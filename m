@@ -4,96 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0316C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 17:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FB9C5516D
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 17:40:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8AA76B008A; Thu, 30 Jul 2026 13:37:56 -0400 (EDT)
+	id 7768E6B008C; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D625C6B0093; Thu, 30 Jul 2026 13:37:56 -0400 (EDT)
+	id 74DB06B0092; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C79E56B0095; Thu, 30 Jul 2026 13:37:56 -0400 (EDT)
+	id 663836B0093; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A18F46B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:37:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F1561401E9
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:37:56 +0000 (UTC)
-X-FDA: 85046150952.10.66520DA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A7143160003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:37:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zxe0DBcy;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785433074;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EF996B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D3490120205
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:40:47 +0000 (UTC)
+X-FDA: 85046158134.07.B31E325
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E658C20006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:40:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="QFxlq/pC";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of fvdl@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785433245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2cxssjRLb23/bY3cD0Rs2QlWjP9nYvCg2nWJJctLs5k=;
-	b=8doRsAIs2xvddlIk+jTq9EulqqxLitsE3BotTLYRUWr/3EeQKG950Yenl7QiM1JyvMeieU
-	vJVayPWijoLLGXIOetHG1Wni0Gzdr381cBr2Bts//lBO5vuVtyco9uLvZafrBftU2Xt8q0
-	7t1Iz3xKH0Vk9njNtdMDRJ0LAlFW1pM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785433074;
-	b=6UiZG9U/kUJm8JB/fepuqQZpPwagqwFsRQkuw+npyo0/kq8b2PLujvYkHMWZe98iqV8Iz+
-	PRDPXR/V9RTqWcwtkBQa068P1PScL1iaiSu6Q9X2mxfbWkZOZFTNSTF6QtP2EXZScftfYC
-	xs1UKPbBwi8KSzccZ1tqMY0Cl6tN3Gc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zxe0DBcy;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA63460204;
-	Thu, 30 Jul 2026 17:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8231F000E9;
-	Thu, 30 Jul 2026 17:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785433073;
-	bh=2cxssjRLb23/bY3cD0Rs2QlWjP9nYvCg2nWJJctLs5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Zxe0DBcyjPydTViWdxQVA/Cr2fEdmUPMvtJYgDhv1r7zeluN5doeuwsa8xvYD6ATy
-	 WKEmX3/1v01b2o5qUvoisYxGZvNIk1V6l45eSC51bcVduaQHpXSiXF9CO3Hq7ZflNL
-	 znUzPTf/MeCzy1KjV1cam3N0VZTLybEMV4LOb6tvVHpjtf7R6FNRZat/RahnOJ5AuI
-	 x5Pc1rvWkZnpiUChK6xY9D7Lxoj6/Rsta7VuN4s0v2JBRltortpb/YrrlX1Op2DuhV
-	 N4IauSOjf23mMIdAI+0FWRVbnGA8dYuiUBPCcdwrYv7QZr2LQHDPX9Y41qK/E3bZoT
-	 Z9jvCEFY/mbjw==
-Date: Thu, 30 Jul 2026 18:37:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Dave Young <ruirui.yang@linux.dev>, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, kexec@lists.infradead.org, 
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH v2 0/3] mm,kernfs,proc: Unmap mmaps of removed files via
- file->f_mapping
-Message-ID: <amuAupu-w664Ubfc@lucifer>
-References: <20260725210549.3716546-1-kwilczynski@kernel.org>
+	bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
+	b=x/8N+6tR6uQOXLElFH1jsx2pikZ7VS7X0Rvuqcrt4vUvD6S7b+ouF0OtmItRZqg0ErRE2T
+	TPY8pPjs9TYte2PRzBH9rnDax5UBG66aakBd1fOLTGtRzJelRPGk6zQqbi9DCMn1NKy/b+
+	kWULWNeimPmx37v+urVky+UJO451flM=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="QFxlq/pC";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of fvdl@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785433245;
+	b=6G17QU3zM9graHxH+rSNc6OsH2pHncK9be0wTFyMVQa7e7Eb5lIg9AJ2EFHgkVGZ51SYQA
+	LtSUB2dX9Ox+rcoJoYIkr9vxnqHKW/yh/j9vABPS8nDR6JDut2dcTWd/tl/hCBLKwXZ1l5
+	TH1Gcsp5wZd7nUP6S/zLaKob1a944lU=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495509b08ebso5145e9.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:40:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785433244; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FwxmNEjIOyP5/0EcR8+juuuAUxgWeIaBmNZJyfLN00XVxBB8885Krd4oR3f3HE6u4k
+         wE2ACO6BVEjMxfaAeis6PRLIRwiFdoLXwB3ALEPtlzRuTeja9Lrw3QyHxiMoMgq43JVt
+         swTDsR1qtLc/vcruCN3Ed2A14vuY8kfXvoI1jpbO6hk2z1KCToS156141DY+Fpl2oPm/
+         tPj4w+yXg5pAhHxKXn+6NMWmJTp5u1VyDzxywqme6CCHCieZK1HS5lT2vi5l7dbE6TjE
+         GUeNU2nyNFw+/oQohQpqJxaBIcCfhCEreJdiwyY7tMmgVqRUmZxV5mENBDmdVwew81IU
+         WLIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
+        fh=hKGHIzkjVrHr0WGLQH8drfNdeHw39aIHx8NR3mbnpvE=;
+        b=Knf/fuBxV1mLe4odvEMekUKkHlk/mLiXV7wkuENq3TIpdNZLS8o44fcHlTloc9RJtu
+         3d/YWsuvovsDOuAej7OPQ0TRhv0lBMf6jrkCFYwJFCIIa6ID5/yWvZPD4Y/zLzmgZVjX
+         PJohh4yIaR7ENTE74a5c0ccaD1mLtQ5owlTb8ZlPk9lEH9X9APfBqAb4NoLQTr03/+Yi
+         7gLeY0GYx6Il97v5gwC2xi1w5VYUCQ+QakuUB+C8sRbsCim9H2tXDQTR0Y+EpYHiYn7j
+         Sozf5HlaiqiUyR5Jn+Ccorny4TRAThLqSmdsYW2BBt7qUmvPgw8La3CwOe5ALkmmlkH0
+         4W+w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785433244; x=1786038044; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
+        b=QFxlq/pCw1zqU7eh2z3SKDIPG4iLUu3kXNRJpxg/URia28PXHFjZK8C9Saz4ROoqF4
+         GsiASHEgNk5CpVL7AL7xHW9+stdQEchokhZShBC5hHU/S0yYXO6T0elggBDEY5vl2xJH
+         kn3OKr6xyS8S3zlP5I4L3AWRtF+NpAphANQgDNQBtdE7MZPfywZ8JavE5tkoMOoxwyjH
+         a+71lR6OaM4TBezQ8xRVJjOrkTiJnwMn9EAcRvR7cxJHHtKtwhFBBGaoclMgFgabPvuT
+         r+m5Ta/tezevihFd+qfLgD0xWa+B2R8Y6QwlMB1nkNzo99Ygaz0Uyg6cxKM6gwZQV5dz
+         r/9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785433244; x=1786038044;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
+        b=Tm6gMLntuicSqnBYAItVk7tNoqWBZ7qYRPYoiwcxbCdL8TYnadAkDlQCzKj1Ah7Ptm
+         uFweSHNpGu21nd3u08EUSdzWKbrHe+da8C/GlBF1kCJw3THJLFp9cspGbS9+QC91C04n
+         KhkrKmmhHi2+jQghxFry0tIiVriH8caXz06ZHe5JSOjGFyIKxTjrRuFgjkU0fyNPe8jh
+         rQS5SYtmkyRfXWSSuZEbpT736DYSG+mgKKB8TzD7mRzo6tia8mrQOFuErYMDkgoYdL29
+         hnBzqcmJ+QluLE0tkJUc2+79SZkpnfWxI4823Xun0ZVmYR3+/c/2NeduTU5MXTHA5gzu
+         CljQ==
+X-Forwarded-Encrypted: i=1; AHgh+RreRjWhDelZNNNdxIkTukxw0Dh6WrTqnIhP/+FnrWuOsEZ5mRW06R0x9jSER6Up1Lp/lkvC5FVhEw==@kvack.org
+X-Gm-Message-State: AOJu0YxLecdDkGeBn9ZbUkYDXlx7+v4uCktighhNJlykO3OKkzFMD+Gz
+	VK/H1St2kzKQgkzXe10j870e1S8Kzy6AYJgQtvtb9P5haITU/9/3pJRr8a5yXx/OZpiSgvZb0Q+
+	sj+tuQZ3QVbnF1P6+qKrBJC0grNfQlObFWYbAqRY8
+X-Gm-Gg: AR+sD13aEqyj0sK43b4Ik+S5DfzHA4CZhUJKW5TfRa/rVMca+DNLih4IKcQ6CIvYB5t
+	KM2j1z/TvxwZUnY/YhZkvPWvO3wIfQk8Fm01pwhqL+rrKA+Si6k251FLat3lICyohEULtebhkDP
+	g+D6U80JtUuFVRPUwCJAdzMG8jK7gJnig9w8jWFOi+pTOfjJkE1g7fQu9tYxY9qFBvY0+D18dkX
+	pjnDYHoWCjW8Z/JReGtzh+Z1qlBEqjDQSWF4qUKvpyM1NWHZcia0IjXB7Gt4Mlj3IbVjoWM2HFL
+	pYRQL0OeOr2+ZdoXS6nnTtoODZBLfy9FKhLXz4hp3u4E
+X-Received: by 2002:a05:600d:848c:20b0:490:ab15:b9e8 with SMTP id
+ 5b1f17b1804b1-4980587baa9mr47795e9.2.1785433244036; Thu, 30 Jul 2026 10:40:44
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260725210549.3716546-1-kwilczynski@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A7143160003
-X-Stat-Signature: udcrap61zwubk1f63omeyhohu3j8jaz6
+References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com> <amuJbBrTW9W6_sx8@gourry-fedora-PF4VCD3F>
+In-Reply-To: <amuJbBrTW9W6_sx8@gourry-fedora-PF4VCD3F>
+From: Frank van der Linden <fvdl@google.com>
+Date: Thu, 30 Jul 2026 10:40:32 -0700
+X-Gm-Features: AUfX_mzF-rbdWdA029msHQErAvjm1m5KqVtwi7O3MQR1mBpjRQR1Wfxbg8w05fM
+Message-ID: <CAPTztWatWbsF4KQwD-_nib-vrZ6uvrhMYcOc1mkWu-7DzN95AQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 0/3] Demote to lower tier using non-temporal stores
+To: Gregory Price <gourry@gourry.net>
+Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
+	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
+	Ryan Roberts <ryan.roberts@arm.com>, Huan Nguyen <nhuhuan@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, Alirad Malek <alirad.malek@zptcorp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1785433074-404625
-X-HE-Meta: U2FsdGVkX19Jhm4upR66pf2io2L5aa3pJOwpDkmaXVkAM1lxnV1WNrrWnmEghNur5Uvvlf0g6W6zb/EQXiAwXeqWdQqverhSuv3L6wX79uUBK3luKlkPRckz9VxAhYJehRljMW+OFpxEFCrlIfcsjJcE3+N108QwrUNyxlEzexP5zudsVXaxkERZIIbCTSdE/LWYbFOqoaAjE3BbKyQBLq3pPFyXiL43nWM+PNUbpu7IJ6jLCZa79ZowObVZD8R5QlNDwnjefQ2oZE1nnYA/RpuLLBnF8wuUonhre5rN0JYKQJC5qjf+XubOuNYOmEU+Gb7TZc5JyCi70RWrbL2FDHxCphlBch+LydpAcTx2s2P/M41Ya5NGynykQpKIBn2ol6sq0FTLyrZ7uLz1sKFn1ogfMcmCwCB0xmTfaO7oDUIJ002hL7jqVpfMvWSYmi4WD+VlkKMLC+uRamJJqYD7rgY5d54PWfaYGB7sE5U5EL+kksI/rf7OJAA7uWXonGRN4z7jIV2w4sPGaWPCpef6dTIPsCCJPhgi5Goqvm3qtEiX4R4azXR5GDAU/yolgIpZdafyU+bwj8nGgbB+rpJHq37eMbrZyfDqNQjQx1Ii9BBHibv1YcqffxhweJss+//w70/JOKC4hXZP0pYeKA0bh5nWjB9HcMd7zTMQW+CP1od2o8iELG2+HYitoU7nKQg5tz6wO9KF5GWx1CiHd1VOn1ZWisTSVWvXvnqBnfu7HpB+Wo1zLwNoaPIAY3ohas8I46173Yec8kpLKW/+NNA972u+BIIq7cfkM1E57/qz82cSi9MhArmWnTOPIOn2ClcnS3/dxhTb/XOQDJ7nMN0uJMXeU6wshl1K5ojppiSs7HUi4JqwPj8/oEQJ9kWj8tK1HO93qL4wXtQbofJD+eg+GeISeskj8rey9dlkI7lmgt0CrZVSPHyVFTpAYsRvJpzVxaWTANXLSsP+AOlAKyO
- s/yR1ccO
- hjr/rV/Zl5sUUO3E00yOisSDv7OxmtvGNg+w+OeC00xKf0z9BnHqzjsU+N3vvNmODK+QBLEoavyA+unlxr7qK3orFfNxYNmJUVT+AjqeZawF8dI0+8/hI6MwE58hU40o7U4+bIuuDVnXioYsS6V6kxMR4M3pLvcltCfu06DAuqKjxUpW6Kb3ETeIXrVmiq2XZfI2KcdgYpx6ANJWE9xVWVbZ/3SPsSArwbzvYQPPWDEIl0/L/jbyWo2tbe6ziFEGXISUmKzSUkUN6s61FQDjDQmWgbjRMyDPM1o8yjN5G8kiXnm8BQePmWfiF+dVjohmYTmvV
+X-Rspamd-Queue-Id: E658C20006
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 8wr4s3h9p5qxk9kxbxfujeywcye9w8cg
+X-HE-Tag: 1785433245-346268
+X-HE-Meta: U2FsdGVkX18oz5uBaIrIsrptHb9U7cKVMV/mhljdRW8KITXXPVODTIeqco8zdfZnnAIBJIlGsvanbS5LJ61OyppNSM+mTFhI4y/zp48fU2QagNN0qjGRc9fRpWvwTANXh9yfEA9WT7j/Z1/JZpk5aThMJKHEsUlqqEqdlb6xH7JccAsh1hhukpXPHhaIUYwrUZYVu8WJeA996Y4whafSrnmk2JA2Nz30UpUlfxt1Cux00tayl/KcToVR4klWGmzpdURL19ZvAb5exOarOPa28dr+vBFK1VuVxrY1R5pdfn51Da00J+hyJa2bJWGkUyZ9fdBwQriO0HO64s9WFrgHFGUfMWPqYS7VFqmUTXLmpPV8F3S9R6v4hcB4MA7REpmLI5ZUqTX4T1F6em7y+4qFmnhOymVn0bDTaUirj7zgdYD1G40TvDXNDvJJpuFjjWZF4TFr/1+GM10rOk31Lg/crU0W7iAkLJpIWfuHHQqls/TXt+0t1OhXOvnYaN0m/wGaTn76SJ2zGFpUovex0zkDD0FN33t4Poc7+1xToDrDUoUKHrMKtWvGt6X3sVsaWl4jZAW3S725dqlfO4/kKT9roQkZeCJF2SB5YuRUOrRRBxzru+ZM5zEfCZqm6F9mXYVuFNqWco8bFGx2GhM4zGE29F09NwR7CN+LOsmFpOznQd/njuIvrjzoWF0Rxf5ZL2kay/tn5VHq9JCrkscdt0YzHMFo3shpMBevNxFLmnO7qVUAZLKn1iJfd9bb1obU/wSsUl2S00r/qhUfFkJxFsMih+kfjUdOZRTrdzq+m6QES6HqZx8O8VHJHxqPygdGIe7zsIIFD8L1nFhUM2XPcBjbe5Oq3iQR99JMrmmSxjXEjbPZyYxPF04HBhIWPaM2IyLKFMc+yHksn25iFVZhjghiyZBlIlTn0HdjGqiUjkXmXUJU40SA8M7fQ25hrr7y3cRT1xRsPRgsia9Mh76DFzF
+ sTMX9YtI
+ CKPFocNseIkP3bmfWBr7YGjAyV75r9YWoOOAIACvfNjXAGWQyXORKDxOCY2wrKDzu47dr3N7dC3hzxQIjWgxRFiryAZA7p5SezQDk012FFRLjCkzo+MSq2xCoEgpKujIExCY4KYHZXlWHsR/IRcwmFbZrok0qwKExde+osFlNfo+6xlPf53S5nHlFCPoZznw5K1xx89ue4EHBfZX7MxHTN/f9Ym0RmR4V/YqykzLLrwQiipjKthDEA4qShas/r0fBrnNtvR6s00mUhgMShYLTao0tSC1GSiGR3U5Gse77rYfMlYBOABOi+HQ6W5Dqz+L8Q5dY05ZAaf76PcxTnlQRscS068S2mnGUqXVkFzE+T8STtIZ+AnLSirovew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,413 +158,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As discussed off-list I think this is fundamentally broken.
+On Thu, Jul 30, 2026 at 10:30=E2=80=AFAM Gregory Price <gourry@gourry.net> =
+wrote:
+>
+> On Thu, Jul 30, 2026 at 05:02:56PM +0200, Yiannis Nikolakopoulos wrote:
+> > In most memory tiering scenarios, the memory to be demoted is expected
+> > to be cold and most likely out of the node's last-level cache (as well
+> > as target pages in the target node). Using non-temporal stores instead
+> > of a standard memcpy path can reduce the cache pollution in the local
+> > node and the bandwidth overhead to the target node. Furthermore, for
+> > certain types of CXL devices that support in-line memory compression,
+> > the last-level cache eviction patterns can negatively affect the
+> > bandwidth of the device. Non-temporal stores can mitigate this.
+> >
+> > This patch-set introduces a new migrate_mode flag for using non-tempora=
+l
+> > stores that is used only in the demotion path. Patch 1 adds some helper=
+s in
+> > x86 and mm to bring non-temporal stores support to a respective folio_c=
+opy
+> > function. Patch 2 adds the new flag and necessary changes for compatibi=
+lity
+> > with the existing behavior. Patch 3 uses the new flag for demotions.
+> >
+> > Experimental data: in a CXL system with 1 memory expander, a microbench=
+mark
+> > that allocates N=3D64 GB memory in the local node and then triggers dem=
+otion
+> > using memory.reclaim, shows a practically complete elimination of read
+> > traffic on the device, i.e. write traffic is N GB with and without the
+> > patch, while read traffic drops from N to almost 0 with the patch.
+> >
+> > Opens:
+> > 1. There is some "duplication" in the x86 tree and a bit in mm. Can we =
+do
+> >    something better there? As it is now in copy_mc_to_kernel_nt we
+> > duplicate the machine check functionality, which if available will over=
+ride
+> > the non-temporal. We were not sure how to prioritize these two and what=
+'s
+> > the best approach here. Can we completely skip the machine checked for =
+this
+> > path? Huan Nguyen has some ideas here that we will align for the next
+> > version.
+> > 2. I am not sure how this should be structured so that it is easily
+> > adopted in other architecture trees (e.g. aarch64). We rely on
+> > memcpy_flushcache for x86_64 but this does not use non temporal stores
+> > in ARM. ARM support is currently out of our scope but any input is
+> > appreciated.
+> >
+>
+> I'm still a bit confused why using NT Stores needs to be an explicit
+> option - rather than the default behavior if NT Store is available.
+>
+> Lets assume we did this for all ASYNC requests, is there a negative
+> effect? A positive effect? Why the new ASYNC type? Is there a
+> correctness issue?
+>
+> ~Gregory
 
-struct file is not a universal - multiple opens can map the same thing. And
-'these VMAs can only be selected by the struct file they were created through'
-is not so.
+Yes, this is a good discussion to have. I believe that the initial
+reason for using a separate mode here was to be non-invasive, e.g.
+"don't break anything else".
 
-So you're not going to get every /dev/mem or /proc/bus/pci or whatever by
-checking against an arbitrary file.
+But why not use non-temporal stores for everything? I don't know. I
+suppose one argument might be that if you know that the destination
+will be used immediately, NT stores might be a slight performance hit.
 
-The shared f_mapping already gives you the shared space in which the actual
-iomem range resides.
+arm64 already seems to use stores with NT hints by default.
 
-The way things are mapped through the file rmap is via (mapping, pgoff).
+In general, though, I agree that for ASYNC requests, just always using
+NT seems fine.
 
-Really the 'swapping' is telling you that what is a shared resource whose range
-needs to be removed.
+Maybe the mode and reason should be folded in to one variable, so
+that, further down the stack, a decision can be made as to what type
+of copy to use? E.g. if the mode is !MIGRATE_ASYNC and the reason is
+MR_DEMOTION, then non-temporal is still a good choice. If the mode is
+MIGRATE_ASYNC, NT is still a good idea. If you wanted to get fancy,
+any mode with folio_test_waiters(folio) =3D=3D true should not use NT,
+since a task is waiting to use the data, so caching it is better.
+Maybe that's overthinking it.
 
-So what you need is to, at the point of the BAR being removed, unmap the correct
-range.
-
-So something like:
-
-unmap_mapping_range(iomem_get_mapping(), ... pfn range ..., 1);
-
-It also seems revoke_iomem() is very conditional, only if
-CONFIG_IO_STRICT_DEVMEM and iomem!=relaxed.
-
-So the file thing just doesn't work + what you really need is to:
-
-- Revoke at the right time
-- Revoke the physical range that is actually revoked
-- Revoke this everywhere
-
-So. I apologise. But. Father forgive me for I have slopped :)
-
-This isn't my area of the kernel so I got the AI to generate something, which I
-enclose.
-
-I left all the gigantic horrible comments in to help.
-
-It includes a fix up on the pci_iobar_pfn() thing you mentioned off-list which
-sets the wrong vma->vm_pgoff for removal (ugh).
-
-The pci_mmap_legacy_page_range() stuff probably just needs converting somehow
-(and if it's broken there today it'll just have to stay broken, the range needs
-to be shared somehow).
-
-Anyway it at least gives an outline of a different road. So treat it as a 'here
-are some thoughts' thing.
-
-Cheers, Lorenzo
-
-----8<----
-
-From 525ce7631fa69aa9297e9fff6289e13316376e01 Mon Sep 17 00:00:00 2001
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 30 Jul 2026 18:15:20 +0100
-Subject: [PATCH] PCI: Revoke BAR mappings on device removal and BAR resize
-
-Userspace mappings of a PCI BAR survive removal of the device and resizing
-of the BAR.  Nothing faults afterwards, so the process cannot tell that the
-device has gone: removal clears Bus Master but leaves Memory Space Enable
-set, so the device still decodes its BARs and reads keep returning register
-contents, and writes are still accepted.  The addresses are released on
-removal, and explicitly reassigned by a resize, after which the mapping
-reaches whatever now occupies them.
-
-These mappings are established through three interfaces, all of which
-attach their VMAs to the shared iomem address space:
-
- - the sysfs resourceN and resourceN_wc files, whose bin_attribute sets
-   .f_mapping = iomem_get_mapping,
- - /proc/bus/pci/BB/DD.F, whose ->open() does the same, and
- - /dev/mem.
-
-On the sysfs side this is a regression.  kernfs_drain_open_files() unmaps
-file_inode(of->file)->i_mapping, which held these VMAs until commit
-636b21b50152 ("PCI: Revoke mappings like devmem") swapped f_mapping to the
-iomem address space, after which the drain unmaps an address space that
-contains none of them.  procfs never unmapped anything at all, and /dev/mem
-mappings are only revoked by revoke_iomem() when a driver claims the
-region, which is compiled out unless CONFIG_IO_STRICT_DEVMEM, returns early
-under iomem=relaxed, and in any case need not happen before the address is
-handed to another device.
-
-There is no need to reach these VMAs through the struct file they were
-created through.  The iomem address space is indexed by PFN:
-pci_mmap_resource_range() adds the BAR's physical start to vm_pgoff, which
-is precisely how revoke_iomem() already finds every mapper of a physical
-range with a plain unmap_mapping_range().
-
-So factor that out as iomem_revoke_range(), without the
-CONFIG_IO_STRICT_DEVMEM and devmem_is_allowed() gates - those express the
-iomem= policy on whether /dev/mem may map busy regions, which has no
-bearing on a device going away - and call it for each BAR from
-pci_destroy_dev() and from the BAR resize path.  All three interfaces are
-covered at once, and a read through a stale mapping now raises SIGBUS
-instead of returning stale data.
-
-pci_destroy_dev() revokes after device_del() has drained the sysfs
-attributes and pci_proc_detach_device() has removed the procfs entry, so no
-new mapping can be established, and before pci_free_resources() releases
-the addresses, so dev->resource[] still describes what userspace was given.
-
-I/O BARs are mapped at an arch-specific PFN rather than at the resource
-address, so pci_iobar_pfn() now returns that PFN instead of adding it to a
-VMA's vm_pgoff, which lets the revoke path use it as well.  All three
-implementations already derived it from the pci_dev and the BAR number
-alone, so this is mechanical.  Only powerpc, sparc and xtensa set
-arch_can_pci_mmap_io(); elsewhere pci_iobar_pfn() remains a stub returning
--EINVAL, now a static inline rather than a macro so that it type-checks its
-arguments.
-
-Fixes: 636b21b50152 ("PCI: Revoke mappings like devmem")
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Assisted-by: LLM # all of it...
----
- arch/powerpc/kernel/pci-common.c |  4 +--
- arch/sparc/kernel/pci.c          |  4 +--
- arch/xtensa/kernel/pci.c         |  4 +--
- drivers/pci/mmap.c               | 50 ++++++++++++++++++++++++++++++--
- drivers/pci/pci-sysfs.c          |  3 ++
- drivers/pci/pci.h                |  1 +
- drivers/pci/remove.c             |  9 ++++++
- include/linux/ioport.h           |  1 +
- include/linux/pci.h              | 13 +++++++--
- kernel/resource.c                | 33 ++++++++++++++++-----
- 10 files changed, 105 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 3c4ca90e2ab7..e983280c7248 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -501,7 +501,7 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
-  * Platform support for /proc/bus/pci/X/Y mmap()s.
-  *  -- paulus.
-  */
--int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
-+int pci_iobar_pfn(struct pci_dev *pdev, int bar, unsigned long *pfn)
- {
- 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
- 	resource_size_t ioaddr = pci_resource_start(pdev, bar);
-@@ -512,7 +512,7 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
- 	/* Convert to an offset within this PCI controller */
- 	ioaddr -= (unsigned long)hose->io_base_virt - _IO_BASE;
-
--	vma->vm_pgoff += (ioaddr + hose->io_base_phys) >> PAGE_SHIFT;
-+	*pfn = (ioaddr + hose->io_base_phys) >> PAGE_SHIFT;
- 	return 0;
- }
-
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 1603d50fdcad..8e4eedfd3ecb 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -753,7 +753,7 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
- }
-
- /* Platform support for /proc/bus/pci/X/Y mmap()s. */
--int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
-+int pci_iobar_pfn(struct pci_dev *pdev, int bar, unsigned long *pfn)
- {
- 	struct pci_pbm_info *pbm = pdev->dev.archdata.host_controller;
- 	resource_size_t ioaddr = pci_resource_start(pdev, bar);
-@@ -761,7 +761,7 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
- 	if (!pbm)
- 		return -EINVAL;
-
--	vma->vm_pgoff += (ioaddr + pbm->io_space.start) >> PAGE_SHIFT;
-+	*pfn = (ioaddr + pbm->io_space.start) >> PAGE_SHIFT;
-
- 	return 0;
- }
-diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
-index 305031551136..ea9cf832362d 100644
---- a/arch/xtensa/kernel/pci.c
-+++ b/arch/xtensa/kernel/pci.c
-@@ -74,7 +74,7 @@ void pcibios_fixup_bus(struct pci_bus *bus)
-  *  -- paulus.
-  */
-
--int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
-+int pci_iobar_pfn(struct pci_dev *pdev, int bar, unsigned long *pfn)
- {
- 	struct pci_controller *pci_ctrl = (struct pci_controller*) pdev->sysdata;
- 	resource_size_t ioaddr = pci_resource_start(pdev, bar);
-@@ -85,6 +85,6 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma)
- 	/* Convert to an offset within this PCI controller */
- 	ioaddr -= (unsigned long)pci_ctrl->io_space.base;
-
--	vma->vm_pgoff += (ioaddr + pci_ctrl->io_space.start) >> PAGE_SHIFT;
-+	*pfn = (ioaddr + pci_ctrl->io_space.start) >> PAGE_SHIFT;
- 	return 0;
- }
-diff --git a/drivers/pci/mmap.c b/drivers/pci/mmap.c
-index 8da3347a95c4..1969a93f64e6 100644
---- a/drivers/pci/mmap.c
-+++ b/drivers/pci/mmap.c
-@@ -38,11 +38,16 @@ int pci_mmap_resource_range(struct pci_dev *pdev, int bar,
- 		vma->vm_page_prot = pgprot_device(vma->vm_page_prot);
-
- 	if (mmap_state == pci_mmap_io) {
--		ret = pci_iobar_pfn(pdev, bar, vma);
-+		unsigned long pfn;
-+
-+		ret = pci_iobar_pfn(pdev, bar, &pfn);
- 		if (ret)
- 			return ret;
--	} else
-+
-+		vma->vm_pgoff += pfn;
-+	} else {
- 		vma->vm_pgoff += (pci_resource_start(pdev, bar) >> PAGE_SHIFT);
-+	}
-
- 	vma->vm_ops = &pci_phys_vm_ops;
-
-@@ -79,3 +84,44 @@ int pci_mmap_fits(struct pci_dev *pdev, int resno, struct vm_area_struct *vma,
- }
-
- #endif
-+
-+/**
-+ * pci_revoke_bar_mappings - revoke userspace mappings of a device's BARs
-+ * @dev: Device whose BAR mappings are to be revoked.
-+ *
-+ * Unmap every userspace mapping of @dev's BARs, whichever interface
-+ * established it: the sysfs resource files, /proc/bus/pci or /dev/mem.  All of
-+ * these map through the shared iomem address space at the page offset the BAR
-+ * is mapped at, so unmapping that range reaches them all.  Subsequent accesses
-+ * raise SIGBUS.
-+ *
-+ * The caller must have made new mappings impossible, and must call this while
-+ * @dev's resources still describe the addresses handed out to userspace.
-+ */
-+void pci_revoke_bar_mappings(struct pci_dev *dev)
-+{
-+	int i;
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		struct resource *res = pci_resource_n(dev, i);
-+		resource_size_t len = pci_resource_len(dev, i);
-+		unsigned long pfn;
-+
-+		/*
-+		 * An unassigned BAR is sized but starts at zero, so revoking
-+		 * it would unmap unrelated mappings of low physical memory.
-+		 */
-+		if (!len || (res->flags & IORESOURCE_UNSET))
-+			continue;
-+
-+		if (res->flags & IORESOURCE_MEM) {
-+			iomem_revoke_range(res->start, len);
-+		} else if (res->flags & IORESOURCE_IO) {
-+			/* Fails unless the arch can mmap I/O BARs at all. */
-+			if (pci_iobar_pfn(dev, i, &pfn))
-+				continue;
-+
-+			iomem_revoke_range(PFN_PHYS(pfn), len);
-+		}
-+	}
-+}
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 5ec0b245a69b..b4d138a484dc 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -1714,6 +1714,9 @@ static ssize_t __resource_resize_store(struct device *dev, int n,
-
- 	sysfs_remove_groups(&pdev->dev.kobj, pci_dev_resource_attr_groups);
-
-+	/* The BAR addresses below are about to be reassigned. */
-+	pci_revoke_bar_mappings(pdev);
-+
- 	ret = pci_resize_resource(pdev, n, size, 0);
- 	if (ret)
- 		pci_warn(pdev, "Failed to resize BAR %d: %pe\n",
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 4469e1a77f3c..266b41e95e02 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -229,6 +229,7 @@ enum pci_mmap_api {
- };
- int pci_mmap_fits(struct pci_dev *pdev, int resno, struct vm_area_struct *vmai,
- 		  enum pci_mmap_api mmap_api);
-+void pci_revoke_bar_mappings(struct pci_dev *dev);
-
- bool pci_reset_supported(struct pci_dev *dev);
- void pci_init_reset_methods(struct pci_dev *dev);
-diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
-index d8bffa21498a..a9414c4ad593 100644
---- a/drivers/pci/remove.c
-+++ b/drivers/pci/remove.c
-@@ -45,6 +45,15 @@ static void pci_destroy_dev(struct pci_dev *dev)
-
- 	device_del(&dev->dev);
-
-+	/*
-+	 * The sysfs resource files are gone, drained by device_del(), and so is
-+	 * the /proc/bus/pci entry, removed by pci_proc_detach_device(), so no
-+	 * new mapping can be established.  Revoke the ones that remain before
-+	 * the addresses are released below and possibly handed to another
-+	 * device.
-+	 */
-+	pci_revoke_bar_mappings(dev);
-+
- 	down_write(&pci_bus_sem);
- 	list_del(&dev->bus_list);
- 	up_write(&pci_bus_sem);
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index f7930b3dfd0a..ec1b2d08556e 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -460,6 +460,7 @@ static inline void irqresource_disabled(struct resource *res, u32 irq)
- }
-
- extern struct address_space *iomem_get_mapping(void);
-+void iomem_revoke_range(resource_size_t start, resource_size_t size);
-
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 64b308b6e61c..df426d054faa 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2274,11 +2274,20 @@ int pci_mmap_resource_range(struct pci_dev *dev, int bar,
- #define arch_can_pci_mmap_wc()		0
- #endif
-
-+/*
-+ * pci_iobar_pfn() yields the PFN at which an I/O BAR is mapped in the shared
-+ * iomem address space, which is where both the mmap paths and the revocation
-+ * of those mappings need it.
-+ */
- #ifndef arch_can_pci_mmap_io
- #define arch_can_pci_mmap_io()		0
--#define pci_iobar_pfn(pdev, bar, vma) (-EINVAL)
-+static inline int pci_iobar_pfn(struct pci_dev *pdev, int bar,
-+				unsigned long *pfn)
-+{
-+	return -EINVAL;
-+}
- #else
--int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
-+int pci_iobar_pfn(struct pci_dev *pdev, int bar, unsigned long *pfn);
- #endif
-
- #ifndef pci_root_bus_fwnode
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 3d17e3196a3e..6cf2a30e1109 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1265,21 +1265,40 @@ static DECLARE_WAIT_QUEUE_HEAD(muxed_resource_wait);
-
- static struct inode *iomem_inode;
-
--#ifdef CONFIG_IO_STRICT_DEVMEM
--static void revoke_iomem(struct resource *res)
-+/**
-+ * iomem_revoke_range - unmap all userspace mappings of a physical range
-+ * @start: First byte of the range.
-+ * @size: Size of the range in bytes.
-+ *
-+ * Zap the page tables of every userspace mapping of [@start, @start + @size),
-+ * however it was established: /dev/mem, the PCI sysfs resource files or
-+ * /proc/bus/pci.  All of these attach their VMAs to the shared iomem address
-+ * space, whose page offsets are PFNs, so a single range unmap reaches every
-+ * mapper regardless of the file it came in through.
-+ *
-+ * The caller is responsible for ensuring that no new mapping of the range can
-+ * be established.  These are VM_PFNMAP mappings with no fault handler, so
-+ * userspace touching the range afterwards takes SIGBUS.
-+ */
-+void iomem_revoke_range(resource_size_t start, resource_size_t size)
- {
- 	/* pairs with smp_store_release() in iomem_init_inode() */
- 	struct inode *inode = smp_load_acquire(&iomem_inode);
-
- 	/*
--	 * Check that the initialization has completed. Losing the race
--	 * is ok because it means drivers are claiming resources before
--	 * the fs_initcall level of init and prevent iomem_get_mapping users
--	 * from establishing mappings.
-+	 * Check that the initialization has completed.  Losing the race is ok
-+	 * because it means no iomem_get_mapping() user can have established a
-+	 * mapping yet.
- 	 */
- 	if (!inode)
- 		return;
-
-+	unmap_mapping_range(inode->i_mapping, start, size, 1);
-+}
-+
-+#ifdef CONFIG_IO_STRICT_DEVMEM
-+static void revoke_iomem(struct resource *res)
-+{
- 	/*
- 	 * The expectation is that the driver has successfully marked
- 	 * the resource busy by this point, so devmem_is_allowed()
-@@ -1295,7 +1314,7 @@ static void revoke_iomem(struct resource *res)
- 		return;
- 	}
-
--	unmap_mapping_range(inode->i_mapping, res->start, resource_size(res), 1);
-+	iomem_revoke_range(res->start, resource_size(res));
- }
- #else
- static void revoke_iomem(struct resource *res) {}
---
-2.55.0
+- Frank
 
