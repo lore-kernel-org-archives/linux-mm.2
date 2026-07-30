@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B0F8C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:10:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F7CDC54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:13:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8118A6B0093; Thu, 30 Jul 2026 04:09:59 -0400 (EDT)
+	id 24CC66B008C; Thu, 30 Jul 2026 04:13:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C2466B0095; Thu, 30 Jul 2026 04:09:59 -0400 (EDT)
+	id 1FD446B0092; Thu, 30 Jul 2026 04:13:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D7866B0096; Thu, 30 Jul 2026 04:09:59 -0400 (EDT)
+	id 1165C6B0096; Thu, 30 Jul 2026 04:13:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2F56B0093
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:09:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D7B3AC08B0
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:09:58 +0000 (UTC)
-X-FDA: 85044719676.11.E1536DC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E04B26B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:13:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 515F71C1233
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:13:48 +0000 (UTC)
+X-FDA: 85044729336.06.7ADD8F7
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 77FBD80004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:09:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rkL1tRhS;
-	spf=none (imf30.hostedemail.com: domain of BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 00EC3A0006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:13:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HXnE18tZ;
+	spf=none (imf25.hostedemail.com: domain of BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785398996;
+	s=arc-20220608; t=1785399226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=mrdTWDDP+zO1OqQHGI5pmP0sI0md65D3HkwggiDo4oEO70YRBGogdG2Ucj2Ewvltgkbr3E
-	9jK8Fr126I09iWdjDtIzi28+BZVP/oYc//SGqOLhluxlW33Kv2rE/IHe0apRCXFxrvthN5
-	hKJtNmmNQvBZBwCFeR7ha8/A45I/Aoc=
+	bh=STnZe2MMCF/BzC03VvW9KYRg64vjJ4C3hF7Nl3+7RDA=;
+	b=HusOMEpy5c4Va4aYq6tYKgh40i9kKWHQBTVQUOvA3Gi++uq/tKYtgi90aYq4OZJmcaYPrR
+	BUikyKsdte6NLZmyLQ+nZ1NCBEkie/Yxm1iYV/cAcElw+gBLjbyA/Z4yWBChPn3vr8VGz0
+	zXPG3V03FnmdcE5Q8WmHWBVAzOTFC1o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785398996;
-	b=0T+vsqoLLqUhVbKc/HFagwm+mRS0SbyKqL9R9Qzbn/Yr+Pb3qpXftJrfg+Z2G1oal6lfeN
-	XQVl024xSo9iVt8ug3pawP1gBacMpSmmmLli1eJS3NNKP7Lj9/VGS2iobApv7cmUE6EY94
-	EuUs4s7+lHyMwf4OSyoEslo+YL6UO/M=
+	t=1785399226;
+	b=p5kZ3mFzJ/9mmdt0Ktj+cYSA5/cUl7uGTiukXcsba0DS1mkLSlLRxnQ5O3snQvry15JMOq
+	PM/wPhc3j+bDMOjXgRjmfkixodS72yS1JkTHchCpx4ku+kq43YQ6RXcxPZHXOBazyBU1kr
+	EdblHfYZ5qiRMOwO+QfcpU4Ir54BLpw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rkL1tRhS;
-	spf=none (imf30.hostedemail.com: domain of BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HXnE18tZ;
+	spf=none (imf25.hostedemail.com: domain of BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5608c610d26bcec1a9db+8376+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=rkL1tRhS589w27c03L/iKFIwI6
-	bqAiqJcPrEbMpmjf9mx6+CvlgQvTU7eNHKmDx7/wlelA2aMnY8/8omcMw6NRIoGpPw9yluYMaWmBN
-	gBQmZo4FEWUVM9sCigArBsZzj5O1Ys+LgIue0QQbekfW9lsELlNvSIjfdSlafd5L0K887M6qDXsYd
-	YAntas6Ph1jM5eshuVoUY5F6RN5+iZq22oRLze+XlmEA6LmbzOFHuhYWSmAMINSckDRz8WhBpTWVQ
-	evwpgZxaopjIniNiZnKWafNb4lNSo9TExbynz/nLC974xLOZxkorcKDOvNy+9N04pYkuuIkkTIg9x
-	rV53T/kg==;
+	bh=STnZe2MMCF/BzC03VvW9KYRg64vjJ4C3hF7Nl3+7RDA=; b=HXnE18tZYg3z1yOR/vmkbR0e8+
+	owNT0191K6/UHsvHlua/zgTPNh+47Mrlet9VRkD9YOmskNQ/80p4l1obKzRYpCGKFK2MtYU7TtyBE
+	QK7pHvVOLyKoFlcEqf53voXwTboFbLoHobPt7cmSzgai4XWYpKfuBTiEBa8cJdaoV2k/2DjgijOrz
+	47Y58aaxz3ZmSK/0K3lIEgqq5eMANYzbG5Dun1BhAiFZooTUwdLf1QlnI3zuvXNZB5kjfpSVqgnsz
+	B1rb3EeP5hQ3vjcheeUz7cCvXG4m0YUzgFz2zFCUn8ORPE8USQ0kcGerQGWURqWi+FHR+hqLmdE8F
+	LLVAXE1g==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wpLpp-00000009oaK-0q6X;
-	Thu, 30 Jul 2026 08:09:45 +0000
-Date: Thu, 30 Jul 2026 01:09:45 -0700
+	id 1wpLtV-00000009pHc-2Lu2;
+	Thu, 30 Jul 2026 08:13:33 +0000
+Date: Thu, 30 Jul 2026 01:13:33 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: Jens Axboe <axboe@kernel.dk>,
@@ -81,25 +81,26 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-erofs@lists.ozlabs.org
-Subject: Re: [PATCH v7 2/5] block: add task-context bio completion
- infrastructure
-Message-ID: <amsGyU2clNRBDYdz@infradead.org>
+	linux-mm@kvack.org, linux-erofs@lists.ozlabs.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v7 3/5] iomap: use BIO_COMPLETE_IN_TASK for dropbehind
+ writeback
+Message-ID: <amsHrVCJnuXzeGG1@infradead.org>
 References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
- <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
+ <20260730-blk-dontcache-v7-3-3e8e6850068d@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
+In-Reply-To: <20260730-blk-dontcache-v7-3-3e8e6850068d@columbia.edu>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 77FBD80004
-X-Stat-Signature: jz1fesocfrpn176kanw1ug1kwydb6i56
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 00EC3A0006
+X-Stat-Signature: 5k784txm96t5p93tc8bk3z43o9nqo4fx
 X-Rspam-User: 
-X-HE-Tag: 1785398996-77976
-X-HE-Meta: U2FsdGVkX1/o6Qzg4/NYh/cgrZ6ZtDsdEDGPY+s1S0rl4MzL+KeYBtXI11P3TJ/EjsDV4pho1j2wg/hOrCzQlwh2VsGEFTzRHv3+6o1AemKwlfWqduxB+XTcHyT5ThEFwiymSJdGsD1XwRgoe4BGupUzZQD3btkW0arXpzdlkUYtX/m/5N9/boQT8RupPks7GOThCZpLRl667rUGu5EyRfZO3A5wIE1ie4cEhRxryk4ejG/MJ73gXvvw8+gVvfQTCJsDetOLprt/6B63mdckP0GpVD3EZ3jC4oMclcCNW2Z8MYRaXQlbehEECAAJyp4gkkmuH3rp6urhAmCYPNsnDlgYO0m7s+oNFit5VT/YgmIJMJ3ejJZsbziQO/JjUiDf97xazATtkqKzJpA5EfxLnEM1T73lqeQ8LqSerNvqr3mDb7Uo+pQwLT+xuUgyl3HLT35O8ZXNEoK0dQaK0Hiu3taPA+4PS5kYN3AQLy91t9JQa1TLmGdeygO4f+zZrqk1R7UUkARp4fwzzcFmCeNntLQJ8ZQZQykCmt4Qbki8K2OuVEul+EJQbk6DzOAaVbMoJBV6zM8G7BzxpVO0S+wIkPa7jmnxxDOVRw0WTsPLVlVGXR0gRTmJhEM+mDfltcfH76Iqkvm7gTPscrCWL85PQUP7biuCSxuFDqEwJ1KM7ymU3iDoL9b/XWtzubpJLxRb6GI7j6gHe67eNz8Aj99+j24ou41tjSGDWXSN4DAETm4y/IG8Nggz0tUQP7S/A3TLm8lGkiGo3SV9j7CrvbsCHyfPnDAKZQ47SuFNpKRT4jmDmcU6TT/geaiqU5lPrXrdz9+TNVT3oJXgIhWlA3iMtOArG4oKUycvp2uNsq8+8Vv5KzYa+ydQMQVBMYitwwsJA4NFds1ta20kG2iOw7fL6ujBc6QdW9bZPIRb7aubivlABawNNWxqzYA3lDuZZNbWuFC32xfrR0F4bpl55xL
- Rv5dADgZ
- Xiiqr/yAbQAdkXRmP20O6jwTWvAG9kixTiy1ml0WtWri8N5phCcaZQF2dSzIG4ZE1cvVVWzybaR7jEnuQVy1XICTOATsfd0m3sE4YviZrQVqZ7jeK+9Q4A5tDI1slqcCBDK/0GSPrUcXR73WFQGdEbdr9yBbUwgISKv8DksHFkFRdKy5fPjjtBXAP2kQLzYD6NcSKXP7Ubr0KJOZgGLmSKPU/FCOxeydUOK2hYGQWwMTBmeALvmVJnT0iZKR8GvLgYmUdP7J+NCC0+AAbkW2bUudNT45lRjfc5gGWFF8b3Y85iFgGP4JEgZtp5I+WD8BRnVQ2GH65psCBIcxSAhqrjy1DJUZeTVPonwZuHt2IOeRvfMOzHSikZFrFLsarZili/w0poRS2JBCTe/1lDLN6yJCLgCBDWD+46WKWP83sfCUT/RH3Wd4wBGO8GPM6yY9tz1yahu2kHTPDrzJGOOUtfEmYdILKrrVO9J53pun6YBQhIBJ2fQARkgkJXdW6WyiSu8Kv+kX1SKqOvbAmjgqgJ+n1gyzfhhivsIDh9w+QBOuc0uWQ4JXhB+Nhyj1Qmt1n9fF20GHfx0AaXJmL7KJ3DAIP4ZItI7TY3f2z6lPIO/s74y7/SoIhjNZTsGPwxUEvnaidb/aWrvfTbDj7c8An1PLKjdt/rhtyO9XlVyH6kanfGjgL+NMBJNJ7QbfQ6bE52YWAhF3bnOVqj2Vkp6Val9sj+GAPszwYtvl+blACD4Qozmz39sYuJ6nubw==
+X-HE-Tag: 1785399225-888208
+X-HE-Meta: U2FsdGVkX18rDFfGiS9xXzjfib8XFYoVsyheMCBbZaQkdk7ZRNc3SX8ZwdZnkXbW6UYPRf1Xs9H551NhKN6Xqyu4ZRDhhxIR3V4mA4t8G6lkDfsnwbjHzBQ2uVcGYHF647PqUxPccugYETt0Q2LpOkDOcRdXD4+Q2qfDE0SMhABYoCaJzZ+Qc4K4p13nq1mUkCHjyXMkEVKF5Ek2wEpBoki9ZIKVplTSruX+xkSY69gJhHkAtqVkr3vNW7Sdy77IIrth60IDMW2jgdVG+mSdM2AKkuXER6DLNIkCqMXsSY9++iXzfMUzO0dQW5UdaZsRk01f9eUF9R6IND0LBOC6jwJht6eOMS+M+x6TOM6uh8cHerIAbYGGQXA+iifu/AijUwzjWObJdWh3H0++XkKiSUOhmT3japxLf9VOd5pDv0nNDYWKKGHp5sxSl7MBsheSl3HpYxIsLQNmR42xOfIGTonB9zLtZdyFyl3pQct/1fnAJqEm9G5uKjxlJJZHGxs0QdnWzzPRUkrfLwMV/xuD6WHIUbXLAXiZ/qj1/7Y137RQd8AvDIS7b8A0pPnN/Jin82jCQ1LGs6di+l6LkDzEnLs3DmLYDt2DIuT/8stu8mrWtQOTXhjDYA4JEC/V7ebEC+urjAeav/+2nBnCrgKqnct0AHdY6gMFEHJH07XsKmF3QWElDTTffJVAyfsew0eIPJTAQXBRIGh/kQ0G0LoTW/4/tlsaT/Jq9l2w7XUUlYUvd2O7lutvN8J3kgH98vGtO5fp242T5QnIZTUP7igDcx/8P33yMUOeiHqzilycbqi5pc7oJv1eMXsPCXp2DN2PHegPaaFS5q6VMi/6mYdxiJ8mGuS4KJdGBNPoNTnnHwe7EZsgXyPk/zKlbM5vtq7lKSiSD2jNxlbDAcrEw+CvNQ6iBw8wiMfmckQkxK3NDyjYdkN/B/VmOed8sGw1VbZFIB49WbuRTtrxqrO9cmO
+ B7SPG8IH
+ lL2o9QsDvy0RaUy9YWbl1KixPP8VPrvu+WLA4iccwbG06smvW5vIol2j4Um71wi7rV0QJQdrgMwEXwqE8Jdci4ETB8s/X53FuEvHdy8zDaX4SxOvhe4TGDfy/6IKN7O4BZscvPoHbUiu6GNsri3Lu2Xaf26RgJ9JQ0KKPAovQhc+chok8UQA3ggAFPlr/iVUIyKHpaP2X6nViG6SM19QdcPefA2BmA5WWN+JVn5aFOsDRHOxbHmRckjnsW+9bGr/3MZ1F5ZWp1d5P7Mgd/EIaHqNPUGpMaNALNlzg1YIfP5vi5SmvG6rLWBqMQoqtkyGzZzQoyUCugfA5h7ed2NIqEFWcEn92zKnmJ64T4gO98iqW1Culo6nDDzZpCc4dWetQzi26M4gky81Y+SExaJg5I4rxQ0DTzW9uamcb/3tHCw0aYHO+bP42r492LAdrL5dJt7qT8NXdzRWdaJGBnkuRPTM5b0Xh5+8l5IZRlWDAha2iA3wX2U8+hg+biz2CeaA6kv4/GzTkSQXkZ7VqvNN5s1EugmSGYCaPHV0LwqpAvOM+lHxSriH4+bn+nIqGyjziipWd6zJv81ey0Xs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,8 +108,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
+On Thu, Jul 30, 2026 at 02:57:53AM -0400, Tal Zussman wrote:
+> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when a dropbehind folio
+> is added. This ensures that bi_end_io runs in task context, where
+> folio_end_dropbehind() can safely invalidate folios.
+> 
+> With the bio layer now handling task-context deferral generically,
+> IOMAP_IOEND_DONTCACHE is no longer needed, as XFS no longer needs to
+> route DONTCACHE ioends through its completion workqueue. Remove the flag
+> and its NOMERGE entry.
+> 
+> Without the NOMERGE, regular I/Os that get merged with a dropbehind
+> folio will also have their completion deferred to task context.
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+This seems to be missing the bug fix you identified for the double
+deferral?
+
+I although thought a bit how that could be done cleaner, see below:
+
+>  		ioend_flags |= IOMAP_IOEND_SHARED;
+> -	if (folio_test_dropbehind(folio))
+> -		ioend_flags |= IOMAP_IOEND_DONTCACHE;
+
+I'd keep this flag.
+
+>  	if (pos == wpc->iomap.offset && (wpc->iomap.flags & IOMAP_F_BOUNDARY))
+>  		ioend_flags |= IOMAP_IOEND_BOUNDARY;
+>  
+> @@ -256,6 +254,9 @@ ssize_t iomap_add_to_ioend(struct iomap_writepage_ctx *wpc, struct folio *folio,
+>  	if (!bio_add_folio(&ioend->io_bio, folio, map_len, poff))
+>  		goto new_ioend;
+>  
+> +	if (folio_test_dropbehind(folio))
+> +		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
+
+And move setting the flag to iomap_ioend_writeback_submit, and only
+for the case where no io_bio.bi_end_io is already assigned.
 
 
