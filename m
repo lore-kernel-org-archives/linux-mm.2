@@ -4,131 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC82C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99480C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6467E6B00B3; Thu, 30 Jul 2026 10:15:33 -0400 (EDT)
+	id 8E2916B009E; Thu, 30 Jul 2026 10:17:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61E296B00B4; Thu, 30 Jul 2026 10:15:33 -0400 (EDT)
+	id 893046B00A3; Thu, 30 Jul 2026 10:17:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 534256B00B5; Thu, 30 Jul 2026 10:15:33 -0400 (EDT)
+	id 782476B00B5; Thu, 30 Jul 2026 10:17:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 320A56B00B3
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:15:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A86A212018A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:15:32 +0000 (UTC)
-X-FDA: 85045640904.18.B3577D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E51674000A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:15:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eN1lj5qO;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ACCA6B009E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:17:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C752B1A01A9
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:17:42 +0000 (UTC)
+X-FDA: 85045646364.14.8BD1E3B
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C047E8000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:17:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=amLY6zm5;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785420930;
+	s=arc-20220608; t=1785421061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WTgepQduWlkZ5ugvc4fI7nenGhhfC2SUKFbYbj1yI00=;
-	b=zgxvkpPnve5b1L/jUCMej4pXspmMyXlPqaosysg8rY+0kFnlok0h1ju2ePjleSysxxSPeG
-	8TNRHky7YbAEYvDTqXYbricA55CxFpCSuD+ll5TmSEp7djO9slntJXcQyrKzmkTkTBXIkg
-	r/X5U/VknkuHLzOwPl41POa7t2KiwLA=
+	bh=U3SvnYZJHl7NYWj02zj6wL/RU9i4h+L+WYLXP9dU708=;
+	b=c/zDgogGfjTRpLRZAvYtb2VX7AKmC7yZL4B4YtXPDyVv7LYRLj3MiE9J8NPKyhmVA4lozQ
+	jq0hpSdZgaDwTtc9ioHKVHJCfC4MecR0pVXNMvZci2vwFqiGY9L2dkwFXGNidAOaEVgOB+
+	oxmAnzv/uCBIVY5DVgq2eQSrfEjMCv4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785420930;
-	b=23LH8fCDwOcgWeWcj403+xgVfOzUokC5/boqmEb1TmXhvdE2dW3L4We1woIZLgUgO0EPCE
-	9JAX/GE6LI0+Yk19uJ1bjJSYDKmxdIGKH/lQ0UaQ2BJyPItU+ORzx58NFjeCtPtPETAiDC
-	LTaQHvGbKb1JgKMhAu6nyodMIk7Jh+c=
+	t=1785421061;
+	b=Bm387ozXe4n6tnXnckWwB/GQSrNMMLCZJMzk8R6dYTnKD8/4DsufrkKHtP+TRVJez8vxii
+	2jny4Ir+hU/9aphuWajrNC1Tmsz9oAtsnoyBIQ1FFUiaY7JCu+//sy3xtsTpN2XtTcY+Lr
+	peMhfurj9e/kkhDMWbweCHSfvFFOE48=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eN1lj5qO;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6AD62600B0;
-	Thu, 30 Jul 2026 14:15:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3661F000E9;
-	Thu, 30 Jul 2026 14:15:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785420930;
-	bh=WTgepQduWlkZ5ugvc4fI7nenGhhfC2SUKFbYbj1yI00=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eN1lj5qOb5fu9EekeSPmrWTJxEQfkM8wW3zTNJHj/Vv6cKTUnD5S1jnm78DMubUyK
-	 s/ZcljVOmAQzh/i1NiYTQbwrmjxhyhCTWKTciw0i/lKBO421kKUa8z4C4OC4JitIdv
-	 +qrL5lwnVFpp1jwQI9e3WM/rPG456maWGLFt4DcQP1wpihsBchKaw93MAz3YfkXTRV
-	 z0w1J2HP7Rl5Pl0BxMG/50TKxMMFXbFVqkD1bQsux9y1PP99PjEefKStxS9NpcmmW7
-	 xq5yv2KeN8lLQkfwDBpW5X59DigYTfawEerDvRtxWGAIxTRnF+xccwrrEs4EyjwwOF
-	 aq006WL96a4eA==
-Message-ID: <73d28cff-77f5-4cd6-888e-5dce5ebae459@kernel.org>
-Date: Thu, 30 Jul 2026 16:15:26 +0200
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=amLY6zm5;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=U3SvnYZJHl7NYWj02zj6wL/RU9i4h+L+WYLXP9dU708=; b=amLY6zm5tP2ZxX606LkgQ+F4SN
+	sj4k1qzLtSyTZ1yjosAgi4YDRF3psU2AvEzsNry9rfF6Y7ul1d+YtWS23yVAWXAZyIo5fPQwyPa0l
+	7VcfSfieRpxys4dP722NIk8egiND/5WV/3qGNfR/REJgknhSAXhG0stTm2FCQPUMEscLwMNeenum1
+	Bbk67sbrctfTjKx3tu8FyJe2sQ491W/Ctlixty5VWICWXgio7lD+mENESX8B1NrzmTJA38alGfMst
+	Ch/Xnjv36A4QAK5UyCxMVDm5uwQVBvGIxcoXjPesWYLu8jRB7UQ5fZVVGNRnMDyiylUTFwPD/nRXS
+	j9Nqc6jw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wpRZe-0000000H8yg-3sxW;
+	Thu, 30 Jul 2026 14:17:26 +0000
+Date: Thu, 30 Jul 2026 15:17:26 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Subject: Re: [PATCH] hugetlb: Use invalidate_lock instead of fault_mutex
+Message-ID: <amtc9t0kbt0XsmeT@casper.infradead.org>
+References: <20260730131431.3613545-1-willy@infradead.org>
+ <d4f87684-7727-4c74-95e9-159196fbb16c@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slub: print just the function name in
- /sys/kernel/slab/*/ctor
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, Alexey Dobriyan <adobriyan@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-References: <456c0a37-9074-45b5-9be2-a5f2fe345400@p183>
- <ee600151-85d5-4cd2-922c-d2d8df21878c@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <ee600151-85d5-4cd2-922c-d2d8df21878c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E51674000A
-X-Stat-Signature: rm485rpqaobyewunzskrjf6d6hb13y6x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d4f87684-7727-4c74-95e9-159196fbb16c@kernel.org>
+X-Stat-Signature: 4w49b6bdyf6bxzqgttmaxzb1ftkfa57g
 X-Rspam-User: 
-X-HE-Tag: 1785420930-338379
-X-HE-Meta: U2FsdGVkX19i9khdcvUe33Otztl1FQWmP7sz2lxKIwJLEupPue489NFUuM6XgDe2ob933DaXUqbyG3HDoP4XsN6YC5AbjPKHyOfhM/yB0pbgy3M3zjXI+V1kSs/mv2ktoi9NO4TtkQFRFCoT1tZUnqzys6OtPwSwxcDAUZOwSUJQesyLhDDhDvIhyGZU23esJlF3K4ptGH9IHvsTUIsdQNeEoxUpcFd+kvNkeFC+aPljeTfp3emCAazKno/PivnOPdR6ZxIY1NyqwKeJfyjeAD/W0kXmwk+/P+vaKf6q7Vq1+TjHqHu3yGCu5GVV9xTLjCa+i+TSutMi3fKLjqi+PikT+TbSQTw+vMHAHY8+lLB1qnTVws8ptxfxIOZucmDO3vZTagaF6t/H3rx1Fb0fkl/megEXUoTs3NxOvJnrs0U8OfS4aoeIvZHCV2dIggrYZ9ZcbPb/TUq7+EuqH24Dv745GxtqxCfcRQQvB7ZRexpoWZNnpRL/0LYLxOzCpxYLROLDbtHeFGPcrHGBsPrqmZ3veqeXmp7qUOipdDWqngwc7Dvrvg8iYos4UV9TWFpXfB2xGrK/p3VsP/I0y18BQFi2bIp8JcpI5Y1YcyNh5dBgzN4TIEPvDCqNVTzkjHK/1pgQ+3vLoXc4RmpvSvq+kYI8d7fWPFz3ONFFj00jw4T/Ern4O/xCTu5I0z2RJRk+bEAgBvaqvmPDqoWCd3LcyHnQccdrbH3ov36huHctfQ3SOJ2dhTZ8wAb0Odj1UPjRWlVLUdoFI3rVwHCPhxvD1mwdpua6Ls8JxTWrcqiayJ16AQkn12QukZoQhXmhpcFpWUPB0OgCSVBDc/dJj+SNiHfYCvEoZFqSuJUBbCwBEK5dvVPSNl+j/Z4d6xfPuDOR1tQrSAYhXw3Tqs4ScmPKNe7rNKksPBZiA/+2FboFj7gYItWWNKp84ySNtUHs0ZF6GxIs7nMN82+weCj8iKE
- CVh1ecMV
- zv2vJXCAAKzDsAeiZY4LFtykrsBNU8x0L50C6P5j8UkmOUWzUQEZGeNkDe/jNXDlDxJic/S7j7VCSVn7GHC2cXC7ZabOuGnc22Fe5DhIQ/t37hWoWmn6PeyAdCPWJTJMEzu/BEXmpDYhSroTyDoeZfg095dFjeApJdl4mR8hfWRPmprOpernA4Gh5WEJPi9s2myeuyKAL8J3yfIOxixGbZE2xqXA/u+fbFH5SCdIDv2kC9uYiXXw0HqsgXm4CHqGexU7nwUI6bT5B9QdkjoaSXZ8tEQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C047E8000D
+X-HE-Tag: 1785421060-599250
+X-HE-Meta: U2FsdGVkX1+BFRZPaeRzJGLlRl1VecacJEt5FCSqqXh0FOVG/2KriqdWQH/t5ixof+29nYTFnzaP/fh9AZwxI86Fjzc5iudBngin2dsDscL0Z1+SALlDFCD9ZYyDFamrxllWeJmPg9rpD4VV4Z2Vs9Z59oO70diGwj7TvtRYBUfp5XSuPkpSwcGQMsk2o0Klx+vtqHWRoYjhDbnG0oCe5HOKCG0/IkCM5X0zfubencLdBjIr/SSNSKOKVOyrAPREaXshx+Hx+86QX9GgLgzF8uXJ07nCwK1ksviaR6b7saNOfbScIpHBlaV6qfTA7GoA3hUUj+0HpefU6nKHa3Qs3AKkqiD8IehC9/OrOiqGvpR3Dz3i+eCoXu47zCaw65nk2mwPf/NL5J6kVwL2eC/R8wEOYGYray8d4OyN61I3kPBvVtuvZS4TzlJOo8nmFRDJYVz+QytRd4ncC3CRg2A6YMpOfEJdZgViZoWxrak3WKHtqw1yYPUiYMhdscATgbszcTd6o+mOYMThj+iEXhYZyC0RgWFikyeBT8NQFdNKpRmmPjhxXOvFQpiiWp47B0sabaPv1UY0iCMn7Zh8VxfdWit2nT3b6tGpFyAK8+sZpwoKfh8fVHiDVJcAOHFEEm5m2ZT5G1yhdx5u5nTU64G2xCRvyrl+/QmzeoFmELsO053kW8W9N+FAHXLuwqcqEQQcYMdXo0Nbj6o7Z8ml3AlQA1QiYbFgPIASLwaUkPBz0LfLQsCo37w+XcPaOObB0YjJF7PpvlbIqPqikmh52fzn4QDH/aqjHOhuXSmibJSStALJtINvj9+4OE5sjyEGckcJWYlvryflXKIWu7M8AtxMF3zXpl82okfBcin8YV74v5z5vvqmvam5HKyoPr6KJrF+Si+gkMS+WSDJOwKd6zCQZigGoM8geE+l+M/r+yR9xYkwqfTeLlvwiFvXLGtl0uohAPEhlWVkWbmNiB/27Gt
+ r4ZLMP0V
+ bIAyI+ZtduuQVYIh/ze1a6xiwg1qoNdUCWUC1JgljeCA70KqKlfVLhRhjNRR/yPFj5JEoJZdXzG+FwiTIVQZGlpRgrGNSngZJ3GYE3s/iw/gIEubEgokDx3oNGx7w1uuSQLcgLpj8r/BQZZ9skJtYATLg1kjPE4BB8hyNvlwJK0GwPcZenCg52wIq9Vr+WZ7/+X0xktPORKqW3vkT9iOAWXM1iXTPM/qzDOlK6/thMMVDBZi1vIsPAhmfNV9rFCqNXPL6Z++C2iZDdnKgdq8RzVhdCpARa2hOGIwUpnYdjsvbQXOvl00h1Y+HSSyKs6Ywn624CGcpdmZ6x7pUYWnJPfFnaDw8lWg9gQNEJKSVIEVTVTRHY4bzfVWYYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,51 +90,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 07:27, Harry Yoo wrote:
+On Thu, Jul 30, 2026 at 03:57:23PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/30/26 15:14, Matthew Wilcox (Oracle) wrote:
+> > Since commit 730633f0b7f9 in 2021, we've had a per-mapping
 > 
+> checkpatch. pl likely wants this to be written as
 > 
-> On 7/25/26 10:28 PM, Alexey Dobriyan wrote:
->> Sysfs "ctor" file prints offset/length of the cache's ctor function
->> 
->> 	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
->> 	init_once+0x0/0x10
->> 
->> This is not useful:
->> 
->> Offset will always be 0 because ctor is a function.
->> 
->> I'm not sure what ctor function size is doing here, it should be in
->> /proc/kallsyms
->> 
->> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
->> ---
-> 
-> I'm not convinced that changing this (without strong justification)
-> after exposing it to sysfs for 10+ years is worth the trouble.
+> commit 730633f0b7f9 ("mm: Protect operations adding pages to page cache with
+> invalidate_lock")
 
-Agreed. It's a pity this was exported in the first place. I can't see a
-benefit for anyone knowing what the function is called. Should have been at
-most a flag whether there's ctor or not.
-But possibly a justification is not to leak the function size, which might
-be theoretically (although unlikely) a hint to some attack.
-Well at least if somebody complains about getting broken, it's trivial to
-revert and we can hear about their usecase.
-In-tree tools (slabinfo etc) were checked to work properly?
+I could ... I was just trying to add some information for those
+curious rather than trying to do something like Fixes which wants
+a properly formatted tag.
 
->>  mm/slub.c |    2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -9149,7 +9149,7 @@ static ssize_t ctor_show(struct kmem_cache *s, char *buf)
->>  {
->>  	if (!s->ctor)
->>  		return 0;
->> -	return sysfs_emit(buf, "%pS\n", s->ctor);
->> +	return sysfs_emit(buf, "%ps\n", s->ctor);
->>  }
->>  SLAB_ATTR_RO(ctor);
->>  
+> > invalidate_lock which is used in much the same way as the hugetlb
+> > fault_mutex.  This is a fairly naive conversion; all acquisitions
+> > are in exclusive mode.  It may be possible to relax some of these
+> > uses to shared mode, but I shall leave that for a future patch.
+> > 
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > ---
+> > I've run the libhugetlb test suite against this, and it includes
+> > a test called fallocate_stress.sh, so I hope this works correctly.
 > 
+> Do we know why we ended up using this hashed locking instead of just allocating
+> one for the mapping?
 
+Before my time!
+
+Davidlohr added the hash in 2014 with
+8382d914ebf7 ("mm, hugetlb: improve page-fault scalability")
+
+That replaced the hugetlb_instantiation_mutex which was added in 2006
+3935baa9bcda ("hugepage: serialize hugepage allocation and instantiation")
+
+> Almost seems to easy that I wonder if we are missing something important :)
+
+I suspect we could have gone to a per-hugetlb-inode mutex but never saw
+the need.  Possibly there's a use-case with a single hugetlb file being
+mapped by thousands of processes, all trying to
+fallocate/fault/holepunch at the same time?  Let's see if Davidlohr
+can remember.
 
