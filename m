@@ -4,134 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D75C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:47:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AEACC55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:55:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE87A6B00A5; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
+	id 38DAE6B0099; Thu, 30 Jul 2026 10:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E98646B00A7; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
+	id 336666B009E; Thu, 30 Jul 2026 10:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D868B6B00AA; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
+	id 226026B009F; Thu, 30 Jul 2026 10:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A04C16B00A5
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17D1E14019F
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:47:21 +0000 (UTC)
-X-FDA: 85045721082.07.C7798FC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 53224C0003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:47:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGOrQ6Hq;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E91576B0099
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:55:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90335C01AC
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:55:27 +0000 (UTC)
+X-FDA: 85045741494.24.FB3694D
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 49052A000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:55:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=rIC1RNki;
+	spf=pass (imf15.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785422839;
+	s=arc-20220608; t=1785423325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6JNCYzO4mboOlKjltzKwN6FyPZkVxGE8uHEozODAlGM=;
-	b=figvatdKC2LjSV/H0r78WPcl1qq39EGgWkAxksYcBgSn6uXbbDXcTW4y7elZ6OC/IB4yiz
-	5rdhwygDhnziLd/RViHfchHBYF6oHmPt7t3VRAsIqcanD6uBOdSZ8glFMMRxzh7ahcjxBt
-	Vqi4uV73MPnH+g4UjRyLLfSQFkJQKvo=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGOrQ6Hq;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=9Z0uQxvmNrLSRCmkr4D1+JE0i6yoiQLKgFJIdlFFf+4=;
+	b=Ip+9t+Cupz23MocPNc2wsilYjwU2mvvyUCuDi/p2xvI3s8AmDuFYJ6xRIibtCgYs8nFYYi
+	xX57JMt6aZLdK2j0w7eosPnLb8aPUowNRwwl/pT5H+TXeJxSXqQ+MGOOo4bS1mK4272R/w
+	wOWYrWfRibV3COE/v2ZBfqZPr4iJd4s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785422839;
-	b=Mfmt33RNHQIRv/9DEpqcBvOtt4BAo6Vnfh/EYTNqMaOEdwe1IQleuH7ohy5LmKO3rJVeLM
-	k27wTWWMgYI+MDTBoJXwRVw4Q64lCiAWYlKRx2gEcS3FILg+ZwpwORwbQ2b2JoC979PSO1
-	ZBeCuNYOTSUTWk75zT/8uyelQEIekiI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D08D160A65;
-	Thu, 30 Jul 2026 14:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853581F00A3D;
-	Thu, 30 Jul 2026 14:47:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785422838;
-	bh=6JNCYzO4mboOlKjltzKwN6FyPZkVxGE8uHEozODAlGM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JGOrQ6HqJK0w0NHZ5yY4kzE3rVaMpoL98iGN34RLoJwSAwUPYf7HzNprDrheGCRMj
-	 3A7QZAeuLfn23Lj1c1bWd2ph6fFA166o9YdO4NVj2n1H+yMtfs/GV3bEzntQ70xp6M
-	 PrSYVIFl/o5aD9jIrRDnr9uozMxCBcNZlfL8jSBx2Ugp4PI1ybZBD75yA6BhhgPInB
-	 A72AXVcarQmxIkBModGhoAWmAFVK477sBoV7vLKxkKtUPykKvKNTT3ERZbDtJLqeoM
-	 IBsnn1qw+nOpLj9RXUMN0NQja6MK/Sr6HMD/kYM+/oQ/SyFp4mQdmU0xCcqKuiyxzm
-	 8cBzRKPRHYV0A==
-Message-ID: <89e64c5d-f317-413e-9fa3-9b7e0a7f0f5f@kernel.org>
-Date: Thu, 30 Jul 2026 16:47:14 +0200
+	t=1785423325;
+	b=XUoOFe96IldrJbIOMq2NX5OGSxpkkYJF4O1a3PfcGMCGAI4wdI3z2IdX/6MljkpqSCT36h
+	03gKWfcsLXzzIeSgYGl8qOarRZJEQ+qaR3zGrdsE+0pe3VUKB346Hq7ESM/bXz5mrQy9BX
+	d8Wt2TaLWty12mFJ1BfYXeYSU5hwk5I=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=rIC1RNki;
+	spf=pass (imf15.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UDHhhZ3020677;
+	Thu, 30 Jul 2026 14:50:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=9Z0uQxvmNrLSRCmkr4D1+JE0i6yoiQ
+	LKgFJIdlFFf+4=; b=rIC1RNkiW8+mftZFmsFq2DCH60j8D5rFTPBUOEU1qi/MNc
+	FABo72XhgHK1N4MWNYEKgaS2W6spwj+GmTCkopTjo0auw+1lxsAbZoIESaN5Larm
+	51E0Ias37FjxUwGFuYtT7ZKFjmM2lUOa7TpGRMfMwXKgdTyYJuUAxwft+cUafTvz
+	k6eZS75tnc9h6qXX4seLVH5z26vt1sYD+OsdwfVnLq/zwg2yp+iLVXIL07/tCr+/
+	2CAzD6EBxSUaHLHzQgRUaJgbX0NFVGB4MZli2CTD+xxS5Q6pHHZC4syB1dqvAX1w
+	3zMfdaVOiqgf/A6OBd+BN2AbzbFnJ67FavkEjSow==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0nydwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 14:50:09 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66UEfLeY006361;
+	Thu, 30 Jul 2026 14:50:08 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fkbtaf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 14:50:08 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66UEo6g047186296
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jul 2026 14:50:06 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 725772004D;
+	Thu, 30 Jul 2026 14:50:06 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 590A520043;
+	Thu, 30 Jul 2026 14:50:06 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 30 Jul 2026 14:50:06 +0000 (GMT)
+Date: Thu, 30 Jul 2026 16:50:05 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Pu Lehui <pulehui@huawei.com>
+Subject: Re: [PATCH] mm: use proper PTE accessor in move_ptes()
+Message-ID: <b7947b4a-7cbe-4b8c-9ae1-fb45660a7db6-agordeev@linux.ibm.com>
+References: <20260720141633.501799-1-agordeev@linux.ibm.com>
+ <7f60a20f-7293-489b-8539-847fa1b96789@kernel.org>
+ <51102823-ceab-499f-8b6a-162e392f864f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/ksm: use checksum to speed up page comparison
-To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260716122039.679173-1-pedrodemargomes@gmail.com>
- <98c91508-4aa7-4390-b2f0-e39f16bdedef@kernel.org> <amtdj-V6kDlXFhq7@fedora>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <amtdj-V6kDlXFhq7@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51102823-ceab-499f-8b6a-162e392f864f@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDExMiBTYWx0ZWRfX/35g+J0LkFlX
+ 8xVdto5GtSbSr2OoyON3SyaZi3Vx12y9NUpgYphp/kI0Cum4Mm5QaovT2yd8O6wDaPigfXKeXXu
+ iMBAAyrMI72ZWgc7XzviKj3/D1CtTy8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDExMiBTYWx0ZWRfX/nYNa++3prAB
+ r3L8RIDNZjfTuFoHlfZ5tjPqIqhXa4gmSZtM0Ja59gNsScNVCp9kRrzVbSu9osZb/1Cr/yWEAk1
+ w/ccbsxzTTeBEuMPTVUxrIs+E3E/VvwbJOjD+uoo7PQmftcOSAH4//+DDBfQoBKHZyQiiS/BRMB
+ G1LLAsCUy4g3A2TlgixGWEdbSmhLGVgJcG7gokqQ/oLM2UfGMOgzpubDptnDJfzRgtEYMx6bGZX
+ xpSbn591FuTiTcDIZ0wdRGEBxEoDBwujLPnDT4HEIH5fbL7u7HTauiL5g5RnlJL1thL8r7yfr6Q
+ pLsGjmevY28b59+mu23N7aJuwKcQXsV+eQVYc8/sS/B/j46+vy0TRuM4sx4MMtiOY/luKFuSpKQ
+ Ue/pxjs8970yVc6KHZ8Gm1yX2pVtlF5XZjCyzw/7UaqOiTaiDB4ub+4TKu19J09SL8wbA4b9jgi
+ PTeAGyBPKs6wqOetNDg==
+X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a6b64a1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=CgfZsCgG6mTAnALvW7wA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: g30uzBDJJit5SmXkJpWfX_IHS0WiqhTT
+X-Proofpoint-ORIG-GUID: g30uzBDJJit5SmXkJpWfX_IHS0WiqhTT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-30_04,2026-07-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607300112
+X-Stat-Signature: pr7h95u3q9rgrrfx89w7r6o4dm99xazk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53224C0003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ehfoufkpqd818hcgq6nk5118new37phe
-X-HE-Tag: 1785422839-680224
-X-HE-Meta: U2FsdGVkX18cTJAcBo2eiPgha0TeXVyDFqnTWeVGbYwqGt+z88GdLDRFwvQqRx+AYkMhXXBuHDVxnWz/m9MlCkx9BaZzEhU6L85NENbaHWiwSHWGV5vEiNw0R+kUXPSiTB/gboPgt1NhoMV/LeyVHEc12jK0OsBqN5a/Pm/SS0NwsjwF27U7DQeC3QMBUGcH6yBzvd+zdjQmIxlg+GiGYzM76Wl6vWCdJOappZ4s01wEKSQ+vKS6D/V/UcEaPdm+TJg3+dULM6jwvNVlJeovkzVQwYlhstUaTx4BHgI4aKCkiriEOmK+EFEojo8qCEEkLV9HMl3hvFF6q3kYB8FZfqg22VAkz+48HRbOnFB65yCvJgOhhckwNYrOCrpo36Ph/MwAAeHGPNLPf+rVhOd3ZGGgDFdc588A0wqonq+mRusbAsVfeXXE7B5aKDy06m1lazxMA86L53M2DQ85n1lNY3EnN0R6TDUipvOr+PKdbwa0prB96lisup8BfkekEAWOec2gZ+Yea2lNvNJFwV0RJjNtWIFKNGCzvbbjpBo0+jbrFnyj3Fvi+GLos+jKlNQfWuAEeGqo8iZH8Lk4TCHGX8kTYZG/Wa2oeGEYWM6oIWaAIIRwU8FrGCnSqc5m9zAyaSWm+Tazufv3hp3Eh7dWEE80ljFXAglRrSBogdrbOGlrzbuKptqPIAM+62Me+wek6UrQBXidAo7A6cuRr12UvQpz6h05aibO8Zg8s25CotYePCzQw4Jeas5iOVU/bvgBk9n0bKJmVGHsDrte8ZIRPOnOZx27nVSVTXwg7ffTqIAyWjZzRjZBRcDSAev14BZBsAJzwQRtf9D+c7oisqfwnbOmniROJ6Cz6Vk8HXJD4GVexClUmz+axUKYiYzlhJpThAZMNIN/uT12q2foszX+WAX7nlhm0Cq94NbArxv/P1/+0GeqTzwt3HkyvHlioCZL9h4e/72AAHBC4tEzR22
- eQZndcWs
- lNn1tsrVCEKTzV0E1tQCDHZUnr0bSO2uKSuWoeqtGPtqc4EPcNjee4UWpwlXEgdOO8dxHDZqddWB6Ya9nS1xryraEm3tOWiQ3r2e5Vd8Krq+pT605Z7lJZzUTwaCjEmbXBTbEg0J2gN4uKUbFlS4e9g6c6WXbAqvTDlePnVtkxpHO9T01SacceVHB4dGkf3A0M9XWVa1+Xl1Nv2eRRMEyBfKHKvM2OH0dNEqi8C66/8YHlRYqRZ48AkVEqfUL+Hrs+t42
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 49052A000D
+X-HE-Tag: 1785423325-596038
+X-HE-Meta: U2FsdGVkX19BZwLRuyNaigk42SrWCFB+f/Nmqx4ppSn/CliQQHrZoP7DEhJbhNRMCUi0E4ERf5z2b++zejwrKXnQtcWwVpCcRYMEXWNQ1jlNK4WICFggTIbRZ3fBxUuIFUs6ESnr7SbwQsYpTzUove8DgXr/LT4gRwkQtnB/TsddMmDuQ2qc3RGClM1Ii3IHHz7OhatNwnOQ2V6Gd81VT9z0NgfJVvYBLguoT9hYlsmQ89Nt+g0VDxyaGf2xF7rcgFosE2WVX0NB7QFxQmOLLzwDdt2IAP1Y3TaRd1GOJYZ5cj+FRk7KqRfL4pJQEzLhUWeQdnR74jy0scd3BLiQ3b478yhcY6eZtToB37sJIYPYbIqhWV/veX7Qizn6LpuhHnNTy74p09ap5+ldw8foqFLLYFdTQGzSi/HWfEZVO5FLebuoVfXK4yjPpMkogSoNZC5x5l78fQ+l1KVxYcM4BPTqiPNFV2fl1OEUCIdJu9UgdcMtsgitu5Gp47cyUuwcJj8DImMqRyGrPkqM0vbDLOsiBTogYRwmGgXLCiJBiNs2FOjgwo+04YYqAqObbZ7FA6XFuqOojpyZyodLZMnSTpw+Py7b1/qjzhsndyCTIXzmT4bN/YPN1pTSrvcFMCN3cZd0+LsONYNQaT3W+IOpASXWglCD9b44rIYYsuoDpuMWoZmGPBDHrbJE2kCQawoR0xfYDfYKHoPsteQYJHfuuSH9TXNbAtK4ZnSc4/es1GDIXeANEWT8GtneDyYlLkCQtmBhh1vGGuDedqLQOTF09zt6D0PZZvir4O3jTJnKC1eIz5o0bpdGRgVugLjtij+Aokv7SWN0TDzMM5ee8Htj3qgj6a6x5o7nQYD6dfG36UJUJLMDAeylfW6NhnUt//r/OvLuTBjq2HBH/XhYL7lIHO2+3QGy5jcRHjcDy7JGYq4RuEC9AqWMgS7qPtti0xytU9+vRwY6O5AuBdqgd6T
+ /aQga3I/
+ ejlCDImumQUhdIKaYqa4gQwvcP9q+rnNCLTVz23vyusawM1rbLVx++S9TNnc7dxCja6QcJG3qrM5aa4HxRCDaUGLBK9pDL5bPSf6jBgbmbeGz1DbS9KfonBe5DnvzgNSuzQyxXC1IKKI4ZtfGMG+gu1mitE6r3j5XBMFcaK8bumR2e3UauRdQ4VnFQ+DnJ/4p8vWBqAh2P7ZG20fuZnYQv9eMDSoBGKpSC6vSdlh/PRSGe/ncQ9TDekLbGMlz5NU+cVK7ZZR5ePgrlBHgY8B+ybUi6pfHioCRJ2nRe09v2u+yHCFDax/QFvtb+Y7Qm4GO+O6k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,140 +140,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/26 16:22, Pedro Demarchi Gomes wrote:
-> On Wed, Jul 29, 2026 at 11:38:38AM +0200, David Hildenbrand (Arm) wrote:
->> On 7/16/26 14:20, Pedro Demarchi Gomes wrote:
->>> Use page checksums as the primary ordering key when traversing the stable
->>> and unstable trees and fall back to memcmp_pages() only when checksums
->>> match.
->>> Since struct ksm_stable_node does not have a checksum field, create one
->>> in a union with migration list fields, so when we encounter a migration
->>> page while scanning an address space we have to recalculate the page
->>> checksum. This avoids increasing the size of struct ksm_stable_node,
->>> which is maintained at 64 bytes, as show below.
->>>
->>> pedro@fedora:~/tmp/linux$ pahole -C ksm_stable_node ./vmlinux
->>> struct ksm_stable_node {
->>> 	union {
->>> 		struct {
->>> 			struct rb_node node __attribute__((__aligned__(8))); /*     0    24 */
->>> 			unsigned int checksum;           /*    24     4 */
->>> 		} __attribute__((__aligned__(8))) __attribute__((__aligned__(8)));       /*     0    32 */
->>> 		struct {
->>> 			struct list_head * head;         /*     0     8 */
->>> 			struct {
->>> 				struct hlist_node hlist_dup; /*     8    16 */
->>> 				struct list_head list;   /*    24    16 */
->>> 			};                               /*     8    32 */
->>> 		};                                       /*     0    40 */
->>> 	} __attribute__((__aligned__(8)));               /*     0    40 */
->>> 	struct hlist_head          hlist;                /*    40     8 */
->>> 	union {
->>> 		long unsigned int  kpfn;                 /*    48     8 */
->>> 		long unsigned int  chain_prune_time;     /*    48     8 */
->>> 	};                                               /*    48     8 */
->>> 	int                        rmap_hlist_len;       /*    56     4 */
->>> 	int                        nid;                  /*    60     4 */
->>>
->>> 	/* size: 64, cachelines: 1, members: 5 */
->>> 	/* forced alignments: 1 */
->>> } __attribute__((__aligned__(8)));
->>>
->>> To evaluate this change it was used two benchmarks, bench1.c and
->>> bench2.c. The first one allocates 8G of pages with different content,
->>> and the second one allocates 8G of pages where the first 4G are the same
->>> as the last 4G. The two benchmarks and the system ksm configuration are
->>> presented below.
->>>
->>> bench1.c:
->>>
->>> int main() {
->>> 	size_t size = 8ULL * 1024*1024*1024;
->>> 	unsigned long long int numpages = size/PAGESZ;
->>> 	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>>
->>> 	// Generate #numpages pages with different contents
->>> 	for (unsigned long long i = 0; i < numpages; i++) {
->>> 		*((unsigned long long *) &pages[i*PAGESZ]) = i;
->>> 	}
->>>
->>> 	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
->>>         	perror("madvise MADV_MERGEABLE failed");
->>>         	return 1;
->>>     	}
->>> 	printf("Wait...\n");
->>> 	getchar();
->>> 	return 0;
->>> }
->>>
->>> bench2.c:
->>>
->>> int main() {
->>> 	size_t size = 8ULL * 1024*1024*1024;
->>> 	unsigned long long int numpages = size/PAGESZ;
->>> 	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>>
->>> 	// Generate #numpages pages with different contents
->>> 	for (unsigned long long i = 0; i < numpages/2; i++) {
->>> 		*((unsigned long long *) &pages[i*PAGESZ]) = i;
->>> 		*((unsigned long long *) &pages[(numpages-i-1)*PAGESZ]) = i;
->>> 	}
->>>
->>> 	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
->>>         	perror("madvise MADV_MERGEABLE failed");
->>>         	return 1;
->>>     	}
->>> 	printf("Wait...\n");
->>> 	getchar();
->>> 	return 0;
->>> }
->>>
->>
->> Hi!
->>
+On Thu, Jul 30, 2026 at 03:08:04PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/30/26 15:07, David Hildenbrand (Arm) wrote:
+> > On 7/20/26 16:16, Alexander Gordeev wrote:
+> >> Follow the pattern established by commit c33c794828f2
+> >> ("mm: ptep_get() conversion") and use the proper PTE
+> >> accessor instead of a direct pointer dereference.
+> >>
+> >> Fixes: b36b701bbcd9 ("mm: expose abnormal new_pte during move_ptes")
+> >> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> >> ---
+> >>  mm/mremap.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/mm/mremap.c b/mm/mremap.c
+> >> index 0dfe3de39ccc..e99b19a9850b 100644
+> >> --- a/mm/mremap.c
+> >> +++ b/mm/mremap.c
+> >> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+> >>  
+> >>  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
+> >>  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
+> >> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
+> >> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+> >>  
+> >>  		nr_ptes = 1;
+> >>  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
+> > 
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > 
 > 
-> Hi!
+> Ah, but I think we should drop the Fixes: tag, or am I missing something?
+
+No, you do not. I confused it with ptep_get_lockless(), so no bugfix
+here. Should I send v2?
+
+> -- 
+> Cheers,
 > 
->>> Configuration:
->>>
->>> echo never >  /sys/kernel/mm/transparent_hugepage/enabled
->>> echo 1 >  /sys/kernel/mm/ksm/sleep_millisecs
->>> echo 100000 >  /sys/kernel/mm/ksm/pages_to_scan
->>
->> Given that the default is 100, and sleep_millisecs is 200 ... and it is known
->> that frequent scanning is harmful for performance, what is the real world impact
->> in common setups?
->>
->> IOW, do we even notice / care?
->>
-> 
-> As described in the KSM admin guide [1], the default values for pages_to_scan
-> and sleep_millisecs are intended for demonstration purposes rather than
-> production use.
+> David
 
-Well, I argue that
-
-	echo 1 >  /sys/kernel/mm/ksm/sleep_millisecs
-	echo 100000 >  /sys/kernel/mm/ksm/pages_to_scan
-
-is not for production use either?
-
-> 
-> At LPC 2023, Stefan Roesch described the use of KSM in a production workload at
-> Meta [2] and presented optimizations such as Smart Scan and Advisor Mode, both
-> of which have since been merged to reduce KSM's scanning overhead.
-> 
-> This RFC proposes a complementary optimization. KSM already computes a checksum
-> for every scanned page to identify frequently changing pages and avoid
-> unnecessary stable and unstable tree lookups. Reusing that checksum as an index
-> into those trees can further reduce lookup costs, lowering CPU usage without
-> changing KSM's behavior.
-
-Yes, but the change is not completely trivial, so we better make sure that the
-change is actually worth it in practice.
-
--- 
-Cheers,
-
-David
+Thanks!
 
