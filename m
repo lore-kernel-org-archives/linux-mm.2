@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03055C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:40:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A6A7C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:45:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07F386B0088; Thu, 30 Jul 2026 04:40:35 -0400 (EDT)
+	id 51DB76B008A; Thu, 30 Jul 2026 04:45:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 031BF6B0093; Thu, 30 Jul 2026 04:40:35 -0400 (EDT)
+	id 4CDAC6B008C; Thu, 30 Jul 2026 04:45:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3A776B0095; Thu, 30 Jul 2026 04:40:34 -0400 (EDT)
+	id 39C1B6B0092; Thu, 30 Jul 2026 04:45:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C5CC56B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:40:34 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A2C5160654
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:40:34 +0000 (UTC)
-X-FDA: 85044796788.30.2FE8435
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A44D5C0009
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:40:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Am3w9iBb;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785400832;
-	b=56ZDuEvNXLZEej/sclh/IY9M5kk3YAhc14z8csrG3EXH7p6b1sb+X4VNYyID6kBI8/8+M/
-	diXxcseIqIhrBZm6Qxw98xwzGrlPkwfZH6NJhCcAJ6MW7/5LXSDEiQLgkmTHlYPQioaAYt
-	srqGDH0LjpWhDml4FaFxACRsPt5RTU8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Am3w9iBb;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AD0F6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:45:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8358512063C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:45:31 +0000 (UTC)
+X-FDA: 85044809262.18.CCCC071
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E6FDC20004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:45:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kOdY4uRR;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785400832;
+	s=arc-20220608; t=1785401129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=55G67AD+bUlnQtHL1MJavniTLpGKt7vPc4y+cPkS8Qo=;
-	b=vKH2JF9OrBUfk6WeDkT6+tRNt+uuViJGLylfKyaijhAlOq1o+MZ2jdPaHA5awLJPTRd2kt
-	4DMsNUitewhQux9IZj3r4EEAGVz9TJJ6ro8gBuZvrQHOAKQhzrwB/WWKYGlJ/l8d67Z3Cg
-	MU43LoIGKD8oOzCnncBDdWZ8C0og5QI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 193C5600BC;
-	Thu, 30 Jul 2026 08:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499731F000E9;
-	Thu, 30 Jul 2026 08:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785400831;
-	bh=55G67AD+bUlnQtHL1MJavniTLpGKt7vPc4y+cPkS8Qo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Am3w9iBbksLZSYkGW+BC2SXWaPrsXS+3w0PfbAUiFLEio7Ojf0Mp6S5i+8TfgZJQ7
-	 P0oEDWw3vSLdXYio4+t/tv5rqP3m3i6YA0+nbhUwJCvoZ2Aag+k6zPehyBKcXT7ir5
-	 l7Egai/6QWPr4er0MIKnLmzK/p7t/cVDFc5YJWjzgGfGK6Tpuzmfkyug6zxOkJatZ6
-	 nyjomqeZ/UizlLOFCXdwnG+WkTF7Wn8jaz4YvGRtw2fU+vEEjVRZ97lQiQn8+BcND8
-	 W1BuAwvX2mVAHr5hud0roY3B9Tm1f2aipjudB63eKi0xt+KNbdCbNwjboFOq/scBOu
-	 rkkhhxo0776pA==
-Date: Thu, 30 Jul 2026 11:40:23 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 01/22] kho: generalize radix tree APIs
-Message-ID: <amsN9_4LTNFBxaFE@kernel.org>
-References: <20260729145610.2827231-1-pratyush@kernel.org>
- <20260729145610.2827231-2-pratyush@kernel.org>
+	bh=nLcQXwTnnn0iFIM9gIERPFamyUUa2bsoWp0iHYmRCW8=;
+	b=8RVxhTjwhp8TYTotKtHQuwIkNs93INdTrIFJzYQiGW6CL3q515zyU5MSQ1bZsyNAFyTD+e
+	lMAcUovqocIo8NE0+LUewFjeuUIyMUM5HMvwVLCn+Hn3yUaLGwKz7Gez3G6UEUD0UQ9iVB
+	gCMHfmICD59ZYXshYfqxMttZ1LyWEN8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kOdY4uRR;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785401129;
+	b=sIUZLka266D8zvfdtaocBm9a+GtpeGP4b2NuEhPWSD+MYz+RDpNnr/0fNoo8QUuFKVjngv
+	0AZOVFTcL3uvoIpx+0/45DzLhW8VFldY3b7gRyAoPdvBIS2MOoZ1yO+BcIl7BfipwJV7Wm
+	P8Kxu3KxbJ3DN10wCcC43s1QDb67muI=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=nLcQXwTnnn0iFIM9gIERPFamyUUa2bsoWp0iHYmRCW8=;
+	b=kOdY4uRRvDlabYess5TZ7yu/oTjrBnvoK3+k+6v8BWULoPDPFfFmWBca9bcsM4nIGXmyAQxZU
+	dNswgt5evN91g7MTVatZJxbKAneeIT8Ezjy2y5JZkgGBlPbo8D6rSNVzSuEkwlaCOJJ5KHcoDb4
+	ZDD2gofeh59MBQRv30zS4II=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4h9jG24VXyz1cyV9;
+	Thu, 30 Jul 2026 16:35:54 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id CAFD240572;
+	Thu, 30 Jul 2026 16:45:20 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 30 Jul 2026 16:45:20 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 30 Jul 2026 16:45:19 +0800
+Subject: Re: [PATCH v7 01/13] memory-failure: Fix hardware poison check in
+ unpoison_memory() again
+To: Matthew Wilcox <willy@infradead.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
+	<linux-mm@kvack.org>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+	<osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>, <stable@vger.kernel.org>, Gregory Price
+	<gourry@gourry.net>
+References: <20260728204409.3396238-1-willy@infradead.org>
+ <20260728204409.3396238-2-willy@infradead.org>
+ <amlKHkemYQBxFESG@gourry-fedora-PF4VCD3F>
+ <amlav1zfVy-9fLw5@casper.infradead.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <ccce5d73-b5d8-3e23-8e49-bb154af023d4@huawei.com>
+Date: Thu, 30 Jul 2026 16:45:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729145610.2827231-2-pratyush@kernel.org>
-X-Stat-Signature: qprgfucfyxc89c7fwprdusaazuto6kpy
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A44D5C0009
+In-Reply-To: <amlav1zfVy-9fLw5@casper.infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E6FDC20004
 X-Rspam-User: 
-X-HE-Tag: 1785400832-137028
-X-HE-Meta: U2FsdGVkX18lbJHEtdM1de/VpYkOxWfB8n6Qc4JnQnJXwcMAsQfIhU/j1y/voTpXpBURfYwdveKnTQanO9ZXrTPnvMtqS4XCOCqSg6gvBhfLkf6dPbom92fdXRVxhaR7Bi7iesl3X2k3UtxRg2iOn5ApmSN50P14ttqlj07M0cs34s0iSVpDg61uO1T6L3hA1RUZbDOfNFLb1o8kXOpKJ1ASb4CaZDd/LOGe+m9msVRP1PWkwNhW1NTA1Wt/8xwRMWJhIvzP31zsHFgqVNxsix6SV2wxIWNxugD7G/BQd79VxfSkA2F8h3XJkSislG9uaNQoq4f+p/r6CBB1eN6d6Sdh090dkaAm/Ye4ZydhN4NAmkDzCzBduIKzQv4irXY4n5IA1aiqfARCMtA5HrUUq6EEl20mR4JiWpc/+qYsVCaqszNWB2pm5/WymDHRPke+CTZVhtuPt5d4rxudc1Mcv8wsC+keFNL0KcwKAnKvE9TSGN2bfoDIn5v4jhvQFtdk3QXxcqTxKpNAokXAW4+5560jxWQmv7pbh2SNSyFiFfZ0awusCw2DjmC2+RrhDeOQ7IH+6B2fnDpY8sy8ucMo/QSfV2ALhypwIJLDUin5fInT6HaGi8Ej11s3c73/djipqMSoqhP81C2lHEly7xp+k6vH/sbx9iVC9808FcQ2Deg7BS45g0Qim+7TI59AKOJvn4PoFmjDv+L9buYJijtVQ/wHlqXRyDLCk6hzcX8fQSYt+BBOxicPCCRBztc4yxFsrtZ2ySpE4G9oiHz1ITwWvf5yTi9CzvfTjaURTFq7iyBkIeyxF6WY+E5nazf3tC35jBC2iBnLbB1oyZ3ZputgCeIo7bWNL2nLLmzD3fAv30Is31/vESJ3NU8i5zL1ubm7WEB8YTTw1nG8fTlzcXty7FzEanv0Wpm638TgHvQL5G8cj63U6pXAv3zXbGDaoSgy0c1HlARrPCkXJeqRPZD
- vU8kLrCO
- 9V76ZegvmBbLHvZ63jsi9FBKTZUG6xptawqzoC114M6hVfVvl5oGP9V5vHJYHsrur88SIIWG6k/Exx2ALjb3Ffg0ns8rj22bVo0RmGUzPAw8C3tk1+s8vfpOSpJdkZSW2Q8T1gV1Woo+yAxX9kiqlgD469rb7I1gKBjTQnw0MP4hpz6ohxTT5s1EQ8BX+RV4CvxI+QXVhp8hEp3veD+crYbfq+B8JlhqEJRzeg/NqgZWuWtJzHhy8kESzUu60G2VazSLo3BCRwCloXQJLBF+I0M3uHg==
+X-Stat-Signature: 9hcgwr5t4f6j7r6b69oij5jrdprsa9ad
+X-HE-Tag: 1785401127-62433
+X-HE-Meta: U2FsdGVkX18N9+5+2RoiUluy0Y9p/HCjFZERjhaETClTPe2K4H+ZzmrueXJQy+uD8BctWig45a7AhepbK4uzzsyZHEvtUOVzCI8L/gHmOfpIeVQo3pwclStZ7w+wAyN3NxhuPuU+NYaDatoVm+XOcIlp7V4Fv5I3FCx2tAgM214BWCmTNayM2lr5C/Iw1INTMIwi93Xe5m42tg2jEbAjhqRHtLlJ6sI46UUp9AyhziRU04Ke71ogwonbZ9nbE9Ph1dYOxPCUPjcPi8lVE05CIMyAJZK9AVIpnM+QCQ8iXExi5UoPVm4JUqtn86cVXVFOBUlbTjlceVIMrW0Nv5v9AV4RtCK5jZeXaAwyc9kvM7SidKvQDFNezbD80MJoRhc1Do37iLESFazlGXH+9rcdNZz3eBsZNmNnu20V+rMH2VXhZBCRmgIDYuMNJ9GiHW4jVVvRSBIXaiD2GqeernSDDobaGhlRMzP0ZYKIf+z8Y4bsjCDr4CKG4c64/oIxfHAjfiWvxt1jT9zvLfW8A4xsJHFCr9QCwluIarI6+paYVNLWLdHlViAu+m93Y01iN/9tz7xAhuiUnAvRvkhehyNrWipz+POpoV0k5VJ33JJXTK2sNQ5WXy/EGEbMYLO1vXWt4w6xXxRuVIPnx6S7fXfRNWnf7yRVynzjViRD/tUl7S4hCVta0blLx7jDxH4G4/DNnwZ1uBw+teS6yyjxTEx7Pqus1YhQ3IoXxAhDPCMja4kKCTLgH/XVdalRrLPC9nJeAOoNOEEx/Wc/ZbR0iGqiKontXn1qOJn4/xmnb/95cXrOr6bPLS6yLBVH0jC3uukfYdVg0ffV6w5BClVJEeTfH3kXEUZqSQFIXfIOVxPuWJLlf3K4M6fFuCGZyoW7hSgmvqyhPgjwUIAC/cxtuLyghdniLoRwXEBPdPuopTCtnTQKanG66uWdRNFDMkhNUmvjvIwXlGCKuNPHiDhvLbq
+ nliXvI9S
+ SqIgnDvBHC3IcBY2PyTotU9FA6NJtNLGWmMw71fAzisXCYmuO7PHKiY6Svm3lH1iNqp236MGnToFBCvlBl2h2iHvU/yWRnbfTjcKPlTbexb6w5USh3SkwcVJqYMLuIrOTJDGzK7o7tl94Ps9AbobYJGnxBHDH6qw6k3gO0lkqMdC2ak0cHANijXDHh1eOlegUZJASbCZB3/7Z+TufezlB1sUKxVJqFZth+ZPG6YZMCWEowy7PbrYxkn1AGceR8RJE742jH4XoZcV4c5khbVsPWzj1J/wUWjdqo6GunRF261Caj3MhCaiDS/Xd4QDM6PrmkCvFiup4pt6ttojeDxTxnn0Kdul0EHI+O3rRCKqwgHaWaYcnLTtzD+XuwSm1fcgqEYoIfZjgypnthGpTiXDPua7oNtOIt5CxzMynL9+PHN/P32TMV9YBSyvhzYE5WMkUPvMTkqcPhs6YRBLWBYpSCFihQAoEYRpXps0yOT84YrFSiCpWs2lDHL97LqH7XH2xG7o4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,31 +112,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 04:55:46PM +0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On 2026/7/29 9:43, Matthew Wilcox wrote:
+> On Tue, Jul 28, 2026 at 08:39:29PM -0400, Gregory Price wrote:
+>> On Tue, Jul 28, 2026 at 09:43:53PM +0100, Matthew Wilcox (Oracle) wrote:
+>>> The earlier patch (6c54312f9689) that attempted to fix unpoison_memory()
+>>> was incorrect for hugetlb folios.  Before a6fddef49eef, we checked
+>>> the head page for poison (which was correct for hugetlb and incorrect
+>>> for THP).  We are currently incapable of unpoisoning pages (other than
+>>> the first page) in a hugetlb folio.
+>>>
+>>> Use is_page_hwpoison() which handles hugetlb pages sufficiently well for
+>>> this purpose.  This is racy as we don't have a reference on the folio at
+>>> this point, but fixing that properly requires deeper surgery and this
+>>> is a CAP_SYS_ADMIN path only so this will do for the moment and can be
+>>> easily backported.  It's no worse than the situation before a6fddef49eef.
+>>>
+>>> The other bug in a6fddef49eef is that we currently clear the HWPoison
+>>> flag on the precise page, which is wrong for hugetlb.  Fix that too.
+>>>
+>>> Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
+>>> Cc: stable@vger.kernel.org
+>>> Cc: Miaohe Lin <linmiaohe@huawei.com>
+>>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>>
+>> Just trying to wrap my head around the state before/after, assuming
+>> the following is correct then LGTM:
+>>
+>> prior:
+>>    pfn_to_online_page(pfn) -> p = precise page
+>>    PageHWPoison(page)      -> checks precise page. Poison for hugetlb
+>>                               is only set only on the head, so bug.
+>> after:
+>>    is_page_hwpoison(page)  -> checks precise page AND head (if hugetlb)
+>>    p = folio->page         -> now TestClearPageHWPoison() explicitly
+>>                               clears the head page poison if hugetlb
 > 
-> Generalize the APIs by taking the key directly and doing the encoding at
-> the callers. Rename the functions to kho_radix_add_key() and
-> kho_radix_del_key(). In practice, this removes a line each from the
-> functions and moves the encoding function call to the callers.
-> Similarly, update kho_radix_tree_walk_callback_t to take the key
-> directly.
->
-> diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-> index 84e918b96e53..f368f3b9f923 100644
-> --- a/include/linux/kho_radix_tree.h
-> +++ b/include/linux/kho_radix_tree.h
-> @@ -34,30 +34,24 @@ struct kho_radix_tree {
->  	struct mutex lock; /* protects the tree's structure and root pointer */
->  };
+> Exactly.  That was how it worked before a6fddef49eef; it used to do
+> p = compound_head(p) (which wasn't great _either_ but had different
+> problems ...)
+> 
+> The careful reader will observe that injecting two memory failures
+> into the same hugetlb causes ... problems.  That's true before and after
 
-sashiko: This isn't a bug, but did you miss updating the kerneldoc for
-struct kho_radix_tree?
+Could you elaborate on what problems this might cause? IIUC, second memory
+failure on the same hugetlb folio will make try_memory_failure_hugetlb() return
+-EHWPOISON without holding another refcnt. Raw error pages will be added to
+raw_hwp_page list. Then in unpoison_memory(), raw_hwp_page list will be cleaned
+and extra refcnt held by memory_failure will be released and PageHWPoison will be
+cleared. So it looks work to me. Or am I miss something?
 
-And indeed "DOC: Kexec Handover Radix Tree" talks about addresses and
-orders.
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
--- 
-Sincerely yours,
-Mike.
+Thanks.
+.
+
 
