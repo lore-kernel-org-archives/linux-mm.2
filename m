@@ -4,84 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD87C54FCD
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 23:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64003C53200
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 00:03:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86E026B0088; Wed, 29 Jul 2026 19:58:50 -0400 (EDT)
+	id 2AA906B008A; Wed, 29 Jul 2026 20:03:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E546B008A; Wed, 29 Jul 2026 19:58:50 -0400 (EDT)
+	id 25B166B008C; Wed, 29 Jul 2026 20:03:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7374C6B008C; Wed, 29 Jul 2026 19:58:50 -0400 (EDT)
+	id 170FA6B0092; Wed, 29 Jul 2026 20:03:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E6366B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:58:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD60FA1C72
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:58:49 +0000 (UTC)
-X-FDA: 85043481978.29.B9FA351
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4246840009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:58:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B48pzRbH;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E1A106B008A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:03:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F1191A088B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:03:17 +0000 (UTC)
+X-FDA: 85043493234.21.B057409
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9D5E680002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:03:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5nFSGTa;
+	spf=pass (imf02.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785369795;
+	b=iYoKAC9Kp3RstrI9FbQfVpPaXk+dmPIRTwiNR3+bQDD4RjrXJTIIF7ZnuoYaWQIg5xlaW4
+	NfN09iFYb8VUTXSMhe5fj/F3PyGlGaLYCM1axMRer+xzdcvKzf3/RN3zuzuGbOIDmkQNUQ
+	oAx/9Rf7GMmTIvWjq5xequ9BhhvvbME=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5nFSGTa;
+	spf=pass (imf02.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785369528;
+	s=arc-20220608; t=1785369795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lMG9XAmDUxsCuNndcn5JjDOaQZspMJ2xjW59i1csd0Q=;
-	b=YRDZd1UG0mSuHWzyVgRmmKOD8Fr5sbL7e/ag73LI84pxl/Me7wfs4tVDifaTruRp3SoIdp
-	nF5kKHohxSpwE/a/YBWLthlmqa1JJPpBUwucmhZbH6/WOPvPkoKF9FntvkcNjDWScq7un/
-	IpdF+V6YCXdeEAEsYNzJkTdrBd27nt0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785369528;
-	b=eVYHsA2LlM6vIeNSgaSR4uYePLI+FQtdrcfp5XL1d1ipHPgJFdkPjD8dePL/Kh71BENOhQ
-	P4X76FpSN15eqVCRRn9ybfwQNeeUA9RMr6YLO/fo7HdYlL9mfAGiQn1LITSf5XivqDbOI1
-	h0lOncPA/blIU+CPFFeCvgMGhYfEOrg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B48pzRbH;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TZXWw/54kDIDx73XnHw22X7yeZR5LWN5LDGxddSIeDE=;
+	b=yV/fAz9itbpQ/X6q8FqNbg0EmZk0s5Lx5ftZoPDFQSBapSX8tB8584FamT4B8fSwWC52dl
+	bE3YFxcKUWJJkaf7njbszZRIrJDil0F5h9DuJmFSzCng7SRrb6Np0zA1lD2d1dpgNrEVfs
+	oV20bZm0rHT29hHof4YRaNxr4dgghvc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 696AE600AA
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015B21F000E9;
-	Wed, 29 Jul 2026 23:58:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 24BAC41AEB;
+	Thu, 30 Jul 2026 00:03:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B0A1F000E9;
+	Thu, 30 Jul 2026 00:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785369527;
-	bh=lMG9XAmDUxsCuNndcn5JjDOaQZspMJ2xjW59i1csd0Q=;
-	h=From:To:Cc:Subject:Date;
-	b=B48pzRbHUb/BDUQAljAcXJt9sU1hRGh2m+Em5JJJA847HEgPOQLaE6+Bm4+6MgqB0
-	 geqEqVD32hBbQcvpciP2W1DkhuSJOnRkEx+qdEEIFLZxrfzfhiqWdYXYF/2O6pMS0z
-	 +AuwddE3TcqJSDj8t9NVuOT2WkkKuQV9t3IP9sTaUDvxOdhS8XggquBBp3XFjGmiUd
-	 Dr2Md6jt7kb1elj9Y38eUT6ZrAC9ciLb2wU/TnHLrTwRgsaxAg3rL8P3XtIyat8Kzb
-	 fE3upX415cK8638olpgAHFuo3kqDG9E64AEulbLiXlAYm1N7opSq0uvUwKUztin1VD
-	 nPwAFfz7WFmVQ==
-From: SJ Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-08-03
-Date: Wed, 29 Jul 2026 16:58:41 -0700
-Message-ID: <20260729235842.99360-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4246840009
-X-Stat-Signature: bm94dkpc5b93311y139h3875c553csam
+	s=k20260515; t=1785369794;
+	bh=TZXWw/54kDIDx73XnHw22X7yeZR5LWN5LDGxddSIeDE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=i5nFSGTa54IX2AUca+NVsi84ye/eHv0R/PXeVpCmikWEvqGvVEgNq01rWwCctSwKK
+	 mcSGvF3NJ2w4pKWWSewA8xqOsYR1ecGWQe+m9DBZu7LmSPKbIh1aJ98HRt7Qyvm0aV
+	 oQk7YKhzp9qUhN5VQCcWwqtj/TSSi/pWOQCDTEYW3ZB1zG2vznlvzhwlgz66DRjFYR
+	 +0oD2xTAN95YjfGa/2w0oug19eFahFBxbosPh8KDHTheLHoiAWJ+TvHESMEY8wz9Tk
+	 brs3/patuZKp+2R16Bh8C86IZ9tQkrrWOxXOO+CNlRDXVDU4uXSwY1nS7XgB2UVAxH
+	 A1t9WCsd6A78A==
+Date: Thu, 30 Jul 2026 09:03:07 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Steven Rostedt <steven@rostedt.org>
+Cc: Hongyan Xia <hongyan.xia@transsion.com>, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Oleg Nesterov
+ <oleg@redhat.com>, Naveen N Rao <naveen@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Jiazi Li <jiazi.li@transsion.com>,
+ Pu Hu <hupu@transsion.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "linux-trace-kernel@vger.kernel.org"
+ <linux-trace-kernel@vger.kernel.org>, "llvm@lists.linux.dev"
+ <llvm@lists.linux.dev>
+Subject: Re: [RFC PATCH 9/9] arm64/debug: Mark debug exception helpers
+ __always_inline
+Message-Id: <20260730090307.24d3e4b1041f30d87d390e1c@kernel.org>
+In-Reply-To: <20260729140846.3c18f437@gandalf.local.home>
+References: <cover.1785153469.git.hongyan.xia@transsion.com>
+	<eb38b41ae1b3216ec69fb45555ef5df57efd7b8d.1785153469.git.hongyan.xia@transsion.com>
+	<20260729140846.3c18f437@gandalf.local.home>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6ugh8bfe5wkea5178fio418yzkxfa8x5
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9D5E680002
 X-Rspam-User: 
-X-HE-Tag: 1785369528-81002
-X-HE-Meta: U2FsdGVkX19lF4dYtn9YoCDxSKW/IJo6Rc6h9SK1lFIia7VbXGhuuN4FEBkJ2Gsj5NDnY6C668aNwz8YeySg8sB2SkU1WGvEOIdcSv3dfsRLK6UWsQ1Zc3TZVWv2LK9GHSkQ1mcFmkkeu4hqDM6gVZ7c5HOTqzMmc70zd7awYTFLiAbUqE6oMZlbvxtbDxYIdPqGrkE1XzSdhKFXm8hjecBnsj9fYTB+CU088jEoiDjcPV7Ca5lbHYRpWaV5TVrBE4CrgomN4wgxKeSVLlCNc/2NeyQmA5kU5V2MdzUhtwGTzqNi+vY1kk6BH0G0/yHRhJiXg3cr+g6ksA2cbA//Aed0aAP9Tfk2SVemgCReH0xMlrw8lSVVDe2G3hbgfMb59J2A+rMrqTwHTH08dC6p5kCvNeIogz0Hfq6IBlL8FefVdOOYG5fUGTPzCOFrcu8GU+I8wVEyJDY2SUKgwSsmi/688mhUyYiMFEAeap9B8NOdzE3Lbz/63mPeelXVYcyk7cJ2qLO1L3UbPwFAfSbrVThQPhckptWZsQs82n7K84s4B1cJQn0SXBOSQuEivKy/pBoApuXHcdNzSDfisRwYveUVg47oBS4G0W+rHNvMNkk4dQnaOsOIAVSXOrnOnQsDmZYINQolHpubJ7+XEdeewYA2TMZbFJQcT0tI2mN+DiPdH3WVPaWR1ELF0umKziziycs2DXrDba6bi1Ew0qdqhskKb+MpGINlAExhw1x2l6+SvZEKIH/GC2xDj7susoFbTMtN4yQ3KYP7r6aF7W2koklMvPpq2ntT8JjyXByxAgM79H+bcj29hnAqt6PxkX3OwlZw/NTKxm0aJc69A5PTThDehNiUvKreIa7fsOJxJUJEbwvWy7qk+MhNURz09yjtLRa6V4LoFrdVsyC6HJoei6xXnmwL6mJV03HsrHC2vWMSSNo4AzA/9B04E8ErLByw7Whjx/Z3J1c6HSVNcTz
- bbzzY5Xc
- pD3M4IkC2wIWkA/wYyTIGXC8b/excfDByKlBZ8EeCoMr2Tj0LQYr7XST9wr/YO2ZdFc5GnhXeyyV5Bzvq6xaqYx1z6AnMJMAO87wBB+LsXnZ97xkQsbGNYHwE5iOYXPh/yqbo8/O4iRNjXkXqLZCL9rd98RhYv2SS8NCAkvghd9yT9F84KkZSc+to2VlmTT8i6u8OXZAZ1uff8J8TTNqc4VfEs3fpzaHPUvc+zskbLY0eWLUr/uu0QXyeSTbwJJYQO1d/C3MpaUEwoETTvBWVVOw8YAegwe/cjXllc46QSwLy9SixPawhu20OcIyvg3YfDUqaTfLdukLk/sAYuy1BweDXYg==
+X-HE-Tag: 1785369795-525301
+X-HE-Meta: U2FsdGVkX1+RbiWKPR1qYW4XT0qO/Wo2LYxIsALPBR98TLt/oh0BLfu9eOzd5GUlr+f/8QhLm53fx8LiNZS5xvOAJwY4t781gOCjWLxP3vep/DkUVClFJENAGTy/3bhHpgqWEj85t3DJTS9o8OdxnHvQazEygBM6wIhc+j5lWwpmijBlDAt8sqquPubhgG5/A+Yp56AAGiyooppE17Kkgb8s0rA3vlVG6Iegsf/sJBe0t4hPupqbC3R1UI69m7LmLzzZqDAfc692fYTmaKUlaOoong5g+mC7DVggR+qiS/U8nAza/RERgj8L1elbcugW9lKmtE+BAHshLuZH27heNfTPH4UfiwK727Canh+ak17n88VdUkMNe3Qu1gHq/Ka2b65U/f9F6W8S7w1OLx6vXet3CJH0K/4uYJFWsZxA8G0vigo5+jDFBdbvCIjXhRc8ksJI2DCGUgyH8BcnB2n53KrlhCI6Vr3HFkqYju/wXgGA9dDDYlfqjofLZr7agnroYqVTXOXCLezfGM5Cpab6dyQzcz5ipCzLWfWFGjVK2vXwj3ridRa5uyDuRqV5GZCXuTJiZWKh9NQhFEMYBA++YlSPJDwGc/yP5hHIFHWaI42xYKz4lPCejKfdqzT791zILmDuaXejUJJYhAf/5u39wnhOh1pqnLiePQp/fdWS1dYtgHIuOBaoy/c3SZT9X+0JfC/6uT9h3tRqNrsrF/sWnvmd+/gSEI9fE30tgU5HhFglAG4Z6Ojwre7E1DRwW+QkxtVzQUFsrbE8wvssVPqVmRT0egHqPuwkKyi5qj6M/nklvSIbiasmOj8xFNlDHsVCnHn/FrR0OaRRf4zXVplRJqAH4fm+7XmMv7QTO61KPfqCMqakUQK3eBxPMBR2PbfkWrjVS++tzICvZc5kqXjjPL5wF+hj2sUABczwhEbD0vLl0mXrh2UPon+sCgEGVMeJ1rS7yXUwfgwUomD8+/9
+ rWZ/MmDs
+ tnuWxRguFYRXQ5eiw0uK6FCk9BBCeUy7Fy2Ks/GO0iSgy39DlE6Ra/Il8s1qiZ7AGy3bdPCBLDab2oHzBDyl7u64Kua1G7Zh0QQ/qTtbXkIUscMHvjoqcOdsV4n1DpCsc5hLCmfakbd6KItS5EH57RrFJGHNpSWWCszToCz5gvAJvRGqOovwqoAGt/quRNG9fBuExZLqPOD+9yT2TVWhXe2rMu6xEcI8xMBgeyBDTGaRnB8PJ1d6tJ4JXs1r/JGxblrMHe+gLT2XGBymEH29R+JypArIwxJ4u6HqqfPyuYEtiMM63Vv6lWx3IAXa+aE8CHfvBRQ+UMQ9GmE88n+6VugQVZ+vNDtRFk+fZR+kXTK5IPAIaZDceMuGLuiYjJkeaZLd4Il5OC4dMKtlSqnX8asQJTfaDjdcQPsoKfgL/yb94xLL/MohyG5Lh6hC0M7OgSC8PZMi55YCpIP23XECoglXwVLp6OmXiM9C2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,39 +106,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: SeongJae Park <sj@kernel.org>
+On Wed, 29 Jul 2026 14:08:46 -0400
+Steven Rostedt <steven@rostedt.org> wrote:
 
-Hello,
+> 
+> Masami,
+> 
+> 
+> On Mon, 27 Jul 2026 12:25:48 +0000
+> Hongyan Xia <hongyan.xia@transsion.com> wrote:
+> 
+> > From: Hongyan Xia <hongyan.xia@transsion.com>
+> > 
+> > Static inline should be enough to actually inline functions for most
+> > compilers, but my Clang-19 somehow thinks it's better to outline them.
+> > These tiny helpers then live in normal .text sections instead of
+> > .noinstr sections, violating noinstr.
+> > 
+> > Mark them __always_inline so the compiler can never outline them.
+> > 
+> > Signed-off-by: Hongyan Xia <hongyan.xia@transsion.com>
+> > ---
+> >  arch/arm64/include/asm/esr.h       | 2 +-
+> >  arch/arm64/include/asm/percpu.h    | 2 +-
+> >  arch/arm64/include/asm/preempt.h   | 4 ++--
+> >  arch/arm64/include/asm/ptrace.h    | 4 ++--
+> >  arch/arm64/kernel/debug-monitors.c | 2 +-
+> >  include/linux/kprobes.h            | 8 ++++----
+> 
+> Are you OK with this patch? If so, can you ack it?
+
+Yeah, this patch looks good to me. Anyway these are expected to be
+inlined.
+
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+For other patches, Sashiko noted some comments, I need to check it.
+
+Thank you,
+
+> 
+> -- Steve
+> 
+> >  6 files changed, 11 insertions(+), 11 deletions(-)
+> > 
+> 
+> [..]
+> 
+> > diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+> > index 8c4f3bb24429..5880445ed0f0 100644
+> > --- a/include/linux/kprobes.h
+> > +++ b/include/linux/kprobes.h
+> > @@ -384,17 +384,17 @@ static inline void kprobe_ftrace_kill(void) {}
+> >  struct kprobe *get_kprobe(void *addr);
+> >  
+> >  /* kprobe_running() will just return the current_kprobe on this CPU */
+> > -static inline struct kprobe *kprobe_running(void)
+> > +static __always_inline struct kprobe *kprobe_running(void)
+> >  {
+> >  	return __this_cpu_read(current_kprobe);
+> >  }
+> >  
+> > -static inline void reset_current_kprobe(void)
+> > +static __always_inline void reset_current_kprobe(void)
+> >  {
+> >  	__this_cpu_write(current_kprobe, NULL);
+> >  }
+> >  
+> > -static inline struct kprobe_ctlblk *get_kprobe_ctlblk(void)
+> > +static __always_inline struct kprobe_ctlblk *get_kprobe_ctlblk(void)
+> >  {
+> >  	return this_cpu_ptr(&kprobe_ctlblk);
+> >  }
+> > @@ -449,7 +449,7 @@ static inline struct kprobe *get_kprobe(void *addr)
+> >  {
+> >  	return NULL;
+> >  }
+> > -static inline struct kprobe *kprobe_running(void)
+> > +static __always_inline struct kprobe *kprobe_running(void)
+> >  {
+> >  	return NULL;
+> >  }
+> 
 
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2026-08-03.
-
-As usual, we have two time slots for meetings in the week.  Next six time slots
-are as below.
-
-2026-08-03 (Mon) 18:00 PT (not yet reserved)
-2026-08-04 (Tue) 09:30 PT (not yet reserved)
-2026-08-17 (Mon) 18:00 PT (not yet reserved)
-2026-08-18 (Tue) 09:30 PT (not yet reserved)
-2026-08-31 (Mon) 18:00 PT (not yet reserved)
-2026-09-01 (Tue) 09:30 PT (not yet reserved)
-
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-
-Thanks,
-SJ
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
