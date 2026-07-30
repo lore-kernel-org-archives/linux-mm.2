@@ -4,153 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FB9C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 17:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E032C5516F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 17:46:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7768E6B008C; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
+	id 6BD146B0088; Thu, 30 Jul 2026 13:46:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74DB06B0092; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
+	id 66D6D6B008A; Thu, 30 Jul 2026 13:46:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663836B0093; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
+	id 55D926B0092; Thu, 30 Jul 2026 13:46:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF996B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:40:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D3490120205
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:40:47 +0000 (UTC)
-X-FDA: 85046158134.07.B31E325
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E658C20006
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:40:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="QFxlq/pC";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of fvdl@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 224416B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:46:30 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82CB3140213
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:46:29 +0000 (UTC)
+X-FDA: 85046172498.19.0904A66
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8ECC24000E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:46:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=X+6U6yfm;
+	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785433245;
+	s=arc-20220608; t=1785433587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
-	b=x/8N+6tR6uQOXLElFH1jsx2pikZ7VS7X0Rvuqcrt4vUvD6S7b+ouF0OtmItRZqg0ErRE2T
-	TPY8pPjs9TYte2PRzBH9rnDax5UBG66aakBd1fOLTGtRzJelRPGk6zQqbi9DCMn1NKy/b+
-	kWULWNeimPmx37v+urVky+UJO451flM=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="QFxlq/pC";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of fvdl@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=UOih8CBVKjn02CmrfoiIHS5zm6Wg61jRZNK4KLcmhAA=;
+	b=hGqGXNQGCE5sA7fWHa33TUZv55Qa3DazVVdQneHY++svJ0rRuBb3j/QrWwI7jwL8sNxvlp
+	bTi8/azAURdVsbi/2ts7SsiicmVcy6tXd2cTpAcYDhSdI18N9rWe3t7EXm/oeJE5SSfDKO
+	YSaoAl8nHR8IFcyp6o1tmNnURTf3z58=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785433245;
-	b=6G17QU3zM9graHxH+rSNc6OsH2pHncK9be0wTFyMVQa7e7Eb5lIg9AJ2EFHgkVGZ51SYQA
-	LtSUB2dX9Ox+rcoJoYIkr9vxnqHKW/yh/j9vABPS8nDR6JDut2dcTWd/tl/hCBLKwXZ1l5
-	TH1Gcsp5wZd7nUP6S/zLaKob1a944lU=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495509b08ebso5145e9.1
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:40:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785433244; cv=none;
+	t=1785433587;
+	b=V66VhTXk80EtOOne3gc2vLkCjXbfe5o4Wn99DoTi1v7961xNo2Q7uYeZrmwoaaWg3YfEb2
+	1b+Isd6ZMVvv+QyUQBNK9cVkBpsVL4rYNRLzY6NVzrcMyTFFTCoU1mm2fNs7R+HS8RZF/e
+	BHjg3fnJXaYLTFcc2szp9FhL7zJ6G7A=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=X+6U6yfm;
+	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbb85186d43so31637a12.3
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:46:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785433586; cv=none;
         d=google.com; s=arc-20260327;
-        b=FwxmNEjIOyP5/0EcR8+juuuAUxgWeIaBmNZJyfLN00XVxBB8885Krd4oR3f3HE6u4k
-         wE2ACO6BVEjMxfaAeis6PRLIRwiFdoLXwB3ALEPtlzRuTeja9Lrw3QyHxiMoMgq43JVt
-         swTDsR1qtLc/vcruCN3Ed2A14vuY8kfXvoI1jpbO6hk2z1KCToS156141DY+Fpl2oPm/
-         tPj4w+yXg5pAhHxKXn+6NMWmJTp5u1VyDzxywqme6CCHCieZK1HS5lT2vi5l7dbE6TjE
-         GUeNU2nyNFw+/oQohQpqJxaBIcCfhCEreJdiwyY7tMmgVqRUmZxV5mENBDmdVwew81IU
-         WLIg==
+        b=YHkNEvbI1TUzsZrPgwu+IKrWVdsdAakcOoOFKVgkh0reZ9zmKS6Mbcnls6dVAL22g7
+         JSeeOGq+Qw1A4GJRpssOXkxFifQbhxfHHG8ZOrPnzOiNLB72fSMJQhIZrih74kySvTvz
+         N0xBz4AbvZfLY22dnbjbI5VIWQeJkcwYV73HNJ197wTdurGBBPf3gfPcocjtVLCTrCFp
+         nSBKScgRD/c+6dSj5m9j+I2m8G2f6FDqd+mvBFPJmpTulAtLxcZyXcsFA08V75f3AThw
+         uS0zvQRH3GeZE4QKKxLEgkxe+vzE5/HUWnzumikrTDqm8ez1dW5+fGB2CnTpW3Jp3pDT
+         KCnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
-        fh=hKGHIzkjVrHr0WGLQH8drfNdeHw39aIHx8NR3mbnpvE=;
-        b=Knf/fuBxV1mLe4odvEMekUKkHlk/mLiXV7wkuENq3TIpdNZLS8o44fcHlTloc9RJtu
-         3d/YWsuvovsDOuAej7OPQ0TRhv0lBMf6jrkCFYwJFCIIa6ID5/yWvZPD4Y/zLzmgZVjX
-         PJohh4yIaR7ENTE74a5c0ccaD1mLtQ5owlTb8ZlPk9lEH9X9APfBqAb4NoLQTr03/+Yi
-         7gLeY0GYx6Il97v5gwC2xi1w5VYUCQ+QakuUB+C8sRbsCim9H2tXDQTR0Y+EpYHiYn7j
-         Sozf5HlaiqiUyR5Jn+Ccorny4TRAThLqSmdsYW2BBt7qUmvPgw8La3CwOe5ALkmmlkH0
-         4W+w==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=UOih8CBVKjn02CmrfoiIHS5zm6Wg61jRZNK4KLcmhAA=;
+        fh=ZtaJK/rAQTwYElew4noZtLvjcTYGlB3qGnCk2ykzSfs=;
+        b=X3Ku4oI7jCp5hdZmvxX6Wl6eaSFVs0VDprc/sUOMeJVw/MP510vRgykSKcpNm6gUmI
+         l8AvqToyn4c5geRoBKMRb2YV/LgKHf47s/oFo5Txfq3OQAzQ9npKF6CYx+NZfM+Ob/A8
+         X7UJBJgRd1GLj8n3AHjS3QajyCxL+oWnkqLOel3br2lYPcNv2SqODFPLVtcuZ2IjlyAX
+         SX5dlNcqI8M1k+v4GRfWCyEHwzN0vJb1Mf1TxWgM7AFkTJBmejCCX0or6xqC/PY2wyc7
+         prT56rgPB13XVh4X12b7yOE2GSkdukSUmne8p2FBpH0wZYC6EcDICn/NOVzgjDfsFgn7
+         l6oA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785433244; x=1786038044; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
-        b=QFxlq/pCw1zqU7eh2z3SKDIPG4iLUu3kXNRJpxg/URia28PXHFjZK8C9Saz4ROoqF4
-         GsiASHEgNk5CpVL7AL7xHW9+stdQEchokhZShBC5hHU/S0yYXO6T0elggBDEY5vl2xJH
-         kn3OKr6xyS8S3zlP5I4L3AWRtF+NpAphANQgDNQBtdE7MZPfywZ8JavE5tkoMOoxwyjH
-         a+71lR6OaM4TBezQ8xRVJjOrkTiJnwMn9EAcRvR7cxJHHtKtwhFBBGaoclMgFgabPvuT
-         r+m5Ta/tezevihFd+qfLgD0xWa+B2R8Y6QwlMB1nkNzo99Ygaz0Uyg6cxKM6gwZQV5dz
-         r/9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785433244; x=1786038044;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785433586; x=1786038386; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XLMCRr3YVakAFIrgmUPrhARsAro1zufop+cwIiHnKcQ=;
-        b=Tm6gMLntuicSqnBYAItVk7tNoqWBZ7qYRPYoiwcxbCdL8TYnadAkDlQCzKj1Ah7Ptm
-         uFweSHNpGu21nd3u08EUSdzWKbrHe+da8C/GlBF1kCJw3THJLFp9cspGbS9+QC91C04n
-         KhkrKmmhHi2+jQghxFry0tIiVriH8caXz06ZHe5JSOjGFyIKxTjrRuFgjkU0fyNPe8jh
-         rQS5SYtmkyRfXWSSuZEbpT736DYSG+mgKKB8TzD7mRzo6tia8mrQOFuErYMDkgoYdL29
-         hnBzqcmJ+QluLE0tkJUc2+79SZkpnfWxI4823Xun0ZVmYR3+/c/2NeduTU5MXTHA5gzu
-         CljQ==
-X-Forwarded-Encrypted: i=1; AHgh+RreRjWhDelZNNNdxIkTukxw0Dh6WrTqnIhP/+FnrWuOsEZ5mRW06R0x9jSER6Up1Lp/lkvC5FVhEw==@kvack.org
-X-Gm-Message-State: AOJu0YxLecdDkGeBn9ZbUkYDXlx7+v4uCktighhNJlykO3OKkzFMD+Gz
-	VK/H1St2kzKQgkzXe10j870e1S8Kzy6AYJgQtvtb9P5haITU/9/3pJRr8a5yXx/OZpiSgvZb0Q+
-	sj+tuQZ3QVbnF1P6+qKrBJC0grNfQlObFWYbAqRY8
-X-Gm-Gg: AR+sD13aEqyj0sK43b4Ik+S5DfzHA4CZhUJKW5TfRa/rVMca+DNLih4IKcQ6CIvYB5t
-	KM2j1z/TvxwZUnY/YhZkvPWvO3wIfQk8Fm01pwhqL+rrKA+Si6k251FLat3lICyohEULtebhkDP
-	g+D6U80JtUuFVRPUwCJAdzMG8jK7gJnig9w8jWFOi+pTOfjJkE1g7fQu9tYxY9qFBvY0+D18dkX
-	pjnDYHoWCjW8Z/JReGtzh+Z1qlBEqjDQSWF4qUKvpyM1NWHZcia0IjXB7Gt4Mlj3IbVjoWM2HFL
-	pYRQL0OeOr2+ZdoXS6nnTtoODZBLfy9FKhLXz4hp3u4E
-X-Received: by 2002:a05:600d:848c:20b0:490:ab15:b9e8 with SMTP id
- 5b1f17b1804b1-4980587baa9mr47795e9.2.1785433244036; Thu, 30 Jul 2026 10:40:44
- -0700 (PDT)
+        bh=UOih8CBVKjn02CmrfoiIHS5zm6Wg61jRZNK4KLcmhAA=;
+        b=X+6U6yfmJGrhU1a++aD/qJi43tISYav6Xulq2QSsMm8TCZa0/62pR7i83RrYlJTlAa
+         Fm4t9ELw6shrLFPOCmpce/jB1geuQ2zFfvG11Lh5VS483B0G5+NmbaKi4ukRsMIAI+1r
+         ZNk4oDFqK4/By6yBPdPP+1DwaweyyO/Vg+ExrUjp5K78Tom1tPMRbC1rLY5jlfaPdpQJ
+         DSYcsTBJCIcAFvdz9W0DTtwLzi14D0CV/lZVCukdIJnxt1xobHg8SqDDZD4whrWyWpYH
+         ZJ066WmoDqT0xyRzb7X3HPhMUnU2GfduiMsUrVnSEakBcyMiQrVvOIa+WswcP4KwLY6+
+         2v9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785433586; x=1786038386;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UOih8CBVKjn02CmrfoiIHS5zm6Wg61jRZNK4KLcmhAA=;
+        b=PcmAi1lg4op7oPFkXojiymAEfjYZwX7y1fBZIQDiu3rMoxHKgbRFNmozpnBfoPZvE4
+         loXPf6Myx1SEX3d5qzgJrveVxfUsmXTkbQa+jtnStOV23kWdZhgotQ63CkGgjJHtBA6h
+         e8pa4i0dHDMZ8HPEP237+ZK4w46SBgzSe4FrYHYIgIy129DNoGNkb7QQMT+ANVTJqX+1
+         Wy1lL35vgwAkXnrVK6vT0wlIf1rtn8DBgy6N4mN67ddQWutbgpe0rnz/nWXgmNBjB5MA
+         V3oBdpdYnqhojW//7JxFOdMgambmIqol96cQf5QNavEFYNjb753OQI6SCmvlVyDo9aY0
+         eHQQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpCuxTwhEAC1Erol7l5Ievs7mILyw/q8vCFoV46E398zXyh8eJTL3OWJ1VUSE9zyvpOCvJnoSz9sA==@kvack.org
+X-Gm-Message-State: AOJu0Yyw6INnuORUP+vfHAxTwnXqtlLNb0nQTwFyIpB6G/FdnPZr6e05
+	FPm3x1OEK2pCeT095ROmFXwqP1vmufUbPb3EivwwJzeL91pGcXWnZuCrkmk+ZCyNe9P7Arx474r
+	KEyRXgFuD9ds3jDY/iQPBDwFstk6euTvJ+zXDZIYs
+X-Gm-Gg: AR+sD109zKmjUZHv3tduPoCZtnx95tKQwqBlBy+tSNLrKRUbI0D8u3ESIG4BLAH98le
+	Hy0hY+vioS5NmY9tw48DAAKlf+sKX1QmvCJ5jWKh09z60wyX410qt1aIg30XoNv+9hgy4ecdFHw
+	0I2vYRoIDSZCSCiJgdEUfsG4vQE8wt1xqQk0GuRgm0kFgR4s6sDQcs3vh3JmrJLkNjBl/U+dIzs
+	cj/V+eoXReSM3w3XAXUR1ievPpx9xP7HQGlajwyD3/6uOtk8Hoq8/EM0SKvZ3SpewZ/WvQJceEV
+	Un9DdK/r2LZcO53x4wLvmDTLIsVmGILE5yIOz0rjqscSxlVdy24XkVb9egfqrVyOQUsD23oOuic
+	QyrvsxiXARlx87uIvrfDgaoPMlduaRN8vew==
+X-Received: by 2002:a05:6a21:e8b:b0:3bf:6ac8:8d29 with SMTP id
+ adf61e73a8af0-3c9006bb981mr3748982637.21.1785433585760; Thu, 30 Jul 2026
+ 10:46:25 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Jul 2026 10:46:24 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Jul 2026 10:46:24 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260728121138.1103610-8-tarunsahu@google.com>
+References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-8-tarunsahu@google.com>
 MIME-Version: 1.0
-References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com> <amuJbBrTW9W6_sx8@gourry-fedora-PF4VCD3F>
-In-Reply-To: <amuJbBrTW9W6_sx8@gourry-fedora-PF4VCD3F>
-From: Frank van der Linden <fvdl@google.com>
-Date: Thu, 30 Jul 2026 10:40:32 -0700
-X-Gm-Features: AUfX_mzF-rbdWdA029msHQErAvjm1m5KqVtwi7O3MQR1mBpjRQR1Wfxbg8w05fM
-Message-ID: <CAPTztWatWbsF4KQwD-_nib-vrZ6uvrhMYcOc1mkWu-7DzN95AQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/3] Demote to lower tier using non-temporal stores
-To: Gregory Price <gourry@gourry.net>
-Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
-	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
-	Ryan Roberts <ryan.roberts@arm.com>, Huan Nguyen <nhuhuan@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, Alirad Malek <alirad.malek@zptcorp.com>
+Date: Thu, 30 Jul 2026 10:46:24 -0700
+X-Gm-Features: AUfX_mxSA02wZmCDGZHkTAv1sqG45AQrWdNvcUlNspdo9IevcZmmfeKZDjs0tR8
+Message-ID: <CAEvNRgHvBTKaG4G5J=sMFGYepEnOFaeCBtjkzN6xmGtZ+o6XxA@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
+To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
+Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
+	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
+	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
+	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
+	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
+	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8ECC24000E
+X-Stat-Signature: xxcbq696y7uonbem5skcxj83ugj179ec
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E658C20006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 8wr4s3h9p5qxk9kxbxfujeywcye9w8cg
-X-HE-Tag: 1785433245-346268
-X-HE-Meta: U2FsdGVkX18oz5uBaIrIsrptHb9U7cKVMV/mhljdRW8KITXXPVODTIeqco8zdfZnnAIBJIlGsvanbS5LJ61OyppNSM+mTFhI4y/zp48fU2QagNN0qjGRc9fRpWvwTANXh9yfEA9WT7j/Z1/JZpk5aThMJKHEsUlqqEqdlb6xH7JccAsh1hhukpXPHhaIUYwrUZYVu8WJeA996Y4whafSrnmk2JA2Nz30UpUlfxt1Cux00tayl/KcToVR4klWGmzpdURL19ZvAb5exOarOPa28dr+vBFK1VuVxrY1R5pdfn51Da00J+hyJa2bJWGkUyZ9fdBwQriO0HO64s9WFrgHFGUfMWPqYS7VFqmUTXLmpPV8F3S9R6v4hcB4MA7REpmLI5ZUqTX4T1F6em7y+4qFmnhOymVn0bDTaUirj7zgdYD1G40TvDXNDvJJpuFjjWZF4TFr/1+GM10rOk31Lg/crU0W7iAkLJpIWfuHHQqls/TXt+0t1OhXOvnYaN0m/wGaTn76SJ2zGFpUovex0zkDD0FN33t4Poc7+1xToDrDUoUKHrMKtWvGt6X3sVsaWl4jZAW3S725dqlfO4/kKT9roQkZeCJF2SB5YuRUOrRRBxzru+ZM5zEfCZqm6F9mXYVuFNqWco8bFGx2GhM4zGE29F09NwR7CN+LOsmFpOznQd/njuIvrjzoWF0Rxf5ZL2kay/tn5VHq9JCrkscdt0YzHMFo3shpMBevNxFLmnO7qVUAZLKn1iJfd9bb1obU/wSsUl2S00r/qhUfFkJxFsMih+kfjUdOZRTrdzq+m6QES6HqZx8O8VHJHxqPygdGIe7zsIIFD8L1nFhUM2XPcBjbe5Oq3iQR99JMrmmSxjXEjbPZyYxPF04HBhIWPaM2IyLKFMc+yHksn25iFVZhjghiyZBlIlTn0HdjGqiUjkXmXUJU40SA8M7fQ25hrr7y3cRT1xRsPRgsia9Mh76DFzF
- sTMX9YtI
- CKPFocNseIkP3bmfWBr7YGjAyV75r9YWoOOAIACvfNjXAGWQyXORKDxOCY2wrKDzu47dr3N7dC3hzxQIjWgxRFiryAZA7p5SezQDk012FFRLjCkzo+MSq2xCoEgpKujIExCY4KYHZXlWHsR/IRcwmFbZrok0qwKExde+osFlNfo+6xlPf53S5nHlFCPoZznw5K1xx89ue4EHBfZX7MxHTN/f9Ym0RmR4V/YqykzLLrwQiipjKthDEA4qShas/r0fBrnNtvR6s00mUhgMShYLTao0tSC1GSiGR3U5Gse77rYfMlYBOABOi+HQ6W5Dqz+L8Q5dY05ZAaf76PcxTnlQRscS068S2mnGUqXVkFzE+T8STtIZ+AnLSirovew==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785433587-170348
+X-HE-Meta: U2FsdGVkX1/EZ3CH22HuzI4hoVe0HGBmSsqrDLmIOlRTiJuG6i3a1DKw9/RN5ZnaMn0AtS8f5+/J39c8y53fC7RtX3sKxoz36OXmC6XmJtoLQAJl+WGLuVZ0ZLZaWNNDLzOvRAkatOHS49JjNH2wVVErqbG+3LpZbZSLfLK12IwgqdPYMYIHGTwIIcyOpF2ahX4hZjcjMtwxZy99DOcaIhXjFzG/FPOYV9xvqFnpGRtn6y/9Hr3Pfj9DcaUTPXmBzYPfuV1cml1K330pbJdhRecSZg2+zqtsQKGQgIv8w8NN755bU9d84OZHc7nkq44e4IYW+Em/2XQ2AtoOdZff1BFKflBDI42IAdd15arpsC1kB/XJSPmuofRsp2d0vFYxfnAUjY11C/fqnteoaBXElaU+LF618ZshmWiJoATFD4dPHRxT+kyWwwJxM1CkqQIYfr4U229U7G4MU2mogWZ/PerQ6V8LQSqT31P5/tEgRPxnpoGKVaKXZ7Gzgj3+bAHgjXaCVRe/z7KA0sqiMeX/CUA9FdWFPxhYdnNAY34q/LFHrWNtBYcK6m3jfbLjjwnbrt5H+nZJei5MR8x4O6jz+xgYjhiUE+VdBpss/lR8c/MCPavfGecJIxku79XVPujiiJfBi5s0c8OsDlsXCd23K5X/TYB7szPEBfYFic3CNA4NltCiDqmS9tWKjIU5BbKnxlSPXk3TByi7Cmk59HrTCwuE744vJ7924RdUAabJcgylG+0Qnxzyo9ADqlksWt/xIhW4r9HK/6FnZ1L5f1ttkg+iX285gZsm1SCVcoHf7ot5ZpbhiwICJtxuzPrDa9d609b+RZEgETuqyeN4ZcXHrZRnI46eF5IwN4k0x6Rv+2KNnPsy0B5crfOOa+6A9SaFS/vTBniq/+BjuzV3ESTJ+DyPxC/UNFZGMnfvWGpY7K1rV7ceP8EUwdnvczH5YIKU1NCxMZcqOsLcXUUcZNw
+ NIsU5tEi
+ h792cxy/eWl7eP5yNBSpC//I5Sr1o9eONm4Jwpg/rHwY8MPXYyuxX/idsMl5XDPEbNBvN+WJ8GvcGGh0fOI6VVPSeban0YDppywDsZdzfgA6XX6XHoXk/FRgf7+78TPOqIgF1ityKcjvpGqRuKpNps3yPEWDJiVTZc6jDiWyigjGMVgGJcYKZ4E+W6BwvrcDtE/XebcDpb4MXGX4fMz+0ehPX/O5uvYT/CCiIr3s23cHgbeWj0Too5c9fusiMLfObFL8c1T04g3hOIN/A1wl7B1O2NP5PtvEbN4hU9oYEZoUe2lbtkfIDsn7J1UCYAhvhXsBWpaQh/FqudSMJL6NyLCY3dE9XKgLPGKC5A/e71mqa7eb9RI+HlQ6lpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,86 +150,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 10:30=E2=80=AFAM Gregory Price <gourry@gourry.net> =
-wrote:
+Tarun Sahu <tarunsahu@google.com> writes:
+
+> Introduce kvm_gmem_freeze() to freeze a guest_memfd inode's mapping,
+> which prevents fallocate() operations and new page fault allocations
+> during preservation.
 >
-> On Thu, Jul 30, 2026 at 05:02:56PM +0200, Yiannis Nikolakopoulos wrote:
-> > In most memory tiering scenarios, the memory to be demoted is expected
-> > to be cold and most likely out of the node's last-level cache (as well
-> > as target pages in the target node). Using non-temporal stores instead
-> > of a standard memcpy path can reduce the cache pollution in the local
-> > node and the bandwidth overhead to the target node. Furthermore, for
-> > certain types of CXL devices that support in-line memory compression,
-> > the last-level cache eviction patterns can negatively affect the
-> > bandwidth of the device. Non-temporal stores can mitigate this.
-> >
-> > This patch-set introduces a new migrate_mode flag for using non-tempora=
-l
-> > stores that is used only in the demotion path. Patch 1 adds some helper=
-s in
-> > x86 and mm to bring non-temporal stores support to a respective folio_c=
-opy
-> > function. Patch 2 adds the new flag and necessary changes for compatibi=
-lity
-> > with the existing behavior. Patch 3 uses the new flag for demotions.
-> >
-> > Experimental data: in a CXL system with 1 memory expander, a microbench=
-mark
-> > that allocates N=3D64 GB memory in the local node and then triggers dem=
-otion
-> > using memory.reclaim, shows a practically complete elimination of read
-> > traffic on the device, i.e. write traffic is N GB with and without the
-> > patch, while read traffic drops from N to almost 0 with the patch.
-> >
-> > Opens:
-> > 1. There is some "duplication" in the x86 tree and a bit in mm. Can we =
-do
-> >    something better there? As it is now in copy_mc_to_kernel_nt we
-> > duplicate the machine check functionality, which if available will over=
-ride
-> > the non-temporal. We were not sure how to prioritize these two and what=
-'s
-> > the best approach here. Can we completely skip the machine checked for =
-this
-> > path? Huan Nguyen has some ideas here that we will align for the next
-> > version.
-> > 2. I am not sure how this should be structured so that it is easily
-> > adopted in other architecture trees (e.g. aarch64). We rely on
-> > memcpy_flushcache for x86_64 but this does not use non temporal stores
-> > in ARM. ARM support is currently out of our scope but any input is
-> > appreciated.
-> >
+> Use a global SRCU (`kvm_gmem_freeze_srcu`) to synchronize freeze state
+> checkers without incurring per-fault locking overhead or risking per-CPU
+> memory exhaustion (as per-CPU structure not counted in cgroup) from
+> per-inode SRCU structures by faulty/compromised VMM.
 >
-> I'm still a bit confused why using NT Stores needs to be an explicit
-> option - rather than the default behavior if NT Store is available.
+
+I wonder if everything to do with freezing should be gated behind
+CONFIG_LIVEUPDATE_GUEST_MEMFD. What do people think?
+
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 >
-> Lets assume we did this for all ASYNC requests, is there a negative
-> effect? A positive effect? Why the new ASYNC type? Is there a
-> correctness issue?
+> [...snip...]
 >
-> ~Gregory
-
-Yes, this is a good discussion to have. I believe that the initial
-reason for using a separate mode here was to be non-invasive, e.g.
-"don't break anything else".
-
-But why not use non-temporal stores for everything? I don't know. I
-suppose one argument might be that if you know that the destination
-will be used immediately, NT stores might be a slight performance hit.
-
-arm64 already seems to use stores with NT hints by default.
-
-In general, though, I agree that for ASYNC requests, just always using
-NT seems fine.
-
-Maybe the mode and reason should be folded in to one variable, so
-that, further down the stack, a decision can be made as to what type
-of copy to use? E.g. if the mode is !MIGRATE_ASYNC and the reason is
-MR_DEMOTION, then non-temporal is still a good choice. If the mode is
-MIGRATE_ASYNC, NT is still a good idea. If you wanted to get fancy,
-any mode with folio_test_waiters(folio) =3D=3D true should not use NT,
-since a task is waiting to use the data, so caching it is better.
-Maybe that's overthinking it.
-
-- Frank
 
