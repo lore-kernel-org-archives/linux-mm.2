@@ -4,145 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CEEAC531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94211C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953BD6B0088; Thu, 30 Jul 2026 02:06:20 -0400 (EDT)
+	id 363226B0088; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 904C66B008A; Thu, 30 Jul 2026 02:06:20 -0400 (EDT)
+	id 313F56B008A; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F3776B008C; Thu, 30 Jul 2026 02:06:20 -0400 (EDT)
+	id 202E16B008C; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F6A96B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:06:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4AB711408D0
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:06:18 +0000 (UTC)
-X-FDA: 85044408036.30.64386C6
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D2726160004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:06:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EDFC86B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:28:42 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A12B408FB
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:28:42 +0000 (UTC)
+X-FDA: 85044464484.27.491F374
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B0BEF160008
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:28:40 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=s8Uk9W8u;
-	spf=pass (imf08.hostedemail.com: domain of meted@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=meted@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	dkim=pass header.d=gourry.net header.s=google header.b=A6wnZ8UD;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785391576;
+	s=arc-20220608; t=1785392920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fSKpK5beRJSFXxCftlJ/6i2fmlt/3JwNSqzLkzUOYIs=;
-	b=z/dI6+w8iQJNV4I37ByKipBJ9yoINoMHhVovYBQPV3ntAsknmMsSue/WAz+3tPwaH0Lkw/
-	KLTupUh9g1FYmnPhve7Tf3MpXw4F+d8TRVj0wSqzq9N12UxHOrS6haUmtXdUIEgEENGk2+
-	KKMZeBY4tZjGcOeiVasIg+kT6WmHt5k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785391576;
-	b=aKgwciFkaxLRUWTGIJpnT94YmFpuHbVoje1xgRie5/1WYvV9G3j8g5F133YpuPta3VBhQm
-	mctVvfoqETsmMErA/nVFmKPB6Ov8XsQ8n/JPh0fIEIIF91rgd4n/1Pq9kb3TCN84cDs2cz
-	TnpiG4n3tVszL4ZPaQShBVgkEA3E688=
+	bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
+	b=Cr/qb0kx44Dy/V5QDBysdqq2iXiErudKfZUoQuXdXI6wrP5vKWljqj0ewFfhEmv4GyKpXt
+	9qdRA97boJ7UToxCM6eNJTemXOFZxiEf8wKvzpCTuU3Ujp+vCGUBv85GZ0OCCkUS/0o3oF
+	aMa327cY/Wmn1cJCJzUAeKK03AqtRXU=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=s8Uk9W8u;
-	spf=pass (imf08.hostedemail.com: domain of meted@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=meted@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U3laV01933585;
-	Thu, 30 Jul 2026 06:06:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fSKpK5
-	beRJSFXxCftlJ/6i2fmlt/3JwNSqzLkzUOYIs=; b=s8Uk9W8uV5FJtCx0SbDAh3
-	YNFN3+TeiruYlev0C/0DU/tf0DzMuHjMq2kOxnLx25pno10CX8HUptcMWsBfSXAo
-	9tGkKt4kAU1tLWoylL4JMu3jq4U56hndhVIvTTmgvsnoYKMCHBynzf5rPGZGstd7
-	PMq4lQ3Ljb6dO6MfSPWdRWifD3OLBdi+Ya9gvTKa12VvpunyiOM34qx4EGZn7hMX
-	yT0yaRhJT0MepDDBWdLJP+yeVUQBmZxRHYcg5upYbwWoJXTxo71Wd4CmMcEmQjXe
-	nyR3Mx5aqdqxMJHDnndbe6jAjKRaLrDO4slY+ECe/WNM+g5ssIaAcse3Q7Dkqibg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0xxa3b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 06:06:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66U5uHWh012301;
-	Thu, 30 Jul 2026 06:06:07 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqj6wh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 06:06:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66U663Rc35127580
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jul 2026 06:06:03 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 72E832004D;
-	Thu, 30 Jul 2026 06:06:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10DBC20043;
-	Thu, 30 Jul 2026 06:06:03 +0000 (GMT)
-Received: from [9.224.76.67] (unknown [9.224.76.67])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Jul 2026 06:06:02 +0000 (GMT)
-Message-ID: <18ca706f-ef45-4207-a55d-025f90133978@linux.ibm.com>
-Date: Thu, 30 Jul 2026 08:06:02 +0200
+	dkim=pass header.d=gourry.net header.s=google header.b=A6wnZ8UD;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785392920;
+	b=GekSOmiWkTm66OjdKqeoOEaHYVnE5YDXM56z+Gyu5VOzW3iMtVLNGUaIgs7kgrvC3MpcYs
+	/6lJ99zCTbHsEO+m1aGqStJnp6nPdFX5CqupOfkSfwqgAbzLyuF9g/IfSJxdZx7Va7A5W9
+	HvUBYi85Mg92/tIFhlfReUig4Z2AdgA=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e54f8c051so96606685a.3
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1785392920; x=1785997720; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
+        b=A6wnZ8UDCdTjrCyi/cZfTvnMem7hRQq+wY1rQnSDopsdnrGhUFhy8G2OnDh4r/cCj8
+         9RZrPmrMjwlcEXIi3UspvgAd4aqu28eD6yqTqaQdFSJPq9LVQc5HfSE4RiZid6TqKhRv
+         OdsiHzwdnpupRootAirqSX3wShiHKF5IX+YaF1OomSyANqCYTC5We9OPKlmjESMmOR42
+         axKsa5QBp7Wg8zBVa7sGYx5jRQrJ64lHxGxUFiZ5teK0OlxFY/etrATJ6KgpUowIzwwC
+         c+fQ6yYmT/tdBZSEcpAFA8LteK1/OXfxC9vZRSnqNwj8CsFn9oEyVBeeNcTp1eRJR+5h
+         CgsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785392920; x=1785997720;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
+        b=drVMjuYMiNQ7WQ1ijlNs5K3SVUQxSbW9hp8PDrTyHzTeM1Rc/xCAs05SRa8Qmeo2MU
+         iK6OFJdaxhAkLicSOJokxm90AJWOJTpefIJA6D3f4SixnVbkKG+WwZ1aGP4A4Ua1mLWE
+         OZ3jQHXMiiaiTI5m0avW7hbgnwcFg5sJVmssXqsc5Uz3sRy6dvaLUKSsgrnuxhI9XO3Q
+         M+B1XOuGFCMR5Wc9f9RNDzLI9OL5+KuY8+8+Y4vWEe+kp4C/mrcNi6PNfi8WDzcJ3kls
+         4p+5ekJEBssrOznr/j/Vqdd2qPQC2xMhFSNvungxmo190ND4mWI3XnIRgNv5maXRyK+T
+         +mSQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2JBeHoa7AiXtekI4/yM8owO4+17cwwKsoKwNTx86a483vAr/tZaTemGa+aJYK4Ehy4xPIm67GHQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxs8EAbOVT2GWJNzVkW0RpiHurrcpeEmT+Pxwll0dvnkHUQZSXT
+	+SyCLM6b7GJp/wM8OT+6Up9FAToKWjjlvjS9jzdJJWMTs75eYMC526Qh6hqKS6L2et4=
+X-Gm-Gg: AR+sD118owMr1hxFgGREc13kuD+OR9PsGf5MGG2zq4dPuGTf50JChokOxE5COCAbHDZ
+	NlvP3SjRnZ8ttRaENtJ88CI1lnpDILDUzFy9P06Fwgi80nB94oBB35irAQ9TU7D+tW18R+Uvb1Z
+	HciYuQS0ZxjctrFy9Y4OL+ClwRGs6iTLSEUZENygZRSx7nI6JdRfysqGC/5kT5x+UXnjaj+Hxg7
+	JqY+JBL1keJcjvnMdmDZk41mzLaK0zF93zsg/3l+y7zbKQ+3O3cYxDx2UZvMhBcV2LbHOeSST9Q
+	lRarG5EV659beBh3t/Q2Rj3Rd0rHRp4Saa99hIEzXm82vzhVWVjd93d4ooE4/1G8IX/ujFwQepD
+	kMlfqXzCXf/pLCdNHWkaut8CkKBLRYQUWkz6jdscq+KxVsH9NvTDVM2KxjgNBz9s0am4KqbHO+3
+	sHLyvUFoVpFOZmi38KXWO2y21nzSdqg050Om5bLrwjtTWlTvWOzs6FLEnDsQqgbray0njyh7TEr
+	Gz2ujW7DjSK2z2Dz1NQctvsBxdZq0TsjtH+ZtQhJRaDbboTE9VHLDQ=
+X-Received: by 2002:a05:620a:252:b0:92e:fe10:3f02 with SMTP id af79cd13be357-9348613d64dmr94585385a.51.1785392919868;
+        Wed, 29 Jul 2026 23:28:39 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933e7318180sm346275085a.28.2026.07.29.23.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 23:28:37 -0700 (PDT)
+Date: Thu, 30 Jul 2026 02:28:35 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 02/15] mm: introduce linear_anon_page_index()
+Message-ID: <amru_6sVmelONPh8@gourry-fedora-PF4VCD3F>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)~
-To: Yang Shi <yang@os.amperecomputing.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, cl@gentwo.org, dennis@kernel.org,
-        tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
-        will@kernel.org, david@kernel.org, akpm@linux-foundation.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
-Content-Language: en-US
-From: Mete Durlu <meted@linux.ibm.com>
-In-Reply-To: <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: r-zTKHDUsTXOcFmf_-9wS5lhnkg_qTkD
-X-Proofpoint-ORIG-GUID: SOP_yvGrI1a3-1kuGNqQ95swD9gDixMk
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDAzOCBTYWx0ZWRfX3sdFvOaD+SK5
- BwqMslyT06eKdSQz0oVVw1k7nVE1QnWBDNlUtJeG8OzEZn1Qwoo9TgP2LDtITB8K11bp8UHn33n
- Yi+SYqS182tCyPn3xWE9dgJhNNaRla0=
-X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a6ae9d0 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=cpGfkXA4JyvoFA7YCHUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDAzOCBTYWx0ZWRfX5gMfbafa3aqX
- NNjDEl9HOtJXNn4YfJJOTBdNIIC8zGhagzyCNDyk/MKfMb5upZKxisfIr4F7NvBQg1xaBcPQyNv
- 46vDVGcFHsZvz6oM5aox1Wu2jAQXWZi+7ZoV/5dAmfE8cDa93FDH0Re4fTtIXlnHqkmNTojKxIp
- MSMINRnnbCBPy0EJhnBzP4XQTVgxjMsqIuUhdnJ3diktuFy/wt7Wwp40O9F68IUluEiQXO5/7S9
- eDQ9I+v86YpB6F5FwzVztmvgQV8nENbYPPyZKklzu2b+ZE9cVLNVyQ2aTkkurLiDMtUElHm0yqB
- 55gNYq4GxIJcsYjXQ7QUnEBwxHurFePOj6BlQTekavxxKGzzBdtYKaTJ+4C6Eza0rl68n5cy+fC
- ZLiVYWsF9IKSiD+qYRqfxKebYddG+4YKGZ9v8/KonRkZJYHycXOJAcJShzHh5i86D3exEA42k9e
- 0rkzXrDM4oGWfaDZuaQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-30_01,2026-07-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1011 phishscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607300038
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D2726160004
-X-Stat-Signature: 5h3n1mfrfdktukiy5tmr8xj5h84ybam4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1785391575-473512
-X-HE-Meta: U2FsdGVkX18TNG8QKeJCvhp4WvrS+pQO3Dm5J1b28IvzXsz70UjPnesmFBBRdV/7KdrZR4Vr/W5QIY/8J6DDwemg8NJFdrTak1g3ey8uAAqwtsZRxWFq2g0vZ9g7t0zDN+FA8Bb9EGLhnCh4GW79x4TgGQIE+5QLWb9xzH+6hDNawD5Mkh9wVvz+eT+RA+RjCywLVLCInecdGajMcp8soDWYKivdsVZwBN1NO3yRZsj+RRtIlqaBvM4/q3v7BjddX9xezi8yG9sv27/b7KWP3GRxhq/hjzP2B0VSvp/2Pif79BwusbqVuCVQHLY5yFyjnEloZqEe48NtDlkBIL/pTNgcHT8DKLqogEmZO5laE6EEeAAH2BG/ZrtIKGDeL0rp0C+vcvj3c4AOHbhVT1BlhvUAtKGt3M+m82lOu5XOPtMs51EoXCpxrQBKQghLwAbgrz+UFVjyPVIodk92dlsWGUUNQueY0FQnGNj7UdBJN0fObI4WXtWC1A3m22Jc4mCFI5hpLxOU8/Bw+QwexUeUf0aSzyhiaXhy6/hgSuFb4ZIF8vyh3ofdTle8keCUbOQOVqGZL46/rZl3HvPePhzn9//8vA/32WYiI2RwR+Zmsvk6Wu83KEid9JcM4eSIL/5Dv8vkFlZpEae08vPhekbHQ7LrAbvQVjd024OrML380+xNssX+euf3sVwwebQc8vlMugu3dWo7ceADKRweToqbfPI+LMWIpt0PW5V1sIE4K7IS8LQZIi8mjQIxtYgLs/UZnyJossSRGneDsY3dX5jrM9vwxwpNa3S0H95JxAZQ0lH4wjHQdktBd3Zg3r1JZgTW/C27ydJkg2FfT5VazCBkehDd4gp38HZy5JtU2zhZ0xoaXhEIbyEYAnHDfD6wXeEarWrtBdWfqI0qOE9hQ5qTFWH7vlB17vGHwcbvwUvxVq++0dcLK3Gk2DWTmhvPTlP34y08QRlTu7A8NCMaByM
- 8c0KsnOI
- WQNat/XAjKzjYHR9HBHGaHyJugyiYtMrKjQ/m25hfpckwS0OI/Z5aSOkMmgfBNTQPkfffNqchc2AciYz3LrdH4+VTR5K589oT0BuHNooBDhXtDmizd0HG0L7HQcaHDKFtTAxBaKyOUZPfCJqeHAyDGWit0C2AtCkpT63EWMhXeMmYSJe5JUAi95gsrC27s6w/S1pe/WVPJb1IJm3EkePNvnT+6sh2C/Yn0cyhifomnH8CojagUmFH007jfxPsBjEtcICiA1isz67AMHlNLdIORItr/8XsrVOPUFOC+cwMAKA3UkxYNIFUeQMMJ129FSbuCUn2K06CEjb9KEvI4HRalqgEGzQZH7VERj7VSYSouUy48WoBhRM/5yc2gmpCPyllUOa4fNsI/Ck4XJ4eTJrGk6dH+jMOs0oCzb5I
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B0BEF160008
+X-Stat-Signature: fik9bz7qd6w5d1ckn6nt4uizyqxtmspi
+X-HE-Tag: 1785392920-144576
+X-HE-Meta: U2FsdGVkX19datRVVwsuf/mrrTk30Qt3jeHWxq8gOouPxc+Bbbn40gdPkl8OP2+0yjXTyD6hTrZEVUbejZmW1XPCoD5Cy1gbVSrO93kcDuqUW4JOCd6KPnhLX6zY/1hiiPPlvHdm+LJvG/wZzo37KIk5v4h+r4dYSUEAE+x0NKih8vGVOPOrWVwAGPFZewcBe9RhvaypeuOMqiHTG8Yfpo5S07DF19xtl9afbES6g+xZJqQZ1x8k6sFd8cDbcbL2rxBJ1oKQu1WsM0XmIsodDa7cZzFyQVOfaAtlMtTrdn+2ZRHYbcS/GyW62jJrqZEiu/hgm1pQzOiC2iwMK57wXlzYkMNyv2c2A5wNaHixzwNPjuEjPZkNJFmKy1n1jOUg629ryFktRGmUE7ODhgyf9dwlmIGvCPpg3h1rnhBEtZkouJJibb8HBzwriOSAFSiqn6FWM4Cijh1ByscklahqdFaGDpSydtjeHgf5NryQR8KohKNNdFj2lu7JEEFHHowsDDEM5GA0A2fw/Ig/qstjmR3mRp2u6uS68l1DzlreBY2143JvL3gVnr1F2o+dL1XLMJYPUtmOBRxd0I30RrxpldeHhfIeq5ER6cy3SHyeOHDLodUi1wTvDC964xeTBtsqXk9pTbeod79/BPvurv1ktcl+8JpLNuM3MBgaOFQmzzn9vGCnOPFGeeTJdSDA1vsjrCNBtzey0HSn5ot0jLfW38kroyAVHqMvwgSOfkEMkBWJ/SYmzye+Bka5l56X2luhJ44kEWgi2PZsrMB+B241SoKppj8O7zYeXaqoA6ecVKbJQGHqN6ycsOncQltq8hlL0mpJZz0FHQwklrX8QnjKzJKRIxMT4RPUmiQieWmvEV/oDPRHaRKpqEYrrNmuWNN8/haEz56YMiusvWRzxAjpU/ZWi6L++yUqWRAW24A6RVYWDsuuqgUh15M/jrAVkcT7ogi/YZmmAESBw05YmFu
+ Bk/R8cp1
+ j8An5TrYTivnV0ompkU5Zqp+77fnjiv4xBzvoX8IcC+U1Q09tfdBfhjl7cEfToZNv/XBtjC9GOR3+3RnEsZoUNFnLigxyiACWphMHS4hICf+ugKHScoD1N3vesxwO6rVK1UlSFdy/HGksKuzJymwaUdso/Jq1x+P8qMhTvzS2AJubUCshBjiyOZvjDrwdCtNK+Jg+U1XW8hkg6V4ct7ZdhO/pKnwD8/gGPUoTYinPiIix+UYppw1/SwrxDF99QF7b7Ou83vttxr/m5QU5lbFAOh10vuwCg62IxJ8Hxg4cevBJ6hJ3sWqnXFj9+v4XSGgFpdsKoagpdNuykevgoni0fsXRM5yi/UXd35HCGX/CmBDbNZON24KaYYaaU5VFSMjaTs3Y8rkopFvLQbG2Huti9kmnr8XcTeBtaAil6aZxJ0jNXEjXBA5x1ZeezCftqoQvN9f78UAEewNHS9aDN0XZ46MSPiYCwFfKiHJUFM9ymB+vTJKEtm3Kx3WnXNbmjhzdn3DJFxMIo7jX/ToRKpe4WCCiNM269TCqVWSR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,44 +135,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/07/2026 01:20, Yang Shi wrote:
+On Wed, Jul 29, 2026 at 05:48:37PM +0100, Lorenzo Stoakes (ARM) wrote:
+> This function provides the anonymous equivalent of linear_page_index(),
+> instead offsetting based on the anonymous page offset of the VMA.
 > 
-> S390 implemented restart sequence. Heiko didn't share too much benchmark 
-> data, just confirmed there is no regression and I had a lengthy 
-> discussion with him (https://lore.kernel.org/ 
-> lkml/20260520092243.264847-1-hca@linux.ibm.com/).
+> It is valid only for anonymous or MAP_PRIVATE file-backed mappings. It must
+> not be called for shared file-backed mappings.
+> 
+> For pure anon VMAs, this will be equal to linear_page_index().
+> 
+> Assert that both of these invariants are true In linear_anon_page_index()
+> and implement the algorithm in __linear_anon_page_index().
+> 
+> Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
+> but not fulfill this invariant, so when asserting this we check
+> vma->vm_file to account for this.
+> 
+> We do not update callsites yet, so no functional change intended.
+> 
+> Also const-ify vma_is_anonymous() to make it compatible with the
+> const-ified linear_anon_page_index().
+> 
+> VMA userland tests are also updated accordingly.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Hi,
-
-regarding performance numbers from s390 and Heiko's implementation.
-It is safe to say we see noticeable improvements on micro benchmarks
-but nothing really pops out on regular workloads.
-
-on 24 Cores - 48 CPUs
-
-1. Kernel Build
----------------------------------------------------------------------
-time make -j $(nproc)
-~0-2% improvement - within noise ratio
-
-2. stress-ng vm ops
----------------------------------------------------------------------
-stress-ng --vm $(nproc) --vm-bytes 128M --vm-ops 100000000
-~16% improvement on bogo/ops
-
-3. stress-ng vm ops + fork
----------------------------------------------------------------------
-stress-ng -M --mmapfork $(nproc) --mmapfork-bytes 128M --mmapfork-ops 10000
-~6% improvement on bogo/ops
-
-4. fork test
----------------------------------------------------------------------
-stress-ng -M --fork $(nproc) --fork-ops 10000000
-~13% improvement on bogo/ops
-
-Basecommit: a2b94afeb516 ("s390/zcrypt: Replace get_zeroed_page() with 
-kzalloc()")
-
-Thanks,
--Mete Durlu
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
