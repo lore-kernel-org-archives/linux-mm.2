@@ -4,137 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 720F4C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 21:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD78C5516D
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 21:06:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AB376B007B; Thu, 30 Jul 2026 17:04:43 -0400 (EDT)
+	id 660DC6B008A; Thu, 30 Jul 2026 17:06:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C606B008A; Thu, 30 Jul 2026 17:04:43 -0400 (EDT)
+	id 63A886B008C; Thu, 30 Jul 2026 17:06:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54B986B008C; Thu, 30 Jul 2026 17:04:43 -0400 (EDT)
+	id 528BF6B0092; Thu, 30 Jul 2026 17:06:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D1A6B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:04:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A27F71A0208
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:04:42 +0000 (UTC)
-X-FDA: 85046672004.26.B237E9D
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BCE3A120010
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:04:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="wKNv+/My";
-	spf=pass (imf29.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785445480;
+	by kanga.kvack.org (Postfix) with ESMTP id 34F606B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:06:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D13271A02C0
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:06:19 +0000 (UTC)
+X-FDA: 85046676078.17.6A3ECB4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 47ABB140009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:06:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nSdf2zFL;
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785445578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DVc5Mxdn0Ce+KRqCagnbFXM3Idv5WP8P1kZ/ct4kSHA=;
-	b=Q2LjaRPgZ82u3pFx2GBR19JV1Fa/Jg2aTx6KDKJ27QYBMKkYh3ouqY6X0XuEKt+zZiV8m7
-	MNRSnyAgyF23OS4pRbdJvE1GZEXSPmMNheLDzsaxXEXGIbC9yNzXMpiMx8Rnfv60t40Weg
-	2DdTA4oxwMBvqANZB9SV0NdxRx6xLhE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785445480;
-	b=NrI+kM0K6STot9WaP6ckoGDY2qJFSBBzR7s64vgr1Inu8EgI2TMylqCR5k41wScFRF+aYq
-	QHQ57RSPg3SyVERyy/16hL53dHNIGsAexb0hW9jL9Acgx2/2Ud9kPrG6PBmDozmZscsbpm
-	IJ1qKWbAqFs1P/9Kt9fS+4wpI6zVqTI=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="wKNv+/My";
-	spf=pass (imf29.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cede6375caso31815ad.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:04:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785445479; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bYBocBoUFO2lqax7fCbpqY2zv+tUnpfue32jFvlMFJw9ssNS7btS+aH08EsAT1iHwC
-         tuTbIA8eACJNnI/FGnBW+9vQQcP3rsZPucEHp+wA9xyPZJ/wdRRBcapheyjavBSRix0U
-         RNL7xJY8XfhHwrIYA+hL8OcfiVbCjzWMXhN4Bxqr+HZ6Pia/D5rV8B3E2WnM0SGDghT/
-         3Oi6KRnPwLvDTp/TUZ68p7RBXXipFQwaWJ0xCM0rtNOx3uZPTR2VNyCgx02ltBS56bs4
-         Bcwfbo4A8fZEBP1ADI53YqOJ4BEpvBDt//qEZJXLpmb3/xzDNQHzjyxwpfMBNz8dwUZK
-         1A2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DVc5Mxdn0Ce+KRqCagnbFXM3Idv5WP8P1kZ/ct4kSHA=;
-        fh=mQwdPqvjBueA3ehlGgYopD1nI/CPPVFpz1SsDbBzpGQ=;
-        b=QOK4Ia559rVBULZpfRpWfIB4JIiXvIzhzn3DeOfo5ey+NW/wG/+Pa0kRTsWDxapVBg
-         Qc5Tx45WD7Q38I2dqsMBTzvtV2pN3U4sqpKHijG0wU4QHp+OnHlrqpgqGWxFqMYDyJLR
-         Ydxe4fPUYPJQ0xK1ZgpUN8srMILXxFFKHzqEu/4y4r/GkaTDyOGc2Qb+p/MAJ26o5jDX
-         oN8Cz4zESWrNzaWgZq2efM2BIzW2JVZ0V2EbZkCCJSmSE3cFwVkkdNSObQ8n7upyZZpQ
-         75frGD41GmCkS1akbwz1X+W4xmHXLiBZY2daz9x23Ge3+fW2kU9xQhkZP6lLiW4yUAaz
-         JPrg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785445479; x=1786050279; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DVc5Mxdn0Ce+KRqCagnbFXM3Idv5WP8P1kZ/ct4kSHA=;
-        b=wKNv+/MyIh0H1AeADQ1XU6Xp8LEqszzd4tqTIGOzqoVAxLe46yPpMGhnwdS7Ypv/T5
-         E6jHiVr+3C1MM5NmM6j7+gollzreiekWu85Vu5a6oQKDsvHfV8yGyWa1YsVhmAzx/gzP
-         sUWrmxHGG8XYM8gdOjDJCjD9otvkh9hg1J4FE+Z8rhzhRIonolQW80DhvPlLuXyyfvWY
-         ueaYUuaAD4JbgL6yo2c9t2jwm4KcElp1xax1Pp9rKyMRx89K6I+X/IUUxfNoK3e8LOnG
-         B0sRdxp+zTPhlbnF3yxP6b/XvbrgnjBUXUh6ejm9ohldlXYDHSl2FASf1CUDu3G2+O9G
-         wa2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785445479; x=1786050279;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DVc5Mxdn0Ce+KRqCagnbFXM3Idv5WP8P1kZ/ct4kSHA=;
-        b=dCGMw/vm4qeSUQekKInxY0f5QCsv0lVirj77suQeJwRlD63nc+0VhhY+2+zoJDb84d
-         SIti9IS4/Qg6Kfdy5ALtLSk5SsVCsw/LiJF81buCLuotwAlFpb7xRS95yS+BQeV4cenT
-         jFmYrtBpLNjQKf7NO7q02/07Zqa7Ag3ozGXCY45dZGH1tHDuqcLUEuAzAT6LrWbuDBvT
-         MBBFhFaZrOWqyrOeFyX8AitnSlz7jq57aG37WOFN7jwwzKaFEJrIrsBTsE3YFnN2TUpG
-         /Vh9n66jiShwhkxk3spvAjFcdpU8F7XfzxcOV+k4V6Va5UHDFV5zh6Gy1K0JP0VbYny/
-         pKQg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp7NxOVb2CyXcScfbf6GfawB/pIldX+8A10Jazp41b0B5xcO+jaW+9QUGPhIoa7Ugau9qr465eeJw==@kvack.org
-X-Gm-Message-State: AOJu0YxgVd7jEPdJMYCJ1xvMBlS5WjciPE5blKyJ5uSWFlCrS9a3od7x
-	LzZH/oWf+b7lnoKa0UCp5MBX6lXvs98gS5Cc1LKICC+Ub+gq8jSsz5ISw1ALEIYzYKRhYXNPbHS
-	aSenCqvxvJbyGzmQUpvFhhsGIyVft5aWd49FKgaZO
-X-Gm-Gg: AR+sD10uKRyHT2pHq7DQ4mbBH0h3M3g0z3y9/6Ofc7c2fOYymw2smNs+R4Od+hkdpkD
-	ImXP4eS6kv6YPqyxh+xZey5hQ4pt8ZOHrO4xvM+OGc3f+Ne8mbg5MMf6eLMAU9tIzlg1wBumdXj
-	mUJVGqEL5HESnNclks5Ya/Ihr3us3X9HVURjHgKBVkcLmmd3f5SNEfef9NKGSu88fnqNIvbNA0j
-	u/MriKJfNg76ppy5hS60As+6O+Qih9SwoszcZcf7x7dg6B7ea2et31OWX8eNIzCf2sUgJTCyPTG
-	8+ai52NBSdpJFMZHW1RP8Lo5MLOazSQUt7lDX5fEhCvMPM1d8xQ6dv0ziz1m+R6nHC8oonm/oz4
-	StyYzvqffww==
-X-Received: by 2002:a17:903:1a8d:b0:2c9:bd54:cf with SMTP id
- d9443c01a7336-2d041128e10mr3787595ad.4.1785445478755; Thu, 30 Jul 2026
- 14:04:38 -0700 (PDT)
+	bh=iWMaZxjO8tD0ZcRu+I0l+25lIoRL+ColSfS0S6Qr2kU=;
+	b=6pkx/IKv71XNzuPL1wtoM0mZ6i0lmW28lqHrr9BVgNr+TPpfG8RqGwnYIfgQrx+QB+d0Q1
+	NHK3BwkquVMt4xzAgToii7AOpL4lJ4JdMX86cBIN/lqEIsF/ijG9LgNey519BuFfSv9YK7
+	ZoM8mtcYuLzi4W8u2lDg8pTXv3UZe+M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785445578;
+	b=FQCrAsTfmFfXNECw2CbbPAvaiuDRl30CFzQnEAzEQ1SsXjdpZhBN54x5LJYpTreytIc6IK
+	IuisGLqHVduo/V55V0VySu7qRTPOZPJYOJf7tzZulqEdVgzHzx7ytOQS7MglTU99ODvtgj
+	Eg6CXmOUkjDcLlSkhmIrZd2wopZH+5c=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nSdf2zFL;
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 613E16001D;
+	Thu, 30 Jul 2026 21:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F7A1F000E9;
+	Thu, 30 Jul 2026 21:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785445577;
+	bh=iWMaZxjO8tD0ZcRu+I0l+25lIoRL+ColSfS0S6Qr2kU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nSdf2zFLgoIx0qAMk+q9BXZuO0D15ScYgxLruXAaDkOlFIehdcR5BeqVOjM9SLP8B
+	 BMeIseD2abONOVlUDmNt43p4evq61r9mFdF5bmKDwQ/9UKc1F1gAuaXT+nBkGt2IkA
+	 2vpTznUYafYmBJSnxAdABc17deveM9Wvekd/aZkoUXeF3kZ+WEQtLR3IEbRZGGqP9w
+	 EOf/tbdATs0MYVtoUmpdJd6gbKxa/yZGcZR5m7pzXLjfjC5jB9zSCyECy6R5MU8RDe
+	 3N85N0wPqYPYOk2UdLcbM6ysuqxevWQlAV/kW5jiCZ6XaejQzffgGbcbxuBfnEOyoY
+	 mb3JNT3QB1uvw==
+Date: Thu, 30 Jul 2026 21:06:14 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <amu5v-e39GKpgFG4@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
 MIME-Version: 1.0
-References: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
- <729c578c-e5a3-4351-b07b-469f79c26b0d@linux.dev> <CAL41Mv7_CjWTahWO9sfDZkVKZKEU56j9Sk+xMWN7zbJfRH5MSA@mail.gmail.com>
- <CAJuCfpH3W-gOa6r=2jyw6Ckh_HjAAtdF+0LA2Hu8FkwNe1TM+Q@mail.gmail.com>
-In-Reply-To: <CAJuCfpH3W-gOa6r=2jyw6Ckh_HjAAtdF+0LA2Hu8FkwNe1TM+Q@mail.gmail.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Thu, 30 Jul 2026 14:04:25 -0700
-X-Gm-Features: AUfX_mwbH53ZuHzeqCsp86EnpqerPYcLXlKZQ2UP6lVY6hiJ-tN8orw_M4epYjU
-Message-ID: <CAL41Mv5iYn1Y7X+yb7dcUVTgMac044Ym-RHv93eun-9WXhye5A@mail.gmail.com>
-Subject: Re: [PATCH] alloc_tag: expose profiling and compression states in /proc/allocinfo
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 47ABB140009
+X-Stat-Signature: rfufsmqrn4sxgzzgfyxojthp8j1npfcr
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BCE3A120010
-X-Stat-Signature: nk7eoy7y7q6kwgapw9eja5u1t9s31nfp
-X-HE-Tag: 1785445480-436066
-X-HE-Meta: U2FsdGVkX195Ojo3BAolR8Tg0X9vcUPU001uipztRPVwq/VQAzm2frBJD/p/HvtKpp4flgiOhLbP53LsMx1OO3W9l88LYfRYlw6XxwaXjWbESSHPjdUM2nUXOp4nV91LMwVEJVjkWRnfvR5HmKuzYN4JVsjeO08qFn/z+PdAlDqfgmAYkNG9bvyCknxVtuRkic3GGYkzWRWLwaOCvdP66k2rbcJf1xpOIMHtM3C2t7BrjvpRQo2t335ug8OPQJfHbUhiHYcYRyZ7kPLYtu03r4Zao8omRU6v3+e4h9XlLAhSvE7nnkCwaWV6zfhjHLRNdMQKDqPAEnkwrVnlhfFlqRqiYSGWUgEoR0epbjOH/Mz2D/mqwxbInUmKM8mt1PvDzBnIQ6uJA1EZXx0ZmGctDEaRo/sC0atTCSYRSiIUaljO6KXkw1gvdeW0uS0Vqb2y7ZeVBZvY2vCtWRaDP3mkdnhWSi9BQtc23sHxWJqEzw/qHM7oyw33mnJCvERqzIQdcwxQl2itrqwXZtJbaJ/qwLJVQnZuBwpFlYEoBBD7J01w4Ms9Z7aCcM7BK+Mfxyfz8j7vDQIC3q+ie+acrSMPH3XvbKrFv6gZUzF8s8YiYeethf5cLNEHGv+7hPAnqgbPtguZPeKGFTTzppIM44V+OvMjfrBq1ABVl5/LKNwrBi6swEllT93DNyxuqGUKwy/OEVI2Er6XJ/UJNzMbIVhUt8Urtl7RWttPtOcqHvAgHh2rVXIepmtOPSYteS+Mw0slxg+E7tlcDHxJ2MTWixEnWZVjeRK8nRG2tNNEsAkVmL5cj76AtfjFvtyJgwZpo3uyrnyM/ZC0w9+S/twjChwSKySVMNZdJxQYDDL97HP0ZYfC/el0v1zmc+PECXkBWrH1Ao3iD2A+8XGWahymbj+0lkJ9vUSdVy9pWNdbapZI0/NDbDcqiYvKcXclZblDjMCjy93gg43yVo5XiWvuagj
- AnS8wUMC
- Vd3dGu3M6MAJo5Q5RhofJ9G/m/VdDogiz2uK/RivhlstDwBlKnHO3W7KBtXLKyKgO0IUgN0niAPQ0jbGhVtNpeZtthfRV6n9UdukKm3xvN39a0onGfCCQZuUvfnIWRKRyzaB3s1UcSXR4VwduvZgR5mRrIW02jj/wrLNvR1poD4PIeKS3DDDACLX30TQfM/M8LtV2u92yp/WFeu5yIcyI7BxOIX85tJna/hVukrd8oxTrALhop4/eIZZN/Ufm/mIc984a3HJSI3KPlepFdLwvRZkMquvLdqYkkOOXnj9w0LOguqyqgCgRzZY26A==
+X-HE-Tag: 1785445578-735014
+X-HE-Meta: U2FsdGVkX1///jIyeERYrIHnuGpNYdr/9m5A1zumDndwDwi9Kv3q/uGob0f/nJChuKzlqmtdEgCVZjVQ7ex58I3SO2aQ6+nnhk1C03DHmZQzmlTKFVoQBxK2QRhv4wIkiLEpDyEdUkHbpzrxSRV8CfNU4/d4uizb6xodpsv5wDvib9GIcv77h1PAZfi2AnJxvTgm6FxaeDKgmc7mhqaVfs3zqpdY4IpfVocW8ybaEu6rxAbr+8+KlQYjg2goLX6cUVb9uKuYkFD+WxEEfSHivmWZudbBkCGmDcgXOrNk3BuoiLecdTA3RUAekZ4ydR1wng3LZOucoT2g5weXFpmWIvNPX5v7QG1q/I0EyhGwTJTB2ftx6izQ49Z440hA6ksxiNQGJQLFHp5YMmiB+MXybknTIJnVAhdTOlBAuEivrqqDJmKq7b1pHm+BbAIVVKA+mzD2WgYJDB7rrZ0BhfaryyrdXZFhUaXo3SCSHlFEIhU7cVHITh3e3eiiojd4aL6YrJUYMahHNbbYqazBV7pimGhbhCGh8JQF+A7Wt0C9btQSU1DRMNy26hmwtzVL738vLGtTp9DOcQh7yx8PJYd7S5t5qQpvBQlw5ILTVKBn/BZYUSBiWZXPMXjaM0Xs1xvNNkIm7wCRFLXvWPJB401JU+/s3DirAyGzupmhr2bck2BKUmEkURl9YoV5mWzHaicHzPVc0tpmHS1mwKlXgtj8p2i48Mkst9r5mWUg8g1wqTd7pA4rnZABc1vdWC1X6HB+BrQyL9YKKCP+ZznGNP7wX2DCe6nEp7/NHNOUuHkV0kEnZNbPnJJVfVB9NDtkyff/QuX/Czkj0UDHUp4BHuDpRa7cLWyJBS6E2T7zkhTD0FWKbev89ff/6zZyl/r7E74Qulqjdmh78/gUxpVS9l0s1aBqdpcFazWaVwXnhcSw4kdrCegFoipO1A3CbXsNw7mYo7DQ9S9HlbU9iwNNRVI
+ tvBKdFBW
+ RI+5U8x75zeS+aK0LgZM1Ln5vhGf9YboYQNMWt1yEJIlf3aElT6Z0FS2O6JSXXix+jeLAP15kUDi7roUe0E6wZWmHjPKVM1yesXPNG8aO1yQJtgj7p3mwLyDC5VhtDeKTOsxFOlSFM5OKyHy8X+ulEe91QuP1MmzcGnpr/vtyyTK+3mwt0Hr7riPIdsfkFUdXXJP+3DZpLdxFW1Is144KWbTHhr7FmZwWXwcr99KxKAa9xGPbnYVdat4vLji+DOtjjQXOZby/nJwcMnOJgwvCtl5ucEBQMK9lfBQ5pKSdp1LzjLV6uscXlin5NqHcB0U/5s9l9Ap5pBf/d1NhuLbKk1+mAkprf30yWD9r9WSwkDNILa8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,176 +101,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 12:49=E2=80=AFPM Suren Baghdasaryan <surenb@google.=
-com> wrote:
->
-> On Thu, Jul 30, 2026 at 10:57=E2=80=AFAM Abhishek Bapat
-> <abhishekbapat@google.com> wrote:
-> >
-> > Hi Hao,
-> >
-> > Thanks for your review, however, I'd like to disagree with your
-> > points. Replies in line:
-> >
-> > On Wed, Jul 29, 2026 at 7:23=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote=
-:
-> > >
-> > > Hi Abhishek
-> > >
-> > >
-> > > Thanks for your patch.
-> > >
-> > >
-> > > On 2026/7/30 06:49, Abhishek Bapat wrote:
-> > > > Currently, userspace has limited visibility into the exact active
-> > > > runtime state of memory allocation profiling and its page extension
-> > > > compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed]').
-> > > >
-> > > > While reading the sysctl provides basic on/off status, it is curren=
-tly
-> > > > impossible for userspace to natively determine whether page-tag
-> > > > compression was successfully enabled without scraping dmesg boot lo=
-gs.
-> > > > Furthermore, since /proc/allocinfo remains in the procfs filesystem=
- even
-> > > > after profiling is dynamically disabled at runtime, simply checking=
- for
-> > > > the file's presence does not reliably indicate if the allocation
-> > > > tracking hooks are actively running.
-> > > >
-> > > > Resolve this ambiguity by appending the active state directly into =
-the
-> > > > header of /proc/allocinfo.
-> > >
-> > >
-> > > It's not obvious to me why userspace would need this state.
-> > >
-> > >
-> > > Suppose userspace reads mem_alloc_profiling_enabled as disabled, then
-> > > the profiling
-> > >
-> > > gets enabled later. All allocations generated during that intermediat=
-e
-> > > window are lost.
-> > >
-> > > When users later cat /proc/allocinfo and see the enabled state, will
-> > > they mistakenly take
-> > >
-> > > the output as a complete, accurate record?
-> > >
-> >
-> > Currently, userspace has no mechanism to determine the actual internal
-> > state of mem_alloc_profiling, meaning users are forced to make
-> > assumptions regardless.
-> >
-> > By exposing the explicit state, this patch allows userspace to query
-> > and validate the state concretely rather than guessing. If the state
-> > changes, userspace can immediately detect this and react accordingly
-> > (for instance by invalidating and / or refreshing its view). Rather
-> > than introducing unsafe assumptions, this brings a clear, testable and
-> > net-positive improvement over the current opaque behaviour.
-> >
-> > >
-> > > I'm also unclear what userspace would do with the compression state;
-> > >
-> > > this is just an internal implementation detail of memory profiling.
-> > >
-> > > Put another way, personally I'd prefer /proc/allocinfo to stay lean a=
-nd
-> > >
-> > > avoid exposing too many internal implementation details to userspace.
-> > >
-> > > Unless users intend to dig deep into how memory profiling works, thes=
-e
-> > > extra details
-> > >
-> > > will likely only confuse them =E2=80=94 most don't care about interna=
-ls at all.
-> > >
-> > > It's similar to how we use APIs: we only care about what an API achie=
-ves,
-> > >
-> > > not its underlying implementation.
-> > >
-> > >
-> > > Could you share the concrete use cases for exposing these states to
-> > > userspace?
-> > >
-> > In large scale production environments (such as our deployments at
-> > Google), we can only afford to run memory allocation profiling when
-> > compression is enabled, as the overhead of running with compression
-> > disabled is too high for production workloads.
-> >
-> > Currently, there is no way to write an automated regression test to
-> > validate that compression is active. Exposing this configuration state
-> > in /proc/allocinfo provides a clean, concrete interface to write
-> > regression tests that verify and enforce this constraint in
-> > production.
-> >
-> > Hope this helps clarify the intent behind these changes.
->
-> Hi Folks,
-> Thinking about these states, I tend to agree with Hao that compression
-> state is somewhat internal information that most users should not care
-> about. So, adding that state into /proc/allocinfo, which contains the
-> data user cares about does not seem ideal. Maybe we can expose that
-> via some other interface, like /proc/sys/vm/ or debugfs?
-> I also just realized that profiling enabled state can be read from
-> /proc/sys/vm/mem_profiling, so we don't really need anything extra for
-> it. Would you agree?
-> Thanks,
-> Suren.
->
->
-Hi Suren,
+On Sun, Jul 26, 2026 at 10:22:36PM +0000, Brendan Jackman wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
+> 
+> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
+> set to not present. Currently, mappings that match this description are
+> secretmem mappings (memfd_secret()). Later, some guest_memfd
+> configurations will also fall into this category.
+> 
+> Reject this new type of mappings in all locations that currently reject
+> secretmem mappings, on the assumption that if secretmem mappings are
+> rejected somewhere, it is precisely because of an inability to deal with
+> folios without direct map entries, and then make memfd_secret() use
+> AS_NO_DIRECT_MAP on its address_space to drop its special
+> vma_is_secretmem()/secretmem_mapping() checks.
 
-Sure, if there's consensus that /proc/allocinfo is not the right
-place, I could share a v2 patch that instead exposes a read-only file
-called something like /proc/sys/vm/mem_profiling_compressed to expose
-the value of the compressed boolean. Does that work?
+I don't think this is necessarily true. See below.
 
-Thanks,
-Abhishek.
+> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
+> set by guest_memfd) because not all guest_memfd mappings will end up
+> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
+> can be mapped to userspace should also be GUP-able, and generally not
+> have restrictions on who can access it).
+> 
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+> [Moved zapping to page cache; removed review tags]
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+[..]
+> diff --git a/lib/buildid.c b/lib/buildid.c
+> index c4b7376406215..ba79bf28f7e69 100644
+> --- a/lib/buildid.c
+> +++ b/lib/buildid.c
+> @@ -47,6 +47,10 @@ static int freader_get_folio(struct freader *r, loff_t file_off)
+>  
+>  	freader_put_folio(r);
+>  
+> +	/* reject folios without direct map entries (e.g. from memfd_secret() or guest_memfd()) */
+> +	if (mapping_no_direct_map(r->file->f_mapping))
+> +		return -EFAULT;
+> +
 
->
->
-> >
-> > Thanks,
-> > Abhishek.
-> >
-> > >
-> > > Thanks
-> > >
-> > > Best Regards
-> > >
-> > > Hao
-> > >
-> > >
-> > > > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > > > ---
-> > > >   mm/alloc_tag.c | 6 +++++-
-> > > >   1 file changed, 5 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > > > index 52aece27b00e..89ec2c6ce57a 100644
-> > > > --- a/mm/alloc_tag.c
-> > > > +++ b/mm/alloc_tag.c
-> > > > @@ -108,7 +108,11 @@ static void allocinfo_stop(struct seq_file *m,=
- void *arg)
-> > > >   static void print_allocinfo_header(struct seq_buf *buf)
-> > > >   {
-> > > >       /* Output format version, so we can change it. */
-> > > > -     seq_buf_printf(buf, "allocinfo - version: 2.0\n");
-> > > > +     seq_buf_printf(buf, "allocinfo - version: 2.1\n");
-> > > > +     seq_buf_printf(buf, "# Profiling: %s\n",
-> > > > +                    mem_alloc_profiling_enabled() ? "Enabled" : "D=
-isabled");
-> > > > +     seq_buf_printf(buf, "# Compression: %s\n",
-> > > > +                    static_key_enabled(&mem_profiling_compressed) =
-? "Enabled" : "Disabled");
-> > > >       seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
-> > > >   }
-> > > >
-> > > >
-> > > > base-commit: c73b725a57f276a3702ca213bde78fca029bc619
+The plan is to eventually have ~all user have no direct map in ASI page
+tables, right? I assume this would then be problematic as paths like
+this one will want to create an ephemeral mapping to access memory
+rather than just fail.
+
+Is the plan to have a separate check for ASI mappings that are present
+in the unrestricted/non-sensitive address space?
+
+>  	/* only use page cache lookup - fail if not already cached */
+>  	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+>  
+> @@ -87,8 +91,8 @@ const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
+>  		return r->data + file_off;
+>  	}
+>  
+> -	/* reject secretmem folios created with memfd_secret() */
+> -	if (secretmem_mapping(r->file->f_mapping)) {
+> +	/* reject folios without direct map entries (e.g. from memfd_secret() or guest_memfd()) */
+> +	if (mapping_no_direct_map(r->file->f_mapping)) {
+>  		r->err = -EFAULT;
+>  		return NULL;
+>  	}
+[..]
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -11,7 +11,6 @@
+>  #include <linux/rmap.h>
+>  #include <linux/swap.h>
+>  #include <linux/swapops.h>
+> -#include <linux/secretmem.h>
+>  
+>  #include <linux/sched/signal.h>
+>  #include <linux/rwsem.h>
+> @@ -1216,7 +1215,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+>  	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
+>  		return -EOPNOTSUPP;
+>  
+> -	if (vma_is_secretmem(vma))
+> +	if (vma_has_no_direct_map(vma))
+
+Same here, and for GUP in general. For example, KVM uses kvm_vcpu_map()
+to map guest memory and access it (e.g. when running nested
+virtualization), which uses GUP under the hood AFAICT. So KVM will want
+GUP to succeed, and probably create an ephemeral mapping as well.
+
+Maybe eventually we will want a GUP flag to handle creating an ephemeral
+mapping, as I imagine multiple GUP users will run into the same issue?
+
+Not sure if this is an ASI-specific issue, or if we also have use cases
+where we need GUP to work guest_memfd pages (with ephemeral mappings).
+
+>  		return -EFAULT;
+>  
+>  	if (write) {
+> @@ -2731,7 +2730,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
+>   * This call assumes the caller has pinned the folio, that the lowest page table
+>   * level still points to this folio, and that interrupts have been disabled.
+>   *
+> - * GUP-fast must reject all secretmem folios.
+> + * GUP-fast must reject all folios without direct map entries (such as secretmem).
+>   *
+>   * Writing to pinned file-backed dirty tracked folios is inherently problematic
+>   * (see comment describing the writable_file_mapping_allowed() function). We
+> @@ -2769,7 +2768,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  	if (WARN_ON_ONCE(folio_test_slab(folio)))
+>  		return false;
+>  
+> -	/* hugetlb neither requires dirty-tracking nor can be secretmem. */
+> +	/* hugetlb neither requires dirty-tracking nor can be without direct map. */
+>  	if (folio_test_hugetlb(folio))
+>  		return true;
+>  
+> @@ -2812,7 +2811,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  	 * At this point, we know the mapping is non-null and points to an
+>  	 * address_space object.
+>  	 */
+> -	if (check_secretmem && secretmem_mapping(mapping))
+> +	if (mapping_no_direct_map(mapping))
+>  		return false;
+>  	/* The only remaining allowed file system is shmem. */
+>  	return !reject_file_backed || shmem_mapping(mapping);
+> diff --git a/mm/mlock.c b/mm/mlock.c
+> index efa6716e4dfbd..045b6779440b1 100644
+> --- a/mm/mlock.c
+> +++ b/mm/mlock.c
+> @@ -474,7 +474,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	int ret = 0;
+>  
+>  	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
+> -	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
+> +	    vma_has_no_direct_map(vma) || !vma_supports_mlock(vma)) {
+
+I don't think this one is correct. From commit 1507f51255c9 ("mm:
+introduce memfd_secret system call to create "secret" memory areas"):
+
+  Since the secretmem mappings are locked in memory they cannot exceed
+  RLIMIT_MEMLOCK.  Since these mappings are already locked independently
+  from mlock(), an attempt to mlock()/munlock() secretmem range would
+  fail and mlockall()/munlockall() will ignore secretmem mappings.
+
+Seems like secretmem pages are just mlock()'d by default, hence the
+check here. Maybe this also works for guest_memfd, but I don't think
+it's a generalization that any pages without a direct mapping should
+receive the same treatment here.
+
+I am aware that perhaps the answer for most these cases is that it works
+for guest_memfd as well as secretmem, but since the main goal of the
+series is setting up ASI, ideally we don't want checks that we know
+will become wrong when ASI is introduced. If the idea is that
+mapping_no_direct_map() and vma_has_no_direct_map() will not be used for
+ASI sensitive mappings, we should document this somewhere, or have
+better localized checks (if at all possible) so that we can side-step
+the whole mixup when ASI mappings come along.
+
+>  		/*
+>  		 * Don't set VMA_LOCKED_BIT or VMA_LOCKONFAULT_BIT and don't
+>  		 * count.  For secretmem, don't allow the memory to be unlocked.
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index 4a4934769f8ba..c043c53687d95 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -52,49 +52,20 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+>  	pgoff_t offset = vmf->pgoff;
+> -	gfp_t gfp = vmf->gfp_mask;
+>  	struct folio *folio;
+>  	vm_fault_t ret;
+> -	int err;
+>  
+>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+>  		return vmf_error(-EINVAL);
+>  
+>  	filemap_invalidate_lock_shared(mapping);
+>  
+> -retry:
+> -	folio = filemap_lock_folio(mapping, offset);
+> +	folio = filemap_grab_folio(mapping, offset);
+>  	if (IS_ERR(folio)) {
+> -		folio = folio_alloc(gfp | __GFP_ZERO, 0);
+> -		if (!folio) {
+> -			ret = VM_FAULT_OOM;
+> -			goto out;
+> -		}
+> -
+> -		err = folio_zap_direct_map(folio);
+> -		if (err) {
+> -			folio_put(folio);
+> -			ret = vmf_error(err);
+> -			goto out;
+> -		}
+> -
+> -		__folio_mark_uptodate(folio);
+> -		err = filemap_add_folio(mapping, folio, offset, gfp);
+> -		if (unlikely(err)) {
+> -			/*
+> -			 * If a split of large page was required, it
+> -			 * already happened when we marked the page invalid
+> -			 * which guarantees that this call won't fail
+> -			 */
+> -			folio_restore_direct_map(folio);
+> -			folio_put(folio);
+> -			if (err == -EEXIST)
+> -				goto retry;
+> -
+> -			ret = vmf_error(err);
+> -			goto out;
+> -		}
+> +		ret = vmf_error(PTR_ERR(folio));
+> +		goto out;
+>  	}
+> +	folio_mark_uptodate(folio);
+
+This chunk seems like pure refactoring that should be done separately?
 
