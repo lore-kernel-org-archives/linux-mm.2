@@ -4,94 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9C1C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FF5C54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:52:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04C816B0088; Thu, 30 Jul 2026 03:51:15 -0400 (EDT)
+	id 7F1F86B0093; Thu, 30 Jul 2026 03:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F40996B0092; Thu, 30 Jul 2026 03:51:14 -0400 (EDT)
+	id 7C8326B0095; Thu, 30 Jul 2026 03:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E56AC6B0093; Thu, 30 Jul 2026 03:51:14 -0400 (EDT)
+	id 6B9696B0096; Thu, 30 Jul 2026 03:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C71606B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:51:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FAEDA1E19
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:51:14 +0000 (UTC)
-X-FDA: 85044672468.14.ED622CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CAF8F80008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:51:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMccH9qZ;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 45CEB6B0093
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:52:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4982140906
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:52:21 +0000 (UTC)
+X-FDA: 85044675282.02.686C372
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DC493A0006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:52:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GY7ZyBXZ;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785397872;
-	b=i7z8eCzQqerZOZkTZ6OwKw6UNthEWXB7/M0h5R0fk3NLcfxIy6YdJYt36ze/XRcy/UYIGz
-	3WY5drVnK8QQieu5gYzWy3/f8XjhcWohFTfoU4ZQdNsEa79KNY9VpjXAy0DsL7LrdpTBoi
-	OI98sOFtmLbGIuhdPjYN58B1jTXVnyI=
+	t=1785397939;
+	b=hltk0okLVAkeyJDcXTD4A8+CfEqc7ZJWVnxiWvKrDyrEgl3DGftHShRNOKyGurOsfxo8ii
+	BasjusFXTkJ5pXv7tQzhcfZi0TeMd+goc6TcQyYUYGRNaeU+iCUmpDNOSakKcZX52zL9+j
+	ZV8UaRwoyNumQEU/V0jgt4Mvi6SGxs0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMccH9qZ;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GY7ZyBXZ;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785397872;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1785397939;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5w/82FCXijfhBdhNwVRgCGnxaefSRGHBnSyEBCZIdOY=;
-	b=6qdCEt4OaFL7ttVO0pH5aU2MEIzxzkoRf+QmdDmPmFY3k0QkumWWaq2vp66dfUAoJkcOGu
-	nP9T+mHdN/e/UhA6oaBIdPNhHxUDmSa+BL2JqUu4ghBBD/c4nqHkyjvqQkVa1m3/KPHaAs
-	idYdm1YHE1yEFfElmAv3sUzsiua7JkM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4154F600AB;
-	Thu, 30 Jul 2026 07:51:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802C41F000E9;
-	Thu, 30 Jul 2026 07:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785397872;
-	bh=5w/82FCXijfhBdhNwVRgCGnxaefSRGHBnSyEBCZIdOY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CMccH9qZx/LKuV9Yn7iaAbmPI1x9Zf0qcQxwaRpLJcWKsmbvFXp/pSo2p7MGNJqT8
-	 hlVPDbRIpWj/4Wfl4WX6mxeNnz9vc/2Sn0SBYWqYRUpa0Psr+xaMyRbyvMRIZ77Qim
-	 xE0Fz5hGcOrcEoDDPkrf6crqMJH1HfI3husQjs9rxbTB74IL9p32m7+7+pMfNKPq36
-	 v/abT6qHQOC/rNqHAFPyeWIxrZ24reB7vrtHk+vI9TmYH/vVcx2zvPEuh0+f5zUXVm
-	 M4Blwuw5RY1uotXXIYCX+8ZNPkyIzt6jgMXV7ufUxpluDis3SL602qQC7DuAvmb7HB
-	 MtjA1lRcLS07g==
-Date: Thu, 30 Jul 2026 08:50:53 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Juan Yescas <jyescas@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, tkjos@google.com, 
-	minchan@google.com, dskiba@google.com
-Subject: Re: [RFC PATCH 00/16] Page Alloc Hogger
-Message-ID: <amsCEe5qDn7CPWvF@lucifer>
-References: <20260723074854.1013941-1-jyescas@google.com>
- <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
- <CAJDx_rjNhiS+J9eDkQxPF6B=jJ-Evr-M7NNeS_QcG7XWNDoEYQ@mail.gmail.com>
+	bh=7BVZHSM3RopaR6W0/bDqMe3XMROxNpJV6YavlmGViAY=;
+	b=70sGBObQSgvw8vKCPoSBEP8ejnueP1GDiHM3xEFOpsOpSEwDmkAHJ/gsxfVsulDZgM3lLs
+	cBXtlvuL6XK3n8Fj7TIFbjzfWjJzKyJA6CQT+NbjhtAp0YqFWuFVOE2EI+M5YBxHEeUPmC
+	1AAm5bswGiyK4QhcVLEiEbnyNXv2YBY=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49545ba3d4eso7856975e9.3
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785397938; x=1786002738; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7BVZHSM3RopaR6W0/bDqMe3XMROxNpJV6YavlmGViAY=;
+        b=GY7ZyBXZpn00WAz//cl/jaJgD/wB/AWq8WeHlz6zT5tOzgxOj6c06lHvOgb2DvcQp+
+         qxCg14VZHsSZ6fjPL2fBcOINx0IzKIWEwDUrXqcAaKQGVD45zLS3AmG0akFttAl1F7K/
+         S+a/3I7mrotJkpTARwzXSxX4zdDhM7F425iPI/8KsK/ZzcKUPD/uwN0Xr6g/GTuG55wD
+         m+jKVb6O5Qcgs/nX9joS1SDbL17Z6Xy9tuN3BCOl9U4uibnwUSHCtUorydA2I9tyrLuj
+         qXgZdw81GNqs0bQSzDe2kGkd77j2XCowKFzrNQVqumLaqF1zFm2/WDGnwZ6pVsRI1UCu
+         TrhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785397938; x=1786002738;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7BVZHSM3RopaR6W0/bDqMe3XMROxNpJV6YavlmGViAY=;
+        b=U83/RGm1VOZfJOi7VAqTk+1FXOezdy3JFlGsxbjPZDIxZRtQhas940fGqo6c2gSHcu
+         rHTHkjUfbdfD3YNwI3GqWsWzMO18cM1Mqh+IpFtUq3ReoEJWc8nTFd/mNxQ5XJOrS3tH
+         TrddHC8MunNFQqHlg6uJrYgskWDBLQdHSoJJz5KlKwwd86F7vr6NPf9Y8tFWEphqT2ci
+         CUmYCAx1du6CfA2Y7RUH9Rhj0+sb7EEk4zD6loUv2RlQJPOss7C/t7bOPb7DWQsWDxwH
+         Ji5gydLVHBPSAjiUszBhR1v1X8FzXxj13BcPPLm+A78PYz51hn08XUFUzMOBd0HCBdA+
+         vnZw==
+X-Forwarded-Encrypted: i=1; AHgh+RpvWTv5KN2y4e8GR8Xm9utqCtBf+b/z5Yzy4+rZjXGn07YXkjFO/tb9iQ9YR7vkyuuJLc1rPr42zQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy4iDkgq2c+m7Z7cmd0KFr4anNN1IzdLwBpfuT3/6AHNuCVmZLh
+	lAT7PpQMy7CfrU4O7ic8nzzp8a+IR7/9w2SPIyEPmM/pAb/Ti+0Xfzxm
+X-Gm-Gg: AR+sD119eEULS0ax6gShcjAJNVzVh++f8lJgXDVHP5rHwA7D/h3XDc5xlf3r1sUNsZd
+	cyf9EqgfWiVElmQRR98Z8jdozYTU4/C2tgzp3TRbqUswm6YPHj5ypLM8elF2u2ZYhSAKW+NzLEe
+	yOL14QiKaQO5nB1E9xVKHJg1TKrlt2AxqMFeG/JRHq+6zaeIGjlfflpMqTTGOhnVyeIQm2Yx0GT
+	FvgWzAuv7P72x0SJLYcEtuLRTcU1UyFEuIwagSFXExDHIGpHxdLXRnJ7oXk5Kzg+NF5clKT8CuM
+	XBIt1WIgulm6zRZcFBnAdIVtV4V7ddENHBWaOi0/W2zBB9oA2QkuntXuYwDeWWoVX6150LC8rkN
+	9J8mhlmT94pswB1zlLzSL9aZjCrzWmIucdRUZ3oDD/j4OY8nkN92oDD7yabN+BoNYV+G1wELWcI
+	GQOKcIFwsO/+p33FFQmSru7Y7a0uzzJNuX3TI+clmo+zd9xN1HAu8oVw7Wlvg=
+X-Received: by 2002:a05:600c:a182:b0:495:6478:2dbc with SMTP id 5b1f17b1804b1-49800e70248mr12017065e9.6.1785397938314;
+        Thu, 30 Jul 2026 00:52:18 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49800f19bb3sm37302585e9.4.2026.07.30.00.52.17
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 30 Jul 2026 00:52:17 -0700 (PDT)
+Date: Thu, 30 Jul 2026 07:52:17 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v2 2/7] mm/khugepaged: extract young page check into
+ collapse_is_referenced() helper
+Message-ID: <20260730075217.qulyrc5s7olumqzp@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260715025941.1571316-1-npache@redhat.com>
+ <20260715025941.1571316-3-npache@redhat.com>
+ <ffb091ee-affe-41b2-939c-6437dd9cc13e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJDx_rjNhiS+J9eDkQxPF6B=jJ-Evr-M7NNeS_QcG7XWNDoEYQ@mail.gmail.com>
-X-Stat-Signature: sqt7n8w31xswbbptbgwa7j9xebyo1ttc
+In-Reply-To: <ffb091ee-affe-41b2-939c-6437dd9cc13e@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: ics8go4pd88otpos3aubfnk53bjcogc5
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CAF8F80008
+X-Rspamd-Queue-Id: DC493A0006
 X-Rspam-User: 
-X-HE-Tag: 1785397872-412025
-X-HE-Meta: U2FsdGVkX1/V1HzL7Jh88MRvHHSWqE5yScah5Dd7AiC9Ij222k0T5JePJ/ZzGbIZdRm37TFky0+tSBQ38ZrOi+9K/QV4zVOnTJGGnR7YnafAWSUeYq+W+4nlIWUx9lqtWjVaEfA/yiEXYG2HF4ZNHNL+8oNPu/EnKDunS8CGSjKl3An5IRoWhm5Svq0K/MvnN4eqLrgOhFPPO9N8CZ/ftwKEEqxNywDCVqjUrg6pub0Vk3+C2pwNq2q+In34eCOsuddwJK8tPiMu8bqc16++JRukbrjc3FZHqQLxfK7bace7UowtA5l823jTCpZDsTQDZJciqHlYHeu+tKj7r0V2ywlkEkpD1mvrbyT1QqyvJjqK9MZ/8YgYz+4ODB/2dJZLKExVixLUo9DV3UnBhxQRe9FPZwWdcmASLomhomJbb+jUNfefM3DMaMTzkcR+D9An8h60uz6qXo9Fs0FlISRLXVW+Ksj5h+/APgYLxJNehkFr2xn02qlnArvV9LRdFoSDCwbUZUWDHHqwUHZgyBBlLLk4bZu3b+n3GSRfvWY2gBzoT3rWH+rHJq/d1DxlSnwIgVJ2xaSR9hr6U6yxdIH1TxDWsZ4WCR6RAlxC6WbTC9tWNyc4mDPEhGO0vLhCqyNFtWyz694pLwJicKQbm6ZnyBdmnqiEkbhkwuNOb0CDTXTF4VcgKri9RUDtdf1Tsf+IxxtZI49Ck7cowFH2O+foyXMVxn7X7FuEEE1vTFTAF6skf3GwvNirVYQkjAf8B6BgPRWR6KU5Y4iyKe+S06YSD6Rz6OXNSv5+SXjirvplz312f0jo/soYnP1x+UTa8WA93VERvpInwd8jjszFn4jYpuxXU/XKesF6bJp1kbZ07DNFpW9CN4n9ZUYQVLk3p9/y/Nvpb15gvKATHQ8+Oal3xQdu3RQYdYTCqBfKeIF/ByNDAPXVm6OE7+6XyfmKvX86OZ5qZbaXABjOTAAZqM/
- jwXKQK3B
- ihmte56xaRcHDE8zRKC3L4VU1UNCsMQ9mpoX0wkNvtAs9J8v6AA4L7vsom5OP92R7wp3nDpS9A5+eRELzzxYEADdCZo9HYPhgHUaV8F0daVHZZAnLEr/fZA/wxHKsei0tfZoHg5HniD22JiR9/Rl09FjEsvdJ7lHyGChHi6JZoewlLGI1fPapGXGsq+qUnhddVqycVwZqDizKDp6uq4OhSZriycPxttRJa8gb0SPFjkgrFwcPRy21+rei0VL49liKYeWoW5HbwylA5h7gX5xlQwQ4EC1y5hGxFQOvwg0tQiuGLS+DP/BzfKxsEBwn16qqdq57RVVcNadDBEdX+yo0Vv6KxEakANDBn4+IpFh477J2N9v7z8N0mQzOaQ==
+X-HE-Tag: 1785397939-736442
+X-HE-Meta: U2FsdGVkX1/1zWGgehXWFr0MIlG51z4Muh+gkbQyvCtAQy2CASl9YmXVxSS4fx3MB7Yx++ocIeUiLW/ZAuM0HcZDWIStoOSSHB01tEG2YU/6I874C32HFf95jfV1AbEvjtmClwOZDT95XA+0eCjWenLkefaYoh6khN5yZWG69bW2OhWy1JtZhimWvdL8IEomd8HPTYdkqg6lw8OS+fbwo8NdOIeWbv+i1rUBWlwzAnX1EaBAd3W3H3f8nyB3BNFVrWtEtovUci9WtZca/9RLojF1Q2z1FlJ/D7V+GBO67PLKyP7gQ0e5bh+UCPcmFCtfh7CoarldFoGLQTK7ZDTNJzp9kltSUdwRsdX+KBb1V9rdHwlFSQJtY/k0kLnIKWlkD+NkWR/UI0phzZgz9jjKpFde3hwsRnuLKv0/a9ubrvMLH3VS6Yz+pCmYy62lGexroBqHvWqCYfnw18lFHfj6PuLkJ+F9DMX1CZYwogYvEzTVTs5jkD9aqDFcDbpjZ1yqhwj2uiMpNEfXKRwg8xaFW5JV/DuiSoujmsHcKW1HEzrR7EMfuYR6r41rzmn1YJsiQYJZXQog3zPJNdvZo4h7cGsSKPRO/jzRoSfSQqU1I+pszw6sIHR3Nf+zIvL7nZhh9b+ujG/UaspJADrawXCt0NvxqLv8+m7/EWxeksCrCjtcfO25l8MFT+F42EGWU069/5YKFXgjn6ctVqA59l0jcKWjo4+Cv+jcGxv6wxgvPqmVODo/0SChZoPESiIyVxGFMJyDYuY9VH60HkoPB45W+bIkpri1plboLOHUzFWjNZJB1znZmasH9fWnMYhoxJ5+thXUmGSaSaATi9TLqUj1H/0R5lqF0a/oC27PuMXrPECjctNGpYwSgl11uFd6+t+Yqj1kl6FZfmouQ+QdCcBz/v2NAtfiDPfiKzsqt16S1TeuyaguxAzntdcC5j8kkOeN4JdUMJzyNF0q9eFazxK
+ 8b0O7wH/
+ 0KYWTRxZZ3n8Uywg0/0Y92kv4SXnCdppdFwfTTmCcL14mMfhzolqizQEskXUx1L8Pb0WDfC9Hqn8AP+XlbIEkVFnFq2HJ8losSqO1hDpIKlB3E5PsxWeuORPBNSGUvhQx6MxJB8yqtCaGrBN4xrmc8oE0olk3mwtEe65EZPjsWJqHVEwrF0S5p9DK5oVSawQT3sY8VSzVcPQxGf1kg3yiH004niYeI3idIFoSpzxZVx8/xUQtNmXaFgPs5annxqOMohfa/sMzzgp+MaJnNB42Rmp/fiXq0+1svdLMT8p4hKTp7wzt8j29Jc7P+HsnEDBB38OZJhuDoZSUwyGnLkJMNdrxL3sEnVwrnVunKzGGoHqMYnsAoL2HB9dwDLTwCODk4327vHdy3gnbmfmU57CZrhL6TmmJ56rcD1vh/WlBMMUWbudmFlfsCPJ3kfHyOaghm96J/fAFVtqeQTaYemnYXob+Gyrwe7qeEpM8/c02+2x+jQf2HxgZ1WqBzM/ibGVvnkbW36RY1urdjnMyECQnE/4X0wVIeev/jIFI6D89cQlZrQid3p0rjOK9YlMr/ZHHx0i4KuoPka2j+TjhVb/xIWaFD9mCDSUmZJLA6wjhKXocj85RUfgPdtGqbAyKR4/n8cY7CMzKw7aQq55XiLLbaoeKrGnbUi382lLOtQHm5uUEjWvJ5/P9uwoO/34LowAVp5kWobqTiFmFwqq82anrVl3usA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +135,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 05:36:03PM -0700, Juan Yescas wrote:
-> On Tue, Jul 28, 2026 at 12:29 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 7/23/26 09:47, Juan Yescas wrote:
-> > > This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
-> > > allows you to allocate memory pages from specific nodes, zones, migration
-> > > types, and orders directly via debugfs. This provides key benefits for
-> > > testing and debugging:
-> >
-> > Would it be feasible to carry this as an OOT debugging module? Would a lot of
-> > symbols be missing to achieve that?
-> >
+On Wed, Jul 29, 2026 at 11:47:00AM +0200, David Hildenbrand (Arm) wrote:
+>On 7/15/26 04:59, Nico Pache wrote:
+>> This change deduplicates the "is this PTE/folio referenced enough to be
+>> considered for a collapse" condition that was repeated in both
+>> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
+>> a single inline helper function.
+>> 
+>> Also move the comment and use it as the function header. While we are at
+>> it, updated the comment to clarify that a young pte is a recently accessed
+>> one.
+>> 
+>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>> ---
 >
-> Thanks David for the comment.
+>Also, do we really need this (badly named :) ) helper given that there will only
+>be a single invocation after #5?
 >
-> The only symbol that would be needed to have this module as OOT is
-> "migratetype_names".
 
-I mean you could hardcode these and be pretty safe :) I don't we're going
-to add any time soon and if we did you'd probably need to change the module
-code anyway?
+Hi, David
 
-I feel this debug module should be a noop in core.
+I see collapse_is_referenced() is invoked by collapse_scan_pmd() and
+__collapse_huge_page_isolate() after applying the whole series.
 
-Cheers, Lorenzo
+I didn't see #5 refactor this out. Or I missed something?
+
+>-- 
+>Cheers,
+>
+>David
+
+-- 
+Wei Yang
+Help you, Help me
 
