@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50EA2C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A26BC55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:34:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B3FB6B008C; Thu, 30 Jul 2026 09:34:48 -0400 (EDT)
+	id 473166B0093; Thu, 30 Jul 2026 09:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18B636B0092; Thu, 30 Jul 2026 09:34:48 -0400 (EDT)
+	id 422F66B0095; Thu, 30 Jul 2026 09:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A0D36B0093; Thu, 30 Jul 2026 09:34:47 -0400 (EDT)
+	id 312256B0096; Thu, 30 Jul 2026 09:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D09646B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:34:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D4C9A0161
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:47 +0000 (UTC)
-X-FDA: 85045538214.24.1E22580
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B4B174000B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QbqEvvt/";
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B29D6B0093
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:34:51 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91E7B80154
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:50 +0000 (UTC)
+X-FDA: 85045538340.11.97ABD96
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C08D21C0012
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hlr/K0cv";
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785418485;
+	s=arc-20220608; t=1785418488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZOVAZcleFesftTESMiI+I5WLr6SsWO6dEuEGcLcphYk=;
-	b=fWC3P4sKLmRtRZfKD2uRQjdttolb5C/egH55Zo94MZ6pGZT3mifSQAaoxOmCe+ahcZmLr9
-	BDW+nltpZrxoX6WhZLfRHwMH/3zHaVhED1AqVLm1Op9PwEqF/gqvgWKa5CV1+UE+Mx+GVx
-	glug2iBnt5Wob13q3qON0FBy8Vpf1pM=
+	bh=g+4qlEqb1XkEb9wx8BpIkiKnPP0oKugCGAugz1nl39c=;
+	b=0xd7ZX/KosEe0ZIsQ9EwRVtXZI8PQcn3jXT1AkVQxxydBvgyv9SET7NDMmTJhaRzl/NSIU
+	ql9G0+p6CF8aozOo1OI87Okbb0N181+xmOgLyQLpvOR3FnaT/hU78RegzOPVjK8wkvKxc2
+	I6hTzonv3P2LMgyAh4k+D78BXh3v7fk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785418485;
-	b=gqIwxbsBoucNGiBC7Xi8s8VQPWj8Ifu5MnnWJT6OJyFy11nrnQ7UmmltbHbPPHt9qBzJ4U
-	nFV/aaLMvPDoROv0MtmAmaWFOOWz4jtLbHw5eYEOeYN82D5AVyu2jvUE6L/Ts4KA4IUdLR
-	SZNg4hr1rZSYFzQDqXEk2Xt37f2pzho=
+	t=1785418488;
+	b=MJhZgz01wjmxshzhOTFHWdK0pOelswI2rl9IRPWJ1y9k+PUBWU35ldO+PAY+FODhx8f9tK
+	9hm4jxOnP6UCMlEQJcKUYbu4O0CJF3Pu04ljVBjS+jw5gVAZHdunbvjJCGvvg2uunPY9uo
+	BqxPdPV2ge3gQa7mAyVuMh4JojFE+Q4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QbqEvvt/";
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hlr/K0cv";
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4508F600B1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2219544F9D;
+	Thu, 30 Jul 2026 13:34:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA891F000E9;
 	Thu, 30 Jul 2026 13:34:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EFE1F00A3D;
-	Thu, 30 Jul 2026 13:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785418485;
-	bh=ZOVAZcleFesftTESMiI+I5WLr6SsWO6dEuEGcLcphYk=;
+	s=k20260515; t=1785418488;
+	bh=g+4qlEqb1XkEb9wx8BpIkiKnPP0oKugCGAugz1nl39c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=QbqEvvt/WhuGlPOLcAdtMUTIWMeAnmAYVMgmkeZyg8u4r2tV2ydaYiNn10ZY9KWDY
-	 wQlitPO//HGvF+M7Wjn1PNxqVpo9fJy9+x4Er6UeffOTS2mXpXFGq05HWWiA41Oa8S
-	 8W4mg2bPb1NXlS8fPNs5JO5WnNwmWH2uapmGVIBstN/DEOEI5cPf3kcqflsaaTgxn4
-	 4HLTW8DJ4ENRJhkByIb9LEiRL0w1EPdnAiwEHkn2iTDTbUnII6PyXbCXbyNIPozVrr
-	 A/ANWbP56en6CLXikUEecNwosnprZw2ifyXHo+szFM5EGR5qFeCZFb3EeCB50P6+M4
-	 pxaulqPTcSKLQ==
+	b=hlr/K0cvCElbazREsM7+d5QYfY34tfXw2CB/QSocANrVOVz+5ze6zbePvlLiegY7k
+	 N5dulF+2TTzcMYhZ9cIXPCZxacX7UWMvntx6Vgk2hOYWQcbQ8CAMNkfc+h39y4ysDw
+	 iUZZhzAEYpINc7KYGY4dQdf2g+2GLCYcdmZhvIM1zw2mejuYkGsOJKTWrZgzFzwIlW
+	 HsFJvxLn+G+1kMe/OJnr0gSTsLR2snsxdZlNJbGpGMT44ZGSHa2uY8VZFgsyhg0KT3
+	 3WWxTgTU04VBjHAhtKTgznNSRcDU5NAGbklOYxPh3QdTJEK1TX1fdO50MPxIiT1n27
+	 csAVSPKIFr1+g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 30 Jul 2026 15:34:03 +0200
-Subject: [PATCH 1/9] binfmt_misc: let a register string create an entry
- disabled
+Date: Thu, 30 Jul 2026 15:34:04 +0200
+Subject: [PATCH 2/9] selftests/exec: let binfmt_flag_supported() return a
+ bool
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260730-work-binfmt_misc-preopen-v1-1-4a0b0da71f16@kernel.org>
+Message-Id: <20260730-work-binfmt_misc-preopen-v1-2-4a0b0da71f16@kernel.org>
 References: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
 In-Reply-To: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -82,22 +82,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-3e0c3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8977; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ffubVVduLLMfNxpTpX0sw0fYfFiETwOhHJHux38zrPw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlB727fj3D7OUNp6ZJjoueLZPc+nGNm4r39++3ytIbj
- v5XXX1fpKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiDjUM/4v4N7dOuzHpZkls
- k+Ueq60LldQbGOV0taWXOpsZXxI7/57hf/3lCuGmtIont9p01JPt0s1Dn/y2++5WuMeWaefbTdI
- y3AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2698; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=KqwlQlXuuUZaCVG8Wlf47Bg4tzNNtuMbADQ8RYC4Dk8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlB707uYxFWeDKXKfS5HtZW927jzklpV8IkP91ejbb/
+ Q3lKrnRHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMR/8HI8GWv6ZNvPeddP5S+
+ fW76l3+Nc+UsXp2VVZPMk07W6+moFTL8FQ6oZ+z4oPeiOiZlp1r67r/hAadWr+KZs/zvd/mr14/
+ EMAEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B4B174000B
-X-Stat-Signature: ismx1aapfrhp3r7o1z8dzehpbirojcjx
+X-Rspamd-Queue-Id: C08D21C0012
+X-Stat-Signature: 71t1bh7z9djtajsdybo7eo4y8jk4nwbk
 X-Rspam-User: 
-X-HE-Tag: 1785418485-506520
-X-HE-Meta: U2FsdGVkX18HQqVWLPSA4Us4fr3vo4CBefFmONIcmuA9+RhXfG6cE6cH/6hLHzZKrzQGRFIWaKyL9W/DOviZPZB7cBeINEhT7b60a7IicJFd2B7I0VEZ3PrPlf/B/xU8lSwH6u9ua44HzLwxExq2arPcLgUp49Wrp/pmZDu19EDNRJcdt/5JPX/WPee1wk2oFqsSFXR9mTTMz5u+opzpESr5eyZhWimp4Jfgfml4up+smCybtwhHMAnLWVs5N1/fiW8QMdYSTiluERG1//WPcqkRJCKJ8DWnOcYFLHVJxOlmrJ0NC8BRJ0x0m0nd4fot6voYEXbcMv8kLjQksI0cnEK0TQHFDDrZ5AqT7jwe9KPaj5AeOizmFTu3ttTvIG7FV5ovybqHELNxQ9L3cweu3Z/eKyCR0cHNcOFcXRCkDPBwr/zEgKAA/ItQt0CAacAsWvN6aVoOvDxBr8fY3e11lWXHWno+6MP7nu9vdbiD9wSqDx9QvIkPzRvfI7P7KDpb8FbqmAuU+NV/BkMSZL+wBO/d8R1XnvH93vnBuHpcnf0l6ud//gf8UOdFYqMDThZy6mHFBbvR/r2s5fGR5GV6T3/gigdlQAfzM/6YTzVhmXe1nDJz8JQWhqSstyGJnPzK44n/6Igdwnbxo3l/zrif7BNODxJkhaeEGWgToxwX6xeYpmnkFz/3d0lSGQxZiwBvc2M6YDdTiBIB6x2lSQgBP5aQxvwrhntGS10bJ8/31hevDvkzGMrwG/MnFxH5u7hS7xQHZAz7Lw7u7gLFuwjfsecCn3bLM6PUtQlkglZaRO6bBvoeM6N4em8I99LD8miMwg4hL8nDasaDWb5jcunBZIUt0EeKIxX36vILDaOJeJjBrmE8IX5bXgsSuRJBTt4miQtYxZeLxGLb3mMw1q42NNgNcgwiZsItMwObYOQt1dhnofkCpRLou661hg0fuRaOAQlljK1ByYFZXjkMDFw
- g/GItX8P
- gudasnYCOEC2j8ljh4yGsQJPIgtwN/0ZKfk21L2KmZml3a5jLCS5i8T7nDJAI1c2+yFme5q8iVTtdfwv2fSO3V3m+G3VSeNa7LHqD4VYH4BMB8RtNxKs4vvt7fh1bi2gWwKzJinGCkAutDDXJ8Uhb7zx51khccxdYwOPUU//DweXeu/azqaesUJ2TfbqQcvWN/jDaUjIPY9U/x43GJ5pWzdO9eR3J/EFeye+SH1tl4GXoqAovb3hihzxj414ut+e0BFfgE2HOqswJmHTMWT39g6NoGBC1Bz0Jhq7rnoiZRW4gCjU+1rCRpd32ByqRrP8aXFwxYuqQMpB6Lik24ntwT8hnrWtYqS7w/q80ppLtU4e9amDeld8cBDlSvg==
+X-HE-Tag: 1785418488-755830
+X-HE-Meta: U2FsdGVkX1/3hJlNutdr/sMme0dZtLrZ7NCaEVma526KQn9X0QkhaP5ZVDvpj+Ch4RlkflRozLF0wDpcEJ1PGoI4oJXrH+L+sQKfK7piztwPNzjrm3MUAXyfEvmdW8W5MFuKhcLgbKCmyiUZQI81jE1Qw9+h5GesTLfZg2jSmK/loSwz4m+PyPJohpLc+UEkAXg8lZqPw2Aq2Ue1QxGxJS40pIjzO8sPFv3MX09VhGbXeIXO5I7UXKAhZR49pK9JXngPx/nE84PE85mYilDC81cWeXzqGmznECz/+kWyugaLy+M1UOr9dSYQZwePcPVlBiSoOuY1gOyTUb+0Ihi3UwzvIiLZWF2+LL5OlRKLRuh7SPHlqGWSXlz8B/ER37DnaFjkOyiBMYzB7T/y14zQvUPVyusau0AhgQa1ueKCz8/2UtnAi0O0zYr6RyBf0lmMtTl9whUzKzio2KzZ7FU3TaE6iouk2dG72y76qWlSFyuFfp2iwXds7GKGfwHhMi3plwuCSBGtRmmEOZ9z/QUgFLSvtnMVg7cN2231u+f1q7YSK8dZyjgFOf63MtZgsUdIL186M5un3kIVLg8vNHjcRvFfksmWkxumH4Bbandy9ZUHJ+tpH5Hhh0pMvAQRCQPQOt6gQTNFhWAxSZq84qAAu8QiJ2y0GkFYKM8/MRA2WebD57cT5nc+Tk6Y33Tfz2A/UHiFWlNkXxQBdsz2yw7x5qs2gaggAvyDX8vWIrTfZwwLONihksVtppeBf0zcEfqyl+DhKI19YPDIwzdn7bkzf2Z8iQ4+u6Ib0XiYvSG8/VCUVMMZnLBdAqEzdWlc3I7210/1FnuO88aZkG89X+3OPBcgx8hwxJWDZwfgmuo3c2RGvamSCk2pjI6OBfAFprX3DIsWASTSEZuZ+CgVi/XaS6JoprZ0AF1ZIusTRINT0dq/WLSI6yz3ackjS6ZNF20LbinzYTM9zpRtsvnN6Qh
+ 5uwjhpTE
+ Keam8y0ZBB2uAXVq/ANxAXQARtnpGqt2m466goH7npzMh5XzMyzRkNfOH8udXowlxShQx59lAx6wxGXsxLBaqLEl5upnrbfJI8C10wGVQq7eeGML8BO1aJANgciFRi1dgGiaDGOlOeYbAjfXpDHSG4xOu7hid2bbfRkjTftcGZysY1ois+SknlyCcQDbFHXZp7ukFUlBoryCaRNJK6Bl3vmE44lzX43br8Dvi0x0CiscesqZhoU1x2HYmbo1Jhh+DG7zjxoZI3qz9erv4zn3PYq0pGS+1uH3UDTzt95mos3y9tnb/B1mSzOCdKJNBPCd97wZ4JhSpXmSvQVs7Y28puF8axsFQm9IQU3OYAhiPYtUQwuwJqmX6CRNQIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,240 +105,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An entry is matchable as soon as it is registered. create_entry() sets
-the enabled bit for every type and add_entry() links it straight into the
-instance, so everything an entry needs has to fit in the write that
-creates it.
+binfmt_flag_supported() returns 0 when the flag is supported and -1
+when it is not, so every caller reads backwards:
 
-Add a 'D' flag. The entry is created disabled and has to be enabled by
-writing '1' to its entry file before it can match anything. That splits a
-registration into create and activate, which a later patch uses to
-configure an entry beyond what one register string can carry. It is
-useful on its own too. Entries can be staged without dispatching the
-moment they are written.
+	if (binfmt_flag_supported('T'))
+		SKIP(return, "kernel without the 'T' flag");
 
-A staged entry stays out of the search list entirely. add_entry() only
-hashes an entry that is born matchable, and the first '1' written to
-the entry file hashes a staged one, which takes its place in the search
-order at that point. The rcu insertion publishes the fully configured
-entry, so the exec side keeps the plain enabled test it always had.
-
-Removal cannot rely on the search list anymore. Whether an entry was
-already removed is now decided by its dentry, '-1' to the status file
-walks the directory instead of the list so staged entries do not
-survive it, and a '1' through a file handle held across a removal
-publishes nothing.
-
-'D' is consumed at registration and not recorded. What matters afterwards
-is whether the entry is enabled, and the entry file already reports that.
-
-A 'B' entry's flags field had to be empty so far because every flag it
-could name shaped the invocation, which a bpf handler picks per exec with
-bpf_binprm_set_flags(). 'D' shapes the registration instead. So the rule
-becomes what it always meant: a 'B' entry carries no invocation flags,
-and 'D' composes.
+Make it return a bool and flip the callers. errno from a failed probe
+is still set for callers that check it.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 98 ++++++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 81 insertions(+), 17 deletions(-)
+ tools/testing/selftests/exec/binfmt_misc_bpf.c         | 2 +-
+ tools/testing/selftests/exec/binfmt_misc_common.h      | 6 +++---
+ tools/testing/selftests/exec/binfmt_misc_transparent.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 707f8a14f8a6..ca7840b01a2b 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -37,6 +37,8 @@
- #include <linux/uaccess.h>
- #include <linux/user_namespace.h>
+diff --git a/tools/testing/selftests/exec/binfmt_misc_bpf.c b/tools/testing/selftests/exec/binfmt_misc_bpf.c
+index 069768a66ba0..c6f5e8f34985 100644
+--- a/tools/testing/selftests/exec/binfmt_misc_bpf.c
++++ b/tools/testing/selftests/exec/binfmt_misc_bpf.c
+@@ -258,7 +258,7 @@ TEST_F(bpf_handler, transparent_dispatch)
+ 	char src[PATH_MAX], cmd[PATH_MAX + 16];
  
-+#include "internal.h"
-+
- /* Entry status and match type bit numbers. */
- enum binfmt_misc_entry_bits {
- 	MISC_FMT_ENABLED_BIT	= 0,
-@@ -52,8 +54,17 @@ enum binfmt_misc_entry_flags {
- 	MISC_FMT_OPEN_FILE	= (1U << 28),
- 	MISC_FMT_TRANSPARENT	= (1U << 27),
- 	MISC_FMT_LOADER		= (1U << 26),
-+	MISC_FMT_DISABLED	= (1U << 25),
- };
+ 	/* Probe for transparent-mode support via its static counterpart. */
+-	if (binfmt_flag_supported('T'))
++	if (!binfmt_flag_supported('T'))
+ 		SKIP(return, "kernel without transparent mode");
  
-+/* The flags that shape the invocation; a 'B' handler picks those per exec. */
-+#define MISC_FMT_INVOCATION_FLAGS (MISC_FMT_PRESERVE_ARGV0 |	\
-+				   MISC_FMT_OPEN_BINARY |	\
-+				   MISC_FMT_CREDENTIALS |	\
-+				   MISC_FMT_OPEN_FILE |		\
-+				   MISC_FMT_TRANSPARENT |	\
-+				   MISC_FMT_LOADER)
-+
- /**
-  * struct binfmt_misc_flag - a flag character of the register string
-  * @c: the character userspace writes and reads back
-@@ -75,6 +86,7 @@ static const struct binfmt_misc_flag misc_flags[] = {
- 	{ 'F', MISC_FMT_OPEN_FILE,	0,			"open interpreter file now"	},
- 	{ 'T', MISC_FMT_TRANSPARENT,	MISC_FMT_OPEN_BINARY,	"transparent"			},
- 	{ 'L', MISC_FMT_LOADER,		0,			"loader substitution"		},
-+	{ 'D', MISC_FMT_DISABLED,	0,			"register disabled"		},
- };
+ 	ASSERT_EQ(artifact_path(src, sizeof(src), "binfmt_transparent_interp"), 0);
+diff --git a/tools/testing/selftests/exec/binfmt_misc_common.h b/tools/testing/selftests/exec/binfmt_misc_common.h
+index c6900ded019f..e8d67908dbc4 100644
+--- a/tools/testing/selftests/exec/binfmt_misc_common.h
++++ b/tools/testing/selftests/exec/binfmt_misc_common.h
+@@ -117,16 +117,16 @@ static inline int artifact_path(char *out, size_t sz, const char *name)
+ }
  
- /* Look up a flag character, NULL if @c is not one. */
-@@ -175,7 +187,12 @@ search_binfmt_handler(struct binfmt_misc *misc, struct linux_binprm *bprm)
- 	/* Walk all the registered handlers. */
- 	hlist_for_each_entry_rcu(e, &misc->entries, node,
- 				 srcu_read_lock_held(&bm_entries_srcu)) {
--		/* Make sure this one is currently enabled. */
-+		/*
-+		 * Make sure this one is currently enabled. An entry enters
-+		 * the list at most once and only whole: its configuration is
-+		 * ordered before the rcu insertion that makes it visible
-+		 * here.
-+		 */
- 		if (!test_bit(MISC_FMT_ENABLED_BIT, &e->flags))
- 			continue;
- 
-@@ -684,7 +701,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
- 					      size_t count)
+ /* Probe kernel support for a registration flag with a throwaway entry. */
+-static inline int binfmt_flag_supported(char flag)
++static inline bool binfmt_flag_supported(char flag)
  {
- 	struct binfmt_misc_entry *e __free(kfree) = NULL;
--	char *buf, *p, *flags;
-+	char *buf, *p;
- 	char del;
+ 	char rule[64];
  
- 	pr_debug("register: received %zu bytes\n", count);
-@@ -780,18 +797,29 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 	snprintf(rule, sizeof(rule), ":bm_flag_probe:E::bmprobe::/bin/true:%c",
+ 		 flag);
+ 	if (write_reg(rule))
+-		return -1;
++		return false;
+ 	unregister("bm_flag_probe");
+-	return 0;
++	return true;
+ }
+ 
+ /*
+diff --git a/tools/testing/selftests/exec/binfmt_misc_transparent.c b/tools/testing/selftests/exec/binfmt_misc_transparent.c
+index d0cb845df1d3..2ebf73de8018 100644
+--- a/tools/testing/selftests/exec/binfmt_misc_transparent.c
++++ b/tools/testing/selftests/exec/binfmt_misc_transparent.c
+@@ -56,7 +56,7 @@ FIXTURE_SETUP(transparent)
+ 	ASSERT_EQ(create_target(), 0);
+ 
+ 	/* Skip the whole suite on a kernel that does not know 'T'. */
+-	if (binfmt_flag_supported('T')) {
++	if (!binfmt_flag_supported('T')) {
+ 		ASSERT_EQ(errno, EINVAL);
+ 		SKIP(return, "kernel without the 'T' flag");
  	}
- 
- 	/* Parse the 'flags' field. */
--	flags = p;
- 	p = check_special_flags(p, e);
- 
- 	/*
- 	 * A bpf handler decides the invocation flags per exec with
- 	 * bpf_binprm_set_flags() rather than fixing them at registration, and
- 	 * 'F' (pre-open a fixed interpreter) is meaningless for it, so a 'B'
--	 * entry's flags field has to be empty.
-+	 * entry carries no invocation flags.
- 	 */
--	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) && p != flags)
-+	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) &&
-+	    (e->flags & MISC_FMT_INVOCATION_FLAGS))
- 		return ERR_PTR(-EINVAL);
- 
-+	/*
-+	 * 'D' is a directive for this registration rather than a lasting
-+	 * property, so consume it: the entry is created disabled and stays
-+	 * out of the search list until '1' is written to its entry file.
-+	 * The first enable publishes it, for good.
-+	 */
-+	if (e->flags & MISC_FMT_DISABLED) {
-+		e->flags &= ~MISC_FMT_DISABLED;
-+		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
-+	}
-+
- 	/* Transparency preserves the whole argv, argv[0] included. */
- 	if ((e->flags & MISC_FMT_TRANSPARENT) &&
- 	    (e->flags & MISC_FMT_PRESERVE_ARGV0))
-@@ -852,6 +880,12 @@ static int parse_command(const char __user *buffer, size_t count)
- 
- /* generic stuff */
- 
-+/* The root directory's inode; its lock serializes configuring an instance. */
-+static struct inode *bm_root_inode(struct super_block *sb)
-+{
-+	return d_inode(sb->s_root);
-+}
-+
- static void bm_seq_hex(struct seq_file *m, const u8 *data, int size)
- {
- 	for (int i = 0; i < size; i++)
-@@ -992,10 +1026,11 @@ static void remove_binfmt_handler(struct binfmt_misc *misc,
- /* Remove @e unless it was already removed. */
- static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
- {
--	struct inode *root = d_inode(sb->s_root);
-+	struct inode *root = bm_root_inode(sb);
- 
- 	inode_lock_nested(root, I_MUTEX_PARENT);
--	if (!hlist_unhashed(&e->node))
-+	/* A staged entry is not hashed; the dentry says if it was removed. */
-+	if (!d_unhashed(e->dentry))
- 		remove_binfmt_handler(i_binfmt_misc(root), e);
- 	inode_unlock(root);
- }
-@@ -1004,13 +1039,21 @@ static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
- static void bm_remove_all_entries(struct binfmt_misc *misc,
- 				  struct super_block *sb)
- {
--	struct inode *root = d_inode(sb->s_root);
--	struct binfmt_misc_entry *e;
--	struct hlist_node *next;
-+	struct inode *root = bm_root_inode(sb);
-+	struct dentry *child = NULL;
- 
- 	inode_lock_nested(root, I_MUTEX_PARENT);
--	hlist_for_each_entry_safe(e, next, &misc->entries, node)
--		remove_binfmt_handler(misc, e);
-+	/*
-+	 * Walk the directory rather than the search list: a staged entry
-+	 * is in the former but not yet in the latter. The control files
-+	 * carry no entry and stay.
-+	 */
-+	while ((child = find_next_child(sb->s_root, child))) {
-+		struct binfmt_misc_entry *e = d_inode(child)->i_private;
-+
-+		if (e)
-+			remove_binfmt_handler(misc, e);
-+	}
- 	inode_unlock(root);
- }
- 
-@@ -1067,9 +1110,27 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
- 	case BM_CMD_DISABLE:
- 		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
- 		break;
--	case BM_CMD_ENABLE:
-+	case BM_CMD_ENABLE: {
-+		struct inode *root = bm_root_inode(inode->i_sb);
-+
-+		/*
-+		 * The first enable publishes a 'D' entry into the search
-+		 * list, whole. The lock keeps that ordered against a second
-+		 * enable and against removal; a removed entry has nothing
-+		 * left to publish.
-+		 */
-+		inode_lock(root);
- 		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
-+		if (hlist_unhashed(&e->node) && !d_unhashed(e->dentry)) {
-+			struct binfmt_misc *misc = i_binfmt_misc(inode);
-+
-+			spin_lock(&misc->entries_lock);
-+			hlist_add_head_rcu(&e->node, &misc->entries);
-+			spin_unlock(&misc->entries_lock);
-+		}
-+		inode_unlock(root);
- 		break;
-+	}
- 	case BM_CMD_REMOVE:
- 		bm_remove_entry(e, inode->i_sb);
- 		break;
-@@ -1112,10 +1173,13 @@ static int add_entry(struct binfmt_misc_entry *e, struct super_block *sb)
- 	inode->i_fop = &bm_entry_operations;
- 
- 	d_make_persistent(dentry, inode);
--	misc = i_binfmt_misc(inode);
--	spin_lock(&misc->entries_lock);
--	hlist_add_head_rcu(&e->node, &misc->entries);
--	spin_unlock(&misc->entries_lock);
-+	/* A 'D' entry stays out of the search list until its first enable. */
-+	if (test_bit(MISC_FMT_ENABLED_BIT, &e->flags)) {
-+		misc = i_binfmt_misc(inode);
-+		spin_lock(&misc->entries_lock);
-+		hlist_add_head_rcu(&e->node, &misc->entries);
-+		spin_unlock(&misc->entries_lock);
-+	}
- 	simple_done_creating(dentry);
- 	return 0;
- }
 
 -- 
 2.53.0
