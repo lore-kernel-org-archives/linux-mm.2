@@ -4,81 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4A9C54FCD
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35F0C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:16:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29F726B008C; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
+	id BBA0D6B0088; Wed, 29 Jul 2026 22:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 229466B0092; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
+	id B44696B008A; Wed, 29 Jul 2026 22:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 118966B0093; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
+	id A332B6B008C; Wed, 29 Jul 2026 22:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CEA126B008C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:02:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F3C0120859
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:02:50 +0000 (UTC)
-X-FDA: 85043794500.05.CCE3463
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BA0D314000B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:02:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DktpZOYk;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 615C06B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:16:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C078280136
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:16:54 +0000 (UTC)
+X-FDA: 85043829948.11.22D6324
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 12FFD20004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:16:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ha7c8VhE;
+	spf=pass (imf03.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785376968;
+	s=arc-20220608; t=1785377813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/IZvBfcFjPVhZmo5POZlSlll5l1dfa6LjVvoLhlsFcQ=;
-	b=YhWunQk2N/nstG1vgLaWLXt8goLCZCYspitslsZRSxlFfNTMeOfznvGmgCDQNUc0hUw1hU
-	wNtfTDDbcDIXnrNSzPMIk2iMD2suZ5ZuyWi6ok+NPxkmNHpVXdDixRmOxhu7T0v0JbHDIg
-	rm81fY/g6xVfkL9QgXrsCXIfz2AGjbY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DktpZOYk;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CEvVzpQ7maBnqXzDlrKpFAxRq67Wh1PJdH6/rY1eZq0=;
+	b=rVDol+cPVazUEbJGkX2cO3HHNqVq4SdXS8p71y5j+XCEjXLkJGLLCv66XKS7LR0py4oJuc
+	EWcmoREKNapy2xBjAnQpYZSLVUR4XSzqzKGaE6DG7uLC4keKp4QD8X4IFQJ3naPlQXfmm4
+	UH4KtfmCSO+ktWwDV1TgkgbZEUm4w34=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785376968;
-	b=KqpQejiRxeh+ONaAaZjD+JEeNHAWGAPN3djCLeYNUFsqQgNTkHu6uzsl4L/OcTA2XpV1Gs
-	5lkw5gYiR4Gm1gaqcV6nmt2TJYSoARO09PGqFTrcApzYs8O8Xw4eY9XxeTr/UNMfFF/Sty
-	s/Ea+tGU3CadVtk54h4EPAUHyU3G9xE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785376964; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=/IZvBfcFjPVhZmo5POZlSlll5l1dfa6LjVvoLhlsFcQ=;
-	b=DktpZOYko/8Ut2JTgiJMCCa2YT3NXbXn1fAuIl1Or9IURA+KwIBPZI5uBHLGrx9zrRezvIPJzAwQyZHnDJqT8ad7Bxf5cFQ1SlUR7uA1BTbQ3nlNiJR1NalcgHsKPTgwAqzUG5XlQXt2hMDxr1ZJjN5U+rPstLrDluQ1k7yBFy0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X83S3tb_1785376962;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X83S3tb_1785376962 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Jul 2026 10:02:42 +0800
-Message-ID: <21cc294a-9bff-4ae1-8f7a-f51b91579dcd@linux.alibaba.com>
-Date: Thu, 30 Jul 2026 10:02:41 +0800
+	t=1785377813;
+	b=Hcp+qNPPtxrJ0QU+9Yn8M6IJ9HawoX6Oeu+a1sWLfZAzYNsy7inpdnadczPkAzrsTnIXyE
+	fB/I9Y6BKNsez6SScBoZp1fLql3FpOTwikTQjXlCKN+DNoJsUq3ipTigHwk3bgpUzmQBBy
+	bzQeNKZ6DOoOHisUewvImGQmmnXp0Mk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ha7c8VhE;
+	spf=pass (imf03.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8485ab7c382so236731b3a.1
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:16:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785377812; x=1785982612; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CEvVzpQ7maBnqXzDlrKpFAxRq67Wh1PJdH6/rY1eZq0=;
+        b=Ha7c8VhE5IR6yL+D3eWnevH1f8bmONxu+IfpNCrVxm0veTYvDIqg+a6M+aiJzJBFO+
+         8PMeXT3mwQkbOIDAImz2rgIymOYDjBYsQPofymXxmTxTswS/Pf/864qx0QyxFixZbeg/
+         FJyByaaLUk6+2ljopX/UYQgbyarVB4WlUkKgHA1il77wD7PeVXy0vh1a6aRyyJ891BMH
+         fo/O5Ar89uaf/7mPfZBwvko8sF+qwlY0odoyGZwgNeKRbYFXy1TiCf/UOSEdTUO+xPlC
+         Z+syLWFhiOOtqNwBKsxglG4fyiqlHt37LZoIxb6qlO/+fnDcFo+OtPzXFJQm08zTBwdY
+         oytg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785377812; x=1785982612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CEvVzpQ7maBnqXzDlrKpFAxRq67Wh1PJdH6/rY1eZq0=;
+        b=ZCEnVuYH6iq4CA4Zp6M3HU4FwzbGPBxdkpkg7IMXsKWXFlhotmAmOvvIyJAStSxlhx
+         EfDe7gj1VNBMuPRgxYVgRnoWy3Slo9i5he6nuYXMMM9TKXUt4G5bEgZQX7rLXkh+d6+B
+         nQGIEbi3AlA781+fGNWYoeOaoXo1zi8VF+D+RdeIUCuedv8Zd80lDjHvpt1G63AkSzPX
+         kGukDar8ZbnKmsI81CzJBtMgR72rAOp3rixZvB2s2CrdB3hyliuZBcWYoPPQN3QKrJ08
+         S8gA+73u84t0PtBTZ6KLwyru600JVOHqvxBG79rZv7jgn2jZkzKUoTrKK+3/6urRKkSU
+         7WhA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1wcPCy1X0GDgHZRHl00++zdCqw8yoZA8YbXvgjlIen0KmUKgqxj3FgtFR4G2lyTfKq00yc5jLDQ==@kvack.org
+X-Gm-Message-State: AOJu0YzP2lVMOwUZSqqC6ZFJpj6UB8HLrwdgqPjlOrF+QhLMj64VK9qs
+	lwncbdhoyL5SSR1QQfe+CdFGfUzY00DDb7MCfS5Q4N2uLBdxAOKWFTQT
+X-Gm-Gg: AR+sD1116zKpMvRHDJwpR0Zbo2kjtp6R5DLX0wiyN6hfLcOERBZuJViw2UPIvMmQDeZ
+	QJ1b7B9QqEh5CbidmcdNtWrZGpHzHxfeRk+We43G/MsF9U1WTwrthS1rXdc2mKCKQPFWRksrtBB
+	CnEwv2j4MDX5cJdifCdrtZwl4ZtM5vhGtV/udHA/PfJDDGPPZij6JSpFTn1v+A9Q6YxxHE5oW7c
+	wAQWjJ1HdJl84bif5CY6zOzJxChdla9Hp/u5tit5JiKcbRG2cmQ4eppM2ekaK+hxg7FDA9YeZ01
+	AoFOVPtXyjrud6dWofyScLjnma591rP2aufKZuapsiMnJ5aNX+Pi9MZ8C/DvgUf5Z+iUTvyPWyn
+	b2G2/C5JW+NiP/fBNFEPYphnRHQYeNttqkMm7kTjEU7xuxIBs82NLVpjVn/Z+lz4NUCVn90dVw7
+	c0FGBUk7Kz5xMQsAWSkwtg0VYM01OeyYxLlERnkua7t5clj4kn1kWUgcY1ih+13t5/FcE4jIEd3
+	k69y82wvUZAfS8rfoLhfTUOead1OgpsP4Ei3h/+fcBkglnUh8acxpgGx5E79/U=
+X-Received: by 2002:a05:6a00:1887:b0:848:3dbd:5cb0 with SMTP id d2e1a72fcca58-84ebc3d2e0dmr1029530b3a.2.1785377811642;
+        Wed, 29 Jul 2026 19:16:51 -0700 (PDT)
+Received: from debian.lan ([155.117.85.23])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe23143sm2159628b3a.2.2026.07.29.19.16.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 19:16:51 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	zhaonanzhe@xiaomi.com,
+	baohua@kernel.org,
+	hannes@cmpxchg.org,
+	youngjun.park@lge.com,
+	baolin.wang@linux.alibaba.com,
+	hughd@google.com,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	qi.zheng@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [RFC PATCH v4 0/4] mm: avoid large folio splits when swap is unavailable
+Date: Thu, 30 Jul 2026 10:16:26 +0800
+Message-ID: <20260730021630.2235914-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm: shmem: reject page-aligned fallocate end
- overflow
-To: Zhiling Zou <zhilinz@nebusec.ai>, linux-mm@kvack.org
-Cc: hughd@google.com, akpm@linux-foundation.org, vega@nebusec.ai
-References: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BA0D314000B
-X-Stat-Signature: a9rhwbiqh84eknqfc96w6e7xo45o6ud6
-X-HE-Tag: 1785376966-124163
-X-HE-Meta: U2FsdGVkX18sMg3n0sbUiG8MiZCMSvPszOnrWy601rFDNJNPAjIgcWNCtZWVk6gQoP27K1wC+xUQrKBgGxjFpHsEczkF+OQg3qwgu/IvQu1M+APq5Oow7nhAD4uurdx1zQrkniW9nWgok9Wii3xwXKyqSHicFQOkoXUxfKYf0qjK8/HXKQUQzQnEjdTjp5L3rhx1/gC3KeWqNeyMwGtoKSPm67ZxuuoIYVV6fX+mPwOfZoZDH8TEgfI9YRKIWVH9dxc3YEE1LrOjbBXJKg4cN87SIU813Hhm+7X8xEhVQ9IPE9051S2emMPtvlHsCbHPuxtsej546tgqWGusfrVtef618Y9t7n81YYmPkBBbelmo3GJ+gwl23bOpz6exsY/MPzIfsK05MxgCHc2q+F9ho/CyIRilPHw6wfOPcOsQCuMlrvBIm6MseKcQ9mkHCbHpgo1w13BmjYBs+DFRT+m1k6vxgL4Q8yuuf2lc5DtRATMcZf3TRfIW1Xa5Wt/gBRJ3A+9FMtk2U0i0BGMhheebq/CVJYicaTQlnQXJqJscdiHnm9IZ6n7iXNySpDG1+RxMNgKUNIz/As2l8hnc4O9pLdM758RTA6yrp9AEQlpkSXGfqXzNx+hF0KtbSSUK3ERBCiI4ossbX054y3nudLcOOvQ8Ir8Vn0jA2rvRsGAbFKbCl7UV3kn/CCCEdczTb2QnFCbB9nMxt7FoVqdlC6eZ0CQe4bifRadjnlFFE36AaGh6SZOSHGS6EOCcNusFvAiF6+V96kPCZit0ui2YusRfIyrJ/10dpxwIV26qYe4EVk6n3/IJ1Pu2YPciQ/NABMcPAJIxFa318Ke3hGpHp4ODGmdluAvPZ25a9CJrjzZJK3WYFAFzc12o+5LdBof7dvCks/+KXkGd0T0mrVaWeddgcD743A8QouUr6GrHdUvORKdKgSNLx7xO4hYManfgpnpeSJq7YuarsrQh4APf/OM
- vHI154PF
- zCyOlpmXRaxO4QhiwXGpAGh19vb35UroU5v+ibzmSi2c3z6JDb4QUlHb4HyHcnju+tXqoIwXnQd6BNHd6ZUiGbEJs8mgXJl8YQYS/R822/TTLY5ZWNT/2UKddxf526uo8ZFujzoWfnzQKq1eSfqODtYbxVnDdzw750ztKxnyv7UH2hpTexAYEMqQIeWulNy4KAWO+rA0GNLapEYuB8WX+iF+WxJdsqjkwvG0co+qw7/mXObu2HmTJqxAjZ4jBhC/PQ7jpzPm3qsGSSVH1GYqUB4jtuV0Os33Cw1WMxR4sdKSnLZUhkRz8qXs7X8UVpyeifA69CbraDHP9kiXPE6aZxZoYzw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 12FFD20004
+X-Stat-Signature: 3cgxq8njk9ocqj67tq5m47d77e934shk
+X-HE-Tag: 1785377812-615965
+X-HE-Meta: U2FsdGVkX18D9I58KSRClgspI8AL9TvRGKw2inOjvY93jHEQKEFWb89NvDGPkpbMolSJHpUPVlyDzat70XyNKR7SzPFthctFccWzuEQlSSvfnjTbhXb31qWxFxlWaS5cA33jwRoZvgauziCfOtYfvD3SWdRUR7rGQnD5VXmfzbOmcOFowyV09wJH4ZXT7Der1qPy6B39wgUyUmePurfoBUeMkqG4DiXCLXotxdt89qVvDYf/XI22y6ihmBsGM/SLPEK1d/0xR2mapQwMRD9LP5sWsw/063tbfdwSvqlp3MSAqmCjrLhiPbY8JsrkO1MVamydLZWjJLv9bipz1JZPoY4OVquQLX4IGNsjqmkdRRSxE2ck9qAk++WjKXNPLnf/qeQIIP4yGswRI5pI5/7qf0jQWTC+MqU5mcIJMomhRzeR6bpdIKIlvpfS1JjwdLLUD6ns7ATIL5jzY4J/1uEgOiqYTv8DbwgPn9cZOnEavRm07xADUMq5DR4xDrHasV9pa1jVsjN7l3bvyzqwPJ/qNo78DcdaAKEcJxGlwbK9vJF5bpCqXo4FUuqEXd1o27mH78Za+6Uzc4STqq/AvRRXE6jEBLdxIMYAJwlT+lMeeiNHAdAaYgWB+sBsNTIzkSwOTPNx1XJMBPXBH8mdeocfZluxbrBmXDMIoMecb5k5WjuMgOyuy/dPEO4AQHlSVdJywgKpf1SKyLvWMRcAtfQFL2MNWaCKC5curMgwv7sd2bhHoFeYkuOy3cpPJImLqStyV09zm5ryjnSG8vxEDD11ZtiZiF3LlDDr7t6S0aPpsSr1KvHw02saSdlXcFQpr9hXcepKCY0O11XpW/XO/7mqqOIpbS4DpLj3S6GqbnjK11q6uCoa2DEs1+fWP42ze5AN0jq3VCC53iVcc0ys9+hOLMb8GTSNz985V+1n1+P0+vOcBXQ6Ixh7WQa1Dkti3D6PoauXp9KtM4Ud5aU5vfA
+ rO2pLoJh
+ 6y0uP94a6NNTfy1+z5ZSd0UzKyIer4URrvTZ81VIiPKy1eKdt/0iln362kuDEL2cJ6N3TSfdqEYoQD6MlpCMc3LrN/3pSd62e2fPeWlBoQ5md0P6VxO/wl8xWr72KSE0fYwgBeh03jxQ0Q7zeMJas+h/rV2eT7zA+Cdf7sdUu3IGl7iKbgogLYgrPmzpTj3BEFobHoL0XWpyRE13wHmKNPOvzSDimQBAqqCo8Jz4lCuw+63chAzbThuhtJg+zit6iH4jXkrmeEM5WoKTRrr1P50gf8hG0nIfhG0XbE/qj9hkgsMGXL/FI3lMslC6xb3wUHGmzze/MQN/myBAT7fnk1dQ2jljLat/LQwGZNec8eM0IUfdg1zd/vK7cGgw3jzjHjw5nSnRBoQ/GnjR+W7YbvYdvLZQyZt600Hy5U87mVwOgjbeE4BWiPSoBaUCmefGoq6EdXeQjxTx0asAxeBkpaUlo1j/v16HlpbiS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,141 +142,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is RFC v4 of Barry's original RFC patch, "mm: Avoiding split large
+folios if swap has no space":
+
+https://lore.kernel.org/r/20260618221720.71768-1-baohua@kernel.org
+
+Barry's RFC showed the no-swap case with MADV_PAGEOUT on 16KB mTHP: the
+large-folio split counter increased by 1024 even though no swapout
+progress was possible. Skipping the split in that case kept the counter
+at 0.
+
+This version keeps that behavior, but makes folio_alloc_swap() classify
+the failure. The function sees both the swap allocation result and the
+memcg swap charge result, so callers only split when a smaller folio
+might still be swapped out.
+
+Patch #1 adds page_counter_margin(), a small helper that computes the
+minimum remaining chargeable space across a page_counter hierarchy.
+
+Patch #2 lets folio_alloc_swap() distinguish large-folio swap allocation
+failures:
+
+  - -E2BIG: splitting may let smaller folios make progress
+  - -ENOSPC: no global swap space is available
+  - -ENOMEM: splitting is not expected to help, including memcg swap
+    charge failures with no remaining swap capacity
+
+Patch #3 makes vmscan split a large folio only when folio_alloc_swap()
+returns -E2BIG. Other failures keep the existing activation path and
+avoid destroying the large folio when no smaller part can be backed by
+swap either.
+
+Patch #4 applies the same contract to shmem_writeout(), which previously
+split a large folio on every folio_alloc_swap() failure. It now enters
+the split fallback only on -E2BIG; other failures redirty and reactivate
+the folio as before.
+
+RFC v3 -> RFC v4:
+- Keep global swap availability and memcg swap margin separate, following
+  feedback from Barry Song, Johannes Weiner, and Youngjun Park.
+- Handle early rejections and memcg charge failures with the refined
+  folio_alloc_swap() return-value contract.
+- Apply the requested vmscan and shmem condition layout changes.
+- https://lore.kernel.org/r/20260717122514.51514-1-xueyuan.chen21@gmail.com
+
+RFC v2 -> RFC v3:
+- Use Johannes Weiner's original page_counter_margin() patch and preserve
+  his authorship. Move the mem_cgroup_get_nr_swap_pages() conversion into
+  Patch #1 so the helper addition remains a pure refactoring.
+- Add Patch #4 to make shmem_writeout() split large folios only on -E2BIG,
+  as suggested by Baolin Wang.
+- https://lore.kernel.org/r/20260709145124.764807-1-xueyuan.chen21@gmail.com
+
+RFC v1 -> RFC v2:
+- Split the RFC into helper, swap allocation, and vmscan patches.
+- Add page_counter_margin() and use it for hierarchical memcg swap
+  capacity checks.
+- Make folio_alloc_swap() return -E2BIG only when a smaller folio may
+  still be swapped out.
+- Return -ENOSPC for no global swap space and -ENOMEM when splitting is
+  not expected to help, including memcg swap exhaustion.
+- Make vmscan split large folios only on -E2BIG from folio_alloc_swap().
+
+Testing:
+- make -j16 W=1 mm/page_counter.o mm/memcontrol.o mm/swapfile.o
+  mm/vmscan.o mm/shmem.o
+- scripts/checkpatch.pl --strict --git akpm/mm-unstable..HEAD
+- git diff --check akpm/mm-unstable..HEAD
+- scripts/kernel-doc -none mm/page_counter.c mm/memcontrol.c mm/swapfile.c
+- Apply-check the exported series against akpm/mm-unstable
+
+Runtime testing is pending.
+
+Barry Song (Xiaomi) (1):
+  mm/vmscan: avoid pointless large folio splits without swap
+
+Johannes Weiner (1):
+  mm: add page_counter_margin()
+
+Xueyuan Chen (2):
+  mm: distinguish large folio swap allocation failures
+  mm/shmem: split large folios only on -E2BIG
+
+ include/linux/page_counter.h |  1 +
+ include/linux/swap.h         | 16 ++++++++++----
+ mm/memcontrol.c              | 41 +++++++++++++++++++++++++++++------
+ mm/page_counter.c            | 20 ++++++++++++++++++
+ mm/shmem.c                   |  6 ++++--
+ mm/swapfile.c                | 32 +++++++++++++++++++++-------
+ mm/vmscan.c                  |  7 +++++-
+ 7 files changed, 101 insertions(+), 22 deletions(-)
 
 
-On 7/29/26 10:07 PM, Zhiling Zou wrote:
-> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
-> then rounds that end offset up to a page boundary before entering the
-> preallocation loop.
-> 
-> For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
-> len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
-> the signed loff_t used for the rounded end calculation. If that wrapped
-> value is then converted into a page index, shmem_fallocate() can enter
-> the folio allocation loop with an invalid range.
-> 
-> Cache the already validated end position, use check_add_overflow() when
-> rounding it up to a page-aligned byte offset, and reuse the cached end
-> for the later seal, shmem_get_folio(), and i_size checks.
-> 
-> Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
-> Cc: stable@vger.kernel.org
-
-I don't think this needs CC stable, since this is not a common case. We 
-never hit this issue in products
-
-> Reported-by: Vega <vega@nebusec.ai>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
-> changes in v2:
-> - drop the RAM/swap-based range rejection
-> - drop the NORESERVE full-range accounting probe
-> - use check_add_overflow() on a signed loff_t rounded end
-> - v1 Link: https://lore.kernel.org/all/adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai/
-> 
->   mm/shmem.c | 21 ++++++++++++++-------
->   1 file changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb3..f4648545e7ae7 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3602,6 +3602,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   	struct shmem_inode_info *info = SHMEM_I(inode);
->   	struct shmem_falloc shmem_falloc;
->   	pgoff_t start, index, end, undo_fallocend;
-> +	loff_t end_byte;
-> +	loff_t end_pos;
->   	int error;
-
-Too many unnecessary changes. I'd expect something like:
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 6641823bed16..cc7b17d0111e 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3624,6 +3624,7 @@ static long shmem_fallocate(struct file *file, int 
-mode, loff_t offset,
-         struct shmem_inode_info *info = SHMEM_I(inode);
-         struct shmem_falloc shmem_falloc;
-         pgoff_t start, index, end, undo_fallocend;
-+       loff_t aligned_end;
-         int error;
-
-         if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
-@@ -3680,8 +3681,14 @@ static long shmem_fallocate(struct file *file, 
-int mode, loff_t offset,
-                 goto out;
-         }
-
-+       /* Check for wraparound */
-+       if (check_add_overflow(offset + len, (loff_t)PAGE_SIZE - 1, 
-&aligned_end)) {
-+               error = -EFBIG;
-+               goto out;
-+       }
-+
-         start = offset >> PAGE_SHIFT;
--       end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+       end = aligned_end >> PAGE_SHIFT;
-         /* Try to avoid a swapstorm if len is impossible to satisfy */
-         if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
-                 error = -ENOSPC;
-
->   
->   	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
-> @@ -3649,23 +3651,28 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   	}
->   
->   	/* We need to check rlimit even when FALLOC_FL_KEEP_SIZE */
-> -	error = inode_newsize_ok(inode, offset + len);
-> +	end_pos = offset + len;
-> +	error = inode_newsize_ok(inode, end_pos);
->   	if (error)
->   		goto out;
->   
-> -	if ((info->seals & F_SEAL_GROW) && offset + len > inode->i_size) {
-> +	if ((info->seals & F_SEAL_GROW) && end_pos > inode->i_size) {
->   		error = -EPERM;
->   		goto out;
->   	}
->   
-> +	if (check_add_overflow(end_pos, (loff_t)PAGE_SIZE - 1, &end_byte)) {
-> +		error = -EFBIG;
-> +		goto out;
-> +	}
-> +
->   	start = offset >> PAGE_SHIFT;
-> -	end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
-> +	end = (u64)end_byte >> PAGE_SHIFT;
->   	/* Try to avoid a swapstorm if len is impossible to satisfy */
->   	if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
->   		error = -ENOSPC;
->   		goto out;
->   	}
-> -
->   	shmem_falloc.waitq = NULL;
->   	shmem_falloc.start = start;
->   	shmem_falloc.next  = start;
-> @@ -3699,7 +3706,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   		else if (shmem_falloc.nr_unswapped > shmem_falloc.nr_falloced)
->   			error = -ENOMEM;
->   		else
-> -			error = shmem_get_folio(inode, index, offset + len,
-> +			error = shmem_get_folio(inode, index, end_pos,
->   						&folio, SGP_FALLOC);
->   		if (error) {
->   			info->fallocend = undo_fallocend;
-> @@ -3743,8 +3750,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   		cond_resched();
->   	}
->   
-> -	if (!(mode & FALLOC_FL_KEEP_SIZE) && offset + len > inode->i_size)
-> -		i_size_write(inode, offset + len);
-> +	if (!(mode & FALLOC_FL_KEEP_SIZE) && end_pos > inode->i_size)
-> +		i_size_write(inode, end_pos);
->   undone:
->   	spin_lock(&inode->i_lock);
->   	inode->i_private = NULL;
-
+base-commit: c73b725a57f276a3702ca213bde78fca029bc619
+-- 
+2.47.3
 
