@@ -4,103 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E44BEC54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E142CC54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:31:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E95B16B00A2; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
+	id E4A686B008A; Thu, 30 Jul 2026 05:31:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46026B00A3; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
+	id E206A6B008C; Thu, 30 Jul 2026 05:31:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35686B00A7; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
+	id D39366B0092; Thu, 30 Jul 2026 05:31:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B19966B00A2
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42B5A160867
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:05 +0000 (UTC)
-X-FDA: 85044924090.07.96BC815
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 637AF100002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3Pv2QV2;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7BE76B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:31:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42664A1ECF
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:57 +0000 (UTC)
+X-FDA: 85044926274.29.452596B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2F7BF14000E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tqarncfb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9kUfo/2L";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="X5/Su/p2";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="rU9fRx/k";
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785403863;
-	b=VvIF9B95xCvLZO6VYk/bEg1rj3Ija2sOCOtDxcpruZ2HyU3EKY5o7B7rtL6dX/sdP8YGY+
-	NWPTAdWkuIMt9kiWsi287i4uO2w2fVGHZMlWmB8nHpRU94pzuGkIofzGTVPl/cOEmawRue
-	gwMwiYXD+pthuAsTsR3Xv0MuTPidtWI=
+	t=1785403915;
+	b=Ff/QdzS3/Ug2643ssnU07LFzAgz3JEutwFiRLU3q9xgT1JY6b0G7mC1aONEDJJLvGghbc9
+	islwZyrpKX922HrXS3NHwVskW9mRYTRm/0QaMRZT2gQW4nNEW72YSqmEyB+xCifslqpTOp
+	xvFry9LaIr8zFAkiB/4UYno6/Ir0o2c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3Pv2QV2;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tqarncfb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9kUfo/2L";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="X5/Su/p2";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="rU9fRx/k";
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785403863;
+	s=arc-20220608; t=1785403915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/n1rMM6UcEp7lUcJboLj/tsE78CgiiG/wYd46p4oCM0=;
-	b=HX78QdYpBx78IqkNKRaXwLEhAohwCChET+W6xnyY+kxXMRE+15+0GAvFHEDd40pt2qUJSK
-	OSryAttkp5PXYbqtfjFspa3q982evOmgdoD/I9W7I3NM86gJy6qPy3WCFGfM21tSFIBX07
-	SVmt8SCLuEdemy47Dx3F03AQm5SDJZ0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8978F43D58
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DB71F0155A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785403862;
-	bh=/n1rMM6UcEp7lUcJboLj/tsE78CgiiG/wYd46p4oCM0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=V3Pv2QV2+O6/iq11SVVAxHHV2/WzjKKS58T/8G6RQdUWFolvP0ss4G9J0/PmQP0R7
-	 N9pS1B5KUn+6Jx43+ayvn2tFJrLkdZuu+CM0D8JblvuPXSGba43eH6F3kf6CbzspU/
-	 M7mZwX+S2QmqOGl67aV6pDKQbyBzeTthEkS9sgBzdWOS8HHRX4smQAjfcMSa2zw97g
-	 KiTzolRTkmBHnl04IvGzDDmq9gN8+3caGeXiHJZ3evAzc5tDs9BIrC0ms2UNoM2bme
-	 /+yclclCpeCudaYk5CFcRs0On8jT74Qw0vowYeYQHkhxMrCz7xAb/gjHRNGD5Y6Kb2
-	 lTy9GJTr4ROEQ==
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c149c5722so4576581cf.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:31:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoWXfRkNOzW2KtPL/AhiH9/qvrDnjK7PcJpy0rj9rB0QRrV4ozSKJ2riJ/JhBBrPgD0OJyUWDiCjw==@kvack.org
-X-Gm-Message-State: AOJu0YxO5a7Qo+H7N5fP8traNqaHXG7igpPaA853E7wfWOozGgGvZ6Yl
-	uFzMRJWNTOCSMQZKAzPg7S/IBHyCoaUnvM2YrqytV+LYDFeicVT06iK+38wXNPd59ooMLe4XAYk
-	LBzc8d4KoGTvdIiOHiozPQ6ZLS3qfVp0=
-X-Received: by 2002:ac8:7f92:0:b0:51c:86b:3487 with SMTP id
- d75a77b69052e-52b3a786c86mr11916551cf.33.1785403861647; Thu, 30 Jul 2026
- 02:31:01 -0700 (PDT)
+	bh=OtkjGI26kFz4A5WqZfCAE61davztwoMy3wTqCe/jrpc=;
+	b=x5g6P0Nxnl8MRIP4ruDWMFSSx+ik/I6SErWcYBYD0c0hnspVPp7EZMGY4ZH4NsRu9/Doht
+	L15mqapqtHcljg/DJ3JzReJLPwyGZjPrXiSAg+uNI4JQV9jmIWaSFAJ0F2RfV3ma8EjH6X
+	Bw0N1xrtXQNUWX0kUgGUgZBE+MkCzT8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 061617D4D4;
+	Thu, 30 Jul 2026 09:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785403909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OtkjGI26kFz4A5WqZfCAE61davztwoMy3wTqCe/jrpc=;
+	b=TqarncfbgPxXXWBlixuAFNLDHy/2Tq9XaSSU74CxQPidY9A1MMnADQBQFYtDqlBqpiQV3w
+	/7yc5/wh+3hu/qhjEqTyN539W3um1k1rzBEac6qfG5nkFO/r6+BrHdRZ4ibevWNhJHuIEz
+	lDImgUWm7SZdXyj+cH08TGK5wsZ56kw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785403909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OtkjGI26kFz4A5WqZfCAE61davztwoMy3wTqCe/jrpc=;
+	b=9kUfo/2LzDHmEMVFfuthPN7OaCbT4qxiNH6ZAheRXnT7Zyjqk4vIXLFNZRWIIg9VghpNgt
+	/jiWQLSq9nmcIvAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785403905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OtkjGI26kFz4A5WqZfCAE61davztwoMy3wTqCe/jrpc=;
+	b=X5/Su/p2jFL+Luy94478xOaWkPh2/4b3Y2ht638r051OM3+wojyx1YWlELDFHSuT1Gp/2y
+	dywTkzFi9npuXU9JRleSE/DoUwztm4MtnYGjaOPna9yUlAHnF08B7iWbpFlci1rmNYg6Fm
+	JQGyGsmIZok3Xjra7WXFbLNauNGPOzQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785403905;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OtkjGI26kFz4A5WqZfCAE61davztwoMy3wTqCe/jrpc=;
+	b=rU9fRx/ka+uy5uYh7zAjOzmzMobNvPEEw5TC9LzEtV3DKibEiiu3myFi65E4YFq4bozBs3
+	jgftj8ZqjUfHcVAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF3AA779CC;
+	Thu, 30 Jul 2026 09:31:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2mhiOgAaa2rndwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 30 Jul 2026 09:31:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9C819A0AAA; Thu, 30 Jul 2026 11:31:44 +0200 (CEST)
+Date: Thu, 30 Jul 2026 11:31:44 +0200
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Christian Brauner <brauner@kernel.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>, 
+	Bart Van Assche <bvanassche@acm.org>, Hillf Danton <hdanton@sina.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-erofs@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v7 4/5] buffer: set BIO_COMPLETE_IN_TASK for dropbehind
+ writeback
+Message-ID: <p2a3kz5oyjzsrbjivphnxv3dcf3gkjgtibd36fgfajajrfn4jr@m43y3mfpv4kb>
+References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+ <20260730-blk-dontcache-v7-4-3e8e6850068d@columbia.edu>
 MIME-Version: 1.0
-References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
- <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com> <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com>
-In-Reply-To: <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 30 Jul 2026 17:30:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
-X-Gm-Features: AUfX_mwq7H0AxlP3E-5oDWbYVsZ0q6R9dFk7_C7xkp5tSzno4OBCXR2nO3NBKaw
-Message-ID: <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
-To: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 637AF100002
-X-Stat-Signature: c1k46qf1f89nq5pccrof9cd6gaymcnhg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730-blk-dontcache-v7-4-3e8e6850068d@columbia.edu>
+X-Stat-Signature: 63k7yj7owws3p59btgpw3x3q43athkeo
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2F7BF14000E
 X-Rspam-User: 
-X-HE-Tag: 1785403863-936446
-X-HE-Meta: U2FsdGVkX1/MSNRevjvTp/epqviKKcIRGviqgVGkobiVzx5Fg/n8GEi4dhDrfVFV48gZF0VkuyVhBEhcpbNO9KQDffXrIWvKpvDQ+CIug7MAin3N6D21P4rZ+a/ljgbMVfBnk/KP33/J7gzeKcE4EIpSO5XS40Oxigghk+3jcSMc5CH2hQ7jIkdBs+t5VYlHCMxIORORpqE+xSy9bX7ZHRJKxWUlAcMqqyVkpehc3h2+TClYWBS+Kk7K8PE13I7byhNOa1eMfEVfLGEK2vyL+IDv0R6Gqed2Knc/MdzRM55S1+cp7Lwx2m1FGP336vYBh2I+QY2AvhYoruSdjrN0le5zad7UJiz0eN/p+jFSwfhA1+Gg916O6s7lzcWUQhtCrSUWP4LdVTrHmbSV1QS7vI0ycYH3HNzR+If5UcTL8e/4PlsLJM4WMKecnotLVih8cJs9YJ9XkFOnVF2NrQqXBFrJ2qoVCN+dum9/kSH7K/utlE/3O0zrsGv3062/liEGNOATbdC1Dnxv9pGypVzr9iIQtN7R3Kx2v490fTGmQVXfllQmWMx0kL/r1w7xFLDrzPXvtQnhAM5vN2Y/6zvYSgCDwjkO4QdxrzG6AIbYlxPg18wdGtoIuQhse5u0HID5lAN3rqPcBgLJV0kHBk3yZ29KMiR1pNS+az6h0ZhFClbIaIq3oGJifsYNmGcfaRCAa30qixDr0vfqEJJvkkrxdUG5r+s+hcr6vsm7KZ5umNv1zeOiduQwFqLGRzWIesg28BUwrG6nyhOG94nltmeaFNv7SW2RVg81pnhRgB7LFgZ4zJoaEqILyic6QePshEOjaDDM4inUSQqcqWB6QKwrM5dc47DuO9Gzr89fg3gwUiVM/M6GAhVxml+wvfnhGRM4xIXCnnGHy4Slzr88gBPvybYhXpXNMie4/CvxDGwykH06LezM3bQf/TS1Da8+VmofF3tepnORGTpaoVkmppQ
- NT1uHK48
- F5CKy5hBk1KQAjv5k7nrAgSOsuT3LQzK5aDP7oBRI5tj2EhALuGc3dsvJZjS8WBA38TTJUoHTwcMaOuMoj6VpnUtmBq62Y5dy5aV6TTFNnawtSjmNBI8mIQHix2lVyJR8ZpfJHqcXKqDkY5EGCxsMCa3N3ovcUeWnx7tCKD995DUHNSgUGz6qURidkcU5LfBTv/dLQzSWd+TAlnQ1svbA+W1XiaLqKoPtY9DKehsJjKS5iBGGN+ag5LTk+oYXXo2aEsUVzM7aImVCNhZEFeyTvE5HGVjS7xwpQ/FNj5V12yapndmigF6DL8cc0GG56cj5Pt3z3KBBqzjJQDZVZgKxP2R9XORPBdrKP1n8
+X-HE-Tag: 1785403915-59287
+X-HE-Meta: U2FsdGVkX1+z3hqVamY7XqXVUWliRrTDWi3bPnxc42PE7sedugTz197a0IPYFPMhuq6Q6JjpfET+Lt2kgeqAveAWFNvPRDsqEhXVIPZG18feJ3pyGnwmL1VPtBTdB9+Hq1VUwgliDrLM3Cvg/f6FbO7wMNfNazHoI+fXN5rLvP1sbD6Qe2m69HhV66MjxxGbRnKhKEz8FwkMhrEE4oAUXt3IeHu8pMZMyWslExdG/IJuPAk3EIqQDBA3WR/0C+uR4UIW20Cn2BxgGalh8uq5YmVgkHrTgl5Ck/m2POK1UBMJsKvB4XaiwZviBJRwtEeWa01iyEcwPnFWFhABMwHA0dojyjpBcZEy8fP4OUS9XJ5GMvj2RQpSc2KMlG3V45p0wHmXing5vbrkuo0gLglSNofGz4BhrYJPZ4ojvJwlMoJYwx3RDr2wO1Stlw3082IbQHph9DfYqsdbJObsy6yhpu7DAyTchkF4RAMv9VSUUr3+qKvMowUcF0wR4vnP3uKpgaBaIPlnJ6HvZY0mJychhK8Q2nxRruLeGrGbvlvSOTf41VNESBdJA6gb0/FyJQ4pRFd38tRCspJWIHJg7z64i4ThzfDVKWTve9LKQLBWenQ6p5PPT+YeeFlQJgxPyMGBrnmPXG8weOZcTrxdr8oN2m44wzDfRVv+E7RPWPuujKVQUWc4l8Nl3ek0/wDdKNtJZqQpmyYfDpmp2c5xWKvptFdCB2T47zOzsWMy2ZqC85T2QgR5RSZGBt9OKZYmKsehT12t6F5eLppqiC1MtmvqN1jc4QqLy0ycEqT8ioP/i3JuJZ0973jHftYtb7pHhJ0ePbHN0UnKdT6LfK+ZhHzDPExKQAzjoo8o9vWFIxB7WvYPyWMNr3sT1HO5AfJWflYEEMzz0OyH4qvqvIb0XEIRS3ZHC291yFFyvDjaoaetCTPdJvIOQVtDNeUDx1iv1ipLGRpJCAbe7AtD+wni+HY
+ 1ANoKUQ6
+ Fr/UWhBAB1ISCuv150XA2jzXctm0pp/jbx6bPUgmTKT8J0gYHCKMWzXifW2TYAh1TaE3WbmEWkby29eq8a/6Z1o5WDqHlhA7Nj4gBzLD2/REw7SXJNodSTKyW/I/UkaIp+927EJVuc98/L6etTmx+tJpEbUL3UX5BTrSLbqXcuOw2R6byXOR+m3FLAP7TN7tzQpceCLFQXyul1LU9JlvdNPU9CYp3ww7g+9MFNOISdPuCWLbgMsQaYp2KWRFBWzmdWJHj2ksL22G1vCw7MN7OU8bKc23cZtp1OsVpPtVLzGx39HBCDRrHJBEyu1FaBPYqZp0Adm9ZvXwAY3yuE7vK13gYazTkaQCGui/sZVXk+O16RHNfo0SGx7cim0MTg94qxOsSDRZp3K0opxc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,30 +142,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 5:20=E2=80=AFPM Zhaoyang Huang <huangzhaoyang@gmail=
-.com> wrote:
-[...]
-> >
-> > This is very weird. This seems like using a sledgehammer to kill a fly =
-:-)
-> >
-> > Do you mean that isolate_folio() fails, the folio is put back
-> > into the oldest generation, and the next time it is scanned, it
-> > still fails to be isolated? As a result, scan_folios() makes
-> > no progress at all?
-> > And is it because the oldest generation contains only this
-> > folio, leaving no other folios for scan_folios() to scan?
-> >
-> > Why can't you simply promote the folio?
-> > Do you know why isolate_folio() keeps failing? I suspect it's
-> > because folio_try_get(folio) fails repeatedly?
-> Yes. As described in commit message, the orphan folio is an abnormal
-> one as it is on page cache but has folio->refcount=3D0 which makes it
-> isolated and putback to lru forever and finally be the only one in
-> min_seq. IMO, MGLRU should keep make progress with bringing this
-> orphan folio together with.
-> >
+On Thu 30-07-26 02:57:54, Tal Zussman wrote:
+> Set BIO_COMPLETE_IN_TASK in __bh_submit() for write bios when the folio
+> has dropbehind set, so that buffer_head writeback completions get
+> deferred to task context where folio_end_dropbehind() can safely
+> invalidate folios.
+> 
+> Read completions are not deferred since dropbehind invalidation for
+> reads is handled synchronously by the reader.
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Why is a folio with folio->refcount =3D=3D 0 still in the page
-cache? Can this be fixed at the source instead?
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/buffer.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/fs/buffer.c b/fs/buffer.c
+> index 9af5f061a1f8..6f099847240e 100644
+> --- a/fs/buffer.c
+> +++ b/fs/buffer.c
+> @@ -1203,6 +1203,9 @@ static void __bh_submit(struct buffer_head *bh, blk_opf_t opf,
+>  
+>  	bio = bio_alloc(bh->b_bdev, 1, opf, GFP_NOIO);
+>  
+> +	if (folio_test_dropbehind(bh->b_folio) && op_is_write(opf))
+> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+> +
+>  	if (IS_ENABLED(CONFIG_FS_ENCRYPTION))
+>  		buffer_set_crypto_ctx(bio, bh, GFP_NOIO);
+>  
+> 
+> -- 
+> 2.39.5
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
