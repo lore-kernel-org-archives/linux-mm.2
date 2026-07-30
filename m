@@ -4,121 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58FDBC55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82635C55167
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:10:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F69D6B0088; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
+	id 7A9EA6B008A; Thu, 30 Jul 2026 08:10:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CEFF6B008A; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
+	id 75AE76B008C; Thu, 30 Jul 2026 08:10:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4BF6B008C; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
+	id 6226A6B0092; Thu, 30 Jul 2026 08:10:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04F196B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:05:28 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98CF114012D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:05:28 +0000 (UTC)
-X-FDA: 85045313136.11.950E84A
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C7C274000E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:05:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vpq10jQR;
-	spf=pass (imf07.hostedemail.com: domain of praan@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785413126;
-	b=I1qhWcamA0CAguI0xQwbnrmTLG4J0re2sXNLpXfRWv/aK2oNeCSkPIZiS8TyH07feKLhhx
-	8pD5lL4Ufpu4+g5Zqfz1JL9XFosjIqhvudqGCR1MkE+ZLyt+pUkNnouNQwWZwv0jhZJfeR
-	K43Q/FKhIZa3BxJ1OMrXP3+0H0jHiFA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vpq10jQR;
-	spf=pass (imf07.hostedemail.com: domain of praan@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 35C006B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:10:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C614D140120
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:10:33 +0000 (UTC)
+X-FDA: 85045325946.05.EB3CB96
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F019E40012
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:10:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L0w7fPaj;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785413126;
+	s=arc-20220608; t=1785413432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
-	b=RuFkQbc9Pjr2PgKJYGhFSe5g6Uuf522KHrsShaFCVP/es9sUeNy+80DfaBu98q0/VF6EIP
-	Pt28oZiWbz2XMy9NaCRBE/tpM8t5mZQDzivk1D3qcsUCk2fCHA/pdXTuHb3cQqdY0oCjU3
-	7vtQhoQqFriODI1QbCKSohU+WxR8y8U=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cab97c86bdso90015ad.1
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785413126; x=1786017926; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
-        b=Vpq10jQR/S0TUIHiRsvtk66lEtvBcGBf3RdsGxShF9pa6oSOa2UTj4uS7BJctOVlOA
-         liqxIKGC4EVxgQkPFYsFg7z4Tk7trzmedndicqGE3I8OM9Ls/IBCNlmac2TsIZFFPJjg
-         STfH07BW2e/I8+PQJPXiKZqHS/LDHLIMy8hIBPy6lsZ57mVe2QE2/aJ5Vc58Vra+xI19
-         LpYp3fIOEHL+CP/0s7+/lJc01SoskiX4g9I+QP0gD1a0/VgkclKBtuXar11slsfadRVT
-         AH7ZGiC4uma0FQogBRAzaFk5iQGglPRVmQ6DW9xFKCsBVMnrf7W8fSoXJ4gOH4BTKUyO
-         hvug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785413126; x=1786017926;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
-        b=M0L2HpdQv6BS7LPqzczom3KiIdxMXOJZcGHimSeNzR+unnahXTChxRM+4JjLENPjPZ
-         c4O9s18ilS6CG98nbvXDvCgjexVR1TJJ4tVj3maJ0owlBsEjmrTzaJZsa+7w6SEISAtP
-         2pU6fgNnIf1QFSclBG4/mynv8NnqBvHZYsvUgDTC61gpzAFaDqFlQRgrbNh0ZNz9k4yT
-         DMoX+otHdeg7TvpYCvEKKOpEJwTOUy6tpMaX7YvyupcwaEKe7Lo4ykRWVOwiY+2P6ioH
-         6elk81B7puAZNb3T7+Bjtp6gKp0+di8hgV+yqsGsll88MeYrJ9QlE9tm6ylSrGnChkRB
-         zxvA==
-X-Forwarded-Encrypted: i=1; AHgh+RrXNJFrEel761ChQ+zyZPb3Gz9hyKpYvRxl0xNFXdSlGo2AX63LtWROZGkFxgwVrI+hzGTH3fse6A==@kvack.org
-X-Gm-Message-State: AOJu0YxWFUjDiZ8aR1xu6wuSOYJOCTK7SdSKaXlj5toYZC344ZR5xRrq
-	f0R2BC+ykIHTYBaS8WSeEFHcXXLpL2TxvpH0VebRoFyPWhnPVzRPbmn+GCFL+tNq6A==
-X-Gm-Gg: AR+sD11PQ5Tk0SYGzAgP66xlPRufcDKBuBTbYVo/MsDgyDVPV6UuoQfBKdoIk8+hLPT
-	d6/gznPW5+8LAUOUbSMdsb92vwHVAlogjxdjs9tOSJIqoYmxaIbytwKX17LtkTQL7N8+eooZfBp
-	G4LKvIHgG5YYdk2wHyOj1Y8w0HUbBJH2SYYghGmtJKAbzHy9i2qiNVeNpXa/H1YbHKB0K8/ayc1
-	bwbuAVmSOiKktgFOCJV+rw1GZ5Yn86dUifOmkOlze7ktkH2M/UhORlKlLuq8GN+Ez83wd27kl5+
-	7JbCtsbDDOYLB7gPusZ8+LuDm0qFbbv+0oPNL2SkSShY0xotXpW71cRZF2a8L1doyYVfXMM2ufx
-	kPu0tE9ZTdS/zSlH/npHjNuEL0p0VF1QLrclvAsspmGEmjXzaJnx5fumuqHGgmz3jkvlV3eYDjz
-	ecQAwhw8ALH8bOW89FMSqdpjvcaxJIfGYfZLC2XSfjyZY1bR9mT6Nz4pFL19EUsvOYfHkKJnvhz
-	eksBt9uhU48JqE4UboTFN0=
-X-Received: by 2002:a17:902:f2d1:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d03e47005bmr23875ad.2.1785413125046;
-        Thu, 30 Jul 2026 05:05:25 -0700 (PDT)
-Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc6d70sm26178725ad.39.2026.07.30.05.05.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 05:05:24 -0700 (PDT)
-Date: Thu, 30 Jul 2026 12:05:18 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] kho: Introduce preserve/restore APIs for
- high-order pages
-Message-ID: <ams9_pf-URoEYdWg@google.com>
-References: <20260723204203.2997395-1-praan@google.com>
- <20260723204203.2997395-3-praan@google.com>
- <178539640188.2151126.10266644348178621151.b4-review@b4>
+	bh=l85ulI3D6QeubP0OTVTfkt47Xt0r4PcaywJzAgl+XD0=;
+	b=gJsHTruiOT57cTqqhgfToJubQi9tKg0GFxUauMUlkxqJSj6HnDvsBbTeaFMbxmNQIFeHes
+	Ui0DLczJmR0jzaSuaT4IlPyrAy1+SYGXaoE3kLl9c6nZ6/FDZHrvbxHcbYysxYxCNPsFSe
+	Wq5b+QPjanjec5A55AAeXQORGedFFRs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L0w7fPaj;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785413432;
+	b=mxHvwXfKqlIfXAE1eeewHgL5s7uUohRTd3+opZ8Pi8qBeM5PVfl8AFchAfvbiCVg2jy+Kx
+	eeotQ2KBTjOt9hz3v1PZZ9/dOKaTHsDvAYGE9czh1D8iTekEjay6BlNz5TxCAZI8LGAN0Q
+	rYoOeQ3dS/h8LoiObbEhw6szWI4sm0A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F212B437D3;
+	Thu, 30 Jul 2026 12:10:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73B81F000E9;
+	Thu, 30 Jul 2026 12:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785413430;
+	bh=l85ulI3D6QeubP0OTVTfkt47Xt0r4PcaywJzAgl+XD0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=L0w7fPajcd0k1r26ufcG5q/3Dk6pUXAKe+RbVcgBUAd36vS7PiHsSijccpPvlIfrX
+	 0IljZAjR3ZknZWyy57kmojYWKwJluLg313pxigW3bYCFDVgrEcZ32KQKINuxCva9Qq
+	 5+619lj65w358KWsUqQY/NsKqf653S9+kYrnxqwGymqNkiAdaDJlyWDBmDCq9Zi2iV
+	 TFbwtmUuNRaKNU2SN4rFEbuebYQZHoSAexEJXeL31M/qw6aNQtMucS5Q1bkbIqgSCY
+	 7uGFkmERHkG1y4GbJX2NJsKtWFfGx9HUHsley4XzYeno58vf6JLHW1xTCcQ7a4NUqL
+	 k+o5we3oj5PVQ==
+Message-ID: <39b527d7-9c6e-4798-be9d-b834c8a3d2a0@kernel.org>
+Date: Thu, 30 Jul 2026 14:10:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178539640188.2151126.10266644348178621151.b4-review@b4>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C7C274000E
-X-Stat-Signature: f17noyzarx66dzdmtzax65a5xti9hrpy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes 2/2] mm/huge_memory: fix huge_zero_pfn race
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>,
+ Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>,
+ Yang Shi <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hengbin Zhang <uqbarz@gmail.com>, stable@vger.kernel.org
+References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
+ <20260728-fix-refcounted-huge-zero-v1-2-3f261f5447b4@kernel.org>
+ <25d560df-6d7e-462a-a987-60a8695793ba@kernel.org> <amsch6HvEH5IJjfM@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <amsch6HvEH5IJjfM@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F019E40012
 X-Rspam-User: 
-X-HE-Tag: 1785413126-792567
-X-HE-Meta: U2FsdGVkX19sJ8Kdg06wXOBunfmdg5EdCCzK18lJFixFs3zZ0cJ8YBVgG5fVJeWkkQAt9Towr5afLM25UJCYB4cJyjUaoZbeZ/ygSCBn2jeqgJjtSpWSgI5Us1b24PlnCDnwUFHX8Xpf/wHtgeUBpTWUN22BlbWpKgxrpVyrdNbX2Yza/VG7s4d0glWyevOTfeSqFfRnB2PgJePyxLWxvXdWIuUAUx/OXo1eqY8R4Im/w3bF7GY3pnq8jJMpaSYj1Q6OjHAJ1r9QCOd5b5IiLzrbTYHGv4Al+9irAhniF+W8St+Duk3dBJ6c7g836/ZEQz+PhB/IupJLgr3jxXKtJJ1fxnWg1PHTN35PqpnHO/M0i2/reCK5+YJ8HSFlkicpOHb2qfZtIHYN2+J45x9uHjlhPVE+66EYbtKyN13mV7Zx2hAqplQLX1uco+DVU/pVFU8dyPir57V+RpqDyP9TeTSyXbqButoNYiZesFH7zCrsi+5Ftd7hPNaRkM59iSvMv6uheXGQUamIFL3ydSfASD7pLDV3ebWMpu5k6ZcUovAReaMwh+S2loV786rD3BvoNX/HudKDNkiw4mrbuhjJaUqeVfUgQwUa5DaqbiaZzOBKcmaVGsSTUTmUwsDow8PsyXoburq+ZHhPEXYM4fIUpngUdedbKMjnv50mQ2m5RQmGDLupfbTbw2bHvJ8bsLAhuFiJwJrIrlmXq3JbtcD/u7ltvlcbIVWP9M9SEy0V9wsCuucgvcja+uzVpSpTxgW2xv+jaH/U43QbHjS8CuWK3UCXNeJhHbVBv0+96YyyhHbuNf3av/pNy+m8xwL6AnEKadAezpfpObj+EOtepOwjZmtjOmoMpefyxKo1Kf9bJLPoMvv6j7jFaA1EDCVUGojTJcHKeP7H1YNKqa9YnzL/i6wSJzwGVR51zfV1hOBJehAO55vENyAQ0amvq80SIWnleQEy3Y1vXdZVvZYhtwd
- UrIfiy7P
- lCwRVyhamKNTwYqi7H6oeZFIM2jBr6oG40vAtLxW8Uvcc2BFtPpufpkbQ8+bJBvUysfPhqtyfzSctdOXGfhHG481e5pqHxjMJVzdGI1OTslwg5cScRbuOki6ATJg9czp9N55SQdQagTWEqHJyeCHd90H1UQb/jJzZaGxupFSjmoF4Ce/dYvQfnGaLDXS/qLsepNTdy8LlsEvIzmDFfobzAzCkWr8ZtSRaoxb2Ik4aqtvv7V2cwvEYRZxhV5cuOe9OVgo6EPdfd+Hc0bgU5JItZDSRY22As1q8yXse5BMGhZpL3lEldu0lnaurS7/QYzKW7Er3Ia8FwvaOWFgcP1JYUWjtcNjPsgn3EhCb
+X-Stat-Signature: s7q5iixnrxaxwg9rbkxuysrwzgdw9sj1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785413431-280618
+X-HE-Meta: U2FsdGVkX19+x6UtT71cx6dNxjSe5IFKZJRwbDXIGvwtahwWR+pnQxu26Ts47K6gH1lIqDb+C0r5u5nzESR4m7Qxk9E1o3LaHP2rAm6Tf5eRyBYd8lFn8TExxUA3agX3M/P0E2VeFd++JAQPSGRqWiZ6qIMSYDSgPbd4FnozI+MvIZBO+NKbd1J377Rwc0O0Iov/zjQRBAURPat5lva1Vby6lH0y66qQ/7S4B5FPgg1IfXbpzWZBsyKo1idOXfD0emWNbM9y2BgV1KdfwyxBgz7TD7ahcBhVabbb1D3GjpmjIqMBCX6tc2cRGOTOUCxvUq8rJVeAgychRP2kbtj9FrsSELzSPf1ZjCWNxUbLNnP2IMokvjetYm3BZpajOazgJCPWTJ8PgVUb4tygttq2hzNmWNnOgFCkpErUABri0Ms8zl1UHEj/L0RDr5/nnG6LkATG7xcGm7IoQI6r+jdkvM2WMdjqHqKPcVPSrQB7izPhmjyN1zr1A8N1SiZeNdEdABkVkJbp3wLazUvzPcg2X/tyYITnQRZwRRd6TUK8gXdJQD8pxVkfMR2O2CAf/VJ3YcKh+O0R+Bf8cowkffddaRIBqrFOqzis89IfQSGWg7ubv9E2BpH1TQjV9puuisT1j9HjVkkPykIPFZHOr+xwEISJcrA6DBCsfMa4KhOKgm4Fxq+G6F7AWvd3iAT0BOyFfJcyfY++XgJCM+4DECL2Yt6GvVMMcELgwj2+uijHE68i61gXG4FxrarQygH31qPUyT5OGl9YhboMCREsc+KwXM9ehIQs5GkpVLjEgnNms5nJGcleKti+KTmLdcAIcl2s5APRH15THd7w8BQ90+TeIjhf0XA1GZ52e3euFlzEdl3GzvXwC/M5/VqvD4xjUJvFzbzjGQtdlh3Bc2kswECitCCnUoxMVKTyDCjwfeL+24vTcb51g99QkfG4Rz+bFWmSMezneXPXyJ9YBC8qKEi
+ HjNVQ3Qv
+ ioAclNrC33/RbwnHjUzC/agqiO8QYXqlo4DGm7Nep13SjdBu3rb6a0fiqOzoKEF2Yqy+2lZmJgdQ5l7oML9LFgGAtQYlFZihfVOjfQVooUloV6GsSMLW9Rw6HZVLPGPKT2bs0i4R36byOP67CUkZHfDU8SruSFbM6Bj8FwcVpuG4j8erCWKomyuxb/rrWbz+AyC1Sm/w6K+PCYooL6QozAxmJPw238dJ+kTMC30czubFPGexwvLqRDlWWKJQPvVKcbIAq6cpFbnE96SlBrPIDtSF6GAPN2NvwnTSYpQ2Tlt9ka130+pYn/+5nsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,46 +147,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 10:26:41AM +0300, Mike Rapoport wrote:
-> Hi Pranjal,
+On 7/30/26 11:55, Lorenzo Stoakes (ARM) wrote:
+> On Thu, Jul 30, 2026 at 11:22:09AM +0200, David Hildenbrand (Arm) wrote:
+>> [...]
+>>
+>>> So invariants are required - huge_zero_refcount MUST:
+>>>
+>>> * Only be set in the huge_zero_lock critical section to ensure
+>>>   serialisation of huge_zero_pfn, huge_zero_folio and huge_zero_refcount
+>>>   writes.
+>>>
+>>> * Be set non-zero only AFTER huge_zero_[pfn, folio] are set to valid values
+>>>   so installation of the huge zero folio on read page fault ensures
+>>>   concurrent is_huge_zero_*() calls correctly identify the huge zero folio.
+>>>
+>>> * Be set zero only BEFORE huge_zero_[pfn, folio] are set to NULL and ~0UL
+>>>   respectively, and atomically.
+>>>
+>>> Establish these by:
+>>>
+>>> * Only updating huge_zero_refcount in the huge_zero_lock critical section
+>>>   in get_huge_zero_folio() and shrink_huge_zero_folio_scan().
+>>
+>> That is imprecise. huge_zero_refcount is updated (incremented) outside of
+>> huge_zero_lock in get_huge_zero_folio().
 > 
-> > The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
-> > that multi-page blocks are split into independent 4KB pages during
-> > restoration. This is incompatible with high-order non-compound pages,
-> > such as DMA buffers, which must be restored with tail pages having a
-> > zero reference count.
-> > 
-> > Introduce explicit preserve and restore APIs for high-order pages,
-> > which preserve and restore a high-order page block as a single unit,
-> > applying a refcount of 1 to the head page while leaving tail pages at 0.
-> > Rename the existing internal helper to __kho_restore_page() and
-> > consolidate the common restoration code into it.
-> > 
-> > Signed-off-by: Pranjal Shrivastava <praan@google.com>
-> >
-> > @@ -457,10 +482,14 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
-> >  	while (pfn < end_pfn) {
-> >  		const unsigned int order =
-> >  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-> > -		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
-> > +		unsigned int info_order;
-> > +		struct page *page = __kho_restore_page(PFN_PHYS(pfn), &info_order);
-> >  
-> >  		if (!page)
-> >  			return NULL;
-> > +
-> > +		kho_init_pages(page, 1UL << info_order);
-> > +		adjust_managed_page_count(page, 1UL << info_order);
+> You're right.
 > 
-> Seeing 
+> ->
 > 
-> +		adjust_managed_page_count(page, 1UL << info_order);
+> * Only setting huge_zero_refcount to zero or an absolute value in the
+>   huge_zero_lock critical section in get_huge_zero_folio() and
+>   shrink_huge_zero_folio_scan() and updating atomically elsewhere.
 > 
-> for the third time hinted that something is off ;-)
-> 
+> Seems better?
 
-Ack. I'll fold it into the __kho_restore_page() helper 
+Yes, I guess the transition from/to 0 are the problematic bits. Everything else
+can just be lockless.
 
-Thanks,
-Praan
+-- 
+Cheers,
+
+David
 
