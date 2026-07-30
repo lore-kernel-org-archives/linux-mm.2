@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9374C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53951C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D77D6B0099; Thu, 30 Jul 2026 10:03:00 -0400 (EDT)
+	id 329C46B009B; Thu, 30 Jul 2026 10:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AF156B00A0; Thu, 30 Jul 2026 10:03:00 -0400 (EDT)
+	id 300DF6B00A2; Thu, 30 Jul 2026 10:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C5066B00A3; Thu, 30 Jul 2026 10:03:00 -0400 (EDT)
+	id 2169C6B00A3; Thu, 30 Jul 2026 10:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6FD6B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:03:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 75845140158
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:02:59 +0000 (UTC)
-X-FDA: 85045609278.04.5C1E563
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D838F180019
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:02:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cK5nrJQo;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 007476B009B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:07:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8797A1C0155
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:07:08 +0000 (UTC)
+X-FDA: 85045619736.14.4E7AD5B
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E10E3140011
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:07:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JruAloCF;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785420177;
+	s=arc-20220608; t=1785420427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qGnmXHIqz3SHpZt1Fpg17ojqINdGAHatAP1AYjREhpw=;
-	b=TLqTo5RsNZQcKBmcuowytOAWf/Qk7SihOm7JMc3e5shYNaRHTsi1vP5fTJcROM6MbWz5Sa
-	OLLhbdPsmKbFnLjHoLSwBdPe5h8zX0175TynsRA6v6Qxy8kynL4dtXwMefAIfPEIp5vqqr
-	+fGH/WZeQDNO33+JlkAZxGXvOKMLDXM=
+	bh=PLkeg63OuLCVxSyZVT3FGznGIpDxUacdB3JC+M2Czpc=;
+	b=CoRtzUxyzU/g2ZGB3VxPOdXrxDxRRgVr0sO5vK4VTVP9bqFjaf+UbuJMmwaHPnypQGiVke
+	9LeM0nPC7gEMmoS2XdrHAsprkEw7x479sNc3HJzXwrkKXpPX/l9D9uD130ikXNQSFYF6bY
+	wY5B2Jn/m21aYui+UMIezZN6k3KaLTo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cK5nrJQo;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JruAloCF;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785420177;
-	b=QFEnmypzKBhaJIJw/+3ZrjfuTKINnOStuvzzrIQbzgtb63F31L1jC39GTaAzqTiUvK+qTO
-	ZnU1K2yg1lAOScgn7DSg3KcJMHK9WIugUy/wCHn3r97a9vlfax9Jm8vhGpD/Q1T4qJedn1
-	DYIlHeiTKlfcwau7fmZTAOC7J5rtBKw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F146E600B0;
-	Thu, 30 Jul 2026 14:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0DB1F00A3A;
-	Thu, 30 Jul 2026 14:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785420176;
-	bh=qGnmXHIqz3SHpZt1Fpg17ojqINdGAHatAP1AYjREhpw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cK5nrJQo4anHOM33If1aE+Zewq9vR1/A9k5UPTrL41oUVTqWnLbGFQKTjEmRQqB5C
-	 SWyxkCD6ryDyQti7oSg/8c/WqIN9VILtay4qSFRMkTKZkzov74016iAKJ3LiCSLQNW
-	 xrPShmKXBWaJVnkUuqaabUV/GkfpNZOi2twYSPTj68nWz9kp7mmz1fAP73pNdHxoF2
-	 2rcjXL+sWL13UqureGyQwLqZ06j7fXIkkxJ+I2CKpbrSqDuQxSwFbCXosyTYrW3AAn
-	 1BEa2lLBrOab+tZzAFno1LO8V+DikV/mJJZbn/RLiCDWyq4ilfcLAS+j21ewQiNhJ0
-	 k/AMJBWAE0ong==
-Date: Thu, 30 Jul 2026 15:02:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Xueyuan Chen <xueyuan.chen@vivo.com>
+	t=1785420427;
+	b=ITDTEP42tFYCmI/ijKJFDrHlahrAVXpdXu3sheKIkr5BATguq3BoVvYLyrDqkOFE5g4E3x
+	gjhZNWGUyU+5pOIzvB5NUAS2ImAnmD4uviZ9qbiDfgZWKGhxwvz0rYcBCGylDJCcsx83wf
+	V2IWRi1P6gMhzHB+Ic+ZktOwz35lwYs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PLkeg63OuLCVxSyZVT3FGznGIpDxUacdB3JC+M2Czpc=; b=JruAloCFq/byX902aD6eb4nSmJ
+	bpfmu/SXtypm50k/hfRBOvP6it/z0APmDVQDTWrPjumMRGG0LWjP2/LGKwl8/ecdBsoTVGJ5Ptzh3
+	gZ5fFaZ5HF2WTw6QpSrIrFKHJgnbk4to5b4wCE/CswWZ6ILaUoOL4+ukFOnZLxltSF7+A7CeWTUY9
+	Z/D+IoHIcvlw85VXICazmvxGAudPMceZS4m1giLr+ZJwkwewLS6iRI0dFrJkWtfrmqPgj7TFHtOsx
+	yVZHX5GnuKGAptpU6MoKnNMsWTsNspG20QtN19pdXc6wFrgC3OSBGUlKeRx1ovL3qwQyqPmmE++y6
+	Frj56npw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wpRPN-009IEB-2U;
+	Thu, 30 Jul 2026 14:06:50 +0000
+Date: Thu, 30 Jul 2026 07:06:44 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>, rostedt@goodmis.org, 
+	pjaroszynski@nvidia.com
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Bob Liu <lliubbo@gmail.com>, 
-	linux-kernel@vger.kernel.org, Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [PATCH] mm/huge_memory: fix huge zero folio publication race
-Message-ID: <amtYgCqaMZ0A2UPO@lucifer>
-References: <4ee89c27873fb4d9e598f8a5cfe71d700ecf894e.1785300563.git.xueyuan.chen@vivo.com>
- <37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
- <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
- <amr1tqBj9ec57xwa@lucifer>
- <97d8fa18-cf63-49ee-8ed1-d7e55159566c@vivo.com>
+	Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kernel-team@meta.com, dcostantino@meta.com
+Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
+ the scan
+Message-ID: <amtZNwxZ3gpOsPER@gmail.com>
+References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
+ <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
+ <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
+ <amCT9QEgJRsLIb_y@gmail.com>
+ <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
+ <amM1xUOhcpGpqIpe@gmail.com>
+ <39c90e82-f785-4b47-9571-dd4b1339d685@paulmck-laptop>
+ <amdWVTs0WKOxguxP@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <97d8fa18-cf63-49ee-8ed1-d7e55159566c@vivo.com>
+In-Reply-To: <amdWVTs0WKOxguxP@gmail.com>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E10E3140011
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D838F180019
-X-Stat-Signature: tn1shzfxmswr9x5hcbqep1z5nfdikiyi
-X-HE-Tag: 1785420177-985321
-X-HE-Meta: U2FsdGVkX1/YKLrQb/EZz/Y9A+INBcHj1F4MVXOUTtmV1S8aWTkQY6jNkbRWwYON6xcL/p+KN2ZM9eMdouQYflSRdm+Y12tgPHOssb4K7ZBxPJ8hC49gEDR9Sse6UO0/HV+rinuaA4gNTNepPp25Lot2yUuc40MlHC7SxEkUd4y6oEI6LuiXAXez5gRkfEduh/zIcF0lAss+++YxCR4GFeQ/Hw9h9Pvgv2eh7YFIdzrgMXFj2195/Iu+Cc31Tg9c3qv9mX310EOc4T9TgAVa73HtVHp9yX6Rkue7FCLLRWdd+gsxR02f0vB9fK/gh7mLFERa+zjIQtfx/QAlfOW7m0W8YvHmf/sjv5vTEpxLgrkG1f4VNhG3D9WxBIwgbXocOcvX66HG2HB+lMiP+0m4vN40g0mSsisgrsgqx59Z/Mr2MmMRcPSKHzl7yCqibrrdtq2yk7NaToskOxXWSGVJyzzS2Pz3d7orIvZwOlCKDvOZTNuFj4sY/o4qK9xJVW4aTuktStDEOmoKENFdYcynGsZZq2Oro/vFV86xVzg03vvjCPKO/1FIe07tm8TYH0bU7vkWAUh8EvtviArB7OgfLeMneXHjddbnwjlaf9CEv0eTwC65Ay2BdQbUlMMHiPV/oGb/D4sELfT1sJhRnQ9ehiJTrsGzPAVZLGYp93cYU4U4nbgwVVzyqcsG/1fpdInaHWAk7jiNcgu7ptxCewpFt5MEJ52Le6exMnQgGXg6OBqNsHsb4HOYwR7tuF/eDf78o+ibQFvoNDKbfGUgcbuPXl2Cf+mDyij21+Hx/lN6U5bdt5W7002CjNVPxgr0BAFbRCGi+MhlubHRuKpLCF6prlge0dnTe0P5RtCXUMbkGiBfMbRJ+K9qReHDCdFyEE/VYyJqPy3QaKJ+qVGA1gfO+G9aguc9sjsQfdPC80L+gGpE4Z26v+S0QDz9L1wN/QThdKPwpLoADuu4/UN5mgX
- pQCHS87M
- c8ID2mtfs3jpjAdMMg+fOfFoY5nmIme8iEkqZC4WnRBKI3NqSVHN/jIvb0K/c4XXA2Q/CkrDonHBChe9Ar0SxaiASsBOJejdVPSXDMIipj6mHHp9IEDJKJjNUXjsRN+K5pSSEMu2zneflPppZGKUkPibOTXnWr1dhYyorXGsPWSPGL8e2fG3ZVXN+LrHKVp8SpquYCBgXjVLgzs+Ml7cuUh65Ynh1eh1v8X/5MxtC9hS4Zphz2B4WOfwmk9n4Wc6RpFZ0QaD7pjuLwdYvcpVf1ghkWhAqiPTOBCzK5S4LqeLs3nWbGElP3V4/YS3remVbeUzu4elpz16cF6Kj7lBTpm9Ycfvvb2qqpmh6VNv57SuucICM+wvlMZbnwHAq5Igs5zs8miI+Kb7PDjlsn6cLfNsxjCVHBzZh6kCAyZWXHWurnZoleY/EeWDLDZyFubi7FzVTxwF9ikoZy++W2fQ411TWT6qPw9fShA01
+X-Stat-Signature: 9sdijenkjqbwbrtsdcp87jeos3egmd69
+X-HE-Tag: 1785420426-821966
+X-HE-Meta: U2FsdGVkX1+bmZl/EUEi2MoKmg8Fm97egNvMmJmDhVwhk11V3pDJCvPF1I6sMIKRgf7HmmndsFg0yjy9Ur6N4XqpeRU0uwb0fs9zdXULE1M0HM3vWCXay+frRNwY2s9+43ZOiBypEd3pGCYwxIXuuCreVLJ0cFpsyELSP3V4bdIfQUw7LkxWadCB1VCh9x1BC9XUSSlFHXksKv9Ki6jqDvoIz1UPg7Bjjx6YwAP9h91zvZAm7STTGVQy/pygL1I7LGnXQJpcKH787JNhalP/ee1oiXMQ2x/zvt9gvR5MWec7NFOizFxX7Rtt40p9T73OsGEtpssdnQG1ePKh8CWLiWaHr6rkDXtfhvbl0y6s1r8ieTdELp6NwL7+Dzswv9A6tt60eVeJK/aqJ+tqQBXnsrsOiUEsKlwlnT2tqOX8WZDpibATBlyFlFwdzzX1AVsWopOIxEWFOkTwa4aT88krkh9tzpe7mbJ3gNk3T0yvB6c5n4dBDjDjcOTE5+XQGk52bcKLDKQ1Hu9/lgYDgiGYYq156eo4lcokbaeuWMHw9dI/P+l9etTDy5Xr6m1/Alyqe69kDVCoY055/fUeejwoLTVtC7AFIVR4gG9sNIoki/0UCrlfpy6T2L8FAT2gNVMHi1NBoWHwj9V8zgyVliGMJ0wi8wsM7g+EpVSlEkir/BaC07ZPzCa0on1gQxXgv1giv3m1He+mbYFX2LXbUuvmVaSunu8h308j6dL2IvYiGWRJj9nEm5CNtHyjuxaCTVlwEZilfDAKy4FLfn7p607zqU1Z+isJgX/e/ZECDQ8sbOtDMkIpgv72o+/QhlaD+ltcon3mQHxJMEvIEPr61ydfzHNVN3H8JqS3a1ybWA2GG7m9bqnw3pkHdSpqr76DQD8Okg6xtnuDgiApOL724UAdO3iWc0c1DUbsOiHfbW/DBpfk2TMmt4sWCD6ol4H2PWdH8W8esSZroOu68jHqIHj
+ H8l+P6M4
+ k1Q4nhACt9r5pVMjsz9SPQ8nO2zY2D0R8gAWHlzgj1LI7jHw2olhay3VpKNQ5f2E8UQrWsLuvirLV2lsqExPsWkauY8q149NBQu6JBv721lVjDMZepp8qI6S0kelKqA6/hwczgVYahfaMSvkH/gS6r4c+snioohQXLXF0ljjofxy8qpW+0YoMt19PRlGWMpHuo86dlgwFSGk2ZqIYWwIlOio5Ybz2OsAToTveM4g9Kw8CfugjjWdTamgpVLLCnBcB+objlbytw5qhcEGyQZTnqJEE3u2sX78iysrC5enCjafBMND8Fm7u4a8h7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,24 +102,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 09:40:13PM +0800, Xueyuan Chen wrote:
-> Thanks all,
->
-> I sent this after seeing the Sashiko report for my series and missed
-> Lorenzo's earlier fix.
->
-> Lorenzo's series supersedes this patch, and 3b77e8c8cde5 is the correct
-> Fixes tag.
->
-> Please disregard this patch. Sorry for the noise.
+On Mon, Jul 27, 2026 at 06:04:37AM -0700, Breno Leitao wrote:
+> I found 3 different cases on Meta fleet, where rcu task stalls show up:
+...
+> 3) Nvidia driver
+>   * stuck in nv_procfs_read_lock_params
 
-Thanks! :)
+I've investigated this issue. The nvidia driver contains the following
+locking pattern:
 
->
-> https://sashiko.dev/#/patchset/20260727143426.1077133-1-xueyuan.chen21@gmail.com
->
-> Thanks,
-> Xueyuan
+        static inline int nv_down_read_interruptible(struct rw_semaphore *lock)
+        {
+                while (!down_read_trylock(lock))
+                {
+                        if (signal_pending(current))
+                        return -EINTR;
+                        cond_resched();
+                }
+                return 0;
+        }
 
-Cheers, Lorenzo
+Code at: https://github.com/NVIDIA/open-gpu-kernel-modules/blob/452cec62d827034798072827d3866d1881662b77/kernel-open/common/inc/nv-lock.h#L54
+
+The lock is never acquired, and cond_resched() provides insufficient
+scheduling relief.
+
+This triggers a more severe issue with ftrace, which holds ftrace_lock
+across RCU synchronization:
+
+        mutex_lock(&ftrace_lock);
+                ftrace_shutdown(struct ftrace_ops *ops, int command) {
+                        synchronize_rcu_tasks_rude();
+                        synchronize_rcu_tasks();
+                }
+        mutex_unlock(&ftrace_lock);
+
+Since nv_down_read_interruptible() spins indefinitely, ftrace_lock
+now becomes completely wedged.
+
+I suppose we want two things:
+
+1) change cond_resched() with cond_resched_tasks_rcu_qs()
+2) Avoiding holding the ftrace lock while calling
+   synchronize_rcu_tasks()? It can take up to 10 minutes on a healthy
+   system to be releasd, right?
+
+--breno
 
