@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5082FC53200
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 00:55:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED1F4C53200
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 01:02:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE5346B0088; Wed, 29 Jul 2026 20:55:31 -0400 (EDT)
+	id E64BE6B0088; Wed, 29 Jul 2026 21:02:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B96406B008A; Wed, 29 Jul 2026 20:55:31 -0400 (EDT)
+	id E14956B008A; Wed, 29 Jul 2026 21:02:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A86836B008C; Wed, 29 Jul 2026 20:55:31 -0400 (EDT)
+	id D2DE16B008C; Wed, 29 Jul 2026 21:02:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 80C126B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:55:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5D631407E9
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:55:30 +0000 (UTC)
-X-FDA: 85043624820.29.4EBFD8F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE2456B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:02:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32FB0C0818
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:02:45 +0000 (UTC)
+X-FDA: 85043643090.15.4EF5ECB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5AFE5180004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:55:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GbhS64Ol;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7C53C14000C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:02:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RkaxOLGY;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785372928;
+	s=arc-20220608; t=1785373363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ge99MicqCJZVBzMhvmLfMa4E6XjEn3jhqh0vIzfEiM=;
-	b=0/6+vtkWzlklTFTmMzezz6Z214ftfTQ33R3oU7O/lIy5LrUeaEvg8C/3LZOPg8Lp8L7ZEt
-	pfeqJ6uJ70uGKzu3v9aTfIt4V+c9k0BKHA+IV75PSxonsI1SasWn4nesLVcFBL1WjNBs4G
-	tgtgNKOWjCLvwQCAhYTCTxbU6tMo05U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GbhS64Ol;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=JKS0B12CjE/o8N1gbs5VdqTnXRPU5U8YKsog3scuw+A=;
+	b=ehRwJbIaaZKIR6wU4EOgrxgWo00BFV5olCUGVDEotkkn7am0P92wVSajqMDueyF/Ir8E/X
+	l60Sr0jDdW1xd+OvO2q6zilU7X2+vqDD09DYjpn8dEdAm8Y889102XhuLNIINghT7DZ5m7
+	qLjiF6tA/eY+ECqk3dozFaFtbqfH4mc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785372928;
-	b=RsQDMwO8VEZV8YAJXUIVwYcm4C4d/VXyzcZh0eGTnfVYfSQiokTBKbpN5aDfJPe1Nn2je7
-	ymgbTe4yspt1YYkEjSuL/fNy33dt8bwNAzYv22/jugEb4Mg+kRVx6uDnN030jqp8KeyUpu
-	P4j8+Wj2GHIrvnmqFI72PrlRUUfNWhU=
+	t=1785373363;
+	b=T9n1pvMjJyyax+ogJJIuJPjBkjlOHVQGXtX2dvOp4zaI7fa1tnseXyhRAcZU/5NI40kwoQ
+	EUBV0gs0FnCO+f+oAeqiCbrMywcVLgkBac65tu9EdkdzQM1AiH/PMiIswG0bEwfp7zh/r3
+	lXpMBi3D9n1QksnfqlLmVm3FSZMXnpY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RkaxOLGY;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8AB5B4011D;
-	Thu, 30 Jul 2026 00:55:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DD91F000E9;
-	Thu, 30 Jul 2026 00:55:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7A6740884;
+	Thu, 30 Jul 2026 01:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137161F000E9;
+	Thu, 30 Jul 2026 01:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785372926;
-	bh=2ge99MicqCJZVBzMhvmLfMa4E6XjEn3jhqh0vIzfEiM=;
+	d=linux-foundation.org; s=korg; t=1785373362;
+	bh=JKS0B12CjE/o8N1gbs5VdqTnXRPU5U8YKsog3scuw+A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GbhS64Ol5wSWM1jNHKBXGbtg2prTUayi7T7xdxtugVqKV6gQQkIA/iYD14KuVZhpp
-	 jHP3vWz1fU1Fs0msPCrj3PHjayQRc6VpBOTA+AC9ZZGK+llQogl0WNRKE0RDCS9jAo
-	 9nYODBwzmvEk2F7Yf0awsovfzXOMdnvhXBa2dqAQ=
-Date: Wed, 29 Jul 2026 17:55:25 -0700
+	b=RkaxOLGYcTsZH3TOBiDLha67pIQvWbABhJls6CJaK6Daw3XnIdsNi9ANVccmPbBDF
+	 eYo7eDv6udeYGWQhqWZZ7ddjuO4FWEKgkiB6cQ++2OjQigbGpa+asLinhcd6prvRsl
+	 Wwo/wQisCmBtHtMR3Em5O+0Fghm7lp/C9D903fm4=
+Date: Wed, 29 Jul 2026 18:02:41 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <liam@infradead.org>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, Hannes
- Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi
- <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hengbin Zhang
- <uqbarz@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes 0/2] mm/huge_memory: fix huge_zero_pfn race
-Message-Id: <20260729175525.5e80051b8b21f723766142d6@linux-foundation.org>
-In-Reply-To: <amm2GOFablLbBC4H@lucifer>
-References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
-	<f0e39f91-8dd1-4d9d-8d4e-da5d608a7148@kernel.org>
-	<amm2GOFablLbBC4H@lucifer>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: xueyuan.chen@vivo.com, Lorenzo Stoakes <ljs@kernel.org>,
+ linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev
+ Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau
+ <kas@kernel.org>, Bob Liu <lliubbo@gmail.com>,
+ linux-kernel@vger.kernel.org, Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: fix huge zero folio publication race
+Message-Id: <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
+In-Reply-To: <37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
+References: <4ee89c27873fb4d9e598f8a5cfe71d700ecf894e.1785300563.git.xueyuan.chen@vivo.com>
+	<37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5AFE5180004
-X-Stat-Signature: 9wfjm6wyes9zs6jtcphirt8j9uap7rgy
-X-HE-Tag: 1785372927-696874
-X-HE-Meta: U2FsdGVkX19KvWFEOL2yzd5VU4FWk6p+9KuWDfDaYkLE86snqwDB0dshXzTgYfr4Qt+NLK0yqOBeGZKyL/e5iRgwBzWxYdYy7cpVtZ1VrGLyCn+Kpc7ZX5pAsbvlHiuf2eRfO1PSd2kkC09UXip/wAH7SBoQdcffqv8DUL5NqcT/r30AdPk4QvxDfFHck6dAOeYq93jroF73gxk38js62crpiXq88ntLeJCwX2xpc01/gHEY9xzEXqGyCGFztleU2DqFqXL0BTxRCTmw0Bheu0eyDrWoGsEiiodHoJB4w5NJNJhv3OzomvVSGOxecheYQU4ue8apXmcOxWyXvVdsyieXgWE5tkYT67c2bhpb65V/av0Dm4NrcHi6FE62Ve/DIxtzxeZdlflDEgAnlXd5HNH62KSXmsOyJNBE2WCj5e0hCBsjpCklq0dXvyUcrtXzjynSZQNJ50ib6oKnkY3ZT7mg8yRkmGAAxQDBBGlNrA5ybzfznE2PjA0cdh6SOuNodLBytY5GzhBIWfFx8xz5Bh6ctO+BoXwr6lYDE8kk/ffbNWZkk5iKMAwaEVIIz/YRuHXFoH2eyweD+7yLFje18NpGyljgHo1EasH5wqd6g7NrxZOHuZlN4O7m4l+e3spvva2TXDwNYy6FrdJEDfz2YI5YjRNN0nZVCDvzkoBAuZcC1CS9jZC0a0qky+zMkm6J28PmCnYOmQg/CM2Ox8Ig8iwA9XmWoXveqVKe2Fi0ijcmg+Xqu6Qby5T6oDg9Aopt59szgl7hWcjUq2oFBWt/0XQaV7aV7FgIVntSA+67Qofy1rAX36viQRTXCEzUrkxuEvd43e3Hm5yUNNf///GUcAKmU4plsPeOtrIuML/GmSaLYcC0fFhAoBjJ1nGwvHONACmrL4kqB8mMw2PtLj01B8m6krm0qzY2OVM0ENkRMxG3u/xGrwvurekQUQE3le339/Asklb0iYfRX3u0h2z
- O83jPx7b
- gDQK9Kj5Yohl3iVbEW1+FrUsBakRz6qgr71wvx0pwmr0IsWjAfZhF6gHrSIdXQ4axqtzfWS7nLH/ivTs0m76D0gjl5vilVUaY6SFoJPu2wTapbmqpAgidAk6bPuRII3za/ldHcMTbRCG1BY113hIwEi9yQpqCYxcocq6j9Fnc8xR7ojCDP4qBCT0fd/ceCCBD104068SkJX33eNAOisw38Q+p++8ZcSCPsMKQmKQwMat/2aBSvb0sRbpX82czc4ymTrsKACaSSI0mPKKFsGG9XakKMgcWpL/djjCrE6TwFOaciK50M1D27QHmAe2MZwqg1PoxpjjGt5VUdS3IVsR1w+7XFPTtjrcOj8fmLwvWyfvht/F5ZQmjYFrjfQb1YQlzQIc6
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7C53C14000C
+X-Stat-Signature: ajn4ceqjcrdi35ru63z4woymzhtd1wrs
+X-HE-Tag: 1785373363-279365
+X-HE-Meta: U2FsdGVkX19JBRMSjtz+f7jLP7a8xIAOee5wxa/c+l/NAHE4QggB25J4VoRQslLhZNIFypOlBOfKbLs7fXUfLj6HKN7slL8+Lwyx2u3E3cmjGdG5RXUYZTg4k0EOQdgXJdZtTp8jxF1N1MgMsu7uB0ECcsZe+xDX7PYutPOnb6hMO1KxsYR2fZJTJ9qLKWLz/jWsFoClnOYWD6i8z+01QoF4aOzbSVoK7w33STglFQgpuj8Z61NYAY8FNAOPEWqlAmetJnfrXY+HRm8oA4pmdJc6CuvM4HOirdZrXGv2ZAlxmcCaKIvvmGGmsghV9kGmkql9jOG7TZ1Ju5hlH/78lrAO5a9hDPbZ5SAlZBAeTmwXKy6tX8AsvBWVNgsprHmgA2Y/p8WQxXHUPMS6XFzgJah5wmMpbpsqMuF0FJfZSfgJgqhLz108zUtE3nZ5Ey6vPK+rMQcTZKgTFivzlBAqkRiQijBGv+hfMEWLwF+2+sLYnsEzmib2h0+duGFTl1cIUCpCmoud3/F76hzGXr6WjJXwFafVWQXvdyQMbYTKiaW0t20oNJilQlAuG0vER7a0DNyxbATp4ztqPNySAdnboDNI/d2nCqVS4A16lrANkMJhKag9N0zFPVvxYxmAYG0uRRjzBcMFmn9M8lUtA1TlxQaxjbKXosvhay0nMNCGd+C/1W/wsTev6KFIxHAXM0hBKVYZWXlN0KuBXis5bqvYHFq//ql44sD+2UUuucy5KWEDDZO20VIaqW1em5EUa4ejIubC4qEkFrMTOzkRPpXt38eGER8h6w1zcWRdjHDjLiRNP+N0XT4x0AiIRnvlyMTQwuc6ByxLdh3VyNXrRKjfDmSGRKYngoRCbCR3twK/P7yDcB7n8pq4xO7Xz1vpaqOTmY9JsO7Ge4jUdMagmzP4wrJfAoaUrI9kRfKTMgQ8mBcVmbdW2gUJK2H8KkSwr5QifKMtdeqNIrMBO8tKPiP
+ S8AcEYkO
+ ousTzvoKXSROZIqVJooPgtqGy2yx00fczf86j/n/+MLEAA6ISvipAIQSvlCCw6fV9EFO2hmGmR4G6NXAqEno1DLkXbGYZi8BZUGzy158CUR500RJvAZS9TIvDF9hIQMVhFSPen/eyhOSG8+N3Fo0LdBtJumEKPcHKGXyMtCC/2gOVehx7qOEHAVg1EvvjFuU6XRU6McBCA9SiNi72CdC5NNT6d0Nwm1OxrERXZ2bcuXHhNix7wU0P+PKD/BLpfkM94rFilWbbXCbM4KJ/mGNMxs79hvQN3w657rmMAFF6vFBSr2wdlFHxkRwVJ+yCdPT44NgZckWMVasfnNzEaw2GdStXyu/vmx61kaiRgJPP3+gtG7VcrJ+ukEbLrTS2Z9naZq9Jfe2amdJLZf0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Jul 2026 09:15:08 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Wed, 29 Jul 2026 08:44:12 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> (It'd be good to get some review on the actual changes also :)
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -245,8 +245,11 @@ static bool get_huge_zero_folio(void)
+> >  	}
+> >  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
+> >  
+> > -	/* We take additional reference here. It will be put back by shrinker */
+> > -	atomic_set(&huge_zero_refcount, 2);
+> > +	/*
+> > +	 * Publish the folio and PFN before making them available to lockless
+> > +	 * users. Pairs with a successful atomic_inc_not_zero() above.
+> > +	 */
+> > +	atomic_set_release(&huge_zero_refcount, 2);
+> >  	preempt_enable();
+> >  	count_vm_event(THP_ZERO_PAGE_ALLOC);
+> >  	return true;
+> 
+> https://lore.kernel.org/r/20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org
 
-Indeed it would.
+Does that actually fix the same thing?
 
-I'll add these to mm-new as there's presumably no rush to fix a 2018
-bug.  And add my little "acks?" note to remind that review is pending.
+Is so, Xueyuan's Fixes: is 97ae17497e99 ("thp: implement refcounting
+for huge zero page").  Which to believe?
 
-
-
-To simplify the dependency things I added
-
-  Fixes: 3b77e8c8cde5 ("mm/thp: make is_huge_zero_pmd() safe and quicker")
-
-to both, as Greg applauded yesterday.
-
-
-
-Should I be worried about
-https://sashiko.dev/#/patchset/20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org
-?
 
