@@ -4,125 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB3DC5516E
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B718C5516F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 484A16B008C; Thu, 30 Jul 2026 14:16:09 -0400 (EDT)
+	id 721676B0096; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4357A6B0095; Thu, 30 Jul 2026 14:16:09 -0400 (EDT)
+	id 6D2A76B0098; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3242E6B0096; Thu, 30 Jul 2026 14:16:09 -0400 (EDT)
+	id 5C1026B0099; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC7C6B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:16:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 814871C03A9
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:16:08 +0000 (UTC)
-X-FDA: 85046247216.19.C2664AF
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8837F40013
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:16:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rVe8q6mh;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 293D96B0096
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B64ECA0234
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:18:49 +0000 (UTC)
+X-FDA: 85046253978.26.DE048CC
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C47B2180004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:18:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TOvLJu4V;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785435366;
+	s=arc-20220608; t=1785435527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jeT5JD84OLDwdMghWHFJO3a32W5zB/0PvPjAX4B/43g=;
-	b=yfjz2lm3uomt1GnC8kQzcSDX5lKuxhOEWB6vKQP1/1OKDX9aVf1bF4Uz1Mx++d3QU7JTid
-	tScXN3xsTslkh0SvGNnvEbDQpKYMDB37kW5y00J5m/zpTqUcmI5GRVCILwMY0roHmfG44x
-	iCMHsyjshUKUw7kPNfTjiwtXuVNuD5Q=
+	bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
+	b=cNofVAWVEjxaliaDr0Nmsum/sv24lNwWVMFponX5oswv5WYYZ37hiU9bLTPWR9Ntl8FrlQ
+	+auOE8xYbR8YsXHUF1TTl/WuLxyP9ek8c442Cyo25P51AuAb8VxlWFYKxttII4QeQ+Ff1k
+	7Qn5pf8O5HznOb6GcURcjXKhMal0YY8=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rVe8q6mh;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TOvLJu4V;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785435366;
-	b=MTV6Fw+AJoxA7k6neI0Kp4Ywm+bMBtxVnpxk0fgAwJocLWoGMO0MUw5TOoFv9uonqyhNfN
-	khZTrS8TSZRbdGtfUAynxDh7SSoasZpDpemILLZcS+sYFV9jPtRUB9Tp1PUvdUFdrq70s+
-	BOJVRnwSya9Xq1ZOU+u0kmBseeqLybc=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca7c1176317so95413a12.1
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:16:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785435365; cv=none;
+	t=1785435527;
+	b=3dFbTZH+6YPFlWwSEIYOaJm4e36nFxSsw6dcpMNgPJ7wKHAy1cNKKBZ/iEEqBTdKQWgfvZ
+	gHcFw5kc4zSYe3JLwQDxJ9ZSgqbrlUn4d4cQgyJa+h/YhyZ75P976HSQtf6jC7fRY8xosv
+	aDR9sSYSfpEnYXATP3kRU3Fi43V+5jA=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so247829a91.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:18:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785435527; cv=none;
         d=google.com; s=arc-20260327;
-        b=WaCv+p9DfxMAsQBG1XUx8/kw/1aHF1hfyZcDoUmIYyIqgI1jVO36gtDRFihyQ6InJ1
-         p7XEDWIOb/8F9BDq26jIlsjAetOCX0dHk7li0B8VCaItSFyv5lk8ZK6K+j13Mq4oyAmZ
-         2S+3NVx5wBb6qHDdlfTXcW5Sd3wkZYZkyhXsVKBV1PAY8PeZSh8uTCtpf0CdBx+LRuyE
-         VlIVTWmboai/MXvmAsMpjcqykEns4xh17Rn5io1cy0G68fFS9HiYhQ3bsXxlLWYSqKFu
-         2C2W3qAN2FcnQ+iXbW/tqegi/FvZ3uQbczp/mZUdHJG6sGqwJS0Mc9aBJexjCZG5bH9W
-         Ajiw==
+        b=pWqfyS72SvsO6WwCw3VzXqrjr8N/1LnpiASvhY39kZoFqGL4+HOjlCoqRcYhd6BTBy
+         4ULVJ1f9tZWyAB9QU8Kq4RVw6v+zXy33JYQ2ke/zVjiG+DuTZtVieWz5MC5rg+n3B/Ev
+         andGeS+Bdw1pzlGFMnsgshS4oS1hydlvi6q/X/dx//KL+qT1Uskqte8SJS2EG8l5LQrF
+         AbN3oLMgDP8j+3DXOmK4xl7qJL/a07c9DoMMUDKvJrdJetRLB0KpruxE+AvuEibtQo/p
+         2ig5Vi9aXMKS08ujAfSuqZjSPEW4VE2jZixDzEpC7WkXdChVm/F0yvm25D2wV8RMj6Xe
+         QQiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=jeT5JD84OLDwdMghWHFJO3a32W5zB/0PvPjAX4B/43g=;
-        fh=loUOqKrvV6OK7lAjAx0TCz5/zvoA5EOnTiMNeGI1iyo=;
-        b=YHPLDcgWTNoLiH50kcFMe3GusNECbqTEuulEUqMCJBVbmxUwxAU1ut1uuocpx2oM9Z
-         MA3fF1dJ6VKz9yC9Xhx7GG/LogNKRx6jFsXkwXZ/AW61nhn8yHMRqI8zlayW/XM1i+FD
-         GmSvU9qbLYiZD/i+ES1/JS9NBSb7TC4L96th5VeW1rqE3JQEfYHSWMIb40FULDRZDzVH
-         I/eTjozoCDj3J3TV/Kx18jbzjL9NHzrT1quJB8tjR4SFjkU4WrMsF0R/z0BGojgylHt6
-         6Pob9fTmS4bhaLlzudSgU9ZAHYt7hMCc8DTSkuod3gXkE69/IVCV82V82Og33lqwq5yi
-         qczw==;
+        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
+        fh=fSCn5+jXC6oxbE+sA3XOnRLstIxv4LfTXVDlDEyhHYs=;
+        b=SGvmsweTjDadYKbZ+BybSpYdrBjd0LVGQsQy8aVsUhsRo0APbCYzuiednvhnRyEKjK
+         HMrarEVYH0Pv+jUslSmRJGPGDNGuLCNFbpq9gV95uU9t+JY5GSfl54SMQakSkH8OOscn
+         oS4uQ9avf6ITug9CkDirKWMGt29jfqpOKRRgmXY1SA2CRbALtVjKjSTCSXFMT3zoIbd+
+         fWPhIwp5MSpXBs/cX6n8LgVUGu7N4X0vFCAX6zFmoFoenr3xy/Ftn60DqqUr1Eja2MP9
+         qeKeYTw50zidPYs8cldt3h54y6x3ds/vCzvqDPeNAXjJpNJYPiT3Csi8/KfiypIjhCYq
+         djVg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785435365; x=1786040165; darn=kvack.org;
+        d=google.com; s=20251104; t=1785435527; x=1786040327; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jeT5JD84OLDwdMghWHFJO3a32W5zB/0PvPjAX4B/43g=;
-        b=rVe8q6mhKECF29JGPmroIsS4xLAc292j+q2ZWBouZKR0jAkdVZmeBzfR2TKbDrYz/O
-         mrYuADASjNVdok9L867Pvcsiq3U2v6xlVTPM5m5v0nnHyVy79mtUFnuiJ5/rc/G3HMNe
-         sNywqjblCF6I9V0KBPKQ98iBKAS/fiXV/4NGRo9ufuaOB/kvnDKFCAH8qseA0d9zr0Rc
-         6RGlNQjHoXCVtxcQSt9yQXHXMchamvTAEuzGWZGE/ORrqgX7HXl4LYbkpN4MataAc9RT
-         LuMoNgaYgs2XxiWVFGxdzyTUSP4O7W7OolkYqn+JUXSDVw4WxGhsYGPyPiqsoYz1zYAj
-         jzOg==
+        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
+        b=TOvLJu4VKP0NTpXk9PjheiqEs7iiEBuHDpIkQnaPfB+wtszYnWJ1dALvu8hftp5Nds
+         76y+mqD8uAdVylOAKBD/WhRgezCz7X+jvH09PnzVuXkwlXTBQqi9T8Z9E+hsguEjKQM+
+         1VxAWz36BAGWg/nnrmYw12+sGsbhf2D0H5uTm6+q6UgrGO8FXBNHR8s5+yCVBSFRDJ2y
+         IN+FDIMOqlrshO6Nz7eEiRh2f2dPG3nYumSVrM4ClXn/R+vVS+bvYRp7R1N6lE2rYjeU
+         9zhY22+j/kA2gWTkMRYwwGzy+5EfswWJY61ks/5fCU/K8mJTNYqkSHrWIMreociISuYc
+         vPUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785435365; x=1786040165;
+        d=1e100.net; s=20251104; t=1785435527; x=1786040327;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jeT5JD84OLDwdMghWHFJO3a32W5zB/0PvPjAX4B/43g=;
-        b=G9Ezm7FpPT4u0Je6gHGVVroMX6bd4FKngmv2CvGSkEZRMbNtpCijRx0auJDpa0DdLw
-         3d9BLaRbH2cdLxrK3qTOsJKzL8aFRwmybjB5vRpcE0wRDRq2MUnCkD7NiuN+M6pTIriP
-         NDqxvfZjmT+D7KEueZkrIo1z+WcJnR1NRncF5QkTljZ+pSoWqq1ew+keQevtEeZPWRto
-         zYqyeSn88oc10D6zi3Uhxhmm2oG9Dud5dO83jX1wcCAARR7lPAu51tZddCivbfsUTiGk
-         zbl8ZQ9LIukxy40uUJ1bPohmy37DAsPCS7AtIxMZS8u5FoNz4MXE949ZQBaUPpTOhR2l
-         ox8w==
-X-Forwarded-Encrypted: i=1; AHgh+Rre+/GSqdTQDIBNAlwnNTMVe4KQZDHMlxIi1MaYqMrcq1QtDdJ2dXh2LexxDTJti85091FujCSM9g==@kvack.org
-X-Gm-Message-State: AOJu0YyDQWXtw1Er/m8WBfDpIZYqNBf72yMh/oKtKttEsSRZ1GWf3dQr
-	j5NaC8yulo6MwTOxR5kF2eCRItpCL/pIGSuXMTQPRU2b7Y7wETdFQaOPRChbA5XvmxrkMc0xprG
-	JkvT1pqgnHk/n6UHyCXWwBU3fia5u2F28RdfAJuSr
-X-Gm-Gg: AR+sD10gB3jZ7j33KU31jIUkquNGN3lxA9fFEdJTCOwZW1bkAsSU6XQBfyb4+T0EJBT
-	VUPyH6o0RTmvIr93I6GQiuP8MJ23ni7G3B/Qx1M1dEzUrQRC91wwWIGVIdgQSdWv+R0laxPlnsn
-	hPfDInCAwCb3X1jgyFY8+UkNIzfVwuVexbvN2Lq16Dc5XsTjGG+j5wCFex9MjR6bfbPjvNVasoV
-	4zk3nBhfhimXr6T4045rnpEBWbFD0uUOMcSK6G4oHFY/dir6Sr9hTlDoDazuToLe9punb+9+GXQ
-	spvWU0NMN8SbMuh2YwdtBMCzP96aUnyFypzTFt7GL/VCmZIKV6JgqChufc0XzN2n1wHa9uj0fPr
-	pIoQzYQS73Rw3Xc/MXeSaOpu3WioXxTq9ZQ==
-X-Received: by 2002:a05:6a21:699:b0:3c3:a948:e2dc with SMTP id
- adf61e73a8af0-3c900759828mr3817647637.27.1785435364789; Thu, 30 Jul 2026
- 11:16:04 -0700 (PDT)
+        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
+        b=Z4i/Jy7jkHjnidW046ubpYk5c9IPShQJD83ZR2dSE9QolBNRVFaScGdOGH3GxLzYzK
+         pFuCPhk6vSNm7nT4wxuZHNC6lS87RKOpWuu4YpLABLijpp7VfrClQvOG2tclWe+VegND
+         gq6TXaB2hmPV41NZRMgju7uVy2FBEqKYnX+dxmxrkNs5Z7mf2dgaJIvO50Ug0Txe5dt0
+         3WRi3ZzsmHxzyDTAQyOZS8MqH6NxYiQtA1YTcg8f+j4TKN6wZ0DVzSfpKKQvxqMZhWru
+         9oIfuTUwNTF2yP/2WAL+n1RfYTBGRZchaecW312cCEPOGRSQ+ihOPWeUvbq8FbF7h4nu
+         LpFg==
+X-Forwarded-Encrypted: i=1; AHgh+RoaskEGQOWDNIkWXAY2mjTWnxoa1c89h/MzefUjT4fgLa3pF9nE42Tjl6hJ/cMq0SyZV+qFgVbiaA==@kvack.org
+X-Gm-Message-State: AOJu0Yzs9ikFyseA7fWUkKg6OMWmTbOSw8BS10qCBYZc3imsmZTVgDM/
+	qRIlp4zyNC9FpsboqxVT0/YNtO0OY7qwcziKphuBbzxS9lcc34yc6IESBY7TAONYIg4FZnFWAHX
+	toJ4lJirTQ82R7aBj0spyJH2ARzqhpIHUSyKIjZEX
+X-Gm-Gg: AR+sD13CXTbpEyw8NL/PzRfVGdXMlJk5AqVtyjzx67wHCLiRs6RN8v5YhK82pcjkmga
+	XjInlM372tNeNdiNz5taRMi5U1157Ks2hQLMu/BSIAJn/9aCMtx63/ntw+5S9yIlE7vPf3B2kKp
+	n4VA35q/hPW2A+z9VfPnkCKLFELl5ElA13KXnS15Ey6MRgUN4vgK891ML8wdmiVNp3hjnTRXmCH
+	W0FUcxcamTxuUadarHS+iAv64ncr8v+7ZUI4tlQyI34CWDqoBZpd9vLi54AzBiXWmK0ZxsnU+K3
+	pJKA3RvVpMFzbp5e0c1H99o/SnF0bR7E1Uo3SFRxQq5Wa9bdZ3lyIY4IUcC2T7K/B1BRIoswl8J
+	acah+GSAsoNg4bNIPQuECcqFJL1UJLCovaA==
+X-Received: by 2002:a17:90a:d007:b0:37c:6130:7a5b with SMTP id
+ 98e67ed59e1d1-38fa7dcb036mr912482a91.8.1785435525974; Thu, 30 Jul 2026
+ 11:18:45 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:16:03 -0700
+ HTTPREST; Thu, 30 Jul 2026 11:18:45 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:16:03 -0700
+ HTTPREST; Thu, 30 Jul 2026 11:18:44 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728121138.1103610-9-tarunsahu@google.com>
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-9-tarunsahu@google.com>
+In-Reply-To: <20260728121138.1103610-12-tarunsahu@google.com>
+References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-12-tarunsahu@google.com>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 11:16:03 -0700
-X-Gm-Features: AUfX_mwuYQlBmJdhbZSf7MRgmwyNG_KfxbR45Duou2tcQqjIodL3cnnQ31aoSzA
-Message-ID: <CAEvNRgGJ0s5Vu8xRvfPmA39p2Bmkr-U7JFFkshM9Dyk9j+t-YA@mail.gmail.com>
-Subject: Re: [PATCH v4 08/11] KVM: guest_memfd: Add support for preservation
- via LUO
+Date: Thu, 30 Jul 2026 11:18:44 -0700
+X-Gm-Features: AUfX_mzurojFzFl7kQ4jInKyqzMda986c-EWBvJn_4YyREdNQpyHfl__fqR3AfU
+Message-ID: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
+Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
 To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
 	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
 	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
@@ -137,13 +136,13 @@ Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
 	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8837F40013
+X-Rspamd-Queue-Id: C47B2180004
 X-Rspam-User: 
-X-Stat-Signature: pcaozom76pumuxso786qy36hw8cwxiww
-X-HE-Tag: 1785435366-623604
-X-HE-Meta: U2FsdGVkX1/oGSk7/3+BPBxWDhyiYvIDCNnhRPXW15W1B/VTFZjDzAln6yCOfKS+VC4RMxmHkrultdIYaB6+tmANdyq1O+lZGAmYM8IkYXSBzSW7D0opdD8YD6ej7TWJIBsbCH6Rpqhs/W+qzpu5uvapQhJsKDFY5OyKeQIvCk97eJjvdje4ATNi3L9NtR4tFuzFn532DT2bBYHLe114vECWO+YX9N+659jxCQrh/rZV3nJSIn0JnPST7kcIE5LHiKjzFmNmlqCx6oso+nKNxXbrST3tJWkGj0UZJiSTY++trRae2zf3JLSETuDZEe7L2ndZj8xvw//YNjydNpEecx7fr1Uexm6bTTUBk5GcMvrDMUc/E8E97IFxYh/dGw7knTi9UeqLdxLOzpgaRED5wwcOC1fwl42VodAEMH+jvE8eiGt/ebb9FjejuyZK4VeEiAIlrkt4LhiQrICMPFlwr3aDVZiRNIlx3grv9tI2VfuB98yv+Fkk5L1cCdDrXJPLJ0WpRjM63ACPyJbyLNGoqdWjZVzCCr9ZQnAeXVAm6QGYcpHvKoAS9wIsMoEEjQ4PZkKUlgWV5OPoLMJzfRMDdqkrZgZrLvnWP/8XOxPyZM00x7wmHsMu+MOrBvhRKXrdG7n30/tmnKa2gKdm8c91ycTEfZKH0sQR3wMmwMyqifoxONBVcIGhJtKSJinXFUwKfCcLttUmErLrw/OY2YnzgBtYWA5xIR0g839Q4jJUH7rs3Ki8V8HU85fxSzVwPzRtK6DbkoBfwAvdPQ/gBGRSBk3V2GSdbsn3vZQw5TUVqCkbc1dbF/A2WyuoHlEoSGlhc+U9cnxhrzA+Flh5jP2VTolcCPjADTv3vOQeWWvTSbJIdcs0oBDdglZXK1W6T2fzmX4Ur3ar9s9MVgTDvK2gMrqNcpCWhwtdPm77yLb/6jBdGfilx5ZkcV5hgiihaTbXYfipb6bObrmGyW5Ff20
- mscs3qNb
- 2/uKFRvVYDBMGpb5zQJp0F2h484zm9a++xM5c99Vc5IyGGWwAlfVRyFhLdn9mu7wHKHb4q5Uj91gOqWF/aBF7IyXzTcE6cBhbGgG6zd9Du74+WwD3OlzCIbK2JyMePA9VlDzDmUqhZzYYynNDd1fK3AVnYJHDwgP6wMMLgI0Jbh0gShf00ZS6CKLJk0J6a749mgicViKx4eFZiWNAn3SL+42QE5QaMrdbkCq6ns+K1LyNNSoi+ycF0hCJ63dGyO/Z9Ujb74NRiSztxaU4AayiLjzydpOapJaYa3Cw07nsUqwcry5etBZBFki+aVQqXljqWYc6V6I3PDY4fs/GDBAHmG2/nvmK/AzLnsRRMc0URR6VBqAzpkUlVei0lA==
+X-Stat-Signature: b9y8i6p8y6ed6c53ircca6yg7a9h3pq8
+X-HE-Tag: 1785435527-912642
+X-HE-Meta: U2FsdGVkX1/hmXLQMhUNMp7KhVNf4+0ZK6h/wTxOwR1rZKM7ERGibfmpwG68yChsfcy7Kz5LvYAA/7rxcsE3RWDUwLHkMcB8rMywmkZUroxFrRHpJ7RmBiuevv6RidSTUgu+xgoke6imXSoWJSiPd2dgDpUKaS+7w4g4Rdyt0sTweH8f6lmh1zy2UgOjp+jBjGAut7xV7wJ2IfCOhJOLiM4Pwbg/muFh/TSFCssVXNv3atvughJ+8RSJzfgo4K/g/Bd7+HZY5yTdWyKrXqq/geKYCWTNzxg7de8+Lc9c9DNX5QZkgVnldxZrBZPbV9vtvDcl5FR31YPlR0FqVw4GlmkJ4n2taoQZmiVBP+WuGZNAYQkXSgyRND/GDKfwpvv0R7p3brdm84lJfyBie3RU0X8vj2Xcb2hEQrMSpntITiCgsitPX5B064kxvAOoKgRzo8vTbzUXecXaQ0TVxurFMjR2f1FHL4TGNgUjAEs8JgaR70zPaJ+5DTp7TYjGZI/W4QMt7eo+goT/9RUKvFiv8xUsAZhDkVOhg1gBmGlnqJSiYf0LX6DaaAjc7Lotrvsxl/Q/1vnpLJeTFkFh9ART5ngcB8Wg5g03cTAWNxxvFQragEXSxy84tSvfY221kvyAzNFhWCGv+15I2nIsR+xF1Zbu/NAPfriRzdJ9rautPJ/SCqpFodW1UvXLgYuKfIBiBJXuH32w6xw4cPBGx2VtWHzhT7rMGiHNlwIi0XlOlPLgIxeaDtqzlVsdnt2mIeQUnhZuf1Q08RieSzKMLHMMxbWRvRSWsfDICrcr0vgN6qB1sniO5dcIT9SN7kvnRayto017AaP/4iMFbP/WQ/FKl8v0GTJGbXUYwaZpvC4kFK90tVnRpUABt0E6HvYoxRsfXFgvGQgY2RtbL91tvtw2rWCHgIpnlQxI4n/3sRWxKfxijnPcEeojbl3gJ2PS36dpUQvoPGBcCq8MiAcg8c/
+ Y+Frnbmh
+ zdEPm8AGa32iNP/NA/u1Zfk3wzkw3k+9OzJvyUUrh0hM+LI0uqjqY1bpSJcDXgXSfHgsk0X2PV+bBy/4B8zNVgakCcvu3iNJpTu76npvnDJO5a9w3D/BPb+F+DGOFHssw9Zqm0u4yN61zzZYvg14qDiMbWOyZouJI9aO9wMRIFqTJWYKC4PwA4pIq0xT095RXPCTNa2asToId+REbiL9wWJI1Jq6/ZLAdmztW+v2bYjsdZr89L/X8xY88/wDqDBZAoB3mXfT1y3JZGiYnccpBQqozqt9OyzSi6rlm5zsio6bqbjMvEGC9gOqinjAfKR983kVjZCaoxW+CeKa42c49QbCMR+D4MwFVR3QKvBVSfmDdygaTTO6x+wDI+2vrZb345hSOwkZTMdGkUeyViBaJj8syxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,58 +152,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Tarun Sahu <tarunsahu@google.com> writes:
 
+> Add guest_memfd_preservation_test to verify that KVM VM state and guest
+> memory backed by guest_memfd are preserved across a kexec reboot via Live
+> Update Orchestrator (LUO).
+>
+> This test includes multiple tests
+> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
+> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
+> - (C) Test to allocate the guest_memfd memory after preservation because
+>   preservation makes the guest_memfd frozen. Which must fail as well.
+> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
+>   kexec: Below is the details of stages in this test.
+>
+
+I think we should split this into multiple patches, where each patch
+introduces 1 test.
+
 >
 > [...snip...]
 >
-> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
-> +{
-> +	struct inode *inode = file_inode(file);
-> +	struct gmem_file *gmem_file;
-> +	struct kvm *kvm;
-> +
-> +	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
-> +		return false;
-> +
-> +	gmem_file = file->private_data;
-> +	if (!gmem_file)
-> +		return false;
-> +
-> +	/*
-> +	 * Only Fully-shared guest_memfd preservation is supported
-> +	 */
-> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
-> +		return false;
-> +
+> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+> @@ -0,0 +1,357 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + *
+> + * Author: Tarun Sahu <tarunsahu@google.com>
+> + *
+> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
+> + *
+> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
+> + * frameworks because Stage 1 daemonizes into the background to pin resources
+> + * and requires a human operator to manually trigger kexec before Stage 2
+> + * is executed. Running Stage 1 automatically would leak the background daemon
+> + * and cause CI runners to falsely interpret it as a passed test.
+> + *
 
-The above check can probably be removed. I think the core thing about
-this series is "we can preserve any memory that doesn't have any
-encryption state that goes along with it", and so the check for
-kvm_arch_has_private_mem() below would be sufficient to gate that.
+Usually there aren't many printfs in tests, but since this is a MANUAL
+test, maybe that's ok?
 
-> +	/*
-> +	 * It makes sure that no memory can be converted to private
-> +	 * even if it was initially fully shared (in-place conversions are
-> +	 * prevented).
-> +	 */
-> +	kvm = gmem_file->kvm;
-> +	if (kvm_arch_has_private_mem(kvm))
-> +		return false;
-> +
+Would like to know what Sean thinks of this, and printfs in general.
 
-For now, has_private_mem == has some encryption state that we can't
-preserve yet.
-
-This also gates off KVM_X86_SW_PROTECTED_VM, but I guess that is
-intended, since when work is done for preserving encryption state, we
-can then test using KVM_X86_SW_PROTECTED_VM, and only then, remove this
-check?
-
-> +	if (mapping_large_folio_support(inode->i_mapping))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
 >
 > [...snip...]
 >
