@@ -4,121 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA43C55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:13:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8236C54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:22:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 982356B0092; Thu, 30 Jul 2026 03:13:31 -0400 (EDT)
+	id 610546B008C; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 933AE6B0093; Thu, 30 Jul 2026 03:13:31 -0400 (EDT)
+	id 5C1586B0093; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 848AE6B0095; Thu, 30 Jul 2026 03:13:31 -0400 (EDT)
+	id 4D6916B0095; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 65CED6B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:13:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8510C089C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:13:30 +0000 (UTC)
-X-FDA: 85044577380.20.A029219
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2CC2A4000C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:13:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m4dlqh1u;
-	spf=pass (imf07.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785395609;
-	b=xuEk6RpSWHyFm6iilWLVXkwRVUAFE4OY+uSrAOu6L2Eea5O7L07m+2fhu8SyQOuLVhaE+b
-	4H9n4wb/uy0C/IKGb8HpimZk3vNsbkOgf80MoMczgqW5uRynbNnq6QkUfOvgPgh4CLGUzU
-	qnCdgRioh1AJHHyvfhpPdZB0gXaJ+X0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m4dlqh1u;
-	spf=pass (imf07.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 245C86B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D09C1208DD
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:22:07 +0000 (UTC)
+X-FDA: 85044599094.27.3E9BE78
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DB44CA0008
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:22:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N73DFTM1;
+	spf=pass (imf15.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785395609;
+	s=arc-20220608; t=1785396125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=CPrk4t4iG0XjStu+o65Zjwa966zGEs6R7VTzoqoByrg=;
-	b=QQ+3vrNN9xVz//LhIuNPIhPck5S0N/E8GmT7f3GIoSyc/zDEtGSMOh4eeDrAuXq+UvYUW8
-	5Hm9TkZjLNut5fCZPheJzFIZfFTzspULaPLwNrpGLvCMjr+p6Er4hYdzQgmLSTmNArLvJ6
-	ddjgBmUd5/ggIQ/Srk1Fs9vh2NUzOAE=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so1676338f8f.2
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:13:28 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
+	b=t0UkCOV/GarpUGl2ChoWr+XzahQ+fZbLS6bv0yWv2nQlfS2GD6eU31LqPHVxumc5JgmHKr
+	XRv5Ke5A87qgJj3HTCKTSizNs2gTH1I97DEn/q5TLeNuAXBJj+uN29YnZv7670qohBkDyR
+	b+AurP6LX92Zvl81ZqmUWZp3hmWnNx0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785396125;
+	b=LNCTV1R0HQaW2PbW/HenqjSKXxWopNn7QFwOZ86GAF7vYDMN3FuMxCAcdmXuCm9x4JjYE1
+	d/aHqXxHEdIseDzk8eSeMswO/OUp+fnYb5jkx2El6zn3ZX4bEspmksUHy+gAhmwaFwJfDA
+	Zdtaox1WJ93HnORn7YNQ8i2dha7p888=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N73DFTM1;
+	spf=pass (imf15.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso1531512a91.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785395608; x=1786000408; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CPrk4t4iG0XjStu+o65Zjwa966zGEs6R7VTzoqoByrg=;
-        b=m4dlqh1ue2av4YRxnla0t7NCXsV5n7J9IrV6lS4bQ0n+Pls/qz0yDX6Ir0vjMlobXG
-         ZmDf6u/sRLArGHzCK6/gcBdzmKbwoEgIWP9OKbaWyES3fe+npSvXVOLy5G9f5j3E8gEw
-         OWw1QwGJT3XudISL2oZXc62oVy3/mmOLPdo9OO+g3SFr9ajLhH9ZUilZNulF6L4AYCc2
-         2CtwB+SBvcxElbRj9C4yfUYWUjR2x3ftRQ+IfRw0b0gXlnlT9410qzmCsj509oSd2P/D
-         3CQXljOoaStjx2c+8q/MrfTdaplZI58018Eny9dP5hyHRixZwhzasr7wFpWbAemj1PN+
-         Mttw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785395608; x=1786000408;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785396125; x=1786000925; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CPrk4t4iG0XjStu+o65Zjwa966zGEs6R7VTzoqoByrg=;
-        b=eHjfpz43FMmFVrXECj/gLAFvqOxmEpX33geouLHOXUQ4kr8Z94YstaqEe4TWIwNIxB
-         ZuJnhZPVNUgK+xDqNtRD3Yxl4Ik7bgePmBaWJz+fVHXoOT3n6jRzSr5tsl3ST8kLj0X6
-         Pd4KPO6HcPFgtgJxfnoj6YFQa2TS9nL8tZtoD1pQ9ADYICiXQiAcYGFfXfW4SEjcd7cg
-         veH8zYFyt3i3rB18s8XU9+4czhwiFRv2RxIDbZ+Nzpy+pHyMXWXV87wbHuNBCUD+Veyp
-         rYqQ0/JC8JYmqdwq0UtFwWCyn9wEMqxdzIYsUWv/XmWbkLgmPue8kUF/7dJsq2savfRU
-         JyKg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp9Y13uVGGxaJB20oNmIyOIwsU5YM0b7AvrAMmXFUpTrkBuUr3ahhYIuINMUb25wV3qEAdmMVSw6w==@kvack.org
-X-Gm-Message-State: AOJu0YxnN9uDC7q116Kr7fdLZRuPTA3FRyn0uGDS+u1CpATT4qpiNP+S
-	DgbmmamCc+BUwy20PczZ3sPTqcCT5xO1UOryP1LtT6A3jNY0SExjMrdj
-X-Gm-Gg: AR+sD10gERlbHnYurdangPgnRkhLDYLh3ATpPGtM7nU3Nk6YucgGOE3ySGmupPMvZu9
-	3sY1o37oRGgAcYWwcDRAN6nbbYnn860EyJNqLX71TuVWGK4MVG0d7hq+LABlcRJhS6VriYxBqD/
-	5UxjfUL8CwJM9TWVbGnb3Wev30HmyOi64CTbn4XzwgpG3P/L8jHFnz0T7wStnrppmoOA4CWvmQy
-	SAe2vC6i9kxTxjlQQKCLj+BBalA4WIK8XUc26Ba50mlMM1xqvELna7MaWHZFU/1C+QTD1knjuSR
-	F1yTv7BnM7scQEKYrjRlFMi5XOvr6UNK1DF/ZdUbFZtQcgPNlWuBJ9qu7UZLVUH9Jgpi25nQWEn
-	cN546QgByVb9MvpIye6conIoWoAK0GQ6mJ3hVgSaqbkru/wiYg6x9qTu1ECjNS3pC8z6UznbE3K
-	OdDYOVp4cfvvvDm3knsblOc9j1KWOiJ+PSJfOCX767wf668Mm4PZBR45froXgiF8vG5jEHNILLy
-	vsF2b52BJ/m9A==
-X-Received: by 2002:a05:6000:4382:b0:47f:6efd:8421 with SMTP id ffacd0b85a97d-47fc81ee02bmr1757235f8f.13.1785395607476;
-        Thu, 30 Jul 2026 00:13:27 -0700 (PDT)
-Received: from LAPTOP-AVI.taile24b5.ts.net ([2a00:a040:1b7:4f41:1fba:f3be:5adb:fb78])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88d6f18sm3534010f8f.4.2026.07.30.00.13.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 00:13:27 -0700 (PDT)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	Eric Dumazet <edumazet@google.com>,
+        bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
+        b=N73DFTM109CdwIrtWRCW2PcDWcbcTFxxnRgTk9mI9sGnqGLG72PPpEGG6cyRe/hE7t
+         zY8LvOdTjXw+ygWgsjlaSYf1/r6Ph4lssqqcjHKM3j6f+LldHb+TAeggGVNwpcLwiznc
+         Rs+a2ZW6Ury2PKFKRVbFbAOOaIHnEEWx1ZYa9NMVXFWn3ZuWPzVdpPTFJanXaHZYNQzZ
+         ZbxmT+b0DHFaW7yr1vtWpMxBqIQoCdaZb6FMov+eV1V9PVazzrcoS8IXCOQjqL4u8kam
+         ZTP3opJTmN65nM6EwjlQ+ywwS+a5HVlpod1OUp/JPzIrBQ+Mj6T4/OFHwoqlMYM97adk
+         oleA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785396125; x=1786000925;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
+        b=UzWT/txsVSRc+4LavggJ9R7npZXqqqgWzkhRjTVCdDZfT03M8iVz5vJq+NqdlQic0w
+         lXB3YPIPRn5qMHQfHjP0VtMgLJcICcsxKFu6iBFsBor9DFjZJvYOYhS/Jzu0HFsw+1UN
+         YrNjTxwCWyEQnx0BidfMGaVNnghIk7SybVJFcUpBjV6Qeakmd82d7ja1UYTG4SKjhJs9
+         8yLIzPykTNnc9a9FayIBv0TKzl2hwVxctYMh/QftHLTYQCDOn9RLsFxVytTE3ghzA035
+         LsCmHLgNE/+kFbijEf3jdsSS4kF1Td4H1INGZ6BLk7Oo6AK+SG3vz0L+vZea7/oyoO5F
+         YKCA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8ai1qcF9voXrzM1dFDkCCtiVQ21Q6yUS52PHxx9W0W4VbSCVOJTzHGhBhzLQIXtVN/Um7RsrnEA==@kvack.org
+X-Gm-Message-State: AOJu0YyJF1LCcHzjcUrA3seCnW5SXfAN6kPETL8hObTzTd5SZ60BiM5n
+	8DAi1b8TExHl5+2o9Tzm81XoUkW1L+jD1TWk8B6kap1BCwavRbualuIn
+X-Gm-Gg: AR+sD13kJaXnX85lDxc7XX93MnzIn2T+jMAj0Ha6UdbbKjm0agNBnr121rAqF9GJjiN
+	5V8/11fBigcW/DYdzToUJesZuhGNsWWu9bHHIhFMCeNhU7WBW/BjCc9T0bJWTkKDnp6/M+8xz6x
+	GjHLxJeENLynX94uJ5dzcxTv4TDSSBjhISx1enHiojssMwk3WM8MFRLF6sU/YDVZkDOFongtmhX
+	5kZ8vLqoUQCbe3nWwbMw7/8/c0R/aIGgU1OtF+80u8V+q2xu8u2FkX0/vXEPG+Ke3cVQlUw8jur
+	UpefNpVZUjXINC4q8K+574dRuEex644trqOQvRSmdGmhvt2l9qrGeo0M2LPxmZbCWM7IGoIfFRE
+	duYC9oH5R76XmWnXSmyfkXjJ4JILyM4ENbbwE6aMTU/W4d82eM2uW3DVIdKGcyusTn0otNUGgxL
+	Obm2twM+STpenzULj0tNlQKfukNX67lOpGHIL86Vue3bvqEj+W6/rpwWZdq6xBAor8/qvVgm9eb
+	3UfJFwRyVZgbg==
+X-Received: by 2002:a17:90b:388a:b0:37e:9e9:6ffc with SMTP id 98e67ed59e1d1-38f9bea7cbemr1361270a91.25.1785396124727;
+        Thu, 30 Jul 2026 00:22:04 -0700 (PDT)
+Received: from localhost.localdomain ([112.65.87.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b960ceasm539089a91.6.2026.07.30.00.22.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 30 Jul 2026 00:22:04 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: Lian Wang <lianux.mm@gmail.com>,
+	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
 	linux-kernel@vger.kernel.org,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH] mm: return -ENOMEM for page-table allocation failure in insert_pages()
-Date: Thu, 30 Jul 2026 10:13:23 +0300
-Message-ID: <20260730071323.964321-1-thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	lyugaofei@xiaomi.com,
+	stevensd@chromium.org
+Subject: Re: [RFC PATCH v2 1/5] mm: mglru: avoid scanning empty generations in scan_folios()
+Date: Thu, 30 Jul 2026 15:21:57 +0800
+Message-ID: <20260730072157.17263-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <CAGsJ_4x22FfT2HkPPFaaEXck_BNbW-xmJNeyhQvpWYwYVspgVQ@mail.gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2CC2A4000C
-X-Stat-Signature: tednji5kmeth77i5hn9p8ntrgp9kxrq7
 X-Rspam-User: 
-X-HE-Tag: 1785395609-555654
-X-HE-Meta: U2FsdGVkX19yHdXfsD2sWv13WbSFdsPTxYRWwlchtspQ96oBDIJJE2nUOaccMyuW+yGzS0ypFO1JD/9Riv8PUsRQ4fPz1AdmH8fISQEY/oV7ftZFYrvtSQsinRCia7DieYprUAZgXCWskD+mVXaXee6zzMVykk0TZUNB+PD4da+XUuqJ81EQ241k86BfyGCmLrjHb8wTCh5nSNshB0YQEENxHdCHFdRczC0gHcUgr+mlm4bIpWT0nSEQMFrRAStRd6OwiosUdO32pXpYS4gmJL963iny7EdOXPBC8rORM4dLFBeFk4/1Fm4b5S8WswN5oCYVRgk8C8Kxk7haV/zOAWnhQF0+P/k9GvOBAac5V55BjBE2fsiZ//dVRCigHDdciooJKOEj1rB3cnFLjwIDtPij7r4wHR6wO5hcEBjuJ8anKDyDrWQU37yNu90liHpkQPnqoAH9VURtBJ46zSWqshpXEmxYk5RxZEwzUAEIQ5Ah73Qmr9TPVXEn4rqwxcbTphOP10pK5twp2ZaS2lktbEbocLvCIL6htHiYKoEC4AAW8NHX7JyoqCZtP/WubfVbBWLmXaUuSqE43dcxxW4ixmAzrJRBl1rHlMnPgPuEs5KW9aA+yKqWchpm25vPJzXEUR9wXfgUgSobTl8yC2lOOBN6gmKLhsjhBXeg163G2wCnDC/K/52Wr+CAdtqQ0/D5IzgThW6yIrEF/eIryT4lzqUmjtkuR46y2FUjbL0vnFBW/qukZR18iIDWlvaJhmR02rukzOztyGk7K0OoDKhCxtuyuF/BvG4UElhtkNMMu2dMpZ8KRq3jzUGR/KDbG63cbhVfM1zPVUgwae0HcL2+Jve/hPU8/7Gs9go+YMsvyPE/LRo4xzwDIKRMRH/o46vOeBwPzjO4fvJFOg9YZ43TRqA5ddQBlRIls2f5ke2lhPdw9tkc0fnF7oQ8rzynjhvg2sbFTM44FmmaMqGXrbL
- H9QujHHF
- VG3w9Ni3sbBxpGLgILEpY8evEkCoUbEYld/udCP4g/v9r0aGdLsomQQzxrp6P9/ZLFZDjELDG/0Swml9URtNHXBVToMNua+F+gWWhpUwQz6De52XVp8h5TguxcViissEe0l65vv/r1tZrv5hlo/a7uDZYuAkRcYkE61oIEXkUY2L/j2xhLB7jxjDpxsb4UP9yJXiAXbcD0HrAV1p+4ZKPDoWp/Rqzj84zpmqzUteCkdXSBpAFGKkAhgaC83Ytl0AD1w2L99RCLoBbvHG5aGQ4pKAih5hggQqaxic7mutbFw7Hze9UyIBBfMQ1RIMcK9UsS03iNf6KBNMktKDGzp97bBRjQa058KyRNCggkh8shKhFjx+5jS5Fy557zn2Uvw6NcwyOaleS43aJ0ecxSX4aEBfwY5HOuRzjNQccXRm+evMWEm/WZS6Ecio6wbI0zf+azp9KgY3vpJ+xZr/jthjlC6abTxBdOLYnnyCTAU3zlnhsV7RUI6Kk6N8JpQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DB44CA0008
+X-Stat-Signature: qurhyku9oha6zz8hi4fejpcoyxyzqm45
+X-HE-Tag: 1785396125-438306
+X-HE-Meta: U2FsdGVkX1957YnkbLGvJA/MsRPz9i7MMdHm620FLUsCJYh6Fto4HP+1OPBqTOjrfYe9NXFPtzkpZqXMVgds90wJ/WWL5Ql0jnX0IHJS+bhvmtXS6+xmtnx+s7j2ZYoHUAVRaoM1edMAoBGCXKmmihjicEUlFtpFCYpwJVT+nIc+zpRFZmSigSw/0Emc/FWaYHSQ1ijWXU2bbBR8wOfWcTZ8DZZsOBSYX2LwZ6rgov0huZeUWSWMNly5tXDHf1UtHdXrC1ELN3SIcuMeIPnt2pDnFtBSsIF8yQC6NCVVqQF6dCgBfOASm1CYP4496t1h4qNN5/12tXtI7tsfq3Z8R5p8AsNwgf3/7jyPqpqDZj8U1Y46L3HVCJeD22gLShCuIkk9Nfv063a6cAkoZOdJ38xVfmJztzfKKCOHnEjFgkpT4KrJJc2HpJj91iwJmGIiC90kDwAUOfXBZ8u/v45KfpwNHRSSOwgp/x8QvGpKDkiI1y3/ZNDo60WiYBbIgnxGCvwpSoactB9Rb0wTbkcLdbeaIdNdSN3NthtS0sxS0w3c+lERgulCBLED+v/KyyQoYLRwxbFtLlpeJhrTyMdK+owxNV7zNyWPBbCSoF6XwdOVQ8o22lnRmdCvXnZO08VYGzSG2j8MCMr1N1J/xpqVc7LTS8ggZ7/1nvZP0Q0A+vYEaut8b2E810KHv27JJQwo22PIcyuHAyaUOiXVzfngY9RaXqZRyQvhIVJVLiLLJclZJqtsJ49ffAYypLtWks87OqC4bU78B6ezaSCsBoFDKw9d1+bU1GvjfDqmZbtOLfH7Zg3tk6d1CX7Ttg6Kivn+GTOVLNZ8Af5hnDY3WZtW2glzhPft1hKoI7j2Ev7TMxzT0rh3LfjiOzRXEA/1p2W+hwfPqjSLt0k/yPy8HWyx9qMJJ5TsE2W7iPxAuAS548yPrzPMsz2uLoTY6dGcvM84CChRu6Rc8Dvu7DrYFpw
+ YJXLS7jd
+ 0OUdQxndduNEsaPPq8cn8G71kvRehcqFnFPIpWL5KSYwd9fHlsal4NVN0KDyoqBl0yVjpuR4dyLd8r8/uB5vTsxoFwtiPLBRdK+cT6dTm4s9Sd1vS5WYGx5L3IEwB/E0YNuEcRFBupA5cqGnKoWoflHGGbkaFnJp8zpnRlQs5ynr+6rFq5zafACOZanVhYcuNDfSBNr/Nw/JTeUgNmR1dAJp3/MvLayXgwaDjkLrGMoj2qngB1uzULvCRye5mtEQ3wzp0Drw4Zx9S1p8YxzIkCF+Z9zswUb40tpV+UkVNgf9rv6Q0iPlG0k2G4YjHLJ7GnDVtyra4NH+LA9Iv2NoKL9kN5znHlgCJrYt6ld6rr21R3KXq10nyWY9WKQjjkZNnBZQeXzS6fOEoQu4JuDEpDtSl9t6yzL1X/S29NLfhO6RDx/ITVeJQXsQSo8DQytQUl60Ob2d+CD48jhEIXDlqH2hanSIdn2wnb4Qd8YwmCnlFzEBkkM9B2A44nBTUU7lzY6We
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,38 +132,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-walk_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
-pmd_alloc() fails. These are page-table allocation failures, but
-insert_pages() currently reports them as -EFAULT.
+Hi Barry,
 
-Return -ENOMEM instead, consistent with the subsequent pte_alloc()
-failure and with the single-page insert_page() path, which reports
-failure of the same page-table allocation chain as -ENOMEM.
+That makes sense. I agree that this rare corner case does not justify
+the added complexity for now, so please feel free to leave it out of v3.
 
-Address and range validation failures in vm_insert_pages() continue to
-return -EFAULT. Keep the later -EFAULT return for
-pte_offset_map_lock(), which is not an allocation failure.
+I'll test v3, with a particular focus on the generation-imbalance aging
+behavior in 4/5, and report back with the results.
 
-Fixes: 8cd3984d81d5 ("mm/memory.c: add vm_insert_pages()")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
----
- mm/memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..d8eddca8e251 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2436,7 +2436,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
- 	unsigned long pages_to_write_in_pmd;
- 	int ret;
- more:
--	ret = -EFAULT;
-+	ret = -ENOMEM;
- 	pmd = walk_to_pmd(mm, addr);
- 	if (!pmd)
- 		goto out;
--- 
-2.43.0
-
+Thanks,
+Lian
 
