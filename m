@@ -4,140 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08CB4C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 23:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81021C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 23:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D15B76B007B; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
+	id 465AF6B007B; Thu, 30 Jul 2026 19:32:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7136B008A; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
+	id 415316B008A; Thu, 30 Jul 2026 19:32:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4476B008C; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
+	id 2E0E66B008C; Thu, 30 Jul 2026 19:32:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C81B6B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C7AE1602D8
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:11:02 +0000 (UTC)
-X-FDA: 85046990364.12.36F89CA
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F123640005
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:10:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XGgABXRo;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785453060;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0073C6B007B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 19:32:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76C401202E7
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:32:39 +0000 (UTC)
+X-FDA: 85047044838.21.04C165A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A609B40009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:32:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJzQpkxc;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785454357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
-	b=kFrCEnY8JEU2g3C9OycWYaEqPGT/1PNHHYgzf6VBa+JANHZjlzO01jmncZUFbHy6jaX8qO
-	aP1geJQ53ZIADbgMv7ztw4YKC2bY2GyRmJ90PrLzGte4FYVaEN3swN2lp+IWFewK1sXxTB
-	P6SlW0DniYp40g0Hom2vP2PDESIRrG4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785453060;
-	b=Oq/kdFAUgN6yaTNutLbW3p/zZuNweTNsjJDglG4UlKIP71EcDNYlYcGXDS1FYvZ651hO75
-	fiC8oA6MN+JCMsfbthiHmxkEZejJRRJJee3guX6+xsHp56X+wyHfwDeoRJCR85tRR/T/eK
-	QV17dUH3Sg/zOjgH3zgWojug8liiE+s=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XGgABXRo;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-495635a85d2so2421985e9.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:10:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785453058; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cWMkXT+c2RDKFjcVha6Ge0dHJdqKsCFZxDsha+4TKOIK59awrHj7lfi4lWZfQamT0R
-         QkJ41ZNQnu7wWqVSX/taEs6SRfik/9UTXF2+wOhV0+LccFXfS9hhoRrDXi9EcYPpTvyV
-         BiFMYMyBXKIDzJ0DPFFOrcmbH449/p2cTyjGBjdxHlnsGmJEpXvPRbNIKjLrqUvy/6Gi
-         vjz10VDGlFj6trsX4yB6a9St4Ho32KyjLSN5NdM7KyWrxXbB7WwK86RxbXzLRopYVwca
-         HYdq3fjHAXsumPMYo20zvJsMdBJs67hAV/TpMxWsa7AK5C4JdB5xAOrj2KJ322Rqoi88
-         QPHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
-        fh=1CrxQ8z4CPPqDR3solT2KG0Eas9xlQuC1AKFxOGSAPw=;
-        b=rvJFwy0N44ZmJHUAv/XPReM+Q+6mPLsK6PeJptqYQomqO5Vfg7g+hAMc6icM/3Kaoc
-         Huq7TYUbuSanVSEM+3udroxnV0os2CpNCqdZzb6UIE3TpArvmh26xqVu8wH33k1jCUOE
-         LGxvtV8Zi5/jgNJaqLEPZeTqNBbvYPMH0PGCtJMSmsU65AJZDwR/U/YpBwEFiqrTArMB
-         QBOqZnHQzff8R1Ue2LVlRGsuqOidyUadSiARScaTQYz8MQipGmNBgLopCHhCYOgmqXcL
-         xs1BjIuc/qESlPt1L6LN1KEvdKc/F2qYSCcAvGS7vD8ztNAPzAWuM+dOQ7C6Se5Cv4h2
-         B3XA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785453058; x=1786057858; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
-        b=XGgABXRoU6fMp1w8y+valz6ce+PFfb88dpbfrWns1paa9/cRMHjsTRdcPKn8Cl+mUa
-         rP9bBuGvzyxCVM6DZO7UwKn0KYQdCJbGJQzTkepfNIj0WZMlGgYbr9G3R35TKT6v76KN
-         Cw6T6cDC4nAETKyhLLmo+KtdEu9K9GfKw36h7P9PVQ0RVu4+CZ3fji5NodUZirU4m17w
-         23CsY6t9Yj6TZCK8Zv6DCb+M7BL55inWgZial+Kl8r18NTmByjsllodhNnEjAzPxxZH/
-         lI3YUEaGAKs9wkyVT++VAQBVeDUc8svKPukKey63IiWWfsBiyX+7grLpXygHHRctUdZS
-         0qUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785453058; x=1786057858;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
-        b=d25uTYbyewuzOIrwNxYrRw9ul4D6ZsgdcWe/5shyE7x90J/DOdLST9PLpScD4dAI1t
-         hsPqgBpUWGHQmLmDx5tP9JfGAMwXkHSe0TvI/y63m8thtiyiG+cUhc3Des+TgUz/SiEz
-         XBgJCddD17bxEP3ocpF2VjpFut0AzUPikCTRw0ZJsVdpK1QyolmFqT3klwZH2QCXhYh9
-         JxdosdVvzhJ5625/xZR17hMt4k9YAb/tSMCrsQkHUHOUFhfvNUlWatniweqilqOHusRk
-         vEQ1yh3FORzs860AzaBSsVwOpoK5aBDcc2yJPviamvmUXA3abfe0xPwV1KqlEoscptsO
-         m+vA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp+aVI0V1QuBTz4zDxHaEcJwfM24fTpMe+4uAAphiAewt2DsD8i4VZzS+oX8kV7K/8wttW005a0fw==@kvack.org
-X-Gm-Message-State: AOJu0Yy4yGEDoZdXPjNYGZKQNnqaMHipLWOPYt59inOoBLIf4kEOq3px
-	Y66yZ4jyB0pNR8g+ybLydu2UGIGGZENnxhCVdOPEr+dLr3xof4LanO2jL0Cs+S9ak3hQgMVP40e
-	7jEKu9rnGe3w9zhOeDpPFAAwCVDWxY7I=
-X-Gm-Gg: AR+sD10xrjIN+t7mpiy4a+6laig+6cdKBJQO3B23MDpdAOjbG+JQ3ikcgJHipBw0oZW
-	Mmwm7N97q6Eq8HcKjj9C/BFS9VQTMjx6Z5uXiadU2qPgpBofiQeYcTVAUCPF/li4QM6mG2HF62E
-	R1ERFvTQyOBidq8Y2ksVkGAxzpT9I4B9bjUgtL2lmR+AJIIlbwJH2m5l0EpuRCS5FzVlTW3c15x
-	f8Ois5Jhof4DNAdCOBuzy/5Ch7qyUk/Z4rPwKx9KCM8IKfhjEEGoPtYwgKhgv0L4i0Z5dKotFSV
-	POCZKNp+4UC+0HKmCrxuLL6igNizHwCOoarXDNHh1vtol+rDAgHv1OUQ8okuMAvXuOsr6i4Ap2f
-	R4YD5WqDcTqrZbCRw2bnbT7eX
-X-Received: by 2002:a05:600c:c05c:b0:495:6060:d6de with SMTP id
- 5b1f17b1804b1-49800ece23fmr43508145e9.31.1785453058373; Thu, 30 Jul 2026
- 16:10:58 -0700 (PDT)
+	bh=Q+9F/KroboI1exr/wEQ+P2zzFrOJ/3pj4yGZy85KhPE=;
+	b=DASl6CEMMSc0qsU0ya/rFuH7AF9qJbToAPuOpGAyiJD3ooY0IQ2vyGaNaMf7c3X5b0C4cz
+	qSz2hwEqC/6MweEtK2ZjAtv2qmwrCpDktg+JoWCLu2IiBgHw9XNX3UdKKnTIBln6BrEY7g
+	noftTkCeUUN4dWe3ksxV2a/4UiQ2KYA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785454357;
+	b=Y7N74CBTXDKMwUzwiql+lIQAq/ebeGhPM8Q0XXzgr6W9pxFymMk6s2xgh7umES5OtW+P7R
+	dSdSal6rSWrPSnjKdb5M0MB/bYjH2ELf7ZSoliiiLqItCHLdUO2tJXWIbr5ynz9KCtFvem
+	xbA07su5u0wqojJMWyjNBsWzFb2SdPg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJzQpkxc;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DA06601E0
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EB91F00ACA
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785454355;
+	bh=Q+9F/KroboI1exr/wEQ+P2zzFrOJ/3pj4yGZy85KhPE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QJzQpkxcShJFdAoRs5WrW44bnsjqjuOGDh56acT6cxbd/xnrP8dIWEoq7zpk6A7rx
+	 6cTK0D1IWIdBsl8LNwg3P8y75D4dCOQNbilPEqng5+TnL2dOXTTK4xS9h8/xD20huK
+	 pMwmo/JbDZcz0CH8/mXvAkhpzKwGji35s5YuZ+xc3NlyRP+QIgbIHQxApJPIcvCBwD
+	 M2TZvFovsseKO2Uey7fTMwZ9MjCyTYUQRR0PRURIdAJM4l3NPZ1V/4CQgE9RflsLUW
+	 tgUR11P50xE4serO2wLIiBtrgJ8sRm6ADZDrEv8unf2fXmZdqJ0Y3341E1AmBls1Ks
+	 D9WxrHzAOPLbA==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92ed3993c1eso23287385a.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:32:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq5kIqm9EGAtw1fKac+Uvd0ZkzkjeUUhNFghD4KygQ5H52Wt7SqR9c5ZW1ey+wGkPqpTkmw3KR2ag==@kvack.org
+X-Gm-Message-State: AOJu0YwTHhJMPZJTGzwvVYl2QxHmbj7ZiMskGXfKEc70zyxk/7ScVa4o
+	5plDpFggpVLqyUQtTueZmBiZ2QkYzzct/AcckBrpheIZLxwuilXuoFH8Zon96Mtm1thexp6i5gr
+	VP6Z5GoN98wD+D8SMIn3G0KpNOpDWado=
+X-Received: by 2002:a05:620a:28d1:b0:932:1abf:9af6 with SMTP id
+ af79cd13be357-93485fbee31mr491308985a.21.1785454355179; Thu, 30 Jul 2026
+ 16:32:35 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260707201735.4113107-1-joannelkoong@gmail.com>
- <ad31d36d-ac84-4053-a5d9-e18c346f3908@kernel.org> <CAJnrk1Y-4-_0udtGKeva=f5=xYRCWcyCnBA_1aVQ8oUZRKGkAg@mail.gmail.com>
- <411318eb-3156-4e5d-9e11-4c319bb9e755@kernel.org>
-In-Reply-To: <411318eb-3156-4e5d-9e11-4c319bb9e755@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 30 Jul 2026 16:10:46 -0700
-X-Gm-Features: AUfX_myk2dUrnprBBbtBc7KG5m1PqaZut-_Y_pgsqKv13103U2O0vsO7thvG7ik
-Message-ID: <CAJnrk1YBG7bT6M=oeEPJDo7A_bXakpN-Vu_Cm3awhXQv_6JmwA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] mm: split underused anonymous mTHP folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev, 
-	alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+ <20260707201735.4113107-3-joannelkoong@gmail.com> <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org> <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org> <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 31 Jul 2026 07:32:23 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xM0cqxnkam-sW1vUgru0FZSN5h5Yn-fJnJw0tOmx++5A@mail.gmail.com>
+X-Gm-Features: AUfX_mx3FaRtyLpukUE2oE_MRXiXjfZqUC67dLixgylAh0Z0iFBGq1tqZkPX-sk
+Message-ID: <CAGsJ_4xM0cqxnkam-sW1vUgru0FZSN5h5Yn-fJnJw0tOmx++5A@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
+	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	willy@infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F123640005
-X-Stat-Signature: 79kj6ujdzpssnjn55ft5jxk4eegsho71
+X-Rspamd-Queue-Id: A609B40009
+X-Stat-Signature: f86dnbj8q4s8bs1i79soc5yis7szh3kz
 X-Rspam-User: 
-X-HE-Tag: 1785453059-674756
-X-HE-Meta: U2FsdGVkX19C6slTmaVFxQyid5xFUtGgzTeXilAoIv8d2r9oTraw2+NrbOeIuXzE9m8p6zx6uStkaJjSi+eJEjPYVHSf8b8k4XhfM9QSAD8XJHZqHLruid6UyKrcoO50+j8GdxhHXbHqgk0XYSaQGRkUUBT+RB0V1XgXuHmfjDea60ZO9q7OfURZfEfr0JYhpBzGF5zTTaF0Ci1jkWk/wy7tlcJgzD/6FG+LZEKAV1cqgRgGhW9M6Ak9OryMxkeqgCuYY0kO6Qmdi/FKfcp6EzK1g0VHg2MXh0f173WWMa24ZtfFClVUMGqfjIbHoTOyCm2OjyQTVACZaDPRYpy/D1M8UnzatEY1HsJ90hvqMbCF1EZZcW8aMEqBslhXY5LyfWD9rtjbMtWZ3mY4b0ftoAK6Di+by5gGqaZORJjc6azJVkUrgaGzdX0RVL8nCv+/kVenc2ijnFwdQQALXmE0kSuup8zfrz6URU4QbR8WTyujL+WcBQ8OoLyh+UJNWuWIMadU9BwR0Ri5bAyPDU/fiwPUu4/jK9BdDcSGd2O5TwUwYl5kpi59yOfFLhNVPW9J5z4Ykvpe1wP3jJ6DOrPWNK5wBLqYr5WBhfHaP7/aqAG/xFi93jktnSzJhY6fq0FmTrrzsLxtBKFt94Of0AmHcFueuEyknOrRQtPgekwH+PIVgJjDmnuDy+FuKW2gfLXGtr5O2mdnDtcQfUvBXa6GbW7smaetuWHVwMsjTgP0u0kBo/uHPQn8viVzFbINQHXbxNmbjbbfhOUCasCBrMY3C2pgnwNx7cUXNhKIfi5xXkZPOTHnYu4fLA1wecZWJt4l+F39v0fDQCAumIA+IMy5eouwbnaAl3gmTAgXfrMjdmbxmr7MCOVapAcBN9+p9PO3fXBsH6W3J+/278/bLOTSoF8l6ZAWg6b+P3YRJLi4Ex7wTuaJbTFRIaLhiyUTL3if5fauXAqtF3irafk+XuB
- JGqZtpFf
- 3ADiPxEHyi+WyFcyJGDPuHeaBGT6aSJiRfa604n+l08mq+EwCBInABkELvjKpuuiqldiB8MU/hlXz0/5mDbk99XV4f67Fw0i+RVVMuBbLMGV7/MZGmp7hgT4N4bF3Pe7Y1nQtrmirPGkNhtTRM5DDdXUGYwOr1OxabVWt4h6ENI2Amcwly2iRsA63jTO+5+DPlgGtwwHhmdTa94dcsM9HTmybAe3xg82ZM+ngRGPuQmziyLVaNztK/sFdkfsuFA683I96MvZAR6dgrCc6JkTVo0LtygWzQM8+Exw8Sx6IOdDpAiPoqFFinZuzt6NSzUADHMOU6PYLkAjjkgVljgxTgwE2C1pTfUx4hcYV2xeGydfbkBwOd3TUNngxkXWE99jx94MxVz+wz1w9PC04TtoUMzKidToFUzP6zyaEXSzQEQPtX+w=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785454357-61482
+X-HE-Meta: U2FsdGVkX18OnIB+fcQzOLdqr6KPBNTqtco2+vG7Mz+iXzlx6OUqhMs8Obu57oO5x31xWjxnqcZmGDTuR9lf/LDxyGD3nxcMTyTmDBqUI26qrIubEHW8uWtTROmFhuVA2ydOPgM7PDUfWVPLqP2keojmbTL/VZRhHiaRi4Qb7eX2psWwvrYysuxX8i94EedjoVohm1TKPX+r97rvPzEpTHHnV/An4xOkmLjEfrqfFVKUKJ5S8ir7vsb8s2DHnMpjfgMBKFXb5LBuObBiXL6o8sD7LjdZcu8CmVnHWPjzpWbm8qTJ6Fmx/EOySFkByTITmrEsPLVI9vmpyV+iDmcBgR/STKyk0tnKn97D58cSQ2VdDkRf98CaiyM0xhlSc4d9cgvNKBJXAaVhGw5X6/8zysREoKC2Ni2s14zxqwpjTyNabdt8KZJFdgtUia5BjtlNhMdB6NGohrvhWtzu+rC7miWdMcoC9iGBMgcZ0KnI9qZWVghp7GSxWQi4bTnvYsJ0VOPMwIqMTK1L5NoOR7mJ0LkfzUJGulQWksKaBkbmwfvHOf1aX3Li0RoLrrBn+7ZpTBr/cgFBBl1ymRDuhZP21+XQacjo9pZbObW2WGMUNlQTFMgvA4KVj5jZcNRa/g625xiNWkIUdA66Cq8G5XhWj8Xpwr3zhDHjGObghnXKVrgGsHQEdfsfhDaZzbYDx3KM1qolplnWBw1KX1cD8obVq1gGNjfal1jSeLaPUSrae6Q/zHwlCpvlTdcPgIDle4skSgCX7rNN7PwbwMRKOWncaXLfYicE3jyUfysTp2XKCZdQTZGZ5lZLhVtRl76uo+GMrAs1imypHv9K7XimDmIIRjNev8lUw+ICFCpA6SOyl/J0Mu6LzzaGyvYdBIdoDffmQ5Viso9UeW1Z5aeXpcysP1OexDMF5tuQZa2XYMeWx1+g6joicdG8rxJfhE3JJOpar/y1gGnBGT9VVCU3/FO
+ VGVxwde1
+ Kkv1yd3tJ9+SW1I5zNKsS0IX3QWdXUErjT9WEk14FoW5cZNBaxxZPI777nTkHS5/5MSJh2q++nRqI3+YkfbTcxHu9B98g39hmErQDsXPcNuIjgUBCM5gxYC2IXGxmJEz0c3SJ7Srx5sLDL6NphIqCcD770bBGDUJ9zTljdSy5R0fqRnBYr2HOoA0EJRvKbP5wbPpj6iPghhkraWQjKVTQbhcHN+IAc9nO1lddAoC4VC2P2Yt+PbKtdlTCPp0PmwPGIPQOnzNllNnLr7ydOD7l8iQhF+d/xq1Ij1pBgHCU8TjwZI85p3B6x5RsrpANcy6dw8Ez61Wq/moPw/w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,69 +112,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 6:53=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 7/8/26 20:19, Joanne Koong wrote:
-> > On Wed, Jul 8, 2026 at 12:47=E2=80=AFAM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 7/7/26 22:17, Joanne Koong wrote:
-> >>> PMD-sized THPs that are mostly zero-filled are reclaimed under memory=
- pressure
-> >>> by the deferred split shrinker, but this is not done for mTHP folios.=
- At Meta,
-> >>> we would like to deploy 2M THP=3Dalways on ARM (with 64k base pages),=
- as 2M
-> >>> provides contpte benefits and 512M is too big. However, 2M THP=3Dalwa=
-ys will
-> >>> result in a memory regression unless the extra unused portions of THP=
-s can be
-> >>> broken down and reclaimed.
-> >>>
-> >>> This series has two patches:
-> >>> Patch 1 - makes thp_underused() work for non-PMD-sized folios by scal=
-ing
-> >>> khugepaged_max_ptes_none proportionally to the folio size and using t=
-hat
-> >>> as the threshold for how many zero-filled pages a folio can contain b=
-efore
-> >>> it's considered underused.
-> >> Did you look at the khugepaged side, and how we handle it there?
+On Fri, Jul 31, 2026 at 5:31=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
+[...]
+> > - it seems way more tractable than the shared list,
+> > - nobody has produced hard data to show that either is justified.
 > >
-> > I'm not sure if I'm interpreting your suggestion correctly - is your
-> > suggestion about using the khugepaged mTHP collapse threshold in
-> > collapse_max_ptes_none()? I had looked at Nico's patchset in [1] and
-> > my understanding of it was that the mTHP collapse threshold currently
-> > only supports values of 0 and HPAGE_PMD_NR - 1. The patch 1 changes
-> > use khugepaged_max_ptes_none's value as a proportional per-order
-> > threshold for mTHP because 0 and HPAGE_PMD_NR - 1 are too extreme for
-> > our use case where we're trying to find a middle ground that keeps
-> > mostly-populated 2M folios whole but splits mostly zero-filled ones.
+> > > > If I understand you correctly, the concern is that people will enab=
+le
+> > > > all manner of mTHP orders, and 99% of the anon faults, including al=
+l
+> > > > the order-3, order-4 pagelets, will go through the list_lru lock on
+> > > > fault, with no batching.
+> > >
+> > > Yes. See Barry's LRU cache change I linked as reply to Usama who is l=
+ooking for
+> > > example at a system that mostly just uses order-2 anon folios.
 > >
-> > Is that what you had in mind or were you pointing at something else on
-> > the khugepaged side?
+> > I took a look, but I just see a microbenchmark. That doesn't seem
+> > enough to make a proper cost-benefit analysis on the complexity that's
+> > being proposed - whether that's a shared list design, or a splitqueue
+> > cache.
 >
-> Yes, essentially that khugepaged does not apply the scaling because we di=
-scussed
-> it back and forth and it either results slowly consuming more memory than
-> intended (creep), or ends up being completely confusing for users.
+> Hi Johannes,
 >
-> So khugepaged will currently only collapse mTHP if it can either not wast=
-e any
-> memory, or is told to waste as much memory as it wants.
+> Sorry for being lazy and not including the necessary background in the
+> RFC cover letter.
 >
-> Adding scaling here when we explicitly rejected it in the collapse path l=
-ooked
-> odd at first.
+> The background is that our goal is to enable only order-2 (16 KiB)
+> mTHPs on Android. Based on our long-term experience with large folios
+> on Android-like systems, we believe this offers the best tradeoff
+> between the benefits of mTHPs and their costs, including increased
+> memory footprint, fragmentation, compaction overhead, and internal
+> memory waste.
 >
-> I assume your point would be that just mTHP over-allocation (not due to
-> khugepaged) could make scaling here a good choice, correct?
+> Specifically:
 >
+> 1. We obtain most of the performance benefits of mTHPs, including, for
+> example, a 4x reduction in page faults, faster memory reclamation at a
+> larger granularity, and making it easier to allocate higher-order
+> dma-bufs. While larger mTHPs can further reduce page faults, they also
+> increase memory footprint, which is a significant concern on
+> memory-constrained Android devices.
+>
+> 2. We minimize the internal memory waste associated with mTHPs.
+>
+> 3. We can use a lightweight compaction strategy that only needs to
+> satisfy order-2 allocations, keeping the compaction overhead low.
+>
+> 4. Combined with large-block compression and decompression, 16 KiB
+> pages provide more than 80% of the CPU savings and compression-ratio
+> improvements achievable with larger folios[1].
+>
+> For such a system, I don't think adding these folios to the deferred
+> list provides much benefit. Since the mTHPs are relatively small, there
+> are unlikely to be many zero subpages. Even if there are, they are
+> likely to be short-lived and will quickly become non-zero again as the
+> workload continues.
+>
+> But I can see the benefit in Usama's case with 2 MB mTHPs. For larger
+> folios, adding them to the deferred list could be helpful.
 
-Yes, that's exactly the motivation. I'll make this more explicit in
-the cover letter in future versions.
+BTW, if the purpose is to find zero subpages and perform zero_pfn
+remapping, I can share something we did before. We simply scanned
+physical addresses and used the PFN to obtain the corresponding
+folio/page to identify zero-filled pages. It is very fast.
 
-Thanks,
-Joanne
+>
+> [1] https://lore.kernel.org/linux-mm/20241121222521.83458-1-21cnbao@gmail=
+.com/
 
