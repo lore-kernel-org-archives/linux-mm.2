@@ -4,153 +4,223 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680D5C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9524C55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:12:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30DE26B0098; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
+	id 903B96B009B; Thu, 30 Jul 2026 09:12:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BED56B0099; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
+	id 8DBB06B009D; Thu, 30 Jul 2026 09:12:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ADDB6B009B; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
+	id 7CA006B009E; Thu, 30 Jul 2026 09:12:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E2BD26B0098
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:11:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F0CFA0136
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:11:55 +0000 (UTC)
-X-FDA: 85045480590.04.ED1D9C8
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7E0E6180004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:11:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=It2kbs4S;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785417113;
-	b=s5W26EILNtgZss2MQeQ05mm6yPyyEPzZZU+Nna34jgtrorq6jx+9cSAJXXvwRijCT7XTE3
-	SNrrW7OTlSAs9lVhf2uO7YMpK5tNbD+PYfE3uywQYXtYGrXmp0Pd7+z2L0ZIlZ3FooDtrJ
-	ulVYOXbF0ZMKzMIfLy5pP/QD6eL8k+g=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=It2kbs4S;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785417113;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 496876B009B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:12:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E25A91C00AD
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:12:46 +0000 (UTC)
+X-FDA: 85045482732.26.E509244
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013062.outbound.protection.outlook.com [40.107.162.62])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E540A1C000A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:12:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=lJAVj20T;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=lJAVj20T;
+	spf=pass (imf20.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.162.62 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785417163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
-	b=62rUuQy+dIVaouLkilMVgaWp9Chh4JTBG0ttc8E6/VVYqeXRTRFJX8Xw5eOVsSKWnwwPaR
-	7wqX7q62Sp7aPSSo1wnlGdH+M0zJBiQOmfgF9GtoUVge6ZXk1GWzzV2zFOmAOoHqMphzGP
-	RYwZEpNV48oe53PpaG4H7W4vniWCc/c=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495635a85d2so17013185e9.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:11:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785417112; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Dyzoy+Z1jNDBYh6DVa0FRGTZaD99Y3nsbvO4UMAOLeHIRHlY48PAN2vTqk97zQ/xX0
-         6mis5KDlg0tVe1KSOqDojmo5JKtvYM6B/y+Dj1645ByUFxSAN/I6PQd51M8j7dGt2urM
-         W4MMn9LRs6UdwenNoX4EqeySBzjb1XDHEZaCLJE7MpEcr9qKu9p/RmHG7MGp+2ANE7IQ
-         JXQSDtb0g/vE2Ls2wjJfFzjkfbvQ9Cf44Pf749RACLpFwi5EPmsmBpAE+hcqMei2GW9V
-         ztWKiou6ptd/2529q7tz3+6kW+jTMgeGUuWO/+h+YW98vypBjvdBaMJ57gR0HqoavMmn
-         A5UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
-        fh=Dwemh4vfVn6f7mLSsuP4CD/euqwyy9490gPCNBAkma8=;
-        b=BAXX1kJ0WZZkt62rSijhvvodaJNNoDb6pCqVNNFRV9idPbbDekNJKdePF0Lj6ZBkuj
-         Ievu/v4qcObRF7kCwusQKo2KDQ/nq2IMS2P12zXZfBpJGqNcRGft27OozRni1VCnnNVJ
-         kFMfUmf7+0Y/k3L1J8Z74Q6ZbucDu3/1St+pG9FGn5r67VBkdUYVniEpO5xdGLBU9DeW
-         dn5OYHDpKeTtgEoya7BofIORpxjsOprE1IcOSVz/2tmbAwPffMOOTCcaeGxP4WCFi5+z
-         kUDUU5HujeEHT+PAkzj3O07uvhZB0VfT3u3me+VQAKu+gl8C1IFJZgZhAHWMUF5NEoLi
-         j6gA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785417112; x=1786021912; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
-        b=It2kbs4Sr2B1xkVvPbKFpCOjeg5iR3g0PhYAWZjbvkwbFj0cECE4ytX7ROBrJtNX4g
-         ketwleymfBbAzoGQHL3tvYE0B57aq58I0Gsm2PJsYH/outctFmQROWTAEOce6KfLYNfR
-         iSvGIIwwdLRnYYTQ+663OCXIIgQyKgNyvmHc6n90Xb2fLU5M2lARO1L7dMLfqCZszSLR
-         rX2hTODlbBx2wCfpm0Sm6cL4ckpr3VoUm38nRqbX8LE8QBg/qlASwOMykS8AcDQYF5QH
-         /wdysoky1tRNMPlTyVk1yCkTGoli8GSXeLpZcIlgBtJJdkTr+UussgHHrPXjRrqNBht8
-         JiSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785417112; x=1786021912;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
-        b=dHRHQA9NK9pJIcjRvyy46iD/HwOZdSH2KmBUvBnzade3EDLs6Dd6l949Z5T7xWSN/n
-         S7Ve6O9zf1fyp8qjX3dCIRuNdfOC37Z3mbM0IbVE+nqwNyzJKLkv4HLWnzEQQ5BZjxdv
-         H7DF86msKrai0a+QgQAH2TWecuHiH6+qMD6B3gnJONFRtMaQz9zW4B88NZ0L7GRlE4ot
-         oM1OicO+XDrTheDRS/wCkt3Fo6C3frUNErblDBySZQlldeEzflV9Y4P0Vo6zxcEDrEqi
-         71UwhT01JUjvmuM5BCiiUViAv0QP6OXVb6xv4vhUOHjW+nJWGeRQaE2jbzrBAhfSXpPc
-         Ms9A==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2FyjblJ8cQ4N8YPmQ8Hi2u4lPIF2jpHFtRjBqpavWTFHOWfQOA39+QEAyMcf1uuwwTTA0yJiZvg==@kvack.org
-X-Gm-Message-State: AOJu0Yx30cLRgl7oCPpdP5yQLtz3TtcP2tIzDqTiP/3ItrILezQ/X67X
-	dggTFjiPvWmi1TnE9U5J4I1VE4q9s4gWTUOwVYO7D90kPmaFbCyfcnS7no8gcVKwacOvPewqDs6
-	XHRYXwzl7wTBMLH/2KaFkXvzog3XGXg8=
-X-Gm-Gg: AR+sD10Qr2A0f2l+RXpOEvIV4dHT6TYkdJeAJvph2QXF/yHm4DorJTyj4qPTST2cZJ0
-	Gr3NadDNbFGmqab42lEKf8FcuMosIq2bh7fk7ymhP3T8I5eHIPGup4OK4T0QXm6pnt0Y7eF5RZ4
-	u8E4cyDsepdBULI2HvzcGtotwwVBdIS7be1pvQFGsDUBuxBL4p5EkDl1GKeDXhSk17T/HZiikPZ
-	c6DEpBtNssw0h7e3apSinz9etUwBxb8H762g3ltpZAslIVe0MqqIYYbojWb3cWQfLzQOEVlM+jf
-	7+8cz/M6HsXj8RTD581xLNBwZkzKj8Us11isVERvExiQ
-X-Received: by 2002:a05:600c:8707:b0:493:c182:6b08 with SMTP id
- 5b1f17b1804b1-49800ed12f2mr35808775e9.36.1785417111834; Thu, 30 Jul 2026
- 06:11:51 -0700 (PDT)
+	bh=vQZW+B7zgckTDD0haxJi9xCCLpf7V5m2hM0k7yoDU4M=;
+	b=jac0Nk3BCX8jiqloty4N5SQXggcB1ESeK6LqCzRjfh4pE4BBe5CM+8tjK7OHiGt/m98A3P
+	NogltB8zA0GnzyJolCwtZ+6Kzh25Alyt00Lb4wyG5E0CRfU6QM2fuxbrZZjPulWtILmRQi
+	Lmv254U1Bec9F/znuXz9+XrCxDwcdLg=
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785417163;
+	b=yITWLLeOXIJK/oRm5dQdTUQvVP4xL6WssjRk5BQBcN9AyR/Awe+gARXGQok0JrjOyRSOuJ
+	RsSXP/krgnO8lq6P6hOKX0kkvCTL+2vTSfW1paamLl0nXAljHSaFb7XG5yRqdZXFsfn8BJ
+	yyJMYEWeO0xTX6hDUcdA2ZgCpi92JlA=
+ARC-Authentication-Results: i=3;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=lJAVj20T;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=lJAVj20T;
+	spf=pass (imf20.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.162.62 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=pEc6fa3mEJOvXiB224Jt+RUwMBLfyyppWSKKSlGBGDlBR23quMtPG3UMWAgFfn/F/iPOxpvZiAAlLgtSkGw+WSRH04mGi2zJZNbJUMEkRjQFPmFqeclv35FY7QYuqtvx2OCky+ssKX16iUQTuKjH5ylyI6VH5UzYYuhO0S0cnZgI5MIpmYsXN2O7kdZlX9NVnSykOj+nhfw5CGCbSr1c1c0FBfnp97vulyeo8chu8FYxIQjCWA04bEETvPqw4SzhBWWn6/olEoDw4t2Evs0ISqjm9HrzCjL4vaCtWw2wE90bnQTzClcuFHj2AtntpqGt9xfi0AT929dN72JYmxhqUQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vQZW+B7zgckTDD0haxJi9xCCLpf7V5m2hM0k7yoDU4M=;
+ b=vk69tWtE6zg7lIV0xZKpGypN1G3XMmiiumB/NFz7fv3UfBhCiOxt1E1+58F/mC+3eYSn07CVbZgz0VWbEfR7MWuJj8L4LTaaWro8YeisDAJqrOACvBT9Ier3hhlf8h/TPufDLjeD+H1FnedvG5Z/O1QNIG4RuMkXuYmOCelZLXW0QAFKj9Z0cfIVR0EORlyV1RHayogu0Z84X/EmfoROUMGBOyog5e8b6u3EAcMdBrO7yWmlzMB+7uOcC0Scqo5pVCKD1xnajtc9rM/1d3IuY8olsE3xM4DaLlMSYos8sWQ1hsVq4ywn5MuIZFtyErWqDX8reGQiOGj41QMaaS7X8w==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vQZW+B7zgckTDD0haxJi9xCCLpf7V5m2hM0k7yoDU4M=;
+ b=lJAVj20TaOQoNE2FeZbkilvS81u7tHGQZ3LZZMIShp1rOXFQDO28HhereLybauXTgTLFkKhUqGQp/vI3TCRyw1s2aeDxESh77xfSSMQxJkVB6e6nJ7PgVVvV/QsyTjX8EEHGerKuQE7S6/DeeMbekH16okby3YYu78cKGgsSA+Y=
+Received: from DB9PR01CA0002.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::7) by AM8PR08MB6548.eurprd08.prod.outlook.com
+ (2603:10a6:20b:314::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
+ 2026 13:12:34 +0000
+Received: from DU6PEPF00009524.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d8:cafe::3f) by DB9PR01CA0002.outlook.office365.com
+ (2603:10a6:10:1d8::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.14 via Frontend Transport; Thu,
+ 30 Jul 2026 13:12:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU6PEPF00009524.mail.protection.outlook.com (10.167.8.5) with Microsoft SMTP
+ Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8 via
+ Frontend Transport; Thu, 30 Jul 2026 13:12:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LRaIZg0OtleIlPYF9fRGjQgEDulFFA4oqKbKEgDZmJsS1026axwXb3wSL8u76K9bcnOfOdJDW0J8O9Stt4YwDTwjWhsz0Pf/JveP07mUskfbm01vTppSS6Mx7xE7HgtA59dH3bFmKGPAzdtFDW/SgGa/WtIYKL8Xe+eepsiEELlhSQKbGBR4w5nwPWO6+Gq4CjBtrjfupWwR0xOlTcc/J2UiSSdmDhWQH33OAFaeImWgvP1Pxq+7zr3FcHdBF9/Hw9uZprvjXApXb4ThZuunrxgPnSYkKQAcWF39sJXBJTGTrLh9OlRMF6WT6KKrBc3fxmJrbO1Jf4nBp45ZukFwLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vQZW+B7zgckTDD0haxJi9xCCLpf7V5m2hM0k7yoDU4M=;
+ b=YOToT8jlJfifOb3Pqsmabq1zSS0Ji07lJFrUlvNbWkaZkCzsyYLnfH8r/PL9SjNAgs7OoAFXoL6Z0ZXDuSioc2dvGAfYJXxKb8v0IzDHDti3DiInLnuUQdlYEGlYTHLob8rV7Ptz4vpOdZ8ZoemoWOIWWqv6gY6cYPDF6HP2oBe9qnoXSbi+SiaERsuHN2AR0glncLLkIyCO2gn16MLgU7ZmprOPwox536LYo0/j6ZZILqA0lNNdgs9I4zoQqLvTeg/o2gJ4oDtbdfutyQuylCowSyIU2E2mtOjmOSPQ0YMGfrZm+y+nphPvk8wcf7YmOFPyBklUOGKgASMxnNKJgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vQZW+B7zgckTDD0haxJi9xCCLpf7V5m2hM0k7yoDU4M=;
+ b=lJAVj20TaOQoNE2FeZbkilvS81u7tHGQZ3LZZMIShp1rOXFQDO28HhereLybauXTgTLFkKhUqGQp/vI3TCRyw1s2aeDxESh77xfSSMQxJkVB6e6nJ7PgVVvV/QsyTjX8EEHGerKuQE7S6/DeeMbekH16okby3YYu78cKGgsSA+Y=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by DU0PR08MB8953.eurprd08.prod.outlook.com (2603:10a6:10:464::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Thu, 30 Jul
+ 2026 13:11:27 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0270.009; Thu, 30 Jul 2026
+ 13:11:25 +0000
+Message-ID: <2203157b-0a88-4f42-9c15-b1696614d74d@arm.com>
+Date: Thu, 30 Jul 2026 14:11:22 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
+ <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ David Hildenbrand <david@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH RFC 06/11] mm/kasan: use hw_pte_t for the early shadow PTE
+ table
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+ <20260727164715.2866609-7-usama.anjum@arm.com>
+ <e3bca247-0644-48ac-96c0-ea69b23cb11f-agordeev@linux.ibm.com>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <e3bca247-0644-48ac-96c0-ea69b23cb11f-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0481.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13a::6) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 MIME-Version: 1.0
-References: <20260526-rfc-nt-demote-v1-0-eb9c9422daef@zptcorp.com>
- <20260526-rfc-nt-demote-v1-3-eb9c9422daef@zptcorp.com> <ahW7gwgaF0zIPTAz@gourry-fedora-PF4VCD3F>
-In-Reply-To: <ahW7gwgaF0zIPTAz@gourry-fedora-PF4VCD3F>
-From: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-Date: Thu, 30 Jul 2026 16:11:38 +0300
-X-Gm-Features: AUfX_mwGq9AjTR5NxgyxAqgBeEwNx--Sq9pL4ych9I9IxB6UA5FR819gtzB2mWI
-Message-ID: <CAOi6=wQ7CxHf8QMFXm5oyHZFc9n6BQecL45rBud=hMubmayCnA@mail.gmail.com>
-Subject: Re: [PATCH RFC 3/3] mm: use non-temporal stores for demotion
-To: Gregory Price <gourry@gourry.net>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
-	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
-	Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-nfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Alirad Malek <alirad.malek@zptcorp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7E0E6180004
-X-Stat-Signature: 39zay183mq8f4f3omyditqrua6ddmpbd
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|DU0PR08MB8953:EE_|DU6PEPF00009524:EE_|AM8PR08MB6548:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9915b72-a3d9-48ae-0244-08deee3c384d
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|6133799003|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ A3geUA+4p5re27ojxPsMilqcXfe8IJ7nI4+D10DCbVZaXhB1UI0fkgENFQvlp++zbEYirHCtgaZUBpLkHWwrCyQJohIneLa3tuj/61DV+DCJVtR57C9dq5LrHAO3sVqaGvZsj5agrY63c5wMB1FR94P3Gt7QhDVLu5cACXNz534fif7gHSgBHK4wBj3h+q9jXvZbde2gflnmlDEwIMHWS0CAGcVQmoH4PhIQio5UvYBKtwdbHGZpi1MSxg80hZ+ZEX+SVgRJKVWbPjuamkmFEcQ4ls+kIr1ODilp9YvLSEyrgexN56udDGyGcIqxKfY4e5NZ4fUEDH10iSh2RjToHcMrSHqXqBfgg2LLdBwIOaK3xYxpTPLWMN2bd27YZBI8aiP3Be4TFTH2Wkp2J4FooGl3lhPffk09pQIv8KIheJRm3zqKzuaWwyPSrO3CzGNlhacqPW5xAZLvsMRhZYvX/5yVF6AKxLj2uPOlobCeKhy6Dl5yEcSJw/ukaMhmKrfDHu1chfllhaf33QukxyMjKGqi0GsNliwTww1ocVnCmbokO9+67cjdNU5uHB5NoaUXF2rYmNL8wSXTUmVIllDikFU7cWnCwkL5caa4nfmRpKVxHpX/joTt0HGkJecPkfvS+3pAikU9LsvgbZbONBulpswO3cMkybt56JsNdI6vaC4=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(6133799003)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ pGNMqoFxLradfRwtZU0HeZlDsmECcdkuaLVRTDL6qPOVnXuuGO7JtOkW/QGzUUum40KYRW9JE20k4bMoR/JVQObFFCh8SMBrJ1LKWlC5KnzCtIAjzTMrA0H3bIvy8aY4tM/+cKxg92fwbS/30ixXRzG7gDQiNkih2WzNy/tDl0qoZIhyA42NNxZ3qW21lYesTDKEDV1tEelcwrj1oVNVNsvC2OT+2Lzl/cP1yigX71cV1ujvMIAZXBkyN7kxbJ614cB/v/WKUu+t0qcy9ChYHwAbVmAlaBlARTkZ3Q+TX+IE7vnN8i0wbCnaSZactLK9TEIfnJmqitXZEm7sIcZOIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8953
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF00009524.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	d350bb23-b4b7-48a2-6f00-08deee3c0f46
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|14060799003|1800799024|23010399003|376014|7416014|82310400026|35042699022|11063799006|56012099006|10067099003|4143699003|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	2VYZMdAeudjMl+4Dw1NODUR9sYMjct+es23eEH/LR/ozPMPhRUjz1GtgrsImVSOeFq75OOzYFfwcfJn77IVzjEuRpBJrVLdP8r8VFlbizJce7FbHP0CH7qcv2f0f2hOVqfBpV5EFL+Q/g/LWYR4QhNTKzDoBMMh/4dEzT/5An9FBBvSKgNbYSma2tXuL7ZhJBIFmF8VNoRNQAdOt6R24wPFIUrQOpvIof8lEphqtXIhR0XOFqQ9oa0gmfoIbX8ZvBsGWSheTDicib88lLGXV8EvclaB4A4kWb6Qe+HaeCgB0n/Dmn8E+GM4SD0TKHI5ysvyI8LPCqR9fqXifYAZMJGDTdNHJn0WLbcxxGymSePQG1hUoAAUrCkOFk8NGqFG1T9Nhe2xlxdFHpFVZg4YUgV23c0h5XTiPMW2jtxwXL3DNFvfm+x5uzppT4S+qpi/ik5RNVttl0/WzHJqCoBWJPxkmrCbHWev3squuVaSIsO0fbgQh1qxCLAIp4JISKo6Afchf431Kn7rllI3xeGpFSO2ZEyidRDxVi7Q1hGorY98tPhXTxqJMJ6bd5AHkmAcVOt8DpkhnZzs9GgJiUi8G2u2rtiq8f4AmhWpOMazkKyDuGtG9aPBD4YQSoeQoXcOV/8qHC9LdGdPbUuRHQRQkOkf9Iua7eHmazLLcCED9vpqtETJXE4MllD5+I+L238F1N7TdIqU9yQp9csPwCZEz8w==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(14060799003)(1800799024)(23010399003)(376014)(7416014)(82310400026)(35042699022)(11063799006)(56012099006)(10067099003)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ysRyGaFXeBl76+d9ZdjYsPiabcZ+OXNtSjZrivoKU+JFNPFEGnvPH5X3YJn5bdOAE8TEGdpenCnm1eAdX+DGF5tUTawanZZqgAH2UoB2xcteoyfORc20iusBxBgLq2vlEgfx2ZUT8g/nUESSV7jEiZm5awYxBjtBBH/Yz3dn2mcbD7gDaYSzo/FiDYujp7WiwXdFiaiYQgiuVBQLOruAfjGdVI7CFcE7p6Rk+iiXvZDVW3Hhh3FLIJeosBx5Vj2HQjLFCSKYrh4EwWJm9LPwHHYfMMfEjQ6DjLJ6zeiA7vdnrEanR7eMal7vBarvuU/VOezPAu+GEab0JnULqd+WqDHtbf3fJPoW0cdwASIO8LbpLV2/aQ9lbeYFeIRI0DZmnksO51luoBLTB4PxbNxvTrzJE0Y3ugJJimkmmZuOUzYs8ijq27WR3egnyO/XBSK/
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 13:12:34.2554
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9915b72-a3d9-48ae-0244-08deee3c384d
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF00009524.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB6548
+X-Rspamd-Queue-Id: E540A1C000A
+X-Stat-Signature: gqbnwrahczwctqrakd57qzn9hfdcagzz
 X-Rspam-User: 
-X-HE-Tag: 1785417113-832537
-X-HE-Meta: U2FsdGVkX1/63vUPOMKbhIxn5KWEPXK22U5+Ve7oFD8G04acIBRX4rWAlvSJ5JW6gWvEn1NW02qBkfdG+qb6fcdhcYLBoRkIlTARC8dqFK8jFnKIZLzZfJH1hrBkmfZ2+b487sLNXXLxswx7oLbNg6jV8CJGCbA+a6Kgofvgb5M1GHjXqzypTv4/67ZShckG/nttcvFUrCi+2BP8ioGKVs+zWFE9jx09PJhXyAYSrpQDIlErdCoZmYEkdoo4J9KTeJkY9DM0G4mY0BT77bg0Fj3Vtdq4Eq6q23YIpWGThUSAWtqore4l+KpNeQamhILE/AiaFq8KiR0fvzg3GQyS/5THTBDpnfdMKXjcxW3ZTbFH0Z8hap+4BKNrLafQg1kIKskmMzSuU0mwdg1aDSV0pLOum1tOoJgBeGOWvyOzBBF8c53itu9NzyUcTmR/7933H94LXYrvRggAEq7vIaJtWtv1tzILR21Z47RbfqcfHKw6cF2DpzJSf4BpiytngkJedXz6c/c6eYqJHnasTWVZ7KloYtjWjYbpyCBhntq086EGw82fT3HA61utLdVf7aPP9+1aQk4K68RHOdA8D4CiUMS4R+f01Q7UCVZZ3Rm6BDLsaNJXCQrrvzlWMjUUa/CRzhWFGlXplOGoJ5vSjwsZ3hw1TMOPn6LB78Vt2pmKNvcOkfz8DdhdWJ5ZGO2APi2ZzQAI/UOzMuWjXu+l5SOISrzvhfeW6wQ5qNJYtA6vIctbl2vSwE86e/EctbNR8KHAg2mudmRtd7vDhrEGEyEzkECBk81p3EgUlYOHGGT4Yn3LerfpiXfwWVeWjGmi4Xrp6tFq9d416D+Dx3PuJAji+I198PEs8LCu/WD2ymVMwicqIs4j0/GKyNuvyUGB2qhUtMu9Dez4fDGtttQnhgWP9doVkA3+wYa1HRvONez38gL4JGL4xKw7UjoxsglnWZqry02aKOkw0dTmrlxTpIT
- NprQ0VPW
- QwDmDniOp8/H8Lns30cBMliRX4itr3O4zVFLJEt0QVWjWGIqP9bWus2UJxhJNJGgZoWqBfKcEkx7uJ2t2WZcGwGMS5gOpB3uvpGQi7s82m3wnRdZDoNpp+i29uRVbAVjLK2SOBXW2VFldxiuzOQsTg6dJUi2uMJrRnjNUlawf7qWVWYmVDN86koiOYjlE4I+Jngr9xjaTiR4caf8+iCYdGZEG3Dh+ZjOA+UQpfV6jBN3fLFKoKvdLU6TmOlyTkjNTIsOrRHHPr2L6f1GlA7yG2u4hHA6Q9wKyDMhvOFpFbj7H1IrjTIag9da5Nvv2claa0Oq5c9uqEcJINJWQUXkaPF3QC5W6Zv96AvTvSq+OYD2wowGLoOneO32WQ0cOrlb+S5z33AgHH179zO8W7M08fmC8fgVYybcKIsLnJuZi13OEpNsTOs/OoX4k9BPIQpUJkc72BMCD81AbKKouidetgncvAcY+BRt0ueMStfeOaYVu2Al/JNVoM8YmvQGtOmpkDHgJjxQdlV+aO9TtJYUy0ahmzWvGtQUJqzP0B8UyjIHWhMuNYxZz21+r2mDdRqu+VsKSUpUCigR2jX0WB6yPRa6z//f+7cEafkLTtKpJY+tpnZWLOityEpqaYQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785417162-316205
+X-HE-Meta: U2FsdGVkX190KUlyoqrZ9dRWfEmXR1NCoEt1uz7rCxGvvPn0QMJ34FpGUTxw8bufx20MTyxVo9hsZ+6vE1FG2DH73f/rV7iJf5g2KJF0jrpyGQK9eTkHmIN8h0zgRNdxGIy4v1dzlQBcD8uU5rhf7fq/aM4VtloiBZBiUtYfAmhrQOEALr0cUQuIOwwiZHEvXKsqhMFX23NGKdgR0VUli3J55+PwF6puPYeSoDnbmISPRaVOjoZDGviRxgegNrJHuSfSxjFqLEoz/OHxGgwFRpTtnHSjyyZWo38rzW6II6r2Vb5ewQYRFprTKBvjPxTEDvkzbZrnlwSRs/IBjZ1PvU7lAPZbMY1i3HNXCYc80ans2KzYysXNRHCAKivKrS/xbtV79pgHx4/5NkBhlrPhONTNSFdYUAOxWmqyjVTE+/eJ/ndPfcfiTineagqFyEq26jQJbrlyQUDYFcT452gmu72e6CXvc/zLrOdNbKqvsOw9Jo4Dg21GU0PXMLHqewJrq0nWDQdjulnfU3e7iwim4cM3lXTK6WLxp+RBCK2LYHZ8TTpn3D6gXxNKkR9KrZWDDM0uzrPkfKmR2G5Bsag9s/7eTjNxAU+Uv0NTbwXgvADXkRPRdYdH5Dr6yjieIiZgH/T2Ai2ZG2wbBhS25GiBB3oYAsKZyjuyM5ylJZZ+pfNsj0QaF3F1XKSjcTLXYNjPfXxuKIn5Rl+23oCC+mqmyRGpGuhlcvL8sJ+13kDCNWZrxhNI/D8YEAnYSZk4NGklai0LF67IStB55FxayxY7vU8pVGugQxSqG2qRFTjCveqNW8Izbap7Zg6NUlA0OM18PJULELBHwRWhnLcu/+WK3+FCvve1WphWPoiiZ7e6jkk3Q/3GyIQNR60GAMyvpSjzl/kP6rLkNlFPJhPMOUotiXbsjKVgdfHrF3vt0bAXy1qdM585qscb8NbQVeH8KH0ckHolFcrt7elFRmyQYNj
+ P8lgnKkm
+ uEoGqFDgH1S8bd2i9Nv61IU+wF76vdohW9QpGKQ24iLcAeyISirNM1oBcdvTf6oMPiXeQQP+V4ZAYwkcVN2tKYZRtPszEOCt9QxGlnW8EmODhZoPmtxoe7sHwNCqeT77Tq2hhu00SiLmwHQSqDuDBzY3MLRw2dlbV8QrnTCYhqLGPTVnbA6HjYqTRhP60uKiOKxLB2wV7cSIAbB6m4QInfmc5XUJhgTCjhM2xZ2EfRAxSTeml+F+X5NZa+p1ftKNIZaZpoyz+nLkrQ8tdSNXDIlnZHrynqt+hn/B7EhEvuCstZf0jNHpV6L20EBzbOaskZvCRpYtpy8mnuUBEVBlVVwoCIVBuBfSYa3OTKyn9hS8Eaf4dgQm+9IBqt4bb397G/EZfDwj0/wU4AU/jEeKkjzOdyS7xM0lCvyuiEmEDa6E2s78bslK/n2QzfpoPbMZPNA7Gv5esnT9ud4SM5bwxyl9Xqs95TFuC3lrwvVEoQkSsqv1LY2K4/HGCS5TbQO97Xq2wbnaHrYrUmUBxmAb61T6W93YK6jRwAXrvGqVLEjjsol9giYuENu4bKdUzgVMQwBqe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,91 +228,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 6:25=E2=80=AFPM Gregory Price <gourry@gourry.net> w=
-rote:
->
-> On Tue, May 26, 2026 at 01:37:04PM +0200, Yiannis Nikolakopoulos wrote:
-> > From: Alirad Malek <alirad.malek@zptcorp.com>
-> >
-> > Memory demoted to a lower tier is assumed to be cold and most likely ou=
-t of
-> > the CPU's last level cache. Additionally, in certain demotion targets (=
-e.g.
-> > CXL devices with compressed memory) the bandwidth can be negatively
-> > impacted by the eviction patterns of the last level cache when standard
-> > memcpy is used. When the feature is enabled, use the
-> > MIGRATE_ASYNC_NON_TEMPORAL_STORES flag in demotions to trigger the foli=
-o
-> > copy path using non-temporal stores.
-> >
-> > Signed-off-by: Alirad Malek <alirad.malek@zptcorp.com>
-> > Co-developed-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-> > Signed-off-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-> > ---
-> >  mm/Kconfig   | 8 ++++++++
-> >  mm/migrate.c | 9 ++++++++-
-> >  2 files changed, 16 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index ebd8ea353687..4b7a75b57f6e 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -645,6 +645,14 @@ config MIGRATION
-> >         pages as migration can relocate pages to satisfy a huge page
-> >         allocation instead of reclaiming.
-> >
-> > +config DEMOTION_WITH_NON_TEMPORAL_STORES
-> > +     bool "Use non-temporal stores for demotion"
-> > +     default n
-> > +     depends on MIGRATION
-> > +     help
-> > +       Enable non-temporal stores when migrating pages due to demotion=
-.
-> > +       If disabled, demotion uses regular migration copy paths.
-> > +
->
-> Do we actually need this config flag or should we just default to this
-> (if the arch supports NT stores)?
-As discussed in the sync call, I was just being defensive :).
-In fact the non-temporal instructions should be in all x86_64 afaict.
-So I've removed this in the next version (landing soon).
+On 30/07/2026 12:26 pm, Alexander Gordeev wrote:
+> On Mon, Jul 27, 2026 at 05:46:57PM +0100, Muhammad Usama Anjum wrote:
+>> diff --git a/mm/ptdump.c b/mm/ptdump.c
+>> index 376880071ca2a..8f19f20be3c44 100644
+>> --- a/mm/ptdump.c
+>> +++ b/mm/ptdump.c
+>> @@ -19,7 +19,7 @@ static inline int note_kasan_page_table(struct mm_walk *walk,
+>>  {
+>>  	struct ptdump_state *st = walk->private;
+>>  
+>> -	st->note_page_pte(st, addr, kasan_early_shadow_pte[0]);
+>> +	st->note_page_pte(st, addr, ptep_get(kasan_early_shadow_pte));
+>>  
+>>  	walk->action = ACTION_CONTINUE;
+> 
+> I suppose this chunk could be posted as a follow-up to commit c33c794828f2
+> ("mm: ptep_get() conversion") independent of this series.
+This hunk has to be changed when the type of kasan_early_shadow_pte is changed
+to hw_pte_t as note_page_pte() expects a pte.
 
-/Yiannis
->
-> >  config DEVICE_MIGRATION
-> >       def_bool MIGRATION && ZONE_DEVICE
-> >
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index ff6cf50e7b0b..368d40dc8772 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -862,7 +862,10 @@ static int __migrate_folio(struct address_space *m=
-apping, struct folio *dst,
-> >       if (folio_ref_count(src) !=3D expected_count)
-> >               return -EAGAIN;
-> >
-> > -     rc =3D folio_mc_copy(dst, src);
-> > +     if (mode =3D=3D MIGRATE_ASYNC_NON_TEMPORAL_STORES)
-> > +             rc =3D folio_mc_copy_nt(dst, src);
-> > +     else
-> > +             rc =3D folio_mc_copy(dst, src);
-> >       if (unlikely(rc))
-> >               return rc;
-> >
-> > @@ -2081,6 +2084,10 @@ int migrate_pages(struct list_head *from, new_fo=
-lio_t get_new_folio,
-> >       LIST_HEAD(split_folios);
-> >       struct migrate_pages_stats stats;
-> >
-> > +     if (IS_ENABLED(CONFIG_DEMOTION_WITH_NON_TEMPORAL_STORES) &&
-> > +             reason =3D=3D MR_DEMOTION && mode =3D=3D MIGRATE_ASYNC)
-> > +             mode =3D MIGRATE_ASYNC_NON_TEMPORAL_STORES;
-> > +
-> >       trace_mm_migrate_pages_start(mode, reason);
-> >
-> >       memset(&stats, 0, sizeof(stats));
-> >
-> > --
-> > 2.43.0
-> >
+-- 
+Thanks,
+Usama
+
 
