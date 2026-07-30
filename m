@@ -4,100 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5186DC55167
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:35:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA830C55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:40:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B51406B00A0; Thu, 30 Jul 2026 09:35:12 -0400 (EDT)
+	id 9613B6B00A7; Thu, 30 Jul 2026 09:40:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B01776B00A1; Thu, 30 Jul 2026 09:35:12 -0400 (EDT)
+	id 8E9FC6B00A9; Thu, 30 Jul 2026 09:40:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9F16B00A2; Thu, 30 Jul 2026 09:35:12 -0400 (EDT)
+	id 78D456B00AA; Thu, 30 Jul 2026 09:40:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD016B00A0
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:35:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0DCA04015D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:35:12 +0000 (UTC)
-X-FDA: 85045539264.15.59A1748
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3926B4000E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:35:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaEA3rl6;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785418510;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 349606B00A7
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:40:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A047E1C0108
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:40:28 +0000 (UTC)
+X-FDA: 85045552536.18.C1C03EB
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012051.outbound.protection.outlook.com [52.101.126.51])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3FD6220009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:40:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=ldDTJd6H;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf31.hostedemail.com: domain of xueyuan.chen@vivo.com designates 52.101.126.51 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785418825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z2257Xq+XVLaRCtpiJteqDp78M7Gp8HHO3wMLpggA60=;
-	b=eRA2MGAok+Ek9lwU3K5cegHFiKLlhUwbFJeG1InQO24n1SQvDtV9LSLJZ6CwkVWgCbRXZs
-	CtbuBuPwrLAGJ+SW7oWO2c3vOFE530lGgmmNM0UD0a2j9G6sYYvC6TPBu0D6q44sw8PTsO
-	qwg0+EBCkCwJ4k/Sg137BRFEQcw3oI4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaEA3rl6;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785418510;
-	b=CFSXKrQMMMdcOay9c5u32ovRSwITRgoeWOd306/Uk273opac4jiiAihyRA8V9cmnVKOtRb
-	IW8MTzWlUSIU7F0devvn1qqng6G8fSMrBCBJpoz3mI3Jf+QeOyvHuvXR8luT1K+BJfVZpx
-	oM+TU2ew+qmgxT/tiO9Z7j38eLMaCzE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81145418DB;
-	Thu, 30 Jul 2026 13:35:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E5A1F00A3A;
-	Thu, 30 Jul 2026 13:35:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785418509;
-	bh=z2257Xq+XVLaRCtpiJteqDp78M7Gp8HHO3wMLpggA60=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iaEA3rl6qCrrchvoPMIgoqeuEHTg7TVXdrfny4buMU97tftIO9RLtblTDpmGLrLJm
-	 zDXRCFcNUrTtS/+fmg2q+oudI7VKn9lpuyUFnSoUyrxnC2yVviWyC1XGU4eSrf06we
-	 V0nMQ5Y5c0oUetb9niF4eST5Qa9xw4NL82U9qcfCL9Ps6s7jIUe5UxANGtsKsmKctc
-	 sI6wvTvRssX9i/AGskL52y+5GL/eorsxYPRaeuGbUaRNXeFuGvbEzELHQrJBrKAghv
-	 MVWsMIcDlCR8Oqt8xid3BsdNz6UlYU1MYQFHGKIjR/OvAvAhDgecYC8L2CD2fl0LGJ
-	 VcLh191qsKdNw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 30 Jul 2026 15:34:11 +0200
-Subject: [PATCH 9/9] binfmt_misc: document interpreters bound by a 'B'
- entry
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	bh=cjKBmC5bi6DtcVbhzDHO2yH4oE/Tk1C37Td6ilVAKxE=;
+	b=PnJCYLtnholUoLsh3kkum1/HUQgeTe5OrRZI4iuvfsmBNVJ7nIv0LwIthQpfBCm4fIKd6t
+	zpIht7S46OC6SKzV7KBbhn8fpqu994/kAw+8KxdFa4pNEx+IJ0QRzbaiUQQHHhkyFvVYjs
+	1spZP/38et9sRruHXlqC85XzOAq3hz8=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=ldDTJd6H;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf31.hostedemail.com: domain of xueyuan.chen@vivo.com designates 52.101.126.51 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785418825;
+	b=YJkeKCY6IOkFsO3HcoV+VUFs+MtseWs5aiXACzrPP+LwJmIfs1WdSDWhyeQ5uBwZQNu0l3
+	rVFpifL9MhOwGSoXQbwTOBtyhgSKO1pleZQFs2dSbEHyj8RwgFZPPtrjQ5f2WE/FqJ88sN
+	cZY8OIFmPhfH5hdfQnsQgPBbJe2Ylq8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lz/5hzVVfSvnkzkYtiEBuJ7pikHZJdQNeNYKSjnkerRIvIbnjFqgBaeRFWUIs4z1lZXQDssMWZ7ZZHrGh5XC56x6hVjmOGn5BZJu8bMknW0AwC+kXAnB8aFOGFKOER/fPQO5eKaRGnF/OM7LvMEpeSp3g44328PPQyrg8blTT+G+LyuXD+mXE2oS2dejLwMqo2MB3cozifQdCaT9nERLdsVBmiz0PwHspQisprMt94Lr1CB02W9LPW/Lv2LeDOQCtdjxTZ9QixQImKWCAixT5c773wAoBjAXbu1P7cAPwbgrQbSy7/m8w0WRCcW1LH5AgSZz38GxaCmwY65rqlQqtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cjKBmC5bi6DtcVbhzDHO2yH4oE/Tk1C37Td6ilVAKxE=;
+ b=V3bsjdKE+9WiT4SMD6fPMuylxoQxHcz5+v25SR85YwsrhwdmXR44PsE8YmJjvcH3W5lIuA6hfM9Q19WDDWV43fV6PqNVeHMMtCA7fKXA3bWRfSPcw0e4c4ZGkW/abS3Ti6v+dOqh2DPECE6EZsnInlYdsUeuxr4FV3BswPNm5cGuf8pcnzmxmBQf1Js5aNyMg9Yn5LMTTqK1HfSGwXIMZDytL7fDRO/wcyTqMZAxSTdco7sarYrxbYAQ1AJk6PL/cq+o0ucuIQVeDwB/zyQ1cbwRoLRq1mV/EAr+qwQGb13wrj2Oimh0pKbIRCKChl6nsTMr0k/lg+2EWm0A/VW51g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cjKBmC5bi6DtcVbhzDHO2yH4oE/Tk1C37Td6ilVAKxE=;
+ b=ldDTJd6HmnZnaPFXUvB4USu70oir5AbEWgIeAkrOL2/eMLN8s4/z5GDcbppATIFi/N/bquvK/eHP9oK6gXrotofQLhDD9rG4sNrfl5AcRYVbJQb9cjnyHiP2fj2M6GYuSEw2YzwZd92Jt6cThlDYfGBe3tcPaqxpt+6LPlPLu/dACnGIaHWVia0NhLwmZkmIgYKpOsPHNvOnoAIuuoxpqtARpw25AzRTlKIXc4kEcXWFQRdTeQlSwMcB4Kt/TUrqJrjGYas7KoL3j529+KOKWNvTE3X8RKH7gwjXElRO7tAE9h3RqrLAc+ArxFhSdZYv/t0SR5MIkyYCsRzBesnL3w==
+Received: from TYPPR06MB8235.apcprd06.prod.outlook.com (2603:1096:405:383::20)
+ by JH0PR06MB6480.apcprd06.prod.outlook.com (2603:1096:990:2c::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.14; Thu, 30 Jul
+ 2026 13:40:18 +0000
+Received: from TYPPR06MB8235.apcprd06.prod.outlook.com
+ ([fe80::6ef9:8fa6:5ebd:96]) by TYPPR06MB8235.apcprd06.prod.outlook.com
+ ([fe80::6ef9:8fa6:5ebd:96%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 13:40:18 +0000
+Message-ID: <97d8fa18-cf63-49ee-8ed1-d7e55159566c@vivo.com>
+Date: Thu, 30 Jul 2026 21:40:13 +0800
+User-Agent: Mozilla Thunderbird
+From: Xueyuan Chen <xueyuan.chen@vivo.com>
+Subject: Re: [PATCH] mm/huge_memory: fix huge zero folio publication race
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Bob Liu <lliubbo@gmail.com>, linux-kernel@vger.kernel.org,
+ Xueyuan Chen <xueyuan.chen21@gmail.com>
+References: <4ee89c27873fb4d9e598f8a5cfe71d700ecf894e.1785300563.git.xueyuan.chen@vivo.com>
+ <37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
+ <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
+ <amr1tqBj9ec57xwa@lucifer>
+In-Reply-To: <amr1tqBj9ec57xwa@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260730-work-binfmt_misc-preopen-v1-9-4a0b0da71f16@kernel.org>
-References: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
-In-Reply-To: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
- Jonathan Corbet <corbet@lwn.net>, Farid Zakaria <farid.m.zakaria@gmail.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
- jannh@google.com, mail@johnericson.me, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.16-dev-3e0c3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5175; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ZgIy0p0xGptvlB+oxU1uGqExeQGJH889CMBMK7z03Hs=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlB73n5Kvc6W3QxL/N5z0XVyVP5r95sV0MzOGsXQIHn
- x8q3sDfUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBGP84wMbed1ty4NDLw8/Y/2
- SsHGmX3O/NeT9Jv1vSKdvrjc7b21j5Ghw53Hc/v91ne3fiz+cVxSppZNuKlI4lWRZVBMbaBN2A5
- OAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-ClientProxiedBy: SI1PR02CA0048.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::11) To TYPPR06MB8235.apcprd06.prod.outlook.com
+ (2603:1096:405:383::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYPPR06MB8235:EE_|JH0PR06MB6480:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5100e7ef-baa1-4021-ff8d-08deee401809
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|18002099003|22082099003|10067099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	9IMeyUUnKVlEUBKQjHSreNhL5rCGwaaLUEwgwWuHbuRvSTOCotGkLL7sqUagDZMr6N/hw5ziD0ETC1mHQ25F6leSheiSEsPewP3eg21jXPyyxO/o1mVkW0L3ix/zYoa87vMtACAQDD3VGiBmAz4X9ZYokxeq5OYVLikvA+ThI8YEjdRxiibEA8vbH+ougUkXBxsho4TowxFt6JbkyfEziNRB+aUnZee2/Ghi4fYZ6hp3Z00K4y42x9iPYT1OCYly40OGEh9fogwazklj/JYK6c6n8hs69gc9YWqKXPkno/MKeDhPxlfqtou/Ej05sub4x29+xkmrXXA9P59p6p9kiQscgKAY9PYFqe7jHy5lrsE+D5lvwXl0nhXX0PDNVKxCigHvddpxKPClPwyUKG6JmPmxpExQxMJVKAeaDMAgx+ebgp1wYu50q3VBapzU5uCUhCNJ7QEbgnGO9zZROwpZpEYYm/VgTi7tP47n2pvTjgqT1MLtSaYM/NH1ZK8+Kk1OQVaNDGC4msgkmDrAoeA/Y7OQYPidIvsG+8GN3nIE7Z2YUy9AWMiHKXJvOnH59H6+YqNCqtNUXFyJ9XUq4ew4mQBfMSS9tCT0ihY/pIXkOrY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYPPR06MB8235.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(18002099003)(22082099003)(10067099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WkZtRkF0d2hGYU9kNlFOWXZHcnh0dGtTUkFIcnB0K1phSlhneXhvamRrWmFz?=
+ =?utf-8?B?RFNlMnFOYWU1MDJUUWk2V1lSOTBSOXdPOHpEeWgwTHlpRS9qMDI3OGE5M292?=
+ =?utf-8?B?TENpNUVla3NaVFBqaUh5bWVOM2Iyd2NQNzNxQjdGUmlLV3JHM0tZZjE5UUMw?=
+ =?utf-8?B?WFY3L05LZEZEdEZWVDlHWGJ5RkN4dk1NZkVDL3E0Mm5NL2ZSZ1Z6QU5mRUE5?=
+ =?utf-8?B?bUdnbldzS21tcWxhd1VNMkphOHdkMzJEWW9HTkhBeURPdUc2QjdkeWV0M1BV?=
+ =?utf-8?B?dFhBcDEzcjFLamJtUkV4YnJhNkMxL2E5YWFrRW9lczFTQ1B2RDk4NG9ZWjJK?=
+ =?utf-8?B?SERkbjFIZy9pdVRSaHpCOXBSejlUY0JBdFNIWVFEK09pQVoxOU9WUHdoK2d5?=
+ =?utf-8?B?YkVQM3FyOFFmcXMvMEF1dXczaG5mdTNqams5MXVyUUJHWDRoRXl6aTVLMVBN?=
+ =?utf-8?B?T244cU9TYURxK0haRHN3eHdTUHlkZnBaK0QxODBCZkxVZVdTVGpYdTcxTFZ4?=
+ =?utf-8?B?SjdaejFqa3poY2tCbUlyTllLVFZPK3dnb244RGdPSEU4SnpmUkxEQjlpOExY?=
+ =?utf-8?B?eC9RdnhWalJzQVIxaW5Zb2RzVC84K2VNQzkxeW0wWDlBMUtGN2VnNWQ4M0Qx?=
+ =?utf-8?B?U3U0ZERSU2xGaUI5d1ZnZlVtTERoejN2VEVhclBVSC84eVFOTTFXYlRxZVVU?=
+ =?utf-8?B?ekpMVXYzYWdjbGhlUDgzaVRYQVRHMk5wNURlQlBqV1BkWGZDWDFkY2J4ZjMw?=
+ =?utf-8?B?WTlDY1psdWZqU0FSamRaUTZFdHNkNC9BQm1OQmRETUNTMG1kYmtwYllEQlFB?=
+ =?utf-8?B?eW9WdGQ3QXpoeHhiY1FSKytOUFhVUGJjT1FuZmowa2EyMUJ2Nk1vazB0QXNM?=
+ =?utf-8?B?ZEtFNDRHZmZOOWhrVXl3Zy9KQzZhUDdrdnZOZGxSWUxtLzhpenFlSm5IVHVl?=
+ =?utf-8?B?aGMxZnUzak4vS0lOYXJsUk5aditGUENScHNnT2dRWGtEcnRDVFNaQWYyVE5z?=
+ =?utf-8?B?YmV2VG56UldBeUFnM1YwWkt0UU00LzF6ZFJKK2puQlhueCtheCsyNnYwaXEx?=
+ =?utf-8?B?TDFyVHVMODlOMVZaYm9LOUY5VGl4WXpCc01OVzA1QUs5TWM2N3A1UEpDT2Vy?=
+ =?utf-8?B?SWcvRnU2cnpEMUxzSTdVWEs4RXpQSFhNdkR6NlhqR0NaczBKYVNWTlQzbjQ2?=
+ =?utf-8?B?RWJGaUNTMTFCYU9ZMDJ1OGdYZFVWZFdKbEhRY0VyZXVWMUZzdVpyOEtLQ2tx?=
+ =?utf-8?B?RVZvcllTL3pjSk9tM2xNbkpPOGQxWldLcXh4dTNsUVBGK0NXTFhzRFg0OHFt?=
+ =?utf-8?B?Vi9rUWExdjRuSjRPV0lNb0RXbUJRTWN3MXo0aUJuZG5HOVdaZjZ0b2UvaGFE?=
+ =?utf-8?B?WkU1TjVjS1I4ZGt4OS9Ob2RuU1VwckowdXBLTlhkblp4aWxNVW1ITnZKTHR0?=
+ =?utf-8?B?WDI2Um1BZXVLOGVJVG40V1F2ZWRTOFdDb2lYZFAxWXpKZnpaWFNlMW55VmZs?=
+ =?utf-8?B?NExNbEhydyswMEo3RDlNL1Vud3JZVGFyK3o5UXJ6bHhPc3hqR3FHbTQrMHBq?=
+ =?utf-8?B?L2VwQjkwT29mdkNXeVpXTzllMUtlQWZFbE0vaGpqRXFJTExZYW84SHZodk9H?=
+ =?utf-8?B?Zk5hclNDa05PTE5JZlVMeG54SkJGa1FFSWVJSlFhdnJVckpScW1FQmZIMmVZ?=
+ =?utf-8?B?WDJiSGtJdzNqY0QxWXNVQ0lXL250LyszT25tVVRXdGxrV1AwNmxCZTJaYWho?=
+ =?utf-8?B?UjBkWG5CekdTaEFpdDRGMDFrMTlFTW9GUjNxWG1lSW9NRE5WRGxhTm9nZlBL?=
+ =?utf-8?B?ZW5sbTJUWWNscXFrNStaVmVSZHNtZ0ZGY2k0a1QrMXEwOVB2Wm9GUTdDcWpw?=
+ =?utf-8?B?eEc4RXZoUkljSlRUM1dGKytRYm1WUkF4aDJkb0lDMk50WnVNcHhlQ2krTHlo?=
+ =?utf-8?B?b2NiSEN3NWI2VS9RVHFpUjBzVTI1d0lsNjhqNWV2ZFpBMTlDL2o3RHRqSDlv?=
+ =?utf-8?B?Uis3VStqdm9JMUtGSmRwcm1BZCtvMDlVaXdTemJtUSt5b2p6SGwrMFUweTN1?=
+ =?utf-8?B?T3pSbURqQytpcE9SSWhhbjFiR2pTOU1XUy9jN2JuSjFGaUxKZXk3QUlaTXV4?=
+ =?utf-8?B?NGFXVGtlV0RmWHJsdEFVTzhmYVplQktNUU9jMUVDSVpOYUlpS0J1VXVKZE9i?=
+ =?utf-8?B?aXNkS1NiOVFRT2dhbC9mUFREQURZbTBTL2cra3JNOEprOUNEaUtLUEdPcjdQ?=
+ =?utf-8?B?STJDTFV3eFdudnN2elBCOXVIbzdoaVR6aHdUK2lFQ01YMjdWcnE4S3NkYllh?=
+ =?utf-8?B?em1jdnl1bXBRRWdVa3o3TEpkRFp5MFljbGRJNDZuUVlWeUx5YWc2dz09?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5100e7ef-baa1-4021-ff8d-08deee401809
+X-MS-Exchange-CrossTenant-AuthSource: TYPPR06MB8235.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 13:40:18.4578
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UXQx4AtsgBVy/dMRmvG8wjj7fwgii+kv6rhFMz9ReDOFwhKnIPchaACg3L96nx6F9xZyxYSeiKq/Uf1UhZ8Zaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR06MB6480
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3FD6220009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3926B4000E
-X-Stat-Signature: 4ei6mab96bobukoruw5uaytrb1tngcmw
-X-HE-Tag: 1785418510-100177
-X-HE-Meta: U2FsdGVkX1/VGmrXiOzt7gss1M3FayCeJkZmiM2ji0HieA7Pq19Dylw7lyIv0FQzSH8Sd8L/31jDaEwKZc3Wu6T6smd6NWTnZEzyjJMs43Gpzux+vjixQw4uyzDwwjZch/m84MggiCjmdFi25q4pl3nOHWQpjOYtvOCxP9wO8AIwY8NrvrGcFf6MbZ3T3HeU5aWG4q9Z/pAu0qptF0l408DXvqOq3xQFfCOKwlqaCR1lOl2gNw4Zj0fWygYucYjFHafDCOGotkYB6nJR2GFs0bv27WQtjAgf03SglfqnCgLjPwqDA1eY4iGGcx+QEn7rkgwUQMWI2bxjYlePVXIJBv8gqgLViCxeI/RMNIP/RWINvOd1dziE31ungf9/1erECzYHQjEKdKbOgJwYi5QwUx8GCqaAjJQu7rc6wBZVx32CruK4toNTbAmub17v96dQrROK8l/TuDdiN5h5Q4bV8cr689E95DWCfWilPTN9FU5flZBB4gm5unU8kicMvpS7Qp7iD7N7SWquh5RhLOiWMhtE2LJu96S7nrPkprvKnBeM0ZNT7QmV7EgLU12BeXuVqOZIXEm/CoZ+9rhL+CnD64eNBc/UaQnmEe26AfM/k7yHMJWOxeWaX+p681DqpHqiuJRBRad6n8oUOKmuheDdWn2Kihu3pbiQd12H3ZbQEbB3PdV5WvSpg5kA9knSivIFvBOnl/TkdoBwZdULzO8tJTFAWgoTtRNJu9vcexxIlYa+1YR6JumB7+Yn1PWF9mW3HsM62RJc1QY6YE136qxqg0glmHVQnNRuZKIAirrXQcTK6WqQesS71IYj95ZiHks/b68PyoOGmQYAlDGXc5MuudccTsHCiiwU2UHlZx0QoKtWgFUssDctmIfSnR8W/tMaI24dAAWVT/WlUcUxvwjzUwQsDWe+AXPe9iSNg7v9e+hslcywmnnGYAez/iVydakHis5OXDVHIdlpRBhorVh
- rSNkgBM4
- gGox7sJdC/oRjU7PBB43WK/cL0k7TpT4OtfGTRwL/9CeNLFOrdhpWdMhGinO8YsSti5xwhMUmL27ZP20f3ogSS8dNq/yuDFwpjJNKIyOG/wRNlNpdD37o7GJGs2khHCZuB5JmCQpwMD6zCrcq+xj6E4XukeUeaStuuFJa9ghWwC8iBznGXXVarQS734uca7n/kxJ2CaYVu77q/0y2aZpY07uaKltkX2iTv2DamYIfoXRwlbZhq3jXlFycNN6dU7YDqOqVe0+RWvlep0ioqrkBlXOnhZi5S6wlbN/V8uO3R5Ehijay3fLLsMoOD9sfhnDE800n+md60NOYRnpmy1Ey4keECmwIZGx7w0xOTY3tLg87xRIRdOBWkttHfQ==
+X-Stat-Signature: a8w91j49648br8fa5spw4xtxzr4i9px9
+X-HE-Tag: 1785418825-714121
+X-HE-Meta: U2FsdGVkX19xBt+mgTbpODxl7hsSQ9Hky6Ds2LFrDp2o+ouL3mpJkWg1fVYmtYp6kJ3eMGrxL4tA34JkHh1xNb2j87mPCTQn2zlzqz4m/6a8i87ZITrpAYA96jbMfpHC5oKO2U5cKeAtm7d30GXRmjbkeekt4wA8yqfjr1N6mv3f3ElWxftUOmVRlx/2yZdP6jzuAh4vSjv2Sqcrj2ag5DqJPW1rhlKjtuZIUQHfpxui/WBw75dG9pypvaN6lnXXor8AcCbrPsPMEueNdEa2QGQ1PLMEwkbGVbZGcpmctcnBiw6/Qb6YGe1EQPsA/FCIph98mYCJBsxjqwH7/4ZABNmIZIl1Go2VDMeb1IPhf5y4rDL/xp5omfEh3cH4cZ5u9tPgHsby32GAH+m7Ty2nH5aWfDvV/DiUkMOXK20io0kYGigXWHQAM1lUbtfFD2eBtzKKXPHRxszt2i4XiZRauRA9532aVwrHCbj4JYopNitc8lpAN6eOfJpis/Godpz0q9gc2iMZX48AxDCJ8AqJ0chGqJRl54RK0+NBYO5G8z7RyPmzxqLlvrGQ6rQH3aUtNGCokzI3RYwIsGKHQoRtlztTvCTDYeaTSjfy4uegPGLx759kA60cEblYwxf1OYiP7M7sci9k3bxvE40YSFraVTFdo1kF9ngTiTQ5xb7DNbpDVopz4xCTJ+R4lOPATo+Miva/wURZtw0kMLI1EYXv0wBwD0i+6piaQUsipOLUHYXk8d77aaKPG3zgLIceS4bs3qI2FgndXNGJztZW91JAmetoGBXHffDmb+YCPrGwZ0UyF/gEsRcFgN4SsKEBh6asmtcQ66JUdOZ67+EfwSlNqmH4MXTl6aDPm7rJBExMnnhliEowfm6XPiK6l17qRK53wDGg9ErZ/FWxwUFL2rlyJGdoeNQhbyU3Vi2NCevtxJJe+Zm5Qyi1ul6N4FP/RhSukhfXGbzXazNayu6KwgO
+ NMfmTc3e
+ t6HiVDNfIEioHjZ2RJfgxtVW6854yumFfsyu5ONvBoZ0AtQtm3hFWjzOc0Aq6fDIS4OfpVPmFzQoymRkIMcEnIOayJF9zGq/xsdsw8ghi2op0Z2/W30CctGhX5sxevtILcEcvItlS+h3EQi9DCve6ekkbY4itDONs/FlyZiEtby09+79x5cT4rwUu11WLr5mZIXNhpDnama5DfCzzpK2DztECvQ44e28G4Pk8inOk3t/rrFvLvLjlEC4M/VpsgzODDMyiiPMyVQsM5O7+282Mtlv4rYqhlcE/E6Mhhi1ISalz/vS9fPSgGP3zBHiCdCofG+XVC/K7J99r4JZoopNE5Ts3/0Qq03RJNayurK3K1bR7w5I0GYEdw6N+YzaTFx9PNF96R7T/i64OZ34MQadYA/WOtwi9l3UD9JG2OxSPuBkstPRCXNfdPwts+1zNTbv1LIuX6mOgGLzIrakyj9d3JkNRRFJcMwUWksfbHFwvaHZgitK5nW1zWpDCHimUaz/wnvtoioJaCh9aVUOS+PmpzW5YSt/ZmD9w+N7aniyqXJjQAlQetSQuBZTs4QHtvk2j9TTUJPuuRYCooGhUz8KxAvXJnjOIyRljUb5QUxtYJl2Yc5lqqcRjXaxSIa/SxGNAusSOpSppxEXJWSU9/xiZsfk5gw+MTBS+h3TF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,102 +178,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Describe the interpreters a 'B' entry can bind while it is disabled, what
-binding a file buys over naming a path the exec resolves, how a load
-program picks one, that an entry binds at most 100 interpreters, and
-that enabling the entry seals the set.
+Thanks all,
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- Documentation/admin-guide/binfmt-misc.rst | 66 ++++++++++++++++++++++++++++---
- 1 file changed, 60 insertions(+), 6 deletions(-)
+I sent this after seeing the Sashiko report for my series and missed
+Lorenzo's earlier fix.
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index 8254ddcb3389..3e2b2a9415bc 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -195,9 +195,62 @@ and derive the interpreter from the binary's location. It selects the
- interpreter by calling the ``bpf_binprm_set_interp()`` kfunc with an
- absolute path and returning ``0``. A match is committed: a failing
- ``load`` fails the exec with its error instead of falling through to later
--entries; ``-ENOEXEC`` lets the remaining binary formats have a go. The
--interpreter is opened with the credentials of the task doing the exec,
--exactly as a statically registered interpreter would be.
-+entries; ``-ENOEXEC`` lets the remaining binary formats have a go. A path
-+selected this way is opened with the credentials of the task doing the
-+exec, exactly as a statically registered interpreter without ``F`` would
-+be.
-+
-+An entry can instead bind the interpreters its handler may use, so that no
-+path is resolved at exec time at all. An entry registered with ``D`` is not
-+matchable yet, which is what leaves it open to being given them, one
-+``+name path`` write at a time::
-+
-+    echo ':qemu:B::::my_handler:D' > register
-+    echo '+aarch64 /usr/bin/qemu-aarch64' > qemu
-+    echo '+arm /usr/bin/qemu-arm' > qemu
-+    echo 1 > qemu
-+
-+Each path is opened during its write, in the writing process's context and
-+with the credentials the entry file was opened with, exactly the way ``F``
-+pre-opens a static entry's interpreter; the paths must be absolute. The
-+path is everything past the first space, so there is nothing it cannot
-+express, and no interpreter has to fit in a register string. An entry
-+binds at most 100 interpreters; a write past that is refused with
-+``-ENOSPC``. To bind a file that has no path of its own - already
-+unlinked, a ``memfd``, or reachable only in another mount namespace -
-+open it and write ``/proc/self/fd/N``.
-+
-+The ``load`` program then selects one per exec by name with the
-+``bpf_binprm_select_interp()`` kfunc, and every exec runs a clone of the
-+file that was opened. The path decides which file is bound and nothing
-+else: it is not resolved again, in any namespace, so what it holds later -
-+or what it holds in the namespace of whoever runs the binary - no longer
-+decides anything.
-+
-+Enabling the entry ends this. Its interpreters are read at exec time with
-+nothing but a reference held on the entry, so an entry that has ever been
-+matchable can never have its set changed again: the first ``1`` seals it,
-+from then on ``+`` is refused with ``-EBUSY``, and an entry registered
-+without ``D`` is sealed from the start. Binding a name twice is refused
-+with ``-EEXIST``.
-+
-+Selection is by name so that the configuration and the program need not
-+agree on an order, and so that a handler is not tied to where a distribution
-+puts its interpreters. A name is a single word of printable ASCII, at most
-+32 characters; a name the entry did not bind gives the program ``-ENOENT``,
-+which it can act on or return. The interpreter runs under the path it was
-+registered under, and the entry reports what it bound::
-+
-+    $ cat /proc/sys/fs/binfmt_misc/qemu
-+    enabled
-+    bpf my_handler
-+    bpf-interpreter aarch64 /usr/bin/qemu-aarch64
-+    bpf-interpreter arm /usr/bin/qemu-arm
-+    flags:
-+
-+The path reported is the one the interpreter was bound under, which named
-+the file at that moment; it is not re-resolved, so it is a record of what
-+was bound rather than a promise about what that path holds now.
- 
- The ``load`` program can also pass a single argument to the interpreter with
- the ``bpf_binprm_set_interp_arg()`` kfunc. It is inserted between the
-@@ -234,9 +287,10 @@ handler can decide them differently for each binary it handles:
-   flag). It excludes the other flags and a staged interpreter argument.
- 
- Because these are program choices, a ``B`` entry carries no invocation
--flags in the register string; ``F`` (pre-open a fixed interpreter) has no
--meaning for it. The registration directive ``D`` is the exception: it
--decides how the entry starts out, not how the interpreter is invoked.
-+flags in the register string; ``F`` has none to spell for it either, since
-+the interpreters it binds already pre-open what ``F`` would. The
-+registration directive ``D`` is the exception: it decides how the entry
-+starts out, not how the interpreter is invoked.
- 
- Handlers are looked up in the user namespace the struct_ops map was
- registered in, falling back to ancestor namespaces, mirroring how
+Lorenzo's series supersedes this patch, and 3b77e8c8cde5 is the correct
+Fixes tag.
 
--- 
-2.53.0
+Please disregard this patch. Sorry for the noise.
 
+https://sashiko.dev/#/patchset/20260727143426.1077133-1-xueyuan.chen21@gmail.com
+
+Thanks,
+Xueyuan
 
