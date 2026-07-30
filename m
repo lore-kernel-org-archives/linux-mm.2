@@ -4,76 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6310C55160
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1989FC55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:08:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8D0D6B008A; Thu, 30 Jul 2026 09:07:07 -0400 (EDT)
+	id 0E55D6B0092; Thu, 30 Jul 2026 09:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3E406B008C; Thu, 30 Jul 2026 09:07:07 -0400 (EDT)
+	id 0BD126B0093; Thu, 30 Jul 2026 09:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2D6C6B0092; Thu, 30 Jul 2026 09:07:07 -0400 (EDT)
+	id EEFB46B0095; Thu, 30 Jul 2026 09:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 503816B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:07:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73F5A40154
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:07:06 +0000 (UTC)
-X-FDA: 85045468452.08.3B218E7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C188B6B0092
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:08:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52921A0725
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:08:10 +0000 (UTC)
+X-FDA: 85045471140.04.2F63099
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 982C640002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:07:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eaaC2kCz;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 812234000A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:08:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPqsL5zZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785416824;
+	s=arc-20220608; t=1785416888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=65J9qMpM5zpfwuBByrCM49o/mlX9umE20iAK+xW9lbo=;
-	b=Ka5ML0Lpm3rsLjCXlQpeHBhmLt452U+2sFqLAb/N9XLoYnfYPYRARFOIqvVJa5HeVZ4QZ2
-	w/0eHG5I5q8BOcXFkGBobW3EXXXL+JisGh0B7u7tZ3wt9ZEA/4YU3Q/fNoKW6eV2raPLJG
-	b4uXwibthBa341vIpJMqHXnKu7yWl4I=
+	bh=s66c5Yht/lK/HodOzOy20J4b5DnxB3/+AhdoBRuSQ7w=;
+	b=sjBgoXmoERi6Ox9x3d0AFvdTrf1kY2BdvjUtTjALnwvVyEQMMIG4wwjMc6M+3rJ83Zg42K
+	rdxwFU2Wm/RLzThR6+WtUAncdm/5BKQ/h9IaIb1HwFO/+a8IXMAOcAps6UgtyRGg2i58Fq
+	ca10xAdOiD2z7vtJob6gfKtJdegbX30=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eaaC2kCz;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPqsL5zZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785416824;
-	b=3wKP4LUC4u4bFRgSq2vkntM87YIuxkvRMdCFvJXPt/XwDAyf/Kcp3NWvltEaK7WQocAdtT
-	mRIl/STdi06GQI/E/VRZpXsdVsZt7Cz/EutvdCtZ3ONgxXiBzAmZ/bR6TA3sKwCoZT2jwy
-	0avkSf4iwhpG4aa+HNXvKyP9O4q1IK0=
+	t=1785416888;
+	b=KIV0qMreJbNAx8ioSo5P3Fy3s7C8IXXmHLr/tp1AeYXF4dMGi7q3gI4phsIZ/8OGs3wwKz
+	ti4Ski8hP/zgjJPAomQYxd3L9s8dzXDRNZlo/Twgov+hrP5vVxRQ+DWghFVMpLnv20PeYX
+	WTNYEnFwcyDlLbE+k9gPTGX2fl22L/w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0934404AA;
-	Thu, 30 Jul 2026 13:07:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BAB1F000E9;
-	Thu, 30 Jul 2026 13:07:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 963C440253;
+	Thu, 30 Jul 2026 13:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECCD1F000E9;
+	Thu, 30 Jul 2026 13:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785416823;
-	bh=65J9qMpM5zpfwuBByrCM49o/mlX9umE20iAK+xW9lbo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eaaC2kCz6ssFAZ99ZNek0I3JHC185BNyzr5CO3G1TPQfycwOC6k3XfVpIGU+G/cLg
-	 TVP/HkX2Qxhn3CB0OlWyEmvtdWQWTfiaTMZiILg3ufr0AEQF5NlYHUYmoazUQyr/L7
-	 fDSE38wVCX1k/cIZUa/zzgHSkyxXsiNMW1/rXJkf8GcsTmV4lgCK0RRh15LCtYdc5M
-	 iqUnoN7sZVjWOd5cFrD3xTBBdAPc95/qhjspeuOqpAX9YxKfgP/ZuW4pYZygkaiziX
-	 mpwZkEYHuVDblSu7nscuiccTFTfyOxaEtROZDIfdblHsxts6z6y+IDGRkMKMZJNzMZ
-	 2tvw9UGLSEkDA==
-Message-ID: <7f60a20f-7293-489b-8539-847fa1b96789@kernel.org>
-Date: Thu, 30 Jul 2026 15:07:00 +0200
+	s=k20260515; t=1785416887;
+	bh=s66c5Yht/lK/HodOzOy20J4b5DnxB3/+AhdoBRuSQ7w=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=HPqsL5zZrU84eK3NAVOtdXHrR3bAcD5lgmYW///zxHyhOkRfbb+LSeOTRxmdR6+d8
+	 M3/RNwR1IoJuRC8zwdFpltWAfgu3+i0W5O2pb8+jfXrZDaLrsgU1v8zf2VSPvT42nx
+	 XgcW5p46g5m6UldNLISjzPMw2t9+PBAgpHP81yhU4KntBtXkgCZFR4AHw1LKssIpVq
+	 tZeFfdgsrx97QT+XHwvZV3t6TV9VgAJioG/FnUwilXqoeTLuFJMuSVyZV5Mi7vgSVv
+	 Da/zMP0oxZf9xudOkAmf0WhsXpQ8A1b2d03iTOhvHXrtUsJZyHfbXnGRmO7qJ+L+KX
+	 kouSyJAgTGcgA==
+Message-ID: <51102823-ceab-499f-8b6a-162e392f864f@kernel.org>
+Date: Thu, 30 Jul 2026 15:08:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: use proper PTE accessor in move_ptes()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Alexander Gordeev <agordeev@linux.ibm.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Cc: Pu Lehui <pulehui@huawei.com>
 References: <20260720141633.501799-1-agordeev@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <7f60a20f-7293-489b-8539-847fa1b96789@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -119,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260720141633.501799-1-agordeev@linux.ibm.com>
+In-Reply-To: <7f60a20f-7293-489b-8539-847fa1b96789@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 812234000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 982C640002
-X-Rspamd-Server: rspam01
-X-Stat-Signature: d9zxckt6h8hd1om9kqn93wpkcaaijzs4
-X-HE-Tag: 1785416824-567829
-X-HE-Meta: U2FsdGVkX1/lY56mc6MZTjTdtWNSJpLA1goqi2CsTxDvM2iBHw1mm9jsS5zkroZet28MhoSiMPycEJ+4dWq24fzB3+oqlIJvptAegFonNaBMucTWjZbfgIrKuSR3p9B9w3oKEsbX4RroyaUexKZoDNsZw72+8g8owD8OEVCAjNyLv9vVK+IWGLpji9fFHBu7tJjZRDLMwr3W+DeEqVoyXqCrGeSbJq/uOJEC8U6BqxjhzjdWitn+/zcMW8getrKS+wTgRiD9M7WfhG8dQMYb7jNph+NfXuon+P9CsrHUSj/NPzicCFL7FG76N7JgZ2HpeUMrISbgPGFBz0PayX7ojLhQl7A3xlhH9mZZz2dQv0ZSocGNuiuSg8gLwsz7PICICSmTbDvuZosmfbo0F0KjlaThMXJrDpyixhkme8CZnpucUYXKcA3NO8bqmyOjIIXp0PM4J6waTtO200amxP+uNcFFiyktJaTFYZPxzqfVGdk1/GqOE6zIHpIDTiBPJw0wA3ZooPfok0ODXeVBm+fjMaP200NCdQG8JP/UsDBf0RuqeXNxbbJKRqEpuDm3gENEb/HJCgKWaG4/2AA+DyPHEbpj4IOEMPashMZsmeIE6lJ7C8h7kSMZXFSefjsf677BPVS0KGnsKg4AUOZwOYQoCZz7XiP1sHwkhUGDSDDpHWa8oGGyhTMp0DtseAR/83TDVBpSwz840tVp42UDBQz08o8El7KKMnCIOB8tPqRU4OSU6TBh1cPjRzmzvprQK9AhLFEFxHcg23jMVajHbWyrsNIPgTd6fcS+DwfgKipueL8aOXXdXN4nVth9O4DxuJrvREQQO21hyp6AayFAYhqmO121ctKQz+VzFxyqOPS3JlVaNJuwrHMtEWvplJYFPPJybtvqtYrC2j/eloE+YupUxvMXOayb1qFQ2VfubhwCsboM4e78kHGJEifWJrgurC0ajWRaSJnaUsrSn52e+vQ
- 1OCnvmZF
- KgcccqeVRqwOdt8SOuUfpkQqOa24Ul9pIOgzfG2yBOsn8YW59iE9CwEogCb/x3jCCKOYH3jDQtPX2V7C3081vJUbLTj7bbrTu9Ng2ff/AWOZUAalPlZ6AYmDl7gcH0KQT+FGxl/3yulKAQJKacZ0cTXyZyJ4g6+eMxw15Zrd88UvWBG/KsVBb10IllOEGmV59VGkpOuQs/R34YJ+8lo7gYZ2crRwYHq265TtsyWnYOv4y69rplmqxxsBfHmo76p4nzowCQUGRqLrh2fudhBi01Nf8swJMzvTPpg492YVV5NEZImQSlFEmnpVK8tt2VdkAdZ4+/13hTAK/wpMgo/AzaFBL4qlHaYi7cyn+
+X-Stat-Signature: w7fe1c4nne7mtfnybrrubt3jty7het8y
+X-HE-Tag: 1785416888-500120
+X-HE-Meta: U2FsdGVkX1+7Gt1mjfbpCZaNVoGCbgeXBU/WY+SFXEDhN5nyekqKDnwaUf9S98xzVV9rP17IOVSbD9UDKDLKFdwLkq73tzJ1N/im4PRiatZ3WT/4jVQl98DMN3GRPfW4cwINLClzOVxVtHXUTfl1qT3o7wHo4SgFEtZedGL/HHSf0QmbkPMEZqx1NWFcoA7n6WuD4vNNRI6JoYx/XUTBRJzZOTc0gCYqYchfKjZ3PFmNo2zPVi9WXS+Kb1b+wDKpcYZe3l9uokjH3Fu3T1wsAE2k9Q0btdiV0WyesWdae0YOF74Aks5K/w9GDPjUzRrhCSNnwo/H1el48ejCEoYC40JjHh0x+QhAjAWBZSo9PYJl05elvE6JaclJ7g9OVMIyYhojpsT+OQwfUf/7Gxg9kVSl6kq9yls2VRDrSmR4XhSwHEvAcegn4uhUIZQHRleELOO5/LLYTq5Rfpx/x9C7GINR7jSuixW4OCqao00zWIf57Kd8YL6e95xBOETgE4R4qDGFVdWrS/yaMR7gbL3NPRLMS9xl72mHtQx4Az2wM3JEtkZLdO1zOIgtArsjK7ERoATvEivXOG4xx9w2FDuWRiDwDFj/KhJEfTCKgFNxFnETIByMBjLwMcCl3aIqmnKR6RWdAM+sfERBARv4XOrAreNqOZlAXRhT2NDnz2zyRZVvO5bhLLBis76eiLgRelsxqxcJ8m48KQ8eZhJQhWDzJrEJ0Qd1hr+Ws74dvnHYbYyeXL7cnPibJNQPYfbDG1He+84fWU7EFfMaOD7YBGjz/4zjboVG+a5D28t42TDczjuAOfGmAZYJ/eQOxekzyybQoUB7qb3ekO0G0VVoT73ztFqv9omrAVvR8Mj0DH2sZKnzXemFfJpKAiWMNw3a2SlHwd7cXHTFvrvNEBFeMZElCIgrp4AOzDk6NV3uP2+CQI6oKQNnTrPYS4V4W/qqTAdlsfTBXEDsNbU0NSJ8uzF
+ msRnoFbV
+ n1G/J/QFhZhMZg6mIvckHV8PNCwVVZex+RSQuBA9GF59EpQWAItElg19K4Ea64El933PbDDmBcu1xnlJ7rGkmIZcvhCQNVHWfyWuBpkiFh827CUEJNkDZhjeXlbrZZOj50SVQ1HIgWyN2FzMveGrMTPd8tA1JQ4+NouMUGOOrgeYI+qNYmGrdB/C9rNwBbR7py1rEL41BgAlldgRLVzatApPwdpEzRJF78pQwto3PV+dZKeRfdS8hijNYAnYEcjaf1DpqabcEsV49Kf438Mdq8n+IrUX21DwQksECnB07xJI1BRDY7/A7LluzHAOR5BnXyeSVXkq8L1+/phVSnJpbGgabid/VyQ4gqT/d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,32 +138,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/20/26 16:16, Alexander Gordeev wrote:
-> Follow the pattern established by commit c33c794828f2
-> ("mm: ptep_get() conversion") and use the proper PTE
-> accessor instead of a direct pointer dereference.
+On 7/30/26 15:07, David Hildenbrand (Arm) wrote:
+> On 7/20/26 16:16, Alexander Gordeev wrote:
+>> Follow the pattern established by commit c33c794828f2
+>> ("mm: ptep_get() conversion") and use the proper PTE
+>> accessor instead of a direct pointer dereference.
+>>
+>> Fixes: b36b701bbcd9 ("mm: expose abnormal new_pte during move_ptes")
+>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+>> ---
+>>  mm/mremap.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/mremap.c b/mm/mremap.c
+>> index 0dfe3de39ccc..e99b19a9850b 100644
+>> --- a/mm/mremap.c
+>> +++ b/mm/mremap.c
+>> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>>  
+>>  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
+>>  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
+>> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
+>> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+>>  
+>>  		nr_ptes = 1;
+>>  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
 > 
-> Fixes: b36b701bbcd9 ("mm: expose abnormal new_pte during move_ptes")
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  mm/mremap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 0dfe3de39ccc..e99b19a9850b 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
->  
->  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
->  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
-> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
-> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
->  
->  		nr_ptes = 1;
->  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Ah, but I think we should drop the Fixes: tag, or am I missing something?
 
 -- 
 Cheers,
