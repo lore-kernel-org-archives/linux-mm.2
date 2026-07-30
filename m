@@ -4,75 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B00C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6739C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0206B009F; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
+	id D59D26B0098; Thu, 30 Jul 2026 10:02:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E60FA6B00A0; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
+	id D0A346B0099; Thu, 30 Jul 2026 10:02:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9D7B6B00A2; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
+	id BF7F56B009E; Thu, 30 Jul 2026 10:02:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B06406B009F
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46A13120177
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:57:29 +0000 (UTC)
-X-FDA: 85045595418.19.647DC42
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AD426B0098
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:02:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2CBA2A09DD
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:02:02 +0000 (UTC)
+X-FDA: 85045606884.07.CBF99FC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6FBABC0012
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:57:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XxA18yci;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3070818001D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:02:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrwqsTj6;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785419847;
+	s=arc-20220608; t=1785420120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8ceSBqux0H7VIJwsDpuwa3ukdal2lQ5X0wxbf29WX8=;
-	b=LeEWGq7A2v6efx0uHp6j+qcnbUI6xSXc9boNbbgS9TtNeAfzZKIzZ9VYlMyoyj1vkqqULp
-	defHELXV+Ldhudr5wGKW1pbGpwlvEK/LsmiSls9oRz6N0wvaXbboDhJxcYifkRBugwE+47
-	rpzYmiove74fTXpn/+siqfS8bBLMWjA=
+	bh=aWmtaLFdmiykJamcY8i4UABM60ooHpSbHhELBVfrJio=;
+	b=1F6fyr+fGEs06dwTgSXLu14VVhkqMG28om8xWyMnL+Zszk9ePzN7jLf+xMFOxxY9CcEJvi
+	HX7PI/8H4toqROrp6PiNPdu84c12NdmX8OK2SaBEiP2zADuvbVpuCDdmTl9QekySAzRUQZ
+	mM+wdV3Et1Xudg4u/HV1R9Nt2P5b++8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785419847;
-	b=Pl2MxF8LO8Kc7yWCXrZ4J496cewShFOPHyw76r/ZIjvPkYhshuW4Ex0i/eP2gpZKsGZWWv
-	NqcOiZ1qfl3ux0DXBHQUEQ1ZmwHMMKAkC7YIJm7lNYPJ6Ewg4XndCIXzQYYSQbwKQW1CSF
-	Ovi43A5qDPSVbPerW/NBT1pyM6RkIiA=
+	t=1785420120;
+	b=y23aeE6xfjfsVqnc+e3RcqSLMuYJNQdBq0Fs7f65akakcADBI/lh+F0ffqYSASScBgenEl
+	mB0crbkAwX90fLbP3bH7U6cNtQgDJnwCckmC2nKEmuye+4NYKDOtMcrMBZE46dQwlaBcjE
+	KnvBxr5z+etRr4uDemrzbYXq69MjzVs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XxA18yci;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrwqsTj6;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98F0E40582;
-	Thu, 30 Jul 2026 13:57:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351851F00A3A;
-	Thu, 30 Jul 2026 13:57:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D7DD40A4A;
+	Thu, 30 Jul 2026 14:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6233C1F00A3A;
+	Thu, 30 Jul 2026 14:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785419846;
-	bh=w8ceSBqux0H7VIJwsDpuwa3ukdal2lQ5X0wxbf29WX8=;
+	s=k20260515; t=1785420119;
+	bh=aWmtaLFdmiykJamcY8i4UABM60ooHpSbHhELBVfrJio=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XxA18yciqUYS1WA6zjNMhFTANc8TD7U2p5JCl8KmQh6/EIsr4P7X54DPuoQ5XpO4M
-	 KMfq5fUvoRwuWLQvplt/9mBCE4qbtKHpNDxXKEWEZACTRvasuo3FrfEqDxMpB305pg
-	 tOyPokjkH9oejHw1SCe3bhp/rJfy+n0SDR/ZR35pda/EStaLoSsxUdwR6lQ7YAVR45
-	 ixSyZR7Jz+juvrKGmL3If5t7wPdjd9BlrL6QjBIx0RCA5wcEepdNQP/QGQibX6dR+M
-	 3v50eCjP4YM3J59av9blCRlrNm5z5gN0FQFI4Df9Sh2FijbydewCAq8fBsfkn3ViDJ
-	 4dVmSCox7U4QQ==
-Message-ID: <d4f87684-7727-4c74-95e9-159196fbb16c@kernel.org>
-Date: Thu, 30 Jul 2026 15:57:23 +0200
+	b=hrwqsTj6FxHQlXLVomxkWY2rpkcXY1CEhrOv5ZElV5+yQP3CXhoawsesrnZPO27In
+	 n6zIWfSmbxhn+UZsMzvOdP6+TUk9rP1YTcw0T+DxcpEpoPYy+vziK8OJnbRPEkW5Iq
+	 912j+xbLurg9kp7Y1S1hEyJlSBO4MHAGVsfuE9vZ3eJOmbQywvkpzhP8RZMy0bmf4Y
+	 dkAnEtpKFwEv/uVEiTFhniqte+eF+idjXQwnLrn+pa2u8oPx0zZFiHtWfkyGvoM7sF
+	 uulxi9AybWaA/U4ZPN2ZYyKftUaDH0MWRqZpzBTULJurrjMTQfUGmo6mZaIdVaLWpy
+	 Ya1AN/t09VSKg==
+Message-ID: <53afc7d5-0494-49e0-b053-5f7b55a44fed@kernel.org>
+Date: Thu, 30 Jul 2026 16:01:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: Use invalidate_lock instead of fault_mutex
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-References: <20260730131431.3613545-1-willy@infradead.org>
+Subject: Re: [PATCH v2] mm/khugepaged: replace mutex_lock/mutex_unlock usage
+ with guard macro
+To: jakov novak <jakovnovak30@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kernel-mentees@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "\\ Liam R . Howlett \\" <liam@infradead.org>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260728204636.20998-2-jakovnovak30@gmail.com>
+ <b78f734a-440d-4fad-bba8-df77894c5aa0@kernel.org>
+ <CAPUiDP1POYKJQ=Gfm-irzUmGaSNfZm+qO0xGP7Z=FO8a=R-6Kw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260730131431.3613545-1-willy@infradead.org>
+In-Reply-To: <CAPUiDP1POYKJQ=Gfm-irzUmGaSNfZm+qO0xGP7Z=FO8a=R-6Kw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3070818001D
+X-Stat-Signature: 4j6qcfs1rqftmp8p46kzfqqxrpxgiscf
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6FBABC0012
-X-Stat-Signature: j1ibszgig7t4uibex4j1xzmas3qagzxi
-X-HE-Tag: 1785419847-839341
-X-HE-Meta: U2FsdGVkX1/S2C2e7CbElWxY0DcImkYvlY5xDli8tSpUTEiu5KTo1zaFpjQjNs4Wk0AwtALNVUa9iKsQmMu7RiQ9s0n9LMQa67ffxc0F7ny4MW+36gn5b6VfVB/BJ6lnFuug5SGbmljz8+D7OalRcBS9wpY13Y6Qi7HoGytHXPbd9UjifhbxVlxjs5kskHsutB5LQYk//PtCTCPzj5di0CLwGGrjzMwsAL+ICkHU9KxzmqZHa9Dts58zFXFCipKwvwll/fM1hBzaogzwDEF6rR4C4H8yDBRsdin4odMt9d+i41/QHbzD7C3ouQHaUD2Ga/4570yHZhk25+YN7D8KLTRG7CiBWN7garQ5DHKsRE5fFYFI8XYrt9QkarXGfnKibeqlJexsrUaqSRExc23Y/ohcsileTl2gHoyu0KhdbimtvpglsDPTV/cWP1Z79xWlRrLU2GQGfe/lMAemUsklbug7+LOvaRjnGD37XqseIfj4KyEHu9pFBMy9WOLmRM6V/FJ0eAXiCSNfpCL8DA/TCSd3WqyGBAgpI2SZq2ZzwNWVovDeV25pQYi/9nYQqNjne+YUo8EOJm02BTIu7aol9pDcpvuErwSBsVj3ys2HVeyn38XmAsxWSzZBSNvHJfnzHnynNolJkSSncUL2UxaKKx1qXJpTEpC6kizass5JnkGoWfAiladY0tk+HMh2xBBKH9xsXBLAlNDfcsYz+VPsfxlDny82n8AGtMazF4UckQ3BPYPsmKiLObaAx/QIWNIhi4hZ9RAoio5y1uZ9qNpDMgQfBIz4x58Lk7T64RIroNy139D01bJO0ExNcUvAPQ9P12jWNHqTCiAbzQYY+i1Go+RgZJrgEJuv/xK0DF6blQLdYq00unyB8lMFz03snXpOXo3GsIlgzlgzlC47/+cMR/qBhlscstLhZ0L2vEfsNhdEIQXGX4zt0eEkG6ztpKir7Zl1JDTP4+fH1NlmrJW
- PPlEgkcd
- hUpA0hk0IRKPZd+mcM2ZupU1p37eh/xmrZqXlvXh1NyJxS87rkQUJrVNHz470pXgBJJix8UhRPOGz3FnucXiL0zv8JhZiCQFS82t90g1G5Qh5DBfhh1jCt6tSIzfqFjD1r/EDFrZLQxmOg80Bzv41OXDd6Mjd7lKNStQLg+B6CzgwkNB1cOgidsrUOi+rNSNWVvwv2FKWv1LwfmaqQeX1fdfJnpTCwWfO0/UtrWt3JLdaY9GMV3EcNVaNNGjMW35bpkwl7WYACQvye+mgIWIBeOmTqJSwVIiLo5PmnXDxQtsOAAORRr38Mvw8ykfqlGQdYVloTnk94PFz4vozWTUbPUVOdyoodPHXWuWQIcl9MSaHSlA=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785420120-844874
+X-HE-Meta: U2FsdGVkX1/V7ZLpu40n7kr4RxW0IgQ8p0+OGvbaf59fFsZM/y8cYtsaf13vKOilKbjL2YUx8LHfDOFNeMyZahWyFMTaltxVv/bRjNoV/SPraH7mY1QG39Wi9twxUDNDwJjH5aT87bbBCp495qtn0dsc/3L94I1/PEjsP2AJnOqIWSrNvd0qK5D6VlTpW7UZypu3hBuRg19teVRFdqLmuKgAoTBUrtF2atxfPaYE5kI/4YPjgAWo7HnXfRUtl2bbSPYocrspDgZXQVCKwJnqZ/dMnzc687XMOaC2NBivBSBOjzSfPiG4z6MZ6LxsyXC5MyyG+pgZSXL+frGfNoY9FieU7C8AOuZ0uzNagoXYLnUh9L4og+glQhBag5edJcFtS3Hmlgiai+YQ7lkJ+br2UabTXr0tgjBPgzFocxh6m7tmgds/gzvfar5K8lUaJUdDqjx1np0kbhMiuHeS5KrDGds7xWKTYszyh+gNFbEiYq5jUY8HD2d0H6pCw6zKENwrvXPpE97jchZPOnoiX0cTa/0ujPFL03Zj2gY41ybNYxC34aRGfKPvLxzxqlcat2hcrtpZPFjofGswoSgJNBqMDeiRH7dBPNBxSsSfS8qZfnEa3IbK7YCfYQrKQY7Xe+FvxiE8RVmBUcoIyN3czyKWKBd28JQOEkmy0Hc9FaavNc0jOL8dGnwVNwyhsPuyg77EASQMfB06bvVUYrj+/AFY8w1hdH2vS9vj4rE2d4sGw5wX+0C9og6fkRWBHG9rpnPdkj0rI5i5Qs1fKo9hwBwlqPkjphznn9mddDSIiKXzl/BlbHJmZw5EEZy2BaWzrlJhQAhyldQvG2ZckPFl6YreftA6Jic/ufRA+3bqh1MPOmHXneSAjCFDMicRbrM79vUULtNycijJLvcgtu4tSSZe15TJ/P+/u+P9fncsFD7jh/FtepG+fBNHtJWGZ5lADV/frNHDA3q1ezhGBCUJoAf
+ Ql25PUKK
+ 51nMyN4wWz5FwFUf2zSpVvp74eAdTNre4AKniEhuwzTDAMVGCbcBUU5KcPbYqwkBqTFXomf05xzS7kbLtr7zwGGTO2YlJHOzeJjtHlFynvP5/K5et4f1g/u+Li3lO9SEF+8xZzV49u994MuzuaHGxBRCTXGYdlPphGWzrlcBJlRtwhjwGTN9IIEJHzawpWxb2Yk/+40U7TJoibaagqQA1NIhCOx1XpV1p7IMNKA60Y6/HjrjhajMagAGjZpf54RNgKZoKIFZXDIGjsoCacFSDfVaUNuSeDL8IwwzLnvAk9YKDb8akd9/hzPFQK1gW9w1npP9REeFuVky1PKk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,28 +147,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/26 15:14, Matthew Wilcox (Oracle) wrote:
-> Since commit 730633f0b7f9 in 2021, we've had a per-mapping
-
-checkpatch. pl likely wants this to be written as
-
-commit 730633f0b7f9 ("mm: Protect operations adding pages to page cache with
-invalidate_lock")
-
-> invalidate_lock which is used in much the same way as the hugetlb
-> fault_mutex.  This is a fairly naive conversion; all acquisitions
-> are in exclusive mode.  It may be possible to relax some of these
-> uses to shared mode, but I shall leave that for a future patch.
+On 7/29/26 13:56, jakov novak wrote:
+> I guess the error checking could be moved inside the if
+> (!khugepaged_thread) block like:
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
-> I've run the libhugetlb test suite against this, and it includes
-> a test called fallocate_stress.sh, so I hope this works correctly.
+> if (!khugepaged_thread) {
+>   struct task_struct *new_thread = kthread_run...
+> 
+>   if (IS_ERR(new_thread)) {
+>     pr_err...
+>     return PTR_ERR(new_thread);
+>   }
+> 
+>   khugepaged_thread = new_thread;
+> }
+> 
+> I can send a v3 with these changes if this looks good to everybody.
+>
 
-Do we know why we ended up using this hashed locking instead of just allocating
-one for the mapping?
-
-Almost seems to easy that I wonder if we are missing something important :)
+Yes, please so so.
 
 -- 
 Cheers,
