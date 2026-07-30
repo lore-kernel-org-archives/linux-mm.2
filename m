@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D115C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:53:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33B4AC55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4577B6B0098; Thu, 30 Jul 2026 07:53:26 -0400 (EDT)
+	id 4312A6B0088; Thu, 30 Jul 2026 07:54:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406C06B009F; Thu, 30 Jul 2026 07:53:26 -0400 (EDT)
+	id 3E1AE6B008A; Thu, 30 Jul 2026 07:54:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F59A6B00A0; Thu, 30 Jul 2026 07:53:26 -0400 (EDT)
+	id 2F7786B008C; Thu, 30 Jul 2026 07:54:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F9B96B0098
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:53:26 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95F3CA0049
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:53:25 +0000 (UTC)
-X-FDA: 85045282770.23.48E96B5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ECA6F1C000F
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:53:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tcq/3Rns";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 092B56B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:54:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91FA8120116
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:54:27 +0000 (UTC)
+X-FDA: 85045285374.06.7DD0F8C
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7AC9B1C0003
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:54:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ltZxcP7t;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785412404;
+	s=arc-20220608; t=1785412466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RI2GUexLmVv8gB7H4ZANPJBiidvoccuLoXhfaCBsWjs=;
-	b=A+r+fPf5fGEflXvu680Lb8rVyNrFPLIvGjG81PUXVdakfA48hnznilyIIgPC2vW+6xyF9y
-	Wr86rqUdrWP3Rcwx5pTvXS21+SBOCJHI8mX343n2L3aw1nnADjnwi+3TPM5cJJwBjkRsx/
-	9OtTxxjXJjYe2ncT4LE0mp9siQLWbRM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tcq/3Rns";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ti2bSmazGTeJeWuqEsKxELAbB2h/8DFLycOObfhZA2c=;
+	b=15VmAH6ep/ArQx1OrDWEKOt/u3kl+QH4VzfgnGwamBDA05Za5ENEI+A/ekGtPIKtqWr46p
+	ucsQB+BZziLXtZgs2XNKLHHGSmBwA+QP2dxWaFEU3h5S+fLerCDIII4q9ypAPf5KCVlQK0
+	CmRZvjodoBuXeTjwJBtkDACk/r75pJw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785412404;
-	b=VVpGAlEQSqyXqj/bNJSjMdXO/cdO6Dsx9vvnqwO7KxRu4pO77Dk9sDdvmAB8aYalw2xKO9
-	Ff5zh1iDNMZqDak8A3M1niwAuyqadIYnSqFbTLJRUF9nOOTWwuBx4/ANomXPErBOgYG2PK
-	R5Yk4mVoHYE+wSrz04zoeWpxoNj+6qc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 187E640D9C;
-	Thu, 30 Jul 2026 11:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A601F000E9;
-	Thu, 30 Jul 2026 11:53:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785412403;
-	bh=RI2GUexLmVv8gB7H4ZANPJBiidvoccuLoXhfaCBsWjs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Tcq/3Rns1MAd8B1/L7Wt94PX9kJJUcT4EbttzTvK6Xl4qi9iy5hsl+eRMHNOV3hyi
-	 /Mk3gix0qtRSRs/M1JUAkS7jHYamRkTtD5ZpR+TcB414J/21Bwz71T3It8uHKHCFkH
-	 QW0ZDT3X+9Qk+L70kqoIbLrxuzWrcnNyHtLchES3uGmkDtv4eGB5kmHhcwTUkrohoq
-	 Rj0z5pYeVOfsbvzeOsEFaFU/StIg8eEmEJgRLNxUObJaaDwsS88WYePIxYM8/2+weG
-	 ylkVcgYkRtbkOoWdIy2v20zBKgRNt04rKm57oUuBTg0pIgXPagEFhf2TLzV6LeKE1R
-	 dT2OrncI5cJSA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Muchun
- Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  David
- Hildenbrand <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Jason Miu <jasonmiu@google.com>,  Jork
- Loeser <jloeser@linux.microsoft.com>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 17/22] mm/mm_init: don't rely on memblock to get KHO
- scratch migratetype
-In-Reply-To: <amr8ADvAiJE3ZYKF@kernel.org> (Mike Rapoport's message of "Thu,
-	30 Jul 2026 10:23:44 +0300")
-References: <20260729145610.2827231-1-pratyush@kernel.org>
-	<20260729145610.2827231-18-pratyush@kernel.org>
-	<amr8ADvAiJE3ZYKF@kernel.org>
-Date: Thu, 30 Jul 2026 13:53:19 +0200
-Message-ID: <2vxzik5w7ky8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	t=1785412466;
+	b=CJKJrLNpnv6GA4dG0HE/aCp1GOw4w4bR5WgD9u08oS2GhoTevl3T4wPfdoDzGtMgh9lA2+
+	ho3haqSaM44tqo82I4mJNKKuJepJw/p/MpweNvFpWK5OhIO8adXRgPGtMMgWm9UhJKl45k
+	nE9NuZEPOlG/7KP+KMhhmkH3y6NXdns=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ltZxcP7t;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785412460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ti2bSmazGTeJeWuqEsKxELAbB2h/8DFLycOObfhZA2c=;
+	b=ltZxcP7t3+OjBynxx5eUHF4NPsMADw77gEwHiFN27N1wa/6uj5b0KtDS09qnl70esX3g/P
+	OfpcZ1n9roz4V4PhzDlvoAlEoque5p/Xel7rhYs3tlBwdc+xDsCo56T6y4Y0NrQbh5VrYA
+	p0n+Zb1zGpsF+8rNSKmuYp3ZeaJq6fU=
+From: Ridong <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	David Finkel <davidf@vimeo.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH] mm, memcg: fix memory.peak reset clobbering other fds' watermark
+Date: Thu, 30 Jul 2026 19:53:14 +0800
+Message-Id: <20260730115314.1069089-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ECA6F1C000F
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 9djc6fysy8cfipj1iqzwetsdmbgao6ry
-X-HE-Tag: 1785412403-193105
-X-HE-Meta: U2FsdGVkX187291WYG8hdBF4hxJ6u2KzEbUPSQ2nzvxLY80VCj3QdAmXs2GhKz5paHJyQfwvYmUb6tBU8hV7NJ/f0HuSM2qEpT1fFaWcx4iOJETszegLUevybOXAx6QLY2/oG39g1Dx7BSJ0SA0dLfVn/wgDUQi+7nAmLemG29khaspdGsD8Rwl+u24ADHRMWKLgr2Cd/nwLPvhFnbZpaIKPp62U5yppaTvWKLp6RYf/qcel2UzOKOcB7R593XIeEvib47FudIM55Vl9dO/JSXPsWQIzwAaKvFjYbqw57PiIE/sKnIUYdeulHSJBFOQjkz43yVLnBvv8gCgskDF+E4waO6Pya7OuumNQYAU9GvwXvgEwhSvaQUOVlhFVdvheySZcPFz/QiCujUWVXQ6uIl1PLhZBwU0BaU/373nT+jnlerMuquEpekDCIF03eOhL2/Gn5YeGQ/qy5MVvYgptuB+WGPVfRu35PeGZn/DADs0SMXA3LTzW+Nj/hiYgUsPHILvCdZEksznkNfevXKLffl13abRSxw7lRVLORDHOxbfqH1V8yd3/7xu9nwnSPvQrbqbjnuv8KBnNQWjrecZFSgt9ZC7PPXQHgt/udvdzCyFwRXvgBgF4WOGDMlqkz55auG/1jK1h5uOr+h1hr3b98TZ8+T7yjhqO2dfYz3D/iCHvxGbb8DxaVfJ1jCLAMYD0f92rFUm5+vJvgvanhB5W/kr14bQQn09UskME+K6rYhWM0anxl3CHGQ2Minlmzj/DJM3KoHWqcr0TYUplmo5M/3rj14vbdTDPGXFJdmJSXou4CYqbvjWsj+v9wmGwD8q+banqATSjeV/Ecd61AEzchRB8fjZiIKlaO2VrzcO2pKsKVGRqsD3FT3mTdKx0p7IQ0NksPE1fTGHFKSOIjn17H9Etp0zPUWnKZ+IQZI7L/gbdgMHHhcr333UZATpz+kMuRms6UR2C9HM9PUlI0Ui
- 7VFOGmHP
- lK5wItOcrTTPzNRE4Bak2uJRl4GbnUyilixlmYhqx8hlTpBTJ2ytTXPgx0VCY/lf5MlC1S+Ueqw/LxUXB9kf0EAyGHh10lnhsnXRGVA+7JdbIthsq4rt2hsE8BxLbuM9FRSiXs2XumoyNmv8OLxdFeXWwR/j7z5NS8QOZpVrXW3RPo3FGqHMDgPed6zPMjILw0luvMI17t+244JdRgXBjqPnGAYroGX6hC2vsD8GYLU/pW6xS/srLZ5RL593GSPOKYiDZuxFY4j2ew9MY4RD2pmE7nR6lEI76Ylv+isreijoAEPiwRNAkk/rxNw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7AC9B1C0003
+X-Stat-Signature: e4txxsociwkypkh74ot76fshxwgmwkjr
+X-HE-Tag: 1785412464-925062
+X-HE-Meta: U2FsdGVkX1/uGDg05RVcZAqA7drhdVBPdTtAzHBplQGvtLTCHX2e/krbwkbF+LK/MqLwPfWEJcWblHrjY7VjgNYNP4hTsXncYPpkAaQ0ziYIategMO+1ruSLECP5biiZDnJtsgLtuVHb9r7z+m50CqjPcNe11RPg2UNCEU3ZF2Ejhe9CA6YMt94BZpXO/5CFohCZeTX+aPgKHcrmBNBQTTEnR4bHQyyC4s5fnAu5/LzOEgPd9KbfZDwcIQUmYEZWBnGHwXWn43CotkFFZRknXaHtj9M9LAc1YuUeSp2QljXeb8zg48N2v3wzE8pSmRll0WC+EFkfbuc0AaX9Fyom3YbbsSCpU7m0PNgB8yDpjQZT+q9J2YU76rSvfcgOGmgV4yK62Hw0YajYk6jtUk7g2cmjJqvFcD76Gl/1Erb2XfyWOvmy/RfiLPydhzieYRjQ/dxPeSsEKrsa5MHmvCNeoXh7y/Gg2O5NK1ubb9kWYRaeMg5CemNWBWafU8ylm96IYqvmmUMmRTXk6/2ug5Z3xMDO+GWBRyWEZ8xOn4EBEbcKX/QAg8t7u5UIt0/LlY6G0aPRio+Ra6xlowAUZFIeD//oB6rMvxpxglnz7OuAlwGqkAhdvEvKUawemSHtLdpkJemUZ4Tfu4iLZC+ch8SXRxwXJE0S1N5LtbDX+ZnQyRpn0FromlcLvRnq81Ld+AhduLCPDAMMpLcCTmnLha3ys3no8eyBABX3CLAbjS5dYxVcjKHLSpV4qVlMbzfipvC4k3Be257tfjdIwOTilTMnSywjljVlyvRaTFDH9k4CyIZGKZZRMpl+aER53KLJqM6NjgOrCl6nPVZdEmt6zDd593IuMzlSlcNNNQlpmq25HM7It6gmPGm31FIT2e3QTuz+iv6lPqpbMq+eHTkJ9zT26FTiws2RXzPwKzPW9dOTrm7ReFcQmJcyF2h5bIOC0ztAtF29R5gTqA2mzrConxe
+ FvJfnnvm
+ iTR4Vi91j2f2+MOBX+pDPVAwEQhLPtP4YJNJgcFfSriZhzRUfD0ZyElqMkdpu/KrNQJFTGmvzRPxmzp/l8HuCSgIEWMxtx1iq7UCmkHLa0a0r+IisJis+qetLN9la4iejvPSX13zydvdj5YP1ADr4lUQueVjbjA9/j6Q4/Gn1UlltHLROYlEvIds1gJarTUr00mTDo5Ksm0gE42BvRQN9ulMgySsj4MS4QY0e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,64 +94,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30 2026, Mike Rapoport wrote:
+From: Ridong Chen <chenridong@xiaomi.com>
 
-> On Wed, Jul 29, 2026 at 04:56:02PM +0200, Pratyush Yadav wrote:
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> Currently struct page init via memmap_init() or deferred_init_memmap()
->> only queries the migrate type from KHO for each discrete memory range.
->> That works currently since KHO scratch memory has a different memory
->> type so it is always it its own region.
->> 
->> An upcoming patch will add support for discovering blocks of memory with
->> no preservations and it will mark it as MEMBLOCK_KHO_SCRATCH to allow
->> allocations from them. This can lead to the bootmem KHO scratch areas to
->> be merged into larger free ranges. This merging breaks the selection of
->> migrate type.
->> 
->> Get rid of memblock_is_kho_scratch_memory(). Instead, use
->> kho_scratch_overlap() to decide the migrate type of the PFN. Since
->> kho_scratch_migratetype() only uses KHO functions, move it to
->> kexec_handover.h.
->> 
->> Instead of calling kho_scratch_migratetype() once for each free range,
->> call it once for each pageblock. Update
->> pageblock_migratetype_init_range() and memmap_init_range() to do so.
->> 
->> Since the migrate type is now evaluated for each pageblock and not each
->> free range, drop the migratetype arguments to deferred_free_pages() and
->> memmap_init_zone_range() and use MIGRATE_MOVABLE directly.
->> 
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->> ---
->>  include/linux/kexec_handover.h | 15 +++++++++++++++
->>  include/linux/memblock.h       | 19 -------------------
->>  mm/memblock.c                  | 10 ----------
->>  mm/mm_init.c                   | 27 +++++++++++++--------------
->>  4 files changed, 28 insertions(+), 43 deletions(-)
->> 
->> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
->> index 18ba417f1ada..c83ec4a15fe7 100644
->> --- a/include/linux/kexec_handover.h
->> +++ b/include/linux/kexec_handover.h
->> @@ -5,6 +5,7 @@
->>  #include <linux/err.h>
->>  #include <linux/errno.h>
->>  #include <linux/types.h>
->> +#include <linux/mmzone.h>
->
-> Should have been mm.h, kbuild bot is unhappy otherwise :)
->
-> https://lore.kernel.org/all/202607301001.ARjK0D4v-lkp@intel.com
->
-> I can fix it while applying.
+Writing to memory.peak resets the peak for that fd only. Each fd is a
+watcher and reads back max(its own value, the shared local_watermark).
 
-I pulled this in for definition of enum migratetype. But I forgot about
-pageblock_order. I plan to do a v6 with the lockdep and documentation
-fixes anyway, so will fix that in v6.
+peak_write() resets by lowering local_watermark to the current usage.
+To keep the other watchers' peaks it then walks the watcher list, but it
+stores the current usage into them instead of the old watermark. So once
+usage has dropped from a peak, a reset on one fd wrongly drags every
+other fd's peak down too, even fds that never reset.
 
+Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+collapses to 1060 KB although B never reset. With this patch B keeps
+reading 410624 KB.
+
+Fix: save the old watermark before lowering it and use that to floor the
+other watchers, so a reset only affects the fd that issued it.
+
+Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/memcontrol.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 60145aadfc5e..881e7c459c64 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4692,7 +4692,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+ 			  loff_t off, struct page_counter *pc,
+ 			  struct list_head *watchers)
+ {
+-	unsigned long usage;
++	unsigned long usage, old_watermark;
+ 	struct cgroup_of_peak *peer_ctx;
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+ 	struct cgroup_of_peak *ofp = of_peak(of);
+@@ -4700,11 +4700,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+ 	spin_lock(&memcg->peaks_lock);
+ 
+ 	usage = page_counter_read(pc);
++	old_watermark = READ_ONCE(pc->local_watermark);
+ 	WRITE_ONCE(pc->local_watermark, usage);
+ 
+ 	list_for_each_entry(peer_ctx, watchers, list)
+-		if (usage > peer_ctx->value)
+-			WRITE_ONCE(peer_ctx->value, usage);
++		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
++			WRITE_ONCE(peer_ctx->value, old_watermark);
+ 
+ 	/* initial write, register watcher */
+ 	if (ofp->value == OFP_PEAK_UNSET)
 -- 
-Regards,
-Pratyush Yadav
+2.34.1
+
 
