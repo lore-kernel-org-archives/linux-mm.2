@@ -4,108 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB2DC55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6A3DC531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39C9A6B0098; Thu, 30 Jul 2026 02:59:11 -0400 (EDT)
+	id 12B346B0099; Thu, 30 Jul 2026 02:59:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D6C46B0099; Thu, 30 Jul 2026 02:59:11 -0400 (EDT)
+	id 017716B009B; Thu, 30 Jul 2026 02:59:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12AC66B009B; Thu, 30 Jul 2026 02:59:11 -0400 (EDT)
+	id DABC06B009D; Thu, 30 Jul 2026 02:59:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E56E06B0098
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:10 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8A3A61408EE
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:10 +0000 (UTC)
-X-FDA: 85044541260.05.3D294F0
+	by kanga.kvack.org (Postfix) with ESMTP id B2ECB6B0099
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:12 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A3E5806F1
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:12 +0000 (UTC)
+X-FDA: 85044541344.28.09EAECE
 Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 814DB1C000C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=i0qRx6nS;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	by imf04.hostedemail.com (Postfix) with ESMTP id C382D40002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=MpKYlVJw;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf04.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785394748;
+	s=arc-20220608; t=1785394749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wwzdh+lefzQ3Mewr3ag7PKLqaiugNuHuZ6D8zRZNNZY=;
-	b=2mMG5M8gi19zOg9eacM8RUpMkxfbaVhvsS0T5ln+cTlPGHLzeLoAvs8snJ9QtqcGqTipeL
-	RPGeZWUrXSiPKYMpCbJEWSwQ4EUKvkNZGT9v1r/X43vw8PxeA7gkaIOP6oiHjU3I/Ev15n
-	0pGLKgv7q3oIqnjLofaUWDfp78HDARM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785394748;
-	b=D77Rz7fcp8zLDGbKsofUdACTQx0ChvGcHQke6sXYfkzwrHBU1kh9QTr5Kt+L5aNYkzq1NS
-	tZXzpe7WdC1onr3r/jsAzApWsvHiwN15wURVpd7MdMj2CknooTq9p7H3NtCkp8ni07w8q6
-	XxH5WhcVwlx901CHOGINwsr+khFvezM=
+	bh=VlLomZ2ihL9HFxlrx7gRVvKB0MpDdFuMFLp7qf/zQYY=;
+	b=D2Ny2DpjQgBTE5LT6h/CkkpBS3NLN6N59lHLA8l4lo5PFVst05JWJ5+GKCBnPICA3giR6a
+	1EwqQPX1SAUNp1CigaVmQN92JF0ccGApfkBWeTbHicaPeR64mMjjnuifg/DoXTdJRGE6Xa
+	1SazSBONSv2+OFL1xJZj5b2xlecAZC8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=i0qRx6nS;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U6ZPMH1775538
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:06 -0400
+	imf04.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=MpKYlVJw;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf04.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785394749;
+	b=cvyPtnn1zG9urursLvcRE5jqjSDr0uSsZK9+rMcRKLl94zpw9CCaFGIZO6azPxm6b3ozvm
+	JI691GtU/D10UIAe2IUoAwryL8FIltujdcHvlassE2DhjdPpahH5/TOwmK1dXx9e57oxHZ
+	rRmMENTueVAQ6t/NTeS7rG20A5gLJ28=
+Received: from pps.filterd (m0167071.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U6ZLHO1889456
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=Wwzd
-	h+lefzQ3Mewr3ag7PKLqaiugNuHuZ6D8zRZNNZY=; b=i0qRx6nSvdRp35M11yLi
-	zCDL5833R4xWz9ehYcDjCN+iJy81EVfUbRN08bHwKN4Sv0jCdbucXr7pPAXPrQxg
-	1n32YTlFzi84Wr18ittxMIrJzVdRnkygO8LEM7xlODihfBD+KKpFhVBicsOyZBR4
-	JD+7PIf6HomtCv8bssHFR2jU/sxf0CVVHqPgBDVeubE9hqpuQG2Q/5k475unjLYu
-	leSSOvM4xxdsLdk3pxUwcrvIJrrT21ENuMSN5TaP/FL7OVtRqYOQU+/M1DKF509J
-	66cfLiS/MOEbOYUmN638Fpjn7j7NmlsYIk9r74XBJWePIIUuy2ZYsp95KPo8t/ry
-	nw==
+	:message-id:mime-version:references:subject:to; s=pps01; bh=VlLo
+	mZ2ihL9HFxlrx7gRVvKB0MpDdFuMFLp7qf/zQYY=; b=MpKYlVJwcHKHdws+WTax
+	xNY1KC8xJ5UwioqCDfrXm10hsZ38GifYdzzDgdp5k3EXoevWleyY1dFEYtamvhpJ
+	nWsGgJa6p/YoSuJF4WIywki9iMXIn1c5Wn4DkpQGgbayfJ6qYYenwE7IR3x6i5za
+	dwukXaXhPCmDnx00K9b63BM+126tHcyEXiVmjVGTroLxLwgeaoTkFFz5LrgjZQxx
+	gCxc77WryoG5AoO8xqG+CIpVGqcvPcJy1Hre/qmfzNh4Lg+NyHId2TO5o74a17H5
+	PMqGOiw2sWKl/vs2sNdLr6yI8HY3DLjU7PD9m6sqBVNHZv4IJI6fROiKcTd5+32Y
+	+Q==
 Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fqrjxt510-1
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fqud416ps-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:06 -0400 (EDT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92e55721a8cso206359385a.1
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:59:05 -0700 (PDT)
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:08 -0400 (EDT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930f5da3467so211794685a.2
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:59:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785394745; x=1785999545;
+        d=1e100.net; s=20251104; t=1785394742; x=1785999542;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Wwzdh+lefzQ3Mewr3ag7PKLqaiugNuHuZ6D8zRZNNZY=;
-        b=lOQnMx0xvHDsBex/mnRymmu0eeybG1NfI9LQt5AGGuAYoPamOf/03trdmeOAcARvCw
-         ZPsCEKn+UU1/bsnq4O63J1tLNDOWz+6Blgx5TSngRcwzuMCea4555M/jGCpyzXRcqWAK
-         FgIUl6T1OPDeMKRlcVFG2sfoVzTfyo3bMtM4wRul+Ev5gD4wRg2lMp4bbKoNTPe++h9N
-         q9DBVlzthhTTLmdzhZiMPjm956bLPkSTBDzYGYrkn77A9YP1cKMlowEKd+Bkv3a8AvFw
-         2oO05ETdLXho8dbGLRjgEkLRSfqBk2k9pIz03fyIM7PGl1Dno+81IjMzwlGsEP1WwF5F
-         2aTg==
-X-Forwarded-Encrypted: i=1; AHgh+RrXbI1rav9+foc7D3rweUTCvB/sp0Q/8ihSEYEz/sAwdLWrY5dIwCO7f0+cC0Z+dpWNLVTQDXb5CA==@kvack.org
-X-Gm-Message-State: AOJu0YwcBYXrj7GwDs7sxQnt9fFJsee8mvZYm+/pVhTvwnPhZ7BGmmPd
-	WgUGh2WvK+ToAI0citCba1WNTko9ZaRVd3KGdaKwytOi3qs8JNyJnxb5yRStjUSn/b/f73MxY75
-	w8Ua2LRZ0v3LIz0q9paFaWYfucuUNSRwtxuMqIGS8HeascTva
-X-Gm-Gg: AR+sD11lqwCM0vVwYfVNYjgnyVKDyoNaUtYpgKc5Fpuz5tQlQZoNlJqjJZYdJirvy3D
-	H289jhqtwdnbg1G71wrPLMabit/ByjggvL7Nu7x3cWkINHIxJ8v8WrUhxU1ep6CKSgArhjWQXvj
-	03fLf5Qd+lycjOEbV3JGQtzdwr0PASuyZ4e9iauaFXHRHTbeJRsGQyFNFB0jUrlySD0oZA+lhaK
-	UbhCksLAYj8HxHzUxgUnydfoGSr8KgCYo2gNrcIC/FnTnnKCDDmKZjlSmxwJZu/mChT2ZpmNcS0
-	jHa4OWG+fGCv6IvtIAieZ38BNimDaDPxZK7xHstyeZqPSKPjbROvOm9CHdWeddrcoZ7UefMY75K
-	XOKDbgmsQ7J8VR8j0xGkWiOwFGd1kOU4wO0XhYCxcmBMoSQ==
-X-Received: by 2002:a05:620a:2886:b0:8cf:c106:faca with SMTP id af79cd13be357-93485fe35d1mr140938185a.36.1785394745168;
-        Wed, 29 Jul 2026 23:59:05 -0700 (PDT)
-X-Received: by 2002:a05:620a:2886:b0:8cf:c106:faca with SMTP id af79cd13be357-93485fe35d1mr140935685a.36.1785394744677;
-        Wed, 29 Jul 2026 23:59:04 -0700 (PDT)
+        bh=VlLomZ2ihL9HFxlrx7gRVvKB0MpDdFuMFLp7qf/zQYY=;
+        b=kvOw3JjxDKWpCs3XSEaj4O6Ut2t5wNsfNc8f+rzjuqzkszxRwIdxT653OGBI9VelTr
+         +hH8qAf8amAQBYTPUXhGLzAvu5BO97DbcoCfQac3Vjd8gTTByyxxMmNO350iKSsJR/oQ
+         RUTQxscIU2v8/cqNhfCFrdlS/cMn2ZHHyPxMJCGTJcJfFjNGGLkUpdeaiLCVqOOV+Vtp
+         20oUbrZ5QxAxvNMggbZSLubI1158tLkRdtS7Cf4BQlpWokaM+z07T5elOmzNl//JPXu4
+         grfb4D4CoMpo09D4XJyCvrFLxq8iuKYJr44IZnNchEhIjkpolnYAvcVMh2X7guEOUM3g
+         kA4Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6HZIB53eT4V5bePt+4qXadeskDWqx4Nihby/h922gbb2fKEt/henQl99HTjWTc+YAabkVAjWgVw==@kvack.org
+X-Gm-Message-State: AOJu0Yx0Z7/BNtyUzQpJgpf/wHzYSPpAFAxrIp2dsqW9SZa6GY2eki9Q
+	qVFFgLwA6x6NS8P0huhPErXC9b7CKSiUIzVb/ljV8OxC9tB9M1q5yo7B5c9AElSpZOi6z1ofEqv
+	wGvPx+/vy1kgRBlu63wHHgzF6VpoWVSpw9FAntvqBpD3LuyGr
+X-Gm-Gg: AR+sD105SPL6Sm3jJKm+TrcS9Vmx+FFe5lGfowyVaibpPUIlY6GJQutbmWv8HN6ncTX
+	zymI+UB5PZZSrFkNxdkNbJkfwDJQEeg8Z76nCEzcJxo4Uh74m/Sm64yM3WCWmrJaF2F7I7CumI2
+	AGPZufi9FjYhoRZA0JgVGnlqNy+tpYs9Z3fZZxTh7KxJhbDad44vZLxGfr6721kzR720H5HwtnV
+	ntGEW8JsfRGL23Lc1QLqGWTWcW243hEJIziiexU+39cKjbi7zXMBRyRA1h1qWRIyWtCHlw2idu4
+	ONz2OVoUzw9iwjx8cHKLSYfR91YE1ztnezRXexqlNviBJoQsZFOOktqasI+Y8NqzN8N79R3FDeA
+	psZrC9dHX5tAakNj9oZx4hJnbW78YDPQGBuazSZEbtrASjQ==
+X-Received: by 2002:a05:620a:4728:b0:92e:94a7:16e8 with SMTP id af79cd13be357-93485f9eb93mr142632285a.15.1785394742150;
+        Wed, 29 Jul 2026 23:59:02 -0700 (PDT)
+X-Received: by 2002:a05:620a:4728:b0:92e:94a7:16e8 with SMTP id af79cd13be357-93485f9eb93mr142629985a.15.1785394741655;
+        Wed, 29 Jul 2026 23:59:01 -0700 (PDT)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3221bc7sm349752485a.7.2026.07.29.23.59.03
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3221bc7sm349752485a.7.2026.07.29.23.59.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 23:59:03 -0700 (PDT)
+        Wed, 29 Jul 2026 23:59:00 -0700 (PDT)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Thu, 30 Jul 2026 02:57:55 -0400
-Subject: [PATCH v7 5/5] block: enable RWF_DONTCACHE for block devices
+Date: Thu, 30 Jul 2026 02:57:53 -0400
+Subject: [PATCH v7 3/5] iomap: use BIO_COMPLETE_IN_TASK for dropbehind
+ writeback
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260730-blk-dontcache-v7-5-3e8e6850068d@columbia.edu>
+Message-Id: <20260730-blk-dontcache-v7-3-3e8e6850068d@columbia.edu>
 References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
 In-Reply-To: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
 To: Jens Axboe <axboe@kernel.dk>,
@@ -127,47 +128,46 @@ Cc: Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
         linux-mm@kvack.org, linux-erofs@lists.ozlabs.org,
         Christoph Hellwig <hch@lst.de>, Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785394735; l=1234;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785394735; l=3060;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=Tk8jUyrOqQ7WXa1eqV1nq7SPxnPRM7zEp3j/WZJSWC8=;
- b=os6OKouVgqku2jRKGVaPk1noDMT3+eXOUJzWQsRazIMJ1bPae/JGJpIYkqGCxir04AYNo7/bT
- w+Brhzebg6AAvdsxWkzbY3bN7osSNAQdnJPqVkijmqj/2VMhvYhfElf
+ bh=VqAWR9drHd5aaagFAxsb9cXKpB8GAafaVAD01CXD178=;
+ b=vBSV9PuGaob7EwfUbiGv6fypiN4LKkZCFKVdXD+PIQv8LCcBMfs8U5vzkhknkhDiwC6C0Zrx+
+ 5R4OEUS3RiTCHa0v/202zDRtO2dKByH8pttxUhsn6U5qKVyhcv1ODCk
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfX4er/+OmiIGPx
- Sntt5oHn+Fuycx7iuhwcYUrHeoL6xVUsH/gGFp8QnULXpkW1IZAi4lXwvdjFVc6IeRALwyxHUxQ
- 1Wyo2LLY3w5tbxisrRy5L22E5KgOGzUYwaANtHqaRDi6TdnV7g5G
-X-Proofpoint-ORIG-GUID: ejLwzEc0PIKjt-SeWgMDi3eqhS4eYmem
-X-Proofpoint-GUID: ejLwzEc0PIKjt-SeWgMDi3eqhS4eYmem
-X-Authority-Analysis: v=2.4 cv=ObCoyBTY c=1 sm=1 tr=0 ts=6a6af63a cx=c_pps
+X-Proofpoint-GUID: P7cgg1C6JfhfSpbwL-scZeAXBUdjZ0HP
+X-Proofpoint-ORIG-GUID: P7cgg1C6JfhfSpbwL-scZeAXBUdjZ0HP
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfX1XtdJpW5/nn+
+ UDljpQRQLk6K5T3lfFTkLdemyPDMXok4VMChtvGG/dTnL3qvIN/GwBBeAX6vYr9cNT4lK88ps8r
+ l/PQOTONy7B/4jX4MgC9QYkPxvwKsbLKpMRfDGw1HCHDnk6O1iZc
+X-Authority-Analysis: v=2.4 cv=b4KCJNGx c=1 sm=1 tr=0 ts=6a6af63c cx=c_pps
  a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=J9_MS8zF8NN3zyd_QTgA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfXyxoJaoVAY6DY
- HNIK8a3/xg/NGLaO605CmL5SAnQgz8QQieKNLq5DBSCTpD9eIFLQMyJaYOLpdGr4XwcDEGAMsKB
- nEpgRkvaz1PhcOVJ6N7NnxRwAYPqPbqXsgzOAE3KJan38EIDYfQYfErOlGsq5tzyrdwtfQOjVHb
- Av+1cDNqmWm6bFm0byW+gtvx7InF8VQnnPmnLd7PsWlLAYiBUK29EeXZjZ4SPp0KsbVVXP9gNPP
- XBpXVeX4N5Lq1tEYbH69KT4+uJJ5mg/rRZWkvUAULIFeoYdjjFZcfZKUZMP+IfvpyGDtcUq4FFE
- 9k/Un/sFT1EPtbbRNci3ulDrmq8i8aa45bP4zfXbuB7eWuZ74966AyRXsG9TJOYgLa1sFH5x30X
- Q7IIHMdBowWU2cA8We2Rv22nzl7yIVeK17Ked+Q5cEFQ1ABhcKFMPZyBAinH4d2qL7gfaewEnUc
- GUje/S6XIqKYHD2A4yA==
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=79PYxaXUQd1wl-QFWJnA:22
+ a=aYi4XJYX91a15INjywwA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfX/UCntimHOX0o
+ 9caKYl5LGmlj0O32uQpf2hGXTUciMF7GRbFNpfq8txcvnkr7k0BYw4IKAaZJmeOhcsXKMCUA7XZ
+ qmaklptMnKqmU0NNtO8yBnBXdwhz2Md9O3PjKIcVN2XZOhXArG2s9oC1CLufxJ7slVHYGvrETyX
+ mkNWSNsuAFAoUKl9B1J23plDjysYgQbQ5zZ5m+IE5GwahSAeKGjC1gq6s81lYWIAIifz479p+Tc
+ zVQ4kBD4Gbo0llAUJ84KLstYoYhpawP+lJSlJj0yCxKUsKpRbTCkQrOON7ymxD1+HCqRhWhgab3
+ FzTty+cgQgci/hQJoSS38D1CiMPErUl+NPiWu3QX8GoPDODul9KvPmkjBYgA9hiEgfA5JItzRgI
+ G4l1NM/egMVY/TJ4yNdIwmC1MQya0OsIGMUQHxPlKHHHGAzsoS4uHJTHx8UCnyLnKDlg4egHP9s
+ 2nht8dfLRyOZvCd6djw==
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11859
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 bulkscore=10 malwarescore=0 impostorscore=10
- adultscore=0 priorityscore=1501 lowpriorityscore=10 clxscore=1015
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607300048
+ priorityscore=1501 malwarescore=0 impostorscore=10 suspectscore=0 spamscore=0
+ lowpriorityscore=10 adultscore=0 bulkscore=10 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607300048
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C382D40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 814DB1C000C
-X-Stat-Signature: hmyi36eszt1gzmu6adiapztoekixg3zz
-X-HE-Tag: 1785394747-385835
-X-HE-Meta: U2FsdGVkX1+cUXdOquKquLapfFMVGERvLiUG2t9TaZz7gPlRdRv8HTWnt4LfuggWObRCZvJ74zuBi62ZUFF8VkABEBEslp3oTi3bEklv1IaA8YSmF1HGT6aZP1UrKhkHY+EGkU7n8vLCpNLkRtIvI9FIhbTNJn4r9Xh8tEuO0b+dNUK6KO41uR/Ur2HjXgmaaUoGU2f6lEXbl7Lxkf1L363woZ8dioJripxy0qyzNdbzCnGkwNHR52yytEPJ9W8cJX7ipCbWy8Zy8oguGyQseOzV4o3bP1PVbH28tnulYXltvWUrvWifoASUVH8IzNzoNx7MS+drGAqvyfjYM/Xc2ls4oNJt02ezQpPYHojWZCTO74FdF0f1dtVSSKeXZDZrPhQroEBBliMbKjE/jibpPLlDZ6WmZPSuZPDDPiQLDTu9fDsfjjsNaeM3PPoCOGxIdNncPNUAp64a9LFRUgMYXOH80FEATlg0KUUzySSndPYwO111NpXRwTvpJR2s1a2YPu8UqnhcEIn7bvyYdgsRqVMcZEVUbQeyX6mq6JR2MlMEoYtQfeVU4N5soDI0L5vsPC0oFkHakWJnj+HXFO/kZschc37yR6uD+H8Cpqx68n/LmzXEcX8WIlbjyJ5thUCOv57LoQEFMHwcJ/YmDviSlbSiUm2S8Ai29YTn+NCl8lhg/1dEuVUQ0bjMac1vSl15rErWLV8oAL2gDSZoJOiJTwxcetyi5jLISq5IL56tQ1HXGu7n4vNao7FhpOgnfOvbf3oQBQv6qnDXNLwlWxBECuFwgjQ7DTUkvS8nxcTUscYYcrjMwNGJjt3uB7sBzYEXeTQaY+MwLok2U5ktfqmClPP+Nowl6TXwToOI/3Jov3HR2N/QihWVIDDajzPIzwmmJ35KyLNEUqfcbbKzaxm5KVA42oT0yrCZijhPM9cg+BkfPs5wajAde9P7kQMdpmCOPlXubSPx2ZF/2mfXaB/
- kfjJvbxT
- 2DUlPSvH1J3lNteY4KicNrxmJWJz8OpUt0hKOImQvrSVHHBPjyThtALZybj+bA+yfl5qBj18CUPQWqG98BtZby85mS3DqYuDbwt7iV3XvYgaHVUj6yxqfZ5LNQsH3ismm6f7aDl4mQPJf94LheXwcjitxM9EyNereua/Tpiwwjm4Depzi0qlFS9MJZE+Ec+K4+0auVrlGqaF2ZZUGg8wDUIPPwn0rxAqIj/W2YsmTe/+zGJ0wNUUGhVsNBcpQXdBe+RQ4QUvH6UKooeI01B1C97kp1pzHe4c4rNBek7/KAPOML+nAtzKM0+YUXfJ0YzGVxATf2z18Z1AMkssVWylH+3PQXC7vXTnv8DgvEmZkUVkHZZfCRo1cHc0PBKHYoOxsF1/gURWlc+IrGHE=
+X-Stat-Signature: swp8m8cb3aezquz57xo6eshpsby9588t
+X-HE-Tag: 1785394749-569177
+X-HE-Meta: U2FsdGVkX18MUUvtyAkU/skbIpN0cw/ZLhrR7zCfkfGNO7TItBdtJLrRNJWJKwiqMUNyEnyIzwJxtWkSDFR/uB2mpX60TPERJf8WErtVDM/NjtXiL0Qjw3k6ntdiwAXqXf+lx8TejFZgscEibdxwG/1tUzI3ZA0U11h68xC7QEYrwOmrU3NO3M9PsSP+LqM68sfJh0FXERhHMR83a3ap37cYtr8EcwJ/6CJG6f4Q113esTNeENbQKNEYcU2rKc/rXXO5DOPIcpVTgfQ03tymCMOrgLYXLrhgrabAKZQsTdULnuQ6ZQa1gm8xL6teHj1iAi/6z/dcOVTusCG0GSrtlOboj/YUHo/QvgXujDvmx1n3OgK0To3fAdOPCqYroQB3PiuElDyW1Lo5zrZ7bTt3iSg5iFQ1v37YH0mNSggkD5GZjwUMFAMvAtXNXM/0Y21IQh5+iXnu97JXzZVdTG+YDyC8KFRO5/0w37PyCEv/GW7urdrW9+mIj4e128efUmBK2KpuRYdX8NF9J5lJ1dfP2v7pUdu7lfH49BdCJQzJ7C0iIOxVnYRZKaXUNWxkGNE+whJrXo647k1u21d9rQmT/wgcIxW6TTUuQQoYmDFon0mc37xzX1oBrEpChGMSBeSGXj4f4K7Os9UbfG1iZay9aVzj17G/ucXyV/HwenLDUj4hehaeRYex8DxTTduEJ9U5LD68uwJjWuIm8KTaRZL72KxWyj3hv4NVGwjDgr9VrnADAtXI5gyVpMMph/hPWokFuLamhsJk2ZianCRWiHCIfdxfaAg5vGuqm+a97dR4lGh5n8Y5jX42zxa7PTWRfufZpwrdAlznJwToSbTDrv1gYTsYx6geFVaMzerluESal1RQZQ9yHlRpV87wETJJr7HGNTBBkfjnLlZHN9YDDyc/7k8cMWkH91fZrknnjtxuvB+N0qRXEcMktnuvzSFHh3G70r4nOF0AJ1vaDhwoYPI
+ cK26Z5CX
+ gW4xZlHJLMil7KHpmbtzztVe4ozqiJzODDVQGPotExn3nWf6ajZsBQBfs5mziP4t14e6Ukj2c9KcsW09veSgTh9aI9k67Y6duWjbmRmmKqNPq4cH/Q7i6JLuSBEvlWC3Kf20mosfjM+F52PLGRw4jCWImKhu3cnPUSzAPpC+8x4Ravav1jqqrkWPsOQQD3PI59VclnClsKx0HRrg9aY2WKfmsGN/6mRTuY4tV4gLQjzJbLisknRCmK+ns20IWaK/YACRX6OpxhAKMxX9k9S3p4zrBTj2+/0aey74YnkHO3n5PEtnTQXNHC9K2s2IHbKFr1q8eT941xUm2Hv/njEl2+RsxxeariNy07vIxgM3HtS9d5Ypo3ZydUaTuYDxd0yfAYsjPF7r6hsA6l1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,38 +175,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Block device buffered reads and writes already pass through
-filemap_read() and iomap_file_buffered_write() respectively, both of
-which handle IOCB_DONTCACHE. Enable RWF_DONTCACHE for block device files
-by setting FOP_DONTCACHE in def_blk_fops.
+Set BIO_COMPLETE_IN_TASK on iomap writeback bios when a dropbehind folio
+is added. This ensures that bi_end_io runs in task context, where
+folio_end_dropbehind() can safely invalidate folios.
 
-For CONFIG_BUFFER_HEAD=y, writeback goes through buffer_head's
-__bh_submit() which sets BIO_COMPLETE_IN_TASK on dropbehind folios. For
-CONFIG_BUFFER_HEAD=n, writeback goes through iomap which handles it via
-BIO_COMPLETE_IN_TASK on the ioend bio.
+With the bio layer now handling task-context deferral generically,
+IOMAP_IOEND_DONTCACHE is no longer needed, as XFS no longer needs to
+route DONTCACHE ioends through its completion workqueue. Remove the flag
+and its NOMERGE entry.
 
-This support is useful for databases that operate on raw block devices,
-among other userspace applications.
+Without the NOMERGE, regular I/Os that get merged with a dropbehind
+folio will also have their completion deferred to task context.
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- block/fops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/iomap/ioend.c      | 5 +++--
+ fs/xfs/xfs_aops.c     | 4 ----
+ include/linux/iomap.h | 5 +----
+ 3 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index 15783a6180de..8b39c53b6393 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -941,7 +941,7 @@ const struct file_operations def_blk_fops = {
- 	.splice_write	= iter_file_splice_write,
- 	.fallocate	= blkdev_fallocate,
- 	.uring_cmd	= blkdev_uring_cmd,
--	.fop_flags	= FOP_BUFFER_RASYNC,
-+	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
- };
+diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
+index 30468d51b5ad..1ae8a8fb8503 100644
+--- a/fs/iomap/ioend.c
++++ b/fs/iomap/ioend.c
+@@ -238,8 +238,6 @@ ssize_t iomap_add_to_ioend(struct iomap_writepage_ctx *wpc, struct folio *folio,
  
- static __init int blkdev_init(void)
+ 	if (wpc->iomap.flags & IOMAP_F_SHARED)
+ 		ioend_flags |= IOMAP_IOEND_SHARED;
+-	if (folio_test_dropbehind(folio))
+-		ioend_flags |= IOMAP_IOEND_DONTCACHE;
+ 	if (pos == wpc->iomap.offset && (wpc->iomap.flags & IOMAP_F_BOUNDARY))
+ 		ioend_flags |= IOMAP_IOEND_BOUNDARY;
+ 
+@@ -256,6 +254,9 @@ ssize_t iomap_add_to_ioend(struct iomap_writepage_ctx *wpc, struct folio *folio,
+ 	if (!bio_add_folio(&ioend->io_bio, folio, map_len, poff))
+ 		goto new_ioend;
+ 
++	if (folio_test_dropbehind(folio))
++		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
++
+ 	/*
+ 	 * Clamp io_offset and io_size to the incore EOF so that ondisk
+ 	 * file size updates in the ioend completion are byte-accurate.
+diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+index 51293b6f331f..cd8de8c82d78 100644
+--- a/fs/xfs/xfs_aops.c
++++ b/fs/xfs/xfs_aops.c
+@@ -522,10 +522,6 @@ xfs_ioend_needs_wq_completion(
+ 	if (ioend->io_flags & (IOMAP_IOEND_UNWRITTEN | IOMAP_IOEND_SHARED))
+ 		return true;
+ 
+-	/* Page cache invalidation cannot be done in irq context. */
+-	if (ioend->io_flags & IOMAP_IOEND_DONTCACHE)
+-		return true;
+-
+ 	return false;
+ }
+ 
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 56b43d594e6e..68af4935a107 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -404,16 +404,13 @@ sector_t iomap_bmap(struct address_space *mapping, sector_t bno,
+ #define IOMAP_IOEND_BOUNDARY		(1U << 2)
+ /* is direct I/O */
+ #define IOMAP_IOEND_DIRECT		(1U << 3)
+-/* is DONTCACHE I/O */
+-#define IOMAP_IOEND_DONTCACHE		(1U << 4)
+ 
+ /*
+  * Flags that if set on either ioend prevent the merge of two ioends.
+  * (IOMAP_IOEND_BOUNDARY also prevents merges, but only one-way)
+  */
+ #define IOMAP_IOEND_NOMERGE_FLAGS \
+-	(IOMAP_IOEND_SHARED | IOMAP_IOEND_UNWRITTEN | IOMAP_IOEND_DIRECT | \
+-	 IOMAP_IOEND_DONTCACHE)
++	(IOMAP_IOEND_SHARED | IOMAP_IOEND_UNWRITTEN | IOMAP_IOEND_DIRECT)
+ 
+ /*
+  * Structure for writeback I/O completions.
 
 -- 
 2.39.5
