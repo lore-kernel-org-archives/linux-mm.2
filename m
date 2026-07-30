@@ -4,108 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7063C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A7EC55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B45956B0095; Thu, 30 Jul 2026 03:25:06 -0400 (EDT)
+	id 777C46B008A; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1D1B6B0096; Thu, 30 Jul 2026 03:25:06 -0400 (EDT)
+	id 728636B0092; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33C16B0098; Thu, 30 Jul 2026 03:25:06 -0400 (EDT)
+	id 668846B0096; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8044C6B0095
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:25:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F33F6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19BA34092E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:25:06 +0000 (UTC)
-X-FDA: 85044606612.05.D2C64BC
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 13FAA80008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:25:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=RyBRZz6c;
-	spf=pass (imf30.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBDB7A08C8
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:26:50 +0000 (UTC)
+X-FDA: 85044610980.05.94A59B0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2A1A8100007
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:26:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxfkodDJ;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785396303;
+	s=arc-20220608; t=1785396409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QazV6RBRIReqOJNyY2v0taCUJw0vnT+qdOJHh51n7zw=;
-	b=1o5oQQgcCeo+P4dMYVXpbbeCPUtQMBeBigGApRMz28SIDebFcfu2cyCCGzdxBpWUfrBln1
-	YZV3m2BViMgFPTqCv7CbFwKtbuM6aZm1S/TRADTrAZumbT8x64xh18SlFPdMmGjR/MEuPQ
-	+6bjn9XU82nX0yPWiQ2uw4NLLFau+JM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q8ZEcwCwLQetxV1WFtJMYHvZdqoS2LqCfUtFy76iNIQ=;
+	b=0lFoMgb0yWU4sKOIiuY1K1mOrBA8bGZdRH61T0aUEU6BkSiE+P9FWMcZoO7+/CWhlH9Tfl
+	SiTvHm1Y0Q8y0TdL/Wf9uOeXVwFP5BF7+eCsJYppI3EjzmOPxy4cuNpVEdwy4YN1sT6D4S
+	diRK2EI/D//jRmY/HNCRIX6Zh9m8kkc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=RyBRZz6c;
-	spf=pass (imf30.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxfkodDJ;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785396303;
-	b=lXo/USL6dKDpBH1K/J9ER8/t4HSfuCKIX2jaGFjGXj8YxeCZh974ihZgpbfQfQZQ3jSSnz
-	NKjzvjX73BoidjoC4dE0a1AhgWZwWqJ6WwTaQ1mxi2DcXC7LMxh5LQtGKmpSZCyINFlmNK
-	rqIZAhLVnmzYpDMENnK69s1qg1TrNHc=
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTPS id 66U7NxII034360
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Thu, 30 Jul 2026 15:23:59 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4h9gfx0TkGz2KKx2G;
-	Thu, 30 Jul 2026 15:23:53 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Thu, 30 Jul 2026 15:23:56 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand
-	<david@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Johannes Weiner
-	<hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Qi Zheng
-	<zhengqi.arch@bytedance.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Lorenzo
- Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang
-	<huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
-Date: Thu, 30 Jul 2026 15:23:49 +0800
-Message-ID: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	t=1785396409;
+	b=oFXGuG9URIwraD8gHgXWZsVi/qrR239CvqLDpOlMcgKwHwyEwTk8n4qpVbf0jZczcr2Pbj
+	Mt9oY5VzowVkDbTswu8fXb/HqSE6IA4txqIY1M5BNQao0yd2z2Ym4Bw2Q/AbUL+WYB5ka9
+	Bhe+3NVAVrdZGWjW+icURbWVffbJ/6M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B151F600AA;
+	Thu, 30 Jul 2026 07:26:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098F51F00A3A;
+	Thu, 30 Jul 2026 07:26:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785396408;
+	bh=Q8ZEcwCwLQetxV1WFtJMYHvZdqoS2LqCfUtFy76iNIQ=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=RxfkodDJSo/HC0OF23G424dtbX5R0k/p/rIVXMGavtHl3+W7XKRuYoP6HD++eIW/E
+	 Cd5LgJuI5/SmIbyn+zS+zhKdDtEw5puQbim/Z0grP4kIqj94kWP0NdmVWdfbByZEhb
+	 +1RKyVeqOn02xB+tqh4Rpw/q84dmC7v5VLh5gSzr1fo9ZXD8aruKXhgo9T65K/n2MD
+	 wr9/CaA82x9z0bQbI51bJe4HZG2u5U6ZFIr5KQK/Mokas7qcjVHU80tOP/8DZDdm5B
+	 HTldpABea/BuPoj+0C1DqtvVXsOKBdD67TN0S7P9rXDIaonqncHi7QCfaD2wZL99ED
+	 sezDkWd4N6prw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 66U7NxII034360
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1785396250;
-	bh=QazV6RBRIReqOJNyY2v0taCUJw0vnT+qdOJHh51n7zw=;
-	h=From:To:Subject:Date;
-	b=RyBRZz6clo7izJg1kGxUbr92OZslOK7QhGZWyZ2xPx6rHKi7J9yy7/woeU7NfTrtJ
-	 OE7oWcYRF0SxLgNiLlRAvFKRAo5zS2WsaHjTh+oE1/MtuABsPA7FWkxcr0IOkaWSdg
-	 QXY1KlmqO/+ZsuY3KswPOJZi261x1TpFoJe3hryZKAAoX2Cum0VWJIUxh43w+JSrKV
-	 uy/XWznAv7u+rxa9eFJAaxfqklXLZclLKaVTgKrgBhG5rjbo7W+prolnr3uItzPmf+
-	 MczObJ8DgYDMWKD+hJiiX5SSKzRAgP3cnjDVCi3Yq8RF0M8jtR4dQ8EBw0YHazvtty
-	 A4/j4yStGUW/A==
-X-Rspamd-Queue-Id: 13FAA80008
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 2/2] kho: Introduce preserve/restore APIs for
+ high-order pages
+From: Mike Rapoport <rppt@kernel.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260723204203.2997395-3-praan@google.com>
+References: <20260723204203.2997395-1-praan@google.com>
+ <20260723204203.2997395-3-praan@google.com>
+Date: Thu, 30 Jul 2026 10:26:41 +0300
+Message-Id: <178539640188.2151126.10266644348178621151.b4-review@b4>
+X-Mailer: b4 0.16-dev
 X-Rspam-User: 
-X-Stat-Signature: 7pxn3d876y819gapzuf38aqgsff1jbxb
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785396301-963010
-X-HE-Meta: U2FsdGVkX1+J+6aLXEvtlhdbHZ9yX49RHws6T0ykv67DtTW/+JH2ElZdIRDOWFNXrtmhSeASAPQUArnvEXYRTFS2ssjWg9b41E+7dtZPnzlq+0GQYUvbZhxnlVD3fpvTbCvIgPXcm0KTa2T5EjKsu65Ddk8Ri/ujfqOjoB0zdTbEYpqxV8X7NvAATm9lcZajWeJrTlKqCuTaWWI4aSfjFD4oumpfELwzgct6dp0Li/GJUJvX8o7Abmiwj56YdlpoMlHZ/Xzh5Z1rIikLeqL6FLu961HxBCgtFC1laEn/yAjKZUAqRdn9mZRPjQWN9IjNRa02lPSgsnsfk9eDCFBX3cq58xNyPv7tBXrpVWEqfPhJPbZ2vtrU9oCwz5xsCUdHOewvwhCbtxwRmAlUtSgazJavQOyIqj7oWzxMtG/vd83S796rOvd6BA1tQcukdfaVFjBdyPl6K2RtcTO8oUGy9d3UGs/9yJ6Qy08SoH5CVsmHm8liDikkPxLwOcqODcd9eSk2Ma+2fq3WT/1Fl7kQUj2Affl5grOMXwZQQa9bfUPkYkt++l5kDUVsh6+rjHb6iovIslDe097LMIBhn7YViWyGfd7c7ZmwPH1pTGIPj9ZQZ1KBLN9749U6t8h2FxQcDdeLvelsJTF4v1ieFhZ6eXyO2mHpGFQ5kaq9JTcKoRcTB1c8DSJ1EdZZMt0okgiHfg5uow+q0u3CrbzY3H/GzPQjB9eDO2KrVglz1q8PIuvLTuldR1Pm6RGNa4gFaQv4/htHPRbIgeA3ooLPk4TcmUhLlynNkHmnRstIk4PZe6vDL6ZxpwzujFNpSB82e+MW/hndvb08767GpCer5zKfglOp4BTMxwGtiW7BOB2D9+Zl7Z6VuEq8Gz5jeHhCHo3yuOESMcjZ822MFXRbbhoEbCSPfwzbPkoovoTVNUt6zp+iOffZTrTtJP6pBILL/DV17UkibtPXlhf7hdbaJGB
- DwCSGRxE
- zsX3bKXV7CkDJwHMaQldHzh3Y9jKGxxCdKrhqlPYcn+BJ8w5F2G9ghKo/DrlEvAFQTwju6y/S62JbNLkHLnhnKNe9ystiuH0kEg5b0Y0iN185IuzG1XzAs7DYTwxMV5SnOBkFlEOFGm+Fg2poyOmO10xMNdVOska+L3HGjQSLJAHEeDmOkh3SCT0tu/Kh4z+l/gsITzJ9WttWskJdX5i6/VjchLqORzXGTzyS3Vt1M48cSzapinTo8FOL+yWLyi/vHF++otz/fWatJV/hboZc5cl9zYDpRikDkHfLDQUA8BFPH/TYeYK0yjAy1DkvrHTPjBmAfAgYJW0I1Y8E9ChfbS0ouPXnwrXmCXILIRmoT4FeREmQAvG4ofhTMNdvW8xSq/flCcGVr9NKWUfpSg+eULAWe41wwQ6PjbEj
+X-Rspamd-Queue-Id: 2A1A8100007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: w33cnmazpdmjm9fdjwijdjoxeruccp7n
+X-HE-Tag: 1785396408-486694
+X-HE-Meta: U2FsdGVkX1/65X6YRl+6hxeStRe5Vn/L72cYBXq3vCBX7W0MMYXiUv90aPR2lwZINEBW+Tlpd//ZFD3VCLaqj2xyfXT7sdRtKlxQnQhY2tTgGiGWcZs414S9SwPE3Fgb4+rSlrOHtWApcmo4NpHSNRI0FxjS28YtWhKccy6/34mLq2qRYpK6mOUF8gIXrgDqNysUU6obPyDMMvTc4DoUrQBUnWA+cJy0CaTPFjlPhvidF2yzN1pX13NgDzl16aR5EUp7ajgSaStdYFJMeKWFtbJ3bJpKeOywdwbhBorL23uyts+yLS2Kdyix5gmU6jiQuDk7VcAUsF/mJF1UC2WoWPidxgIYiePRkncOByJz/QMwvzz4BEXlBp5VWeF02ksfb0oYu0uuzMN97eid7W16DtLvN7m3pHVMS/Okr6Br5W+Kj1LCKmfOqdAM9kxa6vdSLgwrIpc0XxlDcu86xWhagw1PlgPRzpkbU3M6j7zz81PZjbje3cfDc9MLzchfMXcbBujUk3OBwq8F8AYtMBW/gniu/wSfufrrZlqVAz8bXzNtMu9GXSjYX4c8d+liZHMS1K+H2SgaH9Ps3gvOmlq/J1Yo+WYD2NNwS1Ke/2/TpfOpjOExKMElsqIo+E7Vytlx81MJxw7OCZ9pL/e8IMFVTiEA7Si5sVaep4IoJ2SkEukdtAS7F4TmgsmVPsfSDTZhXppSvShOYuHt/9PPjLjsohWCxG45lDA5zxYPvZP1Hw4fI4ITH1jrttcBI1ear64Vl3lOPbUe8sv0vk7+08X/bLJi+OrpidjdSQ19NWb8jKalanzqrv/lm5s/NkxpZGp19s4lnBVo+FyzKHrr7+rywTHqGVvxaRvasXzQ6ORbO9sXzTf72xOeZnMMnrPBGXO4zHsnw1Q59RFl9rwBvAWaq1pQdymNhcWTM+SXgbENqoSHN2rlooqEeVJKk5dKzdDGsf069RAdqindU/e8Pa5
+ nZed/01s
+ xt0iwxv535dcEOAH+WhHpmiH2c6I+rc3lrDAPLFd5FBB/giNsth89zIAnW56/62JI/pohPB2hPzbEX2WxD3SyhPhZl7slYVkP5lhy7h/j49EvKcE3y3XAiGbdAVkMCAv3ZysePYLtuXkiqktiNl87z38UyxR7wSsoWqxbvb6sRZQwbrlP8Q/MywIt25m0PW3WObDmznMxK73aAxYUS+auhcqqq4D5aQxYS7zR5heypvDSUP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,132 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Hi Pranjal,
 
-This submission addresses an issue where the memcg MGLRU's min_seq is
-pinned by an orphan page—a page that resides in the page cache but
-lacks a corresponding reference count, while the number of GENs has not
-yet met the criteria of aging. I believe such pages should be detected
-and handled elsewhere rather than affecting the LRU in this way(legacy
-LRU could move forward by bringing this kind of folio along with).
-Therefore, I propose moving these folios to the next generation when
-isolation makes no progress at all.
+> The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
+> that multi-page blocks are split into independent 4KB pages during
+> restoration. This is incompatible with high-order non-compound pages,
+> such as DMA buffers, which must be restored with tail pages having a
+> zero reference count.
+> 
+> Introduce explicit preserve and restore APIs for high-order pages,
+> which preserve and restore a high-order page block as a single unit,
+> applying a refcount of 1 to the head page while leaving tail pages at 0.
+> Rename the existing internal helper to __kho_restore_page() and
+> consolidate the common restoration code into it.
+> 
+> Signed-off-by: Pranjal Shrivastava <praan@google.com>
+>
+> @@ -457,10 +482,14 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+>  	while (pfn < end_pfn) {
+>  		const unsigned int order =
+>  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+> -		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
+> +		unsigned int info_order;
+> +		struct page *page = __kho_restore_page(PFN_PHYS(pfn), &info_order);
+>  
+>  		if (!page)
+>  			return NULL;
+> +
+> +		kho_init_pages(page, 1UL << info_order);
+> +		adjust_managed_page_count(page, 1UL << info_order);
 
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- include/linux/mmzone.h |  6 ++++++
- mm/vmscan.c            | 45 +++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 50 insertions(+), 1 deletion(-)
+Seeing 
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 9adb2ad21da5..b063c56ea30c 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -434,6 +434,12 @@ enum lruvec_flags {
- 	 */
- 	LRUVEC_CGROUP_CONGESTED,
- 	LRUVEC_NODE_CONGESTED,
-+	/*
-+	 * MGLRU: eviction failed to isolate from the oldest generation once
-+	 * while the window was at MAX_NR_GENS. A second consecutive failure
-+	 * forces aging so residual folios cannot pin min_seq indefinitely.
-+	 */
-+	LRUVEC_MGLRU_ISOLATE_FAILED,
- };
- 
- #endif /* !__GENERATING_BOUNDS_H */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..c18db08c5e10 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -175,6 +175,8 @@ struct scan_control {
- 		unsigned int immediate;
- 		unsigned int file_taken;
- 		unsigned int taken;
-+		/* folios isolated by MGLRU eviction in the current lruvec pass */
-+		unsigned int isolated;
- 	} nr;
- 
- 	/* for recording the reclaimed slab by now */
-@@ -4748,6 +4750,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
- 				scanned, skipped, isolated,
- 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-+	sc->nr.isolated += isolated;
- 	if (type == LRU_GEN_FILE)
- 		sc->nr.file_taken += isolated;
- 	/*
-@@ -4998,6 +5001,11 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	long nr_to_scan;
- 	unsigned long scanned = 0;
- 	int swappiness = get_swappiness(lruvec, sc);
-+	bool attempted = false;
-+	bool rotated = false;
-+
-+	/* per-lruvec pass; sc is shared across lruvecs during reclaim */
-+	sc->nr.isolated = 0;
- 
- 	while (true) {
- 		int delta;
-@@ -5006,6 +5014,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 		if (nr_to_scan <= 0)
- 			break;
- 
-+		attempted = true;
- 		delta = evict_folios(nr_to_scan, lruvec, sc, swappiness);
- 		if (!delta)
- 			break;
-@@ -5020,6 +5029,40 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 		cond_resched();
- 	}
- 
-+	/*
-+	 * Eviction isolated nothing while the sliding window is already at
-+	 * MAX_NR_GENS. In that state should_run_aging() is false, so
-+	 * get_nr_to_scan() never calls try_to_inc_max_seq(). Residual folios
-+	 * that fail isolate_folio() can pin min_seq and hide reclaimable
-+	 * folios in younger generations.
-+	 *
-+	 * Require two consecutive isolate failures on this lruvec before
-+	 * forcing aging, so a single no-progress batch does not rotate the
-+	 * window. Successful isolation clears the sticky bit.
-+	 *
-+	 * Key off sc->nr.isolated, not nr_reclaimed: folios isolated but
-+	 * rejected by shrink_folio_list() are put back with PG_active and do
-+	 * not pin the oldest generation.
-+	 */
-+	if (attempted && !sc->nr.isolated) {
-+		DEFINE_MAX_SEQ(lruvec);
-+		DEFINE_MIN_SEQ(lruvec);
-+
-+		if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS < max_seq) {
-+			if (test_and_set_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
-+					     &lruvec->flags)) {
-+				rotated = try_to_inc_max_seq(lruvec, max_seq,
-+							     swappiness, false);
-+				clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
-+					  &lruvec->flags);
-+			}
-+		} else {
-+			clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->flags);
-+		}
-+	} else if (sc->nr.isolated) {
-+		clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->flags);
-+	}
-+
- 	/*
- 	 * If too many file cache in the coldest generation can't be evicted
- 	 * due to being dirty, wake up the flusher.
-@@ -5043,7 +5086,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	}
- 
- 	/* whether this lruvec should be rotated */
--	return nr_to_scan < 0;
-+	return nr_to_scan < 0 || rotated;
- }
- 
- static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
++		adjust_managed_page_count(page, 1UL << info_order);
+
+for the third time hinted that something is off ;-)
+
 -- 
-2.25.1
+Sincerely yours,
+Mike.
 
 
