@@ -4,125 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0326C55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D55C55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:54:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C8A16B008A; Thu, 30 Jul 2026 11:38:02 -0400 (EDT)
+	id 023736B0088; Thu, 30 Jul 2026 11:54:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9794F6B008C; Thu, 30 Jul 2026 11:38:02 -0400 (EDT)
+	id F3EDC6B008A; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 842CF6B0092; Thu, 30 Jul 2026 11:38:02 -0400 (EDT)
+	id E7BD86B008C; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7A36B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:38:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D69AF1A0196
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:38:01 +0000 (UTC)
-X-FDA: 85045848762.02.8606243
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B60A8140013
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:37:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=NFm4be6r;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB6E66B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C3461401EA
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:54:10 +0000 (UTC)
+X-FDA: 85045889460.15.3101AA7
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 868B016000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:54:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=steffen.cc header.s=MBO0001 header.b=ABZbzREX;
+	spf=pass (imf08.hostedemail.com: domain of lists@steffen.cc designates 80.241.56.172 as permitted sender) smtp.mailfrom=lists@steffen.cc;
+	dmarc=pass (policy=none) header.from=steffen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785425880;
+	s=arc-20220608; t=1785426847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+PnHKrPUlCTuzU66I3wB94qFZEna81g3SqQ9t8e0lA=;
-	b=P34kNlz+GZsxGqck0p2DLjdD13Fpd+izFytbrK0iB53JhXTKl1QOF17eIICywVKEDt1vtn
-	Lz1q8dDz1rHEnLYAZNZ7fv0lK4/Y4FaRGzx6/DWbqPCLZZljXsG2plKGYCzX0wnGe6eFln
-	pUOQLs/SRjmAAiqe3lntC7uZWik5ZzM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=NFm4be6r;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	bh=zksK9+idUghCnssEho47J7vh5F4rjyXM/CYHhLvbBuI=;
+	b=vP75fIOuFsUaMG7TK3Q3mbKRykwtRzlV64RKHBOwmziEEQQ2cimwW5d/8aIF2Fxx9eo2HH
+	1HdTcUlSgvlURkCgNQYdUJNrVRBiJDvu2BUgZ1F9W04fkqu9bmWDTO6Fu2zxEkt4N9HBWr
+	QWmDKISqwmiEeljVRJVrnX7lLQNeAEk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785425880;
-	b=FgnyaaaeFHXJ5W9RKb3a4Kl9ZZQqdeKg09VmFFuk7Irre50CsuwEeUkxwV4JETzEERrh93
-	1sJuepOCfjrt0qip9dyN6HN6GhlQAs3msCC1oY9C+1TgVJMJLYLXoqxer5ooV2rBPGmUaC
-	RYQvGWYtqSIHp8W/IIprnT9dKe9vru4=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8efcef23d21so1576d6.2
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1785425879; x=1786030679; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=z+PnHKrPUlCTuzU66I3wB94qFZEna81g3SqQ9t8e0lA=;
-        b=NFm4be6rPOU7+6Y90YjsD8NjvkuqOwDSTmHnPAggUe18mXZPnBqS3YrmZAFnJ2B1EX
-         Zj0WqxDOITP7uLo+G9OQnUoPoHZJnBKwjhuhqlD3FjGjC2AFbxNniWHFpWQGAXzqmW3U
-         +iGiyyfXRYWkK7gTdwysB/6fXqBfnW5mM8aYoInqXbX72MKOh6LKPd//s+6DaJ7jjUYL
-         AY2PTBj3PbkS8t6fFMB69ZWjOEaTthyZYbgDcEsxzI5tct79UpbNNtfBQHjtr+mEJAdv
-         lK+/lqeIKwwnLaDIcEIZ/dUGdEF2nUCynXZT0HWkgRLdT5IF9a+mtKAuLWzvqsHyCWfF
-         //AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785425879; x=1786030679;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z+PnHKrPUlCTuzU66I3wB94qFZEna81g3SqQ9t8e0lA=;
-        b=jxtASdud0lbBjVyXjlpihRN1dEOrTlgzpPxu3RYtILhWAIEfcLiCgIZX732vj0LcxQ
-         BB7RMM20XQkqEboucvpnqf0nsOubouGdhYYzKX3gmMoqlQ9Z+hp39fhxqXoSQuEWTuxr
-         ilM8w8rXmQMgZepEdr9Vx3kGVxr0S7pfMf7daROjz74U5SZrpdaA6lOTG7HH+oLRYsjf
-         QIJP0KfzIVecGUvL4tNFtp1QqRbCYAyizBrpQ7/hnbYfPcXqMLwOUa7Zn6XuwY6wvuAF
-         jG+MgqSV7uVx5V3cCwPduSPXSWaksS6XZRojlY8SvixJyKAixhQxAY3zDdlP5lnDbubY
-         6S7A==
-X-Forwarded-Encrypted: i=1; AHgh+RoUmIxaGBHhjQwK5A4kw1xfyZYJzWp5EItPVIE2i0tb+dXfcqae3qdCmwvQFXB5iu1du0nJKRRG5w==@kvack.org
-X-Gm-Message-State: AOJu0YxmIs8EsvI/Uh/AUwv+OO1GV6gamiQ8c2XkNugSdnCuVaGtqfd4
-	3ppvQGme1a+atGZu5ePM3oxw5pAun4aqwu+X0ymO7SXjwTizbmQNCEJJUEfpkCSRHtM=
-X-Gm-Gg: AR+sD12kpqSWMjpckp3Um/eXWcjG3L3szWglpMXxQwMtTap445N77ksDjH3Ezvn0Ydd
-	ws6oP7u69S5PInb/RyzrrXXLyLBHJ3IsKK775wowpewIWDx78xnRoU1fAb7pqacADX8lPjtb8WG
-	+C0CJDbyJRuZPameHl4io5XbHidrICIpBZGQtmKLzwh13IccxPfKCxHYYd2Lurrfnwx5Dgz2TVB
-	ubmViwmhZP0IOd6EmBheDId/xUE3A6A6kdOKEFrqX8v8rcTajtNz7w1Nib8jkKjPPbunB/dedBL
-	M/s6s0FBhjvc0sAQjJRamEEdrRJjoAQDDncIKb93Wv1uiVmevx6ohuC8xF+xIhYmgTH3LIwLqWb
-	ydGu0VRRNraRkMwgOlSapMqZ1ybaKBCOlLLy7BJGxduDHHR1M1cwZK5m3RS9P9t5e+o3AF9bY2g
-	660hpoQFM+prRFoSe1JFue3dcz7eK0xAM61fJEYtdyikANSpEDYMsiv9haiQNs
-X-Received: by 2002:ad4:5ae6:0:b0:907:c056:d648 with SMTP id 6a1803df08f44-908346af616mr28769396d6.2.1785425878529;
-        Thu, 30 Jul 2026 08:37:58 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9083231f53csm21821006d6.19.2026.07.30.08.37.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 08:37:57 -0700 (PDT)
-Date: Thu, 30 Jul 2026 11:37:53 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
-	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, liam@infradead.org,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	willy@infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-Message-ID: <amtv0YRbSrN6iUEo@cmpxchg.org>
-References: <20260707201735.4113107-1-joannelkoong@gmail.com>
- <20260707201735.4113107-3-joannelkoong@gmail.com>
- <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
- <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
- <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org>
- <amoWjOnPayHVQU9v@cmpxchg.org>
- <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
+	t=1785426847;
+	b=6gUJCFJikB+0EUj0NREAEsLU3IYCln/ninMoIqPt2JN9RrO00FV87aXlOjeQ7K84bCJhjV
+	mOUq5wXpv4iQqrCfPPnpsbwl7LexcxYLcMg5vmzqYxgh6n72BStj9QGoUzhMjDJWUcDuol
+	mqHPBeXjX/MSUZeS3gV9tEunrMzK+5Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=steffen.cc header.s=MBO0001 header.b=ABZbzREX;
+	spf=pass (imf08.hostedemail.com: domain of lists@steffen.cc designates 80.241.56.172 as permitted sender) smtp.mailfrom=lists@steffen.cc;
+	dmarc=pass (policy=none) header.from=steffen.cc
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4h9tzb1p9xzMlLY;
+	Thu, 30 Jul 2026 17:54:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen.cc; s=MBO0001;
+	t=1785426843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zksK9+idUghCnssEho47J7vh5F4rjyXM/CYHhLvbBuI=;
+	b=ABZbzREXVJlaEcXgHG6Q5/DFAD8yXognsvS9ozhwczAK4KfoCrR/A72xRMgHKDC8YIEHLe
+	Xn9qtIxZSPiNPKquwlhB7/1Gk8XTwi+J/r4tMfnpBk8xvYMaNwPIfm5PordRc43ww97P00
+	Jlrtk6YZxv7VAyXc4t/t4Of00EpMpJPiV1bC2yiM0VkDlHg5kd84sxdZjKKVFFm+ryM5F5
+	gpZQ+9ahyq7YOxjG1mAXkh90nWU5n1iyir5FMhbDOuJ9g/if5fIUcTwCcw6hoKXwSm8boK
+	9O+X6szUa5iUHT7GicwTLGH+AVMEvUXawnKwHceK1hVijvcn2WaBoaByTd+shQ==
+Message-ID: <555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc>
+Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
+From: Steffen Dirkwinkel <lists@steffen.cc>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Dave Hansen
+	 <dave.hansen@linux.intel.com>, "Denis V. Lunev" <den@openvz.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
+ <luto@kernel.org>,  Borislav Petkov	 <bp@alien8.de>, David CARLIER
+ <devnexen@gmail.com>, David Hildenbrand	 <david@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,  Juergen Gross
+ <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau
+ <kas@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,  "H. Peter Anvin"	
+ <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Shakeel Butt	
+ <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, Thomas
+ Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>, Vishal Moola
+ <vishal.moola@gmail.com>,  Vlastimil Babka <vbabka@kernel.org>, Will Deacon
+ <will@kernel.org>, iommu@lists.linux.dev, 	linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org, 	x86@kernel.org,
+ syzbot@syzkaller.appspotmail.com
+Date: Thu, 30 Jul 2026 17:53:50 +0200
+In-Reply-To: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 868B016000D
+X-Stat-Signature: e6gey6s58kccan466e3w9m1r4dexnqxr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B60A8140013
-X-Stat-Signature: u1yeame6heufax74xzjbnjfbgdg3npth
-X-HE-Tag: 1785425879-861615
-X-HE-Meta: U2FsdGVkX19PQIGIVVh/DgHKalAM7/8Aq5qZ4qggAFU8OsoE3rIVXrXHR38snUsHSeAy9/3QK3WFJldzg1F0u6LUftYUkFzskBmVaZyjxhjDEvxbBlZ1rGMWM9IJqLcxpWL9nppL/Agh6qKpCIa9if1u0dJ2bo92dz5e+jmPS7JiF48/D3uX/tzQuxgSUgWdRUhwHGx+6FJ6+hJh3JwVqWr3FxIp0df2vpU9Z87/AkcB+2scBUvEhZr72yDvxCWs5ag5Vb3LdTFZ/Dw7J0o5ctR7X49O6nqZiM1tru+K4szJ/UAiNn8MjTEenYa/axbVqccZ9mTHn52HF/Ury7OKWlvMO+Vun+8m6ULhaxd7AcXH/gFUsRGNLdJzHR63X0DMAuD+oZo93xeDhV6uKGjBiIc6ia2jDwfUINJS3Ea/gVe7/tk7kkZjZMxNDZWa/cMf0feqAp9eNKtFPFIvCysDxJIuxEemIR4PoyOaMEcfM4cmTEg58NHnjWAvPjQVUhZJ4bW9okkbiWCjLTngD/Egx5wDtV1b07kl8cDXxwo4Bs1+XB60MGid5SVKTvz1HHu9PXh9qoY2x6FMSQNLAU/zLKmiqXtp9DO64K85bvLEOGiucJ5oMs63yqAoMpCc+KrjEqOIUDfGdDK+HNxLnMnqMLm+74R2IZmLI43dPNdnpw2ssPHQHDeJg5JvvmYZKMmqvGACN4XkhLBUHsPpsPlBUXyVviKEYVc41BG704ikWqHP+ci/2rKlnJk8qTcsOyy0olHkxAUHM9M/3/mgOQqqupK0H8THBxUuhJF+L3t2ZdEAYG9KhJcs2TYnpuVybQAHL0YbfoKgjkegQZj0fIvDCm91vkMUbsgp/L/i+/gXs1YOQmyVvNIXne4hq3QFrjDzjn8nY9+FyTBdh5nZCXN8A2OKzTh4/FQR2sTDZt7Nlk7PVh5kSVcepQ39qmRLAVlmJrUPQwXFzBY+cMPDpHO
- 9owN/6mB
- /380kT7WD73I/frHJ3N256Q7NYcfEyUjZbU4aVpKXNhJlgjbcmrwLAiM612nBzoKs9iajxT1lpZyHHqcHA0k8S3nU9J+BH5ipu+jvn9byhXzag4zmT1+2mbk7N7U8rZQFmimA61vbH0aOB13GrAzB4OkhCKIEoyssHyYOdEHgl8edvwsSfgAIhguUitHylXRjan9JNUuk71eSAkKEg+hhT7ceVlNyIvxF8V0TDBx61R6HytWxrtdpKepjs2gZgrEkwCX8azFOvD3aoRvm1aDgi9zavwzKltjHAPrMz5DOOk3YbMiVeOsmdJGEmEwYjgIOzq2kfPkUDl7dxlXH9UhmH8NjWQ88uoUbaYv8EZ23YzlRoMqyPC8o23f8jrBh5nWa1EBoKMoRoOq5/CkkHu0NDH8YqA==
+X-HE-Tag: 1785426846-862010
+X-HE-Meta: U2FsdGVkX18mm/lpvym2WYCX0UYefVFbh50kWK/jnYRpUWNhdNhohVgZQa7O+slO388yjD8zPcmvyYtydaPOlfUboqvB2/aUzCsk4o1XHvpPhS6l33SoPZzqhvbKLFsYAxTDoogShQoFxYO1xe34j4zDNXvib8fChNtvBHtkUBFqFBZC6jHKaUq1kS9oVU1SyFG9OCWPcpGK8AnWZeqYfXZ7cjvkF0S3gMBwQLwnPkNMExDUZwopaKcdiBZm2mAvzhorO03dm9rL/3J3eWxmAnvDFmLorvnK0gYk4M8qWcsj6k+susk+CH7S+vHL0TVMHxbDO8+MvwnZ4udtxgsXOwHOtJ+2Pxko+aiXa4afihwQ4gZUeeA6v2K7IhWZZp6CsAqrtpQdcyJIe9JtfMY7F2xa/5I6c3Ls957K/vsq87lJkYDHUjxD75S/quKM21RhxWpTaFP5QVtdENPrDITWAhClH0Uqn6M6oTLWqPDpBToNnPDf2cIzx0b7uQgctmEGk+Dnc+S4+tW/e1HBjJcPsqfS2XCD3AIHJ3b5IXEpZ1vls/93RBTCdApgfcktnuEuM1yktlpAM19cc4KVWDT4X9McbqOgPzfYLTPEDymscMNKag/RC061tG0BwhSJD5+S9bkuacoNWwlBIGG0lfmnllHn2fLhwYNsJ4sMZXMgAtKNuRnsI1S7y7bKYKlNBFZmhau0ErE1tdSU62I56Sqy7duIdmh9mH/IsxtG1t8X3Va/NUP9FL99JIlKLO2EGz81wxkbErInJ7WMA4ge5h95n7lpn7WniSju9ebrsXWJtekfqGqW+Jq/AA2Vh9rIwfXmyUZELVuzFCy5YupHW+fHUNIR4wxE/BcIlPTi6qR5MfPRk5KJ1xDzh/R/uPK39uDRi+NJW5iqdEdjOeVdkha8zlkDVZg7UWiqieLuRHvvO02IQyNJiTUz4VS1Kc8l8K40ChHtyanNDKkxOMwKDTZ
+ Z2VB08qJ
+ WwlYk5tq7e5TEixqSoeSjGk91uN+URWc3xngnenXq0EBrVSvk5Eh7izonUl9SBNE833C7of/X+rBC4+W9seEQWOycvWYOh5fS31Ey52mmdyKUkWiK9LcdKOB8PAWfbgF3mUOTtNNU8FGjn2SLiwcvisuWD7mcrXHAFO7PKWo8KkagWHUQAYm5ypqik6Yx+MGpFcbyNNtjRQadyo67K7t0+VISw5sjqrKpoF51uyYLXOVz7MGGeDnRoj+mW07JxNE0QZOuWZIqd3CarcInCfsmXSOhcOpDwpyWSHAWQIYlytck1AdAYtXfyouUSmq+tDH88mZWlnptH39XbMV3PKlbm3L4IVuqpfgegt66lDiwinonYPrkO0LUfkxFyt9O32ODfOohqQ5v2a7JVO2Uyfx0QskRTcdw/uIZL8b8qFMhyATjQmRS9rwl6uDzR2SE5OxBjHH4nI7oPkAnMYA1QG0izT7qM9PxAxGn6Ldz41GFS15M6xhf6Jo1uQ4qirhimkW7ccX5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,115 +107,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 03:46:25PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/29/26 17:04, Johannes Weiner wrote:
-> > (2) With a mix of basepages and THPs, there could indeed be a lot of
-> >     basepages ahead of underused THPs. That means swapping before
-> >     getting to space that is much cheaper to reclaim.
-> > 
-> >     The current setup isn't perfect in that regard, as the shrinker
-> >     runs simultaneously as the LRU. But it's making guaranteed forward
-> >     progress through the THPs, even as the first LRU pages are scanned.
-> 
-> The shrinker would obviously remain and scan the list for candidates.
+Hello,
 
-That's slightly different from what I had pictured. But I don't think
-it changes my arguments much.
 
-> We might want to remember how man / if any such entries we have on
-> the list.
+On Tue, 2026-07-28 at 16:07 +0300, Mike Rapoport (Microsoft) wrote:
+> There are a couple of CPA fixes floating around:
+>=20
+> Denis Lunev fixed races between split and collapse of the large mappings:
+>=20
+> https://lore.kernel.org/all/20260715183453.2381141-1-den@openvz.org
 
-Right. The question is how does the shrinker actually find them:
+We saw the error below and I was wondering if it might be related to these =
+fixes
+or a similar case that's unfixed still. Seems to have happened during concu=
+rrent
+kernel module loading of kvm and i915 (similar to the case in the patch fro=
+m
+Denis Lunev). But we got it without KASAN and the stack looks a little
+different. I was not able to reproduce this with a ~16 hour concurrent modu=
+le
+load unload loop so far.
 
-> > (3) The anon LRU has folio lifetime, but the splitqueue is one-shot:
-> >     we scan each THP once, and then it's either split and dropped, or
-> >     found full and dropped. That THP never needs to be revisited. The
-> >     queue actually empties as the workload establishes itself.
-> > 
-> >     The anon LRU ~ splitqueue argument is only true around startup.
-> > 
-> >     If we used the anon LRU, we'd need per-page state to avoid repeat
-> >     underused checks. And we need external state to not scan the anon
-> >     LRU at all if there are no new THPs (and no swap). And if that's
-> >     just a counter for "new, not yet scanned THPs", a single fault
-> >     will cause you to walk the entire anon LRU before you get to it.
-> 
-> Remembering "not yet scanned" through a pageflag (for large folios) is indeed
-> very easy.
-> 
-> I don't quite understand the "a single fault", can you elaborate?
+Kernel: v7.1.5, PREEMPT_RT, tainted because of /dev/msr access
+CPU: Elkhart Lake Atom X6214RE, 2 cores, isolcpus=3D1-N
 
-Let's say you have a 1TB host with 800G anon populated.
+------------[ cut here ]------------
+kernel BUG at arch/x86/kernel/alternative.c:2644!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+CPU: 0 UID: 0 PID: 559 Comm: (udev-worker) Tainted: G S                  7.=
+1.5-
+rt1-bhf-369933-f1a4ee1dd787 #1 PREEMPT_{RT,(lazy)}=20
+Tainted: [S]=3DCPU_OUT_OF_SPEC
+Hardware name: Beckhoff Automation GmbH & Co. KG MC6015-0030/MC15083, BIOS =
+Bxx83
+- 0.11a PxeFailTst4.2 01/07/2026
+RIP: 0010:__text_poke+0x356/0x3d0
+Code: 00 10 00 00 77 26 48 85 c0 0f 85 74 fd ff ff e9 2d ff ff ff 48 89 ea =
+4c 89
+f6 48 89 df e8 22 0a 33 01 85 c0 0f 84 90 fe ff ff <0f> 0b>
+RSP: 0018:ffffa8bb010afa70 EFLAGS: 00010006
+RAX: 0000000000000088 RBX: ffffffffc07402b9 RCX: 0000000000000000
+RDX: 0000000000000004 RSI: ffffffffb793166b RDI: ffffffffc07402b9
+RBP: 0000000000000004 R08: 0000000000000033 R09: 8000000000000063
+R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffb435e470
+R13: 00004b8f944092b9 R14: ffffffffb793166b R15: 00000000000002bd
+FS:  00007f205444c9c0(0000) GS:ffff9964b8518000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc66a0ed18 CR3: 0000000106551000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ smp_text_poke_batch_finish+0x1aa/0x3a0
+ ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
+ __static_call_transform+0xfa/0x1f0
+ ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
+ ? __pfx_preempt_schedule_thunk+0x10/0x10
+ arch_static_call_transform+0x57/0xa0
+ ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
+ __static_call_init+0x1aa/0x230
+ ? __SCT__tp_func_kvm_mmu_split_huge_page+0x8/0x8
+ ? __SCT__tp_func_kvm_mmu_split_huge_page+0x8/0x8
+ static_call_module_notify+0x11f/0x150
+ notifier_call_chain+0x60/0xe0
+ blocking_notifier_call_chain_robust+0x64/0xc0
+ load_module+0x1bc7/0x2000
+ ? security_kernel_post_read_file+0x46/0x110
+ ? kernel_read_file+0x2e5/0x2f0
+ init_module_from_file+0xc8/0xe0
+ idempotent_init_module+0xfe/0x2f0
+ __x64_sys_finit_module+0x71/0xe0
+ do_syscall_64+0xa6/0x690
+ ? clear_bhb_loop+0x30/0x80
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7f2054faa7b9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 =
+48 89
+d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d>
+RSP: 002b:00007ffc66a14c58 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+RAX: ffffffffffffffda RBX: 000055f431ad34a0 RCX: 00007f2054faa7b9
+RDX: 0000000000000000 RSI: 00007f205375b44d RDI: 0000000000000021
+RBP: 0000000000000000 R08: 0000000000000000 R09: 000055f431a72e60
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f205375b44d
+R13: 0000000000020000 R14: 000055f431ad01b0 R15: 0000000000000000
+ </TASK>
+Modules linked in: kvm_intel(+) i915(+) drm_buddy drm_client_lib ttm
+drm_display_helper drm_kms_helper cfg80211 cec nft_ct nf_conntrack nf_>
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__text_poke+0x356/0x3d0
+Code: 00 10 00 00 77 26 48 85 c0 0f 85 74 fd ff ff e9 2d ff ff ff 48 89 ea =
+4c 89
+f6 48 89 df e8 22 0a 33 01 85 c0 0f 84 90 fe ff ff <0f> 0b>
+RSP: 0018:ffffa8bb010afa70 EFLAGS: 00010006
+RAX: 0000000000000088 RBX: ffffffffc07402b9 RCX: 0000000000000000
+RDX: 0000000000000004 RSI: ffffffffb793166b RDI: ffffffffc07402b9
+RBP: 0000000000000004 R08: 0000000000000033 R09: 8000000000000063
+R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffb435e470
+R13: 00004b8f944092b9 R14: ffffffffb793166b R15: 00000000000002bd
+FS:  00007f205444c9c0(0000) GS:ffff9964b8518000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc66a0ed18 CR3: 0000000106551000 CR4: 0000000000350ef0
+note: (udev-worker)[559] exited with irqs disabled
 
-The oldest folios on the list might be THP. The newest ones might
-be. You could have a mix of basepages and THPs. The ordering
-constantly changes as the folios are aged, rotated, reclaimed.
 
-How can it find a handful of unscanned THPs in an ocean of folios?
-Even if you mark the folio state, that's hundreds of millions of
-entries whose state you have to check in the worst case?
+Best Regards
+Steffen
 
-The lru lock is one of the most congested MM locks on large
-machines. *Maybe* you can do it locklessly.
-
-Maybe you can add thresholds where you don't scan if there aren't
-"that many" new THPs just yet. That means magic numbers and reduced
-predictability.
-
-Maybe you can be clever and scan from the head of the inactive list
-where (most) new folios start. You still need to skip over basepages
-that faulted after. Skip over the referenced pages that have been
-rotated around concurrently. That could mitigate some common cases,
-but not the worst case.
-
-The search pool stays enormous for the entire runtime of the
-workload. It never gets better, never converges. It continues to
-include every other irrelevant anon page, and every THP that you've
-previously scanned already. A single new THP fault and the search
-problem starts over.
-
-I just don't see how that's algorithmically sound.
-
-> > So I think reusing the anon LRU is flawed. It's fundamentally
-> > different needles in fundamentally different haystacks.
-> > 
-> > If we can agree on that, then the lock contention problem has a
-> > different scope as well: it's a simple optimization issue, not a
-> > fundamental data structure arrangement issue.
-> 
-> I don't agree yet :) But maybe I am missing something important.
-> 
-> Note that the "simple optimization issue" is not so simple once you
-> realize what kind of a pain the batched LRU already creates us when it
-> comes to predicting the number of expected folio references.
-> 
-> It's a pain I don't want to extend to other areas.
-
-Since we already need to do it for the LRU pages anyway, isn't it a "+
-in_deferred_cache(folio) extension to existing refcount checks?
-
-I don't want to sound dismissive at all. It's a problem. However,
-
-- it seems way more tractable than the shared list,
-- nobody has produced hard data to show that either is justified.
-
-> > If I understand you correctly, the concern is that people will enable
-> > all manner of mTHP orders, and 99% of the anon faults, including all
-> > the order-3, order-4 pagelets, will go through the list_lru lock on
-> > fault, with no batching.
-> 
-> Yes. See Barry's LRU cache change I linked as reply to Usama who is looking for
-> example at a system that mostly just uses order-2 anon folios.
-
-I took a look, but I just see a microbenchmark. That doesn't seem
-enough to make a proper cost-benefit analysis on the complexity that's
-being proposed - whether that's a shared list design, or a splitqueue
-cache.
-
-(As opposed to the patch of hooking into the existing LRU cache infra,
-which is kind of a no-brainer.)
-
-So I still think somebody who actually cares needs to show that it's a
-practical problem, propose a solution and show hard numbers to justify
-the engineering tradeoff.
+>=20
+> Lorenzo Stoakes fixed UAF caused by races between CPA and ptdump:
+>=20
+> https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc00=
+18@kernel.org
+>=20
+> and an issue with stale page tables in IOMMU:
+>=20
+> https://lore.kernel.org/all/20260721-fix-cpa-kernel-pagetables-v2-1-2b255=
+deed710@kernel.org
+>=20
+> Mike Rapoport fixed a check of RW attribute in lookup_address_in_pgd_attr=
+()
+> used for the verification of RWX:
+>=20
+> https://lore.kernel.org/all/20260715144519.934289-1-rppt@kernel.org
+>=20
+> Some of the fixes got merged into x86 tree, some of them got merged into =
+mm
+> tree and some are still hanging in the air.
+>=20
+> Beside the fixes there was a supposed simplification of cpa_lock locking=
+=20
+> that looked like removal of an optimization for DEBUG_PAGEALLOC, but it
+> turned out that it was not an optimization but rather a correctness
+> guard because with DEBUG_PAGEALLOC the locks could be taken in an atomic
+> context and couldn't use plain spin_lock()/spin_unlock().
+>=20
+> The changes here are collected from all these fixes into a sinlge coheren=
+t
+> set on top of tip/x86/mm:
+> =20
+> * update to cpa_lock handling with DEBUG_PAGEALLOC
+> * fix for races between CPA and ptdumpi causing UAF
+> * fix for stale page tables in IOMMU
+> * update to the fix of the race between split and collapse of large
+>   mappings
+> * fix for effective RW computation in lookup_address_in_pgd_attr()
+>=20
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> Lorenzo Stoakes (ARM) (3):
+>       x86/mm/pat: acquire init_mm write lock on collapse to avoid UAF
+>       x86/mm/pat: acquire init_mm read lock on attribute change to avoid =
+UAF
+>       x86/mm/pat: allocate split page tables as kernel page tables
+>=20
+> Mike Rapoport (Microsoft) (2):
+>       x86/mm/pat: introcude cpa_lock() and cpa_unlock()
+>       x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_a=
+ttr()
+>=20
+>  arch/x86/mm/pat/set_memory.c | 95 +++++++++++++++++++++++++++++++-------=
+------
+>  include/linux/mmap_lock.h    |  2 +
+>  2 files changed, 70 insertions(+), 27 deletions(-)
+> ---
+> base-commit: a5a162fe1ae130e3d2ceefef3f43afe3773c1d56
+> change-id: 20260727-cpa-fixes-d3c73c075672
+>=20
+> --
+> Sincerely yours,
+> Mike.
 
