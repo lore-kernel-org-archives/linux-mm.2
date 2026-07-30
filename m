@@ -4,127 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8236C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D38FFC54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 610546B008C; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
+	id D3F3C6B0088; Thu, 30 Jul 2026 03:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C1586B0093; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
+	id D16C06B0095; Thu, 30 Jul 2026 03:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D6916B0095; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
+	id C539D6B0096; Thu, 30 Jul 2026 03:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 245C86B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:22:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D09C1208DD
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:22:07 +0000 (UTC)
-X-FDA: 85044599094.27.3E9BE78
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DB44CA0008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:22:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N73DFTM1;
-	spf=pass (imf15.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A084B6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:23:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3734580652
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:23:55 +0000 (UTC)
+X-FDA: 85044603630.26.CFFDF93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9428DC0009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:23:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jHj6GHG+;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785396125;
+	s=arc-20220608; t=1785396233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
-	b=t0UkCOV/GarpUGl2ChoWr+XzahQ+fZbLS6bv0yWv2nQlfS2GD6eU31LqPHVxumc5JgmHKr
-	XRv5Ke5A87qgJj3HTCKTSizNs2gTH1I97DEn/q5TLeNuAXBJj+uN29YnZv7670qohBkDyR
-	b+AurP6LX92Zvl81ZqmUWZp3hmWnNx0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785396125;
-	b=LNCTV1R0HQaW2PbW/HenqjSKXxWopNn7QFwOZ86GAF7vYDMN3FuMxCAcdmXuCm9x4JjYE1
-	d/aHqXxHEdIseDzk8eSeMswO/OUp+fnYb5jkx2El6zn3ZX4bEspmksUHy+gAhmwaFwJfDA
-	Zdtaox1WJ93HnORn7YNQ8i2dha7p888=
+	bh=Os9dgFvLa7OaBZRPPv98Vo5UROeltiAo6YFGnDGfHRI=;
+	b=esxOQnummeAyHInUzE2XM+sKKfN8gWJZuBHVeeyChDBMYWSLlj2gJNZaCp1MiGVagmIhmd
+	ixD+lD/zHE7Es2Ntm/2410Oa7yST83R91uVatOyyoXmqIpZINmyPkAIfgQZvMYP48KpqXZ
+	bpv2P+gRUZho15dnpFC5hUdjvQ1ETeo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N73DFTM1;
-	spf=pass (imf15.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso1531512a91.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:22:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785396125; x=1786000925; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
-        b=N73DFTM109CdwIrtWRCW2PcDWcbcTFxxnRgTk9mI9sGnqGLG72PPpEGG6cyRe/hE7t
-         zY8LvOdTjXw+ygWgsjlaSYf1/r6Ph4lssqqcjHKM3j6f+LldHb+TAeggGVNwpcLwiznc
-         Rs+a2ZW6Ury2PKFKRVbFbAOOaIHnEEWx1ZYa9NMVXFWn3ZuWPzVdpPTFJanXaHZYNQzZ
-         ZbxmT+b0DHFaW7yr1vtWpMxBqIQoCdaZb6FMov+eV1V9PVazzrcoS8IXCOQjqL4u8kam
-         ZTP3opJTmN65nM6EwjlQ+ywwS+a5HVlpod1OUp/JPzIrBQ+Mj6T4/OFHwoqlMYM97adk
-         oleA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785396125; x=1786000925;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jymGRglk5IKRXFWpkqtuU5ryhW9BPX+UWnQa9G+nknE=;
-        b=UzWT/txsVSRc+4LavggJ9R7npZXqqqgWzkhRjTVCdDZfT03M8iVz5vJq+NqdlQic0w
-         lXB3YPIPRn5qMHQfHjP0VtMgLJcICcsxKFu6iBFsBor9DFjZJvYOYhS/Jzu0HFsw+1UN
-         YrNjTxwCWyEQnx0BidfMGaVNnghIk7SybVJFcUpBjV6Qeakmd82d7ja1UYTG4SKjhJs9
-         8yLIzPykTNnc9a9FayIBv0TKzl2hwVxctYMh/QftHLTYQCDOn9RLsFxVytTE3ghzA035
-         LsCmHLgNE/+kFbijEf3jdsSS4kF1Td4H1INGZ6BLk7Oo6AK+SG3vz0L+vZea7/oyoO5F
-         YKCA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8ai1qcF9voXrzM1dFDkCCtiVQ21Q6yUS52PHxx9W0W4VbSCVOJTzHGhBhzLQIXtVN/Um7RsrnEA==@kvack.org
-X-Gm-Message-State: AOJu0YyJF1LCcHzjcUrA3seCnW5SXfAN6kPETL8hObTzTd5SZ60BiM5n
-	8DAi1b8TExHl5+2o9Tzm81XoUkW1L+jD1TWk8B6kap1BCwavRbualuIn
-X-Gm-Gg: AR+sD13kJaXnX85lDxc7XX93MnzIn2T+jMAj0Ha6UdbbKjm0agNBnr121rAqF9GJjiN
-	5V8/11fBigcW/DYdzToUJesZuhGNsWWu9bHHIhFMCeNhU7WBW/BjCc9T0bJWTkKDnp6/M+8xz6x
-	GjHLxJeENLynX94uJ5dzcxTv4TDSSBjhISx1enHiojssMwk3WM8MFRLF6sU/YDVZkDOFongtmhX
-	5kZ8vLqoUQCbe3nWwbMw7/8/c0R/aIGgU1OtF+80u8V+q2xu8u2FkX0/vXEPG+Ke3cVQlUw8jur
-	UpefNpVZUjXINC4q8K+574dRuEex644trqOQvRSmdGmhvt2l9qrGeo0M2LPxmZbCWM7IGoIfFRE
-	duYC9oH5R76XmWnXSmyfkXjJ4JILyM4ENbbwE6aMTU/W4d82eM2uW3DVIdKGcyusTn0otNUGgxL
-	Obm2twM+STpenzULj0tNlQKfukNX67lOpGHIL86Vue3bvqEj+W6/rpwWZdq6xBAor8/qvVgm9eb
-	3UfJFwRyVZgbg==
-X-Received: by 2002:a17:90b:388a:b0:37e:9e9:6ffc with SMTP id 98e67ed59e1d1-38f9bea7cbemr1361270a91.25.1785396124727;
-        Thu, 30 Jul 2026 00:22:04 -0700 (PDT)
-Received: from localhost.localdomain ([112.65.87.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b960ceasm539089a91.6.2026.07.30.00.22.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 30 Jul 2026 00:22:04 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: Barry Song <baohua@kernel.org>
-Cc: Lian Wang <lianux.mm@gmail.com>,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	linux-kernel@vger.kernel.org,
-	lyugaofei@xiaomi.com,
-	stevensd@chromium.org
-Subject: Re: [RFC PATCH v2 1/5] mm: mglru: avoid scanning empty generations in scan_folios()
-Date: Thu, 30 Jul 2026 15:21:57 +0800
-Message-ID: <20260730072157.17263-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CAGsJ_4x22FfT2HkPPFaaEXck_BNbW-xmJNeyhQvpWYwYVspgVQ@mail.gmail.com>
-References: 
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jHj6GHG+;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785396233;
+	b=rWNNXChBOlAPdO+L/BNvAq5ZMf9a1/q8+nWcALN6d0QpTRkhU8chtqeZhYVHifEM8TA79V
+	SK4chGqCPMLpHZGVC8movDLQHUymRfWzmXRPm1caHzeJqwJWsRJFh3Ha4hQHKtghP77U6C
+	0jfxvUcpVSKVt60abMiO4Dvdyt3NgpY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 07524400AE;
+	Thu, 30 Jul 2026 07:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133881F000E9;
+	Thu, 30 Jul 2026 07:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785396231;
+	bh=Os9dgFvLa7OaBZRPPv98Vo5UROeltiAo6YFGnDGfHRI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jHj6GHG+B6LgtjHEN9lD3r0pHdLDN+4kYoIS1VogXbaHwhDQ+DRNw19Wtm3HcxLVv
+	 iAF5ezxDHjmMOOm4WuZQypQ/XfMT4Pw6Y4ybYPZwHN6f4GDG6DIfbgwpOp3GAZyVT9
+	 OfRTqZ51g49gULmex43tFprNxYVrVBkKDfFVow2rJa8asavexLSTKdQoT7CSUiF93T
+	 YtdwNIe8jQPzVp+WdhrhWq0DPLI8WOshgBVxTWWl1Kud5DYndfXSqA4kvyJEzwTyE5
+	 2MAxFIhxHhTM02fFqUhgN+JXPlGtks6I/DHxvDiBX09F2bKGjgiH9dDlqzT9bghJhg
+	 L8lfRYaJWm2jQ==
+Date: Thu, 30 Jul 2026 10:23:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>,
+	Jork Loeser <jloeser@linux.microsoft.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 17/22] mm/mm_init: don't rely on memblock to get KHO
+ scratch migratetype
+Message-ID: <amr8ADvAiJE3ZYKF@kernel.org>
+References: <20260729145610.2827231-1-pratyush@kernel.org>
+ <20260729145610.2827231-18-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729145610.2827231-18-pratyush@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DB44CA0008
-X-Stat-Signature: qurhyku9oha6zz8hi4fejpcoyxyzqm45
-X-HE-Tag: 1785396125-438306
-X-HE-Meta: U2FsdGVkX1957YnkbLGvJA/MsRPz9i7MMdHm620FLUsCJYh6Fto4HP+1OPBqTOjrfYe9NXFPtzkpZqXMVgds90wJ/WWL5Ql0jnX0IHJS+bhvmtXS6+xmtnx+s7j2ZYoHUAVRaoM1edMAoBGCXKmmihjicEUlFtpFCYpwJVT+nIc+zpRFZmSigSw/0Emc/FWaYHSQ1ijWXU2bbBR8wOfWcTZ8DZZsOBSYX2LwZ6rgov0huZeUWSWMNly5tXDHf1UtHdXrC1ELN3SIcuMeIPnt2pDnFtBSsIF8yQC6NCVVqQF6dCgBfOASm1CYP4496t1h4qNN5/12tXtI7tsfq3Z8R5p8AsNwgf3/7jyPqpqDZj8U1Y46L3HVCJeD22gLShCuIkk9Nfv063a6cAkoZOdJ38xVfmJztzfKKCOHnEjFgkpT4KrJJc2HpJj91iwJmGIiC90kDwAUOfXBZ8u/v45KfpwNHRSSOwgp/x8QvGpKDkiI1y3/ZNDo60WiYBbIgnxGCvwpSoactB9Rb0wTbkcLdbeaIdNdSN3NthtS0sxS0w3c+lERgulCBLED+v/KyyQoYLRwxbFtLlpeJhrTyMdK+owxNV7zNyWPBbCSoF6XwdOVQ8o22lnRmdCvXnZO08VYGzSG2j8MCMr1N1J/xpqVc7LTS8ggZ7/1nvZP0Q0A+vYEaut8b2E810KHv27JJQwo22PIcyuHAyaUOiXVzfngY9RaXqZRyQvhIVJVLiLLJclZJqtsJ49ffAYypLtWks87OqC4bU78B6ezaSCsBoFDKw9d1+bU1GvjfDqmZbtOLfH7Zg3tk6d1CX7Ttg6Kivn+GTOVLNZ8Af5hnDY3WZtW2glzhPft1hKoI7j2Ev7TMxzT0rh3LfjiOzRXEA/1p2W+hwfPqjSLt0k/yPy8HWyx9qMJJ5TsE2W7iPxAuAS548yPrzPMsz2uLoTY6dGcvM84CChRu6Rc8Dvu7DrYFpw
- YJXLS7jd
- 0OUdQxndduNEsaPPq8cn8G71kvRehcqFnFPIpWL5KSYwd9fHlsal4NVN0KDyoqBl0yVjpuR4dyLd8r8/uB5vTsxoFwtiPLBRdK+cT6dTm4s9Sd1vS5WYGx5L3IEwB/E0YNuEcRFBupA5cqGnKoWoflHGGbkaFnJp8zpnRlQs5ynr+6rFq5zafACOZanVhYcuNDfSBNr/Nw/JTeUgNmR1dAJp3/MvLayXgwaDjkLrGMoj2qngB1uzULvCRye5mtEQ3wzp0Drw4Zx9S1p8YxzIkCF+Z9zswUb40tpV+UkVNgf9rv6Q0iPlG0k2G4YjHLJ7GnDVtyra4NH+LA9Iv2NoKL9kN5znHlgCJrYt6ld6rr21R3KXq10nyWY9WKQjjkZNnBZQeXzS6fOEoQu4JuDEpDtSl9t6yzL1X/S29NLfhO6RDx/ITVeJQXsQSo8DQytQUl60Ob2d+CD48jhEIXDlqH2hanSIdn2wnb4Qd8YwmCnlFzEBkkM9B2A44nBTUU7lzY6We
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9428DC0009
+X-Stat-Signature: 8qep9uy8uhk79nxzd1s5kyfgpr6yzdoe
+X-HE-Tag: 1785396233-246275
+X-HE-Meta: U2FsdGVkX18dcQqakQZav9XIZDek8+MBNHEo+CYARKCkO7jxsbIxLBe3OVmFvp0UIJcOzL2a0ZB4Kzf/kfqnsMjwqKGYle9B6YlG+Pl+hJig7rjwbor+qzsQ56ebxnEfQK2OaDaIORzuxVcAyNfgrDZZOHTz9V8IWaxuaY+WfULj16tE694lprWPecUJqKRjZe7E1rdgoUK3DEFYVeCwA29ezFvk+MzLkU1Xfh4PWWsuAUN2bVdB7pA12Lw75aSFdNhglY3fgTnHacA3MTyxiTYe4lv9rgvmVij24wtgtACrga+yv7NovmhVkfuLvCcfqQ7R20RNKP7WHx+HcCpZlhwLAU43I/ngGFk31vP2dmMLn9+rYksRokyNzFyFkYufM9h5o7IC8Sq/JSMOgU6Fwe4s09sc7e57PG4Fdg3UqwwNnP18Xy/C4pz7VLyxDEeoWdhMqhv2nNB1Xp75Wzrtb/5OhLua/iWUoBqgrFiTdkQruG2awaJa5NXqsIjUKrBeBI+EBsSixX1se4jrurRlVtX2PCTNOQVozZItABTkwY4G4squ7DZd90yN2AYiQyFkxiUuQrfVdcHaRa0KyR8D7WmBp6UR6Ip/ZrxPj3sznTBGBoCMYmlvSLdYMuLmc/juIEvWODHb0IMILypycAs+EZMp1Qz2Q5Zw1uCxH+90m7jLa0LfImSDIDzdlvyuO9R6SENZ3z2FH7X3KkZVj+48Xnrnn2P6UIv/YnMIhR5XZotwtz6zviUTfbrVUi0u+7q2tVfg4xdXKed1HCUnG84GTAOfteqMMfFP4uxWjN8mUCSj01P4VPDp0lpCI89mXyhx6o7YGFItktRbBUIWZG+TUuDInZFt4H8HhifvboSRiDSx7AQ74Q71Z77BG0kp0UITMCve+tOs0LW1g6DL79AACvopFwVo79KN2lRW1MORIzQZP677tH8Y4bgRFcPhSu+zOhHdt1MJ+lFL8gTQTiZ
+ 3zxmguMB
+ EYrqN9XmkKOmt9FM90U+Osj6/vI05RaY0Lq2+WOhdlcE0x7l1ARuekDgq24JTMLosXcxoxYYFinKZq6PI4keYETi3Ox5w/k1dVZrljxYGV7At99Ln13U7muu0XqWgOmAPojU4A2ifZh82lXpff2spnu1Q8A1Ymm/pPEM9OH5WcLa+g4R0JB0eSTV4IcI5X6RZBqGu85IuO1GAHWlfwxwSx8Zy28GZkehuGFRrN7eIZIImLD9fN40eD+TpFc+qmAJc6WWMa+aRUfAnvkL5L/P3Nb0aUe/mrRykOC4YVaksmgmoonFwKihkurtEjtaYinfqEqbuI+w7onlF+E4t8Jzrh4DGQ5uc4HDDxaJ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,14 +100,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+On Wed, Jul 29, 2026 at 04:56:02PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> Currently struct page init via memmap_init() or deferred_init_memmap()
+> only queries the migrate type from KHO for each discrete memory range.
+> That works currently since KHO scratch memory has a different memory
+> type so it is always it its own region.
+> 
+> An upcoming patch will add support for discovering blocks of memory with
+> no preservations and it will mark it as MEMBLOCK_KHO_SCRATCH to allow
+> allocations from them. This can lead to the bootmem KHO scratch areas to
+> be merged into larger free ranges. This merging breaks the selection of
+> migrate type.
+> 
+> Get rid of memblock_is_kho_scratch_memory(). Instead, use
+> kho_scratch_overlap() to decide the migrate type of the PFN. Since
+> kho_scratch_migratetype() only uses KHO functions, move it to
+> kexec_handover.h.
+> 
+> Instead of calling kho_scratch_migratetype() once for each free range,
+> call it once for each pageblock. Update
+> pageblock_migratetype_init_range() and memmap_init_range() to do so.
+> 
+> Since the migrate type is now evaluated for each pageblock and not each
+> free range, drop the migratetype arguments to deferred_free_pages() and
+> memmap_init_zone_range() and use MIGRATE_MOVABLE directly.
+> 
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>  include/linux/kexec_handover.h | 15 +++++++++++++++
+>  include/linux/memblock.h       | 19 -------------------
+>  mm/memblock.c                  | 10 ----------
+>  mm/mm_init.c                   | 27 +++++++++++++--------------
+>  4 files changed, 28 insertions(+), 43 deletions(-)
+> 
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+> index 18ba417f1ada..c83ec4a15fe7 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/err.h>
+>  #include <linux/errno.h>
+>  #include <linux/types.h>
+> +#include <linux/mmzone.h>
 
-That makes sense. I agree that this rare corner case does not justify
-the added complexity for now, so please feel free to leave it out of v3.
+Should have been mm.h, kbuild bot is unhappy otherwise :)
 
-I'll test v3, with a particular focus on the generation-imbalance aging
-behavior in 4/5, and report back with the results.
+https://lore.kernel.org/all/202607301001.ARjK0D4v-lkp@intel.com
 
-Thanks,
-Lian
+I can fix it while applying.
+
+-- 
+Sincerely yours,
+Mike.
 
