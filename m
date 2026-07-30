@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8516CC55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1E8C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:43:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 968926B0092; Thu, 30 Jul 2026 08:41:28 -0400 (EDT)
+	id EC2F46B0096; Thu, 30 Jul 2026 08:43:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9186F6B0095; Thu, 30 Jul 2026 08:41:28 -0400 (EDT)
+	id E73DA6B0098; Thu, 30 Jul 2026 08:43:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82EE06B0096; Thu, 30 Jul 2026 08:41:28 -0400 (EDT)
+	id D8B2F6B0099; Thu, 30 Jul 2026 08:43:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E6896B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:41:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9EF38011D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:41:27 +0000 (UTC)
-X-FDA: 85045403814.03.865AABB
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D33724000B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:41:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KmNYeTuB;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id B3BE36B0096
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:43:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A827140117
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:43:48 +0000 (UTC)
+X-FDA: 85045409736.21.57ECE5F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B302120007
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:43:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xn9CZZ8q;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785415426;
+	b=c6olobQXPGXhRfhZPXj4hpqc6XGqUec1/bK241jWStXfPTohFZ5T5OL+gv91LK7XltkKd/
+	b8e6kFvF+yP77FDvpcsNB4zxploAr9a1YUHNmdnOfxcW3f6VRaD9N7upJX4Lkz0XiUQXfF
+	ZGbQFROgtR7ivDCB6HLiCH0uhT+AA5E=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xn9CZZ8q;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785415286;
+	s=arc-20220608; t=1785415426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Yn6zB4FyaoOlg1O+5S/R+uP7IqARiMq9a6Q5IJKpbk=;
-	b=JZr9oDT6ChHA0kDyRxTVJkicA6vagcmAEhXqkYlanpcoVJ9MG5OT1rjXH7jxLZf/2G1Z1p
-	ZwdQQsVIYkOjvihsoe7saDMWL9ob0A2cy6bxU0ZPpcNTQjaUD14gqCIT8xkGn2KHT+bWlq
-	OTjGMpFrnotWhiqnMwFiYBGfDP28ryY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785415286;
-	b=qOI2J/jnQ+hH3tctSm0rSb+lnHgzXti7j3ymdsB9yrJ6l47dXm4F0XmY0h2EI78keH4JT8
-	JzA7Ck/Kf3K4gt5LK7mLGNoCjd+esIlsIwgjJTvF1SJdUytOCMTYgELIsSzvjKUUOBzr3p
-	162smrD0eM+0cZc7ohcdgkM/7O9CfL4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KmNYeTuB;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 30 Jul 2026 20:41:14 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785415283;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Yn6zB4FyaoOlg1O+5S/R+uP7IqARiMq9a6Q5IJKpbk=;
-	b=KmNYeTuBY61Zd8qBvi5I7WRr5XPb7xsUl3E3K8/7mKm7457Qb0FUwKaz9ZsvAaWizpNg9l
-	ayDE0CAq8tIY57qHQL9Xf3oqg5Cj+4+7sbYMD5psOO+kk3UNCYAWIEk+vNOSinQvUR1AIg
-	E2dTua96p66XoI2NTAImSv4NHgVXBEU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 13/13] mm/slab, kfence, memcg: completely remove
- obj_ext for kfence objects
-Message-ID: <amtGQIpVU4WoWiXf@fedora>
-References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
- <20260727-b4-objext_split-v3-13-c29ef0f1f257@kernel.org>
+	bh=tv01v+1vmyL2V9Dx2V8kfjj44VgJjpaRsjpUKiXaIwo=;
+	b=0WGJc66SEaJBdJSJvfEvGO134avIEaektNUjd8AHi2UXpQQ6EOuH24PMdD6+7hjA9PHmyr
+	mPopi5JiTIXBVv71n3AqshQhQFtgKCuQ7rU0zcVua5WM5ZArhsO1u58OjUZSITT0CRmkAb
+	1jJGeDZWzC4KI92c/LU0JAPVEjyVECs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D815B43C3F;
+	Thu, 30 Jul 2026 12:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5C61F000E9;
+	Thu, 30 Jul 2026 12:43:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785415425;
+	bh=tv01v+1vmyL2V9Dx2V8kfjj44VgJjpaRsjpUKiXaIwo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Xn9CZZ8q4fyaTzyVghjcX4coSwOOVxWYub2DQbQTTQ/7S+qjSTdRqwH7KxQN8sA4G
+	 KbeBl23oUkUtQxmG5FJgjXHQ5qvuwcrbqSNryM965phjrb42pbs17xhPT9Cipdn1sE
+	 sG79Xp1VqF+sUGHLL4At+wPzmS6nTcw5zF8i2/BOpJmfOCZZcjmCiiBsM1reMlMYnw
+	 cHp9h8IV3A5IENrcouFOw7G1c4VmJ04YWp6EXWzBFgMUQOqYkIy34herfhc4bamJVv
+	 9i9uRpeu8Jw6sbmqXg04pzmRpAyFUZWoVzNkLhy3yKLRil3Izxoux3cLdlE9Qf9GzT
+	 uq6CE9TWqI4nQ==
+Date: Thu, 30 Jul 2026 13:43:26 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pratyush Mallick <pratmal@google.com>, akpm@linux-foundation.org, 
+	vbabka@kernel.org, sj@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, 
+	anshuman.khandual@arm.com, gthelen@google.com, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, liam@infradead.org, 
+	rppt@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_reporting: Add page_reporting_delay_ms module
+ parameter
+Message-ID: <amtGydvlb2omM4WU@lucifer>
+References: <20260727230545.262579-1-pratmal@google.com>
+ <amiN82J8p5z9l_Rm@lucifer>
+ <91b61f02-c533-41b9-b680-7de52a5c6918@kernel.org>
+ <CALHaPKeOs25YNRg60+NxfS3E5RYLt5hJqFNX02ZCEBrjcDua0Q@mail.gmail.com>
+ <amsYVFfJmOs-Hy90@lucifer>
+ <1acb7ba0-6aff-4d30-9554-283ac8fbc93f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260727-b4-objext_split-v3-13-c29ef0f1f257@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <1acb7ba0-6aff-4d30-9554-283ac8fbc93f@kernel.org>
+X-Stat-Signature: etk4gb6mhzzmorxzrdzixh9458hmn17k
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B302120007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D33724000B
-X-Stat-Signature: tsb7aw5psfr71ubaufj5qdw4jxokid6s
-X-HE-Tag: 1785415285-631646
-X-HE-Meta: U2FsdGVkX1+l9BXHpjYgCRfwGDtAIKRp+JgtL1pbj17oMFskYeNv4InDRxpOsNvAbCf+VwuyKhvtmVwoAl4EHMYKdAuJ2ihObrFtHd2wV55xCea57qP4GGL7FIV7lDqV74fPv+3ok4hO1W4YTZNCC9uqMQcPv0Mxu/mDogd6rNNKRqx0zh9VImkIuJ+31iyiRU6bD8+fnt88DnaV4DV8B2zUEBOHz3sC/QQOntdVdt/AXrftIldgDdmNojjRrQ6fmLBmKyyuEX3T29zkEv+a1Liq+2yZkm0QrUbujdN9FzODEvd2S0y9UCRKJ8NXc03mSBeJcZuBxQCUb90zfT4Cn5a0liCxCZTT2FUcVCtCXnGkn5zmSSlDnxy7JIDilNAR/aDfqP5zDj2aIuQuXl3OrA4Dgo0F1FchZuAPegMjTGIkjfgQ8wJTaU18+gtC5Pl1HXWZj6mcg6G4zvP+sIoBehVf9RaQBB23RnZdhl7RqOZ3pQHjGNWl4T7GbfTHDmwF/pcm2BDrMtLZcDjmEAs88cSikUiq+YNFjILYCuNuSgcPVaqoTXTYEw3ZQAu1VYDkpNy9l6Z9sCtLjsesjEBcjGd2RQ/jZShephyBxDdmSfig0HspN6SlHZrGNtQk3mOIclocJRIhOc6JY9fly7JJoTi8iSc8Ox2jkuVK4nGxqJod5+P+Ez3FJCgcW5hIkHIvERAsiyP4Rn7qEmXU8dUU/hTOjn39owIxVdsYyOuTwBMfnpAwY99VBpyIUKnIAIxixNd8c0hE5QC1NgRJPFj5x+zoyAjGhle7ymLZUOTs8JYpXrytAey5UhHlj0Q4Y3SzRvgEG3XZR5IWXRK0uveLakssbNFe27W4D5fe8j4w6/WdEo8N68bxsNRJh1DdyA/SwyT7YPuO2mZDzVcIlcz+3BTWN1svwzPYTTibSRGfvDYTuHhTPX8pIPiKpoU19GUsoY/eKR4kH8zFOWFZ8yd
- Em6aDoyJ
- jZ1CwkKUT0KWiO5etSvoqMF4bLnsFcCJV+TDjhweUhHKvOtZJaBGxvWjVG0oPfdHP0WKWTSCwd2+3XLne8BNbYT++7M/Rh7VsR6z35xlnZfmdvzSJAHGfatHDWpYSc1GlSIehVF5nSflSzFn78WYN6RIJ7r07Vxcl4zbFHSAg96hXgigwkXmzU+QnA86dENLrQ73LLFgozWSP3wXTSPFaPYEgQQM/NsSvcDZD7TKLRPy2RXAP1kTySlGrF8R+Xp6gLzjNXYkaZdeDTOH72+rUiTiukw==
+X-HE-Tag: 1785415426-249462
+X-HE-Meta: U2FsdGVkX1/R1ZkfXQ4wL5DikRnNVj0+5C5sg5UV3NjWgbkfuzhGiwmeO74lK+bgksJkYywSrBpTzqdH9m871lv/VIobibg0boXQO7Um2A5ifEP598WSwE5rrQGUHXepwUkoQfT9sj+H5bpLOyOwyl936r4xof+llnyoxweSOwsgFbF+ZGBHR13d3Zlu34DWTYLmHC4HQnzvYGjzyJa+fE/w1QDaHF4/phZ7X9Q0eClRE/zmxELwIjqPd7J/Itbbeqz2D1Ysh/MlaE9z/fLuc+Akx9qF+Sid1qLiMzPfzfA1GRkQmy7qSBUnpq9do1pNVaeKSpMSI7Ol9oi1qj5iQSvSq890sOPfO2np+eayxQwgMv334Vp19N0qnSdA2Pw4NLjBAU08wWGFZDY+4Z28MRHKukEOVdRgNEzcV2tMCphZxdOSltciJ7Lp+zUneNexDz8VIj5fXfHI+7tSDwFXhguNT4uhv31cIPcS7Gcc7BJpJjf1+dDEK7M281o5KgORKlqqeA6tGM8DNvyNryJ7nbISUWHHIIHGaOaupN7fA6qh0S1zdtO20AWSY3XhJPjTAjtS5BVAv3b0x11PdkQFVKuirJgYeLVpTFvNvv+/zgLP26ttkkvyU+cTFcCLmQM+sLFhoEd2ctu+4rD0H3X81bP3k0dLoFEXdybPkDems1PldcgJbLLo9Iz37GX2kopw8EDIdgiGdHfh2rNinOlH0LuGbrhP6PEJWbQQGR4vfpRz8q+EAQhwL9OCy0UwHCBAFLfk2hKqlNFqa/+y6Njkt9PIxQdNsgacfri/GO7WgXDs2axY1+euEAFhOzMbS7+1kUzrTNMLuh9HsRHzyFjA0PrEzhF72PAAN94qVkA8IyYEsslC5V+ObGp+rkbC+b2InNI4+m/DGC7SpexRGtC++rTmWt5RqZO2P/aU9nX9ToweMHGlU1PStTI2WXuuAYHL7qI+zahabt9h71GZlO2
+ 8u7jCLLP
+ /yI/aSsPSUhY+i/5Kk/IxaJIwZRuOKL5StRq5woyraJPz2+WadtfHm+tP4TLVzbpaOxiLEjo6a9EFqyoNsqr8oPdRzuag8p2qtPoqew/NNBM2YgnZxrLx6CC7yHACP0bDB8zEsVqdBWhpBkkizh/WXQvyrCyEUtmU8aXQjVaF9MCwgonuioAYEOAeHQ1d5X363Yc0FiV15t+HH/I+HCrowVmZsq3GphQkpyCp5QdXpx92rQGjsCK3d3hqCexISw0csxi1LbX3wdoFtp/8Sp/nqy5asiRHa6yOTJJRlWDixpkpsbA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,34 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 02:54:07PM +0200, Vlastimil Babka (SUSE) wrote:
-> We have already disabled memory allocation profiling for objects
-> allocated for KFENCE to avoid complexity. KFENCE allocations are rare
-> and there can be only CONFIG_KFENCE_NUM_OBJECTS (default to 255)
-> outstanding ones at any time, so they are among noise in the profiling
-> stats.
-> 
-> For the same reasons, we can stop memcg_kmem accounting of kfence
-> objects as their memory usage will be negligible wrt any practical
-> memcg limits.
-> 
-> This allows us simplifying the code and getting rid of
-> is_kfence_address() checks in various places, including slab_obj_ext()'s
-> usage of obj_to_index(). Instead we rely on the fact that slab_obj_exts()
-> will now always return 0 for a kfence object's fake slab, which makes
-> those places unreachable.
-> 
-> All we need to do to keep this assumption valid is not to allocate
-> obj_exts for kfence objects, so the checks need to guard
-> alloc_slab_obj_exts() where necessary.
-> 
-> Suggested-by: Harry Yoo <harry@kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On Thu, Jul 30, 2026 at 02:39:51PM +0200, David Hildenbrand (Arm) wrote:
+> >>> With 2s, we wait 2s before we start reporting immediately by kicking the
+> >>> workqueue immediately.
+> >>>
+> >>> So "0" does not mean "report all the time", rather "start reporting immediately
+> >>> as we are notified about a pageblock to report".
+> >
+> > No, it's whenever pageblock_order is specified, defaulting to a pageblock.
+> >
+> > But I guess in practice fine.
+> >
+> > There's fun like this in virtio_balloon.c btw:
+> >
+> > 		/*
+> > 		 * The default page reporting order is @pageblock_order, which
+> > 		 * corresponds to 512MB in size on ARM64 when 64KB base page
+> > 		 * size is used. The page reporting won't be triggered if the
+> > 		 * freeing page can't come up with a free area like that huge.
+> > 		 * So we specify the page reporting order to 5, corresponding
+> > 		 * to 2MB. It helps to avoid THP splitting if 4KB base page
+> > 		 * size is used by host.
+> > 		 *
+> > 		 * Ideally, the page reporting order is selected based on the
+> > 		 * host's base page size. However, it needs more work to report
+> > 		 * that value. The hard-coded order would be fine currently.
+> > 		 */
+> > #if defined(CONFIG_ARM64) && defined(CONFIG_ARM64_64K_PAGES)
+> > 		vb->pr_dev_info.order = 5;
+> > #endif
+>
+> Yes, it's really about "a large chunk of memory was freed". On 64k " a large
+> chunk" is unfortunately order 5 == 2MiB (so the same as on 4k where a pageblock
+> is 2M).
 
-LGTM.
-Reviewed-by: Hao Li <hao.li@linux.dev>
+Yup :)
 
--- 
-Thanks,
-Hao
+Yeah in general I'm fine then with the timeout being 0, the fact it's batched
+like this makes that rather moot!
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
