@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A811C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B97AC5516E
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39D346B0088; Thu, 30 Jul 2026 14:39:05 -0400 (EDT)
+	id 604E46B007B; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34DBE6B008A; Thu, 30 Jul 2026 14:39:05 -0400 (EDT)
+	id 58EA06B008A; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23C906B008C; Thu, 30 Jul 2026 14:39:05 -0400 (EDT)
+	id 457306B008C; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E866B6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:39:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B990140273
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:39:04 +0000 (UTC)
-X-FDA: 85046305008.29.B6AF0C8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AA1A320004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:39:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lEsEG29h;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1F35C6B007B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6D8DA0A66
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:55:17 +0000 (UTC)
+X-FDA: 85046345874.20.377C12B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 306A74000B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:55:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmTfwEIc;
+	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785436742;
+	s=arc-20220608; t=1785437716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=/Whp4I0o87zJ8g9gPpVpcQ7qNGVrWT0goRI3lu1D6Q4=;
-	b=KZzPQMYclKrNG+YeJbZ7b49/Fv1HjYJ1xQ0xUR8C+AY2q8CIyg63ziIFnajwBkMX5H57CW
-	CgDEYHCRB+CjTTyFGcruHvyJ5CExQol9f/qKUvLGKUDq9fo62XCOFgJWI83hHThkL6RugC
-	GozTsl4msbuma0T8ZummDETZu/A7nic=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Hfg/Gngqd8SEsjmvDZsSbSWbGJu/DBm8x/q7YUwOtSU=;
+	b=Q4HZpcIuMSPCi+xoyaGQubC5GfC8J1PsJxG45yIJcN4AMwBhwftFjvwLvWdowUjschULHq
+	VyVtcsOzW4Lom3nicG3S+AkIdgEoqE+7sH5KPU8iP13pPk40RN1UqjFfypKvn/ZxCoWSx1
+	rOwUw7Mefdiv3kpYDy0Myx6fvVMXsz8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lEsEG29h;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmTfwEIc;
+	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785436742;
-	b=2dQdK4Scre9Zi8bx1d0wd8VrEOzHCG7TMABZkWcRAU+KCrsRULfkxNaOGabExlZfvxk2iI
-	SconBkppIhN3EsQghkIsq8vSXx9nIgVNpHoa76yXn6UmTHTFQWtuQ0XOIpqSENjtK+lO7/
-	4vt4rpVdPpYV/l+LL+0LNEPKqjK/+gw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785436742; x=1816972742;
-  h=date:from:to:cc:subject:message-id;
-  bh=FiYRzNq//ikoFu5lJJx3OhSlchMi+agI9pTLRjMQID0=;
-  b=lEsEG29hIAcPSxB09GS6ujJn1LxZIsWmy5GwXkk632/8n5jD/IsMQtDi
-   pPNG5XPVwXPtvNDwbCijetzDJyVdfRUAxjNgXCO1LeUUKfSHq1MYEaEzD
-   46vV/SE0vK5hiEdnkiQRPVwe9nuhGNotavKEmYC6WppbiYGiKCBatqos2
-   kUBSm7pLfPXf3R7+4EVrigeHhiA6AcU1nkkMv9uvm/TujD5zSbRbkueNS
-   XTTAMXbhc8ReHfUj9oI9CYCRBswj2hzNPGK0duPRwGyWI6i7+5KpaFEGY
-   MahwNb+FfpjUpqESb4GA+58hOdGPKfTb3xAedPWjCobhP9QM9PnScuCxH
-   g==;
-X-CSE-ConnectionGUID: bWGSlzbpQsOqZrkGtSOWrw==
-X-CSE-MsgGUID: eP8pbyyFQNyW1zj1eCT+Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="85190840"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="85190840"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 11:39:00 -0700
-X-CSE-ConnectionGUID: 3+OGcSZaSUydmeOagwMJOw==
-X-CSE-MsgGUID: IY885R4iSIW0J8gCeT6IQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="257021696"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 30 Jul 2026 11:38:58 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wpVea-00000000hRd-0BBT;
-	Thu, 30 Jul 2026 18:38:49 +0000
-Date: Fri, 31 Jul 2026 02:38:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- eee677bbc48890b2bcaa42ea7942478302937a09
-Message-ID: <202607310219.P81tFJMe-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AA1A320004
+	t=1785437716;
+	b=vUnI6SdS4jbIwx8Vk6JQzzGr6QEbx095FZs3eOo7Tj2xooOtcJEduSeC/0VbJTI9zPYvSQ
+	AaVGJkahm78UZlDO08D+wp9gy2Z4ve5NXWKYtKcznYyhXbzTuNUTOCFbLaJpNosHXYXDZi
+	uSNygvwxG8eYg6px9O23FO/+KlqktwI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 44186407DD;
+	Thu, 30 Jul 2026 18:55:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5231F000E9;
+	Thu, 30 Jul 2026 18:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785437715;
+	bh=Hfg/Gngqd8SEsjmvDZsSbSWbGJu/DBm8x/q7YUwOtSU=;
+	h=From:To:Cc:Subject:Date;
+	b=UmTfwEIcQAZ86kDM34UYJMbq473z2fsOFlb728dkck+ISBouYAxxdTTa17upWeCAd
+	 Fa952fHS1lUK5GYeiu4zWH3buJ4uR9EZ7TWSXC2lc9Un/KGctN/G4jrnRsJWN0Z3O4
+	 icXTXhrMyGzLgaCR3MW4oWiKwMahsSDodIrIUqVBEd2c77lrw/RFUYTdgTB14yJb7J
+	 AmQmDSvbuqXeefuq7nB6tIdLkstbSL/n0Y6OXGiQH8nG9JbgC7N9vYtzeMuWCwX/Px
+	 YQzQKRIk/AQZMRzMIxKwr9/DY5gDArP6OBunaEBI0dow0OGiJN54LSNJvA3RVVacLl
+	 FhFznXM7WnipQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Cc: linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fscrypt@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted files
+Date: Thu, 30 Jul 2026 11:48:53 -0700
+Message-ID: <20260730184853.48347-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: c13qe76qb7xhiuxqxsoa7benojuk3iba
-X-HE-Tag: 1785436741-958198
-X-HE-Meta: U2FsdGVkX1+vkHzX5VJHmo1KHWL40xmfX5znbo0/X8w1aozlERZpfB1YyulhBkGnRlgMNM2q/vYaewPjQaBRQ+PWH2TNeYnODilWT4sa/mgWWrJ8sC0KFEafBsl6IO4ZPkXimpKFJWtMZfH2Jk+ZQbUd+bLYqKl0RFsy1awCoZARIRvdAKA0rlzxVgKbBHdd8dWad7mAW3PHdhhUM8n8JPqyTHQTmnch6FcqNcABT/yqAeghFL4Pyyo89G6R4ULgIVSFHxh5zSj9hZgE/oTNxbtCVYTIU0rGOeqdxHs0PTvgqHsErvf/Cm8QDhl4vLAPx4M2+dWqS53TsKOGPHTAenx1QlRBsD4iSs0k7Gxnvh/i7j3LX9TvBHNC5zs4upKNzTDLkViha20Jcbk8sPwQXYRuMRxerN/intgtw0Ugp1VDxFYiz+q20NcsKiWeRguXsjslc/KUEdKNwjQ2FiGg3+3ly2Hgplv04o+x41ICeBs9Ay4lSdeGTGWhJFKwl7Xnc/b6jN19APyoxCU4YzPszkSUoCoG0vLSdaOEvYdurZ7tqt7trfVL56GpWqFADojc+4ayo5bg0bGh9YJApRpGKETQeKWNU+8oAxUIuQtsgRWDoadwg8UJRccF0t6fXxgMGXh+CHf6n5n7D3DZSEFYK7G4fgjag4aPmlz/ERI0frNAG0VwQuSk0ZEj9bnijFFiZgLrX4/XcrpOXRPjAcYJtDVr8so++FpiCN8A2YB9vARWfWFPCU9gvExe+Oaqdg8/s7E6nuAc0ygWoGv35amXbVPQWBnpWK+5QQdEh6CPd6G3IDRP+tgiWLZL9ldsfeam/tnSD+F63HpJT5W8pZr/J8OWc37Tdc5fhqi3jVTBwd9w/c5fHEQKTwYaw3kMH+x3ggng0hyCMBxN5MHFlv5Cmg3I/z9avKs8emjIqISo1uHdOvylCclL6ZXhw9mISTjK3BFfaq7M/FkZ5OXSnwj
- HTIo+UYc
- B7P5fapvn5XOIDxs4jYLqwiKYxAMyGeWLByyNeSVzHa6WDursZduNHGLWvGZ+KL6A7gP84rn9bdHkcOiOKFVGd0uj0SFnvnW6hSSqfxvUo+BbLPxoISWST2a+aCgKSrnbI4Z3WHMamMjqohgCkv+/MVjkZP5Oorym83mSVdwt3C8cijjK9/l+WE9LeysWJKDR7tCy1Hg3i6QWa/Q=
+X-Rspamd-Queue-Id: 306A74000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 33c5ekw6kwbq391fdxhheiiyrcjchrt4
+X-HE-Tag: 1785437716-73147
+X-HE-Meta: U2FsdGVkX18WH7rZQ9CEnwqfOSTdDk26QGfmPZu79gPrTU/eOKNSzEvWaXDZ269UqB14pBuXHYQZ/7ALa9Jv6iFqpRhXGQEXdX0w9AkKpVWuAPBA39djVmg6T5DsL0E0hU6H9n0DJVRytcyLMPFLTr4WffEDkDftm6XHWwR8AOSZ4qYobglzmlkbAWI+aVKeZ3P7g5PmpyH0+N32fXar8WUiUYjgwNKUsOAjVzyzbGUhkfyc8oqgvHNcwoa3GkF5NmuZM1pC3kRmu4SkxvplZfVbeo/6BMJjD6IouTDRLVOPOzGY6jDRXpNQcNuuM5JRpe5YyYeG2xxsTgwDnpimiWEN6kZT7AHprR4HSLPotl+n03Sft2rOXgfF2SXTWmRmP1X0vAP1L3I0ku2Dw/jrMJibkxRPwiZWEWPEXsYrfk6aivglB3tO8i7x7DO3WcfGBVXdgXNRV+9JHKbbKaXCk6RmY4XVPGYn9Mh7Gu3CHq57SRcSRlYqap9ga33b8r+KK5fT99VssApJIUHrquVAfd4zWCpDosn6H2Mf9NdaClul2vu4LMrblH2vdVjwB3X3vgQaLIt/g+dM7AmVU9HuDCtDSSFdxRax5iqLwjaFnmCQNsG4I3gkO4FA2UYQ9anCVErusIn7p/O/fCcTJq2BzynUpyfUKH4O8+CmJJ0wjzO1WJ7ba0WnLiUvb2WMyGh1hdttpHTNsavWq4p/WDL8RMudxh5GhJiwjB1WgjK/WN0qtvp1MgkBEGLuqjV0xZxugtzL1mqhxYuzuQpk+OpbZCgh8qeFMaJeYfwsUIcDP8rw3NNoCfZR4Ha4HCjMQhb5qxo9BGLJQXjFKVd933RYrewHA9GKegRhFQE0TiksATOyPmfqSHlUjRP7fMMeyANQV+e7ALV/W9M7hOsc3tKOI1v08YZxiUck6Du58XrpgOyGaur5F1KUnytBYzp+wFX0/pQ/nKQJW3ZJO+07IZD
+ r/oBq3fH
+ 9TO8SQt2+Zl11OK19oZ/SOBBM9UJ4z4xjGLNoDTt6quNh5LVRQ09yObxxa/xNcgqo0Cqz6y5Domx6bzDH1HLJUGevhCKjy3CrzmMqIWzp2BIONs7MjLC+K4kPN3UDzBKTEoVInPwFseIXiHnF2Uwk2x20slpcJO/b9LcJXb7a7xC0xhCSfek9BdXAIwJuZ3V7B1htLhaXqNh4Hg8iX/+42jd6t2x3LcNDYOX5BoOVFUV3UD0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,180 +100,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: eee677bbc48890b2bcaa42ea7942478302937a09  mm/swap, PM: hibernate: atomically replace hibernation pin
+ext4 and f2fs don't prevent filesystem-level encrypted files from being
+set up directly as swap files.  In this case, encryption is bypassed.
 
-elapsed time: 927m
+No one should be doing this, vs. the methods of encrypted swap that
+actually do work (such as swapping to a dm-crypt device, or swapping to
+a loopback device on top of a filesystem-level encrypted file).
 
-configs tested: 160
-configs skipped: 1
+Nevertheless, to prevent user error, make swapon() explicitly reject
+this case.  Document this behavior in fscrypt.rst as well.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
+Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ Documentation/filesystems/fscrypt.rst | 4 ++++
+ mm/swapfile.c                         | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-arc                  randconfig-001-20260730    gcc-11.5.0
-arc                  randconfig-001-20260730    gcc-8.5.0
-arc                  randconfig-002-20260730    gcc-8.5.0
-arm                  randconfig-001-20260730    gcc-8.5.0
-arm                  randconfig-002-20260730    gcc-15.2.0
-arm                  randconfig-002-20260730    gcc-8.5.0
-arm                  randconfig-003-20260730    gcc-13.4.0
-arm                  randconfig-003-20260730    gcc-8.5.0
-arm                  randconfig-004-20260730    clang-24
-arm                  randconfig-004-20260730    gcc-8.5.0
-arm                          stm32_defconfig    gcc-16.1.0
-arm64                randconfig-001-20260730    gcc-15.2.0
-arm64                randconfig-002-20260730    clang-21
-arm64                randconfig-002-20260730    gcc-15.2.0
-arm64                randconfig-003-20260730    gcc-15.2.0
-arm64                randconfig-003-20260730    gcc-8.5.0
-arm64                randconfig-004-20260730    gcc-13.4.0
-arm64                randconfig-004-20260730    gcc-15.2.0
-csky                            allmodconfig    gcc-16.1.0
-csky                 randconfig-001-20260730    gcc-13.4.0
-csky                 randconfig-001-20260730    gcc-15.2.0
-csky                 randconfig-002-20260730    gcc-15.2.0
-csky                 randconfig-002-20260730    gcc-16.1.0
-hexagon              randconfig-001-20260730    clang-24
-hexagon              randconfig-002-20260730    clang-24
-i386                            allmodconfig    gcc-14
-i386                buildonly-randconfig-001    gcc-14
-i386       buildonly-randconfig-001-20260730    clang-22
-i386       buildonly-randconfig-001-20260730    gcc-14
-i386       buildonly-randconfig-002-20260730    clang-22
-i386       buildonly-randconfig-002-20260730    gcc-14
-i386       buildonly-randconfig-003-20260730    gcc-14
-i386       buildonly-randconfig-004-20260730    clang-22
-i386       buildonly-randconfig-004-20260730    gcc-14
-i386       buildonly-randconfig-005-20260730    gcc-14
-i386       buildonly-randconfig-006-20260730    gcc-14
-i386                 randconfig-001-20260730    gcc-14
-i386                 randconfig-002-20260730    clang-22
-i386                 randconfig-002-20260730    gcc-14
-i386                 randconfig-003-20260730    gcc-14
-i386                 randconfig-004-20260730    clang-22
-i386                 randconfig-004-20260730    gcc-14
-i386                 randconfig-005-20260730    clang-22
-i386                 randconfig-005-20260730    gcc-14
-i386                 randconfig-006-20260730    gcc-14
-i386                 randconfig-007-20260730    gcc-14
-i386                 randconfig-011-20260730    clang-22
-i386                 randconfig-012-20260730    clang-22
-i386                 randconfig-013-20260730    clang-22
-i386                 randconfig-014-20260730    clang-22
-i386                 randconfig-015-20260730    clang-22
-i386                 randconfig-016-20260730    clang-22
-i386                 randconfig-017-20260730    clang-22
-loongarch                          defconfig    clang-24
-loongarch            randconfig-001-20260730    clang-24
-loongarch            randconfig-001-20260730    gcc-16.1.0
-loongarch            randconfig-002-20260730    clang-24
-loongarch            randconfig-002-20260730    gcc-13.4.0
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-nios2                randconfig-001-20260730    clang-24
-nios2                randconfig-001-20260730    gcc-11.5.0
-nios2                randconfig-002-20260730    clang-24
-nios2                randconfig-002-20260730    gcc-9.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-parisc                        randconfig-001    gcc-8.5.0
-parisc               randconfig-001-20260730    gcc-14.3.0
-parisc               randconfig-002-20260730    gcc-14.3.0
-parisc               randconfig-002-20260730    gcc-16.1.0
-powerpc              randconfig-001-20260730    clang-24
-powerpc              randconfig-001-20260730    gcc-14.3.0
-powerpc              randconfig-002-20260730    gcc-11.5.0
-powerpc              randconfig-002-20260730    gcc-14.3.0
-powerpc                    tqm8548_defconfig    clang-24
-powerpc64            randconfig-001-20260730    clang-24
-powerpc64            randconfig-001-20260730    gcc-14.3.0
-powerpc64            randconfig-002-20260730    gcc-14.3.0
-powerpc64            randconfig-002-20260730    gcc-8.5.0
-riscv                         randconfig-001    gcc-15.2.0
-riscv                randconfig-001-20260730    gcc-15.2.0
-riscv                randconfig-002-20260730    gcc-15.2.0
-riscv                randconfig-002-20260730    gcc-9.5.0
-s390                 randconfig-001-20260730    clang-17
-s390                 randconfig-001-20260730    gcc-15.2.0
-s390                 randconfig-002-20260730    gcc-15.2.0
-s390                 randconfig-002-20260730    gcc-8.5.0
-sh                                 defconfig    gcc-16.1.0
-sh                   randconfig-001-20260730    gcc-13.4.0
-sh                   randconfig-001-20260730    gcc-15.2.0
-sh                   randconfig-002-20260730    gcc-15.2.0
-sh                          se7705_defconfig    gcc-16.1.0
-sparc                randconfig-001-20260730    clang-24
-sparc                randconfig-001-20260730    gcc-16.1.0
-sparc                randconfig-002-20260730    clang-24
-sparc                randconfig-002-20260730    gcc-16.1.0
-sparc64              randconfig-001-20260730    clang-20
-sparc64              randconfig-001-20260730    clang-24
-sparc64              randconfig-002-20260730    clang-24
-sparc64              randconfig-002-20260730    gcc-14.3.0
-um                   randconfig-001-20260730    clang-17
-um                   randconfig-001-20260730    clang-24
-um                   randconfig-002-20260730    clang-24
-x86_64              buildonly-randconfig-001    gcc-14
-x86_64     buildonly-randconfig-001-20260730    clang-22
-x86_64     buildonly-randconfig-001-20260730    gcc-14
-x86_64     buildonly-randconfig-002-20260730    clang-22
-x86_64     buildonly-randconfig-002-20260730    gcc-14
-x86_64     buildonly-randconfig-003-20260730    clang-22
-x86_64     buildonly-randconfig-003-20260730    gcc-14
-x86_64     buildonly-randconfig-004-20260730    gcc-14
-x86_64     buildonly-randconfig-005-20260730    gcc-14
-x86_64     buildonly-randconfig-006-20260730    gcc-14
-x86_64                                 kexec    clang-22
-x86_64               randconfig-001-20260730    clang-22
-x86_64               randconfig-002-20260730    clang-22
-x86_64               randconfig-002-20260730    gcc-14
-x86_64               randconfig-003-20260730    clang-22
-x86_64               randconfig-004-20260730    clang-22
-x86_64               randconfig-004-20260730    gcc-14
-x86_64               randconfig-005-20260730    clang-22
-x86_64               randconfig-006-20260730    clang-22
-x86_64                        randconfig-011    clang-22
-x86_64               randconfig-011-20260730    clang-22
-x86_64               randconfig-011-20260730    gcc-12
-x86_64               randconfig-012-20260730    clang-22
-x86_64               randconfig-012-20260730    gcc-14
-x86_64               randconfig-013-20260730    clang-22
-x86_64               randconfig-013-20260730    gcc-14
-x86_64               randconfig-014-20260730    clang-22
-x86_64               randconfig-015-20260730    clang-22
-x86_64               randconfig-016-20260730    clang-22
-x86_64               randconfig-016-20260730    gcc-12
-x86_64                        randconfig-071    gcc-14
-x86_64               randconfig-071-20260730    gcc-12
-x86_64               randconfig-071-20260730    gcc-14
-x86_64               randconfig-072-20260730    gcc-12
-x86_64               randconfig-072-20260730    gcc-14
-x86_64               randconfig-073-20260730    clang-22
-x86_64               randconfig-073-20260730    gcc-12
-x86_64               randconfig-073-20260730    gcc-14
-x86_64               randconfig-074-20260730    gcc-12
-x86_64               randconfig-074-20260730    gcc-14
-x86_64               randconfig-075-20260730    clang-22
-x86_64               randconfig-075-20260730    gcc-12
-x86_64               randconfig-075-20260730    gcc-14
-x86_64               randconfig-076-20260730    clang-22
-x86_64               randconfig-076-20260730    gcc-12
-x86_64               randconfig-076-20260730    gcc-14
-x86_64                          rhel-9.4-bpf    gcc-14
-xtensa               randconfig-001-20260730    clang-24
-xtensa               randconfig-001-20260730    gcc-16.1.0
-xtensa               randconfig-002-20260730    clang-24
-xtensa               randconfig-002-20260730    gcc-14.3.0
+diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
+index c0dd35f1af12..cba1989777da 100644
+--- a/Documentation/filesystems/fscrypt.rst
++++ b/Documentation/filesystems/fscrypt.rst
+@@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
+ 
+ - DAX (Direct Access) is not supported on encrypted files.
+ 
++- Encrypted files cannot be used directly as swap files.  To swap to
++  an encrypted file, set up a loopback device on top of it.
++  Alternatively, encrypted swap can use a dm-crypt device instead.
++
+ - The maximum length of an encrypted symlink is 2 bytes shorter than
+   the maximum length of an unencrypted symlink.  For example, on an
+   EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 78b49b0658ad..e4991da81b5f 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		error = -EBUSY;
+ 		goto bad_swap_unlock_inode;
+ 	}
++	if (IS_ENCRYPTED(inode)) {
++		error = -EINVAL;
++		goto bad_swap_unlock_inode;
++	}
+ 
+ 	/*
+ 	 * The swap subsystem needs a major overhaul to support this.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
+-- 
+2.55.0
+
 
