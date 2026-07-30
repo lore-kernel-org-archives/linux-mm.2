@@ -4,96 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6732EC55167
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680D5C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5566B0096; Thu, 30 Jul 2026 09:09:41 -0400 (EDT)
+	id 30DE26B0098; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775C36B0098; Thu, 30 Jul 2026 09:09:41 -0400 (EDT)
+	id 2BED56B0099; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B2E66B0099; Thu, 30 Jul 2026 09:09:41 -0400 (EDT)
+	id 1ADDB6B009B; Thu, 30 Jul 2026 09:11:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 431536B0096
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:09:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC558A014B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:09:40 +0000 (UTC)
-X-FDA: 85045474920.22.EBEC6BF
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3EBDC120005
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:09:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lc6BcPe5;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785416979;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E2BD26B0098
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:11:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F0CFA0136
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:11:55 +0000 (UTC)
+X-FDA: 85045480590.04.ED1D9C8
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7E0E6180004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:11:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=It2kbs4S;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785417113;
+	b=s5W26EILNtgZss2MQeQ05mm6yPyyEPzZZU+Nna34jgtrorq6jx+9cSAJXXvwRijCT7XTE3
+	SNrrW7OTlSAs9lVhf2uO7YMpK5tNbD+PYfE3uywQYXtYGrXmp0Pd7+z2L0ZIlZ3FooDtrJ
+	ulVYOXbF0ZMKzMIfLy5pP/QD6eL8k+g=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=It2kbs4S;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785417113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n80UyXrjaxZDblcYgL2RK7KkUgNXXLilUukX1cXCVmg=;
-	b=3Udmeoy5wyYJMw/rP2mtihX70cWoUDw66jIcM164nTodOPQO6rWxy65iUkqZ9Nq9VHI5Vh
-	mlG6NBBKqKX3MDmOtQh6XZQs9yW4OD2+klalvenu5Pci1tjoMGH5kzcnnbMxrQ4nAJr1v6
-	E1pbHovwduTMb4nHgV1L+9IKS9J0PwQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785416979;
-	b=js/TahUsMx+ost27elRGefj2xVQSKPNTA/V2YT6bOpfsq6gjwVStpMVobAomG+A2yS1Jqc
-	52LgNjOCUeeSnFaGAtnUBBFHrDd16WvBVBFNRLaoZZ1cwEQShGsAsxbWKc/YGCIGhbn52f
-	54aHfIxX0pRUaLKQL7hERVMJON1byxk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lc6BcPe5;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785416972;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n80UyXrjaxZDblcYgL2RK7KkUgNXXLilUukX1cXCVmg=;
-	b=lc6BcPe55LdO7JYMgKr2B/atyloWVgQfyyC1LGUztckrBLxzZMRUuP3OaQFVnkhxZhAzr4
-	P/J16ys7HJiigGJj474/AIhFIIhHBfIg8Bi4ZMKkhzagA89U5sz6zWi+zcTsZzZiGMx2/g
-	LJACO2VRe0wZah1AkMXOEceKKNriTRE=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2 03/17] mm/mm_init: skip initializing shared vmemmap
- tail pages
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <178540851830.2154539.6359871825839331816.b4-reply@b4>
-Date: Thu, 30 Jul 2026 21:09:00 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+	bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
+	b=62rUuQy+dIVaouLkilMVgaWp9Chh4JTBG0ttc8E6/VVYqeXRTRFJX8Xw5eOVsSKWnwwPaR
+	7wqX7q62Sp7aPSSo1wnlGdH+M0zJBiQOmfgF9GtoUVge6ZXk1GWzzV2zFOmAOoHqMphzGP
+	RYwZEpNV48oe53PpaG4H7W4vniWCc/c=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495635a85d2so17013185e9.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:11:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785417112; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Dyzoy+Z1jNDBYh6DVa0FRGTZaD99Y3nsbvO4UMAOLeHIRHlY48PAN2vTqk97zQ/xX0
+         6mis5KDlg0tVe1KSOqDojmo5JKtvYM6B/y+Dj1645ByUFxSAN/I6PQd51M8j7dGt2urM
+         W4MMn9LRs6UdwenNoX4EqeySBzjb1XDHEZaCLJE7MpEcr9qKu9p/RmHG7MGp+2ANE7IQ
+         JXQSDtb0g/vE2Ls2wjJfFzjkfbvQ9Cf44Pf749RACLpFwi5EPmsmBpAE+hcqMei2GW9V
+         ztWKiou6ptd/2529q7tz3+6kW+jTMgeGUuWO/+h+YW98vypBjvdBaMJ57gR0HqoavMmn
+         A5UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
+        fh=Dwemh4vfVn6f7mLSsuP4CD/euqwyy9490gPCNBAkma8=;
+        b=BAXX1kJ0WZZkt62rSijhvvodaJNNoDb6pCqVNNFRV9idPbbDekNJKdePF0Lj6ZBkuj
+         Ievu/v4qcObRF7kCwusQKo2KDQ/nq2IMS2P12zXZfBpJGqNcRGft27OozRni1VCnnNVJ
+         kFMfUmf7+0Y/k3L1J8Z74Q6ZbucDu3/1St+pG9FGn5r67VBkdUYVniEpO5xdGLBU9DeW
+         dn5OYHDpKeTtgEoya7BofIORpxjsOprE1IcOSVz/2tmbAwPffMOOTCcaeGxP4WCFi5+z
+         kUDUU5HujeEHT+PAkzj3O07uvhZB0VfT3u3me+VQAKu+gl8C1IFJZgZhAHWMUF5NEoLi
+         j6gA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785417112; x=1786021912; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
+        b=It2kbs4Sr2B1xkVvPbKFpCOjeg5iR3g0PhYAWZjbvkwbFj0cECE4ytX7ROBrJtNX4g
+         ketwleymfBbAzoGQHL3tvYE0B57aq58I0Gsm2PJsYH/outctFmQROWTAEOce6KfLYNfR
+         iSvGIIwwdLRnYYTQ+663OCXIIgQyKgNyvmHc6n90Xb2fLU5M2lARO1L7dMLfqCZszSLR
+         rX2hTODlbBx2wCfpm0Sm6cL4ckpr3VoUm38nRqbX8LE8QBg/qlASwOMykS8AcDQYF5QH
+         /wdysoky1tRNMPlTyVk1yCkTGoli8GSXeLpZcIlgBtJJdkTr+UussgHHrPXjRrqNBht8
+         JiSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785417112; x=1786021912;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JZxWQFrq5yQB1yLfY/DlKbs1Vg/HpnWd2qZlXhsqsB4=;
+        b=dHRHQA9NK9pJIcjRvyy46iD/HwOZdSH2KmBUvBnzade3EDLs6Dd6l949Z5T7xWSN/n
+         S7Ve6O9zf1fyp8qjX3dCIRuNdfOC37Z3mbM0IbVE+nqwNyzJKLkv4HLWnzEQQ5BZjxdv
+         H7DF86msKrai0a+QgQAH2TWecuHiH6+qMD6B3gnJONFRtMaQz9zW4B88NZ0L7GRlE4ot
+         oM1OicO+XDrTheDRS/wCkt3Fo6C3frUNErblDBySZQlldeEzflV9Y4P0Vo6zxcEDrEqi
+         71UwhT01JUjvmuM5BCiiUViAv0QP6OXVb6xv4vhUOHjW+nJWGeRQaE2jbzrBAhfSXpPc
+         Ms9A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2FyjblJ8cQ4N8YPmQ8Hi2u4lPIF2jpHFtRjBqpavWTFHOWfQOA39+QEAyMcf1uuwwTTA0yJiZvg==@kvack.org
+X-Gm-Message-State: AOJu0Yx30cLRgl7oCPpdP5yQLtz3TtcP2tIzDqTiP/3ItrILezQ/X67X
+	dggTFjiPvWmi1TnE9U5J4I1VE4q9s4gWTUOwVYO7D90kPmaFbCyfcnS7no8gcVKwacOvPewqDs6
+	XHRYXwzl7wTBMLH/2KaFkXvzog3XGXg8=
+X-Gm-Gg: AR+sD10Qr2A0f2l+RXpOEvIV4dHT6TYkdJeAJvph2QXF/yHm4DorJTyj4qPTST2cZJ0
+	Gr3NadDNbFGmqab42lEKf8FcuMosIq2bh7fk7ymhP3T8I5eHIPGup4OK4T0QXm6pnt0Y7eF5RZ4
+	u8E4cyDsepdBULI2HvzcGtotwwVBdIS7be1pvQFGsDUBuxBL4p5EkDl1GKeDXhSk17T/HZiikPZ
+	c6DEpBtNssw0h7e3apSinz9etUwBxb8H762g3ltpZAslIVe0MqqIYYbojWb3cWQfLzQOEVlM+jf
+	7+8cz/M6HsXj8RTD581xLNBwZkzKj8Us11isVERvExiQ
+X-Received: by 2002:a05:600c:8707:b0:493:c182:6b08 with SMTP id
+ 5b1f17b1804b1-49800ed12f2mr35808775e9.36.1785417111834; Thu, 30 Jul 2026
+ 06:11:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260526-rfc-nt-demote-v1-0-eb9c9422daef@zptcorp.com>
+ <20260526-rfc-nt-demote-v1-3-eb9c9422daef@zptcorp.com> <ahW7gwgaF0zIPTAz@gourry-fedora-PF4VCD3F>
+In-Reply-To: <ahW7gwgaF0zIPTAz@gourry-fedora-PF4VCD3F>
+From: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+Date: Thu, 30 Jul 2026 16:11:38 +0300
+X-Gm-Features: AUfX_mwGq9AjTR5NxgyxAqgBeEwNx--Sq9pL4ych9I9IxB6UA5FR819gtzB2mWI
+Message-ID: <CAOi6=wQ7CxHf8QMFXm5oyHZFc9n6BQecL45rBud=hMubmayCnA@mail.gmail.com>
+Subject: Re: [PATCH RFC 3/3] mm: use non-temporal stores for demotion
+To: Gregory Price <gourry@gourry.net>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
+	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
+	Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-nfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Alirad Malek <alirad.malek@zptcorp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3FCC8989-95DB-450F-95C3-183787DF4D08@linux.dev>
-References: <20260720093127.540540-1-songmuchun@bytedance.com>
- <20260720093127.540540-4-songmuchun@bytedance.com>
- <5005C7D3-B3ED-4C62-B611-8465D2BC69FD@linux.dev>
- <178540851830.2154539.6359871825839331816.b4-reply@b4>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3EBDC120005
-X-Stat-Signature: 3984s6zu3y6346rx1j8gkcs9mjepoanw
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7E0E6180004
+X-Stat-Signature: 39zay183mq8f4f3omyditqrua6ddmpbd
 X-Rspam-User: 
-X-HE-Tag: 1785416977-628079
-X-HE-Meta: U2FsdGVkX18KM4UbyglJlV+ze+ufAwy6cPSbL2lcfVud35ZRht5ZL/SSuKRVhNn5Qc7uNUzzKujqiaUv7Y8pzBjTeRUIPqHPorckzHrccQw4joXJDW0AMxOt3Nxi1mbMBfTdyxhzbzsKUyYhkmdnlbjxxrz/X/2aUqOYFzQy2FPl2BGX5O9E+NCR+mb+vGXjFPlGAKZsvxmRPclRqBKtrARZ7e1pxhKEm8LIjHIcy6akZAKnItTWLZKxSSVgJ2kjWDNIZ+3fWcZ7plxNxaIRRFnF5ka4B4Wu1Cbe3JDpzRZuwKiDHaOLvjqWyQjGeKQ58c6Bcbw6H9EMB23hV/etGUCHZtrVh6v8mW0qHR60m6qKLv1pkCoH3aRwPd+3HhU2+Gl+reyn+GxOfmT1DE1T5nJoplA4smjUmWMPcfpXznC1KY9i8oFM3aB2K2GapI/8vUYC4Jyiv8Ke3SeHh3W2J6vA2B7WhWg22tWN3IYyBg90ssKlWqod6ZI3QWtMxqGDLOwHYu5Q+6o0tH2fw8phsBMY57v5CQrq+FQpH8ueMbmmN22qD4jZRE/Sg4BF9rxqIhZN9WNPI6CtuPO7ZkqSwPdMLiKfh07d2r9KchdtIucfibpGw9cEy9KG+Z9yVLQDGrMkoURthjfsrtWfhQN+GsLpeAB7DfUzR4I21yHwb6jfhSBmDZWvlkVN1argvYsokMBpkUyvu9FXzOOpBrjKOAi+iJ2Mo2V6te2Av5MqPUKMFzpcDDWCrUKM2nHrMOEhdIFz7ArqXOLGuFbdPvuq+7BX/Adwudk+B9AiZW0C1F45/+BHpgbsaoipb5AaxnopvRiA49QRjYXouOTcVN1j/enIjm1U0zQeHoe6glzDL1ZnQ1akJTc2tRqvPLbCr9P6sF93C9PQtd/HHgul8Rbw5qUBqnYkUJsqPOxdeapnCm/CAljM5bujXo33mc9VNfzjrkPHF4FeLzbuJrvknIM
- w6lEGBKh
- BL1dir+53QlOw3f5E+5p4S3uDQCThBxcf0pKMc4m2js4u7UIySgOKFZ8eRQpodNGh+8QFCTwdF9IjIJqJm7kcAIxoHz8bt5i+xwfEAWN4KHgGdrkN6F0xfMDPsXkGvSYTYlJwXHPtmUlTuIoRoMpIkweJVN2pup3XG5JAqNudSOmffAfUMJZYeaatONtRdrlobX2vojeWOzPo4FVsYVnFeTd1FSkgiyrhNtRzp1Iw6361rr4wP4e9harFf9h9UQSTcTkrPF0u05biI530YkrT6o3YrlakiVG27JOKnj7RHv2UaroeqB9zxd5dJccNMaYcPGIOwdmtdgUko+jwVq/HT/rCQJIEkd4EwSU/OlaupZUMJHu6F98mnJ39r+R/uORaglIlDs+7DeQy4J9sbxJmV0Tpgw==
+X-HE-Tag: 1785417113-832537
+X-HE-Meta: U2FsdGVkX1/63vUPOMKbhIxn5KWEPXK22U5+Ve7oFD8G04acIBRX4rWAlvSJ5JW6gWvEn1NW02qBkfdG+qb6fcdhcYLBoRkIlTARC8dqFK8jFnKIZLzZfJH1hrBkmfZ2+b487sLNXXLxswx7oLbNg6jV8CJGCbA+a6Kgofvgb5M1GHjXqzypTv4/67ZShckG/nttcvFUrCi+2BP8ioGKVs+zWFE9jx09PJhXyAYSrpQDIlErdCoZmYEkdoo4J9KTeJkY9DM0G4mY0BT77bg0Fj3Vtdq4Eq6q23YIpWGThUSAWtqore4l+KpNeQamhILE/AiaFq8KiR0fvzg3GQyS/5THTBDpnfdMKXjcxW3ZTbFH0Z8hap+4BKNrLafQg1kIKskmMzSuU0mwdg1aDSV0pLOum1tOoJgBeGOWvyOzBBF8c53itu9NzyUcTmR/7933H94LXYrvRggAEq7vIaJtWtv1tzILR21Z47RbfqcfHKw6cF2DpzJSf4BpiytngkJedXz6c/c6eYqJHnasTWVZ7KloYtjWjYbpyCBhntq086EGw82fT3HA61utLdVf7aPP9+1aQk4K68RHOdA8D4CiUMS4R+f01Q7UCVZZ3Rm6BDLsaNJXCQrrvzlWMjUUa/CRzhWFGlXplOGoJ5vSjwsZ3hw1TMOPn6LB78Vt2pmKNvcOkfz8DdhdWJ5ZGO2APi2ZzQAI/UOzMuWjXu+l5SOISrzvhfeW6wQ5qNJYtA6vIctbl2vSwE86e/EctbNR8KHAg2mudmRtd7vDhrEGEyEzkECBk81p3EgUlYOHGGT4Yn3LerfpiXfwWVeWjGmi4Xrp6tFq9d416D+Dx3PuJAji+I198PEs8LCu/WD2ymVMwicqIs4j0/GKyNuvyUGB2qhUtMu9Dez4fDGtttQnhgWP9doVkA3+wYa1HRvONez38gL4JGL4xKw7UjoxsglnWZqry02aKOkw0dTmrlxTpIT
+ NprQ0VPW
+ QwDmDniOp8/H8Lns30cBMliRX4itr3O4zVFLJEt0QVWjWGIqP9bWus2UJxhJNJGgZoWqBfKcEkx7uJ2t2WZcGwGMS5gOpB3uvpGQi7s82m3wnRdZDoNpp+i29uRVbAVjLK2SOBXW2VFldxiuzOQsTg6dJUi2uMJrRnjNUlawf7qWVWYmVDN86koiOYjlE4I+Jngr9xjaTiR4caf8+iCYdGZEG3Dh+ZjOA+UQpfV6jBN3fLFKoKvdLU6TmOlyTkjNTIsOrRHHPr2L6f1GlA7yG2u4hHA6Q9wKyDMhvOFpFbj7H1IrjTIag9da5Nvv2claa0Oq5c9uqEcJINJWQUXkaPF3QC5W6Zv96AvTvSq+OYD2wowGLoOneO32WQ0cOrlb+S5z33AgHH179zO8W7M08fmC8fgVYybcKIsLnJuZi13OEpNsTOs/OoX4k9BPIQpUJkc72BMCD81AbKKouidetgncvAcY+BRt0ueMStfeOaYVu2Al/JNVoM8YmvQGtOmpkDHgJjxQdlV+aO9TtJYUy0ahmzWvGtQUJqzP0B8UyjIHWhMuNYxZz21+r2mDdRqu+VsKSUpUCigR2jX0WB6yPRa6z//f+7cEafkLTtKpJY+tpnZWLOityEpqaYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,188 +158,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, May 26, 2026 at 6:25=E2=80=AFPM Gregory Price <gourry@gourry.net> w=
+rote:
+>
+> On Tue, May 26, 2026 at 01:37:04PM +0200, Yiannis Nikolakopoulos wrote:
+> > From: Alirad Malek <alirad.malek@zptcorp.com>
+> >
+> > Memory demoted to a lower tier is assumed to be cold and most likely ou=
+t of
+> > the CPU's last level cache. Additionally, in certain demotion targets (=
+e.g.
+> > CXL devices with compressed memory) the bandwidth can be negatively
+> > impacted by the eviction patterns of the last level cache when standard
+> > memcpy is used. When the feature is enabled, use the
+> > MIGRATE_ASYNC_NON_TEMPORAL_STORES flag in demotions to trigger the foli=
+o
+> > copy path using non-temporal stores.
+> >
+> > Signed-off-by: Alirad Malek <alirad.malek@zptcorp.com>
+> > Co-developed-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+> > Signed-off-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+> > ---
+> >  mm/Kconfig   | 8 ++++++++
+> >  mm/migrate.c | 9 ++++++++-
+> >  2 files changed, 16 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index ebd8ea353687..4b7a75b57f6e 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -645,6 +645,14 @@ config MIGRATION
+> >         pages as migration can relocate pages to satisfy a huge page
+> >         allocation instead of reclaiming.
+> >
+> > +config DEMOTION_WITH_NON_TEMPORAL_STORES
+> > +     bool "Use non-temporal stores for demotion"
+> > +     default n
+> > +     depends on MIGRATION
+> > +     help
+> > +       Enable non-temporal stores when migrating pages due to demotion=
+.
+> > +       If disabled, demotion uses regular migration copy paths.
+> > +
+>
+> Do we actually need this config flag or should we just default to this
+> (if the arch supports NT stores)?
+As discussed in the sync call, I was just being defensive :).
+In fact the non-temporal instructions should be in all x86_64 afaict.
+So I've removed this in the next version (landing soon).
 
-
-> On Jul 30, 2026, at 18:48, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi Muchun,
-
-Hi,
-
->=20
-> On 2026-07-26 12:30:17+08:00, Muchun Song wrote:
->>> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->>>=20
->>> memmap_init_range() initializes every struct page in the target =
-range.
->>> For compound pages with vmemmap optimization, the tail struct pages =
-are
->>> backed by a shared vmemmap page.
->>>=20
->>> Initializing those tail struct pages would overwrite the shared
->>> vmemmap page contents, requiring users such as HugeTLB to restore =
-the
->>> metadata afterwards.
->>>=20
->>> Track the compound order for HVO-backed sections and use that =
-metadata
->>> to detect struct pages that fall into the shared tail vmemmap range.
->>> Skip those shared tail pages in memmap_init_range(), then initialize
->>> pageblock migratetypes for the processed range with a helper after =
-the
->>> per-page initialization loop.
->>>=20
->>> The !SPARSEMEM __pfn_to_section() stub is needed only for the build:
->>> memmap_init_range() references __pfn_to_section() after checking
->>> pfn_vmemmap_optimizable(), and !SPARSEMEM builds still have to =
-compile
->>> that code even though pfn_vmemmap_optimizable() folds to false.
->>>=20
->>> This is a preparatory change for consolidating handling across users =
-of
->>> vmemmap optimization, and it also avoids redundant initialization of
->>> shared tail vmemmap pages during early boot.
->>>=20
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> ---
->>> v2:
->>> - Fold section order tracking into the first user instead of keeping =
-a
->>> standalone API-only patch (suggested by Mike Rapoport)
->>> - Rename page_vmemmap_optimizable() to pfn_vmemmap_optimizable() and
->>> pass a PFN directly (suggested by Mike Rapoport)
->>> - Initialize pageblock migratetypes from a helper after the per-page
->>> loop (suggested by Mike Rapoport)
->>> - Use a 1G PFN chunk for cond_resched() in the pageblock helper
->>> (suggested by Mike Rapoport)
->>> - Guard section_order() with CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP so
->>> it returns 0 when HVO is disabled and lets the compiler optimize the
->>> code as much as possible (suggested by Mike Rapoport)
->>> - Explain why the !SPARSEMEM __pfn_to_section() stub belongs here
->>> (suggested by Mike Rapoport)
->>> ---
->>> include/linux/mmzone.h | 14 ++++++++++++++
->>> mm/mm_init.c           | 33 +++++++++++++++++----------------
->>> mm/sparse.h            | 23 +++++++++++++++++++++++
->>> 3 files changed, 54 insertions(+), 16 deletions(-)
->>>=20
->>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->>> index 82b0155d886f..2a32101d55e6 100644
->>> --- a/include/linux/mmzone.h
->>> +++ b/include/linux/mmzone.h
->>> @@ -2011,6 +2011,14 @@ struct mem_section {
->>> unsigned long section_mem_map;
->>>=20
->>> struct mem_section_usage *usage;
->>> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->>> +  	/*
->>> + 	 * Normally, sections hold regular (order-0) pages. However, for
->>> + 	 * sections with HVO enabled, this tracks the compound page =
-order
->>> + 	 * to enable deduplication of redundant vmemmap pages.
->>> + 	 */
->>> +  	unsigned int order;
->>> +#endif
->>> #ifdef CONFIG_PAGE_EXTENSION
->>> /*
->>>  * If SPARSEMEM, pgdat doesn't have page_ext pointer. We use
->>> @@ -2365,8 +2373,14 @@ static inline unsigned long =
-next_present_section_nr(unsigned long section_nr)
->>> #endif
->>>=20
->>> #else
->>> +struct mem_section;
->>> +
->>> #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
->>> #define pfn_in_present_section pfn_valid
->>> +static inline struct mem_section *__pfn_to_section(unsigned long =
-pfn)
->>> +{
->>> +  	return NULL;
->>> +}
->>=20
->> I'd like to propose an alternative implementation that doesn't =
-require
->> exposing the mem_section. The idea is to add a new helper function,
->> pfn_to_section_order(), so that for non-sparse-memory configurations,
->> the mem_section concept stays hidden internally. I'd really =
-appreciate
->> any thoughts or concerns =E2=80=94 if everyone is comfortable with =
-it, I can go
->> ahead and implement this in the next version.
->=20
-> A helper that keeps mem_section hidden from !SPARSMEM makes perfect
-> sense to me.
->=20
-> I'd even take it one step further and make it return how many pfns
-> should be skipped in pfn_vmemmap_optimizable case.
-
-To make sure we're on the same page, let me walk you through the =
-specific
-changes I have in mind. My initial plan is to introduce =
-pfn_to_section_order,
-and the expected diff changes are as follow to keep mem_sectionhidden =
-from
-!SPARSEMEM.
-
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index dcb757b36902..0b0c2996d080 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -884,7 +884,7 @@ void __meminit memmap_init_range(unsigned long size, =
-int nid, unsigned long zone
-                }
-
-                if (pfn_vmemmap_optimizable(pfn)) {
--                       unsigned int order =3D =
-section_order(__pfn_to_section(pfn));
-+                       unsigned int order =3D =
-pfn_to_section_order(pfn);
-
-                        pfn =3D min(ALIGN(pfn, 1UL << order), end_pfn);
-                        continue;
-diff --git a/mm/sparse.h b/mm/sparse.h
-index 030248030dc7..c5fbcdde3cee 100644
---- a/mm/sparse.h
-+++ b/mm/sparse.h
-@@ -47,6 +47,11 @@ static inline void __section_mark_present(struct =
-mem_section *ms,
-
-        ms->section_mem_map |=3D SECTION_MARKED_PRESENT;
- }
-+
-+static inline unsigned int pfn_to_section_order(unsigned long pfn)
-+{
-+       return section_order(__pfn_to_section(pfn));
-+}
- #else
- static inline void sparse_init(void) {}
- #endif /* CONFIG_SPARSEMEM */
-
-Since we also use __pfn_to_section in the patch 14 in this series for
-!SPARSEMEM, we need to make corresponding adjustments=E2=80=94specifically=
-, by using
-pfn_to_section_order to determine whether the vmemmap of a given section =
-is
-optimizable. This new helper will be called from several places, so I'm =
-afraid
-its introduction is unavoidable.
-
-That said, I've also considered an alternative: introducing another =
-helper that
-returns the exact number of PFNs to skip, and using it solely within
-memmap_init_range(). However, that approach doesn't seem to offer much =
-in terms
-of code simplification. If I'm missing something or if my reasoning =
-doesn't align
-with your expectations, I would really appreciate your guidance. Thank =
-you for
-your patience!
-
-Thanks,
-Muchun
-
-
-
+/Yiannis
+>
+> >  config DEVICE_MIGRATION
+> >       def_bool MIGRATION && ZONE_DEVICE
+> >
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index ff6cf50e7b0b..368d40dc8772 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+> > @@ -862,7 +862,10 @@ static int __migrate_folio(struct address_space *m=
+apping, struct folio *dst,
+> >       if (folio_ref_count(src) !=3D expected_count)
+> >               return -EAGAIN;
+> >
+> > -     rc =3D folio_mc_copy(dst, src);
+> > +     if (mode =3D=3D MIGRATE_ASYNC_NON_TEMPORAL_STORES)
+> > +             rc =3D folio_mc_copy_nt(dst, src);
+> > +     else
+> > +             rc =3D folio_mc_copy(dst, src);
+> >       if (unlikely(rc))
+> >               return rc;
+> >
+> > @@ -2081,6 +2084,10 @@ int migrate_pages(struct list_head *from, new_fo=
+lio_t get_new_folio,
+> >       LIST_HEAD(split_folios);
+> >       struct migrate_pages_stats stats;
+> >
+> > +     if (IS_ENABLED(CONFIG_DEMOTION_WITH_NON_TEMPORAL_STORES) &&
+> > +             reason =3D=3D MR_DEMOTION && mode =3D=3D MIGRATE_ASYNC)
+> > +             mode =3D MIGRATE_ASYNC_NON_TEMPORAL_STORES;
+> > +
+> >       trace_mm_migrate_pages_start(mode, reason);
+> >
+> >       memset(&stats, 0, sizeof(stats));
+> >
+> > --
+> > 2.43.0
+> >
 
