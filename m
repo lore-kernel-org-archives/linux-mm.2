@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C149C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C95C5516D
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550776B008A; Thu, 30 Jul 2026 13:59:59 -0400 (EDT)
+	id 3A8AB6B0088; Thu, 30 Jul 2026 14:03:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500746B008C; Thu, 30 Jul 2026 13:59:59 -0400 (EDT)
+	id 359326B008C; Thu, 30 Jul 2026 14:03:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418C36B0092; Thu, 30 Jul 2026 13:59:59 -0400 (EDT)
+	id 26F286B0092; Thu, 30 Jul 2026 14:03:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D616B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:59:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9405714023D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:59:58 +0000 (UTC)
-X-FDA: 85046206476.15.6CB48C5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 04D6F6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:03:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A572FA0191
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:03:09 +0000 (UTC)
+X-FDA: 85046214498.04.8F30047
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A7F7E140005
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:59:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UshECIue;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id ACC8C1A000F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:03:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QWH/7gUt";
+	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785434587;
+	b=BLjgodIEJfg4m5WhfuiaftnhMbDCsP0wuyAuz3oTKAEkQv4drJClMWXLpQxN5xgyUjl8Ga
+	w1HQP71HFK3TFHm3WNdeKJ+I+QkdUFvYz1/Q5E40o9yOGExMvqYGnJpQfNMGVauExLzL+S
+	wBwULK4zrq4f/hAUVAXL7egULODXyXU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QWH/7gUt";
+	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785434395;
+	s=arc-20220608; t=1785434587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZrCgdyXy0gel21g6+l3wAl91/gQK/6PxbGO/1UYQNI=;
-	b=wg3OiYKKu/JiguafxYGtgSFKtU0GSbfWzqnboWhYdyRIlaa18uyTT7eFks01gl1ead6fs+
-	pgZtxMOF2QLPwCd51jyGgpIXvMXSFEsVpv4lShUkEClOvCoUcwtgCD8NmMExeZLHeRaRBt
-	QaSnvFhtkG2r4HD3iBcsR110ZInAI+o=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UshECIue;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785434395;
-	b=BW/o1OK8DuNuFp9cmHVbrwe+Cp38sM2y/Jze/+kZljOytExNLwAfGJ7rGaWxxw2X7xo9dA
-	+NKBjWnK4yGfemJd0mPmSJCIPCfbxGI3nd2Fby7l1KVZmL3MCcYIWmnlz76cB0usRWmMVk
-	83dCw4Ntsq+jUu8guDr1RnhB1GB2Buk=
+	bh=uaWtblCQv/4DCdhc7jyYsoeQO3+YXZnfBpK3Ly+PEEA=;
+	b=gSt7t3KuFg98KvnF0oAp/SPkaSYdIAipNaud+Vd/WxVWTWMegInKk6bLbBWG/wFWSm0Ns4
+	gSwvn7z1cVJ/VFL4C47+C+9NkFUe8n6/k9I/8TdTObbWwjsNMfhjrVEs7Slmx5PooHQZTl
+	VpYLv02GSKjFmsjLsLUgY0WbrwWOhbQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E888843B0F;
-	Thu, 30 Jul 2026 17:59:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACE51F000E9;
-	Thu, 30 Jul 2026 17:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785434393;
-	bh=YZrCgdyXy0gel21g6+l3wAl91/gQK/6PxbGO/1UYQNI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UshECIueGJWRMP+SZQFVcW0KEfohxvJ8oK09e7hIWV+2DIe4dmG2UVxZALb6bPcT5
-	 0U1hW+6R6guYUtI0aiN5wXC8mVznh7PRZkBVADUy807+Y/d5CepvjAv+YyE6B+dn2q
-	 66ns3oQYRRGuNTh6RCVt577rqxUpB9uVhkPVSXhs=
-Date: Thu, 30 Jul 2026 10:59:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>,
- stable@vger.kernel.org
+	by sea.source.kernel.org (Postfix) with ESMTP id C6E5443E53
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9ECB1F00A3A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:03:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785434586;
+	bh=uaWtblCQv/4DCdhc7jyYsoeQO3+YXZnfBpK3Ly+PEEA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QWH/7gUtPVc6Cpxv27UYhzK9tvJNy1J9q5VhrVickDBsl+DyXd1bwNIyqVtr4Alao
+	 LH5jI61q4yx9+UxisS4H/Ksrr6Gaw4EITazQb6OcIStxO9u+92dsP1etCGPtTtzkT4
+	 O4oROwpSP3x8GSvcdFDzS1X2TG/VOVjY1sYOe5NB0eQgm5uJUfWlP3p8IBl/s67InG
+	 38LR23VoLNXKuhcECoI8Qbw1Nbn1+bas76izYy4iTtN2HJqyjq73UoANipDda3SVfr
+	 /LI3L+oEpmm+y+aPHXDNgC8jpIC0FupaH4GgbDoGlkoYkMC1qsVNFcxB4cyblfTmDy
+	 AgniaTilN3Suw==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e65e18969so85605485a.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:03:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoqcSPMwmy6kE+fGsZ/SN4I4QUZgEsuds7WisRDSy4rQymJxx8qRVd0x9DS+Pr1pnNTYzmft02+HA==@kvack.org
+X-Gm-Message-State: AOJu0Yynsgw2DTsqyUms99rK60jAZk7OTIOq9eVv2eOUPoHUZgKD1qOK
+	2pyS4rLn3dlJ/kw8Q0s8Woa86V1TPTU1nXOG1DH98oEzY1eWWzCnNh3NnG83p8byIz0kb8SiAO/
+	LJ0H5knAygN00qBRK8OchdsMxG2ULW2k=
+X-Received: by 2002:a05:620a:8081:b0:92e:65d0:1cc4 with SMTP id
+ af79cd13be357-9348e91c56dmr170609485a.30.1785434586093; Thu, 30 Jul 2026
+ 11:03:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260729084206.77793-1-jiahao.kernel@gmail.com>
+ <20260729084206.77793-2-jiahao.kernel@gmail.com> <20260729155858.c7aabff48166a9bca4d68ac3@linux-foundation.org>
+ <CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
+ <20260729181756.a37e0cc7ea3f6013959d1d25@linux-foundation.org>
+ <CAO9r8zMPxdn=MOFD9mbrzed+C9HhOB5DpHG4QS0OJzqV_gLvsQ@mail.gmail.com> <20260730105952.7878a648c43c32b5e649d96d@linux-foundation.org>
+In-Reply-To: <20260730105952.7878a648c43c32b5e649d96d@linux-foundation.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 30 Jul 2026 11:02:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNnswXgnk6_1fXwvjyzdA3J7JNH4txau5y4AF1J8ODYkA@mail.gmail.com>
+X-Gm-Features: AUfX_mzx67h0JEqZoctBWdcDXnKtJNhaTEhESBJ0YTmJdBBac9wda2yHtwtXuF4
+Message-ID: <CAO9r8zNnswXgnk6_1fXwvjyzdA3J7JNH4txau5y4AF1J8ODYkA@mail.gmail.com>
 Subject: Re: [PATCH v3 1/2] mm/zswap: Fix global shrinker when memory cgroup
  is disabled
-Message-Id: <20260730105952.7878a648c43c32b5e649d96d@linux-foundation.org>
-In-Reply-To: <CAO9r8zMPxdn=MOFD9mbrzed+C9HhOB5DpHG4QS0OJzqV_gLvsQ@mail.gmail.com>
-References: <20260729084206.77793-1-jiahao.kernel@gmail.com>
-	<20260729084206.77793-2-jiahao.kernel@gmail.com>
-	<20260729155858.c7aabff48166a9bca4d68ac3@linux-foundation.org>
-	<CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
-	<20260729181756.a37e0cc7ea3f6013959d1d25@linux-foundation.org>
-	<CAO9r8zMPxdn=MOFD9mbrzed+C9HhOB5DpHG4QS0OJzqV_gLvsQ@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A7F7E140005
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ACC8C1A000F
+X-Stat-Signature: 3i5c8qk9mur8qb3s8pbbcf41o7e7uwc7
 X-Rspam-User: 
-X-Stat-Signature: s5otewx8smat9pygap7kqwgqcp3nn1rf
-X-HE-Tag: 1785434395-325961
-X-HE-Meta: U2FsdGVkX1/roaNtDIecHwWrcl51CN9O3O2N00TfJ7ELDi6Ipw+uY0hSCdQUeAs3Wx6V6leZ2reaaDIll1OoP2Qu3uS2y+QEvoZGGZxittXVBP80ocoH5c8ykHbsSzugPwq7LrJx0S7Yx1wJm9G7J10CIiNjwBy+VBF30bKa/R97bTC2nR4pAzIuMg2v9TlZvhdbrQp0qLxTejbcrzJCJfAb5sNGqqr6KoFUGfrjDeG5cJTXCzhrdjaYN0lKCB6h2qFPL6ULae6rzSxqUTt75vu49n22CQgk0EbjCxOJw3QeINj5a/hiBTwFxW4OChkZ6pa4AXM37/QWRYJI+WW2whvOnJC9bL20c/Vrov7Bk5TzTRfAOmymXmOFBfehmy8MUkin3EChwBvzOW9RTVNplyYku4LBy3Dob2U1bIUky8jlsqXCCqUoZO1LGdItIDpAwhbRjX6naGbj4Is5fz/THOTI4PlV+95O+0cQWglGf6L3Qrd9+5vZYu/1yVMhcBSOWJe07zqax0sFgj6X50g3AocL/agZgZz+mG17YzikxbIEbQI3AJX5oh3DL4GAkr1RqfgoUkTmM6+CAxidO274Ay9GVkiKvvNCp5L2/hshfRQvcl5QDmTrRXB3DKQC3eQMUtVcifjb5ixrzYO6UJc40xLd4Y/plvW6hw1UwU/PeBk175rJ99bxRREEvskrxSAJrovVXxc0ZaG8O6meunNXsN5VL+gXqzHp2chj2q2BOhzC2H6Ke3K2ZkTdwDISElNYAzEbwVvnFRW25HcxXvb/LHwhMSYduNHr0F1igrJeWTAcYxtYy5NC4LB/zZGO+uTjdmJWUY5tP1wVDRLDzJZjiT/os8ZOaHCp/EiwaZpSrPcR5t3ext10JGEvpzOLhRGsh+G+9rP8jWuMOx/V+sJ3gdSCWCbTgMaX8Gfp+jgfHp9UNhHr4yf3HjjpVScwnds0n0G2JGdb89gMX0HTh05
- JxKHE95B
- icCsofVySvXGrbO1YmndKaOCiui7vpnkH+SNuAAAKuybeRjAi3HdpneXex05esZNPQkR9tj2olIgryF5owgtb8QvRsjkYhJDyOgeIoBk5smp7mcUHqIflUcZZIqaf4wGmjN3QopYjEoqGtdb3Zz53k2vcY8HTknkyj7T69OZ1W9flkBprT3SQ2grpmVN/bccgibkQS5nmX7HpGdj2LKxAp3xsLuOKuWuRyYGmq8dDc9NhW2ohfiB6B8kCvXFwjomeGlHxUrI4XiGiKFOpfz6oePbr3SIoJwyo8eKCnu3nn23OWWmCmNyT8jYocy58NdZ1s8JmwpiTZS8T5F7CnfOFqPoAg0McDMWRe2Gz
+X-HE-Tag: 1785434587-485018
+X-HE-Meta: U2FsdGVkX1+EyYqczr/UdQQfs8Ku8XJk3SzUmqBwZdm55V40lOp05XvnwqUSR7FlZ39W74SO/pC356AXRCmrHimjBTzQWEpWZ6OpyCPEg6Qm9ALw6YuXtAFdi4CiiO6KHmSntDNZlVkH7qHgXEvIeAeLhQ1lMAo6Q8Eyq5/i3swq82O3pt9xul3sn1QwDKqupIMNFClmhBxYAKqLcxg25GsFTZoZ5isfIeRicLjTzF4oHPbJqT3Sh6P5Zvune6X/UJQKQtotcAZ6BsM467Si78067mMP3g1oc/SXdEAZVKMZxQ8guFQQB1JrvPv6inHweGLlq2T5Vk1RHwoln0jxjIkeEZ0ctZph9gnTiWfb+sPyHs8RT3+uK0EvabyqNZpnn9Wa7YThk8N73n3IzWrOROF3K2Gl6w/WbIr9T4SZd3lFXzltMkyeh/theanLpY6eV5bJq+xhr6mM/5/bAY+QTnw4BYFeCWgL/Vcjk5dI0SCi+mJ9fTmHyKyzRLcz7gd5S7LaC5p15nbMcDGj8XLMhcIAwThqzi0rurM49w14OLejI2rJIrOruFOO7302EOxt6tbdPDlyCDN2mBaceJOeZo/+kRdh+fImZNW2iht3Q6VAGpX9BaPH8YcSd0HpUrGCK2N4MbWSWBOqOek2/gms9rlEqugBa02mCpVXXTKFnSLX5pU18Bn4osr1iIi+/Utz06DouWLGxuW67jWJ1VWlPbrJHPTFMgZeJ7JLsV9IxYXrh5m6VhRrPSZK8pauzn8TQzLj1c0JiULufxdpWufHMUVgoiQhjZhPCQeMbnubTLwKp903xxnks6FKCiS/4GZwRC9aO0sD+aMt7G4psPZquusNIQ2W12L5c77b//ABvpqruuEZHMhF5nDAS9q0jvTkkdIVfnK3KiSRK5uhs5rfj25G8I6nt7CCRjhkpAn6a8bPAqKA+Qli5WwU+7pEGE0b61wcF62Z8maYyGGn9GW
+ 4cIvh9ZK
+ movuO/FtLUxSKMVQyDEN5+0Nng/SU9p25/Mo+/tzMNuROp7tHU9vjiWl15qBVqQV8p5jxgzPGiBPLsqVlRQnj30ANQCT5F73XDHVc0mo8BrQuiwrnn4p/SPYvJ4liWFpRYMNm8ixbrMZDsCeWv4LxujtfMs3DVOkDfszbnsBisRzuUjQNZg4z8nBHMSYzIpUD6o92PyFplePIh7TqaO8YqnVwb9jqxf8fjzEd07yY3F6mkrUTFE4mnDq5ib8892G1rl9HajUoKnS4WeeapB81A5OhwuZAi6is4VnBD3iK2NM1j5eu3OcWGpGGS0ifKEDD/nq/Qukmj4pHdnh14K/yu5A81sZ0D65eFLorIS61lZOc+lw4toR4Gg+bM+4+9+vktZFJ5KxWq/1Mrv/BN6qyklTlK2mW3s3ZettYiMnP/yyCt6cV+hrN7aNomhEW0XC2sjIB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,35 +110,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 09:52:38 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
-
+On Thu, Jul 30, 2026 at 10:59=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Thu, 30 Jul 2026 09:52:38 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+>
+> > > > >
+> > > > > How does this affect users?  What behavior do they observe when i=
+t
+> > > > > occurs?
 > > > >
-> > > > How does this affect users?  What behavior do they observe when it
-> > > > occurs?
+> > > > I think the first paragraph sums it up pretty well, especially the
+> > > > last sentence "hotter pages with higher fault latency".
 > > >
-> > > I think the first paragraph sums it up pretty well, especially the
-> > > last sentence "hotter pages with higher fault latency".
+> > > How do users observe that?
+> > >
+> > > See, what I'm looking for here is an explanation for why we're
+> > > proposing a backport.  How are our users harmed by the current code a=
+nd
+> > > how does this change benefit them?
 > >
-> > How do users observe that?
-> >
-> > See, what I'm looking for here is an explanation for why we're
-> > proposing a backport.  How are our users harmed by the current code and
-> > how does this change benefit them?
-> 
-> It's a potential performance regression when using zswap with memcg
-> disabled. Sorry I just realized you were looking for a high level
-> description not detailed symptoms :)
+> > It's a potential performance regression when using zswap with memcg
+> > disabled. Sorry I just realized you were looking for a high level
+> > description not detailed symptoms :)
+>
+> Are we able to guess how significant this is?  It should have
+> significant impact to justify a backport.
 
-Are we able to guess how significant this is?  It should have
-significant impact to justify a backport.
+It depends on the workload. I think a lot of workloads may not notice
+tbh, I don't think it's common to use zswap without cgroups.
 
-Sorry to push - I'm forever trying to train people to describe the
-userspace-visible effects so we can make these backporting decisions!
+> Sorry to push - I'm forever trying to train people to describe the
+> userspace-visible effects so we can make these backporting decisions!
+>
+> And to justify those decisions to -stable maintainers
+>
+> And so that someone who is experiencing a slowdown in some private
+> kernel branch can look at the changelog and decide whether this might
+> fix it for them.
 
-And to justify those decisions to -stable maintainers
-
-And so that someone who is experiencing a slowdown in some private
-kernel branch can look at the changelog and decide whether this might
-fix it for them.
-
+I don't think it's super important to backport, but it is also
+something that we broke at some point and the fix is straightforward
+and simple, so imo the risk/reward function is leaning toward
+backporting it just in case. That being said, I don't feel strongly.
 
