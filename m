@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D55C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF155C55164
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023736B0088; Thu, 30 Jul 2026 11:54:11 -0400 (EDT)
+	id 641166B008C; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3EDC6B008A; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
+	id 5F2176B0092; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7BD86B008C; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
+	id 4E19B6B0093; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB6E66B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:54:10 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C3461401EA
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:54:10 +0000 (UTC)
-X-FDA: 85045889460.15.3101AA7
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 868B016000D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:54:06 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=steffen.cc header.s=MBO0001 header.b=ABZbzREX;
-	spf=pass (imf08.hostedemail.com: domain of lists@steffen.cc designates 80.241.56.172 as permitted sender) smtp.mailfrom=lists@steffen.cc;
-	dmarc=pass (policy=none) header.from=steffen.cc
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 069F36B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:56:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69B7D1C0229
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:56:30 +0000 (UTC)
+X-FDA: 85045895340.25.312AB09
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7273212000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:56:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=AO8WA0+f;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785426847;
+	s=arc-20220608; t=1785426988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zksK9+idUghCnssEho47J7vh5F4rjyXM/CYHhLvbBuI=;
-	b=vP75fIOuFsUaMG7TK3Q3mbKRykwtRzlV64RKHBOwmziEEQQ2cimwW5d/8aIF2Fxx9eo2HH
-	1HdTcUlSgvlURkCgNQYdUJNrVRBiJDvu2BUgZ1F9W04fkqu9bmWDTO6Fu2zxEkt4N9HBWr
-	QWmDKISqwmiEeljVRJVrnX7lLQNeAEk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QeeiJuN0Sjy8Uw4/dZUmNBcs/fHlw0WPwV83tkIdEVg=;
+	b=LtEYC16+KR1U1oT2ptuZBYufWw7XFmCGw8dyfM7VDSNU8N8pGP8Z7xR0F03ReGpFmhNB58
+	VvgEHCi4QDPgoukdJgr8kMdPnc3FitQyWTJJw2Ps38VZEr8NlZ2pIDpgjBARZ7IUA4pqtH
+	6V9GiCwhSuleXfIOsde8/N5PWb8RgfQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785426847;
-	b=6gUJCFJikB+0EUj0NREAEsLU3IYCln/ninMoIqPt2JN9RrO00FV87aXlOjeQ7K84bCJhjV
-	mOUq5wXpv4iQqrCfPPnpsbwl7LexcxYLcMg5vmzqYxgh6n72BStj9QGoUzhMjDJWUcDuol
-	mqHPBeXjX/MSUZeS3gV9tEunrMzK+5Q=
+	t=1785426988;
+	b=UezUj9ib1U3TiV3wYhD867nFjD/6KDRX1GWY3Frh0xy8U/6E3H8/mdgnGW3VSWVeLrRpvp
+	RZymwQNFmEk2/iTWx96ANGEevwb2cJnBr813yLnSi9cGHe64/TdR8LWIB41JIiK+1cbq+h
+	R93EjcG0ZnXiTSdfdusACTwFxaL7uYU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=steffen.cc header.s=MBO0001 header.b=ABZbzREX;
-	spf=pass (imf08.hostedemail.com: domain of lists@steffen.cc designates 80.241.56.172 as permitted sender) smtp.mailfrom=lists@steffen.cc;
-	dmarc=pass (policy=none) header.from=steffen.cc
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4h9tzb1p9xzMlLY;
-	Thu, 30 Jul 2026 17:54:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen.cc; s=MBO0001;
-	t=1785426843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zksK9+idUghCnssEho47J7vh5F4rjyXM/CYHhLvbBuI=;
-	b=ABZbzREXVJlaEcXgHG6Q5/DFAD8yXognsvS9ozhwczAK4KfoCrR/A72xRMgHKDC8YIEHLe
-	Xn9qtIxZSPiNPKquwlhB7/1Gk8XTwi+J/r4tMfnpBk8xvYMaNwPIfm5PordRc43ww97P00
-	Jlrtk6YZxv7VAyXc4t/t4Of00EpMpJPiV1bC2yiM0VkDlHg5kd84sxdZjKKVFFm+ryM5F5
-	gpZQ+9ahyq7YOxjG1mAXkh90nWU5n1iyir5FMhbDOuJ9g/if5fIUcTwCcw6hoKXwSm8boK
-	9O+X6szUa5iUHT7GicwTLGH+AVMEvUXawnKwHceK1hVijvcn2WaBoaByTd+shQ==
-Message-ID: <555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc>
-Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
-From: Steffen Dirkwinkel <lists@steffen.cc>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Dave Hansen
-	 <dave.hansen@linux.intel.com>, "Denis V. Lunev" <den@openvz.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
- <luto@kernel.org>,  Borislav Petkov	 <bp@alien8.de>, David CARLIER
- <devnexen@gmail.com>, David Hildenbrand	 <david@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,  Juergen Gross
- <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau
- <kas@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,  "H. Peter Anvin"	
- <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Shakeel Butt	
- <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, Thomas
- Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>, Vishal Moola
- <vishal.moola@gmail.com>,  Vlastimil Babka <vbabka@kernel.org>, Will Deacon
- <will@kernel.org>, iommu@lists.linux.dev, 	linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org, 	x86@kernel.org,
- syzbot@syzkaller.appspotmail.com
-Date: Thu, 30 Jul 2026 17:53:50 +0200
-In-Reply-To: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=AO8WA0+f;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=QeeiJuN0Sjy8Uw4/dZUmNBcs/fHlw0WPwV83tkIdEVg=; b=AO8WA0+f8euqq12EwlE6zqlxnv
+	bkJcCAEfvbZtCzu2GRYOo/JcSRlVreUSCg6WY9xv4LT6+aQWoSzsnaITVSe64UhU6BhO17W7fwEKq
+	JnY4W/TQ2dBGUyxthRtbEOCxmciMfK8cmiDsbBK8Oa96wXKXkD9g47ST3hjmIz0mXMvL9UdRJL4sI
+	5hYmedxyI4p71RsrwunJCVuttRx/IepHMHFHSq8QfLHLe9wQl+TknlJfAC15NQrBqQDTLtRm35eHb
+	80/EC8q6AOwntSOUPFy6Qf7QjSRrXAyonJ1RlJSTzOKlne0IhGJDpa/G5y7XeLSSdGGa7gpiM0KtQ
+	rpye85kA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wpT7F-009Lmr-2F;
+	Thu, 30 Jul 2026 15:56:14 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 30 Jul 2026 08:55:50 -0700
+Subject: [PATCH v2] kexec: keep the next kernel off hardware-poisoned pages
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 868B016000D
-X-Stat-Signature: e6gey6s58kccan466e3w9m1r4dexnqxr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
+X-B4-Tracking: v=1; b=H4sIAAV0a2oC/13MQQqDMBBA0auEWZuSSUUlq95DpMRk1KGQSFLEI
+ rl7Ueim28/nHZApMWUw4oBEG2eOAYzQlQC32DCTZA9GgFa6Ua1u5Yt2cs81niN52epxVLbG+m4
+ VVALWRBPvF9gPlYCF8zumz+VveNYf1f1TG0qU2CjXocdOTfTwNLINt5hmGEopXxDXIyytAAAA
+X-Change-ID: 20260727-kexec_posioned-72bb0a4143a0
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
+ kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6018; i=leitao@debian.org;
+ h=from:subject:message-id; bh=5F5DlBsqdP/R/yM6xPT/BGfLDYVW0Qd0O88Or3DcX4g=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqa3QY8WaUST6u3V1yl5vvrupZKusst7u41jay9
+ tiljGymnh6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamt0GAAKCRA1o5Of/Hh3
+ bQgJD/4qR2Bpc7PQ6Xof+Zl/xPMz2tp0WZ4nlK+s1jkGW1LFYgMOQpX086+gAgiFUKSLQVt2gRp
+ plprsrJmOWNBgvWlHgIwEN3TinRH15XCErgM6sar5AT8uHNDs1P9mWnhqHTgKbcAQFoGCWnO9DW
+ 4F7C7THJHpBigIm6+V+P9FUiOhfRNRIsLNxA8kTI8F6hVT/C1BOM2R11iIXtYAYWZWwZZ49dIXc
+ 4f1f4F4oRZRbbGwpHX5+H4QRAJCXyUJ6PSacdvG8RkLc2tuLekz9PrQceuxZY3MIzDMGFWvNdya
+ a7bUNFu18dnvbwbpLpVXogpS1RI6Dn8UnmHHsaYObUt67fAPTk2laVIBKdltInPGqyw4t2rxGR2
+ cLGDKZX0DIyGemo5f87FkrSKMVeROsSqDho03/9yTCRzpJizxitGzlshFe2XCj+Dy9FgBee3ITa
+ E/nPuEV/tbqP4DkiKI3gSS951gqT7wCj103x0fKfu7xp8xz8T0eE98B7K25ZRrxTHcgFoXwMn8Z
+ fDGl2xeDB5CbC+Fb+WxGREUvtRZW1vom2y0bigxdL8BVR7FGLOyQsPMfKdC3DfuYRjYYXjjauQL
+ Wrnh7DzXJU16qI2HdVW1MyXRNMPY1+9tlFb8MLznzSpZxvz6+/oqk2+Zq6wINxkm3VcEBamCe6S
+ Q4G3IDtO+A8HIQQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Stat-Signature: diafrq91eefi5sbdskw5cdf5umqtufpw
 X-Rspam-User: 
-X-HE-Tag: 1785426846-862010
-X-HE-Meta: U2FsdGVkX18mm/lpvym2WYCX0UYefVFbh50kWK/jnYRpUWNhdNhohVgZQa7O+slO388yjD8zPcmvyYtydaPOlfUboqvB2/aUzCsk4o1XHvpPhS6l33SoPZzqhvbKLFsYAxTDoogShQoFxYO1xe34j4zDNXvib8fChNtvBHtkUBFqFBZC6jHKaUq1kS9oVU1SyFG9OCWPcpGK8AnWZeqYfXZ7cjvkF0S3gMBwQLwnPkNMExDUZwopaKcdiBZm2mAvzhorO03dm9rL/3J3eWxmAnvDFmLorvnK0gYk4M8qWcsj6k+susk+CH7S+vHL0TVMHxbDO8+MvwnZ4udtxgsXOwHOtJ+2Pxko+aiXa4afihwQ4gZUeeA6v2K7IhWZZp6CsAqrtpQdcyJIe9JtfMY7F2xa/5I6c3Ls957K/vsq87lJkYDHUjxD75S/quKM21RhxWpTaFP5QVtdENPrDITWAhClH0Uqn6M6oTLWqPDpBToNnPDf2cIzx0b7uQgctmEGk+Dnc+S4+tW/e1HBjJcPsqfS2XCD3AIHJ3b5IXEpZ1vls/93RBTCdApgfcktnuEuM1yktlpAM19cc4KVWDT4X9McbqOgPzfYLTPEDymscMNKag/RC061tG0BwhSJD5+S9bkuacoNWwlBIGG0lfmnllHn2fLhwYNsJ4sMZXMgAtKNuRnsI1S7y7bKYKlNBFZmhau0ErE1tdSU62I56Sqy7duIdmh9mH/IsxtG1t8X3Va/NUP9FL99JIlKLO2EGz81wxkbErInJ7WMA4ge5h95n7lpn7WniSju9ebrsXWJtekfqGqW+Jq/AA2Vh9rIwfXmyUZELVuzFCy5YupHW+fHUNIR4wxE/BcIlPTi6qR5MfPRk5KJ1xDzh/R/uPK39uDRi+NJW5iqdEdjOeVdkha8zlkDVZg7UWiqieLuRHvvO02IQyNJiTUz4VS1Kc8l8K40ChHtyanNDKkxOMwKDTZ
- Z2VB08qJ
- WwlYk5tq7e5TEixqSoeSjGk91uN+URWc3xngnenXq0EBrVSvk5Eh7izonUl9SBNE833C7of/X+rBC4+W9seEQWOycvWYOh5fS31Ey52mmdyKUkWiK9LcdKOB8PAWfbgF3mUOTtNNU8FGjn2SLiwcvisuWD7mcrXHAFO7PKWo8KkagWHUQAYm5ypqik6Yx+MGpFcbyNNtjRQadyo67K7t0+VISw5sjqrKpoF51uyYLXOVz7MGGeDnRoj+mW07JxNE0QZOuWZIqd3CarcInCfsmXSOhcOpDwpyWSHAWQIYlytck1AdAYtXfyouUSmq+tDH88mZWlnptH39XbMV3PKlbm3L4IVuqpfgegt66lDiwinonYPrkO0LUfkxFyt9O32ODfOohqQ5v2a7JVO2Uyfx0QskRTcdw/uIZL8b8qFMhyATjQmRS9rwl6uDzR2SE5OxBjHH4nI7oPkAnMYA1QG0izT7qM9PxAxGn6Ldz41GFS15M6xhf6Jo1uQ4qirhimkW7ccX5
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7273212000D
+X-HE-Tag: 1785426988-335400
+X-HE-Meta: U2FsdGVkX18wLjJ9BJ39dzii2qJ8z7C8AQtw5NUNg3nTu1m2KdkCKe9xBFpZ/i3SlfFMbOu7i+tdHpu99xlbDOH6+eRlRlq9GY0J5DtjxlbumydZJ3+G5xdtDppT51DJLHFRhkUsQC2Nbx9JEKWjpHnzpCTu4f/e1bhCu3reEPoSIK76EAfZbvwzf2EP+eB+Hg5n2N+c8kHMmoRiTfF0z/CYR05aDOp7MGxkGoavE/C6uVXw9yIpkpvrH0q0jZ1cdVC7f8weC52xqSs4ttmx3rz6/dHof0dDvLg2CG7BLm4w3OChbcuDuh5oFzOJae4+lxHd+nx8kwiST4GhMptCPTwkgJ8Z9cIfOK5w+DfMUIWF3XQBdVlQ0Qbnwuxy7V1D/Iuaqdfnl68qlz9V/x9at9pf6mszLlPfI15vk5o6D9pp0oKoi5qlBp3trUyT/1bcZKsZIONSFT2u0Cm/FEg362wbvrbvV25RdNxUWA02O9K/8DA4TE70Be9jnGk9MXHJeiUY/8WcZgF+oqIee56goWWsRTJ+X9NOWaV4PmuC8rVJLG837Z5Co/Gn+4PtUaxqm3uChBbjq+9CWT8wm6V3FCp5/5nM+AHJNuJRcYBUjR/1h/79nz8qIHjrUbYVrgvcQL/yu/tBK0pDI5zxTZnwOopjW9v4V32ykxoH7iCMSE5UkvcoK4S4rouUsGp4WYL4hvgloXgUl9rqun0zv9LFiHCnypimiVKxKvuHDAesNYA3GVqFi9BDBPuMelkVW4uLdiCZf8YmpL+pANQWcyHlvvH8vDH+/YEMRV8vGeXcCbdTgdnkoWOV4uMn/qOvQ4gzhPjRwYNceJyGsjT6cbhppE0T5NHGWQw0R+OjHJ9dbZqyJiGFLj4TY0rkUuyeswkhf+1Org8MTpXqTswZwf0w3Z/YYxhUCwLvtcg9Z/HAqS7Vk4iqnqejFRzLoaW59IRTiQi7/sNRIyDYs1Kk82h
+ 1axvTxr2
+ bPcmlvk1C2NW08E4mpK0Ll1yahyE6ycNXDs00RV7x4Vk5mUNQachhNCoLuWx9e9LbqO9NanpkTVbMwT687fWI04++A4qBIznm57RW8MHjE+i1dZHvSDspXX3VbxCWHarH+ePuZxqb/becKZbOhytcpEZg5x/yMq67GnLImuSe0Tp3KluioGAOHdmBR03N77iP1QKQ9I+sBQy8uQoDD4Dp4j4AVfIKCi08HmKziHX3Ab9A13oEmModHRv+ybrhpmrMUKdKcQWUWh3pkWMgy0IYiyISQcCzl+BFPXF76UxjgK6YDXbXAjXtzmrkvTee9tBx040GmnmAVNouAIZPkLBrYe+szTB3ZpJV0XpI3QHmsS4ueWyAXEgNEXCEomYO0047owyhEmUapBHGZngDqkpDMZPy4GT2B2yNSVi+HqS1xbl3tvlVg5KrRggfT/rTSXxDEyKT2WqhxtGSaNu0ZnNMlTQdJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,173 +120,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Memory failures (such as unrecoverable ECCs errors) are getting more and
+more common. The kernel knows how to handle it while running, marking it
+as poisoned (and SIGBUS user tasks).
 
+Poisoned memory is removed from the buddy allocator, but, not from
+other places. A current problem is that kexec will load new kernel
+on top of a bad/poisoned memory, which is undesirable.
 
-On Tue, 2026-07-28 at 16:07 +0300, Mike Rapoport (Microsoft) wrote:
-> There are a couple of CPA fixes floating around:
->=20
-> Denis Lunev fixed races between split and collapse of the large mappings:
->=20
-> https://lore.kernel.org/all/20260715183453.2381141-1-den@openvz.org
+If the next kernel's image, initrd or purgatory lands on poisoned frame,
+the relocation copy writes to the bad memory and the machine checks
+during the kexec.
 
-We saw the error below and I was wondering if it might be related to these =
-fixes
-or a similar case that's unfixed still. Seems to have happened during concu=
-rrent
-kernel module loading of kvm and i915 (similar to the case in the patch fro=
-m
-Denis Lunev). But we got it without KASAN and the stack looks a little
-different. I was not able to reproduce this with a ~16 hour concurrent modu=
-le
-load unload loop so far.
+Skip hardware-poisoned frames when placing segments: check them in the
+kexec_file hole finder so it lays the next kernel down on good memory,
+and reject a poisoned destination in sanity_check_segment_list() for
+the kexec_load path, which cannot relocate.
 
-Kernel: v7.1.5, PREEMPT_RT, tainted because of /dev/msr access
-CPU: Elkhart Lake Atom X6214RE, 2 cores, isolcpus=3D1-N
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v1: https://patch.msgid.link/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org
+---
+ include/linux/mm.h  |  8 ++++++++
+ kernel/kexec_core.c | 10 ++++++++++
+ kernel/kexec_file.c | 19 +++++++++++++++++++
+ mm/memory-failure.c | 28 ++++++++++++++++++++++++++++
+ 4 files changed, 65 insertions(+)
 
-------------[ cut here ]------------
-kernel BUG at arch/x86/kernel/alternative.c:2644!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 0 UID: 0 PID: 559 Comm: (udev-worker) Tainted: G S                  7.=
-1.5-
-rt1-bhf-369933-f1a4ee1dd787 #1 PREEMPT_{RT,(lazy)}=20
-Tainted: [S]=3DCPU_OUT_OF_SPEC
-Hardware name: Beckhoff Automation GmbH & Co. KG MC6015-0030/MC15083, BIOS =
-Bxx83
-- 0.11a PxeFailTst4.2 01/07/2026
-RIP: 0010:__text_poke+0x356/0x3d0
-Code: 00 10 00 00 77 26 48 85 c0 0f 85 74 fd ff ff e9 2d ff ff ff 48 89 ea =
-4c 89
-f6 48 89 df e8 22 0a 33 01 85 c0 0f 84 90 fe ff ff <0f> 0b>
-RSP: 0018:ffffa8bb010afa70 EFLAGS: 00010006
-RAX: 0000000000000088 RBX: ffffffffc07402b9 RCX: 0000000000000000
-RDX: 0000000000000004 RSI: ffffffffb793166b RDI: ffffffffc07402b9
-RBP: 0000000000000004 R08: 0000000000000033 R09: 8000000000000063
-R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffb435e470
-R13: 00004b8f944092b9 R14: ffffffffb793166b R15: 00000000000002bd
-FS:  00007f205444c9c0(0000) GS:ffff9964b8518000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffc66a0ed18 CR3: 0000000106551000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- smp_text_poke_batch_finish+0x1aa/0x3a0
- ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
- __static_call_transform+0xfa/0x1f0
- ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
- ? __pfx_preempt_schedule_thunk+0x10/0x10
- arch_static_call_transform+0x57/0xa0
- ? vmx_switch_vmcs+0xc8/0xd0 [kvm_intel]
- __static_call_init+0x1aa/0x230
- ? __SCT__tp_func_kvm_mmu_split_huge_page+0x8/0x8
- ? __SCT__tp_func_kvm_mmu_split_huge_page+0x8/0x8
- static_call_module_notify+0x11f/0x150
- notifier_call_chain+0x60/0xe0
- blocking_notifier_call_chain_robust+0x64/0xc0
- load_module+0x1bc7/0x2000
- ? security_kernel_post_read_file+0x46/0x110
- ? kernel_read_file+0x2e5/0x2f0
- init_module_from_file+0xc8/0xe0
- idempotent_init_module+0xfe/0x2f0
- __x64_sys_finit_module+0x71/0xe0
- do_syscall_64+0xa6/0x690
- ? clear_bhb_loop+0x30/0x80
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f2054faa7b9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 =
-48 89
-d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d>
-RSP: 002b:00007ffc66a14c58 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-RAX: ffffffffffffffda RBX: 000055f431ad34a0 RCX: 00007f2054faa7b9
-RDX: 0000000000000000 RSI: 00007f205375b44d RDI: 0000000000000021
-RBP: 0000000000000000 R08: 0000000000000000 R09: 000055f431a72e60
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f205375b44d
-R13: 0000000000020000 R14: 000055f431ad01b0 R15: 0000000000000000
- </TASK>
-Modules linked in: kvm_intel(+) i915(+) drm_buddy drm_client_lib ttm
-drm_display_helper drm_kms_helper cfg80211 cec nft_ct nf_conntrack nf_>
----[ end trace 0000000000000000 ]---
-RIP: 0010:__text_poke+0x356/0x3d0
-Code: 00 10 00 00 77 26 48 85 c0 0f 85 74 fd ff ff e9 2d ff ff ff 48 89 ea =
-4c 89
-f6 48 89 df e8 22 0a 33 01 85 c0 0f 84 90 fe ff ff <0f> 0b>
-RSP: 0018:ffffa8bb010afa70 EFLAGS: 00010006
-RAX: 0000000000000088 RBX: ffffffffc07402b9 RCX: 0000000000000000
-RDX: 0000000000000004 RSI: ffffffffb793166b RDI: ffffffffc07402b9
-RBP: 0000000000000004 R08: 0000000000000033 R09: 8000000000000063
-R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffb435e470
-R13: 00004b8f944092b9 R14: ffffffffb793166b R15: 00000000000002bd
-FS:  00007f205444c9c0(0000) GS:ffff9964b8518000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffc66a0ed18 CR3: 0000000106551000 CR4: 0000000000350ef0
-note: (udev-worker)[559] exited with irqs disabled
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7fabe6c66b4b7..48cad9a519d08 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -5192,6 +5192,8 @@ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
++bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
++			     phys_addr_t *poison);
+ #else
+ static inline void memory_failure_queue(unsigned long pfn, int flags)
+ {
+@@ -5204,6 +5206,12 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
+ static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
+ {
+ }
++
++static inline bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
++					   phys_addr_t *poison)
++{
++	return false;
++}
+ #endif
+ 
+ #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index dc770b9a6d053..9f6ed3c04299b 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
+ 	}
+ #endif
+ 
++	/*
++	 * Reject destinations that land on hardware-poisoned memory: the
++	 * relocation copy would machine-check on the bad frame.
++	 */
++	for (i = 0; i < nr_segments; i++) {
++		if (range_contains_hwpoison(image->segment[i].mem,
++					    image->segment[i].memsz, NULL))
++			return -EADDRNOTAVAIL;
++	}
++
+ 	/*
+ 	 * The destination addresses are searched from system RAM rather than
+ 	 * being allocated from the buddy allocator, so they are not guaranteed
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 59fb9d71e9d86..95cc981a557be 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -475,6 +475,7 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+ {
+ 	struct kimage *image = kbuf->image;
+ 	unsigned long temp_start, temp_end;
++	phys_addr_t poisoned_addr;
+ 
+ 	temp_end = min(end, kbuf->buf_max);
+ 	temp_start = temp_end - kbuf->memsz + 1;
+@@ -504,6 +505,14 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+ 			continue;
+ 		}
+ 
++		if (range_contains_hwpoison(temp_start, temp_end - temp_start + 1,
++					    &poisoned_addr)) {
++			if (poisoned_addr < kbuf->memsz)
++				return 0;
++			temp_start = poisoned_addr - kbuf->memsz;
++			continue;
++		}
++
+ 		/* We found a suitable memory range */
+ 		break;
+ 	} while (1);
+@@ -520,6 +529,7 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
+ {
+ 	struct kimage *image = kbuf->image;
+ 	unsigned long temp_start, temp_end;
++	phys_addr_t poisoned_addr;
+ 
+ 	temp_start = max(start, kbuf->buf_min);
+ 
+@@ -546,6 +556,15 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
+ 			continue;
+ 		}
+ 
++		/*
++		 * Avoid placing the next kernel on hardware-poisoned memory.
++		 */
++		if (range_contains_hwpoison(temp_start, temp_end - temp_start + 1,
++					    &poisoned_addr)) {
++			temp_start = poisoned_addr + PAGE_SIZE;
++			continue;
++		}
++
+ 		/* We found a suitable memory range */
+ 		break;
+ 	} while (1);
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index a8b03e2920ba8..04a1883d51fda 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -96,6 +96,34 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
+ 		memblk_nr_poison_sub(pfn, i);
+ }
+ 
++/*
++ * Return true if any online page in [start, start + size) is hardware
++ * poisoned.  On a hit, when @poison is not NULL, @poison is set to the
++ * address of the first poisoned page, which is ugly, but I cannot only
++ * return phys_addr_t, thus this "extra" parameter, instead of returning
++ * the hit.
++ */
++bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
++			     phys_addr_t *poison)
++{
++	unsigned long pfn, end_pfn;
++
++	if (!size || !atomic_long_read(&num_poisoned_pages))
++		return false;
++
++	end_pfn = PHYS_PFN(start + size - 1);
++	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
++		struct page *page = pfn_to_online_page(pfn);
++
++		if (page && PageHWPoison(page)) {
++			if (poison)
++				*poison = PFN_PHYS(pfn);
++			return true;
++		}
++	}
++	return false;
++}
++
+ /**
+  * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
+  * @_name: name of the file in the per NUMA sysfs directory.
 
+---
+base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+change-id: 20260727-kexec_posioned-72bb0a4143a0
 
-Best Regards
-Steffen
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
->=20
-> Lorenzo Stoakes fixed UAF caused by races between CPA and ptdump:
->=20
-> https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc00=
-18@kernel.org
->=20
-> and an issue with stale page tables in IOMMU:
->=20
-> https://lore.kernel.org/all/20260721-fix-cpa-kernel-pagetables-v2-1-2b255=
-deed710@kernel.org
->=20
-> Mike Rapoport fixed a check of RW attribute in lookup_address_in_pgd_attr=
-()
-> used for the verification of RWX:
->=20
-> https://lore.kernel.org/all/20260715144519.934289-1-rppt@kernel.org
->=20
-> Some of the fixes got merged into x86 tree, some of them got merged into =
-mm
-> tree and some are still hanging in the air.
->=20
-> Beside the fixes there was a supposed simplification of cpa_lock locking=
-=20
-> that looked like removal of an optimization for DEBUG_PAGEALLOC, but it
-> turned out that it was not an optimization but rather a correctness
-> guard because with DEBUG_PAGEALLOC the locks could be taken in an atomic
-> context and couldn't use plain spin_lock()/spin_unlock().
->=20
-> The changes here are collected from all these fixes into a sinlge coheren=
-t
-> set on top of tip/x86/mm:
-> =20
-> * update to cpa_lock handling with DEBUG_PAGEALLOC
-> * fix for races between CPA and ptdumpi causing UAF
-> * fix for stale page tables in IOMMU
-> * update to the fix of the race between split and collapse of large
->   mappings
-> * fix for effective RW computation in lookup_address_in_pgd_attr()
->=20
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-> Lorenzo Stoakes (ARM) (3):
->       x86/mm/pat: acquire init_mm write lock on collapse to avoid UAF
->       x86/mm/pat: acquire init_mm read lock on attribute change to avoid =
-UAF
->       x86/mm/pat: allocate split page tables as kernel page tables
->=20
-> Mike Rapoport (Microsoft) (2):
->       x86/mm/pat: introcude cpa_lock() and cpa_unlock()
->       x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_a=
-ttr()
->=20
->  arch/x86/mm/pat/set_memory.c | 95 +++++++++++++++++++++++++++++++-------=
-------
->  include/linux/mmap_lock.h    |  2 +
->  2 files changed, 70 insertions(+), 27 deletions(-)
-> ---
-> base-commit: a5a162fe1ae130e3d2ceefef3f43afe3773c1d56
-> change-id: 20260727-cpa-fixes-d3c73c075672
->=20
-> --
-> Sincerely yours,
-> Mike.
 
