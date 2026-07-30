@@ -4,115 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF155C55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6339C55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 16:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 641166B008C; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
+	id A47206B0088; Thu, 30 Jul 2026 12:03:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F2176B0092; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
+	id 9F77A6B008A; Thu, 30 Jul 2026 12:03:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E19B6B0093; Thu, 30 Jul 2026 11:56:31 -0400 (EDT)
+	id 8E64D6B008C; Thu, 30 Jul 2026 12:03:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 069F36B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:56:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69B7D1C0229
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:56:30 +0000 (UTC)
-X-FDA: 85045895340.25.312AB09
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7273212000D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:56:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=AO8WA0+f;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 625446B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:03:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD737401FD
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:03:57 +0000 (UTC)
+X-FDA: 85045914114.21.7FCCCF9
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A86964000E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:03:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=dLxheRz0;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785426988;
+	s=arc-20220608; t=1785427436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QeeiJuN0Sjy8Uw4/dZUmNBcs/fHlw0WPwV83tkIdEVg=;
-	b=LtEYC16+KR1U1oT2ptuZBYufWw7XFmCGw8dyfM7VDSNU8N8pGP8Z7xR0F03ReGpFmhNB58
-	VvgEHCi4QDPgoukdJgr8kMdPnc3FitQyWTJJw2Ps38VZEr8NlZ2pIDpgjBARZ7IUA4pqtH
-	6V9GiCwhSuleXfIOsde8/N5PWb8RgfQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PcFIQq4zwEGh6eHDSNhDw7+n/lhtQGiDqeuI6khw0pY=;
+	b=QclZLrRXzrhxO7wVpzTYDBvHgtlbHlehW+2weVQ+V6vaiDT6sCp51AF9ArHS7kH4OrvHHn
+	rvxBWrFfK9W/MhpL9r6rcIfND962BSFfX+VOxaWuIbS+eMZEc/IsM4GVxOckrIdgPK+3PQ
+	LvQQpnfxtVBes+aBy1AdM+hBW1+uBas=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785426988;
-	b=UezUj9ib1U3TiV3wYhD867nFjD/6KDRX1GWY3Frh0xy8U/6E3H8/mdgnGW3VSWVeLrRpvp
-	RZymwQNFmEk2/iTWx96ANGEevwb2cJnBr813yLnSi9cGHe64/TdR8LWIB41JIiK+1cbq+h
-	R93EjcG0ZnXiTSdfdusACTwFxaL7uYU=
+	t=1785427436;
+	b=oFAe0gBIsafQCkHZknOwSrOPDjypDXKBDGmAkCwE1vZBCmORjyvPJm51jdNWnIEaGjdNfe
+	lvfINsFAOKujvGLTDIgp/ZL0uetC8WbFCcEYoHXj5fXUrWhmZJnlKBEBnpp7+25VSnm162
+	H99b5YEIZiGPQA8N74x9r6mee42ZKug=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=AO8WA0+f;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=QeeiJuN0Sjy8Uw4/dZUmNBcs/fHlw0WPwV83tkIdEVg=; b=AO8WA0+f8euqq12EwlE6zqlxnv
-	bkJcCAEfvbZtCzu2GRYOo/JcSRlVreUSCg6WY9xv4LT6+aQWoSzsnaITVSe64UhU6BhO17W7fwEKq
-	JnY4W/TQ2dBGUyxthRtbEOCxmciMfK8cmiDsbBK8Oa96wXKXkD9g47ST3hjmIz0mXMvL9UdRJL4sI
-	5hYmedxyI4p71RsrwunJCVuttRx/IepHMHFHSq8QfLHLe9wQl+TknlJfAC15NQrBqQDTLtRm35eHb
-	80/EC8q6AOwntSOUPFy6Qf7QjSRrXAyonJ1RlJSTzOKlne0IhGJDpa/G5y7XeLSSdGGa7gpiM0KtQ
-	rpye85kA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wpT7F-009Lmr-2F;
-	Thu, 30 Jul 2026 15:56:14 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 30 Jul 2026 08:55:50 -0700
-Subject: [PATCH v2] kexec: keep the next kernel off hardware-poisoned pages
+	imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=dLxheRz0;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e55b62640so1089885a.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:03:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785427434; x=1786032234; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PcFIQq4zwEGh6eHDSNhDw7+n/lhtQGiDqeuI6khw0pY=;
+        b=dLxheRz0MQOLErVLevWlBKRCD6GiHY7Gu+RhAe8m8CVKDcPyJjG9CPrQ1upe6vPRIr
+         /bJFs+/sQwenhpQEYEov7BAVZ4v1CbRB3UL7UCbehE4PPa/SpWPdCYxLn4TT+jwofu2p
+         BOun4XGKDlIM6hTA4+TPWjBYtvQ5cTCr7TQolIZa6+Hqd9OLxt9ncVn3VsnlIQMryUin
+         oTyd+yhEhSoFvBmLizTG3piRbVdvU4We/TXypZJRRZu5L17sganfkujYQTi2Yt+iR9CL
+         61fslLiaboL2ha26Jx+K7BiXOHIBf8bmS/YwSKR/OnmMIfneaHnUNV7LMLtrNxcwGGOZ
+         t+Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785427434; x=1786032234;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PcFIQq4zwEGh6eHDSNhDw7+n/lhtQGiDqeuI6khw0pY=;
+        b=C7iV+LZDtfPks7WaJ7rZhVw7jEl/vT4BdrNDpW/l4vcb+GEbhL9xiwtj5/mKVwY41r
+         sXXt0/WUy9mis444UDB3q4Ga9V8z/hf/4us8nFORk/XrAykF513OXeTxzPwWJqEMC8pz
+         T33DAtL+U+6RNvvCTCue3AuMdV9d5Imbt+sn4JssFn6mscNEbkQCLUITE9q50Zit01SG
+         Nbn0Q5IWo67UwZ9isPG3aWWhQi3kg8UBvCK22toz90E3YJuuQGw339v1NTRO53YCd1Ed
+         CCMHttHBk21+uHqSr3aO0pUn6hc+TXlYIsFn9e0AAPe61NMZ65/xv3Ha4/1WZHbTXzkU
+         aVJA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9pfFUjpotXVfzOFtWUqUlnZ80AvAQ2kFlv54aHkI6ZMOS/IdRBYKvqeA3lfHAAwZov/Lr3ldmHg==@kvack.org
+X-Gm-Message-State: AOJu0YzPby3fxWFCKOrdvfxYgQxlEkg1yssgcxxA7VE+0nueQNtbYM6F
+	PdSmRY/UdCy/jz8T8SbYTt1cQ3EiF/ErfaxjOccQdvVCLSTSiW8LDhO/eG1Y70DzLEM=
+X-Gm-Gg: AR+sD13SJnRsGsCpQPtHZi8btlyRBbXDMf+PoEdCgd9oD3CWUtx253TytqCVfEEPSSE
+	SSPBWRYyabtSJ1W0iBFp+q0jX2Y2kE7tqbBAqf8y6CwlKm6snxBTQmHmooj53cd2LdYU1dH6jIN
+	WJn1ChXDyJF5GHdM3AIcmKOAc+t2mFnovCM3jRN2VyheZ+vCWPh0xaq+s5x1wLWuHeKp9xn2wAX
+	fGL5h7y7YTWj3AN4JOc1aUSdD9KPCwYVFn5VEbPqOHJNpxNKmkec1a5kx8u5fECBrVdEXtpD11T
+	cEC1vA2KnicTWxtDF67hldYIh1p59Bc1ndwzggnHvzIbdcZ0Mh23NFWFiMOeGXQOPTCbnRXqnGS
+	d4Zo/+NkY7WmDC0SExVkhRcO+7r5URe950dxVxhFSSo0FSNHkmNsPZ/z+75VItp/PJuwrqM+0hA
+	pZFVzrDlyDP8Mcku51ogIHLfw4hEESXSSdkx2k7gBSJfxb8ZdRDfZxRiLLBqQ=
+X-Received: by 2002:a05:620a:4105:b0:930:84d0:fd3b with SMTP id af79cd13be357-93485f9aca9mr384901185a.7.1785427434538;
+        Thu, 30 Jul 2026 09:03:54 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3221bc7sm438877585a.7.2026.07.30.09.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 09:03:53 -0700 (PDT)
+Date: Thu, 30 Jul 2026 12:03:47 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Finkel <davidf@vimeo.com>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH] mm, memcg: fix memory.peak reset clobbering other fds'
+ watermark
+Message-ID: <amt140aXu5tYZxln@cmpxchg.org>
+References: <20260730115314.1069089-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
-X-B4-Tracking: v=1; b=H4sIAAV0a2oC/13MQQqDMBBA0auEWZuSSUUlq95DpMRk1KGQSFLEI
- rl7Ueim28/nHZApMWUw4oBEG2eOAYzQlQC32DCTZA9GgFa6Ua1u5Yt2cs81niN52epxVLbG+m4
- VVALWRBPvF9gPlYCF8zumz+VveNYf1f1TG0qU2CjXocdOTfTwNLINt5hmGEopXxDXIyytAAAA
-X-Change-ID: 20260727-kexec_posioned-72bb0a4143a0
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
- kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6018; i=leitao@debian.org;
- h=from:subject:message-id; bh=5F5DlBsqdP/R/yM6xPT/BGfLDYVW0Qd0O88Or3DcX4g=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqa3QY8WaUST6u3V1yl5vvrupZKusst7u41jay9
- tiljGymnh6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamt0GAAKCRA1o5Of/Hh3
- bQgJD/4qR2Bpc7PQ6Xof+Zl/xPMz2tp0WZ4nlK+s1jkGW1LFYgMOQpX086+gAgiFUKSLQVt2gRp
- plprsrJmOWNBgvWlHgIwEN3TinRH15XCErgM6sar5AT8uHNDs1P9mWnhqHTgKbcAQFoGCWnO9DW
- 4F7C7THJHpBigIm6+V+P9FUiOhfRNRIsLNxA8kTI8F6hVT/C1BOM2R11iIXtYAYWZWwZZ49dIXc
- 4f1f4F4oRZRbbGwpHX5+H4QRAJCXyUJ6PSacdvG8RkLc2tuLekz9PrQceuxZY3MIzDMGFWvNdya
- a7bUNFu18dnvbwbpLpVXogpS1RI6Dn8UnmHHsaYObUt67fAPTk2laVIBKdltInPGqyw4t2rxGR2
- cLGDKZX0DIyGemo5f87FkrSKMVeROsSqDho03/9yTCRzpJizxitGzlshFe2XCj+Dy9FgBee3ITa
- E/nPuEV/tbqP4DkiKI3gSS951gqT7wCj103x0fKfu7xp8xz8T0eE98B7K25ZRrxTHcgFoXwMn8Z
- fDGl2xeDB5CbC+Fb+WxGREUvtRZW1vom2y0bigxdL8BVR7FGLOyQsPMfKdC3DfuYRjYYXjjauQL
- Wrnh7DzXJU16qI2HdVW1MyXRNMPY1+9tlFb8MLznzSpZxvz6+/oqk2+Zq6wINxkm3VcEBamCe6S
- Q4G3IDtO+A8HIQQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Stat-Signature: diafrq91eefi5sbdskw5cdf5umqtufpw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730115314.1069089-1-ridong.chen@linux.dev>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A86964000E
+X-Stat-Signature: dkpbqxsg5rrunrd474chbqztte8qigsz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7273212000D
-X-HE-Tag: 1785426988-335400
-X-HE-Meta: U2FsdGVkX18wLjJ9BJ39dzii2qJ8z7C8AQtw5NUNg3nTu1m2KdkCKe9xBFpZ/i3SlfFMbOu7i+tdHpu99xlbDOH6+eRlRlq9GY0J5DtjxlbumydZJ3+G5xdtDppT51DJLHFRhkUsQC2Nbx9JEKWjpHnzpCTu4f/e1bhCu3reEPoSIK76EAfZbvwzf2EP+eB+Hg5n2N+c8kHMmoRiTfF0z/CYR05aDOp7MGxkGoavE/C6uVXw9yIpkpvrH0q0jZ1cdVC7f8weC52xqSs4ttmx3rz6/dHof0dDvLg2CG7BLm4w3OChbcuDuh5oFzOJae4+lxHd+nx8kwiST4GhMptCPTwkgJ8Z9cIfOK5w+DfMUIWF3XQBdVlQ0Qbnwuxy7V1D/Iuaqdfnl68qlz9V/x9at9pf6mszLlPfI15vk5o6D9pp0oKoi5qlBp3trUyT/1bcZKsZIONSFT2u0Cm/FEg362wbvrbvV25RdNxUWA02O9K/8DA4TE70Be9jnGk9MXHJeiUY/8WcZgF+oqIee56goWWsRTJ+X9NOWaV4PmuC8rVJLG837Z5Co/Gn+4PtUaxqm3uChBbjq+9CWT8wm6V3FCp5/5nM+AHJNuJRcYBUjR/1h/79nz8qIHjrUbYVrgvcQL/yu/tBK0pDI5zxTZnwOopjW9v4V32ykxoH7iCMSE5UkvcoK4S4rouUsGp4WYL4hvgloXgUl9rqun0zv9LFiHCnypimiVKxKvuHDAesNYA3GVqFi9BDBPuMelkVW4uLdiCZf8YmpL+pANQWcyHlvvH8vDH+/YEMRV8vGeXcCbdTgdnkoWOV4uMn/qOvQ4gzhPjRwYNceJyGsjT6cbhppE0T5NHGWQw0R+OjHJ9dbZqyJiGFLj4TY0rkUuyeswkhf+1Org8MTpXqTswZwf0w3Z/YYxhUCwLvtcg9Z/HAqS7Vk4iqnqejFRzLoaW59IRTiQi7/sNRIyDYs1Kk82h
- 1axvTxr2
- bPcmlvk1C2NW08E4mpK0Ll1yahyE6ycNXDs00RV7x4Vk5mUNQachhNCoLuWx9e9LbqO9NanpkTVbMwT687fWI04++A4qBIznm57RW8MHjE+i1dZHvSDspXX3VbxCWHarH+ePuZxqb/becKZbOhytcpEZg5x/yMq67GnLImuSe0Tp3KluioGAOHdmBR03N77iP1QKQ9I+sBQy8uQoDD4Dp4j4AVfIKCi08HmKziHX3Ab9A13oEmModHRv+ybrhpmrMUKdKcQWUWh3pkWMgy0IYiyISQcCzl+BFPXF76UxjgK6YDXbXAjXtzmrkvTee9tBx040GmnmAVNouAIZPkLBrYe+szTB3ZpJV0XpI3QHmsS4ueWyAXEgNEXCEomYO0047owyhEmUapBHGZngDqkpDMZPy4GT2B2yNSVi+HqS1xbl3tvlVg5KrRggfT/rTSXxDEyKT2WqhxtGSaNu0ZnNMlTQdJg==
+X-HE-Tag: 1785427435-138377
+X-HE-Meta: U2FsdGVkX1/ZueExSPoYMeMDkbU2/79xM+QsFPgMQTjVnNkuITpuKoehZ0y2Ix6+eVhqOTW43XQV4y9DOXoj4lwrYSaTABva3JbwGwDNq7f8emppIMZB5PCgoGOtXQM1+JW865dOCTcV2ItbhvLWKq8cM7asb0TEhoIPkHAnqrHStEPSbABMIGP7SrshL3CYVOUfmwo/tC/HDNvs8es6bFp7KcClb/zpL+0HOPqov1tG/3V9GPgVq1zaaR5b5wui2ymYH7tGDRAQVd4aEZ28MKivq1ipnlBRHwsEmpv0iYPvE93gqok0gbPg/D1NTtrZlT63dauGwSeNovmR1eJjEe1haAqaz77LqMxcW2KnivT8QIbLeiUP6n5aFeyDB1Bvb8oU3Y8Fs2R7KpMW/gVbHCKG3ovxC6nPeMH8QAobX83TxMDbDGEZVQf+H/3rYzZrT8wJG53FC1zl8GtFKuIvBFbHP70rwp3dbuoR9wDW7eTcGof0MEphtPOsd0dBPWFIKJXg2vn1A9ozSmiluAMNCPMPAG7eq2YQbK3wmlfefGFtR4zsI41esgvETptefhcu7DVAnSYb8iWWInomwksXF2OmqrIL4iAwAOBUmHrYPIuGrOZzEBvAglBU/O+KQeZKyotuZq7UKjV5TmVBR+mBoomPvhN5shVMWExvpnCr6TJrx6WPRlCP6GtiFYdphbg4UnOqr3tdQW1NmFvwuo8Fs97LdmsmpMxBBsd8aduUAotph2poFQ7YxVw5aHnf6+2/2dqN1uv5xABYaSnlI1QKUuPHRizz8Q+p1GD+Dk3BlOZDBXhgmQhYLpMSVxVNeIJL2oTsN5wMbC6+1GJJyAOcx2BEn7+v1LgzmtkeAQXDplwh3Cs/WLLDwhFZXYMOAeAbEiAJXOBUycoC+LEmwX3gZtDr8eZfFztWwdW3Gy8zDfOxcB+UBPbRMnQr2sw0mSj7fZM5K4nsFjCvF6k6krA
+ KcAZ4Xxy
+ YLYDCoxn0p5QBAxOD6qoMUWvho9BrL+kKGZZWvKqQXSKx/ICi04NCUQqNSeBRXccdrFfCc7Cgx42V4PGZMDn999PuO1ChMXywRr4qtnfALS4mlVfbHIQ+JysaFzEbOwRfX33TSiYuaarh6nnzt3g1blhE84wBa3zx4inHgN/gsF3ltiR750x9rfqPDtFi+k77QbXzuxCfADGFIuEoSubmFrTDUpjWaahvzj2hzjYGQnCdiZTEABpqDTxL3qHUgGpGrJxbbqMTx6VtnAJOl00P3NrZ1wSdhfmCii7FpFFgPV9ZgohvpVgLTG61AkYPzL+dNviVre17EFelfVTN1s5jmQkNtRfAIbFXYlztWfIZV/rECcQSI8+u/VlNGmNc4QZqc4EUVHZpcPu5OEs+eu/cJQPIF4lauiOs115r6a+WjMGgaaQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,181 +127,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Memory failures (such as unrecoverable ECCs errors) are getting more and
-more common. The kernel knows how to handle it while running, marking it
-as poisoned (and SIGBUS user tasks).
+On Thu, Jul 30, 2026 at 07:53:14PM +0800, Ridong wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> Writing to memory.peak resets the peak for that fd only. Each fd is a
+> watcher and reads back max(its own value, the shared local_watermark).
+> 
+> peak_write() resets by lowering local_watermark to the current usage.
+> To keep the other watchers' peaks it then walks the watcher list, but it
+> stores the current usage into them instead of the old watermark. So once
+> usage has dropped from a peak, a reset on one fd wrongly drags every
+> other fd's peak down too, even fds that never reset.
+> 
+> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+> collapses to 1060 KB although B never reset. With this patch B keeps
+> reading 410624 KB.
+> 
+> Fix: save the old watermark before lowering it and use that to floor the
+> other watchers, so a reset only affects the fd that issued it.
+> 
+> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>  mm/memcontrol.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 60145aadfc5e..881e7c459c64 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -4692,7 +4692,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>  			  loff_t off, struct page_counter *pc,
+>  			  struct list_head *watchers)
+>  {
+> -	unsigned long usage;
+> +	unsigned long usage, old_watermark;
+>  	struct cgroup_of_peak *peer_ctx;
+>  	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+>  	struct cgroup_of_peak *ofp = of_peak(of);
+> @@ -4700,11 +4700,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>  	spin_lock(&memcg->peaks_lock);
+>  
+>  	usage = page_counter_read(pc);
+> +	old_watermark = READ_ONCE(pc->local_watermark);
+>  	WRITE_ONCE(pc->local_watermark, usage);
+>  
+>  	list_for_each_entry(peer_ctx, watchers, list)
+> -		if (usage > peer_ctx->value)
+> -			WRITE_ONCE(peer_ctx->value, usage);
+> +		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
+> +			WRITE_ONCE(peer_ctx->value, old_watermark);
 
-Poisoned memory is removed from the buddy allocator, but, not from
-other places. A current problem is that kexec will load new kernel
-on top of a bad/poisoned memory, which is undesirable.
+Ah, because B was previously reporting the higher local_watermark, and
+its peer_ctx->value was actually low. Fixing it to current usage is
+wrong in that case. It must remember local_watermark.
 
-If the next kernel's image, initrd or purgatory lands on poisoned frame,
-the relocation copy writes to the bad memory and the machine checks
-during the kexec.
+What about if usage is bigger than old_watermark? Then we don't update
+the peer_ctx just yet. local_watermark is updated and propagated into
+the peers on the next reset. I guess it's correct, but it's kind of
+tricky to follow.
 
-Skip hardware-poisoned frames when placing segments: check them in the
-kexec_file hole finder so it lays the next kernel down on good memory,
-and reject a poisoned destination in sanity_check_segment_list() for
-the kexec_load path, which cannot relocate.
+Would it be easier to understand if we mirrored the max() from
+peak_show() here?
 
-Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changes in v2:
-- EDITME: describe what is new in this series revision.
-- EDITME: use bulletpoints and terse descriptions.
-- Link to v1: https://patch.msgid.link/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org
----
- include/linux/mm.h  |  8 ++++++++
- kernel/kexec_core.c | 10 ++++++++++
- kernel/kexec_file.c | 19 +++++++++++++++++++
- mm/memory-failure.c | 28 ++++++++++++++++++++++++++++
- 4 files changed, 65 insertions(+)
+	usage = page_counter_read(pc);
+	local_watermark = READ_ONCE(pc->local_watermark);
+	WRITE_ONCE(pc->local_watermark, usage);
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7fabe6c66b4b7..48cad9a519d08 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5192,6 +5192,8 @@ extern const struct attribute_group memory_failure_attr_group;
- extern void memory_failure_queue(unsigned long pfn, int flags);
- void num_poisoned_pages_inc(unsigned long pfn);
- void num_poisoned_pages_sub(unsigned long pfn, long i);
-+bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
-+			     phys_addr_t *poison);
- #else
- static inline void memory_failure_queue(unsigned long pfn, int flags)
- {
-@@ -5204,6 +5206,12 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
- static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
- {
- }
-+
-+static inline bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
-+					   phys_addr_t *poison)
-+{
-+	return false;
-+}
- #endif
- 
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index dc770b9a6d053..9f6ed3c04299b 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
- 	}
- #endif
- 
-+	/*
-+	 * Reject destinations that land on hardware-poisoned memory: the
-+	 * relocation copy would machine-check on the bad frame.
-+	 */
-+	for (i = 0; i < nr_segments; i++) {
-+		if (range_contains_hwpoison(image->segment[i].mem,
-+					    image->segment[i].memsz, NULL))
-+			return -EADDRNOTAVAIL;
-+	}
-+
- 	/*
- 	 * The destination addresses are searched from system RAM rather than
- 	 * being allocated from the buddy allocator, so they are not guaranteed
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 59fb9d71e9d86..95cc981a557be 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -475,6 +475,7 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
- {
- 	struct kimage *image = kbuf->image;
- 	unsigned long temp_start, temp_end;
-+	phys_addr_t poisoned_addr;
- 
- 	temp_end = min(end, kbuf->buf_max);
- 	temp_start = temp_end - kbuf->memsz + 1;
-@@ -504,6 +505,14 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		if (range_contains_hwpoison(temp_start, temp_end - temp_start + 1,
-+					    &poisoned_addr)) {
-+			if (poisoned_addr < kbuf->memsz)
-+				return 0;
-+			temp_start = poisoned_addr - kbuf->memsz;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
-@@ -520,6 +529,7 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
- {
- 	struct kimage *image = kbuf->image;
- 	unsigned long temp_start, temp_end;
-+	phys_addr_t poisoned_addr;
- 
- 	temp_start = max(start, kbuf->buf_min);
- 
-@@ -546,6 +556,15 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		/*
-+		 * Avoid placing the next kernel on hardware-poisoned memory.
-+		 */
-+		if (range_contains_hwpoison(temp_start, temp_end - temp_start + 1,
-+					    &poisoned_addr)) {
-+			temp_start = poisoned_addr + PAGE_SIZE;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index a8b03e2920ba8..04a1883d51fda 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -96,6 +96,34 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
- 		memblk_nr_poison_sub(pfn, i);
- }
- 
-+/*
-+ * Return true if any online page in [start, start + size) is hardware
-+ * poisoned.  On a hit, when @poison is not NULL, @poison is set to the
-+ * address of the first poisoned page, which is ugly, but I cannot only
-+ * return phys_addr_t, thus this "extra" parameter, instead of returning
-+ * the hit.
-+ */
-+bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
-+			     phys_addr_t *poison)
-+{
-+	unsigned long pfn, end_pfn;
-+
-+	if (!size || !atomic_long_read(&num_poisoned_pages))
-+		return false;
-+
-+	end_pfn = PHYS_PFN(start + size - 1);
-+	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-+		struct page *page = pfn_to_online_page(pfn);
-+
-+		if (page && PageHWPoison(page)) {
-+			if (poison)
-+				*poison = PFN_PHYS(pfn);
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
- /**
-  * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
-  * @_name: name of the file in the per NUMA sysfs directory.
+	peer_watermark = max(usage, local_watermark);
+	list_for_each_entry(...)
+		if (peer_ctx != ofp && peer_watermark > peer_ctx->value)
+			WRITE_ONCE(peer_ctx->value, peer_watermark);
 
----
-base-commit: c5e32e86ca02b003f86e095d379b38148999293d
-change-id: 20260727-kexec_posioned-72bb0a4143a0
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+This code hurts my head. No strong feelings either way ;)
 
