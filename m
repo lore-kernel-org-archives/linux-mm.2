@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E589C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E049C55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:21:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12C976B0093; Thu, 30 Jul 2026 07:17:28 -0400 (EDT)
+	id 7EB946B008C; Thu, 30 Jul 2026 07:21:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 104816B0095; Thu, 30 Jul 2026 07:17:28 -0400 (EDT)
+	id 79C716B0096; Thu, 30 Jul 2026 07:21:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 041926B0096; Thu, 30 Jul 2026 07:17:27 -0400 (EDT)
+	id 6B1E76B0098; Thu, 30 Jul 2026 07:21:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D977E6B0093
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:17:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 64591140980
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:17:27 +0000 (UTC)
-X-FDA: 85045192134.01.5306E30
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CD6721A0004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:17:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJSn2uKq;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A23C6B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:21:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8A5BA08DA
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:21:31 +0000 (UTC)
+X-FDA: 85045202382.04.16D91B7
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 369861C0002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:21:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785410245;
+	s=arc-20220608; t=1785410489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J0EIPu9PN0yu7q+s4rPgyOAd/4Zfoyra3jhu843lc4c=;
-	b=nBc4TTwhixqNGhV5mnXATlw3xAoerVif711QvIRJgrcT99sBGCSkecbR2Zh+fNIHVKuCBu
-	HMzPzAtAqk8NzyhhXM5W/4E8bQAG58xLmu4xoIuNKgvjwdhjuqNmeuGixnD3SZEimgIGQW
-	QQ2DA9mt//JGf/g2pqIsJXPUxtnqeEE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=+8Ns1tjeiVw62TmXTCblrxJO367Nd9SfrrC+RLSFCGk=;
+	b=8bVEaEEPTiMhdJHo35y8BwB7O/HmAnnw8Sq5/J4wFWx5EHnjOWklTRvIo38t6p2lByLbHH
+	7Ubi4YTQr4byBjJhtKPsvlMAK5zOuEeo0z1p0JQDhcypx/ITOQ/amr0sqmvFGq5fPOR6vl
+	92flVgOKZpTUv4KSk1tc1obQPsRLHAg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785410245;
-	b=ozE9b5ZuqdnBQndMkCxBL7MP48TCvIRidgsnHyQ0jA8ULFg1ZJE9RLEKe1ZMKoPTrO3bTt
-	SJVtbh3KZ2/+b4ugaXoXl7cuSyrv/mhp2s8VY/Ewx0vQBOrfl5UQnK6jlJSsJL2x7G1hO2
-	EjDkwIBCL2ewjVpqQXeH0ZEcgMkp4TU=
+	t=1785410490;
+	b=xjeOVuvURGCMRdy9cNEyEHNa9SJdWkeLd0pw2kjz4tCTzY8r8PDRxgWM0G9HwOtBPpeV5/
+	MQWZNSiG57J4+f4emKa8YFLvcG91esFCjo4r4MPPftl3Q9J5inYqVJLj34C9YyIdAZ0sPZ
+	BZLqdcxik0xAVi99lPjZGuF6JBmW2dY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJSn2uKq;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0440B600B1;
-	Thu, 30 Jul 2026 11:17:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9288D1F00A3A;
-	Thu, 30 Jul 2026 11:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785410244;
-	bh=J0EIPu9PN0yu7q+s4rPgyOAd/4Zfoyra3jhu843lc4c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dJSn2uKqy4X1N8KpDU9tw0HfzTaEO2Pj6MHEBeEXgjSVM5Xbr7EZVdWtj3WSxKFM5
-	 adOwt+KFYRhEgEorTkdoEUV7gHnv13kdZqukzTfqtuVipJ3B5uCKc3XoasaVAVqSzl
-	 hQ7h+egoWcwwlM6k2yeAtbaMFRVC9VrCHMsnv2G7Sohhnuzv5XptqxN+RKP+SvuNFE
-	 Rd6g54eipNLuFBelDtsKnFmkiMA5vXjQRdmTnMnWHcgsw+DIwT0iXkAAar6JrjxrRZ
-	 2PTQK3hHN41LuVF7FEfbokbmneesooU2GWZC6RfcrLXZqvmIP8r6Qfq9z49zi0ipRm
-	 eODOrYYcUDPEA==
-Date: Thu, 30 Jul 2026 14:17:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH 3/3] x86/mm: Fix and document DEBUG_PAGEALLOC
-Message-ID: <amsyuUq_JDh9k7J6@kernel.org>
-References: <20260729110807.797920433@infradead.org>
- <20260729111119.604452135@infradead.org>
- <amoKo2LoJvfndqHn@kernel.org>
- <20260729144838.GM651302@noisy.programming.kicks-ass.net>
- <ampPb0o0T_JdxrMx@kernel.org>
- <20260730104333.GE751831@noisy.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730104333.GE751831@noisy.programming.kicks-ass.net>
-X-Stat-Signature: eeosshhg98em9sta9biia85ww4x8k83s
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h9mx11HjMz8XrrM;
+	Thu, 30 Jul 2026 19:21:25 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 66UBLG7H073757;
+	Thu, 30 Jul 2026 19:21:16 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 30 Jul 2026 19:21:19 +0800 (CST)
+X-Zmail-TransId: 2afc6a6b33af5fd-db3e7
+X-Mailer: Zmail v1.0
+Message-ID: <20260730192119586UvhYMv4xrNqaZLKIJH9X0@zte.com.cn>
+In-Reply-To: <20260729-kfree_rcu_nolock-v5-3-a28cdcda9673@kernel.org>
+References: 20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org,20260729-kfree_rcu_nolock-v5-3-a28cdcda9673@kernel.org
+Date: Thu, 30 Jul 2026 19:21:19 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <harry@kernel.org>
+Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <ast@kernel.org>, <andrii@kernel.org>, <puranjay@kernel.org>,
+        <ameryhung@gmail.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>,
+        <rostedt@goodmis.org>, <paulmck@kernel.org>, <frederic@kernel.org>,
+        <neeraj.upadhyay@kernel.org>, <joelagnelf@nvidia.com>,
+        <josh@joshtriplett.org>, <boqun@kernel.org>, <urezki@gmail.com>,
+        <mathieu.desnoyers@efficios.com>, <jiangshanlai@gmail.com>,
+        <qiang.zhang@linux.dev>, <pfalcato@suse.de>, <surenb@google.com>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <linux-rt-devel@lists.linux.dev>, <rcu@vger.kernel.org>,
+        <bpf@vger.kernel.org>, <harry@kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NSAzLzhdIG1tL3NsYWI6IHVzZSBjYWxsX3JjdSgpIGluIHVua25vd24gY29udGV4dCBpZiBpcnFzIGFyZSBlbmFibGVk?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 66UBLG7H073757
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 30 Jul 2026 19:21:25 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A6B33B5.000/4h9mx11HjMz8XrrM
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD6721A0004
-X-HE-Tag: 1785410245-741751
-X-HE-Meta: U2FsdGVkX18T/puRBk8Bp/kxO4ShVfHUWenvA+q0wpajJXUt6MgNJy3Cp77ClJ0hywJszrP8VbnWbipBERjDZjCDK15pvL69k6i28r44FGsx4u6PmJY1Isu+WNVIMpx+egokQoymzhaYWw1owTIf4VgEto2NqupwjIO5ScKbw/xetRjn9OGUP8N9MtS01Jo5TwmCbk8WpDXa0YdBV9I6lJMRsW3/ihr6Xaeko/sSajeNpWEQA99eYzx4IKEbY4TEYxhBos+D9g2QS/3l5y9gSX15HCt/Ek/UcNa2PvXq3UGb5jr6pQtGcnm7n21dBMDw1n1QbZ2JBGK01PLbxhYNZ94GIImfc9EQNMQ649rU8dSKKhGR3GT4UscZd1T8nryRihTxe+a/JnZxKjGk7T6F5GUAQO/OgkzKY9pqM7p88lBI7ZaDpF+M4mzv/x8pjIx+CFPRM2SYW2nkmMWp6XySfTMgFZFp541d0JLkKfu2GtyIUNfa5szgFH7XGkCj2XzEIZWWy9SXb+6FRnpBX/i3h61z1AZrsmAt2PTSW7QqA8ijj04Hgvx4zpF+/IZE5xT1hMCxiys7sMhDhLJKmPGruUwIJ3XxHG6t3e/0ASn4OGSzb87CP4CvgNtnZVFCqbcB5NyHmYSRYuYEpDg+Cw+6BLQeLoplGCXcRgbOrsmTIAEhzZ75FPJbLyXjkNr4RpXUIvuPOy0Bj08LzXnwNoxJpgIF2IJ3ixPTMq50Sa7J4Qo+32S+gRIT5JmQhc86S9skiFsZss+KFL3D3xq74FOaKtJSdxRInwCgl7RaXI3B/Hi52536PEZFNEIOiUiTweozWYyorICq0nHQZgpdEbxTCWHMvHulDT6iv2LkFo+gzT9zL65z/kAVyaFXcmPxtp1aQif0xD99d+AMWgy2m6D7CAKj7mjaf3bJqwCH7Hd/KzEEvd2tWh33eeMkTRL52JlDkS53UakwloKa3WzJdlY
- u/LeMkl+
- IJZgPAAVGCwafUCkl9HBb15d8Q2a+bCE+1MDTG0mjY+LRK4ZdLyI5LKEhe8EtQDFtlemjeYw383e2BnXF3eVyKu7Nyu/vFc/uT6mxWBC3pYssYPZ/qGM7etGzWE3aOvG7B4GdfmKi3nbmHTB3kk6V8OXH43BbS4d8N7PnBIrFKc405OwZggY8e8eE/GnbOuV+sAQD3I4j8R+pG+b0FeObvGcbuoQltRp8vIVfIHnEK0tst7d7WK0e3D+DYj/irEcThSu8mT5DkGtbodWkcqeTG0cUe+JhBxl2WTfbtOTl14d17v+4D1iuewcqWVweGCgv2bTb3NieGxkw28I=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 369861C0002
+X-Stat-Signature: sbr4gg4rscpbn4pp81ycgh8nk7wd3sy8
+X-HE-Tag: 1785410489-68112
+X-HE-Meta: U2FsdGVkX1+YPt3GwBtp31lN8ejWRqHQt38f2Y2GaNagd+nt2HyXgnhqRK9EIWQpG1/EB1Wv5T4KaFFOePuMdx6MMFkc7HFHvsBdgdIrKioYYIyY3pY19c6wAXO1oZtIxRcsSdQ9UC5/qATZigGIwM5JF/+2WA0RQKE/0GJMHo3a1O/jTgBG9anJz978wbu9sjHytb4CEGzWLp+/4gSB9Rvge0feBP65uwenZrdxKucpbborInNDtZ+4PIL8LxNpghGl98iTrWhz3/AIwLclXlkBucFj1vaHhP41dVN94TzkAAt7WzzLENsubsRyzptZNKOf9CdsZ49/dWQHYxBXN6GrEW5xvdK2Adzo1W3SSNEgtOZFxuPtH9me1C1d7u9hVjs5e6NjTu5X1YoYJOGBfvhye8ug0o9J0P6c3zUWRWyetCDbzAX1cdhI2zYrE5Rz9rr6ppi1BMdsM4mUUJB+2d+LvSJFYiRlFKfG5EPgDKLwVLxD2yDp19phc+32wzgqCPDhjWk5wd4le/Cq7cFcNbC7YifpMAKKX8XP9YXeTqYKoJGWcnglx6KEBYRMK8ZJcN1/y+fLM4yPp5hDtcAlL+TEMkaC/Fb3WW/qojcovKbBvZA16eHCFBPaMqeXwC/M1R5WJHsEkM8ZjR3fqjRXlxmLLCtzQlOO4q2DYe/93rZc3iOyLTjWFA34/wH/HHwCs7xmDrUKw6mJTLoC4QaAKnbgPSSpC74DYD4lgc4hFp1f11gIIM+LBCMeRAyQGrosvhrWzs4P3dUjNr77pBlPv6VQVJdp77VGbcBwrCD3iX5iQ9OCy1mTrfIM8geagW587lMlDcIb1/Kg4PYLX5d90pNNb+EKax/p0/4ZA8gA8FkmHJjIxBoKKbYgoNcqxZprf4kwwk/7ru+SI+NwK2YYNF5HpZWj56HfxWoAONoyJRBIz2s6BphnDRGWLSDoyto5+TCKy0JUfd8sczl2v/6
+ KQULNRjk
+ uJCjgRGXwGvj4PRGXDI19+ULB9SdwSRUMNEItdD98GQoz8h2qIiLj8HB2EJ1BFRRo5x+rkVt1p4HPw9okEjaGEDlG1CoGsFc7ujoClhtzFDfheh2l5oRJBZ7zyCy/jL5IiJtBaULLysFaW5BefUBeWiQNGZiePywuTOkQkJ4JhRwOPLYMO0y1J1QqQDwPZE4PlijmEST3HAOWyo/6dp1GHfOqmqpyG0sWU39XkV1WoJ/6g5g5sgplaUf9KS4iTb1HTVsGgXHr/+vggTW3twap9EaYYfLgJ7JhIPcJOs7eC+JZ+TbD+D8wyEp/SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,46 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 12:43:33PM +0200, Peter Zijlstra wrote:
-> On Wed, Jul 29, 2026 at 10:07:27PM +0300, Mike Rapoport wrote:
+Harry wrote:
+> call_rcu() disables IRQs with local_irq_save() to protect its per-cpu
+> data structures. Therefore, if IRQs are not disabled, they cannot be
+> corrupted by reentrance into call_rcu(). So fall back to the deferred
+> path only when !allow_spin && irqs_disabled().
 > 
-> > > > I like my version with your comments added there more as it localizes the
-> > > > DEBUG_PAGEALLOC exception in the lock wrappers.
-> > > 
-> > > So I don't like removing cpa_lock entirely; it is still serializing cpa
-> > 
-> > I meant static inline cpa_lock(), not removing it entirely.
-> > With your comment why DEBUG_PAGEALLOC is special.
+> The RCU subsystem does not guarantee this contractually, and this
+> optimization relies on RCU's implementation details. Ideally, it should
+> be removed once call_rcu_nolock() is supported by the RCU subsystem.
 > 
-> That is, I despise the whole:
+> Link: https://lore.kernel.org/linux-mm/CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
+>  mm/slub.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> 	if (!debug_pagealloc_enabled())
-> 		spin_lock(&cpa_lock);
-> 
-> with a passion. It blanked kills cpa_lock as whole and changes the rules
-> for everyone when debug_pagealloc is on.
-> 
-> cpa_lock ensures that concurrent cpa() calls on an overlapping region
-> have a well defined outcome. By removing it entirely you can get random
-> state.
-> 
-> In practise this isn't likely to matter, but relaxing this for a debug
-> option is insane. Debug stuff should tighten rules, not relax them.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 2c5ba8c326e7..bb0f2975c95b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6157,8 +6157,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+>      if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
+>          rcu_sheaf = NULL;
+>      } else {
+> -        if (unlikely(!allow_spin)) {
+> -            /* call_rcu() cannot be called in an unknown context */
+> +        /*
+> +         * With !allow_spin, we might have interrupted call_rcu()'s
+> +         * IRQ-disabled critical section. If IRQs are not disabled,
+> +         * we know that's not the case.
+> +         */
+> +        if (unlikely(!allow_spin && irqs_disabled())) {
 
-In practice it's the same, either the thread that won the race for lock
-updates the pte or just the first one to get to actual set_pte and it's
-pretty random for overlapping regions anyway.
+LGTM!
+Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
 
-But I can see your point.
+I initially wondered whether in_nmi() should also be checked here.
+However, irqs_disabled() already covers the relevant reentrancy case,
+since call_rcu() disables IRQs while modifying its per-CPU data.
 
-Anyway, we need Lorenzo's fixes from the set I sent [1] to protect against
-other races and they conflict with your patches :(
+The reasoning looks sound to me  : )
 
-If you are planning to send v2 maybe you can take them on top as well?
-
-[1] https://lore.kernel.org/all/20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org
-
--- 
-Sincerely yours,
-Mike.
+--
+With Best Regards,
+Shengming
 
