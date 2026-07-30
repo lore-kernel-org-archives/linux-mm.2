@@ -4,86 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF580C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47455C54FCD
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:36:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86A506B009B; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
+	id 157616B0088; Wed, 29 Jul 2026 22:36:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F46A6B009D; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
+	id 0F8E96B008A; Wed, 29 Jul 2026 22:36:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BC256B009E; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
+	id F15546B008C; Wed, 29 Jul 2026 22:36:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F8E46B009B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0190A080B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:23:08 +0000 (UTC)
-X-FDA: 85043845656.01.72DEE57
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EE7A980002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:23:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aqUhF1r8;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785378187;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0OzJvIZWBkrlBUTwSYt4KpI5s4IiGKcT+hyE09Mh85Q=;
-	b=j3DEhYgkZXSDA+Bw++T/FJqJ6Op8HJCTqHY9hXpiUcJiIojTrFDqb4CsUZXH1M9q2eHdIf
-	VPrisD5zjCTWIo604fZDGL7+GFhlcExgqoKJ7gETDPsOuGY5hwvc4fsd/Nb3FCkvj7XMJO
-	Z8GN9PxGs5P+z2whZGpbXw8yCI+hTv0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aqUhF1r8;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C2A166B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58F3614089C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:36:20 +0000 (UTC)
+X-FDA: 85043878920.21.62C71DA
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 769C5180002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:36:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="C/s8CGrN";
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785378187;
-	b=bbA6IqYwI72yEOlJOqV8MvzujHVKeScSqR/x/y3xEwxzbRAg8mTRKN4qqG/Kub7GG7ZmO6
-	MI0vE5oyuFL+Y+sjl3Gb4HdhombPfEuvE9YX7msc2wlhWiITZU1hePDTuK7uOCN5pCc9gv
-	6NhzfFrY5NWyfksRaB99Gg//AG8jRwg=
-Message-ID: <729c578c-e5a3-4351-b07b-469f79c26b0d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785378182;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0OzJvIZWBkrlBUTwSYt4KpI5s4IiGKcT+hyE09Mh85Q=;
-	b=aqUhF1r8sA+y1aEGzL5mQ/o0SlE42ZUyiYPmyX4DvA2xKhPbDojKhJ7qCHB3LPxZ0AGR+b
-	hfVUsumPeyusmh6hxUHvoZZkj7WQqUFGaJXDJ1r6tRggQ6/fvvc0g/Xt84Tncsxne+3rJ2
-	O4kxF1JHqFvaVVkwFcAx47k4br5ZBlI=
-Date: Thu, 30 Jul 2026 10:22:32 +0800
+	t=1785378978;
+	b=dduriXHFbopYKVchB41JmJ7J6WjFritnG1CK1FEu6XOWLtfiRJv/hy3qzGya2laYqmAWbS
+	VdtOtiL2nJIM6xo7Wx71HNun3ki+SA/w4Hg6q9OV5L/V3Uta6faAwq33VZ5F3pmGezl/7/
+	V9v8wRIhmbZ4NMfoU1S50s96oTAF/BE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="C/s8CGrN";
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785378978;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4cMQizCo6RK2ppBslsu0qkK2klwa/3pjLSR8m78mm9U=;
+	b=7qcxAZx6yC9QjNmsCJm+hA1fhAkbkYh/dac3NoMspr+X0/o9TAWGRKpchBK3bDogMopCw+
+	kj0ffvFsrhi8jejQf84cpB4LJ+fZyutYRyc395zA9eeZMos6jGcnRjpU0r+7MSmChdK+Al
+	tRkjT0woFTzNFzDmLooWrRtn7PLVcwg=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69c7ab350e9so2625534a12.0
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785378977; x=1785983777; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4cMQizCo6RK2ppBslsu0qkK2klwa/3pjLSR8m78mm9U=;
+        b=C/s8CGrNuDHyMuiKmfpcRNLE6MM5K43w6J29jYB1cW7wA8Uhmm3BO4009bcS4PCFHo
+         Ko8cKfgC1dr36nLo4V9xlu5atR1fvIHAq2T8kQWI6AMINqQ8mnnXyPXwuW55sUfDB7wQ
+         zh/3NeWeE4o51FgLcsGxalDVR9X5KC9DQQKfhrd4HtAJVwjYxSe6V/0z0jGb6SnoSwVq
+         ZSmp5q3EARwC9DN5Q1EukA2be1c21r1CHtmj3Di5FCxY6OcvrjUnLoQVWD8YyytTmuzR
+         Sm+JMESERb4WBhyXxMk56U7Mf+JzirZDOVyjMZ8jE8XJBS5axjU4seNrnc7U8KGQ4x5+
+         R4hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785378977; x=1785983777;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4cMQizCo6RK2ppBslsu0qkK2klwa/3pjLSR8m78mm9U=;
+        b=PVnRmImvkWlmPav/Mu6lGACqkbRxCimGsqqJHhBnf85PWP8ECCzI9zYxuFKoDVCzPN
+         r8pEjmKARah0OaGl1lZ+Q5YZ0gienB2Y1syBI4GP3CVkKVdPm1sVgxU5dJzFvT6l+HGv
+         rQo8Gcn3QokwDOLNL2cvdbjZX+LJcLUlsqn/f9e+CfIGJOMGi5g+FpvBFhQm9ruOAH/0
+         UjLeQrCxUoRoi3egPJGeIDXh8QAxHKhppG6+2oWvP6j/TVc+bfp49RumIPQpa0qVRu2q
+         J6WM5CQ3FbdTeJHpvBma6t7m2h0gXPb4H77iVQ5dHbRE0d3lXjnwqSLcbrsooOn3mvek
+         MOuA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro+tvT6KH8AizlMCP6ejCsKl/WnWBlpr2PV7dKYM95DpRTEsEs5C6Q4nr5NA0O3EqMmxlLqApbpmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxNGuMgnl26uIxdbtsvw87A9XBD6rf8B3sZZJ9GrJOnyf3n7gYm
+	2vH/epYr7Hji7BQ+GTCSG0NFLGc4FZCdHqCirSAWQ2vP2ICZ6lZkloYh
+X-Gm-Gg: AR+sD11ER4QhfIc5XrH22wbh+JgDhpvjUCxkNOGUr3TwYVALFtEIqC1G5UBp6on2JVX
+	mlQvbVSPhmuclkxEe3PiSTXk+G99s9uFB/WHqBcPwVKfjYHtBAr5vHQYsOMtJfHiiBS4o7eov1g
+	F9b94z767/TW15jYFyInmoIAjZsoZldogqByBmAetlj4yVwxoRBdRh13TbbnAdrFFpb7qh/4Vv2
+	xjVvvt0BzEK5+CJfe6g3ZzQxsdLjUJ9SBx+0RNbNlM+5lzov2RWsd+VXuR4773aXAKfiEK/T3gq
+	49iHVSK0cigtErxvdGuzw3W4MZlzMi8/37nlfP2WWX5X5pb5t9n/az67+LSjIw+vqqeCylU/E41
+	ji9CIb9LZp05Id3CFcrFHW0G/ZMsTN+ViBZfolB/bik4VAF9lLVPLXuHCAQwZ70ozaM3i93CKlv
+	9aBFHVKSIUMBbp2Z0hmiSeklc5XZb/pf/66VREZDfNOoImPQMFed5Xy7LV/z2l
+X-Received: by 2002:a17:907:3cd5:b0:c16:36ef:d437 with SMTP id a640c23a62f3a-c1fa55ce077mr39208166b.34.1785378976749;
+        Wed, 29 Jul 2026 19:36:16 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fa851b723sm16110366b.12.2026.07.29.19.36.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 29 Jul 2026 19:36:16 -0700 (PDT)
+Date: Thu, 30 Jul 2026 02:36:14 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"Zou, Nanhai" <nanhai.zou@intel.com>,
+	"Deng, Pan" <pan.deng@intel.com>,
+	"Li, Tianyou" <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	"Zeng, Jason" <jason.zeng@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 2/2] mm/memory_hotplug: improve shrink_zone_span()
+ subsection boundary checks
+Message-ID: <20260730023614.fasdjzfl5wz4tsfr@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260723084946.189392-1-yuan1.liu@intel.com>
+ <20260723084946.189392-3-yuan1.liu@intel.com>
+ <20260725024952.65lfm2s676obpoue@master>
+ <MW4PR11MB6936598686BD5FA7B2FE9181A3CC2@MW4PR11MB6936.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] alloc_tag: expose profiling and compression states in
- /proc/allocinfo
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MW4PR11MB6936598686BD5FA7B2FE9181A3CC2@MW4PR11MB6936.namprd11.prod.outlook.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: j4dihr8prehbzkmabuczaiy5bg4x1z8q
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 769C5180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EE7A980002
-X-Stat-Signature: x7zgco9hqhmw3s7dk6o7en4mzj9n3m6m
-X-HE-Tag: 1785378184-395624
-X-HE-Meta: U2FsdGVkX19APvabixY0ZgBBR7WCtsPtspjurDR4njtnCnKnv+4obaDfTduXj5xkNQ6mzUwFmeqPj3GTj/1JOt1QsNOnMVdceLU8UElWIRRn4uHeEXcn1691fHJ7ot0O2WNmTZ+6t1RnLsIw9iQ5RVEg4Jk+TOsYFQCg1g2r800NTDDWaNIrcE3cDrmcgQlQkbhtT3BXHHuR//55jjFAa9PNjjPHh6ULZ66ZaFud5UaCwTyg93m7POhXiNABJR8SxHbB9tderz0T/KH2e4Qatszq+twBbZ3gQxIBYC8hjdn+3MJcdKEvnFDx7dGOjpTaBRmkcQLvOHxYGXBP15QCLJhTvNUwp3Oghwv/gehiOOYQumVuxE5YbsxE8f/Jg6l/UDFWW+id1YDEAAijU5o8MQatUERgYnNIOvg0gwVzk63p9uklqJVJ1idNoZRbgMOIlP8Y+ETUbmpJ/U3buGvo9Igw8YmJYRgNjcvGmELc5EFKMihzs5qKUL2VujZU397O26kNSYGXvm+TK4NgSqFBBR0jTOuYXez7Hqz6ZjSP51kUnHXmvF/rz28kfCHXYSHjXirV3Mn7c9d+G1tDbcQaOAV90txdQWCSZ9XyNUFx58k6yRMS86ZhCqGlNlwyKO1vmumxqDogMYgvw2CPudquMtSFLW/6ctWmPXBJXA00htN5rAzbsmZ9hiROGG/92vNv5nbwFTYJwWp2RM2f1oOZ90/su3joScSQKD31cQlGnq4F4SDK8f9taKpLG2u2ZTHCbvrTR1Hdn2IVs75l4c3gcBqsqbiflqb8WN+a6xcosNCgecPCM2Td75lGzGnc1MYczvfCGXhAJRmq303LQ8JzqEzCn239LGvnAEMK1dyo2TEAApgLN09eXa9vUN+rLclhLCBKorzG+UucuUdB8DFYreVeAr5V3FbZSvEtSCwc6QDEHNEn6Ewe+WnfGt3x+ehPGikKPaQB+1J3ijZzPXc
- 2gewB8sy
- Iy0yllYXWNRK44WdTUqFKCVYk7SjloVq3bxOJXR0vf78T7rO2sTy4NhMg3FxNIK+d6QtO/Vs4RdPEZ0lFw2a+5RWU4mI8SkFLoBOkO7vrxwl3U0iy8RbHlpZNSb73T8OpN/xHUhUKMfwiAmcMAJ9k9dXo83vNphKcThxhpYb/u8G4/JmiQEptWGpnkfeJzyoHTfLeAc0Ah1Cugnis59apC/x/GH8xNTHevZkMi4boUP0LxqYY16DRe/wDO0egAJTFgth3w0Z4P7mVQHw12amflV/qsx3GT5t6nr5u8V3REzpwJOi855gN4mRFhg==
+X-HE-Tag: 1785378978-670071
+X-HE-Meta: U2FsdGVkX1/mLQCIXwzc1W7KyFB2+fGfgIdrkSaqJw9mPz5rL1A+JQBW8CTy7use/8ALfWwwf+4dhQet2/r7D18piFl+AkD2F0Sc25Oo/415Cpn8F4/Wu/BRwSE0OsmugFc15zlZOYQsPhI9+YwJ1rnaj3OrxA1mOeHuGHDH/vCFH5OciSKlYTSFb1VubYXi3pUvaEGyqhwT1PFpB3iheLPArGZZ9hbWOh5bY/2/Fb+MsMwLIQyPmwhXn9bOQwjRx93M2FAnhObOVZQDQ0jJoKDC1O4tCWGoOH1yMVbrCv0BvKeOEU6XAFK+DA1DNlF5eSGPQim25eZ5ovyXE3ZcAcNYYZrfhEj+GhyOx+ehx5J2HMtzAW2afrHv/55TvpoEKADOX8rMzpr1au6er3pKXrUEktvWMQgD2bdNgV3tj3TryHZQv6v6qhrxTEU/84NUOib7rjCpqOcgxdP/Nv4Equ6ED8Vi3UL94KYdW4Urcd7iZa8aZZjxQWv9dfn8d5o6X2K09RsK8SgOlcZYelc2fBmc8dquH9ZVytGfJIfUpVpjXDfdv2baE5/T79mvyyZ7UDT5Ws4z7gmOuuaTFil9tH33WrIqt1rQrovtpvOnISDpSSXfUv5Z65x85wxAUCdjWBGipT8ZSO4IArO8KBVcFJvYnLV9/hjcm0lSsQkkjfuO3Gt2Su2m6LY8uf0TGJuEVCx+uDlOl3pgseCZSihRUEoBS/JxSzp6FTVmRHVCjxS0yx0SJfKRHt/1MKSzs3wTPwUY67bepEnpXC7yNgOmpIl7EDPMgupszgCHZBJZot2nVijQjLjPIpLYuxiIT9JX8mS4Zm8QPNKwupdivgvmHWuXMCiDMd3I6Tq4XkxnPeiUFDojxf4wlvLsfl4Ei4NFCKuBCdfN39fyigTnDWnaNdoqDGSp4zmBUeKdBeDdE736wlNliX9rbX+KD5RTfHZb9ha7FoRFOXkRiKgP+Om
+ /XxM75NL
+ KG6BuNKa1N+WbL1EWLzHkEGLPpIGGBMJviyAdwqvZ0viU5NElXYbIj7ErY22W33QPnJ14pKYydAQW2QFTa5EJ5yGl9Hd02261tk24ZIO3Ns549PJ/eQX45VYSpGpZGaAA7Ilhe1L+cfFOPnB0sMtW0GtX7Cm630yA5FfX2Kv3LUhFryruph3NOzKZti0SbtS2envGagzscBxJkJqlbHWsDWbJlAqwgM8MmFkEKxCba8S1dFv8XULIlBTC60AAv48Hjt8PTzsIvz7wGrrnBZuv1EjQbxa0GqM+ivU3Pnv054BdaIxC+EDJAg2uBeYFT0GCRRr5R7ssAHWcn6kVzngjpdIvgrQc68qM9NEZj320HSiwj+EL/0lPwIQ3R+3zaInghQ7j+nQQv3C7JZ87jE5xUOwbg8hDwUR405j37t1mOOQQ9aFiU8sqnIT29Wtc1+7O08hGtUQxtUhJRJin8kHOR6FEEXJRcpLfGX+NPEDsffWPdYI3Mg/Te9qzB4s0bqIk8ib2OZGnJeQ773ClTyVcGy8WblrartHz0YhLHyrJLh+ZzsC4XXEw3k3L6pI0rQ4v/v1G1ooHs0ww7dCqznQEX4zlQet9VcvujTftoFz9nofN9yTGNjXQtEDbhXV/DkzQEWS40rgHuYb+cVfPzqEKHmC3DmXC1GOOSNMn9lrb4eeX7iynDt0pC+5qMcuXNLJTD+9AWop4y6hM66EO/gOWGqnr8UifVbHELimeIzjAi0OeNQMbA5JpRt6O6MEy1K6TfweZ1pn8RBh3NkRCrnd4d6kscjlo9j4NKUPliAKqLWhERHdDlnKkKH88MuwuEc/YN7OPLPXQuPu83N1DF4GGfM0VD55boeqKoPnIatiCq/yTmgr8Y8jFBHvM7PEm7EoW3kYCAMHvIXH2ngF88lKZzGsIdOoMHSzTkA41
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,95 +132,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Abhishek
-
-
-Thanks for your patch.
-
-
-On 2026/7/30 06:49, Abhishek Bapat wrote:
-> Currently, userspace has limited visibility into the exact active
-> runtime state of memory allocation profiling and its page extension
-> compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+On Mon, Jul 27, 2026 at 09:49:39AM +0000, Liu, Yuan1 wrote:
+>> -----Original Message-----
+>> From: Wei Yang <richard.weiyang@gmail.com>
+>> Sent: Saturday, July 25, 2026 10:50 AM
+>> To: Liu, Yuan1 <yuan1.liu@intel.com>
+>> Cc: David Hildenbrand <david@kernel.org>; Oscar Salvador
+>> <osalvador@suse.de>; Mike Rapoport <rppt@kernel.org>; Wei Yang
+>> <richard.weiyang@gmail.com>; linux-mm@kvack.org; Zou, Nanhai
+>> <nanhai.zou@intel.com>; Deng, Pan <pan.deng@intel.com>; Li, Tianyou
+>> <tianyou.li@intel.com>; Chen Zhang <zhangchen.kidd@jd.com>; Zeng, Jason
+>> <jason.zeng@intel.com>; linux-kernel@vger.kernel.org
+>> Subject: Re: [PATCH v6 2/2] mm/memory_hotplug: improve shrink_zone_span()
+>> subsection boundary checks
+>> 
+>> On Thu, Jul 23, 2026 at 04:49:46AM -0400, Yuan Liu wrote:
+>> >When shrinking a zone span after removing a PFN range,
+>> >find_smallest_section_pfn() and find_biggest_section_pfn()
+>> >only checked one edge PFN in each subsection for nid/zone matching.
+>> >
+>> >If a memory or hole boundary falls in the middle of a subsection,
+>> >that edge PFN may belong to a different nid/zone, causing the helpers
+>> >to miss a valid PFN within that subsection.
+>> >
+>> >Fix this by checking both subsection edge PFNs for nid/zone matching.
+>> >Keep a single pfn_to_online_page() check per subsection, since online
+>> >state is the same for all PFNs in a subsection.
+>> >
+>> >Reviewed-by: Jason Zeng <jason.zeng@intel.com>
+>> >Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> >---
+>> > mm/memory_hotplug.c | 42 +++++++++++++++++++++++++++---------------
+>> > 1 file changed, 27 insertions(+), 15 deletions(-)
+>> >
+>> >diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> >index 4c699fd9c479..3a281d595207 100644
+>> >--- a/mm/memory_hotplug.c
+>> >+++ b/mm/memory_hotplug.c
+>> >@@ -427,17 +427,24 @@ static unsigned long find_smallest_section_pfn(int
+>> nid, struct zone *zone,
+>> > 				     unsigned long start_pfn,
+>> > 				     unsigned long end_pfn)
+>> > {
+>> >-	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+>> >-		if (unlikely(!pfn_to_online_page(start_pfn)))
+>> >-			continue;
+>> >+	unsigned long next_pfn;
+>> >
+>> >-		if (unlikely(pfn_to_nid(start_pfn) != nid))
+>> >-			continue;
+>> >+	for (; start_pfn < end_pfn; start_pfn = next_pfn) {
+>> >+		unsigned long tail_pfn;
+>> >
+>> >-		if (zone != page_zone(pfn_to_page(start_pfn)))
+>> >+		next_pfn = start_pfn + PAGES_PER_SUBSECTION;
+>> >+		tail_pfn = next_pfn - 1;
+>> >+
+>> >+		if (unlikely(!pfn_to_online_page(start_pfn)))
+>> > 			continue;
+>> >
+>> >-		return start_pfn;
+>> >+		if (likely(pfn_to_nid(start_pfn) == nid) &&
+>> >+		    zone == page_zone(pfn_to_page(start_pfn)))
+>> >+			return start_pfn;
+>> >+
+>> >+		if (likely(pfn_to_nid(tail_pfn) == nid) &&
+>> >+		    zone == page_zone(pfn_to_page(tail_pfn)))
+>> >+			return start_pfn;
+>> 
+>> Here we are checking range [start_pfn, tail_pfn]. When we come here, it
+>> means
+>> start_pfn's nid or zone doesn't match our expectation. But if tail_pfn
+>> does,
+>> why it still return start_pfn?
 >
-> While reading the sysctl provides basic on/off status, it is currently
-> impossible for userspace to natively determine whether page-tag
-> compression was successfully enabled without scraping dmesg boot logs.
-> Furthermore, since /proc/allocinfo remains in the procfs filesystem even
-> after profiling is dynamically disabled at runtime, simply checking for
-> the file's presence does not reliably indicate if the allocation
-> tracking hooks are actively running.
+>Hi Wei
 >
-> Resolve this ambiguity by appending the active state directly into the
-> header of /proc/allocinfo.
-
-
-It's not obvious to me why userspace would need this state.
-
-
-Suppose userspace reads mem_alloc_profiling_enabled as disabled, then 
-the profiling
-
-gets enabled later. All allocations generated during that intermediate 
-window are lost.
-
-When users later cat /proc/allocinfo and see the enabled state, will 
-they mistakenly take
-
-the output as a complete, accurate record?
-
-
-I'm also unclear what userspace would do with the compression state;
-
-this is just an internal implementation detail of memory profiling.
-
-Put another way, personally I'd prefer /proc/allocinfo to stay lean and
-
-avoid exposing too many internal implementation details to userspace.
-
-Unless users intend to dig deep into how memory profiling works, these 
-extra details
-
-will likely only confuse them — most don't care about internals at all.
-
-It's similar to how we use APIs: we only care about what an API achieves,
-
-not its underlying implementation.
-
-
-Could you share the concrete use cases for exposing these states to 
-userspace?
-
-
-Thanks
-
-Best Regards
-
-Hao
-
-
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->   mm/alloc_tag.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+>If start_pfn falls into a hole while tail_pfn still belongs to a valid
+>memblock in this zone, skipping the subsection would cause
+>shrink_zone_span() to shrink the zone span too aggressively, excluding
+>valid PFNs from the zone.
 >
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 52aece27b00e..89ec2c6ce57a 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -108,7 +108,11 @@ static void allocinfo_stop(struct seq_file *m, void *arg)
->   static void print_allocinfo_header(struct seq_buf *buf)
->   {
->   	/* Output format version, so we can change it. */
-> -	seq_buf_printf(buf, "allocinfo - version: 2.0\n");
-> +	seq_buf_printf(buf, "allocinfo - version: 2.1\n");
-> +	seq_buf_printf(buf, "# Profiling: %s\n",
-> +		       mem_alloc_profiling_enabled() ? "Enabled" : "Disabled");
-> +	seq_buf_printf(buf, "# Compression: %s\n",
-> +		       static_key_enabled(&mem_profiling_compressed) ? "Enabled" : "Disabled");
->   	seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
->   }
->   
+>Since init_unavailable_range() initializes hole pages with the correct
+>zone/nid, the start_pfn check always succeeds here, making the tail_pfn
+>check redundant today.
 >
-> base-commit: c73b725a57f276a3702ca213bde78fca029bc619
+>That said, I wonder if it is still worth keeping this check so that
+>shrink_zone_span() does not depend on how hole pages are initialized.
+>
+
+Looks reasonable.
+
+I search the discussion history, and found David suggest this fix in [1] with
+following statement.
+
+  Well, unless we have an odd case where the hole+memory starts in the
+  middle of a "PAGES_PER_SUBSECTION". That would already be problematic if
+  memory starts/ends in the middle of a PAGES_PER_SUBSECTION chunk. I
+  don't such a case exists.
+  
+  We could improve shrink_zone_span() to let
+  find_smallest_section_pfn/find_biggest_section_pfn test the pfn_to_nid()
+  and page_zone() not on;y on the smallest/highest pfn, but also on the
+  highest/smallest PFN in a PAGES_PER_SUBSECTION chunk.
+
+I am trying to understand the exact case David described, but not fully get
+it. Would you mind describing more, so we would make sure not missing the
+point.
+
+[1]: https://lore.kernel.org/all/e86fee84-08d8-4563-8596-e40d8e196799@kernel.org/T/#u
+
+-- 
+Wei Yang
+Help you, Help me
 
