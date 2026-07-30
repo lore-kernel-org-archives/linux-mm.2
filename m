@@ -4,90 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA29C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 448FAC54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9056B0092; Thu, 30 Jul 2026 04:58:49 -0400 (EDT)
+	id 11C446B0093; Thu, 30 Jul 2026 05:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8925E6B0093; Thu, 30 Jul 2026 04:58:49 -0400 (EDT)
+	id 0CD886B0095; Thu, 30 Jul 2026 05:01:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A8206B0095; Thu, 30 Jul 2026 04:58:49 -0400 (EDT)
+	id ED6C76B0096; Thu, 30 Jul 2026 05:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 53F8F6B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:58:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57FD5C08D5
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:58:47 +0000 (UTC)
-X-FDA: 85044842694.14.9CBE9D1
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4E94E100006
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:58:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myBJjWXk;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BD8C46B0093
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:01:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 307191C12A3
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:01:23 +0000 (UTC)
+X-FDA: 85044849246.17.F6153B4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 777EE14000F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:01:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMAAyTQe;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785401925;
+	s=arc-20220608; t=1785402081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AFhMzfQqyefJXEYJAjFh+5rGJKRIhpAgY51DG4j2Pi0=;
-	b=PVT7kf1d2x34Q6ZeMgtHViu9WocjW7dskl9EbjCsewgVJAoZXDM+sxah3WZliUHe6uGf/G
-	pfGiL4GgsXcjS/NN6m+neg2N262plUaPyHw1QQw61hAIbe7Pw/jj+p0lYPX1aXbeEGuAuM
-	GxuwlgwCN7nkny+ERuqJUV7cAfsuv1Y=
+	bh=CepvrJSCofuW+Rbn27Rzxe0iX7nFeJvfMACrLN8SBXg=;
+	b=WjE74YcEnAor2wb97yd40cTe8YF8+t/Olri28Vkp3SCvWWbaVo9F696mePlqMYdXreKFWD
+	cMZq4WJibd7n2r6od/uU7cfhYSQQ2atsg7/q28Z3t8BhvrdDzi0oJvcIJ2uVOk+Ag+iJJk
+	1FFu7nCV9o3sqaDCpgB1bThQpMzOoPQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785401925;
-	b=guP5Y1cGMcC9T+njhZN05Voze7ofc7LsSr4NWyKMivnnrYxy2+44fEImi8BOSZcJxgymoI
-	R48K0I7clThVMn1GM57QRS6TFZnRZM3/lHl0ITmMA5i37J5xt9YofVP9EZr110xzKn1Jzp
-	XNy5D13PERJzfGgpx81dzCGtveF/FR0=
+	t=1785402081;
+	b=3csCxzqpMw9LnbeEO4ILqxnczQ3H++e4pBnmIHSOQJID7twahk4gUtGQf9pTWG8cxSa02i
+	BwF5EUpDZTqHtVTf1Jj1/9Wru4JpavDyAfvTyLc10MoZZ8apPO1pQLsaGaiE5FLaR6bmah
+	8lKh0HVWelsScuVLa7w54DEK6ZjsH8U=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myBJjWXk;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <9c7efd5f-f8d3-4926-acb4-34c326ffb1c3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785401920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AFhMzfQqyefJXEYJAjFh+5rGJKRIhpAgY51DG4j2Pi0=;
-	b=myBJjWXkQnmr9W3gwI1XddrkrmhyZuAF6cALo5kfamQOvLGiTcGR6mEJjcBsosQO5yyInI
-	NBoyPGLMi6D7XYrlxORwUWUA4OGdgieRuwzm3yMz9sK3z/RFzmF3GdVb34DaR8pJVGgw43
-	2Wymy3dvUCJadYLPDxBg0KzYiKxOPhg=
-Date: Thu, 30 Jul 2026 16:58:03 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMAAyTQe;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DBEF660120;
+	Thu, 30 Jul 2026 09:01:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16F51F00A3A;
+	Thu, 30 Jul 2026 09:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785402080;
+	bh=CepvrJSCofuW+Rbn27Rzxe0iX7nFeJvfMACrLN8SBXg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cMAAyTQeOGqrx75vLFrjVKl+Q6ZyYvMe3VzKiXO3gT454huGwem31nWyXRv/q9dlS
+	 E3hQqIi3kmO60/5toa+zlCHUuM+g8Wqeu3nhCRRJ+Sf0qZx2N3FkcFXK6YLhYRpLQr
+	 t/KYFLKt7fKulDxc4uMA3avGCvf+riDMcZSldx4g+Drk+cDrNxW3LqOsYnI8qChyzL
+	 7VHsgrGNTwXbiZ3BhGlFN+vSFe+V/f8AsAU+/6IPpBHgp5VswFdaspZ9ChgObfb20X
+	 +Kdl7lpr/DuwRf+dyPvrYDM1Pns9x4LuCF0BroserOpfZgvlmji+6LlA5kagPgRpPY
+	 2550ObpT+Lr8A==
+Message-ID: <47b147f2-8c10-4ae4-8023-94839f1110a8@kernel.org>
+Date: Thu, 30 Jul 2026 11:01:12 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] fs: push nr_cached_objects memcg gating into
- individual filesystems
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, david@fromorbit.com,
- dgc@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
- cgroups@vger.kernel.org, clm@fb.com, dsterba@suse.com, hannes@cmpxchg.org,
- hughd@google.com, jack@suse.cz, linux-btrfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- Al Viro <viro@zeniv.linux.org.uk>, kernel-team@meta.com
-References: <20260715103516.2410175-1-usama.arif@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260715103516.2410175-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] mm/slab: introduce kfree_rcu_nolock() and improve
+ slub_kunit coverage
+To: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Shengming Hu <hu.shengming@zte.com.cn>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
+ <5342124c-4847-4e93-92a4-f3512928c4d1@kernel.org>
+ <f97853e9-3021-4f20-81d3-4bb710ca444a@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <f97853e9-3021-4f20-81d3-4bb710ca444a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4E94E100006
-X-Stat-Signature: dg5xxenkchex7gcoh1cq6jbnttt6cg6h
+X-Stat-Signature: hfc459jw4my34onzw1kx6nbp7cy3gnr5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785401923-722322
-X-HE-Meta: U2FsdGVkX1+jIOUqbdrqsUkrEvdIYdFKKe4NljJeYfUfw/BgR1olxlSMUQovjEwFqaPuo8H1Omqst1JTMkK6Sv+54QivBNUcX+L+tyapSkz/mFURnodOa9mI0gkbnwkVzM82GqQiFW/V8gp1GSqvJJ6HPHahWotdWz/Wno2/vOrvfBTnwKYVixgsdOaMY9zNbUQojfz3a5vG/+e1B/R5Bk6yLm7Ty3VRZAcEWmoK4yyy1y5zx599YI2stm6EjtrNrJCYNrFxD58mVptOMkleXJGMPUaeMUetK6wmuBdj7UMB9AXyCbyhlJQSxXqKg/A7lyDWxEDRf3zi/w1oJeEnsoK/yZ2I14JBeIYh9WMjFlmO88OTFAKgeqqFccb2KWbh6T7hZTxu/zA8gw9Qdh/a2LJ22+vLHXQdz41GniOvEfmgp8i5CgSJORMdCYqKvKvWjNzWx62RYanqc8oBPZj6OnxwH1x0LrrfW0y3Ynu9362pTkDjksPKmDjnID+YSyVjvyCLrnW1hXWJIFjdSwww1oxZRKUvPzrNoJBU5n17YoTd5lfuM9eWOodWGv53TmtzMAznXAGZn/ptfcqT8+PyfYXTHXPa7tofclYmWmtv06ymUsBh/Go0SL8KgH616yvQVPvs4rUx4vc0uzFpKjxs3ko1eWf2InRh5e66OBh9araf55n8eWPQxCPxvVxi11miKmCitnYT/4S2dpgz4I/0cjR0cITYXD9CK+KSai8Dzwy3HZG+lIMkZndQ866DmsWEMgCp13VeA8YP2pjO+XVTFQDNrjH17zSmaicE151JnMDtmCxxRxrb0Pq5szwTfwqjJc4jTgoYMC8sRQjBYFg/Q0Sl3ShB9CsIVMPQfTfytZ8CCvHaoTBYiM87qpAn9beUxt+KTvFdm6zpESoCe+RBFqRaJvRyJL6dCfugZQzuq1Oz2NKURRKD7xbx2yo/yW06VG3Wa8FA3eQFhqe3IZR
- ezOPtrMc
- ppjeBkaUmV1ULd9R9MS6+TRI24UOO9z6LZnH6bbhSRy2eKDR4tDpPZtkh7CHhPiAG9hQvnV8txFJiC2uhVwbhFuMGtbymRbvf6jIHmRuNvQBjXkrybUZ6U5+/MnCc8SRwI+cd2jn4DOoz76P/LVgxqDrB6raXUddtqbgub5GQW+sGowfsDFRx8FVnuCV5CWBtk6WuoquTuVdIIFyJQvz/IhmYISH5W4aDsyic4T1gArMG9YdpNsljpEn4563JNVGt883l
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 777EE14000F
+X-HE-Tag: 1785402081-920473
+X-HE-Meta: U2FsdGVkX1/nia1z/TU0Aoi3SQI51NVqimyU+CF0zMYDVJqzoLXGPD35QanmzzJsemqJj/P28rtlSMOGLfqgm8SGTPl+gQKFOz5z7VSH6LeO50SqK6649ux45lp8vggch9P4BOj8YzjMN/FFGN1Jun4AivWKquIQW/MwvzDAA3Ym28lRTdEH/6X1l7aW8tEKZZALd9slUQKasKyvIiKmdOf9G3OqvcNEIWliLcJWPF5DoqkLQSLTvGbgWJkHxbiRSjHz/8xiJFY1kvNKOHKE9apojdsMJ/xyXnPhnKNlV203COwv16mm3EFLwu4OyHFxtxxJJJqtaOTCstCzqQflpDOO/3pqhQXEj3mBNNAxwQCn70HxP5lrCAUuSGP/sVRHJ4mu5NI8zV5uvqnDuAcJcrfG4Uiio0cqYDzHDP3xFtkvjbw2BXEFvEyu45xfSgYMzgI/Rd5VZ0uHdnZf4vKRLjVF6KWEieMB03AgF3ZLs2i/IunGv6Iis/MxjVknyKAMz4i7x4n4rJ2wQcFwjqEQCgOCJP0nD29tIbhEQqYuWWZUV4+7skiQ3ni5vTbyUYmZi1eqLRVePAAKOA4DsFNTnFipnFgXUBEFs8NLG+H4A/f5EEosntI+AGiHgBQdauzf8yfMv+A+OxXXZP+3+j2uRhiSbAcZQ0EWsGI+Nh6ZiENDc9f9lzP2DZ1T551m9VGHJtGuODDNzYSwfM7JO3w6gIhuvsF94FLXr3nTE9Lh9GKIN/WE+BR7rWD6f8WWDnWPka56JKK7QIYVvlUi/qG1kQFo79eD4fiben2jxXifgeTDlDbkEuQGfM3h1KV+7GlkbL0nDNK0qeHoJO1CGWNYhExYgwYZA4GSGF6I8h3DGahMIxHHKDBKbbL3HdlrM7+Psb+CAjBv1I1HA1vCcOvJX78S/GPVMfn0Mg1aYaIGWmlemRphL5kwD6vmc6KNHuknNl/PEPhAmT0w7l7P+Wp
+ tt9n5ko9
+ kV+h6U5gKRkRebHHeewDUNAYIqZq18JRmzQ9kjSyBVp6Vnj9JhW6j9ZAdXs2Eh8w/JAwINHbArmUMGAp78qHqnPMFHM1Xu7OAp+U9C2Y11aWrEXpuw2+/B9h/a5LKjUETPQZyYK5TiMtGECAZDrvXDmwqGI8zCj55cOybU056ChNW39DO4udt44vXLtjUktJvxtJo3hB/ROoaNqmYi7WT4dzwolnrH72nesdhxPh4J3jz52PujVPTh3zUOYUAcwDRuwVcXsXb/Kuq+RjxrEYH71olEHgf99Qt/r/9yYBem9o+LMvLbGRMJZ4Q/Jr6oWmPmVxqlygmcoFhA7qQ4MNkisb+XbNfNIKiJ9PEYUIy5rGTciw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,111 +152,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/30/26 05:08, Harry Yoo wrote:
+> 
+> 
+> On 7/29/26 11:14 PM, Vlastimil Babka (SUSE) wrote:
+>> On 7/29/26 10:20, Harry Yoo (Oracle) wrote:
+>> 
+>> ...
+>> 
+>>> 8:  8e69c83a1e52 ! 8:  aeaf2ab60046 slub_kunit: extend the test for kfree_rcu_nolock()
+>>>     @@ lib/tests/slub_kunit.c: struct test_nolock_context {
+>>>      -			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
+>>>      +			gfp_t gfp = (i & 1) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
+>>>       
+>>>     - 			objects[j] = kmalloc_obj(*objects[j], gfp);
+>>>     +-			objects[j] = kmalloc(64, gfp);
+>>>     ++			objects[j] = kmalloc_obj(*objects[j], gfp);
+>>>       			if (!objects[j]) {
+>>>     + 				j--;
+>>>     + 				while (j >= 0)
+>>>      @@ lib/tests/slub_kunit.c: static void test_kmalloc_kfree(void)
+>>>       			}
+>>>       		}
+>>>
+>>> Link: https://lore.kernel.org/linux-mm/20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org [1]
+>>> Link: https://lore.kernel.org/linux-mm/6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org  [2]
+>>> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> Link: https://lore.kernel.org/linux-mm/872bd673-3d45-4111-8a41-31185db3ece5@kernel.org
+>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org [1]
+>>> Link: https://lore.kernel.org/linux-mm/40591888-3a87-433e-b3d2-cda1cab543be@kernel.org [2]
+>>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>> 
+>> Wonder what produced this weird block of assorted trailers? "b4 prep
+>> --compare-to vX" never did that for me?
+> 
+> Interesting. I checked it again with `b4 prep --compare-to v4`, but the
+> command didn't produce this. Looking at the cover letter
+> `b4 prep --edit-cover` It's not even there.
+> 
+> Probably it was produced during b4 send --no-sign? hmm...
 
+Hmm let's see if it ever happens again.
 
-On 7/15/26 6:35 PM, Usama Arif wrote:
-> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
-> in memcg slab shrink") added a check in fs/super.c that skipped every
-> ->nr_cached_objects() hook whenever the shrinker was invoked for a
-> non-root memcg, on the assumption that none of them honour sc->memcg.
+>>> ---
+>>> Harry Yoo (Oracle) (8):
+>>>       mm/slab, slub_kunit: register kprobe to trigger _nolock APIs
+>>>       mm/slab: handle the !allow_spin case in kfree_rcu_sheaf()
+>>>       mm/slab: use call_rcu() in unknown context if irqs are enabled
+>>>       mm/slab: extend deferred free mechanism to handle rcu sheaves
+>>>       mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
+>>>       mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching
+>>>       mm/slab: introduce kfree_rcu_nolock()
+>>>       slub_kunit: extend the test for kfree_rcu_nolock()
+>>>
+>>>  include/linux/rcupdate.h   |  32 ++++++-
+>>>  include/linux/slab.h       |  16 +---
+>>>  include/linux/types.h      |   8 ++
+>>>  include/trace/events/rcu.h |   2 +-
+>>>  lib/tests/slub_kunit.c     | 190 ++++++++++++++++++++++++++++-----------
+>>>  mm/slab.h                  |  52 ++++++++++-
+>>>  mm/slab_common.c           |  81 +++++++++++++----
+>>>  mm/slub.c                  | 220 ++++++++++++++++++++++++++++-----------------
+>>>  8 files changed, 433 insertions(+), 168 deletions(-)
+>> 
+>> Applied to slab/for-7.3/kfree_rcu_nolock and merged go slab/for-next, thanks!
 > 
-> That assumption is wrong for XFS, whose inode-reclaim hook is
-> intentionally driven from per-memcg contexts to free memcg-charged
-> slab. Encoding a blanket "never memcg-aware" policy in fs/super.c
-> short-circuits that path.
+> Thanks a lot!
 > 
-> Push the check down into the callbacks whose counters really are
-> irrelevant to per-memcg reclaim - btrfs_nr_cached_objects() and
-> shmem_unused_huge_count() - and drop the fs/super.c gate. Each
-> filesystem can now lift the restriction independently if its counter
-> later grows memcg awareness, without touching fs/super.c.
+>> Used slab/for-next-fixes as a base for a better topic branch indepdencence.
 > 
-> Introduce mem_cgroup_shrink_is_root() in <linux/memcontrol.h> so the
-> callbacks don't open-code "sc->memcg is NULL or root".
+> Ah, I see. thanks.
 > 
-> Fixes: 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects in memcg slab shrink")
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
-> v1 -> v2:
-> - Do not gate xfs_fs_nr_cached_objects(); XFS's inode reclaim is
->    intentionally driven from per-memcg contexts to free memcg-charged
->    slab (Dave Chinner).
-> - Add mem_cgroup_shrink_is_root() helper in <linux/memcontrol.h> so the
->    filesystem callbacks don't open-code "sc->memcg is NULL or root".
->    (Dave Chinner)
-> - Add fixes tag (Dave Chinner)
-> ---
->   fs/btrfs/super.c           | 10 ++++++++++
->   fs/super.c                 | 19 ++-----------------
->   include/linux/memcontrol.h | 21 +++++++++++++++++++++
->   mm/shmem.c                 | 10 ++++++++++
->   4 files changed, 43 insertions(+), 17 deletions(-)
+> So slab/for-next is not a good base unless it depends too much on
+> existing commits on the branch?
 > 
-> diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-> index a7d804219bec..cc4537435399 100644
-> --- a/fs/btrfs/super.c
-> +++ b/fs/btrfs/super.c
-> @@ -22,6 +22,7 @@
->   #include <linux/namei.h>
->   #include <linux/miscdevice.h>
->   #include <linux/magic.h>
-> +#include <linux/memcontrol.h>
->   #include <linux/slab.h>
->   #include <linux/ratelimit.h>
->   #include <linux/crc32c.h>
-> @@ -2434,6 +2435,15 @@ static long btrfs_nr_cached_objects(struct super_block *sb, struct shrink_contro
->   	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
->   	const s64 nr = percpu_counter_read_positive(&fs_info->evictable_extent_maps);
->   
-> +	/*
-> +	 * The evictable extent map counter is filesystem-global and does not
-> +	 * honour sc->memcg, so it is only meaningful on the global (kswapd or
-> +	 * root direct reclaim) shrink path. Skip the per-memcg iterations of
-> +	 * shrink_slab_memcg() to avoid queueing duplicate global work.
-> +	 */
-> +	if (!mem_cgroup_shrink_is_root(sc))
-> +		return 0;
-> +
->   	trace_btrfs_extent_map_shrinker_count(fs_info, nr);
->   
->   	return nr;
-> diff --git a/fs/super.c b/fs/super.c
-> index d2d04a6f4f84..a8fd61136aaf 100644
-> --- a/fs/super.c
-> +++ b/fs/super.c
-> @@ -24,7 +24,6 @@
->   #include <linux/export.h>
->   #include <linux/slab.h>
->   #include <linux/blkdev.h>
-> -#include <linux/memcontrol.h>
->   #include <linux/mount.h>
->   #include <linux/security.h>
->   #include <linux/writeback.h>		/* for the emergency remount stuff */
-> @@ -170,19 +169,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
->   	wake_up_var(&sb->s_flags);
->   }
->   
-> -/*
-> - * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
-> - * operate on filesystem-global state and ignore sc->memcg. Driving them
-> - * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
-> - * per-cpu counters and queueing duplicate work: the actual reclaim happens on
-> - * the global path (kswapd or root direct reclaim) regardless. Restrict them
-> - * to that path.
-> - */
-> -static inline bool super_fs_objects_eligible(struct shrink_control *sc)
-> -{
-> -	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
-> -}
-> -
+> And usually it's better to use the base (slab/for-next-fixes,
+> in this case) of slab/for-next as a base?
 
-Hi Christian, it looks like you missed this when pushing. The commit
-0ef8faff490be (next-20260729) doesn't include this part of the code.
+Yeah. Hopefully we'll figure out some documented guidelines for this in the
+upcoming mm-next meetings.
 
-Thanks,
-Qi
+>>> ---
+>>> base-commit: ffc64805cebac330b2a60b2f1f144fcc35b8ab46
+>>> change-id: 20260615-kfree_rcu_nolock-e5502555992f
+>>>
+>>> Best regards,
+> 
 
 
