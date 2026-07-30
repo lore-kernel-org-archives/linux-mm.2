@@ -4,107 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EE2C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 21:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C17C55167
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 21:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AA5C6B007B; Thu, 30 Jul 2026 17:26:53 -0400 (EDT)
+	id BE7E16B008C; Thu, 30 Jul 2026 17:31:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B376B008A; Thu, 30 Jul 2026 17:26:53 -0400 (EDT)
+	id B98A76B0092; Thu, 30 Jul 2026 17:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A026B008C; Thu, 30 Jul 2026 17:26:53 -0400 (EDT)
+	id A89D16B0093; Thu, 30 Jul 2026 17:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41C106B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:26:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB01F1C0222
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:26:52 +0000 (UTC)
-X-FDA: 85046727864.20.A823AB4
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 59AE7C0002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:26:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="hzwLx8/N";
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D81E6B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:31:35 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1F876A13A2
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:31:35 +0000 (UTC)
+X-FDA: 85046739750.15.BB4756F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2DC90C000C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:31:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cVj/wtOa";
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785446811;
+	s=arc-20220608; t=1785447093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/UfwfMQb84HOLsF5rxaMcowx7tLIOiJ1m0KFTpO5g5k=;
-	b=rLXcu6ZM0uKLDNvFtD+qzE7yXVddT8n7P93CSJ7av2LhNmWg3fMeLZ9qVKBE12FZF4g+Kg
-	tPdf5vddZpxSONnJatpX1TQuI90WDrRUX5tUxuN2UJ0T7RHP/2J7fy4RPNcYkzwaypAbXs
-	MJOaLnOFShy93yohs7HlUtN9od93Pa4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="hzwLx8/N";
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	bh=z29J3l4xPm9Bm9cw2FicltZjkgLZS1wXEUkuW52Slpw=;
+	b=n1iXAZJE0VvZ1UFKRe7eZ8++6nHKjC6H8cuRBGVnRaC6dp7hKZsHwCkNj7tj+jmnzpS+Ek
+	U7QAOEfr8MnPHbGpc4+smYw7txoKs6UDoraHs3wH87qeWAvCF49yuCFi51OV64GiEi0f8D
+	+pCK083PKWwKbjoM2cHwmyIekhYYWQ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785446811;
-	b=dj1OPJosXpKzv45+YI0Na6pKa4d6inVGutiIwZvF+uC5EUYILedSMyM/a/H+3STyMoyVjg
-	daS4RcmgAJGVe2pbAgxBM819w5o7wx/FYGlHzjvlm+CDgIuV7aVfpKW1tdbHDEcrKhA3v3
-	3J4pJBeKGVwMkC66aNIBFnwBDWlIZiU=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A246440E014C;
-	Thu, 30 Jul 2026 21:26:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id z5j5ovdkJOp4; Thu, 30 Jul 2026 21:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785446792; bh=/UfwfMQb84HOLsF5rxaMcowx7tLIOiJ1m0KFTpO5g5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hzwLx8/NxVyYc2ZU91vSepHfJ0kTKRdNfB/swQ/gtxoViqb+9nhMeHFve2yG3EBsK
-	 LpbyVCmZ4sVijqY4pseFE1/yhEIkJgiR1/pwKNBs+BYz+nFgGCrLBHkPsiyHKfFMTB
-	 XXD5ZYP1q7HmB7sjOHrD/0dlfTtZJ3+qZLd1glMTKCQiO9Aac46JIgfLN0JPLJeFPy
-	 LSVlbV915O0ojrU8eSpiW1wFdtus37f7nhtvXOrhzPTOt5ISd/y/WjSOousRgwamhD
-	 CPG5J+1r1aDXvhL6ca2xSyDO41neVbc5+5GEgYPOflquh0YsWaCqUbRq5VVXSkSQsd
-	 Y75vKiqBd0MpL/FX90z5aq1nBxXK0wsozBkgZ/Ptk/WFQDj5dfSOTGJwDqB+1aIhLK
-	 0pyoalk+evpySz2wtUc+i1eH/n6gfRQlPA72tVN3hUs47DXNicflwqKkYizFS/D1tf
-	 TWAW3jh61wYYLITD6XSGtKGAzyR4Eh/IcQfZCxwbGvcp63Ak9lgiY2/1KQQF9Isp4E
-	 02+zXHfY0gUctcekGRIGtJn6IQkZmQ0AKhXeDCpiIPy5oxQnfFcBrTFW6Uwg6OxYIh
-	 lLnw1dwxnA39WkcTmJuHBZoZp4JhhOyuxmDOKlV4P0b7Guh8n1ULhqInzVXGW3C5lf
-	 Tc3NoQnoTLaM3cJ9gTbSCz5A=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0FF2740E00C4;
-	Thu, 30 Jul 2026 21:26:16 +0000 (UTC)
-Date: Thu, 30 Jul 2026 14:26:13 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>, bpf@vger.kernel.org,
-	kernel-team@meta.com, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 5/5] x86/cpu: Don't reset boot CPU cpuinfo in
- identify_cpu()
-Message-ID: <20260730212613.GJamvBdRJ5H98hTWS8@fat_crate.local>
-References: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
- <20260704002046.3859585-6-ihor.solodrai@linux.dev>
+	t=1785447093;
+	b=ZRdPTqBiOcGjaDbjr8S6blVgAuGzYzaPzAGNQuvf/hlv8RK7H6XpzJfcMDA50GPrvvOvbU
+	dBSUHIHJBqCzjyE410bQ6+AkaE91+9qvsNmMyJ+5jSdZzvMBQNHbwz7aYGm+/bE3922pjj
+	ZhATtM6EFyfJH9ouvbfOwaV8PPoNw88=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cVj/wtOa";
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06827436E1
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:31:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF471F00AC4
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785447091;
+	bh=z29J3l4xPm9Bm9cw2FicltZjkgLZS1wXEUkuW52Slpw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cVj/wtOaNiDIeLPVZWskBigZdoEUfkb+Rt6nuy+7Pb04g9w5KgD0MOPXO5KTgFvv8
+	 9TDfuph62DCuTAg8iE50TBlS7CSCYfZ7Ms09gACSDhYnCr6Uk/PnK9/QVDK44L3qTJ
+	 5KuYcV2Vrd18ayxzY1Ij8afikRD9DwDUwvDb9fUi/Gu52sYJxUGGpwiOTycAcY93j4
+	 ZO7wZGpxfk1wyELFNJwXoNjuVaqgvzMraxb0gdAdCkINd97r2jpcSVF+fKv2UxgR2p
+	 WnZKjP+o2260TMs//600f6wQgJjJ32G+CvkLLBExmKpjiWPiJNEa0uW1ClBPFixVb2
+	 ZYfBf4JuSbydw==
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8ff20870ac7so2442046d6.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:31:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqOlZbfRNIbyVHteR7K5lxJuozgdhNkCEdd1JFfI+s/WdrhAaAREjgg72Xz/6HmYpplAW1BLeD8Yw==@kvack.org
+X-Gm-Message-State: AOJu0YzFbPbh7kfuvVeLgGWp5tGlJFReU6rUqZBPXthM2UjWYVs83D/s
+	CupkOElMebmOikI+jrAt8jfb2NOXHE/5o5eJHRU0mAaxEOWfpH63JEVgsZDMtF1MPNSfcvrcMhl
+	ugdmW9q5xCGVRzLhbsZMfEipUDptKnwk=
+X-Received: by 2002:a05:6214:5088:b0:8fd:6e32:1aa4 with SMTP id
+ 6a1803df08f44-9083483a5a9mr47521046d6.62.1785447091190; Thu, 30 Jul 2026
+ 14:31:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260704002046.3859585-6-ihor.solodrai@linux.dev>
-X-Rspamd-Queue-Id: 59AE7C0002
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com> <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org> <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org> <amtv0YRbSrN6iUEo@cmpxchg.org>
+In-Reply-To: <amtv0YRbSrN6iUEo@cmpxchg.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 31 Jul 2026 05:31:20 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+X-Gm-Features: AUfX_mzSqub_uH6UJY92TU4ZePeFbyNXrk2hqITcfxc-c67VWEt0IELxOcKEVzE
+Message-ID: <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
+	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	willy@infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2DC90C000C
+X-Stat-Signature: wes6mbru8j5yrpouudkhqyezawgmhmdj
 X-Rspam-User: 
-X-Stat-Signature: ukmt3iu8dx7kyfz7jwzwafcxi5yrpdxg
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785446810-89096
-X-HE-Meta: U2FsdGVkX19pH3bjLf9y8dw9RtbKwRtMKA84NumO5nXhLVac3OjBUWjffB50Pth+K8RPJzls2vKvz1mK0UICuAczxetY2NDXPP8G51e3tj1mvmfyaOA/VlFk71GrnGWGTmTfRmgtRKKFdZMXK/f9UijBkgxn0+NYaMdwVLuWreH5TGEvNJyeyyqwuortOVSMu71F7fO23bMJpyDBO9reN2aqkyGahtSGXcfsJwrIsXdTS+xBOHZP6foFFbKS5YqpPpcyL0qlz8iLrNMbxED+UmMoYBuHqM1rLbIDDJBCkGr3FSG6P03ZALT1RtPpddiRS+5C9/9HeRkp2sA4yZ4fMK9psg3ykJsKnOtPCc8jA3qKOkXGUjG2bxMupC14iEyhrPqNQwgGJ58tfwwYyCwaPU+fHplY6MnxR9ZaOfHvPsABkNedE4Dmcd5TAdluOHguEaW/UPl3RuxtyC/sBii6ZSEoWTSRgvGxeGrsP437TnSESNbcPUe+jBQPy+AkhzkamQb4+1l+i4pfZ28fe5/BFmyJI/+Ax7evAfBg/1SosFF8LR2GIVsB1+82fWEz/2BR4LHqEDADxBrpQ5mGDzc8J92Kq115+fYY+TyxgpNKwCqh7UyeDKemWLQLJoD7NPBg24mteC2T2EpGpxGw5b1Rxf7i4ZsyyjaFCKp516lEFhWEhxqjx4vAoZPY2cqFTmF0z92Uy9nAOB6wqD4DwLKgLGNOPrntPSIKmR21GH0nV5zmftzVlwClxTxSp9opNXtyXHfYx+G/fw4pBFDjp/NagP/GFVNDVBPlFmcJeqFnE5mToZSOupVDLDL0g6JQ3axHLf96CblJz3IJa2JZTBStED/2ItkHiZcRs6yl4asugptVI/rzA99voBlCmKplym+JB+jkhle/BS96Z/HUdOldz5qBPmlWAUOI9AJoxYl/OARZc9cKgZgJCuH0IgywxXnObPm5W6qfTiuGEjdpxKE
- GR66Lo7V
- vXAa9L9viaLLC2mUuyAgTQoJNr1VtsNs/OSwBPM9MM9/vhl7ehcx2hhSvmN6tNnL9zfpOLqI2u8efs8UK0jpXeVQyNAhy2VaFldzVKeqoDKbrgKVuw7hM5fuXX6yFH1J9BiRYZQBPe9V2BWuTF9rOGwMJvQ61rsv8WnTG1Q6yxZ40YivBS8LRfaciNEfVazWZ5/iowHFHjcSOSgEkRkCry0PZHSW8Eu6WWc+nMatVgPlTsKfFBjtMRDw0MDdkLdPUW5S/3hRp6mOS00F95EPqU5/VF6+v2nCFWW7MBaBRbO7MJkZwQhN4yBMwigJOWeR7sxDF5WzMMwwzh87Z19KGVi5uAQhQXQhD6+2+mg/t0OR1tsXDxBMLwOLKD8Hn4hWcn9LEn0tDSRiQsBJZG34nT1CIXJqDoLYhNU3oqHDEqB3WGQI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785447093-290607
+X-HE-Meta: U2FsdGVkX18p63H11VSOka+fjqC+s8lLmFpiGAY2qJn1C9RsCvP+zBhEnUUL32UvWldgu15rv/qoK88Oo4Eg3OEuAsil6xIVj++n+VxEtwm4BNOOGt3aE2WoiG1UUmSt7MIu7QoOlxcVSGxx6uLvZ7RQz2q9qQDzyQrm2tvGpWusBurHApdMYMU/E7b/yS2YT9/WyO320Dx/Xi+U1dcUVF/5pC5LGl2SX0AdIeQ9sZwmiDUK18eEge0N9SXTeospnfvV2PptfRw/apeMU8JUEVcM2KrrnAfaC/rMVUUpSVqay7wEzqkBijZtRxlI2OOgKegVdBget2UaPsCU+ZyeCiQUDbhBGtPxq7ILdyGl4jFlVKQ2me49fW6hUdMnGGlnMn4rs0tgReNLRf3sodPrG8ZxbK2uBObJDrlkyPVM+RMt/juMT8m3R4Ufyogsr6dHgqwiodJbVXX+1oIPKVvXk0lVBIa+lxfeezyfRcweLn8I9dSlW+p1pKbrhGm1bdqCdQXKI8qWLSIiRpkdRAiB599iipFPfEa6sxc90pJUBETOCMmznI0dF1b8M7OSdCw0kHOPHQFquI4/CG9j3O+JSVqyrE+F5fzJcScUwXRaVpJ6aizKp4RzUHH5HIaCJYY1rbVBKt/0+NHeTfkxv64vQoeySYJebf0tAumNgF1LrPUnLReMnXXknOb+Sh0+Ul24DD58nW+xTt7LsIbt1DKdPw2uVTrXv+mpY4uBT5eqvGZOZsNcFdtv4EIOFlfabCaUab8ukxyHl7K4g86Ne9tTTWsXKTJzOnKndLzVdnuCN72m3lwV8/DXWcvGklL6SaUIijX4Hd/+6CsHQF6UYLUo+DwmI+2OcoanAHI/t3KXC9ebVoJYdXxc2bhbrtttaLrhvPRatk1oonVk/wsn+DLysmzFWoY01r3ovFWaA7g1A3lZZGPY1qIu21jylBCF10BYF2UxFa7FsSsIlsTwhlF
+ FF7sjfc/
+ wmGXRc+tIt+7/gJZc0tfDRVzBW2ZgLxhxuerarICYabcK1n/BzVSOcB4StIKLMqbLNJmNk9qxSCXyJXsLKeh/2MxrCJjRR68Vcm2X7FFfGi+aITMMChXqujWkPzIgQQBrTrqulT5PxbKHia679nk/a7psUclUPCKBUhnaEHrZ+1aUuZ8WyxREgAmmJ77ZXnV7UGcx6d1C2Emr37WJV4RfDXvY4vJUMMhLqm4D7lpQ7KK7w2rclW5MWABhgiEjg3M2Ukhna4T3zdT6sMWAFFemH0zPViubTJ2Mn9+LY3iSp9i3+qkglfVsJ0i51ay/0urf+Wy8yAYRgHHLJ7a0V/2VWIE82iYhKrQdJFwxHImHwpjSqevMrktOjnO+wUT4mrKpV7NsQGDEx6SZBmQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,108 +111,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 05:20:46PM -0700, Ihor Solodrai wrote:
-> identify_cpu() used to rebuild c->x86_capability from scratch:
-> init_cpu_info() memsets the capability array to zero and
-> identify_cpu() then re-reads CPUID. On the boot CPU identify_cpu()
-> runs after local_irq_enable() and before alternatives are patched. An
-> interrupt delivered in the window between the memset() and
-> get_cpu_cap() therefore will observe cleared x86_capability [1].
-> 
-> However the boot CPU's capabilities have already been scanned, with
-> interrupts off, by early_identify_cpu(). So move the init_cpu_info()
-> call out of identify_cpu() into its callers, and skip it for the boot
-> CPU on 64-bit.
-> 
-> Secondary CPUs call init_cpu_info() then identify_cpu() from
-> identify_secondary_cpu(), with interrupts off, exactly as
-> before. 32-bit still resets in identify_boot_cpu(): it relies on the
-> reset for the no-CPUID cpuid_level default.
+On Thu, Jul 30, 2026 at 11:38=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.or=
+g> wrote:
+>
+> On Thu, Jul 30, 2026 at 03:46:25PM +0200, David Hildenbrand (Arm) wrote:
+> > On 7/29/26 17:04, Johannes Weiner wrote:
+> > > (2) With a mix of basepages and THPs, there could indeed be a lot of
+> > >     basepages ahead of underused THPs. That means swapping before
+> > >     getting to space that is much cheaper to reclaim.
+> > >
+> > >     The current setup isn't perfect in that regard, as the shrinker
+> > >     runs simultaneously as the LRU. But it's making guaranteed forwar=
+d
+> > >     progress through the THPs, even as the first LRU pages are scanne=
+d.
+> >
+> > The shrinker would obviously remain and scan the list for candidates.
+>
+> That's slightly different from what I had pictured. But I don't think
+> it changes my arguments much.
+>
+> > We might want to remember how man / if any such entries we have on
+> > the list.
+>
+> Right. The question is how does the shrinker actually find them:
+>
+> > > (3) The anon LRU has folio lifetime, but the splitqueue is one-shot:
+> > >     we scan each THP once, and then it's either split and dropped, or
+> > >     found full and dropped. That THP never needs to be revisited. The
+> > >     queue actually empties as the workload establishes itself.
+> > >
+> > >     The anon LRU ~ splitqueue argument is only true around startup.
+> > >
+> > >     If we used the anon LRU, we'd need per-page state to avoid repeat
+> > >     underused checks. And we need external state to not scan the anon
+> > >     LRU at all if there are no new THPs (and no swap). And if that's
+> > >     just a counter for "new, not yet scanned THPs", a single fault
+> > >     will cause you to walk the entire anon LRU before you get to it.
+> >
+> > Remembering "not yet scanned" through a pageflag (for large folios) is =
+indeed
+> > very easy.
+> >
+> > I don't quite understand the "a single fault", can you elaborate?
+>
+> Let's say you have a 1TB host with 800G anon populated.
+>
+> The oldest folios on the list might be THP. The newest ones might
+> be. You could have a mix of basepages and THPs. The ordering
+> constantly changes as the folios are aged, rotated, reclaimed.
+>
+> How can it find a handful of unscanned THPs in an ocean of folios?
+> Even if you mark the folio state, that's hundreds of millions of
+> entries whose state you have to check in the worst case?
+>
+> The lru lock is one of the most congested MM locks on large
+> machines. *Maybe* you can do it locklessly.
+>
+> Maybe you can add thresholds where you don't scan if there aren't
+> "that many" new THPs just yet. That means magic numbers and reduced
+> predictability.
+>
+> Maybe you can be clever and scan from the head of the inactive list
+> where (most) new folios start. You still need to skip over basepages
+> that faulted after. Skip over the referenced pages that have been
+> rotated around concurrently. That could mitigate some common cases,
+> but not the worst case.
+>
+> The search pool stays enormous for the entire runtime of the
+> workload. It never gets better, never converges. It continues to
+> include every other irrelevant anon page, and every THP that you've
+> previously scanned already. A single new THP fault and the search
+> problem starts over.
+>
+> I just don't see how that's algorithmically sound.
+>
+> > > So I think reusing the anon LRU is flawed. It's fundamentally
+> > > different needles in fundamentally different haystacks.
+> > >
+> > > If we can agree on that, then the lock contention problem has a
+> > > different scope as well: it's a simple optimization issue, not a
+> > > fundamental data structure arrangement issue.
+> >
+> > I don't agree yet :) But maybe I am missing something important.
+> >
+> > Note that the "simple optimization issue" is not so simple once you
+> > realize what kind of a pain the batched LRU already creates us when it
+> > comes to predicting the number of expected folio references.
+> >
+> > It's a pain I don't want to extend to other areas.
+>
+> Since we already need to do it for the LRU pages anyway, isn't it a "+
+> in_deferred_cache(folio) extension to existing refcount checks?
+>
+> I don't want to sound dismissive at all. It's a problem. However,
+>
+> - it seems way more tractable than the shared list,
+> - nobody has produced hard data to show that either is justified.
+>
+> > > If I understand you correctly, the concern is that people will enable
+> > > all manner of mTHP orders, and 99% of the anon faults, including all
+> > > the order-3, order-4 pagelets, will go through the list_lru lock on
+> > > fault, with no batching.
+> >
+> > Yes. See Barry's LRU cache change I linked as reply to Usama who is loo=
+king for
+> > example at a system that mostly just uses order-2 anon folios.
+>
+> I took a look, but I just see a microbenchmark. That doesn't seem
+> enough to make a proper cost-benefit analysis on the complexity that's
+> being proposed - whether that's a shared list design, or a splitqueue
+> cache.
 
-Ok, this commit message is all over the place. Please structure it something
-like this:
+Hi Johannes,
 
-1. Prepare the context for the explanation briefly.
+Sorry for being lazy and not including the necessary background in the
+RFC cover letter.
 
-2. Explain the problem at hand.
+The background is that our goal is to enable only order-2 (16 KiB)
+mTHPs on Android. Based on our long-term experience with large folios
+on Android-like systems, we believe this offers the best tradeoff
+between the benefits of mTHPs and their costs, including increased
+memory footprint, fragmentation, compaction overhead, and internal
+memory waste.
 
-3. "It happens because of <...>"
+Specifically:
 
-4. "Fix it by doing X"
+1. We obtain most of the performance benefits of mTHPs, including, for
+example, a 4x reduction in page faults, faster memory reclamation at a
+larger granularity, and making it easier to allocate higher-order
+dma-bufs. While larger mTHPs can further reduce page faults, they also
+increase memory footprint, which is a significant concern on
+memory-constrained Android devices.
 
-5. "(Potentially do Y)."
+2. We minimize the internal memory waste associated with mTHPs.
 
-And some of those above are optional depending on the issue being
-explained.
+3. We can use a lightweight compaction strategy that only needs to
+satisfy order-2 allocations, keeping the compaction overhead low.
 
-Also, do not talk about what your patches do - that should (hopefully) be
-visible from the diff itself. Rather, talk about *why* you're doing what
-you're doing.
+4. Combined with large-block compression and decompression, 16 KiB
+pages provide more than 80% of the CPU savings and compression-ratio
+improvements achievable with larger folios[1].
 
-In the patches where you do only mechanical movement, add
+For such a system, I don't think adding these folios to the deferred
+list provides much benefit. Since the mTHPs are relatively small, there
+are unlikely to be many zero subpages. Even if there are, they are
+likely to be short-lived and will quickly become non-zero again as the
+workload continues.
 
-"No functional changes."
+But I can see the benefit in Usama's case with 2 MB mTHPs. For larger
+folios, adding them to the deferred list could be helpful.
 
-to the commit message to denote that.
+[1] https://lore.kernel.org/linux-mm/20241121222521.83458-1-21cnbao@gmail.c=
+om/
 
+>
+> (As opposed to the patch of hooking into the existing LRU cache infra,
+> which is kind of a no-brainer.)
+>
+> So I still think somebody who actually cares needs to show that it's a
+> practical problem, propose a solution and show hard numbers to justify
+> the engineering tradeoff.
 
-> [1] https://lore.kernel.org/bpf/20260610175651.647515-1-ihor.solodrai@linux.dev/
-> 
-> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> ---
->  arch/x86/kernel/cpu/common.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 8f093c6c7ccc..cd3d7c37c174 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1986,8 +1986,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
->  
->  	c->loops_per_jiffy = loops_per_jiffy;
->  
-> -	init_cpu_info(c);
-> -
->  	if (!cpuid_feature())
->  		identify_cpu_without_cpuid(c);
->  
-> @@ -2156,6 +2154,13 @@ static void identify_cpu_32(struct cpuinfo_x86 *c)
->  
->  static __init void identify_boot_cpu(void)
->  {
-> +	/*
-> +	 * The boot CPU's capabilities were already scanned in early_identify_cpu().
-> +	 * However 32-bit still needs to init_cpu_info() here for the no-CPUID
-> +	 * cpuid_level default.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_X86_32))
-> +		init_cpu_info(&boot_cpu_data);
->  	identify_cpu(&boot_cpu_data);
->  	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
->  		pr_info("CET detected: Indirect Branch Tracking enabled\n");
-> @@ -2178,6 +2183,7 @@ void identify_secondary_cpu(unsigned int cpu)
->  		*c = boot_cpu_data;
->  	c->cpu_index = cpu;
->  
-> +	init_cpu_info(c);
->  	identify_cpu(c);
->  	identify_cpu_32(c);
-
-Also, when you look at the final version, do you see how identify_cpu() and
-identify_cpu_32() are soo close together so that you can basically move the
-body of identify_cpu_32() to the end of identify_cpu() and then you don't need
-that helper either.
-
-Other than that, the flows do look better. 32-bit still needs dealing with the
-no-CPUID case but that's for another day. I can't really find it in me to
-care, actually, 32-bit needs to go away and we'll simplify a looot of code. Oh
-well.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks
+Barry
 
