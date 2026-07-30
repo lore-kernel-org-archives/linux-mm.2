@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C653FC55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 16:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22CA8C55164
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 16:18:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C8F16B0088; Thu, 30 Jul 2026 12:16:03 -0400 (EDT)
+	id 1FD436B008C; Thu, 30 Jul 2026 12:18:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579D76B008A; Thu, 30 Jul 2026 12:16:03 -0400 (EDT)
+	id 1AE4B6B0092; Thu, 30 Jul 2026 12:18:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490106B008C; Thu, 30 Jul 2026 12:16:03 -0400 (EDT)
+	id 0C3F26B0093; Thu, 30 Jul 2026 12:18:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 245F26B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:16:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C1C7801CD
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:16:02 +0000 (UTC)
-X-FDA: 85045944564.29.C982E95
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CEFE6140008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:16:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TS8leGBx;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DA0AD6B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:18:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D98E401F8
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:18:20 +0000 (UTC)
+X-FDA: 85045950360.28.3EB0394
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C6C1020016
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:18:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=H30XaJZQ;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785428160;
+	s=arc-20220608; t=1785428298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v4U8SW0YxWrww9IDw6fuGEu6zQ2HQAvAF1fb2z+mrWg=;
-	b=uDmCjTx6ZVukPI526+2jBzegCZabdLfhDdptv7SgQycyD4UwhjHK39wwHkBdBJ3utIIhdN
-	vEDHtPsYgEAULR8hDp1e/9UqmkwLqpr4qu5Cf+3MDVrX5WToCY24Fq0PgTTV0BbqtAbpfZ
-	W6U17qevKsUdgGmv05ZzBFpi1LAbVLg=
+	bh=w1Mc/92E8p+lO32h+qT72OZ7HfiwW0g4cTUB3qX11Fo=;
+	b=rOKAVyOvoct6f9RaVX3Uw1QunO1HFpHT1l3jpAT+KhfvZxuykD8UL2++S42wRh2vp3CyE9
+	L59hOM88lMuiiRLgu8dX+KRFxeMbZeJUGba/oqRLvsXWlpcqmQl+WYaulN0hnncZueHkiA
+	j5IANRpf6siSzO4wQJerGxDGlDJBHVs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785428161;
-	b=BiK9WH8RbQGCbvBa6lSRiscv9sWli8G5POC9qAOXZOHj46YlTUsyXNh0i/iUuYjVcwUb7y
-	jCw4fLDa3qJzkNO8w+Gl+WaQklftMeT1KbUK1DEPIgvvePQjHRnLhZrs871+M3tHPY7bEj
-	KlnXhvT83MeUizNLRgMScsVPM24Kutk=
+	t=1785428298;
+	b=nc1pCl5H35MfyoKdLFn/QgT2RogVgL2027bwlrpJuMT1jnRjqHpPuilYsabXFv7uzjPdH8
+	e5kFS7syTGJzCz9jytQvvvL9Z0ElNPywBlE5dj9f7Z3LzISQ9jonfWC+mGpchc0vW27ftY
+	NMlzm1BZfZE6oagxFbUk65Jw+G4UbSs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TS8leGBx;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1FF6360A5A;
-	Thu, 30 Jul 2026 16:16:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB0D1F00ACF;
-	Thu, 30 Jul 2026 16:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785428159;
-	bh=v4U8SW0YxWrww9IDw6fuGEu6zQ2HQAvAF1fb2z+mrWg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TS8leGBxEjN+OzJUFZz4SdEsyN4Xv4yZ1kByZqOl+cGkTUgTGz2XHpBPfiQCe99UM
-	 Z+UlPp38Ws337aMaKUG2Ki0Pry/RvXWCMEDX0mgCSDMeWEke7N8C197/uLcM8N+akC
-	 hKT+yjGkR63d7kkqqWlOPXcQioGfAT7t+xoLidLg=
-Date: Thu, 30 Jul 2026 09:15:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Avi Weiss <thnkslprpt@gmail.com>, David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Soheil Hassas Yeganeh
- <soheil@google.com>, Arjun Roy <arjunroy@google.com>, Eric Dumazet
- <edumazet@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: return -ENOMEM for page-table allocation failure in
- insert_pages()
-Message-Id: <20260730091558.12e3d9029002c87c1f00b4aa@linux-foundation.org>
-In-Reply-To: <amr9zoSncZguF_uu@lucifer>
-References: <20260730071323.964321-1-thnkslprpt@gmail.com>
-	<amr9zoSncZguF_uu@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CEFE6140008
-X-Stat-Signature: 4ppaxfjh17tc5dfryj1uyxe5gtepng9c
+	imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=H30XaJZQ;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=w1Mc/92E8p+lO32h+qT72OZ7HfiwW0g4cTUB3qX11Fo=; b=H30XaJZQ7r7auy62y8eZtVmoVV
+	G3l/41e0XdTegoohny+WA7lpvZpnLqqWgSSfj3UghOP2rLGuXgaSg+ZyfpuIRwgiktDQpjd+3saSp
+	jp3hBS/EkFWKZMM+b7EempEwkf9zqNMhTW4hQU+6Baa8bJgwYrDLEZYX4gJCRbZ8GpS1dA7/dnuMx
+	Epr/T7iZlu2URIwpixBO6Gm6IAjbRZdoId/JN8sOFhwmPGkpnOgq6kXOSH9kwwZQSxDLFvpg2Py6D
+	ZnGtkfqjo7577UuywvqOr+ppHiYlH6oYRoll8Y8i3Df7bPv6jUn+fzRsJi+adm3g+jQ9bIMfh4mQv
+	7+DCfA/Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wpTSQ-009MZJ-24;
+	Thu, 30 Jul 2026 16:18:06 +0000
+Date: Thu, 30 Jul 2026 09:18:00 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v2] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <amt4s9gKB7Dfpjjk@gmail.com>
+References: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1785428160-646805
-X-HE-Meta: U2FsdGVkX1/tpBhNlzAFEhxIE1B7a2wjqTqDMc7Um5c7rrf57261iHpdNCgz1D3BpnNw7OFOoXCAYkB7OGyUwtDUZ/mJcCK1skaoOxpUgsJpisjVhUYDp46kZayAp0jEtoz49utTr9yZB6qEx2JhfN4BPK8PeAP6Or9qgqSjThzU3viVzVvCRW+OIRZYS2fZtSR/hzX9ytJh063HZ2pVuiKHu0/GBLQtl7pjM9NO+agBTBSHn196MfegqK0oiiXBHpw7eGKRESJ24yS/9v3bUCIlCOjU68X/OB6GloKjGVmXdlOw10amx/6XVBBqhdctxcsuHdFR4hAvv3FuP8djHjfDUhToEhctonY1sduL8Eyn8pOsNlhIvh40fm+jYAabJY/KRmYFrUHXwbiLHDZCHWPGnaH8WKjJf3/j4KcwJX3osHkUEsbGnYWOFWo7y33WI1aNjUkI7quVWk2+dutzUXlcGL+3BeBD5kDlD5LoyCymzSwUGtTMMvE6Bu3TcLvCbFu3Uwvr9AWRPtvDueCw2MfhsSAs9zzWc9rHtVpmriCT+NxJmCVwfC5csN9wI9+wMwEG+vEUw9qtUjt2uLVkIiivcsa6N/ZqV5BzewCgxWVPIKkm/r9/6yPfgRsSwElLXy6X1hvZGrPN0JcJxFwZzejpgrSvl13jm0ylDXeDSvFKysXrE+i5481IofQsle8ddSdzHehtdJjnEIBREb0gNhUmi2ybqGU2ugne8II/BQ6PrXPRy+f5Ai9N2/JE3ieu07Ys6lGxW+qMzlwp9pMXZi0f9fDoRV4Sze/Uc8XGzBdkUfCstkaHCNpDNkClUHiyN7+7IIOx0/bV9/pWD1wTaqITmeWIEmBH+wcAre4nsW8HY6/qk/n91U40mrQudSXNhZ+eBrm6H+/DGqIzXrmwWeIygNqbVpk2KXY8JNoapdswtODQ3d7ic1hqcb77NFVwGf+D/V3BdKzVCy9d9kw
- Ny8VLhRx
- DI9je2TH6eZbypKoKqnC2SjNcdqQH9uwloZyEFKEww70yIfxk3+cncb84MLzcgVIXs9GsDL9Kepkjxd/KaVVIrL1oROw1+eTvehDeIe1DEFjFgb2Vu251jEXwAmy5BqjlbVeBSvckkIknpB+jaWXK2vs0k5PqRLuLs0dioLjbqZm+8WFv9RhydUEbvXk4pqhNLHnt+RF3FpQnQ3Q9GpCIOHs5HtCvr+d+kNvlnDBA0FeN4/0y0h69zYhpzQz66Rol84Du/ByMlqdphqxLg7VOsuhgSM/qcX0kSKxDwD7iHQ5Cn8JaWnEN+mzlH9npAzpnn7en
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C6C1020016
+X-Stat-Signature: t1oxop36nihj73s6hgx7ig9pbzoeco3i
+X-HE-Tag: 1785428298-197552
+X-HE-Meta: U2FsdGVkX1/IrK8Ymlixr0nbkJPsC1Qh9s6/OUaWNQXcnn+SexnOYzN9HJwThrNppZFO7psnVoiPRiqFsstG+3vM+rpE/i5r9ZbRkGG23i9Wkhf1zSP+tpRi1lFmkPK2eLHVJ1WsVFZ96ZLCg6DVYfSfFZ1BzMvh3ndAsf14qyEoqELi0F0Kv1PwB75L0WV7vmUXu2hNCMHnSSvJhlSjoWRU4cWLBtpYLxuTBOs4IpEF59j4/NDg+XLnWL93VK3ahY9IDV5UVatdXM2hQEAgiCRXADN9d3VPWFXe2LHUGq6beMxG3wXOLlMdarFDM8IFiGJXxdxPeHEXjpg9dgFYRbG8fogyC5lDSG1iP09smHcXuYLqbJuqS+9z4RXhbIzVPjtMaejiuRadb/ER6jVVfF4N7jfVLJsFMk8eKcvG4PVZDEVolhSCtbFwy7XW5Y5U0N8ezTsA1DlPLIZfxmHz8AweCvDp1//q2KwSclnsLrWX1hdx2ID6C0ebNU8kCqN5KjudKuk8rvXzH0prKecGSCuZHVltHM8HBb9/aSWSWzLWkU79VgkeCV1ysB2KSgLlxaKItLXrnr6VyGb4EBf/jkTHYIJSEfDNEvE8LMgJB+dDgxM+L24YymRg/sRYPndCYy8PDFCT1m8S/juo0SpkPXz+R+7LbHfr3xXPfd5NQ3V0e1ZLAkfocLkxfu0qJs1BddFpSK9yD91jNyTP3v4pcXPsufgIOq2jqBpJ5pDc1xkXSNovnpsgq4zjV3c5R00oUkKFPFP1P0QvTMLl18OIV8TGg5PbjkYHLpY0iqD9JxJfM3rrMH6lI55HhQI43DEQUaWjYrA9Ti7rFFVKNi7NGzxnsH9Qz1B8HCtMmPkmsm0tzhepIHPAmyT3MZyblw7Oik4HS2vZH27Nd3y5tmTpCnA/GyuG3Vz6Sy3jlwO7vu9hiXcXo4qhYnZ9xu/KAOUzLqOm7RAUbT82uKucSxH
+ NHofij5/
+ neHNXBcOJjufhacY1gLaEVJJsoolEMW5MCYJij+1ZPTlNG/vgGqU7jC+vrrCjWOkHOXPg5Tlasnq3g6b/U+N/wTfaTvlseOooFK2XtPAPQLLDo5ERQbbvcuAUAjOGoAaGqVsJbisYZeUZoiKS23xuBrdr+31Jfzh+vZEOT/voNLGXWr9Z54S3x65WTP9eM0FOrpCfPMSizUsxQxeV2USvovL7VzijmI1uUmCsaRtxEOF7E9/jPX0UJcnvFNL4gjUJsNN2lxarzIwCiHixBifUS+DzPlJXbp/NHaCRO5NZvEZCxd5HzyW2OuVmLftrhkg/oFvhlMwIautBwHJEXEK/9m6Dbw1tRgg99ZkEFwVFyt13sgwatOUSm7OmwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,31 +100,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 08:42:49 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> 	pages_to_write_in_pmd = min_t(unsigned long,
-> 		remaining_pages_total, PTRS_PER_PTE - pte_index(addr));
+On Thu, Jul 30, 2026 at 08:55:50AM -0700, Breno Leitao wrote:
+> Memory failures (such as unrecoverable ECCs errors) are getting more and
+> more common. The kernel knows how to handle it while running, marking it
+> as poisoned (and SIGBUS user tasks).
 > 
-> 	/* Allocate the PTE if necessary; takes PMD lock once only. */
-> 	ret = -ENOMEM; <------------------------------ set it again?
-> 	if (pte_alloc(mm, pmd))
-> 		goto out;
+> Poisoned memory is removed from the buddy allocator, but, not from
+> other places. A current problem is that kexec will load new kernel
+> on top of a bad/poisoned memory, which is undesirable.
 > 
-> The way this function is written is horrible in general, I hate 'preset default
-> return value' as a pattern.
-
-It used to be the preferred way because 
-
-	ret = -ENOMEM;
-	if (expr)
-		goto out;
-
-generated slightly better code than
-
-	if (expr) {
-		ret = -ENOMEM;
-		goto out;
-	}
-
-Whether that is the case with current compilers I don't know.
+> If the next kernel's image, initrd or purgatory lands on poisoned frame,
+> the relocation copy writes to the bad memory and the machine checks
+> during the kexec.
+> 
+> Skip hardware-poisoned frames when placing segments: check them in the
+> kexec_file hole finder so it lays the next kernel down on good memory,
+> and reject a poisoned destination in sanity_check_segment_list() for
+> the kexec_load path, which cannot relocate.
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changes in v2:
+ - change from pfn_to_page() to pfn_to_online_page() (Miaohe Lin)
+ - Return the poisioned address once we find a hit, to avoid O(n^2)
+   chcek. (Sashiko)
 
