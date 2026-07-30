@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05120C55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 01:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CE86C54FCD
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 01:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C6446B0088; Wed, 29 Jul 2026 21:48:25 -0400 (EDT)
+	id 0C2886B0088; Wed, 29 Jul 2026 21:58:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 876DF6B008A; Wed, 29 Jul 2026 21:48:25 -0400 (EDT)
+	id 0733F6B008A; Wed, 29 Jul 2026 21:58:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78C6F6B008C; Wed, 29 Jul 2026 21:48:25 -0400 (EDT)
+	id EF1E06B008C; Wed, 29 Jul 2026 21:58:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 522026B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:48:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D40A1120857
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:48:19 +0000 (UTC)
-X-FDA: 85043757918.10.E3E70C5
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B3F5F8000E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:48:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=snIU8Z+v;
-	spf=pass (imf02.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CAC776B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:58:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FDB2140894
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:58:25 +0000 (UTC)
+X-FDA: 85043783370.27.65F0994
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7460540004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:58:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=I3WAuBgp;
+	spf=pass (imf07.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785376098;
+	s=arc-20220608; t=1785376703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k2kUWZ0xcdYFc/4dDu905x5nCY+rKqCzP7jv+c5usrE=;
-	b=5XOYobDSeL4uUjG1XSmk8bb/1JJPF8xT6qiqmfgOCwj3C+xcwzYtLMbYAKHNpWEpJ8azcY
-	Al/3fBgMNO3PAnZ06qzMbjJroIo/+M6Ds1wbPJYnzAqEM+RGXAsXzIxwq/7em9h1tMECEU
-	bjICN1dams3Op5EDkTqrPUvrfnxo4us=
+	bh=mz/vF1+MIOcbgrfsM9T1ETaqVlnKJAEoM6Ierr9UBVg=;
+	b=x2LUTZfdFe6sJIpsmxYWtL8z5Ah6VuO09RkydPznJFwKj1eo4KbPtMRZH2TZW5WmQbZ9c4
+	PXxuRRqJz+UxFK+7LWuc3zmhABhLROz0Fldq5AMfh9vjh2lrsYa0P0EuXcgXQYBFsUvAV2
+	E9mIwD05EDQo+ONWqlcYWkgKkorfziY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785376098;
-	b=Bvp27Va0kPe8vyxyNYoQ9xFnTj9ZfakdSBwlGmzfln7TMK104PXbP898hqIyJyreOWWPSJ
-	poIvL+V4irr+FpqIhGpsHEqPJJyAJfWe1LTc2vEykgS7x2lLAZYVagjlHxWfwmog6hFhLp
-	A1DNUrgjGQ+iciA2bDn5iuxUAC6CqfE=
+	t=1785376703;
+	b=F9t0dlfurZmMQhMS7jJvuSv4HI1n7qPWEBCk9+O4nrQFM2OVzsGXcYLvBQKEUCmIwyyHj5
+	k3Mzg+dMoX8EqIuba3AFh3MovsyjGFpV/EDjOfEQ+CGi8u5gl4V8+27Yi7Jh5p5JJB3xwM
+	ohNwCFv17lvj9vrFswTLg18ngLaEzjY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=snIU8Z+v;
-	spf=pass (imf02.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <0710df28-5870-4d33-aba1-085756290856@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785376095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k2kUWZ0xcdYFc/4dDu905x5nCY+rKqCzP7jv+c5usrE=;
-	b=snIU8Z+vX8Ry3ANjvdEYi7mUuak8bA4lZ6UeOPKRCzKxibeH87AGjK/ZyBXsS4tMx9lBNK
-	Mzd0mnR5q8KJP5C42BVPKioszvVLq/1wsuvkovqsa7W4tXiAkmPFPsQZAYVC7FxWHp8kRD
-	dxlFXpx/Wgw/KKuhdz5ZbSnUHDWHtzs=
-Date: Thu, 30 Jul 2026 09:48:44 +0800
+	imf07.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=I3WAuBgp;
+	spf=pass (imf07.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
+	s=pkvm2402; t=1785376699;
+	bh=mz/vF1+MIOcbgrfsM9T1ETaqVlnKJAEoM6Ierr9UBVg=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=I3WAuBgphak9hUgaeKMyhtkbytDBA1vCsfg5JIPDtvqilGi+sa/TJhXVnUJdhldbU
+	 jiBAvSOrgri02LEwJV1TMKnxOVb7ymsrBoq8JYLO96ErUneYDsbLunZAz1b2DYx/b3
+	 Hd9SOtxY14oxcc5Agjb3OaHi1ruxSNCgvKaJh7bo=
+X-QQ-mid: zesmtpgz9t1785376698t57f6e66a
+X-QQ-Originating-IP: TuP62bFv3KNDgy434RwiwTPgF3ZWAnB+uhMr4+4GS4M=
+Received: from debian12.. ( [14.153.244.156])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 30 Jul 2026 09:58:11 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 8791580703209932218
+EX-QQ-RecipientCnt: 4
+From: Warren Xiong <warren.xiong@ugreen.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Warren Xiong <warren.xiong@ugreen.com>
+Subject: [PATCH v2] tools/mm: prevent page_owner_sort from truncating input
+Date: Thu, 30 Jul 2026 09:58:09 +0800
+Message-Id: <20260730015809.3819606-1-warren.xiong@ugreen.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260729053812.882137-1-warren.xiong@ugreen.com>
+References: <20260729053812.882137-1-warren.xiong@ugreen.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
-To: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Guopeng Zhang <zhangguopeng@kylinos.cn>
-References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
- <amcT75pLmA0hRUm1@tiehlicka> <615d091c-bd3b-4686-817e-5b29756542ff@linux.dev>
- <amdkHvSMj95DUri5@tiehlicka> <f706d139-53a7-436d-adc5-c691577ce53b@linux.dev>
- <ammzjkUIADCxO2mP@tiehlicka>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Guopeng Zhang <guopeng.zhang@linux.dev>
-In-Reply-To: <ammzjkUIADCxO2mP@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B3F5F8000E
-X-Stat-Signature: yuhjjwpanriys9wnnrms98zye7d71ite
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OO2wLqYBHUeBqYBJX+FmDYsGhQm5jdjufCNlyEe9+ASipmMkSPabawEk
+	KAqwFwnZZtja2/J75CS3YVEOgz+A2L/msdH+CBqPBT/Qn14hewICz4LcgxmFdx9VVHeEjoT
+	nyjxkt/+hmiEwTCS5k1xSBOzh1k2rcwaU3nKss7QyMi+l4pfpwh7kGegOhDDOCfz/TdZ1TF
+	M5LBJ5gLNULH16VrypA4LdCNwqOyHXVVCMlLnH7u3D10CFIjfnKDcur6nkLgMY4wnVCQzcC
+	QrmP2wx2dFWcYZRM3XleFMD5u7l03+twhGdj5BKF43ym2/4wt/OyC6KVgsP5FtRae+JykO7
+	ahhsuuDs2shyMcwBcHBT9qs2M8h0oaXQImACsp/PZPpBJ2rFh+6Erioha0ZHwhlxy+RLMsD
+	IuJCAJDjWj4cM9qRtOEP57/QdD0VuTkxBDT2knRn9RM2OmHr47mft+Uvsyzwz3tTNZJQKeF
+	k5bdGIX1cT0AcidI6b2JY5Amk1ylbTR88Dr5oFNfhwJnygPOjUEYnUECoZsRteU6LFqsItY
+	SWuN0Iy0FBtbVzPdlOt9yF029p4Clf8irlqqENnzs48vvBCSxQf+5NwJe+3tyN/vQ/6QSi2
+	WID+vkaJ4zG9qMvj2gayYj/Tb1g8OGuXrrRpQ7+AuI6ZgvVR0Cq1Qki3P/NkMlq5XaeTU0K
+	XxgdiC6/6LMKRgIh2xOa3Rk+/ywvqwWhl9JWngs4tEOgRxC4LxH4dfTfzYtc68GDiFt0DgL
+	4631fQFv9fYC53/3MI/ZGXkRuEtmngIO4d1Uno4CvTb0rY9l4B5z5GmJFpltV+pHBUUHxkU
+	yKHFe/tUWXU9f/VHpWL4r/OGYr0BCLvpi0UyW/IkElfgJmDaQplznNOvjNN+fPVGcGRHljz
+	2EMKjyRWLMT+CO3M78rbIrLI+0iFR2pgE2TKXYAv9Ra4JhNkDwfYweYFSBfq9P0tuom5U9G
+	hAZ52fyh5Gtcw0h85DRVnWnhcZsgUvdRWm76zgFFS6DIl34Ia3YyTqqqefqOlM2CYX6K5BC
+	Z+GCDsanB01oeGf21FdtapzsxLP7nTxHgLe0lE6duJvqxDYSRB
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785376097-208539
-X-HE-Meta: U2FsdGVkX19Z8HtSJvnacCAPoZ5Fw8v4Y56Znhxuqtse6bqyX5d22Gvppw+3Uk3a0thUHES9rObWjCRvPUJSLdxBvDBBrEyB082sUNKiiCQZkfv40eYbdrpX/Sd1XyUjpmC1Z5pSNcNrzHICd/fG0IY5ZRb7Kow7wNi2m5Wi9wDFZarYN6YfVo8dlkaFmtgOTcjE1dNuk3jXF2JvSVJlpfyYr0jJvch8yb+LzX4yZ/9/qrHYHp29co335ojUzbBWp3cQUd/3RAOgYAGGKOkmVzBKhoMvRZfkfGGxp4aZK8R1oXOG4LiDi8HRkEYBY5tt8NAINlIJZ05sy1B8bpcyOyHSCgOxTtEJKDAGlmUqCinGEUvUnwBgvo/E7PZvNTBBnF6Fh8N+FLx7n2MistmxvGT4429P4r6SDTGlfSkCGvub5c+mpZIiq1Iqd/o+NmFiQDO9tAWzWn8jjW/qPDSLIaoI2F2iEngPGa1dy2dPc7vuBvcm6gQSGAsomI1XYu8cTNPw18qnLc0Ubh9OkIT1h33A1HmqfvERTwCFMKJlIcGNsSO73wA2jfj1xc2P1hMgDwSCQwAzqjCXAurWq5UPElk1lVaZOCWjtS2F/w6NXGZLgl36tul8vvWtVPkg0uWxzrGMoVbSd6a57nduWGXkFl3dNYtlrAMf609tZgrPq7GztaShqpU4qhNwlBA5i6p8506z4zetmBahL+Z2moNKkXFckoePZrWRhqSaQrtI6EjIb8NIlx7jKhiIj5DDOc5CzAEXoGJ77NORkTL7gr6/KK8e/Dpzm1K/FFTZqu81Tv8kSE/bn+Oz00SS3eCN26yNghSkrk4AGyAHBtP62Zem7Yhd0qTTNytHBviLM65rk9XBfH8N13xIeK53gzJ0EQcJcGwjQxSbGHAnq0VqRNSQEarbZeO9JSVp0eMTjT8d1+W0wDN4GoqUDQk2mkwni2H1UHueOUrczXRO+hGDbOe
- 1K30pd7u
- XCUqU65wmk28zM2WFonujezDjJtBqzbtYayx1+H9uVAYeJLjOdWBzMz8WzXZC2/73KoW6lK9N2axCDSc7XEmd9itmtt3AfBp6QWBcBelYC56TgrejQBGGm5m7OTTP2Jf/Jzw+OvRJyZBn6DrdfWSMgVjjSN2b5ErkmZ4SiCkbbbXgJkIWyVDkc9ft7slWQfR0dxvObcPAPW/9sX/NFTT1ixpuCQuT0eQ/Pcljnp8vSpYw9viUOAmQTVoPF/Dj2PVHxCiJN/VGcHKDUT4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7460540004
+X-Stat-Signature: y1owcbsw4jck45gijesiihkrwumsco69
+X-HE-Tag: 1785376702-571307
+X-HE-Meta: U2FsdGVkX19ANhtSy+XNFxyzrbZ/KtUmEuXZZJPFtoeAC+jiGktnCqwI6RjDGwV0NRz5Wu4K7DzR3UmJND6FZm58Viwisc2Wu491COhooB8OllZZCnUVT1Q87wpF/ILIDXEI0ACnzKenL+/++1wn9Ft59NQoYfPX4ms+CmGe0Rurp1/inx+qUbSYcmuGBInSAi9ix2L5Gc2ojHhPMW7Bxc6TX85tZcLlKCkNhJYB5hu9FcvVJpuBXRDmoBw35Iqy+0nA6FX6pyUN9g+zoWKOKgIhGJIMs63Y7X7r1Ora31o4g6Po4nlFcepjMB4TZ+jcCJ/bh5ORkUr9DFyLGx2UiBp6lS7gsgGuQ/cIs65udUWA2mmxloV+Xr48we6r7eWFzB7DQZHyHLXHBoMrxwnxiGYWnmlmyT2OKr/5/sieSCpqBtDudGfFmqwrGCZBz6xrQwt4qJz86WMR2OpOEAcdOlhWQR+W96rhmtVaOdMw3E43sTEAxeJtV4QwM820macsP2SBh4vZUQ8UHCIMgmPymIuR//xC5dkRMbq0klFSqxFHXGjQOMVlC86/jZL6FtNW4Su30Cg3khIw9DY97mvmahpraDWFNpF2PUcwGulMU6MaS1le8wL04kM1XJutuazMe1S6HLUDRoaxHIHOBCEQEneWrcbma232sDLhKAg62dURqucZvEWMqw+eT/plvbult50B7fDWmt41aDwORCP7OI4j7O31LWz/DY+ZZhiAU3pnFXRaJSn1MZzGG27d0nGFwJciNb7Oq3Gupc2POxm2JcwfrAihBoyW4o0H29FyavTpfNuE9zxS7I0XqSrAkxurMLh0ThFd99RyT8mmn3MO8f+kGBqphZHCwynMTlRh/7GeRBCDVxrkFK1919kssmHMgA38KVDpQnmLQNsMSUTSYeux/YU7qtvyc2v4yy8NPZ7YgvexCqd/4yyCO8a7DQ3cXssx83yuObWhv/MIm+N
+ NE5hY3ri
+ 6qdFsP2QbVkihIVSGkOYUB12XBvKrr+4Y84uLb2e2rIBcZnJ6uzm8l8f93wOAhe5ecikpfaubVyGa6cm9dzBSwVgKxbtcoDMlMvW2A3SVk2nK6Dwoe/EqDYUbs9kaZ6tUF9BCfa88r6CutRm1d8Pq+62aNUJheFhF+HhWlvJWew4pErV08KVVh1k3TiFuURsvzwcE4YZqe0EG1Dzyk3jq/SgSUWHVeEIEUmKwxF0I2e5E7rWzUu4i4gZB3T/OOzk7sdkH5dDEysYG8dNcWaeHYNoqo2fW0CTUhvkzxH2o7D0Tf9Ijl2p4o4Xd+0lr4kxXZEU5IbuTNm8moelNKylxkw0hQL0dRSMoFNZYjYLwPQFpfre9BJk2adn93KqAQvQpBNrYlaxjHwgF/62xDMU4gjWXeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +112,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+page_owner_sort opens the output file with "w" before reading the input.
+If both paths refer to the same file, this truncates the input and the
+tool silently processes zero records before returning success.
 
+Delay opening the output file until all input records have been loaded
+into memory. This allows the tool to sort a file in place without
+truncating data before it has been consumed.
 
-在 2026/7/29 16:02, Michal Hocko 写道:
-> On Wed 29-07-26 14:15:25, Guopeng Zhang wrote:
->>
->>
->> 在 2026/7/27 21:58, Michal Hocko 写道:
->>> On Mon 27-07-26 20:59:23, Guopeng Zhang wrote:
->>>>
->>>>
->>>> 在 2026/7/27 16:16, Michal Hocko 写道:
->>>>> On Fri 24-07-26 10:18:05, Guopeng Zhang wrote:
-> [...]
->>> Is this trying to replicate any real workload? One would expect that
->>> writers to limit do some sort of coordination otherwise the exact
->>> behavior is not really well defined.
->>>
->>
->> No, this was not motivated by a reported production workload. We found
->> it through automated randomized testing for our cgroup observability
->> work and reduced it to the reproducer above.
-> 
-> This is an important detail to be mentioned in the changelog. Describing
-> motivation for a change is really important, especially if it has direct
-> impact in user interface behavior.
+Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
+---
+Changes in v2:
+- Delay opening the output file until after all input has been loaded, as
+  suggested by Andrew Morton.
+- Allow in-place sorting instead of rejecting matching input and output
+  files.
 
-Thanks for the guidance. I will take the feedback from this patch into 
-account when preparing similar changes in the future.
+Tested with distinct paths, the same path, a hard-link alias, and a
+symbolic-link alias.
+
+Link to v1: https://lore.kernel.org/r/20260729053812.882137-1-warren.xiong@ugreen.com
+
+ tools/mm/page_owner_sort.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+index 35d3d2549..22b3b500d 100644
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -836,8 +836,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	fin = fopen(argv[optind], "r");
+-	fout = fopen(argv[optind + 1], "w");
+-	if (!fin || !fout) {
++	if (!fin) {
+ 		usage();
+ 		perror("open: ");
+ 		exit(1);
+@@ -874,6 +873,13 @@ int main(int argc, char **argv)
+ 			goto out_free;
+ 	}
+ 
++	fout = fopen(argv[optind + 1], "w");
++	if (!fout) {
++		usage();
++		perror("open: ");
++		exit(1);
++	}
++
+ 	printf("loaded %d\n", list_size);
+ 
+ 	printf("sorting ....\n");
+-- 
+2.39.5
 
 
