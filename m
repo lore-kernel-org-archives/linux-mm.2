@@ -4,83 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F06EC55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD7DC55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:28:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A76956B0092; Thu, 30 Jul 2026 10:24:42 -0400 (EDT)
+	id E263D6B008C; Thu, 30 Jul 2026 10:28:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27706B0099; Thu, 30 Jul 2026 10:24:42 -0400 (EDT)
+	id DFDDD6B00A0; Thu, 30 Jul 2026 10:28:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93F596B009B; Thu, 30 Jul 2026 10:24:42 -0400 (EDT)
+	id D14CE6B00A3; Thu, 30 Jul 2026 10:28:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 696D16B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:24:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F2B6F80190
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:24:41 +0000 (UTC)
-X-FDA: 85045663962.11.B0A1CBE
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BE9F3A0008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:24:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WVOoUvhQ;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFED86B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:28:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5424B1C00EF
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:28:05 +0000 (UTC)
+X-FDA: 85045672530.12.FC8AA92
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 610B54000C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:28:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of yijiangshan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yijiangshan@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785421480;
+	s=arc-20220608; t=1785421683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfnXfNtqGmLSSIHfEvH6536vQ2ZDN2fQBHY6qY0XAag=;
-	b=Ed292E+lYJRpfTKcrLFFN2CAWvIm2tq5RRoc4UyqARcFfmcZ0UuOUi8d9B6OBlces/TSqH
-	Io9q15hZhhF615QiByGT6CgDgdyBSJLDSJQCPmDr0vBqC8Q9nwF3erII+iT8DrzkrRERYH
-	F0eS8OApCmaWWTPln4/uv98InJrlU6s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=VEJHgPkcjCeU2vwKWA41QWNkffAhMg+Inc5vCE6Y7s4=;
+	b=zOXOmfzb5AnjxRsgofO2/EuorvQJsWOwLFpetjOC/E3teWsbmsv07U19rRLeJU//PTia0O
+	4r0NiZZKVpNjVouBTiTE5UsQX/4qqzJhOxElXP1IddcFCtmsvXwD3PWsKEjS8qSQcHmXcD
+	cScUqbDmnV2CwQG1lOCLKDFx88pkp9Y=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WVOoUvhQ;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of yijiangshan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yijiangshan@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785421480;
-	b=HmI8EAPAb/b6lHeK4YBOgGkD5J4d1pavuuoLn0ZRAjmQSp2nnZoOLLiGZSk9T4B4zmNQCX
-	2XGVoZVLI1w+MTB3bGsEvr+UtEmHnTXLO4pUCfLfuj5eJQiqMZb+XVlYdpq078rgVaZgaL
-	sl+copBLj3VwysEBPt6YFq/7eLkksQU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hfnXfNtqGmLSSIHfEvH6536vQ2ZDN2fQBHY6qY0XAag=; b=WVOoUvhQLDeDubNxFbf3UHp4rh
-	Z3peJz+023GdTMP3cihzj8yQ4UZDpDWahQcIf27gnWRKGDXZSwUcuOrMUXFCrw4ibHlqM1fVKA1Ou
-	gQas+TJDPjEjGTIGoXXoR5p6HJnT+8D32+P/PPagCkUR34Nwfgc0vo0ePM2DKdYUjy2rIwStcvNtX
-	Egd7bg7c0NmlvFyko73HIYrjlcXeQ8L3sMoHhwsUi4kB4aJ5SurJ5p/nOo84oGDH8HrF2FajSCwEX
-	YR8IjpiwN4UZOcy29Yq+/0/YMHf5A1/ZPuMInPm1AUCJgzo0LDDgL5q6Lu5J7EZ139PpYPEv62POm
-	mn6yG7Dg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wpRg6-0000000HRgj-1QTE;
-	Thu, 30 Jul 2026 14:24:08 +0000
-Date: Thu, 30 Jul 2026 15:24:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@kernel.org>, Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] hugetlb: Use invalidate_lock instead of fault_mutex
-Message-ID: <amtehrbov9qrPNJc@casper.infradead.org>
-References: <20260730131431.3613545-1-willy@infradead.org>
+	t=1785421683;
+	b=RYOsroyqXrMK1teQQ5S5tYDwbvCnxzG/4kyNdaWEbzfoffohdD48SgG2odfK0JpdpJD9DM
+	B9GvZKA2Gc7VU/jq9Zya2w2VIhAxxqTtVGQtpk2kTn+cD94+WXrEHxpplWDXwsj1E7rU2j
+	MiW32eM9RwwHamRwbfbhuV06pFSxle8=
+X-UUID: d781e4528c2211f1aa26b74ffac11d73-20260730
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:516c430b-7fe1-49d7-9a66-939a5b14d875,IP:15,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:15
+X-CID-INFO: VERSION:1.3.12,REQID:516c430b-7fe1-49d7-9a66-939a5b14d875,IP:15,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:da6d92cb45a1abfbac2444a16ceb26d2,BulkI
+	D:26073022275497LA2ENX,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
+	|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d781e4528c2211f1aa26b74ffac11d73-20260730
+X-User: yijiangshan@kylinos.cn
+Received: from localhost.localdomain [(116.128.244.171)] by mailgw.kylinos.cn
+	(envelope-from <yijiangshan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1917665023; Thu, 30 Jul 2026 22:27:49 +0800
+From: Jiangshan Yi <yijiangshan@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	13667453960@163.com,
+	Jiangshan Yi <yijiangshan@kylinos.cn>
+Subject: [PATCH] selftests/mm: make libnuma-dependent tests optional
+Date: Thu, 30 Jul 2026 22:27:22 +0800
+Message-Id: <20260730142722.874189-1-yijiangshan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730131431.3613545-1-willy@infradead.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BE9F3A0008
-X-Rspamd-Server: rspam01
-X-Stat-Signature: j7hoj655y6g3i9hqy4otk7mxz74upmn6
-X-HE-Tag: 1785421479-319767
-X-HE-Meta: U2FsdGVkX1+GBbJJ7mzv2cr5FBt1fWoPQxG9ixGsVd7WhPPccPSXrBMmG/6KbzIracuj4BaGwkJiuSZ1YivMs/LuqgUWBlnaVY3eVbuKJROsC8FzL28mP+AHIMVH1crUPErKKUoG56fGgtiKtLeC9nZGGCeIL8ht3U3rT7M+KbHOy05vmfhNHxw2LFMVp6AdD2CN9CkwHIenYPcxnIZMK/r3Jk64cP9YigDgvyhUu/VIMbLEisPMPKsdKm2JXH4/eBnikDWjh0ge4XYk9geRKXfr3anbn898E5IxXsQq6WH8GbNyHhqAOC73ld6WDrnZsnXH+/FCt1OXAu70bVDk/dlOft+nziqnGLNdx49zVXoIIEmpIqoBSTJ46n5w511ClPZJvImjvzxAgUE2HbJA2pS7ikkul8HPtGuI8kUuz7SZBDuI2RZM1I+AVcuEjKaXOjum09Suw7TuqcQCWrVflS7zCTtk8U/aV9QBVl81g6iF87oWfFhzGwrIMZB2l+W8kmXSTwnsz9X1A+4QGtn8Q3bMqwGjBjGMeJNiJ+b20hpBr/yxCQpCL3lV1VaogaAodru4h0FHw0B+Q77cDr9mdLpcAa6rMRLFoznl95W4qo6+XXsOdngR/I1wULfSEuyleDCnvgfWBb4wmeJ43DZXZxs6ZhlYG2STWA5tRRv6OrCqQibiUETFRhEf73CmcGqqLTaIjmfS+P4SUGXg7ZQSZS/+ni5fr+UeWP2eeBjP2WWmlKZOqUOjCvlXYplsnWQFS/QZ/DJVY8WdD9uozRE3caQEtdFwf3bbcniMYrQi08f6ce5tXgm0LezrEzzpTsHw8pgf0u8eKz8WJgJU4bk1WgRtzTZb2BtIAcomx7TmDt18cYXNDeWhyb8rFFP2WYPhG9q3TzVQEjmbicBdzydKIyQAm7WNk7vWiYqDX0PNxaH888k5RGP+ZI5Q9boxXmSJGhQ9Ghjc5VieTWlT6J0
- X7/T9Xcp
- NBtVEX5u/OU6nX+lYM8LTCnfXZu6Uzx1TzZIXksWsQDznjZAvqJQsh61wxWjWoeuM5eZaTi4bXynWBgivH4EUfaBkc6pa10jQA906LTXfWlLWUjoqfm8IjoDN64nida8PaWC7I87W25F3SF+cotE/ikPARYgmiUjr03skHeRgd5pDjC/Ym0PgoiSBSjvm2+s+ekzzkEuASNY9ALW7AgYV5Z4HXxGMkGIUV3Ux1p/VYWkeVTZtmXYLvzWVSXvdLxqeuG16kzvbIw5UwXfZe6V5FabeuHKnO/L3nGLFaI4Dxl/bXvj52kH9zaGM+gV8bJbczRfZ
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 610B54000C
+X-Stat-Signature: wras1rea8c7spmfiggi79jzizfkz4mge
+X-HE-Tag: 1785421681-460465
+X-HE-Meta: U2FsdGVkX18znMxUxSoj9jrKtCs400tmUBA9upak/+NBlnMoDy0ACfD+gShuZDa984MZzV2qQRboOCTyQPrzJTb8uFFXxgLpAO3Un/aJzQrGq9kfJp6g8d8JX20yM7b7cspV6Lx6iTCrOudOWI+ayXIM5OfCF15YOd+7B7fE1XTHVnSrKJ/jppKF95xvWYJxB8Uui0j0BNgzZiR7mgK2i1Ujle22ryNarBFmTzkNeBitL74Y2508GkudXLFpng9yJJW/ZYuPoxoNDy41+W/bVTPQtmeQquyG10Oimh5rRo/durKN8nuWteLcNd68FaKSAUkP8VRuRMV+Plk26s8o5AuQBdDuj/OrKdBRY8lhL/rfTKbmAVyozR5XfKIylE6cEheAffBpflCK6OA3U+vYX4IK6V4IZuHaI01ebhEk7CshRIqxhzcuxQguMmix5tJSlGmedccPI8Z+y/jW9mss4sbQCYy9f7x4mlC7rIbQj7xPuYIimPLv+vwXPoi+UcxocI4xi5ahUpMQZBJ0r+k2wCtLWzBv+pcEm5gZ6Q2SSS3ZA0TAuaDW/GA8l2r27YsPnIail7tUOTDHXJq3DWIhzsuHoiaMIy6sEBUeeR8lTWwIq9uUkF9QofQzm38rzNtGwkYyUBjOg2yUAJ7xVKBW7Y1jek7EOlMwpAzPdYv/H0sjsBLQIMjG4e2erVEzQ1xKN+nyY0BZ0c4pv2CZwL0nqbBPAsq4WDECOJnziTA8WiG2GykoYzcMjWkAOjTJcJ6BR8WN5xqQcTxI9jYVct7h0VJnUDDRxgfHBchnBAUpgZDtmifUkpdGq2ybWxVIB5pTfDIeKfquTLg8suKQ5sp2hf4yqUQSAyaxqzcFvNWhki0mMQxPEZovaTzpyZfU5nhJonG+SBPF6ZqpIlIylHdWsLr8dK3AUhjbjFlmAh5kZ7BmFx9acaDdG8KBbo1umag9wHgN7I72XSQGCiyw0a9
+ w3qSUzAd
+ Gniy9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,58 +113,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In addition to the "oops you forgot to" stuff that Sashiko is so good at
-catching, it had this useful thing to say:
-> 
-> In fs/hugetlbfs/inode.c within hugetlbfs_fallocate(), does this change
-> introduce a lock starvation regression? The filemap_invalidate_lock(mapping)
-> is now acquired entirely outside the page allocation and zeroing loop. Since
-> allocating and zeroing gigabytes of huge pages can take a very long time,
-> holding this lock in exclusive mode across the entire loop without dropping
-> it seems like it might block all concurrent page faults on the file for an
-> extended period. Would it be better to drop and reacquire the lock during
-> rescheduling, similar to how the old mutex was handled?
+The mm selftests Makefile unconditionally builds three test binaries
+that depend on libnuma (migration, ksm_tests, rmap). When libnuma-dev
+is not installed, the build fails with a hard error, inconsistent with
+how the optional liburing dependency is already handled via
+check_config.sh.
 
-Why do we zero the folio under the fault mutex / invalidation_lock?
-The usual way is to insert the folio into the page cache then submit
-I/O to bring the folio uptodate.  As far as I can see the relevant code
-that reads the page cache all handles "Oh, this folio isn't uptodate"
-properly, so how about we do something like this?
+These three tests hard-depend on libnuma at both compile time
+(#include <numa.h>) and link time (-lnuma), confirmed by grepping all
+.c files under tools/testing/selftests/mm/ for numa.h/numaif.h, which
+matches exactly ksm_tests.c, migration.c, and rmap.c.
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 991142eb034c..57c32bbd8631 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -679,8 +679,6 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 			filemap_invalidate_unlock(mapping);
- 			goto out;
- 		}
--		folio_zero_user(folio, addr);
--		__folio_mark_uptodate(folio);
- 		error = hugetlb_add_to_page_cache(folio, mapping, index);
- 		if (unlikely(error)) {
- 			restore_reserve_on_error(h, &pseudo_vma, addr, folio);
-@@ -688,14 +686,18 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 			filemap_invalidate_unlock(mapping);
- 			goto out;
- 		}
-+		filemap_invalidate_unlock(mapping);
+Extend check_config.sh to probe for libnuma via a compile-plus-link
+check (the link check needs a main() symbol), gate the three tests in
+TEST_GEN_FILES behind NUMA_EXTRA_LIBS, and print a warning when
+libnuma is missing. The liburing section is switched from ">" to ">>"
+writes and both output files are truncated once at the top, so the new
+libnuma section can append without overwriting the liburing section.
+
+Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+---
+ tools/testing/selftests/mm/Makefile        | 21 +++++++++--
+ tools/testing/selftests/mm/check_config.sh | 44 +++++++++++++++++++---
+ 2 files changed, 57 insertions(+), 8 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index e6df968f0971..235c8ec788a7 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -75,7 +75,9 @@ ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64)
+ TEST_GEN_FILES += memfd_secret
+ endif
+ TEST_GEN_FILES += memory-failure
++ifneq ($(NUMA_EXTRA_LIBS),)
+ TEST_GEN_FILES += migration
++endif
+ TEST_GEN_FILES += mkdirty
+ TEST_GEN_FILES += mlock-random-test
+ TEST_GEN_FILES += mlock2-tests
+@@ -94,7 +96,9 @@ TEST_GEN_FILES += uffd-stress
+ TEST_GEN_FILES += uffd-unit-tests
+ TEST_GEN_FILES += uffd-wp-mremap
+ TEST_GEN_FILES += split_huge_page_test
++ifneq ($(NUMA_EXTRA_LIBS),)
+ TEST_GEN_FILES += ksm_tests
++endif
+ TEST_GEN_FILES += ksm_functional_tests
+ TEST_GEN_FILES += mdwe_test
+ TEST_GEN_FILES += hugetlb_fault_after_madv
+@@ -103,7 +107,9 @@ TEST_GEN_FILES += hugetlb_dio
+ TEST_GEN_FILES += droppable
+ TEST_GEN_FILES += guard-regions
+ TEST_GEN_FILES += merge
++ifneq ($(NUMA_EXTRA_LIBS),)
+ TEST_GEN_FILES += rmap
++endif
+ TEST_GEN_FILES += folio_split_race_test
  
- 		folio_set_hugetlb_migratable(folio);
-+		folio_zero_user(folio, addr);
-+		__folio_mark_uptodate(folio);
- 		/*
- 		 * folio_unlock because locked by hugetlb_add_to_page_cache()
- 		 * folio_put() due to reference from alloc_hugetlb_folio()
- 		 */
- 		folio_unlock(folio);
- 		folio_put(folio);
-+		filemap_invalidate_lock(mapping);
- 	}
- 	filemap_invalidate_unlock(mapping);
+ ifneq ($(ARCH),arm64)
+@@ -256,11 +262,11 @@ $(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
  
-(this change only textually depends on the invalidate_lock changes;
-I can redo this patch without that change if we decide not to move
-forward with it, or I can reorder this patch in front of that one if
-that would be better)
+ $(OUTPUT)/mlock-random-test $(OUTPUT)/memfd_secret: LDLIBS += -lcap
+ 
+-$(OUTPUT)/ksm_tests: LDLIBS += -lnuma
++$(OUTPUT)/ksm_tests: LDLIBS += $(NUMA_EXTRA_LIBS)
+ 
+-$(OUTPUT)/migration: LDLIBS += -lnuma
++$(OUTPUT)/migration: LDLIBS += $(NUMA_EXTRA_LIBS)
+ 
+-$(OUTPUT)/rmap: LDLIBS += -lnuma
++$(OUTPUT)/rmap: LDLIBS += $(NUMA_EXTRA_LIBS)
+ 
+ local_config.mk local_config.h: check_config.sh
+ 	$(call msg,CHK,config,$@)
+@@ -277,6 +283,15 @@ warn_missing_liburing:
+ 	echo
+ endif
+ 
++ifeq ($(NUMA_EXTRA_LIBS),)
++all: warn_missing_libnuma
++
++warn_missing_libnuma:
++	@echo ; \
++	echo "Warning: missing libnuma support. Some tests (migration, ksm_tests, rmap) will be skipped." ; \
++	echo
++endif
++
+ ifneq ($(PAGE_FRAG_WARNING),)
+ all: warn_missing_page_frag
+ 
+diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
+index 32beaefe279e..8e6d1616561b 100755
+--- a/tools/testing/selftests/mm/check_config.sh
++++ b/tools/testing/selftests/mm/check_config.sh
+@@ -7,10 +7,17 @@
+ OUTPUT_H_FILE=local_config.h
+ OUTPUT_MKFILE=local_config.mk
+ 
++# Truncate output files so that re-running this script does not
++# accumulate duplicate content (all writes below use append ">>").
++: > $OUTPUT_H_FILE
++: > $OUTPUT_MKFILE
++
+ tmpname=$(mktemp)
+ tmpfile_c=${tmpname}.c
+ tmpfile_o=${tmpname}.o
+ 
++trap 'rm -f ${tmpname} ${tmpname}.*' EXIT
++
+ # liburing
+ echo "#include <sys/types.h>"        > $tmpfile_c
+ echo "#include <liburing.h>"        >> $tmpfile_c
+@@ -19,12 +26,39 @@ echo "int func(void) { return 0; }" >> $tmpfile_c
+ $CC $CFLAGS -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
+ 
+ if [ -f $tmpfile_o ]; then
+-    echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  > $OUTPUT_H_FILE
+-    echo "IOURING_EXTRA_LIBS = -luring"          > $OUTPUT_MKFILE
++    echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  >> $OUTPUT_H_FILE
++    echo "IOURING_EXTRA_LIBS = -luring"          >> $OUTPUT_MKFILE
+ else
+-    echo "// No liburing support found"          > $OUTPUT_H_FILE
+-    echo "# No liburing support found, so:"      > $OUTPUT_MKFILE
++    echo "// No liburing support found"          >> $OUTPUT_H_FILE
++    echo "# No liburing support found, so:"      >> $OUTPUT_MKFILE
+     echo "IOURING_EXTRA_LIBS = "                >> $OUTPUT_MKFILE
+ fi
+ 
+-rm ${tmpname}.*
++rm -f $tmpfile_o
++
++# libnuma
++echo "#include <numa.h>"            > $tmpfile_c
++echo "#include <numaif.h>"         >> $tmpfile_c
++echo "int func(void) { return 0; }" >> $tmpfile_c
++echo "int main(void) { return 0; }" >> $tmpfile_c
++
++$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
++
++if [ -f $tmpfile_o ]; then
++    tmplink=${tmpname}.bin
++    # Also check linking, not just compilation, because <numa.h> may be
++    # available without the shared library (libnuma-dev vs libnuma)
++    if $CC $CFLAGS $tmpfile_c -o $tmplink -lnuma >/dev/null 2>&1; then
++        echo "#define LOCAL_CONFIG_HAVE_LIBNUMA 1"  >> $OUTPUT_H_FILE
++        echo "NUMA_EXTRA_LIBS = -lnuma"             >> $OUTPUT_MKFILE
++    else
++        echo "// No libnuma support found"          >> $OUTPUT_H_FILE
++        echo "# No libnuma support found, so:"      >> $OUTPUT_MKFILE
++        echo "NUMA_EXTRA_LIBS = "                   >> $OUTPUT_MKFILE
++    fi
++else
++    echo "// No libnuma support found"              >> $OUTPUT_H_FILE
++    echo "# No libnuma support found, so:"          >> $OUTPUT_MKFILE
++    echo "NUMA_EXTRA_LIBS = "                       >> $OUTPUT_MKFILE
++fi
++
+-- 
+2.25.1
+
 
