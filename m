@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14544C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 10:57:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C114C54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 10:57:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 107486B008C; Thu, 30 Jul 2026 06:57:13 -0400 (EDT)
+	id 858FB6B008A; Thu, 30 Jul 2026 06:57:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E0446B0099; Thu, 30 Jul 2026 06:57:13 -0400 (EDT)
+	id 8096E6B0099; Thu, 30 Jul 2026 06:57:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F36326B009B; Thu, 30 Jul 2026 06:57:12 -0400 (EDT)
+	id 71F416B009D; Thu, 30 Jul 2026 06:57:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3F66B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:57:12 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6CAA6160981
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:57:12 +0000 (UTC)
-X-FDA: 85045141104.19.C96EC70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B5B07180004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:57:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKgIuY4R;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 48F666B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:57:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1ED3C0924
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:57:15 +0000 (UTC)
+X-FDA: 85045141230.11.1D9AC50
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 221691A0003
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:57:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjTthBN7;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785409030;
+	s=arc-20220608; t=1785409034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CB2CegvNadEV6Rt1ARiLVxua5opZ3OdqXnTBRWHTtEs=;
-	b=zKgq1AIfT425jYtgvkpnBDq0uJGlB6nonjtCqscV5Nv52rfPHRu4tw6Qp3XM9i0MnwDXcV
-	SGRWYJaha88EItzEav6s/K3yvkzkMyQ+eXElSIBwWmzeZfqKX/Jw+JnvuOH+U4AQfXMbdY
-	bddKdct8AFTYxShWq/Z7F/8euaedjnQ=
+	bh=s+DGim6f9hRKeeOt/GNuiTh3xBY1SZwuIohJg87lh9U=;
+	b=w2ex/Tf4nsiBS5nWZY1j9Egsobw/kCQ5A4Y5qJ56B/dRoWdl9h3nunpt62IRV5X1kPM3qU
+	nXZ94tpz8XOEHUkJqWkWmLZN+xl8yt6aUxC41G2P59WRMvOZwWfa3DqBz4yGQM82iPNRoP
+	AOKAdWKTnG5sXcRinqbZm2wV3d/sWyM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKgIuY4R;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjTthBN7;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785409030;
-	b=fsedFIvDhjXeP1Ne6+mSUoNFRq1AKjQRl+dS3pjg5j0zkaktFZ/mHqWEMjp6wKqTkmW7gS
-	CCpmpvHPB2VTmqFRxHnteLSpbf3xRr1T7CU/1RfVeY66ZWWJUvwbCc+mlli4BEQGNfI85H
-	UQbf7ssUiiNPKu5drrKy7T0Hd2JCVVk=
+	t=1785409034;
+	b=ntw8THPbR5IzHs7PzvdODG+3LpbQb7JfhlNG4V+qmy/qDV9UpJXkwMNInJKUn8RrO6QjyF
+	kNZ92STqAIdIFTnGpWceFX3h+9Oi797MLdelaRNYAcBMFZcqKISkbDaZrv6MEIwQ0KqUtS
+	jiZWUmMvP6w24BA6UhBqQU3O1y1wKqM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29F96600B0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 558EC43B96;
+	Thu, 30 Jul 2026 10:57:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643821F00A3A;
 	Thu, 30 Jul 2026 10:57:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B73A1F000E9;
-	Thu, 30 Jul 2026 10:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785409029;
-	bh=CB2CegvNadEV6Rt1ARiLVxua5opZ3OdqXnTBRWHTtEs=;
+	s=k20260515; t=1785409033;
+	bh=s+DGim6f9hRKeeOt/GNuiTh3xBY1SZwuIohJg87lh9U=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=eKgIuY4RMPQnOYJ3+zJU/xBevWUwMfyNBTfjOJ6ESii17VYf9Uy+3tsP8eK1rPx6r
-	 o4FZ2yUPOK/tbaGrvDWFAkJWOz5GV49UsoobkkAEihsZuW9JHBOVHZjXEWBASedoUE
-	 Ry3dhgCOdoNrm46gDC4EHe5QMNRuYxMsPMUQ1EIRHdPC99f0x4owwVn+0W2q37+nxI
-	 qrE70RlC1ejYgG6VqpEc3E0T/sIgO+mqry/N3TgfA0DtB7soNWJC3x3CK4AYWxdgTo
-	 8LRaapT/BZR6GcA9ji+sTT7h8jz+eRZsmPB75pYIwc7qYn+Mf8GIR7lL/dJfffGIZH
-	 hBmbkS3KH5FqA==
+	b=JjTthBN7leN5wgSNiF1p6cS9G8g6HYxncMhEfkOejiYagZFKC+H5+4585yURMNUru
+	 +RIJbqombBVmX3/LVpzr3qvMU8ZCl0LbRUFOiVmXoit0hBrOezKa4ji5AOkgw3ys8G
+	 5nsR3wuiUxSkKaUD/zeXAtHsKm8Za0ys9/qW5fDVUkRNPelt8Z3FPDKyxcq3TllGrf
+	 GTBkMh39RS0XeKC5fGx2wEb+XrsNy1tzNm2DcW9XWZGt6j7p3PF0H90FKmW0ihlbjA
+	 IgBifsndP+j4n2zZI1aMpSDcfSbHNdtI3v5JmnZ9HXZUP9Av/NVvZUwqSxeZ6QKbvm
+	 psko+QUfnbynQ==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 02/17] mm/sparse-vmemmap: rename HVO order macros
+Subject: Re: [PATCH v2 06/17] mm/mm_init: factor out pfn_to_zone()
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -76,20 +76,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
  David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260720093127.540540-3-songmuchun@bytedance.com>
+In-Reply-To: <20260720093127.540540-7-songmuchun@bytedance.com>
 References: <20260720093127.540540-1-songmuchun@bytedance.com>
- <20260720093127.540540-3-songmuchun@bytedance.com>
+ <20260720093127.540540-7-songmuchun@bytedance.com>
 Date: Thu, 30 Jul 2026 13:57:03 +0300
-Message-Id: <178540902325.2154539.18074053116850060206.b4-review@b4>
+Message-Id: <178540902325.2154539.8652625248432655233.b4-review@b4>
 X-Mailer: b4 0.16-dev
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B5B07180004
-X-Stat-Signature: c7q4zqjy9uybg88cww6oa13txu9pset1
-X-HE-Tag: 1785409030-389312
-X-HE-Meta: U2FsdGVkX18fQ7t8pV+BxxmHBJ/NznL7IGsQB0jMDwrILRYyvv5qUUvH5twzL9IcOpWmCnkBpfSeNgKQGi1KwJ/uc9uVqLMHaTALTBwnp0XtW0gyakSIOWzTO2X937HiYlVaeU8Efk0ZA3gG/53BhGF4IkpekkiYqydKL7WHEYt1c+RxVDhFJ5Gj9k7zgpuvtYoAzc0HexYy3wmDWkbnyzHXYUqEkSfc4Gs4EqhpICV5mbuX47nXeJfsvzdR6C6aYeAR0s0+uf4BxwjCtudedG3gGmHJiUOj6OwEzGUGsNJTiVt1hiL29b4KqP4Jygcqimb1Kdv12W23Q/B+4Y1pJAcKA4wn3wyRoD23uMFnmkXcicVRTCpMG4RYtTxT6buPKW1sVogzgC9FyGT7BlaHGbjP0bsHCl5LQvtDL91vAZG3rW0xF7b2HUXQDiU0DbCO0m/mG1VFUoSjYpFgylifLoFMEPq1VOfziAXOcg6MTSHqhZFJu0+la9bXI1y1JEQVnuuWFPMtq68lPVqjBwYClU0Mk6tZt8SDaLDwN7jHYk0/D8WqpnncpUxBobE/J5+IyIzicJXLgfGaiuOEFHY565oA/NHQXMXmjVKxH3O7mKdBbIkxk3AfZCHypa+Fo0MICZ7zHZgDZA3n02/AzE6AvCjahWX7vLehfsOss4LqcASltG5sRzxJj2/QZBE1/bE0GjhLR+PljdV11TMKyQHfXDUBhgquYuXEFWQiClktwKGCX6Up8HcAADAJ/8w5TiB0+sxoQHiRQZTAQXgqBE2BilfCaoXz+d+hADgWE2SMpow3sKB5F8JtCc/3R0EuwZWEy+woWimcbsFvSZ2tYvJVy529re8qImblpl3M8f+EzTsjpTH63SqV8EOw0EoNWu9c9ki5GxDOEo/GFmVGIfdk4dA9WYp1wLyiE+UIZQKNr872Br5AsddcCCF+ST1Iql9X0oRqAc6OMJmvq+GBGm6
- A5O+kum+
- AQruT+OTNV27hKiioc7z4loVu22MyCg3W2idKDmxh04FVYZ0z54pUtl2+5igI2PNwpjhC09YEjnF/c/Ml/bo4Z9Ow9Mls2SzX13EcBNq4GXLbfPdFPzGUEgqx2y02ZjDMOEwRbOxMgPJ1uJLwtvy/PiOOhnCW0gOtXbcQv3DwGTe3cVplUX7YPDZo8kKITM4CftQcwgw31RHeni0ZjV/ur5WB3MMb4Odr6YRzajKufBDBbIuv37poe9qyUhZUKDg311Mg8t7NJZuqEye61wToAD3p/EsLDjIhELhQO07R9VHP9Lyf/Ky4/Pnann/vNFVlco9+XIyDsfroilNRRT54itFsHA==
+X-Rspamd-Queue-Id: 221691A0003
+X-Stat-Signature: xhbcqcw3qz94fcwcr746ddrqwninjefo
+X-HE-Tag: 1785409033-914725
+X-HE-Meta: U2FsdGVkX1+8zLps+y/VtruTE4p1o2b1vhtLtN4QtLVB7v9pqh0N9trLv2rcHzOgy3QhMPzTbeHGkaW/bj3m98kvL3b0Hfetb6dEq1q3OD7bxbszNTXznDvW79UYOKCO5qunMSdgycpD7fd3rQIiafPPRPvIIzcxDoUj9h7KY/8vgs7SufnGOiSKwF6mn00u34TK1STLUVRN6YT0IVovHJ6mXCTXUsEDpjI1uc6Su/NvLakajWIDb78cr94k9yjvHdjbr8KDeM3SG5MHtS8s6e7CbxjNdrD2dFn3740rqYG/hhRu4sWgNQEJGoju3yR8UOX4Phg6+sKu+3s01dyTBqr9RScs8xDo2tpzxyP1UdFGcZvJplMl96TecobAVEAB0y71fwotEwH1BjWZdH+bjwD6BK0zXe3ch5SxwDwukLCNGT7HDRI3kQWAvWTEB0jPbxkyatJKVGOy4uiSWwhPgIQ2s3z8l7v5bQ8zCFvk2K0IxlcaE1OKpn7enDOjEe/84WpzWeimI8bU1ZNv8WVASrzSvZEwory3QRNw5sa+0YdzbQCpOG3qBlyFFCmJa7t3BnZvwelBJRHPPImTZMNy7ARzN0OZ9fIPegu0OjX+WcBSgbOYHWw+RJL7+kCR2cRNLsoaQiU1QpLn5wuvz+6t8nu+Xy4562PH52xtmKoJWcxSIwlPLezOt8SfqI+Gwj2Is5aER4bo8lUKXjoUxQLmNfgtwVugjt3AaYoLVZ0tCxIquJdnP7nze+/KjVwdLkgasJKxlw3fvqYSUPXMjOFdyT5bRz0N46IRMcUgZ3m+wDT/ONVMc3P7zdGoxNxOQf3SXZDDDlfo2aU3+DMImwj3AqzZ2Q5Numm5svyWxfvvLsapzItaGWzPhKJygzLWm4kK963spYPiZzo8Zg1OTAMkcrO2O2VCVuHSd05i7KhB9qYNGFD7IFlzbCCkzCxeL0msCOzpMMuDaX01ynnNPDV
+ Wii9Pxw7
+ biO1iORfUcd7g2zzb6WJJoFW/Ks/DJQO44z83vZnzlz+aunTXizfGYTTC4lqR84qR9ixhpmfMDwyA9fogI0TsabZd0WMnhqTuF/dkLL0CCcz//SjdNuIcB+DzR/bQ24G5LCrnI/GGjdm9mB3nWnPDpbVopYlFAMPpwwzPSLVcJxR3m/SEKsp3AaDOKSQnbs2lLFo6fQK6DtT4JDeumA8qXscZAWrr02FpFiQ3X3Ipo2GZk41dkkLRnJny7kdML4/6DsZxRMXEyrywLkQmCWU/Jw4lYxgzatALUWFlc9Ow4OJGrR58Ol62LRs+hiGjnR6TmLoo+USQYzXbgjZB9wTt4TWB44Q4ec6ZIbG7+VvFLXX5/tK4T+ig70D0+FHQ0EjpxTG5/iHcXkg4KZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,16 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 17:31:12 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> The macros VMEMMAP_TAIL_MIN_ORDER and NR_VMEMMAP_TAILS describe the
-> order range where HVO can be applied, but their names tie that range to
-> the tail-page cache implementation.
+> pfn_to_zone() in hugetlb_vmemmap.c duplicates the zone lookup logic in
+> __init_deferred_page().
 > 
-> Rename them with a VMEMMAP_OPTIMIZATION prefix and use the new names in
-> the HVO paths. This makes the code describe the optimization requirements
-> rather than the tail-page cache implementation detail.
+> Move it to mm_init.c, declare it in mm/internal.h, and reuse it from
+> __init_deferred_page() and HugeTLB early vmemmap initialization instead
+> of open-coding the zone walk there.
 > 
-> [...]
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+
+With the commit message updated as you mentioned in your replies
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
