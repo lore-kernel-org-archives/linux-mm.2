@@ -4,223 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6031C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15970C55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:04:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 962946B0092; Thu, 30 Jul 2026 09:00:45 -0400 (EDT)
+	id 2169E6B0088; Thu, 30 Jul 2026 09:04:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913526B0093; Thu, 30 Jul 2026 09:00:45 -0400 (EDT)
+	id 1EE8A6B008A; Thu, 30 Jul 2026 09:04:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78D986B0095; Thu, 30 Jul 2026 09:00:45 -0400 (EDT)
+	id 104136B0093; Thu, 30 Jul 2026 09:04:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CF026B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:00:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D4C1A03D7
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:00:43 +0000 (UTC)
-X-FDA: 85045452366.23.B83C868
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013019.outbound.protection.outlook.com [40.107.159.19])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BE65C20018
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:00:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=ehFlbI73;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=ehFlbI73;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf13.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.19 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785416439;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DDECE6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:04:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 805F7120157
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:04:31 +0000 (UTC)
+X-FDA: 85045461942.26.BDCDF68
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9FAEAA000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:04:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NJgyOlF2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785416669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TGN+4FAAC8jIvrpXYh0SLEvL/4I+/62MbZ2lH29z+TY=;
-	b=Q+AsSQsEPBbi+742Bv0Cbgwxi2WUo/11qJpQTpS+GfmjECzCP19Zsp3vPklkP7Xf41qRrj
-	6+PCK/TZbGgEVBqrCZCCCbSk+s6WuFx6B8GAM2BQ+kZiS5RTFrUBoOJq3yL3P7JGdp7g3n
-	8un2dFc+RNRnfMS9FB+gae3jRkSxe/w=
-ARC-Authentication-Results: i=3;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=ehFlbI73;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=ehFlbI73;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf13.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.19 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785416439;
-	b=hdLyQ/5QwwGn1mrYM4H4KPq0r093K7DsbAIVtGy8joX6Zl9XrNRdXnIEbjwXNjngm0Ls0w
-	GlFMqzDWRY4FmTAB7urSGELWbihjscf9HoWNY/tZ2cV8gzEaFICOwMTDRHkSOV1qdSKrTg
-	klcxEcPM7ca/sZFdPezf57UMnddfpTE=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=brhowPZaixhmItoK63D6dRP2HdCj5SxXd89zLkHVw7pOcFVeXeRa6dsm8MDQH2QdjHHroEFd6Vy44UqOzVenBzRaPsvq2w0EKl4/IUBXwYzmU5FD5qK98zkuVHmMIddytylp7fEVQEld1svrp9/gpgB0caXUxONBqz1/LErICzn4gwYGnJsc2+Ui0OSVwjry+j4F6v4JP23HSx/RTzA3YyUr19kWue54mZA4bYjLI4JtNd6PCkBYE8kJv5fNgQkVHSUF7DU8DJg2hcoyi/4JyMN/cq8S6/kq5jWAIfuLSDbG0lV2pE89qdy98lEN93IhPQHsGpZjPMIkgE+4LHtuHQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TGN+4FAAC8jIvrpXYh0SLEvL/4I+/62MbZ2lH29z+TY=;
- b=ld77FhXLKU8yRLcwuOJoBUXZowlHzw/KREmKaaKSNP4IboVn1/jT58no8kAbEK6CO7RiQ3p4rix/RkSc9V/9IDg45FUXT8q/DlphJbEYrV4PfD8jZXRgsWDWJMygGRuNeMbioQzSFFGYKFVVCl68TCsTTNZvnv2YGt/BxhdGB3WppribI5+hiH7pCMPEnErfjlebi7ZNwbSJ0KaFmFQ1Fgu0OiackJx4pHAYbXNXv22/TQ/kaXfhMZi/2H7eRZacVj8ZTjeEEZYZGVHsgt6HSgxqEJ5CwmKUZpLR4FO4z6UIGzXJ1PXVATOciDArVN7cGHl4zvT358xsO5m2ssZlpw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TGN+4FAAC8jIvrpXYh0SLEvL/4I+/62MbZ2lH29z+TY=;
- b=ehFlbI73LoxtbByzSNijQF7loKC3ZeZkxXqfibb33CjVmDNBoYQoepnyr1q1+I1wvvtby/Q9VRDpUKgcH09WljEJj8R5a76S1CKxrdWBk6bf1e/WMFtGccv8XgrF/uT+BZ9ZnJ9h1+A9xjW4ASKIJeakwn8760yq3o5hOm8kHDw=
-Received: from AM8P190CA0002.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:219::7)
- by PR3PR08MB5609.eurprd08.prod.outlook.com (2603:10a6:102:81::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.14; Thu, 30 Jul
- 2026 13:00:32 +0000
-Received: from AMS1EPF00000049.eurprd04.prod.outlook.com
- (2603:10a6:20b:219:cafe::9d) by AM8P190CA0002.outlook.office365.com
- (2603:10a6:20b:219::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.14 via Frontend Transport; Thu,
- 30 Jul 2026 13:00:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS1EPF00000049.mail.protection.outlook.com (10.167.16.133) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
- via Frontend Transport; Thu, 30 Jul 2026 13:00:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yyx+ToOaEnOvliHo5S5zNq7kYBNmgVSRSL0orMykREc9hqSqjsYxQs6C+lu7IYnDXiqlAhPCkdvWBpA4SH3qEK3mFGCnmqynn1L1wHgf/2D1/REgmU4jA1bZUfu4FJEoB4cUaInXCuzbVMHLc0/hyx9184MDrGAS4+YSQsaH2F8L4/e0zrFC6u2XZRkGkB+IRw+ipGNzOdlsNWrP94fZj8M5j1frcD0vHU01l0imGM/TFij8bUMMESJ4CqovmhZr4gEwzrh75Y7b9jhjgHkFozLm3Ik0uwrs9XixxlPemeJLSTjwELPeh+384IKVCn7ncub1OMEh+EfEplfh0oYX4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TGN+4FAAC8jIvrpXYh0SLEvL/4I+/62MbZ2lH29z+TY=;
- b=OPOKjo3Rvy1I4POMIdhajtkJh+RtxKtxGV3xKvUK1yETsg6IzZIMYDDo2cAhLp1PGVZjKFQ6h+aM6JDuMdFWgOTq5x44s+3uUK1oEUbjJLJnVvcq8Ey7XHaO5Lp90rsOH65dFFx0AEyuzASd8q1VpHZVGCp1IHM+Njtzh7zFI5BkKadZCXEjFo2WWCmTIzp3QTVC7Wvb0frWM/amTwik2w880RYlT68zBtZ0gsz6n0kvCxcgn6eF0mUG3KquYfe6ExEhGkpWanzhMxR/C3/ueWLSOH7blAEAxexih86vrVpfwxsrr+Zx77zveIZpbP7Ato2fWzoLhPG2gG6HjGGhVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TGN+4FAAC8jIvrpXYh0SLEvL/4I+/62MbZ2lH29z+TY=;
- b=ehFlbI73LoxtbByzSNijQF7loKC3ZeZkxXqfibb33CjVmDNBoYQoepnyr1q1+I1wvvtby/Q9VRDpUKgcH09WljEJj8R5a76S1CKxrdWBk6bf1e/WMFtGccv8XgrF/uT+BZ9ZnJ9h1+A9xjW4ASKIJeakwn8760yq3o5hOm8kHDw=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by AM8PR08MB6499.eurprd08.prod.outlook.com (2603:10a6:20b:317::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
- 2026 12:59:27 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0270.009; Thu, 30 Jul 2026
- 12:59:27 +0000
-Message-ID: <fe1b4098-6ab7-4cf1-ad6b-ffadabbd587a@arm.com>
-Date: Thu, 30 Jul 2026 13:59:24 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- David Hildenbrand <david@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH RFC 07/11] mm/mremap: use ptep_get() for the destination
- PTE
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
- <20260727164715.2866609-8-usama.anjum@arm.com>
- <50dd77c0-b6cc-43e2-abd5-6d44a29b5597-agordeev@linux.ibm.com>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <50dd77c0-b6cc-43e2-abd5-6d44a29b5597-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0022.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ae::14) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	bh=DgTI17Npaj7RxXtKiWxg+nzYCLrtjUc+y7I6yBRco+E=;
+	b=3OFQ5Mv7CJhvib7NoJNP63oisTFQt6cdUKpV68Y0jTwZXI9IdtlWdm05sn7RaWnuGWEdMP
+	Y4eI9eg1oLb3epkpl7wdkpNEqvpPVa7FIsWAf2HG1Owh2o4/o5cLs88UOh+5C+fq5zqezs
+	q29BAE5ILMMYOLqZqyOt3Dt7dtDoVf0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NJgyOlF2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785416669;
+	b=m4+myGkEuzXYXl4F3fXtJ8ox0hKepSwEYSaBjDNdqUEx1kX0AxM3hHzk0tIptCJKLW2keZ
+	C+CmJns9l+q1RkSZYPsli+HyUlJauPSUOAQqHCSHhkPzJvw6FGr3ENNWccZ7mBGM6Tjnec
+	YF9Bt+1kWYGz5nyfM6wLS173Tb6tAUA=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1677c91969so246100666b.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785416668; x=1786021468; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DgTI17Npaj7RxXtKiWxg+nzYCLrtjUc+y7I6yBRco+E=;
+        b=NJgyOlF2Aa+sgoWOWtVPReBIbjKwJmfsD10k3vgiW4Lr2XAFn4BvUepel9wsvq4SDU
+         AbBM474+vE2w8qpaeiDNKOG0e0atUOFbF/8EeES/aHeSKDuXQso3mD+ecXoF89QRR6cq
+         FgponXcNfgNFGJ6uCjxVBJ3gSnSpNd3Qpd75G6fc+BnRcpzJEKpaHm5lAAQYr49XeVrh
+         1Z43MbT7TSkbFehKsTRTPTVK8g9l6MO5SYtKqRZDSJIQNYo+W5iiLaNbWJeZRuhEiOW2
+         tvnuzPNWIg8Q/NxP6j2Kpkvas3DA6Kuwr0ocS5Zkpyf3Z/zrc5MpoHjDMQ3moE3pKRPv
+         d4yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785416668; x=1786021468;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DgTI17Npaj7RxXtKiWxg+nzYCLrtjUc+y7I6yBRco+E=;
+        b=Kw2ro5DZ3rJvsEfKUQ3/r885nVyOCV/LIg6KiZLsDymaCwi0671MMfd66fwxBzLApY
+         oeN/tOtIq47rBUrCh3jbtnaK+UwSepInSLJM4+DpC3+ClzXw8SpNWU11U6fEkwUoqZ6R
+         m/GwtJPXGUA8Y/Oa7348DwI5tm/t+JY85e4Z8MsUKUK8Bmd6vWLyj6DdO3YkgzPiukgq
+         xtlc8C6t9oUQFWOpL/KOqFYlUpoYdqFuIdXeduFzvnqR/rpODeMFH+UHaWalsdCWVBh8
+         VD9jPMQ6dvYbDJzqJgbBS2NATbA5PzpQ5zVvSFHAB7k0ZIF1P1+uG++zKGm4tRwmH9H5
+         S+Dg==
+X-Gm-Message-State: AOJu0YzzzEpA2V9O9D1HB0/auUO5jYaoA6ZTnkF89C7U0Mb2taM1mjqz
+	a1SuvnwL3gnJvfcxmw6Mlw6vSg6P6MKLctxW7Sx3loWvrddtsCUQMZ0T
+X-Gm-Gg: AR+sD13psh0iBMhcol712yuE90P1Rcr+HdlMCPCIfkS4MqHoTLQH9qF1Pt3BjM29z7+
+	oi/6W1b2ia6+64JJBoA8czutrQoUMaDrFCE2x3/5tctNqlfU4Qh/Sh2iBKPclLo3eXYQYt+EvIV
+	b5YSZbw4rtTkHNJtxuU7PyAO/xWBmbs1wDAdzV2jQ2sjeqDdd9pN4gZ3Q05DzL5y+v5m5Kwj4DA
+	jgWSY6wyHp3Zwd1XtYo6sX8f5umrKaj30C+beQHEbZ6gTOQRHkjTSYTfmtE2xuXvOZd1l2pzxYu
+	hQbdSr+qRo4G+jdOeOmf8l8G8OsQLQF5ef0Q2Z2mkLoqerrS2HRzpSPh1q8J7nrSNz7byoyaUCn
+	oCYS6wsYfOL0sWwHMt9DhpAJhS7mx7lTqgLHK84eUuo9ohE91OBn21eLXtpzRA85+sgsGXyNnu4
+	0SAShwTddShgZimRgu8exvY+s4tg==
+X-Received: by 2002:a17:907:6d1a:b0:c16:581a:2a51 with SMTP id a640c23a62f3a-c1fa53ac343mr131168166b.12.1785416667822;
+        Thu, 30 Jul 2026 06:04:27 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fa85dac0csm64655066b.28.2026.07.30.06.04.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 06:04:26 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 30 Jul 2026 15:04:24 +0200
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, urezki@gmail.com,
+	shivamkalra98@zohomail.in, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: make vm_struct.nr_pages an unsigned long
+Message-ID: <amtL2Md-vl_gt-pV@milan>
+References: <20260729175708.7074-1-iprintercanon@gmail.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|AM8PR08MB6499:EE_|AMS1EPF00000049:EE_|PR3PR08MB5609:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2422e5ee-63ab-47d4-de99-08deee3a8993
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- FC2/f3uqOPNNy96aL5tW8wkHImrCfVxh6gQab1ZKH0Q8V9H1vUmueEs6OtDiI8UtXir4rhhqasBx4ap8cYLSYxigO/kvUNlrkbD2UFdd/IpSC7NMQ5r2AdxEt7Dil8zElmXunvRoE5Tlg5sGnVdcymp/0GRd7uQDnxPOWfgMmzW1CCGhDM3v+DfMPVFosD2QLovucjpI0mdWXiiv3LhVLTTiqh85ygjUz5tiRxrntpo8otSPv4PIgvvvuRnm2hI0to5Mdar/A16FWVJK++gzpBzWDlclVVy9ObW6E9YNTB5AcXTLB2BRmht6C+LJ73SIGkvhND+munjpvjnCNX4GM+dv+iNc2yrnOKf3hduUdhhmqBZMJfBiFIXH6AC6j8q89bevK/2qXILNDQRfolUrwjbzI9gX0tiwMteCnIQTjkYrfh1NWlAMJBqRmVgkez0L1229MzW0FFHciClGqnCrHNlhG9+3JkyI/D1HQnoUBzVW2hMioefk3Nl3IAFu1t0UCQ9ab0zh4eIjPXw+czTd5wh5/3SUeVS2L3txx6cDHO6mWTMfg1iPlJNryIjRZOG4tQgZcfzHN0355IoQ1BJo9CIYMiBMGUUM/pO+t0/1P/UVaidrsdU8W1nwX5nKncAJfTqvDhCcwLQvvX6sZpr1j3KIOss8CU0HxU3z0QangmQ=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- PJVqIA2lDgDWhewu7hYynL9BtEIPBvddMwyA6Osilo+gjydcsIvk19XXBZt97+CSHOBCcSG1lF5ESd//62FEcnuW0Op041L9mUSopM9qIiRcFzs6jxJ5UjR3ygaJFlN1jkDri8tj2JilMkEJV/f+jXbciV8JLgAAjrVUK1FCu8cKe10e2R3XzHtcJB0d0wf+6uvadBsnplj1Vi9ZrgFvKbcSQ3nWsFAKAwekW3nE4LknTIXxlkyGUKh4agwsjc5N6hK6U9AG4+8fxKtOCwiJW0F14FybdRB0nEtZgFHfgnVXGE59pb5a47YhLFojq6ZdSXR/ked5yu0EJrH2ID3F1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB6499
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF00000049.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	4668f8d0-8f81-4de8-943a-08deee3a6347
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|14060799003|7416014|376014|36860700016|35042699022|23010399003|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	O10KOqaXNNUMGR3ls13Np733WLe/+mOUvsHHZK/1xvrOwAaQ3gFyBxD+l4l/yBYETpIfea/UPYyKQXoQWiI0DSf1odiOCn6popV8LeIpeABO8yxkDTap5/ruOMVRfjZLI+0dyHD2AhwqvqDKwora12Uzpxg5urIAPa4gB4EupFRX2Hn9n44kVOaLGJvtbo8AwcybPdx/0cJa2AJXutypzyXOBgYu01V+1NdEtnTlnYyeIniUXiAnZO49zzm2SNvplb2ENgqH6kDZY6eds91aQiTx482FiXo7rQjGer9COEf14KfzsCpgPlo1fLcsJHpS0AhX+6OMTsFA8hsTeu15rGfNPkZrHHJ26Ckw3dA+BOJgVzXOj23My+cRSUZNShklge4arjFOhFMdufo1oPFS8qTpz2tmePAKyDSH7nPAGbR9xQbXnhP39MsUvAYKW9rqMxOtkcT0WsbMA10oUDQ75qNh/i9wl7+THUtbY6fK2MtIFC1s36xsX/Ic+6MccQazOuyXmxWpeY2nLID1Otx4XZpVckuFKv3PMeX4Jz/TThbno8qKIDdQQ82uFvW1ZyzaBwGQdGB3vQ/wX3zoRXr+FkEefBgM9O9xHiFWaZuexJKpGcJY0/ICp7lY2aJEmvGBR/wlK5Irpmo3gcy4rrPqBVgZzL8WivKrJwxuvXgYKM6AzbyC5XB5RWoaraT+RnB+bvHE26VpYqRqh7ejd3XkzA==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(14060799003)(7416014)(376014)(36860700016)(35042699022)(23010399003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	O0tk75Jwa84mlQCh/jghGzah7Zx4wyBrsFKWBapww83B2Rc5zJP6DKPrz2Uug6JPaPNE+9z2QJlnOBHI5eVJvoivlaP5RB0CDEgLDuDWcRD+uFLUl7J24b6Fh42l/El51riqiL/qx8KLaCiZ3QEA+zMCBEPyTCyleaxfiFROcNsSg7Y0+OwvImkIDS3t6ybum1bYLPDeEvQ/niHon1ljqZi8pGpTndyPvy9tSEgttv7Cwu5YZ0FINdmLMPGMOdm4dq6a5pPvgR0KIEK4XtfwADa29iGw+N9A5AaE3kjZpOuY2T60KxAgD44ofaWhiDmg/gIpQeLlQgG0eGkeGaAhv8dZj8ZlgZmaMiccf1N7/RZyq3/dv3uUyldCsqo3IFF21Ksrf85EBWTicCY/fo8/58SOakbPyIkgIp44+9WMgCZzxrQeA0gufUQ9J4l3XfkD
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 13:00:31.6304
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2422e5ee-63ab-47d4-de99-08deee3a8993
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000049.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR08MB5609
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729175708.7074-1-iprintercanon@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9FAEAA000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BE65C20018
-X-Rspamd-Server: rspam01
-X-Stat-Signature: chpjp7rwdkgk698pzwgjw1paygt87p64
-X-HE-Tag: 1785416438-113492
-X-HE-Meta: U2FsdGVkX19jS8QAp6nHhWVXu8otUL5c7hzkh+y6T3QQsgX3Zc92WkefuJ3IqG8Ss8ek070tnararyIDG6vAK46O9FvFZALY2Og4HoPHvvVTtuFvzWEq7ensLSNOEXL/2K7lr73uS3L8+lECelFVLRrtvGEpeSzhI7tz/5vvhlgTAn2w9iiXZRL5ed0lwv1fz85K36rtWCYUQH6gT6vlFLVcbxgpX/ReyKLwKA6J8BPBSE86Z14mZTP18iSDD/4dLP09w5AdYmDs8e5gdXJNzQpW0+UZqicMAw+n3ENTJ/TDMmxR+D8789RjO9xxfVHq+eJZocv87meiW5FljM20ORYz+ySiS586oEeVVkBv+4jkDE22Mq6rdSickLW8CPVagcIQMIOr/JXSQe4TBskEdHyo+Hl6uLOS958yXRdqMnNTeIhHWcRlOlTwWfdHyOlM/zRAJ33x0KqtT2enLQtxioAGow89zW1UbBISVF0LrmjRh97eyk7QAa4j3aW7lxz49rnm8tgyIlPD5SS5SF30UpJgWPtFWW+PS0xpFOcZbrzh5ZM9fOLDE0v0LsL6mdiYQ7E+vrH3aVPapp2+n1o5X5Yl2WKJ4Q3K4kJ/wQRNsSAlSufE1mT6ihfSz3wXnRQWEarptMCwVEX6LBBsVdsGeXUEDtHUmD4iGOTViGwZ5jLnBkdlJiyXY859gaNIQOj9zzgRbDNJ5Ld72CxTCckbK310NsxFXzGYUlKs3KgMSjCMEAQVSdFtBTNTFMr8fnKkSlyQJ9tFKeBfw7jDWKpMrk647Ua/h9go3GCHs0/0NfbYEP4PnBe0vHAtDy3K7PRLIm5wwEbCdSfpQMhEIAZiDHngmKz6bS1fn1BVc9Pz5AFsCeVMrZ4s3sugE2s0Br2wgBNRmb6WXpgJPlmbTT5qQaRtdbGz9No0F+gcBhZYrYGumK5BgzfAwsCWyLQARqJe1Q9Net4vq3lfd5sO1e6
- 7gW9OX3W
- mIX3YqKihc2vBTZSayMDAQijGDHRySa+1zzl1QDBgooX6hJoNNY2pFLXGfc1Od7w471O+OzNAz8H+oHnirFQSY29R2V5ner+KjpUIBln4c8VFEDDiHqi61NFyRu5QEoRrV3lEFmApstiGDSQml1QVx1AT4Q1KoLOx5S395lpiXaR6xz/Tb88B5XrszRwsrCY15Fs1KKAx5397QMITXzrEyDBvDhMnWq8ptOJWhOvfQv7IHGa3fdih0xMlJZMw6n5Yf7oajUy+TpZCy/uL3EoiUc++dMM6Qiy8333E2dY23fjis4ttb/HxnvQvAc7Rc2hssFU3sraHXwMPwYTHZdlrhyXmALTIG17NyvB4JOxA7jyfsnbee4PYqEnQmj1Ul99GI/Qahc0WRg46Af7xqVwmYswNaFnhHjxfqgocx1y2N+F/q0J4Yii7lgkrUVv1EVaFt59QwXHDYR2kC6P09ICubpdDW0ZQ2vwsY9EUOoozPUFD46WTrwaoWj8o84CAB4NsQLg1uRmBRRf43mSOh5N5DnZSkl9tL8yaiQPjlpCeM/1EIQ4uXp+Gege6TK9xmYD4AvAdyDZlDW6lNsEiZTqgJ+Dc2fOgJGDiEyJJpThxd7Hro5z/Ze0iq+DbcsnXaDPAdSbVjUl6aumUk7nCRuREskVnWjiTz5/v5/HcEM5lQ5oFSQ8=
+X-Stat-Signature: 6ri1tgxtrjd7f1tsc6aembozzho63and
+X-HE-Tag: 1785416669-754880
+X-HE-Meta: U2FsdGVkX1+lSeGV0a9jOP9jMDL3C22XYPp4UaUarOLsSU9k6FVrQhIyu3EdxvhQf1uAr6p87TQh1/odqC0Evd0d6wTfKa7Smg/39XTv9DjcgfLKPNR350mAJYmfOX3cm5OMfzymiaw6h4C8De++xf+DFOe2LM8dfv1cUmewP61y9Zr9ugCqMdhY2lhqST0tKXercvCu9O9Ft/KfHgWscfxknS1HySZ93jVddvhFq8z4mS4HS06jvkeOGbt+6MX/mrnTU4Ua+ji9hB+zd0kSUm/16q6lhw6ggwNGp4Dwk7gUb9Z/NthwvYLg3zG64//TRhs2yXkEIPm63PA9wj1sq6ZqDY4TiNHqnPcJUl/L+9LQ096wAdAzlxWhQFHWO8ONIdz09e2iB9SkxqSMk78VE4I2jfzxhkmY2CmkM3FOMwsxkB9rqQH7NhHQ2baJy8dZhmljUYWUdLmOliNXJRUo8ybOj/S0AAuMnPfXDiZoFbcrlkIN55qjefyKA7J50D7P2yJ6NafbgPvG3ngBw07X3xx3FskzaJA6P81OUH39Lp5PcHitF46nfdYT5AuHsiyaotMMJIHd65L5g9+gIloD6/YHpTashu40L9FdigMROxQAvgGBBwRDSMSU2cTaM/3tTd2aEY4B8lRqY8txaVxk2CcM1kO1eV83Q0sam4MvVIUwcKpJVRKdREFHEm0WXnb9mKh6JO7d2DM8kTaHFn8JCjRHzyVHcKKhQeZJmSmPaXFbGwl/9pdP7m5E7yrSsG1sRIIsK0EEVu//PQAhy2dy6yZem6HzMuqjvJkJ3WMXatoBcuR17jtFp7Dn7fvOeJtpxBAHJUmNrK8mmUw8wxQkDIC5vYpaC6lsMUA3i/ylEVwCLRUaJ8ANZYPYmTgNLXzp2Upt0A9pD1poNqEHaf2Dmk5MNoRiJ+vbHBIEmlJT2Pq92oRpa+GVKHfEZ9WqK+AEHP0n0Ezucp9uZPS9dLW
+ ZBY9JizJ
+ DD0J3phpUafreGA6HYz9vB7LQ5NcOf2/jQzDK2sm6GhV/wtTlF9a/vDDW9RN5LAZfgjnHtnPUF5ye0enbc/ChnuC2TKOI9plTJN7gDQRDOEXLliWPPPuUivhIASbd4Y7JQgpivPsI6m54KDO0UHyADUMPe0JG+onBa36UgAiJoxdkfdLAhuINsrf8MiknDBhSagas+fkYMqDH6TAMXDrZMv/s/I4IKf8Pa008EsVdbGaviE7p78IXg0CEQrnVKzdupJxT9vaIfE2Li3Rnk/VyiWmY0OlN2udrnzOabzR/YuVQzQlnv0+FnUqb6Gsp1DW+IeminavylDX+c5QBKJ1OUco8tUi85UpmGaEY5ax7463TKU67U3rajUQ4U0oa4xjYkCXXpqOZmVuVXr2D7LAMiS/dUSX+QPtMNkfRgiUC6RE+wTFqvCzRIYrHCXO6XzgesZIFnBcdjz2m0Tl2kkqWseZiZsEZKQkGhSDxLTbmamoZmgnXPatmHrCQ3xnzgJ41x7PbA2MVQ7aWNnR5t1enB5opLqXQB0iJrGX+a5x+eSevKIPPl+xLUp2hMD3PMrMxKP5j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -228,45 +118,306 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30/07/2026 12:29 pm, Alexander Gordeev wrote:
-> On Mon, Jul 27, 2026 at 05:46:58PM +0100, Muhammad Usama Anjum wrote:
->> move_ptes() directly dereferences new_ptep when checking that the
->> destination slot is empty. new_ptep now points to hw_pte_t table storage,
->> while pte_none() consumes a logical pte_t value.
->>
->> Read the destination entry through the standard ptep_get() accessor before
->> passing the logical value to pte_none().
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->>  mm/mremap.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/mremap.c b/mm/mremap.c
->> index d966ee8248b6b..ecb90ccee6fdd 100644
->> --- a/mm/mremap.c
->> +++ b/mm/mremap.c
->> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
->>  
->>  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
->>  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
->> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
->> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+On Wed, Jul 29, 2026 at 08:57:08PM +0300, Artem Lytkin wrote:
+> A vmalloc area can hold more than 2^32 pages, but the page counts
+> tracking it are 32 bit. That has produced the same truncation bug twice
+> already, once in vread_iter() and once in the vrealloc() grow-in-place
+> check, and it keeps the casts that hide it scattered around the file.
 > 
-> Same as the previous patch, except that I did it already:
-> https://lore.kernel.org/linux-mm/20260720141633.501799-1-agordeev@linux.ibm.com/
-I'll drop this patch.
-
+> Widen the field and everything that feeds or consumes it, so the byte
+> counts derived from it are computed in 64 bit arithmetic without a cast
+> at each site:
 > 
->>  
->>  		nr_ptes = 1;
->>  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
->> -- 
->> 2.47.3
->>
+>   - vm_area_alloc_pages() takes and returns a page count, and the result
+>     is stored into nr_pages, so its parameter, return type and the
+>     nr_allocated and nr_remaining accumulators widen too. The 100 page
+>     cap on a bulk request stays narrow, only its literal becomes 100UL.
+> 
+>   - nr_small_pages in __vmalloc_area_node() is derived from a 64 bit
+>     size and compared against nr_pages, so it widens as well. Before
+>     this the store truncated for a size of 16 TiB or more, which sized
+>     area->pages from the wrapped count while __vmap_pages_range() still
+>     walked the full size. The cast on array_size next to it was already
+>     redundant and goes away with it.
+> 
+>   - new_nr_pages and old_nr_pages in vrealloc_node_align_noprof() widen,
+>     which drops the four casts on them, and the casts added by the two
+>     preceding patches in vrealloc_node_align_noprof() and vread_iter()
+>     are no longer needed either.
+> 
+>   - vm_area_free_pages() takes a page index range.
+> 
+> Three loop counters that index area->pages were plain int and would have
+> overflowed at 2^31 pages: in set_area_direct_map(), in vm_reset_perms()
+> and in the bulk allocation loop, where the index is seeded from
+> nr_allocated. They become unsigned long.
+> 
+> Printing needed fixing in two places. vmalloc_dump_obj() used %u, and
+> vmalloc_info_show() printed the unsigned field with %d, which would have
+> shown a negative page count for an area of 8 TiB or more.
+> show_numa_info() used a single unsigned int as both the page index and
+> the node id, so the page loop gets its own unsigned long counter.
+> 
+> The page table walkers are not covered here. vmap_pages_pte_range() and
+> the levels above it carry the page cursor as int *nr, so a mapping is
+> still capped independently of the counters this patch widens. Widening
+> that cursor touches the whole walker and is separate work.
+> 
+> Nothing outside mm/vmalloc.c needs a change to build or to behave as
+> before. Those users either index the pages array or multiply the count
+> by PAGE_SIZE, which is unsigned long already. kexec_handover stores the
+> count into a 32 bit field of its own ABI, which caps that interface
+> exactly where it did before.
+> 
+> On x86-64 this leaves sizeof(struct vm_struct) at 72 bytes when
+> CONFIG_HAVE_ARCH_HUGE_VMALLOC=n, since the existing padding before
+> phys_addr absorbs the change, and takes it to 80 when the config is
+> enabled. Both sizes come from the same kmalloc-96 bucket that
+> __get_vm_area_node() allocates from, so the footprint per area does not
+> change either way.
+> 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
+> ---
+>  include/linux/vmalloc.h |  2 +-
+>  mm/vmalloc.c            | 62 ++++++++++++++++++++---------------------
+>  2 files changed, 31 insertions(+), 33 deletions(-)
+> 
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index d87dc7f77f4e8..a39c20c77efcd 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -62,7 +62,7 @@ struct vm_struct {
+>  #ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+>  	unsigned int		page_order;
+>  #endif
+> -	unsigned int		nr_pages;
+> +	unsigned long		nr_pages;
+>  	phys_addr_t		phys_addr;
+>  	const void		*caller;
+>  	unsigned long		requested_size;
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index baf7e396e3fc7..efd5e42c64e2e 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3338,7 +3338,7 @@ struct vm_struct *remove_vm_area(const void *addr)
+>  static inline void set_area_direct_map(const struct vm_struct *area,
+>  				       int (*set_direct_map)(struct page *page))
+>  {
+> -	int i;
+> +	unsigned long i;
+>  
+>  	/* HUGE_VMALLOC passes small pages to set_direct_map */
+>  	for (i = 0; i < area->nr_pages; i++)
+> @@ -3354,7 +3354,7 @@ static void vm_reset_perms(struct vm_struct *area)
+>  	unsigned long start = ULONG_MAX, end = 0;
+>  	unsigned int page_order = vm_area_page_order(area);
+>  	int flush_dmap = 0;
+> -	int i;
+> +	unsigned long i;
+>  
+>  	/*
+>  	 * Find the start and end range of the direct mappings to make sure that
+> @@ -3427,10 +3427,10 @@ void vfree_atomic(const void *addr)
+>   * Caller is responsible for unmapping (vunmap_range) and KASAN
+>   * poisoning before calling this.
+>   */
+> -static void vm_area_free_pages(struct vm_struct *vm, unsigned int start_idx,
+> -			       unsigned int end_idx)
+> +static void vm_area_free_pages(struct vm_struct *vm, unsigned long start_idx,
+> +			       unsigned long end_idx)
+>  {
+> -	unsigned int i;
+> +	unsigned long i;
+>  
+>  	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
+>  		for (i = start_idx; i < end_idx; i++)
+> @@ -3642,12 +3642,12 @@ static inline gfp_t vmalloc_gfp_adjust(gfp_t flags, const bool large)
+>  	return flags;
+>  }
+>  
+> -static inline unsigned int
+> +static inline unsigned long
+>  vm_area_alloc_pages(gfp_t gfp, int nid,
+> -		unsigned int order, unsigned int nr_pages, struct page **pages)
+> +		unsigned int order, unsigned long nr_pages, struct page **pages)
+>  {
+> -	unsigned int nr_allocated = 0;
+> -	unsigned int nr_remaining = nr_pages;
+> +	unsigned long nr_allocated = 0;
+> +	unsigned long nr_remaining = nr_pages;
+>  	unsigned int max_attempt_order = MAX_PAGE_ORDER;
+>  	struct page *page;
+>  	int i;
+> @@ -3695,7 +3695,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  	if (!order) {
+>  		while (nr_allocated < nr_pages) {
+>  			unsigned int nr, nr_pages_request;
+> -			int i;
+> +			unsigned long i;
+>  
+>  			/*
+>  			 * A maximum allowed request is hard-coded and is 100
+> @@ -3703,7 +3703,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			 * long preemption off scenario in the bulk-allocator
+>  			 * so the range is [1:100].
+>  			 */
+> -			nr_pages_request = min(100U, nr_pages - nr_allocated);
+> +			nr_pages_request = min(100UL, nr_pages - nr_allocated);
+>  
+>  			/* memory allocation should consider mempolicy, we can't
+>  			 * wrongly use nearest node when nid == NUMA_NO_NODE,
+> @@ -3849,12 +3849,12 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	unsigned long addr = (unsigned long)area->addr;
+>  	unsigned long size = get_vm_area_size(area);
+>  	unsigned long array_size;
+> -	unsigned int nr_small_pages = size >> PAGE_SHIFT;
+> +	unsigned long nr_small_pages = size >> PAGE_SHIFT;
+>  	unsigned int page_order;
+>  	unsigned int flags;
+>  	int ret;
+>  
+> -	array_size = (unsigned long)nr_small_pages * sizeof(struct page *);
+> +	array_size = nr_small_pages * sizeof(struct page *);
+>  
+>  	/* __GFP_NOFAIL and "noblock" flags are mutually exclusive. */
+>  	if (!gfpflags_allow_blocking(gfp_mask))
+> @@ -4352,7 +4352,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  	}
+>  
+>  	if (size <= old_size) {
+> -		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> +		unsigned long new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  
+>  		/* Zero out "freed" memory, potentially for future realloc. */
+>  		if (want_init_on_free() || want_init_on_alloc(flags))
+> @@ -4381,7 +4381,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  		    !(vm->flags & (VM_FLUSH_RESET_PERMS | VM_USERMAP)) &&
+>  		    gfp_has_io_fs(flags)) {
+>  			unsigned long addr = (unsigned long)kasan_reset_tag(p);
+> -			unsigned int old_nr_pages = vm->nr_pages;
+> +			unsigned long old_nr_pages = vm->nr_pages;
+>  
+>  			/*
+>  			 * Use the node lock to synchronize with concurrent
+> @@ -4394,16 +4394,13 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  			spin_unlock(&vn->busy.lock);
+>  
+>  			/* Notify kmemleak of the reduced allocation size before unmapping. */
+> -			kmemleak_free_part(
+> -				(void *)addr + ((unsigned long)new_nr_pages
+> -						<< PAGE_SHIFT),
+> -				(unsigned long)(old_nr_pages - new_nr_pages)
+> -					<< PAGE_SHIFT);
+> +			kmemleak_free_part((void *)addr +
+> +					   (new_nr_pages << PAGE_SHIFT),
+> +					   (old_nr_pages - new_nr_pages)
+> +						<< PAGE_SHIFT);
+>  
+> -			vunmap_range(addr + ((unsigned long)new_nr_pages
+> -					     << PAGE_SHIFT),
+> -				     addr + ((unsigned long)old_nr_pages
+> -					     << PAGE_SHIFT));
+> +			vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
+> +				     addr + (old_nr_pages << PAGE_SHIFT));
+>  
+>  			vm_area_free_pages(vm, new_nr_pages, old_nr_pages);
+>  		}
+> @@ -4415,7 +4412,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  	/*
+>  	 * We already have the bytes available in the allocation; use them.
+>  	 */
+> -	if (size <= (unsigned long)vm->nr_pages << PAGE_SHIFT) {
+> +	if (size <= vm->nr_pages << PAGE_SHIFT) {
+>  		/*
+>  		 * No need to zero memory here, as unused memory will have
+>  		 * already been zeroed at initial allocation time or during
+> @@ -4722,7 +4719,7 @@ long vread_iter(struct iov_iter *iter, const char *addr, size_t count)
+>  			 * mapping types (vmap, ioremap) don't set nr_pages.
+>  			 */
+>  			size = (vm->flags & VM_ALLOC && vm->nr_pages) ?
+> -				       ((unsigned long)vm->nr_pages << PAGE_SHIFT) :
+> +				       (vm->nr_pages << PAGE_SHIFT) :
+>  				       get_vm_area_size(vm);
+>  		else
+>  			size = va_size(va);
+> @@ -5228,7 +5225,7 @@ bool vmalloc_dump_obj(void *object)
+>  	struct vmap_area *va;
+>  	struct vmap_node *vn;
+>  	unsigned long addr;
+> -	unsigned int nr_pages;
+> +	unsigned long nr_pages;
+>  
+>  	addr = PAGE_ALIGN((unsigned long) object);
+>  	vn = addr_to_node(addr);
+> @@ -5248,7 +5245,7 @@ bool vmalloc_dump_obj(void *object)
+>  	nr_pages = vm->nr_pages;
+>  	spin_unlock(&vn->busy.lock);
+>  
+> -	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+> +	pr_cont(" %lu-page vmalloc region starting at %#lx allocated at %pS\n",
+>  		nr_pages, addr, caller);
+>  
+>  	return true;
+> @@ -5266,16 +5263,17 @@ bool vmalloc_dump_obj(void *object)
+>  static void show_numa_info(struct seq_file *m, struct vm_struct *v,
+>  				 unsigned int *counters)
+>  {
+> -	unsigned int nr;
+>  	unsigned int step = 1U << vm_area_page_order(v);
+> +	unsigned long i;
+> +	unsigned int nr;
+>  
+>  	if (!counters)
+>  		return;
+>  
+>  	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
+>  
+> -	for (nr = 0; nr < v->nr_pages; nr += step)
+> -		counters[page_to_nid(v->pages[nr])] += step;
+> +	for (i = 0; i < v->nr_pages; i += step)
+> +		counters[page_to_nid(v->pages[i])] += step;
+>  	for_each_node_state(nr, N_HIGH_MEMORY)
+>  		if (counters[nr])
+>  			seq_printf(m, " N%u=%u", nr, counters[nr]);
+> @@ -5333,7 +5331,7 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
+>  				seq_printf(m, " %pS", v->caller);
+>  
+>  			if (v->nr_pages)
+> -				seq_printf(m, " pages=%d", v->nr_pages);
+> +				seq_printf(m, " pages=%lu", v->nr_pages);
+>  
+>  			if (v->phys_addr)
+>  				seq_printf(m, " phys=%pa", &v->phys_addr);
+> 
+> base-commit: 248951ddc14de84de3910f9b13f51491a8cd91df
+> prerequisite-patch-id: bc462c518eb9ddcaccad5e1f5fed7cc24512b117
+> prerequisite-patch-id: 891688c2e93c570d1c9c7802b46aaba974002684
+> -- 
+> 2.43.0
+> 
+Makes sense to me. The commit message could be shorter describing
+just an issue. I was lost when i read it first time.
 
--- 
-Thanks,
-Usama
+Also:
 
+<snip>
+Artem Lytkin (3):
+  mm/vmalloc: fix 32-bit truncation of the area size in vread_iter()
+  mm/vmalloc: fix 32-bit truncation in the vrealloc() grow-in-place check
+  mm/vmalloc: make vm_struct.nr_pages an unsigned long
+<snip>
+
+first two fix overlaps. The latest also do it by converting nr_pages
+to unsigned long and removes (unsigned long) casting introduced by 1 and 2.
+
+Maybe just use one commit which is last in this series?
+
+Anyway for this
+
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+
+--
+Uladzislau Rezki
 
