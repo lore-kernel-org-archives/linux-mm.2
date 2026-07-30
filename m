@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C648C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 236AEC55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41B1F6B0088; Thu, 30 Jul 2026 08:48:01 -0400 (EDT)
+	id 0C0DB6B0093; Thu, 30 Jul 2026 08:48:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CC696B008A; Thu, 30 Jul 2026 08:48:01 -0400 (EDT)
+	id 0996D6B0098; Thu, 30 Jul 2026 08:48:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BB8E6B0098; Thu, 30 Jul 2026 08:48:01 -0400 (EDT)
+	id EA4666B0099; Thu, 30 Jul 2026 08:48:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05FA46B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:48:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83F1880139
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:48:00 +0000 (UTC)
-X-FDA: 85045420320.30.8817A69
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B26E340009
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:47:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o09DWJ22;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C804E6B0093
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:48:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53152A012D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:48:33 +0000 (UTC)
+X-FDA: 85045421706.01.D570B3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 93E4E180007
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:48:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUg/WBkr";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785415678;
+	s=arc-20220608; t=1785415711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9YnKQEuNyY3l6FqCLIt8DO3maEUsuk3WKolE6H8NO8=;
-	b=1kkoAp550NpTVFmuhD1gF7XtqTWgtyGB+KmWtGBy3vjwt1elzYIIdttbzyHvl4VSUZ1BDQ
-	YEkalVwA3KdsCjHw5vRyi/91evA8kUHN5mNrIWL5o+42C4Odzz3B1I1HLOIWS9glz2RPN2
-	e/BvFlv0ru4GCbkU/wfKP2rJZr3ntx4=
+	bh=UIfD52whRdajlRMAs/wH6Qy+tiFNtzMSJDrWVPET15M=;
+	b=rUnwEez6yI3Eg0aLgmJ+UXRg5/sqmAGxvv+F4cZQTbzprbuFC7uHUjxhxESQ3JANpUFzT6
+	VUBUcqTV0dcbZ2/SDTWQwO7vhQLVKO/z2oQYwlHSa9wrpVL+alIfPg5vmiUcuImVm+KtjO
+	baMMtWblPet9vv99zURIbmWL8LD8w4Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785415678;
-	b=bnJHuaMxTS+UHgGDELafJCVJ2VYbiQ8XPZOCOmHUQHQXaxbHn26I5MIG50qEyXcvzltpEY
-	aMLomP4y5Q0WTl0HOj9LePuAaMJZNXWycVY8dEj6j4Dd3MS9tOXghDes3DdvnRNmb4OFdi
-	yYlcXISmv+RoE5y2wXVVqSCY2bhMReI=
+	t=1785415711;
+	b=2abYgU/MqDj8JpRHbmROZ6y9tK0zhUv6tBhMhzsGZjmoatHfDxzNTeupSlno00fcJno8IF
+	mnGjpXqFvXjvT3iG9lIEunF+/VwINPbTf7a2qIfycN/tzX4m1kjPxualE8VSv4MAhd5lqw
+	NbTTf1v9VyI4Qknwsdab8oMApwM6hYs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o09DWJ22;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUg/WBkr";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E9EC943948;
-	Thu, 30 Jul 2026 12:47:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3CE1F000E9;
-	Thu, 30 Jul 2026 12:47:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 162A360A5A;
+	Thu, 30 Jul 2026 12:48:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EB61F000E9;
+	Thu, 30 Jul 2026 12:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785415677;
-	bh=j9YnKQEuNyY3l6FqCLIt8DO3maEUsuk3WKolE6H8NO8=;
+	s=k20260515; t=1785415710;
+	bh=UIfD52whRdajlRMAs/wH6Qy+tiFNtzMSJDrWVPET15M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=o09DWJ22Hv5sHflnQ1KniaNaofyCHe2ZxHKC48xizG9lN7TljgWIskyagAIXb1Bfl
-	 YC9oZaXML51B5Vh19zrnY46RxqekLzZB4LTnj6+19iR+CcSZYvaN6l0MYN5QrMBoL0
-	 Tsynq4042P+2BCJphiI9H6z36IdoXTreK7b2+694Yoy0yC5oG/THF7LA2lHYPZijgK
-	 NtH7OX5WqDi9hbgbxupM4wvzpFZ8o9Ke7Re+gD+O0FPj8ur9kU52Ea+s0kVMDYxBX7
-	 IlXGBs6CPlA8n3BoN/PgXPP0cz7aR9WQH1WlF/ZgNei3MFZE6v5c3FOlvWQlbvfz2J
-	 /x/efvJVmWLpQ==
-Message-ID: <86119f7f-bd70-428e-a6e0-eea7cc907bbe@kernel.org>
-Date: Thu, 30 Jul 2026 14:47:52 +0200
+	b=jUg/WBkr561zbGX58qkiWcD88JbxTs7n3IAzWM5w5aLtyAGKEIjl1xHDWWdQ7crlF
+	 rQSHXJm7KHaH4ZyHtXcmFQFnjRYQX6o5Hc5Ul8kJwRqTwBqxhRPsmOLvm0Zgr+CATy
+	 QxGK2DH+HqpyHpfoEREFctTirmMHHWk5g1193Y4cSUDY1iw46aTiz54FxkL6w6caTD
+	 /Edq8FHJaUGejWUrfjKOIklvUbW5AIwj0b+69OZDPo5WQUL0dN6Ukyn5NfAGY/bpws
+	 P3ki/KyUXhE2vZL1rgriZRyDbco7BxiLiqS0F/ZXD6RlaWzJho/xsEQemw5qD6DMRL
+	 GVwUk1XGyLnGQ==
+Message-ID: <b351c5cf-bad7-4252-b6cb-1e728c97577a@kernel.org>
+Date: Thu, 30 Jul 2026 14:48:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/migrate_device: Clear stale mapping after freeing
- swapcache
-To: "Yadav, Arvind" <arvind.yadav@intel.com>, linux-mm@kvack.org,
+Subject: Re: [PATCH v2] selftests/mm: unpoison pages in memory-failure
+ teardown
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, ziy@nvidia.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- balbirs@nvidia.com
-References: <20260728062832.1107127-1-arvind.yadav@intel.com>
- <8d50f94b-6d95-4967-aa1f-2c14333ffd85@kernel.org>
- <d2480581-52b5-445b-b56d-af1bb9d71608@intel.com>
+References: <20260729091127.1001179-1-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d2480581-52b5-445b-b56d-af1bb9d71608@intel.com>
+In-Reply-To: <20260729091127.1001179-1-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 93E4E180007
+X-Stat-Signature: in8txu5cpcwrnsz1r1b1utfxoan9szdn
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B26E340009
-X-Stat-Signature: 4xz8fh7dgqdygw9darqqiny9md3myi4e
-X-HE-Tag: 1785415678-491447
-X-HE-Meta: U2FsdGVkX18sqY5Lrr+klueAe9rHGWGNsmGcx9SG/71hO1GsazDQpIkCW/NJBQxD8PeGIsb1WMHEGCssEyjhJUCrARNspGXIsNJItgEMuSUuJtXT2/svXeosAQCP0IenbxUM68cI6sjwqUo1du6advM2vwgMxLLfISOrHv2JoMR7aqpVnIPZhV7U1IuNT8dJ9DpDX5xqxEWminJlyU/nHasgNrG8IAv/RiK2VjTUILLIJ+10zfpCypSYdC/Thn+87Mws7FY1reWSxC2hNYF5GM9metOuZIMIl6B3G2UX5WRiS8ev4gLQbHOMTSzw3T873rRDcMV3skcpCq/An5hdaLUDvloKiWbzTnlmSq9L87PtYuE/1QBhZcVx5q7OSoIdwVYJphtXveoUjTIUwAHEe21NKrVvwzdsP3w2TtC/xbId5JFm0WTAAngVJlFy67n88zzIheD/K8f/Y/CMjM8X0D/bSvrL4WfKkq4Tgqs9rVjAc09V8D0Hwc1kFACAmbWL/+cKMhLgSibMtsJstcGwzW8xGLM30/Hi4vGZQFrKz4Qc/n9AzdLxx2SJ6mzwDLLC+w6f9AqNCKM9/5VN7+ZeaUCzVVJvhwAY0xfsa5KP63JW2/VAKKz501gx7M0TtIB4lFpKTxXNuPLUDXktnRiKz8hwz/4QhLJIMeEj/wcwDyEQc6sJA4s+cuTkEb69MeFjZ83K5+q3B5IgiwjVfRIHCweHrf/8t6B9fImW9GC7Les5i6YMLTx+snyEZAxHWvCOJE0UIGkDc8Fl+NWQpW7apEvAZYVObkJVxzw4FmSqzC+Oj64USJr1+PtOJDeNb/moakMRZYffezEZmIQcZMGQlRMHeznYvdmf+mcZBLSuB7+J3bW7qUf1z2Ey6cYwYjovO1CbqPsLASZY13Uv3BF85iJy8RRlMqpa/+lZUk9c+PqUlTYS7spnL+Qk9Xe+HzgKuuGvhIU+DWYVKlelyzr
- 9ipS9Bjw
- ZRVcoLemJTMQqueGwu4BmAUJjPozgxSxOYymIYSjWaeOo1ofifluC9ASRtabhpa9RAN5PeY2ax1ibb9uDrCH62Y8aEnH8NZo43Myh/pUfvaibHUJHkTLaY8ET6qKkBnA2u8Y3s95MIwJ8CvoxNbRnMW9r+g32Y0EwwcV1M4YDZaS1U4hlrHWdU+of8jFO+MwdUwaMPGZm5e7p6KHT7BRPAFIWja3rsTNIPBDIaeV8RssykfpdXITr3msk48JippbiVMqOZOErStoleRiqcGPqYAQaDKiAhs42QuVPusjkl3OrxAS0OKyEpjY9UiYfa175yiKPr0t+nIYm6vF/1myrmFSB/VM3A8GELUxQiqZ8aek0dKMkNY0lVvqFHFX65/GcsfaV
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785415711-852386
+X-HE-Meta: U2FsdGVkX1+OUcHaFpyE6BWS4fz5/vv0JmxXtkI+jUPI8/N7fsw+Fzvepve9isyUdFb5zcLs/UKSYY8Bcs5jhP5mWa6cVjW+N2h65R6rw8lyrFWCTPAdL81zwZIbpaPGiCcHmX32fa+dsNzW8IuSu1CbmxCKQObBy0byWhqx4VYuAppunWTXCPgzcaHx8MTPZ8lwk1uvsEuHOsXtFu2HKaB/TDV3xL7LTIsZulx0jr02/E4QL/MPmpVltt5j2W4hewiA8ZX8zL80DM0N2TXIlNhfJI9j+zDB/rqQBq4xbRMmu1eCQmXSYav4L3CsX58HXtHikSHV5aS/iS4XlgyJ6ZmanoJMIICRaBtsPUK8DWMhGNSUtW41az1QKleb9NMok21FKdFnejjF5PpjlBln+bsl64UftEXmtdlOBtMHqxeZ0bgOuj9btSMsrefWlBjDim9stjYFAEUpwo1eM/IP1RkjyzSKoJX0SPyZwK0FltQnsuPx+rQYKA8xq1dUwoFZeuZb4L1bNSYmBHKSMPm2qc/359FdCQyaQElLkQL0nDRXgVHkBojPnL30Jr7CCFAT8fpGwHMnxn1QTu3wpovSG5FyhfxldfQprKmYH1qrDLIrfd6dkqyTsTnyMNP+GJiOzjJ5wVeqOdgFVh5OpHSOI3dZK/XSspAQ58Thuqn6QedEyjMTwny9EYejQ83Jgc4sXJJ0fDlIUcHsyQXrVSUyQOFH2z2DiyVQMwSuhw/8MZa4QQnlkfsutOEohu5syLA0/uvyuuxB0dg+nuHhapCEvZdu/+4ajs0Hyvs1VhIJastqHtO2iWVEKGy1T6rkxpoK4FSmBqf8YcLbHmJ3I+t7B0QN4/48es9A0kCJcUnQ6NVOoC4bEPN8skYlpo9hsejECKTbj9kKbG/UgsBXxmdsCTUAkzW4cWn4zIva0WMZafTDx309ypZMWpJhn8ozYQai/xS+RY7mmTGCMk5IdC/
+ x2daQ8pl
+ ajezDJjZl39e/BQcZBKB7dSo19wLAzkCwieFRwXiNmoV6LaJgdNLhYQ/7IpYeBUhTuXGv6fEaRUmip5fB7uCiL+yy4bzKEiT8LGOgBSKRwNWQqHqxXWsGaUW4BfndYMQdoiOEvVtYZBZpOvyd7+lYoDg8ZK8WTVN8ZWfQ2qcVf8KXFoGLC2ufOzeRrIkfv1JdLDyDg3KSSf52VlRniO8HfROOLq0HI+maGqCkJzpN4yQlNLr6SaQnwuGqbQlo6hd9Clxlps6co9cVleRS7P5nIxhoa6j9eaVClXb5Px8WEhJnCuuOdviPbU8cBj7XD6FQ0EtAj4ow96mJf6/1s8CNdtzP8QHmZifxnRcqkYtPL5mwxcH9f2BLTIOlBUd86jPp1z7SSIUNGTM0GYsaBe6kr5CpqDt5tD/ZbgNzBkBvXMc9MLliW5hwv5ZY1LtQ/XKNltTiwo4rAAf3nYM60Os+qSAe2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,26 +144,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->> While this looks good, I do wonder why do we have to supply the mapping here
->> at all?
->>
->> Is there a path where we call folio_migrate_mapping() and the old folio (folio)
->> does no longer have the right mapping attached?
->>
->> It would be a lot less error prone if the function would just obtain the mapping
->> from the old folio.
+On 7/29/26 11:11, Muhammad Usama Anjum wrote:
+> The memory-failure tests call cleanup() only after all result checks.
+> A failed ASSERT_* invokes fixture teardown and aborts the test, so it
+> skips cleanup() and leaves the injected page hardware-poisoned.
 > 
+> Invoke cleanup() from FIXTURE_TEARDOWN() instead. Guard it with
+> self->injection_attempted so tests that exit before injection do not try
+> to unpoison a page when no injection was attempted. Injection can poison
+> a page before returning an error or delivering SIGBUS, so teardown must
+> clean up after every injection attempt. This runs the existing HWPoison
+> and HardwareCorrupted checks on both normal and assertion-failure paths.
 > 
-> Agreed. I will make folio_migrate_mapping() obtain the mapping from the source
-> folio and update its in-tree callers. Since this changes an exported helper, I
-> will send it as a separate patch in v5.
+> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
 
-I think it would be good to understand why we currently pass in the folio: was
-there ever a reason to do so? Or why do we pass in something that can just
-easily be had from the source folio?
-
-But note that that should be a follow-up cleanup to the fix.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
