@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B97AC5516E
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B6D2C5516E
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 19:00:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 604E46B007B; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
+	id 413C26B008A; Thu, 30 Jul 2026 15:00:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58EA06B008A; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
+	id 3C3F16B008C; Thu, 30 Jul 2026 15:00:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457306B008C; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
+	id 2DA506B0092; Thu, 30 Jul 2026 15:00:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F35C6B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:55:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6D8DA0A66
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:55:17 +0000 (UTC)
-X-FDA: 85046345874.20.377C12B
+	by kanga.kvack.org (Postfix) with ESMTP id 061F46B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:00:02 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 936FBA1291
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 19:00:02 +0000 (UTC)
+X-FDA: 85046357844.01.E35CF79
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 306A74000B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:55:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmTfwEIc;
-	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id B442816000B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 19:00:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ucLWT3Yx;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785437716;
+	s=arc-20220608; t=1785438001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Hfg/Gngqd8SEsjmvDZsSbSWbGJu/DBm8x/q7YUwOtSU=;
-	b=Q4HZpcIuMSPCi+xoyaGQubC5GfC8J1PsJxG45yIJcN4AMwBhwftFjvwLvWdowUjschULHq
-	VyVtcsOzW4Lom3nicG3S+AkIdgEoqE+7sH5KPU8iP13pPk40RN1UqjFfypKvn/ZxCoWSx1
-	rOwUw7Mefdiv3kpYDy0Myx6fvVMXsz8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Tayj0EGBxc9QIq60kNKxuIuBQ/P429IFHvuIK0fivRw=;
+	b=NSIemb/4JN96AFNMcA/O4JjV7NAZPBF08Z2A1fzZMqQzgL9w8mfCqjPbAZUnxsF4/gBhPn
+	kDdAsEXYgq+k0wtqrRaA1Ha4/0IE+UrUMMD/9pfr3Q7JJ9/+wdDIUE5D9ar4NQGDz5wpIW
+	lqgwGOg7ZMM8naU4NH7f6yXUPdPjgnQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmTfwEIc;
-	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ucLWT3Yx;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785437716;
-	b=vUnI6SdS4jbIwx8Vk6JQzzGr6QEbx095FZs3eOo7Tj2xooOtcJEduSeC/0VbJTI9zPYvSQ
-	AaVGJkahm78UZlDO08D+wp9gy2Z4ve5NXWKYtKcznYyhXbzTuNUTOCFbLaJpNosHXYXDZi
-	uSNygvwxG8eYg6px9O23FO/+KlqktwI=
+	t=1785438001;
+	b=qRhRGBpQ4bDMW4Gh3B0891X+9SGXOGzC/JmeW/ywsKNTyEPfchN7aoUJegJ4DRFyfrGGmr
+	b5idysMeURgZopOU6z45MUZKaUE4Q7kXPXjtJjeRR0n9I9cqzsDvO3mDcgefRucjGq+0Vu
+	5MTYFfq06qAx9OcmfGM2nMzZUDxmzXc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44186407DD;
-	Thu, 30 Jul 2026 18:55:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5231F000E9;
-	Thu, 30 Jul 2026 18:55:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785437715;
-	bh=Hfg/Gngqd8SEsjmvDZsSbSWbGJu/DBm8x/q7YUwOtSU=;
-	h=From:To:Cc:Subject:Date;
-	b=UmTfwEIcQAZ86kDM34UYJMbq473z2fsOFlb728dkck+ISBouYAxxdTTa17upWeCAd
-	 Fa952fHS1lUK5GYeiu4zWH3buJ4uR9EZ7TWSXC2lc9Un/KGctN/G4jrnRsJWN0Z3O4
-	 icXTXhrMyGzLgaCR3MW4oWiKwMahsSDodIrIUqVBEd2c77lrw/RFUYTdgTB14yJb7J
-	 AmQmDSvbuqXeefuq7nB6tIdLkstbSL/n0Y6OXGiQH8nG9JbgC7N9vYtzeMuWCwX/Px
-	 YQzQKRIk/AQZMRzMIxKwr9/DY5gDArP6OBunaEBI0dow0OGiJN54LSNJvA3RVVacLl
-	 FhFznXM7WnipQ==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Cc: linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fscrypt@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted files
-Date: Thu, 30 Jul 2026 11:48:53 -0700
-Message-ID: <20260730184853.48347-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E32E43600;
+	Thu, 30 Jul 2026 18:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CD71F000E9;
+	Thu, 30 Jul 2026 18:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785437999;
+	bh=Tayj0EGBxc9QIq60kNKxuIuBQ/P429IFHvuIK0fivRw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ucLWT3YxhocSPSq7t+C8gdpLzheHCIIkdTuk0ZW8BH2O6O+kPRu28yszrGgR6XLmC
+	 roV+yxv+/Zu4CGryFVUiypI5QTHuhPiZDR0AvxH7EeLM5SC6Ftd0nuEkLUQstG7+Sc
+	 /pUEuwoM/UN4JhxCs+t7Wd1as2DQOkQymlP6ZhTY=
+Date: Thu, 30 Jul 2026 11:59:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin
+ Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, Hannes
+ Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi
+ <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hengbin Zhang
+ <uqbarz@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/huge_memory: fix huge_zero_pfn
+ race
+Message-Id: <20260730115958.ed8ec3db759f06cdd10feac8@linux-foundation.org>
+In-Reply-To: <20260730-fix-refcounted-huge-zero-v2-0-c5d8a41b317f@kernel.org>
+References: <20260730-fix-refcounted-huge-zero-v2-0-c5d8a41b317f@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 306A74000B
+X-Rspamd-Queue-Id: B442816000B
 X-Rspamd-Server: rspam01
-X-Stat-Signature: 33c5ekw6kwbq391fdxhheiiyrcjchrt4
-X-HE-Tag: 1785437716-73147
-X-HE-Meta: U2FsdGVkX18WH7rZQ9CEnwqfOSTdDk26QGfmPZu79gPrTU/eOKNSzEvWaXDZ269UqB14pBuXHYQZ/7ALa9Jv6iFqpRhXGQEXdX0w9AkKpVWuAPBA39djVmg6T5DsL0E0hU6H9n0DJVRytcyLMPFLTr4WffEDkDftm6XHWwR8AOSZ4qYobglzmlkbAWI+aVKeZ3P7g5PmpyH0+N32fXar8WUiUYjgwNKUsOAjVzyzbGUhkfyc8oqgvHNcwoa3GkF5NmuZM1pC3kRmu4SkxvplZfVbeo/6BMJjD6IouTDRLVOPOzGY6jDRXpNQcNuuM5JRpe5YyYeG2xxsTgwDnpimiWEN6kZT7AHprR4HSLPotl+n03Sft2rOXgfF2SXTWmRmP1X0vAP1L3I0ku2Dw/jrMJibkxRPwiZWEWPEXsYrfk6aivglB3tO8i7x7DO3WcfGBVXdgXNRV+9JHKbbKaXCk6RmY4XVPGYn9Mh7Gu3CHq57SRcSRlYqap9ga33b8r+KK5fT99VssApJIUHrquVAfd4zWCpDosn6H2Mf9NdaClul2vu4LMrblH2vdVjwB3X3vgQaLIt/g+dM7AmVU9HuDCtDSSFdxRax5iqLwjaFnmCQNsG4I3gkO4FA2UYQ9anCVErusIn7p/O/fCcTJq2BzynUpyfUKH4O8+CmJJ0wjzO1WJ7ba0WnLiUvb2WMyGh1hdttpHTNsavWq4p/WDL8RMudxh5GhJiwjB1WgjK/WN0qtvp1MgkBEGLuqjV0xZxugtzL1mqhxYuzuQpk+OpbZCgh8qeFMaJeYfwsUIcDP8rw3NNoCfZR4Ha4HCjMQhb5qxo9BGLJQXjFKVd933RYrewHA9GKegRhFQE0TiksATOyPmfqSHlUjRP7fMMeyANQV+e7ALV/W9M7hOsc3tKOI1v08YZxiUck6Du58XrpgOyGaur5F1KUnytBYzp+wFX0/pQ/nKQJW3ZJO+07IZD
- r/oBq3fH
- 9TO8SQt2+Zl11OK19oZ/SOBBM9UJ4z4xjGLNoDTt6quNh5LVRQ09yObxxa/xNcgqo0Cqz6y5Domx6bzDH1HLJUGevhCKjy3CrzmMqIWzp2BIONs7MjLC+K4kPN3UDzBKTEoVInPwFseIXiHnF2Uwk2x20slpcJO/b9LcJXb7a7xC0xhCSfek9BdXAIwJuZ3V7B1htLhaXqNh4Hg8iX/+42jd6t2x3LcNDYOX5BoOVFUV3UD0=
+X-Stat-Signature: oqp7so8gytu83i1bydc9ef97jg8mrusi
+X-HE-Tag: 1785438000-243091
+X-HE-Meta: U2FsdGVkX1+oS7hATqmRNyl3i0rRHRTZsKAC6mZNkXdv51CIILE30shuGbJnU7w9TcT1/ynszV47kcjLx6e9e6aDStvEI6/UmBZwIe1UR602V8wlys21qZTsj5/pf5eyed5HMpBVvnFqh2UWc6KlFSNGTutEoL/GGints+G5laD8J2m2uNazdcchpljoOezi3LnJ22sfUoBlvGLRM91zWfpNeWdBGVLQEANStk+jDxRlo/QtAdhPOHjCkidV5SozQ0wYRNe/Q/xhswKwmEpJgZ60hFtH5RLr/af8xrJVq881+YXSHwa2ieHo4W+ikzgOcsH6FAk6WzMiFcaQaaU+Fzc5msaGaGifo4kblRLs2J4v5pl/cxYeKWaqt0NA96yuLk399AnxgXUrSKK/KO4zrlxMap6ntyKIAWN8kGXDwoDsP8psD1vQkU/6ttymG2kikh88UaG7bisFnWWESzVYR1CdR3z003hleYunJbXBgHzH7SKVU6gDFP5YUt8bLmSW+F47ESGwC4JXHpnXovYh0Q6xCOg7+0LD1St0KTstxCt2HjziTApw05Lb/zA9h99FocKtQ3qVU/G5YQgDJDxYe25sgvLIG7louB1kCCJ8nYBqruwhuilH1kUeNA/ga0NVnRVyYYGF04s7+nnSPT5f5+vW71M90y/8+nPxVR9Bb+deXZYqCPrbQWelw9NRMXOnPNXqvAHAlPre6yEt0T3S6e9ctS4KPqG41M5NvAHoFX1EYhEj+v2+CTbPFAd3g5B6pPDIt8v04HF/SB4iQvhvRivrc9AGTZNVO9IVR1aZNcoThlhNV2LWknCRrhQO4PTjLA+sBWao4iv3eKk1AljXI/9B4Lc9UY5iGlP5TLijQuAVvWUCB5hh85vu8XnTx9hJS6wCfKsslRVf/Kq58lXsJCXc66uvDbGZ1zwxJ14PRjmQWp8i6eYwY0YXPBWkDlrrp8h1ja77hEKT1PmF6mS
+ 9r5oqKWk
+ NRLnRPMfGHiNlg4HzgkHgKsq1AWnORpw/WrxmixjE29JvLLOXAxgQiLs5LCbyxqZDb8rBrXmhZ+7iW8Sshvh6UTXwuwGOisZqQQpXSn1ozX7MGPTs0I9vkBFE+GGWvyBr5toIYT3waHzQ8JLcQLc/S1EiZ2rfQb9OBU/MRbK6ychom9UccPRSNVkGdf4tHUdNlR7S0cQeJzxezhMJa84z/fuVt6ys1fCO0I/uIKtjbWTdQ24CIxxiNBt95TIi31UIJCMubVRUEtO3j8E/CyBTPj2ps624JmkmB7Eck+Raswg5i8T1861YHjALE5lJ8c80G8yoATYtnDvZXDGQkWG9mParIHJHmOFOz5/XMNr6dtZhr/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,58 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ext4 and f2fs don't prevent filesystem-level encrypted files from being
-set up directly as swap files.  In this case, encryption is bypassed.
+On Thu, 30 Jul 2026 11:55:46 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-No one should be doing this, vs. the methods of encrypted swap that
-actually do work (such as swapping to a dm-crypt device, or swapping to
-a loopback device on top of a filesystem-level encrypted file).
+> There is a subtle race in the reference-counted huge_zero_folio
+> implementation.
+> 
+> The fast path atomic logic fails to account for the fact that the
+> shrinker (which drops the final huge_zero_refcount pin) can overwrite
+> huge_zero_pfn with the ~0UL sentinel value in shrink_huge_zero_folio_scan()
+> after a racing get_huge_zero_folio() installed a valid value there.
+> 
+> This results in huge_zero_folio being correctly set but huge_zero_pfn being
+> set incorrectly and thus is_huge_zero_pfn() and consequently
+> is_huge_zero_pmd() will misidentify the huge zero folio as being an
+> ordinary THP folio.
+> 
+> This can result in the huge zero folio being split and otherwise treated
+> incorrectly.
+> 
+> The solution to this is very subtle as there is an atomic fast path, and
+> thus ordering in weakly ordered architectures has to be treated very
+> carefully.
+> 
+> The first commit fixes the issue by introducing a spinlock around
+> huge_zero_[pfn, folio, refcount] write, with careful consideration paid to
+> load/store ordering in the fast path. It is placed first and kept as small
+> as possible so that it can be backported on its own.
+> 
+> The second commit is a pure cleanup which reworks the
+> CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic to better separate the persistent
+> logic from the dynamically allocated one.
 
-Nevertheless, to prevent user error, make swapon() explicitly reject
-this case.  Document this behavior in fscrypt.rst as well.
+Thanks, updated.
 
-Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
-Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- Documentation/filesystems/fscrypt.rst | 4 ++++
- mm/swapfile.c                         | 4 ++++
- 2 files changed, 8 insertions(+)
+And moved to mm-hotfixes.  But is it appropriate to fast-track a
+tricky-looking fix to a four year old bug?
 
-diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
-index c0dd35f1af12..cba1989777da 100644
---- a/Documentation/filesystems/fscrypt.rst
-+++ b/Documentation/filesystems/fscrypt.rst
-@@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
+> Andrew - I know you don't like a mix of fix/cleanup, but thought it'd be
+> easier to keep the 2 together as there's a dependency.
+
+Sure.
+
+If we were to upstream just the fix then really we should defer merging
+the cleanup into any tree until a later time.  Because the cleanup
+might accidentally fix a flaw in the fix.  Sending just half the series
+upstream results in an untested code combination.  Unlikely, but it's
+happened a small number of times and it's a risk.  Keeping both patches
+together eliminates that risk.
+
+> ---
+> v2:
+> - Reordered the series so the fix now comes first with the
+>   CONFIG_PERSISTENT_HUGE_ZERO_FOLIO separation following it as a pure
+>   cleanup as per David.
+> - Fixed up wording as per David.
+> - Cleaned up Cc's since dependency of fix on cleanup no longer exists.
+
+Here's how v2 altered mm.git.  One changed line, unchangelogged!
+
+--- a/mm/huge_memory.c~b
++++ a/mm/huge_memory.c
+@@ -328,7 +328,7 @@ static unsigned long shrink_huge_zero_fo
+ 			return 0;
  
- - DAX (Direct Access) is not supported on encrypted files.
- 
-+- Encrypted files cannot be used directly as swap files.  To swap to
-+  an encrypted file, set up a loopback device on top of it.
-+  Alternatively, encrypted swap can use a dm-crypt device instead.
-+
- - The maximum length of an encrypted symlink is 2 bytes shorter than
-   the maximum length of an unencrypted symlink.  For example, on an
-   EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 78b49b0658ad..e4991da81b5f 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		error = -EBUSY;
- 		goto bad_swap_unlock_inode;
+ 		zero_folio = huge_zero_folio;
+-		VM_WARN_ON_ONCE(!huge_zero_folio);
++		VM_WARN_ON_ONCE(!zero_folio);
+ 		WRITE_ONCE(huge_zero_folio, NULL);
+ 		WRITE_ONCE(huge_zero_pfn, HUGE_ZERO_UNSET_PFN);
  	}
-+	if (IS_ENCRYPTED(inode)) {
-+		error = -EINVAL;
-+		goto bad_swap_unlock_inode;
-+	}
- 
- 	/*
- 	 * The swap subsystem needs a major overhaul to support this.
+_
 
-base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
--- 
-2.55.0
 
+Sashiko said some waffle because it still doesn't understand that
+__init-time allocations are considered immortal.
+
+A cleanup opportunity is to get into this code and formalize that
+convention.  And the convention that debugfs return errors are to be
+ignored.
 
