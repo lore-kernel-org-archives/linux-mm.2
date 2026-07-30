@@ -4,137 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36484C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:29:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB80C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03AC86B0099; Thu, 30 Jul 2026 05:29:09 -0400 (EDT)
+	id BADF26B009D; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 012BC6B009D; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
+	id B856D6B00A2; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6B136B00A0; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
+	id A74566B00A6; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC3F6B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55BA080337
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:08 +0000 (UTC)
-X-FDA: 85044919176.16.1E73563
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 89141180002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mRnkjc8P;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C4076B009D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 17C021C123A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:54 +0000 (UTC)
+X-FDA: 85044921108.18.73E94D6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 60BF840005
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quoNc9N+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vNeyHlcg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=teqsqB2y;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Jsr0tjOA;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785403746;
+	s=arc-20220608; t=1785403792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qF85TGZj/niZ/mEGZlYzqc0cbtZ0CgIxmW9zrjZkIk8=;
-	b=UsuT49L1HgcNkzJ7RmJT5io+lQ7Bzaz/FMblMw1mj5g+YSuV5KZ1QsfZKbc6SWxYvd1y7f
-	FY2dBcZOSribsPvf7aNhe+YyqOyj6tok+SpzDk9X4hiAFUZaw/m9CAj/m+P3AumBIXKjBW
-	qTuAi05Vu6HZwD8U+yuQLoraVgBeWFA=
+	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
+	b=CUseRP8GZ6Gi0xy1ojr3GMwVlJbgCipq8hxVdnmZm32mglFzgvfBJOpd1RcpYsu/hYOGi5
+	5DeLik7S61SxYKgtFpOmX0nqVb6YhZca7wOL1CWDUNmbeBe4QYGK3fDMZhTgixEYj2ZUle
+	0dFdTFsc3JaKOdsR35JZSMx6zN/jz8w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785403746;
-	b=PSZOEY3nrY4yJnDqC1VgDRwcstU3heFASUX89LNHFoxpYVYedxXKhHgDoCKs+Drw5A6lu/
-	bf3eqPmkzyna6sRv6Y2qOMRFKQGMb5c3tBGt7ajSKl0orTUc5gSDKmKnZkhaDeV3vTmi+H
-	ndl35wHcP89Pz0KTCTa+h1KT6xeIebw=
+	t=1785403792;
+	b=utPemRbqEFxlurjkhH1puOIu8sdPMhDBU3GFEOaTzG91mrqaEXpbZid23py8fgys6jHjkV
+	pNyHYKZSIa7Y3ZemrRljM+9A1+8YJSDrHTax0C33MB29hWBaKQy8rlIBLbTk52cjgufjJ0
+	Uzf/cFaxnSlQU9SQqBpg3JxNXSZcyoc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mRnkjc8P;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C11FD41FA5;
-	Thu, 30 Jul 2026 09:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF251F000E9;
-	Thu, 30 Jul 2026 09:29:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785403745;
-	bh=qF85TGZj/niZ/mEGZlYzqc0cbtZ0CgIxmW9zrjZkIk8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mRnkjc8PEzcdgLosKuDo9W5Ok4pnCQFFHZKl7jIH1MyWc5UZ6Z/M9+dpM8y0Loil5
-	 Lf4IJRMSwIWFjqzPwylw3L5+M7v4ZbOBWytqAS+1Bz+vDriy2Q6fzncCPE1jIM03bz
-	 efxJk4g2FEqWtJMOCVNbvH8zHvjQqozYIQk6q0Z1jpuvxSjADF2gT1XmrBUKutHJSO
-	 cdPIwwKFEVz5UfiWVcaWSZL7N98QUM/BbGVlWIvZe8hA3/PJ++4PnJEK+fkDZtWk+A
-	 DyjrbAh5GLzSIpBbMsm0beKvzr3yfHjXJ2njrCoYddtASaeLL0cfkwt4rWBvYUcssC
-	 jUkZEpG13Phng==
-Message-ID: <6a3bfdb9-7839-4f39-ba5c-5a0c55055aee@kernel.org>
-Date: Thu, 30 Jul 2026 11:28:59 +0200
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quoNc9N+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vNeyHlcg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=teqsqB2y;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Jsr0tjOA;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A184E3E8F;
+	Thu, 30 Jul 2026 09:29:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785403785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
+	b=quoNc9N+9kkAYgWrmvy1o7qFh6Xv8DH5wdqRMvcrDbE6pdCgjqiu8Ys9lreEzPSdyGbksx
+	LtpCbus6Npaa7nkzikkGL81g2GjQpmV4NziHrlYcd+/wyDEmdwNE+deqMaq6WxnuRavvXW
+	FurSvkdkl6HVlWYgaYvD5MGGHRkP/iY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785403785;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
+	b=vNeyHlcgHah8IRGIpsjwuskJEWswsRbbKJA30ggSN5b6BvlLa+wE2p90pyyu842PwJDZkL
+	03rFPS+FO7mh48Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785403781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
+	b=teqsqB2y0TqJYxmBFz4VrFsZR/TWitcoseD4sRRgUFoaDmkc3uQTlqd6H0Y7nTP6O64Fc+
+	d8bPeGruttewhfwkNoNmdfiWb3bKmWTipn2UvHHlrHxXpPgkF8DTXRbvqZFS1urpDrPT1T
+	WNy8o/wXqujDZ7Nq5B3IfNTmZS4A2A4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785403781;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
+	b=Jsr0tjOA3H8XUvMu+it4g/9k/cwpjky8ibGhMgj9lpLsVIxM1wIQ0yl5dpKQ2b6DH8Mo6q
+	mGRCwiYgit8QIjBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EBBA779CC;
+	Thu, 30 Jul 2026 09:29:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uJ7SIoUZa2r8dAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 30 Jul 2026 09:29:41 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 34AABA0AAA; Thu, 30 Jul 2026 11:29:41 +0200 (CEST)
+Date: Thu, 30 Jul 2026 11:29:41 +0200
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Christian Brauner <brauner@kernel.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>, 
+	Bart Van Assche <bvanassche@acm.org>, Hillf Danton <hdanton@sina.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-erofs@lists.ozlabs.org
+Subject: Re: [PATCH v7 2/5] block: add task-context bio completion
+ infrastructure
+Message-ID: <roo3rxpocrjzz66mko3cf4p4thur2w2sgf24cahbpjk3462ext@3jep6oc2raqs>
+References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+ <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/2] mm: allow smaller large folios to use
- lru_cache
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, lance.yang@linux.dev, liam@infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- mhocko@suse.com, npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com,
- surenb@google.com, vbabka@kernel.org, ziy@nvidia.com
-References: <229c3079-8fde-41b4-9d6c-f0e34f780555@kernel.org>
- <20260729222651.31321-1-baohua@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260729222651.31321-1-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 89141180002
-X-Stat-Signature: 7ywf1pzk4sf7opajiujr3h9dsychjhda
+In-Reply-To: <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 60BF840005
+X-Stat-Signature: uji73owspkhwndzw7qm53oumxkmpkwes
 X-Rspam-User: 
-X-HE-Tag: 1785403746-29618
-X-HE-Meta: U2FsdGVkX181l/GiSuYwMzu5QFACZAlrJEQhgj2oRSKvzgcaGq9adNbI0qM8FY3fUH4DZI1m45pFsodGfMXUMzgRmqAQYxI0oP46uvG6sAelwwlhXLu+1kclBPxNj+tpyOoRKgJOfVYdJ84RgZZtOZJWJsGweUnk1gjJy1XW83/sLxt48KOSzpdsN91xun/3AQOsWaN/d/ajcUMoHEoIeklrjTEIyaC3+Gjxj1Xe5sFZsA3cA3jwsNw6MXg53TtstfQK7IfBzvlSPjYHEK7n6UsVpo3KyqwmlLmSM+O5OtxEv1czCHg3tGQuk2j+jVNYhdCSf/yQH8xQqZoXf2Nf0gwiskxdZiFgI9kJ/GNhQkQnhyp7DMoDskeGKXw23XBiH8O7haeJEhIRVuoZpXqhMPIL/W3D2mOXJeVLDo5DYu6nLbDOV50ZRy19Gl6ljaVavLZWYfTDvSCVRW+qkEF3+tcz7Sqw4/dttO8MxAcPoC0qWhEOpaQkIUCPxNhpGxjwvelJotPx1OazzEXFLEP3FGySEb/VLUl/BUnSpgLwD0sUrpti00cpl2NOkGjthk+LTFlDZ8oa6AJ1AkAm4ClszGkKjC6cW0i6UcTxCaNjI1mbe4CKNYA7AQFxxCnY3Xrasc/JRyCn/C+VA0Hu9ii9gB5VsmSOUtVO5Mo+lz8QCgYE0ie9+ImBmYH7nIpG2WHxrDId4gzqtXqMUj1FDV+tkXiI/7IBYuCMUbH1RArUk3BKcrrjAZG4LqdX/zoE+cehWpLo5Pitsjl99Q+VtEyTJaFeLBV473x0kHEzCuCg2TdJj65ZNeO2ikgf1vT6CPqry9UPIK94Xldef/ZvBala/86y/n5XZmAO8h85r1R1WAoRa6ZghIp0P5lMf2W7wtJGL/AeiyatuvPUDTXLgAumzzS8blXTMrf/zegEaVZf3XwpfsiewhCUKyZMBOV/5w0KHEym1q19M0EPd6Tdjb3
- qxSjzB/m
- KGEYyAA7zvzPLylda5phcDFVYnaXMYmxSic6O7x6pzXZXLJK6h/6lWyOfdYX8dhAMcd1p0NZFdQNPMxe6gPAv1eabOTu12RNr9acRsQIpYUuWF2j+qtbH6qBrAdyXjHq8mtm7hwLRhbtqn2wuWPNJvramw/SK89s+dxMgTS23HOMrZQ1B9tsydn1l6dqXeJoprGbgFHrovXCqRLUqGLrtf35ylO3YKxjJQBl74NV09Pgzxk7wDWaRRs6TEeNF7W0RCA33lfvdf7SBbjghsd6u4keOkQGwH4rg4KpciK8LQP1xxsH0vBhxU10Ni+1sRcu1zJE94dKMgWdi9Yarl3ZwpelUiIVe959kxV2st8ziXEjP6FGwFB/e3jC9d0zQuk7iik/J
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785403791-447922
+X-HE-Meta: U2FsdGVkX1+PWulnUEzwBnUqxuX4qhl4bImdYNgTEyQcEautfT3cKXFJE3KQVnuf0BB77fGr1oeHNgWbJsgl2nT8nQ/EFTHAR+fA2xa8mxAkFqgXtMTids2ZSlAGYZbFQVg1+aKqMfzB4B9k6mjjx+HJaujY9Je7GUMHo88yFDNeh4v8WK4y3x/ctA3BLLozcRs5DYWi53Ag4K/4rbHv2C7TPqqt0uQU6muKMH1J3fGG49LJb0Ggepi7zQ7Lyy3xv2dificc1aLPjJUVLTnmGxAqTOZKZDNtSsL5G/w7vt3FqytkkSn7iwfZEOAgn9ZL2ItlTUpX/2fa7v9Lr1mSKFOwpmsuquLKuCblSMa4CgxDseacrHrZk+KP3YC0+ZSDeX2B08tvfh/7k/m2r62Tr2zX+cvCGjeDipJSosSL0bWT94M33uNsbOLDH6WATtF12bKcrI5jG57OYSSy3LJU7tnPrZQSdlNN4b3IYCW9S4tr+g6MoirocgWkXue4jfEkaSowp1GbmrX6IJn6L8tprYEWyX77nyVu45yJBdldXAhayTLchIHuHZrh1DI1FB+r40Nw3F0YOCnrUdtIFjfgyD0SnoI4lfb2ODGdG1cL/CeEQJXvtvBI0+F5coikJ3bIrXV1Aft563Bb8T6PbeSYy7FB1XK23S9TTAC7zNerLeUZyMtNXvn8rs5z2GyGqqeT1Ri42fjLBV1BlsUavmSHUZSpuZaXlftSQa3CYNsOF5WokMRkbMTNjruRekbNl/LrwERTIUQmufnr5qErcptVqy1bQTAuypYUhbTk0SS2dqT9Bxvt+nugVfuyU5lskx46+NoZPR9kqRkl/FSj8vA2aumD/K48gV4bTZtHuMvqZAmMItZP9Jpl2Yf2Es8pnwkbXTu/BYMGBGNBYTNqfOH62/0sqN1W7EGatQzPgsRN83wzjVspoL22BzVamUYyoZJmlDScLFtOLIWEwxbpEKP
+ cdAbEyeZ
+ RrjLpVjcYI6bDAhGZ2YOkM16cIYzaByXB1if4zn67W6JRZ7Wztzm82MjlgndybRxwRVb39Jt8KFGZiGjW9QCnEjEfMv1JvY8e9OkapEvinPcfM0DRjYxTDUOCoBj62kVzjarpqIc5u/OS73u6/Z/6uLfbbYfguB4yJ2uvYsKeWKon/rWFEjCy5DAKtWACj66WtTXTi3+Fji6Uzx4Y0eZzQ9SXrvxz2IpkEn8d+MvTOEIqovc3lPdDE8am4MV+H+akfzVDrYc07Ev16nSGEmw/79wxXx1FDgigAfKq52BbaeRlN/LjzEzD1xwQe9SUAcGfxdcHJ9mda1MxMHUYbWpS//smx/VqcW+xCqEvCc0hfrKAGUXIukpJz2Hd2VltD7Q1wyxUe/8aql53s4uV7nfy8vSj8936A6XYnnKC/d3pzmrLVztaFLURAWzUlSTUah283mVs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,72 +149,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/26 00:26, Barry Song (Xiaomi) wrote:
-> On Wed, Jul 29, 2026 at 8:13 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
-> [...]
->>> diff --git a/include/linux/swap.h b/include/linux/swap.h
->>> index 8d19be675baf..9c5f7a11c7b0 100644
->>> --- a/include/linux/swap.h
->>> +++ b/include/linux/swap.h
->>> @@ -316,9 +316,9 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
->>>       /*
->>>        * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
->>>        * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
->>> -      * will be sensible, but nobody has implemented and tested that yet.
->>> +      * will be sensible.
->>>        */
->>> -     return !folio_test_large(folio);
->>> +     return folio_order(folio) < PAGE_ALLOC_COSTLY_ORDER;
->>>  }
->>>
->>>  extern atomic_t lru_disable_count;
->>
->> Sashiko rightfully raises that split_folio() can now fail more easily.
->>
->> So we might want to proactively drain (earlier?) on some more of the split paths.
+On Thu 30-07-26 02:57:52, Tal Zussman wrote:
+> Some bio completion handlers need to run from preemptible task context,
+> but bio_endio() may be called from IRQ context (e.g., buffer_head
+> writeback). Callers need a way to ensure their callback eventually runs
+> from a sleepable context. Add infrastructure for that, in two forms:
 > 
-> Yes, this is a pain. I haven't tested it, but perhaps a
-> conceptual model could be something like this?
+>   1. BIO_COMPLETE_IN_TASK, a bio flag the submitter sets when it knows
+>      in advance that its callback needs task context (e.g., dropbehind
+>      writeback). bio_endio() sees the flag and offloads completion to a
+>      worker automatically.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 04e8a6b55343..fcd449dec96b 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4069,6 +4069,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	struct folio *new_folio, *next;
->  	int nr_shmem_dropped = 0;
->  	enum ttu_flags ttu_flags = 0;
-> +	bool maybe_in_lru_cache;
-> +	int expected_ref_count;
->  	int ret;
->  	pgoff_t end = 0;
+>   2. bio_complete_in_task(), a helper that completion callbacks can
+>      invoke from within bi_end_io() when the deferral decision is
+>      dynamic (e.g., fserror reporting).
+> 
+> Both share a per-CPU list drained by a work item on a WQ_PERCPU
+> workqueue. Producers push the bio onto the local CPU's list and schedule
+> the work item, which then dispatches each bio's bi_end_io() from task
+> context.
+> 
+> Both methods are gated on bio_in_atomic(), which returns true in any
+> context where a sleeping bi_end_io() is unsafe, including
+> non-preemptible task context.
+> 
+> Two CPU hotplug callbacks are used to drain remaining bios from the
+> departing CPU's batch, while maintaining the per-CPU behavior. The
+> CPUHP_AP_ONLINE_DYN callback disables the per-CPU work item while the
+> CPU is still online, preventing it from running on an unbound worker
+> later. CPUHP_BP_PREPARE_DYN then drains any bios added between disabling
+> the work item and CPU offline.
+> 
+> Link: https://lore.kernel.org/all/20260409160243.1008358-1-hch@lst.de/
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+
+Looks good! Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  block/bio.c               | 132 +++++++++++++++++++++++++++++++++++++++++++++-
+>  include/linux/bio.h       |  24 +++++++++
+>  include/linux/blk_types.h |   1 +
+>  3 files changed, 156 insertions(+), 1 deletion(-)
+> 
+> diff --git a/block/bio.c b/block/bio.c
+> index 6a2f6fc3413e..a9610950325b 100644
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -1741,6 +1741,61 @@ void bio_check_pages_dirty(struct bio *bio)
+>  	schedule_work(&bio_dirty_work);
+>  }
 >  
-> @@ -4154,7 +4156,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	 * Racy check if we can split the page, before unmap_folio() will
->  	 * split PMDs
->  	 */
-> -	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1) {
-> +	maybe_in_lru_cache = folio_may_be_lru_cached(folio) && !folio_test_lru(folio);
-> +	expected_ref_count = folio_expected_ref_count(folio);
-> +	if (expected_ref_count + maybe_in_lru_cache < folio_ref_count(folio) - 1) {
-> +		ret = -EAGAIN;
-> +		goto out_unlock;
+> +/*
+> + * Infrastructure for deferring bio completions to task-context via a per-CPU
+> + * workqueue. Triggered either by the BIO_COMPLETE_IN_TASK bio flag (static
+> + * decision at submit time) or by calling bio_complete_in_task() from
+> + * bi_end_io() (dynamic decision at completion time).
+> + */
+> +
+> +struct bio_complete_batch {
+> +	struct bio_list list;
+> +	struct work_struct work;
+> +	int cpu;
+> +};
+> +
+> +static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch);
+> +static struct workqueue_struct *bio_complete_wq;
+> +
+> +static void bio_complete_work_fn(struct work_struct *w)
+> +{
+> +	struct bio_complete_batch *batch =
+> +		container_of(w, struct bio_complete_batch, work);
+> +
+> +	while (1) {
+> +		struct bio_list list;
+> +		struct bio *bio;
+> +
+> +		local_irq_disable();
+> +		list = batch->list;
+> +		bio_list_init(&batch->list);
+> +		local_irq_enable();
+> +
+> +		if (bio_list_empty(&list))
+> +			break;
+> +
+> +		while ((bio = bio_list_pop(&list)))
+> +			bio->bi_end_io(bio);
 > +	}
-> +	if (maybe_in_lru_cache)
-> +		lru_add_drain_all();
-
-The drain-all is nasty. In  collect_longterm_unpinnable_folios() we escalate the
-drainining.
-
-I think we recently stumbled into a similar problem in guest_memfd.
-
-Ah, yes, there it is:
-
-https://lore.kernel.org/r/20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com
-
-
+> +}
+> +
+> +void __bio_complete_in_task(struct bio *bio)
+> +{
+> +	struct bio_complete_batch *batch;
+> +	unsigned long flags;
+> +	bool was_empty;
+> +
+> +	local_irq_save(flags);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	was_empty = bio_list_empty(&batch->list);
+> +	bio_list_add(&batch->list, bio);
+> +	local_irq_restore(flags);
+> +
+> +	if (was_empty)
+> +		queue_work_on(batch->cpu, bio_complete_wq, &batch->work);
+> +}
+> +EXPORT_SYMBOL_GPL(__bio_complete_in_task);
+> +
+>  static inline bool bio_remaining_done(struct bio *bio)
+>  {
+>  	/*
+> @@ -1815,7 +1870,9 @@ void bio_endio(struct bio *bio)
+>  	}
+>  #endif
+>  
+> -	if (bio->bi_end_io)
+> +	if (bio_flagged(bio, BIO_COMPLETE_IN_TASK) && bio_in_atomic())
+> +		__bio_complete_in_task(bio);
+> +	else if (bio->bi_end_io)
+>  		bio->bi_end_io(bio);
+>  }
+>  EXPORT_SYMBOL(bio_endio);
+> @@ -2001,6 +2058,55 @@ int bioset_init(struct bio_set *bs,
+>  }
+>  EXPORT_SYMBOL(bioset_init);
+>  
+> +static int bio_complete_batch_cpu_online(unsigned int cpu)
+> +{
+> +	struct bio_complete_batch *batch = &per_cpu(bio_complete_batch, cpu);
+> +
+> +	enable_work(&batch->work);
+> +	if (!bio_list_empty(&batch->list))
+> +		queue_work_on(cpu, bio_complete_wq, &batch->work);
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Disable this CPU's work item so that it cannot run on an unbound worker
+> + * after the CPU is offlined.
+> + */
+> +static int bio_complete_batch_cpu_down_prep(unsigned int cpu)
+> +{
+> +	disable_work_sync(&per_cpu(bio_complete_batch, cpu).work);
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Drain a dead CPU's deferred bio completions. The CPU is dead and the worker
+> + * is canceled so no locking is needed.
+> + */
+> +static int bio_complete_batch_cpu_dead(unsigned int cpu)
+> +{
+> +	struct bio_complete_batch *batch =
+> +		per_cpu_ptr(&bio_complete_batch, cpu);
+> +	struct bio *bio;
+> +
+> +	while ((bio = bio_list_pop(&batch->list)))
+> +		bio->bi_end_io(bio);
+> +
+> +	return 0;
+> +}
+> +
+> +static void __init bio_complete_batch_init(int cpu)
+> +{
+> +	struct bio_complete_batch *batch =
+> +		per_cpu_ptr(&bio_complete_batch, cpu);
+> +
+> +	bio_list_init(&batch->list);
+> +	INIT_WORK(&batch->work, bio_complete_work_fn);
+> +	batch->cpu = cpu;
+> +
+> +	if (!cpu_online(cpu))
+> +		disable_work_sync(&batch->work);
+> +}
+> +
+>  static int __init init_bio(void)
+>  {
+>  	int i;
+> @@ -2015,6 +2121,30 @@ static int __init init_bio(void)
+>  				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
+>  	}
+>  
+> +	for_each_possible_cpu(i)
+> +		bio_complete_batch_init(i);
+> +
+> +	bio_complete_wq = alloc_workqueue("bio_complete",
+> +					   WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+> +	if (!bio_complete_wq)
+> +		panic("bio: can't allocate bio_complete workqueue\n");
+> +
+> +	/*
+> +	 * bio task-context completion draining on hot-unplugged CPUs:
+> +	 *
+> +	 *   1. Stop the per-CPU work item while the CPU is still online, so
+> +	 *      that it cannot run on an unbound worker later.
+> +	 *   2. Drain leftover bios added between worker disabling and CPU
+> +	 *      offlining.
+> +	 */
+> +	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
+> +				  "block/bio:complete:online",
+> +				  bio_complete_batch_cpu_online,
+> +				  bio_complete_batch_cpu_down_prep);
+> +	cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
+> +				  "block/bio:complete:dead",
+> +				  NULL, bio_complete_batch_cpu_dead);
+> +
+>  	cpuhp_setup_state_multi(CPUHP_BIO_DEAD, "block/bio:dead", NULL,
+>  					bio_cpu_dead);
+>  
+> diff --git a/include/linux/bio.h b/include/linux/bio.h
+> index 62a983758e09..a8091a3e9d87 100644
+> --- a/include/linux/bio.h
+> +++ b/include/linux/bio.h
+> @@ -383,6 +383,30 @@ static inline bool bio_in_atomic(void)
+>  	return !preemptible();
+>  }
+>  
+> +void __bio_complete_in_task(struct bio *bio);
+> +
+> +/**
+> + * bio_complete_in_task - ensure a bio is completed in preemptible task context
+> + * @bio: bio to complete
+> + *
+> + * If called from non-task context, offload the bio completion to a worker
+> + * thread and return %true. Else return %false and do nothing.
+> + *
+> + * Uses BIO_COMPLETE_IN_TASK as a sentinel: if set, the bio was already
+> + * deferred and we are running in the worker — return %false so the
+> + * callback proceeds instead of re-deferring.
+> + */
+> +static inline bool bio_complete_in_task(struct bio *bio)
+> +{
+> +	if (bio_flagged(bio, BIO_COMPLETE_IN_TASK))
+> +		return false;
+> +	if (!bio_in_atomic())
+> +		return false;
+> +	bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+> +	__bio_complete_in_task(bio);
+> +	return true;
+> +}
+> +
+>  extern void bio_endio(struct bio *);
+>  
+>  /**
+> diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+> index 8808ee76e73c..d49d97a050d0 100644
+> --- a/include/linux/blk_types.h
+> +++ b/include/linux/blk_types.h
+> @@ -322,6 +322,7 @@ enum {
+>  	BIO_REMAPPED,
+>  	BIO_ZONE_WRITE_PLUGGING, /* bio handled through zone write plugging */
+>  	BIO_EMULATES_ZONE_APPEND, /* bio emulates a zone append operation */
+> +	BIO_COMPLETE_IN_TASK, /* complete bi_end_io() in task context */
+>  	BIO_FLAG_LAST
+>  };
+>  
+> 
+> -- 
+> 2.39.5
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
