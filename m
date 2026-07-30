@@ -4,132 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7349C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A772C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9E7A6B008C; Thu, 30 Jul 2026 02:39:33 -0400 (EDT)
+	id E501B6B0095; Thu, 30 Jul 2026 02:41:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C50316B0092; Thu, 30 Jul 2026 02:39:33 -0400 (EDT)
+	id E01886B0096; Thu, 30 Jul 2026 02:41:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B17086B0095; Thu, 30 Jul 2026 02:39:33 -0400 (EDT)
+	id CF0BB6B0098; Thu, 30 Jul 2026 02:41:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8350F6B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:39:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14C621208C0
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:39:33 +0000 (UTC)
-X-FDA: 85044491826.19.D9504E8
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 52417120005
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:39:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mNZiJSOy;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A3A6E6B0095
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:41:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37CB71408E4
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:41:34 +0000 (UTC)
+X-FDA: 85044496908.30.12F1EFB
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7232A40006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:41:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WMm2/wll";
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785393571;
+	s=arc-20220608; t=1785393692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kOg1TP69pkfX9jACUFVlU927ii/AFS16vNDFEmK7SsI=;
-	b=nmiVyHev82sCUU1bHJOmr38xdkSPEWql9alr5+BnJrROZUj5ku8dnB/0HxTavS1FBHF9+7
-	rdxJ+VRc+I0+ocvH4ehPjL7J6ioSwPgk2RjtlB27epoZ2kp/8To6K/r/ARrZn1aWWn23kd
-	gpVgxA+g4BUVlXBVXNIORUcw6JppyOw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mNZiJSOy;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=tykFrDMkx1MM1VG4l80NgytbO4sYhJ8jcy8WA1wreI0=;
+	b=7m61+fEb5xe3oqeLE6jS04tO9NgF3ioYFWr5lgEfq4W1SfDMhJWKMyMW1mZ/FNQXYYKYn0
+	cpCvTd6TN1HPlgILpnalMB3wNjn679IX/PaohBUcchc5a9/2vF4Oh7gPrhb6lYsZN7E2tS
+	M5CSq1xG4bKyzH2n7Roh16YFsBzP0MQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785393571;
-	b=zp0c6nudbqPz83fXAwwW+f0EqJ6Jz5T4TgJCHZeF2u4nOly6k6oX1Mac9SFS/Zgan6ogGv
-	pgHrSYtNbOsj8+Bg8eucQkpjHWt+ErlKTmYIAd5vYfMlA6QaiZsoRjU4J354hLKSSPFvLh
-	Vp5n6ZWwN6kOOXV3rMYcmwCFSbzg4To=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e50979c71so174578685a.3
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:39:31 -0700 (PDT)
+	t=1785393692;
+	b=0IoINsQaqyW/SGPDt9YPm+5oApGlrCzbXeK02k5iK3DLQO86B42T1CPfFdZ7q74x6HN+qr
+	t76kdHLYGbnBbRpnjeKhNpXfhbHOyGbNtGN67cUMA+U9eAUclSGx8avStVPy+8vB4bE7l3
+	VHoPg2srAiF6kG4rUDO9x9hRnlijGQA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WMm2/wll";
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so1476512a12.3
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:41:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785393570; x=1785998370; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kOg1TP69pkfX9jACUFVlU927ii/AFS16vNDFEmK7SsI=;
-        b=mNZiJSOy2Xz1XYpWVWn/vMygKsaHWZzNG4xKLuY0g+k1+E9dqPr8/PCJGHLM8ax0Jf
-         oiJ1qTSGGOp+eD9r1ThHUquTlqgG6IZrTjEI9dStP5yK8stG+A6iDy2ndzqpbCHOw7j/
-         Fl8Iz0VpAePz7kfUoeyd8eEp3KTknAjLp0tA8p4v6m8AJYA0mOZYbT+AKaE/RaQu/NSg
-         3cuLW5t82Y80rQvICgjwWl1em6LGMS74kPEhkVcnZ7t5xZ6UmbYISeVudmd469gaIan4
-         UTTeLB/NbOuhhrKhu40FwHjK7O8C+9z+UuMJadS0CuGsUowi5ncAcuC27rY2Q4kKZQnh
-         0+JA==
+        d=gmail.com; s=20251104; t=1785393691; x=1785998491; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tykFrDMkx1MM1VG4l80NgytbO4sYhJ8jcy8WA1wreI0=;
+        b=WMm2/wllg1Y6vIm6lVKuBSiEIcQJF6LUkRlJHq4QN8yLk1/20CJKHcMLlQS5NW9QPB
+         UGDmuiB3z/AblnPMp4lYuafPLhOV6m1hDMOlGTapIy7thN5+sc4sIJFTjVni6AGlilYR
+         8R/+W8OS/TZ78VklIxY8OHzMLpxuKAfgGY7uLOOfS/ZgOjGtW9Ss2ahYY7Elqwp8HJHd
+         4k2sw6aoAsGtiKsygz9+V/M+5gVjFr5AxH2M6AmR+mSo4M/fxEvyPj2MYDSKN9HpNstp
+         rXjecfjPijUYxgDGH8NLRyBzS4aKB5vWq8sCDta4lCMHxcYG0tUD+l0aUgrWITxgu4hk
+         uC5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785393570; x=1785998370;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kOg1TP69pkfX9jACUFVlU927ii/AFS16vNDFEmK7SsI=;
-        b=P4Xx6Afj6kZ0NrghhqF0bTICNeTHw9Al/p8Fe/dn39nhdBuBH0AP6I542adIbtyJpK
-         hIOAO9UeFnMBTuRF3xQlAABSjkCrVHNqNqnnUthnHXxJox/SzscolQBoUdPflr8gaC4L
-         eG229TUXRoDFyXvqXr0X/8SKDFWlD4ahVu4mslCk9qQj1/84vjMB9L5NUPKXiC+ULF8e
-         9WEySeK6ffNJMojMc0k54qpwoS5L99kDdv3jo8qD2SUbYt6q/H2F0M6z8Mf5itFrigKr
-         z/CkqTlRLKd5ByKQd3t766nCo7PIIQJqUgmLTWaQwcDouFOEYYVdsz//Rr3Eh101Ekal
-         UUnA==
-X-Forwarded-Encrypted: i=1; AHgh+RoP1UCoBL3vMjMgbjJSkavl1ShiSicMZIrBCmjzulA4XlLvYRQn94Q2OJBgQ19sOLcp72Pn42KYcw==@kvack.org
-X-Gm-Message-State: AOJu0YwTirI/TD/e4nvLrSjOrdx50uEZiR1aOKH0kxs4FIBzJR98vqFK
-	CSOLK4CkAqhlorOX1dmr1/Vi8JlZt5ZWZEUz4fwbJ9OFbivXBUPCIyIyEpp2r8dM1Zo=
-X-Gm-Gg: AR+sD12rmUfreL6Y7xoBl3yAQjiI9v7rQCWyTr6UQOt6uY838JGPwLOfRB1cYlXpS25
-	dhZWJUkltF2eRTcTxaRRCuA/Whvyo1zwHvwd71ANe4rd9aslE86JMBOMjAyIoMDTx4oyxBOIO1Z
-	8zFK4+tLrACv4jjfyTMDaeeYIAMajFdzhrB8bAWOLBSvHO5o9b5QXcKZV/ygHO5jDVqfOXr54g8
-	MRVgXzYXRDdrGaJOP0MKVodHDS72WYqzIfj2llPIbhEZTy+A3G6BIqTLCmm/0Y6L/W9gLv0tpPv
-	PRQEwBQg7iysR+WU3AMPEF6LXYeAm3jr/scjnE+gFkBwBFTWClMfiFYpzKz4HbCAoXkIlJCGELh
-	4v8/9SZiZ+JFZtn9P4K8jlJdBANDUSxskee9BJWLOk/LkUvQOhNf6Qrfm69X0EP+ZIeL0bkeHz7
-	OydCyUXzymonQnV2pAYsaJV46jhoEJxIjee3zs+357QDcZ89qZtAQpy1qMPw59s02ncRKewkoVW
-	ExyEbMO5iccmZGVJH5Z6fvdxcxOGADr6t1mtiX11Bb3
-X-Received: by 2002:a05:620a:72c5:10b0:930:ea99:8097 with SMTP id af79cd13be357-93486cf8599mr88361385a.61.1785393570464;
-        Wed, 29 Jul 2026 23:39:30 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3221c71sm356647085a.2.2026.07.29.23.39.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 23:39:29 -0700 (PDT)
-Date: Thu, 30 Jul 2026 02:39:27 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 03/15] mm: abstract vma_address() and introduce
- vma_anon_address()
-Message-ID: <amrw2v7TVl_AG5_3@gourry-fedora-PF4VCD3F>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-3-e8ecfefea812@kernel.org>
- <amrV0Y7ZUtihiB2B@gourry-fedora-PF4VCD3F>
+        d=1e100.net; s=20251104; t=1785393691; x=1785998491;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tykFrDMkx1MM1VG4l80NgytbO4sYhJ8jcy8WA1wreI0=;
+        b=g2RGji8aZVTzHFEhku90t9oQrmPMiENHYlfKWygyT8KPGBtrvgCF16nK5d4XL8G6Yj
+         NhwTmWOTf33ns9Zla3LAU6ZpEeDrQazUiug8YLtpf+VseLFket+xJksX+a+H/QZ4Lc8q
+         s2XgzEmOAlYMyo7tqbmX2AKUpfcqradtirpep0Sd/NmCOD3MQXCxjzb2/4wfg79kCN3t
+         I0M8eGnbdFWIkrtlWy3eyNNYwz78wCfAbV2Lr0NXbvA5KOxvd1K3kab35CaF2Nm1sk++
+         CNg5O7fZbPJapph8qZY3SfbFpJeMfZxPdCVFHXT2KQt/27ETopBjuznd+kfYglVopfOO
+         xI0g==
+X-Forwarded-Encrypted: i=1; AHgh+RrTP0fPJ5a20lbUutAz1TRqJ8we2Gf4ICN7+V+pP9X5xfzpq/VRSFvmpnzjH7oR9hA8+ONKxiqsEg==@kvack.org
+X-Gm-Message-State: AOJu0YxbJTgv9BIRSKIHK8XuNauHOthwvQv2V8rbgfCfriHCUMuKjy/4
+	bAA97KX0gIxOdiLHt6w7vUyUTSBlKGuVrpW5egmDslyZahbAoI+zHEwc
+X-Gm-Gg: AR+sD10OzoOCehH+PNGcB7jyWzV1sfLXDUIaZSYq+5CpkC9VV2hVGfMnSVP99p+0URw
+	OOeKN8bR7f6b5EZ8WBvRHfuCBX7RwYjCEUCU01yyLOpCmSDSf1COpR7VZOhc2Aks3UJrdK7KQ0F
+	dQOXxJO83gaHznKJT5mN12JFdxWy5rENOxVQljo3lHc5gVcJl22Q+JzxQB69sNvaTCs1nlQ3xdk
+	U9vvWWh6zJskTFp0BD+qI2oLqYo/AE5IYcrtm8Jw6SR26LfQdc2Z2571sGudUCgcY4WVD896cqd
+	UuVDppR7zHst99rCsI4gtL7b1Cjisonry/frYbhHIdl3fu/ltmb8jB9pgxYiZ4XSTXkpffeLpus
+	rY+TmCuCQBCLVIGhYHyMdya+yxL6Wfw/uwNn6YR7YogG40ozBHdboOWFLXb4k12X9jdiGGxNGLi
+	uBdHTxYwlFdHpaBaLMrJTqrXE2fj4M41f9fOrmNwLI9Nk56rIJ2L4tlRdNcKIpO3hKgo3HQMkki
+	NIKk2JXqtSLFg==
+X-Received: by 2002:a05:6a20:d612:b0:3c0:e6c3:224a with SMTP id adf61e73a8af0-3c900671988mr1409473637.37.1785393691247;
+        Wed, 29 Jul 2026 23:41:31 -0700 (PDT)
+Received: from localhost.localdomain ([112.65.87.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdb79a3796sm1739829a12.3.2026.07.29.23.41.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 29 Jul 2026 23:41:30 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: Lian Wang <lianux.mm@gmail.com>,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	linux-kernel@vger.kernel.org,
+	lyugaofei@xiaomi.com,
+	stevensd@chromium.org
+Subject: Re: [RFC PATCH v2 1/5] mm: mglru: avoid scanning empty generations in scan_folios()
+Date: Thu, 30 Jul 2026 14:41:22 +0800
+Message-ID: <20260730064122.11785-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <CAGsJ_4w=gpjgwkndm3PAmZXxRm+E8ASG=6XFpprWwr3AxnpvSg@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amrV0Y7ZUtihiB2B@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8w6kn49ehfb91bjpce4u75ibq84itz9k
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 52417120005
-X-Stat-Signature: qds3qiun7c3b31eyff3s4fguqf8odn9k
-X-HE-Tag: 1785393571-374408
-X-HE-Meta: U2FsdGVkX1+I690oopL/+M4JH1EgMeA00XKrLeSwLx9t8zICyzeEx4cHzVpz2lk+cv8F8iU0fDeBe/Bokkgeu1fKrm2VxEPwjmSwn6IU5tzAXZFMPzPNY2mUfoNZ9A3pzu/+TAXKqdyq+VnLsV95//CLHRiVvGjHwA1SMxtmaJ3A3NYrgVZ9mDFAUXC9PmxeuPuJ2Y5886tIS7YKwgI8l4HnROTDpZmFBnitqCIj8/BAy9jBvuaZpsIL9dXiKrXNE1nizXZQLyg1ppCXIFGXyra7wWTSG8GtX/5BaRXznR0T/s3P4XDLc13prWzHCGrbp6iu/qQe7DT1iJMGMs/40z5Lx+OyUEWhHsNDP8AaQQiPfRDBDyIgVB4JjUW6oCuGlBGCWlh70m3khQZpkM72cjSjaIwdf1a7SNKG4vB6nVhxQ2flXnIQdIrIO15VQpFRB4pEtiywQSmRBHR587zko7K6KFlOmO8HJsqweGR961fd5lKBLWFWTJmevSADNF7s7i7iEoriCCWEYUoLVKQQ0lw/TPDLhOgJ70YtJJ8M9QtnE+fYTK2tPfq+SKkKUTYWFhfkY9K87sMhqHdUyWDMRKul/UdFWzF5Hu7qM2GnQPXXVuMUAHvgp2HFeKVDeKNkz273Ub8dl5DqXSScWLPvVQq/j37CJj1sUcwtyqmFiaf0g4p/WlD+TbO70aPB98kJvOkCoNlY1iAtl5g4y0cWW98XHL67oMvYNn+YIBdfeGq1AMXZEmbTKzhq40KTTYnzg+cAxmCZntDzfe6c5Ca/KVL96gMgoCQYTvVk51sNRNk/UpmdBqFLGdtWJxZwnk04pwUZmOcaPu5aEo9REVxLKvEQmGcMqHR1TdNzmFq3vKZFiUlEzbltQfWKufLywbiqxKl9ESA+ruPDECA4ekCbA+HHAoyID+o0SJasXLyzq/UO+/zvWw6ZY4FwyZSziFR5w80lZRUl6yxUQ/0yPos
- Lj0XTLF2
- FSr2YOVTJMZ/+KL4pq5FOA22TCurOPe0PRaePpBGdnbx8KKsaCyySovxHCrz3IvQ+MYwy/KmqIGIPIq4KKo2yNSCz2YWKqzwMhV9zMkDmKDSWFLQPfokP9xYXp8qheN4OdmaDp3O2yJlmhmvTpsSOaU9tO7HBtcV8UZmwQ2gEWI6n0sqIdYpzqz1OFcpUyBtHc+kIhUzXPfur3HQ3mo/0cr0WP3MqzUG9NmapK1jGhujtd7HWrjJ8Km7qYl/7ktoX0iKv9VXFiM3noPAracGzUdPN2Mt8IgLkhNMmrQftGc6q/vwySBtop2OG/o6tR0odarMr3eEulEYMq/ksF9BtskMYCDRn37gsIcC+4SGEpt+k4lpKIFujcEz/VhXr4cDpivf0of0uMQzBeEtXpYietP3XRXrO/UNUXykpCiogtlWyELALieFVCbtruLAkUQicF0AnFKG8YOTn5Hs=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7232A40006
+X-HE-Tag: 1785393692-688332
+X-HE-Meta: U2FsdGVkX19AIr5G/bq2u1xMoKz+6Zlu6H5hI4sfw9tho9a+51bXZNwIhQuZL/y8yxmi4SvtC9w1A7yEBQ7TNVZn1opPLDKxbPO8T8bIaF0H0v0x0DZBQ+Zm5HUzmWhHwGgEsxQJGPVVTpPHj3daEfmiOLwSevKYQ4rQAabmQAgvvcO2waAWItrDfRk2jlPjcz08pgsL7Vahz0+zJSKT+2mp+iIcp/vHYBDZSUBh3rv30oIPskNCRCphUlVPL+KBGSRrcV3/hqIIA5y2Pt2+4A8wqSfQR4b8I35IXl4HexI+zZzWPWK1ecR5BfyUn5Oo44MVI0mZVNLmzaLD3z3UGZOrnh0J2ad0C64x41zWqFvYX+2JYPTvuj7t0tLoBkWfpsNTvfuY1SmjtDZIcV6bANNzuE7stHxSRwHtN3FJ8zQMadDZ/T1/AyogxrXWpbFLW2Q1kOAScgb1dAgXE/ZoY6NJEk5hCxUKZPocFFvjtny+g1ofPdh7ZrT5slzZdA4zbm9kgKXj0Ao+oBBeiYYYpboDZyJ8DZtcva4tcN2fwbrKeAEtjCvJbN6UUfoN58mr+Ob/NdgaGpjS9owSk3eo1Xi1L6inmgSyDi/oMSRdEGstpzfYgqJYr/bupITZaWfYcbzd5s8oe4GGp6IJnahJWCj0jYF+POhvBXEC3jv3keapqpP+ZeeottIxUjb7282WmvQoDfp1QbUI+O0HZEpnFhRZWWBNOGmdLl6e4HVGlteg0aSuuH/gbSI+h88wQw6z/eqJkpMENTZC2MlMpey6BLTaU/T1u3PzU47tNrM7BsL9ORn06BaAZvbdolbTN7rBlpmKGw3XLgHiHq+AHQtKOZ5yBybUr6Oq1hGTpGKh8NREn0rtO5WDC+voNhhbGtx1vWJo6g5DO3bn8gS9I2ydNkV4TxALylVN/tMGtap1fGzpgdCYgMm0WsCcyPqFqUJJnd6UzKJcG6jloMqF8Mw
+ ZXsB1J+B
+ ZU64BadQvAMY6JDWlhqGDjUByf/youpGhFJvHGRUaqGDQmBcFvX8mlmDXBlL2oBpEaqCrM55hdpUOh6uJCf9FHdUAnKSGGMbFt6rnZBjsXYo5tcbmDkEJuUuDfhc9iqdDW7WwexaXWhPwxLjsy3HinVgYdfbFw0mOu3D8sEDhW2p6cugfhhMu7KGYNsadVVPvbCaYM1UO5qGgrh04iOlXOc0MkmN3vyrg1Wd/X9WqxKni55ptUO8nKwcYpm8tKJo181STadM+IDDyz4AH4QNSyV0juMbbCOrjg0HA3dbVLcznEd1X5iMKf4cT1+1bxk2CzELHQoFuyWr1GAL0YK59IirLMIupALeDiyPIT2/VWrfJDkrBUlKYOKyDq11jMwJKshTKqFnEx8RA0qEXyDDuaO1pzy9C4qnN/GMJHKgmDUzpN9NyYH+AekABap1JAwYcI2pV82NKEKcMg5+iPumSaqdu7fUbCYT4x7UXfsYnN9qt4jJOSM0k5YtFUQw7DiLkewq3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,38 +132,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 12:58:22AM -0400, Gregory Price wrote:
-> On Wed, Jul 29, 2026 at 05:48:38PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > 
-> > This will be necessary for determining the address of a folio's index
-> > within a VMA when the folio belongs to a MAP_PRIVATE file-backed VMA but
-> > has been CoW'd, and thus is anonymous, once the anonymous VMA page offset
-> > field is used for the reverse mapping.
-> > 
-> 
-> This is a doozy of a sentence... 
-> 
-> ... determines the address of a folio's index within a VMA when
->   - the folio belongs to a MAP_PRIVATE file-backed VMA, but
->   - <The VMA> has been cow'd
->   - thus <The CoW'd VMA> is anonymous (as well)
->   - The original VMA may or may not also be marked anonymous?
->     (just clarifying, could be original mapper or a COW that COWs)
-> 
-> Ow, my brain.  One question below
-> 
+Hi Barry,
 
-After re-reading the cover-letter again - my note here is wrong and
-my brain hurts more.
+I tested a list-based exhaustion check on top of the v2 series.
 
-... determines the address of a folio's index within a VMA when
-  - the folio belongs to a MAP_PRIVATE file-backed VMA, but
-  - <The Folio> has been CoW'd
-  - thus <The CoW'd Folio> is <now marked> anonymous
-  - The original folio may or may not have been anonymous
-    (depending on whether it, itself, was a CoW copy)
+Using remaining > 0 still misses the case where remaining reaches zero
+exactly when the last folio leaves the oldest generation. Since
+scan_folios() still holds the lruvec lock, checking the generation's zone
+lists directly avoids both this boundary and the scanned/nr_to_scan
+page-versus-folio mismatch.
 
-Lorenzo you are truly doing Darwin's work untangling all of this.
+The change below only replaces the exhaustion check. It keeps the
+priority-gated fallback unchanged, and reports the MIN_NR_GENS early
+return as exhausted to preserve the current v2 behavior.
 
-~Gregory
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 6a73be7590cd..59b8725a0650 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4635,7 +4635,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+ 
+ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		       struct scan_control *sc, int type, int tier,
+-		       struct list_head *list, int *isolatedp)
++		       struct list_head *list, int *isolatedp,
++		       bool *scan_exhausted)
+ {
+ 	int i;
+ 	int gen;
+@@ -4650,8 +4651,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+ 	VM_WARN_ON_ONCE(!list_empty(list));
+ 
+-	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
++	if (get_nr_gens(lruvec, type) == MIN_NR_GENS) {
++		*scan_exhausted = true;
+ 		return 0;
++	}
+ 
+ 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 
+@@ -4704,6 +4707,14 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 				scanned, skipped, isolated,
+ 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+ 
++	*scan_exhausted = true;
++	for (i = 0; i < MAX_NR_ZONES; i++) {
++		if (!list_empty(&lrugen->folios[gen][type][i])) {
++			*scan_exhausted = false;
++			break;
++		}
++	}
++
+ 	*isolatedp = isolated;
+ 	return scanned;
+ }
+@@ -4757,11 +4768,13 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	int type = get_type_to_scan(lruvec, swappiness);
+ 
+ 	for_each_evictable_type(i, swappiness) {
++		bool scan_exhausted;
+ 		int scanned;
+ 		int tier = get_tier_idx(lruvec, type);
+ 
+ 		scanned = scan_folios(nr_to_scan, lruvec, sc,
+-				      type, tier, list, isolated);
++				      type, tier, list, isolated,
++				      &scan_exhausted);
+ 
+ 		total_scanned += scanned;
+ 		if (*isolated) {
+@@ -4770,15 +4783,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			break;
+ 		}
+ 		/*
+-		 * If scanned >= nr_to_scan or isolated >= MIN_LRU_BATCH,
+-		 * avoid falling back to the other type. The preferred
+-		 * type is still reclaimable; otherwise, it would have
+-		 * already run out of reclaimable generations. Falling
+-		 * back too readily can disrupt the positive_ctrl_err()
+-		 * bias. Also, only fall back when reclaim is running at
+-		 * a high priority.
++		 * The preferred type is still reclaimable unless this scan
++		 * target is exhausted. Preserve the existing priority-gated
++		 * fallback without inferring exhaustion from scanned, which
++		 * counts base pages rather than iterations.
+ 		 */
+-		if (scanned < nr_to_scan && *isolated < MIN_LRU_BATCH) {
++		if (scan_exhausted) {
+ 			if (sc->priority > 2)
+ 				break;
+ 			type = !type;
+
+I built and booted this on an arm64 VM with MGLRU enabled. A fresh
+swappiness=200 pressure smoke with a 2 GiB file-cache setup and about
+7 GiB of touched anonymous memory completed without a
+WARN/Oops/BUG/panic.
+
+Would this be worth considering for the next revision? If I misunderstood
+the intended semantics, please ignore this.
+
+Thanks,
+Lian
 
