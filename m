@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67AF2C55164
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6518EC55164
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 15:03:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E92056B009E; Thu, 30 Jul 2026 11:03:27 -0400 (EDT)
+	id 7DB516B00A1; Thu, 30 Jul 2026 11:03:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4366B00A1; Thu, 30 Jul 2026 11:03:27 -0400 (EDT)
+	id 7649B6B00A3; Thu, 30 Jul 2026 11:03:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C470D6B00A2; Thu, 30 Jul 2026 11:03:27 -0400 (EDT)
+	id 5DE406B00A4; Thu, 30 Jul 2026 11:03:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 885E06B009E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:03:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95BFD1A0180
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:03:26 +0000 (UTC)
-X-FDA: 85045761612.20.0911706
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B3F0180004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:03:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=StUNgnYK;
-	spf=pass (imf30.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F8F46B00A1
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:03:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFE291C0167
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:03:29 +0000 (UTC)
+X-FDA: 85045761738.26.C650968
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B25F41C000F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:03:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o629Riuq;
+	spf=pass (imf20.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785423804;
+	s=arc-20220608; t=1785423807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RepOlA7uegAkHRX0rdEAbivBLVoGLgApQvWSVyuj8bk=;
-	b=lOtmdeODO6lc+JQ+ihVYtOHbUNOixqeUjbXPFmsSS66CYMl4GJExpSOAlj2zI0pqIxTbcj
-	6aIgHhV/exIFK7RZ3ROqSC7MfR4b6VwXiNgWfenWVM4nD2nLikbtEisq9sLXziPv69SCBR
-	3vN5LGNwhs3baJ/H/d2rbd4QWR/nJC8=
+	bh=4YrtHMEYPI1tjDQiF/FNeUbCwB0JCeO1sQzq3zX3f00=;
+	b=7yTxSPw9NLjEOzky79uvezGF3jP5kHNSZzkVZYGzTLwotBbHoz2R0wvV6PFBV/IUx9Thvp
+	X9kRKmmcX1jxpmIR/MIS/DvbPzd3Xpf3idoYuBpFgPTBleWrK1AchcSjkKaNkAN7NHesQV
+	xPqK4E60NDiE2U8I6cztCfMe5jn8Bb8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785423804;
-	b=k/PvRU8fb2GvONNybx2loOTZJ/Uzbh1VS/TD2HT3loAX7Nxdz0r2AVsokX82BrAYuzA9bB
-	t2CELdYd/lEwk45ig+ARkSzzPeKJ11HxVRFMihPil5ZHc8mrfJyUjGJ1abnnM7b9hY5Uen
-	FHXJvUFUtA9Rtig6dhu05+5Nil8AdW8=
+	t=1785423807;
+	b=Q61CMGVWNrYiu1AmeYu5Ml3z+OcRxu89BVGSsBxHwbwxv0n0qbjdoKm8AfMrRqAbyZULCc
+	fvGZPd85Suhj6iFIyjJri/YUTYByW1z/Yc/kS0uDIR4gXzUG/GaV06LvRK8RIUYbvEgIgt
+	8LXWSOY/VFkXVBCu03FnWPKnq0oRq6I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=StUNgnYK;
-	spf=pass (imf30.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o629Riuq;
+	spf=pass (imf20.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so1712718a12.2
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:03:24 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1fbe461f59so22659366b.2
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785423803; x=1786028603; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1785423806; x=1786028606; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RepOlA7uegAkHRX0rdEAbivBLVoGLgApQvWSVyuj8bk=;
-        b=StUNgnYKzbOXqMtsgpNUEejWh//cHOVaMDt6RU+Wh8JLePXwKq7sdTS1DGT5zKWtO0
-         o8bWTYYWYmqBOZM0zgizu7GKIXGzDaE/NDI0MY0Gp4qsVx064n2VrFykKtccfcGBzAe/
-         n0zVa5ycbc2ZaZNZP6pThLItamNk9WK9ZsgKDZBXzCK19zTRnJX3ZPK3wcjSlIUozHgN
-         jBv1GggEvh747mLkzCca0WiO+TZVYFqC0mFgCNAlc8hngScXKRLjeNRjQt/j7jw8Y17x
-         USyxJw0LKvAY7LxEvEfiDPaGhv8Ibj0sCwmbvUp67Ydb04R//MsaIN8teVec4PLVxy6g
-         LoAw==
+        bh=4YrtHMEYPI1tjDQiF/FNeUbCwB0JCeO1sQzq3zX3f00=;
+        b=o629RiuqI1ntF6DVt8yQfoEOdSwu5PWOVfNjBelTtnfNJ1sTPuDOGCKvCSu0wACMON
+         MSY/580hhSbXP+B00fQwj/ACymwugb/CUUIJVQhDTPFx0fWWKbrqsMk5JwRxAe0DZF2h
+         dfSFDc2dOKWcBRKvXVFnHfbsdbxkxaqSyZrS6zPS/GeXWl7NGyi57j6FfiBtZAPya6/g
+         EFxWgPAbURF0t8CDnh2zTt6R6gntABG5P3wv0vCfAqglN3h6vSK4DudKjHVcPidbDTnI
+         t0fTiaBNCUYwYM498VJ3csnHjuBybCoRIwFJb9XP3m/Up2GQ6T7FRQNx6nWrFY6U/52D
+         FR6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785423803; x=1786028603;
+        d=1e100.net; s=20251104; t=1785423806; x=1786028606;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RepOlA7uegAkHRX0rdEAbivBLVoGLgApQvWSVyuj8bk=;
-        b=eFRMd55qdqEpFvt+hGZofn1fOVqyRvfk5lU1WG/yMSz2wfTFzI7Jweh1dXuNv+n8Uc
-         Xy+PoPefcAYkdVtqdAwECazGoA9edpMuYdf3tooWSa0nW/DzcDRi4f7684wuVF1r5beN
-         kezvbmqD0d/K/ML+TGoxqqjB+JuJco1A2tAdPuyFWp/GxeKt0qdVxku9htDpral1hcAw
-         7q6eg4Cz8Tr7Ny7cXOlpaS64oRf1wqsKLed+pNNAY8r5Wco+I6nUR9zDXk2/zKDOzeG5
-         QnSzV0F+gmyASbUPlaGWunjDSkcdbLwDSsBk5oAUcRJl/cDq3Yf57femhzhBLkdkxK4O
-         sacw==
-X-Forwarded-Encrypted: i=1; AHgh+RpTaiQPSAdj4fI7SHTNf4QfF1IcHOhgnh4PLjKMDWBGBjgC+13vp3De4RM+hzi30ZzQz4YatLvDbA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9MtZo43mHKOS/q0wBA8cndrD/1t727o4njlaiQ0TUHmMGPf6y
-	lGsXqK8toBXDuJNtQNcCvfBJR2H/1ugIjfLGQRQxJ0qU4vgqDzeeMyYV
-X-Gm-Gg: AR+sD12785WFAEp/G1DAYY2rlkG8ao7pgB3oU7X9MPOuOnHfiRacY4b0U5YfPav8PVg
-	scIs06uRtDJ0s07j9gJJLsgw88KYpbKqFC+0qf4YKwYyWfguqWxVpZHN1bo06TYfSXV7aWZzF7W
-	iaGe8tfFb/9SwlESEuyiMYetJtgHiKSsuhzRQoJBZ3hHv5XQhkHGSJm2/fx2LcmIL9Z8YjGtzxp
-	OjqfHUb1luDMz3vjNWKnP821soFdIgN9LW2Mk0H2+2N1qGjLU6mIshxxpysAxxEPBwLa65rpMY9
-	uqseEUUsKWqcdagvUumHtAO3CDsdzpiNl/4mqna7CPPCClJWGmvgka40cJSPMGj5mauyYSPTSWc
-	S+b2IJwKtnYJoY9ICLyxCQsKt4fFlzQgZ4uLB+PLWxIKa8RzQWGR0uKyFfUXWLW6GZqsosV2Y+s
-	6rbZlosoDrReMY8Muy8d1OQvHAkiKSlLjz+EkCXzA82FmR3730+Gf+aRHM13s1dyJL85wC3OV5/
-	OyvxTvmwNI2PSs9wECxZ3OCvrWRjj9dsw==
-X-Received: by 2002:a17:906:ee87:b0:c16:318:34e3 with SMTP id a640c23a62f3a-c1fa5457a44mr140525966b.16.1785423803124;
-        Thu, 30 Jul 2026 08:03:23 -0700 (PDT)
+        bh=4YrtHMEYPI1tjDQiF/FNeUbCwB0JCeO1sQzq3zX3f00=;
+        b=PnhAXZqp0USQ5iLrIdcEWR75emuom3PNsXB++qbKVEC9wWFo08nbkqxo6Qp9M6UcXJ
+         KBLNoDFPF4wcO1lzT1Zh43MI2REW9uoiuDYDRv/ugYofZNUDG8aCqjWgS8EASYtbfn0C
+         YVT8FghqumlVkAY0WAW+RqqgOX5P08tZ8Qeup54KIjU/gulp4EvDbpxy4ovbkFCcOuQ2
+         GsPEgdwvRtM+uIuPWXfGXVXX8cXY3RMqVperMiYnYj4qZikHQpNeOfGSoPD8jdM6qwvH
+         UU9AEGyYWWGi5PY75Xl1MWZFwt7pGMpbZMBESQ0KxoR/TcBxzuKz2jcwbIbgLDahage3
+         1iPg==
+X-Forwarded-Encrypted: i=1; AHgh+RqKLoUEVtqLU8wrbSwqs414+n2j95sAWF+bsSeb1ELywg/FQ3Gc2jSNg+ivvq1V0nawig+irj5FDg==@kvack.org
+X-Gm-Message-State: AOJu0YxvOv/RST3bJ4jvjl1EO0cxObyYMjtP1yO2tvCLmlk2fWtHG5jV
+	09wvuFAG7fD3ifz5m2WEssLsvXLaA/I6qHKlhuJQOL9RXSEGjfVw52DV
+X-Gm-Gg: AR+sD12StMhoSE3zaWrrVS6CHTtAdIFUhEpwBS7E0LhL/uxBL04AU8cv3EU3XDFfOFb
+	sGljeEytozMsF15ar2iHRN3ZkHSGdU/D5OdRQ6sjlpqp60ZiqfM1IwbkUrANu1PY8exf5n4nmrY
+	x2CWCXWGzDMesECuns4XTwb/w5teNmn5uqDxhNhjg5ArNXEqmnhhovgXWZLMLSX06rrA2eAlBi8
+	VyRRJqFekB1yKuiCCEXSMy8ASpODIWnsDzrkvEWiajg1WcztUb1WSOtDyydDuG1aUnX0iFzqW2a
+	ysexIxDsP+kbgaRb/1wUocoQdgk+vL3YVRIf7BM9nWwQE9QqyE3ndjsDvYXI1RwRGVHER2w9YoA
+	oocggBhQXgQCgvQMGcLqeGk5nhMutKHHcV9R6tYLYLSncaoAa6TxDHRPVmA0DzH9NO86KbEykN/
+	EX9KUwoEQPH77ocaJWrGp0kjHpAiRzsrijPPrCgjhZPRMxdPvNNR2rDWpUv88g5+LCgt0PQewSk
+	T47GZ5aYrJEYVppRIBdrVUZjmor+gKQnw==
+X-Received: by 2002:a17:907:3c83:b0:c17:cf99:6154 with SMTP id a640c23a62f3a-c1fa55db339mr152575066b.16.1785423805407;
+        Thu, 30 Jul 2026 08:03:25 -0700 (PDT)
 Received: from [127.0.1.1] (h-62-63-197-109.NA.cust.bahnhof.se. [62.63.197.109])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a07bf18ff8sm729116a12.0.2026.07.30.08.03.20
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a07bf18ff8sm729116a12.0.2026.07.30.08.03.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 08:03:22 -0700 (PDT)
+        Thu, 30 Jul 2026 08:03:24 -0700 (PDT)
 From: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-Date: Thu, 30 Jul 2026 17:02:57 +0200
-Subject: [PATCH RFC v2 1/3] mm, x86: support copying a folio using
+Date: Thu, 30 Jul 2026 17:02:58 +0200
+Subject: [PATCH RFC v2 2/3] mm: new migrate_mode flag for async using
  non-temporal stores
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260730-rfc-nt-demote-v2-1-452dbe3b5073@zptcorp.com>
+Message-Id: <20260730-rfc-nt-demote-v2-2-452dbe3b5073@zptcorp.com>
 References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com>
 In-Reply-To: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -134,14 +134,14 @@ Cc: David Rientjes <rientjes@google.com>,
  Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, 
  Alirad Malek <alirad.malek@zptcorp.com>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: pcs4kkeyt8qq14rpfqa61ghb3dk4wgts
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B25F41C000F
+X-Stat-Signature: rzfgq74a16i4di9cjk1gu8j63qtdtzb5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B3F0180004
-X-HE-Tag: 1785423804-610512
-X-HE-Meta: U2FsdGVkX19Q7uJl/fPrbVPtj4OvCghRY5rXWghs2mv8qSAMv/j7HCGMTC0Pv4Y2XdfzJfmK7r38OgwRNeGX5pkkQp8lHewxvPFC1m+XtpyNani1Ve8Jh7XI3G4ql9NOSedOHeIX+7GLvPxFBtePQG8WWC5wz2mZ50fd92gIJyvIxpqzDFlRQsM5Sn8VvCtE1egbhKpbi7lfVrSvKhwxOSCJc89Ph8cbPibjyqKQMfnj/E5uLbulasglykcJAtVQccvOkgGEspNdQ88VsTRg6flc1mwQsJ7gCaSQKYqDiZ5x3t9PqdAZcfNvxuEJXp/LVfUik9SpIiY1OB7mmKx9ZcQXNV8IYToeuDUdbAyQ+h15i3qfeZRiAfdech5OJncqJuCYaqvphcf2TfeIR0/Kl+FK8ca41a5nxdhQSsdIm73+OqL5xz3AOG/Ff/qCNRX0o8BzKpIqj3ObKRKg4v/Lfr+gP7pwrumd1p5YrPgRh+QGw8rwR8QtSwanm1RVS96LFtNzOHNAb8nc4ihLmt0qbUlhbMjxZNROPKOr2mgLQuL6FGdfg4lkp9qMwy9qW5ojxoyR+6KGOVSQCz4imBOVCScUb98CfPZ7oP+LYoTrRbZLWJ0eUJZ/rqpalT/FtQekpnRy4LezeJE8Jl563M83xP9qcV1uxNGYfNJ8mgcIm4LdO+SlAJo/hrY8CUL5jhoNApC8+IT0X3KLj6jfRQ2U6tkCKDwmexH/fjxLA5HtR1e3uwhWrpQ0Y240IoE01M4kBg6Voq7ydYLY87XfZZpqslmkhGuQCHgqSJeiV+z+9hC3jc6AdA7qZRw5Q0xTtBmdDbOdtbfWRdpdHLIqZ43yVgi4FZ1BMK1/Bm70Gdh/0qxMDjckPSCr5HXiwVeLK1oSx7+ab2XAMDsTLWk81+sMd3BncP9aErINRiDnxgZQ0vWdr271ioONIYeBJ2t3jjG0q4dqR3kpkjTwhxEw60x
- 4UVfxFB7
- DvhhsAltRq0xJmE/kJJjZrb4dgity4XcH0pRbnOd4gfQa3pxfxaxpFISF14l90xec0NXxK1fDkDGltpQ2lrN00cuRwxROh8pwyZOHBJ0W83CINjj8bN2NFqtRhi5NZt40+yd5tRlTodFjJeytrf3x7tXhzBLnpL6DoiH15kz1RPNe8dWPnIzsEGcsKRZ+uktL39xfjE6eCKNB8EA7D/bZoQ28BZXy+mqFZlVxBzyRxWCvCWV6q0jiOBIEv6OF3a6aPWmm3Cbt1XBl4PY7wMtuz4TZKnm7LTwFmya9uOTKNZLBfaNzRECC8Cv9nYzb6sOtdmvtcCa6O8RDGhG0xe5HecJUJkxN0qFhQjAovOPpp/FGJyj9Rgani1HpSqCeTVQrxIjMX6FA7x+Oj47Ns+p/kJJpqDxssPBwsc8QipNS3sgzzh14+h9iqNo46jzrztuqcR3Hn+3kyFhGUzDqUgJXZ68ol1r25hkMn2WiDjoO+BGVeZe5g1TViga2dlgih1sXWNGa+ghZqQmwwJU=
+X-HE-Tag: 1785423807-843628
+X-HE-Meta: U2FsdGVkX19z1I5hfjdpDA1Ohf4m4LCqz9lnymBgE6sxWImiwnCtgcNEkxO1pPIat7gJtrBdzz3D99iroMHo8iJIDJwszfo60r0QP0g6KCokJXYh5DgS9esVucdVBUSuuXiXfsnfwvYo5tNvE9Zfd9fc5iMiwUtZU4H3t4jSLF/q7FPgLVy0vzBffOVogIKw7VuTF46aKntyYKHRqpTcHDBhwHiyA7uZ7NKwOVrgqAN+3CQw6N7zFc2USUWaX7CO01PyLY0PCWsHiwmTHbrM9/ytGbVbir0FVFfmWK7y65xUszPJgl46XSzkhlNhXeUfU3dXR25mxvxl7fx312drezryQRUW6FX9Sq9jWjOtxOmdd4tjgku5Fpg9wOtZZTQ04suCEiTScnAVixt6FTE1uSRMqlc1JwQw0yfBWjNIEVT0epAqRcYsVseP1Qtt4i2f0DDSYZoViWanC+P3IWr2YwA0v+2UHNCDuI4O8CI7RAsT96xR5B+wq2qjG43qqtZo7i+XVguyDoy59NUbSLHC0MMtbGv1bats0GDYj68Gz1sN1vuYSnSmyL7t4VVoNtCKxn/X+963zMXisXG0q8ECTz0aU9Ujh9Wogu1gZljUQaZO1Sns8VXAkq4Mwu/aGRFUNFQJMx510/+d+nThXcKA4LslqcvSFkYjslWDeQ29pJ6NfcnF1Attt6lS12q7/T6oqr944y3VG/TfExCBIPxagVkzNdKdyg9m0NpV3EbujYVXJQy75xXX6KlWOh8/ayGau6uabZB3InJJ1Bv+Wi9lMC8TxGC6DTopxf2BeswjxHCV6GCCJE3FatYR9LYSD+AKL+9VXpVejw9z2Gh8EwNKjNnVcu4vIVDv4R+2b8HQ0U0YUxIi2g18VNJk/4CxjbSB7cOngCMtWBFkHGr6WmyPMmz1dDX4Gvz9plHutUwsclejd8NyxQnsKabVbPmNVLbMwnNURRgZ0QSWRh/9Eo/
+ VKJA1Nwf
+ ACDFXQ2ZbkAz8M3TvG9cyzIBFIMghufkTcG3eoAGllmRrwXNauxAbNEioxOoo1L2SOZd9ajXXuEAZVXOFygSn11/5/dNCelv3b7FO+jRMKUT6VBzhP26sep1HwuC1MxPk7F3hcbIMKIAKtnIaCwmZUdag6o1IgHD0+8M2GeeM5og98pCWzRaFNdVw/LIWVJvyUY1xTeKHTK21yCfbx6YK0txzljk4kwxCbKF5UQDlq8TX05HvSDCuL8sJrnVOmGlhWHQ8rKrEb7MIKBZ0wJh5OC2/e/b6gGcWiC1mTc5RDgwUX0CDBTD0jqOkYqXTPD7PUtYVlcOKru3mmA1Mwc0mE7RPJ8JPdSdUT2CRo7BaKcd9kAFi19mlla+k6p3fexyMsHk99maruSCK0vbQUN8PHWjA0sgtnGEUacp7o6S93k7ZlMu8u5D2nnaTlv+odXEvO5X1s5G0Wkr2LltqgF8ZkG1MneAerA649+GUAs7Mwi5BkoRND9Vi0YrhM8tYx91jicrN21xxWCMgSG/3FSoC/ep+Xuh6K+ywGIlYDHPB0dleBiHlaA5ekbmTymxtgsB+IFQm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,164 +151,221 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alirad Malek <alirad.malek@zptcorp.com>
 
-In x86, use memcpy_flushcache (that uses non-temporal store
-instructions) to copy a folio. To achieve that, starting from folio_mc_copy
-down to copy_mc_to_kernel, create a series of helpers (named with an _nt
-suffix) that have similar behavior to the original counterparts.
+In preparation for the following patch, add a new migrate_mode which is
+still async but will use non-temporal stores. Add a helper function
+that checks for both async modes and replace all plain checks of
+MIGRATE_ASYNC.
 
 Signed-off-by: Alirad Malek <alirad.malek@zptcorp.com>
 Co-developed-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
 Signed-off-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
 ---
- arch/x86/include/asm/uaccess.h |  4 ++++
- arch/x86/lib/copy_mc.c         | 26 ++++++++++++++++++++++++++
- include/linux/highmem.h        | 32 ++++++++++++++++++++++++++++++++
- include/linux/mm.h             |  1 +
- mm/util.c                      | 17 +++++++++++++++++
- 5 files changed, 80 insertions(+)
+ fs/nfs/write.c                 |  2 +-
+ include/linux/migrate_mode.h   |  9 +++++++++
+ include/trace/events/migrate.h |  1 +
+ mm/compaction.c                | 18 +++++++++---------
+ mm/migrate.c                   | 12 ++++++------
+ 5 files changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 367297b188c3..2d0938d3e372 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -494,6 +494,10 @@ unsigned long __must_check
- copy_mc_to_kernel(void *to, const void *from, unsigned len);
- #define copy_mc_to_kernel copy_mc_to_kernel
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 1ed4b3590b1a..beae4441e080 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -2119,7 +2119,7 @@ int nfs_migrate_folio(struct address_space *mapping, struct folio *dst,
+ 	}
  
-+unsigned long __must_check
-+copy_mc_to_kernel_nt(void *to, const void *from, unsigned len);
-+#define copy_mc_to_kernel_nt copy_mc_to_kernel_nt
-+
- unsigned long __must_check
- copy_mc_to_user(void __user *to, const void *from, unsigned len);
- #endif
-diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-index 97e88e58567b..5a2ee5c2211e 100644
---- a/arch/x86/lib/copy_mc.c
-+++ b/arch/x86/lib/copy_mc.c
-@@ -81,6 +81,32 @@ unsigned long __must_check copy_mc_to_kernel(void *dst, const void *src, unsigne
- }
- EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
+ 	if (folio_test_private_2(src)) { /* [DEPRECATED] */
+-		if (mode == MIGRATE_ASYNC)
++		if (migrate_mode_is_async(mode))
+ 			return -EBUSY;
+ 		folio_wait_private_2(src);
+ 	}
+diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
+index 265c4328b36a..f7186e705b48 100644
+--- a/include/linux/migrate_mode.h
++++ b/include/linux/migrate_mode.h
+@@ -3,6 +3,8 @@
+ #define MIGRATE_MODE_H_INCLUDED
+ /*
+  * MIGRATE_ASYNC means never block
++ * MIGRATE_ASYNC_NON_TEMPORAL_STORES means never block and use non-temporal
++ * stores if supported by the architecture
+  * MIGRATE_SYNC_LIGHT in the current implementation means to allow blocking
+  *	on most operations but not ->writepage as the potential stall time
+  *	is too significant
+@@ -10,10 +12,17 @@
+  */
+ enum migrate_mode {
+ 	MIGRATE_ASYNC,
++	MIGRATE_ASYNC_NON_TEMPORAL_STORES,
+ 	MIGRATE_SYNC_LIGHT,
+ 	MIGRATE_SYNC,
+ };
  
-+/**
-+ * copy_mc_to_kernel_nt - memory copy that handles source exceptions
-+ * if enabled, otherwise uses non-temporal stores
-+ * @dst: destination address
-+ * @src: source address
-+ * @len: number of bytes to copy
-+ *
-+ * Return 0 for success, or number of bytes not copied if there was an
-+ * exception.
-+ */
-+unsigned long __must_check copy_mc_to_kernel_nt(void *dst, const void *src, unsigned len)
++static inline bool migrate_mode_is_async(enum migrate_mode mode)
 +{
-+	unsigned long ret;
-+
-+	if (copy_mc_fragile_enabled) {
-+		instrument_memcpy_before(dst, src, len);
-+		ret = copy_mc_fragile(dst, src, len);
-+		instrument_memcpy_after(dst, src, len, ret);
-+		return ret;
-+	}
-+
-+	memcpy_flushcache(dst, src, len);
-+	return 0;
++	return mode == MIGRATE_ASYNC ||
++		mode == MIGRATE_ASYNC_NON_TEMPORAL_STORES;
 +}
-+EXPORT_SYMBOL_GPL(copy_mc_to_kernel_nt);
 +
- unsigned long __must_check copy_mc_to_user(void __user *dst, const void *src, unsigned len)
+ enum migrate_reason {
+ 	MR_COMPACTION,
+ 	MR_MEMORY_FAILURE,
+diff --git a/include/trace/events/migrate.h b/include/trace/events/migrate.h
+index cd01dd7b3640..e493207a3f46 100644
+--- a/include/trace/events/migrate.h
++++ b/include/trace/events/migrate.h
+@@ -9,6 +9,7 @@
+ 
+ #define MIGRATE_MODE						\
+ 	EM( MIGRATE_ASYNC,	"MIGRATE_ASYNC")		\
++	EM(MIGRATE_ASYNC_NON_TEMPORAL_STORES,		"MIGRATE_ASYNC_NON_TEMPORAL_STORES")	\
+ 	EM( MIGRATE_SYNC_LIGHT,	"MIGRATE_SYNC_LIGHT")		\
+ 	EMe(MIGRATE_SYNC,	"MIGRATE_SYNC")
+ 
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 1e8f8eca318c..cd26781b7376 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -444,7 +444,7 @@ static void update_cached_migrate(struct compact_control *cc, unsigned long pfn)
+ 	/* Update where async and sync compaction should restart */
+ 	if (pfn > zone->compact_cached_migrate_pfn[0])
+ 		zone->compact_cached_migrate_pfn[0] = pfn;
+-	if (cc->mode != MIGRATE_ASYNC &&
++	if (!migrate_mode_is_async(cc->mode) &&
+ 	    pfn > zone->compact_cached_migrate_pfn[1])
+ 		zone->compact_cached_migrate_pfn[1] = pfn;
+ }
+@@ -507,7 +507,7 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
+ 	__acquires(lock)
  {
- 	unsigned long ret;
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..a5cb435b9ffe 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -468,6 +468,32 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
+ 	/* Track if the lock is contended in async mode */
+-	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
++	if (migrate_mode_is_async(cc->mode) && !cc->contended) {
+ 		if (spin_trylock_irqsave(lock, *flags))
+ 			return true;
  
- 	return ret;
- }
-+
-+#ifdef copy_mc_to_kernel_nt
-+static inline int copy_mc_highpage_nt(struct page *to, struct page *from)
-+{
-+	unsigned long ret;
-+	char *vfrom, *vto;
-+
-+	vfrom = kmap_local_page(from);
-+	vto = kmap_local_page(to);
-+	ret = copy_mc_to_kernel_nt(vto, vfrom, PAGE_SIZE);
-+	if (!ret)
-+		kmsan_copy_page_meta(to, from);
-+	kunmap_local(vto);
-+	kunmap_local(vfrom);
-+
-+	if (ret)
-+		memory_failure_queue(page_to_pfn(from), 0);
-+
-+	return ret;
-+}
-+#else
-+static inline int copy_mc_highpage_nt(struct page *to, struct page *from)
-+{
-+	return copy_mc_highpage(to, from);
-+}
-+#endif
- #else
- static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 					unsigned long vaddr, struct vm_area_struct *vma)
-@@ -481,6 +507,12 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
- 	copy_highpage(to, from);
- 	return 0;
- }
-+
-+static inline int copy_mc_highpage_nt(struct page *to, struct page *from)
-+{
-+	copy_highpage(to, from);
-+	return 0;
-+}
- #endif
+@@ -864,7 +864,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 			return -EAGAIN;
  
- static inline void memcpy_page(struct page *dst_page, size_t dst_off,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5be3d8a8f806..d07ce478582d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1644,6 +1644,7 @@ void __folio_put(struct folio *folio);
- void split_page(struct page *page, unsigned int order);
- void folio_copy(struct folio *dst, struct folio *src);
- int folio_mc_copy(struct folio *dst, struct folio *src);
-+int folio_mc_copy_nt(struct folio *dst, struct folio *src);
+ 		/* async migration should just abort */
+-		if (cc->mode == MIGRATE_ASYNC)
++		if (migrate_mode_is_async(cc->mode))
+ 			return -EAGAIN;
  
- unsigned long nr_free_buffer_pages(void);
+ 		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
+@@ -875,7 +875,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
  
-diff --git a/mm/util.c b/mm/util.c
-index b05ab6f97e11..e09e9b5f8eee 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -749,6 +749,23 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
- }
- EXPORT_SYMBOL(folio_mc_copy);
+ 	cond_resched();
  
-+int folio_mc_copy_nt(struct folio *dst, struct folio *src)
-+{
-+	long nr = folio_nr_pages(src);
-+	long i = 0;
-+
-+	for (;;) {
-+		if (copy_mc_highpage_nt(folio_page(dst, i), folio_page(src, i)))
-+			return -EHWPOISON;
-+		if (++i == nr)
-+			break;
-+		cond_resched();
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(folio_mc_copy_nt);
-+
- int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
- static int sysctl_overcommit_ratio __read_mostly = 50;
- static unsigned long sysctl_overcommit_kbytes __read_mostly;
+-	if (cc->direct_compaction && (cc->mode == MIGRATE_ASYNC)) {
++	if (cc->direct_compaction && migrate_mode_is_async(cc->mode)) {
+ 		skip_on_failure = true;
+ 		next_skip_pfn = block_end_pfn(low_pfn, cc->order);
+ 	}
+@@ -1364,7 +1364,7 @@ static bool suitable_migration_source(struct compact_control *cc,
+ 	if (pageblock_skip_persistent(page))
+ 		return false;
+ 
+-	if ((cc->mode != MIGRATE_ASYNC) || !cc->direct_compaction)
++	if (!migrate_mode_is_async(cc->mode) || !cc->direct_compaction)
+ 		return true;
+ 
+ 	block_mt = get_pageblock_migratetype(page);
+@@ -1465,7 +1465,7 @@ fast_isolate_around(struct compact_control *cc, unsigned long pfn)
+ 		return;
+ 
+ 	/* Minimise scanning during async compaction */
+-	if (cc->direct_compaction && cc->mode == MIGRATE_ASYNC)
++	if (cc->direct_compaction && migrate_mode_is_async(cc->mode))
+ 		return;
+ 
+ 	/* Pageblock boundaries */
+@@ -1705,7 +1705,7 @@ static void isolate_freepages(struct compact_control *cc)
+ 	block_end_pfn = min(block_start_pfn + pageblock_nr_pages,
+ 						zone_end_pfn(zone));
+ 	low_pfn = pageblock_end_pfn(cc->migrate_pfn);
+-	stride = cc->mode == MIGRATE_ASYNC ? COMPACT_CLUSTER_MAX : 1;
++	stride = migrate_mode_is_async(cc->mode) ? COMPACT_CLUSTER_MAX : 1;
+ 
+ 	/*
+ 	 * Isolate free pages until enough are available to migrate the
+@@ -2514,7 +2514,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ 	unsigned long start_pfn = cc->zone->zone_start_pfn;
+ 	unsigned long end_pfn = zone_end_pfn(cc->zone);
+ 	unsigned long last_migrated_pfn;
+-	const bool sync = cc->mode != MIGRATE_ASYNC;
++	const bool sync = !migrate_mode_is_async(cc->mode);
+ 	bool update_cached;
+ 	unsigned int nr_succeeded = 0, nr_migratepages;
+ 	int order;
+@@ -2537,7 +2537,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ 		ret = compaction_suit_allocation_order(cc->zone, cc->order,
+ 						       cc->highest_zoneidx,
+ 						       cc->alloc_flags,
+-						       cc->mode == MIGRATE_ASYNC,
++						       migrate_mode_is_async(cc->mode),
+ 						       !cc->direct_compaction);
+ 		if (ret != COMPACT_CONTINUE)
+ 			return ret;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 2c3d489ecf51..ff6cf50e7b0b 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -907,7 +907,7 @@ static bool buffer_migrate_lock_buffers(struct buffer_head *head,
+ 
+ 	do {
+ 		if (!trylock_buffer(bh)) {
+-			if (mode == MIGRATE_ASYNC)
++			if (migrate_mode_is_async(mode))
+ 				goto unlock;
+ 			if (mode == MIGRATE_SYNC_LIGHT && !buffer_uptodate(bh))
+ 				goto unlock;
+@@ -1220,7 +1220,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	dst->private = NULL;
+ 
+ 	if (!folio_trylock(src)) {
+-		if (mode == MIGRATE_ASYNC)
++		if (migrate_mode_is_async(mode))
+ 			goto out;
+ 
+ 		/*
+@@ -1325,7 +1325,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		/* Establish migration ptes */
+ 		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
+ 			       !folio_test_ksm(src) && !anon_vma, src);
+-		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
++		try_to_migrate(src, migrate_mode_is_async(mode) ? TTU_BATCH_FLUSH : 0);
+ 		old_page_state |= PAGE_WAS_MAPPED;
+ 	}
+ 
+@@ -1565,7 +1565,7 @@ static inline int try_split_folio(struct folio *folio, struct list_head *split_f
+ {
+ 	int rc;
+ 
+-	if (mode == MIGRATE_ASYNC) {
++	if (migrate_mode_is_async(mode)) {
+ 		if (!folio_trylock(folio))
+ 			return -EAGAIN;
+ 	} else {
+@@ -1799,7 +1799,7 @@ static int migrate_pages_batch(struct list_head *from,
+ 	LIST_HEAD(dst_folios);
+ 	bool nosplit = (reason == MR_NUMA_MISPLACED);
+ 
+-	VM_WARN_ON_ONCE(mode != MIGRATE_ASYNC &&
++	VM_WARN_ON_ONCE(!migrate_mode_is_async(mode) &&
+ 			!list_empty(from) && !list_is_singular(from));
+ 
+ 	for (pass = 0; pass < nr_pass && retry; pass++) {
+@@ -2107,7 +2107,7 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+ 		list_cut_before(&folios, from, &folio2->lru);
+ 	else
+ 		list_splice_init(from, &folios);
+-	if (mode == MIGRATE_ASYNC)
++	if (migrate_mode_is_async(mode))
+ 		rc = migrate_pages_batch(&folios, get_new_folio, put_new_folio,
+ 				private, mode, reason, &ret_folios,
+ 				&split_folios, &stats,
 
 -- 
 2.43.0
