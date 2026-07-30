@@ -4,94 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC59C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D75C55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 14:47:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC59B6B00A2; Thu, 30 Jul 2026 10:45:14 -0400 (EDT)
+	id EE87A6B00A5; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9CDA6B00A5; Thu, 30 Jul 2026 10:45:14 -0400 (EDT)
+	id E98646B00A7; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98E546B00A7; Thu, 30 Jul 2026 10:45:14 -0400 (EDT)
+	id D868B6B00AA; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7107A6B00A2
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:45:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E88F41C017A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:45:13 +0000 (UTC)
-X-FDA: 85045715706.29.67A0A5F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 45B5D10000E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:45:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFgpgcap;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A04C16B00A5
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:47:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17D1E14019F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:47:21 +0000 (UTC)
+X-FDA: 85045721082.07.C7798FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 53224C0003
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:47:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGOrQ6Hq;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785422712;
+	s=arc-20220608; t=1785422839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i0PRcloglS2eplyMT6C9pAo053hn3uqwraPzhkmyKgw=;
-	b=S+CAo+qy4OwvVb8g8Z2sfb2z818Fhl+m5mPKxg23DFTplHy5/mkfcIz9HKu8LaheqgUCDP
-	QoPXvz7qNVa5iJl1yhuSCCSd1fZDS3WuOoFz4tz55hlK+p1vWS8RwmEF3nXbt9u2+LlWMV
-	Df6SK50HfcEAAlIa9y10llY1bYWAewY=
+	bh=6JNCYzO4mboOlKjltzKwN6FyPZkVxGE8uHEozODAlGM=;
+	b=figvatdKC2LjSV/H0r78WPcl1qq39EGgWkAxksYcBgSn6uXbbDXcTW4y7elZ6OC/IB4yiz
+	5rdhwygDhnziLd/RViHfchHBYF6oHmPt7t3VRAsIqcanD6uBOdSZ8glFMMRxzh7ahcjxBt
+	Vqi4uV73MPnH+g4UjRyLLfSQFkJQKvo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFgpgcap;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGOrQ6Hq;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785422712;
-	b=jKRrZvDLJll0P7HlYMcSf2RjPO30Wdh4T7siUkxoh1Ahq+qgVPY1OLbUznZjYhCSWkyu8h
-	Xpr5oaT7hozihIaylLYZDzulTtczmfFAl6p3DwUdt86ogoE+Tmv2Y2Csflyvtz1zUhzl6O
-	y45wwbFWgKZxE8/ygnIEU2Gi6NXm1O8=
+	t=1785422839;
+	b=Mfmt33RNHQIRv/9DEpqcBvOtt4BAo6Vnfh/EYTNqMaOEdwe1IQleuH7ohy5LmKO3rJVeLM
+	k27wTWWMgYI+MDTBoJXwRVw4Q64lCiAWYlKRx2gEcS3FILg+ZwpwORwbQ2b2JoC979PSO1
+	ZBeCuNYOTSUTWk75zT/8uyelQEIekiI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 712F942E19;
-	Thu, 30 Jul 2026 14:45:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E2F1F00A3E;
-	Thu, 30 Jul 2026 14:45:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D08D160A65;
+	Thu, 30 Jul 2026 14:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853581F00A3D;
+	Thu, 30 Jul 2026 14:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785422711;
-	bh=i0PRcloglS2eplyMT6C9pAo053hn3uqwraPzhkmyKgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AFgpgcapG7OU/hcXjDFHKIFCFmcCMN72NvzEDyn9FOt4KAKFujQN+u156ODNvlN3I
-	 Wuc+FqHYixDczgEfW1b5x8yBPuXZ6mFh4A2CfomEXNaQWfBp5ioVb+vhI8GmhrPZF5
-	 WAh7ipsUZtbMJ3YbF0jqFD8Taa9GPhGIgd7C6fN2XxroAIlVnp6TriEoQ2oQn/jdaL
-	 S+eKQ5iUAffXqeU4+4jpn5ikCh+Ip78uSznja1SdXSbxBFX+mHpz5RZXmakJIM15G+
-	 TJZoquq+Zq3WP+m6Qlh8zY7MD/d97N48IxkHBmFuQ7MnR8RUUtXWq5+qhD/0pmjsQt
-	 bM0XzPmA2O3CQ==
-Date: Thu, 30 Jul 2026 15:44:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Usama Arif <usama.arif@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2 1/7] mm/khugepaged: refactor per-scan state clearing
- into collapse_control_init_scan()
-Message-ID: <amtjMRG7sXlGsj_t@lucifer>
-References: <20260715025941.1571316-1-npache@redhat.com>
- <20260715025941.1571316-2-npache@redhat.com>
+	s=k20260515; t=1785422838;
+	bh=6JNCYzO4mboOlKjltzKwN6FyPZkVxGE8uHEozODAlGM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JGOrQ6HqJK0w0NHZ5yY4kzE3rVaMpoL98iGN34RLoJwSAwUPYf7HzNprDrheGCRMj
+	 3A7QZAeuLfn23Lj1c1bWd2ph6fFA166o9YdO4NVj2n1H+yMtfs/GV3bEzntQ70xp6M
+	 PrSYVIFl/o5aD9jIrRDnr9uozMxCBcNZlfL8jSBx2Ugp4PI1ybZBD75yA6BhhgPInB
+	 A72AXVcarQmxIkBModGhoAWmAFVK477sBoV7vLKxkKtUPykKvKNTT3ERZbDtJLqeoM
+	 IBsnn1qw+nOpLj9RXUMN0NQja6MK/Sr6HMD/kYM+/oQ/SyFp4mQdmU0xCcqKuiyxzm
+	 8cBzRKPRHYV0A==
+Message-ID: <89e64c5d-f317-413e-9fa3-9b7e0a7f0f5f@kernel.org>
+Date: Thu, 30 Jul 2026 16:47:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715025941.1571316-2-npache@redhat.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 45B5D10000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/ksm: use checksum to speed up page comparison
+To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260716122039.679173-1-pedrodemargomes@gmail.com>
+ <98c91508-4aa7-4390-b2f0-e39f16bdedef@kernel.org> <amtdj-V6kDlXFhq7@fedora>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <amtdj-V6kDlXFhq7@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9jn4q99fznhmz7dwkffd4ryehzzosoyu
-X-HE-Tag: 1785422712-563071
-X-HE-Meta: U2FsdGVkX1+vSGzmDoC/ocHGGNa2gE9ESTqbhM4iThtkbVRF+41YgyZQFL82OQKv3ktNKDbHQDaP/IQ3OZba2pwkwEzKxyNWsw9OwS5VmgzUI+I8LqJbrbqkLqN15iBjg2EMFaK2N8dHbm/3O9a10nx8pyIiWk+mk1EFA2V4Tj2XVOCvEPsvuQ3mLapan548WYQEw7mKLlMleEmvnmMM2/Hw+qKRRhjbIaXfHtwxWYDJb06/VZTFCfxl3EgX6lj4lrhtiSZyMlMEkZJwrGC9YnJDjviadum/LGcE9ggDu69ME8bvlNjiW4SqZZReP5UDDf2nv5zD4g37HIlXSerRK6Aj+7xYvk0dvgAlHnJ+bZaSDmCajfCDQMryc8aT8RO+Z35PBIfrq1bzEEByKcL13gtL9V25jjtSmreXXhYTsGG5JugRbknZTfGaz3Pc56K7rJisWsz+FNkXJWt0kCj9pEckybTwP/fy4B+R+r/js2uxsYAojNZXOnky8cKaDJeWs80mPVgvOru/TZpFyHt+Hu/arahMIPLRZts84bV65tp9bH9OruFjm+1ZD4/drL+ywbRpn3BsYmCN9QPQFTrYO+J4U9d+DOOa3YLdvl1WFZxXMoNE4sHOGtC5vatThZohWPHRr9SXQrH+xG5ORTsU5Ve80euno5oZp7KNpxZ3WwbWIhAlks5NIk1oOulhiKSG6tIWqY2a1WYxshy4spVFTbUiohzcIduMCvBDl2q+9zrrNDO4Bg0YAYlXFC87BcRqIyzzwfC/jXL0fmVv8HxjIKGdtKhQjvS0g/MNxXNj8kOJ83u193X1oCvZ3e2ZlYFCE2e5y4Y1TruUfKb5r8VU6yTwInUFCyJJ6SKemPxFjE3lv1uWGbAQNuYmsSXUrD+CHz6+BHzRY+78PUZEh8YWNhnusBw43IZCIvo1/55kmnmIs4pQRy86Puq8w+VjiyR2xz4ohbCywYSpuaKtkGF
- i46kWtMb
- 6igM4dNUxdSYT7H8aVRA4z9BDxlYOS3Bcsmzg31We9Jo9mEeo5jNHzbqxLrMN5nNVGfLpU9IGeQ7SI4W36rWHVlTSqlsUOYUpwJFIKRlBu2y0YPaJdYvT7+svuu7DRZo1VnWPy54Z+jhcFOOgKvIaLEz5vxsHgZUdds42DYOku+4K+TIr1116BskrysIWxRXxZWYqICwALNn2/pflbaCbg33oaPfhoY127pRlRaIfTdXvIao3z1qtLbrMlG6TZqaSrPHzOhgdzPOqsnQcc2tIH+Liw1E78DHg8q74hVeOtsd6/J1xsC45qIJWKlPIkY3u7L7RJf/QS6Er9IKq4utqespKYt7ZnczBN8aZzTOkLFQ3eWNr+ePao9FDug==
+X-Rspamd-Queue-Id: 53224C0003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ehfoufkpqd818hcgq6nk5118new37phe
+X-HE-Tag: 1785422839-680224
+X-HE-Meta: U2FsdGVkX18cTJAcBo2eiPgha0TeXVyDFqnTWeVGbYwqGt+z88GdLDRFwvQqRx+AYkMhXXBuHDVxnWz/m9MlCkx9BaZzEhU6L85NENbaHWiwSHWGV5vEiNw0R+kUXPSiTB/gboPgt1NhoMV/LeyVHEc12jK0OsBqN5a/Pm/SS0NwsjwF27U7DQeC3QMBUGcH6yBzvd+zdjQmIxlg+GiGYzM76Wl6vWCdJOappZ4s01wEKSQ+vKS6D/V/UcEaPdm+TJg3+dULM6jwvNVlJeovkzVQwYlhstUaTx4BHgI4aKCkiriEOmK+EFEojo8qCEEkLV9HMl3hvFF6q3kYB8FZfqg22VAkz+48HRbOnFB65yCvJgOhhckwNYrOCrpo36Ph/MwAAeHGPNLPf+rVhOd3ZGGgDFdc588A0wqonq+mRusbAsVfeXXE7B5aKDy06m1lazxMA86L53M2DQ85n1lNY3EnN0R6TDUipvOr+PKdbwa0prB96lisup8BfkekEAWOec2gZ+Yea2lNvNJFwV0RJjNtWIFKNGCzvbbjpBo0+jbrFnyj3Fvi+GLos+jKlNQfWuAEeGqo8iZH8Lk4TCHGX8kTYZG/Wa2oeGEYWM6oIWaAIIRwU8FrGCnSqc5m9zAyaSWm+Tazufv3hp3Eh7dWEE80ljFXAglRrSBogdrbOGlrzbuKptqPIAM+62Me+wek6UrQBXidAo7A6cuRr12UvQpz6h05aibO8Zg8s25CotYePCzQw4Jeas5iOVU/bvgBk9n0bKJmVGHsDrte8ZIRPOnOZx27nVSVTXwg7ffTqIAyWjZzRjZBRcDSAev14BZBsAJzwQRtf9D+c7oisqfwnbOmniROJ6Cz6Vk8HXJD4GVexClUmz+axUKYiYzlhJpThAZMNIN/uT12q2foszX+WAX7nlhm0Cq94NbArxv/P1/+0GeqTzwt3HkyvHlioCZL9h4e/72AAHBC4tEzR22
+ eQZndcWs
+ lNn1tsrVCEKTzV0E1tQCDHZUnr0bSO2uKSuWoeqtGPtqc4EPcNjee4UWpwlXEgdOO8dxHDZqddWB6Ya9nS1xryraEm3tOWiQ3r2e5Vd8Krq+pT605Z7lJZzUTwaCjEmbXBTbEg0J2gN4uKUbFlS4e9g6c6WXbAqvTDlePnVtkxpHO9T01SacceVHB4dGkf3A0M9XWVa1+Xl1Nv2eRRMEyBfKHKvM2OH0dNEqi8C66/8YHlRYqRZ48AkVEqfUL+Hrs+t42
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,67 +139,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 08:59:30PM -0600, Nico Pache wrote:
-> Extract the repeated clearing of node_load, alloc_nmask, and
-> mthp_present_ptes into a helper to reduce duplication in
-> collapse_scan_pmd() and collapse_scan_file(). Althought file scans do not
-> current use the bitmap, they will in the future, and clearing it now is
-> harmless.
->
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Nico Pache <npache@redhat.com>
+On 7/30/26 16:22, Pedro Demarchi Gomes wrote:
+> On Wed, Jul 29, 2026 at 11:38:38AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/16/26 14:20, Pedro Demarchi Gomes wrote:
+>>> Use page checksums as the primary ordering key when traversing the stable
+>>> and unstable trees and fall back to memcmp_pages() only when checksums
+>>> match.
+>>> Since struct ksm_stable_node does not have a checksum field, create one
+>>> in a union with migration list fields, so when we encounter a migration
+>>> page while scanning an address space we have to recalculate the page
+>>> checksum. This avoids increasing the size of struct ksm_stable_node,
+>>> which is maintained at 64 bytes, as show below.
+>>>
+>>> pedro@fedora:~/tmp/linux$ pahole -C ksm_stable_node ./vmlinux
+>>> struct ksm_stable_node {
+>>> 	union {
+>>> 		struct {
+>>> 			struct rb_node node __attribute__((__aligned__(8))); /*     0    24 */
+>>> 			unsigned int checksum;           /*    24     4 */
+>>> 		} __attribute__((__aligned__(8))) __attribute__((__aligned__(8)));       /*     0    32 */
+>>> 		struct {
+>>> 			struct list_head * head;         /*     0     8 */
+>>> 			struct {
+>>> 				struct hlist_node hlist_dup; /*     8    16 */
+>>> 				struct list_head list;   /*    24    16 */
+>>> 			};                               /*     8    32 */
+>>> 		};                                       /*     0    40 */
+>>> 	} __attribute__((__aligned__(8)));               /*     0    40 */
+>>> 	struct hlist_head          hlist;                /*    40     8 */
+>>> 	union {
+>>> 		long unsigned int  kpfn;                 /*    48     8 */
+>>> 		long unsigned int  chain_prune_time;     /*    48     8 */
+>>> 	};                                               /*    48     8 */
+>>> 	int                        rmap_hlist_len;       /*    56     4 */
+>>> 	int                        nid;                  /*    60     4 */
+>>>
+>>> 	/* size: 64, cachelines: 1, members: 5 */
+>>> 	/* forced alignments: 1 */
+>>> } __attribute__((__aligned__(8)));
+>>>
+>>> To evaluate this change it was used two benchmarks, bench1.c and
+>>> bench2.c. The first one allocates 8G of pages with different content,
+>>> and the second one allocates 8G of pages where the first 4G are the same
+>>> as the last 4G. The two benchmarks and the system ksm configuration are
+>>> presented below.
+>>>
+>>> bench1.c:
+>>>
+>>> int main() {
+>>> 	size_t size = 8ULL * 1024*1024*1024;
+>>> 	unsigned long long int numpages = size/PAGESZ;
+>>> 	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>>
+>>> 	// Generate #numpages pages with different contents
+>>> 	for (unsigned long long i = 0; i < numpages; i++) {
+>>> 		*((unsigned long long *) &pages[i*PAGESZ]) = i;
+>>> 	}
+>>>
+>>> 	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
+>>>         	perror("madvise MADV_MERGEABLE failed");
+>>>         	return 1;
+>>>     	}
+>>> 	printf("Wait...\n");
+>>> 	getchar();
+>>> 	return 0;
+>>> }
+>>>
+>>> bench2.c:
+>>>
+>>> int main() {
+>>> 	size_t size = 8ULL * 1024*1024*1024;
+>>> 	unsigned long long int numpages = size/PAGESZ;
+>>> 	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>>
+>>> 	// Generate #numpages pages with different contents
+>>> 	for (unsigned long long i = 0; i < numpages/2; i++) {
+>>> 		*((unsigned long long *) &pages[i*PAGESZ]) = i;
+>>> 		*((unsigned long long *) &pages[(numpages-i-1)*PAGESZ]) = i;
+>>> 	}
+>>>
+>>> 	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
+>>>         	perror("madvise MADV_MERGEABLE failed");
+>>>         	return 1;
+>>>     	}
+>>> 	printf("Wait...\n");
+>>> 	getchar();
+>>> 	return 0;
+>>> }
+>>>
+>>
+>> Hi!
+>>
+> 
+> Hi!
+> 
+>>> Configuration:
+>>>
+>>> echo never >  /sys/kernel/mm/transparent_hugepage/enabled
+>>> echo 1 >  /sys/kernel/mm/ksm/sleep_millisecs
+>>> echo 100000 >  /sys/kernel/mm/ksm/pages_to_scan
+>>
+>> Given that the default is 100, and sleep_millisecs is 200 ... and it is known
+>> that frequent scanning is harmful for performance, what is the real world impact
+>> in common setups?
+>>
+>> IOW, do we even notice / care?
+>>
+> 
+> As described in the KSM admin guide [1], the default values for pages_to_scan
+> and sleep_millisecs are intended for demonstration purposes rather than
+> production use.
 
-LGTM so:
+Well, I argue that
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+	echo 1 >  /sys/kernel/mm/ksm/sleep_millisecs
+	echo 100000 >  /sys/kernel/mm/ksm/pages_to_scan
 
-> ---
->  mm/khugepaged.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 55157567dc4c..6ec0812210b6 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -629,6 +629,13 @@ void __khugepaged_exit(struct mm_struct *mm)
->  	}
->  }
->
-> +static void collapse_control_init_scan(struct collapse_control *cc)
-> +{
-> +	memset(cc->node_load, 0, sizeof(cc->node_load));
-> +	nodes_clear(cc->alloc_nmask);
-> +	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
-> +}
-> +
->  static void release_pte_folio(struct folio *folio)
->  {
->  	node_stat_mod_folio(folio,
-> @@ -1617,9 +1624,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  		goto out;
->  	}
->
-> -	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
-> -	memset(cc->node_load, 0, sizeof(cc->node_load));
-> -	nodes_clear(cc->alloc_nmask);
-> +	collapse_control_init_scan(cc);
->
->  	enabled_orders = collapse_possible_orders(vma, vma->vm_flags, tva_flags);
->
-> @@ -2691,8 +2696,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->
->  	present = 0;
->  	swap = 0;
-> -	memset(cc->node_load, 0, sizeof(cc->node_load));
-> -	nodes_clear(cc->alloc_nmask);
-> +	collapse_control_init_scan(cc);
->  	rcu_read_lock();
->  	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
->  		if (xas_retry(&xas, folio))
-> --
-> 2.54.0
->
+is not for production use either?
 
-Cheers, Lorenzo
+> 
+> At LPC 2023, Stefan Roesch described the use of KSM in a production workload at
+> Meta [2] and presented optimizations such as Smart Scan and Advisor Mode, both
+> of which have since been merged to reduce KSM's scanning overhead.
+> 
+> This RFC proposes a complementary optimization. KSM already computes a checksum
+> for every scanned page to identify frequently changing pages and avoid
+> unnecessary stable and unstable tree lookups. Reusing that checksum as an index
+> into those trees can further reduce lookup costs, lowering CPU usage without
+> changing KSM's behavior.
+
+Yes, but the change is not completely trivial, so we better make sure that the
+change is actually worth it in practice.
+
+-- 
+Cheers,
+
+David
 
