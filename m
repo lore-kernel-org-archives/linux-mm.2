@@ -4,102 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41AFEC5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C03C54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 158096B0088; Fri, 31 Jul 2026 11:46:21 -0400 (EDT)
+	id E00AC6B008A; Fri, 31 Jul 2026 11:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1084B6B008A; Fri, 31 Jul 2026 11:46:21 -0400 (EDT)
+	id DD7EB6B008C; Fri, 31 Jul 2026 11:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3E8E6B008C; Fri, 31 Jul 2026 11:46:20 -0400 (EDT)
+	id CA0296B0092; Fri, 31 Jul 2026 11:46:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BCDA96B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 244F312047C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:20 +0000 (UTC)
-X-FDA: 85049498520.26.D9E9C8C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 914AF6B008A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:24 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BC8EA172E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:24 +0000 (UTC)
+X-FDA: 85049498688.03.62337CF
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 121AC180006
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=RFHLUSG3;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="bG9/6JxO";
-	spf=pass (imf24.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1ED4D1C000E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=Zd5q3mZN;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="N S5mY7Y";
+	spf=pass (imf20.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785512778;
+	s=arc-20220608; t=1785512782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AkDiARroLHl6KyOSQsFmxb3G2BExRBvYjwZc5Dx3u/U=;
-	b=y4viAx3AMdqKCqvKnUjB/CmQkV4+gffaQGxW+PJUrjuvpcqRXogp2q9Lu8dvfM4NOeSKxl
-	i2LatNly58yKhPptzbaMeWds6bJm3aMaE6fGbHBUFFh7Q6LHqcgoM741aCj7HG7T2Xqlc5
-	KYLt/l2dCThLgfh5yE4n9Q7cirphxwQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785512778;
-	b=J5dvWl0gc6jTh59lr49mU5mLJb+pDl5BOFR1FenXDqAcUBbyS30DlI9ur+el91osh7z4QA
-	YQZJsC1WRBOXXw1jZjgbnkMxdLlhbwjxUE61Co41ggEVwb5FD2oYnvfycNAc7ujxjxruu+
-	jBWD1P4/v+zZHiGsPGTD8l7dWPY8HoI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J5nIrNoSMiFUIl5DH8xWdANuglVgj8cbxwTsb9rwYoA=;
+	b=AtBLDH/CREHZzgfygFW0djOJgvAAsxNMcNWVUCPlwDInSaydYksDU+mX58feNFS4O0fv94
+	oj+i0Wp0w4knkcsTF7VMXJDldiqPmPW6zE7eyhTkEuROT5vGf+f1tdBPBfsMRuHFKpsMIz
+	y7K61fo+n7OEljWi5XI4fY3nwKLf0v0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=RFHLUSG3;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="bG9/6JxO";
-	spf=pass (imf24.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	imf20.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=Zd5q3mZN;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="N S5mY7Y";
+	spf=pass (imf20.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailflow.stl.internal (Postfix) with ESMTP id 9142413000F5;
-	Fri, 31 Jul 2026 11:46:16 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785512782;
+	b=1PKln6wTEH6+Nj+Ao01U2MpoUTkRQVJJvHBQNk92Fws5gGwU6SlZ4qKxBt4JU9bqmtZE5w
+	hqZZsY/huGTyBR9nl3K+Hc0f1WhKR21u973Ayi33T00TojL8o7WEoHXqKiWv4uFbbRq/iF
+	L5CWkBpE6hj8ocyRitdCRK/uEkK4+/Y=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 07FC61300105;
+	Fri, 31 Jul 2026 11:46:21 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 31 Jul 2026 11:46:17 -0400
+  by phl-compute-03.internal (MEProxy); Fri, 31 Jul 2026 11:46:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1785512776; x=1785519976; bh=Ak
-	DiARroLHl6KyOSQsFmxb3G2BExRBvYjwZc5Dx3u/U=; b=RFHLUSG3nAz7pj5m0v
-	XylVJk8tkjr1hoaxgQ0mFWufJPzx0p2SWADqULSGFO5HoobWJA0SPtGAk6x9z0gq
-	3uIF8VaxfVWrtTwzObvRNbZ9hmQ6DZ2c7EPmHIfZZY9zGXYTwlWCckSuB164GKDm
-	rTsMkCH6xMoNiZ6RHwZ23PnRW8EFxvoOXHxYVvFtsnaxFcng9OyCgvr4tqjtwVqF
-	aHyOU1WJdRwo8PyThMZkQ7zeaOlzZ3D/JRa62ESZJxGBZ4el1vpWCGnjCVaBxkQf
-	YHECaf0q0fEhuuhKyaLqOIHOCXNvws7mwKQmVqhCpMRhJOGlSaND8vX41gkM0BF4
-	n7+Q==
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785512780;
+	 x=1785519980; bh=J5nIrNoSMiFUIl5DH8xWdANuglVgj8cbxwTsb9rwYoA=; b=
+	Zd5q3mZNwJF//qXudDTbJ8awtyCqW2iTV3y5rvDGFsBYk8EAd1ZoovsJ7nYgfIv5
+	NCtmx919sFnWudMNQVU1o8Kb/MMtG78gdCoWrTi+GsAno9fZUS4nX/xdBL9NMqJY
+	TMK3MVPwPW86eqgI00Ccuj1ODl8xJ/dtjRJV0FDa6TSt8ijyz+2mr3x6Fb+A+PTo
+	gseH8y+/SQB2MXyLHVcQozCkuflbPSo3ZuN2RV8B4ljXzUTBH2aubYXtfXqYgvU0
+	P3WrzXxrACURCoQj6pGtMoKbSNMus8cQtjACT1xggTf89SZGUp3ApXnJyEnAe1ut
+	WmAismm9GhwS5bJFdpc64Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1785512776; x=1785519976; bh=AkDiARroLHl6KyOSQsFmxb3G2BEx
-	RBvYjwZc5Dx3u/U=; b=bG9/6JxOSRZJDY2cChKzPa9ZeiM48rnRor5t3NrsCMb8
-	h5kRgJOiPdoOJ52BoMWs6XsGB+sPg/75PXOr/kzeMCm/gPrHoJvQ0gaa/BmR/5kC
-	MfzkbzeYzQGowCoYr2RyDXLEi29H22Aqp1DZ35j2cOgj0rZyCMonc2YGex+3QQI7
-	Obj609QZWbSt2aCn3o54boWpub77yFXlsfRwJPQHUsR3jSsZOhFQt84KIWZA+UpX
-	SdstF33yUU2NfNdU+f5BLJzF96alHJ60wFFwtGzOfLmlxfomq0cz6r1Mwpa3qRGk
-	6yKRq16FYut9op21eCkHjRAC6A981TCdfQ1vYKlMqg==
-X-ME-Sender: <xms:R8NsauG14PDiF0y91EAowugIv_p_5gfG011VB8hQGYlqhrrgjzAocw>
-    <xme:R8NsarfFI5UwgKpSRhlkN2BFhQL12ypLEB-_Ls2mEHzDdvE7Z2oCTY0y8iuU4hWhg
-    MPrW6OAUsSXw2MNrOyeUbXFfU-8iUZV5lGTrqAif9ihDunyl_aW8EY>
-X-ME-Received: <xmr:R8Nsaj_l28J-pbiIZvIq1EqyPW6hbtStWf4noHPWYSebRNwdU1Bv9uOiEpfo98LaUvHEKznXrJVvuuFc3Q>
-X-ME-Proxy-Cause: dmFkZTErir1uwCraLLx+asa9zdG1qwL2Ml1O7UA5T9QivlHensOslXjFt8JSOUiAwpktmy
-    VFSmVpuJOSFXYJopWtMWRNOMl5jSELFlcHxyT4rlywsBSeC2VFxk4Cn+kaY841TwDEzXb8
-    px7AlsoeZrekS5MB8qAz74j8vdnqw4NzWFYwngvmGJIY7BNKRggtYtOI21279XSse6PVdT
-    r/6Lq1OfRKHkKuJQG0RneI5XqLVMQwt93YPhCPmyU1+sZpEJVj9WBPTDscuZ7vIF8O98PI
-    sVDIkK1S8/MPQiQrzCKk3qqSw9jWPieQwS0n2cc20s89BbP6bkJ/H2uVMavWpSuSNedbhP
-    Z+Sr9bMEnWdPL7gg/rJqlcMn5wjJOvSifZbgAQN/M/pCKI7s9NnN4JMa8H02Dsc/p12nc3
-    yhrY6s/3dpv1RcFyEz+Bz3ovG3OOeNh8vtPYJmFTU7mv4jXb44aKhOw5SehIowOKK1pOGw
-    oYd2MDVMeyuAJlOD2YBZy7TFQfNHyJJTjQMfPgo8TckyOg/wH2tHt9DuAaDMsauisoyoen
-    s0AjwcFGF1sGDYq7OkG22m2bT6lKKuQm9wBBZwK1TkQoKOVq0i5DdKz82siVwBRpkdILs+
-    HiCb5e8v5+jUQ9o3TqtU4HrOLD19EeN66z2dd33MsKaH1SDF5TV91RO1qUGA
-X-ME-Proxy: <xmx:R8NsahbRBxPEGr9aK_5y1jfKNVx8BPoNLPZX3mdyevDAHz0i2EfzHQ>
-    <xmx:R8Nsakd7dPE2YwbVZhIICktfRMDSu4wm_LCyz3GCoYdOgi5us0GJuQ>
-    <xmx:R8NsavQ8PQYqxpwTYiy_V9wnN-WpJDSYjrJOGa70DpB1kYLpkthx2g>
-    <xmx:R8NsaumIMnrmh5xZZjny_dao9LD4GzJkOos3hAySSiSnKHln3kDylw>
-    <xmx:SMNsajhHNLCl53VxKStEiVH41dP3Wm4w5aGr0fLkYjgDHJM0QvxbqsJO>
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785512780; x=
+	1785519980; bh=J5nIrNoSMiFUIl5DH8xWdANuglVgj8cbxwTsb9rwYoA=; b=N
+	S5mY7YnIyW+Hiu7OJXAh2gxoXAzrRXmf5kOi/AiWWmyfK5fIUBea6QLRHdt3FMC4
+	ls1LT7C/LSl8b+JoV4e4/7L+Wf6lyX1V0MIIdFINUSG9AbXxod5msG/9vus2fOix
+	LwUs4V+xMjDX4/E9R1SOxjMqp/f80kwFHDM7wnOWUsPDZhLQcoqLdhkA760VRx9b
+	qBp+PceNCL2sTGMm5VYruQxVualnpATGhSPXdIka5iKVndjzT6vJ7Zxh2r4vc1rf
+	gXS2YCg1weSuIidSLXLr5NytCNVw/zEVnUd5GoSf6QdJZDyAaLubSuZoThyhIIi7
+	Yb4HZwYXGQSWtReCa8ZUw==
+X-ME-Sender: <xms:TMNsal69Lf6skwkiLaNfWthjlmzsB3MHDHOZ_7MMszG2s7nxeN2ScQ>
+    <xme:TMNsalphjpBU7tUU9UdieRXpze2oOSZuiHuYvPFJp_9O2ZluoeWpzQS6EUM9xdxhg
+    71lIN-dGc9cA1a6A-UJuvArv2UFMbUQdxNuuKcZP6vVwN30--ISbQ>
+X-ME-Received: <xmr:TMNsapXqatYtbR5Jf_WidMFHh_PAzaPh88d1sAk1VwJAQ1lY9stkzFm-2XSdL3-Lpu031bwe-xC91Et_3w>
+X-ME-Proxy-Cause: dmFkZTE/BZlAVVxDq9/HeYo9P0/sW1MPOKOzDZ2zczt2A8za9TVFfqEYLK1+OkUHjXNeVE
+    xlY3hzB0LLvX5gB9iYwoLGDmmqsrU5556smTDInmhhGhkvXGJPYIY9dA60V1rmC96sOsI0
+    XHygQvS6a9K1hbqGvNlelDmHj9E3Ec86FFih5aSGF3F2tH8eUwQUnZN22O/3yPx1ZKBTV3
+    xDZn8CjjGaejfmd2G7b5yAbKcRL7w3G3sNyGFJi3IBL1nqr+l7yrItuwDyFqrIuyqCsuPT
+    nNwSp+6GfQ7Kugx/1btpxv047qEzH62cBeVY3JQwhsB2H5waeSkwx8HWbJQCRnbraO98UA
+    IjotN0qm41ZSLVeEM8qEQ2/W9b3eQYO/tFXXHiItaQLD+T5tlmmwfsRqYpUvTfurO2gKit
+    hVH5ql4+48mgd68VkFtCULSe0kwyxg1BMw3+jlH95v7kXsmNF69YakbhqROMbdUk8sTC2a
+    /RyN6x0U6qtNOHh5Siy1KBanzU+no+ocJ1Heqg6RSKb/J5aG40m9LroFhXarZUSsbOvzBZ
+    gzEHCmrfcHrqWQ+LEP529cg/E5oi6tyqXNygVHXYW7dQ3kJY81NCt5LuubRsX1FP71TBmz
+    tlvGGMNDFhU7KJiizBPPrKlanfEEDUTpaHexVKTt60bTCtLfhVfsG191O6mw
+X-ME-Proxy: <xmx:TMNsalpwos4_J7Ke-2E2GR_SEqAkFOitpQuOr_MLKFtaeXKdwp9-qg>
+    <xmx:TMNsaguogeQHYNlEhH4oI0EAjHWCHemRh4vxaddYQa1841UFBpV2lg>
+    <xmx:TMNsarTLvkCQWF9hCoNpNT5GtxUL6ARcOy7VT4QYYPkVTVDpWwBASw>
+    <xmx:TMNsasryEv_UMI32lccco4T3EycU2lXWsIfTRTlXCGAZ6bKlECtFCg>
+    <xmx:TMNsahLXmDnvvZGzAa2wugTD6lRPPfHZF8cnvy5zSuKtjeaoFyqBp7ya>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 11:46:12 -0400 (EDT)
+ 31 Jul 2026 11:46:17 -0400 (EDT)
 From: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <baoquan.he@linux.dev>,
@@ -123,23 +125,25 @@ Cc: Rob Herring <robh@kernel.org>,
 	"keyrings@vger.kernel.org"@kvack.org, "linux-mm@kvack.org"@kvack.org,
 	"linux-security-module@vger.kernel.org"@kvack.org,
 	"linux-integrity@vger.kernel.org"@kvack.org
-Subject: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
-Date: Fri, 31 Jul 2026 17:46:04 +0200
-Message-ID: <20260731154608.153258-1-linux@jaseg.de>
+Subject: [PATCH 1/4] of/kexec: fix typo in comment (usable-memory-range)
+Date: Fri, 31 Jul 2026 17:46:05 +0200
+Message-ID: <20260731154608.153258-2-linux@jaseg.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260731154608.153258-1-linux@jaseg.de>
+References: <20260731154608.153258-1-linux@jaseg.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 121AC180006
-X-Stat-Signature: fk61icgmcpa1b18dhjwdb5fwq3frh7sw
-X-HE-Tag: 1785512777-94277
-X-HE-Meta: U2FsdGVkX1/MLQK0xYilONRIv1iqNrusMxKL9MyZUGyFoS9aYAv9qbL7i091KXCllaoMk3a6wN/GQzhOo/fYZIzIq4MddFt0G5TN5ocUf4X1iK/LOjHxRqGljsT3z+cLoZL/zSL0Iu1mTJMCre7wkS5AHuNQWT6eP4KYWwiU8REPplvyz37gDQIDnosB7vQQwuDgpVokBXfZ3+uDYb20JPiP/41ln2tEzOCmT/lIjqMrL3QMTZvA9HNm05MeHQ1cpMklzeR/ZYNXggX40Iu302wEa8dDwWon9ptpIWOcsTjjY8j9bitmX9WBVp/HlFYFYAflRhE0YO+SWhjxYUehedsdaSkkjQMhq5OPtiRg7awnofG9vFK4EK4iz8lnuyBKq10Bu4nc6VEMXBX+UE69pb4YNheBV2IA9R4/iL1yiNWAEqq4+IXzCFYtkWOiom4YZeb2lSJ2nCqFXbov+UFbzu4U7AsA238TvpU+EzHh/pdIJeAj45FxFlRyr54364BAYaJZGBBqO4dE9Ryer8saGVJlYNVgHBMc+L6lzQlnnrSBffgiBpNj5fEeAdB5oAjR/s7RjGE8jvqnRGUX3HUiNoRgvIJ8FAwk8dfvtW7oDGXmsIwxugqMlTvuwtg6VGjGJNqYBN977PrBqcdgO8WOJGPCCQoK8H1LlXeHd+S5qulqwc6lTZVdIpr965c5bawqCFQj+HXbhBLsL9N7WFisio0RkLO+UeX9CwqYmZstc6ToIhWjisgG9zscm9fYf2bOatNWqC7TlIqPR27A/I5kcxZ6alUxaaQ4XZ5lBH3f1EK4fkz8zQSWl/s5H66QNgr3mxx9DbadD8BX75MzoCmJX6ANo3R/PN9xRPJdF5ATFAtp+RehdRWqA9ttRz1aF9X0BAUXFQb+HhwJLbd1gITrgunvLVjU63NNRF8buL1fPn+fbSscYNd05j15ont7cvkkB3lgF3GOR9IayoowtbR
- eY2jhH1H
- UYyEhITnOWxeMgLtIE9Hsgzx410xYS1G6u6ja2VCODlZRIZ1bnYLRJE22uHewee3s+F3nqAlzT4mDlDdJTwuBp8d+nWpxOJOPvgxmg/h72yr+fPX4rmmTKSpyDPAeUkwLzD28IR3YP5iJfYsDxMdUiOgVP6O+l63xtesvYOAr5l5gPE9YIkVogfnS3TZP8J09PS3q60x1ppYtPXQLzceM19LTQbbKVOF3EFiLwDJxiZ7AxN/i8TnFXmXP37I6rUPf6PgsuxbWoZi+6aeJk4VQXbbqlH/suWug2V/8fKUTP9qvBhLXgcBjj6tz2fUL2WBvA75dPWA2s+IV25wur/UpWE1IaCPcoPIT1eM07YZH90b/ocEMwX/kLJHgiMoFXA+Q1XSHuyj4n4tJ+QSyiUumTAED9GZpImKv6t4ufYdXzMrzo0F3kcPnIpIPMQwSxVH2dDnMbwx0wJqpgREPR8Hbsv5gPaWhxfzGy1QHeBdOR0bd7L6jAH/Z0QHe87ho33GH2hGYO+l3Lxhi5rTjXSBhF3rPD98SONl69GjXL8JXIyTvila6Uy3RRTG9Gdb/TG5UrlkuIDICgnoVZ0siebHfVI1RSaMNDOyRIn2AmFdu/Z0MJGAWRcq9zCzwUQt1CjHQxU8Ur6RGHyk4TpmW4XS461K3dIDQ6TYhy5mxoymmwHwEilc8WVHeYKKFndd77tK27bHDI/FriHKbfarT9QIw18uhKXDlUAnAFg6QSIhTh5xO3tX9uKi90WJCrfWxq5x4yrIFckOohaz19BfqXV+QyqGTi9P8apQYxp8ksC22bh2UvU0IB9lKrMvnLNrqVnp3EFTtdOE0DPbnr+9oi0hBfCHepgD8QpaGV3RrrL4QYe3UtFxIK+i3gBASWvtu+qGpfFMsWPYV7CzeipJBSnuIonz0FZJQUF1Id9amV61CUYp/z2q7NNZh0M0KzepxeWKwLYMdVjHnj5V+EgD7R0uDWzikwVJX
- 7xMmd8RJ
- J7tCMoSQVoN4xJKNDBDLAXvtpuNWCMo2uLTh7ppxxwIE52S5/+awYbIMB+1WjPu4
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1ED4D1C000E
+X-Stat-Signature: s5qmpc1r5onpaeeuhm16ug8ckt8etz5n
+X-HE-Tag: 1785512781-886735
+X-HE-Meta: U2FsdGVkX1/cj6KwTq8YAOtsMbGZcKAHV/EsPro2VV4Uz3EGuIpZqLxQ1Mj4nJ64wXLy3lDqCyyMUlpghfOemdeWptMGFCxS6J7kZ2Sx1oWpj5CJPmg+vguauBiKjWpuKPZ7ma3iKmOjH+Fy6UPfJ2CZ1znmr/ZUvlM8qBkCJJ16u5M9NFN9Ws372BGMGpm1DYztgA+LrAhXbD1sS12P+jtrCfx8fYtBz5oR0nIq2oFnXby171SzlZmJSlnBTzE86K/piekLRbKpQB0uUNLwG6F2gk8WYCKW44IfENtAFduW/J4UoeewRrOBDDrZmquSoJfJjUQ5/lbduhdLzRZuHnZ5VATkpvbUVxdrytnsJjZlPvNw3W3FBVlE/SkuHLVdMlQlZSThOt5EC22H4bszkwkdaWha172N6q4t9iwyhZayGPVIcf6cOCJZ9ahmVdwmUfJlf0WMXvuYm5gg/ErfSlE8Th5U5TcXBGu9iWS1dMDjNaupP43TzXjozpq+uMH2YYsEqipaTpUJVjyxbBxbMWhWPG/1PwvPg5JtbDQpJyA8UMy/lLmD4v8dTW+gAINEqk7HQDESfyPutoCR0TvPYXOJaDoeslRTVv6+fxkGOkwXpdGJf1g7B5Iz/eLoZ9FbtKywrIvAYwD1EdYNMQ1iD7dB/2TcgPIThvSk6Ndij7GFL5AmxO6unVeQ5hXndqKWxKmBaKvBgVe0lPO5UUiI6srxsiYjvAIV8iKVDHtE308cd3lwQ7kuDpP0Wj5xng2TUrr7RbatXJiweVhK0010YvrQ8CPulWX1Vz3eJzTgGPZ/x7lm7Z1Vqscga9SXCXkuWhD8EU8kgN9V1AHJStLktGaAp4Ycw+SvWAaaJTE+ZO49sWHQbG9UzXtW/YSznfii5HiAFW8NUiSKGYP8WMjY1evqyVAnSjA5vcUf+rdCYkUKZcqXxMIq8ovnK0r31qJdAmdp0dnUDLrsczZAN6R
+ nf0D19Gk
+ B100lVR4tcOch6MHwB9Wtp6Xhz8kOPBAhXCFnovRqpVT34uzQKXrmNW9s//cKxPM1746iAMsnC4GQRBO2rzn/H/6lEasFnF5o+4yS/Atqf2fZQ3JuURgIkZhXrVHziIB1GMzaYKrS+35r97N64X1kDqMm60I0m5j1Sj0hrUM3AA/tSXn3zqw0cYL7dG7iC0nTRt1DbbtZarG9HECNV2LllBq3oWy4CTOWR2+dWs1J3zku0tIzHFqYW02rqiDbrM9fOd95Wu/Mc9ucKWPmGNjkc3Kxd737mbX2gmiuecjKtaQYr7rO7mpwapZGiWqrzOx2gst+jiXvw6BCwHMtXY0QpkMrVEIim3SCkPE0FXKLI1K/uGrFe7MNOSl6Ctz5vjv3cSkMM+clJvwJ6iDx2UhtYE7VRYBiVXA+UaguT08CU7NAxhpWFtcImCaBCcadCNKr9GqioCD/t6TzZ6e3CcNSx5xOdD4+Q3n/mlBa0CjvNTZEolvEjkJcBLWAJJeObKpJuXWLgTmDh6hOBI1AWhVVKMWrD2AwI4qOk/gNCNdABMJs9E3cSIF0CPOiax9ZpdPA/FXzz+mUP5TCe7CJ2vc/lpUMGCYFDZLsErHhkv8ar8RP/bmzyndSRzFBnA7zh1R/O47PpWp9FSLUvyrP1NQ1K7wJDh4jUBCqCISeKz4bkbMLgH8q4HN4abPoIzQeOI8iPbVVo1PEAWwRC/nReSljnzhHPHsggj7BwZ9Ysu/1GbLZr5/H9owDtVMkd2aA8Vt8Q3or+ClvgKvcRvR3KUnb1iVaHO+TjxtSC43zEwC0Kjjl8DownxP3/YgMyuwtqkpqMIXg6zS3+Wg6k7uEiIoKIDeae4dFX6OVTR2WeO4yVpeog90Sqd+rSuvt+p4M7zCrHoedRKsax+peSAqIfmPl2s6oxD5G3DXMsAA+fg4+S7YWVcNdRWyQ7BDsmAERcqmztF+tDK4LCEVD6r1W4yFXKT2mKTIm
+ T3KekP09
+ lS4xMzEfKo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,54 +151,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I'm using linux on an embedded target in a Hardware Security Module-like
-application. One requirement is that I want the system to be able to
-quickly erase its memory when it detects physical tampering. I'm
-approaching that by using kdump to load into a small payload that
-instead of dumping RAM, erases RAM from start to end. However, writing
-all of RAM, especially on an embedded target, is rather slow. For this
-reason, I propose the mechanism in this patch series:
+Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
+---
+ drivers/of/kexec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
-subsystems handling secret data do a quick, targeted wipe of these
-secrets before kdump. This behavior might also be interesting in cases
-where you run a normal kdump kernel but you still want to keep things
-like fde crypto keys out of these dumps.
-
-CONFIG_CRASH_ZEROIZE is a best effort, defense in depth solution. There
-are circumstances, such as when a panic is triggered after memory
-corruption, or when a panic interrupts some operation that mutates data
-structures under locks, when the kernel cannot safely wipe some memory
-areas. The handlers proposed in this series will just print a warning
-and skip the affected areas in this case.
-
-This series introduces two handlers as a starting point: One for kernel
-keyrings, and one for secretmem. Future places where such handlers could
-be added would be for example drivers for crypto accelerators. 
-
-The patch series applies on top of linux-next but should work on 7.0.0,
-too. I've tested the patches on a Arduino uno Q (Qualcomm QRB2210)
-embedded target.
-
-Jan Sebastian Götte (4):
-  of/kexec: fix typo in comment (usable-memory-range)
-  kexec: add CRASH_ZEROIZE to wipe secrets before kdump
-  mm/secretmem: zeroize secret pages before kdump
-  security/keys: zeroize key payloads before kdump
-
- drivers/of/kexec.c                        |  2 +-
- include/linux/crash_core.h                |  5 +++
- include/linux/key-type.h                  |  9 ++++
- kernel/Kconfig.kexec                      |  8 ++++
- kernel/crash_core.c                       | 18 ++++++++
- mm/secretmem.c                            | 50 +++++++++++++++++++++++
- security/keys/big_key.c                   | 15 +++++++
- security/keys/encrypted-keys/encrypted.c  | 12 ++++++
- security/keys/key.c                       | 44 ++++++++++++++++++++
- security/keys/trusted-keys/trusted_core.c | 14 +++++++
- security/keys/user_defined.c              | 11 +++++
- 11 files changed, 187 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index 029903b986cb..36635f6cb900 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -24,7 +24,7 @@
+ 
+ /*
+  * Additional space needed for the FDT buffer so that we can add initrd,
+- * bootargs, kaslr-seed, rng-seed, useable-memory-range and elfcorehdr.
++ * bootargs, kaslr-seed, rng-seed, usable-memory-range and elfcorehdr.
+  */
+ #define FDT_EXTRA_SPACE 0x1000
+ 
 -- 
 2.53.0
 
