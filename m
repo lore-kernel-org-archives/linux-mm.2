@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1632C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 19:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91D6C55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 19:28:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAD7E6B0088; Fri, 31 Jul 2026 15:13:46 -0400 (EDT)
+	id 791C36B0088; Fri, 31 Jul 2026 15:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5CC36B008A; Fri, 31 Jul 2026 15:13:46 -0400 (EDT)
+	id 742556B008A; Fri, 31 Jul 2026 15:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92BC56B008C; Fri, 31 Jul 2026 15:13:46 -0400 (EDT)
+	id 67FBF6B008C; Fri, 31 Jul 2026 15:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 642016B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:13:46 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA726B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:28:06 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2E2C40103
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 19:13:45 +0000 (UTC)
-X-FDA: 85050021210.16.8AC1399
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1525914000F
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 19:13:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=khZ82Zzf;
-	spf=pass (imf23.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD1FB1A0121
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 19:28:05 +0000 (UTC)
+X-FDA: 85050057330.16.9F80060
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 14D5BC0002
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 19:28:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTDIwone;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785525222;
+	s=arc-20220608; t=1785526084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+/IlSQdEk6FwfnjejmyThzGdDfoncjciaxKcBusmd4=;
-	b=33peqyhusQ3iyTpkzllYxUNnyqcSJDo69xzm+siqHB6Us3YqW0m53O0knNrevyd6ohQNmb
-	s5d0fbNU0psxeFt3Y+bC95djxrsZNJcZtFDZFoIaeC6SP1pOPqSwYM0Q0nWd1kYPfi4MY5
-	Wxrsrc67bZMPu8BK7nL8T3oMDL3NHFg=
+	bh=DJcJcfSp8qFT3XBaz1dhInzTEmvps3KjtvVR2urkqlg=;
+	b=6SKZY8fe0dXEcoPUuBYs/09ld8mjfY7hQrF78fYiRecE0xxtJRD6h+Fy+EVT4+iTnsotTY
+	JGAy42WZ+rUulCBYa6ybWpQWo71iHYKn+35N7B9WhMVjuX1sLS0bXSCsNp5WfVtNjTjfcI
+	40c4EBIyj4mY45tXI6QyfdWTnDqpGr0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=khZ82Zzf;
-	spf=pass (imf23.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTDIwone;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785525222;
-	b=sZRTjM/wn+D5hGBG97CNQCPMEoNpTI9IytUslU25nzFf7JoF5T7tvgyehjsgBIRBTwuqkN
-	9FJS14lX05ULDczS1ogsgdJeLGW3LciDnQfnEaZsmS9nM/IELTCIClUMkh0pZBf5x94nR5
-	oi59xOVJblkyF07iIg21y3KN+hd75Bw=
-Message-ID: <7772a849-0faa-46b9-b30b-3523af581d1e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785525219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t+/IlSQdEk6FwfnjejmyThzGdDfoncjciaxKcBusmd4=;
-	b=khZ82Zzf/raPAkLwtS7hRQZpAZJ1eKcFyqYEO8mr9ToABHzWhXmobe2dLFpQoX2oWHwHQw
-	IIyY/T5BVjUSJHV99WiibTSn7LiCd0ceOUBZUVjKKMAJbmwhosrzDoGtanGKCqfVfAEK94
-	tx5+oBES1745ltSMA7OWZEYlRmIlRNI=
-Date: Fri, 31 Jul 2026 12:13:26 -0700
+	t=1785526084;
+	b=i1ua9r1L8K8x5xBk9ksIgp70u5Xu8Fp+oQQLV/ZenTGq6lhEaxw5R6Cq13cCGYUzK02VTY
+	E2JfM4ZrkdtB0hy/5ru3n7AgBbqPlRnIwESMAHApBu+ols7yufyZjogb25ZdsFoYsQcTs8
+	cvl593bE7k06nLf9vAOySR6KC2ZaBrM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BCC560A5D;
+	Fri, 31 Jul 2026 19:28:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01641F00AC4;
+	Fri, 31 Jul 2026 19:28:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785526082;
+	bh=DJcJcfSp8qFT3XBaz1dhInzTEmvps3KjtvVR2urkqlg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eTDIwone+FUJc19+BJBx3DJ5lBw74iYtCWJ/DX2Y8Dkd4SlO+H+CSDNFXD8MKl0Ww
+	 yzvUNvhH02URDNkaBw2cxcfTKnZ9RGt1gpJ0VedFapUogk8q3AECg0APVudQrlHFMH
+	 47cmer8rNiqkrdtV8UPHNJHVJZdtxZfAyxoJFDYLrNCTrj38Pa3tLCb3YVy/OLpqDO
+	 x/vA79EBRHD8JufXVt9loA1C4LWMMsaiA73NylAikqNiY9jkb0LPRyo8sSRaeuz8qQ
+	 K2phP+OArfIIpxxPV2+l32a9DC/exLjO6l5LCiLmwDbhSH6AYFeB1pc4lCUxMYq8Gt
+	 yN51+GjzCcFpg==
+Date: Fri, 31 Jul 2026 19:28:00 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <amz0jzVPZo_eBeRV@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
+ <amu5v-e39GKpgFG4@google.com>
+ <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 5/5] x86/cpu: Don't reset boot CPU cpuinfo in
- identify_cpu()
-To: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar
- <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, "H . Peter Anvin"
- <hpa@zytor.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- bpf@vger.kernel.org, kernel-team@meta.com, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
- <20260704002046.3859585-6-ihor.solodrai@linux.dev>
- <20260730212613.GJamvBdRJ5H98hTWS8@fat_crate.local>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-In-Reply-To: <20260730212613.GJamvBdRJ5H98hTWS8@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1525914000F
-X-Stat-Signature: yxaw8uaw4xnoume3zha3pd8jy6c6mxhw
-X-HE-Tag: 1785525221-43786
-X-HE-Meta: U2FsdGVkX18RXo7hvg6pLchIBAveIGtO3EITQ8cPi9SWMOn/Ktld+NbKeG8VVQr6UrWWS+YcmVxZ6LJ+i6zzerELAkWqkw9pifvZZLYRF8Pd1KXcJ3ig5C+Lbjm3BNUslpa15Gib3yO0ccYpCVZ52TlM9wQFIvJxvIU/NQWXaz4Mk2mTs4473eisGRa9rEC0PLOSFrwXCpwQKZz6OeTpVkVPDmLUtPneZLV8pcEJTr9LU2QQJ0sRQlyE0UCRVmPCd0v5AWCkBHO8Idz+Rw1uhs2X1Qp0onYyD38w1BZbfJK7tZYX0eaBZxmJDNK8bPqB8ai6+eKsdgqyLUNS+MFTrHa7evWyPP9+V6gTAO3/ntKHsbWl4H7Dngx1pP4TFuJlOUzrQjfuxwgkPFK2zavg1xhiNwjMR7vlOVjhESxYR2GJc1ZN/H3FJd2ZyeE3bIvtN82785HLHwCg26Dp3jBj6Ltw1Ydr9UfZK00LyJZHg3dGRki8cx1maes/5El725uIye8XtqrOqSPTzGCHFXM9YWc5ovq87TjCXfLBCbpU1etkcHUtdtOM68CW4ba0dsnvRghsIEraTcyZVsplP2oesYs4Bi8Fj7E+9Umay2FfKxPgbuYXYfyNJ+yRpXBaePmYTgp3yTdWNNWExL9W5iGjBobrm73P/CRatRe7IltkGYj8A15xppzaptwZEteB6JPZNsc5U4JHQmm98gtFGghIN8C+tBOPAse16Wheumzlwkc/0uFF3UVRKibKE0FtlZ/g+8fYC+JS1JeOaQi/YKAIhL93e3bJYG3WgJpf5jMitgFS80FwTN9zAMx3yF1laIk7so8rg8ippJioMYYBHVmLdKCTlk8zlANXFKT6uSxngGCqsZPi2AV6qc3q6pQ2QAiEGKgMh9/eJF+kX19vWUOJi2yGQx8azg5LOhSNE0ZDmJt2kZJ6IK9Q7QscchvxzoTlS50AZyK94PCqWdVkXfl
- w77WE1VW
- djE/cJfw5lpWm27pO2F3TOfcln7miUCu0vFB0EjDVnA2lXoBDxGGTHZnqXPjQKyMP0uEoXidvWt+458w4qz3s2yGqunjW2297eLNYmtzPceDlIjD6vcaN4tzI8quytNrAkQCNlyMJN94Uvy2Y3uu+xTzF5IQKRM+5Au+WehhAF7oxfVq/W1knPzCxKxoEO/IpDpIp6Xt0jMCqlV9FxGvhpwkn5U+vphjKYT4f3K0e5GvrNrYzhdVWduUkjYTjomzKZyIXvqdVvlZQg7amoFRGxK9i9s1AlWXJE5qmdmF0h3SMdng4ckTF6Hac3ImW37DB7aWJTUk+UAAJyBfF/ZDm3p5EYeT7A0VJM3fwqDXZND2Gz64=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 14D5BC0002
+X-Stat-Signature: 5qnrq8y4un1pdnpawmdmdr131gyc3oxy
+X-HE-Tag: 1785526083-305273
+X-HE-Meta: U2FsdGVkX19sOo9rrBij6wNt7cWFjjEjN/RT0OgK4gqlWHoSEJJCiLNGj+/KhKbotLk0f4+3hs20Ej+i9rvf/NoljM/Fgj6IhKY41G5jVLeabBYkunWTkreMYg0wTA/HdrT8wtk+NogUqjzhviuqgCJeqKrvtgJqG4mjNEvDImUYvc1KniZwOkeUq3eG0PBF8GTmljkVpfyKIz+fwcfbwBVRSWBkFy8RaMArCmvJD7Ao42ur1KPuPrr3nN4JO9SZeCWE/0PbzmXRzaW97u9XZ3do/+Kayyf7xnYq4KBAe9a7bAh3D9jYusE6JoeaGXAzbtvN6K1kwJvUeSXzQPPXbzlQlSQbMu/1T9VBYF/RmN1WoRbR3avELOF59nfVALconK5RWFxoo6x9iPKBkwQBzWPV2aNHyoXm57v23MVYDmF4tuIoQLVYXoL1M54BCO6wGnvjjOIhnLBYoyPI5cjlrJmz4Fu7teLEuupIPjR4+YJDWlHQbtTeiNuYRMbKwqSiQXz/GCiItAaz6RSxjA1dlBpzRul7mw3Dn8pAz/Px/OWrFO4Un+Uj9PSwD7bTd8pcUjSZ211RsCDuFX1jdga3XfRc7iOW2SVaRGCTe68vZV9734k8d4oSZQyzYq/CW5hBVReY2CBNYicEujyyNbqbBahyCpbU3iBHKugA2E+N2ceQK/1L35KJcFCRYN2tuN7Kujj2ZBePxWcAGRt2SJAt2MqTtLuMzdQ3+EsnlVtwgeaY2aVy6tywsQmSwFD1RR21lPuvM9dZ+KDOoDmxAwASq+SJZQPdB9kLyR0u9s/R82/sfhVDxrpnp7Qycahtw9meLLiADStijzCFS5rCygd9IRczDhnL1aIDvbR6ogawI3My2zqQOtJFHTR2fVxIgW+lxvBBWlHXxP09F7D8X91E9ACUPaSUuOEWfB7/o9ywIJDzLecfPabRg8vu0vHvZoMHg0qANie/Tq1Xes/pKp7
+ q3hTX/6e
+ RVPhVmNpFIUscjY5HkJ4bvDG7rXILU/Ak9gA+9mVgWmInRyuW5yreoALWGx7G+n4EbQDyaWH4aXx8sQQJsqa62Yghx8+a9s4SVhIHvx9/qPeRLmZFhYqiRLu3CbpJOBuuf50mavWOvIPNT2z5OMRzRXCQ30yNPIPUOWvUJCZXZxjI+TZ7U1aqcS9/pATazb33el3+SX2DyTodCjOzutP62w0asDDtjZsML3DIWjw9PbEq/5SJCGFBqXSMRU80YeHsOqQ3S4lwl01RctmsX74kE1xIsUe5V1mShbGHlxDifvcbSyd66liRcxm6LNCVD1JAOnYjm1pySQu2bFk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,115 +103,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/26 2:26 PM, Borislav Petkov wrote:
-> On Fri, Jul 03, 2026 at 05:20:46PM -0700, Ihor Solodrai wrote:
->> identify_cpu() used to rebuild c->x86_capability from scratch:
->> init_cpu_info() memsets the capability array to zero and
->> identify_cpu() then re-reads CPUID. On the boot CPU identify_cpu()
->> runs after local_irq_enable() and before alternatives are patched. An
->> interrupt delivered in the window between the memset() and
->> get_cpu_cap() therefore will observe cleared x86_capability [1].
->>
->> However the boot CPU's capabilities have already been scanned, with
->> interrupts off, by early_identify_cpu(). So move the init_cpu_info()
->> call out of identify_cpu() into its callers, and skip it for the boot
->> CPU on 64-bit.
->>
->> Secondary CPUs call init_cpu_info() then identify_cpu() from
->> identify_secondary_cpu(), with interrupts off, exactly as
->> before. 32-bit still resets in identify_boot_cpu(): it relies on the
->> reset for the no-CPUID cpuid_level default.
+> > [..]
+> >> --- a/mm/gup.c
+> >> +++ b/mm/gup.c
+> >> @@ -11,7 +11,6 @@
+> >>  #include <linux/rmap.h>
+> >>  #include <linux/swap.h>
+> >>  #include <linux/swapops.h>
+> >> -#include <linux/secretmem.h>
+> >>  
+> >>  #include <linux/sched/signal.h>
+> >>  #include <linux/rwsem.h>
+> >> @@ -1216,7 +1215,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+> >>  	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
+> >>  		return -EOPNOTSUPP;
+> >>  
+> >> -	if (vma_is_secretmem(vma))
+> >> +	if (vma_has_no_direct_map(vma))
+> >
+> > Same here, and for GUP in general. For example, KVM uses kvm_vcpu_map()
+> > to map guest memory and access it (e.g. when running nested
+> > virtualization), which uses GUP under the hood AFAICT. So KVM will want
+> > GUP to succeed, and probably create an ephemeral mapping as well.
+> >
+> > Maybe eventually we will want a GUP flag to handle creating an ephemeral
+> > mapping, as I imagine multiple GUP users will run into the same issue?
+> >
+> > Not sure if this is an ASI-specific issue, or if we also have use cases
+> > where we need GUP to work guest_memfd pages (with ephemeral mappings).
 > 
-> Ok, this commit message is all over the place. Please structure it something
-> like this:
-> 
-> 1. Prepare the context for the explanation briefly.
-> 
-> 2. Explain the problem at hand.
-> 
-> 3. "It happens because of <...>"
-> 
-> 4. "Fix it by doing X"
-> 
-> 5. "(Potentially do Y)."
-> 
-> And some of those above are optional depending on the issue being
-> explained.
-> 
-> Also, do not talk about what your patches do - that should (hopefully) be
-> visible from the diff itself. Rather, talk about *why* you're doing what
-> you're doing.
-> 
-> In the patches where you do only mechanical movement, add
-> 
-> "No functional changes."
-> 
-> to the commit message to denote that.
+> Similar to above, this shouldn't affect ASI at all.
 
-Thank you for the review and the feedback. I'll respin.
+But outside of ASI, aren't there any cases where the kernel (e.g. KVM)
+needs to access guest_memfd memory?
+
+Maybe Sean or David can help us out here.
+
+> >>  		return -EFAULT;
+> >>  
+> >>  	if (write) {
+> >> @@ -2731,7 +2730,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
+> >>   * This call assumes the caller has pinned the folio, that the lowest page table
+> >>   * level still points to this folio, and that interrupts have been disabled.
+> >>   *
+> >> - * GUP-fast must reject all secretmem folios.
+> >> + * GUP-fast must reject all folios without direct map entries (such as secretmem).
+> >>   *
+> >>   * Writing to pinned file-backed dirty tracked folios is inherently problematic
+> >>   * (see comment describing the writable_file_mapping_allowed() function). We
+> >> @@ -2769,7 +2768,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+> >>  	if (WARN_ON_ONCE(folio_test_slab(folio)))
+> >>  		return false;
+> >>  
+> >> -	/* hugetlb neither requires dirty-tracking nor can be secretmem. */
+> >> +	/* hugetlb neither requires dirty-tracking nor can be without direct map. */
+
+Is this necessarily true? I know there were discussions/proposals about
+using some of the hugetlb infrastructure for guest_memfd. I am not sure
+if those folios would remain hugetlb folios though.
+
+Adding Ackerley here.
+
+> >>  	if (folio_test_hugetlb(folio))
+> >>  		return true;
+> >>  
+> >> @@ -2812,7 +2811,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+> >>  	 * At this point, we know the mapping is non-null and points to an
+> >>  	 * address_space object.
+> >>  	 */
+> >> -	if (check_secretmem && secretmem_mapping(mapping))
+> >> +	if (mapping_no_direct_map(mapping))
+> >>  		return false;
+> >>  	/* The only remaining allowed file system is shmem. */
+> >>  	return !reject_file_backed || shmem_mapping(mapping);
+> >> diff --git a/mm/mlock.c b/mm/mlock.c
+> >> index efa6716e4dfbd..045b6779440b1 100644
+> >> --- a/mm/mlock.c
+> >> +++ b/mm/mlock.c
+> >> @@ -474,7 +474,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >>  	int ret = 0;
+> >>  
+> >>  	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
+> >> -	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
+> >> +	    vma_has_no_direct_map(vma) || !vma_supports_mlock(vma)) {
+> >
+> > I don't think this one is correct. From commit 1507f51255c9 ("mm:
+> > introduce memfd_secret system call to create "secret" memory areas"):
+> >
+> >   Since the secretmem mappings are locked in memory they cannot exceed
+> >   RLIMIT_MEMLOCK.  Since these mappings are already locked independently
+> >   from mlock(), an attempt to mlock()/munlock() secretmem range would
+> >   fail and mlockall()/munlockall() will ignore secretmem mappings.
+> >
+> > Seems like secretmem pages are just mlock()'d by default, hence the
+> > check here. Maybe this also works for guest_memfd, but I don't think
+> > it's a generalization that any pages without a direct mapping should
+> > receive the same treatment here.
+> 
+> Ack, yeah this sounds correct to me.
+> 
+> I guess you could argue something like "the reason secretmem is
+> implicitly mlocked is that it can't be reclaimed, because there's no
+> direct map". But that doesn't generalise IMO, you could imagine letting
+> the user say "remove this memory from the direct map, but I trust my
+> swap system, you can swap it" and then use the mermap to implement
+> reclaim.
+
+Exactly, I don't think no direct mapping implicitly means unreclaimable.
+I don't think you actually need a direct mapping to read/write from
+disk to memory?
 
 > 
+> > I am aware that perhaps the answer for most these cases is that it works
+> > for guest_memfd as well as secretmem, but since the main goal of the
+> > series is setting up ASI, 
 > 
->> [1] https://lore.kernel.org/bpf/20260610175651.647515-1-ihor.solodrai@linux.dev/
->>
->> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
->> ---
->>  arch/x86/kernel/cpu/common.c | 10 ++++++++--
->>  1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
->> index 8f093c6c7ccc..cd3d7c37c174 100644
->> --- a/arch/x86/kernel/cpu/common.c
->> +++ b/arch/x86/kernel/cpu/common.c
->> @@ -1986,8 +1986,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
->>  
->>  	c->loops_per_jiffy = loops_per_jiffy;
->>  
->> -	init_cpu_info(c);
->> -
->>  	if (!cpuid_feature())
->>  		identify_cpu_without_cpuid(c);
->>  
->> @@ -2156,6 +2154,13 @@ static void identify_cpu_32(struct cpuinfo_x86 *c)
->>  
->>  static __init void identify_boot_cpu(void)
->>  {
->> +	/*
->> +	 * The boot CPU's capabilities were already scanned in early_identify_cpu().
->> +	 * However 32-bit still needs to init_cpu_info() here for the no-CPUID
->> +	 * cpuid_level default.
->> +	 */
->> +	if (IS_ENABLED(CONFIG_X86_32))
->> +		init_cpu_info(&boot_cpu_data);
->>  	identify_cpu(&boot_cpu_data);
->>  	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
->>  		pr_info("CET detected: Indirect Branch Tracking enabled\n");
->> @@ -2178,6 +2183,7 @@ void identify_secondary_cpu(unsigned int cpu)
->>  		*c = boot_cpu_data;
->>  	c->cpu_index = cpu;
->>  
->> +	init_cpu_info(c);
->>  	identify_cpu(c);
->>  	identify_cpu_32(c);
-> 
-> Also, when you look at the final version, do you see how identify_cpu() and
-> identify_cpu_32() are soo close together so that you can basically move the
-> body of identify_cpu_32() to the end of identify_cpu() and then you don't need
-> that helper either.
+> [Aside]
+> 	Well, the main reason for Google to pay me for it is as a
+> 	stepping stone for ASI, but I do actually think
+> 	GUEST_MEMFD_FLAG_NO_DIRECT_MAP[0] is valuable and prefer to
+> 	think of that as the "main goal" of this patchset. (I didn't
+> 	include it here since Sean asked[1] for the KVM bits to be
+> 	separate, but it's basically just a repeat of the secretmem.c
+> 	changes).
 
-I actually did notice that, but I guess I fixated on the idea that
-32bit part should be encapsulated. I'll fold identify_cpu_32() into
-identify_cpu() in the next revision.
-
-Thanks!
+Right, I understand this is the goal of the series and it is valuable
+without ASI. Perhaps "motivation" was the correct word :)
 
 > 
-> Other than that, the flows do look better. 32-bit still needs dealing with the
-> no-CPUID case but that's for another day. I can't really find it in me to
-> care, actually, 32-bit needs to go away and we'll simplify a looot of code. Oh
-> well.
+> 	[0] https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com/
+> 	[1] https://lore.kernel.org/all/akw1lZDEv8_Ub1zQ@google.com/
 > 
-> Thx.
+> > ideally we don't want checks that we know
+> > will become wrong when ASI is introduced. If the idea is that
+> > mapping_no_direct_map() and vma_has_no_direct_map() will not be used for
+> > ASI sensitive mappings, 
 > 
+> (I said this above but just to be clear: that is not the idea).
+> 
+> > we should document this somewhere, or have
+> > better localized checks (if at all possible) so that we can side-step
+> > the whole mixup when ASI mappings come along.
+> 
+> BUT yes I still totally agree that we should not unnecessarily overload
+> vma_has_no_direct_map() here.
 
+Right, that was essentially what I meant. We shouldn't just current
+secretmem checks with no direct map checks without thinking them
+through.
+
+> 
+> >>  		/*
+> >>  		 * Don't set VMA_LOCKED_BIT or VMA_LOCKONFAULT_BIT and don't
+> >>  		 * count.  For secretmem, don't allow the memory to be unlocked.
+> >> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> >> index 4a4934769f8ba..c043c53687d95 100644
+> >> --- a/mm/secretmem.c
+> >> +++ b/mm/secretmem.c
+> >> @@ -52,49 +52,20 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+> >>  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+> >>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+> >>  	pgoff_t offset = vmf->pgoff;
+> >> -	gfp_t gfp = vmf->gfp_mask;
+> >>  	struct folio *folio;
+> >>  	vm_fault_t ret;
+> >> -	int err;
+> >>  
+> >>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+> >>  		return vmf_error(-EINVAL);
+> >>  
+> >>  	filemap_invalidate_lock_shared(mapping);
+> >>  
+> >> -retry:
+> >> -	folio = filemap_lock_folio(mapping, offset);
+> >> +	folio = filemap_grab_folio(mapping, offset);
+> >>  	if (IS_ERR(folio)) {
+> >> -		folio = folio_alloc(gfp | __GFP_ZERO, 0);
+> >> -		if (!folio) {
+> >> -			ret = VM_FAULT_OOM;
+> >> -			goto out;
+> >> -		}
+> >> -
+> >> -		err = folio_zap_direct_map(folio);
+> >> -		if (err) {
+> >> -			folio_put(folio);
+> >> -			ret = vmf_error(err);
+> >> -			goto out;
+> >> -		}
+> >> -
+> >> -		__folio_mark_uptodate(folio);
+> >> -		err = filemap_add_folio(mapping, folio, offset, gfp);
+> >> -		if (unlikely(err)) {
+> >> -			/*
+> >> -			 * If a split of large page was required, it
+> >> -			 * already happened when we marked the page invalid
+> >> -			 * which guarantees that this call won't fail
+> >> -			 */
+> >> -			folio_restore_direct_map(folio);
+> >> -			folio_put(folio);
+> >> -			if (err == -EEXIST)
+> >> -				goto retry;
+> >> -
+> >> -			ret = vmf_error(err);
+> >> -			goto out;
+> >> -		}
+> >> +		ret = vmf_error(PTR_ERR(folio));
+> >> +		goto out;
+> >>  	}
+> >> +	folio_mark_uptodate(folio);
+> >
+> > This chunk seems like pure refactoring that should be done separately?
+> 
+> This is the adoption of AS_NO_DIRECT_MAP, i.e. the removal of the
+> explicit folio_zap_direct_map() call. We could certainly separate out
+> "create AS_NO_DIRECT_MAP" from "adopt it in secretmem" but the previous
+> version of this patchset was on v12 and it hadn't split them so I assume
+> nobody was calling for this split.
+
+Oh sorry I wasn't clear. I meant switching from folio_lock_folio() and
+the rest of the logic to folio_grab_folio(). There are some subtle
+differences AFAICT so this conversion shouldn't really be part of this
+patch.
+
+I think maybe just drop the
+folio_zap_direct_map()/folio_restore_direct_map() calls for this patch?
 
