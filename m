@@ -4,104 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B0EC54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 13:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03ECC5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 13:28:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D39EF6B008C; Fri, 31 Jul 2026 09:19:34 -0400 (EDT)
+	id 8B5D46B0088; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11B66B0092; Fri, 31 Jul 2026 09:19:34 -0400 (EDT)
+	id 867336B008A; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28106B0093; Fri, 31 Jul 2026 09:19:34 -0400 (EDT)
+	id 77E106B0093; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E02A6B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:19:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F294403B5
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:19:34 +0000 (UTC)
-X-FDA: 85049128668.04.60429B8
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8DB59A0008
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:19:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=aQDSykJ9;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 598F86B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5ED121C09D9
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:28:17 +0000 (UTC)
+X-FDA: 85049150634.26.C12A7EE
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9522D40009
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:28:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785503972;
+	s=arc-20220608; t=1785504495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ozj+azE2WMAic6md6kpz5inr7tjqcL2PUGO5bai+aX0=;
-	b=lFtnodeVdNvZeMmYiEzAUTER+TYlKBFFVWceShtmXo0+3k4Gk5EYtPBhf3UFG/NIr1TJqB
-	Ac1V1JoeZ7qCdMapfqKM6fTJ2duuyRxSHP4+pEcWlMRu0dNm/4HPtiVoOxJ7bOgOUG6SMz
-	Xk3o2B/S6cX0T9hGbtwj77kt6CU5qxk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=aQDSykJ9;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KuuAkSor1Q1r3ueGHHnlqm/zCLQKZ0M2CuaEJKRudoY=;
+	b=njE41OGGNwIZOaq9OUzNH6Weq548B4c9Gk4D1PEsKx3GHfCGUX4xgkKppbin4HQ1Khp/Kd
+	znBmmEoU3EyUdiPwLYmu8S4kZPwJk3jTSWZDo4xh8KfmjZBWg3BZpcLDm+b8dWNVGgoWZI
+	pnhbFq+SEecm3Nf1qfkbdTArPHXU/6A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785503972;
-	b=2jywzUccBYPCHrlAb/v/2PvPKzPwarQTSlY8krNOvQSJR4zON0sNOeV2/h4+1kGKZd8ETd
-	5+75DsJtwrhBlgzTix/WPr4lmqGgDYTqSvvH3a8tJDba6qbWFy2djV7qK/K8QBoc4pZxnz
-	nt3wg/FVWPct8LI1xQYw13xx/Rg9DaY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ozj+azE2WMAic6md6kpz5inr7tjqcL2PUGO5bai+aX0=; b=aQDSykJ9iT8w8kZVB0r7hPlEYY
-	+QYMtbW/SO3mjA7PLH1BAUTc/Madc6281vzWxlV83jB1fYi431eKbSK4gIc/u6KFRIy9V6vYb6rtm
-	tcAkdQfeTvkG33j0UuYOUJK+3Mzs8LgAnqxvG+44MxN2TVs1uxuNwmpmhYv9icMy9qYMzMpdTDkhd
-	VbC3OQLf9CVtr8KYez6WnSvD3XsmtBtu9dc3CVyms/jpr1pmIi9pG2ud538T/lnZX0UD3vUGruw9l
-	Pr4Je6WjpoZl0FkbQRn37HV9/JQMKNrghDRJXHsaZRS2bitl1E4YC59SvbEOCMXnp4mYxVunq+YBi
-	X52rfNMA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wpn94-00A2YM-0r;
-	Fri, 31 Jul 2026 13:19:26 +0000
-Date: Fri, 31 Jul 2026 06:19:20 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
-Message-ID: <amygM1INCTEoYY2Y@gmail.com>
-References: <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
- <amh1nZVVaaZSGD3M@gmail.com>
- <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
- <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
- <amkn21ftNme48Vbl@gmail.com>
- <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
- <amm72Bu9qmWLI-9b@gmail.com>
- <d0d62d7d-8701-4692-89b9-84dff71a7cf0@kernel.org>
- <amnTfwagJQpEY_21@gmail.com>
- <2e1ca7be-ce73-4146-95fe-d8cff4da9494@kernel.org>
+	t=1785504495;
+	b=yxmbgVrS6uidMvLZKWcJvQ5Xk6JpK58evSoaCm8iBt4L6j9eFDnFRoGgS5Ogdi19cqT6OM
+	qUqfwuCjx1oVp4oXi5ji3YX13rLC50gYc3NGKUsfImkblkeI6Vo/ffT1801ORXL0rMg1YJ
+	21hoYJ79edmbnh49X7JviAxRrIpMlqY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	none
+Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF5564042A;
+	Fri, 31 Jul 2026 13:28:09 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id E384117;
+	Fri, 31 Jul 2026 13:27:45 +0000 (UTC)
+Date: Fri, 31 Jul 2026 09:28:25 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, =?UTF-8?B?SsO8cmdlbiBH?=
+ =?UTF-8?B?cm/Dnw==?= <jgross@suse.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
+ <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "James E.J. Bottomley"
+ <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
+ Stefano Stabellini <sstabellini@kernel.org>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, "Aneesh
+ Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin
+ <ryabinin.a.a@gmail.com>, David Hildenbrand <david@kernel.org>, Pasha
+ Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>, Kairui
+ Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>, Arnaldo
+ Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, SJ
+ Park <sj@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
+ <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou
+ <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+ agordeev@linux.ibm.com, ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH RFC 01/11] mm: introduce hw_pte_t for PTE table storage
+Message-ID: <20260731092825.36992dc9@gandalf.local.home>
+In-Reply-To: <9ac33752-b587-4901-b5f2-473e573d7ede@arm.com>
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+	<20260727164715.2866609-2-usama.anjum@arm.com>
+	<6xah74eadjmo2bozyr62wcxo4hhpsiufx2mshh7tztyy2dzzps@63m327m7pl5u>
+	<9ac33752-b587-4901-b5f2-473e573d7ede@arm.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2e1ca7be-ce73-4146-95fe-d8cff4da9494@kernel.org>
-X-Debian-User: leitao
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX188VTzKisaRifdK5JzAhtUj+tNTYkibFXo=
+X-HE-Meta: U2FsdGVkX1+okbaURBZ2Qkn+l9IgiK40Gqe8ZThpseNdxUoxO6+yJtshZ3puroffdGsnNQX9lyVqqMfMDNqtsaiMVrZRSqd7CxcOf+tlTFcxBWBx10qhJ57MkLj8ndzBOYoA/OODEfAwWEkK0Ynym/vN8RHly0+jRGqqJSDy6cHg7VOGub/UmsJX6TfoBSOwr0+39CvO+c3eZRPTPuO9wuZjY0AitKZFKa26poYwhlLhVPb0FYC1FMbtcEIPwcv0BUAY4FqESIdzLvKNozpw1fVotcfhrX1NJojLWeahTii05xgjJv7utljWLfUJzJrqYVN7s4pCcDgRjK7TriyixEP+/JmhkJIq3qIe3n8mNyiV8HHld6EP1z7IlvkGJKR3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9522D40009
+X-Stat-Signature: bk4wphtnyr8oskxq6ok6poi7ogrp6zg4
+X-HE-Tag-Orig: 1785504465-704596
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8DB59A0008
-X-Stat-Signature: cb3fhwjz67rh1ztuwtk3g4m9gmotiy14
-X-HE-Tag: 1785503972-625757
-X-HE-Meta: U2FsdGVkX1+BsJ+0XS1E22Fmb0NB4reSDLy5oUg6hpB5y+EvhH4YIqhZcXBHiyYvR2phmNMbyyKiAGTjWpUfeZ02ZwIBhKyOFsMoVNA1OyeXwiM1ZLpRkUc8a+W7z36zy2WBuvbjiR0yrqnGuCpk0xNsy6U7AR4P7O/GmKlyHsr/BuFrGxkXbsqD7TPyX3dEEhfIxJGBMtbFTTxom9WGV0tzWjEw6FnH0xmCnSgeEU3O4XjkAVajwiQz8wGMYdv/q6YcrsYqpcqiqys3NaVFGfQ/ZuXPCGYaod9fYqPI/0wIvM4GVkEjFVdJUL5C1AIkE4GBpi/oM3/Rixnq4FnpxK2TFSNQ/vlEtechQ83IFBb9vkA81cEbpOwAyUzxM09sw+wNm6Q13BkuGiAb5JkPFm8PTYm19+0Pdelo7rmNO5twFMvWl2pLZ/KvmZS49acNxgcZOf89OPUTq3wxFaf4iba9CfTGz3zrgJzyYI2xoXX4UcOvL+TxahF3gptXaHbPejdnhIvmVNi3ojB/dKrTHdxc4FeQhaf+kZZ0tPpJvcW6sKKpIzZfG8pkQigFeadfNKY75nKFSaIC9kaTFDzIYCidtEVxzMrkR/Drh46rhZjmON6i3YyGs/HA/w2S4Y1M/wNrlIMmI5iYZlHSaK0RHSPVDvW7GDV6IUrnD3OLIkJ1hg7CuuSZDN3ggzAAUrj/qztcy2QYl4epcS+ncvjekim/U1IlpuytdQq5tRs1FT6hRsa3gWl9V3FGmbqT2YnFrJBQbBHG3uajDiBLNS+W9AqlkaUySWpRqBcUEmkz0tLFNRnC18ZQ8VEUFu8oRPUaLMkCogWYBHRIBROXmxjMcWYDxYoCrCoc72JeeWpv02FuYctlxSY6FiANnNjYqaW3UCE7SDm46B+UqUpQ2vJFuVtxbK2ayuuwYH7A5b1IDzztyCxsD2uU0zXQGaSFW5X1W3QGlui86kQ/Zm+UMrr
- U6Zm1s5d
- 1mOCEvhGIhnJmqSm5pYeIrx3FZxr4dcRwNa24iO2NlHL5wEL+SVZeyw/G+uDmzrK2g7facuBgf9rnFdiL4ZE/pA8rjQb+Cf+lOe3IFcLnrUT0BcafBH48KYrcZLzt8IDgokUTuz1juuSfGHiHgUCTEcBorzTCsWhGW7CJck1rmSHfewpwFgkVmujcg2nEeqvsKbyxQCdz91P3u4YaTINmjw/0WxswpBhwF7+ma1UlCeNw22wIhNWJU4ALl8nmhZUMv/EaA/IWH5Iwo92hYRarVfthxWRDclQIuXS01x9xZ3AHloP2et2co+/ujglosxYIdP4GRNDCr3nRkfnM77KnVDONnXdzn1NmuIvFvT8HK3U1ItQVQLdzkv1pfNMKH7djbW+rxxjtIRss1Z2tO+bX4r+AVw==
+X-HE-Tag: 1785504495-738723
+X-HE-Meta: U2FsdGVkX1/AZx791GgMtf4R0pVj04vXn+ZDSzP5pH0HubICqiCFI+zlYIc5iPRpS26AuW0j098H/Wad5hINAdojP+WBV2Vz7TmHphq1FcNwRt0P2aTxe9rq0Hsw/YgjC19jk+rIp9Csx4VId0FQtXkeRRuYdxq+cAX79js4+/N8NO9ipFQ1kRe97embPjt51/egjt9iSgTJ9KD9n9qHxXY2VD9i1xcPHoy7L7cCu92tmrhVWqx/CLIOrtgeZHzr3shcpHCDVezh4IGz8VKEm8L+CVvkGXTqf+b9KGliXWHIqE+tizXk7wvvZYMSS5HQINMZbfBp0jIW0DzLVxOp5pssmy5m3T0RjV+IR2c5uXWatPqosEhk9bwV6LdiHU05ux1OdYC1kQEcNFgFb4zZrehm66qzuH66tEIFXtqMLgQRi6letsJ3gZ/1SFITuYBMc9SrlcRn5Y5H3tQwo/B9XQELcbBHteSBzG+NFYnVZQyqF1bqEGhlxC2s8q1xroV68U06FjYudilSyNA6jl+8qVp3SMFuQB0kvsZ1ztTcCrgKGNXi59nrY+Wuw13pYe1QO/jWTRc6bt8u89aCsyea1i1APwgcGsq/mwn70mGfkTS8LeumcR/7woFohRkyARm/3NUzxP5+H4M4oSCdHtKY1FiBJF8GpQmg8omJgttcrujD2bWZ2eJj9WUm/APJ396q+/FNSuN1FXA3z42+d2xyq4fMPkJ/rb7wZ0oKzYr6mVPUh96mpGWgIaGLWAB91XI7im/4J7npJOX1k92S8ZWJNh4pL0rqAegymvEdQtYBHYCTZBft1+u4NKLjidfTAHp4D5MTcJ5hSwKgBncPAB9K7sv48dnWroyR9pRoiQ0NOFiGYdOFxWUIjg/FzVdxawm+pb+oEhcAQMWaUReiejTMqrO7tybX4YsgitQwEc0hTpvJCsYfTS4WOseQiAc/T+6WrXk0LtjJPmD5D2tDHSQ
+ 6REA875c
+ /H03DVYgOjb6MJeyfMDb5QdCzBX+/Am5Xeyq8L7u22FXC0NBgFFdqfA6EhSGw+ekq+R/VU75snHN7KZzqBZZihDUzSPQt80DHrSXvIH6QLOJmlwchRTMI8jU4zzc1myLFJgWHUeXxtzqwqeljqX0snE6C+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,21 +119,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 01:11:36PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/29/26 12:21, Breno Leitao wrote:
-> > On Wed, Jul 29, 2026 at 11:09:11AM +0200, David Hildenbrand (Arm) wrote:
-> >> Avoid bash scripts, please :)
-> > 
-> > Sorry, I will try to control my fingers next time.
-> > 
-> > Jokes aside, all the selftests I maintain
-> > (tools/testing/selftests/drivers/net/netconsole) were done in bash, so,
-> > I got totally biased.
-> 
-> Ah, I see. The MM folks are not known to be bash experts, which is why we limit
-> our bash scripts to a bare minimum (and focus on C tests).
+On Fri, 31 Jul 2026 11:19:32 +0100
+Muhammad Usama Anjum <usama.anjum@arm.com> wrote:
 
-Thanks for the guidance. I've rewritten the test in C and posted it:
+> On 31/07/2026 6:49 am, Anshuman Khandual wrote:
+> > On Mon, Jul 27, 2026 at 05:46:52PM +0100, Muhammad Usama Anjum wrote:  
+> >> pte_t is used both for logical PTE values and for entries stored in a PTE
+> >> table, so pte_t * does not distinguish a pointer to a copied value from a
+> >> pointer to table storage.  
+> > 
+> > Should we rather call them as "Linux PTE" and "HW PTE" instead ?
+> > 
+> > Some like "Logical PTE" does not really sound very clear on what it represents.  
+> Yeah, I should make distinction more visible in the cover letter.
 
-https://lore.kernel.org/all/20260731-memory_failure_rewrite_test-v1-1-6aa8c6435693@debian.org/
+Just as an outside observer, so take this with a grain of salt and feel
+free to totally ignore it, the term "Logical" and "Physical" to me would be
+that the Logical one is created by software and is not mapped to hardware,
+whereas the "Physical" one would be backed by hardware.
+
+Just using the terminology from LVM where there are Logical volumes and
+Physical volumes.
+
+But if that doesn't represent what you are trying to accomplish here, then
+it is indeed not the appropriate terminology.
+
+Again, feel free to ignore this comment, but I just wanted to give an
+outside perspective of the terminology that I see.
+
+Cheers,
+
+-- Steve
 
