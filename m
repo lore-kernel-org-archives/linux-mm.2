@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59FB2C54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77392C5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B2A06B008C; Fri, 31 Jul 2026 11:46:29 -0400 (EDT)
+	id B415D6B0092; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489766B0092; Fri, 31 Jul 2026 11:46:29 -0400 (EDT)
+	id ACBB46B0093; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B5286B0093; Fri, 31 Jul 2026 11:46:29 -0400 (EDT)
+	id 9935C6B0095; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC626B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62649A1991
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:28 +0000 (UTC)
-X-FDA: 85049498856.21.2FBE000
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53DE66B0092
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1E14160475
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:32 +0000 (UTC)
+X-FDA: 85049499024.05.D5EAB18
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 6B86620009
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=buBYFgP6;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="i AjX4Bh";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	by imf27.hostedemail.com (Postfix) with ESMTP id 639304000D
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=A4zNhdYe;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="R W/bChF";
+	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785512786;
+	s=arc-20220608; t=1785512790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDJuTD8Vcay2+Rdlju8jd0+4JfwRzRzUz3/gOwvyzEk=;
-	b=1iwvD9Cuj6USu3KFJ7QECiL+jcWIL680oQihB8plGongTn3XoJuAggvNIYJEDg0UOIV+8D
-	krQRHzNMlyblUSCvns4VKZRKZjpPSHSpEtaj+mjg86RTrSpBIrV5VCUDq+ZHB97MMhVEHA
-	sepKeI61UgbK/KhfM/t6onIlaDld1tA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=buBYFgP6;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="i AjX4Bh";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=;
+	b=6eshSyXBti4HkTc4cPBb1MTvreHGEnXde5QyH5pT6IxTBhTAAC4oxDhgQIZchBZNlbguk9
+	qOzcHDOt7uDSdvhdLCcmtwIuN6ZFWiV6dlUqM8WDijYzZIkz95Gu7jAKOd3m8byLnFYgg1
+	quJbNWU4Pcg+QjPZfg7ufYxVdS9bPQA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785512786;
-	b=cD3l/2WY6iELiH0dwO1vSklKZSmN70eAFjxZ8oW0Y/yR8JZ4DHEfJphOl50GGNGQQfpGe4
-	+YEOZCFx68VkcBty2lvSLJJPNoRtSgj3m8z57F5UTDu/DlWXvUBaomlRqqu+XitLqjVen9
-	Jup1N5gNUE4e9dqINnYWzJh/m9cMVCw=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 458B11300113;
-	Fri, 31 Jul 2026 11:46:25 -0400 (EDT)
+	t=1785512790;
+	b=pjSF9BieGYHZI8WsufD5ZzejAHWY9jvknzOSnl9P62T3YFv4WN0rx1fJ7OKPsYOs8x6Yfa
+	N4FZudFIqceQBmOZ89snNe/NwTjN/tqTqMykHNX5GF+OKGl+EtyI/5P5vDwRv+IzMr4vyj
+	tW5LOvF1nmSjcH3Fx/b2Oiu0COLySyg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=A4zNhdYe;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="R W/bChF";
+	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 2D9A31300112;
+	Fri, 31 Jul 2026 11:46:29 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 31 Jul 2026 11:46:25 -0400
+  by phl-compute-03.internal (MEProxy); Fri, 31 Jul 2026 11:46:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785512785;
-	 x=1785519985; bh=WDJuTD8Vcay2+Rdlju8jd0+4JfwRzRzUz3/gOwvyzEk=; b=
-	buBYFgP6+JQ8TRSLIR82ewZArTts20O9JKEd5dmyRt0+9UOyPSIDt9uOPZDtuRBv
-	RNEvca7vqe3woUFF+1c7hi0UC1+3fGY/5j7AVbbk7Zmur/wwbn1YNIxRqu1y631i
-	dW/cuGsgW+Ol92eYnz2sBJ/dA1/R5oINA76/X9sYmkEM7haEdI4AAg0HyQn1QrNe
-	HGzud0keDd63kin+L28kTH+xV2HgjKFc4QplYWThOBSv1K1wAbinLKtVtCk0mL88
-	Mm4QGTLtFIGVkksdpkzlk8X7UpKxFgvtKq6tGofgqIrDV0n3HYC3bH02No8U0lrB
-	KHVtzGiuPjikAGxPJrSfeQ==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785512789;
+	 x=1785519989; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=
+	A4zNhdYe2c0zkpkQugS9piOLTtW79A0mDI9E/F0V+cg5pC4Wix08Dj/5yQ2oHMfK
+	PyutuVFxUUTXjYRRZxvScVTgap3l0e8CDVOs+sixHhqvBWFGvqhMqsTamu047vcA
+	t9y0ReJAPS9POEVQRuIoArVuLkFmKg+XGzSmzjVpZz1IfGHA3VCb84yNdj162uRo
+	MfEI1M6NIuNdkn1NpOwoqy/W2haUW9cRRGo+tFV/YGUuWsoLe9VwCyCAwNwvT+Vz
+	/qXrwi3vTWXpGoo+oiLS5bIgSSCzMlvjLtEn1jfdBTEfiClFD40g3In7WsZXIpN6
+	lVJk11VqRqtL4ChvdiNj5w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785512785; x=
-	1785519985; bh=WDJuTD8Vcay2+Rdlju8jd0+4JfwRzRzUz3/gOwvyzEk=; b=i
-	AjX4Bh+jaYkO1aD0xiJjq0YR9gRYbMHKrubsBmIrmF0SLGZjG8uap5Bzdwqn1ZOG
-	doKTv1lEZsMXdWxrXlvpEnowBPPhn7L9sJKbm3Ba9G4Pddh+2eC6zTnIK1FlfjMe
-	ZyLHqaBNktkLoMrq4bUOcdX/GFVBceHj2t1loog8IsisFtx/biPO4TqHWEGPWsaG
-	ilSzaQovVelR95zfSWt4cetlaxO5EUtoqaH0CUBi552Tc3ppBf6R2VG6m92rN5ze
-	3Erj1weyVj7uYfHjdWkS2jDb6sZwm60jd2MZr5+xzAAhH3g9qvK/6budwxvj0EpX
-	r1TvjzP+Q5kUAYTBDwxLQ==
-X-ME-Sender: <xms:UMNsaqBFA0PKDXmxhrDxCxZpIqNb2eR9EkgONS5o_cKz54nUOl9OgA>
-    <xme:UMNsagqUFMH7sxvfDkOKLvGsg0nFRt58Po7iAmQTr8wwqdw5-fk2DtgGDOYJhuxVX
-    W-1KOBjOnPc6Zd8qUm5xWHQhl35FmcOnhMNhdjdnxMXvbjRrfTzRg>
-X-ME-Received: <xmr:UMNsapZQRgDsYIcNYyGM78g47FcwBia0DQdyHorGouqBkucCs7nM1IXBGmKzclvavd4Mv00baDU530PxiA>
-X-ME-Proxy-Cause: dmFkZTE/BZlAVVxDq9/HeYo9P0/sW1MPOKOzDZ2zczt2A8za9TVFfqEYLK1+OkUHjXNeVE
-    xlY3hzB0LLvX5gB9iYwoLGDmmqsrU5556smTDInmhhGhkvXGJPYIY9dA60V1rmC96sOsI0
-    XHygQvS6a9K1hbqGvNlelDmHj9E3Ec86FFih5aSGF3F2tH8eUwQUnZN22O/3yPx1ZKBTV3
-    xDZn8CjjGaejfmd2G7b5yAbKcRL7w3G3sNyGFJi3IBL1nqr+l7yrItuwDyFqrIuyqCsuPT
-    nNwSp+6GfQ7Kugx/1btpxv047qEzH62cBeVY3JQwhsB2H5waeSkwx8HWbJQCRnbraO98kG
-    6027MSV9lKz/fLMN11Ex9ELYwFhZ51yFdgGeT2ITTOkqKl60K1ZbfbQvqK4oEGHyj0vUTi
-    zKZMFSLfBk7PlA+BR6AEltHAihXhQT8QYUcA/4PBl2LZvaiLOQoHL/yqeIdRqLs3QlHNol
-    qe70HNv54SoVwt+uUt4VYC3UZ/vwLxiZt0SlDugWs9ufvM6xodf7R8nO4PqrAUQDSjr34q
-    2Nq7XBKrQJMRsuGQX0qZS+NqPJIFj3+rECUZD2u2OzoKbnQVKTUKhvRCTKW/iNJqr0gVi7
-    Ri5gz0+7qgZ/Gv+nBCA7tdjlhLpJZz7nNMfnlepPP1EhsaFoWq0nXwqngRiA
-X-ME-Proxy: <xmx:UMNsaiGv-zu70rASap_44Sr8gmoB70bjvCoTG9Ia4LaaGCObmvkSBQ>
-    <xmx:UMNsavbn67Ym8Sm16ilYb5_nKOcK-b6abG6vyyxvoZRI2yg6u93fnA>
-    <xmx:UMNsane9D1mTHTmLxAskY_yTBJPKgj8eKkvom6VCn4A-LaErf3p6zA>
-    <xmx:UMNsarDyDPCDFP94XmuEiLmhTqjsAH24JvQIG4W0oBSthXJn67pB5Q>
-    <xmx:UcNsanMtKnGnczfB1xWhnx5ijYZszoeBSiuPKcGXQHJji8YvY-x9xJ_8>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785512789; x=
+	1785519989; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=R
+	W/bChFPnActNSpvOcmbnjUOMD2Z7aDaZiMdwapf3zUf4zqk7KfVoS/ZbRO7lQsGu
+	/RsK7cS6A7uax3NuW4EYT4rEWI1nPkam2Jxh/LOiAFeNrT4YC6ELfTPB52F+1my7
+	30L/nOgvSoODJ8jlAQbC6Os7C3mEI5Q4GIxqfpk9EVKDLMDqliB1D78zXfvKVMY6
+	MgD+GNDTph9sH6LQKkwwM1RLgncUhpupuuczYvfFb8bXibyBseSqrI84DhbbXw4n
+	gCGP1yHchIt96mFD0+Zb9hfsfWyxXxm+pipeml7VPaX60AtHJOVpHtxYp+306FAw
+	do8v4B5tOEZw65c0TYHkw==
+X-ME-Sender: <xms:VMNsakSi6CTbm4kpM1dMtq-I2WEsssafLCa7HnEXpyK1ajNIbg4QWA>
+    <xme:VMNsat5dKKDDXiDQVbeoxmKkFsMn4pHc85tsUMsW41oY6MxBe5qfNUYbXlRBsdimh
+    T_Rf0_8ggEeXlXi6g-Y8LM4LaElHqPCvnE39qRV1YDr-fPzNq73fA>
+X-ME-Received: <xmr:VMNsatq3d6rxXKCZh8CuG2RTFNCAKSg8oWlkFxWgiI01-GM1KBEywGEohzwkzRCihmzBqQC4M8gQ33Ze-Q>
+X-ME-Proxy-Cause: dmFkZTEDtV/RfR0lo0HHB8XdeLePstULQCU8lD8vSj/fzai7Kt3qGLzmV2Zh7eabPaGFb0
+    2JllrHJpDbmKgLep87ndKLD8srM1OHP+B2aK7Yo9bQqUBCftK1jaCjofENQpbYCPj35N1B
+    D51JM4wkbVzLK/VhvB5rAZpxM4uJ15CvWyziZqB0Yl5deZXwzgTYTbzKrvOpxGFqqPQUVr
+    i4kpPelxVCZV5wCGN3geRNU8HWmSzPdeRSyBpI4EPivmCljrA+60QSoB0UUC9t5AFMHYog
+    wby+Nk4njR178weQert2KSbb1tn2SD6ZTK7DDLV1yic4Z+7nokuhhALqi8KJyuVHzaD9KM
+    tjVGZT+3Ps3E4JjqAnbqRwtE6mPw7lRYlPF7Ix8/0DPfvB6Tzqgm+6lWoBqWNjQ6DAvKfg
+    phcitCKTOc1ccLwf6KnR5jwmNCIfyBFz9d0ZF/+3TX2w869/ojiJQ9dmc69a54Cm8/0Wve
+    VwB1xhQreCtebsdJOP9e4KcfWYcxsovWqgxfvfoeraT5OjnjeM59Po1W3IfwDsxEQuGfFR
+    CsU7eCj+UFsIn5zeueiTGkVUK3f3k4n/5WIdWw28l1YOrth23VgKsfWhuI88myee0Uc6C/
+    mn9Dj0AXvpG8cMiZu4qjnQNapvRy67fiak2oK46P68DTzhavrCKITstCEwvg
+X-ME-Proxy: <xmx:VMNsahW_e0ArDh-km8mqS5I978go4sDRVRoYFZ_X9K-WG05_tyVb8A>
+    <xmx:VMNsatrqt_wixGrfDvdt1FMRG_sDvPQVwgh28R1xJ_U_tGIMuioWgg>
+    <xmx:VMNsaovQtb2NPmvyePvR_fXM2FBgLgUr9k1Uhde3FY-pUdvOiQ2dhQ>
+    <xmx:VMNsajQKV-7xAq7LQIwXPuZhLGB_ySPiADwOfngU0rMNUBP2dVn15A>
+    <xmx:VcNsapI5MtQmJgJJF3cOoU9fHccCIyGSbPUQsAQnLu--fnV2F4CEnoj8>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 11:46:21 -0400 (EDT)
+ 31 Jul 2026 11:46:26 -0400 (EDT)
 From: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <baoquan.he@linux.dev>,
@@ -125,25 +125,25 @@ Cc: Rob Herring <robh@kernel.org>,
 	"keyrings@vger.kernel.org"@kvack.org, "linux-mm@kvack.org"@kvack.org,
 	"linux-security-module@vger.kernel.org"@kvack.org,
 	"linux-integrity@vger.kernel.org"@kvack.org
-Subject: [PATCH 2/4] kexec: add CRASH_ZEROIZE to wipe secrets before kdump
-Date: Fri, 31 Jul 2026 17:46:06 +0200
-Message-ID: <20260731154608.153258-3-linux@jaseg.de>
+Subject: [PATCH 3/4] mm/secretmem: zeroize secret pages before kdump
+Date: Fri, 31 Jul 2026 17:46:07 +0200
+Message-ID: <20260731154608.153258-4-linux@jaseg.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260731154608.153258-1-linux@jaseg.de>
 References: <20260731154608.153258-1-linux@jaseg.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B86620009
+X-Rspamd-Queue-Id: 639304000D
+X-Stat-Signature: 1i836i1g9wnz7qazj3owyriuptxsyd1j
 X-Rspam-User: 
-X-Stat-Signature: 7efzb3mfq3d7ubh3nykt8s93sa8ux7fn
-X-HE-Tag: 1785512786-249314
-X-HE-Meta: U2FsdGVkX1+Co2++gxjOsB8jZ5WYoRbRwFpZmYqwFMagyUblQuBgqkt0eAccIAPxPbqolGtRy4pP2FcnM+RPhLxDM4mlj7Bzwua4A5BSdoQj0d2D+b4hfkdVRhl64QaHYltqNNCVpo/VuK5HwYpJRJ98i+KXyIdbyekZWowsaUvJp9RpzbEXgH/UrAoNbJbsmFJSNdh+tZdc33Qkq3T467DuWga+aagKyYnzmUZ62CexoFex6BdM8WDR/NlHWJtbIexYfWfNc/uM4152IFVNhH4T31RxtaMI5Bdhk5oHfRDlEgW3YsPnxXlpgV+rOP6lRA1Cta3voX7DGt+GBvQIEjWywWtQ8PoHrHdn2ZkYbM0pETnBaxSC/ikhufkXVe27XqAOasWci0kgvClPNCPiYnIfw0rSxGZGrSd63Eq1fxSV0rulKPua5E7tCz9Q56biwYm9sYczB0lLSdBvg38ZBpmH2vm0vaXp5Cy4vQeRRIAx9dup+J3zW2QcTpD7hwODWretXyaWYVU5Zx5wS+iNd8SofMF1yhTPBjIvsKuiZmUVrob/6wWNE1C/vD9EQGwoNLXwm6C7lEXNHtyHqPL/nXAPhpQsXsUZsrfL06agFYFAMW+POkD9H5oz00MfodoE+OakepP7529NL6frEr4YIctgrA1I4Xn+Vm1WGGFVlNFH7OpmVNLzhM+r97jQQZYv56MQ1WY+10P/Jz7qb9HxF0aSf3mNVJZDFUImZ6MOkXAwovL+G+U+ixFb7WJP3lX3dfbAcX/+IJfUVg13ojndyOaTqXusv/4rK16A0tYM7Ew2pCN+cAjk9HFEACDbkuqOtQXuLirFT2yv+LPctK0pGElNztHOUs+4qIcRK6nxfKaqvuvgk14WI25p2QkyO7Jom1OCCCGHTM12JPe9bo0jnALKPt3KgNHl/WSfxLuH9pX4TBLnaXEuMx217IA1A6AZDdeDBuhL2TNF2fR2nIq
- 0X07EEjf
- Whcs5GM4og5nds4+deUBWkfLjCDUVdgqoNx1d2gDJLUhkwWqKWP1LpDYMjdgDBknTILuGMjm6QRhG1YcllZaal6VrxPSwn4yQ008fFy1tdzNcwE3WKaiTKDBvVoAooUKTzD5tI8rvFDByfDhFEMrqfxOiVrXs7MeAPzWTq4zmrwUO4aj7kXJTPSg6uLHy2/GRgKbCmUcWXzX6J3lDh8T6RtOGGT7BzTrikZR+qUfl8X7cv4+0Wwe+AYxBKFBQr1YgXc+7ajkpHuzel3Xr5GnmaBLDYnKm+RKgQrKCsUxjUw4sYxYyU1n7HGcDUhJEASRrksg3bOnzS58f8qhqzqb+a1jHiAY5ohL5Lkvzm4T1ffzP63mddTm2DOR6KxODCstI7kjDQZmmhsRu1gLssqosEyd5hHkSCQgQU7M5RJ207DvAjRa+eomzysqOiFJk5GYHAt43jnAubQtn0P7T3m+bhN7fMBOCxc0UtDa4KLhbFaGdBJ922JT63kzUxF4MSgOAaNIrDwFZpn/hDWMLaJomM+GAdB8j+WDdL1OaNWwTIvlBcWNmKZLfg/9ME8BmdSGYazbwif9qqbKGd6jxgtpq7gl5tQ0L3mJr8tqGKKdjToVmMNPIqLcKJa3Tyqymd1sVd2Q9Sq0kv7ueuBlbYbr54n1zavCLEd/AqPN+MYrxPRvcwIAO0vSJEfTfo8k7AJodEeiuzk1c9Bdq7jCsqZbTbtuadaUBbPj6JEiVsxRTYV8Qi1Dn/PsQWhdr8TahBkYtJDQI7puUd0J3ImREc7woEZ8Sud8Z/aPQG2EBxjBV2iwsczPaapMWoPPRwR8+ORh7YbBCA1BfVS0Xq8TxFinNHr8CmYXnAmhD5JctHvEXIkGgkLB3hJ1IgZG0bwzoJwDbNLLot9ZWYxzZYCZTNYdkcar3gnrWb4tEqZzCT3alUii1KoXwDy6hop0aYBUI1rR5AguYKXdo/LbsC/eXVj/Lyf68G/9l
- RFeDkiMJ
- +tuPRaecsRTe6PyWaLLKCKAqdQNxtoM27vGEW3vBXfFDWPqibvFlKYwTsXtFj1swboax/pAXjGSRMnrk21mgNA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785512790-536245
+X-HE-Meta: U2FsdGVkX1+SOv/FKPOzSnbCjCO5jw6AzZhKy3bKbnQrgvqbgBl3W7AudpVLUU/FPVFtRSVABWzkvWbFqcmJwzOA0kBsrHeAC2n4jojUSZ8Qiy2/Zo3iKu+NkCIWtW/WK4kdQt4Slz3GisKH6OrfOXF6Ica6D1AajRt2oLbSoXk/DIY2vJcxoniFyJQ086rFQXpzGVaYhIKuYPdCpxqzrvbGGPj+BITn6FPcKBL9gAecERs4AtzKtZWPdt9aX7ZGxZ46VJu91xOmNt0pIreJTTVkZVnJYUYPKHV78p5m+hbBPDZBVNv9XST8TCoKTWpQ/wFKic89adIv4Mbr65cEHbWgxmYc85mnM75b1Um32ErQ5Kmb8xz0qy7O4gnaRo/KSQnIY8Q8W6yBz254wIBkcdvQBRM9/TkcaYP54gzLJFt648mXMgozMAf404KFLCUNcSTEsSJzzL3ioymDCFcLiozXYdOyikk8EhlRFLYoyCo/phUS4HXcfft2MBVf5lqaJ7fwF3+KSodXHf0Edtp45DgAuCQqcKpmn1DRXS/JfaVZdOVNnF7/Wtkq+4y6MydWMp9Q1NM4RNYDLZUQKL+cuGKlEwFgIHck3BWrwVQFPmHNCLXrVRNsl/BALNEQJN1ZPh93HLUry8bm1IXTOAbD/S9Pn34TJlVZCo9u6CNfXRsSWgt0S9qLTMOETDZ4BW3bH6lczT1hXcY7Xuylo3A2Wre4feFLtRN9Yi1M7LEqZak18a2BqDBN0ndtety5aQbGqIkal/7JnFJMjCqPgntpwSuABSpa5u7ihrVITqfaAFVu20NFNGIUA0loE7MAUggxQY+cGa05q3p81Loxr7lCfBJ7hUonMWdPvza5TKqDZ5BmvLkb5g4JyJ3PYSvi+ZJuU4w0Nz0OTeMiXvLQr5wOjCFtF1l/qWHXeoT+Ln+8tLpEAftoYQcxboJVL/vFeSKETv9oMXvp/NzzGdw3/W9
+ peZBVMlW
+ /p9ySFfH1p3eyPkOt9OsoeQAIK0XbPVQit2QsjvnYn8T+zIfmwhAMm3hRx6csmeCsavhDK4CeGgcofdkpskfu4yw+qLZiOktFSrxFftIzjKBcnt/c2iUS0xfkTj8IMFc4wUBQmy4Xbbrq8ZNPCLzC2SZfkGPiqbVzlDQWUixB0d/agvA6OLZ+2yheeurgNeSFaNvTIJ+lrKyAAkTLD/3EIxdfnL3cK1j4GBklX8mqb4wO8yjod5l7CY0/yzTTGoPNuQEoxBqcQQ9Goct3zOAtlMAQhAXfwoxrz2Gosi5s5YSDdlGAdfbPht+78ZPyjHX55dpTz54BLUTlFab0rfipbQeDsIFSMrMk9/b3OiZlOxg0JxE9DUehRZHZMmoCYe627f/osso37JU1D61lnAIAoq/kpsMZPDnwW/4EH7pb3+Cr1dnAuQnxWDQPWv4DFXISUFINrNknUXozSPXGNfu4+4g9pdrNPNsUP9CwQyQKupiOnBOg8zcCWGGDkdKBxj7h4hYHzyjyN7lZhTlJnqHXBcYjDNAMsh/WfBpOiIIGoOtqYCnb9eRaRX62RIVQnj3v4UOC4wlnQTdycybQAa8HE19A5shlrapMmx2V0BWyGrB9Oyy9pTu73ktbwXER2eBKnOqAk+dcAdjHoYGNZp2hXWlEOsJgAZf4crTlf/w4sgQjWIk5Ajl+Vl8Y8kZByz4So/YJ5cEYEDQdBlT4tPTatECFUlBCY/WPKHcY2cmahR0gEnsZaE8rEtWB9heUuD1rkPRPkkPrsDHokRAvYasm/+l7w5eLkbC4/4lgHruc7zq3XUIU4fAfx5V6ljHXlu9bT8hXj3oXb5eVnwTBAl3hSmJC0OJL/rcEmQxFJv5gOsKe+FeHxEtvL1bjZkwyAN0yTVhDxtTE/NH7af1ycO/l3n8DIR4lD5ml+cOcR3tqaExPlGg5p21isaLIx1JwJUVHgrzACe2Bdk0fSHn+5atyR65pBdFd
+ 24e+lvwN
+ VF5Mxngn7JmpIy9N9pr6qzaOitVt8FNmnAjh4ghWP2I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,109 +151,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When kdump is used to capture system memory after a panic(), any secret
-keys currently in RAM end up in the dump. Add an opt-in atomic notifier
-chain, crash_zeroize_notifier_list, invoked late into __crash_kexec().
-Subsystems holding secrets can register a callback to scrub them.
+Register a CRASH_ZEROIZE notifier that wipes secretmem folios. As a
+result, when CONFIG_CRASH_ZEROIZE is set, secretmem areas will be
+cleared before the kdump kernel is kexec'ed.
 
-Callbacks are run after machine_crash_shutdown() has already stopped the
-other CPUs and disabled preemption. Callbacks must not wait on locks,
-which will never be released.
-
-This is a best-effort, defence-in-depth measure, not a guarantee.
-Secrets in flight on the stack, in registers, in DMA buffers, or in
-other places in memory are out of scope.
+Zeroization runs after the other CPUs have been stopped, so the page
+cache cannot be mutated concurrently and the xarray may be walked
+without taking the i_pages lock. This is a best effort, defense in depth
+measure. s_inode_list_lock is taken with trylock only. If a CPU was
+stopped mid-modification the list may be inconsistent, and this late
+into the panic path, there's nothing we can do about it.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 ---
- include/linux/crash_core.h |  5 +++++
- kernel/Kconfig.kexec       |  8 ++++++++
- kernel/crash_core.c        | 18 ++++++++++++++++++
- 3 files changed, 31 insertions(+)
+ mm/secretmem.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-index bc087124cd78..5c7207c0bba1 100644
---- a/include/linux/crash_core.h
-+++ b/include/linux/crash_core.h
-@@ -5,6 +5,7 @@
- #include <linux/linkage.h>
- #include <linux/elfcore.h>
- #include <linux/elf.h>
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index d29865075b6e..53f629d6633c 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -13,9 +13,11 @@
+ #include <linux/bitops.h>
+ #include <linux/printk.h>
+ #include <linux/pagemap.h>
 +#include <linux/notifier.h>
+ #include <linux/syscalls.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/secretmem.h>
++#include <linux/crash_core.h>
+ #include <linux/set_memory.h>
+ #include <linux/sched/signal.h>
  
- struct kimage;
+@@ -187,6 +189,50 @@ static const struct inode_operations secretmem_iops = {
  
-@@ -34,6 +35,10 @@ static inline void arch_kexec_protect_crashkres(void) { }
- static inline void arch_kexec_unprotect_crashkres(void) { }
- #endif
- 
-+#ifdef CONFIG_CRASH_ZEROIZE
-+extern struct atomic_notifier_head crash_zeroize_notifier_list;
-+#endif
-+
- #ifndef arch_crash_handle_hotplug_event
- static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *arg) { }
- #endif
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index 15632358bcf7..92ab0a69c8ec 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -179,4 +179,12 @@ config CRASH_MAX_MEMORY_RANGES
- 	  the computation behind the value provided through the
- 	  /sys/kernel/crash_elfcorehdr_size attribute.
- 
-+config CRASH_ZEROIZE
-+	bool "Zeroize secrets on panic"
-+	depends on CRASH_DUMP
-+	help
-+	  Wipe secrets (e.g. kernel keyring and memfd_secret pages) on crash or panic.
-+
-+	  If unsure, say N.
-+
- endmenu
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 2b36aa9fade0..d3a7763e2759 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -23,6 +23,7 @@
- #include <linux/objtool.h>
- #include <linux/delay.h>
- #include <linux/panic.h>
-+#include <linux/timekeeping.h>
- 
- #include <asm/page.h>
- #include <asm/sections.h>
-@@ -33,6 +34,22 @@
- /* Per cpu memory for storing cpu states in case of system crash. */
- note_buf_t __percpu *crash_notes;
+ static struct vfsmount *secretmem_mnt;
  
 +#ifdef CONFIG_CRASH_ZEROIZE
-+ATOMIC_NOTIFIER_HEAD(crash_zeroize_notifier_list);
-+EXPORT_SYMBOL_GPL(crash_zeroize_notifier_list);
-+
-+static void crash_zeroize(void)
++/* Called far into vpanic from crash_core.c with other CPUs stopped and
++ * preemption disabled
++ */
++static int secretmem_crash_zeroize(struct notifier_block *nb, unsigned long
++		action, void *data)
 +{
-+	ktime_t zeroize_start = ktime_get();
++	struct super_block *sb;
++	struct inode *inode;
 +
-+	pr_info("Wiping sensitive secrets...\n");
-+	atomic_notifier_call_chain(&crash_zeroize_notifier_list, 0, NULL);
-+	pr_info("Done in %lld us\n", ktime_us_delta(ktime_get(), zeroize_start));
++	if (!secretmem_mnt)
++		return NOTIFY_DONE;
++	sb = secretmem_mnt->mnt_sb;
++
++	/* If the list was modified in the exact moment we panic'ed, it might be
++	 * in an inconsistent state that would be unsafe to iterate. If we can't
++	 * get the lock, too bad, that's all we can do here.
++	 */
++	if (!spin_trylock(&sb->s_inode_list_lock)) {
++		pr_crit("crash_zeroize: can't acquire secretmem superblock lock.\n"
++			 "crash_zeroize: skipping zeroizing secretmem.\n");
++		return NOTIFY_DONE;
++	}
++
++	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++		XA_STATE(xas, &inode->i_mapping->i_pages, 0);
++		struct folio *folio;
++
++		/* no need for locks if we're burning down the house :) */
++		xas_for_each(&xas, folio, ULONG_MAX) {
++			if (xas_retry(&xas, folio) || xa_is_value(folio))
++				continue;
++			inode->i_mapping->a_ops->free_folio(folio);
++		}
++	}
++	/* off to kexec()! */
++	return NOTIFY_DONE;
 +}
-+#else
-+static inline void crash_zeroize(void) { }
++
++static struct notifier_block secretmem_zeroize_nb = {
++	.notifier_call = secretmem_crash_zeroize
++};
 +#endif /* CONFIG_CRASH_ZEROIZE */
 +
- /* time to wait for possible DMA to finish before starting the kdump kernel
-  * when a CMA reservation is used
-  */
-@@ -142,6 +159,7 @@ void __noclone __crash_kexec(struct pt_regs *regs)
- 			crash_save_vmcoreinfo();
- 			machine_crash_shutdown(&fixed_regs);
- 			crash_cma_clear_pending_dma();
-+			crash_zeroize();
- 			machine_kexec(kexec_crash_image);
- 		}
- 		kexec_unlock();
+ static struct file *secretmem_file_create(unsigned long flags)
+ {
+ 	struct file *file;
+@@ -263,6 +309,10 @@ static int __init secretmem_init(void)
+ 	if (IS_ERR(secretmem_mnt))
+ 		return PTR_ERR(secretmem_mnt);
+ 
++#ifdef CONFIG_CRASH_ZEROIZE
++	atomic_notifier_chain_register(&crash_zeroize_notifier_list, &secretmem_zeroize_nb);
++#endif
++
+ 	return 0;
+ }
+ fs_initcall(secretmem_init);
 -- 
 2.53.0
 
