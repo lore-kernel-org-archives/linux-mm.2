@@ -4,132 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C68C5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BEAC5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A4356B00A2; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 81A076B00A4; Fri, 31 Jul 2026 13:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77C306B00A3; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 7A4356B00A5; Fri, 31 Jul 2026 13:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66A436B00A5; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 6B9FB6B00A6; Fri, 31 Jul 2026 13:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B1686B00A2
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1681F16048A
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:26:34 +0000 (UTC)
-X-FDA: 85049599908.30.90B3793
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6DEDC1C000C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:26:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="JFeWexf/";
-	spf=pass (imf20.hostedemail.com: domain of 3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBE776B00A4
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:44:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3A93140476
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:27:55 +0000 (UTC)
+X-FDA: 85049603310.18.C84EC9B
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E88BFA0006
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:27:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=k0Fn2v0h;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d sZHhPg";
+	spf=pass (imf15.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785515192;
+	s=arc-20220608; t=1785515274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
-	b=BdLeV7tINGxlLJA+HPzcUCyd5t5M6IV2WX3e1oH+lzVd7lGy46sxEq8meF/YJdGQCSDjT2
-	tfSuTMUBd0XXlljsDvM6yRmppuecRq6HCbvifvibu8zj7I24R/iBqiKI1Xulw+oNkVc+JR
-	Lx7pgRYxpKZCHiZk+u6IgfnUMaFW8CI=
+	bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=;
+	b=JLjHDsVfMBo+i7jgw+Hk1GjB0ICIZLQWLS1qb/RWZPl5oHWKzYkZNCu7L4TOZrtG/gniHo
+	80hutF03bqAbj6LETd6XebXjrLQYUp6pFlvVHtPNYYHmQ314Zav5zTt39E6yhmaXX7kmYO
+	p5UNxoG3fWvqfR2Yyiik+pEKUV9VA30=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785515192;
-	b=b9DZ8iXuDTfEirrBBCpmL2Sj5HxHx/GhiLsV7bvj1PKMGEuleyeBbhF9SYQn/2uui5IXFm
-	l6esuKezjRQ20klTOwq9NmMG1QSxxeBRDyXgVhIJIhFZZFuAFTTQJkCsnkhn3vF/H1dbCf
-	iHiihnBcoLnmEcl/1qM5oTwKiHf8orw=
+	t=1785515274;
+	b=0+mwyqYE+mGU+2KhCHw/LeHAwmQfgOvhFkmAHPmY7X7KpVL/GfBnPrgpLr0u8F4F1xCE1f
+	vZVvtQrk3s8yx2RkgOGhRXiP0d4Ur3fyc9hI9smC66RK644FjLitmR3FVrKX0vfdJCXKm+
+	wZ92ZdDIlLmrCeHCu4E3hccKn6YHbDc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="JFeWexf/";
-	spf=pass (imf20.hostedemail.com: domain of 3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cea6a46766so19162375ad.0
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785515191; x=1786119991; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
-        b=JFeWexf/OBsBvfuvSeW9RNKIUCV/CdVZMttEco9jbpyZdIdM3L1/QU7y6KpPftQoGM
-         bFQKPuViLpmQNwsmYGsJFsZGeg7R6m7XuI2Tn3EfYBonUBBCpZtXPHfHshhAt2VJU01w
-         NfQK6IZO6zzvOe1NblE8CidpwJlkfUoV64SCMokJsitpoK/iN5NeKl+9X9nDCxyBfB3k
-         ViDszDaBFszJqdZlMIe6ET30HRdK4lf+BnZ3c+LNzwLVrmh73CXvXSWLzc1PcqLFDPWR
-         Z6jjV3EzHqTxZEYvKCubH6QUktpL2Obljhh6gk67aWJVt1Sbv4WldIFF+4VLeXrUPZ/d
-         Kk3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785515191; x=1786119991;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
-        b=oTbefxpYwXeKJIhSTakFFs26BxdqcsdK48u+UBrDvm5Mkwh9DSfekwHcr7zCgR1fVB
-         VMFKxtZzGNVrO29o8ww0+RdACgVbI1k1Txm01jmgjUsGKI8jT3iQkzdXJQx8E0gSn2zX
-         MakRDVP5rHoK67/XMe32KHdyy7FuZAOdtz1uybBU/b2VyDd7a03JXRPQAcfzqigJ4Lh0
-         rb5HLwX2UY4z0amhB5yEccaCTKRb5h7WL76Ddr+fI9TAiUAip+Osrm61b5PJiTcpCykr
-         edjeLW8NtcHIRslXPS+hIkWcDEuKwubqQqd7rGHP1QFxHg2/96KlvGeMtbfb6Q6WHNGq
-         zRYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrMS5OlvF6qYXr5TWHE/8JyvnbyCrB9sEvVYOqU+50LfkSuLPCxi6ZVPn5D1ZI9D3eQImPrNSMiHw==@kvack.org
-X-Gm-Message-State: AOJu0YyKq20U4FFPYi4FBdM0RP8qi+bM1ZicSkTgD492VF/78IWE00gV
-	NEnK4hpmyJCW3/dMfCu7hPd1bSTemu17sDdZzPVb90it8yY/Ozz+TuHUJVU28XR61FY7KOgTanb
-	k1gvq1Q==
-X-Received: from plhi11.prod.google.com ([2002:a17:903:2ecb:b0:2cc:5fd1:2d93])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b8e:b0:2ce:b096:e517
- with SMTP id d9443c01a7336-2d0521cda4dmr6567475ad.5.1785515190881; Fri, 31
- Jul 2026 09:26:30 -0700 (PDT)
-Date: Fri, 31 Jul 2026 09:26:30 -0700
-In-Reply-To: <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
-Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
- <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
-Message-ID: <amzMtg4K6qEEsudx@google.com>
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 6DEDC1C000C
-X-Stat-Signature: k1dshgxh9n37y3iymtmj3maxs99mxpwg
+	imf15.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b=k0Fn2v0h;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d sZHhPg";
+	spf=pass (imf15.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3A9757A011A;
+	Fri, 31 Jul 2026 12:27:53 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Fri, 31 Jul 2026 12:27:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785515273;
+	 x=1785601673; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=
+	k0Fn2v0hBAvs16EZ/yLw7TLmuFAcOyD/YVjC8Ouq96comN5aDewzZCfL0asIk2DM
+	c7VaqQfnLFOz3ABgiGWXaGftTmHIkQV30TQUqsMkko6p8fVn/eX1C7HZKlwCwSZ/
+	2q5TdpN7JGDxH/IaZPK8mBG2PdPABArXvqZxVV0f1jdA44KVF1NtJaTuAFfaSGbL
+	1WbTOlIVJrCpI1KDUJ3L5Cp6TI8dLucgg5JT/pkj3NQxdJHUdAdjESSRuZ6G6LkT
+	7zRhJxK8optUcn1MCi5sFsYsVZA/q/8vf9K0Fr4Yg6lynEgKjmq4NGh58slVn9tg
+	v5mBwTY08HlUzvXNCUe6rQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785515273; x=
+	1785601673; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=d
+	sZHhPgulOxyRAtF1Xbe6k93rj3Mywvhma1m4kxcnHqoNqiBzekcoalPjzyO1gyy+
+	Y4jC5rQKNvHv9ZYWpvZ+aDztsnCABebXs2Izww02hHxEj5V1Rp4vh6Xd7wyVDujc
+	8xB5SdcKqwRsoFyI2w/FVwJBzuiln+aLCY4ODovodqBgvz+bou6uK56JmAAQfn4T
+	wVX7XWb7r/BoMEjViUVmIqxm2mE1gRlklds09mmeDQMN78mjMinH0wJjCMz+ih4M
+	06Aeu0npEkJowZhGqcRJLLl2c+ATj2EFJClO+H2uctY06MJF15RsbvGuFqtoRkDR
+	VCNNIPnCa5cPuhlsXu4XA==
+X-ME-Sender: <xms:CM1sarSPK8tl8pnWv2uH6g4wZr--5nqlC45vsxulbQzNbHOofZVLHw>
+    <xme:CM1sauXjnv8yAG4obCa4UHqnYqll6lL21IBldfRSSJjGlhd1M-PeWtOdoG3mDdHkC
+    KPCkk7kYosfPWaqnf-ltu-4kOsTShdKFa01UhdEy33jIt2BUlWiKw>
+X-ME-Received: <xmr:CM1sanKtTrwfzroiDfSPnoQJTvuMplv57G2bzQv57sfayU2k8PSiyCTH6_QAI_f5FRJnBK2e35r6RP8iaQ>
+X-ME-Proxy-Cause: dmFkZTELfHAaFlN+kIG6IssmIq8q0/JRtHYiEDamnKwtHAGTm/rIkphiM7dmck7n/tEVID
+    Jll9XZRXegS5DA66U1m8pj9kUlkWW6jbmxkpZ2Vy+f9sbLWY4LPn/k9o06nVK28CzSnHlD
+    lWYRxoJf+HWhSZ1zy9/rODG5OphaTJnkZfxiinHtBeukYGRaEV6rsOpAthbf9Rnwd5neaW
+    b5ga7UTCgjqgAq9wYXuIHu4RL0lK64k1SgzKLwhWoz9uN8eIJVTlSs/QiafsKJeCqGBPP+
+    mXVeoA/rZsAKFBE67k4yvTZ9NpiBwhCbzC9zQWp6wR2HnNM114K5oGLjvHnZO8zy7kGoM+
+    43ztEq9yvmk5FIo339uS7eTYuFuzoPGBEBAV56zSFneeUyT1x+W8YuJDcNHflL5vlg94Nc
+    tRE/z0/TBF6FknKyzSzFwXEGXce61rnIpBKiwhKAJPH1q9EgnFkJH/sYGfFrxEcKBzyjWF
+    wJSyyb0894hIenNcHuohbTXDuBYnFqA9f9SKfwB/j1Fia7HM5hm118pFRPbsHhewSXfAqg
+    1BMqPWBdv1JpB+6v6hYDG3BaNrKft+MpEMXFdE7J5adB6kIQFZDjk4ycPJK4tw3VG5E28x
+    OVWMXqMrDck/XjQJJw4OWKtP4nkq1iPW22fpkHdEnpj5tXx568GTn10k6v1Q
+X-ME-Proxy: <xmx:CM1sam1-EhJe4KMpBnYfP287RagS5IVRGdDFw-FSVRSSkYnuRsT8SQ>
+    <xmx:CM1sasLDZpJ9gTmtx-jggzOhLZLPe6cIwPwFATB9WHkHTylD2ogjxA>
+    <xmx:CM1saph9l7hk7_tiaqg8q_GRfrIvBxTU89PD8u2yo_CSHvCDkGLl4g>
+    <xmx:CM1sakCBeSTaUWwDhnPN8X2QadLMaCSI-aNkkXTbqmwo5fpFcNsS2g>
+    <xmx:Cc1sai_2vETs0lM7UmIQEF6NbdBMahVqO-7pdz6By6aE8MWAFYpavdUk>
+Feedback-ID: i60a14417:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 31 Jul 2026 12:27:51 -0400 (EDT)
+From: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
+To: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	keyrings@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	linux-integrity@vger.kernel.org
+Subject: [PATCH 3/4] mm/secretmem: zeroize secret pages before kdump
+Date: Fri, 31 Jul 2026 18:27:38 +0200
+Message-ID: <20260731162739.158320-4-linux@jaseg.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260731162739.158320-1-linux@jaseg.de>
+References: <20260731162739.158320-1-linux@jaseg.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E88BFA0006
+X-Stat-Signature: zu6gourijzssipep8iebyuoxkrd3ooyk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785515192-456271
-X-HE-Meta: U2FsdGVkX180+qtMY8N53UZNfanVE32x/GD56EMmSEHhLJC8F5zTm/ZBji9g2I32Yk1XnP/Z4jeG4bEXoFpr0VlloroKnPEMSGVmPOUqsVxvjGrzeCNz2CgjuJikANar+GNntTjE89QujelpJ4WDSo6yYTE3JdihKqCLNqLYPFf+9YUzF6eDqredHnntjU1M+jzUf6+TLbLNXNfBjlIcai8Q5BvXESnGKIlPICh79aD0ZBpW7CvbsYwwJiKaADqRFo5YZONF+WOv2PdcCr0yM9W2Rjj6kPOkEGWZiwfsfkcbU0xiuRc5h4sDtsxQDcommdgrKN9Zs3JwojXfAinePywVCDeXkFkF4emRUlJMoVWpWxFTu+fFSwfnLWO1T1B2PnTNIdN0MzkSx4MzydiLN4hJfYksaUO5c//5dXU81IclgVdjj4mNDycCeauhadrFOal6vOLgrzhde5ksInC5W+xZodOw8iPcUU3rkPPehFlUYJZG5c/qrVe1rKrbSeg0QR0YZ44aFY7bwTz8a3UGGzvuFXf2ORYVBBolu4A9tNyPWXRQ0+Pk3cGBjL1rxNMuvRH//GXhnXUnlCyxLIJ8/SSBFzIvuK2P78CdSVeY9TyTEkZJqIxF5/pZ6ir6ecwzOBY8XNtOOfUguDQlMJ9zMzL4dSMa6cp9x68BP0b2NNJR99zDcQjjPwV6CcxzQ2lC7RNpyOUdMo+vc5TQgn/1HeY+8F+Al0IYGcC7tozQKH4CXs/EvAwcgyonVWmXeQMDSlNfr5BD3sC2uGrEWt2Su1ezcAhRspOFWuFKPJDY+kq76t1bZRHq62igT94HJVOYiWmsR6avqJEg2YKV3N7nrkrbudA9PKG6n3O/wIKTbkhXlO4oZUCgEERVtPBC8i+cmjG6P8DrVfr6H+VIltaZIUz5bpPLrcwX6mncCqvgo5csW4x3pJUQ6K9HWua+fp4JEtFsIoHA7e9cmjPAZZw
- Btx8LO5v
- aTP+NQUTo9pKEc6CHzfIKJWzTxSlpJnvAOHqAGWWMVEniXO/S7jByH6Ytn/LIlbzJZnhYlUVZaNGsOXZMzZx9VmuHnt17cQVokzIag+OKgpvlCdkzK9LVKma1RzNB8kAgmGnyCYudsWwXzZDdT1NjOX50/sD8dF3wmHcFXzVvA67JfQEv+FTEIT1mDdmU2kVrq8cvIhl08JTjpdD8JDBvupoNwR2/4EkyVg1H8rqSmLd90XAfBkzckTvDdFpImstxs6juqnGtbH6fbF4MuQEyGbfq0kCzbIzqsYPzxo6XZ6HlPAfuhMFycbt5HNo3j7A9XjPXLo/i15NhSV1211wxqIIe8QDXSXZI75ulcHzOEG4SbWMPrufP8RyMoe48/4dsSfuATCjrqhfbj2+hyYgB+W1NPGvA8+uPa0VFaqfibkezLMHynGzHziOFSxJFCVa1DHTcRCcLHWl39tIZl2Yel1he/yoDWpvS3PIZake/fgFk2zwq4BqbpYc6Bk/PYQMSLwgH8/QRtkr5GYHPEHy/OJzsEOAR8s66nefa/smdkbU+gMqrghMngb7SHuYzq46p8JKNU8jMHaWgl/Ywkhp0KeHeX/TDX9/mdOjUIFa3ypHFq1c3wkEn0lzJ85AnnQjwv/nffkvnWA+jn5qSIXZVvmc4TAYFkBciOIE0Vs6Yz8SNrUuhbJUy0p82AAOcms8uNZ0B
+X-HE-Tag: 1785515273-173949
+X-HE-Meta: U2FsdGVkX1/dOBO3fPXcYLcRIpbfrXbv/hqRoRGJIdWb0v4q8k867BM3Yqxw7NozW0RIgIb/Ad5doVWSgrRQ3oLCYXjoXgq2i1kdv/V/vRSW2UPbAm5m4Z526Loo7j6ejtMHLCmAamtDEn13kCZEIg/WXfbgKHn+fS/ik0OOJDpw2b74MafTAJtA3vKOhqekh0ZQSzKixea+7QJoqh8oHt7J/qmANg037PEKf96err/gnwQ2KUvEZ/HvNA0r+WYMG5+A6iUtESprGeZYFA1WQXUikZRRjayrg6fbXHcP1FWAIk3urUyo+wzQREdh6g6YtqnzpeCm0JB/bTh8WycgQt9cQ/pKWqjrigg4CWz3p5F2djixFAdhfDto6RXRANqmFMoYFOFxP/KWYwkJfFcsowloXZ3waig3a4NUunnJJXeIa4EwrhHBnFg4HOl4zl3k3B4F3U9areJN1HZCw+AL1Si6AKAoM66mwqb1AqpQ3JKTN620B7zmHzjI5B6y/za6W97PRkQbSmqmtojy5ygT8O0KoUiPUoeYKT8ItTcWDQFBfa5G9yeP6+wyLsCVeB1ntcUsB4GtddWyl8uaRou4WSukq7SuSMTeYM2n2BuQtbTAa2ZyTcl3WOaf7TUY80dkwwo1OwJYWn0C2/wAapIKYapW7cM88OQBO3O1C1hXFfwZDiY57QxyVhuxsnK+UNVNB107X5PzIWKcJKA8F31EMwdP1XCI6thgPK8O8htjFH8F7EqH1+kn+8s1DjwMVz8L0SZRgzRoR699WfThqO927q/78tDX3gs7DsXL60CswPmFEzVcbEDcHClmH5eio/HEvo6rGaR45HEtD1oLLPw26GxkTaa3slTfp3rc6spaAmc2dbQ89WjovM7YoGNsTSM2zFEFR4Shzl2P/K5xL3Zta2PvHdA5ASiJ3ToIsvv5lKT5rA6UJfa/Bzt2QI4JbgNzxNMmIMjYDs9s7GHXqW0
+ tASAlph0
+ Tc6zITdOtpleQqih17svXVflDY3Thjxy9RpuqE91dvLNFt4vXEcC7o7zGCxwEmtTGo9xkqkDmdiDFkZXjw0gFSFevWuzDToSnnG+MROGqDenkhsMkBZqiLZnMDZ6XXSa3AVCBJWAFNv4l+vGIaSxBIotERZqW6rhNd0thFvu/5L2uWpDrMIPWtAHkakqXhtZNUcFysdGG51jG9vBkFgs4zUSQNgY0trJbwwLn1zwlxlW92FnvH+mjQjYVz6jeZDy9Xp9GOR6AhS1hgevUtRgxyMNAj3cknb5V2U4BQoL5PeOFv8kum1QvnQVKfNw8k0GXo5zp9OfUayzRUFPByEB4fukh7Xht63R95ZYn8AWewSF/0Ck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,95 +135,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026, Xiaoyao Li wrote:
-> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
-> > Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> > 
-> > > On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
-> > > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > > index 33c9830190e2e..89cf922232920 100644
-> > > > --- a/virt/kvm/guest_memfd.c
-> > > > +++ b/virt/kvm/guest_memfd.c
-> > > > @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> > > >    EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
-> > > > 
-> > > >    #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> > > > +static bool kvm_range_is_private(struct file *file, pgoff_t index,
-> > > > +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
-> > > > +{
-> > > > +	struct inode *inode = file_inode(file);
-> > > > +	pgoff_t last = index + nr_pages - 1;
-> > > > +	struct maple_tree *mt;
-> > > > +	void *entry;
-> > > > +
-> > > > +	if (!gmem_in_place_conversion)
-> > > > +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
-> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
-> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> > > > +
-> > > > +	mt = &GMEM_I(inode)->attributes;
-> > > > +	mt_for_each(mt, entry, index, last) {
-> > > > +		if (kvm_gmem_interpret_entry(inode, entry) !=
-> > > > +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> > > > +			return false;
-> > > > +	}
-> > > > +	return true;
-> > > > +}
-> > > > 
-> > > >    static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-> > > >    				struct file *file, gfn_t gfn, struct page *src_page,
-> > > > @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-> > > > 
-> > > >    	folio_unlock(folio);
-> > > > 
-> > > > -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
-> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
-> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-> > > > +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
-> > > 
-> > > It's checking if a single gfn is private.
-> > > 
-> > 
-> > But with huge page support we'd need to check a range of gfns... I guess
-> > there's the argument of not keeping complexity for the future, but in
-> > this case it's undoing functionality for this series and probably adding
-> > it back later.
-> 
-> let's leave the work for huge page support in the future.
+Register a CRASH_ZEROIZE notifier that wipes secretmem folios. As a
+result, when CONFIG_CRASH_ZEROIZE is set, secretmem areas will be
+cleared before the kdump kernel is kexec'ed.
 
-It's not just for hugepage support, the core functionality is used in this series
-by __kvm_gmem_set_attributes() in:
+Zeroization runs after the other CPUs have been stopped, so the page
+cache cannot be mutated concurrently and the xarray may be walked
+without taking the i_pages lock. This is a best effort, defense in depth
+measure. s_inode_list_lock is taken with trylock only. If a CPU was
+stopped mid-modification the list may be inconsistent, and this late
+into the panic path, there's nothing we can do about it.
 
-  KVM: guest_memfd: Return early if range already has requested attributes
+Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
+---
+ mm/secretmem.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-> > > We can just use kvm_mem_is_private()? And it seems can be a separate patch.
-> > > 
-> > 
-> > Do you mean that this refactoring could be a separate patch? I could
-> > refactor out kvm_range_is_private() in a separate patch, then put in the
-> > mt_for_each() check in this patch together as part of all the rest of
-> > the "wiring".
-> > 
-> > I considered that but it seemed like the refactoring was too small to
-> > separate out into another patch when the mt_for_each() part is going to
-> > be in this patch anyway.
-> > 
-> > Or, I could add an earlier patch to first replace the call to
-> > kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
-> > then this wiring patch would be simpler.
-> > 
-> 
-> This is what I meant. An earlier patch to just replace
-> kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we can
-> drop this 'big' diff in this patch.
-> 
-> If kvm_range_is_private() is useful/required by huge page support, then let
-> the huge page series to introduce it. It has nothing to do with the in-place
-> conversion series.
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index d29865075b6e..53f629d6633c 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -13,9 +13,11 @@
+ #include <linux/bitops.h>
+ #include <linux/printk.h>
+ #include <linux/pagemap.h>
++#include <linux/notifier.h>
+ #include <linux/syscalls.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/secretmem.h>
++#include <linux/crash_core.h>
+ #include <linux/set_memory.h>
+ #include <linux/sched/signal.h>
+ 
+@@ -187,6 +189,50 @@ static const struct inode_operations secretmem_iops = {
+ 
+ static struct vfsmount *secretmem_mnt;
+ 
++#ifdef CONFIG_CRASH_ZEROIZE
++/* Called far into vpanic from crash_core.c with other CPUs stopped and
++ * preemption disabled
++ */
++static int secretmem_crash_zeroize(struct notifier_block *nb, unsigned long
++		action, void *data)
++{
++	struct super_block *sb;
++	struct inode *inode;
++
++	if (!secretmem_mnt)
++		return NOTIFY_DONE;
++	sb = secretmem_mnt->mnt_sb;
++
++	/* If the list was modified in the exact moment we panic'ed, it might be
++	 * in an inconsistent state that would be unsafe to iterate. If we can't
++	 * get the lock, too bad, that's all we can do here.
++	 */
++	if (!spin_trylock(&sb->s_inode_list_lock)) {
++		pr_crit("crash_zeroize: can't acquire secretmem superblock lock.\n"
++			 "crash_zeroize: skipping zeroizing secretmem.\n");
++		return NOTIFY_DONE;
++	}
++
++	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++		XA_STATE(xas, &inode->i_mapping->i_pages, 0);
++		struct folio *folio;
++
++		/* no need for locks if we're burning down the house :) */
++		xas_for_each(&xas, folio, ULONG_MAX) {
++			if (xas_retry(&xas, folio) || xa_is_value(folio))
++				continue;
++			inode->i_mapping->a_ops->free_folio(folio);
++		}
++	}
++	/* off to kexec()! */
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block secretmem_zeroize_nb = {
++	.notifier_call = secretmem_crash_zeroize
++};
++#endif /* CONFIG_CRASH_ZEROIZE */
++
+ static struct file *secretmem_file_create(unsigned long flags)
+ {
+ 	struct file *file;
+@@ -263,6 +309,10 @@ static int __init secretmem_init(void)
+ 	if (IS_ERR(secretmem_mnt))
+ 		return PTR_ERR(secretmem_mnt);
+ 
++#ifdef CONFIG_CRASH_ZEROIZE
++	atomic_notifier_chain_register(&crash_zeroize_notifier_list, &secretmem_zeroize_nb);
++#endif
++
+ 	return 0;
+ }
+ fs_initcall(secretmem_init);
+-- 
+2.53.0
 
-If it weren't for the fact that the range-based search is used later in this
-series, I would 100% agree with Xiaoyao.  But since the core logic is used and
-needed elsewhere, and because kvm_range_has_vm_memory_attributes() takes a range,
-my vote is to provide the plumbing now, even though a small portion of it isn't
-strictly necessary.
 
