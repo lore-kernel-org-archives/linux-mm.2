@@ -4,126 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB004C5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 16:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B79C5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 16:07:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAEA6B0095; Fri, 31 Jul 2026 12:05:30 -0400 (EDT)
+	id D8D416B0096; Fri, 31 Jul 2026 12:07:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA2626B0096; Fri, 31 Jul 2026 12:05:30 -0400 (EDT)
+	id D645F6B009B; Fri, 31 Jul 2026 12:07:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B76F6B0099; Fri, 31 Jul 2026 12:05:30 -0400 (EDT)
+	id C79F16B009D; Fri, 31 Jul 2026 12:07:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 65E8B6B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 12:05:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69AB4120483
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:05:28 +0000 (UTC)
-X-FDA: 85049546736.19.8183226
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AB7781A000C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:05:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TjulweAB;
-	spf=pass (imf19.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D5436B0096
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 12:07:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 255E916046A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:07:31 +0000 (UTC)
+X-FDA: 85049551902.14.4E16B39
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 41C6AC0007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:07:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOCI1flx;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785513925;
+	s=arc-20220608; t=1785514049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ryHo/Pk85RB1et4y6uESf2yi2i/ESrF3Kar7ZIFnpUk=;
-	b=Pp6GeHGIwcVc4a2rVvrAnov598nRpgA8BlIttWBLzrRmpUArz3DYOPf933PEYWrZ50hA5c
-	LN5EECHz2oW36IyUT0ov4Ary3S3Fts3QEWuEyRLm+snHACT2pdVWv9xz8hinUKyBoH+jxP
-	rxYZpxLJntP9k34lIcbKaZrCYcmQXPk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WYefLO9Ts6Muw+5ON5ixE0yWQxfz5EGL7n7UPE84iiM=;
+	b=U4NYD6wmrbvyG9nciTEFbuMlPftsV5SKtcu3DOil/vjGTJJ8hBefhF4UNGgGEPz3ONWHZT
+	HGF3SP1lde5Ffa7wU6VxBIQBzftUiKelVUJy3WmotQGrWph1YkOkjZUfiMX+d5SuTTkBXw
+	lHb4iWiigSnTYkAbogBESxgh2H76HLo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785513926;
-	b=ncewGY8d4lgRntkiwIg84/NpjHP7jE3jmQiUe/pNwxig4e8j+wRVcMRqeLjA34NRNNtMPw
-	zpEjx7RG/DaaLPszVco3m1YdKuNfLc7wDH814qbfneQNc1zwld2GAQk7efv09fOWMls8yN
-	7e1Psq8ElTNdr71Kqdwlg1OGMJtWdIM=
+	t=1785514049;
+	b=JlhwPutlNZ1MV0fM5PrCaJtksSH1tFWhX4IEG4oZvYKKxmBVTti10HIpYl2BFmoAzc2K8i
+	0MpV98RIsZPO7tKaPZGSEYE6D0yWEOqP4RYAU2JEn7IAyEphEnT9n5BHHQNMXzxAAyOoTy
+	BNN2rw8jyHHp2d4YqgeBmK5JeXLPEOQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TjulweAB;
-	spf=pass (imf19.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785513925;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ryHo/Pk85RB1et4y6uESf2yi2i/ESrF3Kar7ZIFnpUk=;
-	b=TjulweABoKDR4TCiLBYuuiHGXCsGlbyuQSCoj0Do7od2KD8Qk+6yHES8FDw2Aj1REq99Jw
-	VjUpe1e4Fla/szeQz7n5zB8p9i9RzQYkqoo1a2+Rms5DmSmJ40WMrSwF/UtoijD+Iln6Af
-	6fdbNRcVCjGjhkzqvmPlT+bra3Agijw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-Tcp7d96LMy-sZHniQWAYqg-1; Fri, 31 Jul 2026 12:05:23 -0400
-X-MC-Unique: Tcp7d96LMy-sZHniQWAYqg-1
-X-Mimecast-MFC-AGG-ID: Tcp7d96LMy-sZHniQWAYqg_1785513922
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c1f548718d0so151433066b.0
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:05:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785513922; x=1786118722;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ryHo/Pk85RB1et4y6uESf2yi2i/ESrF3Kar7ZIFnpUk=;
-        b=sFnO0PGpdIqVDqvP1XiZIbCjqDS6vbFNZ2CVwjKnh1DjSmAYHxe1B42IbYAcW6It70
-         kitmePjxdTisq0sihZ0BKlnyirVgTxVNuGlSObtasDafp8Ow5ULZN0k6lR8k7memh9uV
-         XTOEzikGqJSbgfaAQ/9K+HB84tUvtYSVE7tz63fRUVzfYpK9mfMnWH6+Ln+VekISBPX8
-         52dLJpjpAhnza9USTp8nZgtzfWA1u6FdnGqkVHwO8DLwevk8XlopGJDl2WXjdlQTSaKE
-         okYha3b0deazbRA/WNpD2W8vio1Z5PEfUcATpzsQEgjjL/6EXLbeD1nwjetmPoniAR0H
-         f7pQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrMI2yq+LdBzDv+gmTeTf5xYm5EJL55Ezon0O4MGsRuGfOO9Na/KE6WUPRkVpk4c7HeSq5hfRKqcg==@kvack.org
-X-Gm-Message-State: AOJu0YzISBY9JCUcaEjeTePMuy+x6VNGVbJO20e8Lz4oVvv4tjIC9K64
-	k19tZ2U/G24YAaZMboc/cEsETj/h25iKvl7n8QD9fbCyznLHyq05q5rA6hCyb9PGE7EmtHaJ6vZ
-	lmpMmxA1Ar4CfoMbDTzkrtfJPJsNEHUp54Ja7WAWWxj+o5z8/FDuJ
-X-Gm-Gg: AR+sD12UJfAv0vA1TFtBX1omAji6sO60UNBacrDFsQGkg297XpZKg1auT+ONHq9SPh3
-	7OD8RSe3048WWzt7t8byTz9mPguCMrHnaLa0Hg+6QbolPm0F3Y6L6xZdfkABI1RWZ9tOSq6gR2n
-	bIKsX7Eyg7XTSG5fQhOrfZlzDMCCYBi5B7jEbnbtHKupalEWyS1LZMQPj8ut3NN575iUCJRfksq
-	VYlrc1mLMn8NgWZOsEN9brEjBpqyDUQhDK3lNH9CqMjqJd2mOw9tsbVFVOjV7s+fVolb/D69voO
-	+Of08euhfn+n+iavSKkb1hvbATfBEYMJcIURB2FS2W6gJjwC5ZTC0bgLEZ3NhGVzRS0rZFGW5d/
-	L1ehrk8fyTqTpXX6TyJ3UZL3Wlkq3hiT1HAIzbT6R74TzuanZEQiD4RhsI/c6x5ehGVJufJ/sXW
-	VwdM0=
-X-Received: by 2002:a17:906:ee81:b0:c15:9709:fb9b with SMTP id a640c23a62f3a-c1fe8373675mr8933766b.44.1785513921877;
-        Fri, 31 Jul 2026 09:05:21 -0700 (PDT)
-X-Received: by 2002:a17:906:ee81:b0:c15:9709:fb9b with SMTP id a640c23a62f3a-c1fe8373675mr8929866b.44.1785513921309;
-        Fri, 31 Jul 2026 09:05:21 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd44542d2sm222203766b.35.2026.07.31.09.05.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 09:05:17 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>,
-	Fei Li <fei1.li@intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	linux-s390@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergio Lopez <slp@redhat.com>
-Subject: [PATCH] mm: pull writability check to follow_pfnmap_start()
-Date: Fri, 31 Jul 2026 18:05:14 +0200
-Message-ID: <20260731160514.1101989-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOCI1flx;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2978240627;
+	Fri, 31 Jul 2026 16:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A9A1F00AC4;
+	Fri, 31 Jul 2026 16:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785514048;
+	bh=WYefLO9Ts6Muw+5ON5ixE0yWQxfz5EGL7n7UPE84iiM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QOCI1flx/yhiDcNB+AZ7CVXNt+dea6b/SPzicEWBd3ke459a4P0p+nvZgcTfyR7l4
+	 Z7eDSlCJW+T9suLuNzCiW2U4dfQSoL83XFE8ty9xGsBFfPf3mb0hPHPx2zMRgWKU1R
+	 mxzeeN1wNUJJ/wHlABxIJDLx/z3HFbOC+atwfY0iPU6gHwSgwQpGPLEyI7mfM3q5i+
+	 jET5L6ISuvEOMx56dRysjbtIcvdlHQk+a1ADsGq4+pvmn7HOfS8GIzDorSAvFBesEE
+	 f5btpZ0HtRYtzlzvs7xJSOS6RzlM8Wc+UBWsHeNajvjkOEY0zG8kbp9K6ELIhzsw5T
+	 bq6t7wVWVd28A==
+Message-ID: <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
+Date: Fri, 31 Jul 2026 18:07:24 +0200
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lCH9R8NpgbrJGk_qI6Tw7gpCwDq89hFiVVdUKxPc6uU_1785513922
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AB7781A000C
-X-Stat-Signature: 7ozahbzcns169as1d3cx4rocyremakoq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
+Content-Language: en-US
+To: "Liam R. Howlett" <liam@infradead.org>,
+ syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, jannh@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ pfalcato@suse.de, syzkaller-bugs@googlegroups.com,
+ Jason Gunthorpe <jgg@ziepe.ca>
+References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
+ <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: w84niqye5ac7irp6rrdc1z77bw4bccox
 X-Rspam-User: 
-X-HE-Tag: 1785513925-866739
-X-HE-Meta: U2FsdGVkX19eDXj218ogNh0+YkHZHovlZG5NEXw0LJTmqbjfvHwQ62xsU8L7QLjx5m0A0qDjBhWekHVwiTC+AfngQBepora/v7IieiazREfD53oEW/xswRgLHeuKWDZukbhMrQcPOyV26BVdZWhC73sI5WM/+fFdUTiTx6c0Wp3Edv+n+9rLaQ+dcDIsqRLHBjgs3oyR65sPev/bbQQiZNIb2kCDBNpi3v/GQsCuPDrccB1RBLp8tWz8+bsTBlvKWHYh3QtWATqoAUKI7/rJcrNxPB3lXszwvEc11yiavCxNacnK3uVYdUeuVLf7uNG2azpKlNqrD5O5fzhBrYT45z+4VzU3Efo2cuIPJvCCFZiWahXNAvZRYdojVLseiGHAMQoZLF0KSXAdG+TQ1yOLKaH5GX2CAH+4tHvUeDExDOdrjptiQsR4BpE5GFUGdByHLI1J7o1VH1m2bnaL4JOW97irXsR5iWgDdowkbXJ0dL2yuIBzBV5BkhEcVw1n8B8/A9lu5GKlbS3vOr9bvVYJC72QVebApUs9zNwDCrg2QCEA08GG7NS0eFnS6dRNqnXobDhpfnJ6B7yHlt7I7a8HDK7HuAvhjpyTPNPtQJOvLryqvgC95lr3ZY4nT/GvzpvZ5sg8aVZQqIwTnfBr0Q52+kaCtmdQFfdH3mv26d60P89MWv4YQKgfRb+gpuiufIq4ejiuLeNGihajjrApdy+CjJ6j0+bBqk9niGqp9wAaoniGzX/UGpdHioTYjUtBLAOF1g7irVnTh3ztU4lpaKG62aduZd7rdCtOv3wcEhrJ6MtN/VTDY1u6W6PAvVw8ywVDUg9evs6CiV6JG4dQ+4lnHaq56EWHtrKg6MBescQ7ikpvmkCuljgEcDD5UiNE2OSeAfXXH8KE9O9TKZT3yL45zg1xQD1G4hiN1ACSANSLFFjkDzNwZpI9jLHp5bzavbW52BsGlmOHLJ1a71p5T/Z
- 9icCxBsR
- yjJADpjGRejwVbKKMSfpG25BuLbuSbiQ9FSMzRU6AT9g+jlGj2IKepjyp+oiI9ELmsVRR6TxVlq5P9OL+5Y2x45hUAxZNHSVLUe+Y9j+A2oAywpi6DvjdNMQwb4UM6Jf4Sbxopnw7EKEkmnrebnb1kEuRCkbT4FXqaftSVuB8oAb99Pjd5EiWbeIFPjJKSTcHmgZYaXTGnEWfcSpfp3nULM5gi34ynpRbwWnUDe26TVSbl5XfqlLwOGpMMHKlY3vUJNO1XI4PLFlCKyBDhovrkcTCj/bPJeXDeE7PfvSSTB/w/NGnDjgE/GDHfhYBS2K95UHS9V0zvz5HJfmWV5mNGb51LkUBubdFk4V294qYRX1oJ9dyzAWfBokIUxxHwIDDN1CDkZ7+0MZXvCf2TNIBZARK6JrvREonyk+vqPqb24cUZ0wLpIEFEb81yK7zmrlAhRFHnklunR5Dy98NNhOJBebWGxGHgDzboP5k+8RqNKUQQvVO6/tScuBMKIMySggf3sFGhUSRXq8o5a7xkI1IfA18PA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 41C6AC0007
+X-HE-Tag: 1785514049-978719
+X-HE-Meta: U2FsdGVkX19P91UrbLORc/CBjcs+8MqoEqDe7wTklrYVAWNPyeeB25WSPH7a52eX61//PNhBKbczD0pts6xmFTqQ9wkTrZ7pzxCxDu5+WJ65meqUd+aS6L1BDFFYumZTG7MpRfRz0d9c6L1CyEqMaO6bEBiaFe5AcZq6gw6WfBFlg+1Qa3a/K34luxady3tIVy2vU3hiJjYyyPVgcndaIOoVXaJvgfTP4OzwEcPQsa3/kYIj+X91qUz9b3PsRxTlVV+xf/hE8d2oAtZGZJGVPDw4Ry8BifMPJGAi5zCVuaGs3P6oURDjHMX9dMqu/Dv11mfZmq7A0gYB1JWeZMU9xcm7n+ClsIAIWk7vbfj+aXnEwnyVK8w2uCdVDYfIwTppb400/sWPLRki6Xx3f3e7BaRyu0JEacFHtU5zIEZPt/Znj28n6Gzmldem8ZgJipAXImc7QTqZMMgIZVzzD9X4ejpZYgVSSoFqHIKwzDkMjtfKsgG+ypX7Qnjcm/zukD5G2qEaYgI/0XfUz1y8+sePPjdJZvgVVglmkn3VQcBD9S8dadDRmSO8S22qeBpFOtgIsS1tAcmthT2WeDCtcl2F6eypkkcB5uAxUCGWYaKx3GYM9K0yHl3B+OvV4MWkDBvNuwk7XpBadBY3GznQAwc0wM73t9j3dGZT4cuGg1wfXhAEdAhO19QEw5JWCwgTrp2hWMzHrlu8DvN6UVWpMwe+TDhVvxTqdIlPVIwM7/T4g4Y5iN+Lb2z+kcW282VVDfn+3zrSSBd/NxfY1dHgPmVYJKJzbzXLW8U26daCrS0kjjUtYBvd2Y5z2SzaYpWzAGVnwqvImEe98YMco9vJ/V5ZyaND6k0z6g+kVGH+/n1VXXtrX3DWZdlZDFDTKhnCjJA4R1eWzl49B8Gi67xU7r7o4b4YA1xd3cD7I7RxmhCByjTTJFMp8rDqOdVwHqv5/q8kXDvexNQ7OaDpb4D6p54
+ kYicwRid
+ 4grfhdD8CZviJfxNpzzUaHRGojnYEmNz5FbX8ZMPv4zw0QQA5yK5C/51PZ/1u5rM38Etl78SATJkntZr0k2iJX5tbPQB2oWI6XlyDm7rnJ2xrY1LhQDiA8KtPwKyry44SdLqjqUxpdpS8mK1b9HSANjPTMPZ6+ztprRJ4MyjmoTjTTJznVXWK6nfIWlvxVn0Mhw/HZUnqRcDra08SegxigGNttRdLzN6JmKYIcNx8sGT+4qviTQY3mNmgTIk8nS0AJMg3q06GgWO8DE9YhYHvUMkyvKcHounxTOKyV7/x7D+a+9HOwsNXq+tPBIfzpcFRkHA6VnnGOAl8sEMULhn8APxCJyH24lBrGGImZcP4jbBRiekTsQF6pkrjnbfxYAtG2BgZDCjzHEtt/ijk3hj/w5zceV0nnPRrDQRztmKhMxNem/RmLKFW9S6zeV1rFNsOjyMndGEd+d7Jed99tJKwGGZWVMEBWmkqRbdm7MWqbGTSx/1e3L83afp5JvSNLDx2EjDwDAPXxaKBUfzouS6O240CmQxDCbOdPURsjYpnu9T3o3C0rb4HSA5cz24Ie5iHdVSd3K54fDDqF+S1koQs3+uoxWsY16NMAsl5cwMIIjqMvurwd1yLSKQiMbyuNXeCiCgZ4n86PIrtjSiqxQWkXKc2PW5UGFb7NhcFg/0A+HH8v/3O2uiyhdkuvSIH8NW5PfDIuYwP+/cGLAh8m7kNW9K6KnFLRll7WiRUO9WgRm/pV18x43h82s2Sh6rjundUpvqDD4GtTFUCEQBC/usbPbgqvMMbsZcFj1N1KKkYAfff0IAWWq+nb8WX7to/QPU4SCWc5pUn9OlWpaXOgx3+jnL459hwOFL1zp2wL00kglhGLNAENVSlJfRjXuDpwlY6jBIV1oyfJOY6hvZdQs/i9S+bl+VyKhRBTGXB0CGTIlIKG6gW7K9wSGpMAX0pVD7lbFJZTZFm9voQJjYoYERWj+xmsEYN
+ g376fXrW
+ 6owjszfEXf3aHrnU+LDhcsQpKNdSH39vx0h6jMjmpFj8AXRSVzhb8+t6hLNGqz3pQ/oVi94p5J203eZB+IYf4M/GSTA6RqU4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,350 +138,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All callers of follow_pfnmap_start() except s390_pci_mmio_write() are
-following it, if they are doing a write, with a check that args.writable
-is true; for s390_pci_mmio_write() that's a bug.  Most of them return
--EFAULT if it is not, but because follow_pfnmap_start() returned success,
-they do not attempt to upgrade the page from read-only to read-write
-with fixup_user_fault().
+On 7/31/26 17:59, Liam R. Howlett wrote:
+> On 26/07/31 12:30AM, syzbot wrote:
+>> Hello,
+>> 
+>> syzbot found the following issue on:
+>> 
+>> HEAD commit:    cc2b5f627e8c Add linux-next specific files for 20260714
+>> git tree:       linux-next
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=15ce5632580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=2290ccbf984c524f
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=78a7af91b68fc6394771
+>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=179151b9580000
+>> 
+>> Downloadable assets:
+>> disk image: https://storage.googleapis.com/syzbot-assets/6836f8efb1da/disk-cc2b5f62.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/0109d3477cc7/vmlinux-cc2b5f62.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/c2e49e350bbf/bzImage-cc2b5f62.xz
+>> 
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com
+>> 
+>> ------------[ cut here ]------------
+>> !mas->sheaf && !mas->alloc
+>> WARNING: lib/maple_tree.c:5751 at mas_nomem+0x1cc/0x210 lib/maple_tree.c:5751, CPU#0: udevd/5627
+>> Modules linked in:
+>> CPU: 0 UID: 0 PID: 5627 Comm: udevd Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+>> RIP: 0010:mas_nomem+0x1cc/0x210 lib/maple_tree.c:5751
+>> Code: 4c 89 ff e8 d6 85 ea f6 49 c7 07 00 00 00 00 b0 01 e9 95 fe ff ff e8 f3 2d 7e f6 90 0f 0b 90 e9 2b ff ff ff e8 e5 2d 7e f6 90 <0f> 0b 90 e9 77 fe ff ff 89 d1 80 e1 07 80 c1 03 38 c1 0f 8c ce fe
+>> RSP: 0018:ffffc9000562f8f0 EFLAGS: 00010293
+>> RAX: ffffffff8b4775cb RBX: 1ffff92000ac5fbf RCX: ffff8880366e3e80
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+>> RBP: 0000000000000cc0 R08: 00000000ffffffff R09: 1ffffffff1ca1a86
+>> R10: dffffc0000000000 R11: fffffbfff1ca1a87 R12: dffffc0000000000
+>> R13: ffffc9000562fe18 R14: ffffc9000562fde0 R15: ffffc9000562fdf8
+>> FS:  00007f9021203880(0000) GS:ffff8881259f2000(0000) knlGS:0000000000000000
+>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> CR2: 000056467bb0d750 CR3: 0000000046416000 CR4: 00000000003526f0
+>> Call Trace:
+>>  <TASK>
+>>  mas_store_gfp+0x37a/0x820 lib/maple_tree.c:4987
+>>  vma_iter_clear_gfp include/linux/mm.h:1674 [inline]
+>>  do_vmi_align_munmap+0x30c/0x4d0 mm/vma.c:1644
+>>  do_vmi_munmap+0x252/0x2d0 mm/vma.c:1697
+>>  __vm_munmap+0x241/0x3e0 mm/vma.c:3347
+>>  __do_sys_munmap mm/mmap.c:1079 [inline]
+>>  __se_sys_munmap mm/mmap.c:1076 [inline]
+>>  __x64_sys_munmap+0x60/0x70 mm/mmap.c:1076
+>>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>>  do_syscall_64+0x17b/0x530 arch/x86/entry/syscall_64.c:85
+>>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>> RIP: 0033:0x7f9021368097
+>> Code: 73 01 c3 48 8b 0d 61 2d 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 31 2d 0d 00 f7 d8 64 89 01 48
+>> RSP: 002b:00007ffeaf32d0a8 EFLAGS: 00000206 ORIG_RAX: 000000000000000b
+>> RAX: ffffffffffffffda RBX: 000056467bad9bf0 RCX: 00007f9021368097
+>> RDX: 0000000000000000 RSI: 00000000009480e8 RDI: 00007f90208ba000
+>> RBP: 000056467bad9910 R08: 000056467baec140 R09: 0000000000000006
+>> R10: 0000000000000000 R11: 0000000000000206 R12: 00005646569e2588
+>> R13: 00007ffeaf32d130 R14: 0000000000000000 R15: 0000000000000000
+>>  </TASK>
+> 
+> 
+> Okay, so I'm going to change this warn_on again.
+> 
+> The plan is to:
+> 1. Make mas_erase() and mtree_erase() use __NO_FAIL on retry.
 
-Pull the check directly into follow_pfnmap_start() through another
-input parameter args.write_fault; this eliminates the need to do it in
-the caller and, for callers that do use fixup_user_fault(), lets it
-attempt to upgrade the page.
+__GFP_NOFAIL to be precise.
 
-The change in return code to -EFAULT is okay:
+> 2. Remove the warning so that any failures won't cause the warning.
+> 3. Make mas_store() use __NO_FAIL on retry, like mas_erase().
+> 4. Add the check for locks that cannot sleep to mas_store().
+> 
+> Basically any caller that cannot correctly return the failure will avoid
+> failing by allocating with __NO_FAIL.  This means the warning is not
+> necessary.
 
-- s390 is the only one to have a functional change in this respect;
-  but EINVAL is only documented for "Invalid length argument", while
-  "The address in mmio_addr is invalid" should already return EFAULT
-  (https://www.man7.org/linux/man-pages/man2/s390_pci_mmio_read.2.html)
+Sounds good.
 
-- for VFIO and ACRN, -EFAULT was returned already
+> Thanks to Vlastimil and Pedro for the help on the plan.
+> 
+> Summary of previous conversation is here:
+> https://lore.kernel.org/all/20260618152451.GE231643@ziepe.ca/
 
-- for KVM, -EFAULT is eaten
+Yeah, unfortunately, "too small to fail" is a lie, because in some cases it
+can fail (such as the task itself becoming oom killer victim) or any of the
+other conditions that can cause __alloc_pages_may_oom() return with
+*did_some_progress == 0.
 
-- for generic_access_phys() the caller is __access_remote_vm()
-  which does not care about the error code.
+And syzbot knows how to remind us of this, using fault injection.
 
-Reported-by: Sergio Lopez <slp@redhat.com>
-Link: https://lore.kernel.org/kvm/CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=bEHmfnG54qyBAHFg@mail.gmail.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
-	Sergio, this is half of the fix for your issue.  Please
-	test both patches together if possible.
-
- arch/s390/pci/pci_mmio.c        |  2 ++
- drivers/vfio/vfio_iommu_type1.c | 17 +++++----
- drivers/virt/acrn/mm.c          | 10 +-----
- include/linux/mm.h              |  3 ++
- mm/memory.c                     | 62 ++++++++++++++++++++-------------
- virt/kvm/kvm_main.c             | 22 ++++++------
- 6 files changed, 64 insertions(+), 52 deletions(-)
-
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 51e7a28af899..526f80b8fb3b 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -180,6 +180,7 @@ SYSCALL_DEFINE3(s390_pci_mmio_write, unsigned long, mmio_addr,
- 
- 	args.address = mmio_addr;
- 	args.vma = vma;
-+	args.write_fault = true;
- 	ret = follow_pfnmap_start(&args);
- 	if (ret) {
- 		fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
-@@ -332,6 +333,7 @@ SYSCALL_DEFINE3(s390_pci_mmio_read, unsigned long, mmio_addr,
- 
- 	args.vma = vma;
- 	args.address = mmio_addr;
-+	args.write_fault = false;
- 	ret = follow_pfnmap_start(&args);
- 	if (ret) {
- 		fixup_user_fault(current->mm, mmio_addr, 0, NULL);
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index c8151ba54de3..9ee92820b4de 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -541,7 +541,11 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
- 			    unsigned long vaddr, unsigned long *pfn,
- 			    unsigned long *addr_mask, bool write_fault)
- {
--	struct follow_pfnmap_args args = { .vma = vma, .address = vaddr };
-+	struct follow_pfnmap_args args = {
-+		.vma = vma,
-+		.address = vaddr,
-+		.write_fault = write_fault
-+	};
- 	int ret;
- 
- 	ret = follow_pfnmap_start(&args);
-@@ -563,15 +567,10 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
- 			return ret;
- 	}
- 
--	if (write_fault && !args.writable) {
--		ret = -EFAULT;
--	} else {
--		*pfn = args.pfn;
--		*addr_mask = args.addr_mask;
--	}
--
-+	*pfn = args.pfn;
-+	*addr_mask = args.addr_mask;
- 	follow_pfnmap_end(&args);
--	return ret;
-+	return 0;
- }
- 
- /*
-diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
-index 5bca500a83e0..b057e78ef3f4 100644
---- a/drivers/virt/acrn/mm.c
-+++ b/drivers/virt/acrn/mm.c
-@@ -177,7 +177,6 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 	vma = vma_lookup(current->mm, memmap->vma_base);
- 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
- 		unsigned long start_pfn, cur_pfn;
--		bool writable;
- 
- 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
- 			mmap_read_unlock(current->mm);
-@@ -188,6 +187,7 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 			struct follow_pfnmap_args args = {
- 				.vma = vma,
- 				.address = memmap->vma_base + i * PAGE_SIZE,
-+				.write_fault = !!(memmap->attr & ACRN_MEM_ACCESS_WRITE),
- 			};
- 
- 			ret = follow_pfnmap_start(&args);
-@@ -197,16 +197,8 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 			cur_pfn = args.pfn;
- 			if (i == 0)
- 				start_pfn = cur_pfn;
--			writable = args.writable;
- 			follow_pfnmap_end(&args);
- 
--			/* Disallow write access if the PTE is not writable. */
--			if (!writable &&
--			    (memmap->attr & ACRN_MEM_ACCESS_WRITE)) {
--				ret = -EFAULT;
--				break;
--			}
--
- 			/* Disallow refcounted pages. */
- 			if (pfn_valid(cur_pfn) &&
- 			    !PageReserved(pfn_to_page(cur_pfn))) {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..34c79b5fcb9b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3136,9 +3136,12 @@ struct follow_pfnmap_args {
- 	 * Inputs:
- 	 * @vma: Pointer to @vm_area_struct struct
- 	 * @address: the virtual address to walk
-+	 * @write_fault: if true, fail with -EFAULT unless the mapping is
-+	 * writable
- 	 */
- 	struct vm_area_struct *vma;
- 	unsigned long address;
-+	bool write_fault;
- 	/**
- 	 * Internals:
- 	 *
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..40997a26846f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6786,12 +6786,15 @@ int __pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
- }
- #endif /* __PAGETABLE_PMD_FOLDED */
- 
--static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
--				     spinlock_t *lock, pte_t *ptep,
--				     pgprot_t pgprot, unsigned long pfn_base,
--				     unsigned long addr_mask, bool writable,
--				     bool special)
-+static inline int pfnmap_args_setup(struct follow_pfnmap_args *args,
-+				    spinlock_t *lock, pte_t *ptep,
-+				    pgprot_t pgprot, unsigned long pfn_base,
-+				    unsigned long addr_mask, bool writable,
-+				    bool special)
- {
-+	if (!writable && args->write_fault)
-+		return -EFAULT;
-+
- 	args->lock = lock;
- 	args->ptep = ptep;
- 	args->pfn = pfn_base + ((args->address & ~addr_mask) >> PAGE_SHIFT);
-@@ -6799,6 +6802,7 @@ static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
- 	args->pgprot = pgprot;
- 	args->writable = writable;
- 	args->special = special;
-+	return 0;
- }
- 
- static inline void pfnmap_lockdep_assert(struct vm_area_struct *vma)
-@@ -6820,8 +6824,9 @@ static inline void pfnmap_lockdep_assert(struct vm_area_struct *vma)
-  * @args: Pointer to struct @follow_pfnmap_args
-  *
-  * The caller needs to setup args->vma and args->address to point to the
-- * virtual address as the target of such lookup.  On a successful return,
-- * the results will be put into other output fields.
-+ * virtual address as the target of such lookup, and optionally set
-+ * args->write_fault to require a writable mapping.  On a successful
-+ * return, the results will be put into other output fields.
-  *
-  * After the caller finished using the fields, the caller must invoke
-  * another follow_pfnmap_end() to proper releases the locks and resources
-@@ -6844,7 +6849,8 @@ static inline void pfnmap_lockdep_assert(struct vm_area_struct *vma)
-  *
-  * This function must not be used to modify PTE content.
-  *
-- * Return: zero on success, negative otherwise.
-+ * Return: zero on success, -EFAULT if @args->write_fault was set but the
-+ * mapping is not writable, -EINVAL if there is no mapping at all.
-  */
- int follow_pfnmap_start(struct follow_pfnmap_args *args)
- {
-@@ -6857,6 +6863,7 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 	pud_t *pudp, pud;
- 	pmd_t *pmdp, pmd;
- 	pte_t *ptep, pte;
-+	int r = -EINVAL;
- 
- 	pfnmap_lockdep_assert(vma);
- 
-@@ -6890,10 +6897,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 			spin_unlock(lock);
- 			goto retry;
- 		}
--		pfnmap_args_setup(args, lock, NULL, pud_pgprot(pud),
--				  pud_pfn(pud), PUD_MASK, pud_write(pud),
--				  pud_special(pud));
--		return 0;
-+		r = pfnmap_args_setup(args, lock, NULL, pud_pgprot(pud),
-+				      pud_pfn(pud), PUD_MASK, pud_write(pud),
-+				      pud_special(pud));
-+		if (r)
-+			spin_unlock(lock);
-+		return r;
- 	}
- 
- 	pmdp = pmd_offset(pudp, address);
-@@ -6911,10 +6920,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 			spin_unlock(lock);
- 			goto retry;
- 		}
--		pfnmap_args_setup(args, lock, NULL, pmd_pgprot(pmd),
--				  pmd_pfn(pmd), PMD_MASK, pmd_write(pmd),
--				  pmd_special(pmd));
--		return 0;
-+		r = pfnmap_args_setup(args, lock, NULL, pmd_pgprot(pmd),
-+				      pmd_pfn(pmd), PMD_MASK, pmd_write(pmd),
-+				      pmd_special(pmd));
-+		if (r)
-+			spin_unlock(lock);
-+		return r;
- 	}
- 
- 	ptep = pte_offset_map_lock(mm, pmdp, address, &lock);
-@@ -6923,14 +6934,16 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 	pte = ptep_get(ptep);
- 	if (!pte_present(pte))
- 		goto unlock;
--	pfnmap_args_setup(args, lock, ptep, pte_pgprot(pte),
--			  pte_pfn(pte), PAGE_MASK, pte_write(pte),
--			  pte_special(pte));
-+	r = pfnmap_args_setup(args, lock, ptep, pte_pgprot(pte),
-+			      pte_pfn(pte), PAGE_MASK, pte_write(pte),
-+			      pte_special(pte));
-+	if (r)
-+		goto unlock;
- 	return 0;
- unlock:
- 	pte_unmap_unlock(ptep, lock);
- out:
--	return -EINVAL;
-+	return r;
- }
- EXPORT_SYMBOL_GPL(follow_pfnmap_start);
- 
-@@ -6972,7 +6985,11 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 	int offset = offset_in_page(addr);
- 	int ret = -EINVAL;
- 	bool writable;
--	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
-+	struct follow_pfnmap_args args = {
-+		.vma = vma,
-+		.address = addr,
-+		.write_fault = !!(write & FOLL_WRITE)
-+	};
- 
- retry:
- 	if (follow_pfnmap_start(&args))
-@@ -6982,9 +6999,6 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 	writable = args.writable;
- 	follow_pfnmap_end(&args);
- 
--	if ((write & FOLL_WRITE) && !writable)
--		return -EINVAL;
--
- 	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
- 	if (!maddr)
- 		return -ENOMEM;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..0c4ff223162b 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2939,8 +2939,11 @@ static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
- {
--	struct follow_pfnmap_args args = { .vma = vma, .address = kfp->hva };
--	bool write_fault = kfp->flags & FOLL_WRITE;
-+	struct follow_pfnmap_args args = {
-+		.vma = vma,
-+		.address = kfp->hva,
-+		.write_fault = !!(kfp->flags & FOLL_WRITE),
-+	};
- 	int r;
- 
- 	/*
-@@ -2959,7 +2962,7 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 		 */
- 		bool unlocked = false;
- 		r = fixup_user_fault(current->mm, kfp->hva,
--				     (write_fault ? FAULT_FLAG_WRITE : 0),
-+				     (args.write_fault ? FAULT_FLAG_WRITE : 0),
- 				     &unlocked);
- 		if (unlocked)
- 			return -EAGAIN;
-@@ -2967,17 +2970,16 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			return r;
- 
- 		r = follow_pfnmap_start(&args);
--		if (r)
-+		if (r) {
-+			if (r == -EFAULT) {
-+				*p_pfn = KVM_PFN_ERR_RO_FAULT;
-+				return 0;
-+			}
- 			return r;
--	}
--
--	if (write_fault && !args.writable) {
--		*p_pfn = KVM_PFN_ERR_RO_FAULT;
--		goto out;
-+		}
- 	}
- 
- 	*p_pfn = kvm_resolve_pfn(kfp, NULL, &args, args.writable);
--out:
- 	follow_pfnmap_end(&args);
- 	return r;
- }
--- 
-2.55.0
+> 
+> Cheers,
+> Liam
 
 
