@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D743C55165
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 00:33:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F46C55162
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 01:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC6006B008C; Thu, 30 Jul 2026 20:33:05 -0400 (EDT)
+	id 6EBB36B0088; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C005D6B0092; Thu, 30 Jul 2026 20:33:05 -0400 (EDT)
+	id 69C676B008A; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7B436B0093; Thu, 30 Jul 2026 20:33:05 -0400 (EDT)
+	id 5B2236B008C; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 704726B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:33:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F14BE1402FA
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:33:04 +0000 (UTC)
-X-FDA: 85047197088.18.96CECC7
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2FBB34000C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:33:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mOzkbtEj;
-	spf=pass (imf12.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FF796B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97B3F1C0912
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:46:42 +0000 (UTC)
+X-FDA: 85047382644.25.0479422
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 49AE41C0007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:46:40 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V65hgF+X;
+	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785457983;
+	s=arc-20220608; t=1785462401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jBargylVPH3S+42bvmeBrQWNnoArflrjGcYv77Fa7sQ=;
-	b=wSmcKuagX0A/lhaDWUH3y7u8zYn4E2vIlmzciPmylZB5AEMvgAs8CXmu+aBoawA3Vkw/Uw
-	z5UBhNuntdp/JdVWWq9ykdrf5pPXBFyrerRAbWk52SzbOhgSyayoasQU5FZx2BZ3YnnLKY
-	sEYbeWghK9c5sx54pfWfTsShdi37UU8=
+	bh=dO3PkdIRMlkezl62as+Q47Bf7B4brhEm4xLqBToECdg=;
+	b=tjcYkAPLvPEI3B0YFg0T9Gkm2nMaJg4h6b2OOeFbnqM9VNxq+LvUxEw0EsQyQHtIaqShmU
+	M1xYMrh+naB9Lle6LktHKYhqXKIwWjCAQjZF9SMBzI36GmDPi/M5Ctj93J6Zon/frY1phb
+	bGwRHHD6JmYHKvz5ejJj4DSXdS0Vrt8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785457983;
-	b=S6KzGI9x28OYmsamC33oG6Gc2cEtIf4ZSgNWo6LYuHyiDnn48apqhDNOmMzsUudQEZ3uIV
-	ErrKgPpJ4qwclnlLmOHVIdMRPGH+lz2WBLC9i/XSDX3CGWqaq1boGmMMILB8VrJRsdJayO
-	PO2dwNHAMll8w6QxdzeKsX3UbVioDT8=
+	t=1785462401;
+	b=otoFU//ghigIgUYHJTcSSwZ8mE8AcA/r9GPejfRjuB5htWr4SwbaBt+8Twm1aCmCvbpU7i
+	0RPTIrm3trpegOCcYDV6a/H4WO6UPnABRX7dKUqtPuo4NWTAMDawecr5+egNfkrzBavZJb
+	+1PaTsWunG3liOXP40HqafwjxzQ/Keg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mOzkbtEj;
-	spf=pass (imf12.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso248701a91.1
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785457982; x=1786062782; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jBargylVPH3S+42bvmeBrQWNnoArflrjGcYv77Fa7sQ=;
-        b=mOzkbtEjWao2C9Vgkwfv6IbzKVBBrnyorwrrW0DhjBD1sv2N733X3wSDP59LVQu16f
-         yKWnJAhGeZGWWJGQbRmKnEeRGABMDZSy6cYFGnjpCiTexA0lZ1yZVKp1WLY3yUJSkqLM
-         6xrqfsMnZw11Oqc7yDbJKJyzgVjdzD/wAcz3NXfW6VgHSnLGdjDxIjtstIKBcZWA/3HJ
-         mq/NzS2oMEnYZoTr0P74e379GLZ/HJkfhEOjDdnbKQTB8qxjGtnj6tHuCmGbD1ocWCa1
-         q9Lm7NlG4Nebv6Wb2Hhvrwx0oVdMHDjLUBC3jKq8yyAZbh2HKoWPtY8URFvJ6anH7HMc
-         jNdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785457982; x=1786062782;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jBargylVPH3S+42bvmeBrQWNnoArflrjGcYv77Fa7sQ=;
-        b=nTfkyAZQs7HGv8gpJLf3OxgraabVpww8FsNNsYnv5AmOCWY+x3GVMbTSEApGJoZYPd
-         0FwokpURtZhVzSCAK/X/u/3Ql5WvAwjj9VOX1llpqEHGNYW5JfpLWDA+/VEq0zMI2qfM
-         gUwtUEM2CTEGEjq/Bza/8sjPrEf9PTGxdsuxuKcDt+nYYWNUkc+Ht6Q+/Ypyi2vVWC3O
-         TyTaI/a82ragEMA7tAB+sheWfqXwAO8McVvApuz+yQwPrWcRB9Exm7yab6CgknuutSUP
-         Cp0a+cQNklDH8z7WIFQfwHQRnAW2op8nj/Eiu5BH2UWJ6DrfnUpHGxrk8uC5KWLXsTGm
-         kfxg==
-X-Gm-Message-State: AOJu0YzrQ32ryUxSVDjZkkHvBlahz93vthRwlbr6SOmLUrJMQosnVe+4
-	bcvLqWsPY+aY1KCPZwQY2sIDIpc4msqoNXQIch9ONFOtSb2fIiXVMmbG
-X-Gm-Gg: AR+sD11kfVkq2/QImrAnxTkyPm4HRrMKoxijJKVTl/vMCEiMt2RduBbMOXPEoii5o3o
-	TFeE2mCfbcQccvIhJx9m4IUQ7O6kEYW9jFrBpi/s6uQ3WH16n3/xzty6+dTYVQTpCJT0ElWU2Gx
-	jQoIyZEmAi+4J19OV5E2tN/a3SIOpekiRlwsB1knIsuVjXiqRvPY9gIy80ejomtOWggEU0JesBR
-	/p8i7wXd4pfCR5vvS6IpYvbPaMRjkGJW+DhnmtceIlliex08KgPdIcBgUM0gM1+vmqjvFy0fXSB
-	GDTndF/BvsDck07kXYsgTNA3HHmWt2WzUwur5KtZrFCS/PKzqjWhoLMytHfpPJkIVXIGzIckzlX
-	//EXunDYqVihoW0DOaMttWmItdRbOdIy5xgIOKC8ia0G39gCL38QdHQbNVzyI0URm6fquL2mq8n
-	JVCd6vAVzHM0HG5INPhWHkFjQNBZ37rD3IyETb6fXdAg37HKZ8n8N3KJwzKh2R7tLqtQIrsV89i
-	TV+QCSbfHj5W76f+3zXLa2YhBfjFh7a3Hb3Y6g=
-X-Received: by 2002:a17:90b:4e87:b0:37f:9e21:91d6 with SMTP id 98e67ed59e1d1-38fa76ee9b6mr1342576a91.13.1785457981944;
-        Thu, 30 Jul 2026 17:33:01 -0700 (PDT)
-Received: from NV-J4GCB44.localdomain ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d6c8sm1636301a91.3.2026.07.30.17.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 17:33:01 -0700 (PDT)
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Fri, 31 Jul 2026 08:32:48 +0800
-Subject: [PATCH RFC v2 2/2] mm/zswap: reference the pool by index to shrink
- struct zswap_entry
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V65hgF+X;
+	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <d0fa85a4-53bd-4af9-b275-856ca073bc96@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785462395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dO3PkdIRMlkezl62as+Q47Bf7B4brhEm4xLqBToECdg=;
+	b=V65hgF+XXbx2tPBla+Wuz8xT9Y54R7Zr/SDapDPrGfg0JMMAg+szspXIoIhsNQMdGmEuEy
+	TyvjspXsx/f0HdoLsZZ5XwcwHi9XfjLXcxZ/fIXGgSVGSHKizWRaUTrmA7BnlLZoE7h76o
+	45W2UH6GaTcN/VDi96TczreZcCScRuI=
+Date: Fri, 31 Jul 2026 09:46:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH] mm, memcg: fix memory.peak reset clobbering other fds'
+ watermark
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, David Finkel <davidf@vimeo.com>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, Tejun Heo
+ <tj@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260730115314.1069089-1-ridong.chen@linux.dev>
+ <amt140aXu5tYZxln@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <amt140aXu5tYZxln@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-shrink_zswap_entry_v2-0-0-v2-2-e72083aa8734@gmail.com>
-References: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
-In-Reply-To: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
- Chengming Zhou <chengming.zhou@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Jianyue Wu <wujianyue000@gmail.com>
-X-Mailer: b4 0.13.0
-X-Stat-Signature: ahrs6qprgfkbzsnwu9pzc9knrcr15cx1
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2FBB34000C
-X-HE-Tag: 1785457983-530801
-X-HE-Meta: U2FsdGVkX1/aqgsPF20RDhidDD6wHWVs8VR2DQk7Xq6yMWNhBvODa4elx368pEpvoBXRXi6MJMaNK3jhIJlk4bSoj4+Yyf13P+276re0KcxhVrnqmJry4Z887f10uOX8+UbuPOQz2Ee4o0L0q0WteTrP5glvI6Up0QVFibSmJvgOyEjkj8xZLdxTI+OJVMc0qJm87sZI8RDjXhUM/n8fGjNifGshwYzVXVfKvcH+QhC4jT1ba7tyvDWCdTQv+yOCkGaka65xdvIgmYdg4xYClvz9MiUiSYAJcik5JKHqbHuxXd+GhFjKudVuWOeNR9Yoj4k5z6XaNqCmYMHiCsmQWnyT5tyou7zoj4oG3nljR7Q1YSzzIBfdM07vMYvc9704ehg4P7wEHTrLUp0Z3wQBXTR6Ac2Y1LbAJpkbbAvK18CwEFOSs+Fzb91717/JbHWzNwtYE/vFq0Fvxp9aPlRaxq6f3n8sRtAhkL/K69IV5K+PjYpFPBt59krvPT4AnjojKFnhn9FxWGiWsMmwN2NoZHiosFZUJh2JR2y6K34SMXyGP+yt31CL3nxSEUOgPKh3sNSqsgG+rwYe9tz5ewZ5Jlido8hBvyJH9pBvMtNHNn3m4pMoeNc3q6FPvWvryLViXp5NgHj/5hb7CKhF5vtlB0PSQkJOXWl+cMsjbx7dsnEqhDJY80d4RBOzJxl1SxMSn1jLwkCTTLJ00zi6vOXzyjw6lx38fgWluT+FFlIc0HGtNOkN2rpbYLUVewSumdQh1eHU277ip5cY+x+o73sJu0HMRxwYoC5KFO5aN7jdtDviWe8NAuWSr1IEQ8jXQSVQn/v70SEbDT77OrREqI8lp083B3BHsae7crVCmq1TIqbROvg4Kp5Ehtw1taRKa1rh/1O3LiFpZQTkXCnBIImKaDGVkbXvDYsLSanZ0FVBJDm6flaZXlL+6ddMPYRla/IbKKUwwl4fnDmGGMkJVfp
- e8hx9Hdi
- LqTORKw/sUYfvkDsZeVU8A8EO4zQDLhdZGiJIUUTOvXMTHHDGgog/l8CAOCjcum+NdZ28Cxyy8+8bcYlQac/8QjMijI2L5P4LBPivwqHT2WEVtBMCjbdVXwgHB+NDNjlbcEy51D31xoUrf8rClpEh65gL7TECt5jHK3a1ZA28j0JzyPyJdBU167DzuqeghacfF5zimCj/H3Ir0/DTdAfa9ZeGCBXtqM2deX+/kGa+X+zqogMMyvcvDM2Ow7SqU8D6I8PLXxKBp0ZoncpzSBriU2oy5PMpb1jUTI6E36B6NThVhw6FAnJ53UqpXJsltEoRNEUBanioyMjm8a6gSP4wl9rFesF5TXjk31ksYUZf5dfU5t23qCVjxfl830Dj9dQ1+sHNRrvJRykMpH2dkLv4oW8WwCbmc1u/KgubDqb51VfJa328Fh/o/qqH4NbtSlJeGI7V5tWs0sqlfAskJbqVZopIJIpXe7AOyuV2nFKws8U2OO+ji/4bxU81wIOhURFyUmXlADiLGnevAsw=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 49AE41C0007
+X-Stat-Signature: apdrq8too9ub4xxuoph9bynsjw4986xq
+X-HE-Tag: 1785462400-998769
+X-HE-Meta: U2FsdGVkX1/iulyBhIsOSvevoDDdM/sokWzleL+JzEhzkJZZfTKPw5/RDWHaqS97e84G8J2ohKiTagJNQwYbQVVlzQLo5F4w6kNS5gIcaF3I+uIp/YbWBBOw9py1kDkzMqs+a4gan2hNaFou3KU6MV7++gxm0l6lwUp8m63csNBk4je2D/cSOg3STUXaEEA9OjyE65nh/OsBO8pyBkd14iEzBWsibnbZCg/8UZyPYNk0gZNLQAq2noUKC3GDsH/SBFtjJKaezJBd9chpNiSiZ3kpwi9ShN5QyrQ9VJ8KMDL/cLDu8Wkc3xEX2l+7fseWRZ++bWODSNHqso+UbHf7Ku2G+TVglcqUiRIAwsmh+BrSzuYG7mL29zBDXiGFr0rVhqWkSoi5UpsihYVA1OpZzexcJKS56/s6m8j7gZes/CnZ1ewKow4IsRjson7rx3AZC4qis8WzzWaw8kx4YD2ogXa99wbdQQg8uqLpPs5ksx4PE8YwCKAQx0yAruxq42e/4+gWBflBcrr6fjGgYw97BJA+YBpy2b5YjkW/nIs//f0RkizIiCh4F6R4rsCL/ZmZ6O7WjTQw1Q40zqzylXjkabU6CGGrwT05ZbQM2xm9hgg2beU+jU4whb+MY448KeVnM6SQ+0+BO/zQCV8y3fECK74eJKQ+6UGHc7QOJ0UIPWGT1CdlXMHkMNlvIAlJs2G5qCotpb/LFQWKpZuuhz1uvcdzhPF2cStvehcMQI/1XX+KFeR4L1xblDTWwP0WfcjmarxPM7+/Dh5F7QUvqbwS5l576aS9Gj1H1NisT3NgaIl5L6JU1EK7reN5Exyuh5YZyf5myKWhaV28zXiemOMt590NvdEKGMzNaNnoop3K/ZnpmFAQwnPxKfkR0z3oLrm0MQy8XpB75AHSM6+zwICtBYLUZmSgE/KhUrWBq3cqyS7bxXjCTE/qi2cKJGYvlUrbtN945M8Vfb3Xqli9nH+
+ u9Zs6VEd
+ a0a3ZJzu0nMfpBy3tsOnVobjloQxrzpWAjA/Z004yMxXzffBPgLibY1vcRGQR9sVJY1scu+Wd0ynvVuKUjFBfBbbxhcDCfeKy51RlPESbf9UeU2tkui3p9CdPO/9evCUmGN1G9wKLeP5Cx/snTWVsjrWTbqCQlVly/SFeCGnNgc5LmqqHeWU+LYxx+fFpv9QpUswwOm1mXX9QeoiTW7x43mJ9cgGjPNc+ps28FC+r4GzkDAY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,124 +96,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct zswap_entry is one allocation per stored page, so its size is pure
-overhead.  It currently embeds an 8-byte pool pointer, even though the
-live pools now sit in a small fixed array indexed by a u8 slot number.
+On 7/31/2026 12:03 AM, Johannes Weiner wrote:
+> On Thu, Jul 30, 2026 at 07:53:14PM +0800, Ridong wrote:
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> Writing to memory.peak resets the peak for that fd only. Each fd is a
+>> watcher and reads back max(its own value, the shared local_watermark).
+>>
+>> peak_write() resets by lowering local_watermark to the current usage.
+>> To keep the other watchers' peaks it then walks the watcher list, but it
+>> stores the current usage into them instead of the old watermark. So once
+>> usage has dropped from a peak, a reset on one fd wrongly drags every
+>> other fd's peak down too, even fds that never reset.
+>>
+>> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
+>> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
+>> collapses to 1060 KB although B never reset. With this patch B keeps
+>> reading 410624 KB.
+>>
+>> Fix: save the old watermark before lowering it and use that to floor the
+>> other watchers, so a reset only affects the fd that issued it.
+>>
+>> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>>   mm/memcontrol.c | 7 ++++---
+>>   1 file changed, 4 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 60145aadfc5e..881e7c459c64 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -4692,7 +4692,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>>   			  loff_t off, struct page_counter *pc,
+>>   			  struct list_head *watchers)
+>>   {
+>> -	unsigned long usage;
+>> +	unsigned long usage, old_watermark;
+>>   	struct cgroup_of_peak *peer_ctx;
+>>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+>>   	struct cgroup_of_peak *ofp = of_peak(of);
+>> @@ -4700,11 +4700,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
+>>   	spin_lock(&memcg->peaks_lock);
+>>   
+>>   	usage = page_counter_read(pc);
+>> +	old_watermark = READ_ONCE(pc->local_watermark);
+>>   	WRITE_ONCE(pc->local_watermark, usage);
+>>   
+>>   	list_for_each_entry(peer_ctx, watchers, list)
+>> -		if (usage > peer_ctx->value)
+>> -			WRITE_ONCE(peer_ctx->value, usage);
+>> +		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
+>> +			WRITE_ONCE(peer_ctx->value, old_watermark);
+> 
 
-Replace the per-entry pool pointer with that u8 slot index and resolve it
-through a zswap_entry_pool() helper.  A live entry holds a reference to
-its pool, so the slot cannot be reused under it; the lookup therefore
-needs no RCU read-side section (rcu_dereference_protected(..., true)).
+Hi Johannes,
 
-The u8 fits in the padding after the bool referenced field, shrinking the
-entry from 56 to 48 bytes on x86_64.  This raises objs_per_slab from 73
-to 85 and saves about 2MiB of metadata per 1GiB of data held in zswap.
+Thank you for your reply.
 
-Suggested-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
----
- mm/zswap.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+> Ah, because B was previously reporting the higher local_watermark, and
+> its peer_ctx->value was actually low. Fixing it to current usage is
+> wrong in that case. It must remember local_watermark.
+> 
+> What about if usage is bigger than old_watermark? Then we don't update
+> the peer_ctx just yet. local_watermark is updated and propagated into
+> the peers on the next reset. I guess it's correct, but it's kind of
+> tricky to follow.
+> 
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index b203934d3be8..d4f4db2999f2 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -190,7 +190,7 @@ static struct shrinker *zswap_shrinker;
-  *              writeback logic. The entry is only reclaimed by the writeback
-  *              logic if referenced is unset. See comments in the shrinker
-  *              section for context.
-- * pool - the zswap_pool the entry's data is in
-+ * pool_idx - slot of the zswap_pool that the entry's data is in.
-  * handle - zsmalloc allocation handle that stores the compressed page data
-  * objcg - the obj_cgroup that the compressed memory is charged to
-  * lru - handle to the pool's lru used to evict pages.
-@@ -199,12 +199,22 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
--	struct zswap_pool *pool;
-+	u8 pool_idx;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
- 	struct list_head lru;
- };
- 
-+static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-+{
-+	/*
-+	 * A live entry holds a reference to its pool, so the slot cannot be
-+	 * cleared or reused under it.  This is not an RCU read-side walk.
-+	 */
-+	return rcu_dereference_protected(zswap_pools[entry->pool_idx],
-+					 true /* entry pins pool */);
-+}
-+
- static struct xarray *zswap_trees[MAX_SWAPFILES];
- static unsigned int nr_zswap_trees[MAX_SWAPFILES];
- 
-@@ -807,9 +817,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-  */
- static void zswap_entry_free(struct zswap_entry *entry)
- {
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
-+
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
--	zswap_pool_put(entry->pool);
-+	if (!WARN_ON_ONCE(!pool)) {
-+		zs_free(pool->zs_pool, entry->handle);
-+		zswap_pool_put(pool);
-+	}
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
- 		obj_cgroup_put(entry->objcg);
-@@ -966,12 +980,15 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 
- static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- {
--	struct zswap_pool *pool = entry->pool;
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
- 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
- 	struct scatterlist output;
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
- 
-+	if (WARN_ON_ONCE(!pool))
-+		return false;
-+
- 	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
- 	mutex_lock(&acomp_ctx->mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
-@@ -1007,7 +1024,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %u->%d)\n",
- 						swp_type(entry->swpentry),
- 						swp_offset(entry->swpentry),
--						entry->pool->tfm_name,
-+						pool->tfm_name,
- 						entry->length, dlen);
- 	return false;
- }
-@@ -1500,7 +1517,7 @@ static bool zswap_store_page(struct page *page,
- 	 *    The publishing order matters to prevent writeback from seeing
- 	 *    an incoherent entry.
- 	 */
--	entry->pool = pool;
-+	entry->pool_idx = pool->idx;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
- 	entry->referenced = true;
-@@ -1806,7 +1823,7 @@ static int zswap_setup(void)
- 	struct zswap_pool *pool;
- 	int ret;
- 
--	/* Slot indices are stored in a u8 (pool->idx). */
-+	/* Slot indices are stored in a u8 (pool->idx and entry->pool_idx). */
- 	BUILD_BUG_ON(ZSWAP_MAX_POOLS - 1 > U8_MAX);
- 
- 	zswap_entry_cache = KMEM_CACHE(zswap_entry, 0);
+IIUC, usage > old_watermark shouldn't actually happen, because local_watermark 
+is a running peak maintained by the charge path:
+
+page_counter_charge() {
+[...]
+	if (new > READ_ONCE(c->local_watermark))
+		WRITE_ONCE(c->local_watermark, new);
+[...]
+}
+
+> Would it be easier to understand if we mirrored the max() from
+> peak_show() here?
+> 
+> 	usage = page_counter_read(pc);
+> 	local_watermark = READ_ONCE(pc->local_watermark);
+> 	WRITE_ONCE(pc->local_watermark, usage);
+> 
+> 	peer_watermark = max(usage, local_watermark);
+
+In peak_show() the max we have is:
+	peak = max(fd_peak, local_watermark);
+
+I'd like to clarify that fd_peak here is a different thing from usage. fd_peak 
+is the peak recorded by this fd (ofp->value), not the current usage. So 
+max(usage, local_watermark) isn't really mirroring the max() in peak_show(). 
+it's a different expression.
+
+> 	list_for_each_entry(...)
+> 		if (peer_ctx != ofp && peer_watermark > peer_ctx->value)
+> 			WRITE_ONCE(peer_ctx->value, peer_watermark);
+> 
+> This code hurts my head. No strong feelings either way ;)
 
 -- 
-2.43.0
+Best regards
+Ridong
 
 
