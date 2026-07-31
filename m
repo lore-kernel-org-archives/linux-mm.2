@@ -4,85 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71BB5C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 644E0C55174
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5465E6B00A7; Fri, 31 Jul 2026 16:31:53 -0400 (EDT)
+	id 4D1836B00A9; Fri, 31 Jul 2026 16:32:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F7446B00A9; Fri, 31 Jul 2026 16:31:53 -0400 (EDT)
+	id 482666B00AB; Fri, 31 Jul 2026 16:32:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40CF16B00AA; Fri, 31 Jul 2026 16:31:53 -0400 (EDT)
+	id 3BEDD6B00AD; Fri, 31 Jul 2026 16:32:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C44A6B00A7
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:31:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 837C8160150
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:31:52 +0000 (UTC)
-X-FDA: 85050218064.27.439E2AE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B4B6E40003
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:31:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bq6sNpWI;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 174386B00A9
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:32:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C589A088C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:32:12 +0000 (UTC)
+X-FDA: 85050218904.11.45881F0
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3906B1C0009
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:32:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=T04RxQUV;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785529910;
+	s=arc-20220608; t=1785529930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pWjmH3n1jSqN2OxBU+GvsMdSKEdt6YvjB3RUAiKHypc=;
-	b=sHV9KYOH3bM2cwP5FCdqNLBgoncg8vpnw4YeI7FY54k+yHLnBM3Bw/FjdfbEAMLzQ+SjON
-	0Q3MZnUZqqtU8Wtd33j6liTrjGpf7OxBj5JiVcUJsoZrc2WKq9tJx2q/YY3MCpqO1Zce5i
-	sRvE8qzuUIXSbeCW37E16ArGenK+ma8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785529910;
-	b=SXp9QnSoZjgoZL2sXB17o38be4HUhxIJcCl/jL3poyCfUo4hcqsDRGrjnlIqs+s3xEiTSd
-	Ybo9EyHOrz9jT1PELN79gs8xUJrEYFtKleOrAZToYx2y2o+lDW72uds/5uItXbAN0+3THb
-	5L+37/9sKTr4vkJjwoEGm0Wel9JGFcg=
+	bh=dS/ec/wCqlrAfu657jloZlNicm+FYMAt/H6xV35TRnQ=;
+	b=ObHhBCesggxI6LUIQ7oQbTBTbjCofJANuEZfjPn5iKV7fKosDe2u7NzGIi6rdiklImq1zY
+	OB3yesaUc5bptzqjhoVKVhnuemfSamlJoGoPIRGCNugdBsr6mHoNrQX5ijaQOpgDkRds0M
+	7DGjMNJXte4p0Fe1H0Z0KdlGRUTuWHQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bq6sNpWI;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D9E141500;
-	Fri, 31 Jul 2026 20:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2141F00AC4;
-	Fri, 31 Jul 2026 20:31:49 +0000 (UTC)
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=T04RxQUV;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785529930;
+	b=8F0ZXtZGtE1ZUxzySZ75ilkEtUca9VihT7jZFIFvkkU9RzVpDPe5cEngknKcB4Kfh2my/9
+	m8VeN4RlRcGBLnNYYxNUyyDxkvxSE3vMBjWJikNK5x1VU3RI+1H8As1NJBrLjRPTtRZWvq
+	D3pu/PTOAHLA9TU38nhvOxO9Oir1oXo=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8ef1dc934d1so9107106d6.0
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785529909;
-	bh=pWjmH3n1jSqN2OxBU+GvsMdSKEdt6YvjB3RUAiKHypc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bq6sNpWIjDU/RF+4UMgTybXKuFiWty9pVvPF7RaJxO/L7F9E4a9J9U64Rlkd4a46/
-	 4dsDFOKdHBHRJaV7mQ0qlLYv/ur32hczBNbB3ipSoVQ43SU8gra+Nd6y4M97p0tNx0
-	 IrwAI7UWY1kAgdw2KvRtkk4NlzoNouDSZ8/7u8A0=
-Date: Fri, 31 Jul 2026 13:31:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: baolin.wang@linux.alibaba.com, linux-mm@kvack.org, hughd@google.com,
- vega@nebusec.ai
-Subject: Re: [PATCH v3 1/1] mm: shmem: reject page-aligned fallocate end
- overflow
-Message-Id: <20260731133148.44d0a05cbfad8859c7276e7b@linux-foundation.org>
-In-Reply-To: <1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai>
-References: <1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fewgn97rt5y5wiojsh3rjqjdqy47nakn
+        d=cmpxchg.org; s=google; t=1785529929; x=1786134729; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dS/ec/wCqlrAfu657jloZlNicm+FYMAt/H6xV35TRnQ=;
+        b=T04RxQUVpXQHOh6lT3E4RxuBmWzgD9sQ/2rMtNRVZp2wIqdZvCVjl0932QL+7tKc6L
+         tJ+5Z5lRuKozO1M86Zu95qymvvKG7XxSYfAkMGKLBxCCjWpQ4kD7tuvTtAPzwlvn8dKo
+         eMyAVK9GCwA0mMdnkmDfX7RNISDtn86hMF2veDWhDzMvnzmwbztr9s21IMHwluFwwCEt
+         wbCGG3yMgquu5HoQQE/9b0J6JwpjPPSGaUMmuyFjKBvuiwiJF8Cyl0wzAYB7z4IXWX+3
+         8arHZctajU8f2AhoBNB8GYWYCLloyVxofsjPcFZIq/detEBsT7f2uvKs31XNMUHisROw
+         FGHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785529929; x=1786134729;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dS/ec/wCqlrAfu657jloZlNicm+FYMAt/H6xV35TRnQ=;
+        b=eKF6d+k7TnRCzvKi2GGV81X9Jk8FhBxez+p8ek7HzKdFVd7UrZuZ3XFBnuYB5flXUM
+         8hpjGonAZGe8DsWbxP1sgylSVFlOwLSWcePrSX7H1YKbrxJdyJKiDQPwsSw9KFLmT6OM
+         mNNOVighhHrIzTd4Q6lgmI5jyIPJI69p8wsBqx44qtF68PSH46t4nSOR+dmccunU5TN+
+         q+m4VJY2Qt4vhXoHCRXvYemNoXCf39GTtmnaxZq+GykeXPaKeccOUc6GXEmcIMo0k6x+
+         JhVGqpnKUETj0NxQ2tJ3korpVPkRd6/ZdvHoG4vGhyCV3h5XLPCJrDWARB/9kQyjlFch
+         4A0g==
+X-Forwarded-Encrypted: i=1; AHgh+RqB+nlw9IpV29i27p+WBuq3l4YuYuyILod3IsMgQj3oZVXTP6Mh4NS5ComX6p12/U+TvifXWFHuAQ==@kvack.org
+X-Gm-Message-State: AOJu0YxS+w5vTZ47XnGCgyJ0Si8P4vqVPT5Ev9djvFFTi7AIqfIw74H1
+	s70qLKysa54Y4DZxnvf+Tmgn99lNpJUldJdyT9VcocDoURQdiZ81fTkcpSdeDQUPaJM=
+X-Gm-Gg: AR+sD11E7GUt1yo6LPxjD7IbIZTxX4hI8GgFRajcxWgBpoO2sfHNGPazNEjegW15QGl
+	2KLItPmIbf11pXUlrx0ynZKrcVKOVwndcxjT8sAWMcYHATwZZtspB6epv8dfCJDi3vJmMlDKTpL
+	RcT9DP0xWB4HJZw/xPiyZE4g4a3LfaLNvjrP/q/ZQkI1nMNvBPtCp+c/Z+jaYN61EgHKypiZQx8
+	vd5O/BFLlA/8shlxWNsUb9v0IEBDk55ZgYeKc6dj2yHBwAT3bHky4AI6yTazxF6J3eohDa4baT7
+	FASw4F9uH6U75/4Zd2ikqdrL5WzgnCJnbXWTZUSW2tThY+7wHTEovhSHdHvgjQAaiRCMpQ4ykCy
+	UMqddeb/Ke8PTsAvDWAlRyBX0UY+t/CWlK/F08tPIuX2S5ZR5tv2W7lpaM9SPrW8z7tkapMzPyO
+	554B4Lgyn+VKeECuguuEC97LGyTARAVmm3Y8PF9EpFqvyz9HsJjE7vhqDrlFw=
+X-Received: by 2002:a05:6214:2aab:b0:8f1:74b0:a4ec with SMTP id 6a1803df08f44-9084983b312mr21772296d6.4.1785529929298;
+        Fri, 31 Jul 2026 13:32:09 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908435b6adesm17977316d6.24.2026.07.31.13.32.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 13:32:08 -0700 (PDT)
+Date: Fri, 31 Jul 2026 16:32:07 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Wilson Felipe Pereira <wfelipe@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: zswap: drop list_lru param from zswap_lru_add() and
+ _del()
+Message-ID: <am0GR1Xrwr0e1W0Z@cmpxchg.org>
+References: <20260731053721.1412304-1-wfelipe@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731053721.1412304-1-wfelipe@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B4B6E40003
-X-HE-Tag: 1785529910-165826
-X-HE-Meta: U2FsdGVkX18YuZJRboJ/QGrQLLA0Ln93E6mYrcoxnWZZG/YLwjrnhzy88bXpvEJrLdbp4fuJR3TrcojTpcGgiV979cAxeEKxC0hjMYlTgogSKYdmnQOhjSMxVITrBWGmk2MsIVmGbe65F86pMjsLOhY1txnFsvRCAAf/h18IL7toqMb4e8/E2R/21m5idSxFHZ9kZyqjb3G8vhDoD6fG5ry7NmyTxLD8h+Ouzv+DZGPafUSxhQBp0Z8A4psE8hej7bYydn5vCIiCGu54pZU3/DQSlx9HPe332+cbzuQUEm+TVt8JCeuzzf8YxnPhhdwfRwPkivBVN3rLAkvwB2p2I5ggxEJeVOBGkVhrVcz9RPcx8RZXtKvxslDL8SriKuFy13QjLhQ0jIubb0RI1rmtyji8t8wpGoxJf0z6vBaYSc5zwI5HmecWqo2PQBwghbmehUclbOnMZlNA7UI1xobJwVtKuAzsB5MsDDrAslYAeo3qhzobu0iDJdcva0CspQeB85UnpS+O+rKUTLS1mmbvoOzwHoyMaFWO9VQU+/xoAJidFNBH+NS95r0ckd++ohccyYS5qRP9o8tsMw3uMd7K6oKO4BUTY1GWKnf5u3Yk1VZBMLxK5NTWRWhEtpwHdBovchwLlc6FUcJ4cQhw2kmmjnTICrVcgRo7OdcjB2pqEoOlD04uC8b3xTKTr08A2HXC7Cqca+SpCWR5QQYWO+JBsPVsfbJNhq0t7ies3E5BNrK1X6OaWFFFUVv3WsRIsUrrwWiaWZQzxZ+tcfj5gjoa3ERZGIcBzDzNGkDzCQSIpZB/tn6hceNoGl5RGSQFNIW2PE3E8kaiAyRnqYmCenu6tZl7lkMOjUB9KtQE/uCS6iQ9V69UD87uSnFKbT9TCTZGk6+urxeSfKToajGls7/NVTapL4JTvo+5oPD/9c3MvcpNryw25Qv8m2X6Z3HZEhnmUZYNuzWXVwZ7J/N7FX8
- tNCPIZ/1
- A5uaJnpo3TBEnaYXroJPYht9XfwMO3b46v/FPzyJYTogjljEox2rUGGDWiaG7G6i/9HrNwmG9di7WjrlmfaoiTrNqul8EXvZuP6KIf4qpOtt6NhbO+oaQOlHXmhkjcbrUkru1El6DvN32BxDnafSQvIvhfwFRxN8EwmzOHFs2YrwAN8NFzYWhoBW/JaudK+/HxgIJLKdj7P8HXWbOTvylnhc46pyK9UzOTR9pZUFIKz2jW6N5QJVcLATrhDm13MHzSY8w2MSQbZPQwH0f4fY8YjYlCr/xt9uNpHqigWSt9w17nknd8eVlbnJu4A==
+X-Rspamd-Queue-Id: 3906B1C0009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: uxyybrwm8qtwwafe778899r7nbqqymgx
+X-HE-Tag: 1785529930-629247
+X-HE-Meta: U2FsdGVkX18khuJ3c29DoYnEV7ydwQdzaVBvtFy3bkDS8KlpJtnR07c7o3mG1wv3nilTRarw+c+AcjIKAPtodkWURFId+Fpy6p5kIHAUPuh7gELtrQZl9jsjj44/v8JE8pTsRBv+hPiMCuATJhp9cd2vQlYjoUqsqeIB4KVGS0CSKfavp/QDh2vetp1KIcVk+V2f0HgSlCttS5anr4xjfb2myZjspNyqYiZvxExcniEV1z9KC1toQiLZeU14SVplex1HKoPnSa5BIRFo0LjGsDhFtJSAt8eut2GqrcKBHAjnSTwDQFFLCn7kynEiFJ+T31A82MA7jIVopZ9MZBMu4KyvUQ5Okk9Hxf1fj5u2Xt3lBicUaCWveKh13AYwyThlVE7zcK6Kem0SZ1nCySlOAk7IjPZGv9BuJaRcAKIRmOaaDE1N7kKMsQgLi+65Zb7LycmN1sUgR5TKhmSB+5vwJwMSUDyPfp1luCy+hlak8gAWwM4BuU5hIQ83EMPQl1H6UNS7FjlGK+PFUekGn8XwwrE0U1f1S5hgSF8Mn6pITdo3VgPuU29bfn0jBATm92QkxAP1n0y2ZjCqzElTpRaZ2xt38dDbCQ7Un1diz6H9H9naPhEgX0IUUmt5qonClr5sajaBZw0/hZDHHBqkoImfduy5W+Ds6FGdEbqLc5QvxD1N+PqNOEY8KRA8+pfNPvNa6ONmnNSAW69iHnKa2XD05kSjf30f0kuVHbpIp+9ke2a8vqPBnMnm8qUMMlHpLjzJbe0QufXuFYiiVzNnpznYnxScjyDNMs0WlTZTtp8BlC2Tnv/HincAN6+pb/Dd0QkKLZmRAmoBQc+B0dQkoE59Inkg4d9Ffq/fAFwjbzzTmJz/oA2BhwhsRNCKeBFiXAr9HKxLZe8FrMfYRsXm9kYIIKpWWmURCl4YTHtjW8g6VFx76OgvsVzjCFiIWTx1dJpgKbdRsoDgATCfCF7aA97
+ HBwM6HL3
+ F+vOoivXbwHzow8Tduq26xYFt+ihfmE3pN6Sc1ue/1GEuT+VSU7f7USmVchPplH9hXOLOxuIdhkJdYuBliYgyHTMKTwB4lJauL2VmSX0F/BTmLoktdXoHJd/caU6TJm6T0LUMkU1jv/A4qtoZx2s9bFNfaWwfLPv9tWiqVCd/QT9Kqc1LGxQ1O3E56xtNsIWloHgq1wndNXY7smSHHfqmqQBsn97PYut5IXCcz5d2yhGwPoezu7c5GgjU4qJLuhQ8o33ycSieJlLKy5LFTNpCWIXz56pnX9qy8DWK2ARCqtVsVIhdH0QrCkXmuQQuB6sYoxEZZklSE7jKliTLJVIqExBvcGLj+bRhh7gLd9LsqdaKjN2poQ87rliQ7SPzZxOTuK9wBsdIhKK5S72EVSLktIIHocbyG82Y7KgYQw8scog9K/U9KNZxXPYcyXwvmoOExpysiXCAX1yMt8uxoVjGZBvEj36ZWC5rgRRPjbg1nHK3Ca5+BscstfxBGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,50 +120,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 11:22:51 +0800 Zhiling Zou <zhilinz@nebusec.ai> wrote:
-
-> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
-> then rounds that end offset up to a page boundary before entering the
-> preallocation loop.
+On Fri, Jul 31, 2026 at 05:37:06AM +0000, Wilson Felipe Pereira wrote:
+> Since zswap_lru_add() and zswap_lru_del() are only called with the global
+> zswap_list_lru, remove the redundant list_lru argument and use
+> zswap_list_lru directly.
 > 
-> For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
-> len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
-> the signed loff_t used for the rounded end calculation. If that wrapped
-> value is then converted into a page index, shmem_fallocate() can enter
-> the folio allocation loop with an invalid range.
-> 
-> Use check_add_overflow() when calculating the page-aligned end, and fail
-> before entering the allocation loop if the rounded end cannot be
-> represented.
-> 
+> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
 
-Thanks.
-
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3602,6 +3602,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->  	struct shmem_inode_info *info = SHMEM_I(inode);
->  	struct shmem_falloc shmem_falloc;
->  	pgoff_t start, index, end, undo_fallocend;
-> +	loff_t aligned_end;
->  	int error;
->  
->  	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
-> @@ -3658,8 +3659,15 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->  		goto out;
->  	}
->  
-> +	/* Check for wraparound */
-> +	if (check_add_overflow(offset + len, (loff_t)PAGE_SIZE - 1,
-> +			       &aligned_end)) {
-> +		error = -EFBIG;
-> +		goto out;
-> +	}
-
-AI review suggests that there could be a new overflow condition here.
-
-And it might have found a pre-existing underflow.
-
-	https://sashiko.dev/#/patchset/1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai
-
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
