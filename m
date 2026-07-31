@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03ECC5516D
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 13:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75746C5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 13:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5D46B0088; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
+	id 4F9E76B0093; Fri, 31 Jul 2026 09:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867336B008A; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
+	id 4D2AD6B0095; Fri, 31 Jul 2026 09:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77E106B0093; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
+	id 40FE76B0096; Fri, 31 Jul 2026 09:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 598F86B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:28:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5ED121C09D9
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:28:17 +0000 (UTC)
-X-FDA: 85049150634.26.C12A7EE
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9522D40009
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:28:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E6436B0093
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:39:11 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8EA241203C5
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:39:10 +0000 (UTC)
+X-FDA: 85049178060.09.1496529
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 199AE40005
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:39:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=igU8xHOZ;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785504495;
+	s=arc-20220608; t=1785505149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KuuAkSor1Q1r3ueGHHnlqm/zCLQKZ0M2CuaEJKRudoY=;
-	b=njE41OGGNwIZOaq9OUzNH6Weq548B4c9Gk4D1PEsKx3GHfCGUX4xgkKppbin4HQ1Khp/Kd
-	znBmmEoU3EyUdiPwLYmu8S4kZPwJk3jTSWZDo4xh8KfmjZBWg3BZpcLDm+b8dWNVGgoWZI
-	pnhbFq+SEecm3Nf1qfkbdTArPHXU/6A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785504495;
-	b=yxmbgVrS6uidMvLZKWcJvQ5Xk6JpK58evSoaCm8iBt4L6j9eFDnFRoGgS5Ogdi19cqT6OM
-	qUqfwuCjx1oVp4oXi5ji3YX13rLC50gYc3NGKUsfImkblkeI6Vo/ffT1801ORXL0rMg1YJ
-	21hoYJ79edmbnh49X7JviAxRrIpMlqY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PMsSa8DpHjoOi6gmcOGcxYP4gI70dVR+DdX0H08nrsA=;
+	b=n1x9DwsZ9zphkRxyZkBUTAQcaekq35gzFGIS0Y7mFXQpDdGmSWnKD08Cr3qFqooIbdsO/O
+	xKe3pio/scoKQ9EemfuokQ2OAqu2SWJofUM/Pb3taAEEQyLmQ8N6v3AG4JL9uaR4v4P7/g
+	FihJxnCgUo6YAH46zeN49HpSAADtlX0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	none
-Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF5564042A;
-	Fri, 31 Jul 2026 13:28:09 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id E384117;
-	Fri, 31 Jul 2026 13:27:45 +0000 (UTC)
-Date: Fri, 31 Jul 2026 09:28:25 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, =?UTF-8?B?SsO8cmdlbiBH?=
- =?UTF-8?B?cm/Dnw==?= <jgross@suse.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "James E.J. Bottomley"
- <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
- Stefano Stabellini <sstabellini@kernel.org>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Andrew Morton
- <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, "Aneesh
- Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin
- <ryabinin.a.a@gmail.com>, David Hildenbrand <david@kernel.org>, Pasha
- Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>, Kairui
- Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>, Masami
- Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
- Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, SJ
- Park <sj@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
- Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
- <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>, Johannes Weiner
- <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
- agordeev@linux.ibm.com, ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH RFC 01/11] mm: introduce hw_pte_t for PTE table storage
-Message-ID: <20260731092825.36992dc9@gandalf.local.home>
-In-Reply-To: <9ac33752-b587-4901-b5f2-473e573d7ede@arm.com>
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
-	<20260727164715.2866609-2-usama.anjum@arm.com>
-	<6xah74eadjmo2bozyr62wcxo4hhpsiufx2mshh7tztyy2dzzps@63m327m7pl5u>
-	<9ac33752-b587-4901-b5f2-473e573d7ede@arm.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=igU8xHOZ;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785505149;
+	b=if9OZ4hiKSKOTm9PdVqjfItKos4QRhF7XH+tHA8/Baf+xRC/QlWrkOaka25R/AbfknCRWv
+	IYxTEFJiumPYhcpQ3S406VlAsoBAGyZRD2otY9Gh962YRJLinyuczAGrwAujh7JDRfhGdb
+	alNw3LMUtU0xmdvjA4hqASbiaJ9Wc0Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PMsSa8DpHjoOi6gmcOGcxYP4gI70dVR+DdX0H08nrsA=; b=igU8xHOZNj8+WBM8T2IIVwmwCe
+	gtJ75h//s9qV2OGqD9o4sG187F6HHQeHnWSNY7M3PO1AVW3dZnWPL1FKD2cihapIWAdEFRCCEg8eb
+	OVqiw/9BCu/zYeEhQLGl3VqkTF+yhYHdiW1WieoRhngC6Jao6ypH7+6XZHaf4T7EbP8gn1+FfhSGI
+	x/kiUQ4Vl6KI4m3dK8iL1f7KQPVWo81uaXr+qfxLtnZu4mWT7aZWURHvBIpc7HW8nGWFqCq3eZm/l
+	cJiguOAdO9Lal5tdBWQwRyoo7xfSphC199vM9u0kenu/ARmzPGF4Rptfdpyr5Z5pPmJjtxs0Sz30e
+	iMmbv/jA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wpnS2-00000005zwQ-0oaM;
+	Fri, 31 Jul 2026 13:39:02 +0000
+Date: Fri, 31 Jul 2026 14:39:01 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: jane.chu@oracle.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v7 01/13] memory-failure: Fix hardware poison check in
+ unpoison_memory() again
+Message-ID: <amyldelTLZNeGaNQ@casper.infradead.org>
+References: <20260728204409.3396238-1-willy@infradead.org>
+ <20260728204409.3396238-2-willy@infradead.org>
+ <c5b01c38-9c35-468b-9fce-ff7e1e11b03f@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX188VTzKisaRifdK5JzAhtUj+tNTYkibFXo=
-X-HE-Meta: U2FsdGVkX1+okbaURBZ2Qkn+l9IgiK40Gqe8ZThpseNdxUoxO6+yJtshZ3puroffdGsnNQX9lyVqqMfMDNqtsaiMVrZRSqd7CxcOf+tlTFcxBWBx10qhJ57MkLj8ndzBOYoA/OODEfAwWEkK0Ynym/vN8RHly0+jRGqqJSDy6cHg7VOGub/UmsJX6TfoBSOwr0+39CvO+c3eZRPTPuO9wuZjY0AitKZFKa26poYwhlLhVPb0FYC1FMbtcEIPwcv0BUAY4FqESIdzLvKNozpw1fVotcfhrX1NJojLWeahTii05xgjJv7utljWLfUJzJrqYVN7s4pCcDgRjK7TriyixEP+/JmhkJIq3qIe3n8mNyiV8HHld6EP1z7IlvkGJKR3
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9522D40009
-X-Stat-Signature: bk4wphtnyr8oskxq6ok6poi7ogrp6zg4
-X-HE-Tag-Orig: 1785504465-704596
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5b01c38-9c35-468b-9fce-ff7e1e11b03f@oracle.com>
 X-Rspam-User: 
-X-HE-Tag: 1785504495-738723
-X-HE-Meta: U2FsdGVkX1/AZx791GgMtf4R0pVj04vXn+ZDSzP5pH0HubICqiCFI+zlYIc5iPRpS26AuW0j098H/Wad5hINAdojP+WBV2Vz7TmHphq1FcNwRt0P2aTxe9rq0Hsw/YgjC19jk+rIp9Csx4VId0FQtXkeRRuYdxq+cAX79js4+/N8NO9ipFQ1kRe97embPjt51/egjt9iSgTJ9KD9n9qHxXY2VD9i1xcPHoy7L7cCu92tmrhVWqx/CLIOrtgeZHzr3shcpHCDVezh4IGz8VKEm8L+CVvkGXTqf+b9KGliXWHIqE+tizXk7wvvZYMSS5HQINMZbfBp0jIW0DzLVxOp5pssmy5m3T0RjV+IR2c5uXWatPqosEhk9bwV6LdiHU05ux1OdYC1kQEcNFgFb4zZrehm66qzuH66tEIFXtqMLgQRi6letsJ3gZ/1SFITuYBMc9SrlcRn5Y5H3tQwo/B9XQELcbBHteSBzG+NFYnVZQyqF1bqEGhlxC2s8q1xroV68U06FjYudilSyNA6jl+8qVp3SMFuQB0kvsZ1ztTcCrgKGNXi59nrY+Wuw13pYe1QO/jWTRc6bt8u89aCsyea1i1APwgcGsq/mwn70mGfkTS8LeumcR/7woFohRkyARm/3NUzxP5+H4M4oSCdHtKY1FiBJF8GpQmg8omJgttcrujD2bWZ2eJj9WUm/APJ396q+/FNSuN1FXA3z42+d2xyq4fMPkJ/rb7wZ0oKzYr6mVPUh96mpGWgIaGLWAB91XI7im/4J7npJOX1k92S8ZWJNh4pL0rqAegymvEdQtYBHYCTZBft1+u4NKLjidfTAHp4D5MTcJ5hSwKgBncPAB9K7sv48dnWroyR9pRoiQ0NOFiGYdOFxWUIjg/FzVdxawm+pb+oEhcAQMWaUReiejTMqrO7tybX4YsgitQwEc0hTpvJCsYfTS4WOseQiAc/T+6WrXk0LtjJPmD5D2tDHSQ
- 6REA875c
- /H03DVYgOjb6MJeyfMDb5QdCzBX+/Am5Xeyq8L7u22FXC0NBgFFdqfA6EhSGw+ekq+R/VU75snHN7KZzqBZZihDUzSPQt80DHrSXvIH6QLOJmlwchRTMI8jU4zzc1myLFJgWHUeXxtzqwqeljqX0snE6C+Q==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 199AE40005
+X-Stat-Signature: 4mzr17gk4yuagg1m1jeg1fm9gdts8ij5
+X-HE-Tag: 1785505147-954503
+X-HE-Meta: U2FsdGVkX19N+RmTpEbtBejvbJGWNlYitIi34JQbujmo86WrwCdIXwF2FZ1Yx6DSpR0Pvk1JNeTx0OmPmo1gU/MOMLjU0oAQgiUFjOc4VCKku/kXDXnlz5U843ZXitwK/ayK/2yJhFjq3Yi2kmh6n8n5rDvP7ywXMp0loPCs3bTp3WB49veurjFdeevsijkfeXX97zuv1T4jrcdgmN3jefV0x3ZhVatfjFn+wc8kVbolUbhViLRcxSvftNIarv+UxGiGyE4ff5MzpM6tm3ykaDnFhK/MtKGHgaBndttXkFEM8Qa0EYmeF1kl8Vyka+x5TvvxcFhlBa7nG60wB14ZA9ergka/U74a25Y1tDTRBEUB8SQ+xzEGApyfH/q+gBA0IEP4BTcMas7ohaP/rkiYLm7K7oDkf4sDGmUXKRgb5oyRueRMEOe9oISLEdMgmxg1cxGNAQyy1GMh5t4KL29c5hxOqX6zTHVDjssQw3LxEcXbqDUXA4jbm48LqXos4Zjws0YU811m4B94/A9sQCFFfdOEkbM+hKBwl6WlHcUV/dib/jZBJFUZnQWBXtdCOia35y2wePvkz5OWPJnHcuEgrWJk140kA5f+X/gQw82pDoqKJs5oglOuIpDBlacyX8zM13060rmokcvvrWB9un86MInfKShmZbOsAVBX6h5geh7SGxk6OC2Ctdm8Lb7/arX3qdcQR2Ytl4V4mFNQrIGTDmBJBrxMmHCaGjVgrtSJVFMXnmKHtBytvN/9zbSU7sbAYZAxrz8yYxsuludJ88dcUJKr5ogUOVpXmJss93wbHGfS83naQoLnGRofw9YYSt/+gU3kwcVLr+s/izBujgjhTBAyyNMA0Oy+kKILzm2KGh6/1sip+VFj0RSVOdNfDRIINxu13RiflxBtlkIUpBdR+x6TAAmDLbCWNap96sCS5ZSsFk/1Hq4gcWU4GZrhvMx5WGd6QXWb8cvESMVCN/P
+ TecpLZYl
+ vWhZ6dH/bAqddELce8ubj2CO2f5EeXFE+2kFxu41RzZRn384XRDtcUFsMhDpwkiFku1KmyksOJLGy5VUI3/Sc3kZ9+T1KT2hNA4paiplQqlGVhEDUuga5fxeFr3DmTD7pIdHr4h0j6EjqF0cFd4ClUSgIbmSyIzLN6UOmHCd6vVxL4n7H6w+Wozcm6nYwjz/Cf1P/9AgqKK6My0Yl7cqzuKf6aYpU2To32Q64BExFFaWTJ2gOZvW46CN0qxsOuoPNKxMGj3fodnEJIuHYBqxOzeq7MsvKPFvF8sBQ9+lfoVovOP0L8t+H2XZg/Drrb1ZICw51cw9U9iUXD5RxR44WP8s1lFzf6/6xv5dBF5htnJDmiBY0ts0L5+1hvwO/HYFpS3yqKw/ZKSz6saY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,35 +98,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 11:19:32 +0100
-Muhammad Usama Anjum <usama.anjum@arm.com> wrote:
+On Thu, Jul 30, 2026 at 10:39:57PM -0700, jane.chu@oracle.com wrote:
+> I think I spot another pre-existing issue in unpoison_memory():
+> the XXX line doesn't work for non-hugetlb free large folio because it'll
+> just try to clear PG_hwpoison in the folio->page, not the precise 'pfn'
+> page.  Something like below could do.
+> 
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 51508a55c405..14915718ace5 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2730,8 +2730,10 @@ int unpoison_memory(unsigned long pfn)
+>                         count = folio_free_raw_hwp(folio, false);
+>                         if (count == 0)
+>                                 goto unlock_mutex;
+> +                       else
+> +                               ret = folio_test_clear_hwpoison(folio) ? 0 :
+> -EBUSY;
+>                 }
+> -               ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY; <---
+> XXX
+> +               ret = TestClearPageHWPoison(p) ? 0 : -EBUSY;
+>         } else if (ghp < 0) {
+>                 if (ghp == -EHWPOISON) {
+>                         ret = put_page_back_buddy(p) ? 0 : -EBUSY;
 
-> On 31/07/2026 6:49 am, Anshuman Khandual wrote:
-> > On Mon, Jul 27, 2026 at 05:46:52PM +0100, Muhammad Usama Anjum wrote:  
-> >> pte_t is used both for logical PTE values and for entries stored in a PTE
-> >> table, so pte_t * does not distinguish a pointer to a copied value from a
-> >> pointer to table storage.  
-> > 
-> > Should we rather call them as "Linux PTE" and "HW PTE" instead ?
-> > 
-> > Some like "Logical PTE" does not really sound very clear on what it represents.  
-> Yeah, I should make distinction more visible in the cover letter.
+I think you're right, but this isn't a bug.  That is, we're calling the
+wrong function, but in this particular branch, we're guaranteed that
+'folio' and 'p' have the same value so the same bit is cleared.
 
-Just as an outside observer, so take this with a grain of salt and feel
-free to totally ignore it, the term "Logical" and "Physical" to me would be
-that the Logical one is created by software and is not mapped to hardware,
-whereas the "Physical" one would be backed by hardware.
+This is the case where !ghp is true.  Here's the code we're looking at:
 
-Just using the terminology from LVM where there are Logical volumes and
-Physical volumes.
+        ghp = get_hwpoison_page(p, MF_UNPOISON);
+        if (!ghp) {
+                if (folio_test_hugetlb(folio)) {
+                        huge = true;
+                        count = folio_free_raw_hwp(folio, false);
+                        if (count == 0)
+                                goto unlock_mutex;
+                }
+                ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
 
-But if that doesn't represent what you are trying to accomplish here, then
-it is indeed not the appropriate terminology.
+It is my understanding that we take this path for hugetlb memory and
+pages which are in the buddy allocator.  Buddy pages aren't compound
+pages, so calling page_folio() on them returns the same pointer, just
+cast to a folio.
 
-Again, feel free to ignore this comment, but I just wanted to give an
-outside perspective of the terminology that I see.
+Now, I do fix this in "hugetlb: Use the has_hwpoisoned flag" (because
+nobody gets to use folio_test_clear_hwpoison() any more):
 
-Cheers,
+@@ -2733,8 +2756,10 @@ int unpoison_memory(unsigned long pfn)
+                                hugetlb_unlock_irq();
+                                goto unlock_mutex;
+                        }
++                       ret = hugetlb_clear_poison(folio);
++               } else {
++                       ret = TestClearPageHWPoison(p) ? 0 : -EBUSY;
+                }
+-               ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+                hugetlb_unlock_irq();
+        } else if (ghp < 0) {
+                if (ghp == -EHWPOISON) {
 
--- Steve
+so I agree with you this should be fixed.  But I don't think it fixes
+an actual bug.  If it did, then we should do that first for easier
+backporting.  So if I've got anything wrong here, it's worth saying.
 
