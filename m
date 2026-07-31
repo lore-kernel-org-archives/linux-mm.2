@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D801EC55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80658C55172
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0446B0093; Fri, 31 Jul 2026 17:53:26 -0400 (EDT)
+	id DD00B6B0095; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D80EE6B0095; Fri, 31 Jul 2026 17:53:26 -0400 (EDT)
+	id D80CD6B0096; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C96346B0096; Fri, 31 Jul 2026 17:53:26 -0400 (EDT)
+	id C221E6B0098; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9365D6B0093
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:53:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FF29A0BDC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C1736B0095
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 035901A0165
 	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:26 +0000 (UTC)
-X-FDA: 85050423612.02.CA7D84E
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 75350A0012
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pEn3pIle;
-	spf=pass (imf25.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
+X-FDA: 85050423654.05.48DEE4E
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5580D100005
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pR7lhR1y;
+	spf=pass (imf14.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785534804;
+	s=arc-20220608; t=1785534805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=als7b8ug69mz+jjevN//6dwMY7mF0ZGUUEH5Txoyuyo=;
-	b=4OU2M8nxUAvbsejw/dmGswTsPfFa1rRBBdXmuv+vz8Hs4wvwBykaS858GxuZ4drrWQEOTl
-	0IW3s5kq+NWshRAyFKbDYE/l0zouC/QgWPVpDJ1IiG2DBjKzHOaxrhDDIreUkzdbqmVC/h
-	h6LSEf8w3ByH7b7iaq+dhvaXsIHdlYU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pEn3pIle;
-	spf=pass (imf25.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
+	b=pUV4NZs44HNIWepg5+Gv4atDGA0j8ySk/lYGH2MUKyy/F/PxXMdNB9AZZ3wtzf0WMru1kn
+	JpVixsP3lNCr6NENWjCbFa0qTyeDnsSt3MBo7EHGuH5b6tK/EXMo/j92uNrUjjy9Tfv/Jw
+	wqC43DvP2fsTjlWpmVM1H2750QWCDuU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785534804;
-	b=HWw5fFWr5qj/0AIsua93IwT9wCy/sNmvkAf9piR0MjGJdBlS1FG+MSJqAeBGMTD12dYNzH
-	uhZxzsBYMqgERxC97gJMHQwU6OCkFufNc1wypdM8tYDR2e7ztno1mENnc5mPNZmN0+2/EV
-	C/F6s9amskZD4+H1B6nTyXH+ELCSFm4=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so2545727a91.2
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:24 -0700 (PDT)
+	t=1785534805;
+	b=8qUV/cj30jyneP2O5nsu8SMeO/slvaCioV2a2hohzP8EQwVEp0OJrMEUTx4VKt8STzB4z0
+	uwctaNEY4vJ+flu6CGbT1p/HvryK1xME3+Slec6WIn6K3dIRsgOQmohkCFzyeIi4+B9tMa
+	R4JWjQ64yN6cQyRCTucbAG2Kciqyp/o=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pR7lhR1y;
+	spf=pass (imf14.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e11baa66eso1356614a91.2
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785534803; x=1786139603; darn=kvack.org;
+        d=google.com; s=20251104; t=1785534804; x=1786139604; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=als7b8ug69mz+jjevN//6dwMY7mF0ZGUUEH5Txoyuyo=;
-        b=pEn3pIlexTQOPWGdHKKpOArZCTrtogFhK5L3/Jlk2URTjg6IUjFXk5SLbavm6xophT
-         2DPmEKI+F/Zf2epMSWUgLreOqYHDi9iBTsGvLY0hrt7kWF+gfSLQPAOl0e2PfhUFsfku
-         oMuFiwDqqP2k+rybVwziRQab/Pag7wsXnWQcEUX31SjzxnBEJXiVV00izj2PrRIzJO67
-         LnK0P6ZZB1Ps8BN5wZz6IjSLjjcDEvjJb6hUsFpN/ldjWfapF2sR7Y6ODhkZ9L9OZt31
-         rQs0RSzsm+URg/oYNHLMfRoY7Bk0cp60JG/DcZgJz2dtjuYFgekr/YuD8TF57v+2d/Z6
-         f5wg==
+        bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
+        b=pR7lhR1yLDZ8+DFDdMy5y/96QOG87wRll16/UFw6rs6ck0+1VsLl7JjLWvBx+xO8ZC
+         hpxBCyGzfOvfFBE+sK2pjUW5LxJ6TiURro4tS229vqP3lWwEtV6YPnUmUZjmgesaUxku
+         FkU+ngeOzunqeVBEVnVpm5I1n2s0VXTYS1vXX+VG70w26ULWxod+i3UIOvkToQFlQMn9
+         SFE4D1Pl6i07OYVBTnX4U0FkbrcT99w0EKRSasfHdXABByAcam8RvN9yDk2bPuOplFuk
+         x20BIZZNLXeTsgcr4ctsKWaAm76xJjVgmGMMA2Ij8pdXfB+LSbFDMVl4tupWxt1FEdST
+         JfTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785534803; x=1786139603;
+        d=1e100.net; s=20251104; t=1785534804; x=1786139604;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=als7b8ug69mz+jjevN//6dwMY7mF0ZGUUEH5Txoyuyo=;
-        b=laAos0RWhJTj8h3qioRg/sZAre6p6HfHCOD5gfEDTWXz3Tav3NO4AsOuAcn8IPhV4b
-         PwBrUgsNK2csE9NngRtKcFYtZRVCwvmlId7hNmA128KbbXKNbp8gOVflB7DbaPwfjFe7
-         c+U5pDoGOEMpmDw2T5n2RHLWLlgXiAihdf7dipHZtipuEyptYlgWxemuXHqlZjt2BW9a
-         Lkc/qHT8hFZC28C9qLRvYDa3wtGHNdfuYKisA7NUppe/XbMEdeqAsjeIPAhv1nOVsvyg
-         ixQudypG5P8zzLxKkHJgna61PcNUMcCV/KYoYn3daQX414HhemyZuKD6lSeGMERJbnbY
-         Hl/g==
-X-Forwarded-Encrypted: i=1; AHgh+RqA0pUXVWCHcKGRBmdGFUEgDeLf0EKT0yQ5PiDSldRu3KqcPDvU67futhiQVUqZ3CEkWzQSnawpnQ==@kvack.org
-X-Gm-Message-State: AOJu0YwjAAdkb5CcZIPLvKNdgSZWwCSN97MR8HOVi0V8uC1fLVGpXzoO
-	J3GmWC8ZZXoCLKZljaTAAjNwicZKn2Se4TM/tnZMf2ZFSnMJfxdw8Gliuqc37PVFH8HYShGh8+C
-	rFlmzDbjx1sNJ+sxgNUXVeg==
-X-Received: from dycmf5.prod.google.com ([2002:a05:693c:2485:b0:30f:42b1:df2b])
+        bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
+        b=VwcgHzAPVwHonzYkB4AbclArs+1JWExZU1LYEDS8QLD6fI6TH7z3GlxElGwUUfUzze
+         nVxnDoSr/7/+Tz/J9hwTbKvBODIqzLR1ICJRXkRH3A8RdCcj1ZbvhjG4bfyMuCtANl3d
+         ORYGVwr5Cq7BlMpAxEjQO5qq5KfubXtm1YH3Umt/V7XLhhHcozf6VENDth6O2kFnmWFe
+         hQULvQ7JF/wQ/SrL6e5AQPrplgyCQqMl/sYGlmGb+rQYSWx5aFYfj++o+XCwbkEZI7pb
+         eFM+B6Zzzp5MANjBXc9wslaF4U7B/U36iKSVQZ8/30ZCBDEEKk5PUfnQy2kBqgsSRoCa
+         uQvQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+egA9M+TzbK+L74y6Q/uC1kxfLTIfZgvCL1FT8mUKlQMVf5znuiF51h6nr8R3l20SAR6Szt+j4A==@kvack.org
+X-Gm-Message-State: AOJu0Yz0t1OkYa07MxbHvHx6BXDvIPGMhPXuPrN3YItml5GbcgusWKw0
+	RfmSw2IMGDU9dGRzTGSV6GXkbwYmSEsBTnHgVHDGMD8yaZQsCI9WSHWuCf/sEUuZS8T7yJ5juzs
+	ILRk8Z6vcVNpWe9GJ2isWZQ==
+X-Received: from dlan2-n1.prod.google.com ([2002:a05:7022:eb42:10b0:13b:9346:627a])
  (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2dc7:b0:37f:9ce2:348c with SMTP id 98e67ed59e1d1-38fbc4eead6mr1133723a91.29.1785534803101;
+ 2002:a17:90b:4c41:b0:381:5a08:6291 with SMTP id 98e67ed59e1d1-38fbc4bc175mr1169108a91.20.1785534803987;
  Fri, 31 Jul 2026 14:53:23 -0700 (PDT)
-Date: Fri, 31 Jul 2026 14:52:23 -0700
+Date: Fri, 31 Jul 2026 14:52:24 -0700
 In-Reply-To: <20260731215224.831696-1-loganodell@google.com>
 Mime-Version: 1.0
 References: <20260731215224.831696-1-loganodell@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731215224.831696-4-loganodell@google.com>
-Subject: [RFC PATCH 3/4] kho: Add support for multiple versions to debugfs
+Message-ID: <20260731215224.831696-5-loganodell@google.com>
+Subject: [RFC PATCH 4/4] kho: Add test cases for versioned subtrees
 From: Logan Odell <loganodell@google.com>
 To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
 Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Logan Odell <loganodell@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 75350A0012
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5580D100005
+X-Stat-Signature: 68cg991dtgg45nfw4x9rpzgy6dh16m78
 X-Rspam-User: 
-X-Stat-Signature: tfj56gphpdwe1nthbrismowiz7e9hoyc
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785534804-756975
-X-HE-Meta: U2FsdGVkX19FzeFkpcC6F+c85XDsZZ8Z0nsHUKM0hD2SLkeIX7V0WbklmYOocejvuKIidjFwMa3el72nYGq/gAYim+X3nvJpLYa9zh8RTilFgo4WXmV0uJuYYHgavUGW5/M8BFTO/sO1/yLIT+QrqhHOpbxh3u2WnHF5wyeQ7DEwjy/m5v+UGJXMjg9iC0c0tt/EgMZXhCb+xPs1b46Bhq6JkTNGyhnV0MbtlQxjCYD7hWVW8ubulW6IPrlbXvgXBQg18m8AVOJ8waulRHVMl5niD6/heujSrYrR1XXU6xzw2mk1fAoeY1bHOJaiajMBxLpeOwpzC6thC952XeR5Y6a4eObKGgl9ZsB1yifQMUdnQir/S2OBx7d14EGdYO61fnZvMBM8K2PHzHQ8Ovu2ID0+bnHquSu93u6cIlXuZa13QVPedUSPlE4OLMYSxGQOHyrtYqda1F8+J+/Z2hS3KFWo2Bpsk6Gx78sl2lWSiAIhpHRJ/YDpq3XjL5YiWVBwkzN+XVC5yy95pgBfmX243LtQWSe4LS7IQg/BPXD5lqCQyGsa4+dGzEL02cHhE6vJ9Xfov2T1Nf9LepPJ/gxdbE8y3WznmW3yMEMs8EZsfIN3iADKkmlNy8wR9gayxWpg8XcP9xAJTZ84VQ1vu4cNvzrMe9rXjxNieEoBNY25Cz+/xRAJsNPTvIJ/NW5kcEKemFLtsuvY/rWwTsho8ySNAjzouT5VEQapsqdWJ1FRb4c8IA4IrhIQJgRunFHCGdCy+sZDirJ2qt+3npVVFwGGHbAhlUQW85Na1OXHra7ud32aauCUdG5b9P1cDpEQFVd+Una0HQbE4/goHn0oRrFjNGZGxNDhKHneuDSA2fBKDyNmrlhWDh684MsWOL9onLT5EeFfdkwzRTiAK3G83Q9r4kK4ZcAIWii3ufTYq7I33C3E7DsbKSFLrrSC+yhn/cSs2YSIcLYS7lmy+coBw33
- RWHizsRs
- Sba2fKy2rnxPyfyZ78w3FLpyG95bLM7MQhjVTIKCgG1n8OnnuqcZF2C8nsG9fxMFiYlfI3hGnGUqVqR7rg1P8L1o9WqeDiZ3ppPR3lmb1wNf73rOuDG9Fre1WCa2t0hOrl9IrJmxIWAMgj8THU7IP029hoW2LoSw/31WrcO/6VNleDUmq1F354G5pbqDouXjqJuHx8c80zGxt9nbiREPoLTRYEh0CrbK3328WenIcbeY0UGJwRaXs1KwEGX7TY1wQd3bFn/fi1UbWt2sKjOXCRnbnyb/xN63QTrD+5uaWvmqzvjd+fneNF+avu4pfcc/FYSRgvga+YzTPalyVSopoqi+d9pVcWrOyZjqNBIRY0tO87V5Zy6jHNUAJadXBWL3EOhjLi+AdbZVkzQwFMHZ0icSq24SNAcuZWU7myfINjYSA/TkN6P7DX6Llq0EADs6AgYIHf043MSLhHjfXuI2tuXJz5zCzvX7HJ3TPEjIVaUZHWN5xxc8QW15TL0fl/xTt9Yo+RnFuetxrjjyAHYF9J0KBm4vAZo8Mtn8WADaq0mZe3t8s+/W/I50EppD7nSgj805n/bGndw7fmFpGUEIKNC/GTWa3Mb+TMppoHJbD9SS2jWnrbcrC3Ezz71CCJ2omqbas+PHf27EaQeQ=
+X-HE-Tag: 1785534805-79299
+X-HE-Meta: U2FsdGVkX1/R38Rb09qDa0WXI0P2ywKiOzKjZBk0FxwX3eYCbwFnsSVvx7VJE/5SKjeC/oZMx7uNLcQWTpAwr6xc7N35/e1fLIE9HsuLIDYt4BU834fRLurdvfsRIahh5oJaZHcjM++RKTboJvc+TCF/UdV+l3gDWWdUitIYCzUqb/r5xULn7Hmi1uUFGMny9OoPCiTEyOTCQceDdV8t+Mbb7AILUuBZaYF5fub6TGpGJfGgqArhT930S7P0Q0oaqovCi1/sEdsV6A439+83IhddR1AqTqAEns5zdOAO4sgyw1Odh9uDNtPufykIzrR3fBOyUw2FP6wGNQ2KlXmSMntfCoVwkFJiiXeA8iDxOkczg0U0W7Fn/v3if/tDoa7gC9bgSLnEYk9lez1wpDl+AGdCiu5pEcVi+rf6akldTvUZZU3PeWH42kr7z+dBMTFEO1EJXrSyl+cPZxlElBzh2j5tHnztQo85JPIAybTk3fFoqB957DBH2AwJ9VGdhYrald6QPALVZzmLFvFdtDyC1lbdfLwd1DKCfY1pzHWwEt505qZeVJuDstMALreecq5q//CcA3Ic+HvbU02VZLWSzp8askAxZU9YYVuTtzvVCUUyNsrfxWR1mhzzkyR2LSIXXq8H2ym+aCuPY5NTOfiqz/f5koSloXVPcjfSwLnYdwEpnfDoYtA4Z8+gQ9ifJp6DGOi/aSM8rksL/mM9sd7YlwmSlPymEHszIgfC175bNFTXHxgfJQ3KqEWIVZbhgeST+NniBweEKrKKL0HlF6PXpTFo7nx+eF6nQZAX2Sr36cjbvZ9MCg2/hjUb+z8zev9MRK8tgUrwz0O8EU/KBVV0x/ZRGG1StAPpcVyFc8PsSCV8HMzqcyEcVTfCaOMHsWOyFfWqPAbgW4lFIjHUKs9pN1RXKhGyxEgQuyYJfwlXOJwLmpaLTrQRgxIRlnHxpd1pGXbUur4wW/Rwt0R/GaB
+ NdIlNwBV
+ wE5M6X4gf0/7qAy47XDuyE4dJFFPcKvpEqGggwoNV1+Zj0uHQQyidNHZvZcXoXsr7P6HqGt1Ype1+Nq7sKvHSdmEf1Im7NSqthE6FOxXak4KebdBMtpc+4LBEJJvmluY8P+LxawvVznC+PkexqAM4QYTj/0oqVMVD0bamvCeK7yxjbiAPBuNxj/oYKOZWkUmKNJ+NNNQ563o6myj+HDv7d8+77w9EMOw6VbYKTLAvYdK+lUp/+i63WECQ+tHfqtCTQEGkkozHAEJgs1LjRqn4mqoxknQz/zViKU3bAA1G0SZ+ItF0FtWZSxpTnOVznCWI/ldbjzEbZRnYxa0/5vXPhZK7i39yO4b5UtPcYOMJmNJzdkkSg0ZDDD4tjCirP8E3vUSWxlF6HfoPrEoJaxuujn7S1VPhdOxuUh/bbzSXX/kUIwMXIoKUw7P/nCgOqgoLTXz4ilXca/VOfTVHlWy1i77Eox2oYtAiM6OxBlD66k29tl04Y/Ft8sXVyq2Hb/GqAnRPOTt8+etxfENnT5uCtZbtO5/C+fHGaffpHKONHLo0vAM+mHcAHy4BfhUQXcAJl0jNlJa9fJVHgAEG/ih3HxAS/Cohipp6uwIEDpu6Q+N25T4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,90 +110,317 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update kho_in_debugfs_init to search for versioned subnodes
-(depth 2) and expose them as name-version in the input debugfs.
-This ensures versioned subtrees are visible to userspace for debugging,
-matching the behavior of the output side.
+Add new test cases to test_kho.c to verify saving and restoring
+multiple versions of a subtree. The test preserves versions 1 and 2
+of "kho_test_ver" and retrieves them, verifying their contents.
+It also ensures no memory leaks occur during the restore process.
 
 Signed-off-by: Logan Odell <loganodell@google.com>
 ---
- kernel/liveupdate/kexec_handover_debugfs.c | 57 +++++++++++++++++-----
- 1 file changed, 44 insertions(+), 13 deletions(-)
+ lib/test_kho.c | 266 +++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 245 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index 2f93939168ab..2ca055219900 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -13,6 +13,7 @@
- #include <linux/io.h>
- #include <linux/libfdt.h>
- #include <linux/mm.h>
-+#include <linux/unaligned.h>
- #include "kexec_handover_internal.h"
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index 7ef9e4061869..db531da63576 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -310,52 +310,276 @@ static int kho_test_restore(phys_addr_t fdt_phys)
+ 	return 0;
+ }
  
- static struct dentry *debugfs_root;
-@@ -140,19 +141,49 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 		const u64 *fdt_phys;
++static void kho_test_cleanup(void)
++{
++	/* unpreserve and free the data stored in folios */
++	kho_test_unpreserve_data(&kho_test_state);
++	for (int i = 0; i < kho_test_state.nr_folios; i++)
++		folio_put(kho_test_state.folios[i]);
++
++	kvfree(kho_test_state.folios);
++
++	/* Unpreserve and release the FDT folio */
++	kho_unpreserve_folio(kho_test_state.fdt);
++	folio_put(kho_test_state.fdt);
++}
++
++#define KHO_TEST_VER_NAME	"kho_test_ver"
++#define KHO_TEST_VER_1		1
++#define KHO_TEST_VER_2		2
++#define KHO_TEST_VER_MAGIC_1	0x11111111
++#define KHO_TEST_VER_MAGIC_2	0x22222222
++
++struct kho_test_versioned_state {
++	struct folio *fdt1;
++	struct folio *fdt2;
++};
++
++static struct kho_test_versioned_state kho_test_ver_state;
++
++static int kho_test_prepare_ver_fdt(struct folio *folio, int version, unsigned int magic)
++{
++	void *fdt = folio_address(folio);
++	int err;
++
++	err = fdt_create(fdt, PAGE_SIZE);
++	err |= fdt_finish_reservemap(fdt);
++	err |= fdt_begin_node(fdt, "");
++	err |= fdt_property(fdt, "compatible", KHO_TEST_COMPAT, sizeof(KHO_TEST_COMPAT));
++	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
++	err |= fdt_property(fdt, "version", &version, sizeof(version));
++	err |= fdt_end_node(fdt);
++	err |= fdt_finish(fdt);
++
++	return err;
++}
++
++static int kho_test_ver_save(void)
++{
++	struct kho_test_versioned_state *state = &kho_test_ver_state;
++	int err;
++
++	state->fdt1 = folio_alloc(GFP_KERNEL, 0);
++	if (!state->fdt1)
++		return -ENOMEM;
++
++	state->fdt2 = folio_alloc(GFP_KERNEL, 0);
++	if (!state->fdt2) {
++		err = -ENOMEM;
++		goto err_free_fdt1;
++	}
++
++	err = kho_preserve_folio(state->fdt1);
++	if (err)
++		goto err_free_fdt2;
++
++	err = kho_preserve_folio(state->fdt2);
++	if (err)
++		goto err_unpreserve_fdt1;
++
++	err = kho_test_prepare_ver_fdt(state->fdt1, KHO_TEST_VER_1, KHO_TEST_VER_MAGIC_1);
++	if (err)
++		goto err_unpreserve_fdt2;
++
++	err = kho_test_prepare_ver_fdt(state->fdt2, KHO_TEST_VER_2, KHO_TEST_VER_MAGIC_2);
++	if (err)
++		goto err_unpreserve_fdt2;
++
++	err = kho_add_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1,
++				      folio_address(state->fdt1));
++	if (err)
++		goto err_unpreserve_fdt2;
++
++	err = kho_add_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2,
++				      folio_address(state->fdt2));
++	if (err)
++		goto err_remove_ver1;
++
++	pr_info("KHO versioned test save succeeded\n");
++	return 0;
++
++err_remove_ver1:
++	kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1, folio_address(state->fdt1));
++err_unpreserve_fdt2:
++	kho_unpreserve_folio(state->fdt2);
++err_unpreserve_fdt1:
++	kho_unpreserve_folio(state->fdt1);
++err_free_fdt2:
++	folio_put(state->fdt2);
++	state->fdt2 = NULL;
++err_free_fdt1:
++	folio_put(state->fdt1);
++	state->fdt1 = NULL;
++	return err;
++}
++
++static int kho_test_ver_restore_one(phys_addr_t fdt_phys, int expected_version,
++				    unsigned int expected_magic)
++{
++	void *fdt = phys_to_virt(fdt_phys);
++	const unsigned int *magic;
++	const int *version;
++	int node, len;
++
++	node = fdt_path_offset(fdt, "/");
++	if (node < 0)
++		return -EINVAL;
++
++	if (fdt_node_check_compatible(fdt, node, KHO_TEST_COMPAT))
++		return -EINVAL;
++
++	magic = fdt_getprop(fdt, node, "magic", &len);
++	if (!magic || len != sizeof(*magic) || *magic != expected_magic)
++		return -EINVAL;
++
++	version = fdt_getprop(fdt, node, "version", &len);
++	if (!version || len != sizeof(*version) || *version != expected_version)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int kho_test_ver_restore(void)
++{
++	phys_addr_t fdt_phys1, fdt_phys2;
++	struct folio *fdt1 = NULL, *fdt2 = NULL;
++	int err;
++
++	err = kho_retrieve_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1, &fdt_phys1);
++	if (err) {
++		if (err != -ENOENT)
++			pr_err("Failed to retrieve version 1: %d\n", err);
++		return err;
++	}
++
++	fdt1 = kho_restore_folio(fdt_phys1);
++	if (!fdt1) {
++		pr_err("Failed to restore FDT 1 folio\n");
++		return -EINVAL;
++	}
++
++	err = kho_retrieve_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2, &fdt_phys2);
++	if (err) {
++		pr_err("Failed to retrieve version 2: %d\n", err);
++		goto out_put_fdt1;
++	}
++
++	fdt2 = kho_restore_folio(fdt_phys2);
++	if (!fdt2) {
++		pr_err("Failed to restore FDT 2 folio\n");
++		err = -EINVAL;
++		goto out_put_fdt1;
++	}
++
++	err = kho_test_ver_restore_one(fdt_phys1, KHO_TEST_VER_1, KHO_TEST_VER_MAGIC_1);
++	if (err) {
++		pr_err("Version 1 verification failed: %d\n", err);
++		goto out_put_fdt2;
++	}
++
++	err = kho_test_ver_restore_one(fdt_phys2, KHO_TEST_VER_2, KHO_TEST_VER_MAGIC_2);
++	if (err) {
++		pr_err("Version 2 verification failed: %d\n", err);
++		goto out_put_fdt2;
++	}
++
++	pr_info("KHO versioned test restore succeeded\n");
++
++out_put_fdt2:
++	folio_put(fdt2);
++out_put_fdt1:
++	folio_put(fdt1);
++	return err;
++}
++
++static void kho_test_ver_cleanup(void)
++{
++	struct kho_test_versioned_state *state = &kho_test_ver_state;
++
++	if (state->fdt1) {
++		kho_unpreserve_folio(state->fdt1);
++		folio_put(state->fdt1);
++		state->fdt1 = NULL;
++	}
++	if (state->fdt2) {
++		kho_unpreserve_folio(state->fdt2);
++		folio_put(state->fdt2);
++		state->fdt2 = NULL;
++	}
++}
++
++static void kho_test_ver_exit(void)
++{
++	struct kho_test_versioned_state *state = &kho_test_ver_state;
++
++	if (state->fdt1)
++		kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1,
++					   folio_address(state->fdt1));
++	if (state->fdt2)
++		kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2,
++					   folio_address(state->fdt2));
++	kho_test_ver_cleanup();
++}
++
+ static int __init kho_test_init(void)
+ {
+ 	phys_addr_t fdt_phys;
+-	int err;
++	int err, ver_err;
++	bool restored = false;
  
- 		fdt_phys = fdt_getprop(fdt, child, "fdt", &len);
--		if (!fdt_phys)
--			continue;
--		if (len != sizeof(*fdt_phys)) {
--			pr_warn("node %s prop fdt has invalid length: %d\n",
--				name, len);
--			continue;
--		}
--		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
--					    phys_to_virt(*fdt_phys));
--		if (err) {
--			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
--				ERR_PTR(err));
--			continue;
-+		if (fdt_phys) {
-+			if (len != sizeof(*fdt_phys)) {
-+				pr_warn("node %s prop fdt has invalid length: %d\n",
-+					name, len);
-+				continue;
-+			}
-+			err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
-+						    phys_to_virt(get_unaligned(fdt_phys)));
-+			if (err) {
-+				pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
-+					ERR_PTR(err));
-+			}
-+		} else {
-+			int grandchild;
-+
-+			fdt_for_each_subnode(grandchild, fdt, child) {
-+				const char *gc_name = fdt_get_name(fdt, grandchild, NULL);
-+				const u64 *gc_fdt_phys;
-+				char *combined_name;
-+
-+				gc_fdt_phys = fdt_getprop(fdt, grandchild, "fdt", &len);
-+				if (!gc_fdt_phys)
-+					continue;
-+
-+				if (len != sizeof(*gc_fdt_phys)) {
-+					pr_warn("node %s/%s prop fdt has invalid length: %d\n",
-+						name, gc_name, len);
-+					continue;
-+				}
-+
-+				combined_name = kasprintf(GFP_KERNEL, "%s-%s", name, gc_name);
-+				if (!combined_name)
-+					continue;
-+
-+				err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir,
-+							combined_name,
-+							phys_to_virt(get_unaligned(gc_fdt_phys)));
-+				kfree(combined_name);
-+				if (err) {
-+					pr_warn("failed to add fdt %s-%s to debugfs: %pe\n",
-+						name, gc_name, ERR_PTR(err));
-+				}
-+			}
- 		}
+ 	if (!kho_is_enabled())
+ 		return 0;
+ 
++	// Try to restore non-versioned
+ 	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
+ 	if (!err) {
+ 		err = kho_test_restore(fdt_phys);
+-		if (err)
++		if (err) {
+ 			pr_err("KHO restore failed\n");
+-		else
+-			pr_info("KHO restore succeeded\n");
+-
++			return err;
++		}
++		pr_info("KHO restore succeeded\n");
++		restored = true;
++	} else if (err != -ENOENT) {
++		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
+ 		return err;
  	}
+ 
+-	if (err != -ENOENT) {
+-		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
+-		return err;
++	// Try to restore versioned
++	ver_err = kho_test_ver_restore();
++	if (!ver_err) {
++		restored = true;
++	} else if (ver_err != -ENOENT) {
++		pr_warn("KHO versioned restore failed: %d\n", ver_err);
++		return ver_err;
+ 	}
+ 
+-	return kho_test_save();
+-}
+-module_init(kho_test_init);
++	if (restored)
++		return 0;
+ 
+-static void kho_test_cleanup(void)
+-{
+-	/* unpreserve and free the data stored in folios */
+-	kho_test_unpreserve_data(&kho_test_state);
+-	for (int i = 0; i < kho_test_state.nr_folios; i++)
+-		folio_put(kho_test_state.folios[i]);
++	// If we got here, it means both returned -ENOENT (first boot).
++	// So we save both.
+ 
+-	kvfree(kho_test_state.folios);
++	err = kho_test_save();
++	if (err)
++		return err;
+ 
+-	/* Unpreserve and release the FDT folio */
+-	kho_unpreserve_folio(kho_test_state.fdt);
+-	folio_put(kho_test_state.fdt);
++	ver_err = kho_test_ver_save();
++	if (ver_err) {
++		kho_remove_subtree(folio_address(kho_test_state.fdt));
++		kho_test_cleanup();
++		return ver_err;
++	}
++
++	return 0;
+ }
++module_init(kho_test_init);
+ 
+ static void __exit kho_test_exit(void)
+ {
+ 	kho_remove_subtree(folio_address(kho_test_state.fdt));
+ 	kho_test_cleanup();
++	kho_test_ver_exit();
+ }
+ module_exit(kho_test_exit);
  
 -- 
 2.55.0.508.g3f0d502094-goog
