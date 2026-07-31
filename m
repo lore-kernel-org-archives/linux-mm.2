@@ -4,134 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3F6DC55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 09:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C38FC5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 09:01:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A70696B00D3; Fri, 31 Jul 2026 05:00:37 -0400 (EDT)
+	id 73B386B00DA; Fri, 31 Jul 2026 05:01:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A20586B00D5; Fri, 31 Jul 2026 05:00:37 -0400 (EDT)
+	id 677F36B00D8; Fri, 31 Jul 2026 05:01:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E93E6B00D6; Fri, 31 Jul 2026 05:00:37 -0400 (EDT)
+	id 5656E6B00D9; Fri, 31 Jul 2026 05:01:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7EB6B00D3
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:00:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3A5340398
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:00:36 +0000 (UTC)
-X-FDA: 85048476072.20.3C3F741
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EC551140002
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:00:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=buPD5pBU;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785488435;
-	b=XGUgQUNLMV/++OKXmV19BIs27fXaWYTMiCPKdjaiCrVXzFnTyUlgJI8etZKtPp4GgTzp2R
-	XQHhz2WR9gCWuwzR0yka3VQ+LinztO72pRHC+4uWbhId00XhTCW26V4vafoHCHn4nnR3TW
-	ij2d50o9m/gx+Lq7HFhcIyiWh5crhCA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=buPD5pBU;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31D096B00D6
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:01:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3548C1C0A94
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:01:12 +0000 (UTC)
+X-FDA: 85048477584.30.F2A2D7B
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 08E6720004
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:01:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NR7XLSqq;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785488435;
+	s=arc-20220608; t=1785488470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v9bG+vIiE6it+YGgnlKUY0r7YZ8/PBqlN9Pij+qz0Ms=;
-	b=lI37aqgx9V1xEaXfAiCxNMbzUDS99zMh/JRIEpSwdEqspKlDcRJjGhzR4/Kw3qCTvu38G3
-	arcIa8gCf9untqhtF81ngam3r75D/7Q3EiQHqlyaGer/deRp/tdtHtOrWeN7ptcWYJG7tq
-	paxDg+V84IGsqqQ9HDM/7FM5BZBrvTQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB4A24180B;
-	Fri, 31 Jul 2026 09:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42CA1F00A3D;
-	Fri, 31 Jul 2026 09:00:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785488433;
-	bh=v9bG+vIiE6it+YGgnlKUY0r7YZ8/PBqlN9Pij+qz0Ms=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=buPD5pBU2xj8IVgHK5cEGIxtlKP1NkDTgZx/oWgI+IgIZHyLPuTHGa6yX1ayhQCoA
-	 86+OUSWw8cx6S/OK8mZvATsSlhRSfnk2yBvz5A8BkIZ0zdVykej0L/zvhQLHoSQWca
-	 kFPIiGBjspoBwz8aQN5EmwEMaGM0IAcIWM4awTVp3Pjc5ZjuIHrkaStHMcVnS3kuP9
-	 Lb8OQBHUqDjX4nhSd9CCTqAOm+DknPUUkgAbW8Xt7+AsLaWhjOghFq6TAhox6zyvF/
-	 9Y41wzDNaYGoGw/sUhMVy3D2tJ5TxfwAMZP+0XL/zpVkMzmxbFdIgAmwhtdCwQ+hXZ
-	 R6ZbjHL5CwLYw==
-Message-ID: <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
-Date: Fri, 31 Jul 2026 11:00:28 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VFyXsSHstxBFgLyWsqQtLrkX7vC2PRGmGRynzo628c8=;
+	b=yGbrqTv1PicF7WB2K1kHTwMKHMbujrq7vWOD94kWBQ2ZYmGA8G2prLNlKEHsZf7UXPGeCg
+	O8v6lqG44onpqnY92yj0Zimggoszva3wmcEISTB/F7ca/2tFRZmnS9MGZu4zNkjJ+2imU7
+	iks+ltGdrDnruZc64I17nQpwrPVJrIM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785488470;
+	b=OvMMW0RgmEeclh0Dn7zovBFzzX/kUfJ82Ki6iyRfPt0p7dJqw+Jow72h6DidEiu4zrdzuP
+	StCOPH/0dqg9D2EEVT1KLh8ANu6bh8orO1bHoqpGcr2u+5ggk2OAKAzo/pbn4htIAEHEws
+	rlM+NM8tFluAZn3aEtMAG7naO6SDIDA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NR7XLSqq;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=VFyXsSHstxBFgLyWsqQtLrkX7vC2PRGmGRynzo628c8=;
+	b=NR7XLSqqXjHovnSsi91bpQ05//uD9sh6Mlz2930eXsND/bAArDYszP5iHpIOozjH8RUHRZeN2
+	PSrNFHeqRwC6YLullss5DMHxbBS/+EioVOFOUC7RW3D/aclMYMeTnnX3VTZhzx4XFVfWZEx8Is6
+	3J0syixG1Gh9BFHpY7uDBXI=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hBKYg0DwgzKm9T;
+	Fri, 31 Jul 2026 16:51:35 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id BE6B040572;
+	Fri, 31 Jul 2026 17:01:05 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 31 Jul
+ 2026 17:01:05 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<shr@devkernel.io>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH 0/2] docs/ksm: fix advisor documentation and comment
+Date: Fri, 31 Jul 2026 16:35:24 +0800
+Message-ID: <20260731083526.3953421-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 0/3] lib: add synthetic MM benchmarks
-To: David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eabs8xsrmr74hbyb1yhbnn8z7mo33dg8
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EC551140002
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: 08E6720004
+X-Stat-Signature: ncwusrc7qfa7itte63983s7jfbns9k7b
 X-Rspam-User: 
-X-HE-Tag: 1785488434-924030
-X-HE-Meta: U2FsdGVkX19i3p1+hmf1v6dUBh0b1wnq+sCHbKJldzatPbC0z1nlNtGmo2PcItuGdLxNP7cg6f7P+WXHfeYkwgG1rdaE+NLMc84P1A4OQDneEhcdXYnoo38oidYaPMXbisBnZRSWzIGn1rzFeLEHQarE2Bh8fWlgnWGgOonEIuEb2+qhWJuLwHgmwxxS2EkmpMBrkElkY8bhxFFpdaRMxwD1SM1e88NZo6dByLlIRxoeNYq2oLGm2k06E/3NJ1Sh5OFb83YutWmEdJivRlaFBJ1/L0R3NyaTONvb9sBCHHnKaz15WA1SzrIIWIuLB9Yj3cq9x78QiMUtk79MvJd90AIEfYLH+DpBFX1qvGqZbvgkVbeen+tSO4ha1hrPViO+9Woh11azCpohTGi8LXiQYqlqxu0rNyj+F2piyIdeHgISMXiUbRyREiUFjTgD6uF3J0GtMPD+ujyVEGJaAVGbhgGQR6IllGTzrJy8WORmISf8xbIBAfQhwj4xkio4BfVHkODVw413xo2ZuPvnJOBQL7nbvRjS875lf7FiZLP96ig+AkW9/4efjOhKuWPHvkvostuLQgeeeGOTHkMA0OGNAg3mzRc1x+j8lXQ4cFJHaevIp5IXuAibUGr35QkxWOGqurfKCHWKPx2HE8N+TFjizKOgIrrztmF00MB4vimGfMJ74Edd382v7BYv9fBO5ZIIwbLffEiJkkLmA+jYbKcJBmIJEMqZ1vgoaYR5nx/8bFM3ARPKvOvQOVv/ro7kRIpEltireOPu6ZOSF6Cwk3YWM5Gj9WDANs3lk/jdzgpI/xGIqFcW2XkkeOaWw5xffggsDzEC3NV/I+cNJPaBHLzkDk4ZV2Gmd5MUizFa9XvBAjiGXhFGcb7Nap7r73Wix9fdKhdyH9T2qQVtWihWUqUJo4vQOA4rXg5UJSHjcJb7FPHFqV6RQpZiRbLLc5PKZcwNR+a2wuq4GxYRTjdT2B3
- vXY2G/z1
- 7hCO0xKWKcT+qRauhMD08x+DE+Gi7wScjdRXueHfA4v/SpnKjoca94uWqweNv5xLO+0tmu2IO5s6Z2xB+qQoUhH66JfS67Wt6x1hH44WnXasGuFJY10so4rXYvGniqipM73JzzeERcCo1HoFOBebGvMJqpoCsKcilfmF+ZD91r3SV+mzb8+LuNlas4KxshAmdQ5ZDOCtl/zt+4Yzaqwr70ThzmzX7SO/40KcXkaAE2oyoEePT06m0NUI4fedezJB9Aq2j
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785488468-50882
+X-HE-Meta: U2FsdGVkX1+PXRo1cM8IoLAx5RNG+PPYxlshLXhAcewqOyL6igOo8NwL/nWzboAepjcy5hjCQVbHg+feNQUtL+WLSBZO6VqavbmPJYqqTLNkfc3kwR9KCcCbWz8PK1O7a5NjeOzcNAePH+L3a8SzIYqO1Dh2BXqLnH53h6hzOhNkJ+Jy8ZbEJabImthptuS46opo85pOpclTq7asVpPyCnYVdvDi0IyKxcMsUMd/lVyzTg7lCXyBWjMmMsAUSl2l+cREI0eJUlWI8YKnZ1bXveaReHCw5T+u0xCwiMsG3Q0jwkkMUmZM4XwxIeEmoBV/GszT+S2CdnIXVSdftCk8ogAwQukukmyKI4Ul/hTMcY3sqVxwKeZKAKPuBPjEbF2nDJnyYv+l1WLDyl7mzbjYpgkVaqw0jf/KqG4oH1cQDp22uXIUyYbImDkEkWF3t8zKpqMfkskkiCAL8SfYdyLuxCt0Mlnfnkcz5hpMmAPoPi3+J7rsmTdnTzfvdLniSNMncRWoN+qHnmAwkqjRta3E1dOaPYC7bHgoRbhLyi+4NCaai4XW6X+YIsVSqOdFYXAX6NOfojEt5Co2+GTym1JIuGoKrH+xaMOKcSXLVAtXn3qxCcf6kWEuzCxC0DHRfnMVZpZOvLBCBCdPVYOmofHS74adk3HYrEEq5/w1+kgx/csaodcF4nDfYLbzR7mqvy95IejkABam5L8p3mR9clgxKnFeLfdI0/9/yBjxGk4M3idLZkx2A5IIzOSW7Z34cHTqwF9PqWPADn8LacM2Vypu5BwS82tSDWwkEM5eenaa+tRYQXBoySj4Hh8+IIsj1lNOOU42unAib0QrzlxQhUJApiutpgbI5ZSZQQvBQtU7EFmMaJHvQ7MSFSdkYPg8TRABYf5yvVfONNAkGr5aQrzBbWzoaeqZ2SpB/KpwSPBwfPbqmRYTd2o4bbdDzvbHUVosaKYqbWPxbUvMR21eEhm
+ ec8IeboF
+ x4I9ueBpN8TtwAjDv3kbsWrcCvQcnRNKeeMHwtlJ1wx+uZ21jnrvz80UexnMsnpLpcH/O4REX/iXmD7liLZMYEonG6osH0liSsQy/0LMzFpBzxjYNx8vHoiNcHwHMywcY+boOWUOg6ldkDWGCqpGXUgnEqZOLYMx7ZIEI240Dw/h0UiGbo/CnTjQA9EnXzK06eD/shZuPKDNQlbR9N1ZVjVBJmj3v8dbBniEAd1ThRcBOYMftlmDCMtE/CFFyBn8HkiH5NmX47q7vnSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,51 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/26 06:26, David Rientjes wrote:
-> A blast to the past :)
-> 
+Fix typos and misleading description of advisor_min_pages_to_scan.
 
-:)
+Jinjiang Tu (2):
+  docs: ksm: fix typos in sysfs knob names
+  mm/ksm: fix advisor_min_pages_to_scan description
 
-> We've been carrying these synthetic benchmarks in our kernel tree since 
-> 2009 because they've been helpful to identify regressions in hot paths, as 
-> well as quantifying any improvements that have been made for new changes.  
-> Hopefully they can be useful to others as well.
-> 
-> The synthetic benchmarks are run by loading the module at runtime.  The 
-> modprobe will fail intentionally so that the module gets insta-unloaded.  
-> The test results are emitted to the kernel log.
+ Documentation/admin-guide/mm/ksm.rst | 8 ++++----
+ mm/ksm.c                             | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+--
+2.54.0
 
-Ideally we'd have an easy way to actually use them in autoamtic tests.
-
-E.g., loading fails -> error, loading works -> no error (and unload)
-
-> 
-> Proposed with permission from Christoph.
-> ---
->  lib/Kconfig.debug    |  30 ++++
->  lib/Makefile         |   3 +
->  lib/test_pagealloc.c | 337 ++++++++++++++++++++++++++++++++++++++
->  lib/test_slab.c      | 375 +++++++++++++++++++++++++++++++++++++++++++
->  lib/test_vmstat.c    |  95 +++++++++++
->  5 files changed, 840 insertions(+)
->  create mode 100644 lib/test_pagealloc.c
->  create mode 100644 lib/test_slab.c
->  create mode 100644 lib/test_vmstat.c
-
-This looks similar to tools/testing/selftests/mm/test_vmalloc.sh and friends,
-that can actually be executed as part of our selftests and do a modprobe.
-
-Can we have similar scripts to execute them?
-
-But I also wonder if these test modules could be placed then in
-tools/testing/selftests/mm/ instead (or some subdirectory for test modules).
-
-Last but not least: MAINTAINERS should cover them.
-
--- 
-Cheers,
-
-David
 
