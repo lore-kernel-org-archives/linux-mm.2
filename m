@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77392C5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DAF5C5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B415D6B0092; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
+	id 6121D6B0093; Fri, 31 Jul 2026 11:46:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACBB46B0093; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
+	id 5E9E56B0095; Fri, 31 Jul 2026 11:46:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9935C6B0095; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
+	id 4D7F46B0096; Fri, 31 Jul 2026 11:46:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 53DE66B0092
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1E14160475
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:32 +0000 (UTC)
-X-FDA: 85049499024.05.D5EAB18
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 131636B0093
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:46:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 944171404AC
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:36 +0000 (UTC)
+X-FDA: 85049499192.22.7E9021C
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 639304000D
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=A4zNhdYe;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="R W/bChF";
-	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	by imf01.hostedemail.com (Postfix) with ESMTP id A908540005
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:46:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b="C5f/C1yB";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="D ZEerSN";
+	spf=pass (imf01.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785512790;
+	s=arc-20220608; t=1785512794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=;
-	b=6eshSyXBti4HkTc4cPBb1MTvreHGEnXde5QyH5pT6IxTBhTAAC4oxDhgQIZchBZNlbguk9
-	qOzcHDOt7uDSdvhdLCcmtwIuN6ZFWiV6dlUqM8WDijYzZIkz95Gu7jAKOd3m8byLnFYgg1
-	quJbNWU4Pcg+QjPZfg7ufYxVdS9bPQA=
+	bh=6RJPYbBdKyVevokLLvrFaLY6IOxzeT8FvabNtZpBPjM=;
+	b=Ad5+J6L7wzjwFA5y3ACcqQby/y39/NJfKPk4ZttL386SgaYJ75sfKREvk2huuSf0uTi2Cl
+	zgfBA2A40dAX2Bv8AwxmB7UpG2aLz6L+x2nucJGB8YcR8oImWab7eNRsVoFowgKlnMkCGO
+	JsZ/u6PvTm4NS3c8CCfN3g+j+7bzzBU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785512790;
-	b=pjSF9BieGYHZI8WsufD5ZzejAHWY9jvknzOSnl9P62T3YFv4WN0rx1fJ7OKPsYOs8x6Yfa
-	N4FZudFIqceQBmOZ89snNe/NwTjN/tqTqMykHNX5GF+OKGl+EtyI/5P5vDwRv+IzMr4vyj
-	tW5LOvF1nmSjcH3Fx/b2Oiu0COLySyg=
+	t=1785512794;
+	b=PpuHDRJTwwcKtpGg/HgM/+K3CxjdTV2M0KE3x3FtWyK6xP/HETGOm6HwrekmLf/WPh0kW0
+	ZTu3YO2VpZscbjOqdwh6aGpzXf2YrPJ5dU+iISeidoG0F+cEFM37OTj9jv/mWH+nYrCj+M
+	fyZajSFV0lhUTrylzF4XZfrGxsKDyZ4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=A4zNhdYe;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="R W/bChF";
-	spf=pass (imf27.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	imf01.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm2 header.b="C5f/C1yB";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="D ZEerSN";
+	spf=pass (imf01.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2D9A31300112;
-	Fri, 31 Jul 2026 11:46:29 -0400 (EDT)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 7AD961300126;
+	Fri, 31 Jul 2026 11:46:33 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 31 Jul 2026 11:46:29 -0400
+  by phl-compute-05.internal (MEProxy); Fri, 31 Jul 2026 11:46:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785512789;
-	 x=1785519989; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=
-	A4zNhdYe2c0zkpkQugS9piOLTtW79A0mDI9E/F0V+cg5pC4Wix08Dj/5yQ2oHMfK
-	PyutuVFxUUTXjYRRZxvScVTgap3l0e8CDVOs+sixHhqvBWFGvqhMqsTamu047vcA
-	t9y0ReJAPS9POEVQRuIoArVuLkFmKg+XGzSmzjVpZz1IfGHA3VCb84yNdj162uRo
-	MfEI1M6NIuNdkn1NpOwoqy/W2haUW9cRRGo+tFV/YGUuWsoLe9VwCyCAwNwvT+Vz
-	/qXrwi3vTWXpGoo+oiLS5bIgSSCzMlvjLtEn1jfdBTEfiClFD40g3In7WsZXIpN6
-	lVJk11VqRqtL4ChvdiNj5w==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785512793;
+	 x=1785519993; bh=6RJPYbBdKyVevokLLvrFaLY6IOxzeT8FvabNtZpBPjM=; b=
+	C5f/C1yBEM7vqvF64K9CEdgvycISMSYEFZqHnRg/NchCU1OeMbXHX4SemBxucdYb
+	QQFNa8W5A3IV0sIf4gelplYdSmPJBooDOVbx3jN/hI8MeiOiAbFL+r//CMt1uvrr
+	nTEOUVnA9xFkJ99sbHmuag4GmrOIPgNZZ8aM9SBCq5LIsWxWh6D4P5MeMTA9T0d/
+	0ep2UeaNOU3F4s2jrnGzEAnD9eBs5u+PFvYRUADzl/7BPz0MqwutqMylxQSHaeOz
+	zhATvtK6DPlTyqnoOobwwy1qVs3K2LGfB+Bl23yi37Ja6ZpbCnTZLXiPQaW/OEv9
+	E/ZMmlg2uq/K6jSNzgU7/A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785512789; x=
-	1785519989; bh=vuhD3aoT0AyBzEwnNlnOqTcbkLD3kV+I1Y8Pd5N2o2I=; b=R
-	W/bChFPnActNSpvOcmbnjUOMD2Z7aDaZiMdwapf3zUf4zqk7KfVoS/ZbRO7lQsGu
-	/RsK7cS6A7uax3NuW4EYT4rEWI1nPkam2Jxh/LOiAFeNrT4YC6ELfTPB52F+1my7
-	30L/nOgvSoODJ8jlAQbC6Os7C3mEI5Q4GIxqfpk9EVKDLMDqliB1D78zXfvKVMY6
-	MgD+GNDTph9sH6LQKkwwM1RLgncUhpupuuczYvfFb8bXibyBseSqrI84DhbbXw4n
-	gCGP1yHchIt96mFD0+Zb9hfsfWyxXxm+pipeml7VPaX60AtHJOVpHtxYp+306FAw
-	do8v4B5tOEZw65c0TYHkw==
-X-ME-Sender: <xms:VMNsakSi6CTbm4kpM1dMtq-I2WEsssafLCa7HnEXpyK1ajNIbg4QWA>
-    <xme:VMNsat5dKKDDXiDQVbeoxmKkFsMn4pHc85tsUMsW41oY6MxBe5qfNUYbXlRBsdimh
-    T_Rf0_8ggEeXlXi6g-Y8LM4LaElHqPCvnE39qRV1YDr-fPzNq73fA>
-X-ME-Received: <xmr:VMNsatq3d6rxXKCZh8CuG2RTFNCAKSg8oWlkFxWgiI01-GM1KBEywGEohzwkzRCihmzBqQC4M8gQ33Ze-Q>
-X-ME-Proxy-Cause: dmFkZTEDtV/RfR0lo0HHB8XdeLePstULQCU8lD8vSj/fzai7Kt3qGLzmV2Zh7eabPaGFb0
-    2JllrHJpDbmKgLep87ndKLD8srM1OHP+B2aK7Yo9bQqUBCftK1jaCjofENQpbYCPj35N1B
-    D51JM4wkbVzLK/VhvB5rAZpxM4uJ15CvWyziZqB0Yl5deZXwzgTYTbzKrvOpxGFqqPQUVr
-    i4kpPelxVCZV5wCGN3geRNU8HWmSzPdeRSyBpI4EPivmCljrA+60QSoB0UUC9t5AFMHYog
-    wby+Nk4njR178weQert2KSbb1tn2SD6ZTK7DDLV1yic4Z+7nokuhhALqi8KJyuVHzaD9KM
-    tjVGZT+3Ps3E4JjqAnbqRwtE6mPw7lRYlPF7Ix8/0DPfvB6Tzqgm+6lWoBqWNjQ6DAvKfg
-    phcitCKTOc1ccLwf6KnR5jwmNCIfyBFz9d0ZF/+3TX2w869/ojiJQ9dmc69a54Cm8/0Wve
-    VwB1xhQreCtebsdJOP9e4KcfWYcxsovWqgxfvfoeraT5OjnjeM59Po1W3IfwDsxEQuGfFR
-    CsU7eCj+UFsIn5zeueiTGkVUK3f3k4n/5WIdWw28l1YOrth23VgKsfWhuI88myee0Uc6C/
-    mn9Dj0AXvpG8cMiZu4qjnQNapvRy67fiak2oK46P68DTzhavrCKITstCEwvg
-X-ME-Proxy: <xmx:VMNsahW_e0ArDh-km8mqS5I978go4sDRVRoYFZ_X9K-WG05_tyVb8A>
-    <xmx:VMNsatrqt_wixGrfDvdt1FMRG_sDvPQVwgh28R1xJ_U_tGIMuioWgg>
-    <xmx:VMNsaovQtb2NPmvyePvR_fXM2FBgLgUr9k1Uhde3FY-pUdvOiQ2dhQ>
-    <xmx:VMNsajQKV-7xAq7LQIwXPuZhLGB_ySPiADwOfngU0rMNUBP2dVn15A>
-    <xmx:VcNsapI5MtQmJgJJF3cOoU9fHccCIyGSbPUQsAQnLu--fnV2F4CEnoj8>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785512793; x=
+	1785519993; bh=6RJPYbBdKyVevokLLvrFaLY6IOxzeT8FvabNtZpBPjM=; b=D
+	ZEerSNTSuAhU17BHLUw/FatEm72vJIktkenaFzljNXeYlnpfXNudpapwxLG9K2v6
+	D7PFbav0Q5TxhNiqCZ5coEbfDjIoQ7xNft7ohvgd0wdJ1RECDeqM/t3za7sZNk0y
+	KIkHLp8Mfdi2GAGTWPa0NNmBGzmvFN7wkygyGlQDJRK7dJ1bXDG1DleH5fXzDFKG
+	VwqlYWraBwY4ogA53zpmFpmr6ME1MUHCtMiMc2Yqf6RJXQYswL2zNDjvnIPOAqYz
+	55iRjxrI2KjNy36nw+/03Q7RVXah8FEpmAefld5rSkuNr/AJfkn//1Stc6p3+5WZ
+	5wqqQJFHw2jhJpsIKUlSQ==
+X-ME-Sender: <xms:WMNsahK68PcRhDYbo_CwcrJna2vsKpCm3uHiecWu0_g94U0pstoDtA>
+    <xme:WMNsau0AoJCzh5fLBU-W1erkrKFrYFdeidb5nquSrs5qftiBHerRvl597vDjikV39
+    tP10lTtKldWlYedEq50hesyQYfVKd1HK-2BpZVz2Spc-ha2J_rimw>
+X-ME-Received: <xmr:WMNsatIDcLIHEaNrUeWdmS-2ajotvHDhDcBR7TmbHrORfAPwCMqeRIPFtB3cReLikaKRYdRwM9mFCL5FJw>
+X-ME-Proxy-Cause: dmFkZTFJfofAu11mowXawT83+JQu53L9bnc/QTnL9gqST2VtMt8iG6+kbXjN+5vhhcwMKP
+    fY4wA6UFwdX4zMp8/Qgrkj4H4zmVFbRfdsy/N5dPuJwExieSr4d0DlzUvz60M7JGSR+Cas
+    IIT0Q1Wvzymfk4UjWkFNDc+yKtF4IuXKh5cKmIh3bt+XHREf/LNKs7bitBNrGH8CDX9znW
+    2Wl0vpilYna00Bcop4B4Q0eR2lAe6qJei4JSSzGQmf8MllLPQkBEX1f4QlGlpITHhMgUaS
+    ChLmpQl5BWmuB8wQidJ14Rq4SSXn6lcvGT8g0z3kZ8RoVHOoSzo31dnElgvt5nloKKToi2
+    Meb/1RkHPWfnLw/TR9m3N1hk7B0f4d4TP7BdT68iBqR0e3ZqQJM9vZn9qPtezcn60J2890
+    g9mLE7B4cVabqGEYMxfPiWK9ul86fnjHpM1BqYe8k4+NqZu+7DppJUinWUMrJLoy9m+NYz
+    2chY89W/LkmcbR2gh/Pqz7tN9nvlr+DWXHW1PteBEg3NSk7epULDx8ewc6ELJic5Qm9p48
+    ahKcLqq6cDNLJYjVrHgUbEILULEAf9CKXnlqeQWJf3VahmY+HDdo+u5rC1NH4j00bG7ghI
+    iHci+EYJ2nGCHLvrDQ49CpQs85Z3eeMewDO2oWXVAxq/z1b9Yv0pbUKBrO2Q
+X-ME-Proxy: <xmx:WMNsaiNCJ5hgNNgsX1soVX2aDnFApRAX8gwdB2epHyO5n3GCEPoPVA>
+    <xmx:WcNsauz30mR0zGTTz7O1z-SAi5qcFE2AGfmNBZUiR1FSzNr70HR_cQ>
+    <xmx:WcNsaqIWBM-ZiIQojrKtJw5OjCjLpscLOEJR6WCrFkrAVKKdeLPS4Q>
+    <xmx:WcNsato1Q4GUoE1n87-wHh5t8bDmqzyOOPs44LtUIaCzMheKrqh3Kg>
+    <xmx:WcNsalKp8XMjyCpNBgspYRtrwAFMH0JcZHRbKiaBxH-2dDwe5h5Yo_Rm>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 11:46:26 -0400 (EDT)
+ 31 Jul 2026 11:46:29 -0400 (EDT)
 From: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <baoquan.he@linux.dev>,
@@ -125,25 +125,25 @@ Cc: Rob Herring <robh@kernel.org>,
 	"keyrings@vger.kernel.org"@kvack.org, "linux-mm@kvack.org"@kvack.org,
 	"linux-security-module@vger.kernel.org"@kvack.org,
 	"linux-integrity@vger.kernel.org"@kvack.org
-Subject: [PATCH 3/4] mm/secretmem: zeroize secret pages before kdump
-Date: Fri, 31 Jul 2026 17:46:07 +0200
-Message-ID: <20260731154608.153258-4-linux@jaseg.de>
+Subject: [PATCH 4/4] security/keys: zeroize key payloads before kdump
+Date: Fri, 31 Jul 2026 17:46:08 +0200
+Message-ID: <20260731154608.153258-5-linux@jaseg.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260731154608.153258-1-linux@jaseg.de>
 References: <20260731154608.153258-1-linux@jaseg.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 639304000D
-X-Stat-Signature: 1i836i1g9wnz7qazj3owyriuptxsyd1j
+X-Stat-Signature: jdnhssh7ffiwmc8sg6umk4tu6s1er7s5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785512790-536245
-X-HE-Meta: U2FsdGVkX1+SOv/FKPOzSnbCjCO5jw6AzZhKy3bKbnQrgvqbgBl3W7AudpVLUU/FPVFtRSVABWzkvWbFqcmJwzOA0kBsrHeAC2n4jojUSZ8Qiy2/Zo3iKu+NkCIWtW/WK4kdQt4Slz3GisKH6OrfOXF6Ica6D1AajRt2oLbSoXk/DIY2vJcxoniFyJQ086rFQXpzGVaYhIKuYPdCpxqzrvbGGPj+BITn6FPcKBL9gAecERs4AtzKtZWPdt9aX7ZGxZ46VJu91xOmNt0pIreJTTVkZVnJYUYPKHV78p5m+hbBPDZBVNv9XST8TCoKTWpQ/wFKic89adIv4Mbr65cEHbWgxmYc85mnM75b1Um32ErQ5Kmb8xz0qy7O4gnaRo/KSQnIY8Q8W6yBz254wIBkcdvQBRM9/TkcaYP54gzLJFt648mXMgozMAf404KFLCUNcSTEsSJzzL3ioymDCFcLiozXYdOyikk8EhlRFLYoyCo/phUS4HXcfft2MBVf5lqaJ7fwF3+KSodXHf0Edtp45DgAuCQqcKpmn1DRXS/JfaVZdOVNnF7/Wtkq+4y6MydWMp9Q1NM4RNYDLZUQKL+cuGKlEwFgIHck3BWrwVQFPmHNCLXrVRNsl/BALNEQJN1ZPh93HLUry8bm1IXTOAbD/S9Pn34TJlVZCo9u6CNfXRsSWgt0S9qLTMOETDZ4BW3bH6lczT1hXcY7Xuylo3A2Wre4feFLtRN9Yi1M7LEqZak18a2BqDBN0ndtety5aQbGqIkal/7JnFJMjCqPgntpwSuABSpa5u7ihrVITqfaAFVu20NFNGIUA0loE7MAUggxQY+cGa05q3p81Loxr7lCfBJ7hUonMWdPvza5TKqDZ5BmvLkb5g4JyJ3PYSvi+ZJuU4w0Nz0OTeMiXvLQr5wOjCFtF1l/qWHXeoT+Ln+8tLpEAftoYQcxboJVL/vFeSKETv9oMXvp/NzzGdw3/W9
- peZBVMlW
- /p9ySFfH1p3eyPkOt9OsoeQAIK0XbPVQit2QsjvnYn8T+zIfmwhAMm3hRx6csmeCsavhDK4CeGgcofdkpskfu4yw+qLZiOktFSrxFftIzjKBcnt/c2iUS0xfkTj8IMFc4wUBQmy4Xbbrq8ZNPCLzC2SZfkGPiqbVzlDQWUixB0d/agvA6OLZ+2yheeurgNeSFaNvTIJ+lrKyAAkTLD/3EIxdfnL3cK1j4GBklX8mqb4wO8yjod5l7CY0/yzTTGoPNuQEoxBqcQQ9Goct3zOAtlMAQhAXfwoxrz2Gosi5s5YSDdlGAdfbPht+78ZPyjHX55dpTz54BLUTlFab0rfipbQeDsIFSMrMk9/b3OiZlOxg0JxE9DUehRZHZMmoCYe627f/osso37JU1D61lnAIAoq/kpsMZPDnwW/4EH7pb3+Cr1dnAuQnxWDQPWv4DFXISUFINrNknUXozSPXGNfu4+4g9pdrNPNsUP9CwQyQKupiOnBOg8zcCWGGDkdKBxj7h4hYHzyjyN7lZhTlJnqHXBcYjDNAMsh/WfBpOiIIGoOtqYCnb9eRaRX62RIVQnj3v4UOC4wlnQTdycybQAa8HE19A5shlrapMmx2V0BWyGrB9Oyy9pTu73ktbwXER2eBKnOqAk+dcAdjHoYGNZp2hXWlEOsJgAZf4crTlf/w4sgQjWIk5Ajl+Vl8Y8kZByz4So/YJ5cEYEDQdBlT4tPTatECFUlBCY/WPKHcY2cmahR0gEnsZaE8rEtWB9heUuD1rkPRPkkPrsDHokRAvYasm/+l7w5eLkbC4/4lgHruc7zq3XUIU4fAfx5V6ljHXlu9bT8hXj3oXb5eVnwTBAl3hSmJC0OJL/rcEmQxFJv5gOsKe+FeHxEtvL1bjZkwyAN0yTVhDxtTE/NH7af1ycO/l3n8DIR4lD5ml+cOcR3tqaExPlGg5p21isaLIx1JwJUVHgrzACe2Bdk0fSHn+5atyR65pBdFd
- 24e+lvwN
- VF5Mxngn7JmpIy9N9pr6qzaOitVt8FNmnAjh4ghWP2I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A908540005
+X-HE-Tag: 1785512794-267153
+X-HE-Meta: U2FsdGVkX191VKOMNFNh6KWdvDftahguIZ/ACRo6aAp4uYaT6F8WcblGSsjA5ftq/mP7yjwS8cMguhtdQAOzO2v4ome1ZbzeTU4tzTx5lfOdhqaTA3s+aYq85/Yxn7rBeTsiwlIE1iO5hwZ38ZK3rZckkqMJeVFT5O+Wpg/i7lXhfxy0XHJMDr6ltrdgFDJyVbJUQ5o9ljMCix5zcp1+1kGxIFgNZI0AK1zVHtuJTqK68D331bdV0W6ntKG01bNI0jWNEhOFFQbVA43fBgbYZ3Vuy48fz7aozFI6au031yyhpBKkjqecvkEpQ1r6XEfJW6i3RKe4YM95RUDb8WLcCgk4RyMoIQenf/XzHVYtr1I2KwBObnUhQJdbmNGjZ1JJjkiAw+vzJRyPHx8cLLWp3v/FWb0qMRlnwYfL8DB4gGSA3DS1TIuLzLsCdU44VCZbaqdT7+XPPWBrLGFKJZOkZS17MIgqsRW20LTtJ6qWDGc4gqcP+pK+5a8HrnzwwgRZlGNHrmegyi3Cv9N7bbMQP6jpJQyUwiqOha1xYYwHTZvZGZJzwyoH4K2yCB9+pT0IcOq/KJnOxAz4CM+LAoHiMtJwlkkhZGFB4XRh31jP6zJME7IH3ttAPVLBg0wxYfxoN9EkNsgCwLjuq6mCFNdFnqF7a3aYLLgx0IEBH9juiGYoqfjPwCl/5qUVVsqlUm8MvsshXNRbicWdopQN0a7MrZKtiV0j678a3FeKXlsxmn8VaTvJpU/rlhUUxua8OL3SIbLNLdmSUCSFyMhFNP0B+O8Z7qc4ZxnV3eTfgYoTGShpmRe2B5czB9WXddD73h+Lymr3YWm8zVS/T/xsAWr00R/HJDpn+NSd37PRUdkeQPWVfsS/h+8+LuLHzOQwg4aDOjubbXuJVG8SZYfGfYMIWoXtl0PPcGDwdKUKxpGu+28UFUPnHXRfaLVWf0R6AfvY4nKAkgz6PspsxeiB5z1
+ MM5r1Ctp
+ GSg82Q08wBbM69eVtJxzHIiAe0eSXqAVV+NAO9Pfp/2LLnQTLfvuV/yzQmnEw2CuAofir8lxaPWdNY5vjDWA+OplAPhid8zIj6mEYvQSGLyPILK1wdGWi65zEJbBxk39jxgzCXp06MycD0xmpRFOGSpFSjnDrg14ExNkMvVJ2FbVKEKoJ95r9m8p1vAh0PXhJqpavEwY9xR1OEAzSmjfSnOw4CDFEbdEt2FHUj2AI72W250bZNTwFkLzyjojUTeSZwkLoBJ1mguNloDxOCWpz/xB3TOjMDD+0IC7pnPd/bVSvxZzg3LoeJMcNktNb0YSD4XTXIOIysNklNMpTCeUg9yLuLPOpzP5+Qke5YrH9qkpAynl615F8+fDWB0e+KhlLec4l96JIr7dpzPNBWuvIZZHeGuG19xfIMeRsfGV8ocBnvw29wwrgba5GKParPoMlIhQqrpOpk3ojE6uJb/0lkHdaBxfAS7bYbycbzWzmncFnYzDdLhe1WFr4WeEeahYei37AHu95ofNwl/dZIQ7/uSpMM7YVqz2DgYxkbdqshVlmCpYF0FBJmUHYS/s8gLz2YRvLEt0dYjwul+8FicuyvkxVikKar8t/Z/a/7mH5zTLqsVT+7YqzzBXNiqsxPT+R9VX+dVnmK9CjU3qTaebEBv00XD3Cw0HMO80ex1vBqEOBEaHjY+eptKv/SczjQ0L/PeUooRQHHxnBy0ULD5k7POsQExTqK+2CeBTrUhbCs0V8K4o2I0TdEWXc18vy7YcOlP5Ev4P4sjSVsFDLa4yRAeSpCzQBT/kXWE3pEFuCsqjW1NiGD0zGb5naRc9jhs5baBx4QB/jMkMIqEvHkuobp8JdLNotmRi2yeOReckLZ6gkeDOjs+Bbl5PJ9VnjVB294sadKBQVBy08dDgNJqALRqygb7Nb5dQs8Pw5FX2Ld/p1roBcMlk77JeFDtkI0brEU3BOcQQ61jqWDlD+owk3zmCDU4T7
+ HPbptsRb
+ MQQxIislBoTshYk87GBnknORC+99uZSBdGbPRyqxiUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,100 +151,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Register a CRASH_ZEROIZE notifier that wipes secretmem folios. As a
-result, when CONFIG_CRASH_ZEROIZE is set, secretmem areas will be
-cleared before the kdump kernel is kexec'ed.
+When CONFIG_CRASH_ZEROIZE is set, try to erase key payloads on panic
+before jumping to the kdump kernel.
 
-Zeroization runs after the other CPUs have been stopped, so the page
-cache cannot be mutated concurrently and the xarray may be walked
-without taking the i_pages lock. This is a best effort, defense in depth
-measure. s_inode_list_lock is taken with trylock only. If a CPU was
-stopped mid-modification the list may be inconsistent, and this late
-into the panic path, there's nothing we can do about it.
+CRASH_ZEROIZE notifiers run during panic() with other CPUs stopped and
+preemption disabled. In this state, we can't rely on free()'ing being
+safe, so we define a new zeroize key op.
+
+Implement the zeroize op for the user/logon, encrypted, trusted, and
+big_key types.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 ---
- mm/secretmem.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ include/linux/key-type.h                  |  9 +++++
+ security/keys/big_key.c                   | 15 ++++++++
+ security/keys/encrypted-keys/encrypted.c  | 12 +++++++
+ security/keys/key.c                       | 44 +++++++++++++++++++++++
+ security/keys/trusted-keys/trusted_core.c | 14 ++++++++
+ security/keys/user_defined.c              | 11 ++++++
+ 6 files changed, 105 insertions(+)
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index d29865075b6e..53f629d6633c 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -13,9 +13,11 @@
- #include <linux/bitops.h>
- #include <linux/printk.h>
- #include <linux/pagemap.h>
-+#include <linux/notifier.h>
- #include <linux/syscalls.h>
- #include <linux/pseudo_fs.h>
- #include <linux/secretmem.h>
+diff --git a/include/linux/key-type.h b/include/linux/key-type.h
+index bb97bd3e5af4..ff0944ce368f 100644
+--- a/include/linux/key-type.h
++++ b/include/linux/key-type.h
+@@ -122,6 +122,15 @@ struct key_type {
+ 	/* clear the data from a key (optional) */
+ 	void (*destroy)(struct key *key);
+ 
++	/* scrub the key material without free'ing (optional)
++	 * - used from CONFIG_CRASH_ZEROIZE during panic to keep keys out of
++	 *   crash dumps
++	 * - called from the panic path with other CPUs stopped and preemption
++	 *   disabled
++	 * - must not sleep, allocate, free or take locks
++	 */
++	void (*zeroize)(struct key *key);
++
+ 	/* describe a key */
+ 	void (*describe)(const struct key *key, struct seq_file *p);
+ 
+diff --git a/security/keys/big_key.c b/security/keys/big_key.c
+index 268f702df380..ad8537dda70f 100644
+--- a/security/keys/big_key.c
++++ b/security/keys/big_key.c
+@@ -35,6 +35,8 @@ struct big_key_payload {
+  */
+ #define BIG_KEY_FILE_THRESHOLD (sizeof(struct inode) + sizeof(struct dentry))
+ 
++static void big_key_zeroize(struct key *key);
++
+ /*
+  * big_key defined keys take an arbitrary string as the description and an
+  * arbitrary blob of data as the payload
+@@ -46,6 +48,7 @@ struct key_type key_type_big_key = {
+ 	.instantiate		= generic_key_instantiate,
+ 	.revoke			= big_key_revoke,
+ 	.destroy		= big_key_destroy,
++	.zeroize		= big_key_zeroize,
+ 	.describe		= big_key_describe,
+ 	.read			= big_key_read,
+ 	.update			= big_key_update,
+@@ -279,6 +282,18 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
+ 	return ret;
+ }
+ 
++static void big_key_zeroize(struct key *key)
++{
++	struct big_key_payload *payload = to_big_key_payload(key->payload);
++
++	if (payload->data) {
++		if (payload->length > BIG_KEY_FILE_THRESHOLD)
++			memzero_explicit(payload->data, CHACHA20POLY1305_KEY_SIZE);
++		else
++			memzero_explicit(payload->data, payload->length);
++	}
++}
++
+ /*
+  * Register key type
+  */
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index 59cb77b237b3..9f56fa9b4aaf 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -970,11 +970,23 @@ static void encrypted_destroy(struct key *key)
+ 	kfree_sensitive(key->payload.data[0]);
+ }
+ 
++static void encrypted_zeroize(struct key *key)
++{
++	struct encrypted_key_payload *epayload = key->payload.data[0];
++
++	if (!epayload)
++		return;
++
++	memzero_explicit(epayload->payload_data,
++			 epayload->payload_datalen + epayload->datablob_len);
++}
++
+ struct key_type key_type_encrypted = {
+ 	.name = "encrypted",
+ 	.instantiate = encrypted_instantiate,
+ 	.update = encrypted_update,
+ 	.destroy = encrypted_destroy,
++	.zeroize = encrypted_zeroize,
+ 	.describe = user_describe,
+ 	.read = encrypted_read,
+ };
+diff --git a/security/keys/key.c b/security/keys/key.c
+index b34a64d81d47..5673dcc8c5d2 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/security.h>
+ #include <linux/workqueue.h>
 +#include <linux/crash_core.h>
- #include <linux/set_memory.h>
- #include <linux/sched/signal.h>
- 
-@@ -187,6 +189,50 @@ static const struct inode_operations secretmem_iops = {
- 
- static struct vfsmount *secretmem_mnt;
+ #include <linux/random.h>
+ #include <linux/err.h>
+ #include "internal.h"
+@@ -1268,6 +1269,44 @@ void unregister_key_type(struct key_type *ktype)
+ }
+ EXPORT_SYMBOL(unregister_key_type);
  
 +#ifdef CONFIG_CRASH_ZEROIZE
 +/* Called far into vpanic from crash_core.c with other CPUs stopped and
 + * preemption disabled
 + */
-+static int secretmem_crash_zeroize(struct notifier_block *nb, unsigned long
-+		action, void *data)
++static int key_crash_zeroize(struct notifier_block *nb, unsigned long action,
++		void *data)
 +{
-+	struct super_block *sb;
-+	struct inode *inode;
++	struct rb_node *node;
 +
-+	if (!secretmem_mnt)
-+		return NOTIFY_DONE;
-+	sb = secretmem_mnt->mnt_sb;
-+
-+	/* If the list was modified in the exact moment we panic'ed, it might be
-+	 * in an inconsistent state that would be unsafe to iterate. If we can't
-+	 * get the lock, too bad, that's all we can do here.
++	/* If we can't acquire the lock, the rbtree might be in an inconsistent
++	 * state. That's all we can do then, as there's no point to waiting
++	 * at this stage.
 +	 */
-+	if (!spin_trylock(&sb->s_inode_list_lock)) {
-+		pr_crit("crash_zeroize: can't acquire secretmem superblock lock.\n"
-+			 "crash_zeroize: skipping zeroizing secretmem.\n");
++	if (!spin_trylock(&key_serial_lock)) {
++		pr_crit("crash_zeroize: can't acquire key_serial_lock. skipping keyrings.\n");
 +		return NOTIFY_DONE;
 +	}
 +
-+	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
-+		XA_STATE(xas, &inode->i_mapping->i_pages, 0);
-+		struct folio *folio;
++	for (node = rb_first(&key_serial_tree); node; node = rb_next(node)) {
++		struct key *key = rb_entry(node, struct key, serial_node);
 +
-+		/* no need for locks if we're burning down the house :) */
-+		xas_for_each(&xas, folio, ULONG_MAX) {
-+			if (xas_retry(&xas, folio) || xa_is_value(folio))
-+				continue;
-+			inode->i_mapping->a_ops->free_folio(folio);
-+		}
++		if (key->type == &key_type_keyring ||
++		    key->state == KEY_IS_UNINSTANTIATED)
++			continue;
++
++		/* custom zeroize since free'ing isn't safe at this point */
++		if (key->type->zeroize)
++			key->type->zeroize(key);
 +	}
 +	/* off to kexec()! */
 +	return NOTIFY_DONE;
 +}
 +
-+static struct notifier_block secretmem_zeroize_nb = {
-+	.notifier_call = secretmem_crash_zeroize
++static struct notifier_block key_crash_zeroize_nb = {
++	.notifier_call = key_crash_zeroize
 +};
 +#endif /* CONFIG_CRASH_ZEROIZE */
 +
- static struct file *secretmem_file_create(unsigned long flags)
- {
- 	struct file *file;
-@@ -263,6 +309,10 @@ static int __init secretmem_init(void)
- 	if (IS_ERR(secretmem_mnt))
- 		return PTR_ERR(secretmem_mnt);
+ /*
+  * Initialise the key management state.
+  */
+@@ -1290,4 +1329,9 @@ void __init key_init(void)
  
-+#ifdef CONFIG_CRASH_ZEROIZE
-+	atomic_notifier_chain_register(&crash_zeroize_notifier_list, &secretmem_zeroize_nb);
-+#endif
+ 	rb_insert_color(&root_key_user.node,
+ 			&key_user_tree);
 +
- 	return 0;
++#ifdef CONFIG_CRASH_ZEROIZE
++	atomic_notifier_chain_register(&crash_zeroize_notifier_list,
++			&key_crash_zeroize_nb);
++#endif
  }
- fs_initcall(secretmem_init);
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index 0509d9955f2a..f159faeafe23 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -325,11 +325,25 @@ static void trusted_destroy(struct key *key)
+ 	kfree_sensitive(key->payload.data[0]);
+ }
+ 
++static void trusted_zeroize(struct key *key)
++{
++	struct trusted_key_payload *p = key->payload.data[0];
++
++	if (!p)
++		return;
++
++	memzero_explicit(p->key, sizeof(p->key));
++	memzero_explicit(p->blob, sizeof(p->blob));
++	p->key_len = 0;
++	p->blob_len = 0;
++}
++
+ struct key_type key_type_trusted = {
+ 	.name = "trusted",
+ 	.instantiate = trusted_instantiate,
+ 	.update = trusted_update,
+ 	.destroy = trusted_destroy,
++	.zeroize = trusted_zeroize,
+ 	.describe = user_describe,
+ 	.read = trusted_read,
+ };
+diff --git a/security/keys/user_defined.c b/security/keys/user_defined.c
+index 6f88b507f927..ade95dc2481d 100644
+--- a/security/keys/user_defined.c
++++ b/security/keys/user_defined.c
+@@ -15,6 +15,7 @@
+ #include "internal.h"
+ 
+ static int logon_vet_description(const char *desc);
++static void user_zeroize(struct key *key);
+ 
+ /*
+  * user defined keys take an arbitrary string as the description and an
+@@ -28,6 +29,7 @@ struct key_type key_type_user = {
+ 	.update			= user_update,
+ 	.revoke			= user_revoke,
+ 	.destroy		= user_destroy,
++	.zeroize		= user_zeroize,
+ 	.describe		= user_describe,
+ 	.read			= user_read,
+ };
+@@ -48,6 +50,7 @@ struct key_type key_type_logon = {
+ 	.update			= user_update,
+ 	.revoke			= user_revoke,
+ 	.destroy		= user_destroy,
++	.zeroize		= user_zeroize,
+ 	.describe		= user_describe,
+ 	.vet_description	= logon_vet_description,
+ };
+@@ -152,6 +155,14 @@ void user_destroy(struct key *key)
+ 
+ EXPORT_SYMBOL_GPL(user_destroy);
+ 
++static void user_zeroize(struct key *key)
++{
++	struct user_key_payload *upayload = key->payload.data[0];
++
++	if (upayload)
++		memzero_explicit(upayload->data, upayload->datalen);
++}
++
+ /*
+  * describe the user key
+  */
 -- 
 2.53.0
 
