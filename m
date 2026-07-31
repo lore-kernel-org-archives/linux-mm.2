@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 152C6C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CEC0C55174
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 145306B009F; Fri, 31 Jul 2026 14:15:12 -0400 (EDT)
+	id 0F96B6B00A0; Fri, 31 Jul 2026 14:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F68C6B00A0; Fri, 31 Jul 2026 14:15:12 -0400 (EDT)
+	id 0D14D6B00A2; Fri, 31 Jul 2026 14:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B9E6B00A2; Fri, 31 Jul 2026 14:15:11 -0400 (EDT)
+	id F2A326B00A5; Fri, 31 Jul 2026 14:16:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D62296B009F
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:15:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E5E31204EA
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:15:11 +0000 (UTC)
-X-FDA: 85049873622.17.5F4F9D9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 934371A0004
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:15:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v59wuXay;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C96626B00A0
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:16:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B2A8A1A5C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:16:06 +0000 (UTC)
+X-FDA: 85049875932.06.01AC92F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B1E72A000E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:16:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8mqCAa3;
+	spf=pass (imf15.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785521709;
+	s=arc-20220608; t=1785521764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYjCuGD0pO2ANa5DVGnegL9SjFstEyINvHwzqN4rDkE=;
-	b=bY8BSqKRHBbCkuYZi0LaKTG1PIgCLvj6fvcEMgKexYtS3C3NDMIJ3nasWkbABiN2ghgeJC
-	8DqBR+Z7jg0swN9CnA8tjCJZ0ZmGCQBOf6G/9SD8TELBP5Fd/jP6ZHdeHlyCIbJxnUSarK
-	lD+1o9ZEyLKcP/rPEH/cX5/O6YXwPME=
+	bh=9wUJP0XuZAHVCju2vCQtbQJIE3DcNFW1LWD6svK3iD8=;
+	b=x/IkQS3jsXRc+rlSi4sbHTJB3X29tgfRcKDpc7WlnB9iPGTrQjj4botjfcXhlrJt2PKFYy
+	ZNw4xNbCfzW3P5eoIOGyGxxURWJrviCtc4QK26mDV3t/zd9vQ+3C896IwXx0T1rEQghev1
+	5BtAYBO6ShTm07C9ChoqK6fUOQq2PCs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785521709;
-	b=QxV+2q5qvtQVJc09xCnNRu0RCcidms7vnbSbyV9jO5ZJO0Drw4UEKKfSR8ri8ws3VSuixo
-	+F+YzOl87eA++1LR83q9sI/DFb0ecqXUb8WjbZNIEcOV0TB87cMVujXCg+dx1+F8g4Zqrq
-	7ZWe5EeZg4++YuAqIOfJFyu++4hit8w=
+	t=1785521764;
+	b=MperCIREIWfWmVldS5zSwF2ovg4MzqT9euzxQwcXKx3D5kdIDNxpXvGJtc+PgqG8RU6kvB
+	/j9923qy+RHvB8dCe/m3Wi17Ym7+BHRrocbfoyJzDhPiP6wliGSOErr6oasY3gwQAEbUJN
+	9pdi/K39G5JQZtlIpLf/t92AMLXJY3Y=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v59wuXay;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8mqCAa3;
+	spf=pass (imf15.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D922843582;
-	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AD01F00ACA;
-	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785521707;
-	bh=TYjCuGD0pO2ANa5DVGnegL9SjFstEyINvHwzqN4rDkE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=v59wuXay31zPspTTf4mm9ubsz+mm7aYDP0gWzG+bxn+oDvKn48xSkU3q8+yL0ihY6
-	 Y7aREg0tzLTwDSUTXFsT7akakk87yUUrBuj/2E3CU9RklXGLiaJhtq3cssoQAP42bF
-	 U5dqnnZgRNhDOK0pWy8g18iApifRPIiBBu+VC3Jc=
-Date: Fri, 31 Jul 2026 11:15:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH] mm/sparse: correct init section annotations
-Message-Id: <20260731111506.ed0bc4b98228e4a9e5bf283a@linux-foundation.org>
-In-Reply-To: <20260731164758.1210668-1-ekffu200098@gmail.com>
-References: <20260731164758.1210668-1-ekffu200098@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 934371A0004
-X-Stat-Signature: zt8re3fftonoqb6r9z839nq49ks7niqh
+	by tor.source.kernel.org (Postfix) with ESMTP id 22E32600C3;
+	Fri, 31 Jul 2026 18:16:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6998C1F00AC4;
+	Fri, 31 Jul 2026 18:16:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785521763;
+	bh=9wUJP0XuZAHVCju2vCQtbQJIE3DcNFW1LWD6svK3iD8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C8mqCAa3sOez8bYlcdk7Ex9hl1Zc3wGzNlS+gMfhYDFWo2GO6U1oOyWzlb2bPQY+x
+	 hqp45+zj52D2OrfKyI0wE6OnSs4tXIB0pDV9h5BA+FBwqNLLssYqEG2iralfKBbWze
+	 8TnH2nZgoDMCRUVPIIfWgQ5CX2TqVmWguLZl5ry0GMyg4/zCAi/p/yVuCqOjBPDh1S
+	 3CfPkRN86lNOdPWBsocKmexkv/xlcBg6n1fCMbp7GWE8C9TU8+qYac8CviSfGdpNx7
+	 2tBQ+HKflUJA/Bs03oR8x3vLAb4l3YfkvzAafZcN8aqTCzekcrr22Gj5IiA+WkyfGs
+	 NrtPDLo03P3hg==
+Date: Fri, 31 Jul 2026 11:14:08 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted
+ files
+Message-ID: <20260731181408.GA12803@sol>
+References: <20260730184853.48347-1-ebiggers@kernel.org>
+ <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
+X-Stat-Signature: os7zyqyyog98pw59x1e76onqt64fwmf3
 X-Rspam-User: 
-X-HE-Tag: 1785521709-741564
-X-HE-Meta: U2FsdGVkX1+Jkfvcoo3ugD+knvtUf3WEYVCXriPqsi2TRt8CBCIielK3Q6JfkM/W1gz+dexIIZQEmn8cLcFG+ENUVKtU6FMR6cx/7JX4gcQy30sFKptkMDEEw8CjyKjsh66MKFOmrzxxUbF74svFwGx3Gk4jn6w4rPNfCRZ3Cma/IYTZxcLGyw75lsxxGbuOg59STqiCf5mUAnMaTBoHXMtT6zfaXpUIVz4bSVdR57fN78comk3DkJo6+QS8PiAIqlBNnZgSGFmvMfdhHykGJY7k4upD32l0bdMAF9BB3KaSMX7y2xmi33VIPb8J5XDtCV291EL8s0TFhiq5bx9+QntIL6pIy2D0FVgMNL04ww2QVJ0B+nYqrTG2b1y2sCA3g+DvYgGEQR/BxyTu/IxOoobd7R8DXuLZUFgXi4SxbH5StNiksLm5UrMeZMBOUZuvvKPl2MqRlHFinSo7mYr1TBixLDZVgeMpGG1TuHcuGDX+ZKKeykI4SdIQ8BXnlPNRN91Uzk63Ms7kzpGvtOyodXEcDFqwAhBzptEZ+e33MtxKCWULo2LgGJjhzcFVQRBSYZ2dPXWJEBRUSSJpYI8U7qphDjezN78JkFGcYkl+s64mmluhggXsJhgzKq6hgBX10DTTLak2cPVIszX2snTLKwFYWpBBGx7REvu0PglCqhG1lPnf0IkhBy+3H5Gk/K4wTjW/+X7wcBwdoLRqqGflBHVF5NlIr8jIrZ0YaqlADx5HrzdS4s7H1CFeO87PojPzYVNdJl9glbJTVkCzeQlOqdMze5rGFbiPS3cRxKYy4rERyvc4Or9bxjRyAYTEcVwVqUfpRYXOfrUByyECQ0xK6AMI0HudGi0pMs+qoJ3vSJ+vW4nOeqvCOgkc9zAgJdMquNBozHYwIc/Yd0Udz2su3ZLj5tO/bsbqPIotF+A/BRNKvKgLIP0GkwY+SFGLQ+ZvtMvmHma+L03OrEQ0de8
- zQscUduj
- vOuLqSupU1ODGaT0TuQzAbY3bYYr3A9geOFXoub8NqorBlNFuGsogu5m0rtX/wwEcxzki1EGfJ9FAxOLPgQXuvSkm0K+EXKsHfAJYjcdiBHZhSHsqgmNauiOdfVUDX4E3ngbyzI0aybP2xNEltGqpRHAaZDOug7hNFm5Paay0KfE4bg+W3+ZiwXWW7e8n4hFyWXjM/tuNkrFsY+ynaVt9x0lgvhyA32+UJjF1wLJk6a3CvFHux1vdHv1aZAa8bKELsiN6fTKKylDAbPrSQpppC1vnzw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B1E72A000E
+X-HE-Tag: 1785521764-562880
+X-HE-Meta: U2FsdGVkX19ohUEX2NhKnHIdowRYiivwQvba2+a9AI9OXPr/E/JH9X0EEvCYFbF6Asbj6TivcX8mbV392XU/GTqVGiAXKcjfFGzRbmVuIJxMpi0OEVlSFXbJiqIdwjN1qnyPmMUwTygtenijVwrb6j8ynqUTRg7fduDrCRXSl/QQiHkGw6RmafmfKa0LC2aJddFkLupSB4X1QFBjEi/MTTwl6f0xJZjPAUkVOLOPlwrjEbwLxIGMclp8WxygQJchnxDJ79aTwP+HAIAFSf37maxmguRvsC9r7x8QIfYnZL/VpqMmbsezS1KJTGgCop1V/fV8DrhyDpaegNVmlr0uFudh/hkyeVNd66799cCmq4fpSLrJ5Ek7l6ZUwbZHt/pXYh3ydGOWLzsTUuqLmVxRc7q/l6ugeAPD6wU1031UsJm6SBnk3h8J8zGaw9OFwQJCQjlYAdxLYkN3ISuon7yc5GqPfrbPZR8V3Z1cCJhs5hY8oovVAebR2maRsz0/Gf0TruabsZqRNFHnHYnmTuAp07H9BhQfn9csLbzoJGICgBXhsQmiiTvhatbQ2utFRpfzKA3c6T17tEVd/7qlFXLfIUzgsNlehGt7L00TOVsKXNOLL23BikWN4IpaMXkkMRxCKZSBgnwbGaWy8pLCPnjKIcN3RCEUxJED2qbNXWuXtk4zsKNypiHwwJJcjkt96mXeAmPhhx44IO+1zhIvojl1L2P75P0Q6h3FlF2dsTkBr4UxbRlpOvSKWpz1j8LAiiOphz6YpguEn5HyDwwiRsE+7NlIMAcOR84AY4MOfFz+eMYRpHqjOgr7sirltQpnjuyeL6HEQBRIyTxTrbr1H3uDA5fYeHADSz3+gcbWOIild7fDXWK08b253vGZ6lreAj/h9Vb2GDBRJ3lAQ1EV3QOlUmI09T+1PUzo3LITLqm/fMvVX3kai/ZquwXmjOKhRziH07UsLw2cry6z0F8xsLr
+ jqK2aPiT
+ FVc6pBleZyr6BOXQkgYNOypGVdueRB27CKlL/50FasHHVd8Q1em0YgTwh8Lm4eNU7p8cShBCEVkvhuw5PTQNmeFQ4D6R8Lf2PSwQv2DZsZldMlyMhdjkN2mdtYsnOahBzQxFjE6EKqdlb3fokNLJGRjMW7+jMJDdQAIiMdClGG8RirBSevIU8N2gnyAgPn7uTdUGfF2Vy+JHAGmGD/RP6B3qZUw25FRIUym9QhQ1w9B3BDe9Mnwl1tz79YK+EgAMHKS+1n0uZ33KJDyk+8y9UR5SX7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,43 +97,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  1 Aug 2026 01:47:55 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-
-> The !SPARSEMEM_EXTREME stub of sparse_index_init() has no annotation
-> but the SPARSEMEM_EXTREME variant is __meminit. So mark the stub
-> __meminit too.
+On Fri, Jul 31, 2026 at 11:11:02PM +0800, Baoquan He wrote:
+> On 07/30/26 at 11:48am, Eric Biggers wrote:
+> > ext4 and f2fs don't prevent filesystem-level encrypted files from being
+> > set up directly as swap files.  In this case, encryption is bypassed.
+> > 
+> > No one should be doing this, vs. the methods of encrypted swap that
+> > actually do work (such as swapping to a dm-crypt device, or swapping to
+> > a loopback device on top of a filesystem-level encrypted file).
+> > 
+> > Nevertheless, to prevent user error, make swapon() explicitly reject
+> > this case.  Document this behavior in fscrypt.rst as well.
+> > 
+> > Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
+> > Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> > ---
+> >  Documentation/filesystems/fscrypt.rst | 4 ++++
+> >  mm/swapfile.c                         | 4 ++++
+> >  2 files changed, 8 insertions(+)
+> > 
+> > diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
+> > index c0dd35f1af12..cba1989777da 100644
+> > --- a/Documentation/filesystems/fscrypt.rst
+> > +++ b/Documentation/filesystems/fscrypt.rst
+> > @@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
+> >  
+> >  - DAX (Direct Access) is not supported on encrypted files.
+> >  
+> > +- Encrypted files cannot be used directly as swap files.  To swap to
+> > +  an encrypted file, set up a loopback device on top of it.
+> > +  Alternatively, encrypted swap can use a dm-crypt device instead.
+> > +
+> >  - The maximum length of an encrypted symlink is 2 bytes shorter than
+> >    the maximum length of an unencrypted symlink.  For example, on an
+> >    EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 78b49b0658ad..e4991da81b5f 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+> >  		error = -EBUSY;
+> >  		goto bad_swap_unlock_inode;
+> >  	}
+> > +	if (IS_ENCRYPTED(inode)) {
+> > +		error = -EINVAL;
+> > +		goto bad_swap_unlock_inode;
+> > +	}
 > 
-> mminit_validate_memmodel_limits() is only called by memory_present(),
-> which is __init. So mark it __init.
+> Sounds reasonable to me.
 > 
-> sparse_usagebuf and sparse_usagebuf_end are only used by
-> sparse_init_early_section(), sparse_usage_init() and sparse_usage_fini(),
-> which are all __init. So mark them __initdata.
+> One minor suggestion: it might be helpful to emit a pr_warn_once()
+> explaining *why* the swapon was rejected and pointing users to the
+> dm-crypt / loopback alternatives, so the -EINVAL isn't opaque.
+> Optional though -- the check itself is what matters.
+
+How's this?
+
+    pr_warn_once("Filesystem-level encrypted swapfile '%s' is unsupported. Create a loop device over it, or use dm-crypt\n", name->name);
+
+> And this patch updates fscrypt.rst. Would it be good to also
+> update the swapon(8) man page to document the new -EINVAL
+> condition?
 > 
+> Other than these,
+> 
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
-lgtm, thanks.
+swapon(8) is for the util-linux program, not the syscall, so it doesn't
+document error codes specifically.  It does have a NOTES section that
+incompletely documents filesystem-specific constraints on swap files.
+It's missing most of the current constraints.  But sure, I'll send a
+patch that adds a note to there about this one.  That will be a
+util-linux patch.
 
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -104,7 +104,7 @@ int __meminit sparse_index_init(unsigned long section_nr, int nid)
->  	return 0;
->  }
->  #else /* !SPARSEMEM_EXTREME */
-> -int sparse_index_init(unsigned long section_nr, int nid)
-> +int __meminit sparse_index_init(unsigned long section_nr, int nid)
->  {
->  	return 0;
->  }
-
-We could make this
-
-#ifndef CONFIG_SPARSEMEM_EXTREME
-static inline int __meminit sparse_index_init(unsigned long section_nr, int nid)
-{
-	return 0;
-}
-#endif
-
-in a header and make it go away altogether.
-
+- Eric
 
