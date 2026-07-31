@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF89C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E39BC5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0F976B008A; Fri, 31 Jul 2026 14:08:09 -0400 (EDT)
+	id 86C146B00A1; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99AF6B0095; Fri, 31 Jul 2026 14:08:09 -0400 (EDT)
+	id 842AB6B00A2; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64276B00A6; Fri, 31 Jul 2026 14:08:09 -0400 (EDT)
+	id 75B0F6B00A5; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2B16B008A
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:08:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 00C191A0550
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:08:08 +0000 (UTC)
-X-FDA: 85049855856.01.30D43EA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BD156B00A1
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C97081604C9
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:11:24 +0000 (UTC)
+X-FDA: 85049864088.24.1B02784
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 608072000F
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:08:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P31RC6J7;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785521287;
-	b=j8rmxy0r8rEBrHQJmWBauW5PfBz8dyiyopp+2YDxbYMaGs/POISh2pAtzltsOGMhPjVOHy
-	lTW6JY4PKseqmdtVB5kJGaQ8zG+YYlXCPzFISOuFlXp8++J366FanShxaCTMkqV8OJ7xCV
-	P97vjIIco8JYsm8M8o+cB4/3SSOQ5aU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P31RC6J7;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 205C61A0004
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:11:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=NpNsu0N7;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785521287;
+	s=arc-20220608; t=1785521483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PSu7HlraTrtCjx5JsJFL6p1xgqkSTFzQNybrZjtENdc=;
-	b=sN8KHAbnBDc2TgUFp+ttxkgMuWsmFb3pboLjoYFa/GwNqOaeZNEtus0GlpPsWrY2GlCyMa
-	LbyyvKWUHFjz3ONcw/9DH38JINuU81gq7UiFpEOXc1YxjcYPF/7LTElt9HPj1PNSEquYjr
-	QIMk+8BXPS5plD66q4PVLRwSb7xmT3Y=
+	bh=qgKGyimHWHWrS7GKqRrXGIY74zPdoBJNUqsWVCUzh6o=;
+	b=12HFz3H9+r/aODbLYQ6Qnr2Rq6Ur4q36c5AFe4HxRkdDSOYpcEhLrC6n5wP7cOFJpgZudw
+	VzxmFLNCt+TYXB7jo3sHPOiyqcPInCxNdr/zkdG2uWdo4hT691lGthZQT/M8S8yiJEnPy2
+	ne1mJ3zveHSUnbGRE4Pc4Bd+iGJM1lo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785521483;
+	b=zwX+GMV1ddeB9krSaByn7EE9XWB2kAhwEljR9c2dzPodza9otz5E8yOrIn6J0I5OJV66vl
+	3fxTZM1be4GXxqj8ueMManhaRQxrh4ZnCJ7nPQ/LZ5i4a3x/aOY7AskPNnaabHMDMqLliC
+	Tg1MM3QF+qKx3hggbEqnwWCeXRKewBc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=NpNsu0N7;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PSu7HlraTrtCjx5JsJFL6p1xgqkSTFzQNybrZjtENdc=; b=P31RC6J7kHO3GR0UKFbGSYsbUI
-	KoU5Kjp6bTger6m+z79NQzGE4X+mbYGwyU3REKwoV6LYeM4ud4wLJYZQ1q19g4S5+8m6GAbRjaRVp
-	o+PGXI4XbT9ydbNe1fk9+Wl04OJ8orkrYxfAWJJTrMCAQQ2+TfeNEcleEQlUJOCe7ph2F6loRNfgD
-	/ct9qRrj40vo/9p0eBkrr9KZwvYqtRL1jLFi3B8O3ASt9WnUS0cHF4DRAX07Ya8EErl0XUdUoiAsa
-	uUkniItM9pHsGIUlCetCMzDCcwcWN0L5xtTwdOEoNhef8TAmQdyFESmIEoT00Lt9ov/9DzZ5flr+Z
-	fM+Wkk4g==;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=qgKGyimHWHWrS7GKqRrXGIY74zPdoBJNUqsWVCUzh6o=; b=NpNsu0N7Nk2pB2+SdDRWLmEnhq
+	d3V0f55YufscXQEl5pXVlXrTfe6VEv5enoXClU+UvZLUheXpGmD0icDh6+RDW+6brJmY0ykZN491y
+	A1xHIWBiR1s1YFIYbocN/mYdIbECKTcNF0K/c4B7iVtFc3dauPPx6tHdq6bXLAK6kA1TlIljgzzkK
+	ok49T3dq8jmWghghVW4C7/rKanX1I8nIEW4Qtj5xQXKPOzthngAqG9SnnflegVRWO1cyR+3NKVDXd
+	u5H1EXCl1XIlFPTevZbJOftj4jCor++oYXF+qJLTcNlVhI2a1hSQKp/sYypSR7HMx8S5fOEvdcA5U
+	qVi2hIlA==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wpre9-00ACx0-0B;
-	Fri, 31 Jul 2026 18:07:49 +0000
-Date: Fri, 31 Jul 2026 11:07:44 -0700
+	id 1wprhK-00AD5R-2f;
+	Fri, 31 Jul 2026 18:11:07 +0000
+Date: Fri, 31 Jul 2026 11:11:01 -0700
 From: Breno Leitao <leitao@debian.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: rostedt@goodmis.org, pjaroszynski@nvidia.com, 
-	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	kernel-team@meta.com, dcostantino@meta.com
-Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
- the scan
-Message-ID: <amzjjjZrseO-jMJL@gmail.com>
-References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
- <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
- <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
- <amCT9QEgJRsLIb_y@gmail.com>
- <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
- <amM1xUOhcpGpqIpe@gmail.com>
- <39c90e82-f785-4b47-9571-dd4b1339d685@paulmck-laptop>
- <amdWVTs0WKOxguxP@gmail.com>
- <amtZNwxZ3gpOsPER@gmail.com>
- <743bf971-b4aa-416b-b72b-88b538be727a@paulmck-laptop>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v2] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <amzkmjkJtLyYnE-y@gmail.com>
+References: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
+ <2vxzecgj6od4.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <743bf971-b4aa-416b-b72b-88b538be727a@paulmck-laptop>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2vxzecgj6od4.fsf@kernel.org>
 X-Debian-User: leitao
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 608072000F
-X-Stat-Signature: 938z8zewy4phuo3rhjawchdk7mqyjgkz
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 205C61A0004
+X-Stat-Signature: gywtumpk68h4apmo59qxuqu4f598fxjo
 X-Rspam-User: 
-X-HE-Tag: 1785521287-897635
-X-HE-Meta: U2FsdGVkX1+5gH+mMsWlfbk8HbZgQKmTkXltu1sZzcB2D9l/ClAhB3Ilq3rrytiULLI/L8w2YyJhhRKcDRzM+ZD2ZCLgcdYKxj2MYrOO2Wq2sMOCqmCjHo2G5NqC5/TBpBXYJATjyXVSjBZNyc3DWBBMVd2jwnvD3r/nmt44LxfT+S1BuXrZRIbskst717Ni2cq2oUkZSKO5EBkslTlQ+bQ/3HfxoTKpQgTcomKSHCdRAaeQKeF9GT3LoNqle+yZl/ds0RXgf6/Whyuj6DqvxHr4vcw2oo/7Ll/t3TJq/nucrieB3dgP0V8ogmMBl4xPRIisIf8D8qdG0egGi4T6iz6PVrgdWa85QhbHZ2TNiSnyRfP3acQHur5Ve+oh1p1MyDWfyBlNt4NNXKOyOHPxXyyOjPPJyuaT4Z9SnhloOys93x7snL/XnHBO/IF4+8IpPnmagLcKY+egitPD5do74jUWeIKuOB8RQr3vPobfCWM3707vOaG4P7dKeJjHLBwcRaqGfGhS2mA9+laTF7W1IoJFuuCcUDVXETQIsvWE0g6KkrnBv7MVoyAx1RaGbpWD+6FuYF3Z/1TmyIVD53b/vFY5G/AZwTqNu2XNoE44YYx/IouU/K+GqDSYWS8s798rhdfQTeNBs/aOeN5fc0RylMJdK/WFKaXF50gwEBmdiMtqU00Mkn+P5j3WDFA7vOPzZ3KhtucqJ4tkz4NvlfaNlRqaaRXL9rRhKm76eXqPLnORkWCEOdo5YlJ0WifJ4tr9gtRoslN1zpLC15CCPL9yAtQ0v42IRa5BJNBnYNMn4dQHHvfgpdvrUg0HmNB+89ZlRvOUYxLv7BZ98nqZJueBAWu2wWw146vDCn8usAYYkO1C+YWAGh20wA5IuEzPhwBaivfzZsbhjRzUwiGKa2vI3AYMcfZmv+WdAKVgaIMI0THvWuNQuh+SXfdLq36EnYlFX1F/WBBwPW1Dog18N1p
- DP9ceVm/
- rLEZFwTJpL4wxuI4fyWzsPnc5T+awdoooTvNgvNKVebKme7TIdRkvHwnEsUBAwlJpb5wwjdXghY6/++kkP+juCZFuyovfmab5EW+ny4hacSPSa4uDMGnobPHAI2as2uVDAJ5xmL/AIeqQ6ZdaH/CJXY2kRzGsgduJWOVXnkoccb/mab5C2I6qBmPGM9vodY97z9WZxnOrkgH6bpdStP7bf04A6yZyyIKpwy3UCTLUy80Bv22I5Dp9Czz4msVisLgdvSUS
+X-HE-Tag: 1785521482-122689
+X-HE-Meta: U2FsdGVkX195FbABST0GEu+55oWi6uP6P/46RAiu7lSawCvQ53YCk9ndi7HS4s0B1GBUPlz5OwNkFErOIBi4OHAMv50YutSgiwnbAH5NMRhE6GiBcUkwyUe/USEYdnnJ+lNgm+u6v6aVPlbyy22OcqbrSca43uHihZkFCons79IWkhjf3lqxTnsB9ipJYr7/NTtRqBDty2ac8CWhQK1At9Td7q6DPZ0wdXZnCERs2AJl/x7DLqeSBLalRC+tKCIPHqTv6cXJ1fp0uTZ8gt2mYL/k5R8F9cBHBJb/Q+tFi9PdRaX+5WbluBcmlKbnEyAnenXhA3dx456toAZobm2C7E4wCVyACgTEIELvKjBuF4qglavQ92nCupxQ+22w5R0Nkp9+3rIBFGv1C7GhrKDKxrM6iK9hSJdpZmikZfKEGQHn4+JRiM9aaG5ozaQGORtCQHO/kqRA/YB6rnkQc//iFrBeGrULRE8so6tNS7RpBYfzIErWiEIevekNJN8/OboJ6rud9b3lSVFZoqXeZ7wUcJ1KW/tZMyyA4G7pniTVVcMzX5o2Cm0uOJb0VHSBD4fUFoJib2NiTPcutiaMt+0uQY0ghE/vsfWFkmJrAT7AlJWffKU75j587cNdSYhQ0RcTFdJ+bsaFbwr2nsm7mKYYOjZVC5uOfva8IFU+48EFkbNLMGJ1k3iInqQLEYRgl8P5uHX3p9azxms/GhoaUdbC9+BfTbMnG9JsZoZq37TSja/APEGqA/FvzH7Hc7bu49UfbXmbHzeOwxfBJNiFC9+dTZ/2n5XLmihKeIWynBIFzP999rHRcIW+73QAUYCZNSkX22ULNZQdYu65fI9FdChX1kgk+t5pfZeCfeMPhTLWQDiJ+/ht0FNTUWioSrJhcGOm06tL6E5pZbtV/B2NHO/P0z1ZGWk8p+i9uD89pQ/eOTg5oOfKpo3NNXRWsfolfbyeUdI8Frjubpv13ScM6nz
+ M4r9kpSC
+ lWrjlNh/oJcfD0Zwc7Mt7M6VbkeJwAC9YrgIGVRbkMReMPiH1sdqEyoJjqEwig5STm2BnAB24gFBVLJnEFgXz2hn4f1T4NMyz80L7OpyzqX3cUTIddFnqbNjlrhh8BzjmYcc+dYqnKtIid/Uihj90xRecNUHjjN6kLaPPMdI+81OQUg5Ya1HcnRHEjo7kKXL3ICj0GHMc1X5ieuVhjRWgBlZmiFrgjEQDjyOfLQOF5boG9zDbnOQV/owEBSYgUQfnJXom9KpSu0CpH6Vwo01xHcO8ZKW/q1+fo0bs3HAm8PoB8XkASwRC8tg5UeE6xQP2cndeVSnO7+ythprZfW73nm5KBLzvhE0AJpvh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,19 +103,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 07:57:22AM -0700, Paul E. McKenney wrote:
-> > I suppose we want two things:
-> > 
-> > 1) change cond_resched() with cond_resched_tasks_rcu_qs()
-> > 2) Avoiding holding the ftrace lock while calling
-> >    synchronize_rcu_tasks()? It can take up to 10 minutes on a healthy
-> >    system to be releasd, right?
+On Fri, Jul 31, 2026 at 07:49:27PM +0200, Pratyush Yadav wrote:
+> > + * return phys_addr_t, thus this "extra" parameter, instead of returning
+> > + * the hit.
+> > + */
+> > +bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
+> > +			     phys_addr_t *poison)
 > 
-> I do very much like both of those options.  ;-)
+> Perhaps
 > 
-> If #2 is impossible, would it make sense to have a mutex_lock_idle() or
-> similar in order to sanctify the lock synchronize_rcu_tasks() latencies?
+>     phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size)  ?
+> 
+> And if no poisoned page lands here then a default of 0 or ~0UL?
 
-How would mutex_lock_idle() differ from a regular mutex_lock() when
-sanctifying synchronize_rcu_tasks() latencies?
+That was my initial preference, but hypothetically phys_addr_t 0 could be
+a poisoned page.
+
+I hadn't considered ~0UL as a sentinel — that should work and is a good
+suggestion. let me prototype.
+
+Thanks for the review.
+--breno
 
