@@ -4,111 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9837DC55172
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC0CC55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:34:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D1896B0088; Fri, 31 Jul 2026 17:17:35 -0400 (EDT)
+	id 0DB866B0088; Fri, 31 Jul 2026 17:34:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881E76B008A; Fri, 31 Jul 2026 17:17:35 -0400 (EDT)
+	id 0B3BB6B008A; Fri, 31 Jul 2026 17:34:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 770876B0095; Fri, 31 Jul 2026 17:17:35 -0400 (EDT)
+	id F32706B008C; Fri, 31 Jul 2026 17:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 525EB6B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:17:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58324120162
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:17:33 +0000 (UTC)
-X-FDA: 85050333186.10.5C1B4F5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A582E8000D
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:17:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DATojsrq;
-	spf=pass (imf02.hostedemail.com: domain of wei.liu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=wei.liu@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CEF196B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:34:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56D701C0082
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:34:25 +0000 (UTC)
+X-FDA: 85050375690.27.50E005A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 19ABD40008
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:34:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ifDOQ1SY;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785532651;
+	s=arc-20220608; t=1785533663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WZzBzB5TcTM5WHmYQ8Q1dAbLhGvD103w+cLEBe4VuA=;
-	b=YwfxTIKNJ4Y85cZpNVEqeHPelcGRtWABFoJLzb0O3po7vCOGyzdTpFbnodItsKfzs1wxk7
-	46EH0UWRL0B8j74GxKJJDrhRCipw7GVExcDP42f/x0sywmHoB1YXLokPYl1fnREVviUxLx
-	DaRhDrnarEFqgS/3nUBqQIBqztIZJKo=
+	bh=xl5DXrdTRqnaEe2rqitpQGHYE6K74Xb0gMeSAYrZW/g=;
+	b=mfyO/f+UuXVSL2m5U+BOexL2wugvqY4kr5wxz1dYNl9AySsQtbZ9PiFNpY9Rmwt5ayZGIJ
+	nuT6sE2gnz/FcCf6ACEGp27KvmwFg0NiNTc1Yut/+ND/o2OY8+ZYUnMcRXkFMqr+JBSjA6
+	ojYbcJwpOgEkWiyabQrF/PSO45PfF/Y=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DATojsrq;
-	spf=pass (imf02.hostedemail.com: domain of wei.liu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=wei.liu@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ifDOQ1SY;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785532651;
-	b=Of2dIiTf9430NEBHWRRMPenKCxJSihUauRopRKIthDCSVqf6RoTrDT8CLp3rouY/pAeBXi
-	3RuQCHjh4OGzWoi1JX0jhc3BNS+P2kJ/q7DIedMxUgGOpUVyJRWnafNmbazCh2it9kT0ec
-	DhSG3Tq26iQZdpvsuw7Bb4wuJJqI89g=
+	t=1785533663;
+	b=H+YdgD4wzk+VJLB5+MaRZ1WXhjVfBlWdutmDWxl2wZhdqmrFYzexmm4SuVrSFmQmEHMF0J
+	nOX7OFQZtPWazr5XH9Vqv6q7zidu5a2A9XYZt0dnq4hgeEq27+deKXuesFblZRXLo1SveH
+	YHktIQ4NcYBSk9dDyJ7Z+/D3OTp4bCc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE3E0429F8;
-	Fri, 31 Jul 2026 21:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEB01F00AC4;
-	Fri, 31 Jul 2026 21:17:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785532650;
-	bh=7WZzBzB5TcTM5WHmYQ8Q1dAbLhGvD103w+cLEBe4VuA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DATojsrqDUH2APrMK9JbylCWoE2ibRCU80F00dlXpjJ5tQnjcDpOyY3g1h5BaiXkh
-	 OPQFeTRsYckQ7zkJr8ySOqnEXtUPJ9duft5KOengcfVlj82GQ7OHLUYl/0APGURpbR
-	 InOeOg+Wkvj87hf1xVBgbm80Uvpy76xZ/d0vHtznzV505vzReXQHxpkJDoWCGw2BwK
-	 n+dgCmnoh3oGQ2+xsXY4mwgUvbCBCaqlbGSY1kPFCwF5fvZuxWlzKzyDR/rmE7RT2q
-	 LZ/Scw8myMGgEFz2/B1FpXBFZQ6957WjjFwwulg3XmXtT4VNTWJnUiMnJsb6tmcpDb
-	 QxHvmvGNGUzpw==
-Date: Fri, 31 Jul 2026 14:17:28 -0700
-From: Wei Liu <wei.liu@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stanislav Kinsburskii <skinsburskii@gmail.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
-	Oded Gabbay <ogabbay@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v11 0/8] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-ID: <20260731211728.GA3243658@liuwe-devbox-debian-v2.local>
-References: <20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com>
- <20260723142242.5d3f87208d47819d873ae458@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723142242.5d3f87208d47819d873ae458@linux-foundation.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id B989C600C3;
+	Fri, 31 Jul 2026 21:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1161F00AC4;
+	Fri, 31 Jul 2026 21:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785533661;
+	bh=xl5DXrdTRqnaEe2rqitpQGHYE6K74Xb0gMeSAYrZW/g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ifDOQ1SYRWQ+Jyaxb2r8QDbxDjNXQ5IKB+Fl0NDIzg6uuMdiSx7JFI8ove6rmqEOL
+	 YnQQy3r/XW2OW+0bvyW+2jRbNH8lxFMROAZyEwnq4m9iSRiPkflC+4kPOHdbQQzFiA
+	 4ojzOu7w0B5zjxYeiuKNF3pIA2ojGzQtSLbS7nc0=
+Date: Fri, 31 Jul 2026 14:34:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: pratmal@google.com
+Cc: vbabka@kernel.org, david@kernel.org, sj@kernel.org, corbet@lwn.net,
+ ljs@kernel.org, skhan@linuxfoundation.org, anshuman.khandual@arm.com,
+ gthelen@google.com, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ liam@infradead.org, rppt@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4] mm/page_reporting: Add page_reporting_delay_ms
+ module parameter
+Message-Id: <20260731143420.0787387ce2ca120ecee15338@linux-foundation.org>
+In-Reply-To: <20260731193705.2902728-1-pratmal@google.com>
+References: <20260731193705.2902728-1-pratmal@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 19ABD40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A582E8000D
-X-Stat-Signature: h51n7woyghzgu5aqbz8gu35xdz9s3gkp
-X-HE-Tag: 1785532651-153436
-X-HE-Meta: U2FsdGVkX1/CwoBV6tFULZ+j5w3KKRZraauMqkfOIVqkFxib0DQILtebAPVm2M5Vf6NHfFS1I6rgvSU04ShRiEmfm0Q5MOJyP1gEi7de0xbUTVd1uQ/+dfRJNGAYJhBSjv2L8Jj2OEi4ly1dsCWfB1VUD10ePUuXbiHDrAi9tJXVYPUO7jl0d2Feyh6b4U5OqkSSb+cgpRpVbx/aCum7M/yh3wUfmgC+euHwmTNsVlkHkenbl1dZlew/OsfSMnRaeovNK0sgi8uvBzCesyhthGBKrbWIyzT8OkiH0X3YyhMFpgSkbNUk6Vrzv0uetQComtxDIhN1PFihpnB21kK2c3+b6yLNhHq8hDoFQIyhoj/BeBYSNoL0v/WN7ybCdPK+cUPa02Xo7f29jpcmhb5tkqtFAABcHZiN/ayNRzWKciKUGFQoVVunGRTWo+qLsYB4Pkh2BJ/H9h8BFN7l8uJxZXnt0azs2f7oSIhyJCz7VNLasKfhY0BhGNPPkpBdj6qj7jzKRwrlR9vDvkzu/DB57GeygmbUfsqv0ueeqjUKuV7QXcW5uccJYn74tyTGYN7vnSuJLZDzavu2gEgJwZ2mi8Y/IEBg/bWwhz38b5gEu7AD3kYKt/0tKfdIWie9vqSc1KEuxAd7PYT7jVpDjH7kHb5DH0xw1pANTro9R/J/MHfJiBP3Oqf+oPEPI56jTsgpPLdgegWO+aTjn6Lw/GgOb9xT17gaaivnOwr+pQbz41Lo5+ApPFPbOxRkCzAaKzgKr8TQUlxumapmmRpNkPNZYwclI0ctYevydwpdivyhT92ll3jU9B8Sz20zHfwjkXr3j60qGDR1eAAduDX/x4D5+WqS/4AxsmHCfDNzJDgdIshdvfYEFRjchC2IaB9kbnTD2a5CtLvShiJ/Hvv14iUK7ieVS1ibS1sOV14t/vsbTrVlB0yNu3Kbe/PHal4MB9/R90QN0HjQSTvI2gvO6Jz
- RYEEVb/O
- n8LMK2KkVd0Cw191Aji5xEXAxFIEBFlyj170KUnifUet4+oTj9/AgMRJzilCXfkYpYv2V8e6+O0vY5G/E9UsEQ0cGYUgCAUD5nL1XBZVS6sP5QZzs7JSexnxyymDrbCTk+n1nUGSWH9maF5BFou8C1ItJ2ORE2FilfuG5R88UAGcP9q/krlcgKmGfbR2ySCuMfuFZffE63GCwUP/2hTX/tY3Qjd0rhot4QEJaaGWImEUfWvkquXdNBNi8yQUlv6ND06ppndh2PySeTm+QvRztDRTrDfGw1wmM0r3ctOMgNvd7V6I=
+X-Stat-Signature: ug6b5z5ipwe8az3sa3wgq13e99uso4to
+X-HE-Tag: 1785533662-69369
+X-HE-Meta: U2FsdGVkX1+lwGQBR19KTLGfE1yagYgvpM3vHzwsYECqpS6kMlwfQxUfXd0a4U9aYSl/ENN7dWCgDd//RSmOJ7AAwcDwJo5hYiSOurCpcorxoirQGnUOMsfxVOJkDXzhc1VlxFvcbJK4+pzTuIj7XyRy8FjNPokjAIs10dvvkGBb3OATw/v7aDSi6AakF891qVBInlG+TWSgIkc83m/Q16xV1ojPgPd058Q7LsmN+gmkxGQ4g4fbG4dXN+Lhd0WFh0eB7aJVWBv2MS7nUNTo+z1CLNiCBbTPD3qRh7lVXJnm0lqNpMLVsG0lYcXwytyXugwn0x45sUi5WVfJy4bZrwfftVuDCTP+DBgY7pffrmrV6aAziq9mSqmnbLx9onFKbkYT/KWn7gA9wPczwV71as23DtFQi1p62P8zmys3HLklLuZ6OFM4PWDogtLgLr7EVgI1nDiDkFYzMYSwXQPj5GLh49mLO8yYslybk71L6DPYcd7Mt7G4bRjTu0fslIVwVBzFll6I3P8lPYDyptxrjaU4gX9ew8QUNCSkJeL4iAWWpg+IooDoNrOs5oVAWH6g51uBIWomKcAt4ASmuVJKL+3YMioDXyyo6IQELHOpS1S0d0jp8RU32c3DEZQiIGMrMVUARlIHd8U/mU8qUWY3bIYeXljDn6vHdDnXXLepguy0Aciw/2QDGO18t/o+nOOXTwFqiXtM5M8VfCNL1zGvoEJQ3WPgtBboBIqxuSp4ap1MJZfUZpdNs1YP4Mq4d8Iwhsh/V1ZpSMhOfAaT419U6YYC0qMgCQRaHuyCkx3Gmbm8emBfhVH0oZkBuMHfzhkaUsB5wZjv89usXpSr3yoDWetMB+azWWmbuCEhWTIVUJGY99ieOYr3X/7E/vJLTMBVLIk8EWaULZ6zA9elWiFBoaacF2CtVk/cOXHXCdGv0mwGxk5vKi4UNJWdghoWBL+H+DEvnoQB4TUfuxHRSXZ
+ rFhgYqpo
+ SOfE4XDxwj5ovG43xl1denKz3GCEPTzlESCm1XWShIcTD0JE9HLxPodEJyK/Vg66GVWsHJAiOBiO7f9Y0V3b35NWJhr2tYpUFtlHm5mFu+l2VA1nJsYQI0uK8E5EuyYYDVwvuZkrf03uVxeFa6/+kLAHAshvr1jygjDB1vKWRlIUS6icnjRF/HZvw57osKCnIpHqt6DFTZpGdZdJARPNxcXUHfrOHc1KyqFWO1D1TXAkc1mA50frivNUSEsoOqWsy7UeZwNIsZYj9hbJAsedyl7CylotAWAJANSzkhOExhuIweQ5U/mWuieCAsCOq4fDiWUkUEbcDnDfiT7IJsZZI08VDrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,88 +94,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 02:22:42PM -0700, Andrew Morton wrote:
-> On Thu, 23 Jul 2026 10:36:32 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
-> 
-> > This series extends the HMM framework to support userfaultfd-backed memory
-> > by allowing the mmap read lock to be dropped during hmm_range_fault().
-> > 
-> 
-> Thanks, I've updated mm.git to this version.
+On Fri, 31 Jul 2026 19:37:05 +0000 pratmal@google.com wrote:
 
-Hi Andrew,
+> Free page reporting currently hardcodes a 2-second interval between
+> reports. This rigid delay cannot accommodate diverse guest workloads.
+> 
+> This patch introduces a module parameter, page_reporting_delay_ms
+> (default: 2000), allowing users to tune the reporting rate:
+>  - Lower values enable aggressive memory reclamation by returning unused
+>    pages to the host immediately.
+>  - Higher values help batch pages during spiky allocation/free churn,
+>    reducing hypercalls and nested page fault overheads.
+> 
+> Setting the delay to 0 is safe and execution is strictly gated by:
+>  - reporting is only triggered by high-order page frees.
+>  - expensive hypercalls are bounded by a slot capacity watermark check
+>    before proceeding.
 
-I see this series in linux-next now.
+This conflcits with the just-upstreamed 0b45f6927a1
+("mm/page_reporting: use system_freezable_wq to fix UAF during
+suspend")
+(https://lore.kernel.org/20260721005603.1710551-1-linkl@google.com).
 
-I'm curious to know if these patches are going to make 7.3.
+Please review my resolution:
 
-We have some work that's dependent on this so would like to plan
-accordingly.
+--- a/mm/page_reporting.c~mm-page_reporting-add-page_reporting_delay_ms-module-parameter
++++ a/mm/page_reporting.c
+@@ -48,7 +48,11 @@ MODULE_PARM_DESC(page_reporting_order, "
+  */
+ EXPORT_SYMBOL_GPL(page_reporting_order);
+ 
+-#define PAGE_REPORTING_DELAY	(2 * HZ)
++static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
++module_param(page_reporting_delay_ms, uint, 0644);
++MODULE_PARM_DESC(page_reporting_delay_ms,
++		 "Set page reporting delay in milliseconds");
++
+ static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+ 
+ enum {
+@@ -57,6 +61,13 @@ enum {
+ 	PAGE_REPORTING_ACTIVE
+ };
+ 
++/* schedule work for page reporting */
++static void page_reporting_schedule_work(struct page_reporting_dev_info *prdev)
++{
++	queue_delayed_work(system_freezable_wq, &prdev->work,
++			      msecs_to_jiffies(page_reporting_delay_ms));
++}
++
+ /* request page reporting */
+ static void
+ __page_reporting_request(struct page_reporting_dev_info *prdev)
+@@ -77,12 +88,10 @@ __page_reporting_request(struct page_rep
+ 		return;
+ 
+ 	/*
+-	 * Delay the start of work to allow a sizable queue to build. For
+-	 * now we are limiting this to running no more than once every
+-	 * couple of seconds.
++	 * Delay the start of work to allow a sizable queue to build.
++	 * We limit this based on page_reporting_delay_ms.
+ 	 */
+-	queue_delayed_work(system_freezable_wq, &prdev->work,
+-			   PAGE_REPORTING_DELAY);
++	page_reporting_schedule_work(prdev);
+ }
+ 
+ /* notify prdev of free page reporting request */
+@@ -337,13 +346,12 @@ static void page_reporting_process(struc
+ err_out:
+ 	/*
+ 	 * If the state has reverted back to requested then there may be
+-	 * additional pages to be processed. We will defer for 2s to allow
+-	 * more pages to accumulate.
++	 * additional pages to be processed. We will defer by
++	 * page_reporting_delay_ms to allow more pages to accumulate.
+ 	 */
+ 	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
+ 	if (state == PAGE_REPORTING_REQUESTED)
+-		queue_delayed_work(system_freezable_wq, &prdev->work,
+-				   PAGE_REPORTING_DELAY);
++		page_reporting_schedule_work(prdev);
+ }
+ 
+ static DEFINE_MUTEX(page_reporting_mutex);
+_
 
-Thank you Stanislav for continue pushing this.
-
-Thanks,
-Wei
-
-> 
-> AI review suggests there may be some problems.  Sorry, I don't recall if
-> these were considered in previous versions of the patchset:
-> 
-> 	https://sashiko.dev/#/patchset/20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com
-> 
-> > 
-> > Changes in v11:
-> >   - Reject unstable address spaces in hmm_range_fault_unlocked_timeout()
-> >     after taking mmap_lock and before walking page tables.
-> >   - Compute the remaining HMM timeout budget before the time_after_eq()
-> >     check in drm_gpusvm_get_pages() to make sure it can't result in zero
-> >     and lead to infinite HMM range faulting loop.
-> 
-> Here's how v11 altered mm.git:
-> 
-> 
->  drivers/gpu/drm/drm_gpusvm.c |    4 ++--
->  mm/hmm.c                     |    6 ++++++
->  2 files changed, 8 insertions(+), 2 deletions(-)
-> 
-> --- a/drivers/gpu/drm/drm_gpusvm.c~b
-> +++ a/drivers/gpu/drm/drm_gpusvm.c
-> @@ -1422,11 +1422,11 @@ int drm_gpusvm_get_pages(struct drm_gpus
->  	struct dma_iova_state *state = &svm_pages->state;
->  
->  retry:
-> +	remaining = timeout - jiffies;
-> +
->  	if (time_after_eq(jiffies, timeout))
->  		return -EBUSY;
->  
-> -	remaining = timeout - jiffies;
-> -
->  	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
->  	if (drm_gpusvm_pages_valid_unlocked(gpusvm, svm_pages))
->  		goto set_seqno;
-> --- a/mm/hmm.c~b
-> +++ a/mm/hmm.c
-> @@ -17,6 +17,7 @@
->  #include <linux/slab.h>
->  #include <linux/sched.h>
->  #include <linux/mmzone.h>
-> +#include <linux/oom.h>
->  #include <linux/pagemap.h>
->  #include <linux/leafops.h>
->  #include <linux/hugetlb.h>
-> @@ -806,6 +807,11 @@ int hmm_range_fault_unlocked_timeout(str
->  		if (ret)
->  			return ret;
->  
-> +		if (check_stable_address_space(mm)) {
-> +			mmap_read_unlock(mm);
-> +			return -EFAULT;
-> +		}
-> +
->  		if (timeout && time_after(jiffies, deadline)) {
->  			mmap_read_unlock(mm);
->  			return -EBUSY;
-> _
-> 
 
