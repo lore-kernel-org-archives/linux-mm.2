@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49482C55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 07:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE95BC54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 07:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DB36B00AB; Fri, 31 Jul 2026 03:03:54 -0400 (EDT)
+	id C128B6B00AD; Fri, 31 Jul 2026 03:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5259B6B00AD; Fri, 31 Jul 2026 03:03:54 -0400 (EDT)
+	id B758B6B00AF; Fri, 31 Jul 2026 03:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 462CB6B00AE; Fri, 31 Jul 2026 03:03:54 -0400 (EDT)
+	id A63776B00B0; Fri, 31 Jul 2026 03:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2210F6B00AB
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:03:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFF481A0383
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:03:53 +0000 (UTC)
-X-FDA: 85048181946.14.3F77A1F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3BF16140004
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:03:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ljw7EUrP;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8286B00AD
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:11:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F19B2A15AA
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:11:38 +0000 (UTC)
+X-FDA: 85048201476.21.425D63E
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C67E3C0006
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:11:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sCb/Y3ef";
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785481432;
+	s=arc-20220608; t=1785481897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3b41HIRQg0eE6YbzbQ4NGUUdPVrRSzptktaemvAyobA=;
-	b=N2vsiFR61nORhT/hMSi2OVx4aAYGqbZ/KSMAtgLjBVmsF33F5lAuHudk93IVkmODKggsy5
-	MhdDvm8VKNyzwWRMLvewzLmgqtfuWxZfo0aJ71Tc8FFjU2U7XcLjE6W09gzAy+e5L11NhE
-	UpYs57eyeuBWQToCyGEygXtmDmbdwTc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ljw7EUrP;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ebw5ehCYj61s8AMpmY777eNYKEp6k+U7a6tepkq/has=;
+	b=B2cAyHLER8swLx20sJDgc7AlkPXCEaJ1uLQ1oxG4n5f1H+Z/tSZ3dpp8p8N72l/Q58XgTj
+	1jwGUU1q4hpmfe55BY0S8ZQG+249DqXo/amORAInFId/zYSKQvTScgsR4bPDCelPpWw44J
+	6thh4FRCQ8QWy9E8IDbiE37QZoSrAxg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785481432;
-	b=z+jGpGZdDXgXUpdJ4utasXisAeWShg/0k5dNb9zO74kwnpugi4dVCIb5mybSMUOVKTkbVP
-	Uw6AciWhzUNUZ2X6+GhvZl/MPvUJ6tKfRv36RKEEd4uMZEEFkK0ap7BIJYc/R1UN2gzWqx
-	vsLnvaRK5OUm/m6hcb/rJQP+ns3YHeE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FA9222C8;
-	Fri, 31 Jul 2026 00:03:47 -0700 (PDT)
-Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E59F03F7B4;
-	Fri, 31 Jul 2026 00:03:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785481431; bh=Z2oWdrw1FV6V9X2m0SUAt6i6MEK7O8y/i9sTV7EdzyM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ljw7EUrPWgOzkpTOq7GogBK08q5s3oTtp6+XhjbRJQ2O1E30blvq9rhg48QKrt92Q
-	 vJMMd9E4lXwNCnWl6u5Jk8f9hOzbp+mkEmaksWGwcd+f2mHhv0d62/n+2u/c0jC+PR
-	 DLnNiT/BNKw5bZN7VnlopLEuQ5kR/fJi5DLUmQvc=
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v2] tools/mm: add thp_swap_allocator_test to .gitignore
-Date: Fri, 31 Jul 2026 12:33:43 +0530
-Message-ID: <20260731070343.83837-1-sarthak.sharma@arm.com>
-X-Mailer: git-send-email 2.43.0
+	t=1785481897;
+	b=a+9kS/6B5+ALfB8GBBa2qSBxWbKLdL+U9yLYChHCkp7kGug+91Hym0iYhn0gBaGbRxd+HK
+	85CMLKUnGO7luE6W907A6zJwiuESbaIORV3JCUkM93NVL1UOldEDe4uD+Yh7YyCUqhum+n
+	dsH7rA7C01T3C/SGJ+UKrDESvkm7Df8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sCb/Y3ef";
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785481889; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ebw5ehCYj61s8AMpmY777eNYKEp6k+U7a6tepkq/has=;
+	b=sCb/Y3efYJcfWwlaAwj36VbGrp4xatRVyHwWEgcFml5Ox1CvCqT8c36NNQiWZH538XkUJJjZsBLQAWkRCrU74OA4mwnoz8xEzsQWeHvmlhpguvFe7a1kCuiXQPkk2wrZJbdO9DyiTE53nMwLGDlIRjEFpXKgQrGwxx8pE/Dk4v8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X87HH0d_1785481886;
+Received: from 30.221.147.207(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X87HH0d_1785481886 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 31 Jul 2026 15:11:27 +0800
+Message-ID: <85784f76-aa92-4b0c-bda6-d4c3fd190ee0@linux.alibaba.com>
+Date: Fri, 31 Jul 2026 15:11:26 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] mm: shmem: reject page-aligned fallocate end
+ overflow
+To: Zhiling Zou <zhilinz@nebusec.ai>, linux-mm@kvack.org
+Cc: hughd@google.com, akpm@linux-foundation.org, vega@nebusec.ai
+References: <1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C67E3C0006
+X-Stat-Signature: zjtg6popds6dip7gapew4qt8keru81kj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3BF16140004
-X-Stat-Signature: 7ic5drbchydzzt6ap8efwt56tos4fsh8
-X-HE-Tag: 1785481432-630528
-X-HE-Meta: U2FsdGVkX1+VlaQ+8xmZ0lRELRNPohmGIHH1FIB6fM0VCsy0KcV56JuVPZ8DEkmV4wU8HBkJ19hIBd8THPpHZPrd2XI4DaVE09i9wXI+71/C1CPiIQupy6jF0qvNw0b+JdO1SBQrZR3k6J8xDwkrYgxXlqsyb5/p9nw8k04RRgDxU1FdksJ4g+MZZWeGsBc1KFWJ0GrM6TJbsgIt93so8qQxCK+CKZMoWwd5MzVESaUzL1XznQAag7odBgGL2S8OoKvVBjDE/K1bn+p5iOiF4KdDrI3Y3Pml4eexz95WKtGP6BpTTA+DfJLuF6mCA6OAXFzzK6U5VZYqcXT01we5MxmGN89Dbnq7u5hI/ByNn6D5bMqKGyPJC88ol4I/mDXV7PXeN9vcOMr7C5lT6mIcXO/s8OjHnPyVpPXkuLCaqCNbzmvkEAhRyKKRlp8KEOusF4dE1UlH3/yEod3RGfUY9Pdjq33uKcpfRV2nUcUT1BF3RfTFWR5f4POMo43xm2EnLeEzp6625M+O/X4bYkvtQTOSs0yRn3sIr2jjiC6aNaCDUNAbAFdqMlkFFknGsW3YQoFy0/ZMmxmzGvFgUY0fOKAOHGZze3aL3v2WNwmQKuK7AKR0oBh62qaU6bLgCIOMq+lr6IQAHBwRfMetOAD0XE9qBHCkce+El79X7MFAhIOsxYIXx2e5lNpkjG7IwLusccOK6OAvJCziAvWz6NzZ/EZh2S/bplY6JZWonAzCHQ42IhpWa/dHjw5ai05JCxLsT6CcVIIMjXF17XhWUN87ITvVLFyH2D71TGLpwK2cS0iJtU04G3ZpywkI8i4eM159wdPTq9qld56woGZoFEt2sUCRlIcIx//tElpVJ/FIkZeFLbss4fokQKh9lxhYkBOYcmvwT51XgrOdzQazC7hmi0jp4VuXSiPgCXOaJTfrLvhYmFNK9Xf7pKkkHuoocBsEo61Va2q5nVlxtVNvTro
- 9gSqsGeO
- NrlKBuO9DkHoJesRi6QnatKcXJD3SKYoKES08Z3AALh5KaZarMHKmhW/J5VU2zXRxtnkRjtmexAUY4Dt4laQv5TjRxZupWTcRWKtUn68EntWEKdDnZSEQ9QZP61WJvFlu/82ogJTwHlgHLsq1NRrKS+hL4TZBap/FnPVwwyLdM/U0xuSkzuAuO8J/NLPyb9ZDKplnAXAH4l/ROODHDVWT6e3OCf9LFesWk5doH8VxXKY1uygWbquo4hWu1QeUZCYLO1bO3aAIYPORsJm7/JVUEroCKoAUXLwgrmi0
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785481895-858544
+X-HE-Meta: U2FsdGVkX1/2Bd0RlpuhT4vB0IhegQEq1uCKF4ihLMsMkvuKdiF0j4WCdfK30LXT3EqRAu3WAJNlhnmyNgfssuZKbgTQZszqd/gpP9d97zqE+GFxJDagFYT5LWsaDHDVtBK8/e+7M76dnC8hxxdFcAwj4j3Rk27VXVprba/fWrZjSl3a1yCdYBGcs7A1QquK2VSWuljv4XY9ajaAeg6WGChusnv45ec9FiNhJum7M08XXUDCLELypcWIOm7xYJS0vIOkkgxa7YkS1ZLbBfAxp0WP05fccp5QoMpCrIYId8oJz6e5TKVWoEIdKCiIO8o+Ki5aCuSCK7HHSzLcFzAa6ntgmfXGdlL5AuwEtulpKd1vPsMD8UdR22twkWb+y3umnq5EpkcW4IKtyJyMxZgMw4Uo+3xtGTvmrCnlQZAZzu75s/w9452p/evKTRpO6jGcl5tdzDw6dermBj7vdrnRS2S7Ep3gWSjcWbmdl30MqSsM7o/OVcA9pJyU675GM6zgR01gaFJHCYwhDgkI3XpkmI6Xlz0wFEnBdAu8ASd0ossYEglDEXKgd1O9BeWcSWmYXnBL7APAJrc76hwxcnATlvbLup+R7THlQu6BQU4JJHhLx8ziDGA7MxjsABWW6+rzmKr5528ufHoSnHHr37SHJmlsGgh1Y58Z48djwt29+WPJtPJAcsrNlgNG+Br4vJyCj4POKc3i8KmbQOkHOUd/s9bolDkk78giIDgAhVV6WviTJyU8yllCMarnc66QSOOGMcLm9OHdQqeqdYT3h9nX/EKR3WVgomw1f8O2N/h43BcgjowSxZ2ZhqaWrql0+cXg0DI5du51p+Ch1RTTzGboUMnKiIr/HjlK3JxGF+sIeoJn2oLOx5vncv9490/tjM6uJ5P7B9hOZjB4OJH2rbrkVyhK+D+Mch3ii+kfSDqy+gbxFCxuwGFNtN8GSDP4ol/Ba//m2n+C5/72OLCvBF3
+ Q81o/ShK
+ hEF8DK3+9fmpyPJj08lL3/rerwkvdISgY0tIpNPr2PBVawGJage9aE/DO4WblGwc4sU/KUeGITD/WU2E/vjQEG8vwF3GtbDo0qgxNkfmMVeOadhf+CPjLQgCUNZl8rFFotc8usVJ9yz6Uvsnf0fdaksOObvhQ28O49WrKRwjvBLJ7fotKctYEdUHuvcSzIM0XvsXDMFXePfkgZbIzYKz8WFnD8UyfySsdP7L3LC+JXL+rP/vQtw1dv5zsDdHvWrorVCJPSGIcFwvxJLKVHuI4UTRrvrG3LrDKrAZb24tskfpJrp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,28 +86,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-.gitignore currently does not include the binary
-thp_swap_allocator_test. Add it to .gitignore.
 
-Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
----
-Changes in v2:
-- Correct the binary name in the subject and commit message
 
----
- tools/mm/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+On 7/31/26 11:22 AM, Zhiling Zou wrote:
+> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
+> then rounds that end offset up to a page boundary before entering the
+> preallocation loop.
+> 
+> For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
+> len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
+> the signed loff_t used for the rounded end calculation. If that wrapped
+> value is then converted into a page index, shmem_fallocate() can enter
+> the folio allocation loop with an invalid range.
+> 
+> Use check_add_overflow() when calculating the page-aligned end, and fail
+> before entering the allocation loop if the rounded end cannot be
+> represented.
+> 
+> Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
 
-diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
-index 922879f93fc8..1446a659e540 100644
---- a/tools/mm/.gitignore
-+++ b/tools/mm/.gitignore
-@@ -2,3 +2,4 @@
- slabinfo
- page-types
- page_owner_sort
-+thp_swap_allocator_test
--- 
-2.39.5
-
+LGTM. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
