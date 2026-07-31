@@ -4,106 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02216C54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 05:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4ADC54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 05:37:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C57106B0093; Fri, 31 Jul 2026 01:21:21 -0400 (EDT)
+	id A79446B008A; Fri, 31 Jul 2026 01:37:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08656B0098; Fri, 31 Jul 2026 01:21:21 -0400 (EDT)
+	id A2A7C6B0098; Fri, 31 Jul 2026 01:37:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF7CE6B0099; Fri, 31 Jul 2026 01:21:21 -0400 (EDT)
+	id 940016B0099; Fri, 31 Jul 2026 01:37:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 881076B0093
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:21:21 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15808160339
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:21:21 +0000 (UTC)
-X-FDA: 85047923562.16.3356138
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5F59840005
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:21:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FTRgX+Q/";
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63CCE6B008A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:37:58 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF5D0A15AD
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:37:57 +0000 (UTC)
+X-FDA: 85047965394.06.F17F098
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4EC6F1C0009
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:37:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LRun6Wx1;
+	spf=pass (imf20.hostedemail.com: domain of 3sjRsagcKCCcZIHOLSHJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--wfelipe.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3sjRsagcKCCcZIHOLSHJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785475279;
+	s=arc-20220608; t=1785476276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJjBnEkh+nKHKY+8/SylN01ajLlOLYOCTOua+gFNFzU=;
-	b=TiLjZw4kZ0fZRO6RyFjMrwNlXWsGL2ESMIOua7EfULIbxdLW+m4I61vaefti4NUMtasznt
-	ladbfP2jaSjj/T3Ry09SymaTgCtj4R+SRp+7I3n1mAe/MfBiL61hMLa4hF9zpDI9WXaTe/
-	ut9qV5j03Ls37MMkszjBzzCeF8auC6Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785475279;
-	b=70Sa6PgwW/4h4FLN2JfzTBQA/CJnzWJxoBAZNFuAMvN/5GcTgQbXd0y+lcNeKvcI/zPzhg
-	5qFgaIDCJWycCClsdeJL122CqQXOA8IDnGtg17TgjzL+GTVbBwOSjgICa8uBpWJM1kdfKn
-	lD7wmzj2Ig+ALfgsv2NYver56yf70ww=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SEgrncmXtZDPcOb6N9j9gD2FhTkkRdMPM7j7uOcSFqw=;
+	b=VjzfzteS+B/a+OOGigY6e51lsdiT6aRXxejcIMwzRBHsG1COFVQ6KJdMd5YXfcIII3ArhX
+	hQlB1+BuNZSSi+quI8rgY5wbfFBY3IObGDWytJWdwdswBDUOPscmLA9SbtekzDR+3LrzEE
+	5K/2AeT2q9gLI329VXzNYN2f/7xcLjg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FTRgX+Q/";
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27F7F41E5B;
-	Fri, 31 Jul 2026 05:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3B21F00A3A;
-	Fri, 31 Jul 2026 05:21:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785475278;
-	bh=YJjBnEkh+nKHKY+8/SylN01ajLlOLYOCTOua+gFNFzU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FTRgX+Q/6LPx/bvDmDU2kJ8GmAsSNZui+PwVv4w61rL39dDN+2G4enh2VmRozbYn7
-	 GsJbcHWY2ijfeq1hNqCZi/+5CZNATEMUGN+NGRIQQnZn98SGbEuaON+JGNeIPrSQn5
-	 86T3bIan+pShYe5kWz5wOKhgF1CL11s0XSD0NDhY4U1chBowSHfKcbIRmGV028Blt9
-	 D4EmmcMcsX2VpqRWA55TOBkh21SUAIw0ENDA/MKBMTJkU5ecuzoQEtRHTQyWcp3Cv0
-	 yvm+vszfZbuMimHyJy2OiLJL2e04N4YrpSkkGy/laeVYd9BQVybLMKHZC/IsISTNXD
-	 r4+/mJDA/Wp9A==
-Date: Fri, 31 Jul 2026 08:21:05 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Will Deacon <will@kernel.org>, rientjes@google.com,
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev,
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Patrick Bellasi <derkling@google.com>,
-	Reiji Watanabe <reijiw@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>
-Subject: Re: [PATCH v3 01/26] set_memory: add folio_{zap,restore}_direct_map
- helpers
-Message-ID: <amwwwe4eYeXtniFu@kernel.org>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-1-6f5729aa9832@google.com>
- <amu1KN8uJt4aaZAM@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amu1KN8uJt4aaZAM@google.com>
-X-Rspamd-Queue-Id: 5F59840005
-X-Stat-Signature: 9dy4kn87nryh4yxofsqxmps5gsd7p7xi
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LRun6Wx1;
+	spf=pass (imf20.hostedemail.com: domain of 3sjRsagcKCCcZIHOLSHJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--wfelipe.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3sjRsagcKCCcZIHOLSHJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785476276;
+	b=vLYlhla9voROB75L+R0/Spx/5LkrBK3h9/RprpoR14SlscIBJWitKv6f31+eeiWhU78sRM
+	Mrjjx0kDT4qhVUsTB2idbT70oBj8brrUOyYzeGQ0lWJvnX88azFNgRz53CW8WX3ao+AWpb
+	zC014h1FmYuNDqGzzTjeOjx1e5riiI0=
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cccfa32670so6924915ad.2
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785476275; x=1786081075; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SEgrncmXtZDPcOb6N9j9gD2FhTkkRdMPM7j7uOcSFqw=;
+        b=LRun6Wx12QVc3lCsxWyGn/ElOQ8ypK+hrVEqNhwXSPKW1MLyuoXoXmo0KjwAGC41tz
+         Jj028Jm5TujhsYZJ1+/sdZ0ECOjjp7bLPewXF8G5Dg5sxw/mEKSxK5fQUxBlhoOXJN32
+         9RUa10r2JhEKFWVDv4HVyE3bKb47JzJCwuhLPICiE+tU6NX488TJaCL8QhZK7HzKkQKZ
+         93w3KZQFZu7bzC5tgXmS/dw+Uh5wJD8N3mv7OOAy8521iAh/j7XdjQcJi8/p3FDQpggt
+         XrHXTUW+G7wgA5AbabcIVSIACU0LueR4MB5rM7+Wf1TgYI+QwQXKzI3lA+x6RowQePHB
+         ZPpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785476275; x=1786081075;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SEgrncmXtZDPcOb6N9j9gD2FhTkkRdMPM7j7uOcSFqw=;
+        b=heA6xByiyHe+opgxaKFXWEJ+Nd8mm0S2xej5YaS5B0I94t2Mp+kiZw+ip46bjdp2EZ
+         OSlFlG2+wUN7n8pC0HsdVZEr/XwmQsacSvPVj8ZBUNoGnethSKrqck9TyRCc2c+4LbF6
+         3P09/gDvqOHiBeLxuW+yDUBNIG2HvI5gsv8Tdkkj51ipyWjwy48vqZ6VYYPCu1a46ASq
+         a6+g0RQKsTEG+pFlFqX6uZpIn1oiuTtQcomoklgQkEDkEVdbtfgyAxdjtZ4oLN68sRE+
+         +Xbfa7aYVK87OHgtOWHXYzdkaAY1vMmpZfbYfXvJ2e5t+XqyAGS3oxE574xb3cJ8FKFQ
+         8oDA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr8ixP2a47MRmX+x79gHmaUHqU2NNQT+5r5uvS1zN6mWqdrZxGRJGKd/GKStfyNQ68lHX9fZrYLSQ==@kvack.org
+X-Gm-Message-State: AOJu0YxjRm8sQ3zf/qKdb1HdAn/Vae1sh4LVQN4C8zrHkenn6crVbTEP
+	Qu14XQ4pcVLnacargpPvnrI0nZhbpARqgitHp2Bk4DUJXsO+Xi9lDBLEg7OD/msVEY4xEBYVYi7
+	eY4QUB3jy2w==
+X-Received: from plbkc5.prod.google.com ([2002:a17:903:33c5:b0:2ca:cdc4:8da])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:904:b0:2c9:a5e9:c26e
+ with SMTP id d9443c01a7336-2d046dac9e1mr6687825ad.13.1785476274623; Thu, 30
+ Jul 2026 22:37:54 -0700 (PDT)
+Date: Fri, 31 Jul 2026 05:37:06 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260731053721.1412304-1-wfelipe@google.com>
+Subject: [PATCH] mm: zswap: drop list_lru param from zswap_lru_add() and _del()
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	Wilson Felipe Pereira <wfelipe@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785475279-512420
-X-HE-Meta: U2FsdGVkX19yRPl+RQ9XjnBiQZ1FIWX4XWaheTchR6waD02r7DV+pByKgvpYc18A+wa+gvQmm13AeansHPzt4W9zR+e0fd/03apq95H4vtN8TRbQsZLpySrr7mVWr2YfLOIY5KDaJC3XH/u7cwg5it1bBCRtuy4o3WWtYIeDcUnB6iBKxWa6Hr625MDwx17e14DdwBEkQSkhasG1lCbx8znLXJXCXhGy2OTWJ2RS4xuACNF6YjKRa1gRobehe3VMRQGrdwf7swJdVa5YXh07Wdqb2osBtvWL8RpqeucBUmhPOZ8bPTSKTm0VaFFCNXJDrpU309fWMbQzsODrqe21mE6mORUJg/RWcS2Qa3JS6wrhsHMm6RZrLL/2GEzc0mJsCL5qm748EYhLP49BpKYjnpr2dgzEdkYstKQFMM9OVTC/JDsB7z3wtDjUPkItWrMqMORMKqwHVL0lMcri4+tzj4w+ai1l9qrmVrXxAwqMrhy/UzEsaM0Jfag7KdIvk1RkktR1Nag5LohwWDliJEq+u8SNLFhG8QHX5h75uoGAkDwITp9Ed3kUgQUm7ohaSh5riR3tS66XnBJhK25JNqbTtX+1C7Ry1TbJ39P1x8f0TmHb3K3OYaLWfsCPCpzwK4kJ6c54DybkVYMvg08339JhAjjM4aafmgy/Wr6efHTzDw4rYFH2zbymMkWV3LY6uHmXPOzoMxDbyadUvoMBZLrr9J8S1JdTke+7V/AxzzmzYyrk4IlMC3UzvQne7D0dbT14l8cJux1jGBshvGrNKvsxCA5iqCzIkvJwPxggOJlesoPuz7rceFshPvXb2NMyXrSx8aM9nzvGc22UR9ijIiMbcaqfkobwm22VLAa94s2dlCvzjaL67yKNlmI6kkBibJiNxcdpH9BDHRcPoekQf2iqj17AExZYLviGsOu9mQDcyrtQ1RcK7NMCQlyNkB6YuIeQqVvmoK8xlHEgc0XHVcW
- FAmeITfW
- e+qS4+2si4BdYkqoKlpaHibNHCSvF3a3McpE6RHH1GTznbaFrmHEUtnlrMGG6dMSRILSy8BgE0wukt0rkkC4gsxxaUZNY8tb/FIDBbZx0FUFtY5UMcyn25wAnJO8IupotRKJe46aJ7Cnc4FORukFZkoQ4mWeAaS/OdgB1YE0+x7KkpAoZufamhQsaGFUF+G3UTLHpRkc56G0BstZNqM//BgyqXpAKZ73sfsHHv6X0UlLZGy6DabhO9oA92t2HLUmHry+/jXs2i9ocbzmyEsdznldRyxQlR8ez72wyhzZIaXWAFAHjBpC2+98jmUM7TIl5j3lcoSwHtrmL+UCVr46vaVX0iM7zoxSThUG2
+X-Rspamd-Queue-Id: 4EC6F1C0009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ti5gtxe9fuoxdmgboq15k4qgecg76sxi
+X-HE-Tag: 1785476276-937733
+X-HE-Meta: U2FsdGVkX1/zD1j90F4S7cnH76rJ0hwPo4y15GnmReJnAF6Hp6hU+28QWSTo15QZ+VpYLJ2Igbwq9I4xsfyFaHtB/Z7M/H8qVEUM4XtyHXyFCEOeMKVb+0gRH9WeTG3phWFfvGwGVqP917IE6r0y954X5VE3LCHQntL68ugxtz/jCxM+JJYCcKCSwKhbw3zB+IBt7EcYqVuFTibSom9oGNwjexK+XoTDi5HPrMuski+Ue0dnbrUUHe4ymbibwhFUUS5J6GUF65hhs+KwVfWgvt5RHYdY9/n6nykLkJCyRRPHaeboKjb3yapM6piroKfGRPPm7CTjfBlF1+DqD9hRLYzon4ZyQbdHkQ/LF4BAnnr61OY25BfZVkH5JX58OAP4/FcsmhaGzaYzFfpQu1mW5hGeORFa0JngUO3YmfZj34NdcfgAu77XAiiDX95qRBBosF0ny+7uK/l6HLH18NpZoOo2Hv8FNlPeCKw1vsXOP7Px6mBZx1pod54JmMz1z6jKJuln8QyXe99gthG5XY0NYLDcuyLBNFBGHWp+7i2qJIjolfHkzFTp5Zw5lD7xz5foYW6eM2SDkf7YmTL9RGGylWYgKPldbLNSRvU1Fl2MZKcPx5/8pNh97XGbk+XLOnXyfG0MrxgNUYuj76hBynzQKWkS0fEo5tvgkQ+vmfFwnSI8ZH38syLyA7jDYZtepjyrptFHGzdFLJrPDBObawpg/9A8hf3+l0AXZzd8AtK830uXrh2qvtdRLSOcrPSe6nlDckg1h8h8FjXgK/o4oW3pEtC2NTS7tikYdPB2qnr1Owb0Lplh2Ua/Q3zL//RiS3Il0lh9Dn46U7i9gzyLvLmKRGIyPAtDbQAigJDNlYhq+v+wIK2rA8yqvZJehjXF2aUVLaT8JbNbzHfDPYg+M4NootYkS00GuJEKcsRZ2PfvfPh9p/tqtfcU2ZZKbgn+OanOXGaSug3nsJwRb6U6E0j
+ WKGgVsUv
+ vZ4Rvk3eze2EuwIP1XNqP20Mdo04WE5GzlC3JU67c1fl3KqlnZfZPjqp7DFv2lZdbfnDM/UDM+EGMal7P0G6gMnsNEwO7LNqAbdP4HYLZcnl4igJxSxSQoqRsu52KnJz6q5m+tn71wvSvfij0oso+OyW8wwDj4AfHzUf5tNAG7GbypyWfjNpUFTmvVZ6TF3xx+WnK8WZyTOXFTWUProM+xoI6ZwXQlgtXe1rZL0mugTd8/v//FpLG348RqMIuXmxeyZYlOxEbOwkmuafGsp2YhaKJOan0q1Pa+N9o69WyVb3y1O6L8GsajlL76oHiHjm9oScWpspyVzb1OsfsLX4iuDW5rRuqcfKYWj/sWfSvVlz6HofeMWKeOqYPl7pZ9Yg8jlPzVWbi9fnP04NZSHxjokizyHoKaeIu4JZoPm2MBQ7YKlN78pFHHojFEMGRuLiKGYiCJmAR7wtKzawaw9ykYN/PzQRHGadaVod70ilJ5Jz79PFulo3KiuSRMkq5pM0N8r5NXDpRWqmR1Vr5/l5xryBh4pt3vFfUIJZ8B8EAHyuiqBdPGY5eJhGBXn079+BfT5EDN+7y5ReDPB8WPpp3tUxc0/omSkTLXqsPTMR0BLRXuQTYea420hQ9npAHa1iBnIhm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,52 +106,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 08:34:57PM +0000, Yosry Ahmed wrote:
-> On Sun, Jul 26, 2026 at 10:22:34PM +0000, Brendan Jackman wrote:
-> > From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-> > 
-> > Let's provide folio_{zap,restore}_direct_map helpers as preparation for
-> > supporting removal of the direct map for guest_memfd folios.
-> > In folio_zap_direct_map(), flush TLB to make sure the data is not
-> > accessible.  On some architectures, there may be a double TLB flush
-> > issued because set_direct_map_valid_noflush already performs a flush
-> > internally.
-> > 
-> > The new helpers need to be accessible to KVM on architectures that
-> > support guest_memfd (x86 and arm64).
-> > 
-> > Direct map removal gives guest_memfd the same protection that
-> > memfd_secret does, such as hardening against Spectre-like attacks
-> > through in-kernel gadgets.
-> > 
-> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-> > [Added comment, dropped modified set_direct_map API, added highmem check]
-> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> > ---
-> >  include/linux/set_memory.h | 13 +++++++++++++
-> >  mm/memory.c                | 46 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 59 insertions(+)
-> > 
-> > diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> > index 3030d9245f5ac..1bf2a15bca118 100644
-> > --- a/include/linux/set_memory.h
-> > +++ b/include/linux/set_memory.h
-> > @@ -40,6 +40,15 @@ static inline int set_direct_map_valid_noflush(struct page *page,
-> >  	return 0;
-> >  }
-> >  
-> > +static inline int folio_zap_direct_map(struct folio *folio)
-> > +{
-> > +	return 0;
-> 
-> Should this return an error (e.g. -EOPNOTSUPP)? Seems like it would
-> silently succeed if the arch doesn't actually support removing from the
-> direct map.
+Since zswap_lru_add() and zswap_lru_del() are only called with the global
+zswap_list_lru, remove the redundant list_lru argument and use
+zswap_list_lru directly.
 
-That's the pattern we have now for all set_memory APIs.
+Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+---
+ mm/zswap.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 761cd699e0a3e..a810524c76217 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -665,7 +665,7 @@ static inline int entry_to_nid(struct zswap_entry *entry)
+ 	return page_to_nid(virt_to_page(entry));
+ }
+ 
+-static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
++static void zswap_lru_add(struct zswap_entry *entry)
+ {
+ 	int nid = entry_to_nid(entry);
+ 	struct mem_cgroup *memcg;
+@@ -684,11 +684,11 @@ static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_entry(entry);
+ 	/* will always succeed */
+-	list_lru_add(list_lru, &entry->lru, nid, memcg);
++	list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
+ 	rcu_read_unlock();
+ }
+ 
+-static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry)
++static void zswap_lru_del(struct zswap_entry *entry)
+ {
+ 	int nid = entry_to_nid(entry);
+ 	struct mem_cgroup *memcg;
+@@ -696,7 +696,7 @@ static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry)
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_entry(entry);
+ 	/* will always succeed */
+-	list_lru_del(list_lru, &entry->lru, nid, memcg);
++	list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -764,7 +764,7 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+  */
+ static void zswap_entry_free(struct zswap_entry *entry)
+ {
+-	zswap_lru_del(&zswap_list_lru, entry);
++	zswap_lru_del(entry);
+ 	zs_free(entry->pool->zs_pool, entry->handle);
+ 	zswap_pool_put(entry->pool);
+ 	if (entry->objcg) {
+@@ -1461,7 +1461,7 @@ static bool zswap_store_page(struct page *page,
+ 	entry->referenced = true;
+ 	if (entry->length) {
+ 		INIT_LIST_HEAD(&entry->lru);
+-		zswap_lru_add(&zswap_list_lru, entry);
++		zswap_lru_add(entry);
+ 	}
+ 
+ 	return true;
 -- 
-Sincerely yours,
-Mike.
+2.55.0.508.g3f0d502094-goog
+
 
