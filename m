@@ -4,141 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 421EEC54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 14:14:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B2EC5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 14:21:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AFD76B0095; Fri, 31 Jul 2026 10:14:00 -0400 (EDT)
+	id 82EFF6B0088; Fri, 31 Jul 2026 10:21:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 560B56B0096; Fri, 31 Jul 2026 10:14:00 -0400 (EDT)
+	id 80BA36B0095; Fri, 31 Jul 2026 10:21:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 428AC6B0098; Fri, 31 Jul 2026 10:14:00 -0400 (EDT)
+	id 6F7CC6B0096; Fri, 31 Jul 2026 10:21:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 158086B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:14:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C0041A0477
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:13:59 +0000 (UTC)
-X-FDA: 85049265798.09.9EB34A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BDC8940014
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:13:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YigsGhKL;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41D7F6B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:21:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C624D80431
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:21:33 +0000 (UTC)
+X-FDA: 85049284866.24.C5416C7
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A981D160007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:21:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YE5yomCF;
+	spf=pass (imf08.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785507237;
+	s=arc-20220608; t=1785507691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y/41p4/Kr/MVi4hSJAjbKgh4tTo8fUdwQ7XoxvN9Mx4=;
-	b=MCfZvKTo3Pdy3qfilX3+O9AiSYfL1ofe0MicZfmC67kBq/Srehgs6qsBt9C67lYIAqHtjO
-	o/oNSyiu2nW65SqNR94vYqJsqRO0jYLKeYWlg49FhQjlzXd+zfVfYcUQY4tkvJT0dwHs8x
-	y8J578ToBsoMSXoSoA6jgOWqObwt9ZQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YigsGhKL;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=3BqwAfgX6QeSnV97D/RnhlgmbHEZyyQJlqoEom+VcTo=;
+	b=bKhAR4J+fmtjR7Jq/s8XihmmxHFriEux1743ZilUP5G7hQ+pjPYEN5F7JVj8tpQVIjBjSV
+	vJnvjmkvjljFXDyzCZseMpgqGoI1qReJZxzvHcserHQIDZhMsKuOAPP84bxlI2KCwurwoi
+	Vw3mmomTbr0Y28lWtHBl0LR7dtX6r6M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785507237;
-	b=hlecsbejz9jacTTmjzNV0JgnnaPiwjQe6X+zGsLlKMvSnG5F2xauzq3ktOuIa3ufPFDkyK
-	ra9aDuoTqIdJnbqarVQysHQu3xVrMqoQL7jJqC9ah4Q/e6Xwh8RVEgswGXE68qhq0FwchJ
-	jWghTyOHTvPKr8VVNj+BKRBmCvlGyVE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD0694373B;
-	Fri, 31 Jul 2026 14:13:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82751F000E9;
-	Fri, 31 Jul 2026 14:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785507236;
-	bh=Y/41p4/Kr/MVi4hSJAjbKgh4tTo8fUdwQ7XoxvN9Mx4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YigsGhKLHAS1cw4q3uoFzwBffhZ8H3PN7g5JvVhSdCE3LGi5D4xlnJxVQ/41Qh3OJ
-	 k93K3uVnQeWymvZ9/2zXtjabw6KxidwLG7oBUPjtnQutYilyAlDA1wzlKvJj+V57v9
-	 kgvu+7zrqTYTmma1qy1Q8ef8mryAaDvdSyrLVncX0LhdQd8L/DEvPbQR2454slyynJ
-	 b9wUUP/02ooIKyJYBv03FFsQso8c9XK99GtIjqOYEH61EmuaiWpnRDL1Rc2iuecjYK
-	 K+ZAfZxB2+z97igjuJCEppXdQ/4ubhuFHUve8CiJBcd6uBu64Za6hOm/8+jpTBxPxm
-	 Belb0pPocadGw==
-Message-ID: <b07bdb1e-4c6a-45cf-9f5b-20745075f19d@kernel.org>
-Date: Fri, 31 Jul 2026 16:13:50 +0200
+	t=1785507691;
+	b=zohWwR4d8//4ACaUtZFPwRlG5A9XtTu7bndh8gOa0IauNLfEljrQKAsDucyCq3mAyYBkPp
+	wc75nBvcwzSfZWiee+ejuzCQ7Neips0C/mrB1wgsbbbgSdvdSnNMgiyUQFLNsl1QpNBosw
+	O1N/yfMFrwYfrZkBJD1QLrbRpPP9EBM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YE5yomCF;
+	spf=pass (imf08.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1c4db7ca93so135039266b.2
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1785507690; x=1786112490; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3BqwAfgX6QeSnV97D/RnhlgmbHEZyyQJlqoEom+VcTo=;
+        b=YE5yomCFBikRyqDst6hnOLj09YmQIRBuKjPJJR9EVen9PSMiG4H+PSoAE2AZ3mqIK2
+         EMWXketmW7uBu8ACNOoDoviE0Yz+fkgtLcipq1S5L19BeMskhHw7kxE+iN8yrRj9L9XH
+         OJNXbd63+JQ8GLtufJ5aqxpl6y5VBUPXF1jX8OowK7pCK5lSiT+wrpaKGSJrtsH1dWzL
+         0Cow1Dn74rO370bYfqDWUsSpg//x606ovOAJNLZvSJ07dTePlNLUhl5hj0Znb/Ye9U7f
+         BmxT8Vm3v/0zN+Bom/gucXMn+p54a6AU9f1TamMaQI69y+ZicX3EDJywC9A88f96KIrx
+         b8gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785507690; x=1786112490;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3BqwAfgX6QeSnV97D/RnhlgmbHEZyyQJlqoEom+VcTo=;
+        b=HmST4D5AJDHutk5hM1pdl/lDPbBlAKBld8O2fu5OPlh2S0in+knGPL79ZMD+JwFQ8D
+         4zscf4sz0eC8gGPMxMBqwNErQwBW4U7umVojaDRRV9txGpI/qyRt6mBgqovqKneJlW6R
+         wUBT3KzFbhkOSxW/5S5c8DCS8RorymySiriz9d/ffaHd8/9b78Vv5fC8a164wiGco2zx
+         dSabkEUEqm21vksCG46j375sgAjhZrzbi38RJJMISVCa1EwFT8WHkZSJ0XuAlkW/t7Gi
+         V4bu7vBaTh9OZCNUFt0mwrMlXRfEJt0lMeMUQDqrONMHuJM4NuTB6uMU3awh9LnIQfWa
+         TVLg==
+X-Forwarded-Encrypted: i=1; AHgh+Rry3pBiaYUo2kJs3c+leHR385pPLhIQkv3+/xsXCSCryFy18AimamqrEq/IRpBS2cw4MMyML8DC8g==@kvack.org
+X-Gm-Message-State: AOJu0YzyZXkKnDo+KVarZHQDEkA/hmOSqrp8Q32a7g3HHyY7r0jCb7Pg
+	pYoim6etacQ51qYPbXIqu9cyQ2D39ubRFEBL2z2I51LKWtJHA9ZV5O8OR2CQUw8hTs0=
+X-Gm-Gg: AR+sD135rQqnmlYJrdngPFPfVPngi7/8WB9TiuRLAYcxtb1gvplrS/hD29bENE+LJvT
+	aDiBQ44ZZNWiOlXhVyyK0zjgsHlt9FUBjjc3aWaTf+jyxTUqprz1mhCFEdy55G4Yg3rUONAUXKW
+	eGWxcCIMlmQ+Msw8U5RnXirG8cIqTu+wlGZ1ZttwEqe38kHIF51SSt4JWm71N0TzbUru8rGeB/P
+	GX/+YjttBShpUv9LMn+WnFs5EF4VQc1SW3buIOCJzrInZyOUYH769Kj6uw5aN8YbQAbVvuhdv8g
+	ZKb8ori3XF19EUfdGn+sP7uQN34ef4nF9JbK0kmnPqpHHBH4/0G4aun29znIgo/jigQ4whcbyMc
+	fAXqGzoO9+oJbqjP2z+2umP3p/jvXGuCC2eK7wHloCDnIYfJsUFGoaveKZuK7cKNAcpIX+vLldR
+	0+OzODG5E9umMaQ2fdOVZumKvVZXNBsb7CNFYN/kkUwI6L1KH2hTH3IC41ZTGisXY8uPNa7okf1
+	9pM/CrisEIWWbNanvRmHjd3GQ==
+X-Received: by 2002:a17:907:944d:b0:c15:ce72:9352 with SMTP id a640c23a62f3a-c1fd21c33c4mr165122166b.33.1785507690113;
+        Fri, 31 Jul 2026 07:21:30 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c90739sm162999266b.14.2026.07.31.07.21.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jul 2026 07:21:29 -0700 (PDT)
+Message-ID: <b5d285a0-1e72-443e-aad0-dcac32d00d01@suse.com>
+Date: Fri, 31 Jul 2026 16:21:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/26] mm/page_alloc: add support for freetypes with no
- freelist
+Subject: Re: [PATCH v2] params: fix charp corruption on allocation failure
+To: Jiacheng Yu <yujiacheng3@huawei.com>
+Cc: samitolvanen@google.com, rusty@rustcorp.com.au, hannes@cmpxchg.org,
+ yosry@kernel.org, nphamcs@gmail.com, liuyongqiang13@huawei.com,
+ linux-modules@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <ff0b7cdd-8fa7-4cb8-9e21-6a7204809766@suse.com>
+ <20260729123243.790023-1-yujiacheng3@huawei.com>
 Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
- Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
- Sean Christopherson <seanjc@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-15-6f5729aa9832@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260726-page_alloc-unmapped-v3-15-6f5729aa9832@google.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260729123243.790023-1-yujiacheng3@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A981D160007
+X-Stat-Signature: 5zeoswzryq6teex7bzyjq3qacu394zfi
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BDC8940014
-X-Stat-Signature: g7bibysiat31j4tgqyg5ptetq6wbjd6d
-X-HE-Tag: 1785507237-752289
-X-HE-Meta: U2FsdGVkX1/vk2O92JW81x1dfkPWmzcTlIiGggLs8I+lAylKQ1sQ1sindZq4fvtwU+6HicDgaUwgINg8eIAITdMouwAnT/3nqZVdX7oaDX5WGQ6d0z2y1Xnomob5XQVaMmwSNZHnM9FV4Smy1s9BWuWPj/ZOestJ2kdq3kFJHnw24AkD7wqtZbrXhyubb17l4uaS7TDZwBgv5amSnMd1kQqy24erQGsHI/C6kJXF7oZ1XcnTV+vl9pOnJ+iwCV4dOv8Ay4StcDlHl+V7MqnMj5tq3opbdpiOocVMKi2DcpMMGa6GqFI6u5kKjfus6hhEzeFYTSbRF07vMMlehYalH/GiqefrR5Slt8S/muUVPd9sfIV0qXwKTd4yxuhjxW7+0ljd7MVGIbpckuu8DYHDQ/TQ1wQxuBxjig2LBx/5BBzF8OL8aQlOAl5vEvrejYHrDtYEaORfuWp1Ojqs395DSkITEimjS0dLWgVWgOjejfQ6qoqHVlibzHOYc/E2pSmjIBaYOu6bQOUKWjA1VVTehEf1x+7Xy7i0KZft/Zsqu86tPflr+UK4UBPU2qU6Pdii3TdhIwcE+Xf3P4NWE8/0DyDkBCIbZVGzNnj5oZ6SNfHecBJp5SQv0nFps/5af+pm9CeCC0cP6R+uxi08udc7B5RreRY9XwJI+QQkSb4LV8sfoEMEMngufAASGd28v+SLTnErapz1IVdXFfcVqwqCJnXViE0HOjzaVT/cvcGWOwGSJvpj1byRRM6P5uVhJbE/XN+PigO+TePWmBhuWS7vegPp4C9C1+i7gsXXsiDUwsQ1Hr+px9okBeAnAg5jMHwmMo48ToDz0/sTZGDBfYpgsyhVyabHPzbR7uXgI/ZKcjfb9lF3Q302tv4N9YfJotAkjAwO0VQEvTwAw6BBRmqox0zccnrG2VQOAhFdp21UVIhVKerctBDTqA6Y6YLjla3oDmaqoSHH0gYOFpHTZjT
- gG6S9/lt
- 4yRKXH0PmNG3/GZz85lFTHNH2CweWoJosRvfoikuhnwgBvsYvnLQTRKnIIO7nDWjgUYi4zntGvbkqMK2cA+j3tO3dLmmUmQYTJUijufqpmu1OzxWs0I/RuuKyJFk1x7VjTmQwnmFY9PP8jUhBji3wDi4THP5jbH+S/SiWM0QeJsbBgMQp/IkY/4UH8dLQvjSm0OEUJb7NQPfEuvmNqZ+w29HvQFpShgAR60IwvDaziq8PZOIxqbTauz5++J3m6csC+68eRJ9Ojj3cmnWND5z5s/CGfvaX8tDdtuxt4Y2aSePKMqIRWYRTz2XXb91jLJ4a8Ywcco2dQQaUfmcTsT8GUVndb/Mij7/jEyD7d2/Gb2oHzf4T9a/bnhvl1BVclkrdxv2O
+X-HE-Tag: 1785507691-821305
+X-HE-Meta: U2FsdGVkX1+F4gXi/oLlpJ1zuANPiORPHG9uGHe8qOa70KckOoEi2cTQUEzKQO9gVOFTR+SDENBhGAfxULIhPxSRulTgkTciHC06TyG22XF8qAHwTHoL4foSG9wJjzQuDKCDuNagKCw/SIxE1wPpMHQ6OH2TftNprvkKezK8w8IxsdUVI5YmiE9Yk43fv2GcSVygu7MFsqGHoNxZm4OgsK6a3iV3eK0+M9e0rpqVhPNbuwZrlNGU7OlgdIO+eYQTBItDc6Zw1Rdh0iuniGn4R4r9sE6OwvT2ORwIMg1iySVwW+JX4wCL+qcYqyQ2HwiTXsZWHpldNBsnpXP6leKQu1iwxtJKGLD3LEPP7JjLW2b8MGAxDZMR0ruPhH32EEcN/sihFpJOi7vtU9onj4ja01Po4S+QICh1Kd9iMneF8h12EvSwQgqAdb42yjh1VYrVZqjdvwDqUHXJ19w0RZJMfQhYDrotQptMjyGMNOfmpVjYOkPFRQLVu0IKDrPjGhSzVqIjfONuuf9776wkfuNomH2GPgu77ZZ3wQ0UkI8yad5TPp02sLmAtI7iPxX1Si+u+GGrbpp52y/O6dsd5xqI5kLEYaQQDdF3gInsftXjKtXfSYNCMIepVf99bwDoSEUD4iR1dvMnTxhb+Xiw2KOUWNoe3mJopPJMrgiO/ZgfUEEf5urJyJNufNVg36f/dxpq6+J/tPXY5mgklo4tsyvE0bZDDOTkeEw1tFhyRypfT2kLB8a1jtOrVf2ek6dEp06XsJqzrwRUl+1/m9nh12q7QTJYdzqeVdzmXw0c/ST00AegjfEzL9nbKcvip3Q4xsl0Xxyxn97KJyw/U06LaZBVZgfG43THqrYR0e9q4Va5cNrefsLVEQ/eOI7Slv3eSablP4/STLveBbMw3sZp0JxCPFYyvfboPSLnu5wWQXcTjMhlGIygb9JLbfb9HLPObG6zSaJSqg2HfusTGaZnXbl
+ 5Fwy08uy
+ vcOfD7UPZNIJP7Q46eN3geG4sF6+2aeIlyICt7Yp9uGQzS8PEO7A9gvFL0KaPZr+jsal7lgcXECX3u0mKWV+RDJl7UUR1osH0yFpXaXsYNxax2KgfbObPJk9WHkgxgFHw45ZOWFUPtNkaQTPPNFEqrUQFEqmL20X76Q7l3jTUMycqHeUcwg0MSyGaESJIGbTEaqqH/kSb+WSR/ndj3iFY0KXi2zFDG8Q6qL1qAoK/z12y1GoHEsQDIxOmdhyUis05/bM5f3r2fWAugTT/fLDih/bkYjrZcruM1bpkzFvJmDQSnxLwCzdYZoQTPWJz8JUx0mTYgbxuYuAC4sjcfvt5s2PBjP3SBVCMQcGOZCHN6V7WLrBJIrEPWwADrgkOR2g5mCedpAkOHL98I+ykZI9w+gIm3RIvnLolhzMTQSQnyy0kUy8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,23 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 00:22, Brendan Jackman wrote:
-> Freetypes are currently just a wrapper for migratetypes, but in a later
-> patch they will gain flags. The theoretically possible space of
-> freetypes will thus grow, but many freetypes will not actually be used
-> in practice.
+On 7/29/26 2:32 PM, Jiacheng Yu wrote:
+> param_set_charp() stores charp parameters in allocated memory after slab is
+> available, and releases the previous value when the parameter is updated.
 > 
-> To avoid bloating structures that contain arrays of freelists, mark
-> freetype_idx() as possibly returning -1, and add handling of this case
-> to code paths that will look up freelists by freetype (unless those
-> paths "know" that they're operating on a freetype that has a
-> valid freetype_idx).
+> The previous value is released before the replacement allocation succeeds.
+> If kmalloc_parameter() fails, the setter returns -ENOMEM with the parameter
+> left as NULL.
 > 
-> It never actually returns -1 yet, this is just introduced as a separate
-> patch to make review easier.
+> Failing zswap's compressor update before zswap is initialized can later
+> trigger:
 > 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   RIP: 0010:strcmp+0x10/0x30
+>   Call Trace:
+>     zswap_setup+0x3b1/0x490
+>     zswap_enabled_param_set+0x5b/0xa0
+>     param_attr_store+0x93/0xe0
+>     module_attr_store+0x1c/0x30
+>     kernfs_fop_write_iter+0x116/0x1f0
+> 
+> Allocate and copy the replacement first, then replace the parameter value
+> only after allocation succeeds.
+> 
+> Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Looks ok to me.
 
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+
+I'll give others more time to comment. If there are no further concerns,
+I plan to take this on modules-fixes.
+
+-- 
+Thanks,
+Petr
 
