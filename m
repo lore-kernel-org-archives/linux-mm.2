@@ -4,91 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC61C54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 07:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6A17C54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 07:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECF236B00B6; Fri, 31 Jul 2026 03:30:35 -0400 (EDT)
+	id 010316B00B8; Fri, 31 Jul 2026 03:37:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7FC46B00B7; Fri, 31 Jul 2026 03:30:35 -0400 (EDT)
+	id F031E6B00B9; Fri, 31 Jul 2026 03:37:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D95366B00B8; Fri, 31 Jul 2026 03:30:35 -0400 (EDT)
+	id E19DB6B00BA; Fri, 31 Jul 2026 03:37:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF2CB6B00B6
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:30:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4328F1A0392
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:30:35 +0000 (UTC)
-X-FDA: 85048249230.21.7929423
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8793020011
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:30:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of 3GE9sagkbAMEz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3GE9sagkbAMEz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785483033;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=onVNy1/pz6Y8QBVwNGDpWVhxl07qQUJwn142gtHseXs=;
-	b=NOYEw1KT09s+j17j9SnPXYMwMASc06meILeENVr8vz3OphHZ3U8OZk1zYM31Rixyw5l7D8
-	yjCE04nA5vX56b1NBPSmciBqkvt3xLfzw2tQ3qx++Fl11JUKFDCEFduY1Ihw28x8rExRG5
-	PIgiCgEexaekGSW3k+co4Zt+mG5Uvr0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9E4C6B00B8
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:37:43 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 521B9A15F3
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:37:43 +0000 (UTC)
+X-FDA: 85048267206.25.D6B4FEA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 80EBD1C0004
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:37:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeW+P7az;
+	spf=pass (imf18.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785483033;
-	b=8bEqizuYL0DVlWPNJAXuaHs5pTskN0fcP/p3OF6vabKI2F2aSXOefvJ1SB5khQ9CJDSr0M
-	tPjAwsi0Y99ldMulXuCVqoY+i58TDYHqpLMh6lEj8zbaS2wGoEuBMQsWmOhUh9cao0bgXB
-	cbaBjxqPVxUf6TjuYgsHpPNC0zbfETg=
+	t=1785483461;
+	b=Gq/ONQJAq1/Q1gHLgd8mNCbxrxbReEpuklGIq6JwH2SlO5TG5BUFYNMrPA1AmVuNFNK03C
+	qvWn3Fpd3OCHa6ctk1MfIseM+4D3/kVYnn7xBM1g5JYhj2sgbuBF8eZDKLIhk1V6S736hY
+	L3WxUDmKQZ9VWHxpC8FXe3S7kfdtZHI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of 3GE9sagkbAMEz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3GE9sagkbAMEz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-49ab6a82cd5so919986b6e.2
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:30:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785483032; x=1786087832;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=onVNy1/pz6Y8QBVwNGDpWVhxl07qQUJwn142gtHseXs=;
-        b=RqxmoiPk4zlhimMddoBdsWjlR8h0YyjrZkbazxFhNiiNgIArtwvwjqfQUzqiDdzQCH
-         imIY4qIoLaGp1KrRk9zk0mlBXY/SvqwrPhy9s4G9yjFcIc6WSd8ijykAJHQZXV91xXTm
-         Rwsm3aRKsByB9LhVvaf2Hr1hEFirffTGeu3z4GIeMquS9BiBQK9RQ8GT/bETWK1pSFT9
-         IIZprTr5ImFgQbwnJuubDNi5qXLGUUe4ypZQiawbgyvOWRg96tWDBpDcRrkX2sJml5mC
-         FbCu9KNC86Yvj7qVrZsZpkVkoBCwI7dknoELYZwA3Kg/eiQ2Rhs5d7q52Wx3MjtazlZ3
-         9jFA==
-X-Forwarded-Encrypted: i=1; AHgh+RqWFhfwF5LvlfKTTueHt5SO5Hdwlr/XRVwf6adc8nnyZ/HMlA6jeS1WxExs0mmoaNIdOrrjuWW0yA==@kvack.org
-X-Gm-Message-State: AOJu0YxriZkfBhm49sxYCyXWvXBoyLUVlydEM7kzjBJ2bLML0jJMAwlS
-	rjoWmbs4S2ihbHsX2xg+ySE13UDf0X8FqWv/2K1ugElCWhnJ6RsoYU5T9npoiN4lUyZxyBdQa3J
-	72NMEvthfdx8w5c6ezp60J48wqgFG0D2bjMDrBBD2WjqPWmjAz0B5V/eM26E=
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeW+P7az;
+	spf=pass (imf18.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785483461;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0iZQHz7NeGZMsBVItQcixhsFj58C0OgYWDKDkF6Dau0=;
+	b=dl5dMTw8vEJWpZFNrMOzZYmdxaxtheYFBzm0a7BmsOrFBlm6y3I43VP1wRoOE1rYGA2DJq
+	Zjm/l0wdPRiqAmfBPjhUFVIM/my0AJ9D9FifGFaXN1EEyvMrExoyB7ta35OdXlaPHq2RZC
+	UEQt+SLf45ZnTFzX4Jq3wSBDlfzML5I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BD60F600AD
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:37:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D661F000E9
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 07:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785483460;
+	bh=0iZQHz7NeGZMsBVItQcixhsFj58C0OgYWDKDkF6Dau0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=aeW+P7azcEYrHe4APercn3sqTRSCmhLfiQydckmu95XOSwR5slHPjMPKNfiiO+QIk
+	 MjpaHYQS87Iwp62b/ZOxFoxaXIXEsw013z04i7iXlXlKryDdsrhYOhQuJO70p6XqUJ
+	 8AZTyUcOsFG0Zhj+yyo/LE1xMp+Sre+E9pO1F86eDnf5tX1TS/qAwRkgHYhq/lKgIv
+	 DRMlTwyq24QHCTmw+mTMRrwF5xrJqYgBulqNZjIPPdKI5ZZMpS6UcMKAOBrzepRQUx
+	 sO59Jp+/TnHl6XkE+TftXu83SPycyKXJMC115uN1uMPkJoywOERNDwr8b4pwFLhxOj
+	 ZtQkF/ZYlT5MQ==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a08a2b7e5bso1015120a12.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:37:40 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw/K0h3h9jzLo5aWIElqHKrRSQXLJw/J7xH0gmpoo94ce+ANPVP
+	YghMIFHoUpXpfWxHzMXsO+ULBOglGiyFA2NST0O/6mA57QpgGYBOVYCv366Lxxkl4GnZLqiedy6
+	dgXgSh4fp0vufLzPFYuJwOW7rHGLtAQQ=
+X-Received: by 2002:a05:6402:44d9:b0:697:eb97:a4ed with SMTP id
+ 4fb4d7f45d1cf-6a09ba1f2f9mr302833a12.7.1785483459137; Fri, 31 Jul 2026
+ 00:37:39 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4f48:b0:495:d7ec:b6be with SMTP id
- 5614622812f47-4ae4c424710mr871943b6e.18.1785483032617; Fri, 31 Jul 2026
- 00:30:32 -0700 (PDT)
-Date: Fri, 31 Jul 2026 00:30:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in mas_nomem
-From: syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+References: <20260721090606.8982-1-yangtiezhu@loongson.cn> <20260721090606.8982-3-yangtiezhu@loongson.cn>
+ <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
+In-Reply-To: <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 31 Jul 2026 15:38:05 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
+X-Gm-Features: AUfX_mwnrI87ZsEoe4v5LzD35XC58e3JtwAHKXTs3OkJso5rEbEdY1NBlQ3IO_I
+Message-ID: <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec sections
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: linux-mm@kvack.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8793020011
-X-Stat-Signature: zmaarnggiebzaox87bph1451dktxyyfu
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 80EBD1C0004
+X-Stat-Signature: wauyyhswitqn8qsq7bada3fodxzrc8d4
 X-Rspam-User: 
-X-HE-Tag: 1785483033-34080
-X-HE-Meta: U2FsdGVkX19ox/qzBtLN7YxHEjSibSa/dmlhQj30YhL0ioLamsIZ8Odxi7fWRfHGLo22AR92Qd5A5EltAhgkRoHQl1e9b1iJRHmwRcBr936JB1LQuWe7PvNzBKMYqYE9zt8vnO7GbPRIQD/YtarWEfmAS8plxASwD7UKtijpZmbUqiBV/1jyn5dlwuTzA3BSLg99sWNqXgpjsvJd5G3RfLBZi1UQPIGN9ISkijn4qfifz9ClZMNQpMeOtRIzUI+mRaqB6FORn26NulWVdm3NJI/uBUjGBa1iNaBmpKCAvjqybB6+NJTyzi0HTwny1MpE05D7PNPf01uWh/ykbcCGDbnk+U08VCBKQYeTiQhjKKZp0w1c3KuUoqkqQiZZmuq3RY2SQAuI0mqay8djcl/LI+sIZv2jHH0tm6uB2SL+bXGGJbQT8jZlx3Vu926vFOtndecr4QtkoyjHxVtmhGlutgYl1JwEJxvraCH6jYKgVdvk8pRdiElU1Bclo5n4FguBQWLSWSFSolx0oi1qI0f0ErxgpZFWd5Z1Juktpu4wXgmx7Ul9peCk/KQlTp+RK11+y+FWC5bP/Pmg2jTNAO444ltiIY7MRNRemPDCiZCDGqqgDeg6KyWOH6JOwacWcJgMwvWVF6lflsCeZygZK1NjmW8q2OklxmSH+Q6zPU0ax2g8uG91LSgXLBd5qp9es07HBlh6l10thiGFfE+gprK8YKN1GfMYjgmmHouHcoID9qwk7yKyVD1ysi6bloAvwMOZuvEv4VIMVGyjieTVu1kW3ixBMfGDvEVtT30WU9jEcR8sT2NCcMjh5jpbj4TInbU9mPLY8xSBgx4n4cobpCEto2Yye4Gv+XYVCVe3mDciNmTuYkvI3p6xH1tho/KuozRhRHcDFdaR7XOaVrAWGbiR6FkWxWSxWyhnQ+LJjSY9lAGNiDxM9xEWG490qisB1p1U834ENCMLIT7hVZ/v3xf
- ZseIXD3i
- nZAXMVhIw6YeZKVN9rlWzVGxX8GD9R1GIAYiV2+tqhmdDybBkZ6XsLhJSSaBp4tC5LNYBfwBzxzZ8EpgdK43u/rWs8DTKT/9xZsd+JS7mBU4TmJ7JEmA8eOabTLIeLACGbUCJKguV4x/2xA5q/RHvzMubTsVF0NUv6/UCo2y687NTe9OunIWcS6rRpAkY7VtkV7qK2mbKDPVnT3A0lY4F7LC9U7vPNby31BKt1I1V8bTNtg8UlU6rqdcGvkJ7JX71lZ3xk5rqe+hJJJecGqm1cwJg47ZusMx0esag4jRaOJJ/dfiYRIHDdbbP4ZziFVUiOv9+dfc9V3LRSm/2/CDdxufJpaAE45YLl9KfMcMSVaE/43W+AulvzY+rTXpOGZn0zyGU/qlbK1OA5qiM+JvwiqtcLgqlpzbZ4yOLkIfVXv9fHIhJ7PXZBLwaY6CWHT5LJlxPYH0UJytW87hwjKVCfy64VZQ2ZguOw5wn/K7LaoUTgQlIjeMmtbJ1uXdr6qbqRmMCBbmNtvks0W2yCDPAvJGs8KtBhQ0hngzcQxD08hkGZRlQ85YsGG/6WyqjQEYeeRIo1uSfIYz6xi+hMxtXfm5pAKkZpfN+D2CJ4xJHeiqe+IP8KTtnh/zAV5RaXm9qNtFkPeg9ytwlmBYhFMGgZ4Zp8SWzvpHi65jn1YNE2tTMkWnT/1SdFri9x/aqkOy9lTH4ty4klpcsNJr58zpPu3OI1671kkop5mmoGmFZ+2xeHSmzkApme4JVAx0ATJ1vDgoXIMlScYmsAbZwfAX62wvWHsaHyLlO82jetKphbNAI7SdZDUAfXene+A9NNqNN8GrRrbyPsMxbafIFZ4V/PHowzdNgHvjc1RFYM6pGNq4XSRBmzP4kd0Jcq0cdlD6p6swRK9XXgg2C3SWrJNmw5E6JAzP77f2xqo2iBbH/I0+vi6nv2UyERU1H+QM8v+xj0D+uP/UuyvqjfFH1S1ilKWKbcMRx
- fN5CEkig
- xcNFdGIvi5azNp1zJe82SlybNSTjry003ifePyvwruLWPDp0i7HAhAHDv41Ua/pwyXlctKmFM/EE7X4bsa+pIjP89MMNQL8KFCOICBu99pJ0VpN+4bwvdyylHoPdZgFIyhJi1Otyr4s7GAoDGRvrQQqe0HtX1RGBKkdW3kyIKw0rpbuj3N4Uya0lFNfHG77EUoW6/E1mLuTNbABDSjoAyV1rTOuliC2KkCHsfM6GrSeGpA1qligvMU0d4iuf4hQ0yN0tMaVNG9WsS85NlJ7lJK2JhbRzQB/W1NSG99mWjVOn6mR6OJ/Dd375edMevWqLzgmJA37vWlNmQeavNutBAknOosKDI+/VBqmFaXdSkTQ+SW4G3NmbRrPjyGsoWNxCAcdV4DkPwOh1SC+36Fz3zeX2sFqaiKyoP66HjPi67+/UbTlmPFh89sTS3DSEaP78u2hBk47DHXU=
+X-HE-Tag: 1785483461-337589
+X-HE-Meta: U2FsdGVkX1+8+RYlgopcm1hH3fPMjogefdFaS4QweOnNKXrLLa5ZXcEzIe6kHhA56+oVnoKStfJOHWSMBIs4Kp4nyGnTyUnH7CTXogbwMJUwPTevpL2RMJh34HYIKIE/iipMiPTFELXlvBQck0AFQUsHFP1qMMIPwDbJJ0E+x9Nd45lXpgqLS9jBkcGTW1gRYP6rZSBz4My/PCil0XRT72nKBIv+rMfE8VXprKSFW0SPGwscQ0zLHj3uX9K4+VwnSSdlVVmJJHMGuDRCNYwQGEdouv7/o1twHiFcN7RsT2cf0JCWSjulvubsoh2rDLDb1UFwBkmSwZLRe28ZRRd738kxdL+lcI8YjA2f9Hkd9XuwFNmTNj9lcLludUmJlEW/BSe/TFWGDW7j3GT3SESi+84/qZtXb6t+u/AAITiUizYH7/zqvKI9MHqWEb+Z/hsuv5I5jNFyaoyn4vjpkcVQuHxLfwICGjasV+L3wi8c12Yto4YRenkJd9ew6qxID9/hgEgV2IRuU7VzPVqCK7MmfamAc3S+cZ7/PddkHVs4LRhWRK2gYSwFfjwl49Ic2hfhppcZSY90YwII9FSGAXCb8DBLjPu7/ZFAJQ5Wpl7diIjT6a5eg7qfG8buxPDZ0zgy45NdJOJ4tY22eZm2HlviVGXmzCykqzpH8hu3pr6FADc6snaI0U+6zCz8ZpE/Lb+jjOZukvZHyH272sUuuikzQYfyXZRsYvogV13mNzUOqJRobkLwLf48JboJq0F3e/sZB+SciRYofWHHPNmbongRNgTmNAkgHg9e5WVd4G0dBcH4cUVsyWE90LAkXP4XF+otJvp+o8Sxp5JoJijXwlfqpZQ2Px5vknWCEGb4EHt9fbEGy0gkxm2o91xk1odrwIsniZ0/eC4GY1ly/Ibcn1UQTmd1V0rMfJEKjHOwcsdmKJCkzib3HmSH62uoMogWvNc03T87zYTOSLcU/et/Omh
+ eSKvAYZd
+ Wv9d0k6IwHK+ibTQDHh0a1t0FY70CpRebcWZU0U0zn/PftsH/HhlUokTdkiJGGgTHDBWoJ0L466ywav099yK/0zL7vvVagDPownLrZPEZzQMxFFwHg4xwe2dcP1J36B4bbzYV76BAQ1CwEsiZDft7cEkL314Bs+v2XQ08bGP1u9htTeQMMRboMjP3TR5bxBg5TwteVc0gyFMLstvZdh4hg35xSdINs5JNuyDhRPCMwIqaUL5IUpre87mQbj+oK/UX7yzHtQwEPnZ9ksRkhgra6y+DZvlo+TBM/SW6FWOEtvjpQyIEEnNk5StPOKvARNVmikS2l17j4TiZJUb/llVIndl1jo4UQ8V56/zYHDZ2QDvLuXI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,89 +103,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi, Tiezhu,
 
-syzbot found the following issue on:
+On Fri, Jul 24, 2026 at 2:07=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
+> wrote:
+>
+> On 2026/7/21 =E4=B8=8B=E5=8D=885:06, Tiezhu Yang wrote:
+> > The module loader currently runs expensive address pairing logic for al=
+l
+> > sections blindly during relocation. For massive modules like amdgpu, th=
+is
+> > causes the loader to waste lots of CPU cycles analyzing non-exec sectio=
+ns.
+> >
+> > Furthermore, there is an inconsistency since module_frob_arch_sections(=
+)
+> > already ignores non-exec sections during the counting phase.
+> >
+> > Check the SHF_EXECINSTR flag in apply_relocate_add(). If the section is
+> > non-exec, skip address pairing and then jump to normal relocation. This
+> > eliminates redundant search loops to improve module loading efficiency.
+> >
+> > Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> > ---
+> >   arch/loongarch/kernel/module.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> >
+> > diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/mod=
+ule.c
+> > index 7d4d571ee55e..c84ac1546dc6 100644
+> > --- a/arch/loongarch/kernel/module.c
+> > +++ b/arch/loongarch/kernel/module.c
+> > @@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const cha=
+r *strtab,
+> >       Elf_Addr v;
+> >       Elf_Sym *sym;
+> >       Elf_Rela *rel =3D (void *) sechdrs[relsec].sh_addr;
+> > +     Elf_Shdr *dst_sec =3D sechdrs + sechdrs[relsec].sh_info;
+> >
+> >       pr_debug("%s: Applying relocate section %u to %u\n", __func__, re=
+lsec,
+> >              sechdrs[relsec].sh_info);
+> > @@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const ch=
+ar *strtab,
+> >
+> >               v =3D sym->st_value + rel[i].r_addend;
+> >
+> > +             /* Skip address pairing for non-exec sections */
+> > +             if (!(dst_sec->sh_flags & SHF_EXECINSTR))
+> > +                     goto apply_normal;
+> > +
+> >               if (type =3D=3D R_LARCH_PCADD_LO12 || type =3D=3D R_LARCH=
+_GOT_PCADD_LO12) {
+> >                       bool found =3D false;
+> >                       unsigned int j =3D idx;
+> > @@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const cha=
+r *strtab,
+> >                       idx =3D j; /* Record the previous j-loop end inde=
+x */
+> >               }
+> >
+> > +apply_normal:
+> >               switch (type) {
+> >               case R_LARCH_B26:
+> >                       err =3D apply_r_larch_b26(mod, sechdrs, location,
+> >
+>
+> According to the LoongArch ABI specification, the following relocation
+> types exist exclusively in executable code sections:
+>
+> R_LARCH_PCADD_LO12
+> R_LARCH_GOT_PCADD_LO12
+> R_LARCH_B26
+> R_LARCH_GOT_PC_HI20...R_LARCH_GOT_PC_LO12
+> R_LARCH_GOT_PCADD_HI20...R_LARCH_GOT_PCADD_LO12
+> R_LARCH_SOP_PUSH_PLT_PCREL
+>
+> https://github.com/loongson/la-abi-specs/blob/release/laelf.adoc
+>
+> Thus, here is a better way:
+>
+> ```
+> diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/modul=
+e.c
+> index 7d4d571ee55e..b1452b8adc63 100644
+> --- a/arch/loongarch/kernel/module.c
+> +++ b/arch/loongarch/kernel/module.c
+> @@ -484,6 +484,8 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char
+> *strtab,
+>          Elf_Addr v;
+>          Elf_Sym *sym;
+>          Elf_Rela *rel =3D (void *) sechdrs[relsec].sh_addr;
+> +       Elf_Shdr *dst_sec =3D sechdrs + sechdrs[relsec].sh_info;
+> +       bool is_exec =3D !!(dst_sec->sh_flags & SHF_EXECINSTR);
+>
+>          pr_debug("%s: Applying relocate section %u to %u\n", __func__,
+> relsec,
+>                 sechdrs[relsec].sh_info);
+> @@ -522,6 +524,14 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const
+> char *strtab,
+>
+>                  v =3D sym->st_value + rel[i].r_addend;
+>
+> +               /* Skip relocation types that exist exclusively in
+> executable sections */
+> +               if (!is_exec) {
+> +                       err =3D handler(mod, location, v, rela_stack,
+> &rela_stack_top, type);
+> +                       if (err)
+> +                               return err;
+> +                       continue;
+> +               }
+> +
+>                  if (type =3D=3D R_LARCH_PCADD_LO12 || type =3D=3D
+> R_LARCH_GOT_PCADD_LO12) {
+>                          bool found =3D false;
+>                          unsigned int j =3D idx;
+> ```
+>
+> For the non-exec sections such as .orc_unwind_ip:
+>
+> fedora@linux:~/7.2-rc3.git$ objdump -h
+> drivers/gpu/drm/amd/amdgpu/amdgpu.ko | grep -A 1 .orc_unwind_ip
+>   32 .orc_unwind_ip 000ac104  0000000000000000  0000000000000000
+> 18592470  2**0
+>                    CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+>
+> there are 176193 relocation entries:
+>
+> fedora@linux:~/7.2-rc3.git$ readelf -rW
+> drivers/gpu/drm/amd/amdgpu/amdgpu.o | grep .rela.orc_unwind_ip
+> Relocation section '.rela.orc_unwind_ip' at offset 0x3a5321e8 contains
+> 176193 entries:
+>
+> Using the section flag check reduces the operation to a single check for
+> massive data sections; otherwise, the loader would have to perform six
+> redundant type comparisons across the if-statement and switch-case for
+> every single relocation entry.
+Please just drop this patch and make the first one better.
 
-HEAD commit:    cc2b5f627e8c Add linux-next specific files for 20260714
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15ce5632580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2290ccbf984c524f
-dashboard link: https://syzkaller.appspot.com/bug?extid=78a7af91b68fc6394771
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=179151b9580000
+Now the first patch has a risk that the distance between .init.text
+and .text of the same module exceeds 128MB. I solved it and you can
+verify:
+https://github.com/chenhuacai/linux/commit/f87f9d82869ebc71dca4c02bdff1cd20=
+3913a98f
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/6836f8efb1da/disk-cc2b5f62.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0109d3477cc7/vmlinux-cc2b5f62.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c2e49e350bbf/bzImage-cc2b5f62.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-!mas->sheaf && !mas->alloc
-WARNING: lib/maple_tree.c:5751 at mas_nomem+0x1cc/0x210 lib/maple_tree.c:5751, CPU#0: udevd/5627
-Modules linked in:
-CPU: 0 UID: 0 PID: 5627 Comm: udevd Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:mas_nomem+0x1cc/0x210 lib/maple_tree.c:5751
-Code: 4c 89 ff e8 d6 85 ea f6 49 c7 07 00 00 00 00 b0 01 e9 95 fe ff ff e8 f3 2d 7e f6 90 0f 0b 90 e9 2b ff ff ff e8 e5 2d 7e f6 90 <0f> 0b 90 e9 77 fe ff ff 89 d1 80 e1 07 80 c1 03 38 c1 0f 8c ce fe
-RSP: 0018:ffffc9000562f8f0 EFLAGS: 00010293
-RAX: ffffffff8b4775cb RBX: 1ffff92000ac5fbf RCX: ffff8880366e3e80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000cc0 R08: 00000000ffffffff R09: 1ffffffff1ca1a86
-R10: dffffc0000000000 R11: fffffbfff1ca1a87 R12: dffffc0000000000
-R13: ffffc9000562fe18 R14: ffffc9000562fde0 R15: ffffc9000562fdf8
-FS:  00007f9021203880(0000) GS:ffff8881259f2000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056467bb0d750 CR3: 0000000046416000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- mas_store_gfp+0x37a/0x820 lib/maple_tree.c:4987
- vma_iter_clear_gfp include/linux/mm.h:1674 [inline]
- do_vmi_align_munmap+0x30c/0x4d0 mm/vma.c:1644
- do_vmi_munmap+0x252/0x2d0 mm/vma.c:1697
- __vm_munmap+0x241/0x3e0 mm/vma.c:3347
- __do_sys_munmap mm/mmap.c:1079 [inline]
- __se_sys_munmap mm/mmap.c:1076 [inline]
- __x64_sys_munmap+0x60/0x70 mm/mmap.c:1076
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x17b/0x530 arch/x86/entry/syscall_64.c:85
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9021368097
-Code: 73 01 c3 48 8b 0d 61 2d 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 31 2d 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffeaf32d0a8 EFLAGS: 00000206 ORIG_RAX: 000000000000000b
-RAX: ffffffffffffffda RBX: 000056467bad9bf0 RCX: 00007f9021368097
-RDX: 0000000000000000 RSI: 00000000009480e8 RDI: 00007f90208ba000
-RBP: 000056467bad9910 R08: 000056467baec140 R09: 0000000000000006
-R10: 0000000000000000 R11: 0000000000000206 R12: 00005646569e2588
-R13: 00007ffeaf32d130 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Huacai
+>
+> Thanks,
+> Tiezhu
+>
 
