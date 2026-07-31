@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E621BC55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 00:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 874D1C55165
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 00:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87F7A6B007B; Thu, 30 Jul 2026 20:32:59 -0400 (EDT)
+	id 2DA706B008A; Thu, 30 Jul 2026 20:33:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80A536B008A; Thu, 30 Jul 2026 20:32:59 -0400 (EDT)
+	id 28AB46B008C; Thu, 30 Jul 2026 20:33:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D1976B008C; Thu, 30 Jul 2026 20:32:59 -0400 (EDT)
+	id 0DDED6B0092; Thu, 30 Jul 2026 20:33:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B87C6B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:32:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 48C85A146B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:32:57 +0000 (UTC)
-X-FDA: 85047196794.05.2F93BA2
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8BF5FC0003
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:32:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tI46gb9p;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D7FAE6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:33:01 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61D211A02D8
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:33:01 +0000 (UTC)
+X-FDA: 85047196962.04.2182D69
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 820B9180009
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 00:32:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mcwa6LEW;
+	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785457975;
+	s=arc-20220608; t=1785457979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+0vsC71zSDov/oBYPn9+nw22jst3hXsJQFoPYXKGz8o=;
-	b=bpOgPtkwCRuHrrub+d39Qgw+8vL/hA6oIiDa9wcPvj2xuoNSfi1q2bDE6Wn0Xuotdp2ibA
-	VcI9HZHMUHZpx0Cw50Uar+xu6ubGSOTujZztoq8A/1CouVfZZIqFIOUS+l/rYTVn1VIiAH
-	bDI5i0FgvhXpIpYCEmNbWaRZ7oTLWT4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Pgl8j6vS3C7bSkoMmKnotkN6vZDR6xO4lGHnrMnaWEQ=;
+	b=7DkChAINByC1WkwEERy/D2avefD15So33lBrMPlT2P+yG/ZbAN9Ek0NZWO31K418LwLHat
+	FPCw9IJiiQlFisDzaX+o0XMtz5zyeCgpmmeX/tSaDiF1Z545gXkb/2bpJeoabnjhBRdpxL
+	/aab7+iVI3lftRQQ3CnwiW1JfFxXhhw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tI46gb9p;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mcwa6LEW;
+	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785457975;
-	b=67J8pLqPEEVOZX2fz9TUBMOdaL5FNuSL+bvqlIrEkTTo0DG9g5AbZz3Yg8GJ59lPMoVUkB
-	0SB0dLCs3X0uDc0P/lA+1R4DOQf4b8ulkOP4J27uRbBAADe5hvEy0eQpvZMrYyJ/Hbu8GA
-	0PH6UM/AQL6vcqTDhCLPVeiXkcnGfxM=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso558335a91.2
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:32:55 -0700 (PDT)
+	t=1785457979;
+	b=eKnG3aN6EuiYGMfJ14d98PGTm7oQeQwiwMWQ/7F3onKL5MYgAwODXsnkFlxcXduzQwNAhS
+	uXwVzIjGBiZIEbp839Gg4uSunjwF1Rt/XGxHVbRPZ7HVyiRO/ucUmQGPvBSr6QBtyEJIPO
+	pN/FnVdjzZGl8EmV6QCziMHdvrYvTI4=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so335451a91.2
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 17:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785457974; x=1786062774; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+0vsC71zSDov/oBYPn9+nw22jst3hXsJQFoPYXKGz8o=;
-        b=tI46gb9pBls5t7FCWHjTwZ+oFQi6zhRYQGLO2YbscJYrl+ccth74Kk4bPyC98aQP44
-         TXtLUOUx8CBf0zkhrnxhZWWZ5atPkWd7x7zoTTxjS+gQlGfR/B9emYc0+xAQGn/VecKU
-         dJxRJw4TF15o9TB8z0Z46Fm7442yX0FLWHWUw3DVoe6AT0SGZrJR71RFWDYPVej4pXk7
-         z2dOhOlBL8+Y4Xe3Olia/xOuztuzdFE9DhqFQ7fXxZM7F/y4M7yAEH8asPJB9AHkgKx6
-         XRIOO9IdgHI9/KrSlMsLSBw4M48rIPsxEEZu+XfpJv9HqeOSmowgKU/qozJ030z+pwwT
-         v7rg==
+        d=gmail.com; s=20251104; t=1785457978; x=1786062778; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pgl8j6vS3C7bSkoMmKnotkN6vZDR6xO4lGHnrMnaWEQ=;
+        b=mcwa6LEWzZI8g/BwZ4BU6gyMyrIg6y7uM2AZzzSAk1dTbcp2c2liurCLsgTJAOr4Q8
+         mUt/Z6di2GEBk3rJq5a63KPexvVjcmQ4bHBKoMgyA8mY+GPIjtdIHFFWAygRlbHoejQ1
+         nlYNh0Lh1nj9CmtV7maKLA7ZFPOECxl8UCWbQ5WUVAC5rIl7AqNg4oci7dxd/4E2aYik
+         Zv+8K8BlKtk1m7bQcEFlg/N4I1VuoJIs7dIV8zxC09HW3KHVhj3Uvw//fNC4SEE+77iR
+         EZMWPt992vpKAROa2cRzid643BYE/aMrQEduq2Ae5pXnPpil4GxnNqGLAa+JEbD2s3a8
+         IE2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785457974; x=1786062774;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+0vsC71zSDov/oBYPn9+nw22jst3hXsJQFoPYXKGz8o=;
-        b=N9PFGSc7Al86BtBhS3OvelfmECqy82FHZ3JpKcnifLG7ylbGe3h1OgE07q23XVLJLJ
-         rvaT1ELf/eS0BMiAkPkzisi3mrL2g7f8pWtciGoEJ33QpPun5nIkoC8PdzqBUVqUn5S2
-         RpIQLLLVx4UVmmgGvFvEvGpOJsZhGav1qq1S2U12Ir7TJZfSEFIwtj/nhr39EaGxJC5+
-         MPuow2WyX2RmpdEoPsfiT7qixV5ttjQS9UGAeu3zvS4/BroijYPoJFJVaz4jhlhJPsyv
-         hfzbrBXAj3txbG1VYAPEsL41+aTePyl5vsT5p1mghxrFYRdISdhbZgGjOF7sW0dtVRvN
-         ZE6Q==
-X-Gm-Message-State: AOJu0YzA/QpuzIMZKmfi5I9ERpScjyiPEaTRNvSnxXaa6GdByxzpew96
-	82v9jS8E+gkfsvYpgMPV/829t/X4eQ+/W+wsbnHEDKOLhOinYJ+jvUvQ
-X-Gm-Gg: AR+sD13h6nWBGB3uI0YMt2DvDpoxJeHMePW67hazEQ3LmBYV/NFjCsPl7m9RmzmWeRM
-	XudkwFDqAyIrv9qQSVEjhfiqSyXc99H+HNs1j0uh7eK+C93RpDgiDQkoTpcrSOfw+rzi4hg5Jcu
-	GL1+6k0EbufuRPZs8AqmFonzMe54RLm1Da5nETyFjkZPLrKwdI+dQ8MiJR6lcnEJrY/bAxKH5Y8
-	FuVbSfJQ4PGpAhQAQ1dG5ro2+9AYQOAqvyEi8vlSPMz85vB1yAIe0BK/7nMYTh70RNW8pEoxqK/
-	bzFeJ7SmrjsFhXsVEY3i9kDFtHsQR6qGBVAtHpcnZxck/McDPv5PPNLTqCQKcbznq/FlPH/acO+
-	n5vvHdu7i/eDHtfS/vutNWWouNm2Phuo9KBsVQP5Nbx/qCAk/jD6Xql9ec2C5EzBqKP4AZU/ZCw
-	hXIzl1x7d+A6vbnhmpLYCf1q27JHGSYLRp7uzU2cyCIBQejnwgFnfOdIARg/UoJ1dGlugsxzcWu
-	V/DsupiXKec59twNtOKWm0L3D/qG/h4RGkNXKw=
-X-Received: by 2002:a17:90b:1c05:b0:387:e0db:3fb1 with SMTP id 98e67ed59e1d1-38f9c0bdc13mr3564460a91.42.1785457974396;
-        Thu, 30 Jul 2026 17:32:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785457978; x=1786062778;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pgl8j6vS3C7bSkoMmKnotkN6vZDR6xO4lGHnrMnaWEQ=;
+        b=NEubnFQDKUTd8Yvt+lU5e7lhNMjbJ9UE1X7Rt/mNa+q6/7Gw6F1AGdDHlQcvz1g8Ak
+         ePLYM0PTmpuOgTIXhSJ8c0G6ftBxfYcgAlsHYLQi/iNk7gAP64/9uCFrheGFI2833MaZ
+         oOFd+0PAHLrKPsTl3wVL95SrDSLr0p1EKn+UiY7psqpHEG++0TbiCzQJ2tJUUSUDAgpX
+         q3tx3GzBAFSLANHDoRf37mfCE4ztYE4xNjG0fcquNoJIhjgOgrXbvz51Cxkk7l7WLmhc
+         WBp0fm6PGGc5jcazIBiI6b8nGaqvyVdW9nMlMm5ko/QUqsuhtr7E10XwrwV+d5bwmvIp
+         885w==
+X-Gm-Message-State: AOJu0YxgsK6BcwF8IbiuxiTQj3pD4wQoAlWPNPaRmlQ72fd8n6NKAwye
+	D8i/N2x192vhEcCtH9ko2ChFclRze4sar+uf1UJJWyeu5FAgS6MJVlLM
+X-Gm-Gg: AR+sD11VuFdzysPD+nqdfk5avvbpWSFZLL/mHzk/xkgVRIh5Ek+VhhSD1ML+frlaWWg
+	WrmolusjUGIoa0x7GtqTSP+thzCRtGVpy1nOybZWZJTdOJgcohNyvzfZX9yP9qeA2xAsLGQ3Crc
+	F8hzWbNULE/+WrgEZXwZ85FqIAt16ic8ZmersgZm769rzWhSQCvVsVNOpZ9J24AKUf7DNfyduyZ
+	qu9c1kwZh0fx5z6T/0ip0arnLyNe7sE6z7vfo6YTtd7Gx09eExjz1WY9jIv/PaoOg/kbfXpccS6
+	kLEtRKfC3VDtBxhF3M+bal8TJSLuguvKcc6Wl/PsjDSTwLvgRup6YUsDfW9AdLTKSYyvYTeJWXW
+	8y9hgHG/42x62yL0oNbPp6WAej2fzB4TcKX7WG8+4mlz9QhMnztLh0g5F2US9KnQ7VLI57R5Arw
+	0LfF/iGD56yapLk80mElTBg1xGqkAm9XEYMo/xFrSEka0/yYdugmtJ5nbcVapKv2N0YKrxLGLwI
+	WNBvbv+L1AUddH5zfgwhY60k+BgXN/p92WWpfG9n0d5gr+dYh8=
+X-Received: by 2002:a17:90b:5903:b0:38d:adae:4866 with SMTP id 98e67ed59e1d1-38f9bece6e1mr3994144a91.21.1785457978178;
+        Thu, 30 Jul 2026 17:32:58 -0700 (PDT)
 Received: from NV-J4GCB44.localdomain ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d6c8sm1636301a91.3.2026.07.30.17.32.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d6c8sm1636301a91.3.2026.07.30.17.32.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 17:32:53 -0700 (PDT)
+        Thu, 30 Jul 2026 17:32:57 -0700 (PDT)
 From: Jianyue Wu <wujianyue000@gmail.com>
-Subject: [PATCH RFC v2 0/2] mm/zswap: shrink zswap_entry via a fixed pool
- index
-Date: Fri, 31 Jul 2026 08:32:46 +0800
-Message-Id: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
+Date: Fri, 31 Jul 2026 08:32:47 +0800
+Subject: [PATCH RFC v2 1/2] mm/zswap: replace the zswap_pools list with a
+ fixed pools array
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC7ta2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDc2ND3eKMosy87Piq4vLEgvjUvJKiyvgyI10DIDQ3S0w2TkwzNEpNNlE
- C6i8oSk3LrACbHa0U5OasFFtbCwArxJ47cAAAAA==
+Message-Id: <20260731-shrink_zswap_entry_v2-0-0-v2-1-e72083aa8734@gmail.com>
+References: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
+In-Reply-To: <20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
  Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
@@ -108,14 +109,14 @@ Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
  Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
  Jianyue Wu <wujianyue000@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8BF5FC0003
+X-Rspamd-Queue-Id: 820B9180009
 X-Rspam-User: 
-X-Stat-Signature: 3t83gjhwk8rrg7m74yoi9h53ex4mtnrm
-X-HE-Tag: 1785457975-456348
-X-HE-Meta: U2FsdGVkX1/rMcsSrQJKIncqfeB7yaxwRAQEs2H8LFLFUlr2olOpit722BL2i7yYxGni+saUEviaXDniiegNUTa8FRKudFjSpwQ4jHb8x2iyvVbLpz6teloXRbv9jU+3xVzHHXtuQ/JBJ3ZTnHf+M5JwvlER6MUpwguTIktH7umr2zNTOrTWRPXIhzI4vmVybkNiq5zwUT9F8/+xHRsG0sB0/BYzHomiJwfUFMto7RJX34GPWvTFpPVknP1yOYS4XtUsSYJgJizggq6WqZgx0/IBTitMnt5GiH6FLze1spFX7w6uRdAGQbA2ro/ixr8gUUIM2cNG4SYYzJC3b3L8t4aOgS90dEdBc5g7cTjRPs27iLJJmo08x0NzSMD/yfUGkBmq9QISQzr2Cbt1YG7EbH+HrKWs2vPbAsbZLe6S1yIEXjRvp4QQRaXXWDdpembS/03oAxQBnkHG4M3d6MYKk992bfUAqFmIzRfbPM+qIPI9/At5EHcRUDKEdHwFeAkso3+leulWbJFXjA6UZ9UjAqBIzgpxYTaCilxAGwn6i5WYNrovIZClbiqhzyBZ6ivqIY6sf0Tp2hSddceLzrKJNbWN7yRbnkaYJRP9yzomm71kDNz/+q378xKC4CP3C9pTiHT6YRFQOPrWMAfr08bqkPAG1aKkfdtb9Qaqh8l/8Gkn+iv3aAoH66u8IWxYZqswBnEC95pdjm2eqsNcytj4MwPLydRv0+uhD9VkA3s4aQYYcCx4iQ+4KBSSrHhZWjnQ1YyTGv9UdfpLfMoYojxT815BGzyFXAXMjAkyTMqf/krCsiFRH7DrgrR4DgZCp+exJpBS1BS6mfC9c8O2vVTOb49BJ8XQeECzHsIixjE/+loV8dJCAniuaAftNlYtfD6f6JblU/6FM+0+xZrO8nwKyCTIn7M2XbnC0oUIjGiuD2Bf7zQ/JU3ueXt9gGs7KwDdmssismWDhmsqhD2+SQ1
- JqXhsDAz
- OVQiTYDC4s0/bdmup4aDGGLb56RzCOKQtxF5KbkWcJk8Pb+b8F17vZkYXJ5JFy+vvnT70J7l06NKwBi885F4lUnrzsCxAF2+QvBJ7AVFprCX/QqXDqDBWzn3jruTWw0fVW1ZsQnL5EYGB+0JnfdSiPrm3M1TXT51evvkdARJ3j9V3MHVyWzNQnOOs0aubPIdNZFDKqeGk31WeA3hX2w+wdCFEiDN7RstLdjmPv/JAatY2ccc9Ua05VpBe+OP1s2BbZ+CGZ5CDNXwesNZZye88vOGGXoURhHhcxkjqiIUuXqcBuT4Lh7SaLw0ObHFu4oBzPajxDTxI2DbDkMTCcDtMLj42aHOqBcK2MJyJNk1H1CtxiqVBk2J6RCJqaSdIOE4+qd+gBBJq9og9ocnp5tRzVjNv5Vgl1g8KfDnqFAy2WXeVrr3aNpZF1zYhoeQxA4dGN3FEzvWBhkyOCf/4GkUqNkcpTd6yFwgFJTRTP8xy8fv/zazRVmvjCSaJz2H80cUeWGkJcXwCQ5mXIFo=
+X-Stat-Signature: aqd1jyeuyehpbmot3zy9w8uwou19kwej
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785457979-884453
+X-HE-Meta: U2FsdGVkX18E++4oScR/23+CLvyTimrCktCXyaJV9SGG0I3Xz5Mi4qxMAZ9tun/jH3L0X/R8xZUyE9/Ns4XHjeYJ5x0309JC3RFn2Pz6CDU+sLVmKR/VYoakabIrmH9a+F4Th+XAwjhxZ8722GWHstVaU6ipi47FyfDnSgOCBkqm5NArKOyORGcwl6UYBUVmoYLIqDDt54ezJVPWHktm1U9ymjA46qGDDpvjs7wdL/n+wsI1Bi/XeYACqI3WZZS7T2Wwa0dKYFyhouTsID/VL+rHuTmT8p04z8pDlqDjOX0GVjxLcIkvZWQU/b906pgsbfaIsL1s7x3lB/5KUpbO+C+eAzwMdwKmx1ANwMfZBZod3oChxrDlcheH0YCCBQw2xaL7L/KMahK++jD0cn2ZRgvYTj0uHX13WfMm4RfaWvSmCPDNk1jX3EOv4r2uS53IW6/w3z+OAVAZF/2Hy1z4BosbLeEhbjZx8q/bvJ14bRsrs5TOLVW1HP3ySFGEYZBKC4SlYX9bg9bX9Wt/GHKM5OA99SMXltcyBrUf3PcrSX7DCG0NFQnKdHLUPGipV5tX+CyXA6S4As3hFcaTRYp2Io3PLn8nbs4/EQkCYYPKR9PODiuIfxtG7mjNvmZKYe9/uf6s89krOEBBqbnInC2BRBrI8KTiw1/SJlYbNi71bD2d7uFRsrN8gjqah0YKiFwt1zcIVDtN8Q13MQkVFQghcB5MmKTp4CxZsk22gRzsGWZaGv1OBzXfDe4vCtDdHzGuOirc8Ip1S8oOk986fd67Ug7h7Q5FiNlJVFr74b//imBKsj9B6MB/kgIit9Bmmr1zNVZ/iptPWFPFFFW1utMzzyd6lcivinfFZNG8b/WzCvm9yL5tr08nOUBz0WswbDWir+gaVsMQHOGZFI3/YfuNb/4BrYRo22mIHuTL2xUfW+Sq9sfE1byRMs5vP71pQaAGJX14znAqH5FLOoaMBeb
+ vaM72Ohp
+ 0x4c8PLpVpDO2F1iilog3QhzQdew30yoy1ZqWSe1e59AalrNSVXGDCXOv7heCPsTPPhYGmbmcqyHf/AYqxWbxGbux3d70KjGQorIrdjjuKrxtVszsoN7Tgl/e3bW078HNpZpE9aTe2qgy1IcJwR43dVt/EDt9IUwuISw25z1E42touenkdXMBMw38rqraein+zQqWeZbI2jFKytdHhO02qD01+zcHV0/6BSFzb721HSDXoa6XTNVGjseaa+lhLG4Lqq3d7ytfLscbmyi3oy4kXyM6jCgRTpc5tQutcZUSrAtBaRISbsoFbHZ07ji2CxrbRz+ZzPqerLPooIenBwb3K8IeZZg0OjCCJ4hZe/J4p0zpm7OzpoAXdpy9ukZyLvhQG5ChccrOK8KQKDltgnW+wkGtEiGHYzXdGUcEdFjDPgiGPVTLE99nlzfWCa0bQ4IJSGcgC8621tGfpBFnCaVrEDHcH5fmWWl82wucSnl8aZMiEPA3gyCBGTJlNfWGFP127T1A8gndRiMmQR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,69 +124,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every stored page has a struct zswap_entry, so its size is pure per-page
-overhead.  On x86_64 it is currently 56 bytes, of which 8 bytes are a
-pointer to the owning zswap_pool.
+Originally zswap holds its pools on an RCU list whose head also serves as
+the "current pool".  Only a handful of pools are ever live at once, since
+a new pool is only created when the compressor is (re)set and pools are
+reused across compressor switches.
 
-Only a handful of pools are ever live: a new pool is created only when
-the compressor is (re)set, and pools are reused across compressor
-switches.  That makes a per-entry pool pointer more expensive than it
-needs to be, and the RCU list that currently tracks pools is more
-machinery than this needs once each pool already has a stable slot.
+A later change wants to store a reference to each entry's pool in every
+zswap_entry, where a pointer would cost 8 bytes but a small pool index
+only one.  To make that index possible, the current change holds the
+pools in a fixed ZSWAP_MAX_POOLS-element array so each pool has a stable
+slot number, and tracks the current pool with a separate rcu-protected
+pointer.
 
-This series replaces the list with a fixed array of ZSWAP_MAX_POOLS (16)
-slots, tracks the current pool with a separate RCU-protected pointer,
-then stores a u8 slot index in each entry instead of the pool pointer.
-The u8 fits in padding after the bool referenced field, so the entry
-shrinks from 56 to 48 bytes on x86_64 (~2MiB of metadata saved per 1GiB
-of data held in zswap).  Runtime compressor switching is preserved;
-creating a 17th pool fails and warns.
+The array keeps the same RCU publish/retire discipline the list had, so
+lookup and teardown stay equivalent.  Newly created pools are published
+into the array before they become current, so zswap_total_pages() can
+observe an empty pool briefly; that is harmless.  This also caps the
+number of live pools at ZSWAP_MAX_POOLS (16), which is plenty in
+practice; pool creation warns and fails if the array ever fills, and the
+limit can be raised.
 
-Patch 1 is the list -> array conversion.  Patch 2 is the per-entry
-shrink.  Looking for feedback on whether this is the right shape before
-sending a non-RFC version.
-
-Benchmark (x86_64, compressor=lzo, MADV_PAGEOUT store + fault-in load):
-
-  - zswap_entry object_size: 56 -> 48 bytes
-  - e2e store+load median latency: no measurable regression vs baseline
-    at matched stored_delta
-
-The extra cost per store/free/decompress is one array-index load instead
-of a pointer dereference.  With a single (or few) live pool(s) that does
-not show up against (de)compression.
-
-Changes from RFC v1:
-  - Drop the allocating xarray; use a fixed array of 16 pools indexed by
-    a u8, as suggested by Nhat and Yosry.
-  - Drop the zswap_pools list and the per-pool list_head; the array
-    carries stable slot numbers for entries, and a separate RCU pointer
-    tracks the current pool.
-  - Document the new pool-count cap; fail/warn when the array is full.
-  - Clear the array slot in __zswap_pool_empty() before scheduling the
-    release work (equivalent to the old list_del_rcu()), then
-    synchronize_rcu() before free.
-  - Use rcu_assign_pointer() / rcu_dereference*() for slot and current-
-    pool publish/load.  Entry lookup uses rcu_dereference_protected()
-    because a live entry already pins its pool.
-  - Add NULL checks on the resolved pool in free/decompress.
-
-Link: https://lore.kernel.org/all/20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com/
-
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 ---
-Jianyue Wu (2):
-      mm/zswap: replace the zswap_pools list with a fixed pools array
-      mm/zswap: reference the pool by index to shrink struct zswap_entry
+ mm/zswap.c | 88 +++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 67 insertions(+), 21 deletions(-)
 
- mm/zswap.c | 119 ++++++++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 91 insertions(+), 28 deletions(-)
----
-base-commit: 2ed26e8a624f41887d64e2e37a2f6ab36a118d1f
-change-id: 20260731-shrink_zswap_entry_v2-0-0-76ac3af12ec4
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 4e76a4a87cdc..b203934d3be8 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -154,12 +154,20 @@ struct zswap_pool {
+ 	struct zs_pool *zs_pool;
+ 	struct crypto_acomp_ctx __percpu *acomp_ctx;
+ 	struct percpu_ref ref;
+-	struct list_head list;
+ 	struct work_struct release_work;
+ 	struct hlist_node node;
++	u8 idx;
+ 	char tfm_name[CRYPTO_MAX_ALG_NAME];
+ };
+ 
++#define ZSWAP_MAX_POOLS 16
++static struct zswap_pool __rcu *zswap_pools[ZSWAP_MAX_POOLS];
++/*
++ * The current pool (NULL if none): an alias of one zswap_pools[] slot.  It
++ * always holds a ref, so it is never retired from under us.
++ */
++static struct zswap_pool __rcu *zswap_current_pool;
++
+ /* Global LRU lists shared by all zswap pools. */
+ static struct list_lru zswap_list_lru;
+ 
+@@ -200,9 +208,7 @@ struct zswap_entry {
+ static struct xarray *zswap_trees[MAX_SWAPFILES];
+ static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+ 
+-/* RCU-protected iteration */
+-static LIST_HEAD(zswap_pools);
+-/* protects zswap_pools list modification */
++/* protects the zswap_pools array and zswap_current_pool */
+ static DEFINE_SPINLOCK(zswap_pools_lock);
+ /* pool counter to provide unique names to zsmalloc */
+ static atomic_t zswap_pools_count = ATOMIC_INIT(0);
+@@ -270,6 +276,25 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
+ 	acomp_ctx->buffer = NULL;
+ }
+ 
++static int zswap_pool_reserve_slot(struct zswap_pool *pool)
++{
++	int i, ret = -ENOSPC;
++
++	spin_lock_bh(&zswap_pools_lock);
++	for (i = 0; i < ZSWAP_MAX_POOLS; i++) {
++		if (!rcu_access_pointer(zswap_pools[i])) {
++			/* Set idx before publishing so readers never see it stale. */
++			pool->idx = i;
++			rcu_assign_pointer(zswap_pools[i], pool);
++			ret = i;
++			break;
++		}
++	}
++	spin_unlock_bh(&zswap_pools_lock);
++
++	return ret;
++}
++
+ static struct zswap_pool *zswap_pool_create(char *compressor)
+ {
+ 	struct zswap_pool *pool;
+@@ -313,19 +338,27 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+ 	if (ret)
+ 		goto cpuhp_add_fail;
+ 
+-	/* being the current pool takes 1 ref; this func expects the
+-	 * caller to always add the new pool as the current pool
++	/*
++	 * After a successful create, the caller makes this the current pool.
++	 * If the caller fails, it kills the ref to free the reserved slot.
+ 	 */
+ 	ret = percpu_ref_init(&pool->ref, __zswap_pool_empty,
+ 			      PERCPU_REF_ALLOW_REINIT, GFP_KERNEL);
+ 	if (ret)
+ 		goto ref_fail;
+-	INIT_LIST_HEAD(&pool->list);
++
++	ret = zswap_pool_reserve_slot(pool);
++	if (ret < 0) {
++		pr_err("cannot create more than %d pools\n", ZSWAP_MAX_POOLS);
++		goto slot_fail;
++	}
+ 
+ 	zswap_pool_debug("created", pool);
+ 
+ 	return pool;
+ 
++slot_fail:
++	percpu_ref_exit(&pool->ref);
+ ref_fail:
+ 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
+ 
+@@ -388,7 +421,7 @@ static void __zswap_pool_release(struct work_struct *work)
+ 	WARN_ON(!percpu_ref_is_zero(&pool->ref));
+ 	percpu_ref_exit(&pool->ref);
+ 
+-	/* pool is now off zswap_pools list and has no references. */
++	/* Slot cleared in __zswap_pool_empty(); synchronize_rcu() drained readers. */
+ 	zswap_pool_destroy(pool);
+ }
+ 
+@@ -404,7 +437,11 @@ static void __zswap_pool_empty(struct percpu_ref *ref)
+ 
+ 	WARN_ON(pool == zswap_pool_current());
+ 
+-	list_del_rcu(&pool->list);
++	/*
++	 * Clear the slot before scheduling the release so new readers cannot
++	 * see it; __zswap_pool_release()'s synchronize_rcu() drains the rest.
++	 */
++	rcu_assign_pointer(zswap_pools[pool->idx], NULL);
+ 
+ 	INIT_WORK(&pool->release_work, __zswap_pool_release);
+ 	schedule_work(&pool->release_work);
+@@ -435,7 +472,8 @@ static struct zswap_pool *__zswap_pool_current(void)
+ {
+ 	struct zswap_pool *pool;
+ 
+-	pool = list_first_or_null_rcu(&zswap_pools, typeof(*pool), list);
++	pool = rcu_dereference_check(zswap_current_pool,
++				     lockdep_is_held(&zswap_pools_lock));
+ 	WARN_ONCE(!pool && zswap_has_pool,
+ 		  "%s: no page storage pool!\n", __func__);
+ 
+@@ -468,11 +506,14 @@ static struct zswap_pool *zswap_pool_current_get(void)
+ static struct zswap_pool *zswap_pool_find_get(char *compressor)
+ {
+ 	struct zswap_pool *pool;
++	int i;
+ 
+ 	assert_spin_locked(&zswap_pools_lock);
+ 
+-	list_for_each_entry_rcu(pool, &zswap_pools, list) {
+-		if (strcmp(pool->tfm_name, compressor))
++	for (i = 0; i < ZSWAP_MAX_POOLS; i++) {
++		pool = rcu_dereference_protected(zswap_pools[i],
++					lockdep_is_held(&zswap_pools_lock));
++		if (!pool || strcmp(pool->tfm_name, compressor))
+ 			continue;
+ 		/* if we can't get it, it's about to be destroyed */
+ 		if (!zswap_pool_tryget(pool))
+@@ -497,10 +538,14 @@ unsigned long zswap_total_pages(void)
+ {
+ 	struct zswap_pool *pool;
+ 	unsigned long total = 0;
++	int i;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(pool, &zswap_pools, list)
+-		total += zs_get_total_pages(pool->zs_pool);
++	for (i = 0; i < ZSWAP_MAX_POOLS; i++) {
++		pool = rcu_dereference(zswap_pools[i]);
++		if (pool)
++			total += zs_get_total_pages(pool->zs_pool);
++	}
+ 	rcu_read_unlock();
+ 
+ 	return total;
+@@ -562,7 +607,6 @@ static int zswap_compressor_param_set(const char *val, const struct kernel_param
+ 	if (pool) {
+ 		zswap_pool_debug("using existing", pool);
+ 		WARN_ON(pool == zswap_pool_current());
+-		list_del_rcu(&pool->list);
+ 	}
+ 
+ 	spin_unlock_bh(&zswap_pools_lock);
+@@ -589,16 +633,15 @@ static int zswap_compressor_param_set(const char *val, const struct kernel_param
+ 	spin_lock_bh(&zswap_pools_lock);
+ 
+ 	if (!ret) {
++		/* The new pool becomes current; drop the ref of the old one. */
+ 		put_pool = zswap_pool_current();
+-		list_add_rcu(&pool->list, &zswap_pools);
++		rcu_assign_pointer(zswap_current_pool, pool);
+ 		zswap_has_pool = true;
+ 	} else if (pool) {
+ 		/*
+-		 * Add the possibly pre-existing pool to the end of the pools
+-		 * list; if it's new (and empty) then it'll be removed and
+-		 * destroyed by the put after we drop the lock
++		 * Not current; drop the ref below.  This frees a new pool
++		 * (and its slot), or decommissions a reused one (slot kept).
+ 		 */
+-		list_add_tail_rcu(&pool->list, &zswap_pools);
+ 		put_pool = pool;
+ 	}
+ 
+@@ -1763,6 +1806,9 @@ static int zswap_setup(void)
+ 	struct zswap_pool *pool;
+ 	int ret;
+ 
++	/* Slot indices are stored in a u8 (pool->idx). */
++	BUILD_BUG_ON(ZSWAP_MAX_POOLS - 1 > U8_MAX);
++
+ 	zswap_entry_cache = KMEM_CACHE(zswap_entry, 0);
+ 	if (!zswap_entry_cache) {
+ 		pr_err("entry cache creation failed\n");
+@@ -1793,7 +1839,7 @@ static int zswap_setup(void)
+ 	pool = __zswap_pool_create_fallback();
+ 	if (pool) {
+ 		pr_info("loaded using pool %s\n", pool->tfm_name);
+-		list_add(&pool->list, &zswap_pools);
++		rcu_assign_pointer(zswap_current_pool, pool);
+ 		zswap_has_pool = true;
+ 		static_branch_enable(&zswap_ever_enabled);
+ 	} else {
 
-Best regards,
 -- 
-Jianyue Wu <wujianyue000@gmail.com>
+2.43.0
 
 
