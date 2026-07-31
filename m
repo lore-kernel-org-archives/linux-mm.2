@@ -4,131 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5873FC55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:57:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE802C55172
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 22:10:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720146B009D; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
+	id DF0576B0096; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D1026B009F; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
+	id DA15A6B0098; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C0D36B00A0; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
+	id CBA3F6B0099; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B1666B009D
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3A55160198
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:57:11 +0000 (UTC)
-X-FDA: 85050433062.18.DD34389
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DB3DBC000B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:57:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lm48D4pC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of loganodell@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=loganodell@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785535029;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 956BE6B0096
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05AE51A01BE
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 22:10:33 +0000 (UTC)
+X-FDA: 85050466746.02.0466B8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4DBA380006
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 22:10:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgtmVEXM;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785535831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
-	b=53+pr1rCnTUF5W/PqnFTg7welSG8LZmC/6R2XMYJuMoHYUEinge4b5vLzC3pRnhXZCckyM
-	Z2A0Q0pOToBzG5zIhisRTDba+MCpnisDcvZvxSXjVmobNRA19JpJzmHXXyHbLHa+nOJK4X
-	tmn6H8f7wWhXddPlGbVNbXeTFDxZAFM=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lm48D4pC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of loganodell@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=loganodell@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785535029;
-	b=4J2Yb4uQi82IBrD/ErxUueOK8RL8Cj1b5sr+vLtbXigPg9AF45IObQOk7oJwUo5SOz/gqc
-	JWZwS9n40LcaEjcpMYmYn4PeD/46LQjFL+8Rx+0sWoXmBRo4lVcLJ5r6dZFLIyXHUm9L/m
-	d5eYVqOrJzburWUTQNyqnsHW/NMvkSQ=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c10e86e52so22921cf.1
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:57:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785535029; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MNZZKmu9GC8TmPDdIR31orTH+5L1dBXzwGyL1ny8aDnaMG9cd0sCyS0jbACVIUEMhd
-         zkQ2s+1f94L36CNC+Cu6/+9e4eZ8Lf1fcEey9laQWWUu/e2bEFQQKfubuxgzGRApQfuP
-         +r5ONOqaCtW5PGLq4aGBtCTHt/XRifPO0dY5VFL82qonoKarv+BuNV9lgM4DmNarmkvL
-         mU/lNANRSJKtWqTMg0w8CiEW0nHj0KtJ7c3GFIBL0nVRZSSsu0tYOOzrW7spRDlTID6Q
-         /X5MREfTKTi6ntaFoYnVTcMWQlvoUB96b+4UpZCwJagBmKE21nDCRIqu2WueXARS0N90
-         zxYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
-        fh=m5silSSXO2bP0zPfDnICsrYtYiNM4P9ZPLGDxZfbSeY=;
-        b=nQ3q3TUPKAFbRyWe1DvLE4RwvaxUyEy2FzVOYeRO6lNyYwPodhIktlckgitvVMNFZ5
-         P1OGNlfSIBvTXi0byjm8ejd1EQZc0Ee7OKqMKiNDCukeJ0w0e+CZalLVMXTClwGgQyAr
-         5eDa4Sl9LsLbzFj60guAYH+NH+p4PWaOIX93ENqzty97/7xsVWHEtzx4CzNQQV0LLHR8
-         OmrZTw06WX9Y1d0jwLRSicb4Jp3uwKYhkKth48ADQlyqkQmtjUkjKvKnAZ/GxB4OIu7C
-         bp4GJeHI8KdjTF3ILUUe3Zi+FdVz2ttOHOG1MxdLm7pEq7IuXlPxsLKXqJHwrqTBxfwR
-         q4dQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785535029; x=1786139829; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
-        b=lm48D4pCbHoNcsgB5jBR5aoOg0WOqxDXPmEHAwuAif3GtacplTuJebeQLVwMqFFKqg
-         hE551TSHBPAoo8y/qSvcrrP9KO8oUMDh+A7yy3cMP0pfPzcAY6mIA8NDePSwgODzR6oR
-         tNVpmnuNPM3lPe0M2NhS1f6EjK0QSpYiKbAqjKjYTIo3nAnlE53DWUe+xb7MrFKyZ1A6
-         vVAuc5ieeoW8orpNcTobMei664OfhGMq35gyC25e0IQGuVuCN40pGNA/pQkuCBYKlCeU
-         n2BVxc9NQjcNgz40LLpZi/US/6DDkj+popnw3/XLB8uP+n75ErXaB6UAeLsi02wEEuwK
-         8KsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785535029; x=1786139829;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
-        b=TZpT7lXOQI+mxxFEO8zzLflKixlJGXvWnyoqZ+mV3zmvXLgTx9dn6Q09DVjElVitMW
-         C9HRugQvP+VovjrJIS2psr0YEo4oUs/XvKFWLBVlH94YSwae/w9YY/AFlg6mGuG/sTDB
-         gYsMstfDcPFlWtOiHHOCs77RHZa81dct71UWfwn8c2irIKwwJL/rW2LB5nR2I5xYNIT8
-         FnPMhdtxFF/HGdfhFt/r1n2cCbHz8VnBiRYMXAkSP5OOuy3njzGeXeLH3aUWucU7PSKW
-         KeuQMHb7IdYjFfcs0K3qH8eiU1z6SUnp6K+aGybLRCUwkRtFRIWM7Kq5GOPoKkBkQgZb
-         m66Q==
-X-Forwarded-Encrypted: i=1; AHgh+RryrJp970FyRp9eGOtrk1SCgfC0db4P0Vsb+S/Q+mpGSCYD8bMPjTPlWE9l9dKyOCGCFEzqeUX4pw==@kvack.org
-X-Gm-Message-State: AOJu0YxT8H8mwuuDyWaiW72/xTzMJKmASSF2eMPXGyHi+DF3kBmfVvB8
-	EizXySuAJNUchb9KpoEBvQD8EuoNXqedyRwAajlUhQGztUEdJjyVq1Fil/zbxEtqtG88mJgTj8V
-	GiTPfogNLxT4WPeC8LScbvDfEWeYD15NycLBhc6kS
-X-Gm-Gg: AR+sD11PxdIzc/6W7caKS9/unYkBc7TPF5ItlYjGS5f9YyIFe4Bu6jqNmiKqxVtMCeu
-	U5MSREKWyl/o+2tLQm1LX7btCe7cC0XziZLYAUpakcCDr3XkcqqKsYjREXecmIvznjJWKryI++y
-	ra+G3n7zk3dJ4Ppyd491LqKlGpVlvWBggeNzIVLaXXHBX+KN2ycSJLvNK0tGL1h3UhTmmZp9pKx
-	zEaNKmBMQkN8w2m3bpoQIqDsKINBeLVoLqJuslp6BiSMcqU/mozzdof/pJDYpJvH2AETOWOLP2T
-	tRAPo/xKHASVTTZwqa06jh3BRG+5ffMacoLNUU7YAf9fVMs+6oaWfxDs
-X-Received: by 2002:a05:622a:146:b0:528:3186:5799 with SMTP id
- d75a77b69052e-52b599f9d70mr2420011cf.10.1785535028074; Fri, 31 Jul 2026
- 14:57:08 -0700 (PDT)
+	bh=KcMHynopxq0LB8O3aiZw02VpzCo3iMp78znRKkfrp3w=;
+	b=3L3LV9XhQFHq5kZtTbEyMsg0pSrCXHE4c5gNrHjJi9TXdydaorCL2z04XA7KwS/1oYE+bp
+	k7WIqwib+68AtBMlwf/Uz9RxBvkGH/wNR1rWWKX1ZOm1H1XjS59RxWcP5112VS/cKkTjeD
+	bU67JoHs4ecPOwd9Q95+XB6ej6Rhekk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785535831;
+	b=vaRsJqFkZtIgV2q8FiNH7uLRkZB1huZqu//4PQQ3xHQtoDCt8o5a+WSkDNt1JvU8tdujUj
+	6XCqo9l4PGq1MABQ0zHwxCAq9FmlEprY89giKCnu8bSuGWQ55B2wGf360r1ZekYJ3kptKU
+	6iXf8K8WIbspTcwq3i5D2DzyC6r4jI0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgtmVEXM;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8539E406FB;
+	Fri, 31 Jul 2026 22:10:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701381F00ACF;
+	Fri, 31 Jul 2026 22:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785535829;
+	bh=KcMHynopxq0LB8O3aiZw02VpzCo3iMp78znRKkfrp3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SgtmVEXMK+BaM0dDhNotsFBU1VNhPZ/5ykE3Gou3coxHECMuyL0PwNTOMkWSJ+eos
+	 ttqAFupqL1YevTA8JWZ1LdUYx09hwpFTjKg6odUNrzXnUuGGnfZe/jcT0ftoOrQWWk
+	 NC/HHmeoV1H+SU0ZzDGwPDDcico8eKzwfpTFqVSIJSAe7ayrSuUaIwcwHLEc58zifl
+	 pLOMRPpUiWTD0FdUwOD7qLD9qkhj+fbbQXaOODFBHzW0Z1sIdeaBy0+s0a5bH6YMve
+	 VYvBCt8UN4Bai7CfvxLY3gh0ZFquzAmbwVoWcH8c/weg0aVgYsM3EJIU7ZRImkUpuN
+	 H4oJtNNK8ztQA==
+Date: Fri, 31 Jul 2026 22:10:27 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v3 04/26] x86/mm: split out preallocate_sub_pgd()
+Message-ID: <am0aplxsh1b16Rch@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
 MIME-Version: 1.0
-References: <20260731215224.831696-1-loganodell@google.com>
-In-Reply-To: <20260731215224.831696-1-loganodell@google.com>
-From: Logan Odell <loganodell@google.com>
-Date: Fri, 31 Jul 2026 14:56:54 -0700
-X-Gm-Features: AUfX_mxJRt1iOFKSShrQWgDygozw0xoPdaXn5TQE46g46AolJdxphvahs4sLuLw
-Message-ID: <CAD14LL9jt+g=tWwT1N5s-OrzuWeWz1TvCQLbCqTRZOi4UuEG_g@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] Add support for multiple versions to KHO
-To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
-Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000176b0b0657ef45bf"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB3DBC000B
-X-Rspamd-Server: rspam01
-X-Stat-Signature: spquzjfsxt4wzda8cd4o6nx4rjcbx9g5
-X-HE-Tag: 1785535029-968095
-X-HE-Meta: U2FsdGVkX19i9RJvTXJ8QyKSpt2+rkit8BtolZWbfmTDHSDc8jTU5Cqa6Ld1UvaPizAyur7kOCV0rFMDXIWt289WZSmaWtiJF4pEE+YgIbeuwg7MCKuC4epsr7VzD7sOmz+aP50K9hpTdMvlALiv5heJcBoVQdVQ++i3xrJ/4fxdTvCzbJI10VKkqGwvOV9NfJnt/GYHEXSOfhKqNO5BRVblz7XO6PyzJWfRvJzHICTGfmucxRmX7OU/0DsCJFtXXkTGfTUq4JR6MC0bah+8qXzV4WOqnVZbHtH7P2KofJm86xJ5C6DNc8ed0PaCPRoelKWGELtiHJgBb1y6zyJDAh9Ps7FxciIg0i5VsYrBoViRCShji1DZBs95NdfjasopU8IOD9syqxbarVGRk+x/vEIc8i3niWGE6MigxEogwnQtDuot3DTtWRl8vwPe7EEZ5B2eP4Z7vL+4LrYPipKi7chjgxqtFcZ5TXT9xkW6XajJdYwPlQ5v25912ypbs2t4KeuVYib1Oc05NDkUBmboz0AOApxiUWwi5Cr9uJnL+kkl36FFieZ6SRzxszAE3seltPlgsEDZgcri230AX4trdixHMLve7sWrjhhhaW+Q2VkmtBJ1vJjn7Oy/6eew5C5vnfwyQJ0FidrZBxcP+8fW1G5B0AYLhjicATDLmkibUrrAbLrGb9AihDvzmlzw7jD/BUIzreZ0VuxoG4BOrFpby2zMkMOQdDRcrReo3HLtQ3hSe5ydzMaNXOwVIVaqagZQ+NEGRIHF5stxs2T5A42I+tV5T4qtXJ2j+3EXh0BjPiWb20UNlG8pl98ixZ3z5vwURyyFk0J+vBf14xt1HMenCQqlrjHT3DYu8TZNF3S3SB9PebtcRKXCPQpnqyYnPyH/HRxW1rPElq084eaTZtFKpss3eVawuaJmrOHvN4cp2qm8xyPTitaSH8Fy7eYE49gVF6iIdbjQkeUd2cW5ViV
- YnxkLtiX
- IbV9xFyMht35wOWhPru9tbJsMysfAuRncctlllyBgAZkU90vee9ugZSv+fT+BD7sXDQwRyztoN6vjE82/UP1zeJps2Lf0YYIE2d2WDdooDSF09BJMqtOi3N/Mu2/A1imWrc0jom0PJt5zVjSx1IegGc7jiX/YRQCoQiuA6+JOM723vnY+kYrSCfO+YdAM4oE2i2AM3RR0goc180dwExJjpiiuCoF+a9t4ilufdJgM1gt650N9LUFhuXBnCKHgWPc3TeCWtdd2Uy20AL88+L7HXQU0nFgjdaIiPQKmeo7KAmm9TyC6505bPrj5UMdD+3z2QBmyt41eRUnYjUvCczjzeXFqr05YYv7m4dVScF7WMmhxi3w=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4DBA380006
+X-Stat-Signature: niowz9srqg9k66dch55aqwn8nimcdj8s
+X-HE-Tag: 1785535831-738188
+X-HE-Meta: U2FsdGVkX1/AXZEVLGexa5NZn0JLCjpjM9jM+K3M72SnoVRufpxOaWCtZfl/vhihMbzGTiFJIyWb1MJFcsaMsscaPXxB2wZ2VIdsEJZgf9SHk9aP2h8UoG694GXPU94Srod6FKaLhLHEPpFysWEcObFiC6pJ8lwAOV9BTb2bXE2EYVJ/5xY0cDiU4cMTKS0qJIby0WnbK6ln3N/MVKaUfD4n5hZM4SgLzJSnS1h1V93gevgb9g/Lpue8SFhBxXBIrfZUsL5I8OnL5saNcDeRifaW9nTvvEP+Xo82fzzp5XtlHjPnb7E3kEvTSH2fPEe31NfjXe4pQftrDShFNL9XT+NrpIkFfZoVPtva21FN7TNuCUPCueC9LaXJv2UkZaZdNCzf2wqG4SKHzJShxa04zs4HEDR79po4CyBxVbhuLO4VgeMq9EQg6rIc0Wf+S1WjldanncY2vGFKJTEl4Gh4PYl9M78g2y2mFzmJ25pyISqFEeWdruusck0oId9p4TDozw4NkYePl8jkpz0Zkc3q43ooUPxG6UUT5mlzh2InG8XjOaXdddTySda1zwaB3vYDnQ3syhSaOrao9XG3lJyPnmN9GRy6omgSmzHVh3qnmvsFIJj6cXTHlCzzZ9M3c14ajO3gbeo6sobXIcC5zxYW3X7jF2VOx7PR29x4VjQeXxYyiKJrdRufVdkpkrGPamLtK5LtqmMmTgD060RZqNqtQWgrYXqMdr1STLq0W9JG0mB6SVvRoqiD9bOYJBK3MD1Jmx0hwypZStuB8gZAcr1JgEdqKsjqDikGeBaG03OooOMZngeEhLgtF686XRih2bPt2t+GIt0u8NqlbSiezMPCgxeD61FXSQ1F4jqmOPURJjVpEDy8Dko5hBcFPpNd9mzlnVk2iXubmJxSJo+AkowjWg5ncykoXXvPqPNilKKHmSEBl3V6Jn0HrXKAGRd6SZv0jc6bF8etoJExiM7v4/p
+ lN6KAr//
+ JhXOmpYQ2bvrjSMjeX5HrsdtNHPfWQmNtNyfFxmuJpq+urFWu5Np0Yd80YiW7kXEwtXKNt+FbMxDAkO1WizKNTXvhjGW23z6yczdhskRewxNbt4MgFXeQbADGNbWFpOAZJTYGB8nYiDTPJWRLHHH4OyO3PFRB8iJUYXsxPj42i6kvfxOJk1OtiNWpWBC2/vmRECqIZewKjM1M9yxOZ28ouwgPe5315qepaI1XMVMDrPO09c6scS1q54qw24cLv2eFAN7s1taR2uh1HZhCvOdYr3a5OIwb7dfdPW7Sw+UdDMGQiCi+a0ik42K1+eSofmPJWWfVNRdyo/pKUvfobPdkvIf1Pw4yAOWpmOauZP8tydiWDJU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,188 +100,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000176b0b0657ef45bf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Sun, Jul 26, 2026 at 10:22:37PM +0000, Brendan Jackman wrote:
+> This code will be needed elsewhere in a following patch. Split out the
+> trivial code move for easy review.
+> 
+> As a side effect, change the logging slightly: instead of directly
+> reporting the level of the failure in panic(), show a generic panic
+> message, will be preceded by a separate warn that reports the level of
+> the failure. This is a simple way to have this helper suit the needs of
+> its new user as well as the existing one.
+> 
+> Other than logging, no functional change intended.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  arch/x86/include/asm/pgalloc.h |  3 +++
+>  arch/x86/mm/init_64.c          | 44 +++++++-----------------------------------
+>  arch/x86/mm/pgtable.c          | 38 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 48 insertions(+), 37 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+> index c88691b15f3c6..2aba6cfabf495 100644
+> --- a/arch/x86/include/asm/pgalloc.h
+> +++ b/arch/x86/include/asm/pgalloc.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _ASM_X86_PGALLOC_H
+>  #define _ASM_X86_PGALLOC_H
+>  
+> +#include <linux/printk.h>
+>  #include <linux/threads.h>
+>  #include <linux/mm.h>		/* for struct page */
+>  #include <linux/pagemap.h>
+> @@ -128,6 +129,8 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
+>  	___pud_free_tlb(tlb, pud);
+>  }
+>  
+> +extern int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr);
+> +
 
-0/2 is a typo, should be 0/4 :-)
+Do we need extern here?
 
-On Fri, Jul 31, 2026 at 2:53=E2=80=AFPM Logan Odell <loganodell@google.com>=
- wrote:
+>  #if CONFIG_PGTABLE_LEVELS > 4
+>  static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+>  {
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index ab4c5a02326f7..ac6688c70872e 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1293,46 +1293,16 @@ static struct kcore_list kcore_vsyscall;
+>  static void __init preallocate_vmalloc_pages(void)
+>  {
+>  	unsigned long addr;
+> -	const char *lvl;
+>  
+>  	for (addr = VMALLOC_START; addr <= VMEMORY_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
+> -		pgd_t *pgd = pgd_offset_k(addr);
+> -		p4d_t *p4d;
+> -		pud_t *pud;
+> -
+> -		lvl = "p4d";
+> -		p4d = p4d_alloc(&init_mm, pgd, addr);
+> -		if (!p4d)
+> -			goto failed;
+> -
+> -		if (pgtable_l5_enabled())
+> -			continue;
+> -
+> -		/*
+> -		 * The goal here is to allocate all possibly required
+> -		 * hardware page tables pointed to by the top hardware
+> -		 * level.
+> -		 *
+> -		 * On 4-level systems, the P4D layer is folded away and
+> -		 * the above code does no preallocation.  Below, go down
+> -		 * to the pud _software_ level to ensure the second
+> -		 * hardware level is allocated on 4-level systems too.
+> -		 */
+> -		lvl = "pud";
+> -		pud = pud_alloc(&init_mm, p4d, addr);
+> -		if (!pud)
+> -			goto failed;
+> +		if (preallocate_sub_pgd(&init_mm, addr)) {
+> +			/*
+> +			 * The pages have to be there now or they will be
+> +			 * missing in process page-tables later.
+> +			 */
+> +			panic("Failed to pre-allocate pagetables for vmalloc area\n");
+> +		}
 
-> The format of the preserved-data blob that LUO saves to KHO is expected
-> to change as new features are added, bugs are fixed, etc. Currently,
-> LUO handles this by embedding a compatibility string into struct luo_ser
-> which can be used to compare two kernels. This works if the changes
-> between kernels are fundamentally incompatible. In a case where a new
-> feature is added, we may want to support both versions in the new
-> kernel to retain compatibility.
->
-> This series adds a KHO interface to embed multiple versions under a
-> single node in a subtree.
->
-> We go from something like:
->
->        / (Root Node)
->        =E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent Node)
->            =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
->            =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo>
->
-> To something like this:
->
->        / (Root Node)
->        =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
->            =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
->            =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0x=
-phys_luo_v1>
->            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_=
-luo_v1>
->            =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
->                =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo=
-_v2>
->                =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
->
-> We can also support mixed mode, allowing backwards compatibility in case
-> of a roll-back to a pre-multi version kernel:
->
->        / (Root Node)
->        =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
->            =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
->            =E2=94=9C=E2=94=80=E2=94=80 blob-size =3D <0xphys_luo>
->            =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
->            =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0x=
-phys_luo_v1>
->            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_=
-luo_v1>
->            =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
->                =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo=
-_v2>
->                =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
->
-> The first patch moves some common functionality for preserving a node
-> into a separate function. The second patch adds our new APIs. The third
-> patch adds support for multiple versions to the debugfs entries. The
-> forth patch adds new test cases to test_kho.
->
-> Logan Odell (4):
->   kho: Move subtree blob logic to separate function
->   kho: Add support for multiple versions in subtrees
->   kho: Add support for multiple versions to debugfs
->   kho: Add test cases for versioned subtrees
->
->  include/linux/kexec_handover.h             |  14 ++
->  include/linux/kho/abi/kexec_handover.h     |  16 ++
->  kernel/liveupdate/kexec_handover.c         | 234 +++++++++++++++++-
->  kernel/liveupdate/kexec_handover_debugfs.c |  57 ++++-
->  lib/test_kho.c                             | 266 +++++++++++++++++++--
->  5 files changed, 540 insertions(+), 47 deletions(-)
->
-> --
-> 2.55.0.508.g3f0d502094-goog
->
->
+Nit: We can probably move this comment above the if block, and drop the
+curly braces:
 
---000000000000176b0b0657ef45bf
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+		/*
+		 * The pages have to be there now or they will be missing in
+		 * process page-tables later.
+		 */
+		 if (preallocate_sub_pgd(&init_mm, addr))
+		 	panic("Failed to pre-allocate pagetables for vmalloc area\n");
 
-<div dir=3D"ltr">0/2 is a typo, should be 0/4 :-)</div><br><div class=3D"gm=
-ail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On F=
-ri, Jul 31, 2026 at 2:53=E2=80=AFPM Logan Odell &lt;<a href=3D"mailto:logan=
-odell@google.com">loganodell@google.com</a>&gt; wrote:<br></div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">The format of the preserved-data blo=
-b that LUO saves to KHO is expected<br>
-to change as new features are added, bugs are fixed, etc. Currently,<br>
-LUO handles this by embedding a compatibility string into struct luo_ser<br=
->
-which can be used to compare two kernels. This works if the changes<br>
-between kernels are fundamentally incompatible. In a case where a new<br>
-feature is added, we may want to support both versions in the new<br>
-kernel to retain compatibility.<br>
-<br>
-This series adds a KHO interface to embed multiple versions under a<br>
-single node in a subtree. <br>
-<br>
-We go from something like:<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent N=
-ode)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 preser=
-ved-data =3D &lt;0xphys_luo&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 blob-s=
-ize =3D &lt;0xsize_luo&gt;<br>
-<br>
-To something like this:<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Paren=
-t Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 1 (Ver=
-sion 1 Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=9C=E2=
-=94=80=E2=94=80 preserved-data =3D &lt;0xphys_luo_v1&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=94=E2=
-=94=80=E2=94=80 blob-size =3D &lt;0xsize_luo_v1&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 2 (Ver=
-sion 2 Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=
-=E2=94=80 preserved-data =3D &lt;0xphys_luo_v2&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=
-=E2=94=80 blob-size =3D &lt;0xsize_luo_v2&gt;<br>
-<br>
-We can also support mixed mode, allowing backwards compatibility in case<br=
->
-of a roll-back to a pre-multi version kernel:<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Paren=
-t Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 preser=
-ved-data =3D &lt;0xphys_luo&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 blob-s=
-ize =3D &lt;0xphys_luo&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 1 (Ver=
-sion 1 Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=9C=E2=
-=94=80=E2=94=80 preserved-data =3D &lt;0xphys_luo_v1&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=94=E2=
-=94=80=E2=94=80 blob-size =3D &lt;0xsize_luo_v1&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 2 (Ver=
-sion 2 Node)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=
-=E2=94=80 preserved-data =3D &lt;0xphys_luo_v2&gt;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=
-=E2=94=80 blob-size =3D &lt;0xsize_luo_v2&gt;<br>
-<br>
-The first patch moves some common functionality for preserving a node<br>
-into a separate function. The second patch adds our new APIs. The third<br>
-patch adds support for multiple versions to the debugfs entries. The<br>
-forth patch adds new test cases to test_kho.<br>
-<br>
-Logan Odell (4):<br>
-=C2=A0 kho: Move subtree blob logic to separate function<br>
-=C2=A0 kho: Add support for multiple versions in subtrees<br>
-=C2=A0 kho: Add support for multiple versions to debugfs<br>
-=C2=A0 kho: Add test cases for versioned subtrees<br>
-<br>
-=C2=A0include/linux/kexec_handover.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0|=C2=A0 14 ++<br>
-=C2=A0include/linux/kho/abi/kexec_handover.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 16 =
-++<br>
-=C2=A0kernel/liveupdate/kexec_handover.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
- 234 +++++++++++++++++-<br>
-=C2=A0kernel/liveupdate/kexec_handover_debugfs.c |=C2=A0 57 ++++-<br>
-=C2=A0lib/test_kho.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 266 +++++++++++++++++++-=
--<br>
-=C2=A05 files changed, 540 insertions(+), 47 deletions(-)<br>
-<br>
--- <br>
-2.55.0.508.g3f0d502094-goog<br>
-<br>
-</blockquote></div>
+>  	}
+> -
+> -	return;
+> -
+> -failed:
+> -
+> -	/*
+> -	 * The pages have to be there now or they will be missing in
+> -	 * process page-tables later.
+> -	 */
+> -	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
+>  }
+>  
+>  void __init arch_mm_preinit(void)
+> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> index f32facdb30354..fdd3709509946 100644
+> --- a/arch/x86/mm/pgtable.c
+> +++ b/arch/x86/mm/pgtable.c
+> @@ -833,3 +833,41 @@ void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
+>  	/* See note in arch_check_zapped_pte() */
+>  	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
+>  }
+> +
+> +#if CONFIG_PGTABLE_LEVELS > 3
+> +/*
+> + * Allocate all possibly required hardware page tables pointed to ths
 
---000000000000176b0b0657ef45bf--
+								     ^the
+
+> + * top hardware level. In other words, allocate a p4d on 5-level or a
+
+   					  allocate p4ds?
+> + * pud on 4-level.
+
+      puds?
+
+> + */
+> +int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr)
+> +{
+> +	const char *lvl;
+
+Nit:
+
+	const char *lvl = "p4d";
+
+or:
+
+	const char *lvl = pgtable_l5_enabled() ? "p4d" : "pud";
+
+But I am wondering how important this information is here?
+
+We should be able to tell whether 5-level paging is enabled based on
+kernel config and command line. If the information is generally not easy
+to get, maybe logging it during boot would generally be useful?
+
+Anyway, if we drop lvl here we can drop the gotos, which would be nice.
+
+> +	p4d_t *p4d;
+> +	pud_t *pud;
+> +
+> +	lvl = "p4d";
+> +	p4d = p4d_alloc(mm, pgd_offset_pgd(mm->pgd, addr), addr);
+> +	if (!p4d)
+> +		goto failed;
+> +
+> +	if (pgtable_l5_enabled())
+> +		return 0;
+> +
+> +	/*
+> +	 * On 4-level systems, the P4D layer is folded away and
+> +	 * the above code does no preallocation.  Below, go down
+> +	 * to the pud _software_ level to ensure the second
+> +	 * hardware level is allocated on 4-level systems too.
+> +	 */
+> +	lvl = "pud";
+> +	pud = pud_alloc(mm, p4d, addr);
+> +	if (!pud)
+> +		goto failed;
+> +	return 0;
+> +
+> +failed:
+> +	pr_warn_ratelimited("Failed to preallocate %s\n", lvl);
+
+Can this possibly fire more than once? IIUC we will panic right after
+returning.
+
+> +	return -ENOMEM;
+> +}
+> +#endif
+> 
+> -- 
+> 2.54.0
+> 
 
