@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0734DC5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA27C5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:09:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F7F76B00A1; Fri, 31 Jul 2026 16:08:24 -0400 (EDT)
+	id 124196B00A2; Fri, 31 Jul 2026 16:08:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CC766B00A2; Fri, 31 Jul 2026 16:08:24 -0400 (EDT)
+	id 0D5516B00A4; Fri, 31 Jul 2026 16:08:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 394226B00A3; Fri, 31 Jul 2026 16:08:24 -0400 (EDT)
+	id F40E86B00A2; Fri, 31 Jul 2026 16:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E1C36B00A1
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 62B231C0094
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:23 +0000 (UTC)
-X-FDA: 85050158886.23.0770526
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D052C6B00A2
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 589E2A012B
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:26 +0000 (UTC)
+X-FDA: 85050159012.20.7D036FE
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DD56140008
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sbzhydkM;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id D8F138000E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fw+l9rno;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785528504;
+	b=stNDjHIaIVFD42N03GaJW8l3uAae576YVmwKpzr5apckJZPCtZIe+b976dxfBF15nmmB/I
+	g60/PJDFUG9Fw6tSnA7Hxf+2Nd8auBz7WzTYxMMPOUDrP01S6Dh4FBftxWuNgFhx2dVcCO
+	3U3HgbvfoOKHtOLfapFRBF+TxRZpovQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fw+l9rno;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785528501;
+	s=arc-20220608; t=1785528504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ouvowIcM8jLtrmPgXBz2U3nMcb3XnRPv2XSwdzDzMKk=;
-	b=ws0sdskvEKe67qgjdzMCcQOhxvJxMI+qg+v3/w2D4DA/fgKb4pTAre55/r32FsymZ3JtfY
-	ZxO6QDJ8wKBHKSelePrQl7lb0+kDoljhUZ/o43gu3avgOZnjZ4Prff9HsmWCcP7DWE+YEV
-	dxlS/WuDaErQljXNudJsUM5+KjiIzK8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sbzhydkM;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785528501;
-	b=sv/jttWAcgjEsx1MX3fn+bCOGb7QW6ER9O1I1DidzEavei4wCmZ+IO56pbvqadnJsoqEge
-	DtfgTY/BB6KgI+wRlS5xLeVMktWfn47JMqToju/wNTFLcT/AY4utqlQsz0U7e2jIvYKtGS
-	4b2LWIfaXvGd9qA05dkZ50hjnFFLZwM=
+	bh=hIzJYRQZPpHEWuu6W/AISPT7gNqOr/DEAar1Fg4H3OU=;
+	b=2s4jUkFMU1CuerQuK3e+v34jdGbPHkWVLotMyCcrnUUYQU5Ja+NTbb0HGyzneNPrHo20ld
+	2iw0ywdm715HuhSmulOV9gT3TnmajUy57hVEl7b7COXh5kIHxKTiax8gcflxzTkfhpoeUk
+	6aIamHtB82glGU/JbEGgjdB95afxqP4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=ouvowIcM8jLtrmPgXBz2U3nMcb3XnRPv2XSwdzDzMKk=; b=sbzhydkMA/qQS9B/BefM2m8Eri
-	oNaM2GVM3KoXp5QH4bmZSG+z3NqDS9wU4sSj6dMXpHJmvdLDajX4S+J/xBr8NoXtNwkC2Q1UPkDyd
-	AIRkO4UsXA7bu6vihFc2mIRgck4Mm96RjqvpBZJAOmvn/rq5tGFvBlHGfxMPxNlwm7cvwfz7HQPiW
-	oEs0gxs7Cm6iUFSlAyaVi6JWIC3ssTeTqKGRCZlZkXvpyH4jVo60IMiJnGoyiviz6KA+Zc0uRFISz
-	0cN0VUmmrYkjwan22HQbwFd5ylyXre46jXrv8A1UQe0CH0vvWb4zheY6aPq0Li/TEwB5CR+UhkZIW
-	WC0qGZjg==;
+	bh=hIzJYRQZPpHEWuu6W/AISPT7gNqOr/DEAar1Fg4H3OU=; b=fw+l9rnokR1JrAunKCwKK1qypD
+	NpXEnItcaTxMD173aSHPmeiQ61ukkYe54RoPsTvAi5kpxWIid8y2voyY+4+/BHGBg99YfqUfpjQ1T
+	9m/Bm4GoEcWLPS5Uwvw7k3uySov3aKmF47uhHd8S4mc9dcMRqB1qWJP1UgivEhJy/N0gdKMxYCyrT
+	NMy0L2lWu030gifCcfxDfUxgH/ej5mlYVHWhLwfJnsxTfAT+EOS6lCs5xZkDOWwjKGb4L3XiUb3iQ
+	orWTKu8guUAGqN0ZJpgfUU4xoulahiz3Qn+cOIw76rNpRs1T4Rs+btzo7dsheWUeb7BX7cSScMgez
+	fxwpO7Ng==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wptWX-00000002Pnj-2Jy3;
-	Fri, 31 Jul 2026 20:08:05 +0000
+	id 1wptWW-00000002Pfr-11Ya;
+	Fri, 31 Jul 2026 20:08:04 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -74,23 +74,25 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: [PATCH v8 12/15] filemap: Remove checks in mapping_set_folio_order_range()
-Date: Fri, 31 Jul 2026 21:07:57 +0100
-Message-ID: <20260731200802.574821-13-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Gregory Price <gourry@gourry.net>
+Subject: [PATCH v8 03/15] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+Date: Fri, 31 Jul 2026 21:07:48 +0100
+Message-ID: <20260731200802.574821-4-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260731200802.574821-1-willy@infradead.org>
 References: <20260731200802.574821-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D8F138000E
+X-Stat-Signature: xrj1feea9pwtwyiycxpubh5egcf1dfpq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DD56140008
-X-Stat-Signature: gjgwayfsyygbxuthq3x9b1q7auh458or
-X-HE-Tag: 1785528501-179379
-X-HE-Meta: U2FsdGVkX1+UK6x9DB3z99HWGkIPy8jK4+8BkY5GZ+35gTVM0toHInXeMXBBBlpNjol+2tlAy3CqTL/basklvWy4iASzKpHMqK2XjNrVDi0E+OYbq/4q6PoSc8kzZnj4S7dJNfiB8cuDvxM9/rekqGidsFTQmtwKlIVYnwZKbrbCSQu+rBaXx1rpqZJ5V6uyh5i7f8LSuzu82lI8UwXOlL0hyf8j0q6b4qRDK73N8C0ufYiMjYhlJTEMCkgAshmbIL/9Wo+Y6IMUNTafoDRW2SbGzhQvjfo1BkDfZE4YuneJpXEluk/nw7bl0Pt8FnivdPC3vgGXBQRBSPtX0Z/aE/rUs+0oD1XP1h6f6xuKRYutW7UnRRehkluQ5/pInzoiZcETZapJ68fl58jZNvll6Tf73H3Jzev9nKdgtWjJQxASDTry2shRbT/xQf27OrxVNVPG6ByImi50cc7HW5JeQj5C/+uPxNt6t8Y2DBopvhX5msozP8O4siNbVR/3AF9EEDNQimYC/shueaP/noQmpG19n7TSjlXEdDo5r63Y7AHzCCflzdk7de9BDp8v2EGdvXgYtyHnjDgn2zgbjmR2jmQPKXzRC+DZjqgoHtQz68hYHh0Rd+BwnnCniyEYwGnlFV84tU218MQjtIE87GLdgAPfeRllQtnH6xgoZmeCLvrc/+3OQnHeZ3c/keXGB8cHu3k9RWx77grFWI5RaQn4o9lm/mBwKBWncOgY3ec4tTOGXcZjz6RLn66qtx0lrHu1qCS2/fbMu6Eu0LKKgJ/8nEmZKhZRnMTONPRh+Qt5xU1v8jeZI4+u+SD/9P1K6BMdaYzNp0CUTaJ1amDp60gDurPGcNCH/DP9C9uojlJI8Hi04UfxNfiJWmxs5uBb5LpekTczDctOVmwCi70ZNfb+heLHuhip959cTpBWeeq06bVUP+CfgHSEEiALu4a9ntaFsLQqP20witMYD9s1cfC
- YP6SFdE3
- e4RT0CNaCq9bhxtthSi9goLmJqyuNpiP70KTCkzjJSoY1SqKKO5TrNenuLRSPEh/9nD/7742RjtHpgIwa9U5xgpgnGKWy+MHKxgu69n/9uJss5TL1p7+J1/PVXDmjGU0MaCqUl+0zAYqm8TSfV58OnIfmUiBiptiAdDvNnaesHs7EtLt2oI3hwTf8qKrR0tazC5qY6kRfIaAb+WibcuTc9p90UNI2w0IWid6v0X0gIJPqhXqfr6g8l9e0heqp8wSjVqDzFZWDb9+sK8rMlYdGCjIFDnvlzZzNrCF6TzqiRWUkXHDSFzGl9H/DCTxtpCOT5/UkPXtS5ny4GxpuxNHBtnHyOK0h5LcS4eIZCkM+RHSnh+zFGsny5oMJxEkRGRFj0Gk3
+X-HE-Tag: 1785528504-982283
+X-HE-Meta: U2FsdGVkX1+DyEAp+/rh6GGBwowNXcAIss0NB23ozhbbsl4NsJ+Fej0jQDK50hugHY2+EFsp96tKfsc6Hnia+fnzS8+0kTEGtxzzEyTctpdm5hyKxyrPn+EDHifXcbNYlgSU9eKYNvL4K7PKsBkkLTV3ltSjC2NaLLef79gxPtlTESef2FDrWOtpyeOzkqe8KKs7sJlvcU/u0bo9/XfmcSI8x7+c5oslkBfF3+xZvotMMWdjNWU44c82DQn6lCJfRTXPh1+8JZnFsudGqazHvqVZVGsMGM38srtXCNZYsC/uLNtxkNXekR+lx7xwwsFQtSS5rZ/cjivoz9spfA80AiW1AV6AEqijNLUKi5qHu7sor36hogcY3YxKSmUqx5Ib7bxD9aHF0OVq5fgyQ/95lwAgyPG2Gkt/0iXHcVWv621KtL9eACvjox+pg72/RbotN52fYbCkMo+sG4qeLHsGxMgqV6Uja1ywVqQmhoK7aRbyKg2PwbyCoZ0pXFKU7eOBEEhgyWJFuk9V4HxXimnX0rncVgg6HsDnlb4wguHSAdohilnjtQpNtS8lUhvexNy7gDS4jvmalhCkF2sr/wtbAURXxKl1j3wEbGOmNqjet099nqcZOnMQFGKzCtDm+zu3VciL4R1RXE2taXmRSRRrvTYgaxEmcrdhXNd83YVgWltkbV86aDNNWSj5V3UzlfyOzRFilnb2aDkCDy0jUc3b1DEQRxZChjahGvQ9LhbFrF5sAv0WTGfdjwK2lqGoG23Kem4Mv2Pa/WmtsY9WmNlS9rCmEH7flFnBuyvuEbwIWENmhieDBkHQq4LdxDuuPwyLxCME9t2t5g4+GFoPb4i5xkzTmyEHoX11b9Ejpa2scxr00+kLuAtwQD5DOYE9HUkE53gkdFulZSbt3Sn5wylxUP+gSfmi0SnVYHoJTnibDo93dFV1HCW9KSQQ7x/xmsnc9nqadEiG6S/kOWJbptj
+ vBxcJC9H
+ kS6mgnbLaMsx6DwPGXG8+fo5/7d0SCtx1wpVSGe6kjsKGKNiUfGcZyZpoS+cqYEIUEwDK/y7yKabLnWt6NF2AnJJ10ZW98xp4frgOFMZJPZaP7HfEpy2jokEmsijN+evSrzfQAPGo/Uwz/x1YWi4xafoMitXOOUQnRdrR3En8Fop7xEpuuLzRuNfUw12bFZYnmQVJPdVXhUK7EcY+s4Jd9EyAOyhlc67qQ9FgTSo29hjYoVY6Qm4meDfRxzbmA25mdXZ9iwlr9CJqmUvC7o4OVyEC3hCnOB8cwJWdXj050YEWq///3n3ELhZrkb9cbMb48fGVifq3r9hqEl9su7JvgbbSMd28WWcAENG+uoC7UL/toVkk5/W4hbOHCe4VxEa1zE7swW4s78DwohhHGHK1qYqtvSOzm7zzvvSwgWk1abRdqmfF3PBm7a8RVx11UR0oOKIdPgOdRUXMYq/5B6e3Ydgq08pCVFF+4g/kECSY0CgQafy7PTkDVxzTzXiLQ0Ns0rZ3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,102 +100,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These checks make it impossible to use mapping_set_folio_order_range()
-in hugetlb.  They add very little value and can simply be removed.
+This is a better name for this predicate.  Also make the argument const
+to allow other callers to be made const.  No functional change.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
 ---
- include/linux/pagemap.h | 34 ++++++++++++++--------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+ include/linux/page-flags.h | 4 ++--
+ mm/huge_memory.c           | 2 +-
+ mm/memory_hotplug.c        | 2 +-
+ mm/shmem.c                 | 2 +-
+ mm/vmscan.c                | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 2c3718d592d6..968b791cfd14 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -373,7 +373,7 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
-  * assumptions about maximum order if THP are disabled, but 8 seems like
-  * a good order (that's 1MB if you're using 4kB pages)
-  */
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#ifdef CONFIG_LARGE_FOLIO
- #define PREFERRED_MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
- #else
- #define PREFERRED_MAX_PAGECACHE_ORDER	8
-@@ -394,7 +394,7 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
-  */
- static inline size_t mapping_max_folio_size_supported(void)
- {
--	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-+	if (IS_ENABLED(CONFIG_LARGE_FOLIO))
- 		return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
- 	return PAGE_SIZE;
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7223f6f4e2b4..4185a03a45cf 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -1083,10 +1083,10 @@ static inline bool is_page_hwpoison(const struct page *page)
+ 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
  }
-@@ -405,29 +405,23 @@ static inline size_t mapping_max_folio_size_supported(void)
-  * @min: Minimum folio order (between 0-MAX_PAGECACHE_ORDER inclusive).
-  * @max: Maximum folio order (between @min-MAX_PAGECACHE_ORDER inclusive).
-  *
-- * The filesystem should call this function in its inode constructor to
-- * indicate which base size (min) and maximum size (max) of folio the VFS
-- * can use to cache the contents of the file.  This should only be used
-- * if the filesystem needs special handling of folio sizes (ie there is
-- * something the core cannot know).
-+ * The filesystem should call this function in its inode constructor
-+ * to indicate which size folios can be used to cache the contents of
-+ * the inode.  This should only be used if the filesystem needs special
-+ * handling of folio sizes (ie there is something the core cannot know).
-  * Do not tune it based on, eg, i_size.
-  *
-+ * hugetlb calls this with orders larger than MAX_PAGECACHE_ORDER.
-+ * Normal filesystems should not do this.
-+ *
-  * Context: This should not be called while the inode is active as it
-  * is non-atomic.
-  */
- static inline void mapping_set_folio_order_range(struct address_space *mapping,
--						 unsigned int min,
--						 unsigned int max)
-+		unsigned int min, unsigned int max)
- {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-+	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
- 		return;
--
--	if (min > MAX_PAGECACHE_ORDER)
--		min = MAX_PAGECACHE_ORDER;
--
--	if (max > MAX_PAGECACHE_ORDER)
--		max = MAX_PAGECACHE_ORDER;
--
- 	if (max < min)
- 		max = min;
  
-@@ -460,7 +454,7 @@ static inline void mapping_set_large_folios(struct address_space *mapping)
- static inline unsigned int
- mapping_max_folio_order(const struct address_space *mapping)
+-static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
++static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
  {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-+	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
- 		return 0;
- 	return (mapping->flags & AS_FOLIO_ORDER_MAX_MASK) >> AS_FOLIO_ORDER_MAX;
+ 	return folio_test_hwpoison(folio) ||
+-	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
++	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
  }
-@@ -468,7 +462,7 @@ mapping_max_folio_order(const struct address_space *mapping)
- static inline unsigned int
- mapping_min_folio_order(const struct address_space *mapping)
- {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-+	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
- 		return 0;
- 	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
- }
-@@ -524,7 +518,7 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
-  *
-  * Return: True if PMD-sized folios are supported, otherwise false.
-  */
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#ifdef CONFIG_LARGE_FOLIO
- static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
- {
- 	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
+ 
+ bool is_free_buddy_page(const struct page *page);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..353340309107 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4413,7 +4413,7 @@ static bool thp_underused(struct folio *folio)
+ 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+ 		return false;
+ 
+-	if (folio_contain_hwpoisoned_page(folio))
++	if (folio_has_hwpoisoned_page(folio))
+ 		return false;
+ 
+ 	for (i = 0; i < folio_nr_pages(folio); i++) {
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 7ac19fab2263..33007e8e546a 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1813,7 +1813,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 		if (folio_test_large(folio))
+ 			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
+ 
+-		if (folio_contain_hwpoisoned_page(folio)) {
++		if (folio_has_hwpoisoned_page(folio)) {
+ 			/*
+ 			 * unmap_poisoned_folio() cannot handle large folios
+ 			 * in all cases yet.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..492c9bef3620 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3240,7 +3240,7 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (folio_contain_hwpoisoned_page(folio)) {
++	if (folio_has_hwpoisoned_page(folio)) {
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		return -EIO;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..70e54ace0e74 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1086,7 +1086,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		if (!folio_trylock(folio))
+ 			goto keep;
+ 
+-		if (folio_contain_hwpoisoned_page(folio)) {
++		if (folio_has_hwpoisoned_page(folio)) {
+ 			/*
+ 			 * unmap_poisoned_folio() can't handle large
+ 			 * folio, just skip it. memory_failure() will
 -- 
 2.47.3
 
