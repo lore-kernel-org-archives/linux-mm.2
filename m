@@ -4,86 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B7EBC5516D
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C68C5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A9926B0095; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 7A4356B00A2; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 580CC6B00A3; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 77C306B00A3; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 472066B00A4; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+	id 66A436B00A5; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FEEB6B0095
+	by kanga.kvack.org (Postfix) with ESMTP id 2B1686B00A2
 	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 565E016049A
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:05:51 +0000 (UTC)
-X-FDA: 85049698902.23.7F357E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 89EFA160007
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:05:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zVujV1G3;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1681F16048A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:26:34 +0000 (UTC)
+X-FDA: 85049599908.30.90B3793
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6DEDC1C000C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:26:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="JFeWexf/";
+	spf=pass (imf20.hostedemail.com: domain of 3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785517549;
+	s=arc-20220608; t=1785515192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TqAIK+llZBMk6DlijQEEYbjFZ2sn7l7HVlve64fFpcs=;
-	b=UId80zXkrNfVnkiF4I/JDBo4Vc1PNjREo5/MvCl7I9BUcQdEhtP9ib60KDvQ0CHBqSxxGl
-	s2UQB4nPjvTpRRAKjMXupS9yU5pB6PClX4yIMjVTzO90PCIkfdUcI48chRblMWU/4Et6KA
-	/J8DRi2dUzyMNsSmS26qEsz+x83F4j4=
+	bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
+	b=BdLeV7tINGxlLJA+HPzcUCyd5t5M6IV2WX3e1oH+lzVd7lGy46sxEq8meF/YJdGQCSDjT2
+	tfSuTMUBd0XXlljsDvM6yRmppuecRq6HCbvifvibu8zj7I24R/iBqiKI1Xulw+oNkVc+JR
+	Lx7pgRYxpKZCHiZk+u6IgfnUMaFW8CI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785517549;
-	b=1AZFxW90N5i3w33MXA9CQ7wevZ9esAgA9GNodZasamKMF4xVZbRQzbwRG5IHLAy1tl6dYd
-	sO8eyb3ygiq8P4AouO7JfHNlONlrRSjs4jpTJI7LMDIX2qNnmijJrG+R0S8gE98MXt/xVW
-	8DTjxykvJnnR06pCLHzDsCP7j9aw1BE=
+	t=1785515192;
+	b=b9DZ8iXuDTfEirrBBCpmL2Sj5HxHx/GhiLsV7bvj1PKMGEuleyeBbhF9SYQn/2uui5IXFm
+	l6esuKezjRQ20klTOwq9NmMG1QSxxeBRDyXgVhIJIhFZZFuAFTTQJkCsnkhn3vF/H1dbCf
+	iHiihnBcoLnmEcl/1qM5oTwKiHf8orw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zVujV1G3;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A23EA43AA0;
-	Fri, 31 Jul 2026 17:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF181F00AC4;
-	Fri, 31 Jul 2026 17:05:48 +0000 (UTC)
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="JFeWexf/";
+	spf=pass (imf20.hostedemail.com: domain of 3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsxsagYKCF0N95IE7BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cea6a46766so19162375ad.0
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785517548;
-	bh=TqAIK+llZBMk6DlijQEEYbjFZ2sn7l7HVlve64fFpcs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=zVujV1G3bpuLx1untn6LC0L9LnhqML06gKvGHzDFq18UN9eR7GgjyoAguD19cc8kZ
-	 w6Rs2pbBM9fYleHB8kup7z8qs2wQsHguFHll5/h6WikcKjh2PYftCazKsU/Jxj3L3c
-	 h4wyrn4d3HRM1CAiNQTKyoPCQ5IVH3rZlQmVn5Ck=
-Date: Fri, 31 Jul 2026 10:05:47 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: David Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, mm-commits@vger.kernel.org, Stanislav Kinsburskii
- <skinsburskii@gmail.com>
-Subject: Re: [akpm-mm:mm-new] BUILD SUCCESS WITH UNVERIFIED WARNING
- 0c39e2f552f5e16be695cec3a1c77d6a6bf086bb
-Message-Id: <20260731100547.57414d6c37e65f08eb52ef04@linux-foundation.org>
-In-Reply-To: <202607312212.u1pPx1f6-lkp@intel.com>
-References: <202607312212.u1pPx1f6-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1785515191; x=1786119991; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
+        b=JFeWexf/OBsBvfuvSeW9RNKIUCV/CdVZMttEco9jbpyZdIdM3L1/QU7y6KpPftQoGM
+         bFQKPuViLpmQNwsmYGsJFsZGeg7R6m7XuI2Tn3EfYBonUBBCpZtXPHfHshhAt2VJU01w
+         NfQK6IZO6zzvOe1NblE8CidpwJlkfUoV64SCMokJsitpoK/iN5NeKl+9X9nDCxyBfB3k
+         ViDszDaBFszJqdZlMIe6ET30HRdK4lf+BnZ3c+LNzwLVrmh73CXvXSWLzc1PcqLFDPWR
+         Z6jjV3EzHqTxZEYvKCubH6QUktpL2Obljhh6gk67aWJVt1Sbv4WldIFF+4VLeXrUPZ/d
+         Kk3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785515191; x=1786119991;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ICGNWuPesT/hzVX75ShCk7Kt8oQvWLyQi/M5mp0efms=;
+        b=oTbefxpYwXeKJIhSTakFFs26BxdqcsdK48u+UBrDvm5Mkwh9DSfekwHcr7zCgR1fVB
+         VMFKxtZzGNVrO29o8ww0+RdACgVbI1k1Txm01jmgjUsGKI8jT3iQkzdXJQx8E0gSn2zX
+         MakRDVP5rHoK67/XMe32KHdyy7FuZAOdtz1uybBU/b2VyDd7a03JXRPQAcfzqigJ4Lh0
+         rb5HLwX2UY4z0amhB5yEccaCTKRb5h7WL76Ddr+fI9TAiUAip+Osrm61b5PJiTcpCykr
+         edjeLW8NtcHIRslXPS+hIkWcDEuKwubqQqd7rGHP1QFxHg2/96KlvGeMtbfb6Q6WHNGq
+         zRYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrMS5OlvF6qYXr5TWHE/8JyvnbyCrB9sEvVYOqU+50LfkSuLPCxi6ZVPn5D1ZI9D3eQImPrNSMiHw==@kvack.org
+X-Gm-Message-State: AOJu0YyKq20U4FFPYi4FBdM0RP8qi+bM1ZicSkTgD492VF/78IWE00gV
+	NEnK4hpmyJCW3/dMfCu7hPd1bSTemu17sDdZzPVb90it8yY/Ozz+TuHUJVU28XR61FY7KOgTanb
+	k1gvq1Q==
+X-Received: from plhi11.prod.google.com ([2002:a17:903:2ecb:b0:2cc:5fd1:2d93])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b8e:b0:2ce:b096:e517
+ with SMTP id d9443c01a7336-2d0521cda4dmr6567475ad.5.1785515190881; Fri, 31
+ Jul 2026 09:26:30 -0700 (PDT)
+Date: Fri, 31 Jul 2026 09:26:30 -0700
+In-Reply-To: <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
+ <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
+ <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
+Message-ID: <amzMtg4K6qEEsudx@google.com>
+Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 6DEDC1C000C
+X-Stat-Signature: k1dshgxh9n37y3iymtmj3maxs99mxpwg
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 89EFA160007
-X-Stat-Signature: 97dxiye87yz9cx1t9ok6ot69t5tc4n3a
-X-HE-Tag: 1785517549-97655
-X-HE-Meta: U2FsdGVkX19F1IyrRgKUxYyf7ahkzsAPl9NNs6J++dgiBgh56yt1CDbYuBJBJ4Qb6iNKdmKFVy4Pn3PCs1AYarBM1pdtK7b7kDNKWVwBXV35mzMQSvcbUH5GZBwtB781IZtRDwXaH5s8ksF42wqxq//vfd2i6Uuo4cwY2Zyhq/N4X4UCZgePJeJfrbmPRKNZvku1gsS5nNfhrlScJ/Yl2831unTh0YAzjCrykL0NwyWfM9RwA/i/OaJacfOrVV1iqfC+CinwIYP3GdwDzpbHN0uvn9lbrV6EBbOmjmcMhPrQSu3mYUlfqMVSqAugWz+O5xk1bNSJZBAMmeZy0KBhVlO2UH574c6GcRJAwYCi7zQp+H4NiVhup0Pp/mCL1SCryHio7iEZoaFKiXnvyAB6k2HtW6Z5aGXp6EbZH8ZjXcld+fk7oN0b9NHDxQXQ0j4UMd7RzWN6hAyNPrTbS8xGDkFKS/qqCqhE7ax924Vpq72f12EdbKq/0ujOBgEfao3aquFTIfV38QXOwkFuHAxVbuapkdRkgR6GUwfAdSVq24wYtMkzN8LnZSvsTeh0hlhjj1pLxGo3Et3R78DLm2zehb5cRG4d7T3XC0uOEKp2/EUV5tE+eMGE+Bt/EVBQAYmjZkpEiDB1V8tKIvkfZ02EOg0BBpkh1zDL7ubWHMlgHg5cxi9UcOPV80poKmcPKOovcaE/qS6WOdtWCFHeOGeIBMDjhXNq6RI5WTkUWj98NVd2Vk76oWFxOaKdJqVDyCw7ggGDZ8GRy3mD8BFOikpsajYq9FWAaCjnJ04VRqfXd9k5mfYQR7c1zX8I9iiUEIhh3d6m5dyd2l8S3x5CbPjadSoFmPOuQwMg5XcnX3Bq0dZHS7QpxbR/i+WXTncQydew8mVbYTdv2azNGFnxJ0sfjkPdhstF+yhB4ovV646MpX4ebZz1UixZ8yvmkr9JgS8SBx4E9/S2EvGcrbJgQhD
- BCu17TSR
- kQddZBwny79DuqcwAJFgg46wdaC3UyjyIfYJ8YzGKH5pAhMLEy0NXgjvTH77p4+mavqGcPamUS9AhwMCV+bNr80mrGPBbj0bMoBJD0lyAgnRQCVMBPSphK4phhvpGuw2UCz4RwQO2qyBURxHAWfdoIme0x3v+7arnhS+Zmz5UTUG3zOvJSWGthXnoUrOI5KdZeuez2WlHg0de+mQgltnsDyIhpX9GK4yFadDXRekzk+Y55rjkcwO4UaJbmmqj0MZQ8AV3l80yge+WfrO38Ej3sB+MZOvYA+BAPZzRJ3wTLjJYYm39myRTc4+rdJODufHUXRUy
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785515192-456271
+X-HE-Meta: U2FsdGVkX180+qtMY8N53UZNfanVE32x/GD56EMmSEHhLJC8F5zTm/ZBji9g2I32Yk1XnP/Z4jeG4bEXoFpr0VlloroKnPEMSGVmPOUqsVxvjGrzeCNz2CgjuJikANar+GNntTjE89QujelpJ4WDSo6yYTE3JdihKqCLNqLYPFf+9YUzF6eDqredHnntjU1M+jzUf6+TLbLNXNfBjlIcai8Q5BvXESnGKIlPICh79aD0ZBpW7CvbsYwwJiKaADqRFo5YZONF+WOv2PdcCr0yM9W2Rjj6kPOkEGWZiwfsfkcbU0xiuRc5h4sDtsxQDcommdgrKN9Zs3JwojXfAinePywVCDeXkFkF4emRUlJMoVWpWxFTu+fFSwfnLWO1T1B2PnTNIdN0MzkSx4MzydiLN4hJfYksaUO5c//5dXU81IclgVdjj4mNDycCeauhadrFOal6vOLgrzhde5ksInC5W+xZodOw8iPcUU3rkPPehFlUYJZG5c/qrVe1rKrbSeg0QR0YZ44aFY7bwTz8a3UGGzvuFXf2ORYVBBolu4A9tNyPWXRQ0+Pk3cGBjL1rxNMuvRH//GXhnXUnlCyxLIJ8/SSBFzIvuK2P78CdSVeY9TyTEkZJqIxF5/pZ6ir6ecwzOBY8XNtOOfUguDQlMJ9zMzL4dSMa6cp9x68BP0b2NNJR99zDcQjjPwV6CcxzQ2lC7RNpyOUdMo+vc5TQgn/1HeY+8F+Al0IYGcC7tozQKH4CXs/EvAwcgyonVWmXeQMDSlNfr5BD3sC2uGrEWt2Su1ezcAhRspOFWuFKPJDY+kq76t1bZRHq62igT94HJVOYiWmsR6avqJEg2YKV3N7nrkrbudA9PKG6n3O/wIKTbkhXlO4oZUCgEERVtPBC8i+cmjG6P8DrVfr6H+VIltaZIUz5bpPLrcwX6mncCqvgo5csW4x3pJUQ6K9HWua+fp4JEtFsIoHA7e9cmjPAZZw
+ Btx8LO5v
+ aTP+NQUTo9pKEc6CHzfIKJWzTxSlpJnvAOHqAGWWMVEniXO/S7jByH6Ytn/LIlbzJZnhYlUVZaNGsOXZMzZx9VmuHnt17cQVokzIag+OKgpvlCdkzK9LVKma1RzNB8kAgmGnyCYudsWwXzZDdT1NjOX50/sD8dF3wmHcFXzVvA67JfQEv+FTEIT1mDdmU2kVrq8cvIhl08JTjpdD8JDBvupoNwR2/4EkyVg1H8rqSmLd90XAfBkzckTvDdFpImstxs6juqnGtbH6fbF4MuQEyGbfq0kCzbIzqsYPzxo6XZ6HlPAfuhMFycbt5HNo3j7A9XjPXLo/i15NhSV1211wxqIIe8QDXSXZI75ulcHzOEG4SbWMPrufP8RyMoe48/4dsSfuATCjrqhfbj2+hyYgB+W1NPGvA8+uPa0VFaqfibkezLMHynGzHziOFSxJFCVa1DHTcRCcLHWl39tIZl2Yel1he/yoDWpvS3PIZake/fgFk2zwq4BqbpYc6Bk/PYQMSLwgH8/QRtkr5GYHPEHy/OJzsEOAR8s66nefa/smdkbU+gMqrghMngb7SHuYzq46p8JKNU8jMHaWgl/Ywkhp0KeHeX/TDX9/mdOjUIFa3ypHFq1c3wkEn0lzJ85AnnQjwv/nffkvnWA+jn5qSIXZVvmc4TAYFkBciOIE0Vs6Yz8SNrUuhbJUy0p82AAOcms8uNZ0B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,26 +137,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 22:31:38 +0800 kernel test robot <lkp@intel.com> wrote:
-
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> branch HEAD: 0c39e2f552f5e16be695cec3a1c77d6a6bf086bb  mm/swap, PM: hibernate: atomically replace hibernation pin
+On Fri, Jul 31, 2026, Xiaoyao Li wrote:
+> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
+> > Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> > 
+> > > On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
+> > > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > > > index 33c9830190e2e..89cf922232920 100644
+> > > > --- a/virt/kvm/guest_memfd.c
+> > > > +++ b/virt/kvm/guest_memfd.c
+> > > > @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > >    EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> > > > 
+> > > >    #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> > > > +static bool kvm_range_is_private(struct file *file, pgoff_t index,
+> > > > +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+> > > > +{
+> > > > +	struct inode *inode = file_inode(file);
+> > > > +	pgoff_t last = index + nr_pages - 1;
+> > > > +	struct maple_tree *mt;
+> > > > +	void *entry;
+> > > > +
+> > > > +	if (!gmem_in_place_conversion)
+> > > > +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> > > > +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> > > > +
+> > > > +	mt = &GMEM_I(inode)->attributes;
+> > > > +	mt_for_each(mt, entry, index, last) {
+> > > > +		if (kvm_gmem_interpret_entry(inode, entry) !=
+> > > > +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
+> > > > +			return false;
+> > > > +	}
+> > > > +	return true;
+> > > > +}
+> > > > 
+> > > >    static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > >    				struct file *file, gfn_t gfn, struct page *src_page,
+> > > > @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > > 
+> > > >    	folio_unlock(folio);
+> > > > 
+> > > > -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
+> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> > > > -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> > > > +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
+> > > 
+> > > It's checking if a single gfn is private.
+> > > 
+> > 
+> > But with huge page support we'd need to check a range of gfns... I guess
+> > there's the argument of not keeping complexity for the future, but in
+> > this case it's undoing functionality for this series and probably adding
+> > it back later.
 > 
-> Unverified Warning (likely false positive, kindly check if interested):
+> let's leave the work for huge page support in the future.
+
+It's not just for hugepage support, the core functionality is used in this series
+by __kvm_gmem_set_attributes() in:
+
+  KVM: guest_memfd: Return early if range already has requested attributes
+
+> > > We can just use kvm_mem_is_private()? And it seems can be a separate patch.
+> > > 
+> > 
+> > Do you mean that this refactoring could be a separate patch? I could
+> > refactor out kvm_range_is_private() in a separate patch, then put in the
+> > mt_for_each() check in this patch together as part of all the rest of
+> > the "wiring".
+> > 
+> > I considered that but it seemed like the refactoring was too small to
+> > separate out into another patch when the mt_for_each() part is going to
+> > be in this patch anyway.
+> > 
+> > Or, I could add an earlier patch to first replace the call to
+> > kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
+> > then this wiring patch would be simpler.
+> > 
 > 
->     https://lore.kernel.org/oe-kbuild/202607120402.clBrrZQA-lkp@intel.com
+> This is what I meant. An earlier patch to just replace
+> kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we can
+> drop this 'big' diff in this patch.
 > 
->     mm/hmm.c:673 hmm_do_fault() error: we previously assumed 'hmm_vma_walk->locked' could be null (see line 654)
+> If kvm_range_is_private() is useful/required by huge page support, then let
+> the huge page series to introduce it. It has nothing to do with the in-place
+> conversion series.
 
-Thanks, due to "mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap
-lock-drop support".  I think we've looked at this previously.
-
-+	if (hmm_vma_walk->locked)
-+		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
-
-...
-
-+			*hmm_vma_walk->locked = false;
-
-Stanislav, can you please take a look?
+If it weren't for the fact that the range-based search is used later in this
+series, I would 100% agree with Xiaoyao.  But since the core logic is used and
+needed elsewhere, and because kvm_range_has_vm_memory_attributes() takes a range,
+my vote is to provide the plumbing now, even though a small portion of it isn't
+strictly necessary.
 
