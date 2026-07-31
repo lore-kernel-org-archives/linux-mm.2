@@ -4,137 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87097C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C3DC55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A4B36B0088; Fri, 31 Jul 2026 17:48:56 -0400 (EDT)
+	id 767626B008A; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255446B008A; Fri, 31 Jul 2026 17:48:56 -0400 (EDT)
+	id 7179F6B008C; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1473A6B008C; Fri, 31 Jul 2026 17:48:56 -0400 (EDT)
+	id 62DC66B0092; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D90F46B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:48:55 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3A29B6B008A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54B6B12016C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:48:55 +0000 (UTC)
-X-FDA: 85050412230.08.A3EF335
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6160AC0007
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:48:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7Mfp9Fp;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785534533;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B7F24120167
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:23 +0000 (UTC)
+X-FDA: 85050423486.08.E62B8AD
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 114D22000A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vEL3ZEur;
+	spf=pass (imf03.hostedemail.com: domain of 3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785534802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+6NJaceoftQlu3V+oVLti0xg4HHs7NkT1GiDbWZAPSg=;
-	b=e3JEY3wpDP2JzH/3rUnq03IMP5OLbJknqM8NB7hzLmZajjlGGKD8PcNIUqgUgC32LcqF09
-	qIlM+JInTiMmjPXidVREO7jMkpiFzcWM/6z6BTEigAL4yiz5xVp+HmIMpm4te0ddis+WwN
-	2sSDujaY8VpD02YkRYg0zi2YeolnebM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785534533;
-	b=mE41Qs/L8XE8kqaz7KVF1Go/DRRd2E2K2pC8hSs2NPmRWQJNXnVGC50RFdMsNzoImHgyf6
-	1Mc2awQPCcWzK0aCvt8bccQzz9jceYgZLIOQp6FD5hJ8yT9NNIl4NVlEPnVAk4pY2IwdY4
-	Z9uJqLuyTpLHyjSlHsQwBkK2VnFSLlM=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7Mfp9Fp;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c15a5b265so88031cf.0
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:48:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785534532; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GWSoUCCuJe8SMf+iuAr6G4VwdCQnY0277P4VAmUYV0UYMlIifUxPiJ+/ObRJtfi4Qg
-         NXmhr0FydM7l+5g+JN50xXN0LHuoG+NklhiJ9zg8dwO6Zp5Fmf5QQ7mfl0o8f/fZxOdP
-         I7kSD2Ne1v29ldPrkIVO+mdtaZOZSXeJ0bxEJjQQ/iPgy5AD7OP58SpPT+CT8kdFEU04
-         CzJg3nIR2Xr766UUAPtTRGwkGdwOxhn8uYAMRZOAbMdaepHG+XBt3OqELKnDIYAqENum
-         Xmij1LUPS9HdM4uaL5wmH69QrPAnNnzNPK26kK472GoKrUA7vM5YAhL/npr20275RGk8
-         y8Gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+6NJaceoftQlu3V+oVLti0xg4HHs7NkT1GiDbWZAPSg=;
-        fh=vOlaChF/4VruNzPnFo+w0bF2vxLUDlm4NBR9z4Iryns=;
-        b=LXQzJTvdz7HWdH6p/Xv4RqiBkXzUuwUkuNaSEhrK3oAJoESum9BAJWBY5xvSEdYwxK
-         3oROX2HWTyt6eYZAedLb+4gsVG2SaqMuuibyEOVySqwrESoTfGuMwKWn2mHQUZXbPzx8
-         H8WZhCuwt7ObRALi+Kgv7Z/DU93ckM9Mx1/7q8nz9yaS1AxE7b2UnmmlvZzpj/eS29G3
-         eQXGdBPSQKJ9OF+SeeUmeNsF2Cz2FQ46UKgbBWKgPw/kCaZlvt5YUCD9ftUWmxu42sAT
-         B7+i7/3JwAppZ5NiEmo+T1gYsTIAbLSGQWD15RX0wlm5wnbnRxyD06er2nT0aD4sAyvi
-         VUew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
+	b=d9qlMeEgrJqITCaU96JWQr3NKF5ITUi+x+yUsIvjccgTVv6c72z9OvS/YBHhOL4YJ950CP
+	afQs8PHeL/9e5Y26T+TbEm0KsUKlPN5S34RUc969+cr73mGIA3CL15U7U2tR1AHlOXuLTW
+	F4r+BUbwLNrH0oh22NXLKElvv4XdcBc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785534802;
+	b=Vhd8SuOhiASrtAMSZ3AP6eK9Y3/mfRF3VCv9P0lHbPEGBUtEplQX85HFDW+WhF7RseEWg0
+	iMz1+fR4W4FOxW4AqCAm6GDPDV0XmZfr2hxQc1PnAfxEWZYs6yXLgAkQ8k9ttJjVhLVbxM
+	t5Uhx4L5zig5Kb18LHrRmQElHX3y5Xg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vEL3ZEur;
+	spf=pass (imf03.hostedemail.com: domain of 3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cab041eced3so2133193a12.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785534532; x=1786139332; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+6NJaceoftQlu3V+oVLti0xg4HHs7NkT1GiDbWZAPSg=;
-        b=Q7Mfp9FpTtXKJbRJzNZaHeF+pkKILlw32tVykI1Bz32RxgebmJut7DBMRRfWNLo8pC
-         l4itvmzjN52JyYqE8Xm8IXhtZks/md6D8wfqRyjSPB8A4wxZKwZ9FTa+FGC4vM8YixuP
-         Q0ZE3pnu+1+J0Y3IbmilpHD+DT/jvBJHHj++ACEX+JphtU5T2zmwtHLl84oV+VzhqKPG
-         ESAPQRMbji40i7hYcZAVky4+zbPd5CpF6QUnSYtC+i3ndktyaHxqjLz4dh8R1ZzLvw8l
-         qHUheuad1I5ceIX+i+BfOyp1wbp4KykhOjXOHV1xnVK8iBzJA4yhkCWS/z9+aJYEb2VW
-         SNQQ==
+        d=google.com; s=20251104; t=1785534801; x=1786139601; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
+        b=vEL3ZEurSR6z7RNPFIl1Fcc+kq5F276CYyUDHBU10nbG7j1Ww7puQJfAN4bw5dynaw
+         XzGuQ/4OUi7mhQZBFLM+8zugb37bEeaMYL3unJziUh/VqB89v5ZvLnxLrJxHSWna8qmq
+         6Vxjr8TuDC6AATijJRfIilhR6r4wFwAl+//H/EE6FgBA0j5zl00I+fGzDU+CClDJPE3M
+         /VVakFp+chZJ5bTh6aNpR2NMyie4ByHsy3H+St3KoFn7bGr/EP5tb3/TfvTOUlfU7O08
+         AndlMWz0z5jlNHNzhOG/lcSw3EcqUsr+fBxc3GsJ5qEn0B8hVM/898yBqT3VppOQFThw
+         8n1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785534532; x=1786139332;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+6NJaceoftQlu3V+oVLti0xg4HHs7NkT1GiDbWZAPSg=;
-        b=COPidmwGCsSgTVltwbhygP6bhJXsievibNuC3CVoiSWFFE7gBKrVgIDe5Jf6FzFEk6
-         4skNSyXX7dhzmKI0u9AE2zXsyDpXKPBvnifi3ZmI9s6lKn9LRVKXreXoSp5+B3lrY9Z0
-         9r/VIZmu6ma0o/71Eq4Hg0lluQUWUC/JhrvJKk0Eg6sQ4voKk5CECbzs/tV7N68oQPfS
-         KcSEVuhrPXwG65ebbJoG/NQfpA0xzngWw6fpgPNabbcxbhrDgBIFAXVTyeQbdPXLVAVV
-         DjApPVCJ9VzfTDPD3PpPrPJhDM1mBZmKZyzRzhsvVALw5wqhgdF7d8ehkATDKiBWhyog
-         2rYQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roi6Bm2HJlx74WROJcDIuHgUL+9uSPvcrjxUxjm+c8SbqlO+fXW4UsZBFXkjrfLdivltWk0DYTTcA==@kvack.org
-X-Gm-Message-State: AOJu0YyqpkdYdRL8x/T2ZlZumaaC3FsO3N6zOuAkgtGANpH4zIrGUQNr
-	CeTbR575CrL+dKEeryeSGXwLNIb/SlxVtbWd86kGQWP72JoAUJd9myNSHgJw7KACdZSYnRpmTdC
-	GsVP5N0W6yaoUp6xWgnAzbO0UUk12hO1xXaFZCLKz
-X-Gm-Gg: AR+sD11GWC8vBjeiXesvuIlpY4OuN6wK3KeRWoH+wDIOZbevioMncFbldDG+BefL/PH
-	UC9cid1hGqtxVe2Vpbt7gG355Z/F9xbkFV0EEMjOwi9uQemaP4fP46VF5gyZjY6fsnHVOSzwvlv
-	bAMriwq3p5W2EEkffxuUY5h6KHqN8JiIOzdmW+ead1Elco/fJg11fp+oPImlGRYv1KJHx2Uc0Aw
-	ZtAGEzJUundhMjLvaOx3f3CCQJfPaK8XD5RxCnXcCNizkzL3T+gJBYqT9f1UH1EdaSjXBltb+ZW
-	M7j8O1RGhLvoj976niF4VZe35rzJQk73afeDkXcZDfI=
-X-Received: by 2002:a05:622a:22a0:b0:52b:4ec6:52ba with SMTP id
- d75a77b69052e-52b599faf08mr6569441cf.6.1785534531823; Fri, 31 Jul 2026
- 14:48:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <0d84763f140ea735d790e0b30a8e954536beb875.1785455267.git.abhishekbapat@google.com>
- <0dcd8c2c-d841-47c2-997a-640d1937a77a@linux.dev> <CAL41Mv49qeLm-MmHtQGFnyzjEsE+8kvOgtMTKpjNAzDWozum2w@mail.gmail.com>
- <CAL41Mv46p9bFhX-UYpZ-jk9g+yQcwtMbcQHGnfwp8rQJzw_FEQ@mail.gmail.com>
- <CAJuCfpFCs_t4DZA=rdA_a4rL+kJ_tckjQM+9kHUZuLTK6w0WTA@mail.gmail.com> <CAL41Mv4Bf1WG-yeiZ_DiDm7_eMO_5M0Ta1eivm2HthJUDuUL2Q@mail.gmail.com>
-In-Reply-To: <CAL41Mv4Bf1WG-yeiZ_DiDm7_eMO_5M0Ta1eivm2HthJUDuUL2Q@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 31 Jul 2026 14:48:41 -0700
-X-Gm-Features: AUfX_mwWl0CbM3FcwrFUsHHQDbeNmYR63vTDzpoyAALlhnJBOQ6QdN1XMgRzAHo
-Message-ID: <CAJuCfpH2ee0+bi0HDYL+cdcBETieu1Juph__tc=esEoBMFQDnw@mail.gmail.com>
-Subject: Re: [PATCH v2] alloc_tag: expose profiling and compression states in /proc/allocinfo
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1785534801; x=1786139601;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
+        b=bPRXsZ9dek4kLUaP0UauXRpzCqgFo9/bkEI/D1k2Rcjouwh96xOsot6T7pziogjUFa
+         th+Yxu6soIyGLrNl/GCoXf803/STvdQ3c8vsyzA7J30cZFHEQ5arGNnEKcf2aa43G+LF
+         Zj7Tuz/Zdxn7882SIgVizfjNoLiK/9565nPesfxc6cNS8SBUhOCHqpAMzkMzUJYHg6Mu
+         I7qaXkSP/u5ZE0h/A1Sm/H7LC5qh2yHUBHNNW49lJ32iM9VLpqSNyLUQKluvYsm5G+EQ
+         9VWS9HBDBMmF0qf/X6VCfAwPhV+4gbVWRqNxfytPvWiNq5lwmyuH/r0H+tzGLYTHHt+6
+         kb+w==
+X-Forwarded-Encrypted: i=1; AHgh+RouN093exfFGbtOrKRF4RBYtJE82fpOCnwswLfFFV+MUYXOFWAG24LjDfnzSjvxxyshciaI0HyPZQ==@kvack.org
+X-Gm-Message-State: AOJu0YyHatfGBXOphaBDrFQ1kHLX2Y6Y6y+ewQzlSQ4HSd3TXokmy6pL
+	ET3Ey99DTZ6JrwKGx1qwdemhkdSCMw/0ZbO0a0za3JZ7cXeaqSTwZQpCJJ9J/FDJr3fcX+jq/ge
+	XN+YTJkkP+GuZ4zXPFv79Nw==
+X-Received: from dybhd40.prod.google.com ([2002:a05:7300:e128:b0:30c:5a76:5abe])
+ (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:6f07:b0:3b4:7e2d:a3c2 with SMTP id adf61e73a8af0-3c92a52a045mr1268067637.18.1785534800614;
+ Fri, 31 Jul 2026 14:53:20 -0700 (PDT)
+Date: Fri, 31 Jul 2026 14:52:20 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260731215224.831696-1-loganodell@google.com>
+Subject: [RFC PATCH 0/2] Add support for multiple versions to KHO
+From: Logan Odell <loganodell@google.com>
+To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
+Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Logan Odell <loganodell@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: p57dray54ichxrdqta4xszjowubre8ye
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 114D22000A
+X-Stat-Signature: 87w9hxu8okgq357ja63g34yygag7a7b4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6160AC0007
-X-HE-Tag: 1785534533-966940
-X-HE-Meta: U2FsdGVkX1+WlYSNBUI8rMwg62BnnFRVcILDaSuohMwdxelB6D8Al0dVVLHW5HBwHeCaSbti2k4Hx2mfXN/Ew6QeD08yyX3dT2GxA3EfTdyFjWgWPhjn2jfl4MV7DfW03NtTQIJKrbMPyefvYhmEDGZQrvcGmT9+ePEGb9n6Biu9xMxdXiuFXaT8xk/6RmPCEkY7y6gc7ElFSHEtp/B93Dnnp5ojBX9PPtHswkZ/xEVAIzSNSIdBGNfq9eYB5YEFTniXGrUqBfLsFaiWXMHYbkWAt8tV/RRdQRgID6CHgm2SEx6c1SgjUn78t6qGLjJ9GZkscs8oglfABS/3fpyxdEJsABrczioPeoUT9OQk0iVopvVJecuumJDutYtNXY+ypHaq275TOUm3i18TfwUSsaQFgYKZz9zWKpFmaD9T2Z+1oIXC/xzPmg58qSRKYPWMo2Ccsj5ZZu9wZGyEgt34sepUpZEuSVfdsXkN0x3fn0KjTEyi8r74YdA14cdtHI1meRKrr/L8SoPiHwRjIDR0zzmtPmjFbqsyIf1GTY+OchZvP8UR2GuByE1KXCKaIKhJKB8Inm/F2KNTh7oOaaNb/a5fcgINoUw4IzI3mFHeBMz7DsVioFgS2Wry42ArB1PPR0aoKzVFg9F+DmNvkHXo6AL2VLuU97A9HStCJW1BaohazueuWmOZMTi99hPr5tAqfttDpKRcZft7Pze34VOr1jUtfVEdwsNLBtBkOjVXjgfk8fwsTTqE2xFK/gldaJsm83WfQfY1pQ/aHXHAr0tAnaPN/cCYH3AW+X/X5bDkfMpGdTWnCeNQSf2N/dgggXgVvm4xYpEPumUwPTL/DqonS1NJfNWvgfjYGOd3kvaMvz3aP7M9fPmT6k7j4wUnCqP+AnBTKUgwie/kINyjs1HYeDBy+gtQE6BOASilxbv7I9tL7lgPMNYDMR8XqT3lN4iebrziILLCWZIDpOojonQ
- bGvX6Wj0
- 7qDNjL8+08fSqedGYBNUwNYvOe7LsB7iQ95vUUYxhEY7BcjqfnNjQbYDrCYcZGjjP3TENujpgJy6BOZ+gSwYDHzH5Q9TN4MsCoaL6pf6oygAJfoJRoZxgtMm4PJ8tRcJ4q7neZqXgH4p7C+C71yAws84I0SwmmR65NX9NtKgMnSL8JNqlPmAJ24gISuGTUaN+aKh4bPPsadAbc6vA7uBgP2y1V6MfmuSrtfqJYcIyzawh1kxKOnBXs2VTmD4l861ggEfaLFOC/N31DJXOiEL+j2gadQ5lU9SI5eXIly6s+SxLTrmfYgmntne5xpx7fcEMKKOnbpFbObSV4yN/c6vo+jw9q5FQScw/n59/jRW3itP2ZuM=
+X-HE-Tag: 1785534801-272925
+X-HE-Meta: U2FsdGVkX1/6yO45pBgEvuWhuUSQSiskW5BXAZ51rKiO8BADTJELNxJfaZJaFwTQqfasghykZ5ZQdGdvvF+ff/R9f+WQQcJIqDZWPKMvr86DHK2MTR1IEQqE/hJHzl2nt9qbn7yajIfzIQfEvrl27fJTqaNcFHDB8ogbt9YXDcwMgdUAZI9h6aGL+CS52VfK1iofW1xrSBBS/BKeCIlRU9rHI/d9arQGT5gvlr2g7v/UNCKU5HJW56cdv5RxzZR4qY7dulo1phd5tbgl9h+q1uX0kkOO3FWYSrK/7N/sGkcfCn4KGHXhogTn1be9RA5ZEBPuBOiTf/vkr217QmHwNAANoHkzzN4+K9WTt949PgUTg85Juc9w0CFtk39uil8Gq1GhfsMFkJB3lBLYpMA/n4Qv0OKTsoH5tcgd/pm2bmTAFRBVlRUpAxY452isbGFAqtKBts4pTNwvIYl92VNH6IWKnkgslYiWj2ZNXBgVYQb/TQkaMrkBMHAV3JOT805Nguyv6HctDIO+QoQiAFE7nHp44oakrhbp8eraXtUOh2/7AAF8qXSz6fvegENB6O2GHzG372XZ2wHrhBqiCWVs+rW1cVAn1si7jTbHRb7SP3NHx8cn9MGRx7QsnTLvW0obwpVIR8xDGwzw0Y8Yi34XeatI5OpMLpGpNWLfevr7mJ4JL6RS39EoHf8Y8FGPOk94bY007giMucP6xvJ2tmOUznSirhyf3Azi9/RaSiTTwyLez6OJOvGvgn1cCc4lSBz8SlaCiNwgIr4T8yc4sr2WLyDODruRnOELJQSszrDHhNlH24cgN0cNfXK30iVjhWNM31zZA20x/OogGWovkfdVb3MEHbKyotFCUMVrT7SRYonUQaUaUjzf0iS4YIZDyEIgelFi9F2XIsTfS4kgAhRCtVQjheFeJIeTmfKA6UYq/d8SN3cGMCYjL9ekF+pcXg9jl7Vl4UI1WhBbLRlEYl7
+ vu+Qn0d7
+ I5rQ2PFGgeHRUfD2arbYsbkMZu5t6gCQHdvppNpViKrLAW6XagQGNW5uTLiKe3AnXttatU//WCjdVBrDd7SAMvr8qP8W8EN92MEMflb5GXc/PpYrxd+I8eKiBrRrAXWrbz4pLRC0Wr5uJWyfPZ7XK6YSTLPE41bN78vZvY/c/Fik79BZf0BWh7opozzzOod4d1FXLSKarqNMdF3scoBaXwrOMs3ZPYIEpag1hwLzcP/dvTu5Ua4eU8Wc6A2eu3WxS11MoqcRU+mglIQB+XOLEXXB/glFCz2WgkKoBS0sONXK3lKLnm4rvf4DgwQQ4gBq44KTFVWvRSku5SoTMcS6SWc5uQRytWJ1+ETjrvnH0P3udtBbUY4Iyh8PaGwv7At0SJk6XCmL/k/CDTl5E+Uoa6lWGtU3zHA/i25ZJI4niZU1EwZf7nrten5tbhvCyC0BBY8AeuM6ppirJMwUBXWasZL5Mje7weXeaU2ddK2n3T4ibOylaUyZEbFfBXorX5tFpq3QMMKXdbgvWYLMmQbfECWeoFcxK0rIdncVnzBJn1+ZhlyyhNtYis77m03wdsY/zMKOZIM8NYjkWUjNNWElTWDmIZIi5h2NNg7EVEUJQsSyFqCUy3hr8V/014g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,181 +109,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 2:10=E2=80=AFPM Abhishek Bapat <abhishekbapat@googl=
-e.com> wrote:
->
-> On Fri, Jul 31, 2026 at 2:04=E2=80=AFPM Suren Baghdasaryan <surenb@google=
-.com> wrote:
-> >
-> > On Fri, Jul 31, 2026 at 6:37=E2=80=AFPM Abhishek Bapat <abhishekbapat@g=
-oogle.com> wrote:
-> > >
-> > > On Fri, Jul 31, 2026 at 10:25=E2=80=AFAM Abhishek Bapat
-> > > <abhishekbapat@google.com> wrote:
-> > > >
-> > > > Hi Hao,
-> > > >
-> > > > Thanks for reviewing the v2 patch.
-> > > >
-> > > > >
-> > > > > Hi Abhishek
-> > > > >
-> > > > >
-> > > > > Thanks for the v2 patch.
-> > > > >
-> > > > >
-> > > > > On 2026/7/31 07:48, Abhishek Bapat wrote:
-> > > > > > Currently, userspace has limited visibility into the exact acti=
-ve
-> > > > > > runtime state of memory allocation profiling and its page exten=
-sion
-> > > > > > compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed=
-]').
-> > > > > >
-> > > > > > While reading the sysctl provides basic on/off status, it is cu=
-rrently
-> > > > > > impossible for userspace to natively determine whether page-tag
-> > > > > > compression was successfully enabled without scraping dmesg boo=
-t logs.
-> > > > > >
-> > > > > > Resolve this ambiguity by exposing the active compression state=
- by
-> > > > > > adding a new read-only sysctl `vm.memprofiling_compressed` to o=
-utput the
-> > > > > > state.
-> > > > >
-> > > > >
-> > > > > I think this should be vm.mem_profiling_compressed.
-> > > > >
-> > > > > Otherwise, you will need to adjust the procname for this new sysc=
-tl
-> > > > > accordingly.
-> > > > >
-> > > > > Also, kindly add docs at the linked path.
-> > > > >
-> > > > > https://elixir.bootlin.com/linux/v7.2-rc4/source/Documentation/mm=
-/allocation-profiling.rst#L33
-> > > > >
-> > > > >
-> > > > Thanks for bringing this up, I didn't realize that I forgot the
-> > > > underscore in the commit msg. I'll fix this in v3 and also add some
-> > > > documentation about this.
-> > > >
-> > > > > > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > > > > > ---
-> > > > > >   mm/alloc_tag.c | 6 ++++++
-> > > > > >   1 file changed, 6 insertions(+)
-> > > > > >
-> > > > > > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > > > > > index 52aece27b00e..877068241f06 100644
-> > > > > > --- a/mm/alloc_tag.c
-> > > > > > +++ b/mm/alloc_tag.c
-> > > > > > @@ -1303,6 +1303,12 @@ static const struct ctl_table memory_all=
-ocation_profiling_sysctls[] =3D {
-> > > > > >               .mode           =3D 0644,
-> > > > > >               .proc_handler   =3D proc_mem_profiling_handler,
-> > > > > >       },
-> > > > > > +     {
-> > > > > > +             .procname       =3D "mem_profiling_compressed",
-> > > > > > +             .data           =3D &mem_profiling_compressed,
-> > > > > > +             .mode           =3D 0444,
-> > > > > > +             .proc_handler   =3D proc_do_static_key,
-> > > > > > +     },
-> > > > > >   };
-> > > > > >
-> > > > >
-> > > > >
-> > > > > I think adding this sysctl alone won't be enough.
-> > > > >
-> > > > > If we set boot arg sysctl.vm.mem_profiling=3D1,compressed but pro=
-filing
-> > > > > gets disabled due to insufficient page flags,
-> > > > >
-> > > > > this sysctl will still report 1 (compression enabled) even though
-> > > > > profiling was shut down.
-> > > > >
-> > > > > To verify this behavior, I have set up a test environment locally=
- as
-> > > > > shown below:
-> > > > >
-> > > > >
-> > > > > [    0.265503] 4046 allocation tags cannot be references using 5
-> > > > > available page flag bits. Memory allocation profiling is disabled=
-!
-> > > > >
-> > > > > [root@localhost ~]# cat /proc/sys/vm/mem_profiling_compressed
-> > > > > 1
-> > > > > [root@localhost ~]#
-> > > > >
-> > > > >
-> > > > > I'm unsure whether we should initialize this sysctl when profilin=
-g gets
-> > > > > disabled at boot.
-> > > > > If we do, we should set mem_profiling_compressed to false in
-> > > > > shutdown_mem_profiling.
-> > > >
-> > > > I think the way it currently works is, compression can only be togg=
-led
-> > > > at boot time. The new sysctl my patch introduces is read-only. Base=
-d
-> > > > on the current behaviour, if compression is enabled, and profiling =
-is
-> > > > toggled off and then on again, it will be toggled on with compressi=
-on
-> > > > enabled as long as we're in the same boot session. I don't want to
-> > > > include changing this behaviour in the scope of this patch. I want =
-to
-> > > > limit the scope of this patch only to expose the current state to t=
-he
-> > > > userspace, hope that makes sense.
-> > > >
-> > >
-> > > I reread what you'd mentioned and believe I originally misunderstood
-> > > your point. You rightly pointed out the subtle bug where the
-> > > compression state is left desynchronized if compression was unable to
-> > > be turned on due to lack of page_flag bits. I acknowledge your commen=
-t
-> > > and will change this behaviour in the v3 patch to toggle the
-> > > compression state to "false" if this happens. Thanks for bringing thi=
-s
-> > > up and I apologize for my previous misunderstanding.
-> >
-> > Well, if profiling got disabled then it doesn't matter whether
-> > compression was requested or not. The profiling is not active anyway,
-> > right?
-> > IMO if would be less confusing if we let mem_profiling_compressed
-> > reflect what the system was configured to do. If that configuration
-> > was impossible and profiling got disabled, the userspace can detect
-> > that by reading mem_profiling sysctrl. As Hao mentioned, this should
-> > be clearly documented in the docs.
-> >
-> So, IIUC, you're suggesting that I not change the kernel behaviour for
-> the edge case Hao brought up and simply expose the boolean value
-> through the read-only sysctl. Right?
+The format of the preserved-data blob that LUO saves to KHO is expected
+to change as new features are added, bugs are fixed, etc. Currently,
+LUO handles this by embedding a compatibility string into struct luo_ser
+which can be used to compare two kernels. This works if the changes
+between kernels are fundamentally incompatible. In a case where a new
+feature is added, we may want to support both versions in the new
+kernel to retain compatibility.
 
-Correct. And please clearly document that mem_profiling_compressed
-reflects how the system was configured. In contrast, mem_profiling
-reflects the current state of profiling, which might be different from
-how it was configured originally (might have been disabled later by
-the system or by the user).
+This series adds a KHO interface to embed multiple versions under a
+single node in a subtree.=20
 
->
-> > >
-> > > > >
-> > > > >
-> > > > > Thanks
-> > > > >
-> > > > > Best Regards
-> > > > >
-> > > > > Hao
-> > > > >
-> > > > >
-> > > > > >   static void __init sysctl_init(void)
-> > > > > >
-> > > > > > base-commit: 2ed26e8a624f41887d64e2e37a2f6ab36a118d1f
-> > > >
-> > > > I'll also wait for Suren's comments before sending out a v3 patch.
-> > > >
-> > > > Thanks,
-> > > > Abhishek.
+We go from something like:
+
+       / (Root Node)
+       =E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent Node)
+           =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
+           =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo>
+
+To something like this:
+
+       / (Root Node)
+       =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
+           =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
+           =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xph=
+ys_luo_v1>
+           =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_lu=
+o_v1>
+           =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
+               =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo_v=
+2>
+               =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
+
+We can also support mixed mode, allowing backwards compatibility in case
+of a roll-back to a pre-multi version kernel:
+
+       / (Root Node)
+       =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
+           =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
+           =E2=94=9C=E2=94=80=E2=94=80 blob-size =3D <0xphys_luo>
+           =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
+           =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xph=
+ys_luo_v1>
+           =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_lu=
+o_v1>
+           =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
+               =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo_v=
+2>
+               =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
+
+The first patch moves some common functionality for preserving a node
+into a separate function. The second patch adds our new APIs. The third
+patch adds support for multiple versions to the debugfs entries. The
+forth patch adds new test cases to test_kho.
+
+Logan Odell (4):
+  kho: Move subtree blob logic to separate function
+  kho: Add support for multiple versions in subtrees
+  kho: Add support for multiple versions to debugfs
+  kho: Add test cases for versioned subtrees
+
+ include/linux/kexec_handover.h             |  14 ++
+ include/linux/kho/abi/kexec_handover.h     |  16 ++
+ kernel/liveupdate/kexec_handover.c         | 234 +++++++++++++++++-
+ kernel/liveupdate/kexec_handover_debugfs.c |  57 ++++-
+ lib/test_kho.c                             | 266 +++++++++++++++++++--
+ 5 files changed, 540 insertions(+), 47 deletions(-)
+
+--=20
+2.55.0.508.g3f0d502094-goog
+
 
