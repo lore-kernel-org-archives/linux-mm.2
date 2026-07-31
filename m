@@ -4,87 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C622C54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6808BC54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:17:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 692E06B008C; Fri, 31 Jul 2026 11:11:21 -0400 (EDT)
+	id 00F046B0088; Fri, 31 Jul 2026 11:17:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6429A6B0092; Fri, 31 Jul 2026 11:11:21 -0400 (EDT)
+	id F02146B008A; Fri, 31 Jul 2026 11:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 559186B0093; Fri, 31 Jul 2026 11:11:21 -0400 (EDT)
+	id DF1706B0093; Fri, 31 Jul 2026 11:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 361A56B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:11:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A554C0476
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:11:20 +0000 (UTC)
-X-FDA: 85049410320.14.25F6A1F
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DFE63A0006
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:11:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jD5wOdrf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 995736B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:17:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1471B14046F
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:17:33 +0000 (UTC)
+X-FDA: 85049425986.03.9A316D3
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EF1D31C0010
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:17:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=r9uQ+uHo;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785510678;
+	s=arc-20220608; t=1785511051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qo1LR7qrIwKJFtiU17ykHkbB13kJdtxhqwfYwUfZhvA=;
-	b=QCeeZEvdvOVXpUXMld8VacYNOgO8nvcTJSdn16w0lZpChYr7Yt+pat1pp785i+C/ZswVfU
-	0GUz6rLn5rA/xB1QwP+FpkR0gXn0gEhsHT8890mfOGWMeUbzp/7uFt8k+8V0XeJJohN5nz
-	BcP1/ygYfAvK0VLsCHoOWXkJDk3Eeic=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jD5wOdrf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=QOdikcJRo1h3a9sD/t/2mX2tsaLsS7uHoOpBXELRAPI=;
+	b=vjOUlmdi6ONyjQqkRTsBEzEB53u/wrSvcGurfRaUShmVlPJz4npnNxr39+gN5Z8cZFI9vU
+	AC2/gMSVbzdi+jX5K7WGMzGigOYotdpG85M9/4qhN1Cy6chbgIfl7RSqCzPtW7KvKFZ73n
+	xQJukymXa4U5Su/J0Xl1mAXacGpokWo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785510678;
-	b=ZdWQcVd1uE0NsQY+WuCPvufmS6X/HM8iXRt9CJsoebUCT6c3ryF9Cve37UFnK6TDLDo5Ml
-	6zCrsYoCkSijz7k6iyBygv7qICFF1iXclX1UwtBekLFk8LtLSaOnqRu7b1K46n4q+ihFNL
-	3aSGoOXi0XJzkpkAJmM4CspFWE3eozM=
-Date: Fri, 31 Jul 2026 23:11:02 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785510674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qo1LR7qrIwKJFtiU17ykHkbB13kJdtxhqwfYwUfZhvA=;
-	b=jD5wOdrf8h5mlWbkWIIredTfjWIAiJ71znqBSjQ7zbpML8PWy6RmmcRGZa7BCDL9qZfsqO
-	uttlq0r3C6Ao7WiRTJedjWVOP1f4x8cSC63BJ6wDixAojIUP2Bczt0P/nV4vsRWngQ7EiD
-	bDcZFs4H/FkW1LFUeXED4/+7zqbkY44=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted
- files
-Message-ID: <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
-References: <20260730184853.48347-1-ebiggers@kernel.org>
+	t=1785511051;
+	b=PhSWILxCMDvKDipOVYO8cMRqaReg5JElkFxhCIjjDA5qv/GNBtS++ClFqtlPRTrlUoyE6q
+	Xaa0Qt74rkrsi0caZMA9/zHr4eM4KdOSMYHYCpa7hXBm/pqfABxj3BIFe4exfkL37O2J9N
+	YToBHyFH2q6wqEm73/YVNpaJpiKElhw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=r9uQ+uHo;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e53581361so58954585a.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785511050; x=1786115850; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QOdikcJRo1h3a9sD/t/2mX2tsaLsS7uHoOpBXELRAPI=;
+        b=r9uQ+uHocNbVxpodc3pzPqTekJfAH2z+CH4WTm+/lUkGPZN8yHnnJ29eU9WJctY3Wd
+         pReKheF01GYOMD4Zo77dL+bYQ9vhktEAw+Fl8MbKC7S87n8hZrJuMGkFHomdSsWHSgyS
+         Bw396mCDi/bhRY78mIOZUi9TohNnTnS+8AMmMRvrGeBK10/hLGJfmnUnxQjOz7U40s3P
+         Fja5fxm3TBXxt+2n71yf7vFNrXN7fDsvG7Z66iuf9hWjoBLb1fY81OuGPhWrZoSyP4J9
+         8kcDdkfgTi6MbIIgBLW8hxmL/o+ki2V+zo/+pOElH1WlXybWYPp+rXX7SRtrqck8x30K
+         bc1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785511050; x=1786115850;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QOdikcJRo1h3a9sD/t/2mX2tsaLsS7uHoOpBXELRAPI=;
+        b=NCt7J15udrBuVbpEFbGY3kGgdtN73NdbqFWYqgzRuf3XuVHSAYosJ5O1fiL/618qBO
+         tz8O2pTv0NiSnKrzjrHWgg9s9AQfmbSN6cd/xswc1SHlpqkKE3JdZKhVJ7qmOZFDLge8
+         qX50GJj1w3TKspJeIuOyVwQGwU1R9Tyqc+nK/FcNjEYZPkoV7V5S8rts7Ig/kWQyAXLG
+         B1SHwNmicCpx87ePbmvIK3WTGhvGy31bb3wUohMZb3Iim8rI0802rPZDrGM0MJbgrmEt
+         zhF9+I1CQBId9lv9fN9ctqxAbjCUHR/PsGwp6kPIQtBtNjPGSbk9kULKPTxXJsiIW+rB
+         +fmA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7qywmaSu5tiwfUTiF0QxQSo/f2nMFo5edy1eA18Ll86Lz2oCUj5VHw+CO+NZi/r2ok5uGYJsoUQ==@kvack.org
+X-Gm-Message-State: AOJu0YzG/zE2J6Uz93s/jLvJJrm9lwRlHn2DfOOBS3KKcKU04N1AeT0u
+	ZY2wJOzbbjliH3rZv2YMOL2bMQLTJYs0QptoZusbcN0yBNgRq2UlTY4t2TMVfgdLO9A=
+X-Gm-Gg: AR+sD12fLz7KwyyfGEKf9DmjdWCdqhij+COgZwKWDhd99JZlPh975Ie6V2Cp8cr2Okd
+	WweqhTo3185U+G521OhT89v2AyfoQNRNS0Tx/gBlLNL625Wfk9irAipp2m7wwxlYncfOck3QtZb
+	MbMXCJBWWoLZLQGMUp1WD65eNdJiEQlIcFIbHdrFhSohQJ1JJPgR8KpqIQ4lY9+aDAJi5gUgS4D
+	lkhlqdANQFmAW7Gj66zC/mKeIqtygTANmzVz2Z9L8NePIfOFby6hFywc3308/ZgjElNsN8BG/EZ
+	Jr4Swlq/NRI7OhJ7Iek8LFU/S6MoS86O/FppuFmoqIjTCn2Pb2Dkol4c64F4tjq30OH8zh6DRGL
+	CWtLLnKrw4Ev8mF/fKyIZVPbNfxd8VULGi8QSrhFdyPAH5nfXa/33fIlvoC2r2ym3BXOb6Py/1z
+	2NDyZ7J9yhh6XnxcH9gDrlmvKGfJYVOiGPFrFWUQtuqlJyMcB9B9O44RtMIAo=
+X-Received: by 2002:a05:620a:1003:b0:92e:9cc7:fa46 with SMTP id af79cd13be357-934a08b94e9mr67580585a.21.1785511045509;
+        Fri, 31 Jul 2026 08:17:25 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9349c199e03sm73739985a.30.2026.07.31.08.17.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 08:17:23 -0700 (PDT)
+Date: Fri, 31 Jul 2026 11:17:20 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
+	jiahao1@lixiang.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
+	mkoutny@suse.com, muchun.song@linux.dev, nphamcs@gmail.com,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	stable@vger.kernel.org, tj@kernel.org, yosry@kernel.org
+Subject: Re: [PATCH v3 2/2] mm/zswap: Support batch writeback in
+ shrink_memcg()
+Message-ID: <amy8gAN33W4QsM5R@cmpxchg.org>
+References: <amufiuAaZbuDdKkQ@cmpxchg.org>
+ <20260731071900.38942-1-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260730184853.48347-1-ebiggers@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DFE63A0006
+In-Reply-To: <20260731071900.38942-1-jiahao.kernel@gmail.com>
+X-Rspamd-Queue-Id: EF1D31C0010
+X-Stat-Signature: 78qtn5jqpzo81uo8p9zuucawk8dza31r
 X-Rspam-User: 
-X-Stat-Signature: fiwghqp8zcb46m1m6upqyts3ed7h7t9o
-X-HE-Tag: 1785510676-173469
-X-HE-Meta: U2FsdGVkX18Hnq71/Wtd4+DIupBhyjQU8o4cC8TtodFyh45V8WkEYhsBhBTBYVu8CxjbXWYySo1ExRxNx5e/IldFTCNVwzEc+5Gb+iw+yaW28lbI6DmKppN29b/2MAd3rthJ0sJlsrbUtWb6AERpQU/44aHZ3qn1FtODpMk3z7kS1uJvFadI+jI6+HYMGVvDYY393FIuNY7uQHiA9RtSkhel/Zf5QLTgM04XyXdmL7IX49F3Z9bfDIlXNg0O7e4b0DdfReUZ2b6v7bFlSJiDb4rpOumrx0c840ycJ59CYMF1UjDohMGzfXMpMmuSMU3qjt059knrlDBeT/ePRSnoRY4fvCgYTRvsyxdxlTgPbgLRGPMN4dZsUuBVMjYsh8So7o0JTcXj6DyUCjfu+9JR6QLIxzpBR0xjUBykyFANIDUuV8h7jrzroz3x7ZLEqkgEXYk8Z8GqwQrzxrphaviyD0qF7EAMQ7zXV6AmPmhbA44ZrfiSg9E6iE3K1Heq7nZu0tSbA547h3uXW4XYF1UE+VKoSHzb9N/vkyEQib6gZhSIcA6pDVLHXq1ijlfd2TO6ooxOn6F9z5rOkkgjJmxHnHvWYpxGCKP8leSseNnSIX1zelsTG/XBMflEPoIoQeILuoQyFOm5JnKMKtaN5glKbg7a8piFweED4HSnRcuXQ5OXgaRvNbxTNYmBWdCveMnrWSLwSYw50ghg/5kefBwXwZP3qaLWfZFrbAwLP3bqntkl4sHdWsgpWeAfgeVz4W9xezxc+nO1aZoRD8o42Tz4IQjy+hdzIQdr3v+bUIbhtp1MR98jGQf9CteN4w80EmqI6U3dL5EtQ0xNtVwAlnqSGgsM3/0IAru8VlATmk/bVMkJowOfMuX3pBdzh2zm+N66cEmERAWgikJglwZU2yb06YpPF9IaRgiUBFYWpw5NY4cpHktQgyo7I3MIc1mOYAHii5LlPW+Et7tRP+V30qc
- ko+E78Qi
- IL8S2PCswsFOoCdhiD/x7SPH8iXyuq8QH9KWf3yDRzCGaSh11xEmldxTsY7XNmHIQ5hcFgd9G7OFG9RsIZ9RPIhT9LYBWklJRy9y63WNM2ngYTMCe93fhofQWu4oZPl8yq7nGP1Nx/jXyu8V+4/6T/rES7x51qQEFUFsCfRkGHGF+UG84tPv1DYf5UoHVV9lF6qh1FyCzbT9t2Fc0c/QtUJzQXBc9y/xQt9pxRKFiXsphysofzLele98BQU7DEUBfk40J14VV2P9agQTMVVrQyw9B+Q==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785511050-627755
+X-HE-Meta: U2FsdGVkX19Y0v4LrwsMeH57Kgclmsu9AbLigUWqEs8kOSuQmPZKBHsmXoDkEoFFgjXq7tlZ+LjLsND/EsLpzj/yS1+3C8opqp2RveWrIujnJBLLiofwAqy2OmnKJsfdI2lvzUy6npARX4n7NgnYyOhjC/oSZZ0C7/hu5v6nYXeU7Rzl72+hchynppgLJq1Iiya79H9wIe2hBM3E6qyXmW8A6hXgr2HPDdqb+wwEXs51+Lvi3JOas0tuhpvqL04BKMGRBhusguDWiy24e4MRyjJ3BPT6RkWfkkYapv7S8DREWQWVx2FYyZiLcdjKcCRapWaAolANgPCp1EAb95V7MG5kQq+oDf8mwi2ow6dg1WuuxznL/5/hX7fWgFVYYVMNzwZHkOr5GEgT5HaX28eazgzGK3I8jLWWaDMJjiEHthAfSWmb/yHdnM53yXebTqR88mvKiatqLLbC1T58eFuodDQtz0OuxDIzE26ee9mmSbFi/1x8+VSQ8KK+a61STy1Ca6ZSpdilc7Qx8EC91WVzTzmAkeK1lZLp9hRkat95c3QmV++RS3r4XWqVWcr7EMTZOT0cgNrH56jpPV/2S43PAf1es+6rQnrjnIwBmdkX9cuzOjIiVQ9K2uK0f3WtAO/kc2a4lzMqv6c+dM+MSGeaVgD4W/oiA/ygY3l54Q0MsQmYkzJGu4Sj+6rodRQcNayvdigFKYoidhHk0AEzmqY63+YF2LCUT5XNDGvJaI7snrgxreit7CEV8ykQ90dpPVRymUc3oyVxvUQ1Fnlvl9b5TuP9sKOU9wtGFjXdlWpxAGd2N6OI/iFa6xcTy4N3hS0yWXGETaNoP3BR6KEIsltmyh9ToOYwJ5ZRaN6Rhi33iQnScVOceHte3ZY7VZuMTd893y7VXQCyhvuPmXWj8o96/dP25BBuimvbH1yKj/56lIwEep+jmdSFfcO+gSBBwAVXvTnbCq+r4nk7PDpTKva
+ oChpS9e3
+ //pRp8VTOhN9CuaW3qX6hCOzEScUER9xL1z8+FXrQGp9IwGT8EmWV6QWPTNiJekA6x5ZWA5naoutF7Zk0bPXF82gFjE3cw2fSraQF3M+F3t99BoPpxBsZBZPA6Lo582z/a590i8VpexiL74Nrr4yPb5gg+ecZ3gUVS0SSzJAWCGWCerfGjUrbL0JnCaTX6c+OGCJwYJKOfY5U+wrd037DUoI2Lz6DS03v3GrjA9NYmiWVV859Ia/xhI82moe6qm33+80+kMl+uN24Jhsv4fVljqS3JOr3WFrXDxzMaK323tPPk3QTPKCg5FL1h40iRzldd7zjDxb9uWN3ktBwS7jphiN+lGa/a8/YN+bcFnyys8B+WjrziD+LaqiyLDyyPiSzXtW0bnNmLQiegr4jJBJECn9xtLe7oMWoOvDNW8wMhNj6OvCsH28DdmfpKJS07IC49zKqhdHp4LBpm1ZrzttbZ+Dng3US1HgGO+xlXBuTrAiIBLH5ZSx/LZ36na5Zxf4YHYegSy2yiHQwwH6vW4g6SeLdzIYoHNL0AP6hhLtK3LR2bRWcFaSFin2d+Xyo6REnIZiDQUEPITMtjt8BTnkoKtJoQzNbMDKqYrSjgruXoL510JPP6h82kYzid0lqSb5LZB+t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,76 +124,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/30/26 at 11:48am, Eric Biggers wrote:
-> ext4 and f2fs don't prevent filesystem-level encrypted files from being
-> set up directly as swap files.  In this case, encryption is bypassed.
+On Fri, Jul 31, 2026 at 03:19:00PM +0800, Hao Jia wrote:
+> From: Hao Jia <jiahao1@lixiang.com>
 > 
-> No one should be doing this, vs. the methods of encrypted swap that
-> actually do work (such as swapping to a dm-crypt device, or swapping to
-> a loopback device on top of a filesystem-level encrypted file).
+> Currently, shrink_memcg() writes back at most one entry per-node during
+> its traversal. This makes shrink_worker() inefficient, as it must
+> repeatedly re-enter shrink_memcg() to make any substantial progress.
+> Under high memory pressure, this can cause the writeback speed to be
+> too slow to keep up with refaults, leading to zswap store failures and
+> forcing pages to skip zswap and go directly to disk, which results in
+> an LRU inversion.
 > 
-> Nevertheless, to prevent user error, make swapon() explicitly reject
-> this case.  Document this behavior in fscrypt.rst as well.
+> To address this, extend shrink_memcg() and rewrite its LRU iteration logic,
+> enabling batch writeback for both the shrink_worker() and zswap_store() paths.
+> To prevent shrink unfairness across NUMA nodes caused by a shared global scan
+> quota, limit scanning to up to SWAP_CLUSTER_MAX pages per node and write back
+> any reclaimable entries found.
 > 
-> Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
-> Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Test Setup:
+> - Total memory: 32 GB, 1 NUMA node.
+> - zswap settings: accept_threshold_percent=50, shrinker_enabled=N.
+> 
+> Test Case 1:
+> Set max_pool_percent=1, allocate 512MB of anonymous pages, and fill them
+> with random data (to avoid compression). Then, use cgroup memory.reclaim
+> to force a large amount of anonymous pages into zswap. At an interval of
+> 2ms, allocate a 4K anonymous page where the first 4 bytes are random numbers
+> and the rest are zeros, and then trigger reclamation of this 4K page through
+> cgroup memory.reclaim. When the pool threshold is reached, shrink_memcg()
+> will be triggered.
+> The test data after running for 120s is as follows:
+>                                 Baseline      Patched
+> shrink_worker wakeups              5,363          169
+> shrink_memcg calls            11,373,201      350,703
+> written_back pages                40,212       40,241
+> zswap_store calls                161,190      163,753
+>    store succeeded (ret=1)       102,743      117,183
+>    store rejected (ret=0)         58,447       46,570
+>    store reject rate                ~36%        ~28%
+> pool_limit_hit delta              55,826       33,760
+> pswpout                           98,659       86,811
+> pswpin                                 2            0
+> 
+> Test Case 2:
+> We evaluated the following two sub-configurations using stress-ng inside
+> a cgroup capped at memory.max=1G for 120 seconds:
+>   Test Case 2a (max_pool_percent=1): Continuously triggers the global
+>   zswap pool limit, thereby waking up shrink_worker() to perform asynchronous
+>   shrinking.
+>   Test Case 2b (zswap.max=320M, max_pool_percent=50): Continuously triggers
+>   the cgroup's zswap.max limit, thereby invoking synchronous shrinking.
+> Command executed for both setups:
+>    bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
+>    exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method rand-set -t \
+> 120s -q'
+> 
+> Test Case 2a (max_pool_percent=1):
+>                                 Baseline       Patched
+> shrink_worker wakeups              5,640         1,308
+> shrink_memcg calls             8,481,500     3,140,972
+> written_back pages                   260       468,216
+> zswap_store calls              2,742,756     2,011,269
+>    store succeeded (ret=1)       934,640       947,988
+>    store rejected (ret=0)      1,808,116     1,063,281
+>    store reject rate                ~66%          ~52%
+> pool_limit_hit delta           1,181,310       196,882
+> pswpout                        1,808,376     1,531,497
+> pswpin                         4,288,497     3,635,365
+> Test Case 2b (zswap.max=320M, max_pool_percent=50):
+>                                 Baseline       Patched
+> shrink_worker wakeups                 0              0
+> shrink_memcg calls              687,608         54,002
+> written_back pages              639,176        846,663
+> zswap_store calls             1,224,222      1,228,548
+>    store succeeded (ret=1)      992,816      1,208,123
+>    store rejected (ret=0)       231,431         20,425
+>    store reject rate               ~19%            ~2%
+> pool_limit_hit delta                  0              0
+> pswpout                         870,745        867,360
+> pswpin                        1,707,823      1,216,814
+> 
+> Under identical workloads and runtimes, batched zswap shrinking
+> exhibits a significant reduction in both shrink_worker() wakeups
+> and shrink_memcg() calls. Furthermore, the sharp drop in both pswpin
+> and zswap_store() rejections demonstrates that batching zswap shrink
+> operations effectively mitigates zswap_store() failures caused by
+> hitting the pool limit. This significantly prevents pages from bypassing
+> zswap and falling back directly to disk, thereby reducing LRU inversion.
+> 
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Acked-by: Yosry Ahmed <yosry@kernel.org>
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 > ---
->  Documentation/filesystems/fscrypt.rst | 4 ++++
->  mm/swapfile.c                         | 4 ++++
->  2 files changed, 8 insertions(+)
+>  mm/zswap.c | 30 ++++++++++++++++++++++++++++--
+>  1 file changed, 28 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
-> index c0dd35f1af12..cba1989777da 100644
-> --- a/Documentation/filesystems/fscrypt.rst
-> +++ b/Documentation/filesystems/fscrypt.rst
-> @@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 48fc7b575e24..d406c14925d8 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1275,6 +1275,21 @@ static struct shrinker *zswap_alloc_shrinker(void)
+>  	return shrinker;
+>  }
 >  
->  - DAX (Direct Access) is not supported on encrypted files.
+> +/*
+> + * Scan up to SWAP_CLUSTER_MAX pages on each per-node zswap LRU of @memcg
+> + * and write back the reclaimable ones.
+> + *
+> + * Since the second-chance algorithm rotates referenced entries to the
+> + * LRU tail, the per-node scan is capped at the current LRU length so
+> + * each entry is scanned at most once per call. It is up to the caller
+> + * to handle retries, deciding whether to scan another memcg to complete
+> + * the full iteration, or to rescan the current memcg to drain its zswap
+> + * entries.
+> + *
+> + * Return: 0 if at least one entry was written back, -EAGAIN if entries
+> + * were scanned but none could be written back, or -ENOENT if @memcg has
+> + * writeback disabled, is a zombie cgroup, or has empty zswap LRUs.
+> + */
+>  static int shrink_memcg(struct mem_cgroup *memcg)
+>  {
+>  	int nid, shrunk = 0, scanned = 0;
+> @@ -1290,13 +1305,24 @@ static int shrink_memcg(struct mem_cgroup *memcg)
+>  		return -ENOENT;
 >  
-> +- Encrypted files cannot be used directly as swap files.  To swap to
-> +  an encrypted file, set up a loopback device on top of it.
-> +  Alternatively, encrypted swap can use a dm-crypt device instead.
+>  	for_each_node_state(nid, N_NORMAL_MEMORY) {
+> -		unsigned long nr_to_walk = 1;
+> +		unsigned long nr_to_walk, node_budget;
 > +
->  - The maximum length of an encrypted symlink is 2 bytes shorter than
->    the maximum length of an unencrypted symlink.  For example, on an
->    EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 78b49b0658ad..e4991da81b5f 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		error = -EBUSY;
->  		goto bad_swap_unlock_inode;
->  	}
-> +	if (IS_ENCRYPTED(inode)) {
-> +		error = -EINVAL;
-> +		goto bad_swap_unlock_inode;
-> +	}
+> +		/*
+> +		 * Cap the scan at the per-node LRU length so each entry is
+> +		 * scanned at most once per call.
+> +		 */
+> +		node_budget = min(SWAP_CLUSTER_MAX,
+> +			     list_lru_count_one(&zswap_list_lru, nid, memcg));
 
-Sounds reasonable to me.
+AFAICS you can just do unsigned long nr_to_walk = SWAP_CLUSTER_MAX.
 
-One minor suggestion: it might be helpful to emit a pr_warn_once()
-explaining *why* the swapon was rejected and pointing users to the
-dm-crypt / loopback alternatives, so the -EINVAL isn't opaque.
-Optional though -- the check itself is what matters.
+__list_lru_walk_one() does a list_for_each_safe() that will exit the
+same way whether you hit !nr_to_walk or run out of items.
 
-And this patch updates fscrypt.rst. Would it be good to also
-update the swapon(8) man page to document the new -EINVAL
-condition?
-
-Other than these,
-
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-
-
+> +		if (!node_budget)
+> +			continue;
 >  
->  	/*
->  	 * The swap subsystem needs a major overhaul to support this.
-> 
-> base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
-> -- 
-> 2.55.0
-> 
+> +		nr_to_walk = node_budget;
+>  		shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
+>  					    &shrink_memcg_cb, NULL, &nr_to_walk);
+> -		scanned += 1 - nr_to_walk;
+> +		scanned += node_budget - nr_to_walk;
+
+scanned += SWAP_CLUSTER_MAX - nr_to_walk;
 
