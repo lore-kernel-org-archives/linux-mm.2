@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE59C55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34AE9C55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20E576B0095; Fri, 31 Jul 2026 16:08:12 -0400 (EDT)
+	id 346996B0098; Fri, 31 Jul 2026 16:08:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1951A6B0096; Fri, 31 Jul 2026 16:08:12 -0400 (EDT)
+	id 320766B0099; Fri, 31 Jul 2026 16:08:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05EB46B0098; Fri, 31 Jul 2026 16:08:12 -0400 (EDT)
+	id 198796B009B; Fri, 31 Jul 2026 16:08:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAF356B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 442D1A04F6
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:11 +0000 (UTC)
-X-FDA: 85050158382.06.9FF27A0
+	by kanga.kvack.org (Postfix) with ESMTP id E7CFC6B0098
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68D67140136
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:13 +0000 (UTC)
+X-FDA: 85050158466.20.C17A62B
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CE8B9100009
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="tK/RvxUM";
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id D45621A0007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WEUFo6lg;
+	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785528489;
+	s=arc-20220608; t=1785528491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6pjpw7CE45fm5rwUaMmq6NBeRjAsSjRlEPCJeSuv2J8=;
-	b=7fS7VuaMyB4g4Q7WpHQhP4XM/Nfj1j267J3p/NUnv87kh6o0NLOg7E7RFSX+kdFZYprovq
-	ymNM37upBm+EaITywjhTsFo30heH7+jbLguAXw7xbVRZiEbVBH91gO8LP4UT+7A2PQiFca
-	iaFSkRR7EPsyXiui8xpufvLyAtfVRJE=
+	bh=bJ70o10O/g3H5Xkl1BshZBHBRF3IX9NucmJReUP8SV0=;
+	b=oct2ag0MNcHW5miiCaHb+iYLdxns3bX8cM3S3imJqGek+Jmxgj47BgN2P0BJZ4qvQCJ5jm
+	oOe9e1EVAk7BNTzL924SbosN4vIfrYerwo9W/NmUsGgaBawZci/eak0ajNgyh/gsFQTtLo
+	l59XajHBPc6t0BSFapYz4aLGSkC3XYY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="tK/RvxUM";
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WEUFo6lg;
+	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785528489;
-	b=trr4yohvyoNJKS9xi9VMepwf6ssxRCtHVm9QX/6z0Q0XuUpakboMDhzZ3goc0CsElA7p6i
-	QlHaypwzANpQEqJtCw6+HaofvEl+KIK1wHxNQXADRSffet43rMCOzUZcG9Vz1p++gZTW3U
-	pJxTB5YVW5ly64rgPvQvpu4gZThUE0s=
+	t=1785528491;
+	b=FJnhUk/k8TbIjoEuGtkkygMYEtX2zMENvVMbIxZEIRdCMr4Sy4MHipCRh9JoE5rdnR1sOA
+	u8AayNZ7A8qwlcBKjLBnJsKVBp6EgYuSwgLoXL6scvV5q4oMpTTIW90Jrtfafwrns3rWFY
+	UWbn1dHSLy5wLLGmwIs5MTHIXWK+fF4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=6pjpw7CE45fm5rwUaMmq6NBeRjAsSjRlEPCJeSuv2J8=; b=tK/RvxUMIG0VqyalMTuee1h3yL
-	6qB62SBlIS64AWYMW4/BAE8i665UJD3bzYB4jVj8gPjKH0nvJovsfqNt0UdOvCY/pWB3r11qpcOrw
-	MTD4MPGCRIFfE7mLnMie8h9Y46RGcUFBpkSv0NNWAOUtPlrjBjAsGWKxHIcagyk9AiFDbBcjYDIoB
-	n8ircKqbCxO8KD1YsKcc2RGHYp1S3l0F8j330KQgPArm55cruwtihYPfGQShsHQasXiFe0+5SECHd
-	Q057AZk6wYPC808oBQmpoZk3fJN1i8iyG2pqcZg9dSG8oOwm7mhSuIgNc1TCrs3szVNddWIX+ijfk
-	vEA3wnvg==;
+	bh=bJ70o10O/g3H5Xkl1BshZBHBRF3IX9NucmJReUP8SV0=; b=WEUFo6lgpEaA3POSXGYOQvorJ9
+	q53YIASpBfUusnCBlMc8ZeJXQClAlqIBG8xH98fFuBv8wle3jTQqR/d7AqvrCCjMYTvXY3Lh7RJ4L
+	5xJVaolHKvCU2XoLkGguvbczr+dN9xS9+qjc28qvAR8tuR/zJT+Kh3iFd+GAIuHWymQN/TkwZMcZy
+	jcyop2y8kT2j23DSIqZc8tTVfyzw3cERn/7cFsPIN4h+EX0dgtLC8pUyDouP286OjeVhAdg0We/nu
+	AP/d57Df9WRrji5aarcIVGCJgxTyoB7NJx1kopNFKmXsa8KphPUsu7NtqdyK7v9mqC73a9aKpbxUJ
+	iOPnk2dA==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wptWW-00000002PkY-3Eny;
+	id 1wptWW-00000002PjV-2oCc;
 	Fri, 31 Jul 2026 20:08:04 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -74,23 +74,26 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: [PATCH v8 06/15] kpageflags: Use is_page_hwpoison() to set KPF_HWPOISON
-Date: Fri, 31 Jul 2026 21:07:51 +0100
-Message-ID: <20260731200802.574821-7-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Gregory Price <gourry@gourry.net>
+Subject: [PATCH v8 05/15] guest_memfd: Use folio_has_hwpoisoned_page()
+Date: Fri, 31 Jul 2026 21:07:50 +0100
+Message-ID: <20260731200802.574821-6-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260731200802.574821-1-willy@infradead.org>
 References: <20260731200802.574821-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D45621A0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE8B9100009
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 3q6b8o95399fiyre47m5pfkdft3hffwd
-X-HE-Tag: 1785528489-556798
-X-HE-Meta: U2FsdGVkX18V4eCTXGUkwnI1E2A2oLosiTCmYgTHQXtYw9ZFTYbKOTkl4PgUSnl4lnAPreLdEDNbE4F/gaPQGhQJThC7TGGiA5ALcdfuEK/jv2Iz9wBEfjlvdHvYC8dl0by1LHgJTQmEouX+Leey3Uz04TK7HICiJE3j1dE/RTIlMttXaTwk74gHyw7+HgcU98kjIsgtKY7dDxO5KdAW6lLHLsGzJF+l57UvIOSWk3vxfFvWE/wlxxkEMkebK9ZiNQnd56mpVR4ncidvZpz3C2sbXMDyipi8eaiYeLK87sKMygx5em9mErYq6EZ5rBLm0yaWLy3qgi1Gad8qE0ELH73i/AFTGxdGM0oGkwjHUOGFgoqqQL+JVANZLMK0vgI3wwxdTKZn/n5eb0Xfa2nQf4VRNWzfUqK0I9L6gNNQGSZUnRGk2x7YyrVQZr0Z48HJcxB+vHyPL8hpolULaTaInZ+SoUYNXaagS4awVLRS2se59bIt+25Rb73kCj0z0yXyOSHwEVF9wi8irMZSln9YMQWMmF9VJlEQOc4t7MEWzlFj02Y7RGPq9DsJyvJsy+hnsfpSmMgpA0XcwBWVV5myVLvKMiYLhCeDCjaRRMxB53zRFLBb6v/k/Kov4Zx8WyMWjW3hoGYP4sufHHjybsy6b58c1hPXJxv+M/YcNdeSXNiWF7dmPdgO+Ysh4bjlxbizoRnAO/lRoBqmzRm8pERF3325OAUTEE0GkoyduWFYhbBmMlNI1Ocz8NHun1u1pxihvCByYVv//zIlKC21Arj5Ci8tHTi7V76DF2V3ZQZ6PBW7DXaKnm6nueMjNdpfsAwI4CDWL7hP67aYfb9oJn7QrjIW1pOaZTYwsJl5XfVOXmkvjLMltexjYyw7pQPmfi6V161cgE7fA9ZZErNc2FwPFqmSmKfwovcdxHUUQf5Nu/y6005TiPPC/+9tYZJAAm2BHBMVHj2G7x7Ods1z2Gm
- C9NcgU4B
- Td/RPqBRbmBRBPb+vQwOlDlVMxtM6ooSXCuIVDM+VZUz2MN4TIkYgnvsdem08337xwJVgt+gctFnJOIcly5uX2OLaur1W/WqJ/lcYjrSA1GS5r7yDVn0LcfbEbaPnjpn0e2h/QT3p3fVvRyrf8EjG4FC3tjnhx+cm8aT6ZvLDoyd4TDDHTLkCntk1LJ+PIMLelpIFD7zbIvwpiXvvvercLIBHwLSQtYgoQkWdCVp0ZZRMQc2de2H+1Sg+TWNX71d0L1tHIEda8CCgO6Nn5EEOyBUNXQQAUcWQVpsxjZBTu95yRxf/C0ZOlmUcRe4JjjdGa2Q8U5Xmbu/gmLhtFBZ39EHA8kmT1fvfqycJNySJmaGHfA2/n9AR32C/9g==
+X-Stat-Signature: poxchjyfjzhrgfisse53bojfbioi71qz
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785528491-140005
+X-HE-Meta: U2FsdGVkX19ICZ3Y0aUPdLL/do7izEdJ1qfvuLfNc+vQ/AJPr+5mxm0pSi5x3inmQrfCM1hAh4fIKHWNcqF2Sdtrs+Dz4ZeAwDtMCYOZzgrM0b7B+cGpRJ0+tWtCWoi0qL1810OEkVkJhzb3a55u8LDrfSOFdyCYgjlumqGX/JCo0OAJkiM6GdbTRci8tv0FnNlCmRmOheEdKOLtks/l5iVeBcAmPUssWFPVuvYzEGmeMDNSWYlRzO+gh38keE2DJhVWwOkys+N5Vl9tsBykw0Cnaxxc0ks0APyQbUv8Us+gMzX9gL/d1vqeRJoiXBKksB45vLhee+M8OszYz3gPvz5k56aKnO5h4/1gGnPthoTIy13AUpK1csDvX9WP40ichsqjfBtkRYgCP8073VlvvXO3tl9C80ZOcQigADiJxRoFCnCUfHrCFOKbd3IefaE533eXasNYxK6RoK8glcksvo8tKCp38GZlZk5xhybyvNB6FWYVDweXAj7M8G1KoEkdmIbNOZmFnfroXbSE/hD6AkSulchQaBGjREx/74Jsr9Z9scnmxWdxlpcTqlZVrm52q0zfzgv2tjNA/dT75gGaOfYRQU6AWP5Wd/K7XgmQNXz3EIFoB7zobWZvNJj2wn7yRNSb9Sm28qzK0c+NPCAvTyMi77tr9x3YTjBfpC5n4qo7XzFTEJMl29NYytLQsEAcoZPLuLhasXakcysIeEyoMHusDmpufAg+EtHuzOGvVGIbg1sSQ5jRVHhnOOKOL3sW2nr/hmASSmTfN3OqrT6jWs++3o2kX2M9dbTeujOSZl5ItQX0REr7oxy7sKrx1BlBUmGZB4iTOOcs5FzjFZA2C/x8ilTkQ0hPafGdkqYlgprby9scwBjPDAtL9PW3sslbuLhc+yFfYvnK/iZjGEnUa0DuxezgdRSur0hBRgR80UUcgiGgcsMWUnHr9nyD/eFsOfhBbXSgTksP6bCmbSw
+ 1J708uzg
+ CkiIHY86wELMJwTNT8lUmLt2hQ391akxa5HtXzyqw0N5kR673R8kHtvfAsSUVl2pw8T9RjSEBhnGj9OhZTlUXRcZcgody2VsIXQjO0rOBF5NT6Hni1/wjxt7a+PSTfzLAoH1YblB9j3ucZ1Bnt+YV0/r1wDm09XA8YHQW47aBIclxZirNgGCacgqvTcvuxKcejddJITiGTvn7HSbL0DBdfMPRlEiXuPh4I7ptId2QNp4dXWz/EKjH/R+JP3Ar+FXWpXKROFKS+jhSSsxV5LkGJATYV4pDDpsZ0BRf3uomfU3YS5IDaHU/nSBIfSgK53AFbRMfqQ/QmL6BVRzNPnEJc2H4anZrOPFrPI9kXAMfWUj5H3RMQ0qOcpKoiZG2u4Yw/HN5GZKUy0tzW5JbcUdi0Nfwyn9UoPIUgNju2QPKJMMmVPU+p99BpyUpJ4VBWO/QN7KKRydyKCD/G5VpwO9VrPiyz2e3m+JHu0Q8diuPAyGmE8M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,34 +101,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of knowing how hugetlb handles hwpoison, just ask
-is_page_hwpoison().  This gives us the flexibility to change how hwpoison
-is handled without updating this function in the future.
+folio_test_hwpoison() only works on hugetlb folios today and will give
+the wrong answer for other large folios.  folio_has_hwpoisoned_page()
+works on both.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
 ---
- fs/proc/page.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ virt/kvm/guest_memfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index 7d9387143435..28c9a7b724f3 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -233,12 +233,8 @@ u64 stable_page_flags(const struct page *page)
- 	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
- 	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index db57c5766ab6..94eedcc7f1a9 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -774,7 +774,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 	if (IS_ERR(folio))
+ 		return folio;
  
--#ifdef CONFIG_MEMORY_FAILURE
--	if (u & (1 << KPF_HUGE))
--		u |= kpf_copy_bit(k, KPF_HWPOISON,	PG_hwpoison);
--	else
--		u |= kpf_copy_bit(ps.page_snapshot.flags.f, KPF_HWPOISON, PG_hwpoison);
--#endif
-+	if (is_page_hwpoison(page))
-+		u |= KPF_HWPOISON;
- 
- 	u |= kpf_copy_bit(k, KPF_RESERVED,	PG_reserved);
- 	u |= kpf_copy_bit(k, KPF_OWNER_2,	PG_owner_2);
+-	if (folio_test_hwpoison(folio)) {
++	if (folio_has_hwpoisoned_page(folio)) {
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		return ERR_PTR(-EHWPOISON);
 -- 
 2.47.3
 
