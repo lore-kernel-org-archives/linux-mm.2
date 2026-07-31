@@ -4,104 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C3DC55173
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD5C4C55172
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 767626B008A; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
+	id 39E076B008C; Fri, 31 Jul 2026 17:53:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7179F6B008C; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
+	id 2F8F16B0092; Fri, 31 Jul 2026 17:53:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62DC66B0092; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
+	id 20ECC6B0093; Fri, 31 Jul 2026 17:53:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A29B6B008A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBB2D6B008C
 	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:53:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B7F24120167
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:23 +0000 (UTC)
-X-FDA: 85050423486.08.E62B8AD
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 114D22000A
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vEL3ZEur;
-	spf=pass (imf03.hostedemail.com: domain of 3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com;
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6631E16018E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:24 +0000 (UTC)
+X-FDA: 85050423528.20.0208613
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B6B9EA000A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="V2Djism/";
+	spf=pass (imf15.hostedemail.com: domain of 3URltagoKCJI7A2w9Az0772AA270.yA8749GJ-886Hwy6.AD2@flex--loganodell.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3URltagoKCJI7A2w9Az0772AA270.yA8749GJ-886Hwy6.AD2@flex--loganodell.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785534802;
+	b=qCfBYNTCyOnVu8x/JelSaCHdIbQh3H8zOPnprY5AOksPm0ggfkSZ47+7usY6dSCj+7L7E4
+	aseQm098QsJOONhS0hYQNBaAiS/CJpo4H9KYJLWJR6GNQJXzpUwoxgSvDmfacejC7Kg0KB
+	NQU/14paIhom8dDHMgzK0wvg41Cesw0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="V2Djism/";
+	spf=pass (imf15.hostedemail.com: domain of 3URltagoKCJI7A2w9Az0772AA270.yA8749GJ-886Hwy6.AD2@flex--loganodell.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3URltagoKCJI7A2w9Az0772AA270.yA8749GJ-886Hwy6.AD2@flex--loganodell.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785534802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
-	b=d9qlMeEgrJqITCaU96JWQr3NKF5ITUi+x+yUsIvjccgTVv6c72z9OvS/YBHhOL4YJ950CP
-	afQs8PHeL/9e5Y26T+TbEm0KsUKlPN5S34RUc969+cr73mGIA3CL15U7U2tR1AHlOXuLTW
-	F4r+BUbwLNrH0oh22NXLKElvv4XdcBc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785534802;
-	b=Vhd8SuOhiASrtAMSZ3AP6eK9Y3/mfRF3VCv9P0lHbPEGBUtEplQX85HFDW+WhF7RseEWg0
-	iMz1+fR4W4FOxW4AqCAm6GDPDV0XmZfr2hxQc1PnAfxEWZYs6yXLgAkQ8k9ttJjVhLVbxM
-	t5Uhx4L5zig5Kb18LHrRmQElHX3y5Xg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vEL3ZEur;
-	spf=pass (imf03.hostedemail.com: domain of 3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3UBltagoKCJE691v89yz6619916z.x97638FI-775Gvx5.9C1@flex--loganodell.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cab041eced3so2133193a12.1
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:21 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IXN1kpPZzQWxyZLtIWIq6X9QJe/5QaMTFSKsE0QskIU=;
+	b=S3BnqDuqMQ/q2+jSu3SsS8iSSXA7/wjQ0bdkaHX/BpIpRBnj+BBGXoN163WOs9Sijwja6n
+	hK5ONXrlZzndYYt74FYJ961i05A+pkAVWmg0QT5WTZoJh2m+zODBntOtcTsipOr+yNxLW/
+	BnL/kZ140Ls+tzhmu/RwvN9LTHmcsM0=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso1524176a91.2
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1785534801; x=1786139601; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
-        b=vEL3ZEurSR6z7RNPFIl1Fcc+kq5F276CYyUDHBU10nbG7j1Ww7puQJfAN4bw5dynaw
-         XzGuQ/4OUi7mhQZBFLM+8zugb37bEeaMYL3unJziUh/VqB89v5ZvLnxLrJxHSWna8qmq
-         6Vxjr8TuDC6AATijJRfIilhR6r4wFwAl+//H/EE6FgBA0j5zl00I+fGzDU+CClDJPE3M
-         /VVakFp+chZJ5bTh6aNpR2NMyie4ByHsy3H+St3KoFn7bGr/EP5tb3/TfvTOUlfU7O08
-         AndlMWz0z5jlNHNzhOG/lcSw3EcqUsr+fBxc3GsJ5qEn0B8hVM/898yBqT3VppOQFThw
-         8n1Q==
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IXN1kpPZzQWxyZLtIWIq6X9QJe/5QaMTFSKsE0QskIU=;
+        b=V2Djism/WfGx4WOl0vD3ORKmCD/vaFIUSCEINqjmHz6ljBxexEynMt18r87hHo5c+2
+         KYgArHVaAqbJDYhVjAuuLsdTXqCWigW+biflEtqrciTzJ0MCX+x16+C5xz/G85HNfR9Z
+         vnlgUe5c1rTiG6J0Y2h+cQUpWru+yMpIJBFvwtfLXEvJhTVC/lXCaj/PvEEQtplUZ501
+         BvHCbFSR62aulNqBKumCP8Dhj1Pk5dA2U4D5jKr1UR2M/qnm011JGTsa5ChPAiWsFlZ/
+         vNJablxCDm1UU/QDd0qwiQxb4nPWpOkjhivCKqJASBvlys38Ss9364C8SX0/30EydpYE
+         KIKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1785534801; x=1786139601;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QMT8aJxPN69Dyrd3LsDwUHfdRMUYihjZGyjp7f0vmTQ=;
-        b=bPRXsZ9dek4kLUaP0UauXRpzCqgFo9/bkEI/D1k2Rcjouwh96xOsot6T7pziogjUFa
-         th+Yxu6soIyGLrNl/GCoXf803/STvdQ3c8vsyzA7J30cZFHEQ5arGNnEKcf2aa43G+LF
-         Zj7Tuz/Zdxn7882SIgVizfjNoLiK/9565nPesfxc6cNS8SBUhOCHqpAMzkMzUJYHg6Mu
-         I7qaXkSP/u5ZE0h/A1Sm/H7LC5qh2yHUBHNNW49lJ32iM9VLpqSNyLUQKluvYsm5G+EQ
-         9VWS9HBDBMmF0qf/X6VCfAwPhV+4gbVWRqNxfytPvWiNq5lwmyuH/r0H+tzGLYTHHt+6
-         kb+w==
-X-Forwarded-Encrypted: i=1; AHgh+RouN093exfFGbtOrKRF4RBYtJE82fpOCnwswLfFFV+MUYXOFWAG24LjDfnzSjvxxyshciaI0HyPZQ==@kvack.org
-X-Gm-Message-State: AOJu0YyHatfGBXOphaBDrFQ1kHLX2Y6Y6y+ewQzlSQ4HSd3TXokmy6pL
-	ET3Ey99DTZ6JrwKGx1qwdemhkdSCMw/0ZbO0a0za3JZ7cXeaqSTwZQpCJJ9J/FDJr3fcX+jq/ge
-	XN+YTJkkP+GuZ4zXPFv79Nw==
-X-Received: from dybhd40.prod.google.com ([2002:a05:7300:e128:b0:30c:5a76:5abe])
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IXN1kpPZzQWxyZLtIWIq6X9QJe/5QaMTFSKsE0QskIU=;
+        b=jR5gXuZLXbTITPtCKhogiVVkchLHaPK54+MOabQqqRHsqBa7jcjLtFtelHnNqwzY/K
+         3cD+FpSBjFH5kB/CQRrjQrlFZjj3J/+NWiM5Ffl99WQrPYEmyoPLV2xSx+0Ch21xBZH5
+         VEkJCidbpxYSbsfcAXHA7Iw+z9RVW1TRM3W7l78sWrPl43dKpT/llF0s59tQZfYUFbYC
+         T4zwDdathO+R3InK2ppW4tSDZvxw1n8xJRGNSzCvD/VqD2SNw1haiqisjEr6CD9sELxH
+         i9KMbuBUnOCpgTPDZqv8JSZsGvElsXugyfPTMLQTFbNs0T8BfbZnCc6PykYZR4bXRCHr
+         UBjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqKavsbh2yz/uWs+Fsa7lzimoZINETr+6rLvei+anzBWRbeHHYqtxWyceGDbKWRYKbDtrDtxVXZew==@kvack.org
+X-Gm-Message-State: AOJu0YwwRYmlRHd+VUJhtWBZ+hIVeIsD45qrXQsITzn2LFXWlmO0QtPY
+	+XEVkzY9HhORsfcWZe/7bsnCcEg2tAmN8KsYi4vU1BeYEYnph1WsbTiMxYcvxSiYpRnPrxghq6i
+	A4ka3S9iTnFm1Cxqg1CNeig==
+X-Received: from dybkz17.prod.google.com ([2002:a05:7301:1a11:b0:313:b255:3ca2])
  (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6f07:b0:3b4:7e2d:a3c2 with SMTP id adf61e73a8af0-3c92a52a045mr1268067637.18.1785534800614;
- Fri, 31 Jul 2026 14:53:20 -0700 (PDT)
-Date: Fri, 31 Jul 2026 14:52:20 -0700
+ 2002:a05:6a21:3393:b0:3b1:a9ce:507e with SMTP id adf61e73a8af0-3c92a60a0f1mr1289190637.32.1785534801433;
+ Fri, 31 Jul 2026 14:53:21 -0700 (PDT)
+Date: Fri, 31 Jul 2026 14:52:21 -0700
+In-Reply-To: <20260731215224.831696-1-loganodell@google.com>
 Mime-Version: 1.0
+References: <20260731215224.831696-1-loganodell@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731215224.831696-1-loganodell@google.com>
-Subject: [RFC PATCH 0/2] Add support for multiple versions to KHO
+Message-ID: <20260731215224.831696-2-loganodell@google.com>
+Subject: [RFC PATCH 1/4] kho: Move subtree blob logic to separate function
 From: Logan Odell <loganodell@google.com>
 To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
 Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Logan Odell <loganodell@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 114D22000A
-X-Stat-Signature: 87w9hxu8okgq357ja63g34yygag7a7b4
+X-Stat-Signature: 7zaj8ngz4jmh7qfan89firipq76b4fip
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B6B9EA000A
 X-Rspam-User: 
-X-HE-Tag: 1785534801-272925
-X-HE-Meta: U2FsdGVkX1/6yO45pBgEvuWhuUSQSiskW5BXAZ51rKiO8BADTJELNxJfaZJaFwTQqfasghykZ5ZQdGdvvF+ff/R9f+WQQcJIqDZWPKMvr86DHK2MTR1IEQqE/hJHzl2nt9qbn7yajIfzIQfEvrl27fJTqaNcFHDB8ogbt9YXDcwMgdUAZI9h6aGL+CS52VfK1iofW1xrSBBS/BKeCIlRU9rHI/d9arQGT5gvlr2g7v/UNCKU5HJW56cdv5RxzZR4qY7dulo1phd5tbgl9h+q1uX0kkOO3FWYSrK/7N/sGkcfCn4KGHXhogTn1be9RA5ZEBPuBOiTf/vkr217QmHwNAANoHkzzN4+K9WTt949PgUTg85Juc9w0CFtk39uil8Gq1GhfsMFkJB3lBLYpMA/n4Qv0OKTsoH5tcgd/pm2bmTAFRBVlRUpAxY452isbGFAqtKBts4pTNwvIYl92VNH6IWKnkgslYiWj2ZNXBgVYQb/TQkaMrkBMHAV3JOT805Nguyv6HctDIO+QoQiAFE7nHp44oakrhbp8eraXtUOh2/7AAF8qXSz6fvegENB6O2GHzG372XZ2wHrhBqiCWVs+rW1cVAn1si7jTbHRb7SP3NHx8cn9MGRx7QsnTLvW0obwpVIR8xDGwzw0Y8Yi34XeatI5OpMLpGpNWLfevr7mJ4JL6RS39EoHf8Y8FGPOk94bY007giMucP6xvJ2tmOUznSirhyf3Azi9/RaSiTTwyLez6OJOvGvgn1cCc4lSBz8SlaCiNwgIr4T8yc4sr2WLyDODruRnOELJQSszrDHhNlH24cgN0cNfXK30iVjhWNM31zZA20x/OogGWovkfdVb3MEHbKyotFCUMVrT7SRYonUQaUaUjzf0iS4YIZDyEIgelFi9F2XIsTfS4kgAhRCtVQjheFeJIeTmfKA6UYq/d8SN3cGMCYjL9ekF+pcXg9jl7Vl4UI1WhBbLRlEYl7
- vu+Qn0d7
- I5rQ2PFGgeHRUfD2arbYsbkMZu5t6gCQHdvppNpViKrLAW6XagQGNW5uTLiKe3AnXttatU//WCjdVBrDd7SAMvr8qP8W8EN92MEMflb5GXc/PpYrxd+I8eKiBrRrAXWrbz4pLRC0Wr5uJWyfPZ7XK6YSTLPE41bN78vZvY/c/Fik79BZf0BWh7opozzzOod4d1FXLSKarqNMdF3scoBaXwrOMs3ZPYIEpag1hwLzcP/dvTu5Ua4eU8Wc6A2eu3WxS11MoqcRU+mglIQB+XOLEXXB/glFCz2WgkKoBS0sONXK3lKLnm4rvf4DgwQQ4gBq44KTFVWvRSku5SoTMcS6SWc5uQRytWJ1+ETjrvnH0P3udtBbUY4Iyh8PaGwv7At0SJk6XCmL/k/CDTl5E+Uoa6lWGtU3zHA/i25ZJI4niZU1EwZf7nrten5tbhvCyC0BBY8AeuM6ppirJMwUBXWasZL5Mje7weXeaU2ddK2n3T4ibOylaUyZEbFfBXorX5tFpq3QMMKXdbgvWYLMmQbfECWeoFcxK0rIdncVnzBJn1+ZhlyyhNtYis77m03wdsY/zMKOZIM8NYjkWUjNNWElTWDmIZIi5h2NNg7EVEUJQsSyFqCUy3hr8V/014g==
+X-HE-Tag: 1785534802-528154
+X-HE-Meta: U2FsdGVkX19IG5UUwojMz05FP0Abnq3Ug5JDPvnB1Ob95dHoCd/Nxp4jqYbY+sIUtNxYd6llqB7qaVUo6lYoDiajmxjqlgbU+wgQqU2d+Fy7reNQI36wOejwEFuv1fn0S4sh091VG7Gfz4H1VqXgoFCE25m5FJBVnoJgzJo4ostgHG0X0vxZUjmPAwZORXQfZw+C5T9CSVDSlnMauNJNsOI9gAw/OSq2pIh/4sBoGnkBULFjJNfDavXg2qmnDniAnuI6PfbDsZMUyU6rWz6+HWuMGgixfgxb7JwwldYiYHifRIdmsHTQ7pqLNOAApENim1JBqPd1DGdrbTGyDqz+3bXS9umRVR0x7fsdMGeB/5GhOvmOBAS0WskUHa7taFcCND8gAM6QIQ/G1OCgSUUL3fmqGBi6Bwk5c7fsAcOMGbTj45jnjiVh8dsWujVtFyTgPuaW8kATZsnTmKR+7fpOdswzHEw31cYpIGzjsycuc//upnXeOQOe6xGSXLe2LQ+YAK0xRfrJnGhzVSlg598vcJ2ymAGsUtJJ/RIA34iWdxjJyUUf3bt+Dbb/YwrOh2zOsvv7aqVVgmMZyBYuJ4ZnOOeWvud0lbXOfVYndJL22cE0Nd1+fLgU9IneGma29vO93Cyk8yIaq7Psjyk8Wd4RNcXUcnt4Pr8MvQw6YS6TeenyCnj2XfChzpQd91qDhKIB3WOuf4EjMfOaeZpMj42w0yhUatB0dtazJhTXwyQZ22sKeaGpKIahOLmz3beeNMpXahG9TpT0p2oZ8XpbPFhfDhihQfsXNDeZqljXnIjMGF9CcnODDqhUsWmK3T9NH9mSCN92u5NXvo+iKDGCbZBP9MrbY7Y4fkh5WBIRP5d8Gnc7WfmWz9SBdIk3rd4JAKpSOajVLY//tIhUqH6sr/yBU4bMoXGhVaLHZPh72fE/LxTRsOJWTheAnQr7OZfcAed/0GKPypn7FV8XTgzOCsc
+ M7Dxlel8
+ 1bSg7PpZMWB2v/M9NUNpFIwJ7bYENPvI5ZA/UN5D90xyisomOlEktLFQav/3X94jtnDnjtG68cafASw1ZU5Hq3hdGOQ0mBCUZr6+9cj5zTXeTAACBVYyvF6rGPx583NlyLNaVo7H2Gp0R3/Hkjv4pYVl+y1F0OAVjUbIJbc07ipheioCrpz4yJofWlqW9DZ148SkXjW8DH3mHwrgLbWhQr3waD5c3MrVFsZJl3HZ7VTTcKB6vr/FG+ceWY5uSq2uLyj97j/tE1yQfdL803GQg50VhcrrMOOfCyft+4PnESvUMCfwXMxLo5vaqIRy+hGJvGyYuedlMbJ1TgMAP2qVvU2hyc679DzgyEkUOJUO2jykFcae6HTi55l0ZQ5QdJYS4cRHGgC7Nt0tVm130Hq1zv7GWzta661I8Um6A6hComJIkO1qqLKPJ4c+Jo1Lj100itEHGJHL+133n/Mu6tXJIiijciV1Ss0avayMdb6sbvuAr7OW6Kf+5BCz3I9IGP/tXzVXAeO+KbBy7epI4YVEPmgMFhvKA8tbzhgNeFN3sP9Ls1kdStWBDkLp0bqlGzeisnylOIJchW0JwZUGDYR9CYzyb3CFyvpBwtmZYxjt7yzuaWX8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,74 +110,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The format of the preserved-data blob that LUO saves to KHO is expected
-to change as new features are added, bugs are fixed, etc. Currently,
-LUO handles this by embedding a compatibility string into struct luo_ser
-which can be used to compare two kernels. This works if the changes
-between kernels are fundamentally incompatible. In a case where a new
-feature is added, we may want to support both versions in the new
-kernel to retain compatibility.
+Move the logic to set the blob data in a subtree node into a separate
+function to allow for re-use. No functional change.
 
-This series adds a KHO interface to embed multiple versions under a
-single node in a subtree.=20
+Signed-off-by: Logan Odell <loganodell@google.com>
+---
+ kernel/liveupdate/kexec_handover.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-We go from something like:
-
-       / (Root Node)
-       =E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent Node)
-           =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
-           =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo>
-
-To something like this:
-
-       / (Root Node)
-       =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
-           =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
-           =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xph=
-ys_luo_v1>
-           =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_lu=
-o_v1>
-           =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
-               =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo_v=
-2>
-               =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
-
-We can also support mixed mode, allowing backwards compatibility in case
-of a roll-back to a pre-multi version kernel:
-
-       / (Root Node)
-       =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
-           =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
-           =E2=94=9C=E2=94=80=E2=94=80 blob-size =3D <0xphys_luo>
-           =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
-           =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xph=
-ys_luo_v1>
-           =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_lu=
-o_v1>
-           =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
-               =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo_v=
-2>
-               =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
-
-The first patch moves some common functionality for preserving a node
-into a separate function. The second patch adds our new APIs. The third
-patch adds support for multiple versions to the debugfs entries. The
-forth patch adds new test cases to test_kho.
-
-Logan Odell (4):
-  kho: Move subtree blob logic to separate function
-  kho: Add support for multiple versions in subtrees
-  kho: Add support for multiple versions to debugfs
-  kho: Add test cases for versioned subtrees
-
- include/linux/kexec_handover.h             |  14 ++
- include/linux/kho/abi/kexec_handover.h     |  16 ++
- kernel/liveupdate/kexec_handover.c         | 234 +++++++++++++++++-
- kernel/liveupdate/kexec_handover_debugfs.c |  57 ++++-
- lib/test_kho.c                             | 266 +++++++++++++++++++--
- 5 files changed, 540 insertions(+), 47 deletions(-)
-
---=20
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index cc68a3692905..29a05cec2625 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -722,6 +722,21 @@ static void __init kho_reserve_scratch(void)
+ 	kho_enable = false;
+ }
+ 
++static int kho_add_subtree_node(const char *name, void *root_fdt, void *fdt, int off)
++{
++	int err;
++	phys_addr_t phys = virt_to_phys(fdt);
++
++	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
++			  &phys, sizeof(phys));
++	if (err)
++		return err;
++
++	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
++
++	return 0;
++}
++
+ /**
+  * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
+  * @name: name of the sub tree.
+@@ -739,7 +754,6 @@ static void __init kho_reserve_scratch(void)
+  */
+ int kho_add_subtree(const char *name, void *fdt)
+ {
+-	phys_addr_t phys = virt_to_phys(fdt);
+ 	void *root_fdt = kho_out.fdt;
+ 	int err = -ENOMEM;
+ 	int off, fdt_err;
+@@ -757,12 +771,7 @@ int kho_add_subtree(const char *name, void *fdt)
+ 		goto out_pack;
+ 	}
+ 
+-	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
+-			  &phys, sizeof(phys));
+-	if (err < 0)
+-		goto out_pack;
+-
+-	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
++	err = kho_add_subtree_node(name, root_fdt, fdt, off);
+ 
+ out_pack:
+ 	fdt_pack(root_fdt);
+-- 
 2.55.0.508.g3f0d502094-goog
 
 
