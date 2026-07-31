@@ -4,91 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F46C55162
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 01:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A08BBC55167
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 02:14:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EBB36B0088; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
+	id 290316B0088; Thu, 30 Jul 2026 22:14:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69C676B008A; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
+	id 2671D6B008A; Thu, 30 Jul 2026 22:14:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2236B008C; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
+	id 1A4746B008C; Thu, 30 Jul 2026 22:14:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FF796B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 21:46:43 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97B3F1C0912
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:46:42 +0000 (UTC)
-X-FDA: 85047382644.25.0479422
+	by kanga.kvack.org (Postfix) with ESMTP id CFA0E6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:14:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39C171C019A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 02:14:13 +0000 (UTC)
+X-FDA: 85047451986.28.ED7AD7D
 Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 49AE41C0007
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 01:46:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V65hgF+X;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6F3A040009
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 02:14:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pAN6jO/4";
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785462401;
+	s=arc-20220608; t=1785464051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dO3PkdIRMlkezl62as+Q47Bf7B4brhEm4xLqBToECdg=;
-	b=tjcYkAPLvPEI3B0YFg0T9Gkm2nMaJg4h6b2OOeFbnqM9VNxq+LvUxEw0EsQyQHtIaqShmU
-	M1xYMrh+naB9Lle6LktHKYhqXKIwWjCAQjZF9SMBzI36GmDPi/M5Ctj93J6Zon/frY1phb
-	bGwRHHD6JmYHKvz5ejJj4DSXdS0Vrt8=
+	bh=1fEupGYGhLWFgoSe/r+XuCrNsAvYCd8RtQFa5T3203Q=;
+	b=qEoxODbmp1PFVw2aVNfPZInOD+M9hIjYHiA8PME+3mS9ItfclEgX7ZhUxsv0Gs4LPAgaUa
+	oMiyXzznbUEeJK6ZbQn0J02G/j7dRrMiguWmbEg8lhTqxQRjPtwUYAlFonVg3Ja1xxZQZs
+	/cW1XWOY+bJCpcPn6EZFCaZq5YOXIUE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785462401;
-	b=otoFU//ghigIgUYHJTcSSwZ8mE8AcA/r9GPejfRjuB5htWr4SwbaBt+8Twm1aCmCvbpU7i
-	0RPTIrm3trpegOCcYDV6a/H4WO6UPnABRX7dKUqtPuo4NWTAMDawecr5+egNfkrzBavZJb
-	+1PaTsWunG3liOXP40HqafwjxzQ/Keg=
+	t=1785464051;
+	b=mZe0xJs1UdIJI+1zHQ9rFZsF08OchNXKTSLayt5JZtMH1lC9luzlGAIkRPe/Ela41xz/v7
+	WKAR4w+r8yYOzGyQZt1KGiya+ZXWitgGl1RhmXp2gXMh4W2ciUJMfx5Wd3rc/CK7FAOxJq
+	d4dFg/s67HPa4UlnT7N8951Eb66YCeo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V65hgF+X;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pAN6jO/4";
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <d0fa85a4-53bd-4af9-b275-856ca073bc96@linux.dev>
+Content-Type: text/plain;
+	charset=utf-8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785462395;
+	t=1785464049;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dO3PkdIRMlkezl62as+Q47Bf7B4brhEm4xLqBToECdg=;
-	b=V65hgF+XXbx2tPBla+Wuz8xT9Y54R7Zr/SDapDPrGfg0JMMAg+szspXIoIhsNQMdGmEuEy
-	TyvjspXsx/f0HdoLsZZ5XwcwHi9XfjLXcxZ/fIXGgSVGSHKizWRaUTrmA7BnlLZoE7h76o
-	45W2UH6GaTcN/VDi96TczreZcCScRuI=
-Date: Fri, 31 Jul 2026 09:46:27 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm, memcg: fix memory.peak reset clobbering other fds'
- watermark
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Finkel <davidf@vimeo.com>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, Tejun Heo
- <tj@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260730115314.1069089-1-ridong.chen@linux.dev>
- <amt140aXu5tYZxln@cmpxchg.org>
+	bh=1fEupGYGhLWFgoSe/r+XuCrNsAvYCd8RtQFa5T3203Q=;
+	b=pAN6jO/4ybpymCX8FToWqPhTuorFnbVQrXI2DTFHP1wDzq7nQdvF1sji83Co4zdLBIG2TI
+	lDj7vmuTVVX6ivbn/q7D2iufVlZDKIDeOXg9CC9DMSpNqgAiIUdlo9WGTevIk8wuug0MiY
+	2lV3ww5f8Z/73Do3h/oyBDosIgesvbQ=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v2 03/17] mm/mm_init: skip initializing shared vmemmap
+ tail pages
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <amt140aXu5tYZxln@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <amtgdZ0U_UIbx_hI@kernel.org>
+Date: Fri, 31 Jul 2026 10:13:43 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <89878C33-9BCD-4FD7-92A0-884CF682CBF3@linux.dev>
+References: <20260720093127.540540-1-songmuchun@bytedance.com>
+ <20260720093127.540540-4-songmuchun@bytedance.com>
+ <5005C7D3-B3ED-4C62-B611-8465D2BC69FD@linux.dev>
+ <178540851830.2154539.6359871825839331816.b4-reply@b4>
+ <3FCC8989-95DB-450F-95C3-183787DF4D08@linux.dev>
+ <amtgdZ0U_UIbx_hI@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6F3A040009
+X-Stat-Signature: jo3w7jrznpw3h9xa9x6bhc7a4i1e5dmy
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 49AE41C0007
-X-Stat-Signature: apdrq8too9ub4xxuoph9bynsjw4986xq
-X-HE-Tag: 1785462400-998769
-X-HE-Meta: U2FsdGVkX1/iulyBhIsOSvevoDDdM/sokWzleL+JzEhzkJZZfTKPw5/RDWHaqS97e84G8J2ohKiTagJNQwYbQVVlzQLo5F4w6kNS5gIcaF3I+uIp/YbWBBOw9py1kDkzMqs+a4gan2hNaFou3KU6MV7++gxm0l6lwUp8m63csNBk4je2D/cSOg3STUXaEEA9OjyE65nh/OsBO8pyBkd14iEzBWsibnbZCg/8UZyPYNk0gZNLQAq2noUKC3GDsH/SBFtjJKaezJBd9chpNiSiZ3kpwi9ShN5QyrQ9VJ8KMDL/cLDu8Wkc3xEX2l+7fseWRZ++bWODSNHqso+UbHf7Ku2G+TVglcqUiRIAwsmh+BrSzuYG7mL29zBDXiGFr0rVhqWkSoi5UpsihYVA1OpZzexcJKS56/s6m8j7gZes/CnZ1ewKow4IsRjson7rx3AZC4qis8WzzWaw8kx4YD2ogXa99wbdQQg8uqLpPs5ksx4PE8YwCKAQx0yAruxq42e/4+gWBflBcrr6fjGgYw97BJA+YBpy2b5YjkW/nIs//f0RkizIiCh4F6R4rsCL/ZmZ6O7WjTQw1Q40zqzylXjkabU6CGGrwT05ZbQM2xm9hgg2beU+jU4whb+MY448KeVnM6SQ+0+BO/zQCV8y3fECK74eJKQ+6UGHc7QOJ0UIPWGT1CdlXMHkMNlvIAlJs2G5qCotpb/LFQWKpZuuhz1uvcdzhPF2cStvehcMQI/1XX+KFeR4L1xblDTWwP0WfcjmarxPM7+/Dh5F7QUvqbwS5l576aS9Gj1H1NisT3NgaIl5L6JU1EK7reN5Exyuh5YZyf5myKWhaV28zXiemOMt590NvdEKGMzNaNnoop3K/ZnpmFAQwnPxKfkR0z3oLrm0MQy8XpB75AHSM6+zwICtBYLUZmSgE/KhUrWBq3cqyS7bxXjCTE/qi2cKJGYvlUrbtN945M8Vfb3Xqli9nH+
- u9Zs6VEd
- a0a3ZJzu0nMfpBy3tsOnVobjloQxrzpWAjA/Z004yMxXzffBPgLibY1vcRGQR9sVJY1scu+Wd0ynvVuKUjFBfBbbxhcDCfeKy51RlPESbf9UeU2tkui3p9CdPO/9evCUmGN1G9wKLeP5Cx/snTWVsjrWTbqCQlVly/SFeCGnNgc5LmqqHeWU+LYxx+fFpv9QpUswwOm1mXX9QeoiTW7x43mJ9cgGjPNc+ps28FC+r4GzkDAY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785464051-768428
+X-HE-Meta: U2FsdGVkX1/cxO4GYgNj8W30ph2uD29QJG3YD3MhXFGJZXPnv3UHGyc87gq4+QKF8d9TDL6iS0D5UJ7NPkrldkhxnPak+UgnRRMKrQ4Fzo6Sia0Bixh6ewvlI1hNvq/WXTYaRe+LhumBZx2kvSDu3wbQAmh9hNXIMnnjEiXEcH8C73BqnABKPRTwYnv7O4/kf+ttFSJ3i9LLqtx5+dREUYUnF2rfLHdy/ocfLhfuLsUjcH4CsuObQXhyHNJNzeyDy9Eun0xkENw6hrbmcMDDTqcKxGYsqxZz9Jz0jA3IaxiQl/odtHdL66gnsF77u2lIniZqssmBvfb/YTGPWhB+W+3+aPf3/GbZ9IJODQi36SFCrN9e1j+zSe8z5bhu+jISfQX2/k6gIZvcS1IdYJiSUwIOLnkE59w8tGPdzWNOO1CCTfdvvACR/zcJTYSK5pCfEn8i/zrSB/yIe0G3/FtnBpkjSbYZWQfoso9JFOPf3yBBQklgRBnK7iaz2EhuXVQqBh44ycC9/lj43pGAA380QqOeqrRkDDqFQCcCkrKL8vJMwzIwOj4CVCcbUcAyMYdBBmwsQkVEHP8DXJFMrRt8OPX4gVqFsoaEmamV2QDzrAQT/hWsIMDTGT6RoPeM+6k2Jubq3B5asBvyKUsOlWr74855iPuX5KzH609q7enz4wfhfVmvOpqh+djy9+mI4wp9ReyH9RJOJ6227K53qeHeX9RIUr3JxdDlfLFoOfxg1FqINcGEABhecLaJMaIkXdu+P8aoOz65Yfh3l7iphEwhZo1cxOjRwFcfjoBRQ6lsrdl2VLDD3d09XXbc0496XL+cyPiJ3/uImqNDQF2BOh5pLXf0BeJzHhbypChfUkVD11PWm6NkbaG+qf0kP8toADMtpgHCkXO3yV9WJo/xpzcccBpnA99Rr+YB7yO02ebA5k6NrQRXGHRgZsmaKfUlrQGN9RHOvuePylDLHNASSTn
+ VVKtjcpt
+ 5A46zwCBf0EPNmoGWhggIO+GzDN88mLhORkiGlbnuXbmSkjXeqEUI20Fx0RlWe8AQEAddgmU4PoK7RWRSrTbU6KKtbNBzB290FH3HMa36+EWmR0jz2wCHaA7T4M2qDLY44UvdD8sj/HsEiGqTx+G+lB4sfg6lMyJDQNkcU50ZQbIyEa+IttAt6JHx6BXiYUH5NrpoOcOOIjlN3f3nl3lRglTbA/dc32IlswsAiq1dYfMSo1sUiYDstCYgodOMhPIp9XC61klCXDFA20q5hARDuiWUmdd+VL+lQ3oEwC4aEfv1KvT7ZDGsgUFoBxP8qlMpaTWt4tVKN87HSViJMy6Mqj5SHKN4kwV6FZoLXeCoEVuGI29U2y6FgFkoT6C6FIDG4+lq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +103,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/2026 12:03 AM, Johannes Weiner wrote:
-> On Thu, Jul 30, 2026 at 07:53:14PM +0800, Ridong wrote:
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> Writing to memory.peak resets the peak for that fd only. Each fd is a
->> watcher and reads back max(its own value, the shared local_watermark).
->>
->> peak_write() resets by lowering local_watermark to the current usage.
->> To keep the other watchers' peaks it then walks the watcher list, but it
->> stores the current usage into them instead of the old watermark. So once
->> usage has dropped from a peak, a reset on one fd wrongly drags every
->> other fd's peak down too, even fds that never reset.
->>
->> Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
->> B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
->> collapses to 1060 KB although B never reset. With this patch B keeps
->> reading 410624 KB.
->>
->> Fix: save the old watermark before lowering it and use that to floor the
->> other watchers, so a reset only affects the fd that issued it.
->>
->> Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
->> Assisted-by: Claude:claude-opus-4-8
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   mm/memcontrol.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 60145aadfc5e..881e7c459c64 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -4692,7 +4692,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
->>   			  loff_t off, struct page_counter *pc,
->>   			  struct list_head *watchers)
->>   {
->> -	unsigned long usage;
->> +	unsigned long usage, old_watermark;
->>   	struct cgroup_of_peak *peer_ctx;
->>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
->>   	struct cgroup_of_peak *ofp = of_peak(of);
->> @@ -4700,11 +4700,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
->>   	spin_lock(&memcg->peaks_lock);
->>   
->>   	usage = page_counter_read(pc);
->> +	old_watermark = READ_ONCE(pc->local_watermark);
->>   	WRITE_ONCE(pc->local_watermark, usage);
->>   
->>   	list_for_each_entry(peer_ctx, watchers, list)
->> -		if (usage > peer_ctx->value)
->> -			WRITE_ONCE(peer_ctx->value, usage);
->> +		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
->> +			WRITE_ONCE(peer_ctx->value, old_watermark);
-> 
 
-Hi Johannes,
 
-Thank you for your reply.
+> On Jul 30, 2026, at 22:32, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Thu, Jul 30, 2026 at 09:09:00PM +0800, Muchun Song wrote:
+>>> On 2026-07-26 12:30:17+08:00, Muchun Song wrote:
+>>>>>=20
+>>>>> #else
+>>>>> +struct mem_section;
+>>>>> +
+>>>>> #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+>>>>> #define pfn_in_present_section pfn_valid
+>>>>> +static inline struct mem_section *__pfn_to_section(unsigned long =
+pfn)
+>>>>> +{
+>>>>> +   return NULL;
+>>>>> +}
+>>>>=20
+>>>> I'd like to propose an alternative implementation that doesn't =
+require
+>>>> exposing the mem_section. The idea is to add a new helper function,
+>>>> pfn_to_section_order(), so that for non-sparse-memory =
+configurations,
+>>>> the mem_section concept stays hidden internally. I'd really =
+appreciate
+>>>> any thoughts or concerns =E2=80=94 if everyone is comfortable with =
+it, I can go
+>>>> ahead and implement this in the next version.
+>>>=20
+>>> A helper that keeps mem_section hidden from !SPARSMEM makes perfect
+>>> sense to me.
+>>>=20
+>>> I'd even take it one step further and make it return how many pfns
+>>> should be skipped in pfn_vmemmap_optimizable case.
+>>=20
+>> To make sure we're on the same page, let me walk you through the =
+specific
+>> changes I have in mind. My initial plan is to introduce =
+pfn_to_section_order,
+>> and the expected diff changes are as follow to keep mem_sectionhidden =
+from
+>> !SPARSEMEM.
+>>=20
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index dcb757b36902..0b0c2996d080 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -884,7 +884,7 @@ void __meminit memmap_init_range(unsigned long =
+size, int nid, unsigned long zone
+>>                }
+>>=20
+>>                if (pfn_vmemmap_optimizable(pfn)) {
+>> -                       unsigned int order =3D =
+section_order(__pfn_to_section(pfn));
+>> +                       unsigned int order =3D =
+pfn_to_section_order(pfn);
+>>=20
+>>                        pfn =3D min(ALIGN(pfn, 1UL << order), =
+end_pfn);
+>>                        continue;
+>> diff --git a/mm/sparse.h b/mm/sparse.h
+>> index 030248030dc7..c5fbcdde3cee 100644
+>> --- a/mm/sparse.h
+>> +++ b/mm/sparse.h
+>> @@ -47,6 +47,11 @@ static inline void __section_mark_present(struct =
+mem_section *ms,
+>>=20
+>>        ms->section_mem_map |=3D SECTION_MARKED_PRESENT;
+>> }
+>> +
+>> +static inline unsigned int pfn_to_section_order(unsigned long pfn)
+>> +{
+>> +       return section_order(__pfn_to_section(pfn));
+>> +}
+>> #else
+>> static inline void sparse_init(void) {}
+>> #endif /* CONFIG_SPARSEMEM */
+>>=20
+>> Since we also use __pfn_to_section in the patch 14 in this series for
+>=20
+> I still didn't get to patch 14 :)
+>=20
+>> !SPARSEMEM, we need to make corresponding adjustments=E2=80=94specifica=
+lly, by using
+>> pfn_to_section_order to determine whether the vmemmap of a given =
+section is
+>> optimizable. This new helper will be called from several places, so =
+I'm afraid
+>> its introduction is unavoidable.
+>=20
+> Do you mean that section_vmemmap_optimizable() will receive pfn as a
+> parameter and use pfn_to_section_order() internally?
 
-> Ah, because B was previously reporting the higher local_watermark, and
-> its peer_ctx->value was actually low. Fixing it to current usage is
-> wrong in that case. It must remember local_watermark.
-> 
-> What about if usage is bigger than old_watermark? Then we don't update
-> the peer_ctx just yet. local_watermark is updated and propagated into
-> the peers on the next reset. I guess it's correct, but it's kind of
-> tricky to follow.
-> 
+I was originally planning to go with the this approach, but now I've =
+come across
+something that feels a bit unusual to me: a function whose name starts =
+with section
+takes a pfn as its argument instead of a mem_section.
 
-IIUC, usage > old_watermark shouldn't actually happen, because local_watermark 
-is a running peak maintained by the charge path:
+So I started thinking about an alternative. How about we keep =
+section_vmemmap_optimizable()
+as it is, but introduce a new helper like this:
 
-page_counter_charge() {
-[...]
-	if (new > READ_ONCE(c->local_watermark))
-		WRITE_ONCE(c->local_watermark, new);
-[...]
+static inline bool order_vmemmap_optimizable(unsigned int order)
+{
+	return order >=3D OPTIMIZABLE_FOLIO_MIN_ORDER;
 }
 
-> Would it be easier to understand if we mirrored the max() from
-> peak_show() here?
-> 
-> 	usage = page_counter_read(pc);
-> 	local_watermark = READ_ONCE(pc->local_watermark);
-> 	WRITE_ONCE(pc->local_watermark, usage);
-> 
-> 	peer_watermark = max(usage, local_watermark);
+The main reason I'm leaning toward this design is that this new helper =
+would be
+useful in at least three places:
 
-In peak_show() the max we have is:
-	peak = max(fd_peak, local_watermark);
+- Inside section_vmemmap_optimizable(), we can use it to decide whether =
+a section
+  is optimizable:
 
-I'd like to clarify that fd_peak here is a different thing from usage. fd_peak 
-is the peak recorded by this fd (ofp->value), not the current usage. So 
-max(usage, local_watermark) isn't really mirroring the max() in peak_show(). 
-it's a different expression.
+	static inline bool section_vmemmap_optimizable(const struct =
+mem_section *section)
+	{
+		if (!is_power_of_2(sizeof(struct page)))
+			return false;
 
-> 	list_for_each_entry(...)
-> 		if (peer_ctx != ofp && peer_watermark > peer_ctx->value)
-> 			WRITE_ONCE(peer_ctx->value, peer_watermark);
-> 
-> This code hurts my head. No strong feelings either way ;)
+		return =
+order_vmemmap_optimizable(section_order(section));
+	}
 
--- 
-Best regards
-Ridong
+- In patch 14, we can call =
+order_vmemmap_optimizable(pfn_to_section_order(pfn)) to
+  make the same kind of check.
+
+- Looking ahead, I'm hoping to unify HugeTLB's optimization checks under =
+this
+  same helper as part of my broader refactoring plan =E2=80=94 which =
+would also allow
+  us to remove some HugeTLB-specific code. For example:
+
+	static inline bool hugetlb_vmemmap_optimizable(const struct =
+hstate *h)
+	{
+		return order_vmemmap_optimizable(huge_page_order(h));
+	}
+
+I'd really appreciate your thoughts on this =E2=80=94 does this approach =
+make sense to you?
+
+Thanks
+Muchun
+
+>=20
+> If that's the case and pfn_to_section_order() will be used in several
+> places I think it's better than to have a dedicated helper just for
+> memmap_init_range().
+>=20
+>> That said, I've also considered an alternative: introducing another =
+helper that
+>> returns the exact number of PFNs to skip, and using it solely within
+>> memmap_init_range(). However, that approach doesn't seem to offer =
+much in terms
+>> of code simplification. If I'm missing something or if my reasoning =
+doesn't align
+>> with your expectations, I would really appreciate your guidance. =
+Thank you for
+>> your patience!
+>>=20
+>> Thanks,
+>> Muchun
+>>=20
+>>=20
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+
 
 
