@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E39BC5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:11:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 152C6C55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86C146B00A1; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
+	id 145306B009F; Fri, 31 Jul 2026 14:15:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 842AB6B00A2; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
+	id 0F68C6B00A0; Fri, 31 Jul 2026 14:15:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B0F6B00A5; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
+	id 00B9E6B00A2; Fri, 31 Jul 2026 14:15:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD156B00A1
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:11:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C97081604C9
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:11:24 +0000 (UTC)
-X-FDA: 85049864088.24.1B02784
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 205C61A0004
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:11:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D62296B009F
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:15:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E5E31204EA
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:15:11 +0000 (UTC)
+X-FDA: 85049873622.17.5F4F9D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 934371A0004
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:15:09 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=NpNsu0N7;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v59wuXay;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785521483;
+	s=arc-20220608; t=1785521709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qgKGyimHWHWrS7GKqRrXGIY74zPdoBJNUqsWVCUzh6o=;
-	b=12HFz3H9+r/aODbLYQ6Qnr2Rq6Ur4q36c5AFe4HxRkdDSOYpcEhLrC6n5wP7cOFJpgZudw
-	VzxmFLNCt+TYXB7jo3sHPOiyqcPInCxNdr/zkdG2uWdo4hT691lGthZQT/M8S8yiJEnPy2
-	ne1mJ3zveHSUnbGRE4Pc4Bd+iGJM1lo=
+	bh=TYjCuGD0pO2ANa5DVGnegL9SjFstEyINvHwzqN4rDkE=;
+	b=bY8BSqKRHBbCkuYZi0LaKTG1PIgCLvj6fvcEMgKexYtS3C3NDMIJ3nasWkbABiN2ghgeJC
+	8DqBR+Z7jg0swN9CnA8tjCJZ0ZmGCQBOf6G/9SD8TELBP5Fd/jP6ZHdeHlyCIbJxnUSarK
+	lD+1o9ZEyLKcP/rPEH/cX5/O6YXwPME=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785521483;
-	b=zwX+GMV1ddeB9krSaByn7EE9XWB2kAhwEljR9c2dzPodza9otz5E8yOrIn6J0I5OJV66vl
-	3fxTZM1be4GXxqj8ueMManhaRQxrh4ZnCJ7nPQ/LZ5i4a3x/aOY7AskPNnaabHMDMqLliC
-	Tg1MM3QF+qKx3hggbEqnwWCeXRKewBc=
+	t=1785521709;
+	b=QxV+2q5qvtQVJc09xCnNRu0RCcidms7vnbSbyV9jO5ZJO0Drw4UEKKfSR8ri8ws3VSuixo
+	+F+YzOl87eA++1LR83q9sI/DFb0ecqXUb8WjbZNIEcOV0TB87cMVujXCg+dx1+F8g4Zqrq
+	7ZWe5EeZg4++YuAqIOfJFyu++4hit8w=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=NpNsu0N7;
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=qgKGyimHWHWrS7GKqRrXGIY74zPdoBJNUqsWVCUzh6o=; b=NpNsu0N7Nk2pB2+SdDRWLmEnhq
-	d3V0f55YufscXQEl5pXVlXrTfe6VEv5enoXClU+UvZLUheXpGmD0icDh6+RDW+6brJmY0ykZN491y
-	A1xHIWBiR1s1YFIYbocN/mYdIbECKTcNF0K/c4B7iVtFc3dauPPx6tHdq6bXLAK6kA1TlIljgzzkK
-	ok49T3dq8jmWghghVW4C7/rKanX1I8nIEW4Qtj5xQXKPOzthngAqG9SnnflegVRWO1cyR+3NKVDXd
-	u5H1EXCl1XIlFPTevZbJOftj4jCor++oYXF+qJLTcNlVhI2a1hSQKp/sYypSR7HMx8S5fOEvdcA5U
-	qVi2hIlA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wprhK-00AD5R-2f;
-	Fri, 31 Jul 2026 18:11:07 +0000
-Date: Fri, 31 Jul 2026 11:11:01 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH v2] kexec: keep the next kernel off hardware-poisoned
- pages
-Message-ID: <amzkmjkJtLyYnE-y@gmail.com>
-References: <20260730-kexec_posioned-v2-1-f92d18551f64@debian.org>
- <2vxzecgj6od4.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2vxzecgj6od4.fsf@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 205C61A0004
-X-Stat-Signature: gywtumpk68h4apmo59qxuqu4f598fxjo
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v59wuXay;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D922843582;
+	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AD01F00ACA;
+	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785521707;
+	bh=TYjCuGD0pO2ANa5DVGnegL9SjFstEyINvHwzqN4rDkE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=v59wuXay31zPspTTf4mm9ubsz+mm7aYDP0gWzG+bxn+oDvKn48xSkU3q8+yL0ihY6
+	 Y7aREg0tzLTwDSUTXFsT7akakk87yUUrBuj/2E3CU9RklXGLiaJhtq3cssoQAP42bF
+	 U5dqnnZgRNhDOK0pWy8g18iApifRPIiBBu+VC3Jc=
+Date: Fri, 31 Jul 2026 11:15:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH] mm/sparse: correct init section annotations
+Message-Id: <20260731111506.ed0bc4b98228e4a9e5bf283a@linux-foundation.org>
+In-Reply-To: <20260731164758.1210668-1-ekffu200098@gmail.com>
+References: <20260731164758.1210668-1-ekffu200098@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 934371A0004
+X-Stat-Signature: zt8re3fftonoqb6r9z839nq49ks7niqh
 X-Rspam-User: 
-X-HE-Tag: 1785521482-122689
-X-HE-Meta: U2FsdGVkX195FbABST0GEu+55oWi6uP6P/46RAiu7lSawCvQ53YCk9ndi7HS4s0B1GBUPlz5OwNkFErOIBi4OHAMv50YutSgiwnbAH5NMRhE6GiBcUkwyUe/USEYdnnJ+lNgm+u6v6aVPlbyy22OcqbrSca43uHihZkFCons79IWkhjf3lqxTnsB9ipJYr7/NTtRqBDty2ac8CWhQK1At9Td7q6DPZ0wdXZnCERs2AJl/x7DLqeSBLalRC+tKCIPHqTv6cXJ1fp0uTZ8gt2mYL/k5R8F9cBHBJb/Q+tFi9PdRaX+5WbluBcmlKbnEyAnenXhA3dx456toAZobm2C7E4wCVyACgTEIELvKjBuF4qglavQ92nCupxQ+22w5R0Nkp9+3rIBFGv1C7GhrKDKxrM6iK9hSJdpZmikZfKEGQHn4+JRiM9aaG5ozaQGORtCQHO/kqRA/YB6rnkQc//iFrBeGrULRE8so6tNS7RpBYfzIErWiEIevekNJN8/OboJ6rud9b3lSVFZoqXeZ7wUcJ1KW/tZMyyA4G7pniTVVcMzX5o2Cm0uOJb0VHSBD4fUFoJib2NiTPcutiaMt+0uQY0ghE/vsfWFkmJrAT7AlJWffKU75j587cNdSYhQ0RcTFdJ+bsaFbwr2nsm7mKYYOjZVC5uOfva8IFU+48EFkbNLMGJ1k3iInqQLEYRgl8P5uHX3p9azxms/GhoaUdbC9+BfTbMnG9JsZoZq37TSja/APEGqA/FvzH7Hc7bu49UfbXmbHzeOwxfBJNiFC9+dTZ/2n5XLmihKeIWynBIFzP999rHRcIW+73QAUYCZNSkX22ULNZQdYu65fI9FdChX1kgk+t5pfZeCfeMPhTLWQDiJ+/ht0FNTUWioSrJhcGOm06tL6E5pZbtV/B2NHO/P0z1ZGWk8p+i9uD89pQ/eOTg5oOfKpo3NNXRWsfolfbyeUdI8Frjubpv13ScM6nz
- M4r9kpSC
- lWrjlNh/oJcfD0Zwc7Mt7M6VbkeJwAC9YrgIGVRbkMReMPiH1sdqEyoJjqEwig5STm2BnAB24gFBVLJnEFgXz2hn4f1T4NMyz80L7OpyzqX3cUTIddFnqbNjlrhh8BzjmYcc+dYqnKtIid/Uihj90xRecNUHjjN6kLaPPMdI+81OQUg5Ya1HcnRHEjo7kKXL3ICj0GHMc1X5ieuVhjRWgBlZmiFrgjEQDjyOfLQOF5boG9zDbnOQV/owEBSYgUQfnJXom9KpSu0CpH6Vwo01xHcO8ZKW/q1+fo0bs3HAm8PoB8XkASwRC8tg5UeE6xQP2cndeVSnO7+ythprZfW73nm5KBLzvhE0AJpvh
+X-HE-Tag: 1785521709-741564
+X-HE-Meta: U2FsdGVkX1+Jkfvcoo3ugD+knvtUf3WEYVCXriPqsi2TRt8CBCIielK3Q6JfkM/W1gz+dexIIZQEmn8cLcFG+ENUVKtU6FMR6cx/7JX4gcQy30sFKptkMDEEw8CjyKjsh66MKFOmrzxxUbF74svFwGx3Gk4jn6w4rPNfCRZ3Cma/IYTZxcLGyw75lsxxGbuOg59STqiCf5mUAnMaTBoHXMtT6zfaXpUIVz4bSVdR57fN78comk3DkJo6+QS8PiAIqlBNnZgSGFmvMfdhHykGJY7k4upD32l0bdMAF9BB3KaSMX7y2xmi33VIPb8J5XDtCV291EL8s0TFhiq5bx9+QntIL6pIy2D0FVgMNL04ww2QVJ0B+nYqrTG2b1y2sCA3g+DvYgGEQR/BxyTu/IxOoobd7R8DXuLZUFgXi4SxbH5StNiksLm5UrMeZMBOUZuvvKPl2MqRlHFinSo7mYr1TBixLDZVgeMpGG1TuHcuGDX+ZKKeykI4SdIQ8BXnlPNRN91Uzk63Ms7kzpGvtOyodXEcDFqwAhBzptEZ+e33MtxKCWULo2LgGJjhzcFVQRBSYZ2dPXWJEBRUSSJpYI8U7qphDjezN78JkFGcYkl+s64mmluhggXsJhgzKq6hgBX10DTTLak2cPVIszX2snTLKwFYWpBBGx7REvu0PglCqhG1lPnf0IkhBy+3H5Gk/K4wTjW/+X7wcBwdoLRqqGflBHVF5NlIr8jIrZ0YaqlADx5HrzdS4s7H1CFeO87PojPzYVNdJl9glbJTVkCzeQlOqdMze5rGFbiPS3cRxKYy4rERyvc4Or9bxjRyAYTEcVwVqUfpRYXOfrUByyECQ0xK6AMI0HudGi0pMs+qoJ3vSJ+vW4nOeqvCOgkc9zAgJdMquNBozHYwIc/Yd0Udz2su3ZLj5tO/bsbqPIotF+A/BRNKvKgLIP0GkwY+SFGLQ+ZvtMvmHma+L03OrEQ0de8
+ zQscUduj
+ vOuLqSupU1ODGaT0TuQzAbY3bYYr3A9geOFXoub8NqorBlNFuGsogu5m0rtX/wwEcxzki1EGfJ9FAxOLPgQXuvSkm0K+EXKsHfAJYjcdiBHZhSHsqgmNauiOdfVUDX4E3ngbyzI0aybP2xNEltGqpRHAaZDOug7hNFm5Paay0KfE4bg+W3+ZiwXWW7e8n4hFyWXjM/tuNkrFsY+ynaVt9x0lgvhyA32+UJjF1wLJk6a3CvFHux1vdHv1aZAa8bKELsiN6fTKKylDAbPrSQpppC1vnzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,25 +91,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 07:49:27PM +0200, Pratyush Yadav wrote:
-> > + * return phys_addr_t, thus this "extra" parameter, instead of returning
-> > + * the hit.
-> > + */
-> > +bool range_contains_hwpoison(phys_addr_t start, unsigned long size,
-> > +			     phys_addr_t *poison)
-> 
-> Perhaps
-> 
->     phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size)  ?
-> 
-> And if no poisoned page lands here then a default of 0 or ~0UL?
+On Sat,  1 Aug 2026 01:47:55 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-That was my initial preference, but hypothetically phys_addr_t 0 could be
-a poisoned page.
+> The !SPARSEMEM_EXTREME stub of sparse_index_init() has no annotation
+> but the SPARSEMEM_EXTREME variant is __meminit. So mark the stub
+> __meminit too.
+> 
+> mminit_validate_memmodel_limits() is only called by memory_present(),
+> which is __init. So mark it __init.
+> 
+> sparse_usagebuf and sparse_usagebuf_end are only used by
+> sparse_init_early_section(), sparse_usage_init() and sparse_usage_fini(),
+> which are all __init. So mark them __initdata.
+> 
 
-I hadn't considered ~0UL as a sentinel — that should work and is a good
-suggestion. let me prototype.
+lgtm, thanks.
 
-Thanks for the review.
---breno
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -104,7 +104,7 @@ int __meminit sparse_index_init(unsigned long section_nr, int nid)
+>  	return 0;
+>  }
+>  #else /* !SPARSEMEM_EXTREME */
+> -int sparse_index_init(unsigned long section_nr, int nid)
+> +int __meminit sparse_index_init(unsigned long section_nr, int nid)
+>  {
+>  	return 0;
+>  }
+
+We could make this
+
+#ifndef CONFIG_SPARSEMEM_EXTREME
+static inline int __meminit sparse_index_init(unsigned long section_nr, int nid)
+{
+	return 0;
+}
+#endif
+
+in a header and make it go away altogether.
+
 
