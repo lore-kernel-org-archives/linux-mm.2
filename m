@@ -4,130 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43812C5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3454CC5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 15:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4344B6B008C; Fri, 31 Jul 2026 11:01:14 -0400 (EDT)
+	id 3504D6B0093; Fri, 31 Jul 2026 11:04:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5666B0092; Fri, 31 Jul 2026 11:01:14 -0400 (EDT)
+	id 3009C6B0095; Fri, 31 Jul 2026 11:04:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D5906B0093; Fri, 31 Jul 2026 11:01:14 -0400 (EDT)
+	id 1F01B6B0096; Fri, 31 Jul 2026 11:04:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2926B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:01:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6CA231A04AC
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:01:13 +0000 (UTC)
-X-FDA: 85049384826.21.A975423
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 378014000E
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:01:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=WVV9HctI;
-	spf=pass (imf12.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.47 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E93606B0093
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 11:04:12 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 856AFA1731
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:04:12 +0000 (UTC)
+X-FDA: 85049392344.26.9E7572D
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3DD05140018
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 15:04:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DO4geTNe;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785510071;
+	s=arc-20220608; t=1785510250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QWMMe323FpJCSMO/+srY4nRAHRMTDbNnpPaXX/8/JA=;
-	b=K2Uypg7SC1glm9WiuG0dgRIoFbjXbnuJ4EdTcRLbfUZu9d+uCXb5gGujEMw+DHL/0Mm5qo
-	6cWBymHlXYa7gPqROFMfjJKLMjuQ1CsxRDgbsgoc6DpYt5c3X7QwWKaJwi98YAOZVvGB2o
-	HiY0KK55Or4+nr8zEkL6528UtsbituI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785510071;
-	b=n2vrJ2ZfQLr1sJbBsH2HX9BeIo6tf7R5uWIfTFwjy4m1xzZnNBsa9qoWrN7UHKbWkR2VnF
-	fNIk2k3RMFUZ5uq2kWP/1/tAMdctTo0ONCxmiuPFhT3hjEo/qxkuR/rhbT6rr+KknwmWt7
-	IooUEHdSTbmhZvL4o/fjumJLNpnWW84=
+	bh=FUEbNrW9/UnpiqJgVKJmhk4NpMeX0dug4W8nQe/yncQ=;
+	b=Wtt/lNnQNdltsPE68awPb0QV9sCDsOBPCxOlA5DHirzryz+2ItHyybFYqWJ9ZQNS+MrXFp
+	FtyoUyMpQ2rHqrCHCMO8WT6+V4J3htSEkeBC6RovqN/llYAC/bZ9ecTyi9adPTpftKhv6K
+	kprOICyloAZ8xwp39A2HdkwGle+/AnE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=WVV9HctI;
-	spf=pass (imf12.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.47 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-45691990234so761810fac.3
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:01:10 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DO4geTNe;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785510250;
+	b=4L6TI5qxBK5R59XmeIZx+cR+QIqjcuuOWSTGRvadDiwu8th3KrlbQBT+5HQDwjQ+FrEqO4
+	Y7URuF1y2xBNIuGEmhnQakr7GotX1YMZXZBkYag/fsvQ3OzL4Gf5ho80/gBNNHSVGCplj2
+	AwqUaaGy8zFt3B8wFQscP7kwzFKxYrk=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e512a9a6bso59590185a.2
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1785510070; x=1786114870; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0QWMMe323FpJCSMO/+srY4nRAHRMTDbNnpPaXX/8/JA=;
-        b=WVV9HctIVTKrA9LjdPGCT6SQPxPYh5ouu1dTcR0MGtu3dMEIJWRYJO7WlyOUFotalS
-         kWW7ePBW7fDPYLdJJ1K94NdmNCQzE1xoF/GSAO4UHxXwcuNGOnWsRkMrk9pdMS011Oqk
-         BEUrdoQU7InvmljKVqDJdQEzTeG2U/wtxouVcs2q85AL3yc6hcKLu+IC+CWeIoZpa0kl
-         t75D2vpE8SR1gX/K2Nxv9HTUfDq2Rz83QwUp4mKcegHiGOqC8kQmjV/x8+zQ+uGy2oY3
-         Fi12AbHmB6lbO+kQKnTkxGqF9ObDIjFEOndPNwHaXAGyI0m4uos505nVTac+ISnrpmOX
-         BrWA==
+        d=cmpxchg.org; s=google; t=1785510249; x=1786115049; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FUEbNrW9/UnpiqJgVKJmhk4NpMeX0dug4W8nQe/yncQ=;
+        b=DO4geTNeemDBFCD6lM3eosv7cHpXQdzyFu3ECPe1lsoaRAu1tmO6xxX+qo4y7Qy14M
+         sM7Mgc7CUSa5hHAbozJRSn7NhQX1wbTyhQzJtm5X063d52yFdK8p1mi/kG5Ywv8U85MP
+         D1oAJHYWQgX3kf7YHpntHgHGeH9RCObiCDnOgTyfDKV6s9M4BD97j8kNPFrTWvUWfkb3
+         6tBvHQeW18pd62NPNfWDDTinnjz7p12W7PDhfLUFaIEIH6JpbyWuWVVlglNpeMXf9fvh
+         N4MjWESjCeqBft49GNCDwWFm5vce3hLrRdVSLcPBSOo2ydM60O+0eVL2KNx5pb8AAG9r
+         YcSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785510070; x=1786114870;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0QWMMe323FpJCSMO/+srY4nRAHRMTDbNnpPaXX/8/JA=;
-        b=P1sViIWe2Bh20WkACvM9NscCiAm99Fqy4TWv32bokWAg86RjBpEyaAC8QH3RTnwU+J
-         Jinp+w1aKjqKnYPc9r/gT9ZUT7IRwOxfgxRCV0fKY/g1YWeMx2filCmQQzeVSAphv+fJ
-         wFdYiJQ4pVgrSjoRi59vTMoqsqcjvhg/GKpas6TIC9mWl6S6OiZBB9w17VBNVO+3lKuw
-         8sAXN3GeYOfpU0JN3s3M/zYegneBrcOeu6L22qlNEKocjmeo0swdirPDHINi/C5ncfrL
-         XwPwqNbns0x2W7W3Gy8JfY4e01EGG2uDNU713vlOsYg7aw20CkHg0teP6KWC7ZDB7qdw
-         SpLg==
-X-Forwarded-Encrypted: i=1; AHgh+RqaLwEfPgvkunOgLE0S2Bn9iPM+TBRpy+Rcpw8c6Otqt8eoOIYGRKlk0I5p3AUR57gmzUtWj2Bk4A==@kvack.org
-X-Gm-Message-State: AOJu0Yz7h78g9hIly2WhF+vdAFTzziIDZV8k8M0hBkz4mtnrjPdJ7uWh
-	1h7pNos7AHSNWSElFqgqa0onSIp6pnQpfkEcDUMrKrCS7UKsWV5uqP3FWGjahql73atmkmSfm70
-	kReCAqa61pw==
-X-Gm-Gg: AR+sD133FluJLMsmQwo6blJfnB40Aib0IxQWU5vrip16S4wRq2M1/xqkwGLMSL4dj0S
-	P/ffhXBjQfZU520CuXyBqEKxe8XAzbc2dlIcEPM+R1O3xj8QVk5TZM0mWnqPHgcuTMxE39w5Jjf
-	8oB8LtBrgHtJoipSa28CvFgB6dpvhJiD6PqKWbP/vNtqLE0bbsT9ZJtoGWGnyH8Kp4GV/BpvTJs
-	tDHtkhHlcuiBWzz5r7ACmQ9CzLVTmHK4ujZ4OIQWoRtfJI/mfURKkfTMSJ4HA2SVk36QunTUi4b
-	c3uoPzj/0YFf/InvI6HYPNlBW++FWwsjxLrfBqHMelwlfWokyjxJ7M1HDWqMymQZ1/R4FFDBQtA
-	u6iEzBHli7EoCNa9J+x7Ei5+YGDefWS7GzgLX0uuMIi65Z94+VQKKtyXqwHdkRLdQEAvgfWm0iX
-	R6vXqfJSpou0UQhLPYDFeapAI+DNuKmeA8mTM5WJA8qpPylS+bzjicjNa/DaxJy7tNsw/bsFL7e
-	4PhMQN+xd0srBd1auv8tC/DRbANnej/rzF5oCgVVQ==
-X-Received: by 2002:a05:6870:92c2:b0:455:9e4c:6bd8 with SMTP id 586e51a60fabf-4590572d113mr843225fac.2.1785510069701;
-        Fri, 31 Jul 2026 08:01:09 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-458f67655fesm1139402fac.18.2026.07.31.08.01.06
+        d=1e100.net; s=20251104; t=1785510249; x=1786115049;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FUEbNrW9/UnpiqJgVKJmhk4NpMeX0dug4W8nQe/yncQ=;
+        b=RdM/I8+MOqlwyRrHgbg0Pa4VMvAPCgJiH+UqX5lUx1GVpQH9Wa4O4o0IM4AaFshxwK
+         6zIbVXdir8pM2kSysS1ByjY2xvj8eLZ7Z5OFgCz5Fw8pRP8E0dvzMhmlpMojWqfVibXI
+         QA87Z/2PwjHNVeWa5xF8Zri1pHPeJ9CXnsj0gaQIO5tKuXM/DPptx+RGvRRdJJmOYnj+
+         jClzBPBr3Lz5LTrMJKSq2hrP2KZJxmKL2DdVOeiIsGGFSJscM6noMPsoP1OSjArzdyk6
+         1jwyFTYTPfweTiQy2KHaiaHSEI3GlOGk+ScsvNIPDRpAU5OWnGURDsP7qUKt0CLoZI7q
+         mIUA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpk9T+QBWN5ANjzWneurI+xOo4TyU3tCWLEKNNOV/0cjk7E1lIt/HzxFxSkcPcWRtwQpTUf7o59Jg==@kvack.org
+X-Gm-Message-State: AOJu0YzTT2LTSWf2T+zSqbMaSUeJoY8NL6G6xFic0Sgj3554nY1VhSty
+	H9sMUSab5vCP/om5S+WnaqH0SUz/dXI6vWHfaQKpOjfuz46b4fwNg+jN64ZecREWd/8=
+X-Gm-Gg: AR+sD129LKGgFYXODTG7seDwoMMWO6ilhxFh6wsxNZ1p3XVcyvn5fhiBW4sLPnvEls5
+	IPzkZ6KBbfLqoyTHxfKQjCenb9m3s/qjcn0YXccLDqSOzh+Th242NwQ/P+poP5J89IPIBVIQQiC
+	8x2VSxUVSuG60j/cU5T7SeF8P6TNBnd4F8wwU/Lb4l7jUJyrmjqlDGzb01sCQgYX4XFfZyNlhWu
+	dSuQtApkksa9pBxVFJJ9eQAT/9NT/ffP6RQJi0Sh75pRe4EQ5cs3gP0AqIET6fqeka3d40kpTvB
+	+EJ3xFt+R9nHYF+R6UxdIlMCAB70ygqO/YT3/jQ1dRT9GYx6X0OsWPhyDIBwiCGc9lcMHLFhVZu
+	2phXrxyGJgHRqG9sjJzh5YDeOUIZCI5XGShs0CauFwLpg9OfRpIo09AHwEIOtkvDF7zxR2nK8gN
+	RfAd6Gco4jS5agS3+c4XefSdSG/aP3r9UGa9JpoEczFl16951hgdmgun/yPFE=
+X-Received: by 2002:a05:620a:a414:10b0:934:9535:8d08 with SMTP id af79cd13be357-934a0ab83a5mr47682085a.43.1785510248860;
+        Fri, 31 Jul 2026 08:04:08 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9349bc6cafasm74557585a.20.2026.07.31.08.04.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 08:01:08 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Christian Brauner <brauner@kernel.org>, 
- "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>, 
- Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
- Jeffle Xu <jefflexu@linux.alibaba.com>, 
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
- Chunhai Guo <guochunhai@vivo.com>, Tal Zussman <tz2294@columbia.edu>
-Cc: Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
- Hillf Danton <hdanton@sina.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-erofs@lists.ozlabs.org, 
- Christoph Hellwig <hch@lst.de>
-In-Reply-To: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
-References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
-Subject: Re: [PATCH v7 0/5] block: enable RWF_DONTCACHE for block devices
-Message-Id: <178551006694.14426.18417795913299417263.b4-ty@b4>
-Date: Fri, 31 Jul 2026 09:01:06 -0600
+        Fri, 31 Jul 2026 08:04:07 -0700 (PDT)
+Date: Fri, 31 Jul 2026 11:04:04 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Barry Song <baohua@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
+	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, liam@infradead.org,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, willy@infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+Message-ID: <amy5ZKC2Kc7RX94Q@cmpxchg.org>
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org>
+ <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
+ <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 378014000E
-X-Stat-Signature: w4a413j7srue7bycycnziktms951xbdp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+X-Rspamd-Queue-Id: 3DD05140018
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785510071-298110
-X-HE-Meta: U2FsdGVkX1/IMtfKVZ0YkctNKfm2V1UK6APQlIVssJPXomN3uoUuOc1KcFdjKrdYFR+3xPkgmSphAUNjs3y5YJkl4l1HUjIveqIlreLj0+dMyy5ffNBnQcxlZvNEzOyIOITCaNDg2Y01z+C4qAG4/Q3rA3L9TAFcJlv6YIfAAoxeuBUBomYjWGVb0PtFEHUFDsAX6o2AVNfeYXtdNwAWvLkPd/TgSpCeT3MgtLUKOyO8pn2C/MYh0xaugjIFu70/fjVnXGPftplvjWoK50l9csdgwCqKBIru8lEHp8MST9zIcjuqvQfCV1JcEz/DsRqefTkunZgWIcIg8spZko+3PRT/cvhqe1xohdnNyqrax4AAk5PQnguRC6mpWVk6CdTFhs2OO1Zwqo6GPnHzOfTVg1nIRTAAHnySlr2Zhfj8awj16oirVUtQblh/CU8cVWOFC5nW0l88Ycqkc4/4fJ1c2ZKj3afCYkeCOPPhFPb4955tG78lWHFnMBzvG/UZ4sLD+K1DP1SK6/sCtxV3fBW22SJSr2qWo+xGLNrlztoMZ/yyICeCgdoaSoxbdyeEIlEfYcfkHZr0AiGwPZgPLjrhSbDdWd0OAKD63cOw/P9PiUqx5mL20qhPtG8BC9b5cOqkRmlF9+Jt/ZDlYNn/f9bsdew07xm6NRhwBnJRX5iXhy+/0NBfuTTPkvTo8ueXrIjjXP/UadMqKPbH0FVhDSxzInBzETsICm3EOg0Lmx80AF4Q5fOxg+Ct+SRU5QaeW9RhJGInZlVoXFFJ4kKxY7H9ZD7aQM0X+7Eh+Af42fqqB+vBHz9vfJtYrOH98AoruDYGFn2zqeQ90p99C8IBjDLTTYzX2Oa84McyIGO/bhOdw3mry7pks9Igkd9sB2ctvRq0BK16rf5o4/5WE+baL+vqyq4P6uoDqNjZUWLhLNntfGr/393auGVKguvCzOyBvfoaXa92lW9tkTbHUf1Znvn
- SeLya/7S
- QS4nfRdvlnkZC6Wqwby83Ueu83vm1Kdttyl9h8PLjNLTEdAUaYjSHfrICw5XqT+VM9MBr0DTMWfgqY5bK07JYAJ6/GYp0ecrUC/+1qYYugQa+ac7rERY2iZ+N/sc+4GCTs/taRo6+NI0kI4sOwmkAkXXCfLo3wbfeX8qnc/UokVlwcdITumkAwTHEKVkaXCkkGqMJOC0JwFuvrdzOZ5L0FgTu9PmVlJgJY6GoEWHYlAQGnOWAxkigmgrhidhjKQWiV9yxsZ84ZUGkX9t7B8X503G+O8ezX8ONZ7owGuCR6TdrOEUhz4SvefdtDFOqVTBrCFF1VfruYdojl6an2f7l5axT9L4ugHGgYsBu/oXvVgSH3/wMSy0zHicyE4EStH5u5uNk3dz/7ihPL2qf8UMhiU9ukq713jPiXEugmmEH4nMQapir0Pgrc23U9PHTFRsIr1Sq
+X-Stat-Signature: qfadjsfd4j55kjfnx745qsiatdjsbx4u
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785510250-513680
+X-HE-Meta: U2FsdGVkX1+hvSLL+ZkgUUkLPJMguuTnoypHVMlHMJLgAl8gmyXgbkX25TgA3I3eldTuDPgxOObJLrNh7Cvc6VWNFUgJrFkYfIbnYLYM2SzI98UP3n1xn3y6mgjqn+6CsnozSWrzBcrns7jUWRGNIrdZCbxsTEXDkAPRtH6GpQTZPm3od2w5kq34e9oq3tmG3c15kqht2vDk+AfBI6xW7k/2+qDL+rPjGXGeZrGNRIIr8XszBu1O2IxlSSsDuDOWvq9cQY6VWMkpnROTszOeu1ZMpRucOyKJB0YCASm+BJejjz2FZ7Ro3gW4AVbLF7/xshcgYt7W7Da91ZNeqj2v1s/1ZrPTWB/qRo7K+1su5G6XNjvejnC0YnBJSQB3JhurdEZnCN0rNhMmVPmCpV59DjbxGEplDQfdDyOal3XS+qa8m5QHJ8KX5Rkv/6fqRRHQ1+f5WtoPo1qzkryo77Ir+beRAQ3WAoEQ6L4HiYupyTMoc1uW6tHUWxd8cGQ322gbh8hZaYT08QJwL/CY1hQK5qMiX2GuZOujr6aHRvj+2KTy2KOXN04nxnU3nrYMmiYpv+YQJJtLkThEFJX0krJ9lhASD3Xf3Qro7dqJPQSSeNNdJsiBbTbveFX6AkmPfwhC+l5uuGLR2unuPKgCWEOzKJAxeRj6jtoZv0yC9iuUQbn5NbgFGSrcCGpxvZW4pev3H5wTH/2d/xpVzsIFp1xSMSeFTGq24TJVMwqgzm9mtnnYXLNBziWbEW8aJ5/e0R+aonAUB0w+ShHdZdXi2IopRdKEWP/5qZE1I014dv435Ftr88cUV77vLd7QvAHVI4Fv65pkC767ZZnok6NuNp0/+CMcXvo/l1/WAtVyviCZlssbgsY4SMDRbxT9VwqwOSNxODsBjEVF/hjonXVuj/f7ch97JdgLI+9bw8dmtYfSTb6Xug7agkTArCfYLJt2u/M7nmtlr7j5AD06r6yCm36
+ OfZbnfOQ
+ eNg5ELI1aLXnTmdCYWquESu9i2tjgJ5u5zEBQoW6weprolsoxcmdnJOpqk07LwJFV+CzeVbTlxYAEchUWt3VvBMv0lrWqE4Lm8eD0KY8Wp2F4TSqL/MKeQmlKtKiivgsIjAdCWYOBXzOUwD06JIcWpGhrtlZZ46cM1+KbKF3FpNQLqPYHeub47/gYPUWVaantfU2BZQuc6+5niFQdrXPRHbwjKDk2aSrjt7ASYeZXu02p+4ELnUFUs28zuUHKGkfVFTlrovZ0ntxsqFQxf02UJcxmcFZxePjRQrSA581GjF4PDpyZjRR18XlSkG+8HaqasZg9kUWbdNirHy6JEeqjmSSfMfWU2Q73fvhw+JB2Pm4SHl9KDsT6fzYcplmsnSPIcjZ3Wf+uoAaBDfSXARaykfgPMGpDimte1KVcrwp/AjIUhScv4Gk5C5TuSWiqEI94IvVV7OMS2k6CBcxJJw0Rde9wgn1ucwEpB3RKTfdjDxruRtxAi+0NxNoKDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,34 +135,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Thu, 30 Jul 2026 02:57:50 -0400, Tal Zussman wrote:
-> Add support for using RWF_DONTCACHE with block devices.
+On Fri, Jul 31, 2026 at 05:31:20AM +0800, Barry Song wrote:
+> On Thu, Jul 30, 2026 at 11:38 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >
+> > On Thu, Jul 30, 2026 at 03:46:25PM +0200, David Hildenbrand (Arm) wrote:
+> > > On 7/29/26 17:04, Johannes Weiner wrote:
+> > > > (2) With a mix of basepages and THPs, there could indeed be a lot of
+> > > >     basepages ahead of underused THPs. That means swapping before
+> > > >     getting to space that is much cheaper to reclaim.
+> > > >
+> > > >     The current setup isn't perfect in that regard, as the shrinker
+> > > >     runs simultaneously as the LRU. But it's making guaranteed forward
+> > > >     progress through the THPs, even as the first LRU pages are scanned.
+> > >
+> > > The shrinker would obviously remain and scan the list for candidates.
+> >
+> > That's slightly different from what I had pictured. But I don't think
+> > it changes my arguments much.
+> >
+> > > We might want to remember how man / if any such entries we have on
+> > > the list.
+> >
+> > Right. The question is how does the shrinker actually find them:
+> >
+> > > > (3) The anon LRU has folio lifetime, but the splitqueue is one-shot:
+> > > >     we scan each THP once, and then it's either split and dropped, or
+> > > >     found full and dropped. That THP never needs to be revisited. The
+> > > >     queue actually empties as the workload establishes itself.
+> > > >
+> > > >     The anon LRU ~ splitqueue argument is only true around startup.
+> > > >
+> > > >     If we used the anon LRU, we'd need per-page state to avoid repeat
+> > > >     underused checks. And we need external state to not scan the anon
+> > > >     LRU at all if there are no new THPs (and no swap). And if that's
+> > > >     just a counter for "new, not yet scanned THPs", a single fault
+> > > >     will cause you to walk the entire anon LRU before you get to it.
+> > >
+> > > Remembering "not yet scanned" through a pageflag (for large folios) is indeed
+> > > very easy.
+> > >
+> > > I don't quite understand the "a single fault", can you elaborate?
+> >
+> > Let's say you have a 1TB host with 800G anon populated.
+> >
+> > The oldest folios on the list might be THP. The newest ones might
+> > be. You could have a mix of basepages and THPs. The ordering
+> > constantly changes as the folios are aged, rotated, reclaimed.
+> >
+> > How can it find a handful of unscanned THPs in an ocean of folios?
+> > Even if you mark the folio state, that's hundreds of millions of
+> > entries whose state you have to check in the worst case?
+> >
+> > The lru lock is one of the most congested MM locks on large
+> > machines. *Maybe* you can do it locklessly.
+> >
+> > Maybe you can add thresholds where you don't scan if there aren't
+> > "that many" new THPs just yet. That means magic numbers and reduced
+> > predictability.
+> >
+> > Maybe you can be clever and scan from the head of the inactive list
+> > where (most) new folios start. You still need to skip over basepages
+> > that faulted after. Skip over the referenced pages that have been
+> > rotated around concurrently. That could mitigate some common cases,
+> > but not the worst case.
+> >
+> > The search pool stays enormous for the entire runtime of the
+> > workload. It never gets better, never converges. It continues to
+> > include every other irrelevant anon page, and every THP that you've
+> > previously scanned already. A single new THP fault and the search
+> > problem starts over.
+> >
+> > I just don't see how that's algorithmically sound.
+> >
+> > > > So I think reusing the anon LRU is flawed. It's fundamentally
+> > > > different needles in fundamentally different haystacks.
+> > > >
+> > > > If we can agree on that, then the lock contention problem has a
+> > > > different scope as well: it's a simple optimization issue, not a
+> > > > fundamental data structure arrangement issue.
+> > >
+> > > I don't agree yet :) But maybe I am missing something important.
+> > >
+> > > Note that the "simple optimization issue" is not so simple once you
+> > > realize what kind of a pain the batched LRU already creates us when it
+> > > comes to predicting the number of expected folio references.
+> > >
+> > > It's a pain I don't want to extend to other areas.
+> >
+> > Since we already need to do it for the LRU pages anyway, isn't it a "+
+> > in_deferred_cache(folio) extension to existing refcount checks?
+> >
+> > I don't want to sound dismissive at all. It's a problem. However,
+> >
+> > - it seems way more tractable than the shared list,
+> > - nobody has produced hard data to show that either is justified.
+> >
+> > > > If I understand you correctly, the concern is that people will enable
+> > > > all manner of mTHP orders, and 99% of the anon faults, including all
+> > > > the order-3, order-4 pagelets, will go through the list_lru lock on
+> > > > fault, with no batching.
+> > >
+> > > Yes. See Barry's LRU cache change I linked as reply to Usama who is looking for
+> > > example at a system that mostly just uses order-2 anon folios.
+> >
+> > I took a look, but I just see a microbenchmark. That doesn't seem
+> > enough to make a proper cost-benefit analysis on the complexity that's
+> > being proposed - whether that's a shared list design, or a splitqueue
+> > cache.
 > 
-> Dropbehind pruning needs to be done in non-IRQ context, but block
-> devices complete writeback in IRQ context. To fix this, we defer
-> dropbehind invalidation to task context. Add infrastructure that lets
-> bi_end_io callbacks run from a worker, in two forms:
+> Hi Johannes,
 > 
-> [...]
+> Sorry for being lazy and not including the necessary background in the
+> RFC cover letter.
+> 
+> The background is that our goal is to enable only order-2 (16 KiB)
+> mTHPs on Android. Based on our long-term experience with large folios
+> on Android-like systems, we believe this offers the best tradeoff
+> between the benefits of mTHPs and their costs, including increased
+> memory footprint, fragmentation, compaction overhead, and internal
+> memory waste.
 
-Applied, thanks!
+Thanks for laying this out!
 
-[1/5] block: introduce bio_in_atomic()
-      commit: 8ed0831b5263e1aa48d99063795a1f20e4e69b50
-[2/5] block: add task-context bio completion infrastructure
-      commit: 77e73fa61b3888c9765a549af02c928372522cc9
-[3/5] iomap: use BIO_COMPLETE_IN_TASK for dropbehind writeback
-      commit: efbde6f9f449da3306f5b5d32f08829954ffb44d
-[4/5] buffer: set BIO_COMPLETE_IN_TASK for dropbehind writeback
-      commit: a2c924c240e74dc2dd14ff763245dc86b93db714
-[5/5] block: enable RWF_DONTCACHE for block devices
-      commit: 8b5ffb43ae9d27eed9165e1962963d685d879219
+Again, IMO the microbenchmark was plenty justification for using the
+LRU cache, no worries. That's a straight-forward plumbing change. I
+was just saying we should probably know more before pursuing a much
+more complex direction for the THP shrinker. So thank you!
 
-Best regards,
--- 
-Jens Axboe
+> Specifically:
+> 
+> 1. We obtain most of the performance benefits of mTHPs, including, for
+> example, a 4x reduction in page faults, faster memory reclamation at a
+> larger granularity, and making it easier to allocate higher-order
+> dma-bufs. While larger mTHPs can further reduce page faults, they also
+> increase memory footprint, which is a significant concern on
+> memory-constrained Android devices.
+> 
+> 2. We minimize the internal memory waste associated with mTHPs.
 
+This is kind of tangential, but I'm curious if you would have
+experimented with larger folios AND the THP shrinker?
 
+In Meta, 2M thp=always without the shrinker would also not have been
+tolerable. It OOMed immediately on a large number of services. The
+shrinker *is* what allowed us to use such large folios to begin with,
+without the internal memory waste problem.
 
+> 3. We can use a lightweight compaction strategy that only needs to
+> satisfy order-2 allocations, keeping the compaction overhead low.
+> 
+> 4. Combined with large-block compression and decompression, 16 KiB
+> pages provide more than 80% of the CPU savings and compression-ratio
+> improvements achievable with larger folios[1].
+
+That's very interesting, thanks for filling in the details. How this
+jives with compaction and compression units is clever.
+
+> For such a system, I don't think adding these folios to the deferred
+> list provides much benefit. Since the mTHPs are relatively small, there
+> are unlikely to be many zero subpages. Even if there are, they are
+> likely to be short-lived and will quickly become non-zero again as the
+> workload continues.
+
+That's good to know as well.
+
+> But I can see the benefit in Usama's case with 2 MB mTHPs. For larger
+> folios, adding them to the deferred list could be helpful.
+> 
+> [1] https://lore.kernel.org/linux-mm/20241121222521.83458-1-21cnbao@gmail.com/
+
+Here is an idea: the THP shrinker will not consider anything unused
+that has <= max_ptes_none zero pages. See thp_underused(). Joanne was
+proposing to scale this knob down relative to the folio size for mTHP
+shrinking. What if instead we kept the meaning absolute?
+
+The knob is an expression of how much waste the user is willing to
+tolerate per folio. If the folio order in question couldn't possibly
+have that much waste in the first place, we don't have to queue it?
+
+Something like this:
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..1670e9869bd3 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4364,6 +4364,9 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 	if (!partially_mapped && !split_underused_thp)
+ 		return;
+ 
++	if (!partially_mapped && folio_nr_pages(folio) <= khugepaged_max_ptes_none)
++		return;
++
+ 	/*
+ 	 * Exclude swapcache: originally to avoid a corrupt deferred split
+ 	 * queue. Nowadays that is fully prevented by __memcg1_swapout();
+
+The setting defaults to the PMD-1, so out of the box we wouldn't queue
+any new orders. It would allow that 2MB on 64k ARM usecase, without
+jeopardizing smaller mTHP usecases like Barry's.
+
+Thoughts?
 
