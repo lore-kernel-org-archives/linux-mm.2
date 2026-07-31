@@ -4,154 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E11C55172
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:54:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5873FC55173
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:57:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAB276B0088; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
+	id 720146B009D; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D82256B009D; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
+	id 6D1026B009F; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C993A6B009E; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
+	id 5C0D36B00A0; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A2CB96B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41723A018E
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:54:12 +0000 (UTC)
-X-FDA: 85050425544.12.EE9A613
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5438E180003
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:54:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PSVk6WjH;
-	spf=pass (imf06.hostedemail.com: domain of nhuhuan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=nhuhuan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B1666B009D
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:57:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3A55160198
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:57:11 +0000 (UTC)
+X-FDA: 85050433062.18.DD34389
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DB3DBC000B
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:57:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lm48D4pC;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of loganodell@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=loganodell@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785534850;
+	s=arc-20220608; t=1785535029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
-	b=bfGT7XIMpH4JO0wrRUZZkkSOmeWfBsp9koKL05FQwYpbFZ4B48+pLvfSD36DuAfStyEm5M
-	m6PQyT7E0BaT5YIAJx+6OmybiQrj+TepRQT+hVHm1mSfVlUo8m5+u2YHF+qXwPo8Ew9akA
-	KO1kZK9g0kFztTffrT/pQQTeJGBR/UU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785534850;
-	b=eUVk1GozK7aNBJMwvO/sU4SGJtDEdi6XBM32iXoHMDzXhVcXHQQyCx9JcV/V2DWYMpW8hb
-	HLU+IxFL89XEcVH1Yrmav9J1n7GupBVc2uEC3PGP0JwTdp//KuguATMQauLoAHl7+TpJzh
-	cxA1nG/16igjRSZJtMALVHeugVvgeHg=
+	bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
+	b=53+pr1rCnTUF5W/PqnFTg7welSG8LZmC/6R2XMYJuMoHYUEinge4b5vLzC3pRnhXZCckyM
+	Z2A0Q0pOToBzG5zIhisRTDba+MCpnisDcvZvxSXjVmobNRA19JpJzmHXXyHbLHa+nOJK4X
+	tmn6H8f7wWhXddPlGbVNbXeTFDxZAFM=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PSVk6WjH;
-	spf=pass (imf06.hostedemail.com: domain of nhuhuan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=nhuhuan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c10ed63c0so25821cf.1
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:54:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785534849; cv=none;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lm48D4pC;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of loganodell@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=loganodell@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785535029;
+	b=4J2Yb4uQi82IBrD/ErxUueOK8RL8Cj1b5sr+vLtbXigPg9AF45IObQOk7oJwUo5SOz/gqc
+	JWZwS9n40LcaEjcpMYmYn4PeD/46LQjFL+8Rx+0sWoXmBRo4lVcLJ5r6dZFLIyXHUm9L/m
+	d5eYVqOrJzburWUTQNyqnsHW/NMvkSQ=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c10e86e52so22921cf.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:57:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785535029; cv=none;
         d=google.com; s=arc-20260327;
-        b=osR7UaMnLhonNU9n+wBF2m5lkMTfVEsjIF/2eBqufe4O6Y/SKJ0BVXkayLr+RZrLya
-         oy4lkwba7KjVCXNbbV/xpNK3WoSlBD0LGHZ6HzGeqe8vVkLGb0DVchdiOE5VV+4JUcnD
-         fvYiYwU1JFhqcgeqaRV93H6bazJEwQV2rhJQdfcaywFZnGqVvORbN2Rm+wity8vbtgKS
-         ahDgWbVT5fnWnGflEaJJSX9ywGVCOViJv880Pp0PYScnBaUTyV1qmXwZpECHpzH/xZu9
-         4ATcHprGvrQVOgowz4CYn1kEcRZ54fFWRrsgEmNsDsOXLNnud+4JG35vKTjZ7ptWQn/Y
-         6YmA==
+        b=MNZZKmu9GC8TmPDdIR31orTH+5L1dBXzwGyL1ny8aDnaMG9cd0sCyS0jbACVIUEMhd
+         zkQ2s+1f94L36CNC+Cu6/+9e4eZ8Lf1fcEey9laQWWUu/e2bEFQQKfubuxgzGRApQfuP
+         +r5ONOqaCtW5PGLq4aGBtCTHt/XRifPO0dY5VFL82qonoKarv+BuNV9lgM4DmNarmkvL
+         mU/lNANRSJKtWqTMg0w8CiEW0nHj0KtJ7c3GFIBL0nVRZSSsu0tYOOzrW7spRDlTID6Q
+         /X5MREfTKTi6ntaFoYnVTcMWQlvoUB96b+4UpZCwJagBmKE21nDCRIqu2WueXARS0N90
+         zxYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
-        fh=llt+HM9T8/pnuZeJV8SR71l0XmfdYd5wMbZE1cBXRJo=;
-        b=Zoui8fZYPt4qkcKET/L8nYQIFg7Iw2NY+ZpI65+VYCTWRYlrihZItqk33sLUvSTCU9
-         Dz+lGVavGnsQH488Eoem6Fka3WGEQ7uYA/VpPON3z9LKCgh4YrR+0dfp1QIi4cZ/eHzS
-         OWAl4aqApsmRWn6oPx3QaOjYuanMUEApe2qs1mkvuXHm15G+DJqymO7U/92e8T0j73XH
-         0V5va6V4NHIXwWJQiG8htLkODxZ+JjBFTrSxUOzK4bgwZoPrhf3ucTg2dIhbOcsZOU19
-         VPGrOLFlOKpEupRAOwmKXwa/aLK85tl5Hr67bL3EJ+6Nh9P6rippJ9gvUHuxI35jfiZ+
-         AIpA==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
+        fh=m5silSSXO2bP0zPfDnICsrYtYiNM4P9ZPLGDxZfbSeY=;
+        b=nQ3q3TUPKAFbRyWe1DvLE4RwvaxUyEy2FzVOYeRO6lNyYwPodhIktlckgitvVMNFZ5
+         P1OGNlfSIBvTXi0byjm8ejd1EQZc0Ee7OKqMKiNDCukeJ0w0e+CZalLVMXTClwGgQyAr
+         5eDa4Sl9LsLbzFj60guAYH+NH+p4PWaOIX93ENqzty97/7xsVWHEtzx4CzNQQV0LLHR8
+         OmrZTw06WX9Y1d0jwLRSicb4Jp3uwKYhkKth48ADQlyqkQmtjUkjKvKnAZ/GxB4OIu7C
+         bp4GJeHI8KdjTF3ILUUe3Zi+FdVz2ttOHOG1MxdLm7pEq7IuXlPxsLKXqJHwrqTBxfwR
+         q4dQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785534849; x=1786139649; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
-        b=PSVk6WjHval+h9nK222BM8OzoRyVlnZzZKw39gnte9dm8/ZrT+LDNAvdk8RtmHZ14L
-         /pgt4LjjEvaROfylmt/YmPLq6+RW2vsK06y/T1KGab6BP2M+gxlR0jRgGZDmB+PV8d2W
-         AARE812foHTWX1U6yXFWSvefID9JW7rB2N3IabLhmOmPCUFGxZAKxcW6YXEsgS+HGc48
-         nUY+UNThASGdBFj8Tfc+qiR/pCCg2NGYv96o/3vVa4SOpet6luzCD2qCW1Bw6DAJKg0r
-         CW8hztvuIllXpTMZGp9wB+HjpPvzvc7ypbALC3bUKuVdDj+T6fbJIRW6tsli8lVZ2xgz
-         zXWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785534849; x=1786139649;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785535029; x=1786139829; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
-        b=M463piw94KrUlVep3GKJ8sZKQcMiNW9ZSzpsh+yMQNvFf6Id6A4NyizapTtAnyXWP3
-         MGWwO79eLM3quZZUaZRnlb4Cwb4PWf0al+1fsNEv6/rBA6YDGtNdpTp0hRsTS2odCIKD
-         WN1n138L1Q/EYjOT1LWWS5pGvKEWLUqAOjFMDBR0gGL0nJb7Q2g+0OFsky8x5x+VTW2U
-         q+REODn9FEmMG2yK0+YjsuLYuqRMZRyf5K9V3yJdJnbXJ0dtFalhbnrEuPHeA2ZP/l+8
-         tyXmShL33hea4mSE8Sp0urJp5AzGHwBo3lrS1u0f6B7TpfPpRYQTmHo74UDzh1tUeakg
-         5vvQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpOrg+M6nESFDGHlxEGGQlGvfcpiIdgRGx8BcwsJx5HMy81EUeMFg9/4C+rpuki/lSW1zO76gTXmg==@kvack.org
-X-Gm-Message-State: AOJu0Yw39uSLIXGUHxuT09cq+XZOVnEkJaCjBrYAs8d7TS9yPp9LWpp8
-	Ebf46g68I406RE2PYsLfdnMDXVEBK3OSH0bRLTd7Aj64TsRMfpf9ZB5Bv0LeSa61d9cXT+FXpUu
-	MQ8NSqH4v7e9ylafoPNyZ/MoBdbcXUFkMRoYXSW5y
-X-Gm-Gg: AR+sD11CnwQEG6rMSa27623jph8LfH8uT9rgmU+7vLwjLfDw0ZeiBviuYXs0cAZZIZW
-	zFU/hM2dw0RZKXxILJJsOBctG1J4Igvcy1dN+ZR/BrUPVnbxEptwWgah1wHW4UEvLsqISPzGYy4
-	xEclv7a/9qFLqno7jl8UfP8MOCWCheTXasK2X8wRslsYHoKsTYYuT/xrRgPmAjnekArpuAUKoiC
-	+ejGQgjlz+YdlYxC2mIF2xI5QgW1melFDrxHi+vCFLE1XtSUu1iw7srN5GyJO5xx2g3y3R/zpju
-	OzSZD9cawQxm/6pfY869eMZmdPQYs15c5UizFYv8q2ypIwNluK4oyYpqD7E6WDmpMgd13GfWBiQ
-	=
-X-Received: by 2002:a05:622a:134f:b0:517:5e32:2d14 with SMTP id
- d75a77b69052e-52b59a19ea6mr5408341cf.10.1785534848971; Fri, 31 Jul 2026
- 14:54:08 -0700 (PDT)
+        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
+        b=lm48D4pCbHoNcsgB5jBR5aoOg0WOqxDXPmEHAwuAif3GtacplTuJebeQLVwMqFFKqg
+         hE551TSHBPAoo8y/qSvcrrP9KO8oUMDh+A7yy3cMP0pfPzcAY6mIA8NDePSwgODzR6oR
+         tNVpmnuNPM3lPe0M2NhS1f6EjK0QSpYiKbAqjKjYTIo3nAnlE53DWUe+xb7MrFKyZ1A6
+         vVAuc5ieeoW8orpNcTobMei664OfhGMq35gyC25e0IQGuVuCN40pGNA/pQkuCBYKlCeU
+         n2BVxc9NQjcNgz40LLpZi/US/6DDkj+popnw3/XLB8uP+n75ErXaB6UAeLsi02wEEuwK
+         8KsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785535029; x=1786139829;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WTn5nuKnJDRIJ2W+5Ct0Qi+MqrY8bd4Qgdd1o8+thLg=;
+        b=TZpT7lXOQI+mxxFEO8zzLflKixlJGXvWnyoqZ+mV3zmvXLgTx9dn6Q09DVjElVitMW
+         C9HRugQvP+VovjrJIS2psr0YEo4oUs/XvKFWLBVlH94YSwae/w9YY/AFlg6mGuG/sTDB
+         gYsMstfDcPFlWtOiHHOCs77RHZa81dct71UWfwn8c2irIKwwJL/rW2LB5nR2I5xYNIT8
+         FnPMhdtxFF/HGdfhFt/r1n2cCbHz8VnBiRYMXAkSP5OOuy3njzGeXeLH3aUWucU7PSKW
+         KeuQMHb7IdYjFfcs0K3qH8eiU1z6SUnp6K+aGybLRCUwkRtFRIWM7Kq5GOPoKkBkQgZb
+         m66Q==
+X-Forwarded-Encrypted: i=1; AHgh+RryrJp970FyRp9eGOtrk1SCgfC0db4P0Vsb+S/Q+mpGSCYD8bMPjTPlWE9l9dKyOCGCFEzqeUX4pw==@kvack.org
+X-Gm-Message-State: AOJu0YxT8H8mwuuDyWaiW72/xTzMJKmASSF2eMPXGyHi+DF3kBmfVvB8
+	EizXySuAJNUchb9KpoEBvQD8EuoNXqedyRwAajlUhQGztUEdJjyVq1Fil/zbxEtqtG88mJgTj8V
+	GiTPfogNLxT4WPeC8LScbvDfEWeYD15NycLBhc6kS
+X-Gm-Gg: AR+sD11PxdIzc/6W7caKS9/unYkBc7TPF5ItlYjGS5f9YyIFe4Bu6jqNmiKqxVtMCeu
+	U5MSREKWyl/o+2tLQm1LX7btCe7cC0XziZLYAUpakcCDr3XkcqqKsYjREXecmIvznjJWKryI++y
+	ra+G3n7zk3dJ4Ppyd491LqKlGpVlvWBggeNzIVLaXXHBX+KN2ycSJLvNK0tGL1h3UhTmmZp9pKx
+	zEaNKmBMQkN8w2m3bpoQIqDsKINBeLVoLqJuslp6BiSMcqU/mozzdof/pJDYpJvH2AETOWOLP2T
+	tRAPo/xKHASVTTZwqa06jh3BRG+5ffMacoLNUU7YAf9fVMs+6oaWfxDs
+X-Received: by 2002:a05:622a:146:b0:528:3186:5799 with SMTP id
+ d75a77b69052e-52b599f9d70mr2420011cf.10.1785535028074; Fri, 31 Jul 2026
+ 14:57:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com> <20260730-rfc-nt-demote-v2-1-452dbe3b5073@zptcorp.com>
-In-Reply-To: <20260730-rfc-nt-demote-v2-1-452dbe3b5073@zptcorp.com>
-From: Huan Nguyen <nhuhuan@google.com>
-Date: Fri, 31 Jul 2026 14:53:31 -0700
-X-Gm-Features: AUfX_mydSrv99P-U14w6L8Rc9PDoTTKUxRYzjtIKVF_wWri1fRV1Nci3jK142jQ
-Message-ID: <CALwWd5usu+e=MgX95zGPUeqRjEu_SARLoiMPQpyMYBoUVQkk_g@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 1/3] mm, x86: support copying a folio using
- non-temporal stores
-To: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
-	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
-	Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-nfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Alirad Malek <alirad.malek@zptcorp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5438E180003
-X-Stat-Signature: mu8bsqupsy58rq7dzxbmm6aamj7khu95
+References: <20260731215224.831696-1-loganodell@google.com>
+In-Reply-To: <20260731215224.831696-1-loganodell@google.com>
+From: Logan Odell <loganodell@google.com>
+Date: Fri, 31 Jul 2026 14:56:54 -0700
+X-Gm-Features: AUfX_mxJRt1iOFKSShrQWgDygozw0xoPdaXn5TQE46g46AolJdxphvahs4sLuLw
+Message-ID: <CAD14LL9jt+g=tWwT1N5s-OrzuWeWz1TvCQLbCqTRZOi4UuEG_g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] Add support for multiple versions to KHO
+To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
+Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000176b0b0657ef45bf"
 X-Rspam-User: 
-X-HE-Tag: 1785534850-151143
-X-HE-Meta: U2FsdGVkX1+Gm4h9TDzNN33FFcCy/UlR/y2tSHS+WUazhmxPsR1eob6NWi9JuP+IuFD2IIbWG2YaFp0NyG4TDjRj/+ZCFBDa9cEm9CMwVjal/rw7tVtdmJ8750ZVzLNJI8y5bszR4ykaRcmnhlSl3ZS/uauywcVCd2fU/3xiSymBm6pF0hksSeq+Qfao6MPvTqqvdlNz6/rZ8UE1Sm+D/HIOmBOPUABLFz2eFNpFEXMBsNR4kTMCg8+xcy1eDBU1aOp+csdjfovfgj+UaFeIQs0hDBA2a9QW/apj1JRBvr5eZ6HZXJmwDkIRBa5jHxCE+ffTt2NI9Zihu306Ls9TnqwH9pfoC31rzNGolIH1Mpherx4sscrDrK5Vv+4QRTEB5rzrcgjsLZyaLrZsS8OMA9cnJ/8wzIBSnLli6HKHnn+C+lXekmeIx94t1RcCLbts+SSCJka8+zQUTF1H51cIVX1hFIequOf4PZIOuhIb+ngxctSlT7J1gdvAWLPkdu7Rx7sdRh/l9dFh3zjQbOFn+eYqls0ef78HqOLLlshVbzzDF7P2jGjUpL6cQ40Y3BFE4CVb21kKODfwVb5evMUlL0Exh8OJGMt2l3LSeEEKw5VKt2rFN/jGeLSHvEaljpCAmiI4XF7j1PVkr615gIbVyvhxfBXhqRQMkfzCD+A2N9gBCpOSqDfN0suNGcqeLCLE//mE2dc4bj8eZaHl6DL5y0BC4u5FibnEyt1hy9aMeI27rZqa3Xe7Yl1B2Po6mLqoaIcYUX9itazmn4ajkUOeMv5Xisp/aiGup5yUsEnNcqEEK9jovA4oHYtKm0Y0/3ZqaDwys1//YFYmExm4OKg2E0BzFOPcSmG1/lnk1jtwf5u15RSF0WtkwWSEbgNW8ZAWcKe+toLwEaKOI7KTNBeoV35QxdoJGcwkQa54tZCg2G04mWTUeu4cJwJrSFf/yOLRK3V8KsAMuGQ7PfAQM9C
- Q6cxvA+4
- e95emxyD041CwRnbqos4ZKXxLrFAxPoz1a1ThyV7rBs5zJNtu1EwfBQ3HHr50+rl4MoMX//EY0ZbY9Jglu8HzLHP0U/tSxxw8BZ5WSL0wrsUyjAXp7zuF80svP0QV5M5VFuCibCJbimuZJ170MQa2sFNqkfO0m1aApBtp7dKTV9Pm3tpzoI1FqkvDXIMVmu4zS8DE7BRfh54gZavWhzsqqrEtK80Wj+FyvMMvEdNUvlHIJtBHTmktFKow6d3qaxYY8xH6gwlNvFeHOEwFKw8eYxx5HRiVDw6Y5YJ5weO2aSR4F2TwMdWSAk1YAV5LmcTstCGwLoFptuzorDmIDfrr3b+iWkVyuVcCqT7mOHTlILtxz3GL95sFxg2Ka+sOJh51WwaNO2zFtdGRKhw=
+X-Rspamd-Queue-Id: DB3DBC000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: spquzjfsxt4wzda8cd4o6nx4rjcbx9g5
+X-HE-Tag: 1785535029-968095
+X-HE-Meta: U2FsdGVkX19i9RJvTXJ8QyKSpt2+rkit8BtolZWbfmTDHSDc8jTU5Cqa6Ld1UvaPizAyur7kOCV0rFMDXIWt289WZSmaWtiJF4pEE+YgIbeuwg7MCKuC4epsr7VzD7sOmz+aP50K9hpTdMvlALiv5heJcBoVQdVQ++i3xrJ/4fxdTvCzbJI10VKkqGwvOV9NfJnt/GYHEXSOfhKqNO5BRVblz7XO6PyzJWfRvJzHICTGfmucxRmX7OU/0DsCJFtXXkTGfTUq4JR6MC0bah+8qXzV4WOqnVZbHtH7P2KofJm86xJ5C6DNc8ed0PaCPRoelKWGELtiHJgBb1y6zyJDAh9Ps7FxciIg0i5VsYrBoViRCShji1DZBs95NdfjasopU8IOD9syqxbarVGRk+x/vEIc8i3niWGE6MigxEogwnQtDuot3DTtWRl8vwPe7EEZ5B2eP4Z7vL+4LrYPipKi7chjgxqtFcZ5TXT9xkW6XajJdYwPlQ5v25912ypbs2t4KeuVYib1Oc05NDkUBmboz0AOApxiUWwi5Cr9uJnL+kkl36FFieZ6SRzxszAE3seltPlgsEDZgcri230AX4trdixHMLve7sWrjhhhaW+Q2VkmtBJ1vJjn7Oy/6eew5C5vnfwyQJ0FidrZBxcP+8fW1G5B0AYLhjicATDLmkibUrrAbLrGb9AihDvzmlzw7jD/BUIzreZ0VuxoG4BOrFpby2zMkMOQdDRcrReo3HLtQ3hSe5ydzMaNXOwVIVaqagZQ+NEGRIHF5stxs2T5A42I+tV5T4qtXJ2j+3EXh0BjPiWb20UNlG8pl98ixZ3z5vwURyyFk0J+vBf14xt1HMenCQqlrjHT3DYu8TZNF3S3SB9PebtcRKXCPQpnqyYnPyH/HRxW1rPElq084eaTZtFKpss3eVawuaJmrOHvN4cp2qm8xyPTitaSH8Fy7eYE49gVF6iIdbjQkeUd2cW5ViV
+ YnxkLtiX
+ IbV9xFyMht35wOWhPru9tbJsMysfAuRncctlllyBgAZkU90vee9ugZSv+fT+BD7sXDQwRyztoN6vjE82/UP1zeJps2Lf0YYIE2d2WDdooDSF09BJMqtOi3N/Mu2/A1imWrc0jom0PJt5zVjSx1IegGc7jiX/YRQCoQiuA6+JOM723vnY+kYrSCfO+YdAM4oE2i2AM3RR0goc180dwExJjpiiuCoF+a9t4ilufdJgM1gt650N9LUFhuXBnCKHgWPc3TeCWtdd2Uy20AL88+L7HXQU0nFgjdaIiPQKmeo7KAmm9TyC6505bPrj5UMdD+3z2QBmyt41eRUnYjUvCczjzeXFqr05YYv7m4dVScF7WMmhxi3w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,221 +136,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yiannis,
+--000000000000176b0b0657ef45bf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Although copy_mc_to_kernel_nt() asserts both "mc" (machine check exception)
-and "nt" (non-temporal store), the implementation fails to deliver both:
-1. copy_mc_fragile() is MCE-safe, but it does not use movnti.
-2. memcpy_flushcache() uses movnti, but it is not MCE-safe.
+0/2 is a typo, should be 0/4 :-)
 
-Additionally, according to the Intel manual, since movnti uses the WC proto=
-col
-(a weakly-ordered memory model), a fencing operation is required. Because
-memcpy_flushcache() lacks an sfence, it can result in reading stale or corr=
-upted
-data after folio_unlock().
+On Fri, Jul 31, 2026 at 2:53=E2=80=AFPM Logan Odell <loganodell@google.com>=
+ wrote:
 
-Furthermore, copy_mc_highpage() is unoptimized for page migration operation=
-s
-because it reuses copy_mc_to_kernel(), built to handle
-variable-length, unaligned
-memory. As copy_mc_highpage_nt() follows copy_mc_highpage(), it inherits th=
-is
-flaw. In contrast, copy_highpage() is optimized for page migration by lever=
-aging
-copy_page(), dedicated to 4KiB-aligned memory.
-
-Therefore, copy_mc_highpage_nt() should call a dedicated page-copy assembly
-routine that provides MCE safety, movnti stores, and an sfence, rather than=
- the
-generic copy_mc_to_kernel_nt(). We can name it copy_mc_page_nt(), following
-the naming convention of copy_page().
-
-What are your thoughts on this direction? Any feedback or suggestions would=
- be
-greatly appreciated.
-
-Huan Nguyen
-
-On Thu, Jul 30, 2026 at 8:03=E2=80=AFAM Yiannis Nikolakopoulos
-<yiannis.nikolakop@gmail.com> wrote:
+> The format of the preserved-data blob that LUO saves to KHO is expected
+> to change as new features are added, bugs are fixed, etc. Currently,
+> LUO handles this by embedding a compatibility string into struct luo_ser
+> which can be used to compare two kernels. This works if the changes
+> between kernels are fundamentally incompatible. In a case where a new
+> feature is added, we may want to support both versions in the new
+> kernel to retain compatibility.
 >
-> From: Alirad Malek <alirad.malek@zptcorp.com>
+> This series adds a KHO interface to embed multiple versions under a
+> single node in a subtree.
 >
-> In x86, use memcpy_flushcache (that uses non-temporal store
-> instructions) to copy a folio. To achieve that, starting from folio_mc_co=
-py
-> down to copy_mc_to_kernel, create a series of helpers (named with an _nt
-> suffix) that have similar behavior to the original counterparts.
+> We go from something like:
 >
-> Signed-off-by: Alirad Malek <alirad.malek@zptcorp.com>
-> Co-developed-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-> Signed-off-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-> ---
->  arch/x86/include/asm/uaccess.h |  4 ++++
->  arch/x86/lib/copy_mc.c         | 26 ++++++++++++++++++++++++++
->  include/linux/highmem.h        | 32 ++++++++++++++++++++++++++++++++
->  include/linux/mm.h             |  1 +
->  mm/util.c                      | 17 +++++++++++++++++
->  5 files changed, 80 insertions(+)
+>        / (Root Node)
+>        =E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent Node)
+>            =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
+>            =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo>
 >
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uacces=
-s.h
-> index 367297b188c3..2d0938d3e372 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -494,6 +494,10 @@ unsigned long __must_check
->  copy_mc_to_kernel(void *to, const void *from, unsigned len);
->  #define copy_mc_to_kernel copy_mc_to_kernel
+> To something like this:
 >
-> +unsigned long __must_check
-> +copy_mc_to_kernel_nt(void *to, const void *from, unsigned len);
-> +#define copy_mc_to_kernel_nt copy_mc_to_kernel_nt
-> +
->  unsigned long __must_check
->  copy_mc_to_user(void __user *to, const void *from, unsigned len);
->  #endif
-> diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-> index 97e88e58567b..5a2ee5c2211e 100644
-> --- a/arch/x86/lib/copy_mc.c
-> +++ b/arch/x86/lib/copy_mc.c
-> @@ -81,6 +81,32 @@ unsigned long __must_check copy_mc_to_kernel(void *dst=
-, const void *src, unsigne
->  }
->  EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
+>        / (Root Node)
+>        =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
+>            =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
+>            =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0x=
+phys_luo_v1>
+>            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_=
+luo_v1>
+>            =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
+>                =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo=
+_v2>
+>                =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
 >
-> +/**
-> + * copy_mc_to_kernel_nt - memory copy that handles source exceptions
-> + * if enabled, otherwise uses non-temporal stores
-> + * @dst: destination address
-> + * @src: source address
-> + * @len: number of bytes to copy
-> + *
-> + * Return 0 for success, or number of bytes not copied if there was an
-> + * exception.
-> + */
-> +unsigned long __must_check copy_mc_to_kernel_nt(void *dst, const void *s=
-rc, unsigned len)
-> +{
-> +       unsigned long ret;
-> +
-> +       if (copy_mc_fragile_enabled) {
-> +               instrument_memcpy_before(dst, src, len);
-> +               ret =3D copy_mc_fragile(dst, src, len);
-> +               instrument_memcpy_after(dst, src, len, ret);
-> +               return ret;
-> +       }
-> +
-> +       memcpy_flushcache(dst, src, len);
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(copy_mc_to_kernel_nt);
-> +
->  unsigned long __must_check copy_mc_to_user(void __user *dst, const void =
-*src, unsigned len)
->  {
->         unsigned long ret;
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index af03db851a1d..a5cb435b9ffe 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -468,6 +468,32 @@ static inline int copy_mc_highpage(struct page *to, =
-struct page *from)
+> We can also support mixed mode, allowing backwards compatibility in case
+> of a roll-back to a pre-multi version kernel:
 >
->         return ret;
->  }
-> +
-> +#ifdef copy_mc_to_kernel_nt
-> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
-)
-> +{
-> +       unsigned long ret;
-> +       char *vfrom, *vto;
-> +
-> +       vfrom =3D kmap_local_page(from);
-> +       vto =3D kmap_local_page(to);
-> +       ret =3D copy_mc_to_kernel_nt(vto, vfrom, PAGE_SIZE);
-> +       if (!ret)
-> +               kmsan_copy_page_meta(to, from);
-> +       kunmap_local(vto);
-> +       kunmap_local(vfrom);
-> +
-> +       if (ret)
-> +               memory_failure_queue(page_to_pfn(from), 0);
-> +
-> +       return ret;
-> +}
-> +#else
-> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
-)
-> +{
-> +       return copy_mc_highpage(to, from);
-> +}
-> +#endif
->  #else
->  static inline int copy_mc_user_highpage(struct page *to, struct page *fr=
-om,
->                                         unsigned long vaddr, struct vm_ar=
-ea_struct *vma)
-> @@ -481,6 +507,12 @@ static inline int copy_mc_highpage(struct page *to, =
-struct page *from)
->         copy_highpage(to, from);
->         return 0;
->  }
-> +
-> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
-)
-> +{
-> +       copy_highpage(to, from);
-> +       return 0;
-> +}
->  #endif
+>        / (Root Node)
+>        =E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Parent Node)
+>            =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo>
+>            =E2=94=9C=E2=94=80=E2=94=80 blob-size =3D <0xphys_luo>
+>            =E2=94=9C=E2=94=80=E2=94=80 1 (Version 1 Node)
+>            =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0x=
+phys_luo_v1>
+>            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_=
+luo_v1>
+>            =E2=94=94=E2=94=80=E2=94=80 2 (Version 2 Node)
+>                =E2=94=9C=E2=94=80=E2=94=80 preserved-data =3D <0xphys_luo=
+_v2>
+>                =E2=94=94=E2=94=80=E2=94=80 blob-size =3D <0xsize_luo_v2>
 >
->  static inline void memcpy_page(struct page *dst_page, size_t dst_off,
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5be3d8a8f806..d07ce478582d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1644,6 +1644,7 @@ void __folio_put(struct folio *folio);
->  void split_page(struct page *page, unsigned int order);
->  void folio_copy(struct folio *dst, struct folio *src);
->  int folio_mc_copy(struct folio *dst, struct folio *src);
-> +int folio_mc_copy_nt(struct folio *dst, struct folio *src);
+> The first patch moves some common functionality for preserving a node
+> into a separate function. The second patch adds our new APIs. The third
+> patch adds support for multiple versions to the debugfs entries. The
+> forth patch adds new test cases to test_kho.
 >
->  unsigned long nr_free_buffer_pages(void);
+> Logan Odell (4):
+>   kho: Move subtree blob logic to separate function
+>   kho: Add support for multiple versions in subtrees
+>   kho: Add support for multiple versions to debugfs
+>   kho: Add test cases for versioned subtrees
 >
-> diff --git a/mm/util.c b/mm/util.c
-> index b05ab6f97e11..e09e9b5f8eee 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -749,6 +749,23 @@ int folio_mc_copy(struct folio *dst, struct folio *s=
-rc)
->  }
->  EXPORT_SYMBOL(folio_mc_copy);
->
-> +int folio_mc_copy_nt(struct folio *dst, struct folio *src)
-> +{
-> +       long nr =3D folio_nr_pages(src);
-> +       long i =3D 0;
-> +
-> +       for (;;) {
-> +               if (copy_mc_highpage_nt(folio_page(dst, i), folio_page(sr=
-c, i)))
-> +                       return -EHWPOISON;
-> +               if (++i =3D=3D nr)
-> +                       break;
-> +               cond_resched();
-> +       }
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL(folio_mc_copy_nt);
-> +
->  int sysctl_overcommit_memory __read_mostly =3D OVERCOMMIT_GUESS;
->  static int sysctl_overcommit_ratio __read_mostly =3D 50;
->  static unsigned long sysctl_overcommit_kbytes __read_mostly;
+>  include/linux/kexec_handover.h             |  14 ++
+>  include/linux/kho/abi/kexec_handover.h     |  16 ++
+>  kernel/liveupdate/kexec_handover.c         | 234 +++++++++++++++++-
+>  kernel/liveupdate/kexec_handover_debugfs.c |  57 ++++-
+>  lib/test_kho.c                             | 266 +++++++++++++++++++--
+>  5 files changed, 540 insertions(+), 47 deletions(-)
 >
 > --
-> 2.43.0
+> 2.55.0.508.g3f0d502094-goog
 >
+>
+
+--000000000000176b0b0657ef45bf
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">0/2 is a typo, should be 0/4 :-)</div><br><div class=3D"gm=
+ail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On F=
+ri, Jul 31, 2026 at 2:53=E2=80=AFPM Logan Odell &lt;<a href=3D"mailto:logan=
+odell@google.com">loganodell@google.com</a>&gt; wrote:<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">The format of the preserved-data blo=
+b that LUO saves to KHO is expected<br>
+to change as new features are added, bugs are fixed, etc. Currently,<br>
+LUO handles this by embedding a compatibility string into struct luo_ser<br=
+>
+which can be used to compare two kernels. This works if the changes<br>
+between kernels are fundamentally incompatible. In a case where a new<br>
+feature is added, we may want to support both versions in the new<br>
+kernel to retain compatibility.<br>
+<br>
+This series adds a KHO interface to embed multiple versions under a<br>
+single node in a subtree. <br>
+<br>
+We go from something like:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Legacy Parent N=
+ode)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 preser=
+ved-data =3D &lt;0xphys_luo&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 blob-s=
+ize =3D &lt;0xsize_luo&gt;<br>
+<br>
+To something like this:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Paren=
+t Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 1 (Ver=
+sion 1 Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=9C=E2=
+=94=80=E2=94=80 preserved-data =3D &lt;0xphys_luo_v1&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=94=E2=
+=94=80=E2=94=80 blob-size =3D &lt;0xsize_luo_v1&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 2 (Ver=
+sion 2 Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=
+=E2=94=80 preserved-data =3D &lt;0xphys_luo_v2&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=
+=E2=94=80 blob-size =3D &lt;0xsize_luo_v2&gt;<br>
+<br>
+We can also support mixed mode, allowing backwards compatibility in case<br=
+>
+of a roll-back to a pre-multi version kernel:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0/ (Root Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 LUO (Versioned Paren=
+t Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 preser=
+ved-data =3D &lt;0xphys_luo&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 blob-s=
+ize =3D &lt;0xphys_luo&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 1 (Ver=
+sion 1 Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=9C=E2=
+=94=80=E2=94=80 preserved-data =3D &lt;0xphys_luo_v1&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=82=C2=A0 =C2=A0=E2=94=94=E2=
+=94=80=E2=94=80 blob-size =3D &lt;0xsize_luo_v1&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 2 (Ver=
+sion 2 Node)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=
+=E2=94=80 preserved-data =3D &lt;0xphys_luo_v2&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=
+=E2=94=80 blob-size =3D &lt;0xsize_luo_v2&gt;<br>
+<br>
+The first patch moves some common functionality for preserving a node<br>
+into a separate function. The second patch adds our new APIs. The third<br>
+patch adds support for multiple versions to the debugfs entries. The<br>
+forth patch adds new test cases to test_kho.<br>
+<br>
+Logan Odell (4):<br>
+=C2=A0 kho: Move subtree blob logic to separate function<br>
+=C2=A0 kho: Add support for multiple versions in subtrees<br>
+=C2=A0 kho: Add support for multiple versions to debugfs<br>
+=C2=A0 kho: Add test cases for versioned subtrees<br>
+<br>
+=C2=A0include/linux/kexec_handover.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 14 ++<br>
+=C2=A0include/linux/kho/abi/kexec_handover.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 16 =
+++<br>
+=C2=A0kernel/liveupdate/kexec_handover.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
+ 234 +++++++++++++++++-<br>
+=C2=A0kernel/liveupdate/kexec_handover_debugfs.c |=C2=A0 57 ++++-<br>
+=C2=A0lib/test_kho.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 266 +++++++++++++++++++-=
+-<br>
+=C2=A05 files changed, 540 insertions(+), 47 deletions(-)<br>
+<br>
+-- <br>
+2.55.0.508.g3f0d502094-goog<br>
+<br>
+</blockquote></div>
+
+--000000000000176b0b0657ef45bf--
 
