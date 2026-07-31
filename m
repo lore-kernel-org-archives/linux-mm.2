@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE802C55172
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 22:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C66EFC5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 23:33:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0576B0096; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
+	id 7B3886B0088; Fri, 31 Jul 2026 19:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA15A6B0098; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
+	id 78AF16B008A; Fri, 31 Jul 2026 19:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA3F6B0099; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
+	id 6C7136B008C; Fri, 31 Jul 2026 19:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 956BE6B0096
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:10:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05AE51A01BE
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 22:10:33 +0000 (UTC)
-X-FDA: 85050466746.02.0466B8C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 404D16B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 19:33:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7D26A01E4
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:33:31 +0000 (UTC)
+X-FDA: 85050675822.17.DCBEA25
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4DBA380006
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 22:10:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgtmVEXM;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id D55E0C0003
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:33:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m1q1CWJi;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785535831;
+	s=arc-20220608; t=1785540810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KcMHynopxq0LB8O3aiZw02VpzCo3iMp78znRKkfrp3w=;
-	b=3L3LV9XhQFHq5kZtTbEyMsg0pSrCXHE4c5gNrHjJi9TXdydaorCL2z04XA7KwS/1oYE+bp
-	k7WIqwib+68AtBMlwf/Uz9RxBvkGH/wNR1rWWKX1ZOm1H1XjS59RxWcP5112VS/cKkTjeD
-	bU67JoHs4ecPOwd9Q95+XB6ej6Rhekk=
+	bh=7915x5o+7+QwzRXdlpGQp/YpYXzXT04kydeHEVKdkWc=;
+	b=34DD974Xy1ZyukiTBTlj6fY1HCgEFQc/AX3l0OjQV2RMoAHxDnHdooOpGwjZsGhbXnvGkq
+	LL0kUED5jij+Rh4FOF1DwK/QRDL9fTb8X9dxHFfmmPPDiRmsZXR6n7gwabt3X2BfCqwWDB
+	P7DJ0Cs7+zKf7QQ50ddhzpetmNUdvfg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785535831;
-	b=vaRsJqFkZtIgV2q8FiNH7uLRkZB1huZqu//4PQQ3xHQtoDCt8o5a+WSkDNt1JvU8tdujUj
-	6XCqo9l4PGq1MABQ0zHwxCAq9FmlEprY89giKCnu8bSuGWQ55B2wGf360r1ZekYJ3kptKU
-	6iXf8K8WIbspTcwq3i5D2DzyC6r4jI0=
+	t=1785540810;
+	b=Wz4Bnc+kx9ULvX/Wz/JDPYAr5/6WG/OsPmRRi5iKtlgsXYFtbFQuk1RIqTiz+mhFFPWcaG
+	dBUrcCZka1NPDkG0PuQyqa13Kqh5UqPu8LAvCH5c0FzxB7bTVH1qSvIWFfuNTL+Wqwpp7Y
+	Sqz6LTQuDgX/hkJiZqJTzUY272WDwSs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgtmVEXM;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m1q1CWJi;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8539E406FB;
-	Fri, 31 Jul 2026 22:10:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701381F00ACF;
-	Fri, 31 Jul 2026 22:10:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3435444FEB
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4EC1F00AC4
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785535829;
-	bh=KcMHynopxq0LB8O3aiZw02VpzCo3iMp78znRKkfrp3w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SgtmVEXMK+BaM0dDhNotsFBU1VNhPZ/5ykE3Gou3coxHECMuyL0PwNTOMkWSJ+eos
-	 ttqAFupqL1YevTA8JWZ1LdUYx09hwpFTjKg6odUNrzXnUuGGnfZe/jcT0ftoOrQWWk
-	 NC/HHmeoV1H+SU0ZzDGwPDDcico8eKzwfpTFqVSIJSAe7ayrSuUaIwcwHLEc58zifl
-	 pLOMRPpUiWTD0FdUwOD7qLD9qkhj+fbbQXaOODFBHzW0Z1sIdeaBy0+s0a5bH6YMve
-	 VYvBCt8UN4Bai7CfvxLY3gh0ZFquzAmbwVoWcH8c/weg0aVgYsM3EJIU7ZRImkUpuN
-	 H4oJtNNK8ztQA==
-Date: Fri, 31 Jul 2026 22:10:27 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 04/26] x86/mm: split out preallocate_sub_pgd()
-Message-ID: <am0aplxsh1b16Rch@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
+	s=k20260515; t=1785540808;
+	bh=7915x5o+7+QwzRXdlpGQp/YpYXzXT04kydeHEVKdkWc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=m1q1CWJiWqw3tnVHwvtoE8Lz6ojQFGQ6AZdX/Ld1jE8jY+vb+sSU1LEwjPNb7/BO9
+	 HFauED9ifVOfJUyRRHPQGOBFHR71wyNaWbP+j9HOf3+WehDN9i5tj1GuKgD5gL5oWw
+	 Ne6AwrB/XPHVBYFuyHXmY4YocjJg7N0JQ+rwMiXWHQPmqb561SW9G4LWZ2fZkBV1/k
+	 e7RjOQWFKy56uiHSZhzt5pJ3d6YT1MyX3t78IZuNHt8w1QtH2/JiOpO1S7p5n8h1h0
+	 3FGl81ViOiFZauZRhd9LHK/XCyfesccr1saZ/+IZd+oGy5ZFq2FpEvyatTxPBWu4Ek
+	 YRassCcurrvGg==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e6c4a867cso106514085a.0
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:33:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpVibG6DT4+AeOW8FYrkR/B3dpHo3Kpm6xiVxwGgMLh3AliZ0kg+EBQsl6ovJhSjYXPLTVJ6QEebg==@kvack.org
+X-Gm-Message-State: AOJu0Yyb8mZXhVNIZM1hNPa/rIN5Eu7VxrZqSeaT6pEzBPxrkCC9j+lS
+	5EZtdKTmHVRtH4jhBKZ5xESjgK631oNSiahO2mTfd7w4gQWdA1QcBhRNJQxxgC6KTVpc3S+5VJO
+	gGhSHUvTzfsTn89uo3Hgb9/3x6Ew2km8=
+X-Received: by 2002:a05:620a:410f:b0:92e:e695:d622 with SMTP id
+ af79cd13be357-934a093821dmr371165985a.28.1785540807225; Fri, 31 Jul 2026
+ 16:33:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
+References: <20260731083843.37811-1-baohua@kernel.org> <20260731083843.37811-5-baohua@kernel.org>
+In-Reply-To: <20260731083843.37811-5-baohua@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 1 Aug 2026 07:33:15 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y_v1PNyAEg1Xj8FciPNSkaoFifGnxM34QuUWFWMup79Q@mail.gmail.com>
+X-Gm-Features: AUfX_mxrSwBCQcSPvJ6gXz-cE-o3KgiYpFl_Hj0twi_cEW52rNMntKNum63ZrMY
+Message-ID: <CAGsJ_4y_v1PNyAEg1Xj8FciPNSkaoFifGnxM34QuUWFWMup79Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 4/6] mm: mglru: improve scan_folios() exhaustion detection
+To: akpm@linux-foundation.org, linux-mm@kvack.org
+Cc: axelrasmussen@google.com, david@kernel.org, hannes@cmpxchg.org, 
+	kasong@tencent.com, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, stevensd@chromium.org, weixugc@google.com, 
+	yuanchu@google.com, chenridong@xiaomi.com, zhangbo56@xiaomi.com, 
+	wangzicheng@honor.com, lianux.mm@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D55E0C0003
+X-Stat-Signature: 5gjongfih8gegpga83bwaeznzrj5yqxh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4DBA380006
-X-Stat-Signature: niowz9srqg9k66dch55aqwn8nimcdj8s
-X-HE-Tag: 1785535831-738188
-X-HE-Meta: U2FsdGVkX1/AXZEVLGexa5NZn0JLCjpjM9jM+K3M72SnoVRufpxOaWCtZfl/vhihMbzGTiFJIyWb1MJFcsaMsscaPXxB2wZ2VIdsEJZgf9SHk9aP2h8UoG694GXPU94Srod6FKaLhLHEPpFysWEcObFiC6pJ8lwAOV9BTb2bXE2EYVJ/5xY0cDiU4cMTKS0qJIby0WnbK6ln3N/MVKaUfD4n5hZM4SgLzJSnS1h1V93gevgb9g/Lpue8SFhBxXBIrfZUsL5I8OnL5saNcDeRifaW9nTvvEP+Xo82fzzp5XtlHjPnb7E3kEvTSH2fPEe31NfjXe4pQftrDShFNL9XT+NrpIkFfZoVPtva21FN7TNuCUPCueC9LaXJv2UkZaZdNCzf2wqG4SKHzJShxa04zs4HEDR79po4CyBxVbhuLO4VgeMq9EQg6rIc0Wf+S1WjldanncY2vGFKJTEl4Gh4PYl9M78g2y2mFzmJ25pyISqFEeWdruusck0oId9p4TDozw4NkYePl8jkpz0Zkc3q43ooUPxG6UUT5mlzh2InG8XjOaXdddTySda1zwaB3vYDnQ3syhSaOrao9XG3lJyPnmN9GRy6omgSmzHVh3qnmvsFIJj6cXTHlCzzZ9M3c14ajO3gbeo6sobXIcC5zxYW3X7jF2VOx7PR29x4VjQeXxYyiKJrdRufVdkpkrGPamLtK5LtqmMmTgD060RZqNqtQWgrYXqMdr1STLq0W9JG0mB6SVvRoqiD9bOYJBK3MD1Jmx0hwypZStuB8gZAcr1JgEdqKsjqDikGeBaG03OooOMZngeEhLgtF686XRih2bPt2t+GIt0u8NqlbSiezMPCgxeD61FXSQ1F4jqmOPURJjVpEDy8Dko5hBcFPpNd9mzlnVk2iXubmJxSJo+AkowjWg5ncykoXXvPqPNilKKHmSEBl3V6Jn0HrXKAGRd6SZv0jc6bF8etoJExiM7v4/p
- lN6KAr//
- JhXOmpYQ2bvrjSMjeX5HrsdtNHPfWQmNtNyfFxmuJpq+urFWu5Np0Yd80YiW7kXEwtXKNt+FbMxDAkO1WizKNTXvhjGW23z6yczdhskRewxNbt4MgFXeQbADGNbWFpOAZJTYGB8nYiDTPJWRLHHH4OyO3PFRB8iJUYXsxPj42i6kvfxOJk1OtiNWpWBC2/vmRECqIZewKjM1M9yxOZ28ouwgPe5315qepaI1XMVMDrPO09c6scS1q54qw24cLv2eFAN7s1taR2uh1HZhCvOdYr3a5OIwb7dfdPW7Sw+UdDMGQiCi+a0ik42K1+eSofmPJWWfVNRdyo/pKUvfobPdkvIf1Pw4yAOWpmOauZP8tydiWDJU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785540809-668241
+X-HE-Meta: U2FsdGVkX1/SOxK3rmpL3olyV3k5mCsITczMN+ftuv4jmepIrauwXzRfPOMVEvxN+yBUZd8h7Qv/BXxdwTPZBOuG1gJVOfnU2bw6smGxaVbMTwWt1+A/bn+1QyYd4J9+Ant9aAMgCPaDCzixAb+XOP9Dl4wtEC50TC3i14uyFy0Cm5SJzPMFfChgeEY12oFHUTCLFub+gW804KksCbllKusgxiG8B3FLl46QRrUbNu83LdT1Z2EE79QcQkwOb2Oddn4k3YLxENLMCqbtZeA5or+BId6cscdyybVxDdUDdMV7OFtoVVBclXagDD+b++8vC0aSdBw1ojEQ066Dsb4L2WF/Z0M9jYbNjgZcPkQwkowvkXlgNc+Ro4M1vEyMjEYm452BsiS3sMNs+aBXjlrx6+WZEdfrttoE0LN3tBBzaRApwra19eSPZdgm4YApKKoBCrBYIgQsqgX+sExiQRb926Jx3ZlkUqhhnCY9dmKoEtkVAUeUfSlrmTbEY8fhdfkh/91Ez+dFT2VRlTeHsdAKZYvFbf/niuoE+kLJqCdVsTK8PgaIo9/GEROHMn6hPoHDuzhjx4NFWPOfDovLJDDsP1G9X6LXaBbc/2UnnZ4ByFUyZefiSfvqRjzcQYnogslANroaUXFgyrPERpugC7qplAxAhocKM5kXUSjovLQtFReXIx2cfQH90Hk5flcO48dQKDeA5VubHoEAqpGNKIlghwRAejobLfc7/cYktgRGoaEusEbSXChpvummiRsxjqO6+uB/1S3H6bRvHzZjIMxwbHIRYNB5NQSG1w7lDnKuCfiPrOTJh4MfRkDVE/S9Sm9hTpJ/r0vWP84VHnG1lg19bwI23MZ6Qs5/ncoXfv/Av/z1yE4ofUvP3iBt0+8XqR/PVb/4ccSHSVuqN5NvG0IyzM27QauLGZDxj+Er5DEgllmdjKNa+SSuIhSEDFbC1Yii67imz3OEl+AZmwcFwmv
+ SBpZ0vWF
+ Scx7Ax1psyBOMPb8fg8HRSOiCUTbRU8me/Y3jwcwRjimKCoqRNpxtBHdPeMLbNyzG8j7XZDW/YNxd9xkhG7p1HtmING3+6nFsD/Y5dyaIpNelvUzy/S/yBWkoEp32WHDSKCgTwOEWAFsaxdkbUlPCJ4kOgJ3cj2LuTiz7oaV1s1CleKKiWZzyn0uAc6+9k6yLv/yY2k+PUT+jJXZw796oRqsu38Nrm0OuKjO7RTshf9+c1XUt9+MFQAWa0EY87AxuweP4+SmYT672yfRpQWO0V0BuC6XkMxtKK8Sp9hyDURYvvcS0trU1v24r7oGuoIon464/pxON3UnT5b6mIsfLkaJR32/gCUQE9Lf7p2lTE2BFTs7Ha2mXxTneZEAMadCaIUMKGRF3AnRQQn6WTgKppGhbdPdEvdZw5rRkkpGkCu3DcPTHQIV5x9NQ0Nkr4ON3nCt3FyvzldHZkGpGtLQxPCic8Fkf7vJhwEsccWVXmy2dulY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,195 +106,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 10:22:37PM +0000, Brendan Jackman wrote:
-> This code will be needed elsewhere in a following patch. Split out the
-> trivial code move for easy review.
-> 
-> As a side effect, change the logging slightly: instead of directly
-> reporting the level of the failure in panic(), show a generic panic
-> message, will be preceded by a separate warn that reports the level of
-> the failure. This is a simple way to have this helper suit the needs of
-> its new user as well as the existing one.
-> 
-> Other than logging, no functional change intended.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+On Fri, Jul 31, 2026 at 4:39=E2=80=AFPM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
+>
+> Commit 16b475d2ac3c ("mm/mglru: avoid reclaim type fall back when
+> isolation makes no progress") uses scanned =3D=3D 0 to determine
+> whether scan_folios() has exhausted a reclaim type. However,
+> this is not always sufficient. It is possible for scanned > 0,
+> while the oldest reclaimable generation is exhausted after the
+> first scan_folios() call.
+>
+> Add an exhausted output argument to scan_folios() so it can
+> explicitly report whether the reclaimable lists for the current
+> type have been exhausted.
+>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->  arch/x86/include/asm/pgalloc.h |  3 +++
->  arch/x86/mm/init_64.c          | 44 +++++++-----------------------------------
->  arch/x86/mm/pgtable.c          | 38 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 48 insertions(+), 37 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
-> index c88691b15f3c6..2aba6cfabf495 100644
-> --- a/arch/x86/include/asm/pgalloc.h
-> +++ b/arch/x86/include/asm/pgalloc.h
-> @@ -2,6 +2,7 @@
->  #ifndef _ASM_X86_PGALLOC_H
->  #define _ASM_X86_PGALLOC_H
->  
-> +#include <linux/printk.h>
->  #include <linux/threads.h>
->  #include <linux/mm.h>		/* for struct page */
->  #include <linux/pagemap.h>
-> @@ -128,6 +129,8 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
->  	___pud_free_tlb(tlb, pud);
->  }
->  
-> +extern int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr);
-> +
-
-Do we need extern here?
-
->  #if CONFIG_PGTABLE_LEVELS > 4
->  static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+>  mm/vmscan.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 0038f33aa318..2e7fef6975b6 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4707,7 +4707,8 @@ static bool isolate_folio(struct lruvec *lruvec, st=
+ruct folio *folio, struct sca
+>
+>  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>                        struct scan_control *sc, int type, int tier,
+> -                      struct list_head *list, int *isolatedp)
+> +                      struct list_head *list, int *isolatedp,
+> +                      bool *exhausted)
 >  {
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index ab4c5a02326f7..ac6688c70872e 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1293,46 +1293,16 @@ static struct kcore_list kcore_vsyscall;
->  static void __init preallocate_vmalloc_pages(void)
->  {
->  	unsigned long addr;
-> -	const char *lvl;
->  
->  	for (addr = VMALLOC_START; addr <= VMEMORY_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
-> -		pgd_t *pgd = pgd_offset_k(addr);
-> -		p4d_t *p4d;
-> -		pud_t *pud;
-> -
-> -		lvl = "p4d";
-> -		p4d = p4d_alloc(&init_mm, pgd, addr);
-> -		if (!p4d)
-> -			goto failed;
-> -
-> -		if (pgtable_l5_enabled())
-> -			continue;
-> -
-> -		/*
-> -		 * The goal here is to allocate all possibly required
-> -		 * hardware page tables pointed to by the top hardware
-> -		 * level.
-> -		 *
-> -		 * On 4-level systems, the P4D layer is folded away and
-> -		 * the above code does no preallocation.  Below, go down
-> -		 * to the pud _software_ level to ensure the second
-> -		 * hardware level is allocated on 4-level systems too.
-> -		 */
-> -		lvl = "pud";
-> -		pud = pud_alloc(&init_mm, p4d, addr);
-> -		if (!pud)
-> -			goto failed;
-> +		if (preallocate_sub_pgd(&init_mm, addr)) {
-> +			/*
-> +			 * The pages have to be there now or they will be
-> +			 * missing in process page-tables later.
-> +			 */
-> +			panic("Failed to pre-allocate pagetables for vmalloc area\n");
-> +		}
+>         int i;
+>         int gen;
+> @@ -4723,8 +4724,10 @@ static int scan_folios(unsigned long nr_to_scan, s=
+truct lruvec *lruvec,
+>         VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>         VM_WARN_ON_ONCE(!list_empty(list));
+>
+> -       if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+> +       if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS) {
+> +               *exhausted =3D true;
+>                 return 0;
+> +       }
+>
+>  next_gen:
+>         gen =3D lru_gen_from_seq(min_seq);
+> @@ -4785,6 +4788,11 @@ static int scan_folios(unsigned long nr_to_scan, s=
+truct lruvec *lruvec,
+>                                 scanned, skipped, isolated,
+>                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_A=
+NON);
+>
+> +       /*
+> +        * This scan exhausted the reclaimable lists before reaching the
+> +        * scan target or accumulating enough isolated folios.
+> +        */
+> +       *exhausted =3D remaining > 0 && isolated < MIN_LRU_BATCH;
 
-Nit: We can probably move this comment above the if block, and drop the
-curly braces:
+https://sashiko.dev/#/patchset/20260731083843.37811-1-baohua%40kernel.org
 
-		/*
-		 * The pages have to be there now or they will be missing in
-		 * process page-tables later.
-		 */
-		 if (preallocate_sub_pgd(&init_mm, addr))
-		 	panic("Failed to pre-allocate pagetables for vmalloc area\n");
+"Does this logic properly account for early loop termination when large fol=
+ios
+are skipped?
+Looking at the scanning loop earlier in scan_folios():
+} else {
+      list_move(&folio->lru, &moved);
+      skipped_zone +=3D delta;
+}
+if (!--remaining || max(isolated, skipped_zone) >=3D MIN_LRU_BATCH)
+      break;
+If a large folio is skipped, skipped_zone can instantly reach or exceed
+MIN_LRU_BATCH. This causes the loop to break early while remaining is still
+greater than zero.
+Because isolated would also be less than MIN_LRU_BATCH at this point, could
+this incorrectly evaluate the exhausted flag to true? This appears like it
+would signal to isolate_folios() that the current reclaim type is completel=
+y
+empty, triggering a premature fallback to the other reclaim type and breaki=
+ng
+the cost-based reclaim balancing logic."
 
->  	}
-> -
-> -	return;
-> -
-> -failed:
-> -
-> -	/*
-> -	 * The pages have to be there now or they will be missing in
-> -	 * process page-tables later.
-> -	 */
-> -	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
->  }
->  
->  void __init arch_mm_preinit(void)
-> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> index f32facdb30354..fdd3709509946 100644
-> --- a/arch/x86/mm/pgtable.c
-> +++ b/arch/x86/mm/pgtable.c
-> @@ -833,3 +833,41 @@ void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
->  	/* See note in arch_check_zapped_pte() */
->  	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
->  }
-> +
-> +#if CONFIG_PGTABLE_LEVELS > 3
-> +/*
-> + * Allocate all possibly required hardware page tables pointed to ths
+This is a good point. We could break out of a zone once
+skipped_zone >=3D MIN_LRU_BATCH, provided the zone still
+contains folios.
 
-								     ^the
+It seems I can fix this by checking whether we exited
+early after reaching the scan target due to any reason:
 
-> + * top hardware level. In other words, allocate a p4d on 5-level or a
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 902d85afc5f6..c0e14048ab7f 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4720,6 +4720,7 @@ static int scan_folios(unsigned long nr_to_scan,
+struct lruvec *lruvec,
+        unsigned long remaining =3D nr_to_scan;
+        struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+        unsigned long min_seq =3D lrugen->min_seq[type];
++       bool reached_scan_target =3D false;
 
-   					  allocate p4ds?
-> + * pud on 4-level.
+        VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+        VM_WARN_ON_ONCE(!list_empty(list));
+@@ -4758,8 +4759,10 @@ static int scan_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+                                skipped_zone +=3D delta;
+                        }
 
-      puds?
+-                       if (!--remaining || max(isolated,
+skipped_zone) >=3D MIN_LRU_BATCH)
++                       if (!--remaining || max(isolated,
+skipped_zone) >=3D MIN_LRU_BATCH) {
++                               reached_scan_target =3D true;
+                                break;
++                       }
+                }
 
-> + */
-> +int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr)
-> +{
-> +	const char *lvl;
+                if (skipped_zone) {
+@@ -4768,8 +4771,10 @@ static int scan_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+                        skipped +=3D skipped_zone;
+                }
 
-Nit:
+-               if (!remaining || isolated >=3D MIN_LRU_BATCH)
++               if (!remaining || isolated >=3D MIN_LRU_BATCH) {
++                       reached_scan_target =3D true;
+                        break;
++               }
+        }
 
-	const char *lvl = "p4d";
+        /*
+@@ -4788,11 +4793,7 @@ static int scan_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+                                scanned, skipped, isolated,
+                                type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANO=
+N);
 
-or:
-
-	const char *lvl = pgtable_l5_enabled() ? "p4d" : "pud";
-
-But I am wondering how important this information is here?
-
-We should be able to tell whether 5-level paging is enabled based on
-kernel config and command line. If the information is generally not easy
-to get, maybe logging it during boot would generally be useful?
-
-Anyway, if we drop lvl here we can drop the gotos, which would be nice.
-
-> +	p4d_t *p4d;
-> +	pud_t *pud;
-> +
-> +	lvl = "p4d";
-> +	p4d = p4d_alloc(mm, pgd_offset_pgd(mm->pgd, addr), addr);
-> +	if (!p4d)
-> +		goto failed;
-> +
-> +	if (pgtable_l5_enabled())
-> +		return 0;
-> +
-> +	/*
-> +	 * On 4-level systems, the P4D layer is folded away and
-> +	 * the above code does no preallocation.  Below, go down
-> +	 * to the pud _software_ level to ensure the second
-> +	 * hardware level is allocated on 4-level systems too.
-> +	 */
-> +	lvl = "pud";
-> +	pud = pud_alloc(mm, p4d, addr);
-> +	if (!pud)
-> +		goto failed;
-> +	return 0;
-> +
-> +failed:
-> +	pr_warn_ratelimited("Failed to preallocate %s\n", lvl);
-
-Can this possibly fire more than once? IIUC we will panic right after
-returning.
-
-> +	return -ENOMEM;
-> +}
-> +#endif
-> 
-> -- 
-> 2.54.0
-> 
+-       /*
+-        * This scan exhausted the reclaimable lists before reaching the
+-        * scan target or accumulating enough isolated folios.
+-        */
+-       *exhausted =3D remaining > 0 && isolated < MIN_LRU_BATCH;
++       *exhausted =3D !reached_scan_target;
+        *isolatedp =3D isolated;
+        return scanned;
+ }
 
