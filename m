@@ -4,130 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06183C5516D
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 08:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3318C5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 08:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3FCC6B00BE; Fri, 31 Jul 2026 04:26:54 -0400 (EDT)
+	id B09CB6B00C0; Fri, 31 Jul 2026 04:39:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF0FB6B00BF; Fri, 31 Jul 2026 04:26:54 -0400 (EDT)
+	id A93896B00C1; Fri, 31 Jul 2026 04:39:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B9236B00C0; Fri, 31 Jul 2026 04:26:54 -0400 (EDT)
+	id 95AAD6B00C2; Fri, 31 Jul 2026 04:39:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 640036B00BE
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 04:26:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D26E51C0AAE
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:26:53 +0000 (UTC)
-X-FDA: 85048391106.22.C314F77
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 89A9020007
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:26:50 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gdg2fqhM;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FAB66B00C0
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 04:39:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E60D5A0348
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:39:03 +0000 (UTC)
+X-FDA: 85048421766.25.BA56D5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 76DD840008
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 08:39:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyO6dISV;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785486411;
+	s=arc-20220608; t=1785487142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jQO6RJJpDBufvNLvtb3u/YM2NGYqsygvubbrUh7q/6E=;
-	b=60vio7bWX4C4lKHduvVtBTmG8ukcqvrpXSzCn43r+kLm2siaK74qtTmvkbTB6uI0yedFrV
-	MP9idcqzTu0DFPzpLjfAAW/dvf9kBv4pndxVrOvffR1NNyx1Zwhk1P3Nmn1DudvaBIK5hz
-	4Tu37sc6JxkGVvxYBMASVha17ZlTqfE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gdg2fqhM;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1rnLid9Gk4gz87YPzn7Yuv3VMf7sSMoO6a7K32KAL6A=;
+	b=Eh3p107R35ED8Uxq5n16aQJbDON0oVNfCQhlEBFC8LrQD6vvyLtQSHaTj/teqvqtMuuSOZ
+	TEKaQpTSBLOza2ZhiX9vDlYLYIc/MHTrVZERZjv0BriQ6z8mu3HFjPodd7YSk5Mfra+RWX
+	WLu0VC9tFOnhv9PsgwjiQK6r1uikRFA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785486411;
-	b=5gq/aKaBdA7/UPeo+8jy6LKbfPi7szREftZPfC2MVeLoLY63DRSXmT7M+HWL7rn3+Dh9gk
-	gTCZR9LvNUJHCyrSgMzio0aBk5qWBZ/qj4ZcDZDlBThpbh1qOBI6l7SxWPp3g/IisO1XwY
-	EwDOLgOxvBNbxsZWx1rSwiODGHObtvA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785486410; x=1817022410;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5dNmxu5/DKV/iLc1cxX1Ef3+PAoXGe1Aq8VEZB3JYrg=;
-  b=Gdg2fqhMtLlqtXxM4xLVfTOddYFQDcvosHiDDMT+snUBaMVJZakq+b8B
-   52LNo5Kqq6uifBNjDrncn6PLuw0hoApytt2qyE8G8QII0KQaLfwK5jMIY
-   jnT+/T15UKMKMYrYT507FrMAw4PHjkxPT8y9QgobtOzKXxwwyFdScokv3
-   JUF72F+rY6Wusmx7FzBSHydPK+5J3glfHIc3bAquIindtbjR8k+FTc+bp
-   L2IlYn+Kw7vCX4YFnoxHH8C5S9jlrQmnVvHwT7JP2UkhVTFOtYhS6EJ8K
-   zqXQMLwjUIMriC65363djFj34MfIUuWd5g2kCd7q+S2b5DbVVoCxCgD5h
-   w==;
-X-CSE-ConnectionGUID: 3cKqbzgGR/+ZxCbDwQlZJA==
-X-CSE-MsgGUID: uIpEFN6uQoKqFPVg8HwgKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86126083"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="86126083"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:26:49 -0700
-X-CSE-ConnectionGUID: KbSyPLdZQD6xu1UMvfTcHw==
-X-CSE-MsgGUID: g90yMGrGQQeZJeLvX6Oqmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="265591573"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 01:26:34 -0700
-Message-ID: <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
-Date: Fri, 31 Jul 2026 16:26:30 +0800
+	t=1785487142;
+	b=rnburIUWLLuZygLq8MSqB7ZPDY9R99iD9QYQKJmxw4yBSoenHf17OcwSVhDXfKqA2LKkfZ
+	P0+3wdsmlrpJ1OGdut6wMnX4JNITgnKbAC8D0nbZGiX8AGu1yYTPRiJEATuyC6qY07ePYV
+	tTLoIB925Q3SndLRlhIiLqChzBdw6bc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyO6dISV;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9FEA600AD;
+	Fri, 31 Jul 2026 08:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5E11F000E9;
+	Fri, 31 Jul 2026 08:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785487141;
+	bh=1rnLid9Gk4gz87YPzn7Yuv3VMf7sSMoO6a7K32KAL6A=;
+	h=From:To:Cc:Subject:Date;
+	b=QyO6dISVOMXLgpuo4gnPGqmPB+luAsl+zm00IV6x4PkXDPemoHgUJPuwZnkr3SUll
+	 FijdQrgqa9ucSgiy5ue7d0cH6icMg30LURkqO+LEoKRmeLfP8H0mmlMF/nM3lY3t1q
+	 f4jk6MT+hslKYL++sBDrhLe9N1qZjiVM2sZQpl7xc9onpDLrJZwbk83L3KDeZd7M3w
+	 JRqWv3vTRmYYeF38QU+jYo/8hS+lHiK15N0KPayKIpecPnjuQrTz0IL6PuqpdiEj1G
+	 WZGQszjQ9kcSVujkelMhDP2V45fqSM+jIjYUF9s5X5KOx6mCn7bEEgVcy6Sley5zfh
+	 xi6Q3SgLqTMGg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@chromium.org,
+	weixugc@google.com,
+	yuanchu@google.com,
+	chenridong@xiaomi.com,
+	zhangbo56@xiaomi.com,
+	wangzicheng@honor.com,
+	lianux.mm@gmail.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [RFC PATCH v3 0/6] mm: mglru: fix swappiness behavior
+Date: Fri, 31 Jul 2026 16:38:37 +0800
+Message-Id: <20260731083843.37811-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 18/41] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 89A9020007
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hgho5wqrwg1ez4gudd9m7dinok7wm3au
 X-Rspam-User: 
-X-Stat-Signature: b8u4wuxedr3z6rkp98gzadftjr56ujgx
-X-HE-Tag: 1785486410-29813
-X-HE-Meta: U2FsdGVkX1+XVpQqK1nEoe1CzS7zWwog0KYu6Y+OiNvg1r9QkaGmhmvc2m+/+YTXN4xxUfXzB+0vIVKKN/4W0pCbaQ/2qlRDst/6NxjctYFHAl4VajN3vitXVZ9QcIvB1+sR3rOKCw551SZr/eQuWHsoCJsaYLgSyejxIFpYVrFJe1htb69+mm+0GFKenvQPPN7g8TsNZQQVUlS+shLDfckElfHePVzp33DuxALYvRvmlJhv5mnQ1fbvC4sFHgNzomIdb1LFlnrx9O6XKmE7gEJfWYBkqoYDYwvL+nCPE3W6GA0+xJu4yQ9373K0NP0uiKVPZ0DxRV5dbPb+3cPwL3P+E5IxDQiPgUHmkyJrZXKwJAbM7Yr9PrhO4SrmgeMW0ny+oG6CKNZAsT3Ssy/STEkI3IQZMCcevbgjneIWwo2cyXXP9ZD1gDSK/+zZbXBbveqck688ZX4BXGV+7ckc0vZ0hK4rUXGxjzA1oJjHRufVe6cJwre2TvRi/ELq0M8i+Rw11pC3/nFxMD1QMhMz8cfVrvnE2D2O7GhNdkMEqaTHzuIVnDDSO6AX34VuV4/YmJCfGbebVJaUxJNTYGM0XjZh/jhXFSCH44jDcmGfi2sbYjOB/EhS3G3n7yEANvP1UWKfZpg8g07CG47KB0swzGiHpNbtuaHLVUG7r2shGuO+9TpAI8LGYiOC4QjiY/VZgBED8Z938oXMJ6OrRcQE6tfnIYzU5w5/sqW0RQoF/kl+yrOO1Dt8WCN1hKjKuzkQhDianp9YnR/QG3AAtTgrNhOikZFNyOXAa5BLosiQ1Ywu+r9AYfJ2pIhSVU4W6jAPgr/aChTn+p+lw0dw3QXAdI6W5vyGPnVnU3TjQMj/iAPTnWxebLCyhY2tISmlv0tGM3h16mIPrpcGfx/WIWwJ1wygkCS8njzOZ/4O3nLhqwut0o3UaXAEK2q7P2Voz0dYXd2T5Ja+3HDXP0GWl6n
- OxIfLKAL
- mkdXcItXaOoTvzZcBm9WzNo17OaBImzr0vqnmascjXxzSPGdhLFmNxPocuhHZs1RNOBIu4uoxmRICsZibtjts0U4tDk3VlxDC/ERl6Ag5aU5oN5vc1BpLHNY8DPy0B84MWjy+LqaoSf5KLEwuElWB/x02n5cBQMIjhQNj1RN8FaiL7tBZ0X3VGA+Jbbm5F+GnS8Sb6i4CNnNPsx4ciF+jSJ88k4c3d35kNGVUJbCPhdVOO2vXpbk3yrTbUsmTfxzqVMJ/lWjbXiH3xFCl0O8adNur4FzpOPJVtmqsGltlXiSSKV7l2zv/mtn9u0vc+aK1u8nSR/lv1P0MNQZwYwW77ifcTw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 76DD840008
+X-HE-Tag: 1785487142-60331
+X-HE-Meta: U2FsdGVkX1+yknG0vE22eoFhWILRdxHiY/inKYzToepoAnAzwPQvrlsVDt4/9Br7B6DXX2yhLWX3rUv2fjA3poBrs8u5Be3JdDpqgerhZV4iIA1bntS3uiRq+UIrqQIbDIzD7uhH8UU16kybp+n0PmS+T8JRdU9QxNWDQYbXzvuA86siB9qMHQv094Nu5sPvcHDglrojNbTgF2tyZy8DYee8vYh3SNbqlBEXfs8pIlfF8/p1kwUDYj/9hI6KEVYnLnXbVX+mKfVbdBqHVbGxLBPaE8p/EUXdikyoeNTrxbpDQaDaY3hTrmrbk61rjZ404/lzIC/cTwvvb+m+qN8f2/Muiaf46yIjRiIHrVf681n5Xo4WOTmnBnGIxM7jCssfW7n7+c8abQcNv772A9VGEedNdTGhW/L0xbpsEogTg9zB5PQYKnBrPpitsXUD+xPvP+4OtwLOuXo4q5Vd5nUCiL2BjGyr3qbwW4k8Y6Ve9YvyqhIeLvpM7XDkAveXdqkxTQNttOrbsX46Tx+ZeTGJunHemJIEedzHytSB33VOlk3ZBDjB0D4IOJlHPw8pMJsaQJiaVEIG+Jpr/5qry/+P6DFXLdlUTpaOy1vWgSkiKBIhd31ZOtdXnk5WgJO626aLRDfxhaCVtMjpaBYfQAn3ruhPh0AZxAI4mEKXC33rz3ZbLXEYpcixFCiTEnMRPCVAetwrg2b0/xVotVERlQhmMCV+EtGjTPSXPiCaT6mteLJsFMFsvIvOv01MnQs4gthfanuQLOHkBhvFIdn5a6+GPTMqr00h2U3NyhfdrD8ZVTeLACv0AQvDvoAvBRdVH4Km0FQnaw39LHmIpMBNSOXPkyW9VkSbUXRiY0NG5NkXiFWjSv+1vPlNPzIB9SEkP2Yhga7Evr7/wwfUUkrf5gnfT12pMwX6/pCPpJJiwgiFEhR69DHU+CmCQsExLcLudAgkP9AudwDRTKCESZKlHA6
+ zhlgeVN6
+ eYptcMyDcD0HRJz88Lcvxr29sfXN7m3t52BaW0m0L2mk3Y41pFtdoRbCFmM/cddc7yZ5kfANrlJG6I6rrC1rnpfLUdjY4ApeaeON3Q3L0ANV0fh1rLHRsuX9Cns5XEXc+FO5NSXvb4B2vA4oPSifIzEidOZNvoX84jSYaXjRpIpKSVvnhzw4SnG8KcVbWkexhVoJOFg/BaJAqmkwdK4J3ENEbz3SE+KqTVw2pNXSkLmY+UE9CMPGTGx81+ZzaO98gtm2XBpp5qfDwz7wEbE26F4O0EbfwxQsczECCzZqxaR6amv19pi8JSeqIWGuPDgckCc9Mb262OkvQJ81if7eyrL9zgrJQRCCZO8MNOS6t+GBgLHs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,98 +105,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Update tdx_gmem_post_populate() to handle cases where userspace requests
-> "no source page". To handle "no source page", populate (perform
-> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->   Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
->   arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
->   2 files changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-> index 6a222e9d09541..d8d9409120e61 100644
-> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
-> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
->   Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
->   provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
->   
-> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
-> +to represent "no source page". A source page is required if in-place
-> +conversion is not enabled or not supported.
-> +
->   Note, before calling this sub command, memory attribute of the range
->   [gpa, gpa + nr_pages] needs to be private.  Userspace can use
->   KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index d1af0a752e97e..e890da5f18aed 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -3192,7 +3192,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->   	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->   		return -EIO;
->   
-> -	kvm_tdx->page_add_src = src_page;
-> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
->   	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
->   	kvm_tdx->page_add_src = NULL;
->   
-> @@ -3238,7 +3238,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
->   	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
->   		return -EFAULT;
->   
-> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
-> +	if (!PAGE_ALIGNED(region.source_addr) ||
-> +	    (!gmem_in_place_conversion && !region.source_addr) ||
+RFC v3:
+ - Added Ridong's patch of improving isolate_folios() readability;
+ - for lru_gen_imbalanced(), apply some suggestions from Zicheng
+   and Kairui, considering lruvec size and use macro;
+ - drop "mm: mglru: only fall back when reclaim is running at high
+   priority"
+ - mitigate aging for balanced swappiess value(near middle 100)
+   as swappiness bias is less a concern for them; but slightly
+   increased aging overhead might not be good.
+ *  RFC v2 link:
+   https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
 
-Sorry, I still want to discuss why we only allow in-place PAGE.ADD for 
-gmem_in_place_conversion only. Though Yan raised this opinion[1] in 
-previous v8, I'm not quite following her argument. So let me try again.
+RFC v2:
+ - Quickly address a few issues raised in the Sashiko comments so
+   reviewers can ignore v1 and review a cleaner version instead.
+   https://sashiko.dev/#/patchset/20260726012946.18684-1-baohua@kernel.org
+   Thanks, Sashiko!
 
-I think in-place PAGE.ADD of TDX doesn't need to depend on 
-gmem_in_place_conversion. There are two use cases actually.
+The active/inactive LRU respects swappiness well. Anonymous page
+scanning and reclamation increase roughly linearly with
+swappiness, while file page scanning and reclamation decrease
+accordingly.
+For example, when swappiness reaches 200, both pgsteal_file and
+pgscan_file drop to zero while building the kernel in a 1 GB
+memcg. In contrast, MGLRU shows almost no change across different
+swappiness values.
 
-1). Userspace sets the gmem page as private, and invokes the in-place 
-PAGE.ADD by passing a 0 source_addr. Due to patch 16, the target PFN 
-will be ADD'ed to TD as a all-0 page.
+                   pgsteal_file
 
-2). Userspace sets the gmem page as shared, and writes the desired 
-content to it. Then converts the page to private, and invokes the 
-in-place PAGE.ADD by passing a 0 source_addr. The target PFN will be 
-ADD'ed to TD with desired content.
-
-For gmem_in_place_conversion == false, only case 1) is possible.
-For gmem_in_place_conversion == true, both case 1) and 2) are possible.
-
-Basically, this patch is changing the behavior of 
-KVM_TDX_INIT_MEM_REGION. Before, it returns -EINVAL when 
-region.source_addr == 0. Now it wants to allow the "region.source_addr 
-== 0" case. If we can allow it unconditionally, why bother adding the 
-restriction to allow it only when gmem_in_place_conversion == true?
+Swappiness    LRU         MGLRU
+--------------------------------
+1             10567455      763612
+36              990706      480205
+71              688170      415848
+106             446294      386164
+141             286307      359196
+176             201733      351686
+200                  0      330093
 
 
-[1] https://lore.kernel.org/all/akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com/
+                   pgsteal_anon
 
->   	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
->   	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
->   	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
-> @@ -3269,7 +3270,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
->   			break;
->   		}
->   
-> -		region.source_addr += PAGE_SIZE;
-> +		if (region.source_addr)
-> +			region.source_addr += PAGE_SIZE;
->   		region.gpa += PAGE_SIZE;
->   		region.nr_pages--;
->   
-> 
+Swappiness    LRU         MGLRU
+--------------------------------
+1              4410548     2726362
+36             2465268     2762859
+71             2677908     2885124
+106            2737227     2841796
+141            2984276     3035015
+176            3381338     2938302
+200           13116359     3113499
+
+
+                   pgscan_file
+
+Swappiness    LRU         MGLRU
+--------------------------------
+1             17997223      923094
+36             1325674      539571
+71              852345      464222
+106             538207      464477
+141             357253      412277
+176             217536      399446
+200                  0      375902
+
+
+                   pgscan_anon
+
+Swappiness    LRU         MGLRU
+--------------------------------
+1             31639423     5987136
+36            23441521     5753224
+71            26067110     6101780
+106           25619448     5782919
+141           26842088     6234264
+176           29200021     5980292
+200           62193924     6413125
+
+This patchset respects the type selected by positive_ctrl_err(),
+which uses swappiness as its gain. It does so by running aging when
+the preferred type has few or no reclaimable folios, allowing more
+folios of that type to become reclaimable.
+
+For balanced swappiness values near the middle (for example,
+60~140), the swappiness bias is less of a concern. We still avoid
+aggressive aging and allow fallback to reduce any potential aging
+overhead.
+
+In other words, this patch strengthens reclaim type preference
+for extreme swappiness values while preserving the existing
+MGLRU behavior for balanced swappiness values.
+
+With this patchset, swappiness starts to behave similarly to the
+active/inactive LRU.
+
+                         pgsteal_file
+
+Swappiness      LRU        MGLRU      MGLRU+Patch
+-------------------------------------------------
+1             10567455      763612        1938714
+36              990706      480205         427934
+71              688170      415848         373450
+106             446294      386164         368160
+141             286307      359196         334467
+176             201733      351686         293716
+200                  0      330093             25
+
+
+                         pgsteal_anon
+
+Swappiness      LRU        MGLRU      MGLRU+Patch
+-------------------------------------------------
+1              4410548     2726362        3284272
+36             2465268     2762859        3315112
+71             2677908     2885124        2942357
+106            2737227     2841796        2941288
+141            2984276     3035015        3345933
+176            3381338     2938302        3409531
+200           13116359     3113499       14414151
+
+
+                         pgscan_file
+
+Swappiness      LRU        MGLRU      MGLRU+Patch
+-------------------------------------------------
+1             17997223      923094        2612649
+36             1325674      539571         514506
+71              852345      464222         423155
+106             538207      464477         436573
+141             357253      412277         389644
+176             217536      399446         333973
+200                  0      375902             25
+
+
+                         pgscan_anon
+
+Swappiness      LRU        MGLRU      MGLRU+Patch
+-------------------------------------------------
+1             31639423     5987136        6191482
+36            23441521     5753224        6097925
+71            26067110     6101780        6157755
+106           25619448     5782919        6203221
+141           26842088     6234264        6599502
+176           29200021     5980292        6783074
+200           62193924     6413125       22814377
+
+Barry Song (Xiaomi) (4):
+  mm: mglru: prevent min_seq[type] from pointing to an empty generation
+  mm: mglru: let scan_folios() scan both reclaimable generations
+  mm: mglru: improve scan_folios() exhaustion detection
+  mm: mglru: run aging if the preferred type has no folios in
+    reclaimable gens
+
+Ridong Chen (1):
+  mm/mglru: improve readability of isolate_folios()
+
+lyugaofei (1):
+  mm: mglru: run aging when pages are severely imbalanced across gens
+
+ include/linux/mmzone.h |   6 +-
+ mm/vmscan.c            | 145 +++++++++++++++++++++++++++++++----------
+ 2 files changed, 112 insertions(+), 39 deletions(-)
+
+-- 
+2.34.1
 
 
