@@ -4,90 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BDAC55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 09:41:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 956A8C54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 10:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8BB6B008C; Fri, 31 Jul 2026 05:41:46 -0400 (EDT)
+	id 5F21E6B0088; Fri, 31 Jul 2026 06:13:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9C26B0092; Fri, 31 Jul 2026 05:41:46 -0400 (EDT)
+	id 5A35E6B008A; Fri, 31 Jul 2026 06:13:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDB1A6B0093; Fri, 31 Jul 2026 05:41:45 -0400 (EDT)
+	id 4B9586B008C; Fri, 31 Jul 2026 06:13:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CADEE6B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:41:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4E25A1603AA
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:41:45 +0000 (UTC)
-X-FDA: 85048579770.22.BE3265C
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 39CC040005
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:41:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OxPWSkfs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AD0B6B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 06:13:48 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B478D14039C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:47 +0000 (UTC)
+X-FDA: 85048660494.14.3439EB4
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EB20A1A000C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=u59+EVoG;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785490903;
+	s=arc-20220608; t=1785492826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jgxl9CIQj6KttRa1KpmqjLcUf7cr/iCoTYx4L9S8blw=;
-	b=45LZyrvTySBcEvIauKORx08Pr2/itDPgXoB+K6s/JWOz8DG6RY1ZBz4ay7ZCV2z/AzAFWe
-	OAJggZ8wpan7gYxPAkTuaDYA+0zvbeQmMb3zwkfbbAV6vbwsnBk0XW3ENtry9NiNhgRhZr
-	TCp7gFN+UyFMc4RSwY9W0eAOluEtZqE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OxPWSkfs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785490903;
-	b=elUv6LS5kLbfgMv9j+dFP9QL92MTpLX4qZlZ1YWuA9S2MZUITcUZbgJ23WPU8Z+5WZETIi
-	UqeUhYhT8qHz1yLZqPfy1VcMtYDZ9DERJ3DACZXjx9tyE+ChjxIEwmHPqE5ZCwP0sRfbXJ
-	pI0vuluPgBZ1rI6VO4Ivb4w/eIwjJ/E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785490900;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jgxl9CIQj6KttRa1KpmqjLcUf7cr/iCoTYx4L9S8blw=;
-	b=OxPWSkfspY3uM75dNzMXC6xjyjOI4Bs9bAbnQqGjK7gWWpIQC2JpWVvU/gw2bX1cjSzmjc
-	gb6sYVIdfp4EeWcNS6P6Nc0xfsjxwAeRnEQcJeqxcbfhMft3GOALuVI3Yd1kE5DlChSYiM
-	DgDAMlRTiyVsZDt5xxAmIFvyTBXgKug=
-From: Hongfu Li <hongfu.li@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	hongfu.li@linux.dev,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v2 1/2] mm: Use a folio in the softleaf_is_device_private path
-Date: Fri, 31 Jul 2026 17:40:54 +0800
-Message-ID: <20260731094054.90791-1-hongfu.li@linux.dev>
-In-Reply-To: <amdkR-gX_ABcKyCQ@lucifer>
-References: <amdkR-gX_ABcKyCQ@lucifer>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8LK1SF//t3va2bThbeH1OWK77lJlFXbCBS1qpFyGJdU=;
+	b=f7K0o+HZgzBNg0XnVd9cI36Tiia3t8wmiCT0MI5W6Pj4b9zeH3kqtCFHLL/AObYUrWdpEj
+	Z3AmassOG9p00jV5GQshamJ6VniRsLyiDAUmg2nW/NvpSUrlPqVPO9Gd1a7OQsUY3MS4wT
+	iGPE8fwDSMZUSCFfivWmlaw+rTBnFrM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=u59+EVoG;
+	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785492826;
+	b=bFCCsBDyjdfJy1Q7+wspXG3pSAxFbp0bZxAvX+GWaGrNPPr7kC8wiR/L6raNXKw4VctGLg
+	skdgatfllBbh2J6u/t84uOEYpvy1AhrYXWZyQ/PLYXVe33Xez2HK/L/CHGDh4Qm2usc2yh
+	0vrSDU34ABbWb0yXlOjRab0IhUHyee8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=8LK1SF//t3va2bThbeH1OWK77lJlFXbCBS1qpFyGJdU=; b=u59+EVoGC98m2JEO8LFmuFQs7B
+	Y02NU7GEnkp3ZquWsk1yC8BpCD5AuwZhSzGdonKvi3ahW/ninNrLBONNa6FG8XQpSpbM+wocf8QWq
+	Fjxh7MVNmvPxZq5fg1YPykGNfHtcDlf7yyCz4iyZX/a35i3m4AeKLu8Oy5lrODICFpXQtqmK6FPsO
+	jRsh8T409Wr5ZJWVFD0Vk1G4kY5E7ijUsKZVaFIyl8OU5fOB3fGUyZ1qwNQHUSqIXVTVVD5rt1mqF
+	HKi34LuInZ2UD/YYZD9JO7d7ZOs8PTQWSkcuityzhDigolK1ICf1mt+d5mTokX9aQCm8ZzPO2rE08
+	eilgjXmg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wpkF9-009wAv-1O;
+	Fri, 31 Jul 2026 10:13:31 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 31 Jul 2026 03:13:04 -0700
+Subject: [PATCH v2 1/3] mm: kmemleak: default min_unref_scans to 2 for
+ verbose auto-scan
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 39CC040005
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260731-kmemleak_hardened-v2-1-7b9689ac77cb@debian.org>
+References: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
+In-Reply-To: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, workflows@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ kernel-team@meta.com
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1646; i=leitao@debian.org;
+ h=from:subject:message-id; bh=DaAs9v2s48e9JMFkP+I5JIQ1sntx0U1Ktp2zFL4yLtE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqbHVAsT97IECXFQK2T5y0rTmoAdJIv7jKa0scr
+ gqh/l+QROyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamx1QAAKCRA1o5Of/Hh3
+ bR2MD/96NkIxUrTkZVumh95rB23L+q8p7ZqHB7FrhzGUp9KmBdL9RzmuB6fzjDt4Zwxi7z4cSLb
+ hD3eJUmI8k/xCJW7LAV1nvEieJq/GrowJ1YCvvbFyAVXq3xT3CX61ppzdrpTgZt8/rgfqApHikg
+ OwPaN1FJ9rBWIDqddC+tQGi0V6Ra1w6fsnyEv1GfWXjEXiyXuzEyp4/DRdOrh5feJH/M6l9oUqk
+ RpEKaMNlV8C5gGF3AXJSpaq9pRgGGW9+3Z8hpWROdbd1r7j5M/UpVWzoW8wmuSv4RcUmcPduQF5
+ gtzK0DOCHNQlBTLjLm3foQBGw0Z+Gs5cQEEKB4xCFLir4I0/bmEE3zLeGcgN9nlX86yRC31GMHe
+ OBFDJo+oM2MX5cnozIEfpyxQ+iy22Wm0lxMpSzHmwMqjk+RgBMySL2Sr06+u3StGLSNcS9T1VI8
+ cRn0gbnACMoT8TfNkMnDsbA+tGm2FLg4Z/79ATyxCl2PgxRW+R6Ah0P9uXMZhDUQxPNbFzWBCh0
+ pEJv98e5oFLqKiX7DYNq5oe8yR60A0VxG0Tpqz4hmZf767Afdq3RwjKaWqPMvsZe+X0KZaEyH7O
+ hIc/yiosrztgTH6toi/L96B3EeYq9hBeW6wUjDaBf6QUiDN6ePrYuc9LkNknlDOKKbxRboYRLRE
+ 5W+Cz3RXAYaVEyw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: EB20A1A000C
 X-Rspam-User: 
-X-Stat-Signature: ypu95zhsrze6393uodxx9xcpgmkcc6pw
-X-HE-Tag: 1785490903-103194
-X-HE-Meta: U2FsdGVkX1/NHyoIQkpZnjsJQH+bjCKLfTcBeNCji2jIF/d7Afi6OyBjD5xhMggOUmGDJvj0/Hvq0eE1jSGBF+uf4aJ6tgzRqSfzDsMrdFU5mnV0fBSRplxX5oQQe2gGYacFULI3P8H/lRd5N47zcIyglcr0ZHKtRyRIIYhZXQEeRDLs/BLn+HbbXUU/CidVbObCQti3wW6nMDv3EfmHvCAP/f2jQ5gvDGx71VAjNmbUOGmEVnwOCGnvIoSBzqkF29rsyhG/nrQS9yLMtssflYrMqnckNhIpkgFxuNeOCkOeMeCKi4t6BkEWGXmcTLAndt359T/RW89QfX6WIQN9ttHKQrkCZ08aFLIcF8KVwAarQtHR8dvNq7Q7WUXyxvWZ79J15fqyJ+56vQl8r663QkcegAm08Cy1DrexyrVlI1bRMiYySZNuOgR7b/iQd9KnRptUQC2fAfym+QKX0qlY6+VQ1thWxHpwKeTalKTlkHl4be+lR4eA3ibpIvCuJX6GOwwYjVJ19AtoL/DoDnVZjYKmyXYJT4N2BzVE0BhUoCydmUs5p6Qsvk2cYIIUnO47J3/sg3O5MTAJ2pEIkQaKRkZQFG+nel7Bp6EnQIVkLtn9w3JKw1Hf/GnWJBpBB01SRP8QEiTG2h/aRfax+PwstzlDMFRow46IKkEVdV12ex3p34ZI5geJkCzciPvSHb/EVpWmWb3QBpMfhqhHP2cl6/32zUwQ1SKMbJgzXM55GNdSKKVjCh4zYTHIiErDW01xJHdF+AKp0fjiH3lgr+5XD8xA50WvkTt7cZvEZIhXvNtRc2Dgw5fGhoYtr87q4oHOZNK05BS+LhLJCLCf+ONh9MC3+GF6QgRzrcfFJZYje85u5rJrE7fqeHt/nog35zLKNpYkOg1fBWoSF90tM4U2wC3WmzaubskvbNMwK4uQea4vsAUFbHTWOksR1scsKktMPL1cD+drKql5s7SyjjX
- cCiDcpbP
- EAQil89TH0qbj6foKqW8hoFyXsWGgP8S8VgPFhqxXoqK3Fe6OIjNjMDxsymj/fA8pEIBuMacEZFL69CMwiIK477MS1sAQY5B54z85Oo/t4M4u/5aVjeqM9/uWgqGwaXdxK1EpVPjGeW1H9FLMhwMgr+J4oLuTuwIP+S1ppHjp43LTGSGe6CzwVETx3IVNU8EXxXjCjgTpCYYLUmngWSbpJOl8wfH5vEVw6hj5uSVrxzULHH4jNetI1TxpWw==
+X-Stat-Signature: yw4y7dszj81e8gxr35578wro1x7dt6rx
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785492825-202457
+X-HE-Meta: U2FsdGVkX1/2hPjS8cV9e7eoj1RrZxXFvXYYgJ7G9KnuvUSOurI/4oewgkTVdldp5Z9AHkdSMXCqlqNPSlqrTPhyEKFbeW8wZIalECZRTZOdwKD4mUKNHkfQqYr9GkyYBbatlfgHwpODm2LGSYlsmFQYFMeEOlUBrCfdlplRMgS9l61DFzbMVGXaE1cVrd1TFBr/n/27xGNMBpDwCW5ikHoAgw1gJfllaTkBeXpDKWwhU5PjdnS/nETMinoShKLAZ791FTEOea5JKuacb6E6YTSxcu7DCXctFmuzKiFV6I7abKD07td5RzpsldFUaX454epAkTKcJ6Yr/5mI6lZgMyqoxccdh9xlyRu6WByrOeqj5eP1ZRU+SAKNcRUEEIcV9620HDZeUZ8pPyHyyqmzNJZfXNiWxTOETJiGBS5+4WwOiTzmKlMhXmLt7qEdiYvIb+IP/WHKsY76moXMYLbH1ogv/8GPsN2K2FNuSseC/GOxPhZMKLOPvHcsuq6sm+vwzIFRD8a8DrvzO5yic4MdqQ7Du9LnTwgAL3lvhSvHLdofKW3SKmxH34cgRc/CQ1OEloriJ0Alg07NByWTHNPV6Vmbako62ssu/w4VtaOqk50uyAryBxPFJXQk6xNmgZWhZmkMRO5qetENaFg9Rv6v9XOHqjCk2Cek2lbX3m9vaonnq3hKNMKOwvRi3xnGrgfFhT0faTJuF8twhwISrmxKMscbTYwwUHTZR1GmfKk97rBMCKNJ4n/WrtbzKXrs8XF+IZkzFpCZo457dOUzGgf9clfAblfzNOLxZP3JdH1vvROOxwIDpxZfdLqLmwfKMVUORtq3xI2dJc/VQvOrM+melwkEC2A4uhmmECgNgD2iT+nit5u5gWIg7Cs7nhjgnPRdEbMgL+fUbILDpp9kLDp7wUnS9N5Ez2B2G1EEbmITLQLrhSm5IXt3Ffh/aF85asR8SIf5aBxywCYeC+9fFDd
+ NeQ36yoJ
+ 2ycimRhKPxm6MMyaOcAhjdDMEBZjuCijhx/MRLlL8HGdsY+kk0LiBZ/aXAW1fTMqaSuM6f0iXbsAIQ1/HRLJF+stvBKpACcsNyb1sbutDpauI3tepyYrFxir39Wxx4pqKXCoB9F+WvfsEhrxoRZhppEGXWth20Ct8o+rtT6MTnhR2PBBmvvullM3xYm6z0QLtksGaiJ2vEEqpt+PsBLope/tDn6jtklFLnrT/+2bh8EBIxQfYVl+r9SLXH0UI0Zw13x6MUthC/ebYmKTIVKEy3n+V4mF3/HQSe35SgaaJvVwIsDZyjQR60wzt1lYxEfB3iWjtd1xTU6vvomk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,44 +119,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >  mm/memory.c | 11 ++++++-----
-> >  1 file changed, 6 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index d5e87624f692..ae521baa8c84 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4871,18 +4871,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >  				goto unlock;
-> >
-> 
-> Up here we have:
-> 
-> 			vmf->page = softleaf_to_page(entry);
-> 			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-> 					vmf->address, &vmf->ptl);
-> 			if (unlikely(!vmf->pte ||
-> 				     !pte_same(ptep_get(vmf->pte),
-> 							vmf->orig_pte)))
-> 
-> Since we're canonicalising to folio why not actually set folio using
-> softleaf_to_folio()?
-> 
-> So
-> 
-> +			folio = softleaf_to_folio(entry);
-> -			vmf->page = softleaf_to_page(entry);
-> +			vmf->page = &folio->page;
-> 
-> This would also make more sense in your 2/2. But more on that in a sec.
+min_unref_scans defers reporting an object as leaked until it has stayed
+unreferenced for that many consecutive scans, filtering out objects that
+are only transiently unreferenced during a scan.
 
-Thanks, I've thought through your suggestion carefully.
+It defaults to 1, which reports on the first unreferenced scan.
 
-Could entry reference a tail page of a folio here? 
-If so, softleaf_to_folio() retrieves the folio containing this page,
-and vmf->page = &folio->page would point to the folio's head page,
-which may not be correct.
+CONFIG_DEBUG_KMEMLEAK_VERBOSE depends on CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN,
+so a kernel built with it runs the scan thread periodically and the user
+has opted into detailed leak reporting. A second confirming scan then
+happens on its own.
 
-Best regards,
-Hongfu
+Default min_unref_scans to 2 there to suppress transient false positives,
+and keep it at 1 otherwise, where a manually triggered scan is expected to
+report immediately. The value stays writable through the module parameter.
+
+CONFIG_DEBUG_KMEMLEAK_VERBOSE defaults to n, so this does not change the
+default for kernels that do not opt in.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/kmemleak.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index f63dfacee7ca1..8fa409a4f9fb2 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -237,7 +237,8 @@ static struct task_struct *scan_thread;
+ /* used to avoid reporting of recently allocated objects */
+ static unsigned long jiffies_min_age;
+ /* consecutive scans an object must stay unreferenced before reporting */
+-static unsigned int min_unref_scans = 1;
++static unsigned int min_unref_scans =
++	IS_ENABLED(CONFIG_DEBUG_KMEMLEAK_VERBOSE) ? 2 : 1;
+ module_param(min_unref_scans, uint, 0644);
+ static unsigned long jiffies_last_scan;
+ /* delay between automatic memory scannings */
+
+-- 
+2.53.0-Meta
+
 
