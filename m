@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CEC0C55174
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54297C55176
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 18:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F96B6B00A0; Fri, 31 Jul 2026 14:16:07 -0400 (EDT)
+	id 62CE86B00A1; Fri, 31 Jul 2026 14:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D14D6B00A2; Fri, 31 Jul 2026 14:16:07 -0400 (EDT)
+	id 5DDCF6B00A2; Fri, 31 Jul 2026 14:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2A326B00A5; Fri, 31 Jul 2026 14:16:06 -0400 (EDT)
+	id 4F4816B00A5; Fri, 31 Jul 2026 14:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C96626B00A0
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:16:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B2A8A1A5C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:16:06 +0000 (UTC)
-X-FDA: 85049875932.06.01AC92F
+	by kanga.kvack.org (Postfix) with ESMTP id 2BA416B00A1
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:19:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9054804B0
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:19:05 +0000 (UTC)
+X-FDA: 85049883450.05.BE0F139
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B1E72A000E
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:16:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8mqCAa3;
-	spf=pass (imf15.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 17D9C4000A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 18:19:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0b7YZk7;
+	spf=pass (imf12.hostedemail.com: domain of "SRS0=Tn6V=FZ=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Tn6V=FZ=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785521764;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1785521944;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wUJP0XuZAHVCju2vCQtbQJIE3DcNFW1LWD6svK3iD8=;
-	b=x/IkQS3jsXRc+rlSi4sbHTJB3X29tgfRcKDpc7WlnB9iPGTrQjj4botjfcXhlrJt2PKFYy
-	ZNw4xNbCfzW3P5eoIOGyGxxURWJrviCtc4QK26mDV3t/zd9vQ+3C896IwXx0T1rEQghev1
-	5BtAYBO6ShTm07C9ChoqK6fUOQq2PCs=
+	bh=nSWPqMz7Q6UQotLRcbGZUaRbsx3pPGFQF/kK6NROqrA=;
+	b=pueaGhB7E57vIBU9QNaPCwyL1t0zdsxkL5vRQRvzUIaJt63opFCI50+3BbdfpRrerOK4hJ
+	xQwgn1OfORS515EREAG3qK26ArrEdr+/WyYU2SpzNd4jV4ogtrSW3I7BNUD5bLM7GAS6AX
+	/lyil2xoMRp1l3j0f2jc+z0ip22+/Dw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785521764;
-	b=MperCIREIWfWmVldS5zSwF2ovg4MzqT9euzxQwcXKx3D5kdIDNxpXvGJtc+PgqG8RU6kvB
-	/j9923qy+RHvB8dCe/m3Wi17Ym7+BHRrocbfoyJzDhPiP6wliGSOErr6oasY3gwQAEbUJN
-	9pdi/K39G5JQZtlIpLf/t92AMLXJY3Y=
+	t=1785521944;
+	b=S66rkdLmAexP0ETS0a5/Jse3aQo7uPIskJz7Yzk+VtLeKUvGGkc9+tfO4DZMWusbu5JTvs
+	20Erdp+StTcOI3f8Y7+yoxe9+vnDp2ZhRWlsKrpz0+JCXo/ZJNklDonXB+9CSfJxHyY+mw
+	SVYvWVYOm01LUaxxnhCryljGQTaZsr0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8mqCAa3;
-	spf=pass (imf15.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0b7YZk7;
+	spf=pass (imf12.hostedemail.com: domain of "SRS0=Tn6V=FZ=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Tn6V=FZ=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22E32600C3;
-	Fri, 31 Jul 2026 18:16:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6998C1F00AC4;
-	Fri, 31 Jul 2026 18:16:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 83B5760A5D;
+	Fri, 31 Jul 2026 18:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353101F00AC4;
+	Fri, 31 Jul 2026 18:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785521763;
-	bh=9wUJP0XuZAHVCju2vCQtbQJIE3DcNFW1LWD6svK3iD8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C8mqCAa3sOez8bYlcdk7Ex9hl1Zc3wGzNlS+gMfhYDFWo2GO6U1oOyWzlb2bPQY+x
-	 hqp45+zj52D2OrfKyI0wE6OnSs4tXIB0pDV9h5BA+FBwqNLLssYqEG2iralfKBbWze
-	 8TnH2nZgoDMCRUVPIIfWgQ5CX2TqVmWguLZl5ry0GMyg4/zCAi/p/yVuCqOjBPDh1S
-	 3CfPkRN86lNOdPWBsocKmexkv/xlcBg6n1fCMbp7GWE8C9TU8+qYac8CviSfGdpNx7
-	 2tBQ+HKflUJA/Bs03oR8x3vLAb4l3YfkvzAafZcN8aqTCzekcrr22Gj5IiA+WkyfGs
-	 NrtPDLo03P3hg==
-Date: Fri, 31 Jul 2026 11:14:08 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted
- files
-Message-ID: <20260731181408.GA12803@sol>
-References: <20260730184853.48347-1-ebiggers@kernel.org>
- <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
+	s=k20260515; t=1785521943;
+	bh=nSWPqMz7Q6UQotLRcbGZUaRbsx3pPGFQF/kK6NROqrA=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=J0b7YZk7aQZOrwvpJjnA8XFX5gO2kMBIu+uo7OflScYO/Ba8XfcsEAp1dXrZVYXLr
+	 lOG7b3fk0d5WW2lmxsSS+d2CTBzpG5TYqXdnxUBy6MPBuz8lSJE31nfZIB2rbKRWJF
+	 TqSinhyHjnMd8O7Uh9+CRQ/+A0pGGcPItg895F8TiG3I3qPuyCMRr28Kr/byrTypGS
+	 e91TCJzVOCmpZjG01MvicwJQ38eTgg/a2ubLgUKeGw526Hig21KjDBkke28+J+hchJ
+	 3AIF3z4FafdEvrnUVlQLQNXxkmKx1F9O7cxa8ASSngumXrVim+vw2B8lxH4DBVIuil
+	 pPth+Z83pNiKA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id D7D73CE11BE; Fri, 31 Jul 2026 11:19:02 -0700 (PDT)
+Date: Fri, 31 Jul 2026 11:19:02 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: rostedt@goodmis.org, pjaroszynski@nvidia.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, kernel-team@meta.com, dcostantino@meta.com
+Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
+ the scan
+Message-ID: <23a60deb-c73a-47da-bd5b-4bf3c1c1bc8a@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
+ <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
+ <amCT9QEgJRsLIb_y@gmail.com>
+ <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
+ <amM1xUOhcpGpqIpe@gmail.com>
+ <39c90e82-f785-4b47-9571-dd4b1339d685@paulmck-laptop>
+ <amdWVTs0WKOxguxP@gmail.com>
+ <amtZNwxZ3gpOsPER@gmail.com>
+ <743bf971-b4aa-416b-b72b-88b538be727a@paulmck-laptop>
+ <amzjjjZrseO-jMJL@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
-X-Stat-Signature: os7zyqyyog98pw59x1e76onqt64fwmf3
+In-Reply-To: <amzjjjZrseO-jMJL@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 17D9C4000A
+X-Stat-Signature: iq3fkrq7gawobejdcupsxyh4z58d7jb9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B1E72A000E
-X-HE-Tag: 1785521764-562880
-X-HE-Meta: U2FsdGVkX19ohUEX2NhKnHIdowRYiivwQvba2+a9AI9OXPr/E/JH9X0EEvCYFbF6Asbj6TivcX8mbV392XU/GTqVGiAXKcjfFGzRbmVuIJxMpi0OEVlSFXbJiqIdwjN1qnyPmMUwTygtenijVwrb6j8ynqUTRg7fduDrCRXSl/QQiHkGw6RmafmfKa0LC2aJddFkLupSB4X1QFBjEi/MTTwl6f0xJZjPAUkVOLOPlwrjEbwLxIGMclp8WxygQJchnxDJ79aTwP+HAIAFSf37maxmguRvsC9r7x8QIfYnZL/VpqMmbsezS1KJTGgCop1V/fV8DrhyDpaegNVmlr0uFudh/hkyeVNd66799cCmq4fpSLrJ5Ek7l6ZUwbZHt/pXYh3ydGOWLzsTUuqLmVxRc7q/l6ugeAPD6wU1031UsJm6SBnk3h8J8zGaw9OFwQJCQjlYAdxLYkN3ISuon7yc5GqPfrbPZR8V3Z1cCJhs5hY8oovVAebR2maRsz0/Gf0TruabsZqRNFHnHYnmTuAp07H9BhQfn9csLbzoJGICgBXhsQmiiTvhatbQ2utFRpfzKA3c6T17tEVd/7qlFXLfIUzgsNlehGt7L00TOVsKXNOLL23BikWN4IpaMXkkMRxCKZSBgnwbGaWy8pLCPnjKIcN3RCEUxJED2qbNXWuXtk4zsKNypiHwwJJcjkt96mXeAmPhhx44IO+1zhIvojl1L2P75P0Q6h3FlF2dsTkBr4UxbRlpOvSKWpz1j8LAiiOphz6YpguEn5HyDwwiRsE+7NlIMAcOR84AY4MOfFz+eMYRpHqjOgr7sirltQpnjuyeL6HEQBRIyTxTrbr1H3uDA5fYeHADSz3+gcbWOIild7fDXWK08b253vGZ6lreAj/h9Vb2GDBRJ3lAQ1EV3QOlUmI09T+1PUzo3LITLqm/fMvVX3kai/ZquwXmjOKhRziH07UsLw2cry6z0F8xsLr
- jqK2aPiT
- FVc6pBleZyr6BOXQkgYNOypGVdueRB27CKlL/50FasHHVd8Q1em0YgTwh8Lm4eNU7p8cShBCEVkvhuw5PTQNmeFQ4D6R8Lf2PSwQv2DZsZldMlyMhdjkN2mdtYsnOahBzQxFjE6EKqdlb3fokNLJGRjMW7+jMJDdQAIiMdClGG8RirBSevIU8N2gnyAgPn7uTdUGfF2Vy+JHAGmGD/RP6B3qZUw25FRIUym9QhQ1w9B3BDe9Mnwl1tz79YK+EgAMHKS+1n0uZ33KJDyk+8y9UR5SX7g==
+X-HE-Tag: 1785521943-196956
+X-HE-Meta: U2FsdGVkX18GaTsZBj7XNBwpL0vDNaNHGRQySk+PrXcNFnBbNBYrli6QoatYsASRwO1y9AjipAXDy6uqF9pKCJ9fYaL8AKpfxJFBsscz1PEHqKZFVXJ/N75aLL5IK9wbkqMdghXGAh7S6Ap6kIBGZryJc2NFSHnPKolacjwQEhh6FyV7CV1jl1ex1Y8B3gceYGc1iw720v1F7XA0j33usYcVRJxO92l6ui8eiNs+GQF2LZYDgzy1zj567MkCAkf/ImXA3oIPnpHL+9U0kKkklyhO/iZZg7vow6XmJATNkaSaXlM78ZRW8qaEOMA4mLsMbLYvaqQIFZftfC/h1UlSt27dM60NdbZQks4mVZ5/7l4G2tbhfVUO0o9Gqtn1m39yDg5kB3i2u5RasDQKqHlG5SCCaVBTxoQvgFzBAGdDQFwKuaK4DIM5chpw98A3eVipgkUgKUPzg0uOyr4qxe+u3X12TXVmy63ax6Uay5jwHsQ8c6yT00HWhlyvXCnr4BhFBhbTI3aCoYy2XRrFo0R2T1ZnY6MKcQx7XjYR4RS4xM8U+20DBbTrfdMeFPj1z5KeDYbrlybaPkKY5If0+IQKlz061aOCTNEQ3icSV7a8r2gwmyizQhWsygheOrQQzZJgEfDd99YXN5vl9BSnXnuu5/UyEDu9KACb3F2dWwvlZe4/XKiFD5bBiHGZq9qQ8zQuLegnjrPOOiotgoFbGrH6eOpMq6puus3+7LRKuVKuSyOib/QGXOOT5k7VsqlqOjcWJ/Bs4rk73zei2OsAiRYlZORzcp7nB4SkOqObCgFtNt1pyrDssLNkxnMSY6ktWKAGvXJMfZhyuFKEzDaVho83+e7vIEVjt6nO51K0+rIjVqMjhzaiXFdfNJsvejkjNi8Nb5no2dDr4EnDS5HE0DnUQJai4mCz3vepcBrafIahGLwnrYxpy1K1p/7TX3LzmmGU7QFt/0fg7kc10MKlwq6
+ aP88CIv0
+ cXc9suzCdy04Ba10kwrmlzWg183cmPsyxLPdmKYAc3RDHdC/sRqT8g7d+H76SHgn3h0J2YB9pDqSfVwj5hOaFL03pMj9ls0+Fmpqcgd3b2Hdo018etOyUnP4tuJ4kxXqNoxKqfNp66H25bTA+rYkBjssT+pBBExBu+nnaYBjk+W0RFy4aGG4q7bdtse9xrHyuCSYpKZGfVR8ed+/ZBJ+/YOo9rsowKi5IjbLXmvk1wY4+lRRZXYkBFJ3ruZyWFc22OmpmBJdRysuP9bpeSEdVFVmj3Z5NMQXOtM3KvE0XpAUfnTVAGAKCmn+XJI8yawQzqlbtQy+wfMN6gPfUMbvWiI6dfJxykR1/u+ejsqQV/vvVpAUHp1nSJlPpVjO/AbdFeCVpDb8X6IpFLoMsdECEVMcjeT7rSbnHKgO5eWGgFQ5wsQnjmidB2YONY7m1rSBZaeumcLprVYxgYtUQUqAF/jAoVI0gB6cWo109mojnpCWkNNdZaySOpe2ya6G+qUbGNHEgjWAIqyIzXCxp6Qq5KDKb4/C/oh/lbm9aB1DuM0HQ48fdf3kOKmLpUd8/AR5T7r9FnssnHeIqU6Dq6iJ6UMW3PahRBj4dleXZRlrlVAC3fBxiKToWxRFwx9M2KZw8OaOOfHJd/s6DMflPIDhEJrli4OFkY2myT6a5PYjaxqlU3MGN2cqVxvHP8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,80 +106,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 11:11:02PM +0800, Baoquan He wrote:
-> On 07/30/26 at 11:48am, Eric Biggers wrote:
-> > ext4 and f2fs don't prevent filesystem-level encrypted files from being
-> > set up directly as swap files.  In this case, encryption is bypassed.
+On Fri, Jul 31, 2026 at 11:07:44AM -0700, Breno Leitao wrote:
+> On Thu, Jul 30, 2026 at 07:57:22AM -0700, Paul E. McKenney wrote:
+> > > I suppose we want two things:
+> > > 
+> > > 1) change cond_resched() with cond_resched_tasks_rcu_qs()
+> > > 2) Avoiding holding the ftrace lock while calling
+> > >    synchronize_rcu_tasks()? It can take up to 10 minutes on a healthy
+> > >    system to be releasd, right?
 > > 
-> > No one should be doing this, vs. the methods of encrypted swap that
-> > actually do work (such as swapping to a dm-crypt device, or swapping to
-> > a loopback device on top of a filesystem-level encrypted file).
+> > I do very much like both of those options.  ;-)
 > > 
-> > Nevertheless, to prevent user error, make swapon() explicitly reject
-> > this case.  Document this behavior in fscrypt.rst as well.
-> > 
-> > Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
-> > Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> > ---
-> >  Documentation/filesystems/fscrypt.rst | 4 ++++
-> >  mm/swapfile.c                         | 4 ++++
-> >  2 files changed, 8 insertions(+)
-> > 
-> > diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
-> > index c0dd35f1af12..cba1989777da 100644
-> > --- a/Documentation/filesystems/fscrypt.rst
-> > +++ b/Documentation/filesystems/fscrypt.rst
-> > @@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
-> >  
-> >  - DAX (Direct Access) is not supported on encrypted files.
-> >  
-> > +- Encrypted files cannot be used directly as swap files.  To swap to
-> > +  an encrypted file, set up a loopback device on top of it.
-> > +  Alternatively, encrypted swap can use a dm-crypt device instead.
-> > +
-> >  - The maximum length of an encrypted symlink is 2 bytes shorter than
-> >    the maximum length of an unencrypted symlink.  For example, on an
-> >    EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 78b49b0658ad..e4991da81b5f 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
-> >  		error = -EBUSY;
-> >  		goto bad_swap_unlock_inode;
-> >  	}
-> > +	if (IS_ENCRYPTED(inode)) {
-> > +		error = -EINVAL;
-> > +		goto bad_swap_unlock_inode;
-> > +	}
+> > If #2 is impossible, would it make sense to have a mutex_lock_idle() or
+> > similar in order to sanctify the lock synchronize_rcu_tasks() latencies?
 > 
-> Sounds reasonable to me.
-> 
-> One minor suggestion: it might be helpful to emit a pr_warn_once()
-> explaining *why* the swapon was rejected and pointing users to the
-> dm-crypt / loopback alternatives, so the -EINVAL isn't opaque.
-> Optional though -- the check itself is what matters.
+> How would mutex_lock_idle() differ from a regular mutex_lock() when
+> sanctifying synchronize_rcu_tasks() latencies?
 
-How's this?
+It would sleep at TASK_IDLE instead of TASK_UNINTERRUPTIBLE, as shown
+below.  This would cause it to be ignored for hung-task purposes.
 
-    pr_warn_once("Filesystem-level encrypted swapfile '%s' is unsupported. Create a loop device over it, or use dm-crypt\n", name->name);
+For a similar example, RCU uses swait_event_idle_exclusive() instead
+of swait_event_exclusive() to avoid its grace-period kthread getting a
+hung-task warning when the system doesn't need a grace period for more
+than two minutes.
 
-> And this patch updates fscrypt.rst. Would it be good to also
-> update the swapon(8) man page to document the new -EINVAL
-> condition?
-> 
-> Other than these,
-> 
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Yes, I did learn about this the hard way.  Why do you ask?  ;-)
 
-swapon(8) is for the util-linux program, not the syscall, so it doesn't
-document error codes specifically.  It does have a NOTES section that
-incompletely documents filesystem-specific constraints on swap files.
-It's missing most of the current constraints.  But sure, I'll send a
-patch that adds a note to there about this one.  That will be a
-util-linux patch.
+The downside is that if some bug somewhere else under one of these mutexes
+caused a too-long sleep, that too-long sleep would be silently ignored.
+As always, choose wisely!
 
-- Eric
+							Thanx, Paul
+
+------------------------------------------------------------------------
+
+static noinline void __sched
+__mutex_lock_slowpath_idle(struct mutex *lock)
+	__acquires(lock)
+{
+	__mutex_lock(lock, TASK_IDLE, 0, NULL, _RET_IP_);
+	__acquire(lock);
+}
 
