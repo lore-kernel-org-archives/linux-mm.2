@@ -4,126 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32B24C55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B7EBC5516D
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24C626B008A; Fri, 31 Jul 2026 13:44:05 -0400 (EDT)
+	id 5A9926B0095; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FD9A6B008C; Fri, 31 Jul 2026 13:44:05 -0400 (EDT)
+	id 580CC6B00A3; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C5476B0095; Fri, 31 Jul 2026 13:44:05 -0400 (EDT)
+	id 472066B00A4; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C95446B008A
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:44:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4842AA19AD
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:27:50 +0000 (UTC)
-X-FDA: 85049603100.24.8C14473
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 432A316000B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:27:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FEEB6B0095
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:44:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 565E016049A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:05:51 +0000 (UTC)
+X-FDA: 85049698902.23.7F357E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 89EFA160007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:05:49 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=hjt7qbI8;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=kIog68RB;
-	spf=pass (imf08.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zVujV1G3;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785515268;
+	s=arc-20220608; t=1785517549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AkDiARroLHl6KyOSQsFmxb3G2BExRBvYjwZc5Dx3u/U=;
-	b=aIM/euMm0XoIR+ibRNQSJE0QSnhkrpCnIaVjIWsAszmeYrBa+H6fJWk4FSdu4aXZ0NqxD5
-	d66SPXCT+c7uyW/0+B9MHIq7im2Q+D5O/gWfl7STbCdLHxyxK9J4ihwEd/04y132mDt2Sa
-	s2sbm6wmMoE3SHzZTBMQGWxR18Wk7H0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TqAIK+llZBMk6DlijQEEYbjFZ2sn7l7HVlve64fFpcs=;
+	b=UId80zXkrNfVnkiF4I/JDBo4Vc1PNjREo5/MvCl7I9BUcQdEhtP9ib60KDvQ0CHBqSxxGl
+	s2UQB4nPjvTpRRAKjMXupS9yU5pB6PClX4yIMjVTzO90PCIkfdUcI48chRblMWU/4Et6KA
+	/J8DRi2dUzyMNsSmS26qEsz+x83F4j4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785515268;
-	b=TpjMRoXzG7OIm1qPtGLeltDx36uv/w+phTRM8FZK3Sf2GhMPRjQiIXu1cxzAumqBSwRvuI
-	i77CoPhGbFa8dt6XBm8iRVCP+cyZxcVmmtRDEpdURgfTQPrV/+7ErlH+FpfILkWoiVuFgR
-	dGAdbNU/mOCRE8Tu+5UxA1HAAb9yFqY=
+	t=1785517549;
+	b=1AZFxW90N5i3w33MXA9CQ7wevZ9esAgA9GNodZasamKMF4xVZbRQzbwRG5IHLAy1tl6dYd
+	sO8eyb3ygiq8P4AouO7JfHNlONlrRSjs4jpTJI7LMDIX2qNnmijJrG+R0S8gE98MXt/xVW
+	8DTjxykvJnnR06pCLHzDsCP7j9aw1BE=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=hjt7qbI8;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=kIog68RB;
-	spf=pass (imf08.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zVujV1G3;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 489707A012A;
-	Fri, 31 Jul 2026 12:27:47 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 31 Jul 2026 12:27:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1785515267; x=1785601667; bh=Ak
-	DiARroLHl6KyOSQsFmxb3G2BExRBvYjwZc5Dx3u/U=; b=hjt7qbI8FvJ4RGjJdD
-	r+b04gl7p1QRerLb0BU6Qjqhzsbe98Z9KzJqYf/dtm64O+FQPX83r8MVn85oNcty
-	z0X4fZFhTfhtlnL9GJEb/+a7flBMG+vfdR1Z8OGNRSs9860DQe3FP3lGxPOBJdfn
-	iljIDSVMfNMBuLzwSLjP1Dv6039KS+wRlPW3+67Dz/H/kriDQB19uCIYmaO1xgRV
-	go5hJxjKfkxsRV77vUCZTtsB+3ZTzJyQotrho3ngrN10KtKDaBm2Jef43UPC5BrU
-	5pb2ZAfkXZ4pNWPHtue5rCUStMagoYlbfT96d7YzpzdYcYncJSC3IXGTp/FglyPo
-	9d+g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1785515267; x=1785601667; bh=AkDiARroLHl6KyOSQsFmxb3G2BEx
-	RBvYjwZc5Dx3u/U=; b=kIog68RBao2r7bX5vkaWRkHXGnVWOrTvgIXKQuXYAo4z
-	kFPTuTcql3TbCIEkT+M7cimQQ9oojLJ5yf8UfEABGVee1sfju96P87ZjZhnMfNmQ
-	zz2mVGb38+bzWQhHbnN1ygw6LZDVhJjmctGkbeoSQWqhrpCJDXB2K707Q31UveL8
-	Yhoq54BDIOgjwqH5Q0l5bSJO+DwUcNzEgbssWj66zFDgCd1Vpq8rKZGfqyaxiuWV
-	KK9ZBvVEGWFNVf6MxO/J9vKG0oMJ2PiJLhN7uF0RjWn38b0IJ7LdRcrVl8X6D3oe
-	w1eNj6FEIxQXooALj7DM9C0QOjBgz6KjQqB4+Hb3EQ==
-X-ME-Sender: <xms:As1saiP_jfhX6GxIfUz0AEi6cQqX8LkLsBfks7M8Z8n7vSlCurwPXw>
-    <xme:As1sahbKlAdCSupSrwigUrcTeai2C4AYFIMLY53SqrdDcTFC3DIaE7D9_C_WDbvOz
-    zjakWFmFq_RZuHbL-Nf74z24lx09sjzy5B1FGyhMQRyC4Fin1e5Yg>
-X-ME-Received: <xmr:As1sap_LOBHM-lQwmoMck9ftRnlGzUdL8mXA8NrTqsaDkaskAxgErhFqyqka3WYT6DgqSjX-mtGemuL2Fg>
-X-ME-Proxy-Cause: dmFkZTERcFVP8HLW6lWAJcoFMNKyac4KI1WLdSW5Cwyv5Q1y5Mf4zQwvfs5MLKguSB69WD
-    9WWeywtKpWZQupz8iqlVwAqXwfVPcIpA0zWAnoln2vFRMsZ5/0NyILUu8khRqxHSc+porj
-    sEXnf9R/frKCLFuO4k5EcgxmebF1dFZDTkmYpB+ZAE5NcAqEp3I4Y3cayAywGXcJ60CYux
-    wuFhlPiLKYPaRlGZg0yinrrIvHHDYX1E/rLPP65YNds5yJbzqICjaYNfhvUiefT9If22bU
-    f7VjNiBbYA+da5ag1FbGIeOOmrseEOyOe8lOF/5OW7GKqFFgn78JwI4GwuDa0h1/tS+0In
-    xKVxvjXkh6CkzfdyxZiM5OOVn0agfJYkWpqT6pE8JQII6BKhMdou4AjkmEHEb2BTkUnZzB
-    NkpZb57BBGM+hRziXHB//LM/E+laIWVcdxlNrnssRcml3jAmjx5JQY+s/+BKxfzbU7FDXq
-    6GHNqUAWLZWoW7/Nn1FFbqNIAqPGsJSPbn6lPot1Tu3108NWr/O0vU03IHdZ+xcLjc+t3W
-    NcXQMmR1IZc3AYP+fNT+QWVFv+G0GdyzVBSTTl8DK45xcmmN4q9adVeLyiZFJv8kIme3ig
-    97wsh6m3BzxC7g4Doe/g+fe9tu9zcKtl+74wrHDhGd+ST7cG6x7V1AhPjzjg
-X-ME-Proxy: <xmx:As1saqRzf2z8nikH8v8Fgk7vE5ReXwTwewxy_kYa4GDi7drpBd2y8Q>
-    <xmx:As1sarfN__oFApAvj1SGHFP3MrJMtgNiDb8ydhAAWqEKr_0CFdeS5g>
-    <xmx:As1sakQC5jgRbzn602PtIDau365wCeo8O_PAZLpKdY79c-n97kTf_A>
-    <xmx:As1savLmxUrf-42QUT7-WpWLe0rwf8vAz7bAQS3G9pxat6ux61-LmA>
-    <xmx:A81sahcUa2-2m8h52Tj7OKAHdnM6S6QDlKncYBV6WH5ku6rJfAlLYW43>
-Feedback-ID: i60a14417:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 12:27:45 -0400 (EDT)
-From: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
-To: =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.de>
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	keyrings@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	linux-integrity@vger.kernel.org
-Subject: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
-Date: Fri, 31 Jul 2026 18:27:35 +0200
-Message-ID: <20260731162739.158320-1-linux@jaseg.de>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 432A316000B
-X-Stat-Signature: g9kobq6a69p5pwnnf3wci7spanjxnqfp
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A23EA43AA0;
+	Fri, 31 Jul 2026 17:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF181F00AC4;
+	Fri, 31 Jul 2026 17:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785517548;
+	bh=TqAIK+llZBMk6DlijQEEYbjFZ2sn7l7HVlve64fFpcs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=zVujV1G3bpuLx1untn6LC0L9LnhqML06gKvGHzDFq18UN9eR7GgjyoAguD19cc8kZ
+	 w6Rs2pbBM9fYleHB8kup7z8qs2wQsHguFHll5/h6WikcKjh2PYftCazKsU/Jxj3L3c
+	 h4wyrn4d3HRM1CAiNQTKyoPCQ5IVH3rZlQmVn5Ck=
+Date: Fri, 31 Jul 2026 10:05:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: David Hildenbrand <david@kernel.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, mm-commits@vger.kernel.org, Stanislav Kinsburskii
+ <skinsburskii@gmail.com>
+Subject: Re: [akpm-mm:mm-new] BUILD SUCCESS WITH UNVERIFIED WARNING
+ 0c39e2f552f5e16be695cec3a1c77d6a6bf086bb
+Message-Id: <20260731100547.57414d6c37e65f08eb52ef04@linux-foundation.org>
+In-Reply-To: <202607312212.u1pPx1f6-lkp@intel.com>
+References: <202607312212.u1pPx1f6-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785515268-48954
-X-HE-Meta: U2FsdGVkX1/VTVlL5DVBoHD4uVDFUWF0SNIO6ePD026WGCcfYQvKU1tZOUF2d8fNzRwA4hNhSnxC4NNpkXzZ5y9zBTRfA+ACd434qug0HVKStxkY1VC5s1K6ZBFut1CzfCpU3lBFeME37FTi83noylP35D7wQ5FrnMOGlxDz3zOcfPOII4Fxfe26ZqvL5VTJTXtpG6wzhcSS1WJlH6iUq+lSBBz0zTr//B7HP2JiV8HSXeEPoh7MhdNAL8tLcJq16DbPWxfs6C7UJI/9aoOfqjvpFzn8ISO1HhJg54x6AuARIpBn1uA1SzT/5teNerOWqCPX4OKjqqPziHagcwZY4VzQhTLPrwASJ+3WAc/mlRxXiE1nGHjoPXhOOjm4epr59xFufxMfC7OSLgiHG6WTX3KCgsihdnkRJIL8CLZ/CsDTiRGok/Cq8bzm/PwgvzVV8TanzQX7ZbL2MlgdYfaM06hljW+GOKPlPj7bcHLIk9MKiyQLpvhQCt9A9txVMKiR24J1Lt8iss8Fzwh0/mJ0PdRlbuiJAXUDrcCQlrCbbaYJgOWIo4GzR5fiSby8hYQcL0RB+w/xE+P/GUiD7xsBqj2ujHg54tyBT/qmW2UOg1KLIuNzJuMppYt704ARLVcl5nn+u3e7WJcEklpZ1vuVwwV1RozQfR7Jw+aLhaxFmud3hbDK4rxPalBohPBGXHEvxmlka72fIz7PPyP2GY0st0xnC2Br3NExrIqj4jz3XIQEvkbQzYbuoPOoy7xGYnhBCNZC8bKL/m2E2NlY8IzoEry41bfSDwmOlwOCW1SItAONPOz0TvEf7vwvbsNRRQjkthEyrB4YTTwgnbgVPfgIASfFeWnivPQpnQ0BBo9JKMpFpGeUjkBXieOEMU1AyupSDsmAFTgmhLtNOCO0FS3kI9XM2mEN1vL2AR7mleM48xWBPD1rNqe1GzeGnpGicmm27drp2BzvbAk9SyvXAcY
- 7BixOaQi
- aGK+JP0XmTyxpAHbUBhdcP14bayvkYSxBnNJ9XwJAYb95GWVF9Y48XxLY0fib3KC5SStYVfjAYOYK2KVtX5VXQxC1fKLcZ6hJlXTrfAXZyGcn29P5Rd7xwYnncVF9VDh6CMKD/osZK6p0f6E+OaXqFWIWz51uvrT/DcoISbiTT6dhBiQ9vgPnx4qow9Udz9Nd2ryGCDb0yHO+LyJKGmrJxBp5E8haox7MtBcz2PICNwNy3wHOMgwK5uH6ESr8E3lQHZ00D4ZrtWi9j2bs0brmECCm1SGKlZ4sASxxg6irIvPtK6Az6QdrjQsMtn/yGuLMdvfPTh4BRMhmgjdy7MHFWj98abH9pRwB8bvxtmUovRbg/5RjBlMmUyyAXnzCU0cu7k8odnTv/5vrISQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 89EFA160007
+X-Stat-Signature: 97dxiye87yz9cx1t9ok6ot69t5tc4n3a
+X-HE-Tag: 1785517549-97655
+X-HE-Meta: U2FsdGVkX19F1IyrRgKUxYyf7ahkzsAPl9NNs6J++dgiBgh56yt1CDbYuBJBJ4Qb6iNKdmKFVy4Pn3PCs1AYarBM1pdtK7b7kDNKWVwBXV35mzMQSvcbUH5GZBwtB781IZtRDwXaH5s8ksF42wqxq//vfd2i6Uuo4cwY2Zyhq/N4X4UCZgePJeJfrbmPRKNZvku1gsS5nNfhrlScJ/Yl2831unTh0YAzjCrykL0NwyWfM9RwA/i/OaJacfOrVV1iqfC+CinwIYP3GdwDzpbHN0uvn9lbrV6EBbOmjmcMhPrQSu3mYUlfqMVSqAugWz+O5xk1bNSJZBAMmeZy0KBhVlO2UH574c6GcRJAwYCi7zQp+H4NiVhup0Pp/mCL1SCryHio7iEZoaFKiXnvyAB6k2HtW6Z5aGXp6EbZH8ZjXcld+fk7oN0b9NHDxQXQ0j4UMd7RzWN6hAyNPrTbS8xGDkFKS/qqCqhE7ax924Vpq72f12EdbKq/0ujOBgEfao3aquFTIfV38QXOwkFuHAxVbuapkdRkgR6GUwfAdSVq24wYtMkzN8LnZSvsTeh0hlhjj1pLxGo3Et3R78DLm2zehb5cRG4d7T3XC0uOEKp2/EUV5tE+eMGE+Bt/EVBQAYmjZkpEiDB1V8tKIvkfZ02EOg0BBpkh1zDL7ubWHMlgHg5cxi9UcOPV80poKmcPKOovcaE/qS6WOdtWCFHeOGeIBMDjhXNq6RI5WTkUWj98NVd2Vk76oWFxOaKdJqVDyCw7ggGDZ8GRy3mD8BFOikpsajYq9FWAaCjnJ04VRqfXd9k5mfYQR7c1zX8I9iiUEIhh3d6m5dyd2l8S3x5CbPjadSoFmPOuQwMg5XcnX3Bq0dZHS7QpxbR/i+WXTncQydew8mVbYTdv2azNGFnxJ0sfjkPdhstF+yhB4ovV646MpX4ebZz1UixZ8yvmkr9JgS8SBx4E9/S2EvGcrbJgQhD
+ BCu17TSR
+ kQddZBwny79DuqcwAJFgg46wdaC3UyjyIfYJ8YzGKH5pAhMLEy0NXgjvTH77p4+mavqGcPamUS9AhwMCV+bNr80mrGPBbj0bMoBJD0lyAgnRQCVMBPSphK4phhvpGuw2UCz4RwQO2qyBURxHAWfdoIme0x3v+7arnhS+Zmz5UTUG3zOvJSWGthXnoUrOI5KdZeuez2WlHg0de+mQgltnsDyIhpX9GK4yFadDXRekzk+Y55rjkcwO4UaJbmmqj0MZQ8AV3l80yge+WfrO38Ej3sB+MZOvYA+BAPZzRJ3wTLjJYYm39myRTc4+rdJODufHUXRUy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,55 +91,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I'm using linux on an embedded target in a Hardware Security Module-like
-application. One requirement is that I want the system to be able to
-quickly erase its memory when it detects physical tampering. I'm
-approaching that by using kdump to load into a small payload that
-instead of dumping RAM, erases RAM from start to end. However, writing
-all of RAM, especially on an embedded target, is rather slow. For this
-reason, I propose the mechanism in this patch series:
+On Fri, 31 Jul 2026 22:31:38 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
-subsystems handling secret data do a quick, targeted wipe of these
-secrets before kdump. This behavior might also be interesting in cases
-where you run a normal kdump kernel but you still want to keep things
-like fde crypto keys out of these dumps.
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> branch HEAD: 0c39e2f552f5e16be695cec3a1c77d6a6bf086bb  mm/swap, PM: hibernate: atomically replace hibernation pin
+> 
+> Unverified Warning (likely false positive, kindly check if interested):
+> 
+>     https://lore.kernel.org/oe-kbuild/202607120402.clBrrZQA-lkp@intel.com
+> 
+>     mm/hmm.c:673 hmm_do_fault() error: we previously assumed 'hmm_vma_walk->locked' could be null (see line 654)
 
-CONFIG_CRASH_ZEROIZE is a best effort, defense in depth solution. There
-are circumstances, such as when a panic is triggered after memory
-corruption, or when a panic interrupts some operation that mutates data
-structures under locks, when the kernel cannot safely wipe some memory
-areas. The handlers proposed in this series will just print a warning
-and skip the affected areas in this case.
+Thanks, due to "mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap
+lock-drop support".  I think we've looked at this previously.
 
-This series introduces two handlers as a starting point: One for kernel
-keyrings, and one for secretmem. Future places where such handlers could
-be added would be for example drivers for crypto accelerators. 
++	if (hmm_vma_walk->locked)
++		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
-The patch series applies on top of linux-next but should work on 7.0.0,
-too. I've tested the patches on a Arduino uno Q (Qualcomm QRB2210)
-embedded target.
+...
 
-Jan Sebastian Götte (4):
-  of/kexec: fix typo in comment (usable-memory-range)
-  kexec: add CRASH_ZEROIZE to wipe secrets before kdump
-  mm/secretmem: zeroize secret pages before kdump
-  security/keys: zeroize key payloads before kdump
++			*hmm_vma_walk->locked = false;
 
- drivers/of/kexec.c                        |  2 +-
- include/linux/crash_core.h                |  5 +++
- include/linux/key-type.h                  |  9 ++++
- kernel/Kconfig.kexec                      |  8 ++++
- kernel/crash_core.c                       | 18 ++++++++
- mm/secretmem.c                            | 50 +++++++++++++++++++++++
- security/keys/big_key.c                   | 15 +++++++
- security/keys/encrypted-keys/encrypted.c  | 12 ++++++
- security/keys/key.c                       | 44 ++++++++++++++++++++
- security/keys/trusted-keys/trusted_core.c | 14 +++++++
- security/keys/user_defined.c              | 11 +++++
- 11 files changed, 187 insertions(+), 1 deletion(-)
-
--- 
-2.53.0
-
+Stanislav, can you please take a look?
 
