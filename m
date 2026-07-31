@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5891CC54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 09:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78AD2C55167
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 09:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FA7A6B0088; Fri, 31 Jul 2026 05:17:35 -0400 (EDT)
+	id 601AD6B0092; Fri, 31 Jul 2026 05:20:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D2316B0092; Fri, 31 Jul 2026 05:17:35 -0400 (EDT)
+	id 5B1B86B0093; Fri, 31 Jul 2026 05:20:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8276B0093; Fri, 31 Jul 2026 05:17:35 -0400 (EDT)
+	id 479C46B0095; Fri, 31 Jul 2026 05:20:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FD276B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:17:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C656FA15CF
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:17:34 +0000 (UTC)
-X-FDA: 85048518828.11.1FC532B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F206880006
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:17:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPz9HUnd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1B32A6B0092
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 05:20:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7714EA15FA
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:20:48 +0000 (UTC)
+X-FDA: 85048526976.03.8D3C83F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BA6CFC000D
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 09:20:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k8sP/PXi";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785489453;
+	s=arc-20220608; t=1785489646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SmXHxm/S8gWAcFTPx9bcFZXCiUJzwFzL8tV4kp0WIxU=;
-	b=SgGJ55mbYQfjmGKXaA7mMFD8qMONLILoOLdQEgompw6QiJPSmPBiMW6LfMEGd0Va9bdU1L
-	l8vIu0XwbJOruXZS54bbfE/SxsDsVLOfYIVDFmJYsMPxJTSHpuoyAbPQXAg99eLPvWMc+h
-	+fxpNK5HoAqNqy2nbNvHzF5QeenNCDY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPz9HUnd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=AUZ9SN0N2C05U6WQonOb03P00ptR6/rTlFGHNCrawFE=;
+	b=F8aA1JdMzaKgCSYm0Zgr33sLuq7pr+Mx6raveDGMmGsNnfVH28pH7boN5PPlNryF8PNtZl
+	NaBeMzriwUxif1bf3/4TblgTIiEbbhQ+MO8xz1CktJXmixLTZa0m31IpOLd+dV7BoZss9z
+	KULr222uICNURpxZSa9czTV+Px3okmc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785489453;
-	b=XE6GdYsoL4gaHIZLXMfv+bQoi7OhSy/TFEDgLN7Y1U7EMjmf9oaJLq3TkORrMCnQ2/ZEyX
-	KjBTmTWfUNPakmgjjaZQUAQSXfGG7Bw5c6Zfy2grc0uuYggzH/oTJQBfO2v8ySjflXRQeK
-	w3l5eCufFUkkBzuim76u1bYlahzj7O4=
+	t=1785489646;
+	b=i26cakhVdr6U7CTc1C3xkwLhembHzG85IPJwt+0CpC9JgpXmqPPlzXC/0GadXsSz/7k8v9
+	LSfnebXG86tlEVHMLTMJunnuVwIz804l4d+aYnLecp5Eq3XW2JwAKcO1Z/vLpr0fX8KkqR
+	vqnVg4FAfBnIVEXhBJHG1upWA6ttOoM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k8sP/PXi";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1872E43701;
-	Fri, 31 Jul 2026 09:17:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633691F000E9;
-	Fri, 31 Jul 2026 09:17:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F6BD6004E;
+	Fri, 31 Jul 2026 09:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A321F000E9;
+	Fri, 31 Jul 2026 09:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785489452;
-	bh=SmXHxm/S8gWAcFTPx9bcFZXCiUJzwFzL8tV4kp0WIxU=;
+	s=k20260515; t=1785489645;
+	bh=AUZ9SN0N2C05U6WQonOb03P00ptR6/rTlFGHNCrawFE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HPz9HUnd+RzfuNqF4BxNb0nf8/PabOFpkZi9AJIOfsuvqKyxT30y6mUyqxgyCYHFM
-	 uqc0pOT5Y9b7sAYZWt6oUoR0VVwHAfSk2nlCmbHIWTrIOqMx+cT6ne8RCsWfuZRS9F
-	 GnJ1gkId/DRMKHTI4gNwt2umOzD5HUuF7gNcuNS/Zc5fSrAW4jF19EU6Ni/SDixRor
-	 m2nRC6k2xKe9tFMXKxPpAW+9yhKKc0JD0lOPfL/dbLASYEHYavC/1dQJWHYbu6KfHp
-	 c9rt5F70+bY+sm0lRsq9YaKj1Vo8CjKIRAOLJ/gNs0gnn1NVpYA6vO3QCIFqA00+3z
-	 jhVgVxUKa+b4g==
-Message-ID: <33b55954-71e7-4e8d-868a-0440c1b28ae8@kernel.org>
-Date: Fri, 31 Jul 2026 11:17:24 +0200
+	b=k8sP/PXiGrwySS5F70zb2FFJVkowjAapZVdfJ+XsvgQNrWwmuI01dxYN0SZXI1Xpj
+	 zCverqWB4eJuQ4aYeK71fSB2klB6AWfHyfnFxchDDaLsMhmxFPfkllKd+vVTsi653E
+	 bA7DMvP+eDZ3wEJLTcMhROHrQlZHRr5k4bLwai3gd7csJjxitduzAla4h1GXpQ6uK3
+	 Q8UW5M5xqsNdeI3OjJlOTxDEcn0s0MPfGcJtLrz2GjToi5UVr917wMWE7bFamNckoO
+	 z1KlVAOpm16qWyuzNFWgs/x2SNEbAxbcbxJmVRZkrsCKmdFAth3yz2zW6LTeoIPs36
+	 jkTcAqesRId9g==
+Message-ID: <fa82bba2-8a34-44b6-a3af-a942d8ec2b45@kernel.org>
+Date: Fri, 31 Jul 2026 11:20:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- xu.xin16@zte.com.cn, chengming.zhou@linux.dev, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
- shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260731083526.3953421-1-tujinjiang@huawei.com>
- <20260731083526.3953421-3-tujinjiang@huawei.com>
+Subject: Re: [PATCH v3] mm/khugepaged: replace mutex_lock/mutex_unlock usage
+ with guard macro
+To: Jakov Novak <jakovnovak30@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "\\ Liam R . Howlett \\" <liam@infradead.org>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260730204724.16912-1-jakovnovak30@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260731083526.3953421-3-tujinjiang@huawei.com>
+In-Reply-To: <20260730204724.16912-1-jakovnovak30@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F206880006
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BA6CFC000D
+X-Stat-Signature: prqzofkyzjnqo4cge4xe3u8i7xkxgtjr
 X-Rspam-User: 
-X-Stat-Signature: zg956faqqehffp4ezdkyc9tzpyk75syr
-X-HE-Tag: 1785489452-338908
-X-HE-Meta: U2FsdGVkX1/YpnBk9ybd2NBJ4MsbEooRRUa404LlrR3uSCRaNh/ZD/OryJKmRd7hscvJr4K4Ga7c+fe0Hnj7il3GQN2IAZtD8T4Ej5ibAH1JRnQWf+B3svhnT5jAtpgDdfN0zMZdaDDEqOw3IqyyYXU89fYLvU94fAAfUcMI0cGoC2ZxZMhGJn7dP/u2k/3c10VgBauaYQ8MEtC84LOGxzxcpj6pmjcdCkcIs9uZvjBUC6an2Y9Abjnnf32UxTxzNq5HH85LaUvz78QxzUA3hf8KAxrQRiSwdqCJBod5ym2caYiv5j0L1s44vRNdX4EldfNmQtgPcX3RWrKhHZMUbvwizIg+ldMotBrnF6n7qodlpwm8T7ue8bQj8ZTq3UoAOpfzKDE8ax3U/Ir/9OpblTJvfGXITzUzkHpJLqqn/+Y2UGNjKcPgH/pCgnGmdoZnTomUmbeg/0u67F3bQrv8JhF/LrGog2OlaBF4MwIu+XCK0eiTh0f3OUiqsLm2bQedFv6Vmai9QPAX/SnEWB/VFHJnkdKlqjI7iPRmFqkkt+0hhD4mxylEc9aif0+1CCXItI3krU9/qkb/MADbaggOq0Pg061xh+H0wS6tNfVVTrqcQd9H+uLQ8wNLhMlUMztDwFpN6nKstB4cWprw7rsu6lssSlDjM8pQYuV8MCNAvC/SO+fI8/IG9N47J7ukkXRHpusRwSkLq3pkQ3O+d2j1u+RIbVS6IffSsiF0D0DAF9lhuVHIIkWGFhOrnuEwbjGsLbJLV+QKZ93Bl2Vrk4r3MBWoiIuPi+JrfylOggb4k10pDh2T1nbqz3CUUcwyUQrSwBmAFgZzaqsmo6il8HMV2qXfFn0cX+WvtZJWWdFH4hLh4DIWnFcOn5PctPPJM6iqaWFBaBdqK354ndbe/MC171m5iUzY4oNsmCMUOK0yqXdTYazQ3/F7TMfuyo2F2NLjeCkYlnitSAk0ibGJA2P
- PeGm2w2Z
- R23y3FJTAN+GPOnoxctfoj9EVTbXtG2pUW1OkU01lpHG5UYnw2OC6PrwygKI5VlyOlLzGWisAb/cWi54T5slzC/YZbjrK9MZw93H2hdkVcarpwg9UcL4EYbV7S63bChkmML8O6jjql9PrND4X96+Bx0bdiPTiUIQciEGBUZRAmoaRxs2INRqNauFHdqu4xRpFmbzjmONanTIMkJFNoZtmXsAr2all6TXrDyU1jUy+gG1fSnfn3BtYHtXSbnOOFhBlls3ODZJL+8TgtE647T9U5FzDryQKBKA5wxYt/tn+V4X1aoAW4ddGVKuUtWPUdcO+s7rdAwP4L5DQ6UrVe3nlL7tsXc6go8Q34RVk
+X-HE-Tag: 1785489646-507690
+X-HE-Meta: U2FsdGVkX1/mX3ZbMAos5X8Y6s7gSznW6Z7/Z5axDN4MgmgHyrpMxynknZNqLybsmk6mTTMPz1ykvdS0kaPWVWXAhh+4HU8VXUiIPBn/WibUZcU4t++KAPk9xB7hC99W/Mnv1BMagpPk8s1ieRsM1aoSd/jYwu+lvHDlZ3f9/Q3B5upChOei6vng0v9Aw2XDi9IirWv+VRpbP9A3NyHilthvK6JDP83EriC7N58Is5H6JewZp+ld2Derh3xoo7ItNzVSWWZkte9uPDyF5Bm+JtNffxJcSM/b7YiGvfNdCo84fLgHi+//D0v5Zoflkc8ivK0lAUg66MwFOcYqmE6zw71kfN4n8cJ90VkOGj6DgQPb7YqyhM9OJwy+Q6kYnMgaN2R0YK3FJPBxdueOI6RiOS5Xh4JuAS9nVFFjQDIFWmOeHHb+SF/XeZeeqevAErZRZayVSBO9j+dwQ73AUDNLWOzcrfWtQFcejqP9oo2YMHJMmtLC1UP8IdO5wjcUmpIdWOjvJmQBB2tfAx3WX1dqE+Ehnk5CYpgT5XN9S3izgmRpUvKljRqZvB5flRfd2xe60pu21W5e1VnDptlSrZSrfr3SRj9KQrTlLLqY0Mt18cM0zYcvvYUoRKjdeOxT4CyS+k8zlmBh+Xn5mBSp1dfAakDlvCkPT7GMO/01A0o0zA6hXma2USLyjHz4+cdlVHUw7PD7SPUek7qXYUrMgKIn0Ooj+bBaF1RRbv9Ma2y+7diaV1TPyVISSDUHmGcwvZtr5CJZDo1+Yu/uCbLIeS1XEm4sz8SIGhdHTpNe4GySSYZsx4KNDwziPiMPvJGST0Z77zPoIdBn/riDEIJoIlvbBML9o/RKvQtq4B9ypKtLELhL9tzOsjzxvsHNjC+e12RSv4zHKnqQI2+cYGXMF2g4KZfwMardKRo+yf49u34ubypRxhISk6x+VkllRBLxo3v91905/VqWnwhTAzMH/oE
+ QQpNdBic
+ By8iffRi/zShKgTtfZMI86aZRAqcKzYVbpL41mr9bf+HpWUVcdyXaJ0p0lFeTKxyWwUc/32QzLcUMhynQEaXxlTXL6FWJisc9m40ibjVsxfrFVZf6SiWzQQrIc0mpOzt9pafIxZwSl14jIplLInhr3S80KeIHIpuvvcQdJk6tlFxdBBwQFbVTCAbtLxhBMxMK0z6KMrElIbuhE6bp4LzrtOy7I3udZEHfMQdjgcaIyldzcUS/oZIOmhBq61aclM7zzJyK8SIGKR26LlM0/sfpAtHfi6tPNtTEXfXdhNAmMBmtHSA8HLSRpOUTLFkgVnz41+aK18wMh00YhFxTOeieNWjGomsH+92v97yOceXZlZ5oiGlXiVgk6s05DuDklISiTlp+fkvCvG9PX2gaRYI8mhroX9J3IQ5kwYCZVpQlEpujOAaXHvZQrHQmjya0eC5UefHxThKtgfbRx0QobtXqcWRKIHJr4FSbiQ3EhEqVdaFeFFVmZZrO+W5O0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,67 +144,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/26 10:35, Jinjiang Tu wrote:
-> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
-> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
-> lower limit of the pages_to_scan parameter, but that is not how the
-> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
-> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
-> scan-time advisor is enabled. This will mislead the users.
+On 7/30/26 22:47, Jakov Novak wrote:
+> Currently, khugepaged locks the khugepaged_mutex in two functions:
+> start_stop_khugepaged and khugepaged_min_free_kbytes_update. Remove
+> mutex_lock/mutex_unlock usage in these functions and replace it with the
+> guard macro. This makes the code more readable (removing a goto statement)
+> and makes it harder to introduce bugs in the future.
+> No functional changes introduced.
 > 
-> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
-> [1], but the documention wasn't updated.
-
-s/documention/documentation/
-
-> 
-> Update the documentation and comment to match the semantics of
-> advisor_min_pages_to_scan.
-> 
-> Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
-> Fixes: 0710f38ad26a ("mm/ksm: document ksm advisor and its sysfs knobs")
-> Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
-
-Drop these.
-
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 > ---
->  Documentation/admin-guide/mm/ksm.rst | 4 ++--
->  mm/ksm.c                             | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+> v2:
+>   - Added #include <linux/cleanup.h> to the includes at the top of the file
+>   - Moved err declaration to the scope where it's used in
+>     start_stop_khugepaged
+>   - Made default case return 0 instead of err in start_stop_khugepaged
+> v3:
+>   - Moved new thread creation logic inside if (!khugepaged_thread) block
+>     in start_stop_khugepaged
+>   - Removed suboptimal err variable
 > 
-> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> index c9f533b10f6f..c329ca747b8c 100644
-> --- a/Documentation/admin-guide/mm/ksm.rst
-> +++ b/Documentation/admin-guide/mm/ksm.rst
-> @@ -183,8 +183,8 @@ advisor_target_scan_time
->          pages. The default value is 200 seconds.
+>  mm/khugepaged.c | 31 +++++++++++++++----------------
+>  1 file changed, 15 insertions(+), 16 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 617bca76db49..97f61a050f7c 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/ksm.h>
+>  #include <linux/pgalloc.h>
+>  #include <linux/backing-dev.h>
+> +#include <linux/cleanup.h>
 >  
->  advisor_min_pages_to_scan
-> -        specifies the lower limit of the ``pages_to_scan`` parameter of the
-> -        scan time advisor. The default is 500.
-> +        specifies the initial value of the ``pages_to_scan`` parameter of
-> +        the scan time advisor. The default is 500.
-
-Makes sense.
-
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -3111,18 +3112,19 @@ void set_recommended_min_free_kbytes(void)
 >  
->  advisor_max_pages_to_scan
->          specifies the upper limit of the ``pages_to_scan`` parameter of the
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..1e3a9c657a64 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -342,7 +342,7 @@ static enum ksm_advisor_type ksm_advisor;
->   * Only called through the sysfs control interface:
->   */
->  
-> -/* At least scan this many pages per batch. */
-> +/* Initial number of pages to scan per batch when the scan-time advisor is enabled. */
->  static unsigned long ksm_advisor_min_pages_to_scan = 500;
-"when the scan-time advisor is enabled" is clear from the variable name.
+>  int start_stop_khugepaged(void)
+>  {
+> -	int err = 0;
+> -
+> -	mutex_lock(&khugepaged_mutex);
+> +	guard(mutex)(&khugepaged_mutex);
+>  	if (hugepage_enabled()) {
+> -		if (!khugepaged_thread)
+> -			khugepaged_thread = kthread_run(khugepaged, NULL,
+> -							"khugepaged");
+> -		if (IS_ERR(khugepaged_thread)) {
+> -			pr_err("khugepaged: kthread_run(khugepaged) failed\n");
+> -			err = PTR_ERR(khugepaged_thread);
+> -			khugepaged_thread = NULL;
+> -			goto fail;
+> +		if (!khugepaged_thread) {
+> +			struct task_struct *new_thread = kthread_run(khugepaged,
+> +								     NULL,
+> +								     "khugepaged");
 
-So I'd shorten it to "Initial number of pages to scan per batch"
+
+Nit: we can exceed 80c to increase readability.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
