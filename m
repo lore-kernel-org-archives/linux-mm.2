@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B0DC5516F
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:08:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 908CEC5516F
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 20:08:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 235536B009E; Fri, 31 Jul 2026 16:08:20 -0400 (EDT)
+	id 25C536B009F; Fri, 31 Jul 2026 16:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5F66B009F; Fri, 31 Jul 2026 16:08:20 -0400 (EDT)
+	id 233E76B00A1; Fri, 31 Jul 2026 16:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 123506B00A0; Fri, 31 Jul 2026 16:08:20 -0400 (EDT)
+	id 144436B009F; Fri, 31 Jul 2026 16:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDF906B009E
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 578211A0140
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:19 +0000 (UTC)
-X-FDA: 85050158718.04.1DCC12B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D80896B009F
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 16:08:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CF99C011A
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:20 +0000 (UTC)
+X-FDA: 85050158760.09.E0C61B3
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D29DA1A0002
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="qJsf/3bM";
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id D500FA0007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:08:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nBxlqtTP;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785528497;
+	s=arc-20220608; t=1785528498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2ER2w8+MMrXnv4m+kudfL9RHNepNzRG57k1o/CVENk=;
-	b=GP10b2ysGE4b/5gZrckpFmu80gQO55LBxVJtmrqZyY+fF5EvEnShaj+FiuqVXIyokFFbLc
-	JMCbowhOHBIRjSmsB6WZyqCUo90AlR3nVu6PIyrC7IG2pB5FShmYFuHH53Yq7K7UWJPMz7
-	EjAXkAMyKO8u5b5eHLZujej5WAnrUe4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785528497;
-	b=FmAD7IO4qmDpWyknee7jhvHu0Tm4QKaKz3rZUPG3KDAd+Nh1n404OXnbnqDjP9Yha1Zzak
-	u8jRctSrj6PkNJZT86Ijbb022iOYYkIknhINZOR6BBqIBF85ieHW3gjkdkoMRLdexIs/XI
-	v6Zu+EfkA1sWye4aDQ3WZeJhKO4XiJg=
+	 in-reply-to:references:dkim-signature;
+	bh=pfcGJd0Zogu5lBcBZbtpBfo+xRnEBjukcFUlsBluOJU=;
+	b=zIPOrZMnR/FvmkboXIlTvh5J/tTWWuhutG78xYNFnKLxtz7iaIyMULSLvwKL/xEO3+AXcl
+	oZ5gxdYwBnABz6VfMHOHyqGRauLES2U4fvQw1rXnVOnGftfp0nT/e9hsVg1y7zTdWmdEjJ
+	kXNnkUynHTAbJzh1uNDw4z2LKZXfDlk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="qJsf/3bM";
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nBxlqtTP;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785528498;
+	b=u+dYJIYhpE/Pgl7IzlZk3KkpiqxZK1ZmGRWDpxJEXEDg0N6C+SH2vBAMYj4ItECkmapThf
+	fj79cuNFF4b3jiLhstLv3ahZpZ61g5ymYk74/kSvQM5/DbtsWGSshQ0QW4EQlIpkgb2099
+	eT6B1TRv4Zp1QMLbcsAmam6eAne5mbY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=E2ER2w8+MMrXnv4m+kudfL9RHNepNzRG57k1o/CVENk=; b=qJsf/3bMrtj2dJEDjuQYieP0wM
-	imeGJ0ZCm6W1R+mBxI7fQ7M39VFQPgA/mnlyG/cCEjl4JYDab6gYhR9YOJe8CZdHzBPC9RTEGC0EM
-	bjHuCmJ7NCF+SJdoi9cO44GGlhAqv+u6Qx04Z/ScIEbf8+y4EwpSD7rGmwHp+uyFd1Mnf6zwe6t6z
-	B3pEbUxkZ6OYFm0xMNxSwRbLhafjAxSUHRmjfsUOXIadqe4qPb4v17tdmn5S6OL1yFHpTfBODxcap
-	FFpqIXHMUIA9LhsHDLLjuww4c2l7WtK7YGYirQgSSm9WU+e2W42TM35cOC/w/paXToiO5ZufbVhGa
-	XXMArKzg==;
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=pfcGJd0Zogu5lBcBZbtpBfo+xRnEBjukcFUlsBluOJU=; b=nBxlqtTP27i8+63bzV0/yMQxEU
+	7PK6NVE7qj4Rhqa+qiBgZlElQfCN8B9Z6SNEn4TwGrGzer2YSVE268m5b9EkKTbSKEZ4QGsyuD1xb
+	CgNzUVAHyexiyvhwMgmMLwL6HJvS9FkTvl053rgVxriPGnyNCRmlPKSRqIIMW6NBPjA19G1ttbKyP
+	b/uB6O6I1ytzJLim6X/nKrnUEy2s8G/Z1n5+vsCjLT8qCi+rpDAapdQ5cs2qKd82O3BEb8uxK3gnA
+	a7zgd8Y8l9/FLopT96H2S5V9eC7uQVU6kacWh4pGcjfYfZqPPo9rkRaV1Yj8FbhmKc/7ZbVd/Amfd
+	vA2CFmmg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wptWW-00000002PfF-0X1B;
-	Fri, 31 Jul 2026 20:08:04 +0000
+	id 1wptWV-00000002Pen-3RaC;
+	Fri, 31 Jul 2026 20:08:03 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -74,24 +74,21 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: [PATCH v8 02/15] memory-failure: Prevent hugetlb freeing during unpoisoning
-Date: Fri, 31 Jul 2026 21:07:47 +0100
-Message-ID: <20260731200802.574821-3-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: [PATCH v8 00/15] Use generic_file_read_iter() in hugetlbfs
+Date: Fri, 31 Jul 2026 21:07:45 +0100
+Message-ID: <20260731200802.574821-1-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260731200802.574821-1-willy@infradead.org>
-References: <20260731200802.574821-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D29DA1A0002
-X-Stat-Signature: of6an79y83iefijt7raxn854mfd11tnb
 X-Rspam-User: 
-X-HE-Tag: 1785528497-295310
-X-HE-Meta: U2FsdGVkX1/5VlDq5kF37/+Q7cTHOFVxIk5t8jMGvggYvPSj1qcwEtocPROLwKzNxyu2Wjeww+4w02GH6QMYg+UpoAX0WpnKNOxOPmPkBzIQhtht2WZHQmu9CItxDdmAAY8hRDJTAO8i40OJXw99fVyZluToMhBBUalp7fUqJvFMmc0b0N7DmuHwD6B03JhOAlDBJysOz/03zLExqkyl09BfII8TagVEwL/Ktr3kn6mOiZ8ZncLT7Klh3pS9W66tSn0ueBpEtze61XtPLzT0CcwOgu0pesoUY4N91O7Iny702VV8c1VrjTfLXfms2irZyqOSZK0b5GKmqcC6SY7bjgnXeONO7NuFYbEC7y7ssJUgALFsMPd3ArhjT7HYlQCx5ZpI3k4r6nbiwSQNOUkvU/JWKwiXhQouIi2jJ8eQj4YEbAgpU0IrtbXxvO4MFvVyPMJgyrwyRcr88MZNwknupEZedAC+tVyB5fZ9tIIv9xKZjCfH12QBJDl1J74aIZXEfRTmaU0VhZaDBFdzszTTUeI1lZyVjlDipKxTsGsNg8GOgKS9auunY46EjmQg+m39XSd+xiGMDTfM+mVyyi/JZ8SYzyRQ56lqvpjBWOhY+yjZwNeN2CDDFFsUm7RwpEA/VYV/QgdPI0Nrzflag9g02gvTzQq458F+ao3jC08kxHdeGHs0Q6kYu1rpLY/Q1/JyBOS55ENmcDpt9eol+xUEwAGsuJsQHCBcZw8A1ALmSu9WlP6fjEMLOti5AZRjtyH3Z8JPX0cuaRQEDLOp6ZG6nDM+t1wxJAYE3fB1GmGhXrWgRxVrkCChCa0BSKxBYsAY2cbJSLlvPAamkwX/gvRtpaiU8VWYuBrXhhbqH3qIFQaQyT82MH9Q9dIebosV8aWbiCot+bvEzlLlf5Qts4h5ldb6DgdS2LYf7djNFy+SBlbgeOPuT0lRWCpTWkhAYshDW9bPI9TOCpL+U2mISUi
- KD8udngZ
- fEfrrxX/T3yyeLKKrIhvrwtq4aV1EpEjQw0oyK2nG0AtEYZSgg79d2RtOfCp06eoI1XI5CSyunEpPdz3Idq94KCE/ADPK1ZgS5KkBVcFZhVRCfoMmMUg/MqmRQyrCIsZXKFctq67rho0tiFER/KBZ9+iE4SsXZnWt/p6fKU4c//ylZ8lBBmCVM8WzWX8NNKDfvz1pnKItPiSZVY8C8Z9YQcWpF7eb7FhGD4n6bSaEoBDYlhjaneSqurpf2ouzQvhFwLKrEZbc26Zqs5K67GJl97z6gmnh2QLXSY9a8oEWrdMd3UuXbqhHFSTzTNfyU3dKoCcDIHg2Vf/oK5pH3r//Ph9phM3akDgrOvsXiIPpkU7Vd6iglD3rPU3QmptOQkZl8e46vSkuHt1ah+hYsuspWZ4sRoFjw6rGeal0
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D500FA0007
+X-Stat-Signature: aeozweam9g79t4mnwah84pcrxiid96bb
+X-HE-Tag: 1785528498-281223
+X-HE-Meta: U2FsdGVkX1+l4dqZVAmqoi64BSqOQ3bz0BjgdxhCdUuRtj9xDRdUnabRvYVWqhCwclJ6hTxSm4k2zltc273pWPtNUEOjHY/3aYsrfS8e3AJES4vNZQuzm7J7HlrrdZRPFc/rJT/ayCaaSq37zCyo6MVP6munWtMkW8+owYPMeVWpUrOGz4+hNvY8Pnt2yWs35C9g1/1SUhZJAQHxnlKt6KqGBEqHCB1LOeXnP866AngMy9/h9wVdAtK3YesTcZ2FRlWi75Iqj5x+/QKopJ95vzAZxGFOUYLyKfgFrJjkjmOQcjlIBoG+sLhxzPzEpe+a5USkK3wVV8lVcE3Rq1Sp7EJ07a0fQ2K3sod8IbamoPCMf9dfFY3XBB7vU51M+KUSZRfX1bP7s1EtOTt+xaXFF7RXpj3LB4Li2XIyMKjzufX1DPF2XbxiM8pa8cDdYo6xo7ILEGKfisQz/wzWM5DUWiUc/BVWTr8YuPi0FtJFud/L82HLxEpvf1H/nrzTIBLYKKb2hH/u066wzYHhYP1dKD3vUrF8HW8UWDtYVGaVpzOZ87tNoLBr2+CSgqswnqn9NjU2lFIUNiGr5NbJQGbUo2GqCMOCbc0HHxZzS5Jo+zAzQA+QW7JNQD8NBHwpODoUYmNetj3F8kl3Fz4TPCG1pbpArV3WTSQO7al4xqYMDsGsDm34Ef6408k703q0M+8lq0Oj2CUuJyATqZ4/93nDLgfXavu5yznuWSPMSPNEB3NFuGgcjEv36hDgfyZBd2l2OYsooizVOI5GvnYv7nRnqiEguwqzX+2ZVVdtb+MNAS5eA2CSIr2r5Ye5ej20Osovasw5hUR0Eo2HxQhhTSvEG5oOClnExF1alGww9376C2Ogh/VEj6sNLyHTfjlmBFCP0gsPU5SbvzbzfrlKvzKStMhAOoOpmQ/5ST1R9Q/rMFDZeWI26Dins1H97gUBjxpXXhA1Tf5D4yuMswHXKpe
+ 8HWQpdH9
+ 7v3cxlfXxgMQ1sjUf880AfBHy/Rbs7MRsgjW4KFFv36juGAvUY/FdTpG/Ff66CVQVVILEUHmRTsO5x2VRE1gWDbr5dor7aFamATUQnFFPEnG3ahpm9CyYYgm/PreRhTtwUpHJbuqb4qzHJTxsPkWOuR/PyzyxekD6x5MeXGjIfdG1aanJNe67iq+Zzf+CpqQQDhzq1TVXSCDvpEIBjm1AVS7BJbYg6rk1ZGdLNjDrX6EuqxOb9YnYm60/s8segmQNPyfDRA8qZh7E00qERco8/Bhu6Hfd83pHHhPqJ1QI0PcULqz5C7sUQ+qILhEZ5KMiNHM9jDY+Yzfc7KsmFMWO3THsI/7Y6OQpA9u/2erpprqwIHmLC85WyHCUR1aDuegTu+s9jXya5ZNkBS1cR3hgqFFuOeRSQ+1vwoCtwZPun/0CB+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,79 +96,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If we fail to get a reference on the hugetlb folio, then it might be
-freed as we operate on it.  Prevent the freeing and the attendant races
-around manipulation of the raw_hwp list by holding the hugetlb_lock,
-which is also held by the hugetlb code when freeing hugetlb folios.
+This set of patches are separated out from Jane's earlier series.
+https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
 
-Fixes: ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
----
- include/linux/hugetlb.h | 19 +++++++++++++++++++
- mm/memory-failure.c     |  6 +++++-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+We need three things to use filemap_read_iter() instead of a hugetlbfs
+specific read_iter: hwpoison handling, treating gaps in the pagecache as
+holes, and having hugetlb set the folio size in the mapping.  hwopison
+handling turned out to need a lot of prep work; the other two things
+are fairly straightforward.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..50eab2c23299 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -110,6 +110,17 @@ extern struct resv_map *resv_map_alloc(void);
- void resv_map_release(struct kref *ref);
- 
- extern spinlock_t hugetlb_lock;
-+
-+static inline void hugetlb_lock_irq(void)
-+{
-+	spin_lock_irq(&hugetlb_lock);
-+}
-+
-+static inline void hugetlb_unlock_irq(void)
-+{
-+	spin_unlock_irq(&hugetlb_lock);
-+}
-+
- extern int hugetlb_max_hstate __read_mostly;
- #define for_each_hstate(h) \
- 	for ((h) = hstates; (h) < &hstates[hugetlb_max_hstate]; (h)++)
-@@ -279,6 +290,14 @@ unsigned int arch_hugetlb_cma_order(void);
- 
- #else /* !CONFIG_HUGETLB_PAGE */
- 
-+static inline void hugetlb_lock_irq(void)
-+{
-+}
-+
-+static inline void hugetlb_unlock_irq(void)
-+{
-+}
-+
- static inline void hugetlb_dup_vma_private(struct vm_area_struct *vma)
- {
- }
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 944e6e1d4971..1dd0e7b99bb1 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2725,13 +2725,17 @@ int unpoison_memory(unsigned long pfn)
- 
- 	ghp = get_hwpoison_page(p, MF_UNPOISON);
- 	if (!ghp) {
-+		hugetlb_lock_irq();
- 		if (folio_test_hugetlb(folio)) {
- 			huge = true;
- 			count = folio_free_raw_hwp(folio, false);
--			if (count == 0)
-+			if (count == 0) {
-+				hugetlb_unlock_irq();
- 				goto unlock_mutex;
-+			}
- 		}
- 		ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
-+		hugetlb_unlock_irq();
- 	} else if (ghp < 0) {
- 		if (ghp == -EHWPOISON) {
- 			ret = put_page_back_buddy(p) ? 0 : -EBUSY;
+Sashiko complains that the implementation of AS_AUTHORITATIVE is
+incomplete, but hugetlbfs doesn't use any of that functionality.
+We'll add it when we need it, either when hugetlbfs uses it, or when we
+convert shmem to use filemap.
+
+v7 here:
+https://lore.kernel.org/linux-mm/20260728204409.3396238-1-willy@infradead.org/
+
+Changes from v7:
+ - Split preventing freeing of a hugetlb folio into its own patch
+ - Add hugetlb_lock_irq() abstraction to fix compile bug with HUGETLB disabled
+ - Use is_page_poisoned() in kpageflags
+ - Collect tags from various people
+
+Jane Chu (2):
+  filemap: Add hwpoison handling to filemap_read()
+  hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
+
+Matthew Wilcox (Oracle) (13):
+  memory-failure: Fix hardware poison check in unpoison_memory() again
+  memory-failure: Prevent hugetlb freeing during unpoisoning
+  mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+  hugetlb: Mark some function arguments as const
+  guest_memfd: Use folio_has_hwpoisoned_page()
+  kpageflags: Use is_page_hwpoison() to set KPF_HWPOISON
+  hugetlb: Move poison to pages before clearing hugetlb page type
+  hugetlb: Use the has_hwpoisoned flag
+  mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage()
+  mm: Check individual hugetlb pages for poison
+  filemap: Remove checks in mapping_set_folio_order_range()
+  hugetlb: Set mapping folio order
+  filemap: Add support for authoritative mappings
+
+ fs/Kconfig                 |   2 +-
+ fs/hugetlbfs/inode.c       | 123 +++--------------------
+ fs/proc/page.c             |   8 +-
+ include/linux/hugetlb.h    |  43 +++++---
+ include/linux/mm_types.h   |   4 +-
+ include/linux/page-flags.h |  63 ++++++++++--
+ include/linux/pagemap.h    |  45 +++++----
+ mm/Kconfig                 |   6 +-
+ mm/filemap.c               |  51 +++++++++-
+ mm/huge_memory.c           |   2 +-
+ mm/hugetlb.c               |  41 ++++----
+ mm/memory-failure.c        | 197 +++++++++++++++++++++++++------------
+ mm/memory_hotplug.c        |   2 +-
+ mm/rmap.c                  |  43 +++++---
+ mm/shmem.c                 |   2 +-
+ mm/vmscan.c                |   2 +-
+ virt/kvm/guest_memfd.c     |   2 +-
+ 17 files changed, 367 insertions(+), 269 deletions(-)
+
 -- 
 2.47.3
 
