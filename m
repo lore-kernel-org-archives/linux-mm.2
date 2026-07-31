@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D211C55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 10:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE54DC55167
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 10:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A862B6B008C; Fri, 31 Jul 2026 06:13:51 -0400 (EDT)
+	id 8D90B6B0093; Fri, 31 Jul 2026 06:13:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5DD86B0092; Fri, 31 Jul 2026 06:13:51 -0400 (EDT)
+	id 813F96B0095; Fri, 31 Jul 2026 06:13:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0866B0093; Fri, 31 Jul 2026 06:13:51 -0400 (EDT)
+	id 757606B0096; Fri, 31 Jul 2026 06:13:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DE1F6B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 06:13:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB8A11603C1
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:50 +0000 (UTC)
-X-FDA: 85048660620.24.7977F1D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4549F6B0093
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 06:13:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 48A5814039C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:55 +0000 (UTC)
+X-FDA: 85048660830.26.A064958
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 357B64000D
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EFFE+9nM;
-	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 918AD140008
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:13:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="v/AfJXjO";
+	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785492829;
+	s=arc-20220608; t=1785492833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xV4fEJeXNzRRTz9eyzhHqxzd2ssVnPioX8g4LZc5jns=;
-	b=EQtJCAMfBIQeZUnuU6eWK1fL+szzQimFXzWyLocgZu/RPiGe36IvPMXKOWRf+hlPMnG6Oj
-	tjjTxHiTauK5LBlHIleeQPI9P+uB8krpO1R2rD/CNnIbj6pkGUwB06t/H9ftPyHZz/jtRV
-	Fl2qDgFo45gTxjmDjOGxugZCXDGQLlo=
+	bh=ubcjTD4WMXtsiq8p2FJU6LDktp9obYXwMtyJ483ghMU=;
+	b=eakGlYozI0fbJTFUgwRMJnx14C+CkoDGNQrV8SOY8EhtLujweWgJmxfuHFYX06HTMIrVvA
+	9xerhYOGJdV4roR/kjtuvDJY/Jyt+QZq2U9sB/7Y7qD+5WfO9Fdl0YON3Qpa8AMeD1RYgg
+	RaQj/eKs3szvzWhImEoDDFa3T2BjEeM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EFFE+9nM;
-	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="v/AfJXjO";
+	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785492829;
-	b=oW1lnv/37jvrWH7ASh6VLIyxWZCMAJ8AFtkwPhSuEyvVKTAYj1QVAe0H2SnJgH8ceBILlB
-	7uiR9yeaH72nHAdq6F3fJPKvB79J2E7Vnb3NahUPVnEVVFiD76wf76S3gv71m6iyDVGD8r
-	/AfqREsAJaKRoIM8mT9hWbLPR3zAQx0=
+	t=1785492833;
+	b=RsbixZDgbkXnWrt2ktC7G4YTdJqKgdL1xRUiAFZaZ90+Kf8nTpELEAF8IJCNgGoM3QWgz5
+	6hCzh4FcZ8M29r0aXGERNFebb2t7Okp9KScq6STHtx8Qu6fvr+dDu+ZvduCOTE4pXyZjOD
+	bkmuKATbJgVFkmvbmvo+SY6D5gEUyg0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=xV4fEJeXNzRRTz9eyzhHqxzd2ssVnPioX8g4LZc5jns=; b=EFFE+9nM6xVpiuj8tLWcGSG3QK
-	So+ZKmIWLcq7SzyIVr+PhfO/kMpiQSIoyVCxtUZTR/VFza+ivXNDfsif+3EUOfD4IJE4mGjRbXkMA
-	8uPN8FkhXMPRFjpRDzSvXJbMUhxzcTBIoOCXX3FBP1/jYDf86MsGEg2E9Q1Jbxp2uzguwNqEdjV44
-	cGzxb0f+CW94YTxCin6JLhxY3zLCXiH5kyGqW3Y0tT9EfUKUCZFF/r0a+it7OW049t9dmiAeWCv0g
-	9E7w1ZS+f9GfzQk5n6nZpfVxK1a1qRurXXajriUCiwXW12ql/CiLFd8irJRnf2O9ZNCE/qJtOKJFr
-	jchBGW1g==;
+	bh=ubcjTD4WMXtsiq8p2FJU6LDktp9obYXwMtyJ483ghMU=; b=v/AfJXjOnFdaw8rUFIUcYMWkI4
+	qQN7iICNQcgMvwpO7u92p4W+7U0OoO+jXPOymbTRLEutPeAYZkqNhghiRJmbEkVzOGL1gFhcKpgei
+	+wsd+HGExLTqCGMKNZVuHivIcLKDmycv2G9cd+TVaZMSvaLhR+0vJ64XHkxIkwxgKBFFjlupn4cF/
+	KGqGWjMp+DCVvyWrZKu0rWAxaMV3/tK8/SvZ5z9jH3mXuatdCfzdhB8QGadIv3AONMPX7lp+LARFp
+	Yj2ong1kVQqxYNU3wAxiLPV4JoXrt2meAu21/h+ZiNrin0gRCAZuEPMEABK/X/OAHYr7i8jYmg8pD
+	qlHfDU4w==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wpkFE-009wB6-1X;
-	Fri, 31 Jul 2026 10:13:36 +0000
+	id 1wpkFJ-009wBK-1J;
+	Fri, 31 Jul 2026 10:13:41 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 31 Jul 2026 03:13:05 -0700
-Subject: [PATCH v2 2/3] Documentation: kmemleak: document the conditional
- min_unref_scans default
+Date: Fri, 31 Jul 2026 03:13:06 -0700
+Subject: [PATCH v2 3/3] selftests/mm: kmemleak: drop stale min_unref_scans
+ default from comments
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-kmemleak_hardened-v2-2-7b9689ac77cb@debian.org>
+Message-Id: <20260731-kmemleak_hardened-v2-3-7b9689ac77cb@debian.org>
 References: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
 In-Reply-To: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -87,31 +87,31 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1829; i=leitao@debian.org;
- h=from:subject:message-id; bh=yushGXHZHDaSIkXcWCwIaU2p131csUNRGVUynS0/D8Q=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqbHVAkbMzz1VnyGwGOef4ZiEzj2NbeGxr5mJpq
- Mv6SE71RKuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamx1QAAKCRA1o5Of/Hh3
- bSlmEACfchMqlXsVkdT9/a+9nVdaRgU7yjDLJWJnQzY/f1pqyxIZVO8LKdjRhDQcjuquiFPAyK0
- iih8KXXYxdT+qjkc2o+h5QXPRA1Y/F5F/Wc8jeLib+XxAbON9LEeFWQbHDkh8crWUQd8Rrm2Fph
- kr95DQSmCJmtyrJrE1KgH978QJv6mnUfM00iwGsuF0rs4wTym01lhT6H2LWtR8g20s1dQuhXcml
- 9Mt8Xj1N+y9k8Qs/6m0hdkkIE1/CT9AxXovfdTUaUzvIzJZIwv4ESXYEKaKEmbUIlvPg/6l8NuN
- sFtUpJ1KvVlFIIgZTt8VpDtYZi/eCg6fbHSqehBmU/mKhCouRBp1OUfaIcKMPiSNgR14gWkI6nX
- 5/PYU1tI8QiUoVceE6xRvwBAkWYiZNXptJWZ1N/PsqLmW7x8LKzH/a9ZDBDXGHmBXiLWdhwkKrk
- BfoTjefFk4NZDwebFcgo2stmynjLgVrcyXy8koRUm04NM/2wiFNFhGcPdeGsRRiB0FTifOAI0bk
- nq9dtNdBqImemco0ADvxNLWXE2wbf3G/N289iVUqEFhfOUmjhH8WiqaRA/VPUtOGeb9OFt9n6/T
- tFn/LLSrFf7bQCFFlccBFv6ivAa+lih2Whj477mmmLtT3N7F92E3xKYp6nPistjW0+BCvuHXAZz
- 8JCoNWOcFKaqFPw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2281; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Oj4udiEjmpiOjfHea+V/PwK9ca6Z32nug57dxTay9Ho=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqbHVAWQRNUMdRa9PHEBXY7Nf8tp4hOStjJKxld
+ uKVu49wgSWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamx1QAAKCRA1o5Of/Hh3
+ bXlrD/94O2e9I6iW9tkOQ8YBD5tmLc8N681vxPuVSgqZnf4F0a28eyrsM4SHdjXBOYfkDxqakwT
+ alJi3+n+fVADlOmxOsH3DxPtRzJ9Ips5yCM+oYMqmN5CzknQpLupbeTqAa90hH2D2qGpzlomVR/
+ UJReyIkTFNHj1+OeymYac0D/PQjOokkvuSb8qQPIle+jA2o/kZS58GV+0Vc/VEqX/M1h7K++s+P
+ Zn/3eYAsYavPJpCw6GE+ZN/mNj28KmDWGMOg2LfULmIvqtTqjeAHnqB0Yf77nCKg4oHQjjioh8b
+ zxQ+ZLujJ3CtUixw704ZM/O/qICJSHIBp12aCTgRZ/ilCWL3CEQ17jSFkGXzOSa6y0TrZgVFwSK
+ YkUsAjKJlXGmrk+o/6vAKvz0c+1t/S7lfqpKJYzMRlc0UmVBLXNnNnBohVhPARVK9bHsvI5mNC1
+ IXzaml6bk3bQxE/KNM3lv0G+TfZkA0iKMX+DROuDRl+9JwIO7Pwc5YAquuOA9WaAczOACiIdclx
+ QGIoztu9sCIy8MeK+cA+EQJEWH4rhMVO3etUWzy9kg+jMBKTgOfnpfJrsxnZdv1GJ3cWtC+1lsX
+ hF39qVjOljB08s6XxAVj0gcXIt0fFKbSbOR57nxyDlQtGQ66R4Vo7vM3CZ/n2NpAw3g5xhT8ht5
+ UMv7S0LQJtBOL3w==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 357B64000D
-X-Stat-Signature: w9wz663e59fxy9n6rk54a6qy5mqqmzjo
-X-HE-Tag: 1785492829-611079
-X-HE-Meta: U2FsdGVkX1+pvrVGDJNYei7bQBLsN/9gw3Lc26bZg5rdE6tC3F5GzPgfJnIOKvg+6XzwO3RxN1hC4PozrR9uwz37MbCgu2W1Ife2GcUoEEhpH9MBV2pc5zrlRo5C+1Mb8eg0lvfRP2kWvST0/z5KF1cFc0QlQyD8xusZbPDcrhGJW91FS0KvoRVTUwlMVa/XjBqJf5wACHKTVQjR6BFVtnw5lr1oHi1yziJctLdsB/XE2Lmmkae5QdCLXpjEo/F8egkRSdc0fRZDWnjy+YosWEnR28js8chpzkEFoV6x7thGGT20/AXOBbT6SCS4wbU4Du4asa1Vy5UUFQFnu/bzHdtkZ0GG/BnQd0/YEBcow6PwECB7/EFRjmG4hAdIfsN2yIVsGrOmtDPfNe+HzZ5eozt+BPQ5gRmyEqUgXT+BRGkWxKIPA58VnfZsVN283LOqkCThFT8mRHvNzTB/fDgCIIgaN+VHeBrDjunK2/crMzru++dJ3KRMWMEpkbNwgr0CMI2hH0XV1Vorc/f1cpbeyDypNOX9DUos8bj/jCyUt9q5ceo+vHbuF3H320MoOnVdlkrMI2LDiOMFm0ME8IMj5FcFDFyOgy9x4A/8PJeDRs11lT07PGKYSSEK32IpFqZFAuaqmYfDtmzgrP2mGxK28P8+k+VLH8dTNAbBoHOVSPnK0h9tnzsRCT1ySSTVFKeyTvtUXD7sfmEQRTCyV5jKm640y4Ij2wfMro5ufd7Zp23FC4kkUA/bI4U5ToAvj4gxaq/i0k7ZM0iB2wnOLODR3LCwjox/N0wZsnvMC5azlza8e+dlsi84aOkcy3qah2rsRytWC1G7/HKZQnKUlNc2Ta2Id+Mnm6SYnDShr5RTNciYVNdQW8YWB2MN6u7td7uTSLPoamV3tvfJ/mWL2I3Yo7/yeTDjSiTSO4KdGsRO4dufkcgDqi/YupTxWCPMRfQcXwPSzC3Cb+mdwIZnrUq
- NdFcu3y3
- sQr5S4HYBRLczqxbOyE7exa5izRofGhEbKbRsRx43K9c6WB7AC/qPeof13GCa3FQNon/DYhg0NZnyde3lb37OSwz/Pd5aiaKSu3p1AIAelAornaKfkBEql2fNwXXaTgDEuzjExfo01XKLppt7fGMRMJVZ2OkVDNLd49OMo5Qzl+SiA3eswS/CPwCAkwPiW8k5fhwYmzJCQY+BUOf5ornS2LW2FpZt8qiTyJq11tYFkLQb7ByHXZ9OieGXgOnukCwivftRlHSEKZ39f2Olp92AMTvV58f2RlCyLVYnrt/weU644n9jg6pOMMhlk7UMotE/2rrx42jBj85mMj0=
+X-Rspamd-Queue-Id: 918AD140008
+X-Stat-Signature: bmepsh47zsgg44j5k9hu9o3pdkzumqxu
+X-HE-Tag: 1785492833-318841
+X-HE-Meta: U2FsdGVkX1+NYHTGjYxACpTgQMwQLhNdPdc4VJv/aagwM2NJoQHEdBCReUuoFmEcsVt6NUoERTxqV+xGmuai0SiznNgUKip2AJ4slqWrkEtQbLvZLxecQ1qv9+WCiEY2JPNNVkg1L9T96tCLE93K2jE0TcX/n7MDdFq4WhxerpT3gY5Ux9ivOknUhaJPKVO+IfY+FACRIT05BNKsN94dcg22aswlhez6/Om2jm+zVBYUBqTfGIGCoztggrWOuWFwcuDux1gAYbo0TX627cmFROMvgbQnUSqebGeZjECjysQOo0jjx00uESiHPbHNZNZRnZGPv1d2nC6kXaPTpKVFbyyyppnPddTT5XDlYMu6M90B/LFoPDIqswEe+z65iDtbhTEauGZD/esJsaWHKQmjn7viupnInUAVJ0RlFMukZap1MgF/jPARAGDb4B5RF5j6mzTEprEXapd72N6ArHEqt7zCoEkx5YwpuaqYAKjALSKRnTm/2qBDC3m1A2xMsthhPKySoN60gbzetDU7x+OPRPpQ8SayVvnNmneyau4kkwqrh55GKpZPrtIWUuTCxeqaU3hRpD/dQJwRDtqbfjBna296f0vf/rVZr+/LrLTc/x0bcXnBd2mmeuZNAEgcA0p3Nw52xCXT9mRMZNmfedyE2+5PIfOGvhH79FMs41TgyCVfUbw7no60FpWjGMZ+by4YP3PvlDjw8eRYZmZ2lVDV4sYR/I3p0y7rTa/fV7TUWkVny/oeFFq0y6ZOeP8qc35QR8nucesb5uTyWFNCSK0zOFwmeBO2Lfe+AaysQb+Jb8WP/mdv9r7JQk9WPRXYJGLqIYDgcRdO1qQCey7CwIdKHkcrhUNTJ0t+0h5NliGHVm5LBV/q0n6p3Mpo0TQ3T48+hSsqFttLNJCwEL5jrfO1kEodhKwOxKWgy5Pe7TdTlCZHSpAE8DIBhiaSi7D86oPTyoayGiNuS4x+eO2ovG3
+ xC7COzuI
+ /4wQXAfEqd7hllYShugGQIAu08pLqILQdvMhdaT/PLFdeVmvZ9i0zF6o9BvykzguZPBt8JAl32YaIohx6rAOFNxgChQlva4EdBd1RycQa/Sc5nUVazuRMth19ndjgaCs1A/KEJ4RKWDoxB1nknrE1WqASFcFKA8qxKj0BHSCrxpdTjWFSqGfcA0Hh0e9N164k18UviGjf/PiOS+TUonAHcmUkgznhcYF4jDTLHYyXSSiZlXhvnnEc6iPe4mydaDQ6+blV5fVByOr6rkt7DVgktVKiG2Qs9ysRG3WRjKfS6xGiFYLjzhSYqu7arAn0qWIn0Hz9CuSTiF6bN8JwIhWVqU+7bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,38 +119,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-min_unref_scans now defaults to 2 when CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN and
-CONFIG_DEBUG_KMEMLEAK_VERBOSE are both enabled, but the documentation still
-states that the default is unconditionally 1.
+The test writes min_unref_scans explicitly for every case, so its comments
+describing 1 as the default are both unnecessary and, since the default is
+now conditional, wrong. Refer to the threshold values directly.
+
+No functional change.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- Documentation/dev-tools/kmemleak.rst | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/ksft_kmemleak_confirm.sh | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/dev-tools/kmemleak.rst b/Documentation/dev-tools/kmemleak.rst
-index a8a83bc69ceb8..d1b690b171696 100644
---- a/Documentation/dev-tools/kmemleak.rst
-+++ b/Documentation/dev-tools/kmemleak.rst
-@@ -198,11 +198,13 @@ systems, because of pointers temporarily stored in CPU registers or
- stacks. Kmemleak defines MSECS_MIN_AGE (defaulting to 1000) representing
- the minimum age of an object to be reported as a memory leak.
+diff --git a/tools/testing/selftests/mm/ksft_kmemleak_confirm.sh b/tools/testing/selftests/mm/ksft_kmemleak_confirm.sh
+index 3a8576e835c8d..72ded5e6794c9 100755
+--- a/tools/testing/selftests/mm/ksft_kmemleak_confirm.sh
++++ b/tools/testing/selftests/mm/ksft_kmemleak_confirm.sh
+@@ -5,7 +5,7 @@
+ # (the min_unref_scans module parameter).
+ #
+ # kmemleak only reports an object once it has stayed unreferenced for
+-# min_unref_scans consecutive scans. The default of 1 reports on the first
++# min_unref_scans consecutive scans. A threshold of 1 reports on the first
+ # scan (historical behaviour); higher values filter transient false
+ # positives where a live object's only reference is briefly invisible to a
+ # single scan (e.g. an RCU tree update in flight while the scan runs). The
+@@ -16,8 +16,7 @@
+ #   - a freshly allocated object is greyed on its first scan (its checksum
+ #     settles then), so nothing can be reported before that priming scan;
+ #     each case below primes once first,
+-#   - with the default threshold (min_unref_scans=1) one scan after priming
+-#     reports the orphans,
++#   - at min_unref_scans=1 one scan after priming reports the orphans,
+ #   - raising the threshold to 2 needs two scans after priming: one is not
+ #     enough, the second reports,
+ #   - the parameter reads back what was written.
+@@ -105,9 +104,8 @@ echo 3 > "$PARAM"
+ # scan. Every case below runs this priming scan before counting.
+ prime() { scan; }
  
--The ``min_unref_scans`` module parameter (default 1) requires an object to
--be seen unreferenced in that many consecutive scans before it is reported.
--Keeping it at 1 preserves the historical behaviour; higher values filter
--the transient false positives described above, at the cost of delaying
--genuine reports by up to that many scans. It can be set at boot with
-+The ``min_unref_scans`` module parameter requires an object to be seen
-+unreferenced in that many consecutive scans before it is reported. It
-+defaults to 2 when CONFIG_DEBUG_KMEMLEAK_VERBOSE is enabled, where the
-+periodic scan thread confirms a leak on its own, and to 1 otherwise. A
-+value of 1 preserves the historical behaviour; higher values filter the
-+transient false positives described above, at the cost of delaying genuine
-+reports by up to that many scans. It can be set at boot with
- ``kmemleak.min_unref_scans=<n>`` or at run-time via
- ``/sys/module/kmemleak/parameters/min_unref_scans``.
- 
+-# 1) min_unref_scans=1 (default): one scan after priming reports the
+-#    orphans. This also establishes that the helper produces detectable
+-#    orphans here.
++# 1) min_unref_scans=1: one scan after priming reports the orphans. This
++#    also establishes that the helper produces detectable orphans here.
+ echo 1 > "$PARAM"
+ gen_orphans
+ prime
 
 -- 
 2.53.0-Meta
