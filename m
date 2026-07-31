@@ -4,105 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80658C55172
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E11C55172
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 21:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD00B6B0095; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
+	id DAB276B0088; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D80CD6B0096; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
+	id D82256B009D; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C221E6B0098; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
+	id C993A6B009E; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C1736B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:53:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 035901A0165
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:26 +0000 (UTC)
-X-FDA: 85050423654.05.48DEE4E
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5580D100005
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:53:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pR7lhR1y;
-	spf=pass (imf14.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785534805;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A2CB96B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:54:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41723A018E
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:54:12 +0000 (UTC)
+X-FDA: 85050425544.12.EE9A613
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5438E180003
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 21:54:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PSVk6WjH;
+	spf=pass (imf06.hostedemail.com: domain of nhuhuan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=nhuhuan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785534850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
-	b=pUV4NZs44HNIWepg5+Gv4atDGA0j8ySk/lYGH2MUKyy/F/PxXMdNB9AZZ3wtzf0WMru1kn
-	JpVixsP3lNCr6NENWjCbFa0qTyeDnsSt3MBo7EHGuH5b6tK/EXMo/j92uNrUjjy9Tfv/Jw
-	wqC43DvP2fsTjlWpmVM1H2750QWCDuU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785534805;
-	b=8qUV/cj30jyneP2O5nsu8SMeO/slvaCioV2a2hohzP8EQwVEp0OJrMEUTx4VKt8STzB4z0
-	uwctaNEY4vJ+flu6CGbT1p/HvryK1xME3+Slec6WIn6K3dIRsgOQmohkCFzyeIi4+B9tMa
-	R4JWjQ64yN6cQyRCTucbAG2Kciqyp/o=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pR7lhR1y;
-	spf=pass (imf14.hostedemail.com: domain of 3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3UxltagoKCJQ9C4yBC12994CC492.0CA96BIL-AA8Jy08.CF4@flex--loganodell.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e11baa66eso1356614a91.2
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:53:25 -0700 (PDT)
+	bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
+	b=bfGT7XIMpH4JO0wrRUZZkkSOmeWfBsp9koKL05FQwYpbFZ4B48+pLvfSD36DuAfStyEm5M
+	m6PQyT7E0BaT5YIAJx+6OmybiQrj+TepRQT+hVHm1mSfVlUo8m5+u2YHF+qXwPo8Ew9akA
+	KO1kZK9g0kFztTffrT/pQQTeJGBR/UU=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785534850;
+	b=eUVk1GozK7aNBJMwvO/sU4SGJtDEdi6XBM32iXoHMDzXhVcXHQQyCx9JcV/V2DWYMpW8hb
+	HLU+IxFL89XEcVH1Yrmav9J1n7GupBVc2uEC3PGP0JwTdp//KuguATMQauLoAHl7+TpJzh
+	cxA1nG/16igjRSZJtMALVHeugVvgeHg=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PSVk6WjH;
+	spf=pass (imf06.hostedemail.com: domain of nhuhuan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=nhuhuan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c10ed63c0so25821cf.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 14:54:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785534849; cv=none;
+        d=google.com; s=arc-20260327;
+        b=osR7UaMnLhonNU9n+wBF2m5lkMTfVEsjIF/2eBqufe4O6Y/SKJ0BVXkayLr+RZrLya
+         oy4lkwba7KjVCXNbbV/xpNK3WoSlBD0LGHZ6HzGeqe8vVkLGb0DVchdiOE5VV+4JUcnD
+         fvYiYwU1JFhqcgeqaRV93H6bazJEwQV2rhJQdfcaywFZnGqVvORbN2Rm+wity8vbtgKS
+         ahDgWbVT5fnWnGflEaJJSX9ywGVCOViJv880Pp0PYScnBaUTyV1qmXwZpECHpzH/xZu9
+         4ATcHprGvrQVOgowz4CYn1kEcRZ54fFWRrsgEmNsDsOXLNnud+4JG35vKTjZ7ptWQn/Y
+         6YmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
+        fh=llt+HM9T8/pnuZeJV8SR71l0XmfdYd5wMbZE1cBXRJo=;
+        b=Zoui8fZYPt4qkcKET/L8nYQIFg7Iw2NY+ZpI65+VYCTWRYlrihZItqk33sLUvSTCU9
+         Dz+lGVavGnsQH488Eoem6Fka3WGEQ7uYA/VpPON3z9LKCgh4YrR+0dfp1QIi4cZ/eHzS
+         OWAl4aqApsmRWn6oPx3QaOjYuanMUEApe2qs1mkvuXHm15G+DJqymO7U/92e8T0j73XH
+         0V5va6V4NHIXwWJQiG8htLkODxZ+JjBFTrSxUOzK4bgwZoPrhf3ucTg2dIhbOcsZOU19
+         VPGrOLFlOKpEupRAOwmKXwa/aLK85tl5Hr67bL3EJ+6Nh9P6rippJ9gvUHuxI35jfiZ+
+         AIpA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785534804; x=1786139604; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
-        b=pR7lhR1yLDZ8+DFDdMy5y/96QOG87wRll16/UFw6rs6ck0+1VsLl7JjLWvBx+xO8ZC
-         hpxBCyGzfOvfFBE+sK2pjUW5LxJ6TiURro4tS229vqP3lWwEtV6YPnUmUZjmgesaUxku
-         FkU+ngeOzunqeVBEVnVpm5I1n2s0VXTYS1vXX+VG70w26ULWxod+i3UIOvkToQFlQMn9
-         SFE4D1Pl6i07OYVBTnX4U0FkbrcT99w0EKRSasfHdXABByAcam8RvN9yDk2bPuOplFuk
-         x20BIZZNLXeTsgcr4ctsKWaAm76xJjVgmGMMA2Ij8pdXfB+LSbFDMVl4tupWxt1FEdST
-         JfTA==
+        d=google.com; s=20251104; t=1785534849; x=1786139649; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
+        b=PSVk6WjHval+h9nK222BM8OzoRyVlnZzZKw39gnte9dm8/ZrT+LDNAvdk8RtmHZ14L
+         /pgt4LjjEvaROfylmt/YmPLq6+RW2vsK06y/T1KGab6BP2M+gxlR0jRgGZDmB+PV8d2W
+         AARE812foHTWX1U6yXFWSvefID9JW7rB2N3IabLhmOmPCUFGxZAKxcW6YXEsgS+HGc48
+         nUY+UNThASGdBFj8Tfc+qiR/pCCg2NGYv96o/3vVa4SOpet6luzCD2qCW1Bw6DAJKg0r
+         CW8hztvuIllXpTMZGp9wB+HjpPvzvc7ypbALC3bUKuVdDj+T6fbJIRW6tsli8lVZ2xgz
+         zXWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785534804; x=1786139604;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AKxRO57RwKQvgozbHnUQp+sB+wk0XehXYqNUOkWbMpk=;
-        b=VwcgHzAPVwHonzYkB4AbclArs+1JWExZU1LYEDS8QLD6fI6TH7z3GlxElGwUUfUzze
-         nVxnDoSr/7/+Tz/J9hwTbKvBODIqzLR1ICJRXkRH3A8RdCcj1ZbvhjG4bfyMuCtANl3d
-         ORYGVwr5Cq7BlMpAxEjQO5qq5KfubXtm1YH3Umt/V7XLhhHcozf6VENDth6O2kFnmWFe
-         hQULvQ7JF/wQ/SrL6e5AQPrplgyCQqMl/sYGlmGb+rQYSWx5aFYfj++o+XCwbkEZI7pb
-         eFM+B6Zzzp5MANjBXc9wslaF4U7B/U36iKSVQZ8/30ZCBDEEKk5PUfnQy2kBqgsSRoCa
-         uQvQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+egA9M+TzbK+L74y6Q/uC1kxfLTIfZgvCL1FT8mUKlQMVf5znuiF51h6nr8R3l20SAR6Szt+j4A==@kvack.org
-X-Gm-Message-State: AOJu0Yz0t1OkYa07MxbHvHx6BXDvIPGMhPXuPrN3YItml5GbcgusWKw0
-	RfmSw2IMGDU9dGRzTGSV6GXkbwYmSEsBTnHgVHDGMD8yaZQsCI9WSHWuCf/sEUuZS8T7yJ5juzs
-	ILRk8Z6vcVNpWe9GJ2isWZQ==
-X-Received: from dlan2-n1.prod.google.com ([2002:a05:7022:eb42:10b0:13b:9346:627a])
- (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4c41:b0:381:5a08:6291 with SMTP id 98e67ed59e1d1-38fbc4bc175mr1169108a91.20.1785534803987;
- Fri, 31 Jul 2026 14:53:23 -0700 (PDT)
-Date: Fri, 31 Jul 2026 14:52:24 -0700
-In-Reply-To: <20260731215224.831696-1-loganodell@google.com>
-Mime-Version: 1.0
-References: <20260731215224.831696-1-loganodell@google.com>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731215224.831696-5-loganodell@google.com>
-Subject: [RFC PATCH 4/4] kho: Add test cases for versioned subtrees
-From: Logan Odell <loganodell@google.com>
-To: graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com
-Cc: pratyush@kernel.org, akpm@linux-foundation.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Logan Odell <loganodell@google.com>
+        d=1e100.net; s=20251104; t=1785534849; x=1786139649;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8gIfdsfjbn1z2tePFkfGVAXUb4NElj5vr2DMSWId60A=;
+        b=M463piw94KrUlVep3GKJ8sZKQcMiNW9ZSzpsh+yMQNvFf6Id6A4NyizapTtAnyXWP3
+         MGWwO79eLM3quZZUaZRnlb4Cwb4PWf0al+1fsNEv6/rBA6YDGtNdpTp0hRsTS2odCIKD
+         WN1n138L1Q/EYjOT1LWWS5pGvKEWLUqAOjFMDBR0gGL0nJb7Q2g+0OFsky8x5x+VTW2U
+         q+REODn9FEmMG2yK0+YjsuLYuqRMZRyf5K9V3yJdJnbXJ0dtFalhbnrEuPHeA2ZP/l+8
+         tyXmShL33hea4mSE8Sp0urJp5AzGHwBo3lrS1u0f6B7TpfPpRYQTmHo74UDzh1tUeakg
+         5vvQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpOrg+M6nESFDGHlxEGGQlGvfcpiIdgRGx8BcwsJx5HMy81EUeMFg9/4C+rpuki/lSW1zO76gTXmg==@kvack.org
+X-Gm-Message-State: AOJu0Yw39uSLIXGUHxuT09cq+XZOVnEkJaCjBrYAs8d7TS9yPp9LWpp8
+	Ebf46g68I406RE2PYsLfdnMDXVEBK3OSH0bRLTd7Aj64TsRMfpf9ZB5Bv0LeSa61d9cXT+FXpUu
+	MQ8NSqH4v7e9ylafoPNyZ/MoBdbcXUFkMRoYXSW5y
+X-Gm-Gg: AR+sD11CnwQEG6rMSa27623jph8LfH8uT9rgmU+7vLwjLfDw0ZeiBviuYXs0cAZZIZW
+	zFU/hM2dw0RZKXxILJJsOBctG1J4Igvcy1dN+ZR/BrUPVnbxEptwWgah1wHW4UEvLsqISPzGYy4
+	xEclv7a/9qFLqno7jl8UfP8MOCWCheTXasK2X8wRslsYHoKsTYYuT/xrRgPmAjnekArpuAUKoiC
+	+ejGQgjlz+YdlYxC2mIF2xI5QgW1melFDrxHi+vCFLE1XtSUu1iw7srN5GyJO5xx2g3y3R/zpju
+	OzSZD9cawQxm/6pfY869eMZmdPQYs15c5UizFYv8q2ypIwNluK4oyYpqD7E6WDmpMgd13GfWBiQ
+	=
+X-Received: by 2002:a05:622a:134f:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-52b59a19ea6mr5408341cf.10.1785534848971; Fri, 31 Jul 2026
+ 14:54:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com> <20260730-rfc-nt-demote-v2-1-452dbe3b5073@zptcorp.com>
+In-Reply-To: <20260730-rfc-nt-demote-v2-1-452dbe3b5073@zptcorp.com>
+From: Huan Nguyen <nhuhuan@google.com>
+Date: Fri, 31 Jul 2026 14:53:31 -0700
+X-Gm-Features: AUfX_mydSrv99P-U14w6L8Rc9PDoTTKUxRYzjtIKVF_wWri1fRV1Nci3jK142jQ
+Message-ID: <CALwWd5usu+e=MgX95zGPUeqRjEu_SARLoiMPQpyMYBoUVQkk_g@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 1/3] mm, x86: support copying a folio using
+ non-temporal stores
+To: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Rientjes <rientjes@google.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Jonathan Cameron <jic23@kernel.org>, Raghavendra K T <rkodsara@amd.com>, 
+	"Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Xuezheng Chu <xuezhengchu@huawei.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, dimitrios@palyvos.net, 
+	Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-nfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Alirad Malek <alirad.malek@zptcorp.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5580D100005
-X-Stat-Signature: 68cg991dtgg45nfw4x9rpzgy6dh16m78
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5438E180003
+X-Stat-Signature: mu8bsqupsy58rq7dzxbmm6aamj7khu95
 X-Rspam-User: 
-X-HE-Tag: 1785534805-79299
-X-HE-Meta: U2FsdGVkX1/R38Rb09qDa0WXI0P2ywKiOzKjZBk0FxwX3eYCbwFnsSVvx7VJE/5SKjeC/oZMx7uNLcQWTpAwr6xc7N35/e1fLIE9HsuLIDYt4BU834fRLurdvfsRIahh5oJaZHcjM++RKTboJvc+TCF/UdV+l3gDWWdUitIYCzUqb/r5xULn7Hmi1uUFGMny9OoPCiTEyOTCQceDdV8t+Mbb7AILUuBZaYF5fub6TGpGJfGgqArhT930S7P0Q0oaqovCi1/sEdsV6A439+83IhddR1AqTqAEns5zdOAO4sgyw1Odh9uDNtPufykIzrR3fBOyUw2FP6wGNQ2KlXmSMntfCoVwkFJiiXeA8iDxOkczg0U0W7Fn/v3if/tDoa7gC9bgSLnEYk9lez1wpDl+AGdCiu5pEcVi+rf6akldTvUZZU3PeWH42kr7z+dBMTFEO1EJXrSyl+cPZxlElBzh2j5tHnztQo85JPIAybTk3fFoqB957DBH2AwJ9VGdhYrald6QPALVZzmLFvFdtDyC1lbdfLwd1DKCfY1pzHWwEt505qZeVJuDstMALreecq5q//CcA3Ic+HvbU02VZLWSzp8askAxZU9YYVuTtzvVCUUyNsrfxWR1mhzzkyR2LSIXXq8H2ym+aCuPY5NTOfiqz/f5koSloXVPcjfSwLnYdwEpnfDoYtA4Z8+gQ9ifJp6DGOi/aSM8rksL/mM9sd7YlwmSlPymEHszIgfC175bNFTXHxgfJQ3KqEWIVZbhgeST+NniBweEKrKKL0HlF6PXpTFo7nx+eF6nQZAX2Sr36cjbvZ9MCg2/hjUb+z8zev9MRK8tgUrwz0O8EU/KBVV0x/ZRGG1StAPpcVyFc8PsSCV8HMzqcyEcVTfCaOMHsWOyFfWqPAbgW4lFIjHUKs9pN1RXKhGyxEgQuyYJfwlXOJwLmpaLTrQRgxIRlnHxpd1pGXbUur4wW/Rwt0R/GaB
- NdIlNwBV
- wE5M6X4gf0/7qAy47XDuyE4dJFFPcKvpEqGggwoNV1+Zj0uHQQyidNHZvZcXoXsr7P6HqGt1Ype1+Nq7sKvHSdmEf1Im7NSqthE6FOxXak4KebdBMtpc+4LBEJJvmluY8P+LxawvVznC+PkexqAM4QYTj/0oqVMVD0bamvCeK7yxjbiAPBuNxj/oYKOZWkUmKNJ+NNNQ563o6myj+HDv7d8+77w9EMOw6VbYKTLAvYdK+lUp/+i63WECQ+tHfqtCTQEGkkozHAEJgs1LjRqn4mqoxknQz/zViKU3bAA1G0SZ+ItF0FtWZSxpTnOVznCWI/ldbjzEbZRnYxa0/5vXPhZK7i39yO4b5UtPcYOMJmNJzdkkSg0ZDDD4tjCirP8E3vUSWxlF6HfoPrEoJaxuujn7S1VPhdOxuUh/bbzSXX/kUIwMXIoKUw7P/nCgOqgoLTXz4ilXca/VOfTVHlWy1i77Eox2oYtAiM6OxBlD66k29tl04Y/Ft8sXVyq2Hb/GqAnRPOTt8+etxfENnT5uCtZbtO5/C+fHGaffpHKONHLo0vAM+mHcAHy4BfhUQXcAJl0jNlJa9fJVHgAEG/ih3HxAS/Cohipp6uwIEDpu6Q+N25T4=
+X-HE-Tag: 1785534850-151143
+X-HE-Meta: U2FsdGVkX1+Gm4h9TDzNN33FFcCy/UlR/y2tSHS+WUazhmxPsR1eob6NWi9JuP+IuFD2IIbWG2YaFp0NyG4TDjRj/+ZCFBDa9cEm9CMwVjal/rw7tVtdmJ8750ZVzLNJI8y5bszR4ykaRcmnhlSl3ZS/uauywcVCd2fU/3xiSymBm6pF0hksSeq+Qfao6MPvTqqvdlNz6/rZ8UE1Sm+D/HIOmBOPUABLFz2eFNpFEXMBsNR4kTMCg8+xcy1eDBU1aOp+csdjfovfgj+UaFeIQs0hDBA2a9QW/apj1JRBvr5eZ6HZXJmwDkIRBa5jHxCE+ffTt2NI9Zihu306Ls9TnqwH9pfoC31rzNGolIH1Mpherx4sscrDrK5Vv+4QRTEB5rzrcgjsLZyaLrZsS8OMA9cnJ/8wzIBSnLli6HKHnn+C+lXekmeIx94t1RcCLbts+SSCJka8+zQUTF1H51cIVX1hFIequOf4PZIOuhIb+ngxctSlT7J1gdvAWLPkdu7Rx7sdRh/l9dFh3zjQbOFn+eYqls0ef78HqOLLlshVbzzDF7P2jGjUpL6cQ40Y3BFE4CVb21kKODfwVb5evMUlL0Exh8OJGMt2l3LSeEEKw5VKt2rFN/jGeLSHvEaljpCAmiI4XF7j1PVkr615gIbVyvhxfBXhqRQMkfzCD+A2N9gBCpOSqDfN0suNGcqeLCLE//mE2dc4bj8eZaHl6DL5y0BC4u5FibnEyt1hy9aMeI27rZqa3Xe7Yl1B2Po6mLqoaIcYUX9itazmn4ajkUOeMv5Xisp/aiGup5yUsEnNcqEEK9jovA4oHYtKm0Y0/3ZqaDwys1//YFYmExm4OKg2E0BzFOPcSmG1/lnk1jtwf5u15RSF0WtkwWSEbgNW8ZAWcKe+toLwEaKOI7KTNBeoV35QxdoJGcwkQa54tZCg2G04mWTUeu4cJwJrSFf/yOLRK3V8KsAMuGQ7PfAQM9C
+ Q6cxvA+4
+ e95emxyD041CwRnbqos4ZKXxLrFAxPoz1a1ThyV7rBs5zJNtu1EwfBQ3HHr50+rl4MoMX//EY0ZbY9Jglu8HzLHP0U/tSxxw8BZ5WSL0wrsUyjAXp7zuF80svP0QV5M5VFuCibCJbimuZJ170MQa2sFNqkfO0m1aApBtp7dKTV9Pm3tpzoI1FqkvDXIMVmu4zS8DE7BRfh54gZavWhzsqqrEtK80Wj+FyvMMvEdNUvlHIJtBHTmktFKow6d3qaxYY8xH6gwlNvFeHOEwFKw8eYxx5HRiVDw6Y5YJ5weO2aSR4F2TwMdWSAk1YAV5LmcTstCGwLoFptuzorDmIDfrr3b+iWkVyuVcCqT7mOHTlILtxz3GL95sFxg2Ka+sOJh51WwaNO2zFtdGRKhw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,319 +159,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new test cases to test_kho.c to verify saving and restoring
-multiple versions of a subtree. The test preserves versions 1 and 2
-of "kho_test_ver" and retrieves them, verifying their contents.
-It also ensures no memory leaks occur during the restore process.
+Hi Yiannis,
 
-Signed-off-by: Logan Odell <loganodell@google.com>
----
- lib/test_kho.c | 266 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 245 insertions(+), 21 deletions(-)
+Although copy_mc_to_kernel_nt() asserts both "mc" (machine check exception)
+and "nt" (non-temporal store), the implementation fails to deliver both:
+1. copy_mc_fragile() is MCE-safe, but it does not use movnti.
+2. memcpy_flushcache() uses movnti, but it is not MCE-safe.
 
-diff --git a/lib/test_kho.c b/lib/test_kho.c
-index 7ef9e4061869..db531da63576 100644
---- a/lib/test_kho.c
-+++ b/lib/test_kho.c
-@@ -310,52 +310,276 @@ static int kho_test_restore(phys_addr_t fdt_phys)
- 	return 0;
- }
- 
-+static void kho_test_cleanup(void)
-+{
-+	/* unpreserve and free the data stored in folios */
-+	kho_test_unpreserve_data(&kho_test_state);
-+	for (int i = 0; i < kho_test_state.nr_folios; i++)
-+		folio_put(kho_test_state.folios[i]);
-+
-+	kvfree(kho_test_state.folios);
-+
-+	/* Unpreserve and release the FDT folio */
-+	kho_unpreserve_folio(kho_test_state.fdt);
-+	folio_put(kho_test_state.fdt);
-+}
-+
-+#define KHO_TEST_VER_NAME	"kho_test_ver"
-+#define KHO_TEST_VER_1		1
-+#define KHO_TEST_VER_2		2
-+#define KHO_TEST_VER_MAGIC_1	0x11111111
-+#define KHO_TEST_VER_MAGIC_2	0x22222222
-+
-+struct kho_test_versioned_state {
-+	struct folio *fdt1;
-+	struct folio *fdt2;
-+};
-+
-+static struct kho_test_versioned_state kho_test_ver_state;
-+
-+static int kho_test_prepare_ver_fdt(struct folio *folio, int version, unsigned int magic)
-+{
-+	void *fdt = folio_address(folio);
-+	int err;
-+
-+	err = fdt_create(fdt, PAGE_SIZE);
-+	err |= fdt_finish_reservemap(fdt);
-+	err |= fdt_begin_node(fdt, "");
-+	err |= fdt_property(fdt, "compatible", KHO_TEST_COMPAT, sizeof(KHO_TEST_COMPAT));
-+	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
-+	err |= fdt_property(fdt, "version", &version, sizeof(version));
-+	err |= fdt_end_node(fdt);
-+	err |= fdt_finish(fdt);
-+
-+	return err;
-+}
-+
-+static int kho_test_ver_save(void)
-+{
-+	struct kho_test_versioned_state *state = &kho_test_ver_state;
-+	int err;
-+
-+	state->fdt1 = folio_alloc(GFP_KERNEL, 0);
-+	if (!state->fdt1)
-+		return -ENOMEM;
-+
-+	state->fdt2 = folio_alloc(GFP_KERNEL, 0);
-+	if (!state->fdt2) {
-+		err = -ENOMEM;
-+		goto err_free_fdt1;
-+	}
-+
-+	err = kho_preserve_folio(state->fdt1);
-+	if (err)
-+		goto err_free_fdt2;
-+
-+	err = kho_preserve_folio(state->fdt2);
-+	if (err)
-+		goto err_unpreserve_fdt1;
-+
-+	err = kho_test_prepare_ver_fdt(state->fdt1, KHO_TEST_VER_1, KHO_TEST_VER_MAGIC_1);
-+	if (err)
-+		goto err_unpreserve_fdt2;
-+
-+	err = kho_test_prepare_ver_fdt(state->fdt2, KHO_TEST_VER_2, KHO_TEST_VER_MAGIC_2);
-+	if (err)
-+		goto err_unpreserve_fdt2;
-+
-+	err = kho_add_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1,
-+				      folio_address(state->fdt1));
-+	if (err)
-+		goto err_unpreserve_fdt2;
-+
-+	err = kho_add_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2,
-+				      folio_address(state->fdt2));
-+	if (err)
-+		goto err_remove_ver1;
-+
-+	pr_info("KHO versioned test save succeeded\n");
-+	return 0;
-+
-+err_remove_ver1:
-+	kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1, folio_address(state->fdt1));
-+err_unpreserve_fdt2:
-+	kho_unpreserve_folio(state->fdt2);
-+err_unpreserve_fdt1:
-+	kho_unpreserve_folio(state->fdt1);
-+err_free_fdt2:
-+	folio_put(state->fdt2);
-+	state->fdt2 = NULL;
-+err_free_fdt1:
-+	folio_put(state->fdt1);
-+	state->fdt1 = NULL;
-+	return err;
-+}
-+
-+static int kho_test_ver_restore_one(phys_addr_t fdt_phys, int expected_version,
-+				    unsigned int expected_magic)
-+{
-+	void *fdt = phys_to_virt(fdt_phys);
-+	const unsigned int *magic;
-+	const int *version;
-+	int node, len;
-+
-+	node = fdt_path_offset(fdt, "/");
-+	if (node < 0)
-+		return -EINVAL;
-+
-+	if (fdt_node_check_compatible(fdt, node, KHO_TEST_COMPAT))
-+		return -EINVAL;
-+
-+	magic = fdt_getprop(fdt, node, "magic", &len);
-+	if (!magic || len != sizeof(*magic) || *magic != expected_magic)
-+		return -EINVAL;
-+
-+	version = fdt_getprop(fdt, node, "version", &len);
-+	if (!version || len != sizeof(*version) || *version != expected_version)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int kho_test_ver_restore(void)
-+{
-+	phys_addr_t fdt_phys1, fdt_phys2;
-+	struct folio *fdt1 = NULL, *fdt2 = NULL;
-+	int err;
-+
-+	err = kho_retrieve_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1, &fdt_phys1);
-+	if (err) {
-+		if (err != -ENOENT)
-+			pr_err("Failed to retrieve version 1: %d\n", err);
-+		return err;
-+	}
-+
-+	fdt1 = kho_restore_folio(fdt_phys1);
-+	if (!fdt1) {
-+		pr_err("Failed to restore FDT 1 folio\n");
-+		return -EINVAL;
-+	}
-+
-+	err = kho_retrieve_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2, &fdt_phys2);
-+	if (err) {
-+		pr_err("Failed to retrieve version 2: %d\n", err);
-+		goto out_put_fdt1;
-+	}
-+
-+	fdt2 = kho_restore_folio(fdt_phys2);
-+	if (!fdt2) {
-+		pr_err("Failed to restore FDT 2 folio\n");
-+		err = -EINVAL;
-+		goto out_put_fdt1;
-+	}
-+
-+	err = kho_test_ver_restore_one(fdt_phys1, KHO_TEST_VER_1, KHO_TEST_VER_MAGIC_1);
-+	if (err) {
-+		pr_err("Version 1 verification failed: %d\n", err);
-+		goto out_put_fdt2;
-+	}
-+
-+	err = kho_test_ver_restore_one(fdt_phys2, KHO_TEST_VER_2, KHO_TEST_VER_MAGIC_2);
-+	if (err) {
-+		pr_err("Version 2 verification failed: %d\n", err);
-+		goto out_put_fdt2;
-+	}
-+
-+	pr_info("KHO versioned test restore succeeded\n");
-+
-+out_put_fdt2:
-+	folio_put(fdt2);
-+out_put_fdt1:
-+	folio_put(fdt1);
-+	return err;
-+}
-+
-+static void kho_test_ver_cleanup(void)
-+{
-+	struct kho_test_versioned_state *state = &kho_test_ver_state;
-+
-+	if (state->fdt1) {
-+		kho_unpreserve_folio(state->fdt1);
-+		folio_put(state->fdt1);
-+		state->fdt1 = NULL;
-+	}
-+	if (state->fdt2) {
-+		kho_unpreserve_folio(state->fdt2);
-+		folio_put(state->fdt2);
-+		state->fdt2 = NULL;
-+	}
-+}
-+
-+static void kho_test_ver_exit(void)
-+{
-+	struct kho_test_versioned_state *state = &kho_test_ver_state;
-+
-+	if (state->fdt1)
-+		kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_1,
-+					   folio_address(state->fdt1));
-+	if (state->fdt2)
-+		kho_remove_subtree_version(KHO_TEST_VER_NAME, KHO_TEST_VER_2,
-+					   folio_address(state->fdt2));
-+	kho_test_ver_cleanup();
-+}
-+
- static int __init kho_test_init(void)
- {
- 	phys_addr_t fdt_phys;
--	int err;
-+	int err, ver_err;
-+	bool restored = false;
- 
- 	if (!kho_is_enabled())
- 		return 0;
- 
-+	// Try to restore non-versioned
- 	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
- 	if (!err) {
- 		err = kho_test_restore(fdt_phys);
--		if (err)
-+		if (err) {
- 			pr_err("KHO restore failed\n");
--		else
--			pr_info("KHO restore succeeded\n");
--
-+			return err;
-+		}
-+		pr_info("KHO restore succeeded\n");
-+		restored = true;
-+	} else if (err != -ENOENT) {
-+		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
- 		return err;
- 	}
- 
--	if (err != -ENOENT) {
--		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
--		return err;
-+	// Try to restore versioned
-+	ver_err = kho_test_ver_restore();
-+	if (!ver_err) {
-+		restored = true;
-+	} else if (ver_err != -ENOENT) {
-+		pr_warn("KHO versioned restore failed: %d\n", ver_err);
-+		return ver_err;
- 	}
- 
--	return kho_test_save();
--}
--module_init(kho_test_init);
-+	if (restored)
-+		return 0;
- 
--static void kho_test_cleanup(void)
--{
--	/* unpreserve and free the data stored in folios */
--	kho_test_unpreserve_data(&kho_test_state);
--	for (int i = 0; i < kho_test_state.nr_folios; i++)
--		folio_put(kho_test_state.folios[i]);
-+	// If we got here, it means both returned -ENOENT (first boot).
-+	// So we save both.
- 
--	kvfree(kho_test_state.folios);
-+	err = kho_test_save();
-+	if (err)
-+		return err;
- 
--	/* Unpreserve and release the FDT folio */
--	kho_unpreserve_folio(kho_test_state.fdt);
--	folio_put(kho_test_state.fdt);
-+	ver_err = kho_test_ver_save();
-+	if (ver_err) {
-+		kho_remove_subtree(folio_address(kho_test_state.fdt));
-+		kho_test_cleanup();
-+		return ver_err;
-+	}
-+
-+	return 0;
- }
-+module_init(kho_test_init);
- 
- static void __exit kho_test_exit(void)
- {
- 	kho_remove_subtree(folio_address(kho_test_state.fdt));
- 	kho_test_cleanup();
-+	kho_test_ver_exit();
- }
- module_exit(kho_test_exit);
- 
--- 
-2.55.0.508.g3f0d502094-goog
+Additionally, according to the Intel manual, since movnti uses the WC proto=
+col
+(a weakly-ordered memory model), a fencing operation is required. Because
+memcpy_flushcache() lacks an sfence, it can result in reading stale or corr=
+upted
+data after folio_unlock().
 
+Furthermore, copy_mc_highpage() is unoptimized for page migration operation=
+s
+because it reuses copy_mc_to_kernel(), built to handle
+variable-length, unaligned
+memory. As copy_mc_highpage_nt() follows copy_mc_highpage(), it inherits th=
+is
+flaw. In contrast, copy_highpage() is optimized for page migration by lever=
+aging
+copy_page(), dedicated to 4KiB-aligned memory.
+
+Therefore, copy_mc_highpage_nt() should call a dedicated page-copy assembly
+routine that provides MCE safety, movnti stores, and an sfence, rather than=
+ the
+generic copy_mc_to_kernel_nt(). We can name it copy_mc_page_nt(), following
+the naming convention of copy_page().
+
+What are your thoughts on this direction? Any feedback or suggestions would=
+ be
+greatly appreciated.
+
+Huan Nguyen
+
+On Thu, Jul 30, 2026 at 8:03=E2=80=AFAM Yiannis Nikolakopoulos
+<yiannis.nikolakop@gmail.com> wrote:
+>
+> From: Alirad Malek <alirad.malek@zptcorp.com>
+>
+> In x86, use memcpy_flushcache (that uses non-temporal store
+> instructions) to copy a folio. To achieve that, starting from folio_mc_co=
+py
+> down to copy_mc_to_kernel, create a series of helpers (named with an _nt
+> suffix) that have similar behavior to the original counterparts.
+>
+> Signed-off-by: Alirad Malek <alirad.malek@zptcorp.com>
+> Co-developed-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+> Signed-off-by: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+> ---
+>  arch/x86/include/asm/uaccess.h |  4 ++++
+>  arch/x86/lib/copy_mc.c         | 26 ++++++++++++++++++++++++++
+>  include/linux/highmem.h        | 32 ++++++++++++++++++++++++++++++++
+>  include/linux/mm.h             |  1 +
+>  mm/util.c                      | 17 +++++++++++++++++
+>  5 files changed, 80 insertions(+)
+>
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uacces=
+s.h
+> index 367297b188c3..2d0938d3e372 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -494,6 +494,10 @@ unsigned long __must_check
+>  copy_mc_to_kernel(void *to, const void *from, unsigned len);
+>  #define copy_mc_to_kernel copy_mc_to_kernel
+>
+> +unsigned long __must_check
+> +copy_mc_to_kernel_nt(void *to, const void *from, unsigned len);
+> +#define copy_mc_to_kernel_nt copy_mc_to_kernel_nt
+> +
+>  unsigned long __must_check
+>  copy_mc_to_user(void __user *to, const void *from, unsigned len);
+>  #endif
+> diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
+> index 97e88e58567b..5a2ee5c2211e 100644
+> --- a/arch/x86/lib/copy_mc.c
+> +++ b/arch/x86/lib/copy_mc.c
+> @@ -81,6 +81,32 @@ unsigned long __must_check copy_mc_to_kernel(void *dst=
+, const void *src, unsigne
+>  }
+>  EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
+>
+> +/**
+> + * copy_mc_to_kernel_nt - memory copy that handles source exceptions
+> + * if enabled, otherwise uses non-temporal stores
+> + * @dst: destination address
+> + * @src: source address
+> + * @len: number of bytes to copy
+> + *
+> + * Return 0 for success, or number of bytes not copied if there was an
+> + * exception.
+> + */
+> +unsigned long __must_check copy_mc_to_kernel_nt(void *dst, const void *s=
+rc, unsigned len)
+> +{
+> +       unsigned long ret;
+> +
+> +       if (copy_mc_fragile_enabled) {
+> +               instrument_memcpy_before(dst, src, len);
+> +               ret =3D copy_mc_fragile(dst, src, len);
+> +               instrument_memcpy_after(dst, src, len, ret);
+> +               return ret;
+> +       }
+> +
+> +       memcpy_flushcache(dst, src, len);
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(copy_mc_to_kernel_nt);
+> +
+>  unsigned long __must_check copy_mc_to_user(void __user *dst, const void =
+*src, unsigned len)
+>  {
+>         unsigned long ret;
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index af03db851a1d..a5cb435b9ffe 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -468,6 +468,32 @@ static inline int copy_mc_highpage(struct page *to, =
+struct page *from)
+>
+>         return ret;
+>  }
+> +
+> +#ifdef copy_mc_to_kernel_nt
+> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
+)
+> +{
+> +       unsigned long ret;
+> +       char *vfrom, *vto;
+> +
+> +       vfrom =3D kmap_local_page(from);
+> +       vto =3D kmap_local_page(to);
+> +       ret =3D copy_mc_to_kernel_nt(vto, vfrom, PAGE_SIZE);
+> +       if (!ret)
+> +               kmsan_copy_page_meta(to, from);
+> +       kunmap_local(vto);
+> +       kunmap_local(vfrom);
+> +
+> +       if (ret)
+> +               memory_failure_queue(page_to_pfn(from), 0);
+> +
+> +       return ret;
+> +}
+> +#else
+> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
+)
+> +{
+> +       return copy_mc_highpage(to, from);
+> +}
+> +#endif
+>  #else
+>  static inline int copy_mc_user_highpage(struct page *to, struct page *fr=
+om,
+>                                         unsigned long vaddr, struct vm_ar=
+ea_struct *vma)
+> @@ -481,6 +507,12 @@ static inline int copy_mc_highpage(struct page *to, =
+struct page *from)
+>         copy_highpage(to, from);
+>         return 0;
+>  }
+> +
+> +static inline int copy_mc_highpage_nt(struct page *to, struct page *from=
+)
+> +{
+> +       copy_highpage(to, from);
+> +       return 0;
+> +}
+>  #endif
+>
+>  static inline void memcpy_page(struct page *dst_page, size_t dst_off,
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5be3d8a8f806..d07ce478582d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1644,6 +1644,7 @@ void __folio_put(struct folio *folio);
+>  void split_page(struct page *page, unsigned int order);
+>  void folio_copy(struct folio *dst, struct folio *src);
+>  int folio_mc_copy(struct folio *dst, struct folio *src);
+> +int folio_mc_copy_nt(struct folio *dst, struct folio *src);
+>
+>  unsigned long nr_free_buffer_pages(void);
+>
+> diff --git a/mm/util.c b/mm/util.c
+> index b05ab6f97e11..e09e9b5f8eee 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -749,6 +749,23 @@ int folio_mc_copy(struct folio *dst, struct folio *s=
+rc)
+>  }
+>  EXPORT_SYMBOL(folio_mc_copy);
+>
+> +int folio_mc_copy_nt(struct folio *dst, struct folio *src)
+> +{
+> +       long nr =3D folio_nr_pages(src);
+> +       long i =3D 0;
+> +
+> +       for (;;) {
+> +               if (copy_mc_highpage_nt(folio_page(dst, i), folio_page(sr=
+c, i)))
+> +                       return -EHWPOISON;
+> +               if (++i =3D=3D nr)
+> +                       break;
+> +               cond_resched();
+> +       }
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL(folio_mc_copy_nt);
+> +
+>  int sysctl_overcommit_memory __read_mostly =3D OVERCOMMIT_GUESS;
+>  static int sysctl_overcommit_ratio __read_mostly =3D 50;
+>  static unsigned long sysctl_overcommit_kbytes __read_mostly;
+>
+> --
+> 2.43.0
+>
 
