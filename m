@@ -4,113 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E461C55167
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 03:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07535C54F54
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 03:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E1576B0088; Thu, 30 Jul 2026 23:23:06 -0400 (EDT)
+	id E74F56B0088; Thu, 30 Jul 2026 23:36:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692B66B008A; Thu, 30 Jul 2026 23:23:06 -0400 (EDT)
+	id E25F56B008A; Thu, 30 Jul 2026 23:36:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5811F6B008C; Thu, 30 Jul 2026 23:23:06 -0400 (EDT)
+	id D3AF06B008C; Thu, 30 Jul 2026 23:36:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FFEA6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:23:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A477914033F
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:23:05 +0000 (UTC)
-X-FDA: 85047625530.26.277CCB6
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D0C60100009
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:23:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B74D56B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:36:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E45D40334
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:36:37 +0000 (UTC)
+X-FDA: 85047659634.15.5206042
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 66AC8100007
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 03:36:34 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=nebusec.ai header.s=google header.b=F0cz6ozm;
-	spf=pass (imf05.hostedemail.com: domain of zhilinz@nebusec.ai designates 209.85.214.172 as permitted sender) smtp.mailfrom=zhilinz@nebusec.ai;
-	dmarc=pass (policy=quarantine) header.from=nebusec.ai
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785468184;
-	b=fW8yrQE7eIcLnL9mqX9E9gXWoJT4yo1eMklomsVxIS+CQvoCANYkoecti4EpZhgkNTteWS
-	7I2lR98YPPP2/YicAMpY6K0sfJrGOjqRJINt99BPlrPDRkqZ6fFpCy2JjbEW2wc9KFNwCh
-	E6wdoHntlzplIFw9zmORTQcGAsMy3+Q=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=nebusec.ai header.s=google header.b=F0cz6ozm;
-	spf=pass (imf05.hostedemail.com: domain of zhilinz@nebusec.ai designates 209.85.214.172 as permitted sender) smtp.mailfrom=zhilinz@nebusec.ai;
-	dmarc=pass (policy=quarantine) header.from=nebusec.ai
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=citI954n;
+	spf=pass (imf05.hostedemail.com: domain of shijianlin11@foxmail.com designates 43.163.128.53 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785468184;
+	s=arc-20220608; t=1785468995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=J1xR7SF+cs1ep4prKwwQVFCGU6amOjiDrNOT9EMpHXE=;
-	b=xFBZEiArnSwoTz1B2D+rJAURltmu4oCW8W5uhWLfqOKHjRdP+p2LqBdtYeNh8x4cD3wT1U
-	xcoQ1EhIj1jJl71jawKNb5h+vkRAKt6I5w8Mu5zkIhS5fl3Qnb/LZsza1gXqG6bMqfSpKd
-	BhTXPs2kvTYihpHtYeDJyvM3Z+5B934=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so6870675ad.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:23:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785468182; x=1786072982; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J1xR7SF+cs1ep4prKwwQVFCGU6amOjiDrNOT9EMpHXE=;
-        b=F0cz6ozmv8Vx4Y84pAzIqcMN+kKmAkBKJ9Fq3N2vPUK2Q9OurICmZbYYntYqEB1wjc
-         2j/CjLacWK9u1GXW+ub0hqUyUNf531+7RgGDvuub5byVKdrUwuH7/Qcb0HqNOrVNMB+J
-         vuVzxSA6NZzd+v65hMwFhR4TJHobvMgLcgJdWFT/gcIwN2Y2gFgALO4SEQgYM4/LHypl
-         xr9Zgq4v2NqDsgsnXVp6XqN7B4Q68POmUPmaqHJ5+trZF4IL/lR1iGQsJM88tidXH+3v
-         h9KF69N8pKg96c/vGoyKDcp6TxO40mHE2Id4tWX7VsvwrZy23WN8Fh0Fp7t9fsnNOQyB
-         rAew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785468182; x=1786072982;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J1xR7SF+cs1ep4prKwwQVFCGU6amOjiDrNOT9EMpHXE=;
-        b=QmrXEHDm4PH9A5qXuCVVUakhyE4ynXD9d3j9nXj4VJ4rBKPsoPvl2s+HNFYdipQFRa
-         /zjTCSduY6ddNhTBVV4hJ8MSL68g6hsg6Hn+wTx8GqHUk7FzUXVjlHrNgiqslhvWC5Wh
-         12piyZc+O11uTXCWgp2swnsoyUU2vCh48waYaZA2raWxcWtgnqDxaeOe+CtafaJf5VfQ
-         CJ2WojQxG051eN+S3fYpSdOSeoPJ97BzizcssrwCjbucZGwpqmWCw9d8GaSDwxfx+qFi
-         qYqpXy91kxr28X9RdlNmK1DY0qhzrK/EqSxYHDP14HtBONBtqu8mxpY2xWLod2QVjZd+
-         ZteA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrp16sgVJgi49TgpVmdExuDD9FjRSJk2D43/uK7NhiKZIust1hU17NguVjrPoaSVOpAZJ14gruWhw==@kvack.org
-X-Gm-Message-State: AOJu0YxA8uc7IlwV3upd5tvTKZcAtmGfVw8O+vvFkb38sql0QJ3zaoqR
-	elxTZz1P05D2wElnaibAAJTvtrGXY3k0WhDsQo+NeRQClr/nGuE2+AltRSAko7C5zQhZ
-X-Gm-Gg: AR+sD11YePC/52pma3UK1MILqkht20CYC8n3B3nlwb9EypHiZPH2LuAgIPZXM1D1DP6
-	gVgpcZyOlpyW6e6n5ZaCg5dhy1D4fATJJD+UEf/0npRPWRvujty6wyBiuBn2N5NjWorGx2v9alx
-	jiQ0Qf7FIhnAi1mR82fXlkEkvb5FzcUsCObwLGgDHguJHfdKD85mhy0UIhNmxjBTOlI85jLoSf1
-	F0fDjBLzPoCWdgxbsUVsa8nNjVURfU3ApQao5kEg0s6i4U5XsqpiwcZVwMny46JoL6DyMY3Y8LI
-	O6oHEEBmsS8OlbIbwy54NaW0x7rbzDZ0hyZ5G/DvZWfnu3tLbsgGvFX0UxOTHvUV4DOchmgwpXq
-	iUiU5t5SaaXYJpXmv83tJ0cS4Z0e0JRo9qRHJK/JO8bfJKumXhGNlULAnxgNSfD7RVdYscIOjP8
-	HUJhGJh1hCrruowt5DWccPbKDZjcHEdcRUMOaH843zb8ey1T22qd7vgx5TdD3hINTqFOhX6bH9C
-	ElQ
-X-Received: by 2002:a17:903:2f0b:b0:2ca:bb6:e7c6 with SMTP id d9443c01a7336-2d046ee964bmr4704625ad.37.1785468182406;
-        Thu, 30 Jul 2026 20:23:02 -0700 (PDT)
-Received: from Roxy.localdomain ([203.175.14.58])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d047abcadasm870605ad.51.2026.07.30.20.22.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 20:23:01 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org
-Cc: hughd@google.com,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/L0XMQGa1DDfjS3hU02vlKX4lo3wqFMc+fEjdCdUZpQ=;
+	b=ETcC8Fh7kYPuRPw7VceAKCgrTEMRnfbTteWxVP/MIK3vawUZcD1+BtFq9mk45i8wKLi7h3
+	zITXC5suC9bs903JLULQrzui8aMvNXDTpr9pmnubQMbQiz35ReeyUy35djqCyc/NOu5xEC
+	s+bwjLtkdQq7FszYYJUk9WFWY4zBmlk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785468995;
+	b=3fMZto9WeHNHWiOJU9Ur1VvuDNi5JBW/aINVIeCIdFfsltHXZNMp8czh+otNufb7ur6iXi
+	H+KTg6q7fK2uAplJwYaMpAfF/dxlVGqikpYGJnjEEbit28ju2SdgQ1lzaQcj+JxVM6Gjsi
+	By2PnLQp20JI4EaqviptZpNrVH3z32A=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=citI954n;
+	spf=pass (imf05.hostedemail.com: domain of shijianlin11@foxmail.com designates 43.163.128.53 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1785468988;
+	bh=/L0XMQGa1DDfjS3hU02vlKX4lo3wqFMc+fEjdCdUZpQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=citI954nxod/O0rmJUw3Shl+9qPDE6iaxK7+mBbrHpGI9ksB2QYx3tyBIZr7cuxEO
+	 bngxAQ4MJDRRkqvIlqdsF6DoM0JmLcSeB6K9CbAdcQzyeP+NdkASovEavYwQiXP+pI
+	 rfz69y1zaNuh+UqlMDkHjDf+UEHSkXAQXCsrId+8=
+Received: from localhost.localdomain ([180.153.160.8])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 91A37E00; Fri, 31 Jul 2026 11:36:26 +0800
+X-QQ-mid: xmsmtpt1785468986tz3yfkr22
+Message-ID: <tencent_A9F9A0525FAA458D725A6A3443B44A970005@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJCDLgjtG4ERF+7iHtRV+2q6pYEmuQdf88Thpn32iXB5cuttvw60
+	 c6bJHCNExpGdDJXw1FI8DoGKOPu1vEbybRZGxE3NaosQesUUqVAY4D381P3+1q+T/0aG7tnIWXF8
+	 rdJaDWRd6rJIsBffgz6cOw5AbvCBRoA8pEAb6hXRVmqZCsTrSWtVgSAyax1cN/vKR0sFDGntljbY
+	 SQDknESC3hEvY1zpIbbjUhEaaoZ8K2pM7TgBn8rpA9nm0dGZgdE7yTMuP8O9RftePps0uga+5Dj1
+	 ugrouqWhZ2d7eW+P0G19FRl1o7oilwHqCcLmwJTBA77LCgztwtvdObfAlqgB6icgZfGhB+9YlLlZ
+	 WgwRiypZ8jSndyS+gQ6pOJWlAX2e2Spj8uKyjSaGdG3dN8HqbF2/iVmf3kVlOw6L/x6ttUQSszKl
+	 aLkT3HXwzpC5QJLg1vCEChZTAxW7Vd4hqIloEFJCamWHEuFAbI8jtug3zYNNPOJl8GN3/uBLtPx3
+	 RLPvkKy1hn0ub4wdB9te1DaO+Rii9kHZ664Dx195tIxQmMxQVDNqlToOlXfMoU4sa/OHnzwi9E7d
+	 6Hg4udaZgr2TG8laBnnFhTDOJbtUe76IZEtdeEM56l44Fa5REI/G+gNVJHdFgVKdaJEnaQ/rrD8j
+	 K1Jsern71YBe6YCF15HRuJOvihDF0lUOh2FfuDNYSd2cbOI13o99ftIvXDRSn44rHdz/1k4YKRkI
+	 /NTsycVnWm+VQ/2RexD3VrOaEAokF+4TtUIeLAiFQiA1BZGS8pg/fGGu94Hd3E6nna2iunM3K061
+	 KTm4rEY42ago6s2PkUdHuOZ22/phrDwmg0r8Hlnk6tZk4GjGpOxguZ1jtPk0Lv+v/2b+nab0GjXv
+	 TtV0XYGDTv6MYi1YGjfLcGNvQxdei6PW0NGj8+wKtyVNam+YJIgu4n1nA2qPYnnD2HjFDV1kwhed
+	 2SwM5CzX2Z6YhqAp2DWbSrByRO4vkL5gY+lhemUaOpDOkfggrZmE5ThWj827FVxHj7NUWJHzmMOK
+	 jWl5tt7w==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Jianlin Shi <shijianlin11@foxmail.com>
+To: vbabka@kernel.org
+Cc: linux-mm@kvack.org,
 	akpm@linux-foundation.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH v3 1/1] mm: shmem: reject page-aligned fallocate end overflow
-Date: Fri, 31 Jul 2026 11:22:51 +0800
-Message-ID: <1929a466735dcbb9438936ff50b7a4fc2332a8a4.1785377919.git.zhilinz@nebusec.ai>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
+Date: Fri, 31 Jul 2026 11:36:23 +0800
+X-OQ-MSGID: <20260731033623.3020474-1-shijianlin11@foxmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <3105745c-f547-481c-a329-9b78ff4de0f8@kernel.org>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com> <3105745c-f547-481c-a329-9b78ff4de0f8@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r6epc15wcoatmwpa4dttpjnuodqedxdd
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D0C60100009
+X-Rspamd-Queue-Id: 66AC8100007
+X-Stat-Signature: za5hmxnbrkg1qrzqh7g5qb1555xz86yh
 X-Rspam-User: 
-X-HE-Tag: 1785468183-908310
-X-HE-Meta: U2FsdGVkX18cKH+igd3EMr12Mja40xmcrzb42Ncuo7WcvL+bjcootbGFQ9Qk8rSNycP86+AOxFiffp6EmKVofaZQLLX1heI8dvZFIr+7yys6wMBxAmv2HAq/ZQqkrqad7SV5PVCvbF8evckCTw9QseN5hCf1LfEr+tnA4vUoBOe797+jI9VR/vNnBF8/NUpEdeIGNd3wwdKzrngj0q38UmqhgCp2CCw0BIPqskivwGOr1tTdgwIu6JDDWQYI6CQdRzuyIP+jA3882UOZu9RT8DwpD60xErXDSxzhtbXx2CDWqQWSVaHdlh2GQ0WpB7XU2au9HaRGaH0ACyN7MVdgg+8qOd8NngmYgBH/zA5JjD/m3MYewjCkG09dw3++jBBMr/Ppc15fBgss3zLwpWpJN/KIvMndyouHg/66bfLiDOXjpdHYB+xdNPgZK3doKBPGk91Ax5Auba31rUQ/BBv0s54lfXduMlRCgLL+7B96XS2OREuo5hNFTaauSpMJXrXhAlTXFaSeqb6EhJUEAd/QiyRQCeN5Zv3VR1Da5WMnrWYJGeS2POY1kL0GdZ+biFTz+5yeydFhamSy56FuqgNt0phE7ui5u442U/cqoBski+3UQiOetwgsZyWjPG93+6zTtoSB0pAFSNCzi8UVvCVUzlf2/ybERw1leewIuShLgj73GnBMCrhCoKYFGkN3eSpVwY90F7WPlw0eL1bN3c/fIBfOirYur+Jrtv6UBk+m8xhVRamKcGRgby9NrF0X5a3UJ0W67DgIMsyrD/H5xJhvo8JYt4jHH8RwCZA/65uQtlxZJH5wM4FijQ4Hi30rRI8YhprMZg2yuWrZ+PcNlETZrgTdCQ7bCabJS0MWuGFj+SSJToAujgCAMwtP26BGikkKCHCrsOAbdsmC9zPipzeSYcIA1sjBq36uawRFm/9EmMjrGLjg+ZDiHt9oXl2xuSa+m7mF+9FxqmCjJ7R5tji
- zGvzZ2Vo
- hSGOQ/+jrQViN7O/bytY86KXAan15NbXGtva/fJMNOfQZK/mBjjoVncnRcWuC+27g7i9uJKQUhV79lAnoF5diFrioPZv/wCKks4vXuo0QVhrs+F6ebvwSVsAcfVMAduWEhWsdGpXgWvfJLdotMYpKYPbjQhbk36HNgIGHAYGf8IuT/DMwtoSdKEDziY6PWCo6lXS7YRdC3nxc/VTnMuFYSGcH1pG3UI+kpU5yk6xMGq5gI5PwN089RuNUZlC+oiFl8hlyzNlAJYuQ80vsa5OcABbN32fnd5lwNAexZMkaLI4V1ZE=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785468994-743683
+X-HE-Meta: U2FsdGVkX198aMK5Vv68zgMwlSAZfZiTIiNQcQUwyJgZT6L4cqvaBU/6/QglwvOgXcgL9qsJ0JxzdIP8i0us4xxlfGsBeUv5yHsgOecvU5HDUag3ZOps83kkFF6wuk4Rm6I2FsVCfQDxiF8fExCBxhXlPIeIjPVvf6rMeKOwklTPKewLVjS637DgMlDnt9gxZpRjdN3aFB/F/z5RgrIBaDoLOFxMBq7WT4e1r4KuFGFmoPksdayUPi3cC4pr0WOJdEIcUaicwkgpsO8I5Q2Y9v4VGcG1yeOhPiFIigqkjDv27waP13tx1FxMuFqLRDNmy91KR8DZ55arOqypZ1xjtx7vDJgvatl+76fJCfly8E+8cBCszmXzVR1qAuCB3C8Zkya4NJJJyT+BibeqId4JLAUD/tUrQFgp/32K2q9/KzQ0bYFqfWczbVEEoDz+HjVqgqa/sFU9BvWwC7hQtYMTm41ubAbRlrOya8bxta+yKxsZ2jX9E1Rj77MRhHaJqFNCUG3PkZAWsCaOCgmeuDl5rVVrZXeJUrfwNdycBxU8H14ekrM8UUZfLskkfZ9Y62/Pb4J0mZmM9EybIIx0byOs2t82b4jL9h5yMwZblzYS21Ii9ucqWPKWZxLrHfcn7KD9TELQFhvoPc5THNrRJ5kXXhdS2tv3tjZjCR1iHl7vaYlYIZn2ZQ6ipzSLhiATt2rIzdBalCOkOucFVyUPfJeutxbPYS5b/rw9Da9M4M04NeagKwiEBsTxqOss+lWc6zbcF3cAkYlX3mn5h+Nl9OkykB/nMnuuPaIaxV7uxLcEu64hy4+4mBbNWxQuKzBgYugxJEjiOEZwsw1AFqvSZKNR6o0xywslGC9xBVwd8yq16Dti8yJFBisbShDOb2w3hXs4HDfZjP++f0dcNmtf4+s/nG5/8k3TS6lXS3OnQb8RKTYAianVzrbin1WHsBPZaEvuBSQqPvboczjIvoIxAlA
+ /nGJB+mq
+ yxv5DSNDXCVTVlwolsDyxF82qndlrjYmeLkuFdinf0dW6+pEPoxU2vviM84tmehM5Qa84w5F5FKmxGYQYTaqRAzyzJnoR+cuMvF7VMEd1utE7tkxoNgGr6GYWjtgFZpH39byay0DteM6bCq544DcKRpAkWOWgnS6YBUKgRjichDZofci7dhESK4n91okJqr3+5Ucwu8sIPsPF0RNIIRQEc+e4c+NPRCutgyBxRxscWZ/Xg9T2LwAvLuNc/8Q6FXgSj/gRGlWwxb6bxiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,67 +106,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shmem_fallocate() validates offset + len with inode_newsize_ok(), but
-then rounds that end offset up to a page boundary before entering the
-preallocation loop.
+On Thu, 30 Jul 2026 15:28:00 +0000 Vlastimil Babka wrote:
+> Could we also get rid of this adjustment with proc_dointvec_minmax's
+> handling of tbl->extra1 set to SYSCTL_ZERO?
 
-For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
-len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
-the signed loff_t used for the rounded end calculation. If that wrapped
-value is then converted into a page index, shmem_fallocate() can enter
-the folio allocation loop with an invalid range.
+Hi Vlastimil,
 
-Use check_add_overflow() when calculating the page-aligned end, and fail
-before entering the allocation loop if the rounded end cannot be
-represented.
+Good point, thanks.  v2 drops the manual "< 1 -> 0" loop and adds
+.extra1 = SYSCTL_ZERO to the lowmem_reserve_ratio ctl_table entry, so
+proc_dointvec_minmax() enforces the minimum on write.
 
-Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v3:
-- drop Cc: stable
-- simplify the fix to only guard the page-aligned end calculation
-- remove the end_pos cache and keep the existing offset + len uses
-- v2 Link: https://lore.kernel.org/all/87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai/
-changes in v2:
-- drop the RAM/swap-based range rejection
-- drop the NORESERVE full-range accounting probe
-- use check_add_overflow() on a signed loff_t rounded end
-- v1 Link: https://lore.kernel.org/all/adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai/
+For integer values this is equivalent for 0 and positive writes; negative
+values now return -EINVAL instead of being silently coerced to 0, which
+seems more consistent with other vm sysctls.
 
- mm/shmem.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+I'll send [PATCH v2] in a separate mail shortly.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb3..ff99a22ecdb63 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3602,6 +3602,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	struct shmem_falloc shmem_falloc;
- 	pgoff_t start, index, end, undo_fallocend;
-+	loff_t aligned_end;
- 	int error;
- 
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
-@@ -3658,8 +3659,15 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 		goto out;
- 	}
- 
-+	/* Check for wraparound */
-+	if (check_add_overflow(offset + len, (loff_t)PAGE_SIZE - 1,
-+			       &aligned_end)) {
-+		error = -EFBIG;
-+		goto out;
-+	}
-+
- 	start = offset >> PAGE_SHIFT;
--	end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	end = aligned_end >> PAGE_SHIFT;
- 	/* Try to avoid a swapstorm if len is impossible to satisfy */
- 	if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
- 		error = -ENOSPC;
--- 
-2.43.0
+Thanks,
+Jianlin
+
 
