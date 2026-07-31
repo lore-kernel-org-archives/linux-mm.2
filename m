@@ -4,89 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 698CCC54F54
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AFA0C55167
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Jul 2026 17:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 314616B0088; Fri, 31 Jul 2026 13:32:47 -0400 (EDT)
+	id 5AC096B0092; Fri, 31 Jul 2026 13:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4C36B0092; Fri, 31 Jul 2026 13:32:47 -0400 (EDT)
+	id 583ED6B0093; Fri, 31 Jul 2026 13:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 201836B0093; Fri, 31 Jul 2026 13:32:47 -0400 (EDT)
+	id 499496B0098; Fri, 31 Jul 2026 13:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ECAA26B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:32:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40EBEA0505
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:22:45 +0000 (UTC)
-X-FDA: 85049741490.27.CAF0A1C
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 40FC0C000B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:22:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=qI2D0sFg;
-	spf=pass (imf10.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785518563;
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2F86B0092
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 13:32:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 284CCA04F8
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:25:39 +0000 (UTC)
+X-FDA: 85049748798.24.E9368FD
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4AB44A0013
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:25:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lVJP8UHD;
+	spf=pass (imf25.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785518737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzJMQv3xVzAUCtnkpzcujRghNUggd4I3z1xPzy1NvXo=;
-	b=Ztp9F8yaEcdYwBmcJuT9UDOobqIwnVJokLQ0LsEKVCC73XT5k/5rek92nGXiz//WU8EnYL
-	LOuwKGMEZ+j3yCVK0S1wBSYAz2DMYnQ5S66EeVZal9T2N09odgACZcv1nRFhY4ndp4ZJ2g
-	tf5vq2r4Swx9AwrhYZ6/RdfNsntP/58=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785518563;
-	b=NBBkwkFipB0MUgBtTOclhsI6C3PzEN1ESzbKG+H/0FW6uwN+884AzWV7j+XqOcWfDk0k0E
-	POZ9aWH7imC8BLTeXwatmoBzLl65t/D81HllwzEo6zWPLE7mHsSvpxMQTF6miA0+jAnhdF
-	wzjCrBOIY5mVeQ5zNoE0EpJgLnMesOg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=qI2D0sFg;
-	spf=pass (imf10.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id C5B5D19F5BA;
-	Fri, 31 Jul 2026 19:22:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QzJMQv3xVzAUCtnkpzcujRghNUggd4I3z1xPzy1NvXo=; b=qI2D0sFgvOvwu8u48r0FzVvH8c
-	36lVMmnUJecBSk9vJU8oSnhGdAwXdyGAEe61r1/ijGLeQjH+kRscMRVLfJQjhUcZeVkwOxcPs01n6
-	aBr/+ggQefDd+Bg2FRnHCxboX9paLgF99p3zxoqB+rXxtvaG9GPMTclHRpBw73ZX/aU0=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1wpqwL-00000005Lmm-0Wdo;
-	Fri, 31 Jul 2026 19:22:33 +0200
-Date: Fri, 31 Jul 2026 19:22:33 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Guillaume Morin <guillaume@morinfr.org>, linux-mm@kvack.org,
-	Breno Leitao <leitao@debian.org>, muchun.song@linux.dev,
-	Rik van Riel <riel@surriel.com>, david@kernel.org
-Subject: Re: [PATCH v3] hugetlb: only adjust reservation during unmapping if
- mapcount is 0
-Message-ID: <amzZ2R-NAiYJhob-@bender.morinfr.org>
-References: <amkC_1Ya6OiUoiLZ@bender.morinfr.org>
- <20260730150115.37de0d2306820eaf72834743@linux-foundation.org>
+	bh=jVQMyDPxDTS6fwb+X3TMjpuyJAk3p59jQk9XwYz65a4=;
+	b=1xD83nm8SpuJ6jtJGyEr1r68Ox18yn9zl4t+orVBtuw4+xRn8jwn0dbvwFHNra7GxGI+Dh
+	8DDWDTPuggWL7nrQjO4aeXVFFYsl9R2+GTk1yxj0av3ExWdLeM5DsHrZP7rvtXvtgog4js
+	M/FBGaOKLNHTR4Ldes46IbWDSZztDs0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785518737;
+	b=hmUPaOsEj8+CemrEHgPLI/S8PcKLIQsN1gcrgGhXDlWSWEbHrF4nhnS73qPAOw9Uvup6dc
+	95Ytps3WOS41tFRwVLFwdZhPsfR30mCUopRMb2cNuPU2RHs9AiiqMS/ybUfdIYeE+xhLLa
+	Jf2rmTDKQVnKwabXph52+kP+1hz/tJY=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lVJP8UHD;
+	spf=pass (imf25.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacef7d299so2885ad.1
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 10:25:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785518736; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XY4eBJp1oqQYrE/jSB9t7FcG1novWvImusnPBEwC90iC5HJ6bCUrWA8pOnuKBvfH0/
+         rrzrSj6ZBqEMz2/ChMpdck4Qoee4AgejrMjsBshZuZUtTqe+5bhTOa4jQuLDJmEE4JbP
+         vOC9W+9KGJuPOgKUxqsEUqYsmBiDqPoj67YzIlbJU4g3OEhAwNf99AGD+o7pmppD7Rc/
+         6Vq3JRYaoq5gfOvdMlhz9YKilfy4D88Gvdt36XIpM+bpHSzptc6ZSokuCa7Hs999zuvp
+         /+O3W6nLc8QjKLuG6Z1ssW6jyWBHrNBC4ffd4hhez7KTwV4vNtJDoMyqAKqTDaZO/CKy
+         bsKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jVQMyDPxDTS6fwb+X3TMjpuyJAk3p59jQk9XwYz65a4=;
+        fh=4SlupNw5UXDMPdpi/JMX/bULL/XfKJFBQMM6NOI0p0g=;
+        b=ZO1tYQmnyty02OAfNIn3qUmzgVSvEcXNzN4x/f9qXtsd0hoV44BHB/5SU+YhxkQbvQ
+         yhLoC0SKZDXYAkMd3LktdnT/GI8iCmNvT9xS38LS6FwN9jJrnoue0gh5cfpIynaxJyeL
+         UdlW8wG8uHSr7TuLkrI8+7usGuDvIqd/C3QxXC6XaLJGCKB97ud8XF5l3L0d/QY374dt
+         k7cOs1rdP//tljzMRIZ3WZpD9VxZ9cIO7f4GYBXKh8pAB1dC6F3OcwUP3MpZmYPcbmj2
+         j++vn4s6NzF1qmskjGhszyGqkFEvOM+tL58LzqhhpTiFwf4asHDSjd+qilIsAM269kCQ
+         ZoIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785518736; x=1786123536; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jVQMyDPxDTS6fwb+X3TMjpuyJAk3p59jQk9XwYz65a4=;
+        b=lVJP8UHDbOfN5vq5eydKUh4DiFu3rKwV1eUX911b0zEMdW8FFrqgh7AjhCXcsB9Z6y
+         xbUvvN9L7vT+2I2Yjuzvd8nIm/fknGa/4rd4QoOUyvpcZOP5YQVLFvLjVIumbtscAldJ
+         GAuHaWhTjExYGvyJXeHhNzY7z5dteLlivscufG1rlAQ+1TutA8NsYTFNOioJpKT41EeZ
+         CIe6Fb4CZ43hJR1fMCJwcKoR/CuULvlvWxbEnM8+u7IcOyD3T47Ib5lfGJxqpjBr9/G5
+         kWBsOtvRD31qaccTeJGbnpA2dy2kLrOV9RgrTHM/f7Wt/CiUiaZsr9NUhsiXLpx2WN1B
+         HtuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785518736; x=1786123536;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jVQMyDPxDTS6fwb+X3TMjpuyJAk3p59jQk9XwYz65a4=;
+        b=mzePa1/SuiQluetQyghFi7s989ZqYrDbPYcNzhTvt7r3aXBL1oIRnb260K6WYNc2li
+         dRj/kVj4jIER3uyzpnw3M1x6jCa2HbMK2ul4p2Kjyk6HwWzkpaSVrVwhVyc3QVFtvZ3e
+         KRRMcX8P9IaBJ+WhulTeEZ6w52p3H8wqtVMACGLcKBhtekoOqbX2hW+R6YjBNvhgXyE3
+         SIYl+LSVT+v227VbXtrEFk7OvFaWzk2mSpGqhDA/wfR3UTL51N7woxJSYtfgV3Nu+lF8
+         O/ZrWeDzw5ln5DjhskWjuCv54zKyvJoCiJTaVol+Vu0naoSldbrI29CyR4OyHShNJ/y7
+         ICoQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrZpm0x0bb6MnIw4PlV3J3S4o0DJJK6T/kDgS/9t3no/qjnqNWJ8lSG1XvI4UFzbkMblaNE8s+zLA==@kvack.org
+X-Gm-Message-State: AOJu0YxH0xNhsmPJtxhpkXk90/ZKGCLWzJyymTwlPxjvMYhswKppoU14
+	ixrd87e/YvBFu6rMoNZCK5itex4yte4uOodiBAMtJm/My5b/zbuKpBlhqqcESr4fksZ27vsE7Ng
+	Mvn3RZMztAJU1rS2GE6xzQXuUd7lD/4pB0xFyarhM
+X-Gm-Gg: AR+sD10Leqf0Tog6GbzyyU/QCAd0AM1jGYiVFgkkT7I9+UqUHRwkbfIbz6NiwSb4d4h
+	4oJB4DksbrTN3VCBWXL22RwjkKxAFiqZYE2bGEOhFjgDK4h8mRukqP5IwVJj0aWKAwhAqXJT41A
+	2t2UF3zJ0MnpR5EoY/ivUtyG6sVlNaLAnPkEZn3od5AKK1zNqPcF5qr1xdzTJ03MP+f0peaYOaE
+	tYhAEdueUJq9fFzZhynYZtIerWMzMHu8uQVjq+XxC74WXv+h4RBhGQJYzXrWwXHXtMsnuHgaXxh
+	niYFKAmo5jEicMjksf9KAfW9UqNnpfqvWto9Y5N+1Iv6j++AOVJuUAX5dPfzKa/003KtJl9m
+X-Received: by 2002:a17:903:384c:b0:2b9:e831:5e5c with SMTP id
+ d9443c01a7336-2d054694188mr204535ad.4.1785518735417; Fri, 31 Jul 2026
+ 10:25:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730150115.37de0d2306820eaf72834743@linux-foundation.org>
-X-Stat-Signature: 6bc6u3fwn7srgxuykxt9h4jwy3to8wuy
+References: <0d84763f140ea735d790e0b30a8e954536beb875.1785455267.git.abhishekbapat@google.com>
+ <0dcd8c2c-d841-47c2-997a-640d1937a77a@linux.dev>
+In-Reply-To: <0dcd8c2c-d841-47c2-997a-640d1937a77a@linux.dev>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Fri, 31 Jul 2026 10:25:24 -0700
+X-Gm-Features: AUfX_myhN3HvpnSZA75M0vcKNhp1NwWoLudXYC4dn6MNqViceOHT-BCCP0o6lSg
+Message-ID: <CAL41Mv49qeLm-MmHtQGFnyzjEsE+8kvOgtMTKpjNAzDWozum2w@mail.gmail.com>
+Subject: Re: [PATCH v2] alloc_tag: expose profiling and compression states in /proc/allocinfo
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4AB44A0013
+X-Stat-Signature: rfrtkudaw35krdc7f771ym5wie1ko7io
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 40FC0C000B
-X-HE-Tag: 1785518563-3380
-X-HE-Meta: U2FsdGVkX1/PRHpf8e8zPeI1EJSvjYofeOP0VJgkuyNCpYnXUBxnL2gJjAxVNVbW4UG5eeTV4AfgY49sVb/ZNhHfAOjWprYjF3CTISq7/NeADIP5yExlF1InEcg+eTRTfctm/g8al5qrE2l7oECyEHbQVTqgasdsACbTzm8Y75f0yUyqZFFrx8cXdtKJVRgUOGuo9cqpaTqhByxX1ug+Ml62AdTPTg6eG74IkZ8OO0eDSIZnMyWJe+xxQu+xaeNleWNhNx0KmKUhoIfK6Xp+vMlKf8M2yZohBge7EDge+Ps16o1hKdBjLMXXk7Z1mtDZclCyBZICGOVe8A3G1aIWKskNeA+l1BTJWve8dbupsNdLtJVNq7J0+j9qU4trqXBpvyqiTLSU++VBK0cWFrd2wi8pjPMs6WWDwhZ2zo06NFeZOnAs6yFR8A6yUOeZO5KkshAmcd6IjNGuI5MUJI9t4EiaMbfDcOwJuUAPb/IPf+KJvCdua3f5Fh09fV4tYPLWv0Jd9M90W4+6YTA+7bNGpxseZOp2KMVBfk3sTIdpCqkfOp4hE0fFtG4VQfZNtFWikw7TvnoCWd38cbK0Do8wAo19jiWwVRjG6su140i25oCFi/MXDGHBz+cnnpUN1qvV9Sg4ZgwQ405ryKJODr0+gn6oYH0yklMlWjik7EHo3+9RsgEtcx8JrIAIxNqtosqZzSQ5ZUkI1PazyqsOdoT0GtNMPs9bRS7LkLX0Ndjep2CKf3/FH6fNrA/7atgBh0Z15ym6pvROEj/SXbNE/voPvpmS84RZxvkLq4kxMi47JsNfyXKc5gxKYK0lhtMnWzq0YnmJ/RngPNr7gnW95HL3n66DdGZV05c+OZkPFKc7SKz/9ODSjmS82MKfJ6Q9MYOtxTFq1es7IeYr8PnJm+72ETrfiF0fgQaexqrV5GA+cluwAkpfin267f1fvCykNZXLCfX1i5eUA5aLNaQcFNO
- b+9Z+HaD
- H/nFI6AIkWfxuGeZ3XmLTgNiOarXy3mcp2MBQJx+wWYnBUjZelqgi0PP28iq7itqGarI0sJzr6NMjE++DGgKaCm2JKV/lupEpVzDmIdVxxP7I7A5b2yeE/MEdCmYBKAwY9WV9hKSo2lnbYI3BrOmju8az9Gulv9Cf3QPSR59MBr3AmaA3k7xDk3dHRxfuPWwA9qC18uLQry1PKL7aMTusntXXeByKVrun1fTmfZ44QkGDZT1gV8ljbQLnBCIJCpYJ5FI4HBibn32UWob4e/wYawAiomO0TZNYFOizN3T+u74gMNsC8FNfvPpoYG9htsgsjFQXh52R6+h6ryI=
+X-HE-Tag: 1785518737-539684
+X-HE-Meta: U2FsdGVkX1/N7SmMHGRzUKQyjojN0S1P+uEaSx4m8IZzrBiqIQ0GqN4vdR4dcWDHprOCSxoL4L1d2JfEb2jVo3C+VbthBhdIHy2zrgOBtpL1emTPpqcm8MlxW/TBJP+xMQjBx36QevoW7zfYVbJFgouQoQiDqp23MsWYlJ+5pPRLbCE8UBSOIVmGcOBBm+rNapGootVzi5sfBSfAdJgt0XHam92S7eb9SegyptuvK01d5ONsWZ1MVarAlu6a6bdO9rYgf4D9KkI9hlE0wyvRmwkyV9WBKMSj73WjF7+0mrjCLYi7eolH/mZnB8w5asLYdPe3iFv0RmcZL6tG2GRxoeVY9wkHkivZYOH+XE1/PpnHT5EJjRWXIMKYoIGEkf6AwX5QlzMK1Zo94YeXBhtBEhDxAaI15asccOTobl0Zg3rZfKqlsQliCjV29VNVdUDqGTn2/qnZG7G+thjYzW9IWdUNCpmHwlGYjZl9k91/THCKn/KTxsi5MuLF7yZpiEW6TDDqhpZXGtptKulOo/UbdWwn9QDhSTrysHKbdo0t0P2PDsvAq834g/AfrhjjGC9a4B2hA0dCOlwiG0/l8ivcK05UIlH3IEW30Qc01yxzGwgC/7IYUZV93yzY3UW8KAlnv/AhwO01mv76r94vdNS9e5Cl1xPLiZlfAafcjPkqqN5nb8pls8pYqH39d2U0CjcWn0ApB5bpMW1iDlw17eVc8DMHaQfKW1hcwSuBCuDUPbSSzgY/Bmqyh6zh8MePCT9uB3cV8x/UEVuTn3NWDZLxgCn8pfNPDxtd1TXEePg4l0QxCXz49z3OW6p6BS4noPFSk4scRrJ2IlNX8nCjGF1a7oRsdqbYSGoZ7Ldkjoo/BZvv8je89gEMficmaW9CRegABEZ3LCGNN+AsGH+ohPulkij9Ec7WfrU8E4pkiMPXebToSVaYbziLFYwA0QMmxzZxMkNVP1+mOmqTvw6aVXm
+ yiZU780T
+ 3NCPZshHOt5eTh5WbbzBSiJp3VrVb7KbT3qw9TysAx0qCGV+B4UMXngWY2ckhPjq0IntFP+5+o0xATLBdE13d+1dtew4SW2kUQhAWZGK9xJRRlsFKC9Jy5lCFrBumaCSlhiUYPkAw2UHsYHknpZGBQ/xRTM3lUPsTt9kpBPfXoBvHt0OPWYzcC/CvUHKWbcajTg60SLHpqUcEcLL9lo+OMzLZpVJ0nPU0b0pslqHYoQ8GcZWiA4YPHWs2BOLb6eVKIldU7UXx4No1YXnGR1jSPg31zx65r5AFv+2g61TFHfXL37uH+R/4wX6ciRNKOOdPBPP1/edB3tS4Hpa/epP9qZrL0mDfyodmztlRsAjoizA8G+Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,127 +137,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Jul 15:01, Andrew Morton wrote:
+Hi Hao,
+
+Thanks for reviewing the v2 patch.
+
 >
-> On Tue, 28 Jul 2026 21:29:03 +0200 Guillaume Morin <guillaume@morinfr.org> wrote:
-> 
-> > Since df7a6d1f6405, __unmap_hugepage_range can adjust reservations. In
-> > the case of folio mapped in both a parent and a child, if the parent
-> > unmaps the range first, the reservation adjustment will result in
-> > an underflow of the reserved count. Once the child unmaps the range, the
-> > count is restored.
-> > Change __unmap_hugepage_range() to check the mapcount before adjusting
-> > the reservation.
-> 
-> Thanks.  AI review mentions a couple of things, one pre-existing:
-> 	https://sashiko.dev/#/patchset/amkC_1Ya6OiUoiLZ@bender.morinfr.org
- 
-Not sure about the pre-existing one, perhaps Bruno/Rik can comment?
+> Hi Abhishek
+>
+>
+> Thanks for the v2 patch.
+>
+>
+> On 2026/7/31 07:48, Abhishek Bapat wrote:
+> > Currently, userspace has limited visibility into the exact active
+> > runtime state of memory allocation profiling and its page extension
+> > compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+> >
+> > While reading the sysctl provides basic on/off status, it is currently
+> > impossible for userspace to natively determine whether page-tag
+> > compression was successfully enabled without scraping dmesg boot logs.
+> >
+> > Resolve this ambiguity by exposing the active compression state by
+> > adding a new read-only sysctl `vm.memprofiling_compressed` to output the
+> > state.
+>
+>
+> I think this should be vm.mem_profiling_compressed.
+>
+> Otherwise, you will need to adjust the procname for this new sysctl
+> accordingly.
+>
+> Also, kindly add docs at the linked path.
+>
+> https://elixir.bootlin.com/linux/v7.2-rc4/source/Documentation/mm/allocation-profiling.rst#L33
+>
+>
+Thanks for bringing this up, I didn't realize that I forgot the
+underscore in the commit msg. I'll fix this in v3 and also add some
+documentation about this.
 
-But if I understand the bot scenario correctly, the new issue is
-incorrect.
+> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > ---
+> >   mm/alloc_tag.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> >
+> > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> > index 52aece27b00e..877068241f06 100644
+> > --- a/mm/alloc_tag.c
+> > +++ b/mm/alloc_tag.c
+> > @@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
+> >               .mode           = 0644,
+> >               .proc_handler   = proc_mem_profiling_handler,
+> >       },
+> > +     {
+> > +             .procname       = "mem_profiling_compressed",
+> > +             .data           = &mem_profiling_compressed,
+> > +             .mode           = 0444,
+> > +             .proc_handler   = proc_do_static_key,
+> > +     },
+> >   };
+> >
+>
+>
+> I think adding this sysctl alone won't be enough.
+>
+> If we set boot arg sysctl.vm.mem_profiling=1,compressed but profiling
+> gets disabled due to insufficient page flags,
+>
+> this sysctl will still report 1 (compression enabled) even though
+> profiling was shut down.
+>
+> To verify this behavior, I have set up a test environment locally as
+> shown below:
+>
+>
+> [    0.265503] 4046 allocation tags cannot be references using 5
+> available page flag bits. Memory allocation profiling is disabled!
+>
+> [root@localhost ~]# cat /proc/sys/vm/mem_profiling_compressed
+> 1
+> [root@localhost ~]#
+>
+>
+> I'm unsure whether we should initialize this sysctl when profiling gets
+> disabled at boot.
+> If we do, we should set mem_profiling_compressed to false in
+> shutdown_mem_profiling.
 
-The bot is correct that during the 2nd fault region_add() will
-return 0 when the new reservation is committed. But that return value is
-changed into a 1 at the end of __vma_reservation_common() for private
-mappings (there is a lengthy comment about that). Therefore it does not
-fallback to the 'hugepage_subpool_put_pages(spool, 1)' path and
-therefore there shouldn't be any resv count change.
+I think the way it currently works is, compression can only be toggled
+at boot time. The new sysctl my patch introduces is read-only. Based
+on the current behaviour, if compression is enabled, and profiling is
+toggled off and then on again, it will be toggled on with compression
+enabled as long as we're in the same boot session. I don't want to
+include changing this behaviour in the scope of this patch. I want to
+limit the scope of this patch only to expose the current state to the
+userspace, hope that makes sense.
 
-I wrote a quick repro of the scenario as I understand it and the
-reserved count is as expected.
+>
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+>
+> >   static void __init sysctl_init(void)
+> >
+> > base-commit: 2ed26e8a624f41887d64e2e37a2f6ab36a118d1f
 
-#include <ctype.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+I'll also wait for Suren's comments before sending out a v3 patch.
 
-int hugetlb_nr_resv_pages(unsigned long *num)
-{
-       const char* field = "HugePages_Rsvd: ";
-       FILE *f = fopen("/proc/meminfo", "r");
-       char line[256];
-
-       if (!f) {
-               perror("Could not open /proc/meminfo");
-               return 0;
-       }
-       while (fgets(line, sizeof(line), f)) {
-               if (strncmp(line, field, strlen(field)))
-                       continue;
-               const char *p = line + strlen(field);
-               while (*p && isspace(*p))
-                       ++p;
-               if (!*p) {
-                       break;
-               }
-               *num = strtoul(p, NULL, 10);
-               fclose(f);
-               return 1;
-       }
-       fclose(f);
-       return 0;
-}
-
-int main(void) {
-    pid_t pid;
-    unsigned long num;
-    void *mem = mmap(NULL, 2048*1024, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-    if (mem == MAP_FAILED) {
-        perror("mmap");
-        return 1;
-    }
-    if (!hugetlb_nr_resv_pages(&num)) {
-        perror("hugetlb_nr_resv_pages");
-        return 1;
-    }
-    printf("Before the initial fault, number of reserved huge pages: %lu\n", num);
-    *(char *)mem = 1;
-    if (!hugetlb_nr_resv_pages(&num)) {
-        perror("hugetlb_nr_resv_pages");
-        return 1;
-    }
-    printf("After the initial fault, number of reserved huge pages: %lu\n", num);
-
-    pid = fork();
-    if (pid == -1) {
-        perror("fork");
-        return 1;
-    }
-    if (pid == 0) {
-        // Child process
-        pause();
-        return 0;
-    } 
-    // Parent process
-    if (madvise(mem, 2048*1024, MADV_DONTNEED)) {
-        perror("madvise");
-        return 1;
-    }
-    if (!hugetlb_nr_resv_pages(&num)) {
-        perror("hugetlb_nr_resv_pages");
-        return 1;
-    }
-    printf("After MADV_DONTNEED, number of reserved huge pages: %lu\n", num);
-    if (!hugetlb_nr_resv_pages(&num)) {
-        perror("hugetlb_nr_resv_pages");
-        return 1;
-    }
-    *(char *)mem = 1;
-    if (!hugetlb_nr_resv_pages(&num)) {
-        perror("hugetlb_nr_resv_pages");
-        return 1;
-    }
-    printf("After the new fault, number of reserved huge pages: %lu\n", num);
-    kill(pid, SIGINT);
-
-    return 0;
-}
-
-
--- 
-Guillaume Morin <guillaume@morinfr.org>
+Thanks,
+Abhishek.
 
