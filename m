@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CD3C5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03DE3C5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:07:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B8326B0095; Fri, 31 Jul 2026 20:03:07 -0400 (EDT)
+	id 0C4E46B0088; Fri, 31 Jul 2026 20:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28FBD6B0096; Fri, 31 Jul 2026 20:03:07 -0400 (EDT)
+	id 075596B008A; Fri, 31 Jul 2026 20:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CDD86B0098; Fri, 31 Jul 2026 20:03:07 -0400 (EDT)
+	id ECDBD6B0093; Fri, 31 Jul 2026 20:07:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F35EF6B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:03:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A8D51201C9
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:03:06 +0000 (UTC)
-X-FDA: 85050750372.15.00E833A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D8A7BC000D
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:03:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BCVvSJdV;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C633F6B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:07:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45E6BA0105
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:07:52 +0000 (UTC)
+X-FDA: 85050762384.14.737CFA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AED1A80004
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:07:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiLyWsLI;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785542870;
+	b=34YhQQJBX+C6pXCadIDFFNbMVahC1YWs4WRIlT5M3E/BIB2w2VliKAsNFnkf8kbDbAxmap
+	Dx9ivO9u6fAkgZPs/vzfuTL22+QSZxWJ58h5oS2JtMgMc1lh00RRY5gdT99mJxz86YlIfk
+	s71uirVaKdhup7krndrnp6wY0gnm2rk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiLyWsLI;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785542584;
+	s=arc-20220608; t=1785542870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kKe36ovYx0ZIRWZyBdCD5oqQviaXIOCy9RWreiRdHts=;
-	b=ACxd68XFGQndZ8y+USls/ZITm0atwq6iiDgz2Xhx7qTnEh3BOGeAQqWqadIymh14aL04CR
-	r6z+zZ7JC1tx2U6jTEcNKaI1wq6iVUGHu2Fv2B8vv5jAaG3fnA2/IvpCJ359omwdJK+bd3
-	kylrDBTr7XWoKw9qzATkN/Ot2PucGiI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785542584;
-	b=Q0tfVZlANZRTuf3nyeTXJkLeqroMP0ND43SYu4L+f3mIUBSbBgsB/Fdg0rXH7KkEkYrTbl
-	8OtbXgZaX3JyOWQgHAxfwtMRA+fOeBfd+a49mDJcuaaOHEjytu+6fTwMp4oBcaYkZX7M6o
-	gzNMeOps5mNeNCX2SqINkktGVo4siq0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BCVvSJdV;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=LVoiJJzODmnFFCLzc4mL+KmhAo+t9chR1W9Ku/1lVo0=;
+	b=W28l+HGrWY95xZtWmBggA+iiHs2ld+7rjnIEu3Vbrs3l2J0SxhlHs68pKGGArnaE5NjaRk
+	4hgGjAXY3z22GSRjI8GGBaNBLU0eeInAn+Mkoh9vg7/bTMo7gFG3FFrwxUp6+v45dR1pp+
+	w1XCggIP27EKYMpsSikHd5WHkEnJr+g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E32FC43A78;
-	Sat,  1 Aug 2026 00:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C21F00AC4;
-	Sat,  1 Aug 2026 00:03:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD097600B0;
+	Sat,  1 Aug 2026 00:07:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A281F00AC4;
+	Sat,  1 Aug 2026 00:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785542583;
-	bh=kKe36ovYx0ZIRWZyBdCD5oqQviaXIOCy9RWreiRdHts=;
+	s=k20260515; t=1785542869;
+	bh=LVoiJJzODmnFFCLzc4mL+KmhAo+t9chR1W9Ku/1lVo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BCVvSJdVnbUQEK77KUzBs/Bk2LG9oTBGvBRgRHfTrvgrnx2HJbuZU0F6/ecmMh3qN
-	 GArXeBh3QnH2IRie6698xUPhpXwnT5Wmw6vu0qrBvA0HP9P0acjTvCwqUkfY0VfQsd
-	 8qEsHGHpinbA2essXEKq51osF507kZmLvbHxMCh9Z31YST6OMTGtyo87ydZcpIcgX6
-	 pnxw7kAtkEK7eeT2uoXhC2f0U+/FyPvdxy4u9eKSm0VnPaBEJuEiWYpowGxfnoJNsf
-	 T+r9wLz138TXlZf85JV97U8TSEdsRkple3QL3Y/AKW78kIuDjLtimQ0p5QDhg5jDWV
-	 TUOA7g75W9oJQ==
+	b=MiLyWsLI2WxmX2cL4YRY2yU5gqfTRqe7EdOp8fdM5KALhQ0kidbL2Q0DpoYFiJ0km
+	 oduMOIVIB2UHh7NtwyUihwXDKSlW43pJ6wnNkhj1mdg4ZHHkla41NKydtqkEFYcM6g
+	 2gDti57B+33aV2rqGje6oe0J5TjRe1OITil2m9JdpXrnKnamvTug14RL0GCWsFxesN
+	 oEGRL7dkHs7Bhmv3SBH5+q4eyikCuUESI3aLNHpt1aOeFUOIa3QkUmPvQkcsZlW+GH
+	 quKQTMWWrdXealxMiN6Wa1OesdvpeBjXZM6lh7JYZWmmiyJ8pSy3wmmYXQD3FQRztb
+	 MoBPYRKf5a3XA==
 From: SJ Park <sj@kernel.org>
-To: pratmal@google.com
+To: Wilson Felipe Pereira <wfelipe@google.com>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	david@kernel.org,
-	corbet@lwn.net,
-	ljs@kernel.org,
-	skhan@linuxfoundation.org,
-	anshuman.khandual@arm.com,
-	gthelen@google.com,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	rppt@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Brendan Jackman <brendan.jackman@linux.dev>
-Subject: Re: [PATCH v4] mm/page_reporting: Add page_reporting_delay_ms module parameter
-Date: Fri, 31 Jul 2026 17:02:53 -0700
-Message-ID: <20260801000254.77032-1-sj@kernel.org>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm: zswap: drop list_lru param from zswap_lru_add() and _del()
+Date: Fri, 31 Jul 2026 17:07:41 -0700
+Message-ID: <20260801000742.84624-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260731193705.2902728-1-pratmal@google.com>
+In-Reply-To: <20260731053721.1412304-1-wfelipe@google.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D8A7BC000D
-X-Stat-Signature: 8b1knj6ggpyg5ca7yqukhats41oo199s
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AED1A80004
+X-Stat-Signature: ejt7qjrr5qat7iwrkps57sp1t5sdjnax
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785542584-718253
-X-HE-Meta: U2FsdGVkX18Sehld5Q/6SoSr8Zt93dvz56tewDfEB18on2rydNWq+KSOW8lG8eCrUy7ifXBOVuO6QSiMBeo1EuAM9fLAMYtY2I0mF80RHF3BAz2zJi57MLIuR2Tk4797Uya9v13hW9Y3GzHunGsJNH8db7VRmoQgEUsFDA03w7xyqpGEMdlfvNVfQyrrcxif2zuRTJsrBRqGeATte35l1xroQWGwO7AiT9/WFvOcGlyBJTIxAWBytwEmd70+2vZiP05vrwwJiRC965TD22CuB6vJ9k09MzW60HDcNNZFCpRfwVk4VDvNSBf/4SkB6jGceM6bYMQ2PiceZf3dC876CBpIU9Cb91kJFr5wnR84/gava7GON2NHXk1fWRi1QT/5c/HsaIfa5TAkUCTIdO2lknyngV1rsvV34N75YV1DGgmaYJ67YC3HhcrqidPeTzFtaGGSsb4ioMXgIqIo/1FSQpa6x0WLxeULojf12f3qEFPTdBXn4MAPtEpNCm4MfyOsQQAYi+PKUGrnyEaMQiyxn8z9B2yZg181OSqWwvVY4HTcIMcwtIyymMPdsGOmW2u42xzC5HcPtcEa5HVEuMSngGu+IpCmJzK9oGASc4bb/DVICqcQARAZi7jkt4FYRgnM7AYuheR9xjh1OlV31eab4tYnh1nN7PdP8nsZGdAOLCDyKKk/cqhQhrhMI8vRzghQDaEt7Sj68rWqAi4+wXHtEK1Y4FMd22U7fqhiYvSPLVgpJwWOhVtiS5YYf8n94f1v7/O7XqCELQgvwTvl3/0sC/Z0uqCzqlnZYNawuLKqZr56aYBOjtwwdHrF/eCAo/jTla3i2AeCuj3gt90/tEt0rfaRYN0rB1SwfN1+mJo/IBfm/P629ECpoEKXLEpz158d5skKoo/Wjq2jnpyu/N3JJnv8/sE/dT2ri78qcbgHmoy00AzyfjdWmlsvLdQWoXpl3ckQDh9vRpcJ5CXTvd8
- 2TTkhf1+
- 4ma02nAVlQjCRu85udrr9+q7sfSP7ircolgPfgi8W9z3vKCKfbykudtgQfP4O6zc5w0dOprhku3TzH5Uep0NNxy78gCQrcOr+I2hFPFKQGwbr+OLlTENa/FLgTo1VzcyiLIse5JrGEz9J63cjWIpcNHf94rWGM8V1cOr4GpPhrHSqiUGwZBH40LZNM/OMzHjAbI5ctbMI5vnMjWfDcdGO9QdvqSQPduHIzJcPI060oStA8z0hKxMk10c2pjwtGqI2EPJGu8pZNBsu2BRynh2HSuK8cR185tPaBVsbNqV0drxtM4mccJL3r+7h5Q==
+X-HE-Tag: 1785542870-275009
+X-HE-Meta: U2FsdGVkX1+BpOIy4QIEoerbDm/L06IJyA84xElawuhc5l7gHYXuqGwqCkPr9njlAbMsah7eHnNeh/4kUVsxA8P2v2DQ2Yge95K4gXtBlhq+jNNufBOdD8A9H3l0hYvJAJ3vq4V3IjNotvuCMUzH94MY6FMSpRLd0HeofIujghrm5qoTdIWZ8bJen8v1GH2MciAKyqdjPGtEi1d2M/zOJkdcT8D5aI++uOQNbU7bk2EnghRN52Gyo98mdo/cpnb5blSXFQak0MeUgy0eXN8oFGtgVMbII5l2swBVrikxpSohpQ1fNAodPMDlhrxR7oL7DhcCaP4+9uQuzp2bQkmTbdWMkvnopiEj+OhSOdHfVZm1zPuG2tB1e780da4iMGNZWmpwgJ05+T27CBGxkrFCkTsi1ICM8Tq3cNd8ES6LTjAfFUuVmIV0JEl5DtQf5UYYMZQuqq8NBdjf28eqtCKLdcIFLChzztqsF9V7dyu8K0rlKviJlNo0ZRQJTZUgUb5QIrkafZqaUNDAyMJk/y8DCgzt31XOSpS8UH5ofplZ5ecGVeSx+FgTx8+17fe0qvNlBGmtNyiv7mHxv5VV8q9OF40fc3qieJUQALOeuejN3bpAvWmk0f9MnuXv7zrNlhw9AmV9t21sI5NlIV6U92qSkc9Rcrzvw9l1L45tYnSWgmzcDTLEg/1YHW88r249Rwvmus+wLPinqPKktIFqGR8jol6vpQd0/MkQRXx95RadC9PZnQ7FMgooSppnicSyI5Q61waju60ZkXGsbamfwDNiauKmmnrJrlE2MewRmZewYB0sIMc2D+gLxDwy02yW5VuT0mNF/xTGwGZAC6p4sb0lrieVwylUt+NACvkeepCd2A26IP8HlEc+O3ck5opyuCFN3IgE5sNDOnJJqwJdJqXLHvr7/E6sZQ5mKSeccC9T1PJNOTcWDByEsKyjj7E7s1dp+ANstOjFgKtjJwcPhhh
+ ZlMIjafd
+ 29Io0K6Df1SPhC30XW1h6EWuw3HfDNisU61RdlS8Rjzo6CvefXg0/k949I4m8Bo4an1VhrQsjFwCsQktMa2UY6tv/4PCYNKaougqAFh7p4W0qEMj1fWS4WAH5kkGd6WaOJ8uy2rsOmCF2mAfH1tv91fn9LYLpTXlePpaLsEq1cL1/OSoYwFUj89ttKE4QKReAmjTOJdCbW1l7CJv7G0TqNKs4dOBUWOphgiB40LvH3MyZt61ZBAC3FvlFsvzuifesq6kyTm1Uq/j3Bh3UXmPp9oIjsI3V8TwzIx0pFNE8R1K2rcM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,35 +95,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Brendan changed his mail address [1].  I added him to the recipient list.
+On Fri, 31 Jul 2026 05:37:06 +0000 Wilson Felipe Pereira <wfelipe@google.com> wrote:
 
-On Fri, 31 Jul 2026 19:37:05 +0000 pratmal@google.com wrote:
-
-> From: Pratyush Mallick <pratmal@google.com>
-> 
-> Free page reporting currently hardcodes a 2-second interval between
-> reports. This rigid delay cannot accommodate diverse guest workloads.
-> 
-> This patch introduces a module parameter, page_reporting_delay_ms
-> (default: 2000), allowing users to tune the reporting rate:
->  - Lower values enable aggressive memory reclamation by returning unused
->    pages to the host immediately.
->  - Higher values help batch pages during spiky allocation/free churn,
->    reducing hypercalls and nested page fault overheads.
-> 
-> Setting the delay to 0 is safe and execution is strictly gated by:
->  - reporting is only triggered by high-order page frees.
->  - expensive hypercalls are bounded by a slot capacity watermark check
->    before proceeding.
+> Since zswap_lru_add() and zswap_lru_del() are only called with the global
+> zswap_list_lru, remove the redundant list_lru argument and use
+> zswap_list_lru directly.
 
 Looks good and making sense to me.
 
 > 
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
+> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
-
-[1] https://lore.kernel.org/20260729-email-change-v1-1-666ae7c2b7fc@google.com
 
 
 Thanks,
