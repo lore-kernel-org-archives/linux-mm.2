@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70949C54FCD
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 06:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9382C5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 06:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB65B6B0092; Sat,  1 Aug 2026 02:27:01 -0400 (EDT)
+	id 49D616B0093; Sat,  1 Aug 2026 02:27:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E60206B0093; Sat,  1 Aug 2026 02:27:01 -0400 (EDT)
+	id 407706B0095; Sat,  1 Aug 2026 02:27:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9CF6B0095; Sat,  1 Aug 2026 02:27:01 -0400 (EDT)
+	id 2A1086B0096; Sat,  1 Aug 2026 02:27:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9106D6B0092
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 02:27:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08AB4A0273
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:27:01 +0000 (UTC)
-X-FDA: 85051717842.30.3885711
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 611C9C0003
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:26:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UyFuxlIE;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAC926B0093
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 02:27:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D615160269
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:27:02 +0000 (UTC)
+X-FDA: 85051717884.03.BAB29DA
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5CD9C80002
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:26:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yjzAedOe;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785565618;
+	s=arc-20220608; t=1785565619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PB3rmpgw9H0XxiAUvpBD648Jdd5NiwEYnJ6cr6ny1fE=;
-	b=WVsW9nii/yyRJD2DwCPAtEl86VU/DxHJvYb6ZMzOkYouX2YKCG8tb41HkdT4doKzmrn5Uu
-	C9JWhy2h44K8NBubx2Pwi9SuHBjIRUNx0BjGjI9bl2hZWIUVGpYpxbAkebrg9Q38lIfbl3
-	y9NqSOR+VaWM5C08Y4OoX8UX9/cAmd8=
+	bh=FeTN6/wbbbJzcWBYOmzqiIEjf07PxMHihk3dLZnDlrk=;
+	b=vQy+8YHuWxeFlsh3N2xcuQlOc01ULuWs6TgWHxmQKAVZbilVPjFvv56qmN0c/N2W3VV9AU
+	fCQXaxm/3uuOtR+RZzQG21NA/+qr+KfMTJUN9NUgm4FlraVcg7lDyiKdJ5uNgDm/xzpjjJ
+	PpTJsSAKnHxZKUvWPCoUiIDOL1UEPQA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785565618;
-	b=19v+QIDZjyfkCYBfzebHGb/k9FASRyPX1lRWVYmU4CwIB9M4GrNB4j6Tuyrscl5d8gmvG6
-	CnRryAvD704ZrZBNx4AAvqsNMNg8lyNfMw9jY+Qo3nj7vuqxly1+6sZN8jitcajb+hdYwe
-	3ICPU6jIQL2Sl6sBJFfXM5bAoSu1iT8=
+	t=1785565619;
+	b=8aaduCHznSWHnJ+3SNAKoUFSc3d86ZKbZFlgxhkl+IoMjMnRjXCNZ29flzJp2yzGwr1VIK
+	19XzmzehyZhMmEbYFpf3ROUdatHSZKfi2YFZ3SnIbV2va6aq5wEkxfwyI25BTbzJhRIQwv
+	9MCxCXaO65NxJwF70pIDtZr+JPs8sVw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UyFuxlIE;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yjzAedOe;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1785565613; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=PB3rmpgw9H0XxiAUvpBD648Jdd5NiwEYnJ6cr6ny1fE=;
-	b=UyFuxlIEqWU45rDpdNsiPI6Uc8TuCHoRvKlXp+wEBhLSrDa/1tr0JGT9PD9BRpqalPo/L5nXdBRC2L9PLIbthoWys1LSh7vZtgPkE8pz39SSkuwyWtv1LtVfr8PzGQukIY7mOtgvIq5npmWVU0UbsxJ8Oa21kHbIyGa7gKEj+C0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X89c9e5_1785565610;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X89c9e5_1785565610 cluster:ay36)
+	bh=FeTN6/wbbbJzcWBYOmzqiIEjf07PxMHihk3dLZnDlrk=;
+	b=yjzAedOe0h7r3zejJXKWU4raT1u+q+yYK27lYwekA0Zn+phVm3J14UXBTtm4XSZ+Cs8jiG6gE8ejNFXsDqrF8+++oQQ1RXx6wLqCaAIAv7aHcyPXGnNEZF2U0jqihwENzYAJUMQt7PMtpDyffmPC4L3IWhRqMjd2ZWZ0uY3cF24=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X89c9eS_1785565611;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X89c9eS_1785565611 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 01 Aug 2026 14:26:50 +0800
+          Sat, 01 Aug 2026 14:26:52 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -73,22 +73,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/4] selftests: mm: move gather_after_split_folio_orders() into vm_util.c file
-Date: Sat,  1 Aug 2026 14:26:36 +0800
-Message-ID: <cb0697506337320d438bce15cdd3c4caccb914a1.1785564857.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v2 4/4] selftests: mm: add mTHP collapse test cases
+Date: Sat,  1 Aug 2026 14:26:38 +0800
+Message-ID: <dd8013c1ddada90913876e3bd912c07e613fba8d.1785564857.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
 References: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 611C9C0003
-X-Stat-Signature: kx7h4nceeeh48gqr7y44ow8s6qxzeow4
+X-Rspamd-Queue-Id: 5CD9C80002
+X-Stat-Signature: 91o1aazprcizbizy6qrrbxarn1x65fjc
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1785565616-595219
-X-HE-Meta: U2FsdGVkX1+2StMfjLUuDx23hT9ngh2ZyqwSA5CnruDoinlIofPqLtn0nQXaljUKTi5rrSHdDhaRpQ/S3RxLzgAUD9nnHhbMSdGwo/K5kXHvfcZLmb8Di5pm8fk2JM+gs7Lt7juJ3DRPM/oZhI6xpEoCE9+ejubwZJV8Su4ClMBsvY6IahKM9nndfG/4f8t5q3EbPlHGsXC8fc5SHAJbO8kPQdC+PNSgGyBjpeTHo4QnW514aUu4paoUHtM7/WubG7ue1CESytSFxb+3dS4/Ur5QRVsbSMN/nXD7ET8hSC3NrHoyoblRMJQ3S62orvsMPsUzwAUpAjgw1QHuQKLwfPBTKpS+p1lFP9CaI5yOT5ywwGpzx47HQJVlYjnU4a6BVFO+aeIWZ0/MIAZDpanXprxmKpgc6F/oXbuMzLDD+EavyOZnifnB6A4g6MJub/56Th4QTUQsrrf5Nv9UlG578DG6HOE/q8wwVcul4vLaKWYEq3m8GPoP3U5el8vUtntIR3IcYIo+45XtqYDp9FnVTQ8F0r+zenKebGm6lBXO0DG2LfrLq6IjFw+uu7MbZRE7E5poSN9FdiUtoFgYzumbJLv3ZK0hNC2Bo0PgzkXOH8+MJ4TDAiP8HaA1s4lmVmKLFojFAjhZZZ4BrPUMLisPSs63Bp4E+TEyxxPGJPkEVon4ud1o00nXMvG/6dnpluJH2SebhaCNiVDwDSIWWNEjI6EdqqHa6LR+dlhTwcA3SzKT2cZRXdq+XuOPCx9sFKC0h9eSJzINdXYP3yb5xMDwfk9r2kv2L+TPptuOpTgGQNKKXhY8retdh9yhPV6MZYPC/V6Jbs5nc601IKcq7mLV3pbYSf9wEoiApd2YKav86iT+fuo7gEUYERD+tYHTBM9qTe3/vZPkI+ay8LyZo1dNlgfOT1cN6kRZVpPXUiHyJsB3tX6zW7h+ehqvPxws02R+pryLn1D51qBZPoEWrcq
- dBFOyrvF
- H/iZYr8QWJfJpLg6/2nFkmI//fHclFqJg+pMrIU+CjkSMc7DOuKZAbYJCPpzbrK4asWux7AtEDgrlzRquvpT/T44OWHVlb55n0ukYI6fuc1zXtVKugmc8sMP9wDIPkNuBIN/C8HnulcVaxQ4Tl3qUoaOGjbYgKbWKfuhzZs+hy2fnCut4JNGI8R6moSN+z6s15XI5ttNpxmQD/x3wJZnO6wfI2T8UdwUpuUR/YR3WCgSmu5dba9/zC8a8012AAG4ZMWlX1mnRjIxenMozCNpjhDkEioJ5UyG5RBiaQTE8A4UuVno=
+X-HE-Tag: 1785565618-741258
+X-HE-Meta: U2FsdGVkX1+/BDEWE2l4tNCk2BylSuJovUGlBXpyksW6S+TKoxRrDNoyHTUkYSAFNziuQJVLpqR3V/zWs27jELyS6WOCkDoSwTTs3A8eQCQ7yjOmC3mI78++0cJO3CzKyXQdmD7gk/VMpaZ2M/cEygDyxcgWiRyuaW5eKN6Kg/kWOcUPc7RKjA9k/lmYx4jTJfPZ5ylWvRwSkmSqXCLzyoCRk2zdWAtdbYo/krhz4FvcZwAyYPFhH1ZMyQEI2hlwcM9IW2ZXNMeRSd9s6ai4vTeszJkqMATOcKawHjL0/pgPlUq5m8ovEMWGUAvPStHtcWnOT9C8RAB+WOdY6GZ6zq/6nWXjvV8BvxSZbiGlwncqLYluCbTlOA2FeIHfKBq1bvago7231FZA1LC67jvpAO5a6hHUObfIrTOHOKTNhHxhYOe4hcyi/oLc0Mv4zLfUkrtxQmx14sSOBANzmLv2CeGC7jK2a1jsZ0XcfwMGnjCCQFmgIuw3Re2RRQsK+Ps99ZXNwlGyJiXNS3lCXGMTpV6We79iRFIKOvflQIUvemjRGj2eZR+CvO8dlp+i54saDTSvzHptM3bTQszJp8/X8DPYn9l9a/pV51FOY6RR8jA9Lmet88j2uRnhr3uPKZtQ4lZL3y/yes2el8uof2r6TxOmjla6JVOZGJCtTsjlUR9u2rJO5eA8eINicMjsCTGHzR9Xdkc/Zh5RHtnoxHMG1ue6P78giofSfRGumjC4FbjUFp14/ubtw9Rz4q0O3jv3IR5Xf7x7la1OCN4Af71TO76slmNVlEZL8ZWt/sStEwnNXwuqYCi8QlzPrihkneUAnZSc+Ze8J8M6u14Ip4fGnuImzsR0S6aEW1zn8rj5YEWwenUbSpeEP7DDJ82kFNI647M0qlljs4Np/9PponxVMam75ZyzxW9V7jMaC9POGJER/LBLFWMrY5h5QljA1/utVCRcG4oMjqyXkvyQQ1W
+ ST08dXGH
+ dPFenJNfqHM85ItNNdQK7eZgThv7B+SPcblXIhCCeXLnSZ5g3NaPjZX02Q35/VSV4x72BnDTmq+TvCkb+aDiqVLOZjQ82+fxH2Fy03rsZq+uYViKn5GEUPwwJZt/aCXNd35w+mHZvz8zNckbmu6AQ3ftridM5lLgM+O807QjJXszyAfhW2Xyk0wcVTAEEQCBtYyR3aU1tOwNh+rPYEfR63E5whCmbXxiEJU1z6FWuqXltet/GygJdZrgjME5mWVYlcGee
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,306 +96,316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move gather_after_split_folio_orders() to vm_util.c as a helper function
-in preparation for implementing checks for mTHP collapse. While we are
-at it, rename this function to indicate that it is not only used for
-large folio splits.
-
-No functional changes.
+Added a new command 'mthp_khugepaged' for mTHP collapse, along with the '-c'
+parameter to specify the collapse order. Additionally, added mTHP collapse
+test cases for 'collapse_full', 'collapse_empty', and 'collapse_single_mthp'
+for anonymous folios. All khugepaged test cases passed.
 
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- .../selftests/mm/split_huge_page_test.c       | 125 +-----------------
- tools/testing/selftests/mm/vm_util.c          | 119 +++++++++++++++++
- tools/testing/selftests/mm/vm_util.h          |   2 +
- 3 files changed, 122 insertions(+), 124 deletions(-)
+ tools/testing/selftests/mm/khugepaged.c   | 130 ++++++++++++++++++----
+ tools/testing/selftests/mm/run_vmtests.sh |   2 +
+ 2 files changed, 113 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 4cc70873a674..86a603692826 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -104,129 +104,6 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 	return false;
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index f69be6be0ecd..64d6da6aa90d 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -26,9 +26,11 @@
+ 
+ #define BASE_ADDR ((void *)(1UL << 30))
+ static unsigned long hpage_pmd_size;
++static int hpage_pmd_order;
+ static unsigned long page_size;
+ static int hpage_pmd_nr;
+ static int anon_order;
++static int collapse_order;
+ 
+ #define PID_SMAPS "/proc/self/smaps"
+ #define TEST_FILE "collapse_test_file"
+@@ -69,6 +71,7 @@ struct collapse_context {
+ };
+ 
+ static struct collapse_context *khugepaged_context;
++static struct collapse_context *mthp_khugepaged_context;
+ static struct collapse_context *madvise_context;
+ 
+ struct file_info {
+@@ -554,25 +557,25 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
  }
  
--static int vaddr_pageflags_get(char *vaddr, int pagemap_fd, int kpageflags_fd,
--		uint64_t *flags)
--{
--	unsigned long pfn;
--
--	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
--
--	/* non-present PFN */
--	if (pfn == -1UL)
--		return 1;
--
--	if (pageflags_get(pfn, kpageflags_fd, flags))
--		return -1;
--
--	return 0;
--}
--
--/*
-- * gather_after_split_folio_orders - scan through [vaddr_start, len) and record
-- * folio orders
-- *
-- * @vaddr_start: start vaddr
-- * @len: range length
-- * @pagemap_fd: file descriptor to /proc/<pid>/pagemap
-- * @kpageflags_fd: file descriptor to /proc/kpageflags
-- * @orders: output folio order array
-- * @nr_orders: folio order array size
-- *
-- * gather_after_split_folio_orders() scan through [vaddr_start, len) and check
-- * all folios within the range and record their orders. All order-0 pages will
-- * be recorded. Non-present vaddr is skipped.
-- *
-- * NOTE: the function is used to check folio orders after a split is performed,
-- * so it assumes [vaddr_start, len) fully maps to after-split folios within that
-- * range.
-- *
-- * Return: 0 - no error, -1 - unhandled cases
-- */
--static int gather_after_split_folio_orders(char *vaddr_start, size_t len,
--		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
--{
--	uint64_t page_flags = 0;
--	int cur_order = -1;
--	char *vaddr;
--
--	if (pagemap_fd == -1 || kpageflags_fd == -1)
--		return -1;
--	if (!orders)
--		return -1;
--	if (nr_orders <= 0)
--		return -1;
--
--	for (vaddr = vaddr_start; vaddr < vaddr_start + len;) {
--		char *next_folio_vaddr;
--		int status;
--
--		status = vaddr_pageflags_get(vaddr, pagemap_fd, kpageflags_fd,
--					&page_flags);
--		if (status < 0)
--			return -1;
--
--		/* skip non present vaddr */
--		if (status == 1) {
--			vaddr += psize();
--			continue;
--		}
--
--		/* all order-0 pages with possible false postive (non folio) */
--		if (!(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
--			orders[0]++;
--			vaddr += psize();
--			continue;
--		}
--
--		/* skip non thp compound pages */
--		if (!(page_flags & KPF_THP)) {
--			vaddr += psize();
--			continue;
--		}
--
--		/* vpn points to part of a THP at this point */
--		if (page_flags & KPF_COMPOUND_HEAD)
--			cur_order = 1;
--		else {
--			vaddr += psize();
--			continue;
--		}
--
--		next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
--
--		if (next_folio_vaddr >= vaddr_start + len)
--			break;
--
--		while ((status = vaddr_pageflags_get(next_folio_vaddr,
--						     pagemap_fd, kpageflags_fd,
--						     &page_flags)) >= 0) {
--			/*
--			 * non present vaddr, next compound head page, or
--			 * order-0 page
--			 */
--			if (status == 1 ||
--			    (page_flags & KPF_COMPOUND_HEAD) ||
--			    !(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
--				if (cur_order < nr_orders) {
--					orders[cur_order]++;
--					cur_order = -1;
--					vaddr = next_folio_vaddr;
--				}
--				break;
--			}
--
--			cur_order++;
--			next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
--		}
--
--		if (status < 0)
--			return status;
--	}
--	if (cur_order > 0 && cur_order < nr_orders)
--		orders[cur_order]++;
--	return 0;
--}
--
- static int check_after_split_folio_orders(char *vaddr_start, size_t len,
- 		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
+ #define TICK 500000
+-static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+-			  struct mem_ops *ops)
++static bool wait_for_scan(const char *msg, char *p, unsigned long size,
++		int nr_hpages, int collap_order, struct mem_ops *ops)
  {
-@@ -240,7 +117,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
- 		ksft_exit_fail_msg("Cannot allocate memory for vaddr_orders");
+-	unsigned long size = nr_hpages * hpage_pmd_size;
++	unsigned long hpage_size = page_size << collap_order;
+ 	int full_scans;
+ 	int timeout = 6; /* 3 seconds */
  
- 	memset(vaddr_orders, 0, sizeof(int) * nr_orders);
--	status = gather_after_split_folio_orders(vaddr_start, len, pagemap_fd,
-+	status = gather_folio_orders(vaddr_start, len, pagemap_fd,
- 				     kpageflags_fd, vaddr_orders, nr_orders);
- 	if (status)
- 		ksft_exit_fail_msg("gather folio info failed\n");
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index d92c819f3717..09e5d5cabe21 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -194,6 +194,125 @@ unsigned long rss_anon(void)
- 	return rss_anon;
+ 	/* Sanity check */
+-	if (!ops->check_huge(p, size, 0, hpage_pmd_size))
++	if (!ops->check_huge(p, size, 0, hpage_size))
+ 		ksft_exit_fail_msg("Unexpected huge page\n");
+ 
+-	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
++	madvise(p, size, MADV_HUGEPAGE);
+ 
+ 	/* Wait until the second full_scan completed */
+ 	full_scans = thp_read_num("khugepaged/full_scans") + 2;
+ 
+ 	ksft_print_msg("%s...", msg);
+ 	while (timeout--) {
+-		if (ops->check_huge(p, size, nr_hpages, hpage_pmd_size))
++		if (ops->check_huge(p, size, nr_hpages, hpage_size))
+ 			break;
+ 		if (thp_read_num("khugepaged/full_scans") >= full_scans)
+ 			break;
+@@ -595,7 +598,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+ 	if (!is_tmpfs(ops) && ops == &__read_write_file_write_ops)
+ 		expect = false;
+ 
+-	if (wait_for_scan(msg, p, nr_hpages, ops)) {
++	if (wait_for_scan(msg, p, size, nr_hpages, hpage_pmd_order, ops)) {
+ 		if (expect)
+ 			fail("Timeout");
+ 		else
+@@ -617,12 +620,62 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+ 		fail("Fail");
  }
  
-+static int vaddr_pageflags_get(char *vaddr, int pagemap_fd, int kpageflags_fd,
-+		uint64_t *flags)
++static void mthp_khugepaged_collapse(const char *msg, char *p, int nr_hpages,
++				struct mem_ops *ops, bool expect)
 +{
-+	unsigned long pfn;
++	unsigned long hpage_size = page_size << collapse_order;
++	struct thp_settings settings = *thp_current_settings();
++	/* mTHP collpase only allocates PMD sized memory */
++	unsigned long size = hpage_pmd_size;
 +
-+	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
-+
-+	/* non-present PFN */
-+	if (pfn == -1UL)
-+		return 1;
-+
-+	if (pageflags_get(pfn, kpageflags_fd, flags))
-+		return -1;
-+
-+	return 0;
-+}
-+
-+/*
-+ * gather_folio_orders - scan through [vaddr_start, len) and record
-+ * folio orders
-+ *
-+ * @vaddr_start: start vaddr
-+ * @len: range length
-+ * @pagemap_fd: file descriptor to /proc/<pid>/pagemap
-+ * @kpageflags_fd: file descriptor to /proc/kpageflags
-+ * @orders: output folio order array
-+ * @nr_orders: folio order array size
-+ *
-+ * gather_folio_orders() scan through [vaddr_start, len) and check
-+ * all folios within the range and record their orders. All order-0 pages will
-+ * be recorded. Non-present vaddr is skipped.
-+ *
-+ * Return: 0 - no error, -1 - unhandled cases
-+ */
-+int gather_folio_orders(char *vaddr_start, size_t len,
-+		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
-+{
-+	uint64_t page_flags = 0;
-+	int cur_order = -1;
-+	char *vaddr;
-+
-+	if (pagemap_fd == -1 || kpageflags_fd == -1)
-+		return -1;
-+	if (!orders)
-+		return -1;
-+	if (nr_orders <= 0)
-+		return -1;
-+
-+	for (vaddr = vaddr_start; vaddr < vaddr_start + len;) {
-+		char *next_folio_vaddr;
-+		int status;
-+
-+		status = vaddr_pageflags_get(vaddr, pagemap_fd, kpageflags_fd,
-+				&page_flags);
-+		if (status < 0)
-+			return -1;
-+
-+		/* skip non present vaddr */
-+		if (status == 1) {
-+			vaddr += psize();
-+			continue;
-+		}
-+
-+		/* all order-0 pages with possible false postive (non folio) */
-+		if (!(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
-+			orders[0]++;
-+			vaddr += psize();
-+			continue;
-+		}
-+
-+		/* skip non thp compound pages */
-+		if (!(page_flags & KPF_THP)) {
-+			vaddr += psize();
-+			continue;
-+		}
-+
-+		/* vpn points to part of a THP at this point */
-+		if (page_flags & KPF_COMPOUND_HEAD)
-+			cur_order = 1;
-+		else {
-+			vaddr += psize();
-+			continue;
-+		}
-+
-+		next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
-+
-+		if (next_folio_vaddr >= vaddr_start + len)
-+			break;
-+
-+		while ((status = vaddr_pageflags_get(next_folio_vaddr,
-+						     pagemap_fd, kpageflags_fd,
-+						     &page_flags)) >= 0) {
-+			/*
-+			 * non present vaddr, next compound head page, or
-+			 * order-0 page
-+			 */
-+			if (status == 1 ||
-+			    (page_flags & KPF_COMPOUND_HEAD) ||
-+			    !(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
-+				if (cur_order < nr_orders) {
-+					orders[cur_order]++;
-+					cur_order = -1;
-+					vaddr = next_folio_vaddr;
-+				}
-+				break;
-+			}
-+
-+			cur_order++;
-+			next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
-+		}
-+
-+		if (status < 0)
-+			return status;
++	/* Set mTHP setting for mTHP collapse */
++	if (ops == &__anon_ops) {
++		settings.thp_enabled = THP_NEVER;
++		settings.hugepages[collapse_order].enabled = THP_MADVISE;
 +	}
-+	if (cur_order > 0 && cur_order < nr_orders)
-+		orders[cur_order]++;
-+	return 0;
++
++	thp_push_settings(&settings);
++
++	if (wait_for_scan(msg, p, size, nr_hpages, collapse_order, ops)) {
++		if (expect)
++			fail("Timeout");
++		else
++			success("OK");
++
++		/* Restore THP settings for mTHP collapse. */
++		thp_pop_settings();
++		return;
++	}
++
++	/*
++	 * For file and shmem memory, khugepaged only retracts pte entries after
++	 * putting the new hugepage in the page cache. The hugepage must be
++	 * subsequently refaulted to install the pmd mapping for the mm.
++	 */
++	if (ops != &__anon_ops)
++		ops->fault(p, 0, nr_hpages * hpage_size);
++
++	if (ops->check_huge(p, size, expect ? nr_hpages : 0, hpage_size))
++		success("OK");
++	else
++		fail("Fail");
++
++	/* Restore THP settings for mTHP collapse. */
++	thp_pop_settings();
 +}
 +
- char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
- {
- 	int ret;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index c7ae28dfda63..20af3e574cd8 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -95,6 +95,8 @@ bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpa
- bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size);
- int64_t allocate_transhuge(void *ptr, int pagemap_fd);
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
-+int gather_folio_orders(char *vaddr_start, size_t len,
-+		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
+ static struct collapse_context __khugepaged_context = {
+ 	.collapse = &khugepaged_collapse,
+ 	.enforce_pte_scan_limits = true,
+ 	.name = "khugepaged",
+ };
  
- int uffd_register(int uffd, void *addr, uint64_t len,
- 		  bool miss, bool wp, bool minor);
++static struct collapse_context __mthp_khugepaged_context = {
++	.collapse = &mthp_khugepaged_collapse,
++	.enforce_pte_scan_limits = true,
++	.name = "mthp_khugepaged",
++};
++
+ static struct collapse_context __madvise_context = {
+ 	.collapse = &madvise_collapse,
+ 	.enforce_pte_scan_limits = false,
+@@ -661,10 +714,17 @@ static void alloc_at_fault(void)
+ static void collapse_full(struct collapse_context *c, struct mem_ops *ops)
+ {
+ 	void *p;
+-	int nr_hpages = 4;
++	int nr_pmds = 4, nr_hpages = 4;
+ 	unsigned long size = nr_hpages * hpage_pmd_size;
+ 
+-	p = ops->setup_area(nr_hpages);
++	/* Only try 1 PMD sized range for mTHP collapse. */
++	if (c == &__mthp_khugepaged_context) {
++		nr_pmds = 1;
++		nr_hpages = 1 << (hpage_pmd_order - collapse_order);
++		size = hpage_pmd_size;
++	}
++
++	p = ops->setup_area(nr_pmds);
+ 	ops->fault(p, 0, size);
+ 	c->collapse("Collapse multiple fully populated PTE table", p, nr_hpages,
+ 		    ops, true);
+@@ -676,10 +736,31 @@ static void collapse_full(struct collapse_context *c, struct mem_ops *ops)
+ 
+ static void collapse_empty(struct collapse_context *c, struct mem_ops *ops)
+ {
++	int nr_hpages = 1;
++	void *p;
++
++	if (c == &__mthp_khugepaged_context)
++		nr_hpages = 1 << (hpage_pmd_order - collapse_order);
++
++	p = ops->setup_area(1);
++	c->collapse("Do not collapse empty PTE table", p, nr_hpages, ops, false);
++	ops->cleanup_area(p, hpage_pmd_size);
++	ksft_test_result_report(exit_status, "%s\n", __func__);
++}
++
++static void collapse_single_mthp(struct collapse_context *c, struct mem_ops *ops)
++{
++	unsigned long hpage_size = page_size << collapse_order;
+ 	void *p;
+ 
+ 	p = ops->setup_area(1);
+-	c->collapse("Do not collapse empty PTE table", p, 1, ops, false);
++	/*
++	 * Only fault collapse_order sized ranges, and only check 1
++	 * collapse_order sized huge page.
++	 */
++	ops->fault(p, 0, hpage_size);
++	c->collapse("Collapse PTE table with half PTE entries present",
++		p, 1, ops, true);
+ 	ops->cleanup_area(p, hpage_pmd_size);
+ 	ksft_test_result_report(exit_status, "%s\n", __func__);
+ }
+@@ -1081,8 +1162,8 @@ static void madvise_retracted_page_tables(struct collapse_context *c,
+ 	ops->fault(p, 0, size);
+ 
+ 	/* Let khugepaged collapse and leave pmd cleared */
+-	if (wait_for_scan("Collapse and leave PMD cleared", p, nr_hpages,
+-			  ops)) {
++	if (wait_for_scan("Collapse and leave PMD cleared", p, size, nr_hpages,
++			  hpage_pmd_order, ops)) {
+ 		fail("Timeout");
+ 		return;
+ 	}
+@@ -1098,7 +1179,7 @@ static void usage(void)
+ {
+ 	fprintf(stderr, "\nUsage: ./khugepaged [OPTIONS] <test type> [dir]\n\n");
+ 	fprintf(stderr, "\t<test type>\t: <context>:<mem_type>\n");
+-	fprintf(stderr, "\t<context>\t: [all|khugepaged|madvise]\n");
++	fprintf(stderr, "\t<context>\t: [all|khugepaged|mthp_khugepaged|madvise]\n");
+ 	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
+ 	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n");
+ 	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n");
+@@ -1109,6 +1190,7 @@ static void usage(void)
+ 	fprintf(stderr,	"\t\t-h: This help message.\n");
+ 	fprintf(stderr,	"\t\t-s: mTHP size, expressed as page order.\n");
+ 	fprintf(stderr,	"\t\t    Defaults to 0. Use this size for anon or shmem allocations.\n");
++	fprintf(stderr,	"\t\t-c: collapse order for mTHP collapse, expressed as page order.\n");
+ 	exit(1);
+ }
+ 
+@@ -1118,11 +1200,14 @@ static void parse_test_type(int argc, char **argv)
+ 	char *buf;
+ 	const char *token;
+ 
+-	while ((opt = getopt(argc, argv, "s:h")) != -1) {
++	while ((opt = getopt(argc, argv, "s:c:h")) != -1) {
+ 		switch (opt) {
+ 		case 's':
+ 			anon_order = atoi(optarg);
+ 			break;
++		case 'c':
++			collapse_order = atoi(optarg);
++			break;
+ 		case 'h':
+ 		default:
+ 			usage();
+@@ -1148,6 +1233,10 @@ static void parse_test_type(int argc, char **argv)
+ 		madvise_context =  &__madvise_context;
+ 	} else if (!strcmp(token, "khugepaged")) {
+ 		khugepaged_context =  &__khugepaged_context;
++	} else if (!strcmp(token, "mthp_khugepaged")) {
++		mthp_khugepaged_context =  &__mthp_khugepaged_context;
++		if (collapse_order <= 0 || collapse_order >= hpage_pmd_order)
++			usage();
+ 	} else if (!strcmp(token, "madvise")) {
+ 		madvise_context =  &__madvise_context;
+ 	} else {
+@@ -1213,7 +1302,6 @@ static int nr_test_cases;
+ 
+ int main(int argc, char **argv)
+ {
+-	int hpage_pmd_order;
+ 	struct thp_settings default_settings = {
+ 		.thp_enabled = THP_MADVISE,
+ 		.thp_defrag = THP_DEFRAG_ALWAYS,
+@@ -1239,10 +1327,6 @@ int main(int argc, char **argv)
+ 	if (!thp_is_enabled())
+ 		ksft_exit_skip("Transparent Hugepages not available\n");
+ 
+-	parse_test_type(argc, argv);
+-
+-	setbuf(stdout, NULL);
+-
+ 	page_size = getpagesize();
+ 	hpage_pmd_size = read_pmd_pagesize();
+ 	if (!hpage_pmd_size)
+@@ -1250,6 +1334,10 @@ int main(int argc, char **argv)
+ 	hpage_pmd_nr = hpage_pmd_size / page_size;
+ 	hpage_pmd_order = __builtin_ctz(hpage_pmd_nr);
+ 
++	parse_test_type(argc, argv);
++
++	setbuf(stdout, NULL);
++
+ 	default_settings.khugepaged.max_ptes_none = hpage_pmd_nr - 1;
+ 	default_settings.khugepaged.max_ptes_swap = hpage_pmd_nr / 8;
+ 	default_settings.khugepaged.max_ptes_shared = hpage_pmd_nr / 2;
+@@ -1267,6 +1355,7 @@ int main(int argc, char **argv)
+ 	TEST(collapse_full, khugepaged_context, read_write_file_read_ops);
+ 	TEST(collapse_full, khugepaged_context, read_write_file_write_ops);
+ 	TEST(collapse_full, khugepaged_context, shmem_ops);
++	TEST(collapse_full, mthp_khugepaged_context, anon_ops);
+ 	TEST(collapse_full, madvise_context, anon_ops);
+ 	TEST(collapse_full, madvise_context, read_only_file_ops);
+ 	TEST(collapse_full, madvise_context, read_write_file_read_ops);
+@@ -1274,8 +1363,11 @@ int main(int argc, char **argv)
+ 	TEST(collapse_full, madvise_context, shmem_ops);
+ 
+ 	TEST(collapse_empty, khugepaged_context, anon_ops);
++	TEST(collapse_empty, mthp_khugepaged_context, anon_ops);
+ 	TEST(collapse_empty, madvise_context, anon_ops);
+ 
++	TEST(collapse_single_mthp, mthp_khugepaged_context, anon_ops);
++
+ 	TEST(collapse_single_pte_entry, khugepaged_context, anon_ops);
+ 	TEST(collapse_single_pte_entry, khugepaged_context, read_only_file_ops);
+ 	TEST(collapse_single_pte_entry, khugepaged_context, read_write_file_read_ops);
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index 687d115e3bd8..d09f9f6a384e 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -410,6 +410,8 @@ CATEGORY="thp" run_test ./khugepaged all:shmem
+ 
+ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
+ 
++CATEGORY="thp" run_test ./khugepaged -c 4 mthp_khugepaged:anon
++
+ # Try to create XFS if not provided
+ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+     if test_selected "thp"; then
 -- 
 2.47.3
 
