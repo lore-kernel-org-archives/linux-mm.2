@@ -4,138 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB2C7C55171
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3328CC55171
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:24:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 827C06B008C; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
+	id 12F486B0088; Fri, 31 Jul 2026 20:24:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8003B6B0092; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
+	id 0E12F6B008A; Fri, 31 Jul 2026 20:24:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7186E6B0093; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
+	id F39236B008C; Fri, 31 Jul 2026 20:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 449CA6B008C
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB6031C025F
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:16:58 +0000 (UTC)
-X-FDA: 85050785316.02.286B6C9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 330FEA0003
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:16:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EeVcjbfB;
-	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785543416;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
-	b=beCpgtOI/h1IPm+8OOmfTUn6YOhRjErRNoToQ/JpvUPDTYt8srnlYI7pf4pA9l5oDpm2wd
-	3y7Tc3XkqgQCRZpz4hy099X0pNvL/DwXQe2bI5hUWQQVbxSh/v5umOuefqeskXTKn8LGhw
-	xCdwMUCpcC/9CCa922YRDqDmGeeNS2M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EeVcjbfB;
-	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id CB5CF6B0088
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:24:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 635DF1C01F9
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:24:32 +0000 (UTC)
+X-FDA: 85050804384.20.1549B37
+Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C20BE180007
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:24:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3vTxtagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3vTxtagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785543416;
-	b=evVLihx9osqK4+pdzxj+89RuO6olTdAJvHBGI7D+ha8MqIFWnFsUNCRLns6OCgVk7RzNIZ
-	+orjp/gOvbhB8YzjsHUpeFQB2sF/jh/fvUe8hfkQSOC8P/RXJgjIh53c/8ASWelAgcsmya
-	sWV4/yDke6mGyIpxBJiWH6H+ciXtqX8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785543415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
-	b=EeVcjbfBTMiiYFF6PfihcgrsOuD5OveM204zZW1sYbSejhv0THkmPRE3rXlpwmPUgPoQpj
-	RTljvRb1hU6uHYeFdMi10hmGOM2wcF7bEFQMAL9NxsmE5R00jDnJKWNfOQXdChP/HM6em3
-	D5jkF8wOSSAIgUSQGFBA+Zy32eZZ8O8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-cy7hat5WP7-2m8LetrD6RA-1; Fri, 31 Jul 2026 20:16:53 -0400
-X-MC-Unique: cy7hat5WP7-2m8LetrD6RA-1
-X-Mimecast-MFC-AGG-ID: cy7hat5WP7-2m8LetrD6RA_1785543412
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so1821094f8f.2
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:16:53 -0700 (PDT)
+	t=1785543870;
+	b=Kp2circ1kUVF2HJtRMvtn/xDGIdtzuwX659LcH8L6RARbifHwhuHo2ZIHsdf29gyRHgxpw
+	2s+UJDZ0PqwO/cCBJh+COIkVqM34v99xspymJPfiZ5veP7F5WeutWtwo5OQ0o0ECL6+gcc
+	dvgOvAZqm8loqZ+LmSXJBA/DReLDkU4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3vTxtagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3vTxtagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785543870;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=qVd58TPnt7YWORxKDPFmEH4Zsye0rPYQgz8PIgkDcCw=;
+	b=LEZOrjXcGreY6pbgUKhLOpvE4EFvkhRyjQ1/rsRxIaMkXffqekVxE7yD3ggzlOmrAu64+n
+	swnRX4kT8dvKAnFNkke9Q0UifONYHxeC/kgy4rLW74Ta580cibCsbesDfS5B6nACPtwmB5
+	eYepcxbmawWyI8YyIUVmpaF9g+8zLQY=
+Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-4a485034d01so2322983b6e.3
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:24:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785543412; x=1786148212;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
-        b=Ugg2kL+XpfxTylsJy/W8nqHFbWvTGkA/QvMJFPTnvNSmRw2JjrpauFMzt9cOT7F3X2
-         tfXkVi+8/6hBO1EKzv4lBrBw/6c8qp56uIwFs2YAIW4IWF4Eys6fPu2S+yFQJlKeFuDj
-         DjEfxs26wwrDxSeaxiA7OoWpxF5FAC37cUAx/Zoay2h6C7tkxnWgUzUBg840406/8REB
-         lEBP1bCV6bICYV+LxTeq8hs3L3kcBceaR67EZkM0lPTcs8yp71+xjx3zwaQysQ1Kpmk9
-         RqY4IWscHaeHlAnN0aNX1YnFxR6MAalwweeTx5X5VhGub/F9upnnFGViKJkxPmJCEhbL
-         N2yQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrncVqjuAdh4Uj0YHmZnuEyctxX8GsmyKYSLgsAg0te97MaDs2TokKFIcYqDgtWPLdsMFcD2LPDTw==@kvack.org
-X-Gm-Message-State: AOJu0YwOOw3whJdoVHrJtPIcv2VrB5WY+GJAoDEFDpPFVS/M70BLEv7w
-	fvRAFsl0UdPJfsTqj+fB7adcMf5RRODxqbIJZqgrh2wNluqwmH3LPcDkzRF5t9V+i5X5dy3mZ6f
-	ThNljddwGXuHFP3fYOmfT2IKMwIcCOdwkmodEjp10Fbv8Viam39wb
-X-Gm-Gg: AR+sD109Mk8kKSPvlbPPEhagriodNN0TIm/Xe/l8XmkuxnbLASVPKuDWwpRzrAqju8/
-	Wch0q9kdOjnWR/j3nJxGac2pbO2Cbp+GR/ya+T8NTlrzET8j+DBM02Jcgeo3lcjOOOF+pZbNwwR
-	AIrfGdyBGudU/s0fZw77ROWecH4zNvDyA+vfyuiHrt1uPul9RNrfWI5KqeDU8PzysPPsVOOqb0G
-	lTJNs7BXSjm2NMPgvBUMlxMIh2GG9IX5Ds0mLiUWQeR2WArn2+4Zgkl4NsIz9untnkjzMdy3jmo
-	lU5Ugr+w1daQysloCSE24zowJ1kVMInY0MM9VAhC5eY4xGNnWKcFjZnKUNciMbeqx2uXf7u8avZ
-	yl0Q5rMkAK1Nx2vQ/ajilMO8=
-X-Received: by 2002:a05:6000:46d8:b0:47f:6a3a:9e6b with SMTP id ffacd0b85a97d-47fd72f1612mr1988334f8f.32.1785543412353;
-        Fri, 31 Jul 2026 17:16:52 -0700 (PDT)
-X-Received: by 2002:a05:6000:46d8:b0:47f:6a3a:9e6b with SMTP id ffacd0b85a97d-47fd72f1612mr1988296f8f.32.1785543411814;
-        Fri, 31 Jul 2026 17:16:51 -0700 (PDT)
-Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a0c8bsm10836910f8f.34.2026.07.31.17.16.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 17:16:51 -0700 (PDT)
-Date: Fri, 31 Jul 2026 20:16:47 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Link Lin <linkl@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, prasin@google.com,
-	rientjes@google.com, duenwen@google.com, jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com, Ammar Faizi <ammarfaizi2@openresty.com>,
-	jiaqiyan@google.com, ahwilkins@google.com,
-	Greg Thelen <gthelen@google.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>, jthoughton@google.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_reporting: use system_freezable_wq to fix UAF
- during suspend
-Message-ID: <20260731201559-mutt-send-email-mst@kernel.org>
-References: <20260721005603.1710551-1-linkl@google.com>
- <20260722173639.34d3f58413354218b24a5b0d@linux-foundation.org>
- <CALUx4KSfUUud86k4SLwETJAciRc8kZ9QocvBj39KmzXDiQ7J1g@mail.gmail.com>
- <20260723051327-mutt-send-email-mst@kernel.org>
- <CALUx4KRoCco0HA=Y_qFzSD=CegbJPUkQkvjRb1Y3UcgRdwQToA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1785543870; x=1786148670;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qVd58TPnt7YWORxKDPFmEH4Zsye0rPYQgz8PIgkDcCw=;
+        b=m86JSY53MI+VD3+b6P2ryU1ZH0Y6t0xbkbdjbdc9hdjfjTPlA6bCHDSCl5a41oGX0B
+         nCb+KVmTbrlCry9WThWFbTO+jr3dsvgGMTxm7R6pd3XU8i/Dxy064qsZQNBCQfqFXtAp
+         Za0znMwTlQXo9EkG3RWfU708W9AU8x+mvfCL95V378Z01Q5h5GldM/8WksgQhRcrcplJ
+         G8HXUaLdhDL0VOF2p6blS6ZTKbBTawMpLSEGhzZliulzKz6dLDogO6XVmWGcpdm5eO7W
+         cn3VmMfGdKF8Lw1UpAV4z0Jr4RFSeGkYauJCEkt6veizQJdFTxxiBejIDnZDddqY8BwN
+         Q5yw==
+X-Forwarded-Encrypted: i=1; AHgh+RonLiCiUL2fCmWNwTgwghVjIzx7648d8NtvG+zkUizqjE7qPuMnvDoVqf4zTF7DZRVw2EmPUVYAqg==@kvack.org
+X-Gm-Message-State: AOJu0YzU4b/YrOsYcCFEuLs2ZftRh/98iepxGSJ+qIJHtLODgzTUEBZw
+	D14Czw+iBUSM4nCTcubMHpD7sS2krdWrVQIsEvrVJZ6LxWEBDvKNrKXHXC+BblyRPl8zM+kupk7
+	JJsvYipfDXVBKnemwodPISh9aZdGM9BNRyBYOMgnFGB/gl/iFqGUudxePZHo=
 MIME-Version: 1.0
-In-Reply-To: <CALUx4KRoCco0HA=Y_qFzSD=CegbJPUkQkvjRb1Y3UcgRdwQToA@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Mic4rYGXGkFUey_JG3J89e2oRcc-7xRwLyLl9_X3KmI_1785543412
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:d52:b0:497:deab:2bfe with SMTP id
+ 5614622812f47-4af5dfb3c0dmr3861203b6e.1.1785543869869; Fri, 31 Jul 2026
+ 17:24:29 -0700 (PDT)
+Date: Fri, 31 Jul 2026 17:24:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6d3cbd.6ce73036.24301b.000e.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in va_alloc
+From: syzbot <syzbot+61c997e6be1d9bb300ba@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bsegall@google.com, david@kernel.org, 
+	dietmar.eggemann@arm.com, juri.lelli@redhat.com, kees@kernel.org, 
+	kprateek.nayak@amd.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, mgorman@suse.de, mhocko@suse.com, 
+	mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org, 
+	vincent.guittot@linaro.org, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C20BE180007
+X-Stat-Signature: ser4mtome4ragicf8rs4jhfzxu453woa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 330FEA0003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: gno6sgx18udiojw63gx4da875ynptrsh
-X-HE-Tag: 1785543416-9615
-X-HE-Meta: U2FsdGVkX1/w6wdLPZfw2Abrw6cie5HtDUbdFd3ai+4pr9jlW10ZQ39LTiPRsNWuFAKpYJf23LUoBUjtvw803HcTx3NsRfA7tCkJgDa36yb8l87umI/fdYWvsPpRItSALnIa8H3w76rBCZuX5IB5erehlUe8CHsSdkAxf/O3DbZnsVwjb0+30MoIPZr8UaiafxxLhbSnOzubO5uXguOPnpwo1pHfbVlcFXvK5hprQOXdpssX8tHocBn5/oQT+j9et95S+NDEEalp4yaGS6MlNDVoMfbVU7AK7dzFR/0kUn3uEk+ctZQgS/JJ8Swr5i71g9Ju/XMmRLl23eOgbzNfVDFYEw2T5SQJ2xpxAQMzOoGdXLho2m9SVomXdrSUwPZUUnYvu5HbZIoGsyxIgm+UXbgx1vNwD3lAK3Q1Jr9OQgQTOp9+NaQYyQK5qppHqYmovGuUyt/MTAALlRLNe/Ce/z1hqqBs1gMyiBrhTQT08Hs2+52wodbi2vXlFfu0RqClAUty3SQa/4CkuHfPk3TeXN/WcCbBcmfqOi0D/Cda8tzQtjHaeyTBGyr11sTsE3lcAn5B67XBZHuuN0SzZZhjpGl5GOnxZLEwpiSFPW9ETW5mDJAyl6F+8Uaf2w+aNNmw32kcvkfjOFRp6qmgzLECqqNrc0zuuz0uoaUmGld6x5IDTFZeq2LugMnzTtvElM0Ve8URzy2FP5HJojdNumOJffwATfMywQH2fcuJZCKjPGWaZI8dCzO+sH0DQEV3zQSBxukQ7u8HAN/HfmW0jpSOmTPQwDcrz58QqHB9JaaRBo7xpjtqkreaSJo0RUrHqSj3l7+Szl7uIGhqO+fuYfoe6GZy39QuTiOGN/fP6dfwi52vdT11U/tmqBrloz8eZYCGCfEWdBn9Bm5fKYBPUkYwYe0ix0d7TOVw06TXNPjwDNCR8YWvQhs6U5T7cujoEJdDa6lha2+zvSwAauD+Vk7
- i4T85fz8
- 9fg9TiZT5EFX7byGR6krCKEtqWdIdQbdbGQu4KkkcvN3J57rw19eKgag+r55DUzNbFfHLLl+BbfZfdI0SfGGCOD69YupESlAWSWaLteNHtR2PaSmSBAiSNg/almzYq09ZbRVx6mi587Hfy0HMG9xbhB5TjuPrl3Q91WJm2DlnAFxhkL/2kCFE0hb2nXom3PXBdaabF9nofxjJ4CDoYqEHVgoZVRMOBwtCfxsorfa7npiBQ5DNUsPMWpReNYUwq8S2v0SGDQs08N10rnOftzv82UeX59GWaT3JRNhuNKyCVd5PZBIxgb4s5xDWcWcZ2de1ULIk2RGy/wdFd/zBrQ1GhE190iozFlPXup8mVsK6G1k68Sb10efofMWwWBba3y+JlXBqR/SJHL4eeBQoOrsEsKj2yfnBl3YHMk1BM1fqyCM7RS/nLZNUvvv2W0bccSrqZvdWNJZWBQh12L0gxckQHGLvxOUJ7VoM8UmIKKrcVl6tNlI=
+X-HE-Tag: 1785543870-789466
+X-HE-Meta: U2FsdGVkX1+ub4iq2Kci39o6DLnMbOqG33S7BG9FTCltXrmpstxtW7ToaveTXV8tsfPE1eheRnaYxXVxbYF5ZvmForygTe/1UlbUD4HLkC7DdzMyQD3vJuSCzMbX2xiLWJoiEvT0VJDFzC74vgefu5LiWkLnM57YWSJmqaEcT8QlkWKUc+t2PGBJV2ILbNVr96tmEmNPV/f5QiF8ASIrHVGvWW0x3iR4yeFthinGF1N9lOtC+vtsjMiVOyLB4GYRX0zh43fME2t4/Ea/zBCQijrO78S/ZU3SYT2a7GDLr/AsEa0zNMsXYqmZjxlK8E+VBiN/AuIn7OSZTGSKsmgxYY3s62PV6V4CcaMJlC5X/wFc+2oD6pREWhpV5Aza2Wsw3K2Nwkd/CiaALwbEIIc0sGM8WWd1WhWGmxMW5ytEEq5YTYeH5rFyWTIRYlmLGnKbKgrVYjot1ePpJyo4NrwYEqy0IyXFh0PuTNLYWKOlhHGtv4Ef3c3sZQ+Inv2NYddAj7cHGeOjnHYMVMGWrzaKLCexAuNeqiPVqDi64pgzZKaiEfcB1iOvYsXapvI4O+Z5XXreqakAbB4OC6CwVC1iZ0rbwafQEQClkfujtzbQ3/MDVZ/diuEhjqkweeUJHpqPCOfQ9Sk86flIHXvmTprwyWMv4XbuvHtiKZ3q1uh1IQ/OppkJgbhuj9en9AEpCt3lsJiIjS2HxjUvhrrzESL+xTd5VkjGDGz+mgwEWdiR/YSXiIHH25I1T8K1vf2cJHYtpOhA6iqlzs4o71+BorB2dmcgkCOIAIXfwmrIbSwHY3IxzPBa6ZdpVwAm/dXL+tfSXJh9xYamnTW2qA8huAVHWtUOzcuKhIx+zUMIVTw3O1fMpgUkyTmOhdBfT4ZhwhP02ZZj7xb1QjSv2THmmB4w3SGw/dMUZGzXax/PlCj2xAmYYfJotbsQfqHnqFJ4Cowy9qi1fkVt+HfCBybbBc8
+ JGcWQ4/a
+ mlYtyGksPI5nayzDbbUfCQF/A5W3x9fJyOQtC73XhnZcP+zlffKW62BUgDADjnwGSR+n3ZoA174eyDcKdm4+UIik8VgQjnn+3frcYR7XCJ+/4Xwcf0iz4CTvEeebFngQDhNTlNhik6EgnnmuauogvB6lf0bxZxpclZqUJxhHuuBXmuR2MC4+F1Se0Ru88dNBf5QeIEbbZKrxcO81ZKio3/d58UCDAYAARKGS57gYrsmPitP7gXd2G9D6+VXMG8aAWXFMMJdcc00Tq6nyi/m2q3EUxeiiAiK6qkIrvJWx8NbLR+s9v6uxEwgABTN50MVriwoDvgFFGJtOgcF+RwPDMd+2vEffe/IBa3phDOlcdcguwtg/8ymSQipTRkvttzSgUGPcB7LvteXdgGb7e8d7kqrQoKlBUe+L74FPego1nDc+SbQpAuAYqg0mmcK1ih5K5Hjy9zbCR9h2lPbn2CrPj3qU/enuoC7KpFAy3+man11nZjnVUkh7JUSFtim9W4fOtlzmV63OnLjyRWsP7AXq7llxUaM54oMukghEXHH5bHLoZSfII8NDrCr4e8E07CQCxiUtfJQEfswIlmCr/dlhQy68jkEZKxFEyUErdv4Hn56YHjJskJF7MMe5jSyQyIulE6TTv4AoJwmA3y7EqfHdKiAmenG3yXu7w2gYMWyeJuZIlBw9nzPvbeQq9wnrJe0NQXUTG2Z/GwbW+wkt3NQBg+E5ry2i0ayWFfw9ecILTUOEjbvQW5+6mWlS/ckodMmKwuuxxcdIbvsnkh4T2kJGLc+K7UknVbWa8nm7l8xICCXa7/3ClaYwCTPoOhOKbvVD+kKE0k/KBPwyjUJv5S/v0xSBA0MWRup9M5YvU6ve0BIcZbbQnc88+y5QsYxpfeUFPljRTllYO4ImvM05HecNhKpGmBITKXZAvDdv3hRWCESqzkxfJ0jtBKaVYJKMk/KnmLWTuE8kCsJssBW8cvr8/Yl6X+TMz
+ +nCxKthW
+ WfJ0C3CUQhGqoF28lxyu1vrsZLp08wvBxApqfJ14WBl1f7ap/GJ0g/qoJlqt5YOHMhUZhbs6CDD4O60zJyN+t8jik7i4xUzJO2kLl9b1F6GJO0r++CQcxucxbcDhAtUIBH8WRSAiBtSdvfv5yKyLvZHoGk9/H73Sml2Voh3VbyJb7U3iMBES7Xyr75oY5XjOPaZM6siyAKh0XklWXHBopf79wXKU/x9zA/eDrl5cj7gXbYFBJDbQwyCtcx6K4P7q6hRSvn+0ShTWm07p1Ek0z8rAq8q96v0SsDYRFCXWYrn4XYyJUzmcZGpAI7ale6iqKX0V15XpapcQ6Kv3elshLTGBL7UU6f/ZoSQbARQsjl20T9xx16cD74w/QVLQOh7yUr2V4nG/dxCcX7ikRBhkLUAMzftJCaRJDXkloyvzIu4nfM8kZZHiiccK189sjrQF8WxDcAA1Dl18uvZH9tsofA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +100,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 01:21:40PM -0700, Link Lin wrote:
-> On Thu, Jul 23, 2026 at 2:15 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > I suspect rest of work items we have, e.g. update_balloon_stats_work/update_balloon_size_work
-> > all have issues around freeze/restore and error handling.
-> >
-> > --
-> > MST
-> >
-> 
-> Hi Michael,
-> 
-> We have indeed discovered a kernel crash in update_balloon_stats_work
-> after the balloon driver failed to resume and initialize in our
-> production fleet.
-> 
-> Alex Wilkins <ahwilkins@google.com> diagnosed, root caused, and
-> reported this vulnerability.
+Hello,
 
-I wouldn't call this a "vulnerability" just a garden variety bug.
+syzbot found the following issue on:
 
-> I am currently drafting and testing a
-> 2-patch series to gracefully unregister callbacks and cancel work
-> items on resume failure so that the VM continues running without the
-> balloon driver instead of crashing with a kernel panic.
-> 
-> I wanted to follow up and let you know that we are actively working on
-> this. I will send out the patches to the list as soon as they are
-> sufficiently tested.
-> 
-> Best,
-> Link
+HEAD commit:    11028ab62899 Merge tag 'probes-fixes-v7.2-rc5' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16efd632580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c05be6c9b0d36cb9
+dashboard link: https://syzkaller.appspot.com/bug?extid=61c997e6be1d9bb300ba
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-11028ab6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/511647651d7f/vmlinux-11028ab6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1c76180d0109/bzImage-11028ab6.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+61c997e6be1d9bb300ba@syzkaller.appspotmail.com
+
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 1, space 0, times 977
+CPU: 0 UID: 0 PID: 5320 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ fail_dump lib/fault-inject.c:73 [inline]
+ should_fail_ex+0x40c/0x560 lib/fault-inject.c:174
+ should_failslab+0xa8/0x100 mm/failslab.c:46
+ slab_pre_alloc_hook mm/slub.c:4539 [inline]
+ slab_alloc_node mm/slub.c:4897 [inline]
+ kmem_cache_alloc_node_noprof+0xb3/0x610 mm/slub.c:4989
+ preload_this_cpu_lock+0x49/0xc0 mm/vmalloc.c:1902
+ alloc_vmap_area+0x3c3/0x1420 mm/vmalloc.c:2072
+ __get_vm_area_node+0x1f2/0x300 mm/vmalloc.c:3226
+ __vmalloc_node_range_noprof+0x358/0x1730 mm/vmalloc.c:4042
+ __vmalloc_node_noprof+0xc2/0x100 mm/vmalloc.c:4143
+ alloc_thread_stack_node kernel/fork.c:359 [inline]
+ dup_task_struct+0x2a0/0x8e0 kernel/fork.c:929
+ copy_process+0x820/0x4390 kernel/fork.c:2115
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2748
+ __do_sys_clone3 kernel/fork.c:3050 [inline]
+ __se_sys_clone3+0x33c/0x360 kernel/fork.c:3029
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9d8f39ed89
+Code: 90 b8 01 00 00 00 b9 01 00 00 00 eb ec 0f 1f 40 00 b8 ea ff ff ff 48 85 ff 74 28 48 85 d2 74 23 49 89 c8 b8 b3 01 00 00 0f 05 <48> 85 c0 7c 14 74 01 c3 31 ed 4c 89 c7 ff d2 48 89 c7 b8 3c 00 00
+RSP: 002b:00007fffcf746358 EFLAGS: 00000202 ORIG_RAX: 00000000000001b3
+RAX: ffffffffffffffda RBX: 00007f9d8f35a320 RCX: 00007f9d8f39ed89
+RDX: 00007f9d8f35a320 RSI: 0000000000000058 RDI: 00007fffcf7463b0
+RBP: 00007f9d902776c0 R08: 00007f9d902776c0 R09: 00007fffcf746497
+R10: 0000000000000008 R11: 0000000000000202 R12: ffffffffffffffe8
+R13: 000000000000006e R14: 00007fffcf7463b0 R15: 00007fffcf746498
+ </TASK>
+------------[ cut here ]------------
+ret
+WARNING: mm/vmalloc.c:1820 at va_alloc+0xeb/0xec0 mm/vmalloc.c:1820, CPU#0: syz.0.0/5320
+Modules linked in:
+CPU: 0 UID: 0 PID: 5320 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:va_alloc+0xeb/0xec0 mm/vmalloc.c:1820
+Code: 08 4c 89 ef e8 16 98 10 00 4d 8b 7d 00 48 89 df 4c 89 fe e8 97 69 a1 ff 4c 39 fb 76 27 e8 2d 67 a1 ff 49 c7 c6 ea ff ff ff 90 <0f> 0b 90 4c 89 f0 48 83 c4 58 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc
+RSP: 0018:ffffc9000f5e74b0 EFLAGS: 00010293
+RAX: ffffffff8225caea RBX: ffffc9000f679000 RCX: ffff88801fae2540
+RDX: 0000000000000000 RSI: ffffffff8c4bed60 RDI: ffffffff8c4bed20
+RBP: ffff88803f07ef08 R08: 00000000ffffffff R09: 1ffffffff1d94962
+R10: dffffc0000000000 R11: fffffbfff1d94963 R12: 1ffff11007e0fde1
+R13: ffffc9000f670000 R14: fffffffffffffff4 R15: 0000000000000000
+FS:  000055557c363540(0000) GS:ffff88808c543000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9d90277d58 CR3: 0000000012236000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __alloc_vmap_area mm/vmalloc.c:1855 [inline]
+ alloc_vmap_area+0x907/0x1420 mm/vmalloc.c:2073
+ __get_vm_area_node+0x1f2/0x300 mm/vmalloc.c:3226
+ __vmalloc_node_range_noprof+0x358/0x1730 mm/vmalloc.c:4042
+ __vmalloc_node_noprof+0xc2/0x100 mm/vmalloc.c:4143
+ alloc_thread_stack_node kernel/fork.c:359 [inline]
+ dup_task_struct+0x2a0/0x8e0 kernel/fork.c:929
+ copy_process+0x820/0x4390 kernel/fork.c:2115
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2748
+ __do_sys_clone3 kernel/fork.c:3050 [inline]
+ __se_sys_clone3+0x33c/0x360 kernel/fork.c:3029
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9d8f39ed89
+Code: 90 b8 01 00 00 00 b9 01 00 00 00 eb ec 0f 1f 40 00 b8 ea ff ff ff 48 85 ff 74 28 48 85 d2 74 23 49 89 c8 b8 b3 01 00 00 0f 05 <48> 85 c0 7c 14 74 01 c3 31 ed 4c 89 c7 ff d2 48 89 c7 b8 3c 00 00
+RSP: 002b:00007fffcf746358 EFLAGS: 00000202 ORIG_RAX: 00000000000001b3
+RAX: ffffffffffffffda RBX: 00007f9d8f35a320 RCX: 00007f9d8f39ed89
+RDX: 00007f9d8f35a320 RSI: 0000000000000058 RDI: 00007fffcf7463b0
+RBP: 00007f9d902776c0 R08: 00007f9d902776c0 R09: 00007fffcf746497
+R10: 0000000000000008 R11: 0000000000000202 R12: ffffffffffffffe8
+R13: 000000000000006e R14: 00007fffcf7463b0 R15: 00007fffcf746498
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
