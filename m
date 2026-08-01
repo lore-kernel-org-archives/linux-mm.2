@@ -4,85 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D159C54FCD
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 05:08:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA7CC54FCD
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 05:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 124F16B007B; Sat,  1 Aug 2026 01:08:38 -0400 (EDT)
+	id 79B846B007B; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FC0E6B0088; Sat,  1 Aug 2026 01:08:38 -0400 (EDT)
+	id 74CF56B0088; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03B826B008A; Sat,  1 Aug 2026 01:08:37 -0400 (EDT)
+	id 6629E6B008A; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6D946B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 01:08:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 63BA412021A
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:08:37 +0000 (UTC)
-X-FDA: 85051520274.17.D24903A
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D130A1C0004
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:08:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KSVs7qoW;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 447166B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D7D03C0243
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:37:48 +0000 (UTC)
+X-FDA: 85051593816.25.64A3343
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 97A8C40009
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:37:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H8F19DKG;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785560915;
+	s=arc-20220608; t=1785562667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UJRJbzaMPn7EWU1PuaFIxydKwh1J5WKdvnMdojZ2MQw=;
-	b=70jeO8XlOmtn8jpHqw8MPCefB7BI235nVaODl8hPknoUFq8dI7kxS8I8Q6bzWvsxhkjoIs
-	SMmRwwlirfdN1EZJXhfbOZHs/zX+j5YVZYorC8mzQc+3EjWoa+nZLxFHkEdiTXvRa2PqZ5
-	CnvNsJR4QhHQhcYCfvZHvw4vTXqTtns=
+	bh=4mjnroDt3NYGYmhJROVWxiFtMXCSRJVFSmdPavCLqTA=;
+	b=MJKuBHc4spKWc7NyXDLVeKd0Kpz+K0lyq6YTsK1kXnBuLCQGLWS9zmH/4uabhVKKKzAJPh
+	i/ywQhVwgHZbqHnsMHZEo2Ip9ZL7A9GQUHrmay3yar5tcOuc7xX7ZGYH3QI/T1T5E74iYY
+	eFi5CGqkRZlHk13AnmARMbT4HWFUTqY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KSVs7qoW;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H8F19DKG;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785560915;
-	b=zOOrKltTuYnmB4FylKSfEHHNp9ball0g14Vyj7QbU9VaPs7DxI+EoCtltypa5MvjJb4bQw
-	ZJhRPp+0EEC2hrvvdkDcsaabhlb6xK1FH2phwYjgifNVYJPbj9FXAMNGIx1tmgcNGxXoNh
-	6uchiXwPwoEOlsltVis0L8yJtWSyhzM=
+	t=1785562667;
+	b=NGV2eJeU72dQMWfT48qFmf8Jt4AN5yRLkPM0K/7Gtg2gBxVHjeqQtDgRrSaNaBKYJpgTb0
+	QB3aT3dWd58gzZ1W8HHGqTxrqd68b3AIKOfr0ZkKHsF27Iivv2G4IJdZsHmzeWY78ig0TP
+	GAdeKAi8sVYH6El6nxVfrwjDk7s+RMM=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1785560910; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=UJRJbzaMPn7EWU1PuaFIxydKwh1J5WKdvnMdojZ2MQw=;
-	b=KSVs7qoW2s4YMw+ZAxQpIKQDUWh3SOCKiI6FlA9AFt/KJkZKGVkGKauL0A3LzGCApgk0XR547SS8xwsl2QoLe8shI/FE8/JGLVpVgzYvAGoU0IkmjqQ6IFZ2/DqgxvYU66K+BxUkZSlRn8veBqYVe1p+GDNpsNlua1A41jPKd3A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R361e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X89Sdcd_1785560907;
-Received: from 30.32.91.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X89Sdcd_1785560907 cluster:ay36)
+	t=1785562661; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4mjnroDt3NYGYmhJROVWxiFtMXCSRJVFSmdPavCLqTA=;
+	b=H8F19DKGp9QKOWwdOa3vvgZWMf6h0DQDGgDnlAvH4pDmvDcrCNlKM5dVZvDtRKrkz5FwlJedjxdYgfYfUTVYlGDEEQRWaa5TyEDE34f5kQWPikHeu4XlAt5pxkvWo2IAC3Ip1pTvM/aQwKruQ/hDuVIeG7jYvH/ly2ip5gDeqFk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X89YbOs_1785562657;
+Received: from 30.32.91.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X89YbOs_1785562657 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 01 Aug 2026 13:08:28 +0800
-Message-ID: <00123a40-5aec-4600-9db5-6905806387b0@linux.alibaba.com>
-Date: Sat, 1 Aug 2026 13:08:27 +0800
+          Sat, 01 Aug 2026 13:37:38 +0800
+Message-ID: <4280f431-ce88-4f09-9de6-328414c98411@linux.alibaba.com>
+Date: Sat, 1 Aug 2026 13:37:36 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] selftests: mm: implement the mTHP-sized hugepage
- check helpers
+Subject: Re: [PATCH 4/4] selftests: mm: add mTHP collapse test cases
 To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
 Cc: ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
  dev.jain@arm.com, ryan.roberts@arm.com, baohua@kernel.org,
  lance.yang@linux.dev, usama.arif@linux.dev, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <cover.1785224928.git.baolin.wang@linux.alibaba.com>
- <8fd04f8c2f11390bf00058f9cd3d98d73544c75f.1785224928.git.baolin.wang@linux.alibaba.com>
+ <bea2086517b69a1af8813dac5774a1409aafd262.1785224928.git.baolin.wang@linux.alibaba.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <8fd04f8c2f11390bf00058f9cd3d98d73544c75f.1785224928.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <bea2086517b69a1af8813dac5774a1409aafd262.1785224928.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D130A1C0004
 X-Rspam-User: 
-X-Stat-Signature: 7ad85hnkdnez69t6nxhise9y9ztpsxku
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785560912-274659
-X-HE-Meta: U2FsdGVkX18r468Zp1Qg1c71Wf0nfmAdglrxtQCMZp+0gi4tUQsL/JP+OxKy0HsNAiW/lrDQja6ke4ha5lUbD83nNKol8E/Rj24y8EoQRErbjSz1vu/V6YRhCgj2+NMOCjXOCRD4Qv1g5AEPvA6ZZ7BdbGkzptuPXzeoKfuAEMxolHmDGpAN7X/2F2bJ0UaQa8yB1kYRJdJ+BSX6J08Dhfv9FrRSm3DYA8gfNplez1y0pOBaiVAvKWcnKi2UVgqNvcjFrGKDdceGoffZlTrN7v2IIoMsfeWGRAvnILaAVnuuFNCziET5XOlk+MdtFLdgzFUZnJIt3/Qf85XvcOXdxfENOIUCGYmpfubbT0UZZR2EHWxz7EwEI6YRQikGXz1Ld9hyNNmKiGj2EIlPzdtTrZ8lqN41trlGW+VMaJkUA+j3gjHXtnLN5K5GL5FOMb4+iYKDlFnOwfOo1X/nmD1gjPcRkWaDdnI4cG0+AnF1FHP4Z1D3+DUqvv0FsJa1VVYfqk2qBrzxmcXLSEKM9ysqrR8f8/bh3DMhgXfxH84Srlum9dzrxBBdNe7uSNZJm98v8w+pOQKJhFOY21zqZslEQ6wrrw0g+dSVaNC5RcX2xN1OdjfwXQCNRjVgT1o3RWr/njhA6ISk1P1OHlrQZ2vP0FIQyNAspnany1l9hSDS5ZEn97Q8rbEyEq2XcTcqpdgTZReItZK661fBRWK0ylxvFZB22l9P8/ktZ690Lk31Zt7WnLOhYHW+khh5UT5sJzMrXkZhRfiW2y75IMVY5s3LJEbt00btOMaB6gg8q9mmlPo/kjcqzQU3OlUAHPyvWVHNmtZgHlJoXiHf/EXF5jZ9NKeqlRAnkzVz/LM+WU5SJOWbFRmaUd7sYBqWZHqV9vgYGaRzkT61d0HCQl2RSoBkN3urrfA3vr7YTg6Ol90JpHETl2BCOB5uQIf36LOeAHjvV+QLkfSNEOWDbAulLUL
- 7kQm8STs
- h7XB/vs273l01PTXQu/WiqsuN4ZW6j9kfxJCyiU+ZgM+F4UtuOJ2v/Fmg7G5UmK89nSvvw150GilWHAnLEcGEfi1A1v5DvqjjkMxccm4Ts8AyYPC/Cdd5ajv+NnRzO2whn1lJ+Z7PNED1/2a+ny/ByQsFv5HlGW+eoLhSYcBStfW+2BYunE89jzRdGYdt7NP9m0VSyPeF4yi42SBHu/k8CViZ4wrQJ8OUigEnCJKudAxPzn7yr7P2zKfxXTW5PFsAICIzngvlC8jP399Y8//unTrfMWZOWLtO6D7oErLnrYW9ph8=
+X-Rspamd-Queue-Id: 97A8C40009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: erjqu1se3umphqmqdbkgcc3osfbg9e5s
+X-HE-Tag: 1785562665-191173
+X-HE-Meta: U2FsdGVkX19MKUqK8ugMBDSv/D+yGFcdW+K3P5wtTPC+ffWl3b0lpOgLlSkZ60NLSSD43ECirweJMAylCzdtnZYhIyqWNLNQa7Gpb9lxHD14Awy9NNoKQLr0qp70koczNX1045DGHaOey5KJGOy8c8o8L6qxxK0NbPewsKGpwQthgDX0PR7PlDhqzqs2TPaX64/wiBRT9wqpRHk5g33Dc/zrmNKGb5gKr1oyaywY2UJwIFa8DACeKoi+2LWUrGQvxftc3iXnTe1SgfVHz+GV8mjQ2JXhrUz4ecnO2xpwHTTdTOSLsz5PxR1m15JOPNqTGhWHAeq2lh8C6+ERuS9UygHKKSNS1u3liDVdTpOYhBObP+o3xXgY2uK7FWMAwyKIj07tfbKpMTVrY+5OnDzvHFet2zFSwp5HSTwTBg3KxEDj2Bot9cz/WwpmwJ5ibmIWo6xT3h2/PFnKcNmeRsWtrSCIcpU/93TZDQQBYUvOaRMymhpPeLpZCfzxcuQNhQ3Mqx1LZ4fnMdj6FmMmf27QgI+CRZGzhQhRH//0zbNXU4ksHmwGHA/i68tAAJN2t6ORfV0Cs/JiItTCRANHopqyBI6yhL7JQjkaJT+bdxA5tPKuCYwt1v1YbP0LgM7n/vclIhUVVDSuafw74D8grTPd/7AxxDDlc/E+OXgWv+7pYhlhP/XhN6Pwj662+caCjgusAD62501ld3DiyN/Qg9qQhVbEwHCr+/doUqFSZCbv2n213coXOm3sVR0eu7NmSHXzS//g1yPnifyh5EJGsKnBsPPGmq24E+yN777Ewm4pXJ5WNGKAv85VC1ZQHULPfCaaQi9PTy6ONwUyvCqFzWCojKxO4usW+Tb0RqGjEdkhkBFr5DYSJ0iyKAyZpqE+o7zGEnJ+GM4ofrOpXixUhC98a9EqEwdZe9OueAQhgsyTtCtwRu3iLlxPh39k0FzaJVylpt+qxeAzfx/IWPOmjuR
+ e7dSCVi0
+ GH6712njdgLAebVSusvNphjWI4t2GTBfZ1vsrQ7mhjv0xkixB5EqYTKnHuSnKKZz70YD9vCSzXH5HT0ADCsWvQgXQWAuVCqYMQsTcnVffNSRxhTElptrOp4SyPlgPaRvmInlJ72A7XyTCpl1plrmI4upidT9Jj4cd8H+9MMW2hpcxzNjY8OtQiJ0lvGe0o06apghEbTBJAzpwwrOiCf14R53mHWFzevZoyqpU0U/nrIWgQZhcq4aAjO4XQh8Xvqq6XkQf737vtWTDtU9PLwbq5GaKDWr24V2k53BbJQa0vYZqWCA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,90 +92,128 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 7/28/26 4:13 PM, Baolin Wang wrote:
-> Implement mTHP-sized hugepage checking helpers using gather_folio_orders().
-> Also rename the existing PMD-sized huge page check function to
-> __check_pmd_huge() for clarity.
+> Added a new command 'mthp_khugepaged' for mTHP collapse, along with the '-c'
+> parameter to specify the collapse order. Additionally, added mTHP collapse
+> test cases for 'collapse_full', 'collapse_empty', and 'collapse_single_mthp'
+> for anonymous folios. All khugepaged test cases passed.
 > 
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->   tools/testing/selftests/mm/vm_util.c | 55 ++++++++++++++++++++++++++--
->   1 file changed, 51 insertions(+), 4 deletions(-)
+>   tools/testing/selftests/mm/khugepaged.c   | 130 ++++++++++++++++++----
+>   tools/testing/selftests/mm/run_vmtests.sh |   2 +
+>   2 files changed, 113 insertions(+), 19 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index 09e5d5cabe21..a4ffaa0ca6fa 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -15,6 +15,10 @@
->   #define SMAP_FILE_PATH "/proc/self/smaps"
->   #define STATUS_FILE_PATH "/proc/self/status"
->   #define MAX_LINE_LENGTH 500
-> +#define PAGEMAP_PATH "/proc/self/pagemap"
-> +#define KPAGEFLAGS_PATH "/proc/kpageflags"
-> +#define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
-
-sashiko comment:
-"Is there a risk of undefined behavior here if nr_pages evaluates to 0?
-
-If check_large_folios() is called with an hpage_size smaller than the 
-system page size, the division hpage_size / pagesize will yield 0. 
-Calling __builtin_clz(0) results in undefined behavior."
-
-This doesn't happen now. But for code robustness, I'll add a hpage_size 
-check in check_large_folios().
-
-> +#define NR_ORDERS 20
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index f69be6be0ecd..e21a6ec38363 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -26,9 +26,11 @@
 >   
->   unsigned int __page_size;
->   unsigned int __page_shift;
-> @@ -348,7 +352,7 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
->   	return entry;
+>   #define BASE_ADDR ((void *)(1UL << 30))
+>   static unsigned long hpage_pmd_size;
+> +static int hpage_pmd_order;
+>   static unsigned long page_size;
+>   static int hpage_pmd_nr;
+>   static int anon_order;
+> +static int collapse_order;
+>   
+>   #define PID_SMAPS "/proc/self/smaps"
+>   #define TEST_FILE "collapse_test_file"
+> @@ -69,6 +71,7 @@ struct collapse_context {
+>   };
+>   
+>   static struct collapse_context *khugepaged_context;
+> +static struct collapse_context *mthp_khugepaged_context;
+>   static struct collapse_context *madvise_context;
+>   
+>   struct file_info {
+> @@ -554,25 +557,25 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
 >   }
 >   
-> -bool __check_huge(void *addr, char *pattern, int nr_hpages,
-> +static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
->   		  uint64_t hpage_size)
+>   #define TICK 500000
+> -static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+> -			  struct mem_ops *ops)
+> +static bool wait_for_scan(const char *msg, char *p, unsigned long size,
+> +		int nr_hpages, int collap_order, struct mem_ops *ops)
 >   {
->   	char buffer[MAX_LINE_LENGTH];
-> @@ -366,19 +370,62 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
->   	return thp == (nr_hpages * (hpage_size >> 10));
+> -	unsigned long size = nr_hpages * hpage_pmd_size;
+> +	unsigned long hpage_size = page_size << collap_order;
+>   	int full_scans;
+>   	int timeout = 6; /* 3 seconds */
+>   
+>   	/* Sanity check */
+> -	if (!ops->check_huge(p, size, 0, hpage_pmd_size))
+> +	if (!ops->check_huge(p, size, 0, hpage_size))
+>   		ksft_exit_fail_msg("Unexpected huge page\n");
+>   
+> -	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
+> +	madvise(p, size, MADV_HUGEPAGE);
+>   
+>   	/* Wait until the second full_scan completed */
+>   	full_scans = thp_read_num("khugepaged/full_scans") + 2;
+>   
+>   	ksft_print_msg("%s...", msg);
+>   	while (timeout--) {
+> -		if (ops->check_huge(p, size, nr_hpages, hpage_pmd_size))
+> +		if (ops->check_huge(p, size, nr_hpages, hpage_size))
+>   			break;
+>   		if (thp_read_num("khugepaged/full_scans") >= full_scans)
+>   			break;
+> @@ -595,7 +598,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+>   	if (!is_tmpfs(ops) && ops == &__read_write_file_write_ops)
+>   		expect = false;
+>   
+> -	if (wait_for_scan(msg, p, nr_hpages, ops)) {
+> +	if (wait_for_scan(msg, p, size, nr_hpages, hpage_pmd_order, ops)) {
+>   		if (expect)
+>   			fail("Timeout");
+>   		else
+> @@ -617,12 +620,62 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+>   		fail("Fail");
 >   }
 >   
-> +static bool check_large_folios(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
+> +static void mthp_khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+> +				struct mem_ops *ops, bool expect)
 > +{
-> +	int pagesize = getpagesize();
-> +	int order = GET_ORDER(hpage_size / pagesize);
-> +	int pagemap_fd, kpageflags_fd;
-> +	int orders[NR_ORDERS], status;
-> +	bool ret = false;
+> +	unsigned long hpage_size = page_size << collapse_order;
+> +	struct thp_settings settings = *thp_current_settings();
+> +	/* mTHP collpase only allocates PMD sized memory */
+> +	unsigned long size = hpage_pmd_size;
 > +
-> +	memset(orders, 0, sizeof(int) * NR_ORDERS);
-> +
-> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> +	if (pagemap_fd == -1)
-> +		ksft_exit_fail_msg("read pagemap fail\n");
-> +
-> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> +	if (kpageflags_fd == -1) {
-> +		close(pagemap_fd);
-> +		ksft_exit_fail_msg("read kpageflags fail\n");
+> +	/* Set mTHP setting for mTHP collapse */
+> +	if (ops == &__anon_ops) {
+> +		settings.thp_enabled = THP_NEVER;
+> +		settings.hugepages[collapse_order].enabled = THP_ALWAYS;
 > +	}
 > +
-> +	status = gather_folio_orders(addr, size, pagemap_fd,
-> +			kpageflags_fd, orders, NR_ORDERS);
-> +	if (status)
-> +		goto out;
+> +	thp_push_settings(&settings);
 > +
-> +	if (orders[order] == nr_hpages)
-> +		ret = true;
+> +	if (wait_for_scan(msg, p, size, nr_hpages, collapse_order, ops)) {
 
-sashiko comment:
-"Does this code overflow the orders[] stack array if the calculated 
-order is 20 or greater?
+sashiko said:
+"Could this setup create a race condition that leads to spurious test 
+failures?
+In mthp_khugepaged_collapse(), thp_push_settings() is called to set 
+hugepages[collapse_order].enabled = THP_ALWAYS before wait_for_scan() is
+invoked. The khugepaged thread is then immediately allowed to scan and
+collapse the faulted memory.
+The very first action in wait_for_scan() is a sanity check to verify 
+that there are currently zero huge pages:
+tools/testing/selftests/mm/khugepaged.c:wait_for_scan() {
+         ...
+         /* Sanity check */
+         if (!ops->check_huge(p, size, 0, hpage_size))
+                 ksft_exit_fail_msg("Unexpected huge page\n");
+         ...
+}
+If khugepaged collapses the memory in the brief window between 
+thp_push_settings() and this sanity check, will the test falsely fail 
+with an unexpected huge page error?
+For configurations relying on THP_MADVISE, this race doesn't appear to 
+occur because the madvise(..., MADV_HUGEPAGE) call happens after the 
+sanity check in wait_for_scan()."
 
-For example, on architectures supporting very large huge pages (like 
-16GB huge pages on PowerPC), the order could be 22. It looks like 
-indexing orders[order] here without bounds checking could cause an 
-out-of-bounds stack read."
-
-This doesn't look like the mTHP order size, but I'll add an order check.
+Although this race is unlikely to happen (from my testing, it has never 
+occurred), setting it to THP_MADVISE is indeed more reasonable. Will do 
+in the next version.
 
