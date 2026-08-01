@@ -4,102 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C27C55171
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 03:29:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07D9FC5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 04:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E48A6B007B; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
+	id 8B8F46B007B; Sat,  1 Aug 2026 00:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 794E76B0088; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
+	id 869BE6B0088; Sat,  1 Aug 2026 00:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AD416B008A; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
+	id 757746B008A; Sat,  1 Aug 2026 00:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 46F6F6B007B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC5DBC01EE
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:29:24 +0000 (UTC)
-X-FDA: 85051270248.02.39DA5E3
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 914EB100005
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:29:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785554962;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tm7PyOogKDuImuMfp/Jfq3/mFgj3o0HKG8Kidl6div0=;
-	b=6qixIlzfr05ofILoD9z/RwYSpHJcRIVaWy349t+c8CktQVAPCScXLx3lB+PBBxO5NisE8m
-	v1a8zcsDig8+HOHP4xOKSEwFUDKrPH8aZIb9mtXBQ7D1gFma/eiA8ZndVk+Gdq8HJ7oD7T
-	bg3u6wLS3vyrrmq3X9azDIBI7x7ICoM=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39F396B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:00:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8554120208
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:00:17 +0000 (UTC)
+X-FDA: 85051348074.27.E5FD188
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B98ADA0006
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:00:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Pp6Y7scz;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785554962;
-	b=Flk7pF4x5yc+Ciu0GQa0v1d7y+Olt0moiFTBQkjlf9DBtRctdFGDuDL1s2rr/FF36HAIlp
-	W1zcQcyzQobuwFUqMY5wbqB6N33rFmJ9uf3YxIaEuguyzj/3abA6qjarGHGJ5kI1G3TOmH
-	Mr07tgMQSy63tQqNoFJsp2xPIweLtPM=
+	t=1785556815;
+	b=HOPR7HA2pQKhXiYZSHQmu8O41e5iE/epE0ecEliydSpCnMbJooQdH8Hj7Gw4h1iEfGyJgx
+	Znn3XqWTbryjjInVsxBMkSXBCDFK3AXRaohAv7htZhHqST1LvwgnhP0pkBOjdbLBI3sYd7
+	rWH1v8yviuUdvQbgDP0nQAA6hAifTvc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
-	dmarc=none
-Received: from loongson.cn (unknown [123.138.236.242])
-	by gateway (Coremail) with SMTP id _____8Axx+oLaG1q9GwJAA--.31594S3;
-	Sat, 01 Aug 2026 11:29:15 +0800 (CST)
-Received: from [10.130.40.83] (unknown [123.138.236.242])
-	by front1 (Coremail) with SMTP id qMiowJDxDccJaG1qf3YfAA--.37140S2;
-	Sat, 01 Aug 2026 11:29:14 +0800 (CST)
-Subject: Re: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec
- sections
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: linux-mm@kvack.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>
-References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
- <20260721090606.8982-3-yangtiezhu@loongson.cn>
- <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
- <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <0471efa9-d2b4-22d1-6059-acfa6a150a94@loongson.cn>
-Date: Sat, 1 Aug 2026 11:29:13 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxDccJaG1qf3YfAA--.37140S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Zw4UuryDZw1kAF4DJw15WrX_yoW8Gry5pr
-	45GFZYkF4qv3yxAFs7Kwn8uFyjgrsYvFWjqr95Xw1vyas0g3ZYy3WDKr15tFWkua9YkF12
-	vayaq3yrZ3WDAFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Jr0_Gr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtxDUUU
-	U
-X-Stat-Signature: 3e6br6njfyjridsqc7qi4yshaicn975d
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Pp6Y7scz;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785556815;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=7ApH4QkiqPNgNnpjR0pMvRisqbHHlBUkcRi45oPDtyQ=;
+	b=iNhcYPN+rgwPdVNa8ZT4CTUmPMizkX+3y9mZN4uSAV9oQDiDf/vh5OjtHyt9L74W9TRHG+
+	7ZSNDy6pav3qj/Q0c+LQIGjmdQrxynG/rXShYiwLpm0Cz8+ARv9ay/A8Ugfwo/S/lka0ze
+	w+jTkoBOwjvKcUU4FvRoK6Q84T5g27o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785556815; x=1817092815;
+  h=date:from:to:cc:subject:message-id;
+  bh=7nUDrQMpdp8B/2IGadLa7D6zOIyf/M5G8NhUW2iIuk8=;
+  b=Pp6Y7sczVtS62FyuhLEaBK7q3USd4YXYuhVt5RmugXBUsXrqYaPc3D4P
+   SR+qVZUIgI8CZaFhEWDjCvzhOpXPIGattPijxcS1ezh+N8Nmjlbw1rQU7
+   Blq+C6iuXp5Z+CMRqby9lpXKZ3VgAkfb95AvguGU6UPk0fSedYeZM6zc4
+   0ZFaV6A3pqtTCzP6fT1aIw6K5RAbBs5OvuyacxfdEog1m4J5Ru5VQpdz+
+   DJZNrzAJcKJ23zSLDkEHEpZB8+0/xzf0T7TtSmq7EufE0gWMzuhQicTFM
+   yE4HfG9dJR/rgQdr6FvxQq5PWU3Dj4wVZuHJKnJkeWGs/9wwMrP1PRFzT
+   g==;
+X-CSE-ConnectionGUID: hAyEPLG/QqSVwRFrCLIiFg==
+X-CSE-MsgGUID: TGVxAJFfSpmWzv+QCC5tqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11861"; a="97336113"
+X-IronPort-AV: E=Sophos;i="6.25,197,1779174000"; 
+   d="scan'208";a="97336113"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 21:00:14 -0700
+X-CSE-ConnectionGUID: DnDHkbO4SiOvaw0fp3jpaw==
+X-CSE-MsgGUID: udX62kEaTQOIj+Cs9er0RQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,197,1779174000"; 
+   d="scan'208";a="259491084"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 31 Jul 2026 21:00:12 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wq0tN-000000002iv-3aKB;
+	Sat, 01 Aug 2026 04:00:09 +0000
+Date: Sat, 01 Aug 2026 11:59:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS WITH UNVERIFIED WARNING
+ 9e25ce807d1c5df0fb7ec68cc9eb4253ac4bd055
+Message-ID: <202608011116.FOaI6WWp-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: yi5m6zjtg4jh3f53c7ep1w7djyhwc79o
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B98ADA0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 914EB100005
-X-HE-Tag: 1785554961-44763
-X-HE-Meta: U2FsdGVkX19qQHyG1EHvhiVNNWWky1G3/XkTCgi44aZt9gdI9cdDkca/JsYdbFw4l2vHXsuNDZ+KjV8xJeOEc18iVy0mBH0aTnYT1yP0FEjrLMHFaAbfgpYUXMfhY2d5ukqbfwEgLfEghwOplfid8F1gXjZ7XM3MLZXtSxE7mVStiI7LtXwxH8MV4IlXvOoOkAGG8NBqJuSEp7xg5e/E+kUKRnNSoTwWmMq1+x22tdw+BqhVNzZjdHeBb/w6CtQmVeuvJOzWua7tthwJq4s48qRDZpeum00nyt2cHaChaHp4QM062odz5f48Dk6fC1mfABsqC52m6nZiWseeiI7qnyVAX6eR675qbjC4jZyZ4+LYZSUnCFosbBSlAbkyN/6YaiU+Cui2pkOreOlQdv6Jvy+xN4CIaArqIHoXa+bkS8/jVb68cU+Ub8vYjY5FhP6ApWExZeib1CYhjFX2qMQ7WdDOtqpc/wlHpnZfYuBBppkILUndt+M6bPSUqET0YMp4yFvq7aFlSD0J8aRrRg5Auaict8pV6GiCfjvcX2eVQnz2kPrfzMFfYcqSjoIJ3YgwhR41HRLQXQPAaS3QaRiJvc2FyZhYHk0s1KaOUTZxVPiZ8MBqPKS7b4pdepC2uITqa0qKRPp5buixVz72dGVI3ZOuxpWnxFDude/jiWa+GdO0U1aY3MNJjOXirHWu6v3C40O0EUwAg6AeZNNGuopHr9D7OxTkAvJMkIvVsAvfBBZuLfPN2470LOAzOAJoY5Vy8NMCpqBI4wn1X+ajvtTbryOSG1C48kaAr4no2IjhCRip7+WNAJHeoBL3paCVaOufEDK9ppJtqLaz+JZJHDb+RNzIROcKhBN66fTGLcAeTnT2fq+5d24YZkLsKwr7iELiC+mbEBZGd2BdZpb6yySQEJG+la+Ka5bavzJsjUIo70YNSIaXxcwdIJTghDOrVL68VW+dSnzMR17vTa625A4
- ECGDa/RE
- 0sHuPsGv94eVUtez4iYBFJUB82daziNcOjxUkSBieJmCsMGEx3v/2NnPVLQ==
+X-HE-Tag: 1785556814-413832
+X-HE-Meta: U2FsdGVkX1+Nm0eyDheng3d9sEzjRLfoiL5QuED+QNt4C+brRGJH4nT2wmDUjy1iPXjZDk4GmwewAZxuuU53kvlyhLx3tr2usA+QH74aoI5tWjCdjyALxoY4J4menNB22WFYRTA54z5BfzYgGIgmG11bk0bzKkpdaiwLTzn2YLFzCkPrk78i61zYAnblQQ2+ySunnsN8LBqhhLmCRGmjnqPE4GJtS6YJgAKarp1jI/cuyr9cyywCqvVTGiNgsdGAhcYrL7yWRKZV+5oW2ya+2i/Y8F7f6sWXaxYGAAhaA1gAc+ab1XFjqX2zABCw9y2XoJYLOekrC0li0a02Sv7mUJauo+XvAkkPU3h2BOGsdnrhm451FFMZ8SeuBO1pm16UzaV8xO+u/oriv/OztK/z531QStrqlL731pB5cRIU7MNOL66/fNNkgMgJFuVgy89K/ziGD2Q2mR/h9oo/t+0OHIC5lB/84kehR/B/1PfGprfF+4MkrGH3rsyntKZEjEkHcbwe1IbWoLKJ/ObPenM/W55FZAeQm3l4k7AY/tykySfDN4SfW4FRMt55GSdhT1zwkAzOMxozqRRj9Cx92z+Ja0kB3ALsbeNZ0iwu/lj9Xu/hfD+sPBHLynWZRy5boq99BafPk+YKud2pBV6pR5LLPAk/QVfKo9fxlPgg0tBJhLE9wlkjb+UO2ReUjlSS8CbwH2eksavBcNVfFfsAGLjCsmxshh1IRrXAht/vF/9LRWniu8qs3o3JnwG17yG3RJKOncmLCOjqI/f8IVaTWqydcQO5aGv5IjeM360q7qbboe3JERY36iRjFAMaNZiDytdASX3XS4QVqM3WL783S7HUXaq4TaXv6kom/+nrhepBZW/tg8MdN0A0qShpl01BACMP0leKyemlJpdXG/nkNhmly4MZ67Ty4LCrvUW0His+kJ82mtS7NrUzsPCKZzCJhNRzEx5xi4QH5p5M9VqTwTv
+ amJ1L235
+ tE4ePZCrHVWE3phtUHUkURJ7lZ5sYK5CED8UNfHvEqzGkH9v6OG/5rzebU6eYLjPeev/xrza0HlJNghEQbLoeDDupyaWgLlrb0q1BEG2IgHpqw84Ny+8bboRd4omNmdiQLjnbYPDQ6N0XYyWmAFF/mT9n46B9PPX6UO18F8AEQhqrJmTb1wYA4UP8aw56TwwxYoujCFoMf05tcpu4nMEqQRuD8v0E3FJBbzj6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,50 +102,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/31 下午3:38, Huacai Chen wrote:
-> Hi, Tiezhu,
-> 
-> On Fri, Jul 24, 2026 at 2:07 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->>
->> On 2026/7/21 下午5:06, Tiezhu Yang wrote:
->>> The module loader currently runs expensive address pairing logic for all
->>> sections blindly during relocation. For massive modules like amdgpu, this
->>> causes the loader to waste lots of CPU cycles analyzing non-exec sections.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 9e25ce807d1c5df0fb7ec68cc9eb4253ac4bd055  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-...
+Unverified Warning (likely false positive, kindly check if interested):
 
->> Using the section flag check reduces the operation to a single check for
->> massive data sections; otherwise, the loader would have to perform six
->> redundant type comparisons across the if-statement and switch-case for
->> every single relocation entry.
-> Please just drop this patch and make the first one better.
+    https://lore.kernel.org/oe-kbuild/202607021433.DYT5fDqE-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202607120402.clBrrZQA-lkp@intel.com
 
-OK.
+    mm/hmm.c:673 hmm_do_fault() error: we previously assumed 'hmm_vma_walk->locked' could be null (see line 654)
+    mm/vmpressure.c:123 vmpressure() warn: check likely/unlikely parentheses
 
-> Now the first patch has a risk that the distance between .init.text
-> and .text of the same module exceeds 128MB. I solved it and you can
-> verify:
-> https://github.com/chenhuacai/linux/commit/f87f9d82869ebc71dca4c02bdff1cd203913a98f
+Warning ids grouped by kconfigs:
 
-Looks good to me, I think it is safe.
+recent_errors
+|-- hexagon-randconfig-r072-20260801
+|   `-- mm-vmpressure.c-vmpressure()-warn:check-likely-unlikely-parentheses
+|-- i386-randconfig-141-20260801
+|   `-- mm-vmpressure.c-vmpressure()-warn:check-likely-unlikely-parentheses
+`-- powerpc-randconfig-r073-20260801
+    `-- mm-hmm.c-hmm_do_fault()-error:we-previously-assumed-hmm_vma_walk-locked-could-be-null-(see-line-)
 
-static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
-{
-...
+elapsed time: 786m
 
-	if (mod_mem_type_is_data(type))
-		execmem_type = EXECMEM_MODULE_DATA;
-	else
-		execmem_type = EXECMEM_MODULE_TEXT;
+configs tested: 102
+configs skipped: 1
 
-	ptr = execmem_alloc_rw(execmem_type, size);
-	if (!ptr)
-		return -ENOMEM;
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+arc                  randconfig-001-20260731    gcc-8.5.0
+arc                  randconfig-002-20260731    gcc-16.1.0
+arm                  randconfig-001-20260731    clang-17
+arm                  randconfig-002-20260731    clang-19
+arm                  randconfig-003-20260731    clang-24
+arm                  randconfig-004-20260731    clang-24
+arm                          u8500_defconfig    gcc-16.1.0
+arm64                         randconfig-001    gcc-14.3.0
+arm64                randconfig-001-20260731    gcc-8.5.0
+arm64                randconfig-002-20260731    clang-24
+arm64                randconfig-003-20260731    gcc-10.5.0
+arm64                randconfig-004-20260731    gcc-12.5.0
+csky                            allmodconfig    gcc-16.1.0
+csky                 randconfig-001-20260731    gcc-16.1.0
+csky                 randconfig-002-20260731    gcc-10.5.0
+hexagon                       randconfig-001    clang-17
+hexagon              randconfig-001-20260731    clang-24
+hexagon              randconfig-002-20260731    clang-24
+i386                            allmodconfig    gcc-14
+i386       buildonly-randconfig-001-20260801    clang-22
+i386       buildonly-randconfig-002-20260801    clang-22
+i386       buildonly-randconfig-003-20260801    clang-22
+i386       buildonly-randconfig-004-20260801    clang-22
+i386       buildonly-randconfig-005-20260801    gcc-14
+i386       buildonly-randconfig-006-20260801    gcc-14
+i386                 randconfig-001-20260801    clang-22
+i386                 randconfig-002-20260801    gcc-14
+i386                 randconfig-003-20260801    clang-22
+i386                 randconfig-004-20260801    clang-22
+i386                 randconfig-005-20260801    clang-22
+i386                 randconfig-006-20260801    clang-22
+i386                 randconfig-007-20260801    clang-22
+i386                 randconfig-011-20260801    clang-22
+i386                 randconfig-012-20260801    gcc-14
+i386                 randconfig-013-20260801    gcc-14
+i386                 randconfig-014-20260801    clang-22
+i386                 randconfig-015-20260801    clang-22
+i386                 randconfig-016-20260801    gcc-14
+i386                 randconfig-017-20260801    clang-22
+loongarch                          defconfig    clang-24
+loongarch            randconfig-001-20260731    gcc-16.1.0
+loongarch            randconfig-002-20260731    clang-24
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+nios2                randconfig-001-20260731    gcc-8.5.0
+nios2                randconfig-002-20260731    gcc-8.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+parisc               randconfig-001-20260801    gcc-11.5.0
+parisc               randconfig-002-20260801    gcc-9.5.0
+powerpc              randconfig-001-20260801    clang-20
+powerpc              randconfig-002-20260801    gcc-10.5.0
+powerpc64            randconfig-001-20260801    clang-24
+powerpc64            randconfig-002-20260801    clang-24
+riscv                randconfig-001-20260801    gcc-14.3.0
+riscv                randconfig-002-20260801    clang-20
+s390                 randconfig-001-20260801    gcc-15.2.0
+s390                 randconfig-002-20260801    clang-24
+sh                                 defconfig    gcc-16.1.0
+sh                   randconfig-001-20260801    gcc-16.1.0
+sh                   randconfig-002-20260801    gcc-16.1.0
+sparc                randconfig-001-20260801    gcc-8.5.0
+sparc                randconfig-002-20260801    gcc-11.5.0
+sparc64              randconfig-001-20260801    gcc-9.5.0
+sparc64              randconfig-002-20260801    gcc-15.2.0
+um                   randconfig-001-20260801    clang-17
+um                   randconfig-002-20260801    gcc-14
+x86_64     buildonly-randconfig-001-20260731    clang-22
+x86_64     buildonly-randconfig-002-20260731    clang-22
+x86_64     buildonly-randconfig-003-20260731    clang-22
+x86_64     buildonly-randconfig-004-20260731    clang-22
+x86_64     buildonly-randconfig-005-20260731    clang-22
+x86_64     buildonly-randconfig-006-20260731    gcc-14
+x86_64                                 kexec    clang-22
+x86_64               randconfig-001-20260801    clang-22
+x86_64               randconfig-002-20260801    gcc-14
+x86_64               randconfig-003-20260801    gcc-14
+x86_64               randconfig-004-20260801    clang-22
+x86_64               randconfig-005-20260801    gcc-14
+x86_64               randconfig-006-20260801    gcc-14
+x86_64               randconfig-011-20260731    clang-22
+x86_64               randconfig-012-20260731    gcc-14
+x86_64               randconfig-013-20260731    clang-22
+x86_64               randconfig-014-20260731    clang-22
+x86_64               randconfig-015-20260731    gcc-14
+x86_64               randconfig-016-20260731    gcc-14
+x86_64               randconfig-071-20260801    gcc-14
+x86_64               randconfig-072-20260801    gcc-14
+x86_64               randconfig-073-20260801    clang-22
+x86_64               randconfig-074-20260801    gcc-14
+x86_64               randconfig-075-20260801    clang-22
+x86_64               randconfig-076-20260801    clang-22
+x86_64                          rhel-9.4-bpf    gcc-14
+xtensa               randconfig-001-20260801    gcc-9.5.0
+xtensa               randconfig-002-20260801    gcc-15.2.0
+xtensa                        virt_defconfig    gcc-16.1.0
 
-...
-}
-
-Thanks,
-Tiezhu
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
