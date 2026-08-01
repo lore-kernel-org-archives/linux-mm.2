@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E02C5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF319C55174
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:49:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2020F6B0096; Sat,  1 Aug 2026 04:49:10 -0400 (EDT)
+	id 7A6F16B0099; Sat,  1 Aug 2026 04:49:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18C3E6B0098; Sat,  1 Aug 2026 04:49:10 -0400 (EDT)
+	id 758BA6B009B; Sat,  1 Aug 2026 04:49:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C96A6B0099; Sat,  1 Aug 2026 04:49:10 -0400 (EDT)
+	id 5D17A6B009D; Sat,  1 Aug 2026 04:49:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6AC6B0096
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63EA34027E
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:09 +0000 (UTC)
-X-FDA: 85052076018.26.503FFE2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 321916B0099
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EAC0160249
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:14 +0000 (UTC)
+X-FDA: 85052076228.23.1C0A26D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C7D1E8000B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OhXqkXdt;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 04334180007
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fH7Q9Co9;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785574147;
+	s=arc-20220608; t=1785574153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W+DZv5O3y5NnEgeX2qKFyTmcPLYk4xvi9rQcOd074n8=;
-	b=OM9HtvklwOjoprr0bXbB0oLupbyj3ItkUHuz8fW8Er7mHV4A5rSsx4skU6cq13lm6JxpCK
-	RFtxaSWEsPhdv8QmkPNi2NT+ej4w2bTSBzYUdf0VZMTll8unZmWG5hXXv6JD3qRq7dhvQS
-	JfRvTCHybpEArsASG0vcbdgLi+0Qee8=
+	bh=JrkBED7KT85yC/ETBmppqUy4I2mZbe+o6Vny+4DxgfI=;
+	b=c0rDBLxeZJ/BrdVwyv5VumMb38JG9H/UlzVy6M8Que9etsZUpYXyq941Og4uyvo8ENJO5b
+	Y6doBtkuwUd9d0sNG88Rtq9biMN+9633UHNPr7m3/1Id7ZW8GGMG4OPg5F6HIohuZg/bFw
+	ZcC2nxjaDYZgPKkSKfsSmjDnuZWysBQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OhXqkXdt;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fH7Q9Co9;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785574147;
-	b=v8LSJhbhP2vbJszv36x3P425QqmCgMezxfwoA+qDyPQVqnzYQukfT2IrdGHriJCmwJvoiT
-	KaXEF3OqWVAM99Zs4rYMY7oi4HuMDIJtZRVHJCieP2LtvJmmN6/JzeEW5BuxrexwleOCB2
-	ROU8YNcdpbRY/mzNrRZl52FgpXzG3yo=
+	t=1785574153;
+	b=bCG0LBohtQ5+MCwfIeFT/mBqEHngyqibvgzl+X2bwcg9vKUXKBNfxcVWAUsPlqRSKdRRsN
+	PquvUsOU7hwtW7jRawZKNMzftX+psUHzNIyPYmMtnSwPGcyD3IyMoq5xxIX24uVvW56ZCr
+	MR/+eGW/QCIdoJ6Vrt5uAna4cfNmraY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 597D960AAD;
-	Sat,  1 Aug 2026 08:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060361F00ACA;
-	Sat,  1 Aug 2026 08:49:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9051B600D8;
+	Sat,  1 Aug 2026 08:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA141F00ADF;
+	Sat,  1 Aug 2026 08:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785574147;
-	bh=W+DZv5O3y5NnEgeX2qKFyTmcPLYk4xvi9rQcOd074n8=;
+	s=k20260515; t=1785574152;
+	bh=JrkBED7KT85yC/ETBmppqUy4I2mZbe+o6Vny+4DxgfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OhXqkXdtf/qGCpwbtSdDnWbV2wKwD8MWHWKkhrruGTMO8Ym2K0xMs9bowsWda8ygh
-	 mtmdF2YGLGnXBezEYsM3exCChKzG0WsDxJf9EZLAeA0FG7LTbN5tQKdQO7qLzl8eLt
-	 bJgEaxtIkPn4IQNHwdK2RShieBpN3VFZtkkViPsAVEEHmerLdz7XXD+WPi4pVWoyE2
-	 aDb4xc6BDXSe26JYjEwBDHr0jS6W141z18d9GQEX2ePgMMO1BJdYY4L9IBUyOdjjs1
-	 7aucco5zCmCIARZp4SRcG3DYbz2lluvvHwvDyIEPR3HuYCv/EA3cCIFfZf03GbNSW8
-	 nW2zZqgNbfyTQ==
+	b=fH7Q9Co90aLn4pZHLfAZHKWfqeqMxQkiyoH0OPMw0VHVNMpmMphb886dRHxBjKgyk
+	 hgCD4TLiEdm/3FbUPTjPzskFtd81SO3AmO5HJEPLc09YD5I7EmU1BvxrUfXG6xluy4
+	 d5KTBFzhuXUaKHTUqv94YyJTI9s++Vn6u1v55WZyuMnRZLGvWzNn0o/EVBDGPicrhE
+	 FZNmgaehyZ3MDXkbnqxoHPUenEKjq384GWwLMNXI+QYkAfbQ0rSEY/7vlTg6+7V9aM
+	 xmv3NYt8uCvxni9qfkiA0qJ2J4SL5uMrQ0OlnN7wRzedD7AjxrJCXBY3R8gOuEgE2g
+	 U+X35ATmQq3Dg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 06/22] kho: move all memory retrieval logic to kho_mem_retrieve()
-Date: Sat,  1 Aug 2026 10:48:15 +0200
-Message-ID: <20260801084833.1897543-7-pratyush@kernel.org>
+Subject: [PATCH v6 08/22] kho: add callback for table pages
+Date: Sat,  1 Aug 2026 10:48:17 +0200
+Message-ID: <20260801084833.1897543-9-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
 In-Reply-To: <20260801084833.1897543-1-pratyush@kernel.org>
 References: <20260801084833.1897543-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7D1E8000B
+X-Rspamd-Queue-Id: 04334180007
 X-Rspamd-Server: rspam01
-X-Stat-Signature: 68yn3dgcr837y8kr1odoppuiaeuz4u98
-X-HE-Tag: 1785574147-773600
-X-HE-Meta: U2FsdGVkX18kvKnFFn+18OahylDn0NrlRPKXHYadvOojhmBt4ydtW3cnDH2PJBocf8ta0Ra37KjDtbSY9lnyGZw8CunvF33YctIQODwvMcDin+9qgnVKwdVULYdI+rYTMmxkJF4GIcs23u2/5cu+NU3RvxF46Xp/FV69MMldBrOUcIjFQtBTs+Nx0Yi0s6qt+KUrBkSV0BW3nB5NsDP4lQFEaRN4mfh9o5jYpESueimR4c7W5/QCNGQHzeGvtx7JT2iAOlK/lUG2eQfo9poqaklsiIBhnekxMNw8Toh12+1Gt45Ri6cs6Il68Sz6K+RBC6alNzq/dym3y/xEV/2bM2oVMCqy0L/LaX+IJfXfebU9kWTdUML1JiaYyiCAZCvpJG4tcR1dcJoc6ClWYxf8CObPksm38lHHC7/5eeHHYznXRGtyzmbGKKb2JVlV7hdHv/2TkHlXDR3OPjaLdgFosNNJifLhZ/AadaxyG6/R0I9hYiwLST9g4BcNAg/BUmP6+ceDu7ieqDdqV0pDoZzD4Vq4ax723oj+eN76118etSnO4/q4qg98y1Vzq6eeIqARRwVoXWy0WUIZSCUUUaJ9gMljdnQZeIPEsxFK3HYXQW3ajc8v31/fJSajAezHXIQm325+M/W6Hfxj1Rp26vhJipdIr5S0r3uzb+uB/NOdk329aothzwUR/95Tg5AZhxa9V1ZHJ4eEJMLdUd3QwV3+Kvki9IPegTO3kia25ygPEs1OOoFN0cjCx8ylAgYMG7qEPbtA41YLo+dTXAPJvBTC4mPXhRI7rQpSlyT3xXZ+vUQNsv+hRIiD6CqftiI8Y4GI1o90mtS1B+lpBkmCeMG+jgIj5HFGncPznI8l3cw3bAZk9r7GGrUVpOdWA+d3ZcJ1Bkqgq+YDLCRdTpJGQb7+PlL8XQSuasVz6Aud/7byXGtgkWfgLesiA7+TWgAGKXjT9nOWqNFQKk/J8E3vU3+
- FG1kUHas
- kdL7OOMjovVsfCBE8xgNcDQVsJm/feXfC8sQzzw1aRDCTtIFxDQ3QjV6FU1w7Iz5cUiQLZPCve4BWIHUo6szcx0/O2OOXh0N6EUNeHmIUMXtFiWCGMo98/1uPaF46LBulfW/j9aobxlDAt4c+NVC3e1JfynVkRaR2ZffXhfOLlWd38f5mroB242xaWtFVyI5rpcxeuASxDt4CptHSjBeDToG/EOIzxUYpJRG/pfUxd3JsUCqghBlhcDQ0o7XU6iV3xoGovHMSApoxrDH5LZ5fm4PH2r0UZKLE4ZsV
+X-Stat-Signature: igrzsei79iuc4rjdu9bnu3fnpfbm9746
+X-HE-Tag: 1785574152-884737
+X-HE-Meta: U2FsdGVkX1+S4OrPpZi7gWIKZRgAiTikmfisrLb9NFNbyFeXZ3sFHekiIC3xGh4KxXzG7cPh2GtwcZeUBaHba61Ts8SPGD242PoN2a2nkl1aL6LCfDwzUiot4SUnpusBm3BH02200a2pkHi7EhUqRprK3ZhUrK0GsOsBfntjckCXgYov4Rc5pHEzUZ0paZq/qIhzZOYJfDV98uXg/OfFtwtUAo2BT6qRHfWTRmyJ2avtU1GJ5UzRyizSUkuWl1B8SGWPfdFkgR5U2+gzeUAO7spQluPyeJywE1d/lg2IJhrPdnV17U5C1fOLHHwwKatTBjDpil1jYldmTLbnNexbRFUyDXHvVU3kKHr2tGn58YStZrwlCqsIyW5WGZr3ipEr/vlTg0x2qTVbKIY1rymlCszSg8c4VBYRcXjo2+k16y9+CnoNKGbVR/XEPlAt7MrjvRvZk2BFfi9UNU0oJpkwX8al/Nb8CUnQGCTClA+DBa2Gc39A527ojRVtt4i48ZdgcGwfIDz6Ftsv/8Cb9xZjkhAQ4/gW/YGVSBYkY93Vd1YZI5Ks86aRHvLxXZ2+9YleaUgNfuVhF6rRR71cCpkOWJNbq9qBAfHVgC0CVSdfH+Yw6LOVLDLY2b30MQeIglR1ImWtdH28R7ia84ihSEhF0XarpP8xd6BXWZUU3eHyGKAwjkaO6gDiTX5HxKHQbDl+XuNhkqfVu+y/6EbD11yVg3m75fMCFS6SYS0J7bvBG61Tc4sc4kGGD3fo3lg+fB4L8jabEoqjlbuqxkWsCVKaoXNMDdscer+wR1brVXRBeVhUaZMoQvSFGU9wQay4h7Xf2bEjndOWWaaIHpYgR1Xk92s3bx6Ad0/CU+6f3yoqtkZ8ooDoLFE7aH2SKtM5pwacbH7933JhUaVNs6qYGvW+QJRDgw+0dAJ5YfK9CgYjNqElkLefdjuTb6a3sFSe0x8wfB+Dsm4PPnKOxAxuPk3
+ C9b4WaVf
+ cX+p34wSxPltlmMurRw2qwL+qMmtDG4rv1qb6SIk5qx+iuHiausK9iO/QsRN1pL9i0F2Z+63A+zyqMcTMOAPxBj5r9zZrw1eqvm8AcbmoBuoUMc+zosrcojBBRzlkLTxmy6x7DyvX3Oif9x/iLLJ8nRiFXP7CO/UmEnc2/ofHMgzPG2zmziqxJCkh0YVqGSFWj83hi/zY4L6UE/zpOoccE0XcJ6xq/XplB5l8rDQdhi9yo2F+DqfDAlxEXTfnbGZlGNCuEuBuTKS6/Yg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,76 +102,80 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-The memory retrieval logic is spread out across kho_mem_retrieve() and
-kho_memory_init(). The incoming scratch area is initialized at
-kho_memory_init(), and the error handling is done there too.
+The KHO memory preservation radix tree does not mark the table pages
+themselves as preserved. This is done to avoid a circular dependency
+where preserving a page can lead of allocating other preserved pages.
+This means any walker looking for free ranges of memory outside of
+scratch areas will ignore the table
 
-Consolidate all this logic into kho_mem_retrieve() to make the code
-cleaner.
+Add a table callback that is invoked for each table page. The callback
+is given the physical address of the table page.
+
+This is useful for the upcoming mechanism that discovers blocks of
+memory with no preserved pages and lets them be used for boot memory.
+
+Another use case is for users of the radix tree other than KHO itself.
+The radix tree does not preserve its own pages due to the circular
+dependency described above. But external users of the radix tree would
+need to preserve and restore their pages for the radix tree to survive
+past early boot. They can use this callback to do so.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- kernel/liveupdate/kexec_handover.c | 31 ++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ include/linux/kho_radix_tree.h     |  3 +++
+ kernel/liveupdate/kexec_handover.c | 12 ++++++++++++
+ 2 files changed, 15 insertions(+)
 
+diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
+index 486e193d58f4..902bbeddcbb7 100644
+--- a/include/linux/kho_radix_tree.h
++++ b/include/linux/kho_radix_tree.h
+@@ -41,12 +41,15 @@ struct kho_radix_tree {
+ /**
+  * struct kho_radix_walk_cb - Callbacks for KHO radix tree walk.
+  * @leaf:      Called on each present key in the radix tree.
++ * @node:      Called on each node of the radix tree itself. Receives the
++ *             physical address of the page containing the node.
+  *
+  * For each callback, a return value of 0 continues the walk and a non-zero
+  * return value is directly returned to the caller.
+  */
+ struct kho_radix_walk_cb {
+ 	int (*leaf)(unsigned long key);
++	int (*node)(phys_addr_t phys);
+ };
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index b53ae68ca087..e3408e1844dc 100644
+index 9fb07c0ef18e..2044f35cf1de 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -1415,8 +1415,13 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size)
- }
- EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
+@@ -288,6 +288,12 @@ static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf, unsigned long key,
+ 	unsigned int i;
+ 	int err;
  
--static int __init kho_mem_retrieve(const void *fdt)
-+static void __init kho_mem_retrieve(void)
- {
-+	const void *fdt = kho_get_fdt();
-+	int err;
-+
-+	kho_scratch = phys_to_virt(kho_in.scratch_phys);
-+
- 	/*
- 	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
- 	 * catches that and never sets kho_in.scratch_phys, which stops memory
-@@ -1424,8 +1429,16 @@ static int __init kho_mem_retrieve(const void *fdt)
- 	 */
- 	kho_in.radix_tree.root = kho_get_mem_map(fdt);
- 	mutex_init(&kho_in.radix_tree.lock);
--	return kho_radix_walk_tree(&kho_in.radix_tree,
--				   kho_preserved_memory_reserve);
-+
-+	err = kho_radix_walk_tree(&kho_in.radix_tree, kho_preserved_memory_reserve);
-+	if (err) {
-+		/*
-+		 * Failed to initialize preserved memory. Clear FDT and radix
-+		 * so KHO users don't treat it as a KHO boot.
-+		 */
-+		kho_in.fdt_phys = 0;
-+		kho_in.radix_tree.root = NULL;
++	if (cb->node) {
++		err = cb->node(virt_to_phys(leaf));
++		if (err)
++			return err;
 +	}
- }
++
+ 	if (!cb->leaf)
+ 		return 0;
  
- static __init int kho_out_fdt_setup(void)
-@@ -1629,16 +1642,10 @@ fs_initcall(kho_init);
+@@ -310,6 +316,12 @@ static int __kho_radix_walk_tree(struct kho_radix_node *root,
+ 	unsigned int shift;
+ 	int err;
  
- void __init kho_memory_init(void)
- {
--	if (kho_in.scratch_phys) {
--		kho_scratch = phys_to_virt(kho_in.scratch_phys);
--
--		if (kho_mem_retrieve(kho_get_fdt())) {
--			kho_in.fdt_phys = 0;
--			kho_in.radix_tree.root = NULL;
--		}
--	} else {
-+	if (kho_in.scratch_phys)
-+		kho_mem_retrieve();
-+	else
- 		kho_reserve_scratch();
--	}
- }
- 
- void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
++	if (cb->node) {
++		err = cb->node(virt_to_phys(root));
++		if (err)
++			return err;
++	}
++
+ 	for (i = 0; i < PAGE_SIZE / sizeof(phys_addr_t); i++) {
+ 		if (!root->table[i])
+ 			continue;
 -- 
 2.55.0.571.g244d577d93-goog
 
