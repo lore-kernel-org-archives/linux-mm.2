@@ -4,132 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D908C55173
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 12:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D170EC55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 12:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80DE56B0099; Sat,  1 Aug 2026 08:32:22 -0400 (EDT)
+	id 9FF606B007B; Sat,  1 Aug 2026 08:46:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E7036B009B; Sat,  1 Aug 2026 08:32:22 -0400 (EDT)
+	id 9896E6B0088; Sat,  1 Aug 2026 08:46:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D5246B009D; Sat,  1 Aug 2026 08:32:22 -0400 (EDT)
+	id 8533E6B008A; Sat,  1 Aug 2026 08:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD186B0099
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:32:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2E541A02DD
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:32:21 +0000 (UTC)
-X-FDA: 85052638482.12.78B1E73
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EE627180007
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:32:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YlpDipHp;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B65C6B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:46:55 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D4EA280289
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:46:54 +0000 (UTC)
+X-FDA: 85052675148.03.3CB0D0C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3FA8020006
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:46:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqdQ0gEj;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785587540;
-	b=5UU0hSxVucP166GFv+KglEwDDpPslpyBWJTvrjVaS59SYkgEr4fE8zPdtDL0xTHAfveyUj
-	GG3Cm7V2RqPAMxXZwYgafDdxg7QirHq46HjowIRuE46cxPRwIYgajx8kQ5mb0WC+sZlgo/
-	Zzq6VKjWOBd06StAHOxksmvGjFkqXS4=
+	t=1785588413;
+	b=ZJf+CvRwvvNm+JeBB3jxmdi57zFv2KbO1aQKB//ziykimChmguS6/nnnWsmFK5ku6OoYTW
+	PpueJUq8RRj6gr1inKkPoXVQW4+HeEW2kKnR2mUan7bvMrHIJ0cvHr3JVeaB2AZvjPtric
+	pBQ7L5nMHFiGY8olLgpO+Lnsl4/hkxM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YlpDipHp;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqdQ0gEj;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785587540;
+	s=arc-20220608; t=1785588413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GBMKwQxu07dAahElgzkICs5Y0p256zctbXyzmgOcwEM=;
-	b=w+ygNMaj04Qh4LjOq6Qa4So1jwZz9ZONXlksIjS4AdRUPWHYXI+weItHFvurOxTzH1IfGd
-	Fi/t1NBq6bdcq9u47EHFlTT2NPju5PnuHBH96y3YXi4/ovms0vZilizdXhw9mio7aAGtCP
-	tJbucgUSeIFogksGC8Cti184c6SLZ6w=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-81ed2a06b9eso17514097b3.3
-        for <linux-mm@kvack.org>; Sat, 01 Aug 2026 05:32:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1785587539; x=1786192339; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GBMKwQxu07dAahElgzkICs5Y0p256zctbXyzmgOcwEM=;
-        b=YlpDipHpSXyAKGAZ27NojYOmSEz4PYmD20fYvk2wSYv2WaIB+0VxsZH1Yi6TN8kFeZ
-         jmedEEC29guvCWCBLabmP8SKueeBktI2c8UCgjsp9c3AYqv4nMf4vrdhc+TZx7+9OpLh
-         Uux8M57VpLzrSmAMC4ukzdMVQsiEsFL7HK1sE6RR14vr0PDc1Ceu2L4iWGENG2IX9b9Y
-         dS7/FlsIguH0VD68Dxf1ZntBmoqHyUaxcwL/7EkFn/JifQsQb2bm/dYZWbRmalXH0CuY
-         8W7tPPrbEFwyReYagrvMkBKuN5nEn4DvzHyL+kfo34fnI0LHnKj30ajbQkMi9l2hsycM
-         h3kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785587539; x=1786192339;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=GBMKwQxu07dAahElgzkICs5Y0p256zctbXyzmgOcwEM=;
-        b=RYU+yczC1Mm2V9X+PHv6vdCmBcmYP6RT6iD5yjEgaDq5lL80ta544zPtDNiD6tdyrh
-         hBDntuhaJnshyi/CFYqVc6VBzgd30HvEtR8hH1VEMP9YDw1pqLmNTzbr9U2wnre8u8uk
-         U94+eeDMh0/ogNol1UfcF2AqmGqaqbvI0YtKDS8vHz4W93QlqTX2JYviVI3n83pT65+6
-         FbH8K1SDkfAhNA9yHUDXpsBL3+OLCj9XvpLll7KYkYXdtwQlmxPHsPfIJp4QzDznp7/0
-         t7prwVVXcAe/+8rVVq2s7q2wXXdpv0wTrY5wA4NABvyGW5NXnMC7GfzGKgwzQQhHu2JK
-         /DoQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrriSGjTKcqzI+NgoQpl/KG6rEdHStwHtCYLtmA3eWdKtdtVMALQOtn8wtkZ+rImUpyHB3m7QuJaw==@kvack.org
-X-Gm-Message-State: AOJu0YyQHFlmX9RXsf3/LaKkXZD6Vs7kVFKrma0LVboWo4J073M7HDY/
-	Re096VyFUcty+tF0TpMyTXBvIJ0dIRYVQDfL1BNZHOHkuTfhaEyZdJwciEr2StUXyWY=
-X-Gm-Gg: AR+sD10OUxEWL3nnJb8PM/5g7vyG7SoOi83Du1CRHVil8fnZDYx5GLIP5le7+6R60zu
-	rZuePJZFJMFSnzZNwvL2iQ8i3Xm+GZVUYh76VtjBkS063xuLFpOWmf66sSsV9q9hHf5DDVWCi/x
-	WXlVtrRGilY/mPTZKoq075B+UPrODcEF7rHQkPGfVhZXaxZxNs48pg3cGMdOdX8ZqQYvMtk/1bM
-	Kt+6HmdR2K5ZAOtjmFL6cL8W712ea7pNIfTu7yt+CqFlhd8tndlGcxeuvCXfFv6QWGGzDPBFsxP
-	6t+JQmJoFkurlmBPB3gpbCqsotnMzkyDe+WS7S7vyyzRaljHHMgh1LqzknYxYo1e4BOR+Dm5a4D
-	arel/mjMQS2qZZ4qDvgCuwwORurd5h/q/XMROgHQR5mizyrW84jYSjVd2Tunrl6ww+oMZ061wZi
-	803+IwDt3K0+eWLdOjIAtySERDfNCjw8MoN/Ahgh/GaHaRPMbLsOSM1vln/zXR/CLh2wPGXCXs+
-	8hjuxVKCv0sQsyUqcAWfSAb5slP558z33MRy31/GNUUBe6lSTWZBHQYNQqPrp+VUQJzwFoPhI0c
-	jyc4wek=
-X-Received: by 2002:a05:690c:6604:b0:812:be92:6ea6 with SMTP id 00721157ae682-81fd4b909d3mr37800897b3.28.1785587538894;
-        Sat, 01 Aug 2026 05:32:18 -0700 (PDT)
-Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fccf9555dsm24556607b3.20.2026.08.01.05.32.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 05:32:18 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Andersen, Tycho" <Tycho.Andersen@amd.com>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Baolu Lu <baolu.lu@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	"Heyne, Maximillian" <mheyne@amazon.de>,
-	James Gowans <jgowans@amazon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Praveen Kumar <kpraveen.lkml@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	"Woodhouse, David" <dwmw@amazon.co.uk>,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [Hypervisor Live Update] Notes from July 27, 2026
-Date: Sat,  1 Aug 2026 08:32:07 -0400
-Message-ID: <20260801123213.2259109-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FkxXSTG3H//V9ns14rG4qN59j0AblwsWEwAmJcsn5lo=;
+	b=nTyMUu5p7Iw3vta0WbXu9n2p+NfkrTxzOSTrW+E047KZ5kFyRrt66LHNSFTxlfmoQkdiX5
+	dHFfSQFwUINu1iybpL0lgA6ge5kf+lmfRxwFTc7gCL4SCbQnzXhlV6vB7jFhumEZjb0gug
+	pXbXIc4cGjDEpYOZCC+L9V+hu3R18tI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 44F3D4350E;
+	Sat,  1 Aug 2026 12:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99A21F00AC4;
+	Sat,  1 Aug 2026 12:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785588412;
+	bh=FkxXSTG3H//V9ns14rG4qN59j0AblwsWEwAmJcsn5lo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NqdQ0gEjqB7HERKuKpQmnPZaDGNbkB1jDYLk2t4C951COmRrMXdjq4R1JHuxfOyQZ
+	 NSiT4zUzTR8xDpP4TrmxxbOP+3UI6gz37JXEaodgU9p44im+5xtwKhAO4ROLZEt6Fy
+	 ZEFk5huLhtE2BPrmSvheETTa1q29dYvHKqhTXZ02VMXNEVnKHmKYRru7TIubaV/zpQ
+	 rIdxK72V80+Ik7Z9Y83dqTpqNNOo5J+tUixSTOYDxX7617eZcYGMvX0axVRbyHUcp3
+	 v7OvKtcPMLboYglTn+6iRpwbWegIE7gOkaLy11VZhMormeDdU/UGB7Ti6BFxzVKvy/
+	 Os5/l3k+5yhtA==
+Date: Sat, 1 Aug 2026 21:46:44 +0900
+From: Harry Yoo <harry@kernel.org>
+To: Danielle Costantino <dcostantino@meta.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	Hao Ge <hao.ge@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	"Liam R . Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: [7.1.y 0/3] mm/slab: fix unbounded recursion in free path with
+ memalloc profiling
+Message-ID: <am3qEKonkiyEG_nE@thinkpad>
+References: <20260801122533.319272-1-harry@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m5u39wggkhid7f9qpd16toj5d3b5xsrt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801122533.319272-1-harry@kernel.org>
+X-Stat-Signature: qgm1btqhom7sepqaxc45jpo1fzzmrt4r
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EE627180007
+X-Rspamd-Queue-Id: 3FA8020006
 X-Rspam-User: 
-X-HE-Tag: 1785587539-829828
-X-HE-Meta: U2FsdGVkX191JITeZCi6m3OKt1AcLzpNb3PfpS3suAXn1wYHOkrlFJh6PDUwUiaWKsdRi5yDqsqOCsq892hTH0nFFczBsqxXDAJV5Z9ukw7kq1rKR0FLyJP2OP2R0A7DlcoysH2+7QZTVJu8t+BOFK9lnlkBeaxprJONob3ZEeY7WwX16E5cteuS/P+IUSA0y+dfbx3RiLwuqyYkSwH7SU6zZZyN6XCGmkfuf77GIKIImD46foK92vP4hM4PqQIxeSXcqeb0mLVoIpLGK4AeTxz3iaMaEi91tCCd1esE9zM30vQ1B+bxDukV4X853JEqqeGTMPNvOo9Vzttb1XrT06ut5EcKHoIx7hnYogQO4YyNNkdksoWwxhZ8kfS9Um8rAogXB3QZ9cfBaplsGYKTZjMuhYSKLc5cEhMLHBEJsiueml8q275+oij07WytbHWlbUQMzMZzDk8LDFlBKQc5wVmzkkdsf19F5+X7+XLX8ivHmwMHeZ/bo89KLXzHLblUlQrlCxY7HcTceNQqQOeAjpyyAWCwD7V0aS1pesoIZUWazj9t557RuWVWfcMnSVqGxyuwlP6bgjOvahPIwmvktEfbtUvSLwrOigjRFtr0TFXmfViUuOfUUgBTH/UisZgK3a+L2SsxANGXI1fE/CE/E9IZ97OmhrxbjIohd8I5/HY4XfR3TFbSIFkVfcoLXy/6x+z9/pzj6JgkPmnRT0KCKpyNhLgCvKqGkuUzLwei+I4egUnWlJVQvAgdYZuKVErBLk7bf7gp5v7cQFsv5NzF1hoIJe87F5IbjDOtu1znvlWGunFPINlaZA7AyZuPVqV/epZoa8EaX101Ct6ahgB8h+PBKkBUFmfGRf9vT1t7iSLZGIR7f+8pyd+nnPC3CGxAUZUoy/k1xoQjJFubQ27e4L2nhuENytSBRgyCvVYHWUEinI/wCd0FICXmC4Wcl9S+0HmV2sLLgSNWDeIDZAQ
- Ui+KMv3V
- yzuqEnXxwRxTKPh3dDyq1pYL/MPeIZObuRfRtZbj+Doya2EUWOBxQzWJttMSRbaGu2+JZP6cMw5OqowfP+jBP1N1+JtpgarMGAVqFCfSJQoOx4oFnyGi3FoUQgViekdgPUKK330YXiJirOlaj3awlZG4QeVnlzHM0ieD+QVx24QAxHOY1ZP9VGPLK4RKIF7c/4/dJkR4c3bkVY1XaFQP7gO6iW2uVsBoFH25B3/t2ht22F5slHl5a+JQjhFBXCCxeotp6BwbJJA5O/difypQ0Yc3eX/3zY5/SffMlkloAlEQaG09Mn2CkwiLn72qwFk9m+CgzPO1VqL8DyXPkCFQ3J0RvHgX3IOxPo4uAeyFVjJARcq94Q98tVUjY84NcRaDXj1cke4dhSSR3uzbbWLEoct6zvp59YcSvRKQQ
+X-HE-Tag: 1785588413-343356
+X-HE-Meta: U2FsdGVkX18eAJmkSFLtDfunHbFL3h2EcnmSL8yPZBCs3KGMVKQcnHlrLf7V6n63RygZkOf0F656gw2VDj0MiNTpJ1WYkFviWwGtJaPEThuQmf3xTqL97djVPLE5YXq0gC21jI5Ft0WosvXdYFoJAWXn2f5d4SAZgqg/eaH6wnKDkrUcuVFixOTsyyyIhWVsoeWnWluDMJJ544PkceLdPFPRk2RYQYyXV+86C5bSOBUUh7FXaowjhQY050r+ClNxp8B4mOvtoBZ8IBynfQVMdc3vQtjDmTzpkPbR13GAMgF6b1cXQkFLVWJ3sqxbcGp3wKm7DV+vzJwCf9wbM6YGb1nCBDWzjLdWlAh0mZVn1h80bHidfVWxlSJlpN67E7bt4jL/UsU7nPj0hc61Zy39zbIoitawEGjYucYe240vn+YqsUkymE2L7hCPDqAKOlVfEKKZXdQYWuPZPTExUOyAU+qlG9MzxY4F0HlGlBgfPyBxuIgY6z5cZBR7VEz3N/Vj0O6wCyiHCL/vfGIgScr0w5xP5ilvUS0VE2dMhhmOfcQjQ/GEoR/tkbBKEzvs3Eh7C23HLB3FyltkI4MfnjTwvEwoc7Tss6U28BjKAEzObMKpx2lb/uupC3CZLGsNc0iXpmt3TmPB2SPnlCIfohCqR275evTWyx7mTP2JlqmiF4pPc9bnH0nM9Hm4szds1fP7F+nfAN6G3oPFthWLEMvWJbrAJdWfl/fBZty0AO/wwFc5ISCp+CFkySTYxiY3BlOtLWclEJWGfmUn3LZ9ODZFctqJbWEcx4BNFZ+Av4kIXaqO6EmVIw1zmsAbq4vQLUpUqvcrkLI6FtafIOcIaWQHYi6hwLW/SHRm+sU8yxTQKdKTsRAvndBOlHo981EKvmZsYOtsueelvmv1pHFx9cyxt1sBg6s9BfdsIquRUIG80HBLqOfAamaYYdjtA1/Wz4eTuh/tDYL1k1X800AHN0u
+ 9e94naAA
+ qsbwnzSCyx97LmAIKoXVoKUTLwDOSdgzX9d5NQCbMblRPi3aK1ZY4nSsECfSaNSDcOFToYbQwnQoeir81HZxJwXcx///yForyeACWHwhNek70DYs5DiKaufKge0WZoLcLjtfeWhSWSboulDFho/LZ+v8TgDC2xYw6sxaxpyk5Uz6CnJjMUAIsSObvcjC5hPvWM2ieelAUAwWbGUYO/AoMP51a5VudzBkBoUUnHTdy9CmVgVlS4QcLaKSAvtl0Ea2BxNadG27rmpc4pT+31i7iP1DI3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,181 +97,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+Ouch, I did not add "PATCH" prefix by mistake.
+Not sure if it makes stable maintainers life harder.
 
-Here are the notes from our Hypervisor Live Update call held on July 27.
-These notes are intended to bring those who could not attend up to speed
-and to keep the momentum going between meetings.
+Fixes for 6.18 and 6.12 will be submitted over few days as I review
+and test them.
 
------>o-----
-LPC 2026 Call for Proposals & Registration
+On Sat, Aug 01, 2026 at 12:25:30PM +0000, Harry Yoo wrote:
+> From: "Harry Yoo" <harry@kernel.org>
+> 
+> This is backport of "mm/slab: fix unbounded recursion in free path with
+> memalloc profiling" series [1] for 7.1.
+> 
+> The last patch has a slight functional difference compared to mainline
+> due to lack of SLAB_ALLOC_* flags. I described those subtlties in the
+> backporting notes in detail.
+> 
+> [1] https://lore.kernel.org/all/20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org
 
-* Deadline Extension: The Call for Proposals deadline for all LPC 2026
-  microconferences in Prague has been extended to August 7th.
+Also, I did not include the first patch from [1]
+(mm/slab: fix unbounded recursion in free path with memalloc profiling)
+as it's already queued for 7.1.
 
-  https://lore.kernel.org/all/ahcc3Qyuy7Oy03Iq@plex
+> Harry Yoo (Oracle) (3):
+>   mm/slab: decouple SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
+>   lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
+>   mm/slab: prevent unbounded recursion in free path with new kmalloc
+>     type
+> 
+>  include/linux/alloc_tag.h |  3 ++
+>  include/linux/slab.h      | 19 +++++++-
+>  lib/alloc_tag.c           |  9 ++++
+>  mm/slab.h                 | 28 ++++++++++-
+>  mm/slab_common.c          | 13 ++++++
+>  mm/slub.c                 | 97 +++++++++++++++------------------------
+>  6 files changed, 104 insertions(+), 65 deletions(-)
+> 
+> -- 
+> 2.53.0
 
-* KVM Track Load Balancing: Due to a strong number of proposals for the
-  Live Update Microconference, the team discussed moving select topics
-  to the KVM track to balance the schedule. Orphaned VM topics (proposed
-  by Pasha and Pratyush) and potentially guest_memfd preservation will
-  be submitted to both tracks. Pratyush will coordinate with organizers
-  of both tracks to ensure talks are accepted in one track rather than
-  duplicated.
-
------>o-----
-PCIe Persistence
-
-* PCI v8 Status: David Matlack is preparing the v8 PCI series, targeting
-  submission by Tuesday/Wednesday before leaving for vacation.
-
-* Versioning in Structure: Versioning is being moved out of the compatibility
-  string (which will remain a constant string like "pci") and into the first
-  field of the pci_ser structure. Because retrieve failures in the PCI core
-  are fatal and require a kernel panic to prevent memory corruption in
-  dependent subsystems (such as IOMMU), embedding the version in the struct
-  allows the kernel to reliably distinguish between missing FLB data and an
-  incompatible version.
-
-* Reviews & Landing Strategy: Bjorn Helgaas provided review comments and
-  Reviewed-by tags on several patches, including feedback on structuring
-  and naming for the bus number preservation patch. David will reply to the
-  v7 cover letter to propose merging the initial series through the Live
-  Update tree due to dependencies in liveupdate/next.
-
------>o-----
-VFIO Persistence
-
-* VFIO v5/v6 Status: Vipin Sharma sent out VFIO v5 on July 14th and is
-  working on v6 to address review comments, targeting submission in 2-3
-  weeks.
-
-* Lockdep Investigation: A lockdep warning reported during testing was
-  investigated and determined to be unrelated to Live Update (involving CPU
-  hotplug locks during boot group operations and ATS). Vipin will start a
-  separate mailing list thread with a reproducer to discuss the lockdep
-  issue independently so it does not block the VFIO series.
-
-* Landing Strategy: Vipin requested guidance on the base tree for landing
-  initial VFIO patches. Pasha will reply on the cover letter thread to
-  initiate discussion with Alex Williamson and maintainers.
-
------>o-----
-IOMMU Persistence
-
-* IOMMU v4 Status: Samiullah Khawaja plans to post v4 this week. Changes
-  include lifecycle edge-case fixes identified by Sashiko, refactoring to
-  separate non-live-update functions, and adopting the constant compatibility
-  string with private struct versioning (matching PCI v8).
-
-* Recoverable Error Retry Logic: Samiullah noted that retry logic for
-  recoverable errors is not required for Phase 1 and will be deferred until
-  needed by subsequent patch series.
-
-* Dependency Ordering Documentation: In response to Pratyush's question
-  regarding file preservation ordering, Pasha and Samiullah reaffirmed that
-  LUO does not enforce a hardcoded preservation sequence. Any ordering
-  restrictions imposed by file handlers (e.g., preserving during preserve
-  rather than freeze) are strictly for optimization or immutability reasons.
-  Samiullah will explicitly document these guidelines in-tree. Future
-  evolution may only relax ordering requirements, never make them stricter.
-
------>o-----
-KHO & LUO
-
-* KHO Scratch Extension v4: Pratyush Yadav posted v4 of the KHO scratch
-  extension series on Friday. Feedback from Sashiko was primarily on
-  pre-existing issues; Pratyush aims to land the series in the current
-  merge window.
-
-* LoongArch KHO Support: Pratyush followed up with the LoongArch developer
-  regarding boot protocol preferences and maintainer feedback; awaiting
-  further updates.
-
------>o-----
-Guest Memory (guest_memfd) & HugeTLB
-
-* guest_memfd v4 Status: Tarun Sahu is ready with v4 and plans to post it
-  this week. The update integrates negative tests, including verifying
-  allocation failures when guest_memfd is frozen during preservation and
-  ensuring guest_memfd without required flags is not preserved.
-
-* IOMMU Interaction & Freezing: The group discussed how IOMMU DMA pinning
-  interacts with shared guest_memfd preservation. Unlike regular shmem/mmfd
-  where sealing prevents hole-punching (fallocate), guest_memfd currently
-  relies on freezing during preservation. The team agreed on a phased
-  approach:
-  1. Proceed with the current guest_memfd v4 series as-is (using freezing),
-     with a cover letter note clarifying that IOMMU support for guest_memfd
-     will be addressed in a later phase.
-  2. Pratyush will explore removing the freezing requirement for mmfd and
-     guest_memfd in favor of dynamic updates to serialization structures.
-  3. Implement IOMMU support for guest_memfd once the freezing/updating
-     model is finalized.
-
-* HugeTLB: On hold pending landing of the extended scratch memory series
-  and removal of freezing.
-
------>o-----
-Orphaned VMs & Development Environment
-
-* Prototype & Repository: Pasha presented an update and demo on Orphaned VMs
-  (allowing VMs to survive host kexec/reboot without stopping vCPUs). He
-  published an open-source development environment repository:
-
-  https://github.com/soleen/orphanvm
-
-* NanoVM & Simics: The repository includes a lightweight C-based VMM
-  (nanovm) that demonstrates end-to-end live update across kexec. Pasha is
-  running it under Simics, which provides full hardware emulation of Intel
-  VTX virtualization instructions (unlike QEMU full emulation), booting the
-  host VM in ~6 seconds and nested guest VM in ~5 seconds (real time). This
-  provides a clean, bare-metal-like environment to study vCPU state and VM
-  exits during reboot.
-
------>o-----
-Action Items & Next Steps
-
-Pasha:
-* Reply on the VFIO cover letter thread regarding the landing tree strategy
-  with maintainers.
-* Coordinate with LPC KVM and Live Update microconference organizers regarding
-  track placement for Orphaned VM and guest_memfd topics.
-
-David M:
-* Post PCI v8 series.
-* Reply to the PCI v7 cover letter proposing merging the initial series
-  through the Live Update tree.
-
-Vipin:
-* Start a separate mailing list thread with a reproducer for the lockdep
-  issue independent of the VFIO live update series.
-* Continue work on VFIO v6.
-
-Samiullah:
-* Post IOMMU v4 series.
-* Document in-tree guidelines for file preservation ordering dependencies
-  and optimization/immutability requirements.
-
-Pratyush:
-* Follow up with LoongArch maintainers regarding KHO boot protocol support.
-* Submit LPC talk proposal to the KVM track and coordinate with organizers.
-* Continue work on removing freezing requirements for shmem/guest_memfd.
-
-Tarun:
-* Post guest_memfd preservation v4 (including cover letter note regarding
-  future IOMMU support).
-
------>o-----
-
-Next meeting will be on Monday, August 10 at 8am PDT (UTC-7), everybody is
-welcome!
-
-Join Here: https://meet.google.com/rjn-dmzu-hgq
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-Best regards,
-Pasha
+-- 
+Cheers,
+Harry / Hyeonggon
 
