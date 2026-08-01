@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAD6C55173
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 17:36:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D13C55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 17:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB1726B007B; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
+	id 1DD5B6B0088; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C635B6B0092; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
+	id 18DDE6B0092; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4076B007B; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
+	id 006996B0093; Sat,  1 Aug 2026 13:36:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CC4B6B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36464120332
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:07 +0000 (UTC)
-X-FDA: 85053403974.13.D8421BC
+	by kanga.kvack.org (Postfix) with ESMTP id D51B26B0088
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:36:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C937D120331
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:06 +0000 (UTC)
+X-FDA: 85053403932.12.7766C98
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B17CB160008
+	by imf28.hostedemail.com (Postfix) with ESMTP id 58AEBC000C
 	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LIlnGYbl;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b7g2jA9x;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785605765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u3Yai1oWYsB5IJ1T8UFXb8F9ZG0QK/4CFjudJQO8wtI=;
-	b=S7qw+qW9earG7BPKOLDtNQPZPaWALqdjuHZDcdFA0284mq4QDNmeS0FPcvkgmefkU2Iwc5
-	sLpTtYmMgb14HGWAlx4Zd+lDTPSKMVzLMJiCjEfgC3eVid8AqceyoK5kTiOzPjO/lkF+Hv
-	pP6j0DOvQ1Uo/m06VXtVzFszw126pZY=
+	 in-reply-to:references:dkim-signature;
+	bh=DgoWkAGslNq32y7wpqOrv1OO4q/c8+5GUJCCC3yQcNs=;
+	b=wWSz+7Y8ERpjpb1QXTbuIKCjaMjX1SQdeQQRfwaQHwVotdc9RI4Pxx0NqlJqmwnfIScQRa
+	mP6G5VcnhmatE270lAJmi/hG5D64abzw6FYZOf0eusOE7KAcNtTz0GkzWe7LWqPGEXffqC
+	rpF/+zHN6D0qsmxfUemnwM/IbtBlL8o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785605765;
-	b=AOan1DBeHSvxpDHV8BVSiUZsrhpniMsRm6Sr5t9tMQrVfJPMF8dzAur6hl8vf58wlzpZuE
-	9a7hKMFKl1hwVMiSwBqyjh+n31xf5GZ6Gmh5//AZP4u5qcLsQkYumPb+EHlkrPyyYcVqor
-	KJ261nAk0d9P0hoL51nVj++BQnlZQ44=
+	b=iv5qi+/p4PivR9C8w2wdNIEOnLY5JyK4xOgglLnHVthFIrtlreBXZuHm6Ij7cpw5G3CZs3
+	WkSbesGccTUFC2MTwps9KflCNdbuaObSqd62nN6TQ1UpwARb1oCOjPvTkmjvbQf07VDYpf
+	ysz/wO+/TPd3UnJ7IybTnU159zpdPsk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LIlnGYbl;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b7g2jA9x;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48F2C60AA9;
-	Sat,  1 Aug 2026 17:36:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E491F00ACF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 921B260A9C;
 	Sat,  1 Aug 2026 17:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014F31F00AC4;
+	Sat,  1 Aug 2026 17:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785605765;
-	bh=u3Yai1oWYsB5IJ1T8UFXb8F9ZG0QK/4CFjudJQO8wtI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LIlnGYblIdAJF2L9ANrF/LWWjqlMRNw0pyblGdwP+H0Y0oNSeuaXfWqnRatJ1P8jP
-	 3V7rmoYiqRnGONnpuCaK0KT2FVuVPlEnwCSTGHZtDwkDiP9i2efZAZorGcPskdfVvC
-	 vcTwwzppVg6859yhqMlgowY8ZzTeL6KEB8RctiOy3yxsvPExbA5AF/dEWIGObwl33v
-	 nA5qztxHlIASYkZGam7SLdh44jv8LmnGPDugdf22fRA6SSZq9fOcrGR5Gp4mWtYi+L
-	 cTDaolvHBd80EjG7lBftVS5gpN/l0YZk2v5Hnr/woUVfGnd/FWWZCVGkJvLyFvDeqf
-	 NhbnPy6Qa21lQ==
+	s=k20260515; t=1785605764;
+	bh=DgoWkAGslNq32y7wpqOrv1OO4q/c8+5GUJCCC3yQcNs=;
+	h=From:To:Cc:Subject:Date;
+	b=b7g2jA9xQ7iYK3VMelhLVoJeebvUY96cXG/MeGKOq/UQPEnD+NxHxwaks8lW8S2L5
+	 D1pCq9LBVzmVWbPK6yaG38mkb8sC0nwLwPo/NPcB4Ep1Bm7cT50zESoWO8eAdZlPlG
+	 QuyP56W0C9huQxfwO+t2XMLOSTtZyZQGQfHUTz4bDz3+mc+9OHDV9nZDKmxAXSA/ub
+	 7w6VIZNttEIL3coUj9bMzlxrVjghVEfQ35ms9aNF2gpznNW0iVKoCU7l2r78v4MaBp
+	 RMZwlTWxf5GHK8RqgUuZFFa9qslkg0qDhC+iJzRlN3I9lrXuaAC8llrqP0xmdNYSFL
+	 sYKblaRZiNGBA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Yueyang Pan <pyyjason@gmail.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 2/9] mm/damon/core: initialize damos_quota_goal->last_psi_total
-Date: Sat,  1 Aug 2026 10:35:45 -0700
-Message-ID: <20260801173554.94710-3-sj@kernel.org>
+Subject: [RFC PATCH 0/9] mm/damon: fix DAMOS bugs in core, paddr and vaddr
+Date: Sat,  1 Aug 2026 10:35:43 -0700
+Message-ID: <20260801173554.94710-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260801173554.94710-1-sj@kernel.org>
-References: <20260801173554.94710-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B17CB160008
-X-Stat-Signature: o3y6a7adpfcw48paaxacnr46kebbq5em
 X-Rspam-User: 
-X-HE-Tag: 1785605765-354905
-X-HE-Meta: U2FsdGVkX1+sEz0OXw3DlUBSc3f2A0vHb0qW4HViuk7ffM4ks1RiUuvS+r2zMdgFFk86CLfUAV1dDHG6KsU1wkeJny7LnQgsUr8yyKdHa1pOvyK5YVZ2UWiPYCZaLNQdlTWa+UOktVdtSke799iVcmpQAgqjhFoZhpOOTrQrITZ3o/VAvg6qjselLy5Mzbmh7J4kUqXh0Nu/k9PaepUwqa3qcPTOezLd2q7dpm2n+cNV3sTJwR00VMoKBuHloUniZ+QtyDwNb9wSVoIaDQd7A2lDMjDIsuL+s709X/FEsEW3q8phsqygSPtWlfqYXKxsVRRfOfpHywf7enc7oJLQBgmJrczb2G+mRDS0aCnYeSCBK53lilB1eDZgp6Rj+ZvRuSV7Cmwze7T/8jq90JGbBpn6nKzxS6VY7ENHpWIBeoYFltd2uBKwCDVSLB/KWE18lshOvwzpWZWAjU+Xl88kO3yzrD/jiu+PWus96HC0K/7Oqy4zAIWO9aIttCyjoVosJqpb9Jqb8Rm8kRQ06gr48e/nxljgxhSuejrZt1Z+gdJEa0UHgV+l2DzSVbovL6BF8KgtQMbEpq1lvcAhHgmRKIafikw7TXSrMDO/nUtHg0wH4UVE5lmpknRGPBLp5L0hFPQdgNPMCfQI1xQYbMYwboT0ysAVKOIYVIovsgzTn/tZygwdqzO13GzwDVXftRoDfACuIYdN/6HxzpvBZ+xtETCfmbgC24ebiLXpe7+oAJdJRZPlIHltGK9Irg7TQK7lHidh+S8N23dRP7PR3WqVTyTy7+yMgfGb/0G/GuWmO6eFfLjWv3C9VxGnYLV+RCZSXJMFuvT8jUIJtS2Xcr1RqYe84hp/pFsMJH+RnumP2BQ3EPb6l4O+HyM1zrDQF8ImnNDkfiSo9fUVl+Gybs3Un0YgFEOCC/JYxGb3VBRvfinrufwlrcB+gbFN4OkPRV+8JxVegCzcuQ5FyCiXerO
- fWzW/Gw5
- bEqmKksY71vIVPeYsz1AZrszn/ilSNgsODFp/BATRz+i4/ZJHEye9QdnUFyNl00xLX3STyNbADVDQHaP7qB3r+Fkv1L7y5M+g9PSegIcg1XvoPNcn/R3CBKnH7LSpS971679QYlsTohUR7dqmwmf8K+Sa5ksvBgQ7Ym7gxfeMlqW2eO8HatHS67SCgRYiqDqvKvsnpgkcAK/jNHWjwxHwKNVBh5dFvroGB7micOwkqIv4xmrgiijE7W96wcZ0p+iRFcL1/MxkNmAaSoMIR+fc3i6czQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 58AEBC000C
+X-Stat-Signature: nr3ichjarm5aigsdmh5w8y37zmeub7gu
+X-HE-Tag: 1785605765-311555
+X-HE-Meta: U2FsdGVkX18vrUw6IdUWgT1y8LLb/JQK6x7FYvdKimqRbYOwPO7Htg6GGSCImHQx1Zdmxh/ZLZLLv72t+rwSIwwwPTcMW0gfRhBmmzsaoKSZbIehnz1gYUr35p49m4HaO+IxVb7CujeTI1r9cJ67yLEvgvu+BK4ScEvtvkUXMokCWus45iHNcOspLFVt+tWr0FyLfZgTAneIT9eLoxGTxSOatWxWyP+rj7lvH3gJi4NUAaDToaunM32lCH7XgLzcqXpVh1Ivy4CWVhpvpQQcEhdQDuk5RV7fd5bdjDePfLDdY/a95g7d4h4qRtc/RkqfXIrtI5nTmftAlLKbbO1g+6ynHT4BwZrnptav+3BtUESh9Qqtu1AQ0xqHmcZ8zZFvDvjoj8FjZjjgz5Y4JCVFBUvgkupESgL/01QqxO4sfAljJ4LyyJe4Bno7HwTlhaJF5jdITkzgj3MxZWx31adUSuzA/JpMAjBo6s4mTXKtS1LjVHSYr0mYycev7y5kpxYiCrVqdSftgEHJQB5wMMyxPJFT/G7fbNt5j3FzznjlfNL15TdiCPvG8YJ8lBA61GtBbUbEq7i+5qoJnwe/ae22qH8l5+RzTCP/wB0ztEwqnu+bgQZZM501U9beQnJKZlblzo+nunVLF5zfiAWmVQYW0tJZly6leGWV1NFn9grlxkqMhF94Tw81cn0/Nbb7wfg4QOhu9txUIYNQZOtVHm9BKtiRtuTtBJsQlctB/oUZE/eS/zS31a3LJ/WKp/mNYGGXvEDZ94no2YCOCiMSdhh9qiyF1GBlM4Pc7NO60/8oGntY6rdfM0biGMyk7ZXl624KgirbDphctTEHV1hiseC8qSnCugCsFfmOQtPaf5SQGJe1BVF91dHvmOHBjViOinCimC8cJAXBz8gmlyRV9YgJgvN237WDZO/Hdizkc+4t2DB9X9YewR3+LWxmNCsySHe+Tjx0zXIpLPz92pdl4Zt
+ ii5T4CDD
+ f96ZpvSkDigEUTt9iotRfUJIOQdywUPdQNTYW25StCNCCLIxZbLZPoCyRJ525DoHpTFtkxCWB7NiTrdBVZIKWJhv8aQj2s5sycTntLuMTknndTcmLDK8WTcNTDz0K/Bx+zPpfw3iDJjxkuE/HLIZkjx4SjfY2DrlW1FsAF7fT6iHw1VxEZVfcDRNWGOTOdUfwuSt1kqld2V1lD6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,59 +94,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When DAMOS_QUOTA_SOME_MEM_PSI_US metric damos quota goal is set, the PSI
-delta for the feedback loop is calculated using
-damos_quota_goal->last_psi_total.  It is not initialized at the
-beginning.  So the first iteration of the feedback loop uses the
-uninitialized value and makes an unexpected starting point quota.
-Initialize the value at the beginning of kdamond.
+Fix misc bugs of DAMOS.  Patch 1 make DAMOS less stress memory allocator
+under extreme situation.  Patch 2 fixes wrong DAMOS quota auto-tuning
+feedback loop start point for PSI goal.  Patches 3 and 4 fix wrong
+folios walking in DAMON_PADDR.  Patches 5 and 6 fix wrong folios walking
+in DAMON_VADDR.  Patches 7-9 handle extreme and unlikely memory
+situations that can cause divide by zero and underflow.
 
-The user impact would be trivial because the issue impacts only the
-initial iteration of the feedback loop.  The feedback loop also has an
-internal cap of the quota adjustment.  The wrong adjustment will soon be
-corrected over a few iterations.
+All bugs are discovered by Sashiko.
 
-The issue was discovered [1] by Sashiko.
+The bugs are not very critical, but better to be merged sooner than
+later.  Since mm.git is closed for urgent changes, I aim for 7.3-rcX.  I
+will drop the RFC tag after 7.3-rc1.
 
-[1] https://lore.kernel.org/20260718005316.89585-1-sj@kernel.org
+SJ Park (9):
+  mm/damon/core: skip applying scheme if region split for quota fails
+  mm/damon/core: initialize damos_quota_goal->last_psi_total
+  mm/damon/paddr: respect folio end for DAMOS_STAT
+  mm/damon/paddr: respect folio end for DAMOS actions except STAT
+  mm/damon/vaddr: respect folio end for DAMOS_STAT
+  mm/damon/vaddr: respect folio end for DAMOS_MIGRATE_{HOT,COLD}
+  mm/damon/core: handle extreme memory state in damon_get_node_mem_bp()
+  mm/damon/core: handle extreme memory state in get_node_memcg_used_bp()
+  mm/damon/core: handle extreme memory state in get_in_active_mem_bp()
 
-Fixes: 2dbb60f789cb ("mm/damon/core: implement PSI metric DAMOS quota goal")
-Cc: <stable@vger.kernel.org> # 6.9.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ mm/damon/core.c  | 29 +++++++++++++++++++++++++----
+ mm/damon/paddr.c |  8 ++++----
+ mm/damon/vaddr.c | 10 ++++++++--
+ 3 files changed, 37 insertions(+), 10 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e2900d0c984c9..3bdbf4fbf7147 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3728,6 +3728,17 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
- 	return -EBUSY;
- }
- 
-+static void damos_init_quota_goal_last_psi(struct damos *s)
-+{
-+	struct damos_quota_goal *goal;
-+
-+	damos_for_each_quota_goal(goal, &s->quota) {
-+		if (goal->metric != DAMOS_QUOTA_SOME_MEM_PSI_US)
-+			continue;
-+		goal->last_psi_total = damos_get_some_mem_psi_total();
-+	}
-+}
-+
- static void kdamond_init_ctx(struct damon_ctx *ctx)
- {
- 	unsigned long sample_interval = ctx->attrs.sample_interval ?
-@@ -3744,6 +3755,7 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
- 	damon_for_each_scheme(scheme, ctx) {
- 		damos_set_next_apply_sis(scheme, ctx);
- 		damos_set_filters_default_reject(scheme);
-+		damos_init_quota_goal_last_psi(scheme);
- 	}
- }
- 
+
+base-commit: 70802c13e2c9a0ab52605035e2d63b964afe6add
 -- 
 2.47.3
 
