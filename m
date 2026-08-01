@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70143C55172
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 14:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69ABC55172
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 14:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F9146B007B; Sat,  1 Aug 2026 10:42:37 -0400 (EDT)
+	id C95C96B0088; Sat,  1 Aug 2026 10:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CFDD6B0088; Sat,  1 Aug 2026 10:42:37 -0400 (EDT)
+	id C1FC46B008A; Sat,  1 Aug 2026 10:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F696B008A; Sat,  1 Aug 2026 10:42:37 -0400 (EDT)
+	id AE73E6B0092; Sat,  1 Aug 2026 10:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3226B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 10:42:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D88B12032F
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:42:36 +0000 (UTC)
-X-FDA: 85052966712.07.E20C78E
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 65FFD4000E
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:42:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NEVhQSZZ;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785595354;
-	b=pJWDySNcIUQ8KK9ILKoBs/prU5TKG1KOOMSd/hyVYoaQG//c7+cnqhTUNKzrkR46Ft7jD4
-	LKXnlKrDHBn3YWNYZvYWT3P7XSGs7cFMrBrBYWCn6kMyLmj77G3P3FG0y6SLwXJjXFCNXb
-	ZlF/IWA8u4egVqQOXuv0KxvWXJDaG+M=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NEVhQSZZ;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 85C5B6B0088
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 10:52:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7A6E140333
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:52:20 +0000 (UTC)
+X-FDA: 85052991240.20.42B1094
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 17D0614000F
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:52:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dY/qZWe/";
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785595354;
+	s=arc-20220608; t=1785595939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9bAGXb0quOYyJBifFj3CMsobl7Wj528s8Q4pbvQG4r8=;
-	b=XADjV2Izlmzw2CuecmbdSEOyUvNHzhOMh+ercKZ7whnB765ek2oFnFWkhJeXlQ5tUpLgEy
-	Sbvy6gZHd/nF930duL7mAg4VuwyEOJf8jhivJWF97m3VOMJ6SCJY3Qqcg8VDsEKqrpaX2l
-	iLchaaGQ8YE3pRs+F7UEK8kixivKf6Y=
+	bh=GcGm8f+HjinZy6KpUpQibmKA3BxQ4Nicuuq7tor/vmY=;
+	b=BP38p2ifyG/dMp/d9rK+jiG7KaGblmYIc7gK04nwEV+Qr8foPOcxUvfgDugKwUBZSYUXBb
+	DWb7MI38Ov8dc62iyfp4dor8zUrf1IIZzm2OJ4fBq/GZhzYrggxmedovC40zBtCvw3GMbv
+	+hefbcKFO/1m4HQNj0ua2JqG1uYgx6A=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785595939;
+	b=U9JHO8Kj49JUiHEjfHGiwYT2Z78SBnV6p+vliQ/mDb1AdVwA9CgXe0vtC/oYbyiWBmA8IU
+	wQaXRevc3rHm1vMKgj/pd0PwLvhcML07qFpovOLxNARf0AHJEwP6WTMG7xOAt6fxJc2OBS
+	x9zRLu8ApnQOa2RzHemmrgW946iO1zo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dY/qZWe/";
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785595351;
+	t=1785595936;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9bAGXb0quOYyJBifFj3CMsobl7Wj528s8Q4pbvQG4r8=;
-	b=NEVhQSZZKi4DShjfGxrZuPRqNtphOqe5pi5nbT5xk6bKbRruhnX8733czhr713IWW5JtNX
-	lBIXPePnqdQ4ryvX+Ui/oO5FEIW8RXuUpYzDAhh8N6HVjtmRQGHRB2ii5QDX7Pypq+cifn
-	JH9gGi4r4HorTfPR/8XI8D8vS+iUZ30=
+	bh=GcGm8f+HjinZy6KpUpQibmKA3BxQ4Nicuuq7tor/vmY=;
+	b=dY/qZWe/pctIzM3LCzB73J/MmbY3+GUl3Wm5oBdOtv9fzRMojtyF2M4U6ZiLC3BIP315zn
+	SGGrWvW/q4nommTh9uVRrqk/1lgBEVXiKouBxZ49ldIobitG/aClAOMJIDcVixCOgXUkt4
+	itTlKiyeiGTV8Aws3LDIYftmReuBv0o=
 From: Usama Arif <usama.arif@linux.dev>
 To: Zi Yan <ziy@nvidia.com>
 Cc: Usama Arif <usama.arif@linux.dev>,
@@ -87,26 +87,26 @@ Cc: Usama Arif <usama.arif@linux.dev>,
 	Kairui Song <kasong@tencent.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH RFC 03/14] xen/grant-table: stop setting PG_private on pages for grant mapping
-Date: Sat,  1 Aug 2026 07:42:19 -0700
-Message-ID: <20260801144223.1599317-1-usama.arif@linux.dev>
-In-Reply-To: <20260731-remove-pg_private-v1-3-142c97ba3562@nvidia.com>
+	Eric Biggers <ebiggers@kernel.org>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	linux-fscrypt@vger.kernel.org
+Subject: Re: [PATCH RFC 04/14] fs/crypto: stop setting PG_private on bounce page
+Date: Sat,  1 Aug 2026 07:52:07 -0700
+Message-ID: <20260801145208.1930586-1-usama.arif@linux.dev>
+In-Reply-To: <20260731-remove-pg_private-v1-4-142c97ba3562@nvidia.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 65FFD4000E
-X-Stat-Signature: 8ta837mtwy6mc5ozt3pp3wg8nnyptbnm
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 17D0614000F
+X-Stat-Signature: qrikjqiq44ybnygfktt887z1u9gkyg56
 X-Rspam-User: 
-X-HE-Tag: 1785595354-12082
-X-HE-Meta: U2FsdGVkX1+P/qSoO2W7DdBDw7wIC+u7odxcXPXl6FSCA4SNY/jOgCz7NoXZvM1Hp1mkTwId7ANumhtreUdqbpa73Ehh6Q4UtNOLNhN54dXzbLSfw3aZMIBHN8l4PhMnf2FkW5xcbewjFpwwMDuh0+tSWcHvozupaeF8MJ+2E92uaXLPMl25fNnulm+ww92lk/41dN5f7YlmHFQrRIuA+9GJr5o0AHFMFhP0C8UMgbrXS0N6ZGpbMNKQ54A2owJ2ay916FFlJD8pvEKq9q9rneIWshbEd/6SnJm9Vy7BnMMMCxEpenfUkyq1xxXrQFRWeNd7H8nGEDiMdxwOsQZX6Jln4hCxQ/wTGskTA2zhbMTkyamp+9XC4522LyjiOsEHJQ7zZp3Sp7dXtWrnXn/X2rv+CI1i+X1WCEEUcyAKC3PXQc9slH2K7U742h8ENczjOWeYfZxSxghHc4XhuwJL2a2kExPW34eNW08zdlQ0+xIoICorbLbWqOvkHZrcfywTmOKL2DDvY4Pa1wrunObDkXD/H+0hSLWU3ZIazj4m1xYtvJ/tcpa7agtUkaTme+H4r5R+tUda6TNIztxnuzMvXHb4OSoEd5mREoHhCUwh62IKQcu6cqlc2aPhGLCXkP5R5XkAUji6EYODv1QtrDva9kGvKh5yvLJVCulinOSBM8O294wfs8lVIZuyH7QxBPV0DKvZ5czKJyf0crgKkzkIeuJckG/PkRIPDqcRrXD1iZ6w7vcIWRMo6lu65LQZjkaxHdaaFaex9CBYVCi8d7lu0GC0P1FjMMslIG0hreXDtXWECVg0gNuAvqQnyJdo5Y0uMaj4Wotc9NWhoVE67ZRxGKEB80Bz3euQHEQo/boRYqP3Fcwo7yoa6TW0BgJTkJ3ArLBFEfamOA1IFZMiIxZ3Nz41SRdzMwOmRBoAwRHHlXwSCJtKzz9dOCKVcIRLgczzQcFT6Kprcw8SKipetzE
- Mu7xkeJ+
- 4NX/v+cALjeEOadlq9F+eaSM7tVUYZvz7RHVUdDtKY06SPSLaCO4wRBpWAlwFPTZ/7gOBR2lvJFn/pWq3KkcYWNd3FCt5YYZlWyIgXpZjI+TCpDnTFNxJh4uTDxJV2nxDVCMuEv2XZXZBUqaVBwtjgonch8c8oNeAgZ83/5yqxAtOclYPB601jIUc80Bo8etRUb/CFRBfllO6yn9IfGmsWgASAI+1h+9M64M9ojC+BeWu6ecCnJYP7bju1DpwHzRABpm47a1cAUYjLiMxV8gRNBwBKXVnYjPDVKqyC6LMbXHVxUn7jq+JZYfyBXTZTgfREHcdJsdicGtiZ2PxvxR/TWxJ3Bn1dEGEnDN7QmLY82zoFuWD3lVLIo8jPWEPjV+v83gun2CtQ0ATlcW0nw2AwFLdPCAvSP8OiPSVCIkkxWyPKkaDr+gJs6GVLA==
+X-HE-Tag: 1785595938-462179
+X-HE-Meta: U2FsdGVkX19lOP20jOs2o/3u7HklN/3aB4Cg61lP3sRMowN+Pm7AcUld9Q+8QWvaOL/cEFcucCNZfdEJ7X4G2NNL5+DrGydp8JIJtlMjPsfi4maIoDt0gBX0ZcWdje3IfNf6IKts8TNP3g53l2rytwG7Opx5JZD5dlmxb+c/nmhng96CivtZINrTA4JElQptIs6LTG/yP2L0Jo1H/Hw3MT5HkeRh8L/ZsA4z7koMUo0Y5UtthYNRl1qf6ehrtJk+Z2cd3IgaaSaZBUuh1oUGXkiajif+1yV4ZvBap8YSrZPNC1KfC7LU373qL7RQ5AWN9izx5Q7g/DgzwKatRRnnm3/3IMbP0biSndUKNF2Rg+oQszCE1bQcnGo9Vc5VXHEtOiRo4o6g1F4lCk+2KLLyKEh0gYvFrcx3vjh40RLy21/RiK8/vsoVYJMY8qhTCupMMBdIEFXusiuIRp3pZRL3uA0cbaiJmzbA9xNOIFr45BZFXx4DNS90myeT/3GQA8lH8LwWeI51Lh9vFGmfyOEpe5EjZ/Zfa5QnjAY0A7sUn0K88EiAc9oRhlbg9NBzj63qqwDwWLMjUrNspoBYbRiI9c4jTxDCZyhsmdQUBl6wqAwINPoXig6pziI0JCAKDMOA6pTZgtzbeNuagk9wwJe1INj6guCs7z6n758bvC4Nbt0l6vMnkJyi9riTKyqVvfzwZ3ymgLy1rZMp9rCSwYuV6iFn5lFgJCgYPKiWDEdS66bxrnKqpZ1dYFmms0LQbUe7xMt5RkzsvUVpCtBNm/ljoMAbvvTjGse47AXxSSUVa/Je7x8+TXtlBzUuki5hZKNyyRTWHiwxXeiuFVFsDeGtGUJzdF750GfZ/Xk19ilFYl1hATHQfZ3ZfB+okZm2d0WfmaDa8WCocDkV9eRTFP6srD/J3F9euvclrJck8AQgTNBsPxCAaK35bXiicIaG14r5sM+lAzGH6VmCt/leR3Q
+ EO6p4yVA
+ y0pQpvVIh20gV51lfHyQxufUmEfmhF4F7eOP1cv/6GyESMMCOnRhJ8Hwb+YpyHu56mnK/Tz/c8tzAqeDJxhpDFw2RZAEvMX1nKBtSOjq0KYlEDSB+TVeSHthfwMZqAHfwRxceEaBXMog95LLyM+WtHr1S19WM6h4BR2zm3Fpa6+Bct4GSf00xL8qp77rOJLdNvQLfTBD7h2aFrgjY31QFcUqHauSnilrYeAnyCTBEpiglvVjDtMbGme3oh6D7JfFOWgFaa+UE1B346FkpCYs4Frd5HwFzbC9+zDbId1R8/GvxSAc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,17 +114,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 22:13:26 -0400 Zi Yan <ziy@nvidia.com> wrote:
+On Fri, 31 Jul 2026 22:13:27 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-> gnttab_alloc_pages() stores xen_page_foreign in allocated page->private.
+> The point to a plaintext folio is stored in page->private and cannot be
+> NULL, making PG_private redundant.
 
-in allocated page->private "for 32-bit only".
+s/point to/pointer to/
 
-> On 32-bit, a pointer to xen_page_foreign is stored; on 64-bit,
-> xen_page_foreign is stored inline. Checking page->private != NULL is enough
-> to tell whether a xen_page_foreign needs to be freed on 32-bit and
-> page->private is zeroed unconditionally on 64-bit.
-> 
+
+And fscrypt_free_bounce_page() NULLs it, so that needs to be corrected.
+
+ 
 > It prepares for a future commit that remove PG_private.
 > 
 > No funtional change intended.
@@ -132,64 +132,45 @@ in allocated page->private "for 32-bit only".
 > Assisted-by: Claude:claude-opus-4-8
 > Assisted-by: Codex:gpt-5
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Juergen Gross <jgross@suse.com>
-> To: Stefano Stabellini <sstabellini@kernel.org>
-> Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Cc: xen-devel@lists.xenproject.org
+> To: Eric Biggers <ebiggers@kernel.org>
+> To: "Theodore Y. Ts'o" <tytso@mit.edu>
+> To: Jaegeuk Kim <jaegeuk@kernel.org>
+> Cc: linux-fscrypt@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > ---
->  drivers/xen/balloon.c     | 5 +++++
->  drivers/xen/grant-table.c | 7 +++----
->  2 files changed, 8 insertions(+), 4 deletions(-)
+>  fs/crypto/crypto.c | 2 --
+>  1 file changed, 2 deletions(-)
+
+Nothing in fscrypt or its users tests PG_private on a bounce page, so
+this looks right to me. The commit message needs to be corrected but code
+looks correct.
+
+Feel free to add:
+
+Acked-by: Usama Arif <usama.arif@linux.dev>
+
+
 > 
-> diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
-> index e7f1d4ca6d753..7f47b0ad05607 100644
-> --- a/drivers/xen/balloon.c
-> +++ b/drivers/xen/balloon.c
-> @@ -182,6 +182,11 @@ static struct page *balloon_retrieve(bool require_lowmem)
->  
->  	__ClearPageOffline(page);
->  	dec_node_page_state(page, NR_BALLOON_PAGES);
-> +	/*
-> +	 * clear page->private before giving it out, since it might be used to
-> +	 * store xen_page_foreign info.
-> +	 */
-> +	set_page_private(page, 0);
->  
->  	return page;
+> diff --git a/fs/crypto/crypto.c b/fs/crypto/crypto.c
+> index 570a2231c945a..c8a98dd94650f 100644
+> --- a/fs/crypto/crypto.c
+> +++ b/fs/crypto/crypto.c
+> @@ -73,7 +73,6 @@ void fscrypt_free_bounce_page(struct page *bounce_page)
+>  	if (!bounce_page)
+>  		return;
+>  	set_page_private(bounce_page, (unsigned long)NULL);
+> -	ClearPagePrivate(bounce_page);
+>  	mempool_free(bounce_page, fscrypt_bounce_page_pool);
 >  }
-> diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
-> index 35f879dc5dfb8..cc348ba2e0786 100644
-> --- a/drivers/xen/grant-table.c
-> +++ b/drivers/xen/grant-table.c
-> @@ -875,7 +875,7 @@ int gnttab_pages_set_private(int nr_pages, struct page **pages)
->  
->  		set_page_private(pages[i], (unsigned long)foreign);
->  #endif
-> -		SetPagePrivate(pages[i]);
-> +		/* Data is stored in page->private on 64-bit */
-
-On 64-bit arch you just iterate an empty for loop. Cleaner to put the
-whole for loop in ifdef?
-
+>  EXPORT_SYMBOL(fscrypt_free_bounce_page);
+> @@ -202,7 +201,6 @@ struct page *fscrypt_encrypt_pagecache_blocks(struct folio *folio,
+>  			return ERR_PTR(err);
+>  		}
 >  	}
->  
->  	return 0;
-> @@ -1031,12 +1031,11 @@ void gnttab_pages_clear_private(int nr_pages, struct page **pages)
->  	int i;
->  
->  	for (i = 0; i < nr_pages; i++) {
-> -		if (PagePrivate(pages[i])) {
->  #if BITS_PER_LONG < 64
-> +		if (page_private(pages[i]))
->  			kfree((void *)page_private(pages[i]));
->  #endif
-> -			ClearPagePrivate(pages[i]);
-> -		}
-> +		set_page_private(pages[i], 0);
->  	}
+> -	SetPagePrivate(ciphertext_page);
+>  	set_page_private(ciphertext_page, (unsigned long)folio);
+>  	return ciphertext_page;
 >  }
->  EXPORT_SYMBOL_GPL(gnttab_pages_clear_private);
 > 
 > -- 
 > 2.53.0
