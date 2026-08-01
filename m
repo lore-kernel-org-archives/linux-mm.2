@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27D7C55173
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 17:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79FEC55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 17:36:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8DC86B0096; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
+	id 008A86B0098; Sat,  1 Aug 2026 13:36:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14D16B0098; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
+	id F20E76B0099; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4F46B0099; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
+	id E0FC96B009B; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 806D46B0096
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C3C3F6B0099
 	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:36:09 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 222BC40371
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64DCEA0342
 	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:09 +0000 (UTC)
-X-FDA: 85053404058.22.23143BD
+X-FDA: 85053404058.24.F7573DA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6D8BF40005
+	by imf23.hostedemail.com (Postfix) with ESMTP id BC8B114000F
 	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYq63uts;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dBhdoT/o";
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785605767;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uiWMed+e4y9TXxwRAiQ3Fg56ABB5uO8dHBY+Ne9IA7s=;
-	b=6tKcpbBHG+rCUVCKqABqWDI8CIhPNFpjIc7+QvJ9cohH76I/KAyQlYciJbCpcSJ9AsVEiG
-	O86WEDmbh3InaCtuwPTgU4O9HjXCRC9zLYk2UN/SQgAEoKw+0MwAWA7RX9iYJsd4esdKgR
-	eD8NKbK+Z0cFeZ2gPdK4ZwjbS7G7xM0=
+	bh=o1TLO1J6QDVVNz5r0BRdl5+1+gHGcHEvIPNqhuz3/rg=;
+	b=Si2SELKfDM4tbVX9uyOrOrrftw5wWv4jpwfC4VqMZlTWvdDVgjZzMniAQo9iU7Ia9kU+TM
+	AOiQ7E1SdklqlKCLCtZkEIZsc6NGhv9jLWCERNutYUPapfTqAO8aBSxb2MqCYiwCzmi52i
+	VXJSkHERZHUUf4/uR/Zcoc71iqWurfE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785605767;
-	b=US9wqBw8+6LC+zM8KR+sW0s2wpjMsjLSnRO/3ICI04MDDrUPKh9Wiw3ps5BzERkt8VZTp5
-	kYyYxY1izwkng3Wivzys8Y+srD7vmcoJrDjXgHAoE9x7Set7qPdQAPW5EHUEToYOjdBjLZ
-	7O7L5YVK/pl5jwwsbtRjCgGwTCbiv+c=
+	b=rV6kDNvyVGsEg7JP5Dcbm8lB8VQo5V559WpDVaSK60EM8hmizxA4XXpKuCZm/Ybe9uqg4l
+	43lFaq136wxruozpNa9kl7kJFuAHoniRxI1YlpX1BnnYIF9KLTH771UiQtMQDE7CVbqqIO
+	nAobgi/sb0uW3K8XZwHBlCbna8yyof8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYq63uts;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dBhdoT/o";
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A47C043CA0;
-	Sat,  1 Aug 2026 17:36:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C941F00ADF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 07EC943CA6;
+	Sat,  1 Aug 2026 17:36:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDBA1F00ACF;
 	Sat,  1 Aug 2026 17:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785605766;
-	bh=uiWMed+e4y9TXxwRAiQ3Fg56ABB5uO8dHBY+Ne9IA7s=;
+	bh=o1TLO1J6QDVVNz5r0BRdl5+1+gHGcHEvIPNqhuz3/rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jYq63uts2BX3RT8QBWXV1P7DCrKOFcTgxo9PGxsrjQSW+hcplom+EoZzSFzf8zyDA
-	 YBfSaEi2as9OOiT8vi6D8MV/9GKLCWMM3kvoPfq+W7ffAMYGDFxY71gCPSbLDOkzI5
-	 VqipxAaAfN2yf6IBxsVuuVlLpkCwxjA0HlYy4l7NOn+zNUEh64PO49gfnQZbfyTJNk
-	 IwZ3TYq5lpv8dYAk3/puCw4SLj3Plg4lggsOnf0Mi4n+HJpB/OKbgsWgSXQWy2iCCE
-	 7jxncCePmxG+KBBYCeDEVblgL8GClZ6kWUS3y1RnCd0wztk45h7K3hWPYQSqsPXQYt
-	 fi5DaXe+Fi1+w==
+	b=dBhdoT/oGy8uRNBe84+vYOBuny3Wc3DU+omPxB8qCyOOhCnd7o9VPHfTLGSr0svTm
+	 WIVpXEAo95W2gFYNTc60Q/WrtdVkwUCPxrXFqI0aCS1pvhIFlzieCAPUArKSzS7M7E
+	 WiCSPcSHFSaorwfw1JYkCD+X/Z6b8UycD0GVzoa6YTU6LaSH+i8jYQ4BqC3u4nkN50
+	 aVM3BZ6dyZVLl5ekBfmG8Qzr27Ok+q7YLzONrQq1/3z9fWr02hCNBH7/Bbv78Ez8kf
+	 DORcHdnxEUA7CGYp9TRVu0eCFvk35jcx2SgKzYvpD57ijKfUj4y99iyAUR1EaPkGGM
+	 LadBoeJhACBfg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 6/9] mm/damon/vaddr: respect folio end for DAMOS_MIGRATE_{HOT,COLD}
-Date: Sat,  1 Aug 2026 10:35:49 -0700
-Message-ID: <20260801173554.94710-7-sj@kernel.org>
+Subject: [RFC PATCH 7/9] mm/damon/core: handle extreme memory state in damon_get_node_mem_bp()
+Date: Sat,  1 Aug 2026 10:35:50 -0700
+Message-ID: <20260801173554.94710-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260801173554.94710-1-sj@kernel.org>
 References: <20260801173554.94710-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D8BF40005
-X-Stat-Signature: ozyfyc45rcp4wymru16f8po6uw8z4bge
+X-Stat-Signature: 43c9f1oi8tphepj4uasxdgw7d1iu4ayt
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785605767-165826
-X-HE-Meta: U2FsdGVkX18b3enu4TnGQz9rlqFr9jgs6LfBE/sFqDwp/oY32TEQq5Pvkd5T7raCpbpmN0g9GChVG4YuyUEJ/4Sxzxc1EbeuzDhM5pFXnLXiJ4C57XkHueM4yAnggqDH18svgdPqsy0Es97URIb72Atp0iewY3rSAm6w2ZbR8BD7l01P7oeVDTU6094ROTPMqj52hHs7Mvu8mdjmthy1DxPKXD4Jn8FcpU+kVS9Y/WqIctDWuSmI71Gl+7KIffmn4C8E2BPP9L7JcQ/XPsAfgSapYbqTK3naT013YfTx8Sk4tuXXOKUt5oMO/yFYyfNLqk46shcUf9qPPeMHbq4v4AXu94cEaZKU/Ei2tfsQ60ZU+TAZVT1xLrRPnU6Z/LdoYLf4fEydIKFAkZoEpKwKBxwNtdKKqw1y8cztD/aD+EyVEyZuUHO9es76JFWC9MrmqdGFz7Vc8vB9nfG9p52xxn7dKcpytGZKhJeqh4X7jKBU3cnWUtzv67ASKjt4mrKBPoRZD3+CxRz2KTDyefd5hE17IykPQaTM+BuQIpLabkL0rSPZINGAuYvGLodyQAq8xcZQwHe0RyZfuSbASVmmp63chPGsqSiL9Bqc5rRVmqD4KvP9GaWvuq/qXEYj4OktsWtwmseRHfbUF1Xm1eFgPnCJcJLp4d8rg/qSBV5jOZqMMnfSSgL5uiaF0L39ZYT0TNJlB0vXndcyzrytkaPyb7crf8IPuwZhllqrlZQgolP/VUTz8c2iq0upeNwAgxQSw8N9ugzZqKvApKgDTWkd3r9/X/dh+r2MwpEWxw4F/CXw/45Q+g+0uvF/40P5wrzhrdEzbM5eg2G6YOYsyeuD7gSrTsH9QdjVwvC9qOJhhPvnbi5hUS8d+0BayvdExBFbhNSqz3Z8veSvGdCmlsVp8TLAeVCdNsHJ7oozqwvRhswfz6v9fcRXRVvLVwPORNAP36i2bbc129gqbek3gAm
- GqifHZzi
- nq9UINKulMOKr56D3Bb8KEIpP7jJ5BGmyLq6nHagOuo1BGFlRlFAWn1o5o120RivnWIMlfBqgxzaX0EXWEBe1gdh8cgiZxe8z6N68fyLLhE7uGvv4o2s0dZbJZTuibEbVw4x8EQc8gEQNPoew9+yhDGNWryZjN2uAU2BaU3iRq8qtXA7ehKnEGzeuU03kkQsKvzJhkyHVC2jUK6qjSj/InGkISISCyYij5E33oEUqwK8A+tHcGEQ+FwnB2siK6ygNfjEGA2h1uFvO3NViMS0G0RjEiPRdZeWUOntT9sUMEkYIp/uFLxo8aUloIw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BC8B114000F
+X-HE-Tag: 1785605767-488350
+X-HE-Meta: U2FsdGVkX185B+CYoL4hpAPAIxGlJ+UK8A74J5YKD9Uab6SDgMdiIFsRY1JpLUU0x64AGq3wqega0yMEp/jaHhY7tDwoEJmkctrMjYdm6P0Xc/JxmZk8cBL36fpNKfF0XakAmkLEsTLWefkQQp1NPHsjT9y1IzvxaCk32DTzhx/1O/JlAr4IEtuxVbiPIxigBXkUIxQUy/z7Vc34+3H4XnBNXJNp+x+mAspn7xONh8L/T9ItkNby6hNN1qMpzjzwLSLtVwVjreoNdE+ixdGDrtkviHOWcaY9TbEbluuBLORlbNx5OpCscy1JTizQZt/C9MwLhhoJSa26Nby1RbBt0Vl/sDbS5HBdvmni6jl3401yZd4DLR7e+jIfqEUtnj6XMowOYtgs4VFdlwQRQ1M9mSRBHRTAz3EQl1ymKX+yi6oY+As0+LpqFYCTC7KlIqxIZWap/iJVr9wdTt0lJidiGc7PIY34gDOL4oeH6YoFVgJnYzLl5sUqb0P/kXU8euDkUl0T9veSzAy3yOe0z8AiD+UfW+wQYJneXGXYJvLNLKzAX6kwEp3MVC3m347d3zNhNJMM9rKfuEfT0Rug9EZOXaZ2aszlPIMsVnRZ6FY/UeZCDNIbK+fw4Q3SOBFWAKhWwNiaGEQpy6QAdhaKT3PL1YbEvCYxeAP9eiXfHqpb8zqbXzIc9DcKkrrFRMtCHTsmliOLSkxVDhlDTRZucZHUvQJlILo6WUPzNnwhKKzD8/k8Y+k+F+6gFs8rT9wu5/6paxVeguczqZ/Ylt7l6ryXg4ghb+Hr4V3bQmpWQTZgLckiirXoVeXLr0KFt4WGwIvDnVEHRzDqK3tEaKuLXpotFd49WbbW6BH7QjyYDpPuGhfFOZbSKZ0ECE351Te+Bi3S8GzE5FqBUKvypAEk/CTjtYVWNct9Ak041zOEaO8yqxpoOlYNnohtLHa6NOCMOvIWDXhUROu78Z4LaxZn7+W
+ M7aa77NL
+ hk/0JwXxHKYn/7WpMCCAWZQ2r2O7orlhemgK5yYqF/PQyleMSqX1wTlvMCUXx5XCrH5MoWkIX9bohB0CyUx9sTcIYBKymWTM94T01L4IG16z6HxRwl8m5pChSsdc5m8zxO7sz8V+Gd8MbhTUTCLxZ2UrJbivbHd+O+J+K25qKpLV5K7uwjN5XFqe17bNBR0Chkx36oWkNOMKOdpc4VlwTh90zgl7V9l5TZxAIJx0IXo7jycVWlilE59Jo4ItA1xFHGRcMita4bE4f+SMSR9kF1RycfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,58 +94,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For applying DAMOS_MIGRATE_{HOT,COLD} actions to a region, DAMON virtual
-address space operation set (vaddr) calls walk_page_range[_vma]() for
-the region.  The pmd walk entry function, namely
-damon_va_migrate_pmd_entry(), collects folios of addresses of the region
-in the pmd.  It starts from the walking address and advances the address
-by the size of the folio of the address until it goes out of the pmd or
-the region.
-
-Let's suppose it is for the first pmd of the region, and the region
-start address is in the middle of a large folio.  Also, the next folios
-are small.  Then, some of the next folios could be skipped.  Fix the
-issue by advancing the address to exactly the start address of the next
-folio.
-
-The user impact is that DAMOS action is applied to less than expected
-amount of memory.  Given the best effort nature of DAMON, it is no big
-problem, but it is clearly a bug that is better to be fixed.
+In an extreme and unlikely situation, si_meminfo_node() might let the
+caller show zero total ram.  That could cause a divide by zero in
+damon_get_node_mem_bp().  Fix it by setting the totalram one byte in the
+case.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260514015053.149396-1-sj@kernel.org
+[1] https://lore.kernel.org/20260328133216.9697-1-sj@kernel.org
 
-Fixes: 09efc56a3b1c ("mm/damon/vaddr: consistently use only pmd_entry for damos_migrate")
-Cc: <stable@vger.kernel.org> # 6.19.x
+Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
+Cc: <stable@vger.kernel.org> # 6.16.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/vaddr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 035cd509f6b58..aa833c2c4fa35 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -669,6 +669,8 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		return 0;
- 
- 	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
-+		unsigned long page_idx;
-+
- 		nr = 1;
- 		ptent = ptep_get(pte);
- 
-@@ -681,7 +683,8 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 			continue;
- 		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
- 				migration_lists);
--		nr = folio_nr_pages(folio);
-+		page_idx = folio_page_idx(folio, pte_page(*pte));
-+		nr = folio_nr_pages(folio) - page_idx;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3bdbf4fbf7147..269865eb8fbfa 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2816,6 +2816,8 @@ static __kernel_ulong_t damos_get_node_mem_bp(
  	}
- 	pte_unmap_unlock(start_pte, ptl);
- 	return 0;
+ 
+ 	si_meminfo_node(&i, goal->nid);
++	if (!i.totalram)
++		i.totalram = 1;
+ 	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+ 		numerator = i.totalram - i.freeram;
+ 	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
 -- 
 2.47.3
 
