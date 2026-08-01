@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D8AC54FCD
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:50:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D689AC5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1BB46B00AA; Sat,  1 Aug 2026 04:49:41 -0400 (EDT)
+	id 6BD8E6B00AB; Sat,  1 Aug 2026 04:49:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0ED6B00AB; Sat,  1 Aug 2026 04:49:41 -0400 (EDT)
+	id 646FE6B00AD; Sat,  1 Aug 2026 04:49:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92D5B6B00AD; Sat,  1 Aug 2026 04:49:41 -0400 (EDT)
+	id 50F6A6B00AE; Sat,  1 Aug 2026 04:49:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7533B6B00AA
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 017B1A1358
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:40 +0000 (UTC)
-X-FDA: 85052077362.06.9958564
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 52BBB1A0007
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IygCmeR7;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 351BC6B00AB
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B21C116027F
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:42 +0000 (UTC)
+X-FDA: 85052077404.02.24CAC44
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 27CED20005
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kt4e7q6D;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785574179;
+	s=arc-20220608; t=1785574181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DcIy9f09G7AFfaW0m/xEV6z6X9TFYUkoxNnVWt25+18=;
-	b=XNAFtLNAx1recG9j+oYC03zASYMrDCL9TGKQicct9lqvqI6QPRFzCtiZx+BTIv/qP+qR7R
-	ACxYPUnXnynNsdYgeFm2Pneg0eLgtyS6lxYd9h1BMcB+tiS3iwb6jSlqaRl2p/N4X8/ele
-	FnXCygGANS5Zh/Ho7xB0ozhBt1ntQLI=
+	bh=c/vB3WD/7Dj176UGptU16rqTkNJk3eC17XvdFm9X+ws=;
+	b=VtTtiQ3uwlqu0pG95KPr+0mo8nVId0qZihL0ohXoeFnbU5n/XQWcs1l2PbHUhw4bsLbfdq
+	BDhWWZljIBTNirAqxkwd5bjKuQ8cs0uNh8j2XY8xqBVbjY9PapbN51A/6N6aJLNV9E4W5o
+	Vv0vxQ6JlqlrcBFyX/47WBhkgwLMFl4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IygCmeR7;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kt4e7q6D;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785574179;
-	b=ah7zIGkIRpmpRlaYb3jn+9t5m8l2fV5A9Hn0QY0VME9/DfEt8zl/mPqvgAUT38E0Gt0Py3
-	F8yLALulXWjyYc9OodV++OpoSWmqJ69MDGO4nkX3kDM+d0c3qK55lbl8wt1ptcG3FjMbSZ
-	HcihUY5pRtyONCi6k91dYMN3edvHVMI=
+	t=1785574181;
+	b=6dp7nr3s7uZ4znaYUD8oGjMuvBAmrgFQpKd44XkPitzoIFRfrGbMr1+TlASoW56QYuvFrF
+	Okn6601pvM1OgiVnkiM26Yug4k1uLtNxrPXeB8TAWYd+IG8IBAqYfPmXqS21vHEu2Oh9vM
+	er6uubvRAKE1r61jV3/S+03MWLo1PEk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF01D45271;
-	Sat,  1 Aug 2026 08:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BF81F00ADF;
-	Sat,  1 Aug 2026 08:49:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C8B9760AAC;
+	Sat,  1 Aug 2026 08:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5867C1F00ACF;
+	Sat,  1 Aug 2026 08:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785574172;
-	bh=DcIy9f09G7AFfaW0m/xEV6z6X9TFYUkoxNnVWt25+18=;
+	s=k20260515; t=1785574180;
+	bh=c/vB3WD/7Dj176UGptU16rqTkNJk3eC17XvdFm9X+ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IygCmeR712ERaVNGY3E7VqhV3DY/W14mNeAS42TBhexbvQmzSwMxzK5hayLtEpm98
-	 rGuTR741l4DbCb0rk9Dz+cyeSO2r3AkYhm1lT2gDC42bUav8jn5KR43bxs35SBEw4L
-	 1+qcCZN2Vb2kUgL9rp+VA8/tT63HG+mEg1G1GDQW0iqdm1essHXttw/dmf6padVHhR
-	 5R9PvjgA+dM+ilQI/DySB7jm6Z0rzcS6w1jjQOrHe54G3rQSCwS6RbU62gmBKWfdBL
-	 iLcmhKAVEbZcOmAvQ45vZpJluIuWWnxpzx2IMEh/W5aGfPJ8+MBNiIpUFEYUFgzWcN
-	 CdAKM6EFcRWJQ==
+	b=Kt4e7q6DHaIsNzhM8Hw4l1ztlRsErtKU4viX9Gl/BNomAKQpvGAAA9c1FE0iHWYQj
+	 nrVNtyiE5aY63+cESIDyPXCrFy7e2q74mPOoylQJMu4gGxMWF2kr5NzUI1BDn65pn8
+	 jbJOTl9xHM5zcJvjqZIvC21TOnnJt1G/0IO99ACEjJ+VrShTKRZM/9QzwPoCWcTdtE
+	 r3qs7ag92TaD5qxD6N3WLvhQAz0SVdJ9h/4nHr6Gsk5rhGUP/XMf8/RRA1RpcYXbNI
+	 7rWXFthAp+VPTyzkn1FdzeneJP4Id5dqbZvQqvFml7AyqYtfzeZLWVcG4OH0AfBGby
+	 rgUfQXBanMW9w==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -76,24 +76,23 @@ To: Mike Rapoport <rppt@kernel.org>,
 	Jork Loeser <jloeser@linux.microsoft.com>
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v6 16/22] mm/mm_init: simplify deferred_free_pages() migratetype init
-Date: Sat,  1 Aug 2026 10:48:25 +0200
-Message-ID: <20260801084833.1897543-17-pratyush@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 19/22] memblock: always include KHO headers
+Date: Sat,  1 Aug 2026 10:48:28 +0200
+Message-ID: <20260801084833.1897543-20-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
 In-Reply-To: <20260801084833.1897543-1-pratyush@kernel.org>
 References: <20260801084833.1897543-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 52BBB1A0007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 7gaauj8gjdqdiiawoadc7csjntiqmhcz
-X-HE-Tag: 1785574179-355907
-X-HE-Meta: U2FsdGVkX19/8OfTFWl0vKbwTnMIyKY5eyUQS07/825MqXzVx51Ed2QX4hBdz4AoHbXVOeba+gFEvyi8hHi6lMu0xqFcPg33HZp3smaunWrNSIz4Z3CJBstmsSzLWSQmUtUWlrApk6p5TjnwmxnOS+iovfv44EvH+ObxfBvFwE82eHx7NbUg/xMju/2azmi63d10U4jOwYjSjZBjIaBsm32WwtImMNTCXxddR5oiJbws+Q7dSwJh2dm+kzWbcrtAoHCsTXAFDCkdU3t+vPcVtXbwnqUyuOIR+8OBy+7E1bgpA1zPVhMVcs4uGeX8nP79P7hJ4jBF0bfeKZFqfQzuT2f1reMyqqTbvqcOUfbR2nF6CDyCZE8k19SebK2qJGxuYNN+/fApWHYN1kGIHLaYSN9gMuZpAH07jJTeJYsngTIE1ZeipFaRryfxWjDt5fJjDSryDZRlqZfCoDwtOraRebyOuwYkYoZ3UwK0WKzqviN8cgfveuLYxFWr7DOiRIzcHpuIFkZbvVhHCxAvNRIEfdPkF55tukeUMA8FsePwGbhteGlkBM3YGzSF+8j2CpBQ57N5D/784kGVqnZs7h+BrWnuzJxl74aFyUA21DvVD1Q2wtqZxxUrm5t+h66XDC/uuCpbzFwM84O8H0TSQ4QRxkKdV0Qv803wLUNstzAjLTaVhsY5SN0DlOZqaZw6YLxVhkb+p4onaNc6qFhcS31hW9u4pW6g8osHmNUlrZWDqLIAorqZrn97glpZkjjjnYc5JCrvaUjPGZvUGBxqgr78AM7Zo6VzlrcjH9bNRRqnVI0IDhHKIAOihwIIM1aNG9dPVRsKQqxc5qn/x3y8AwPWqLA/cqaqd8r/i9yd/HjFP6xnE+DnG0Tq+xCfQyVq+tMTysQBoHa48as59mGqE+RGMTRx2bnPAbF8OAJ7L7Ueo8ZAfXOEtXjjf1sBFBDR0bcR4xTB89ZJUF9OQz4vjng
- ZgVl+htD
- ba/RdSXSy0L2vx4rlPo69VdtNAdBOlgDSNdHAy356RNCK9j5HYyXkbgV/29joTQFjTdvk3oWqE6+ruzAyPDeEtAlrFIocN+o5mkgSoHVs7aB+Hy8lsQsgKsQ9yUkZW2GkXDXLPY7OJijFWh+EeP/sbtSVdIZFaqbYOZXwcH3uen/i/Pl4tUuNnCUq1IEnnlEyUFhyeLKim+06UIdGyj//KOtNvpP4UamWU84ssUwWiYlOEZ0PKXYL49yr3yro/x89tv8O1So+PFvQCtnwzSPXrU1kF33wiEksCeaPAnqBdWEGnwyF7yYy6ZYhNg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 27CED20005
+X-Stat-Signature: c48mdx3tggqcr6puq84k8qyxn744kz5b
+X-HE-Tag: 1785574181-896680
+X-HE-Meta: U2FsdGVkX18z7MuJik5H32HhRkhi++899tOe+kjb2z4ic9Klcw7W/djhrQ2jjAqaruARxiDI44UGo1iRpjW1zrxHXP5ogXTGc2x0Lk9V/IkSVo8+lIXIZyN/camKQFvMy9PCNuob4qoe9Wf3Zog3Cfi5Tca900tpeDwQU3ry9Bi+v9BPWE9rxRHOPEz+d60ZqftiQpGC1HefgMtrTjEobQ1km2MFKFZHWUo0LMXJf08gXw1DoQtsJvZHrA/Z5QggOILZkZFLMBaOgG2fhT+hoP4cErmV8egNHMHB2xzkSVTKNUFL2o8gO1vVGHT3mqkgo7eZTbjAQy97E6K/o9Nz8m07lfgytIbYRHzp1y7cG8psVxU9FvbiU6Xa3XRAy2nw4pFaBDXsj8srbWm8ffKfUBZkYNC5FuG9z7O5lylvgcn3quiNXAa9LIBPGiFrWphql/WK/5tSwXC9ujjaJBH/4Oj6010kZYHkJQJa5+6PA/7g7maDZQvdzXhk8LAwPOlD/etmKjR8/r3Q0c8kjetPZOIItdiT53slpXO5P41/ndA54rhdwaBTmGkqeicjr7fafErWIiFkqJjZslG/WnpcqZu3a0IimfMBqzI3pg2m68H0AjIwNkBQEIV+Ni6OS1YpBWXS1HAk7NKXmACnA/Z4pZeG1uwBfn2n6NSF5+lvjCcq06XsV+7VTaekF6xHYrJrdOLcU8UjX43J/xut6kUcEDMzaABfEPSW24iVaYnQB2BRbO3P65QFoBfEAaB7zJG2m5rsSXd859pIo17b18IxLlCRRsOaa8OwjkWtmHBPhYzyN2azlsI+bvIA+eed1LA39/gYkEicLn+v0AqpZ5y1CqW4PAmpMzU0iTIVu53oS3UqEsOQ0ptdDbmgxIqHi1A4QjkYn10casM4EiQeeEAIZGrgW+I+wKZxjhAvO+3VCFF0BxCw3fTXUaXv0i/2uRgXbCJN4GtIYtBt5V5/Wqt
+ 8V53/Op0
+ Bus3QSxvOFE9M0ACXmvNHWfZpKYOti30qX8nt2QOIG8BaL8MbLI08OmuaFZijbbWrD+UblLAnxu9TmCDu3MjmMp/5imbddhJlOVdQMS7fvrIOVfwmddsY/XYVzhts7CrpWjIeyO33E/DQQTiiznosbBbL4mnYqPBSh5pGcwj30MsyMTNWzQQ0arjUo4KRnPvI2PFMWyywfYTAfm0loynuY1ovky6n7G54xfvIWyCjRXyB845Fx3TbdI17RxkzqCIE0WcqfLI+2vV9AJg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,92 +100,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-deferred_free_pages() open-codes two loops to initialize the pageblock
-migratetype for a range of pages.
+In a coming commit, memblock will start using kho_scratch_overlap()
+without a compile guard. The compile guard for the function is in
+kexec_handover.h and provides a stub when CONFIG_KEXEC_HANDOVER is
+disabled.
 
-Replace them with pageblock_migratetype_init_range() to remove the
-duplication and make the code clearer (Note that deferred_free_pages() may
-be called from atomic context).
+Since in memblock the call will exist unconditionally, always include
+the KHO headers.
 
-Link: https://lore.kernel.org/20260612035903.2468601-6-songmuchun@bytedance.com
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Including these headers unconditionally breaks memblock test
+compilation. Add stubs to fix that.
+
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
+ mm/memblock.c                                   |  2 --
+ tools/testing/memblock/linux/kexec_handover.h   |  9 +++++++++
+ tools/testing/memblock/linux/kho/abi/memblock.h | 10 ++++++++++
+ tools/testing/memblock/linux/libfdt.h           |  9 +++++++++
+ 4 files changed, 28 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/memblock/linux/kexec_handover.h
+ create mode 100644 tools/testing/memblock/linux/kho/abi/memblock.h
+ create mode 100644 tools/testing/memblock/linux/libfdt.h
 
-Notes:
-    This patch is taken from Muchun's series [0]. The patch as of today is
-    in mm-unstable.
-    
-    [0] https://lore.kernel.org/linux-mm/20260612035903.2468601-6-songmuchun@bytedance.com/
-
- mm/mm_init.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 84d4b1c997bc..30355effe1f2 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -674,15 +674,15 @@ static inline void fixup_hashdist(void)
- static inline void fixup_hashdist(void) {}
- #endif /* CONFIG_NUMA */
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 8b2e551435ae..ea735bcd4dd1 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -19,11 +19,9 @@
+ #include <linux/mutex.h>
+ #include <linux/string_helpers.h>
  
--#ifdef CONFIG_ZONE_DEVICE
-+#if defined(CONFIG_ZONE_DEVICE) || defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
- static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
--		unsigned long nr_pages, int migratetype)
-+		unsigned long nr_pages, int migratetype, bool atomic)
- {
- 	const unsigned long end = pfn + nr_pages;
+-#ifdef CONFIG_KEXEC_HANDOVER
+ #include <linux/libfdt.h>
+ #include <linux/kexec_handover.h>
+ #include <linux/kho/abi/memblock.h>
+-#endif /* CONFIG_KEXEC_HANDOVER */
  
- 	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
- 		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
--		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
-+		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
- 			cond_resched();
- 	}
- }
-@@ -1142,7 +1142,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 				     compound_nr_pages(pfn, altmap, pgmap));
- 	}
- 
--	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
-+	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE, false);
- 
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
- 		nr_pages, jiffies_to_msecs(jiffies - start));
-@@ -1981,12 +1981,12 @@ static void __init deferred_free_pages(unsigned long pfn,
- 	if (!nr_pages)
- 		return;
- 
-+	pageblock_migratetype_init_range(pfn, nr_pages, mt, true);
+ #include <asm/sections.h>
+ #include <linux/io.h>
+diff --git a/tools/testing/memblock/linux/kexec_handover.h b/tools/testing/memblock/linux/kexec_handover.h
+new file mode 100644
+index 000000000000..bdfd9445b1fd
+--- /dev/null
++++ b/tools/testing/memblock/linux/kexec_handover.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef LINUX_KEXEC_HANDOVER_H
++#define LINUX_KEXEC_HANDOVER_H
 +
- 	page = pfn_to_page(pfn);
- 
- 	/* Free a large naturally-aligned chunk if possible */
- 	if (nr_pages == MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pfn)) {
--		for (i = 0; i < nr_pages; i += pageblock_nr_pages)
--			init_pageblock_migratetype(page + i, mt, false);
- 		__free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
- 		return;
- 	}
-@@ -1994,11 +1994,8 @@ static void __init deferred_free_pages(unsigned long pfn,
- 	/* Accept chunks smaller than MAX_PAGE_ORDER upfront */
- 	accept_memory(PFN_PHYS(pfn), nr_pages * PAGE_SIZE);
- 
--	for (i = 0; i < nr_pages; i++, page++, pfn++) {
--		if (pageblock_aligned(pfn))
--			init_pageblock_migratetype(page, mt, false);
--		__free_pages_core(page, 0, MEMINIT_EARLY);
--	}
-+	for (i = 0; i < nr_pages; i++)
-+		__free_pages_core(page + i, 0, MEMINIT_EARLY);
- }
- 
- /* Completion tracking for deferred_init_memmap() threads */
++/*
++ * Header stub to avoid test build breakage; we don't need to actually implement
++ * any KHO functions as they are not used in the tests.
++ */
++#endif /* LINUX_KEXEC_HANDOVER_H */
+diff --git a/tools/testing/memblock/linux/kho/abi/memblock.h b/tools/testing/memblock/linux/kho/abi/memblock.h
+new file mode 100644
+index 000000000000..71cf6982a2b9
+--- /dev/null
++++ b/tools/testing/memblock/linux/kho/abi/memblock.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _LINUX_KHO_ABI_MEMBLOCK_H
++#define _LINUX_KHO_ABI_MEMBLOCK_H
++
++/*
++ * Header stub to avoid test build breakage; we don't need to actually define
++ * any ABI as they are not used in the tests.
++ */
++#endif /* _LINUX_KHO_ABI_MEMBLOCK_H */
+diff --git a/tools/testing/memblock/linux/libfdt.h b/tools/testing/memblock/linux/libfdt.h
+new file mode 100644
+index 000000000000..6137b788fe8d
+--- /dev/null
++++ b/tools/testing/memblock/linux/libfdt.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _INCLUDE_LIBFDT_H_
++#define _INCLUDE_LIBFDT_H_
++
++/*
++ * Header stub to avoid test build breakage; we don't need to actually implement
++ * any FDT functions as they are not used in the tests.
++ */
++#endif /* _INCLUDE_LIBFDT_H_ */
 -- 
 2.55.0.571.g244d577d93-goog
 
