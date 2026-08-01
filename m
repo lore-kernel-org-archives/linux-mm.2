@@ -4,123 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC7FC5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD03AC55171
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D49F86B0088; Fri, 31 Jul 2026 20:31:24 -0400 (EDT)
+	id AE34A6B007B; Fri, 31 Jul 2026 20:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFBCF6B008A; Fri, 31 Jul 2026 20:31:24 -0400 (EDT)
+	id A93896B0092; Fri, 31 Jul 2026 20:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE9FF6B008C; Fri, 31 Jul 2026 20:31:24 -0400 (EDT)
+	id 9AA336B0093; Fri, 31 Jul 2026 20:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81CDC6B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:31:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55130801D1
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:31:22 +0000 (UTC)
-X-FDA: 85050821604.14.85F87DC
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 82777A000B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:31:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WSSV9ceQ;
-	spf=pass (imf15.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1AE6B007B
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:36:44 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2F73A01FA
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:36:43 +0000 (UTC)
+X-FDA: 85050835086.19.4354EED
+Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 48879120002
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:36:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf29.hostedemail.com: domain of 3mT9tagkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3mT9tagkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785544280;
+	s=arc-20220608; t=1785544602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=huQxdldpqRYaZEjHQZL7Ohp7YA7LATCZJOhI6k3svOo=;
-	b=nsJ3byLOOP1nVGxv3m9KhZiBwaHufYPyrl2w+qwiV06HYIJqoJFdRkN+hHfkvy0iLrtv3B
-	p53FcW6pNYt/ZwRQlSCNMZ9JnLG5SuEAfy7UHkhXf+AJLiyEa8MkWXhzWpB+CxQF+OhfLf
-	KaiY8aDsVXS0t/3Yu/MZFh0xFo/mzRI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785544280;
-	b=1796dvkZtcRqGDuLdE6SzbuBOwTLFb1nO5xwoe0ZQACCY15/E10gwhLBrcXF4gEgsSjNaL
-	VSPRLe1IbLY6sN8PHazHLatfdyTIA4/WFp1eX9GXsvN0Wk1la1mYOA56yJ9HePH92rAMBN
-	qCL7zS+7giUVU/G4M0rM3mToGEEKpZ0=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=FUoHlSVYyRWQcZ6/7tjmj01mDGscNWRNSzyTEDtffAc=;
+	b=RQtUeA7q7Fxf3/6pSB9BDb9rnUVglvxXMOp/FbNcW44Pb64pRdsws7+4myW+n0YxhpIDJ/
+	8/KjxJFGtRcZmRRtGOk807SFcgo9C8m7/G3QzoZpXQpPBq24ElS+yHjB8nSseVLg9AV0TM
+	cUGj+I3x7f5X5npF4sraGf1+qsxkRuA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WSSV9ceQ;
-	spf=pass (imf15.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-848479c9bd5so1392056b3a.3
-        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785544279; x=1786149079; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=huQxdldpqRYaZEjHQZL7Ohp7YA7LATCZJOhI6k3svOo=;
-        b=WSSV9ceQuoDNNu8mvPBUAP4yuIrtgDoEZVqqhJ5a94AlEjIROpdMenKdj7y3iFJpkS
-         d3ULK15xVU1XRFucsP2rG8hSVK0qeXGw+Yf/ohtTo7GfkqRViYDgSZOuGRKenQBPqDN+
-         xy0Dx1nNGZYGTGSeNNEI9AX9cGWvZALEYNVmEblEd8Chh02FT1R/388Ohw9xhWm0f+Zh
-         qrM5bnrXZixon4nAhtDfe/N98thUecJ6MqATdofetF3IhY9Im+IGfjmk56s+6lW7CACx
-         hAc43qSENTnwMOTuxpd+s0wZj+VgQqWHn4GRvqFOHhQPT1keXyCMP8M1D8kie9ppuSMp
-         jF8w==
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf29.hostedemail.com: domain of 3mT9tagkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3mT9tagkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785544602;
+	b=I09F84KFTRJKVP+DwJ8pW5NET4iZRLVXuxmydqUPTGLVF1r/jRn+EtXgxlRPr1IYvYlImM
+	paD356bcKh+M/Cji422FXqHLebiY6D5GeVAlzjHO2GA3G4ZfmpgA41bFvnUQCxkLu2shaw
+	INYE7wYUMkEHEOm2iZFf+fdAFGCSwXs=
+Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-495b0cf250dso1039430b6e.3
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:36:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785544279; x=1786149079;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20251104; t=1785544601; x=1786149401;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=huQxdldpqRYaZEjHQZL7Ohp7YA7LATCZJOhI6k3svOo=;
-        b=m0VMm87P6dsON3j2sQizY1iXw+KiBFG45EmOwEeRknUqH/kfs/IoxOTOeQLiqAg/7J
-         5jG1Vv7cvLF78w5Yflb+jxSPZn2M9g4i8ivjFZiH9gRNlUopgUhmXz1FGUb+xKhy6YQR
-         j3PYL/xuuK6BIY3JcIbpTUxaeM42alE326HbYDxC4amY74FrBmUm0ilnbeqGj+K/K3Hn
-         PsKMPv5VxtTosGOEXQA2ua5qKOBg4rWJWnHiv6UlhrBPnrr9QDYC/PLzyaMhJKkGb0N9
-         h3zLbUQ1Sg9j1YcWgDlnGubRMgvQvqW/+jJgW1EtjOc2xOwgrKbmuZVur/zRkpEawl/p
-         sxlQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrn3lNxGkFhym1kM1x8nnUVtC7ctvsSYlYgzHikVVw4eQA2RRSqznPynfWOgOTt3J45s8yT26Y6ww==@kvack.org
-X-Gm-Message-State: AOJu0Yxjg47v8xdZwJCXpPihbcTOX4TAVXgqt7x0yWzEVU4sHNciRbcB
-	qaswevRIzVv8WN9vsneXi/zPAocDQFMbTMOHRwzAhHhmG4cZek756Drp
-X-Gm-Gg: AR+sD137SPQ+lAuyUodkOnw77S1MKKlWK1VkJBH1E9SNzVQ8nuCa8x+jzhALcDzZC6I
-	kst4UEXj+nfHo/PJffA0kp/8tOwvAVi1p45vOaRcEbomas9zVt4DXMCqJZRTdyqvJX+uyC4IBFQ
-	876XlNZAYGWfDTlu/J6jMJPLkIR18/yhcL5VzpsB1fxmz4r+Fg/DmQ6KyHEgLCD2WXmset2bDFm
-	F6qTMc3XZMbBfY51Tq+RBBztk9hno+m0Mnu+PA8m1duI++8C+HlHQft090RM1ZbRogQcg4+pBiY
-	V50qa/s8Gw90yWdldO4HAz71PlhGDQqSiaNR0x8bFn3IkEul65sS4R89cqQOJosnmD3j5XoqqKk
-	cvrzQsBysBEn8X8dJlx3m7AlXBZxjpuqaebYIFDQtQ/6sZaPCU6wnY/ajPLxr5oPO5L2DrprKPG
-	dVsHmy6skjLI+w2nG+hL5v3TujoAL0eJeklwnJCAY0OKEADZwK8a2SMjwJcfCbZ9YX90xzaL/Li
-	8f6trW051sUY3hLpiXGuVS6pbg3Wk2CWHpP+/Ww77DjBcycm4OkDhgFYrE=
-X-Received: by 2002:a05:6a00:4392:b0:84e:216d:7e4e with SMTP id d2e1a72fcca58-84ee479b03amr1357914b3a.1.1785544279161;
-        Fri, 31 Jul 2026 17:31:19 -0700 (PDT)
-Received: from ?IPV6:2409:8a28:62b:7644:8009:eff3:7a31:a025? ([2409:8a28:62b:7644:8009:eff3:7a31:a025])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc4237e5sm1030113b3a.59.2026.07.31.17.31.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 17:31:18 -0700 (PDT)
-Message-ID: <6e16a760-d84d-98e1-433e-3233a9dd2236@gmail.com>
-Date: Sat, 1 Aug 2026 08:31:09 +0800
+        bh=FUoHlSVYyRWQcZ6/7tjmj01mDGscNWRNSzyTEDtffAc=;
+        b=VUCbQlzDGxR34o13svRr5Uqrh2K6J+H5j4ys2HXunVOITbi66pLfxu6rPunBWhLdwD
+         B0GP9GS92zkmngMTs2BVEWPtVPAOVNYioX0x+VUDYx9wJBe0KEFhYUxTarcyhIdAiGBR
+         gD53Hsx7thAoHqEeULtfBrAOD4kFjEeJdakcXSP7vVm9EgvpZpayqSJf7//ejBIk7mPo
+         gq+kefQRLKkvfKhM2VqSQqeBEQWIL7SMTKGdHHq70ER8uwtH4jrl7EFF2jf3q/i4Wg9c
+         4/VwUy2pCZ30n5fuHkhuLB5l2IY5PtGa9ObYueoOocwBgtBmEDy6VC55pYUE3nQ2UkJP
+         e+ow==
+X-Forwarded-Encrypted: i=1; AHgh+RrfRy92awnSeC4888trPcBgpYBrzh64iHZLX04ySaQMZo9tZEbOzG5Z7l0rknRtfGxhmShguUzO8Q==@kvack.org
+X-Gm-Message-State: AOJu0YxK7F9O2F/XYcRI3CmVC+cEOE0svMbvD5a0qzmqtMdDH8LIdfVj
+	fwKleMrpZHqx4IE0zNp4CTZAOGPMN1JVIMsZvJDyu41UU+mPn5QD5tZDQMwXcR4KIBiaVTErKhC
+	BD/tZ5E+nPOr1L/++iisNgSoB86/NUBXsWGT7ED5WGTv989lb7AX/b2Gc9W0=
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 2/2] mm/zswap: Support batch writeback in
- shrink_memcg()
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, jiahao1@lixiang.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mhocko@kernel.org, mkoutny@suse.com, muchun.song@linux.dev,
- nphamcs@gmail.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- stable@vger.kernel.org, tj@kernel.org, yosry@kernel.org
-References: <amufiuAaZbuDdKkQ@cmpxchg.org>
- <20260731071900.38942-1-jiahao.kernel@gmail.com>
- <amy8gAN33W4QsM5R@cmpxchg.org>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <amy8gAN33W4QsM5R@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 82777A000B
-X-Stat-Signature: ttuoid3bo8ss3xz8hxsdg5u6efm71ajy
+X-Received: by 2002:a05:6808:1484:b0:48a:ddd4:d36f with SMTP id
+ 5614622812f47-4af5e0c2e55mr3930519b6e.8.1785544601341; Fri, 31 Jul 2026
+ 17:36:41 -0700 (PDT)
+Date: Fri, 31 Jul 2026 17:36:41 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6d3f99.13bfb6d0.1ecdd5.0255.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in alloc_vmap_area
+From: syzbot <syzbot+a308ee836af04d1d6fa6@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bsegall@google.com, david@kernel.org, 
+	dietmar.eggemann@arm.com, juri.lelli@redhat.com, kees@kernel.org, 
+	kprateek.nayak@amd.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, mgorman@suse.de, mhocko@suse.com, 
+	mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org, 
+	vincent.guittot@linaro.org, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1785544280-508034
-X-HE-Meta: U2FsdGVkX19ojnOQhe27CSapJKTfnNI176t5eX1A/Sh5WZUrf61/SvLi8NJLQA0UmcyPoDqytILUrGxceiC0l19EVYn5rbPLXiAHCubJM2WkGtxrdlx4CN+ky/AiwluBUtm+6+d5zCaVhxEFLTQ+fntLVJrXar2tl8DnHX5fwFwSyfUnCNcNCPhNYL9TyDEu+h2wmG+pVnOnVe3zOtN9V/7ZY1j9/xWxN4pmQwKseUeC7G7v79bRLAGLoHSOeXW20KdmKw6nvQtgXaytn70qpyMeomhV4gqVBoPlLQj/tgdQpX6VaTzET4qA6ioHzGy9Aofc5acYpdvVNjdkoeT660KR7Gs7cZfVu5VV3O5KG2q4Pn+t6qM3XCgMdGBE3yjQET1/eRk9QrPy+t1TPfCEAz1RgB3SVF5/aMOfhqoaztLesHRGTLdOMeNhV+OSljBfhjZSJ43ZP1eF98V0dbXWS0ngkBZFVwXZJcZFntvfVBD0brGd5DqsD2DTgmJnCaNZ2gtTM+wTxzmpNgjThFMj8Lob/tNBrzb2y5Kp4mQHFWmnXmfyYmed0B2XOIJgP6L7dHW5M33scgz5rPUPtuYai8+m06I6SDhyqGaNKIThbldDvsNQ83AM+AuYFTkwaeyEFOIgfBlMoYSC/abmqJIDdK2xxEpaFX8WNDJt8MdE4QUu/XDeS9F0em3yU68GEPtkK1xAW3MiL9edRsVfjoqEjtBT71cJjJU3bTWTTY5WWSsQbU7lV/XxZJ1EcJ5zgpqIOH+29C9xHaMa/7bRB6GV62G6BwAQpwZpWqSIyMDpZTyhZSig3nOwd1Lc8M6yEn11ypx7eBIQzW5t1kHp7bSVzNaMiqWiDeNV+hpl+ZDKDHpB9aciLgWBeMXqs8J/SAJFk2IGBrsyDE0opcvaMrVI/w+vkwIhKGqhw9qh36GOkjbvnDNFfilH5t69Hx+Tl8TVkoRCueE2v5K8apHk1Ep
- XV0EQkuU
- IG4sOdAyzFFuAUhoxRuHeHZJF5TobjcV81XA5NcoSbUrrEDmlj1JraRciwKXb+QqzAXQBDhG/YfSue6WtCuL0nJDJP2ty3JS+wzFIIWt9WeYwqJl9vw+ez1sJhwjyzCpm/BotWyryJ0nYo+9qYhSgi8PsbkK1/M7mQYUPwpoHraZZuksWwephDyLZIrB1foMrR5a/oVxZxF3r6jRRu2kzVZJcIwPMKHECHRVw67gu5sC0JeytNt+t9ahqnvz7V3BcWDA03V+BKM7N+ffzEqnOAu7l6jCyENl58eQMdNVLc48c4N7430jd5C+UQNpguH7R1qKK24lyRfmwMCWTU3teWmUB5vVtmzmWZFGKX/5JVH4K/Hfz+SGp0L3w91+1M4/XlUmCaB+WTqxEk7inF9nuAtvQy81OggzZhQY5pMCgRf4m2Np96Ix44md2N+xIXd5lWv/T1dQJjbT3MzHs47X0ViFuWWlWmZ+eW55UnHW04IH1+Rxt/2qdZXjiaznQZNxCV0+0z6Wkpz4x3fJFrN14E1xb20EoswgLvz/BBxVbmKp19MPgLuPGBtHG3Zs5jhox4bJ/1vxzcQfBgG0upU0/9VKcqSb+4jPyrK06
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 48879120002
+X-Stat-Signature: c5wp31rb8jmjje1i1f4shdzyq1wukngd
+X-HE-Tag: 1785544602-178026
+X-HE-Meta: U2FsdGVkX1+86QZoU2u/zjEjpDTNIwAG8Rn/PGAMuVpTD1k8l0LKMbD0QMCjm+rg6lGo/yYzYxcbj5YMxtQ9wMg4w0N7/CpgTZY0GMM7Bb8IB79KSvxwp9p4WnBKwwRlvptIiGsxmtF3AZEjNoU2gNqwxTvuhZ7qpL3945X3+yEQX2VzEX8yo3tvFDEtfWf95P76JfVTr6Hy1lWbRJhGTquVWW7ltxgG7jPbopvFXx+Lk6mi0fEDHnWxnPlE7z2GkC/dnKq4REYpNt82dFRghNADq3kv4Ej8UMvXE6N60+5O3HGqAdSQ1MxkyuAppKc1wALv4YJcw0oM6VC8/dATrIlbSOLbZz6HhFZq2FWLIoVwkBxXVPwxWogmGIjEeJI0Q3R4tJHtraStBm1fQQ/GKgbxZRNGz8L3hQRQvVJ92i48PMVt1x9ClJGYWQcnDSVBe2rdZ+dpP9TraNIgEaHfnCCTmSO3mRtA/XhyxyJBgG+xnx9KSmjO2nqyN7WnsbHt75Zbj6VMENxXbpeFomC8Q4LxuPESi5hiD67egH8pAhYE7d3znSVsVPM3kc50gXMOUYQHK0gcFsr7TKfIliehbbEHjqXsG7yoZvn9DGcxnkUCNkgqMpL2r7flr3pR+dADcfEtFhFFb3Pdas5lSozogEGPCGj5BlM44OIO8o+Z3bgCWv0hlWj3WqilFmfsmb4pIElYH2HnDcUWPX5PfguHWF/xyKVIaBxdBknnc3v+J6Zb3sfBdUg4cXX3ZD3RujOqmZcgFWu4V7yykwTDAAvobaIzrMTn3O6fs2+Yn2oqudP+xlXe0tca3EF5/goYzv00li2FhY4yONTqTv+i2xDLGBFDrUFxW0qn2oHHLUzCyX2ZwgimJpjM9iIA6JV4tMiS2EdVJQQMv0rYcO+BI8l8FnlNW0t3h4eMPlc9iBmLlv8WBT4r/0atWKj6Ev4ynK/1EPdiXL8zyX23p4ujBvo
+ zZl9wsBg
+ 82m1UmoUX29ZQofsZfQK8XJiy9ekambP2g1AESR/lHhSDW7+stJF6EJR8aLxR4NdWclmctiBIWsemoxLF/Bp8LcfqPtAmiDZn0wKIBLuCwLvLzU9ZftnbWUnyeG9aUFPuorTfy0aQiovJZ33pfOezXX6buwCrTOpTnmY2Do0hn5eeaLjgo75jOX6bwc0yVs7qroSg1p7pA4hHy3LmQXrwENRj7+u+MD+DwfZUAyzfcgkCYyhuYEuNwF2R3CWa7zrd800dLPs3meB8gMnG3vCTxiII7uyGEBiRJtepXj3MYKdMb9vVs+hIvZYmzvf+6x6SS+nNB9eXxgwr+ij3672xJ2WWd3/mdx10lukkxIEtOc8gQdjVSZAVOFVUXOyXwnk30wcHHpbaczwO9fFeXgDs0Iaqu9vjeIV8tY03DFrSrtpJa0IShNIcFfItwN2vXPi6OzuJUpsVkgnl+7z5wybuWO0QYz6OEPfWGsCsUVObgHJJTwxffqENyE5tz/LbrEayOo9aR07M2SUr8kCUVC0U8kf96hn9vFQjr8NKAe0PexbeMiy35uG9P4EmYYIs6aoHX/hdl2JfvEG16bIutTLoluJdKuKeRonOVfOrgzputvqMLO2P9/IFDTn8VdG5CDWuomY4vWzywFouCKg6cl973Ux0J/StGxoq3zi56gu/nuPj2pkpU8bqQCNel1+G4wjS3/4X2n8vN8HlsrUBKQuWEU9pbJbXbujmtbXhXPZ1/2L79/VNKIly3ahB1z4dY1d0scSCIDeQ1L82KWgl0stdO3onl9zf5mAtl5VDXD2CAYLbMmCyIVrgVXB7d86pfi/EZwnbrrqgrs7/twkF/OOziCzmx5aNzT3hq4hPHAZhCHbimhLpm8dYtMtSZ/GZBB0vqCRmE9nNwHLZCKFk9m7LrUSvISQvRb45NdkH2BiKXmJ81Qcuj99HJwg78NNiOXBjJNrZfP0bz9k0xzBVJcw2WgudSZRZ
+ PF7lXNKV
+ sEVnc0VSWdanv7zqiOnkqwAXvicoBHklsO6u8UNmrn5PzePTpxi5ik4ObNLA72MT30kXzqSCTDXt9GTQmzE7bTjTdSiQBFJKUS3SUh0QN3rltDXhS3o0Spv6KGr6j8EiU5WJw1zevs78c5Xr46kWXv89eRhZmkGsLe2lIQIVC3cpJabfeAvGEEPo8JcDZryJ7HNci0WmSUt2pqXV5bz2fFqQakcj6fYDqBASyG2KaDo4sqvIzL+GS2k9i4h0rsN10Pe0sgt/7+eqrc//mxy+6yOV3IZlE47jvbPujTFAlwgN6kPw+ISPMCmhbd6R1yUgDKhwPBpgYnrY7V7oKlXfWQ8nvkBdTYmMzW1KebkD8Q0LtXManEASEs6nC8uylEkA90IEoBO/jP8bh8sVM6pui+dQUnmgLbos/LiG7f+tNvDN941x3QhdKdkI3eIc2hCkY2XLR1LUCBM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,173 +100,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    11028ab62899 Merge tag 'probes-fixes-v7.2-rc5' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=165f9499580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f221a1b5d497ed15
+dashboard link: https://syzkaller.appspot.com/bug?extid=a308ee836af04d1d6fa6
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-11028ab6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/50d1387eb51d/vmlinux-11028ab6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/30ffbd0f8cd4/bzImage-11028ab6.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a308ee836af04d1d6fa6@syzkaller.appspotmail.com
+
+ret
+WARNING: mm/vmalloc.c:1820 at va_alloc mm/vmalloc.c:1820 [inline], CPU#3: kworker/u33:7/821
+WARNING: mm/vmalloc.c:1820 at __alloc_vmap_area mm/vmalloc.c:1855 [inline], CPU#3: kworker/u33:7/821
+WARNING: mm/vmalloc.c:1820 at alloc_vmap_area+0x17f6/0x2bb0 mm/vmalloc.c:2073, CPU#3: kworker/u33:7/821
+Modules linked in:
+CPU: 3 UID: 0 PID: 821 Comm: kworker/u33:7 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+Tainted: [S]=CPU_OUT_OF_SPEC
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: events_unbound call_usermodehelper_exec_work
+RIP: 0010:va_alloc mm/vmalloc.c:1820 [inline]
+RIP: 0010:__alloc_vmap_area mm/vmalloc.c:1855 [inline]
+RIP: 0010:alloc_vmap_area+0x17f6/0x2bb0 mm/vmalloc.c:2073
+Code: 48 8d 3d 8d d8 c0 0e 8b 74 24 10 67 48 0f b9 3a c7 44 24 70 00 00 00 00 e9 95 ed ff ff 48 c7 c3 ea ff ff ff e8 7b b0 a2 ff 90 <0f> 0b 90 41 be 01 00 00 00 e9 ae f9 ff ff 41 be 01 00 00 00 48 c7
+RSP: 0018:ffffc90004627458 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: fffffffffffffff4 RCX: 0000000000002800
+RDX: ffff888025aa8000 RSI: ffffffff8266fbe5 RDI: ffffffff8e46c938
+RBP: ffffc90003389000 R08: 00000000ffffffff R09: fffffbfff1dbda96
+R10: ffffffff8eded4b3 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffc90003399000 R14: ffffe8ffffffffff R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff888096ee3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f7f3a190 CR3: 000000002228f000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __get_vm_area_node+0x1ca/0x330 mm/vmalloc.c:3226
+ __vmalloc_node_range_noprof+0x228/0x1630 mm/vmalloc.c:4042
+ __vmalloc_node_noprof+0xad/0xf0 mm/vmalloc.c:4143
+ alloc_thread_stack_node kernel/fork.c:359 [inline]
+ dup_task_struct kernel/fork.c:929 [inline]
+ copy_process+0x7fb/0x8030 kernel/fork.c:2115
+ kernel_clone+0x176/0x9d0 kernel/fork.c:2748
+ user_mode_thread+0xcc/0x110 kernel/fork.c:2824
+ call_usermodehelper_exec_sync kernel/umh.c:132 [inline]
+ call_usermodehelper_exec_work+0x6b/0x180 kernel/umh.c:163
+ process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
+ process_scheduled_works kernel/workqueue.c:3405 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
-On 2026/7/31 23:17, Johannes Weiner wrote:
-> On Fri, Jul 31, 2026 at 03:19:00PM +0800, Hao Jia wrote:
->> From: Hao Jia <jiahao1@lixiang.com>
->>
->> Currently, shrink_memcg() writes back at most one entry per-node during
->> its traversal. This makes shrink_worker() inefficient, as it must
->> repeatedly re-enter shrink_memcg() to make any substantial progress.
->> Under high memory pressure, this can cause the writeback speed to be
->> too slow to keep up with refaults, leading to zswap store failures and
->> forcing pages to skip zswap and go directly to disk, which results in
->> an LRU inversion.
->>
->> To address this, extend shrink_memcg() and rewrite its LRU iteration logic,
->> enabling batch writeback for both the shrink_worker() and zswap_store() paths.
->> To prevent shrink unfairness across NUMA nodes caused by a shared global scan
->> quota, limit scanning to up to SWAP_CLUSTER_MAX pages per node and write back
->> any reclaimable entries found.
->>
->> Test Setup:
->> - Total memory: 32 GB, 1 NUMA node.
->> - zswap settings: accept_threshold_percent=50, shrinker_enabled=N.
->>
->> Test Case 1:
->> Set max_pool_percent=1, allocate 512MB of anonymous pages, and fill them
->> with random data (to avoid compression). Then, use cgroup memory.reclaim
->> to force a large amount of anonymous pages into zswap. At an interval of
->> 2ms, allocate a 4K anonymous page where the first 4 bytes are random numbers
->> and the rest are zeros, and then trigger reclamation of this 4K page through
->> cgroup memory.reclaim. When the pool threshold is reached, shrink_memcg()
->> will be triggered.
->> The test data after running for 120s is as follows:
->>                                  Baseline      Patched
->> shrink_worker wakeups              5,363          169
->> shrink_memcg calls            11,373,201      350,703
->> written_back pages                40,212       40,241
->> zswap_store calls                161,190      163,753
->>     store succeeded (ret=1)       102,743      117,183
->>     store rejected (ret=0)         58,447       46,570
->>     store reject rate                ~36%        ~28%
->> pool_limit_hit delta              55,826       33,760
->> pswpout                           98,659       86,811
->> pswpin                                 2            0
->>
->> Test Case 2:
->> We evaluated the following two sub-configurations using stress-ng inside
->> a cgroup capped at memory.max=1G for 120 seconds:
->>    Test Case 2a (max_pool_percent=1): Continuously triggers the global
->>    zswap pool limit, thereby waking up shrink_worker() to perform asynchronous
->>    shrinking.
->>    Test Case 2b (zswap.max=320M, max_pool_percent=50): Continuously triggers
->>    the cgroup's zswap.max limit, thereby invoking synchronous shrinking.
->> Command executed for both setups:
->>     bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
->>     exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method rand-set -t \
->> 120s -q'
->>
->> Test Case 2a (max_pool_percent=1):
->>                                  Baseline       Patched
->> shrink_worker wakeups              5,640         1,308
->> shrink_memcg calls             8,481,500     3,140,972
->> written_back pages                   260       468,216
->> zswap_store calls              2,742,756     2,011,269
->>     store succeeded (ret=1)       934,640       947,988
->>     store rejected (ret=0)      1,808,116     1,063,281
->>     store reject rate                ~66%          ~52%
->> pool_limit_hit delta           1,181,310       196,882
->> pswpout                        1,808,376     1,531,497
->> pswpin                         4,288,497     3,635,365
->> Test Case 2b (zswap.max=320M, max_pool_percent=50):
->>                                  Baseline       Patched
->> shrink_worker wakeups                 0              0
->> shrink_memcg calls              687,608         54,002
->> written_back pages              639,176        846,663
->> zswap_store calls             1,224,222      1,228,548
->>     store succeeded (ret=1)      992,816      1,208,123
->>     store rejected (ret=0)       231,431         20,425
->>     store reject rate               ~19%            ~2%
->> pool_limit_hit delta                  0              0
->> pswpout                         870,745        867,360
->> pswpin                        1,707,823      1,216,814
->>
->> Under identical workloads and runtimes, batched zswap shrinking
->> exhibits a significant reduction in both shrink_worker() wakeups
->> and shrink_memcg() calls. Furthermore, the sharp drop in both pswpin
->> and zswap_store() rejections demonstrates that batching zswap shrink
->> operations effectively mitigates zswap_store() failures caused by
->> hitting the pool limit. This significantly prevents pages from bypassing
->> zswap and falling back directly to disk, thereby reducing LRU inversion.
->>
->> Suggested-by: Yosry Ahmed <yosry@kernel.org>
->> Acked-by: Yosry Ahmed <yosry@kernel.org>
->> Acked-by: Nhat Pham <nphamcs@gmail.com>
->> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
->> ---
->>   mm/zswap.c | 30 ++++++++++++++++++++++++++++--
->>   1 file changed, 28 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 48fc7b575e24..d406c14925d8 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -1275,6 +1275,21 @@ static struct shrinker *zswap_alloc_shrinker(void)
->>   	return shrinker;
->>   }
->>   
->> +/*
->> + * Scan up to SWAP_CLUSTER_MAX pages on each per-node zswap LRU of @memcg
->> + * and write back the reclaimable ones.
->> + *
->> + * Since the second-chance algorithm rotates referenced entries to the
->> + * LRU tail, the per-node scan is capped at the current LRU length so
->> + * each entry is scanned at most once per call. It is up to the caller
->> + * to handle retries, deciding whether to scan another memcg to complete
->> + * the full iteration, or to rescan the current memcg to drain its zswap
->> + * entries.
->> + *
->> + * Return: 0 if at least one entry was written back, -EAGAIN if entries
->> + * were scanned but none could be written back, or -ENOENT if @memcg has
->> + * writeback disabled, is a zombie cgroup, or has empty zswap LRUs.
->> + */
->>   static int shrink_memcg(struct mem_cgroup *memcg)
->>   {
->>   	int nid, shrunk = 0, scanned = 0;
->> @@ -1290,13 +1305,24 @@ static int shrink_memcg(struct mem_cgroup *memcg)
->>   		return -ENOENT;
->>   
->>   	for_each_node_state(nid, N_NORMAL_MEMORY) {
->> -		unsigned long nr_to_walk = 1;
->> +		unsigned long nr_to_walk, node_budget;
->> +
->> +		/*
->> +		 * Cap the scan at the per-node LRU length so each entry is
->> +		 * scanned at most once per call.
->> +		 */
->> +		node_budget = min(SWAP_CLUSTER_MAX,
->> +			     list_lru_count_one(&zswap_list_lru, nid, memcg));
-> 
-> AFAICS you can just do unsigned long nr_to_walk = SWAP_CLUSTER_MAX.
-> 
-> __list_lru_walk_one() does a list_for_each_safe() that will exit the
-> same way whether you hit !nr_to_walk or run out of items.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Wouldn't it be better to ensure that each entry is scanned at most once 
-per call, particularly when list_lru_count_one(nid) < SWAP_CLUSTER_MAX?
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-On one hand, this avoids scanning the same entry multiple times within a 
-single pass. Since the second-chance algorithm rotates referenced 
-entries to the tail of the LRU, entries on nodes with a large number of 
-zswap entries require at least two shrink_memcg() calls to be written 
-back, whereas entries on nodes with fewer entries might get written back 
-in a single shrink_memcg() call instead. On the other hand, we also 
-avoid spinning repeatedly on entries that fail writeback.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Thanks,
-Hao
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-> 
->> +		if (!node_budget)
->> +			continue;
->>   
->> +		nr_to_walk = node_budget;
->>   		shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
->>   					    &shrink_memcg_cb, NULL, &nr_to_walk);
->> -		scanned += 1 - nr_to_walk;
->> +		scanned += node_budget - nr_to_walk;
-> 
-> scanned += SWAP_CLUSTER_MAX - nr_to_walk;
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
