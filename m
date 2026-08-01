@@ -4,90 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03DE3C5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB2C7C55171
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C4E46B0088; Fri, 31 Jul 2026 20:07:53 -0400 (EDT)
+	id 827C06B008C; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075596B008A; Fri, 31 Jul 2026 20:07:53 -0400 (EDT)
+	id 8003B6B0092; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECDBD6B0093; Fri, 31 Jul 2026 20:07:52 -0400 (EDT)
+	id 7186E6B0093; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C633F6B0088
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:07:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45E6BA0105
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:07:52 +0000 (UTC)
-X-FDA: 85050762384.14.737CFA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AED1A80004
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:07:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiLyWsLI;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785542870;
-	b=34YhQQJBX+C6pXCadIDFFNbMVahC1YWs4WRIlT5M3E/BIB2w2VliKAsNFnkf8kbDbAxmap
-	Dx9ivO9u6fAkgZPs/vzfuTL22+QSZxWJ58h5oS2JtMgMc1lh00RRY5gdT99mJxz86YlIfk
-	s71uirVaKdhup7krndrnp6wY0gnm2rk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiLyWsLI;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 449CA6B008C
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:16:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB6031C025F
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:16:58 +0000 (UTC)
+X-FDA: 85050785316.02.286B6C9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 330FEA0003
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:16:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EeVcjbfB;
+	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785542870;
+	s=arc-20220608; t=1785543416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LVoiJJzODmnFFCLzc4mL+KmhAo+t9chR1W9Ku/1lVo0=;
-	b=W28l+HGrWY95xZtWmBggA+iiHs2ld+7rjnIEu3Vbrs3l2J0SxhlHs68pKGGArnaE5NjaRk
-	4hgGjAXY3z22GSRjI8GGBaNBLU0eeInAn+Mkoh9vg7/bTMo7gFG3FFrwxUp6+v45dR1pp+
-	w1XCggIP27EKYMpsSikHd5WHkEnJr+g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD097600B0;
-	Sat,  1 Aug 2026 00:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A281F00AC4;
-	Sat,  1 Aug 2026 00:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785542869;
-	bh=LVoiJJzODmnFFCLzc4mL+KmhAo+t9chR1W9Ku/1lVo0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MiLyWsLI2WxmX2cL4YRY2yU5gqfTRqe7EdOp8fdM5KALhQ0kidbL2Q0DpoYFiJ0km
-	 oduMOIVIB2UHh7NtwyUihwXDKSlW43pJ6wnNkhj1mdg4ZHHkla41NKydtqkEFYcM6g
-	 2gDti57B+33aV2rqGje6oe0J5TjRe1OITil2m9JdpXrnKnamvTug14RL0GCWsFxesN
-	 oEGRL7dkHs7Bhmv3SBH5+q4eyikCuUESI3aLNHpt1aOeFUOIa3QkUmPvQkcsZlW+GH
-	 quKQTMWWrdXealxMiN6Wa1OesdvpeBjXZM6lh7JYZWmmiyJ8pSy3wmmYXQD3FQRztb
-	 MoBPYRKf5a3XA==
-From: SJ Park <sj@kernel.org>
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: SJ Park <sj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm: zswap: drop list_lru param from zswap_lru_add() and _del()
-Date: Fri, 31 Jul 2026 17:07:41 -0700
-Message-ID: <20260801000742.84624-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260731053721.1412304-1-wfelipe@google.com>
-References: 
+	bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
+	b=beCpgtOI/h1IPm+8OOmfTUn6YOhRjErRNoToQ/JpvUPDTYt8srnlYI7pf4pA9l5oDpm2wd
+	3y7Tc3XkqgQCRZpz4hy099X0pNvL/DwXQe2bI5hUWQQVbxSh/v5umOuefqeskXTKn8LGhw
+	xCdwMUCpcC/9CCa922YRDqDmGeeNS2M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EeVcjbfB;
+	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785543416;
+	b=evVLihx9osqK4+pdzxj+89RuO6olTdAJvHBGI7D+ha8MqIFWnFsUNCRLns6OCgVk7RzNIZ
+	+orjp/gOvbhB8YzjsHUpeFQB2sF/jh/fvUe8hfkQSOC8P/RXJgjIh53c/8ASWelAgcsmya
+	sWV4/yDke6mGyIpxBJiWH6H+ciXtqX8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785543415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
+	b=EeVcjbfBTMiiYFF6PfihcgrsOuD5OveM204zZW1sYbSejhv0THkmPRE3rXlpwmPUgPoQpj
+	RTljvRb1hU6uHYeFdMi10hmGOM2wcF7bEFQMAL9NxsmE5R00jDnJKWNfOQXdChP/HM6em3
+	D5jkF8wOSSAIgUSQGFBA+Zy32eZZ8O8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-cy7hat5WP7-2m8LetrD6RA-1; Fri, 31 Jul 2026 20:16:53 -0400
+X-MC-Unique: cy7hat5WP7-2m8LetrD6RA-1
+X-Mimecast-MFC-AGG-ID: cy7hat5WP7-2m8LetrD6RA_1785543412
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so1821094f8f.2
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 17:16:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785543412; x=1786148212;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YTUbWgbCMoV9mNudsltxaFWvTkWg6x0Ijnt3ApilYfU=;
+        b=Ugg2kL+XpfxTylsJy/W8nqHFbWvTGkA/QvMJFPTnvNSmRw2JjrpauFMzt9cOT7F3X2
+         tfXkVi+8/6hBO1EKzv4lBrBw/6c8qp56uIwFs2YAIW4IWF4Eys6fPu2S+yFQJlKeFuDj
+         DjEfxs26wwrDxSeaxiA7OoWpxF5FAC37cUAx/Zoay2h6C7tkxnWgUzUBg840406/8REB
+         lEBP1bCV6bICYV+LxTeq8hs3L3kcBceaR67EZkM0lPTcs8yp71+xjx3zwaQysQ1Kpmk9
+         RqY4IWscHaeHlAnN0aNX1YnFxR6MAalwweeTx5X5VhGub/F9upnnFGViKJkxPmJCEhbL
+         N2yQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrncVqjuAdh4Uj0YHmZnuEyctxX8GsmyKYSLgsAg0te97MaDs2TokKFIcYqDgtWPLdsMFcD2LPDTw==@kvack.org
+X-Gm-Message-State: AOJu0YwOOw3whJdoVHrJtPIcv2VrB5WY+GJAoDEFDpPFVS/M70BLEv7w
+	fvRAFsl0UdPJfsTqj+fB7adcMf5RRODxqbIJZqgrh2wNluqwmH3LPcDkzRF5t9V+i5X5dy3mZ6f
+	ThNljddwGXuHFP3fYOmfT2IKMwIcCOdwkmodEjp10Fbv8Viam39wb
+X-Gm-Gg: AR+sD109Mk8kKSPvlbPPEhagriodNN0TIm/Xe/l8XmkuxnbLASVPKuDWwpRzrAqju8/
+	Wch0q9kdOjnWR/j3nJxGac2pbO2Cbp+GR/ya+T8NTlrzET8j+DBM02Jcgeo3lcjOOOF+pZbNwwR
+	AIrfGdyBGudU/s0fZw77ROWecH4zNvDyA+vfyuiHrt1uPul9RNrfWI5KqeDU8PzysPPsVOOqb0G
+	lTJNs7BXSjm2NMPgvBUMlxMIh2GG9IX5Ds0mLiUWQeR2WArn2+4Zgkl4NsIz9untnkjzMdy3jmo
+	lU5Ugr+w1daQysloCSE24zowJ1kVMInY0MM9VAhC5eY4xGNnWKcFjZnKUNciMbeqx2uXf7u8avZ
+	yl0Q5rMkAK1Nx2vQ/ajilMO8=
+X-Received: by 2002:a05:6000:46d8:b0:47f:6a3a:9e6b with SMTP id ffacd0b85a97d-47fd72f1612mr1988334f8f.32.1785543412353;
+        Fri, 31 Jul 2026 17:16:52 -0700 (PDT)
+X-Received: by 2002:a05:6000:46d8:b0:47f:6a3a:9e6b with SMTP id ffacd0b85a97d-47fd72f1612mr1988296f8f.32.1785543411814;
+        Fri, 31 Jul 2026 17:16:51 -0700 (PDT)
+Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a0c8bsm10836910f8f.34.2026.07.31.17.16.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 17:16:51 -0700 (PDT)
+Date: Fri, 31 Jul 2026 20:16:47 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Link Lin <linkl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, prasin@google.com,
+	rientjes@google.com, duenwen@google.com, jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com, Ammar Faizi <ammarfaizi2@openresty.com>,
+	jiaqiyan@google.com, ahwilkins@google.com,
+	Greg Thelen <gthelen@google.com>,
+	Alexander Duyck <alexander.duyck@gmail.com>, jthoughton@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_reporting: use system_freezable_wq to fix UAF
+ during suspend
+Message-ID: <20260731201559-mutt-send-email-mst@kernel.org>
+References: <20260721005603.1710551-1-linkl@google.com>
+ <20260722173639.34d3f58413354218b24a5b0d@linux-foundation.org>
+ <CALUx4KSfUUud86k4SLwETJAciRc8kZ9QocvBj39KmzXDiQ7J1g@mail.gmail.com>
+ <20260723051327-mutt-send-email-mst@kernel.org>
+ <CALUx4KRoCco0HA=Y_qFzSD=CegbJPUkQkvjRb1Y3UcgRdwQToA@mail.gmail.com>
 MIME-Version: 1.0
+In-Reply-To: <CALUx4KRoCco0HA=Y_qFzSD=CegbJPUkQkvjRb1Y3UcgRdwQToA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Mic4rYGXGkFUey_JG3J89e2oRcc-7xRwLyLl9_X3KmI_1785543412
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AED1A80004
-X-Stat-Signature: ejt7qjrr5qat7iwrkps57sp1t5sdjnax
 X-Rspam-User: 
-X-HE-Tag: 1785542870-275009
-X-HE-Meta: U2FsdGVkX1+BpOIy4QIEoerbDm/L06IJyA84xElawuhc5l7gHYXuqGwqCkPr9njlAbMsah7eHnNeh/4kUVsxA8P2v2DQ2Yge95K4gXtBlhq+jNNufBOdD8A9H3l0hYvJAJ3vq4V3IjNotvuCMUzH94MY6FMSpRLd0HeofIujghrm5qoTdIWZ8bJen8v1GH2MciAKyqdjPGtEi1d2M/zOJkdcT8D5aI++uOQNbU7bk2EnghRN52Gyo98mdo/cpnb5blSXFQak0MeUgy0eXN8oFGtgVMbII5l2swBVrikxpSohpQ1fNAodPMDlhrxR7oL7DhcCaP4+9uQuzp2bQkmTbdWMkvnopiEj+OhSOdHfVZm1zPuG2tB1e780da4iMGNZWmpwgJ05+T27CBGxkrFCkTsi1ICM8Tq3cNd8ES6LTjAfFUuVmIV0JEl5DtQf5UYYMZQuqq8NBdjf28eqtCKLdcIFLChzztqsF9V7dyu8K0rlKviJlNo0ZRQJTZUgUb5QIrkafZqaUNDAyMJk/y8DCgzt31XOSpS8UH5ofplZ5ecGVeSx+FgTx8+17fe0qvNlBGmtNyiv7mHxv5VV8q9OF40fc3qieJUQALOeuejN3bpAvWmk0f9MnuXv7zrNlhw9AmV9t21sI5NlIV6U92qSkc9Rcrzvw9l1L45tYnSWgmzcDTLEg/1YHW88r249Rwvmus+wLPinqPKktIFqGR8jol6vpQd0/MkQRXx95RadC9PZnQ7FMgooSppnicSyI5Q61waju60ZkXGsbamfwDNiauKmmnrJrlE2MewRmZewYB0sIMc2D+gLxDwy02yW5VuT0mNF/xTGwGZAC6p4sb0lrieVwylUt+NACvkeepCd2A26IP8HlEc+O3ck5opyuCFN3IgE5sNDOnJJqwJdJqXLHvr7/E6sZQ5mKSeccC9T1PJNOTcWDByEsKyjj7E7s1dp+ANstOjFgKtjJwcPhhh
- ZlMIjafd
- 29Io0K6Df1SPhC30XW1h6EWuw3HfDNisU61RdlS8Rjzo6CvefXg0/k949I4m8Bo4an1VhrQsjFwCsQktMa2UY6tv/4PCYNKaougqAFh7p4W0qEMj1fWS4WAH5kkGd6WaOJ8uy2rsOmCF2mAfH1tv91fn9LYLpTXlePpaLsEq1cL1/OSoYwFUj89ttKE4QKReAmjTOJdCbW1l7CJv7G0TqNKs4dOBUWOphgiB40LvH3MyZt61ZBAC3FvlFsvzuifesq6kyTm1Uq/j3Bh3UXmPp9oIjsI3V8TwzIx0pFNE8R1K2rcM=
+X-Rspamd-Queue-Id: 330FEA0003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: gno6sgx18udiojw63gx4da875ynptrsh
+X-HE-Tag: 1785543416-9615
+X-HE-Meta: U2FsdGVkX1/w6wdLPZfw2Abrw6cie5HtDUbdFd3ai+4pr9jlW10ZQ39LTiPRsNWuFAKpYJf23LUoBUjtvw803HcTx3NsRfA7tCkJgDa36yb8l87umI/fdYWvsPpRItSALnIa8H3w76rBCZuX5IB5erehlUe8CHsSdkAxf/O3DbZnsVwjb0+30MoIPZr8UaiafxxLhbSnOzubO5uXguOPnpwo1pHfbVlcFXvK5hprQOXdpssX8tHocBn5/oQT+j9et95S+NDEEalp4yaGS6MlNDVoMfbVU7AK7dzFR/0kUn3uEk+ctZQgS/JJ8Swr5i71g9Ju/XMmRLl23eOgbzNfVDFYEw2T5SQJ2xpxAQMzOoGdXLho2m9SVomXdrSUwPZUUnYvu5HbZIoGsyxIgm+UXbgx1vNwD3lAK3Q1Jr9OQgQTOp9+NaQYyQK5qppHqYmovGuUyt/MTAALlRLNe/Ce/z1hqqBs1gMyiBrhTQT08Hs2+52wodbi2vXlFfu0RqClAUty3SQa/4CkuHfPk3TeXN/WcCbBcmfqOi0D/Cda8tzQtjHaeyTBGyr11sTsE3lcAn5B67XBZHuuN0SzZZhjpGl5GOnxZLEwpiSFPW9ETW5mDJAyl6F+8Uaf2w+aNNmw32kcvkfjOFRp6qmgzLECqqNrc0zuuz0uoaUmGld6x5IDTFZeq2LugMnzTtvElM0Ve8URzy2FP5HJojdNumOJffwATfMywQH2fcuJZCKjPGWaZI8dCzO+sH0DQEV3zQSBxukQ7u8HAN/HfmW0jpSOmTPQwDcrz58QqHB9JaaRBo7xpjtqkreaSJo0RUrHqSj3l7+Szl7uIGhqO+fuYfoe6GZy39QuTiOGN/fP6dfwi52vdT11U/tmqBrloz8eZYCGCfEWdBn9Bm5fKYBPUkYwYe0ix0d7TOVw06TXNPjwDNCR8YWvQhs6U5T7cujoEJdDa6lha2+zvSwAauD+Vk7
+ i4T85fz8
+ 9fg9TiZT5EFX7byGR6krCKEtqWdIdQbdbGQu4KkkcvN3J57rw19eKgag+r55DUzNbFfHLLl+BbfZfdI0SfGGCOD69YupESlAWSWaLteNHtR2PaSmSBAiSNg/almzYq09ZbRVx6mi587Hfy0HMG9xbhB5TjuPrl3Q91WJm2DlnAFxhkL/2kCFE0hb2nXom3PXBdaabF9nofxjJ4CDoYqEHVgoZVRMOBwtCfxsorfa7npiBQ5DNUsPMWpReNYUwq8S2v0SGDQs08N10rnOftzv82UeX59GWaT3JRNhuNKyCVd5PZBIxgb4s5xDWcWcZ2de1ULIk2RGy/wdFd/zBrQ1GhE190iozFlPXup8mVsK6G1k68Sb10efofMWwWBba3y+JlXBqR/SJHL4eeBQoOrsEsKj2yfnBl3YHMk1BM1fqyCM7RS/nLZNUvvv2W0bccSrqZvdWNJZWBQh12L0gxckQHGLvxOUJ7VoM8UmIKKrcVl6tNlI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,22 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 05:37:06 +0000 Wilson Felipe Pereira <wfelipe@google.com> wrote:
-
-> Since zswap_lru_add() and zswap_lru_del() are only called with the global
-> zswap_list_lru, remove the redundant list_lru argument and use
-> zswap_list_lru directly.
-
-Looks good and making sense to me.
-
+On Fri, Jul 31, 2026 at 01:21:40PM -0700, Link Lin wrote:
+> On Thu, Jul 23, 2026 at 2:15 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > I suspect rest of work items we have, e.g. update_balloon_stats_work/update_balloon_size_work
+> > all have issues around freeze/restore and error handling.
+> >
+> > --
+> > MST
+> >
 > 
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> Hi Michael,
+> 
+> We have indeed discovered a kernel crash in update_balloon_stats_work
+> after the balloon driver failed to resume and initialize in our
+> production fleet.
+> 
+> Alex Wilkins <ahwilkins@google.com> diagnosed, root caused, and
+> reported this vulnerability.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+I wouldn't call this a "vulnerability" just a garden variety bug.
 
+> I am currently drafting and testing a
+> 2-patch series to gracefully unregister callbacks and cancel work
+> items on resume failure so that the VM continues running without the
+> balloon driver instead of crashing with a kernel panic.
+> 
+> I wanted to follow up and let you know that we are actively working on
+> this. I will send out the patches to the list as soon as they are
+> sufficiently tested.
+> 
+> Best,
+> Link
 
-Thanks,
-SJ
-
-[...]
 
