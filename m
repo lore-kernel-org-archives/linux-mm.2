@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B310C55173
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 12:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1368DC55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 12:25:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AEEC6B0088; Sat,  1 Aug 2026 08:25:46 -0400 (EDT)
+	id F2E036B0092; Sat,  1 Aug 2026 08:25:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05476B008A; Sat,  1 Aug 2026 08:25:45 -0400 (EDT)
+	id EDE0C6B0093; Sat,  1 Aug 2026 08:25:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA5256B0092; Sat,  1 Aug 2026 08:25:45 -0400 (EDT)
+	id DA5EF6B0095; Sat,  1 Aug 2026 08:25:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A96186B0088
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:25:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 298EB160119
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:25:45 +0000 (UTC)
-X-FDA: 85052621850.28.FFC7BC2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92F76180009
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:25:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XgBVE3Gb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA95B6B0092
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:25:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33051A02C7
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:25:48 +0000 (UTC)
+X-FDA: 85052621976.15.E1A7A23
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8A027C0005
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:25:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RzOwbCuD;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785587143;
+	s=arc-20220608; t=1785587146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fR5GQklAEmMIRAxF5ZINhcf10poKg1/4k56TIs+euS8=;
-	b=qdIhMCfE4GnpaZsLkRLl2RJyJrSAj+BS6Yy08t3BJSSuk7ECczyuKmFfr3iojtEW9hckdM
-	jcyuh0I3PaIsJkO68YNLd48SZNY3qxLiCq1n9iRWzHhVGk9osPI9fRjA6sB47mpQxBrOtO
-	jNruRoBekN0QXZPquRRz5btc6fhVw7s=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XgBVE3Gb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=oCy5bIVtYQxaWyXI8Dl7cmjAZ6Z+ut7Uf+oQ6OT3GMU=;
+	b=q+t8xLtcSgH5TlkBCNin+Y83CWGHuSYJjxcxTY05uHLZOCioP6LS01s2ACW3gmHM0SRDHW
+	7QXqhrMhN/FaUWKztfBX8HbbQf1lOsUXRrbV0kcW8ynBPb1eYFI7n6myEs0kRodJP1YdRi
+	MIyUHDYQt+WmpTE97tLAIEfCrZwmhO0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785587143;
-	b=6ErWIBumggDKtLFcfWF2CEIx2gFf2g5ZoDUY9KoELPy0cb84VmKZkv0hMzAU2/tFsa1Ky5
-	fvCCQaWOiCv64NUIZ5NM+ByMm0xIe+jqWStcx6NHPY1G4+zeIKDr3pQMgq8h3EAcQAZPdN
-	ImaMx0Rr5xqQXbCa2407fW2DKgtIAuI=
+	t=1785587146;
+	b=5FX6Tiy4RYTwzopGiIQUscOg2+DLzkw04Oo1+sGdQ+a5u4wdZXIO3+lZDHXCw8cQ8UiV6S
+	mW53sGF1omhV86dTcaLbXt0Rd6GYJBMtaK+UxC9wwEaQ4504VS3R7a/gyskqsI4JldaScP
+	VCBSw4JdEc6MGZEUNJstuW61JQIsSTc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RzOwbCuD;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B25A60A90;
+	by sea.source.kernel.org (Postfix) with ESMTP id B25EE4330B;
+	Sat,  1 Aug 2026 12:25:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD8B1F00AC4;
 	Sat,  1 Aug 2026 12:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63901F00ACF;
-	Sat,  1 Aug 2026 12:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785587142;
-	bh=fR5GQklAEmMIRAxF5ZINhcf10poKg1/4k56TIs+euS8=;
+	s=k20260515; t=1785587145;
+	bh=oCy5bIVtYQxaWyXI8Dl7cmjAZ6Z+ut7Uf+oQ6OT3GMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XgBVE3GbYz9QXwCf2ZRYlPhwPyUGUCO6C6tk9Pc2sQnSY35UCRgBrOJw4nNPSBjJe
-	 7mKzbtf9C50CiWxQ+T6Ch+6bbkQUy64hdggkkV1/GPNmT9VegCkXhWu1RnPPl9AOGh
-	 JwTWoJKtKGgQsh7iwJKb/A3T4FRUr1gvYiQOPe9eRlvISnD38j5w7BZiUyc/asvyxk
-	 jwMlqIeV556EQIBILYc4nBH6N7PoML3cOtJeTYYA7nkEEsj9pMA66ZY92+kc9ncQl0
-	 h8DQx1B9KOEObFLTFXfe/gYKYXAoodT2LqnpKvKNsVcWzClr7BOtVsn0dTipceSeuQ
-	 rGy2YU4jTfIDQ==
+	b=RzOwbCuDSnCP913cQqRNIX5YpQ1FBuMuir92WwGtgL2MMHMBN03zq19hltowL6rTo
+	 2coSPOwO4F21Ey6kPAMSl6fmWglrpAk+lgK0JbL59Um9Y4lVwHAV1Lc0AF1gNrAWyX
+	 J9EWAoZ/I3YVkXendqI1gGoXLn5b2u3dziNG6zH/b+FgVJkrzT8RITz9xRHDJp3wWH
+	 0Oas6siKzXp7RMUbZiwu1AoAk9VMC6cnIaYi8PB86UtY30gb3Ketia+sWgcx2GriiU
+	 v5m86ov0+kx8KxnICb8rXPxAjsq9ehQ0MkzTm1dlcU8++KvszyjJSlDkGsF1kpl4W4
+	 bLHkmhAwfOnLw==
 From: Harry Yoo <harry@kernel.org>
 To: Danielle Costantino <dcostantino@meta.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
@@ -81,22 +81,22 @@ To: Danielle Costantino <dcostantino@meta.com>,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [7.1.y 1/3] mm/slab: decouple SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
-Date: Sat,  1 Aug 2026 12:25:31 +0000
-Message-ID: <20260801122533.319272-2-harry@kernel.org>
+Subject: [7.1.y 2/3] lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
+Date: Sat,  1 Aug 2026 12:25:32 +0000
+Message-ID: <20260801122533.319272-3-harry@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260801122533.319272-1-harry@kernel.org>
 References: <20260801122533.319272-1-harry@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 92F76180009
+X-Rspamd-Queue-Id: 8A027C0005
+X-Stat-Signature: 9i4w3n6ei5cmtaq3b4ty6swf3j7mg1ju
 X-Rspam-User: 
-X-Stat-Signature: 7hz8heoibjdz8d5thpkfjxmeptzuomnq
-X-HE-Tag: 1785587143-672423
-X-HE-Meta: U2FsdGVkX180MOBfAHwUsbfD/FOtNrsurIr8cYhd+sh9HYKTiGXPaBquRnXBdRD0ew4KShU9SijVSxNcFR7yuXckPVNA0fef66PZFmIuodzYkQJWQMzxO3rQykCZlv6k7raW09uog2XRigBE+j16rz7H+/kdIF01JIMlPSrHCmRLEYr4qwgr4wwxD7yhePJlhp8ea5BsY+jEQ21sUqugOJUOrsG+k/H4cAwDZSzwqPlhbgzBpGOTElo/vyW7gKzAv3R3jfLkNRXp7Qv8hmkv1bUf8Nj+tOcaedOzBtMB0+A3/EfN6X+82esyEvPiQng1WjYuPY2SZ0T4USV5MYls/LZyBrGEBY1Emsvgwiess/Rl4GeREn+u+8JSqaZ8FiRBvjDjSJwMkm87bBYMeSkj4ENe8F0fsgmeYtD7dxhxTDyC799VTPnWhJbeANL7M5A1aPfuNXuZV4nceF07RihHHCs8luDG7Mf5Wd00brkJrQIGZ1fuDUZuWsJnOz1f5Wxh2et8Fg+YW5TL0GZxs1C/wAjBhi/6hDrlKMZU1vSoVKQc8PyTWPQo0HwseoXzsscDO/RXUIQR0MOc67e+wGTXgb48CDx/3j48ZjcNYqzFvcAnfbyUfsmc5+Fdn+vdqhKNNKeAH4j7zeOTQKo3B67ZLLUdsgLHtmjYSZ1fnJAf+cghUEGz/1QqwlcqgqTK/CsoH97/h1ljMtEw/pJaNDusbbqQn5xT4Ukk28gOM+jf+JNyudooGgcayPTvISEkaHWsskRBzxWnY0KF2YdWMPnySBZ/US/G9p2VOYMGbdn8RjQYjGy8j8dzR7KYxreZsNeg2R0hERnzu4PeIxbblb/mD4rNEHTDngypMDdZPhF0UpECTKcjbLWxX6bHlsf+j3W3j3X3UMdC4WuSCO7wMXD/LJUzx8IobEtZCulZs+xNpaHuR4f0TkL01QuzqiWSL+gzSpQyt9HiEMJ0OsSs4lK
- 3x+Isa/i
- oYBDjwcIOn2uTclgmOwzpNX9LRwaMF1SakB3k+j/Ai1OcxdxpHvSd2kZHnbMscmlhwXovtBTbpucbDy+S0AtMGwIXUThSEQt8kaCkL2K/ZK5dgD1XNmkqchrd4pEWM4VUhlh8Nc6JlOzDXVzWjJYa+9joA0IY7Xwoy3nQCAiDXYGCR+foUUr+lmQ0zbP5K+6x0mYPFZYPgzCWA3+106Z7mNipSV/TmbZtP4poc5RnzjEYYxwAd+ybO1ExBV4pAylqQsVANwsY2psMZ/YqXoHULCUEdh70+DVBZLME5ClrrYpcvd88WDCcJFdfsci/oHUeOunre1RWBEJvH+wArb3/gh99q2V8Mlqz/y9XOBC9llnwh4RPO0Wk2n3Cy+z4LcHg+TTcng0+AJ+7ke8=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785587146-414290
+X-HE-Meta: U2FsdGVkX1/HwcZO0XMwAxyftQuDstgnREc+fCmA0G98bERkzWDiFfaDNay0dpWkJBRGTC9LBRMa8wWncvBspPRIYgcAUSdJE7nhQGiz7KdSyJoFC6HaG2YxkXC8cU+8bU7SEurlQE3NU35YyhVj+nJnUtqTWp8F61TD9vGquwXqZ0ce1+WqY01+iy6rWGDIegNuDmvyaVqwbdssP4+aJ/9l+/9aIC0TOPGV+IA8L39CEWh5p/wTHbxZ0pRCRtlnlr80c1v0sLOR10CBz0DkPLIg9ueH3pB/T6xyhdDbI0vMDtEcoD3RkJeVfPiXBGO5QtvO+h8vH343anAmOIBEmSSQhpLd5W912tFE2jp7AaIpZ5MjzQUxvYCmOJCFbP5WBYfTa4EZJQj+duhPJfF2n96eLmE62tE9BWdw5HAND5GKsoSwuHeXiXqJHFssxHfXT+dIZuwZQ2IWoFz4Cpuzv6p37pkeG0WqBzT5cQ1oui6kbolAk34lYKA3+YigOSnt0O+Rt1zAwjGIjr8G7cqgxOr1FZU9RAVjv++SvciasPW+Ji5Y7cvZNQuba9Q88y4+xRhnnRdoNLtoeyp9dm1jmMnYoX30f6PqOsFi7qee+dmibgwRpjjczO3I8PG6ch8DSKjPE6+U5e47GxqprEXha4lmUr4E1pC2MWQZDxjVI0Pi3LtoQjFN8TlpHCu/Q0gOSVw8P2Z72RrtAxHKWdpFJtZzRbuaIfrh9Zv+cjSXgzAyVYJRkrWWrK0LG9at1aLc2Si2wrgnVkvkf8z3AhIqXfb/7mvhZ1bVMPtLo04U/zy7HA8YcqEqgxQKjf3mnNBe3suIuBGxm/gllTrExesyOaQhz+u/VgNGxEneKlhAojjlXmjZCr41d0HjjU1fHInmb4eZEReOCLsLqnndCUgw4yh1qCvspsdgGCmCfZ7mOYAEytgUXyD4a9mdF5B/hXo2QnjnRV2E2InT00q2Xrq
+ FNl4GGPM
+ BxBiPRCHMbC5p1nzEkfDdckIsxDqGO/Br1Bhpj+/NvWx+KO1MHn5Tpr/KhWW75iwMlqlC9bH3KZUePKfNFynjhiM0bn7NalMTfNMcciXl9htbkCVFHD4cAMz3YzHXYmc9AfZ7Kzxm0du569/CoDQNs5pNgNEP2Q1an7UAzsLyV6b7EASqwSqiULqkgwDzdXdq55TObVCCvziiNQIClE/Vj/Qt3GcP8JkHRyiBcQTdVm63FSx+zOmO7m0KogXPD1rUAcVx92KVNRQ2RCrCjFZg7ImzXhvBfE8O69Slb0DGlAvb8Arq9xNgUTGPhnWl0r4yluSl4P01NOmzQP97eKU7F+mgeSoi66xn6x8o67bS4mCdb79oh4u9cQGHWorIhu4PVswN+BOfdVV7BI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,102 +106,71 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
 
-commit 982e31382d9a1a3c8c4e6a13702a53711f4efe9f upstream.
+commit a37b0066a10aabf3c968b4566706fb866eaf9a85 upstream.
 
-Bootstrap caches are created with SLAB_NO_OBJ_EXT to disallow sheaves
-and obj_exts.
+mem_alloc_profiling_enabled() tells whether memalloc profiling is
+currently enabled. However, even when this function returns false,
+it can be enabled later.
 
-To allow disabling obj_exts while allowing sheaves, decouple
-SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT. Bootstrap caches now have both
-SLAB_NO_SHEAVES and SLAB_NO_OBJ_EXT.
+However, this is not enough. Some optimizations can be applied only when
+memalloc profiling is permanently disabled. For example, to skip the
+creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling must
+be set to "never", "0" w/ debugging on, or have been shutdown so that
+it can no longer be enabled.
 
-No functional change intended.
+Introduce mem_alloc_profiling_permanently_disabled() for this purpose.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://patch.msgid.link/20260713-kmalloc-no-objext-v3-2-47c7bd138de7@kernel.org
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Link: https://patch.msgid.link/20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Harry Yoo <harry@kernel.org>
 ---
- include/linux/slab.h | 13 +++++++++++--
- mm/slub.c            | 10 ++++++----
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ include/linux/alloc_tag.h | 3 +++
+ lib/alloc_tag.c           | 9 +++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 1a69255bb87f..fda7e24a762b 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -58,10 +58,13 @@ enum _slab_flag_bits {
- #endif
- 	_SLAB_OBJECT_POISON,
- 	_SLAB_CMPXCHG_DOUBLE,
-+#ifdef CONFIG_SLAB_OBJ_EXT
- 	_SLAB_NO_OBJ_EXT,
--#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-+#ifdef CONFIG_64BIT
- 	_SLAB_OBJ_EXT_IN_OBJ,
- #endif
-+#endif
-+	_SLAB_NO_SHEAVES,
- 	_SLAB_FLAGS_LAST_BIT
- };
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 02de2ede560f..7e7cdc7612be 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -134,6 +134,8 @@ static inline bool mem_alloc_profiling_enabled(void)
+ 				   &mem_alloc_profiling_key);
+ }
  
-@@ -239,8 +242,14 @@ enum _slab_flag_bits {
- #endif
- #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
- 
--/* Slab created using create_boot_cache */
-+/* Slab caches without obj_exts array */
-+#ifdef CONFIG_SLAB_OBJ_EXT
- #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
-+#else
-+#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
-+#endif
++bool mem_alloc_profiling_permanently_disabled(void);
 +
-+#define SLAB_NO_SHEAVES		__SLAB_FLAG_BIT(_SLAB_NO_SHEAVES)
+ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+ {
+ 	struct alloc_tag_counters v = { 0, 0 };
+@@ -239,6 +241,7 @@ static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
  
- #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
- #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_BIT(_SLAB_OBJ_EXT_IN_OBJ)
-diff --git a/mm/slub.c b/mm/slub.c
-index fa24b985a783..33e64f21ecc1 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7726,12 +7726,12 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
- 		return 0;
+ #define DEFINE_ALLOC_TAG(_alloc_tag)
+ static inline bool mem_alloc_profiling_enabled(void) { return false; }
++static inline bool mem_alloc_profiling_permanently_disabled(void) { return true; }
+ static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
+ 				 size_t bytes) {}
+ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index a9ab88f416b9..e3a923594604 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -26,6 +26,15 @@ static bool mem_profiling_support = true;
+ static bool mem_profiling_support;
+ #endif
  
- 	/*
--	 * Bootstrap caches can't have sheaves for now (SLAB_NO_OBJ_EXT).
-+	 * Bootstrap caches can't have sheaves for now (SLAB_NO_SHEAVES).
- 	 * SLAB_NOLEAKTRACE caches (e.g., kmemleak's object_cache) must not
- 	 * have sheaves to avoid recursion when sheaf allocation triggers
- 	 * kmemleak tracking.
- 	 */
--	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
-+	if (s->flags & (SLAB_NO_SHEAVES | SLAB_NOLEAKTRACE))
- 		return 0;
++/*
++ * Memory allocation profiling is permanently disabled and cannot be enabled.
++ * Must be called after setup_early_mem_profiling().
++ */
++bool mem_alloc_profiling_permanently_disabled(void)
++{
++	return !mem_profiling_support;
++}
++
+ static struct codetag_type *alloc_tag_cttype;
  
- 	/*
-@@ -8513,7 +8513,8 @@ void __init kmem_cache_init(void)
- 
- 	create_boot_cache(kmem_cache_node, "kmem_cache_node",
- 			sizeof(struct kmem_cache_node),
--			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
-+			SLAB_HWCACHE_ALIGN | SLAB_NO_SHEAVES | SLAB_NO_OBJ_EXT,
-+			0, 0);
- 
- 	hotplug_node_notifier(slab_memory_callback, SLAB_CALLBACK_PRI);
- 
-@@ -8523,7 +8524,8 @@ void __init kmem_cache_init(void)
- 	create_boot_cache(kmem_cache, "kmem_cache",
- 			offsetof(struct kmem_cache, per_node) +
- 				nr_node_ids * sizeof(struct kmem_cache_per_node_ptrs),
--			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
-+			SLAB_HWCACHE_ALIGN | SLAB_NO_SHEAVES | SLAB_NO_OBJ_EXT,
-+			0, 0);
- 
- 	kmem_cache = bootstrap(&boot_kmem_cache);
- 	kmem_cache_node = bootstrap(&boot_kmem_cache_node);
+ #ifdef CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU
 -- 
 2.53.0
 
