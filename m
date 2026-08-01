@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BFDDC55172
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 11:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88A49C55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 11:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 175E16B008A; Sat,  1 Aug 2026 07:00:50 -0400 (EDT)
+	id 8062E6B0092; Sat,  1 Aug 2026 07:00:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FFFB6B0092; Sat,  1 Aug 2026 07:00:50 -0400 (EDT)
+	id 78E826B0093; Sat,  1 Aug 2026 07:00:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09876B0093; Sat,  1 Aug 2026 07:00:49 -0400 (EDT)
+	id 67E706B0095; Sat,  1 Aug 2026 07:00:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B684B6B008A
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 07:00:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A747E1C08C1
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 11:00:47 +0000 (UTC)
-X-FDA: 85052407734.23.AD7D86D
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D79A2100002
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 11:00:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C60F6B0092
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 07:00:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 652AD8027D
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 11:00:56 +0000 (UTC)
+X-FDA: 85052408112.01.3FA64AA
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 87DF610001A
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 11:00:54 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=u81cA4nq;
-	spf=pass (imf05.hostedemail.com: domain of m@mavick.dev designates 80.241.56.172 as permitted sender) smtp.mailfrom=m@mavick.dev;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=b7oXTNTj;
+	spf=pass (imf05.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
 	dmarc=pass (policy=quarantine) header.from=mavick.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785582046;
+	s=arc-20220608; t=1785582054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Bbvo5JM5EzDceFV5HFBn3Tn1Nvzi+vQVAFu4wTmlqI=;
-	b=GpIlNOz3R60I8vGUK5+xn+1GqhRtSv2vE61iPOGrauaPpHgEqitQ742JE5Wq9sdeU+Wepd
-	3olx1Q87VW8QtDCDsZtkylIg2fGU2zyvm+QDXSyXOerRdR5CJFYWECtAoeNgYlQVQATeut
-	sFIzNQ0XlJWS7cjOFVmZd5Zm9MRtZC0=
+	bh=C912dpGQcVcNQokG8z6F9kwSDBoO6n2Gknkhy/XwQHc=;
+	b=4PQLc7ceTDBsU1lu81CKxkDx1EfpCPA2EU/uvU4cBdq8c7Eer08abhw9jFDSYlipjbyLAd
+	dM5S7OZ20GTN9i6VUorQwS5lpyx2Ojpxrs/PhEbZRjFkSSAE564zQ8yWwXrDzDGAj1S2G+
+	GDLImoV+qy/oSzj/nYAdtauL2371qfg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785582054;
+	b=o3prO34brwccnqPreEkT9mt2lAgcJB6ZtSZZNW7bXf0IwKctI7jZ2asgrb1WlMuNU/057F
+	TrEqh8D70t8zle1a7NHFTtnWFpoV6hHF+NNFtjmVCW8erKnhtHq6iOQA6+4vgq7lYKDFVV
+	cFnSwyKCh28KLTDmO7uVxtaoGRavjl8=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=u81cA4nq;
-	spf=pass (imf05.hostedemail.com: domain of m@mavick.dev designates 80.241.56.172 as permitted sender) smtp.mailfrom=m@mavick.dev;
+	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=b7oXTNTj;
+	spf=pass (imf05.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
 	dmarc=pass (policy=quarantine) header.from=mavick.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785582046;
-	b=VLc/8s40EZPtTdCrfGAolHtZA7gyi4VleLHy0/OfDkzh27Y/n3GA8e3pVG4c/q3FZFnNnl
-	GVFPFUoaELdjkQ3AFtwYAQWtzdnTXx+d6mNK2njWb5VpA1EACC/Jd9jxSNO9q6jOyTHhol
-	cv6mlFnafNiY9XsTRdyKwRcBd/UlmS0=
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hC0NB6WcLzMlGG;
-	Sat, 01 Aug 2026 13:00:42 +0200 (CEST)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4hC0NM5NPrz8twy;
+	Sat, 01 Aug 2026 13:00:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mavick.dev; s=MBO0001;
-	t=1785582042;
+	t=1785582051;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0Bbvo5JM5EzDceFV5HFBn3Tn1Nvzi+vQVAFu4wTmlqI=;
-	b=u81cA4nqP3SwSZYYHDPT/c5iJMa/mvGsUCdVoLwzxrcGgMFdrtexAyfBe4goeV8CnoZjmp
-	Y8QnIl1s+PhdvBc1uZ67SH+P2UaPM0wBkVnrC+24JdQDekZnjHXK0r1hvcI9G8U6J7NYb0
-	GCCAq5M8x3jgV7eAiA8AiD6S1s+UCp9bvRP16OM6cb3/Jyv5mOV/wewYycedofExfwcFoI
-	B/bCmIOP2cc3iImIeld1Rds/k5ogd28dgZPxvk8gfIb2Kql+LxMpp37/g8R0ra44dqB2oq
-	9FxmU2xf61PGf8Ow4QVc3bBeLX5rbaVXjqV/rrIUGLiFyYarvXjg33CZOAHzgQ==
+	bh=C912dpGQcVcNQokG8z6F9kwSDBoO6n2Gknkhy/XwQHc=;
+	b=b7oXTNTjj2ZCjCrjXH+4onJXBZ6okt7C6WdM+iEtplUoOlZh0An8Gt1LjzqSL5V97xIZT4
+	h7Vkq7kXdpBxiePE+e1Oo7O+4aCj4HDTlio+MwKv31V7yZetw03K+6hRotzC1IvPSipcyp
+	aO9aKbTG+FscVo4yCU020JW1nEY2VAIATiXBYprDl99x7J7KBELWSUFVGyI5wVOidvM3PI
+	ocmxALYuXyiTEcxHaHyxI8wnw5Cc0RQmfx+zteGZobHxeiPopl8XeWsM+Ff54vL8pYq42i
+	CXcKgsPMj9LdyKM6HtN1KmZOGa2Wj7TMU2F6OlBg3h7eEY2e2WkTFlT0uUwVwA==
 From: Eugene Mavick <m@mavick.dev>
-Date: Sat, 01 Aug 2026 18:59:41 +0800
-Subject: [PATCH v4 1/5] tracing: add ref_trace_final_put tracepoint
+Date: Sat, 01 Aug 2026 18:59:42 +0800
+Subject: [PATCH v4 2/5] refcount: add ref_trace_final_put tracepoint
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260801-refcount-final-put-trace-v4-1-2e58678f0ffd@mavick.dev>
+Message-Id: <20260801-refcount-final-put-trace-v4-2-2e58678f0ffd@mavick.dev>
 References: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
 In-Reply-To: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
 To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
@@ -85,22 +85,22 @@ To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
  linux-mm@kvack.org, Eugene Mavick <m@mavick.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4872; i=m@mavick.dev;
- h=from:subject:message-id; bh=ll6nYQOrO2XWydxLfhKt+/rvzaAqc+x2/e8etpbuoBQ=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm5FzdGbl2SrP/R6MkG6f0mqz+8/KArc/GXXJBuwnVnm
- 8LVi1U2dZSyMIhxMciKKbLUZCW4Z6yclWh8dFIPzBxWJpAhDFycAjCRnGWMDHdzXrOYP4isqmRz
- VKud4Pf8y/2zOpe+ZH+4tbBw2o2QC16MDA/PHJbIWcL2r+Ttg51bNy/dYv5h9/yWhML3E88wfKt
- XfsAKAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1632; i=m@mavick.dev;
+ h=from:subject:message-id; bh=6SxDI3lnGUVOqQynlBB5KrL+oi0ZqISwEqlbLLcv/7A=;
+ b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFm5FzdeTp94SLNX3H9W4vWzJQy1ntvEAl8fNlzxQov11
+ zxpDbnFHaUsDGJcDLJiiiw1WQnuGStnJRofndQDM4eVCWQIAxenAEzkvyfDP+vKxR8r+V5M/+XX
+ EisVfOAMe7m22o3lgjd7ilweRTKZWDAyrBTY4lr+ubyZp1b30KMN1yo+a/4Rmctz5tetDbpGEa1
+ 8HAA=
 X-Developer-Key: i=m@mavick.dev; a=openpgp;
  fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D79A2100002
-X-Stat-Signature: eebyru7aqa3rpcbfz1twkajoam4z9jk5
-X-HE-Tag: 1785582045-950015
-X-HE-Meta: U2FsdGVkX1+8Tdggi5LqLNdko5cV9et0b4stWYxur5soAI/5BuxV+ioqxpR5E4HOt+yCdllL41NAMKj0qJL84Ar6HD0ptW8zpmRENIYCh97Jr1QWDXnlBphVyLPS2zWBAn9V35yuVpZjHx7rLwMGISYcs9fUrratKtjP4xpgHCvdcWreQBxl7yL1x17+Adzk8/muyF1Sl3cXjzF6w8u9rw8ftCvgp/uY2ORh8XwyRm+y8fv9KsMiGQKmgXP6BsvitsRtq22L9kUMl14icueLmnyS6lCGk/q7tAi5bT0gIoQK2B/dOzsLVYh06309DdELzAiUE3XquUxC0XPB04G9/5twwLF6Se/9KGAqUShPnw+LS1H/PKM2S3V2tGzFDVd+msGhwPO0opb3smfLckB+nbNhJeMrJue9+zTHbWYfHVS/JpCwy3JptOXCptzpXhWmCQVnJTblLb0yrpzNONiwZf/I3l6SjS0/rWTK5jA780AunACGawt7htoJiy6bsfZWDwyofFCh6GU2hM2mDJFQ/s38ZKn5rS5XBA3is0fWIGm0rm96vFknxJMt/H28/UyW5EeUDwq5d1/ovVxGc5XMwMPClj7hLIKicY9Y2oaP0NB1GhCpwbgNwc+lhzgsUSMNtxJZ+pT7fnZ0M7/rh0KQmnoDLb2u8flRZ7rfSm8KG2Lj0miJppz4zlt3pX+8iFnkDxTx/sN3Ic0iT+HVqsgGT1wBYutX+1FiqZdqrOGY6jiKQJ8tQVbhIGrghtpKacbzW8lw6OtwKOpHr8IvBFH3R0wkubDRFwl8gcSVpMt8tgXsAz/wLlNCbcAhQhEJYEtK5FrmYiKp6q67dvYOlyKd5gcoH0axRr/X4034/BaJLeSkIYXPQkHfxMHSWCHvBY8BvvvKyzI8iylUFL1ApB+j38duuyA4Im5mbCfOfj0VqwQLzj6I/2HBMmcJExOj0Al96iqLzyA6fnOLjQtQ1EA
- DHnGwMFs
- frNIwupEa9i/vNFubxDxQuJxx9wMf2xqEpbh9SaOb54pUhD/0BGNAfOgcn9XeDd1RpdGnUzzS5ANyhdkbz+KCe3ecv9XIJILPC+hAZ5FbSuzbZPQUW5cmtxxAalIHOi+aQ4lICJfrY/wSxrNJtlX+WaFtKjFWVSvYWFpYxOH4Il8v+DqDOIOmtkYk7OuBiTiqXhy4stne89P6uIJUXvbhrmihiyVLHnjxkQFGl+UKWP/ePKF5kXI43ejFIRz5S436w1SaU1LbeReX8Y6VwJQjd6ZBQPxwu3psFIWoUiD9wvra2B+6gUvAMzCBbKZfa9XFdgA29kz7+cqkqVA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 87DF610001A
+X-Stat-Signature: dkg4kxw34xu8t79r3ngszm7dx5z971hk
+X-HE-Tag: 1785582054-919552
+X-HE-Meta: U2FsdGVkX182li9/miA8B7fUzcGoDBsGWmONbyFHuLYJ/OikcQ9noDBehmNHlVcdcLoyX44w+a+97WLFpDU26mjZPg9WUkyVpliJtg2nUI2ELA90YAbbxIZtgA/oZP3T9famwHFsCJ8tzxjLiiTVbLpi/hNlOjJxL8x8Gj03LPzv0ocuBE7NQSWyxRGk3sg8uZFrBH3z2mlz+mjkgeNX4tmSrxwI6hzaMmxeL6JDjuO0N/mpby+4bFkDJ5+FvM+EmQuttenbAQYGPmJ4/KuaTvvSwI+pQuvHSVeP0RoMNe49Ae3mnppRxzDL97MDZxVAPxpwjwsIRgwDVVrLqMq38On69iv1peFmXQQsAGoKXRMff+Gg/NF1BbKMibJTCadrHycGqbtmui1G/Xe0cD4w8o73IVnayilggp+LZe6SsvJ2dCbNhjqf6pRe9lPGhmNJghwJepqmrDt+EDzicF09B/wZLNG3YeVIQH3BfTygGvT+j8/V1ls/7cqVRzaVnBEonNsOFi3WDJqTdDWTJ3kEBSxoMp4C3gSNYzZ09mdyNMnvH1nDeB6cTtdZiT2oEm9hGYhyWm6F/TGln52oZKTwMWVnZMQ1/QuqB7cERT5BHgbDhSiJb4WmvBn6mwXSm/VweSltIEJOqSxo8KBATvl6u0rXgzCZkVH5vuBvPULsSEtrE2E8yd80ml3+aUrm4EX+Y+WLQv/uIGPuc0ikBszOP1GlWLB7wyq5R0oGMk/PpGUKGj7sGYfD0jhOooFPsH70EGCyKvcyC2pBwlsmlJ8RSFpAf8WEC0kyvnaQ1zUB+9Li22Qndr79jHEaDLrYcOJu1iAvuKBPflOyDQY5mzK2XM5+5dJC1pZKwUJTPZZNZnSkRq1c6xf+Sk3eYlTYKjnjuRD3jV++bF66FzCakfLyQkU6Hzq4TgESkr/yWA1oNtc+XSf/GGW47kjId6n8FgE3Z6pmcrb8DnHktZ5NdiI
+ EAVArvjD
+ +o1QGiUkBCUsoDG5HNZXJhOD6YXd9pWSUmXze473ieKLT1ljpkspVvNgk5GjEXIDC2PdTwMyrBxsbbL3U2RromG5max24vLSa4DU3JEbJ26BLWDoy9eOIChTirRhEdEf2LLaLdvsEsyIs25aFBpgonQAzLWQ6NGHc65LHyJ1nRROQ/eWs+D1BL0Nj0688RGSmOdNZbNx5lWDGrzxq6zNf9EIz2clo+avYTdTm4XVv/R8J9yGN1Hx6oag1x2tbcJ9zxMRSn8AiurfWILRq2deUVx5MC6bKhU7/Qr5c1BN6DbF0tYBfslv1pZuBy6mAcKgWT1T+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,157 +108,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add ref_trace_final_put tracepoint and related core infrastructure
+Add the ref_trace_final_put tracepoint to __refcount_sub_and_test() and
+refcount_dec_if_one()
 
-ref_trace_final_put fires when a reference
-count reaches zero and the object enters its final release path.
-
-The tracepoint records three fields:
-- caller: function that called the refcounting
-  function(refcount_sub_and_test, percpu_ref_put_many)
-- ip: return address of trace wrapper macro call
-- obj: refcount object(struct percpu_ref, refcount_t)
+This tracepoint fires when a refcount_t reaches zero, capturing the
+caller
+address, trace wrapper macro call address, and the refcount_t address.
 
 Signed-off-by: Eugene Mavick <m@mavick.dev>
 ---
- include/linux/ref_trace.h        | 40 +++++++++++++++++++++++++++++++
- include/trace/events/ref_trace.h | 51 ++++++++++++++++++++++++++++++++++++++++
- lib/Makefile                     |  2 ++
- lib/ref_trace.c                  | 13 ++++++++++
- 4 files changed, 106 insertions(+)
+ include/linux/refcount.h | 2 ++
+ lib/refcount.c           | 6 +++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ref_trace.h b/include/linux/ref_trace.h
-new file mode 100644
-index 000000000000..c93c30bc20d2
---- /dev/null
-+++ b/include/linux/ref_trace.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_REF_TRACE_H
-+#define _LINUX_REF_TRACE_H
-+
-+#include <linux/tracepoint-defs.h>
-+#include <linux/instruction_pointer.h>
-+
-+/* Declare the tracepoint so tracepoint_enabled() can be used */
-+DECLARE_TRACEPOINT(ref_trace_final_put);
-+
-+#ifdef CONFIG_TRACEPOINTS
-+/* Wrapper function implemented in lib/ref_trace.c */
-+extern void do_ref_trace_final_put(unsigned long caller, unsigned long ip, const void *obj);
-+
-+#define do_trace_ref_final_put(obj)						\
-+	do {									\
-+		if (tracepoint_enabled(ref_trace_final_put))			\
-+			do_ref_trace_final_put(_RET_IP_, _THIS_IP_, obj);	\
-+	} while (0)
-+
-+#define do_trace_ref_final_put_cond(cond, obj)					\
-+	do {									\
-+		if (tracepoint_enabled(ref_trace_final_put)) {			\
-+			if (cond)						\
-+				do_ref_trace_final_put(_RET_IP_, _THIS_IP_, obj);\
-+		}								\
-+	} while (0)
-+
-+#else /* !CONFIG_TRACEPOINTS */
-+static inline void do_ref_trace_final_put(
-+					  unsigned long caller,
-+					  unsigned long ip,
-+					  const void *obj)
-+{
-+}
-+#define do_trace_ref_final_put(obj) do { } while (0)
-+#define do_trace_ref_final_put_cond(cond, obj) do { } while (0)
-+#endif
-+
-+#endif /* _LINUX_REF_TRACE_H */
-diff --git a/include/trace/events/ref_trace.h b/include/trace/events/ref_trace.h
-new file mode 100644
-index 000000000000..8bd9aa30a540
---- /dev/null
-+++ b/include/trace/events/ref_trace.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM ref_trace
-+
-+#if !defined(_TRACE_REF_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_REF_TRACE_H
-+
-+#include <linux/tracepoint.h>
-+
-+/**
-+ * ref_trace_final_put - trace when a reference count reaches zero
-+ * @caller: return address of refcount
-+ * function(refcount_sub_and_test, percpu_ref_put_many)
-+ * @ip: return address of trace wrapper macro call,
-+ * inlining may cause it to be something else tho
-+ * @obj: refcount object(struct percpu_ref, refcount_t)
-+ *
-+ * Tracepoint instrumentation can be added using the do_ref_trace_final_put
-+ * macro defined in include/linux/ref_trace.h
-+ * which uses _RET_IP_ and _THIS_IP_ for caller and ip arguments respectively,
-+ * thus only requiring obj arg to be supplied
-+ */
-+TRACE_EVENT(ref_trace_final_put,
-+
-+	TP_PROTO(unsigned long caller, unsigned long ip, const void *obj),
-+
-+	TP_ARGS(caller, ip, obj),
-+
-+	TP_STRUCT__entry(
-+		__field(	unsigned long,		caller	)
-+		__field(	unsigned long,		ip	)
-+		__field(	const void *,		obj	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->caller = caller;
-+		__entry->ip = ip;
-+		__entry->obj = obj;
-+	),
-+
-+	TP_printk("caller=%pS ip=%pS obj=%p",
-+		  (void *)__entry->caller,
-+		  (void *)__entry->ip,
-+		  __entry->obj
-+	)
-+);
-+
-+#endif /* _TRACE_REF_TRACE_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/lib/Makefile b/lib/Makefile
-index f33a24bf1c19..41737090a95d 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -335,3 +335,5 @@ CONTEXT_ANALYSIS_test_context-analysis.o := y
- obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) += test_context-analysis.o
- 
- subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
-+
-+obj-$(CONFIG_TRACEPOINTS) += ref_trace.o
-diff --git a/lib/ref_trace.c b/lib/ref_trace.c
-new file mode 100644
-index 000000000000..22fe372f468f
---- /dev/null
-+++ b/lib/ref_trace.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/ref_trace.h>
+diff --git a/include/linux/refcount.h b/include/linux/refcount.h
+index ba7657ced281..70d07a462da1 100644
+--- a/include/linux/refcount.h
++++ b/include/linux/refcount.h
+@@ -107,6 +107,7 @@
+ #include <linux/limits.h>
+ #include <linux/refcount_types.h>
+ #include <linux/spinlock_types.h>
 +#include <linux/ref_trace.h>
+ 
+ struct mutex;
+ 
+@@ -393,6 +394,7 @@ bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
+ 
+ 	if (old > 0 && old == i) {
+ 		smp_acquire__after_ctrl_dep();
++		do_trace_ref_final_put(r);
+ 		return true;
+ 	}
+ 
+diff --git a/lib/refcount.c b/lib/refcount.c
+index a207a8f22b3c..ab88d4674942 100644
+--- a/lib/refcount.c
++++ b/lib/refcount.c
+@@ -7,6 +7,7 @@
+ #include <linux/refcount.h>
+ #include <linux/spinlock.h>
+ #include <linux/bug.h>
++#include <linux/ref_trace.h>
+ 
+ #define REFCOUNT_WARN(str)	WARN_ONCE(1, "refcount_t: " str ".\n")
+ 
+@@ -56,7 +57,10 @@ bool refcount_dec_if_one(refcount_t *r)
+ {
+ 	int val = 1;
+ 
+-	return atomic_try_cmpxchg_release(&r->refs, &val, 0);
++	bool ret = atomic_try_cmpxchg_release(&r->refs, &val, 0);
 +
-+//Wrapper function for functions defined entirely in header files
-+void do_ref_trace_final_put(unsigned long caller, unsigned long ip, const void *obj)
-+{
-+	trace_call__ref_trace_final_put(caller, ip, obj);
-+}
-+EXPORT_SYMBOL_GPL(do_ref_trace_final_put);
-+
-+EXPORT_TRACEPOINT_SYMBOL_GPL(ref_trace_final_put);
++	do_trace_ref_final_put_cond(ret, r);
++	return ret;
+ }
+ EXPORT_SYMBOL(refcount_dec_if_one);
+ 
 
 -- 
 2.51.2
