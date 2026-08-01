@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FDF4C5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32195C5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 00:58:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74C226B007B; Fri, 31 Jul 2026 20:47:04 -0400 (EDT)
+	id D7C836B007B; Fri, 31 Jul 2026 20:58:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D5AC6B0088; Fri, 31 Jul 2026 20:47:04 -0400 (EDT)
+	id D2CA26B0088; Fri, 31 Jul 2026 20:58:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A0B16B008A; Fri, 31 Jul 2026 20:47:04 -0400 (EDT)
+	id C1E1D6B008A; Fri, 31 Jul 2026 20:58:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3076F6B007B
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:47:04 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B50F3A1009
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:47:03 +0000 (UTC)
-X-FDA: 85050861126.15.750FEB6
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E658140004
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:47:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Lp/5WC0u";
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 948D06B007B
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 20:58:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2136CA10E8
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:58:34 +0000 (UTC)
+X-FDA: 85050890148.25.37DB4CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 71991140002
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 00:58:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2vjah6U;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785545222;
+	s=arc-20220608; t=1785545912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMek1aawQ8IyooAOw8hjJzP++g15hi+kUNuEx4O2XuA=;
-	b=Wp0RS5fbxvkDuzuotv/jIFpvowWhl+pd5rkCHyqfLHn3e8IrTaB/IWb/9VggpMyHo+XXvL
-	o5XWzVEr6MzLcHD7Wo2K/AAB9Kyc6wzPKydXN4vMMlMA3+sQtVR0mQQydFtlSai3Vz7GDa
-	k3fvUsuoO85DL/qj6du5Yusy5hL0vpc=
+	bh=LYRQpuzIyMl3zJADWFX5IN1PL3+LNC1In3syVPUK/5Q=;
+	b=nL8MHMeqyH/PhQsishnLSMsBRDPrgXAkJgGQia+LCtKm8hIGo2XgLFTwOtzxQOS2uXh1az
+	MAJ65OY7R2zlIIVlpDGGt63cAUPs8zvBsOpFuhFaba0Cq6l/cY4gTQze4PPiAbw8YjUQ0I
+	LgEzUOlnG137YrTI9IgkeUw0qbwNQR8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785545222;
-	b=R3/AXV+aqdprDUfuK4c9dGDKLbtF4EO6ThUBsQTVRii/Ron8enL4IZ+bHRtHw6LOtlnEBl
-	6nrNJoDm5Wktg4vEDmtXayVgaAOA4n509DkmIYT8/ZejplBKvk0TJS0x1hDi+lgGzET/HZ
-	sW8d0PSo1tcfRtlWCjuxvZOfsnxQCk8=
+	t=1785545912;
+	b=XtlLeReRzTEHZHFsRhIQ7cC2yphYFTgYAmg9j0HstGV+z6ZztxyuC+3SEnmro9mk85XEp2
+	g8X4dM6ZS3nQtQ2ZumVNMp4H6C68h9DCXifHnWQigxMn7mq/mgcdWTGbPtDyUbjze5XbER
+	5eyLDSOL3KkcW9JideE56EtUcjRfVEQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Lp/5WC0u";
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Sat, 1 Aug 2026 08:46:52 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785545219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMek1aawQ8IyooAOw8hjJzP++g15hi+kUNuEx4O2XuA=;
-	b=Lp/5WC0ukjnAn5o7N1qqH1jN1lRSaj6RecCQ9ONDeU+uZ3dm1b6L3FalP3D7qZ6EHAhVdC
-	VlIh6gP28hAflRVDqF1Bq042TiBVII/vlLXde6jAxOk4MqdsHPCkYT7WPSTm3YwOPD+5px
-	ZYNtt22HoOYMfrGxy6XWPDx99Au6IY4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted
- files
-Message-ID: <am1B_Mz21L54mrDS@MiWiFi-R3L-srv>
-References: <20260730184853.48347-1-ebiggers@kernel.org>
- <amy7Biucbf-et5O2@MiWiFi-R3L-srv>
- <20260731181408.GA12803@sol>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2vjah6U;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B83D543C3A;
+	Sat,  1 Aug 2026 00:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D501F00AC4;
+	Sat,  1 Aug 2026 00:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785545910;
+	bh=LYRQpuzIyMl3zJADWFX5IN1PL3+LNC1In3syVPUK/5Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=d2vjah6UX4HkhcO/C80E/gRhOBWJZ5SSXbNB0qiZz+WfzvCn3guWvCwnQ4pbpjV16
+	 cUVgtuJDxq3ZXRK0l6vidQr5Yc8izrZh1b0MolILgsT0WkFS232GW9DoUeK7g0OLAg
+	 3gOJ+tOFkMZRKvgXJh4lH9EG65N+4n57enz2fJ59qymLGd93f88ubVL/x5DYUZMZ9q
+	 UiB2STglkP9IEWDUWm/MdrwuU4AWhnGBNA4xHeCRPs/33kxircMfIPWMeVWScITbRK
+	 1vRhVer5ahnOMz2Lr7Nyv9BTFUOoxNm7zJah5w/7SxNjxCBamHBqZfzkXqjW26YcC+
+	 yB4JTdCqX1zhA==
+From: SJ Park <sj@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] tools/mm: add hwpoison-panic tool
+Date: Fri, 31 Jul 2026 17:58:22 -0700
+Message-ID: <20260801005822.85110-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260731-memory_failure_rewrite_test-v1-1-6aa8c6435693@debian.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731181408.GA12803@sol>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E658140004
-X-Stat-Signature: b3ju5sbknjb8tj94j9zcpim63up8a83f
-X-HE-Tag: 1785545221-113822
-X-HE-Meta: U2FsdGVkX1+RCXU3sxquuXERDRI9iL0/84Xg8F7pWwRHzdmbxljg3rCpLi2ysu0Jz8anbWRw4ad9A/O+Czv80wFMvYidlDmWCjzFMopo6wXtbsEwWciaDF7SffTSTaEVuAde3qKHMyYy1KV3VqNaaAIBBf1E643TLGX94dXMSc8NRkot5Hcfd/HvMb+mRW8AHBcbrSlVckwCamc0S0GXbFrc3Vgeuwrc6IHQbMZWs6dycS16VOQt+BN/qQD2gIiMIbgFtV4r2dosNSRJFK5YMDwgq5RQQ9NMvvny9yAddiZD0G7N+H3+uRNnnLCxpP+jXnVphxiEhnbe/n03Oij8tR1C/vWQsZ1CJQiIzdXkn8e2SXr4qpKSZH/vET43YlLKYjf3AQWrZhpumCyFLawuMATiahiW3/h4yjl6vV5asUf7rqWZhQp6x0zc2PYRUxWX1P2zrZfdKjUGSUYBkwodxeoLj8wS6+3JjeMsNAGZe3w94LdXSXZIzbU8/Rk2nLBVWJ1igDCbUGVp7WJ8pBovKauycDi5Ay7fVeb9n61uUlJYNiEFyAjrqvAEOfPSCxpVAUNdal2ye4vYBwAlFq30xTY+kAPTLHe8KelaIFgjj9qaSmt/YSXcwkCEg+Mt+1kN6Pn3qLeDd6+HhiTQICVVQR1tfz+wJO0jhXy+jlTSkpgEDi0tPjxU9yR6XOgG9vXyjPrUQ9sW4D1Gar4E9hsoB18LAaE6mLmxYZeBevNUWRGmIG9oZVkahbjazpk3CkCddgalcRZyYMVnffDUcPXceQ9sSLfkht2Xq/AYA8wCP8hqLPI5SrqhrN//9h4BpSa+5jleigk//ZA2KA6oBXtEszkuo9bTcO+m8Esr7AWbin20rHMxtvLWdmITMj2TxaNZpx7DR9xo0tMMdY1cRelDSa+aocrzCf767QWN0aKt7TQNSxIAmm29/egla3DhFosmnlax9bQxRLJGc7yeFRT
- kVvzpJtC
- WXiUTUUvhaX5mR33WoXH7LdWop3ZhlNh/W21KInhDXTELf16BbABMf4Y92LBC4PEJa2QMPt3GZH+OjVg8hKXidiPC8AfHNRi+54e0d3qPhZj3uMMyPqQtyNham/Wah3E+yqug83U6vA6GNyeiCWx7pG9kJKYYNXHs6l8sohLi5V9RB2CwyBeJ1cxqxzFThXi27UjZ9FI6xT1Rlgp0BKXynNADByRNcjuRUYL+42NPDj5loxKtekPAVoyNiEvmrnPBBKpB/5gsO+cWfGF3dQ9MzTAPSA==
+X-Rspamd-Queue-Id: 71991140002
+X-Stat-Signature: ntpznaw4tyc7hc9h1ofuedstk9e3iy64
+X-HE-Tag: 1785545912-400938
+X-HE-Meta: U2FsdGVkX1+xavKShyGhyk1qNRBif98tkNzjmwXHFn1Pckd+s8niQ/WpREoFo0zkyMiby4HIuoPaJ55JbwxV/Z0tLMymDjIjgqlG+LdjW2idSmCda01MqiE0/QnV9vbZpDvl08ctC4HRigFik4dYK8mCiQUkq1krqLLVS8Rktx1orDcz00CLZ7/7j1hmIFSh9lcFLIK8Gkol0mXW+kGGDAKpRd2f/PisV6gPtaeGmOGMfe0JCz32I7spqflB8d91joXeCPSYpsSWnBjiumPFkIDJxd2NFkQdDUd3RzNbX19n+XsvQMmS51P66At2n89x5QL7JXwpw+tstQRf2G6PX1kJjyWrYTzmdy1R9sqqBBQqS7OPQbTmPZN+fa+s0+4vpLuwLABI3+/vlFnQAAizdJ4hNsdQ3Kkro3vTnF3iPdhq2D0+ln65BUpLKFglonFH9sbbcU3Q24binxjS6cexe5VAIUhrTV3qqvLOls0WJK//Sf382UZaLfEQTITOUw7RF383Jz/Z/xoono5oqBRas3ceu3Kw78ax5mhD5ygUtEk6m1tQLYENiF48hhGhSblNk+OWYHass+JiEIdql/NVE5vVBg0L+yY7+NLCMglAlEJ/SK3A7Ufgk3GBmNCroHBir41gmX1oOeWhwjMM8VBTGxJYVug30tIWlhHVzPpa2MDxoGZNxJRYdb+W6B2coSEzc4L/9iKv31SI31e/kFixD/3GWG+073UrogB0FwJJnH4+ln8ktaAZ4j4bPuA84BOOg+CYxUOpDlZDPuytAPTOiSqUeSVkBmLJvqXpdy16JyUL4hmjFOnKW+E1wpoQYctNH8mbb+WnPBFcPDQFSff8B4450Aktg+TGepxvZuoq44nbZQksufLLezTbv2wKgIjJP80m2HeZ4SlTsOHu3+3jXBBT/t/akHlBohw9L+Nx6kWIQltt/j/YSTEt8OUhrRNNAnZeuEpytFY9gBVUJw5
+ aJwoq7qW
+ Op7IGIjUQIuYFAxarqoXpmwrVpiBc2LO0i01JbM6vI0ssx//UZjWiey+dcXqcPGBvig1VCJa7aolVV1aD+6wq5vwkIO+P676koH6dNvwTj/weqKORbveUJrvul7rXn231JKwNMz6e5QNhabRM42O6ydoX9AxNsw3Xz24vc91KZKeIWHUUoN5vPMMFbs4EhEX/iDC1FZqt742KO4zemiZqYaNkINrGnbPGFlji9yYbLYoq400DLPPmw7lzBnF9gdS1szz8Y2XfZiuBtThCL7IRQf6NI4DHryBG7LLFZu7p4dlbxPgKVDFxnlVfXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,85 +101,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/31/26 at 11:14am, Eric Biggers wrote:
-> On Fri, Jul 31, 2026 at 11:11:02PM +0800, Baoquan He wrote:
-> > On 07/30/26 at 11:48am, Eric Biggers wrote:
-> > > ext4 and f2fs don't prevent filesystem-level encrypted files from being
-> > > set up directly as swap files.  In this case, encryption is bypassed.
-> > > 
-> > > No one should be doing this, vs. the methods of encrypted swap that
-> > > actually do work (such as swapping to a dm-crypt device, or swapping to
-> > > a loopback device on top of a filesystem-level encrypted file).
-> > > 
-> > > Nevertheless, to prevent user error, make swapon() explicitly reject
-> > > this case.  Document this behavior in fscrypt.rst as well.
-> > > 
-> > > Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
-> > > Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> > > ---
-> > >  Documentation/filesystems/fscrypt.rst | 4 ++++
-> > >  mm/swapfile.c                         | 4 ++++
-> > >  2 files changed, 8 insertions(+)
-> > > 
-> > > diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
-> > > index c0dd35f1af12..cba1989777da 100644
-> > > --- a/Documentation/filesystems/fscrypt.rst
-> > > +++ b/Documentation/filesystems/fscrypt.rst
-> > > @@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
-> > >  
-> > >  - DAX (Direct Access) is not supported on encrypted files.
-> > >  
-> > > +- Encrypted files cannot be used directly as swap files.  To swap to
-> > > +  an encrypted file, set up a loopback device on top of it.
-> > > +  Alternatively, encrypted swap can use a dm-crypt device instead.
-> > > +
-> > >  - The maximum length of an encrypted symlink is 2 bytes shorter than
-> > >    the maximum length of an unencrypted symlink.  For example, on an
-> > >    EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
-> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > index 78b49b0658ad..e4991da81b5f 100644
-> > > --- a/mm/swapfile.c
-> > > +++ b/mm/swapfile.c
-> > > @@ -3650,6 +3650,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
-> > >  		error = -EBUSY;
-> > >  		goto bad_swap_unlock_inode;
-> > >  	}
-> > > +	if (IS_ENCRYPTED(inode)) {
-> > > +		error = -EINVAL;
-> > > +		goto bad_swap_unlock_inode;
-> > > +	}
-> > 
-> > Sounds reasonable to me.
-> > 
-> > One minor suggestion: it might be helpful to emit a pr_warn_once()
-> > explaining *why* the swapon was rejected and pointing users to the
-> > dm-crypt / loopback alternatives, so the -EINVAL isn't opaque.
-> > Optional though -- the check itself is what matters.
-> 
-> How's this?
-> 
->     pr_warn_once("Filesystem-level encrypted swapfile '%s' is unsupported. Create a loop device over it, or use dm-crypt\n", name->name);
+On Fri, 31 Jul 2026 06:16:12 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-Looks good to me, thx.
+> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
+> sysctl, picks a kernel-owned PFN and writes its physical address to
+> hard_offline_page.  Three page kinds are selectable with -k: rodata
+> (default), slab or pgtable. In all cases the host should panic.
+> 
+> Example:
+> 
+>         # ./hwpoison-panic  -k slab -f
+>         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
+>         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
+> 
+> In dmesg, you will see:
+> 
+>         Memory failure: 0x100032: unhandlable page.
+>         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
+>         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
+> 
+> This lives in tools/mm rather than selftests/mm because every successful
+> run crashes the machine, which is not something to run from CI.
+
+If the purpose of the new program is testing, would it make more sense to put
+it under tools/testing/ ?
+
+Also, does this test really need to be end-to-end test that cause panic?  How
+about doing unit test of core functions, using tools like kunit?  Or,
+live-patching panic() to only print messages and return before running the
+test?
 
 > 
-> > And this patch updates fscrypt.rst. Would it be good to also
-> > update the swapon(8) man page to document the new -EINVAL
-> > condition?
-> > 
-> > Other than these,
-> > 
-> > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Argument -f is required so an accidental invocation does not take the
+> box down.
 > 
-> swapon(8) is for the util-linux program, not the syscall, so it doesn't
-> document error codes specifically.  It does have a NOTES section that
-> incompletely documents filesystem-specific constraints on swap files.
-> It's missing most of the current constraints.  But sure, I'll send a
-> patch that adds a note to there about this one.  That will be a
-> util-linux patch.
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  MAINTAINERS                              |   1 +
+>  tools/mm/.gitignore                      |   1 +
+>  tools/mm/Makefile                        |   2 +
+>  tools/mm/memory-failure/hwpoison-panic.c | 353 +++++++++++++++++++++++++++++++
+>  4 files changed, 357 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 56b337a064478..799c4883d5b0b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12094,6 +12094,7 @@ F:	include/linux/memory-failure.h
+>  F:	include/trace/events/memory-failure.h
+>  F:	mm/hwpoison-inject.c
+>  F:	mm/memory-failure.c
+> +F:	tools/mm/memory-failure/
+>  F:	tools/testing/selftests/mm/memory-failure.c
+>  
+>  HYCON HY46XX TOUCHSCREEN SUPPORT
+> diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
+> index 1446a659e5408..b9b80d909db4a 100644
+> --- a/tools/mm/.gitignore
+> +++ b/tools/mm/.gitignore
+> @@ -3,3 +3,4 @@ slabinfo
+>  page-types
+>  page_owner_sort
+>  thp_swap_allocator_test
+> +memory-failure/hwpoison-panic
+> diff --git a/tools/mm/Makefile b/tools/mm/Makefile
+> index 858186a6eefdb..9f6de957a95a0 100644
+> --- a/tools/mm/Makefile
+> +++ b/tools/mm/Makefile
+> @@ -4,6 +4,7 @@
+>  include ../scripts/Makefile.include
+>  
+>  BUILD_TARGETS=page-types slabinfo page_owner_sort page_owner_filter thp_swap_allocator_test
+> +BUILD_TARGETS+=memory-failure/hwpoison-panic
 
-Sounds great, thanks.
+I was initially thought why not underscore but dash on the name?  But, I
+realize it is obviously too persoanl taste.
 
+[...]
+> diff --git a/tools/mm/memory-failure/hwpoison-panic.c b/tools/mm/memory-failure/hwpoison-panic.c
+> new file mode 100644
+> index 0000000000000..b8076d86da15b
+> --- /dev/null
+> +++ b/tools/mm/memory-failure/hwpoison-panic.c
+> @@ -0,0 +1,353 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * hwpoison-panic: verify vm.panic_on_unrecoverable_memory_failure by
+> + * injecting a hwpoison error on a kernel-owned page and confirming the
+> + * kernel panics.
+
+While reading the above explanation, I was expecting this program will directly
+say me if the kernel panic-ed or not.  But this only says if it was not
+panic-ed iiuc?  How about saying, like, "Trigger intentional kernel panic by
+..." ?
+
+No strong opinion.  I'm never a good English reader.
+
+[...]
+> +static const struct page_kind *parse_args(int argc, char **argv, int *force)
+> +{
+> +	const struct page_kind *kind;
+> +	const char *name = "rodata";
+> +	int c;
+> +
+> +	while ((c = getopt_long(argc, argv, "k:fh", opts, NULL)) != -1) {
+> +		switch (c) {
+> +		case 'k':
+> +			name = optarg;
+> +			break;
+> +		case 'f':
+> +			*force = 1;
+> +			break;
+> +		case 'h':
+> +			usage();
+> +			exit(EXIT_SUCCESS);
+> +		default:
+> +			usage();
+> +			exit(EXIT_FAILURE);
+> +		}
+> +	}
+> +
+> +	kind = lookup_kind(name);
+> +	if (!kind)
+> +		fatal("unknown kind '%s' (expected: rodata|slab|pgtable)\n",
+> +		      name);
+> +
+> +	return kind;
+> +}
+> +
+> +static void check_prereqs(int force)
+> +{
+> +	if (geteuid())
+> +		fatal("must run as root\n");
+> +	if (access(SYSCTL_PATH, W_OK))
+> +		fatal("%s not present (kernel without the sysctl?)\n",
+> +		      SYSCTL_PATH);
+> +	if (access(INJECT_PATH, W_OK))
+> +		fatal("%s not present (no MEMORY_HOTPLUG?)\n", INJECT_PATH);
+> +	if (!force)
+> +		fatal("this panics the kernel; pass -f to run it in a disposable VM\n");
+
+I personally feel like this option is not very intuitive to me.  I think the
+name could be better to be intuitive.  Just removing the option also seems fine
+to me.  If we really want to warn the brave root user, adding an interactive
+prompt (E.g., "This will panic the kernel.  Proceed? [y/N]") also be an
+intuitive and safer way in my opinion.
+
+No strong opinion.  My user experience design skill is undoubtedly bad.  Feel
+free to keep this as is.
+
+> +}
+[...]
+> +int main(int argc, char **argv)
+> +{
+> +	unsigned long phys_addr, pfn, prior;
+> +	const struct page_kind *kind;
+> +	const char *verdict;
+> +	int force = 0;
+> +
+> +	kind = parse_args(argc, argv, &force);
+> +	page_size = getpagesize();
+> +	check_prereqs(force);
+
+Maybe check_prereqs() can be called before getpagesize()?
+
+[...]
+
+
+Thanks,
+SJ
 
