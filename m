@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C4EC5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 03:16:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C27C55171
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 03:29:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7416B0095; Fri, 31 Jul 2026 23:16:28 -0400 (EDT)
+	id 7E48A6B007B; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 581256B0096; Fri, 31 Jul 2026 23:16:28 -0400 (EDT)
+	id 794E76B0088; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4495B6B0098; Fri, 31 Jul 2026 23:16:28 -0400 (EDT)
+	id 6AD416B008A; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5006B0095
-	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:16:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4884A1A0223
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:16:27 +0000 (UTC)
-X-FDA: 85051237614.15.69C1DC7
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C6F531A0002
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:16:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=bMMULlZD;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 46F6F6B007B
+	for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:29:25 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC5DBC01EE
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:29:24 +0000 (UTC)
+X-FDA: 85051270248.02.39DA5E3
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 914EB100005
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 03:29:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785554185;
+	s=arc-20220608; t=1785554962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M1pHvAK4N9+3KUvGzv0LO80HoGs7+eXLX4dwzNp1IZM=;
-	b=jR8mBMYiqgUBgYimVgXSoxHxdeIVTR1PCSwt5jbc7S/J9ypcAnMufECvqvk03iPzZKMiL/
-	Csnw3yfyJUr/SwlNhqQqH387IsYZP6onIq2nlTGvUaH/SCEnsfm7YAWACy/zO2mCJ5sVam
-	nMY1CJk8g5zWeKl5j2EfovXLPUPS2l8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tm7PyOogKDuImuMfp/Jfq3/mFgj3o0HKG8Kidl6div0=;
+	b=6qixIlzfr05ofILoD9z/RwYSpHJcRIVaWy349t+c8CktQVAPCScXLx3lB+PBBxO5NisE8m
+	v1a8zcsDig8+HOHP4xOKSEwFUDKrPH8aZIb9mtXBQ7D1gFma/eiA8ZndVk+Gdq8HJ7oD7T
+	bg3u6wLS3vyrrmq3X9azDIBI7x7ICoM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785554185;
-	b=aBmRMoIUsWZ98vLyXXfajwaiNLGMqNsv3hTT1xfvnKmlygCzsuDBVyrLqUjYtoO2fkQCzX
-	+0XX6d1CZcH8IS55uyrXYzHWvEsgxwY7AfaOwZDSqbmVWI/qGLhxv8h1P1SAGekHM92EcV
-	axLcHgGGWnrdOJdc7bBQyZkHlFCSBfA=
+	t=1785554962;
+	b=Flk7pF4x5yc+Ciu0GQa0v1d7y+Olt0moiFTBQkjlf9DBtRctdFGDuDL1s2rr/FF36HAIlp
+	W1zcQcyzQobuwFUqMY5wbqB6N33rFmJ9uf3YxIaEuguyzj/3abA6qjarGHGJ5kI1G3TOmH
+	Mr07tgMQSy63tQqNoFJsp2xPIweLtPM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=bMMULlZD;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
 	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=M1pHvAK4N9+3KUvGzv0LO80HoGs7+eXLX4dwzNp1IZM=; b=bMMULlZD2Ev3kM3uCYDeagi7uu
-	SGxDMlBuA+9EC1H10raJQGthPKNwhRU/ByxUaR8mzy4Pct6RgOIcGMUv+2zX9H4D3xBhOCic0mypU
-	pVI1HwOm6NVbJgW3QO36LLC8eaUzW19upwDg4XfYc5XXnsKgI59fjNScFpZGCa33d47YowjBMU3kY
-	+iINXrsIg7lb4r3iUrvP4UB9zNWK51o++i77raAAmcGYPUx/t6ryctUgrrGNJ9OYPIxiKE9W7jONp
-	6J6UKhulw3MrIoaqs21CpiYFmHYnOmEaVqmjvk1XK0nWBqhJfiRJpZB27pNbbKKkpRul0TOCw5z3K
-	QE07Sn+w==;
-Received: from [96.67.55.146] (helo=fangorn.surriel.com)
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wq0CU-000000001Q5-3m7I;
-	Fri, 31 Jul 2026 23:15:50 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: kernel-team@meta.com,
-	Rik van Riel <riel@surriel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>
-Subject: [PATCH 2/5] mm/gup: split follow_page_pte_commit() out of follow_page_pte()
-Date: Fri, 31 Jul 2026 23:15:37 -0400
-Message-ID: <20260801031540.2742891-3-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260801031540.2742891-1-riel@surriel.com>
-References: <20260801031540.2742891-1-riel@surriel.com>
+Received: from loongson.cn (unknown [123.138.236.242])
+	by gateway (Coremail) with SMTP id _____8Axx+oLaG1q9GwJAA--.31594S3;
+	Sat, 01 Aug 2026 11:29:15 +0800 (CST)
+Received: from [10.130.40.83] (unknown [123.138.236.242])
+	by front1 (Coremail) with SMTP id qMiowJDxDccJaG1qf3YfAA--.37140S2;
+	Sat, 01 Aug 2026 11:29:14 +0800 (CST)
+Subject: Re: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec
+ sections
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: linux-mm@kvack.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
+References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
+ <20260721090606.8982-3-yangtiezhu@loongson.cn>
+ <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
+ <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <0471efa9-d2b4-22d1-6059-acfa6a150a94@loongson.cn>
+Date: Sat, 1 Aug 2026 11:29:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <CAAhV-H47kc-=A2syzJNLWOD1=TWumvyYWObL+xutrbSRy=WpWA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxDccJaG1qf3YfAA--.37140S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zw4UuryDZw1kAF4DJw15WrX_yoW8Gry5pr
+	45GFZYkF4qv3yxAFs7Kwn8uFyjgrsYvFWjqr95Xw1vyas0g3ZYy3WDKr15tFWkua9YkF12
+	vayaq3yrZ3WDAFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Jr0_Gr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
+	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+	1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtxDUUU
+	U
+X-Stat-Signature: 3e6br6njfyjridsqc7qi4yshaicn975d
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C6F531A0002
-X-Stat-Signature: 44f17388ejwk9grz9w4mw8yikt4sso95
-X-HE-Tag: 1785554185-321468
-X-HE-Meta: U2FsdGVkX1+USgYv79+tz7+g7F66avZ8rF+ut+Br8ZPc5VwosfP2pjlqRBuQQPVNgNPiv85yxCCR/s/+cT+rbGOuXgd7s3G0tjqFD5rTC0f8xeMn0AIhX8g6Ai4LV5kQCAEJii+rO3p7jUug/rVT68BPaQpa9gwmU1F5fLGBvMMxiuTKFndKw7KMLaMRufV2zV8CmArA6EEkA+mUie/qQI8z6V/Nb+oNbfvl5DwCIALk7yYK8+s4QP356iC5aCWOkv/NHfphOU6pj72Khv78CllVq9cr7IL4Cx/PQunhqOrhHG4SzwfXCOPDrkJlik7mxnWwLnekCIUbN96/cOSjXbmkMN4qcblFMG7f3+xxBRIxuh8Lq9u/qRMtSE42HlWCL4vDcrGI/pKnzHp2v/5odmoEK1D4jDkLdADnsVFE4xpliwQ91Pqtfwse+UmTKeBFMatMfRql1KBMSocVUtcL19whaplk3g53j0c4Cp3fyt7bzBv83BVnA8Jztb++xdM1DVbPOZAJeep6vPkDD81M0ycfz9BXNNFHcyiBuXNn7mdyPot3bdAPD/tzSd2AaWIhwJRyqftg641f7s3N0iHhQLVMSJqtw9yVl3tm+7iDNgioshJXrcwJx2H8ejqrSnVB2Culbiv7cNIQQoruEiHhkCG1nPTFDlbNzaQHzg0Vs+suRrj3w/fO/yaqd/ezXmnJgmSM5K2DXysSv2cOcTgQl0UnO6Wgbh6sFwBYxsYPKLa4megdKqDNZtY05f6PodifDW55EFownX5MzHvr70PNxw5NA8cWaPH0QtZ3uug0sSat6clTXrtaxPfAtZoSTmwej9oY8RVspIPFDuQ29GywXtgt8RU2QGGrdLBi6z3PlaCTqOGwVFvIb7S9f7XhZtwwf+98waPkbKshFdRMKaslLCNPcyt1rDHfREaFl/tgpp7+ZMTeAEXkqhVv5NUIhHIQtH3YYXvrYfyWqj6SGz4
- q4Kou25B
- Ea9x823W9PjnmsB53GZLnucHJ3dmIdqNp/ZWdZokKsRjIla84IW6+3/jq8RNTxp6s/JBfL9gSTHeQosty4UU4xIzADTJEO6gF+Y7IUFU5oAeKv5nKIPo/e+kq5fhhTDbAK5XAegWID+hHUoOM84d4ZBl5f3W1q+fSDuyO7vTpmM3zemNlM7P71oCM50pT0pIbA4a8fHGTqkNQOlbdhXIKWU/GWAj6+Q0sbO6DdlWxPZAd/CboFtJdycPIAnrqz2Q5PP4w/tGlWt8Pke+640+AwDAFjpBTmzHaIEGQRozv96mRq7Hpw236Kri6VD6+NNKBDbMd1xaUSk2es0Mq5KL3PWbTww==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 914EB100005
+X-HE-Tag: 1785554961-44763
+X-HE-Meta: U2FsdGVkX19qQHyG1EHvhiVNNWWky1G3/XkTCgi44aZt9gdI9cdDkca/JsYdbFw4l2vHXsuNDZ+KjV8xJeOEc18iVy0mBH0aTnYT1yP0FEjrLMHFaAbfgpYUXMfhY2d5ukqbfwEgLfEghwOplfid8F1gXjZ7XM3MLZXtSxE7mVStiI7LtXwxH8MV4IlXvOoOkAGG8NBqJuSEp7xg5e/E+kUKRnNSoTwWmMq1+x22tdw+BqhVNzZjdHeBb/w6CtQmVeuvJOzWua7tthwJq4s48qRDZpeum00nyt2cHaChaHp4QM062odz5f48Dk6fC1mfABsqC52m6nZiWseeiI7qnyVAX6eR675qbjC4jZyZ4+LYZSUnCFosbBSlAbkyN/6YaiU+Cui2pkOreOlQdv6Jvy+xN4CIaArqIHoXa+bkS8/jVb68cU+Ub8vYjY5FhP6ApWExZeib1CYhjFX2qMQ7WdDOtqpc/wlHpnZfYuBBppkILUndt+M6bPSUqET0YMp4yFvq7aFlSD0J8aRrRg5Auaict8pV6GiCfjvcX2eVQnz2kPrfzMFfYcqSjoIJ3YgwhR41HRLQXQPAaS3QaRiJvc2FyZhYHk0s1KaOUTZxVPiZ8MBqPKS7b4pdepC2uITqa0qKRPp5buixVz72dGVI3ZOuxpWnxFDude/jiWa+GdO0U1aY3MNJjOXirHWu6v3C40O0EUwAg6AeZNNGuopHr9D7OxTkAvJMkIvVsAvfBBZuLfPN2470LOAzOAJoY5Vy8NMCpqBI4wn1X+ajvtTbryOSG1C48kaAr4no2IjhCRip7+WNAJHeoBL3paCVaOufEDK9ppJtqLaz+JZJHDb+RNzIROcKhBN66fTGLcAeTnT2fq+5d24YZkLsKwr7iELiC+mbEBZGd2BdZpb6yySQEJG+la+Ka5bavzJsjUIo70YNSIaXxcwdIJTghDOrVL68VW+dSnzMR17vTa625A4
+ ECGDa/RE
+ 0sHuPsGv94eVUtez4iYBFJUB82daziNcOjxUkSBieJmCsMGEx3v/2NnPVLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,130 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-follow_page_pte() does two things once it has resolved a present PTE
-to a page: run the per-PTE safety checks (write-fault, unshare), then
-commit to that page: grab a ref, fault it in if pinning, mark it
-dirty/accessed, and hand it back to the caller.
+On 2026/7/31 下午3:38, Huacai Chen wrote:
+> Hi, Tiezhu,
+> 
+> On Fri, Jul 24, 2026 at 2:07 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>>
+>> On 2026/7/21 下午5:06, Tiezhu Yang wrote:
+>>> The module loader currently runs expensive address pairing logic for all
+>>> sections blindly during relocation. For massive modules like amdgpu, this
+>>> causes the loader to waste lots of CPU cycles analyzing non-exec sections.
 
-Split the second part into its own follow_page_pte_commit(), unchanged
-except for taking its inputs as parameters instead of local variables.
-A later change teaches it to commit more than one page at a time.
+...
 
-No functional changes intended.
+>> Using the section flag check reduces the operation to a single check for
+>> massive data sections; otherwise, the loader would have to perform six
+>> redundant type comparisons across the if-statement and switch-case for
+>> every single relocation entry.
+> Please just drop this patch and make the first one better.
 
-Suggested-by: David Hildenbrand <david@kernel.org>
-Assisted-by: Claude:claude-opus-4.8
-Signed-off-by: Rik van Riel <riel@surriel.com>
----
- mm/gup.c | 86 ++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 53 insertions(+), 33 deletions(-)
+OK.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 09c64ef2f57c..053da43760a2 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -813,6 +813,56 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
- 	return !userfaultfd_pte_wp(vma, pte);
- }
- 
-+/*
-+ * The caller has already run every per-PTE safety check (present,
-+ * write-fault, gup_must_unshare()) on the PTE, so this only does the
-+ * per-folio work: the refcount grab, the FOLL_PIN accessibility fault-in,
-+ * dirty/accessed marking, and the array fill with the cache flush.
-+ */
-+static long follow_page_pte_commit(struct vm_area_struct *vma,
-+		unsigned long address, struct folio *folio, struct page *page,
-+		pte_t pte, unsigned int flags, struct page **pages)
-+{
-+	long ret;
-+
-+	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
-+	ret = try_grab_folio(folio, 1, flags);
-+	if (unlikely(ret))
-+		return ret;
-+
-+	/*
-+	 * We need to make the page accessible if and only if we are going
-+	 * to access its content (the FOLL_PIN case).  Please see
-+	 * Documentation/core-api/pin_user_pages.rst for details.
-+	 */
-+	if (flags & FOLL_PIN) {
-+		ret = arch_make_folio_accessible(folio);
-+		if (ret) {
-+			gup_put_folio(folio, 1, flags);
-+			return ret;
-+		}
-+	}
-+	if (flags & FOLL_TOUCH) {
-+		if ((flags & FOLL_WRITE) &&
-+		    !pte_dirty(pte) && !folio_test_dirty(folio))
-+			folio_mark_dirty(folio);
-+		/*
-+		 * pte_mkyoung() would be more correct here, but atomic care
-+		 * is needed to avoid losing the dirty bit: it is easier to use
-+		 * folio_mark_accessed().
-+		 */
-+		folio_mark_accessed(folio);
-+	}
-+
-+	if (pages) {
-+		pages[0] = page;
-+		flush_anon_page(vma, page, address);
-+		flush_dcache_page(page);
-+	}
-+
-+	return 0;
-+}
-+
- static long follow_page_pte(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmd, unsigned int flags,
- 		struct page **pages)
-@@ -868,40 +918,10 @@ static long follow_page_pte(struct vm_area_struct *vma,
- 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
- 			     !PageAnonExclusive(page), page);
- 
--	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
--	ret = try_grab_folio(folio, 1, flags);
--	if (unlikely(ret))
-+	ret = follow_page_pte_commit(vma, address, folio, page, pte, flags,
-+				     pages);
-+	if (ret)
- 		goto out;
--
--	/*
--	 * We need to make the page accessible if and only if we are going
--	 * to access its content (the FOLL_PIN case).  Please see
--	 * Documentation/core-api/pin_user_pages.rst for details.
--	 */
--	if (flags & FOLL_PIN) {
--		ret = arch_make_folio_accessible(folio);
--		if (ret) {
--			gup_put_folio(folio, 1, flags);
--			goto out;
--		}
--	}
--	if (flags & FOLL_TOUCH) {
--		if ((flags & FOLL_WRITE) &&
--		    !pte_dirty(pte) && !folio_test_dirty(folio))
--			folio_mark_dirty(folio);
--		/*
--		 * pte_mkyoung() would be more correct here, but atomic care
--		 * is needed to avoid losing the dirty bit: it is easier to use
--		 * folio_mark_accessed().
--		 */
--		folio_mark_accessed(folio);
--	}
--
--	if (pages) {
--		pages[0] = page;
--		flush_anon_page(vma, page, address);
--		flush_dcache_page(page);
--	}
- 	ret = 1;
- out:
- 	pte_unmap_unlock(ptep, ptl);
--- 
-2.53.0-Meta
+> Now the first patch has a risk that the distance between .init.text
+> and .text of the same module exceeds 128MB. I solved it and you can
+> verify:
+> https://github.com/chenhuacai/linux/commit/f87f9d82869ebc71dca4c02bdff1cd203913a98f
+
+Looks good to me, I think it is safe.
+
+static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
+{
+...
+
+	if (mod_mem_type_is_data(type))
+		execmem_type = EXECMEM_MODULE_DATA;
+	else
+		execmem_type = EXECMEM_MODULE_TEXT;
+
+	ptr = execmem_alloc_rw(execmem_type, size);
+	if (!ptr)
+		return -ENOMEM;
+
+...
+}
+
+Thanks,
+Tiezhu
 
 
