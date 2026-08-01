@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD828C5516F
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64CCBC5516F
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 08:49:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D73476B008A; Sat,  1 Aug 2026 04:49:03 -0400 (EDT)
+	id 7A73E6B0092; Sat,  1 Aug 2026 04:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFD8E6B0092; Sat,  1 Aug 2026 04:49:03 -0400 (EDT)
+	id 730726B0093; Sat,  1 Aug 2026 04:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4196B0093; Sat,  1 Aug 2026 04:49:03 -0400 (EDT)
+	id 66DED6B0095; Sat,  1 Aug 2026 04:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 918A76B008A
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B956A0252
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:01 +0000 (UTC)
-X-FDA: 85052075682.22.D5AB758
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 470C66B0092
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 04:49:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7BCB8024A
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:03 +0000 (UTC)
+X-FDA: 85052075766.24.5B2AEC0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C6290180002
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:48:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yox6bb/l";
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id EF8E5A0003
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 08:49:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQoIkJWY;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785574139;
+	s=arc-20220608; t=1785574142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wYDhciAMewwTzuFPipnf+IQyHks9mUviEC7Ko/C24K4=;
-	b=faN0uX5i1/A5kxqa6v+d4KwesIU7LUgekCV/gzL1mmsQj0O5YfCo4osmKKOyOUSLgMWlos
-	EWpGC97YjWr2tfTJG+J2gsww0tNKXCsPkwWUX/33CxNDwYlUgw71UItkqsM6f2HhrhYmT3
-	7pOKai1Jo1kitGHQecvoMcV+cBHSWac=
+	bh=oW24OSgY+02kiGUyGuv6YRB0JlDE5wjv3dR4PPzE/Do=;
+	b=74L9FSGIJN6gThbBbjDYK0LcM9ycHOoz2KoF4K34T7X3cl/ZXof0rd+a9Izli9mw7xbMGA
+	fxY+lPzs4NSwSbzEH1zvau5xw0hxr1f0SZqBai9vLtka/bnf7quobqa6CHnwCXBsCmfjVa
+	wf45YiLY9SKKiPqlmjt9RRPZNqz1D8o=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yox6bb/l";
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQoIkJWY;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785574139;
-	b=ej/Vr1YLVtQaT29J4mnlZkNcHZrpgW6rQ63U8fGH0igVoJUko4jS9Gt4L1b1F9li2O/Lj4
-	+OK5cI6S70xMrY1HJUHi/guVCjwCO1STsRC1Su+YbftSDFZ8JL2wMfWqiLkONtqxzkzPPv
-	yGIg3yhdk222sOp6CQNdVfD7miPRh00=
+	t=1785574142;
+	b=Yl4+t2fnTmWXmjJN63AV2++L4pPQlp+TarrtEmJY1DJn8D3nmSe3+dnaCTT3GPPTXKhc/I
+	2mYXpWT1hcVRYlZNG/dWhZ3YtFX/R/l8a5AjSMgSVk+HY7BTGIO9423aeP7F8XRmImyvX4
+	AF4v60lyZkR62Ghm2sws5vuDoaV/A6I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC90143EAD;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BABE45274;
+	Sat,  1 Aug 2026 08:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46621F01559;
 	Sat,  1 Aug 2026 08:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1FB1F00ADE;
-	Sat,  1 Aug 2026 08:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785574134;
-	bh=wYDhciAMewwTzuFPipnf+IQyHks9mUviEC7Ko/C24K4=;
+	s=k20260515; t=1785574136;
+	bh=oW24OSgY+02kiGUyGuv6YRB0JlDE5wjv3dR4PPzE/Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yox6bb/l6aQBc1NTt8Udm6FZMQckCTopP8JlPLTf58Nvk76tzgfeWeHOFJzoALMYT
-	 VZ6eZ5mhmtEI0j3NZJgC3LU5fkfSMMBi/uCjbdGR0agId/bqG/79vPT85Sj+o7BoRy
-	 J2sPqUUuyZho+vha90TUZeS7clb7X+zOUXxQ8vk1iv8YpgmHiYqsbPgZryNgguM6ou
-	 oB55d+zfkpln21E4nM9TAXZeb+nkl8r46gpYzYO3hItVZgn/5EiSyYPic4f+otBV6f
-	 2het5JmcLoMc2PzgEEA4hjft1VHtw4mvSWOcBmkGuwBqY3hNIIMqE0bzODtjsH0GWn
-	 7XOtToKNynQPw==
+	b=gQoIkJWYTAvsAQv8VrdnjyxabkPvfgPjzaOhUwz0mE1PbNvBwjjRZsQbEPz0skHqm
+	 3IRj025y9mp+vNFteaFmVDoS7I29HLINzSlBq0wW1salKV5kCzKdWBGEyS3YVkHxC2
+	 +jBSMCnuKJ+HHT5KdczqbXuyj/r4tqKUaqnCI7BLRgOHlbyCpWL0L1W8N5DM4V5Mj4
+	 dN5NkKtFWB9UvdZ2ibw6+mZSUAQtubKXX443aPI4lXSBOchrJMnlYQPFoVgMs5JqAv
+	 uQ+zukTE83aXZ6melPsHCXod95nNmTykOSkkMkY10a/mHHeMHDWzGfqfd5S+nJXSsu
+	 FF4eDfQrH7yBw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 01/22] kho: generalize radix tree APIs
-Date: Sat,  1 Aug 2026 10:48:10 +0200
-Message-ID: <20260801084833.1897543-2-pratyush@kernel.org>
+Subject: [PATCH v6 02/22] kho: make radix max key width more obvious
+Date: Sat,  1 Aug 2026 10:48:11 +0200
+Message-ID: <20260801084833.1897543-3-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
 In-Reply-To: <20260801084833.1897543-1-pratyush@kernel.org>
 References: <20260801084833.1897543-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C6290180002
-X-Rspamd-Server: rspam01
-X-Stat-Signature: mwgts8q8wanxhaxsbd8qsuya9b8auaoa
-X-HE-Tag: 1785574139-79795
-X-HE-Meta: U2FsdGVkX1/O/bTmhCRZcSAxM8UXciEKzxVnatPRYBPceYYMOmg2+XJ4OLnrG7tVGaRjzIYkEfvqzCGlUgRYAyeOrDbd2Qpu1j9G1hFgs+0b79ycTIvyDp+hwF9vkyYi0ntOL1BOfTUb1aXuJxW/I8DnRR6UxCd9FSiMllSgYC6EW5oO+ortN9W/bEVmjlIKh/CBILaiI3tADV5jBEiyspVYBMnufGMT/rMoH72ijdM2NyoNRxPibwmCb3FZ7erZMzz3gUEuARXXvOUpxQdbTWQZAdPOFi7z1bWWGptkah9dKb4uEzhsG4bdJ5x9NqCPg8JeZsPL6sLThdjsvcyjBkycKMv/BMQyxTY9m1e0wuQ83gKiulYsSmD52mlfC3+i3sgLm74g/bhWymg0BwY/XBM6pySTgt/XNeLztqUZkeZ/Y6kS8nDB8lmaSQ3Ad3y2gMM26PlqKS06sWcMyDrRm9Vr4eefuvej4Zp0ESOV6VENSHzZ2xwdV8/dZPLoQBpbupHkNrETGuO7Nkw3J1tyITghPgUlyKauG4r83O/imymGcFPAOvb+lkR7Ngy8MJ6p+odyaJKaN01H2GlKVC1ONFJuJfw1Wz2SDUFIXa9PS9BBRxP54ME7CDWyVaimj3wCipL2b0Xob5spVqSu4ljBQBL8j8o0lE0FwgiPeFH4uF2Sn/RRung3ItIFyhoKXUPSBEpsWbpEL87mhLK55rKOy4rcUHssF5cHdIFW4A0vJdBXNICQpG7BfovJjtWNcjKHJmmvSkhW/LAvokpi+U27H3hBv7AY8N0iqRycZVOqxPAbWWapSf0jkQ1rVNEB+Pniu8TWjgvkCRglUyKx55oWWC7QGUj4yhH4YxPHeq/1DZ2DeLg9cnL1qI/9yHhWsYMGdt2j8oMmC6k8YpSfFP2kWV50f8HsibWBjHXWnzJSF3cesPvQwEJCfbaML4cdQgUQzV1RBGPL+IQ/wVdZiaV
- YElfRokF
- iPAd+qyPkM25MJhdR0dYrBgExj9pEJ7W3njyzSVQ1HaRHjNa3nXgIbsAGjTJyzMosKJeyFD9wzR6XAv45WyyTrQ0YdFX2dJQ/qRy5fRND33iqFoq2WeKZDQw8tBB2y4K522bVIV1I8rbGnIFn9JRxCrdLpK91FoV6FSVEbqqJt51m8LXQknUDPBYx7lSjEdpd8tEZtt1ommSxeltvzh0SRfjLyJIImNl5kI5Dxq2oXsgBVtmBgRsyStvgaxfjOrBDlCqStnHZSNBB/zyF0pFlk+WB39F6mBAeUfSzcbFUh+PBuSY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EF8E5A0003
+X-Stat-Signature: fpjejsnuy34874dao4em53esfk77e4s7
+X-HE-Tag: 1785574141-519846
+X-HE-Meta: U2FsdGVkX19CIIoQPa/IfoY5ABwvpejvura6f9sEtc/YcpE7gy8KDL5gs4gfEbX4UcXBSd5tTm7KWTy2UGKTBVJK2sYVfuqqn8wwdGWw0LdwWgHrg/hrzJ4EUEis4R0aISimBVo9TPxyWgImaSz2mEbSjNrzAoG9ohTEnSyxhOIxdRh7GiXNX+ui8FBjKxQ8kPf+Ety4l3SlSzzDsI2hQ9BWekrzK9rJUKszt/BcCl1ZnzboyED/Ua+g7Q+quEJ7Vx1yKWUR4sRqx2b2pV6F6zR8QlnSzJJw9dl08TdmMQGi8WCe201GGww8qQR/eU17ooaWDFqWNUQZkQTrYdYyA/vASHTolsWtT6d+4Df89Yw9ba8o2LO9rXP7dyrpgcWtb7Gdt4TGnqxmrDc+8mmi/nysbG5UsJWd3U/vuTnqk+CS3Oj/XpSdUTQ4wEeI44uQEKxesGauXJSHvNIDoE1CIq8jMkqgMnxe4NiytDi7kbHuUOl1ha/HLQ60J8Pbnjy8frwPB/WGXUjOnUdLDil+qydEsATLsthZkGQC4KsVGmqMZj1KzAR81Z1lkM09Nx4sKoOSv01uoy/5vgsoMB8ADDVCnEr6ry7JCqqaSrR0bA+A4pYF/eSPHt517NMuxMb+eSDAvCdL+tHSPSFPAy1cMnSyylb+F0WtPK4CTdRsDPaWEQybsl55i2nqD/Q9af5+hyX9+x57wtwHxbaQCpsxwsNky83EHSIbgJWDLkJEA0rSrrU86qSULUWd+Ydb90YfLu65xV1sVMw9xRsK++OjfsLPI7HbPsIgdYhx812pu/Ur1FsuENy1hz96JERsSfdGGaYGNDELgm6Bg0BOVBQXcuC/1sYyaqE4m/jFgopf4bNm71pRdZF10ppF1jiv22pEp8najxGG6V6JcNuaPrR6t/RQOWb0bVqxrWxnTU7pRIBe+f5tlmu/05wXxbbjSQDQnonXCR8jCFxDkq3p7a4
+ 9TzGEYXB
+ z1I+yz2zN2KP0fusu0vwVEOJQj05gC1mu3JvkF3A91ifoMNHD8ce7Bo4qi5zw1t8V52ekngx9nQ/5ID/G49gOOilTl0FCsPQ8AukVuqqTlZDPpWQxd1Dy4ngff+P0jqKH0I3IJLZZBV9tEPwMNFO0AHM3z/Sfg9PPWarQzxXCB7b14kyeyN2wyXmO1GBN/PAAcoJqG+X6pvCSOyk8A+Zh5jUFOkmpPkP0uekLL51lcobZbV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,311 +102,104 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-The KHO radix tree is a data structure that can track the presence or
-absence of an arbitrary key, with nothing inherently tied to KHO memory
-preservation tracking. This was one of the design goals of the radix
-tree. This was done to enable it to be re-used by other users of KHO.
+The KHO radix tree constants are somewhat hard to understand. The tree
+depth essentially comes from the max key width. The max key width comes
+from the need to store a 52-bit PFN plus one more bit for the order.
 
-Despite that, the radix tree APIs are very closely tied to KHO memory
-preservation tracking. Adding a key is done by kho_radix_add_page(),
-which encodes it as a page tracking operation and takes in PFN and
-order. kho_radix_del_page() does the same. These functions encode the
-key internally that goes into the radix tree. kho_radix_walk_tree() does
-the same by baking the PFN and order into the callback arguments.
+All this is very obscure with the corrent code. The PFN width is defined
+as KHO_ORDER_0_LOG2, which makes very little sense to a new reader not
+already familiar with what the value means. Then the fact that an extra
+bit is needed is hidden in the KHO_TREE_MAX_DEPTH calculation.
 
-Generalize the APIs by taking the key directly and doing the encoding at
-the callers. Rename the functions to kho_radix_add_key() and
-kho_radix_del_key(). In practice, this removes a line each from the
-functions and moves the encoding function call to the callers.
-Similarly, update kho_radix_tree_walk_callback_t to take the key
-directly.
+Simplify this by removing KHO_ORDER_0_LOG2 and replace it with
+KHO_RADIX_KEY_WIDTH. Update the comment to explain why this value is
+used. This moves the +1 from KHO_TREE_MAX_DEPTH to KHO_RADIX_KEY_WIDTH,
+making things clearer.
 
-Now that key encoding is no longer an inherent part of the radix tree
-and can be decided by the user, rename kho_radix_{encode,decode}_key()
-to kho_{encode,decode}_radix_key(). This moves them out of the
-"kho_radix_" name space into the "kho_" namespace. This emphasizes that
-this is KHO's way of encoding the key for its radix tree.
+Update kho_{encode,decode}_radix_key() to not use KHO_ORDER_0_LOG2.
+Instead, refactor the code and comments to make it clearer how the
+encoding and decoding is done.
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+In kho_encode_radix_key(), add a new variable for the shift for physical
+address. Use that in calculating where the order bit goes and in
+calculating the shifted PFN. Update comments to make this clearer.
+
+In kho_radix_decode_key(), turn order_bit to 0-indexed to simplify the
+eventual calculation for order. Touch up comments to make the
+computation clearer.
+
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/kho_radix_tree.h     | 34 +++++++------
- kernel/liveupdate/kexec_handover.c | 76 ++++++++++++++----------------
- 2 files changed, 52 insertions(+), 58 deletions(-)
+ include/linux/kho/abi/kexec_handover.h |  9 +++------
+ kernel/liveupdate/kexec_handover.c     | 19 +++++++++++--------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-index 84e918b96e53..9157fe08f9ce 100644
---- a/include/linux/kho_radix_tree.h
-+++ b/include/linux/kho_radix_tree.h
-@@ -11,15 +11,19 @@
- /**
-  * DOC: Kexec Handover Radix Tree
-  *
-- * This is a radix tree implementation for tracking physical memory pages
-- * across kexec transitions. It was developed for the KHO mechanism but is
-- * designed for broader use by any subsystem that needs to preserve pages.
-+ * This is a radix tree implementation for tracking numeric keys across kexec
-+ * transitions. It was developed for the KHO preserved memory map but is
-+ * designed for broader use by any subsystem that needs to track keys.
-+ * Conceptually speaking, the data structure is similar to a set. It tracks the
-+ * presence or absence of numeric keys.
-  *
-  * The radix tree is a multi-level tree where leaf nodes are bitmaps
-- * representing individual pages. To allow pages of different sizes (orders)
-+ * representing individual keys.
-+ *
-+ * For the KHO preserved memory map, to allow pages of different sizes (orders)
-  * to be stored efficiently in a single tree, it uses a unique key encoding
-- * scheme. Each key is an unsigned long that combines a page's physical
-- * address and its order.
-+ * scheme. Each key is an unsigned long that combines a page's physical address
-+ * and its order.
-  *
-  * Client code is responsible for allocating the root node of the tree,
-  * initializing the mutex lock, and managing its lifecycle. It must use the
-@@ -34,30 +38,24 @@ struct kho_radix_tree {
- 	struct mutex lock; /* protects the tree's structure and root pointer */
+diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+index 5e2eb8519bda..2f4fb9c63942 100644
+--- a/include/linux/kho/abi/kexec_handover.h
++++ b/include/linux/kho/abi/kexec_handover.h
+@@ -257,11 +257,8 @@ struct kho_vmalloc {
+  * memory. These constants govern the indexing, sizing, and depth of the tree.
+  */
+ enum kho_radix_consts {
+-	/*
+-	 * The bit position of the order bit (and also the length of the
+-	 * shifted physical address) for an order-0 page.
+-	 */
+-	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
++	/* Need to store the PFN, plus one bit for order. */
++	KHO_RADIX_KEY_WIDTH = 64 - PAGE_SHIFT + 1,
+ 
+ 	/* Size of the table in kho_radix_node, in log2 */
+ 	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
+@@ -274,7 +271,7 @@ enum kho_radix_consts {
+ 	 * and 1 bitmap level.
+ 	 */
+ 	KHO_TREE_MAX_DEPTH =
+-		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
++		DIV_ROUND_UP(KHO_RADIX_KEY_WIDTH - KHO_BITMAP_SIZE_LOG2,
+ 			     KHO_TABLE_SIZE_LOG2) + 1,
  };
  
--typedef int (*kho_radix_tree_walk_callback_t)(phys_addr_t phys,
--					      unsigned int order);
-+typedef int (*kho_radix_tree_walk_callback_t)(unsigned long key);
- 
- #ifdef CONFIG_KEXEC_HANDOVER
- 
--int kho_radix_add_page(struct kho_radix_tree *tree, unsigned long pfn,
--		       unsigned int order);
--
--void kho_radix_del_page(struct kho_radix_tree *tree, unsigned long pfn,
--			unsigned int order);
--
-+int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key);
-+void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
- int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 			kho_radix_tree_walk_callback_t cb);
- 
- #else  /* #ifdef CONFIG_KEXEC_HANDOVER */
- 
--static inline int kho_radix_add_page(struct kho_radix_tree *tree, long pfn,
--				     unsigned int order)
-+static inline int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
- {
- 	return -EOPNOTSUPP;
- }
- 
--static inline void kho_radix_del_page(struct kho_radix_tree *tree,
--				      unsigned long pfn, unsigned int order) { }
-+static inline void kho_radix_del_key(struct kho_radix_tree *tree,
-+				     unsigned long key) { }
- 
- static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 				      kho_radix_tree_walk_callback_t cb)
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 4834a809985a..7349cc82f6dc 100644
+index 7349cc82f6dc..ea24f23ce292 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -85,7 +85,7 @@ static struct kho_out kho_out = {
- };
- 
- /**
-- * kho_radix_encode_key - Encodes a physical address and order into a radix key.
-+ * kho_encode_radix_key - Encodes a physical address and order into a radix key.
-  * @phys: The physical address of the page.
-  * @order: The order of the page.
-  *
-@@ -95,7 +95,7 @@ static struct kho_out kho_out = {
-  *
-  * Return: The encoded unsigned long radix key.
+@@ -97,10 +97,12 @@ static struct kho_out kho_out = {
   */
--static unsigned long kho_radix_encode_key(phys_addr_t phys, unsigned int order)
-+static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
+ static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
  {
- 	/* Order bits part */
- 	unsigned long h = 1UL << (KHO_ORDER_0_LOG2 - order);
-@@ -106,17 +106,17 @@ static unsigned long kho_radix_encode_key(phys_addr_t phys, unsigned int order)
+-	/* Order bits part */
+-	unsigned long h = 1UL << (KHO_ORDER_0_LOG2 - order);
+-	/* Shifted physical address part */
+-	unsigned long l = phys >> (PAGE_SHIFT + order);
++	/* The physical address is encoded by shifting the PFN by its order. */
++	unsigned long shift = PAGE_SHIFT + order;
++	/* Order bit goes right before the shifted PFN. */
++	unsigned long h = 1UL << (64 - shift);
++	/* Shifted PFN. */
++	unsigned long l = phys >> shift;
+ 
+ 	return h | l;
  }
- 
- /**
-- * kho_radix_decode_key - Decodes a radix key back into a physical address and order.
-+ * kho_decode_radix_key - Decodes a radix key back into a physical address and order.
-  * @key: The unsigned long key to decode.
-  * @order: An output parameter, a pointer to an unsigned int where the decoded
-  *         page order will be stored.
-  *
-- * This function reverses the encoding performed by kho_radix_encode_key(),
-+ * This function reverses the encoding performed by kho_encode_radix_key(),
-  * extracting the original physical address and page order from a given key.
-  *
-  * Return: The decoded physical address.
+@@ -118,12 +120,13 @@ static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
   */
--static phys_addr_t kho_radix_decode_key(unsigned long key, unsigned int *order)
-+static phys_addr_t kho_decode_radix_key(unsigned long key, unsigned int *order)
+ static phys_addr_t kho_decode_radix_key(unsigned long key, unsigned int *order)
  {
- 	unsigned int order_bit = fls64(key);
+-	unsigned int order_bit = fls64(key);
++	/* fls64() indexes starting from 1. */
++	unsigned int order_bit = fls64(key) - 1;
  	phys_addr_t phys;
-@@ -144,24 +144,21 @@ static unsigned long kho_radix_get_table_index(unsigned long key,
- }
  
- /**
-- * kho_radix_add_page - Marks a page as preserved in the radix tree.
-+ * kho_radix_add_key - Add a key to the radix tree.
-  * @tree: The KHO radix tree.
-- * @pfn: The page frame number of the page to preserve.
-- * @order: The order of the page.
-+ * @key: The key to add.
-  *
-- * This function traverses the radix tree based on the key derived from @pfn
-- * and @order. It sets the corresponding bit in the leaf bitmap to mark the
-- * page for preservation. If intermediate nodes do not exist along the path,
-- * they are allocated and added to the tree.
-+ * This function traverses the radix tree based on the @key provided. It sets the
-+ * corresponding bit in the leaf bitmap to mark the @key as present. If
-+ * intermediate nodes do not exist along the path, they are allocated and added
-+ * to the tree.
-  *
-  * Return: 0 on success, or a negative error code on failure.
-  */
--int kho_radix_add_page(struct kho_radix_tree *tree,
--		       unsigned long pfn, unsigned int order)
-+int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
- {
- 	/* Newly allocated nodes for error cleanup */
- 	struct kho_radix_node *intermediate_nodes[KHO_TREE_MAX_DEPTH] = { 0 };
--	unsigned long key = kho_radix_encode_key(PFN_PHYS(pfn), order);
- 	struct kho_radix_node *anchor_node = NULL;
- 	struct kho_radix_node *node = tree->root;
- 	struct kho_radix_node *new_node;
-@@ -224,22 +221,19 @@ int kho_radix_add_page(struct kho_radix_tree *tree,
+-	/* order_bit is numbered starting at 1 from fls64 */
+-	*order = KHO_ORDER_0_LOG2 - order_bit + 1;
+-	/* The order is discarded by the shift */
++	/* order bit goes right before the shifted PFN. */
++	*order = 64 - (PAGE_SHIFT + order_bit);
++	/* The order bit is discarded by the shift */
+ 	phys = key << (PAGE_SHIFT + *order);
  
- 	return err;
- }
--EXPORT_SYMBOL_GPL(kho_radix_add_page);
-+EXPORT_SYMBOL_GPL(kho_radix_add_key);
- 
- /**
-- * kho_radix_del_page - Removes a page's preservation status from the radix tree.
-+ * kho_radix_del_key - Removes the key from the radix tree.
-  * @tree: The KHO radix tree.
-- * @pfn: The page frame number of the page to unpreserve.
-- * @order: The order of the page.
-+ * @key: The key to remove.
-  *
-  * This function traverses the radix tree and clears the bit corresponding to
-- * the page, effectively removing its "preserved" status. It does not free
-- * the tree's intermediate nodes, even if they become empty.
-+ * the @key, effectively removing it from the tree. It does not free the tree's
-+ * intermediate nodes, even if they become empty.
-  */
--void kho_radix_del_page(struct kho_radix_tree *tree, unsigned long pfn,
--			unsigned int order)
-+void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
- {
--	unsigned long key = kho_radix_encode_key(PFN_PHYS(pfn), order);
- 	struct kho_radix_node *node = tree->root;
- 	struct kho_radix_leaf *leaf;
- 	unsigned int i, idx;
-@@ -270,21 +264,18 @@ void kho_radix_del_page(struct kho_radix_tree *tree, unsigned long pfn,
- 	idx = kho_radix_get_bitmap_index(key);
- 	__clear_bit(idx, leaf->bitmap);
- }
--EXPORT_SYMBOL_GPL(kho_radix_del_page);
-+EXPORT_SYMBOL_GPL(kho_radix_del_key);
- 
- static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf,
- 			       unsigned long key,
- 			       kho_radix_tree_walk_callback_t cb)
- {
- 	unsigned long *bitmap = (unsigned long *)leaf;
--	unsigned int order;
--	phys_addr_t phys;
- 	unsigned int i;
- 	int err;
- 
- 	for_each_set_bit(i, bitmap, PAGE_SIZE * BITS_PER_BYTE) {
--		phys = kho_radix_decode_key(key | i, &order);
--		err = cb(phys, order);
-+		err = cb(key | i);
- 		if (err)
- 			return err;
- 	}
-@@ -332,15 +323,14 @@ static int __kho_radix_walk_tree(struct kho_radix_node *root,
- }
- 
- /**
-- * kho_radix_walk_tree - Traverses the radix tree and calls a callback for each preserved page.
-+ * kho_radix_walk_tree - Traverses the radix tree and calls a callback for each key.
-  * @tree: A pointer to the KHO radix tree to walk.
-  * @cb: A callback function of type kho_radix_tree_walk_callback_t that will be
-- *      invoked for each preserved page found in the tree. The callback receives
-- *      the physical address and order of the preserved page.
-+ *      invoked for each key in the tree.
-  *
-  * This function walks the radix tree, searching from the specified top level
-- * down to the lowest level (level 0). For each preserved page found, it invokes
-- * the provided callback, passing the page's physical address and order.
-+ * down to the lowest level (level 0). For each key found, it invokes the
-+ * provided callback.
-  *
-  * Return: 0 if the walk completed the specified tree, or the non-zero return
-  *         value from the callback that stopped the walk.
-@@ -484,13 +474,16 @@ static struct page *__init kho_get_preserved_page(phys_addr_t phys,
- 	return pfn_to_page(pfn);
- }
- 
--static int __init kho_preserved_memory_reserve(phys_addr_t phys,
--					       unsigned int order)
-+static int __init kho_preserved_memory_reserve(unsigned long key)
- {
- 	union kho_page_info info;
- 	struct page *page;
-+	unsigned int order;
-+	phys_addr_t phys;
- 	u64 sz;
- 
-+	phys = kho_decode_radix_key(key, &order);
-+
- 	sz = 1 << (order + PAGE_SHIFT);
- 	page = kho_get_preserved_page(phys, order);
- 
-@@ -859,7 +852,8 @@ int kho_preserve_folio(struct folio *folio)
- 	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
- 		return -EINVAL;
- 
--	return kho_radix_add_page(tree, pfn, order);
-+	return kho_radix_add_key(tree, kho_encode_radix_key(PFN_PHYS(pfn),
-+							    order));
- }
- EXPORT_SYMBOL_GPL(kho_preserve_folio);
- 
-@@ -877,7 +871,7 @@ void kho_unpreserve_folio(struct folio *folio)
- 	const unsigned long pfn = folio_pfn(folio);
- 	const unsigned int order = folio_order(folio);
- 
--	kho_radix_del_page(tree, pfn, order);
-+	kho_radix_del_key(tree, kho_encode_radix_key(PFN_PHYS(pfn), order));
- }
- EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
- 
-@@ -906,7 +900,8 @@ static void __kho_unpreserve(struct kho_radix_tree *tree,
- 	while (pfn < end_pfn) {
- 		order = __kho_preserve_pages_order(pfn, end_pfn);
- 
--		kho_radix_del_page(tree, pfn, order);
-+		kho_radix_del_key(tree, kho_encode_radix_key(PFN_PHYS(pfn),
-+							     order));
- 
- 		pfn += 1 << order;
- 	}
-@@ -939,7 +934,8 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
- 	while (pfn < end_pfn) {
- 		unsigned int order = __kho_preserve_pages_order(pfn, end_pfn);
- 
--		err = kho_radix_add_page(tree, pfn, order);
-+		err = kho_radix_add_key(tree, kho_encode_radix_key(PFN_PHYS(pfn),
-+								   order));
- 		if (err) {
- 			failed_pfn = pfn;
- 			break;
+ 	return phys;
 -- 
 2.55.0.571.g244d577d93-goog
 
