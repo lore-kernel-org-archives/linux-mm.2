@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 341F4C55172
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 16:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA004C55172
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 17:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9A656B007B; Sat,  1 Aug 2026 12:31:45 -0400 (EDT)
+	id 9D3C06B008A; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4B876B0088; Sat,  1 Aug 2026 12:31:45 -0400 (EDT)
+	id 97CBF6B0088; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3D206B008A; Sat,  1 Aug 2026 12:31:45 -0400 (EDT)
+	id 891E46B008A; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 972406B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 12:31:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BBBBD1C0B70
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 16:31:41 +0000 (UTC)
-X-FDA: 85053241602.27.CAB4F0B
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 90737100005
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 16:31:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=RmkXFT2X;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A M+GAMA";
-	spf=pass (imf14.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6772D6B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:36:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE04B140370
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:06 +0000 (UTC)
+X-FDA: 85053403932.20.1720977
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 57E5040006
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 17:36:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JqZJuyL+;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785601899;
+	s=arc-20220608; t=1785605765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+GWeLMj6JRkBwIB5dZ2ML5Xr2ewkb9W4drJzAxuBpRM=;
-	b=u2nqaYDyZ5l4KOCt4f+aCRwSKMDryV6UMsfYYz40rA43A9O1/nw6fZSLRTzGpNP5DVOsbx
-	s3H7nTPAZ7eR7kYtytJMqNA3SslPDJG4SIw/z7qyOgIpealAKif9SlfVUtQDU9nxf9BuzS
-	nfirufWI4ixQTvB3MzSs9t1WiHOSt6s=
+	bh=ccJR9KUzvn7k6BzhoDEjN3sQrL1C2MxY/yOiNOzvC90=;
+	b=HeiO6vlBVU0zoO0r2bbUIPFu4n0w4aR8ke+KaavjRkrzTzupjYxSyn4NoJjErSJsvuDO9d
+	KscgKdWSqwts3msZa8KzqkvPX3KmVsVnX6Ny2ljc94n4ISD6wly2EvPEBppSSpLiT1iDYw
+	dXQ+BWo4a6dzguh5Ou8pL8f4XGWCiuE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm2 header.b=RmkXFT2X;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A M+GAMA";
-	spf=pass (imf14.hostedemail.com: domain of linux@jaseg.de designates 202.12.124.139 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JqZJuyL+;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785601899;
-	b=JVpLXsJ5qC5B5Bxl2h+hXYD25tjiKrfX07U7q/lzaqwxcDGezYzjXVNJxumOH3Oas04mJf
-	TrbrlUfMF2Ce5RUxE53pFMD3j6G8cNXNa+DhT0jfuqfZYr4Qm4DxstOIdlWBRcG53uO9M6
-	H+nPbhlxNrB2gsPtAGdNvO/xB/5nM5Y=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2F5F113001C3;
-	Sat,  1 Aug 2026 12:31:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Sat, 01 Aug 2026 12:31:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785601898;
-	 x=1785609098; bh=+GWeLMj6JRkBwIB5dZ2ML5Xr2ewkb9W4drJzAxuBpRM=; b=
-	RmkXFT2XRwFzTnZ4RUuvPxrVeMfPjFOnKrwCQsS1XptZmkGjnm0XK8zPm95SZptR
-	vblyF6P+DynXIEReP4UCqbvO3IMnP26E8gPFZVvIKxFxpj/WP+jbSL0xKwAplAJE
-	gEnbKFuaiMyMaFH5mrB8PQ+DMYdaPHXJ97/jG9UBaGIj3TQ7X1dTNdx1rF4YdDSc
-	iMHjeqzRagEJLUxPukNwHDgpBumKK9kM6tgK5VD2UiZaQwlECGu1yKPHEkzUz/AK
-	WkXrhcCp+jhjHp8Ngn+QB0Pt9guioRZlwl/hktcFcX6LZeI/fYbv/NpTjqirwpZn
-	VVHNMIE0xu4DhjWBh1KyIw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785601898; x=
-	1785609098; bh=+GWeLMj6JRkBwIB5dZ2ML5Xr2ewkb9W4drJzAxuBpRM=; b=A
-	M+GAMAm3QbbKNrAARFlEsFWy2tEQk0jncgzM/KHX319JOGnX3qe1BISPYpFfR9vm
-	+Mw8Yrb5xv6kiMCyD9tEu8u1sJgT/x9+BwsfZ0I/5bT+yZXvmV7fD1LMhb+LmGvV
-	8/4QEFQ2T1n45F2uJKEEeqD7FBWoiHWHR9Qu4WAZlxzzH52Npi94GZFVuq5dqBgs
-	r16p0vkhDOqgX6wB8Ijy/G0nlIeqX5WG3Wlr3z9CEWwxsTI044OAmxg+Lr6NWXvK
-	KUOKRdx6W+pcgXx5fMrK/FmdWe5guJFfuqbQPAsBnUKOzvrVxPucnnUVUjqaYPn1
-	Je6eQuIup7l1UHNYKtBbA==
-X-ME-Sender: <xms:aB9uauKFiZJTjA93RGjFnHFdEvt-HMy0HsgX3-hOAJlqrp1C3ZizVQ>
-    <xme:aB9uaqFUWSmz2qOoolnQJtK4wKgpBNA245buXNm6-MRNEo9R6Ua67PC9nQciMCnBx
-    wnk7tfBCvCeNvKWhGXcU30p2SuE3RCAmug5Hgz0g3Zhrot4cMOPIg>
-X-ME-Received: <xmr:aB9uanPuOshfY6CtKMSGadEowsBukwEQX-vYlocgi_Cuevm95ob8-EiONsw-uPGosUE0_r9cndeMRUDj2Ba5V_0>
-X-ME-Proxy-Cause: dmFkZTGysGsnMEekMD+PYaXQlblXcVTecPczGN+gVmqOxy4sIfPSEgEdEy9IGkXqGXAYan
-    DgHFBKPnw/bMa6UCHHMC0exlwD99XK3fcXTSJ0QkvFhwAe2MTshN1slIIxFE3BXZADEpdL
-    tUUbdbZ08888lAfzeLa8pD6z4j7mB1zFV/lVyxXX1BWN5uUA++eU/U1yOSrRvDozJBELil
-    8rJAGQd3FpKYZxHzerbf/GRb7jk5KXrrlWQSt0HC55zxuWRowmB5ffELTLLDzjdJzr54fX
-    bVWNOtgpIcH43ZWWHr4BoZH4xazltQq9pdjH9ZmzK0fC7Hj6xiEL60USKu+J8gJURge/pZ
-    gNQpgM+Fy6NfM+eMiFCVI0shBHyPX3L7aWUnI3ddWuPO/7fY1U7bleIEI2rKSRTh3ddxqV
-    y0PFC1MHUOu1nFyHSfUpyW+CPxPjQHUWXAPWjbm4posuz0kZ2WVdesFbz8wX7xOhdtoeQ4
-    NIB/ZyX+wPhghTBupZRz2Fao6YdT5OVKu5w6QFEVPgjZUTS5H4Eqkn/A6SMTGffrhS9ge4
-    OlLF8+/f+sQTWF9iebWeJwJoCqNe07ytko3fiWkDeSitzobrn/lY5IP6VGsTQmOR+EUlQ/
-    UzXA2VVLIxEnMTc5gz5NwCEakiJBTEWt62brpYUVuKzUapbciJ7ee4sqm68A
-X-ME-Proxy: <xmx:aB9uas_pMjHsEPoSSOLYfSz1vKmRwTmnO44j2Uj-tvYYFw4JuvSiWw>
-    <xmx:aB9uas7ZWYyx1bGFlgWkMgfFvbwNqE7huNTq2hV0KbcluNmuVZat8A>
-    <xmx:aB9uapXiIem4YDb63Xz4m0RJHUCh1r5m3J01ugYIx9C4daDSwLyfTA>
-    <xmx:aB9uaqJ9TByhcsx4YSr4sAoMga6UtLV_5ds_HktryZHRG1gXKovEJQ>
-    <xmx:ah9uapeWm7c0PJ_UJy7PEj8GZJ4vsUgV29GuwE-0KO-FsDt7a1mwCaDy>
-Feedback-ID: i60a14417:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 1 Aug 2026 12:31:33 -0400 (EDT)
-Message-ID: <74625f78-15ea-439f-b9f0-939d2976fa7f@jaseg.de>
-Date: Sat, 1 Aug 2026 18:31:31 +0200
+	t=1785605765;
+	b=e43nxajup9VYEMW/JQDd6odORPwGaED4c1D0PmxqUTBw2tuFeG4nlCYqD9pccurDB7+vFA
+	xOiG1F9noYvN9fjjy44W2J+cvYHcFrPsngiHp+Yk3e8TlX3yCUggoMl+GznEZj22EUmF5R
+	FKsvEH5R/wSu7jAfXNNbP+Lk18rxMSg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E64FA60A9E;
+	Sat,  1 Aug 2026 17:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D21F00ACA;
+	Sat,  1 Aug 2026 17:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785605764;
+	bh=ccJR9KUzvn7k6BzhoDEjN3sQrL1C2MxY/yOiNOzvC90=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JqZJuyL+6d1IhKbNi3w6gCesrHj9Klcy91QoQIT3Yfypuou1ns/P3r9cPTwoBnKIV
+	 UUBjUbqYoAyh2tbixCqhvMuXxpChVokzSU1CCrquXVF3A4jx5FYg6eN9e4cXC3Vry9
+	 qahhEhLizN95D1WMm9bve9Lt4DCQFkCKjdjzI4uJJoR6lHTrXiHAT/Px6f6pUGUcso
+	 7Wg9gv4kXybbp3KEgKqkIBcCzvCiCeD4WocPdrWGwWrjPhapXPzQcEEwrzoqKIXcKr
+	 YIsG53J1BNDLdEBw3Nqekbid0SncAlf0EQmhHeMmdz0dFM8QgahAYOkCKbxIb7r3uX
+	 AQd5+b4cgEABw==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 1/9] mm/damon/core: skip applying scheme if region split for quota fails
+Date: Sat,  1 Aug 2026 10:35:44 -0700
+Message-ID: <20260801173554.94710-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260801173554.94710-1-sj@kernel.org>
+References: <20260801173554.94710-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
- <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
- David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
- Coiby Xu <coxu@redhat.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- keyrings@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org
-References: <20260731154608.153258-1-linux@jaseg.de>
- <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-In-Reply-To: <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 90737100005
-X-Stat-Signature: ak88a59id4ukhrbfax4t97p4enwouj45
-X-HE-Tag: 1785601899-458490
-X-HE-Meta: U2FsdGVkX18j4hybExQ4YJtAMdBqh0IDGASdzcYNVGVKAilERILYebbdFtvQoi8S8Lw6EthSY+IgTznGJZczHI7d2KOlWvsODlVrOvl2pge+qXmwcbSmAA0pUr/yshoU6sQzisx3mcFURQIQmXBWINoGYpNncmk8W9EcfB40GeO5mKdg+dVM0gw5mbeWp4xaFj7pefp3UIMFtv5PxSGWPFgPDnWXVrp0a/AHekM7jIC7gnjga5gCqAy5tCpiXR91Jbkw/UU0hw/83UCsydaEXEyoe4BTduXtDn1/Od1WGigk9Uk4bCA9hK565EmrPbD1iDjnRvV01IiC86HwLcQf5dAUUs+vn6NuE+nHbEDOd2J0h7LK6aZAAwHBDIrZJV3GnYeUlTJh4uzV0GkpTRICSxjcPdOc8hsUnVrEDcRLbzHWu74ZHTTZcJ0464n8Zb9LINiB5u2AIZRAbOdgJPfvH7zJIICGLW1Ow68/yoc2LX0W9UG/VDPj6DmRXV8spQw88DiZL3MJcoNmf0g5ju0jvFoCsTOuWQevmD7UWPpARqb5artmwv0IrI46/yW7x40rU+sRCKb5VCX9Vbt7r41A/P6LyDH6YJxAN/PvsOrkd4boME2pOZ1ddn5C6SXddDR0RAdviPgTCcfOGd+nMQYmBnvukuwfYor2LKUwWauG2O45I8E8XX1a0ZjYlqZ326h3LJydaLSwnkhspgadG9HVLtYIutIvQ6s2Gc0Hgv+Pb4B4+mlh/WgjW520ycVPeLps83/+stk0RfwNQslQjxe+H4Qsr8F9Dlg5PRw01BIxBU1c6pslWBhIIoC9nrTnaBzWxtz04NfZzi65Ayz7Y1sM1Q6I+opBMvAjsX3q0nQU9ovWFhl9XxqiRjFxCt4gpdffr3Wj6yNfMKCjAwwyrjEYOEZAVIxjY4Gl33RHRYM7idAmy7lRbNS8UjJQI+LBiUtoDh7UJWx9n7jpFbqIQOs
- n4fDZiO/
- Fv3riyBnZ5ZfJuH/0Ubecb5Qy4cpq2T3UDql1N+pSkEyZDYnx15oetDZ3rMiVf3r78f1Htjh+m2UXQCodQyHDUXwk1Nt85fRZZd1kOePIzhtrArABt0L2WrhgQI2cLAtC9/cdKctKsBsu1vfwBSdyykGsndu9cC+wUxmqOn044Uh/OT14Ktdy9uiDNM8fCiZQptUF9A4DG9FaOX2qe01L+ew9O6gwS74csV1tR6ZO2cEPF/Wgen9TBrHKL2ZIjyTUgHfkomBLJ8fATnvy5JkeWXUMaonGTGLplI9bLai++sAaGfCQW+8VESzYOKxXCXMyHgNDLZLShWyzpXB+vt0UDi4pkz0fYEKasHFzqi3GEBYspiwE+9IiimtTtgAhqsu4ZDrm/h2PwauvU+dFYr3WePczsFsyrKgjmn8JQNIitHE/Dd5ow2X9ie1nOK8c8Lfpk5emLvSGxWRZA0M3DjVoOp6qgTXG7ZdIRNiF8hSB+q+TwZny4fVYN7HKi7jTiJJV7VIPggnk9LL6vIYntJ29tPGxhg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 57E5040006
+X-Stat-Signature: fiqb1c6iph14gb7ex94cg9ihoyi5hft7
+X-HE-Tag: 1785605765-156190
+X-HE-Meta: U2FsdGVkX188pqKM7NCTOROi4KNKMlnvDGWhot9y4JHrfuP9eNgHg/NkphgDDcImscrfPna9yvGgklmU4+Pea/QbvXW5YHRgdDponyVaIZgtlCb4lAgc+gQkU6tGQirsQQduOGrae6CLb82rJSJ3m0dz/QxdN7WE4GXV9bJ6y0JyuRhrv92fWVwYC/TBbXfquZgnMZ6EOFtpec/4waJv1G9shsvNvNXbFInp7S24PmTjfyUwXY5DlDcp8usbXrLLykClNRgg9AuQ7TT8utyCaRKRnPHFr8QfR+w7r2i+WNDFtGU8dr2tPdxKQ2cTzJWnKME6A/7Z4/1KxVOaJMTWs5lEIAaSOA6+1zpyqdVp2ApJkXBN/I0aNdfb1kDJVVyJUmO1Hhg+gU6vUFlIAf2eRPNOMhJM+/qjtbTZNGIBwuGi76909c07b3U4Gha3n6aSHQ79v6ifclaOJm0D/QvnIX7CUrBEhvzB/bimLd8ZXMQJ/AFfItGC85lRIa6gPtPlC8feVR5bgd0a1yGSc0j79stB8V/j4DWrICRkOxtofDh3dKjzjc8VIoCbgecEoNYrNBonelm4JT1rkkFCsPDglc0DohypLIfu2CmeuL6/eBB0lfoy+d8ysy3RmrjrRQ1MBU2rKRbI/giwN60q8rwhhx0rVx0A5m1udzg0D6Wazuts3L40616+tqGyRqjxx8u3xaRvpJPoepjttj18n9CVZz4eQgIiuzs8bkOj3NA7YFblzUcVTlt5ao8wzk9V/uRHqBzW+blXMk6f6dnHGTKTDlEe2Wsjkzovf0In9rqWjm0Q1hO13RJQjhiom44q5ee7Xk34ZzFFF4n7V+/rLBJE9Esp1wkebp6dinNY07J7KjrgMYe8c997HpBV8p5PLbWR5QOcWImF3X51ZOZwgLmTiRnTLtvEjOGjcBOsRh/UE/v/eJHZ8Ez2U2yuu5/ikDEwnDPzMSvg19WvTxoC5wQ
+ n9itwrw4
+ M+vYvGooIpoPmzMpRab2x0Ml1ZJSAWjyqrFcbSjiwSsBYCBy4MjTnFKqgkTlF5e42mKMY8PtO2YwJNV7oYAbuTPEpLWmjQsRMG4HHXOZbnGm+Q3C1RgURnOcLvNkgNXIrL26UZn8oPSDRnINf1JRS5iFU9QjfA8Y+2dJr8MlAELSU1lKYVupcN0hBjKtIC5whC3Py+ALUVM8+akdrqGvwLHM2GQaFSMd+kdYQTnaYAZIvM+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,53 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi there,
+damos_apply_scheme() splits a region and apply the action to the
+subregion if it is needed for not violating the quota.  The split
+operation (damon_split_region_at()) could fail for allocation failure.
+In the case, the quota could be violated.  From the user's perspective,
+DAMOS becomes more aggressive than expected under the extreme situation.
+Handle the failure.
 
-On 8/1/26 16:03, Baoquan He wrote:
-> On 07/31/26 at 05:46pm, Jan Sebastian Götte wrote:
->> Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
->> subsystems handling secret data do a quick, targeted wipe of these
->> secrets before kdump. This behavior might also be interesting in cases
->> where you run a normal kdump kernel but you still want to keep things
->> like fde crypto keys out of these dumps.
-> 
-> Please check below patchset, you both seem to have the similar
-> requirement. Please go there to discuss.
-> 
-> [RFC PATCH 0/4] panic: a pre kdump notifier list for hypervisor upcalls
+The user impact is not critical.  The failure of damon_split_region_at()
+is unlikely since it is arguably too small to fail.  Also DAMOS being
+aggressive is limited to the single region.  Users can set
+min_nr_regions to set the maximum size of each region.  If it is
+reasonably set, the transient overhead shouldn't be critical.
 
-Thank you for the pointer. That's indeed similar, but I think this 
-patchset here makes sense as an independent patchset.
+The issue was discovered [1] by Sashiko.
 
-* The two notifier chains run at different points, and theirs runs 
-inside panic independent of kdump. This one here has to be run after 
-machine_crash_shutdown(), and so makes most sense inside 
-__crash_kexec(). The wipe code in this patchset must be one of the last 
-things to run before the kexec since the wiped data structures could 
-easily lead to problems if something tried using them later.
+[1] https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org
 
-* I think this patch series here is a bit cleaner. I don't think this 
-needs a custom notifier implementation.
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control")
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-* Since there's lots of places that may need wiping after crash, I think 
-it makes sense to have an explicit notifier list for that purpose, and 
-to not mix these with other things like hypercalls. I think ordering is 
-important here: The wiping should be the last thing before the kexec 
-jump. Having it on a generic notifier chain risks that later, other 
-callbacks get added that when interleaved could cause problems.
-
-* Since a good fraction of users may not care about wiping secrets, I 
-think it should be gated behind an explicit enable setting.
-
-> Note that we usually dont' want to run a lot of work after panic and
-> before jumping into kdump kernel.
-
-I understand. For this reason, I think it's best to keep this 
-default-off. As-is, the notifier list call is timed and on the (slow) 
-ARM64 target I'm using, it takes about 3-5 ms to run. I took the "try 
-lock, skip if locked" approach to keep the risk of this code crashing 
-during panic minimal. In my application, the kdump payload is code that 
-then does a full wipe, taking a couple hundred milliseconds.
-
-Let me know what you think.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 644daf5a16560..e2900d0c984c9 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2613,7 +2613,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 					c->min_region_sz);
+ 			if (!sz)
+ 				goto update_stat;
+-			damon_split_region_at(t, r, sz);
++			if (damon_split_region_at(t, r, sz))
++				goto update_stat;
+ 		}
+ 		if (damos_core_filter_out(c, t, r, s))
+ 			return;
+-- 
+2.47.3
 
