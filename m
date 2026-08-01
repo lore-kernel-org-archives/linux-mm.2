@@ -4,84 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA7CC54FCD
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 05:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005E1C54FCD
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 06:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79B846B007B; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
+	id C58966B007B; Sat,  1 Aug 2026 02:18:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74CF56B0088; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
+	id C083B6B0088; Sat,  1 Aug 2026 02:18:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6629E6B008A; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
+	id B1FC56B008A; Sat,  1 Aug 2026 02:18:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 447166B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 01:37:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D7D03C0243
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:37:48 +0000 (UTC)
-X-FDA: 85051593816.25.64A3343
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 97A8C40009
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 05:37:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H8F19DKG;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0EF6B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 02:18:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D480120225
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:18:27 +0000 (UTC)
+X-FDA: 85051696254.07.8B50F61
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2FB21180004
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:18:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLUXONCv;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785562667;
+	s=arc-20220608; t=1785565105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4mjnroDt3NYGYmhJROVWxiFtMXCSRJVFSmdPavCLqTA=;
-	b=MJKuBHc4spKWc7NyXDLVeKd0Kpz+K0lyq6YTsK1kXnBuLCQGLWS9zmH/4uabhVKKKzAJPh
-	i/ywQhVwgHZbqHnsMHZEo2Ip9ZL7A9GQUHrmay3yar5tcOuc7xX7ZGYH3QI/T1T5E74iYY
-	eFi5CGqkRZlHk13AnmARMbT4HWFUTqY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H8F19DKG;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=kOOJhpkv1VdpNyc5aU2dKvgUhW+HxzIMR1wOtifdQ5U=;
+	b=5hHayr0pSA2Zt3DhD1Qkhp9IEDM91bLdQ51zFLmwmgM1XSUirQstY12UeLfEO2eMVeecpN
+	uuk3A0A5bF8oYNgODfENrG4HmIzyNY7Cc9ed1JNeAHPb5SisnoyNoo+SIGwP5xudiGJHF/
+	cPB6yLnSNLUQ/iU0HAUAL6LoA8nRbpk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785562667;
-	b=NGV2eJeU72dQMWfT48qFmf8Jt4AN5yRLkPM0K/7Gtg2gBxVHjeqQtDgRrSaNaBKYJpgTb0
-	QB3aT3dWd58gzZ1W8HHGqTxrqd68b3AIKOfr0ZkKHsF27Iivv2G4IJdZsHmzeWY78ig0TP
-	GAdeKAi8sVYH6El6nxVfrwjDk7s+RMM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785562661; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=4mjnroDt3NYGYmhJROVWxiFtMXCSRJVFSmdPavCLqTA=;
-	b=H8F19DKGp9QKOWwdOa3vvgZWMf6h0DQDGgDnlAvH4pDmvDcrCNlKM5dVZvDtRKrkz5FwlJedjxdYgfYfUTVYlGDEEQRWaa5TyEDE34f5kQWPikHeu4XlAt5pxkvWo2IAC3Ip1pTvM/aQwKruQ/hDuVIeG7jYvH/ly2ip5gDeqFk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X89YbOs_1785562657;
-Received: from 30.32.91.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X89YbOs_1785562657 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 01 Aug 2026 13:37:38 +0800
-Message-ID: <4280f431-ce88-4f09-9de6-328414c98411@linux.alibaba.com>
-Date: Sat, 1 Aug 2026 13:37:36 +0800
+	t=1785565105;
+	b=m6mW51JBqdo9Fo44xwVxNfAuS9DRdFwYVkPO9yqm3FSe6pM4EDlZEndVVmIsEN6XOeRR5h
+	35fYoyxMpec+bL42TRsZsjYQtCuIiJMJjv0o5r/eeCiC00LUgpCi0qQ4wb7yoEC6BcHvdl
+	vB+0qQhCWAyR8HSEzfgyOiea810Sz1I=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLUXONCv;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 86F7C441FD
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:18:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAE21F0155E
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 06:18:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785565103;
+	bh=kOOJhpkv1VdpNyc5aU2dKvgUhW+HxzIMR1wOtifdQ5U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WLUXONCvON7GVKh4t/cOGkkmr4g2Jz1XPfTXLqAsxOdGUj/0wmrONuVGxyaQtLN3a
+	 mofg+qd3+gRyFzD3XJL0pvjup/J65i4eYciEU6SnVV2WSj+cdtZ+gAOBA5iIGntdn/
+	 ufW9RCKTxEaxyxtRsycT4D1GDsUBO/p+IyVakVqafkG6ODDWPbBN3RkPHkR5+al7pM
+	 q9c9FgzFnvxm8rEdm2Y75vj0/6WWkkJDSYRLQPM5CgoNlox9WCSgjKUb4NzoTGbiGw
+	 ZxcWufAkh+w+KsU9+D7U4JrOU8a2FnWdByFdtqWI22WO8QsSU50u2ITpc41WiHOBnx
+	 W1XWTfhaHZyBg==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e6c4a867cso115830385a.0
+        for <linux-mm@kvack.org>; Fri, 31 Jul 2026 23:18:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoEUo8gISeh9uUmeqWPhkcZa2whrAqAtPeeqYFYkYi2E7yxEomjEJhzCAmcF+7Syv03VaLG3Me5hg==@kvack.org
+X-Gm-Message-State: AOJu0Yz8xIQDCDwsWNvojJkthiJUgcFt860Swm7AHZJOnEBZKoaz4y/R
+	n4yTimQatDQFMKoqwpgcrzN3msfs66bHMev9Nn9jpkLVMach6u58/dHFKiR8bqzB2atVfE6MXOL
+	T7qGVLdT+1ZRIzeqic77+YNmccMD5lo4=
+X-Received: by 2002:a05:620a:d87:b0:931:57a:8252 with SMTP id
+ af79cd13be357-934a08b7aadmr501992885a.20.1785565102587; Fri, 31 Jul 2026
+ 23:18:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] selftests: mm: add mTHP collapse test cases
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
-Cc: ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
- dev.jain@arm.com, ryan.roberts@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, usama.arif@linux.dev, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1785224928.git.baolin.wang@linux.alibaba.com>
- <bea2086517b69a1af8813dac5774a1409aafd262.1785224928.git.baolin.wang@linux.alibaba.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <bea2086517b69a1af8813dac5774a1409aafd262.1785224928.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260731083843.37811-1-baohua@kernel.org> <20260731083843.37811-3-baohua@kernel.org>
+In-Reply-To: <20260731083843.37811-3-baohua@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 1 Aug 2026 14:18:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xxO-yAxcynYHdbR-PcYUtKQXKMxq9W2xnm7QasEqg75A@mail.gmail.com>
+X-Gm-Features: AUfX_my5ZgUcc4zh-_yVbGyP_sFgY7URq9Y5fcNeCdYUxpMGtm-FQ6UHGCJZciU
+Message-ID: <CAGsJ_4xxO-yAxcynYHdbR-PcYUtKQXKMxq9W2xnm7QasEqg75A@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 2/6] mm: mglru: let scan_folios() scan both
+ reclaimable generations
+To: akpm@linux-foundation.org, linux-mm@kvack.org
+Cc: axelrasmussen@google.com, david@kernel.org, hannes@cmpxchg.org, 
+	kasong@tencent.com, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, stevensd@chromium.org, weixugc@google.com, 
+	yuanchu@google.com, chenridong@xiaomi.com, zhangbo56@xiaomi.com, 
+	wangzicheng@honor.com, lianux.mm@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2FB21180004
+X-Stat-Signature: yeatosyg8gpiy6on7nq7foox5aash69r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97A8C40009
-X-Rspamd-Server: rspam01
-X-Stat-Signature: erjqu1se3umphqmqdbkgcc3osfbg9e5s
-X-HE-Tag: 1785562665-191173
-X-HE-Meta: U2FsdGVkX19MKUqK8ugMBDSv/D+yGFcdW+K3P5wtTPC+ffWl3b0lpOgLlSkZ60NLSSD43ECirweJMAylCzdtnZYhIyqWNLNQa7Gpb9lxHD14Awy9NNoKQLr0qp70koczNX1045DGHaOey5KJGOy8c8o8L6qxxK0NbPewsKGpwQthgDX0PR7PlDhqzqs2TPaX64/wiBRT9wqpRHk5g33Dc/zrmNKGb5gKr1oyaywY2UJwIFa8DACeKoi+2LWUrGQvxftc3iXnTe1SgfVHz+GV8mjQ2JXhrUz4ecnO2xpwHTTdTOSLsz5PxR1m15JOPNqTGhWHAeq2lh8C6+ERuS9UygHKKSNS1u3liDVdTpOYhBObP+o3xXgY2uK7FWMAwyKIj07tfbKpMTVrY+5OnDzvHFet2zFSwp5HSTwTBg3KxEDj2Bot9cz/WwpmwJ5ibmIWo6xT3h2/PFnKcNmeRsWtrSCIcpU/93TZDQQBYUvOaRMymhpPeLpZCfzxcuQNhQ3Mqx1LZ4fnMdj6FmMmf27QgI+CRZGzhQhRH//0zbNXU4ksHmwGHA/i68tAAJN2t6ORfV0Cs/JiItTCRANHopqyBI6yhL7JQjkaJT+bdxA5tPKuCYwt1v1YbP0LgM7n/vclIhUVVDSuafw74D8grTPd/7AxxDDlc/E+OXgWv+7pYhlhP/XhN6Pwj662+caCjgusAD62501ld3DiyN/Qg9qQhVbEwHCr+/doUqFSZCbv2n213coXOm3sVR0eu7NmSHXzS//g1yPnifyh5EJGsKnBsPPGmq24E+yN777Ewm4pXJ5WNGKAv85VC1ZQHULPfCaaQi9PTy6ONwUyvCqFzWCojKxO4usW+Tb0RqGjEdkhkBFr5DYSJ0iyKAyZpqE+o7zGEnJ+GM4ofrOpXixUhC98a9EqEwdZe9OueAQhgsyTtCtwRu3iLlxPh39k0FzaJVylpt+qxeAzfx/IWPOmjuR
- e7dSCVi0
- GH6712njdgLAebVSusvNphjWI4t2GTBfZ1vsrQ7mhjv0xkixB5EqYTKnHuSnKKZz70YD9vCSzXH5HT0ADCsWvQgXQWAuVCqYMQsTcnVffNSRxhTElptrOp4SyPlgPaRvmInlJ72A7XyTCpl1plrmI4upidT9Jj4cd8H+9MMW2hpcxzNjY8OtQiJ0lvGe0o06apghEbTBJAzpwwrOiCf14R53mHWFzevZoyqpU0U/nrIWgQZhcq4aAjO4XQh8Xvqq6XkQf737vtWTDtU9PLwbq5GaKDWr24V2k53BbJQa0vYZqWCA=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785565105-791575
+X-HE-Meta: U2FsdGVkX19D2m2TK3Re3LeKXQZA/1fN3Whvtvoqr/haFd3CWyC9QpcBVVxFD+ezm+J+wBeqsAIu7FFCZi2KiKnccxAQnO1oBsOM6RvyrxZex+3oAgILrEODUVM9h5NZUkP3OaEPYevGW+JRsJewqQwBWdcf41iUtT2xdTQgJU0LiW4VNk0vVtzCZbP1b5f8WR/SKpR0Q0N5LactjWsUpYNkjTr6c55XaOjebAJEmpRMwb5eCtvjPFXbXR/VR5teur0EuIBLC7ywZ/w8xk6VxfeIwRmNx5F5cfTwFbQFYg4qAalpIGoW53YYGE29TN9LNOaOXRQlmGQsVM3ZySB3gyLjX6JhLA5WX2z476ufvibv/ggjeKJAla/yo0sukIaiSgwNEowErhwHhgMjZV4WKy3jscry6dGAn+MIH2FfVgqod34hhFO0Ua6RBoCejKe7ucH2USyBOKlf6Ri/IiFnmVBz0EQuo6QVjcXQuq/7UyJqIzyFRbYj7fgTzFltkfu5FOhhbpBvWms7R/MaVobpj8rJXOxY5AAJETs5KIHSteOb7jOEqxD3UdNL9IhDOG8JSlYpZmFMOWe5V2qWRpYBYosHq3Xqyy7h8fWgo/6jutL00msHDKn7vI1tQJzUogsF4x7w8cw+5wZeFkkItegA9aFVKEpNI5a4A8QG840o1ovAVupIvvtn5BriVnUEzV0TRt7XOFtUtCDFu41p3IuWu6NvYPiZzr9x1zjC2fmxQKACZ+tLaevOc+fCqGxbNR+aat3Q59Am3fAd10vJaHmruGWkZidNq3AVlDMzV31RPjtY34/li0612pd5I0C/H15Krw4tL2DWWPmoKwkYFMJbKIl1LE+cH3wP2vZSxQz9ncgO2tKqEYEuNLkDCbBJirYZGLgYxSAR2fRvuTfK9MTXcUORW4auV5Xq56vGuCqOBB/RxNr9okFvefJn0hwwGQNa7FeDlDIjqFtq7PSneS8
+ J44IWdIc
+ qhpu/PIrLk8ytMulCJzCwaMfUdbBFQAW5RTaaOPUfzjL313j3E/x+IVAVfxILKDkb1CXL+kYwBNtscglNlrscI/ybjVS1IJ8GuQ50Qm+8QRC9ZkVTCs1Y13X17eh1gCMuazcFN163XyLw3gGb2rnKlOgpwg9fVADoCgTg8kFZSkQDtLuzmRVi1aRtll1EyfNo0fzC8dj82E1DHkJIwrQn95WLhnJlU3OsnBEUolUPL4sjAYJVWxXN1QYPUBlLemg2C5rPfXY18zzLhPiyy4Dp1ue2pbCKEgVrDeEiCJ9l28ekSVxM6W9SrqaA0QOHOiTqsTZeof+/KO4HH8KR3uFlahhu8hSyUBHnhDKlB2gfZSOgnnP+gMxWDsv7V7ib/84kitxPBc6Nv3i7b4VGzvNJ1csBQ2xZCs1oni76JLTMlTeAM7DzhJaenfPDRI1XO+/UMLzudBsJHPBbgMWtmDmmhWGGXHxBqlpK3yi0y4wcz58qgjE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,131 +107,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/28/26 4:13 PM, Baolin Wang wrote:
-> Added a new command 'mthp_khugepaged' for mTHP collapse, along with the '-c'
-> parameter to specify the collapse order. Additionally, added mTHP collapse
-> test cases for 'collapse_full', 'collapse_empty', and 'collapse_single_mthp'
-> for anonymous folios. All khugepaged test cases passed.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On Fri, Jul 31, 2026 at 4:39=E2=80=AFPM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
+>
+> When we have four generations, and scan_folios() exhausts the oldest
+> one while the second-oldest still contains reclaimable folios, the
+> current implementation doesn't move on to scan the second-oldest
+> generation. Instead, it returns, leaving that generation with no
+> chance to be scanned at the current sc->priority.
+>
+> This doesn't seem right. Rather than breaking out and starting a
+> larger next iteration, let's let scan_folios() continue scanning the
+> second-oldest generation directly.
+>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->   tools/testing/selftests/mm/khugepaged.c   | 130 ++++++++++++++++++----
->   tools/testing/selftests/mm/run_vmtests.sh |   2 +
->   2 files changed, 113 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index f69be6be0ecd..e21a6ec38363 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -26,9 +26,11 @@
->   
->   #define BASE_ADDR ((void *)(1UL << 30))
->   static unsigned long hpage_pmd_size;
-> +static int hpage_pmd_order;
->   static unsigned long page_size;
->   static int hpage_pmd_nr;
->   static int anon_order;
-> +static int collapse_order;
->   
->   #define PID_SMAPS "/proc/self/smaps"
->   #define TEST_FILE "collapse_test_file"
-> @@ -69,6 +71,7 @@ struct collapse_context {
->   };
->   
->   static struct collapse_context *khugepaged_context;
-> +static struct collapse_context *mthp_khugepaged_context;
->   static struct collapse_context *madvise_context;
->   
->   struct file_info {
-> @@ -554,25 +557,25 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
->   }
->   
->   #define TICK 500000
-> -static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
-> -			  struct mem_ops *ops)
-> +static bool wait_for_scan(const char *msg, char *p, unsigned long size,
-> +		int nr_hpages, int collap_order, struct mem_ops *ops)
->   {
-> -	unsigned long size = nr_hpages * hpage_pmd_size;
-> +	unsigned long hpage_size = page_size << collap_order;
->   	int full_scans;
->   	int timeout = 6; /* 3 seconds */
->   
->   	/* Sanity check */
-> -	if (!ops->check_huge(p, size, 0, hpage_pmd_size))
-> +	if (!ops->check_huge(p, size, 0, hpage_size))
->   		ksft_exit_fail_msg("Unexpected huge page\n");
->   
-> -	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
-> +	madvise(p, size, MADV_HUGEPAGE);
->   
->   	/* Wait until the second full_scan completed */
->   	full_scans = thp_read_num("khugepaged/full_scans") + 2;
->   
->   	ksft_print_msg("%s...", msg);
->   	while (timeout--) {
-> -		if (ops->check_huge(p, size, nr_hpages, hpage_pmd_size))
-> +		if (ops->check_huge(p, size, nr_hpages, hpage_size))
->   			break;
->   		if (thp_read_num("khugepaged/full_scans") >= full_scans)
->   			break;
-> @@ -595,7 +598,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
->   	if (!is_tmpfs(ops) && ops == &__read_write_file_write_ops)
->   		expect = false;
->   
-> -	if (wait_for_scan(msg, p, nr_hpages, ops)) {
-> +	if (wait_for_scan(msg, p, size, nr_hpages, hpage_pmd_order, ops)) {
->   		if (expect)
->   			fail("Timeout");
->   		else
-> @@ -617,12 +620,62 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
->   		fail("Fail");
->   }
->   
-> +static void mthp_khugepaged_collapse(const char *msg, char *p, int nr_hpages,
-> +				struct mem_ops *ops, bool expect)
-> +{
-> +	unsigned long hpage_size = page_size << collapse_order;
-> +	struct thp_settings settings = *thp_current_settings();
-> +	/* mTHP collpase only allocates PMD sized memory */
-> +	unsigned long size = hpage_pmd_size;
-> +
-> +	/* Set mTHP setting for mTHP collapse */
-> +	if (ops == &__anon_ops) {
-> +		settings.thp_enabled = THP_NEVER;
-> +		settings.hugepages[collapse_order].enabled = THP_ALWAYS;
-> +	}
-> +
-> +	thp_push_settings(&settings);
-> +
-> +	if (wait_for_scan(msg, p, size, nr_hpages, collapse_order, ops)) {
+>  mm/vmscan.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index ce027c271e9b..31947fa60f18 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4718,6 +4718,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>         int skipped =3D 0;
+>         unsigned long remaining =3D nr_to_scan;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> +       unsigned long min_seq =3D lrugen->min_seq[type];
+>
+>         VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>         VM_WARN_ON_ONCE(!list_empty(list));
+> @@ -4725,8 +4726,8 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>         if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+>                 return 0;
+>
+> -       gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+> -
+> +next_gen:
+> +       gen =3D lru_gen_from_seq(min_seq);
+>         for (i =3D MAX_NR_ZONES; i > 0; i--) {
+>                 LIST_HEAD(moved);
+>                 int skipped_zone =3D 0;
+> @@ -4768,6 +4769,14 @@ static int scan_folios(unsigned long nr_to_scan, s=
+truct lruvec *lruvec,
+>                         break;
+>         }
+>
+> +       /*
+> +        * This generation is exhausted across all zones, but the scan
+> +        * target has not been reached yet. Continue with the next
+> +        * reclaimable generation.
+> +        */
+> +       if (i =3D=3D 0 && ++min_seq + MIN_NR_GENS <=3D lrugen->max_seq)
+> +               goto next_gen;
 
-sashiko said:
-"Could this setup create a race condition that leads to spurious test 
-failures?
-In mthp_khugepaged_collapse(), thp_push_settings() is called to set 
-hugepages[collapse_order].enabled = THP_ALWAYS before wait_for_scan() is
-invoked. The khugepaged thread is then immediately allowed to scan and
-collapse the faulted memory.
-The very first action in wait_for_scan() is a sanity check to verify 
-that there are currently zero huge pages:
-tools/testing/selftests/mm/khugepaged.c:wait_for_scan() {
-         ...
-         /* Sanity check */
-         if (!ops->check_huge(p, size, 0, hpage_size))
-                 ksft_exit_fail_msg("Unexpected huge page\n");
-         ...
+https://sashiko.dev/#/patchset/20260731083843.37811-1-baohua%40kernel.org
+
+=E2=80=9CDoes this cause all folios from the next generation to be skipped?
+When we increment the local min_seq and jump to next_gen, the global
+lrugen->min_seq[type] remains unchanged. When sort_folio() is called for
+these newer-generation folios, won't it misidentify them as concurrently
+promoted?
+mm/vmscan.c:sort_folio() {
+...
+/* promoted */
+if (gen !=3D lru_gen_from_seq(lrugen->min_seq[type])) {
+     list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+    return true;
 }
-If khugepaged collapses the memory in the brief window between 
-thp_push_settings() and this sanity check, will the test falsely fail 
-with an unexpected huge page error?
-For configurations relying on THP_MADVISE, this race doesn't appear to 
-occur because the madvise(..., MADV_HUGEPAGE) call happens after the 
-sanity check in wait_for_scan()."
+...
+}
+Because gen now differs from the global lrugen->min_seq[type], won't this
+unconditionally return true, moving the folio to the head of the list inste=
+ad
+of isolating it, and wasting CPU cycles while falsely inflating the sorted
+metric?=E2=80=9D
 
-Although this race is unlikely to happen (from my testing, it has never 
-occurred), setting it to THP_MADVISE is indeed more reasonable. Will do 
-in the next version.
+Good catch. One way to fix it is to update
+lrugen->min_seq[type] as well in scan_folios():
+
+       /*
+        * This generation is exhausted across all zones, but the scan
+        * target has not been reached yet. Continue with the next
+        * reclaimable generation.
+        */
+       if (!reached_scan_target && ++min_seq + MIN_NR_GENS <=3D lrugen->max=
+_seq) {
+               reset_ctrl_pos(lruvec, type, true);
+               WRITE_ONCE(lrugen->min_seq[type], min_seq);
+               goto next_gen;
+       }
+
+But this seems overly complicated, so I'd like to drop this patch
+in RFC v4 and instead rely on the outer loop to retry the remaining
+reclaimable generations.
+
+The current issue is that when a reclaim type has four generations,
+scan_folios() may finish scanning the oldest generation while the
+second-oldest generation still contains reclaimable folios.
+However, it won't continue scanning that generation in the same
+reclaim round.
+
+Thanks
+Barry
 
