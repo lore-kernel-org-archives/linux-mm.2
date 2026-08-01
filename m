@@ -4,129 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC0BC55172
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 14:00:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1D65C55173
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 14:03:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E800A6B007B; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
+	id 8DF846B0088; Sat,  1 Aug 2026 10:03:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E31CE6B0088; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
+	id 8B71A6B008A; Sat,  1 Aug 2026 10:03:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FE36B008A; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
+	id 7F4DD6B0092; Sat,  1 Aug 2026 10:03:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BDEE6B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDD2D402FA
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:00:51 +0000 (UTC)
-X-FDA: 85052861502.01.ED67625
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 18EAA2000D
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:00:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b="sqTRUZ/i";
-	spf=pass (imf13.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.178 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785592850;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BA486B0088
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 10:03:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF51B12030A
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:03:37 +0000 (UTC)
+X-FDA: 85052868474.27.7C55ADE
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 53DF820009
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:03:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cEDQsNuM;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785593015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
-	b=8M58UJaJv77tNY9g4YLGZZYIQGjV7t8cmwxGUiiLf4PYkgwyOWuMxp9UGW/DP5iUG1WiZA
-	KcyYczO70PcvPHj10lVN0x6jiG3G/4N2rPuzVOyelr7xgkqUmh9uvjoCLj1t6i1lAgwuQV
-	rknsxvqByLMvu1W+KFAqw4JmoBzJ2O0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785592850;
-	b=OryXWLPCHttN6Jaldc8S/kkoy5FrDRx/i6KvT63T86s90XNeAIcITnnyn1lsTNIHZc17aq
-	0J3Q6a9WoGLcvh0geezc6feSoMQuBnol4V2cA6loIJl985UB7x1Kwlz5F81WIHLUMSDjvN
-	XCDbvbNtPNqNkXbIg/7AsD58PiiSu48=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b="sqTRUZ/i";
-	spf=pass (imf13.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.178 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39c7fd45465so16750951fa.1
-        for <linux-mm@kvack.org>; Sat, 01 Aug 2026 07:00:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785592848; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TjfgazHDwGFbVrP+osXuIq8ds5XHgnW1fKc3lkh/VWVRJnWmOUFa5pQV9Bhd/Di3iw
-         2pmXNvIoO4FDZum9oBEHWTednkz7TT80oKSZXvtPRwYTvbOvy9kqmZd4ZxrrbVnprFjC
-         oeokzfq+zqoYydWXrf5Lt2LTNAQCwp07BGlAjkr+00lFp1CRjOMEjUcuOwKP/k2ukXwV
-         zsZ2oKnCSuEhIitxZgnSUkEMDSv3x8TrhP1OnlXTpOIjagYMYQ5ScCac9QwUpRJ1WJPP
-         qzD4ZNNdEP7EdaCzc7FGfYuV3V0yCzs3qC6RjuTd4Cdde0UbkN88sG1ZxH4Nf42mGKgY
-         1Evw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
-        fh=CIuLf+UTB57xam21wo9SOWCHp974tTxtZfQZo9olesc=;
-        b=J/MGtWeZkMt50eD3xHgK5qySa72ViRqnN47I053dV+szFhN4zK0OVHdZj3wlllYeJ7
-         YqmdOuUMztKYgnrHnDGScucwwhzDskOaKV4tTsqk56GSr5PgYzZK32didslnzBBRYq5p
-         xhZQTgTfy2TRYdx4urOo2tVpV7TtESwEcde9E4dLvm9/jbVWRx61xcv+I09eGLdZatIe
-         5B9RN8ztvHQVsxEr8RrYYvgjgabzvCWc5hbKJcnJ/E1NTJLylwan2GyF4FigIPEtD6Hn
-         g92lxXdhHXFVWZeTR1HobycbNd98GZcGOTj+iajPyhJOo1/MBIfXZzk+y1jfsKMewR43
-         jY0g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1785592848; x=1786197648; darn=kvack.org;
-        h=content-type:to:subject:message-id:date:from:mime-version:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
-        b=sqTRUZ/i7kxh2ruORdAOXOprC0zWIUAcLo79Bw69CKug/7eCyfl4xbTysRnZmrvmdz
-         0TJGIFwWf/wIhNTaCNk8GDrzQEr+8lE5vlAno/hZ/zPXr7JOWyhNNKL0uvXH8guAMwWz
-         ottmom3uypcpVuJY+w3RlypE/4soNAGBVicV2Acgg5NFRuBT82Bu+dwIKJ7FSEmfTqte
-         E/A4RLIoqLfoe3ZausV0q626o8satvKd5LOA5cshphDbhfaE2GGF2VCm8uxzijnCzmTj
-         XawIMlt4jhdV4h7vkZJxnhv7PKenbSyzf2WBKLRJO81J+qIEDTq3b+JgbT2J8f+iVXyu
-         dfLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785592848; x=1786197648;
-        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
-        b=r1xe2dseNx2IaSiX1GTdfLhZI+0KIBiEtT+25trnQRzwq69R0vipoWbhgKIxOPa/+d
-         wTBaaUzZjfZ7AFiWuAMrm+oZEL7KAor5cfdRmtDm7rxRAPfqvhmdkSgG1dBsoaDCXi8z
-         a8VpmwTboVwPM7IMxLwytqtxBr3tWKOiJLmuY6gs4BOejsWqHqvt4C5tWj+At6q5XTw4
-         ouOWqZYlJGACxx08sg5fhrSSXGge2MN75OkyjrQvIEpmL121n+FCLIQvHIyAcpNKlKj5
-         5GcnRzUd2EevwwZgX2WGPh6g8vAduUBUbJQmhzKgqkqKjYIdA92BdLz2DVV3E1NRlFy1
-         4yyw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqf7mI4jrpAwhAHJRICT1mpZDc/M9MYjhsvxPrvSUAvPP7K8VvDYkplpJ4Hbi7ku9tswydD4Kejng==@kvack.org
-X-Gm-Message-State: AOJu0Yw3aa+Ay2wby6veHZS387ZVsW4ifDkhHl41Rwts4b+H804AfENw
-	qIVdxOv7KAC0m1OYIhwKiaOkT9N2ytPgebZeNSPPnGdSD9/sCsZJFr9cIXVjfiLOJs31LHUFg5m
-	d6dLki02BumDwUW/ffVDl/3ntAYnOzoq+dbmPDLgc
-X-Gm-Gg: AR+sD119g4o6eQKIgLDcBGuDYui7GUsIVbvSlsQ0pUrMavWzsyGUiKKAP/4dZ4j4PwN
-	I5ZLt8zpO+T2vif3VCNbfng/hry6Ejg1CJBoiMgO1zlw2W+1Dz/8jzcaZul1oFv3rEIiBxSTTC0
-	iuodWTJSWVgRMdwbuLgaRSVqCEcrQwauyd410SK2RTsz26JUJPvsI14bqtOPzLVg/uCCtDTxazH
-	mku2N8QduasTu9HYydGoATWB69bNCuRUDVKOlfkIWbXzm1JDcywaRgvnCWJDt/WmAlBdy/4pxoT
-	lKsfPyd7IzFD1lJzEOYCdvKL34zl7cIzjGbHMuqyXg==
-X-Received: by 2002:a2e:bd02:0:b0:399:767d:c118 with SMTP id
- 38308e7fff4ca-39f862d6c73mr6559161fa.23.1785592848320; Sat, 01 Aug 2026
- 07:00:48 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IqzEYyvsxUaoTo7q5N2srwBhq/x6rJ9uYS3yb+pyTCM=;
+	b=RkAS0ivEb7rvvm7N66YGmTNH9SL0vW2KE3hhzGgSza5aFfSu9tQsKzXu3WZ+8Q90qzT7Dh
+	4rghwJ6/WaLsMts+PkSa19LW9Jnk6k96I3VEPHL9ijpebw9625BLQrXFiOXNf58R5hPXy5
+	54O/SW1VubEU62zvqYSGWAOnw/xj3A4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cEDQsNuM;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785593015;
+	b=E4od9VtBZQyTmiXcdD8OLbXbK4QYURa53XOL9vKCkXIXk/pZlKnh5jiRQhWuNYlzH5U7ji
+	dLKI2Qx0Z4bdc3v7SXEw2B9Yue8AQH3TxvjlXK/Gci4NcFPGv7P3zqLGKLlwZ4IJjDVbhl
+	7MS5cd0eKnhHi7JdZgWRXbo0Ip3yq3E=
+Date: Sat, 1 Aug 2026 22:03:22 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785593013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IqzEYyvsxUaoTo7q5N2srwBhq/x6rJ9uYS3yb+pyTCM=;
+	b=cEDQsNuMU8m/3kJa8BRPGCCaVqA8r7jf5GBr9BqwksvWQ/PAlqBsrBozlWfigSsa3nLSoD
+	V5tD/fjnuc0ccF7kNC9WdzxKuuDZ3jOm2kTSbc1ZkPmRPmyg36zpt6RYRwuJiEw4c7aKdY
+	A2CajIn/zJtbM1ar9ehSkRM6ioD3jLk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>, Coiby Xu <coxu@redhat.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, keyrings@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-integrity@vger.kernel.org
+Subject: Re: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
+Message-ID: <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
+References: <20260731154608.153258-1-linux@jaseg.de>
 MIME-Version: 1.0
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Sat, 1 Aug 2026 07:00:36 -0700
-X-Gm-Features: AUfX_mweTyYVCxpa9foQ144vqzcL8WzG2Quj3VmGrGcQ9-NGP9rO1jbWFu1aHLM
-Message-ID: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
-Subject: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to memory.c")
-To: David Hildenbrand <david@kernel.org>, zhengqi.arch@bytedance.com, 
-	"Liam R . Howlett" <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260731154608.153258-1-linux@jaseg.de>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 18EAA2000D
-X-Stat-Signature: gnybeqfwuhpu4duhcojccox9xzaa6oxw
-X-HE-Tag: 1785592849-384432
-X-HE-Meta: U2FsdGVkX18j2Qn67z5GFgRQuurhugUokvkUfO2K2n6eA3b1SyAHK12GMtS4oya6RqLPZZzqT6YzulcZqj6jJHdENXEnjwFCEJx0wcjlIIlRwJXH48VX3YmCahq3ukgMFeyzEmrh0fEk40yKEXhCyM+7L3Yj2XmyoZ7Hw6A6gvWOAY3d6Bz8q5TmOOqHUZqb9d/KuyhtCPQg8Jeb3R2lMAgan3FFbPjr5Nxq1thvLWk5PcF178IJOBIvvFqm2Ghrsy4Zhl97DbuMYch6hfbYio8Iet+dTREfW7fQRbwjekZCRwJD/+fmm1bFixQQLg0sWeaP9/xAqbshB9NV2r4krYalMu6QzK7Pg9a5gCpPeXwsfLO4UmDefKkEcgYlU2gjogOd/rX08adkkrQetbVoWV6wJhUyHZ09bOBD9ZwRbf9sfJeoQx2D5UZXKPZOX5BqpDh0RRTMpjI5L2SbRzSsS52jvQop7HLd4KkAxYqXzx/dVq2CpZRpzJEX3WKUuBKxR+J9wvF7vPpMU22EUObvBG7znJFkxb7ZSNT00eOusprRybGMm+HIorwT1Yu3QYLZmID2N5B0XN9bNiCEVxKmcrRFQoAN4YBb4Epd0TM52M+Zi/KZko4/M8ZeybKjzyJ7NMG4qboRbU/PZV54PuBEnqg7yF9c/TPeqZ4WHUy3bx8xr8/pScKv+W3eaAENIA0TO2LHCIUiN+7ZHSw8J3kQy6J48fVvGb5WBRxxLwDofVy4U3dAAA+2UAuC/bA/n8Eyjo4TTbOFD4RoJjZ+5cQZPm6LzrwL1yKi21qjVg1PFPxIP8uMf+d2mNS/1N4zpu5sfND43rdWnZSHJy6KUx6H9MIeRlg8VlJOPOASEaCXbOAar6c075v4Ic2IORR/+Z6mDU65cR+aUlHl7ODZnZAo0bfeBl6cF+1rqFeVuZkSf69pr34LR5WcBE5AoJwkaiO9EOqQNfJWoCuFvoG2lB8
- aLy+rnCn
- NMn7JH2RcR7FGAj11h8rV0YQud8nSj5sKG4senOv1o16IDD5XiiiFDBWhL0UYzCIcmPQHCPGnsARP0N2bK7Ip60hhlqSZ2mkc9X6D8/krqJatnLc+YtwKw78BVOYLLMXyR4eNHbb1eOO5CJN0nmEzTx4CvIpFAjQ7b1rmc5sRFX8a5WFjjBfVRGbxP/v7iAjUcZgb9w5hFuFDN+ILHYRWQxAHHU23rxh/Lik0OmcboCLkMBRSk355lDJdJP/LtYbjfHrJMlnO2NWBtS/APHscU/4C/5oqHR8q9K+UoPge/pnBPAl5zZRbxlQueVbXwqPtUgHBcAM+eRdgtXb70hn7sNzmH1j7iHGRZtDw
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 53DF820009
+X-Stat-Signature: texp9gxst9xa3m8xoy184ydipjgtsh5q
+X-HE-Tag: 1785593015-406596
+X-HE-Meta: U2FsdGVkX1/vNJJnh8wxEfqomGi69PUI4fPVTDWdU4phfu3i//HQm8aKynecwEAznAUQ2ZHEoCimhhpV0C/qHgnduYdnNhGj8QLAu417/bT+HARGrV/HSOPP0NLSLPSZFdzxJlFx57QN+niUfFHPnHRLXE0O9htx1HZyOLUSZa6/Mdrcf/CnrexprG63iEoAMwpdMv8rPdj2pAdIn7wjFmjUXkTO9J6MkdBoTMBGVZ1TstGDi7cAM4zRqK7eIgfHHMyiCg998RjD7+t7bC5POwPGGi3kVw01eeyeznd3zOmRWbUQiUkfMqZ1c9bGUVUOFlKUoZAecpe7kKSoysDFLc5+XuhFtivO3kMXiwaKV1kL3wkehXvAD6Kz6bHih/Jh4JgnKSycbwEOCq6sHKXUw8Js/fEDr9qRKN3iOVow/S/WSXsGlKRUK5rm7+wNuNiwHsE4fNVC56n8sPWNhvOm3GZHNlgDr6SRbsfhIWykrPn2fUi9/G2K/kJkKdAmMAbbTdhiYs9qfYQ4rW8xN/cNqk49Sw/27JIxQlwh/YHLSGOR6LAh6Tid10Wp70+UXfVDaTeKORo+kvyWg/oFqjPvruQNfd4KtG/KQnZtnSaz87HscNw9S52MmsSpniL6dNzg7NhjVYGCK5sfdNg5rIl074LurHjzHL65v90NSqazo0q9JbD9Qo+youyXmzP4hubGj3ISfEW2Kso+MZ8fiQhTWA+BR8GQ0jvNg+2huKJ1wacgRgP7CS9TFBw0uG2mWeWJ5e2owGNvxSyfpk7zDDgttM0mpGJZKsTwTDd+8PV1RuCH/BTDt4W4Wc41s5ymoEUO5sUfZ7o2QYUQ0G5DNjaZxXa8lkb1YWmiOKN5QBtqtCcMs03PvgWI2gmoz0CK9IwKEe4Sr9MFRxZUEMoge9AwXSHpJmerDxZP1H8CE+rpOdxuuAzEX0lQ07Bvzuf4ojpgQHli7XTvHpsRHkIEWo5
+ 4SuOFXuB
+ st9bDv57V72TVWuDYBDQTPUpf0+L17NfCopoF7Qg+mq0xFZRfcp353HqG1TBqP02b0LXOmHsurb4TpBAGccorLlwrZjKnwJkCjkmAIK+2yCI7oqqPQtduXXMSeFI+uwUiLXQCPEtUDb9EZ67B3am62hHdIqLWVfMKwhqHsrmI8hqmD4tMyFkYAz4CKO+ZohTljm8DKMFEVR6TPWx9Mb6b2ndf6V3YHUy6q4DeIcGejKfYEsy5DJJqRAoVDo8od1F046xFLM+dWsgVsCk/xdd107AtmMGcrB4IB8j/lvpsVe3QgUZ8VBQQy+XNAoex6E3bI/OAMa99PtXfYgMv9R5xskHRfXidLBJIJ9ofuI2MD7JAMsk3Xb4csyhZl/EXYMqG3bPDqw+HxVTRJYY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,46 +104,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all-
+On 07/31/26 at 05:46pm, Jan Sebastian Götte wrote:
+> I'm using linux on an embedded target in a Hardware Security Module-like
+> application. One requirement is that I want the system to be able to
+> quickly erase its memory when it detects physical tampering. I'm
+> approaching that by using kdump to load into a small payload that
+> instead of dumping RAM, erases RAM from start to end. However, writing
+> all of RAM, especially on an embedded target, is rather slow. For this
+> reason, I propose the mechanism in this patch series:
+> 
+> Add CONFIG_CRASH_ZEROIZE (default off), which when enabled makes various
+> subsystems handling secret data do a quick, targeted wipe of these
+> secrets before kdump. This behavior might also be interesting in cases
+> where you run a normal kdump kernel but you still want to keep things
+> like fde crypto keys out of these dumps.
 
-I saw a fun bug report in ripgrep and a studious but pretty bad
-AI-generated analysis, and I peeked at the actual code.  I'm rather
-suspicious of this:
+Please check below patchset, you both seem to have the similar
+requirement. Please go there to discuss.
 
-    if (can_reclaim_pt) {
-        if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
-            pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);  <-- what is
-addr here?
-            mm_dec_nr_ptes(mm);
-        }
-    }
+[RFC PATCH 0/4] panic: a pre kdump notifier list for hypervisor upcalls
 
-It looks to me (and an LLM -- I can *never* remember what all the
-tlb_xyz functions do, so I asked an LLM for a summary), like addr is
-not guaranteed to point at the range being zapped, because the do loop
-above may increment it right past the end.
+Note that we usually dont' want to run a lot of work after panic and
+before jumping into kdump kernel.
 
-On x86, by my reading of the extremely vague text in the SDM volume 3,
-INVLPG doesn't care in the sense that (most of?) the code paths
-reaching this have already validated that there weren't any live PTEs
-in the page and INVLPG promises to flush higher level paging structure
-caches for *all* addresses.  But INVPCID makes no such promise that I
-can see.
-
-So it kind of seems like this code might end up flushing the wrong
-paging structure caches, leaving all *actual mappings* in the TLB
-valid but also leaving a cached reference to the to-be-freed
-pagetable.  Which would be quite bad.
-
-Original report here:
-
-https://github.com/BurntSushi/ripgrep/issues/3494
-
-I haven't sent a patch because I *still* don't pretend to have
-followed what all the tlb_ functions promise to do, and I don't want
-to submit a subtle patch based just on an LLM telling me what *it*
-thinks those functions do.  I could trace though all this mess
-manually, but I bet that one of you actually remembers :)
-
---Andy
+> 
+> CONFIG_CRASH_ZEROIZE is a best effort, defense in depth solution. There
+> are circumstances, such as when a panic is triggered after memory
+> corruption, or when a panic interrupts some operation that mutates data
+> structures under locks, when the kernel cannot safely wipe some memory
+> areas. The handlers proposed in this series will just print a warning
+> and skip the affected areas in this case.
+> 
+> This series introduces two handlers as a starting point: One for kernel
+> keyrings, and one for secretmem. Future places where such handlers could
+> be added would be for example drivers for crypto accelerators. 
+> 
+> The patch series applies on top of linux-next but should work on 7.0.0,
+> too. I've tested the patches on a Arduino uno Q (Qualcomm QRB2210)
+> embedded target.
+> 
+> Jan Sebastian Götte (4):
+>   of/kexec: fix typo in comment (usable-memory-range)
+>   kexec: add CRASH_ZEROIZE to wipe secrets before kdump
+>   mm/secretmem: zeroize secret pages before kdump
+>   security/keys: zeroize key payloads before kdump
+> 
+>  drivers/of/kexec.c                        |  2 +-
+>  include/linux/crash_core.h                |  5 +++
+>  include/linux/key-type.h                  |  9 ++++
+>  kernel/Kconfig.kexec                      |  8 ++++
+>  kernel/crash_core.c                       | 18 ++++++++
+>  mm/secretmem.c                            | 50 +++++++++++++++++++++++
+>  security/keys/big_key.c                   | 15 +++++++
+>  security/keys/encrypted-keys/encrypted.c  | 12 ++++++
+>  security/keys/key.c                       | 44 ++++++++++++++++++++
+>  security/keys/trusted-keys/trusted_core.c | 14 +++++++
+>  security/keys/user_defined.c              | 11 +++++
+>  11 files changed, 187 insertions(+), 1 deletion(-)
+> 
+> -- 
+> 2.53.0
+> 
 
