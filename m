@@ -4,87 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AB22C55172
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 13:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC0BC55172
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Aug 2026 14:00:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DBF06B007B; Sat,  1 Aug 2026 09:20:51 -0400 (EDT)
+	id E800A6B007B; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18CAA6B0088; Sat,  1 Aug 2026 09:20:51 -0400 (EDT)
+	id E31CE6B0088; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2996B008A; Sat,  1 Aug 2026 09:20:51 -0400 (EDT)
+	id D1FE36B008A; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0B3F6B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 09:20:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 436F21202C2
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:20:50 +0000 (UTC)
-X-FDA: 85052760660.15.48C1601
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B015180008
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 13:20:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ8qK7jP;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785590448;
-	b=cwfoo4otMey23WkvfkHX7fqh9h8Rs73U+XHPrwH49BxDg7jlvyGhqvv/c2L6ruWggwBu6A
-	UunKh1Y1qdQNUkHrx+M/wiAufC9rVZ+I4lmqayXDTDWmA4HBb4YTAmnV+Mq2+RpketRwwp
-	Ckl51NmgOo2EhHsFFfJS1t3tLIoC+k0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ8qK7jP;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785590448;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BDEE6B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 10:00:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDD2D402FA
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:00:51 +0000 (UTC)
+X-FDA: 85052861502.01.ED67625
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 18EAA2000D
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 14:00:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b="sqTRUZ/i";
+	spf=pass (imf13.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.178 as permitted sender) smtp.mailfrom=luto@amacapital.net;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785592850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t13C+xMvQNSfcgbBPqp8o7L1VMr2wxshCbQ8fbg+xWM=;
-	b=oyNHlCNjVOCyPKscRmHFX7lQqt3szo7V29RpZ35uMEAkJ+HGJ+eo5OHWBem9C9hIU69h81
-	R87n05cH2e4vnFVxzJ7kezPPuUDlaKDM4TDEVPnL9gf+wG9YcL8Z8gJTwJdrbtt9J0h9OP
-	2HM76+xJbD8axgLTNPfC/pRty7GOv48=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785590444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t13C+xMvQNSfcgbBPqp8o7L1VMr2wxshCbQ8fbg+xWM=;
-	b=nQ8qK7jPPB/d/j9bllq7oXQohbv6EqlhGdVUbElepHCkBR1/wz6UI64F/A9sGIoFuZls89
-	GaR9uE90m5KQGBBHVxfTNZ0TjZ6l+9FKgrAD5JXX3iF1ufT/GvBH+PNPjShlrdcA72kX20
-	m59R5IME/ugvYQ96DEFgx3azQZs/u+E=
-From: Usama Arif <usama.arif@linux.dev>
-To: David Rientjes <rientjes@google.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [patch 1/3] lib: test_vmstat: add synthetic benchmark for vm stats
-Date: Sat,  1 Aug 2026 06:20:37 -0700
-Message-ID: <20260801132038.2926647-1-usama.arif@linux.dev>
-In-Reply-To: <e8dd28ab-ea7f-2ccf-c89e-a12f2d8b9988@google.com>
-References: 
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
+	b=8M58UJaJv77tNY9g4YLGZZYIQGjV7t8cmwxGUiiLf4PYkgwyOWuMxp9UGW/DP5iUG1WiZA
+	KcyYczO70PcvPHj10lVN0x6jiG3G/4N2rPuzVOyelr7xgkqUmh9uvjoCLj1t6i1lAgwuQV
+	rknsxvqByLMvu1W+KFAqw4JmoBzJ2O0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785592850;
+	b=OryXWLPCHttN6Jaldc8S/kkoy5FrDRx/i6KvT63T86s90XNeAIcITnnyn1lsTNIHZc17aq
+	0J3Q6a9WoGLcvh0geezc6feSoMQuBnol4V2cA6loIJl985UB7x1Kwlz5F81WIHLUMSDjvN
+	XCDbvbNtPNqNkXbIg/7AsD58PiiSu48=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b="sqTRUZ/i";
+	spf=pass (imf13.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.178 as permitted sender) smtp.mailfrom=luto@amacapital.net;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39c7fd45465so16750951fa.1
+        for <linux-mm@kvack.org>; Sat, 01 Aug 2026 07:00:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785592848; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TjfgazHDwGFbVrP+osXuIq8ds5XHgnW1fKc3lkh/VWVRJnWmOUFa5pQV9Bhd/Di3iw
+         2pmXNvIoO4FDZum9oBEHWTednkz7TT80oKSZXvtPRwYTvbOvy9kqmZd4ZxrrbVnprFjC
+         oeokzfq+zqoYydWXrf5Lt2LTNAQCwp07BGlAjkr+00lFp1CRjOMEjUcuOwKP/k2ukXwV
+         zsZ2oKnCSuEhIitxZgnSUkEMDSv3x8TrhP1OnlXTpOIjagYMYQ5ScCac9QwUpRJ1WJPP
+         qzD4ZNNdEP7EdaCzc7FGfYuV3V0yCzs3qC6RjuTd4Cdde0UbkN88sG1ZxH4Nf42mGKgY
+         1Evw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
+        fh=CIuLf+UTB57xam21wo9SOWCHp974tTxtZfQZo9olesc=;
+        b=J/MGtWeZkMt50eD3xHgK5qySa72ViRqnN47I053dV+szFhN4zK0OVHdZj3wlllYeJ7
+         YqmdOuUMztKYgnrHnDGScucwwhzDskOaKV4tTsqk56GSr5PgYzZK32didslnzBBRYq5p
+         xhZQTgTfy2TRYdx4urOo2tVpV7TtESwEcde9E4dLvm9/jbVWRx61xcv+I09eGLdZatIe
+         5B9RN8ztvHQVsxEr8RrYYvgjgabzvCWc5hbKJcnJ/E1NTJLylwan2GyF4FigIPEtD6Hn
+         g92lxXdhHXFVWZeTR1HobycbNd98GZcGOTj+iajPyhJOo1/MBIfXZzk+y1jfsKMewR43
+         jY0g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1785592848; x=1786197648; darn=kvack.org;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
+        b=sqTRUZ/i7kxh2ruORdAOXOprC0zWIUAcLo79Bw69CKug/7eCyfl4xbTysRnZmrvmdz
+         0TJGIFwWf/wIhNTaCNk8GDrzQEr+8lE5vlAno/hZ/zPXr7JOWyhNNKL0uvXH8guAMwWz
+         ottmom3uypcpVuJY+w3RlypE/4soNAGBVicV2Acgg5NFRuBT82Bu+dwIKJ7FSEmfTqte
+         E/A4RLIoqLfoe3ZausV0q626o8satvKd5LOA5cshphDbhfaE2GGF2VCm8uxzijnCzmTj
+         XawIMlt4jhdV4h7vkZJxnhv7PKenbSyzf2WBKLRJO81J+qIEDTq3b+JgbT2J8f+iVXyu
+         dfLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785592848; x=1786197648;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZRJkSRYLvhWoKW5wE2ChSY4jyv1xejt7euQKuPJZ4+Y=;
+        b=r1xe2dseNx2IaSiX1GTdfLhZI+0KIBiEtT+25trnQRzwq69R0vipoWbhgKIxOPa/+d
+         wTBaaUzZjfZ7AFiWuAMrm+oZEL7KAor5cfdRmtDm7rxRAPfqvhmdkSgG1dBsoaDCXi8z
+         a8VpmwTboVwPM7IMxLwytqtxBr3tWKOiJLmuY6gs4BOejsWqHqvt4C5tWj+At6q5XTw4
+         ouOWqZYlJGACxx08sg5fhrSSXGge2MN75OkyjrQvIEpmL121n+FCLIQvHIyAcpNKlKj5
+         5GcnRzUd2EevwwZgX2WGPh6g8vAduUBUbJQmhzKgqkqKjYIdA92BdLz2DVV3E1NRlFy1
+         4yyw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqf7mI4jrpAwhAHJRICT1mpZDc/M9MYjhsvxPrvSUAvPP7K8VvDYkplpJ4Hbi7ku9tswydD4Kejng==@kvack.org
+X-Gm-Message-State: AOJu0Yw3aa+Ay2wby6veHZS387ZVsW4ifDkhHl41Rwts4b+H804AfENw
+	qIVdxOv7KAC0m1OYIhwKiaOkT9N2ytPgebZeNSPPnGdSD9/sCsZJFr9cIXVjfiLOJs31LHUFg5m
+	d6dLki02BumDwUW/ffVDl/3ntAYnOzoq+dbmPDLgc
+X-Gm-Gg: AR+sD119g4o6eQKIgLDcBGuDYui7GUsIVbvSlsQ0pUrMavWzsyGUiKKAP/4dZ4j4PwN
+	I5ZLt8zpO+T2vif3VCNbfng/hry6Ejg1CJBoiMgO1zlw2W+1Dz/8jzcaZul1oFv3rEIiBxSTTC0
+	iuodWTJSWVgRMdwbuLgaRSVqCEcrQwauyd410SK2RTsz26JUJPvsI14bqtOPzLVg/uCCtDTxazH
+	mku2N8QduasTu9HYydGoATWB69bNCuRUDVKOlfkIWbXzm1JDcywaRgvnCWJDt/WmAlBdy/4pxoT
+	lKsfPyd7IzFD1lJzEOYCdvKL34zl7cIzjGbHMuqyXg==
+X-Received: by 2002:a2e:bd02:0:b0:399:767d:c118 with SMTP id
+ 38308e7fff4ca-39f862d6c73mr6559161fa.23.1785592848320; Sat, 01 Aug 2026
+ 07:00:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 755titm1nj7wqo1c5uaymk3tng4nnaxs
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B015180008
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Sat, 1 Aug 2026 07:00:36 -0700
+X-Gm-Features: AUfX_mweTyYVCxpa9foQ144vqzcL8WzG2Quj3VmGrGcQ9-NGP9rO1jbWFu1aHLM
+Message-ID: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
+Subject: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to memory.c")
+To: David Hildenbrand <david@kernel.org>, zhengqi.arch@bytedance.com, 
+	"Liam R . Howlett" <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Linux-MM <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1785590447-120155
-X-HE-Meta: U2FsdGVkX18vrpxYmlt1qYYfU3IBHyOFf3p61dltn8tXOqXkpHdxZfoA8S+ivQX/S/kvBGbVima4WhcF4M06OKy7BhYmW5PcbGDJTTC9AMWJyZgVCy/mlBu79fBZMXPoo3ClOhCGmXtgX7NbyltWbLLtE6062KKeSMx5el21uePSVY9UVlI1raTAR12zYYp0oE9bqrMETjgwxER45+3oG36TSNwiTDpSJVX5Djb8lgFAgqIwpvmCMv/D3e9QZVaeZopPgKZ3i8fK/gnOYVl3tlMyus8qvGhZ6pbl2L7t7nYqlz56i1WqH47yWWsAI4uNJyzFdQRyRyLwM2+P+CyeZezH0Sz8cLqx8KwrzpJnjOyGBsznWdhhAvMBe/Fg0T9pp7v+xdbi4ZM3eFgnYzzGHJdNuDnGeRC9/LDlk+N1dQUEXzZUC/41kqibRlmk2W9NLEAcIcwaxdBsuKhO2Cu/RS7lq3zt5fVIfUizm2lsKjAMVEAUufpT9GT9wTzCMk4I2qTrqH7xMg6EgDc/Zilr7JcWE7MPZaIbUCnqzks62Xv/dFfcQFBvVJyYDfXqfnNgcev6bRUscxgNaMLoMjK2xOJalYU7MIi2Geb1uqXH94eEPOTh8IFZ3RHhrTdU55ClHsur1j5UdB4DfWgExrDZgpF7xGkquLsl5tKWZYOGnZf7u+CWGf7AvHYiGXUkCMEYCVqhdA1pCTZiJBCi/YGj3GLHaD7IPv7sHEeO4emBZBhN23qahN9J5fNo7YeFMwMXJDq9rJJylfknx9lA6UuuRgmnesCkj5BHqCepnHvvP8jIMEsxvPInRbc0tYHso87XOU0rERuwhC/V0DM/ptLjUaZCSeMQ2QbfV3jJnxg6drnOXFwbT9gnxOT1eUabf4/fwP5xPqizI9Ot8hSqZ3Uvt8wgr9t110ZaIcwJpRjICBY/cwTGf0NBAyN4hOXHF78lgxtjqgwGICOvTtfo5OW
- 2IOMQZ12
- WdlO9FBDQrLcfdMd9jH0ggap2nRfxipSkQgzbEg49QjdhR+/eyPDLb7+m/jNJQ4T6lDym+FRrGPcIjr8iFyJxz0fS047dw51RPn5XQKweAU5YHmJwS+EC+s+mlF/BvELytZgDY/Q0x2POshG6Abucj66YGuwQ9mievHh2HiZz3QDNfueoT4yNBwiKA8/f7hzxUA7CL4SDgEeUjcpAKD2e9AqOEQa6W2lTUovTwDTk2GXKGZ6Zxz66RXhO5nlrdv3aknd0az0qAQ6RyoemsMW4HFM3rlORavd9xm7dcEpw+FJ3ptVsJe6DJNB3WPK+Vm2k1YYpk7V+1BYjzp4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 18EAA2000D
+X-Stat-Signature: gnybeqfwuhpu4duhcojccox9xzaa6oxw
+X-HE-Tag: 1785592849-384432
+X-HE-Meta: U2FsdGVkX18j2Qn67z5GFgRQuurhugUokvkUfO2K2n6eA3b1SyAHK12GMtS4oya6RqLPZZzqT6YzulcZqj6jJHdENXEnjwFCEJx0wcjlIIlRwJXH48VX3YmCahq3ukgMFeyzEmrh0fEk40yKEXhCyM+7L3Yj2XmyoZ7Hw6A6gvWOAY3d6Bz8q5TmOOqHUZqb9d/KuyhtCPQg8Jeb3R2lMAgan3FFbPjr5Nxq1thvLWk5PcF178IJOBIvvFqm2Ghrsy4Zhl97DbuMYch6hfbYio8Iet+dTREfW7fQRbwjekZCRwJD/+fmm1bFixQQLg0sWeaP9/xAqbshB9NV2r4krYalMu6QzK7Pg9a5gCpPeXwsfLO4UmDefKkEcgYlU2gjogOd/rX08adkkrQetbVoWV6wJhUyHZ09bOBD9ZwRbf9sfJeoQx2D5UZXKPZOX5BqpDh0RRTMpjI5L2SbRzSsS52jvQop7HLd4KkAxYqXzx/dVq2CpZRpzJEX3WKUuBKxR+J9wvF7vPpMU22EUObvBG7znJFkxb7ZSNT00eOusprRybGMm+HIorwT1Yu3QYLZmID2N5B0XN9bNiCEVxKmcrRFQoAN4YBb4Epd0TM52M+Zi/KZko4/M8ZeybKjzyJ7NMG4qboRbU/PZV54PuBEnqg7yF9c/TPeqZ4WHUy3bx8xr8/pScKv+W3eaAENIA0TO2LHCIUiN+7ZHSw8J3kQy6J48fVvGb5WBRxxLwDofVy4U3dAAA+2UAuC/bA/n8Eyjo4TTbOFD4RoJjZ+5cQZPm6LzrwL1yKi21qjVg1PFPxIP8uMf+d2mNS/1N4zpu5sfND43rdWnZSHJy6KUx6H9MIeRlg8VlJOPOASEaCXbOAar6c075v4Ic2IORR/+Z6mDU65cR+aUlHl7ODZnZAo0bfeBl6cF+1rqFeVuZkSf69pr34LR5WcBE5AoJwkaiO9EOqQNfJWoCuFvoG2lB8
+ aLy+rnCn
+ NMn7JH2RcR7FGAj11h8rV0YQud8nSj5sKG4senOv1o16IDD5XiiiFDBWhL0UYzCIcmPQHCPGnsARP0N2bK7Ip60hhlqSZ2mkc9X6D8/krqJatnLc+YtwKw78BVOYLLMXyR4eNHbb1eOO5CJN0nmEzTx4CvIpFAjQ7b1rmc5sRFX8a5WFjjBfVRGbxP/v7iAjUcZgb9w5hFuFDN+ILHYRWQxAHHU23rxh/Lik0OmcboCLkMBRSk355lDJdJP/LtYbjfHrJMlnO2NWBtS/APHscU/4C/5oqHR8q9K+UoPge/pnBPAl5zZRbxlQueVbXwqPtUgHBcAM+eRdgtXb70hn7sNzmH1j7iHGRZtDw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,170 +134,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 21:26:23 -0700 (PDT) David Rientjes <rientjes@google.com> wrote:
+Hi all-
 
-> From: Christoph Lameter <cl@gentwo.org>
-> 
-> Add a synthetic benchmark that can be used to measure performance of VM
-> statistics.  This is used to analyze any improvements or regressions in
-> functions that are frequently used in hot code paths.
-> 
-> The test is run by inserting the module: modprobe test_vmstat
-> The module insertion will always fail so that it is automatically
-> unloaded; the results are in the kernel log.
-> 
-> Signed-off-by: Christoph Lameter <cl@gentwo.org>
-> Signed-off-by: David Rientjes <rientjes@google.com>
-> ---
->  lib/Kconfig.debug | 10 +++++
->  lib/Makefile      |  1 +
->  lib/test_vmstat.c | 95 +++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 106 insertions(+)
->  create mode 100644 lib/test_vmstat.c
-> 
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index 1244dcac2294..6d743c8e27fa 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -3427,6 +3427,16 @@ config TEST_KEXEC_HANDOVER
->  
->  	  If unsure, say N.
->  
-> +config TEST_VMSTAT
-> +	tristate "VM Statistics Benchmark"
-> +	default n
-> +	help
-> +	  A synthetic benchmark measuring the performance of VM statistics,
-> +	  useful to analyze any improvements or regressions in functions that
-> +	  are frequently used in hot code paths.
-> +
-> +	  If unsure, say N.
-> +
->  config RATELIMIT_KUNIT_TEST
->  	tristate "KUnit Test for correctness and stress of ratelimit" if !KUNIT_ALL_TESTS
->  	depends on KUNIT
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 7f75cc6edf94..5f3ebabd0224 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -105,6 +105,7 @@ obj-$(CONFIG_TEST_FREE_PAGES) += test_free_pages.o
->  obj-$(CONFIG_TEST_REF_TRACKER) += test_ref_tracker.o
->  obj-$(CONFIG_TEST_OBJPOOL) += test_objpool.o
->  obj-$(CONFIG_TEST_KEXEC_HANDOVER) += test_kho.o
-> +obj-$(CONFIG_TEST_VMSTAT) += test_vmstat.o
->  
->  obj-$(CONFIG_TEST_FPU) += test_fpu.o
->  test_fpu-y := test_fpu_glue.o test_fpu_impl.o
-> diff --git a/lib/test_vmstat.c b/lib/test_vmstat.c
-> new file mode 100644
-> index 000000000000..f63f439ab9d2
-> --- /dev/null
-> +++ b/lib/test_vmstat.c
-> @@ -0,0 +1,95 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Test module for in-kernel synthetic vm statistics performance.
-> + *
-> + * execute
-> + *
-> + *	modprobe test_vmstat
-> + *
-> + * to run this test
-> + *
-> + * (C) 2009 Linux Foundation, Christoph Lameter <cl@gentwo.org>
-> + */
-> +
-> +#include <linux/jiffies.h>
-> +#include <linux/compiler.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/mm.h>
-> +#include <asm/timex.h>
-> +
-> +#define TEST_COUNT 10000
-> +
-> +static int vmstat_test_init(void)
-> +{
-> +	unsigned int i;
-> +	cycles_t time1, time2, time;
-> +	int rem;
-> +	struct page *page = alloc_page(GFP_KERNEL);
-> +
+I saw a fun bug report in ripgrep and a studious but pretty bad
+AI-generated analysis, and I peeked at the actual code.  I'm rather
+suspicious of this:
 
-Good to check page != NULL before using it below.
+    if (can_reclaim_pt) {
+        if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
+            pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);  <-- what is
+addr here?
+            mm_dec_nr_ptes(mm);
+        }
+    }
 
-> +	pr_alert("VMstat testing\n");
-> +	pr_alert("=====================\n");
-> +	pr_alert("1. inc_zone_page_state() then dec_zone_page_state()\n");
-> +	time1 = get_cycles();
-> +	for (i = 0; i < TEST_COUNT; i++)
-> +		inc_zone_page_state(page, NR_FREE_CMA_PAGES);
-> +
-> +	time2 = get_cycles();
-> +	time = time2 - time1;
-> +
-> +	pr_alert("%i times inc_zone_page_state() ", i);
-> +	time = div_u64_rem(time, TEST_COUNT, &rem);
-> +	pr_cont("-> %llu cycles ", (unsigned long long) time);
-> +
-> +	time1 = get_cycles();
-> +	for (i = 0; i < TEST_COUNT; i++)
-> +		__dec_zone_page_state(page, NR_FREE_CMA_PAGES);
+It looks to me (and an LLM -- I can *never* remember what all the
+tlb_xyz functions do, so I asked an LLM for a summary), like addr is
+not guaranteed to point at the range being zapped, because the do loop
+above may increment it right past the end.
 
-Why use inc_zone_page_state() but the __ variant for decrement?
+On x86, by my reading of the extremely vague text in the SDM volume 3,
+INVLPG doesn't care in the sense that (most of?) the code paths
+reaching this have already validated that there weren't any live PTEs
+in the page and INVLPG promises to flush higher level paging structure
+caches for *all* addresses.  But INVPCID makes no such promise that I
+can see.
 
-Checking the 2 functions, __dec_zone_page_state() might cause
-problems if preemption is enabled?
+So it kind of seems like this code might end up flushing the wrong
+paging structure caches, leaving all *actual mappings* in the TLB
+valid but also leaving a cached reference to the to-be-freed
+pagetable.  Which would be quite bad.
 
-> +
-> +	time2 = get_cycles();
-> +	time = time2 - time1;
-> +
-> +	pr_cont("__dec_z_p_s() ");
-> +	time = div_u64_rem(time, TEST_COUNT, &rem);
-> +	pr_cont("-> %llu cycles\n",  (unsigned long long) time);
-> +
-> +	pr_alert("2. inc_zone_page_state()/dec_zone_page_state()\n");
-> +	time1 = get_cycles();
-> +	for (i = 0; i < TEST_COUNT; i++) {
-> +		inc_zone_page_state(page, NR_FREE_CMA_PAGES);
-> +		dec_zone_page_state(page, NR_FREE_CMA_PAGES);
-> +	}
-> +
-> +	time2 = get_cycles();
-> +	time = time2 - time1;
-> +
-> +	pr_alert("%i times inc/dec ", i);
-> +	time = div_u64_rem(time, TEST_COUNT, &rem);
-> +	pr_cont("-> %llu cycles\n",  (unsigned long long) time);
-> +
-> +	pr_alert("3. count_vm_event()\n");
-> +	time1 = get_cycles();
-> +	for (i = 0; i < TEST_COUNT; i++)
-> +		count_vm_event(SLABS_SCANNED);
-> +
-> +	time2 = get_cycles();
-> +	time = time2 - time1;
-> +
-> +	count_vm_events(SLABS_SCANNED, -TEST_COUNT);
-> +	pr_alert("%i count_vm_events ", i);
-> +	time = div_u64_rem(time, TEST_COUNT, &rem);
-> +	pr_cont("-> %llu cycles\n",  (unsigned long long) time);
-> +	__free_page(page);
-> +	return -EAGAIN; /* Fail will directly unload the module */
-> +}
-> +
-> +static void vmstat_test_exit(void)
-> +{
-> +	pr_alert("test exit\n");
-> +}
-> +
-> +module_init(vmstat_test_init)
-> +module_exit(vmstat_test_exit)
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Christoph Lameter");
-> +MODULE_DESCRIPTION("VM statistics test");
-> 
-> 
+Original report here:
+
+https://github.com/BurntSushi/ripgrep/issues/3494
+
+I haven't sent a patch because I *still* don't pretend to have
+followed what all the tlb_ functions promise to do, and I don't want
+to submit a subtle patch based just on an LLM telling me what *it*
+thinks those functions do.  I could trace though all this mess
+manually, but I bet that one of you actually remembers :)
+
+--Andy
 
