@@ -4,90 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBC77C55171
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 18:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 047B7C55174
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 19:53:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D21D6B008A; Sun,  2 Aug 2026 14:54:45 -0400 (EDT)
+	id CD4746B007B; Sun,  2 Aug 2026 15:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7349B6B0092; Sun,  2 Aug 2026 14:54:45 -0400 (EDT)
+	id C85856B0088; Sun,  2 Aug 2026 15:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FBA96B0093; Sun,  2 Aug 2026 14:54:45 -0400 (EDT)
+	id B74016B008A; Sun,  2 Aug 2026 15:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8616B008A
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 14:54:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BAF6A1C0F54
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:54:43 +0000 (UTC)
-X-FDA: 85057230846.20.A986CE0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 29DBC1C0004
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:54:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTae5JiF;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A1736B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:53:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14147A1D06
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:02 +0000 (UTC)
+X-FDA: 85057377804.09.5B59DD2
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2943D160003
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="u hM6P4g";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AvKnug8B;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785696882;
+	s=arc-20220608; t=1785700380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KZNY1MD6P0OCjtAb6cuHefbevIrlOVJqJGEJAaJiWKI=;
-	b=OjHH3aW+CZROi0nB0O2gPZMyC7ESiCsGnGU41TD10dpfesPeH+lXquIMHK/eoxuQuuAce8
-	5a3nSyRDrM29n4zvHPBmGDfGSeOWtLZKywIgqvrwTgs0cbXvQ+ZIa0krPdbXf2dIuzgq3a
-	1mm9pT8r1Di85RuviASD1I22o012sM0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=juH0jvMGNMvH75SBITV8UFq5P61TdljuZYunxn70Lnc=;
+	b=Zeq9EtWxqPhRo22lEjFzndWchKZR+HG4SgvZd9H2FMgGoIat7jrNbQQeEeabCfRkHeb2UR
+	x/KbEOmWYmCIRqqM37VHIfxg6r44r5xr0A8IfltaJdx3sQKLVYQerB/G4Swv7F0xegAe/J
+	CID4ue7GhkWVbHz5Wkdox4C/vuo0EFU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTae5JiF;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="u hM6P4g";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AvKnug8B;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785696882;
-	b=KSZt2f1QwieY30Je6rFFC0fPPFXSbxPeJD2ZeTXSJi+V+3V/ZpDc7eXt5s/+ABO0c+nnYw
-	tDWd7LkpIS54YgEMUEbyIbfqWHSFfKxmOp5vY/sd1hdZt64/4qaEC5d3dT4QHePjFQaXwV
-	cz3txl6Z+dE0rHIB/3RIQRr1xKRX0V8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 90133436BE;
-	Sun,  2 Aug 2026 18:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8FA1F00A3E;
-	Sun,  2 Aug 2026 18:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785696880;
-	bh=KZNY1MD6P0OCjtAb6cuHefbevIrlOVJqJGEJAaJiWKI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lTae5JiFy4IZpvv98o7309NigTJWUP3B1irg7TQpYpWaa231tj7JUYYeSSw9q+ny8
-	 GeI6Rbk2q0AoNG0KZwsjC+lcLnAY06RZTrIWwhsz2O6rne4i38shQxPuUSs6HTwAuB
-	 c8/Bg99D3iClUIceuOzkzP8kZvRxlx0cu+b2fggviRXp+fx1jYW6JwzVjM75mkaXvZ
-	 ePjNoZJo+gY77RmBLBbAdqIzvrXwKaAbxuKsFl0kCR8cD3vEkcN5Qxe3cFaFVRDUQN
-	 jWpHQp2d6qv9pHdVB9qNJ6KzXB4pYza2Ms0G+D97LkYLda89P1glVzujA5nDgrtkI4
-	 7fS766uf+sLyg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
+	t=1785700380;
+	b=N737AKj/QDsqdv6E3Imq/VWhLgBX2rNJhdwOse50N5+nCnMoSaM2T/mrjRnKxbOQJLBlSW
+	VjQPVZd2UroX6LjDYOXG7EIcDnREFk8zrtPjNBK6aNkH/ROQKn+6KDhJUMsI4s20XOWBNC
+	kVy0+InEsa4L0Z89WSo7FzxezVfoU20=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 813A2EC009A;
+	Sun,  2 Aug 2026 15:52:59 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Sun, 02 Aug 2026 15:52:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm1; t=1785700379; x=
+	1785786779; bh=juH0jvMGNMvH75SBITV8UFq5P61TdljuZYunxn70Lnc=; b=u
+	hM6P4gdhbepxbJzvroluvW2yWL/UULvZOlcPtfZmyz0bJo68GRqf3RIcfVTPmgx2
+	FQiaE8QirQZ6ZHwaz1qqbjbbWJ2VhEXw3zBkvV3jVNLkSmSepioMuwP8Kzd3eFav
+	PmQyQixk8M1P5RJsdLLEqmcB7uB3282SdJdwn6mHFHeBXWZQlJX4Xv7UxsReB/p7
+	i9QPNPkRrZGxQkwTDCBLwNss4fc2NDXjgaVKL2n/hfKxLpLUzN1CfkGmrMsicDr+
+	kfJTgWmh7qkfGAySpjnM7gxFNhRaA/fML2Y+B2ksupbs75YQMly20SVnElnXkQsg
+	5lbqq1AmMmdRxVAM32FWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1785700379; x=1785786779; bh=juH0jvMGNMvH75SBITV8UFq5P61T
+	dljuZYunxn70Lnc=; b=AvKnug8BwEHeOqz3eStexXRCiT46dQFuUVnLbINZTjhM
+	IZq2I9yE5Co7Cfi6plPsfyZ5HSl7A5HO2A3oUcZcmiEeM0gwH9XkcbJTj7fnhRXA
+	gEfwK9bNGt69m9B4VTxGU/vgqtzJvVfeiYcYiycmbp+HqOBF7La2pcZ6aPEzp1Ml
+	4pSDfN0oL+AaLyhAxYLBSSDprtZ5/ECG0pnyhhCeLYyBQMnNPc+a1t1J8i86UidY
+	pYhPPx51/5yO5zOnt2C6WgNILq7FNAx3+qYc2K/D3QJI+hoJwqhAupL+QDPnO9Bw
+	Pji9jV1wUDsraya7P5x64gZjm2DcMN/IBJdgmiyOGA==
+X-ME-Sender: <xms:GaBvalG4fbkKOFL8zac2rwsqsXKHXQz_f07mOjzmUi-E8wx9_mLdfQ>
+    <xme:GaBvak3oh8E9YcxEvWz0Qprm531sLVUdQeI5ooDz_g1AlsyGUfeN5ZFF5uCOXw-Hz
+    dzTMMoD8fEqaWMTF5Q4YwsCCneKRN6TkP2ER65oaqbDJbloI0ueVbo>
+X-ME-Received: <xmr:GaBvakG0tLQEkIwLaqlrRnduxZ_kDc8vv9sX0uuJUik2HtDQa_0eYfzLlbg>
+X-ME-Proxy-Cause: dmFkZTFTXVbsrdk8DREbD4eAIbzYwCFJVQVYe1wc0iuILac2QcFkZzhmKLqmHUUlY1+WS0
+    JLauri+119lYDJyBUuNkM3ZF6tyQxpmoGpXbDRjA7Yn+fc4Yeyx/mJ2VCfHBem3VSOrNZx
+    ZLxg4PzVIPwfldLbz+/H0iEw+ORGH35XW6PXBV7LcuESiIzG6PrevfT73f2IjyaRtaasuF
+    gPSbcIUUpGIoWwqhsaOwJ6Ur3DfyrUTEv12C7z5cMDWrQrO/zzcHS1eRqEz3TuW4S5Cdoi
+    NGn2u9TpdxTsiHv94c7rIr3iBqxgHKXzJSx6tt6/CdfWHGAWFLKgLnSS1/Srhf7jQ3ttV3
+    CKkWB154qaEI+c6pwAWHOM03fg2pxaeBhYUpMLk45SnOXqrGdkjNLcJxOObdiSQDCrtpAH
+    XL41agzQiu8KpDVxwv5SgeaJlcUGKUB9hoL96amrXZu9EfnOFGpvdzgTjMkjpW6Gp5NYvC
+    bCOZu6rWJ3m799ft8cemhklyFNs/G3ysTwnE79IrX7BzWW8b8M+7XXrrr+gUekz8gH+RF2
+    RLrex9przHQ0Od29ojl1Rg4Re+lZJx5kK+t4cL3DyKORGKyWrC5gCXZAYcmUgP2L8+F7jk
+    US68WTNUovAdi/3LJYpgGBvo7gckU0onGiAouNRfLPzNVBhkiG8QUfU2fb2g
+X-ME-Proxy: <xmx:GaBvatzsO_BQnL75b0rQp1H-jqkwW8Lm1NoECke8iA2-1MzQdp9Z1w>
+    <xmx:GaBvajnF3xfI8N3Y4CibDubPgk9w9G9TvJtFUIf5CmiAv6_485Oodg>
+    <xmx:GaBvakCGPIoglm_xRNaCmoUK-jESAImzTVj1LJuUDMcbVyonSGcWWQ>
+    <xmx:GaBvauIhGneIZZ7CtBASj2mSLaBmBMYxJ63nWf7RyYHU3xusiMINiA>
+    <xmx:G6BvaogtS0YGBOuNgyuc2fe8xBBMzUVp9roE1jKGpkui6t3jletB3BK->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 2 Aug 2026 15:52:56 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Nico Pache <nico.pache@linux.dev>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 2/2] mm/damon/lru_sort: skip damon_call() if ctx has not started
-Date: Sun,  2 Aug 2026 11:54:28 -0700
-Message-ID: <20260802185430.9940-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260802185430.9940-1-sj@kernel.org>
-References: <20260802185430.9940-1-sj@kernel.org>
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [PATCH 00/16] selftests/mm: improve khugepaged coverage
+Date: Sun,  2 Aug 2026 20:52:32 +0100
+Message-ID: <20260802195254.1937477-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2943D160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 29DBC1C0004
-X-Stat-Signature: x4orfu9bxwxqaza74f7mi5hz7d3nf34w
-X-HE-Tag: 1785696882-7326
-X-HE-Meta: U2FsdGVkX19Wmqj1tGXXsE7xbxQD/UHuhiPkIlAST+pyQn55OVEmaFcLXc/yonfrfVYfyYdnte5p6K2pke/WBqcJGlBAXwBL3yK0LTW8IzdWBG389n/XFfnLwcbwye2zwgZYSqNNUrQhnngygAoWyLYVRW5naXA7tevlOEnGDNL9zUDrUFuquOkfU8SxoSWvTd/oJ+h64m3H/YCYrTq7H6S6bfIOXhcFKJXb6om/mGzsJI6mYwoOrIwEJUBD+75Nsi9qGt+Bt9vjkFfO/QSgjAlGQKdZGqp1c6i0DMLz3S7WLD+NiiiqV1CitwVPp+1fw7L4lE1mN/sIN4zPtMmfL92/8YABfuySeI31SfTzdQiX+mRW9ud8BzhKOSU9BrAH61HOPLmoKxApNtv2OoAVgx0RuK2+ls9HK3mcueILe6yL3AG5+RuaHxtk26mAqX6b2pvnoG5AstPnt/Goj9hHQEsSFDrwD/5OLOetYa3QIiE0sW0A7RqQWEo503PgESn39qPby86/ztoWLf71hxElwZ6Y6K/o/rMepaocQFkqw0G65tafTxk9SzxEsDIODkUyR2nHmLx3eDLOnQYn+7EM5uWV6ZbV0rT0j7VL1bVl+pZnEDtGLzwI7+HesHVYOY3oAZY5ktnGsQAYczwYXRzu18fLVktu5rr8mUWLmS6/LVvtTN5YX1v8TW+6SlP/fSBWuLn5clMfrgg+AXDhVcrvhYtk/pLyRx/uQ412U8oeSI61cXBdHtsAtcgPwpgdXoGwKrha78FFMEAfNk8HmX3hrCZPzrllVAi3MysVRdVtTdXiVhqLBCepIrA26/9UXEQK9J7js+LVvGhvlu9YbuVgAS7pkzrjNkFRH6DV3Oj5vc6Vc0E5PXSMZWjEbeQ8qsxNYNdvfO5cYiay7OLxbRZESm4vbl//LydfOlPQ5f+L07AjjhBn1Z/vGAY1rIGU3mhIuCNWkYA7GFZNP+4MZlZ
- yzaCQEtF
- 7R2WZz9Snv/dwkbjQW50fDWPjWGlj3JqY4yz9UiR9KtcejpYB7ld0KkRTpkl+NeKR83gSi3d7HcihimJOJ6NA3qdOwzLShZ/8xll08bWkcBy7Yqsqn+3WysZwxxMXdirUf93fxlVHyJiJijrbrMIv9FDU7HsqigZ0ZNgmror+8/7U/Jq5VVsMkG7QmkcflbI9vpf7nXAOHm/0LsIr+8jl4HYfLIvGRQHxaxP0xW6CHLEv9HOll6vOc2VeAHBYqUZIt3LGXigwoqHi11MYNJQp1eMhDA==
+X-Stat-Signature: bn8ufg5g77z7px9f4xx7s6a3kgdskgyf
+X-HE-Tag: 1785700380-643890
+X-HE-Meta: U2FsdGVkX192DbNnMn9YREaIgQVgjev2Ys8VunTJDvCdYInTLAW/qoinnb8p/lNOaCKqNoByP2hML2pPjsSjMSWGaziWWKVvSNUcnKCRlMUnO/AAf9fgrRdMqFVq6pINVcglaoeSifebHbsf4GIi8Je4H1oJOB3E7EUBN3kTbShuww4Jgw8n7YJMXqTG8StR0bhzKRvAFfTRTf89ihY8vXYjoUjowwyStP4WpNOB10gaGfqJcgG9apc4WzeGajloxW0jppH4QKhOoEO0YyCtbumfFdv6ZHS1pJNYBblJKNTebJrwlVxmIwxM3Eaiph+dCCVQXd203uBn96nPhSy3YhqPgI8iqQYkMrrC7maMryQtRJObuGi0mWTz98myvnN5EialSsWrlIi8M+yxPMqr9LjRoNuWg9CjhV0e18VS03q+YEpLIQKtJJc8ciFzfRTJnCFPS80HyUnlFAci6MtwHcGqvjUyun1BVioJNfmcow81iH8aNZZ8EqowYdo9Y3VcoDrMoRUzjEMg2wKMvNXn/1yutWeVSh37WanZ/Yu4PTm3ntNpX4pHcIjrIXa+VAqny3nsnP4mPX2iFx739RJskE1n2qIWW1ALvh0v8N1yomxspE5syUDSAWmlC1flMxGlgQVEWD+NrlzdC7AkWSJpaJO3emYzydpxKsHixWXm+uxmZxNQpIhG4HVGXn3hP0U6QlZy47zgdZhcS7u8mxz10/gknPlKfvcJVN7qhipjjg9R+Enmk/E7nQb9QuxEl97KQYpXojTfIE6DWbUH8QP2qV9ACKUYTILfS2QkpcQe86z6V5YCqcSX/61MR4oFVgn4J6lCtDS7AmZexzrIaB1fFsnH8Bk23Gnaz/9IgxlesF6Z/lyK6Pxj0AevlDC4BfRvkH4PSOFnGik0Y4o1tpOoQJuYLSqD3SxqVC6/t/oQEBVTJk0VYP7YRYPBCRx9zp9+lya4a0JVDlUzNSOlF4O
+ u4g0yQ6Y
+ RUNeDxrafpqBGfbWk0PczlMFm3Cs4v3BSesqTL5H++mmeSkAyUo2oBD2P8dqIVc90AHkTgG9mgAPRScd4/QhSF2iAqy8/rdTHKdDRTaspHt3e//Ju0R2Ax0J/hR75K4zmMRNiyuf/iVAHiQtT2xBBZzLO3IAq7zdBeBW9VVFhvsldtS6RNAzJvYugWL4njCCkeMl8O4Z9Qg930Ikqm8vdgcvfJcQ4xX9wyEzgbWsjyowergeKy6mkc9QbI9/aC9eBdgNd+2s7C1UtjthTshWB1cEuRvFyP/raw0fy00YuRTHNrsYTtOquPBMn2QVa3+yaGEOo7ccGhzqdJ34Hl/A9wFVfazzQPw3wA682Ll+seiPyF3/h/GQ0LY3Lh0fjDhir26jYVdWsij3NA9HSD7PDbht5h3eotH4pySZkhF2m375H82q6SguILEvFC8kwgxJXDrSA7ISZrVBk9/aGE/HKQJ/AqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,59 +145,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_LRU_SORT calls damon_call() for commit_inputs parameter user input
-if the DAMON context is initialized.  The context could be initialized,
-but not yet successfully started.  In the case, damon_call() could
-indefinitely hang.  Read the comment on damon_call() for more detail.
-Fix the problem by memorizing if the DAMON context has ever successfully
-started, and skip damon_call() if it has not.
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-This issue can easily be reproduced by writing Y to the commit_inputs
-parameter file on a system that DAMON_LRU_SORT has not turned on before.
+mTHP collapse went in for 7.2 with no functional selftest coverage. Every
+khugepaged collapse case is PMD-shaped, down to the detection: it reads
+smaps AnonHugePages, which cannot see anything below the PMD order.
 
-Fixes: de3c60e1c831 ("mm/damon: add synchronous commit for commit_inputs")
-Cc: <stable@vger.kernel.org> # 7.2.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/lru_sort.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+I am also reworking khugepaged's collapse mechanism, and that wants a suite
+worth trusting before the mechanism changes underneath it. Nothing here
+depends on the rework -- everything passes on an unmodified kernel and
+documents what khugepaged already does.
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 3920d5042f109..bd847829a9907 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -346,6 +346,8 @@ static int damon_lru_sort_commit_inputs_fn(void *arg)
- 	return damon_lru_sort_apply_parameters();
- }
- 
-+static bool damon_lru_sort_damon_has_started;
-+
- static int damon_lru_sort_commit_inputs_store(const char *val,
- 					      const struct kernel_param *kp)
- {
-@@ -366,11 +368,8 @@ static int damon_lru_sort_commit_inputs_store(const char *val,
- 	if (!commit_inputs_request)
- 		return 0;
- 
--	/*
--	 * Skip damon_call() if ctx is not initialized to avoid
--	 * NULL pointer dereference.
--	 */
--	if (!ctx)
-+	/* Skip damon_call() if ctx has not successfully started. */
-+	if (!damon_lru_sort_damon_has_started)
- 		return -EINVAL;
- 
- 	err = damon_call(ctx, &control);
-@@ -423,6 +422,8 @@ static int damon_lru_sort_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
-+	if (!damon_lru_sort_damon_has_started)
-+		damon_lru_sort_damon_has_started = true;
- 	return damon_call(ctx, &call_control);
- }
- 
+ - vm_util grows folio-order helpers: is_backed_by_folio() moves out of
+   split_huge_page_test.c, and a range-level form asks whether every
+   order-aligned window of a range is backed by one folio of exactly that
+   order, mapped head to tail.
+
+ - folio_order_check validates those helpers against the kernel for every
+   anon THP order it supports, before any collapse test trusts them.
+
+ - khugepaged_full_pass() drives exactly one scan pass through the sysfs
+   wake path, so a barrier completes on the daemon's own cadence instead of
+   needing a short scan_sleep_millisecs.
+
+ - khugepaged -o <order> runs order-parameterized anon collapse cases: a
+   full table, only the populated window, default max_ptes_none and
+   max_ptes_none=0, and collapse upward from smaller large folios. Any
+   order up to the PMD order, where the same cases baseline the PMD path.
+
+ - khugepaged_race races two faulters, MADV_DONTNEED, transient FOLL_PIN,
+   fork and mremap against one of three collapse drivers: khugepaged a pass
+   at a time, khugepaged free-running, or a MADV_COLLAPSE loop. Every
+   racing page must read as its pattern or as zero. -z collapses
+   hole-bearing windows; -p adds pageout and compaction, the only threads
+   that elevate a source folio's refcount from the reclaim side. DEBUG_VM,
+   page_table_check, KASAN and lockdep are the other half of the oracle.
+
+ - A shared-source write race pins the CoW isolation contract: a co-sharer
+   writing throughout a collapse must not see the collapsing side's pages.
+
+ - Four tests fail on the environment rather than on the kernel: the
+   collapse wait is a fixed three seconds whatever a huge page costs to
+   build, collapse_compound_extreme wants a 512M page from the fault path,
+   the shmem cases want a PMD-order page cache folio the page cache caps
+   below, and the swap cases fail instead of skipping without swap. Scale
+   the wait (a 2M PMD is unchanged) and skip the other three. This is why
+   the suite now runs on arm64 with 64K pages.
+
+Tested on mm-new (1dbd7c34bb92):
+
+  x86-64 4K    105 pass, 3 skip, 0 fail
+  arm64 64K     87 pass, 7 skip, 0 fail
+
+The skips are structural: sub-PMD cases decline at the PMD order and the
+mixed-source case at the smallest order, and on 64K pages
+collapse_compound_extreme and the shmem cases skip for the reasons above.
+
+Kiryl Shutsemau (Meta) (16):
+  selftests/mm: move is_backed_by_folio() into vm_util
+  selftests/mm: add folio-order check for VA ranges
+  selftests/mm: add folio-order detection self-check
+  selftests/mm: add order-parameterized khugepaged collapse cases
+  selftests/mm: add khugepaged completion barrier helper
+  selftests/mm: add khugepaged race harness
+  selftests/mm: cover a shared-source collapse write race
+  selftests/mm: skip collapse_compound_extreme where the PMD is too
+    large
+  selftests/mm: skip khugepaged swap tests when no swap is configured
+  selftests/mm: verify synchronous khugepaged driving is attributable
+  selftests/mm: race-harness variant for permissive hole occupancy
+  selftests/mm: add memory-pressure threads to the khugepaged race
+    harness
+  selftests/mm: parameterize the mixed-source collapse case by source
+    order
+  selftests/mm: zap whole PTE tables in the khugepaged race harness
+  selftests/mm: scale khugepaged's collapse wait with the PMD size
+  selftests/mm: skip khugepaged shmem cases without a PMD page cache
+    folio
+
+ tools/testing/selftests/mm/.gitignore         |   3 +
+ tools/testing/selftests/mm/Makefile           |   3 +
+ .../testing/selftests/mm/folio_order_check.c  | 138 +++++
+ .../testing/selftests/mm/hugepage_settings.c  |  66 ++-
+ .../testing/selftests/mm/hugepage_settings.h  |   2 +
+ tools/testing/selftests/mm/khugepaged.c       | 430 +++++++++++++++-
+ tools/testing/selftests/mm/khugepaged_race.c  | 483 ++++++++++++++++++
+ .../selftests/mm/khugepaged_sync_check.c      | 198 +++++++
+ tools/testing/selftests/mm/run_vmtests.sh     |  17 +
+ .../selftests/mm/split_huge_page_test.c       |  62 ---
+ tools/testing/selftests/mm/vm_util.c          | 157 ++++++
+ tools/testing/selftests/mm/vm_util.h          |   7 +
+ 12 files changed, 1490 insertions(+), 76 deletions(-)
+ create mode 100644 tools/testing/selftests/mm/folio_order_check.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_sync_check.c
+
 -- 
-2.47.3
+2.54.0
+
 
