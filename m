@@ -4,164 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC0BC55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 16:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D6EEC55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 17:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14A816B0096; Sun,  2 Aug 2026 12:53:47 -0400 (EDT)
+	id 4BF5A6B007B; Sun,  2 Aug 2026 13:07:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AD3C6B0098; Sun,  2 Aug 2026 12:53:46 -0400 (EDT)
+	id 497F86B0088; Sun,  2 Aug 2026 13:07:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E69DB6B0099; Sun,  2 Aug 2026 12:53:46 -0400 (EDT)
+	id 3AD696B008A; Sun,  2 Aug 2026 13:07:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF096B0096
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 12:53:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BE0F140516
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:53:46 +0000 (UTC)
-X-FDA: 85056926052.06.C76E4FC
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AD66F100009
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:53:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 152FD6B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 13:07:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7AECDA051B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 17:07:04 +0000 (UTC)
+X-FDA: 85056959568.28.9D269C8
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DD25E100015
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 17:07:02 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=lsnrTEqo;
-	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of 3NnlvagkbAEEv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3NnlvagkbAEEv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785689623;
+	s=arc-20220608; t=1785690422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YgZD12vF5o4SjGPupBE5NOIO7mg5JBXcQDcfIckANSI=;
-	b=iNE0va3pVbvBp7YzU0RhljsyGtm3XWhaVghrEU99joBNB4ugNZMEm2Bc1jvE4rP6IIoVTi
-	vj5ZMuvx/0k1W5zHBeahHnaaDAhWK+c3pmoQdIVSmTDhLOkW0c4bduUaColy/wlJ2NvH5B
-	q47dB1uM3iR9TkHreMSrI/xC34ZvEmc=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=zxFXnSoB4KgiBC0T5VAyA9bBTcGnRnLoGoYzvYWvSBw=;
+	b=c3VwjQTsH4/ouGMcaaGrC+Ez/wrDNQGi0r7zLz/2ayY1G8H6CJVtBMGwuuyhEd/WA9dMUB
+	bRpsuOFepFDOo/SH2TNbd6V3/kXrkVtAVLB8cZnWrqazx6BRaoLpOOxzYRpSW2AZ/wncFp
+	1bc9s17EOOD6weCXO/9xaU716iPy1DU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785689623;
-	b=y0oRNrD4UXa8nCGViFenCXVi5Hyh2CZdO/5ZOdTHkrotwiCQXDmoXTF5q/sLaDdCA/6bTs
-	vLjaVXn5WS5bE1Pvq5wEdwo4PT5RR3pda1eEhBP5I8k0c1GsALCgAq0l5cAWBRehhWpfYX
-	f978pBth8sRdx7SDUoxudPsIquBUjeI=
+	t=1785690422;
+	b=19MCNHbtsWfz0ybJzWJcRfbYiy1vOsYPjeIek/7P/heDkxlaTnJjTv1DjF0gCDB6OcVxE8
+	1FYfkIJR1/HJ9/CJyEtgv2qm69vCvhfWwQ3l+pI/Xl4vsEO5za5wwE3t9k2/c/lNdUFB7y
+	J9mDutyQ3267vnky73fv+rsn6ADR1B0=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=lsnrTEqo;
-	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672GEaIr1598383
-	for <linux-mm@kvack.org>; Sun, 2 Aug 2026 12:53:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=YgZD
-	12vF5o4SjGPupBE5NOIO7mg5JBXcQDcfIckANSI=; b=lsnrTEqo2LT6TEG7vP9k
-	kxCnydT7i+KLPh3FM6khNDUcEeh7r3bpmjw4ho9//jQfGfwp6l4lpPAGmI2+/TLG
-	gmpB6U/NZJNclhxo/IUGUl+WvenUkYtiYHIuBHI0Hp+E1lyqCa2V4n/S83pOczq4
-	sjDiT4+xNLyn231+Gw3p+g2UC21cwg/k+RqhZEIY9L2NP99I4P6rfUH2rbwtjDR3
-	wMeYR6qiBnRcnBRpPdBRGimZHPeEZLHfOL7V0ZhfqV3ggSNQiXi9Bynso4c8VuhW
-	v7lwlMkbpF0w4g7sxcbaukGlhvOHCbKXU6wbun8NU3jkGMd6KZN6oYWqP6Nv8/K9
-	yQ==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4ft9898410-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sun, 02 Aug 2026 12:53:42 -0400 (EDT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c1a9764f0so26914721cf.1
-        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 09:53:42 -0700 (PDT)
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of 3NnlvagkbAEEv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3NnlvagkbAEEv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-49d4cb3ca23so3734033b6e.3
+        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 10:07:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785689621; x=1786294421;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YgZD12vF5o4SjGPupBE5NOIO7mg5JBXcQDcfIckANSI=;
-        b=Bf2RTveLOIqFu1dNSwdGGVBHg/E6QwkvxXYSv0X9KODrCXT5QCEddy9VRfqxlI0SxG
-         iQoLnzLhp1zC7FuaiU5zFsgk6CtzbDk/8TAEuwNOVePbYT1ZPF6Azq2dWUhQqHSxFCq8
-         9SxOi9+CaI4eUNtbBQ2oBKdmQy22rFMu3/mWWRgAX15wjGhvOiqDxb0Y5kRx5cArfBrE
-         k6TdcMjb8BfBf+QA9RKtvRgvcHHIS5A8bKyNfw4Kt/Y8UqC3zqbSJS7ZxId7RC5WS2xD
-         9gSei95JjSCU8FAq5oqPZOiP2HMm6yaSihrv+lTNxJemTo3FZO/7CC9nEXnNeD8+km/5
-         UyHA==
-X-Forwarded-Encrypted: i=1; AHgh+RoiDSnE2EDFE9Z0jcQUWHMUHWjfoBYfk3JeViEXbzHysQNmUN1iHN+jSovAeNW1UhnFziSQSv92pA==@kvack.org
-X-Gm-Message-State: AOJu0YymxgX1Ft/XOHNgrTjhWzNxFxyyHI165JbvMhYW+siOJrJMkaK8
-	DK5SuLw/rEDyTBeAT9Ms68ls3tjdyB4TFzPrdElFBDDJF/FWRh3awRQq3Y2bQm01qtUNAHuHfxe
-	RB4S9teo0ShVdi4jwHnfgZxQQfk/DGuFcDZeHjgWgU4m9UG3W
-X-Gm-Gg: AR+sD11OWQOvzCkXQhXnd97w743gkcwoW9QDYDIqiwnvfjweTfNLb3BunCVIdnFhqtz
-	q5KS3vfIiPfcvGcEnhDp5OGmneDp8X9IsvcIJeQ2ywVmqp6j7/VmuNWSvyjXfxAeF4mKFKs3l7w
-	YffXEKo+IpI9FdKSiJfAIs2HGWmLlxa+0iqj3OYZED4T/pkXSkGZJ+tQ38zS8NKuBff5/Gc3dlh
-	kGgRh7nOCareOglsamXO2qqq3VoewubxiTA06RaEc+EJfUC5yp9Vmi6iajlvyTNSQMqcMoV56mK
-	wSt9/8mi4fNt+Jv22M5OPIiMdgvRyy/bHQ1gYELTKBNnNxK60Z9HKWEX4M4/9O6BGhqJR+o9ZAD
-	mnub6DtvRw5GM40sffnogAYxF9jRIdU5uHDjSIaIARKhTAWq2mrA=
-X-Received: by 2002:a05:622a:1247:b0:51c:844f:28da with SMTP id d75a77b69052e-52b56673bf2mr163448581cf.5.1785689621475;
-        Sun, 02 Aug 2026 09:53:41 -0700 (PDT)
-X-Received: by 2002:a05:622a:1247:b0:51c:844f:28da with SMTP id d75a77b69052e-52b56673bf2mr163448101cf.5.1785689620984;
-        Sun, 02 Aug 2026 09:53:40 -0700 (PDT)
-Received: from [127.0.1.1] (CBL217-132-158-98.bb.netvision.net.il. [217.132.158.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a0c8bsm24064574f8f.34.2026.08.02.09.53.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 09:53:40 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Sun, 02 Aug 2026 12:50:05 -0400
-Subject: [PATCH 4/4] ceph: remove page_snap_context()
+        d=1e100.net; s=20251104; t=1785690422; x=1786295222;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zxFXnSoB4KgiBC0T5VAyA9bBTcGnRnLoGoYzvYWvSBw=;
+        b=KzGImHKJDKcQnqcCsRvn0qPDcBMW7eiS3DCQ1GlJPkWx5zRczo1X8Lf7stPsrGby7e
+         8oR/g7cdDD03Eud6CnYImweakWh84ZCpDziPAZ/WFfTM6xbtuuoAqF65LIMSmO9vJOc9
+         VnAly5rS/nYajt2vJQMpsWCtnXjnu6k/EYDmdLT2Pesod+plLgSZT8cjlXtOvVBuhIOf
+         8HduCG6dEEg1EQX2eKNuMcx9RMevgyqsjYEvrlukYhDaun5EdcFQQDoNpRwwE25Z/zN7
+         qvfn1luDIZmYOWcccs5uafrDfIZGBno1UPBFfXHECyxw1vddUeH3ECXf8qHd3lwbckg6
+         89BA==
+X-Forwarded-Encrypted: i=1; AHgh+RrnuywUEmM0s8Edrs6dT4cTOO96d3FknB2vKqgC1/ekMLJZLi7Hxrx/XNFsa2AzZngiKWO9uj3/DQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzyo8i5k15ZO4rCeNZMWy1P7C+snm5o1Be4AQxzRNv4WZqvS5xj
+	75+e2eDWeAKLXOdKqNF+BSB2NjC+8KuxQfo1XyQyhy7DzC0XEvQvrOqDyG3Co9IPeETJv+ahacC
+	FpyDCwy2dp8SwbPcJ6NPZmTCKxjl21tgvz8B9r3//zPi3yHN8KiFfV7+iBmo=
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-remove-wait-on-page-writeback-v1-4-6c35d6b3ad36@columbia.edu>
-References: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
-In-Reply-To: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
-To: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785689606; l=1958;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=E+7MzW7ymcOmm2fAOpewcVRXAlWP28GQ8bwE/xkarAE=;
- b=CGrtCZzmymnOg0P1AnYYYJJhAxmkHbTbgJSoW9X6pUAWQ24AQTP1LclOZq1dzmzHdLFh9Byxb
- fftOg/3aKaoDeb0vSDcCi66HsuVSw4joSRlXCjwpzGhun32idb8IvRp
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAyMDE1MyBTYWx0ZWRfXx45UKZ8LKlMk
- xrRtapogkOAcjhknp2ITRAgBeAZDXera/RadNbMPWuER26FVU83lEKSAH3gpmw+T1j2jC0yZ6RB
- jbkXqipbkB779KH9QyjR9dTl9M4UynByuKwpAOy2dVFJ3GFVXxQQ
-X-Proofpoint-GUID: P4W5UNuKzXApWfgYoMcr9AKX1vxm0omg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAyMDE1MyBTYWx0ZWRfXwhH/L/Scfppr
- jctxcMU4KOgTd6f4PdJFhIgGR+vW8wemHUzSLJTZzeAMNZO00g+jjcerVK1Dq0zJYYqXS0fxG8t
- Nb1G4fCvulfkAoyrdb5x29Fi3fGz8HF59FlAnC5K/uqm3+9+ubjTklGheVhhDMOJ7PhDA7G5z9R
- 9HsE6FDanjIWFzdNJ6AW5UvLlPkQQeVfL+PWsVjthhp/WfwP5AXS5EYl2xwd9212pO+y4S1f0ux
- e/jLtnaTl0/Rs+3Oyj2PLZFoq4ryajLvyI/2kqrz2TaPjSlr5K4KcqOxHUmbYImd9bN8A7Hdm1j
- /GKgU3Mzoj/K+ALUqGzDZDTQ5iFUWoj4/5qumtnPnDD9BLBoXH6zYbZ+Z7NL+TGl3Pt3YHP1dgy
- rWA2O078pJoo6Fb9jNfhuHIPznt7yQCzDiYWi8UO67x40iV7wCqCPDPcuRxDKLBAEY9507MwFSA
- p5hEgQlp5FUjf5NSc4Q==
-X-Authority-Analysis: v=2.4 cv=G6ss1dk5 c=1 sm=1 tr=0 ts=6a6f7616 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=C4zMR0+CEq2lM/mtmjScOA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=7ovMhKOaTh8UDYQOW-cA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: P4W5UNuKzXApWfgYoMcr9AKX1vxm0omg
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11863
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=10 malwarescore=0 suspectscore=0
- phishscore=0 adultscore=0 clxscore=1015 lowpriorityscore=10 bulkscore=10
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608020153
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AD66F100009
-X-Stat-Signature: jcpidco7cgga3471ukrkjw9rwzf7x39t
+X-Received: by 2002:a05:6808:2228:b0:48b:5dcb:85ab with SMTP id
+ 5614622812f47-4af5e07d704mr12408667b6e.8.1785690422033; Sun, 02 Aug 2026
+ 10:07:02 -0700 (PDT)
+Date: Sun, 02 Aug 2026 10:07:02 -0700
+In-Reply-To: <68dc3ade.a70a0220.10c4b.015b.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6f7936.13bfb6d0.1ecdd5.0272.GAE@google.com>
+Subject: Re: [syzbot] [fs?] [mm?] WARNING in path_noexec (2)
+From: syzbot <syzbot+a9391462075ffb9f77c6@syzkaller.appspotmail.com>
+To: brauner@kernel.org, christian.koenig@amd.com, 
+	dri-devel@lists.freedesktop.org, hch@infradead.org, jack@suse.cz, 
+	jhubbard@nvidia.com, kees@kernel.org, linaro-mm-sig@lists.linaro.org, 
+	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, 
+	sumit.semwal@linaro.org, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: DD25E100015
+X-Stat-Signature: xms9j8331jnc53c1in9d875mi6j3rid4
 X-Rspam-User: 
-X-HE-Tag: 1785689623-237372
-X-HE-Meta: U2FsdGVkX1+vnC7PtbTj3HoMMfGnErK2ynw7K9Hp2NjQ3gwnhDk1w2LTePIvasMkP0hVgR8zVtz30sOXS3SVex8cfmwF7kVoir2jXE4agtYrc5Oxogy43+ceZJ6h1lmP76k8HKXOBpFyge0KA5mkmF2rjC89EMDwpcKjT0QyGCf9mAbrHjGURFR0xzBaeTfikbQNLZtACKja4/DfQDsNf2sUggmyaCGu4/FMWEiPVgj+14+yhBNlTjwDlVx0IEcp0d9SWBlTPVXW0IljlOKtNcqXljxsssgz7aVhmOcqKOg+rtaEJqNvR4mAC3N/4kRFX/Xfm9ctGh1HlVq1kzC8bwK5g+6ZnBEnbZBO6BEgACWlbUKkqSZ5hq+bK8wQkZmiVxVbH5FXg9I2FvyJ9ktP442mTxGV1h0lPx90xUcdPZKUM1IEoG9oJIrJkbFzd1VL2zeCctfk4xp+07RxRk5FErkMwKtwhdbx8zBMiQkF2rtUe42aJR51KKgnmzkP+qwngk9a+sXEPR99TRiDL8V2kD39cAXyI3zGeUqVcCIKfblFjM/hph9S6IBIcLLqTkOyVYDzwStJkP3CnmCZUh1rO80xSPn2tysixCSRQSm0/QamNLN7CIecjIxZeia5q4ugsQtl7HWoD1lHwc4BYmiDsFMBns4Q781FdPjvzNOGR9kMEtXCjM6Px+KVLNGMYiNeEDYSUIc8GAfDMRpOiewzzsMtnHSZjMbkfdmltnXoFGdfDFT/2FEztPkV6lcpo/zc+t7iuozhS+BdQlYbeqehA1gXx2dkzg9TDakgvq37tP4m36J4zftuYTmk5sgIcYuI64AQji9h1mIpBYYLGhAdGyLTWakyu9Mv7rdHRJFjamGVzXnObsCOonZDUR6ybz2HUZ5/edDEPRCMkl3rmzbU/HZCM3lLuiJsEjEb6OSXw0XbyQmKyb+vfTuXkprepZ+QStPK12jfRkmEC+pTt45
- bAMiGg8R
- wP1CCSwJ7IQC1/qlW1+MWZW/89WCTthX+Ra2if30jgYZL7l9jU1aPQlCkQVheMBrf+yQ0F558+d4ws5Zh1Ogd4JBEj736gvWPEFSecB9RSJKa05xoXRckZDiGiSIy2EGqsnWIyiqKLCfWTvz3s9pOSHpAM1cLgIx0Lo/0NyfgmMQFWFcMPHY2WVWt/CUXvrrVY4mQii/fYrdRLeDkhIkbh+GTnK87G471IFSIWYVtHArWr41VJSnm0TYvEGPPvOgWXZJ4cAtEUdZfCzI+8XPcYPWnvdKF60t/BcnFT+viN4/ljBLYvA2ASao+qgLilNHpY74cfmyvLh7gMOuUdEz0g2qNo72bLQ7P5gMHzrT9/KZWdI9JY40Jk7se4dSNNf3/LYHpJtmkHF7zThs=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785690422-408809
+X-HE-Meta: U2FsdGVkX1/QwR5ZnCFPoiHMEQjo79Avl15lWSSxuPKtQYb0HKXZEKIx9R0o7y6NdLWWfJ3Y6pG/0FbMS+ljNEfycSs0hkTUetK16/kHpGQ1znRYbUsr5Sy+ItdPX+Y+ALJYptB1c1W152ReQZAz9zfG0rOXDgYPA/yoliC6pJpVEK24GIDFmEKIDAQ85vOAQAGZnJNprP+JQGpbHGowgRenZlCpDRug26vILFVbJUCKDSQjtyCGXY+3nIQG+5TOdGHFHXMyYN6ARWzkxkHy5wOSPtQutgv581kkqb71YTfiPamiar9cZagxY1PATiKYqRDkxOJ8HWqIdRmlj4YcSGx1oPs9Czh5N/v7rkMccfkPKUi96UjuKXQfS8PEOvYU94kikn/0ZZwRpm4ivnQQyXGHE4MjQXjS3NGhfRLiZIXHcD0DyMgkcLQVXtJ2RCS8ivu6zLmijQnkVQ6qRb73ADNpvOY5l1Wu29e9Q0gMizJpgK9TgWO/K4qqsjN/H0ah9sbioU1RnNRR85b1ROxrOLgY9T+MlRVYvongULokYxkVTJrM/AxKa6tH2xklnega+O1KmDZ3Epujkd4uOkxtXtaTRGD5NECBGKqecQvRP1V47KpY1KtjpR4B5Hx87f1x93Ct7MZSjagcpziQn5MHDCxivkEuFTH5T0scOcldxEJyQJuuiHQnFfPhVzEZLAOMcNpGRPzV+4JrF3nggQ2IqgwRePNc45bGFPzRDGW34kguCQ+YznPCuIpgkFbFZ77EMKQ7HmsuiSzyL6d66vwLYmCQeCxmwccSO5HtHIgWCA+IGu5OYtsKk/X8dXw+VqmK5Ue/uXNPof8hVXXEZzL9ysFa45kYkjICSVyTjfQiKb+0wxIeABI+w6Qd3gVRIuyFhWZZWDGrlnIyNnjndDl1Mk440BqeyQNCn3tmG03vq4m/J21t+tzF7G2zREIAGaqTdHaoE4JTZoXVTtnTjwQ
+ 2bHciRrX
+ nqlWtuncImGmqBz4p/FSFz8Rj2NHd/xIyW3PXdAKaAkQ5XLMEL3kVEZ3c5+PtU4gK70sTUzurR17MO75CIcHqPPB16dTBAe4HMRmDAnVzz9zLyKgJzAL5ObnM/zPYUKDy2efNqgJp/3alRw20MszoHjLOfZyjgQTWndDV15nc9igOtCXXkq/nv140AUTCtQVDXKOl9g5+P9URwNsq4lFwy3+GbB+CtN9+ytG3T2iOicxxOXTgqD2yIIFrjQdPeGjVFq7PGtQIWlPx5UXg/pK2zeWDkHrYAbFTpdC1pQvXO0pc7E28128I0dioyOQc/6v4qY8EvPKxXbXF7j2vbV1cOXjcD2rmSSqcEg29AHtKKDOJHBP0J11NJH5hN3NiHAZs9b71npiVqCTEXBPwGDMl9VxItAI0f9NSjxYWG02L9oMQwpwQbUo7d0vXEOZDFBFSaJSa5gTAYEW3fVxsqpoEA/eAE+Ce7HwEqwdTdJLbzOSdAn3+dHnQL+kYtQzE4aQns7b4K+7mrbsxUuhANt+6UCtSV2/uF6pwBejwkGorKDQ1LioHS/sCT+Xi8WaXrX5zQENoG4ViCg1+VfHJjKJMLzh1td6BsGBuOPdY6b4HUVJ0tfwre9nsfw4JuUy3tDKxiqoqUEYxpQH0r9T0Z2oVwcrqPIaxotxGy7+ZbH6vx55fH/LoHw7EFuJGNRwxrefbBzR6JqtELh2UF39kLlxTs1+YtU1Bo36trPt2AqGLGRlyz+2y8nZlBjKtgMIKgMXmbgB+cu9aDqZ1lb0AGLf8EezBvP0CYFDwx/8ZgtpgErSr/3KAJEavYS3CNvQ9Vu6//UwesArokR241oexmKFKLt7LtnhSpZ+Izuf/quY1riPxNkwi25mOf/QvIS514ZVPJ8W1zdxB8F+ueQEtlvn4/kSTq3tre+FZV9d6K2Qv1PM6KuLFqSzm0LhAoL0yI4Nx8qmZXi5VZmo6YpTmo88FtUoTUKeL
+ lmpRC3LO
+ F+/0w9cQdVfJTCHyEk6AB5H/goOPmirINHMklWbbIUhNyEaBiawl3uSmWE86K/bv2aqGI19Yioxd0mYpUsrs3NR3V3VAiaW4j/oKdQpfLbS31aFOssdKdETv7LvG/nhy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,59 +102,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert the final caller in get_writepages_data_length() to use a folio
-and ceph_folio_snap_context(), then remove page_snap_context().
+syzbot suspects this issue was fixed by commit:
 
-This drops the last open-coded use of page->private in ceph's writeback
-path.
+commit 6de2aeffabaafaeda819e60ec8d04f199711e11a
+Author: John Hubbard <jhubbard@nvidia.com>
+Date:   Thu Jun 4 02:53:14 2026 +0000
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- fs/ceph/addr.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+    libfs: set SB_I_NOEXEC and SB_I_NODEV by default in init_pseudo()
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index f4aaf9a5f196..702cf5fc1eab 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -29,9 +29,9 @@
-  *
-  * There are a few funny things going on here.
-  *
-- * The page->private field is used to reference a struct
-- * ceph_snap_context for _every_ dirty page.  This indicates which
-- * snapshot the page was logically dirtied in, and thus which snap
-+ * The folio->private field is used to reference a struct
-+ * ceph_snap_context for _every_ dirty folio.  This indicates which
-+ * snapshot the folio was logically dirtied in, and thus which snap
-  * context needs to be associated with the osd write during writeback.
-  *
-  * Similarly, struct ceph_inode_info maintains a set of counters to
-@@ -68,13 +68,6 @@
- static int ceph_netfs_check_write_begin(struct file *file, loff_t pos, unsigned int len,
- 					struct folio **foliop, void **_fsdata);
- 
--static inline struct ceph_snap_context *page_snap_context(struct page *page)
--{
--	if (PagePrivate(page))
--		return (void *)page->private;
--	return NULL;
--}
--
- static inline struct ceph_snap_context *ceph_folio_snap_context(struct folio *folio)
- {
- 	if (folio_test_private(folio))
-@@ -697,7 +690,7 @@ static u64 get_writepages_data_length(struct inode *inode,
- 	u64 end = i_size_read(inode);
- 	u64 ret;
- 
--	snapc = page_snap_context(ceph_fscrypt_pagecache_page(page));
-+	snapc = ceph_folio_snap_context(page_folio(ceph_fscrypt_pagecache_page(page)));
- 	if (snapc != ci->i_head_snapc) {
- 		bool found = false;
- 		spin_lock(&ci->i_ceph_lock);
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11c53db9580000
+start commit:   ba3e43a9e601 Merge tag 'soc-fixes-7.1-2' of git://git.kern..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=65472e27d1590a04
+dashboard link: https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12a08f2e580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1697af2e580000
 
--- 
-2.39.5
+If the result looks correct, please mark the issue as fixed by replying with:
 
+#syz fix: libfs: set SB_I_NOEXEC and SB_I_NODEV by default in init_pseudo()
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
