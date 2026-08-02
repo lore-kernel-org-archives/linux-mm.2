@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57636C55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 19:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0CDC55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 19:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF8066B0096; Sun,  2 Aug 2026 15:53:14 -0400 (EDT)
+	id 2064D6B0098; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECF726B0098; Sun,  2 Aug 2026 15:53:14 -0400 (EDT)
+	id 1D7486B0099; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6FDF6B0099; Sun,  2 Aug 2026 15:53:14 -0400 (EDT)
+	id 0C6D46B009B; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 99D6E6B0096
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:53:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1550240553
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:14 +0000 (UTC)
-X-FDA: 85057378308.22.14BE06A
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1EC11120004
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=Wli25CZf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="j kkO2fa";
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9B4D6B0098
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:53:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 55001A1D14
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:18 +0000 (UTC)
+X-FDA: 85057378476.27.B207621
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 669AD4000D
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="k Nz7ivY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V/LoVwbA";
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785700392;
-	b=b9jyz1hXJWytP255XOTCzAV6hMOSk7On1m2bpZyNxDAQendaTYQPNQ0ot2nV0cyHcy1jcK
-	1di7GpmtZ7922c3SNWSmnBgV+EZaTET+n/Lh0CesHW5cXrdVg4jaq++cX+Su87byXW3f4z
-	iF80hXUg7QysStIOa0vupE5H11NhLAo=
+	t=1785700396;
+	b=TDxS1DfNDdelKsWMct8jIgfSBOcEEHtgIQTSMh+4LYeexddI2L/PIDUWWCK3OS8glclgTk
+	6p2p0vwtE4vyUkDDS3NV89O+25jX7lsmJxUu3D9UG6AGm8Evd4GEPRK2/BL1dn23iMM6oG
+	9MvfECofOW6LciFsiibBs2hORFgvcMc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=Wli25CZf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="j kkO2fa";
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="k Nz7ivY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V/LoVwbA";
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785700392;
+	s=arc-20220608; t=1785700396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1WPM1DppkjKUgv0LPs11qP7SdNGZ55iE+fQR3xyAJ80=;
-	b=m0MgSwzBJEfONPb1Q2vknwRYfTrsMCZsTdGCMB4nrWXwSo9XSlnuugYToL+D3oxT3PHtZg
-	zEh/SG3ybRlEhLkC1JeNOJ1wiIPvVXlX2uaT6CD8iyaj7LRqsf1i6j+vClApy9uvlADbep
-	UyLSCqrVaci5IMjIhSqXj2fXr5Rx2Ts=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id B3673EC0098;
-	Sun,  2 Aug 2026 15:53:11 -0400 (EDT)
+	bh=H44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=;
+	b=Cdh20+Pbscdkxv8qDqlO3SaF8rAHGX83q/t95l803BYDUqpjDiymEOSumL8ICmDbp9/txn
+	FjLScUlW1oXn6rMfxQePVjY7QZLVkEPaIdryii0+LoVeDgVWUPrsuo22xawXMNJS74UOiM
+	dtiHtqIxiIkkkP0wPPYOR8v6jdbHOk4=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id EC3AD1400056;
+	Sun,  2 Aug 2026 15:53:15 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sun, 02 Aug 2026 15:53:11 -0400
+  by phl-compute-04.internal (MEProxy); Sun, 02 Aug 2026 15:53:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1785700391; x=1785786791; bh=1WPM1DppkjKUgv0LPs11qP7SdNGZ55iE
-	+fQR3xyAJ80=; b=Wli25CZfPZBdyUYeoHkMI6Vi/yyR0o4PVljO+K7aBBweqAKH
-	vy4pt1FgkR5HHC28Sut7skVWp6hyML2cALp6sIb+AEAG7paGH9R/yKcOIgSMxFeS
-	X2D0UfS+AsCbIROcqqYrfZPNsqRRG9z1WXaL43AdT9pM1fgJdo4Nvi4p2ngdG5ri
-	xQWOi8nbDcGerKmTHb793NaaU9ti9UHrkqgKz88eEKoZDCRwCNFIdt4gAsgQ0WQX
-	crMqCdzlwhteHTPuMrI4nUGFD3C/NGONv/d6BCIbqjxUL9otW288ktDN23UfjDty
-	/QiMH0zGyHvogQdmfGb3yLo3nLIzIPnlQQnx3w==
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1785700395; x=
+	1785786795; bh=H44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=; b=k
+	Nz7ivYDag2BKut0ro5VbcV/4kBFwahLe2YjpLoej9Jyi+ixkAEdALVL2Af47PFux
+	J/X1n2m1RE3Mtml3fpY28gaQ50mjwTFpplW6PcV0/jivcGK1o56SVk65a4aTZWjs
+	0blXcDeARdqn/juo34WKHZA3DpqC+q/VqME8byj4DKvM3J7BpCOCzczNGNvcEHnE
+	EUt51VjqEokvRDWl/svtQ0CbWuk6oBFTY+bCJu0OoJgRK6kwTa9gEIFR3zHXkuWc
+	B7OzMsDKcZpPzGR0CpVJynuWPWZ3ZL60OsnnSMBJ2V2V9d2lY33lG9tNk3V7/w/k
+	zDGmIw1JlpxsvRPqeYy1A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785700391; x=
-	1785786791; bh=1WPM1DppkjKUgv0LPs11qP7SdNGZ55iE+fQR3xyAJ80=; b=j
-	kkO2faSH2qqbw+T00QbtAO4xgPflQrLgoP/jfVuvCI/JzosxCvugK+gG0WRa1ylj
-	56Axndz04/lrJsVHMXezyCzcrCwRnRn4+pT2bMfRzJwCZqhCALMpmLGDFRKvWMLw
-	fecC31hR0rY2Fu/FREdUIbHiaOvzoKlIfBq1UlPUW6QYku6t3L9aRXYHwnYaUuHX
-	1+0A3nm66TvNVO69Tw0XCPL3d4SOLoPCj7xCYJVausQiI2lGCt0IhUwsJ3REYWQ8
-	zFwHJ8DC68oL6N/oj2blWOBZ/pzo4DOulbVXM2c7fhiOTBENUZvxJipgGUBq5P4M
-	fNCxabwMllF5ylrIfZ9Lw==
-X-ME-Sender: <xms:J6BvahdyZ1Z0qbKr44sYmiMCHEch0_di3GVfGYwhDEMuArrnZiHlKA>
-    <xme:J6Bvapvle4Sw_gJPuG4kjaDJzNRrWYzSaRJ0fEBI7xcG3cQq7XbM9rpfGbnSfwiAz
-    z_CT5QY5M9ipkI7B_P0TRuvo2j1uZRJI9aMFJg7yRv6j4Jo_gxtKII>
-X-ME-Received: <xmr:J6BvaneiExRAj_AZpfIdrTEbcowUduzT_pscTnRIyhTiP56GglK3jWlkfwg>
-X-ME-Proxy-Cause: dmFkZTF0jcSSKFGDg2KrIu5c43P4SsiipwcvDQBe+CHxos2n8PFgvSXAdv5YVW583HVAOz
-    W5evq6qe09LpHqloXNM1K7VWF721j2bpam5IryqVMcYz9qouNwbpBEKv3Y5gifbeJAqW/Q
-    YZQrbB51yLEk86mWZaGZ1Drq0Xy949i11wvFP7mkSWE3f4+XiyFqs+bTi+V6AVpUjNMMFr
-    yeY2fCKzWlrX4GavSe/JRyGqxABGArlOuRBA0IP4mMA1yNK8fSDYGTdjzDrtr8AjwNqVIi
-    3BcHDiClTVSc/WD5f6J8XCsMYF+6dE+0Mr4gWnl6eMmh6FUU5GqCPEjsceh07AxGuRDdN+
-    Mp3rzXyvTq+D0mEH5/Ucwuk1nG5jG3LFCFh30C0hEnfxRqaW+SrVC9nZQIVO1yWvGsXy9F
-    r+nirxscbPhY67oKZa+lnbjq6d7SRR4ufPvzjKUEzGg7cxqAud2bfbq9sI5eoES8VJujED
-    W6CgeZrF7vP4Z+MCGj+D+rXtWwOEiUkBy4spPxX3ShPUPosw0Cq/im07TlCwQgFT6VDqIL
-    f8N7nijDyr6xCe8fXjY8DMvjYzCvkkh7x0DLLodIBHzNzBf4K4C6P0K+M1TesMrsICNIZo
-    wfJLuZBVgQ5R7ie8ivhbe8NDc5pkn4wjFjqY1etOwigorFvV2gRqfYlnXQyQ
-X-ME-Proxy: <xmx:J6Bvatrdc0MZ66-DzBzwlFyWGfWYv2j1NII_V5-6MSI86-N9qrrSPg>
-    <xmx:J6Bval-VXTc94xGLiwqgQcSPnGfPeQNpCEhGw1YeQG3up0hIJtzTyQ>
-    <xmx:J6Bvam5K2NKG1GtC4-x83lr6NbaCOIeEWUDr--rTQu58EW4_6tPy_A>
-    <xmx:J6Bvanj9FRLFGp2SMGRQR9DZCGO6NII2iZQ7SpJ8_x02pCFrYRhMFg>
-    <xmx:J6BvalX9NCcC5kfDItu38cQISPYpFXyInvdGjBANVlgGurUFxrYkjWdT>
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1785700395; x=1785786795; bh=H
+	44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=; b=V/LoVwbA1IbgqMEGa
+	H24kE8AQoXybM2lBxYJFwN4mDDGYX7JA5OUpVY2eSRJXJxHvqfW4Iz8p74d8maUf
+	TYIYFENy1CIp/Zbav4g7hx4Ei+NrlGhHEtzzJrwZ9E0we3CoV8ExZUAlJpIPCrqU
+	bAljleKHnp4Dz9xoFpNfqaT7Gj9+RVEgCCSRVETi0TiiED1q1aMWOul5bnGF1KUD
+	hNr9aaOrJESiBPIArQ55pX15/frvXqG5vWKPamWLsbzmsuwGihV3jI7/eS44aJak
+	gjZXnJrtyZA7YcvOA/f7K2TJT5H6wCaRddNOomMcSVYwGIaZh4SDTy8zOD75mKo8
+	bP8pw==
+X-ME-Sender: <xms:K6BvakRh8eom8_Ld5GSEQkdMWuOrTn1_JS1yC5GcYl09VEGEiMichA>
+    <xme:K6BvasQplTOME6kZ1Uya8aff57qkpjA11hu7aFpMB-grxSDtfKbkQwZgQfCuxCYFY
+    CcIivhada8MK0FdWbAlsyJKV7VvRA6g0xfikiZJklqE83D_ikSmaoOp>
+X-ME-Received: <xmr:K6Bvaux93rgGQLjmDdat9CQA0sFKmd4qU-uyKke-w4D_zMdWie_C79k62oA>
+X-ME-Proxy-Cause: dmFkZTFcbv35QwNbwWPHQBcJdrWasH4YRFOBaNWig98oa0GgLD3LmQrthvyDgK5JnDhp96
+    dBkNywOXlTP9Hby+cm0vRQHofuB4BhsdtVcBrMer/A2AOpegfr9Hr7RYzI6OqquxWhxeXC
+    aB5bOw4cR5G6EDzO4v2r94SJnXRDYvi2NMwyCB/quID+suEuw0TjLUMYjjQ5pFm1F3OqpQ
+    Ctej7rOharBpUeBz9hjZojzUlseCYYYMV+BulSa6+jD3O5m4ZOeULsSyQlLb9bciCyrhiP
+    bT+z0cGYr8PFizBGTpPnPZCe+jZkx/DQlEsoaoSV2SjHlZpE6q2+n/t1AcZaLqu1qPGmas
+    PhunGhbdXSVZZ0JW2Q7u2nd7H4XKfvnaBGal6+JQcn3sAZmJmQi/ZpIuGEya+WRJ2S+d86
+    vxuCjftE5heNijEnl+FTv2HJYJjIZgU9pge1DM+9loyjS1KVWWWm/0TYqsnaUEWxQ+MIWw
+    gG8Bj5uTuWOLL9k/NeM8rR66FsqQ09OYUZ8FlGkoxsmuh/Uuke9lLp3v92RwsVo8ecKtww
+    TryvXTNqp/4AxVhP0g4gAko7bDM6IlXDicRZiOqygUSyw9IXXAuAeTnh/OHn8my296Jwm1
+    uEBU/1jc1apLoQukcKLULVKlskI2rytGv0n8FgG4Xq9cXjyfAtOoDLD4jhCA
+X-ME-Proxy: <xmx:K6Bvaqts2nQDudW01QQH8DIkKgJnWBGlaeYNNmv0PNhMyvGwKqNHKw>
+    <xmx:K6BvalwqBEsxfUEs-kVa4pws498HnLspE54o5AEYlTYZPl3jjpA4QQ>
+    <xmx:K6BvaicI3Zlqy-PQI2z3VPGQIOZPcUV2kwyU4FuEyJlLKYRYVWZtNw>
+    <xmx:K6Bvaj37Gma1iABQWWCQQKcwidQqpuqsZBc-BBe9WfonAwZeX5MqDQ>
+    <xmx:K6BvaiNjCW6LUDIX5UaIFKBG6pyQGm78sThDIwuE-cjopUTeq1-2rXK8>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 2 Aug 2026 15:53:10 -0400 (EDT)
+ 2 Aug 2026 15:53:14 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -125,23 +124,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 06/16] selftests/mm: add khugepaged race harness
-Date: Sun,  2 Aug 2026 20:52:38 +0100
-Message-ID: <20260802195254.1937477-7-kirill@shutemov.name>
+Subject: [PATCH 08/16] selftests/mm: skip collapse_compound_extreme where the PMD is too large
+Date: Sun,  2 Aug 2026 20:52:40 +0100
+Message-ID: <20260802195254.1937477-9-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260802195254.1937477-1-kirill@shutemov.name>
 References: <20260802195254.1937477-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1EC11120004
-X-Stat-Signature: geoafyothx57zrye1qo5jreq8ybrg6zk
+X-Stat-Signature: tbj1zcw6jugdr8o1cd5nus5rhw4to448
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 669AD4000D
 X-Rspam-User: 
-X-HE-Tag: 1785700391-121255
-X-HE-Meta: U2FsdGVkX1+Sc2y7RaFRQhIYkdGT4uZ7tsh9o6pQbmRLjTqZk+9n8zKBltyjeGsuSj0qnwRaQGi3r1m78WJwcaLvxsP2w40qmlDZH7U062wgH9LxouYKOjrFsttMtqBR9wWNMnkJo5zharEqk5LkEGuxqZPTDGOTKuwrQ3ul5H5IsfP+6Q2SSA1LycVRiqi8WRGjGQQZ4/ngY9w+vGtNCZ0RxxQx+IRTlYCmQgWvZAbzozJZHEyYB4rraR4pEOLGs40ZkAmIJ6ja7pyjtJuB/R5fhQTeZPYqxGRTWSDB6WGOnccekuj/A67G+O8sqttub/CEswHrT2hUjbHdiA5wcj+Wo5Ex0e1jlgUOyh4MaJEFYAIhpNPrxR5wFrFX9H9IA0WiqIsU+19xwNBWln98ZsufcBEkg8cdp0jmnEE4FGQjPAvaAJprLJTJiH/dpa8bXHTxf5o26ug5az+PJrRO0JI5gRaq1/3PhG2lmZMv9X1+vVvx3E0IBKphHr/u/vOcWNKerxttTNuqv67VkEbaG4Pgp7Ut8K58JnUF4lcuBPS1ycR1Q5ueJt3ekgp86dF7bvo08sBMgsjY1sWqjJ+1bchhqC3u9hBa8Ipf25DreUVaeKtFj22hPsk8sdBOdMktQGkCollrFnUXqynkq1W7yOVNsUrHOuBy+WYHfhiVEfST6udrgidcLyE5OXZ1A/Soi4v8DyEKw2Imb5T5YFoGrVpt3N0e2d0H/Uws4kzL+AxJMVOfeos06e5Xxxxhp+g3/KljCGjpuj4KFJGho+NM3yXh091fXwPwNV+gPip3ZJ7l87NHA9nJbbbpe2JJ3te0vMhg/kk8/qTURnoxDsRn2x3w8eQfVetWzpn7J4u4ddn2vomUF9dwGcecRuPnBpgr/+RLsoRQY7l0MJHj+0KXUoVNDn7ScLcBWzYdkw3ZhcMq88mlBgTmRgnI9uWgzCwWot55FwGZIdYZIpqucv7
- LaothPok
- QBqV0YhRcOtiO+wVAF/VmMVSfKI3hQE85XR4lTdU/sdkTbyzSqzZxczhWgBM+43UsLVMaDAZsjkpVMpRjQDnHH3eONVSs9AhKev8MgAGphxMgFJ1YcvABWJIeGLc1tV+CXmrY7smd1q7IwzlqQ9ycG637/3OLKvWIZleAFf3isjH2/la1Rc56wqXQ4XuNRdw6COkqmy5ON2wljIRI8JAZ80fSQPvuHXmJ3MnqMslsRO/awXaqXLqd+88lwU4IxkdpnFBpeypAxtOMHoZz7uNBcvWEJ91YTbr86dtZPKdbv9dJC6wLckaT6iUcFwlyuHix49p5Fd8HW17y9fJCxvuC8lADkLJuHjwHV3ztDzFCaM5eS+bJmq0GKPs+of9HxaYoquhSMBoxdn9k733aNv1fGVwZQZz6YYQnw1rPcD059bqpE6OCshaOxF1e6VgDlsuBPZfMfpguLBGT/5BGss+dda+Yorz2Cir58XtHCaQdNYFxoBs=
+X-HE-Tag: 1785700396-437965
+X-HE-Meta: U2FsdGVkX1+Z7Cir/d9EOQium0Xdby37JXu6l2tUlw5F8bQTVVW3xOyEr0/f3WfaQ/rk9yQ/V1yHCTAcvPwF+k/LRyCdXCBNQaprsWiDBOGXFhBjg3Ixwbl27RC1IGZmzBH9jsqYvYM937yRg2oSmJMoZFkBu6T2Prz/lSmRdj2aM7JoD/Syfn3R20qPwbFsle4GpJw6CpnShwtAVqsJZHXIRbcefLhiAVp4graNcrEyC6ZmKPZvFYGoYbUz3nnuL7ZlBQiOZwEPPDjOzh1k/0dQ/mUW/6okl2MBYqtvxsRQAJhjwuD5E8mnzprgl0JK4nn8mc01AAIw6CDBwxyyb0Qwf2uJ1Gq5Uo8G38xsDLs0Y8fLoxtn0Fa2VRYaAiop885mKeen2HKw3nVomCaEK87VOAvNnwfOdsrJ6eU7HMI1Q2pVKdmfE1EkwaETNY1RVfWUBD8HDH/6rCANElK32Ml3TpvGQvHnnbbIp3Ui5YAdkV6wlj3j/PI9PZV2BRi4i3ZDHpPFEZcS+5pFtzeq6vQaRYZiLugpYJJaOcx0jt/fMicfd2r5k3C6oRoBjfL17Is0svCeWsN0bXNNaqzEw4ZAEkQGsjyRsxbEOH3N7OhzGKpj4xayxzcx5RlDVVcQiNU2ce14xMlavIoMb13WPtWge1fJbOcnJah2M8Tctsy5YNEfwANEgAWqCyvFw/x3ikOil+XkS0HAJl7ktpXeqm1Ys1RNK6BF+SWghTbSf2nGDeH2YfXf+gJoGSNkh6Y8It393RLmJljxSww+FGXDbUQ5whiVlwVOf0+hkKUdjjBR2XftiaA70SYWQoNDta0d5ImH6YpJI7bqh07JJYmQf6FSIZjrjS6QVLffhnPxyi1rAInmnnGAVqkznXo4Y6z0FoE8N4YW3X3iYDNO+ohPwTv79mXYep/VBFuHu3IEZJzmlmDYKwOKdibSpmBidqoxCkO6IwXI5VvZ0cjZ9lk
+ OajGgoIE
+ 2UPM2fKis6gb28EVa2VKjzf6UIYahB1iBJR/ReYebWWJSfPs7eOc+g23HEvql2IMhczfvoVoLhH8Aoqxjv5dGpf83J484lUA//9/hFScxy4RKApqqcj6vnJrQwIIh/Ughg1+IaiCyxP6rqE8cPFq76zmbDk+js+ZWT7alUX5iHRe3QRobV0IiD6cbavbu+MFIyfogY8cKcg3sfNmMMZUv7sqjE2F49h6+IYcNZuuqH9YIj9hZUDQCToWSR0bdPje7J7EzsmdX6knohZvpnR99+47B4xPEfTli2mcbRiN+QsKy1zzVyd6JpRqNjbGOeLUfi74+QfYEoowJRchbVPqVMCyVfyT//pA09EjA1CpVqUwUGS+QSb3CQ/YJXipdXVKeLw1tHv0/Ho4Q+pdLAdgZt1JEi/dOGK3kTw+felaNeEULWfTL6Cs6V84n2D86oWl4LoPN9tQm5ylibKN9QB3A1y1YprUFiFc8ksWnvvxfTvQyZX6J+8InGgoyfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,445 +149,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Collapse serializes against faults, GUP, fork, mremap and zapping
-through a protocol of locks, TLB flushes and refcount checks; none of
-the khugepaged selftests exercise it under contention.
-
-Add khugepaged_race: two faulters, MADV_DONTNEED, transient FOLL_PIN
-(gup_test), fork and mremap threads race one of three collapse
-drivers over the same ranges:
-
-  stepped   khugepaged driven one full pass at a time via
-            khugepaged_full_pass() — deterministic extent per step;
-  free      free-running khugepaged (scan_sleep_millisecs=0) — soak;
-  madvise   MADV_COLLAPSE + MADV_DONTNEED loop — the PMD-order axis.
-
-All anon THP orders are enabled (inherit) and max_ptes_none is 0, so
-a window collapses only once fully populated; the racing
-MADV_DONTNEED then steers selection across orders as pages come
-and go. Every racing page must
-read as its pattern or zero, never anything else — checked
-continuously by the faulters and fork children, and in a final sweep.
-The kernel-side assertions (DEBUG_VM, page_table_check, KASAN,
-lockdep) are the other half of the oracle; runners should inspect
-dmesg.
-
-The racing threads share three PMD-sized areas by default, plus one
-owned by the mremap thread; -a overrides the count for
-memory-constrained or emulated hosts, where a 512M PMD (arm64/64K)
-makes the default playground multi-gigabyte.
-
-Short runs are wired into run_vmtests.sh; soak length is -d.
+Its fault-time THP construction (x hpage_pmd_nr) cannot hand out a
+512M order-13 page on arm64/64K, bailing the whole binary. Skip when
+hpage_pmd_size > 32M; MADV_COLLAPSE-driven cases still exercise PMD-order
+collapse there. No effect on 4K (2M) or 16K (32M) PMDs.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/.gitignore        |   1 +
- tools/testing/selftests/mm/Makefile          |   1 +
- tools/testing/selftests/mm/khugepaged_race.c | 354 +++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh    |   7 +
- 4 files changed, 363 insertions(+)
- create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
+ tools/testing/selftests/mm/khugepaged.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index 54eefd8f97bc..b3b26447cd23 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -67,3 +67,4 @@ prctl_thp_disable
- rmap
- folio_split_race_test
- folio_order_check
-+khugepaged_race
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 33917c76b871..046bae8d1eff 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -105,6 +105,7 @@ TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
- TEST_GEN_FILES += folio_order_check
-+TEST_GEN_FILES += khugepaged_race
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 81001e15765c..b43e060b4118 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -857,6 +857,21 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
+ 	void *p;
+ 	int i;
  
- ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
-diff --git a/tools/testing/selftests/mm/khugepaged_race.c b/tools/testing/selftests/mm/khugepaged_race.c
-new file mode 100644
-index 000000000000..b586a114e4cd
---- /dev/null
-+++ b/tools/testing/selftests/mm/khugepaged_race.c
-@@ -0,0 +1,354 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * khugepaged race harness.
-+ *
-+ * Runs collapse against concurrent faults, transient GUP pins
-+ * (gup_test), fork, mremap and MADV_DONTNEED over the same ranges, in
-+ * one of three driver modes:
-+ *
-+ *   stepped	khugepaged, driven synchronously one full pass at a time
-+ *		through khugepaged_full_pass() — the primary driver: the
-+ *		full scan+collapse path with a deterministic extent per
-+ *		step;
-+ *   free	free-running khugepaged (scan_sleep_millisecs=0) — the
-+ *		soak;
-+ *   madvise	MADV_COLLAPSE in a loop — the legacy-PMD regression
-+ *		axis.
-+ *
-+ * All anon THP orders are enabled (inherit) and max_ptes_none is set
-+ * mid-range, so the MADV_DONTNEED holes steer selection across orders.
-+ *
-+ * Correctness signals: every racing page must read as its pattern or
-+ * zero (MADV_DONTNEED), never anything else — checked continuously by
-+ * the faulters and the fork children and once at the end — plus
-+ * whatever DEBUG_VM / page_table_check / KASAN / lockdep report in
-+ * dmesg, which the caller is expected to inspect.
-+ */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <pthread.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/time.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+#include "vm_util.h"
-+#include "hugepage_settings.h"
-+#include "../../../../mm/gup_test.h"
-+
-+#define BASE_ADDR	((void *)(1UL << 30))
-+/*
-+ * Shared playground for faults/pins/fork/dontneed: several PMD-sized
-+ * areas the racing threads spread across, plus one area owned by the
-+ * mremap thread. More areas means more independent regions collapsing
-+ * at once; the default suits a normal machine. On a memory-constrained
-+ * host -- or under emulation, where a 512M PMD (arm64/64K) makes the
-+ * default playground multi-gigabyte -- pass -a to shrink it.
-+ */
-+#define DEFAULT_SHARED_AREAS	3
-+static int nr_shared_areas;
-+static int nr_areas;
-+
-+static unsigned long hpage_pmd_size;
-+static unsigned long page_size;
-+static char *region;		/* NR_AREAS * hpage_pmd_size */
-+static char *mremap_area;	/* region + NR_SHARED_AREAS areas */
-+static char *mremap_scratch;	/* well above the region */
-+static int gup_fd = -1;
-+static volatile int stop;
-+static volatile int corrupted;
-+
-+static unsigned int pattern(unsigned long page_idx)
-+{
-+	unsigned int val = (unsigned int)page_idx * 2654435761U;
-+
-+	return val ? val : 1;	/* never collides with the zero-fill */
-+}
-+
-+static void check_page(unsigned long page_idx)
-+{
-+	unsigned int val = *(unsigned int *)(region + page_idx * page_size);
-+
-+	if (val && val != pattern(page_idx)) {
-+		corrupted = 1;
-+		ksft_print_msg("Corruption at page %lu: %#x != %#x\n",
-+			       page_idx, val, pattern(page_idx));
-+	}
-+}
-+
-+static unsigned long rand_page(unsigned int *seed)
-+{
-+	return (unsigned long)rand_r(seed) %
-+	       (nr_shared_areas * hpage_pmd_size / page_size);
-+}
-+
-+static void *faulter_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		unsigned long page_idx = rand_page(&seed);
-+
-+		if (rand_r(&seed) & 1)
-+			*(unsigned int *)(region + page_idx * page_size) =
-+				pattern(page_idx);
-+		else
-+			check_page(page_idx);
-+	}
-+	return NULL;
-+}
-+
-+static void *dontneed_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		unsigned long page_idx = rand_page(&seed);
-+		unsigned long nr = 1UL << (rand_r(&seed) % 6);	/* 1..32 pages */
-+
-+		madvise(region + page_idx * page_size, nr * page_size,
-+			MADV_DONTNEED);
-+		usleep(rand_r(&seed) % 500);
-+	}
-+	return NULL;
-+}
-+
-+static void *pinner_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		struct gup_test gup = {};
-+		unsigned long page_idx = rand_page(&seed);
-+
-+		gup.addr = (unsigned long)(region + page_idx * page_size);
-+		gup.size = 16 * page_size;
-+		gup.nr_pages_per_call = 16;
-+		gup.gup_flags = 1;	/* FOLL_WRITE */
-+		/* Racing MADV_DONTNEED makes transient failures expected. */
-+		ioctl(gup_fd, PIN_FAST_BENCHMARK, &gup);
-+		usleep(rand_r(&seed) % 200);
-+	}
-+	return NULL;
-+}
-+
-+static void *forker_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		pid_t pid = fork();
-+
-+		if (pid == 0) {
-+			for (int i = 0; i < 16; i++)
-+				check_page(rand_page(&seed));
-+			_exit(corrupted);
-+		}
-+		if (pid > 0) {
-+			int wstatus;
-+
-+			waitpid(pid, &wstatus, 0);
-+			if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus))
-+				corrupted = 1;
-+		}
-+		usleep(rand_r(&seed) % 2000);
-+	}
-+	return NULL;
-+}
-+
-+static void *mremapper_fn(void *arg)
-+{
-+	unsigned int seed = (unsigned long)arg;
-+
-+	while (!stop) {
-+		void *p;
-+
-+		p = mremap(mremap_area, hpage_pmd_size, hpage_pmd_size,
-+			   MREMAP_MAYMOVE | MREMAP_FIXED, mremap_scratch);
-+		if (p == MAP_FAILED)
-+			ksft_exit_fail_perror("mremap() away");
-+		for (int i = 0; i < 8; i++)
-+			mremap_scratch[(rand_r(&seed) %
-+				(hpage_pmd_size / page_size)) * page_size] = 1;
-+		p = mremap(mremap_scratch, hpage_pmd_size, hpage_pmd_size,
-+			   MREMAP_MAYMOVE | MREMAP_FIXED, mremap_area);
-+		if (p == MAP_FAILED)
-+			ksft_exit_fail_perror("mremap() back");
-+		usleep(rand_r(&seed) % 2000);
-+	}
-+	return NULL;
-+}
-+
-+static unsigned long now_ms(void)
-+{
-+	struct timeval tv;
-+
-+	gettimeofday(&tv, NULL);
-+	return tv.tv_sec * 1000UL + tv.tv_usec / 1000;
-+}
-+
-+static void usage(void)
-+{
-+	fprintf(stderr,
-+		"Usage: khugepaged_race [-d seconds] [-m stepped|free|madvise] [-a areas]\n"
-+		"\t-a: number of shared PMD-sized playground areas (default 3)\n");
-+	exit(1);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	static const char * const thread_names[] = {
-+		"faulter", "faulter2", "dontneed", "pinner", "forker",
-+		"mremapper",
-+	};
-+	void *(*const thread_fns[])(void *) = {
-+		faulter_fn, faulter_fn, dontneed_fn, pinner_fn, forker_fn,
-+		mremapper_fn,
-+	};
-+	const int nr_threads = ARRAY_SIZE(thread_names);
-+	pthread_t threads[ARRAY_SIZE(thread_names)];
-+	const char *mode = "stepped";
-+	struct thp_settings settings;
-+	unsigned long end_ms;
-+	int duration_s = 10;
-+	unsigned long thread_mask = ~0UL;
-+	int nr_areas_arg = 0;
-+	unsigned long i;
-+	int steps = 0;
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "a:d:m:t:h")) != -1) {
-+		switch (opt) {
-+		case 'a':
-+			nr_areas_arg = atoi(optarg);
-+			break;
-+		case 'd':
-+			duration_s = atoi(optarg);
-+			break;
-+		case 'm':
-+			mode = optarg;
-+			break;
-+		case 't':
-+			/* debug: bitmask of racing threads to start */
-+			thread_mask = strtoul(optarg, NULL, 0);
-+			break;
-+		default:
-+			usage();
-+		}
-+	}
-+	if (strcmp(mode, "stepped") && strcmp(mode, "free") &&
-+	    strcmp(mode, "madvise"))
-+		usage();
-+
-+	ksft_print_header();
-+	if (!thp_available())
-+		ksft_exit_skip("Transparent Hugepages not available\n");
-+
-+	page_size = getpagesize();
-+	hpage_pmd_size = read_pmd_pagesize();
-+	if (!hpage_pmd_size)
-+		ksft_exit_fail_msg("Reading PMD pagesize failed\n");
-+
-+	gup_fd = open("/sys/kernel/debug/gup_test", O_RDWR);
-+	if (gup_fd < 0)
-+		ksft_exit_skip("/sys/kernel/debug/gup_test requires CONFIG_GUP_TEST and root\n");
-+
-+	nr_shared_areas = nr_areas_arg > 0 ? nr_areas_arg : DEFAULT_SHARED_AREAS;
-+	nr_areas = nr_shared_areas + 1;
-+
-+	ksft_set_plan(1);
-+
-+	thp_save_settings();
-+	thp_read_settings(&settings);
-+	settings.thp_enabled = THP_MADVISE;
-+	settings.thp_defrag = THP_DEFRAG_ALWAYS;
-+	settings.shmem_enabled = SHMEM_NEVER;
-+	settings.khugepaged.defrag = 1;
-+	settings.khugepaged.scan_sleep_millisecs =
-+		strcmp(mode, "free") ? 1000 : 0;
-+	settings.khugepaged.alloc_sleep_millisecs = 10;
 +	/*
-+	 * Strict occupancy: mTHP collapse only supports 0 or
-+	 * HPAGE_PMD_NR - 1 and coerces anything else to 0 anyway, and 0
-+	 * also keeps khugepaged from burning the whole step in doomed
-+	 * PMD-sized allocations on 512M-PMD configs: under racing
-+	 * MADV_DONTNEED a fully populated PMD area is rare.
++	 * Builds a PMD's worth of distinct PTE-mapped compound pages by cycling
++	 * hpage_pmd_nr fault-time THPs through mremap. Fault-time THP allocation
++	 * is best-effort, and this needs hpage_pmd_nr PMD-order pages in a row:
++	 * fine at a 2M (4K base) or 32M (16K base) PMD, but a 512M PMD (arm64/64K)
++	 * is an order-13 allocation the allocator cannot reliably hand out even
++	 * once, let alone 8192 times. Cap at a 32M PMD; MADV_COLLAPSE-driven cases
++	 * still cover PMD-order collapse on the larger configs.
 +	 */
-+	settings.khugepaged.max_ptes_none = 0;
-+	settings.khugepaged.pages_to_scan =
-+		nr_areas * (hpage_pmd_size / page_size) * 8;
-+	for (i = 0; i < NR_ORDERS; i++) {
-+		if (thp_supported_orders() & (1UL << i))
-+			settings.hugepages[i].enabled = THP_INHERIT;
-+	}
-+	/* Base of the settings stack; the bottom entry is never popped. */
-+	thp_push_settings(&settings);
-+
-+	region = mmap(BASE_ADDR, nr_areas * hpage_pmd_size,
-+		      PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE,
-+		      -1, 0);
-+	if (region != BASE_ADDR)
-+		ksft_exit_fail_msg("Failed to allocate VMA at %p\n", BASE_ADDR);
-+	mremap_area = region + nr_shared_areas * hpage_pmd_size;
-+	mremap_scratch = (char *)BASE_ADDR + 2 * nr_areas * hpage_pmd_size;
-+
-+	/* Populate so the first pass has something to collapse. */
-+	for (i = 0; i < nr_shared_areas * hpage_pmd_size / page_size; i++)
-+		*(unsigned int *)(region + i * page_size) = pattern(i);
-+	memset(mremap_area, 1, hpage_pmd_size);
-+	madvise(region, nr_areas * hpage_pmd_size, MADV_HUGEPAGE);
-+
-+	for (i = 0; i < nr_threads; i++) {
-+		if (!(thread_mask & (1UL << i))) {
-+			threads[i] = 0;
-+			continue;
-+		}
-+		if (pthread_create(&threads[i], NULL, thread_fns[i],
-+				   (void *)(i + 1)))
-+			ksft_exit_fail_perror("pthread_create()");
++	if (hpage_pmd_size > (32UL << 20)) {
++		ksft_test_result_skip("%s: PMD too large for fault-time THP construction\n",
++				      __func__);
++		return;
 +	}
 +
-+	end_ms = now_ms() + duration_s * 1000UL;
-+	if (!strcmp(mode, "stepped")) {
-+		while (now_ms() < end_ms && !corrupted) {
-+			if (!khugepaged_full_pass(600))
-+				ksft_exit_fail_msg("khugepaged pass timed out\n");
-+			steps++;
-+		}
-+	} else if (!strcmp(mode, "free")) {
-+		while (now_ms() < end_ms && !corrupted)
-+			usleep(100 * 1000);
-+	} else {	/* madvise */
-+		while (now_ms() < end_ms && !corrupted) {
-+			for (i = 0; i < nr_shared_areas; i++) {
-+				madvise(region + i * hpage_pmd_size,
-+					hpage_pmd_size, MADV_COLLAPSE);
-+			}
-+			madvise(region, nr_shared_areas * hpage_pmd_size,
-+				MADV_DONTNEED);
-+			steps++;
-+		}
-+	}
-+
-+	stop = 1;
-+	for (i = 0; i < nr_threads; i++) {
-+		if (threads[i])
-+			pthread_join(threads[i], NULL);
-+	}
-+
-+	/* Final integrity sweep. */
-+	for (i = 0; i < nr_shared_areas * hpage_pmd_size / page_size; i++)
-+		check_page(i);
-+
-+	thp_restore_settings();
-+
-+	ksft_test_result(!corrupted, "%s: %ds, %d steps, no corruption\n",
-+			 mode, duration_s, steps);
-+	ksft_finished();
-+}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 6f42e35b5227..a8b6b839cb97 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -404,6 +404,13 @@ CATEGORY="cow" run_test ./cow
- 
- CATEGORY="thp" run_test ./folio_order_check
- 
-+
-+CATEGORY="thp" run_test ./khugepaged_race -d 5 -m stepped
-+
-+CATEGORY="thp" run_test ./khugepaged_race -d 5 -m free
-+
-+CATEGORY="thp" run_test ./khugepaged_race -d 5 -m madvise
-+
- CATEGORY="thp" run_test ./khugepaged
- 
- CATEGORY="thp" run_test ./khugepaged -s 2
+ 	p = ops->setup_area(1);
+ 	ksft_print_msg("Construct PTE page table full of different PTE-mapped compound pages\n");
+ 	for (i = 0; i < hpage_pmd_nr; i++) {
 -- 
 2.54.0
 
