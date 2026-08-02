@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0CDC55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 19:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E251EC55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 19:53:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2064D6B0098; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
+	id 77DD96B0099; Sun,  2 Aug 2026 15:53:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D7486B0099; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
+	id 72F216B009B; Sun,  2 Aug 2026 15:53:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6D46B009B; Sun,  2 Aug 2026 15:53:19 -0400 (EDT)
+	id 5F6366B009D; Sun,  2 Aug 2026 15:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9B4D6B0098
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:53:18 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 55001A1D14
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:18 +0000 (UTC)
-X-FDA: 85057378476.27.B207621
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 669AD4000D
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="k Nz7ivY";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V/LoVwbA";
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by kanga.kvack.org (Postfix) with ESMTP id 295FD6B0099
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:53:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 991DE14054F
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:15 +0000 (UTC)
+X-FDA: 85057378350.19.E966A5C
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BC585A0006
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:53:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C 6nAz0H";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=mq6bfxHo;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785700396;
-	b=TDxS1DfNDdelKsWMct8jIgfSBOcEEHtgIQTSMh+4LYeexddI2L/PIDUWWCK3OS8glclgTk
-	6p2p0vwtE4vyUkDDS3NV89O+25jX7lsmJxUu3D9UG6AGm8Evd4GEPRK2/BL1dn23iMM6oG
-	9MvfECofOW6LciFsiibBs2hORFgvcMc=
+	t=1785700393;
+	b=OJUYXmU3K+/fL623fGhRHg9XWeznc/ql5L9Pir5p1VAGbvtu6f0ys+jJqJhOVNnRgofP7v
+	LoC6/keDHbTeaIdT59ub+3UDICk6oyn3yI7nq9ppKBlX/Lw+0UKr7jw/qNVW7NpQMhqo0k
+	T4AC5AYBS9VLm/BkzCIA9zTrf5pTX4E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="k Nz7ivY";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V/LoVwbA";
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="C 6nAz0H";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=mq6bfxHo;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785700396;
+	s=arc-20220608; t=1785700393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=;
-	b=Cdh20+Pbscdkxv8qDqlO3SaF8rAHGX83q/t95l803BYDUqpjDiymEOSumL8ICmDbp9/txn
-	FjLScUlW1oXn6rMfxQePVjY7QZLVkEPaIdryii0+LoVeDgVWUPrsuo22xawXMNJS74UOiM
-	dtiHtqIxiIkkkP0wPPYOR8v6jdbHOk4=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id EC3AD1400056;
-	Sun,  2 Aug 2026 15:53:15 -0400 (EDT)
+	bh=/GalfQyREKxG2C3FQIdFi+JAjsDFcuy0z1FP7FGhoa0=;
+	b=tRT31TIGH5H1wZdyFjKJAJSVdsRWTqKDyHSS0YW+V4EOpX3RzB3DGfwbW62SU7M+el+1cl
+	zoVww/OCfXFFjeIjzHtl90EeLnmsO+6TgIaDHjZdrsF83Rix/ASQOQjxBZDerVAZvoLLsC
+	L8f21LX9clxB6izCeZML7v821c02FsI=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 472C9EC009A;
+	Sun,  2 Aug 2026 15:53:13 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sun, 02 Aug 2026 15:53:15 -0400
+  by phl-compute-02.internal (MEProxy); Sun, 02 Aug 2026 15:53:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1785700395; x=
-	1785786795; bh=H44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=; b=k
-	Nz7ivYDag2BKut0ro5VbcV/4kBFwahLe2YjpLoej9Jyi+ixkAEdALVL2Af47PFux
-	J/X1n2m1RE3Mtml3fpY28gaQ50mjwTFpplW6PcV0/jivcGK1o56SVk65a4aTZWjs
-	0blXcDeARdqn/juo34WKHZA3DpqC+q/VqME8byj4DKvM3J7BpCOCzczNGNvcEHnE
-	EUt51VjqEokvRDWl/svtQ0CbWuk6oBFTY+bCJu0OoJgRK6kwTa9gEIFR3zHXkuWc
-	B7OzMsDKcZpPzGR0CpVJynuWPWZ3ZL60OsnnSMBJ2V2V9d2lY33lG9tNk3V7/w/k
-	zDGmIw1JlpxsvRPqeYy1A==
+	:reply-to:subject:subject:to:to; s=fm1; t=1785700393; x=
+	1785786793; bh=/GalfQyREKxG2C3FQIdFi+JAjsDFcuy0z1FP7FGhoa0=; b=C
+	6nAz0Hegkhoqy/l4n6NMVUHb5XKpoUhF6jsII7z8lVkOIi8Fm8fRPmgN815q05qd
+	/D7nbBInNNMae6GhET1Od88zeMBG/C+XsVssIt3zrq/UKMEaAW8Plna4lgHpoA8R
+	/z5EbgL7AEVkc130Hks85wMKj1a0nkZtBa9Rkp/d4aMuEFBcMpsd4QLWUTGGZ9ZM
+	XIjxPCCvklNfoUHGLtHFVZDZmviMNBpAYvYVLq8JaAb9hIZrFBOq8hYCWTKTsatn
+	wu8IcegD5quLBx6zPhIV/elCEeQWDY1L1EtUS/yYKjzy4JI1HJgO4l2PKeisssoV
+	XpksLbajYSFKc/7oce7Nw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1785700395; x=1785786795; bh=H
-	44JK26m4Zj+SfIrO6VuSUoR2cZlhVi4rAW+EimBh4E=; b=V/LoVwbA1IbgqMEGa
-	H24kE8AQoXybM2lBxYJFwN4mDDGYX7JA5OUpVY2eSRJXJxHvqfW4Iz8p74d8maUf
-	TYIYFENy1CIp/Zbav4g7hx4Ei+NrlGhHEtzzJrwZ9E0we3CoV8ExZUAlJpIPCrqU
-	bAljleKHnp4Dz9xoFpNfqaT7Gj9+RVEgCCSRVETi0TiiED1q1aMWOul5bnGF1KUD
-	hNr9aaOrJESiBPIArQ55pX15/frvXqG5vWKPamWLsbzmsuwGihV3jI7/eS44aJak
-	gjZXnJrtyZA7YcvOA/f7K2TJT5H6wCaRddNOomMcSVYwGIaZh4SDTy8zOD75mKo8
-	bP8pw==
-X-ME-Sender: <xms:K6BvakRh8eom8_Ld5GSEQkdMWuOrTn1_JS1yC5GcYl09VEGEiMichA>
-    <xme:K6BvasQplTOME6kZ1Uya8aff57qkpjA11hu7aFpMB-grxSDtfKbkQwZgQfCuxCYFY
-    CcIivhada8MK0FdWbAlsyJKV7VvRA6g0xfikiZJklqE83D_ikSmaoOp>
-X-ME-Received: <xmr:K6Bvaux93rgGQLjmDdat9CQA0sFKmd4qU-uyKke-w4D_zMdWie_C79k62oA>
-X-ME-Proxy-Cause: dmFkZTFcbv35QwNbwWPHQBcJdrWasH4YRFOBaNWig98oa0GgLD3LmQrthvyDgK5JnDhp96
-    dBkNywOXlTP9Hby+cm0vRQHofuB4BhsdtVcBrMer/A2AOpegfr9Hr7RYzI6OqquxWhxeXC
-    aB5bOw4cR5G6EDzO4v2r94SJnXRDYvi2NMwyCB/quID+suEuw0TjLUMYjjQ5pFm1F3OqpQ
-    Ctej7rOharBpUeBz9hjZojzUlseCYYYMV+BulSa6+jD3O5m4ZOeULsSyQlLb9bciCyrhiP
-    bT+z0cGYr8PFizBGTpPnPZCe+jZkx/DQlEsoaoSV2SjHlZpE6q2+n/t1AcZaLqu1qPGmas
-    PhunGhbdXSVZZ0JW2Q7u2nd7H4XKfvnaBGal6+JQcn3sAZmJmQi/ZpIuGEya+WRJ2S+d86
-    vxuCjftE5heNijEnl+FTv2HJYJjIZgU9pge1DM+9loyjS1KVWWWm/0TYqsnaUEWxQ+MIWw
-    gG8Bj5uTuWOLL9k/NeM8rR66FsqQ09OYUZ8FlGkoxsmuh/Uuke9lLp3v92RwsVo8ecKtww
-    TryvXTNqp/4AxVhP0g4gAko7bDM6IlXDicRZiOqygUSyw9IXXAuAeTnh/OHn8my296Jwm1
-    uEBU/1jc1apLoQukcKLULVKlskI2rytGv0n8FgG4Xq9cXjyfAtOoDLD4jhCA
-X-ME-Proxy: <xmx:K6Bvaqts2nQDudW01QQH8DIkKgJnWBGlaeYNNmv0PNhMyvGwKqNHKw>
-    <xmx:K6BvalwqBEsxfUEs-kVa4pws498HnLspE54o5AEYlTYZPl3jjpA4QQ>
-    <xmx:K6BvaicI3Zlqy-PQI2z3VPGQIOZPcUV2kwyU4FuEyJlLKYRYVWZtNw>
-    <xmx:K6Bvaj37Gma1iABQWWCQQKcwidQqpuqsZBc-BBe9WfonAwZeX5MqDQ>
-    <xmx:K6BvaiNjCW6LUDIX5UaIFKBG6pyQGm78sThDIwuE-cjopUTeq1-2rXK8>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1785700393; x=1785786793; bh=/
+	GalfQyREKxG2C3FQIdFi+JAjsDFcuy0z1FP7FGhoa0=; b=mq6bfxHonPq8Benoc
+	6tRjC91Qwl+i8dM2qyAL31SGbN9L3XxePb8tbua+ueWOf2UH460LXW5nYqgVp1zg
+	DAuz24V4VRKKujqoQk8Iq6oL+gqXKSvJTfd2zqPnBKDAXLUwKDCD3iv4FQxBh5Wb
+	ZUz5S2aCuefi1VkI3jXXxMeuSvv9WzYkSojirnQyJkMhr/2IQI3Y/B1dU0htROpO
+	vT9Uh27K+OnD3S1FCZG3gbWI4cfdVaYq5ShWTHvPOMpCQfZ3ukNyMB3usbeAEexE
+	kAdhJPFog0TsZeRgikS22iXkaXuTZHvGMqCcv9pcha7mtqfWPDmt3gJX5Yj/OBsZ
+	sybcg==
+X-ME-Sender: <xms:KaBvaqS30jjklCgWg6CVTIYrA62shSxzseXhj5nQFkUURoOwiEwhiQ>
+    <xme:KaBvaqQwobAprdIO7Ph3yavdhOE7Ep9ietD-I8cmMUgpVUIgbh7qC5i-Dbu49J_GN
+    WDluF-hogELudzETQ0C6TLrxM6O4ZNZbPbruAKNIEG0Tc0Q3wQ7OGs>
+X-ME-Received: <xmr:KaBvakyrqlv6JBQcj4S45MDmuE0XFsOIm_40RquTR8oiuKbwhO44L9mAuNY>
+X-ME-Proxy-Cause: dmFkZTGeN1xI4bt1iclSzDFip0Bk/XaIhvbS/8i3JSTXfor37WXDF+RcNWPPd9pfiJK8Zw
+    2BrRRh4rnHFGERiD1jpqkpu4TBSJEj+dkjcrMZ9PB457VyyAOaPr9tioF0eAgQ73LLdMGf
+    ZnUc9d7R5xpl56ih9w8zQdF1AdPa5yFqJeaq79y1FNmaYwVg1fW3ZavvRb02VDPCTYSs5n
+    EKi2mK0TcmJbPEDbjm1vybeof8AWtEC76nwVjuGNoLmfYq44vTWlCkOqLjX+gcHHM4Q7iT
+    SPI3JBSpkIfgjo/e1nwt56byN8xWT3gnCcQMRcCsWQ2AE9kBILBwP01Qmf1NZFO2elKCXI
+    XkLOto1aBOC0cyJ0aBcRedijAUCRu75ag49n4uds8B5vtLBgS8ErmJEmXjo7fYAYYWI7JS
+    cu5tkEvFEJ2qbFcGnDKS6Lfnlp24okWHwGDHmIFrcJC3eAC0jJSvsTj1cJklnskvScRcrH
+    qkaYHCr9eu/VM244yipyyQCQWmD8wcY+Qev1RTM2TJ0RYIocSEvBgjdN9BfMrMoNi0UKgc
+    57FC67cUXuny0o2J+9N6RkBtbtoLuv0BiPrIduS2c6ZfeaMaMAbmEMgvSelijkkEWQ86RA
+    f0cFQ15eugH72v4Gm9qiXX2WIKLaYmb3RSpi75yCd8wTPoMezrbBSqcTOQDQ
+X-ME-Proxy: <xmx:KaBvaov-DUuCnv8AXxrALMZMKyCcx7VtDEbgPoAL0k_DGSgBBdbxAA>
+    <xmx:KaBvaryGiI4giROC5_Sl-AyVQtoRItwlZqJOQIOOS5c8CexEBwdEAw>
+    <xmx:KaBvagedtqxFWzYUXYapkyfxOpvIrw5caaRZVJrXRyAqA3i3WKtBlQ>
+    <xmx:KaBvap2eAGc_kvopij-uepQhgyz2UMynPM2pi9SD_paY-OYaE-W8jQ>
+    <xmx:KaBvaoOONH7FR7YmN-ziScF9kJf_xGOd5iLSdm8cHG0gJfpVfsslXZe8>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 2 Aug 2026 15:53:14 -0400 (EDT)
+ 2 Aug 2026 15:53:12 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -124,22 +124,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 08/16] selftests/mm: skip collapse_compound_extreme where the PMD is too large
-Date: Sun,  2 Aug 2026 20:52:40 +0100
-Message-ID: <20260802195254.1937477-9-kirill@shutemov.name>
+Subject: [PATCH 07/16] selftests/mm: cover a shared-source collapse write race
+Date: Sun,  2 Aug 2026 20:52:39 +0100
+Message-ID: <20260802195254.1937477-8-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260802195254.1937477-1-kirill@shutemov.name>
 References: <20260802195254.1937477-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tbj1zcw6jugdr8o1cd5nus5rhw4to448
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 669AD4000D
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BC585A0006
+X-Stat-Signature: 6xsf84weiksc9u17brtd8a97g79oyq1h
 X-Rspam-User: 
-X-HE-Tag: 1785700396-437965
-X-HE-Meta: U2FsdGVkX1+Z7Cir/d9EOQium0Xdby37JXu6l2tUlw5F8bQTVVW3xOyEr0/f3WfaQ/rk9yQ/V1yHCTAcvPwF+k/LRyCdXCBNQaprsWiDBOGXFhBjg3Ixwbl27RC1IGZmzBH9jsqYvYM937yRg2oSmJMoZFkBu6T2Prz/lSmRdj2aM7JoD/Syfn3R20qPwbFsle4GpJw6CpnShwtAVqsJZHXIRbcefLhiAVp4graNcrEyC6ZmKPZvFYGoYbUz3nnuL7ZlBQiOZwEPPDjOzh1k/0dQ/mUW/6okl2MBYqtvxsRQAJhjwuD5E8mnzprgl0JK4nn8mc01AAIw6CDBwxyyb0Qwf2uJ1Gq5Uo8G38xsDLs0Y8fLoxtn0Fa2VRYaAiop885mKeen2HKw3nVomCaEK87VOAvNnwfOdsrJ6eU7HMI1Q2pVKdmfE1EkwaETNY1RVfWUBD8HDH/6rCANElK32Ml3TpvGQvHnnbbIp3Ui5YAdkV6wlj3j/PI9PZV2BRi4i3ZDHpPFEZcS+5pFtzeq6vQaRYZiLugpYJJaOcx0jt/fMicfd2r5k3C6oRoBjfL17Is0svCeWsN0bXNNaqzEw4ZAEkQGsjyRsxbEOH3N7OhzGKpj4xayxzcx5RlDVVcQiNU2ce14xMlavIoMb13WPtWge1fJbOcnJah2M8Tctsy5YNEfwANEgAWqCyvFw/x3ikOil+XkS0HAJl7ktpXeqm1Ys1RNK6BF+SWghTbSf2nGDeH2YfXf+gJoGSNkh6Y8It393RLmJljxSww+FGXDbUQ5whiVlwVOf0+hkKUdjjBR2XftiaA70SYWQoNDta0d5ImH6YpJI7bqh07JJYmQf6FSIZjrjS6QVLffhnPxyi1rAInmnnGAVqkznXo4Y6z0FoE8N4YW3X3iYDNO+ohPwTv79mXYep/VBFuHu3IEZJzmlmDYKwOKdibSpmBidqoxCkO6IwXI5VvZ0cjZ9lk
- OajGgoIE
- 2UPM2fKis6gb28EVa2VKjzf6UIYahB1iBJR/ReYebWWJSfPs7eOc+g23HEvql2IMhczfvoVoLhH8Aoqxjv5dGpf83J484lUA//9/hFScxy4RKApqqcj6vnJrQwIIh/Ughg1+IaiCyxP6rqE8cPFq76zmbDk+js+ZWT7alUX5iHRe3QRobV0IiD6cbavbu+MFIyfogY8cKcg3sfNmMMZUv7sqjE2F49h6+IYcNZuuqH9YIj9hZUDQCToWSR0bdPje7J7EzsmdX6knohZvpnR99+47B4xPEfTli2mcbRiN+QsKy1zzVyd6JpRqNjbGOeLUfi74+QfYEoowJRchbVPqVMCyVfyT//pA09EjA1CpVqUwUGS+QSb3CQ/YJXipdXVKeLw1tHv0/Ho4Q+pdLAdgZt1JEi/dOGK3kTw+felaNeEULWfTL6Cs6V84n2D86oWl4LoPN9tQm5ylibKN9QB3A1y1YprUFiFc8ksWnvvxfTvQyZX6J+8InGgoyfQ==
+X-HE-Tag: 1785700393-526850
+X-HE-Meta: U2FsdGVkX19qOIhh0uw+TGlxUpc2AXVvsV6Fkpjm1G6eiL28wzbRE7BxctOkRnT9MYQh94BdFfZ1Y5nEyuy8gNnIAvck8VaLAA4ogboeZ6g4c/vAhsOk5NmkqPq8C+v1S12jzlIVdG2Dg39N1O7obumGDakAJApOKAp//xwHgKPglOcfEOlDtEiFqn50eB4toFxKlyn+UfyxPWrzxPHPA/XRIhdr1UNRhMi8Liq5Ce0hBiKXvodHU+N5tF/DHquxbQpkztpHuCO96DO8iJJ9BQjoUULBFEYq1UByDsvEWon3JzxgCrsJrMDJY5p2/HCyzNcS1gjMLLTfGrdb5cDrR4QSlUE0Phyc2FMCI2jleOHqN+AtTjrxY2A50MpFz1N8dsrGj96SsWS6PbATgT4te68vxDf3piQ+VqquOJanxesqo8d7eyBcv2PXZeUbJnJSeFEgZoFTHrrtWo0nVyf9KCNMApRLfMVQ1Syr9sT3Y1jT/qZXyzV5oInNRr6pxnesEAHTfHSGiP96bxZF+r8+iTCjYwnfgN0DfnkS6KSJdUSAzhWyWMR0Rpd+npqrIP/1gykIvXsHvPoce/LZkEAiFEqjvqlB2fZqkYZygqF1qcVZ/6calxocRaAhgZhjkgvqBRYHyUyAo/3yVr9oaqzZ9/ie6P6afOivyq95/DFa07+q1I1bpi1w86GMJBWS/jNAwUeaqgtzkaP498BPWyhyxTggHbwnPOqMTSpX6MG2P8SHvDFnt7ehbs4zGs/HZwK8NP9cZgWNWnmdtqNMP76nO+iI/9oJbQyMZtbdwFUSpOW82+IRM0F+XaGh56QNcWGlAb2ZCfDEMkG0oV94IYy6wR1g/eXo3Nc7X+bAQ+quzM4FPQSxHVsXImUhIC1jfwKrlbF/JJu2SwR5pZhcUpof17skzaqZlcdJ7UAk/8QYJEItv2mBbkO7+GGLEfbGHShBvbGhAz2FhdyRbIh0B4+
+ GXY/9TVK
+ +0TqH0FbDMnJio8sZOLFuxh0WHyVuAIskMMYPXMu8M4NhQvf1c9oeKWfnPzALR9cGoL/tRFXXtzgzHgNxPWqEyiG45fazjA8Y2zEGOXzZpRMsfXIzFa7tXEPIQkDwcfGtHd1PdkNKDTaSpzNth0Z9EkBzCJ2Rj9YRi21wQ7vZ2K8YGHKEPTYo+4ELEaxWuGpytgTwKQra+h/Le+ln54S69a9DwdK0O6IvibwpYUEGJ2aBJMSALx/8XJ1f2oIJqbB/9KhzwiN6x0ylxITEuPcKonWQ+hy3KIlMpGcH87OuP3p5OpulwxrCb09gnD/3g8h69W6bj4pBAWanx9F66vnSsQdEsz7OoW5VffW3JCjdkIrzrliez4jJJgeS/AtGgsTnQ7MMOEBNRHZmU0mOHdc3Rz2dVAyQuY9JGRL88kLO7ImMqlwzkIlHKn6K8W78onctyaJT+WK2MNhKf7Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,43 +149,100 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Its fault-time THP construction (x hpage_pmd_nr) cannot hand out a
-512M order-13 page on arm64/64K, bailing the whole binary. Skip when
-hpage_pmd_size > 32M; MADV_COLLAPSE-driven cases still exercise PMD-order
-collapse there. No effect on 4K (2M) or 16K (32M) PMDs.
+collapse_fork already checks that a fork-shared range collapses in the
+process that asks while a co-sharer keeps its own page, but with the
+co-sharer quiescent. Add a case that keeps a co-sharer writing to the
+shared range throughout the collapse: CoW must keep the two sides'
+content independent -- the collapsing child sees the pre-fork content,
+the writing parent sees only its own writes. This exercises the
+requirement that CoW keeps a shared source isolated from the collapsing
+side throughout the collapse, even under an actively writing co-sharer.
+
+Passes on the unmodified kernel, pinning down the CoW-isolation contract
+that khugepaged collapse already provides.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/khugepaged.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tools/testing/selftests/mm/khugepaged.c | 58 +++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 81001e15765c..b43e060b4118 100644
+index 65fafab06410..81001e15765c 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -857,6 +857,21 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
- 	void *p;
- 	int i;
+@@ -1047,6 +1047,61 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 	ksft_test_result_report(exit_status, "%s\n", __func__);
+ }
  
-+	/*
-+	 * Builds a PMD's worth of distinct PTE-mapped compound pages by cycling
-+	 * hpage_pmd_nr fault-time THPs through mremap. Fault-time THP allocation
-+	 * is best-effort, and this needs hpage_pmd_nr PMD-order pages in a row:
-+	 * fine at a 2M (4K base) or 32M (16K base) PMD, but a 512M PMD (arm64/64K)
-+	 * is an order-13 allocation the allocator cannot reliably hand out even
-+	 * once, let alone 8192 times. Cap at a 32M PMD; MADV_COLLAPSE-driven cases
-+	 * still cover PMD-order collapse on the larger configs.
-+	 */
-+	if (hpage_pmd_size > (32UL << 20)) {
-+		ksft_test_result_skip("%s: PMD too large for fault-time THP construction\n",
-+				      __func__);
-+		return;
++/*
++ * Content stays isolated while a co-sharer writes concurrently. A shared
++ * source is copied live (not frozen), relying on it being CoW - immutable
++ * for the duration of the copy; a co-sharer's write goes to a CoW copy. The
++ * collapsing child must see the pre-fork content, the writing parent only
++ * its own writes.
++ */
++static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *ops)
++{
++	const unsigned long shared = 64 * page_size;
++	const int stride = page_size / sizeof(int);
++	int wstatus, i, n = shared / page_size;
++	int *ip;
++	void *p;
++
++	p = ops->setup_area(1);
++	ip = p;
++	ops->fault(p, 0, shared);		/* shared prefix, pre-fork pattern */
++
++	ksft_print_msg("Fork, collapse in the child while the parent rewrites...");
++	if (!fork()) {
++		ops->fault(p, shared, hpage_pmd_size);	/* private remainder */
++		c->collapse("Collapse a range shared with a writing co-sharer",
++			    p, 1, ops, true);
++		for (i = 0; i < n; i++)
++			if (ip[i * stride] != i + 0xdead0000) {
++				fail("Fail: child content");
++				ops->cleanup_area(p, hpage_pmd_size);
++				_exit(exit_status);
++			}
++		success("OK");
++		ops->cleanup_area(p, hpage_pmd_size);
++		_exit(exit_status);
 +	}
 +
- 	p = ops->setup_area(1);
- 	ksft_print_msg("Construct PTE page table full of different PTE-mapped compound pages\n");
- 	for (i = 0; i < hpage_pmd_nr; i++) {
++	/* Hammer the parent's own writes over the shared prefix. */
++	for (int it = 0; it < 200000; it++)
++		for (i = 0; i < n; i++)
++			ip[i * stride] = i + 0xbeef0000;
++
++	wait(&wstatus);
++	exit_status = WEXITSTATUS(wstatus);
++
++	ksft_print_msg("Check the parent sees only its own writes...");
++	for (i = 0; i < n; i++)
++		if (ip[i * stride] != i + 0xbeef0000)
++			break;
++	if (i == n)
++		success("OK");
++	else
++		fail("Fail: parent content");
++	ops->cleanup_area(p, hpage_pmd_size);
++	ksft_test_result_report(exit_status, "%s\n", __func__);
++}
++
+ static void madvise_collapse_existing_thps(struct collapse_context *c,
+ 					   struct mem_ops *ops)
+ {
+@@ -1595,6 +1650,9 @@ int main(int argc, char **argv)
+ 	TEST(collapse_max_ptes_shared, khugepaged_context, anon_ops);
+ 	TEST(collapse_max_ptes_shared, madvise_context, anon_ops);
+ 
++	TEST(collapse_fork_cow_race, khugepaged_context, anon_ops);
++	TEST(collapse_fork_cow_race, madvise_context, anon_ops);
++
+ 	TEST(madvise_collapse_existing_thps, madvise_context, anon_ops);
+ 	TEST(madvise_collapse_existing_thps, madvise_context, read_only_file_ops);
+ 	TEST(madvise_collapse_existing_thps, madvise_context, read_write_file_read_ops);
 -- 
 2.54.0
 
