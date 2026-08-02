@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEACC55171
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 15:52:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4982AC55171
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 16:08:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2DC86B007B; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
+	id D9CF36B007B; Sun,  2 Aug 2026 12:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDE2A6B0088; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
+	id D4E566B0088; Sun,  2 Aug 2026 12:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA8A36B008A; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
+	id C647E6B008A; Sun,  2 Aug 2026 12:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A54376B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C45DF804C8
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:52:32 +0000 (UTC)
-X-FDA: 85056771744.20.F12D4E2
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E3C1DA0003
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:52:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO3eVHyw;
-	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785685950;
-	b=lh487yX9A8+lEIE53GrvcpMVDc79IP+NfjKgYIoj2C4xNafHh7U4IBf0q+Mt+zEPkWJzn2
-	2h+H6uivKjH1y0LgiI73QnrP6JHUmGz7MFzMJSr+hp2ocukURrFNUvf4NblwKhJ8XVmyDh
-	LIuuGZDggmRUBg/zyXDrXz2Dm/ImLeM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO3eVHyw;
-	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DA506B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 12:08:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2791C160516
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:08:18 +0000 (UTC)
+X-FDA: 85056811476.04.E904A6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7658E180003
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:08:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fViHsPsw;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785685950;
+	s=arc-20220608; t=1785686896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
-	b=uTv7XJ9itOlo/ZZ36Kk/e2aVGEuoqrMGjCGowH29m5DB6I6riDJWjxu8I1bQ5SjF+y1vGS
-	1uQ++M0q6gzmjjq+v4AxzTBHwPOrqe4hHhWAapGb7lMecZOyIjh44+Nc0pIrynWRw/EWnL
-	9s55UhwyJSzUYlJGJG6fMRE6v9+IImo=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69fc2261f2bso4326219a12.3
-        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 08:52:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785685949; x=1786290749; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
-        b=pO3eVHywJFUpxDtgBvkVfSNareKPp76DYuxDhJPlIXA1YtrwQiX/hBt+C+d5ZyAepZ
-         w7m3POdGjBF2NsDTXwfm6zce73Vwzd7krsQwMSdkWK2/421u5iKO0oGS0KKLj43UBaAz
-         UX81yPRhVYYFSmq6rcyhEMGkeI8Tn650EUA78vGCM0A63A6rkrWsJova+LewBwZoyZGK
-         idFlC0GoU4nVWTN2oePTvRIQhMJor5/anKxj9KlBhrUo9p9k28Aa5H679a8yn/+baS8+
-         vLHEyb6gBoNrVvJjxKF6DBriI76wXIYjQWgSSIIE924s/Iq9RG+ys5TpQzHtJC9Wkxai
-         vDUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785685949; x=1786290749;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
-        b=ZVUdHbiC9DScN6vDIfUeasdUPbeyIYrUNmXKUDaMLUlw7Gd31UG+b4xpv2qgeIFzLN
-         EJl/vAbbk5Eb03v0P216py/++jByBQwhTstwuyyYKTBycSLrAwm1kWfQLXqUVPq7vwI6
-         Yjrq2GSeAwYuXoyTZaZHQYcQgnTpAYe7n/3oAADuTtSgzd2bPwLasafKD9D5VkOgS6P+
-         ZjoXQnkg1e/ndJOeCw+natFTdxApDREYVY6pAhgPb39RRs4hDlgCWvZ16VzyEG3L3OOY
-         R6TI54RIpB+OLub+wSYteQonWbAAw1TCdrCK9E+5SdRrQQCqyyVEN9+c+tOyko3QL7uR
-         8Ubg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq05HnfWf/tx9Loe8viN0/CdjomlPKz7jJRaP4HP5xMtWAoUpUgorIR24P50YdkrlFUTVllACoHMQ==@kvack.org
-X-Gm-Message-State: AOJu0YwjZ0RQ+8ZBJCT9dMCGx5fFpXRQXhqtMqwf4IyNBj+cxePAymPK
-	7qtNGeKD8oC4MlxWu8eG1Bh9/9UudqOzQRZqiyN22Hu7ZnF05aA4k79N
-X-Gm-Gg: AR+sD12UHxGF/rssyVL+AQsmT7CRjv6a32PVILQsAmRabSOPpRlMhW8J9XPwZOiZ9OR
-	9r5cYuzgQdYVneqeZ8ah8+YITFWeM7vRE7wyy0uMURql6bpv3DveibwAZsHROYO8UM2G6M7RcRn
-	qLrwKPpZijBr5VNR0dc70Koo2wr7Ximl/eex9HFbXa9W0vrgFkCBAggvwCANbQPaQx7OEO4D3bY
-	Y/wVpiTa2iasUym7UoL/RIeMvbChyKCux7xtySFLnwI5SbWMmOiyesZ++5LpK6VP4fi7mwn/uJP
-	WF2axzgp5ZjC0inT5mVp+6Rox3ausm0AcIUn2UJwyIRNSDGfgKiLPPbpNyWMai8W6h5uWHNwwY9
-	O0rtiYTmpLhA5StbUjlNC/xJNq5PgnDdxQEOlbg6Co6Ijz/9g12LUB06YhYnRCJpyg1ytUJ+tae
-	Eh9S22N8ziE0+/0hqG4WBpuIfUdA==
-X-Received: by 2002:a05:6402:4011:b0:6a0:f9b2:4d67 with SMTP id 4fb4d7f45d1cf-6a0f9b24f94mr154075a12.15.1785685948981;
-        Sun, 02 Aug 2026 08:52:28 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a0d0ed21aesm1101924a12.5.2026.08.02.08.52.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 08:52:28 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Sun, 2 Aug 2026 17:52:26 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
-	urezki@gmail.com, willy@infradead.org, shivamkalra98@zohomail.in,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/vmalloc: make vm_struct.nr_pages an unsigned long
-Message-ID: <am9numIMZZ4s7UMl@milan>
-References: <20260730130923.9e71be5f477ee3db333cf0f8@linux-foundation.org>
- <20260801114915.115224-1-iprintercanon@gmail.com>
- <20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
+	bh=H+4xx3fRKee1b0QajtvgZv/bFYWSicihtcsfxKrpyj8=;
+	b=m6aa55Q6PUM1MEKMjIy2nVQR7uz6f63n+6YNn0kG+YDMikcCq6d8jvggwp5GNiZEvieVHK
+	rr6skQBDAbI/9k3VAfeTTE98GWwdqsz/SoVRS+oQtSXqlm4jbaiUXyCblnHvcYFS/xGHTG
+	BINm03kFmSfwEyC7JOX2rN8dYEAjFfE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fViHsPsw;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785686896;
+	b=p2kFV4USisUFhFybkDFUh4RtDHYtKKGhi3PDEnivTHK06KoPuMbFHHFtjr+RiAsnCj39ev
+	1aPHQPSAUsT9vNaibJ+k9DjfpntPh5Wsflt8ZHwqMRwsNKwcOrpsGNojnaLlzrQP/N/dLQ
+	e3hDXbpSrgqLudICRXNWkglBC4IAX4U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 44BBB40F11;
+	Sun,  2 Aug 2026 16:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56271F000E9;
+	Sun,  2 Aug 2026 16:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785686895;
+	bh=H+4xx3fRKee1b0QajtvgZv/bFYWSicihtcsfxKrpyj8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fViHsPswWigTKEfPBToFcw3DBd7G4MxypKk/ObN08SNRwfIiSmB1gi58BxY634oTS
+	 xhYBJ+W7P76Del+d1V7R746QWJ78Z3CXuTXnLUV36MKbq+smBuiZ7QtNnkOSLfiyRG
+	 iR0iSBZRvR+u4doaVnz2BhahCK0dqGkdTWfgPYTfkB4663fXF0CjqEy/0/fDFHoNf4
+	 HVYE+1sPqqQr3lV20HM1tOfTLYPCEt141ysP99Zn0nM6lgDhLuS2NwJE7+qmnpPcOy
+	 7l7nEOSihJlcHapONkZ4xBGdIfVJGu+j2hgR/mS9vxOd9b4eEjb+2povUvxI5HTGVT
+	 JMM5BTeXywfUQ==
+From: SJ Park <sj@kernel.org>
+To: David Rientjes <rientjes@google.com>
+Cc: SJ Park <sj@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Fan Ni <nifan.cxl@gmail.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Raghavendra K T <rkodsara@amd.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	Wei Xu <weixugc@google.com>,
+	Xuezheng Chu <xuezhengchu@huawei.com>,
+	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org
+Subject: Re: [Linux Memory Hotness and Promotion] Notes from July 30, 2026
+Date: Sun,  2 Aug 2026 09:08:10 -0700
+Message-ID: <20260802160811.88983-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <fe8acbf6-a631-c280-55a3-3a6fbf248ed9@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
-X-Stat-Signature: 8preeur7dbyfyf6qqtk8jjm5a5gwqouw
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E3C1DA0003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1785685950-61117
-X-HE-Meta: U2FsdGVkX18jVYcLwd0NAfG5doIPOzPvQJdXs/EI4n+pGDgT4GAlTFmsla0Fo5TzSKjRABjiFyGLmohvPWeFq0Co5VATgEnBFsh6orhOmSwMXxPxCLXbmVtNYSOFUHLolheJg4HdUNg6HroYcBivchd2J1G6udgOQDYe+gf+kHuHy31RkRW0bL0jAPPQaV79fmUZ5EzRkANtIMTPKvlJmLV/37cVnp4fDa+fa3ZQxagza5q4mYAtOJYJCI0/Y2c8F1Tx35IpHdbureZKsq/lKI/C5JMYHfbjwbj1yfkxqc1N/ofcAXnl20S7gz/xyWfWEbityCjblmrgzuq5lC3cTaSmk79YsAEbmZixClnTM9Vfy3D7WL5cp2Jpfx3M/AS207946BRBZRi/4vAkkbrMKj+bBeseRs1uelXuauI3wHl2vvvCtEmT2TMZCrZAqzeHRUlqWTS+3YMhMLTlzLCckanPo3azOXe135KhU4O4lB2ZZpx28AMtLNWH6VB5qOr4U6DsegUTGICxPVHTbhfWGULA2hZ2x7o4I8XqqFiAESgXwR1mnhOIjzuZAoDgr4/n4ehBJMbp21E6Ppwq1rDqDLd9Na40J4GVOow9TH0KNZvCqV0HfKzMl2MXFyrK7mV25spEgLjtbihsPH+qZ78Yheaq2lXItwcCPe+40+huTJWzQ1ThVaOR8pW3HySGa3sV8co6Lxya4jJsvActdMJRLsbauQY7egHe8ss0qvx0g9qpNQEYNis61pDhFBHdnFdXg8b267vQodCCMQeKxt1ibwsehNQnGYoJmcbZt3ITrUh8C3IeuCmC+tvdOg0rIEoEE/FWEhnIeAChgFPpZrS3OOCRnRpGctuIrVTAIAZ/ckDcgArmpMv2TAD06D0k2AgJL6kHkCaTZ54svtQ1siFSWZ3xOkc4VIXqusm1iejM9rNu5CYpOmo4uONilG39CquEDBySTKfTWdl0d5AR17u
- rRt8mnqu
- aUPfv1ruiAkWF5f38m3kHXx7IC0H+1P/iM5nEmqCY3juSFtf/BhWFQimEGWRhWz/IUwQZXgj0aNLYBwRYKqyX3odUpb9L4P06luViRlBZtl4zMhbg212XCjFfydTfm4ok6Hl5FBKChuLV8NXS3ici7o6dnmZ0aVIiuRc67bEQqLenjMe1V4XKsDfIbtIE+JEfDft48kK65Bw/kwQmG8jfv8MMP+8N3SZqq+9oqkhAGAUdklFeLJPldXHqUV0G4RBy+qlrMXURbCim5v07pPvFb79QGCQrtMxiyfYHDvcO2H/ELWLwRLp20f7Zpm1uB/4qoAmLdQbOaqcDcwP+lLpRwHhZYACoNvDDCdSgaml5vfA83Kqc9tPqqtpBhET3vNGNBjuFwkc41Ggl/Q7LiDkKtXq8bcm7rAbr96GkaBUaW+0DmGj5k6Pbodov76LtF3WKjari85Drj3CdPZAEjE+BtE+ApkU7CEZ7wTqNLaDy35C5QG8Phs0cqkfFKm8fhT3EKkGPMi/QN79x4cEAhbZy2/A++LlLoqIZOZNTZ/l93H8VaXHVACvwU8KrmggqNGRqLtt4
+X-Rspamd-Queue-Id: 7658E180003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: xs3abpw7y7crur9ih8m4pdr3c3nu17dd
+X-HE-Tag: 1785686896-304437
+X-HE-Meta: U2FsdGVkX19jsOVrBOBp97+ywjria174kurspA19Wr8xk6ga27NTTqrXEV/7TxtxgQnQOzK6JVGY8lhCx0HZhOXLsb4NKqg+KgP5uiTnlkLBfQNHNoqvanKG28Fg/0v1gA9cvg6UxDxNnwdUuw6v/bZIVjTVxmkjRE8bMepjfnFHt35HHl/Ze2fn/yAgxdU0lPVpzShCHzkewTH86RQFP0GLMeUr2Z3T+EMK4dN4yOVDVCqIgjIEZvBvMXvL26so1/hZru3J2p6OYOSLKT9sr2GRPnqlsXAMUOU8yED0ly5+KbIZd1WOOf9Ie4tUWzQ753i/XLEEZC93bI0dive8rBgXVa1gufLHy7EW8Q8QQODQeEDNJVme2olggj/+g5LMCiX1WgpqIYgUlIuP36WkfwV36z4R2rskm/pAVpb+gAdJzMiPpAyZKU10NWORzrwcIKWvYT6eSX9BL8jeLMPxx+fOSdN49Gg8x1RsVlyxv1FTWmlbqMvjUzbrCdoSE80wkO+FeL/mP90dUlW8u0Veico+23CPdbMYjFLwoqC6dQBS8ItXyHbUxXz1Q2ImP/WuILUGc6bRYOaNcEg5alBuKZutadGQMRW8/DYoD9CQ+YIoUsIgHbhTcJ5mO5kHKP3bwZccrErtDPJnKzL8Rd1kAVnF1qJ02A4a2HBF+ygZBot0jm0ry5GwVz22e+K4HXvc4NeEfrKTAHxwC7Ymz+MD6I4iw+FGUuC0P9JscXW3c6pEiZ8QqhpCbQHryxB0guDWldrvcmoGvxzanEaWh/D0LsAzkVZsKa0vvbQh0uclJVe/Ug5RZCBj/nUvp6g4Ge9sFHceGC8NXCTTmGms5X5BPb4wfxYDYIcul8tzo01t+j5SPk4GDkrkQs3/rZZDuEQfqXpk1dJG6TDVl5oG9RyRLEq9PEEuO5ZiMA/JfpK56KiaR4g7qcqiuP009TciOaCE5ErK2HVX8rLwPZtKjOf
+ 6rIbPloo
+ 2Y/YrNq7jPP2msaxW04N00wkBPJIdfg3WErWqLK6//fatdUu7vZeJv0WPFFgJFasTIwmhseyDjoeow3HV8OLLiyADG6E5G70lUk+J43qW2ULRtxU2UOb4Rjbne9U0wKdsraHmy92QhlJ2p1MhGFb7itnb7BPd3iuxGZd8RllmaRL990bVtgRZxAdEo1KoAq8Bd6J4/wXNFORCkIx52g2ss0KOFwAKAYkRqBi/+WAfzc7qDxVTiSIjO1lOGjQZSRqJqopoMY247TyMbZemjFc0qdHOumXQkIZbxnIAzH8K4IQGPUgMDFc9LuxL3VehGM4byVgH9KopC4RtORfhwtMqDLEavdzlwoq2uIFKW2k/JHAZ2v1pRSvXpEpFTjI/jHnGc4us/K86wCLZ35wl9jkGKyX/JQUA5qR/rxHHJjxMltt5qE/xKORLyUVMxFwRGxfSpMzK3OlAsjnaHtuZpTZUUq/Cmhlk6Bi36gOh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,109 +102,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 01, 2026 at 11:52:02AM -0700, Andrew Morton wrote:
-> On Sat,  1 Aug 2026 14:49:15 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
+On Sat, 1 Aug 2026 20:40:35 -0700 (PDT) David Rientjes <rientjes@google.com> wrote:
+
+> Hi everybody,
 > 
-> > vm_struct::nr_pages is an unsigned int, and the file keeps deriving byte
-> > counts from it as nr_pages << PAGE_SHIFT. A shift is evaluated in the type
-> > of its promoted left operand, so those are 32-bit arithmetic and wrap at
-> > 4 GiB of bytes, which is 2^20 pages. Every site depends on a cast being
-> > remembered; vmap() has one, two recent commits did not. vread_iter() then
-> > computes a size of zero for a 4 GiB VM_ALLOC area and /proc/kcore returns
-> > it as zeros while reporting a successful read, which drgn, crash or gdb
-> > cannot tell from real memory, and the vrealloc() grow-in-place check
-> > declines a request that would have fit.
-> > 
-> > Widen the field so the class of bug goes away instead of one site at a
-> > time. Everything feeding or consuming it widens too: vm_area_alloc_pages()
-> > and its accumulators, nr_small_pages, new_nr_pages and old_nr_pages, the
-> > index range of vm_area_free_pages(), and three page indexes that were
-> > plain int. Five casts go. Two prints needed fixing as well, %u in
-> > vmalloc_dump_obj() and %d for the unsigned field in vmalloc_info_show().
-> > 
-> > No bug report behind this, I found it reading the code. The 4 GiB wrap
-> > needs only a machine with over 4 GiB of memory. Neither larger threshold
-> > is a practical concern: 2^32 pages, where the field itself truncates, is
-> > 16 TiB and beyond what hardware can populate, and 2^31, where the plain
-> > int indexes break, is 8 TiB and larger than anything in the tree asks for.
-> > The int *nr cursor in the mapping path is unchanged and is separate work.
-> > Users outside mm/vmalloc.c need no change either. Those handing the count
-> > to a narrower parameter cannot drive it near 2^31, and
-> > kho_preserve_vmalloc() stores it into a 32-bit ABI field that still
-> > receives the same low bits; above 2^32 pages the truncation just moves out
-> > of vm_struct into that store.
-> > 
-> > sizeof(struct vm_struct) on x86-64 stays 72 bytes with
-> > CONFIG_HAVE_ARCH_HUGE_VMALLOC=n and goes from 72 to 80 with it enabled,
-> > both inside the kmalloc-96 bucket it already comes from.
+> Here are the notes from the last Linux Memory Hotness and Promotion call
+> that happened on Thursday, July 30.  Thanks to everybody who was involved!
 > 
-> Thanks.
+> These notes are intended to bring people up to speed who could not attend 
+> the call as well as keep the conversation going in between meetings.
+
+Thank you for sharing this note, David.  This is so helpful!
+
+[...]
+> Bharata updated on the status of his v8 patch series.  He has posted it 
+> with some numbers and did not observe any regressions when comparing NUMAB 
+> with pghot.  The initial goal is to upstream the support for the tiering 
+> subsystem regardless of the number of page hotness sources.  Thus, the 
+> upstreaming story will be about clean up and refactoring to support 
+> tiering; David Hildenbrand had suggested that the current approach was too 
+> extensive.
 > 
-> Ulad, AI review suggests that vrealloc() has an issue handling
-> __GFP_ZERO.  Can you please check?
+> Bharata was also looking into performance numbers asynchronously.  Gregory 
+> had been vocal on why this patch series is needed upstream, but any 
+> additional use cases and support for the upstream series would be 
+> beneficial.
 > 
-> 	https://sashiko.dev/#/patchset/20260801114915.115224-1-iprintercanon@gmail.com
+> ----->o-----
+> There was discussion about what overlap this work had with DAMON.
+
+I should have attended the meeting, sorry.  I show some rooms to improve
+clarifications.  Let me add a few comments.
+
+> DAMON 
+> was noted as being highly complex
+
+I admit there are many complicated parts in DAMON.  We therefore actively
+working on this.  We develop auto-tuning and simplified alternative features
+for users.  We cleanup and refacor the code for developers.
+
+It would be nice if I could further learn what makes people feel this way, and
+wht can we change in DAMON to make it simplified.
+
+> and we reflected on previous examples 
+> where this was a similar story upstream.  Wei suggested that memory 
+> tiering should be supported in the core MM and not something external.
+
+I think this could better be clarified.  What is the definition of core MM, and
+why it is beneficial to have the support inside it?
+
+> He 
+> also suggested that we wanted to support hotness signals from hardware 
+> (like CHMU) and fix the promotion side but that does not require extending 
+> DAMON specifically.  Nobody in the call suggested that they were working on
+> productionizing DAMON at this time.
+
+We shared the plan [1] to extend DAMON for multiple access primitives (a.k.a
+source) other than page table accessed bit in LSFMMBPF'25.  A few people showed
+interest.  Amazon and Micron publicly showed their interest.  There were few
+more companies showed interest offline.  We therefore kept working on it.
+Recently a concrete plan with timeline [2] is made, and we are working on it.
+Quite amount of preparational changes are already upstreamed and working
+prototypes are shared.
+
 > 
-I have checked. I think the AI is missing at least one point.
-AI argument which is:
+> Gregory suggested that our focus should be on generic support in the 
+> kernel that ensures that we can handle these memory topologies correctly 
+> and without extensive configurations, including from userspace.  Wei 
+> strongly agreed with this.
 
-<snip>
-If a driver initially allocates memory using vmalloc() without __GFP_ZERO 
-(leaving spare page capacity uninitialized), and then grows the allocation 
-using vrealloc() with __GFP_ZERO, the caller expects the newly exposed bytes 
-to be zeroed.
-<snip>
+I fully agree with this.  I shared my plan [3] for doing that for not only
+tiering but general NUMA topologies in LPC'25.
 
-In the vrealloc_node_align_noprof() header documentation there is a statement:
+I will try to join the next call for more conversations.  But feel free to ask
+any questions on the mailing list or privately to me, at anytime.
 
-<snip>
- * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
- * initial memory allocation, every subsequent call to this API for the same
- * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
- * __GFP_ZERO is not fully honored by this API.
-<snip>
+[1] https://lwn.net/Articles/1016525/
+[2] https://lore.kernel.org/all/20260525225208.1179-1-sj@kernel.org/
+[3] https://lpc.events/event/19/contributions/2066/
 
-AI argument violates the documentation, i.e. mixing __GFP_ZERO is not allowed.
 
-From the other hand we can mix it and remove that part of documentation:
+Thanks,
+SJ
 
-<snip>
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 7a0cbba3d29d..28d0fed94d22 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4294,11 +4294,6 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
-  * __GFP_THISNODE flag should be set, otherwise the function will try to avoid
-  * reallocation and possibly disregard the specified @nid.
-  *
-- * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
-- * initial memory allocation, every subsequent call to this API for the same
-- * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
-- * __GFP_ZERO is not fully honored by this API.
-- *
-  * Requesting an alignment that is bigger than the alignment of the existing
-  * allocation will fail.
-  *
-@@ -4415,13 +4410,12 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 	 * We already have the bytes available in the allocation; use them.
- 	 */
- 	if (size <= vm->nr_pages << PAGE_SHIFT) {
--		/*
--		 * No need to zero memory here, as unused memory will have
--		 * already been zeroed at initial allocation time or during
--		 * realloc shrink time.
--		 */
--		vm->requested_size = size;
- 		kasan_vrealloc(p, old_size, size);
-+
-+		if (want_init_on_alloc(flags))
-+			memset((void *)p + old_size, 0, size - old_size);
-+
-+		vm->requested_size = size;
- 		return (void *)p;
- 	}
-<snip> 
-
---
-Uladzislau Rezki
+[...]
 
