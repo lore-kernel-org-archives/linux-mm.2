@@ -4,175 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F57C55174
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 22:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4527FC55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 22:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A78E16B007B; Sun,  2 Aug 2026 18:50:49 -0400 (EDT)
+	id 5016B6B0088; Sun,  2 Aug 2026 18:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A293A6B0088; Sun,  2 Aug 2026 18:50:49 -0400 (EDT)
+	id 4B2B76B008A; Sun,  2 Aug 2026 18:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A4E16B008A; Sun,  2 Aug 2026 18:50:49 -0400 (EDT)
+	id 37C466B0092; Sun,  2 Aug 2026 18:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5193E6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:50:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40DB7120575
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:50:47 +0000 (UTC)
-X-FDA: 85057825734.10.84998CF
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011058.outbound.protection.outlook.com [40.107.208.58])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 639AEC0003
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:50:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=drD1euwz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.58 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785711044;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB0996B0088
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:54:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5947B40592
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:54:20 +0000 (UTC)
+X-FDA: 85057834680.14.81B1B61
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8255D180008
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:54:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iSFEEOd9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785711258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVwWwQdKTK9HqZs1QmUSo2B0oGlTQAei9AZRUo9zB1s=;
-	b=6jH2ADGNdFVLvK024yQmqaf7ZKIs5zwxcQHUO7zUy8wEaq9bLGnuxaeNHMRVGXvFABctL2
-	Os6kl8zG7yr8g7dqz30OgezjVNudkre5XLONiMseqrqJhDOjaHPaebcWmeXByOR5WheCKK
-	VmcbrR8GlwgrlIitRMUQt5LQHtHG254=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=drD1euwz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.58 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785711044;
-	b=kCD7WmrN+iosGH+H6r/wUuCZUwkHlsn7LrP/tLRFKT6uU4YhT0K8e1pIWnaoiEc7nNULkN
-	56Uv2+RAWJhnSVG3jUusVY+z5FG+UuzRnBGE89ADtwOUe/I9x7boiCKqeoUgI5vzfUt1/G
-	idsbOsaOioALcuyqHvncV+8kuUNOJUA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DSjXuMR6Hzv/1LrVDnMh1gNioWQidQHY2DfMjSZaiyXgWOqPUJ137YdvqqKE7w7ayMF3EVtnWschqOZ6aoxpxOnWlwiyJ6lFckhB/57UmBOwLwHh0AY7chBKbhz7GgV/oS2D0SwjUAdog5cQug0cNr4+X1E1janD/i55ZfuUoWd2eDbuRIlh5Q94UCaIiq6ZXsESxAAh7TA8CsQJYq02JZ0f1rR63fonxC3z8eTl6zt1eDH/ILgDsMhwTFTjN4fYWG1oPPP09UABlJH/YZ03r5B3XeTmQHSUrVuItXY8dPr9eHHyb69/AP78mwxG+omh9VuzFZhPi52Dmtcpgmanzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CVwWwQdKTK9HqZs1QmUSo2B0oGlTQAei9AZRUo9zB1s=;
- b=R6SORqz4SQiTq+cpblfeGF7ltkwo+DWmx+RP5DcmYd9757LhdEw/RUD3yAPdhnSIN/F3+h+bdJXjKP/MtyAe9okSgdFIwvxusrTS9gSDqZ8dCl/StJoscbtKbgDw7YSxyJezEPv/tHsFIr6RnDeDiFAH1rS6+FBfITA8hq5S5myyvAOiZOJMf1MY8klt2b5LqN82Slj1Nz2+p2FQlAQNsorudtjpbpW9GY9dmpbxo5JiCF5zhDyy61Lcj12LqUNk3puS4XSKXSBbwjNqMwuGwYSDApUZmkga2OzdVRwfji03cvbNNwL5jFhD6CydZ29kyX8oCytQbkOFzPGyO+uzbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CVwWwQdKTK9HqZs1QmUSo2B0oGlTQAei9AZRUo9zB1s=;
- b=drD1euwzwybUzeJLhunKMp+v52huZZQnOOmGrxrwwkqGFWLFUTxRedMQFiAvoEa8rXMfG0Ih/sWNdpWk2skgn+ZcVROdIqtjVTlvlNujMKsOKEay0jfegsNEGILduqikMdQE6QOiBo3Bnm0YOX8yad+eVQBAOdrhfydVs2UPj4Q4c96M2oe3dbrh3KMjwbFFYaVmE7gBwxvbNynqgufiegfB3QrH2NM47Xa7cI/UjDvlSZQZw7xHd+igobCK6hIoMmkVEBBT5XpTyxkDHlzbSH137o1KHWX7dpYokJOffUZBgs456fVlogi4FMjeZ9swF5YmLR8W288ekVAB8D7/Dw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS0PR12MB9037.namprd12.prod.outlook.com (2603:10b6:8:f1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Sun, 2 Aug
- 2026 22:50:38 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0270.016; Sun, 2 Aug 2026
- 22:50:38 +0000
+	bh=hSFBKkmya71V99CcvaKtLUtW6MLEeCo92pqjKBtH7Xc=;
+	b=FzlmIdI1imPGQj+/B0nlpt87pmls7OEbWSLxqLjwpxPylCZBBkM898kybS1sphWAmfSvF0
+	wkPPQ03nUKyXKXmoPKY4VjTYj7xvCHXxKSmFL3YIGuMPN6zeMPrKMN7bsdzSyFV8aHyrcq
+	vXAfAcqe7Aq9OjJL6wYKqkQrJ/KgZJg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iSFEEOd9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785711258;
+	b=yiXKawlIpIisH1LRODfvSZVB3WVx65KRaWdeNGQBBWkIn8rIKELqEbGzDR7zRx/WHNlFNY
+	sb9qYrK2cP3+4CTnrZ91znkHKpCius/7zNJfEzouZCE1a+bZLteRtiR2d1Toq7lWzLeglq
+	HrlyWSzlM07mGZolzAFsYFMmD7cKYbo=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso2949934a91.2
+        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 15:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785711257; x=1786316057; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hSFBKkmya71V99CcvaKtLUtW6MLEeCo92pqjKBtH7Xc=;
+        b=iSFEEOd9OT9UIKuZ8pMRkHW4WVQ9GH7cuiKMJu45KN39GJTWiK4aRdKmxpmbFBvHxF
+         PaU5WNY+mPsAEqjp/NNHl1ECl2pm8J8r72O3jiN92ZiVsDJZvFYIlF5qcCKv9SjwBl01
+         5C6fkryCf/yp6S9MkNIpUEJit1FHUC3dIajp86jOmNdegoVRZssywfIIEkzXg6hzOzhW
+         VZsG0iJLzsBD1PLkSB56CXqX46SSQQC1jw7LzCDXbjmr4n+vZbw81073UaPc+Jb4G2eZ
+         RE+204DOpTanTnAIijb8CKFZTWfGnMhxXUHEKrPSHRRhNkz9RNxCBd6u9ch1RbCWsu9x
+         Bqcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785711257; x=1786316057;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hSFBKkmya71V99CcvaKtLUtW6MLEeCo92pqjKBtH7Xc=;
+        b=mlo3lJ3/dLjbX8EErSXe5gFXAf84efDQvlTaYtNZ9UBzpeumpqjziRmlQE3l1W2c1+
+         n+Xn6mlvTjWocxGQAQ6Tncg78rPjHzggMebZ7Ys6laX6KOoDOfKowvTA+u6MfxEPSA8B
+         s/GiEQLtXmDRfr3bSV5yAFtjnUF5/geq6fLCQanMXH23aqiJ71vFRrLWE65n2IvcR1PQ
+         QkoSOHEYUJ1VoP66+aXLBPQabbrWQGfdWj+jcvGOagWHiSlN8q9NWVI7MBl4aAkm7rFq
+         7cn7ZgFuYlMzXbCPNTDzkGKBANm5S39dkngVraz8cTadeFKdyXP/mASvrgpKudaYFqFK
+         aZYA==
+X-Forwarded-Encrypted: i=1; AHgh+RrW1RL4HZTxmzzbDZbfrX92wshZDYhz0pmrf+h2TGS0fBsfcYOhgO6gsT/fiKG3PqNOHSdA4KU3vw==@kvack.org
+X-Gm-Message-State: AOJu0YxwPzk1XU6ePZQAZlODUJ+yRY3Biyj3eM3mmk7ktTsKX9PyMwLk
+	hJqTsWXGJ/bN8Xr6LbzmVb+Pu+IiVZAaFucAhGL2l7Mxz8LIS8Sr+k63
+X-Gm-Gg: AR+sD101kvdJ1o6RtnVxdRtAMBNyQZ4rVFyAvHwi2yCxhFTd9l1aRlqSxj71nDN+aOG
+	XsJwzqGinyBJjAzHwC9Z9H1BmtQ+Oay8lCHUmd/pLpbvj7XANsnOPCYJdmGmjYehBaga08ZNso4
+	ALqN6Ntmy63TgP7nOpj/nJB0vmoDLCqSgVHfNffYcSl1yuaIjDP8XKjmsDkLk4xuMm03KrrOGBS
+	861YjPU8F3QyMYTDmkls8BhFdSRRWvqChPgjfheoZMZRiDXVdMQKqZelnyLZ3VzeZCz4VtRpjpJ
+	r1n6WVkMG2Kp1McU/b5xnA8B74BbhPj08dbwUrs0zVKeuxFncg6VzTs/Zea8+NqgEr1J3chi4ok
+	qC2SoYNDzKunMswigN3YRm5UU0Jxh1i27Pw+2NnN4/C0JfrEmegkWk5SWu7IXq7YxFZk6t8ysrV
+	A2MxQbXceoEsfUSBTnp4fKIeo6JdVaA0FrzuB8F8gYylMUL4cMjzcRnAwi4rIyxXo=
+X-Received: by 2002:a05:6a20:b598:b0:3c0:e552:f2d with SMTP id adf61e73a8af0-3c92a761f35mr7446088637.34.1785711257265;
+        Sun, 02 Aug 2026 15:54:17 -0700 (PDT)
+Received: from localhost ([73.222.46.22])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e18e70esm50339576eec.29.2026.08.02.15.54.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Aug 2026 15:54:16 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 02 Aug 2026 18:50:36 -0400
-Message-Id: <DKETQDCO9OYH.2FDBR4ZXGHLM@nvidia.com>
-Subject: Re: [PATCH 16/16] selftests/mm: skip khugepaged shmem cases without
- a PMD page cache folio
-Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Barry Song"
- <baohua@kernel.org>, "Dev Jain" <dev.jain@arm.com>, "Hugh Dickins"
- <hughd@google.com>, "Lance Yang" <lance.yang@linux.dev>, "Liam R. Howlett"
- <liam@infradead.org>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport"
- <rppt@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Shuah Khan"
- <shuah@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Usama Arif"
- <usama.arif@linux.dev>, "Vlastimil Babka" <vbabka@kernel.org>,
- <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: "Kiryl Shutsemau" <kirill@shutemov.name>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Nico Pache" <nico.pache@linux.dev>
-From: "Zi Yan" <ziy@nvidia.com>
+Date: Sun, 02 Aug 2026 15:54:15 -0700
+Message-Id: <DKETT5RWDAG9.1AP6L1IJ3CL72@gmail.com>
+Cc: "Farid Zakaria" <farid.m.zakaria@gmail.com>,
+ <david.laight.linux@gmail.com>, <jack@suse.cz>, <jannh@google.com>,
+ <kees@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-mm@kvack.org>, <mail@johnericson.me>, <shuah@kernel.org>,
+ <viro@zeniv.linux.org.uk>, "Gemini" <assistant@google.com>
+Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
+ interpreter selection
+From: "Farid Zakaria" <farid.m.zakaria@gmail.com>
+To: "Christian Brauner" <brauner@kernel.org>, "Alessandro Di Federico"
+ <ale@rev.ng>
 X-Mailer: aerc 0.21.0
-References: <20260802195254.1937477-1-kirill@shutemov.name>
- <20260802195254.1937477-17-kirill@shutemov.name>
-In-Reply-To: <20260802195254.1937477-17-kirill@shutemov.name>
-X-ClientProxiedBy: YQ1P288CA0004.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c01:9e::22) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB9037:EE_
-X-MS-Office365-Filtering-Correlation-Id: 227324b9-af71-4b66-9157-08def0e878ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|18002099003|22082099003|6133799003|56012099006|5023799004|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	Q3z+ii1fO8nKj6aUiOMPlAfiC5cdn7CW2234u1zkqYuzue86Lyc7RpBAOWGvD2rlog86XnvERIhAEVCx09jB573vbyQrcc95yEn+8mwnVe7WNVMnj2ax7i1bJDiKQmr0mleoOlpFkzkUFaB/p4nIHOqyiJD+kKDhWACLFEEx7WV27gA77CWDJbMHhLROjku3vnPPEGzyuFKZe5OQ3heWmiN9JAac1iqSpFfQglxlftuDcQryLA0upTyR6coT46Iuaqw8tmZd49xvsxAW9tHlLOoVHow813d3rd4BrjU2G2R4nf/O/sleAVXUXDnh9ZhmyNE5FqYpsEKyzXVy3jJSCMKKRkWEAkQ4xwhb5q7P4MI+TreDZ7E/g/2c8tW5PKmA0HIgtnUpBi/KLfOF5tRW8K6Z+4THUFS8d21E41O9InYW53+MwzCR7CnCmAptulnuFLv86O15q0seGy7ycaQ+wsJZIo3BMv5RMF5dvJHCJk1C0k7f9ySCXoGMAm6BwVaWEkWd2LcOsqY884XH7/cqgk6IokWriPULjCQNq17EH4SFJ1dOIczbb06kr2jRyxFiWgA74l2HUXko3Lq3T+jrDxz/MAzFi6YDh3Ijb9ouxyfecNnKgRuZuMRAPDU8xkk+rlm86ag8reRjtVGp+jJSIuu7/tbmI78SnLqC+7sxLQk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(5023799004)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WjVTVlBiNjBIUTFYMTdSRkNlM043T2x6czI5QWFOT0l0ajZ3SjdIRFo5d1J1?=
- =?utf-8?B?Sk8xeUh4WWdsY052bjAzd2RRdEZ4NWVRaW8yZVQ1Nm5pMm9abDRzU1BSam1E?=
- =?utf-8?B?SXVaa3UvR0pZRVNyWEZpM2gzQmNoeXZZWExkQkJSTm9YcFc3dDFsY0ltaWJB?=
- =?utf-8?B?U2gra0lGWGVXeGNmdlI0ejJlajdtWXVqQ2ttbW9xVU1jdExTY2w1ZFJrS0FC?=
- =?utf-8?B?aU04TDNFNnZJb3NueGVBVi9Cc2pnSjNnWmZsQ0FNT2kzOWZNek5YYkFSc0hR?=
- =?utf-8?B?cUlRYjBOcTVVL0p4WWg4cWNQb0x4MXdrYjRkMHplb3pGUy9FT1N5M0xoVlZB?=
- =?utf-8?B?SzdybGNGMnNjeExmaFlCNThnZVJMM1Zyd1RFeHMwemJOZVR0NUhBd05BQmZL?=
- =?utf-8?B?Y1U3ZUxweTdSSkFRc2hQUXBjUElJMG9EcFNmVTk1SGlTK2wySGVtS2V4WnRM?=
- =?utf-8?B?c01vUjhtOVBkcEY5WE1LVnkzbG02aEUwd3dERHR6YXpIekJscWpzVEJROThp?=
- =?utf-8?B?SFpNVUxGLy9PZk9nZkFZcXVYZzVOUUhhUnlGQi9HbGFML1RMSnp3TXlDcjNn?=
- =?utf-8?B?dkxlMVdqRWViZ240aWJJYlUwcm9ESno0Yk1xY0RDci9qYit0VnMzZ0Jia2V5?=
- =?utf-8?B?MFpISHE2RG9iVWpOMTFDN1N1dVdHWkphQ25vT3JJYWpmWjdGbWFmRG05dCtR?=
- =?utf-8?B?ZGg2bDRCU3J2S0hnajRMcFErTEl6NWpxRGF6dEtGc2VkTG1nbWJJUHhldlhV?=
- =?utf-8?B?TFlOQml4azc4bWhVRmtBRCtnemtCMGx1Y2V4T082ZjJ6RmkxWWgvU0JtTlZk?=
- =?utf-8?B?a2lXWFBVM3gvV2ErNU9MamRxeUExZjZPZ2NmVHhhdCtCTTdnTVdMdHpENVk2?=
- =?utf-8?B?VzJQV0JlN1ZMVGZwQ3BZaDR1MEVVZUxsTEl1ZHpPQWVva3hrV2tQVUxjY2s3?=
- =?utf-8?B?UWU2cjVWRkNlQjBvTUFJcmhFUFBkRFAyaTRQR0NVWkFkUnhzUklkQXJkaENU?=
- =?utf-8?B?MU9RZDdzWWZBcXl4czFFeTkzaUlpMytkcHBIU2w0MXpQMmRZamk3VVNzWC9i?=
- =?utf-8?B?Nmd6TUJsZnJlNUFFcERDRGgza21jdzVranRrRFhqb29HOVAyYVlHNlJZWkxO?=
- =?utf-8?B?OGRCWExoTE84cXNKSXEvcExQUitTQVN1Qk16WGlaMzgxNzI0eEtDd0V3WWlp?=
- =?utf-8?B?ZXZYelNKZVZVcDVTWlU0UHAweTNrVWVJQ3NhNjdpN242TXlDRnpZeEViVWtY?=
- =?utf-8?B?cmZVYjhtbnI3VjYyVWpUcGhsbjlQUTdreFdZMGtiN2hHbmhEaWNLbWJXMlZ4?=
- =?utf-8?B?VFRUT1poQ1FYc3RDNjNnczV1TVEraVg4VlRidThydFloMXBxb2Q2d0dmUlM4?=
- =?utf-8?B?Z3p5bDFJbnVFRkM5UFlZT2JLcHgyM0VacTl1anMzS1BVTXRpNzEzYUJTQ01N?=
- =?utf-8?B?OEhvSWg4SndVdlc0MUh1SUluY2xxay9VMVRMUld6dDE5bkw0UlppY2pSUzRa?=
- =?utf-8?B?UWdEV2MwQnRFbjBOM3Y3YU5wOERETzd5OG9lVmI4S2tqbDJUeFZSZVZlYUtx?=
- =?utf-8?B?L3ozZ1pEa1ViaDVvT3pMc0REUCtpNmhRSDlzSEJXWG9ERERqdk5BNFhvNzNw?=
- =?utf-8?B?YVJvTU43YnFCemdlMHZxRzNpbkRrS1M4SFdpbGtFcUZoRjJKSTJ5T0Ntb1NO?=
- =?utf-8?B?UkhYSVA5WGY4bkFycDFTOXRQUmM1QjlSN3RJNklRT1NRR3pLM25qRk1TcVdF?=
- =?utf-8?B?OVYvaEd2WitNb2Qvc29CUXpKa2lOdCtKR0pJeTZTWGpmeGhHaW55ZUpMdFVU?=
- =?utf-8?B?SzNQdVRicFFqb3J6QlBMUVVCbEUzVHYxUmk3UzFWb1puZzh6WnV1emlpT05V?=
- =?utf-8?B?VFMzTHdPMFJmNm5PQ3lrMFZGOUNzbCtKZEp1V1dUV1QxbisrSElFTmdvY3ZV?=
- =?utf-8?B?WFBnM2VUVzJoUStlSDQ2VFRUYUR5NW8rUUMxaG9EdVlVYzlLcDVaY1VWRjc4?=
- =?utf-8?B?TUZzbE8zNVd2Ni84VGg3bU1YbnRrRUVjbUQxNzFOSXNmMytaVEFBY2kwZU5x?=
- =?utf-8?B?SEtiTzkyeXZvZlpYV1d3ZlcvY081d0I2eXpGLzlEK1UrM0h6TDBQMzNhVW9r?=
- =?utf-8?B?dDcvZTl5Q1FmMmRaZGhzVnpiN3Z5QzUrbVhVVXpPRTVxK2ZBc3l4R0t5bXV1?=
- =?utf-8?B?R08vNSt3bXljdXlOYWxJK1VSemcxWFduVHhTdGVNcUJTL1N5MTJPdHRvKzFs?=
- =?utf-8?B?ZzZRQ2FIZWZCQzJXbmhzTTdpSjJDVjdDZGU2dnkzeVpCbTN4ZnZ0MUQyRzlD?=
- =?utf-8?Q?ZttoJEDljfJ57ENdBW?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 227324b9-af71-4b66-9157-08def0e878ff
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2026 22:50:38.7344
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YMMA9PeSq2IeDfrpino0WxI+Ph5hokFFDi91UVFJ8zjCC0bv8L2PEPdd9sE9hgWb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9037
+References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+ <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
+ <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
+ <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
+ <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
+ <20260722011217.45e79a08@spawn>
+ <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
+ <20260731004604.53c66732@spawn>
+ <20260731-batterie-galant-zumachen-d4b91acf8af0@brauner>
+In-Reply-To: <20260731-batterie-galant-zumachen-d4b91acf8af0@brauner>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8255D180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 639AEC0003
-X-Stat-Signature: yt9nef8z5wjcm3etnjmt3jtyuzqb6c3a
-X-HE-Tag: 1785711044-265651
-X-HE-Meta: U2FsdGVkX18pSo+gVmnkzFiZTK+Ueu+2fuPQCGBU4bX+hDTHUVX8QbWV6KuFhUdvOjJdjZjDc06P4NYTVVF0ZejAt7WbQdmT2RVnEt14TZVlFljVyccW/9Q/hslMlxonMJSpQXwboiG6l+OeeTXdwFQfFFlWMiJG/NVdcULgiqbnidPMbwyznrSL7cTinGRx4Cch4UiPd6IiDt5DGAyfNE5kTdngEJ2kE6dX8nlhUejKxIUxARjNchO511ZpHiIm1P1jDNgmavm+7hh4lM7dqrfgHxBTTa+1xEeiyE9J6v7100ZjAFSnQ0qJs/9H+RQi89LhWnbxYG6tVEHZRZHrJKoxav3Olo4IticTQW55A6HPq08aaHvARzz1ZWu/Wk9i+Tv/xzKVkIm8JAmuo56VQnedoVngdCNYl2mZf/5HnXzQU4fN4E/rFKoiC7451aTVeIN8ZBCTJe1Qrd6z8xblVsX4c/socQe4qV6LCluxZOtvydiRDJLVHnVMTmMK7lnWrX1Q/Hfccg93L3Fld8/ep9QUOLUWUvB6lQSpDgTOOfKM5WRyMhrBoUlSfrpgh4lz/DoRsit5zN5hZJcGem1kmcEf/ECod+M9TAfAqwRnLq9qEEMTPePk2UhEN1bcEw/+Cq3tykh+tjBKb7meH1npaekh0iDeFzrSMe/NhMEbFbqnpFgf4DcDWKR8JMAT+5FnbDGkLThbemCmeweKfI+jA1LOq90Ivu9PZqL2REMtKVWEtWGF3r5a71UsIgLqa6iQ0axqQPh1bg8ZWZvjTYfrMLqi0ze0A6PHPsDEvjyZrq+1vN7WJAqemJ8hOcqjdg9Sn62o15YGvVqfkDSmKOEutCQ36aXwvMM3BTJhMdNo50+bO4tMVfCvcc23pd1CxrBt+u07oP9ULNEgS3hRFDoIb8G4fzCI3maMK5uE+fyLlBJ+vs7qOI/4pStLQFW4WVAlGEmh5BgVmb0w0okV1SA
- O0Z3f81a
- u3hG9g1+8exZzAdc5kYUqp5F8nBF8Vy9DmgInTjJZ28Tg9t7z0xytRp6phxBma/zZkd77Jfam+zSR3aVKtwO+hcMfC/c2i/7MSCe+vwuJJKJ/PgYw8HezsfDgPZP0IwfAU8XRfhGSz3JCHtOmHIE5Vg6N3XUzKd9svcNDlCpMTTYHaWN9IOJbrzR9pPFVgDfpntElDpub/2N61Kh5ZtH97QYIg1teWj1WE0jslKFCUst93s9lQkv4n0VfcSOXotsI0yRvElmIgHj/UPUatzeutPWh1EnYRhX7lT/S/x1laupPolIHqZ3sI7N3aftyCxyT/WWdv8cJ0xnLbc513joIkdPlnO5rAy3oZVoXRdRAC58CdkYzUTsYR76YYuiu3qXgvk760dxdAcxk9CdJTflymj2c2A==
+X-Stat-Signature: b3pgyiody9xaoiecsdrabpfih7t1k5sq
+X-HE-Tag: 1785711258-359742
+X-HE-Meta: U2FsdGVkX192Jxxyw2fX8Q7rNliPpaZFK8iTiOorBxpXwEOUH8TYa10bvuTENz7j1z00P1paL24WwScnO1sCgYDbt7n4CdVJeij1FIY7JOMhfoIRHSuyEWqMWNxivdiWQPTTztqkv6ya4iJpMtdZdpRcE/HAIFdfMuYTO/uG8I2UzgRrHAE7Hh/DiYYNYdVnWYh/0DMsXQ0FEM4WmNj5bIo6L7mkWTBvWbJmcwvJFEiqBInzdWRfsHMOXSRAGQEM7kvy5ySfWRgVPNfKii1atFvAPVLtGb+KClnOnJazPAPM76+wrSnoLPftVa5hT72f8FCeqOqFENfo261eBUfb1pNCdHu4SATOgBrOAKyMCzLjtCENrgrR4yrKGU36lDfnxM3RBl6WyTV40+KAFb9H/C2UalcD11mqiuwH0tLgxfuGWCwaUjnH7MXpvBFVjCQN10GmkmqIDn1IFBlVL2J6WyctjKUy0EiibBTiXQ01C6O9MN1l1IEksSTeZZnVs+BrXwzPvw3H+eJp8ZwYcT4W3nupFm5lXKDaMDoiF9KVvzo0Sj5lgK+76EBDfYahgBlDtWt7CKdb7yQO8H6iDJ5o0IJzv18w4b/jiCcCWWq63ITuDj5JClJKPv+f3aBZsz/w5RQicNRgJ5tHynuGPHNLF8E7XF4xZknI0aFi3WiRTuIqVK9IuzvYunBQxXAj6UpXaajWJMt6QJSZEtNEZQYbPoA0KzH8b3QVo3+hdompV3ksG251xN/RIepAEBSc/W82S0oU+oOjfh79hz3/lqbuFxYAPykxqmLpCAwXQtpUC6cdp219XTuFjTBjh4Kxsxpnl5VLCQqdxw5OfZ72iaBEBSp9mEIAoDqm0vwApWjObr+IhzUmw5f968oo6zyfrkRbODWCGVxOc8j1nQfJEjEU9tqkFpehfnyAgUL174X8DpMcrrqxbbSD54qeCmhKF9y2WJdlZOTLVlgidTjHOWT
+ OA1g3xRM
+ Zrxly+YF8olu58K24VqypnW6gvrJLq+yb87OK6Mhz/YEx6HJrpDIBzofz1lIcs1oPWYHU9O9jy9DtzBTWfO1Xc9kkK44/Luijx+QacKPum7XZL8bmFq59Si0LHSK3RGGbNZZbsDiNZZyUeH2J8+dZ5JYp9dzEYk/P9FXKUdf6keCv/6/pLHcB+eZUbSSrxWYHr3x3nd75l+anolgmL2fMDtHk/jPCqk2vt7DZcAHOgxh09Yz0PIVJ3RUm6XnvVRorIM+/RTFvg75Esc9RISf94DGMh/bo6s8D9rPYA7y2XCjRsolSVMykzAFCNZQ6C+5mAxE5XpQmCqU0gUOa9s8zsMZCvyg2/K43gDw2jUVDAdleL65knKl+bR1Zc2EfO94Z5fbrgmWorhc0LaKyLjk5Hh7rMnPHB5Z82an17X69qbo49ClYVzHfx+cfNlV1DcUOD9jGxQ3FpFzpVUCaHXc1iZl+qvDl2tUfk0oDkBqhQ6XaIYHPC95REn4vO/icVZPQMov1Ts0Htp7vTUvL2haiZTkiANhCIB5CRvldxH31COqA7Rkc0vjm+vRQ9Ze046oCsDR0Jd2oy7ijyh96E3gAw4aAbkC1Un7E/VlBWSj0zBMyEQ/hvPviuHyx5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,89 +134,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Aug 2, 2026 at 3:52 PM EDT, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Fri Jul 31, 2026 at 2:41 AM PDT, Christian Brauner wrote:
+> On Fri, Jul 31, 2026 at 12:46:04AM +0200, Alessandro Di Federico wrote:
+>> One could delegate the feature to user space, but that makes it much
+>> harder to get adopted in a uniform way.
+>>
+>> Will systemd, Android [1] and OpenWrt implement this? In the same way?
+>> If so, at that point it could have just been a feature of the Linux ELF
+>> extension.
 >
-> The page cache caps folio order at MAX_PAGECACHE_ORDER, and
-> xas_split_alloc() puts that cap below the PMD order where a PMD is 512M -=
--
-> arm64 with 64K base pages, as include/linux/pagemap.h says outright.
-> shmem_huge_global_enabled() then offers no PMD order at all, so
-> MADV_COLLAPSE of a shmem range answers -EINVAL and khugepaged passes over
-> it.
+> Whether systemd, Android or OpenWrt adopt something isn't a decision the
+> kernel gets to make and it isn't one it has to make. Merging code doesn't
+> create adoption. It creates an obligation to keep the behavior working
+> forever. That includes the machines whose owners never asked for it.
+>
+> It's also not how ELF conventions get established. PT_GNU_STACK and
+> PT_GNU_PROPERTY are the two OS-range headers our loader acts on. And
+> they came out of the toolchain and we implemented them afterwards.
+>
+> The one time we picked a program header type ourselves ahead of the ABI
+> PT_ARM_MEMTAG_MTE in 761b9b366cec we collided with PT_AARCH64_UNWIND
+> and had to change the name and the value three months later. We got away
+> with it because it's a coredump segment that gdb reads, not the exec
+> behavior of every binary on the system.
+>
+> If you want systemd, Android and OpenWrt to agree on one marker, the
+> thing that produces that agreement is generic-abi with binutils and
+> glibc/musl on board, and then we can implement it.
+>
+> So we don't actually disagree about there being an ELF feature. We
+> disagree about what the header means. My position is that the header
+> names the intent and userspace implements the resolution. Yours is that
+> the kernel does both.
+>
+>> Of course the Android people could disable the feature even if it's
+>> in the kernel, but if the convention is established by the kernel,
+>> there's really no reason to deviate from it in the way it's implemented.
+>
+> The kernel can't establish this convention. It can only implement one.
+> If binutils won't emit the header and no loader cooperates, we've shipped
+> uapi that nothing uses and that we still can't remove.
+>
+>> The whole point of the portability thing is to reduce the assumptions
+>> you make about the target system. Ideally, you just want to use
+>> features widely available in kernels in the wild.
+>
+> Sure, but nothing merged today is widely available tomorrow. Both need a
+> new kernel. Uniform-by-default doesn't arrive sooner because it went
+> into core elf.
+>
+> And a new phdr doesn't degrade nicely. On any kernel that doesn't know
+> it the binary has no PT_INTERP it loads as static. Dies horribly at an
+> unrelocated _start.
+>
+> And keeping a literal $ORIGIN fallback in PT_INTERP instead and old
+> kernels or gVisor open it cwd-relative, so an attacker who controls cwd
+> plants ./$ORIGIN/ld.so.
+>
+>> But from what I understand from another thread, your intention is to
+>> use userspace as testbench, correct?
+>
+> Not testbench as in "go away and come back later". The difference is
+> where the semantics live once they turn out to be wrong. Get a corner
+> case wrong in a bpf handler and the distro ships a fix in the next
+> update. Get it wrong in load_elf_binary() and it's the exec behavior of
+> arbitrary binaries... which we can't change afterwards.
+>
+>> > This is policy that the admin should decide
+>>
+>> Agreed, but the admin is probably satisfied with enabling/disabling,
+>> not deciding whether the program header type is `PT_INTERP_WITH_ORIGIN`
+>> or `PT_ORIGIN_ENABLED_INTERP`. Same for the distro maintainers.
+>
+> Nobody is asking an admin to name a program header type. The distro ships
+> the handler and a file in /etc/binfmt.d and the admin never sees either.
+>
+> But note what you argued here... If it needs an enable/disable switch
+> then it is policy. And the only question left is what the switch looks
+> like. A global boot-time on/off is the worst available version of it.
+> It's one bit, machine-wide and can't be scoped to a subtree, can't be
+> delegated.
+>
+>> Then, from a security perspective, AFAIU, implementing this in
+>> eBPF does not solve the problems that have been discussed.
+>>
+>> For instance, `selftests/exec: add binfmt_misc bpf-backed handler test`
+>> does string manipulation (no `openat`).
+>
+> The handler doing nothing but string manipulation isn't a simplification
+> in the example. It's the design. The program never opens anything. It
+> computes a path and hands it back, and the kernel opens it with
+> open_exec() under the credentials of whoever called execve(). There is
+> no openat() to add. And fwiw, it also supports pre-opened binaries for
+> really crazy use-cases where you want to pin a set of loaders once.
+>
+> The module RFC resolved $ORIGIN in kernel code opened the interpreter
+> itself with file_open_root(..., O_RDONLY, 0).
+> That skips everything open_exec() does and it achors path resolution at
+> the binary's directory. .. clamps there and absolute symlinks resolve
+> inside it. $ORIGIN/../lib/ld.so, which is the RPATH idiom everyone
+> actually writes, silently means <bindir>/lib/ld.so.
+>
+> I'm not holding an RFC to final-code standards. The point is that this
+> is fiddly.
+>
+>> Overall, I feel like the current proposal pushes back on having a new
+>> ELF feature for security reasons, but then delegates to distro
+>> maintainers who want to use the feature to take those risks.
+>
+> It doesn't delegate the risk. It binds it to whoever wants the feature.
+>
+> Whether resolving the loader relative to the binary is safe depends on
+> invariants of the deployment. Is the tree immutable, who may write to it,
+> which prefixes are trusted. The kernel doesn't know any of that.
+> /nix/store is root-owned and immutable, so the policy is safe there. The
+> same semantics pointed at a directory the user can write to is a hole.
+> Only the deployment can tell those two apart.
+>
+> Userspace arrived at the same answer, incidentally. glibc expands $ORIGIN
+> under __libc_enable_secure only when it is the first path component and
+> the result is rooted in a trusted directory. That trusted-directory
+> notion is exactly what an in-kernel implementation would have to invent.
+> And it is deployment-specific.
+>
+>> But also, distro maintainers don't really need this feature because
+>> they can just write /nix.
+>
+> Right, and that's the honest core of it. The people who need this are
+> users on machines that someone else administers.
+>
+> But "default-enabled ELF feature" is a strange shape of fix for it.
+> Because the machines you'd be enabling it on belong to the people who
+> never asked. This proposals is to change what exec does for everyone
+> else in order to serve some use-cases.
+>
+>> I'd be happy to try to work on the example eBPF program using openat,
+>> address the various security concerns that have been mentioned until it
+>> looks right and then it could be loaded by default, but with an option
+>> to disable it. But I'm not sure whether there's such a thing as "default
+>> loaded eBPF program".
+>
+> And there is such a thing. The distro ships the object plus a file in
+> /etc/binfmt.d and systemd loads it at boot. That is a default-loaded
+> program with an option to disable, it just lives in the distro image
+> rather than in vmlinux. If one handler ends up being what everybody
+> ships, that's the uniformity you're after, and nobody had to freeze
+> resolution semantics to get it. Could even be upstream in systemd.
+>
+>> Alternatively, I could extend the ELF core as a parallel feature of
+>> the eBPF-based mechanism, reviving some patches from previous
+>> iterations.
+>
+> I'd rather not, for the reasons above.
 
-IIRC, after READ_ONLY_THP_FOR_FS is removed, all pagecache folios are
-split using non uniform split, xas_try_split(), so does shmem (except
-shmem in swapcache not splittable). In theory, we can get rid of the
-cap, since xas_try_split() does not split more than one level like
-one can try to make xas_split_alloc() split more than two level (e.g.,
-512MB to 64KB on arm64 with 64KB base page).
+Christian,
 
->
-> The shmem cases nonetheless ask for a PMD-sized shmem folio, so on such a
-> configuration four of them fail and the run bails out in the middle:
->
-> not ok 2 collapse_full not ok 4 collapse_single_pte_entry # Allocate huge
-> page...Bail out! madvise(MADV_COLLAPSE): Invalid argument (22)
->
-> That is the kernel declining something it deliberately does not support,
-> not a collapse defect.  Skip those cases where the PMD order is not a shm=
-em
-> order, which thp_shmem_supported_orders() already reports -- it reads the
-> same per-size shmem_enabled controls the kernel only publishes for orders
-> the page cache can hold.  A tmpfs-backed file argument is skipped on the
-> same grounds, and a run left with nothing to collapse into skips outright=
-.
->
-> Anonymous collapse is unaffected: its orders are not capped this way, and
-> the anonymous cases pass at a 512M PMD.
->
-> Assisted-by: Claude-Code:claude-opus-5
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/self=
-tests/mm/khugepaged.c
-> index 9213ce1658d0..c5a3c3922581 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -1584,6 +1584,27 @@ int main(int argc, char **argv)
->  	hpage_pmd_nr =3D hpage_pmd_size / page_size;
->  	hpage_pmd_order =3D __builtin_ctz(hpage_pmd_nr);
-> =20
-> +	/*
-> +	 * The page cache caps folio order at MAX_PAGECACHE_ORDER, which
-> +	 * xas_split_alloc() puts below the PMD order on arm64 with 64K pages.
-> +	 * A PMD-sized page cache folio is then impossible, so the kernel
-> +	 * refuses these collapses by design and there is nothing to test.
-> +	 */
-> +	if (!(thp_shmem_supported_orders() & (1UL << hpage_pmd_order))) {
-> +		if (shmem_ops) {
-> +			ksft_print_msg("no PMD-order page cache folio: skipping shmem\n");
-> +			shmem_ops =3D NULL;
-> +		}
-> +		if (finfo.type =3D=3D VMA_SHMEM && read_only_file_ops) {
-> +			ksft_print_msg("no PMD-order page cache folio: skipping tmpfs file\n"=
-);
-> +			read_only_file_ops =3D NULL;
-> +			read_write_file_read_ops =3D NULL;
-> +			read_write_file_write_ops =3D NULL;
-> +		}
-> +		if (!anon_ops && !shmem_ops && !read_only_file_ops)
-> +			ksft_exit_skip("Nothing left to collapse into\n");
-> +	}
-> +
->  	if (anon_target_order &&
->  	    !(thp_supported_orders() & (1UL << anon_target_order)))
->  		ksft_exit_skip("Order %d is not a supported anon THP order\n",
+Could you help me please understand how the next branch makes
+its way to the kernel?
+
+I see NixOS Offers the latest as of 7.1.
+
+The topic for binfmt is named on 7.3.binfmt in vfs so my assumption is
+that it's slated for 7.3.
+
+So that means when Linux pulls for 7.3.rc1 I could start to test it on
+NixOS? Maybe 3 more weeks?
 
 
 
-
---=20
-Best Regards,
-Yan, Zi
 
 
