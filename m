@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16306C55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 21:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AFBC55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 22:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 703AB6B0099; Sun,  2 Aug 2026 17:55:18 -0400 (EDT)
+	id 079A76B007B; Sun,  2 Aug 2026 18:19:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68C766B009B; Sun,  2 Aug 2026 17:55:18 -0400 (EDT)
+	id 02A316B0088; Sun,  2 Aug 2026 18:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554DC6B009D; Sun,  2 Aug 2026 17:55:18 -0400 (EDT)
+	id E851E6B008A; Sun,  2 Aug 2026 18:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 29B686B0099
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 17:55:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B208BA030D
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:55:17 +0000 (UTC)
-X-FDA: 85057685874.05.CB36C8B
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EEEB520005
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:55:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Uxn9yz6O;
-	spf=pass (imf13.hostedemail.com: domain of 3wrxvagYKCFUFHE1Ay3BB381.zB985AHK-997Ixz7.BE3@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3wrxvagYKCFUFHE1Ay3BB381.zB985AHK-997Ixz7.BE3@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B4A786B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:19:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46681160585
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:19:54 +0000 (UTC)
+X-FDA: 85057747908.06.FEB75B9
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7F32D1C0002
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:19:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EfiyZGNi;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785707715;
+	s=arc-20220608; t=1785709192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FNzfa/Q2B0yr5cHe2iHTydpaM2L8dTGY4PL8h7AQ+vM=;
-	b=qwmXf2FAckt2tBdH31nPvag1Air5QZ8mr8KWsPxltfRyKaLrC/n9M+sapRpj1+ObkSQgTH
-	8cPeFx66TTjNNdLwUJRLEMHjS8yTA0ggUg6IkI8KXyQOesvRRtDJ7ZuYdNkplJ83DS/q5G
-	mkDfXbyopjK9tL0wjySpBZy8pY+Aitw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785707715;
-	b=6MLVQ6uIYRXqRn2Iqm0VdTdTsNgG20MgvsylEFP5U/HbqiG3A1s8W7aHIot0kBEvqQoiE7
-	beGaAP6lQZlL3LhH5gRSJ+p89JVtOCS4gYteqLUm5a8Hz0LVDfFwK3VRILo/5R38/MmFU5
-	bJzbqQe/oCHOYgyrWMyYAOIacquuVQc=
+	bh=T9PxmJvgH++4wFP7ID3jQ6AJu2hUuoRabft5a9u/mZc=;
+	b=RE2hLMYGPiSI8Sl9o6HjCoUwR5agsCCByhCteFroNnXNArFZvkDyFDSSqKwHtHSPwUD87Y
+	EaYVEH9orosjBP5e1DWj8h04Zoufdja0XzAoVb5BAAHuaqYNpdt7bMFX9FweMKPGdhrszL
+	kdmwnR7xma4o1Z/XM/fnjl4QNKcp1jI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Uxn9yz6O;
-	spf=pass (imf13.hostedemail.com: domain of 3wrxvagYKCFUFHE1Ay3BB381.zB985AHK-997Ixz7.BE3@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3wrxvagYKCFUFHE1Ay3BB381.zB985AHK-997Ixz7.BE3@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so4620774a12.3
-        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 14:55:15 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EfiyZGNi;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785709192;
+	b=d48GhQoQcaFiEeN98Bm9hr5vjS/3vG8H4d1n53uP7y9UsdTXGP/DKvEVBC7KKEkRhyAD4p
+	rpWCqYMz5KlQGw0qmZlHe5kZou7b8dvMDqib7c3DjtvuMIVJ0X6gd/+JIwWD5TqwU6QDuT
+	k7kaQHKaltuQKz8h4GA81QKFKuezLL4=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ccdf36f63dso83265ad.0
+        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 15:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785707715; x=1786312515; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FNzfa/Q2B0yr5cHe2iHTydpaM2L8dTGY4PL8h7AQ+vM=;
-        b=Uxn9yz6OLbt+AhvWe1Webr2nXTTwHMhiYYmrMjCOgsK32Q4GnL6dijkH3Btt7ZC/Ur
-         XNPd2wqGLG2Er2pwPn4QlH75hXLeTA3ZJcbB+vHIbmzgA3M5QtM3SEHfxbrTX3C3YATJ
-         aYoBQuodecrK2+GmGhcsS3TvTmrcgDfcSFCz9BkYrpiN+/Q1R1uVyj5MZEc6XOZ89GcV
-         HSd5aKosJWEHPuUZVQeDg6A3RR9+puUlhMvxQ9KoUHrqVA34COep2usIFxGNTVtm19gW
-         KFz/CHa/0Jx1c0mu4vCmIIhmavGH4i8iw97uzbchhBBgqCTPskrjFQknUFaV8YmoefrA
-         IQTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785707715; x=1786312515;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785709191; x=1786313991; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FNzfa/Q2B0yr5cHe2iHTydpaM2L8dTGY4PL8h7AQ+vM=;
-        b=fWuXSwh1Kf1wPYagTccz+LBM1syivPifV7+v3L/UV1pGUHqx83ydVzokLx21U0Tv9e
-         a/6jsNiMRD9JS3glagEpIf6rryHu+hAglPSvsJw+1LESuvT1/HUYKVRH5uCefYJ53obm
-         j3nzLS/9vXU7SS7B2GUPnCje9arLjVnvbIQ9Ao23qQClw+RTidnQ07dGbJkcqQ2PeDKb
-         j8aarxyS136GxZc78dVLvLf5R4p/nf316xiICYng+MFWUuYmKMkLIV3NPF9tlsfV5knz
-         EKLw72zSHmPEPL+16AANVObi+KGSnXRFFZFzsZVPI1Y3p6Gf+zTsFFFh7KpPcwfosSuf
-         ilgg==
-X-Forwarded-Encrypted: i=1; AHgh+RrD3HYLTA1zs4k8AGN7TmJ7mEulCJxV0uFGfZLA118Oa+2dg67BpOZf4x2iMfb8GXwZuRvr5YGbpg==@kvack.org
-X-Gm-Message-State: AOJu0YwO9frC5sHc9Gb0xrmBc2ZfeZFVvM6b7dyPjUd0Zf69TYXnXFE9
-	HjwNilQBsj9qaNqjMkLGoGrZmPo850gOI7o8Y8GDpbThZx6FvVd7ubNbH+dSPdF3R8K8zus78tl
-	W0M8UhQ==
-X-Received: from dlep14-n1.prod.google.com ([2002:a05:701b:458e:10b0:13d:2928:7996])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d80f:b0:3ba:cd5b:3dc8
- with SMTP id adf61e73a8af0-3c92a5f1c89mr7273098637.31.1785707714551; Sun, 02
- Aug 2026 14:55:14 -0700 (PDT)
-Date: Sun,  2 Aug 2026 14:54:59 -0700
-In-Reply-To: <20260802215459.2769283-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260802215459.2769283-6-surenb@google.com>
-Subject: [PATCH v3 5/5] tcp: Remove mmap_lock fallback path
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
-	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	surenb@google.com, syzbot@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EEEB520005
-X-Stat-Signature: ykr1pykieugf5ygu6pjh6tbtktdy5zux
+        bh=T9PxmJvgH++4wFP7ID3jQ6AJu2hUuoRabft5a9u/mZc=;
+        b=EfiyZGNizHT0gb2WzOVebjJRZHaQfzrOeSN8h6ON4Q7ld41Hvlwu8DKEIMWlp6E0G4
+         Jv+EcFLKOTc5046d8z9Cf42MZWU7IBFYNrqdld4gJ64nPHqQla8ED+y9B/Ou8AMDs7d8
+         zNzK5LpiY/CVijHHrV3/vRxqzijT4UGZmud7j6MyKd5vtOLgMn9v8NjDVm6frC8jKaPc
+         Za/CUOjVVujDQBGJXvXYIX/aAnv5yEMVfKEtPU1ekX8YfzsWAwrelZ/WJSWlUE5ezrTx
+         CD2M9/97txAzKMYv2+WdSVAw8WzSBpE64ckWoKlMVSAi/85HwXEQz0pee9GOHzP/L2tv
+         IAEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785709191; x=1786313991;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=T9PxmJvgH++4wFP7ID3jQ6AJu2hUuoRabft5a9u/mZc=;
+        b=rGSAuePxJtVuQQWWwUJPxkAC//glH6uyspSyaccuWoeueLTjdIsgeJbMFu4JiMKWxo
+         WVw4HsJvM9NcXZfBPUhNgFFHgTr+oO+gIN1H1mH6BtWWLqpHTSg4LLYd5oJHSnFUzR09
+         wJj6mAo21YCeF3+daBKxZ3PC2qaxQMlFZVIsCDp1FlKTloSaUO/OTtvauNyUqXC6o52/
+         xGZEjq4vhfvpU8fHY/4vci3NZ5cjSYweJgP5YjDzUmARH/VSUf/GZ844IYDIjfOlC33F
+         EydL1W8OarX/WpkCuFF+EplkBkwAGjzMxtiYNxIVGrIOq+DCsWKlDlRdAB6BsE6/nTm8
+         Xb9g==
+X-Forwarded-Encrypted: i=1; AHgh+Rpf3MTqbSDUAEH/RvdxzlfL58/RF8Vp2eE1QdX0100e1LKd0lRw4W/mlhYxT2PIrmCKflyCXfSY7w==@kvack.org
+X-Gm-Message-State: AOJu0YyNKkPO32s5iOG0dIpJfO1GM7tA/TWhCp7d2td8+YoNGP8F9XX5
+	kkcXi9jGbiClzWStu/sothO/xVzs38AwXsJdTxRKylmsufB78ovuAmvs4y2ptyMFbQ==
+X-Gm-Gg: AR+sD13YxJbITrUH9iNkd3zssMa6KuKMEIgrPO0mvbmVIde5/mXXjoqrpAzAfG+kYB8
+	aMlh0WmF2HdH2jryc84ogm/n9qOP+eE1aVpu8xRX1J4hGEfZbHZGaebt8pls4gYKVq8v9Od8nLF
+	w5Qrt44lfFhVm7RP1IsSI2F8FenH2pxMYj0RdvnOLyopI4urftABwVvkbUj+EEI6bjOifEMYtZJ
+	HJInJ5gFZZYkVGcXNSsWeZmRXZTOzhKTfEJ7Y3IDOzVUTWVqKg9p9eVp1j5K/ecZ7q6gLpMn0iB
+	4kjHtxsaKGlrN4AfhhziT+4yRXt0v7u9CaweV0zPJb9FlShc3UvPc7W1jMYnSJ3VpVs1QKv+2YF
+	pSFBJhTci7Ba1N5YqpjoMCA148LhKNcxJaD+qj3GJsh0ztgRTWX43HwbQFbXbAK4W3A7w4ZNXKi
+	vQ0N8mZy3p07GSBdK6WO6/pRxezz/Q9qjSelz2wHTdABjTXeqYeVHo4I/cI9nzDDPaScWJuA12G
+	AN6n0jFrYXdxpYaw+KLsBd84waj7wT6kTHZFLiKkcP96MqIbN24HmqUmjnsFyidky5ZKDdR4Cbo
+	hplHrYkK/XWDfZBzgLCTd5mgTpU=
+X-Received: by 2002:a17:902:da81:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d0547c255emr7641115ad.8.1785709190721;
+        Sun, 02 Aug 2026 15:19:50 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:b3ef:da16:936a:c7c9] ([2a00:79e0:2eb4:9:b3ef:da16:936a:c7c9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc29f2b9sm2774436b3a.35.2026.08.02.15.19.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 15:19:49 -0700 (PDT)
+Date: Sun, 2 Aug 2026 15:19:48 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [patch 0/3] lib: add synthetic MM benchmarks
+In-Reply-To: <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
+Message-ID: <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
+References: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com> <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7F32D1C0002
 X-Rspam-User: 
-X-HE-Tag: 1785707715-788169
-X-HE-Meta: U2FsdGVkX1++X7vs7zog/CtSbeXAej5A2L11F5vXfrIA0kerHex2JIamalyHQMdGoG8FgEbwgPOnvefkbnTNqkj6+L8edhKCHN7BIfwGqLzRqigpiERv/8nZRrq5XpDhdgSmodhLM6UPn7RxJggeKKY9S70w6uewQB9qqRv9Z8ck8i+ITGAtmplqk6YCJZ/PwtBlHTQUmMlAJgk9tdqkaDJqBS0lNRVW9pTHP2V3bnajAHRsQHHkOAaCH1m+GEAba99rG0cmodbyCK80tpvFAayFy0lYti/XCboi3u02nC3S25ouSXNuya8n8BB4IWgsXCRiY8JY8cUz7NP3VpF3IyF1wLXKTgjt5QGSpZhXVXOB1Oh5LaA9SwDQGtoO0Fic2fnhz203nSJMPFN3PDXh7pZbIcDEUp4WVZWPUv2Ero7HKBwnIfc4AIBKB/PN1j70fHTOx6T0O9Qgp+qfzG5u1GsfsZI5cXQmRkrC0AJ5yulosskbzjDoz7UaaGRD49MV5kxeGvnfPoiGWy4/vRU9G7QVjThxVpyxQqr/wh49M+qXRdSrkrT0tZPR2ewOujO0TBHgA5IoHB26c83mXpYEcLqIKi5qqbleH3LwN2d3P0NrmNGzDX9mb4Rp7VUfWEIN3ZogWkKiQSI+LqQZ2y1aFaGE86Be5nEoGW/KHVF3DiYWh481Lh74q0Tzvmq8YsUn0RabF1gJ4Uiom4+ucuv5k1NH7lc1RAkG65a28Dxgghhqrdb2YogSP6r2EuQDtV/iDyLs2fQolqL1UTRps97mmRr+fXNacOblXaymmjMH48AdoYmBTUGY/a6DHpuLeIqS3dEucibcjj8Swezcoq9yk9O+gcP4xs/rHD0XgG6PHE5b/rVTgyjjZPypYB47bQ99BntI2n5RmZ7ZEwimNsC4lLW+2Rv5P4+z5gUyv/n+/RhvtzcoDqDtamauF165koHpGoOD46SsEHQsJ8+lPK9
- 4rBBAZ9W
- RQMHJ5mkjKLI52WKuQGWEgfhDrBNOZ2OeYhl8YKvZ2+t+fMteN8mUvHtvxBnBBPdUgSNdp9aAVYoSLDLk3pH3r15izOKIt3x82tNXkn9+/tnoe8cbzKUZM4OPqoib44nRfvFAcFyEfO8b01d2RA0pHWRJJVTfpALrZI8R/vQq5dnNTXLaEybTHDmHbnAbATat/xmPyvxyjieJ6neT/gj6earpQyLxjc1x9dUgpArdHdNzYXYgdydc8hsMMDyo7edogS86+8dDA9XswbEoT47PtT0w6xd/+opmwjTW2HbhXbJXcKDRCqK3NCPQHWWMRL0TnAf/ONzquZbOwheMu94dL3H+lmEkMlWpFG6IMffIj/Z+by9yC0SW1nBru3OFsBChFmtA3lBejYTdC+vCGz/VSzl5Ktg/FM5f0a0gkuyBYk0KaxzMynT+SZyJcmraHiW0m37b4mlTleSXekas3i7Sn6t4NqOWYb82xVOhMIZKURUmKvmGtV1zAW5HRDlJux+2lR7UujD9ftArQLIm7DLU2wj/41BPBd7XWveKgbCg1T5i4YKnMWTxYmw+3OoP/nqco1xgnsjJUURcdsXQ664NVrnkrs34AlLVcH+jLw8jkPJd/ZVjChjMP8faUqSW2796BUGb7/lTweK7eTq7W66Wa78jqOfyDaHDoymvlebxGW3YftD1bUOLf1uiUy2D3X6BD9BUeQAA7rY1LyeHIx1gNNXb2y25UzZ4U6vPfIFRe/nveAhuth9cUtWWIrgvJmOSGil4pCQUxwSkoINrwQGP0tRlhR6M6vKNLgTKgBXQW46PzcMkm+gVEVAPiw4eL9d1lb12qaVS9gu527qkN600boahcI95rEeDVJFz29trQdqH+nOS9S94OYHGXekvZP2Tnucxg6rYQ6XGM1RoYenCeyrR1DFhAdCx/vCnSKZEwIil8advvFo5vr2hFTZkbvIsoDakLDhz7cljKS4lcJzfzKfHOP9b
- lADJ/DPr
- 2P+1T62+9ZJwDBhZBCmtcpYzirLaTtYIik85lKtQqIWUXPMURLdMc0xV4rONaMtxYu1CVO23dYg=
+X-Stat-Signature: zghax9j7ffs6qrqiqqi4ye1augngkddf
+X-HE-Tag: 1785709192-144436
+X-HE-Meta: U2FsdGVkX18CbxIepQbhNePHZ5RX699FyWBprP5z5CPB5EgK1hZoQmR1feJPHE6P6o8gXj2h4V4kVevcZ5yFxjdsyHk/Dn+Xkpf9JCQOGRbp+8etR2UyzXBRY3iF4sUiece2EfYVN7s12F13t04TH/udeki6WGi4FzlnrD1pGhfXCaKKpaVhebjY1f6dKl2SYgS0P30AmBO0CQwwt2cjTmnmaT1m6hCAL/wzGBBbWjAxwx87V+Y7vWGW6GC1xhfRuPcWcjh5blX3i1F17nGrRwzhd8a2iWehfNyk1+dBSyywS3HtByP527gvKxcHtBsYGSdGWWQ1TdSUXCVfCU3iLP8ee3yRoTRZpzmDLkLOP+NvMZ+5ifcE8hZyK3uDlvwFTJLXdbcF7BPcY92xiRVSM+K9oUeJC+eawnLCOaD67TeGyfGid6s9dY+LHUcJIQS/pj6FaOwwOi4B3EfIgp11FhblUdEnmc8VxIshWz6J5GpMCnJDEsOQRjcUyWb9URnupl7wrGGeH2GBHpmzP50JWtKFGIvNr/tYWXJabjIAYLrHAZrzNT3BAq6QuQoHsWkir2X9/w14xxVhLUml2eIjYDRVB11Ihw7Q5G5CHluuyUV6Z9SOZpWmRcWmUMIX84I5XOgt6KLWQlJtkSPTtGDk/kDDutz4ZKlzVG2iDZkwelGeONuUW8cBTFZvJ3jkmoD5zeBnk9CiDkxTQ5qY83t9BJCtT5XBQaYkKnnphhL+k0bPmHANk1nB+V4OTftBvTqxrAzOqoYXBfWQuKTM5LRUqoOhOmtGH15n3bP6ouKNAZX4lpbnErG2GOE+DhGjSOv9x09dyUmkZ8qc2bp18nRgnfleG7I1oUakon3QxB+2H2DIvlBxm0omqfFEYKES2BbU1jzPfR5FTHVLT6bOTiq3Bw2hVEw58ChUxF6aGeX8ZAeCFLSTUHHjWq0B3fSe6dsYzwQRpjJhPOpDo8CkC7C
+ tPwta/4k
+ iezOMivsBK6bXXN5TGZh9NvL83aXoTIWWZFtFYviad/jjXYMlk64CJ5j68z1+hRbUAwIFn/mNHx5lxfbb5UDqmYYL6zUIV3n1B2E4WNrkoNE3J/FUR0Ou7UVREAL+omVhZsjoYeMRLoEQe4QTO5Ko4+r3FuKvklPl2ZqM4Wm3Ut0cIsN9Ym99Dec+RVcAikONHbgHPoTXQCyAQt5BINxakSXxOYmgBZlXVQx3G9OEYIOm6gd9KULamn8fsey0G+IGD1VxoAg1QKHdRmlT5PIAnK2PZ2dUhfwNIgvhXkSZ88ADqnFj9nv0f5j8WRzW2dzlofzNnDaWDM+R1usa79CbiLED1CbPzZIuSqGqo6xgdDhLrt1cP5Z1hOQD0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,110 +120,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+On Fri, 31 Jul 2026, David Hildenbrand (Arm) wrote:
 
-Previously, the per-VMA locking could fail in the face of writers
-which necessitates a fallback to mmap_lock. The new
-lock_vma_under_rcu_wait() will wait for writers instead of failing.
+> On 7/31/26 06:26, David Rientjes wrote:
+> > A blast to the past :)
+> > 
+> 
+> :)
+> 
+> > We've been carrying these synthetic benchmarks in our kernel tree since 
+> > 2009 because they've been helpful to identify regressions in hot paths, as 
+> > well as quantifying any improvements that have been made for new changes.  
+> > Hopefully they can be useful to others as well.
+> > 
+> > The synthetic benchmarks are run by loading the module at runtime.  The 
+> > modprobe will fail intentionally so that the module gets insta-unloaded.  
+> > The test results are emitted to the kernel log.
+> 
+> 
+> Ideally we'd have an easy way to actually use them in autoamtic tests.
+> 
+> E.g., loading fails -> error, loading works -> no error (and unload)
+> 
+> > 
+> > Proposed with permission from Christoph.
+> > ---
+> >  lib/Kconfig.debug    |  30 ++++
+> >  lib/Makefile         |   3 +
+> >  lib/test_pagealloc.c | 337 ++++++++++++++++++++++++++++++++++++++
+> >  lib/test_slab.c      | 375 +++++++++++++++++++++++++++++++++++++++++++
+> >  lib/test_vmstat.c    |  95 +++++++++++
+> >  5 files changed, 840 insertions(+)
+> >  create mode 100644 lib/test_pagealloc.c
+> >  create mode 100644 lib/test_slab.c
+> >  create mode 100644 lib/test_vmstat.c
+> 
+> This looks similar to tools/testing/selftests/mm/test_vmalloc.sh and friends,
+> that can actually be executed as part of our selftests and do a modprobe.
+> 
+> Can we have similar scripts to execute them?
+> 
 
-Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+Thanks for looking at these tests!
 
-This really is a nice cleanup. It removes the need to pass the lock
-state back and forth to find_tcp_vma().
+Good call, I agree these could be loaded with a wrapper similar to 
+test_vmalloc.sh.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Cc: Todd Kjos <tkjos@android.com>
-Cc: Christian Brauner <christian@brauner.io>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org
----
- net/ipv4/tcp.c | 31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
+All three of these tests don't take module parameters (yet?) so right now 
+this wrapper would just do the equivalent of check_test_requirements(), 
+usage(), and run_test() where we'd pass in a single option for now, 
+"performance".
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 455441f1b694..62defe70f3ce 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2167,27 +2167,18 @@ static void tcp_zc_finalize_rx_tstamp(struct sock *=
-sk,
- }
-=20
- static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
--					   unsigned long address,
--					   bool *mmap_locked)
-+					   unsigned long address)
- {
--	struct vm_area_struct *vma =3D lock_vma_under_rcu(mm, address);
-+	struct vm_area_struct *vma =3D vma_start_read_unlocked(mm, address);
-=20
--	if (vma) {
--		if (vma->vm_ops !=3D &tcp_vm_ops) {
--			vma_end_read(vma);
--			return NULL;
--		}
--		*mmap_locked =3D false;
--		return vma;
--	}
-+	if (!vma)
-+		return NULL;
-=20
--	mmap_read_lock(mm);
--	vma =3D vma_lookup(mm, address);
--	if (!vma || vma->vm_ops !=3D &tcp_vm_ops) {
--		mmap_read_unlock(mm);
-+	if (vma->vm_ops !=3D &tcp_vm_ops) {
-+		vma_end_read(vma);
- 		return NULL;
- 	}
--	*mmap_locked =3D true;
-+
- 	return vma;
- }
-=20
-@@ -2208,7 +2199,6 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 	u32 seq =3D tp->copied_seq;
- 	u32 total_bytes_to_map;
- 	int inq =3D tcp_inq(sk);
--	bool mmap_locked;
- 	int ret;
-=20
- 	zc->copybuf_len =3D 0;
-@@ -2233,7 +2223,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 		return 0;
- 	}
-=20
--	vma =3D find_tcp_vma(current->mm, address, &mmap_locked);
-+	vma =3D find_tcp_vma(current->mm, address);
- 	if (!vma)
- 		return -EINVAL;
-=20
-@@ -2315,10 +2305,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 						   zc, total_bytes_to_map);
- 	}
- out:
--	if (mmap_locked)
--		mmap_read_unlock(current->mm);
--	else
--		vma_end_read(vma);
-+	vma_end_read(vma);
- 	/* Try to copy straggler data. */
- 	if (!ret)
- 		copylen =3D tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
---=20
-2.55.0.508.g3f0d502094-goog
+> But I also wonder if these test modules could be placed then in
+> tools/testing/selftests/mm/ instead (or some subdirectory for test modules).
+> 
 
+I thought about the same and just followed what appears to be the standard 
+convention (like test_vmalloc above) for lib/ for now.  If they should all 
+be moved under tools/ somewhere, perhaps we handle that in a separate 
+series?
+
+> Last but not least: MAINTAINERS should cover them.
+> 
+
+Ack.
+
+> -- 
+> Cheers,
+> 
+> David
+> 
 
