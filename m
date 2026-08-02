@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3152C55174
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 18:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9A9C55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 18:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 834136B007B; Sun,  2 Aug 2026 14:00:58 -0400 (EDT)
+	id 6112B6B0088; Sun,  2 Aug 2026 14:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4AA6B0088; Sun,  2 Aug 2026 14:00:58 -0400 (EDT)
+	id 5E8AE6B008A; Sun,  2 Aug 2026 14:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FA586B008A; Sun,  2 Aug 2026 14:00:58 -0400 (EDT)
+	id 4D7996B0092; Sun,  2 Aug 2026 14:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D8F46B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 14:00:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4B2F14053E
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:00:57 +0000 (UTC)
-X-FDA: 85057095354.03.4FE83D3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21CF96B0088
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 14:01:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FA24A0522
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:01:00 +0000 (UTC)
+X-FDA: 85057095480.25.FDE0EB2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 123AE18000B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:00:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hir3URuD;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785693656;
-	b=lbXR1B4kgApEfUDPlLIChY/N4Kx93O0hf2vsIgENJagHc1TcwlQh+SnXKVEvqY4/1jxVKo
-	6TnzmkPgnYi/84aO1zse4TfqdxAkTdkM93kImFAhodk+/aTewC+Mtf3QdV/XE+EROOREWL
-	amFQqovCRc2pxhFc00wKjRnyLN1NCT0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hir3URuD;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3674920010
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 18:00:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KEmN+I/S";
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785693656;
+	s=arc-20220608; t=1785693658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=aG5ekkfvn3A//KECMKgZl27slO76I4o4kDAK0PCOpLw=;
-	b=DcM35Wdh5/doh5sIZPjoSXT/eM516FoUzxRVBRwoc6u/7hdTDcj7Pq2ewe8oYwDRvOqK4N
-	uzLHyt3mutGLj490NnzldgJMR+BchoQRZ1KWoD6eFZsgboGYr3RN7o/MzoYF3ey9i2A5X7
-	mz9NMsYGhBZKqkHAz/bTYXAtG0AYnpg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xdUbIeEA0NY1lpHQDcBWvRIKEibZrc5Dbd8chU0BwRo=;
+	b=BlQLRGuuj3msK9Fd/PD6tmA2gfBovbfxXRSD+JDBSjjvz3BXI8aCe7U4zG+z9GoRaaWmrs
+	GEClq+3V/Dom/B3Fd8QpTTOX49jHj26LdWF01O2Jbk+7cFxH2sao9EJypem+j5/VpxC8P1
+	Pr9/bwaeaHFRTze2xo6HEayB7aa51Ok=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785693658;
+	b=sFQdFUQl+PKrw8GqKb2Db2E3ODO2AQpXhRQ4JRGEmeQISBOVL0DdW3yN47OVFR6ByvnO3o
+	5wtEEavsa42cdsK39PdA3JVlXtE076hry6su2ehWsdYzSerICVyCyc4ZQOc4iZgsKcq1k4
+	YzKWVu9Ku+Efcm5kEFz0IT8+ejYELh8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KEmN+I/S";
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A224411A1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5ED3743C37;
+	Sun,  2 Aug 2026 18:00:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9499C1F00A3A;
 	Sun,  2 Aug 2026 18:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA071F000E9;
-	Sun,  2 Aug 2026 18:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785693654;
-	bh=aG5ekkfvn3A//KECMKgZl27slO76I4o4kDAK0PCOpLw=;
-	h=From:Subject:Date:To:Cc;
-	b=hir3URuDIttID8b5GJHAXggVkRnfATo9lrEzTpHHqRlEhyX0DQwT/JAE9Opz2z5Hf
-	 sOs7KLGhrV7UZS+cmcoHUTrJjiTFFi5aeccZryrOTG1zP0WOAGX/1jCdgvLabOcUi9
-	 3Qmt77+PiLlYr7qsqB3Z2FZQtMXmBt0zjUReR9oimQQbIfe03d8Aoj+NtP8J7V9Z0J
-	 QXrY9rsbJLJ2qbsZNVRbQ5nTPzs1qXu0l/wUEE6juzjhyWtBi8OylIze2tKKW2S/Ay
-	 SFHPgpyuNBWviQFvJ9Nv41P0/qqvq1ilNN0PYN2wTqY4mkNvfxMZ0zcL1t9Of/5tEl
-	 Tk0v9VZRjV7/g==
+	s=k20260515; t=1785693657;
+	bh=xdUbIeEA0NY1lpHQDcBWvRIKEibZrc5Dbd8chU0BwRo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=KEmN+I/SzbZDPFVG5b+3QkXRjLgREbM+/2vvRmaf+cf1uLFmH0QmTJ7eRMDyfQkZx
+	 KYyl8n27eLCcuWRj0cVMkOyr/sMOsqnB6/r9/pOOLwshk+u+z91lRzg6FFy5n3eaL/
+	 oEcNCZ5Ku3fY18PxIxdyxi6cVKRxws4t9qH6culmVY/z22HG1+U2SK0ofG7WRSVzE0
+	 5M5Z4JLXwVzHBy83kPIC+eE8rkB7h4XkuvV1oVyfXJd5RINtFbX8moKeQ6LCHSKby1
+	 6on/Zvmrn/E9J6jkqn/SeP6elDZneHITEpCxmNlYK9zTDZ8J8sUHutnIvGCR8GVv1G
+	 dvsStJhE1MSqA==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/3] fs: don't warn when a mount is completed from another
- user namespace
-Date: Sun, 02 Aug 2026 20:00:42 +0200
-Message-Id: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
+Date: Sun, 02 Aug 2026 20:00:43 +0200
+Subject: [PATCH 1/3] ovl: don't warn when the mount is completed from
+ another user namespace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMqFb2oC/yWM2wrCMBAFf6Xssysx3oK/IiKbuLHRkpZd2wql/
- 25jH+dwZiZQlsQKl2oC4SFpavMCu00Foab8ZEyPhcEaezLOWBxbeWNMTXPXvmPBkSQjnSM5ezT
- WHfawqJ1wTN9/9npbWXv/4vAprfLwpIxeKIe6TEPU7WrM8w87PpWIlAAAAA==
-X-Change-ID: 20260802-work-fill_super-warn-a7fa82502843
+Message-Id: <20260802-work-fill_super-warn-v1-1-4e987911a39a@kernel.org>
+References: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
+In-Reply-To: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
 To: Amir Goldstein <amir73il@gmail.com>
 Cc: Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org, 
  Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
@@ -82,22 +81,22 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16-dev-f2f85
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1667; i=brauner@kernel.org;
- h=from:subject:message-id; bh=yhq9Fu4T1qU5Eg66CKyubI8uMlPD3dDLjZzzlC0UkhM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTlt1761vZrmk3uD7czkz4+dJXV/MDXkKflE//Rz9O51
- 16TYX9NRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETCmBkZdoVcDNXWN3jFpjyV
- 85zCT98J809OuBeeNatA+5bSzDOhhowM16Pb9obpl8W/W5N94PRz7Xs/RJj/ej7Zlz3rIJe2yOL
- rjAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2481; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=M6JZlR8i5Q+W2IPwr6zZOJ0eNJQ8egqcpk2wTkdtdRQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTlt15ulrh9w/j6jAsRNdGduTJdQcsuXHv196O76IeHV
+ 179ydL40VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRf7EM/wxMtkR+f+SQKNO5
+ KuHPZa9lVa4B+5be38Lz4+z6hV+Pz6xlZJigarTw8hkG/i3eByZJhAdUSBvtPPG5JOWL0rLJPTp
+ /+fkB
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 123AE18000B
-X-Stat-Signature: xhif64u6gd4hg86h7xje3dh3a8bw6sfm
+X-Stat-Signature: wh1rsmzfn9funamd147sq84t5umpth5f
 X-Rspam-User: 
-X-HE-Tag: 1785693655-386414
-X-HE-Meta: U2FsdGVkX19gGs0fherQ9zKeow3f47Kggh9VZsQGoLATtzUWWd+vcvJ/GHb0AbyLBueFvu2jMk/kMXVAFQxq3wn5KhlFUGG7rROrtHJtsY2XzOQyIR33LzUD/kMUmmkFiWR/zk3M0TTE8APbFAgX7ROL5dq5zQbdfRihqJS81BPWGTRS92+IS/ZH40eqv4vI2bJ9oLGpBLaOxom4DFwGRRHPLEWXtqv40i8InK1qaqr/bw65/SPrfW82UT4m1VLcbotHlJd2ZTouOAlvCECFAHGrtCYPt0OMZjNIjiD276PjRWHAFva7j7Pn0UKsXRF19iBsPIB1s0YhNITsxTE1O1laU+qWRspVbs1XFpz1d8JpV0LhXQnzi7InlpxdJf9QUlDGnwcCt8cOnLNeyo52DcMy4j2DwDJkTCkxLB+AUl2G3XFwujLSIaMugS+xZnyhTitO/LdajtauQupXt7JvTHRYpSCwPhPHem/4Y5PmMiLwG6lWIQfIqLnfXYrnX3aGl405IktbZYHgRnhn7DITUAsdACSGgtRlrT/dKeDeoXbF6O4gz2AbATT7EU/KvqjmjPqf/gnnvNui/NFBeh+EVj/pz+W9AcwVXyLYCMUR9tqq94ylXyfsHwk9Ur4/7llMiB4aiB5GvV0LjRabRdyktbC7NtsyJVz+YAGxaGiO/pI+dkf+/7/nMWyvL1TtO9hD9lxMJOj3CJG1AALuoDKgXjtvwlLLSLhtGtOTxNKTqn1u88bUgTR3p+zVTq4LnI1eVpp1i39POyd/TZVJEkMzoHSn4AU9EekCJRjsNd/F2ip1mZ5LhyY8Mf9RtqEQKZqeeVZC6gp6AHtekYVsthEPt7ZLhZZw66u5m8LHdVIgEx+/p8k5HDFQ9xyiPEUMamKIAG9IR/+IvpoeQufzny3WlGmJAxIsD5Mqn3nHv3cOK73u4a5nP9VxU/4Gy5Q5y1sSkgUnSJis2I83Fs5gdPG
- +abK7gA2
- dYuEiJLUXQf1WJB0aFIcTYVqAFu/Fw1dGvWzaSJXta8CG4S0Rx8ihRB/yrAwlrtLrFnPNNn+ez0moneSdExzBmbdNMjkW2zc444sx6JaHZg7P13+Ffcsn9lrislMI2K9nYH7w0Stq8tpdceHDg6x5hqlKPOszZOvZQxBwcY4Uh5nQzUYBZV4Vf/VQu7OCo8zuIhOSpxZx29b0rYU2dnKlxz153DBZJejNPSLiCip1IeJMyDz+VeaI+Smy9w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3674920010
+X-HE-Tag: 1785693658-589829
+X-HE-Meta: U2FsdGVkX1/OjWGtG7VgVfSYhhvQEXB7G5k5wirXkpNwEnPG9eoOh81aFmy3V9qw5IbGQ3KCFaoVcUFxbvIfHIIi+V68aOx/aeRYkIPTiJPpoJHfJuPbDRikIopkPL6t+zuhpZJjvfDP7h6fiesWO1RwbTZFKp0Xk7AxzKjffriCKojMhcEy2JeSJu8stKNFKCWJhqPm6pYiAtySqJ3n6nXIy8lCdwCF8D1dQlQ+GZSvaFpTJHC12EwcsURMptGpbwugUpejT0/OjUPyh1ufVBKPbZZukJxIJhkVbVyvJdsX6XHstxbE+99eyrdTDKm6Fca3oDjQS9IC7Eh6n8MiwJ0Qpcq0VtWKENqW2SDPCfFz3rV3vIW/enkm8ZLGFY9fqSSZH+9EkcAhv50ugEq3/7MxvyQhGbzTGlOOyHvU/F8rdcnCE5q8PtAcxNNjWSq6g1qht5RUShedxfTVowj0eEfX1DW3XgJP2WSRI0wplc7vgi++OoUaxcYT0Px4couplwg52cmEvR2cqwJluJ3dRwt6DTZw3MkXI7lvf9XL9TAOsHIkoy6Bj21EKAUSA55MJM6KS5k9ClzVBTulXXikVZeYiUyZrhhtAG/GjXy0UtnipgwHR+ZRL33BjXpQi0vWu7SU1yMD+HHUc74u8EdiTnLUItjQENpyj/sT+0B8iinlEykUsArtodll3UJHIk+fUyN/KfqoKe+BTNwg+sXaQ5GsfFnoD1bcSLUFOlybGkE97eshmgvh/LJM9wvIBu9nY56QlbnzSpKCHTmmCHoPMevoosSrDbX/LtH6PoloOwr8xKXPLTILznV7YlBiuadUN6z+eY/us1rNHa/dsqQbgcIZ/n4Y85kx04amxv05UoHmIXWKjSD5KyWN9r9Rww75afwKMSJc4iCbUS3wZsu60gLLlrtvAfWI5HciDOoJ5mf8KE0BE59zAbh3B+/fEJl8GjVbXv1aDJO5BLDQeRX
+ nXa8K2k/
+ qjyvuz7xLpfJD2N+AnEhGCta3azIWihIFZiynWqANZ5bmwoAB5Jz6YqRP2XyTlAik/KFhWVfPwedmGA58GwCCorsWZDJtpSeiji+VauCWrqbjValjmkO3387Xh1uwEmYHNuDKdkbEZXPrH46QlpOOxuluCvsTdb1asQwl0OE8rp6XhRsH2RaKCteXwRHGQSGS/2VTDkd9V+MgYZIwnqWcA+l9N/R0rJAhHZyqZd9MfBLVryLbUNHY6/53esLQUZ4zBAVSIrMZf1P7DWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,36 +104,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-fsopen() records the caller's user namespace in fc->user_ns and hands back
-an ordinary file descriptor. The task that calls fsconfig(CMD_CREATE)
-doesn't have to be the one that created the context, and mount_capable()
-lets it through as long as the caller has CAP_SYS_ADMIN over fc->user_ns,
-which anyone in an ancestor namespace does. So fc->user_ns !=
-current_user_ns() is something an unprivileged user can arrange.
+fsopen() records the caller's user namespace in fc->user_ns and hands
+back an ordinary file descriptor. Nothing ties the task that calls
+fsconfig(FSCONFIG_CMD_CREATE) to the task that created the context. The
+fd is inherited across fork() and exec() and it can be passed over a
+unix socket.
 
-Both overlayfs and binfmt_misc WARN_ON() that. They're plain WARN_ON()s, so
-it can be done in a loop to taint the kernel and flood the log, and it
-panics a machine booted with panic_on_warn. Keep refusing the mount, just
-stop warning about it. Overlayfs already spells the same check as a plain
-error return in ovl_parse_param() for Opt_override_creds.
+Completing a context from another user namespace is allowed on purpose.
+vfs_cmd_create() authorizes the create with mount_capable(), which for
+FS_USERNS_MOUNT checks ns_capable(fc->user_ns, CAP_SYS_ADMIN), and that
+succeeds for a task holding CAP_SYS_ADMIN in an ancestor of fc->user_ns.
+So an unprivileged task can reach the WARN_ON() in ovl_fill_super():
+create a user and a mount namespace in a child, call fsopen("overlay")
+there, send the fscontext fd to the parent and let the parent issue
+FSCONFIG_CMD_CREATE. Both namespaces come from a plain unshare(1) and no
+capability is needed anywhere:
 
-And add a selftest for both cases.
+  WARNING: fs/overlayfs/super.c:1551 at ovl_fill_super+0x7b9/0x1e20 [overlay]
+  CPU: 3 UID: 1000 PID: 3243376 Comm: fswarn
+  Call Trace:
+   get_tree_nodev+0x71/0xa0
+   ovl_get_tree+0x15/0x20 [overlay]
+   vfs_get_tree+0x2a/0x100
+   vfs_cmd_create+0x60/0xf0
+   __do_sys_fsconfig+0x4b2/0x500
 
+The child needs the mount namespace because fsopen() itself gates on
+may_mount(), which asks for CAP_SYS_ADMIN in the user namespace owning
+the caller's mount namespace. fsconfig() doesn't repeat that check.
+
+It is a WARN_ON() and not a WARN_ON_ONCE(), so the condition can be
+raised in a loop to taint the kernel and flood the log, and it panics a
+kernel booted with panic_on_warn.
+
+Keep refusing the mount and stop warning about it. ovl_parse_param()
+already spells a user namespace check this way for Opt_override_creds.
+
+Fixes: 1784fbc2ed9c ("ovl: port to new mount api")
+Cc: stable@vger.kernel.org # v6.5+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (3):
-      ovl: don't warn when the mount is completed from another user namespace
-      binfmt_misc: don't warn when the mount is completed from another user namespace
-      selftests/filesystems: test completing a context from another user namespace
+ fs/overlayfs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- fs/binfmt_misc.c                                   |   3 +-
- fs/overlayfs/super.c                               |   3 +-
- tools/testing/selftests/Makefile                   |   1 +
- .../selftests/filesystems/fscontext_ns/Makefile    |  10 +
- .../filesystems/fscontext_ns/fscontext_ns_test.c   | 239 +++++++++++++++++++++
- 5 files changed, 254 insertions(+), 2 deletions(-)
----
-base-commit: c679ce3be6cb63763d68ab9b5d9d73ddc0a40762
-change-id: 20260802-work-fill_super-warn-a7fa82502843
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 60f0b7ceef0a..60b808b85fc4 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1544,7 +1544,8 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	int err;
+ 
+ 	err = -EIO;
+-	if (WARN_ON(fc->user_ns != current_user_ns()))
++	/* The fscontext fd may have been passed to another user namespace. */
++	if (fc->user_ns != current_user_ns())
+ 		goto out_err;
+ 
+ 	ovl_set_d_op(sb);
+
+-- 
+2.53.0
 
 
