@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2626AC55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 23:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB79C55162
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 23:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1407C6B007B; Sun,  2 Aug 2026 19:22:42 -0400 (EDT)
+	id 4759A6B008A; Sun,  2 Aug 2026 19:23:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F0706B0088; Sun,  2 Aug 2026 19:22:42 -0400 (EDT)
+	id 44CD26B0092; Sun,  2 Aug 2026 19:23:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0076C6B008A; Sun,  2 Aug 2026 19:22:41 -0400 (EDT)
+	id 365A96B0093; Sun,  2 Aug 2026 19:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE2C6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:22:41 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D02240557
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:22:41 +0000 (UTC)
-X-FDA: 85057906122.12.7C4244C
+	by kanga.kvack.org (Postfix) with ESMTP id 111AD6B008A
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:23:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9596E4053D
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:23:09 +0000 (UTC)
+X-FDA: 85057907298.01.C20AF05
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C3E8710000B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:22:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bNCcfmfX;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785712959;
-	b=ZNEVGtl9Rh/VQmDHOVpluKUQ2fCH7UYrMlPV0oIJDUHcjM19056dFUG9gwpnvQjaRrfHgl
-	f4EVrrmn7Rk61UV/NM7zYBk2VJSOKPFg70RfGHx97mc85BNEQ3ZheS9AxE//S64Eq2MrBa
-	dpEfCGxjbyX3U1b630Me2blo/5YTSFc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bNCcfmfX;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5F24140009
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:23:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SQkOZwYd;
+	spf=pass (imf11.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785712959;
+	s=arc-20220608; t=1785712988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYPOkQbW1lOvJHgzDB/D42RIqBuqUE7gwCxeBtFkNcE=;
-	b=chWB7BQs7uvF7JusNrzpTBOaAOZfe6dgvs9peXh9TjPoq/qXIuUfdnSnnE2UTGgXquC1ik
-	//LfFbYOioCCN07wxPJYOnTNvOGiqZuftuM/Z3uqnlT6brPDOeBs3SfgcMbrVmRoWOs0qI
-	3Bmyg3uqs2vnNYcbO2utRqwllesc1EE=
+	bh=JI1ktj3Bz3caTxqnuCI4TmhxMGBgh+dVMiaBP2zCz4c=;
+	b=pww2mzlS/2kcJjhtc1Oub/6SvOOxBXcTTqWkNL2EBk2hE/gvJxAdsfjkMXXhk/m6XRZGyC
+	LmwTYi5wd3ogNxa5lNqAa72sFNG109k2iOco0Uigs2XfcMEDa6KAiR/DHpEFwP8foajReS
+	WxlbESLZkPP575bsXy762Rd7BJ8BeyU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785712988;
+	b=tLlXaq4PY4Ta7qDrzexB0/S1pe+gXs11AwQoqq6U1sxMM9FOfrjqlQqhwaf2v9PawrUwE9
+	AeybdV0W0a55gM6hlBI1T30bkizcxS9qExt9DeBYEmS5hbzH0SqFIjXRDfPexNNSR0o+gx
+	gY9RQIVRSlO+qBbBOcViwZPev5DW3y8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SQkOZwYd;
+	spf=pass (imf11.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CYPOkQbW1lOvJHgzDB/D42RIqBuqUE7gwCxeBtFkNcE=; b=bNCcfmfXzYPcDZU4gQ941j5m+e
-	ezZSwgr3RloMRdgx0AtjFMkwQv2TZcjb5FxNEO+bLaQhhSYdInhHgG+cIC+ZK+3nUgiWp1JM07dPL
-	pEB4m2M6GzM47r7k6Q2hStBVUUU0qvd/67jn/wsowipJ3J4yY0F+pqIwjYRrsGK+1OrHV5LNehNJq
-	DRw2NG62SGqccFo52U6OfpfykBJWe+M9FBtLKr+Pm/9/y7Ap/pNaMDGPGZbU5b99YEYTpV2kWQajN
-	cxOJy+i1wLHH5/obl9QyKatff8oACgs9wpdeTNsFdh+6YUkxuaploALcfmznKBTZkOHuYldJR8gIu
-	w8jxBHzA==;
+	bh=JI1ktj3Bz3caTxqnuCI4TmhxMGBgh+dVMiaBP2zCz4c=; b=SQkOZwYdQ6aROR/PLvxeztwjsl
+	A6QyQsShXcTzOPW/XpH1Zr7axPN2BtzTrDixng/CTDk5sWMVt6EQ1PhzZuz8210YEqv2bBmVUNE54
+	2QLm1YvBS51NbyoxfQuTBczwg6NImLwZLftV9vWPKfeVCukNvgY7AanhCBLPn9nH0CKV29NsV3Jl3
+	RdJwZEmb0K/sPtoJkt/OdzeJnQs5YezzfLy1DXvKYfuivXhc+r5KICXRx2SBMFgcGnnj7xjsD3SDD
+	ZBXoIYMqf33/DPczcwBOYp3vM8dGDUisP75kOERfF13y9jGKZin4LPePcjsNHLnNIxSGScr8EgknA
+	SGXZsZLw==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqfVl-0000000CBhr-0SJ4;
-	Sun, 02 Aug 2026 23:22:29 +0000
-Date: Mon, 3 Aug 2026 00:22:28 +0100
+	id 1wqfWH-0000000CCTg-3fst;
+	Sun, 02 Aug 2026 23:23:01 +0000
+Date: Mon, 3 Aug 2026 00:23:01 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
@@ -76,23 +76,22 @@ Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
 	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
 	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/4] ceph: convert
- ceph_wait_until_current_writes_complete() to folios
-Message-ID: <am_RNGURAG-chvAM@casper.infradead.org>
+Subject: Re: [PATCH 3/4] mm: remove wait_on_page_writeback()
+Message-ID: <am_RVfvDCDDOA9L-@casper.infradead.org>
 References: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
- <20260802-remove-wait-on-page-writeback-v1-2-6c35d6b3ad36@columbia.edu>
+ <20260802-remove-wait-on-page-writeback-v1-3-6c35d6b3ad36@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260802-remove-wait-on-page-writeback-v1-2-6c35d6b3ad36@columbia.edu>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C3E8710000B
-X-Stat-Signature: fozj1z9xosdp1484iejd9jfq684g8hwq
+In-Reply-To: <20260802-remove-wait-on-page-writeback-v1-3-6c35d6b3ad36@columbia.edu>
+X-Stat-Signature: tjs3sk7c7oeqr98obp9ht7bhp8tw8su9
 X-Rspam-User: 
-X-HE-Tag: 1785712958-991927
-X-HE-Meta: U2FsdGVkX18IFHhyx2xbHA+zyTSjJTgiQjlxqSRJtxtxB18BdSiJiGehgEFPnQUGhLZSohZZevlO5BA0Fg4JegyFt+zqhstSOnb8Y6Nmw8+3Jx2OemYwfyjqMhJBIB3AkcQsnURus3paXuHVsMWTlTCZsOJ/0AExKeqY/lEj6MnNIzTxfp8XoW5EVQMX3TsBip2NM/JR84oknAg+Qu+rIWoowq5HI59PwsCfJakM8ToVdpz8VTCIFBvRuhQQzwBACV6SKJk9D7VEywV4pUpndrBmYkCMjhJSfUU87nYOyBcrINN7Yi5QPagPkwTUJTgXXR04Niqj9v0eFOiYOn9WNp1Sca1R9rhMsQ8b4dMsWqflIUAe8tcvCRIl49TOUBMRCx8OHasyRRo4AF3rZ2ccMRX9Mda8Mqszt9Y5Ri9qEjAu9BbI1pz25ve3RRIe09l6NsEj5+tnrelHvlRJIHEuhWrFFXHqPDYfMG3zvu6+JnFlva66Pn+CqnMz3tZbE5qv3H46x8SoDuHXMd6WmsJJIMlLIswVrpshKe2P4sNyqCeQJIj5v8VzM8uv3uTbAsTaUtxu1Xe+ntS+/TQZLcUGuEZk8Yhzm6dQBWh3FGq3+kMpHx4eV0+0eVdYnZ+HLLs1Nx3/mLZJnRNQ12GDYYdnKmdijXFHdAn/wvpbyK/V2VUmEwIzBfPBb3BTSfuDXVwOlMevy0pZxX1G7dQMX9BFYrBNkJ88pGXCVLfeGNio8PDJjuttXWvVSUj8qWqkTel/30DWpuvbdq79xlzG5DWh4FE+LzsE5VPcYLBlnkJildE9YBIuFHXWpxizxZ5FmunSxHOOg9ghI0hENzhi/FDi6ZmVj7685M1wntf5/2n7fn2oBKo1r377J3WuCTxpKU/lBZTQVNdGEu0Pta4HBqgG3DqdzIZa1g+1awu80hc88uJHcZI7W6NUCJ8zD77v9E/eAYv1BqXohGg4j2/saq9
- v82NSrYf
- bKHBrK1Q4HfrQb2hUfvL2wfQHcXt6TTcYDP/X2zu+aQh2Bu+jr9I9rL4DvuFEFxKhu+BkV8bBDYFF8USjWLlBnA+Pr4Olmfvz3KqD2rMnvwTRyorkAW53w2FC4Y56Berc1rFf431n3+F+Pp9Eu0wgRBjJQ4ijG46OJtqHMd2HlRjg6A6BToLLH3/DBl7S4uYGKQmVGTQqj3jtaY8H+m1ONs5OK+pCztNlx04mEagGP5APmrPgjR2bYJDw+yFDC30Pcxqm71LKFLwocag0q+DovT+c/qwlvSqFa0q2gfaDVS1B1poUd4L/naG6CugCZnDv3t/ptsHgCA5LbRab3C7zhoP0p5WOBzMo0Eh8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5F24140009
+X-HE-Tag: 1785712987-101897
+X-HE-Meta: U2FsdGVkX1/KnRr75K/00iroVCDSxQHHLnch628uNKbVtQw1AMrOnfoibIM6RFk+qwkxq0hMeowefzUizR3qq7cDj7WP+tuUxC+RsMOANxvg+wm266zLxyLczwS90LkQjCN2htSXqkZFV7Um+VQTk4+U/3Rd55Bqu915bxyKrp/gVEr7ffUOCqDcYW6rSTAF+EHxgYTn7UXXWJs3Is+5tvd8iO1ZFiGzKTCDAO6YRAi+Dn0C18HFrWMUoXY0vHISYyHDYlTZhVaXRbYd91c6Sewm92N2b5kAdt2ceppp9RiV4fgC92k5sle4I04hmm41xWQSjNFsT61c4huYTTfKMvkz/DtG0bXsBBoQFG53m/ZxhXFcjjJt6Km3bl2W8HYd6COVUvJG7w7yHtFfv5d/WcapzLwBZ6gk43aJbkp/QF/gbwHtacitxKtqfI0prAWsflAGZDEETox7Jr3zttoSg/1GoV/svhS1cIT4CEIpSE0TAbt5x9gsaWtr3K45qA55QaIU2PYkSpv+PFn4Z+/45k2m37YSImQCUkW9UkDcZOEpI+XtMIYg6UDGfKCmrVo2riUlE9owiKm4ntPoPRUbmakMlZejiDrnQoS5z+c2do4uxcQ3bdpW2Tp/mhpC2m3+FipftRB14AKhq/9OFn7O6J2/fMvxv8E75tGqSyC1vNmQfKWMyquhF4oBxBDrPsOadkbQwW/+oqgM3yqlJOI9rz6UWkLUiAEoCLo6PaArLaiejFBw+5M4XNG7rIv+prs+1DMGuCyU7RjAXT4FtNLxEoZBnClHb8VTA0QhgeKyn5GGUVHTZ5vRCk8CRTw9quGf6epjHXnidy+b3lfzE/8XT47A5quGyriF9ck8pQK037GVECuuy+HTpYeNhxQBkI0fRr+zd+0FT083jcjUcA4gdfbNLcN/kun9ctrI4RTiQP8Z1QAGIC4vrgM8yU0oAbgnQw7XCqTsjLisMle0s+f
+ 9GFdrWwv
+ FqA0pgIuXuv7++ypVGyk+kBzodIzUT+at90iRHhCKOAu7MFT6OBzfRgCR32vdKSr36K49+ipPNCCWFmT+RQ/r/v35nuuEKnhGimakhPewoSzZv3rVsLeC5AdkSzRPjk4K3alHBJb+alXmNidUmV8Y5KMBex8QbUGfbbe72z6SUWjXk7wmXMvIgQZ6XGRTIAcWVfhzVZwRsIF1qz/6OTD8zYBdAQivLVWajgzFBI1ThGIxbK47FAM2nvr72HkCpbbwYtC9a4F9JSgw3Cgl7Gbih5TvBMiokSeSKKct/V6WYDQF5oi8zTJMJZtZLEsMU/K+61iEXToocpkfPdnD9iXEyKgd9z2nPfL/Mx/pqy5oX7qImrehaoiXFxQ+CWit/BdRc+7o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,17 +99,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 02, 2026 at 12:50:03PM -0400, Tal Zussman wrote:
-> Iterate the writeback batch as folios rather than using
-> &folios[i]->page. Use ceph_folio_snap_context() for the snap context
-> check and folio_wait_writeback() instead of wait_on_page_writeback().
-> 
-> This removes one call to compound_head() and the last caller of
-> wait_on_page_writeback(). No functional change.
+On Sun, Aug 02, 2026 at 12:50:04PM -0400, Tal Zussman wrote:
+> The last caller was converted to folio_wait_writeback(), so drop the
+> wait_on_page_writeback() compatibility wrapper and its declaration.
 > 
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-
-Beautiful.
 
 Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
