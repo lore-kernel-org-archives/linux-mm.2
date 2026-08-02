@@ -4,91 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7315C5516F
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 00:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B035DC5516F
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 01:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CCC66B007B; Sat,  1 Aug 2026 20:00:37 -0400 (EDT)
+	id 1A0436B007B; Sat,  1 Aug 2026 21:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 156D96B0088; Sat,  1 Aug 2026 20:00:37 -0400 (EDT)
+	id 151BF6B0088; Sat,  1 Aug 2026 21:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01DF96B008A; Sat,  1 Aug 2026 20:00:36 -0400 (EDT)
+	id 01A8E6B008A; Sat,  1 Aug 2026 21:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C95616B007B
-	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 20:00:36 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45329C03E5
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 00:00:36 +0000 (UTC)
-X-FDA: 85054372872.06.5F29108
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 99D40140015
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 00:00:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3oYhuagkbAMY4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.205 as permitted sender) smtp.mailfrom=3oYhuagkbAMY4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785628834;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C6BBF6B007B
+	for <linux-mm@kvack.org>; Sat,  1 Aug 2026 21:21:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 49497A1AB3
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 01:21:14 +0000 (UTC)
+X-FDA: 85054576068.22.9276695
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010032.outbound.protection.outlook.com [52.101.61.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 73A8940008
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 01:21:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="qL/cIfoD";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785633671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=rcjUvSgLwh50//vBrNZydN3/5lJfhx/xxmZpzcHLEYM=;
-	b=cHPtUZmNxn1YGyByXIsOBHif+JAfTBpyRIzocP3C1BcALrknEcZabdbhpg++a2fJyG1l1t
-	11OSxJuvrS+HhOmSWHX94qNq21WBHC07KpBH7G8yoKq/GpmLpFWE/09WvGDfJMPQdpmuev
-	XiNqIQOqIZ9w9/RYYn1jUOj2cZND2ls=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3oYhuagkbAMY4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.205 as permitted sender) smtp.mailfrom=3oYhuagkbAMY4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785628834;
-	b=Tujtsv9K69o+rAuxCTxSCFNbHQIhDzSTSw6IcRUNwfIkDhUeANrCg2ldPXQuKQXD1Yq7pd
-	ikhyI6qFWR4dVx1Glv6sZvBNN4yk/GC9QtyUcdqmHaRhrFeRxm/4hMBlNrzE/9NsFB6ta4
-	YuTLgS0FEtwehojCVbbVWJtQLCTUcrY=
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4ab8b4887d4so1574991b6e.1
-        for <linux-mm@kvack.org>; Sat, 01 Aug 2026 17:00:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785628833; x=1786233633;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rcjUvSgLwh50//vBrNZydN3/5lJfhx/xxmZpzcHLEYM=;
-        b=cXjYTSWVu8ZjQiYfS83dwVp5jkSuYEe6qGXFkDsvfL+ffBzOx8+kTTxxiEIV/GuSKz
-         3qtugFwGcv5puS54YFZv6kapdqFVu8vQZ4p+cKH63xhz5WOatpKt3aWJaMftL8Mf04vL
-         pIgkzUtyr4Y0DNHGIZ7LOCVTmqok73f/GjJClTXb3j/gkNLx/on1q/AZUxk5Msbj/sob
-         La+Yu/T19n0OWlwgiFAjrBrvUiaOMOR9WADWUJ++wWGbpIcbhynf3zaxtQMW5pemCemP
-         PrN8oSiAvGy9RnPK4ODjwHcGic1v3MwHo8BeTEb7FqidqlVMPxsL18+J+ul4li4pNRIP
-         Bwxw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/6seFfLlEftulk3RQTsX5S8EwZWb8ab95MzbqpcUEsrdDMxA/ZZBqc+JhJZBJlarBZP+yy9sy8w==@kvack.org
-X-Gm-Message-State: AOJu0YyWUm23D8Bfj8UW/mC6BHFbscCI7ufOAU7Sk32QVV28fw7Kyg2P
-	skCixRabY9A7rHvLvJEpakNZpA6tWwUq/oZTBwLGbP22pGEC6kF24aitsSuSxy9G4KegM0c+0Eh
-	FxyWS7LQoT3FOFTLWYwzhmvG7HLAPNMLbGgKuQoXRrIZ9WrieRLAs2Zpr0MM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IcoMjamgmnpSi49IE9S2XA6UdAsXmsAB4lq+ttMtSC8=;
+	b=nUcZ2YTTIpvlVO4RRkkB44iGRU/Teq2zCXbQTrO92hLEdK221EUlTzz5ng8iEcxwlKulNy
+	JmxUXqXgNQQLjXllaA+zYxkiguAK5Ng4bB/Tv6MRhI6L6HkSr3V1snw8Bj3jVdQU44rbYS
+	wo5pG5BaGTK53l/qCp01Q80efg16MEo=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="qL/cIfoD";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785633671;
+	b=UIaNNftwRvk8IgeBLKQfcx/NFT/C2WRTx6OSrr1B8v8jHlyaLznz9wt6iMLvqgKWuJTBtk
+	qP8kYgBPcvuu6y/47MlVDHNi7+M0v0GT5VwMQ1eNgqAVz1MY6CsjtuEYW8Vn7B2jJhTCOL
+	y+WyU6TfRYDT/FDkffsAVRJkq9/fJSQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ymih5iA5ecCGcxb455iuWxK8bYTgWnszxTks/w+6Ncwhkq5DkubwW0eg2E4fsX1o5ET0ubDvggKhF1Yaiz0SYZ6WRvkfdjQJ9QGB+KfTpF+NKKmMFIW5/ki45Cg5wc5wV4YhjI3sdhEAgzD+yv8DyhNfbd0CR04Ibcv8X+ZU4O7QOpszH0Rbe95U5l4kTh01nVN2OGP/2PDy+393OGQzPriDBVwJVJiQe8onkaiPfkgPPDzBO2nZYoZh7pH1IrU3/skjiaojl4hdOgKfdKPYbOE6RiLHP3GapDlW/3v68QP3NboFcOK3BGKj2Gh//W7BB+IobLi4lju0r3Qye2pZ1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IcoMjamgmnpSi49IE9S2XA6UdAsXmsAB4lq+ttMtSC8=;
+ b=ZGDRJWeNI5l+uju4bJ/skD69PUKjwaTPbX7wiJNKIVvLL+KD8D/OA3Blfb/FO9alqAt3wZAw5eqR75sxPtBEFoO/4lXfXfxNXq64eH0mK8Iw5a+IQI6ZAxGVww0ZBVn2f7bTUg0c5jINA3rkcNWgFqglXF+05JLFCkaJRWSzSGl7KN+bt7DEKY0FRy+xouPXZ5XaGbjC0C5I8f7bGhvfGhgN/m2GASJklNd7oZvx2N56jLYB+L+f2fElWyXGWhaQVuGDGncMYRcF2ZPIpc4GvHQjnT+9kaBm2xbtLFE685IrXHeLuErWLrq9d1IIp0KRFEJy28meyW3wpKgEgL+OMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IcoMjamgmnpSi49IE9S2XA6UdAsXmsAB4lq+ttMtSC8=;
+ b=qL/cIfoDwa/OTRbasBGqTsxCxv9pvHOZgo1hIaBEMGV7Ep05V8pL/wjnoUyrBTEh7SrCvWZ5pEJc6MjgLji9qS7MXLhTo9nJS3/5F6tC/fjF5/w+izndsY4wScFIIpMzHAOxWiRPhnXQ8ltN7yLv8NUhzdXRRGJwoEbghDgGELkuoHXNkYn3c737nNW0y9fsujU5TRW4/MYmKyTsbdrFCtggjmIbHWlr7teM5ku0Urnvt1KIf/bcytVSrjb8ZO+4lKHllPRSD6y2qtRLQI1wS0q9RUEme2oq1wAPfC844AEGDukwnH+BtoIqFfiqeXt3SbRxqNv4UCnm61WA8/FedA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CH3PR12MB7497.namprd12.prod.outlook.com (2603:10b6:610:153::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Sun, 2 Aug
+ 2026 01:21:00 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0270.016; Sun, 2 Aug 2026
+ 01:21:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 01 Aug 2026 21:20:58 -0400
+Message-Id: <DKE2AY7ZD4JG.256PLQ1WXGZAT@nvidia.com>
+Subject: Re: [PATCH RFC 02/14] perf/ring_buffer: stop using PG_private as
+ AUX page high-order marker
+Cc: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
+ Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Gregory
+ Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Kairui Song" <kasong@tencent.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Arnaldo Carvalho
+ de Melo" <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Borislav Petkov" <bp@alien8.de>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, <x86@kernel.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Alexander Shishkin"
+ <alexander.shishkin@linux.intel.com>, "Jiri Olsa" <jolsa@kernel.org>, "Ian
+ Rogers" <irogers@google.com>, "Adrian Hunter" <adrian.hunter@intel.com>,
+ "James Clark" <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ <linux-perf-users@vger.kernel.org>
+To: "Usama Arif" <usama.arif@linux.dev>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260731-remove-pg_private-v1-2-142c97ba3562@nvidia.com>
+ <20260801143227.1267657-1-usama.arif@linux.dev>
+In-Reply-To: <20260801143227.1267657-1-usama.arif@linux.dev>
+X-ClientProxiedBy: MN2PR03CA0009.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::14) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:238b:b0:495:ce61:4e0c with SMTP id
- 5614622812f47-4af5dfd106fmr9779571b6e.3.1785628833595; Sat, 01 Aug 2026
- 17:00:33 -0700 (PDT)
-Date: Sat, 01 Aug 2026 17:00:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6e88a1.13bfb6d0.1ecdd5.0260.GAE@google.com>
-Subject: [syzbot] [mm?] [kernfs?] INFO: rcu detected stall in netlink_sendmsg (6)
-From: syzbot <syzbot+508388c85f7a82cbd79e@syzkaller.appspotmail.com>
-To: driver-core@lists.linux.dev, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB7497:EE_
+X-MS-Office365-Filtering-Correlation-Id: 564a383f-17fa-4554-5828-08def0344fc6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|11063799006|4143699003|56012099006|10067099003|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4eLa3ilGgVLWVucC1/BCtbgDF4xSwByrjTr3Rb0ZsRpSNsuxeQJc+yT8NfiDIKhwJEWIEBPQ4H5mqawzkTkICMDVpHk8BFGFPQZBsC3xJL2rlujnxY9E4ZNA+dQqxPqTyWEBXJlscFxz0O2H+vnXn8dypDb/+ORVeS/2cXUumBstESiFCIWeF0l7TpKjusv4kqqE4iofuQ/FFdl7MmshyjE5a+x7R8Zx9p2xQtqp/BbdA7x6GSUBuEF8uZianeW6xWAA6IMb5oh+kTAInNCap672Eq/VTqKdmZrHxbgQhJnCW+FetpZeScIt4EAhxkQ6niPpcLRJgKctC0Rgt5D6+0CS2zS+sM9mNH8HjSsJHq4LXl55F6TFeId/uYKXu+FB78M3YQaFOeLYTomKUroqIvHoJOPqgkp2MsQuEYWiHio41Rqbps/KKaLVZI7/v/t5KcuhybkNXrXi+WUx8venRBglw5c4mdBVoVI2nbFGz/8oTVlY53/t6xj2qQ1TES4me5dmcDWGJiabyrr3y1REB3lUA38q0e/t7Waducj7WArB+9gfocWTIcGNzkXH8EiuG7smSlc4UijejNrWsSXyGUNR0Q7oNTdJAfxcQ0CKMf9zuFzzz/jgWLR6Y6XZNN4kaYeBmBZ5H8gD2Pu7c0KpQb8DNDhS5oKmu4uclszd8v8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(11063799006)(4143699003)(56012099006)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WFhTTnV4RTQ1cHdzY0t6Skh1WVEzUXJTdHF5UVhRWTV6YVZLcmdQQkJCSnV5?=
+ =?utf-8?B?aDBZTWcyZU5NYWFySnA2T3hVa0FySlIxd2J3QkY3bHYwVTdnbndSZXMxRUNB?=
+ =?utf-8?B?Ry9IS3lGVm9PVUJYNmc2WWlLendCREx6bHhRRnlTSEhJWDZWcU1ZcFlKTmpD?=
+ =?utf-8?B?OFlpYWh1T2ZPRnBralV0Rnh3T1dJM0x1V1IxTXV6cVJyZGtsU1Jpa2tnekpD?=
+ =?utf-8?B?a3IyQzVBcUgzVHlUVU5sWkV4UFpDUGJNMGVmMFFuY3UrY2RMMVdBV2Q2Um00?=
+ =?utf-8?B?LzhVUzBPMDdFYnhhOVlOaXFOQ09SblRMeXpYRHFRMzRCcENkWnFTcGRiUmR5?=
+ =?utf-8?B?UFk1dFdNZ0Rqb1NSMGltN05vd1k0WDRyYzQ0YmNhZ2gwbGlmNG1XV3MwVVAv?=
+ =?utf-8?B?UFUvU1ZZU3A3cFEwTjlYditwcFBDdm04Z2xxRnNPV1R5UDBZaEU4YXhEa0Z0?=
+ =?utf-8?B?Y3JOYkFib2JaUGYzcURpL2c4TmNEbXdTd3VxWUxTMkJnZldPRVNlc2VFdEFO?=
+ =?utf-8?B?NHNGN3Y2STk2U3hhRm1aRWZ0aHBkSFhpZW9CeldxMUs5WmVoZnNpd3VkMFc1?=
+ =?utf-8?B?Q085ZGVYelNvQk5FK1NJYXZVaWp0S2ZRcEtEenEwT2twSVZTVTRuQ2pPdHJW?=
+ =?utf-8?B?MGFrWWxSRS9JYXdZKzAvL1dPTnJaOUZhTVdvb1pmNXZBQUw2eXNrSFhvNXVv?=
+ =?utf-8?B?NkZaN2djcXBOUEQyQk8xdkhYU0Z3dmhhVVNRbkEzRzAzOGVXK25JeWFkQWp2?=
+ =?utf-8?B?R0pmZU1aZkZVNHBoRlk1Y3hFaDZUUU03UWE2WGNKSmpIWFF3QXluU0Y3V09H?=
+ =?utf-8?B?U1lKR0Vjd0hqWndHcFE1WU1wZ3plUXVpTDdmSkdFQkkxK0RDU2RmdS83Nklp?=
+ =?utf-8?B?V1I1RW5TU21KQ1kvbU1wN21XZkxYemw1RTBoZU93QW1IUGJvREpIK1dPeWg3?=
+ =?utf-8?B?Zy9jR1FieW1DbmJKUGxpdVVvSE4zRmJnQ01GVkhNSlpndlp6SlpBcTZIYTVs?=
+ =?utf-8?B?K1lDbktKWngxa1hMTFFTY0VPV2lnRHI0emJjWVJaOXRhY2tDQzBQV29OS1Iw?=
+ =?utf-8?B?bDJsT3lIZkliR1d0OFFFRitrN3crdHV1QXpKaUdLRXJqSnl6bEh4N1JvVkxp?=
+ =?utf-8?B?aS9lc1lGczlSNWoxMEVYUnExMC9rdkl5bTF0RkZhaUIxSzVMRHFiRktxMWlm?=
+ =?utf-8?B?YzJVdlBuNkpWNXVmU3dva3dhTkNRYU1EaVNrcEpySXBHRU5HK3RHbm5rNzF4?=
+ =?utf-8?B?Z3ExY0E2ZlhhUncxSGx4cGM2bW5sZHg4OWRrWThmM1BwN3hvNkJIMStLRFVx?=
+ =?utf-8?B?L2NiTlZDNUNqeGxONVdQZVBlbGxnY0YvU0F0YUtRNWtYWnZZdUZyMTMxYkt4?=
+ =?utf-8?B?aUZlZ2lXamtvdGU5SGc5ZlZaSlBTWk5kQWliVzltOHVjbnlTVHdKcGdqdEVM?=
+ =?utf-8?B?dmNCYzFaZ1FyWXE5cFZWcjBCL0ZqUjVNZDMyTVpEOUZ5cVBrTkpQa0RUY1A5?=
+ =?utf-8?B?ZWJSem9zQms4akwrYThpL25nY3hUYUhkWHlaZ2srQTBINlNWZG9PdDZLWDhm?=
+ =?utf-8?B?QzJQSGFwOEpDT1pCeWpTc0VyaXdxRTN1M3hQUUJNd2RBMVR5OXQySjJOT29Y?=
+ =?utf-8?B?Rlh1QUcwL2pjS3R1WTlFNmRSMmhKM2h2blRyY1hnbG55Z3lwWEh5ZVdqWHBJ?=
+ =?utf-8?B?elNiUWxrVW9KMW5ncXdPdkVONzFKZndDWlpBaVdzSHZNNzVoYWIzaXRzbWt4?=
+ =?utf-8?B?UWpuUUs1UnU3Y2xZb1RzenNad013Q1IxQStFdzlXdC9yT2tjelJmc3ZLSzZW?=
+ =?utf-8?B?ZU44NWo2cStranUwR3VPVHJqWS9kcHo2VmxzZjhqdGZvbUV5dXdZbDJLTTJj?=
+ =?utf-8?B?VGUzdmdURjRDVFRQSExJUGdSTDVZQnI2VmF0S0JKY25OckZpK296VmY5TmU3?=
+ =?utf-8?B?dGdJOTEzZ2FlZnRpdGdnbkJLV2dwZUNBdWZEUktSbHJpUFZsQXo2amZubXU3?=
+ =?utf-8?B?cVpiZURzWE5sck1QYW1NaEVRTkxwWTFLS3VRWHZ5djNlekJOUngyOE5PSml3?=
+ =?utf-8?B?Vk5VbzRQbVBmUlFRV0F0dFExcW41c1pXeVpQMkFVTTFOeFAvcmRYTjYvcysr?=
+ =?utf-8?B?MDNSdHpaZVdjMzlibTg4eWV4ald3RzF5ZVJOSnI1MHAvUFA2QlNxditwQkdl?=
+ =?utf-8?B?UkhycVdVUVVHK1ZtQi85eGhOWUxUT3E1WTcvdTdVdDNYWTZZdTAxOEFqemU0?=
+ =?utf-8?B?STlsSk12eTNvb3VJWTMzSWY2dzlJd1FGMVQvSktpQ08xRkFPR3pwbTVmR093?=
+ =?utf-8?Q?VV8HbWZaNX3V57xyfo?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 564a383f-17fa-4554-5828-08def0344fc6
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2026 01:21:00.1980
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cgcR57FbDJkfuchHuhkV2LDjudUkxM1SkoPMNCQY4QydSn1n3yXexu3I6XXwPx/u
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7497
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99D40140015
+X-Rspamd-Queue-Id: 73A8940008
 X-Rspamd-Server: rspam01
-X-Stat-Signature: jhnxs8ma95wh6sakfujx5goio4so5rjm
-X-HE-Tag: 1785628834-132649
-X-HE-Meta: U2FsdGVkX1+ZDu9WMgEd10Q//6TnZb+Ck6+UyuGrwW4tHe+XJ0wrc+TcMorGZBrBwWiN59cnMCDTP7nAF5tmPostny1pe5mMiLe7MkvcenXbvh99eeO3itdvfRbL4JIY7vWABAqEonGoA1PhsB8Z5amwqs510hYWodWnQDxigS/u18qUQ0mjn7sY915IkOyRyavXo7kKZUCU4vCzWyZ4dGl7ElfY8+AnVraSxwOlxezObmQ48DXG2PvyiUJhXWUC+MvcsC38riJbwBf1uC9MoMnQ2Wi+evx96UflT0I+g6uCBygFVQNPmVAsi6zjQeX9OW6F6n7Ar4WiH3C16qnXA+HxxYMmwE6rMOl57SBMhWrzFlO1nZQQP30+fC2BYl/wID1h7apnntfOpx/yKSn2/FopzwFRMXXLXK1tqTpEWuAAYp7GhO7PRi6wqAqxHAnTf20eBxR8WRLsLBIlkPuKfhncxevjaVuXzPtmA+EccPKirinn7muae/buFq2XZjsLmx9ikilarFDIccB7i8JmB2ysuiYQ5gkCezPXRBfiP4b3mYjZIg7yuF398anyXHVT+Sg6SLm2nKf2DDFr9OJRT9GUc2SR54ZOhAa7M6wVs2lnRrBhU/0issh1Mk9kJ6Klc3oMgPEsqfyHbLvLYEYxOQBjxi9l2wIQea23l6BMdq1kFRtbvxYoalZnzRvK1draUfrtG30K8vzLzo002p4FvmLZM8ZcEts0nw+K7+USa42UDdXKBmGOBmTbnATqDsmhXMZr6RGjx6d2Dtt5+xvz/UE39HeMgl7DccKK7qKKTN8mjVbHiDh+E9vGoSk9x7W45TWArLs/Gqa1cyjvb3EoimYyw0d9gqf8WsxFXdzJnO81RTeE5gKnni/H4nFfFsHm0kMeeqxBcQszU9NV0RWNWb6aKN2N+GKj8OcJwzNbhGu/uCzdk+8051udGV4xwtjWmZMZ1gOaNi7fnmCX4GA
- UgXz88jt
- DxbUw+GJ47JjoJCjv21dE0Y7KnfwBis3EPvQ2ttN8hEENNXoJDM8xJaRbAPxoU+YcP2Qa1Mc96TBIf5flWs/gZN/sehwmJ6h8FCIsVNZN5u8rv//ulKoreRSf4B7qQI1tAXBIZi6NTZsIJH6LkvZq7Dnb3+KLNfXKKoGcdNfjEOzIn0GYh+Lz/uVfwU14JvpUCH2EAjLhttJlszAEvq33rSGmaK/BsZ19VU+cmoaWcv3QN0y0q7FeXw8p2xycyAfegd8w68hSJLOnpj4GX+AzLzYNJAfqNR8KQXAlB0OATNocxbmiBWvU89AqM8ie+FKeFRkj/PG/3MNtkPQNNTdr7K8Bz0qrNXp4yKpnE1ctv+h7jFcxqk55IvqzCUnPLrpef8wNAwstIomZcnHtTpYbQ/8ls6y02R+bvtZGNNS8K8u4lQb6QmPpUUxx1zhuIcHUQrhMpcn8t8730YFnDR29OwmHidIX9BCGJZFiZTqcMpExA93fcjwW18Pr875rY/mNp68++FOLxmQG32D3+3rVqfFlqQiI5e/3xseqmHv0FfKNRT0TbCIw+gicgqi9VC7oPg87F1K4Wa4e+vaIjW2fTV99qq4/+/zGpwSIGsYMj/XWGO4Z6D+CRypLmFyF0Pc18NOfE2jar+kM9BMZ5EXvLlGPuO2l9QfWKTiNq2jjsZaYBWlWH+o3sS1X/i64Z7LLJ+NOErqE8CRdWzLaw68dxGeL0DojIYfZFxqEhilmn8DakewKBThVgPjJbX6Z9tmvXtnQk80AQGEZXaiXV/o3W/WxTZyg4PUMDzOq5cD/Sbnb/mMu2jPlR24DiYTzsnrNV0q3SDSWBdyxPiOOtUt/ca7cFoS5QJdYssG1Fqkfq3mTnWrT5bFD+hnVVKTp3xLsPm2Y8hNbs9ne318r2qTj+w5MNITAN9zbMs71pWBhBzTk4ebTMCpymGXr6k30EFX5yG6iY+kM6Brh2W8FSMx/X/2yf2Vm
- N6U1A4qz
- JlZFWDSV8/dsobZR4bHpZa8Mp61siHxzcQVCnnQNDdbdeRtS2FpqwD861O7Z5bxEt2J+nevF/JNVGY4io0eygNEImS9m/fsPuFqH9EbjLqOGEuBApFVnKPeR/pZ3gwPDLmguyUlnMyi3g03s6luZp0J78as+FL3jd+e5VjYdKVBmoyS0MBxUaOPg0HSq+pWzUAHeuO5t89Nlx7NdkNJCqUbyWtyMMo17rc3MJgmJ5TxOJaMuWDMborqhc453Npnj1M4ZaU3fB6xzt8DCr1QiKi+okD5RD9W7PuG3kxHNtdYftTPg4qYuf1+Sfc7mDwGbeYXOSg8HxStR1ZNPxOSegsZhPIYmywgIX1HpMm1naBoSV3Oz/xRRE1A+RqR+9mtf/VlZnD3AiGKheyZ8zWLj2IxyxB5Fq3/bQSHhWL2JwAl9k/pnWNY8FEyFEkVtrl1LbZ2ITdRdG94=
+X-Stat-Signature: cyqn3h8t39p9pa9zbost144rxmjtkbc8
+X-HE-Tag: 1785633671-793247
+X-HE-Meta: U2FsdGVkX18exsSYhj6Ca/hYWpWkxv/G4oV5czEueBQIHikidvo0URJLm8rcPf3nNBC6GCTUPWMrBpVPji7NYM62w+iAcn4loV/e/fOYTz6X/hERzgzXeI3bgYoVV2i/rM2wcTXHNovIGmHJfVED5YsLO5q04Qnj0CmcfJ+3RFRHL1KoliVSUICwyq/2IbLML9vRGubO2pT09/d9K5nz/rQUzH2H9o/Q65V4BkGzXLj5P92rnBCubQM/vG0XBBsDl5Xj7CMEgQAf1Jb+AUZQLQSqhUARobyRZbGkwV2poRorOU957jp4qq2x8M5FUFrDenjkOy+qwEfal0c1qhSIPWMvV1GVCJEgBn+Vt1lb05McCxKMeG2nmTR1MonWBvhrLcgLxHYZnGAnFa3Twg6U+5A4WvDirbVRZRaItQSv5+pOHyKOTZQolNTeJoMWlwDDAdiyKmnNmbKjJrbRFpeKeVlIb+Sn2wgt/z6fYHHqWt4CiAHWQ3ruI6bgOkOs7rg/KGECOGyN+u04PH5IWZYwpVWK8mZ7GDkwzBo7KPmZriyokEqGL8KC5yX43ldix7I0GZHAlL3P9hmJr9ao1ZgKXgsdiVqZ3KiOUZ5MIZrsOHvlUxJVHnMMldjlXBy3dN//9oNZc4pR8rS2EtxV2CZLwtLymrwCR7teCO3zVnrOSU3a5QSBgjllsm8UyOfKj2E1ciemtQOZwPFQWqD/0v+jan/eJGWZf+NyqUROaukc2KFTVG6KsSep+8z84M9CymTIRszZXsgjpJS7dtvhMkZlouc4B6Rtr8HHtNLD/w5z28BuCS3oaz+sH5AkD6eEDcVwYg7BGDxFpH1MCfRcXZvKRcq0/IQDdL1mmNn2apKVBRDXkr7hRGBf2mcJ/Y68q27UJ/PFHPh+Sn1J4mLTFdXmHODR9dH5l1F0zYnbEYS7i2siwLw3FiucrVlnT+xTHoHKDANKtJ8Z3tEse2O4Dzw
+ 7rZtZrpc
+ B6Km5REJmaVlk2go4NQMvqCkfEcFsVj7NngmwjlTrn/3udfai/zQlRfFMbwjlcQLg/wHA/BnBreYnfFdBXIZzuLCnnBrZRQe+WBuD/Y1dtFwGJxPj6cXFV6TnCTDGgRy5P5krCEfXCmmjVMZuxpYPFzC2GbhPuvxsJapMdX87PmnvU0b9OSiAbGinaYktR5fjnOdQPirj0F8Ayx2vwqpSl3qpHnhJGcr/hbLCiGtnPkkLM8NdnMG7A4TsAc2pVjEw706uDxUHjnjZ+7PyO8MWqwNQph0LEwXCHwhwMbP48TobYVGFKpU0PujKKR36u2xK7ItSGRLwepGJpre5IvZNqZM6rpR91S2dBXtbXp2dJd3pCIl/dBTbJTRslCfHzH0/00GxFCcgFixMb4Z0YmbEYQuoRm6+2x0bBG3xEEhQU9yuV7GSCWcLELuR3Tmgthw5HQ0gJiSN3rdsjTd/byyFSzqopzFBMM3A8p3KvlMifRD3T/hKI7SkWm6bHlwmLadPlHfPaZxZkwVyd5JoIWd4j1XCM/Vrx+kjIps3uKLHbe51lC7htgdFZbWo2OWR7n0gmpKl+iaEohkrfgevz9kHkgDobAP9tOINThPKL0z4mqjqMnmDErCeXJOcXmHAgdqUlwQbYD4ZyaT6r+FxeJUejNKHUgoz7NTyT86+uoNuaCgvarFxKiogCS5r7NBXZOy8H6A25GXvITqqfmqNtKW+kMrcuSzmQ9PpzZtwP6WZxCSdFAF8qKqTHY+Bim3h2Q+zf1842YN2dR2mjhg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,164 +192,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Sat Aug 1, 2026 at 10:32 AM EDT, Usama Arif wrote:
+> On Fri, 31 Jul 2026 22:13:25 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>
+>> A high-order AUX page sets PG_private on its first page and stores the
+>> order in first_page->private. Stop using PG_private and check
+>> first_page->private for AUX page order only ring buffer and its users.
+>>=20
+>
+> nit: only "in the" ring buffer?
 
-syzbot found the following issue on:
+Will fix it.
+>
+>> It prepares for a future commit that remove PG_private.
+>>=20
+>> No functional change intended.
+>>=20
+>> Assisted-by: Claude:claude-opus-4-8
+>> Assisted-by: Codex:gpt-5
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> To: Peter Zijlstra <peterz@infradead.org>
+>> To: Ingo Molnar <mingo@redhat.com>
+>> To: Arnaldo Carvalho de Melo <acme@kernel.org>
+>> To: Namhyung Kim <namhyung@kernel.org>
+>> To: Thomas Gleixner <tglx@kernel.org>
+>> To: Borislav Petkov <bp@alien8.de>
+>> To: Dave Hansen <dave.hansen@linux.intel.com>
+>> To: x86@kernel.org
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+>> Cc: Jiri Olsa <jolsa@kernel.org>
+>> Cc: Ian Rogers <irogers@google.com>
+>> Cc: Adrian Hunter <adrian.hunter@intel.com>
+>> Cc: James Clark <james.clark@linaro.org>
+>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>> Cc: linux-perf-users@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> ---
+>>  arch/x86/events/intel/bts.c | 3 ---
+>>  arch/x86/events/intel/pt.c  | 6 ++----
+>>  kernel/events/ring_buffer.c | 7 +++----
+>>  3 files changed, 5 insertions(+), 11 deletions(-)
+>>=20
+>> diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
+>> index cbac54cb3a9ec..5849392cf26d5 100644
+>> --- a/arch/x86/events/intel/bts.c
+>> +++ b/arch/x86/events/intel/bts.c
+>> @@ -66,9 +66,6 @@ static struct pmu bts_pmu;
+>> =20
+>>  static int buf_nr_pages(struct page *page)
+>>  {
+>> -	if (!PagePrivate(page))
+>> -		return 1;
+>> -
+>
+>
+> For order 0, 1 << 0 is 1, which is exactly what the !PagePrivate(page) so=
+ LGTM.
+>
+> The commit message probably needs more text but everything else looks goo=
+d.
+>
+> Feel free to add
+>
+> Acked-by: Usama Arif <usama.arif@linux.dev>
 
-HEAD commit:    9c88929cc18c Merge branch 'vxlan-fixes-for-skb-header-pull..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=12e316b9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=508388c85f7a82cbd79e
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=113de499580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13c10aea580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c839a5778222/disk-9c88929c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7d9c12119e13/vmlinux-9c88929c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f0189c8f6aad/bzImage-9c88929c.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+508388c85f7a82cbd79e@syzkaller.appspotmail.com
-
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	(detected by 1, t=10502 jiffies, g=15149, q=760 ncpus=2)
-rcu: All QSes seen, last rcu_preempt kthread activity 10502 (4294966187-4294955685), jiffies_till_next_fqs=1, root ->qsmask 0x0
-rcu: rcu_preempt kthread starved for 10502 jiffies! g15149 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:27496 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x17d9/0x56c0 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7326
- schedule_timeout+0x152/0x2c0 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x30c/0x11f0 kernel/rcu/tree.c:2123
- rcu_gp_kthread+0x9e/0x2b0 kernel/rcu/tree.c:2325
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 5666 Comm: syz-executor142 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:__lock_is_held kernel/locking/lockdep.c:5601 [inline]
-RIP: 0010:lock_is_held_type+0x89/0x150 kernel/locking/lockdep.c:5940
-Code: 9c 07 41 83 bd 98 0b 00 00 00 7e 48 4c 89 eb 48 81 c3 a0 0b 00 00 45 31 ff 49 83 ff 31 73 24 48 89 df 4c 89 f6 e8 f7 01 00 00 <85> c0 75 2a 49 ff c7 49 63 85 98 0b 00 00 48 83 c3 28 49 39 c7 7c
-RSP: 0018:ffffc90000007d68 EFLAGS: 00000046
-RAX: 0000000000000000 RBX: ffff88807e8aaaf0 RCX: 0000000000010001
-RDX: ffff88807e8a9f00 RSI: ffff8880b86281d8 RDI: ffff88807e8aaaf0
-RBP: 00000000ffffffff R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff52000000fac R12: 0000000000000046
-R13: ffff88807e8a9f00 R14: ffff8880b86281d8 R15: 0000000000000002
-FS:  0000555577b834c0(0000) GS:ffff888124f50000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7bc378eef0 CR3: 0000000070652000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- lock_is_held include/linux/lockdep.h:249 [inline]
- enqueue_hrtimer+0x79/0x2c0 kernel/time/hrtimer.c:1107
- __run_hrtimer kernel/time/hrtimer.c:2048 [inline]
- __hrtimer_run_queues+0x4ce/0xa10 kernel/time/hrtimer.c:2096
- hrtimer_interrupt+0x448/0x910 kernel/time/hrtimer.c:2215
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1051 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1068
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:__orc_find arch/x86/kernel/unwind_orc.c:101 [inline]
-RIP: 0010:orc_find arch/x86/kernel/unwind_orc.c:238 [inline]
-RIP: 0010:unwind_next_frame+0x4d0/0x2550 arch/x86/kernel/unwind_orc.c:510
-Code: fc ff df 4c 8b 7c 24 10 49 8d 6e 38 0f 84 8a 16 00 00 e9 ee 01 00 00 49 89 d5 49 89 d7 4c 89 e0 4c 29 f8 48 89 c1 48 c1 f9 02 <48> c1 e8 3f 48 01 c8 48 83 e0 fe 49 8d 1c 47 48 89 d8 48 c1 e8 03
-RSP: 0018:ffffc90003ace660 EFLAGS: 00000202
-RAX: 0000000000000008 RBX: ffffffff9073eec0 RCX: 0000000000000002
-RDX: ffffffff9073eeb4 RSI: ffffffff90f35a48 RDI: ffffffff8c4bdb20
-RBP: ffffffff81b1f9a8 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8eb59c60 R12: ffffffff9073eebc
-R13: ffffffff9073eeb4 R14: ffffc90003ace708 R15: ffffffff9073eeb4
- arch_stack_walk+0x11b/0x150 arch/x86/kernel/stacktrace.c:25
- stack_trace_save+0xa9/0x100 kernel/stacktrace.c:122
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- unpoison_slab_object mm/kasan/common.c:340 [inline]
- __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
- kasan_slab_alloc include/linux/kasan.h:253 [inline]
- slab_post_alloc_hook mm/slub.c:4612 [inline]
- slab_alloc_node mm/slub.c:4945 [inline]
- kmem_cache_alloc_noprof+0x2a0/0x5f0 mm/slub.c:4959
- __kernfs_new_node+0xe6/0x980 fs/kernfs/dir.c:665
- kernfs_new_node fs/kernfs/dir.c:751 [inline]
- kernfs_create_dir_ns+0xfe/0x230 fs/kernfs/dir.c:1120
- sysfs_create_dir_ns+0x12f/0x2a0 fs/sysfs/dir.c:59
- create_dir lib/kobject.c:73 [inline]
- kobject_add_internal+0x622/0xcd0 lib/kobject.c:240
- kobject_add_varg lib/kobject.c:374 [inline]
- kobject_add+0x163/0x240 lib/kobject.c:426
- device_add+0x3fa/0xb80 drivers/base/core.c:3695
- netdev_register_kobject+0x178/0x310 net/core/net-sysfs.c:2337
- register_netdevice+0x1433/0x1eb0 net/core/dev.c:11446
- cfg80211_register_netdevice+0x138/0x2d0 net/wireless/core.c:1690
- ieee80211_if_add+0x108d/0x1600 net/mac80211/iface.c:2397
- ieee80211_register_hw+0x3e79/0x4a50 net/mac80211/main.c:1644
- mac80211_hwsim_new_radio+0x3238/0x5680 drivers/net/wireless/virtual/mac80211_hwsim_main.c:6113
- hwsim_new_radio_nl+0xd8b/0xf90 drivers/net/wireless/virtual/mac80211_hwsim_main.c:6904
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- __sys_sendto+0x408/0x5a0 net/socket.c:2252
- __do_sys_sendto net/socket.c:2259 [inline]
- __se_sys_sendto net/socket.c:2255 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2255
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7bc370bc2e
-Code: 08 0f 85 25 ed ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 90 41 57 41 56 4d 89 c6 41 55 4d 89 cd 41 54 55 53 48 83 ec 08
-RSP: 002b:00007fffcb9d7168 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000555577b834c0 RCX: 00007f7bc370bc2e
-RDX: 0000000000000024 RSI: 00007f7bc3791990 RDI: 0000000000000003
-RBP: 0000000000000003 R08: 00007fffcb9d71e4 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 0000000000000000 R14: 00007f7bc3791990 R15: 0000000000000000
- </TASK>
+Thanks. Will add order 0 explanation to the commit message.
+>
+>
+>>  	return 1 << page_private(page);
+>>  }
+>> =20
+>> diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+>> index b5726b50e77db..29d8b4a3560cd 100644
+>> --- a/arch/x86/events/intel/pt.c
+>> +++ b/arch/x86/events/intel/pt.c
+>> @@ -774,8 +774,7 @@ static int topa_insert_pages(struct pt_buffer *buf, =
+int cpu, gfp_t gfp)
+>>  	struct page *p;
+>> =20
+>>  	p =3D virt_to_page(buf->data_pages[buf->nr_pages]);
+>> -	if (PagePrivate(p))
+>> -		order =3D page_private(p);
+>> +	order =3D page_private(p);
+>> =20
+>>  	if (topa_table_full(topa)) {
+>>  		topa =3D topa_alloc(cpu, gfp);
+>> @@ -1289,8 +1288,7 @@ static int pt_buffer_try_single(struct pt_buffer *=
+buf, int nr_pages)
+>>  	if (!intel_pt_validate_hw_cap(PT_CAP_single_range_output))
+>>  		goto out;
+>> =20
+>> -	if (PagePrivate(p))
+>> -		order =3D page_private(p);
+>> +	order =3D page_private(p);
+>> =20
+>>  	if (1 << order !=3D nr_pages)
+>>  		goto out;
+>> diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+>> index 9fe92161715e0..061b5cb222266 100644
+>> --- a/kernel/events/ring_buffer.c
+>> +++ b/kernel/events/ring_buffer.c
+>> @@ -630,11 +630,10 @@ static struct page *rb_alloc_aux_page(int node, in=
+t order)
+>>  		/*
+>>  		 * Communicate the allocation size to the driver:
+>>  		 * if we managed to secure a high-order allocation,
+>> -		 * set its first page's private to this order;
+>> -		 * !PagePrivate(page) means it's just a normal page.
+>> +		 * set its first page's private to this order, otherwise page's
+>> +		 * private remains zero.
+>>  		 */
+>>  		split_page(page, order);
+>> -		SetPagePrivate(page);
+>>  		set_page_private(page, order);
+>>  	}
+>> =20
+>> @@ -645,7 +644,7 @@ static void rb_free_aux_page(struct perf_buffer *rb,=
+ int idx)
+>>  {
+>>  	struct page *page =3D virt_to_page(rb->aux_pages[idx]);
+>> =20
+>> -	ClearPagePrivate(page);
+>> +	set_page_private(page, 0);
+>>  	__free_page(page);
+>>  }
+>> =20
+>>=20
+>> --=20
+>> 2.53.0
+>>=20
+>>=20
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+--=20
+Best Regards,
+Yan, Zi
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
