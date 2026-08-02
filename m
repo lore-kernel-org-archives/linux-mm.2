@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA7BC55177
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 16:21:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D83D0C55171
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 16:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3821A6B007B; Sun,  2 Aug 2026 12:21:00 -0400 (EDT)
+	id 7E9136B008A; Sun,  2 Aug 2026 12:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E03D6B0096; Sun,  2 Aug 2026 12:21:00 -0400 (EDT)
+	id 7C0BA6B0092; Sun,  2 Aug 2026 12:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10A716B008A; Sun,  2 Aug 2026 12:21:00 -0400 (EDT)
+	id 6D9056B0096; Sun,  2 Aug 2026 12:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8DC6B0088
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 12:20:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67682804D6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 43B156B008A
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 12:21:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B1301604FD
 	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:20:59 +0000 (UTC)
-X-FDA: 85056843438.18.C9610DC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D44A9180007
+X-FDA: 85056843438.16.1D12761
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8E9EDA0003
 	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 16:20:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VxVIL/x+";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSq0UYct;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785687657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0zkQs6mCwPIKeiUIY1+pQwOcOcVfTo/+g8AflA0OwVg=;
-	b=D6S3xxs0/mEd8CUtw/wgr5rjzUjmf4qyYEFuMME+zYkgjK5Kc5bxKBbpO3rXeAEO6cOf1c
-	CIAe5Lx8IdStbQDuxhTlY9KRemoVFigHqFXX3FZ45X6qxsV5I7hO2sfm/w55r1bLjsfLSO
-	cmHJhRbd9Kl+Degnp4J2wAZhy2/ssxo=
+	bh=jjY62t0IWaBhzTuKFbAdxLlz/gg8XTsDxaNCLSSWaXE=;
+	b=opuN5XPL5IVpXbuZE4jxYju23ynt7q9fxQmHBBNpq105WTo4/UQQNLxFAtz3TIqMK08Qfs
+	GnlUj+JyKkKpnZNGs9mKX5lsyu2pqFpr2lW48eh3gUgBJs1IhNsEQHTbwlXhGVdd4GxxpP
+	ojDNs3lCLI4E9pWw91wPtCc4sLYTDJk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VxVIL/x+";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSq0UYct;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785687657;
-	b=fgV6IhHduPq40rI2DtD8oGeUJpwDzrZ6YGOt1OodgV8hSKRfpswuEekqfGvNHeNXoKWI0Z
-	0U4uCB+okywENvNV/eh7wzQPS68I861fOHar5QBQr4gYlLkOl/mQWjMn2ssF1AoEcN1L7E
-	M7anNOa9jFxcn1qibejFL0hvRFbSMCY=
+	b=rYeoN5tEwroXYw8MuJzuUo+68ycKZqy1eAueX6yfrobsEBsP2QLKorc4zPdb1H2tOrU7TZ
+	/rvwqZ7+Ilccau7FAFKchh3/tveUQ6W39s3y8sPvBfNtMwG2xSXhdPLXfO2xaL3Se8ZBuJ
+	GNLh7oNtX7iJfOMK32A9y30u6uSsocE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35A0C60DD8;
-	Sun,  2 Aug 2026 16:20:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FD31F00A3E;
+	by sea.source.kernel.org (Postfix) with ESMTP id A76E640DA2;
+	Sun,  2 Aug 2026 16:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533861F00A3D;
 	Sun,  2 Aug 2026 16:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785687656;
-	bh=0zkQs6mCwPIKeiUIY1+pQwOcOcVfTo/+g8AflA0OwVg=;
+	bh=jjY62t0IWaBhzTuKFbAdxLlz/gg8XTsDxaNCLSSWaXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VxVIL/x+lPSXwBymfAdejVtDamYvADtCXQL5xRajDaAI8Gtuk0W4YR66+gJVP68cE
-	 AyVJuw5NeKTPnIKO/ZGdT2Qu63tJV8HimD/8MoEdAKw6JezCnyWY6qoGFr+zMG/dYd
-	 ZRKupuw6+fXNZq6TxU2gEqvxrScLxZZ1OS+aWCTNGaEci361wpAEc05DNzFCh/ORYr
-	 I/JAuAsVw5ratIlFX69NZwaAf47uqJtpFDuZs0YO03FFoWdqOJCGoXkb5dyXT19ITS
-	 uYAIr9RczGoJlfHEx4QUNjArx+eBkYKipPkoZcwBUBxn8e5ADi2zcwaxUyaWQHG7T+
-	 fBzMWiKviU46g==
+	b=TSq0UYct4CsaLWaMcHePVWRxZ9TID5ACYmfWlfMlJRaKzXP6iN+dtu3Ddk8ksPpgF
+	 591qY0pyf6QPHkLh08YiqZb2g9xJMsp199h7NLKnFqIG3nF1z92suMOM39BDiiHqlI
+	 5sok9cvQifjsOQ1QW4EB2MV19BgAjTZlRSBXBDYWuZeChcdTDtWGwm8C5piKuTPs7Q
+	 v9vQEymECJvEOs5vCs+mru1znHuFQEZuoGC5RqIVjYrP90EKe1lhXyfRcAdbuDNzXP
+	 Wgbh/kRB31e6ECaEL5ckR+pcqgpq+8I4qpEqThvdEjvHV5iPjSPerXuj/wt00X3/ga
+	 qj+FLomyNI8pQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Yunjeong Mun <yunjeong.mun@sk.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 2/2] mm/damon/lru_sort: error out for >10000 active_mem_bp
-Date: Sun,  2 Aug 2026 09:20:49 -0700
-Message-ID: <20260802162050.89477-3-sj@kernel.org>
+Subject: [RFC PATCH v2 1/2] samples/damon/mtier: error out for zero quota goal target values
+Date: Sun,  2 Aug 2026 09:20:48 -0700
+Message-ID: <20260802162050.89477-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260802162050.89477-1-sj@kernel.org>
 References: <20260802162050.89477-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8E9EDA0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D44A9180007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: pasqo38cs4r3thjzzquhsbcaickkzs97
-X-HE-Tag: 1785687657-949260
-X-HE-Meta: U2FsdGVkX1/y/NESqA/Ffcvj4h/ER8v2mz/vqXkjGrkV3wWLQtV6UB72fLb84PRKdHYMmgk41Tr4dWJNlUR1eQUzcXqoJkQWhVUIsT6WUWwc1JbkwI5Ge8CbA0mpFwwjE2i9CE1AnXIfNfslkltZtvWjMZI8AR749rqqghfI6HHvhsqF9VcWF+lnPUZ4DSTsZjmz+jl+KpaFsaPtDfpSuVLa+yuoyBo+/0vZTp+8HV7fyxu9VILVnsjvLyh2bpU6zm2Wh/3LaoWAZYoEt+0svW0G01DinJfPsO0zAd26iw43dDAvVkA2fxzE7i31wDrHWrvUhGZnIc7PYhxKbqfn9+JFysH/iVr4zwYIUuv5mNGLscKL9dMHQon7pv5WvqNsv4LPsS7fPovO5EHCKf1nK7R0IpdHIg0l3Iy2z4pYJmW0ig5PxaXC+c/X7bkKkUpKDQoCju/x/XeSdkA2oeAgBbijcGejWQFGFqCTd0jUzHscyJnkxExU+432c3YUa1WqFtq9ucoXlZvRkhBpf+nGeoWiQkPCXU41cQppic8u5r1CDHW3l9uoZWF2p3RUyhKMoKWKHk1qlDEyRnbsOGiATZkyhUEntFA0PT68Rc9o3alYEe7xcJ/6aLcKufbVuvQff5D7+FEHu3cCgzNArIZHE85M1SwySlIZh6nYuoEN7RM7YbUUCzKqysyjKWcOPqIiozxg40pnA0+sDlTRIH+vfq6eRuUnBX+h4dRsHyeX9t7hAB7z/lkJD7ahSo2RProNGa0CcsDPJnVk2x2DkoQ8gP/o/Oux3Hr21mHUtxQCiFgcdUlrzOXSiy4T5//GyJqxmPlDo85oFoZUSnFw5VEMuUwO8k5UOClfKwrR+v3J58fBRyJZ+K5wlzCju9g9oQcJ4Sgcx6S/V7kypM1yKcwoiW9S7j9LEueCcN6UwK/JF1xgNk1nMxNrzhU/G6cjchpI0LdxumcnswcJR/6fZiS
- j2RiCLhV
- ccb4lbosE1vwHVhmB4COO9BgPiE+BJT3d6RiJCjtZSUiHaDVC3tj5q+xsL7V/1I4Wm1FzxeKrTNzdlqIPgS1Y5LyBk7CFfCwVTUWMwLuriByJA5/lbxjCbb9dsO6qMes6HnlmTR2Z2W2DDy7mmKkcMTRPIDzg572ulSAVXLbKf4FRRfv6zvvqYG7A5tn2wsVX3AGqOCeuZUNUOTZ7wqQGqtCNJjTlPYfePZxuM4kN462WyxNbhAHC0XJE60QdJEnjzXJbms9JSKTeX3xnwHHarboChg==
+X-Stat-Signature: omfkfbnrx6ksy13qoso98z1rhj73zbnb
+X-HE-Tag: 1785687657-718673
+X-HE-Meta: U2FsdGVkX19ktrv7O/y2E4ukGUiQiU+YDmCg0u4BjXEyq65T4PXmN3FE+MCnAjrdkZlHil6jQuX63BLx8Nt+KCIDpSvmPLlwT3nX2+WAC/sTgukKo4AMgwY9KsCAUkMoL6/ccAt+QFVv6iwLfw8Fmn/o2yuiEWI3P6rqex2ai0/47hp8ojJjoRupVvX5vEr1uN8SW9i3Xjt6549bg+vEbt8T2JxpDkXQt3zGKukoElKQ0oZrntdWEcEPo6FEoKCUi9MRrYDM6LLyo24AqJ+vGpZuuuiWoH+erUOwpZlfNBD57M9sImui8eChiTYYw1tQeQRwUivS0ikB0C+A+NbBcA2Xh0mmFUmslHXaR/bgx7q0ohFXdb5SU8loF5+9CZKFoPFb8qy/k+cJF3NSIpNIEntO/okIsCMH5BRt+1e2cJAa8MNUqUpab1OhX62keRcsBVneh6Ob8Ts+oiqh8TYHLPA2sVvzuO462BclXaDVbU5zFV6nAm+XP9gz7BGRQCRLJwuSPQJCOM/QBU5Mzby8W6kYm0YmyzcZG5TJNzmLY+KU9xTeMjLzAoQ4l2nY2l7ycLrGifZv+a9VWBQzi4f/RGx/7Hgo+ItGOIF3qKoZLT9IrVGObCIfPTVfwXmI77qfSG8iJeAOtS9UJdAYlZhf2upvbN26JOnuaxCLILEWOzlJNKYpLE3mr3ql0Sf8kiuB8LMANFzj2J1LbuzFa/ZAOuEaEFqrHzO9Vi6yp1+vg9zDNpe/IuztJuWtOsIQMcjsBPLejuZeVEgE7Nz7ajBCicizL1dioaKgwCYrrtQ7xhiwSsNDi7TJAXV4+6Be6FfIWuxMz6XUtAm938cIeHlfpLvTJLP7F6iQt9Ruwc0xnOLoZ5ZZJsBKzuZNbe5HdMtoRmw0APLVNCkjFqlt5NUi9azbzHXXTiAPXdh/0M0ISbtNeoR3W3WkJQKjdFwMLFD4cNYsfrT30Esos9U/ufP
+ cq1AdWrQ
+ v5GYi4qSF1RFbksCNFzkM4fcXAKb+A6GCw1MvT+wmTp0cn+c/JbZYvClMqUJU6CIsr0kvJtQ8TlDvuyAngGM86aQ45zYMKVGp3+vECw0yfU8Fhw44483lyQ//kvgFiWZfkLuUnQqO89A6qeYwA74PnR0ibIsaIEtzqaWnKTtApk99r3nYWmYx6n1n1UvTXpSQN3WGGynnC7CQpJpOKPk7u2s6VTJXRYCospzaowuA0hxDyTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,57 +95,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_quota_score() can trigger division by zero if the target value is
-zero.  DAMON_LRU_SORT lets users set the target value for the hot memory
-scheme via active_mem_bp parameter.  It avoids setting it as the target
-value if the parameter value is zero.  However, it also sets the cold
-memory scheme with a target value that is calculated as '10000 -
-active_mem_bp + 2'.  Hence, if a user sets active_mem_bp 10002, the cold
-memory scheme's quota goal target value can be zero.  As a result,
-division by zero can be triggered.  Fix by returning an error when the
-user tries to start DAMON with >10000 active_mem_bp parameter value.
+damos_quota_score() can trigger division by zero if the target_value is
+zero.  DAMON_SAMPLE_MTIER lets users set the target_value via
+node0_mem_{used,free}_bp parameters.  It doesn't guard zero value case,
+though.  As a result, users can trigger division by zero.  Fix the issue
+by returning an error when the user tries to start DAMON with zero
+node0_mem_{used,free}_bp parameter values.
 
-It makes no sense to set active_mem_bp with 10002.  It also requires
-module parameters write permission to reproduce the issue.  That said,
-the consequence is quite bad.
+DAMON_SAMPLE_MTIER is just a sample module, but the consequence is quite
+bad.  Also the zero node0_mem_free_bp parameter might look like a
+reasonable setup to some users.  Hence, the issue might really happen in
+the real world.
 
 One reliable way to reproduce the issue is like below:
 
-    # cd /sys/module/damon_lru_sort/parameters
-    # echo 1000 > wmarks_high
-    # echo 995 > wmarks_mid
-    # echo 0 > wmarks_low
-    # echo 10002 > active_mem_bp
+    # cd /sys/module/damon_sample_mtier/parameters
+    # echo 4096 > node0_start_addr
+    # echo 8192 > node0_end_addr
+    # echo 8192 > node1_start_addr
+    # echo 81920 > node1_end_addr
+    # echo 0 > node0_mem_free_bp
     # echo Y > enabled
     # dmesg -w
     [...]
-    [  597.421247] Oops: divide error: 0000 [#1] SMP NOPTI
-    [  597.428848] RIP: 0010:damos_quota_score+0x6f/0x480
+    [18792.235916] Oops: divide error: 0000 [#1] SMP NOPTI
+    [...]
+    [18792.242787] RIP: 0010:damos_quota_score+0x6f/0x480
+    [...]
 
 This issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260801213028.5127-1-sj@kernel.org
+[1] https://lore.kernel.org/20260801202657.117135-1-sj@kernel.org
 
-Fixes: 40d98d31cd70 ("mm/damon/lru_sort: support active:inactive memory ratio based auto-tuning")
-Cc: <stable@vger.kernel.org> # 7.0.x
+Fixes: c5e67d40a102 ("samples/damon/mtier: add parameters for node0 memory usage")
+Cc: <stable@vger.kernel.org> # 6.17.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/lru_sort.c | 2 ++
- 1 file changed, 2 insertions(+)
+ samples/damon/mtier.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 7e077084cb03a..3920d5042f109 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -233,6 +233,8 @@ static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
- 
- 	if (!active_mem_bp)
- 		return 0;
-+	if (10000 < active_mem_bp)
-+		return -EINVAL;
- 	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, active_mem_bp);
- 	if (!goal)
- 		return -ENOMEM;
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index ac9c24b92ead8..d1123ebbfab90 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -156,6 +156,9 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ 	if (!scheme)
+ 		goto free_out;
+ 	damon_set_schemes(ctx, &scheme, 1);
++	/* zero target value causes division by zero in damos_quota_store() */
++	if (!node0_mem_used_bp || !node0_mem_free_bp)
++		goto free_out;
+ 	quota_goal = damos_new_quota_goal(
+ 			promote ? DAMOS_QUOTA_NODE_MEM_USED_BP :
+ 			DAMOS_QUOTA_NODE_MEM_FREE_BP,
 -- 
 2.47.3
 
