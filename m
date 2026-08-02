@@ -4,100 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 861C1C55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 08:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C9DAC55171
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 10:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EAC56B007B; Sun,  2 Aug 2026 04:49:21 -0400 (EDT)
+	id 398BA6B007B; Sun,  2 Aug 2026 06:20:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 174C26B0088; Sun,  2 Aug 2026 04:49:21 -0400 (EDT)
+	id 349F66B0088; Sun,  2 Aug 2026 06:20:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03BA06B008A; Sun,  2 Aug 2026 04:49:20 -0400 (EDT)
+	id 239B26B008A; Sun,  2 Aug 2026 06:20:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C8F336B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 04:49:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55D05A0466
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 08:49:20 +0000 (UTC)
-X-FDA: 85055705280.03.F66DE45
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4EB5814000E
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 08:49:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dq3nO3rQ;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF04C6B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 06:20:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E840C047F
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 10:20:29 +0000 (UTC)
+X-FDA: 85055934978.22.06FA709
+Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2ABC6C0007
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 10:20:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=iZwnkVSo;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B DnxRYH";
+	spf=pass (imf28.hostedemail.com: domain of contact@jaseg.de designates 202.12.124.136 as permitted sender) smtp.mailfrom=contact@jaseg.de;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785666027;
+	b=0eVz2ce6nAjchNM2ZsdzvgqJ0emlNk1cCaK+fhXzlgFhXSQgbIzJ/l1mlBPedyNBWWKArb
+	K1WN8qTcllbiCrTB9tXbT9grQOwqNikHWhpNa8K8arAN8X6e7z58Yg2yEwtMIJdsVViBOu
+	1moC75E0h+2yBSUo74mut5PXqUgUDmY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm3 header.b=iZwnkVSo;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B DnxRYH";
+	spf=pass (imf28.hostedemail.com: domain of contact@jaseg.de designates 202.12.124.136 as permitted sender) smtp.mailfrom=contact@jaseg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785660558;
+	s=arc-20220608; t=1785666027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lt/WotSflPJ7SfOyz8ZoSm3HZ+oIFTYVnelZyMiFwPg=;
-	b=TNCDXe+pMKIZd93kUV7TaJgQVsu3DNzOW63vkER4xU3XvYe1/kbTE+uy07vDZHCp7pS7F8
-	QHRHt1wygch0pIOgrb32kge+5h3vXqKicebH6jiAtIlNkA0VbVOYGxFaZKu9tLmR89C1NO
-	tKOBoVaX9O4scIhPvKhjosYrkim0x8Y=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dq3nO3rQ;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785660558;
-	b=B3Xm0SocPONEr7LJPswWTbo55K6RnXsqYOhtesmHNcKKBRDXOV03D0V+iT1uZ/NiPHVSnX
-	Q0AkDNeqnMSbETc9Dzd7eMQkxqswgFZ6D6Yg4IPfDvMvinTJNFGH83jvQWFfK4CPJL96YX
-	YFpwt2IOC2cCS2kzUW5RTHOC5em/SD0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89DEA43EFA
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 08:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1241F0155B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 08:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785660556;
-	bh=Lt/WotSflPJ7SfOyz8ZoSm3HZ+oIFTYVnelZyMiFwPg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Dq3nO3rQWlCrsB/MsrkWLhwP9IllERjg4H9AECGR4P78rEu4d0rg9G3Wl6BwGwvwM
-	 W1BPgLMCKWgsIyUBV2v/aJZ4YLt4QV1dD6tR+61hX0grg83r68cg/y4k4g82Mu8KVE
-	 9eFSieLjpPUQtFrWltKJifg7LMQtKG0i/jN5vIAFYtUuSk6aeeXCXcfJTG2XnMGzCU
-	 UjGZ+/dDKrw+atKD6hrBzdJM7VB3ZN6GwvoYZhHJ2IoZy6elY+ypyUueEvd1ILaXPd
-	 sPn+i/UBSXeV3+kEbTGY1C9E8R5D52MswUfR1Gz3WrwstE/yoF1wAlwlrihMIfa1dF
-	 vdIeqJgMQhhTw==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e7c6ec9dbso111434685a.0
-        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 01:49:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr9WYeOhnTlpPVFxUr97/ZU3YMFxf7bTGUG3fwggHjikHejioyt6G/kVoKWou4BeRxMbDuJzn/7YQ==@kvack.org
-X-Gm-Message-State: AOJu0YxbpJd6MCEtGoipY2rp+/hQO8Z8513JOu9Qqg5gdPUUBS9+1vY6
-	99RgKvHfoHjHOsnyoCoynZ7rbV8VYQ8iyOQrRGhCSX5X1GG9v/ttGhp/6ewUdVqGvk+C8K/NSSQ
-	01vsxxjJiUGNCA2RsvIbczPQkaiECGzw=
-X-Received: by 2002:a05:620a:3987:b0:92e:e376:cf97 with SMTP id
- af79cd13be357-934a0acd7a9mr769036085a.44.1785660555581; Sun, 02 Aug 2026
- 01:49:15 -0700 (PDT)
+	bh=UWXStCMoW6WCbh77+QZYpryjqAzaULEhXUbNrcfh4rw=;
+	b=c4hJS2e+MwXFsr/Wh/sPGtsETcbXAVYngxfehK9ClnqSTt2eHhsI4MqdNXWBgoscuFNkKR
+	UFxVgAHM/UjWg0XWBcwGdbfPbtmqiuFQLejfGkI5n1s8EnotYr1U9meDhYjlisybJCja0X
+	ilsijz+YzdELTC4zQ653eYUEoQvwjV0=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id C146E1300093;
+	Sun,  2 Aug 2026 06:20:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Sun, 02 Aug 2026 06:20:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1785666025;
+	 x=1785673225; bh=UWXStCMoW6WCbh77+QZYpryjqAzaULEhXUbNrcfh4rw=; b=
+	iZwnkVSosBHNE8xpbW2/uRGeqmvdP7MUygil9KGnZUB9Xa9IDAA3U9JSiOogjVZW
+	1tt40D75cLDZGnVWkY/D1TQ9ySN8s8gC0Kt4wucww+TjSW92baCAn0jWAFnOseqf
+	665uGt8+/SISS2/7yCCSd4HUubsKgeQScQ9rwmFmHx/mir4+2gm/5YcCAmvxHtuh
+	4RQl0CiwQCX7bpzunx+GL0QyNagk1fHODyy6Lit3UYDOE2hsEGfw09C78ob6jmzi
+	H5e4opGZuvhLa4uVttC4T19BCT9ek1z/vd8/8VDDMQgBVzk4XjZxDzDCQULOnhwg
+	Mz1ZckZsqogahodGV4DnzA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785666025; x=
+	1785673225; bh=UWXStCMoW6WCbh77+QZYpryjqAzaULEhXUbNrcfh4rw=; b=B
+	DnxRYHiYO7+nhj2tcTfTdom1aUBnsbDb6AsS19aAl8kFmxkJFcG9td2FJSvD39Ov
+	FVS1gE5m9WqCd5JeQOy0Om5Je52Ch9bb1CLMvR/OHjJJIeTXIbxSQASWE/DyqhI9
+	8wG9ABtJE/f4e9LyB8f37qM5dMQutALMBkK6YWd1r0rUNdfaRIJZ4CctmbHWt88u
+	0P9Wgj9tmgzhDorOx5ORgUByFzJDmgq9/iAQYp69Xf7YPeAQUZE+kJ1fGlI4kUVJ
+	fN379P1wnb8s8FMuviiW7LXoVQ8xol/W6lHsdcYOySxxE+cT9COWm6GMQp4BE+ik
+	SbTHY5w24nMvleifrql1w==
+X-ME-Sender: <xms:6BlvauWuSlb2vA2ojV38iW8G58GBzSEiPw8bC2jhukWRngUmvDPRKw>
+    <xme:6BlvamtkrADkPVjhXoiU00XKp0dJCvTdBxzmBQUXLXuS6uIvo5kqOOcyMkg_xXbW-
+    GpZWa_tTmVxNkdmqVqGSS0ROk9T0d9UuLB23MFnGyO4sgWtwwDZ>
+X-ME-Received: <xmr:6BlvauMvjbDStu_vTDXfjJnxpxBHJLHiN0DbxdfoYoS-y_wwcEeywDcWljp7KkFROVrcEIq_m0YFLptS6UIzHOM>
+X-ME-Proxy-Cause: dmFkZTGkWVqRDKxcHXed4G2Im/dKcKeNjOvDOtoNYff23UD3/wEy+brhhk2RbqYNFArYft
+    yxG2GBFuo/j13wt08UgFKzWNJHXB1MYtyl0OJ+p3c+LmNt9xDuYa0828krvA9AU4dW3MVc
+    Z5n9mgmxq8A45aZYLVP40RS7oHZFHK4FWE7Hl0BBpELs6vISpMoZS716y4r/pXgHw7dGVE
+    HtZba2b+c323q/EucToLYsxPoAnfhDRiAWZPJ7sHTC70DdV/mF+iHA3pcAliftaH98HxlF
+    dWAU7NICZgRrE7g1GmWLChsHoNRsXBqeNgzRXezEKkEnCA25hSbCTGx1gy57PKPdifSkM2
+    1+ciZ2GlZM3GF80LlZuK77cxGBAdgbTWk8lgzFXdVtOY2danDcL3KQC3YDVBYv+d46w1le
+    kGqPJu6c2rOE4768YKbMvJs+9Jg+FP+SBbO1ftDchUC2tp7rAam/eBslVM9sjgVmzu0hC1
+    1IUP9pcqlFQ6gF2IZSlnI9D6R+BByUpikFCkdDbaQQmNibFVbiC/AEi09VwXv7+gdrH1CT
+    aE0mQD3qPQ+8j840mFjrWAmHsPz8NG7CivCMwnImvW95JZUIwrUtLboE28YsF76BJGmPeY
+    mGIb/QFKZI6gXrQsBHX/uuM35J6LeeDUpZn8B7mofvk3AJFfMows3UuAjWFA
+X-ME-Proxy: <xmx:6Blvaurww5cxUbuXjvHc-NXLfEZZhhcv-ak2IEiADLlMH6SivIkRWQ>
+    <xmx:6BlvaouAlqlGvoFhSUugZLwmA1jy3sUUn0WT_H6Y5-aX9y0cU9AKkA>
+    <xmx:6BlvauiSJND0xIkfHxP_JkZ4QPVNk_JsDHQCPGPvYm-1237I_qjUAA>
+    <xmx:6Blvas1Z2x02fdspsIPFFjRYIlBl41Sv55VojK-VZw7_z07Q1H-f2Q>
+    <xmx:6RlvavMS61OqS3oEGaKid47bE1XwBqD-7dwbctrl5oElNq6wolknVEnH>
+Feedback-ID: i60a14417:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 2 Aug 2026 06:20:20 -0400 (EDT)
+Message-ID: <e9523b5a-6623-49ea-9ba3-cddae1a9ce7e@jaseg.de>
+Date: Sun, 2 Aug 2026 12:20:18 +0200
 MIME-Version: 1.0
-References: <20260802074018.73887-1-baohua@kernel.org> <20260802074018.73887-3-baohua@kernel.org>
-In-Reply-To: <20260802074018.73887-3-baohua@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 2 Aug 2026 16:49:04 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wLG77Y5r9Dy6QOqgmjNM5W1E5aGqKyJb7Bp3WGemNFmg@mail.gmail.com>
-X-Gm-Features: AUfX_mx5OHWyntVSVER1sCMf_W6pihUsx09VgYnLvBQglt_q0gIbFInfOzX4OmQ
-Message-ID: <CAGsJ_4wLG77Y5r9Dy6QOqgmjNM5W1E5aGqKyJb7Bp3WGemNFmg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 2/2] arm64/mm: use VMA lock for kernel faults on
- user addresses
-To: akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org, surenb@google.com, 
-	liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, shakeel.butt@linux.dev, 
-	david@kernel.org, linux-kernel@vger.kernel.org, zhanghongru@xiaomi.com, 
-	willy@infradead.org, zhangbo56@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
+To: Dave Young <ruirui.yang@linux.dev>, Baoquan He <baoquan.he@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
+ <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+ Coiby Xu <coxu@redhat.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ keyrings@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ Tao Liu <ltao@redhat.com>
+References: <20260731154608.153258-1-linux@jaseg.de>
+ <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
+ <74625f78-15ea-439f-b9f0-939d2976fa7f@jaseg.de>
+ <79610b53-5201-4af3-913a-0c4dcbb6f9d6@linux.dev>
+Content-Language: en-US
+From: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <contact@jaseg.de>
+In-Reply-To: <79610b53-5201-4af3-913a-0c4dcbb6f9d6@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8quhfj96ffbyhs53r7bcosozo9phbb4b
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2ABC6C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4EB5814000E
-X-Stat-Signature: 3jb63sw5n3xq8ozqazgej7bzxg55h6mf
-X-HE-Tag: 1785660558-299409
-X-HE-Meta: U2FsdGVkX1+5mwozx1bqfHNO7Qn/x/tyXh95Vb2s3JHr6SenOnT9rAnMGkk4VZDZBjinFE8UeGrQCJ47+s+I9ulz5fIE8lWLqZEzSl6cBJs7WilBUChU6QxPMYhOjZLQlIR6/aYum3jRDFSSPcrY3g6XHXnFkKeUNNqx705r/3A9TtAKpvSOhr253Cz/xk6RZLVs1E8athYODqzyptojbD6nP4IhniHlOXHVbgZbGFC/TYgI/rBFiglsfGOiGUUJtPZp9Dt3UpCvFHVyH669WiRvH4t4hGk0FoPxicq+lin8ujmRNOeTZivHT0JoL2gqWTrddviLuKRVmJTNqy65D3EI4jccE9aMqNpLiW3Wj9ieP6bXwjLs8rw1MdiP/pxw6zqJ3O6jWMf916a8goqwKOnyK2fm/OUpgs+NO6EzQdN3kWhrIGwzJB8U+DDrLMrZTMW9GAHHzDhkD4wje2ioE+7LdbT0n5MoTWZk7kcf5qfe7jacmTQdeizPaAnACfJ994Q/9wTLvhbQ531VWytfccKN56CWF+Q56Em45ZAwO/LDlZCEUI9C3jLJ8CF7PLvc2qXAWX9uKG9DuaWUrZrILA9wBAdlL0Xdmzwj+2qpoDimnSnhi+a5TnKw4t+D/wbbRfb7bD/V0Z9+mmtOPrnlMkitC26KLrYSbJxeT6YDfWxXNq9V1BfQg1F/72JDbFVUGmE2ZpMNteQ/pW7ZXrLQTLNxrOulrFoZQnmXIujskTvaXfxI7UYryK0a6YYRQg4AU9AoDpUap44jeFtOO0Dbtcm+tU7On04wOm9Ea5XwPl1Yk6+NHQWZO9gSSmQKnAa9f/ew96xWv5hKRV8rpFgCWSR+MQmfg1f29cH92TuLGHCNfSC1oAn4iCuo33iizCZfzQ/p3YUIlwfxJcdSFAxMIUOKJCJrFjhXoxhrN6Ly3N5K+SDW/WC9BRqejEfzVeZbOqVfQGE5GeY2ZrthH/R
- xk4XIgaN
- mTnIardQq3lCOeAq/u/mOYK0vrCYS7W7NjI294yIAXwLMUFO/ncB6BHl0tXkPdW6y29xsZRL967EGks5Vz/F7ZixIfHhVrkGsakWWlQeeNAK4ACigU7QhWZoPON7nlQChy8UYLp+2Mp0IatWejfuHbZsBZlmUwc5WEgsX/w5Z2ZJ2lMDuLm4YBOcYp9+g+Httbhu3CcP05orGl/90PQe6mbqt/z0oDaxv7jVRCjpkiSGWrorB6lba0JRgBOBPBN5JjyYJwb9dgC4ypL63VeavzeMaH35x8vkmxC+PmoP5DT5POQwUjfczsOi+OG7UMlnV+N/8Vp4lkiVovwI66LI/S2PvEqttqfsulaeiJtdpGfRbhkYPNtkuJ7gIF5tVnxKXr5Svt8M21He9kkc=
+X-HE-Tag: 1785666027-324498
+X-HE-Meta: U2FsdGVkX18CMWTpXwUGPnbv9wuvorn9n2hPyis1B9S17ugrYy2szcU/XE4xEi7uBy8qEVojaNRQ9W1S1MdsXjNDkwjfXjXn3CFPUO6DI8qgZNX0SF3C7bGdmInrrOxjwGt22EAlqezAwJOoNj9H6Ew9yi+iEWbQpp8lRZH5Hf9BpEzJ9VibJujX+oe3uTXW8qFlaluNz7YM26m1QSsRYiKNJMChMJmc2JknkVcRfYdIWzzcRfXVB+vJjAcewZKTtKdZ/5AXQKyixzHoZB/s8ZLJra9OyDDbM0r4ZdE6gdfe0KJMLcARLXF50lwlRIqyf2iSBCr0VzqgTxtr1f4AIGarUScOgEJHFP8GVLJ6wRpTLvMRCg6KWPT73FggDonhDzwuRXkkT7HPaST6NbSD+HjFmdtta++ast7+PNNzlEsqgTjMsc76hpiMDzKLdk+ey0KiQHEbFXrXgm5dGzP2AQ+KbRqPhPZ6ScGAOJQ1tyYRuJgO7aQih2g/8Jdjr/3ZpSm23cxQ3Yt1iUoxRRjxvgER0xaW7iAnWr9BRUDrCR/iJSTWylJhZyahFm7d1CmVUTc3YUmst5lUiK0NRgpD3jU6PXzCqfTC12HxcNO3nZrmSdWLR/B67G3rw5r0bM4cXeXWS6no6uExeYXWkHv0EbPdYmqznRljt5tOEcmQ1hVxhUj1jmL/zd0y+puTNuxI984SyELEeoXEdcqqFcbjKNbtO/9vRRVXHGqItnxHxQQY+M1IDurBqR5JOu8McF8BR5jG8nAMGxp99mMf4lC4ZbsWZdV3x0r7fY4EiOuc1TGd4Vvi2WMsejnMkBFWpdoELfxsf3VWIMD1QJ52WMaiL81xClHgNc2vgptJchHIyO8HqJ0XJMQQWdvCD9z/f1oNmnTCohJE1FjZo0POzk+2LZSIuRqb4zBPGxER/xjDW8XRO67/HRVdoidIgQTTtL46tJR8LjUC/s+nn5IXn+F
+ aEpPxTYU
+ jZwKgME9G+LFQGvi04SwaqBXa/Ha3ewhe58P8NCh8GZ1G11pfiP7/3IEOhtEudFnLY9BKjlc/jasapdqvx+IHp+uGUWOTRO3fGvDzdK6CMEo9epRuZUtBgDVniiiBVa7ReAlMi5DqaI/aX+KCFXtzjCezKPq/6oT/r4fLlz2gjUOmoQGCaFjxpurT+Rp4+9sp9Odtj+B8jtZNe8mbzpgjh6V+zGL4Ncp0vsF5kgfdE+pQs60tlGnpK7JXTwhUlCq0iSlcxUUUfpZFBhty+oR9GyqYmPHmVa3W3PPXWB6qkYN03tR4UC/RFSwavS8ZrLtJhyi6TTsXy1nieDem2lWQTSyVoSEiNRlvqrRlLU1uUXA4CSqiVYIt4b1nL/JJ4CCL79gsZwXrOFRo3jeFVPF627jrsz8VV8HFlNcCKogkuQPLzaGBsi4YI4jlMOQeNVoFbi0W/DiP/zAONgNo2WvcWG3u0GLIDPQ5tNGM5rVlD0IIPHy+j8CL7BknvilBM4xmSMPm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,78 +145,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 2, 2026 at 3:40=E2=80=AFPM Barry Song (Xiaomi) <baohua@kernel.o=
-rg> wrote:
->
-> Use the VMA lock for kernel faults on user addresses. This also
-> makes the existing code below meaningful:
->
-> /* Quick path to respond to signals */
-> if (fault_signal_pending(fault, regs)) {
->         if (!user_mode(regs))
->                 goto no_context;
->         return 0;
-> }
->
-> Right now, the code above is dead because !user_mode always
-> takes the mmap_lock path.
->
-> Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
-> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->  arch/arm64/mm/fault.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 85e23388f9bb..241f1ab07ab3 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -607,6 +607,7 @@ static int __kprobes do_page_fault(unsigned long far,=
- unsigned long esr,
->         unsigned int mm_flags =3D FAULT_FLAG_DEFAULT;
->         unsigned long addr =3D untagged_addr(far);
->         struct vm_area_struct *vma;
-> +       bool uaccess =3D false;
->         int si_code;
->         int pkey =3D -1;
->
-> @@ -663,6 +664,7 @@ static int __kprobes do_page_fault(unsigned long far,=
- unsigned long esr,
->                 if (!insn_may_access_user(regs->pc, esr))
->                         die_kernel_fault("access to user memory outside u=
-access routines",
->                                          addr, esr, regs);
-> +               uaccess =3D true;
+On 8/2/26 07:08, Dave Young wrote:
+> On 8/2/26 12:31 AM, Jan Sebastian Götte wrote:
+>> On 8/1/26 16:03, Baoquan He wrote:
+>>> Note that we usually dont' want to run a lot of work after panic and
+>>> before jumping into kdump kernel.
+>>
+>> I understand. For this reason, I think it's best to keep this default-off. As-is, the notifier list call is timed and on the (slow) ARM64 target I'm using, it takes about 3-5 ms to run. I took the "try lock, skip if locked" approach to keep the risk of this code crashing during panic minimal. In my application, the kdump payload is code that then does a full wipe, taking a couple hundred milliseconds.
+> 
+> Not only about the time used, the panicked kernel is not reliable, any more extra logic can make it even not reliable, any pre-kdump extra logic is not a good idea unless it is a must to ensure kdump working.
+> 
+> Cleaning up secret data can be done with makedumpfile + eppic scripts (see the manual of makedumpfile), or it is even possible to do so in kdump kernel with Tao Liu's improvments for makedumpfile previously  (I don't know the status, probably dropped for the time being, but it is possible, cced him).
 
-https://sashiko.dev/#/patchset/20260802074018.73887-1-baohua%40kernel.org
+Thank you for the pointer!
 
-"Does this conditional bypass translation faults? Because this block is
-guarded by:
-if (is_ttbr0_addr(addr) && is_el1_permission_fault(addr, esr, regs)) {
-it appears uaccess is only set for permission faults like CoW or PAN
-violations.
-If a kernel uaccess routine accesses an unmapped user address, a translatio=
-n
-fault occurs, making is_el1_permission_fault() evaluate to false.
-Would this cause demand paging in uaccess routines to fall back to the slow
-lock_mmap path, missing the intended optimization?"
+There's two scenarios worth considering. First, in the standard scenario 
+where you enable this option, then drop into a standard kdump kernel, I 
+don't think it makes a big difference *when* you do this cleanup since 
+someone is going to have to dereference these pointers. IMHO a good 
+reason to do it in the old kernel is that there, the code knows about 
+the layout of all the data structures. To retroactively do this in the 
+kdump kernel is much more complicated, since there you have to 
+reconstruct the structure layouts from symbols or hardcoded struct 
+layouts, and you have to keep this symbol/layout information perfectly 
+in sync with the running kernel.
 
-Good catch! I should have only modified a single line. Then
-unmapped PTEs would also benefit from the VMA lock:
+The second scenario is what I'm working on here: I'm not using a normal 
+kdump kernel, but instead a custom payload that wipes all RAM from start 
+to end. This payload will wipe all these keys too, but my critical 
+concern is speed: On the embedded SoCs I'm targeting, the full memory 
+wipe takes too long (hundreds of ms) for an HSM application, so I want 
+to do a targeted wipe of just the keys first. The old kernel I think is 
+the natural place to do this. Adding to that, in my scenario the most 
+likely trigger of a panic is not something like memory corruption, but a 
+trigger of the system's tamper alarms, which would leave the old kernel 
+relatively stable during panic.
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 85e23388f9bb..e1b406d667aa 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -674,7 +674,7 @@ static int __kprobes do_page_fault(unsigned long
-far, unsigned long esr,
+I can imagine several possible mitigations for the stability concerns 
+beyond the default off config option:
 
-        perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
+* Since the wipe handlers are all really simple, it would be possible to 
+manually guard every memory access there to ensure they can't fail and 
+that they don't write to sensitive areas like the dump kernel or the 
+remaining panic'ing stack. Doing that would only rely on information 
+(more or less intact stack pointer, kdump kernel area boundaries) that 
+would be necessary for kdump to succeed anyway.
 
--       if (!(mm_flags & FAULT_FLAG_USER))
-+       if (!(mm_flags & FAULT_FLAG_USER) && !is_ttbr0_addr(addr))
-                goto lock_mmap;
+* And/Or I could extend the patchset to include a mechanism similar to 
+that in Bradley Morgan's patchset that catches segfaults during wipe, 
+and then skips the handler causing the fault.
 
-        vma =3D lock_vma_under_rcu(mm, addr);
+* A last option would be to have the alive kernel prepare some kind of 
+"wipe this first" structure in its memory during normal operation that 
+the dump kernel then can pick up to do the actual dirty work. I disfavor 
+that since it adds double bookkeeping to a lot of places, some of which 
+could be performance critical.
+
+I've also picked up that I should remove the timing logic since that 
+could cause instability.
+
+Thanks,
+Jan Sebastian
 
