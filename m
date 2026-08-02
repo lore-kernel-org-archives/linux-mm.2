@@ -4,104 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AD4C55175
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 14:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEACC55171
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 15:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2866B007B; Sun,  2 Aug 2026 10:57:19 -0400 (EDT)
+	id F2DC86B007B; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093DA6B0088; Sun,  2 Aug 2026 10:57:19 -0400 (EDT)
+	id EDE2A6B0088; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF106B008A; Sun,  2 Aug 2026 10:57:18 -0400 (EDT)
+	id DA8A36B008A; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4BFC6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 10:57:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 432D71604E6
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 14:57:18 +0000 (UTC)
-X-FDA: 85056632556.19.F3712E1
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0ABF7C0009
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 14:57:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=INWiOBSc;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf22.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A54376B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 11:52:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C45DF804C8
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:52:32 +0000 (UTC)
+X-FDA: 85056771744.20.F12D4E2
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E3C1DA0003
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 15:52:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO3eVHyw;
+	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785685950;
+	b=lh487yX9A8+lEIE53GrvcpMVDc79IP+NfjKgYIoj2C4xNafHh7U4IBf0q+Mt+zEPkWJzn2
+	2h+H6uivKjH1y0LgiI73QnrP6JHUmGz7MFzMJSr+hp2ocukURrFNUvf4NblwKhJ8XVmyDh
+	LIuuGZDggmRUBg/zyXDrXz2Dm/ImLeM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO3eVHyw;
+	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785682636;
+	s=arc-20220608; t=1785685950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+MqEBL3My6pzXchmMKapwn70BV5PXSqCNR2sBzFd4dU=;
-	b=ADTuevkKmcNLDFtkt9orjd7ikOlcTns+C6vRv/e6x9IaO1IxJ4QU+MzeCoMyXPSELoCLIW
-	8c/VMtIKwhkW1J9T/ZAQOjcLyOwNRQ1TEDatVIT6yto2uePd+lxmZqz1FckCHsr52YHCoT
-	1rIl+3tUPkcA/TXBCJALXN09DivvNHI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=INWiOBSc;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf22.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785682636;
-	b=OkWOovEAVr/s+c4kjh1cjBaE9qLfxR/ibXXX7z7SbpCFDWOKqjSE9ymZwmWjnvZ4iHBjhx
-	zs01QhV25J5HM6j+DOPCVIK+27x67dDRaNLDziw1V65yXLCG5Wu8P1I/2j4k5JpBV9EAsC
-	jdVntgZ733orsIMKm2Sf3YhLYxx5To0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1785682630;
-	bh=+MqEBL3My6pzXchmMKapwn70BV5PXSqCNR2sBzFd4dU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=INWiOBSctHaPxAryZy6XwCY87+TYvJfTTUpJhttdVqresDCfoVYTtQWz1GBGxDxX2
-	 VSo0vhG6NcPvKB8XOnPRg7E8pTS+p35JXrqHMktIoMmc7WsbiyB4n2x1efiveuix+r
-	 XS/oQeBPMJ+/IAE7MPzP/K56fYDYD6bJBixNb0mc=
-Received: from localhost.localdomain ([180.153.160.8])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id E480182F; Sun, 02 Aug 2026 22:57:08 +0800
-X-QQ-mid: xmsmtpt1785682628t0xgiphrl
-Message-ID: <tencent_B9556590D4B65ACF74C06897689A6E39F206@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4Ag1wOFoiyyQzdTBXQBZ4sivjcfqzojsikiLzeK9s8IFIa+eBKFjh
-	 td1yfGy/QuTThCWIE/PMAkLbxrvrNeD4RzLvC6jhzAViIWzBFJcuXNoPkhzECd1bmir9hiPHwxLq
-	 VXgaMt+3YPbpv8xsqkVdIBTvtK7QLliQLbZ/CwCP1/TRfbagUCY9Jrm4sBN70+hWiU9kWnefZqNJ
-	 F7K2Rrk9uTtUObOEVLYVVpaTtT+9wM+Q2/aMGZtlHyLV4mVoBnthVDVwUzrtwfjci+s6vrG4xY1D
-	 gUE2c3Zb2n2HtqK+N/L1P6FWBB0FKOsy3Xxj8QM0BzVzvNBQBeNOUDO9LxKJnDz90KtTXRzIL1mw
-	 CM3swJ2G6CIQGGWjuqrfG+3ABmC8Am5kr7jyWt5fvATX3WQtwhLl+uApaVjuA6ay8fSbI2B30yVP
-	 GvzM6vaxMtGLvXZCwG9RgL/2pZ612qoPeOEiHwANKQdS9vQPoS+bv+Mr821zQROm0gy8daFurWwB
-	 YNL5N88gPWnYAoOnZzoPoDRxMi762aBu86SrvEGrNPS/vAFbrci2XS3iZDVWL98vme4IaoCeGl5z
-	 mHMUi7eYQXY7xI339q7FKE5kU1JdEv8f+VQZ6+le/Wyakv+wdtlodvWgePtFQhkYHvHqy+rTEdqG
-	 v8zYHWyLwPADtO3YM3ozTLI8IWvWkOm39KIrwuUYW4H7LgE5piE/GQMtOKifsa8YrELg7Dfi9Yam
-	 EHiT3l8cVZ4EOGFZUpdCHpBkoBsm6BrMmdTo9kl7q1mVWmwIooM1P+upayGFFpYpKd/Q5/azd6lw
-	 yqLLgu74gT0FaezBMocYniunoOr0FnzMZAvx4nVp21/VUWZK1p3sSB5y+hMkuQjRo+XwxS/OWpgW
-	 tJLlSauPtvUDvHgX4g+dZPO7eUIqfXC8yBU8MRAtkgvSVPB1qLFJwRU4o6gyVy6ugNSsAO8JAgYr
-	 6yYA7Dnv8G0kG4Lu1LqoGh1y7SOqsHFDWJJPIsYnhlqWjv0aSHFLbTALt5Y9Ky+lq/szcPlHfLuB
-	 V0kWEQ9///fQADixY7ENg7ZaFRw5QKRSG7rxj3wVUz78LindtXsfCdlTBqUGU=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Jianlin Shi <shijianlin11@foxmail.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	hannes@cmpxchg.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	ziy@nvidia.com,
+	bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
+	b=uTv7XJ9itOlo/ZZ36Kk/e2aVGEuoqrMGjCGowH29m5DB6I6riDJWjxu8I1bQ5SjF+y1vGS
+	1uQ++M0q6gzmjjq+v4AxzTBHwPOrqe4hHhWAapGb7lMecZOyIjh44+Nc0pIrynWRw/EWnL
+	9s55UhwyJSzUYlJGJG6fMRE6v9+IImo=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69fc2261f2bso4326219a12.3
+        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 08:52:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785685949; x=1786290749; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
+        b=pO3eVHywJFUpxDtgBvkVfSNareKPp76DYuxDhJPlIXA1YtrwQiX/hBt+C+d5ZyAepZ
+         w7m3POdGjBF2NsDTXwfm6zce73Vwzd7krsQwMSdkWK2/421u5iKO0oGS0KKLj43UBaAz
+         UX81yPRhVYYFSmq6rcyhEMGkeI8Tn650EUA78vGCM0A63A6rkrWsJova+LewBwZoyZGK
+         idFlC0GoU4nVWTN2oePTvRIQhMJor5/anKxj9KlBhrUo9p9k28Aa5H679a8yn/+baS8+
+         vLHEyb6gBoNrVvJjxKF6DBriI76wXIYjQWgSSIIE924s/Iq9RG+ys5TpQzHtJC9Wkxai
+         vDUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785685949; x=1786290749;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AfsggKPyu3o5by6xB//nU7yz9KE4HCf03TFtDT66V7I=;
+        b=ZVUdHbiC9DScN6vDIfUeasdUPbeyIYrUNmXKUDaMLUlw7Gd31UG+b4xpv2qgeIFzLN
+         EJl/vAbbk5Eb03v0P216py/++jByBQwhTstwuyyYKTBycSLrAwm1kWfQLXqUVPq7vwI6
+         Yjrq2GSeAwYuXoyTZaZHQYcQgnTpAYe7n/3oAADuTtSgzd2bPwLasafKD9D5VkOgS6P+
+         ZjoXQnkg1e/ndJOeCw+natFTdxApDREYVY6pAhgPb39RRs4hDlgCWvZ16VzyEG3L3OOY
+         R6TI54RIpB+OLub+wSYteQonWbAAw1TCdrCK9E+5SdRrQQCqyyVEN9+c+tOyko3QL7uR
+         8Ubg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq05HnfWf/tx9Loe8viN0/CdjomlPKz7jJRaP4HP5xMtWAoUpUgorIR24P50YdkrlFUTVllACoHMQ==@kvack.org
+X-Gm-Message-State: AOJu0YwjZ0RQ+8ZBJCT9dMCGx5fFpXRQXhqtMqwf4IyNBj+cxePAymPK
+	7qtNGeKD8oC4MlxWu8eG1Bh9/9UudqOzQRZqiyN22Hu7ZnF05aA4k79N
+X-Gm-Gg: AR+sD12UHxGF/rssyVL+AQsmT7CRjv6a32PVILQsAmRabSOPpRlMhW8J9XPwZOiZ9OR
+	9r5cYuzgQdYVneqeZ8ah8+YITFWeM7vRE7wyy0uMURql6bpv3DveibwAZsHROYO8UM2G6M7RcRn
+	qLrwKPpZijBr5VNR0dc70Koo2wr7Ximl/eex9HFbXa9W0vrgFkCBAggvwCANbQPaQx7OEO4D3bY
+	Y/wVpiTa2iasUym7UoL/RIeMvbChyKCux7xtySFLnwI5SbWMmOiyesZ++5LpK6VP4fi7mwn/uJP
+	WF2axzgp5ZjC0inT5mVp+6Rox3ausm0AcIUn2UJwyIRNSDGfgKiLPPbpNyWMai8W6h5uWHNwwY9
+	O0rtiYTmpLhA5StbUjlNC/xJNq5PgnDdxQEOlbg6Co6Ijz/9g12LUB06YhYnRCJpyg1ytUJ+tae
+	Eh9S22N8ziE0+/0hqG4WBpuIfUdA==
+X-Received: by 2002:a05:6402:4011:b0:6a0:f9b2:4d67 with SMTP id 4fb4d7f45d1cf-6a0f9b24f94mr154075a12.15.1785685948981;
+        Sun, 02 Aug 2026 08:52:28 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a0d0ed21aesm1101924a12.5.2026.08.02.08.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 08:52:28 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Sun, 2 Aug 2026 17:52:26 +0200
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
+	urezki@gmail.com, willy@infradead.org, shivamkalra98@zohomail.in,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
-Date: Sun,  2 Aug 2026 22:57:07 +0800
-X-OQ-MSGID: <20260802145708.1727189-1-shijianlin11@foxmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
-References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+Subject: Re: [PATCH v4] mm/vmalloc: make vm_struct.nr_pages an unsigned long
+Message-ID: <am9numIMZZ4s7UMl@milan>
+References: <20260730130923.9e71be5f477ee3db333cf0f8@linux-foundation.org>
+ <20260801114915.115224-1-iprintercanon@gmail.com>
+ <20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0ABF7C0009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
+X-Stat-Signature: 8preeur7dbyfyf6qqtk8jjm5a5gwqouw
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E3C1DA0003
 X-Rspam-User: 
-X-Stat-Signature: aq18eds53nd99175ny8hew3utwoskwmy
-X-HE-Tag: 1785682633-7699
-X-HE-Meta: U2FsdGVkX1+Ik/0lTXhteuuXaxComZ9b0ZQRwXdv6hlaVUQsSh7RGGNk3m4Ol968rfmfXOWf+GksPPm0OovxU1BbjxwQjS8cTS455f9hMhr51JTQBPE7Ks7BWxwJjS1+hWwoIHJ9UY+x0aSUc19BagO+m6bKtG5gSRvNk6hF4Hqww06x2uI/C58bZgR+lCnExQXER5NixmF0XNxp8raTjSYp/c2b1nK79kl8S445Uf86Io9SLZEM9pLQX//8YePr/clj0Izo7Uri0GlDbNWNlju2ENTLp14MjqflFPLAYIzCZKdv7lVHgyyD0U0iSLpRR0D0Jrn4LBPSwCC8vhtIntVfTcyfdTnk9DKxJWmkWfnfZ4eh4u6QPNW3cp/YNE+0A6tz+9SXFRzN8haUQsG3gwiJo1EL467TdN4GId6IwJ1s3bqc8MTh58eB2aN9oHwwfKII/Aj4jf22leKbyrCL0/ojQq8aOzMyLnk/7WVgwwdkYKXFRhaRxmu8FDPpDJOV+SFZI87VF82vkptVCOPmickoc8xBSrZwbS2fvUMKJPbkaPxsF41nSE8ywTxN5Y+dzErwtAoRA6zF9JgOPM6AkpBgQkHr5wEbvoibv6uM82XJVtWxGbUY8+Pgg1cf3AGVpl4Z9kuO1kn7Uj0EWPJX5n+12ESL3aEQ7Dwt151MpzG+hg4KjnycEyXeUwkzURJoLWqW/gGYofYR58yd/a8vPx0V5KzlK5MlDKl/b3Cg5VHyRUFXfoLbor4Nct0+1Oo/o2oRNoLvLtv6cUK31E6mWqqSEO42wKnljONI4dU5F83EBUniUhILCYJPyuEm/sVG4v6xf0nmw98cdXAIjMU0Ez5QhZ9EUJXKzwmz/lhP8ZOY4TNGKPtRGVa8UalDxnCVglUGr3PcIFwU3RX0TToNXUl6YuXibYnCTJU2Tp0Ce/F4Sz8Q0uTo4eri2OXaCZQdNi3PvWI8c1vZ8tGMVDU
- 9GRMgdPp
- BC8pQN7yhoJdpPSkHaiv+07hGYSaMiQDbI+3DGQ8c5I6Lr8zFW4PtvdA+prxt7WIcepQSVRaSKDNmRmWaY57jdLIMt2Gf+vFqZ8imtje6OBbmbr4pZKYWysX0KkvSWJKLLq/EjiCtD2WbuiUPpmEC3ZkSkkXN+xRly2LU9cxHs5jXgwcPRBfV3nA9lfbSq2GlEZlHSUzTaRM3Vp0HV2mLnCYcc26Mzc4cv6Y4MCHXx6LeCpFclCYKQPtrd6hUNk3DtaUQsI4qak23+IeS/Xy+Pyke1uIPHIqgyYZgrD4x/68gKWXcQvqItKJ99JDj5pIMDatevlNVAJo+FnxlfUFtI+K9J46bw8QKHhZW90juXtssgmM=
+X-HE-Tag: 1785685950-61117
+X-HE-Meta: U2FsdGVkX18jVYcLwd0NAfG5doIPOzPvQJdXs/EI4n+pGDgT4GAlTFmsla0Fo5TzSKjRABjiFyGLmohvPWeFq0Co5VATgEnBFsh6orhOmSwMXxPxCLXbmVtNYSOFUHLolheJg4HdUNg6HroYcBivchd2J1G6udgOQDYe+gf+kHuHy31RkRW0bL0jAPPQaV79fmUZ5EzRkANtIMTPKvlJmLV/37cVnp4fDa+fa3ZQxagza5q4mYAtOJYJCI0/Y2c8F1Tx35IpHdbureZKsq/lKI/C5JMYHfbjwbj1yfkxqc1N/ofcAXnl20S7gz/xyWfWEbityCjblmrgzuq5lC3cTaSmk79YsAEbmZixClnTM9Vfy3D7WL5cp2Jpfx3M/AS207946BRBZRi/4vAkkbrMKj+bBeseRs1uelXuauI3wHl2vvvCtEmT2TMZCrZAqzeHRUlqWTS+3YMhMLTlzLCckanPo3azOXe135KhU4O4lB2ZZpx28AMtLNWH6VB5qOr4U6DsegUTGICxPVHTbhfWGULA2hZ2x7o4I8XqqFiAESgXwR1mnhOIjzuZAoDgr4/n4ehBJMbp21E6Ppwq1rDqDLd9Na40J4GVOow9TH0KNZvCqV0HfKzMl2MXFyrK7mV25spEgLjtbihsPH+qZ78Yheaq2lXItwcCPe+40+huTJWzQ1ThVaOR8pW3HySGa3sV8co6Lxya4jJsvActdMJRLsbauQY7egHe8ss0qvx0g9qpNQEYNis61pDhFBHdnFdXg8b267vQodCCMQeKxt1ibwsehNQnGYoJmcbZt3ITrUh8C3IeuCmC+tvdOg0rIEoEE/FWEhnIeAChgFPpZrS3OOCRnRpGctuIrVTAIAZ/ckDcgArmpMv2TAD06D0k2AgJL6kHkCaTZ54svtQ1siFSWZ3xOkc4VIXqusm1iejM9rNu5CYpOmo4uONilG39CquEDBySTKfTWdl0d5AR17u
+ rRt8mnqu
+ aUPfv1ruiAkWF5f38m3kHXx7IC0H+1P/iM5nEmqCY3juSFtf/BhWFQimEGWRhWz/IUwQZXgj0aNLYBwRYKqyX3odUpb9L4P06luViRlBZtl4zMhbg212XCjFfydTfm4ok6Hl5FBKChuLV8NXS3ici7o6dnmZ0aVIiuRc67bEQqLenjMe1V4XKsDfIbtIE+JEfDft48kK65Bw/kwQmG8jfv8MMP+8N3SZqq+9oqkhAGAUdklFeLJPldXHqUV0G4RBy+qlrMXURbCim5v07pPvFb79QGCQrtMxiyfYHDvcO2H/ELWLwRLp20f7Zpm1uB/4qoAmLdQbOaqcDcwP+lLpRwHhZYACoNvDDCdSgaml5vfA83Kqc9tPqqtpBhET3vNGNBjuFwkc41Ggl/Q7LiDkKtXq8bcm7rAbr96GkaBUaW+0DmGj5k6Pbodov76LtF3WKjari85Drj3CdPZAEjE+BtE+ApkU7CEZ7wTqNLaDy35C5QG8Phs0cqkfFKm8fhT3EKkGPMi/QN79x4cEAhbZy2/A++LlLoqIZOZNTZ/l93H8VaXHVACvwU8KrmggqNGRqLtt4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,108 +122,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-lowmem_reserve_ratio_sysctl_handler() ignores the return value of
-proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
-even for read operations.
+On Sat, Aug 01, 2026 at 11:52:02AM -0700, Andrew Morton wrote:
+> On Sat,  1 Aug 2026 14:49:15 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
+> 
+> > vm_struct::nr_pages is an unsigned int, and the file keeps deriving byte
+> > counts from it as nr_pages << PAGE_SHIFT. A shift is evaluated in the type
+> > of its promoted left operand, so those are 32-bit arithmetic and wrap at
+> > 4 GiB of bytes, which is 2^20 pages. Every site depends on a cast being
+> > remembered; vmap() has one, two recent commits did not. vread_iter() then
+> > computes a size of zero for a 4 GiB VM_ALLOC area and /proc/kcore returns
+> > it as zeros while reporting a successful read, which drgn, crash or gdb
+> > cannot tell from real memory, and the vrealloc() grow-in-place check
+> > declines a request that would have fit.
+> > 
+> > Widen the field so the class of bug goes away instead of one site at a
+> > time. Everything feeding or consuming it widens too: vm_area_alloc_pages()
+> > and its accumulators, nr_small_pages, new_nr_pages and old_nr_pages, the
+> > index range of vm_area_free_pages(), and three page indexes that were
+> > plain int. Five casts go. Two prints needed fixing as well, %u in
+> > vmalloc_dump_obj() and %d for the unsigned field in vmalloc_info_show().
+> > 
+> > No bug report behind this, I found it reading the code. The 4 GiB wrap
+> > needs only a machine with over 4 GiB of memory. Neither larger threshold
+> > is a practical concern: 2^32 pages, where the field itself truncates, is
+> > 16 TiB and beyond what hardware can populate, and 2^31, where the plain
+> > int indexes break, is 8 TiB and larger than anything in the tree asks for.
+> > The int *nr cursor in the mapping path is unchanged and is separate work.
+> > Users outside mm/vmalloc.c need no change either. Those handing the count
+> > to a narrower parameter cannot drive it near 2^31, and
+> > kho_preserve_vmalloc() stores it into a 32-bit ABI field that still
+> > receives the same low bits; above 2^32 pages the truncation just moves out
+> > of vm_struct into that store.
+> > 
+> > sizeof(struct vm_struct) on x86-64 stays 72 bytes with
+> > CONFIG_HAVE_ARCH_HUGE_VMALLOC=n and goes from 72 to 80 with it enabled,
+> > both inside the kmalloc-96 bucket it already comes from.
+> 
+> Thanks.
+> 
+> Ulad, AI review suggests that vrealloc() has an issue handling
+> __GFP_ZERO.  Can you please check?
+> 
+> 	https://sashiko.dev/#/patchset/20260801114915.115224-1-iprintercanon@gmail.com
+> 
+I have checked. I think the AI is missing at least one point.
+AI argument which is:
 
-Fix three issues:
+<snip>
+If a driver initially allocates memory using vmalloc() without __GFP_ZERO 
+(leaving spare page capacity uninitialized), and then grows the allocation 
+using vrealloc() with __GFP_ZERO, the caller expects the newly exposed bytes 
+to be zeroed.
+<snip>
 
-1. Propagate errors from proc_dointvec_minmax() instead of always
-   returning success.  For example, writing non-integer garbage to the
-   sysctl now returns an error instead of silently succeeding with
-   unchanged values.
+In the vrealloc_node_align_noprof() header documentation there is a statement:
 
-2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
-   actually written, matching the write-only refresh pattern of
-   min_free_kbytes and watermark_scale_factor handlers.
+<snip>
+ * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+ * initial memory allocation, every subsequent call to this API for the same
+ * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
+ * __GFP_ZERO is not fully honored by this API.
+<snip>
 
-3. On write, parse into a temporary ratio[] array and only copy into
-   sysctl_lowmem_reserve_ratio[] and refresh derived state after the
-   full vector is validated.  This avoids leaving the ratio array
-   partially updated while skipping setup when proc_dointvec_minmax()
-   returns an error on a later element (suggested by Andrew Morton).
+AI argument violates the documentation, i.e. mixing __GFP_ZERO is not allowed.
 
-Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
-SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
-the minimum on write; negative values now return -EINVAL instead of
-being silently coerced to 0 (suggested by Vlastimil Babka).
+From the other hand we can mix it and remove that part of documentation:
 
-Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
-
-Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
----
-Changes in v4:
-- Parse writes into a temporary ratio[] array; commit and setup only on
-  full success (Andrew Morton)
-- Update handler comment: proc_dointvec_minmax() and write-only setup
-
-Changes in v3:
-- Rewrite commit log to focus on the two tangible fixes as suggested by
-  Johannes Weiner.
-
-Changes in v2:
-- Add .extra1 = SYSCTL_ZERO to ctl_table entry
-- Remove manual sanitization loop; negative writes now return -EINVAL
-
-v1: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
-
-mm/page_alloc.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0387d2afd..13fabb062 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6673,8 +6673,8 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
- 
- /*
-  * lowmem_reserve_ratio_sysctl_handler - just a wrapper around
-- *	proc_dointvec() so that we can call setup_per_zone_lowmem_reserve()
-- *	whenever sysctl_lowmem_reserve_ratio changes.
-+ *	proc_dointvec_minmax() so that we can call
-+ *	setup_per_zone_lowmem_reserve() when the sysctl is written.
+<snip>
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 7a0cbba3d29d..28d0fed94d22 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4294,11 +4294,6 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+  * __GFP_THISNODE flag should be set, otherwise the function will try to avoid
+  * reallocation and possibly disregard the specified @nid.
   *
-  * The reserve ratio obviously has absolutely no relation with the
-  * minimum watermarks. The lowmem reserve ratio can only make sense
-@@ -6683,16 +6683,23 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
- static int lowmem_reserve_ratio_sysctl_handler(const struct ctl_table *table,
- 		int write, void *buffer, size_t *length, loff_t *ppos)
- {
--	int i;
-+	struct ctl_table tmp = *table;
-+	int ratio[MAX_NR_ZONES];
-+	int rc;
- 
--	proc_dointvec_minmax(table, write, buffer, length, ppos);
-+	if (!write)
-+		return proc_dointvec_minmax(table, write, buffer, length, ppos);
- 
--	for (i = 0; i < MAX_NR_ZONES; i++) {
--		if (sysctl_lowmem_reserve_ratio[i] < 1)
--			sysctl_lowmem_reserve_ratio[i] = 0;
--	}
-+	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
-+	tmp.data = ratio;
- 
-+	rc = proc_dointvec_minmax(&tmp, write, buffer, length, ppos);
-+	if (rc)
-+		return rc;
+- * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+- * initial memory allocation, every subsequent call to this API for the same
+- * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
+- * __GFP_ZERO is not fully honored by this API.
+- *
+  * Requesting an alignment that is bigger than the alignment of the existing
+  * allocation will fail.
+  *
+@@ -4415,13 +4410,12 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+ 	 * We already have the bytes available in the allocation; use them.
+ 	 */
+ 	if (size <= vm->nr_pages << PAGE_SHIFT) {
+-		/*
+-		 * No need to zero memory here, as unused memory will have
+-		 * already been zeroed at initial allocation time or during
+-		 * realloc shrink time.
+-		 */
+-		vm->requested_size = size;
+ 		kasan_vrealloc(p, old_size, size);
 +
-+	memcpy(sysctl_lowmem_reserve_ratio, ratio, sizeof(ratio));
- 	setup_per_zone_lowmem_reserve();
++		if (want_init_on_alloc(flags))
++			memset((void *)p + old_size, 0, size - old_size);
 +
- 	return 0;
- }
- 
-@@ -6791,6 +6798,7 @@ static const struct ctl_table page_alloc_sysctl_table[] = {
- 		.maxlen		= sizeof(sysctl_lowmem_reserve_ratio),
- 		.mode		= 0644,
- 		.proc_handler	= lowmem_reserve_ratio_sysctl_handler,
-+		.extra1		= SYSCTL_ZERO,
- 	},
- #ifdef CONFIG_NUMA
- 	{
--- 
-2.43.0
++		vm->requested_size = size;
+ 		return (void *)p;
+ 	}
+<snip> 
 
+--
+Uladzislau Rezki
 
