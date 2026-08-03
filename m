@@ -4,82 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC37DC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13479C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDB116B00B0; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
+	id 7E2E16B00B3; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB2E26B00B3; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
+	id 76D286B00B4; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA2056B00B4; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
+	id 60E366B00B5; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87BF66B00B0
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B2F4B14066A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:33:16 +0000 (UTC)
-X-FDA: 85059293592.30.9912F5C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 10797180003
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:33:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGdBNCTB;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 368646B00B3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46A061406B3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:52:56 +0000 (UTC)
+X-FDA: 85059645552.11.C51604F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6EDEBA0006
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:52:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkG4C3U9;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785745995;
+	s=arc-20220608; t=1785754374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m+e8KnNIzD8gYxdZrSOuhd8fe4rBpYFoiXBzIPosaVY=;
-	b=0r77+GXsQmrlcCvL8jPl+NwDg+BrxfXWMPN6RLioF3Oasb78jYtugyR6+0pqj8UPaQeJny
-	4H2vOYBM8Xmlhma8x5YobmDcoJQJizgjvOO55OVbk43OfaE6q6WvE35sZcolwkTYk32meE
-	NENXZkpfUOese3adKZ/+uoMyFOCmt8Y=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGdBNCTB;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=xVzjQs3HFfWf+RuJQ4W4NrHFv6BkXFAG420ZywAGWLg=;
+	b=ZhlZUWiX97sWfEWn/Pi8f/UFuvEat0SQjags926zKAiEt6LSJ5qPA7m5BhbFV6GhfOp4yH
+	VOzNCZzLU3sNJgnN5jlwboCowRGZHCn55gpA6Q2hGc1+TQ1u+W3nFP9IcRSPwJOy+/SW50
+	S9R5rpAZy9yKL10B5caVrEKYcU5v0nk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785745995;
-	b=eNJ1N1sCl8E0Q9l6rSkwPECs+vXfQxCKQcUBStDZtbKEGaseTyI4rwJMN7/SpE+S4tRazK
-	q2x20L5o8iadiSMnuwPSWNOO+x3gildmsrBeeD7C48LKUwMwNYoUk45J54kjTA4JfwmRhW
-	FikIgSoaiXob/8Jzb+bylYmT3t3oWS8=
+	t=1785754374;
+	b=bbFt4L5bPo0Bs09TGUZTbRFoI0EZEKLzu6PWuToNz9J4elsk9BaN9Ukmj1FmmJKm+NHTxx
+	cQgtxwIuXuO67HTZPoVKB2lEVekLu+35tCMVmIUWciCpIxOw9nd7EsIDkuc3O7tyR2CwL2
+	yTOTR223UzFK1o9FCI8eJR8m9yNGsEw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkG4C3U9;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82915600FF;
-	Mon,  3 Aug 2026 08:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487D81F000E9;
-	Mon,  3 Aug 2026 08:33:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 76493405D9;
+	Mon,  3 Aug 2026 10:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D6E1F000E9;
+	Mon,  3 Aug 2026 10:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785745994;
-	bh=m+e8KnNIzD8gYxdZrSOuhd8fe4rBpYFoiXBzIPosaVY=;
-	h=Date:Subject:From:To:References:In-Reply-To;
-	b=NGdBNCTBvXRIxOnTroJ/LTqb0MLDnqhdLBDSAuGkqbrlV66qNdr4IgJdtEUst88OI
-	 XY8xslbBhgpzEbeuYhbVA3CcIZ15wgYGE3ksCwdNSQxSVh9Kais/xTWvn7O6HNYjRi
-	 wdmpdmfYzeBkLXKDlZmmNhmvZuAOoosu0tUHmdY2193xXqUR4OBf7GSBvoBaPLum4D
-	 Dex0VM+ssdS9/3T5du/BEGyeCrXSXeD3FTUE9iIM5JDNMQfLdUwLLReDPpTUL0my5t
-	 V2ugzta01MTSak2BogaSbJkXFiT1SmbGFP5zs0vtYfcCNDEBzr+2i9w0H8ca9MMWCt
-	 v3T15unawu23A==
-Message-ID: <2504da57-a507-4567-aa5f-bbd3ec17d002@kernel.org>
-Date: Mon, 3 Aug 2026 10:33:09 +0200
+	s=k20260515; t=1785754373;
+	bh=xVzjQs3HFfWf+RuJQ4W4NrHFv6BkXFAG420ZywAGWLg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IkG4C3U9Q5nzyqNz6vG+sRjzCiegmydkM/traJZfxUI0agHFbx1RfrYvaT+Zl8jL9
+	 fiihX4iWNoFjmP1NE/bVaF19K1Y+CmltIcfa5yVu4bj7zam3Dgl8NfWz3p3D7lilC8
+	 gFOlwXmrD1U+DpFVHh53sTMYJphFYYzIxKZ9EmC8lnd9BxURflFXD5fJOFHzyj7T19
+	 Z0RNVlGSfhEs6mdd22ZnYaOrqcjrAqu74XomLemSL/QKo4iDNd50DrQud4ggXKVXyf
+	 QU/qF2RPHdTywPbO4YY5W0U6wm+qOD9vBJB6Oi93N8eWViDHrqFT9MopxTP81kRjKx
+	 4SOffAXcClgJQ==
+Message-ID: <4ad4b17b-bae6-4169-8649-bff4a29e7fde@kernel.org>
+Date: Mon, 3 Aug 2026 12:52:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to
- memory.c")
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Andy Lutomirski <luto@amacapital.net>, zhengqi.arch@bytedance.com,
- "Liam R . Howlett" <liam.howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+Subject: Re: [PATCH v3 06/15] mm: propagate VMA anonymous page offset on map,
+ remap, split + merge
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Linux-MM <linux-mm@kvack.org>
-References: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
- <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -125,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
+In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 10797180003
+X-Rspamd-Queue-Id: 6EDEBA0006
+X-Stat-Signature: u76nzws9c5brgw6s56xs95rrzzxz1ceg
 X-Rspam-User: 
-X-Stat-Signature: x58mxaajskwukx7sh5n3teiggumujjck
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785745994-138796
-X-HE-Meta: U2FsdGVkX1+epuQVSr+IXOLAOy23oNdIzsZ33Sa31MrVJHHhk/tvT1lv1a1u340sTZe2HErFP0010EUKgSWC7uoIvxagj1QeIoV7EIb57nVIajibjzuXCo1UlCY86d3knzsUh1copehTV4L6D+ghgjMDFPT+04qmy7cKbShv842s3KR7mnmHa+xfrl0xfQPvBSlKUzDkSlMkyKEQmt/rwPTEMI4nnRaPRXIU9pjvud8J2IkCQPqlbLvcAlZrkOQV5rprd2L4peJI6Dn927oEBtU5Eh4FJIISHsYMA/cPQuo+0C4lUPabUrpbFlGAH7NyZ2hsPSnFYUnrDWu8/L6m/oPVyHWoKKcaYBtc03rBIJfs0XFcTery5blAp3bwkA/oRWje5sR44Kths6TIXaUpbrZGJ4BcxMcrCHL+80XpWRfNqzJ7Hy0C3e9fbNdCFcQ7gX9suI168Z7vjS43+9Bl1IvAbDHLkliG8ofgjpkBObDOSwEYmeOnlAPIUjAzyJJEKGK3TEAtX8weja8w0CR/0LZQPg/dQMdZ5oyKguOXSR4TmwzOyWLePUK2lFiAyuo0CrJuEFt2piwNhpTN9vI7tpGXsPPkmyOX94xEKJblvFCrZT7EtPLb/kMX1eurvYPcOyDjb1+MFtguKKYWwTuxzNxq+adzBhHM2ZPhw2ghgE6VTPMAv85cZLH0KAOXOGvw5w60Pul4smXrd9DqLC40LU3/azcrJTv8UOWeNI1laooPzrgFHle5/nwRRVmLnQxsd5JzNW3Oi80zhHLIeKE9mOmtWLelebQ0zX2oB+BxBkXxvBibOt8gCTVhDVjL4qRFl48J2jwHS8qEVXBNagoIwK2PDbpI6loTyp4wz6JwRthy+EdJHiz9m2Caqns3nxyi3CfrX5l9wALFfR28+adWOeRoc1eJsDKydniKkE7lLPGTJGv8/pW6E4LltqYeB8jpG0uKNLnbTVdrfvdB3Qi
- vM5HgEWM
- POFuwbxYZYAGONK5Dal2+0m448gX4RlNPsh0Vb3bxgMNWYkSQLdw44wqRroLfezv6noZpDcPE7n71kMt3XMfrAjBtl5Ca5G+CLGZM4/LF46qfoQtzy2GlqdXeDZlnGVKEKtS4B2LM+6WKwa5IB3TC3JSRFO2IQu8PYRd/eCUYwGL6NCdfXlwkWY8aRyASPvk+avw9nRDIFNGEQKOedyENo349xfQonLTYzTr6AKzwGsuoZXef3RbVhDt7chET0ypZvtsy
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785754374-735089
+X-HE-Meta: U2FsdGVkX18JHRctVCtwlclxi5RlRb73/oJDwbjzZOcnv/ZwXPByFucGUQgoHYlr9ElWdsDGK0h54rZlIsYDyt/ceIVnpk2DuJ3L5cdRJ9UncQzrabQNB+quqEKnU+wQPZl3ecxg90VDHVR0oWLGT/1ibREopcTu9b3zz5fdxTzZuF2qV6QX/V3WyZlbukm/V5k/CMuupLnVhRw1i+Tq999E8XYcDr4MSdVYiFz4KsdNvRVA8n4PdDk7cUezr57OAWaCDw8DNgFzTM/EMyb99hin6+ogRKQuBZkzxSGEBDERm8BLOCVf/maGGQAwT5eO6Kpmnv+OC4jL0QKP42T1wtbXOMV/EwHgQgD38McegSpZsn5J+/m7OubdwXuWSyC2Tl+k2OTmNpHujam4GOvBx4+kVCHzynC1XV4R30MZuYDCYF3Ngqc2YFRc/pOYcsEbuNkKpen8caOO06je+I9nc3buSREbZ4v2Wl71ysG0a6FmYtTXRRCqHoV6NmZoEu7CAkxvH+Z/rS1iLcZFV2jTNuQeJCJGL/hJSVYcKIhLUK/PwriQYHzxRkNrzq62rbH+vV3SJqTjokwUdIFJmV6/rROy7WbpB1ozfVJFUW30Lfd8/GPsB7EDBLrqzhppxJSfXwMiJ+k7JicKOewhKKywIQVh4xM83hV/MW9IUNJ9GEziHgI2pe/PuLsG0F8iI3JpqDUpb4MTZ3VUkWgf/8t6WxhDX6WbwOTgsLivbEffkk16cmWHIpX/xBMvTk9k4T57AYKRRHbJUXjrJS2rZr/c7gp05tVyUKygascfFsfytFPUYqAczUUhrZngTdBgd4165p2vaxcGIGB+N4EhTks76Xf8he9i2SRLiyr/TQ/xQBfc2raZPwmfL7kuKaz1xNMBb8Fi19CZOYak8xGMo8BtDyrzYX2RxYM9AeygRwJ+oIXS4xIBjKucCIKScYEQZXNDCvfsP7oZADa4dMDRSxW
+ bzqwyp8+
+ Pf2bf10EbDTABJ4G+J9ZxPwPCzkR3KBKQ6OzKhGK+MeyPpwnO6J6nT0KCMx5HaR6NENePDuWtgsePfnI9C0RQtEYBLaBWG7kOlVM0g/RD85A5d7aZt5FynPsun2w8GautiYrmtU2lFqfcfaSCD/rCUvzziGUPZUrVHogpxrqei5ICpSJDdsLwLr6QckCf7wscFIi/c/gLRRUxpp4VR1/BZitgfqcYxckTy5o1+kLjwUwwXroC0Zm0IagaJOwdWhW9q3wJOjAY/PIM9Q6BpHTVbThC9MdB/av5gN5+V3xI/UGmTYzkMOQ6prEEKvfXcMdV7Vv1WcRYrO89u3Naq/1gNFrdMNojeWjK9ziHBL6Olhbov0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,36 +160,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 10:31, David Hildenbrand (Arm) wrote:
-> On 8/1/26 16:00, Andy Lutomirski wrote:
->> Hi all-
->>
->> I saw a fun bug report in ripgrep and a studious but pretty bad
->> AI-generated analysis, and I peeked at the actual code.  I'm rather
->> suspicious of this:
->>
->>     if (can_reclaim_pt) {
->>         if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
->>             pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);  <-- what is
->> addr here?
->>             mm_dec_nr_ptes(mm);
->>         }
->>     }
->>
->> It looks to me (and an LLM -- I can *never* remember what all the
->> tlb_xyz functions do, so I asked an LLM for a summary), like addr is
->> not guaranteed to point at the range being zapped, because the do loop
->> above may increment it right past the end.
+On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
+> We must correctly update VMA anonymous page offset state on all VMA
+> operations that would result in it changing, with special attention given
+> to remapping.
 > 
-> It will actually always point at the end, whereby the end is at
-> the start of the next page table :/
+> We cover most cases by simply updating vma_set_range() to do so (with a new
+> anonymous page offset parameter), but also notably must update the merging
+> and mapping logic to propagate this parameter correctly.
 > 
-> pte_table_reclaim_possible() makes sure that we reclaim only when covering a full
-> page table.
+> The remap logic remains the same - we may update the anonymous page offset
+> if the VMA is unfaulted, but now this applies to MAP_PRIVATE file-backed
+> mappings too, so we update the code to reflect this.
 > 
-> Subtracting "PMD_SIZE" from start would ... or just remembering the original start.
+> Note that we use __linear_anon_page_index() upon remap as the VMA may be
+> shared, in order that we update the field consistently regardless of VMA
+> type.
+> 
+> Similarly, pass through anon page offset to the merge logic, updating the
+> vma_merge_struct struct to propagate it, and also use
+> __linear_anon_page_index() to obtain the anonymous page index so it can be
+> safely used for both shared and MAP_PRIVATE file-backed mappings.
+> 
+> Finally, we update insert_vm_struct() to correctly set the anonymous page
+> offset on insertion of a VMA.
+> 
+> We simply ensure state is correctly propagated here, so no functional
+> changes are intended.
+> 
+> Also while we're here, replace a VM_BUG_ON_VMA() with a
+> VM_WARN_ON_ONCE_VMA().
+> 
+> Also update VMA userland tests to reflect this change.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Stupid me, we have "start" right there that we can just use.
+
+[...]
+
+>  	struct vm_area_struct *vma = *vmap;
+>  	unsigned long vma_start = vma->vm_start;
+> @@ -1919,11 +1929,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+>  	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
+>  
+>  	/*
+> -	 * If anonymous vma has not yet been faulted, update new pgoff
+> -	 * to match new location, to increase its chance of merging.
+> +	 * If a vma has not yet been faulted, update its anonymous pgoff to
+> +	 * match the new location to increase its chance of merging.
+>  	 */
+> -	if (unlikely(vma_is_anonymous(vma) && !vma->anon_vma)) {
+> -		pgoff = addr >> PAGE_SHIFT;
+> +	if (!vma->anon_vma && !vma_test(vma, VMA_SHARED_BIT)) {
+
+Could we also use is_cow_mapping() ?
+
+
+> +		anon_pgoff = addr >> PAGE_SHIFT;
+> +
+> +		if (vma_is_anonymous(vma))
+> +			pgoff = anon_pgoff;
+>  		faulted_in_anon_vma = false;
+>  	}
+>  
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
