@@ -4,93 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBF9C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6396EC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:27:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA1A6B00B2; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
+	id 5AB046B00A0; Mon,  3 Aug 2026 09:27:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C2616B00B7; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
+	id 582C96B00A2; Mon,  3 Aug 2026 09:27:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0956B00B9; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
+	id 4C1216B00A6; Mon,  3 Aug 2026 09:27:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 676666B00B2
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 688F680612
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:38:22 +0000 (UTC)
-X-FDA: 85059306444.17.A9CF603
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2EA41180005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:38:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="iGOhIT/r";
-	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 24C066B00A0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:27:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8E05A0655
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:48:23 +0000 (UTC)
+X-FDA: 85059482886.10.863A598
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 200BB4000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:48:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YXUbK2bW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 35GNwagkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=35GNwagkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785746300;
+	s=arc-20220608; t=1785750502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8qzlmodlEBIbxJqlmoucNkpiYME5cpAY3OvwuNsbT7w=;
-	b=bu5/YRusq+CEDvahmfHuOEfJyU0Nxmk4C9UYyOETbPS/h9gfnruf/g1fVHOuaYWVooJQGJ
-	aJaTffW/pEG4r2OKBUrNDBYgpqSvGYDOxNLlXQYQwj/GVnHoGNgvEdddMbQ5Ah721376HF
-	6aEIZfmllVRCt+fbtWbDDxeX4qddYSA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785746300;
-	b=4o9i/8JK2gPWo5fvJjOCZwua2e9wSPnAkuK1Tm9JzxdzjMbd8u2aI8JSWztiPTQHd8jNTN
-	luL8dYtfDD5XrCb+zIQZ7uhzLyNSTp104viFKlAVF6SJbMLYmiz9sDnIWkGRZEdIfxBvD4
-	iuuyEq5DWxdnGDCyHKMMX4MOqigKTcc=
+	bh=wgBz2SZWInGYkxeV698PRx7vfdGy6WMbWCS7qMcdi/k=;
+	b=quRuXAdSTgkQD+s206zzhGcGZruA/N/mgjtEHSyRCHNOR20kyuWuTtwTVpxiouQXgSCbWK
+	4DiGf+y6HwG483VdD64Nt0Zn8A/UQ9Wq/ySmgV7Fz4bH6Acsia91L2LMVIoVWl2SxpWrpu
+	+7q/A2slFrIyBUYlbEnrHJqwWeFHs7Y=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="iGOhIT/r";
-	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8qzlmodlEBIbxJqlmoucNkpiYME5cpAY3OvwuNsbT7w=; b=iGOhIT/rZCy864LHT8ew/VfJLo
-	OLuWnwA/E94in/is4ajYmq1OpX0LjjLy9+pRvB3su3w/QlwNEtPcbCebh/kcwZeRHnblHF/txAdGP
-	icul/0LVvnbxoMBrGl8S+S3orrIFPE6Iz9tOclMhcMb84nN2W+Bxx359psgjOIckgOny0GXyvcLMY
-	ZwP8dcD2eM13KpVOz1jrqyDVbPdwd3T+DyoN5cy+JcQD4/Q80xhSOcG6Ugl/w7DFEcptDVqsc4Iar
-	0x6jB5f3BtZOcDUxzOz35yU5NHePIe4qcWjtKh27s0qHS29Q6t7Ft3fwMrcH0+/M6tctvr7znAPe7
-	B5ivSTCg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqoBE-0000000BI5c-1vwb;
-	Mon, 03 Aug 2026 08:37:52 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A2BE9301127; Mon, 03 Aug 2026 10:37:50 +0200 (CEST)
-Date: Mon, 3 Aug 2026 10:37:50 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Eugene Mavick <m@mavick.dev>
-Cc: Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/5] tracing: add ref_trace_final_put tracing
-Message-ID: <20260803083750.GA49951@noisy.programming.kicks-ass.net>
-References: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YXUbK2bW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 35GNwagkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=35GNwagkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785750502;
+	b=8VBzZwb1XpEVpQoIGz3nzFkw5Rtsi/wMZhkaOOwWTjw+kF2sMYypzNL5YrEcOMDS5jbO8j
+	x7Sb1qOs8ZCXZZXR2/JJEwcsPvjaKyZHr3lffH/xRHeR0Rge4+rwTMBBnQjifyF1dOaIjC
+	uXUHwpIOnpx7T52OUI7e96bTZfOVem0=
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-495569acf8dso12689975e9.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 02:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785750501; x=1786355301; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wgBz2SZWInGYkxeV698PRx7vfdGy6WMbWCS7qMcdi/k=;
+        b=YXUbK2bWdHc04vGTVKcgqkHWCtQoLjGl8ksIjQwPDG5F5cvMWIRMx9l+r6XBE96Rqx
+         ZGw5BnjtYLjIoCIBCvQ+Mo3X4ID86DrklUiJUHp8EIlG63zwKmBf3KEs+SIjenYhZZ9l
+         F9HQAQrg09ewnKga7+iUy7XlCjRiRFxPi237NFmaU+za3fZykJmhPRKFDuQAEisEGa5y
+         UShPxuDTmag6X5wCH981Q+mEtsrCSymRm2N2ecwDZ1g8w1QzFjcteu9iJ3IDx3ErxKYz
+         XCU5nu1lnqxC7Wz/AOv/1QqI469waArDgxkwnJ7eqUOtJeIVH9U4KHaMI1ekKUk3dxV5
+         dwIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785750501; x=1786355301;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wgBz2SZWInGYkxeV698PRx7vfdGy6WMbWCS7qMcdi/k=;
+        b=j0I+8IPug1/aZojuURwknc1kYN2fjZnOafVaxt5IQPjBlxmCZw37EqDARA7wrNz9RH
+         QZGzILvFIbl1NeK2WhRo+qzugkNzfpA9fgS1StM1bpnOKAy90qM+TcWpcCEA6kocy4yR
+         SKRWWu0+SrkZYWSzLz7yfaGq6wBR41RyIcDPpoGxPJDVtWHLkgfGangObNtkcGAqMYii
+         AHRbqiWOi6ZGqOmNFqOtGwfwy1Pau4UaESuokRjF9QUDbXkRTXdSGbdw1FM3w62q9GQl
+         TkDIIcPoc14Pc3wqxPXP/miYXpfd15R9OK6nmKG08bg4SuvyyjCGcup8Fbf5Iw7tQUCA
+         mPdg==
+X-Forwarded-Encrypted: i=1; AHgh+RpkVmsoTftug1GkGJL7SWP2HWc4YhVcyxXa7RSmj8t7N96zO2cdHJZGhRGZod1sd++36CjSaUCByA==@kvack.org
+X-Gm-Message-State: AOJu0YweLGE58+JlySbKd4wxOO91JLLtn5GMdFltKZNBS6xrhiaHpM59
+	8ZMPyoCB7HIwk/oPzqVa9YVoJJKYyZjGJO0gtMFrbnj117GuXu8lDNAd+QmVp26/8rLHIafiY9g
+	rZ4j6cIGOwG0Dx8788w==
+X-Received: from wmsu12-n2.prod.google.com ([2002:a05:600c:c3cc:20b0:495:6d4c:6fea])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1f89:b0:493:cfe8:5b36 with SMTP id 5b1f17b1804b1-4980c66d7c6mr159543425e9.8.1785750500288;
+ Mon, 03 Aug 2026 02:48:20 -0700 (PDT)
+Date: Mon, 3 Aug 2026 09:48:19 +0000
+In-Reply-To: <20260802215459.2769283-3-surenb@google.com>
+Mime-Version: 1.0
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-3-surenb@google.com>
+Message-ID: <anBj40CVAhcGMnQ4@google.com>
+Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, arve@android.com, cmllamas@google.com, christian@brauner.io, 
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 200BB4000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2EA41180005
-X-Stat-Signature: xreqjmjoa8sps9rygoedgosok1ge6tk6
-X-HE-Tag: 1785746300-810075
-X-HE-Meta: U2FsdGVkX1+eGWMlT1zEU/Avi1WSFuuedGXlPnhdQuiDxMhKEy5d3Yk8RXXVLY9hD5q8M//WNsFvlBhW4SEy4nYXO2887ABmzU8ya0l1xFFOB6cavhDUMz8vuQ7C/Ki79X3v4zt0CsFdNo6Q5uWyAxjy5+w1HlyXC5waeI3ujNXqGKhppeuG+u1WBhv10Et2rJExCo68O+hOapFrDK7JSu36RVfePKE5cH3FEyKB58dgecGpT/KLRrpjDRqnnqlLSU8uThBTAkCIT79qAxI77g2uyE078g01TnDZ66Ew0lbeG3kY+eC0PXfTyubdfrBAXbEE4NGnrl8WW9FP8cqZQuxweSrYgIpOBZ9LGchb4OXVYx8NCbbbGy+moVKJCePYezoaVrj/aPoQoyJuZQopqSB95PA2q7sj4kZIdXIZzSx9ctuT3jCfeERVf77jpBiPRz6S5ai+U+1KtzPTjxDwd52iE8ppJgxJLMKYZUpQY+OsU2JY+LKZPyXgkLPSA4yabaXKYEdk1WL6IXUmxntYXxhWsXY0oF085jAaJL4cuCPpZUkmzdLGlh+7SUzeN/JOGDMQ9SNJz9yTqUj8PSBzTlXVavXAUreqDZ9UtxmeTA/r3hPQiHb3Fc3iNq9oGKVX5zvBCAgqFlI61kkAfgl2es1XGQ7AjUu8PVyQhXqmKZpoe5JDacrTxbcz8iWF8tpToX7B6T7beTpCnI+obcy7fPSkWB5dLVv8kVHSdNCuVrgYIG3Swuydp8ShJLGO4KAVCSPieOp81Rbzj0jyGwG62fuGb/PU5XnybmWyINDePA3gQIoL6e/EtwhMr3Xmea3lsW45tdGnBb84Ql2Qq5J02rSz2TJj2+QISiuzsIZ/MQDHOsCZp8rdq+TdB87wNCxaindP3syGeBjzZ50Fmpuei4z/mUJtkUmsXJtGU2JCiYt7ur5nq/wUKVMni5kZvgOMlMSk8AgfVLfoIOgkuB1
- H0UI/NmY
- WRkVgFICFDigoCDlTuQwDNOaTC7ugYQI5jPOALx/87onWGqFd4jLMnK7Rjm28nSnYo2uD+iss1c5fYUBHW6b864h+Go9hDb6x5R/2OGWzHcHULfvDi2LQ1E30UXLLzXuhQkqbZ6rhyzaz4HEhWC1W9HoJpo8a/ENDQD/kvWs5WxMknjv5k0kijFQUdG5GbhDAheAfTNyzGdn6VaDNothYDAh45l/rEylQondVx66R4JFOf6GzYFgy8MxVnsu85rPtt2z6ukfjfqCVzKVDdP2S9M/tSA==
+X-Stat-Signature: 8nwxe3fsmybij7n6fskknrng8cagf5ax
+X-HE-Tag: 1785750501-421325
+X-HE-Meta: U2FsdGVkX19g4eD6/hcHrppeUzHq8Q0vne0HlpRKZC1WnozFGY5dY9ZAy41lW8+fENQgBOWHOYRvqfBIRpGx6juY8T8slsCSjqsAsRjTPKZwAeii6lWRNfqffe7kljPI/TidFmPQipDDLSAK96wBamu3aYV25rlwy9SlblQJBTjHjS3QUoJ7uOksLh4eAVP32O8RSMWvrAUca8/JAZI/XPJCliN55qEt1/cNE+JOHxu49C86Hr+y+6AditSXz2S9b4ZfibAaNMR6ojTpL5u/buXF0oqQa49Tb8fBE6uI3JIx7t7WWsSlXdNx9lACZ0G3sof9XbP0oHtpwG59tDp51AVKlXFFQU9uAPMvATqdlZjtrrftil+BKRHjTVDOuA4wTj+pVI3NshpS5bQwPQfFaO1bCWIoy8ykgPXXnQPAhq2LK0Fqurymdz1fpU6oT9a/xi7OHOiQbKlipvqZ8nD7mxYX5k1aHCi7md7FMBt+1cvQp+qfAEUay/mXZdwhnXRD8o0UIejm0e2FpVVtQayjamCKsj9Rvpygy/+0jO072JHarMmfLGfxHDLvojnVNKV4yrqWQPKXh7FtGwJg9C9jH3INY4z2PQw2sI7b1DoFj0vwlk6CkQ7Cc1Dwu/BcF1ZpsyG/mrqguZgI3IpnzaWf4XonqlKGrIIG8QUXM8ljAibGwYCZLDxcc/a/EMdZWGmpsMHrd24QIP0Svwiz07iE0YjLF3xF9OXdLQBsdrRqOcY06fqsOhXl7hhpb+ft59dyCQhup0RUU+XHxfpRQdt2YGvjnxACKF1cq51TwmfswP1N6LjWj8ENhns/NH2UyaFnSzQSLPhLv3o3D3+Nl9ONh/kUOBgy4SkxuzqvGjrjUlq89bmxi5lKsEN9pPFDAbawCJ0VQyMqP6WGhO3vYG9ohoi3RzPmVMSHCw5mgD6krl7hwKvzKCbno7OUvnRXC4oORBMzVEhgpeSY44LJNBg
+ 5p69OOj7
+ ywX6P5pqLOzWXIIL7XOs82QnhraVDtjMdIOH4xyV4+iOHJtjAtLW3TOkQBQiQ968E/KzehBQdRM1lAt/l1Oby4tGhmFz0ZCnCvmUQEpqbD9l/j9oY9a7bcrl19EIXSU16+nZPcSiGP+TBYbeD8wG0Y8VQNahhooGgxnauU8fF+DmjHfQ5uppVmIoX92E816x9MXYa9TdnY6KszNyHyQ34J5mVxkSR8NsvBk75bfZ01PvfcJ9eFlLK5uK0kO2kEujr9t+O3NPd9ojY32gciVX588LZTNky17BN6u2jq7aW8MB6VksYrTzWPOcTPzXeSet4tG/eWXrFuFDCmBZGEyXOqyMipG/D5PzgWEHUlhRR2eZf8OKCpDU2VcVnMGRc1ftYiv4wmJb/xuFOA/Kish9V8qE9yYg4u/2kfcwvipXFxCm39Lr5rPjIhIyYlPW0tQeK4U/wRAswXD7NV+rjdLZouoOMmbVWWxGcvMdwJKDrgiUlXQyGCZoFACKAPUxwzuNSO/qHTnLSL4Luvemfb+m1P9x+5k/8JvBTOxyJjoHysbp2ZUE/mjkT/DN/OQuNE7jAzOib669WFIzlfqlZgDDn9+OtLzip+XJAokpXo7VC8EbKg3IN0+I9UrNG0nMAmSZ5vAcs52nJPJq7diQGzj35E6LQk6VMR8U0r6VpCUmpEr/1JIX8b5eP9dSt1ErojrTU2Ycr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,25 +113,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 01, 2026 at 06:59:40PM +0800, Eugene Mavick wrote:
-> When debugging use-after-free(UAF) bugs, knowing when the object reaches
-> 0 references and enters final release can significantly aid the
-> debugging process.
+On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> There is currently no universal way to trace this information.
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
 > 
-> This patch series implements tracing of the final puts in the
-> most widely used refcounting implementations,
-> refcount_t(and thus kref which uses it), and percpu-ref.
+> Long Version:
 > 
-> The tracepoint records three fields:
-> - caller: function that called the refcounting
->   function(refcount_sub_and_test, percpu_ref_put_many)
-> - ip: return address of the trace wrapper macro call
-> - obj: refcount object(struct percpu_ref, refcount_t)
+> == Background ==
 > 
-> Signed-off-by: Eugene Mavick <m@mavick.dev>
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+> 
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+> 
+> == Problem ==
+> 
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+> 
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+> 
+> == Solution ==
+> 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> 
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-I'm not sure this Changelog is convincing me. To me this just looks like
-more weight / bloat without benefit.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
