@@ -4,154 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863A2C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13972C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C166B00D7; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
+	id 2DAA26B00DC; Mon,  3 Aug 2026 09:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913F16B00DB; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
+	id 2AB4C6B00DD; Mon,  3 Aug 2026 09:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82B1A6B00DC; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
+	id 1736E6B00DF; Mon,  3 Aug 2026 09:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE8A6B00D7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52531C06CB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:27:24 +0000 (UTC)
-X-FDA: 85059732408.30.6A08D01
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7F2F0C000B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:27:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrOWJ/T3";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785756442;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E13736B00DC
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91C491A066F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:54:46 +0000 (UTC)
+X-FDA: 85060103772.01.ED2BCB1
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012005.outbound.protection.outlook.com [40.107.209.5])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 519DD4000F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:54:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=a1fNdxZF;
+	spf=pass (imf17.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.209.5 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785765283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSw9uK8dJUH+TEOnxzh6YVpEYxvD00f6y/AeO3+B2bY=;
-	b=Ec9zAJaZgW993Wgud1qDkCubFsdyoaKp3kMQcBBZ0GUH9w5PV98VoLRDd2BBbg6JaEX1+b
-	1hNd7db6Xk2gGg4Y2lR65LXOmzXr1OKr83Iujpy2hUjiaUGiMSLcaRqPashXR6YxGStn7p
-	fVkjh0I1G717hmHZ5ZUtHe5R85VUMK0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrOWJ/T3";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785756442;
-	b=RUYXpyRX5lVov+aCvEt6hzfX84Eh/YD8fTZ8JG1lTUGbYm9QkKaXaPPpa+ijQmSjFTLlEj
-	yKvWdur9YeAPXD5x5IB4XGEE2g6ak11/s1ept25aGxc7PK2t/gmUPXurEzyDI2okp5eijc
-	3T4Rk7rxRjQzcly7ayEobfDn9jkWEt0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 754D044F61;
-	Mon,  3 Aug 2026 11:27:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2CB1F000E9;
-	Mon,  3 Aug 2026 11:27:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785756441;
-	bh=YSw9uK8dJUH+TEOnxzh6YVpEYxvD00f6y/AeO3+B2bY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BrOWJ/T3RZiSPYgsiuttXsyJmDns/XBJdG5Ezs0djh/inyu3iPhd4Q1b3mTHBBMc5
-	 NIXKwWXd4Tin/w6AJcPCoy5wDc7/ncbMzVCTe4HjbCjTM1ZneLr387ymLfCAcv8zaZ
-	 ehA6Jm8+NEtL1lUSbPVd5Vi9Klfj4D2x4uKSdia0JWCsH2TwBsIti7Mt45ifq2Yf8K
-	 FG5lkt6UaziiuuM3kkese1CWMncs+AbUJ4gWEXuNTp4K0Rl2BbxZnyVqd6H6IImH02
-	 hQzgQw4qdzvWIFstsJHmLRQhGrMfbD7u4TofoGgR1ldLJrrrZ4f8FFAwHijJDZyoad
-	 ujEyyYQvqbhwg==
-Message-ID: <0d9f3040-825d-49af-9d07-1e7945dd3e9d@kernel.org>
-Date: Mon, 3 Aug 2026 13:27:09 +0200
-MIME-Version: 1.0
+	bh=J/1gRhPoHEcaO4S1BBbQYvfz6mXmbVkM35cABLK2k+E=;
+	b=1aQdQZYj9jbquPrGLqQNwn7dg1GRVsHueJ/of+MBbQy1jUwL8r7HDRSQnG7L4c+3asFykP
+	3gYojtjVAoIf+zDu/v72IIcgqdIygcTt/sFbV0v0DaNAydIF67Dy+/EzegTBUTg7F/ypT8
+	r14A+Ocg7keXYZM5L+M7kddJ4d5arNc=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785765283;
+	b=8jfzaeUzHsin6D3xEjE3GNK+hmC4X2/tvDlitdxRVKCW8OPrhHSuIG1HoyjsS4NVhibFs2
+	EJnB3HjggSMkSen/CIZDLyRlXH6nyv5A8MpfzBYM2lo6u7uaMbHtxslnIDH3hE8Wl57NkG
+	MsWEFa/X+PygVmsVsL4DyiRPQ/EzrsY=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=a1fNdxZF;
+	spf=pass (imf17.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.209.5 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m24s7lvF9byWb4upvtYMQ1OFW2q8PCpMQnleJoW0jB7izOLr4R8A7ZApcOBShhtVHX7GdxtPbAiQMTEGrVgwDlPOzx3JGhUNzI7EPeNHrqko0kGHFFA/gWunwG2uILJFDN2VIid1/biDurVFgiaQhmzpzjPCXYfoc1tdqREcm2TcMFHLVRCi04qR8wdKrdShXn7hQlwjzGSTY7WEstEs5BL6RQvyWjklg3cmV6FunTH8JeScFISWi3zKgJJ0gfaR8cEbru72gor9Ip/x1YG0VY/ulm2hLgr1vrvw0S/FcZ/Vgz582OY+QDD/Yz018S4jSFJ9k+VaGBOPZMJ9oa+dtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J/1gRhPoHEcaO4S1BBbQYvfz6mXmbVkM35cABLK2k+E=;
+ b=WFtAqnsQHZkQY279BCXF8CDs2wrxSF6FmHB/fUlxFbGv34+Ry+L9evCNI0BJamZ1LLZhY6JsgqyR7ayIYsngTX/RrMUq3s+hFDBEtc9DkEU1ca/onxUbXTsMC7NDdrb0GS0xhWGk9MzrGbApfK3uNhuziCoeq0+EWtCeCzHOk9gCCSeYgqXCtGTCh7q2Blf1F38VXosyAac1ifVe6fWvPABcANLYmXbvrMhOCt7+eemqah7xLjH5Foce7xWFfysxN23TqWgg9AF12meRMrVNp3TPDoBiOjD6VhuEDzuyAb1R3JO0K2R3ATt6HLrgDdHg3I34u3UbrTdpbafymgKfGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J/1gRhPoHEcaO4S1BBbQYvfz6mXmbVkM35cABLK2k+E=;
+ b=a1fNdxZFqVmnyM9c3AYDlLxlhwowsSmPh89dSxxtmaDyIm/rVoLTP5zFBMWhJLrhqtW/6EPkQY8ZxN18RmTSlZ9zjKwO8cYR6+D0nG3B96jxNQtkgg3NNyfb6UpJyW722z3UQzaNFlaoFzLKbK/tDN631+MNBUStweupce14+9Y=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DS0PR12MB8576.namprd12.prod.outlook.com (2603:10b6:8:165::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 13:54:35 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
+ 13:54:35 +0000
+Message-ID: <80fdf249-6f24-4cc7-bc9a-91bf23293497@amd.com>
+Date: Mon, 3 Aug 2026 15:54:27 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/15] mm: introduce and use linear_folio_page_index()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+Subject: Re: [PATCH 3/3] drm/ttm: allocate pool pages as compound (__GFP_COMP)
+To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-8-e8ecfefea812@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Dave Airlie
+ <airlied@redhat.com>, Matthew Wilcox <willy@infradead.org>
+References: <20260722044220.1110278-1-matthew.brost@intel.com>
+ <20260722044220.1110278-3-matthew.brost@intel.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-8-e8ecfefea812@kernel.org>
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260722044220.1110278-3-matthew.brost@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0082.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cd::12) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB8576:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b85e231-8005-47de-e6af-08def166c08b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|22082099003|18002099003|56012099006|10067099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	X9vXXrXKA8YuzMh04+PAROAaxrm71vsWB4vstcO404CkVcsbyoxKSvJ/ZluWm+v7YL9xQEbGSK6OA81fpaoVTcsaF9Scwdk/OlYE2eNIRq2n+q1RrCth7jpv2wP1ao0q67yDgJX28Z6ZNfQdSyVHJVa+/gn8P+1RnrfdBntXWfApQ+Y9/uMc8WvbJBmGWUYNs78932E2VNqColRO9nYeD5C/dqS00EQzSYchoIVVc6HwgFil1MMNq8uBvIvlv4AhrPBANIiPOc/C7/iFBpp28yOgTbCR0Oyx6sVGE0SkUXkyrVcOLjXo7MLtCB8sxe4v03CFJioWfyw3S/GMmI++yIJBI4RFaaYD0TDR7heJTNuxuDB6B8huWlCZUDiULcDom/TIZcSeR9K8C1Ah9TOLf4bSpqhVnD+U8RvJVXWc5DhFbAdfEmSkx78x45bf0fhop/o3I/AjKK5mDv19TUTeUsVZhyeDjuVwKyXx9xa3IEBnIOyzYWBUlrTEZW3xJyNOY4b51gUdHFsmZAxvoC7Fk0jL5Ty22WmMFSo8AvZXG+055e9cP4I4+pc4b0DEu62+nqW/YYowOavqi2TGa8fVHU3hZrMUF/QtBFAR0TUIUO6+SThdrlJDpDG5V9pr7OVz/H0PZ9bdaU5DPClMF+EOnRlmf0uOkylYiSaVF7JH1ow=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099006)(10067099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UURSZHdFRWgzQzRFYnV4YlpEZHg4c204bjRvelBTWGF4ZlZweUZnZGhLSytk?=
+ =?utf-8?B?K3dRLzZ4alFIOXVqVWVId29mVlpQS0txK1hSZTd2Wk16a1Zyb2g4NU14YUJY?=
+ =?utf-8?B?RjU1K0NCR3lyMU9uMS95Rlp0cGJvR0RIbzlFdmNXNU5oWk84Q0o5MjRDckxt?=
+ =?utf-8?B?QzlkTUQ3OThtRThHTzVCSEI0TmZNZWt0WlNlOXFIT2xjSFJrcEtHZ0U2K0pI?=
+ =?utf-8?B?czRaWWllQ0FmQnN6blJ1NjJaV05uU3llbzBIaUIzQVFtNGZFQ2Q0VDFtdWNH?=
+ =?utf-8?B?NlQ0NFlLUnkwUTZQZ29QN09JU29HT0l4UGp6clJiUzRwUWJaQWdFMnBmMXVD?=
+ =?utf-8?B?bm5DbmFNUWo5bTRMUEZVaWYrODRRNGJhY3FoaG40aW1NdEdCQm9kMm9MRlJG?=
+ =?utf-8?B?NFNOdldBRkg4ZmxEVVVTZnpGdGw0YnFhQzZkUUxWQW4wU2dqTHp2aDljUUFn?=
+ =?utf-8?B?bHpjbndza2lVcGZnMldGUkJBbTM0RG9lZm5mRE16OW8vZmF4MVExYjZ0TUxE?=
+ =?utf-8?B?WkV1MVBJM2VpdGRGdEcxaXIzbUJWYzRnVVZDTmQzeHk5Z3VoeEttSVc3SmM4?=
+ =?utf-8?B?RVBqajJpM0wyMXZ6bE8rbjJJdGxKNWdXT1hydnphaEd3K2hEbnliMndZWjJk?=
+ =?utf-8?B?b1JEWnl6L3pGWGpneU9zK0IrWGthSDlrZUplQUlBTWFycWkyRWxyM0M0bnA3?=
+ =?utf-8?B?ZWcxY1ZHcGJBNUQrSlV0YU9CQko2eVpub2R3NzZHN25IQjFrUkRCY21DVHo2?=
+ =?utf-8?B?SjFFSEV0bzlycmY4MWFucm1xMFRHdmRhSCtTRnZibi92ZllCM29tdXpPR1dO?=
+ =?utf-8?B?bVBWZEppb09nTlc0cWs1RWMxcldYVXI1ZHZrcnZoQ0RuK0RtT00wS3JranNE?=
+ =?utf-8?B?aytzakRPSzRvUnNtcWVwZXdkZUlydGM2TTZGSzFHQWxuTUpzY2JpQ1MyQWV3?=
+ =?utf-8?B?OCtaS2s4UWVKUE90N1NpZWFEVHhxbXVuOGZyblRxU1RGZnVNdTRkd2pxMUZi?=
+ =?utf-8?B?REtVeWhHWXpDeCtlc21aSUdtYmNHckRaOHBUZTh3ZVNwdjRFbHpsNHZXNmkw?=
+ =?utf-8?B?N1Jramd2blFmcWJQdFc4TVNpTklKQ0QxcVdtQ0RZTGNxQTBpZU1USHNORHpV?=
+ =?utf-8?B?SCtKdWpFeU9wVlpGa2ZzQllkTmZFWTJZQnBsbmhOTW1JYVhRNFQyb2VsZ1RG?=
+ =?utf-8?B?K2dRajlQYkZhNTNNWVBJUzIwTTlvcTU2WitWR3duMUFXTEJCR3R3RTVuN0Ju?=
+ =?utf-8?B?alhpZFRUSnp6Z2QzZGxJWCtidDN2ZURGWi9kZEdkSElncUNOdFA5QzIzTUVB?=
+ =?utf-8?B?MVlQQUo1N21ZODFvaFVaVWplUXdMeG12eUs2ZFZaZDBCaHFQem9oNmZpQzJM?=
+ =?utf-8?B?ZllFMVJrTnRMMWJsZ1ZLZmppaGVLK1VmZXByampFd1c2TE9oZk5MOXhrTG5j?=
+ =?utf-8?B?c3ZZTzNWS0RlZXYxd0pQOXVmcmp3bHhIaXM4aWEyRmgzNjc5VzVKTldCZEcz?=
+ =?utf-8?B?NjRDY0U3NUErclZXZTArTW44Yk9PSUk5MlpZTTFVMGxzME5YWnlhQk5LQlNW?=
+ =?utf-8?B?dVlHdlk0NE9MeVk5VCtOZUI5MDdpVFRlSzN1NFhyWUJwTXNidFUrdUF2cDBq?=
+ =?utf-8?B?SGpZZ1p5ZHlmVjQ2L3FUOVBhNG1oRmZvYjN5YzZzd3d2U2NCU2w4S1o3ZFNC?=
+ =?utf-8?B?VVZHd0d2NHhNUElhSjAzNC92QTMwVFd0c3RiNGlvRkJaQUgrWHR3amFUUDh2?=
+ =?utf-8?B?M2dhVWVaekcxM3JhZmxSTktBNzlPdkVBc2E5ZVBQZUd6dGxEbXlTaXl2OEFI?=
+ =?utf-8?B?MnlMaUtIZU9Ra0J5VjJmUnZxMnUwenVrT0JzTDhZNTNuL2tKZUVuWjRZNFhn?=
+ =?utf-8?B?T2dLZUY0RU00QVAybnQ0dlJueERVblhpT2hGVXdsTUhGQ252enJTQ1Vndk84?=
+ =?utf-8?B?SlM3bmtjVjFqYjlmMlA0K0hLbWJqZklFdCtYQWpZaUNTR2FZeVB6NGs3SnE0?=
+ =?utf-8?B?UmV0YVpCODFyeWRsSExYUGVjUkkxVVBMYzBLS3dYOTVRbVhMbkQ2UTkvUkZZ?=
+ =?utf-8?B?cXBLckVjNVF1TFhHUzlOUU5NQ3NhZkd5V2ZEeHVsbWpPOVlHSWIyelNjdGll?=
+ =?utf-8?B?ZlhoTnRDeWNvV3kwcEpTRzVVdzk0RFdhYlN3TTVqN3Q0aTNvbDRNTTh2eXlq?=
+ =?utf-8?B?c1ppME1JVXdiL1dLcnh1VjNhWkVkbEx6aStTTjV5K0FGTWR5Ris0ZS9VVHV6?=
+ =?utf-8?B?SVFUR1F2KzRkVVU5STM2SHhzU3ljc1hRbG1neHBVSUVJUWJXS2docTFrWlBz?=
+ =?utf-8?Q?sYKam/003KsdJoQtTY?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b85e231-8005-47de-e6af-08def166c08b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 13:54:35.5697
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tggL/DKIAg+mCsLt1BDFx70PJwrruSptic6x7vUAaNHbR8TdDSlWibzIVy6mSWqz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8576
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 519DD4000F
+X-Stat-Signature: baa5idh93ttjqakfw11zwyohmndohwo1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F2F0C000B
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 545a39dchiyfx5h3wmsomyeweququiwa
-X-HE-Tag: 1785756442-909077
-X-HE-Meta: U2FsdGVkX1+afHrGQBlq02rS8WMMZVaUufc6bwwWL8Yov4/R0DY4mGCqMgR92VrRzKFCfTZgYMUe84wDOpotSa62BI6E9cuNQ3gOiRMsVhD8mNvDYZVDKc9SKrNKGRpOXagckeeNGwVAiiQc6a7XBcrCxSh5qpacAfJbZmwwtmlvo9g77ze6MQWRhk6vwgfu0c3+OYaedctkhQnFhdU55H88a+k4/tqQODtIdyEwSis7u2mnpHemw7KXFGNZb4NCAMLZcZLPtYTLZkm4IpTRc2IH3PKQRlhgYxmkuzxqrs4wkSvETzZyqwZWyDpXTzn8P3R7AMom91TVo/z9SWLeecq2R+tQwf7YLw+1v72lxf+60LN3Irh78ooxTFoiuBeAmrWMvw0+zwlayPEASGLMQcSufNIL52mOYuPBeRqE7jTWTSNmbKwrT5818+k5H14pc6qkdCJeadXyv90liYxBooAkTG3VvCm2aekDPH2nJg5+t2TurBsoZSo3BinE1lTFjjMq5JEeEtiMfW2ruF1w/r5HlpCDFhQ3kZoH0YHdYK8Sl7Mkgny8KIYkpjBusTMtfsZdBGVOb9eLbebihVqryqMJkGbYsZeCH0d+Vv8RmQ6i7jrpjf49by8gE0AJKK1lQp1uP8Bf3WdmLnI2Gu5t30kCTyNvEglATxUaEL/3X66t9CS+FK95wtdJoPPIv6yIvGudmnqeMhGgcA3i4Y6ZL3vWuV5esaRrXO4nmb2p09y7qcJx3e6hg4+CHKyU03bcZ7oMce+GkyASTimno+7hCBTu1ktzTLdeFbQMmDo+afTbF0YaOd2ImTaRWS8mE85q3LBoXmpFK2szGl2ud9u2J018kQ53KxnVxx6nzhnmPlFb7jyhJhFcCSa5QELBTfmP22fnN6jACwug4a3AGa0LhDQ4dCpj5j5yD6D1DTht/wbeL3TgMYxF3OOpMrJo73tCvjnfxm32VLtWG6L6tuN
- 4Ctz8tg8
- PSJYECA+8KVSXrqpovp+udDieEGkkJ/rtqZ8e7o5+gi3yPLsYYi9mVYuamTdhuyhv5aJnZK+ZYwkFKOvfNMFSGm4huyVPVwNQxm8RXLoCtEC1j8GrFuvNuBea8So7Y1gz0Io1P/4Jitob9ChtCLQLRRtnbTgi1AdLmZOpsse+iQsW/+BVNdx0Xftxw26cIszGqhQus0+vKsbE5MkyEg2ls6x508SrGcmN7fxV1IVUZjQnLd41n/QmhNZuZmp56qiPN8Gq2rO5axiIRvjTP7Evbov9jUsZH31x1bh5PY1jiFFfvchASxU/9Rm2wnfkT3mxfUJIbCptHhM+HTS+DnSZjSh2EaG3y06zoWm3gQCp8AbbHCyb2i95A4zMxayw83USAf9t277olVEhsCSLnRRudO1ZQw==
+X-HE-Tag: 1785765283-302054
+X-HE-Meta: U2FsdGVkX1++0m7NKOZr1SOXezdNM1U/QvcsE8qUy+u0Jef1LbDfiVZY2TwJELTEw26bh/GH4XSA/UVGBImBOZ3C36wxjQ5C0Catf/94oddzsgX2b+he+FXGvBzQ9VEtYlBeztcbvBMGz5+PO4/6OW9K7gnPi3RQ22t1JlAIgpqklMwR488mnWyWcf5mYDjuBU89XjUFuuh7lKy/6MHaxwytpraTFFPkGKoFBLVN4wXY5OTRaPngck1l65iTG1L/ZoLyp2B5o6UzYmhoxcSSlrH3M1yZctQBT7PaIrvf7qBweCBH2qLQvIoJa7scmJ8Ek26yTjKXZiNFsQThSg6QwP+xgIWXxdMCPZLO83hsDQ6vwZPlkS2JdxKcZRxjA6v+BaEW5DoCDMmW5s/xxGndKTaHk9YnV7fb8sG1zvpOtv5XunXcVN9ximuHsl+p9I59KHtln2wVkOq2/viyg4mnQclKNQ8IFBVSGe70fhTsVf/ftsUvla1pjZqMASFG+l+D5X2waoCpD3MlkZ2Zvm0eZL3I2o5mPs9HZVlrzORcZnBNaPfLhEWN0N0lYv9LmdIYcyWo8xTFqox0n8b8eaKqBNJDLC5pjRukZfcGypRU66c494j7qPSXSbHvuDncliqNz8LzbWF+pghpGs9Ideab8Ns060CBXXQpP9ABGIpFHTqM2OVK3arTPK7l3VMeFVQIF1cP5djXoJrWkcle3KxHlc8TjAVhaj0a6Aak28nPGLnA5yOtpkE4hXtGALAlGQ4x7tM7ORNX0KfhST5yTUDZe0hKHrpGQZ3qBcWfcJpwDxAg2Tw4twdOT/fjUFQD/f9d6y8w0jEr8tq6ZdFZhZmEAvZoSCbTFR0QtGKIykD18kd1yxPik5yn/GAK9C/Xglk+MMghuAct0Lrbz2kU1lRwUq+xlWh/vGL+oI2sQXaCA34nveM/Qot8YI8S4CClJCQhW279XNbc0RuhlBjdYb5
+ ftL8yVq4
+ VY9uoSYSzFEMsEfNbYiELZwypPuggGMyfZxp3rEqm2IvIvUlu+/MA0xE4VoDBXfqZzVzqeiMWfWRq4SFQCbYLUVvQQOGRvCCkjvDvSV2CHUO+gnrBNTkZLbkhXOb0nu14ZeTCYYLLtxoC1iibtw8/fs+2UiW9VOzvPikVnPwQcKRdi/gIHwQLYRYVHjoeMehygDo1t8f6Sg+qgPuIWXV1VFBVDjCZn61jsffWDH/wWAmQDNPAlIZG2i/9cK9PmtIxU3wb2kgWJiHWOh6SMJtrlayTekKEJDbML0UNQy+ZrpRTzVU5EuD2xw0/IwVIG16CF73Nc5R8JR/X17M6rO/d8NUXiQ5HLOrY3eXpiFoaDj5hz0aVZ8WdLxJ+XMm6NQMfwhN+djw0vUGrIMMOw79Ye1GkQ2WM+hBLZUjHx4V0hgLrRW5k0LIucIkjl+kmR19tEfT/eUcI+QCER2YI5a68WbRj7QSRG5TupoJ1tQG0O3pnHau7Gln6vS0oYwEXU06pLj2pyGgggbprtBOdXdzcUr3hnWFbdu9zyEouzyWbWCAeZNyTICg/cdZ14ZB2GXmTv0IX3Xs47DiB0dpwtr54cIwknva5fwrvhqIHQ7luJ4vXvswhmT0C4OBUjdBUXRp10cyvW+Awo4+B1lKeN+795R1tPSRetksOl+LTSxJGmi0HSGbYbxi/BapdsnKCehnq8Xdijztm7C7/wSBtjVCEQVRgFMb1y6z/CoTMaaiUgOFs2U+r4LUuAdUQCNYcTPXZnWdpbtbCPQWJtpEVDQQdk623uYbKghmf0fLuowYQAY6k5nxLafoqvLi7uyMk0B56YXDfa0H57+OByZsxPrOSW68E/DJZpUBeMTEk4ssSGvx0qy+uVWbExxZvsV8l/wr/0/JpuYrXbll2YDf6ZSgwe6KtWj/toecnzhFlOdm0z5pSWwHwTTDKcH1n7e0ru3ep+VTRK64o9ntuCF6//Z6/OkzEBcRa
+ eSmI0Jub
+ udo8OBFZhwv+HmSgb1ra/lXV9jrsHY0bWVdT4j1drKQ+X08sU8eA+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,126 +184,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> This function is, for now, a placeholder; it will be used in future to
-> determine whether to use the anonymous page index or not, based on whether
-> the folio is anonymous or not.
+On 7/22/26 06:42, Matthew Brost wrote:
+> Historically ttm_pool_alloc_page() deliberately avoided __GFP_COMP for
+> higher-order allocations and instead stashed the allocation order in
+> page->private. The stated reason was that mapping a TTM page into a
+> userspace process and having that process call put_page() on it would be
+> illegal on a compound page, because the stray reference would fold into
+> the compound head and could free the whole block behind TTM's back.
 > 
-> Currently it simply wraps linear_page_index(), so this does not change
-> behaviour.
+> That hazard no longer applies to the non-DMA path. TTM faults its pages
+> into userspace via VM_PFNMAP (see ttm_bo_vm_fault_reserved() /
+> vmf_insert_pfn_prot()), so the core mm never takes a struct page
+> reference on them and GUP rejects the range; a stray userspace put_page()
+> cannot reach these pages at all.
+
+Yeah unfortunately I clearly have to reject that.
+
+This is exactly what we have thought before but that doesn't hold true. Especially KVM completely broke our neck here.
+
+But let's continue the discussion on the other thread.
+
+Regards,
+Christian.
+
+
 > 
-> We update callers that will, once the change is introduced to track
-> anonymous folios by anonymous page offset if MAP_PRIVATE file-backed, need
-> to determine which index to use based on folio type.
+> Convert the !ttm_pool_uses_dma_alloc() path to allocate compound pages
+> with __GFP_COMP and recover the order via folio_order() instead of
+> page->private:
 > 
-> No functional change intended.
+>   - ttm_pool_alloc_page(): add __GFP_COMP, drop the page->private write.
+>   - ttm_pool_page_order() / ttm_pool_unmap_and_free(): read the order
+>     from folio_order() for the non-DMA case.
+>   - ttm_pool_split_for_swap(): for compound folios, split via the new
+>     folio_split_driver_managed() helper rather than split_page(), which
+>     rejects compound pages. Each resulting order-0 folio is then freed
+>     individually as it is backed up.
+>   - Drop the now-dead page->private = 0 clears on the purge and
+>     full-backup free paths.
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> The DMA path is intentionally left unchanged: dma_alloc_attrs() does not
+> produce compound pages, so it keeps split_page() and the page->private
+> order stash.
+> 
+> folio_split_driver_managed() lives in the THP split machinery
+> (mm/huge_memory.c), which only builds when CONFIG_TRANSPARENT_HUGEPAGE
+> is enabled. Drivers that drive the TTM shrinker and therefore reach the
+> split path must select TRANSPARENT_HUGEPAGE.
+> 
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Huang Rui <ray.huang@amd.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Assisted-by: GitHub-Copilot:claude-opus-4.8
 > ---
->  include/linux/pagemap.h | 18 ++++++++++++++++++
->  mm/huge_memory.c        |  3 ++-
->  mm/migrate.c            |  6 ++++--
->  mm/userfaultfd.c        |  6 ++++--
->  4 files changed, 28 insertions(+), 5 deletions(-)
+>  drivers/gpu/drm/ttm/tests/ttm_pool_test.c | 23 +++++++++---
+>  drivers/gpu/drm/ttm/ttm_backup.c          |  8 ++--
+>  drivers/gpu/drm/ttm/ttm_pool.c            | 46 +++++++++++++++--------
+>  3 files changed, 53 insertions(+), 24 deletions(-)
 > 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 259177544b03..6eb8d811ba4c 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -1143,6 +1143,24 @@ static inline pgoff_t linear_anon_page_index(const struct vm_area_struct *vma,
->  	return pgoff;
+> diff --git a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
+> index be75c8abf388..771ed257778c 100644
+> --- a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
+> +++ b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
+> @@ -169,7 +169,14 @@ static void ttm_pool_alloc_basic(struct kunit *test)
+>  			KUNIT_ASSERT_NOT_NULL(test, (void *)fst_page->private);
+>  			KUNIT_ASSERT_NOT_NULL(test, (void *)last_page->private);
+>  		} else {
+> -			KUNIT_ASSERT_EQ(test, fst_page->private, params->order);
+> +			/*
+> +			 * The non-DMA path allocates compound pages, so the
+> +			 * order is recovered from the folio rather than from
+> +			 * page->private.
+> +			 */
+> +			KUNIT_ASSERT_EQ(test,
+> +					folio_order(page_folio(fst_page)),
+> +					params->order);
+>  		}
+>  	} else {
+>  		if (ttm_pool_uses_dma_alloc(pool)) {
+> @@ -177,13 +184,19 @@ static void ttm_pool_alloc_basic(struct kunit *test)
+>  			KUNIT_ASSERT_NULL(test, (void *)last_page->private);
+>  		} else {
+>  			/*
+> -			 * We expect to alloc one big block, followed by
+> -			 * order 0 blocks
+> +			 * We expect to alloc one or more max-order compound
+> +			 * blocks. page_folio() on any subpage resolves to the
+> +			 * compound head, so both the first and last pages
+> +			 * report the max block order.
+>  			 */
+> -			KUNIT_ASSERT_EQ(test, fst_page->private,
+> +			KUNIT_ASSERT_EQ(test,
+> +					folio_order(page_folio(fst_page)),
+> +					min_t(unsigned int, MAX_PAGE_ORDER,
+> +					      params->order));
+> +			KUNIT_ASSERT_EQ(test,
+> +					folio_order(page_folio(last_page)),
+>  					min_t(unsigned int, MAX_PAGE_ORDER,
+>  					      params->order));
+> -			KUNIT_ASSERT_EQ(test, last_page->private, 0);
+>  		}
+>  	}
+>  
+> diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
+> index 3c067aadc52d..9194747a1dff 100644
+> --- a/drivers/gpu/drm/ttm/ttm_backup.c
+> +++ b/drivers/gpu/drm/ttm/ttm_backup.c
+> @@ -72,9 +72,11 @@ int ttm_backup_copy_page(struct file *backup, struct page *dst,
+>   * ttm_backup_backup_folio() - Backup a folio
+>   * @backup: The struct backup pointer to use.
+>   * @folio: The folio to back up.
+> - * @order: The allocation order of @folio.  Since TTM allocates higher-order
+> - *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
+> - *         return 1; the caller must pass the true order explicitly.
+> + * @order: The allocation order of @folio, passed explicitly. For the DMA
+> + *         path TTM allocates higher-order pages without __GFP_COMP, so
+> + *         folio_order(@folio) would return 0 rather than the true order;
+> + *         the caller therefore passes the order explicitly. (The non-DMA
+> + *         path allocates compound pages, for which the two agree.)
+>   * @writeback: Whether to perform immediate writeback of the folio's pages.
+>   * This may have performance implications.
+>   * @idx: A unique integer for the first page of the folio and each struct backup.
+> diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+> index 1bf37023fed6..364cc7ec7469 100644
+> --- a/drivers/gpu/drm/ttm/ttm_pool.c
+> +++ b/drivers/gpu/drm/ttm/ttm_pool.c
+> @@ -168,9 +168,11 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
+>  	struct page *p;
+>  	void *vaddr;
+>  
+> -	/* Don't set the __GFP_COMP flag for higher order allocations.
+> -	 * Mapping pages directly into an userspace process and calling
+> -	 * put_page() on a TTM allocated page is illegal.
+> +	/*
+> +	 * For higher-order allocations be a good citizen: don't dip into
+> +	 * memory reserves, don't retry hard, don't warn on failure and stay
+> +	 * on the local node. The non-DMA path additionally sets __GFP_COMP
+> +	 * below; the DMA path allocates via dma_alloc_attrs().
+>  	 */
+>  	if (order)
+>  		gfp_flags |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN |
+> @@ -189,11 +191,9 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
+>  	}
+>  
+>  	if (!ttm_pool_uses_dma_alloc(pool)) {
+> -		p = alloc_pages_node(pool->nid, gfp_flags, order);
+> -		if (p) {
+> -			p->private = order;
+> +		p = alloc_pages_node(pool->nid, gfp_flags | __GFP_COMP, order);
+> +		if (p)
+>  			mod_lruvec_page_state(p, NR_GPU_ACTIVE, 1 << order);
+> -		}
+>  		return p;
+>  	}
+>  
+> @@ -482,7 +482,7 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
+>  		return dma->vaddr & ~PAGE_MASK;
+>  	}
+>  
+> -	return p->private;
+> +	return folio_order(page_folio(p));
 >  }
 >  
-> +/**
-> + * linear_folio_page_index() - Determine the absolute page offset of
-> + * @address within @vma from @folio.
-> + * @folio: The folio whose linear page index is sought.
-> + * @vma: The VMA in which @address resides.
-> + * @address: The address whose absolute page offset is required.
-> + *
-> + * For compatibility, currently identical to linear_page_index().
-> + *
-> + * Returns: The absolute page offset of @address within @vma.
-> + */
-> +static inline pgoff_t linear_folio_page_index(const struct folio *folio,
-> +					      const struct vm_area_struct *vma,
-> +					      const unsigned long address)
-> +{
-> +	return linear_page_index(vma, address);
-> +}
+>  /*
+> @@ -493,15 +493,31 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
+>  static void ttm_pool_split_for_swap(struct ttm_pool *pool, struct page *p)
+>  {
+>  	unsigned int order = ttm_pool_page_order(pool, p);
+> -	pgoff_t nr;
+>  
+>  	if (!order)
+>  		return;
+>  
+> -	split_page(p, order);
+> -	nr = 1UL << order;
+> -	while (nr--)
+> -		(p++)->private = 0;
+> +	if (ttm_pool_uses_dma_alloc(pool)) {
+> +		pgoff_t nr;
+> +
+> +		/*
+> +		 * DMA-alloc pages are not compound; split the plain
+> +		 * higher-order allocation and clear the per-page private
+> +		 * (which held the order for the non-compound case).
+> +		 */
+> +		split_page(p, order);
+> +		nr = 1UL << order;
+> +		while (nr--)
+> +			(p++)->private = 0;
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * The non-DMA path allocates compound folios (__GFP_COMP). Split the
+> +	 * driver-owned, off-LRU, unmapped folio into order-0 folios so each
+> +	 * page can be freed as soon as it has been backed up.
+> +	 */
+> +	folio_split_driver_managed(page_folio(p), 0);
+>  }
+>  
+>  /**
+> @@ -548,7 +564,7 @@ static pgoff_t ttm_pool_unmap_and_free(struct ttm_pool *pool, struct page *page,
+>  
+>  		pt = ttm_pool_select_type(pool, caching, order);
+>  	} else {
+> -		order = page->private;
+> +		order = folio_order(page_folio(page));
+>  		nr = (1UL << order);
+>  	}
+>  
+> @@ -1124,7 +1140,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
+>  					       num_pages);
+>  			if (flags->purge) {
+>  				shrunken += num_pages;
+> -				page->private = 0;
+>  				__free_pages_gpu_account(page, order, false);
+>  				memset(tt->pages + i, 0,
+>  				       num_pages * sizeof(*tt->pages));
+> @@ -1214,7 +1229,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
+>  		}
+>  
+>  		/* Fully backed up: free at native order. */
+> -		page->private = 0;
+>  		__free_pages_gpu_account(page, order, false);
+>  	}
+>  
 
-
-I found this to be rather confusing, given that we now have a "folio" helper that
-receives a folio and a "page" helper that doesn't receive a page ...
-
-I guess the problem is the "page" in "linear_page_index", as it
-reminds of legacy page->index.
-
-
-I wonder if it would be better to have a linear_folio_index() and
-force that address points at the start of the folio.
-
-Looking below, this is exactly what we want for all except one case:
-
-
->  		/* pgoff is invalid for ksm pages, but they are never large */
-> -		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
-> -			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
-> +		if (folio_test_large(folio) && !folio_test_hugetlb(folio)) {
-> +			idx += linear_folio_page_index(folio, vma, pvmw.address);
-> +			idx -= pvmw.pgoff;
-> +		}
->  		new = folio_page(folio, idx);
-
-I think we could avoid this index work entirely by using the pfn, which is much
-clearer to me, and similar to how we handle it during other rmap operations.
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 222c8c15f782f..686351d353203 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -362,17 +362,12 @@ static bool remove_migration_pte(struct folio *folio,
-                struct page *new;
-                unsigned long idx = 0;
-
--               /* pgoff is invalid for ksm pages, but they are never large */
--               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
--                       idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
--               new = folio_page(folio, idx);
--
- #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-                /* PMD-mapped THP migration entry */
-                if (!pvmw.pte) {
-                        VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-                                        !folio_test_pmd_mappable(folio), folio);
--                       remove_migration_pmd(&pvmw, new);
-+                       remove_migration_pmd(&pvmw, folio_page(folio, idx));
-                        continue;
-                }
- #endif
-@@ -385,10 +380,14 @@ static bool remove_migration_pte(struct folio *folio,
-                    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
-                        continue;
-
-+               entry = softleaf_from_pte(old_pte);
-+               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
-+                       idx = softleaf_to_pfn(entry) - folio_pfn(rmap_walk_arg->folio);
-+               new = folio_page(folio, idx);
-+
-                folio_get(folio);
-                pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-
--               entry = softleaf_from_pte(old_pte);
-                if (!softleaf_is_migration_young(entry))
-                        pte = pte_mkold(pte);
-                if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entr
-
-
-remove_migration_pmd() will work for now. Later it should just receive the folio
-and do the same thing through softleaf_from_pmd() -> softleaf_to_pfn().
-
--- 
-Cheers,
-
-David
 
