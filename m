@@ -4,101 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA80CC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:52:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F357C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:53:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D6E46B00BB; Mon,  3 Aug 2026 09:52:57 -0400 (EDT)
+	id 039716B00BF; Mon,  3 Aug 2026 09:53:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987006B00BF; Mon,  3 Aug 2026 09:52:57 -0400 (EDT)
+	id 004486B00C0; Mon,  3 Aug 2026 09:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800EF6B00C0; Mon,  3 Aug 2026 09:52:57 -0400 (EDT)
+	id DF47C6B00D0; Mon,  3 Aug 2026 09:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55E886B00BB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:52:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F00D1A0690
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:15:32 +0000 (UTC)
-X-FDA: 85059551304.25.5739E0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DDEC51C0007
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:15:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2TVK2uX;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785752130;
+	by kanga.kvack.org (Postfix) with ESMTP id BC6F96B00BF
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:52:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 516E21A068D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:14:33 +0000 (UTC)
+X-FDA: 85059548826.14.FE1FDAC
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6520140014
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:14:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="B4phoP/O";
+	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mclapinski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785752071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v71BYkAHIRI8Q8frz24K9WW9baJGdIZiJra6zVG9U4Q=;
-	b=123nhwR5QJ9+DResMTibdYwD9gRLRIVgms2yvbATob07jctJnCfL0f2sHomoE7SiV6d/PZ
-	ISXnLtwmvea948ONefH6aFGGQxJ+ko6JDLniS9Oax7eRRDVM833pVO7pGxSaHSw2/sgWRd
-	gG09bEa2Pqu4LLsIgL6RU5Z/SAzj/RI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785752130;
-	b=bcQmDVSK6zcxr3ngXrHxPcB0pXEj8Z9UuvFqUfCNK5bcxbSuYMzmeepqyGlbeVlN25tseB
-	E/Qy5+ayMIrl24zYP8lUwjqF72OAHM0CNvWwhS8QNl/+NJ6pRn4sXLhNs/NQXDgO69t3cP
-	SrfPnfnloSJwPYye0jStwWcPrPeKwic=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2TVK2uX;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0926F40344;
-	Mon,  3 Aug 2026 10:15:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747321F00A3D;
-	Mon,  3 Aug 2026 10:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785752129;
-	bh=v71BYkAHIRI8Q8frz24K9WW9baJGdIZiJra6zVG9U4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J2TVK2uXiY0cFJv633nAghYxOTtWj4WoRxazTyou1qgggoZymwvopm2LYCBg2kGds
-	 ymnEUF629L7pEfyiNWowUOOSJQuuFRFGV0mUPgZhuLD0CLW+vIr6c7Geq2Pma137YW
-	 7OE4bzALZg01VNZS4/a6HHR0z4/2doG6N70QflXd/8HfBF5LxlbDxZHougZiJEavRk
-	 UPdaWF+jiInQXa4aETFFy0RaM5skKQ+gkvmOLWR3CfSgtF+rR82OhQEep61xeS09aB
-	 dz9eVzhUmkqmOXcqJfvphbCw7TqLCjh3jYOIQtdjIp2vHvzAJ8qyVFEMto2DgiH17d
-	 n2cE1J7UNfRQw==
-Date: Mon, 3 Aug 2026 11:15:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 05/15] mm: introduce and use vma_filebacked_address()
-Message-ID: <anBpy-uFv7Ghdr1q@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-5-e8ecfefea812@kernel.org>
- <73adddc9-4321-4f6d-ac67-470c8f515fff@kernel.org>
+	bh=JhfNGyoj6gWauQ3L4lUW323UQobqUhOK0WUh6mOtMxg=;
+	b=BRCqDtkQfQtG2iGmbQH7fFqVYBb/Q6my4winV96/NTGkInHi/aJ6oierkIBnFQLKnAwc9W
+	ggHwI27o7pMqJtQUKfuUBNGx3Gu8YhLc5eiJtc6DvdJS4lZTRHgCjTPsl9WQ+tovLYHUc5
+	6C3S9LN+oZHmREAcSsALQo5G2vP5svY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785752071;
+	b=wrtM8Vq7X9zoBjroP/F44iVXYN0EcPvrSOHcj1nB1lhvgSd7G+GKzQfuqLY0smM/Q2kK0o
+	KnY/gwrJGSSabo4Xm2Q+JJlFnNvxHtsRnPlRf29ABQ77jHPolDG24oCmWUK9FIvvZE46ub
+	n/L9/cYA1DQz1baWmVspCGQLiXn5P/Q=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="B4phoP/O";
+	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mclapinski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso11545a12.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 03:14:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785752070; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oEqZs54All82Tg5sPcLavpMb+8BHw+zpJ8Z6tcmimdkUeJ5ESuJDzoEjK1P7OOlLhr
+         9+jQBSQ0V6muwGMvMBfpEntq2ZFP/rCYkbo/7g2koruoomkAGdvFlRsHlsZvD4Du/Xao
+         MvZsbnmiJgHRPeBIYNKlDf1usm2ddm6+YWQo5g1xkh+XVi3llM4yzptysEw7ltqQhzkq
+         Ke+D3XxUmi1NhPBx+39SDBJusnuikHzp42dKbhR7h13cmgsq9ja/bDjALW1lGa3bDGf8
+         RDNN5InYvEJ2D0HaWI3IVq8KnVLvlJ5SxUHWJeeuzkQ7VboI5vF6U/+Jh+VPpWZnex/0
+         GEyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JhfNGyoj6gWauQ3L4lUW323UQobqUhOK0WUh6mOtMxg=;
+        fh=JQOxCr24DgrBQ4I4m37xxf2L0IjTK5tyCd+CvTsF5Nc=;
+        b=GBvp/sjnRLuDsvTVZHq6xkPhuyJBBShTwexV5QrZ7uhGNVAIfsx1DI50cL0a/UotwW
+         w1x92Cr4ujy0r3bsiQnL2Mca3qUEtqycFVlQriQ7ziHUYHdIgUxdetVO/lfJtCcgZxi8
+         Etu1Ihrra0iMMTdNuNzqfwFDaO9iuViNplrlcqrzcdomPs2iYBo41Mkqz7kywi6CVxQj
+         cqWZRzpZk+XpRr8aJKh80gireeYWYl36crbo/+n4lw6vodLmDTJEZPcBWGwGGvuvkx3T
+         k92vihhgSFQ29PuQvadIW3Og4pXbznyv7ndB9Ab/a4lO+XIme7m/xXSvWWMIKrSi9PHs
+         e9YA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785752070; x=1786356870; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JhfNGyoj6gWauQ3L4lUW323UQobqUhOK0WUh6mOtMxg=;
+        b=B4phoP/OotrsS21y5ysUHNR735BaUmTEXXU7fGYPZzXzi+vAl0hrtEsR7WFcOGwx/A
+         PS2RyvHFX0n5CvHQrJwO2RPeo2BpmTsrbCMbci5sMfXEH4RiXKfj1hsRwjvrxcF49nuN
+         8ggrnvQjsCkK648zGS67JBLKyhKGdeFUyU2x8bsOftYvNDFWyC7zB7MQhL8TfUQikGKz
+         SvBqhjn2ZtzknatMDwb5rXsa97na79LVNhMwMzm/QechF8zSrcsCPZFoLzparc/FhSUn
+         p0MnsyXFLXP0cMdP0UONVrUYGqSdNZQuB1Le9A9puzDReXw6hLEXZSbP99la13KevkE0
+         XJmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785752070; x=1786356870;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JhfNGyoj6gWauQ3L4lUW323UQobqUhOK0WUh6mOtMxg=;
+        b=KtYsIZ09gxMJkugzy9OkaIjGjwBtismhQZUZNWXflPyDBB9YgTP8ot+kxVtUQMJELx
+         +IzyX2tPsQBdfE9nhdMyK9/Dzw1slwGA1ZzcwtrdsWm/l7NdgPNl0j2WqOXtlIMEgL1M
+         exJhxx7Ldwr/7dWxHE+9rpEK6wfniT6f1Tw1osHgxq/fWEwB2vs932/btn/kJ3T3si0K
+         9lDde+FWypR+taB5upaF4rJGylijiA3dwwCjg4/fMH68Wy5n8HjoKyaz1z3pLzLv5gdm
+         OcX2K9HTp7YU+zInUU+AFFwxwpI5FvifyZpBIJiyxzjzzvyRAwBfjj8RIBMjZBFAge0R
+         B0JA==
+X-Forwarded-Encrypted: i=1; AHgh+RrBibxCcLQ+Vt3HP0wY9Vwl423hLBlIChT7dGLvf4P6EJIL6m3a2H3hgoiPeRUsx4UEjjuRFeflRQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCNFc5w3y73Ei0nfs25yW0mVLH14wx7OSdnNohOuOanXGM/uW2
+	sRX/bTKG7S6q4S9oI33YgA3rsK0GAZT65mUx+8W1W9o24C9rt1C8L554/AUSac5t6mM8XYJ35Wl
+	d0boJb+++SqPDhGb1PdB38xN7fIOfwC5XRMQFvTfq
+X-Gm-Gg: AR+sD116+TyK6H999W//VgSdzVRDdiO2KqJ3iHk18/6ROUmdWlyxJMHa0wgGXQKRheF
+	eN8SN8s8ZKTzcgaWLaJC97VrvRcQDmok/BzHgxxDXXq7St3xoxRihbKT6qlrlZkd5v8akNY2Uln
+	2l6Pp/9mNQDNfIbVJ3A61FR6QGY/42pNUDTvi5m4ShkOU7glIQTve7zGAWvPwmroTpZdbarY0fR
+	u5AcV+FoCYZlQVA00uOUbcx3Wl7QPC+8oi8vHOK3mk8e02DOEqFp0pghpu16FC4dFNwK8mOuakb
+	F22YNuTgQQgWhSU/xqf0/SG163AMTzQ8RkoWqR/w/O2voOp5462qcF3isYAOaaEW8/em/8UGYYG
+	UHJbSpgWL
+X-Received: by 2002:aa7:ce14:0:b0:68a:e1ba:9cc0 with SMTP id
+ 4fb4d7f45d1cf-6a0a84fb3b5mr117552a12.8.1785752069382; Mon, 03 Aug 2026
+ 03:14:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73adddc9-4321-4f6d-ac67-470c8f515fff@kernel.org>
+References: <20260717134028.2880508-1-mclapinski@google.com> <178453346331.1178000.18393988680596713513.b4-ty@b4>
+In-Reply-To: <178453346331.1178000.18393988680596713513.b4-ty@b4>
+From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
+Date: Mon, 3 Aug 2026 12:14:18 +0200
+X-Gm-Features: AUfX_mxV17yZnjq8GhJvKqca064Dy4Pslz3w1Zu1qT_JOmfoWenIfP3JTE0c8GI
+Message-ID: <CAAi7L5dE=oROWR0mTknPyjnL-XRXuCUsfHSiGh7yUqWCSzE5PQ@mail.gmail.com>
+Subject: Re: [PATCH v2] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, Evangelos Petrongonas <epetron@amazon.de>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6520140014
+X-Stat-Signature: rm18an3tzz3zc41d1xrsxwbg91tajsjh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DDEC51C0007
-X-Stat-Signature: eug34kzzb3u8tqgfao33nezezeiamddz
-X-HE-Tag: 1785752130-530430
-X-HE-Meta: U2FsdGVkX18QIsd9Q/Kki6d/39lTfokyEUd10gtRCSB27pppsy9OJOQi0XAJ9+Y+nm+Sz6Pb2BhCzTebReFzht6Ncqhk3duIMOCK/4jckQQzsdRVDd96GJdrs1GDNypo06u+L9DBoWVWXwGHu4G2zNiLwWRV+j6PcHK3LBZEWzKPNwjYiD5vaLMDbJNm8lTl5RAxqyrHFSEpkQidWALEzUDJLSh+gBusnwOJGQsNhl1LMUIxmYQm/5YRssWCCyaRkEDiq5PsykNc1Ggqgw6WnoMt4JIBuQHtP7KASLrSqmKePPx7qsD9tjLq+I5RykwPQ02kLaTCe5WFpwN/R2LyajHq5EZuAALRjLM8wxgQNITYGYzw7jGpRYp4JKq05HAVp76YK4RIf1IvAMqSjzkNEyUy/MeljmQqyw8ehfbCHoxOzP4KY+NEL0gikDSjTwFo5Hycl3g3Xw4+v3zVGGcE5vdrAueubnr411AfEkhBSWRIsgqsAgBcXGSyAriXpfMviJPVNjsd8aMVu4w2jvygOppCIYoDU9xUdxIsL97ZyyL/A5xliX2bSy/HuIiX3VECehYVNkVUSaBUbY6KHya1cPz73FCxIkYxCVf5IWv03mN1lTw+XYdueRC3KZB5uh0Fr7HapelrT8QWThjl+PKGWdt0wmYlcrDs4w62zucGnrtIxcwZK5oZ9WKkzEBUglfq1taowcpt+NFuZPLh/wnbprF43EjzHF8HJxiA0DPfseHUuC3Eb7em9Up0KZdOGCLJWCFZe7PIV7ZR3qelTF63Qb+Fs744XQ/9ceAEUyRX0oqJMFgDcVkkqP/69nxhWO7Nm0MWuHXC7v8GPzoPLuoiwAz7NouEyVWB94Xmm8iU+TEpvlgmA6C+Jtw1X4ZPm0ClUE2T3s5wyXtrjaioNPcT1qXjmQfbz6rrHTEKSYLjHEjDAc2M+frgbYG5+SnoSh6whURHGkJZqkZ8OEZC9Px
- zVE3hIRG
- +Pizsgd05yL2X650cMjulUqk9OiE3O+e2MgwCBOfoWUGXIE6xzW5bDiG4rbf+oyCKMiA+ZPfkBNv86xb4ZT7xLPfq86NMmXJ60wWyLaEi5Sfv22NvAykwdqkHckUZSShzShkX6s0wtr8wBTjnIr+8uQA4zohm/6OND5PNUSm4paqte4/7+jA3s+ubWV9MwytjWssQyB9p/atrMcQeJOKt0YEeD5mdWGr/m+3RDFlxRRbL2nWuUT7ewbkwasC7kMZOpod73B0FYpB/4h9I/awAXheibJM4UccGrpf7GWc4nPwGBnCLRyzjlm7LisBOqlxSgXVvVswNzQzYZi5+JY2kSQs5KjqtK/LHCxecqUzUghzX/YB1LcfH8WjKrAUAi6FaktXfd31ROElLPCrdXrDAiWGuuw==
+X-HE-Tag: 1785752071-178162
+X-HE-Meta: U2FsdGVkX19NblPa2A+OtrbjK0ZJ5RhOVHV9I2kL8I+A2A+WeYS+qdbN/UCgg9uSQt8r0VOzt12M7jLcjeQ7GFKIyzbPr3LIa13BqHEcJR75riPNv3CJQXccxHDxPK984972HTvgEvfpksD2ySm4bMe7TvOs2N3MC7OGygk6ehI4UaYUlCLsGLuQTWy1Rm6Q2RxrB4Y8UTSh4/wj9Y+HHoDl9Z+sLF2T8IZjKgZDoK4GXNXvgQ+K7IpM2/iMHQdCpI5sKgm36sY5WDfvpWjrMFhUOp03bWYxlzguC5Jo5NuKaO1qvzv4066drTAjlGv4wL/IJzprOyMmTvJdUvYvdWfS0wnRNcRm5qHItisVT3dgVavPX/JcE81BNpjUij1ofsLLBiz6hZpya7vg1dfgiHRDB1fWv943NgKLGT7J5IYiAKqQyBzWUROLuoVGunmGE3tzaMTKgMmOlWdPW0UK8UF/oBVWWWJlv0gJNscEgY2UpvSR93Ven/yGdZwRzCiCokYkNKV6tz4GRDsVcHrMCwqOYNOT0mk5Hagc/xYZN5Uv9tl+Rn1pn+D7ezmNGBgJvuLbtEorhbtUsZWXVr/ni60Fe19IxGyxY8oh1/B0K+HmSP3pg+zCebZCU5c0kO9796MXQL4Uf41DP7V2U8WZ6mfxoKmu15wBsIZ+ya22vfR1bmi6HZnW1iKrXdx+z9mQT1GAKT0J3DkIWBMyidsYwnI+Y5nnzolXO7l2MRdJHGaX5Nz5LRpNbGsVIT97FqIkgwTvPmUNCK8VOe5o3ulX11Z7He7d1qzn5Mo7ZZ9wctqf3d3N++Y5ScbqDQ/3SLUCbmw8gLjEK9Z/aUWHKovy0xP8+kYM87Bzaut6ZQ3UcoIOimViT4l9Db6Y08eIzYXTW60ZkZA3OeIZevXHo0KXOzv6a6mr/ImrctRDDb1Q/UnBNIXIMtMP0v3ClmDVYLh8XKTFaQ5vd7JXH+MprAW
+ ywkXcT0C
+ 3bn2z09YVJBccReOKauXz58gX5h38j1/cuKn5sh/H07o/H5CDjC58v7Nmpd3YsmoistmAiTei1GXt4fTPfTBGBfGrEv1DjAAiW9OCjBfRJ92hqTaa/CxYbxcMQ2HnTa4yTyoDy3JAj76tGBPBaxjCWkcp8LFTdbGST1XcNFMrSP7QzLCSnbocbHUkP5pvR2ph9dFQ2lX/A4sCijpFlcyw28mJKWl82aGkHH2HJNHplnWV3QF0PKXhlfTamyCDmMy8xaCcZn3JHCZWPXFOci6/gaw4If/WnjyZt4PmkaW10vvjwnmXGjjEqsyfA7PFQPGdRZ2Cw3cz3V0TyPJFDoFkBO2VVWyh1PTK9N4SyDw642XcEtP4MMDQwipPrsTdG1wB2gt8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,40 +141,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 11:54:31AM +0200, David Hildenbrand (Arm) wrote:
-> On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> > In cases where we know that the VMA is file-backed, use
-> > vma_filebacked_address() rather than vma_address().
-> >
-> > This lays the foundation for using the anonymous page offset via
-> > vma_anon_address().
+On Mon, Jul 20, 2026 at 9:45=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
-> I was briefly confused why we can't do that immediately.
-
-Because everything has to be switched on at once or it breaks things. Obviously
-you could use vma_anon_address() for pure anon but at that point you're only
-confusing things.
-
-This all stems from the existing situation where anon folios might be indexed by
-EITHER a file offset or an anon offset.
-
-In the end 'laying the foundations' makes the actual 'switch it on' patch (9/15)
-nice and (relatively) small :)
-
+> On Fri, 17 Jul 2026 15:40:28 +0200, Michal Clapinski wrote:
+> > kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
 >
-> >
-> > Also add an assert to ensure that the VMA whose address is required is not
-> > anonymous.
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks!
-
+> Applied to fixes branch of liveupdate/linux.git tree, thanks!
 >
-> --
-> Cheers,
+> [1/1] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
+>       commit: c553c774c9715e1c92c48b342f30d60601693fb4
 >
-> David
+> tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
+> branch: fixes
 
---
-Cheers, Lorenzo
+Hey,
+I see that this change (merged 2 weeks ago) didn't make it into linux
+rc6. Do we need to do something manually to get it into the nearest
+release?
+
+Thanks.
 
