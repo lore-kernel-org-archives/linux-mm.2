@@ -4,101 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47EA0C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7ADC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:48:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11A496B00A2; Mon,  3 Aug 2026 09:48:00 -0400 (EDT)
+	id 5D68A6B009D; Mon,  3 Aug 2026 09:48:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F25C6B00A6; Mon,  3 Aug 2026 09:48:00 -0400 (EDT)
+	id 586E76B00A7; Mon,  3 Aug 2026 09:48:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D0F6B00A2; Mon,  3 Aug 2026 09:47:59 -0400 (EDT)
+	id 477016B00A9; Mon,  3 Aug 2026 09:48:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C05D16B00A2
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:47:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68FE91A0670
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:40 +0000 (UTC)
-X-FDA: 85059362640.05.37D758C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D0AFAC000B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g1C6H9lY;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FC2D6B009D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:48:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB3ABA20D0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:48:35 +0000 (UTC)
+X-FDA: 85060088190.07.1322333
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 13E9F20006
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:48:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="svrG/gCk";
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785747638;
+	s=arc-20220608; t=1785764914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZH1yyH6OQfp+HeumAa7QMNRKJ6QwYZoAjIJS12vbQQc=;
-	b=IFI1R4Hvp/qGuVpZF18SZ/gX9q6m7uDN+lVifwww1x1s+B7G9B6w8+pS3+GuuKs6EPBvv8
-	ocGQgsdMtXw7mjumQ5kIbcQHVU2U0fqSgf+PEFGTFzOwAQRm+EPZCpZ7qrGA7Jr4gGft2M
-	svLNL7Vvpy2l7gopndGuI8OMLhA/gXk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g1C6H9lY;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gSjlnclITsfEniWZnfioDPIZpAfFUZWebTMKBU3cmxA=;
+	b=kX9UvF+zJTZfXh86QSMBsi3wrbTDi2YrJnDyyHzTHd1FtUDOL+Q6I+YFOXV1X3bKh+/UDP
+	FTSKzhLD3nels4GpbNLTNw6Y1x91tWhVdaE2GWn49FkTg+m2Lh3tJmfEAjPKdc4bC1YuRv
+	JSuwoRG4KP8J63wLj42aRB9z4LRcH7I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785747638;
-	b=Xx9/CWBO3JbOUl/VoZClP8jaA7Tu3Aww55JvvRQ+1yEuomteDFY+e2YshHucO8yJS6ntdg
-	1bkK0jxDgra2Zen0QKh9Xa3mi/1hLzKlaJS827WzWsmRXiQj4WDu8pedk1yVdAMc2Tl8PF
-	AkXRV1vrTvY6bQ60WRXQhPwiJzEqDJ8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72D8760A5D;
-	Mon,  3 Aug 2026 09:00:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E83E1F00A3D;
-	Mon,  3 Aug 2026 09:00:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785747638;
-	bh=ZH1yyH6OQfp+HeumAa7QMNRKJ6QwYZoAjIJS12vbQQc=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=g1C6H9lY9ewm2jizolbdQB1Yjerow0BfWYnaHZ7AKif87hHGr2V5ySS1fHPjS9Lx3
-	 O15XqRNV+SuDtlJWoz25FsRxHl0hIAwf0wSAvzTQpMfEWmo/Fo25C5DivZWJejuuNP
-	 Y1Df9EWMNeuPJ/zKxd3yCFwd5xk9HHIYE00yCoTd0iuWArbaiZaRneIW6hT3s9G7ig
-	 ig3obMPlfx1Dhq5RKxRV62mpz9cJ4m+JyBL/M/wUgdN+NviA2Wv88zsOEV2OLKmx8M
-	 XCrbr6aGjo+/MpDAWROF+Gh6fD/PuwSNC0ImgiuT+wvJn0rHYsjbm0adHN/GXSF9ZQ
-	 miwcHh71NAy9g==
+	t=1785764914;
+	b=QBOoL5e2fFKWdcAAnv8Qaxxh7IZ3e1yFQMvA764LVyokyqrqXcLG7D9YOZtCw5vpEkVYDf
+	hMflVL6+s8NUQ8wdYPlkOn6zgO/QI5QyjGp96xHR5P1kU6iepsVVRrHezxICXRlAQQWeN6
+	DxjjlWXk2983FJr3aINyfumSIdtuc4k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="svrG/gCk";
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38f620399a0so2697713a91.2
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 06:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785764913; x=1786369713; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gSjlnclITsfEniWZnfioDPIZpAfFUZWebTMKBU3cmxA=;
+        b=svrG/gCkeSuFDoGUHj60V24tG9vwcf4l5yyNjAeYPduHH4GAszdOJ+9rjtataQaF3k
+         Rj/SxB4cHVbI0oCQATBtLoef4FF2o7wcC6fHGOYuIfjKqWDtkDJLL7XBejxbKd9PDuIr
+         GdP9K3fA7Yhj2MLcP0kYIw7lrBO2ymdQJAOwUCamh8r5elaCtLWILFLkU8C51bVquDiX
+         ra141QGpYvB+WlqJRSiBWrPTMN5YJN5NzM7XNTE9bdiGQIiTK5hk3y4i1DZnDYP1+8O8
+         ZXGq2gP6lMztn6rjOrseCzN9FtRF8RYTecac55Shob2s2CKGZlAIcmeo7ur67pXtBsdF
+         HZdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785764913; x=1786369713;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gSjlnclITsfEniWZnfioDPIZpAfFUZWebTMKBU3cmxA=;
+        b=Us8lXYrqfUX9wQkmRYhxIDJXl5j/9c+EVnMT6s4W1KX2SNsgMYBW8tvUjsjd0Tusj9
+         0jCgy3I1OQ1syKAT64fU7GxGwIwpbGWAAsOpm8xw26PQ2gSjg79+hsP7acwkrB0b391T
+         OepBiSpuNlW0OLBoTQfbDh8Qzics3r6omaJphdOgQijpwmxafRlTXS+LfUzj3C23+KRC
+         nq3HtoemMeAs6PeVCQr4BmOZcxJytTNQ+acmvRpJLRjumMwxbvhw0ITiViVHbvpbDEnB
+         yeWHakjlNDAIcYaILJV6xJhLM5FosqGOZseyhq0CQQVYPP6u8U5OVTXbXTTOl93cj4a0
+         DGRg==
+X-Forwarded-Encrypted: i=1; AHgh+RpYPKxOJI6lzLBbkvCYZ2YeCDW8JeamdDLXqa2rOjgwlzuveefoPWHsE9Ay4weLxQinmkZLISvTkQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBwJ9+VUu7LYNBFH0S5oO36VFgDdca4Y27oCLChOowhBJ9BoVn
+	Ij3dK2f2Cm2WERz92Nh8Jq7mv39DrNvTWIMKEp1D0pQe2bqjbJ5G902Q
+X-Gm-Gg: AR+sD10Hswh/tx0AVQD1mecq9VKAhaXiy2/ipHorodkZSVK8jqyEoVMQelDNlsXV0K9
+	uyd7voBciSXYVz2CkOeFfiEwABuphQC2dMWTRHOo79TqJDSNvNJVdVL6JrMeo96g0Qej85F/vyF
+	T+YW3VBPkfT3N9D80EqdINB3pHOci969IC359J1gitlxHsPDHGm9Di+k2yFlhQpzZN9X8ax5LAi
+	yDPrAe+CHKwtw8C0jGdUj8v8T2fr8AfRX8rutT5fS/VqQ6sP1k70qT90A0F9TTKV6RFmccy7gid
+	8OC6CbYwl73c5+L4XGoOmvWRG8Rw3L6myzkjMYansFCnJLh4VR+sOMzoxjHelk0DqbSFfgp56/Y
+	CHlSYF7dnTYhapbmawWshnbbzMSMvBM8Oh/0QuEM9dONhLmK6BwDUpEDFFzzakU4D5IlZUoTXUf
+	XJm+MMXal3DFkkqBM9G1ZIM30KWhXCTLVVGD0b4ziz5DFDjB87cpXMPa4=
+X-Received: by 2002:a17:90b:4cce:b0:38e:4cb:51f with SMTP id 98e67ed59e1d1-38fbc422a55mr9123754a91.11.1785764912679;
+        Mon, 03 Aug 2026 06:48:32 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2962928sm3987415a91.3.2026.08.03.06.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 06:48:32 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>
+Subject: [PATCH] mm/page_ext: remove pgdat_page_ext_init()
+Date: Mon,  3 Aug 2026 22:48:21 +0900
+Message-ID: <20260803134822.2568766-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 5/6] tools/mm: make gup_bench a benchmark only tool
-From: Mike Rapoport <rppt@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, 
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260730140825.238130-6-sarthak.sharma@arm.com>
-References: <20260730140825.238130-1-sarthak.sharma@arm.com>
- <20260730140825.238130-6-sarthak.sharma@arm.com>
-Date: Mon, 03 Aug 2026 12:00:01 +0300
-Message-Id: <178574760162.1561566.7432721858074092727.b4-review@b4>
-X-Mailer: b4 0.16-dev
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 13E9F20006
+X-Stat-Signature: 93y9i6eynbxkffe5mw9kq3e19o9tweun
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0AFAC000B
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 4rr43rwusq5jqdn7w6ohn6uqjsypmfjd
-X-HE-Tag: 1785747638-331236
-X-HE-Meta: U2FsdGVkX1+wKZphD+D+MN/StwvVq0PaBWVZHhcd2PyxKUUXXLjIVyS3XaN47GUTeJhRzy88dqKgqpTPqYPQ2wtsk40nzswseVbopiOmkHAwEDmWOSag98RMQogTFOkGlrW03PGmem8O6ocfUdvyFfifl9jUnAuLlq8EnKLLejLopzNCHk9PlT5k3mXB5+4EdHnHD0sQ05Fg86+hynjh6txaH352FLFJ6esdB70fEj7eYs87d2ZFEaXMfAUK29a7e7Yub3UOS8qBKYvTQjPgQ0q+dxZ6LNekWV5gPvTP112X0GFTA0OlQzro+6Q8WymRKBc13U1JaDmi/zlGq7ig3XSA5xUrcL3JqcRimZs1n99pwhPqe4KaGK0qHkuihbcH/SgE9cjrxYR4DxiZMPimg8CIW95mYEBNAfA7Rb4oZAnCKB1jpFK+11BMmlOz8IXfloWUrzvZ9L6KngJq439TWqzzjc+FpcxFfkTNQQMIvv1YusHjP/BTYB7ynjm+1q6KbPI8A/K+rQj2HPGT4rMyf26Eu4jo/iZlPxEUu8eua2iRJV8nm+JKN11429ku9+6QXwW/0p/UlM8t+txoVDCVJTRUU3E1uUCWhd/Cuq6o6NRan180wH336HulcalfEHlL12qq76xxTL8ghR5wWUPCkmebLQVAeaOKaLD8l5asjmUEndbcuGYOxIFjPmaelyQrLgT+XAx+3rYuFpbojmjIBa7VAM0+8PK3YgJpP3htmlIKsJnGGey+/+lOt3DVAX6Haflscug/G9KS5zwBBPILdy6nFPp9NgohoHwhQC6EPs9NIfs9E5iu2Q5GwKQrjoHEYuA40nRRFVbkFTq+fm8uF/F0JcttyGExF0p/C/uWUkkAqRHj3NirpW71/PWLJ/idXfKG2gFmI5BvMArsp6tmWgy2KDlw0VcVJAeyGUTGVjYCUGo01ZPT97kCsmTQ8mfaWJD3kqjbWqqnhC5xjxd
- mWvvTqrR
- Sveo9teVcMIc7z8LuVwXuXBWrFaR/K7qHavfBTRzUls80nzbp/4IH46g8ygmlqc2Wc13S3PsTPwGHUk4OwLYzVUiJL9ERmpVs4yMZmJJtlHDvUmV4wTiZkH0r+lCDXjBCAletC02qBgnXU00NXB1QvJg1DvccWJufhPad0FYz9iaEy0qJL5YDUH1RVTApXQNKU0OxJCm24Cec1Of0J36yK1Fhf32LOBQKfeoeKG4gIPgQ+E7lhK7fA50Qw2Qvp/dlVyZxAzYblSgP9RkFhP3Zx9WlDp5vPeDSQbC0Jd/zcBQPtSvo6h04Q6PMWsi9PjJ1nK/CVe+Na5//6k7dVUHGYxbuQSlttphrl8Te
+X-HE-Tag: 1785764913-330702
+X-HE-Meta: U2FsdGVkX1+xjfhFw9Auh6AAbtKxBLaH++Vd4JCEWvrthcFbLcFEgeVBy4r7vIyxAjwYAsiAr2DHm0kUN/bz5I4+jpswAQu9kcEgJkIYr1ln+bY2EwpswajehJGl6C0a9vexQ7xrrHYWOnMubgmGLvtw8+AVUyUQ4zGtYtJ+jSYok8oGoIlgxOFauWr2+byngrNao7+/1txBEvVQpm3sSHeyzVEWlxYBvEAQpiw089L2zlNtZOHUpsZmrHa+auscA5j+fN1xWvShalJxHq2Ppd0UsjRH0U2rEsbZBRqMKSRX3Wm0x77yf1gzGR2XGuFEHbrRsqLYk6kXBrCL6A8a6ToH3BAGYHS+RwB2VeL7Pr980TUnsgWrsKLsmKRNIY+aAV5ExM1IFMhj8hetyeu+GyxLv2RILintf/ehzeUjxPl3F7gx7hW4EE62yDMX7B0xZYOBzjtStF2YQ8uZ3AKemERdhVg4oNJqDGOQwJgWMERhgfi1+IslfQRm+vgksUPyUlcHYA+DI5g3saGsPYxn/4rU78gxgT4p7L7FvHbjkH9rgVJfgqnNCyryJOkl6KI/KOdBWIpkO2wpRTCFQdxQSI6ZMWt8fojmBcB/1FCTSh64VTELI8RgnbYHB9ml6bRIYS7E/EMq/+lxOAoFUDF0tXO4Q503Btkc5M8C28F9kluCdw40LZDwMG9zHTNEPdhajy6AFLcTUMwEw/3TNvYh8c7ENtUBVmX3nN6zo8/Jx/mxRyq5lnw6y4NUbe+mgW7j5hYcmv8+sOa4gtcsTV1dGgjlfb2iIvtpND+BXAhY1gpMhtfYpjPS8MpfNrVrsYkwIKUPRwNc0NqrAGYL2OklCka3cP8zR2tjaT0fUWkC4EMMOjXMsENhW9NmEU92BAq48qOJutc3EJOW0qYyvO2w/quFLDcJSyMtaKUOivAeu2IKT2e/v0Zyc4ZVvQ/3dtRu4qi+6ou2pB8S9C2VlZ8
+ GgSbM8Jw
+ YOhFAvwhHJIPKX7T28iwjfDgIFhAmhSXSIDQHwqVa+Ecdy/9XPRmaBOEP1AzGb/XSOmYyj1ec9pBThRp2xjUPVRYyo/2ZuiP5LzcXw1fHH8HSJyzaqe0PwgHPMSgb7/CJ0yvttZGpid7uJgAQGdYEtmI7hJlKIvkuE3bj2uTBbK9996Xd/T8s3WJ2vVv55ZPUN45gp7wtHdCCwYeOxCPN/5Uo7CB+b3GrXvIDU2Yp1HKohwHARAZUyFT76xVwkPdO/fH/LY/Lkt4ob3UrHQPbe3gkgWamSydhN/UoQtmXeGqGgNE3RN4Bl0YOynF08ygCZuDfkFL3W6JF2Oo3nr5Auzs+2J4PvhOp4ZvGlXQtN4IaV35jH8DpBeucc1M9Xf73I3BOunEuknccIk+bu5Y7Wb1jsiPQLiHYDmTcqaWEzpu4FVJY9IHYLTZrorDHI2nXo6FvcyB5smgZcqc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,262 +123,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Remove the functional modes (GUP_BASIC_TEST, PIN_BASIC_TEST and
-> DUMP_USER_PAGES_TEST) from gup_bench. Drop kselftest dependency
-> and use normal diagnostics and exit statuses.
-> 
-> When no arguments are supplied, run a single GUP_FAST_BENCHMARK
-> with existing default values. Let users select other configs
-> through command line options. Also validate numeric arguments
-> and reject positional arguments.
-> 
-> Restore hugeTLB settings on failure and after every run. Also
-> handle failures without relying on assert() calls.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+pgdat_page_ext_init() sets pgdat->node_page_ext to NULL only on
+FLATMEM. FLATMEM depends on !NUMA on every architecture, so the
+pgdat is always the zero-initialized contig_page_data and the store
+has no effect.
 
-...
+So remove the call site, the unused function and its declaration.
 
->  int main(int argc, char **argv)
->  {
->  	struct gup_test gup = { 0 };
-> -	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
-> +	int filed, i, opt, nr_pages = 1, thp = -1, write = 1;
-> +	int nthreads = 1, ret, started_threads = 0;
->  	int flags = MAP_PRIVATE;
-> -	char *file = "/dev/zero";
-> -	bool hugetlb = false;
-> +	const char *file = "/dev/zero";
-> +	bool hugetlb = false, restore_hugetlb = false;
-> +	unsigned long nr_pages_per_call;
->  	pthread_t *tid;
->  	char *p;
->  
-> -	while ((opt = getopt(argc, argv, "m:r:n:F:f:abcj:tTLUuwWSHpz")) != -1) {
-> +	while ((opt = getopt(argc, argv, "m:r:n:F:f:aj:tTLuwWSH")) != -1) {
->  		switch (opt) {
->  		case 'a':
->  			cmd = PIN_FAST_BENCHMARK;
->  			break;
-> -		case 'b':
-> -			cmd = PIN_BASIC_TEST;
-> -			break;
->  		case 'L':
->  			cmd = PIN_LONGTERM_BENCHMARK;
->  			break;
-> -		case 'c':
-> -			cmd = DUMP_USER_PAGES_TEST;
-> -			/*
-> -			 * Dump page 0 (index 1). May be overridden later, by
-> -			 * user's non-option arguments.
-> -			 *
-> -			 * .which_pages is zero-based, so that zero can mean "do
-> -			 * nothing".
-> -			 */
-> -			gup.which_pages[0] = 1;
-> -			break;
-> -		case 'p':
-> -			/* works only with DUMP_USER_PAGES_TEST */
-> -			gup.test_flags |= GUP_TEST_FLAG_DUMP_PAGES_USE_PIN;
-> -			break;
-> -		case 'F':
-> -			/* strtol, so you can pass flags in hex form */
-> -			gup.gup_flags = strtol(optarg, 0, 0);
-> +		case 'F': {
-> +			long val;
-> +
-> +			val = parse_long_arg_base(optarg, "GUP flags", 0);
-> +			if (val < 0 || val > UINT_MAX) {
-> +				fprintf(stderr, "Invalid GUP flags '%s'\n", optarg);
-> +				exit(1);
-> +			}
-> +
-> +			gup.gup_flags = val;
->  			break;
-> -		case 'j':
-> -			nthreads = atoi(optarg);
-> +		}
-> +		case 'j': {
-> +			long val;
-> +
-> +			val = parse_positive_long_arg(optarg, "thread count");
-> +			if (val > INT_MAX ||
-> +			    (size_t)val > SIZE_MAX / sizeof(pthread_t)) {
-> +				fprintf(stderr, "Invalid thread count '%s'\n", optarg);
-> +				exit(1);
-> +			}
-> +			nthreads = val;
->  			break;
-> +		}
->  		case 'm':
-> -			size = atoi(optarg) * MB;
-> +			size = parse_positive_long_arg(optarg, "size");
-> +			if (size > ULONG_MAX / MB) {
-> +				fprintf(stderr, "Invalid size '%s'\n", optarg);
-> +				exit(1);
-> +			}
-> +			size *= MB;
->  			break;
-> -		case 'r':
-> -			repeats = atoi(optarg);
-> +		case 'r': {
-> +			long val;
-> +
-> +			val = parse_positive_long_arg(optarg, "repeat count");
-> +			if (val > INT_MAX) {
-> +				fprintf(stderr, "Invalid repeat count '%s'\n", optarg);
-> +				exit(1);
-> +			}
-> +			repeats = val;
->  			break;
-> -		case 'n':
-> -			nr_pages = atoi(optarg);
-> -			if (nr_pages < 0)
-> -				nr_pages = size / getpagesize();
-> +		}
-> +		case 'n': {
-> +			long val;
-> +
-> +			val = parse_long_arg(optarg, "page count");
+No functional change.
 
-It's better to name the numbers parsing after what they do:
-parse_flags() and parse_num().
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ include/linux/page_ext.h | 5 -----
+ mm/mm_init.c             | 1 -
+ mm/page_ext.c            | 9 ---------
+ 3 files changed, 15 deletions(-)
 
-> +			if (val != -1 && (val < 1 || val > INT_MAX)) {
+diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
+index f23d4b218da0..79c53ec45dfa 100644
+--- a/include/linux/page_ext.h
++++ b/include/linux/page_ext.h
+@@ -55,7 +55,6 @@ struct page_ext {
  
-And the limit checks seem wierd all over the place, like if we can loop
-infinitely, why do we care about INT_MAX?
-
-And what exact limit ULONG_MAX / MB or SIZE_MAX / sizeof(ptread_t) are
-supposed to express?
-
-> +				fprintf(stderr, "Invalid page count '%s'\n", optarg);
-> +				exit(1);
-> +			}
-> +			nr_pages = val;
->  			break;
-
-...
-
->  	if (hugetlb) {
->  		unsigned long hp_size = default_huge_page_size();
->  
-> -		if (!hp_size)
-> -			ksft_exit_skip("HugeTLB is unavailable\n");
-> +		if (!hp_size) {
-> +			fprintf(stderr, "Could not determine huge page size\n");
-> +			return 1;
-> +		}
-> +
-> +		if (size > ULONG_MAX - (hp_size - 1)) {
-> +			fprintf(stderr, "HugeTLB mapping size is too large\n");
-> +			return 1;
-> +		}
->  
->  		size = (size + hp_size - 1) & ~(hp_size - 1);
-> -		if (!hugetlb_setup_default(size / hp_size))
-> -			ksft_exit_skip("Not enough huge pages\n");
-> +		if (!hugetlb_setup_default(size / hp_size)) {
-> +			fprintf(stderr, "Not enough huge pages\n");
-> +			hugetlb_restore_settings();
-
-you don't need to explicitly call hugetlb_restore_settings(),
-_setup_defaults() sets up automatic restore on exit.
-
-> +			return 1;
-> +		}
-> +		restore_hugetlb = true;
->  	}
-
-...
-
->  	gup_fd = open(GUP_TEST_FILE, O_RDWR);
->  	if (gup_fd == -1) {
-> -		switch (errno) {
-> -		case EACCES:
-> -			if (getuid())
-> -				ksft_print_msg("Please run this test as root\n");
-> -			break;
-> -		case ENOENT:
-> -			if (opendir("/sys/kernel/debug") == NULL)
-> -				ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
-> -			ksft_print_msg("check if CONFIG_GUP_TEST is enabled in kernel config\n");
-> -			break;
-> -		default:
-> -			ksft_print_msg("failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
-> -			break;
-> -		}
-> -		ksft_test_result_skip("Please run this test as root\n");
-> -		ksft_exit_pass();
-> +		int err = errno;
-> +
-> +		close(filed);
-> +		if (err == EACCES)
-
-What was wrong with switch (errno) ?
-
-> +			fprintf(stderr, "Please run as root\n");
-
-Please add root check upfront and skip EACCES here
-
-> +		else if (err == ENOENT) {
-> +			DIR *debugfs = opendir("/sys/kernel/debug");
-> +
-> +			if (!debugfs)
-> +				fprintf(stderr, "Mount debugfs at /sys/kernel/debug\n");
-
-Just replace the prints, no need to refactor the logic there.
-
-> +			else {
-> +				closedir(debugfs);
-> +				fprintf(stderr, "Check CONFIG_GUP_TEST in kernel config\n");
-> +			}
-> +		} else
-> +			fprintf(stderr, "Failed to open %s: %s\n", GUP_TEST_FILE,
-> +				strerror(err));
-> +		if (restore_hugetlb)
-> +			hugetlb_restore_settings();
-> +		return 1;
->  	}
->  
->  	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
-> -	if (p == MAP_FAILED)
-> -		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
-> +	if (p == MAP_FAILED) {
-> +		fprintf(stderr, "mmap: %s\n", strerror(errno));
-> +		close(filed);
-> +		close(gup_fd);
-> +
-> +		if (restore_hugetlb)
-> +			hugetlb_restore_settings();
-
-Use goto err_do_cleanup here and everywhere else. Piling cleanups in 
-if (something_failed) is error prone and unmaintainable.
-
-> +		return 1;
-> +	}
-> +	close(filed);
->  	gup.addr = (unsigned long)p;
->  
->  	if (thp == 1)
-  
-...
-
->  	free(tid);
-> +	munmap((void *)gup.addr, size);
-> +	close(gup_fd);
-> +	if (restore_hugetlb)
-> +		hugetlb_restore_settings();
->  
-> -	ksft_exit_pass();
-> +	return bench_error ? 1 : 0;
-
-Using goto for cleanup gives you clean return 1 on error and return 0 on
-success.
-
+ extern bool early_page_ext;
+ extern unsigned long page_ext_size;
+-extern void pgdat_page_ext_init(struct pglist_data *pgdat);
+ 
+ static inline bool early_page_ext_enabled(void)
+ {
+@@ -202,10 +201,6 @@ static inline bool early_page_ext_enabled(void)
+ 	return false;
+ }
+ 
+-static inline void pgdat_page_ext_init(struct pglist_data *pgdat)
+-{
+-}
+-
+ static inline void page_ext_init(void)
+ {
+ }
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 711f821f7b3c..e9c4204b73ad 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1394,7 +1394,6 @@ static void __meminit pgdat_init_internals(struct pglist_data *pgdat)
+ 	for (i = 0; i < NR_VMSCAN_THROTTLE; i++)
+ 		init_waitqueue_head(&pgdat->reclaim_wait[i]);
+ 
+-	pgdat_page_ext_init(pgdat);
+ 	lruvec_init(&pgdat->__lruvec);
+ }
+ 
+diff --git a/mm/page_ext.c b/mm/page_ext.c
+index e2e92bd27ebd..b679a8c1f7d7 100644
+--- a/mm/page_ext.c
++++ b/mm/page_ext.c
+@@ -164,11 +164,6 @@ void __init page_ext_init_flatmem_late(void)
+ 	invoke_init_callbacks();
+ }
+ 
+-void __meminit pgdat_page_ext_init(struct pglist_data *pgdat)
+-{
+-	pgdat->node_page_ext = NULL;
+-}
+-
+ static struct page_ext *lookup_page_ext(const struct page *page)
+ {
+ 	unsigned long pfn = page_to_pfn(page);
+@@ -494,10 +489,6 @@ void __init page_ext_init(void)
+ 	panic("Out of memory");
+ }
+ 
+-void __meminit pgdat_page_ext_init(struct pglist_data *pgdat)
+-{
+-}
+-
+ #endif
+ 
+ /**
 -- 
-Sincerely yours,
-Mike.
+2.43.0
 
 
