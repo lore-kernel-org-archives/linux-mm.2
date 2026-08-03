@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 445C0C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E9CC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:47:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EE8A6B009B; Mon,  3 Aug 2026 09:47:39 -0400 (EDT)
+	id 38B4E6B009F; Mon,  3 Aug 2026 09:47:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29EAE6B009F; Mon,  3 Aug 2026 09:47:39 -0400 (EDT)
+	id 3630D6B00A0; Mon,  3 Aug 2026 09:47:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5C46B00A0; Mon,  3 Aug 2026 09:47:39 -0400 (EDT)
+	id 2A0306B00A1; Mon,  3 Aug 2026 09:47:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE08E6B009B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:47:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83E81806EE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:47:38 +0000 (UTC)
-X-FDA: 85060085796.18.5F97A08
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CA28012000E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:47:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JYalJtLF;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3AAE6B009F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:47:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1856AA04DE
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:47 +0000 (UTC)
+X-FDA: 85059362934.10.2C61741
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7E79220008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:45 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMWhxAW+;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785764857;
+	s=arc-20220608; t=1785747645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EAKVtID1+xnccXINfe4QJMdmATK4hGK2KcE0oA0hH3s=;
-	b=y4ZKg/9YBZQ52GrKqjM/+L2UCCkTAnGCMnqQ7Vix1H/WOOYCjRykTwKSruTjQSLxHibcWd
-	BU2LUVOKHXJw/Q+DYf73i2YNtkLzaVsAiagdsi1cG+sNsDkP2DHVpvWnVY9mON8vxta1DX
-	lYsNZcqd8Zx0K95VLiXptfNong2SO+k=
+	bh=S1fW7CNa0Rta/NRgITqdOPZuNkGF26w1VzOGgOD6xvg=;
+	b=hC39APJZI6IXfXng6Wh+9C/WZ+Rm2R5xxUBxFamI6sYWKGbxJuTBrgPprYcEN1NJyg8Kn3
+	XeYCFvXYvPfdSCKCFR941TDXM+yhri58bT3UzhAvoTgFcKc8f6UOdUyTtY1eHsPfZmR942
+	A7qxVehJ824UEtd464VKUpjOsjoI8Go=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785764857;
-	b=g9oJvUsKBxhtbedSOQ4GGm8eg5hfY0HhcD+ddtfdCIA2V3xnxIN07oQ+36m9LnTRI4h6rC
-	cOKbFvtsUlQXsO7rppK6RLFkPpWWTar2+VREt8sy+RX512mVap+nzEAwVe7f+C/CSGcHEv
-	Uhi4sri94B6QU/ZPz8qUYkomBkf8650=
+	t=1785747645;
+	b=xSXYKUya4qp1c3x/ky7TNroi4r2WKz7jlBDSX7qzCMg1jzfqmnQCWnHjBiTmkIJPwSthU9
+	e0KCO/Kj7WVEASKT0Tz4crgiviYTVoHtEuMT8PDGNSUx4eYL/b0cRhUh8xlLLNIopN6Qlu
+	JbLsA9f7QyA4xNZl0jW7LPj/1EH3hso=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JYalJtLF;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C60B21476;
-	Mon,  3 Aug 2026 06:47:31 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 42F223FAF5;
-	Mon,  3 Aug 2026 06:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785764855; bh=hhXsfn/zKWmJn+exhaR5yAw9rWiZOEgRl4BokkeuAis=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JYalJtLFKsdTul5C+eXgLl5h/r+HoLJG8PCPUQtIj1di2hvliwdGTq4hy7X+HeTIM
-	 Y+jp53IxJk4UAXoaSZkMwRRoMpR2sER4qpgcji7R/nmCaoMxDTVCFOSk1YaBHI59D9
-	 ZrPAJpKpZp0808LmmYXfAv/KttwYh+PiL97FvXzo=
-Date: Mon, 3 Aug 2026 14:47:30 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/3] mm: kmemleak: default min_unref_scans to 2 for
- verbose auto-scan
-Message-ID: <anCb8tz8KTwe9f6u@arm.com>
-References: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
- <20260731-kmemleak_hardened-v2-1-7b9689ac77cb@debian.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMWhxAW+;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 01BE560A5D;
+	Mon,  3 Aug 2026 09:00:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11A41F000E9;
+	Mon,  3 Aug 2026 09:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785747644;
+	bh=S1fW7CNa0Rta/NRgITqdOPZuNkGF26w1VzOGgOD6xvg=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=CMWhxAW+ua9CuWQbkSA2KkHuDlUsptPy/9hThctxswMbNkp4WkJ3SgzGMluxhWuuz
+	 gvqw9uqlqwoDocMV9/ZhLhhjaTDwSW/2ThQuH+xdUHZZtlzHNtDjRDg4SccCXq9cx0
+	 rG0otOr6yxz/vpI4hPcpW9SfKJOnF43QQCi1DQ0ITJz2FK5n24KdalAEUaiA4K0FFr
+	 uW+A4x9QpLlykXKz9VhfNlFJtxfuBqT25+GjZXSefWpEm6Oufga3zuURWhneY+lPuT
+	 SHl3H/k8dqBX6Ld7IG/i2sQlK7eBrOfD10EySgTjWMD9TsL4FSNtVHVQVlwf2m1OSz
+	 bpFmPnvKT0ypQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731-kmemleak_hardened-v2-1-7b9689ac77cb@debian.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CA28012000E
-X-Stat-Signature: y71b6umm97r6fq9rgceam7rzurgye3t4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 6/6] selftests/mm: add a GUP selftest
+From: Mike Rapoport <rppt@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, 
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260730140825.238130-7-sarthak.sharma@arm.com>
+References: <20260730140825.238130-1-sarthak.sharma@arm.com>
+ <20260730140825.238130-7-sarthak.sharma@arm.com>
+Date: Mon, 03 Aug 2026 12:00:01 +0300
+Message-Id: <178574760162.1561566.17560239060453947110.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Stat-Signature: peozjuwjp3f3rk5jcfyaydanszxqm6wb
 X-Rspam-User: 
-X-HE-Tag: 1785764856-447845
-X-HE-Meta: U2FsdGVkX19pggBvku/6GNyKoqMrs1pyExvGSdKFzZ2N+GvPB4qDWZopbYnf65c/pw7v9jAiuyi2XbqgJ3xQe31+JCSVdzS1norBnhoz5sg6sWcGsubf1NbGbLHrQyh8+XCruoVrA0TZi3eJvGsK6MhnwiPSwaLiB4ElhB587N1obodgZMWMtHMGCbrGgB+yUfdpyOFKl2bU1ylponWlEj5i99m5Dh3k14G3Bdfq6fveItyKYHwBG2igRPRsFz4QIk37lgr9yIv4MZ7bcnGeohsxsK4+B4XdM3KxEFa/Iu11CwMlM2TXQYgbSALmbbIYcJX//osKT2au8xWyt6DWTprfffaVZkS5ubaV1948BvdYKQ4Q+MI8AFF55KObhUedplOb2I+iiylCFWCvw0tPbWhxRsmKye+CrDgP3+zwygkitVqGzV8LcSwdVALdg1c9vH/6rZrthb8eUvc0uljfvsGusTso5IGg2HjVjQ0eCUEdqG1ohMf8uBeuLMSeA6hX+7XuUjrdfCK6HMGWfF+fdVYUuSBICh9W8XuZyd/CJ6RVWoF1/A+CSTD86sXPpwRNtxpKHve+HILbFmSMHwNGfL76CekoBUgc+GtnFbVbBuKJDXuSMyjA3eHu5cQqbE/mD42ywxanzz0xwbkEHAfwe579hgMPxddgExLO9S+bdsn83jH79FEMAIBBBICZsx510uxT3GlFUUIkz1CWHU26KUn6nhL06sno7kcRAo7rqYVztx+peH7kuunXPS9MXGyN3c+RIpUUUZ40GVCIMQtBcbKOEG5ci222cmeDjH7cDtyuHZvzMHCWMz5zlEtXILUduarw5pFIxkaCa5Uzf6YTjk8bltV6c8yMV9qln95SgivgbOSrSAsFYAEvRCLmf93qri9WgdJ6l6N1NUZQQ9MwaOmJZeXatn5zXW8v7yBELbZTTuMEThbSDq3Ni26+Wf0AWcrP7eKi7IxWpssaWEL
- ccgX6wSr
- AyowSBfXI9y8FwSsutxIBQaVe1kXYriNpJN8Ih2Y8NvhBBBThIMURLVS6OomjbDc992J57s+H5oJg6yonjYMMpcdkBZWUifsZ42eVBgBhCQ5dZz2jDPkMRY8MGLTmOZlzSgIul/4snbe8opUNXYkf73ktDGQZU9t08whFEoB9TIzlDadCIitPew67gbiJDbKEDfODTy1oneGqY5GtezX5o5g/nBo1MD/R0qlOY7j47ZpJ3Q6fyE7skl8hRSn6kmvyBEoTZrqFxIGThX6fRl01w40kgi30VTbTBV/uQ3VALYJtkj9V67z2OMwffONHtyjN0oorXZz3w/+lGKV7aPK3XDbvYs36vVoxnanyxDVqHTjpqWw=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7E79220008
+X-HE-Tag: 1785747645-204723
+X-HE-Meta: U2FsdGVkX1/nVZoIqPyYRxI//V48mUBxTEQToKYShI9Nci8/Wg5vRK4fSRfBpfft2jsfojSSKLFn6DoPddJpJ0OCc6KhkCR6WlADVK1X8XpxmkzdHJmeO/NuOPkaE//6cqv3+pxoKwUtMb7YR2NOYq1z+NYcIjwCM8M2BymvUFH/SerqqSu1apuzlZVIPSjkSoob1aKy9BZCJy5kvpFWFXnK2RlJxsfh2SP33skCjY1KwvDUTr9xASR8/m3iKSOqZKQiGqxnjfLBmxQhNvKbp2qvOBstPqHJ+iyKyeGOseIbhiXxjj/Nk7CK8VAL5W6r/6I756wEFwvr6ZsxwJW9VO/NSYtrnjkAs/OXY4ghMoE+J3svP3C+DeDZDSoyC1MAnI2qfuJnsfFGpI9PbnD6b7R7Hv9cdchiuRYpdHYeccN19wx2VGH6ddP1CxJXPBcrO9GQpRLipa1P2rSaWS6Dc10r+Ebl3H0YcNM2HUBPWFjLxgjP720GS9Ews4gxBLHbXFMqg+oT+GBFqmxaX/wR5uOdMIZYTwuzCtKoWrwNV0TPHVzDRf8YD4suulSrIuk2tOb7PYRB6CUZ6wALEi7jZLPGMCsdEueZfGB7MYSKRWKfLtl/+Tc+61UqhW/yf4DF650KeWxoU0u/qBa55AS+O7FfCPZ2AD4hFBICNfnQVH0j13MTqPG1buTygZIjDAHfv2GWjSmKBitjxeYnHJKY/2rchrP5PUKtEv4E3f00QEu+pFUcO5iO2rFFx2h4Q8ajQnTWNgPu8axKgvNmYBHwYK1yLyS4uInwc06kRn5I7piop3rer+umThP/eDws5e8kqu9MiqRJ2n+/t5Rj1TQfPDtiPpnYgyF83++FtAvEyAm9TaVyAIFWB9tA3Lvdq7B8OU0vovdruJgDQI7LgfDqBqIgOMu0j09++2a3rlR5YBG/RxggLod/clYaqWER4QDKvjplZy5rlb3FvvbkDxr
+ WAxOsGBW
+ vjYd3oyax0c7oBfoHDKOYZpATdKNRAnqYRfjtUdfnT89TipmdOqoZEoi1UCXgzql3QKfPxHifE0AsLi50MKZykEXDKcsMrZn9W3WVpuzL0rWXQyhLoVj0nJ9gugjdLUMuyFj+YZl72dBO2JpzK0ZwG5abZs6Yv73zx/PHHVbcuVjiczB1A+iRjpJvuAtxP61q5pWiMfzWyWA42piiGo5nXtZxQMwuaQdQzXbnIDPTFlkbxCuHgCgyBjltqoxRQRCivUaXx9Z07q1nLzCW1agrUWBxAXTRE7BP+bbq5/o7euzkuB0XUPq/W5zgDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,26 +106,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 03:13:04AM -0700, Breno Leitao wrote:
-> min_unref_scans defers reporting an object as leaked until it has stayed
-> unreferenced for that many consecutive scans, filtering out objects that
-> are only transiently unreferenced during a scan.
+> Add a new GUP selftest which uses kselftest_harness.h. Cover
+> 12 mapping configurations: THP enabled, THP disabled and
+> HugeTLB, each across private/shared mappings and with/without
+> FOLL_WRITE. Run 7 testcases for every variant: get_user_pages,
+> get_user_pages_fast, pin_user_pages, pin_user_pages_fast,
+> pin_user_pages_longterm, and DUMP_USER_PAGES_TEST using both
+> get and pin.
 > 
-> It defaults to 1, which reports on the first unreferenced scan.
+> Sweep four nr_pages_per_call values for each test: 1, 512, 123 and
+> all pages. This preserves the coverage previously provided by
+> run_gup_matrix(): 12 mapping combinations x 5 GUP/PUP operations x 4
+> batch sizes, for 240 ioctl calls. The two dump modes add another 96
+> calls.
 > 
-> CONFIG_DEBUG_KMEMLEAK_VERBOSE depends on CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN,
-> so a kernel built with it runs the scan thread periodically and the user
-> has opted into detailed leak reporting. A second confirming scan then
-> happens on its own.
+> Preserve the previous sparse dump coverage with a standalone test for
+> pages 0, 19 and 0x1000. In total the selftest reports 85 TAP
+> cases and issues 337 ioctls.
 > 
-> Default min_unref_scans to 2 there to suppress transient false positives,
-> and keep it at 1 otherwise, where a manually triggered scan is expected to
-> report immediately. The value stays writable through the module parameter.
+> Add the new gup binary to the selftests/mm build, .gitignore,
+> run_vmtests.sh and MAINTAINERS. Update
+> Documentation/core-api/pin_user_pages.rst for the new test.
 > 
-> CONFIG_DEBUG_KMEMLEAK_VERBOSE defaults to n, so this does not change the
-> default for kernels that do not opt in.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+>
+> +
+> +FIXTURE_SETUP(gup_test)
+> +{
+> +	int mmap_flags = MAP_PRIVATE;
+> +	int zero_fd;
+> +	char *p;
+> +
+> +	/* zero_fd has to be >= 0. Already checked in main() */
+> +	zero_fd = open("/dev/zero", O_RDWR);
+> +	ASSERT_GE(zero_fd, 0);
+> +
+> +	/* gup_fd has to be >= 0. Already checked in main() */
+> +	self->gup_fd = open(GUP_TEST_FILE, O_RDWR);
+> +	ASSERT_GE(self->gup_fd, 0);
+> +
+> +	self->size = variant->hugetlb ? 256 * MB : 128 * MB;
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+I'd derive the hugetbl variant size from the size of a huge page and
+predefined number of huge pages.
+
+> +
+> +	if (variant->hugetlb) {
+> +		unsigned long hp_size = default_huge_page_size();
+> +
+> +		if (!hp_size) {
+> +			close(zero_fd);
+> +			close(self->gup_fd);
+
+You can move hugetlb setup after opening those and save the headache of
+closing them.
+
+And in any rate prefer 
+
+	goto err_do_cleanup
+
+to
+	if (something_failed) {
+		cleanup1();
+		cleanup2();
+	}
+
+	if (something_else_failed) {
+		cleanup1();
+		cleanup2();
+		cleanup3();
+	}
+
+> +			SKIP(return, "HugeTLB not available\n");
+> +		}
+> +
+> +		self->size = (self->size + hp_size - 1) & ~(hp_size - 1);
+> +		if (!hugetlb_setup_default(self->size / hp_size)) {
+> +			hugetlb_restore_settings();
+
+No need to call restore() here.
+
+Also, if you use a constant number of huge pages you can just add
+HUGETLB_SETUP_DEFAULT_PAGES(NR_HUGE_PAGES) somewhere in the begining and
+you won't need to setup and teardown hugetlb explicitly for every
+hugetlb test.
+
+
+> +			close(zero_fd);
+> +			close(self->gup_fd);
+> +			SKIP(return, "Not enough huge pages\n");
+> +		}
+> +
+> +		mmap_flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
+> +	}
+> +
+> +	if (variant->shared)
+> +		mmap_flags = (mmap_flags & ~MAP_PRIVATE) | MAP_SHARED;
+> +
+> +	self->addr = mmap(NULL, self->size, PROT_READ | PROT_WRITE,
+> +			  mmap_flags, zero_fd, 0);
+> +
+> +	ASSERT_NE(self->addr, MAP_FAILED) {
+> +		int err = errno;
+> +
+> +		close(zero_fd);
+> +		close(self->gup_fd);
+> +		if (variant->hugetlb)
+> +			hugetlb_restore_settings();
+> +		TH_LOG("mmap failed: %s", strerror(err));
+> +	}
+> +	close(zero_fd);
+> +
+> +	if (variant->thp)
+> +		madvise(self->addr, self->size, MADV_HUGEPAGE);
+> +	else if (!variant->hugetlb)
+> +		madvise(self->addr, self->size, MADV_NOHUGEPAGE);
+> +
+> +	for (p = self->addr; (unsigned long)p < (unsigned long)self->addr
+> +			+ self->size; p += psize())
+> +		p[0] = 0;
+> +}
+> +
+> +FIXTURE_TEARDOWN(gup_test)
+> +{
+> +	munmap(self->addr, self->size);
+> +	close(self->gup_fd);
+> +
+> +	if (variant->hugetlb)
+> +		hugetlb_restore_settings();
+> +}
+> +
+> +static void run_gup_cmd(struct __test_metadata *_metadata,
+> +			 FIXTURE_DATA(gup_test) *self,
+> +			 const FIXTURE_VARIANT(gup_test) *variant,
+> +			 unsigned long command,
+> +			 unsigned int test_flags,
+> +			 unsigned int which_page)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
+> +		struct gup_test gup = {
+> +			.addr = (unsigned long)self->addr,
+> +			.size = self->size,
+> +			.nr_pages_per_call = nr_pages_list[i] < 0 ?
+> +				self->size / psize() : nr_pages_list[i],
+> +			.test_flags = test_flags,
+> +		};
+> +
+> +		if (variant->write)
+> +			gup.gup_flags |= FOLL_WRITE;
+> +
+> +		gup.which_pages[0] = which_page;
+
+Can't these to go to the static initialization?
+
+-- 
+Sincerely yours,
+Mike.
+
 
