@@ -4,88 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EF1C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3278C55196
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE7586B007B; Mon,  3 Aug 2026 17:40:18 -0400 (EDT)
+	id C689E6B007B; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C98496B0088; Mon,  3 Aug 2026 17:40:18 -0400 (EDT)
+	id C404A6B0088; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAE306B008A; Mon,  3 Aug 2026 17:40:18 -0400 (EDT)
+	id B577F6B008A; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 994A86B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:40:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1D93B1C13F2
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:40:18 +0000 (UTC)
-X-FDA: 85061276916.12.AAAAE66
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1E010C0002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:40:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b6VwgqfI;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 986946B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5402807C5
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:55:00 +0000 (UTC)
+X-FDA: 85061313960.02.B2F281A
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0C77F2000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:54:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LDMDbnHe;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of 3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785793216;
+	s=arc-20220608; t=1785794099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Bg2LdVq1/Og7fOxQWrSuRusd4/7PR3QXSV1Hts0A/w=;
-	b=aocaAm5me6N3vgIBpgRTDC+Ptu4xByX1eCQRQCW5cu260+4V3q7jRYss7xgTjrYFRomu6L
-	Je//NBYaYNF9QZwIrnu1m+MESCxdB1PUBva3IUNnsBuYN7JfX4Elk8xLYcfj7UCf9+BKeg
-	uAKPCsuDmbnuhnHtn3M40iwcWSmIERk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785793216;
-	b=TkaYVeS75qP2C8MAW+e67creMvSZLitLJqhldBEMsS/OU/z9j0DNbQPRWpbQydp8yvrEXv
-	juaQ/IKJqu9HzSCzfPXvjIvqTutSv2G4CyP6gcrvQDDlFtvIo1c02/25c27dkG1bnntfhT
-	yij5fav/FswIR01A+M3/v1gcxEGy36A=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
+	b=wOdUBoQe1rKcfQ+MqahylSkWIMlRqtiWiO9cYK2TnFq6CzNm86qD2TljCnHuAdnI/9UPS/
+	ixgpHwSn7tuy1KFzSRfIqB5DmZ7qwdlppOH/9bbSllTkHekcPFS5yvXRttIij4kWiBGCLA
+	LjTZ9Qe8r2SY2gPwxcwCRV68VYn/V1g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b6VwgqfI;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30C0742ADB;
-	Mon,  3 Aug 2026 21:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4171F000E9;
-	Mon,  3 Aug 2026 21:40:14 +0000 (UTC)
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LDMDbnHe;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of 3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785794099;
+	b=xeMID63jJTXIOKDmey0t7dLrMqHCAqyhOULP5KK5Fs9sOwhjH1iEN1en37bd3sOnNNMoBY
+	vBa88Z7HYKQya44rbZCPbB/iJD5ct5E5R+Zwxg8HO9xKSwYzwcfzR4WG6f/9KSWF+QVmeW
+	GQungHHF1DsEG5C74j47QzgNVflDY2Q=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so2669248a12.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 14:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785793215;
-	bh=+Bg2LdVq1/Og7fOxQWrSuRusd4/7PR3QXSV1Hts0A/w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=b6VwgqfILcG8FeFaIWu+DpKiAAl03QgVszTQCrSWT8MAKoNwAbNTlkxRN3uWu50yP
-	 NJZ50HtAspJQ2DQlmn8EcJUwz7pLZ2M9ff26SidVSUGVu/s+V1ZwZF8BIh+f8YCjzw
-	 F54QgJLm49aXZwLS2fQZ3AegJIsn4oU9jZnbSqdo=
-Date: Mon, 3 Aug 2026 14:40:14 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Li Zhe" <lizhe.67@bytedance.com>
-Cc: <apopple@nvidia.com>, <arnd@arndb.de>, <balbirs@nvidia.com>,
- <bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>,
- <kees@kernel.org>, <mingo@redhat.com>, <muchun.song@linux.dev>,
- <rppt@kernel.org>, <tglx@kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <x86@kernel.org>
-Subject: Re: [PATCH v9 0/8] mm: optimize zone-device memmap initialization
-Message-Id: <20260803144014.e2d4ebb83e9471b695f6290d@linux-foundation.org>
-In-Reply-To: <20260803070929.86075-1-lizhe.67@bytedance.com>
-References: <20260803070929.86075-1-lizhe.67@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1785794098; x=1786398898; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
+        b=LDMDbnHemBeth+OugZE1/K3nN+xUGBqvhaYjg7GuVFQqOJM6H4JLhd6qLR1u3wrVGQ
+         FKsOQzfdeO/OyMz47zu067rvjP2CfPo9ybNgU4KTgZt8Crpz1AXRTCgwKk977Ms7Z9yA
+         +XLiLkjf5A6uDOCRSbyN1+RNF/7Ko87gR8VFm3MvFt6yg2m9q0uhytc9YfoloU9uT7j+
+         +CXcH8zyxVjEpdyJxB7+EaUC14PrEisSh6tLvDtfLIGzaIvct52SL2Ey6AnAuTqVJetb
+         Zj7QCZHIandFZMMv6rZH4K2BfdsGgWJeqZFN1gaLi3YECRq6Z/zf9QU4C2l1M9RhkDVI
+         Sa7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785794098; x=1786398898;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
+        b=gkaEQ5QMymPxiVkVvxvTcnH8z3LSCiS1tYf8wAOHvVPMxurXvRx2bhb3JriSHEMp4g
+         6QgVMDf2VhdoFHMokeetHLK7dDtJBVr1t5GhahT6a48YPki45F4yE7UWjUynoZrC58Ak
+         dFp++sEnsH5UegfBEvTxKTZ3p6+/kZuKKCoE+FCUg+vEhw5EmWi6kNtEW86vV7OXoU/Q
+         HvBfR4IEzsbggA/NbFHGDznzJpsTYqOvdqh8f+3+zyFYQVWEKT88E3cDD3yVZCjA/n4r
+         GVfhQ7wOd3v/h5QrgAIl1Knb3aWKqp0C+GTw7Nm5Zj/vJ8HGP6OvL2+ak8afCf85jero
+         gUTA==
+X-Forwarded-Encrypted: i=1; AHgh+RrG8zitd6Li+hr3nxbj94siK1JfZlPZ4JV+gzC/Cd144wKxx8a311lZ84akvvs7fExcfbv3gac1UA==@kvack.org
+X-Gm-Message-State: AOJu0Ywl66mIGxHFqy7BzUkvKEuTO/zfPnEq6UjHAbOAiDUEzkFPhyxZ
+	KPmoqMbUzifHFY0jX9gCrOYrvflgsnZuv96lrbXQqvF4VYtrw+5ecy5/E1guLyTVaJbN4+SZK8P
+	T+t/zPszkGB9IOmwHXps40xFEMWpCs1syfg==
+X-Received: from dlbrj9.prod.google.com ([2002:a05:7022:f409:b0:13b:2a58:e5fa])
+ (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:1dc3:b0:387:e0db:bc28 with SMTP id 98e67ed59e1d1-38fbc554637mr10362140a91.40.1785794097472;
+ Mon, 03 Aug 2026 14:54:57 -0700 (PDT)
+Date: Mon,  3 Aug 2026 21:54:55 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
+Subject: [PATCH v3] alloc_tag: expose profiling and compression states
+From: Abhishek Bapat <abhishekbapat@google.com>
+To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Ge <hao.ge@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Abhishek Bapat <abhishekbapat@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0C77F2000C
+X-Stat-Signature: hsn5x64c1yk6czhky793r6ayxjwuz5gz
 X-Rspam-User: 
-X-Stat-Signature: ht3t76b6eu17xe763qgdiiehzr39arwx
-X-Rspamd-Queue-Id: 1E010C0002
-X-HE-Tag: 1785793215-8230
-X-HE-Meta: U2FsdGVkX1/TFED2IF+BjqJOkonTBWHiN1bEdgjVq3JNLJWoA0sBq69I8+YjZZq/qVl7CVsk+kPe0dd+A0EQW0OwgbxKQEir6+jAAiUH2ufbpuppwH2aJsHr0I4NEVcTZJBbaKszhkwt2YYrSekP5etkBuoHyoROgzdatnsijHthtQah+Cx1UPD1I4/8M0mZsPdYsa43Slck+vlB1KFVbb0Pw6lv5rOLygpXas1IRKFZkQ4Hbw0FXeE+vz8VYYdo6mXmnppM4NSQ/h+yahYHtmrydFRTYlZnMGBHwL4X6n8N+JK7+tO40GERfqM5WSKtU8h2a1PxaBZvlba6lLzQiRPlmo7IvcKzyXu8/CjPIv0gRCUgBXr14XX8jsIeu1r2/efCoGDGWLB/zq6sGekClO09K8a4rdJgRADA3Z6HO1nxr79hXF8RPJo2qIYB1EMCQ3H/UrfrtvCgeSj5wvYZiYUx0I1axWUlzcVV1KVL/3tozRdeLPurEIMJJ/zRbt2hgJIfYYU7XMhchmUnvPK9MgXS29c+PpcWYYkW/ugkBEQ0qE0vheXHPFT7T9PUJEOUxIvtjtkDs54OmkMw0UyGnux1qnvX+SNCs6PoRyDZvCd1pNxEF9hld0j2m0vrzdghKJCTztIUMpy7sAOutWnuko+6qp+S6HUaEkkjJibfUCdhYhLNjbtdv6/cONENxXLOa2LZFQPQINKMAfQ2WFDcJkgixx9EdWharWdr0jJf8t9Au6PcAq0X9cfveDUf7I2AjYdJ7dJ8+mv8BHL2qjGnENCclBcBwtKbdfMRiS13Pnm5dU7JCNzwegQ1I5S5siQJ3FKMIrtDYKTKC+xdPDIEnI5jmaD2pY/xqzGZFZm8bVZB6Xe+2Cn4DAjYl0XmW8qJsJWpjKYyNB8DqPpct1vjMOyqSP18jC/1iwVInMTum9GoiyZJMUnnk22N9HfmPHYpaRhpPbIicOtWFLRXQQH
- RWSq5rqz
- LNa4d/kfQxqq+3+5XB9mgpMvmdVvFxXUz7x11Pj+1Rv8rNZE4pw1N6UXoFdVTa83LLD9HlFcN0wClan4yodo4LQoQaNdLAwyuPVnXzbxg4XXTcOEMwnAPpQi3+l6bUp2tUd6kcJBKNDDpQJP5k2BM+WqrIM4mfZI3xOVy+SD77kvSVG6CD0Ygh+LIdv36LUWquqAfp949dICqZT29nkFIHIRRYbX7VcH1YC9g5QrYcl6AudJkFGv+JJEbhzgJyaChy0V0NGvIG5A9ZmyT+reHU9dm7XHN9en+vsF+D2jUQdvwXMJHZXVqI3pvJv2tjDMjtZtlqj66Zk7/pzPqGsr+Uan3Lg==
+X-HE-Tag: 1785794098-576112
+X-HE-Meta: U2FsdGVkX1/HfOv8jnGz2cczvdebsSl0TH88rqzDfNAC76YLUD6np6yDQTnt60shP2xM8/a30x2oHE9AFWpfYIRT6iNzfxvNWEd8/uvn6wF7MnQx8uA9cDAUiWSI4bkrBwVwkiAdwCpYmmyWTqTfAPLacCBMgQsObZDLxgM+ZGtNo/2uZV7jPY7R3KScbI5i3qwIJs4DkSVxRzf44jvq8cTmAaG5KqPuyzaSjEzEFnQKJciVoBNECkCGKoKsIB6fmYGnv1OMRW7oUuKbAESQ36Xm19AyAcD/yOwrC7O9doWNRhJjX94Grju737B7PO9zakBa648ZCDATD25gsoAI7Yg0wHlUIJly6pStWSEF1s67Dquc9Xtk9H0gL4IPk96K4kwQ2twm+N/5BzZtjOKiwx1iPc7CYfDVJT6UgAlwVzuvO+vZqi1UBTDTA0LvwK8J8E+VZlNub3HompCqtwWBsU6lPXeoEMNtp47kpYEleVHcYkKYU2RLJTp6I+aWuwNGGJsK155uTUVDhdwh1ONg//OADNQVpVxYCf/n1Cv+jjJrpJ41gCzrZsTYX4pgseurGzBztrxPHekexVzQfKFicfiuflrgMxWjhYM9GIMSkC82+Z4g/9c5q4B03+KqGqGhWVkHs4Srov10XudU9phwzaZyxDI3H8/uOYJZEGIVgMAdqtS8ex9BeYImtlldLdAwIK1f+hz5ME9Qzy8Lkiu+Olw7AUkI6TCRMYL3Rgtn5DgW8TSNc8YVjvwTt3AYPhHcu/OLTVrl5LmodrPxbloi5OuKKhgWrUti0N7jTEEbVJDO4jI16wzVfu5Ppd4EGurQYj1t81mEvpKgypjThAT7ZFaTiXE80085d3g7h+B3CHKAxqMghytcWADghQRQgRHRSSn2GoO0aAeyqCPYJc2h8D7MCBFK10DWwkRrQRTcRcPYtoij6WJWVomyQ0DAU6G7usFc8GkZbwo8UzPWsuy
+ +KGBVutK
+ pXTR3efjwo2AzBXh6sSGdzb9XHGkX7/J8gUQYrw8O0fF3M1alU1y0tGscL8FgbAhIeXpkje2v71N/aHbgM9d3BcANYHAuQDnVwqdmYAPvymVY3uYulW1yw9rZ0jsD5rjAX6b78PXImMS2CS2I/2qDJ5JB611KXhwLB+mfC2Xykx8yrM86lwnwM9LRbrlCWa5izUqDH7BGaI5QgNSzC9sItrIQfw4ziqk2KJz2enp6sBmeBSJ0xH/S3Q190pTNY4hX01VZXkTXGWJlxK7KDFSd426DuA3b/wFXKeC+lr1ntEIAM5/IZFn/lkbdCuTAZ7LyjmuNhP8gKJwNVOx5jFtXqwltSQvh2DGWreJIK9AYbuGoPX3OiHYUhvNYlnwhNb1VjpzMxYlHk68WQ/v5JJpHgharYroHIc7voiH9XAuispGXUacb7Ua4nR0aMDdWtLtuQZAhb4Y/GFBHshz+XT6qnYs0NKcllBIgSZOJleeSB9jnnU8c6AoKGIV8PZIDprxspMlTi28F0tZJI9IbeSTxJEid3i12B75WZTboFJfbAzJpbgIOvrLQD82IoNFXtayjpAgs0eOK/CiKqb6wiB4NEPWGHJgNwlbW6aJobd2v9Ha4l6yAPOzj6DQQXkcAnDCTRKu0T5I3eCxN7bw7kL4uwPJokHCWl8aoQSvCQSFfLTOfXFo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,29 +106,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  3 Aug 2026 15:09:21 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
+Currently, userspace has limited visibility into the exact active
+runtime state of memory allocation profiling and its page extension
+compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
 
-> Test procedure:
-> Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
-> initialization time from the pr_debug() output of
-> memmap_init_zone_device().
-> 
-> Base(v7.2-rc1):
->   Average of nd_pmem rebinds: 244.28 ms
->   Average of dax_pmem rebinds: 273.31 ms
-> 
-> With this series applied:
->   Average of nd_pmem rebinds: 96.79 ms
->   Average of dax_pmem rebinds: 119.04 ms
-> 
-> This reduces the average memmap initialization time measured during
-> rebind by about 60.4% for nd_pmem and 56.4% for dax_pmem.
+While reading the sysctl provides basic on/off status, it is currently
+impossible for userspace to natively determine whether page-tag
+compression was successfully enabled without scraping dmesg boot logs.
 
-Well that's nice.
+Resolve this ambiguity by exposing the active compression state by
+adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
+state.
 
-Review is partial and it's late in the cycle so I'd prefer to schedule
-this for the next -rc cycle.
+v3 change:
+- Added documentation about the behaviour details of the new sysctl.
 
-AI review might have found a couple of things, please check?
-	https://sashiko.dev/#/patchset/20260803070929.86075-1-lizhe.67@bytedance.com
+v2 change:
+- Moved from displaying the state in /proc/allocinfo to a new read-only
+sysctl.
+
+Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+---
+ Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
+ mm/alloc_tag.c                            |  6 ++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+index c3a28467955f..3ad1e9aacb9a 100644
+--- a/Documentation/mm/allocation-profiling.rst
++++ b/Documentation/mm/allocation-profiling.rst
+@@ -43,6 +43,19 @@ sysctl:
+   warnings produced by allocations made while profiling is disabled and freed
+   when it's enabled.
+ 
++  /proc/sys/vm/mem_profiling_compressed
++
++  1: Page extension compression is enabled.
++
++  0: Page extension compression is disabled.
++
++  This control is read-only and reflects the compression status initialized at boot.
++  Note that, unlike `mem_profiling`, which represents the current state of profiling,
++  `mem_profiling_compressed` represents the state configured at boot time. Turning off
++  profiling at runtime will implicitly make this sysctl effectively dormant. However, if
++  profiling is toggled off and then toggled on again, it will resume with compression
++  still enabled as long as the value of `mem_profiling_compressed` is 1.
++
+ Runtime info:
+   /proc/allocinfo
+ 
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 52aece27b00e..877068241f06 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_mem_profiling_handler,
+ 	},
++	{
++		.procname	= "mem_profiling_compressed",
++		.data		= &mem_profiling_compressed,
++		.mode		= 0444,
++		.proc_handler	= proc_do_static_key,
++	},
+ };
+ 
+ static void __init sysctl_init(void)
+
+base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
+-- 
+2.55.0.508.g3f0d502094-goog
+
 
