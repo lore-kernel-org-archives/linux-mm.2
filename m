@@ -4,102 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F935C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6BD0C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:51:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E5E16B00B1; Mon,  3 Aug 2026 09:49:43 -0400 (EDT)
+	id A98A26B00B4; Mon,  3 Aug 2026 09:51:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BDD56B00B3; Mon,  3 Aug 2026 09:49:43 -0400 (EDT)
+	id A48706B00B5; Mon,  3 Aug 2026 09:51:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710F66B00B4; Mon,  3 Aug 2026 09:49:43 -0400 (EDT)
+	id 95E826B00BB; Mon,  3 Aug 2026 09:51:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4296B00B1
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:49:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F3CF80625
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:34 +0000 (UTC)
-X-FDA: 85059362388.07.0893D98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 820C82000F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:00:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InDa2lOl;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 69F666B00B4
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:51:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2BD016070E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:51:52 +0000 (UTC)
+X-FDA: 85060096464.13.70C8244
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 64D804000A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:51:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUXQqDSw;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785747632;
+	s=arc-20220608; t=1785765111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z3TNkOT9vMabBF3bjPGTX+nNF4y4J7Wx1dBGZm5w1zk=;
-	b=uyaO8T8/wz53CXdCOHQf0ei/FQ0305XBHD22BiVYZQurOjiJDtAXStzt82G0QcXangj2Ld
-	tkeB15cja2VmbJt6YG62VxA8DLC2mBJdIW+SszwJMs0PCJn2Sh1XAVhoN8BZB+oRou636F
-	3U/Md4xSVjyZS7RR7xrhFd249NH8I0o=
+	bh=wYWtREcCitn9VzwK20Ul7JwMvS/AiBKt/jNqS56Ugik=;
+	b=BZ5jLIR1UB/+VlBYq5HP5h6r/dDoGNbthSqP4ntscjvB4IzxrFSUjUE9rT8+bd0uQW9A4e
+	RBP79KxNc+Yydo8CzipAOdjH+wOKMjUeL3vxFAsZiskb/CV6roWlsFw4SjGuwnalckB3D9
+	5gBhdG7ppoLHfAiCadpMNBWZMNZ2uG8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785747632;
-	b=ZEhxU3WlM2/D4DfS1uap6BLBjMewR04Llz9UvSwg5hH+jjkF1eNzRk1JSWYKpBPUU8UsZp
-	RcyQyyFVAq2kbvn59hR2++YaqrfPOQsdph3rmrr7SPdtaL6T/Qf4vQkOBnbF6XMrUTwpRM
-	FSortBhY13Semp0oqFnha7WSacQGqTc=
+	t=1785765111;
+	b=VwCM1Y0qYPZmnf9GtxNXSL0pA4oTvm0U0RjFYN/u0TUmaElXgksoeQr08f2e1i9qJFGQkj
+	xPhzIoSCDM3qnf5R6koXl+HLqKjNp2aJS21LVOMEEDeX4hb+7wipIBd6DEnSBcbybEPL66
+	iPCYoImIL4sWbHLKNlzCT2vOYXZmFPM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InDa2lOl;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUXQqDSw;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B68E240176;
-	Mon,  3 Aug 2026 09:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3871F00A3A;
-	Mon,  3 Aug 2026 09:00:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 005FB60A78;
+	Mon,  3 Aug 2026 13:51:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FC91F000E9;
+	Mon,  3 Aug 2026 13:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785747631;
-	bh=Z3TNkOT9vMabBF3bjPGTX+nNF4y4J7Wx1dBGZm5w1zk=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=InDa2lOlOoCz52KomKj4SnDG9kXgGXUPDQlsbI3zxn3XkgfMeSbSpeppsVlo4Dy5+
-	 SXPn/k1Kfg/S8YM7eDUMbEQ+ncSz6d89++WAbrULe0wxhhE6MdxtkA+QtnBDwbQ+h/
-	 hA5Gv1ndYvGUwet5mAib1GiFr6bRfPLEGsiNo5sIW9GYKgnFnB5DxazpFK6Akl0Qsw
-	 gTXZjJdee2MX/2V0d+sHhW77hPrf+YtgMwfIaJvjlhV/8Wpx0IWNDjRWe3eec41c1s
-	 lfv4xFhjpBUaa1QQ2HyBsfkRqI+GV06EXoBspxlOYBMM37oWyEOKlGS4rj5itxrDfE
-	 7s5ppJV+H3NKw==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 3/6] tools/lib/mm: move hugepage_settings out of
- selftests
-From: Mike Rapoport <rppt@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
+	s=k20260515; t=1785765110;
+	bh=wYWtREcCitn9VzwK20Ul7JwMvS/AiBKt/jNqS56Ugik=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fUXQqDSwQRNCmkLD5cemnbTUAjHE/irGyvzgbHLxPc0i1jBlBQTukK5HA+aSIvnBC
+	 R0SzlslWfUByqQyQLjFv2VKbBHYAmHOj9EWiRF3DvEyZodM3CLzCGvNK/M5dInlK4+
+	 U9wzqk6EU/OphCdVnGMO3Czmba3DqbykfibI9bvc3yGFgXNsUJ38xhXuRdsYEfwVdZ
+	 7o4p/kjve+UU+zLDVez4Qe7mmlF1YZMvbdm3762IvRErJDJH70Sft4ErX88/PAtZYd
+	 cDhgsG0sy69Q3FQZ1KH8SAU/9DRtAzOgrkS2ASxz1hjVS6rI4+uMaAJcrhu06pFGXk
+	 q/JRoSBb92K3w==
+Date: Mon, 3 Aug 2026 14:51:28 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, 
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260730140825.238130-4-sarthak.sharma@arm.com>
-References: <20260730140825.238130-1-sarthak.sharma@arm.com>
- <20260730140825.238130-4-sarthak.sharma@arm.com>
-Date: Mon, 03 Aug 2026 12:00:01 +0300
-Message-Id: <178574760162.1561566.5251738533303087247.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Stat-Signature: pmadx3yysjjcrfrn7bb8fcugf4du9iwn
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 07/15] mm/rmap: track whether the page VMA mapped
+ pgoff is anonymous
+Message-ID: <anCcMvnsux22LaWU@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-7-e8ecfefea812@kernel.org>
+ <1b48cf7d-8906-43d4-a85d-5cfad10a12ac@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1b48cf7d-8906-43d4-a85d-5cfad10a12ac@kernel.org>
+X-Stat-Signature: jpc891pfxdicdmoa719txt6zg8emoqgx
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 820C82000F
-X-HE-Tag: 1785747632-151332
-X-HE-Meta: U2FsdGVkX18qHEark6JHzF3/VO2mfcU65MsqKOk33Am7zjw0GI3R/qYmUDxGzq/7QxPq+ocX8qoP87ytNGbDeXOz5f+fmv5DGu6O6L5RXd3BrI5J6fTIJwj3x8Dh+YfExkD0RTK6QpYvM+SZuNtNus7EyigOr4bqdc6+fuumpz4MzWVrAsc4s4wgL85v4dHmt+vfswQqPlCJz5tSjUy20Y57LF2NBfu/M7Drh7KS5owr46pK+k9K19+05rs9dbjCx0HlTkA/86XuF1CFj2yMZkFIdcTj4toe8l2Pvssy/T42jNodWCKKjhJTuRaM/ArafhNKik0A/2ED0GOB/NlWC0YOiRvp2JNoZPTGkbs+Vf8IOFbzXcecxyeHNtUP/WXQwptJtfH9ehxvQHXIUFfqRjML7rxdxZMdDA06vjdjw6S45Qae3HkCz68BSO7+NJtUCph2PMFdsy7x73yVwKpxwZAW0Hn5HmQ3KuqxNJo5ivs4ILXj3IA/xrEM56B+2q2B2GLMkiRrGYc97Bde2sW7ScuqpFm541+aSTocleOwiBcr3to1RO2Ep9b5tBKYi04/f5QE1Trol1ci+4eQZCN5gUSw+ybo6h0xkKOcveV7Rgl2UBfktq2ign0zt+yrDTRFOU8p8hU3NFx/biC4aY6/e6ZFhzmkLtw55iuoJtPGYmexJ/7/uK13Sfsti5XocURX3QLp5fKzQsqpRkB5+R4ieAifVSoNj5fXnS6esWd0qHnQOImGqJ1Un8qXHpCvcOnFiFDdYo55mnaQ5ab5JlqRUuJo2Pkc1ZLzwTV8SpOlRPHMHhOOdDGlwleZUQTJ4JA8TkCuDvFHMzwmLEbjCL1GZUhg36LJY0hb/ejvu6bcZYU+PSkGyfu6gKf+dB7UN0RJRFNYtbfWNJngLBwOkQfCjqkdahNIjG09RPMqb8472JU9N8rcTAawolpdjaKwP+T1jZSUh8ByghEPHdMi7WD
- UwkIzE5C
- 5ruiX3Hg2y7391Q6QDZZX7vI5VVz+NoK8PJe4q5KgY5NsRJ5+sgRqK6ZO+FMdnrwLY5DMp58dS1piWsZmjpSmXVLR4dBr17Wsg+FqgLbtUWt/kHx8G7MSCfYSp6ULkNbVULg8n0OgE2AxgA5qRKeTa6A6JWQa42FP9KOrw1e/yDVEJ6oj93ZkF6Idm1tVcgXdIdP1uv7Q+IVZmOgmx3aGxcRc1TjsKgS18URcIVU2cj2rPD6D0obRkQvYjEhUHtI118Ef33xI5I16FM1tWsDjP3GQnRIJruECG+wwHlcOEMfyAyD095yJEAetI3bRxYS6pLlDiNL+oxKeYmg=
+X-Rspamd-Queue-Id: 64D804000A
+X-HE-Tag: 1785765111-711595
+X-HE-Meta: U2FsdGVkX1+NJLxBRU0/OPc3F7J9Z4QxxX85Hw8yVpx/2cfWw0yBFlcX4kz7KOW6b+KjxwbqdzCw/3WrQVKd12AAPMONSgJxL2kZmkRwMsaA4KqvByeEYo1FLXCXbaes5b/UwoM+Vxd0fAhWxu5mMo28Ti+aanoubzXiWoqsHsImtfNxpc4aLrpY3k9MJk11zQoV+PqJVj/uYjzNTNSpUEA97vGY84PmcWZfqj+KAPkhEp4HB+2BROiRHq0hiUWyzU+q4V+7hrpHC3MK6YD3ZvGweZOKcGEXAUc33PY8+g9PDvlu3Lvn/5bQeHE773xBeC4pK+oLXsjatUEijRQohrT/b2VOz9iyMlypYJXMpQkj4ZSo/StOJyPIYLfx1Z+RmWlVa7GvlfrqvUDogmB3PXPvSQ2FHTWUAWeCKhIFEXPzBoUuqD92zTz1QJM2ouXAMZdTIasXRE1G+aB620+2h6iZ+z82/EOAw3+Lm/GYGN1qi+ZYHow+EWjU8TfDBOYeiNDnjo1gXPi2nuP5Xq/65uhxOkLZf/rWN6fiV5s8k0e2UOfO0ZbN5iyhjlt42HR2ILYtTNdKeKSeZfgGrOm9YV8xSUf3ZFR/0Y1C/q9SZKuERfCHuwsqVtz8pnNwdVl7QLQ/HEfyBtUZVVOxXccUG4u9qBIDZwS6/N5E3A0GNj2Nq4Pcq2qVaNX22CRRYKRTxYyfpxdyOT47bKrprR7E9WM/gGT5HFvKZnBZLLIOkYPYGIi4guAXLHdOKwPeo3z9LDs78xQpjSEvX+FMnEtLES3xO/L2D3GNwVp2Xs1/yQRztn23IWz5MTYTWD7KyOEELeKZh0on/ISkZ41Kcc35+CkpU/3mx28xEXpV7qrSy52MVCRpPRN07LghE/yb2UHVy2zpp4LFQJ43tfCBI1BkOm0boYMbgHBAESMzCmDHlEW/9InEPmaxnAZWwwaL/9dKZCz2vtNAKQsmLkNRl2C
+ 9EyO06CX
+ O9R66p0O9c3gZoylQ67rsxyr3hfn4VO7b8XKWijwZajeHnZRsI1KOgeJ9pFgjQqer84lXYZap+d0KZK1Q8cLpOrKrg97oxcOvPtuonQ6ROENzCzvYJyXU2fgw9k+B8XStbW4W/vdhCNAnTmSUgekQSV9cD8txU6BaeRBpA/lqWnlLpV5Ak0AiWwhHt2amKNAHMH4QnKCTd98eN4dNk4su4c/VZlJUbZPIm6BYg42iI22UxepisATZDvV7+uMZTBBsmGmzw4tB1nJiJt3u5ilE0QoqKvVYf2Ak0YtIno+qWbUIO4DjtEnjhd0ezMD7jkMMyr293Z6gBQ8Plqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,73 +107,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Move hugepage_settings.[ch] from tools/testing/selftests/mm/ to
-> tools/lib/mm/ so the THP and HugeTLB helpers can be shared more easily
-> between selftests and other tools.
-> 
-> Keep the helpers exposed to mm selftests through vm_util.h where possible,
-> and use direct <mm/hugepage_settings.h> includes for files that do not
-> include vm_util.h. Adjust the selftests/mm build to compile the moved
-> implementation from its new location.
-> 
-> Remove the remaining kselftest dependency from hugepage_settings.c.
-> Replace ksft_perror() with a new print_file_error() helper and
-> ksft_print_msg() with printf(). Prefix both with a # to keep them
-> TAP compatible.
-> 
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+On Mon, Aug 03, 2026 at 12:57:44PM +0200, David Hildenbrand (Arm) wrote:
+> >  /*
+> > - * Then at what user virtual address will none of the range be found in vma?
+> > + * At what user virtual address will none of the range be found in vma?
+> >   * Assumes that vma_address() already returned a good starting address.
+> >   */
+> >  static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
+> >  {
+> > -	struct vm_area_struct *vma = pvmw->vma;
+> > -	pgoff_t pgoff;
+> > +	const struct vm_area_struct *vma = pvmw->vma;
+> > +	const pgoff_t pgoff = pvmw->pgoff;
+> > +	pgoff_t pgoff_vma_start;
+> >  	unsigned long address;
+> > +	pgoff_t pgoff_end;
+> >
+> >  	/* Common case, plus ->pgoff is invalid for KSM */
+> >  	if (pvmw->nr_pages == 1)
+> >  		return pvmw->address + PAGE_SIZE;
+> >
+> > -	pgoff = pvmw->pgoff + pvmw->nr_pages;
+> > +	pgoff_vma_start = vma_start_pgoff(vma);
+> > +	pgoff_end = pgoff + pvmw->nr_pages;
+> >  	address = vma->vm_start +
+> > -		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
+> > +		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
+> >  	/* Check for address beyond vma (or wrapped through 0?) */
+> >  	if (address < vma->vm_start || address > vma->vm_end)
+> >  		address = vma->vm_end;
 >
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/lib/mm/hugepage_settings.c
-> similarity index 94%
-> rename from tools/testing/selftests/mm/hugepage_settings.c
-> rename to tools/lib/mm/hugepage_settings.c
-> index db0db8a3df7c..4471f4989dbb 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/lib/mm/hugepage_settings.c
-> @@ -10,11 +10,16 @@
->  #include <unistd.h>
->  #include <errno.h>
->  
-> -#include "vm_util.h"
-> +#include "file_utils.h"
->  #include "hugepage_settings.h"
->  
->  #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
->  #define MAX_SETTINGS_DEPTH 4
-> +
-> +#ifndef ARRAY_SIZE
-> +#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-> +#endif
-> +
+> Am I wrong or are all all changes here completely irrelevant for this patch?
+>
+> You mention
+>
+> "This is necessary in order to determine the correct VMA page
+> offset in vma_address_end() when pvmw->nr_pages > 1."
+>
+> But I don't spot an effective change here.
 
-We already have ~20 of those in tools, so one more won't hurt :)
+As per commit message:
 
-But really definition of ARRAY_SIZE() belogs to a header, maybe
-something to cleanup later.
+	This is laying the groundwork for eventually using anonymous page offsets
+	as the index for all anonymous folios.
 
->  static struct thp_settings settings_stack[MAX_SETTINGS_DEPTH];
->  static int settings_index;
->  static struct thp_settings saved_settings;
-> @@ -49,6 +54,13 @@ static const char * const shmem_enabled_strings[] = {
->  	NULL
->  };
->  
-> +static void print_file_error(const char *path, int ret)
+	No functional change intended.
 
-Maybe print_file_access_error()?
+I cannot enable an effective change here, because if I did I'd break the kernel
+and introduce a bisection hazard.
 
-> +{
-> +	int err = -ret;
-> +
-> +	printf("# %s: %s (%d)\n", path, strerror(err), err);
-> +}
-> +
+The point is to have a reasonably broken out series that lays the foundations so
+the actual patch that enables this functionality is as small as possible for
+debuggability, reviewability, etc.
 
-You cooud add this at the first patch and avoid errno dance there and
-all the changes for printing below.
+The tracking introduced here is critical for the actual change.
 
--- 
-Sincerely yours,
-Mike.
+The trivial layout changes in vma_address_end() are done here so there's less
+delta in the 'switch on' patch. I can add something to the commit message saying
+that if you like?
 
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
