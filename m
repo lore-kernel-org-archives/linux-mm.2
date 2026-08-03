@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE34C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A820C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F4F86B00EE; Mon,  3 Aug 2026 09:44:33 -0400 (EDT)
+	id 203C96B008A; Mon,  3 Aug 2026 09:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CC9C6B00EF; Mon,  3 Aug 2026 09:44:33 -0400 (EDT)
+	id 1DAD66B0093; Mon,  3 Aug 2026 09:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E3756B00F0; Mon,  3 Aug 2026 09:44:33 -0400 (EDT)
+	id 07C206B009B; Mon,  3 Aug 2026 09:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2310A6B00EE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:44:33 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93A91A06EE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:44:32 +0000 (UTC)
-X-FDA: 85060077984.22.4751EC0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B037880010
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:44:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D40D26B0093
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:46:57 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 548531406B3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:46:57 +0000 (UTC)
+X-FDA: 85060084074.14.C445869
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D81BD80004
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:46:55 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Hy3P94XF;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l3gHHJ5k;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785764671;
+	s=arc-20220608; t=1785764815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hFSLVl3vqMdmpwvvARJ3ktsvhZjh5uM2PCOjkzWMtqk=;
-	b=hX3zDUl6IX84lvzROTto5K+C6y6J+o3IER3c4dxAZWe1XsOBUezn2xpsFW9qFnTHZ9OhtJ
-	CXc+z8H0//60x5GaHR3JKTxowTlLkVQt1ngOEAxoOWDagc90O4xpZaqlLKEurMh7fT09vB
-	0deDdeRpBoLB/vysfrxRThIDc0Q9qIY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785764671;
-	b=7h2guHjf30tQgvo22Ra2+PszRv6LVvnBMDtd+cNRy6iItgyp6dGB30mXL+jg4W4q/ziUxW
-	w4q06Vn66cYGA/N3S1QNk1UUJNM8e3GbA8jjjJrrIYS1qu5cVACFnN51z6O/jhefNULdIC
-	VMwsipfc39Xywf8Fqffh0LdIJdqx0ao=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=co/3NtBMT+/PSQBj9iUTUY4KxUG/Ig2umyiYC8Q4zFc=;
+	b=rhtr5ynyIE1fudN/xzZLa57d4NrK34ZQ5PbP4C88wjxtbW2PCP6fVaDwF7dzJqZcFTyX2X
+	3WLbn9Eo72CISMdIp356c3DkN0JjR772w1qYl7epkloUXvk+5kM769S5R45HU/IIW2zHKb
+	IX6+U3XHtVXoqNpPgMD/Z1bmlLDFiqw=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Hy3P94XF;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E20CE1596;
-	Mon,  3 Aug 2026 06:44:25 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 145D63FAF5;
-	Mon,  3 Aug 2026 06:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785764669; bh=FbJxtBRUzaq14tEYegaKum4NxMdFUr/7vbSSHB92jDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hy3P94XFDUXk6tU9GNq5CIL9vpL5JIYIqJxo5Dddl4Lyni2Z2dqfmtSz7120G69az
-	 jYGFL76aKiodXvYN3OVrzPyfesEB+Um0xxKOQeANvgv19bpPIw6aRwaOOF9SzjT9kJ
-	 ijB/52AFaeXBreAiDELLWQHFMElZ1lGk/T3KkQD4=
-Date: Mon, 3 Aug 2026 14:44:22 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm: kmemleak: default min_unref_scans to 2 for verbose
- auto-scan
-Message-ID: <anCbNtFjv9B16gcG@arm.com>
-References: <20260730-kmemleak_hardened-v1-1-b0b20033b4bb@debian.org>
- <anCagP6JDQG9w71j@arm.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l3gHHJ5k;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785764815;
+	b=ZbUbmcuWdECb1GpnWBMjPif6Fu7wckzh5jkMf6muSfm+TpCwoTnur5XMjVxdb5uCvcT68L
+	FvEiQ+kdKvwkvsJEnmycIzdrSB+f+1GmiZ+qodIJvZqbiLlbhoWGZs1aYFSuYBIJj+VGpj
+	944R02F5L/ATjvF0IJP0+ejpyGu2Vtg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A7C4E60A78;
+	Mon,  3 Aug 2026 13:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263691F00A3A;
+	Mon,  3 Aug 2026 13:46:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785764814;
+	bh=co/3NtBMT+/PSQBj9iUTUY4KxUG/Ig2umyiYC8Q4zFc=;
+	h=From:To:Cc:Subject:Date;
+	b=l3gHHJ5klugoL+0hNmdK4DzQSOkan+yAC9Nal74GzYW31jeLXXi4X1kxjUsloEG8l
+	 SQV/uUVas9PpeKXumZD+LIH8wsmrQ+w5m7bVeWjx6s1ZIUrC166lTy6+UNENIpIqFs
+	 CdhRw0s+yt1QdDIGmy9R9BvUHFiKKwEPuGUljJIjA/GCmS87UnIHCnwiaP5TLNNyEC
+	 XYO3FKA5eanu4mwiXUm9/DynpZX/mmu1Djg2ytvh+FQSwAp2J+/Wp8C9z6s3ndKf8x
+	 Te4TJH+fF4NIPaqVg3iNBncEIs3c+CxbDWEqRWPAn3ovLMA2lNnnJGXkLSOt1CnnyY
+	 2+ENQnbqP/o2A==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] mm/damon/{reclaim,lru_sort}: fix commit_inputs infinite hang
+Date: Mon,  3 Aug 2026 06:46:43 -0700
+Message-ID: <20260803134646.16640-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anCagP6JDQG9w71j@arm.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B037880010
-X-Stat-Signature: qhnudkxmj1rk4u1ysc7rfxoma63kjdor
-X-HE-Tag: 1785764670-12013
-X-HE-Meta: U2FsdGVkX1/KczEiuS40XaZRvSBDminQxC9r91yt+Uj2AS54Bf/m2dqf3HvFw6TUefYAqYxpFPiy/EPGMFtjV0eTwbksFZ+9cBExCdOuyY7E9xIIwfzg78N/Il7EfGVWhuQ+kD5Fy/kCbGYC0dbqro7nef4MOpv9MiQ4bzc8KYuW9W3CIYW4l3X7tmNHkW6ORxCxsmUiZkOoHNon+UNnlxBXal0MQ7t4px/AGiQRZ7lSE1jnO240/8Fj27CFvT+DCIgsnMqdXgTUzA5k7OEwKB1xdoa1RXKssFPFm9yqT8B9wPzqr5992SgIxL+YLjC7pEp4zZ5ST7hPmIatx1G8a2KKLs/pVCivjwe1bytHy8VzIkzS6mVFnSDOaHac8ngqloPQzIg3p/vI1cUsloOfkh3ZE6R7yyi008u5XTeHUmnRigIELNiLezQPWovrFlLRoNoyp0xDXdm/1Mi1bOsohxt54CoKBU8pUWiK3tVCwU54H4INyS27qMUcq7lP5X6vqDdyAGbV+TjPI31A7XYF4wXbRK4Ar2b0b6ktCSobVWae/Ib8pl9zsOAzwcnZ8PXr11zQK838EKIzNhj279iYYkpQ8xr/S8pNxHvyCGEkBd7x2J9sWA/wwJwpWty8uFvWovrhbYV8iER+xcRZopBiqGFeSKTKSgMJgT//7nkeYUUuLQkTA42IKHIAUtyh0grO5gcDwaLpZJx2oe/qrQzhhtxJ2z8qopUBWmACKDUn9C4fL8UYCGEQuwFwyf6p57cehSYmBfepXRKh9q3clfL3jGNpAmeL4RUxBwhiTcCmIZRg6PaKevME/Q0vhcvfqD41ABhqqb+XDeOwoE+0X34NKW3KJQCKOLF2tvNS3xL1x44R7BnVQaMB+3h16HEnnAdzViL1zFF5lPvBN5ioBPaaF/e12kD+QtT90EIAOQUiuy1i/b+qE9FV7xcVV6kWNvDXjLL+AFJeRgvdIHyW7T+
- I+mKWA35
- 3p1nhrJZ53IfFXbeEII31KZKIl4yapMypEWAlpmi90KVT79VODhu3z8ia4ds0yj3A1/g26EWiu42WIb1p2+kDLIvAvM5zlzfZRCjnbKWOSRf+YXO7jzOrZ5JKwG26V4gMXG2Fgg9mY5+ZNXwRsWj2E2cvP/ZuXQLr+cdCvBWeuYGdTY8Ru5JnIL6TA+zVedmSOBUcxwp40Fly8lAFl1CBqsXFuwfCs1sBvsIRcH9IiUPJ+C/amIPnBT/RCs5qWb7gcQhlnFgu8utCk7hY00KWloWxoxzprNHXQyXhXNPblTZwfGydAIq39eYDQvPjGKd+GX5JkFexsvSR0i6rIwnZKwe0qjrNR/Vnr5zIw6ewQXBuhOQ=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D81BD80004
+X-Stat-Signature: fjeeruwues7iy4dimegpenabensxgd5n
+X-HE-Tag: 1785764815-522923
+X-HE-Meta: U2FsdGVkX1+VKUvmsSzo9nPp2S/hshKEZYZN+14j+iqHgoyGHWc6vneHnX2g/QCE3PNnZ7AjtMH+8M5BsC8f45tRbpQY8wUQhzy9kXbEqJKKpSEgbiF3Y1Wfwziq9gyIt4Tjnabrz+wWFdkiU2rPPcqzXeTYOHtlh2/WK0VLQoGfUPtn2Qf165sft3MXSdlG53RaweGqFPbEiA0apEeg/tgTS/pOZL+X2QGiL/c0NgIS6DIkCfa9r8TM5vED/iY9fxAI+JyaZDOGTrs2Qc+JlbXPxeEwzauQffef896kLePD59GsEyGakyC/DPRjh/Ci1IwH29+73UjeT6Bzty81JiOYP07FeBV5/VAPvvT6kdMG3RVzxhBi9fOLRihuB6Si7SV5ceDRBTsDfAbtgLGNrChu04Gu5+xSvlHOcvvgEd7SHZiPIoQsQBXlrdCSQ8uZqkt3Y/lZtJuEOwlCcFCZ8FS9E+DNRqEX9/6vsrgVL31MxnKa8FMcsXrZS7kQ7aL+ouegQTuiAQQWwAUEP4uQ8xP2qvyeldyz9wbLxOw7gApfpJlwIOFar0iMdldItvdUq+8wY+KId/aGG2xK5hBIgXLu94/avlZXk6zJ6dgpMZcpGX1uhyKCQ5l3XcEzHSgCENO/e8Gi+IIGZeOK2wjowm6YcpVUdnhYRYpZ6mIsUaH+bp0jnl0rnjnVux8M4umG2pg6STnxsvZ7rNZjLXcx8N1/xJmzqs/2+R3T6vN0mbi3Ie0/6e+YqN+FXz02QYjhTkDdzEcJ2B4L82yIPND+NJ3aMcAvrzQv5mqTtkipP/BeZypYLz8pmXqcAnwg7dQXo4ewSALiE9jsRXTgcvt1ZgFLd4nC9hpUznOYUDLC56TlEmdq42l852TXduL1Shkl2LegkXlm366FklEsDu8LP/6yOy1IEf2QcSt6J2ww+eIicSPgv+FGhm/M1VExybbqwDC0YEMQVVe6NMOz1+P
+ IUINdGRY
+ LYuNp+KjuNeRa6Q/gTYwkvG/Rmq7D7lPhdk5qkL124eLordlnwGURlHSR42jdGlcSV635HLltOer3Z1DeIgCzBXaDKQr7nchXvA7hQUwXHZws4f9KJhbJ64WrrU8m4/iCH2gmYKxD3WWPfPadxhQ+AtidPGIZf/afmyGuJTh7wZlkkNIpbeNbvYkWFUaJbc8Av1ppqmFjDzTxdanODfjY5BanqBjU8Muv/SL7iiqkFIRBp5a7Df+a+UGJApIJOllDu8pUS8jpun2SFZrIlzyp9qUXyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,31 +92,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 02:41:20PM +0100, Catalin Marinas wrote:
-> On Thu, Jul 30, 2026 at 07:31:21AM -0700, Breno Leitao wrote:
-> > min_unref_scans defers reporting an object as leaked until it has stayed
-> > unreferenced for that many consecutive scans, filtering out objects that
-> > are only transiently unreferenced during a scan.
-> > 
-> > It defaults to 1, which reports on the first unreferenced scan.
-> > 
-> > When CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN and CONFIG_DEBUG_KMEMLEAK_VERBOSE are
-> > both enabled, the scan thread runs periodically and the user has opted into
-> > detailed leak reporting, so a second confirming scan happens on its own.
-> > 
-> > Default min_unref_scans to 2 in that configuration to suppress transient
-> > false positives.
-> > 
-> > Keep the default at 1 otherwise, where a manually triggered scan is
-> > expected to report immediately. The value stays writable through the module
-> > parameter.
-> > 
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> 
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Writing 'Y' to commit_inputs parameters of DAMON_RECLAIM and
+DAMON_LRU_SORT before the modules were ever turned on causes infinite
+hang.  Fix those.
 
-Ah, I noticed there's a v2. Ignore this one.
+The issue was discovered [1] by Sashiko.
 
+[1] https://lore.kernel.org/20260802173021.762-1-sj@kernel.org
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20260802185430.9940-1-sj@kernel.org
+- Drop RFC tag.
+
+SJ Park (2):
+  mm/damon/reclaim: skip damon_call() if ctx has not started
+  mm/damon/lru_sort: skip damon_call() if ctx has not started
+
+ mm/damon/lru_sort.c | 11 ++++++-----
+ mm/damon/reclaim.c  | 11 ++++++-----
+ 2 files changed, 12 insertions(+), 10 deletions(-)
+
+
+base-commit: a96a4f995fbc65238bcbe94e05bcdbec29a54571
 -- 
-Catalin
+2.47.3
 
