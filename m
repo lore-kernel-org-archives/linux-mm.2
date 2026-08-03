@@ -4,202 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117FAC55196
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 18:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8188C55196
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 19:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED9896B008A; Mon,  3 Aug 2026 14:48:16 -0400 (EDT)
+	id D711F6B007B; Mon,  3 Aug 2026 15:01:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8A8E6B0096; Mon,  3 Aug 2026 14:48:16 -0400 (EDT)
+	id D217E6B0088; Mon,  3 Aug 2026 15:01:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D53716B0098; Mon,  3 Aug 2026 14:48:16 -0400 (EDT)
+	id BE9246B008A; Mon,  3 Aug 2026 15:01:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9173B6B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:48:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FC0FA221A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:48:16 +0000 (UTC)
-X-FDA: 85060843392.25.472D1DD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0F5F6180005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:48:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A+LRE/X/";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf06.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1785782892;
-	b=77BmfqAJ5hUS8w+WJpBUx3jsOAd10+RtqtI7NcBrqFDy3li4cNu5yIz+LxuIggoRrGeDL1
-	+SsB0PVLSUdJFodujdLv0O6izkDXjLTjP9ry/xUV22eAAMiM2U761Ky5JxObVRgqtcJllh
-	FwUzy81VZS73FweXcF2AgoDR07avTyU=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A+LRE/X/";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf06.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 901216B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:01:42 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1631E407E3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:01:42 +0000 (UTC)
+X-FDA: 85060877244.27.8EFFA56
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0AB2B40016
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:01:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K5IF1H2l;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785782892;
+	s=arc-20220608; t=1785783695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8SClt3akbnQ59iEeq1F/2UzurnedUjnSrfWquKA9xA=;
-	b=j0QoVupCCqxkVuZtHLvnxh3xdFZtJvH3dt4u7fT697vpS5a/y5EE1P9bOyeR6/IftoU5/9
-	ZER32QMFsKXBsFZpR2WT/8bepz11AG5mm69I/4evtcycHr/oWlj7+Jn+cUHqIpc3jLk6Ad
-	yxxvM9mRyDh3V9HMNMlAxGs4zleAasw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785782892; x=1817318892;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=FEvsqek4MqSIT7wmQFOBw2R0Pt+rFIRmPU4JcWGC8WE=;
-  b=A+LRE/X/EGCoNJ1k6HOj6awWktH31TMAoPcQUexNCqIzIxUbW/Poscwz
-   8FlIoq1y/sGwKZ74pC/LSfssTubeJUuyjYxjprdZiKniG6MM6XnjhbAIw
-   8W3cJzWGOdtzQcH6bdYGn0nPT0VzzR6/n3naSv+RPIb/6sAJfPZderCy4
-   MF5SHR2IHN9ah9Aql7Xz9eL7iX/H6UcISOIDGc65HKQ358rp+cKLBln4J
-   zxPMe4+5qRU7vT1b2kPTDZvOJjDgA0AzEk1Xilr/syGbvrvOCAjzMx+Oo
-   0w8CfgHwDY5z1v9yPFSOZmcHI8+0AciTQ1u7S1/TSEnWGwIug4aPylaoj
-   g==;
-X-CSE-ConnectionGUID: ZaUlVN7QS9uJnRuHfMCpbw==
-X-CSE-MsgGUID: KULfmxcxRC2vjgTj4yap2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="103731550"
-X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="103731550"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 11:48:11 -0700
-X-CSE-ConnectionGUID: n/t/EYyEQ+K68gK08mZjbg==
-X-CSE-MsgGUID: LdHhuF2LQV+jYu4vOgYQiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="299519656"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 11:48:07 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 3 Aug 2026 11:48:06 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 3 Aug 2026 11:48:06 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.30)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 3 Aug 2026 11:48:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dqKQKogDPFX4YoHQbENtiSi9yyvryoMVlSdXu3iqe2YbhaqcekH5JSC7NfULE51Pr/yoKu4oC8ismAQxKLK2yAjj5eLDGBOmTazVktaUtZitxfn5Kd3CUfM9mfUZWiqVlou8ncQVV21xtzyqjDnSy4CRbVIWkRiZ8F2VQVgFHCAfdX2i+kHiRGmBiYysv2OzRgxrgkGQ5QwF6azZnJCdjuXbA9kRmb62z1aVezNYtD/pIreX4Z+0V2EFpQsimg5tc1PVk8aP9HqSVklc7Le0PKFfgpWrZ6Ek9s8QdRvAy8s8lnS+nw9DlYrQtkbO9r/inA+6oh2Oi84pD3EAqo59ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pyZIpUi1IHRWDfgL+54cSMIw2XB1pJ2ujLim5OuOzhc=;
- b=bYMDvXnp2mBQvyuFZvIh/AjXDeR9d10woqIpbrGielEaiGs7CE0qlQbJyMFef82wec6W+lIv/0e9dMN/uMR138D6hxGDbrcAbBiGxaETjugWAsyaQy9GbHeU17BVSL9YNxyVEHyG1kh7hlN4q+I85+VBy1pWI7uiZoGk9p2S/ra0Q5DKoTh/rdOuDBLqNMLeb656DqWXQhLbcOfYnHeyrlp+B10uvpa+H1+AtpwUTrCRpIoFgtA4tLBCTPwkVj8Gok/9qhdiPhqSaSL9pdHKeTVdExeXXgppaQasE8s8hkNL//2vK8fx/uQgt66ihszRoh8WgNHhn6mPE8clZdXc3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SA0PR11MB4749.namprd11.prod.outlook.com (2603:10b6:806:9a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
- 2026 18:48:03 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
- 18:48:03 +0000
-Date: Mon, 3 Aug 2026 11:47:59 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Huang Rui <ray.huang@amd.com>, Matthew Auld
-	<matthew.auld@intel.com>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan
-	<ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R.
- Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Tvrtko Ursulin
-	<tvrtko.ursulin@igalia.com>, Dave Airlie <airlied@redhat.com>, Matthew Wilcox
-	<willy@infradead.org>
-Subject: Re: [PATCH 3/3] drm/ttm: allocate pool pages as compound (__GFP_COMP)
-Message-ID: <anDiX4L3Oz8fKJCW@gsse-cloud1.jf.intel.com>
-References: <20260722044220.1110278-1-matthew.brost@intel.com>
- <20260722044220.1110278-3-matthew.brost@intel.com>
- <80fdf249-6f24-4cc7-bc9a-91bf23293497@amd.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <80fdf249-6f24-4cc7-bc9a-91bf23293497@amd.com>
-X-ClientProxiedBy: MW4PR03CA0176.namprd03.prod.outlook.com
- (2603:10b6:303:8d::31) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=R1gryesswu7LOxT7pEMybT/gxexwAugdJcKLJ1fyGvQ=;
+	b=p7DFY3EHYfydkW8ncAQEy3ICz9ENRASp7UqhJBbhHMKN+63sHM7BBnTVkU9LM6oVTQOSjJ
+	2iBjb1KpcWD/UGwN9n6kjcZuOnUINmlWL2xo7qsvNwI2mUHuSkkhtRNWdbAH9cRj1g4SNn
+	RXCJ1s51gdb3VFV1byFHjlqF636KHV4=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K5IF1H2l;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785783695;
+	b=rgom2dhaBBXz1NoJyU9RlmpsU0Nirm2siflY3diQnJrxRy8SppE0bKQ6pD+F52nt928IN9
+	g4yVhbNzl1/o4YzbdEbPTwogYAVsdOCm/Z1OkLTIOFzVNgaol/C1qu77QA7YHMVHfcmnHo
+	YD8zldcZ6+At1OGeSWuf9Z53mpFPj9Q=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c10e86e52so46981cf.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 12:01:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785783694; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EjUlOD0QbQ9L8cEnrcf9RyA1BKLLGaIqfbm6Rb55DBnTOziR/Akq4Xa528a8AtF/g5
+         o+hjDPE6cZ3Hg6+XfbRjT223aZ6Qgr1pL8vmhgUDy6sinswXz5ER2DRQbtrgIXTtmtA+
+         TCO+AFGp+o4N+Xhh4EuIORMkVgPDz6Xk17lCbwRNVoz28kw+3YXQWrvqq/E2APontEfj
+         wimEHqm4JVpsK8rTHf4PLffHhsUag2sHFaaCMN1YVISz/o/+MLBX912uOVgqxjNYU0rb
+         Im82JNVE5vMUNzdgagFcF0hw4KuGc/awrHs9ytuNJ1ERERYR8PRgNfc2NAyTijx23nsM
+         wCTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R1gryesswu7LOxT7pEMybT/gxexwAugdJcKLJ1fyGvQ=;
+        fh=FE1ssSNOghaEP4GA4VwP2mVK8+eplvXHtZGdpdpbG6U=;
+        b=Qgj5aBk4xNaRz0zLcFdmhwGAEl8+BdxbFcASfhVNqeDmN0D3jOq5TWRKM/rtIxf45R
+         ryffUmskya2W5ZOLGacQy0qxn00w0aNXUXInNEMlJvfpWbD6fsUzWcypllLTtAoYQTkP
+         2nvnyzY3JcxRQDAPN6AlJ+rwoV7dRDXA+2OPgfhGY/Q7HQm4d6saq6voaVbZBzQ5o6oG
+         Bhz8MtVNp/DJ4I3xi3VlOOCosQabKCu1NCgcJc5g5WLc19ua2lVhKWzjrYvqsNUx11VX
+         QWMMEZFQ5qXbMOa4Fii8pvDffSXvDBFrXfdY2WjayCagW0+vO21c0sA4R32az6PjvW9l
+         SGAA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785783694; x=1786388494; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R1gryesswu7LOxT7pEMybT/gxexwAugdJcKLJ1fyGvQ=;
+        b=K5IF1H2lvT8pDYt97GTkl3zayNZcisDSuHnCITaQs0y61iw6ZC0zKK39K1rGHTZ7fk
+         w0ByzoZ9Yvq6UOFJWNwUcbZggFWpt3/E2u0v/b/65WEeGDwIqXhZ6Bpz9mRun8HoQfhz
+         Pa1g9eLOEVIpZ3TajIyfSqIWBmfGvgaaFvAR7RicRAbdiaHzS3o9tnSstbD7ITcVAU/4
+         cNkjSTraChYIeW6qj3cYTQHGHXdDzJ8vk0CmOisO7mVZdiRn1WZzLPQXr5wF7DeMo8rH
+         g9+qASeBn6HILXT5zcZuxnh3EFUAYp+Qul2bg+AfdwbiobaRoSdwYjWDd2V6MN3qxsZH
+         wPkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785783694; x=1786388494;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R1gryesswu7LOxT7pEMybT/gxexwAugdJcKLJ1fyGvQ=;
+        b=b5VxCQk4RWLzd+W/Dnmog9ptq7MpZSwVUQGzuu8teQtiE4BS+jb+zB4uaAcVUhJuHb
+         6UX9lqH02tnL6eZT1KvU+x4AoGbjOUaonvWnbB+MqF/3xJZKV655FgldPsIiQQB3V3ok
+         /do+fQlCbmaA0ViUw26YHEjEQanx0m29y+3LYfHyPeyJPYKvfdruoxqTKD2gOGXIf91M
+         Kf2TmgNWCODDP6Do49XcojMIJ3lHw2ciaGJTjCNgc8NSrOg16rECUslyDmJ9Oq266h+h
+         nCuj4sYDhsHznKCj3fUzX44nc8q0qQRhvNRJtTz9mq0nlFHw+p+wztRjuK+KO5lCNUv8
+         8Blw==
+X-Forwarded-Encrypted: i=1; AHgh+RokcMzISGzZhHzHoSvE5l/sRJ8+QNVXZHG1BtmubFxn/p97MbRqgQdSXgHIImr2CUELJdFXO2dSaw==@kvack.org
+X-Gm-Message-State: AOJu0YzrQtUsV4desijrkLImzxfjiK31qdMe2QlChTSswApVtngtrf13
+	QNExOjV7V/TEV+Fc1v+YrhxaZikcR4px+mVDWThXrlyEJCZ38vtE5uP69aCgMsCNvHJ1i1oEbBC
+	vtj0QA2WGH/24yY6VQ/XXYcCfWJtPXEN/Eu6xcXkY
+X-Gm-Gg: AR+sD12bZCpD/XFUNg6uMiDHsHyYUTNAK9i/idBJ0t7pnslOPrEYvTzjzj5bOoaXEEW
+	h9LTa4JNZxIZa/i0TV4leTWyIMQB7HOaEZWoAL/aGnPOUZS4Llmq1tuouNQlatZ39NSKHeJp6Mt
+	S6RoxuO3qZq/NG2L78aXE136fInn3KP8mIG0Jy83pWj4BPWREQt6Fge0ONkvrD49zM20PYWa+nb
+	ImKBetx332V2Gl3v2YdgdyQDbEpeHcUmLzq0SKaam+6vGWpED1AlpISPHHuxDoMrU+c67dN3emH
+	iLyk8q635cqH55V9huMYXy7w4kSGTXRtSuwbAyoRsqQ=
+X-Received: by 2002:a05:622a:4286:b0:4ff:c0e7:be9c with SMTP id
+ d75a77b69052e-52cd47ab104mr2015581cf.0.1785783693096; Mon, 03 Aug 2026
+ 12:01:33 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA0PR11MB4749:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bf27c39-3ef9-4014-a222-08def18fbf93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|18002099003|22082099003|4143699003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info: q4GmUfpsSmBTfMgfDCQpzj8HfwY8ZP+gOfSMmCmFejyIcnqa9g778j47gPrHuApW/EZ0LzIsgZO3xw5f6ZxLvrztouUZdmmyq7jRAwMaBF64hKMKUynevFIJidm8KPY6POP+GbENsMUMMvWAp1Gd9ASqitCZdHQt1E2HNrsgvyFS9MZkOYLnCuGvBy3Grmw4uYf6SerpF1QgoaYAFkvdmjkPaNXtUhpfJazyh5D7kajttnrfOb+wtsa8Nbqt4jVIJGz/mhTdn38gBnsJ1urHsdYPazr5f3hgczCez4w2JiYvpouNbI/y/nzAe8jkVQYn2lIau4zLRP5By6BAM8E2EV++H22EzfJXDJM0DdjP1jml05u7pspHF+ACMkT8oD1FwGcHGCl641+rF62b7VsynstnidcRx3MwrUyR5N6t56QxVac88nwovxxgGoDnsMUcsQAxSHWlExbbh1COLSf+a1bqJIT0UXo6cpJGAiNWpaaB4DiZ4K3/NVHs/C0cUIuV2Xk2A0mIZtZtRgBwsHqkn9HDqbVbIpL3q7LNkP7kBYr9sTh4vX/yxS+tssBdq5ePfQhyunyYFbuc72mtaH3HeMaeEAcqB/FRb2a2b4T3RDU0MpZalFCV9EppNEK8Vt6oEN4/ae2ISgC9sAgcrJFyr2UPj1RuIYlsKv5Z+G+EZLA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?yvb2IOYcte7duJ+YkFbcxfzIQk+FixE3wM/1NDTgWEjMwCZ7myRJBkNBPH?=
- =?iso-8859-1?Q?7QWK159CP2IkzA+kvdbIbQE9aG5guzndETZ485/wVrJfu9gNIVWJs8xz7E?=
- =?iso-8859-1?Q?LO4OlsBJnHTeQVXDMWmCyBcnHkJ7Z3nOMbhuIwvkeOSBNhuLS80ks78/As?=
- =?iso-8859-1?Q?a8MEPL2M/TxuZbZiOYbohkDhunf+xyN1YpxodrYik6Uj3aqRtReOUmZgMJ?=
- =?iso-8859-1?Q?dC2MYkNI3xn+178hXOi41FAQgVVU55O2NAqwbu9QVFTCT6oKx7V+tK3vC/?=
- =?iso-8859-1?Q?xs/KfIw2dcVrrI9N14/u7/B5vNdfYOEqUODt+n6kU7z/CBc9xsm6dk9LMx?=
- =?iso-8859-1?Q?MEKxuIWHqcyYoLz0T3WaGZtWc27eqfHDMAouLpST5PdG4G0oJ3IggYL67k?=
- =?iso-8859-1?Q?HJEXGr23CdfbB+J4ZZFBnif2NfFDmrk9PgZnXuf6YWzebIz+erZdkFEG9d?=
- =?iso-8859-1?Q?s/D0SaScQLNB3m/CEqLuTxIFmggaqNK/wS9l5c8ZsXEUgKFVeYDR8DMxBG?=
- =?iso-8859-1?Q?EFXqJ6lq0Dd28jtabp+TJVhC6QDXm7zbKkwdw+zLy3ee6RG7OpkbM5NjJT?=
- =?iso-8859-1?Q?fSJ7Q6mIaktFYpK0OnrLv+SLgUByabwqLLPUCBkpBOCbTbAidEIsC9d47T?=
- =?iso-8859-1?Q?5EMT+5IEAKayHO8YH6xNZJBaQldc23gFSju7jrOQXZMr5C9graHb3Q0SxG?=
- =?iso-8859-1?Q?63vjquT1NNSCjMMZbwiDT7K3smxn64o+VAxEqaxP/bWjWnk9d9raPyDHxk?=
- =?iso-8859-1?Q?v2/ZBOjK+1x1LYf97i75O1GoLA18ScIbkIro4KiRD6Pxuv1yl/AIOo8OBi?=
- =?iso-8859-1?Q?KeU5YPWFWk9RIqF1umYryC9k+ZLUmkjKkzI2xueqh4wkDprL1Ha7IlGwRB?=
- =?iso-8859-1?Q?R0ctWiUaERaiKr9HFA796UojG8ae/L4LWo3leaZyFVehUWY/0MfAX3Q4Z5?=
- =?iso-8859-1?Q?GtoTT5oZLG/ruLkCjMm5NZRW7o+NJfemiZlL4VYNTHUYtxkhhROaQ9FD9f?=
- =?iso-8859-1?Q?dqrufAl8ogyivSTIx8XxI2sU25HxwJXBoCSxHND1g1MWpbEVVcrR7sI8j4?=
- =?iso-8859-1?Q?p7nJKX8jrDZBZ89Ayebt7ieDienvDxU1D8ngAi6TWpQpGF3wEVWa7P15ar?=
- =?iso-8859-1?Q?lhB/ZiQR2Un1eniv1qmI3ijSayTqHKIi2DOZx3l9I92HDd6/fbBv9vOIGM?=
- =?iso-8859-1?Q?5nTDgX/UGdgHiORMjPHg97jg2jujAMBGk71VfRI7F/1vAjGvOU1NgM5+rS?=
- =?iso-8859-1?Q?tbIMGoRM9WglW5Hp0Ag0EWNjFm00gvW9NFjETuT3hjsKc3c8n7kFprc/u5?=
- =?iso-8859-1?Q?qvV91Vjx7mYVtec8FKN1KcOJN9F6KVtPXv2wcEK2L3uzmKQqu5b45/aejP?=
- =?iso-8859-1?Q?ffavsxiCpp7G6FIZJ1BDaEbMa6b1G6r0WW+mln8rlWkQhnWbbzZAwWyclB?=
- =?iso-8859-1?Q?edKBFsp9Lrpjn5yNrfzAmNMWe+l77Dw4yDjc56qAOnbHK5zMWwn9FyukQs?=
- =?iso-8859-1?Q?W/IaA3QWhRztczCGzuYz8j7Hp12v20uhS8CYUKOA3+AuLcaA/2fyq3TjRZ?=
- =?iso-8859-1?Q?NswXCrakSjrGWKd9sB7gLYWLBOYz/c2Z3/4f0DceG5cEGlZ/b0G+ArDBWx?=
- =?iso-8859-1?Q?sM/syD2MG2w4Wkz979dkr3t6tvmCosFsHifsYjDrxMEw5QLS3Oqx0x0/gz?=
- =?iso-8859-1?Q?A/yF7WysXgR/KXhn/oPbW6EfmtEkMG5+Rwk8rFzHKeyqRMatkVCwKBx3BZ?=
- =?iso-8859-1?Q?hC+vg0b+KqjwO0O7KLecxjg//4pCKDQ5q4xRxoU8qURGXKjboRMGysrC6B?=
- =?iso-8859-1?Q?NBjPa81Ngw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: QoNI5YSH6ke9EfMNcr3slYzTj9rs2xuBSGWSyiqOs7h2RL8O06L+sSuyQbMFqIqVShTHfPjLlrU/eIeGuosZ3VrUaSGRQlZZIq4aZLRFeIYNom1otBxpVXg7DO+MCtGLvrxljbRfkwMXLd4u2RRbD+/SeFpiDFeWXw3oZZ0XuUFPtTKbD5cwevqKsm3J3Yty6ljQ8Gfms22ki3bENAqovEYXdWWMSk/ntRyg+DpI2l6ExOs5vKNoUG4PIWgCThmgtHHGg7ZBvR/d2UfdIcf0aigxTtt874TyGRJFgHDd8NxldvmNVJi0Yha8I+M0OFO35yXcSI1/MnWNWVgrBHLmTQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bf27c39-3ef9-4014-a222-08def18fbf93
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 18:48:03.2242
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PzeqzX02C5F1a6wjhX0LVrZYXLVsQve5mf43u+BNJUt4GGumDen12KJO18IHtqzzPBb/jTYVUx92KQyuaD3NKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4749
-X-OriginatorOrg: intel.com
-X-Stat-Signature: wnxi59thuipgrotoxqcyfski4obttek3
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0F5F6180005
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-4-surenb@google.com>
+ <anB4uxEbKsa1Re0w@lucifer>
+In-Reply-To: <anB4uxEbKsa1Re0w@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 3 Aug 2026 12:01:21 -0700
+X-Gm-Features: AUfX_mzfHS3ktZjmk8ss0wM7ebtRwE-uigW3jVZ31a5V5rk8fb2Tzs2Fewwyfls
+Message-ID: <CAJuCfpGXk8jfRrJ=JwMLvpzxbNnzJUOYRHfWUX5e4vgP5j72Og@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0AB2B40016
 X-Rspam-User: 
-X-HE-Tag: 1785782891-849929
-X-HE-Meta: U2FsdGVkX1+/MLnUhp87FnpoZ3kHfQljqmuVekBpOUzySrSyfRD+j9kFbXQg9g8bNyLb6Hn/8Ig+x0OiK5s26rqynMqOHiL6XOFlRTHGhsvf+oo5M5dtOkhJUMqyCdT1J1QxFfTppLwghbLBLKnxK+BmSqf7Qa5cbG2A442UmIaT3DI+tiRAgy0mAdDT/kyd8F7cDEFffOrHWi5CTM3yGdQA8D8lYfR8afQ7F+yP21Dv6JOM2ciRXPAITOI/jevr4793+M7qta/xHBho68kkm7hD3bICBEl71zWCOcEdz4ninCbDDSA3IC0fYWgJKSNiD2YW9wEllfPjJM53F0h8FvTkGaNlQ1jx8NA+pdR64+xpKBSKhrJbiYS5lR2oNqtyN3PePkRamTSeEbI3vrtHPOR7N91yAsQ1cS4ryi3uNBX52R7OwQqSLidHZBdan0Z5AsM84qZXMwA9UvREN3hIqTnDHWTgXmofyX+tdv54B2hjI4jkPM0OBJpscvK/CvtptPMLIP7KYJ3yjlkrD9jYW4wXBZeEPIL00fIW+N4Hda1bHZOYhofzEhEkG2SSMOrlhxkD5zIPbzkCBbPz9lQjkswlLVhpfF5Qv66BFDiHDcP1zCX1uWlS+eklPpp/9y41HMTVE/kG9MAckqE7kDu1MVeCfTxgXHdEbpw7kfdGzFmsaG1m0Y2hjOKykr7iy7BKj+iL9XE3B/qDjC5jYHMdYzV+MoOSVL1ccgZjyeRNSwMAYpIePO4h9nSE37qAnWNAqKYeB5Iy1izWh9Psl3+DYBGK4qs8wDJT37O6ZojfUZc3h3bGTE7R3ODD54ZKMHb2ch4Nwel6rt5LwQbODsx2Ufrs2lWmSymcxg2QDlP+gF7Y4iNpv0tiMkA27sPKVo9iYJHvbyIQ7J1ujHNbe8YdT0HM4EqgLJJBuVyT/EzIOriLwWt7PDiVUazwH7yRSo0oP2xWkrhKGfneQONAJbg
- xC+RP0+6
- SpYnX+EUrXR6dCZ5ziJVk9M/BqTKVF3QfBL2u0ZHWFulUCTnx7AXMoUGuUj6qlEl9/PkkvtDHmsB9pjSCT4ixqFX+271jk7y9UQvOjbDsHzGOSTrMJMpNf0kEsLDw4oa1IYoVwY+6qYWrZB1Rd/oXLAPE2AmCKCrRC7UawMEWOwb0CRkNKxtjNX+q9ssEcOVy7RKditW/CLLCAOJAxHNmMhxaEJgXlR44KJ7+CHCqqbyNVMlCAlt+4dsE43iCq4f/wpXuFnQjfLeMc3lyCpD/4sGozuXVwv+E59qdOU2i2PBoUiewFQzhzUjy21HgUwnrGU8jD1zxdJvgCrPMfqryHnNnLOgIcvet19jv06GcxaTYIGI5eUYYg0foYagnLx9QEmGVO5kuo6lHf0v5IcYN1zxWZXVTmE+Lr8Zz3CaSSaUozgdZltrkydomdug65kqqkpzhXroY29VwSFrTjfcH5QAUi8/KsPXdGESNvlFyleIrQai7+SJMIORb1riw+47pQ2u36Sis62QOxJyI5efNC1oyXDg/mepblIlwA+LW5i17PcAe9BjmDyzbIuriSexcbCN9kdDervSAa3HCbEYFzCFRvb1HZSUvM/iMLHEJ9XNnKS7GYVMoVDXT+10jdsWq/Y3Y/ZVGrl/4+Cxbwo9Gvzh4xKUqRgMleDbFWKqha8v8n1P09HYYVos6sSfZRY9VD+emeec6Bd8FEqvYciIWRQGStCpftZwC6OCSiK1PdGvxi3FvlUH4pI629kHkPekCa2N8KQroJTa/rLrvfpPUDqQlNRB2oSAN6Q5Up9mRzJjm9whc1aOhdk1/OT/NYoJ04knYZ/15NikpMrAJU9OzWlCztLqioD6ACuo8wggjEQkOhvnfF4siol12tPkM+gUQ6D2VRvF7RNHqZa3i82FQ6y09f18PFHLrvmAPdO66pca9h1geWFcF1J+jUG4OQ47dytMafiVsno4XjgScowsEbKiX3oWJ
- Xn6EIQo4
- +t1AExz4XNM6drRAbQKS2/2sgAiQNAdV/I5oyc7onnRxtZhixO05fQzHMKnzqS3dDL9NhR1q30CtMASQXAcEnSBGlrMxKfvY
+X-Stat-Signature: bwictkh9mf6wrmcxb5zr6u8ufrnba16a
+X-HE-Tag: 1785783694-546739
+X-HE-Meta: U2FsdGVkX1+SezTZKvD9wfdTMkFvqfwy99JkIMWd+lRG1h+wxyYoJEkgvNIA0XfKKT+2Y1+bLoemohQeSaRfTpokzbzuzBpCOdaEyxvVq0FY3gnnqSUIEKjqpQU4Cq3aQKSXCzvuDQLljzpb13SVLPFD+LLLdndXpmRfWEc2H2alakKOEi2XH4//vEpWLvgIHWy7JqeKI8bVMMlIIhe9kZ0t7zmCBBEy4L19oQM1tOwk/aNJB27K6uxTJugBCryUjjjfBqWHiz7jRZlAcmNn1IGvG9Jr9cOiYK+miAB1UrGK/dd+sm4Oadvytt4Bu/sHvMBCPABcCi8JKhPCquIrG+3aqjz8ZxUVsu8XbKzvaOz9GEVSLkzdw868Gp6OO4LEw70RgruZoS/NOWbY5YOtwONI+2q7vz1VBZId2Pvj71Pw9x2YTlKd3XGnXEJkyNXzOBymuxW7pj9WqpRW8/fL1SpK+rJCWwX3cQ8/cEAqrzYBs51pJ1orgMeX03ArpLNOBInD4pA3rgHIKSOxf+GD3O8dFBIBuuknPRzTZzpNqM+0M6/t0sJ7gfhJFS7kDSbuQ18zhOVcn1O4lNYyPOjHdw7VPAzE/TL39bVkS2H6t646bn4mhAg7O0lwNAFJ5zlwVzHdkjKzEEoPTMi/S90d+sTlog2V12akQWm+AL9SrtcfZJ6yUckbdX2fuPgdMKNygECyJzYGbCNo9ufFK+fnvrsOqib4zfEzVz2iyTHpL0XvimLeC1SRCYbSCQhMNYuww1B2B0VryKGHLvCmEPCZbFBJDbwSZCoVDMFlq9Tn+ghmWM7nrLh78o/mliYckGgb6ptPXlC6FucAWugX1bUNotIj1/CgCI0L8HqfE0Tu1Zfh8rTdklqAFchEQn9f0ffrf+mXJbGIuxdatoQCuBEKEQjuUAlv9lwFbXM2+g6VQ1RnYLkQDYo3UHenHk8wejJ9k6FX829BLf3xjE1GcvV
+ imUwAX1L
+ SEIWBHMWhJ1zSSvf2Y+xPEt0+PcXbDbui5JzCthHFKEuEnFla5cmqa4n+2kmQN2LJrQ8A9An01uEAv9qqjjb/4PVOhk508XfN9NIWm6oqYtqOVGIfBoeTjfVk2aUxASjKd4ilnMpC/PeSQATO9ATVqCJ+yNXt/DgO+ZKHO93Xbqb8EhpC19PqQIIdU3vhsTJQoNmPvscMXSSNI0az8ziKSAlmSkoKY8XrQv9sdQkGflADpt5Des8m5l83eE4aSf0NycOvtyexhFwuTv8fgsRNLpoecOMmKL2TX3px76rU3NLBS4nPM8kZFrUqGN8fUtoNmYBxbsQgwSkfCLU9pXYdAjsmBJjHI4xZKIM2wZ3vc4e5HkMM791Q3jadqnjkrtJIFbTtZ+bipab/0HJZXzWvFPRkYLxhZ/vC0YF84WVhU7UpFrR2LSDNcZ7cqftMCBIYZ8e6fqpvZEWYzaT/3HJKy65nMRgWWnZIZ2+5rFJMWPS7+LGO20R9irBqhszVymw4mp/eXkyNQFVjiIDghLFNFjuUrsgzWycarUfgL/jb7/IPGFXmsXO36hr142YcGzhPPYH6Y47UppgCBjEqvX0B77mWniSCXzagMMU/HZMTDbZzFaD284IcnGL4QHQBIKB/oCHlOar+RMHLf6HsQV7AuN/ygdCED6Ubk2le
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -207,275 +145,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 03:54:27PM +0200, Christian König wrote:
-> On 7/22/26 06:42, Matthew Brost wrote:
-> > Historically ttm_pool_alloc_page() deliberately avoided __GFP_COMP for
-> > higher-order allocations and instead stashed the allocation order in
-> > page->private. The stated reason was that mapping a TTM page into a
-> > userspace process and having that process call put_page() on it would be
-> > illegal on a compound page, because the stray reference would fold into
-> > the compound head and could free the whole block behind TTM's back.
-> > 
-> > That hazard no longer applies to the non-DMA path. TTM faults its pages
-> > into userspace via VM_PFNMAP (see ttm_bo_vm_fault_reserved() /
-> > vmf_insert_pfn_prot()), so the core mm never takes a struct page
-> > reference on them and GUP rejects the range; a stray userspace put_page()
-> > cannot reach these pages at all.
-> 
-> Yeah unfortunately I clearly have to reject that.
-> 
-> This is exactly what we have thought before but that doesn't hold true. Especially KVM completely broke our neck here.
+On Mon, Aug 3, 2026 at 4:28=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
+> On Sun, Aug 02, 2026 at 02:54:57PM -0700, Suren Baghdasaryan wrote:
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
+> >
+> > =3D=3D Background =3D=3D
+> >
+> > There are basically two parallel ways to look up a VMA: the
+> > traditional way, which is protected by mmap_read_lock, and the RCU-base=
+d
+> > per-VMA lock way which is based on RCU and refcounts.
+> >
+> > =3D=3D Problem =3D=3D
+> >
+> > The mmap_lock one is more straightforward to use but it has a big
+> > disadvantage in that it can not be mixed with page faults since those
+> > can take mmap_lock for read, which can deadlock when mixed with nested
+> > page faults and parallel writers.
+> > For example:
+> >
+> >       mmap_read_lock(mm);
+> >       // Another thread does mmap_write_lock().
+> >       // New mmap_lock readers are blocked.
+> >       vma =3D vma_lookup(mm, address);
+> >       // This deadlocks on mmap_read_lock() if it faults:
+> >       copy_from_user(address);
+> >       mmap_read_unlock(mm);
+> >
+> > The per-VMA lock can be mixed with faults, but they can fail and need t=
+o
+> > be able to fall back to the traditional way.
+> >
+> > =3D=3D Solution =3D=3D
+> >
+> > Add a variant of the RCU-based lookup that waits for writers. This is
+> > basically the same as the existing RCU-based lookup, but on a failure t=
+o
+> > lock it temporarily takes mmap_lock for read and waits for writers
+> > to finish before locking the VMA, dropping the mmap_lock and returning
+> > the locked VMA. This has some advantages:
+> >
+> >  1. Callers do not need to have a fallback path for when they
+> >     collide with writers.
+> >  2. It can be used in contexts where page faults can happen because
+> >     it can take the mmap_lock for read but never *holds* it.
+> >  3. Its fast path does not require taking mmap_lock for read.
+> >
+> > Basically, when applied correctly, this approach results in faster
+> > *and* simpler code.
+> >
+>
+> Would be nice to have a:
+>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I haven't tried KVM, but it's entirely possible that KVM or another part
-of the kernel breaks TTM usage here.
+Ack.
 
-It didn't take me long to put this together after it was brought up in
-the other thread. It makes TTM a bit clearer and also simplifies my
-defrag series quite a bit, since that series included several extra
-steps because there's currently no reliable way to determine whether a
-page is the head page without native compound-page support or
-reinventing this in TTM.
-
-Xe appeared to work correctly with these changes, which is why I decided
-to post them.
-
-> But let's continue the discussion on the other thread.
-> 
-
-+1, I saw your response there. Hopefully we can figure it out, as I'd
-very much consider this a nice-to-have cleanup.
-
-Matt
-
-> Regards,
-> Christian.
-> 
-> 
-> > 
-> > Convert the !ttm_pool_uses_dma_alloc() path to allocate compound pages
-> > with __GFP_COMP and recover the order via folio_order() instead of
-> > page->private:
-> > 
-> >   - ttm_pool_alloc_page(): add __GFP_COMP, drop the page->private write.
-> >   - ttm_pool_page_order() / ttm_pool_unmap_and_free(): read the order
-> >     from folio_order() for the non-DMA case.
-> >   - ttm_pool_split_for_swap(): for compound folios, split via the new
-> >     folio_split_driver_managed() helper rather than split_page(), which
-> >     rejects compound pages. Each resulting order-0 folio is then freed
-> >     individually as it is backed up.
-> >   - Drop the now-dead page->private = 0 clears on the purge and
-> >     full-backup free paths.
-> > 
-> > The DMA path is intentionally left unchanged: dma_alloc_attrs() does not
-> > produce compound pages, so it keeps split_page() and the page->private
-> > order stash.
-> > 
-> > folio_split_driver_managed() lives in the THP split machinery
-> > (mm/huge_memory.c), which only builds when CONFIG_TRANSPARENT_HUGEPAGE
-> > is enabled. Drivers that drive the TTM shrinker and therefore reach the
-> > split path must select TRANSPARENT_HUGEPAGE.
-> > 
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Maxime Ripard <mripard@kernel.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Cc: Christian Koenig <christian.koenig@amd.com>
-> > Cc: Huang Rui <ray.huang@amd.com>
-> > Cc: Matthew Auld <matthew.auld@intel.com>
-> > Cc: Matthew Brost <matthew.brost@intel.com>
+>
+> Here given https://lore.kernel.org/linux-mm/af4Zx0gJIWbdDeY2@lucifer/ :)
+>
+> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
 > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
+> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 > > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Cc: "Liam R. Howlett" <liam@infradead.org>
-> > Cc: Nico Pache <npache@redhat.com>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Dev Jain <dev.jain@arm.com>
-> > Cc: Barry Song <baohua@kernel.org>
-> > Cc: Lance Yang <lance.yang@linux.dev>
-> > Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> > Cc: Dave Airlie <airlied@redhat.com>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: linux-kernel@vger.kernel.org
+> > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
 > > Cc: linux-mm@kvack.org
-> > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > Assisted-by: GitHub-Copilot:claude-opus-4.8
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> > Cc: Todd Kjos <tkjos@android.com>
+> > Cc: Christian Brauner <christian@brauner.io>
+> > Cc: Carlos Llamas <cmllamas@google.com>
+> > Cc: Alice Ryhl <aliceryhl@google.com>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: David Ahern <dsahern@kernel.org>
+> > Cc: netdev@vger.kernel.org
 > > ---
-> >  drivers/gpu/drm/ttm/tests/ttm_pool_test.c | 23 +++++++++---
-> >  drivers/gpu/drm/ttm/ttm_backup.c          |  8 ++--
-> >  drivers/gpu/drm/ttm/ttm_pool.c            | 46 +++++++++++++++--------
-> >  3 files changed, 53 insertions(+), 24 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-> > index be75c8abf388..771ed257778c 100644
-> > --- a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-> > +++ b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-> > @@ -169,7 +169,14 @@ static void ttm_pool_alloc_basic(struct kunit *test)
-> >  			KUNIT_ASSERT_NOT_NULL(test, (void *)fst_page->private);
-> >  			KUNIT_ASSERT_NOT_NULL(test, (void *)last_page->private);
-> >  		} else {
-> > -			KUNIT_ASSERT_EQ(test, fst_page->private, params->order);
-> > +			/*
-> > +			 * The non-DMA path allocates compound pages, so the
-> > +			 * order is recovered from the folio rather than from
-> > +			 * page->private.
-> > +			 */
-> > +			KUNIT_ASSERT_EQ(test,
-> > +					folio_order(page_folio(fst_page)),
-> > +					params->order);
-> >  		}
-> >  	} else {
-> >  		if (ttm_pool_uses_dma_alloc(pool)) {
-> > @@ -177,13 +184,19 @@ static void ttm_pool_alloc_basic(struct kunit *test)
-> >  			KUNIT_ASSERT_NULL(test, (void *)last_page->private);
-> >  		} else {
-> >  			/*
-> > -			 * We expect to alloc one big block, followed by
-> > -			 * order 0 blocks
-> > +			 * We expect to alloc one or more max-order compound
-> > +			 * blocks. page_folio() on any subpage resolves to the
-> > +			 * compound head, so both the first and last pages
-> > +			 * report the max block order.
-> >  			 */
-> > -			KUNIT_ASSERT_EQ(test, fst_page->private,
-> > +			KUNIT_ASSERT_EQ(test,
-> > +					folio_order(page_folio(fst_page)),
-> > +					min_t(unsigned int, MAX_PAGE_ORDER,
-> > +					      params->order));
-> > +			KUNIT_ASSERT_EQ(test,
-> > +					folio_order(page_folio(last_page)),
-> >  					min_t(unsigned int, MAX_PAGE_ORDER,
-> >  					      params->order));
-> > -			KUNIT_ASSERT_EQ(test, last_page->private, 0);
-> >  		}
-> >  	}
-> >  
-> > diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
-> > index 3c067aadc52d..9194747a1dff 100644
-> > --- a/drivers/gpu/drm/ttm/ttm_backup.c
-> > +++ b/drivers/gpu/drm/ttm/ttm_backup.c
-> > @@ -72,9 +72,11 @@ int ttm_backup_copy_page(struct file *backup, struct page *dst,
-> >   * ttm_backup_backup_folio() - Backup a folio
-> >   * @backup: The struct backup pointer to use.
-> >   * @folio: The folio to back up.
-> > - * @order: The allocation order of @folio.  Since TTM allocates higher-order
-> > - *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
-> > - *         return 1; the caller must pass the true order explicitly.
-> > + * @order: The allocation order of @folio, passed explicitly. For the DMA
-> > + *         path TTM allocates higher-order pages without __GFP_COMP, so
-> > + *         folio_order(@folio) would return 0 rather than the true order;
-> > + *         the caller therefore passes the order explicitly. (The non-DMA
-> > + *         path allocates compound pages, for which the two agree.)
-> >   * @writeback: Whether to perform immediate writeback of the folio's pages.
-> >   * This may have performance implications.
-> >   * @idx: A unique integer for the first page of the folio and each struct backup.
-> > diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-> > index 1bf37023fed6..364cc7ec7469 100644
-> > --- a/drivers/gpu/drm/ttm/ttm_pool.c
-> > +++ b/drivers/gpu/drm/ttm/ttm_pool.c
-> > @@ -168,9 +168,11 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
-> >  	struct page *p;
-> >  	void *vaddr;
-> >  
-> > -	/* Don't set the __GFP_COMP flag for higher order allocations.
-> > -	 * Mapping pages directly into an userspace process and calling
-> > -	 * put_page() on a TTM allocated page is illegal.
-> > +	/*
-> > +	 * For higher-order allocations be a good citizen: don't dip into
-> > +	 * memory reserves, don't retry hard, don't warn on failure and stay
-> > +	 * on the local node. The non-DMA path additionally sets __GFP_COMP
-> > +	 * below; the DMA path allocates via dma_alloc_attrs().
-> >  	 */
-> >  	if (order)
-> >  		gfp_flags |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN |
-> > @@ -189,11 +191,9 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
-> >  	}
-> >  
-> >  	if (!ttm_pool_uses_dma_alloc(pool)) {
-> > -		p = alloc_pages_node(pool->nid, gfp_flags, order);
-> > -		if (p) {
-> > -			p->private = order;
-> > +		p = alloc_pages_node(pool->nid, gfp_flags | __GFP_COMP, order);
-> > +		if (p)
-> >  			mod_lruvec_page_state(p, NR_GPU_ACTIVE, 1 << order);
-> > -		}
-> >  		return p;
-> >  	}
-> >  
-> > @@ -482,7 +482,7 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
-> >  		return dma->vaddr & ~PAGE_MASK;
-> >  	}
-> >  
-> > -	return p->private;
-> > +	return folio_order(page_folio(p));
+> >  include/linux/mmap_lock.h | 15 +++++++++++----
+> >  mm/mmap_lock.c            | 29 +++++++++++++++++++++++++++++
+> >  mm/userfaultfd.c          |  6 ++++--
+> >  3 files changed, 44 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index eb32b482434e..fdd8f5cf5722 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -228,10 +228,12 @@ static inline void vma_refcount_put(struct vm_are=
+a_struct *vma)
 > >  }
-> >  
+> >
 > >  /*
-> > @@ -493,15 +493,31 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
-> >  static void ttm_pool_split_for_swap(struct ttm_pool *pool, struct page *p)
+> > - * Use only while holding mmap read lock which guarantees that locking=
+ will not
+> > - * fail (nobody can concurrently write-lock the vma). vma_start_read()=
+ should
+> > + * Use only while holding mmap read lock which guarantees that vma loc=
+k is not
+> > + * contended (nobody can concurrently write-lock the vma). vma_start_r=
+ead() should
+> >   * not be used in such cases because it might fail due to mm_lock_seq =
+overflow.
+> >   * This functionality is used to obtain vma read lock and drop the mma=
+p read lock.
+> > + * VMA can't be detached while we are holding mmap lock, therefore in =
+practice this
+> > + * function can fail only when there are so many readers that vm_refcn=
+t overflows.
+> >   */
+> >  static inline bool vma_start_read_locked_nested(struct vm_area_struct =
+*vma, int subclass)
 > >  {
-> >  	unsigned int order = ttm_pool_page_order(pool, p);
-> > -	pgoff_t nr;
-> >  
-> >  	if (!order)
-> >  		return;
-> >  
-> > -	split_page(p, order);
-> > -	nr = 1UL << order;
-> > -	while (nr--)
-> > -		(p++)->private = 0;
-> > +	if (ttm_pool_uses_dma_alloc(pool)) {
-> > +		pgoff_t nr;
-> > +
-> > +		/*
-> > +		 * DMA-alloc pages are not compound; split the plain
-> > +		 * higher-order allocation and clear the per-page private
-> > +		 * (which held the order for the non-compound case).
-> > +		 */
-> > +		split_page(p, order);
-> > +		nr = 1UL << order;
-> > +		while (nr--)
-> > +			(p++)->private = 0;
-> > +		return;
-> > +	}
-> > +
-> > +	/*
-> > +	 * The non-DMA path allocates compound folios (__GFP_COMP). Split the
-> > +	 * driver-owned, off-LRU, unmapped folio into order-0 folios so each
-> > +	 * page can be freed as soon as it has been backed up.
-> > +	 */
-> > +	folio_split_driver_managed(page_folio(p), 0);
+> > @@ -247,16 +249,21 @@ static inline bool vma_start_read_locked_nested(s=
+truct vm_area_struct *vma, int
 > >  }
-> >  
-> >  /**
-> > @@ -548,7 +564,7 @@ static pgoff_t ttm_pool_unmap_and_free(struct ttm_pool *pool, struct page *page,
-> >  
-> >  		pt = ttm_pool_select_type(pool, caching, order);
-> >  	} else {
-> > -		order = page->private;
-> > +		order = folio_order(page_folio(page));
-> >  		nr = (1UL << order);
-> >  	}
-> >  
-> > @@ -1124,7 +1140,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
-> >  					       num_pages);
-> >  			if (flags->purge) {
-> >  				shrunken += num_pages;
-> > -				page->private = 0;
-> >  				__free_pages_gpu_account(page, order, false);
-> >  				memset(tt->pages + i, 0,
-> >  				       num_pages * sizeof(*tt->pages));
-> > @@ -1214,7 +1229,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
-> >  		}
-> >  
-> >  		/* Fully backed up: free at native order. */
-> > -		page->private = 0;
-> >  		__free_pages_gpu_account(page, order, false);
-> >  	}
-> >  
-> 
+> >
+> >  /*
+> > - * Use only while holding mmap read lock which guarantees that locking=
+ will not
+> > - * fail (nobody can concurrently write-lock the vma). vma_start_read()=
+ should
+> > + * Use only while holding mmap read lock which guarantees that vma loc=
+k is not
+> > + * contended (nobody can concurrently write-lock the vma). vma_start_r=
+ead() should
+> >   * not be used in such cases because it might fail due to mm_lock_seq =
+overflow.
+> >   * This functionality is used to obtain vma read lock and drop the mma=
+p read lock.
+> > + * VMA can't be detached while we are holding mmap lock, therefore in =
+practice this
+> > + * function can fail only when there are so many readers that vm_refcn=
+t overflows.
+> >   */
+> >  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
+> >  {
+> >       return vma_start_read_locked_nested(vma, 0);
+> >  }
+> >
+> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> > +                                            unsigned long address);
+> > +
+> >  static inline void vma_end_read(struct vm_area_struct *vma)
+> >  {
+> >       vma_refcount_put(vma);
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index e20d01e8d38f..6ff05e68e61b 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(struct m=
+m_struct *mm,
+> >       return NULL;
+> >  }
+> >
+> > +/*
+>
+> Why not a kdoc comment?
+
+Indeed. Will change.
+
+>
+> > + * Find the VMA covering 'address' and lock it for reading. Waits for =
+writers to
+> > + * finish if the VMA is being modified. Returns NULL if there is no VM=
+A covering
+> > + * 'address'.
+> > + *
+> > + * Use only in code paths where no mmap_lock and no VMA lock is held.
+>
+> Well, a VMA read lock can be held which would make this a noop essentiall=
+y.
+>
+> If a VMA write lock is held you're also ok as the mmap read lock will pre=
+clude
+> an mmap write lock, meaning vma_end_write_all() will have been called and=
+ the
+> write lock released.
+>
+> So I think you can just drop this line?
+
+Maybe instead of this I should say: Use when mmap_lock is not held,
+otherwise use vma_start_read_locked() ? I think that was the original
+reason for this comment.
+
+>
+> > + *
+> > + * The fast path does not take mmap_lock.
+> > + */
+> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> > +                                            unsigned long address)
+> > +{
+> > +     struct vm_area_struct *vma;
+> > +
+> > +     /* Fast path: return stable VMA covering 'address': */
+> > +     vma =3D lock_vma_under_rcu(mm, address);
+> > +     if (vma)
+> > +             return vma;
+> > +
+> > +     /* Slow path: preclude VMA writers by temporarily getting mmap re=
+ad lock. */
+> > +     mmap_read_lock(mm);
+> > +     vma =3D vma_lookup(mm, address);
+> > +     if (vma && !vma_start_read_locked(vma))
+>
+> This maybe warrants an unlikely() given it can only happen if refcount
+> overflows? Also worth having a comment to that effect here?
+
+vma_start_read_locked()
+  vma_start_read_locked()
+    vma_start_read_locked_nested()
+      unlikely(!__refcount_inc_not_zero_limited_acquire())
+
+already contains "unlikely" clause. Do we need to add it in all its users?
+I can modify the comment for vma_start_read_locked() stating that
+refcount overflow is very unlikely. Would that work or do you want
+callers to have that too?
+
+>
+> > +             vma =3D NULL;
+> > +     mmap_read_unlock(mm);
+> > +
+> > +     return vma;
+> > +}
+> > +
+> >  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_=
+struct *mm,
+> >                                                           struct vma_it=
+erator *vmi,
+> >                                                           unsigned long=
+ from_addr)
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index edd90892f8cc..c3a0c38a3dc3 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(s=
+truct mm_struct *mm,
+> >   *
+> >   * Should be called without holding mmap_lock.
+> >   *
+> > - * Return: A locked vma containing @address, -ENOENT if no vma is foun=
+d, or
+> > - * -ENOMEM if anon_vma couldn't be allocated.
+> > + * Return: A locked vma containing @address, -ENOENT if no vma is foun=
+d,
+> > + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcou=
+nt
+> > + * overflow happened due to high number of readers and the caller shou=
+ld
+> > + * retry later.
+>
+> I'm guessing you're fixing this up as part of the patch? But it feels a b=
+it
+> random, I mean fine but you should mention this change in the commit mess=
+age +
+> explain why.
+
+I'm fixing that because Vlastimil asked about these inconsistencies in
+his previous review :)
+I can package these fixes as a separate patch or add a comment in the
+changelog, smth like "While at it, fix the comments for related
+functions". Would that work?
+
+>
+> >   */
+> >  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+> >                                      unsigned long address)
+> > --
+> > 2.55.0.508.g3f0d502094-goog
+> >
+>
+> --
+> Cheers, Lorenzo
 
