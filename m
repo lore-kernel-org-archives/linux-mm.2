@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A612C55175
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A35C55175
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 546F36B009E; Mon,  3 Aug 2026 03:13:35 -0400 (EDT)
+	id 411FB6B00A0; Mon,  3 Aug 2026 03:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E766B009F; Mon,  3 Aug 2026 03:13:35 -0400 (EDT)
+	id 3E9886B00A1; Mon,  3 Aug 2026 03:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BDA6B00A0; Mon,  3 Aug 2026 03:13:35 -0400 (EDT)
+	id 326BF6B00A2; Mon,  3 Aug 2026 03:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B9456B009E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:13:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C32ECA0625
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:13:34 +0000 (UTC)
-X-FDA: 85059092748.24.2E4124E
-Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5E97E40003
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:13:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=codJXF7y;
-	spf=pass (imf27.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 174FA6B00A0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:15:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99D4C160629
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:15:19 +0000 (UTC)
+X-FDA: 85059097158.22.D8AF96F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DD7B91C0006
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:15:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DpFxADqY;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785741211;
-	b=Xa/ecsVK1ERT+Q1sv3Bi7AZeBoEwQQOxAAyXLv7IPlHVplfdujhYMC/pkjsTy5blrwhDws
-	gMhjgDa6qH/w75WrUnmflxOp1jh6/GG+magjXftAc34+LYY+BWFF6TzilauokcVk1a0h4X
-	q+KlZSxxJqeO9ZiV8//JLrJyI2TgbJ4=
+	t=1785741318;
+	b=ev1bgeIx7PaZx2tJost/p5QYHsCBm0HJkN2zbTk86sIUhM8Ia9iL4yjarELfwtuGLH2poW
+	tkSblP8oXcQjxpQlG3Z36meh3IBSSbuSSZA+3RZ5keEVU1Y3kE+AljZGcH98jMn+DAMvnX
+	0VynTi/T+hyDhE+0OuX+NHlEk9bJvL4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=codJXF7y;
-	spf=pass (imf27.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DpFxADqY;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785741211;
+	s=arc-20220608; t=1785741318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/NdI+a5QV2PO1JVHqbHPiO12lvnhARSugrgjYx4LQKM=;
-	b=Ls46Gb6AFMhbqseltQSMoF7c7OA+S8Qaz2L1q51wc9KmLdVhjqsMmwZq/emh0xE/2+OIb7
-	1QknCHJLjbw0vEaRY3T/X1YyItwRN80YwlE0IcaP4vqG3ljQKvv54v7UxaWbVdkFokkPXG
-	A7KXn+nLm1yn9+q9tcxANa9I4RPaCl4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1785741205; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=/NdI+a5QV2PO1JVHqbHPiO12lvnhARSugrgjYx4LQKM=;
- b=codJXF7y65AkdNReRLLLe0+Haqt7xmpCtF1D14X9cofjoXsd8B37OkJK9od5YigNunGvXK
- 4xjGCBDBSb3KkPJTvLNYsU6EQ36Hhwaw9R1iKS4DsA/Mi41IRuqKXhpK2EnwAQaoXALC9T
- TTEJK1RsoxZ350Zzyet8W/NkYfTmotBWDJpc5/XRbu3Di9q7LqIS2A1+aYih0next75DJj
- bRrSgEDRKZZfk52WYpN8dT67ns/tvD4nJ1q9cX3VMTQ1WYRciMog5b32xzgzBtsrb4b3pl
- DnBNI5buM4XWWxXqv1WIgHOQOi/cvHRJf93f2UZMZOPL8yIXzo/6UhmAHrETgA==
-To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
-	<muchun.song@linux.dev>, <rppt@kernel.org>, <tglx@kernel.org>
-X-Lms-Return-Path: <lba+26a703f93+639bfd+kvack.org+lizhe.67@bytedance.com>
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
-	<lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [PATCH v9 8/8] x86/string: extend memcpy_flushcache() fixed-size fastpaths
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lOw5vekGbjNw6ykDt0fzbiYJA2c7NYGfZyY2lgJKOak=;
+	b=UhA/SlwtVvhokYVSq9BL/cnCP2RM8bfV1xY0T5VpdwOjxuk5q9ylsiCzMxH4gs4Bw7z3d9
+	0J2Ar2a35mH5LcmFSU3QrbWuX0j77uuDLACKWrt9JvkuCxlziX8LSkXxOCBccBO/Fr5QDq
+	kWw/DxqvRRATE39CX0L0I/cE6OiXhGg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C365041867;
+	Mon,  3 Aug 2026 07:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09371F000E9;
+	Mon,  3 Aug 2026 07:15:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785741316;
+	bh=lOw5vekGbjNw6ykDt0fzbiYJA2c7NYGfZyY2lgJKOak=;
+	h=From:Subject:Date:To:Cc;
+	b=DpFxADqYOi+VHQ+Hrpil882FXtGQulPwbpCRjtbBGElPW+ao4/mQfksudQQLthqF5
+	 pkVTVUYOo5vZhYepoOIxvvFHOtkoPHMo/dz57XR7S4sxJlyoo9A+w2q3TJou3wKf9U
+	 /AQhkfpmmahTv41Cm0E5We5ZQiFqkL1bhX55rKzwMVJrb+NUrLf59e51n0xMXGD/Hz
+	 xDMCGpqeCUp0V6KrAcV6FiqZLg5sC6G1QlFj//4EYFd3DMno52+L34cmZHx+tz/qWw
+	 WM7JxxUZlbEz2fzVoZZgGa5+tV3uZ7QPEakf10G1xJ7OLUMr8rSAv+EgrxhPs+8xDU
+	 RgY5si8IGAFpA==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: [PATCH 6.18.y 0/2] mm/slab: fix unbounded recursion in free path
+ with memalloc profiling
+Date: Mon, 03 Aug 2026 07:15:09 +0000
+Message-Id: <20260803-kmalloc-no-objext-for-6-18-y-v1-0-8b01d1021f0d@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Date: Mon,  3 Aug 2026 15:09:29 +0800
-Message-Id: <20260803070929.86075-9-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <20260803070929.86075-1-lizhe.67@bytedance.com>
-References: <20260803070929.86075-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ6CMBAAwK+QPbukrbEWv0I4lLLAKnZJawyE8
+ Hcbj3OZAzIlpgyP6oBEX84ssUBfKgizjxMhD8VglLHKqSu+3n5ZJGAUlP5J2wdHSWhRO9zxRqa
+ 5e9cPTdBQijXRyNu/b8HW2tU7dOf5A0OcH2x2AAAA
+X-Change-ID: 20260803-kmalloc-no-objext-for-6-18-y-5e297a8bd9c1
+To: Suren Baghdasaryan <surenb@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>, 
+ Kees Cook <kees@kernel.org>, Danielle Costantino <dcostantino@meta.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Hao Ge <hao.ge@linux.dev>, 
+ Hao Li <hao.li@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ "Liam R . Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5E97E40003
-X-Stat-Signature: gux9p6oyi737ea9tnrreu8nisjkxommg
+X-Rspamd-Queue-Id: DD7B91C0006
+X-Stat-Signature: 4ma4y155h9notrnwxyqw97uskcp4d8u6
 X-Rspam-User: 
-X-HE-Tag: 1785741211-706474
-X-HE-Meta: U2FsdGVkX19LOtBIJKqm6A47aI8uRl9RsnH5e9yZFmEB63oPF3FIzsVJTKY93cRNgThE22IE7LMrC1jh1F3ewUPPzndWzwr2foc/MELWjyLYYihkkhpYbdeYVpkl4MT7hogsrUNQZBQGA0abkx/Gi5SkXQb8EonqhPSipElzaGhp0h9+WhMwL+FpiLla/5CGbDfuu8TGfuMPyQRpgb5/GXbJvWMoDa1KEUwUlTkPXncvdS/GeENv6eo5zbCPLD9tAshjw+IZhfRuf7AFy2YXJTFIKo/C/9ps/dybZA64Fet5g1SQJ2uqNZXWP54LIFgkr8JsQxIRe8R7pW6PEaSf+ZN7dsGgi1r1iGA9m9ULHnFhpZbG+XpbhZ5a9cPlShi2D0ugjeyL7lYr/ZqESO3cVinKtA/jdkNh5VVfXDnAD8yXAi656vI9lk4jQb9ipV6Mzpt2EqZMqvAchOFyrYmVxlvuUvOKfBmWw85nE7kdvFQiWpNCWDXpZZ0yey/F+uJpUEFxqPy7HCHDkwLJ7iejyCh5F9iGDaGamVqJNQOd+PaJagFznEiloHI4B1iEO/fYmlE5tPOSL97T+ke/EiGqJz1/ca/nLi0kBmxLHOfLJfmhiogxN7/gzu2HDnnkZAYSXA7ybVIpbydR16ewqP8UrDj8fQWtMstUF+6LsBBfYtXkGdwIftPeU2409W5XoxhZ+KzIgiBIeMptuSPTML58MFx9qa0Y4ZahMguCNsuZ4BheNEqmNubLnNeDwhPj0MfrJ9Dt7aTvXjcN2KVRQLGcFPhAomnS9iMwJ35Sm1+agUJAcdDUOXujCq3skOtfyVLayrLWliWiUDr7IXA0+cVJrAzDwYJXNc/Xlwzx6fgC56ZAH0SP2yV6ovCPz0o0SSAWjMjTyxceBXx0zt6RNxbMgl9A78Tkw+x22bcgDLGoi/V/1ZWaP1War+AG2qNuouN2gLk9OUGJ8jdnGwsNUW4
- gYKwjltd
- gNhSg7e07tKyhgvWXlKl9DqH+UsWVvfV8TDwmDZWmI+tZm4Y75wdW/eghYJlfGFOtHolRFPrrQWI5/re1d4Sr8vooAv8ldV4FHZl4kd0HFM55ZFNvSNtYSjlY//MRWFd3aqFlB427WUM3o52H72nEM455reXeaU/2wMGa1/LsqzUF8ZoXhpGGSbwap8a9UUo0dZiQUwUZdoCtg/rYZnp8d0PNp1nlJmO06Xgvs7uo1P/GsVYXHlbuflx7GpeFShNwGzjF3lQNco438hsnJntVHGny0jP0jyoEL7V3jOYau6YKnVjknujkekijjg==
+X-HE-Tag: 1785741317-4389
+X-HE-Meta: U2FsdGVkX18w1NmTv/nYDOYI1J3N/lHvTZMykg+f9lSNJtd/drdgpfw1P7Jz49c+r8HRgds8Gva/kmL1EYaUB2x4FQxn24JjNmf9M0Q8FltIF29APJAadYETMnHP1pUAm6nIrjsuVaXF3kewEJ5i1bGuNxco8Y9X+80Ky+Oe7PmGsEXF62B0cDAo8w9yaar4epp+5FCo4djnzPkDkSvXGfXk5BtRbnArYB2+4gaLHbRD0PmFBj/jbOAWG5xPIZfI9gnkPqMDOHH6hafUiLndeD8i32FxEyc9HQAU1To+80VPUPmf9GYISfxGBltJz3VLu8oY4zvqLOtE1aTlK3sq0aSwfSY1sC8gObjuC8OnYPpXQkqQ5c8Sp8p7fcMDjB+r40BYw52QOlU627OvdAKIe4KnQuE2IQcOPGNXpHjWKPmZMrR3O9cOfwCzDL5LVLQN16iexNp5oxF6l3ZIUmbE7H0FIrtZZg9Qq+jcdm1OsD4xWjeFBDWlzUjrBl203epLCZFTSNQpRNQZ3LhpLC/tjIP0OhagOozERYjxwgVqZd4FWBiETx6tVou1j2xxHvpCcsO++gP53MlVH0heUyZ5w0Ro+l3lsLKWr7HIofkQSA8+GP/tpG3yG3vb8BGY+WsSLaynCmorjMe1mjzwlEiGS78m6MQJTgl9i3sJQLwxSPyZhvKYxW1DWhYZWIEf/eoDWEoimIBSpEKcBtmO7Y/Wc+fgdEex4u6cgf4s0nQ5914fG6tIIPSxzoBGrZGXI7yKln2Uk3SfpXvSoL+/OSFRAr8rf/gvOExgsbf83GlgydyEV4lkd0LlsXENwtGrgYg+X7Li9moQ44lVMRmUdZMT4+mxOqZ4YkfdCAbsgeOGPyF4KyZPOiwNTEi0NLQbe/j3pQnHyMJNDoRKOCQAw1hNXxC8ka1eNfbNib1NjKf7b9QBAqPkgelGEZi6kvyUJBFCUOAr0tMAv4dsc0MoQs+
+ EaOwzZWK
+ 7WOe4lGE09PnYNjh8bV3mTSaJIgYlKCPEqe/+oaSMWJu4jep7+o7hHpxd03wKmV/u+KTd1RT7Z+wW7nvOJS9ReO7HrnM6LU2Gtuss068UYL53BOoLdZYBtSXF6/jv3/jp0LZ4oscEcIvr/YSQA8rcPkeMuJyLMY7hu6lPmnDFyNgsePySrtAz46E5HYQ/L/w6uCCnO4JJy+EiZ6PNaJyayFEEUAjZTdp3ppG8ytfu2fhphJCFMOUQJm2u0vHu3IdSoNZlP8cjavgExUqqYfTS+AiZ7wQGbvVaueH79kRJwcIiTwpdIjD42tL6WOTrEoCfWd6TpqqijDCT4OIdHRmA3s1XzVoAC8yGU1ZzjKthvjhpf0xmmvChpbGaU/Nj6jluZ/pR6qjawO5LKCGfbl6G+gmsFFmHQHau6Z6M8SmkKY02cmH8exjCu6Yuf5O9igruul+5ynPZvSLrUBzsi6L9rX2xqd1YnKUS0xwyz2dHQ5xhfPlIJFZyW7Sop/uz+WYorjbqbeKUhvysme/CiQSuX1KGuOYow84PnIvYgAZjOAPokTPHYz7FS0oeZ7XoXa7OH1FP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,130 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The x86 memcpy_nontemporal() helper maps to memcpy_flushcache(), and the
-ZONE_DEVICE template-copy path uses it to copy one struct page at a
-time.
+This is backport of "mm/slab: fix unbounded recursion in free path with
+memalloc profiling" series [1] for 6.18.y.
 
-The relevant copy size is sizeof(struct page). On x86_64, the base struct
-page layout is 64 bytes. Adding either the KMSAN metadata pointers or an
-out-of-flags last_cpupid field can make it 80 bytes after alignment, and
-enabling both can make it 96 bytes.
+The last patch has a slight functional difference compared to mainline
+due to lack of SLAB_ALLOC_* flags. I described those subtlties in the
+backporting notes in detail.
 
-memcpy_flushcache() currently only has inline fixed-size cases for 4, 8,
-and 16 bytes. As a result, these constant-sized struct page copies fall
-through to __memcpy_flushcache() even though the compiler knows the copy
-size at the call site.
+The first two patches from the patchset are not backported to 6.18.y
+as they are no-op in 6.18.y.
 
-Add fixed-size MOVNTI cases up to 96 bytes so the ZONE_DEVICE
-template-copy path can keep these struct page copies in the inline
-memcpy_flushcache() path.
+ - mm/slab: fix a memory leak due to bootstrapping sheaves twice
+ - mm/slab: decouple SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
 
-This matters for ZONE_DEVICE memmap initialization because the copy
-happens once per initialized struct page. For a 100 GB fsdax namespace
-with map=dev, this is about 25 million struct page copies during nd_pmem
-binding or rebinding.
+[1] https://lore.kernel.org/all/20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org
 
-Tested in a VM with a 100 GB fsdax namespace device configured with
-map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
-server.
+To: Suren Baghdasaryan <surenb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Christoph Lameter <cl@gentwo.org>
+To: David Rientjes <rientjes@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+To: Danielle Costantino <dcostantino@meta.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hao Ge <hao.ge@linux.dev>
+To: Hao Li <hao.li@linux.dev>
+To: Pedro Falcato <pfalcato@suse.de>,
+To: "Liam R . Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
 
-Test procedure:
-Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
-initialization time from the pr_debug() output of
-memmap_init_zone_device().
-
-With memcpy_nontemporal() used by the ZONE_DEVICE template-copy path:
-  Average of rebinds for nd_pmem driver: 150.83 ms
-  Average of rebinds for dax_pmem driver: 153.55 ms
-
-With this x86 fixed-size fastpath patch applied:
-  Average of rebinds for nd_pmem driver: 96.79 ms
-  Average of rebinds for dax_pmem driver: 119.04 ms
-
-This further reduces the average memmap initialization time measured
-during rebind by about 35.8% for nd_pmem and 22.5% for dax_pmem.
-
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+Signed-off-by: Harry Yoo <harry@kernel.org>
 ---
- arch/x86/include/asm/string_64.h | 56 +++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+Harry Yoo (Oracle) (2):
+      lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
+      mm/slab: prevent unbounded recursion in free path with new kmalloc type
 
-diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-index 21ae515ae35a..bc6a9f34b346 100644
---- a/arch/x86/include/asm/string_64.h
-+++ b/arch/x86/include/asm/string_64.h
-@@ -82,7 +82,35 @@ int strcmp(const char *cs, const char *ct);
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
- #define __HAVE_ARCH_MEMCPY_FLUSHCACHE 1
- void __memcpy_flushcache(void *dst, const void *src, size_t cnt);
--static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
-+
-+static __always_inline void movnti_8(void *dst, const void *src)
-+{
-+	asm volatile("movntiq %1, %0"
-+		     : "=m"(*(u64 *)dst)
-+		     : "r"(*(const u64 *)src)
-+		     : "memory");
-+}
-+
-+static __always_inline void movnti_16(void *dst, const void *src)
-+{
-+	movnti_8(dst, src);
-+	movnti_8(dst + 8, src + 8);
-+}
-+
-+static __always_inline void movnti_32(void *dst, const void *src)
-+{
-+	movnti_16(dst, src);
-+	movnti_16(dst + 16, src + 16);
-+}
-+
-+static __always_inline void movnti_64(void *dst, const void *src)
-+{
-+	movnti_32(dst, src);
-+	movnti_32(dst + 32, src + 32);
-+}
-+
-+static __always_inline void memcpy_flushcache(void *dst, const void *src,
-+					      size_t cnt)
- {
- 	if (__builtin_constant_p(cnt)) {
- 		switch (cnt) {
-@@ -96,8 +124,34 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
- 				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
- 				asm ("movntiq %1, %0" : "=m"(*(u64 *)(dst + 8)) : "r"(*(u64 *)(src + 8)));
- 				return;
-+			/*
-+			 * The relevant fixed-size copies here are the
-+			 * x86_64 struct page sizes: 64, 80, and 96 bytes.
-+			 * Keep 32-byte and 48-byte copies inline as well
-+			 * instead of sending those nearby fixed-size
-+			 * cases back to __memcpy_flushcache().
-+			 */
-+			case 32:
-+				movnti_32(dst, src);
-+				return;
-+			case 48:
-+				movnti_32(dst, src);
-+				movnti_16(dst + 32, src + 32);
-+				return;
-+			case 64:
-+				movnti_64(dst, src);
-+				return;
-+			case 80:
-+				movnti_64(dst, src);
-+				movnti_16(dst + 64, src + 64);
-+				return;
-+			case 96:
-+				movnti_64(dst, src);
-+				movnti_32(dst + 64, src + 64);
-+				return;
- 		}
- 	}
-+
- 	__memcpy_flushcache(dst, src, cnt);
- }
- 
+ include/linux/alloc_tag.h |  3 ++
+ include/linux/slab.h      |  8 ++++-
+ lib/alloc_tag.c           |  9 ++++++
+ mm/slab.h                 | 28 +++++++++++++++--
+ mm/slab_common.c          | 13 ++++++++
+ mm/slub.c                 | 76 +++++++++++++++--------------------------------
+ 6 files changed, 82 insertions(+), 55 deletions(-)
+---
+base-commit: 2fe596715f840d053aed5cee5455f701bdcd2b50
+change-id: 20260803-kmalloc-no-objext-for-6-18-y-5e297a8bd9c1
+
+Best regards,
 -- 
-2.20.1
+Cheers,
+Harry / Hyeonggon
+
 
