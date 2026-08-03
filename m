@@ -4,142 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1BCBC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:54:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C3DAC5518F
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D28C6B00A7; Mon,  3 Aug 2026 08:54:29 -0400 (EDT)
+	id DC9BA6B00A5; Mon,  3 Aug 2026 08:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 934D46B00AA; Mon,  3 Aug 2026 08:54:29 -0400 (EDT)
+	id D53D06B00A6; Mon,  3 Aug 2026 08:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AE916B00A9; Mon,  3 Aug 2026 08:54:29 -0400 (EDT)
+	id C428A6B00A7; Mon,  3 Aug 2026 08:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBAD36B00A6
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:54:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4654B1C10F7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:54:28 +0000 (UTC)
-X-FDA: 85059951816.22.3305A42
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3E4254000D
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:54:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b="E/37XMMJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="X FiXArH";
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of contact@jaseg.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=contact@jaseg.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D8446B00A5
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:54:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C8191406BF
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:15:33 +0000 (UTC)
+X-FDA: 85059853746.19.38AF12D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A67101C0010
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:15:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFKPUPrP;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785761666;
+	s=arc-20220608; t=1785759331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XdhUY7gIfBKTt39kTsvjcNMlzRZeyYxSvOWiFph/C9I=;
-	b=3ljf5aqT3h9hxSKns6VhIcYAgjorQTUaykuWvF39VRYfOxASgzU8ylWWQyFjd2GFsNq5zb
-	AWCkb53L0Wwe2OVLcggEPHdjo/tOKCEtzqBxR9JdQI4Y7JS5tElfq8bAOmNkptDDXScoHk
-	bfvshcnI3401Tie3cUWV6aUN4OIoRzE=
+	bh=poueR7DfB9aIGfWVmCWpCQzsUcIx1p6d9MpQRvHzhFc=;
+	b=ouRnxK0KxGC6mZsLtZh2VWib9Axh5Bqzgw6LRrWgCdwu08LfU3a2XFsYbAvkH1xMjklM1z
+	asyB9OwBxb6Ali7nRIFlNZL+kpQxfMe9/uP/ccYzdFVJ6vQSR9CoJSwxlbEz23dvemQ27K
+	igzi2u6SOAZwWflEj+RoZZasRqSnFYo=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm3 header.b="E/37XMMJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="X FiXArH";
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of contact@jaseg.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=contact@jaseg.de
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFKPUPrP;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785761666;
-	b=nRQKMJnTBUkwYBVRWs8bOCTtvZBOQeZKRwgcX3zaYu94Vq6s15C4JNpClBGhLJW5q3sLOO
-	IM7DlYykS5Fkyw0yy3Y+wEjBX6byMfnxfTQxyKPYFYFZMI2+8kWjsctOTCOA9LWyxRAMmz
-	EbKCiYjIh7H1qWiF8B1QBLlzheNwOB8=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 970111380046;
-	Mon,  3 Aug 2026 08:54:25 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 03 Aug 2026 08:54:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1785761665;
-	 x=1785768865; bh=XdhUY7gIfBKTt39kTsvjcNMlzRZeyYxSvOWiFph/C9I=; b=
-	E/37XMMJ0v1Ud1lWVMQvTpyJCZCOLPVTbuoLeAvRkedhouyV/mlnvFSGw+oaQldM
-	p73GHXwhaKd2DTK07mdTe7wKjvUiFTZ3RLkcX8Pa+qAp+4GDEkJlIhu0CLBT/1Dq
-	Rwg4J/vBB/l6N/VOPRo21re9jKhsgafZirxl6MAj4z2QD9EJAGNn+Ju3cc9DIVMV
-	VHpDEt/LvGTFFVgplQVHIMMziB3f8IWMSXMzOwSm4QzFPbdYI3edHpAMGUXdsnLN
-	yS1Ct3IGugF74exAfxiZQexS3uM1zwnS8MbKrFmsbGIwi5DvWn0zdQvkaCHIEnK4
-	7hJqcH1CBvuoaTEESExJFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785761665; x=
-	1785768865; bh=XdhUY7gIfBKTt39kTsvjcNMlzRZeyYxSvOWiFph/C9I=; b=X
-	FiXArHDlNIaYE+MSFFil6OM4ih9Q9ukB8Xg+PtmQChn/juMjJc5C/2TiiQa5rDdQ
-	oji9SOifXAUFhQxCaF9TZXe4d3tJdWpFkRJkXwJUoFA3Q3h9CaaPWuAcoBKMGvNC
-	T9XijdaPf5V8CmiRq3ZnS/+60fkcDV9s12//xkQJenxHiczv+ufSAF/ohVvvdK9s
-	GHRfIJIuS87uOuHA7XRSOEVD0Gzqi9hjRJ6EC1I9JeX0UEgEAloWzvCEbTlnrQSl
-	BnB/vKYF9z0sNpWDGDutmpSRD5Msj6V9xxH7ub3hX6IBXd3AXCvNvkO2QAvMkYTQ
-	dJ0Oy4up4nrGsFmtx2aFw==
-X-ME-Sender: <xms:gY9wap_gyPrNfTOfCdMuF-RTBVYkBSjVwOcJQ2LNvslRQxZCVvhLTQ>
-    <xme:gY9wagfKNF4RQqJ_KVzOwahfzhJ9V1E8SMnCPJza0jrXdz4KYLY5_WmUjuk_5nDYn
-    WNlfBrCYKBNem6pA0jfsdYEO8YIo_PxNOTHP28LMpWsdQIxkYBF6Q>
-X-ME-Received: <xmr:gY9waj7qzG0aTPTP4hskOb8STRqmTH5_15kri37eDl3xAtfKXZb3lLjT_IQ8lvqKdf6xgwCsYfl5xLOUBrcrNvQ>
-X-ME-Proxy-Cause: dmFkZTEAFwn4saL/ueJBGnQZvkKPJZOrxi7Z/2dkwRHayWmHWj9cIIsrRAVO1lPv5iGa2I
-    07a4H2y3pW3KAvHQ432PvCbsVS0IkeXykOQfC9H46EgUO9jcKnIJ7dW4YjzU0Ps4sC4bQo
-    8pzctXin8n+CtzWh+qnXDD5LsdpMGDmzQE7xHuriMeVbPyLI0BTGwLVBkZvM3487FUS5mH
-    ojh/ZlhUAfcD6c7XxMQYSJdd/MJVosZjcqbPVVxLFGJsoN316J5bx9B/ynbhOnU5BJ6bMt
-    UpXH6loyunRrrLxq3Qtdo7N7A6Zfs+5ztQR9/k+CaHMErQU69rWzwbtket9B+FHmEPJmf+
-    m1QBe/Pypl+OospWrYYumCNptZu9SKzBkqfs6a8tBtpO5ASa0CndqsfBSx9nQ5Bis/RX1D
-    KaqdqRod2s8ZM7BFrfCiSfeFbwkKjAZefFu2qSO2YBnUztZxlRWQ711MNeQ+I2zTxNaayR
-    bUPmyHUCEXgi2r1cavn+NNVJCy8obrmR4csBg51STLoI/cHLdDvy4DYyCzKxo1CLi7dVxF
-    oRTnbIHkJIHJDIYxZ19P3h9HrpUIAKmVZFO3YLDrTl+Ohck5MTLywiOvDh3dz53JqxWxko
-    6lKg2tvXK/oMHO/Va5BgR/bc03JkpZhDno+J5C7c5sYZnPqOybQFQpL8cgXA
-X-ME-Proxy: <xmx:gY9wak8h2ozZAE1RgwbftpnqMwtXUE2Rv-DcOVWREgeIuuNJfYikoA>
-    <xmx:gY9walweEINbJmt1TkVmHteWu5WzfoVC2d5d9xFoJXhN9a-Y2AxKHA>
-    <xmx:gY9wajHyXxJkuacXTCzsOmu2QS8sOZOAGqX-K3mWeUnGz35kSZI7RQ>
-    <xmx:gY9wagOkgOrCBKZm5jNSl-r3wKgvHMLaG7_BHtFBrpYb9La7slGhRw>
-    <xmx:gY9wat4FvRzPw34-XxHfeBGXAEHWmgoSE9B7iRFhhjBRP6_-yF9sTjNK>
-Feedback-ID: i60a14417:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Aug 2026 08:54:22 -0400 (EDT)
-Message-ID: <ba907c1c-02e4-41b3-a14c-5535dc1fd09c@jaseg.de>
-Date: Mon, 3 Aug 2026 14:54:20 +0200
+	t=1785759331;
+	b=TaPjrJS01errM3Ydm/9cQAC3oAV0P7yo3Wfpaa0w2XLnHgQG0Il8O7zvYV2wrbM+NBTpV4
+	yw801kGLSYfV6hYKnBDDTG1pvZf1srqhpcU8+g1zfju0zAC67vAqjx+GJ3+/k9rHn3kWay
+	LfbKGHJeKW/gaYSK59LbTD3tFIyqSZE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AF7C44022;
+	Mon,  3 Aug 2026 12:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F6E1F000E9;
+	Mon,  3 Aug 2026 12:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785759331;
+	bh=poueR7DfB9aIGfWVmCWpCQzsUcIx1p6d9MpQRvHzhFc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=EFKPUPrPVthfkr8KU/etmkk+cysO6CYYC+ELmo719CZWR5PhxFFMQsC5n0aIoxd6X
+	 85mn1cl1SvdTx+AkJVZeTWt2+Bg2pd8W6RS1xY3pDFP/c50ZzBbC2WColtvL3ZWLpD
+	 jkyj/mVmPKqUvwUbcsNvgLxtR641CCzOcEhQgUGXtLdwj1EjQgTJt4VDGcor321Gj6
+	 u7dvmsh6JxE8X6Qqjlz1cdad2sWuhECnWGjX/K2wnoaGXv2flIAWzJ0dEIRPrqFWIp
+	 ZOTyBCM0R7d0LdQMI3R2iRIISbftI+I+ypvr307yqDIeCEn+BW2oH/LnsCsa83wx9t
+	 G7rvEsyxxxFrA==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 03 Aug 2026 14:15:02 +0200
+Subject: [PATCH 3/3] binfmt_misc: document the pre-opened interpreter limit
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
-To: Dave Young <ruirui.yang@linux.dev>, Baoquan He <baoquan.he@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
- <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, David Howells <dhowells@redhat.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
- Coiby Xu <coxu@redhat.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- keyrings@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- Tao Liu <ltao@redhat.com>
-References: <20260731154608.153258-1-linux@jaseg.de>
- <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
- <74625f78-15ea-439f-b9f0-939d2976fa7f@jaseg.de>
- <79610b53-5201-4af3-913a-0c4dcbb6f9d6@linux.dev>
- <e9523b5a-6623-49ea-9ba3-cddae1a9ce7e@jaseg.de>
- <ab46b71a-9f8d-48c4-89be-e15ce50aa8c6@linux.dev>
-Content-Language: en-US
-From: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <contact@jaseg.de>
-In-Reply-To: <ab46b71a-9f8d-48c4-89be-e15ce50aa8c6@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3E4254000D
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260803-work-binfmt_misc-interplimit-v1-3-4a2435500bd9@kernel.org>
+References: <20260803-work-binfmt_misc-interplimit-v1-0-4a2435500bd9@kernel.org>
+In-Reply-To: <20260803-work-binfmt_misc-interplimit-v1-0-4a2435500bd9@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Kees Cook <kees@kernel.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
+ Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com, 
+ mail@johnericson.me, "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.16-dev-f2f85
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2057; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=2n5y7obkLAnf5oBtFkR2gN8H7OTFfUdPsI44hm+1s90=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQVtIVlPlu66fpst9a3+8UeB+9cvX8e92uvguBznxwkT
+ rIV7ovz6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIMlmGv+I7X++6Irt706Zd
+ Ny2iD60T5HoY3uffGXWY9z3zfuFjZ2QZGdZu/MS5LIbtE/cs+ZWTpz8SOjxtm8XTo6sk6yIsmue
+ feMYNAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Stat-Signature: cyzcxax59cgcjwiejxrs1sseq46yr1s4
-X-HE-Tag: 1785761666-368258
-X-HE-Meta: U2FsdGVkX1/LtTCwAkST0FH9RuwHnMUggtVaYrVrgTeP9KCSJrq4fc0J2AHpR369mmvE6R7al1CxN/hL3YCw7L582Bvauz5dkqZ2tvmuVbYO5oFYbn1vBQ4aTpnFkikfkkiSfsbIB6uGYDYxjq0yu10mJSprgW5rmTY7grhZHtr/tooYslMWMCaxnt6ljVjqMcWyZgFAUkYvFE9Hbj/efj/oQGQzTQ+J94SpvU2E0DIO+troqL5Ne22SNA2OwBOPzukK+j1qVmHaDvbU04p5j8gA5/qGoZs8rNYJXTuVSv1s3mYVxI1Vn/nVdyyMTs7qhpaNkR6264wIaGRNwtTXDhyI9Cnj4HW+Jhei36iTC96s3cAMvNmQWMmf3GJ/NgMulgdk34jcB+4CH3UlrQBNx5m27+w7x3FD4xn2tOorG7fc4gsDUqot/HSPlzxFvocYUnTL8ShekbFe1AUC3wc+/8AVJ9GR+8N2TKgI0HYr3qN6i0p9ODHs/uINUoV1xooGmyQkJdq6UWTfZ9WwNEiOOg0FrglEF7f9dGxZIH9qqjiUQjt2pdxPtNXDFearqpsxrWJHMZf6TExqYM7/TCy2Yi8rj3AZU7Y3bvvUGE3z+mGE791VVscWmvVND1IPWSLQrW7HSuULNbj8lFPx8pQ0Divl4ksdhkYidWv4VJ3U0gsfzn8bvTo1EF+IxyU35oUWILlnQWez3R2cCiw3/Nk/S24vCA4nH4zMSZlTmSDjPPymBl9eBvd4iSynPs61B3KJjI3AaSkUv0iKocMnEK0hX83tcnJTuFdEv8VWyyD/g1qZNGD0UlZzZgqCjmLb5W8ewd2p/5vMq9E3FkuMmyEL6WkYFZgDHHrZrTtMY2v4Km6e4BZRCDUff3VRtovjh50TkZbiho4ACMOwhjig1BsydcBEZk0iDSJmQ3rVCCM4e50rSAXaPRmdVJMQ5/n6SVh2MVVuM1qCVsclPtxudJJ
- 723o74Ap
- NPFkNhiusB2blYToWGtdMH3Jmxa6XJbbnInUxiqA9Es6tgk86fmq7lhQGTuC88O6KSlIGFpl02BxlQ3zhSQBH/KNAyCAeFdY3LYt9DOYDadPHVBU6pWj0Gy647MgGE7vUIu6hJSKdrMPs9R2Z+Uq9JtJLE35tIhO1cgJZEc04MglnVNFWkNROYS7WE8gBIfr3r0QnLBCXyOL6ngLVeJVt3ZO94X3NzqiFM7amDkwNWrTm0BhKcuH2n5xyG1I3A+TSRTfBrZCBuQLMcOr4w+fCdF3sdsb3UGNrUlj+0xcoYv8XSBYeewlb+prDE+5hynnh/rlm1HQ6bPhBDvaTb+H/2myTCGlmovzYZpkp8a6cQpuLoLdvFYdv0HVuVobkUm1DioxphUKti6YtKnSiClY5/n3DHVWVhNGGcBAJWXwjpU4lE3iBkrtrmd4pGMbuQ2mLGxQ1Ra1cEfVs8jfQ5EWg8xZMzjs/MfKW8rmpKM8ZCSq/m2g0Kl6pL0KI/e6Gn1V5X1Tp
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A67101C0010
+X-Stat-Signature: 7pnqsi58ct9g6kyrizwxn1ibercekjrk
+X-HE-Tag: 1785759331-325956
+X-HE-Meta: U2FsdGVkX1+TQ1/n85Uga4h0L0Serv5TaC0rzVJB4xAB81EG8mNsM+WpQZu9njaUAjZmRkjvEOafRMBwrxPFdI1WyFVXuNJm5COmzptq17u3qAxsidhN9WHtP4hJoZMubI0Swc/pnrBuBbflQSlWS5lHDj9gPNBeGznK6hg2E2A1djIdkeloDb2CqxZ0W5k1At8bpChJn6P5P0T/fcP+payt+yJuVBAOtIyCMs80IcQlmQvVomZfJAwdKeMT2EDvUQF80frku1of2wA1ETmFtPajri7WOzpTqog0QaC8uVWp/edkZ51UQWKu35rKrRqQ1dRDE0ePNpMDlK2oBbnX7MHgDfvOlJIYgGk3pZ5u9NrV2efHc2U0tKFfMZxCwP77ELUzPw9jK+su27TvTfvuftOn1he7JvS8qWuX861Krhxl2B/cVd26kNqayv2eoanqQ99wmJOh72AS4Pz9aGLssrOuol3rNhI0O9+4AMLuKd48l2OD7t1udYkuiWp95/rVmDHf+Q0f3mlD7iUQWnZXBqWQ8Ow3uTjU+DaKkGBRBvgdYDgB2GpyVpsH5BkRCv1E43T5/PiTaiXpRpHgy8zYxkmRbVp8O429bX+sI9TAjgMD9fcH+Qui1cRl14VsMN4p6jp14AStDdfQ/GdAegjOOpVPTMlEj7qV4eGbSBd2HrO4tLP+iFufJXBvuYBcKhKnIXEajLJZH2Rk9RgHlvvuLwPu4GEEnqYDQoP0Et2kEJ0UAUWOFEuKiKtAgmsOPAW2T0WMZgtFBzE7tg8QOgk7CzLgt3BPtdJ9A+ffuCtlRvPF9afV9NGorjkfqGp84ox8156a8nk3K+6CAbQ5TeaMwXpOffBRhU+Nm+pGBuDRE4NsM534hF3DZOYfoZs/gxZiqPEULxfyebLSF/ruV0m/9fGV9yr1hljdIo1Ncm+Yw0xGS5KYUlDLId5ijKh9q4SfAmQHvYJbZ7vYMvMD69w
+ CIRX9igX
+ tCxkWuPwha/EaJX/j8CIRAXpla+dvO7zni1sHKEdxe0DczbhpfN1GjKZeVRZUNdz4XqqHWLYTs8ftMQdQV8ye9q70lfG2wGdnqdhqpsAMqFa2dp4ul+vyoWRwWXT79goi/g4eTtFAKatIkNg8kGAlAiy9uJPPOAvWcHIsw5IINVTkgaOxCfC7kEd/V2x/2DkIZwPhkpxPgcwADolPyEwS30CAlPqFYOLLpb9d3xKQva88WmrL1bTcEMa2VfgwvRQDHevwIE8nb68CPBR0Tbukp3Q0SuQIMn1oXuDcIfa82mI/HO48qUkmcIDaaoXsEYSBsvatYLpXsVQ2VBzKkRd1ZU+H369sLO42KC81HMOd2vU2VneJyLpYEtTfKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,45 +102,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 14:12, Dave Young wrote:
-> On 8/2/26 6:20 PM, Jan Sebastian Götte wrote:
->> On 8/2/26 07:08, Dave Young wrote:
->>> On 8/2/26 12:31 AM, Jan Sebastian Götte wrote:
->>>> On 8/1/26 16:03, Baoquan He wrote:
->>>>> Note that we usually dont' want to run a lot of work after panic and
->>>>> before jumping into kdump kernel.
->>>>
->>>> I understand. For this reason, I think it's best to keep this default-off. As-is, the notifier list call is timed and on the (slow) ARM64 target I'm using, it takes about 3-5 ms to run. I took the "try lock, skip if locked" approach to keep the risk of this code crashing during panic minimal. In my application, the kdump payload is code that then does a full wipe, taking a couple hundred milliseconds.
->>>
->>> Not only about the time used, the panicked kernel is not reliable, any more extra logic can make it even not reliable, any pre-kdump extra logic is not a good idea unless it is a must to ensure kdump working.
->>>
->>> Cleaning up secret data can be done with makedumpfile + eppic scripts (see the manual of makedumpfile), or it is even possible to do so in kdump kernel with Tao Liu's improvments for makedumpfile previously  (I don't know the status, probably dropped for the time being, but it is possible, cced him).
->>
->> Thank you for the pointer!
->>
->> There's two scenarios worth considering. First, in the standard scenario where you enable this option, then drop into a standard kdump kernel, I don't think it makes a big difference *when* you do this cleanup since someone is going to have to dereference these pointers. IMHO a good reason to do it in the old kernel is that there, the code knows about the layout of all the data structures. To retroactively do this in the kdump kernel is much more complicated, since there you have to reconstruct the structure layouts from symbols or hardcoded struct layouts, and you have to keep this symbol/layout information perfectly in sync with the running kernel.
-> 
-> I know that this is the usual reason people want to do things in 1st
-> kernel :)   Like the crash_kexec_post_notifiers which was introduced for
-> people to use at their own risk.  Is it doable for your case to use
-> crash_kexec_post_notifiers?
+Document how pre-opened interpreters are accounted.
 
-I think there's a few reasons why crash_kexec_post_notifiers isn't what 
-we want here:
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ Documentation/admin-guide/binfmt-misc.rst | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-1. Enabling/disabling just the key wipe notifiers scattered around the 
-kernel becomes a bit ugly when they're mixed into the same notifier list.
-2. The key wipe should run after other notifiers because by definition 
-it will corrupt data structures so future operations like any crypto 
-operations will fail in interesting ways. Having two separate notifier 
-chains is an easy way to separate them.
-3. For my use case, the stability argument is exactly why I want to run 
-only the wipe, but not crash_kexec_post_notifiers. There are many things 
-in crash_kexec_post_notifiers. They take precious time, and they 
-themselves can cause instability. For example, the remoteproc panic 
-notifier can (intentionally) wait up to several hundred milliseconds, 
-which is too long in my use case.
+diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
+index 622b5d8c8995..d26b63a27c25 100644
+--- a/Documentation/admin-guide/binfmt-misc.rst
++++ b/Documentation/admin-guide/binfmt-misc.rst
+@@ -128,6 +128,11 @@ There are some restrictions:
+    named by an absolute path. It is opened when the binary is executed, so
+    a relative one would be resolved against the working directory of
+    whoever runs the binary
++ - the amount of pre-opened interpreters by ``F``, or bound to a ``B`` entry
++   is limited by the ``/proc/sys/user/max_binfmt_misc_interpreters`` sysctl. A
++   registration past the limit is refused with ``-ENOSPC``. This limits an
++   unprivileged namespace pinning files. A nested namespace can raise only its
++   own limit and every ancestor is charged too
+ 
+ 
+ To use binfmt_misc you have to mount it first. You can mount it with
+@@ -215,10 +220,9 @@ with the credentials the entry file was opened with, exactly the way ``F``
+ pre-opens a static entry's interpreter; the paths must be absolute. The
+ path is everything past the first space, so there is nothing it cannot
+ express, and no interpreter has to fit in a register string. An entry
+-binds at most 100 interpreters; a write past that is refused with
+-``-ENOSPC``. To bind a file that has no path of its own - already
+-unlinked, a ``memfd``, or reachable only in another mount namespace -
+-open it and write ``/proc/self/fd/N``.
++binds at most 100 interpreters, and each one is charged against
++``max_binfmt_misc_interpreters`` like any other binding. A write past either
++limit is refused with ``-ENOSPC``.
+ 
+ The ``load`` program then selects one per exec by name with the
+ ``bpf_binprm_select_interp()`` kfunc, and every exec runs a clone of the
 
-Thanks,
-Jan Sebastian
+-- 
+2.53.0
+
 
