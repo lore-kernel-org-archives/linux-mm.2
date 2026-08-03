@@ -4,98 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A2DAC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74EF7C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:04:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 813726B009E; Mon,  3 Aug 2026 09:04:39 -0400 (EDT)
+	id 8FD8C6B009F; Mon,  3 Aug 2026 09:04:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB766B009F; Mon,  3 Aug 2026 09:04:39 -0400 (EDT)
+	id 8D5EE6B00A2; Mon,  3 Aug 2026 09:04:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 703CC6B00A2; Mon,  3 Aug 2026 09:04:39 -0400 (EDT)
+	id 79C816B00A4; Mon,  3 Aug 2026 09:04:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 483D86B009E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:04:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7843C0682
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:28:42 +0000 (UTC)
-X-FDA: 85059433284.21.B229F2E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EBCC440005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:28:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W+fpwFs/";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FA7D6B009F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:04:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB85480611
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:17:26 +0000 (UTC)
+X-FDA: 85059253692.03.55BC8F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BFE21A0008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:17:24 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dZI6HV0g;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785749320;
+	s=arc-20220608; t=1785745044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hUNX++3BEUzA26hicxStbuLxQDCbIeizijI0OkQjZck=;
-	b=J3v1QhUOQ8I7w0zGHu/S/DaSYIc/fDNf5qnjqX4nr+yJRSItbrQVb16oCdhZeu2PeGY2kj
-	kKVv4HyItdLTMNrmEfFulwk/dlf96g3FZMujwXg3cDmG2o7TSuVMJ1HHT6v71xqX/NfMng
-	SNuzaf2rn/Qz980IV025xi4L0GcjY8o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785749320;
-	b=cfZmse8ecCx1JJ3ujQh1V5FCgTz/3QvtdP6gZm83PLj7Oziqf/ZzvFhHOZkBOi5flkBz5K
-	qZv1nLw8Z8WgN7p7uUrfPJ7eG7k9URKwReYEnyAdpgS2kl5xGI/7UkDqeBV3im/Hqekckh
-	uRqRc0F3l2oBpeSMYkhZHPBnqsGb9AE=
+	bh=coiuyZR1VmW5G88T8irYDXeM/sT+sxprk8RM8Eu7o+Y=;
+	b=CITh7ZTfg/jrQfnXOD2eBSUP9GMOIoP6fxg80vdSCH+5rr87CUSGuaorYzKh0XJXk8JJl5
+	pzqP0tvuseQUeoDDyXkQS+9Hy26265uhtHLZJDq8uFC+Hu0zJaVbIOWHCfdU8j1XxQlozP
+	VnLXJBckD6CJldu1A2Ww2ket4LW7/vA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W+fpwFs/";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dZI6HV0g;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785745044;
+	b=dT4ju4lqL7V/AvQGOlnHmsIoNTA4vCQYiYcx/DiayB7WPP/VYtab1sUSL+UlRMJZcBIDpx
+	97W3ZjSShgJR2heCkNDfMRpu7vu4B/54m5vUpQhejav+wnEr5ks8k9Pe7pPdncabgokCYS
+	b+lGSM237TOHD599zPdf2VFiRY1lXuE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7BB4160A64;
-	Mon,  3 Aug 2026 09:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED211F00A3A;
-	Mon,  3 Aug 2026 09:28:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D17CA4170C;
+	Mon,  3 Aug 2026 08:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640961F000E9;
+	Mon,  3 Aug 2026 08:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785749320;
-	bh=hUNX++3BEUzA26hicxStbuLxQDCbIeizijI0OkQjZck=;
+	s=k20260515; t=1785745043;
+	bh=coiuyZR1VmW5G88T8irYDXeM/sT+sxprk8RM8Eu7o+Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=W+fpwFs/JXd5ssh7ZvqoPV4mgc6cns70ZX82HVprWFINNlekvxdEDGQYq0twhE/dB
-	 4Nbt/63rh/mObIY9W+yhKvUJOcQjMvj7Vsgyag0DGFxrXWFn46NBCinM+2Rgyd8Bm3
-	 nuvqJgmZX+QMcWIx5hoohcLZEG1JC9pBLOxXNrZ8ZthH1exCXltLZLXzz8QZQjko94
-	 mba5S+VDexpjZxkcwNS3O2GNS6RbufGYkp+nMb6iJP7wSyoEsg1PGKjivG0uCHtvkq
-	 JbodFQKyDMkbGFNRhIhWlbv/RkYeyj86XbV2obzzLiaopEoV22UedVvElH0i3qEDue
-	 0F5qBmbU65dJg==
-Message-ID: <2ac2746f-18b4-4960-8628-82e87c2140ce@kernel.org>
-Date: Mon, 3 Aug 2026 11:28:28 +0200
+	b=dZI6HV0g2Yg7FFetdn3P1hVJ3ewoATxX0lbDDztDi38EgnW/HZUixAizvtVvOcT1N
+	 0XYqAUJja335FbBgZEej8RV8VxwYK0mG9eRHyK1p/94QKHkRiu4UDDUx5aEpLqofxg
+	 t0kdNV1n4nZbsAy0psfbz/75JReTYj2MPY+MSppD2mUt1tF1/XdoiBtJBvdYSuvnEr
+	 7StCacmDxqPx4H5JT5bs4NHPDHjlc7TPF87/CYpfk97fBJ5h02ynfLfrfsM6o49hZj
+	 T0oEZKDdPL/LpfqPjPgDSacgzrL/fAvfFsVjd3sPq0sGxzvbxneuED9S8zeAZ7WJmU
+	 mIF4g1h9D6nHQ==
+Message-ID: <e85ee97b-6a3a-482d-b6e1-6a6df9be60f3@kernel.org>
+Date: Mon, 3 Aug 2026 10:17:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/15] mm/vma: introduce VMA anon page offset field and
- add helpers
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH v2 1/3] tools/mm/page_owner_sort: fix --sort option being
+ silently ignored
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-1-e8ecfefea812@kernel.org>
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260803062056.1518070-1-ye.liu@linux.dev>
+ <20260803062056.1518070-2-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-1-e8ecfefea812@kernel.org>
+In-Reply-To: <20260803062056.1518070-2-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EBCC440005
-X-Stat-Signature: t69843cd5cmuc8u81kkddq8f5fy1idzd
 X-Rspam-User: 
-X-HE-Tag: 1785749320-223745
-X-HE-Meta: U2FsdGVkX1/l4QFGGokcpycP/ITGoOLpgVyZCPFXfee2PmrS6LZTNb+nwKFRyJWaSGsMIc2OL5Z0Tb9MiRsUg/uFpRfBhI9DqhOJM5XjD248/gYJbzXeD+dqCPOMbJHiaOPiQfz+VStM1eyxB6m3dq8SiBch/Eeas/Nm8q0e95toBwKoQwN8nGrmh0zVryKqXDYCMC0Ty9JrImJ1TDSRbo0z3yV5RoWHMO1XhZAVCilLNUIpllsruQPssJYBL23yxiQVl2S6rydBvCdPMOoZhNOrJ0MV9pJeI57prNAXLiOF7QHBgjmxsCa/tY6szIuk6PeQKIidkm7PnHneYDcodRWHqT4M6owCuAQy2LRAdRFGIsNj5zycczBjHb1z/K4Qll8FQ4qexRs7Yp3EozuM7ChX5Upae5r4FocI4CXxc0qqK6n2FW0D2oeabpIjhe29Wmq1KEW4rKaEzXU3uIx5trt/tRf0jjNpH8YZbALfBl2LZD77b38oJtQuut+/HjhGo1PrDkvlnU5VcWI5NVjot5lJKzmWofZdgd1Kxgnn3uYOJEXCkwSrp//DKZeG6WA97gutxUEJ6Nj2aVsabH514+NGTKlIV1ECJfpgCl0rLNPpeJ9yfoQTrhfV6MhDwdDJnICtzm9RdlRnKE3z6JI5VbnNpfQbhN9pN7m31/YRWm3n5mr34LOppi3P87KA3fbQW6C/rx6ThHVujpWTRm6I6489jP93TsNP5AGdDKTNRw6weZ7vvmaxREjItApzCPXsWQTrBsYzLQD6+4KNCGZKbTaCNvJyHfinvLxWY341CtCSa0jjWEbUd+CBhtr4qLos8IP32DgjZq9EMLllg0PlARH/3dCt8gwhDj6FAMeEON+FDEwu2jODWE5KrbQ/4N3yxitFgXocEZEx62Z3UKvKqpNoW63OdD3riGvAMoIPGx8Uq/UJ0OECdUfBfAIGtkFyFPn825i95sBhT9XyvPS
- EaSJp5qo
- TRvPPe1Df2eH4+sQCcaLgwxrvr7lXYHHpd0ejnITyxFa50Q3mkA/MhtcjmNOx5jymsojyIHhHXiYP9WRr5Bdny+DiW3q+tmOaxs2Ui9RnkbOi/WzK6aVWx6y3eadrL9jA5AVZaIPtOsDP9+Zfi1rNL5OsKQ6QwP/4v2g5SoHvmO43nCdcARVOlmv6N4sJU5Mseyeqz/0DDf31iSff16eq/DrNBip/kGo0+Vc2b2EflpbZdFvNyLemLlhux0vAAfG6EEvjTGcSRQgcDNG8i3GHdDKzAVGNS6Ia+TLBzu1WFFwTVb8sdnjkS4XD8X5uvN3cehDtMnpGxoW09ORO9wCbrM6RmuXYKmO48k13xd6K/KxGqzY=
+X-Rspamd-Queue-Id: BFE21A0008
+X-Rspamd-Server: rspam01
+X-Stat-Signature: yzjqafhpth3we4wybts9n3ykz4zgptqx
+X-HE-Tag: 1785745044-602892
+X-HE-Meta: U2FsdGVkX1/Vm5Okg/dljeNc3QTFf191/YFVCUIf/l2sB8iVBZvoghPfpn02ee8JTXejugx4i7T7u7Yzb+R7+XcyBpBWj0UOlvJCCdMnhoHLD4WTFKPJBNBp6iVZ5ma96UZ6vKDs3qclZky3LRL0+G0Q7BAYgWuU3sa9vSh6OwoIdOk6NEC3KfeFQLKbZvQf0g84uPsoEf5dU7tZFomkofcrtSMznOVpc12DXaU3FUC0pAt1xQYlTV3P11bmm86LjRDVwW4dE1gZTIGhbRH97PHoM1HHLrkC5eaM+t9RKtUYd4l6z8uS6DfRcCZQ5EyuAJgXB1RC6Fub77myANuwMrsA3f7zpQyIAlmw9/h7dd/vIwtBIKr4JLvOTlJ5SdUr3G4QTIS6O6Qp00OL8kz/DZbcyVcMVKSFzFAzVTWf4xIDAoY0uGYAhpN9M5Zwc9pB1GM9Tt0AH7YGoevU2z0xj8mVQnlr5+dBFAmgqJlDAPGqHy5iJgSy0u8cUreXGTk2bL8nDxx/NVjiRZN3o8IVake7yFlcFR/F7Hm5kqoPpXfI5VlKM43LnQ/d7mfRWOKMS4y3n4EZcGdsWdg7xUPvKBUIsF77SdKUPqWG7eRMQo8y/dq68n4Kn/xfBYvtAWJNgN8y1BEdO6z3bEp+FA78IIJdx2VrGbKrxTOrzCcWu0TNwxPYrndNLqVxKk81rp8mbUUf0XPgK/WAZTHpLM3H51fK5HZIj/hVZJbVXZLDqpU7X9x/DSBRIXIIr3fAC0y+79yQ4Zp+2HXUKvmf4kBj1ygjBB49lYXsSlMtma1iSHi9e6GL5NiqNewYcN5F9N5qsvJW+/n2ubThYfYp9eMLVjM3pWpbAwdLVAuPGSA27pKrqQ2UZpA66WlE7wVXe0Pq0pvizGErrY17S3kKaTE1ksb2SX3BFtll/d2h75mnmyjB5uvrGUNigorF9oJxuJtQNdh718mUrkutE+FtW/Z
+ Dkz91q/2
+ TF6fDwhgGiq+kHPNa5Z67u/2RrTy96hcqQ0Tu+oFXUau8MTKrZnmVZUdb4wpDf5550Vtpfo/X1DEGaVJhqCmhNQVS/2dcssXP1cFdFLMqEGprwA2NnjgZR2OO4+j7wiJzAM6a3U4d6+iCmcKZozYaDqW9VJj2th8hEgXddTC1aPPT40toVOBs0mtvkUxEP5TjLYNrBQWzA+asV8/CMC9ZloSpzKi1YRRxckhjprDQlQX6wuhc+l+0F0hpZ+pXP7CW7xY/k0Fhruoi1c3ezIXb9QbYpTk8DLMAkl/gM8Hz5v5U7805yg2w1asIvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,84 +143,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> This patch establishes fields within the vm_area_struct type to store the
-> anonymous page offset of VMAs.
-
-Nit: Avoid "This patch". Just say "Establish ..." (I was surprised to find
-that even Documentation/process/submitting-patches.rst document this)
-
+On 8/3/26 08:20, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> The anonymous page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT
-> if they are unfaulted or were not remapped, otherwise it is equal to this
-> value at the point of first fault.
+> When --sort is used without any short option (-a, -m, -p, etc.),
+> compare_flag remains COMP_NO_FLAG.  The switch (compare_flag) then
+> falls through to the COMP_NUM case and calls set_single_cmp(), which
+> unconditionally overwrites the sort conditions that parse_sort_args()
+> already configured.  This makes --sort silently ineffective unless a
+> short option is also supplied.
 > 
-> Currently, anonymous folios belonging to CoW'd MAP_PRIVATE-mapped
-> file-backed VMAs are tracked by their file offset. By adding anonymous
-> offset as a property of VMAs, we can now track them by their anonymous page
-> offset instead.
+> Split COMP_NO_FLAG out of the COMP_NUM fallthrough so that --sort is
+> respected when no short option is present.
 > 
-> By tracking this, we provide the means by which to eliminate this
-> inconsistency, and more importantly lay the foundations for future work for
-> the scalable CoW anonymous rmap rework.
+> Reproduction:
+>   # Before fix: ascending order (ignored --sort=-pid)
+>   ./page_owner_sort --sort=-pid input.txt output.txt
+>   # After fix: descending order as expected
 > 
-> This patch simply adds the fields and some simple helpers. Subsequent
-> patches will update mm code to make use of these fields correctly.
-> 
-> The fields chosen are packed in the VMA such that, for 64-bit kernel
-> builds, no additional space is taken up.
-> 
-> The first field is present on cacheline 0 containing key VMA fields, and
-> the second on cacheline 3, which contains file-backed reverse mapping
-> fields.
-> 
-> Given the relative time spent accessing reverse mapping fields as well as
-> updating them, there shouldn't be any performance impact here from false
-> sharing.
-> 
-> Update the VMA userland tests to account for this change.
-> 
-> No callsites are updated yet, so no functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
+>  tools/mm/page_owner_sort.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+> index 35d3d254941c..3c86c8d0618c 100644
+> --- a/tools/mm/page_owner_sort.c
+> +++ b/tools/mm/page_owner_sort.c
+> @@ -821,6 +821,10 @@ int main(int argc, char **argv)
+>  		set_single_cmp(compare_stacktrace, SORT_ASC);
+>  		break;
+>  	case COMP_NO_FLAG:
+> +		if (sc.size > 0)
+> +			break;
+> +		set_single_cmp(compare_num, SORT_DESC);
+> +		break;
 
-[...]
-
-> +static inline void __vma_set_anon_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
-> +{
-> +#ifdef CONFIG_64BIT
-> +	vma->__vm_anon_pgoff_hi = pgoff >> 32;
-> +#endif
-> +	vma->__vm_anon_pgoff_lo = pgoff & GENMASK(31, 0);
-> +}
-> +
-> +static inline void vma_set_anon_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
-> +{
-> +	vma_assert_can_modify(vma);
-> +	__vma_set_anon_pgoff(vma, pgoff);
-> +}
-> +
->  static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
->  {
->  	vma_assert_can_modify(vma);
-> diff --git a/mm/vma_init.c b/mm/vma_init.c
-> index 715feee283f0..baa7e82f47e3 100644
-> --- a/mm/vma_init.c
-> +++ b/mm/vma_init.c
-> @@ -51,6 +51,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
->  	dest->vm_end = src->vm_end;
->  	dest->anon_vma = src->anon_vma;
->  	dest->vm_pgoff = vma_start_pgoff(src);
-> +	__vma_set_anon_pgoff(dest, vma_start_anon_pgoff(src));
-
-It would be cleaner if both interfaces would either contain "start" or not contain it.
-
-The former would be better
-
-	__vma_set_start_anon_pgoff(dest, vma_start_anon_pgoff(src));
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Why not a fallthrough; after the check?
 
 -- 
 Cheers,
