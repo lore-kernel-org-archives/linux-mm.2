@@ -4,83 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F4A5C55162
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 03:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79955C55162
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 04:46:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA7076B007B; Sun,  2 Aug 2026 23:50:01 -0400 (EDT)
+	id E78826B007B; Mon,  3 Aug 2026 00:46:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E56DC6B0088; Sun,  2 Aug 2026 23:50:01 -0400 (EDT)
+	id E50ED6B0088; Mon,  3 Aug 2026 00:46:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1F6E6B008A; Sun,  2 Aug 2026 23:50:01 -0400 (EDT)
+	id D8E706B008A; Mon,  3 Aug 2026 00:46:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A13EE6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:50:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FB42805CE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:49:59 +0000 (UTC)
-X-FDA: 85058579718.13.5E2F0C2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6CD30180004
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:49:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kIZEY5K5;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF1DC6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 00:46:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EF99405E4
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 04:46:51 +0000 (UTC)
+X-FDA: 85058723022.04.D09E55F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3B5C9140002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 04:46:49 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/Pk1h1X";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785728997;
+	s=arc-20220608; t=1785732409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjdEMLkja9qKxv90Rpl8tIl7VQwb9LCdaOHrApnrTCU=;
-	b=HzPkv7osEM4RjxCJArxYqRfLgAr9RDdikOqSPIkJjugiRjzCGftL7Futpncab4YBog1hkU
-	0OlmTsgg/jHAJgRxhidmeFw3vGN829Yw1RsI8khFATGMHJGGw09wTq5LkpZO9shL2zhMm2
-	UkkfE9+9RnBLGFRPL134TTYdvBPIAKY=
+	bh=gpeKUvVa0Z+BawXDonU/NOBv2XLfOdUJACza6QkXVjo=;
+	b=WEMoWRZmhXCsfa2OuLvrU9BJ7r913Pz4QRUCy/X85EMU4zHDu/spnY7sy+4TZlcsBFSZaw
+	NQq2qy4ddKBoR54bg1iDxiLvbN2Vbou0p3zaltaJEFxjsmh3qmRJRukAMrDXpOiaOuWIDI
+	GZqg2jcCks3NfHTW7EACu4D4VvPDAIk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kIZEY5K5;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/Pk1h1X";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785728998;
-	b=YDB+cmgEP9IK+tYZsaSNj+7rObcmY/o/IDPIvpP/xcOwBHRy9uJWcClB2KZKHBe1AXtjGO
-	m0a8EUIK6o/Tpljpq3p7MLZ1LkIKNhu6ESpN3LLhh3av69xCnWHly7bvzSgTQ1prTf95uv
-	5RTOHiM3UaTYMAPi2GULjobZlhsR8oM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E7E1143D;
-	Sun,  2 Aug 2026 20:49:52 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 994583F86F;
-	Sun,  2 Aug 2026 20:49:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785728996; bh=BEtWf/7nQjx9/eFB+l0hzs+fD9Z86AKzw+zM89qjclI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kIZEY5K5JrrwAD/m+/5k5UHF+TGv+edBFiJB5a1ZPlzVomWmsHPUAWZcviZg55K5j
-	 4XU8WB0HWvhQ7QImJlaDd/3Xlsnf/4n7oKGkBynmUcl/8yhd9LREu5qsAZmaeJyBn0
-	 QPJBqCei+ZGHqIKKvnLREFS/s8pGXMJwo8Ft0z8Q=
-Date: Mon, 3 Aug 2026 09:19:52 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>, 
-	syzbot+61c997e6be1d9bb300ba@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/vmalloc: Do not warn on -ENOMEM from va_alloc()
-Message-ID: <pi25qtpcxjhykyc7xwjvvgnlnam2gyp6rxoxsxj5vzfscg5ysp@6wzaipk3t6bm>
-References: <20260802104627.63892-1-urezki@gmail.com>
+	t=1785732409;
+	b=GpSAQoOQZ3rRBBvMZqJtx2DgZ7fg39MzFaOBO1RwRwelW0FSI5v9o8Q1frwLG1XKnUKFat
+	47DA9P9L2HntYqBWcyBs9ROsLBZ7GozXqr9M4932lYwa0foHodfVUD+WvKbsA/SkEckeMI
+	6UA3AaAtexBkZTMib+N0aLa83t4GGf0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3624343FD1
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 04:46:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2101F00ADB
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 04:46:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785732408;
+	bh=gpeKUvVa0Z+BawXDonU/NOBv2XLfOdUJACza6QkXVjo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=m/Pk1h1Xs+eMYRn6D4r2xkCKiVlhkkkJbqJ/vkE1K5nZSUqwCGuPdRPsuaWv1ck+c
+	 cUWRAcb7w+lEIMDRsL8OZwv73ElaUelBHryPSUcZaZzm2R/0SHAXhbiMikgOITG1gm
+	 y3+6Y7qFhKy6JWYasSRjilLlbeGA39CWtK/X53t52Hoe8bPfO8y/qelmulGiFee4wQ
+	 amhX/y4lDTOwDDraTO17xU0W8QAHC/BQLF7CUAHHS+3pfvLIxQhlhz+2Rnx67Hj41a
+	 drJSqgtYhdQtHGqH/hR0ksk9vlzyo+u2DiAMwmPERSGwptjWMbebNyjs9iBx6sLFjN
+	 5HstPr2FL4KRg==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e65e18969so176480785a.1
+        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 21:46:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrnLSLlqWGoJQiBAqB5SoGJTkAZetN6YAVA+eoTsypGx4SpYycjUTij5fGOiFVXWn7YQJ6eN54HPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx1aLbbd2MOZ4WbSOCKW1ckuGO1fYdzp0D3igF2JarhseUe4ouu
+	n6QWMplRvn5OQmcyFdGimqKpcGLzFrSjV6l6m6lQRTdybXJZwEqc8CtvUlnr6HxSRnli6CJsw4z
+	3t6EdutsmPjtsrH0Ux2Dw4DdN43A61n8=
+X-Received: by 2002:a05:620a:4150:b0:92e:7075:941 with SMTP id
+ af79cd13be357-93497456c97mr1774800785a.13.1785732407203; Sun, 02 Aug 2026
+ 21:46:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260802104627.63892-1-urezki@gmail.com>
+References: <20260731083843.37811-1-baohua@kernel.org> <20260731083843.37811-4-baohua@kernel.org>
+ <9692264d-74a0-4a69-9d57-49a8c90cf41d@linux.alibaba.com>
+In-Reply-To: <9692264d-74a0-4a69-9d57-49a8c90cf41d@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 3 Aug 2026 12:46:35 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yxJyOaNTfVWxeTH0PVED0fgExOod4ay3pRVYjFcf+BZg@mail.gmail.com>
+X-Gm-Features: AUfX_mwilr5G3P3D0y7x2OCWQ7SaiFleSnxBdYCXy9-G-EW4Zg4KWTwZPJSqMRA
+Message-ID: <CAGsJ_4yxJyOaNTfVWxeTH0PVED0fgExOod4ay3pRVYjFcf+BZg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 3/6] mm/mglru: improve readability of isolate_folios()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
+	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com, 
+	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	stevensd@chromium.org, weixugc@google.com, yuanchu@google.com, 
+	chenridong@xiaomi.com, zhangbo56@xiaomi.com, wangzicheng@honor.com, 
+	lianux.mm@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3B5C9140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6CD30180004
-X-Stat-Signature: yxizcmof83qdi8b96ocx5go47pgigxgd
-X-HE-Tag: 1785728997-264954
-X-HE-Meta: U2FsdGVkX19cu0JDYCnbjrDloxzs9sFl+8y5bjIRKwCyx1e0DPeEHPdzYN6po8Uqs/VHJx7bNvZs+wWBiSbSGBKG8a/jrLV6v0BfkBw3kU/45Zch6KkjJqpyMXrIJy7327OKuXLfC1pk3H53sSjfKUrclVvNM5/CEBE0rQ7rGJCxXp7O4iAzgEa08LF36dB9PVZUxL5p/zH/gyj1/cEMoOMC9XeIo6jAjOuYPf8tQT002WpchSdEiwGHhRNBUbU3jZq26+u6ZA20SoPnCA5n+sAXuv3PoKLFGv0rcRacBTchX57RK21JxWHjJu9ZQbNGE+FuLnvcsDoqs3nn/X8tHUqAdwhA4gLT3LTPZSMml5j37ZGwQ5MMbUGQzmEAsqr6wLr4s1h9kAOumnd/jIq3oE+Sh6DdHGLe2SoPwhYKdO/4wRFMQ+kwGGyQigQl8TPHpxRnzHxgYjBm8no/zl2RXSUxkW2M9tK4+SbHGjdViZX4/j/xR6y8i0gmzzsFXnJXskDQ6ZHbEObSgw2bryIggKBgk0N28ZUZ5Efw/H0OJnvFVmViD80Iv/Kkx8woLkj8N1Sp6WJMvdxYuZ6T2Z5BvE91uml6ak/jjc9feYYzJnazOV3r5yeor9bcTRWcdWOxAfPX/Ljwegb9gw2JTOj2JNlWxWJjoKDSkEtJee2/FAboTxtHpX8BNA2plX8+igdMqlTa3oWjxWw4wvdfAtwAm9x7moyM0bO8cmr/XU248vs7UvHhafbmrvBhQk53swUkZximeW1UiaLrSMkwTQVN1WAYmvfCWX57U+SW+rLTAoD2aIFos9PXJTdu+cqAREkLfMW6TjHmCbV+v1N0IkUrYd7lsVG2mjcEdmDuXV3ZauFrwzqbE7FnK8ck90eHpHomGTqSJXaKRj0F+zX9c+JlsWJUD9o60cbzYsEkFlX2flw2mOYv8BqxE6n5RpwOR7QgaK9SUdzufPeVly8CYfb
- i+DI3Vk1
- q6GMCQWUfzE/nGt3yFNQ02WLaMHXwx1DlEhb/LnRlyQ+Lldxlvm1mU/SbuoqWP69OchIzmIcHgt3hRNq6KI9vYCS5/MRwk0t6B5ki13mwlNJPRpCz66RErr/ZQuYA30BvuD0/EkoeL2WchRiPgawpErBGwUJahD9Id8RYQ/BEDmHQZfctpFfIwapGvnjLwJVk6jvhdgRVH94BpaPZvMPtT+ocUzPQcCr9wyJ8/s7fANYDZGG6vOw3R450GA0yx9I6cHhfnlj+6NYhSTG7emkB3bRpjAsbJ+tPfcsG2eGDLIrKY9ejkx/fXFVHZfcpannmfou+tyJdSW6I1AVjEATHZxMRk/LY1Myd8l2Z0oCKlElzK1gOiGJZ3NLwyzSsOEAoBekz4PcuZj+UHxvjXkDpqL1AIDHmbtscSmrw01fpiN42SWIGrp13TdkiU0KSuMl4HrxyirvacwWDxdsDuLGGtmgdul0A0UQaz8D1WmhGqhY+l1DoVPWgvn7wJ1ezWn72wV+znWK73K4BaM7c4iwbMuacH9YVins/ZFF9YTvqU+zFqBVrYr4hVFDJFQYTh+bZB+8L4b+Pu+rzwIUKzhQV0rGbQQ==
+X-Stat-Signature: 8zmewaijhqxp7pwu57b1osero4ssqn9x
+X-HE-Tag: 1785732409-152818
+X-HE-Meta: U2FsdGVkX1+cl9F+XwGaLAKH8iWamZZ7d4NNBdry4uA7rDUVYTTqES2xVOyhbdybGfAmn0F1Isu+LBqePomNDX6adB3U9UzLSuwa2tB0WD8EGh7AouG9BE57bfmRj3FbRizRZJn7ZNzheJ/IKkVGYdH8fExQuYzVo1JyaPTVs2XtDzVpkOI6a1+HGzJenldFtVERXjCD/8Rd4bnAs7Y2meiHIwY7xD8oBD3r5gZwoRiuYhCKZcJSYnDut32UXdf0ybdygdDe7PNn4tgEaqP5Sg0RS7rq0slOM0dnFmiubTPpsRzgnXnbaVrjaFCROVKRVB9BN7j+oZ114M9jhQ2InmhrNQeTqGZMUWS8AcTsaDuvQbkAlB3RQWPYDdlj/r3y6XaG37q0TOI1CyhUKiq/+iArUF9klMQP05xhUPX0+jqYj+Vw0AOhXtVmC12ASIjkxLFwRhte2yc+Tk+dbvfTUdlSb/lNk/t1lR70dkpky1b4Vxs/j+vM/hhdsN7XS0SXbyeuVOZno+YG8r7JzjTc/jC6iZsLCFk2W3EHbiNl72UmzfROwcLIUHC7EM6iFASJhUIDkDsDLkgZKLe7hyk+rxZD2gZjlnOkxePuNHWMSAbFXIYQROLRo4vfkXLV2BMl9vCj/TmKPhZ/zDBhZOSYQNK454XFhoeRL7hAOvyodDAVJ+EsOf4yvucLQJXODNFHw6NfkulQd5wahTAsLy2SWYiPcswkwJI851+cJbhTOBidztMED6bJbuzL00FKA8rvB9yf2Y/YzVkfGlH964airlCJfEZ2CGUrUtvFNH0DaHhNVjph81eao8aBKMybuehmxbiLJmz/62XBz+seaNLfeuFRll+TUSDJancDb1KLINtXv+iHjE5uTW3ltNXWYfixV3WWSmZxkefX+LnrinltGTtY8hWZXfNHL1i1QnY8PWFSku5cSfayFMF3Vbz2FA73nExeJ25He9O928p+HEi
+ ucNZ5eUH
+ 42kxvXdYfeWzrj9qi8WRzsF9Q3Wb57y7/yaX82i2/nPCgIPIhaLRgHEt992ewGTSe2ZQfbkVxC5ikTABA0+AMTY4eqid4TUTdnMCAuwAY59fyRThBHK0CWIO5rj0uS77Csl2skSsmMLGGUew172brp1aWn8e32DQd52rkFmwPnKVDDrLs7x+1HAlNbi/BBIsKOqkbe5X7Z4P+99/+z1qmd0k/eWQKL7faGTaYWVO5Lxge+nRiA4XNyyiq3uUiJXOWCl6yRHug0dJ/c7v01hVWH+Px6+cd+4NwBS1xSdN3IZjoYkE1tfFeNk4Pc52RU08BFYGbhTnMNQJaT9gsWIeQYh5ZxrF4dsGE1mLi6wGrooh/T3bWanN58ekwr3pzI0wvQx3QtBDAHheC2JYxYRRXutB4McgD7x9HnbyCxNOBxgIma45Ge0nWzRxKdvKDvwFMRlV5Iap0TULZmiqMTxLK+/1piMbLi7na8mRn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,68 +108,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 02, 2026 at 12:46:27PM +0200, Uladzislau Rezki (Sony) wrote:
-> Since vmalloc() accepts non-blocking GFP flags, allocation
-> requests may fail when callers pass restrictive GFP masks.
-> 
-> va_clip() may return -ENOMEM when its GFP_NOWAIT fallback
-> allocation fails during NE_FIT_TYPE splitting. This is an
-> expected failure, so va_alloc() should return the error
-> without triggering a kernel splat.
+On Mon, Aug 3, 2026 at 11:22=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 7/31/26 4:38 PM, Barry Song (Xiaomi) wrote:
+> > From: Ridong Chen <chenridong@xiaomi.com>
+> >
+> > The for_each_evictable_type() loop in isolate_folios()
+> > is misleading: it does not actually iterate over each
+> > evictable type. Instead, get_type_to_scan() selects the
+> > type to scan, while the iterator `i` merely bounds the
+> > number of attempts.
+> >
+> > Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> > Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+>
+> Good cleanup. Some comments below.
+>
+> >   mm/vmscan.c | 47 +++++++++++++++++++++++++++--------------------
+> >   1 file changed, 27 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 31947fa60f18..0038f33aa318 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4828,35 +4828,42 @@ static int get_type_to_scan(struct lruvec *lruv=
+ec, int swappiness)
+> >       return positive_ctrl_err(&sp, &pv);
+> >   }
+> >
+> > +static inline bool is_single_type_reclaim(int swappiness)
+> > +{
+> > +     return swappiness =3D=3D MIN_SWAPPINESS ||
+> > +            swappiness =3D=3D SWAPPINESS_ANON_ONLY;
+> > +}
+> > +
+> >   static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lr=
+uvec,
+> >                         struct scan_control *sc, int swappiness,
+> >                         struct list_head *list, int *isolated,
+> >                         int *isolate_type, int *isolate_scanned)
+> >   {
+> > -     int i;
+> > -     int total_scanned =3D 0;
+> > +     bool single_type =3D is_single_type_reclaim(swappiness);
+> >       int type =3D get_type_to_scan(lruvec, swappiness);
+> > +     int total_scanned =3D 0, scanned, tier;
+> > +     bool tried =3D false;
+>
+> The tried' is a bit confusing. How about 'type_fallback_allowed'? Or
+> other more readable variable name?
+>
+> In addition, the 'single_type' variable can be removed, and just
+> initialize 'type_fallback_allowed' directly:
+>
+> bool type_fallback_allowed =3D !is_single_type_reclaim(swappiness);
 
-Dropping WARN_ON_ONCE() just for -ENOMEM while preserving this
-warning for other returned errors does make sense.
 
-> 
-> Reported-by: syzbot+61c997e6be1d9bb300ba@syzkaller.appspotmail.com
+Yep. It seems we can simply use type_fallback_allowed and drop
+tried entirely:
 
-Very small nit.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 1ffd96c87bc2..358388b49a70 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4840,10 +4840,9 @@ static int isolate_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+                          struct list_head *list, int *isolated,
+                          int *isolate_type, int *isolate_scanned)
+ {
+-       bool single_type =3D is_single_type_reclaim(swappiness);
++       bool type_fallback_allowed =3D !is_single_type_reclaim(swappiness);
+        int type =3D get_type_to_scan(lruvec, swappiness);
+        int total_scanned =3D 0, scanned, tier;
+-       bool tried =3D false;
 
-If there is actual link for the problem report, probably it could
-be added as an Link: or Closes: here.
-
-
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-
-> ---
->  mm/vmalloc.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 1afca3568b9b..7a0cbba3d29d 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -1817,8 +1817,10 @@ va_alloc(struct vmap_area *va,
->  
->  	/* Update the free vmap_area. */
->  	ret = va_clip(root, head, va, nva_start_addr, size);
-> -	if (WARN_ON_ONCE(ret))
-> +	if (ret) {
-> +		WARN_ON_ONCE(ret != -ENOMEM);
->  		return ret;
-> +	}
->  
->  	return nva_start_addr;
->  }
-> @@ -1891,12 +1893,9 @@ preload_this_cpu_lock(spinlock_t *lock, gfp_t gfp_mask, int node)
->  
->  	/*
->  	 * Preload this CPU with one extra vmap_area object. It is used
-> -	 * when fit type of free area is NE_FIT_TYPE. It guarantees that
-> -	 * a CPU that does an allocation is preloaded.
-> -	 *
-> -	 * We do it in non-atomic context, thus it allows us to use more
-> -	 * permissive allocation masks to be more stable under low memory
-> -	 * condition and high memory pressure.
-> +	 * when fit type of free area is NE_FIT_TYPE. It is best effort
-> +	 * pre-loading. If it fails va_clip() may return -ENOMEM from its
-> +	 * GFP_NOWAIT fallback.
->  	 */
->  	if (!this_cpu_read(ne_fit_preload_node))
->  		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
-> -- 
-> 2.47.3
-> 
+ retry:
+        tier =3D get_tier_idx(lruvec, type);
+@@ -4861,9 +4860,9 @@ static int isolate_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+         * We are running out of the current reclaim type. Fall back to
+         * the other type if allowed.
+         */
+-       if (!tried && !scanned && !single_type) {
++       if (type_fallback_allowed && !scanned) {
+                type =3D !type;
+-               tried =3D true;
++               type_fallback_allowed =3D false;
+                goto retry;
+        }
 
