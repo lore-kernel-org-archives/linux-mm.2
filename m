@@ -4,122 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5DB5C55162
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Aug 2026 23:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18E3C55174
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 01:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A886B0088; Sun,  2 Aug 2026 19:38:23 -0400 (EDT)
+	id 501A86B007B; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E27C6B008A; Sun,  2 Aug 2026 19:38:23 -0400 (EDT)
+	id 48BD96B0088; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A9EC6B0092; Sun,  2 Aug 2026 19:38:23 -0400 (EDT)
+	id 355E96B008A; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E62816B0088
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 19:38:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DB1F1A05B8
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:38:22 +0000 (UTC)
-X-FDA: 85057945644.17.1879D07
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8B002120004
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 23:38:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hVV0uJly;
-	spf=pass (imf29.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785713900;
-	b=T1R+9BrFIjCZCUQgOZfofKCcZgNNbl/k1FKlbsxvzzvc/E0sE2uFE7li7Q+xn6pw6+k/da
-	BjoIhmBUUmtpHyZXvKHyi9Z6Sk5oHXbksN0s+kNoXlfXv4YMxSWYGNywnyx9sTfdv9B9uS
-	irgT+w9OyPAv6xcdtNjUSYM1sNxaf8U=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hVV0uJly;
-	spf=pass (imf29.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 03AED6B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:21:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94B4CA055B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:21:18 +0000 (UTC)
+X-FDA: 85058205036.28.FE4B018
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 142541C0002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:21:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QEISm6gV;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785713900;
+	s=arc-20220608; t=1785720077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WjoUynZVyetLFo7x/yUba6Zt9rYMhRjBHXBxc2twQlQ=;
-	b=IJFN3dOJnwpORNHXJe8+XWSzP2xitw3uX+0wa1P+9EChdoKtbKOTglFAn1/23ReoXakNGF
-	iDKtxV1x50VEZmZZfYDl7bEKSBzEZ6UEH8O1lQnsx+Q8dEd1N6BTaiCyunzB2CXFV+N+l3
-	DtxiPv/RefkjD6l/qMbXf1OXcNjuV3w=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf52d15d88so22377845ad.2
-        for <linux-mm@kvack.org>; Sun, 02 Aug 2026 16:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785713899; x=1786318699; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WjoUynZVyetLFo7x/yUba6Zt9rYMhRjBHXBxc2twQlQ=;
-        b=hVV0uJlyBSH8oTaesfs6ntLac509wtLKUd9zUtqOCuh7AVcGlHPThTsPYqtZNx+BUg
-         T9s0SwvhdEJf4UqRNrGAFC91uJuWO9Cuzn/908Dghv18K3Ab/TBoQvz96eCV4bYemRg3
-         RKB0yk6+oGYGczUkqzjxOGqCgNUlcXAgGmaOn+uoxsuPqOGxS58AyGd2JQl99BPmIJYH
-         Hlt12kMdZk7a6N4RZSlWANYR+VpSTs10euf7eL5dUPjfTYvwGk55W76YfdS5PkI/HBDf
-         Z+rMHGdaqtlBN2oemDGim17axeUGTS+/YNxO95GPTvJkC5gwnXv7BsZMvE7dlIWh3D75
-         0J1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785713899; x=1786318699;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WjoUynZVyetLFo7x/yUba6Zt9rYMhRjBHXBxc2twQlQ=;
-        b=MM9sUbyfp/nONKiyXlsVs5mUgOAPZ2PQ2t6mFIzSBcdjTbqms/rRgkAvYWFXu6ms72
-         JIiakqFKnh0j0p1khma7Ee4c5LzlPIMtGofcuIdrlvDVI/ON8bHu+6Y2OXCT8jFUDffR
-         nNkqxSZ+ucMnFycaRj52+V12CmR3mIokWeP8dcbSFPb9LrzavONG3FIrnW0ePB/7fGcw
-         R3EWeW/o0T7Hm7Bs/N8JV83IZS4DM4JM5yHD3Yz+hR6znnlbZMd4qtftG3PyxgBZWZY4
-         rlE41gNIkJ/lumOQQdkFMuOMqkL5jwPexLWcQD2JpcFjEjK49OHSOPB0tgt1bh8nihOt
-         SA7w==
-X-Forwarded-Encrypted: i=1; AHgh+RrJrrYzb6ZghQxwEyj+QyjAC61zSLvz+IOsQeWffJ0FMmfL3Vqkq139VcyZprBS6ERL20+/d8jCZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwdrX9rCbRdLV5g8xDMymT2Ew7G2CmSIGNs68eIWCwVJSAAATrY
-	Cb9I/lcAlRmSOUPQiT4Proeg/ZBfSZDMCqOn1yOAKYKbQO89C6eQd+WM
-X-Gm-Gg: AR+sD10gch9FRP2JpsOjBD+k0aAhG6d8pyTi1yPK8NBAWXx/LFHdY9QSUQjk7Q53gqV
-	SRHsKDSQWr6YNuu4+/JgSb7r0SVPAubxqObHfprn5IAG9uaAr+3x8BUhxY1Wgjcm5OSzlIXPGz/
-	s/lVwdpmEbi0O1oPQ9xVvu36ODNtACC2ZwPOrT5iv9z742tleWlzpI9EcbzuQ74Diigtljfdo9l
-	i4eCDdaTDCt5rPb3PXkqrhwh29K38oZmQ+ZKBqWm3Udf4b362E/a4nRIAYaavpuFu89dj3Ri9Iv
-	aDk1XQxxDy6xGRhf7bQbjw4X/c6eiNkgbMBjf+Ayv4fKWeKRtLYW23MDc2Ar+EA7bsBH/k2jNE0
-	8JYt0EcChAbqrThmvzzW2Pz//1zxhjkRlZi9SKYMprncUlaK8uEEao0qoIFEPVrw9COEasT6aMU
-	TdH8sTGnXRovICLxUBKv5cq8uTHhaGsZV5EtBUkV4jjXyB53gJI8cA7bF6nZebB/fmxXkciDZCI
-	w955Q==
-X-Received: by 2002:a17:90b:56cc:b0:38e:69ae:7148 with SMTP id 98e67ed59e1d1-38fbc4d966amr6898529a91.24.1785713899432;
-        Sun, 02 Aug 2026 16:38:19 -0700 (PDT)
-Received: from [127.0.0.2] ([73.222.46.22])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab4e44bcsm35070094c88.12.2026.08.02.16.38.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 16:38:18 -0700 (PDT)
+	bh=42NsJQFvkSGCAxhpN3JTXKrMrElWaI1s02NNzRaLxS0=;
+	b=u+N6LctBF4hLLfWNQbl4IQRl7j75A8w3B/pn00a+01Kt2kJD9aBWW7oitw1k8Oebs721KZ
+	4WZsBXJGHZMj1MbBtOi1etP5f2UK7f1NB1SDLPu0lXFZod1q7R6PcPCNxh7vFvu8IemFz0
+	58KiYyMrZ4qUrTEYv32Y1PQO6zmZXcY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785720077;
+	b=JkzpW2oVSf4TrEq+vTZKHQZd27kSHChwPdap2nuZ08uHjiLgd1hSyrROlssZcH6XzxJixP
+	As4K5XlVgN0AneSXy7tWB4O8heH4OrBeb8ulgNE21TX9gF7Sl09bmp2SzZzK2FRAPGKywS
+	Leq0ZAmFSzHDw7tJCSXGV48NkraoKSU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QEISm6gV;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785720072; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=42NsJQFvkSGCAxhpN3JTXKrMrElWaI1s02NNzRaLxS0=;
+	b=QEISm6gVTo32Ga+cDIWZ8shxdgRPC9jmN1zUk+DA4RI+Rd6RnXLZqiAbLyxuCZsPnktdzV0izZOtOhh5c1RoFkO0zn9B+UehAZ1kbOZAgDIzo7ZKV7FzjdJYSWmqe5vFb4KcASMtruHhpwKfi0Mouroj2BeKBcqPNjyHmh/jYYE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X8D0ULo_1785720070;
+Received: from 30.74.144.148(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8D0ULo_1785720070 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 03 Aug 2026 09:21:10 +0800
+Message-ID: <f9f01bc0-490b-4d06-85a0-e4693b80696c@linux.alibaba.com>
+Date: Mon, 3 Aug 2026 09:21:09 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/9] selftests/exec: let binfmt_flag_supported() return
- a bool
-From: Farid Zakaria <farid.m.zakaria@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
- bpf@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
- Farid Zakaria <farid.m.zakaria@gmail.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
- jannh@google.com, mail@johnericson.me
-In-Reply-To: <20260730-work-binfmt_misc-preopen-v1-2-4a0b0da71f16@kernel.org>
-References: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
- <20260730-work-binfmt_misc-preopen-v1-2-4a0b0da71f16@kernel.org>
-Date: Sun, 02 Aug 2026 16:37:58 -0700
-Message-Id: <178571387899.1880415.16506772757157668104.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8B002120004
-X-Stat-Signature: khnr4f1zyzmzptnjruponqz4dxkbf4mo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/16] selftests/mm: improve khugepaged coverage
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Nico Pache <nico.pache@linux.dev>
+Cc: Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Hugh Dickins <hughd@google.com>, Lance Yang <lance.yang@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260802195254.1937477-1-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260802195254.1937477-1-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 142541C0002
+X-Stat-Signature: h7nhfedpdf3fuewmrc4umj6wcerpdg76
 X-Rspam-User: 
-X-HE-Tag: 1785713900-114434
-X-HE-Meta: U2FsdGVkX18ONWr+qMpkk4TVC7Rpq7dpX/JqLxpA9ubUedCpp2SBWnAJp7n+08xZtWXkGFZyohv3XeDH/h/F/uhXPB72GNSZ7Rc5tSVJytRGfQm6GCjZG5TwWveZASwjHWP9fBPiLQOLQEmgzrk9h9UsVSZqpf2lNcWhqOM6qBOXwkJ0BJhoVVw7lMPW6Ouf5YrIc7VxQQkC3tRRm3s4ym8GFiw1ihdBNunyZrPu6MNZGbDN8YvxFttc7xbv/AmMXBg0k9jIZzMVQxkUJ6POB0zgOg0xRQ2c/UcleNV07TX4ntliAH8uwnSqDvsgkguAecdD9yaBFrX3I0YbTwZa9+v5uXCOE3kT/2fj8yIRWn6qnaUvJqqlcijrPuKj1d6OmBeAet/9QDclwzMQvhzL8JYrNMMH/wgY126uwR6ALqY9zJM/Oe1zdSMCeT5UrFwWjcOxyz+hmhxyGk8AHq6H+IFSQEQnoD1e7XUiqOrfxeSSb7AsZCn+9U9YL0Qw9jdiRAaYd055C7CYpt+n9V0IjbsnzuvKSVcE8BHjv4HjLnqAYDERBLQ1u2TFzsPEbP3bggtcMnbWgy8VXZuRxZKuddq1BXPYMoH/lL79G4ZPMtd9jo62dWLAllOuhK84uplPEkJEHTmhxK0cwc4kk/Os8dzZqJ4M8Pq4OCMsndbw1KIrOGt/I/8xXaHbQfkFxCf9Rtwl0mCwMNPKqnBb8b8+43+G+QutjLg+ZveM++I3wQtOWNDLdd7PO/d0PM9Kt8k4ugqLCRpaqBGMHLeOvX2Q0FDAkbiodlynrxCdg3CGcxMlBpAXEtAso+RCVDBWIEk61LRy0GC488pbobf2ImUit6iNkJc+dHOV/xvjWHpTwL8/Fc4EN/Mm4eZkXwhiXUMMz4Qqsj0+emxM/wGCp0SWG5lV2CizkagCmZ4mcF4mYj5mfHtafV/Ks7mI1YvCG8dCfjgrcdnjDkvuBdZ0slZ
- X1QwUzgt
- oIh0q8PX4JGHngpC/zaXGcE2GvLgyNqMcBIvQrXOVVJbA+G9bNDR3jutlY01yzLoYD/kVKrYpL4G1cmIXtjyabRXl0oxNqAAkEkAmQVuhoIcemRyZPlDE/burXHJ/58JrTE7yp4zxmBgfZ59kY3aEAujLqpMUL5YZKAkUwCdi698G7HWSqMnfOunkSgjk0ICNe+Zvod5UavkNTbAC7NhANRpTtJSxchPHlS/udgTHgZKvYcGOqi/SiI8SpX9/718FM8SMxax3LSZ+ijiRtfsJ/5Y7njVUUhBsuP7q0ZyYNyrPYP0CQK4nk8cWx1G39sE8odwB5LTkkNsqZ2Tk9ymC12Zp7kqw4CzbJZPhZqsCb/+3iPFnO/cS5JyNL+diWrE2j/fhDUbntNIiszBMBcIJz6ndR7+8IdHBxl/a9DTp6wGlDNPWnuN/p5elS1pDds3GJcGgGScfNmxEnwLMUnjL/BJlWLWX8QBn7EYB4HxFRqoXIcqUrjQfM9QPKo4jBtJcV8Xsx3AK6BCV2AVv/pz0FV9qz0syjgoefrbTeVElb+XXbS6PlVpYJSCA4+ci5U60IUWD
+X-HE-Tag: 1785720074-83598
+X-HE-Meta: U2FsdGVkX19JLWiTjAdBiQZe/Y2nmA3Q8+Hra9OaBvYbLfJNleknZnUxyoC0qOfJEW88lu2H7UDKwfgOW6vV6B6mOmWYPHO2qGX9+CpYqn36Y24qWHWscQUDCu4aKFt8MXR9zyyruyKczBMFcam6r1g1Tt1nR3Jtw9Iu5yxshx3sMJxGeHnluhXQCzYdwpsnblsFmrTm6/Gwl2OyL54HoRGLRUOr3NOPoCwDhNqpKONK4NqFHdCVN/zX46ew/EuKpM3RwLLpUUs76MEhYBac00Ihvig0OhNgSxGVB+rzrMrQu05NdOWc9zPgoHRhj16YWFRmqXIs3+HYqoD923Hi0f8IjC/X9w32R2zC2kzT+0++cRpbvO3+pXBLGHhxtLSHrPAAi65cEE9am4p5MycMfcrVSgwsZG4WhIKhe24cXQDktscQDovxg4fSfGQU7aKuth2tQzaZFgFZ8vnRTgsg1JCGFVfHbzxa358r/nsaGIbYTJXrgioERY1xKiQUS3lo1NPNN/75RlUZOLikwQgcd6jT4G+oRBt5G8nAwAvo2FzN90EeXvDeFyAmKA/AxNbwzTvg7CTrFK56Xv1LJ+oRu+N4v2mYvfHMJvEA4TdsLTyuBjLFrmmRZDsPUHus+GYS9E8Na4swM3/FRCKnxfuyNo0JNz7xkyOoZJApxlHpxg+P+8zDWtQtCymJvOOgyMhciUA6FFPbyUor7hAAXoDHrJ4xGo8VBkNxGYmTc2+HFX8vkbzmbnKruSMcFubOc0sotbsL4ZYYme1AQdmxZRP7+JYZ6UiyOOof6B40jdJ4e4doAG+jx8RK7BcVVAVZGMVaHKmy2JFbab7ZgQLAsMzDMmf9Z+f5a4M2SD0rfo4Srn6+LjNre2qU9AmgZ63zxNLaMQnv5hEa8eRwyQFtOOz2nEf9AB0YiepdBpQDfeWGmqu+V0pKspxUKjKLWqAfsJdfUa9yjI2TKvPjOnGsIyy
+ dSsJqwuY
+ Gph1bgmhffFBn2oNfqEWSUxIf60bRm5IRUoWoP/FGS00yO5JZdcG9WHRV1MY7eGEBC5yHpM5J0X04td+PH+EdY042F90F/UTYQDjO2CZo8Q5VXSrCUzPXu9AUhA0kKYz4T60BllaFXm9wGmywZAcb5WibgnPj4xIhmFz0xE6xlx6sBo12jrH2qWNOa4I3ddCDGr9VBXwZ8PirMaF9VKrvZaRrYW0W3bVL9SjiUOencRFtfO/IULrqPCe+8ZO0a6n96xADEaWeovfhbRkvpidagV9hI19cXr1MHUqaoQT+6x4WleDadZ71QrKiUTxOddCCkFqr/5Q24d+bR8JPU32xwOt4bIeZsyYkZNjC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,20 +96,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 15:34:04 +0200, Christian Brauner <brauner@kernel.org> wrote:
-> binfmt_flag_supported() returns 0 when the flag is supported and -1
-> when it is not, so every caller reads backwards:
-> 
-> 	if (binfmt_flag_supported('T'))
-> 		SKIP(return, "kernel without the 'T' flag");
-> 
-> Make it return a bool and flip the callers. errno from a failed probe
-> is still set for callers that check it.
-> 
-> [...]
 
-Reviewed-by: Farid Zakaria <farid.m.zakaria@gmail.com>
 
--- 
-Farid Zakaria <farid.m.zakaria@gmail.com>
+On 8/3/26 3:52 AM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> mTHP collapse went in for 7.2 with no functional selftest coverage. Every
+> khugepaged collapse case is PMD-shaped, down to the detection: it reads
+> smaps AnonHugePages, which cannot see anything below the PMD order.
+
+Yes, I’ve already sent out several versions of mTHP collapse test 
+cases[1]. Not sure if you’ve seen my patchset, and it looks like some of 
+our work overlaps :(
+
+[1] 
+https://lore.kernel.org/all/cover.1785564857.git.baolin.wang@linux.alibaba.com/
+
+> I am also reworking khugepaged's collapse mechanism, and that wants a suite
+> worth trusting before the mechanism changes underneath it. Nothing here
+> depends on the rework -- everything passes on an unmodified kernel and
+> documents what khugepaged already does.
+> 
+>   - vm_util grows folio-order helpers: is_backed_by_folio() moves out of
+>     split_huge_page_test.c, and a range-level form asks whether every
+>     order-aligned window of a range is backed by one folio of exactly that
+>     order, mapped head to tail.
+> 
+>   - folio_order_check validates those helpers against the kernel for every
+>     anon THP order it supports, before any collapse test trusts them.
+> 
+>   - khugepaged_full_pass() drives exactly one scan pass through the sysfs
+>     wake path, so a barrier completes on the daemon's own cadence instead of
+>     needing a short scan_sleep_millisecs.
+> 
+>   - khugepaged -o <order> runs order-parameterized anon collapse cases: a
+>     full table, only the populated window, default max_ptes_none and
+>     max_ptes_none=0, and collapse upward from smaller large folios. Any
+>     order up to the PMD order, where the same cases baseline the PMD path.
+> 
+>   - khugepaged_race races two faulters, MADV_DONTNEED, transient FOLL_PIN,
+>     fork and mremap against one of three collapse drivers: khugepaged a pass
+>     at a time, khugepaged free-running, or a MADV_COLLAPSE loop. Every
+>     racing page must read as its pattern or as zero. -z collapses
+>     hole-bearing windows; -p adds pageout and compaction, the only threads
+>     that elevate a source folio's refcount from the reclaim side. DEBUG_VM,
+>     page_table_check, KASAN and lockdep are the other half of the oracle.
+> 
+>   - A shared-source write race pins the CoW isolation contract: a co-sharer
+>     writing throughout a collapse must not see the collapsing side's pages.
+> 
+>   - Four tests fail on the environment rather than on the kernel: the
+>     collapse wait is a fixed three seconds whatever a huge page costs to
+>     build, collapse_compound_extreme wants a 512M page from the fault path,
+>     the shmem cases want a PMD-order page cache folio the page cache caps
+>     below, and the swap cases fail instead of skipping without swap. Scale
+>     the wait (a 2M PMD is unchanged) and skip the other three. This is why
+>     the suite now runs on arm64 with 64K pages.
+> 
+> Tested on mm-new (1dbd7c34bb92):
+> 
+>    x86-64 4K    105 pass, 3 skip, 0 fail
+>    arm64 64K     87 pass, 7 skip, 0 fail
+> 
+> The skips are structural: sub-PMD cases decline at the PMD order and the
+> mixed-source case at the smallest order, and on 64K pages
+> collapse_compound_extreme and the shmem cases skip for the reasons above.
+> 
+> Kiryl Shutsemau (Meta) (16):
+>    selftests/mm: move is_backed_by_folio() into vm_util
+>    selftests/mm: add folio-order check for VA ranges
+>    selftests/mm: add folio-order detection self-check
+>    selftests/mm: add order-parameterized khugepaged collapse cases
+>    selftests/mm: add khugepaged completion barrier helper
+>    selftests/mm: add khugepaged race harness
+>    selftests/mm: cover a shared-source collapse write race
+>    selftests/mm: skip collapse_compound_extreme where the PMD is too
+>      large
+>    selftests/mm: skip khugepaged swap tests when no swap is configured
+>    selftests/mm: verify synchronous khugepaged driving is attributable
+>    selftests/mm: race-harness variant for permissive hole occupancy
+>    selftests/mm: add memory-pressure threads to the khugepaged race
+>      harness
+>    selftests/mm: parameterize the mixed-source collapse case by source
+>      order
+>    selftests/mm: zap whole PTE tables in the khugepaged race harness
+>    selftests/mm: scale khugepaged's collapse wait with the PMD size
+>    selftests/mm: skip khugepaged shmem cases without a PMD page cache
+>      folio
+> 
+>   tools/testing/selftests/mm/.gitignore         |   3 +
+>   tools/testing/selftests/mm/Makefile           |   3 +
+>   .../testing/selftests/mm/folio_order_check.c  | 138 +++++
+>   .../testing/selftests/mm/hugepage_settings.c  |  66 ++-
+>   .../testing/selftests/mm/hugepage_settings.h  |   2 +
+>   tools/testing/selftests/mm/khugepaged.c       | 430 +++++++++++++++-
+>   tools/testing/selftests/mm/khugepaged_race.c  | 483 ++++++++++++++++++
+>   .../selftests/mm/khugepaged_sync_check.c      | 198 +++++++
+>   tools/testing/selftests/mm/run_vmtests.sh     |  17 +
+>   .../selftests/mm/split_huge_page_test.c       |  62 ---
+>   tools/testing/selftests/mm/vm_util.c          | 157 ++++++
+>   tools/testing/selftests/mm/vm_util.h          |   7 +
+>   12 files changed, 1490 insertions(+), 76 deletions(-)
+>   create mode 100644 tools/testing/selftests/mm/folio_order_check.c
+>   create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
+>   create mode 100644 tools/testing/selftests/mm/khugepaged_sync_check.c
+> 
+
 
