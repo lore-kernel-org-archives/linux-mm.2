@@ -4,141 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8E3EC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:12:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9F1C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B00BD6B008A; Mon,  3 Aug 2026 17:12:42 -0400 (EDT)
+	id 4338E6B007B; Mon,  3 Aug 2026 17:20:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2BE6B0092; Mon,  3 Aug 2026 17:12:42 -0400 (EDT)
+	id 3E4766B0088; Mon,  3 Aug 2026 17:20:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A1146B0093; Mon,  3 Aug 2026 17:12:42 -0400 (EDT)
+	id 2FAF16B008A; Mon,  3 Aug 2026 17:20:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0466B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:12:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA0FC140839
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:12:41 +0000 (UTC)
-X-FDA: 85061207322.16.3FAD2B9
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 099C780008
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:12:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=q4fJjEYT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785791560;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F1CB56B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:20:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83B3EA081C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:15 +0000 (UTC)
+X-FDA: 85061226390.03.521F79C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 983B4C000D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OsLtx+Hn;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785792013;
+	b=GmBcAoLE+6CbfqBHusD4dPXiO6eFnrPFkZZjEJWxS393LcwDCow1EiSg4yKDM4moQijoKf
+	/kUv1n+7zNNusVolH8/3w6nye09IzJ1TJDEWlCOXOOopOaETsFCeBz5z8QCfU/yNo3SqCb
+	xanV6DmMKvh3+hI2mfRJPtUYhG53gWE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OsLtx+Hn;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785792013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
-	b=H4sbTFbFH/Yg2Svel5IBANIVD93upAQkO7G7UrOcqhdDtMO/kKZJROpEHqURr776QX0SnI
-	NkgMa3CKVbIspyNdgexZLFMjnrWjW/POUDl/QdDiXohJQRJzbQ5oQ1aXu7LUNAc7CDRktd
-	3463Fhk00+EROVFUvU02HZkzgUOqGe4=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=q4fJjEYT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785791560;
-	b=IPLXsrnVqcs92ibZ2T7NwOlxhrHtqVxuqE2ebwnSopJm39ZhyMNqReq12klnzdijZ/vhyT
-	w+z43hg3CgwEGpX0usYwVyJZRRz7cIQEP4poo4gkY0Q6B3fW6LMN1dueNBW+mGYvanMKs9
-	zzUxPe/pOUwhhqn5cW4M2t30661kqnc=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cab97c86bdso16185ad.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 14:12:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785791559; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rSfOzB4NZwnkrsgztFJ/gtJD4W+88OwA4yi3PpplD+j7ZaJtqOJKbPT0toBzhIIyzg
-         sWC+L+yP/lwdq6yN5yCaRGTyoeWTe5nwOhV1wddj+iNc1kaVYzXKoKUCmfTwY8ubhf5t
-         I5iovyWqoh4o+nanTR424bJw8Z95Rfgcm2EIjBtdgtzxC/DAeYO1nBLPDHGOYrXMuIMS
-         WxZ1sJDm8yBt20A7MO6z6kkFvGD/sfu0BkGZyhiCK89pGeKuFiwLs/fWwBKoIqkN+k53
-         7605JtJN8uI1iNWuQPGaMArh2r3lqdOu5uoXqfgvslKPkOVfb0UMzWnH7FKZoQGm+V/S
-         qW9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
-        fh=gJfwcE92tX1Hx6LD+DKg/lhRHxN1luJWIwNjC2+xj94=;
-        b=CwbkF1DupPm9X9NVZm7yoydthib24Kcaq+lAThCx0j6eWoOWt+K7+1F5POF/6V+Nlp
-         zCM3hDT8A8eJzfaxLWlu0REQQaPJjH9T+H9sW1xql/7iKsO3AaNko437RBK+ydHL2GJ/
-         75yReeoU3TPEWaVwYmQWQN7X9GavP2UVNaYVAwDOnznu3q9QZFf7BmAF6BWzaS8n8HpJ
-         5VBL18+TYLLK1RemujFNpJzD+tsa3vDEwfYl5pBIT38Qsl6CP5W/ecjetP31w1kuvJMv
-         43NH7Jr7OCf2E6qqDj7oFeMzyLiGJTAC2NiIYOn9wZjNeSPThbkjwwSPH86hnELh2pGJ
-         ev0w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785791559; x=1786396359; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
-        b=q4fJjEYT+WZ0029BNrmkS1h9GQNV6xfZBdCxmUxoJ1cZQ1e8z7+RZ26+t/4q5eGcvA
-         zfFYyhLg4+gNw4wW6tL6SBatRaZim5S4peeiNH55S4JYQJdOQlVy+l3n8R9WhMKUGXj6
-         6CgmcJ7eNJy1VRO0kRsoitxj/xV30ZtUStVE2hyMbIfrizdzlCRgKd7WCxo9jKdq3jer
-         qC865epHan9sNlFJkWpW2aQ6q3yVclUBEW/E0qHrHHVi0xNNJQzLxE9c80KVaUBYgHGE
-         EWq+M1jURzJejCVpafY3kElq8NI6yyfWfzwa4xqIxHdDCoBbnvEzdQ7LKxxHiHm1IFrB
-         rUFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785791559; x=1786396359;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
-        b=V4jbrfWuw4f4h2mS4kHfUk5fUQzzso5M+/VlvAR22u5PMXMzXp8nb19nbb8v0B6ghm
-         zmB0WEKhm8Y07imRNWNR3UNyJ6I7JFel09hlRAKRRQ4+TMuT3v0sjDNs940zOTj01VnW
-         V0muRv9NRx0yUyd5WQ+/TrJTfUids7ZkX/9IfLqLV5sgdXAfEKGFOly/8iKmaWvV9Mv4
-         WACav2N38YzT8wDe/2a7SsFOPG1PWWakro7bbwhWOcvTsc886I+Eol+SLQ6rgDSz2b6h
-         90nODV+cmc2sfO9Y8d/NSoTRiO8jLn67QsFOe4DGXT2anQuBu6fdzz/oOglGBm0w+Fr5
-         k/Sg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0+kldt9rgLBZ6nPINKSTij/J3HCKgFOMJS/o3z5sv0w+wifKzDMmEE8y56XHSYWCaQWRcTyKEXw==@kvack.org
-X-Gm-Message-State: AOJu0Yxrv6UKL3lS42UpFcGTnGrxvPojLapsf5rEcPCkfMhjFujlPb4y
-	u9VSvoRxS1/2aJjy1HGI2kYfZIQZAkVLn+xZbSi7nFBPfY06ltGbKiYWZpaWNC0nFyLriNIz01d
-	wL1esIrJKd9UDIfP1QMA0kltguFtL0NVM+5wsNFUd
-X-Gm-Gg: AR+sD10kH/1/n7Y+bYxAw0h8PMKxq31trfqbs9AUulgEFyjQtU8M8bfQm+yibXXJQuy
-	usnZ8celObbiWCOcWCp9W7LBp612vGJMezpynLbWzrFmkbjQAhGhrQNo3gWvyy1rGZXAfyqPdRQ
-	cdMze+z9vei95TljQ+gK9yQiTbE7F97b7Xk22f69FvSa620cbqu3C7qwsRIaUgyw4w4Go1QdwF8
-	q2oApWAaqu6MAyg89dK4/PO5e5/vVmG4Gd51GNqg7KT7VdUWcfC5Z2qUo29EnMlb1lhwXajsIR9
-	4On5giQo0Ty8UOs787d7VsdrJLlkSVplM4Hl6t9PsdbynT18AplfXlBI1PcGgt38v331XXQSnss
-	a+Jd9+FskUFI9LbYCs/6dlImnBhTAzw==
-X-Received: by 2002:a17:902:cccf:b0:2d0:8b22:22e8 with SMTP id
- d9443c01a7336-2d08dac64f2mr2794505ad.17.1785791558228; Mon, 03 Aug 2026
- 14:12:38 -0700 (PDT)
+	bh=nhajB4klxh4v80X3LNDpszm0tYAWjr6mI5IumldjZD4=;
+	b=CwVkabH6vSEfammY9SxfFVd5pTlWfVq5pKMO9Kj/hJwAwSDLCfQ8H4+awnb8v/4cjDDOS1
+	ExvCOMRWDBJiix8P2mNpwKXGWlHg25BSLbme46/UmjRZcatcll+SEyG+YWW1Fs4kTzRFW6
+	Lz1jQP9nZElZmmUSGm9wrVceDDaVhfA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EBFB43AFE
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7296A1F00A3A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785792012;
+	bh=nhajB4klxh4v80X3LNDpszm0tYAWjr6mI5IumldjZD4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OsLtx+HnBNJCqyOHv/wAGUkRY5SUHYN54Z1hp94/yVRopqRIL5F6xFlJz5D1KLZ/p
+	 KdXGzQCnJ4U5xYJCxGiucrFjKFtdJ76iFVuWVIanJO/HBzC7VBuB+AK3zoELc28yWi
+	 3Fz44Fnb5+dcZUDlafncdcaHDGGrSQZjKOz9FpYMXr6hgub0Kg0m73D4Oo7UiyfTSN
+	 bjZ+DPxNsLGf0w3ioBaLV11xgA+hYkERIQAKyTa0CAe4GPfaotHM8VbnTaP40HL5fc
+	 8ty738ZD+mYeHIlnx8+7XgnvSFt13UDTHsnL8sE6YYaIk3QkPbeD2Jia2YQh2RecGW
+	 h+LQzZlAdQnNA==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930f618435cso213980585a.3
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 14:20:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqTuIePKg+1vxHA012ORI518/xANpHuepvufarQyktzbxiaIO/hR/p6PzwNFgQVkUB4TNBB5a689g==@kvack.org
+X-Gm-Message-State: AOJu0YxhhQygNyGE/qTFAT1zWEvbdpY+2crJk9YOkaUP8x+htFGdMqQj
+	cqtfFfx+DAoWuXJMqnEcSIm8HlHZmG3w7hhYder7/i/aP9hVJTURpEGwiu0FYu9R6031QmypeMa
+	JjcPPClsiwQYVTS4XNyO161SFdNUPBAc=
+X-Received: by 2002:a05:620a:230d:10b0:915:cb40:f76a with SMTP id
+ af79cd13be357-934a0ac22abmr1687368385a.39.1785792011811; Mon, 03 Aug 2026
+ 14:20:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
- <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com> <anC1iE21eonDK06n@lucifer>
-In-Reply-To: <anC1iE21eonDK06n@lucifer>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 3 Aug 2026 23:12:01 +0200
-X-Gm-Features: AUfX_mzFwteAQxBUM4TvuzYNFGYmEeNzpupbj75hFXyN-f5Jb1ghubsN_Vgb6e8
-Message-ID: <CAG48ez1=_O0g7rArdpoVwg84jOJuELEAXu5sw=TO_CWBsK=T7w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, aliceryhl@google.com, 
-	arve@android.com, cmllamas@google.com, christian@brauner.io, 
-	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org
+References: <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org> <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org> <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org> <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+ <amy5ZKC2Kc7RX94Q@cmpxchg.org> <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
+ <anCpdjEoDNgVbfzP@cmpxchg.org>
+In-Reply-To: <anCpdjEoDNgVbfzP@cmpxchg.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 4 Aug 2026 05:20:00 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
+X-Gm-Features: AUfX_my5DInNlM16VQ1g82eeKFlXBW6QPdPYwLpd2qfDvR7yb3QsjsoFnN7FLA8
+Message-ID: <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
+	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	willy@infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 099C780008
-X-Stat-Signature: ic7q5iiaipisdjpir1nggxxnfi1x6dpj
+X-Stat-Signature: 8xx77cnax3uqayhmp8b6yppgezdutyjh
 X-Rspam-User: 
-X-HE-Tag: 1785791559-701699
-X-HE-Meta: U2FsdGVkX1/DadcYePb1/uw+YdRya/ea+BtonRG51I1HcjbF92ObwAizTMe1a+8L2PjWw8VBiBvBQvm3t1SS+glcLnEvuvuNAk937e6edD9OMD7Q8ALBoHAqRFW2HBXdOWSu8s42XScSt4GI9sptaexXl0D745eQTerpTIIDx6j2FPHgYJYo1xzZbVm5homDCX5CM6PLGAODo0s09jiMg4MV6CppE6+LrzC2OpVn58TsGqOAtgDqNe1QdM4xpX1dtIbVZcSl9KIHbnzude6mhRcwM4IBe5Z3wGpy6ngAT30dbxOHRKoAfPAPcqzdII4Ol8f/SfHD7EkuzTyyeCWSnaN++qXNdPXvlphtbipw5yjt85UViZgq/Lf+yG+DesaxlbP5ZenvjCMxof3IlREqDaRU6sjMaEje+s6NcLXzMtZXPMMCFYTkTqefLGyyDHL92iOsIIF7FE/r2TH42ETyKT8z5ggF7X8SqsJg7VRuxetlLqso1oR0tc2PlNFkKqqiV6dqcpxATRTQ7XOMboY8raEnttbJNxxO8WMOfyKRCg3ZfgSfDAoxFz6hqjTDx33r/wb6tZEk+Yf2ptUB06EEU/5gLTfaAsZKH3WxZM9Wqi9B1Sjhv5HECCM7/rUorVUJliEiELr3GPQRuxQNLdoVvSPI0l+ARZ4kGeb+EeKwxmxQDVoXSN7RaSvCYdiTgxbRdWJFq+CIhv8lqPpSZeeRxtxZL+Z62MnLONgyKggRFldwSVWDjYMWKoPtUO5FGf9YhHH1ckJSSua56S7P76UqQ7TAvvrOHpGV5Vbsf9TYX8JDZhHxIN13JSJYueREpJU0ITk9nwSNbFutKzZgUEA5b0tIhtPAt/qLk7kOGbkK5THk+L7wHrkbRWwHmUeuLooNJ1u8yta5NcO020SjwRDqp+40NA8bQbcR1XjmZwT8xBkLxJoDG1O8yGC7i440y2sCBHR25k436Cm28a0V+O8
- f/4X3hSJ
- cU8FBzgd5Xg4t8dWwQyrY/hmROxrbaBFRCTqcjvhyITSH4lDDOp5b+ON16gam68u2o8OeEJ0KLPuAV4eI54gv5s914sJPJuonf+V0wFoWKF9kurpX3cDyVAZb1jODmktbDI8O0WBUp2ILnRIJjhMQDbnQ6WEFdK3W+vBaYnZNE+z50/sg5fVmtJ/32Xl3o2nsYBgjSOlwsYsJ6bvcHkwjSZj7yl7zv+NtfP8/PqZK3x0wKq5na8i78xcYrjsg118xHVGjcIN1kcA6WWsK/7MosbCZ+UhwDBqUikibn/438FGEBosDX/Vn01KPbEqgEDUga1aOnT/hvyJdJDpp2hP6zA1ievWoH5dEV6bQ48E0BRJwOqw=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 983B4C000D
+X-HE-Tag: 1785792013-127131
+X-HE-Meta: U2FsdGVkX1/1E43PbMOrAW9fyMeYfMc67z5R66uZITr49yXPZ2yISRN34KdVgXKj6Ia2CjNwjNt5+8ZVE3cNFzgqtblBnXt/X9SNG9t5MEeJS2abpNzEM8GIYWC4UzZqYFFG3qv24XVtmVtwPMIxQ3IWdZFOKK/r++tfccarDogz+yjdwmB3l34fvFejUAMbrgEg6pBa6CfPinXA6O1Oecj+Co9eJsFVDGJxkl99iiPdLO0XATjuykL/MWtd0YCuo/BjXNiHxPQ99ORXgU88uUUbOw1RXQJ3dueSjnbdn0MnB7HjWz4nPYHiuLFkoJlszx3MZZ/FIddhWthcxKeTAEXRKd5q7OuwZdCsh7fNh6XXDeht4oSL3Vwdpf3gmf+hUV2fKsw/xNMl0RP2VoBEkHBg5SicMrTCqLYMcmKUpl9OTOgcyoE4ikmDfiRP1ywmra7NDLhW7Ss8YmwopHFIZLzWgdpsw+sTumf4etRo5uvKT0lIabrKzoSJbLZqsc5sFBib8VxzLYDQSJ7f/6dbTfkglvJkRNjtyUw/1/rbsk2RHoPVkD2rY/y70pA/Lo2HlIB0oo9D2vZ8F8dsLA0vrfJVa8J9RhlZlrExG9mYwxxRRuzIqNKVYKRJf1pHP4Fc7+p/EaK8AwyjpgydSHyt05K5DWAomEmWGhFGVDqbw/38T61VV5BOIfwUKhelZtcAOOPlpQaC2G0ow7Zo13FI2p6jiu9HattSCBBkW1X/FvQxD8QQp7wKEfPdes89fGFud/WHxkzqrEHc2Ex/BTS8jAaHMrETNgFqwGD7Rb6feKTm/OC73zhPbQ6yv5MWTJs50VXk7E2patMQyRIOVu9zGYDG4QfJ6oazJKLZLa8fO8K7l/yXrqH0V7eJzMXWesosNeKS1WOUPqICPuW6Rn3VkuGLsATcQ9WvsAiE7aAg/ksFkaiGn8sMBSEw0ZY+8zTB4lr06uhh9O8T/sgUPQX
+ 0WDTG369
+ 8V3ZnRalcADJO7G3VoAlOWzFOjjw4JDj4t15JCQPFeYUvZxuto00vkhNI6pOOmneOrxiJUBAODhSYdMGZOml7MuS4wORv+yNAEL8yLnw6kK26Kv5uCzymCxvmVBPwfVrxmvA6FmWWaJ9HpbAg7HI3tEJfxYw+6LQfINjCpvPGDy+IQZAnIx8vRQxTxWRjnOBPndQ7q3xnRWr3OA74POW/xYPJ/Le5ycTrM9h3BImZqB/BlAPS0HpuJ3kV2jIoRwCRCH62YSQQtFvmBASZyuOLECGRIJ9U/AYtnAgLAHk2tle9kY4tNgxmjYFxteFPl8OtYGuEDmwM/S/Ea6yVIiwqjx7DvBL1UCcFnLMzQHna6FV8oTbAzo+DCyQGWwRevsGFeVn+AcIzXALp4no=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,32 +113,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 3, 2026 at 6:08=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
-> On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
-> > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > > -#endif /* CONFIG_PER_VMA_LOCK */
+On Mon, Aug 3, 2026 at 10:45=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Sat, Aug 01, 2026 at 03:33:42PM +0800, Barry Song wrote:
+> > On Fri, Jul 31, 2026 at 11:04=E2=80=AFPM Johannes Weiner <hannes@cmpxch=
+g.org> wrote:
+> > > This is kind of tangential, but I'm curious if you would have
+> > > experimented with larger folios AND the THP shrinker?
+> > >
 > >
-> > Now that I'm looking closer into this, I think we would break NOMMU
-> > case because nommu.c does not take VMA write locks at all. So,
-> > lock_vma_under_rcu() for example would always succeed.
+> > Haven't tried it yet.
+> >
+> > A key difference between Android and server workloads is that Android
+> > typically has many applications running with frequent
+> > foreground/background transitions. When an app moves to the
+> > background, much of its memory may be compressed. When it returns to
+> > the foreground, it often allocates a large amount of new memory,
+> > creating significant memory pressure.
+> >
+> > If we need around 200 ms to cold/warm start an app, allocating 2 MB
+> > folios and later splitting them into smaller ones via the THP shrinker
+> > could cause us to hit this shrinker path directly during the app launch
+> > process. For example, we may spend the first 100 ms allocating 2 MB
+> > folios and then the next 100 ms shrinking them back under memory
+> > pressure. This would be quite ironic for Android :-)
+> >
+> > Since Android app launches can demand a large amount of memory on
+> > devices with limited RAM, keeping burst allocations small is also
+> > important.
 >
-> I don't think anything's broken actually.
+> Makes sense, thanks for the insight.
 >
-> Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA fl=
-ags,
-> but now you have stuff that happens that didn't before but:
+> It works for many DC services because it's just a bit of extra startup
+> cost, while then getting predictable THP coverage for exactly those
+> areas where it makes sense, and the TLB benefits pay off over long
+> service runtimes.
 >
-> * vm_area_free() -> vma_assert_detached() - fine - it's always detached i=
-n nommu.
+> > > In Meta, 2M thp=3Dalways without the shrinker would also not have bee=
+n
+> > > tolerable. It OOMed immediately on a large number of services. The
+> > > shrinker *is* what allowed us to use such large folios to begin with,
+> > > without the internal memory waste problem.
+> >
+> > My understanding is that Meta's use case is a service that is already
+> > running with 2 MB pages, and later additional services start and
+> > require more memory. In that case, shrinking THPs from the existing
+> > service to free memory for the new services makes sense to me.
+>
+> It's simpler than that. We had existing services, scaled to machine
+> capacity, running with basepages. When we enabled 2M pages, they
+> started thrashing and OOMing from areas with poor virtual packing.
+>
+> The shrinker makes it possible to run with THPs enabled, period. This
+> is why I'm concerned about making the search for waste less
+> efficient. It would likely regress things in production immediately.
+>
+> > > Here is an idea: the THP shrinker will not consider anything unused
+> > > that has <=3D max_ptes_none zero pages. See thp_underused(). Joanne w=
+as
+> > > proposing to scale this knob down relative to the folio size for mTHP
+> > > shrinking. What if instead we kept the meaning absolute?
+> > >
+> > > The knob is an expression of how much waste the user is willing to
+> > > tolerate per folio. If the folio order in question couldn't possibly
+> > > have that much waste in the first place, we don't have to queue it?
+> > >
+> > > Something like this:
+> > >
+> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > > index 2bccb0a53a0a..1670e9869bd3 100644
+> > > --- a/mm/huge_memory.c
+> > > +++ b/mm/huge_memory.c
+> > > @@ -4364,6 +4364,9 @@ void deferred_split_folio(struct folio *folio, =
+bool partially_mapped)
+> > >         if (!partially_mapped && !split_underused_thp)
+> > >                 return;
+> > >
+> > > +       if (!partially_mapped && folio_nr_pages(folio) <=3D khugepage=
+d_max_ptes_none)
+> > > +               return;
+> > > +
+> > >         /*
+> > >          * Exclude swapcache: originally to avoid a corrupt deferred =
+split
+> > >          * queue. Nowadays that is fully prevented by __memcg1_swapou=
+t();
+> > >
+> > > The setting defaults to the PMD-1, so out of the box we wouldn't queu=
+e
+> > > any new orders. It would allow that 2MB on 64k ARM usecase, without
+> > > jeopardizing smaller mTHP usecases like Barry's.
+> > >
+> > > Thoughts?
+> >
+> > My understanding is that adding smaller folios to the deferred split
+> > list is not the right approach. We could end up with a very large list
+> > where we cannot distinguish partially unmapped folios from fully mapped
+> > ones. For example, the deferred split list could contain 100 fully mapp=
+ed
+> > folios but only a single partially mapped folio.
+> > Moreover, for smaller large folios, the number of zero subpages
+> > is likely to be small and short-lived.
+> >
+> > However, this is probably fine for larger large folios, since it is
+> > unlikely to significantly increase the size of the deferred split
+> > list. In other words, the deferred split list should remain manageable.
+> > For the same reason, larger large folios may not benefit much from the
+> > LRU cache either.
+> >
+> > So if we have some mechanism to prevent users from doing things that
+> > are not beneficial, such as adding smaller large folios to the list, it
+> > seems reasonable to me.
+>
+> Just to clarify, we're on the same page, right? I was proposing a
+> mechanism to do just that.
 
-I don't think that's true, AFAICS vma_mark_attached() is called from
-vma_iter_store_new() which is called from the nommu version of
-do_mmap(). But I think you're right that one blunt workaround for this
-would be to add a hack that prevents ever marking VMAs in nommu as
-attached...
+For example, with smaller folios, the distribution might look
+something like this:
 
-> * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to 0 =
-(correct).
+Smaller large folios
+
++------------------------------------------------------------+
+| F | F | F | F | F | F | F | F | F | F | F | F | F | P | Z |
++------------------------------------------------------------+
+
+F: Fully mapped      (dominant)
+P: Partially mapped  (rare)
+Z: Zero subpages mapped (rare)
+
+So it doesn't make much sense to add them to the list, because we
+would rarely find P, and even the few Z entries we do find would
+soon be filled with non-zero data anyway.
+
+For larger folios, the list becomes much shorter. As folio size
+increases, they are more likely to contain zero-filled subpages:
+
+Larger large folios:
+
++------------------------------------------------------------+
+| F | P | Z | F | P | Z | P | F | Z | F | P | Z | F | P | Z |
++------------------------------------------------------------+
+
+F, P and Z become much more evenly distributed.
+
+So if the folio is large enough, this seems acceptable. I know a
+sysctl knob may not be well received, as it adds to the user's
+configuration burden. Perhaps we could just hard-code a
+sufficiently large value instead? for example,
+
+#define LARGE_FOLIO_ZERO_SCAN_MIN_SIZE SZ_2M
+
+if (folio_size(folio) >=3D LARGE_FOLIO_ZERO_SCAN_MIN_SIZE)
+     deferred_split_folio(folio, false);
+
+If, someday, people find that 1 MiB also helps, they can provide
+data to support it.
+
+>
+> > As a side note (I'm not quite sure whether this is relevant to this
+> > discussion), one thing we tried previously as an out-of-tree proof of
+> > concept was:
+> >
+> > for (pfn =3D start_phys_pfn; pfn < end_phys_pfn;) {
+> >      folio =3D get_folio_from_pfn();
+> >      if (folio_is_zero_fill(folio))
+> >             swap_out(folio);
+> >      pfn +=3D folio_nr_pages();
+> > }
+> >
+> > Then I was using my previous patch to remap it to zero-pfn if someone
+> > reads it:
+> > https://lore.kernel.org/linux-mm/20241212073711.82300-1-21cnbao@gmail.c=
+om/
+> >
+> > This does not depend on any list-related logic. We can scan all PFNs
+> > within a short time.
+>
+> Hm there are 268 million PFNs on a 1TB host. I don't think that can
+> scale?
+>
+
+Yes, this is a problem. We tried this on a GB-scale system, and
+the scanning itself was very fast. However, it provided little
+benefit, as the zero-filled subpages were quickly overwritten
+with non-zero data.
+
+> Compaction used to be linear scans, but needed to grow the freelist
+> search and a whole bunch of position hinting to stay ahead of scaling
+> bottlenecks.
+
+Right. If we want a physical-address-based scan, we'll need some
+lightweight mechanism to hint where scanning should start.
+
+Thanks
+Barry
 
