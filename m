@@ -4,102 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C8CFC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E61C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:59:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E23F76B00BB; Mon,  3 Aug 2026 08:59:37 -0400 (EDT)
+	id 34E8C6B00BC; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFBB76B00BC; Mon,  3 Aug 2026 08:59:37 -0400 (EDT)
+	id 324D16B00BD; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE9E06B00BD; Mon,  3 Aug 2026 08:59:37 -0400 (EDT)
+	id 19F886B00BE; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A99B6B00BB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:59:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C8CFC012E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:39:54 +0000 (UTC)
-X-FDA: 85059763908.26.2BE4063
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 638B41C000C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:39:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KOjAQses;
-	spf=pass (imf18.hostedemail.com: domain of 3An5wagUKCBsGI11E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--praan.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3An5wagUKCBsGI11E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id DFE156B00BC
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:59:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74751C066F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:20:34 +0000 (UTC)
+X-FDA: 85059412788.21.8BB0C23
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A379E1C0007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:20:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cQ/RvL0S";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785757192;
+	s=arc-20220608; t=1785748832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=93Zcj2NXzxZtscFdS8APS888IZfB2IV9unzK92NNaNs=;
-	b=ZeKfBysGwGCAaP4QkRW/Q7/YGi8wWPXXHS3DE9Y2n9STw/Y7kNt6TcGZMBaGgpFrEV7dJH
-	nvmNVcAXocc/XMRpZYIZn+9GU65qWeVcmxy5gjFD2dRcPbTKjXmOSJ161eOqCnY3mxYIq6
-	Q33ZzDFj+ESJrHf0FMNGgEAa8JYZvNg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uXdaGv7hV1IIr0JYIQZkL1apFdYS1zKRORz3x/OxqU0=;
+	b=CK/calpT4/u/JsgWf+rrET8lrr6oHWUQ/fg7iS7nOf2uyLDHmdaYe7tuY2PgJ12bloHirR
+	I5PHCZqtgnl8HZKjQmaWohQrl/PFXq5wnLON0Y2vsJdEwPRU7491Mn5nY7/gYcBCIwWhnp
+	16FfJIH0TUZ6KZDiehqdSQHvGK8by9Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785757192;
-	b=SoqYjQWeEj4AybhjaYVKLGxwaqtQz+pbyI0zGQtl0miFApxkVv2aSA5l4V4L+rgQs2HJGA
-	l9gShIcMviYltkkWFv0FMLLTOFvepmCWXE/Kd+5Mfda+6RvPvMNaQmMbrJShoS+wamWF2j
-	pzvgKSNDw5OhNutuZ7JWq08s+YXkxKY=
+	t=1785748832;
+	b=W6J1S0kD1IVXZv5yEWy5srmzY13O0vM4kaUtptYXzUE90WKyIMsCUUjfpZaqQbYu7fcOYr
+	UrgsKLLZSZTgd6MAZlPgD7L9Ni7YdCSFcrcB+642xNiCDaKUXlT1RoovDGHswcv9vj3Otd
+	HZvhGUcTlXEVOgzkmYwg6rCtrzdfCyk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KOjAQses;
-	spf=pass (imf18.hostedemail.com: domain of 3An5wagUKCBsGI11E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--praan.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3An5wagUKCBsGI11E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb835525b13so4142629a12.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 04:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785757191; x=1786361991; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=93Zcj2NXzxZtscFdS8APS888IZfB2IV9unzK92NNaNs=;
-        b=KOjAQsespRh60zpBZcBccOyCLESpoaC9LRZYe7n7JqaGNm+M1aeSN5MfzuQv/34qrR
-         cp+H1IdL2yz4Is5oJ7Z+bqpHN8VaiUDEDlBhwu4se+7eEseojJMqSEKh0Do26skQyeeq
-         O7SJK2barFCwgpUBDw/YIsuhkCeFQmPIRrLscPqyXKcxvw2sZc2BpcejE7ezp/3Nwt3i
-         ch9hF8pbNSlIfx2D4Nb9vAERWwKEKHCmZs+kMo4p759bIlQqiMp1Y2gyiHSx8RAWW98S
-         CBcREFzL5pCGDTfTB1TyICmFHtPiqSijJz1pRNRliKPfa/Hln5EyZB6NYw0TkHCkDqhx
-         Wn5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785757191; x=1786361991;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=93Zcj2NXzxZtscFdS8APS888IZfB2IV9unzK92NNaNs=;
-        b=KGvOZNJji3fFcnzZsMmz5jyaBPd1e/1e7enAUPBS70+hOcrkBr0qOCg6hZz1xZa7nY
-         a8KTe9aQztuhZeFI6yH9lJrGgXN+eQTly8hUr+9izQYyGwKOp4Qmlt9ylYm09t4+8ThL
-         cdy3y4GndNKitpuurUBTvS3Vs46lD1un6xnP1qKOD3eqar//Y2LgV0Xl+Gv6oaCtkZDI
-         1/aaUeYq9gNIis/2xb9x6zpjHchMy6xL/LxNWv+RZUy0tYesD7t/4uIuR5xUV90BMjLz
-         4UPmBT3mMUQHxIvvllKho/ywzD7/u7fe6cGaInmfdc7TUhsuRxSP60tjgAp/t7rrbxDK
-         CSzA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0Epu8iKINDYr0JqsW82NhSzLidOWvWD4E0IVn2Ao3Z0ZNBs6Tl/GEX3LMmq0EyHHC6L/nzYRcMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx8kQpsfcyzM8nwIjKBkqVvdjk2q76/2pg0QHSCb81kblSQ3EsF
-	OkKTiQyldKwnBf841HEP+JUByRK0peuK578P5d6m2CFbRQHK86AfaLZ1CYJFnlonqk3gtj9w9hR
-	mzg==
-X-Received: from pgmn11.prod.google.com ([2002:a63:5c4b:0:b0:c8c:68c0:9240])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:114c:b0:3c9:1c8:2b60
- with SMTP id adf61e73a8af0-3c92a94eed9mr9848362637.65.1785757186070; Mon, 03
- Aug 2026 04:39:46 -0700 (PDT)
-Date: Mon,  3 Aug 2026 11:39:41 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260803113944.3694290-1-praan@google.com>
-Subject: [PATCH v4 0/2] kho: support preserving high-order non-compound pages
-From: Pranjal Shrivastava <praan@google.com>
-To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pranjal Shrivastava <praan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cQ/RvL0S";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B13A2410CB;
+	Mon,  3 Aug 2026 09:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C64E1F00A3D;
+	Mon,  3 Aug 2026 09:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785748831;
+	bh=uXdaGv7hV1IIr0JYIQZkL1apFdYS1zKRORz3x/OxqU0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=cQ/RvL0S496/GYwKO5ueLFiCiA0Gokc4nJ/+kBNvZMqV/rcm3Yww4CUoejh/L8f63
+	 9tPllYl3spSlPPw+QIWWqjYIXanuL3TAiiZlqhEpt+SDZ/S8wVsbSMkK/FKxoOIG0j
+	 OZ7iw+EAmF8UqGc69FM9jTmpdGoSpD0OJ42FNzxT7L+pl1aziYljJVSvyMlTlgJtYv
+	 sF1kQ3N9HzkNZXn4GKl7Gh4osiRpfMF3cXmQ/qN0Inu5oIypmjyxloa5N3fJkoo/wK
+	 0D7Ad/Hqy2suRnfp0aNvr196+k1P28pucwwY1jJhET8FBwbNeGN09bX8bUdbaS1awN
+	 CWffmU4Zoq5rw==
+Message-ID: <00e90eea-9045-4f83-99db-f3631a54e5ae@kernel.org>
+Date: Mon, 3 Aug 2026 11:20:25 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 19/26] mm/page_alloc: rename ALLOC_NON_BLOCK back to
+ _HARDER
+Content-Language: en-US
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+ Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
+ Sean Christopherson <seanjc@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-19-6f5729aa9832@google.com>
+ <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 638B41C000C
-X-Stat-Signature: 8mttm9j5uu91w5b4w31e5ix6x1hz47gg
+X-Rspamd-Queue-Id: A379E1C0007
+X-Stat-Signature: qfmscz38myt7w6w1bax85j3x7ifg8bdr
 X-Rspam-User: 
-X-HE-Tag: 1785757192-410973
-X-HE-Meta: U2FsdGVkX1+wa1EwbvXD2Wj9/UdQ0eE05v6eOb/JYcfHO15DQ7NJgUuWi3QjpORcPzEdI2QhBbAG6Z288RN4Tndr655v4yOq+x+NP/3u7/2bRo7WThw81VYLRiI/uBx31E/77Z+87BCeZceroxsEFuoWs0nTH8QqXMH/sfdsa2ZLuGlE03KLkiapHN5tM5fvSN1VQLWtn4I1A55n0Ug6fiHTbRppHktdy63jbEj85fUpjQnw3QeHdAFWxHyOrD504e5x29DKnzvMcZfUasdEKcvJivo/lUzm8yexWyf8+cPf4rt3xaffKNUnDGRjHoWbFxA4P/cL1Qbw8hskoHTpwpMV7VSRszNNphpMyX3lJObyssX8xBIcrXcbqRptgOLRmU5u7GJTGywLycj3VI//tiTFBezeTOURkA5atB2ebsUZHkCt4QcMVyNqS+L2OOKjNpSbhvNia+0Sab12laqkSmpmwDPOg7uoDwzjgQ63G9N7YAX8vXSnQvZbxQ2/+dujuWyJzBsaGSc1c+UGC0oh7ZoqJg77+HWR7a9nK2SzcbCai+0A0fgjQ/8a6ouTQNIpRp2RfX+XzXM1/tdFYBnxNq3Dz4KmQ+SP3Q1I2ATE+DSAEESASHrqoFk/iz4w0VGVTTzur9sqEU1BDvSRT1DjBVKNUOdG1PlA6eiwNmS5RoJNGxKOcCXHdeLJLlagzsaJgNobIdvA5EIshJzKuBru8xDAZag5ri6qblIUPrB8vy3a+rShdsmqqOj9Lvi83Imf1PrxWjQ2hs22npl51jsFVDsnMK/aNKy7Mny6Vn5eK/DFKPr1ZqUhLJygoiScNTlY8Nx5H+NHc59UiGSnE6JIkxu4/DHDLFILTdoECNIzbkknC1j0ZObKfLFotyBvz6DjV4N0eX6qdKp7VpZru3i8EychEPWK8i52escqgzRdfT+E25128Sp3JFLwJsjEccMIyfvbRQouqfhUNaxO/n9
- 3GwUzzVm
- 62XCXpti/N/zoOvPBaROdzvEcXyR9Rt/mXI/fCKUFvFx0IYt8HgCEFjHAGnZFWoxTwXPYKzTla27MM89jpMNwj/YnYNTIvIdT97X/Zd9DJdGdU/MICa5RW+CRpgfcsD91O6O1jLzHohEJG+luteVS677Wggttprf5zmJzqxGamqopNN2uqYqBua6oojeDGz+cEypDO3NPr7qTS1vBHi69L+kbGgD2X/YB0NZVrXrpTz05H/7oa848ccw8/+hAwSXBootS48J/V9IH7bqqjN45nDOCZxu3/uvqSlacNk7boQMi3oIy2wt3w1rNBQj/8qGUpAw0Fz4cu15cwN0aLXgkHlC7pwqGTrLhafnb+Qbc0IWcAEesUregwwOFNI6djJILM4s7JlRxLYUbIAAPCoaicT9Bu+W7v5SehfyubDY9RiPeW0red4uKDiDyI1zmRmKjUxRcHo63aIn+uPnml42B+1fM+YSbGvwOVMWRNvZPH6UOLv1+VHuRIonl/jnJ5q3/I3EcrF34HFxkpUPL1ZG+3kzqNqJ9/or0E8iyn/Y+w7WM+3SjBV8nMt0SN6UYoDC9U1Aq7GIWWqSIp+HgxLBKpt0bHT8Tm4f+EyscPU3VJnPQQzbqZXA+sOzz4hOW2kY5zgSI1Dv7RfjLF5HBwddLy+lzCw==
+X-HE-Tag: 1785748832-875166
+X-HE-Meta: U2FsdGVkX1/WetIbaJ2bokLLXzOHfXLb4/HCJ5nudVJ01NLtUN58RaaYtdgExRrj+HutQBW87xQ3isNWMqEaeSlsd8ICkRwTi+bigq+ypAhXvUPH0+hvjjhOJL26ZS9lVDMoFL3xp5GSGIthXhoemHGX3atbQ2ByliHKh4jAwj41MYjm2NzIvTh9Ligsvh8PUqthgPRfSdgJYRhDsji2T10YMOIWlwCMopJUGNeX8pWjS/mI+/5mGi/DnRlQIIR6pNWGwARO2CsmYFWoEf/1Ig0aeG+cuSBWmLLhpyAQmLrWcDBcucusYwrS6fzAJnr4g3ut3uwE/QZS2jx0tYKBz1Rlh3321TslZdTRIFfzwOn491wKGdAzL5dld4KzxHaGmirWpeA61ogx0F9uF0t0XxVVCnWTuxyu7VizheZrjUQsTmZxCe3jHhVrwqLFAkQhKr6ZAIms4zojj6L+WIdJ8bcPZph1UGconXshYPiM/tTYPrZhtxoZDPNMR/IIrjbCnwYqgfEQjLCRJlciW75PdRdtgLDpU0E5mV+0iH98RGBO34utrnpOv4FP4YyLbclXFeMTGk0fGhGEG0lGSsYbS1+B82okyOqLvcUC1PMJGkuH9EWggoTl4EyWX1grIz8u2jANN9WM5LWz0O8b1+BN6YaZaS/lhXwls97Dh78AtqDvjAVRseZI6ChMyotjRlSWHbt51s0uVCgJj68Eb49uHl5qCg/Smr7LD6hoqUMkhOzfDZEP1lWdOF356AnFH2uiCbEByK9Fl+uz3rCOLiRYL379lXZwSz/uj+B40XWgE5LPAX//YY4JtWyzsDoL1VHAw5JJoPhya+Gfza1fwD715bDUESGT5ooZxHYb5usUYo0e0OHAh4NvuDgWWwumem6xN68f02WB4PhZ6YT7MKqHRz16p3ByHhl6hpJRZuvdNvQKYghRc5Vz/SggLbMrZIoJR6eajtnQwBdLn6bFn9e
+ G0AtfCoW
+ t6+k8rxYNU88HfYXQ0Hgy+WN5WNfFiFJXDF9gTfF49BMnSq9scGT+aqgPpZvYTFkK4TXLNF9igxy6AOtsVybzkbPCIzw9U+tvUJ4IOHyRMH/l+K1MutZwuI6YJOLFnd5LJEfna47qfFsyesihXHkVrrQOfK4nncZE4r2QqVfEfCN5TwnsoOqmBXR34GFlHxqH8sQCDt8MLioEHcC0vxNLRMGIKohkz1dlTzCLQk9RgdcaMQxbuEab8UEO/4UXlaWoTX4c3MPZOktX6m/vpRJ7TCrJNhJHzjM1imizdEOlzIZcz1F4b0OSXiw1IiDcSOhNJX3Yh5dIig1NDWs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,85 +147,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduction
-============
-This series is required for the ongoing effort to preserve DMA allocations
-across KHO [1]. It addresses a fundamental mismatch between the current KHO
-restoration logic and the physical reality of high-order buddy allocations.
+On 7/31/26 16:52, Vlastimil Babka (SUSE) wrote:
+> On 7/27/26 00:22, Brendan Jackman wrote:
+>> Commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+>> non-blocking allocations accesses reserves") renamed ALLOC_HARDER to
+>> ALLOC_NON_BLOCK because the former is "a vague description".
+>> 
+>> However, vagueness is accurate here, this is a vague flag. It is not set
+>> for __GFP_NOMEMALLOC. It doesn't really mean "allocate without blocking"
+>> but rather "allow dipping into atomic reserves, _because_ of the need
+>> not to block".
+>> 
+>> A later commit will need an alloc flag that really means "don't block
+>> here", so go back to the flag's old name and update the commentary
+>> to try and give it a slightly clearer meaning.
+>> 
+>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> 
+> I wonder if we need to do this, and instead we could repurpose
+> ALLOC_NON_BLOCK directly. AFAIU it's about removing the side-effect of
+> gfp_allowed_mask in the next patch. But what would happen if we did that
+> using the existing ALLOC_NON_BLOCK (or maybe just renamed to ALLOC_NOBLOCK?).
 
-The Problem
-===========
-The current KHO restore implementation treats all multi-page blocks as
-split pages during restoration. Specifically, kho_restore_pages()
-initializes every 4KB sub-page with a refcount of 1.
-
-However, many kernel subsystems, most notably the DMA allocator (via
-dma_alloc_coherent), frequently return high-order non-compound pages.
-In this state, only the head page carries a refcount of 1, while
-all tail pages have a refcount of 0.
-
-Consequently, when these contiguous blocks are restored by KHO in
-the new kernel, the forced reference count of 1 on tail pages causes some 
-trouble with the buddy allocator. Downstream of the eventual free path,
-__free_pages_prepare() [2] ends up calling page_expected_state() [3]
-when is_check_pages_enabled() returns true (triggered when CONFIG_DEBUG_VM
-is enabled or debug_pagealloc=on).
-
-This detects the unexpected non-zero reference counts on tail pages [4] and
-incorrectly taints the kernel while leaking the physical pages in question.
-
-Proposed Solution
-=================
-Following feedback on the v1 RFC, this series moves away from auto type 
-detection and instead introduces explicit preserve / restore APIs for 
-high-order pages.
-
-Callers now explicitly preserve these high-order blocks as a single unit by using
-kho_preserve_page() and kho_restore_page(). These functions apply a refcount
-of 1 to the head page while leaving tail pages at 0.
-
-The existing APIs (kho_preserve_pages / kho_restore_pages) remain as is 
-for ranges of independent 4KB pages, continuing to use the split refcount.
-
-The internal initialization logic is refactored to provide a helper:
-kho_init_high_order_page(), which is shared between folios and high-order page 
-restore APIs. We also consolidate the common metadata validation, state
-clearing, and managed page accounting into __kho_restore_page() to avoid duplication.
-
-[v4]
- - Consolidated adjust_managed_page_count() within __kho_restore_page()
-
-[v3]
- - Renamed "unsplit" terminology to "high-order".
- - Consolidated the common restoration code (magic checks, private 
-   clearing etc.) into the internal __kho_restore_page() helper.
-
-[v2]
- - https://lore.kernel.org/all/20260713204935.3069000-1-praan@google.com/
- - Dropped automatic type detection via higher bits in Radix key.
- - Introduced explicit kho_preserve_page and kho_restore_page helpers.
- - Refactored internal init logic to share code between folios & high-order pages.
-
-[v1] https://lore.kernel.org/all/20260703020832.1731864-1-praan@google.com/
-
-Thanks,
-Praan
-
-[1] https://lore.kernel.org/all/20260708234854.4044652-1-skhawaja@google.com/
-[2] https://elixir.bootlin.com/linux/v7.1.1/source/mm/page_alloc.c#L1370
-[3] https://elixir.bootlin.com/linux/v7.1.1/source/mm/page_alloc.c#L1027
-[4] https://elixir.bootlin.com/linux/v7.1.1/source/mm/page_alloc.c#L1034
-
-Pranjal Shrivastava (2):
-  kho: Introduce a helper to init high order pages
-  kho: Introduce preserve/restore APIs for high-order pages
-
- include/linux/kexec_handover.h     |  10 +++
- kernel/liveupdate/kexec_handover.c | 127 ++++++++++++++++++++++++-----
- 2 files changed, 115 insertions(+), 22 deletions(-)
-
-base-commit: 8ba098e6b6ff0db8edf28528d1552be261af30d4
--- 
-2.55.0.508.g3f0d502094-goog
+Hm given how ALLOC_NOLOCK and ALLOC_NOBLOCK look so similar they can be
+easily confused (at least by me), I'm not even sure about the rename.
 
 
