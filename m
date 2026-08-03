@@ -4,143 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CCB4C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DABBC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0FFA6B00C6; Mon,  3 Aug 2026 09:34:04 -0400 (EDT)
+	id 7664F6B00C8; Mon,  3 Aug 2026 09:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6A86B00C7; Mon,  3 Aug 2026 09:34:04 -0400 (EDT)
+	id 73E416B00C9; Mon,  3 Aug 2026 09:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FD666B00C8; Mon,  3 Aug 2026 09:34:04 -0400 (EDT)
+	id 67B486B00CA; Mon,  3 Aug 2026 09:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ACE16B00C6
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:34:04 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2BC8AA1FE4
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:50 +0000 (UTC)
-X-FDA: 85059499140.15.0B1CCD3
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CA2424000C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="fHiUgDc/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lqn1zzlt;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pDooKbr/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CLT1mS7S;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785750888;
-	b=H6RXsh5qqM7vjIJhstnuneQM8qxSZRildV2Cgqr7MrDkm1y2hbhFF05FMXMuEU8pw591m1
-	YY/Rkh75G8Qyt7RfwdiUW1mhEkr3mP+AbC2htSHes+FGJ4dbEZW6nzf2CU2unbN/uVIElk
-	5rZ6K3xxKyIls2ex5LKV/5PHeAFV5iI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="fHiUgDc/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lqn1zzlt;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pDooKbr/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CLT1mS7S;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D3D16B00C8
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:34:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76DAE1606A7
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:39 +0000 (UTC)
+X-FDA: 85059675078.19.AA475FC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AEC21180002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMmVCiB5;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785750888;
+	s=arc-20220608; t=1785755077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iROqidNnIXSZtIIk8nl3VK4dOUo3dfGu6PFD6UoFhbw=;
-	b=o+XfYJHXCGz0xynTTaj500518FDPzlL+6QdPmYR+PUJtGIN1XPrrTt5qHqJFi43Q9lZspf
-	2B8vfBIy49w62TsVexL4uO98PzpaR81T/pfSIST/1yqtlNBGYMlaK3k26VlEdQQw8KabLy
-	VTXa67cstNLq7lwD2H1kAi6U3cqkt+4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9B5F77EFF8;
-	Mon,  3 Aug 2026 09:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785750881; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iROqidNnIXSZtIIk8nl3VK4dOUo3dfGu6PFD6UoFhbw=;
-	b=fHiUgDc/gBWZNPYTfUL+/RKtJMvY4YDCOJBMBuxQzU5xto7ubw4eaPSQkzSlU46dks7UBX
-	ruxnjVfs10OfQlbHXoApIdA1V9BstCp9eGS8uYEWOZo6w+PuO0/uuVZs4UhrgGet0VOHQS
-	ALWCsVaUyzTGnAoYHqbDwYDkvPKvxQY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785750881;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iROqidNnIXSZtIIk8nl3VK4dOUo3dfGu6PFD6UoFhbw=;
-	b=Lqn1zzltP7SCM9HQ6qrUpcN9jfu8MXAXViLUoliKx+AzkXpws+spjIvH4se097r8DHkyEP
-	Kfu4eglMl+CVnBCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785750877; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iROqidNnIXSZtIIk8nl3VK4dOUo3dfGu6PFD6UoFhbw=;
-	b=pDooKbr/7Sc7/HRKzOzWRfK+N7685sWi2sBn2+fcCVca6XP+3RJ0SzE+9VqVH3VR9aO+Ub
-	RmCm+VpxU6OwY8SqzrioAod+X5fHjMen/sbX/cAD9QfOdkGUoTmtjhfVH57TYfX1Ue9JPa
-	elh4I9oIIZ0Mjc4RhC+lll0YdIppR/0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785750877;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iROqidNnIXSZtIIk8nl3VK4dOUo3dfGu6PFD6UoFhbw=;
-	b=CLT1mS7SoLb60oRjTZ+JbcfZfJ79SMp450+duotun2UxsMTeGEme3vUvdiIRHgqn4qsUvq
-	zAmEZumhqT1xMcAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8FE4A779A1;
-	Mon,  3 Aug 2026 09:54:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1MAWI11lcGoWNAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Aug 2026 09:54:37 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2C4BFA13A4; Mon, 03 Aug 2026 11:54:33 +0200 (CEST)
-Date: Mon, 3 Aug 2026 11:54:33 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <hongbohbli@tencent.com>, Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
- readahead_folio_reverse() to avoid folio->private
-Message-ID: <332rknj4vo3cfhvfhhlf6pvg37s3lbrnzbbnv4swa6gctsiu6a@ndotgokvnglc>
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
+	bh=hp7zTybQm+mhJAOmq6bcq40GTnQfmEk+v4OwIE/uVhQ=;
+	b=gkWuccz9zIQnQL6Y3thxtCmjuRAezMonjXyBLqFDP1RDgYC3bU5z0vIWcKo5jKj4hjtcdE
+	zxPkAQhk02nTqxnMseFZmMJ8YxERjMLSB1kljOIC0ah1G9aD5Q1BJ2LCeMqAjlNU+EW+7S
+	alaomuOV3jmyS42us7+CfgJmULBIA5o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785755077;
+	b=i9WnwE4RK6YxTxTBMJg3n1ZDYbqxL90jR/BdJD4JI7U1KfpuU00kGba7PxgkuLk+ZC6vWq
+	MklfwenMNmdkU1xuNkR/298CNDf0ipJMqumfRuub1Z/qxWX59zpPyOGWSWlLJ9Kic5+5r6
+	bapeKEhUutDlGy9mJslhm9fwZ3XuZAI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMmVCiB5;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE0ED406DE;
+	Mon,  3 Aug 2026 11:04:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9924C1F000E9;
+	Mon,  3 Aug 2026 11:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785755076;
+	bh=hp7zTybQm+mhJAOmq6bcq40GTnQfmEk+v4OwIE/uVhQ=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=PMmVCiB5ZCcTFUg9590+cZFq0NC623ucq0Yv3SR5aFPDWWOoWLQK1SQ5auxZcBrsE
+	 iI/cYCUI6qWJoBbo9we88l2JCOmGLNsveFXqQVwDAKA0uEE/OkyoUOzLA1F2jZhyIU
+	 fENuy/PG0sfJvOdzQ/RVrc96m9MPLUh0uVIva682LQsMcrWo6nJQpjKh1ZgYIPuVpr
+	 QXKb5gCr0Dkj/qvRuRtejUbJJHG6IdtBsyj6WfuBgmekGLigeCr6+B/1jD/nLFP4TE
+	 gUFVwTqsiYCha8/1n97UtkllzZt7WUYhF9kmM1O4/o7ARat6qVawKabzlGaZxAYnwy
+	 5gwXhHkV1jaUA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
-X-Stat-Signature: q6hqygdwsbrft15pspxiio8wf16eawkn
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CA2424000C
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 00/16] selftests/mm: improve khugepaged coverage
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Nico Pache <nico.pache@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+In-Reply-To: <20260802195254.1937477-1-kirill@shutemov.name>
+References: <20260802195254.1937477-1-kirill@shutemov.name>
+Date: Mon, 03 Aug 2026 14:04:23 +0300
+Message-Id: <178575506321.1561566.145327646496245621.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Stat-Signature: t5nw61k7q7nps89xufjnaysx5zhpztyf
 X-Rspam-User: 
-X-HE-Tag: 1785750887-563333
-X-HE-Meta: U2FsdGVkX1+at8xMza3c56QJPyYrTdhAn1YZ2jZ7dKOR3Sn7G84Jc6hS3wu2MXcy15pAm3QZUbxHcg4Sx0EGlQrUX/N4Xusxr0s9HvSpwT4bKEXceHiPQV3nIVngFPrU8oQbd4ohvmCH8jOD9u7n5exxPI7sAEaiCTw5S11SZ7nq6WPIN5MkwyMjsaDrQb/76Evjhvbr+nrg3QM0Isrq9vNnmUR2Hkj7SkhErBvXMklJD+aDyxKIS6iHoqoX+pvuX7Akg/sanIgg0RlfeEkR5bpAdFW9YgX87AQs1CDCUq19d85EeQFQB3QFkreAWVVzglsbYCtYPu0M8+M213v4rEWwJ55twK9k5nypK+5c/DOHhq+g/XDciHXrEwBXcICQS3mZaZ1w4htBXPZ3FaCBYI26Mx6k2DrLsESw9u0lC9c12S8sJ0WTaO49igi89DRRCkIXd17Ugz6HFeNplGs8fTaVWUvwZc9RC3+d2QAVdEuAhe1spsQyN8OPlp3E19TrwacAJzTyCi6eIy2jE8KO4dNoRT1J9/SHmSYPA2NOAlTTsQVMbk8cXkrZyrJNQSlCYzjUxRnQf4+1OkB2F7Rtbxwj7AjSlEcjXF3m+TxpZtRfGG+wrsLn5iXWLp4nLyHfDxHc57SbAHhHR6NnG9skCcmr5482QAsj5wFT4PGciq4z+bxe/9a8WwVPT40s67UYmNCO4OVqXsr7SszgwQUwHTgSxGwSEaWEJ8eawSj6VT+K3WF2SrCNjCemkAevbZ5ukDZCThsUH8JYTSgiGZp42wmdBS+B3HRP2LxSwYDX4D06njHKHadye4BM5J1hmJAKyT4x2KZFMCZWmwitxyXmoMyX//uP6SB17hv595Uv1lF+P5N6SKXUn4KyBfaN1731E6aIUIJ4yUCtaecDUqh8zRxYDlCOtjpZw7mq6pGGh3fIfENm5DpBFLdmH1d1AT4Q6thR2SXI3C0NcxRD8mf
- BoDWaw2g
- /p1TJsQTa8EUDkRXowVcqT/JzS8yPw++pTQp+Tnmk9t0zhpQ6e7NWHEdDMXF+C/GsCg/J4VjhYaxpcFV5o/3bA1F3gmkoSoXaoEo1ygrLV744q04nIr4Kh4MLsoctjUL60lpbdQh9XA6Y20ICUZb7w8aCalaQJue95tkb0FIXy8WXR4r4zXR141vhBttuq4F8zZtYj3An8HiNIa6UC6uVqbcBwft2fvviNibUS1ID5jMBBJAPemf9JNl3WX9mtmIdmJQbzFsoF+FAHaI7ZdS8DSZxgqcIFHwoHiy0/9ddfzRiq05EJtURNNEXpRkNFIJju8A8DDFN3RY5zHmdJkOOH0UX5R6bp2Go/SwwJHTwZBm5VHdTfv3zoqmUPIvQUFGQthGrlVp7FTZzxnxH4fv4eM/Onqd0BvkPLOmLbz7G7QKB2/20hRsc/X1GSsYwHLog7EZ9sX5AZ3sz+GF1jpVyZRZPgDgTvZnykEouzwYG9bs+IXoNSgHK8UKmEhNVYdAF2MOMLwKXLYblL2Z09J0eVKVCzg2bKdi5hjHgCEwaVJ34vEhkWoT0mHc1aDHWlInVktgD8csIo3CWjjjWoDAe2b7XDLRMANzkaGG6IBr4KnnS7jRbNF+tLZnXcRKpgb4SbWo7cWYBSMYMX0IqfBF03ACkMxgRGr4B0F0fMsqhW9TYervhLMmWdVon2UVkRoWViXNw1tGXlr/EBW0OFCrVxaig65OO3vAGSIYd
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AEC21180002
+X-HE-Tag: 1785755077-964239
+X-HE-Meta: U2FsdGVkX1+MLZtZ4jRyLWN+44juqalGaO55no4Ky+SbIuNHW6BSZSS3auxJCVVAYsJiiZ47k2DO6umE32NcfiwzJJ4aTqaoYVq3vcFGIKDMyArVrjlrBNBm7v2eQY1U2AbupB336YabwTsA3ObZR/DiRJ4MNpf/xDB04sxZrLiE1AiFPPQRecsK9j1+MOfBz/6uyPXftorkfiYDejcr63+NtUBx2NjiWa33jJan1NhWd4faQSCmr115kkHbdFi1MvBQYVbmSv8ZJTZb5FMAp3RVKlx5KA7oDSF0io6LcrKl5vtFD+sdlrjUazw9t963Fjne1lNO1DbSJJLlqMT9LkgHuHF19OKgTo/T4bEHLyawjBgKndObrX1dOcVkbGbRI1mKgEjPi9ImcNDkructHkBcQCVwo84t9YYDBgsUwGDlAv1ev2A0Z4T6uFFxR2tfDDe00EzeJddQSYLJIA5nYdQy6FbXMajBVg/DJk6MAvN9OpBHJU76EEy/7p6xWroGCqFRkCOH1kW5KdqVuvSL3RtwjmC3TfDvKGFrhUwGqQa61z7PNXJb+HPnmk/s2hv4gNmC9HKfUT9fdpbga41r8gi0Onlur8Ajac6ZawDIDZYALB82KjLUwWqwVy5zwORBvvO3kVEYTHh4VP9talX8m1FyhR9sA9WUY264pW+yfxkC42QaEMwLcNzzxHTj/QLqTh23X9uSjdRjxEXW9CK+cNSwYwIAn+KEWu5b3GSS9P6l5VNL6QEfTXcDwEHCX7PZcJpGy1nQw2JjYTM83vKGXZQKUbS0ujUhWENSS0jFkWdYCMCF9s0DvcjlirRkvTfAkzxrXQPKmLnasIlpUyeVKDfwdTkCYfuBRI8uhXoVmAjvttsR4Z2foh76nmhPLX/6o4W33J5lcbhFoX+82ohuDNvFbkfWZgvNMiH7IsVz8Kiet+M9EwkKG7w+omb6MlHT2R4wNpYPm9TOAPaVpNv
+ jQKpx05D
+ qSzToSiN5sldQ/9qHeI73RnHMVfR3dXoLPgD0ayJXeMQFfXprFfdGo0dSCbfioRTlSGKU06M5dfuS1hgGmu4O8t7AjA5G+13FPA2hcHiu0vwbX9WfFQmvxL3q8aXZM3c+xkuzJxpY6vWqPZ+jfCS79gxt5DfkIzLKhXRwHtGMYO6tAocleL1XkF3A2JBesJ56lv4rmY6f2vI7N7755HjL+CCPzAUcKqhSfRZNGtS2P/tT28T7bUCI48Bg7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,93 +102,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 31-07-26 22:13:30, Zi Yan wrote:
-> erofs needs to traverse readahead folios in reverse order to achieve
-> maximum performance by
-> 1. reading all folios from readahead_folio();
-> 2. storing the prior folio pointer in folio->private;
-> 3. traverse from the last folio to the first one.
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Add readahead_folio_reverse() to achieve the same function without using
-> folio->private.
+> mTHP collapse went in for 7.2 with no functional selftest coverage. Every
+> khugepaged collapse case is PMD-shaped, down to the detection: it reads
+> smaps AnonHugePages, which cannot see anything below the PMD order.
 > 
-> It prepares for a future commit that replaces PG_private checks with
-> !folio->private checks. After switching the checks, erofs's use of
-> folio->private without bumping folio refcount can cause unexpected
-> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() becomes
-> reachable.
+> I am also reworking khugepaged's collapse mechanism, and that wants a suite
+> worth trusting before the mechanism changes underneath it. Nothing here
+> depends on the rework -- everything passes on an unmodified kernel and
+> documents what khugepaged already does.
+
+My overall feeling is that changelogs need more human touch to be
+parseable.
+
+>  - vm_util grows folio-order helpers: is_backed_by_folio() moves out of
+>    split_huge_page_test.c, and a range-level form asks whether every
+>    order-aligned window of a range is backed by one folio of exactly that
+>    order, mapped head to tail.
 > 
-> No funtional change intended.
+>  - folio_order_check validates those helpers against the kernel for every
+>    anon THP order it supports, before any collapse test trusts them.
 > 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Gao Xiang <xiang@kernel.org>
-> To: Chao Yu <chao@kernel.org>
-> To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> To: Jan Kara <jack@suse.cz>
-> Cc: Yue Hu <zbestahu@gmail.com>
-> Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
-> Cc: Sandeep Dhavale <dhavale@google.com>
-> Cc: Hongbo Li <hongbohbli@tencent.com>
-> Cc: Chunhai Guo <guochunhai@vivo.com>
-> Cc: linux-erofs@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
+>  - khugepaged_full_pass() drives exactly one scan pass through the sysfs
+>    wake path, so a barrier completes on the daemon's own cadence instead of
+>    needing a short scan_sleep_millisecs.
+> 
+>  - khugepaged -o <order> runs order-parameterized anon collapse cases: a
+>    full table, only the populated window, default max_ptes_none and
+>    max_ptes_none=0, and collapse upward from smaller large folios. Any
+>    order up to the PMD order, where the same cases baseline the PMD path.
+> 
+>  - khugepaged_race races two faulters, MADV_DONTNEED, transient FOLL_PIN,
+>    fork and mremap against one of three collapse drivers: khugepaged a pass
+>    at a time, khugepaged free-running, or a MADV_COLLAPSE loop. Every
+>    racing page must read as its pattern or as zero. -z collapses
+>    hole-bearing windows; -p adds pageout and compaction, the only threads
+>    that elevate a source folio's refcount from the reclaim side. DEBUG_VM,
+>    page_table_check, KASAN and lockdep are the other half of the oracle.
+> 
+>  - A shared-source write race pins the CoW isolation contract: a co-sharer
+>    writing throughout a collapse must not see the collapsing side's pages.
+> 
+>  - Four tests fail on the environment rather than on the kernel: the
+>    collapse wait is a fixed three seconds whatever a huge page costs to
+>    build, collapse_compound_extreme wants a 512M page from the fault path,
+>    the shmem cases want a PMD-order page cache folio the page cache caps
+>    below, and the swap cases fail instead of skipping without swap. Scale
+>    the wait (a 2M PMD is unchanged) and skip the other three. This is why
+>    the suite now runs on arm64 with 64K pages.
+> 
+> Tested on mm-new (1dbd7c34bb92):
+> 
+>   x86-64 4K    105 pass, 3 skip, 0 fail
+>   arm64 64K     87 pass, 7 skip, 0 fail
+> 
+> The skips are structural: sub-PMD cases decline at the PMD order and the
+> mixed-source case at the smallest order, and on 64K pages
+> collapse_compound_extreme and the shmem cases skip for the reasons above.
+> 
+> Kiryl Shutsemau (Meta) (16):
+>   selftests/mm: move is_backed_by_folio() into vm_util
+>   selftests/mm: add folio-order check for VA ranges
+>   selftests/mm: add folio-order detection self-check
+>   selftests/mm: add order-parameterized khugepaged collapse cases
+>   selftests/mm: add khugepaged completion barrier helper
+>   selftests/mm: add khugepaged race harness
+>   selftests/mm: cover a shared-source collapse write race
+>   selftests/mm: skip collapse_compound_extreme where the PMD is too
+>     large
+>   selftests/mm: skip khugepaged swap tests when no swap is configured
+>   selftests/mm: verify synchronous khugepaged driving is attributable
+>   selftests/mm: race-harness variant for permissive hole occupancy
+>   selftests/mm: add memory-pressure threads to the khugepaged race
+>     harness
+>   selftests/mm: parameterize the mixed-source collapse case by source
+>     order
+>   selftests/mm: zap whole PTE tables in the khugepaged race harness
+>   selftests/mm: scale khugepaged's collapse wait with the PMD size
+>   selftests/mm: skip khugepaged shmem cases without a PMD page cache
+>     folio
 
-One comment regarding the generic infrastructure below.
+I'd put the commits that update the existing tests at the top of the
+series and than add the new tests and infrastrucure.
 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 4e8b2b29f6d3e..90904a4d173b7 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -1549,6 +1549,37 @@ static inline struct folio *readahead_folio(struct readahead_control *ractl)
->  	return folio;
->  }
->  
-> +/**
-> + * readahead_folio_reverse - Get the next folio to read, from the tail.
-> + * @ractl: The current readahead request.
-> + *
-> + * Like readahead_folio(), but walks the range back-to-front. The folio is
-> + * returned locked with its refcount dropped; the caller unlocks it once I/O
-> + * completes. Compound folios are returned once, at their head index.
-> + *
-> + * Context: The folio is locked.
-> + * Return: A pointer to the next folio, or %NULL when done.
-> + */
-> +static inline struct folio *readahead_folio_reverse(struct readahead_control *ractl)
-> +{
-> +	struct folio *folio;
-> +
-> +	if (!ractl->_nr_pages)
-> +		return NULL;
-> +
-> +	/* xa_load() follows sibling entries, so a tail index returns the head */
-> +	folio = xa_load(&ractl->mapping->i_pages,
-> +			ractl->_index + ractl->_nr_pages - 1);
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +
-> +	/* Shrink the window from the tail down to this folio's head index */
-> +	ractl->_nr_pages = folio->index - ractl->_index;
-> +	ractl->_batch_count = 0;
-
-Thanks for the patch! Currently there's the invariant that the returned
-folio is still inside the _index .. _index+_nr_pages range. I think when we
-are providing a generic helper, we should keep that to make code more
-robust for the future when more people start using it.
-
-What I'd suggest doing is add bool in struct readahead_control telling
-whether the last folio (batch) was taken from the head or tail of the
-range, advance _nr_pages and _index accordingly in the functions returning
-folios (probably hide this in a helper function __readahead_advance()
-because it will be used in 3 places) and maybe call this new function
-readahead_folio_last() instead of _reverse() (but I have only a slight
-preference here so .._reverse() is ok with me if other people prefer it).
-
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Sincerely yours,
+Mike.
+
 
