@@ -4,158 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E027EC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB94C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C1026B00B8; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
+	id 879116B00B9; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1491E6B00BC; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
+	id 7FE8B6B00BB; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2A6E6B00B9; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
+	id 73B1C6B00BC; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD6A6B00B7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67ED3406AE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:03:45 +0000 (UTC)
-X-FDA: 85059672810.17.B829F7E
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A12704000B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:03:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=FsuiiLhk;
-	spf=pass (imf27.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	by kanga.kvack.org (Postfix) with ESMTP id 44D786B00B9
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7EC6C40653
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:47:12 +0000 (UTC)
+X-FDA: 85059328704.06.C013276
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A05E2A0002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:47:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rleupwvm;
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785755023;
+	s=arc-20220608; t=1785746831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1LdikCzHnIi62dfq8/K9AYncVOh5mbXj++hGhsLbls4=;
-	b=eN3/xHIDvQtUpAbqUHbwx2wnWZO69/5oNwIpTtN6xWe8Os9Y+KprfC2tfm7/2X7SxwK8Gj
-	qLISlesSHnEeYsRM6fpopluzfMXu+o9JZyQTg+P+Hy5Z57J6oyPyqo9D4cS3cqVyy8GRSD
-	RmfhYO+9bYi2T5avlWkvDFeZ7+74zpw=
+	bh=3f+0xEs3P53DlK4ELKZv7+ZiQst6jm95znwRrhos9Ek=;
+	b=yUd98HYkooHocpOBjm2UEHJvhXh6Z5QWzhDeGToMu6U7e7xE6c4M7MQowkF7psinetLxs7
+	o103PBw0uRC2O9ec5bkXTIXOdp0iU3KWAX4ZPqqFAybsEDg1JVxrwTtTjrg/jEwpAJgzDQ
+	XNqgRmtDo40vAV0objK4cTHuyEp6IUg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785755023;
-	b=N1HcttktjjJSj2ekD4rFV3yLUy7c2wDXJ9SjrVdFBgZRYW+xN3uK05FQ+AE9zD4Pty12gJ
-	VEWoi+q6IZkBanDFFH1M2cXRtlC1bW7yMBdPM9iSJru4ZU6Yxa/rGSC6I6TPhm68ztqLn5
-	K1x3Fns2oD4OM99y/sa+tyiUBj8U8uk=
+	t=1785746831;
+	b=zUZCGayj+1QKsiIKcMczlhLtGFuRoAsDFGT0gzpcsBw2aIoKzN3Cbco9x+9LnjBACTS/pR
+	IeOgsKJSAEAGOQqCo/n1+JCcLmghq4cyKSJzProKhPMtCFQiY9ygDCw4ISGWvvqV4atPHZ
+	4dyWXcvldH/maxEiz1XKJmYGnjtWAwg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=FsuiiLhk;
-	spf=pass (imf27.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167073.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673AT25I2066249
-	for <linux-mm@kvack.org>; Mon, 3 Aug 2026 07:03:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=1Ldi
-	kCzHnIi62dfq8/K9AYncVOh5mbXj++hGhsLbls4=; b=FsuiiLhkIM09zlFAK1ZR
-	JVBQqODgbbTmdK7mFuJSxhXTopBvkbrNFB/WpquLaWIsitYZYWCYXiXaXCfDtTT5
-	GdrzCPLsWv6MkkNF+diFTM7EQ6q3jHrYEA0waXyQA+2pz0m76GgQ25G09ifvp2YJ
-	TK7Z3mOqNsAxOL4Gm4JGj7cTkndGZrsaU+Rr6SST3K3fa/ONGFVF75rtAhEsCE3w
-	5Gd1vyctR+V1kpokQCyeQE9iNs/46Ok3e0MT7tHdxbGNunrFuWPXSPeDLPf+sLUp
-	q3Cg85erO9ZtUBIb+jMtk4enoDZODaZH7tGUGX1CRUaZACL2E6BH1fyvMKzP5cnr
-	mw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4ft9k32w73-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 03 Aug 2026 07:03:41 -0400 (EDT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c26012cd0so27468881cf.0
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 04:03:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785755021; x=1786359821;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1LdikCzHnIi62dfq8/K9AYncVOh5mbXj++hGhsLbls4=;
-        b=ZfR/mpNHc/wSEMHE7r36NWsIV1UesaNHuZNGtzsJem9XJk79m0sFn4ESi3ekiPlvn+
-         UDSw/lmvfTir2YhGMzCKYI8AXWaKgx3Jh/gVALjmpWTET8J+EW4IDIJHs9+AF7QUVAmm
-         RqVYOALkwZtIWNM/thBp55pdsigOAAXrtyxbdl/lb6+jFArRS4C+whhoi+JdEDGJFqaB
-         /iIc4kBbzJkosalmemZda6wt6INsIuoQMLJ0uzhV2DUUGA7zDG8Ul5E+oSsKLleeeXGG
-         pMrthHuOtgbUfoKQOpa2IaKVD3igBwVuZK1NyObwG3zD8bAyI3vYZU9iwkZGvn+uYFPg
-         mUVw==
-X-Forwarded-Encrypted: i=1; AHgh+RrBY/lHUqGXF44Yu+lmkJC/wY+MQ893R/k1NtRwu69n/dm5DXDnDTXE+t5iVi22omy179krLr/3rQ==@kvack.org
-X-Gm-Message-State: AOJu0YzciFrzIX/W1RKq1JIOiYUVitpH+eyIfDpQaN4VdaURm5eCq/3Z
-	5382b00anh+pNPTHefFjEROx9RX7dRSjFRN0uhOTcPfrETTVkLOEUGjEH4T1ukTbyeba1wzeMQg
-	jHQHg6wtp/HUOvP9slvk20Fu1DcAG4ENqZQBNz7Y+/ZjuWcCE
-X-Gm-Gg: AR+sD12yQiJYB+00TFrgJJPSuogo2lMuNoHI9Kw1vv6rdR54bxxtdDYCvi0Sm4uyJy5
-	NT1u1btifxJ76uSitzlLgZptfv4ckeHq5L9OlJuq1J3/2Cejv5dpkPZb/EZZ64DFsbzkJSi0Zzu
-	cQYxOGl8vMPbswP7E58PwT33ig+lNyIWlTKZXwNovMyyciCFcwiZpDUeJ5w4d3Tk3P1f9ZVY4H8
-	zsdsNvMJhAJJaK35XKxiXfmscM3P5/fcrgIov+lOW1eFGEzC74ZecKTP6LgmVKX/46IgSa71jan
-	LU9+eYxoCA0yiDuQlh4FNB9DdhgFDa7HKjIKRt1fHzuXZBKb33fwNZfqLuJRV9BkAEtEowLinq6
-	gzsdTcU6LUuXYLNdUu2JZ6Gkti5NXIaztIxVlhzBzNp03gJF97/U56/Qc
-X-Received: by 2002:ac8:5fc8:0:b0:51c:1532:ae84 with SMTP id d75a77b69052e-52b5669dca5mr178425461cf.6.1785755021064;
-        Mon, 03 Aug 2026 04:03:41 -0700 (PDT)
-X-Received: by 2002:ac8:5fc8:0:b0:51c:1532:ae84 with SMTP id d75a77b69052e-52b5669dca5mr178424591cf.6.1785755020521;
-        Mon, 03 Aug 2026 04:03:40 -0700 (PDT)
-Received: from [10.100.102.30] (CBL217-132-158-98.bb.netvision.net.il. [217.132.158.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41d0064sm30745913f8f.5.2026.08.03.04.03.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Aug 2026 04:03:39 -0700 (PDT)
-Message-ID: <08c19cc8-c28e-4098-b137-fc9721deebbb@columbia.edu>
-Date: Mon, 3 Aug 2026 14:03:37 +0300
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rleupwvm;
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785746829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3f+0xEs3P53DlK4ELKZv7+ZiQst6jm95znwRrhos9Ek=;
+	b=RleupwvmKXXbx2oK6zVCCMAFb33S/+9DAxWmSm/LUas1HiC576yo482kddw/nLD3QBrVyO
+	+NnHURtRy50uZv5otTYD/EZtWxwOGlWuePT869zpUInneRRO8ow3BD9xpTtUiNnd0fThAv
+	HJeywPrG25lXi6vZMf+eJ5iDZdab2gw=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	usama.arif@linux.dev,
+	brauner@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 3/3] mm: shmem: make unused huge shrinker memcg aware
+Date: Mon,  3 Aug 2026 16:46:35 +0800
+Message-ID: <d23cc0d06527e8085bdef645bdce489d9aa15bfc.1785746588.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1785746588.git.zhengqi.arch@bytedance.com>
+References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] ceph: remove page_snap_context()
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>, Jan Kara <jack@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, ceph-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
- <20260802-remove-wait-on-page-writeback-v1-4-6c35d6b3ad36@columbia.edu>
- <am_3oyOJAoFeBFTC@casper.infradead.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <am_3oyOJAoFeBFTC@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=PNI/P/qC c=1 sm=1 tr=0 ts=6a70758d cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=C4zMR0+CEq2lM/mtmjScOA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=jHxIr1HyPKZ_Q5_91PL3:22
- a=tvZamFcuqidHLa0JVA0A:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDA5OCBTYWx0ZWRfX+DzMqarFqjIZ
- wse7imjzjUex+kQyyohgLtmO+41YhY1l2N8+ykT/Sw1Zy98u8GZJo6lt6Nf2hiEJwsTjBbdICy2
- uxApmhvetHxL2/KS5HVyuqUjQOyPzcFGkBfp+P3uVKvrB6IZb6+n
-X-Proofpoint-GUID: eL_nS04BDV_VfQH3GlBh0DAlkgHJkyr9
-X-Proofpoint-ORIG-GUID: eL_nS04BDV_VfQH3GlBh0DAlkgHJkyr9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDA5OCBTYWx0ZWRfX2dHEK6eahc8S
- UgvQIRSjv/lvJ5l5+MPvkLRTwoNVcqkWVCHoyawcaXLRWkzGQMqiczw66fGoxFu/ta05fBipWJ/
- L2v8A9KobzJFjengmd9rhrFd5SnsqzvIAawtV0cMYcC7uMbs8ZAw2KCEGPQlFfFa/9mG/3U1lr7
- 9HNPk8rrD8m8A030Xe2bd7sjC4UzXgAiMKG1WWh9ZgTJgNJpiI0T2vdKyuXHW32QoKITPnGjQ1E
- xSicUGreJf9i7nw+2sG9BW0NBlXqQ/ugx6Q657Z9kapr/OW1ghCWvkEYVk7mh/KVnZ5oeaciuTN
- sdg4S9LgvTQRIarfH2ZU4IxhZRR03tYZgG0nMV1WiOUPXNFUGCd5IyVimTA86DBXwA4G6C515ql
- KKKFvEMus6FCXDl6V+0sM0gi0LVZMi6Dtfk2SbzcwNXwGdO7acfplQCvrxa9L4d61ajiZZ2EtwR
- gMJa7Pfoiy9GgXw8Ibw==
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11863
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=10 adultscore=0 malwarescore=0 spamscore=0
- bulkscore=10 priorityscore=1501 impostorscore=10 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030098
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A12704000B
-X-Stat-Signature: 8xe5q5ujk45qg5gp7dzmsb7oue4ykjod
+X-Rspamd-Queue-Id: A05E2A0002
+X-Stat-Signature: a444jmqn8yb1dumncttxshgqp6z1bwiw
 X-Rspam-User: 
-X-HE-Tag: 1785755022-32177
-X-HE-Meta: U2FsdGVkX18qjjyyOk+DxwYzWllH76+QIoc0TMWUBQF9uUaBnYv4x9+XlBOzQuN6jFIkBiENqBiwDiuG23A3cGVgXJqMttNqz8qps1sB7gEzlyzy0TbuMzdRD8gUo0cskl0Pw7PMIEFrsCW7IcqwBvIkxge7dcqzDxDXWXz5/FVveJudJc9y0v0yoVZOWzZ7QXSlHEJ1FG9RrYmZnH5HQjAndJUNPiVfucm/TZMLPxgoB77CE262U0h6s1EVtPvO7zC5N82sZxywDbSU/4qql7YDeLX+P0zxLhxI6HbgR3VZsqbL2Tm/Ppkc/XF6+e3kV2OhicrwTEmxCnTDUa6wZJH81mwrtrGCeQ/reGImEeAMPMdxORNVOTbbeIN2WM10hIQ7gyPptUphvqpvqhG0WR1JHJEtwc48fdhH7AqUY2HfjLPWNk0xoHpwbDhdxY5u1W12q2hq+pnKsy3LwPA6DCUJdapuchqD8Bf0gs2hFC9McvvmdXI3o+4RtkQ7DnPlVDOwZ4mPSxAlfgwup/JhO4G6Z7bi/VZDdqaWJoF7DD5HNSVvyfuyhH5JB5wSquQR+2JZ/ijcAthcbM7BRxDq3Vfonogoy4/Uj3hXbN0meu+N5WbqiA/CJUx1CftAxnD3LBlRh5JzOD4yzJOwvP3ANK4t9NdC3BgchcAWzQ+LqdYIP/mjBe0VewLPRioUn8na8J7z6U6aUmRNFaAT61P1KzYCTrox89UGsug5FMPdFngYzc/HM4I5495874j4JR21bbU6lhLrOQGo2U86R3SyK6ZO037hbdueBS1sHnrcTHJFIRTAbxkmWeELPdhs3naVVxuubDQBDRXO9VHFjNYVeaHElBQCDAzRUahYGWhvZdeuzByn9KpmS48+AdQcp0HLEIem9mHaHD3k3u7/d5UaiLpuwxlj71hZX53eL/z5g/ScYtu5vzB9q8xIYMmps/FvWJRnYHzyx/0WVZFxGAK
- 4v8vPpJH
- n9szUSyOdVvF460jC8rN7dDJgdcv2WeePwfpWi8LRg9Ax8njMeu7dHr2q8q0rS6O/33InkLSYQ2SszcxfFKe3/zkqIgJXYKqydF+Kkb1+ei5MUHrSzP6T5xVCBZfgQ06zaqNCUfUUAXrrZdGsLnyokjki38D0z2IPYQzeYToZXdHDh23ZM0uOYkeUJ+JRLmjyc5bslQQqCLVqqiK2CG55DShFOluCZ8H9wDYR3io/xoOeAKmso9Xd+GrqTUyffU8WoPQeKgLIkOKZoWtkhUe+L98X4QNfsh+aiHD6KnoHTA/2f12PVMe6QpAk8xT35+imEMq/OHVA65rHDM1e8uaTnicvMGVxDyGDsyj1ettxT9lbYRC7UFSpKTW4/M3Ih5YdrdJiYjmWL41d9N2qzlWq1LYZS2gzUE9qEiDrRWL12rn+hH62Ou/Cw2jV7w==
+X-HE-Tag: 1785746830-732157
+X-HE-Meta: U2FsdGVkX185m4AUTV+WD2PkZ0u9xLMAa7RtWr3eRPr72AxBirYleixrZbDaIEFt5n5+5ZH6+Jze0PaQJkyzA7mZ/ziUTS8z27tHpdSPcBtdbXjMh3lp0veUfdz2oaBBs0Ib7lD5PN9C+BEGdkZ2damxKiB1DRue1ipuEpDz/rgtfW/ueflQ2no9GbUIW4mZtd6Q67PkrqCshiyjduwpu5xDzaSZIVA7UCwZZ9Y37mK0boH5MjnQEu/2ukkLlYdcPfcZ4rnDhh+HQ/DbQJnkYQpgT69r7ZTdD/YYtPePfTs8dUf1lAehyeyeV1Fha5RMQkUEr7ZCgmrtYNrfcmDaC5DXt6lD6RWQHrdKWPj8bz12e2tygJ6gJbFBuO2oU4nYbnoFT5iQB1Yf95QJ/o835Gqxrc/giGiIaCNfFkeXBMMUawGa9TyYeHNp2mrDDHSSqqQRGBZY3kXbDyTpe8bUfJ6Ir8EwinuR5yPCyUhek55wCg3N2ees1PlK/3PMMnXUBNZdYpotCgcSxItWb6riofzPkMV+jn9eS75IFM/YwYSClvepiXU8GrmVT/5KxMo8UXqG2Q5S8spuBVRBvCtJOI5fudSZIl07BH5tCf31vALX8iWe89R/COt5yhx+1XSj20cIWV4JUgFiF2YuD/Wg6tBRiyGukd1IyPt2rP/0m4cjidtvlP1KLwnXW7BXle2tZsLOXqQ9hE4hVs8rJOK7aBhLVbuJpGAZf9GrqYNnvE/NBvvwDuqfNhNVg7mT6JUw7BxjWFYSmNIDR4MKGUiOtnPwgTrhwnjGc2gMsplJH7+gzAinQADnoZRPQiTcsMfUVVAaRjdHE9lUQZpkXi+JL00G4hoo1t8Lv0btoqTmRuPCI4norM8zcexKgynucsfLs3gn+JeSbzKWYunLez+bBIkSh+XFaqObAQiTeSSJ3ZzRve6EgtGjIZp96UuhrKsPaZ1KL201UBdTgspm0bW
+ vqGPGwpV
+ HiGc0Mgaal4I8DUDDN2/8g9FafPjqKBVjtTNHXuepQBa578Z/XQ3X+DiLjT/M9GQZQozKDwXCW4/ekKMvn57Jtyo7RGdRTR0pCPAejQj/I6A8nVMqkCWXMNzyuetk8XM3vSQugoyiIrfghHLESWxRI5toSgF/qcLwyRuuZeZ2CSuUhHTps32L6ADZ+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,38 +92,536 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/2/26 10:06 PM, Matthew Wilcox wrote: 
-> On Sun, Aug 02, 2026 at 12:50:05PM -0400, Tal Zussman wrote:
->> Convert the final caller in get_writepages_data_length() to use a folio
->> and ceph_folio_snap_context(), then remove page_snap_context().
->> 
->> This drops the last open-coded use of page->private in ceph's writeback
->> path.
-> 
-> This one I'm deeply conflicted about.  It's adding an extra call to
-> compound_head() ... and we're not getting much for it.
-> 
-> I'd feel better about it if it started with::
-> 
->   static u64 get_writepages_data_length(struct inode *inode,
->                                         struct page *page, u64 start)
->   {
-> +	struct folio *folio = page_folio(page);
-> 
-> and then we had a ceph_fscrypt_pagecache_folio() function and
-> ceph_fscrypt_folio_offset() (we already have a fscrypt_is_bounce_page())
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-If we're adding these, I might as well do a few more conversions...
+The shmem unused huge shrinker keeps a per-superblock list of inodes whose
+tail huge folio extends beyond i_size. Since that list is not memcg aware,
+reclaim triggered by one memcg can scan inodes from the whole superblock
+and split shmem huge folios charged to unrelated memcgs.
 
-> That way we'd have this function entirely converted except for its
-> argument, and a future patch can do the conversion with little fuss.
-> And we'd get rid of one of the four remaining calls to
-> fscrypt_is_bounce_page()
+Convert the shrink list to a memcg-aware list_lru. Queue each inode on the
+list_lru sublist matching the memcg and node of the current tail huge
+folio, so non-root memcg reclaim only walks candidates charged to the
+reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
+reclaim keep global semantics.
 
-I'm tempted to convert the argument as well, offload the page_folio
-to the single caller (ceph_submit_write), and be done with this function
-in one go. Although now that I look at it again, ceph_submit_write can
-also be converted with the fscrypt helpers (albeit with a healthy dose
-of page_folio() due to ceph's pages arrays...).
+The list_lru still tracks inodes while the actual split target is the
+current tail huge folio, so validate the folio memcg/node during scan. If
+the folio no longer matches the reclaim context or splitting cannot
+proceed, requeue the inode according to the current tail folio; if the
+inode is no longer shrinkable, drop the scan entry.
+
+This can be tested with the shrinker debugfs interface by allocating 32
+tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs shrinker
+with memcg A's cgroup id:
+
+               before A scan    after A scan
+  base         A=64M, B=64M     A=64M, B=64M (per-memcg count is skipped)
+  patched      A=64M, B=64M     A=0,   B=64M
+
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ include/linux/shmem_fs.h |  12 +-
+ mm/shmem.c               | 341 +++++++++++++++++++++++++++++----------
+ 2 files changed, 268 insertions(+), 85 deletions(-)
+
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 5663dff53186e..aeb59901a840c 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -11,6 +11,7 @@
+ #include <linux/fs_parser.h>
+ #include <linux/userfaultfd_k.h>
+ #include <linux/bits.h>
++#include <linux/list_lru.h>
+ 
+ /* inode in-kernel data */
+ 
+@@ -54,6 +55,11 @@ struct shmem_inode_info {
+ 	struct dquot __rcu	*i_dquot[MAXQUOTAS];
+ #endif
+ 	struct inode		vfs_inode;
++
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	struct mem_cgroup	*shrinklist_memcg;
++	int			shrinklist_nid;
++#endif
+ };
+ 
+ #define SHMEM_FL_USER_VISIBLE		(FS_FL_USER_VISIBLE | FS_CASEFOLD_FL)
+@@ -83,9 +89,9 @@ struct shmem_sb_info {
+ 	ino_t next_ino;		    /* The next per-sb inode number to use */
+ 	ino_t __percpu *ino_batch;  /* The next per-cpu inode number to use */
+ 	struct mempolicy *mpol;     /* default memory policy for mappings */
+-	spinlock_t shrinklist_lock;   /* Protects shrinklist */
+-	struct list_head shrinklist;  /* List of shinkable inodes */
+-	unsigned long shrinklist_len; /* Length of shrinklist */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	struct list_lru shrinklist; /* List of shrinkable inodes */
++#endif
+ 	struct shmem_quota_limits qlimits; /* Default quota limits */
+ 	struct simple_xattr_cache xa_cache;
+ };
+diff --git a/mm/shmem.c b/mm/shmem.c
+index bc0b768135113..704353852ae26 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -724,51 +724,237 @@ static const char *shmem_format_huge(int huge)
+ }
+ #endif
+ 
+-static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+-		struct shrink_control *sc, unsigned long nr_to_free)
++static bool is_shmem_unused_huge_isolated(struct shmem_inode_info *info)
+ {
+-	LIST_HEAD(list), *pos, *next;
+-	struct inode *inode;
++
++	return info->shrinklist_nid == -1;
++}
++
++static void set_shmem_unused_huge_isolated(struct shmem_inode_info *info)
++{
++	info->shrinklist_nid = -1;
++}
++
++static struct mem_cgroup *shmem_get_and_clear_memcg(struct shmem_inode_info *info)
++{
++	struct mem_cgroup *memcg = info->shrinklist_memcg;
++
++	info->shrinklist_memcg = NULL;
++
++	return memcg;
++}
++
++#ifdef CONFIG_MEMCG
++static struct mem_cgroup *
++shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
++			    gfp_t gfp)
++{
++	struct mem_cgroup *memcg;
++	int ret;
++
++	memcg = get_mem_cgroup_from_folio(folio);
++	if (!memcg)
++		return NULL;
++
++	ret = memcg_list_lru_alloc(memcg, &sbinfo->shrinklist, gfp);
++	if (ret) {
++		mem_cgroup_put(memcg);
++		return ERR_PTR(ret);
++	}
++
++	return memcg;
++}
++#else
++static struct mem_cgroup *
++shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
++			    gfp_t gfp)
++{
++	return NULL;
++}
++#endif
++
++static void shmem_unused_huge_add(struct inode *inode, struct folio *folio,
++				  gfp_t gfp)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
++	int nid = folio_nid(folio);
++	struct mem_cgroup *memcg = NULL, *old_memcg = NULL;
++
++	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, gfp);
++	if (IS_ERR(memcg))
++		return;
++
++	spin_lock(&info->lock);
++	if (!list_empty(&info->shrinklist)) {
++		/* isolated on scan list, let shrink handle it */
++		if (is_shmem_unused_huge_isolated(info))
++			goto unlock;
++
++		if (info->shrinklist_nid == nid &&
++		    info->shrinklist_memcg == memcg)
++			goto unlock;
++
++		list_lru_del(&sbinfo->shrinklist, &info->shrinklist,
++			     info->shrinklist_nid, info->shrinklist_memcg);
++		old_memcg = shmem_get_and_clear_memcg(info);
++	}
++
++	info->shrinklist_memcg = memcg;
++	info->shrinklist_nid = nid;
++	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
++	memcg = NULL;
++unlock:
++	spin_unlock(&info->lock);
++	mem_cgroup_put(old_memcg);
++	mem_cgroup_put(memcg);
++}
++
++static void shmem_unused_huge_del(struct inode *inode)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
++	struct mem_cgroup *memcg = NULL;
++
++	spin_lock(&info->lock);
++	if (!list_empty(&info->shrinklist)) {
++		list_lru_del(&sbinfo->shrinklist, &info->shrinklist,
++			     info->shrinklist_nid, info->shrinklist_memcg);
++		memcg = shmem_get_and_clear_memcg(info);
++	}
++	spin_unlock(&info->lock);
++
++	mem_cgroup_put(memcg);
++}
++
++struct shmem_unused_huge_scan {
++	struct list_head list;
++	struct shrink_control *sc;
++};
++
++static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
++						 struct list_lru_one *lru,
++						 void *arg)
++{
++	struct shmem_unused_huge_scan *scan = arg;
+ 	struct shmem_inode_info *info;
+-	struct folio *folio;
+-	unsigned long batch = sc ? sc->nr_to_scan : 128;
+-	unsigned long split = 0, freed = 0;
++	struct inode *inode;
++	struct mem_cgroup *memcg = NULL;
+ 
+-	if (list_empty(&sbinfo->shrinklist))
+-		return SHRINK_STOP;
++	info = list_entry(item, struct shmem_inode_info, shrinklist);
+ 
+-	spin_lock(&sbinfo->shrinklist_lock);
+-	list_for_each_safe(pos, next, &sbinfo->shrinklist) {
+-		info = list_entry(pos, struct shmem_inode_info, shrinklist);
++	/*
++	 * Use trylock to avoid ABBA deadlock: add/del path takes info->lock
++	 * before the list_lru bucket lock, while here the order is reversed.
++	 */
++	if (!spin_trylock(&info->lock))
++		return LRU_SKIP;
+ 
+-		/* pin the inode */
+-		inode = igrab(&info->vfs_inode);
++	/* pin the inode */
++	inode = igrab(&info->vfs_inode);
++	/* inode is about to be evicted */
++	if (!inode) {
++		list_lru_isolate(lru, item);
++		memcg = shmem_get_and_clear_memcg(info);
++		spin_unlock(&info->lock);
++		mem_cgroup_put(memcg);
++		return LRU_REMOVED;
++	}
+ 
+-		/* inode is about to be evicted */
+-		if (!inode) {
+-			list_del_init(&info->shrinklist);
+-			goto next;
+-		}
++	list_lru_isolate(lru, item);
++	memcg = shmem_get_and_clear_memcg(info);
++	set_shmem_unused_huge_isolated(info);
++	list_add_tail(&info->shrinklist, &scan->list);
++	spin_unlock(&info->lock);
++	mem_cgroup_put(memcg);
+ 
+-		list_move(&info->shrinklist, &list);
+-next:
+-		sbinfo->shrinklist_len--;
+-		if (!--batch)
+-			break;
++	return LRU_REMOVED;
++}
++
++static bool is_shmem_unused_huge_match(struct folio *folio,
++				       struct shrink_control *sc)
++{
++	struct mem_cgroup *memcg = NULL;
++	bool match;
++
++	/*
++	 * Only non-root memcg reclaim needs to match the folio charge against
++	 * sc->memcg. Skip the folio memcg check for the following cases:
++	 * 1. shmem quota reclaim (sc == NULL)
++	 * 2. global shrinker reclaim
++	 * 3. root memcg reclaim
++	 */
++	if (!sc || !sc->memcg || mem_cgroup_is_root(sc->memcg))
++		return true;
++
++	if (folio_nid(folio) != sc->nid)
++		return false;
++
++	memcg = get_mem_cgroup_from_folio(folio);
++	match = memcg == sc->memcg;
++	mem_cgroup_put(memcg);
++
++	return match;
++}
++
++static void shmem_unused_huge_drop(struct inode *inode)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	spin_lock(&info->lock);
++	list_del_init(&info->shrinklist);
++	spin_unlock(&info->lock);
++}
++
++static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
++	struct mem_cgroup *memcg;
++	int nid = folio_nid(folio);
++
++	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
++	if (IS_ERR(memcg)) {
++		shmem_unused_huge_drop(inode);
++		return;
+ 	}
+-	spin_unlock(&sbinfo->shrinklist_lock);
+ 
+-	list_for_each_safe(pos, next, &list) {
+-		pgoff_t next, end;
++	spin_lock(&info->lock);
++	/* Requeue the inode to shrinklist */
++	list_del_init(&info->shrinklist);
++	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
++	info->shrinklist_memcg = memcg;
++	info->shrinklist_nid = nid;
++	spin_unlock(&info->lock);
++}
++
++static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
++		struct shrink_control *sc, unsigned long nr_to_free)
++{
++	struct shmem_unused_huge_scan scan;
++	struct inode *inode;
++	struct shmem_inode_info *info;
++	struct folio *folio;
++	struct list_head *pos, *next;
++	unsigned long split = 0, freed = 0;
++
++	INIT_LIST_HEAD(&scan.list);
++	scan.sc = sc;
++	if (sc)
++		list_lru_shrink_walk(&sbinfo->shrinklist, sc,
++				     shmem_unused_huge_isolate, &scan);
++	else
++		list_lru_walk(&sbinfo->shrinklist, shmem_unused_huge_isolate,
++			      &scan, 128);
++
++	list_for_each_safe(pos, next, &scan.list) {
++		pgoff_t folio_end, end;
+ 		loff_t i_size;
+ 		int ret;
+ 
+ 		info = list_entry(pos, struct shmem_inode_info, shrinklist);
+ 		inode = &info->vfs_inode;
+ 
+-		if (nr_to_free && freed >= nr_to_free)
+-			goto move_back;
+-
+ 		i_size = i_size_read(inode);
+ 		folio = filemap_get_entry(inode->i_mapping, i_size / PAGE_SIZE);
+ 		if (!folio || xa_is_value(folio))
+@@ -781,13 +967,19 @@ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		}
+ 
+ 		/* Check if there is anything to gain from splitting */
+-		next = folio_next_index(folio);
++		folio_end = folio_next_index(folio);
+ 		end = shmem_fallocend(inode, DIV_ROUND_UP(i_size, PAGE_SIZE));
+-		if (end <= folio->index || end >= next) {
++		if (end <= folio->index || end >= folio_end) {
+ 			folio_put(folio);
+ 			goto drop;
+ 		}
+ 
++		if (!is_shmem_unused_huge_match(folio, scan.sc))
++			goto move_back;
++
++		if (nr_to_free && freed >= nr_to_free)
++			goto move_back;
++
+ 		/*
+ 		 * Move the inode on the list back to shrinklist if we failed
+ 		 * to lock the page at this time.
+@@ -795,35 +987,30 @@ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		 * Waiting for the lock may lead to deadlock in the
+ 		 * reclaim path.
+ 		 */
+-		if (!folio_trylock(folio)) {
+-			folio_put(folio);
++		if (!folio_trylock(folio))
++			goto move_back;
++
++		if (!is_shmem_unused_huge_match(folio, scan.sc)) {
++			folio_unlock(folio);
+ 			goto move_back;
+ 		}
+ 
+ 		ret = split_folio(folio);
+ 		folio_unlock(folio);
+-		folio_put(folio);
+ 
+ 		/* If split failed move the inode on the list back to shrinklist */
+ 		if (ret)
+ 			goto move_back;
+ 
+-		freed += next - end;
++		freed += folio_end - end;
+ 		split++;
++		folio_put(folio);
+ drop:
+-		list_del_init(&info->shrinklist);
++		shmem_unused_huge_drop(inode);
+ 		goto put;
+ move_back:
+-		/*
+-		 * Make sure the inode is either on the global list or deleted
+-		 * from any local list before iput() since it could be deleted
+-		 * in another thread once we put the inode (then the local list
+-		 * is corrupted).
+-		 */
+-		spin_lock(&sbinfo->shrinklist_lock);
+-		list_move(&info->shrinklist, &sbinfo->shrinklist);
+-		sbinfo->shrinklist_len++;
+-		spin_unlock(&sbinfo->shrinklist_lock);
++		shmem_unused_huge_requeue(inode, folio);
++		folio_put(folio);
+ put:
+ 		iput(inode);
+ 	}
+@@ -836,7 +1023,7 @@ static long shmem_unused_huge_scan(struct super_block *sb,
+ {
+ 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
+ 
+-	if (!READ_ONCE(sbinfo->shrinklist_len))
++	if (!list_lru_shrink_count(&sbinfo->shrinklist, sc))
+ 		return SHRINK_STOP;
+ 
+ 	return shmem_unused_huge_shrink(sbinfo, sc, 0);
+@@ -847,21 +1034,21 @@ static long shmem_unused_huge_count(struct super_block *sb,
+ {
+ 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
+ 
+-	/*
+-	 * The per-superblock shrinklist is filesystem-global and does not
+-	 * honour sc->memcg, so it is only meaningful on the global (kswapd or
+-	 * root direct reclaim) shrink path. Skip the per-memcg iterations of
+-	 * shrink_slab_memcg() to avoid queueing duplicate global work.
+-	 */
+-	if (!mem_cgroup_shrink_is_root(sc))
+-		return 0;
+-
+-	return READ_ONCE(sbinfo->shrinklist_len);
++	return list_lru_shrink_count(&sbinfo->shrinklist, sc);
+ }
+ #else /* !CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ #define shmem_huge SHMEM_HUGE_DENY
+ 
++static void shmem_unused_huge_add(struct inode *inode, struct folio *folio,
++				  gfp_t gfp)
++{
++}
++
++static void shmem_unused_huge_del(struct inode *inode)
++{
++}
++
+ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		struct shrink_control *sc, unsigned long nr_to_free)
+ {
+@@ -1417,14 +1604,7 @@ static void shmem_evict_inode(struct inode *inode)
+ 		inode->i_size = 0;
+ 		mapping_set_exiting(inode->i_mapping);
+ 		shmem_truncate_range(inode, 0, (loff_t)-1);
+-		if (!list_empty(&info->shrinklist)) {
+-			spin_lock(&sbinfo->shrinklist_lock);
+-			if (!list_empty(&info->shrinklist)) {
+-				list_del_init(&info->shrinklist);
+-				sbinfo->shrinklist_len--;
+-			}
+-			spin_unlock(&sbinfo->shrinklist_lock);
+-		}
++		shmem_unused_huge_del(inode);
+ 		while (!list_empty(&info->swaplist)) {
+ 			/* Wait while shmem_unuse() is scanning this inode... */
+ 			wait_var_event(&info->stop_eviction,
+@@ -2572,25 +2752,12 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+ 	 */
+ 	if (alloced && folio_test_large(folio) &&
+ 	    DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE) < folio_next_index(folio)) {
+-		struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+-		struct shmem_inode_info *info = SHMEM_I(inode);
+ 		/*
+ 		 * Part of the large folio is beyond i_size: subject
+ 		 * to shrink under memory pressure.
+ 		 */
+-		spin_lock(&sbinfo->shrinklist_lock);
+-		/*
+-		 * _careful to defend against unlocked access to
+-		 * ->shrink_list in shmem_unused_huge_shrink()
+-		 */
+-		if (list_empty_careful(&info->shrinklist)) {
+-			list_add_tail(&info->shrinklist,
+-				      &sbinfo->shrinklist);
+-			sbinfo->shrinklist_len++;
+-		}
+-		spin_unlock(&sbinfo->shrinklist_lock);
++		shmem_unused_huge_add(inode, folio, gfp);
+ 	}
+-
+ out:
+ 	*foliop = folio;
+ 	return 0;
+@@ -3067,6 +3234,10 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+ 	if (info->fsflags)
+ 		shmem_set_inode_flags(inode, info->fsflags, NULL);
+ 	INIT_LIST_HEAD(&info->shrinklist);
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	info->shrinklist_memcg = NULL;
++	info->shrinklist_nid = -1;
++#endif
+ 	INIT_LIST_HEAD(&info->swaplist);
+ 	cache_no_acl(inode);
+ 	if (sbinfo->noswap)
+@@ -4933,6 +5104,9 @@ static void shmem_put_super(struct super_block *sb)
+ #endif
+ 	free_percpu(sbinfo->ino_batch);
+ 	percpu_counter_destroy(&sbinfo->used_blocks);
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	list_lru_destroy(&sbinfo->shrinklist);
++#endif
+ 	mpol_put(sbinfo->mpol);
+ #ifdef CONFIG_TMPFS_XATTR
+ 	simple_xattr_cache_cleanup(&sbinfo->xa_cache);
+@@ -5026,8 +5200,11 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	raw_spin_lock_init(&sbinfo->stat_lock);
+ 	if (percpu_counter_init(&sbinfo->used_blocks, 0, GFP_KERNEL))
+ 		goto failed;
+-	spin_lock_init(&sbinfo->shrinklist_lock);
+-	INIT_LIST_HEAD(&sbinfo->shrinklist);
++
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	if (list_lru_init_memcg(&sbinfo->shrinklist, sb->s_shrink))
++		goto failed;
++#endif
+ 
+ 	sb->s_maxbytes = MAX_LFS_FILESIZE;
+ 	sb->s_blocksize = PAGE_SIZE;
+-- 
+2.54.0
 
 
