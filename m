@@ -4,118 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A1BC55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2A0C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:59:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EDE76B0096; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
+	id 843B46B0098; Mon,  3 Aug 2026 10:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C49A6B0098; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
+	id 81BE46B0099; Mon,  3 Aug 2026 10:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBB76B0099; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
+	id 732486B009B; Mon,  3 Aug 2026 10:59:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6440D6B0096
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE8DB1C11B0
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:57:23 +0000 (UTC)
-X-FDA: 85060261566.06.E2068C9
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 20E96A0003
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:57:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oq+G0WrB;
-	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 55D606B0098
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:59:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03FDC1C10FF
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:59:48 +0000 (UTC)
+X-FDA: 85060267698.21.08E04A6
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1AF29140012
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:59:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=szNhVQx8;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785769187;
+	b=WG0m2OMlC/dlmL4QwcE3zSUcAvFoP8Y5VrRue+OE16vWga8IEhoUsdiV9LkKvMzyrtnW5t
+	SxFmjK4QYOBsdQGtZ9LfEceBi6IsNfAX8ihUgbdfaN8Qo/KE5EvDjVWPgB86070EwWR59N
+	GMNtLbf+00zgGOPZ61BiR2kE97Z1588=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=szNhVQx8;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785769042;
+	s=arc-20220608; t=1785769187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
-	b=aDhIfoqVYK69Ja5ifyT6BxvG/o8zmnm50+4Z2oq356qo2/1E3PTp/PpDEC7N68+9TrGFph
-	VdbUBD/BlHnJj0EhqIh+582dZ/c7F3df53+/tuBqXEwH5nF7zcUu+TZfybRnV4SKii2gIb
-	TXY8ZOwoputmywH74i1CxEC06d59aYc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oq+G0WrB;
-	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785769042;
-	b=tUHZM4bFbg1pfW5gf18whlRz/EsD7qtyefbigVPZkxUZFSTZ0UQGeeJDRabLwxAtoYQnpP
-	lFJyaNSzho+D8CJ+DjHa+7jcOefpLOe2XKsox9jKEQDZ0JFaQUqEnZvrQo9T2InkhCEli0
-	zpPw4Pn1yIcQmFtMbc938dc2dWkJ/Ds=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47f84023916so3490363f8f.3
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 07:57:21 -0700 (PDT)
+	bh=53dYbIroP5cNJFfZLCrtYqk/aTOAkqcu4BnJ3vI5eGA=;
+	b=FGbdH8/oUa/TrUve47oxj8nqwfTKnQTlDgSA6VuIHg4JgZuN8uoqDUd30x/9aybqDNG/hM
+	WhM6kh8fr9uCgAIxHAGgS1wMy/Ip1KQU6/om/JGcrA4MOC/NkXAs4HIXVVspRB/z0y306e
+	vYr7cxJMzvO+UNcw10v8iG7LfZ1NNtY=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e5c9211d2so220001585a.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 07:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785769041; x=1786373841; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gourry.net; s=google; t=1785769186; x=1786373986; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
-        b=Oq+G0WrBW6xKXCVfUBl+Dqb8CDE2siZxVOzQpNcPU5hO6wH8jXCJVsjnUForNxkEk+
-         ka6RaWVRs6kHBHMTcBjl2fvQf2n7L/mvnmWVhxj2WZUoXLHajttwDjOZ/Ju3vIXL8KMD
-         GncMKW4zeowPsfVL24lk1b7zCgSawGstzFYQoWEA/2K3mag8GjVr4XMWqnbzCduR9F2j
-         UtisLnyi2kAnsH+eIPjkB1oN2Ms84+tOB3wiKQ5xCQwjd8Wz/NG/HJnZY4S9KdYfTgEP
-         KmVAaGSpkXI2XeteziTF47WJdms2/eSLDQl9rIW3myDkk57Zj0SN21ffgeuk8na3KVe7
-         Y0bw==
+        bh=53dYbIroP5cNJFfZLCrtYqk/aTOAkqcu4BnJ3vI5eGA=;
+        b=szNhVQx8YK60+g9/nzfRQhhjVjtH42tpX/whKfg08XuEjPhQuWKuL5ZXfJ/OW+NenW
+         vysDocj+COPGmz/s9lHE+eSWWacGggg3L+mK+oBHQ2+AZ9H2GKmHWN7FGn7bxjs/Nb9z
+         UVm41+zUHSOkk7mV8x6HfX3ONVxSpXaWuc0TiqeMCP6HX4i9qKJeobre7w16HAwEB0AW
+         owkgfsOyZXiYRzDUM96yFyP7TW2u4x1rqXuwn0z99KeayDcepZyUXGiXKoJS29iNLSLC
+         CjMcg/KmGRgRoRVE7cKbp3LIw16a7p9gJyk2SKVTJjdnshSOg05t9xrr4d7E8Rk8h7bU
+         TYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785769041; x=1786373841;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785769186; x=1786373986;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
-        b=JBgI8leBL3r8UaEWsOdoK/fnZ8OtL94DLkuP1uqo+8lRyKtMD63wL0MreR/JX5nmN4
-         /JXc0t+ccpRD7Oh9l18g7FGLtrbYiOUnEJtq9S1eWSZgvOJ8hOqMO2VNmXwGkEhFQlHr
-         yqdCaqWBjn0IkqA5A1GqiOi5EdnATOEtkxf98eSlCXUKXt7Ro+9g+lipZ9jCUWaOQ6Dh
-         VwvKJYbpouYDxiyjkNcvpbPsquVR0qnt99BJOCnLV/7BoGr/W0cZUC+nSyrK3Qet2D7M
-         6a/6TNxVt1zniOQO2W2bqn7dPyxJswmgyvM3gWEf2/y9R8A//ciyd+Ix5E8S2TsBuPzQ
-         baoQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rru2tu+WzkslXsgofhaHFzz7ZdAF/praWPLU4G2yTiCBQ8ASi8RhMQYAhUfkxusFZ3iUK4JYdOk/Q==@kvack.org
-X-Gm-Message-State: AOJu0YwTtv2QWejmmJneONUo8XYFfpmYQcFG+T5X1i8C4Re1A3jICpNo
-	hOilVLzRj1b5xvB15zVg3u2o/pdWuW6rK1p4iTSC831hZuocGy4v9Zor
-X-Gm-Gg: AR+sD13aAAjRm7zVYHfZtUaSUhcy+Q5L/lpnKBrcIm2rCn1A3SSN7dUJjXmucyuE4S2
-	U3YKDJPYJl0AouFjdNOheB55q/qfsMi9XA1/hqMhNWQJE6DA/0zBYaooRLxTYgr8vdJpxPHr+c2
-	e5i+vYVVqG5F8x9DYexzg8gZK/7GRZSmzFSWl37vjnxGjGDOwbYUMsG4XzC1pqpJfiGh51Y88A4
-	Nn5ctYBxDanQ0l97Jopn1Xmqv5ZXWXV7r6ahkRPElraXnZmW3RFqRIN8SDkPxgHzu+LkKnj4g+o
-	bhNQX7O6wuzxbkYPhtaUfqn/z7O5J4rHjSiplWRRrUtETrrjlzUrlWYIkrFOPh0g22SiqGDxfmW
-	NAftejaeUgkfNmuwAhTM03X3sbBgMwrmaozxckiTmiBu60g7tRpJdOQ7N24ee4R+Wtkx7MZLdcj
-	pqPB9HI5TGq8C1uzDP+PX3p/h+GeKAlFq0I6YRvKvmd7bUzmzr0uMmV5tdWIoUyLMEMfevXZCQD
-	29kJH9H9mgYhZB4eh9RPDue8Q==
-X-Received: by 2002:adf:fdcd:0:b0:47f:8fc8:af01 with SMTP id ffacd0b85a97d-47fd72f1fd4mr22343046f8f.27.1785769040415;
-        Mon, 03 Aug 2026 07:57:20 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd458bf7csm35015001f8f.32.2026.08.03.07.57.18
+        bh=53dYbIroP5cNJFfZLCrtYqk/aTOAkqcu4BnJ3vI5eGA=;
+        b=h0/EmFtbIAOCEhf5ieyJWwTfpxJd67UH+4SfrSDqABPY4ZgPk3vgba9oOtCHPmWFDU
+         b++LiGxwQBFrLSCmgjIMPmNiuisXj9t1Uq8BDI+mu6ycye7tE8vnngKdijYAL7PKxFjM
+         Q+yjyQcK9bXss94XrJZ1baoalzkUXfzcYokNNhXaVIFRg+2XCjqZSU+o/K64nBszzPm+
+         68kgn79aC3rBGC7T14HE3TYhOtK1QVdUDBH2UUfC3jx50Agg9VNFUBPEUqj7kHr//Bqa
+         ysfPlDj4mqrjiPUASzvSULZTxcGAoqO9XPxKSP+70wArqvJJAwW7B6HCtBhHkUOvdHMO
+         ThxQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqMpXQq5cdInocfI8qfy+cqirG3MgNYPNRav70oLx6OUenE6qIKKTXlppVUwOUtRokTO3YTW982Kg==@kvack.org
+X-Gm-Message-State: AOJu0Yziyec1uQFtPR/2gklz4ruj02YQwqsEI1z2+BZt65IGeGUmIYFG
+	zE/gMHCu4NfYyvhJyHnHyxWL2mhgHlmc/o77PWVNBVBGWv9YO0bXX6Ys5zsrJRj9IeM=
+X-Gm-Gg: AR+sD12g9djSMx6s9P8zwM+CzNvucWoxc3hLMWcl+43G+8ZdgP/hdUuBKBT59HZh14a
+	dhnxCYgAiY+LBl1tvEcHGkLGg3bKEPEKbbSidnHr6AkG7G3O3n4PGWAHJMn+Dn79vTeH1AxYwfr
+	4dAp1hlqvP1l02Gr88l5Md9NMb8RDUBl+KRG0K6I5lfnBNBLdr8rkOBUxAydtLvzk1GnEHkA4rg
+	YvHSiRflBBiFrhpzCD+azvIYn6UgjuPtyrjPwrJ//jAxYA2y5l/P9kfdXJ5H2Doyz58Zq+7yub5
+	oSqtXamxOQFO4oI/CadEUQeb6RVojMW8S+cSw2teB8h5ptplRdpUMQyjCubJVdTdvDYrMrW8wAN
+	+oIz5QS4Xy/i43bs/OnncXF/niABCi8MsytkVKK2bvvair+UyotZMQBYgmBkkx97iG0nwinmGfs
+	a0pmxEOEGwJ0NkzjrFKe1uYqbi7t4tj6lS88+fPxSlVSv//BkvbM6s1GVQozgC3YMniYIfjePnz
+	VJbNubADaGNM/m9nZEJdhxrZiGtaMMGW1kgVAWM/vWy
+X-Received: by 2002:a05:620a:5be3:b0:932:df7e:b31d with SMTP id af79cd13be357-934a0784031mr1438847385a.12.1785769185244;
+        Mon, 03 Aug 2026 07:59:45 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9349c1c1cdcsm685303285a.34.2026.08.03.07.59.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 07:57:20 -0700 (PDT)
-Date: Mon, 3 Aug 2026 15:57:15 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
- damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] mm/damon/lru_sort: error out for >10000
- active_mem_bp
-Message-ID: <20260803155715.08868ca7@pumpkin>
-In-Reply-To: <20260803134034.15217-3-sj@kernel.org>
-References: <20260803134034.15217-1-sj@kernel.org>
-	<20260803134034.15217-3-sj@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Mon, 03 Aug 2026 07:59:44 -0700 (PDT)
+Date: Mon, 3 Aug 2026 10:59:42 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Byungchul Park <byungchul@sk.com>, 
+	David Hildenbrand <david@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, erdemaktas@google.com, fvdl@google.com, 
+	jiaqiyan@google.com, jthoughton@google.com, mhocko@kernel.org, michael.roth@amd.com, 
+	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, seanjc@google.com, 
+	shakeel.butt@linux.dev, shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 3/3] mm: hugetlb: Move mpol interpretation out of
+ dequeue_hugetlb_folio_vma()
+Message-ID: <anCsOd6cCRtxr3jI@gourry-fedora-PF4VCD3F>
+References: <20260803-hugetlb-mpol-interpretation-v5-0-af2b7089f8a9@google.com>
+ <20260803-hugetlb-mpol-interpretation-v5-3-af2b7089f8a9@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803-hugetlb-mpol-interpretation-v5-3-af2b7089f8a9@google.com>
+X-Stat-Signature: 1drn448q87i488qew7kyi491emd39b18
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1AF29140012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20E96A0003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: zj68313zwox57q15itwnh1itbnf9t9no
-X-HE-Tag: 1785769041-191994
-X-HE-Meta: U2FsdGVkX1/xigSXbp5jqzmMDK8QiwNL9D7IjQk5Txj3+jbmwh72UB9u31Fuy6d8BrsbOwh6WNds4+gFBTwGT6Q66GebSoAFNE43doX6Wwo87q6zTDPxKZieeVjjwHwqVHSoS/83nYx40petrmOuv7olG19PpeTorQEUfj/lhKJ1fQnEyTtaylWZxzVAh8IGyQKXexAQWt5XN7L9VD66iQfzc6Kw/EvEGx4vwKL9uh9VF7Br8Ky4JjHCvgXDGtHgZnrZKZ52LvEa3igP1xE8gU5RghVuqozYMNi3xCQfycyqoqbqLHKKMAV9YUP4oHqOgQygPhMOvge6Dfk2xflYRreCMkdALpMvBI4FhFNL6euAp0PjcXnWCKbXVdMTRI95BaPElH4PR3fSdxS5N4+yOwjf4InTsUEk/EZU6HI35GQh24/R0ICEpWQ82Q5lldA8jyb/SnNlPzOWzORiOR17U0Lf48B4txga5qXCd62P2mrZd1HTY7x6asyGfiqXftIhJGt404HPiOPs14drHrWreeOx5MHJoNmS9GCxvMIgSCXzQ8zz3Wl7bZp6nxqmCcC1xXlQT5eTGWbUDcUwlz8G3jp2G8HHPPwoGcdma6NZnbGSij39TMyoWKIb/BAU3SErUb1QDOoNfH59N4hEFm2vBTyPZssdtUOFV6vkGBel57w80fgmKH/baaOXEYCE92mPLu1OJsm+KqHOWVkoKgc33TUWdfuEJHOcAtRK5GofEsNWsLeRRDCAlRSiy19BLGgVyon+hGEqOojPzMriTWAV1uEjTK2X9gGxmqZgFSiv7z8jz8r2qXEhOfS+E9gijLPkpZru07BFEc5vkb2VL+dbcfiz6soYtl3CJLZ3/ANDtDaRBtpmrbcvwwjHL+550jmrR+Q/G1/kNebF4D/ZKqrN57lq0R7ODCTdy+Js6P6YtiHWUyJiYrDrWK3kXL7/C03Eu2HPGhpROTqpvpvfxIM
- OKNrtsCk
- 70sb9sgCPYPFR1DRF6DJTqLbp2swQ9rjfx7lsB9mwUbtfaSWCKFDLVWB6AnEYseLzZWi5vwMYAy4CfuNyRaqr7Fe4GayvdFlOUGXiBhc7yGRd+KraD6DQVSThzn6kDVWfP4zcNMFXH72Kgjru0uLWLdtcmx3ax1GJgkM4ScEBl5xSXuXlKzRvQOpG4X/KVqW3ablZMIeO2eSG+MBxRCIv95Ap4uPztbEBl9AgQLg8IUfUivVzzCqjtTozgRX6psuxwwPg4/lEbILgRES1PGDVNz0lLXiY1dcbI0OOzbsmbAuORZfTAuFjbOT67rN7MmJhvL/kFpv3adLIOhQUrOjK69tggyuK7Rn0yKF7EVYheHErhSc9br88a+KkXWLr4C34VF1QbHd0T8gooJwnZhhEXtgm0bgtME5hB8FOeql9AQDj3kJvcHY97Rs/xNzeRjALD8YT4znM3pQpIOyyvNeSTS7MrL+3RPW7h9O06Zc0GnmRExRyqFqRBQebEA3O9T7jSS5+c5wpd/Qvvih/iLRpShPjJ3wK5I78GyjS
+X-HE-Tag: 1785769186-78146
+X-HE-Meta: U2FsdGVkX19Pss90tUn+9vKZFwwdqxM9XNtmOy+zFCZ18yYhbP1hc2WMHjyyywbhYEecvyGVNXCO3riLPe8D8jq4mcrcrXt8BVLTC9SiNN5N5oiL8+BeRuJGYgSGlfGSi4thBTlovp+rfnFvA3Bdfz0/hG7j452Uz0LSDZ/PcQyL1FGVy10aVsCeuG35qTvPIJpMHZ1XSVcsCtCULftAJDCpSCZTtveo+W12maN7i3Sv1QIsV9Lc054xYTzzsUaKXJHDALjVO4q6vwaBPdstnStUe5rMeMhqH2Y2aFDBs0KDYPRDHQXg1hGOYPbnNw2G/s+Wl6W5AWhNzkIKvR8S/FO5wurZ1DG/G2PQuRiqU40yh2Ojfp5wQE8yLaXgsdEij/XZBaj3WeeKoi1ZJ6S3x/Adrzp2Y2ZW+/NPtSvA+NO34oCgeyWt0SMlx6ry1otuEEqfLUpz5PfU/LsZYOpgB55kHJK46RZD6J1dEPEy54WqQaaBJ44oko5/MAvJxM3JZJzqXYSnfukePJxAnveMpchZZyzW+a6QoPoIFb5oTlvmCpPR/WueNQAbr8nwpXZSzX04g9q+f5TTVePULvo3moHEVR0mT8eggOrb6kQFC7H4V35InAw0Wt8ZTVJ43RF0C3At9E1nzBOxY4PfbuxFdcQaeUFaISOBSMaHXN/Joa9CMcVwdOLAqK1BA2b5+FS9SK64X3oBX6/V1IEPjvoutgaM49mZbtY1Y9ZDNfMlE7sCVhv+4V1eGpUDn0waQU2vKW5ezfmgz2gPXl+4PoF3gSPg8gdzr31VpeMvueuvg8BijLmADbElXPnHrX7UHadWOGfeA5ZQ6zIFnZoZMb5R0Wsj1FigkEK0xybvGvq4jKFvOUjKEH+WLxUpAc5ucp4Nl2xGu1qGJkge71MjbWrou8uUa+RhQJstHeWEzxsINAn8Dw+TccWOkEfbXXBWQXvcPpSEj+mrJYxnu/dJR2J
+ xxi9SMg5
+ o4yJOccOURzJ6AvwCRnHfW9ntchu4enTwkWkA7780kEORE5uv2FnJVLWmknGYngJR+6SknWs7OutHGbmtIEmom35VLRLxOVCRChcWdi83mTHF0QEWa9SMkES4R2GiPxnz7lwt5/GyF3dnSm2MctQbMDrhQtjoCEw5DiQyrVFXJtat4qHlXdLGkYf8eA0ll9pITLx4gNmRvGGV7D7ZTyMFHwLK7HLIpcWdjD2pJFZ/lQcXTK56c+mAIPpznZee/oxScoEy7fNvMa7reWgfQRlHtipIfju9+bWrGJWAQK52GhbPN5ZG1ndtGXqaCw5DTNcgJFN5Hg3knwQx2+y0YByczHm0U+2PTPSHuGpc32buPTR36eqqrLfnqOSsPVvVnn805SGt11cKoR4sDqrjW9o78ROHn+0aYHUnJiXxDhfeFn7Tdcas5g0pMdoZdZ4xET0LfUJ40qsQNFqieDCYoxxbaejze2GpCYT5BF0Ly+tCWTV7QEeLV395dqRZHaQvQZkLbfaj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,62 +130,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  3 Aug 2026 06:40:33 -0700
-SJ Park <sj@kernel.org> wrote:
-
-> damos_quota_score() can trigger division by zero if the target value is
-> zero.  DAMON_LRU_SORT lets users set the target value for the hot memory
-> scheme via active_mem_bp parameter.  It avoids setting it as the target
-> value if the parameter value is zero.  However, it also sets the cold
-> memory scheme with a target value that is calculated as '10000 -
-> active_mem_bp + 2'.  Hence, if a user sets active_mem_bp 10002, the cold
-> memory scheme's quota goal target value can be zero.  As a result,
-> division by zero can be triggered.  Fix by returning an error when the
-> user tries to start DAMON with >10000 active_mem_bp parameter value.
-> 
-> It makes no sense to set active_mem_bp with 10002.  It also requires
-> module parameters write permission to reproduce the issue.  That said,
-> the consequence is quite bad.
-> 
-> One reliable way to reproduce the issue is like below:
-> 
->     # cd /sys/module/damon_lru_sort/parameters
->     # echo 1000 > wmarks_high
->     # echo 995 > wmarks_mid
->     # echo 0 > wmarks_low
->     # echo 10002 > active_mem_bp
->     # echo Y > enabled
->     # dmesg -w
->     [...]
->     [  597.421247] Oops: divide error: 0000 [#1] SMP NOPTI
->     [  597.428848] RIP: 0010:damos_quota_score+0x6f/0x480
-> 
-> This issue was discovered [1] by Sashiko.
-> 
-> [1] https://lore.kernel.org/20260801213028.5127-1-sj@kernel.org
-> 
-> Fixes: 40d98d31cd70 ("mm/damon/lru_sort: support active:inactive memory ratio based auto-tuning")
-> Cc: <stable@vger.kernel.org> # 7.0.x
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
->  mm/damon/lru_sort.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> index 7e077084cb03a..3920d5042f109 100644
-> --- a/mm/damon/lru_sort.c
-> +++ b/mm/damon/lru_sort.c
-> @@ -233,6 +233,8 @@ static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
+On Mon, Aug 03, 2026 at 06:38:00AM -0700, Ackerley Tng wrote:
+... snip ...
+> @@ -2925,35 +2935,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  	 */
+>  	folio = NULL;
+>  	if (!gbl_chg || available_huge_pages(h))
+> -		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
+> +		folio = dequeue_hugetlb_folio(h, gfp, &mpoli);
 >  
->  	if (!active_mem_bp)
->  		return 0;
-> +	if (10000 < active_mem_bp)
+>  	if (!folio) {
+> -		struct mempolicy_interpreted mpoli;
+> -		struct mempolicy *mpol;
+> -		nodemask_t *nodemask;
+> -		int nid;
+> -
+>  		spin_unlock_irq(&hugetlb_lock);
+> -		nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
+> -		mpoli = (struct mempolicy_interpreted){
+> -			.nid = nid,
+> -#ifdef CONFIG_NUMA
+> -			.mode = mpol ? mpol->mode : MPOL_DEFAULT,
+> -#else
+> -			.mode = MPOL_DEFAULT,
+> -#endif
+> -			.nodemask = nodemask,
+> -		};
 
-That is backwards...
+Bah, mea culpa on prior comment, i did not notice this was a prexisting
+patterns.  This is frustrating to say the least.
 
-> +		return -EINVAL;
->  	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, active_mem_bp);
->  	if (!goal)
->  		return -ENOMEM;
+It does seem like there should be a better way to do this, but i think
+we should be ok with this for now.
 
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
