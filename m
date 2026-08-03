@@ -4,140 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3F4C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8654C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:32:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5A816B00AE; Mon,  3 Aug 2026 09:32:48 -0400 (EDT)
+	id CBB546B00B1; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE4DB6B00B1; Mon,  3 Aug 2026 09:32:48 -0400 (EDT)
+	id C91F26B00B2; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FA926B00B2; Mon,  3 Aug 2026 09:32:48 -0400 (EDT)
+	id BA82D6B00B7; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 797D66B00AE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 301F5A0666
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:52:56 +0000 (UTC)
-X-FDA: 85059494352.23.467EEA3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 603564000E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:52:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnDGQLIx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 986766B00B1
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9450B406A3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:44 +0000 (UTC)
+X-FDA: 85059675288.10.D60BD9C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EBE8980005
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SbnvzZMl;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785750774;
+	s=arc-20220608; t=1785755082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AknyMFqIkIaCU6rSuEeZlYh75O08PGY4/BITC/7L1BI=;
-	b=XAwALCX9NXWEBK49l5PswgVilGx9K51m3mg4jjRW9wFJNmQs0PkrSBK8ny+oMcnjr8EKvm
-	v5oy5YbQYwdKPbka1B+jFBYlLQBQrhmNkqcQe+NsxPUuJhDvVcQIjIfit0PGGOwUGiaEFr
-	mzuzn98V5ifHvn6iYsTp9slAd/IIEPE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnDGQLIx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=Eljn8Ny6rhPTzrLYH+abslck/G8K3E0nYOeGDjQhH0s=;
+	b=J4vaThPa9YS33qywUI7zR8DAumaxMGq8sqB3RUsUgk8qCqBN9Uepr5RLc7HiqtGkIJudPO
+	DgPR2pZhwQwkFlXvzHw3mnSPC/JclgmoOJ2Z9cEP9iVbkWETPyg8DwfW/xOIM8Lo0QamXB
+	mNnq2IJr8y5RHh8fhLUA4ULqlHvd6rs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785750774;
-	b=X9BBxL8CvenwrvoEPIlC57KJ9QlGlxzhQ1oUUpkAVDfN+lRVxh05Xr04dHurjUm1+vybMj
-	49lJayETA1y3jpEt8LR4So8dK4PBs73yBQK9QruKLHFr4pgIHdXOHOX2tpgNCkfpl7R73Q
-	Z8OeYp2eHPYTCZPq19lSA0cBSPk/kcM=
+	t=1785755082;
+	b=EBCGDnUSGDt8zT7X3SKzWIDuTuV1wbuNVwyJTDbzZMdhik9A5B1860WPaZPrmroysyRCyO
+	B6zBb5W6QqiotBYQT5R1v59xK7ylIMB48AZNqKJ06112NJtyOVHC6zC8HZoH/PZcmS5c90
+	vnXG8lgfE8gioZDr1xaDlci15/eYvfM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SbnvzZMl;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7342D41AA3;
-	Mon,  3 Aug 2026 09:52:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624851F000E9;
-	Mon,  3 Aug 2026 09:52:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 78BA160A84;
+	Mon,  3 Aug 2026 11:04:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6591F00A3A;
+	Mon,  3 Aug 2026 11:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785750773;
-	bh=AknyMFqIkIaCU6rSuEeZlYh75O08PGY4/BITC/7L1BI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lnDGQLIxWVkYsVzCVdlGVbWoQQMN8WzleG7V2hcirxFPvescDxiUKQ1V+K/UdoX2S
-	 f5cxmLvSZpRIPDgpMimJRryp/HGveCXAaCapDH2by2h89kjWG80/dvEzSXowpJPN0O
-	 YasMVeGxX0kliKmtnchXbGFnseSMRDaqYogjFmEAF+NBM3CNVx8hMVwPQiFbrz2Ija
-	 EnnxmSsmRMAW8fqdSxSZevb+QF4JypAsuJRIyyAvTzJb1Eik4xoHSieHEwNu3IrL8b
-	 jW3RPJlP3FeiO0ovfCed8tcm6G0p9lRLNsNLbogEvnTeN5g2g3wDmCwNNLGcIy2pBy
-	 RpNfdyoRuPiLg==
-Message-ID: <3f120b68-7c10-4a9d-850f-99f666f671bd@kernel.org>
-Date: Mon, 3 Aug 2026 11:52:47 +0200
+	s=k20260515; t=1785755082;
+	bh=Eljn8Ny6rhPTzrLYH+abslck/G8K3E0nYOeGDjQhH0s=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=SbnvzZMlM/voSC7+sBfc7otUzGuJs5uZzzFTrVXzuurPl1aDwibu4lf+ckuMsBoHu
+	 z3zd8CsNBXdKp83z/0oGh6x2tuGeO9ZyWyT2LmgH7d5vkBov167h1XwmHYyoRbkAce
+	 aPYiQd8Mh097JYBn1YrVEmVe/KOmpd37QeZ5VJu+Y30XkltL5iO1zFHZ59I5EkCK5W
+	 SitiSkw/jA1JlJeGPikvUrKqZgqtUrrl7fP+8K4Rji0525a6ZPrzKd1sO3qMDvpm1X
+	 7gelXVBLkh+wS2A2lbDkftGdUYiLEi/BmKS7QJ9J8s/RlA1BEKn3kQwCTqcTrXzdgG
+	 YG5How9yhG9tQ==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 25/26] mm: plumb alloc flags into some alloc funcs
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
- Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
- Sean Christopherson <seanjc@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-25-6f5729aa9832@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260726-page_alloc-unmapped-v3-25-6f5729aa9832@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 603564000E
+Subject: Re: [PATCH 01/16] selftests/mm: move is_backed_by_folio() into
+ vm_util
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Nico Pache <nico.pache@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+In-Reply-To: <20260802195254.1937477-2-kirill@shutemov.name>
+References: <20260802195254.1937477-1-kirill@shutemov.name>
+ <20260802195254.1937477-2-kirill@shutemov.name>
+Date: Mon, 03 Aug 2026 14:04:23 +0300
+Message-Id: <178575506323.1561566.15724813374821403024.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EBE8980005
+X-Stat-Signature: 89tptji4c3dy7etfjpbj7piwmcwg5ub4
 X-Rspam-User: 
-X-Stat-Signature: 6mww3kugindsonmo1cp4w8bee9pxk4o5
-X-HE-Tag: 1785750774-795570
-X-HE-Meta: U2FsdGVkX1/x1gf8XzdcMDWdHaAj/Txi7vh9VFJz8z+96Aaqbj5tSAo8+kdBPMWX/aE7XtEP/o7xvsneChbmLvdKIEnOfIAyujofNCUViDk8hHEPWE17tvlSoc1p27cT05/F8YcQs0VxDdEt1Gy1nLhdopBdzSpjmf9iSYlIz862BVDbXdbgfDIiRbt6WYaX6dO+2swpOj5HI7XPN7QzKNwW5ff3SJeflAOEjax+77M/arcRh3453ofi3MfDJ++jBNlHeRIjxRwCB5b/BUNcs72Ih/Ck/pFNkuZ08uv0mtU7FpQd48sHeAmvGcGGovYDyHAGxfGoF0BtPwxPbW4bGuPzTVdFHKAO1Yzz3Ucl75PJeCq8afeGbE0gAYP1cBUz77rTEO/U5tqxJCXkCxfwLvPIDSdMPAmgVN6ojzx3V0kXVobeomz/Mae0+zoq95eBxxWFxA/l3zwKglDg/u5TIsilxBDc+AXMJmN4S4T/e2VEOEzHM0aWXk1tnqKUf6DOYhkYaQsqfruc+RgXuB/9LP16T+o8KoioGQwbfRrbycZ/gh2bwhyU+H2mbnFJ7eyMVmzqfyI+f6Fah4CSq4u+mn3/ouUvBSSav1FA+Un5UUJsuPriXVip4z7BjNq1/r9/aze8QUrsbHF+q9V+ezB/Rcx9ZrPx1Zau1FVgymu6pboD+APIqo3l+ZCl1aGmankI92H05AvS5tG5pg77kod6ccsrLdoD007kaAzIPzyAELNYS5FKDU3od1cxD88JsF7eJ/XiJFglUlXRRlZgKx9sfcjhs7surUCfOS1tmj973Kbm0O1XXeUqtj+KHV3UOoAZOrXMQPBXzatWkkvQf9ekW7rb+Ot0ky54H3c7RoeWEzMgD9w67l1F3CQbT7GU6mLBdG1/ZrC4LiKVtIlzeRUb9PhKw5E2s3sAuTV0i7GcyMWPnWrz1YsJtf6jvc71W7EyxuLu7fJ7R51jMG89z+3
- Ir4xmFIE
- 9zZ1q1KLe/zQn2Ny/t+ScZTJ1uOxIvQXChi1aWP7feZK2hnE5OadtoXxRphsV0RcbcXTMkNWM081T4odrP0+ZVkJBgfsTbsjg7SWoOwyAWNt4CNcf6XSQn3MnzYupYPyAhrTX6EKhXyUQfHVlCt7XmQDJa3RDZCAnEASMWk5PbKeb9wIzLWh2ExzUV1yWVlOYaiE6Bw59yFlSuiw1GKdwmgtTMf5SmP1x7WyNcfXczaVGYYbM8js5FwIMBa/LmVDVWS8T2TdvVR+Yydf+ZYvuWLYmIy8uOT0LdehudUKPIkNEoEUSQ26fmtqfPg==
+X-HE-Tag: 1785755082-509619
+X-HE-Meta: U2FsdGVkX1//c+iSlhDw07jKtmTIW/5NxlGTbMTFbAa6lPbkNXILQqeiCCMdH/OI63dSf2PYfEmF1gzdlKdrv8n4b+EmuvDbRlWiK2/7lxgSBUMq16TUPLVxRatZqpS4avO7an0eIoi04vpVLObsm8fw9Ca+c2DSctyNbAle7SdznOVRmZnYchzEtjBSHlKbWfex7L/u1B4nR6MHb1YcaTYvTMOmloNUA48GA217dl9RolAVflAHN4n20vHBe2G1o+YEvlZlk+6c7kJgIaskU/o0IyQDIaybkzR4oQSTUtSSvE2YG7+zVeyhHZBPNKt/WpeH1HTrjgbhVzkVazy68JGanF+W/lepXoWJ0huMmHs7+ifJ86njaB053Jvl70DPENm0Qu7BS6Kv/QAmZHnFeGJnrtV7bcVvEjNUcoEfjHBNsuosOxj59yQI8KqWMVrkaNj+eRqMxCXnHSv6QoZ7osFRP5TcjuVA4ME4MYemdk/WEm/sXMKwkhiO6R6kwfRTGJwIPMCl/JXGLHLSbYStyMRoL8TIctgAX7/bDmUwnvPul05U9pAUKb/nrzkGokhvHu3q1QioAJVrlZ1Rm4WdqpXMV3mlHk35spsxmO7WJurQhu6e68QqWOPWTW4OobaJlHmrY5StyhmBW4lzhmKr5pIrlSulQaKRidGm18EiRnFGcxezfKkqpD1aksuOQd4XmVhs30TU8p3Sx5B/zEe1b4jjHMLLIm5pteoIcdl4Vq/q8rSmwK/+rC4EPzT3vpnK96NkUYxq4G1TEwYujrqV5LMcbYARgxM4CudUsa+PoIG/GB7K1WE9fzU2jtblKgneILT4K1L1bgZ6psIIp0tzGNl1RuC9sRSQDFu8zzVyfiPzFYzN0Nem52CAnmyiEOycowlw4tcREu8pz0AA7Sd5XVdymzQapKSZUQwPcoj2q3U4wzEfy2hRa1bxeNaO5XMU+bPOyKrTJmNrj4Z1z9b
+ KeevR3e+
+ VwO9lDsFw8z+TSZz3eMwzr5sbRRogXdEE2T/R6Ei10BhJMHW/bhemWIT0CWsntyy8kvKrXBmuFfRIhmbrOUcmamdprau/O/HK0n61YJjKXSdO86OPbkTBQPCIGLfXW4FeB3qWsUiN3M8idJ8nEj/41om9iZPFEkurjjRpeYddwRkwshZ8EFwgilqTYoYj09aQlRvxL3tw6Et+x9QRtDCd9W/fBmQnvoTgn88rBVypjgHmJYagOC8lkdGdDWAWv8zXOc/jYvTQ1nPag9EiFT8Rxc6C4YVwRKasJuSLhnbUJGIOyuMgXMyjcYPyAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,16 +104,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 00:22, Brendan Jackman wrote:
-> A subsequent patch will want to set ALLOC_UNMAPPED in the allocator APIs
-> used by filemap.c. To keep that patch from getting overwhelming,
-> split out the arg plumbing into a separate one.
+On Sun, 02 Aug 2026 20:52:33 +0100, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> The khugepaged selftest is about to gain mTHP collapse coverage, which
+> needs to verify that a VA range is backed by a folio of a given order.
+> split_huge_page_test.c already has the building block for that:
+> is_backed_by_folio() classifies the folio backing a page via
+> /proc/kpageflags compound head/tail flags.
 > 
-> No functional change intended.
+> Move it into vm_util so other tests can use it. No functional change.
 > 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> [...]
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
+-- 
+Sincerely yours,
+Mike.
 
 
