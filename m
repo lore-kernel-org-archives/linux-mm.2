@@ -4,143 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B88D1C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2074C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0DA66B008A; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
+	id 85EC46B0088; Mon,  3 Aug 2026 10:30:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABE076B0093; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
+	id 80FB06B008A; Mon,  3 Aug 2026 10:30:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 962526B0095; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
+	id 6FF116B0092; Mon,  3 Aug 2026 10:30:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A6606B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F13EE1A073E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:19:51 +0000 (UTC)
-X-FDA: 85060166982.27.2135F43
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CB04D40002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:19:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TfMR0kY5;
-	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 43AFB6B0088
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:30:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C394FC071F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:30:25 +0000 (UTC)
+X-FDA: 85060193610.20.E2A1562
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 09D9D140007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:30:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KunjWBf2;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785766790;
+	s=arc-20220608; t=1785767424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXmSSQiql4lPt359U06+XjBJquVgqILNx41T0YVm9Ag=;
-	b=noKcW1ccQUV5t2Y5HJ2G1SrPPTtXsT81/t9GhpsFKl1xXxRJqGatoEGvnnO0jdF36dFtkU
-	CeonyutUEvEgko1Euwy9jzN9d2OFFcJ4D6dRu8mOTIspSsPDPGbrc/KBDjGxSLmI37MwKw
-	mKE6Z4Subq19393ZBG084tvs7rGRKBs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TfMR0kY5;
-	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=tBUO0sI60vSvUUULyUBjZ5PO/NpGB9Aqguv7Qzws6Zw=;
+	b=JAGhAXisHFXpkjcBMYsnSwDtiGcJ/2NADjG5PUp1pApMe/p+wMqxLE+8K1fRJJ9Z3A3urd
+	35RhSFv5H7efk5vhE/OyjT9cYnk2L4zzQMhXu+rhX5JPOU/Q3F+FWM1E6H1DF9uphyW2RX
+	0nzgUTIw31NxyBfSCDCoqcPfrKeld4A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785766790;
-	b=vk4algVnB6bver19iB62g9X5wyzVepxsJku57xxu+eBYyRya6mG2hQ4eW20KqijNqtne1+
-	uZijSNpcE2AuIamx7ESrlFhZf3hS3yeIrCRwBo98gls+EgXWdt7vcqFf+qokwAdUzX4j8X
-	VYcEOGR6xL3j5W0A7ysDspAxR5SXofk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785766789;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hXmSSQiql4lPt359U06+XjBJquVgqILNx41T0YVm9Ag=;
-	b=TfMR0kY5qV7N8rRsb3HV1iGq75Cnrhc5fc1M/imKxNEoGG6HDVJ+add1qhPd2/aJ8V9RgP
-	JDScByh1DyRnuReLyunWl+eEPgjlyhlMqH2MB0RY4mocNCHxZ1LXTCjRltHolF0h6yRUdm
-	s/l5uQToyelTPR3jkvp8gMyDWvrF6Z4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-QykCMbifONmPD1yzZM3sjA-1; Mon,
- 03 Aug 2026 10:19:42 -0400
-X-MC-Unique: QykCMbifONmPD1yzZM3sjA-1
-X-Mimecast-MFC-AGG-ID: QykCMbifONmPD1yzZM3sjA_1785766781
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4795180059B;
-	Mon,  3 Aug 2026 14:19:40 +0000 (UTC)
-Received: from [10.44.50.44] (unknown [10.44.50.44])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF83441C;
-	Mon,  3 Aug 2026 14:19:35 +0000 (UTC)
-Message-ID: <58fc5ce1-b6f5-48df-bd3b-054443c60cdf@redhat.com>
-Date: Mon, 3 Aug 2026 16:19:33 +0200
+	t=1785767424;
+	b=qJrFXzkOxhgzmYtrQGsZYiYgcouTrECUI+iQYMuK0v/rVLQF5zyw8zLI3dmM0nXQkmlcmi
+	hX8XKtHpuNUX7EcAtpl+izbYgHST2By6+1dRuWXILc1roYbYr1Dcva8NrbDzSrYqfUGTFW
+	EsE59XQv+JtTVqVH+vfIgKaZPAY1KsM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KunjWBf2;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E330641A8B;
+	Mon,  3 Aug 2026 14:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6D91F00A3D;
+	Mon,  3 Aug 2026 14:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785767422;
+	bh=tBUO0sI60vSvUUULyUBjZ5PO/NpGB9Aqguv7Qzws6Zw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KunjWBf2HfEayrRWcgqlNF4dW8kZwEqvN9UMQVHbeVCf0bXTvc+9at69v/s86hVAy
+	 koxpSd5erKYHoQX6nU7pnxFVeAtOusP96Z+voCXciMEyecY4S+LM9crnVyh2EyWsJs
+	 ZGRosrBTJnaKMq/d21m372wXHZWkB7RqQOG8oYWhA5vCaKtJoEHCZZ8ByMRdEjQlkN
+	 pqiWrjr6BscxP4XUIMy8ofhjFcI8Ie4RbM+d8A5AO4eUk3TihD5OvMlO5qzUrV/nnQ
+	 yvjunAW8aAvCp/IczAYDcLvAXMtPV+pZelWzN4EzWjCR1M8tEGuY0Hyp0KY2Z9+Trw
+	 OoTsIb5WR/IgA==
+Date: Mon, 3 Aug 2026 15:30:00 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 08/15] mm: introduce and use linear_folio_page_index()
+Message-ID: <anCdkHNmG5K43E6l@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-8-e8ecfefea812@kernel.org>
+ <0d9f3040-825d-49af-9d07-1e7945dd3e9d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: oWXs-7iky58kThdRQ96Pi2pKkmfbE5E4Md9fw-E3FyA_1785766781
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CB04D40002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d9f3040-825d-49af-9d07-1e7945dd3e9d@kernel.org>
+X-Stat-Signature: 3uji1z3cpzoo6fxqtqbmobxdg93hidzb
 X-Rspam-User: 
-X-Stat-Signature: pg9crdfa4uisiep5ow6wrgo7kaxtccdg
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785766789-64719
-X-HE-Meta: U2FsdGVkX1+jHdGQNRweHD2Z/2IF6vgyqzTXdyFegsC3RVtyDNaZfjl8fTCuGTkjMcFAxcODYwXKtUMzSlJduTdI2Jay7gfYQRP6xjT5ZwGftYFS5zD9FrOJSjZA0YL/fJkuuySPCEICfOAaApFzbeXy6adecnfN+YQc7JCVKMXmkvy3p1eq+sIUgw8i0Qiy2d//gj6tQwXXcKllq6IYlliWp3p3wCTMtb5Jyqag6iJ3/Pj5kkn+dWDOEqj971cIhjvzkOS40S1XIliTQoVbR4heoKg1IyL4/cqU4x0F6sIJ8630xwFGGqU2EVn9OXZTkfVVjyaVY5iarUJZeCwMebKaSu0oiMrIOIsHlwhUjsZDPk1lfS3FVGY3+uXphh0rnd6VLBVjnyHyVWj8qehCbCgeKv+kRK4cK/YFB1kW8AkCoGgITCTzEuSBXnl+rxF+sHf1MQF5iqRmNhIaylS832LhifyHuV0/93fifHOH6uMt7njSxDTRO6DifsqT2UyXVg0Rqs5MB8iLf6FrfQ2nb+oZcVUtil5fDPWq0MWk/JGuOLYNZjtFaXCF4NdMcMO2DS2Zr0bcZrt37isksQO+uI1xl/+1EGx8/1KLDW460SQzlF8jFja0nYFo0+gn84uf2jIOzZQ1pCssFP/mIa/vFs1y/kZN1yodVefCSK354nXxwtLk3qmxkyschBlJ+IRct+Iw3IsQcudC/X3+H7+fhtaRighAc/PbxwbwMIfTvN09L58+Eqe+h1cNioxqy4A4JkwAqxXLzRbT5t1c4nntac0UE/GNaVtQoPq0cfuy63Mu7Lqt433cerpk5mwDWjSIYJZdPPlvT+cQ+DQcmQVcR+nPW3kw1B/ob+KziRULyq3QmbKC2JVfdafpNtmf9HVywKLiQ9nW8X3S8EizmUY5QiogeEfUrIGCx7Y8luLjlXpcw0XmDheoRT93wI7IUmJ26kamzZi8vQNNZJDknUT
- SL778nIp
- gbXwMoIHEq4EKufSnLH9oE5EQt4ikgZ6Iebws7i9LCaI4DO4T/xJOo81mta6CXz72wDw1Qib7h+GIyosez/pRUNZ+/IBQ6ByK5xVlmnTdqv36PgZe7gN5sK5WyDd1AVPbmjZDszb1agAPR+Bw5J6FDmm56A4CAfTZ7cQQSgjW5M8pKm/p+5jIOhMK3yhSxR5t21kmawZXxGNGEzSvE9USVrwvrb3mUqhYcesWeEyxBHhqe7ui26HjoIE0S2DwV9rOPoigvyqpUQ82U47yjJ6S+n66xAR2wI5nYpGe/X6u3oufaUEXgblstaZ56sXZ+cVKOv0yA9qyt0ECyxjCz9lfuPvJ7KX4ZnJ0oRBBpZ6wUJbpsMGHYMHFKfdTcg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 09D9D140007
+X-HE-Tag: 1785767423-417067
+X-HE-Meta: U2FsdGVkX1/M+Ew0YCUGKODRIrg2Kr+inSxrrvSE1IRD8GGUyP8OvohA7VTkMBJUi7bqWIL/nk9puhvccU//umLYdktl93W9ZVxpbQ71jt6ecKePhgiacY/bqsBMV2feuOHqOVHqyJU1JicVYcOcEAojNlvOKNJx5KQAgX/Oy+WumkmjJ+udxJp4PFNTpA+T6jB4uLxE5YxcqpenSoeUGPZ9rxPBHwbYMWa9Diyr7YrnV+uInDVGPDLFllaVKuPjL7103DFc5XbtphFDRfx8QY2+VSreeFtiXrMQiKGhsLFUCQtv23NRweMDxDgwanjpshgfFbhaixT9+3BcifFYhOED+nQnvklQkn6uq7PoPdyli7DqVznLTgl3ECiWbWbRSDJM5PEDFfWU/hqDIZluKjTPXp7UUWyomuSa3SBewT0mA2+9oV9PM7WJmjGSDggIraabJ+SKShX5Xr34JLlSKdEBkxIqv8R7LbhNmMn8E23A0pXyCTNqPNBxeiJy6moV9e3r4J4S15laAWN+TxzEcQ08gRUA9cU27n6UWl/UlYNzWLuwJZeiGa4wH8K+QNA0iX7FLIbDN9WigyQOOn7CkWSTwg54j2pumXSVMYrabwNzFSb3LXJildKYfVcMO5hY4UyCcCJ8cage66gDQRNFqR+HKLJlCoM5RkpE6+1/XKcPf9r9S+LQUYbn9tSFv103Xl4XGNso4hMXobxoUsPiyexLcw0feVfCeZn71Z62nhO1Lro6SQxm3YWX+ji2NKX7Kwu8vYqlUg97KQihosv1dqHZJk7GpuF+cnuEsTP5/M3BtIQ8MB/YYePWwUGBpyBuTW2MfA6ubBSHIS7NLdN9YpYB8Gf+AUxtAKzcgRliIZPBde8HtbcjZ+VP0UWyVMfojBA5i3+IrhBFHLN81eLM+M9Ewq1BgM3jqQfEEmyGIjDYGjlLP4CTaz2R82bRHEj952VQ73cE1XnkuMuFqCQ
+ EN7sjTez
+ ZXTkH2f1EcYV9QG3g/h5EwyMqLtRdOa7bcRQsSSmKUHTpIclq1CEgouucXWeRJFzVgo+6b86U0CRVX7SufhM2/16gAlwL3uUW4sC9gaJGxJN23TDvKDAGM3KtiMIq4hAT75Rz10aYVJ0hTGD6T7lG5LXFIvI3ID8bKvX4f+tYlFNjGTb1ZDMbzbuc72he20JDCQEOoDNER504Zl95y3YMf2shyGAhhgbzBprz3IPUhQAKYVJebUIXNy3TL4mC/YEUgEn3mxvUcCrwh+F2SZdj49imi7lgGZsguCZkTjjq/hnQ6nzYhizLKF7jOzcsXxlsIF1Gbrrzflv4oggFhOLQGs7aUjMLZy2miD5ZPDS6MedOHrWdCljT1bmwF9dblOOwOwxMEzGmYk1bevEZ3Q9SE9TDlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,48 +106,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 13:54, David Hildenbrand (Arm) wrote:
-> On 7/31/26 18:43, Paolo Bonzini wrote:
->> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
->> the reporter to help with testing these patches.
->>
->> Right now, users of .pfn_mkwrite() have no way to create a PTE
->> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
->> will have cleared the writable PTE bit, users of fixup_user_fault()
->> will see a read-only PTE and have no clue that the page needs
->> a *second* fault to reach its final status.
->>
->> Handling this in fixup_user_fault() is problematic: the information
->> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
->> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
->> knows how to retrieve it.
-> 
-> How is mprotect() supposed to work in that case?
+On Mon, Aug 03, 2026 at 01:27:09PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
+> > This function is, for now, a placeholder; it will be used in future to
+> > determine whether to use the anonymous page index or not, based on whether
+> > the folio is anonymous or not.
+> >
+> > Currently it simply wraps linear_page_index(), so this does not change
+> > behaviour.
+> >
+> > We update callers that will, once the change is introduced to track
+> > anonymous folios by anonymous page offset if MAP_PRIVATE file-backed, need
+> > to determine which index to use based on folio type.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  include/linux/pagemap.h | 18 ++++++++++++++++++
+> >  mm/huge_memory.c        |  3 ++-
+> >  mm/migrate.c            |  6 ++++--
+> >  mm/userfaultfd.c        |  6 ++++--
+> >  4 files changed, 28 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index 259177544b03..6eb8d811ba4c 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -1143,6 +1143,24 @@ static inline pgoff_t linear_anon_page_index(const struct vm_area_struct *vma,
+> >  	return pgoff;
+> >  }
+> >
+> > +/**
+> > + * linear_folio_page_index() - Determine the absolute page offset of
+> > + * @address within @vma from @folio.
+> > + * @folio: The folio whose linear page index is sought.
+> > + * @vma: The VMA in which @address resides.
+> > + * @address: The address whose absolute page offset is required.
+> > + *
+> > + * For compatibility, currently identical to linear_page_index().
+> > + *
+> > + * Returns: The absolute page offset of @address within @vma.
+> > + */
+> > +static inline pgoff_t linear_folio_page_index(const struct folio *folio,
+> > +					      const struct vm_area_struct *vma,
+> > +					      const unsigned long address)
+> > +{
+> > +	return linear_page_index(vma, address);
+> > +}
+>
+>
+> I found this to be rather confusing, given that we now have a "folio" helper that
+> receives a folio and a "page" helper that doesn't receive a page ...
 
-Hi David,
+This is just to avoid having to duplicate the if (folio_test_anon()) { ... }
+else { ... } stuff.
 
-not sure what you are worried about specifically, but fixup_user_fault() 
-catches !VM_WRITE VMAs and returns early (see vma_permits_fault()).
+Agreed it's a bit confusing!
 
-Also, do_wp_page() has the comment:
+Really you are figuring things out from (vma, address) - 'what is the correct
+page offset based on the VMA'.
 
-         /*
-          * Shared mapping: we are guaranteed to have VM_WRITE and
-          * FAULT_FLAG_WRITE set at this point.
-          */
+And yeah it seems migrate can do it via PFN as you suggest, it really is
+just trying to find the page offset in the folio.
 
-before the call to wp_pfn_shared() which is where .pfn_mkwrite() is called.
+But...
 
-Let me know if this was not what you were asking.
+>
+> I guess the problem is the "page" in "linear_page_index", as it
+> reminds of legacy page->index.
+>
+>
+> I wonder if it would be better to have a linear_folio_index() and
+> force that address points at the start of the folio.
+>
+> Looking below, this is exactly what we want for all except one case:
 
-Thanks for the review of patch 1---I mentioned here in the cover letter 
-that the name was temporary and I'll take your suggestion.  I can either 
-use EXPORT_SYMBOL_GPL or switch to inlines, but not both because the 
-existing functions like vmf_insert_pfn_prot() need to stay non-GPL-only.
+...I don't think this is true.
 
-Anyhow, now that the series has a Tested-by I'll clean up everything, 
-and repost later this week.
+The uffd code uses this too in move_present_ptes():
 
-Paolo
+		src_folio->index = linear_folio_page_index(src_folio, dst_vma,
+							   dst_addr);
 
+And it's now _updating_ the source folio index to the offset in the destination
+VMA, so it doesn't even relate to the source folio's offset at all?
+
+(move_swap_pte() calls linear_folio_page_index() but obviously has to be
+anon, so that can just use linear_anon_page_index() there instead, will
+update.)
+
+With your change we can just eliminate the linear_folio_page_index()
+function and open-code the uffd case.
+
+It's a bit of a special case anyway and is neatly the one place where you
+actually don't know if it's anon or file-backed (well anon or shmem
+specifically I think).
+
+>
+>
+> >  		/* pgoff is invalid for ksm pages, but they are never large */
+> > -		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> > -			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
+> > +		if (folio_test_large(folio) && !folio_test_hugetlb(folio)) {
+> > +			idx += linear_folio_page_index(folio, vma, pvmw.address);
+> > +			idx -= pvmw.pgoff;
+> > +		}
+> >  		new = folio_page(folio, idx);
+>
+> I think we could avoid this index work entirely by using the pfn, which is much
+> clearer to me, and similar to how we handle it during other rmap operations.
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 222c8c15f782f..686351d353203 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -362,17 +362,12 @@ static bool remove_migration_pte(struct folio *folio,
+>                 struct page *new;
+>                 unsigned long idx = 0;
+>
+> -               /* pgoff is invalid for ksm pages, but they are never large */
+> -               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> -                       idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
+> -               new = folio_page(folio, idx);
+> -
+>  #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>                 /* PMD-mapped THP migration entry */
+>                 if (!pvmw.pte) {
+>                         VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+>                                         !folio_test_pmd_mappable(folio), folio);
+> -                       remove_migration_pmd(&pvmw, new);
+> +                       remove_migration_pmd(&pvmw, folio_page(folio, idx));
+
+I think we'd need the idx code below to go above where the idx code is now
+as otherwise this will be incorrect right?
+
+But then again, if it's a PMD softleaf it'd have to be aligned right, so
+couldn't we just update that function to be passed a folio instead and
+avoid the idx here at all?
+
+>                         continue;
+>                 }
+>  #endif
+> @@ -385,10 +380,14 @@ static bool remove_migration_pte(struct folio *folio,
+>                     try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+>                         continue;
+>
+> +               entry = softleaf_from_pte(old_pte);
+> +               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> +                       idx = softleaf_to_pfn(entry) - folio_pfn(rmap_walk_arg->folio);
+
+Could actually be softleaf_to_pfn(entry) - pvmw.pfn even?
+
+> +               new = folio_page(folio, idx);
+> +
+>                 folio_get(folio);
+>                 pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+>
+> -               entry = softleaf_from_pte(old_pte);
+>                 if (!softleaf_is_migration_young(entry))
+>                         pte = pte_mkold(pte);
+>                 if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entr
+>
+>
+> remove_migration_pmd() will work for now. Later it should just receive the folio
+> and do the same thing through softleaf_from_pmd() -> softleaf_to_pfn().
+
+Ah you already addressed it. But since this would move the idx code above,
+I think I should just change it to accept a folio instead?
+
+Or for less churn &folio->page...
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
