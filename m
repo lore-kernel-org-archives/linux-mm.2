@@ -4,101 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3278C55196
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763DEC55196
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:06:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C689E6B007B; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
+	id D6B896B007B; Mon,  3 Aug 2026 18:06:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C404A6B0088; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
+	id D43506B0088; Mon,  3 Aug 2026 18:06:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B577F6B008A; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
+	id C7FF96B008A; Mon,  3 Aug 2026 18:06:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 986946B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:55:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5402807C5
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:55:00 +0000 (UTC)
-X-FDA: 85061313960.02.B2F281A
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0C77F2000C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:54:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LDMDbnHe;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9BDBB6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:06:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1AAC58082E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:06:50 +0000 (UTC)
+X-FDA: 85061343780.16.ED8FD5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5281140007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:06:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MQd1VvHk;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785794808;
+	b=4T5tooAAUeGh+7lvE8zoabMVRRgPjIXDZpXlPzsYQgynWGG8aVVzGqGss7d1SThWtt8kkP
+	WRBB0FD40SAR3OljhaENvkm0q8h2bBPSwnzlfDg9JrtWyBvF2KaQrqgIxLtoHcp9nI6eDO
+	DpyZ+bP3PSgTjNUJ8HCUjVrsJFtSveA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MQd1VvHk;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785794099;
+	s=arc-20220608; t=1785794808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
-	b=wOdUBoQe1rKcfQ+MqahylSkWIMlRqtiWiO9cYK2TnFq6CzNm86qD2TljCnHuAdnI/9UPS/
-	ixgpHwSn7tuy1KFzSRfIqB5DmZ7qwdlppOH/9bbSllTkHekcPFS5yvXRttIij4kWiBGCLA
-	LjTZ9Qe8r2SY2gPwxcwCRV68VYn/V1g=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LDMDbnHe;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3MQ5xag0KCGwKLRScROULKZKdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--abhishekbapat.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785794099;
-	b=xeMID63jJTXIOKDmey0t7dLrMqHCAqyhOULP5KK5Fs9sOwhjH1iEN1en37bd3sOnNNMoBY
-	vBa88Z7HYKQya44rbZCPbB/iJD5ct5E5R+Zwxg8HO9xKSwYzwcfzR4WG6f/9KSWF+QVmeW
-	GQungHHF1DsEG5C74j47QzgNVflDY2Q=
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so2669248a12.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 14:54:58 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uRJdUMyhX0PzJBnxRWEvMZdbGSumUGTes3rU+AOWdN4=;
+	b=xMhBqr9gWF/grNadi8XkyWcrYJRXrXvBqWxBO9sI1dGbWU0z4FygwR780WYxzyc6RL71XS
+	4c5y2JJnnLanfGKnfsqDKNcbvn7Gz8/oqvMuNU8OtU9sScFQABWMH7O+O84mDzVIzcy7JI
+	+ThpZWwkrqH+2LDMxmE0p2Wr1t3DqqA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C7B14145E;
+	Mon,  3 Aug 2026 22:06:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0113C1F000E9;
+	Mon,  3 Aug 2026 22:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785794098; x=1786398898; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
-        b=LDMDbnHemBeth+OugZE1/K3nN+xUGBqvhaYjg7GuVFQqOJM6H4JLhd6qLR1u3wrVGQ
-         FKsOQzfdeO/OyMz47zu067rvjP2CfPo9ybNgU4KTgZt8Crpz1AXRTCgwKk977Ms7Z9yA
-         +XLiLkjf5A6uDOCRSbyN1+RNF/7Ko87gR8VFm3MvFt6yg2m9q0uhytc9YfoloU9uT7j+
-         +CXcH8zyxVjEpdyJxB7+EaUC14PrEisSh6tLvDtfLIGzaIvct52SL2Ey6AnAuTqVJetb
-         Zj7QCZHIandFZMMv6rZH4K2BfdsGgWJeqZFN1gaLi3YECRq6Z/zf9QU4C2l1M9RhkDVI
-         Sa7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785794098; x=1786398898;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gSBooIlJf3UAkzT4nWmRIwMiBklsMyQf8PbFU/y+GgU=;
-        b=gkaEQ5QMymPxiVkVvxvTcnH8z3LSCiS1tYf8wAOHvVPMxurXvRx2bhb3JriSHEMp4g
-         6QgVMDf2VhdoFHMokeetHLK7dDtJBVr1t5GhahT6a48YPki45F4yE7UWjUynoZrC58Ak
-         dFp++sEnsH5UegfBEvTxKTZ3p6+/kZuKKCoE+FCUg+vEhw5EmWi6kNtEW86vV7OXoU/Q
-         HvBfR4IEzsbggA/NbFHGDznzJpsTYqOvdqh8f+3+zyFYQVWEKT88E3cDD3yVZCjA/n4r
-         GVfhQ7wOd3v/h5QrgAIl1Knb3aWKqp0C+GTw7Nm5Zj/vJ8HGP6OvL2+ak8afCf85jero
-         gUTA==
-X-Forwarded-Encrypted: i=1; AHgh+RrG8zitd6Li+hr3nxbj94siK1JfZlPZ4JV+gzC/Cd144wKxx8a311lZ84akvvs7fExcfbv3gac1UA==@kvack.org
-X-Gm-Message-State: AOJu0Ywl66mIGxHFqy7BzUkvKEuTO/zfPnEq6UjHAbOAiDUEzkFPhyxZ
-	KPmoqMbUzifHFY0jX9gCrOYrvflgsnZuv96lrbXQqvF4VYtrw+5ecy5/E1guLyTVaJbN4+SZK8P
-	T+t/zPszkGB9IOmwHXps40xFEMWpCs1syfg==
-X-Received: from dlbrj9.prod.google.com ([2002:a05:7022:f409:b0:13b:2a58:e5fa])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1dc3:b0:387:e0db:bc28 with SMTP id 98e67ed59e1d1-38fbc554637mr10362140a91.40.1785794097472;
- Mon, 03 Aug 2026 14:54:57 -0700 (PDT)
-Date: Mon,  3 Aug 2026 21:54:55 +0000
+	d=linux-foundation.org; s=korg; t=1785794807;
+	bh=uRJdUMyhX0PzJBnxRWEvMZdbGSumUGTes3rU+AOWdN4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MQd1VvHko4+awaL0IxEWMNfsFnlHJayCptEKysDdY9mkMl6SKPPuxgXIlT7CYqtHb
+	 Q0VNqwwbA/rL/I1Wec8S3NhZ1IDLIaeNallTWV5vsVVsbIRaLyDRtvVnY9FI2JNkpA
+	 MXNDjhDj7k8qZFO/7jzLd29stMJtz039PWzPUB1w=
+Date: Mon, 3 Aug 2026 15:06:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: dayou5941@163.com
+Cc: linmiaohe@huawei.com, nao.horiguchi@gmail.com, linux-mm@kvack.org,
+ liyouhong <liyouhong@kylinos.cn>
+Subject: Re: [PATCH] mm/memory-failure: fix refcount leak on soft-offline
+ LBS folio
+Message-Id: <20260803150646.6af05f00288dfec3b9c4b8bf@linux-foundation.org>
+In-Reply-To: <20260803060001.800638-1-dayou5941@163.com>
+References: <20260803060001.800638-1-dayou5941@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
-Subject: [PATCH v3] alloc_tag: expose profiling and compression states
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Ge <hao.ge@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Abhishek Bapat <abhishekbapat@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0C77F2000C
-X-Stat-Signature: hsn5x64c1yk6czhky793r6ayxjwuz5gz
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5281140007
+X-Stat-Signature: taf9tgc6qfut3m46rqqkiwsc6ypx3zfo
 X-Rspam-User: 
-X-HE-Tag: 1785794098-576112
-X-HE-Meta: U2FsdGVkX1/HfOv8jnGz2cczvdebsSl0TH88rqzDfNAC76YLUD6np6yDQTnt60shP2xM8/a30x2oHE9AFWpfYIRT6iNzfxvNWEd8/uvn6wF7MnQx8uA9cDAUiWSI4bkrBwVwkiAdwCpYmmyWTqTfAPLacCBMgQsObZDLxgM+ZGtNo/2uZV7jPY7R3KScbI5i3qwIJs4DkSVxRzf44jvq8cTmAaG5KqPuyzaSjEzEFnQKJciVoBNECkCGKoKsIB6fmYGnv1OMRW7oUuKbAESQ36Xm19AyAcD/yOwrC7O9doWNRhJjX94Grju737B7PO9zakBa648ZCDATD25gsoAI7Yg0wHlUIJly6pStWSEF1s67Dquc9Xtk9H0gL4IPk96K4kwQ2twm+N/5BzZtjOKiwx1iPc7CYfDVJT6UgAlwVzuvO+vZqi1UBTDTA0LvwK8J8E+VZlNub3HompCqtwWBsU6lPXeoEMNtp47kpYEleVHcYkKYU2RLJTp6I+aWuwNGGJsK155uTUVDhdwh1ONg//OADNQVpVxYCf/n1Cv+jjJrpJ41gCzrZsTYX4pgseurGzBztrxPHekexVzQfKFicfiuflrgMxWjhYM9GIMSkC82+Z4g/9c5q4B03+KqGqGhWVkHs4Srov10XudU9phwzaZyxDI3H8/uOYJZEGIVgMAdqtS8ex9BeYImtlldLdAwIK1f+hz5ME9Qzy8Lkiu+Olw7AUkI6TCRMYL3Rgtn5DgW8TSNc8YVjvwTt3AYPhHcu/OLTVrl5LmodrPxbloi5OuKKhgWrUti0N7jTEEbVJDO4jI16wzVfu5Ppd4EGurQYj1t81mEvpKgypjThAT7ZFaTiXE80085d3g7h+B3CHKAxqMghytcWADghQRQgRHRSSn2GoO0aAeyqCPYJc2h8D7MCBFK10DWwkRrQRTcRcPYtoij6WJWVomyQ0DAU6G7usFc8GkZbwo8UzPWsuy
- +KGBVutK
- pXTR3efjwo2AzBXh6sSGdzb9XHGkX7/J8gUQYrw8O0fF3M1alU1y0tGscL8FgbAhIeXpkje2v71N/aHbgM9d3BcANYHAuQDnVwqdmYAPvymVY3uYulW1yw9rZ0jsD5rjAX6b78PXImMS2CS2I/2qDJ5JB611KXhwLB+mfC2Xykx8yrM86lwnwM9LRbrlCWa5izUqDH7BGaI5QgNSzC9sItrIQfw4ziqk2KJz2enp6sBmeBSJ0xH/S3Q190pTNY4hX01VZXkTXGWJlxK7KDFSd426DuA3b/wFXKeC+lr1ntEIAM5/IZFn/lkbdCuTAZ7LyjmuNhP8gKJwNVOx5jFtXqwltSQvh2DGWreJIK9AYbuGoPX3OiHYUhvNYlnwhNb1VjpzMxYlHk68WQ/v5JJpHgharYroHIc7voiH9XAuispGXUacb7Ua4nR0aMDdWtLtuQZAhb4Y/GFBHshz+XT6qnYs0NKcllBIgSZOJleeSB9jnnU8c6AoKGIV8PZIDprxspMlTi28F0tZJI9IbeSTxJEid3i12B75WZTboFJfbAzJpbgIOvrLQD82IoNFXtayjpAgs0eOK/CiKqb6wiB4NEPWGHJgNwlbW6aJobd2v9Ha4l6yAPOzj6DQQXkcAnDCTRKu0T5I3eCxN7bw7kL4uwPJokHCWl8aoQSvCQSFfLTOfXFo=
+X-HE-Tag: 1785794808-543185
+X-HE-Meta: U2FsdGVkX1993A16RmC3nmlaFf8BDslaJotm6afb8zuJG5DQNT3Ve5J95B3ub+8Y873Lc8Hh9zSeIzfRFf2DIzzN5lvnau7Kt1BsTzBUp1S+5qTiJZSBQ8BFLr7sBx/EZNy127/3LVnPZ1ZWxXUQiSzWZsT6lIQkxeJKoZsSWN1FpoMbfywbUakdg4GYqlbEJwsV9P34z3x50oKG1q6+eVQp9rmrdLfBKFSNz3nvig5nTLzXHBmU9e5+lRqHk+CRPtzzHptVWYdo97x/qb8JekknyN94nDsiZPpGtLhNrS/uLqGqlvCW1WuzjO+b+JaGcRZlgH3loHiZ3ZIP0cwDhGxvXddMiYy8MqtK4v/NIjmNrn2AJjri6eU1GQfFBvBqmrUgLAWGuyw49m8rrlLyoQU/4IYIPST7/E+ccy3nNfUDpeVKKeRW5P9ymbFHMPffBegEZMLQdIgPtzYmtWnkWIyWiaXe9Ulj+8KHIU6NnJYDhoei16cF1L+sWo4zRT8pgxWMhKz5kLv7tIrt0nMChVGl4n78qyykLYHklVkcdtTTSXyzfC/C/LsHM3TobV1FzUtvnmFrTx3mLnBI1fWf/jGS0n+w91s/SKbfk/q8M7QZfYpAUmNxXXhtlzN1Qsfri4uf0QcW7lXopFrSSMOSS3g+mNGsAGmUxOhzKwOekDorth45EMM+9TbXRoRjH0grSKgTy/OMF9D+59UIp/us+w90NPfRPLBAt8dsk3Zp5op92WLE45BiwZaa9ockGfzGfCii4jzQSrNhGqylslOzeGwsxhVSH0On7jPdpWnb6FQpjJIefFKLPn15x6eKmxvcLV3/HSszX0EXJR69Rtxwub0qatDo0wRq91Kd82XtEYAjWvCmYrbwe/W6BMtmNx50fq0+/Ixtn94jbLrIDfLvdQHiESIYMEciHat7Xz76EQ+Kf60Hd18+Z1bWBs2uahcEnkq1mOX75qIabx2b+WL
+ 9hJYSTYg
+ KjwZie6vp3BARDioumWwBTHCCLLbqIuua8bmYimFM09GlQncab9i/aKOIVz4goCNhD+vqgjl3VaUcqk43zDMPfkVcKIJqo4VYvIlgb9HImD1BHwSbBXAjIrXqIDDvNkM4VTUvzvEPanceuHKgIVPozZB6Tt9AkCk4EmPlYwpKumG45X0Q4IyTNKWhBUSNfcruGrHShCqEGaACcXjwNUjcIAYVKYxf0fQZQfH0GRzPXM7Y8OZOSikKEgIDPnb64LLs+0UhstN2BUGIacZCK+WN0YnpgJwsYopgMZgmrHhweI1LaVTD19F5NFDkqRLD6hrhZfpeCmA02MWDrFNmFvkN0nQ/21NnFgjYeABxzNUKX9ZXesuXpeh4LssqSh38It1HvNN5dFBJIzIutcTk3rpfSiRqww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,75 +90,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, userspace has limited visibility into the exact active
-runtime state of memory allocation profiling and its page extension
-compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+On Mon,  3 Aug 2026 14:00:01 +0800 dayou5941@163.com wrote:
 
-While reading the sysctl provides basic on/off status, it is currently
-impossible for userspace to natively determine whether page-tag
-compression was successfully enabled without scraping dmesg boot logs.
+> From: liyouhong <liyouhong@kylinos.cn>
+> 
+> soft_offline_in_use_page() runs with a folio reference taken by
+> get_hwpoison_page() (or by the caller when MF_COUNT_INCREASED is set,
+> e.g. madvise(MADV_SOFT_OFFLINE)).
+> 
+> made soft-offline skip splitting when min_order_for_split()
 
-Resolve this ambiguity by exposing the active compression state by
-adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
-state.
+Something went wrong with this paragraph?
 
-v3 change:
-- Added documentation about the behaviour details of the new sysctl.
+> is non-zero, so large-block-size folios stay intact.  That early
+> return -EBUSY path never drops the reference.
 
-v2 change:
-- Moved from displaying the state in /proc/allocinfo to a new read-only
-sysctl.
+So the effect is to leak a folio ref if min_order_for_split() returns
+0.  Has this been known to happen in the real world?
 
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
----
- Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
- mm/alloc_tag.c                            |  6 ++++++
- 2 files changed, 19 insertions(+)
+It would be good to update soft_offline_in_use_page()'s introductory
+comment to describe its folio refcount handling.
 
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index c3a28467955f..3ad1e9aacb9a 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -43,6 +43,19 @@ sysctl:
-   warnings produced by allocations made while profiling is disabled and freed
-   when it's enabled.
- 
-+  /proc/sys/vm/mem_profiling_compressed
-+
-+  1: Page extension compression is enabled.
-+
-+  0: Page extension compression is disabled.
-+
-+  This control is read-only and reflects the compression status initialized at boot.
-+  Note that, unlike `mem_profiling`, which represents the current state of profiling,
-+  `mem_profiling_compressed` represents the state configured at boot time. Turning off
-+  profiling at runtime will implicitly make this sysctl effectively dormant. However, if
-+  profiling is toggled off and then toggled on again, it will resume with compression
-+  still enabled as long as the value of `mem_profiling_compressed` is 1.
-+
- Runtime info:
-   /proc/allocinfo
- 
-diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 52aece27b00e..877068241f06 100644
---- a/mm/alloc_tag.c
-+++ b/mm/alloc_tag.c
-@@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_mem_profiling_handler,
- 	},
-+	{
-+		.procname	= "mem_profiling_compressed",
-+		.data		= &mem_profiling_compressed,
-+		.mode		= 0444,
-+		.proc_handler	= proc_do_static_key,
-+	},
- };
- 
- static void __init sysctl_init(void)
+> The other failure path is fine: try_to_split_thp_page(..., release=true)
+> puts the page when the split itself fails.  memory_failure() also puts
+> explicitly on its analogous unsplit path.
+> 
+> Split the new_order != 0 case out and folio_put() before returning.
+> 
+> ...
+>
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2801,9 +2801,19 @@ static int soft_offline_in_use_page(struct page *page)
+>  		 * NOTE: if minimizing the number of soft offline pages is
+>  		 * preferred, split it to non-zero new_order like it is done in
+>  		 * memory_failure().
+> +		 *
+> +		 * Drop the ref from get_hwpoison_page()/MF_COUNT_INCREASED;
+> +		 * try_to_split_thp_page(..., release=true) does that itself
+> +		 * when the split fails.
+>  		 */
+> -		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
+> -						       /* release= */ true)) {
+> +		if (new_order) {
+> +			pr_info("%#lx: order-%d folio cannot soft offline\n",
+> +				pfn, new_order);
+> +			folio_put(folio);
+> +			return -EBUSY;
+> +		}
+> +		if (try_to_split_thp_page(page, /* new_order= */ 0,
+> +					 /* release= */ true)) {
+>  			pr_info("%#lx: thp split failed\n", pfn);
+>  			return -EBUSY;
+>  		}
 
-base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
--- 
-2.55.0.508.g3f0d502094-goog
+Thanks, lgtm.
+
+AI review might have found a couple of pre-existing issues in the
+surrounding code.  From a quick read, it doesn't seem appropriate to
+address either within the context of this change.
+
+	https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
+
 
 
