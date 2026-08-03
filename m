@@ -4,137 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAAB9C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DEFC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:22:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F10A66B00B7; Mon,  3 Aug 2026 09:19:45 -0400 (EDT)
+	id 8D5856B0098; Mon,  3 Aug 2026 09:22:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8516B00B8; Mon,  3 Aug 2026 09:19:45 -0400 (EDT)
+	id 8AC5F6B00A3; Mon,  3 Aug 2026 09:22:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3A966B00B9; Mon,  3 Aug 2026 09:19:45 -0400 (EDT)
+	id 79BC96B00AC; Mon,  3 Aug 2026 09:22:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B01306B00B7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:45 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 444BB6B0098
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:22:43 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 847C080624
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:31:39 +0000 (UTC)
-X-FDA: 85059289518.14.207DA17
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BD51112000C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:31:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkUiqspx;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9CD731C11AB
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:05:52 +0000 (UTC)
+X-FDA: 85059829344.14.60A6153
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5A72A40007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:05:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qR6eKlKw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BZAiIMkw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eLdxZkJc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vGVVMShC;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785745897;
+	s=arc-20220608; t=1785758750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nO2+a+U5X2MAvQbsGGv6KYHXpTk6ryoC8p6rvByqe0A=;
-	b=s2KmXXunZHSbPSb57VV3M1OaIR9ksicWLl4zIu0dJqzXV4vxZCmulZFSHWSvEUlx4484sy
-	xt5Z7GaZgGS3rkRY6dJ0JSjekhXNRKIHyVeVw1B/kg6GRNzXW3qiUhTrRLIETBlz1OxHmV
-	1bhkeCT1ja94NW1QiksskOzt/HwXCVk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkUiqspx;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8XrW9jPvYLT+yJolHSZeV1xbelIgml749r9l2fLqeHI=;
+	b=0b6pLNC6cmY9udDk3eX0Bcha6fcL8i95fhE9fEN7/iG4rAnlTOpam6we5EReS+WS9g4ezj
+	wji5pQCICbpNCktVKf8tokmijjX8QrOvGJxQFifMuGHbZ8brRAO0ryM+VOQqQAIM88fB8R
+	mUWIeNuOQsk+2ZDbxbJfoo37HND6qAA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785745897;
-	b=qvRgPDJTJ68UBA7wU+USHijJe/SX3RmQG1duDYfZfbr0a6qsE/pJ7Aj4t49VUiC+K8icR7
-	ajD7HFUKsA0Xaq+YOcLHx+qRr8wVBSLTfEtPaqND8i9zL/0gbkiBxgM13ii2Xba/Mw0Xn/
-	Q/4SxZ7oh8ucKNdDz/tucJXpHB3LppI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E942F4122B;
-	Mon,  3 Aug 2026 08:31:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056921F000E9;
-	Mon,  3 Aug 2026 08:31:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785745896;
-	bh=nO2+a+U5X2MAvQbsGGv6KYHXpTk6ryoC8p6rvByqe0A=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=RkUiqspxtqSbCoGEIXIa79A/9JHzcBLO4mDsu84Ulh3AapPhhU7jYex7bGWT+y25/
-	 YeXp3ppKm08wY+FgRaUsherk27Np6+LTVFvpEZiQmJmKZByn0p5QwmCRRzHenlYuDL
-	 v25VRPB0DbFBC0YM1/pIuPIJ0p1/IWDgenanRW9oSv4zQr7mvCOIdWXjRXSHhfvs48
-	 GxPQwIoXOFUwO+yR8FTFESf8/1l4lmsr1dyZkmhDtjGCF1NI6zLy4ZgxafukY41W4T
-	 7sbUWITikkk7BHDe791a3jvOPoi8tl/FmEEHO7DlBfKWNO0ItpKgilV0yd9HsviQxT
-	 3uGBuEnjqfOYQ==
-Message-ID: <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
-Date: Mon, 3 Aug 2026 10:31:31 +0200
+	t=1785758750;
+	b=YKV2Tb/R9mT0wmUbtBY8la9FNsFUILSx2yz+8qnz0buvHBUB5wH7GE1SARY0Ur73cvzTBk
+	ycc9vTPN8fz+e9/A7yGgkG4y+2ofyyYTD8n13C2r222ldGJgGiCMfAHubt9YlRpnI8L7kv
+	jaQDDFFneQnX2cWBC1Y3cBUlP1MNm4g=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qR6eKlKw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BZAiIMkw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eLdxZkJc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vGVVMShC;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8199D7F0A0;
+	Mon,  3 Aug 2026 12:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785758744; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8XrW9jPvYLT+yJolHSZeV1xbelIgml749r9l2fLqeHI=;
+	b=qR6eKlKwsVqJ2fBOlPW1CERKuW5dfE+bdWJIPXJpRCetRMTFRTSgZMIpcvOMg55PYQ0+6b
+	uaTtErYcQ+XDggYDyWZznr7UMOefcejeHS31EAM4Ynm3Ysd8CCkXF+qTmB8kBzQQx4/nYn
+	Y5n4T1zJLJR6EF3F07uY1ldMe4K4Ii8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785758744;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8XrW9jPvYLT+yJolHSZeV1xbelIgml749r9l2fLqeHI=;
+	b=BZAiIMkwuhb/qHEtkW6r/ImNKzfl8pHpLKDer45EvsQZCeUvE8iP2gMB+KVkYVentFzyB8
+	akCTrXS1lYZW4EBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785758740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8XrW9jPvYLT+yJolHSZeV1xbelIgml749r9l2fLqeHI=;
+	b=eLdxZkJcyym2hya8zcTwZUAt93qjx2KZ+287tbxat+dgcMMYVUceXOJ4YfIR4HaDvHj5xM
+	IN8MU0c/aH5LFUOH6HcJMQ/+RkeDsyk+elIfR9LjFuJI+X3Qd20N/8ZXxCI1731sptJ8Nm
+	V0Sco1KxyiapNkmQT6/Und2Qpatb7OM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785758740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8XrW9jPvYLT+yJolHSZeV1xbelIgml749r9l2fLqeHI=;
+	b=vGVVMShCSxEqBi+PBGqchTq5etMt0X1X5CpcTAnY7JNa+Bh/UW3yFjkw9oQw9XtWB3cMaK
+	P2x7U7WPKmFP9GAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 76A1F779C1;
+	Mon,  3 Aug 2026 12:05:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5BXxHBSEcGruNAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Aug 2026 12:05:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 1B061A13A4; Mon, 03 Aug 2026 14:05:36 +0200 (CEST)
+Date: Mon, 3 Aug 2026 14:05:36 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	Laurent Vivier <laurent@vivier.eu>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ovl: don't warn when the mount is completed from
+ another user namespace
+Message-ID: <s47cadp2vvo4ybfbivknswng3ze3fvldlcspm7mygzkmxo3aas@tivvzq4d2f6k>
+References: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
+ <20260802-work-fill_super-warn-v1-1-4e987911a39a@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to
- memory.c")
-To: Andy Lutomirski <luto@amacapital.net>, zhengqi.arch@bytedance.com,
- "Liam R . Howlett" <liam.howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Linux-MM <linux-mm@kvack.org>
-References: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260802-work-fill_super-warn-v1-1-4e987911a39a@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5A72A40007
+X-Stat-Signature: akdczuay8zeo8oebfprd4wi1j31a7sxf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BD51112000C
-X-Rspamd-Server: rspam01
-X-Stat-Signature: w9qog1qa5da81me1itd93gm4xargijn4
-X-HE-Tag: 1785745897-32051
-X-HE-Meta: U2FsdGVkX183k4IQyDsocSdxbxINtqoy+XZ7Uh+bixIMNMKiDu/TLEqJiSEZlTyM72AuUsREIClKt/HeUieOcPUo+FQj+m47I3whEvlrImIu2FMT9q8YJepBxhyDIt9z850ty6K/58MTzqYJ1cq+M2DS1uiRr5+PPA0IbVfMw45mUP+9kM6/hKz8nf4u06Ax0NHElLTLAeBzmg640W+1wIstfZobgd+zguuuNpr6GUWISoFUEGzQANR0o/2Ew9b0DVsspWIFz2mn+KjsjFmOlNcPzFmhGuAjzj+C2XpSe9D5Y4TZtBoFnTHwJNLb3xi1RznqJKl3RpWUGINa4ipC+OmYXNlKmzcVP841oxSr7m9KTxYE+V7y8B/43ukbMOGKLyo8mIECWIgfUpZUbLU/HT/7Bgf7HlvKpAZGjfQm8iAvPaBEY5GtwW8tAa7vC/8zjbgAwRZz8uum+F7w/mwgn2B9C11iOQUr6NZQ2qneUknAWPtzg4a04tTmqckap27N60gHvM0RYu4ySH2y/63vHGtFKujBRzfnGLIJ6IElvZD2w/gnvHp4bvo5bQ80lpNuqV+yb4uLsmoVoD3PsgWdAHDszfwmyVx0S3vE4f/e1dbCdQ8uDWZtLipTeVJWj6MP9Wh9fwpoJw22+UScWtZ16Bz1UtmioS3WR5u+uLAJcb26hQ30a8G2tI9Q4haJSLRwQkg8YowhS6an59oAdgtz9WZBobymJlAKJEUsutwAGreQrHsxiaE9QLR9ERPuJMAeIYyThylyQpPqBw0CuvE3htkV6J3+kk50wTcQ3kX4v/EYtYYDRl/qTRf54jrAye7by7azqmA8dIsUetWdBqGcZeAzsmrKa7SYdm1qkFXkgqCRd0h8aYalACKtRfqPERk8HraKnRV3a6VcHLIyFL6R8cFpIToggg0oDoAsqbBn5PYgANN268Kq3SGSav8ukfsa/x7uWlrjkcfP+DvtNJd
- zZc26Aqn
- hC7XYL8lIn+61xZ+QzyvwiTv6GilUECKAQ+81pZL8HAo2ZcKE0PWKXeq0I+rZsFTVM+QDhgkIBwXmXks0oGM1UCD2St9r5fUIZuQIgP3GeXLORYKGsQ5Kb/eW7zLuSMZzBBuwGiTZtFmlAq3Aac5tsbcfUL3hYg6wiF8CSSZiNbxuWO/ZNHGZU23qFpu52uiXwT2BGmOt6VukbO/W4O39Ce/039HIx4ZPBhapgRnGaPsC8TNX0MbVlPuBiSjOEvnEq67U5RkIKRjwH8Wb0Jpu8bTMgw==
+X-HE-Tag: 1785758750-96267
+X-HE-Meta: U2FsdGVkX1+pnKzr1WLBeR7cPr/Kq5S0chZLB7zy6s4cRPq4BPgsuJ0IvQdHxvd6L/8FS3+Mcb59mXDkkE8/8YU2ZrmEf0khd/da97voWa02eDzyslUCTbtAbdKpGnZsqmDd6G7O0zIAGOzLvCzLjPejYg6K35FUHUE1A62LfqfJY85xQo5saspqqWig7SaP16Kic9D3nHdnWnJIQIJ9+XVWCzjoGcdZmui4TQe+L05Evm5DkDDpUUFEhnsORvdxFfT0jwThpuGMSj0jpunFowXxIo9gDxW002QxS1Bp3hQrgmy83/7h0rtjJB/yRAsNM550WW7U3b0fXzCB/1KtQbFVwqZ3eahOPKEFSULGX6t+jSxc2XjAPtYyS0dzpdK2DWR+mH9KXjn52l1DlILckdq6E1Hb+uCFOUhesrvR//9eJWJfbNT65P9c9R/6AbR0RDC6yy9dUP43kldIbYoLPvfh9HWioMgIrY2ounS0n5NvSD3MpXLr7rAnZK7NQYcQSH8xB1oRkQA7GLH3pAI+F/AV9l+YVGl9/ogpZi8SAjrxOJCXKpFRec4/nFtW4++yREp+YC/6w4HDOpq7mlwf9zkqSE1tc8zUPbXhI/2wCDv7vVN/oQLGIykIgcaAQXTRRF2jbqgBnI1v6210qC8DE0iHb7LVIA8O/lut8950GU5SgcRS+ZUHs0GN/W1Cf9Jg5lCZPcnP8Mu0M4qS4LeuTDv3d6Q8Jq3fdSZmZa4Q3rk4mJR9IS81iCitb8roUTGOs+q8To5Ik1qAoYRiiA3dWaYPgcfRdfbFDfKtZD86GRH9X8VCShdWuRrrzmVRb9JRA5/mwZaZ2boBP5FLJ1H4+ykRfW9OvGZWudZBtziBXZwVqF4hL4d5/scT88J6k8TtGyXYnb17uN6jdD5XMS81m79iZbqpbOIdca0e0ywXwSy5bJdrELirqKyKmwBXRqAe8Xl+YFRw1fKUNn/8cL4
+ biHlG3vs
+ gDVCR+Yf35KX4ucVJER82T7oVnTTbe/t0S6tBaJjIjqtpLysH2nPBNQl2N1Jb2IeYrvTosPvj2hmtR8qVFYbDJtLawiYdB/QFvnvpO96S4m5hTxqE/xCaFkf2TAQun6m8UPS2LZ/yB7rXQUvhXD2kpzdv3vLpLv0EHwKTNKs2Tzvhr5jpHCk9Wccm3TA06zkS7ZF7PVJNuM495++IiWAPDFq5i0ibYEottWIaB5lZuWb2/72aRcTc8poUiietatmzB8qjVp8O1IvQhlJDAUd4jT7U7zcWc67d/J0BUhdlsdSgYPYF98yexc6B7YNG5GJmiewDQ+0UAZVmA0yj2F8xpJw2JbNwmwHnpP8CeWNxFg4GXTPov6AQrWUDkVB+IVmd7fnS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,65 +136,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/1/26 16:00, Andy Lutomirski wrote:
-> Hi all-
+On Sun 02-08-26 20:00:43, Christian Brauner wrote:
+> fsopen() records the caller's user namespace in fc->user_ns and hands
+> back an ordinary file descriptor. Nothing ties the task that calls
+> fsconfig(FSCONFIG_CMD_CREATE) to the task that created the context. The
+> fd is inherited across fork() and exec() and it can be passed over a
+> unix socket.
 > 
-> I saw a fun bug report in ripgrep and a studious but pretty bad
-> AI-generated analysis, and I peeked at the actual code.  I'm rather
-> suspicious of this:
+> Completing a context from another user namespace is allowed on purpose.
+> vfs_cmd_create() authorizes the create with mount_capable(), which for
+> FS_USERNS_MOUNT checks ns_capable(fc->user_ns, CAP_SYS_ADMIN), and that
+> succeeds for a task holding CAP_SYS_ADMIN in an ancestor of fc->user_ns.
+> So an unprivileged task can reach the WARN_ON() in ovl_fill_super():
+> create a user and a mount namespace in a child, call fsopen("overlay")
+> there, send the fscontext fd to the parent and let the parent issue
+> FSCONFIG_CMD_CREATE. Both namespaces come from a plain unshare(1) and no
+> capability is needed anywhere:
 > 
->     if (can_reclaim_pt) {
->         if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
->             pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);  <-- what is
-> addr here?
->             mm_dec_nr_ptes(mm);
->         }
->     }
+>   WARNING: fs/overlayfs/super.c:1551 at ovl_fill_super+0x7b9/0x1e20 [overlay]
+>   CPU: 3 UID: 1000 PID: 3243376 Comm: fswarn
+>   Call Trace:
+>    get_tree_nodev+0x71/0xa0
+>    ovl_get_tree+0x15/0x20 [overlay]
+>    vfs_get_tree+0x2a/0x100
+>    vfs_cmd_create+0x60/0xf0
+>    __do_sys_fsconfig+0x4b2/0x500
 > 
-> It looks to me (and an LLM -- I can *never* remember what all the
-> tlb_xyz functions do, so I asked an LLM for a summary), like addr is
-> not guaranteed to point at the range being zapped, because the do loop
-> above may increment it right past the end.
-
-It will actually always point at the end, whereby the end is at
-the start of the next page table :/
-
-pte_table_reclaim_possible() makes sure that we reclaim only when covering a full
-page table.
-
-Subtracting "PMD_SIZE" from start would ... or just remembering the original start.
-
+> The child needs the mount namespace because fsopen() itself gates on
+> may_mount(), which asks for CAP_SYS_ADMIN in the user namespace owning
+> the caller's mount namespace. fsconfig() doesn't repeat that check.
 > 
-> On x86, by my reading of the extremely vague text in the SDM volume 3,
-> INVLPG doesn't care in the sense that (most of?) the code paths
-> reaching this have already validated that there weren't any live PTEs
-> in the page and INVLPG promises to flush higher level paging structure
-> caches for *all* addresses.  But INVPCID makes no such promise that I
-> can see.
+> It is a WARN_ON() and not a WARN_ON_ONCE(), so the condition can be
+> raised in a loop to taint the kernel and flood the log, and it panics a
+> kernel booted with panic_on_warn.
 > 
-> So it kind of seems like this code might end up flushing the wrong
-> paging structure caches, leaving all *actual mappings* in the TLB
-> valid but also leaving a cached reference to the to-be-freed
-> pagetable.  Which would be quite bad.
-
-:/
-
+> Keep refusing the mount and stop warning about it. ovl_parse_param()
+> already spells a user namespace check this way for Opt_override_creds.
 > 
-> Original report here:
-> 
-> https://github.com/BurntSushi/ripgrep/issues/3494
-> 
-> I haven't sent a patch because I *still* don't pretend to have
-> followed what all the tlb_ functions promise to do, and I don't want
-> to submit a subtle patch based just on an LLM telling me what *it*
-> thinks those functions do.  I could trace though all this mess
-> manually, but I bet that one of you actually remembers :)
+> Fixes: 1784fbc2ed9c ("ovl: port to new mount api")
+> Cc: stable@vger.kernel.org # v6.5+
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-The memory.c code is definitely broken. I guess the real question is,
-what the effect of that is.
+Obvious enough :). Feel free to add:
 
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/overlayfs/super.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index 60f0b7ceef0a..60b808b85fc4 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -1544,7 +1544,8 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
+>  	int err;
+>  
+>  	err = -EIO;
+> -	if (WARN_ON(fc->user_ns != current_user_ns()))
+> +	/* The fscontext fd may have been passed to another user namespace. */
+> +	if (fc->user_ns != current_user_ns())
+>  		goto out_err;
+>  
+>  	ovl_set_d_op(sb);
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
