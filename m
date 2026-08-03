@@ -4,99 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A1EEC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC37DC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4144B6B00A4; Mon,  3 Aug 2026 09:19:17 -0400 (EDT)
+	id BDB116B00B0; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C32B6B00AA; Mon,  3 Aug 2026 09:19:17 -0400 (EDT)
+	id BB2E26B00B3; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2650D6B00B0; Mon,  3 Aug 2026 09:19:17 -0400 (EDT)
+	id AA2056B00B4; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F25A46B00A4
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F2B0160481
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:39:36 +0000 (UTC)
-X-FDA: 85059460752.19.F97789D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 87BF66B00B0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:26 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B2F4B14066A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:33:16 +0000 (UTC)
+X-FDA: 85059293592.30.9912F5C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 97CB880005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:39:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfeROh1v;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 10797180003
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:33:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGdBNCTB;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785749974;
+	s=arc-20220608; t=1785745995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BKSEegNXfW2lpOQAddhRouW7LuvpBaU2Q0GuiYjnqCw=;
-	b=BrYZxTRNgMKFchD/0ZhTibTmpXPDtp8W8oXZAMs6yTrHoTCteDAv+2lscr9aVAPDsBiOhc
-	0TuSbHNIlW1uagwYNxeTsXNPDTJ0CD5J8RM9nZqXdl8Y3JQ3Jm8Xn8gzh3VE2yPOw/oDxJ
-	e+0a88L2U7Cdy+FUkSNSGZAaR4jvjRI=
+	bh=m+e8KnNIzD8gYxdZrSOuhd8fe4rBpYFoiXBzIPosaVY=;
+	b=0r77+GXsQmrlcCvL8jPl+NwDg+BrxfXWMPN6RLioF3Oasb78jYtugyR6+0pqj8UPaQeJny
+	4H2vOYBM8Xmlhma8x5YobmDcoJQJizgjvOO55OVbk43OfaE6q6WvE35sZcolwkTYk32meE
+	NENXZkpfUOese3adKZ/+uoMyFOCmt8Y=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfeROh1v;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGdBNCTB;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785749974;
-	b=HKFy7JRfyWg8fn2NlWOfIE538YfdAQCZ9Z0kQYDEcS886PigzrMHN+5kS1fprXXNt/p1oY
-	+xV3EPHn51rLMxASP7vkcuQkkLMhlFQ2EIYEmYyVZkQl90WNfbTn27knFyaKNLDFQ29kbw
-	LdvFaMJBnYVND+YpBW3LwO10XINZIeE=
+	t=1785745995;
+	b=eNJ1N1sCl8E0Q9l6rSkwPECs+vXfQxCKQcUBStDZtbKEGaseTyI4rwJMN7/SpE+S4tRazK
+	q2x20L5o8iadiSMnuwPSWNOO+x3gildmsrBeeD7C48LKUwMwNYoUk45J54kjTA4JfwmRhW
+	FikIgSoaiXob/8Jzb+bylYmT3t3oWS8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1FC3F60A61;
-	Mon,  3 Aug 2026 09:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CCA01F00A3A;
-	Mon,  3 Aug 2026 09:39:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 82915600FF;
+	Mon,  3 Aug 2026 08:33:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487D81F000E9;
+	Mon,  3 Aug 2026 08:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785749973;
-	bh=BKSEegNXfW2lpOQAddhRouW7LuvpBaU2Q0GuiYjnqCw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IfeROh1vbwpu41mP1+qXu5Qi0C614XgCnptV0j/UQQK2WI8kjZTg7hDHgk70tKdgy
-	 KXDlWA7APDzfCyR4agogf4l5RdoIkbBMe3anAhxiSdRl8oc6c63ff1MVjuDJFICIHy
-	 Huj4iF991WfP1/MZGpGjBLDz/OgWcZfWBkhhBg67cgeWuUNN+UPcdgOKKHTt/g5SCR
-	 1GfMKW6HnxEYN3yq66ooaT3iRVISjMCGaukeCOiw9O3PbFthPmvHZGcoAgGAGMlNnf
-	 /hEjR+VkjxQQi/MTOq4tituznJc/cSZwBsvHepKznw+d1pOAGGxtkvDA/ECU228qU0
-	 5GYHUsSnN0YpQ==
-Message-ID: <698b8cec-3bce-4dcb-89e8-5b0d0fce4a06@kernel.org>
-Date: Mon, 3 Aug 2026 11:39:18 +0200
+	s=k20260515; t=1785745994;
+	bh=m+e8KnNIzD8gYxdZrSOuhd8fe4rBpYFoiXBzIPosaVY=;
+	h=Date:Subject:From:To:References:In-Reply-To;
+	b=NGdBNCTBvXRIxOnTroJ/LTqb0MLDnqhdLBDSAuGkqbrlV66qNdr4IgJdtEUst88OI
+	 XY8xslbBhgpzEbeuYhbVA3CcIZ15wgYGE3ksCwdNSQxSVh9Kais/xTWvn7O6HNYjRi
+	 wdmpdmfYzeBkLXKDlZmmNhmvZuAOoosu0tUHmdY2193xXqUR4OBf7GSBvoBaPLum4D
+	 Dex0VM+ssdS9/3T5du/BEGyeCrXSXeD3FTUE9iIM5JDNMQfLdUwLLReDPpTUL0my5t
+	 V2ugzta01MTSak2BogaSbJkXFiT1SmbGFP5zs0vtYfcCNDEBzr+2i9w0H8ca9MMWCt
+	 v3T15unawu23A==
+Message-ID: <2504da57-a507-4567-aa5f-bbd3ec17d002@kernel.org>
+Date: Mon, 3 Aug 2026 10:33:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
- anonymous page index
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
+Subject: Re: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to
+ memory.c")
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>, zhengqi.arch@bytedance.com,
+ "Liam R . Howlett" <liam.howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Linux-MM <linux-mm@kvack.org>
+References: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
+ <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -142,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
+In-Reply-To: <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 10797180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 97CB880005
-X-Stat-Signature: htphze6i997tykywozrmzn6eqpwys7yr
-X-HE-Tag: 1785749974-857033
-X-HE-Meta: U2FsdGVkX18G4WDeCuMn3wxUQf0BCpTK5VkLfjUx6je8Ux9IosrK262trXZOG0Kv0Ntftfch6QXN22t3q/bvWyReFH36MiDNxgezAduM+C4+0u0nMwBIw6pxF//2mJ2gMDj6sHB/sEWm7DQhYlk8dzZ/2Apm2fwjM4Glx6mXH+p71rxrO0u93o2GuZWyD2UgXPlX2DhUeug++OhQ3VJTbqN+CddjV9FBlnrJkHY2zWo8R7Q1GvDJhO0z351R/ThGaf+CJ/1Q+Frj2xGGJ8Te0MXx5z5RmA/wWX2OYTfFelOxzk1qt+iV2nbuc+ic3nrgA4bnqtoxzYHpSoHYgvpLhyT4xFa+ljl8fmSyCdeRJRuBCXMVBipMVGpifwANz2ewm/RgPcigDXrpK7m9LmyeRCTQ3BWf31zzYR88TBXbXSi2UbbfJHDsYqhQNqkTU3OUFFLaotWo6XcFAq6ZsKhxOA2ntb7krbLTaMWMalNNI9fHT39V/VGxgsHKpmiajuwB7bbZ9UQ8G02ve+l2G3vPQPBD6VfutBcJcxi6R1zxBdNw5PKB+s8dPT2oiZZDjKbpTcrRYyE9RgndyAUPWz650CAl0eJ4WCugaxDz4cMUXcCrGzQ+hcM4LTyNHKinvxNDzj4Cin8it0//zZUBWB9vlez5wdVXLFjA3Hb38seB6rRS9pDN3pDuCt1HhYLZ1aogchkRTnduWOV/0hpkv91nRQbjajR7lAH8+UABJ5wpuvaMYzV0LucfVNNfCIEeHdUeoojzmcaSiVUG73G2XTQTyo0jJnJXmGYmepWUsV9FuLdY7PS4gI+NMdBy8T1djXa1C4TnxDpq7v/m2HxN6TEAyaGQgNleCFqhXxmezgyJdJIxhJ+xeleo3e+LocsOeZ1IUZ+vpo5/leTQn4uyZ3MVhApCUemRltBpqYVHYtE3XpI6IAmvhmqvxgfhY+n8Spwr6HqMB6v/k0TtdNIMGZX
- axd0XzU1
- 5vEAUyYbtxKgftkDqEaQDpnhhm0sBbUxTOkjFvN5VsAHNkt+oEKcJNd9fO46XZUgZy527rn6chsvCGjOmtB64VxjdA1sUzt6zDDsCw4cymlepugtUrU6ofk/sT6SHEJW94DYN4XklXlG0+qh6tOZeECtMSbm43v23Ht8ocIsQn0KlLYsCNuu/kgDeji8XBcPJf/3tKKV8W0M9/5WrMnLJ2Z8gXtF242gF3NFEZQSwldd67wL+ckFxAqe4MoibZak981RZO6pReB8ptx5bk1MQouzDke/BWgCYn6IvFBTA8E7hHAdlhOWu7S3fAFfIOa86htRbDaZZVuQowD9nZOxeuRXwDwG2yOCZCyZ9BH4Gll5H75Jbw82Ke1RZgbDDAdLvB/4y7+JhF/o9cgkHD9hXdHE4Wg==
+X-Stat-Signature: x58mxaajskwukx7sh5n3teiggumujjck
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785745994-138796
+X-HE-Meta: U2FsdGVkX1+epuQVSr+IXOLAOy23oNdIzsZ33Sa31MrVJHHhk/tvT1lv1a1u340sTZe2HErFP0010EUKgSWC7uoIvxagj1QeIoV7EIb57nVIajibjzuXCo1UlCY86d3knzsUh1copehTV4L6D+ghgjMDFPT+04qmy7cKbShv842s3KR7mnmHa+xfrl0xfQPvBSlKUzDkSlMkyKEQmt/rwPTEMI4nnRaPRXIU9pjvud8J2IkCQPqlbLvcAlZrkOQV5rprd2L4peJI6Dn927oEBtU5Eh4FJIISHsYMA/cPQuo+0C4lUPabUrpbFlGAH7NyZ2hsPSnFYUnrDWu8/L6m/oPVyHWoKKcaYBtc03rBIJfs0XFcTery5blAp3bwkA/oRWje5sR44Kths6TIXaUpbrZGJ4BcxMcrCHL+80XpWRfNqzJ7Hy0C3e9fbNdCFcQ7gX9suI168Z7vjS43+9Bl1IvAbDHLkliG8ofgjpkBObDOSwEYmeOnlAPIUjAzyJJEKGK3TEAtX8weja8w0CR/0LZQPg/dQMdZ5oyKguOXSR4TmwzOyWLePUK2lFiAyuo0CrJuEFt2piwNhpTN9vI7tpGXsPPkmyOX94xEKJblvFCrZT7EtPLb/kMX1eurvYPcOyDjb1+MFtguKKYWwTuxzNxq+adzBhHM2ZPhw2ghgE6VTPMAv85cZLH0KAOXOGvw5w60Pul4smXrd9DqLC40LU3/azcrJTv8UOWeNI1laooPzrgFHle5/nwRRVmLnQxsd5JzNW3Oi80zhHLIeKE9mOmtWLelebQ0zX2oB+BxBkXxvBibOt8gCTVhDVjL4qRFl48J2jwHS8qEVXBNagoIwK2PDbpI6loTyp4wz6JwRthy+EdJHiz9m2Caqns3nxyi3CfrX5l9wALFfR28+adWOeRoc1eJsDKydniKkE7lLPGTJGv8/pW6E4LltqYeB8jpG0uKNLnbTVdrfvdB3Qi
+ vM5HgEWM
+ POFuwbxYZYAGONK5Dal2+0m448gX4RlNPsh0Vb3bxgMNWYkSQLdw44wqRroLfezv6noZpDcPE7n71kMt3XMfrAjBtl5Ca5G+CLGZM4/LF46qfoQtzy2GlqdXeDZlnGVKEKtS4B2LM+6WKwa5IB3TC3JSRFO2IQu8PYRd/eCUYwGL6NCdfXlwkWY8aRyASPvk+avw9nRDIFNGEQKOedyENo349xfQonLTYzTr6AKzwGsuoZXef3RbVhDt7chET0ypZvtsy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,17 +143,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> This is potentially useful debugging information and matches the existing
-> page offset provided.
+On 8/3/26 10:31, David Hildenbrand (Arm) wrote:
+> On 8/1/26 16:00, Andy Lutomirski wrote:
+>> Hi all-
+>>
+>> I saw a fun bug report in ripgrep and a studious but pretty bad
+>> AI-generated analysis, and I peeked at the actual code.  I'm rather
+>> suspicious of this:
+>>
+>>     if (can_reclaim_pt) {
+>>         if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
+>>             pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);  <-- what is
+>> addr here?
+>>             mm_dec_nr_ptes(mm);
+>>         }
+>>     }
+>>
+>> It looks to me (and an LLM -- I can *never* remember what all the
+>> tlb_xyz functions do, so I asked an LLM for a summary), like addr is
+>> not guaranteed to point at the range being zapped, because the do loop
+>> above may increment it right past the end.
 > 
-> Use the raw __linear_anon_page_index() function so as to always output this
-> value regardless of whether the mapping is file-backed or not.
+> It will actually always point at the end, whereby the end is at
+> the start of the next page table :/
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
+> pte_table_reclaim_possible() makes sure that we reclaim only when covering a full
+> page table.
+> 
+> Subtracting "PMD_SIZE" from start would ... or just remembering the original start.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Stupid me, we have "start" right there that we can just use.
 
 -- 
 Cheers,
