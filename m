@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF7CC55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8787C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:17:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08DFB6B009B; Mon,  3 Aug 2026 09:17:47 -0400 (EDT)
+	id B3D536B009E; Mon,  3 Aug 2026 09:17:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0165A6B009E; Mon,  3 Aug 2026 09:17:46 -0400 (EDT)
+	id AC61C6B00A0; Mon,  3 Aug 2026 09:17:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E20966B00A0; Mon,  3 Aug 2026 09:17:46 -0400 (EDT)
+	id 98D826B00A2; Mon,  3 Aug 2026 09:17:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B9AC46B009B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E07FA0685
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:50:56 +0000 (UTC)
-X-FDA: 85059640512.22.DE76E1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E167140003
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:50:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFihx0A2;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76EEE6B009E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C12B406DE
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:02:16 +0000 (UTC)
+X-FDA: 85059820272.10.EA451D7
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 154011C0016
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:02:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EnouUtAw;
+	spf=pass (imf21.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785754255;
+	s=arc-20220608; t=1785758534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sHtaBqBR2lA62K2It/9H5iX/mbJ0pDsZ9rva719MFwg=;
-	b=ySGZBoLf6MMnEZpzTG1kbnYJNr64kQzqflJEIsIOsJPKDNBscvPT1po39JL4uZfzBxWJSO
-	FOwgiDmJpxO14eJnbW4QeHlCJS2DzGdkyRCczjWOIsEgA485mQUDmwVXZkcx4OH4a4PMnf
-	NGzDwJ5+SIAnxZh8l2ub2mr/FsLo/yU=
+	bh=52EZk8YPwTy+jG8rvfx/kfwJ0amdCbdlhZF4BPxa9n0=;
+	b=XMf2T68scyjpST1MrX1WjLFUywCLAUbDRDNtGgbjAi7etew0Hvy6nJXQxTLqAHNe8tADYT
+	pFVi5kntVFydTLoGE5b7B0Ivf8VlY+QCAKvxl2dhL9nn17xsCH2naibPhX4fN5qKhCyre1
+	S6TBjagwyX7RxDDaG/zRpVq1e/6cHGw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFihx0A2;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EnouUtAw;
+	spf=pass (imf21.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785754255;
-	b=glL5tETXqKP/UgfV7TI/fVrIpvwJl9eawTFKFZBrThKn31szzTTPVdFWr299BvGbTDlu3+
-	9/TFdRURL6e7T5RzqWvXyLyIFs6utTAaGjHu89ZeoSkKTqU+oqAFM6Y2qgkWdLE5I8R3tK
-	iNpNN6jeODEmV25GnaS1x3NGZ7v8kts=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E402343B50;
-	Mon,  3 Aug 2026 10:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D6C1F000E9;
-	Mon,  3 Aug 2026 10:50:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785754253;
-	bh=sHtaBqBR2lA62K2It/9H5iX/mbJ0pDsZ9rva719MFwg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OFihx0A29rg1uTXZbxZdVXkbxfuH1uoLEDwBdbye7f0sAHCXfRGQ/jITtAoWPM3eJ
-	 ZsuJp74wywdcIobEK2myhLAhhWwWZvoKzHDR5h1lPEnbTzP2sUO7bnSM3ggmBxba+2
-	 lZO41+/qSImEy0rzzE5XpgOwWevgDsQGnW8oGRB1RCjwy8fUx5N8URQjMLO9Vur0M+
-	 UI1JIGkTbegPz3rmeA7p1IzNdaD6hqx/bTjP+i7TM/HjiAsNEhPzl9nthLAu5kV09/
-	 npRzqSFNOyGb8XK3pNgkuMTziaCBn8opgS757+0tAn0XUviOd5s3q9GE/yNaHeEzqb
-	 Y2KKzJIQIu7cw==
-Date: Mon, 3 Aug 2026 11:50:35 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <anByayBh6Ed2bXox@lucifer>
-References: <20260802215459.2769283-1-surenb@google.com>
- <20260802215459.2769283-3-surenb@google.com>
- <anBj40CVAhcGMnQ4@google.com>
+	t=1785758534;
+	b=n5yimsQ05lC68R9RR/I5Pj7sEsD3A3yWUzMmXFIVeuxQy87xjWXBhoHVQNZ4DA93oVqnJX
+	O4QH+WhnWWmyR2+16Sy4WEZiWnTPBw/EAiiJg6TMS+Wu1G/WB5VnuUYYgRFBDU9AxzQau4
+	Ve3rD8Qd25uFDYr7VlHmeXlW06Ub76Y=
+Message-ID: <d5513f7a-6a69-44ad-ab3a-095cba0d1cb8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785758532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=52EZk8YPwTy+jG8rvfx/kfwJ0amdCbdlhZF4BPxa9n0=;
+	b=EnouUtAwmdUyiYMkNZYeTEKz+AWGqvGLFPzrRg2VSPbHDC6HVF7FROS4eLHrg3gT8tooRk
+	rig62DQPA5EaSsWXf6iA3G0v/XDaJ6BmV1oe49+5hzRGn2f3z2n2yirXt1Il6HlfYyxdck
+	yb7BufJLbG3lqJtL+aY1dN0OwdZGnlw=
+Date: Mon, 3 Aug 2026 20:00:32 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anBj40CVAhcGMnQ4@google.com>
+Subject: Re: [PATCH 0/4] CRASH_ZEROIZE: Wipe secrets before kdump
+To: David Howells <dhowells@redhat.com>
+Cc: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>,
+ Baoquan He <baoquan.he@linux.dev>, Andrew Morton
+ <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+ Coiby Xu <coxu@redhat.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ keyrings@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ Tao Liu <ltao@redhat.com>
+References: <79610b53-5201-4af3-913a-0c4dcbb6f9d6@linux.dev>
+ <20260731154608.153258-1-linux@jaseg.de> <am38qk60mpVFuJRi@MiWiFi-R3L-srv>
+ <74625f78-15ea-439f-b9f0-939d2976fa7f@jaseg.de>
+ <2490025.1785751199@warthog.procyon.org.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Dave Young <ruirui.yang@linux.dev>
+In-Reply-To: <2490025.1785751199@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 154011C0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E167140003
-X-Stat-Signature: wqz7mgsthgshghaekskhuygmtf8ye9cr
-X-HE-Tag: 1785754254-299917
-X-HE-Meta: U2FsdGVkX1+y6bnrP+BDKQoG9V0F06dc35ycqI38i4z+ehnEASyfhMbwyUE/bkHfk0m5lmbTqma+yb1meHRh7YXwlxr0ljL6mkP+WEmJdLmiNCSXFKnxj5OipTt0O2g8VAp3fNcvF9KVQqySxPJ9g68sc239GIowyKWd0/9UVNG1gnkrk2uA1bqWvmPWoIY0eIDtKVw/NPl8kSLrEK4hMuRx+5I5L9tXaENmxv1T/JezVlROye+EOoLZE9RWjwkMKTrFgvZUJ1U2lz+7zSShUyux/FoMnGTeXpmUt5xzSK4UXzzWaKorxnYciFojbrWNsiPiuUDb3sf2+ZQXGpcoFiI9Z0lAuInLVtJqu0hvORDKO9LEiI8M2a+vwLP/7JQeTsgcCcuOkW3Exk53Do0YiB04iOHNV8cNEcSRhlnA+YKxwIE4XbmSu4p30Q3Z9rKN5HI6gP/D7yb1r784U4URR5KuuNdgLsKSCYb2fvQqNNxYJz+PLxk20fygSbhtfwK5XXR9seHeZHSQ7nDMJSCe7upmEy7EJatU9m6qWk3iJzql59U1bEZcD4zBW+b6TG5MAYtHt3qOkjVTKtSsIDKvoUa97zQudFNeg+73M6yluzVfU4pJBqUclVX7BoljSmk6BhOGrNcTDIZylBSwEurq/7+52PcGBv/l0oarwIn0yTP2kqTLezl0hPY2Yrd8xUFTxA90Ysr1JT81X82wC4DkUQ38jKKMFYnHAf3DZzCaRpYZtZfI0cMdgA/BQ+fpQJQWKV4AXsAwb0wUmZLC/5s1LWbIH6hF78lbN95bu4Gfx92ZbdRy4rfCTp7+Pu3CqFKPBuV6LLHTIeJQOF+S/vhPvEkc1STFiIOHIGT7ZUMJM1PX34igjlki9RLzNf1dnP/yyEA+pESge7juajrLwsRudfok2JTku5m+XCf77E50rpwSiYMpd8HgdmzuGgkhdd5EZfUGKyj3fMKHuA3nlgu
- acx2vma7
- hv+C4+gAQHsSScOCbefTst2JPghIP4LF29DPoWlBwU8LWFSmtKxekKgIHw6S9pjRCIhRLGsQpx/wy0ry1W4EKXE6qMsj/Rq6NE2/xKJ/ec1AxlR+n7jehTeN7DmUYYD/eg8qhBldDiFmSjg8q5wuL791sxHg6knzbKGws5Kdb7oHLz8EI42KX72aQTeR8r8Oa1WM3CeoSA3pPJ2E6JcuLXqDwQH0rVCv1sboRocV0mJG3Woy96MnrCdkTPYt1GPcDbAQfNHao2zz9t0XQ8Dy2EHG4+/Z1F1dPgq0iUEbuGq52dpmrOYWUS74m6PfTKdG0mjPnidMqqytYodvAM8DTQWZ2UAyUX6zoPBCgVrKK8tbOke2VyZciKQHk5A==
+X-Stat-Signature: nk8zdqjtf35jydziyyrtrajgwu9tbs1e
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785758533-617638
+X-HE-Meta: U2FsdGVkX1/JdMfmyFYTqeBXj95+jultvmO9k2h9ajunYrIbcDZ5wq4KyRZpqLMI8aUlm6kMRVTo8rPUB4V8JbaAa+qH2fT5yMeETIb5yCE1Y3JzlrK7SFcaQkYOb7IpzjfhQ/aaDSyqWy+Te6OJIy14LouiQ6q+Ev/iceXuTLAMheSI8AqOvk+HOuPiDPsTfT32upNwnIY4ae836NBQoyhSpSCPMRwjMvGVA7sD8E+xDQTFN4deQhhI9yH2iC+1bGk0dDK0UOu8UxdFmED4iIFHa/Gg4Kw7s2PklboU2/+OuF7+V2/wHlgCkZWgHLeybeyfpGVsVS8ZUQ/vrJRUoEtp12CfEGb4WCslL7gkJ4XhRC1Vzx88M5DG3cyqr3B1sEWgq7aw+cpmK/wYDv6CGkGn0Bz54/HbndGP3xx/h+3H8XEFd4RXX6zxXVFdpn/y/Stzgr4OcTFvnlgcTDVfKw7zm7mFbTiSvHCY7bG15xMNgn98K3KKjQXML1EBIOWppa7JeceyUQ6vFPGEGdA+VF8fhj9fST0tbcTnvCjVSgYBtjMw1EJKxSEYy+/Mjrb9bChmKNYw+TwlqDZIyb5nUxwg4o8FFsza3M9gs8Zjc8UHk4pHtwWpEdoYJVIh1L51347e2z1LlB1YkEunZjlSJH7RUu0JHi/hz4xDqK6zi/QeLYw7uxKqAuzsSQfPQxT+Z+I+mbNZo1p9f5e1hXOlSgymOsFynVRcjdUfobc/Loqaw6UoB0qzBL7sUwnoh42HL3fHrN2P6o/uDAUS5QEIxKtJlN/nEMVQ3XU6hskF3Hl8VKw43DlyhsHWI0gysVfvTr176YLRBZkdlEvhfa21B6IPD+/VfSzNVTOqtSWu64Lyui2AukpMwpFQwTq5Mrx9VbzFNDW/sbLS5qplfQM9aLt10a6W2CQlD6sdf55MjSZsKj7RA3JSQkBy9LDkellWnzmDJ8/qSrAVI1rlhIA
+ NZU1qfNx
+ EzHleyfc2pgtfSBq1BS1rz6ri99Jippq2CawP8Sg/IVG4qAxhC0igra7bA1Qt2iS1/dqVEdMAn9OkZ+pud1qpw9OfXDLsanAAjXJ1DxylnYQ/ATtMCUp3fZ7KQVV0nt8LCD+MHa683h92CDaBDMCDuuaATyqiZfdHyjN0YIL3JHgBnqBiDpOTvjrshHWwm8B/fh9aAyvwYnqpOdy2qWvzTcV2lKo2W180RzMECBtLXJz2DxBkRcuVUrAY4I0J1AdYUl3DqTlQQsASG6KcrcKy3D/ajINvk+X8v6FHjnSJSEkn3u7w/D0P8eHLRYrJATRaVu+B5S/IZx4SGAcIy+ecOUJ4C41MkZx8sa8Ds54kQZHJe1M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,58 +104,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 09:48:19AM +0000, Alice Ryhl wrote:
-> On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
-> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> >
-> > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> > it and mmap_read_trylock().
-> >
-> > Long Version:
-> >
-> > == Background ==
-> >
-> > Historically, binder used an mmap_read_trylock() in its shrinker code.
-> > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > fallback.
-> >
-> > This was presumably because the per-VMA locking can fail for several
-> > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> > to mmap_read_trylock().
-> >
-> > == Problem ==
-> >
-> > The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> > essentially already a non-blocking trylock. The main reason it fails
-> > is also the reason mmap_read_trylock() fails: something is holding
-> > mmap_write_lock().
-> >
-> > The only remedy for a collision with mmap_write_lock() is to wait,
-> > which this code can not do. So the "fallback" after
-> > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > likely to just be retrying in vain. That retry in an of itself isn't
-> > horrible. But it adds complexity.
-> >
-> > == Solution ==
-> >
-> > Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> > will not persistently fail. Rely on it alone and simplify the code.
-> >
-> > Full disclosure: I originally tried to do this with
-> > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> > trylock semantics. Claude caught this in a review and suggested the
-> > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> > I guess.
-> >
-> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On 8/3/26 5:59 PM, David Howells wrote:
+> Dave Young <ruirui.yang@linux.dev> wrote:
+> 
+>> Cleaning up secret data can be done with makedumpfile + eppic scripts (see
+>> the manual of makedumpfile), or it is even possible to do so in kdump kernel
+>> with Tao Liu's improvments for makedumpfile previously (I don't know the
+>> status, probably dropped for the time being, but it is possible, cced him).
+> 
+> Does this represent a leak of the secrets?  Also do governmental
+> standardisation bodies have opinions on what constitutes a leak?
 
-Is there anything on the rust side that needs to be changed also?
+It depends, for the crash case I'm not against to clear sensitive data, the
+concern is to avoid extra complexity of logic pre-kdump.   Which
+government?  Sorry I can not answer here.  
 
---
-Cheers, Lorenzo
+> 
+> David
+> 
 
