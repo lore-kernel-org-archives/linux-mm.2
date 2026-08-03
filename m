@@ -4,156 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F079C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B88D1C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDFD76B0092; Mon,  3 Aug 2026 10:03:00 -0400 (EDT)
+	id B0DA66B008A; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8F826B0095; Mon,  3 Aug 2026 10:03:00 -0400 (EDT)
+	id ABE076B0093; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A585C6B009B; Mon,  3 Aug 2026 10:03:00 -0400 (EDT)
+	id 962526B0095; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73C396B0092
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:03:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13C2D140734
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:03:00 +0000 (UTC)
-X-FDA: 85060124520.03.4B6494F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 34A431C001F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:02:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSturGiZ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A6606B008A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:19:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F13EE1A073E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:19:51 +0000 (UTC)
+X-FDA: 85060166982.27.2135F43
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CB04D40002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:19:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TfMR0kY5;
+	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785765778;
+	s=arc-20220608; t=1785766790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T1E7dQ4aPZaIdq3SbmqgAHM9kCwev2hzByfcmJn3dpw=;
-	b=ZZ9vTSgED4/gV+0nzsvUplBBCl0Erxm70jxsYu4UAjxnNw2xMW8JeLGa3QAwaFXiYpxZlR
-	JU4lYa1MYM1tR+hjBE9ZFAgr1u6reieYxBQy7ftU36M0k24k4LhKAxrjGGOQPXN9U/LRTr
-	zhfydtnFmXyEuX4KKl9proFEB4vUyk8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785765778;
-	b=gVN3FbJN2rfmEz2/q9K3dCTMT9FF7SojkGk/jPcg2NgOjlhAhLugBHsbhUZlJDi5s81BOJ
-	O1c8RuUVpqIHn0chm/MbgcoitiS0TGDjF/WHD8f41ddYB56Z8QuBwFeGwp92ushkUnRhl5
-	CirxLfyGauU73/qyAYpRqoO5+fIZsp8=
+	bh=hXmSSQiql4lPt359U06+XjBJquVgqILNx41T0YVm9Ag=;
+	b=noKcW1ccQUV5t2Y5HJ2G1SrPPTtXsT81/t9GhpsFKl1xXxRJqGatoEGvnnO0jdF36dFtkU
+	CeonyutUEvEgko1Euwy9jzN9d2OFFcJ4D6dRu8mOTIspSsPDPGbrc/KBDjGxSLmI37MwKw
+	mKE6Z4Subq19393ZBG084tvs7rGRKBs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSturGiZ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A11344043;
-	Mon,  3 Aug 2026 14:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B07C1F000E9;
-	Mon,  3 Aug 2026 14:02:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785765777;
-	bh=T1E7dQ4aPZaIdq3SbmqgAHM9kCwev2hzByfcmJn3dpw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fSturGiZDOvtsXwaLNuF1cO1Im0uBGa354NwhqDC8M5d/qTsUxw1udoKLC54YCerx
-	 xT5pICzoM6YeHh4pTQURX0OvjgHTEvKdruMiu+xmZgPar+SXZGTbnEzQgZmIV9AToi
-	 nG7eNzHrJARTpUI5nj7ZtPYznsg6LshS6EdqSrjk/3KSvRdxTM+wQ5QSEkgvHOxzFM
-	 ruj+hzz/2bsg5p8WW2Ok+rT/+W+m2Ck5LU3CftpAP4Ct24z4DIWzTbMmK0kEBmuk9d
-	 mcrofLr8Pc5bZkK2wbnAqLH+Rrdx+GwjpcafR1QUHMYhtk1l3q9ilhNeMMNq+hT0Y1
-	 1TQ2mG266LeNQ==
-Message-ID: <007258ed-3fd7-4d90-b909-6fdda15e0485@kernel.org>
-Date: Mon, 3 Aug 2026 16:02:45 +0200
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TfMR0kY5;
+	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785766790;
+	b=vk4algVnB6bver19iB62g9X5wyzVepxsJku57xxu+eBYyRya6mG2hQ4eW20KqijNqtne1+
+	uZijSNpcE2AuIamx7ESrlFhZf3hS3yeIrCRwBo98gls+EgXWdt7vcqFf+qokwAdUzX4j8X
+	VYcEOGR6xL3j5W0A7ysDspAxR5SXofk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785766789;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hXmSSQiql4lPt359U06+XjBJquVgqILNx41T0YVm9Ag=;
+	b=TfMR0kY5qV7N8rRsb3HV1iGq75Cnrhc5fc1M/imKxNEoGG6HDVJ+add1qhPd2/aJ8V9RgP
+	JDScByh1DyRnuReLyunWl+eEPgjlyhlMqH2MB0RY4mocNCHxZ1LXTCjRltHolF0h6yRUdm
+	s/l5uQToyelTPR3jkvp8gMyDWvrF6Z4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-QykCMbifONmPD1yzZM3sjA-1; Mon,
+ 03 Aug 2026 10:19:42 -0400
+X-MC-Unique: QykCMbifONmPD1yzZM3sjA-1
+X-Mimecast-MFC-AGG-ID: QykCMbifONmPD1yzZM3sjA_1785766781
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4795180059B;
+	Mon,  3 Aug 2026 14:19:40 +0000 (UTC)
+Received: from [10.44.50.44] (unknown [10.44.50.44])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF83441C;
+	Mon,  3 Aug 2026 14:19:35 +0000 (UTC)
+Message-ID: <58fc5ce1-b6f5-48df-bd3b-054443c60cdf@redhat.com>
+Date: Mon, 3 Aug 2026 16:19:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/15] mm/rmap: track whether the page VMA mapped pgoff
- is anonymous
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-7-e8ecfefea812@kernel.org>
- <1b48cf7d-8906-43d4-a85d-5cfad10a12ac@kernel.org> <anCcMvnsux22LaWU@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
+ followed by .pfn_mkwrite() for write faults
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: oWXs-7iky58kThdRQ96Pi2pKkmfbE5E4Md9fw-E3FyA_1785766781
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <anCcMvnsux22LaWU@lucifer>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CB04D40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 34A431C001F
-X-Stat-Signature: ocsha77nmb5ofgnakp3soxww86dxbd5g
-X-HE-Tag: 1785765778-34694
-X-HE-Meta: U2FsdGVkX1/wIfJkLIdAAcMDEh/Hi3RApBmBjFCA2f1Ua5QaahpFNsVu4kTTkvvLAXl0bgaIXR2AJ/dLeQ8j2m0Oduor1gGs/6/kHuTtyAaKyEXa6c86wYEPHl5TlB4ya1Gw8X3bEeennoogT1YhxzSdaVqMXKy4zf7Pu5pJCkBt1VFp5XuThYUX/V/X0BXzkxP6GTjiIJ4DD6GNg+vSRlIfCwi3rUmxgzULiHcuyLY8yVHvzstPrpy17vqGDYcmkEVNfdu/l7a4wHW94ORrrL73MqQluNDoOqU0LWZ72i/f8T+MX3dZXC6TVvz522Gsxn7qSwrg0t/C2gnozB5IPh4MOZvTcYsWVLY+XG1R7eRPC86Vmi2xcwOdDoyLCDUxLF6uJ2qz92ASQ0ZZVyuymS/wRFa4WnyzVJS+PcbKGxL1c7IRWtK8E66u2a8q7eQx4PbwvGMEfiY4T/YEmRJuWjysPM5Fha/E6qslSkfjniqj/M8mLoPYtjn6uLbmusoFF4yFI6nYxm2uycllmjZ4YQHhm+ZDaNGkyjlLOwdxekqP5zxztoAIz5DfVEvsQu6yfazt4U0G4uG0wBUGkMVih2BWm6H4jOd6JrZkYyhSy3b/73rqloM5QFJvPHqaq6YI9VzCq4PZuAWmW7FNC+vZhYEU/CJZTii+0bZeZHT4+ZTgwc/aIJ/J04N4k+GBykEK1/RjDnYrEUJGPwOV8xKv+yfrZjFw1I6Tm9oA16CMOMSjrBfLO+EmBU1vIUX0m1zw4+FHiLcUJirlZiLcurHkezeK1a96JHPOL/uwtiSDyA5WOkaX9AZzCJWHdLuHg2PdYMEAdf9OsCEIBeRZQ63Oiu56YcHpNw3dAt4iJzADm+XfP86Ei6bPceU/smTFXtMAbJxVKnDfwLFPhYvWFkDDY4yE8TLq1/MjL7IWrTRD+lQoXi0vJqSBy1j+ddHMnsfgBRj9HPaSir+J2T7owab
- 5fw5rRLL
- cdlze3viNvMB2KdNhlS8lNwyobC9lUzNvClmhDrkMdBjmt+RMaZ6tq4I88/2ztzUjVZYqJ47FXrhierxDMQGVdsZbH1lkhXTwoLDtWfIM9WHbqjCu52bR/y+18tVyXCSbji7olbsKkFK9AYbcgfwEC64QJPgLkUroezYpkZtPxgzsXMXSi7ymdCF1hXUkuLHxtR/CmGSWYF+K2nTatkN+B1u0R1Id6zNJQkW/nwDXPNDjUgJNV6A3wlfFG+w8YcABg3wp1823zGCS9EAOPAd6YO+cm1ZX9iftVy3feoNhNwEcKNZi+1icDZ/UmrHavBFMf4VfNfRIkyIW3DDihA58ffaMMA==
+X-Stat-Signature: pg9crdfa4uisiep5ow6wrgo7kaxtccdg
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785766789-64719
+X-HE-Meta: U2FsdGVkX1+jHdGQNRweHD2Z/2IF6vgyqzTXdyFegsC3RVtyDNaZfjl8fTCuGTkjMcFAxcODYwXKtUMzSlJduTdI2Jay7gfYQRP6xjT5ZwGftYFS5zD9FrOJSjZA0YL/fJkuuySPCEICfOAaApFzbeXy6adecnfN+YQc7JCVKMXmkvy3p1eq+sIUgw8i0Qiy2d//gj6tQwXXcKllq6IYlliWp3p3wCTMtb5Jyqag6iJ3/Pj5kkn+dWDOEqj971cIhjvzkOS40S1XIliTQoVbR4heoKg1IyL4/cqU4x0F6sIJ8630xwFGGqU2EVn9OXZTkfVVjyaVY5iarUJZeCwMebKaSu0oiMrIOIsHlwhUjsZDPk1lfS3FVGY3+uXphh0rnd6VLBVjnyHyVWj8qehCbCgeKv+kRK4cK/YFB1kW8AkCoGgITCTzEuSBXnl+rxF+sHf1MQF5iqRmNhIaylS832LhifyHuV0/93fifHOH6uMt7njSxDTRO6DifsqT2UyXVg0Rqs5MB8iLf6FrfQ2nb+oZcVUtil5fDPWq0MWk/JGuOLYNZjtFaXCF4NdMcMO2DS2Zr0bcZrt37isksQO+uI1xl/+1EGx8/1KLDW460SQzlF8jFja0nYFo0+gn84uf2jIOzZQ1pCssFP/mIa/vFs1y/kZN1yodVefCSK354nXxwtLk3qmxkyschBlJ+IRct+Iw3IsQcudC/X3+H7+fhtaRighAc/PbxwbwMIfTvN09L58+Eqe+h1cNioxqy4A4JkwAqxXLzRbT5t1c4nntac0UE/GNaVtQoPq0cfuy63Mu7Lqt433cerpk5mwDWjSIYJZdPPlvT+cQ+DQcmQVcR+nPW3kw1B/ob+KziRULyq3QmbKC2JVfdafpNtmf9HVywKLiQ9nW8X3S8EizmUY5QiogeEfUrIGCx7Y8luLjlXpcw0XmDheoRT93wI7IUmJ26kamzZi8vQNNZJDknUT
+ SL778nIp
+ gbXwMoIHEq4EKufSnLH9oE5EQt4ikgZ6Iebws7i9LCaI4DO4T/xJOo81mta6CXz72wDw1Qib7h+GIyosez/pRUNZ+/IBQ6ByK5xVlmnTdqv36PgZe7gN5sK5WyDd1AVPbmjZDszb1agAPR+Bw5J6FDmm56A4CAfTZ7cQQSgjW5M8pKm/p+5jIOhMK3yhSxR5t21kmawZXxGNGEzSvE9USVrwvrb3mUqhYcesWeEyxBHhqe7ui26HjoIE0S2DwV9rOPoigvyqpUQ82U47yjJ6S+n66xAR2wI5nYpGe/X6u3oufaUEXgblstaZ56sXZ+cVKOv0yA9qyt0ECyxjCz9lfuPvJ7KX4ZnJ0oRBBpZ6wUJbpsMGHYMHFKfdTcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,60 +148,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 15:51, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 03, 2026 at 12:57:44PM +0200, David Hildenbrand (Arm) wrote:
->>>  /*
->>> - * Then at what user virtual address will none of the range be found in vma?
->>> + * At what user virtual address will none of the range be found in vma?
->>>   * Assumes that vma_address() already returned a good starting address.
->>>   */
->>>  static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
->>>  {
->>> -	struct vm_area_struct *vma = pvmw->vma;
->>> -	pgoff_t pgoff;
->>> +	const struct vm_area_struct *vma = pvmw->vma;
->>> +	const pgoff_t pgoff = pvmw->pgoff;
->>> +	pgoff_t pgoff_vma_start;
->>>  	unsigned long address;
->>> +	pgoff_t pgoff_end;
->>>
->>>  	/* Common case, plus ->pgoff is invalid for KSM */
->>>  	if (pvmw->nr_pages == 1)
->>>  		return pvmw->address + PAGE_SIZE;
->>>
->>> -	pgoff = pvmw->pgoff + pvmw->nr_pages;
->>> +	pgoff_vma_start = vma_start_pgoff(vma);
->>> +	pgoff_end = pgoff + pvmw->nr_pages;
->>>  	address = vma->vm_start +
->>> -		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
->>> +		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
->>>  	/* Check for address beyond vma (or wrapped through 0?) */
->>>  	if (address < vma->vm_start || address > vma->vm_end)
->>>  		address = vma->vm_end;
+On 8/3/26 13:54, David Hildenbrand (Arm) wrote:
+> On 7/31/26 18:43, Paolo Bonzini wrote:
+>> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
+>> the reporter to help with testing these patches.
 >>
->> Am I wrong or are all all changes here completely irrelevant for this patch?
+>> Right now, users of .pfn_mkwrite() have no way to create a PTE
+>> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
+>> will have cleared the writable PTE bit, users of fixup_user_fault()
+>> will see a read-only PTE and have no clue that the page needs
+>> a *second* fault to reach its final status.
 >>
->> You mention
->>
->> "This is necessary in order to determine the correct VMA page
->> offset in vma_address_end() when pvmw->nr_pages > 1."
->>
->> But I don't spot an effective change here.
+>> Handling this in fixup_user_fault() is problematic: the information
+>> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
+>> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
+>> knows how to retrieve it.
 > 
-> As per commit message:
-> 
-> 	This is laying the groundwork for eventually using anonymous page offsets
-> 	as the index for all anonymous folios.
-> 
-> 	No functional change intended.
-> 
-> I cannot enable an effective change here, because if I did I'd break the kernel
-> and introduce a bisection hazard.
+> How is mprotect() supposed to work in that case?
 
-You can just throw in a patch that cleans that up and avoids messing with confusing pgoff?
+Hi David,
 
--- 
-Cheers,
+not sure what you are worried about specifically, but fixup_user_fault() 
+catches !VM_WRITE VMAs and returns early (see vma_permits_fault()).
 
-David
+Also, do_wp_page() has the comment:
+
+         /*
+          * Shared mapping: we are guaranteed to have VM_WRITE and
+          * FAULT_FLAG_WRITE set at this point.
+          */
+
+before the call to wp_pfn_shared() which is where .pfn_mkwrite() is called.
+
+Let me know if this was not what you were asking.
+
+Thanks for the review of patch 1---I mentioned here in the cover letter 
+that the name was temporary and I'll take your suggestion.  I can either 
+use EXPORT_SYMBOL_GPL or switch to inlines, but not both because the 
+existing functions like vmf_insert_pfn_prot() need to stay non-GPL-only.
+
+Anyhow, now that the series has a Tested-by I'll clean up everything, 
+and repost later this week.
+
+Paolo
+
 
