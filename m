@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 876A7C5516F
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 05:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CDF9C55162
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 05:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBEAB6B007B; Mon,  3 Aug 2026 01:33:56 -0400 (EDT)
+	id 5345D6B0088; Mon,  3 Aug 2026 01:34:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D477E6B0088; Mon,  3 Aug 2026 01:33:56 -0400 (EDT)
+	id 4E4226B008A; Mon,  3 Aug 2026 01:34:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C10BF6B008A; Mon,  3 Aug 2026 01:33:56 -0400 (EDT)
+	id 3D36A6B0092; Mon,  3 Aug 2026 01:34:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D186B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:33:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20D521C0B2E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 05:33:56 +0000 (UTC)
-X-FDA: 85058841672.30.D431559
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EA7A71C0004
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 05:33:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bUaz5LgE;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1794E6B0088
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:34:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9F8ADA0615
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 05:34:07 +0000 (UTC)
+X-FDA: 85058842134.06.E018F80
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 75808A0007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 05:34:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VxNAtEJW;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785735232;
+	s=arc-20220608; t=1785735246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MuLECA5wEc+VuT7fskiCgEgJaLOrznwzNQPZMRxjVd4=;
-	b=pRx8uFAeploxXPLNRza1SFxfzuunamzmhlxBSaJ6+TptWYXV+5bN0lH58xtPJfLQ7TgZLp
-	PQovumshAJs8ecKIo4QJh7l3iXSu/mqO2cOoXkBb9eYRoAS7pRApjqwIYpvUUXeKhYwuxK
-	r9LGIYY1r32/FD8z5zhU311BrymrYKU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bUaz5LgE;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=mF2nNofqE/1aZcEINmVMZXFzL7fXY93UAMZ3+IRnNek=;
+	b=PJ47qvGfEWgQClAtu5fTGHegkLkVg/9KGpUpcL3x18O3sXigzq+nNzFhkfcsqHWI7QOFXW
+	LImX4M2wig82xA4FnQlkJPXNS+sTVGWOPnN+xvQoOyO/rPBPzXKa0zOROSvQCjlKzM+OFw
+	E5z3e7M2BXjGXWAS/jyuVSf5RF4nXVQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785735232;
-	b=p47BzqWwOoPdDBRoNqf+0TFbsJ2mBTT0K3vKlFsehKyBnUiRIo4ySFMyeb+02701FSY62v
-	CWAw4xm2xzNPoo04r3JRJAIQ/vi5AUbl8kTpI+0VfhWn7itd04LA7CzSxp3eZ99M1hDHcg
-	ft753tpu2vFZNaMU9wIAY1yoF94caC0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785735227; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=MuLECA5wEc+VuT7fskiCgEgJaLOrznwzNQPZMRxjVd4=;
-	b=bUaz5LgE//bVKlBxQ2ks+Ju2tLXNl+0IwXCP+oXSi4Rdm4wpR3IwMtuTP3Lwlno5+Fvb6Kt3OiFD+YBEA0GvU5hOExZqFed5AN6AAJ9D5tV0WHT2GExBoqTCIN5kZl+lZsfUvFvuihOX9KMXvOCSmlXdwrNBe3ZeBmYWeZevny8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R361e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X8FRsN3_1785735224;
-Received: from 30.74.144.148(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8FRsN3_1785735224 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 03 Aug 2026 13:33:45 +0800
-Message-ID: <e9ad4f78-b4c6-42a7-a746-069739db00b8@linux.alibaba.com>
-Date: Mon, 3 Aug 2026 13:33:44 +0800
+	t=1785735246;
+	b=oZCLDJMmM/2u2xRKCDA+kNce5VRdgn12aXPtBLreyV29xHcv9c+z9lu1D6mo0NDKJnesDP
+	eWL04HFwlFP+X6WZLKc8gaYCqHpEh+IrOqpLMx3msaj7FC61ioAgbNuA9VhHg8EIYqewQ5
+	HkU3tvC6uy+6Km8ywNZrq9wgw+ldObA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VxNAtEJW;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F694143D;
+	Sun,  2 Aug 2026 22:34:00 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 89BAC3F66F;
+	Sun,  2 Aug 2026 22:34:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785735244; bh=OwvH7HKnExVk5bb7qHumfOLl0QVPjZFJ5VQ9gIp1z5k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VxNAtEJWUmeEkUu0EcMEiqUWEttW+gczS/NRlAcK6sWKaWYF9ykm3T/BhVjzcpbBj
+	 NjCaqMnPz+IoO4jJhnysZOTs0UuPEcAdOjYiDA3VpgoqFQ6DsE1IceoFpn0jBQBwDO
+	 PythhqLRSOxyedcYTeQgQGxcgk4meMgDYf02n8F8=
+Date: Mon, 3 Aug 2026 11:04:00 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Wilson Felipe Pereira <wfelipe@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/cgroup: test_zswap: skip test_no_kmem_bypass
+ if debugfs is unavailable
+Message-ID: <47ho7uhwnbtjmqrdr5hzxuy2dcfb2dal7so6ztt7obmqepeuri@e7bc5dfit4tm>
+References: <20260801041255.752039-1-wfelipe@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 3/6] mm/mglru: improve readability of
- isolate_folios()
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com,
- david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
- linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com,
- mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- stevensd@chromium.org, weixugc@google.com, yuanchu@google.com,
- chenridong@xiaomi.com, zhangbo56@xiaomi.com, wangzicheng@honor.com,
- lianux.mm@gmail.com
-References: <20260731083843.37811-1-baohua@kernel.org>
- <20260731083843.37811-4-baohua@kernel.org>
- <9692264d-74a0-4a69-9d57-49a8c90cf41d@linux.alibaba.com>
- <CAGsJ_4yxJyOaNTfVWxeTH0PVED0fgExOod4ay3pRVYjFcf+BZg@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4yxJyOaNTfVWxeTH0PVED0fgExOod4ay3pRVYjFcf+BZg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801041255.752039-1-wfelipe@google.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 75808A0007
+X-Stat-Signature: 69qq668f5zfwppqm7wga54drdoecmux1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA7A71C0004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: dnhacfauuyheu8mf7wtgah8xb7ufdmzd
-X-HE-Tag: 1785735230-8794
-X-HE-Meta: U2FsdGVkX1+Lo07kKn1vz0I+YA01umRT8G0U04A82DsZD18ENG/eOItZeegJ1N7xyBQHUS38nIYXz02tegGyW1qx3xnrh4RNuLfapgC/FQK4H/5vG+ypgtQNrjOgU0MXpfsZ82XRUPKX+UVa3PCtHNINDubuUJQbQCKj+LlNcIHjMS/m3fx2KTU08NjK8+TC9JKF/57FE80Sq4ULgqP/NiyFFv9DkOK7+kNXlEJSQx4O7nK+Pe+DtW8PL7ubWKyNxKsAG/eyze0/Wo7/+Tdn5QZWJJI/oSZqnS6ytBRen6gUbqa6eJQP48qvoJ0Wxz1HPcZnXy/TktXenUTGacUKfUNfRCtG2rrWTHtPY/gBFh2qAXgSj+KraYSIjHzT1ntEGQ0Ex73pBThE/uA9zxMifb+UoOVXe6JDRo+gQak96HETxRzjRGqWgwQyrXWwf7CmWTHV55qHU1DkATKFD31zosHn6jyQVKIwFKGqL7hXmJTlGELomjs3pFCjquG1U++mckPm71aESkBXB5zgWLjkmZPTIikCUQRpheV6T9VY+e5J/uMXFo8iT/qnedzxvA3FRt+PBQ4YKMmU+oZL9MPx4xcwmNZlW9cgAXaeYZa3Ts2P8yAa/npAT6a3/bB5M7Bye5Fj2uTrn+pi3OP1nD84ce6W8WwuQwmzIEMcX5twQAm975l/mboeUxOFPvaJgW2SuJnQSzYXVQ1cdegn4v97YbdDibk9ShLiynf3qKrBMptDo2E6ELJM93MKz//mVSpKkTCIxA9lGAkdwBjvbySh9OwOHtYWIHSXr+RAAdfYapxyo9kOX9Udl15gasnEX3IC2iZbmQvx6Iaf9QOoR3XAeL0cESereDxodpJNtyCogUXuwOUYfNJgj8s1c2pJa7HfaBske1rRERFiMQKs83XGgv7trIhJ5CS9ajcRIo/Jktrogzus/RxwOmAFbLElv6wWaRUkVAnPrG2p57/NqkA
- l8Rm/yeN
- 7Chp4mhlob2WDfh2lH9HJ9nocsK237MNx77e5KIUJllFWfN0XMnnnlqp04Lz+3QktZFTCKkf3o+sDkB9DWnB2MsVMn/srkq0RmsTZ/7LB/Q5DiQToiMR7v9HcsNG+BLk55lTKjH0o4Aana0Q+4zAaAKFIy8X3lxbn5wgctVX9o/XyeyjFjN+HhkACDe2xE2VaITjed0Kh7JwvvI4OyKVmN/XMaUnZNh7+sNB4LfnVG7gIPXC+H+1Xf9NZW1qQ26an8ckZStjj1IYJrMlKeJov/zXawEPqkP5ZEI+pCfFn/XLlCKQ/+tB2FArBNdH/d0GHtBcu/Hm1rMcv6ngJq+RPYs4v+ePthFFqdxKy1y0LesabbV5F9Wwvy7a/MPSOVBL0hTeQrXRixZRg9PKfi7zgvktHRCeUWP860zGAZb5gRzEzhjYZhVotbty5XFAaqZycA1CguoPG4PFVCO1cnYYkbL1JyWowfJ86olTUIIv/P7zGlA2R644rYRZyaQ==
+X-HE-Tag: 1785735245-127217
+X-HE-Meta: U2FsdGVkX19Dzqlt2FZWJ3X8FGz3C7SYDc9V2Re57CoxoZ72IiOBH8fcB1NZmAkYkRaJpVY5fjpsnxw/fJjBd1LCQtD7VxJxhCC21p0a73/4Vzg/27LHEtljwCwqgx16p5n1qJG2L29a9iLzHlvdSVKSziIhSiqhXoal5aiT/FFK9Y2YDO0qX7a3resG0xgMYr8lH2fe9blXXgVYcpWw/DhnOPK3m0MvZf44szL4x52IpjC56+NrQqmoqgYeOHMe42eRHECBQ0hlQpmWpOJdIJXvgAkWBdRGFmLzlNVCMwstc7gf0fiGXNE0mU2RwPPmt/SDVnkW7znw+NtrKa6ZUgkUL4oq7seJe4hDzZvSXe7ftv3ra6nv0i2PlM5ntGGESOs1yLrmqxIOZGJn1fV2LjcXEfmvOPPa1zObhzcUfubJyJtA04gfUE10BoAV6ZFGqodIGzdFPechD8BXXdbNUbxRy3Dx8fp8fO3jD7DYYD1Wn47ffaqUc7q1Iqf1TGlosIEeevSn3aCJkj9J1zETGFbGe/AfB0+ZyAIMs20yimDoMx+0sR0jv1a5tNAC0O7bAVtjcrT6zsU1lvD4qXJreYel8oEYBMYj4kHMkQ8zOwr27lesRO6StAYaUjH03QlGOXI4+wcnwmo1ni6ZeFvnAGg7ndYVZsF4Mz2CH6bZcD1YgP24vBV8X96UNNKMt1gF6bMFM4GwHY9s8ERhigb6VZNshCi6uEZ+dkdWpIdQCBLRzjGIDFRXPa5j/uFO9+V2Ui1pXOHJU6SBaGQ6wG5OtmAImyIr385FH4pqqq31pAC6gp1U5xMLlfzJ+H/ug4PEjWMujJUJ1w4B00AoqIG45pnTCDnuIqeloG7p6GzwNiSDPbKuHkQRcd/Q03UU7xYrV361mXRpvm3m3ZxCUs9u5IEDCggsdXIgi+12P0I0r6yTWXFjIR/mfWdHiPNvWdMHChYxX5L7X6sRlXc76ku
+ s2syjI2A
+ pgIR4k+XCFtCStlcoLMJ39i7zjPbnzTflvXvK3BtHQIJHGNNYXABgjAu+s9tWk4ICGtTfvjFYX72KYHaCSSr5S9FiVGVsUF5ZbFY2rVlzyx6K48o3d8/uDJAMYRe8CSna6IR71E3wcHW4ONmed34r9izs94sFexMff3oDXu8FzsLAanjA58fdAVwArjylbqrfaw4hncwAAL/lMH//3C/F0RhiDh/YuCJE33jeSWrKjQNpC5X9lT33pbgyAyq/6Jy1RU2NT7/tY0vaadtW7ptS4AMNuUaapPfsYLm3I56GnFj1zseVFe1lVHipBz4ydDVFPjfKVv8eb6TnosypkB7QkjyWFHVMo71j4/64IDHzO+tNnNSB8yhmTgR5f9JBVEMVfulRwRwGrbge6EoEHMDIiNP2PA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,101 +91,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/3/26 12:46 PM, Barry Song wrote:
-> On Mon, Aug 3, 2026 at 11:22 AM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 7/31/26 4:38 PM, Barry Song (Xiaomi) wrote:
->>> From: Ridong Chen <chenridong@xiaomi.com>
->>>
->>> The for_each_evictable_type() loop in isolate_folios()
->>> is misleading: it does not actually iterate over each
->>> evictable type. Instead, get_type_to_scan() selects the
->>> type to scan, while the iterator `i` merely bounds the
->>> number of attempts.
->>>
->>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->>> Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
->>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->>> ---
->>
->> Good cleanup. Some comments below.
->>
->>>    mm/vmscan.c | 47 +++++++++++++++++++++++++++--------------------
->>>    1 file changed, 27 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index 31947fa60f18..0038f33aa318 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -4828,35 +4828,42 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
->>>        return positive_ctrl_err(&sp, &pv);
->>>    }
->>>
->>> +static inline bool is_single_type_reclaim(int swappiness)
->>> +{
->>> +     return swappiness == MIN_SWAPPINESS ||
->>> +            swappiness == SWAPPINESS_ANON_ONLY;
->>> +}
->>> +
->>>    static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>                          struct scan_control *sc, int swappiness,
->>>                          struct list_head *list, int *isolated,
->>>                          int *isolate_type, int *isolate_scanned)
->>>    {
->>> -     int i;
->>> -     int total_scanned = 0;
->>> +     bool single_type = is_single_type_reclaim(swappiness);
->>>        int type = get_type_to_scan(lruvec, swappiness);
->>> +     int total_scanned = 0, scanned, tier;
->>> +     bool tried = false;
->>
->> The tried' is a bit confusing. How about 'type_fallback_allowed'? Or
->> other more readable variable name?
->>
->> In addition, the 'single_type' variable can be removed, and just
->> initialize 'type_fallback_allowed' directly:
->>
->> bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+On Sat, Aug 01, 2026 at 04:12:46AM +0000, Wilson Felipe Pereira wrote:
+> test_no_kmem_bypass() needs to read
+> /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
+> verify that compressed pages are charged to the memcg.
 > 
+> When running in an environment where debugfs is not mounted or
+> CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
+> loop to terminate early and report a false negative (KSFT_FAIL).
 > 
-> Yep. It seems we can simply use type_fallback_allowed and drop
-> tried entirely:
+> Selftests should not fail when if debugfs is unavailable, and it
+> should print a message when it is skipped.
 
-Thanks. That's what I meant:)
+Agreed.
 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 1ffd96c87bc2..358388b49a70 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4840,10 +4840,9 @@ static int isolate_folios(unsigned long
-> nr_to_scan, struct lruvec *lruvec,
->                            struct list_head *list, int *isolated,
->                            int *isolate_type, int *isolate_scanned)
->   {
-> -       bool single_type = is_single_type_reclaim(swappiness);
-> +       bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
->          int type = get_type_to_scan(lruvec, swappiness);
->          int total_scanned = 0, scanned, tier;
-> -       bool tried = false;
 > 
->   retry:
->          tier = get_tier_idx(lruvec, type);
-> @@ -4861,9 +4860,9 @@ static int isolate_folios(unsigned long
-> nr_to_scan, struct lruvec *lruvec,
->           * We are running out of the current reclaim type. Fall back to
->           * the other type if allowed.
->           */
-> -       if (!tried && !scanned && !single_type) {
-> +       if (type_fallback_allowed && !scanned) {
->                  type = !type;
-> -               tried = true;
-> +               type_fallback_allowed = false;
->                  goto retry;
->          }
+> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> ---
+>  tools/testing/selftests/cgroup/test_zswap.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+> index 49b36ee791606..c4f7b66f1b206 100644
+> --- a/tools/testing/selftests/cgroup/test_zswap.c
+> +++ b/tools/testing/selftests/cgroup/test_zswap.c
+> @@ -566,12 +566,19 @@ static int test_no_kmem_bypass(const char *root)
+>  	int child_status;
+>  	char *test_group = NULL;
+>  	pid_t child_pid;
+> +	size_t stored_pages;
+>  
+>  	/* Read sys info and compute test values accordingly */
+>  	if (sysinfo(&sys_info) != 0)
+>  		return KSFT_FAIL;
+> -	if (sys_info.totalram > 5000000000)
+> +	if (sys_info.totalram > 5000000000) {
+> +		ksft_print_msg("requires less than 5000000000 total ram\n");
 
+Agreed - should not silently just skip the test.
+
+>  		return KSFT_SKIP;
+> +	}
+> +	if (get_zswap_stored_pages(&stored_pages)) {
+> +		ksft_print_msg("debugfs at /sys/kernel/debug is required\n");
+
+Could the error message here match that in gup_test.c for consistency
+and probably later on these could be factored out in a macro constant
+
+ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
+
+> +		return KSFT_SKIP;
+> +	}
+>  	values = mmap(0, sizeof(struct no_kmem_bypass_child_args), PROT_READ |
+>  			PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+>  	if (values == MAP_FAILED)
+> @@ -604,7 +611,6 @@ static int test_no_kmem_bypass(const char *root)
+>  	/* Try to wakeup kswapd and let it push child memory to zswap */
+>  	set_min_free_kb(min_free_kb_high);
+>  	for (int i = 0; i < 20; i++) {
+> -		size_t stored_pages;
+>  		char *trigger_allocation = malloc(trigger_allocation_size);
+>  
+>  		if (!trigger_allocation)
+> -- 
+> 2.55.0.508.g3f0d502094-goog
+> 
+
+Otherwise LGTM.
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
