@@ -4,112 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A294FC55162
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 01:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B051C55174
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 02:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36A986B007B; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
+	id 94F5F6B007B; Sun,  2 Aug 2026 22:06:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 341BC6B0088; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
+	id 927F26B0088; Sun,  2 Aug 2026 22:06:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2304C6B008A; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
+	id 864F46B008A; Sun,  2 Aug 2026 22:06:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E369F6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:31:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA9D1A05AC
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:31:57 +0000 (UTC)
-X-FDA: 85058231874.12.BB88641
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A533B1A0002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:31:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=hHbdq4au;
-	spf=pass (imf19.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D7EAB6B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 22:06:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8044A1EB5
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 02:06:55 +0000 (UTC)
+X-FDA: 85058319990.02.A116B34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6503A140007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 02:06:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vOC3V1kj;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785720715;
+	s=arc-20220608; t=1785722814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=09rkTuMDDVqF9abH3X0B/t3sherUeOedU/4OBZrumvI=;
-	b=cy0vLENRAHkyOzN7uQXimeKKVT/khBIZ2tVDDKxNuPPFqQT6+BnRYKdXS+q24hTBmlnvbs
-	AcJitIvW+fcT7MloDcgp/ElOTqd0s3kQUYva1Ejj1ZkXMf7ArsgiWR5qzgJcSNO0G1HIYS
-	AauMAF7NHQbVHpQLAwnm5tcUt+rxaxg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vAtto6COYpowGn7w8xEz/ATwLur92gvwTqS/9hGpRTs=;
+	b=ZxNCGH1X6EguM/FoLGwd4mGN9y+4w1xvBhErvCYlSn3XiLwKEbfmaAgP/ug0rs90Uc4A9U
+	enGf0uZcY7dckMIB2KdX2mMNNUcPoIA9ve79ZnsCnBlwLhbYG+vfB1AVP6vVMeVsml40mS
+	HJNQSptTnz1PYD00ad8fcELjhuNG5NA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785720715;
-	b=ht4LNDEljujZg7GdQq/OHLwkMRjpGnQkq/BqGAJ2qXhQmdGDvXIg6e3L4itz3kQ3zp63i8
-	kFyOO+cYbgk9MHpXNRJRj7yfGk0FMx0kkT7qVqtEiK5sL1hPlCXrn1RgcRs7lN8cnJwJDJ
-	QFg2kuS9lohR1IHG/ysCy/DnxmEO0X0=
+	t=1785722814;
+	b=h8OaZILLbfHx4qSjSj3+LyQg/C5nMhYqRlLIXngux/jenhmxLv10V751r7Q9x5BbRwKSHs
+	7srcoHygecuLXQWyFrzKpDm511fFg3QVT9oS5GGpT6hSF5nyJWaI8Vw7rS5Gx6q0H2sI0p
+	9EK3rXJ4kfVM8It1eFdlPSyhMDhxyzY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=hHbdq4au;
-	spf=pass (imf19.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1785720654;
-	bh=09rkTuMDDVqF9abH3X0B/t3sherUeOedU/4OBZrumvI=;
-	h=From:To:Subject:Date:Message-Id;
-	b=hHbdq4auDq4ewFwLLVu+AyeTdfVnrigxl7vWKGimytBHudjH2RW3EPUayLjnyYBjL
-	 izbtHsO5tknu9cC7ifwc99GppE1AfQQqnuQkDq0h19N64eHdFJqCcAsq9j/RGreZpw
-	 8KCSurEsSxwvtQ9k06EV2kzvjZP+A54rTiQhNehY=
-X-QQ-mid: zesmtpsz2t1785720645t91937be5
-X-QQ-Originating-IP: bzQf6HnNiJZYwmOVBHh+2fwKuDqnUpmM2SuA4MLcqjQ=
-Received: from localhost.localdomain ( [113.98.201.214])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 03 Aug 2026 09:30:34 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12329309936361500638
-EX-QQ-RecipientCnt: 13
-From: Warren Xiong <warren.xiong@ugreen.com>
-To: akpm@linux-foundation.org,
-	shuah@kernel.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Warren Xiong <warren.xiong@ugreen.com>
-Subject: [PATCH] selftests/mm: read memory information without popen
-Date: Mon,  3 Aug 2026 09:30:15 +0800
-Message-Id: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>
-X-Mailer: git-send-email 2.7.4
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MvEJ+bjyN/5DUN+4NULqj7ZVA2R91Rc9YXEuRgxs6ST1csaLr6YVrMR+
-	beVKgz0Og8dFqNSOdTqzrJkX6EikjfyiipYzLI9bojkPGVGzFvoNCOcZYBCWZtukavsf2lT
-	MBc5eSLnzjWZawWRKcEIWFxADhthBo5WQiCHgTzfouGMspuqxgMnlqOBw+ad83g1YNyxQBX
-	ySz9noUNkbG/t7UDllFyHNcYFh3qCk1nMoSCt10R3T6banwAs0Ftb/Eqllc2ubvcKVL7wZa
-	/1Gwei6PWmx13MBG4OyrU7rwc+nVx9QfNeKcIDHOWCDVpTDkeHS+vpL1NHN6GFFkA0dyyZu
-	tbvuF5R/2DmOFzmLAz7Ti8FTdKt/5QJ0cwZhRW5kGdX3Sq+aAyO2JE5Q3DOAaqypr8MBxRR
-	mxhW1k3599TRqb1I/aIjDYnsWy9OCOn6W/p8TB6wr9123oPeZ4tHnm8tGRslTWzeYdrfxon
-	S/oUcXWn/yTFsAD/eN7hBXvjggHDFBdXEA7mGeQPd9jMUsaQrNndJa9KHfdxTxs1z00NDgk
-	4dX4XCKdvH/iPMtBcVZY20zyVZLTlwaFUL5l2FwUTO/DmWNwZv+DPAio7Ac6MaK37Dojeaa
-	v+hMTr+KkzmXOXAEjGz+lKaAnWTP/qE6P31EegVBbI81JgzS0VWr0YSTbBOMFeVAeNUaOaP
-	7HO88LFLkuVxC9fmRpO0E4nfBocD3A0757YxfQazuLeY9+fpokTaa9ISCIQnko/EFSwoPuo
-	MBhTASxSoY7mfssyhmZAL2rUELWSrXcOP/9wHZTr9mkcxzUhPqHl6aARrsurIjCe75Pgupp
-	N21M6PjG+p16JEkyR+chdzxuSJYqYUVmZKjhCSbk7iwtYU+f0crwjOxMpOgJM3PuK9J2/GJ
-	jZYKlzSzO8UPkX1kMmPhs/CzTeSd3hNK/HLBGI10lPojySKAQSTuxQbp3Iq9YlYqb2G86oP
-	6qSKbWN4vGbFSlq5d1WOYMihEucf00gEombfpcZJD6+gKMR0DE3P43ZGEHAgRxWmKQ44yPR
-	UMYLSO0ilPk1p4pPjl69GMffJ06EG7Gc5T9UMd6zcfTrW/loktjOAx959pC1i6IG6jsiR4L
-	8fKzCqU5KE6EP5zZdhSrOg=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vOC3V1kj;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vAtto6COYpowGn7w8xEz/ATwLur92gvwTqS/9hGpRTs=; b=vOC3V1kj1md7BOyGrPCz6hcIlv
+	ciInho3Qww7CYBFz9ZhzGnt28wUH61GKPzt2YqnvWtLF28Q3VhwAAvwe7SYmKgV6kyuuuTluxeK/v
+	xMsiQbQSvDjYtLT6gvSFGNpeXn3Ut62n7C4zKXkTwithA+Y1fLbLJFeSL2rSQ3hih7D07ICb4l29T
+	qidI70jz9YMXBdEXpcGTxxq+QKH4Pxw/pAujdhSgPQWeUBLB+BpJ0j1/ANI1PiwjY6zpScj9bH+mb
+	5+PCwgcsP5S15rNoeixaXQpq+DR7cyUeg1mFXUqMod8Spu16XjKClg/FoihZGIVOha75UM1hVJHoI
+	w65rKB9w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wqi4R-00000000G7T-1IcH;
+	Mon, 03 Aug 2026 02:06:27 +0000
+Date: Mon, 3 Aug 2026 03:06:27 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 4/4] ceph: remove page_snap_context()
+Message-ID: <am_3oyOJAoFeBFTC@casper.infradead.org>
+References: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
+ <20260802-remove-wait-on-page-writeback-v1-4-6c35d6b3ad36@columbia.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260802-remove-wait-on-page-writeback-v1-4-6c35d6b3ad36@columbia.edu>
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A533B1A0002
-X-Stat-Signature: whwxdmz9ygiyxesyzuygcb5wprmejx5h
-X-HE-Tag: 1785720714-643216
-X-HE-Meta: U2FsdGVkX19yYhCfZZ7XC2MUpAd898J3MpXCj3/mrLFaf1WaiBLm1/v/jAo0WLH7y28xGUYgrd1JHY8kqtF0e9HTH8ZnRXYGnNuO9L86XnV1YSYorvEc5r72/zMzBKTVp0HooNnSyVba7O2/lkjfQhOmR2Pkd0kqXA4TPay8Zu3pgA8931g5iyjUtxxPVzt/K6LEhdSXpUdcLn8EIzOj+vn/xe2rGMbCDailOzbxcFGjeUCV/FjNLBC+jL/dVeL5gaIFfw6kolscmOhL6s9IIdINELGuRXSHWl0IX8qSUNn0khZW62N9FkDOz4AP8bpy6flzekqd99acp34x3UC44OIWpwq7NRT6bGoaw8nIG8XwfymR6O+GTUNu9ZiqI8IGq9Y3Mb1nw6DYKlfSCHss9/iBcZoWttK+QMwidMzTC/22dtobKlrsgIpPuVjOiqJDkqluFV1D0NYNMxDSQzoaUE8/QyuTbItdVGLpIhykup3lx+x4bYYUyd17aSBMdHRoZoiqXSC66Y3UDIsUeoCTOQaT9xcIeGYHBH8Vn3IAJwExaGEyaDumOLifRADC4iqETgh4xgTRUsNRz16VgP1LEu3bKL8a/uNh1w+bJiVKTbCjTJTToxJR66gqljDPAdG2aWHPh5/0r3E1tPi+VFBguje7Reqb0wMgGbBjp+A5tL4cMZZRgfXRiwS+yiqLwmtEzu8nJK4X8JRpeGl2WrwqIhhq15Fb82Jq8JRlpQjWkNGZoPnRC2Qqo6Ah2puIZ4fYt2Tn8Nc0pGo0dUSlAlgLsIWrTeFvoAlfFvlaHzQkGN6VT3D/6g/IDHFyPmw92auqhJ/TlBV5Q/qh62/TqW+ChMq9KT1MGhB+BQRhOBJpzqJIaYsmE1ibEm5h6BoTuZ0CTz3Ipm6eTkE/nqxNen4PpOFLjdYHTe1bJN7d0l4SNtV36iIYm1r7WYPYesYgkEK9+UzBKMBHvhkWb12kLa5
- 00pOzO3m
- CgEZ8WrludxtwlEHF+ZFXuRej5ss6lMp35FL0ZJMTCkmaTfGynj/M12OVIOWVQAAxNOKs1qWRJT0mAjiW4Q+BjuoDVYPKtysByKPKeJEvIvR8cLBdAqTL+1YdHVkYHbKSDFoo2I/tAJYvxG4Y6vU1CUIYSEyMnbYxLtyKtP/IG/Kg8NndZ3mtAcfGg5EIpe/hN8Qar5ZLpjd9hh8l5S3Erf71UM9idmaa07OYKLKbJx4BbTF/sB8RRNm2hmmQ/59yqDpjmKrhwqOsVfnX0mB4lSXOiKjFrASN3PW78frNIZkV6dHOW6MwxA7Gd7iant4Wf2ScPoU4GRYztElCjZa3yPKZtQ==
+X-Rspamd-Queue-Id: 6503A140007
+X-Stat-Signature: ndiotcdanqsrpntuek1jjw9m8jp87guu
+X-HE-Tag: 1785722813-953335
+X-HE-Meta: U2FsdGVkX19y3TyYecWsQuCjjCNLFKECSwIq3NyXEQpP+2hWjv743mgSQv815EQzAbMc52Y5zUiWjT+fbgnP6J/LtA93imHBnHIDr1yTS7ZEp5slw0emCcd2FvWjQDV4YE5eN27Aird5aPaO6yAeD6WBBm5045eEvbSuxhMnau44bfWIOWpETzasOl/GLkHLzm5k74dqaWwjUshDdUEujH4TZnfnyvC3i0Ly6YZkMm5iZWO9nJ/guRCPT5kT85fNTCHFntCC60IttV0/vawypxZgwdPkSxsDh12k7BpNQy85GcCzd1jF27r1tPRLCpJDs41rFJOTNHaUlhC6Ybkh532e5wX40R4reHwn8TzmObsU1uqKwHa29vcCLHoNeIz6RFogVDMMjkfVCMkvnSS0NLKtEoHCwf6A8WAYqLTaisyv+jfYg6q/fKNn0O5ygLApNHFXNknWnzvBKnWxh/R3igPGGdvPwyHTh1TY49L4C8fGPi7/hZbYmwT5SjkbTUA3If91fY6IFy0tNqXDu16loRgKQMv8imiaMjrdbE0+jFkatUWPcyGpEqof4CSp9dK46dPDY0oq8FMcqAAxtl/4nbb3/C/kO4Q0yNtsrczDE8Vx+Bpk9EkW71Zinuh+vwuKF2q01LQE6Xxggl3Vdma8oamXMkhD7aOnKRc8FM/xzCcpTCa2beYKXpGUuCk5IUg1XPyx3zPHL4TkhHUi3OAku/IsSXsvjFZfPahyOSPaj20tfGkxnIrF1pQWP2TmkKojjcX5jkLsMOeL4+Edizs7ZPe0K/LUhWlLolDQt84PLRbMc4yqata0qN6H3e+E1h/b5Rc8wqAp0bRwtitmbkd9YiDNg/Eq18GWLcmm/Wa6Y4MoeVMY9X0YadbWn6t4a4vGwyZoyJkp5JTah4Wxgruwnnc2ayXZvvx5pydy3r3DNjXdBul7Ewzp2zDKoO58KmC4RMeOieoVG7Pqfui81+q
+ CqGXC+7V
+ 6gYFYd5wRryIic/aTGKPN/cUArkCqhh9efVrXRtUG42DmQ+NljHo47PJmn7WJ9KoyTgkFSiW0lwDZGquAcBlmYGFuqTE9U80ZnX71T212LMUKQWKXCXSX+vL46g8nXJ7wLQCSUTWUrvSDx6QmQGvYcJP0DUA821orAOeY9ojLdLbrHVB46CSRRGsxlOOjKldk7p/3vpUy1HeXM5bKtQF3/o6m68U23CKtc8wRsnJL+ml2ne3gYw72hH6CY6rE6C05j9RiaOBQ22IfrmrqgMBSpMuHMcCp8UCn4U/i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,92 +99,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-read_memory_info() invokes two shell pipelines to obtain MemFree and
-Hugepagesize from /proc/meminfo. It does not check whether popen()
-returns NULL before passing the result to fgets(), and it does not call
-pclose() when fgets() fails.
+On Sun, Aug 02, 2026 at 12:50:05PM -0400, Tal Zussman wrote:
+> Convert the final caller in get_writepages_data_length() to use a folio
+> and ceph_folio_snap_context(), then remove page_snap_context().
+> 
+> This drops the last open-coded use of page->private in ceph's writeback
+> path.
 
-Open /proc/meminfo directly and obtain both values in a single pass.
-This removes the unchecked NULL path, closes the file on all paths, and
-avoids dependencies on external commands.
+This one I'm deeply conflicted about.  It's adding an extra call to
+compound_head() ... and we're not getting much for it.
 
-The compaction test continues to pass after this change.
+I'd feel better about it if it started with::
 
-Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
----
- tools/testing/selftests/mm/compaction_test.c | 43 +++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 16 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 5b58258..0df2000 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -7,6 +7,7 @@
-  * allocated.
-  */
- 
-+#include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/mman.h>
-@@ -29,30 +30,40 @@ struct map_list {
- 
- int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ static u64 get_writepages_data_length(struct inode *inode,
+                                       struct page *page, u64 start)
  {
--	char  buffer[256] = {0};
--	char *cmd = "cat /proc/meminfo | grep -i memfree | grep -o '[0-9]*'";
--	FILE *cmdfile = popen(cmd, "r");
-+	char buffer[256];
-+	bool memfree_found = false;
-+	bool hugepagesize_found = false;
-+	FILE *file;
-+	int ret = -1;
- 
--	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
--		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
-+	file = fopen("/proc/meminfo", "r");
-+	if (!file) {
-+		ksft_print_msg("Failed to open /proc/meminfo: %s\n",
-+			       strerror(errno));
- 		return -1;
- 	}
- 
--	pclose(cmdfile);
-+	while (fgets(buffer, sizeof(buffer), file)) {
-+		if (sscanf(buffer, "MemFree: %lu kB", memfree) == 1)
-+			memfree_found = true;
-+		else if (sscanf(buffer, "Hugepagesize: %lu kB",
-+				hugepagesize) == 1)
-+			hugepagesize_found = true;
- 
--	*memfree = atoll(buffer);
--	cmd = "cat /proc/meminfo | grep -i hugepagesize | grep -o '[0-9]*'";
--	cmdfile = popen(cmd, "r");
--
--	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
--		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
--		return -1;
-+		if (memfree_found && hugepagesize_found) {
-+			ret = 0;
-+			break;
-+		}
- 	}
- 
--	pclose(cmdfile);
--	*hugepagesize = atoll(buffer);
-+	if (ferror(file))
-+		ksft_print_msg("Failed to read /proc/meminfo: %s\n",
-+			       strerror(errno));
-+	else if (ret)
-+		ksft_print_msg("Failed to parse /proc/meminfo\n");
- 
--	return 0;
-+	fclose(file);
-+	return ret;
- }
- 
- int prereq(void)
--- 
-2.7.4
++	struct folio *folio = page_folio(page);
 
+and then we had a ceph_fscrypt_pagecache_folio() function and
+ceph_fscrypt_folio_offset() (we already have a fscrypt_is_bounce_page())
+
+That way we'd have this function entirely converted except for its
+argument, and a future patch can do the conversion with little fuss.
+And we'd get rid of one of the four remaining calls to
+fscrypt_is_bounce_page()
+
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  fs/ceph/addr.c | 15 ++++-----------
+>  1 file changed, 4 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index f4aaf9a5f196..702cf5fc1eab 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -29,9 +29,9 @@
+>   *
+>   * There are a few funny things going on here.
+>   *
+> - * The page->private field is used to reference a struct
+> - * ceph_snap_context for _every_ dirty page.  This indicates which
+> - * snapshot the page was logically dirtied in, and thus which snap
+> + * The folio->private field is used to reference a struct
+> + * ceph_snap_context for _every_ dirty folio.  This indicates which
+> + * snapshot the folio was logically dirtied in, and thus which snap
+>   * context needs to be associated with the osd write during writeback.
+>   *
+>   * Similarly, struct ceph_inode_info maintains a set of counters to
+> @@ -68,13 +68,6 @@
+>  static int ceph_netfs_check_write_begin(struct file *file, loff_t pos, unsigned int len,
+>  					struct folio **foliop, void **_fsdata);
+>  
+> -static inline struct ceph_snap_context *page_snap_context(struct page *page)
+> -{
+> -	if (PagePrivate(page))
+> -		return (void *)page->private;
+> -	return NULL;
+> -}
+> -
+>  static inline struct ceph_snap_context *ceph_folio_snap_context(struct folio *folio)
+>  {
+>  	if (folio_test_private(folio))
+> @@ -697,7 +690,7 @@ static u64 get_writepages_data_length(struct inode *inode,
+>  	u64 end = i_size_read(inode);
+>  	u64 ret;
+>  
+> -	snapc = page_snap_context(ceph_fscrypt_pagecache_page(page));
+> +	snapc = ceph_folio_snap_context(page_folio(ceph_fscrypt_pagecache_page(page)));
+>  	if (snapc != ci->i_head_snapc) {
+>  		bool found = false;
+>  		spin_lock(&ci->i_ceph_lock);
+> 
+> -- 
+> 2.39.5
+> 
 
