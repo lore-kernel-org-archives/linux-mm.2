@@ -4,155 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13479C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEFA5C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:19:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E2E16B00B3; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
+	id D3ADB6B00B5; Mon,  3 Aug 2026 09:19:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76D286B00B4; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
+	id CC4B16B00B6; Mon,  3 Aug 2026 09:19:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E366B00B5; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
+	id BB3606B00B7; Mon,  3 Aug 2026 09:19:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 368646B00B3
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46A061406B3
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:52:56 +0000 (UTC)
-X-FDA: 85059645552.11.C51604F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6EDEBA0006
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:52:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkG4C3U9;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 973F46B00B5
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E1B98062C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:44:36 +0000 (UTC)
+X-FDA: 85059473352.15.7191C64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7AB8220003
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:44:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmg9Y3uN;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785754374;
+	s=arc-20220608; t=1785750274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVzjQs3HFfWf+RuJQ4W4NrHFv6BkXFAG420ZywAGWLg=;
-	b=ZhlZUWiX97sWfEWn/Pi8f/UFuvEat0SQjags926zKAiEt6LSJ5qPA7m5BhbFV6GhfOp4yH
-	VOzNCZzLU3sNJgnN5jlwboCowRGZHCn55gpA6Q2hGc1+TQ1u+W3nFP9IcRSPwJOy+/SW50
-	S9R5rpAZy9yKL10B5caVrEKYcU5v0nk=
+	bh=KOhYheecQUnFVrVpCgpvGP/7g3mj4mAGi+KSC8/ce0M=;
+	b=NoDiBjdCt30knf7c6ttPQqiQWfLkhNzX64VfbrmYD/KeneviPXFQmlmAo245jlW29mNNr0
+	rfxBr6J44231xpBvZntalp6bbMMatuIf60a+A/833o3hXNuajK2BSOhfv4osdMrx0erQ2w
+	J+rwazFlEjTXZu64hZkTMNDj9d9GmwI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785754374;
-	b=bbFt4L5bPo0Bs09TGUZTbRFoI0EZEKLzu6PWuToNz9J4elsk9BaN9Ukmj1FmmJKm+NHTxx
-	cQgtxwIuXuO67HTZPoVKB2lEVekLu+35tCMVmIUWciCpIxOw9nd7EsIDkuc3O7tyR2CwL2
-	yTOTR223UzFK1o9FCI8eJR8m9yNGsEw=
+	t=1785750274;
+	b=qfVs/wEF5vrMOVFA9I+s+m4CrR82PINdJ+qIPrBDaLKtqfEDvyr5aBNybrqqC4IxSpOlTc
+	kbInhWSG7J1sp9PboCShp359+4gHzQC6hrbxezrNtyrZ3iL8g3+F5WZzVvg3xW96ee2X+e
+	i5F8fx+0HAfk/kfYL2CS/WXMmeH/KlE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkG4C3U9;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmg9Y3uN;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76493405D9;
-	Mon,  3 Aug 2026 10:52:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D6E1F000E9;
-	Mon,  3 Aug 2026 10:52:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ED68A60A61;
+	Mon,  3 Aug 2026 09:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEBB1F000E9;
+	Mon,  3 Aug 2026 09:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785754373;
-	bh=xVzjQs3HFfWf+RuJQ4W4NrHFv6BkXFAG420ZywAGWLg=;
+	s=k20260515; t=1785750273;
+	bh=KOhYheecQUnFVrVpCgpvGP/7g3mj4mAGi+KSC8/ce0M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IkG4C3U9Q5nzyqNz6vG+sRjzCiegmydkM/traJZfxUI0agHFbx1RfrYvaT+Zl8jL9
-	 fiihX4iWNoFjmP1NE/bVaF19K1Y+CmltIcfa5yVu4bj7zam3Dgl8NfWz3p3D7lilC8
-	 gFOlwXmrD1U+DpFVHh53sTMYJphFYYzIxKZ9EmC8lnd9BxURflFXD5fJOFHzyj7T19
-	 Z0RNVlGSfhEs6mdd22ZnYaOrqcjrAqu74XomLemSL/QKo4iDNd50DrQud4ggXKVXyf
-	 QU/qF2RPHdTywPbO4YY5W0U6wm+qOD9vBJB6Oi93N8eWViDHrqFT9MopxTP81kRjKx
-	 4SOffAXcClgJQ==
-Message-ID: <4ad4b17b-bae6-4169-8649-bff4a29e7fde@kernel.org>
-Date: Mon, 3 Aug 2026 12:52:42 +0200
+	b=Xmg9Y3uNj++DUWdqH+KDhGc7xKen49AIQbhB3ronbkhIiJp+Bs/hZoOiESkCNpNyq
+	 Gtk5MNuz2HtlX5AtMFSCRi+I0h9qN/w2YKel/+db1aVtrzKiO1slVxPfp36R76zLxn
+	 h20v/mUzP91kAiXt6wFZUGoKf83EwIT2GX3+iu1afxMwV1BZpbYG4/CtJ/s1luBM0Y
+	 cV4sw8c3v7zUlAQX4bALNahjITbS0Vr3/JlBLenrXC0wLa5vsEJ2P7ZT801KSaiZek
+	 /ihkTExc92CeJhOEXKZTnG9gJX7BDH59ig1L+FDhpy2K0kPdNWTkrpHpQ6lWb1u1cy
+	 hhzMsTTaB6IAg==
+Message-ID: <60bd3790-f350-44b4-8066-9e6a7285efff@kernel.org>
+Date: Mon, 3 Aug 2026 11:44:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/15] mm: propagate VMA anonymous page offset on map,
- remap, split + merge
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 24/26] mm/page_alloc: always direct compact for
+ unmapped allocs
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+ Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
+ Sean Christopherson <seanjc@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-24-6f5729aa9832@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260726-page_alloc-unmapped-v3-24-6f5729aa9832@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6EDEBA0006
-X-Stat-Signature: u76nzws9c5brgw6s56xs95rrzzxz1ceg
+X-Stat-Signature: df8s8ex6914kimi1rrqw1zrrt6dqg3ci
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785754374-735089
-X-HE-Meta: U2FsdGVkX18JHRctVCtwlclxi5RlRb73/oJDwbjzZOcnv/ZwXPByFucGUQgoHYlr9ElWdsDGK0h54rZlIsYDyt/ceIVnpk2DuJ3L5cdRJ9UncQzrabQNB+quqEKnU+wQPZl3ecxg90VDHVR0oWLGT/1ibREopcTu9b3zz5fdxTzZuF2qV6QX/V3WyZlbukm/V5k/CMuupLnVhRw1i+Tq999E8XYcDr4MSdVYiFz4KsdNvRVA8n4PdDk7cUezr57OAWaCDw8DNgFzTM/EMyb99hin6+ogRKQuBZkzxSGEBDERm8BLOCVf/maGGQAwT5eO6Kpmnv+OC4jL0QKP42T1wtbXOMV/EwHgQgD38McegSpZsn5J+/m7OubdwXuWSyC2Tl+k2OTmNpHujam4GOvBx4+kVCHzynC1XV4R30MZuYDCYF3Ngqc2YFRc/pOYcsEbuNkKpen8caOO06je+I9nc3buSREbZ4v2Wl71ysG0a6FmYtTXRRCqHoV6NmZoEu7CAkxvH+Z/rS1iLcZFV2jTNuQeJCJGL/hJSVYcKIhLUK/PwriQYHzxRkNrzq62rbH+vV3SJqTjokwUdIFJmV6/rROy7WbpB1ozfVJFUW30Lfd8/GPsB7EDBLrqzhppxJSfXwMiJ+k7JicKOewhKKywIQVh4xM83hV/MW9IUNJ9GEziHgI2pe/PuLsG0F8iI3JpqDUpb4MTZ3VUkWgf/8t6WxhDX6WbwOTgsLivbEffkk16cmWHIpX/xBMvTk9k4T57AYKRRHbJUXjrJS2rZr/c7gp05tVyUKygascfFsfytFPUYqAczUUhrZngTdBgd4165p2vaxcGIGB+N4EhTks76Xf8he9i2SRLiyr/TQ/xQBfc2raZPwmfL7kuKaz1xNMBb8Fi19CZOYak8xGMo8BtDyrzYX2RxYM9AeygRwJ+oIXS4xIBjKucCIKScYEQZXNDCvfsP7oZADa4dMDRSxW
- bzqwyp8+
- Pf2bf10EbDTABJ4G+J9ZxPwPCzkR3KBKQ6OzKhGK+MeyPpwnO6J6nT0KCMx5HaR6NENePDuWtgsePfnI9C0RQtEYBLaBWG7kOlVM0g/RD85A5d7aZt5FynPsun2w8GautiYrmtU2lFqfcfaSCD/rCUvzziGUPZUrVHogpxrqei5ICpSJDdsLwLr6QckCf7wscFIi/c/gLRRUxpp4VR1/BZitgfqcYxckTy5o1+kLjwUwwXroC0Zm0IagaJOwdWhW9q3wJOjAY/PIM9Q6BpHTVbThC9MdB/av5gN5+V3xI/UGmTYzkMOQ6prEEKvfXcMdV7Vv1WcRYrO89u3Naq/1gNFrdMNojeWjK9ziHBL6Olhbov0Y=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7AB8220003
+X-HE-Tag: 1785750274-239485
+X-HE-Meta: U2FsdGVkX19QG/cmtSBBSkW+II1cYg2YIliPI1Ei2MHJWl1lKyx1npjRuYJ9dN52c5QBShFLLfcZgvbdIaOgD2ngDgrmZnnONZTyf1/yWOpjJi6QhPEXNbRzdumQGGmaz1d3suyfAz2AqC9Bkb+BsTNkytobHS30Nl5lK53nM1F08jbiNd2DapKZfiqv6T3ewjexaMulaAXptQLHARiIwgjWuWqeyE8ZwX+aIxANFQh1z9h9I1OA4ALVrP4o5NUXV19NNJO8rZGPk9oKDxNAF3fguaugZBCjcQhbRIGUE1FpyFf4JcwB3JVqCNnLIqy34c7uHbvIhb2W1ruZyw8uXbZLC6wCxB2cIcJRnijYlzuWDwHcR1yvpFcJ/tpABmKWf/q3wt116LGuYOf9qtL4rokRA/K6gogLfowTEbXdY+ktWiqFe05oSPUMdFxbQH6zgqE5mVJdKb0+9MN8MXJAGpNb/HFj0HyfQeYeVSIu2NbqlGJ6zNrOA+VTuPG8tMC0/2WmhrNFJCmpRYxQepQ9mv9xmki9JOslkXF4W3bSA6SXUcMQqu7znbdGCTFrg7FQmmfg5gEoVctzIC9FEzMr1oO231oDZxG1Ok2ufwljfIaqC3KFLliuYPN7p05jds1ug1f99Nk3cKyLzyQSGMlsGsrxheI9gq3pTJJWVcSeg4qfQAUsDEf0boclhEjwRRKagcLN3OGyhnD2oxpev4tD7DCPyFQKcrVRXwYyoB0naDUResIrctqroRy+d3Oa/nSEShlYdQ2ofwk9Nd7ibWOZwHXe6IpK39pk7U5t+UG/CS0sSv0HICvS0bdJPFC8+3+VBrFqC08WMGSrRaXjVoAgJYhsRbg3Ra54MSOAgCN6BHtdQRWDMVuKmjInI9s5fwC3lhiN9zhI+k1JfIRrg//iUdme2QRFSuaJDGVLwFfOWgA8igJJEyNAsk5M302TCZDDc3JDF97tTF23vdOW7UC
+ 2h1EyDaA
+ dgRy2DflUes8Qtf+DAKG9b5fbGr/EdskNUwmRIyvBNn3nk5J3cBIzlBkZPIPIFpz18hB3Rqb5pqQX0UTck9PYxynk7bQRdV56fCJBFuwhpBCZRJI7tYXgNzdJaEnCxtTItDGDWroYRhUYfeXl9/AbyShnTpF4CzOe4SUtQ5NEtTxawlLBOr0l8eN3SE/iUk7JEryL2kmNVy2AZ9gfi24Y2tw7IQKObJEkPV68GTgSASjKI6gM5WT6AUjUN75BQR9ICCb8Z+0H7XDry3LtGP8tyEQfwfHONguIQa5BDTW+EbWChT7XbgIOojKkvu22OhXLczY/Zc/D3qz8fAyCqToa0OlEbewfCt/ztzWB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,74 +146,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> We must correctly update VMA anonymous page offset state on all VMA
-> operations that would result in it changing, with special attention given
-> to remapping.
+On 7/27/26 00:22, Brendan Jackman wrote:
+> This is the minimal solution for ensuring that compaction can service
+> unmapped allocations. Without this, it's possible for compaction to just
+> check watermarks and see plenty of free pages, without being aware of
+> the direct map state, and thereby cause an ALLOC_UNMAPPED allocation to
+> fail unnecessarily.
 > 
-> We cover most cases by simply updating vma_set_range() to do so (with a new
-> anonymous page offset parameter), but also notably must update the merging
-> and mapping logic to propagate this parameter correctly.
+> Instead, with this change, promote compact_order to pageblock order for
+> unmapped allocations, much like defrag_mode. Then, check specifically in
+> compaction for the presence of wholly mapped blocks that can be unmapped
+> once direct compact is complete.
 > 
-> The remap logic remains the same - we may update the anonymous page offset
-> if the VMA is unfaulted, but now this applies to MAP_PRIVATE file-backed
-> mappings too, so we update the code to reflect this.
+> This all takes advantage of a major simplification: since unmapped
+> blocks are currently always unmovable, this can be asymmetric. There is
+> never a need to promote a !ALLOC_UNMAPPED allocation to compacting at
+> pageblock_order, because compaction would be trying to generate a
+> currently-unmapped block to map; that will always fail because it would
+> require migrating unmapped pages, which is not supported at the moment.
 > 
-> Note that we use __linear_anon_page_index() upon remap as the VMA may be
-> shared, in order that we update the field consistently regardless of VMA
-> type.
-> 
-> Similarly, pass through anon page offset to the merge logic, updating the
-> vma_merge_struct struct to propagate it, and also use
-> __linear_anon_page_index() to obtain the anonymous page index so it can be
-> safely used for both shared and MAP_PRIVATE file-backed mappings.
-> 
-> Finally, we update insert_vm_struct() to correctly set the anonymous page
-> offset on insertion of a VMA.
-> 
-> We simply ensure state is correctly propagated here, so no functional
-> changes are intended.
-> 
-> Also while we're here, replace a VM_BUG_ON_VMA() with a
-> VM_WARN_ON_ONCE_VMA().
-> 
-> Also update VMA userland tests to reflect this change.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-[...]
+Nit:
 
->  	struct vm_area_struct *vma = *vmap;
->  	unsigned long vma_start = vma->vm_start;
-> @@ -1919,11 +1929,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
->  	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
+> ---
+>  mm/compaction.c | 22 ++++++++++++++++++----
+>  mm/page_alloc.c |  9 +++++++++
+>  2 files changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index ed12d2fc6fad3..fe1aaf293bbce 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -2531,12 +2531,25 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+>  static enum compact_result
+>  compaction_suit_allocation_order(struct zone *zone, unsigned int order,
+>  				 int highest_zoneidx, unsigned int alloc_flags,
+> -				 bool async, bool kcompactd)
+> +				 bool unmapped, bool async, bool kcompactd)
+
+Instead of the new bool parameter, can we check alloc_flags for ALLOC_UNMAPPED?
+
+>  {
+>  	unsigned long free_pages;
+>  	unsigned long watermark;
 >  
->  	/*
-> -	 * If anonymous vma has not yet been faulted, update new pgoff
-> -	 * to match new location, to increase its chance of merging.
-> +	 * If a vma has not yet been faulted, update its anonymous pgoff to
-> +	 * match the new location to increase its chance of merging.
->  	 */
-> -	if (unlikely(vma_is_anonymous(vma) && !vma->anon_vma)) {
-> -		pgoff = addr >> PAGE_SHIFT;
-> +	if (!vma->anon_vma && !vma_test(vma, VMA_SHARED_BIT)) {
-
-Could we also use is_cow_mapping() ?
-
-
-> +		anon_pgoff = addr >> PAGE_SHIFT;
-> +
-> +		if (vma_is_anonymous(vma))
-> +			pgoff = anon_pgoff;
->  		faulted_in_anon_vma = false;
+> -	if (kcompactd && defrag_mode)
+> +	/*
+> +	 * When trying to generate an unmapped block, check the counter for
+> +	 * direct-mapped blocks specifically, since we'll need to unmap the
+> +	 * whole block to service the allocation.
+> +	 *
+> +	 * Why doesn't this apply to the other way around too? (Mightn't we need
+> +	 * to _map_ a whole block, to service a !ALLOC_UNMAPPED allocation?) No,
+> +	 * because of a likely-temporary simplification: currently, unmapped
+> +	 * blocks never contain movable pages, so compaction isn't going to free
+> +	 * up one of those.
+> +	 */
+> +	if (unmapped)
+> +		free_pages = zone_page_state(zone, NR_FREE_PAGES_BLOCKS_MAPPED);
+> +	else if (kcompactd && defrag_mode)
+>  		free_pages = zone_free_pages_blocks(zone);
+>  	else
+>  		free_pages = zone_page_state(zone, NR_FREE_PAGES);
+> @@ -2599,6 +2612,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+>  		ret = compaction_suit_allocation_order(cc->zone, cc->order,
+>  						       cc->highest_zoneidx,
+>  						       cc->alloc_flags,
+> +						       freetype_unmapped(cc->freetype),
+>  						       cc->mode == MIGRATE_ASYNC,
+>  						       !cc->direct_compaction);
+>  		if (ret != COMPACT_CONTINUE)
+> @@ -3084,7 +3098,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
+>  		ret = compaction_suit_allocation_order(zone,
+>  				pgdat->kcompactd_max_order,
+>  				highest_zoneidx, alloc_flags,
+> -				false, true);
+> +				false, false, true);
+>  		if (ret == COMPACT_CONTINUE)
+>  			return true;
 >  	}
+> @@ -3127,7 +3141,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
 >  
+>  		ret = compaction_suit_allocation_order(zone,
+>  				cc.order, zoneid, cc.alloc_flags,
+> -				false, true);
+> +				false, false, true);
+>  		if (ret != COMPACT_CONTINUE)
+>  			continue;
+>  
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d12ce84662ab7..5f1dea7eee15b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -827,6 +827,9 @@ compaction_capture(struct capture_control *capc, struct page *page,
+>  	    capc_mt != MIGRATE_MOVABLE)
+>  		return false;
+>  
+> +	if (freetype_flags(freetype) != freetype_flags(capc->freetype))
+> +		return false;
+> +
+>  	if (migratetype != capc_mt)
+>  		trace_mm_page_alloc_extfrag(page, capc->order, order,
+>  					    capc_mt, migratetype);
+> @@ -4523,6 +4526,12 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  	if ((alloc_flags & ALLOC_NOFRAGMENT) &&
+>  	    free_to_migratetype(ac->freetype) != MIGRATE_MOVABLE)
+>  		compact_order = max(order, pageblock_order);
+> +	/*
+> +	 * Unmapped allocations benefit from compaction even at order 0, because the
+> +	 * allocator will actually grab a whole block.
+> +	 */
+> +	if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED)
+> +		compact_order = max(order, pageblock_order);
+>  
+>  	if (!compact_order)
+>  		return NULL;
+> 
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
 
