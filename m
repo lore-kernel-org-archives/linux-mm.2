@@ -4,108 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66B2DC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 18:40:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C37EEC55196
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 18:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA3286B008A; Mon,  3 Aug 2026 14:40:26 -0400 (EDT)
+	id D45E06B0092; Mon,  3 Aug 2026 14:41:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E53186B0092; Mon,  3 Aug 2026 14:40:26 -0400 (EDT)
+	id D1DEC6B0093; Mon,  3 Aug 2026 14:41:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D69876B0093; Mon,  3 Aug 2026 14:40:26 -0400 (EDT)
+	id C335E6B0095; Mon,  3 Aug 2026 14:41:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B165E6B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:40:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40EDC407D7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:40:26 +0000 (UTC)
-X-FDA: 85060823652.29.A3DDF69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 97B421A0006
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:40:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewuN8cuG;
-	spf=pass (imf19.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A38626B0092
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:41:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44355407C0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:41:46 +0000 (UTC)
+X-FDA: 85060827012.17.6A013C1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 42084C0005
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:41:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=K99Ctjpq;
+	spf=pass (imf10.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785782424;
+	s=arc-20220608; t=1785782504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZb15sPo5N1TfPjLBzaNxLa5T1EMEuStHZ3GRvUGF+E=;
-	b=x2OxPOhnGMCIN1rYlzxShGdtpTehwvRvke0440NOdbSg7hrJCrPehaeVeBI+lCWAOLQfg7
-	MwcvoObUmQWiiYdPAx08lL9beziKl6P3vr3X9IcfMnL7HYiuyEoqFZFDLf9Yv+0u4N9XAJ
-	dchlWZ8oUfGdsejTyQvTLYrV+Kdzm0A=
+	bh=HhKBhRE/Ogt+aoCiMYP5CpFhC51oTVXTWdgXC3JbEJM=;
+	b=DgiY4rx25zxIdTeqxR7YtZH6pLoko051oN0LyHEjSjXJMb/J9U/zPA+cyJSeDKF+4iP0vv
+	t2ilnRErA0VPQyVHWQghO9UsEUVkczfZf7JpErH0yAdlJsHdMlCX6SWlTqM7CZhgnqJIQ9
+	y5mGFxu/eRjGpXuiCO6/Mfa/4jkXpD8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewuN8cuG;
-	spf=pass (imf19.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=K99Ctjpq;
+	spf=pass (imf10.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785782424;
-	b=RwTeb/05yJnXHCIWYM0JeVZS05LKP2OBRRJClH9H6oMQ5KAPeudRWpUBb8ULteFBw/Gjyk
-	Ug3XVtT3P/KyUvH7noDwS1tBX9mPioODH7sN9xPSK0u9QvrdSHzEkoKof6oCmJd7AeA/Op
-	PLlmIH8+TiZpNF/EzW6x5SiYV15yYF4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73B4C60AA9;
-	Mon,  3 Aug 2026 18:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3022C1F000E9;
-	Mon,  3 Aug 2026 18:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785782423;
-	bh=vZb15sPo5N1TfPjLBzaNxLa5T1EMEuStHZ3GRvUGF+E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ewuN8cuG7auUrC7UW93BEXpJZzHXJryz6zIWqRe/yq9BMaTlYjkUb28PRwxSvit0y
-	 2pDbSrYNK7TfuZmyUpGZEGEIV8ppjlFGZzpHg0H0VrHjc2wCuS+q+H/vxdHWzEjkhR
-	 q6mr2g6ltg5Yn8xfzRIdBbpHY6qb1tYvh0UN2HC5cdtNrsbnW5+r1nT9Bja/o/FhlB
-	 D277qAmcxpkZU2XPn/KOMlTi8XaI/s041vXXxE0XKXuGivOMw45WRqW93vkF00kggr
-	 j9OzfuJoeS9E1sEE2NU2gxILZelXTQp2gLQc/LVID10reyC4xYci3Yf6/QtlAilc0y
-	 OK/54yFAKSDBQ==
-Date: Mon, 3 Aug 2026 11:40:20 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, "Theodore Y. Ts'o" <tytso@mit.edu>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org
-Subject: Re: [PATCH RFC 04/14] fs/crypto: stop setting PG_private on bounce
- page
-Message-ID: <20260803184020.GC2062@quark>
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-4-142c97ba3562@nvidia.com>
+	t=1785782504;
+	b=jCqc/WuYXo9HASD3rmMsUWVa211yOUfcTovBXjIzZQ3LRoUpV6KwxwaxOUGLfql2qFXUy+
+	Cna9kyLY4Ts1yLB4zoEHLbZJ50yzkSHIeNNW8dbt+Fio8R3KDRp+U68mO3OjN1vAnmjERa
+	29GspNnJ9MtfmuxREuJFZt1G8YjnOvI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 31A3F143D;
+	Mon,  3 Aug 2026 11:41:39 -0700 (PDT)
+Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6860C3F86F;
+	Mon,  3 Aug 2026 11:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785782503; bh=uiQBz3mOQUpgseZ4BF2zQ1KUX0+aXrmMQaRmZKtIEvg=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=K99Ctjpq6y2hlz37u/iCbCYcWjnzA7RxwykGj/9EpUCw2VjHCOE67FIFoBWO9wTRV
+	 jV6Nl4jQzuxB7a1/P1/uoWW0JENbjsv4wt8f0lUV/84T3HhUqwHK1BNJTLlmE8bYVF
+	 s414pYK9IjtKApzagQxNFMgK7hZ43MgCPl2cGAfM=
+Message-ID: <c5edac70-59f9-45a0-b316-c1d987a18ff4@arm.com>
+Date: Mon, 3 Aug 2026 19:41:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731-remove-pg_private-v1-4-142c97ba3562@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fscrypt@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ stable@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v2] mm/swap: reject swapon() on filesystem-level encrypted
+ files
+To: Eric Biggers <ebiggers@kernel.org>
+References: <20260803180426.3123-1-ebiggers@kernel.org>
+Content-Language: en-US
+From: Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <20260803180426.3123-1-ebiggers@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 42084C0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97B421A0006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 97krde4ficx39o16nuet83uotxangnkr
-X-HE-Tag: 1785782424-400219
-X-HE-Meta: U2FsdGVkX1+2h0gK6wx/7trvf3M7ZcmH7vS7lzgA5DxwAwE0b0Ov6OyQjDIrN4okK/bbeXr0v4mZmymfeOqFWK3rq3j+SBw0j5cQYoDswoT1Pa5qqQkWkSYqe9UVAdCmrtNNHySXlBWZGIDnv+XCWG7BaAx2qOc9xcV6nojJwkMs/luViA1OGO4DarYsidihYeha7RjUO8OV5j98Otpf0qHkG+CaPHgwyhzU4v09WH5BPJ8cMdqoD21A9zwlsuG0SS7RqiDrHNeXqmLz07ybq1w6rgIdUZwhljiZ6wTjwrjdMj8+aueKicyXz0WxaMeHrENkmMYqqehNEgptj0nW0LrmA74v606djdHGvTKADkjpXpnVwbysnzV3TlHNsbMB3qLGC37MNtJgToVGa0C3ODG+wtvM0viv6P3CeCByt+r8GxSmrLoGrG/JikTNVKpAdklvqnGm0qRu2R1AscY6HS8u1IzuwP7Q2nHsktPbTTnWxFShL+wP6/QizsgUr3Tny6h3IpsIgHgRz+bKU79U+HaVaUuXm8T3uHkp18BPGJOjhc5E25nHaX4d+RP3fs8PFGcxvNHJx8tSdXDbdTbKmobV5nThKrwB0ahBLeNEhmCXFt08CiMqDvSFDvl4uVSVbjne/+W16kpEsY8d9B/9+43rMGpZe1XTqR0YRjBwGIy4uoXeypr/vqNVVfoxTg3M7bW9l3NfyE6riYuUVA7dW9dMFJ6Z8z5W8Yo3d2xpffCdgPP1l9pXSyt7oOdCAzpl9Fr2xA2fxW8mZO1MFBtyzBsjji5r+rFBmB4eIHCCZeSEejJTglabF+q3qW8JmTPRDUAzs5HGfqe3v4zcwaOh4PobSa+2v/3z7KNYN9/pR4za/KHRcODFNnoNJk1UPRosSKRVL58IaaWPZAxPpnek8lXROVYVYziLHq+MlXN6vQbHxT0PmxWlJnt/sJ9T8XT69c8/fpIDbD63LfGI0Vc
- 0ZxStYFi
- ZIT0lsvwCCp1V2IY4nq3lKf6LH2RANEDdnpewfe2uLg80yJ4jDSmCgJOD6B+TijzOJ2ynP4CFvcVobY9uuJrXBJQFe4j/z4zcwitQhcKA/reYER+ebitda8bg01uDAP7m/2j0ybwC0LASao676oc9fYIEsAj5t/klBezLwMTgnhjlapbUwKpRkGMbLSw1o3qjl3OrIcikEWjSb5f3vcXRlaPwk6jes3HXW+YMmbhxdq44a2nRkJgBZPLzzR4u/MJAVBbr0CQgQdEDJEX1mRXVuvSL/oaOuN1+r8F+/0WMryeF3HKQ4MDCUiSHU6J6+EHaahUl3sC2rmtPND/NszZdOXylRQ==
+X-Stat-Signature: zmo5reyk95okpmcfamz3r6sgb9fz4pb1
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785782504-914725
+X-HE-Meta: U2FsdGVkX18J0bjIBMIur9hn7rQA0zXmPVvJGQ6Y1r0w50A2RUqTK84CBy7f5W4QLDI3NTxGJs6Ah99NLnZ19GH4nm8sm3UrNT0h0RFJS++0MakJ53Pj1nfJHNRNId2Ygm5ofug5BW4EiKYJnvrOiiSLCeNu1Se6fUKd5uukJ5E/XE2agjg2lRHerX1yKTf1ivp+mCer32nNA+jpAuqON52VDtRLVfDov+sKsXXyBHbroMBsl3DEHRkA9aSDDxKPmbro8i967G3rqzZ7dZ4yAH2g0cySbCI+4AT0escY8by14QfedF+JZbe6kY71m/0SdJSNTuJQ72bk9y0rrycIXmknA1YFmxx2mLf5IJEH0AMxdVwMdijCku/KK6YQXVb5/S8EQudzJSxNwMApdLZq7YifvjvKwGb1onm1Lcm7xyOR9paoA8YUR5NVpvKl++syqAT+ZYKhr2XaxExQSsUP+UC3/ui6qqft9uPoOVmOyzte/AOl23O49xhPaQk2hzSOAQHLDJpepRGgGiQHW+dGpTa1v0/TnsnVunZ/fu5M1gVwC6IhTMtbxspCzNI319KLDrOaCjqxkIg7UzNm0Tqg8uPtcSkdOF6bYeJAuJpChLCzx+MSyMQ0B/9I+fwaDWfkV9l5Ql8KjV2gBi+9SKXNaewKjpMn6dtizOGGTOB4i29rt8X4wiedKjYdIQTON6ePJjEOmSrLtgVlQ2WtHnbGZQkbsmi5AqDfb1hZtOZ0j5sCkMbkUc0DRYeifeSNvPof84I3z5QzQ0g6X7dxZPrSf8WlnsA5x+DdXukbNdP6D/Q8OQ7DiWDZAFGuKp4pVm+4V3FZXZ/0d+AuQ7MQFlmnk/HQde3Iq6XuKBSdB7LPn9DNG2xTWJu/83a97y1gPdYD2iH80f10K+G5hF8EFtYReb5j08KlpeWdVoNgA3r23WZuGW1kJsDUyCYgEOGh/tp0SE8AEUAc6UsSw//jLrC
+ 47r740J5
+ BRgNm7t6NhM+Z2X9wjNHFCF2mcM1yTTQPEixMzRhrenF2QadvlqVU93n76fjrwHjpStlx1E/OTSrljdX9VN160QJ8ocaV19MFajf2MXGn3CRMKG5SSPJjEZmzZ5/nTfrU7o5qU7IiuzfcW8UcVTW6C6wD6IdMpvNFq5cn2jiE45Y1Akawc1tgeMTpjn4xuOT1y56F5yGPywzxrZe8+FuHxmxVuvNuvDY/zCKxSPtSlSghcv9mnBhT2T3g9quPqYBaUM4/1cUVVE+IVb/k5t/j1XkuxiVLWm10r4DQIpOsQhtRueE0PHK4kfj5Y5V0mWP0LZlt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,24 +97,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 10:13:27PM -0400, Zi Yan wrote:
-> The point to a plaintext folio is stored in page->private and cannot be
-> NULL, making PG_private redundant.
+On 03/08/2026 7:04 pm, Eric Biggers wrote:
+> ext4 and f2fs don't prevent filesystem-level encrypted files from being
+> set up directly as swap files.  In this case, encryption is bypassed.
 > 
-> It prepares for a future commit that remove PG_private.
+> No one should be doing this, vs. the methods of encrypted swap that
+> actually do work (such as swapping to a dm-crypt device, or swapping to
+> a loopback device on top of a filesystem-level encrypted file).
 > 
-> No funtional change intended.
+> Nevertheless, to prevent user error, make swapon() explicitly reject
+> this case.  Document this behavior in fscrypt.rst as well.
 > 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Eric Biggers <ebiggers@kernel.org>
-> To: "Theodore Y. Ts'o" <tytso@mit.edu>
-> To: Jaegeuk Kim <jaegeuk@kernel.org>
-> Cc: linux-fscrypt@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
+> Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
+> Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+In the past, I've certainly setup swap wrong. It'll help:
 
-Acked-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-- Eric
+> ---
+> 
+> Changed in v2:
+>    - Added a pr_warn_once
+>    - Removed unnecessary word from fscrypt.rst
+>    - Added Reviewed-by
+> 
+>  Documentation/filesystems/fscrypt.rst | 4 ++++
+>  mm/swapfile.c                         | 7 +++++++
+>  2 files changed, 11 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
+> index c0dd35f1af12..e4882b73120e 100644
+> --- a/Documentation/filesystems/fscrypt.rst
+> +++ b/Documentation/filesystems/fscrypt.rst
+> @@ -1238,6 +1238,10 @@ astute users may notice some differences in behavior:
+>  
+>  - DAX (Direct Access) is not supported on encrypted files.
+>  
+> +- Encrypted files cannot be used directly as swap files.  To swap to
+> +  an encrypted file, set up a loopback device on top of it.
+> +  Alternatively, encrypted swap can use a dm-crypt device.
+> +
+>  - The maximum length of an encrypted symlink is 2 bytes shorter than
+>    the maximum length of an unencrypted symlink.  For example, on an
+>    EXT4 filesystem with a 4K block size, unencrypted symlinks can be up
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 78b49b0658ad..8538659acb9e 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3650,6 +3650,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  		error = -EBUSY;
+>  		goto bad_swap_unlock_inode;
+>  	}
+> +	if (IS_ENCRYPTED(inode)) {
+> +		pr_warn_once(
+> +			"Filesystem-level encrypted swapfile '%s' is unsupported. Create a loop device over it, or use dm-crypt\n",
+> +			name->name);
+> +		error = -EINVAL;
+> +		goto bad_swap_unlock_inode;
+> +	}
+>  
+>  	/*
+>  	 * The swap subsystem needs a major overhaul to support this.
+> 
+> base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
+
 
