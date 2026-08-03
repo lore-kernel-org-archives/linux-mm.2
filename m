@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FFBC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E99B0C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79786B0092; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
+	id E87D16B007B; Mon,  3 Aug 2026 18:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2A2E6B0093; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
+	id E38836B0088; Mon,  3 Aug 2026 18:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93F766B0095; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
+	id D005D6B008A; Mon,  3 Aug 2026 18:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FD926B0092
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4716740858
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:47 +0000 (UTC)
-X-FDA: 85061421774.08.5853F3C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 92C2D6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:48:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 148BCA22D8
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:48:43 +0000 (UTC)
+X-FDA: 85061449326.05.2F1F44F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4C76340008
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:45 +0000 (UTC)
+	by imf04.hostedemail.com (Postfix) with ESMTP id 14FDA4000B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:48:40 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1BtXtRv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcSyEC2V;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785796665;
+	s=arc-20220608; t=1785797321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+uMo1mqds7+ytfGnAG4j5G/sObQBuQqDwF+7pp06uTM=;
-	b=Nh0MwO3+XZRfc/x00hQfrT+Z8JfXu+gICSQe4dFCoEvq3y/AfoxCtHt2QO46sVeolZbJHy
-	fiPId1NKEzHJvP91jh3Rg38Dfr5I1Gj/zH/Ex/4/AybF5PMOjxR37lgTxM8uNodYbyr+Tr
-	0NG2Lx4ZsRsFiQVpxNsdcFImFRa4UAc=
+	bh=ZAIfynDU5M3n70OfcSMdJeSVh5VujgTdPZ8VZgKd/3E=;
+	b=d6uvzPMcYLVFrImbdUxh0HrznxudusvdZBe+eIWp7LFyEjyeqrdb/6GowZSpKaEKYK+08y
+	cQOr/OKQ2YbflNnGfn+vYcwqzrlAMpPLshN2T1CI4je/nkYVqDPl6NkrQzwru8v9LXYeES
+	+4yuMY2LN4zvOuWn6+OoHM07y13CJQk=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1BtXtRv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcSyEC2V;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785796665;
-	b=AIbZSrUDxjMD/qfO8QPDTFkd6uNB77I9ygpx4NDmVlfZN32Z9YPy/uo42X35eoOti5pRlS
-	psEIAsuaTxgveJeuYTdhbQaFJcLtaAqWQFAabWeVrZSLD8KmrBdn8RZ3nr/3Kl1up+ItkI
-	EeCNyTdQ0tPWOl0tBVwzlunJJ7BJvWg=
+	t=1785797321;
+	b=KTSogEw7xoEV5H5e9aSxq34Xxra1XnvUXNW8/ocM6AuhviQCsDEH6xzsr26RBwBLRSEfqn
+	6wEQmjHXp9n/QaXOuLNpnv0V3qJMsOhJV/4ntIR1mnAQ8m1okvv+CB+hy2sOirP7192Oa5
+	/9kfnoNQoliKF45HA9og8BP4DDfRqz8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E08D43FBA
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612EC1F01558
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2896042A37
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9541F000E9
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785796663;
-	bh=+uMo1mqds7+ytfGnAG4j5G/sObQBuQqDwF+7pp06uTM=;
+	s=k20260515; t=1785797320;
+	bh=ZAIfynDU5M3n70OfcSMdJeSVh5VujgTdPZ8VZgKd/3E=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=i1BtXtRv4xGPqlKGtwXrDU4q5r36CweAM1IiXE7Sp5iOJ3efGsRXBGZDn1Mbkjwh5
-	 BUI4HdjrSKmaLqEdrLwZ3fe193A82tAdMHasMPvWknEzSgHR0CnBuxgeOR4CTnv778
-	 Tals4QQoYMf5obfygtaAl4pPwyFqjtrMEhlycg4CP7eBzRgR6JdrRrfiPgVwsWM7nK
-	 VxJ0xeDWhMgnLectVPMTCNqnvZTbK47DqxqeeVLIux6TiE4yD451jDxK4QJG33kUID
-	 3tWT/wdHVNrKrg6TN8BztbjwGLT8IHQRDr/f3XzBCUVFk2VXQyh0yjdt6augvQKB6Q
-	 SAvdE4o8Pm5jQ==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e602d2c0fso27656185a.0
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 15:37:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrL3oVnSnbGzGonl9r3HUSlE+yPd6pgO8Jvicq1t1SoFPg+IVXlVy2O+ENJVbeDmGKIHdDirXECXw==@kvack.org
-X-Gm-Message-State: AOJu0Yx2yAtAJTphSKsqstdcRZW5ORB9OEB6Ti3zcW9Y9YbFGPjyuOt0
-	nyx7MHjdJJz4qXPVXBh+CnSc/v16BpWoCQq/QrH5LfbhuEtxYgCa0dypKyrAoXznoNPllSf0Cil
-	Kc9RxW5AuMr9hbu3fvXtly+lr46MZf5c=
-X-Received: by 2002:a05:620a:11aa:b0:92e:d2d4:2d04 with SMTP id
- af79cd13be357-93631984d68mr248278285a.23.1785796662708; Mon, 03 Aug 2026
- 15:37:42 -0700 (PDT)
+	b=HcSyEC2VG4eFVIWhSKQQGwlWOtRY7cRoEMlttQ04+6wBfWzgNZSflNXn8DGlj9GjI
+	 Yr2vRwMSXnjNePj4wwczr15Bp+Fl7u9A/kcjMcwZJiiuZsybTypiMWYT8W4WRfwjBK
+	 MvNANH8TUCLLgYg1LM8sMw7k9PxGP7K68fVn+8bpn4Lk0P4jcaCqRrDu4FiiIDrlVG
+	 j01A49Ld2kg4xK6Kr36U5cC2mAUUkXJiAPjOkRZh/5KMVAZoyzK9ZdPDGK7Roocv4e
+	 s6+HPT/UBxDq83oxvHNT6rQFzF4Sgm+PNBVx4Ss9XOWicbpgF74bAvug1B2d/Xo6ly
+	 1hhmMq4V9jAzQ==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e602d2c0fso28093185a.0
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 15:48:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrv7wuLkaleJwCZSpkAIX13nMpOKH9NYfHuAOKuFjd/C0BIiiIPTvMuN0Gw2NlJZREV0zDT0bQWpQ==@kvack.org
+X-Gm-Message-State: AOJu0YySjVeC5pd+8qvdkmQkOIwCeqElZh0cJ2eUDhPvNe5AvAvrOBtr
+	OseGEsTqTADJKmYtruo/3LJB1ksu8Msvvsf1+BBlNwJ4QlGnDCySXvHNhAUK9Fzcu+n7CVqlDMn
+	rRPeTgeFJRNZGQi6BRu311uqqrfO95dE=
+X-Received: by 2002:a05:620a:1647:b0:92e:551d:f1a3 with SMTP id
+ af79cd13be357-93631855f7fmr230832585a.8.1785797319405; Mon, 03 Aug 2026
+ 15:48:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260802074018.73887-1-baohua@kernel.org> <20260802074018.73887-2-baohua@kernel.org>
- <anCu3DOrXDeMrwi5@lucifer>
-In-Reply-To: <anCu3DOrXDeMrwi5@lucifer>
+References: <alG_1bhH5aqQCNEh@casper.infradead.org> <20260712132759.2030823-1-zhanghongru@xiaomi.com>
+In-Reply-To: <20260712132759.2030823-1-zhanghongru@xiaomi.com>
 From: Barry Song <baohua@kernel.org>
-Date: Tue, 4 Aug 2026 06:37:31 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
-X-Gm-Features: AUfX_mxObWP2k3KVrcuv9diuYZ831nvuzQqkRHE7nkurJp-mPMd32XGLmVpvk58
-Message-ID: <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 1/2] x86/mm: use VMA lock for kernel faults on user addresses
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, surenb@google.com, liam@infradead.org, 
-	vbabka@kernel.org, shakeel.butt@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, zhanghongru@xiaomi.com, willy@infradead.org, 
-	zhangbo56@xiaomi.com
+Date: Tue, 4 Aug 2026 06:48:27 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x3HiRP7QU=N-oPiWuxuTG1VvzCCdHPqr3Trdk_8WMUGw@mail.gmail.com>
+X-Gm-Features: AUfX_mxt21q1lY7MgtJoykb0bDaIL6OumFi77U2eocAFVDBg1jwnCIrRPv26yn4
+Message-ID: <CAGsJ_4x3HiRP7QU=N-oPiWuxuTG1VvzCCdHPqr3Trdk_8WMUGw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3] mm: retry page faults under per-VMA lock when
+ mmap_lock is not required
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, david@kernel.org, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, 
+	surenb@google.com, vbabka@kernel.org, zhanghongru@xiaomi.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wi71d19k5x81dki7mpbsqrqrp4s1hwyx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4C76340008
+X-Rspamd-Queue-Id: 14FDA4000B
+X-Stat-Signature: xocjpc1a6u3yugoanug8bqjo4tdzi1h8
 X-Rspam-User: 
-X-HE-Tag: 1785796665-911352
-X-HE-Meta: U2FsdGVkX1/cnBYnj/DfTzd7aMFLhJ/cHXafhD3VWoOzgHS3sebvqsqkn/9gbKPFj5Z0Yo/KGd4za+yy9oCXifXSRHxbJYwgWTk0TBG3rJU2W4UpKvX4c6QJr7o2jnIQqIIv6LLzhfuarGT1iIcjM8z6TbovpJvRUa8XvVc75YQOPuynHKCTTjOUkHZZWI3CWRsP6yaB+5vd00ieNwagHFVN6tB0/FxzPh1FaJRxvZ09IshbO+SM8QV3B333nJO8U9mltCcLC3DkmdTssfm5hOsWgIiQJTtT1bAVGg7wOzXQrahvXq49eaAKuqdnw2Gt9T9mYmcDYCUWqlyp47otcNCnHCqD/C6DgYkQwMC5+T74o3FAkpd7PgNPIzJHC111jSYjW+B7LVZmMrmeeuH9B/sCJcG88i84S+1fvcwwj3SGEr/0BmlKwMUSEAZifgq+CWI/RKlXA9woI0fVK6/xxQYEL/hCYjGrFGcGe1vpWCC23ny5fcg/PT1A8/6JIWzWYNPRB1c7SJEQsIcfpTq5odvZ8+Xc1E70Pn+1i+UppnzzG+n1mXZ/OPgg3rP4IoyyB7At1fG5nmUu5nC158ad+RpqWwMzQmeWJnGYnN1h8njVer/InlemjOxwCR7PPKkK5P/1OSFz3dAlWpTAp6yrV4RiBUW5Vu+S65y1p0FlzdnLInom/7/rVIKIqYh7b9KcRiMLpD70U7iKjDCYSAA5fqKteb6KwJO+XDsq91fOj8xif1RLm3oeSZ7LCLmIn2uowvbZgvL4jbARnNSgcHA+FJ+eMg6p0tFteuxC4EQH1Ac9jYCGit/ZdfHbeIafzdIh3ak2sR7cfkMANJlQpjgTYVsoIdtWud00BAL2iCQUy0jJC1qUuOsQPOgEssab+0j0Iyf79CFAYEsAnxwN78Xs6GGknZCdVN4weCBUmbRn/Rv/d/CINhFlWeZJlaJQZaCXNiCqLdacb7hFX+wzhnn
- M1RgcBq2
- Z84xAtVgC/pW4s+598qn60Oi0AObs8iGuVmpsyUPpnfEDIVfskXiXuv6HxTNE3xg0U7Xay22TosOj18hTKTd+C4l15pRQCsY6tPbrHBVJqfxsMjhln0A407Zp6U/a30fjuLwLjcu54vMnkM8Rricis1NhMJlp8C2U1Uso8aJpHXV3I7985lNVoQbGfpRS++V7WQj0XnNknhsBESZNsmO7tRx2ZOeyV2UwMnZngVu5SN5cdUVopd0oFd8+QlCVKIXcJFzGzXElHQXZrBvswdzoHdf0UqNaYQjJbeot056Bsr6iIIyZKnlIDeJjP9HGMpkUPu3txwcRHcUxbOc=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1785797320-791667
+X-HE-Meta: U2FsdGVkX1+ecy/f7p3xZgyeKFW+mYEM4lLRx02iapAZ9S5VEdfe/HvoN9SZr8yJQDYQRbkRvpBcMG6ChXVKAT9mGCqsvYgZc8aMRAoyBafJ/egrEr0/A9b0+r3htZWWcY5nrGsx3XMHFf/500Ri16reLqpvWMYa5ammB+ALlXwjHeynkORXa8HdRLnikzcnWZBqUAwnCyYOh4k6Uz4FGlYNZ5kqUjP0N6gWqeITmEPG85Y2tQWD3le27jPqZJkHcATLCtdlw8WKVqvV1Uf94OAACBpL4sXDI2FuAs7U4gD3Ma+VFiTmSsg6Ajd4WBBAIkP3QXFft+Maj7FsdTBzSoQu7WGeTY49yVEGpIWZ2sjKtJsGhnuCJv6vc9BGn9TBz2l4AFHd4VC911fOCy85AwQvmqayqxGNe2uKSksTMT14dtqc1cNZUS0lxptaJ14nHVOWu1lWaTqH5SHsrNessFyIcLP4y9il1CfUlbMlF2DBsSM5HINRom6bRJBA+H72XqRQgqVO5qnt+TlIM03yr0jDWbbVZKooDuMGNGtIhsCc3dgpFwnPXzuZrUaESOMxWiqg4hN4un2zJIkKgQTJlfCh1CvMMWp6Wj+FyhWjC9Qs1sVrIz0TBHDZDPB+iJh5sa+lpSEmtBXlH7O/+68gO/2tPU/pxjBevsn+2YoyVBEFhzkOgBtCE41YXe5FCEnoGICsA/BS4G2dN2JaIdZ6p7evQzgSiNx10zTCz1vLW358lkHCzO1RJ3mst5PtEiE6+WF+NJjoOi+/+0Jn4yxUltfOdCMHVkeJAh5bwzTJwn39w5ScKndfmIEEZ2aRP7M11ylY9PGFpspzNRZFv1eMYr7Osgxtged0buCMpm76zcIaOSBk2o/cnJOagxhbg4fq6L7+agvQOVeXyNM2bLd00aoZ3QIvX/T2x+Jx+MRw8pn9xLRhPy24d1nUHoDeSDLlTjSFPRCBBq58hi5Z3Nz
+ 9bJH6H8F
+ Sl/r+pu3fmDU1e7ldEoMskcTzCqaF5xjc8ZiA6oVzbxyArRp3ouEGXmbUhH2jEHKHBuAzCWlYOD4ocJTWCw+e8DlrgNRzvAsQOnSXLlOqQ8o0TNPhX+DMPBo3QOB/+hyRRJme0eJifU2psOH6eYTD4WIGG/Cm3dCz7fwwWZ2KHpZJ8RfIdlNz9A/3Ihb2WZ8oR/uv0sWegOGdL/GWtvcKGbWOqUe5x9VAaLDtw1ufshrIf8yOnwexaZtn3cuy1zvUqKtJhfcdNq+boK/YUpCvi4MJovFkmhlUdTlFlAuvuNRnRf6hwVaQreFXEq3m36D8FQzxtpVGSF/qQDLJvCXEGClcjzLnA5a8NgKZdqT0cTj2HYOPiXTG8/FTIo8buALSLo5iY+zTNqumKVDtBr8Fv+TaBESCV2E8SaX4XV7dA/m0zpIQFRwTUYo4oqss2ESpJHSFFGmhP9ftkDkatgch18izJOimFx1PSUHNvwvxE+177S4D87hoBArhIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,86 +105,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 3, 2026 at 11:18=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
+On Sun, Jul 12, 2026 at 9:28=E2=80=AFPM Hongru Zhang <zhanghongru06@gmail.c=
+om> wrote:
 >
-> On Sun, Aug 02, 2026 at 03:40:17PM +0800, Barry Song (Xiaomi) wrote:
-> > Use the VMA lock for kernel faults on user addresses. This also
-> > makes the existing code below meaningful:
+> > On Tue, Jul 07, 2026 at 05:52:31PM +0100, Lorenzo Stoakes wrote:
+> > > +cc Vlata, the only one from the MEMORY MAPPING - LOCKING people excl=
+uded,
+> > > and Willy as he's been heavily involved. But see below you need to cc=
+- way
+> > > more.
 > >
-> >   /* Quick path to respond to signals */
-> >   if (fault_signal_pending(fault, regs)) {
-> >           if (!user_mode(regs))
-> >                   kernelmode_fixup_or_oops(regs, error_code, address,
-> >                                            SIGBUS, BUS_ADRERR,
-> >                                            ARCH_DEFAULT_PKEY);
-> >           return;
-> >   }
+> > Ugh, I hadn't seen this.
+> >
+> > No.
+> >
+> > I've been looking into this problem, and as usual it has turned into a
+> > yak-shaving exercise.  I think I'm five yaks deep at this point:
+> >
+> >  - Need to start by simplifying filemap_fault
+> >    https://lore.kernel.org/linux-mm/20260625195040.2508362-1-willy@infr=
+adead.org/
 >
-> Hmm yeah :)
+> Hi Matthew,
 >
-> Bit weird it uses user_mode(regs) and the early exit uses the just-set
-> 'flags & FAULT_FLAG_USER' too.
+> Thanks for looking at this.
 >
-> Some horrible duplication here too... the user_mod_regs() etc. code is ju=
-st
-> duplicated in the mmap lock path.
+> I understand your concern about adding more complexity to an already
+> complicated fault path.
 >
-> I think you mentioned it on Suren/Dave's series but vma_start_read_unlock=
-ed()
-> would avoid all this and could lead to a nicely red patch.
+> However, I tested the RFC patch [1] on Android workloads and observed
+> lock-wait regressions. The common pattern is that filemap_fault() can per=
+form
+> file-backed I/O while holding either mmap_lock or a per-VMA lock. The tra=
+ces
+> show three representative classes of lock-wait regressions: GUP faults,
+> kernel uaccess faults, and per-VMA-lock faults blocking fork / copy_mm().
+>
+> 1) GUP faults under mmap_lock
+>
+>   APP: com.xs.fm.lite
+>   lock type: mmap_lock
+>   holder: Thread-77
+>   faulted file: libbytehook.so
+>   lock-held filemap fault time: 95.606ms
+>   blocked writer: NetDownload#15 (blocked 218.971ms)
+>
+>   Holder stack:
+>     filemap_fault+0x0
+>     __do_fault+0xdc
+>     do_pte_missing+0x2c8
+>     handle_mm_fault+0x4c8
+>     __get_user_pages+0x618
+>     __gup_longterm_locked+0xac
+>     pin_user_pages_remote+0x88
+>     process_vm_rw+0x2cc
+>     __arm64_sys_process_vm_readv+0x28
+>     invoke_syscall+0x58
+>     el0_svc_common+0x80
+>     do_el0_svc+0x1c
+>     el0_svc+0x48
+>     el0t_64_sync_handler+0x70
+>     el0t_64_sync+0x1bc
+>
+>   Blocked writer stack:
+>     vm_mmap_pgoff+0x168
+>     ksys_mmap_pgoff+0xa4
+>     __arm64_sys_mmap+0x34
+>     invoke_syscall+0x58
+>     el0_svc_common+0x80
+>     do_el0_svc+0x1c
+>     el0_svc+0x48
+>     el0t_64_sync_handler+0x70
+>     el0t_64_sync+0x1bc
+>
+> 2) kernel uaccess faults under mmap_lock
+>
+>   APP: com.xingin.xhs
+>   lock type: mmap_lock
+>   holder: Thread-2531
+>   faulted file: libtiny.so
+>   lock-held filemap fault time: 172.375ms
+>   blocked writer count: 5
+>   writer wait range: 152.766ms - 172.006ms
+>   representative blocked writer: com.xingin.xhs (main thread, blocked 172=
+.006ms)
+>
+>   Holder stack:
+>     filemap_fault+0x0
+>     __do_fault+0xdc
+>     do_pte_missing+0x2c8
+>     handle_mm_fault+0x4c8
+>     do_page_fault+0x39c
+>     do_translation_fault+0x4c
+>     do_mem_abort+0x54
+>     el1_abort+0x3c
+>     el1h_64_sync_handler+0x80
+>     el1h_64_sync+0x7c
+>     __arch_copy_from_user+0x1b4
+>     copy_page_from_iter+0xd0
+>     pipe_write+0x1ec
+>     vfs_write+0x368
+>     ksys_write+0x78
+>     __arm64_sys_write+0x1c
+>     invoke_syscall+0x58
+>     el0_svc_common+0x80
+>     do_el0_svc+0x1c
+>     el0_svc+0x48
+>     el0t_64_sync_handler+0x70
+>     el0t_64_sync+0x1bc
+>
+>   Blocked writer stack:
+>     vm_mmap_pgoff+0x168
+>     ksys_mmap_pgoff+0xa4
+>     __arm64_sys_mmap+0x34
+>     invoke_syscall+0x58
+>     el0_svc_common+0x80
+>     do_el0_svc+0x1c
+>     el0_svc+0x48
+>     el0t_64_sync_handler+0x70
+>     el0t_64_sync+0x1bc
+>
+> 3) filemap faults under per-VMA lock blocking fork / copy_mm()
+>
+> Other testing also reported similar per-VMA-lock blocking data [2], where
+> filemap faults under a VMA read lock can block fork / copy_mm(). One exam=
+ple
+> from my trace is:
+>
+>   APP: com.xingin.xhs
+>   lock type: per-VMA lock
+>   holder: xylog_thread_po
+>   faulted file: 2026-07-07-11-51-46.203.log
+>   lock-held filemap fault time: 10.518ms
+>   blocked writer: com.xingin.xhs (blocked 1.583ms)
+>
+>   Holder stack:
+>     filemap_fault+0x0
+>     __do_fault+0xdc
+>     do_pte_missing+0x2c8
+>     handle_mm_fault+0x4c8
+>     do_page_fault+0x30c
+>     do_translation_fault+0x4c
+>     do_mem_abort+0x54
+>     el0_da+0x54
+>     el0t_64_sync_handler+0x50
+>     el0t_64_sync+0x1bc
+>
+>   Blocked writer stack:
+>     copy_mm+0x2a4
+>     copy_process+0x4ec
+>     kernel_clone+0xb0
+>     __arm64_sys_clone+0x60
+>     invoke_syscall+0x58
+>     el0_svc_common+0x80
+>     do_el0_svc+0x1c
+>     el0_svc+0x48
+>     el0t_64_sync_handler+0x70
+>     el0t_64_sync+0x1bc
+>
 
-vma_start_read_unlocked() could completely avoid falling back to
-mmap_lock for binder. For page faults, however, there are still
-paths that must retry under mmap_lock, such as
-__vmf_anon_prepare() and swapcache_is_device_private().
-So we may not end up with something as clean as binder, but I
-think we can still achieve a cleaner design than what we have
-today.
+Thanks, Hongru. It seems these stacks clearly expose paths such as
+GUP and copy_from/to_user() where I/O may be performed after
+Matthew's approach is adopted.
 
->
-> >
-> > Right now, the code above is dead because !user_mode always
-> > takes the mmap_lock path.
-> >
-> > Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  arch/x86/mm/fault.c | 3 ---
-> >  1 file changed, 3 deletions(-)
-> >
-> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> > index 45b99c3b1442..c22b74e0eeaf 100644
-> > --- a/arch/x86/mm/fault.c
-> > +++ b/arch/x86/mm/fault.c
-> > @@ -1328,9 +1328,6 @@ void do_user_addr_fault(struct pt_regs *regs,
-> >       }
-> >  #endif
-> >
-> > -     if (!(flags & FAULT_FLAG_USER))
-> > -             goto lock_mmap;
-> > -
->
-> I'm not sure why kernel faults of userland memory were excluded initially
-> (Suren?)
->
-> Given that it's OK to take the mmap lock here and we're necessarily in pr=
-ocess
-> context anyway surely it's OK to take the VMA lock?
->
-> It looks fine to me but want Suren's input.
->
-> Also given vma_start_read_unlocked() is coming maybe that's better for a
-> cleanup.
->
-> And finally - Willy is working on a grand clean up of this stuff _I think=
-_ so
-> you probably should coordinate with him also?
+I am putting together a list of paths that would perform I/O under
+mmap_lock, along with possible ways to address them.
 
-I have no problem waiting for Matthew's work. It is the right
-thing to refactor the duplicated code across architectures for
-the VMA lock page fault path.
+Performing I/O while holding mmap_lock may result in unpredictable
+and potentially long mmap_lock hold times, so we need to address
+these issues at least.
+
+1. GUP doesn't support vma lock
+
+Maybe this can be addressed by Rik van Riel's patchset? I haven't
+looked into it in detail yet, so I'm not entirely sure.
+
+mm: use per-VMA lock in __access_remote_vm for improved monitoring reliabil=
+ity
+
+https://lore.kernel.org/linux-mm/20260724222934.1463812-1-riel@surriel.com/
+
+2. copy_from/to_user doesn't support vma lock
+
+Maybe this can be addressed by the topic currently under
+discussion?
+
+mm: use VMA lock for kernel faults on user addresses
+
+https://lore.kernel.org/linux-mm/20260802074018.73887-1-baohua@kernel.org/
+
+3. first PF before retry might have been mmap_lock:
+
+Maybe this can be addressed by `vma_start_read_unlocked()`, as we
+discussed here:
+
+mm: Unconditional per-VMA locks and cleanups
+
+https://lore.kernel.org/linux-mm/CAJuCfpEF6SjKhRW33AuboAuUbQz5zv+QKr2eD=3D5=
+2Qd_POL18Kg@mail.gmail.com/
+
+4. The last one is the fork regression, which is unrelated to
+I/O under mmap_lock.
+
+- No approach yet. Perhaps Android could enforce some rules to
+  prevent apps from calling fork() in the future?
 
 Thanks
 Barry
