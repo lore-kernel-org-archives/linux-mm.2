@@ -4,141 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A994EC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB711C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:51:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B1AF6B008A; Mon,  3 Aug 2026 13:45:41 -0400 (EDT)
+	id 8E6716B007B; Mon,  3 Aug 2026 13:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862EC6B0092; Mon,  3 Aug 2026 13:45:41 -0400 (EDT)
+	id 86F346B0088; Mon,  3 Aug 2026 13:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 751306B0093; Mon,  3 Aug 2026 13:45:41 -0400 (EDT)
+	id 736BF6B0093; Mon,  3 Aug 2026 13:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BBC56B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:45:41 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE6741C132B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:45:40 +0000 (UTC)
-X-FDA: 85060685640.10.20128B3
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F38432000F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:45:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=X8J9hBuZ;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 377296B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:51:40 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA3F480799
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:51:39 +0000 (UTC)
+X-FDA: 85060700718.09.E26E2CD
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D0BA01A0007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:51:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i68A3XXp;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785779139;
+	s=arc-20220608; t=1785779497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BRpMmWn7ih469Fj36TmA1mRpR7obmZjKnWSavtgAWok=;
-	b=n5xR6ilIrjE3p3EOhN7aFc4wfLxeOpjGq5Ngsf4KhHDpW9uI6C+QDWIaEh7TAxH42a8akk
-	sqrZuMn7TFmKQi/lLCstySzdn+5z3Ft9yHSEhuKHzIaAhO0l6y1XT+JCg3DMdoHnl8UdZa
-	lSb95BqnjwfuaZJllyXpRA1mzA374Lk=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785779139;
-	b=GCvcC2N+emIxu5ZGPS5EIV94i/HpHRJPnVywdp5YOckmR+ZOBT45MQfnXdUt04Yno577PZ
-	uymLOLeQSu2T4JK+RENDQhd9X+inmhTUkAETjLG9EHTG49ZywUmfZtcSyjwhK5oJYOJbDD
-	Mh/z6Jni8PaYtw8IJ0Gqz987w8BCWIw=
+	bh=gN9PGDfMfb8sN7B1AJaJ+0FbizOuTl6vkuEoW4uKhkM=;
+	b=2ltmHbP2sxdGJu7w10LIBnfu0Q8eHJbHXEk6H9CxuVHSv+oDyh5zlkmxsjXm3FdeXgXUUP
+	dYubXYjZwAsPbnImWHTYmqTTzBmrGjRqQN4pI0TfC2Zxr9KXg17MDn9fEE662J1kcmK0I3
+	JvFySMPj0MryApHqsvHOJLFRqRThbDc=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=X8J9hBuZ;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c10ed63c0so12951cf.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 10:45:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785779138; cv=none;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i68A3XXp;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785779497;
+	b=TT8GvpsCj7/i++ODEl9w9AQsjwCSK0/NBxiTyjC7E3RrB2X2QUMthZoKt3YTsvSxIdeJz4
+	5clYbJyisSO9VoZ9mTdsSfJ/Q5y+BHdp/d+U+k60jdrnb3FDQm+sFqY8tL7/4zfBjLX4xA
+	75UCjRs/+youAPdn1099i+UBR3DF/Bw=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c01c79467so23911cf.0
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 10:51:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785779497; cv=none;
         d=google.com; s=arc-20260327;
-        b=p2f1HRW+FdUkqTqoHj2mY2mtT5gK85VU2Hw5TnWyM0u+Ix0CTdfKnLRntt6RZGYHMT
-         ydXW+yrtfS3o8gYuqraMRFd5XIfehRxcDNM3hh+oHQUOJOhOctlvMUSf5iqY98Quqdwn
-         kEeYrYKWsx5EnJJFrQSr7ATbdCy/WKhkgXdxUN7YynoBSNu4iOt65wfWq8oNNOI+dQa/
-         V0GHVbzjvpB+KhbZCG9eTpyX6hRbbvOCV2XYnnYWmy6pVtZ3N95bqIcEtPc5zGbRLkOE
-         AywmwJeQgQ95KMQ89KyYABapjlsiaqc9cJdYCo3SZiKHfWzjZ7LgNLicRl52cRyLuKcf
-         tMvQ==
+        b=cw7xF9bI2CCFfT7qaoNh2utCpF5bYhttTk2vIIgGYCXxxL0Fr6rEqogr7flSmhneM2
+         tAAfA4t2+f8iYxeyaz9a7UCn1hwwSA6ZpxwTGD0+n4N1tgZGfP34GQQ7j0AWEum6hfQ+
+         dfEm060PwRHzceQRLgFpc/zBGJsuPrpnWCgvAtSmoDH2IrIxq1qIb5nE9D0EoqNUM3N/
+         l7c2YuACUFGB3coMoh6y9GlEgLNt3EIMgbJjCVDjunk8bkNi6Zo2h5WKuXXyl3DqcaFw
+         v0x8SjwpA8lXzvbX33TWj1pjE1R32E2eaSWldfNTF0UvIZHKlgSppwc26UT6dnROyTsU
+         jA4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=BRpMmWn7ih469Fj36TmA1mRpR7obmZjKnWSavtgAWok=;
-        fh=b6/43zvxFKTcJlVBATSvreN8eOpwSWCCaMmKOCDkMtQ=;
-        b=Ov337Z+1iE1BN+o7NW6o+Xk7i4gKoxx/xeEKbIXHy+O6hEn12Uz48qs3frdMvzNVs6
-         6o4yeNMOfxwfZ4HhdYR1VcqCFU3zfQQ2qV3em+hGkar+A9yMBsVPRI4a/yvIQ6bMip2X
-         4d0o4CLzpOgIF9zHV13qHDW8SfYaQQLAiNn5pQ0agCTjkewDucPmCscwsWrq686bQHiY
-         dRQQZGKFnjPeDpyHN4i+lcZwK/ZW4Xbf05e3Ty7UK/PUHQSFpLo4N4JIRB3r4SI9/BVi
-         FbYJdvCcbgsecqseb5SUOHbAwRNlyhs8PFzIvK0Mm0yifF5GSjob+mCxYk+4KMU7I+0Z
-         qcyw==;
+        bh=gN9PGDfMfb8sN7B1AJaJ+0FbizOuTl6vkuEoW4uKhkM=;
+        fh=h39OEL6YakaLOap4nQrOCPstzlizGA4+/NkHaICVMGQ=;
+        b=GaxD0AJ8gsCZt13PNVbBFl2S19vsA4rLqnGSJ9nU9J26FIc95Ygvrr2e8sciSr7XTA
+         ce6Uoe38Z2Uabr3eIf1Gw3QGYOE0IDgJiRswjHAexIRhPMuUe3GN9Qd9ieInXQ1P+JaS
+         qhhzlrkHPsdO4s/BLrTVPdlo8RxQ5CID/Em9ecVVfHHt68XkJLgBF8jBFvxH2tiqDHwL
+         o1QFfPErI6C3w5GzAvhNcIRHjl/6LUxFtZKg+FJ3KjNlR8/86hxeewtThphMjJWF3sfs
+         HgcacVSX8k62nByROB2RBYzR5uyE7rLzz3f4TdB23EiSik5toMyWaZbAV5z/V4cj3+FN
+         pw9w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785779138; x=1786383938; darn=kvack.org;
+        d=google.com; s=20251104; t=1785779497; x=1786384297; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BRpMmWn7ih469Fj36TmA1mRpR7obmZjKnWSavtgAWok=;
-        b=X8J9hBuZJO6k97Zn3UEpj+XD/XYFN4IZ00T2zkWoPSwL4QxsASrGce4ALYADPzsuvW
-         kpbXQehrwEJzsUy6aZi6eG+9+LURMa49IXI6HCxx7FVtBglgWgDA6FQcpv7CxusT6jlq
-         Mf5HgGY4ox3mh1OyXNsx0pCegvXpIYZVhejxXcfnfVLJm5xk7hsr0D/FPNQpNpg/m2WL
-         iL9PM7Lrif9DFUvzsUtZXhuleKwyNjBOLAJT3Co99R9EtCO0rg3sLP/1tli0uXojGKOm
-         Q6vS3dEWzzFHQeUCxkKwPKfa2tZCLS/S1tu/K5u61cWaNaHTpIA4guyj7ZW00Ubri/N2
-         08ug==
+        bh=gN9PGDfMfb8sN7B1AJaJ+0FbizOuTl6vkuEoW4uKhkM=;
+        b=i68A3XXp0eQGwagEviUc1Sm3jMw3HFLBO/txVURmjgLAiqKMV/15mky+bNpdX8XPps
+         xe+yXyNHFfawjBUHDYyHKlB3pRT+C+l04KfH0Zd5sNDUC8BTCnVd64NAyKSZNOZfiZhb
+         hE1+wyuWvS+WnCa5/ViTvE2UAJmUZDRsMQZvgaQyB0eIa4kcZaOpdj9i6zQsYifsKAaT
+         FkDgxD+MYwVlzTUasAC+YQxRiz/S6jJhDPdGsdeMGqC3TWeRHxMuPEpRoQP2jEVdhn4p
+         ecRI5l1t37jKi4ki2LR8ZPoubA0mAaXxXrl3WydcrcE0hfX0MUZuZnmy93H14GSvrvlW
+         YkNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785779138; x=1786383938;
+        d=1e100.net; s=20251104; t=1785779497; x=1786384297;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BRpMmWn7ih469Fj36TmA1mRpR7obmZjKnWSavtgAWok=;
-        b=ZHfDrTqDGuy3VL9AkckkQ9P4rrUQqMn8TZDyQbj5vvB296kce95kcyqyvpWdpK/dan
-         n7BlVEArHL3+5cwLdrAtQB8vZryF11kPS2EcsSDb+iHIzbRLK8NzaptxNZVFcZUgbzfA
-         MCB2K9FA9MQMtZnJXUov8vlTZgzHPj9BUrQPnR5o8XUwEZ1lhD28UYx1n/7f2Sm7GFCd
-         aa3l4WZzCQ27DReiVi+GkF95qYBQhDToEHl3tjbqsTZq/HcJYBxe78vcKy961D/UjsB8
-         fuJmbSjiUvCqV9NJbelEstSbZPwsnn9ymy1aIEzIwhBD+noqAb+5ABNxTLjdDVAxnULY
-         Jb/A==
-X-Forwarded-Encrypted: i=1; AHgh+RrK96cHiOdTxfH9p2Efv7yaOqSQs/cB/3k04Fo8lAFB6vy6Oqknwk3S9o8uDffTKYuTRnD+NN5TAw==@kvack.org
-X-Gm-Message-State: AOJu0Yyn1NhKWN/IzVViam41VU5cC52iS4mAVQSoxQ7g4Ap/QwjT9IFX
-	GTSIcRifqrkldnBryJSXvXyxtqsgTCZru1UFcOtz5CopMHpbABtfkQciuf87tqNjKQLdcWmOm9T
-	v1LgjFflsp2aITMMlGpb+x94kSEFqML7z9jTJD4v1
-X-Gm-Gg: AR+sD11ZzfskA1Dr4u4Os2NzbAvOquk9iGvD1URdZiN3dCVA670KBscCsFSmtIDIT4R
-	q3htndrdHeHFTDnqwQX/zLyIkTJL7hTNHt6jggbqbHIUsoYBlFut4aPFD/FN7/zgTASaOJUL8+9
-	928x8FI4+vlEel/RsEcofdLJa+kdul3Hon7A9RpNr5i232pOKu03luRXGLVjjyYzrpA0MenpbV6
-	/4fTR+n4yMUuB+8l+dALJE/8IzAS/lZlCiHu2v4XUrappwsJiZoubLYN8IsxGZJFainKxFmhO/c
-	C2cTnN5HTZzGM7VENmTKxYGkiY+Et8zgQAcsIZ5RzGAEQKyyCsCFVA==
-X-Received: by 2002:a05:622a:2291:b0:51c:ca9:3d15 with SMTP id
- d75a77b69052e-52cd4fcddfamr586201cf.12.1785779137391; Mon, 03 Aug 2026
- 10:45:37 -0700 (PDT)
+        bh=gN9PGDfMfb8sN7B1AJaJ+0FbizOuTl6vkuEoW4uKhkM=;
+        b=hwEKNg/CeLEIiHHynT/0C9mPSud95mpFQq4hn80S/m5isIOCPCuuvmDK5oIGD+wO0g
+         1if6rtqfpoafXNMIku/UIZVrSHdlOXGTrZtbX+uzF7HRQSGC6sLJGFEyx/OeOZSDTvNr
+         MmBwfoYTjGhvFgxCTn9Z9hjrRdIK8SySvr0rlZ0Gj1HavTZsAw4NSbuGBsVH+JNhdEe2
+         hlYsTPkyZb47GsnakectLLEkaSERk1wcbTQP3XEAw6vqrcCv5NvhYh1+Adf9csH+xImh
+         a9+QOD589ZDGPZcPCSTbvQCF346KQHeS2wZt7O5ajDljBiDmNjq6CbjxsmfA5Hz1T+XW
+         ACqg==
+X-Forwarded-Encrypted: i=1; AHgh+RrB9UhFAAVPikitnO3TshQa3cVgRI+uO0/KVihF837mO1jr+Qv8k/31g544eKB9yPrnjmM0GHYG8Q==@kvack.org
+X-Gm-Message-State: AOJu0YzGLQjdPkBxByflYv0FAOFgxRYpL5/WiDXIuFCbVSBd6Rl+vK05
+	9RC2mct0jfljFwNTRR1dXoKbXkg6uZWCoXKvK09Qagm4hT7Il1POBNrv4cCN6FQTkwdW/QtgjTF
+	VFa96zQb0ZQKvfB/uNEGYlgvmVBGrEfsviQr5/tAY
+X-Gm-Gg: AR+sD13kRsfNVCDxTTuXoQKQyCXwLYwQoiWlEn27a2dT2TeyDiSrsQ84GQIPzij7Vx2
+	ms8ParLYzinxMIvgkxpJqTSihUmrK8ZD5T9OrkvCrEkNg2qToFW3Iep32xW54Yd2iR9/BsebeqV
+	ct2n9F5/lcjLZDeyvzftPSbF2opyMiyBwQThZGygA6rDQpRsQfZaAlizVe9a7BZ8AF5GdYiS8+H
+	0WT9lkrmP6bxFtSUOX9CsCR0AE7sXWO5p48taS85JfWIN7PEI+GIqUsf2HDY/fBd5S4iXwp01kK
+	kn37opOpRkvsd5FQFR0h189YVZf6L2dTUOUzaN+uTvGiNDVVOG8Vkw==
+X-Received: by 2002:ac8:59d2:0:b0:52c:d3a1:358e with SMTP id
+ d75a77b69052e-52cd501c9e2mr508011cf.18.1785779496122; Mon, 03 Aug 2026
+ 10:51:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
- <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com>
- <anC1iE21eonDK06n@lucifer> <CAJuCfpHNMHKgmP=JLPKY65e6gO6MRpGE5MjUtjd_-2+LHr2Gpg@mail.gmail.com>
-In-Reply-To: <CAJuCfpHNMHKgmP=JLPKY65e6gO6MRpGE5MjUtjd_-2+LHr2Gpg@mail.gmail.com>
+References: <20260802215459.2769283-1-surenb@google.com> <CAGsJ_4wXGf90BMoJp3_z8G4fMTAgED88RXvbp6C4Gf+iy_2nvg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wXGf90BMoJp3_z8G4fMTAgED88RXvbp6C4Gf+iy_2nvg@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 3 Aug 2026 10:45:26 -0700
-X-Gm-Features: AUfX_mxBR2LOxXxJQ1PIuO4cTsQwU7lloBbSc867VOvDBN4dk3ilj-U4-2El9T4
-Message-ID: <CAJuCfpE0xtaXd7r3kHPhscox+5siXh5+c0Ssjbz+qLJUFWA4MA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Mon, 3 Aug 2026 10:51:25 -0700
+X-Gm-Features: AUfX_myBHnqbqUHzxMRv2lr_uMcuDR54YU5uhLBh_mtvAIUn3WoWtjNwKbef5Os
+Message-ID: <CAJuCfpEF6SjKhRW33AuboAuUbQz5zv+QKr2eD=52Qd_POL18Kg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] mm: Unconditional per-VMA locks and cleanups
+To: Barry Song <baohua@kernel.org>
 Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
 	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
 	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F38432000F
-X-Stat-Signature: 9f1ehozfcdrn7mpqtm6r5anwt53smqzg
 X-Rspam-User: 
-X-HE-Tag: 1785779138-548515
-X-HE-Meta: U2FsdGVkX1/xfP06247tvz9ApcJ4W9mmD6ap1sKvC+YaR6PEI90O3cf6TJXI2YTpODDJE63EeXMKqjugeSotvb0+C1ziphvhbpDm34xJnuCFpOlOB0d6NB6NzTGdho4ks8ziY19uhHz+Kbzo5Lm+JOuaz9MCmlYLSBMzwDzy3QicXW2fqF53Qy8cDusLRvfGGhjVA5wPSH59tytWZBcdXkMZfvaYmm9kMsGAJzqEQBBUCiwzavZ77ZU+ScO8BaCxuHMeSc048HwNhtUXDnMeluYnnOBOJ4EGTEyunT5nAN4l+uClWYKl8ESUh/laMGOKnsEp0902VSeZjYnBwOPtKZz5J88h+h5z9ia2DVSzkdsMDWYi94xr/hhvnOtpY/4I1RQKLcVQ8+qvaSfqBjmCtfGrUGwxNTpTuz6y2Mmu5y3rqtcBn+iG55rZZdBMhMaUSh1KKLzrB7QNOYGpEnJjEhaLDf/n8tAC9Lspk3QrKyGohkkPO8+EI8oMtwBRQDaotHrVv9D6mNZ78SdSnI/we/GIla6AhLr8xEgUWSMZNt4F2X7+gZU3mU0So2ABRugkifntrj2TBMLPSLC/UAzZ0ND9VB0yaOvkaKF5TwaNbrb2yA7XNz4H5RAmCVzL3sDYZwyIbZsfTehSIe2HTnRrI7z4hXxovga88NWJNdu5c48HYiJq7leSHO1Di2shkbO08F1iIlI0PX6T8JJjAWmz0zIvqjZE3FwMz8eRMe6OqQ68eF53FHXdMRzHtugQPuhcq/IWV0meRRJy8QcmXoIMmopqCphEyyIPBOf74wtoSoWPu4P4Y5dtac38JmM8yar5eWYMIGXvkvLisCnHIjAWEWbVeDQbGLG23ggryyLPjv15BGL6684dcfdODYjuT5SZJtiG4O7lhcTfMCE1ESMNrJ/zWQ0x0ZiTBe2+cHZA+fpwLXrpz995i2oa7/klG61bk5hMnoeq+UzHfyb1jz9
- wLvQYji8
- c9YUHB3DoackFnfcJR78599GouR9CMxvF+9PIXlbzuJMar6o73/04TduiAVXbd2NzGRTmu1YDRN0K+MleaGv5osgcRhn4vzGPJmZBaOGDDhhPIoH7y/AKV8PZEmmpbPRvtOZUtOSjvqW1m/2KmRK2hbrjdSE8AeEaxICkcaD2bhwEl7c03rIUPZSZ8D20IPp9+k4UKYkLkBzf9Wwl9vkAizQkup+Nq9QICs8teG9rJdz1Ob0GyqTmVzd18VweqKGrVJ4mp+4Ynviyl31p8Sk6t2gXmjh1ty3Vu0Vkw0nygfs+KepIT36SrmS4VisXH//NkVKD/7tgDC/l9qRlvyrwLfD9Zrq0rEOyhyXLTVomP6M5OSYLM7JHrcXmJ8+VjUZasjji/hB3B37CoEOWbmNLjwVeezv3t1cZdd+7w38fJhHmFS/bM5uWxMtFQoMPh4AWMe1vXvMeXDg99/8n38H9NBgNPZS3YpYLZOhpeh5hrMjA7pIN2qzJyxP+9hJ/b/XhR3E0ffMuA14dUSNVue38X9Y6Z/+cS7wj8WWF0ZCwxBX/7zbOroD5n0fSZu3h92KbYOIQJg7H+UIL0U7PMl4EQfQOWS0IF6aSKb1Tkrrd8zhayXSKvTESDjnt+aZyNx820bfweHJxFoLG1FP+a6+tI4+uJZJsvn9gTSAb
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D0BA01A0007
+X-Stat-Signature: zt7n1q7bjfaaqditz58yekywp54ssmhd
+X-HE-Tag: 1785779497-360539
+X-HE-Meta: U2FsdGVkX19OwLmFSiYPJU4FRPSmFjDC3PervUk7EPLp0ZwXzv5zRE7rKvnuJ84EsvNazp08kP+TA2LSilYVaiPegreivfiLHqELA90Vf58aznIKSWdZcWOoXuDvonQOL8pnMJaQIDyQPjeA6jmcdYBVdCZz/7T5AXuZP+kjZo053D/9jyebndEtdlkqW52wEr6f9G0qLluNDE6ePzdpTM2ByabdMlTQ6H4VpOtJyhVccJROIvxbMf+tvhmT/ONamOUopTgxVT2vC60CPLq9lFHOArIfOQ8ZMCVoy2P+fXnFg/JO8YaCl63ebFD5Jf4RuKcKfRG9ZuFE584hTtZ0Mn/XY1dsjLdzOaqmgGZ+EvENieVFMfhCIPvuLN2Pf1V42gBpuS0IwxG6RavlBCa2r63IHHtYPqNLH5E6Ax4+8j0bT4CCYrMP+QTQbS8lBi5JlKrVoPnT5nFY0VqZJdqe09SWC+ACcTC1tCYhYB+VFdyAAg9dWiFGVBLPcBJ0DrIK4hIdeNk0eV5HBLmksKKOKOwqkE42T2wwAmvTqgMhIEVhZh8KGeTfHg8A1l48xgW6CrByT539/2YIsslSljDM3GkZ1M0aQP8G78dyCGshqRswCzYQdkBsQk0UMQRHf/sylf41dlss2zljwjMNb9cjoEAmtF4NZJz8MpdNc7LpE3KnUl2w0FuDj6EnBh/i52cmmdUTNzcM+/V0CaA0e79N7bs1/HBL7MLntl+QvKKZcBp7PGAe6YF/cQcBFm4nMlngfhFSOnYGWp6UiU3bksUKzIi5Fund2LvdXLeR9s/kaV2V4VUCslS2Y4hvZxYDg6lG2U40qFg6pEvlk26mQdjH7w7f64lgX2aCvagzL4rcYGSGWndQUAcEe593le63LYofyqZuIs47dr6caV30imQYyX/J+PtlDCHuSZcoy2/+HuumjY6Ki5SpLqQE/mJ+up9xx5OrC2j5tz3uVzqI1hd
+ K6ityE0E
+ QaOsSc012CzLsnDW25CgI1eiDNaX0s6iv37D09A1LlQs4e1XzGNH9zRfg87kn8dRIiTxFqWAybH4Jpz5olMCQk0HDWDGKXYdL9hhAir+5igTIBBlYblGsRZCPdUv/oupim0d6sujZG0cUGrK+LVIeYT7O3XLI+WXFjWi4uki2nFYh+cP/sQ87b8HF+5I8lqOz63GMs4w6vrxNiHcQM4Ub1DTk4M7jLGFrMoo0TRt8q1MJzBQjTFNYTyu2t8EqMSeN4LfxH0cw/nZRGK5edJS6SEidooUjtQQMPx0UVFhRa2STW7wVdbcwYePJ5MydecZyoN2pwCEK9n50Rdd8fBoePukgTsC2AoDAexfvnv7K4st6EBk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,117 +144,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 3, 2026 at 10:41=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+On Sun, Aug 2, 2026 at 7:11=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
+:
 >
-> On Mon, Aug 3, 2026 at 9:08=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org> wrote:
+> On Mon, Aug 3, 2026 at 5:58=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
+com> wrote:
 > >
-> > On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
-> > > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@goo=
-gle.com> wrote:
-> > > >
-> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > > >
-> > > > The per-VMA locks have been around for several years. They've had s=
-ome
-> > > > bugs worked out of them and have seen quite wide use. However, they
-> > > > are still only available when architectures explicitly enable them.
-> > > > Remove the conditional compilation around the per-VMA locks, making
-> > > > them available on all architectures and configs.
-> > > >
-> > > > The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LO=
-CK
-> > > > when the architecture started using per-VMA locks in the fault
-> > > > handler. But, contrary to the naming, the Kconfig option does not
-> > > > really indicate whether the architecture supports per-VMA locks or
-> > > > not. It is more of a marker for whether the architecture is likely =
-to
-> > > > benefit from per-VMA locks.
-> > > >
-> > > > To me, the most important thing side-effect of universal availabili=
-ty
-> > > > is letting per-VMA locks be used in SMP=3Dn configs. This lets us u=
-se
-> > > > per-VMA locking in all x86 code without fallbacks.
-> > > >
-> > > > Overall, this just generally makes the kernel simpler. Just look at
-> > > > the diffstat. It also opens the door to users that want to use the
-> > > > per-VMA locks in common code. Doing *that* brings additional
-> > > > simplifications.
-> > > >
-> > > > The downside of this is adding some fields to vm_area_struct and
-> > > > mm_struct. There are likely ways to optimize this, especially for
-> > > > things like SMP=3Dn configs. For now, do the simplest thing: use th=
-e
-> > > > same implementation everywhere.
-> > > >
-> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > > > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > > > Cc: linux-mm@kvack.org
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > > > Cc: Todd Kjos <tkjos@android.com>
-> > > > Cc: Christian Brauner <christian@brauner.io>
-> > > > Cc: Carlos Llamas <cmllamas@google.com>
-> > > > Cc: Alice Ryhl <aliceryhl@google.com>
-> > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > Cc: David Ahern <dsahern@kernel.org>
-> > > > Cc: netdev@vger.kernel.org
-> > > > ---
+> > v2 version of this patchset [1] was written by Dave Hansen and per his
+> > request, I'm taking over this series.
 > >
-> > <snip>
+> > tl;dr: Make per-VMA locks available in all configs. Simplify some
+> > of the per-VMA lock users now that they can rely on them being
+> > always available.
 > >
-> > > > -#endif /* CONFIG_PER_VMA_LOCK */
-> > >
-> > > Now that I'm looking closer into this, I think we would break NOMMU
-> > > case because nommu.c does not take VMA write locks at all. So,
-> > > lock_vma_under_rcu() for example would always succeed.
+> > Binder and networking folks: Your code is the target of the cleanups.
+> > I'm cc'ing you now on v2 because there's emerging consensus on the mm
+> > side that the approach here is sane. I'm not quite sure how this pile
+> > would get merged, but ack/review tags would be appreciated if this
+> > looks good to you.
 > >
-> > I don't think anything's broken actually.
+> > Longer version:
 > >
-> > Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA =
-flags,
-> > but now you have stuff that happens that didn't before but:
+> > When working on some x86 shadow stack code, it was a real pain to
+> > avoid causing recursive locking problems with mmap_lock. One way
+> > to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+> > They are great, but they are not available in all configs which
+> > makes them unusable in generic code, or if you want to completely
+> > avoid mmap_lock.
 > >
-> > * vm_area_free() -> vma_assert_detached() - fine - it's always detached=
- in nommu.
-> > * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to =
-0 (correct).
+> > Make per-VMA locks available in all configs. Right now, they are
+> > only available on select architectures when SMP and MMU are enabled.
+> > But all of the primitives that per-VMA locks are built on (RCU, maple
+> > trees, refcounts) work just fine without SMP or MMU.
 > >
-> > AFAICT nothing else.
+> > The only real downside is that making VMAs a wee bit bigger on !MMU
+> > and !SMP builds.
 > >
-> > So seems fine to me?
+> > The upside is much cleaner code, lower complexity and less #ifdeffery.
+> >
+> > Clean up a binder VMA locking site now that it can rely on per-VMA
+> > locks.
+> >
+> > Building on top of universally-available per-VMA locks, introduce a
+> > new helper. Since the new API does not require callers to have a
+> > fallback to mmap_lock, it's much easier to use. Callers can
+> > potentially replace this very common kernel idiom:
+> >
+> >         mmap_read_lock(mm);
+> >         vma =3D vma_lookup()
+> >         // fiddle with vma
+> >         mmap_read_unlock(mm);
+> >
+> > with:
+> >
+> >         vma =3D vma_start_read_unlocked(mm, address);
+> >         // fiddle with vma
+> >         vma_end_read(vma);
+> >
+> > Which avoids mmap_lock entirely in the fast path.
+> >
+> > Use that new API for another binder site and one in the TCP code.
 >
-> One place that needs fixing is in BPF iterators. They use
-> lock_vma_under_rcu() which would always succeeds even if the VMA is
-> being modified. Instead of removing !IS_ENABLED(CONFIG_PER_VMA_LOCK)
-> check in bpf_iter_task_vma_new() I'll need to change it to
-> !IS_ENABLED(CONFIG_MMU).
-> I'll look into other parts and try to verify they do not affect NOMMU
-> but ultimately I would like to run some tests with this config, which
-> is not trivial...
+> Nice, Suren and Dave.
 >
-> >
-> > >
-> > > Extra per_VMA lock-related fields in the vm_area_struct and mm_struct
-> > > would also inflate NOMMU structure sizes without them being used. I'm
-> > > not sure if this is an issue we should consider.
-> >
-> > As nommu co-maintainer, no it's not :) I won't have that stuff blocking
-> > important changes for real arches.
-> >
-> > Go ahead! :)
+> I wonder if we could use the same approach in the page fault
+> path. Instead of falling back to mmap_lock when
+> lock_vma_under_rcu() fails the first time, could we wait for the
+> writer to finish and then retry acquiring the VMA lock?
 
-Thanks for confirmation!
+Yeah, we might be able to do that. Matthew is working on moving common
+page-fault handling code into a single arch-independent place. Your
+suggested change would be simpler if done after Matthew's refactoring.
 
-> >
-> > --
-> > Cheers, Lorenzo
+> For example:
+>
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 85e23388f9bb..684f38cc4e74 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -677,7 +677,7 @@ static int __kprobes do_page_fault(unsigned long
+> far, unsigned long esr,
+>         if (!(mm_flags & FAULT_FLAG_USER))
+>                 goto lock_mmap;
+>
+> -       vma =3D lock_vma_under_rcu(mm, addr);
+> +       vma =3D vma_start_read_unlocked(mm, addr);
+>         if (!vma)
+>                 goto lock_mmap;
+>
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index 45b99c3b1442..a3a4c4741e30 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1331,7 +1331,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>         if (!(flags & FAULT_FLAG_USER))
+>                 goto lock_mmap;
+>
+> -       vma =3D lock_vma_under_rcu(mm, address);
+> +       vma =3D vma_start_read_unlocked(mm, address);
+>         if (!vma)
+>                 goto lock_mmap;
+>
+> Best Regards
+> Barry
 
