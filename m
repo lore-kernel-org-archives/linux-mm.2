@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0758DC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5ECC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:12:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6D26B0096; Mon,  3 Aug 2026 11:07:56 -0400 (EDT)
+	id 9BBF16B008A; Mon,  3 Aug 2026 11:12:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67E406B009D; Mon,  3 Aug 2026 11:07:56 -0400 (EDT)
+	id 96DBD6B0092; Mon,  3 Aug 2026 11:12:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BAE56B00A0; Mon,  3 Aug 2026 11:07:56 -0400 (EDT)
+	id 883A46B0098; Mon,  3 Aug 2026 11:12:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA596B0096
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:07:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A91F31A0765
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:07:55 +0000 (UTC)
-X-FDA: 85060288110.17.35F11A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 19BC6100017
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:07:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kTE+/Up8";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A426B008A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:12:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EEF8C1C057B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:12:21 +0000 (UTC)
+X-FDA: 85060299282.04.6AC0157
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7FDAE8000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:12:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ONEOu75G;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785769674;
+	s=arc-20220608; t=1785769940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2T8dsYQ/yokvFm5Hvo97P6jloDB9Jam9qmoCjWPa3ao=;
-	b=UkIJ1FETY6/dVRnESuKMZRODxVaev3j61JVsil7PwOHydTQ6cG1M2wwU//CFvdR5inDb8t
-	ODkkIyK6zB+K6zjzn+rD1OUjPkTq6J6M7mEmtHYkihqNHDa6qg4L5qVPEsmFkRvH7Ga04A
-	W1JpUS+DPlz0coepQLX9JP/pLC6azoo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785769674;
-	b=SrZZE+QA0vtdFy2ldcB4oKU/VnAHXt1/Yo7mdCALLw0nYWF8Nx12S2qNBc0HRxuk/WQezA
-	6osr+nRuU40wnEdCAjC6QTlUqQA3RfiSJ8ePr0In866XDHqtiBcCfdLG1v8Vt5SATsqOwP
-	GP8mtNdh/EyaXdbz1I6pX6WDklXJTms=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nYkiDqZ2s4jvTz9taNY7nkfTxdmOdt6GrT7E1WYDfzE=;
+	b=o2njJvhGjQy4j6qmTD2qiZG0mcGLkRPvchnL+yp0IxC/0KUozP7EbeT41oCVgH23md4Dtk
+	b4cIkS77DMpRezV3erjW2feyiLscDIiRn/hnZSKtA2mP70r5nVqyF7JllFLyoHpyjkJYyk
+	gOAjQrH3Yu9I90ZxY4bliPnDcJHedJ4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kTE+/Up8";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88C6060A89;
-	Mon,  3 Aug 2026 15:07:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3F21F000E9;
-	Mon,  3 Aug 2026 15:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785769673;
-	bh=2T8dsYQ/yokvFm5Hvo97P6jloDB9Jam9qmoCjWPa3ao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kTE+/Up8JVH3KqYp0V99R6t55UtaaF4Bc7Inu3jh3UFi/Y737TMAiYKJa88xngrEr
-	 polOoaiwAbcv7tFVfJtN8xEPRkHNpQYwlXrhfaax/OjsrG7HnDN+PAgNfq4/DsO7MB
-	 v953LXE8aEOhE2leCcJ5xkWy+eVEYGfNdUAyCyR14meMP+ZowKyYK0GWVvzmaRD66X
-	 ArtIvBTLULpTgLUKJSE0SdAq5OTIzSy6K+HDGwlz+13KpDMZmSZV/6IqpO4zRJ2wEg
-	 dExgwc6htXkMVcd9FN19bKEKTuZi0QBTqM9Qf7b2H/WD6Ts3jSOelXSAxREYW2TYd9
-	 Noz9H8psSpAeQ==
-Date: Mon, 3 Aug 2026 16:07:35 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	William Kucharski <william.kucharski@oracle.com>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/2] mm/huge_memory: use folio's memcg inside
- __folio_split()
-Message-ID: <anCtxQE5hDUH5N6a@lucifer>
-References: <20260730-add-gfp_account-to-xas_split_alloc-v2-0-5a56c2361d85@nvidia.com>
- <20260730-add-gfp_account-to-xas_split_alloc-v2-1-5a56c2361d85@nvidia.com>
- <am28pV2PEfHsi4p-@lucifer>
- <DKFEEI2EDS4F.1AHGKB1EL6XRG@nvidia.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ONEOu75G;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785769940;
+	b=nNqlc2N6ySlonSYYo0t40BDUlo5xm2rBIYVZF7X1JN3ddMxZlWiiXPUvRQ0rN3OA/tB1Ko
+	utRxIC7yBEGg41IE+FzErbrBcZxDdvMS8mo0MmGxQes5kiyaLkVmfiDEJm/DcIvf5jjiy5
+	BX82vB7OzJ5KrzgcKxz5/TtJTae0+L8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=nY
+	kiDqZ2s4jvTz9taNY7nkfTxdmOdt6GrT7E1WYDfzE=; b=ONEOu75GH0kFmaLupU
+	O4B/FR0pDt7YCt5BnMuQsMBCROJIBGzJ3QFx2zmNYNDJNTuthHAeiQ4x0n7nGPsY
+	LNZHlGOFLtwPI2YtqKiNZri4NiV4LogRrW889zbmJ+bdjV6b8v1SPq2AmVFhwSLP
+	9yHuqeyLU+j8EO2X8TOC27Wx8=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDHDym5r3BqxJTWKQ--.40551S2;
+	Mon, 03 Aug 2026 23:11:55 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH 1/1] mm/ksm: validate KSM rmap items before hwpoison kill
+Date: Mon,  3 Aug 2026 23:11:51 +0800
+Message-ID: <20260803151151.3472893-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKFEEI2EDS4F.1AHGKB1EL6XRG@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgDHDym5r3BqxJTWKQ--.40551S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww1UWF1DAFy3Zr17Wr4Durg_yoW8Kw15pa
+	n5ZasxJrZ5tw1a934xA3yq9r1Yv3s5ta1UtF1Iya4Svas8trs8KrW8Ja9rJrZ8Ka4kCas3
+	tr4q9Fs8GF4rXFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4ksDUUUUU=
+X-Originating-IP: [61.171.203.210]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xvQyWpwr7tctQAA3S
+X-Rspamd-Queue-Id: 7FDAE8000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 19BC6100017
-X-Stat-Signature: 7c4x1j4p6ni1786b1dy89sstuc3axkh1
-X-HE-Tag: 1785769673-291492
-X-HE-Meta: U2FsdGVkX18KiDrF5C5l+5rraz4ZIyj3K28i3DXXNUBoxz5yC+zxZGLpMhw305SIT6aimQfk/uuShCXmex/FhJSUQJFKu60zqH22j8Jyubwl3vTc+YBAwtXvTFJQWTEU/bJpcrC9gZWb4L9M0k1l3pqzK22I5eCeMmcxo6TejhK12Ni8JjSDmvgsD3iIE/nY4gclLNvoRt7c/Ky+bLmJOQKUro6jkAKANNFwoMMyx74snU+1BYvqtnmZzhS0LAA/KHV94O3AtIZqABPHVmzQGIOciNsE3TmFII5+vRI2zoezgLtc2yoX9jD5lfC7rpVSPt6ZHMX2paFqQ2p4ECJ18TntxoHbDN6tqayD0rb7Vx7wiAsC5zbw8rAQpQ0jUb/QUK+o4qGr8YQ7wtqv420SEkQoJcl3TkYARY8FVhgTyJW+wXI/KjTYdjVxw7UBrQGeB6NZHnXIvBTUMOGvdIEmM4F/3cfuKjWYFfaXOYMAhhCvpdktBZBNJl3wndg2X4mQ4DD2ZuUp2JEmYHK5ZoaARDJasiEWOaSSoASCrua3qaNvq5l8IqrX0k31Uhc7Jg5igsuA+V9+qzubzXQX2q2Li2S7ijiW6oVB+u6tRI+XB2DcntDYIiSzDN1Jk9IZD8jfi1Sruo+p65ka5/OWk+cRd+zRe3WSD7HSuAv0k3Tm+Gj2egWxGejJW/Vti8lrehPmgt7AH7JKzKUnKyd3rvfpOA2nshHwkY47x2Iigzk/d9EpxZgDsBc125+IfwTzSXTkCNRT40SQiXs0QhPVwU2U2kpmuto8nuDkyjS5c4pCo8qN2jysTvmBIOQJ6ezypKYpaVsxAjlBjslRtxhp6k2zKw9574AdwJhfNcyMIgTkfzxIE5cbuwBvb4ExnBQes1vozHNIBBHcvQGLiyzsIXAztZ4ii9h2MxPedlCtjKunyeiAFbgg/3tKBKGvWn+Bla5vsfPKy7PtVdZL4iqS6aH
- vK+6EkGO
- k62Dz6Gu5MtotG7+6b5OU7ExXv9Yf7hYST8UKTXe/RKz8r/hikrVGRhind/Gi08nkZyrj6RwuQcZcG0nYlN6fZA0PkexL8Q8VoRhJ0Ier1smUIDhErD6L5pIviiRqDXGDIwupiI1TzxgVxE1E3bvFXx4juWqciLU6C1BcEbRsQrRlJzRM2CbMc3bDDSkoboSkkkAqRMsvheCLpYgXZJ/hJnJd60CcskwfTscYOyMH+z1qOiYYiBl4ZDT/Vm/L93i682o19kQP4HGSo24el8CG6KCA1Gf/6uOm/S+OkCwre3EYnB/vL5hATYmPq6/p/uhX0GcO7umV9iZtmOnox3ojITO/pLBqaHZJc3lDqUQYNNhxitsANA9JLfeTujCVAhh5ZV+LKqQeslR/htWuMZxsCFMurQ==
+X-Stat-Signature: u979rqksfawbsan65h76wtjeg5ogttr4
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785769936-461956
+X-HE-Meta: U2FsdGVkX1+iw/dtBnKtjehjtmVNpBlOhF/jJV5BfA7OjjuUuRb0hHSTvBP8X7SifQDgEM4MtL6kPCiefzB2JpHs+FyENaHoQjRCtBnvfcBOXvCg9x2+BVYLySENJbEYJR0A7k8ZUSLlWw5RyMxvvt5i4y1QHH4B9UAY+QOQKFVFTDbCtSLofrd3EWdS9dz5uMvhULcaaz/58fSSn/y0FUWdH9m9SM8MjELTYxg6srOJh/RqrrCd6crK9V0d/oBFqxBJlI5IdhedJIcnthi4aDTtqVUpZJf2WTdg70AAuFLk61+nQlkEyJt9e0iiQ8sQ1KOU0I3G2U4xhAFVcNF6mrt3SPRH+GSzRM9S7oY4W8xSDDUOg9QeBWrPPOcIWNv3irO9Z6hwSCAEAoFuEt7y04MPid3k2fChletxzJ7NM8CGXcm4RfVXt/dlSWjeCZAk2bL1s0jLK7J7nrAe9RlvwD6CffdfeBVWY7N2SV5ORtzRMblVKyYj3umAOCtxYULZXY4/paO1JR4swsG0lF+VwGBo8Tj/0U7CwlD2vwv4ErW1ukoYe1zuGK+qY7zB5hoCG0yEortGwKkUY52YDEie9lqMiEb4QM9TtymqHtqn+692UbWZv49Cq+VDOIedA8Z6yVqVtCbtqWMe31zLt+ke65KjxHIh5kYIE68flXrZ/8ianwa1FfXE+LhR15zbR6xC8Z8e4fXYE3z005aZivJQYYtt8cZ28/TaWkrW0HDE/VgwfPlT3+2BhPnNAkFg14hgrfQShYxGQosnIE8HCIKeqDeRJSonF/8uqgXNuUCU8BfzdMUjL8A/vSZyVDu+V5ddfo9/z50CBz64gVdbo6PWugqaPq4gA72UE+YL90+Br5sUkgeOrnWzUk8V8s7JR0wz8fQXP4NYTEyJSPP2wljb8oiFGorIkZKJdph0r5ZvwnT20ouSeeezMue9LF+R2rgC3LXCoKiv9BOPi+hKY2y
+ o8BTfEDt
+ z6S+IjS+GrYy+eSZ99P2gXFnG9zM5qyrDZ+7vCEmbykmXqvLowVUPM+ZGNIMwY3wVEQQzGVkr1Nay+fYiPu59Dj149A3tu8CXHS//WcTvZlbxGj9lE9NRXPXJrCocUV2W70Yh1/Yyn7X19hRJkOfBquHKZKUA7XISHqU4L1ES47RDepqPzJHA1JYBt3mIUSdHuwTHDMuePTHbU1Pz4aftDWGV5EXfhMKE719AtjmmVkIu+UEyfyelnO4hYES76aGpA9M0uE4PYEiwhgq7wSk85LCT/Z5C638cUqFiONBqsrK8DkkY9Vbc+ZQ0s/goBL0OXvUbhUvTkDLtwuTetBkcEx8QAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,105 +93,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 11:02:30AM -0400, Zi Yan wrote:
-> On Sat Aug 1, 2026 at 5:36 AM EDT, Lorenzo Stoakes (ARM) wrote:
-> > On Thu, Jul 30, 2026 at 10:18:00PM -0400, Zi Yan wrote:
-> >> During a pagecache folio split, an xarray node allocation can happen and
-> >> needs to charge at folio's memcg instead of folio split invoker's memcg,
-> >> because for example folio split can happen during reclaim and reclaim's
-> >> active memcg might not be folio's memcg. Switch to folio's memcg at the
-> >> beginning and switch back afterwards.
-> >
-> > I assume this is the only allocation? I guess in general it makes sense to have
-> > the folio's memcg be active here regardless.
-> >
-> >>
-> >> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> >> Fixes: 6b24ca4a1a8d4 ("mm: Use multi-index entries in the page cache")
-> >
-> > Cc: stable?
->
-> Like you said above, only xas_split_alloc() is affected. And we have not
-> seen related workingset regression report (like what Johannes reported
-> in commit 7b785645e8f13 ("mm: fix page cache convergence regression")).
-> It might be OK to not backport.
->
-> Johannes, what is your take on this?
->
-> >
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >
-> > Change seems reasonable overall.
-> >
-> > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> >> ---
-> >>  mm/huge_memory.c | 20 ++++++++++++++++----
-> >>  1 file changed, 16 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index 04e8a6b553435..b9c2d8908e564 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -4063,34 +4063,42 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> >>  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
-> >>  	struct folio *end_folio = folio_next(folio);
-> >>  	bool is_anon = folio_test_anon(folio);
-> >> +	struct mem_cgroup *memcg, *old_memcg;
-> >>  	struct address_space *mapping = NULL;
-> >>  	struct anon_vma *anon_vma = NULL;
-> >>  	int old_order = folio_order(folio);
-> >>  	struct folio *new_folio, *next;
-> >>  	int nr_shmem_dropped = 0;
-> >>  	enum ttu_flags ttu_flags = 0;
-> >> -	int ret;
-> >>  	pgoff_t end = 0;
-> >> +	int ret;
-> >>
-> >>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> >>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
-> >>
-> >>  	if (folio != page_folio(split_at) || folio != page_folio(lock_at)) {
-> >>  		ret = -EINVAL;
-> >> -		goto out;
-> >> +		goto out_no_memcg;
-> >>  	}
-> >>
-> >>  	if (new_order >= old_order) {
-> >>  		ret = -EINVAL;
-> >> -		goto out;
-> >> +		goto out_no_memcg;
-> >>  	}
-> >>
-> >>  	ret = folio_check_splittable(folio, new_order, split_type);
-> >>  	if (ret) {
-> >>  		VM_WARN_ONCE(ret == -EINVAL, "Tried to split an unsplittable folio");
-> >> -		goto out;
-> >> +		goto out_no_memcg;
-> >
-> > This function really badly needs splitting up and probably some cleanup.h work :)
->
-> You mean folio_check_splittable()? You want to move -EINVAL checks a
-> separate one?
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-No __folio_split().
+collect_procs_ksm() walks the stable-node rmap list and queues an
+early kill for every task whose mm appears on the anon_vma chain.
 
-Comment about cleanup.h really was the whole pattern of goto xxx for various
-levels of unwinding things.
+That rmap item can be stale by the time memory failure handles the
+poisoned KSM page.  A VMA may have been split, unmapped or remapped
+after the rmap item was recorded, so matching only vma->vm_mm can send
+SIGBUS with an address that no longer maps the poisoned page.
 
-But really I mean the folio splitting code in general, there's a lot of
-massive-complicated-functions with a million things going on at once,
-__folio_freeze_and_split_unmapped() is another.
+Check that the saved address still belongs to the VMA and that
+page_vma_mapped_walk() still finds the poisoned page there before
+adding the task to the kill list.
 
-Feels like we should really have this stuff in something like mm/folio.c anyway
-too now that's renamed :)
+Fixes: 4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
+ mm/ksm.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
->
-> --
-> Best Regards,
-> Yan, Zi
->
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..bc4b2dd894d8 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3222,6 +3222,27 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ }
+ 
+ #ifdef CONFIG_MEMORY_FAILURE
++static bool ksm_rmap_item_mapped(const struct page *page,
++				 struct vm_area_struct *vma,
++				 unsigned long addr)
++{
++	struct page_vma_mapped_walk pvmw = {
++		.pfn = page_to_pfn(page),
++		.nr_pages = 1,
++		.vma = vma,
++		.address = addr,
++		.flags = PVMW_SYNC,
++	};
++
++	if (addr < vma->vm_start || addr >= vma->vm_end)
++		return false;
++	if (!page_vma_mapped_walk(&pvmw))
++		return false;
++	page_vma_mapped_walk_done(&pvmw);
++
++	return true;
++}
++
+ /*
+  * Collect processes when the error hit an ksm page.
+  */
+@@ -3237,13 +3258,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+ 	if (!stable_node)
+ 		return;
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
++		unsigned long addr = rmap_item->address & PAGE_MASK;
+ 		struct anon_vma *av = rmap_item->anon_vma;
+ 
+ 		anon_vma_lock_read(av);
+ 		rcu_read_lock();
+ 		for_each_process(tsk) {
+ 			struct anon_vma_chain *vmac;
+-			unsigned long addr;
+ 			struct task_struct *t =
+ 				task_early_kill(tsk, force_early);
+ 			if (!t)
+@@ -3253,7 +3274,9 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+ 			{
+ 				vma = vmac->vma;
+ 				if (vma->vm_mm == t->mm) {
+-					addr = rmap_item->address & PAGE_MASK;
++					if (!ksm_rmap_item_mapped(page, vma,
++								  addr))
++						continue;
+ 					add_to_kill_ksm(t, page, vma, to_kill,
+ 							addr);
+ 				}
+-- 
+2.43.0
 
---
-Cheers, Lorenzo
 
