@@ -4,99 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11D55C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6691DC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61776B0088; Mon,  3 Aug 2026 08:58:00 -0400 (EDT)
+	id 71D9B6B00B9; Mon,  3 Aug 2026 08:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B37CA6B00B6; Mon,  3 Aug 2026 08:58:00 -0400 (EDT)
+	id 6F4B16B00BA; Mon,  3 Aug 2026 08:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D9DA6B00B7; Mon,  3 Aug 2026 08:58:00 -0400 (EDT)
+	id 5E3A76B00BB; Mon,  3 Aug 2026 08:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6F796B0088
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:57:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 510631A0671
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:18:00 +0000 (UTC)
-X-FDA: 85059406320.27.0A5971D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A40B6B00B9
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:59:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71EE6A1BEC
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:26 +0000 (UTC)
+X-FDA: 85059409932.22.A4141A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 78D9AC0009
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzXopaUF;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B9B8710000B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:19:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JesergGZ;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785748678;
+	s=arc-20220608; t=1785748764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxyuD0oss58ubgzj1FvTC+7tUw49ZGQl25e5UWdLsh8=;
-	b=S6z7OXTKoPMXOTa9dHHdgrvAkI08f9VxaJ1VQj96wWh/sdQl/OJu+LUlaJhyzatYHG4DWb
-	QyidtzEolI8EnoU+MFboWbvjJVttx9aJTTuxXa5ykxVx8b5Rg+pUBtqi3S9CbizluWmAJ4
-	iXOfATZmVpcAlTSgxkh4ThZwH0l1Dcg=
+	bh=cdDQILORMQ8A5KFOekP98a314EWXtxrYKLqfQJeDADU=;
+	b=p5/3CMAtTTPpCNF9ddNGelKQgUFB9f8ccQCN0gO9UiTubIDporl+QpPdw5MIQ5JLh8Br8G
+	dbACqW2ds07YIomvANosWGtY01Hl4YVeP7kMfgBzQ9pDE6SO4+JRSJMdiXfGnZt9ydNkqL
+	1nV1Lbwd4CmmzRNY5vjE9ZhMzO/Hmgg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785748678;
-	b=xe1ZN3QJG/CoQ9fPvSMtXHfeGn3prJQgzVPU79f/MbM/KLnatrJ3n7rP4gff76eCwKmGnM
-	u0fc39TW/J/oCvWaz3XLzrtf0pKEHFsBCkv2nk0n70M0eY/5HD9Z/tYpEJugLEU33HwU9E
-	JQ0SU+r4JuwBYn+R451B3MeDlGMgEWc=
+	t=1785748764;
+	b=6ZmqN47oNzSTIw+vYOC5c0NB4C6OFS2vhYJYg53tPcBSjrktKJlPTjSHPkctn0tSzmGUTZ
+	uRzkrcd4LVlRiC5AL50LCNyYGHxGi1eoJwzIGpU1fRVyESd3nEOarDsjJFR8669Af2lGGk
+	GsYcI4nE0sn6obPRpxpQv/D3YsTLlpI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzXopaUF;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JesergGZ;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A35F60A7D
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409491F00ADE
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 58E5960A5D;
+	Mon,  3 Aug 2026 09:19:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5741F00A3A;
+	Mon,  3 Aug 2026 09:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785748677;
-	bh=fxyuD0oss58ubgzj1FvTC+7tUw49ZGQl25e5UWdLsh8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bzXopaUFvz6eF3NhFb4UpuJ6Pyqp4WVoWUBykPWH2CJ5V/G/Nbls6Dm/a1p8D6rwR
-	 GwvbaXXvzISYvTgv0x35Ts0FQmZLr8GeeWmhaWGQo0O+KPKtr3iNI3u3Urq9+to0mK
-	 w5OwAt+Dvx7oMOtZvNFJ2KuVomsSmpy5iHdvKfF/TT9kSYF1O01cDZ1c0DeEDqmZM2
-	 Oam53YGx3zR1UvSiSLjA+9NzSLgMqO9e/yjX5Jt222t56ZuPbyUXbWRUpJvdfkMqAy
-	 MqOuay4TnrRHyjzzl8usI27OV/sVHWozrUP59rbn/Jr085pdvF+2sqhl8Ote2epWv9
-	 VR3fZb6e8BbzA==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-930f72317a6so164328885a.3
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 02:17:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoYtumA0AjnmrctC+7xxlsF0FDLjqdNRENc06Qt8C2iFwNLoLflAlx0gZF9ZoLIyXq9z4nWHFoqLw==@kvack.org
-X-Gm-Message-State: AOJu0Yxqy3TaKyvZzSlFUJBr4xn4c3gI8llonZjxR+mMoA8qEljChHgP
-	5sLfRtIjbTQ4k1YpbCvijlf+f+YZ78AaFdVHwOaQBMlIpg/tvkao7lZZyudUSp9Vk2CVLGY4JAk
-	w2qY3K8POl1WPA1QWR0266jMruzI/3DY=
-X-Received: by 2002:a05:620a:390b:b0:934:9524:2e89 with SMTP id
- af79cd13be357-934a0789904mr1748731885a.13.1785748676518; Mon, 03 Aug 2026
- 02:17:56 -0700 (PDT)
+	s=k20260515; t=1785748764;
+	bh=cdDQILORMQ8A5KFOekP98a314EWXtxrYKLqfQJeDADU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JesergGZSKI+boCbMxRVMl5UmGIgB/amcI2tVOY6n5Mj9P7k5444Z+OMQYXfZ2ciF
+	 8hWgGu6eVFv4F0q9ArGh8HPaTjsF/rpyH1zTO0xty1nZpRMpY6PXNmFAUb+UCAMHkQ
+	 uojekA5uZJqWTx6NPyvLK57S77g+ftn+8/l2OLKJx6aj4zwutuQq5/qcnFCIpoYRLV
+	 S5GfoWt5mmue6IQOAGSyha6/Vh8O1zYfPs3e0JaU7QkZyPzuTQt9bcnJnMVJOecgWH
+	 M+4xPZ+xRwrVk9vRFg+ByQ3LUQBelz1KzUjBSva4gzuxBnFaxFXRgnKeWifN1XDhf6
+	 RBtwECo/SbacA==
+Message-ID: <7308cc99-1d1f-4e81-ada0-f0541aca12c7@kernel.org>
+Date: Mon, 3 Aug 2026 11:19:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup: fix always draining LRU caches in
+ collect_longterm_unpinnable_folios()
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Ackerley Tng <ackerleytng@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org>
-In-Reply-To: <20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 3 Aug 2026 17:17:44 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x3MQVU7_Npxf3JQ8Q27TsAW1Tx5-ifH8c6+gKtg5QkuQ@mail.gmail.com>
-X-Gm-Features: AUfX_mz8oKCS0mJlMGsIPpYo49S4g_rtl56yBju74CQn1opkjI8-NpakPIKDA3A
-Message-ID: <CAGsJ_4x3MQVU7_Npxf3JQ8Q27TsAW1Tx5-ifH8c6+gKtg5QkuQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/gup: fix always draining LRU caches in collect_longterm_unpinnable_folios()
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Hugh Dickins <hughd@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ng1oqrjk3jua8ayjiu7srxecbj5cm3ug
+ <CAGsJ_4x3MQVU7_Npxf3JQ8Q27TsAW1Tx5-ifH8c6+gKtg5QkuQ@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAGsJ_4x3MQVU7_Npxf3JQ8Q27TsAW1Tx5-ifH8c6+gKtg5QkuQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 78D9AC0009
-X-HE-Tag: 1785748678-823044
-X-HE-Meta: U2FsdGVkX1+uGilRIXMPxOfSfahxNV8vO9f+v2hcF6Nep8S2hi7gB94UAARD+mCxrRXm/lbgNLYjmy9M+88TGzNljj4xg5FvUWZ157pliQhP6XS2xeB8DgKsS1zTLk+HUdXXf8MljJ+HM1w4ABPCDQCSNwBfV3/lpd48acAN0LRETM8i0Ugg9+DHMqRiNOO3uBK3odlyEYR79RYSwQdePX0rGivF7ccGU1Hpoa0/oihsIyotrBGrjbtxHHI+tTpsC4hircNGDN9k6D6dnLA9oteQ9rU01NxiSY2fyjANSGzD9TohnnKp8MhgoTPKpKs75NmKxvP7oeAXfw9AUjBB1aCod3a90+fvipfMdFZqUeOvkb4ymjoFiUcRurGGk6vmzplvOZQFM67/ONjK7ghzIUEKu7IjVfySgn0vP7+zyleCjvLR62knlREUrbzkVJY3oMkdSmvRiVOaIKZ7I9XRjBGT0U3ZF/SmfAk7QQ0SayCtdbQca4qPaQrXaQvwxtrzsPN2ke6m2YlQ4Zj2AmTy/7R31rpvH98bJj0kiZn8c3DmctYpPS8ggpBRMO18baDqDICnI6ViXCeJoQWbtuCdpzlb9lKTqTwxyWDD/ZgC56HhEH+u+nLwh3Dp7HEpK01+GC8NzAxGvuHZZIQicariYF3PSlLH0WvvXrlr16E8pCY3lSkA/+1maOA5b44b/EDkK2+S0ObXffuXlWxc4pqqcCFiE5tKqM7TfNM3BAk/t4aPSpwiAy0kV1GUPJwZ57gzUaj3/TN3WhW0evrFR9WLAz2tVzusIfWm42QsfTuIgxWFvHoRBtSOdRG/T1uXQ+vi13g6HzOTd5wX6xP4sk6iGl+zkgQcGLE4AUnxP05TwPiyJUtz7gAvSiUeampvfnGSQoa8rnfeR9nfnfasqwJUOKl37svc9gJ18ltBavtYIkfxy8VeR3IgYedBv5oT5NOR/WIS1231tcoJy2xZPxH
- BiA2+DlG
- zwpYzaM54ja3izmxaR7bCFW0eBtAmGmZ/NOk410qFG2QbTJovSs53cDSyxmStmcL+iIKmWUDq6QQigf2O3Z36ONMwSphTLekI8MAjs6hMIeFPafO7xZS3ZkY1B2sVW7/pz7T5j/E77XoTVvYFUawgBNeSyRJvvdK9nUBMG5Tj0TlvdDYFY87XPs5Lg5Xz/qJBSzRn9hPU/78btzO8HraTBcWIxYfKvlu+b3gfctKbR/vu2iFlYZZZ7lprZxKhTnXVu8N4TqhG1xZt2fgjIyICL8TyuwTcXFj3BizjBQSyikUwHYCXWged/dDavI+d0ugZVCclOA9AQqUodRBYmL1GBTwV3LfeDHhDhKS2
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B9B8710000B
+X-Stat-Signature: heuzirdqsih4mj98pmgtx46cc4cmzdii
+X-HE-Tag: 1785748764-33869
+X-HE-Meta: U2FsdGVkX18A3BYl8zS3UIds8PdpiN5ZUqvcnzrGhqQQW1fYaeJgZS0/DqXBUXqJEFLpAY0JApmL0ehvRNv/846c2IThOtKG/B0Mx4AK4sVqzJB4vgs86vtfyVtFu813euui+oFeC9m3AiKhX2TsWXQrCS2wZLZk0FwJNc9oL0EtFsHHq6g7CzjXGQk+QlPy7t0uzHsnC+kIJm2W+dctBnxOyhV1cU1ACGePl9WPhN7Ch06rS6vbgxUkOLELSdyMuvwrV8kJBBdqeSWpNXCUUZy45T9bo58clOWpWULjbcXkreRtMcTF/NhrIP6fhKH+jGE95BVr53Qc4Rxsu9lV7USJ6o4fRjIy7dbRPNhFq7OH7o6s2z1AruUqCgAaA5RhXzzVChJUs1AWo4exjaW/KEtshKIHvHjcOrCQ7JNXJthGQA92x7F4eWzKhVmeEfYuGbPbn0gZ5OKs6oRE08FBtze3KDlobJ5GpkCVsDMFwlkD/i/7Rlv/jiEDQ3P0XGb0HsH9YJmyLm7Swvp+1+RpCvbp4zI68VOXaDd6lxtzvB70QfGiJUw1VYnGJlOlP8NS0q+/VD6vIEXEkcVbRr3syazGbbf602mfnvTunUtT4Qe6EwQLc5RKdcbgL/Tym4CxMHNm7E7JCRvjeNn2OGNYi2yX9XyvzMfZ2EeXLEE77EGQz1UIMWtiY+5xE3tsdyl5h5pkU/HpFIXYw7l5gIkFjCrkAkzNHo+mZnFIlVZwM/ooPORK3WWmfDtDEXqJrVzq3p5cd4mRfU8TLKtXvIfaCKVCavOVRH/9NRiKYXpJKf5ZOj21b+lAtKpBJUU7UtOzxtWR/f/q2HKLg3IFNTFY+9NcjFIPYRCdYhgGNONqo+3QIEnPrNn7uAsaph002K9Fc1ZpTYN1eNfUMvvPsACfWPGYVG1QCze7Vj8hcYbXEjzeb/k7mGYxU46796jxWD7gza+v4RXzRxex+DNyJv4
+ lxtltuXK
+ 4w5bliyUGU0MloZSJZSdSXPRvgt44A3WrmJ2WOtmIXfw8n68sGhsI4ZYEcQUhV2hgu2dNMgpw676rM7EYskeyKILmr+8AM025A+HGVZgqV/q1lv+E/YfsdQPsIGNM2S0o286nFwSFstF3dvtHBK5sSfHNZnx7AlPztglt6+68xuTLgpheYFTSShYgf3vgdLgpohX6VBIK0M5flcNZJf6NA/OIquIkbLsroXXP6VdE8o1m69gpfLohBoVl2mBZ8+QcCjwE5upfeLNT7Itpg5m0uQhYqZEfNGOsuz3xeJWRa267D2m1vTU7oHkS6agK1CadFPUNgJkvKWqDnJbT+L0Nu89AeiP6tqbJfCWT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,132 +142,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 1, 2026 at 4:28=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> folio_may_be_lru_cached() is currently only true for small folios, and
-> for small folios FOLL_PIN adds GUP_PIN_COUNTING_BIAS references instead
-> of 1 in try_grab_folio()/try_grab_folio_fast().
->
-> Consequently, our
->
->         folio_ref_count(folio) !=3D folio_expected_ref_count(folio) + 1
->
-> check in collect_longterm_unpinnable_folios() will currently always
-> identify "reference mismatch" and first drain the local LRU cache to then
-> drain the LRU cache on all CPUs, as collect_longterm_unpinnable_folios()
-> is really called after pinning the folios with FOLL_PIN.
->
-> Add a comment because the current code is not quite intuitive: we used to
-> drain only to make sure the folio_isolate_lru() would succeed. But then w=
-e
-> also started draining to make later migration more reliable.
->
-> We'll refactor that code soon a bit, to also make it usable in other
-> context where we really want to remove any references from LRU caches.
->
-> Let's add CC stable, because having an easy way for excessive LRU cache
-> draining on all CPUs does not sound right. In common scenarios we
-> don't expect to every have to drain.
->
-> Fixes: 98c6d259319e ("mm/gup: check ref_count instead of lru before migra=
-tion")
-> Fixes: a09a8a1fbb37 ("mm/gup: local lru_add_drain() to avoid lru_add_drai=
-n_all()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> Found by code inspection. If someone has a testcase that can easily
-> trigger this and result in migration problems, please test! But this
-> change seems to be "obvious the right thing to do".
-> ---
->  mm/gup.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 99902c15703b0..41c3317e0f0f4 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2273,6 +2273,7 @@ static unsigned long collect_longterm_unpinnable_fo=
-lios(
->
->         for (folio =3D pofs_get_folio(pofs, i); folio;
->              folio =3D pofs_next_folio(folio, pofs, &i)) {
-> +               const int pin_refs =3D folio_has_pincount(folio) ? 1 : GU=
-P_PIN_COUNTING_BIAS;
->
->                 if (folio_is_longterm_pinnable(folio))
->                         continue;
-> @@ -2287,15 +2288,20 @@ static unsigned long collect_longterm_unpinnable_=
-folios(
->                         continue;
->                 }
->
-> +               /*
-> +                * We drain not only to make the folio_isolate_lru() succ=
-eed,
-> +                * but also to remove any other folio references from LRU
-> +                * caches.
-> +                */
->                 if (drained =3D=3D 0 && folio_may_be_lru_cached(folio) &&
->                                 folio_ref_count(folio) !=3D
-> -                               folio_expected_ref_count(folio) + 1) {
-> +                               folio_expected_ref_count(folio) + pin_ref=
-s) {
+On 8/3/26 11:17, Barry Song wrote:
+> On Sat, Aug 1, 2026 at 4:28 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> folio_may_be_lru_cached() is currently only true for small folios, and
+>> for small folios FOLL_PIN adds GUP_PIN_COUNTING_BIAS references instead
+>> of 1 in try_grab_folio()/try_grab_folio_fast().
+>>
+>> Consequently, our
+>>
+>>         folio_ref_count(folio) != folio_expected_ref_count(folio) + 1
+>>
+>> check in collect_longterm_unpinnable_folios() will currently always
+>> identify "reference mismatch" and first drain the local LRU cache to then
+>> drain the LRU cache on all CPUs, as collect_longterm_unpinnable_folios()
+>> is really called after pinning the folios with FOLL_PIN.
+>>
+>> Add a comment because the current code is not quite intuitive: we used to
+>> drain only to make sure the folio_isolate_lru() would succeed. But then we
+>> also started draining to make later migration more reliable.
+>>
+>> We'll refactor that code soon a bit, to also make it usable in other
+>> context where we really want to remove any references from LRU caches.
+>>
+>> Let's add CC stable, because having an easy way for excessive LRU cache
+>> draining on all CPUs does not sound right. In common scenarios we
+>> don't expect to every have to drain.
+>>
+>> Fixes: 98c6d259319e ("mm/gup: check ref_count instead of lru before migration")
+>> Fixes: a09a8a1fbb37 ("mm/gup: local lru_add_drain() to avoid lru_add_drain_all()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>> Found by code inspection. If someone has a testcase that can easily
+>> trigger this and result in migration problems, please test! But this
+>> change seems to be "obvious the right thing to do".
+>> ---
+>>  mm/gup.c | 10 ++++++++--
+>>  1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 99902c15703b0..41c3317e0f0f4 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -2273,6 +2273,7 @@ static unsigned long collect_longterm_unpinnable_folios(
+>>
+>>         for (folio = pofs_get_folio(pofs, i); folio;
+>>              folio = pofs_next_folio(folio, pofs, &i)) {
+>> +               const int pin_refs = folio_has_pincount(folio) ? 1 : GUP_PIN_COUNTING_BIAS;
+>>
+>>                 if (folio_is_longterm_pinnable(folio))
+>>                         continue;
+>> @@ -2287,15 +2288,20 @@ static unsigned long collect_longterm_unpinnable_folios(
+>>                         continue;
+>>                 }
+>>
+>> +               /*
+>> +                * We drain not only to make the folio_isolate_lru() succeed,
+>> +                * but also to remove any other folio references from LRU
+>> +                * caches.
+>> +                */
+>>                 if (drained == 0 && folio_may_be_lru_cached(folio) &&
+>>                                 folio_ref_count(folio) !=
+>> -                               folio_expected_ref_count(folio) + 1) {
+>> +                               folio_expected_ref_count(folio) + pin_refs) {
+>>                         lru_add_drain();
+>>                         drained = 1;
+>>                 }
+>>                 if (drained == 1 && folio_may_be_lru_cached(folio) &&
+>>                                 folio_ref_count(folio) !=
+>> -                               folio_expected_ref_count(folio) + 1) {
+>> +                               folio_expected_ref_count(folio) + pin_refs) {
+>>                         lru_add_drain_all();
+>>                         drained = 2;
+>>                 }
+> 
+> Not regarding the fix itself, I agree that the fix is correct. I am
+> just a bit curious why we cannot simply do:
+> 
+>                 if (folio_may_be_lru_cached(folio) && !folio_test_lru(folio)) {
 >                         lru_add_drain();
->                         drained =3D 1;
+>                         if (!folio_test_lru(folio))
+>                                 lru_add_drain_all();
 >                 }
->                 if (drained =3D=3D 1 && folio_may_be_lru_cached(folio) &&
->                                 folio_ref_count(folio) !=3D
-> -                               folio_expected_ref_count(folio) + 1) {
-> +                               folio_expected_ref_count(folio) + pin_ref=
-s) {
->                         lru_add_drain_all();
->                         drained =3D 2;
->                 }
+> 
+> Or at least the following diff?
 
-Not regarding the fix itself, I agree that the fix is correct. I am
-just a bit curious why we cannot simply do:
+Best to read 98c6d259319e, which documents why this is required.
 
-                if (folio_may_be_lru_cached(folio) && !folio_test_lru(folio=
-)) {
-                        lru_add_drain();
-                        if (!folio_test_lru(folio))
-                                lru_add_drain_all();
-                }
+-- 
+Cheers,
 
-Or at least the following diff?
-
-diff --git a/mm/gup.c b/mm/gup.c
-index d110f30d9bf4..3aa1d498e9ea 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2300,13 +2300,13 @@ static unsigned long collect_longterm_unpinnable_fo=
-lios(
-                 * but also to remove any other folio references from LRU
-                 * caches.
-                 */
--               if (drained =3D=3D 0 && folio_may_be_lru_cached(folio) &&
-+               if (drained =3D=3D 0 && folio_may_be_lru_cached(folio) &&
-!folio_test_lru(folio) &&
-                                folio_ref_count(folio) !=3D
-                                folio_expected_ref_count(folio) + pin_refs)=
- {
-                        lru_add_drain();
-                        drained =3D 1;
-                }
--               if (drained =3D=3D 1 && folio_may_be_lru_cached(folio) &&
-+               if (drained =3D=3D 1 && folio_may_be_lru_cached(folio) &&
-!folio_test_lru(folio) &&
-                                folio_ref_count(folio) !=3D
-                                folio_expected_ref_count(folio) + pin_refs)=
- {
-                        lru_add_drain_all();
-
-If the folio is on the LRU, why do we need to drain? Is it
-because we already know that the folio is not on the LRU before
-calling collect_longterm_unpinnable_folios()?
-
-Thanks
-Barry
+David
 
