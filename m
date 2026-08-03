@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 494A7C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95097C55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C91C6B0098; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
+	id 95C5B6B0099; Mon,  3 Aug 2026 09:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A0786B0099; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
+	id 934AC6B00A3; Mon,  3 Aug 2026 09:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B65C6B00A3; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
+	id 823746B00AC; Mon,  3 Aug 2026 09:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2D96B0098
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7334F40643
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:24:51 +0000 (UTC)
-X-FDA: 85059272382.13.7FABFF8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C5FAD1C0010
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:24:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNcjlv3x;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 50F1B6B0099
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:12:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5F964061F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:23:38 +0000 (UTC)
+X-FDA: 85059269316.29.71CBC3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 14ADE180007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:23:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIa4FNQo;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785745489;
+	s=arc-20220608; t=1785745417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uZW8Xe7TSzJ7FXXnug3vpzOQOy16s7g8Ksg66fFK9aY=;
-	b=uw1HKlKCqwT4EYIFSeaaCCOvKbDi5kAplWi6ompsTzRvQfmNleVxbhGKKCMpaFgtRhTH2j
-	hrkJzOvhQfOhXoclMu2mrA8HMLbCVJodx9In2ecPZ4/fmllLFvXpBNJG7zD8Hh0utOqM0K
-	+at1eKgsewNSgAMMdrI0WpzyN0Usv0k=
+	bh=Gr1XBpbnk0zX9E9Hf9+XaMO/o0eQfNbPl/6JAmkYcuQ=;
+	b=XlPWP0ByDNgCtSXe7nzJAImvGSsi23UtbxcC8XkEb7bJw60BZ2M8HW31Lv/4U0L5Ef1Vza
+	2r5I+9XHKzdy2xzhx8ovZ5d4q0xE5HRHK5lIkg62fHNCpPBmjcqXO69CnPmqPH0JDJeh/W
+	xLAry3OFAglzeqbYlUUDP+5kpOj92lM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNcjlv3x;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIa4FNQo;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785745489;
-	b=xtsl0/b2JdseJYqOBG+MOLX+j9mov9g0n1ij7ZNKu4FrI+cqdy+kWO8DKMEoMPjoqbckGn
-	2ugXZ9FdsPes3uXcBmrtY/Lu9fqdjXtZF/DCU2sSFlkv8HeUmybqRQWoiNuR7A2PH7t0W7
-	tg4cIHIC2j2PGCm1SOyOjry5Izs0aqY=
+	t=1785745417;
+	b=ZS+aWR4JXV9AFFdFKggRx2olaSF98WWXiIb/aUwrgW65DN919Pd/7vbmhpfQ13pK2poOaI
+	8qTaNGXQWyoRHqTTcWr4ouBqoZqdQIHPYD+yK6tD4avPItBktLkSzYdqi5ARQsa5d3Fs6c
+	r79DWR2OaJqAvEDazdwLb7mXCqKWJZk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 457FD600FF;
-	Mon,  3 Aug 2026 08:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84AE1F000E9;
-	Mon,  3 Aug 2026 08:24:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CFF0C4172E;
+	Mon,  3 Aug 2026 08:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C411F000E9;
+	Mon,  3 Aug 2026 08:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785745489;
-	bh=uZW8Xe7TSzJ7FXXnug3vpzOQOy16s7g8Ksg66fFK9aY=;
+	s=k20260515; t=1785745414;
+	bh=Gr1XBpbnk0zX9E9Hf9+XaMO/o0eQfNbPl/6JAmkYcuQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hNcjlv3xU4tfnME+np5OMyup34YXRO6fAka2C7GGyUBrNGRXsfICH5gbQCIikY6IP
-	 Hn4mbWmNO6rpbymygca46hhgJ/RcVVEttBlJmFAAprsBePsmjSf6t6tzC50FHRKwtf
-	 qxYHufouiki31FOR8CeIeLuvwrOoXk+lmOC0LSXtBprHWtSnhUCxBWDPdmO4Lp518b
-	 R5TOuV5ltQmcL4n7CHveqTmUuqUUFTdUvkcWLe3SrHsQ/BWkHASQtnpL68RovVEHou
-	 KTSJNJh3E0T3dC2Zu51Befi+P/bJIKTze5d3yXZgZtjG/juNXzQOsajw2ZVfz3TwOC
-	 9xQLuvWAo5U/w==
-Message-ID: <27485af6-fd17-4092-8c3e-6571b9bbe222@kernel.org>
-Date: Mon, 3 Aug 2026 10:24:43 +0200
+	b=kIa4FNQoZ10ntwIac2bANO5VbZGe8hJzsApKeARQeHnL1gzrhSOnIYU71zqqvoEpx
+	 cZ7+KVZRof25vvxshmLw4I96b9lYdzNm36vIBmRScJkd0l3gezBunlfChOJHpr6S4D
+	 PNGRaeTNk+2GQVQkLZDCE1XHSGJ7RmiUdE8/rc7oBYyKllzvrtAl9cBmtxgCZF0ZeC
+	 e9VlOnhahZzLEC5lpkUo5pzKcKVk4SQ1Qt4N0UFQuYtIvoX8VFuFKIbaWeTgNY0TNk
+	 OIGBsuMR+1eTKxuLh7I4eIRoC6+vRZYXfVjeyM6Hhp7UwqJxTl1MPb3tZDU/hHkSCU
+	 SB2HFNKUf5BDQ==
+Message-ID: <7b687665-765a-486c-8a30-3bdd4f28f902@kernel.org>
+Date: Mon, 3 Aug 2026 10:23:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tools/mm/page_owner_sort: show available sort keys
- in usage text
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 2/3] tools/mm/page_owner_sort: add module name
+ sort/cull/filter support
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>
 Cc: Ye Liu <liuye@kylinos.cn>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260803062056.1518070-1-ye.liu@linux.dev>
- <20260803062056.1518070-4-ye.liu@linux.dev>
+ <20260803062056.1518070-3-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260803062056.1518070-4-ye.liu@linux.dev>
+In-Reply-To: <20260803062056.1518070-3-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C5FAD1C0010
 X-Rspam-User: 
-X-Stat-Signature: 97rgbjnctp7dcohozgd6n3qwu9t5fi86
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785745489-700642
-X-HE-Meta: U2FsdGVkX1+6ktmpkfTOs56RhN23cRLN/tCwt4ruycoa4TzhRoLYZ5Ak3wSPxCutYgK13CEcFhj45DwXEpkW3joptHmsKDGDLJFMF1B10t8NpXq0JLY6Q2n8E5JoUr8D+VGqRPkxb37qTVQjlpdZgGJ0WH/Fgph6JOPcFMVbRcf/ZuZMh6hlnez8mf3rG925sJxRjE2S5JJcq4DUUOhhkOUR2Ew4i0+jhx7alEKR651crD+oA3ZY7Gl9Zr57X1oKW6c1YnYt1zfrMlOkGPu3Mzn2eeX2+w6f1MLW3GwZ6pelEFPps8Or7TZTZqdyiJZjrf0j1uA2WcEa61lNgciCAFX7o3OtuUV9ozHaGpCWIm4jz04V6i6ytOBxhmz7ECdJemzBoHs1DhgyknnNqmLWkGoV1ROByZFkzlB7yFwa998esYDhIKfJYQvr7tPZdaS/t6VU44QECxm6Nqy4F7vKy0QLTbakraIwGQWxp9A+i0+u622E9Yrqe+8aem59dIcrNBUkm4sC4GIILG2uWcjjqgK04gZ6NSQe/7VXK2GdkioZPrk3AY5fDmjQHPO/68Aa6DRDxZjfLVun2o/nZf7HuR/VUkrfU4tzvjpIGy9MyIJ6xMpjV/wW1a/r1JVqUtDME6SBwfyjOWTsll6VwI8tiU9oEMI5WCS2dem/2ozaprQQt6OK5YWttKHGv+q3OdVNSG7HQPrjMkrl1cfzRmmVWLRueAx9h3ptMccfYPnBL34GhVnX5hhOXEibuakG6oAfMpK6txvxBPEZgr8pfy+FgQeQEAKjwrLO0TtJrfhsDrq7jU2EPYzEofFyuho7Qbd0kP9L04UHbyVCQokVy63vRX9GPFhXlV5jpfMib2HeGIK/wrt43FLvikZlaiI7vrQi1gx1IRunkGYrJC3cUzqq2acMnju050Q9usVd4wiS2i3RGFD3oafmhW1fzUBhKDFuxe1lrLOD6zGvTzW7tJN
- jSsHbXmo
- nQoZsvq63MCATOLOfLgP6dC3JGMAv8LOGqODZXAeJbguXkxr8Zh/5Mtrn/9WxoqeiRq471t7x5y+iOBZlBErEzviQA5qnWWE1I5PrH1E2bhGSdsqnGnuSeXJg/dJXiSjg5iUzkzUV8nioRGDxSzPkrum7dXUVd+8h69x7g6QaXPhosux9pyau18FBG1OOWtHHxrTuKBDJRJU7IdWrrUblmYwY+FpgQjfSbNpfck/8DXFARuZ48bFaXVEo2rq89WsPEVRO9SbKB2l39Xw1vt1fOoVUNIKasH5Ii1wAeTk/aEydfQIgRmk26EqY7jtdRmjr2J7XQs5/85VsfYU=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 14ADE180007
+X-Stat-Signature: k9zwqzigtdp7yhfhbtnqhps75skkqex3
+X-HE-Tag: 1785745416-205595
+X-HE-Meta: U2FsdGVkX1/hbshCrotZaLEcHepXEWuq3jVVUzFVwPwakKVJ0PScqcqxJIvoK287cRYESrEf2c4+j6AByc25dAOgC7KtyJt08WrjvYA3ojgL42Vxj1lcK7T+Qtvr/4GX78GNoQ53H4IxtdXxaPZxyGgxaLslCiG49W4SShF4FGyeXnKaqkMjRBMv70epkghFSPm2TZJPa9d90DtBFbVtDTU0VHtrVX9OJW2SPYtdVvLRnnSQEkC6JEfaPGO/SF+GPQoXJj5q79hRkIHP7KqSDesvfvrCLeORdS1UMQ2+OP94Rvyp4SKcmemVWPq+UI59jvktSnwCQIs7uPxnAQcqP8Rb4nWgQUmkU+GwZZRCJm9vKOBuZbEjJ3Q9ArnZiklCnaLgyhOtM/oPkc1OirjvcSCBadjnTFULGv0GqavA64XH6g5naVIRif9m/SLs3YQMVZPa55hTVYYFUb6gZtQRXG6TTyESy8jjtrigaShW1EVhGA5Xyqfp1w7m1FxPEVqiOdh/kFTPoGkoSYnKoe+fg9UF0TS0P+hFQV/GVWWobJwq+t8bs44okcWKVKbsFyTHvGi6ae6wHzp0V6hSZraA1zoLW5ko2k1xN6obC7Jk6EzWgnpvT9JhKAaaonWoKQgE5McHWywr5jacA47ugcjMEYZwfItlqCmjB+J4wQnYkZuCluhwYDqY+tClSqjs58a8FunmtxOiHIB9k3NnL9JFBUG+6Vw4Po+RcCfaJvKNWchVYp/mv8/6fZ40e27lekvC5XM8vSYvC/1yERJGo5rYjtfRpvTMCJUe5eenFG5FVYdZ+nsfLHuLml2xtcbijKkP1ZB+h7BfSDfdAFAFAZ++Z6DDEraAfSeY3cAI1TybDTFu4ZHBHAOFNuiA5cltw5eP/T7USX6AM2L1Uwd874N/anunUVJ37IFzoXFsPu0HMXWdZEZqrgTVfo3oORne5xKBFl7aJmjEJJE7VyUqLMm
+ U8E0+d4S
+ rthjR2QGNQobBG8LE+2slZ9Zhibe16Unld9drc/3NffJm50lSO6D7i1n7OapFYd0tFLj6SCiDREgFdutRdrVaLGZMPz5hzJ9k7e8xvbQF0i5sPNgfoyibjjRQXFtQPJzAgIn+TglNn3P5WUCzjrj+blmgHwJMXq0qILgLfN5DouG3Os5sjz9EbivyxvDwTpcmix8FYExXEuZGBF2IDd8APE8uQOTecy/4WOpFvaZsIHHxRXrqHWPoC+yvPst86mhs6akpl0oSvHqODnnj0duYInimIr8ounnqgQDv+o4jkluWMdM0VBAlA4ekFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,17 +146,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/3/26 08:20, Ye Liu wrote:
 > From: Ye Liu <liuye@kylinos.cn>
 > 
-> The --sort option accepts abbreviated or complete key names, but the
-> usage text never listed them.  Users had to read the source or the
-> documentation to discover valid keys.
+> Page owner stack traces already contain kernel module names in the
+> "function+0xNN/0xNN [module]" format produced by %pS, but page_owner_sort
+> has no way to sort, cull, or filter by module.
 > 
-> List all available keys (full form and abbreviation) with a brief
-> description and examples directly in the --sort help section.
+> Extract the first module name from each record's stack trace using an
+> anchored regex that matches the stack trace frame format
+> "+0x[0-9a-f]+/0x[0-9a-f]+\\s*\\[([a-zA-Z0-9_-]+)\\]".
+> 
+> The regex is anchored to the stack trace frame to avoid false matches on
+> kernel thread comm names such as [khugepaged] that appear in the record
+> header.  The character class includes '-' so modules with hyphens
+> (e.g. aa-bb-cc) are correctly matched.
+> 
+> Records whose stack traces contain no module frames are assigned "vmlinux".
+> 
+> New options:
+>   -M                  Sort by module name
+>   --sort=mod          Sort by module name (supports +/- prefix)
+>   --cull=mod          Cull (aggregate) by module name
+>   --module <modlist>  Filter to records matching the given module(s)
+> 
+> The module field is also printed in cull output when relevant.
 > 
 > Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Nothing jumped at me when skimming over it.
 
 -- 
 Cheers,
