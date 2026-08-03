@@ -4,142 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E61C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF9EC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34E8C6B00BC; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
+	id 3C3046B00BD; Mon,  3 Aug 2026 08:59:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324D16B00BD; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
+	id 3738F6B00BE; Mon,  3 Aug 2026 08:59:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19F886B00BE; Mon,  3 Aug 2026 08:59:39 -0400 (EDT)
+	id 28AF56B00BF; Mon,  3 Aug 2026 08:59:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE156B00BC
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:59:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74751C066F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:20:34 +0000 (UTC)
-X-FDA: 85059412788.21.8BB0C23
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E606F6B00BD
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:59:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AC8C80681
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:21:10 +0000 (UTC)
+X-FDA: 85059867900.24.E5C07B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A379E1C0007
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:20:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cQ/RvL0S";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 68B4D2000F
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:21:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRcM7qCe;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785748832;
+	s=arc-20220608; t=1785759668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXdaGv7hV1IIr0JYIQZkL1apFdYS1zKRORz3x/OxqU0=;
-	b=CK/calpT4/u/JsgWf+rrET8lrr6oHWUQ/fg7iS7nOf2uyLDHmdaYe7tuY2PgJ12bloHirR
-	I5PHCZqtgnl8HZKjQmaWohQrl/PFXq5wnLON0Y2vsJdEwPRU7491Mn5nY7/gYcBCIwWhnp
-	16FfJIH0TUZ6KZDiehqdSQHvGK8by9Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785748832;
-	b=W6J1S0kD1IVXZv5yEWy5srmzY13O0vM4kaUtptYXzUE90WKyIMsCUUjfpZaqQbYu7fcOYr
-	UrgsKLLZSZTgd6MAZlPgD7L9Ni7YdCSFcrcB+642xNiCDaKUXlT1RoovDGHswcv9vj3Otd
-	HZvhGUcTlXEVOgzkmYwg6rCtrzdfCyk=
+	bh=O6rPJX/xVGWVF9zsA8o8w81JCtpZXuhJSo94UA5ONX4=;
+	b=VF1pm02mMMFUesoWNxZM6wBdloGpedHQVlk/sg5LAqsOPH0+4DcM8r+kgXg/dHIkKNXdnk
+	4PPBn13LapYY9qNTZ0n3+9Ks4lVnMez8Kwo9g8efHCBAfzsT+y6Z5TCx6FldbUMLlL8jO/
+	vfH22w1+IBhkInna4IhbzHXF2XeCvWE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cQ/RvL0S";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRcM7qCe;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785759668;
+	b=H0ZLs+HOHid88erj/r/bvM/ElGTk1+IEkxRESFwBhK2A3+lLd+4jUX/YOj+qQowD6fB/Oa
+	A8yk1jrTZCU9Yk7SImQKea8HGgkRYEypUZlnOmL40fDgCR4CMOhd3KM+74OMs8jyDFf27g
+	BOBXe9nZ1vQVBXe4aFBNxBXLfCyzDwI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B13A2410CB;
-	Mon,  3 Aug 2026 09:20:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C64E1F00A3D;
-	Mon,  3 Aug 2026 09:20:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B19443BDC;
+	Mon,  3 Aug 2026 12:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FC71F000E9;
+	Mon,  3 Aug 2026 12:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785748831;
-	bh=uXdaGv7hV1IIr0JYIQZkL1apFdYS1zKRORz3x/OxqU0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=cQ/RvL0S496/GYwKO5ueLFiCiA0Gokc4nJ/+kBNvZMqV/rcm3Yww4CUoejh/L8f63
-	 9tPllYl3spSlPPw+QIWWqjYIXanuL3TAiiZlqhEpt+SDZ/S8wVsbSMkK/FKxoOIG0j
-	 OZ7iw+EAmF8UqGc69FM9jTmpdGoSpD0OJ42FNzxT7L+pl1aziYljJVSvyMlTlgJtYv
-	 sF1kQ3N9HzkNZXn4GKl7Gh4osiRpfMF3cXmQ/qN0Inu5oIypmjyxloa5N3fJkoo/wK
-	 0D7Ad/Hqy2suRnfp0aNvr196+k1P28pucwwY1jJhET8FBwbNeGN09bX8bUdbaS1awN
-	 CWffmU4Zoq5rw==
-Message-ID: <00e90eea-9045-4f83-99db-f3631a54e5ae@kernel.org>
-Date: Mon, 3 Aug 2026 11:20:25 +0200
+	s=k20260515; t=1785759667;
+	bh=O6rPJX/xVGWVF9zsA8o8w81JCtpZXuhJSo94UA5ONX4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GRcM7qCeH/lYtr1JcWg218lJRY0s/6HSzlMFse+6Uc0F5VIOhuGhAiEwVozRBUkQV
+	 ZzD9Zu9sUzJUq38Mi06sXf9FXGnnVVyzDShtPrPu0i8kSbXhc2+i0gzMr8KPgueVtg
+	 mm/5wvEUU7PsIPf/Vj9Gu1tblzhNESa0JOYV8ULUZQlRxYJcYXGishnLQhPIRhmGkc
+	 8fZXhloC8MQXTFFJTAmpwKUo6UX4hXFuwbUcYsNVI0NinzW26ulwJSBXEXxikH/A9G
+	 BzLKZA5Gt9hS9GOmVaQ9B0BE0CJJC1Tz11Z7Xc1i0f4O+NDIZwWGyW4y5b0NXXnkyJ
+	 xwS6MOel+uffQ==
+Message-ID: <944bfc30-68e4-4ccb-8b00-f0f86d27cb56@kernel.org>
+Date: Mon, 3 Aug 2026 14:21:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/26] mm/page_alloc: rename ALLOC_NON_BLOCK back to
- _HARDER
+Subject: Re: [PATCH v3 0/3] make unused huge shrinker memcg aware
+To: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com,
+ baolin.wang@linux.alibaba.com, usama.arif@linux.dev, brauner@kernel.org,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
- Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
- Sean Christopherson <seanjc@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-19-6f5729aa9832@google.com>
- <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <ee8df643-91dc-4a38-a676-486a0d52c919@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cover.1785746588.git.zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A379E1C0007
-X-Stat-Signature: qfmscz38myt7w6w1bax85j3x7ifg8bdr
+X-Rspamd-Queue-Id: 68B4D2000F
 X-Rspam-User: 
-X-HE-Tag: 1785748832-875166
-X-HE-Meta: U2FsdGVkX1/WetIbaJ2bokLLXzOHfXLb4/HCJ5nudVJ01NLtUN58RaaYtdgExRrj+HutQBW87xQ3isNWMqEaeSlsd8ICkRwTi+bigq+ypAhXvUPH0+hvjjhOJL26ZS9lVDMoFL3xp5GSGIthXhoemHGX3atbQ2ByliHKh4jAwj41MYjm2NzIvTh9Ligsvh8PUqthgPRfSdgJYRhDsji2T10YMOIWlwCMopJUGNeX8pWjS/mI+/5mGi/DnRlQIIR6pNWGwARO2CsmYFWoEf/1Ig0aeG+cuSBWmLLhpyAQmLrWcDBcucusYwrS6fzAJnr4g3ut3uwE/QZS2jx0tYKBz1Rlh3321TslZdTRIFfzwOn491wKGdAzL5dld4KzxHaGmirWpeA61ogx0F9uF0t0XxVVCnWTuxyu7VizheZrjUQsTmZxCe3jHhVrwqLFAkQhKr6ZAIms4zojj6L+WIdJ8bcPZph1UGconXshYPiM/tTYPrZhtxoZDPNMR/IIrjbCnwYqgfEQjLCRJlciW75PdRdtgLDpU0E5mV+0iH98RGBO34utrnpOv4FP4YyLbclXFeMTGk0fGhGEG0lGSsYbS1+B82okyOqLvcUC1PMJGkuH9EWggoTl4EyWX1grIz8u2jANN9WM5LWz0O8b1+BN6YaZaS/lhXwls97Dh78AtqDvjAVRseZI6ChMyotjRlSWHbt51s0uVCgJj68Eb49uHl5qCg/Smr7LD6hoqUMkhOzfDZEP1lWdOF356AnFH2uiCbEByK9Fl+uz3rCOLiRYL379lXZwSz/uj+B40XWgE5LPAX//YY4JtWyzsDoL1VHAw5JJoPhya+Gfza1fwD715bDUESGT5ooZxHYb5usUYo0e0OHAh4NvuDgWWwumem6xN68f02WB4PhZ6YT7MKqHRz16p3ByHhl6hpJRZuvdNvQKYghRc5Vz/SggLbMrZIoJR6eajtnQwBdLn6bFn9e
- G0AtfCoW
- t6+k8rxYNU88HfYXQ0Hgy+WN5WNfFiFJXDF9gTfF49BMnSq9scGT+aqgPpZvYTFkK4TXLNF9igxy6AOtsVybzkbPCIzw9U+tvUJ4IOHyRMH/l+K1MutZwuI6YJOLFnd5LJEfna47qfFsyesihXHkVrrQOfK4nncZE4r2QqVfEfCN5TwnsoOqmBXR34GFlHxqH8sQCDt8MLioEHcC0vxNLRMGIKohkz1dlTzCLQk9RgdcaMQxbuEab8UEO/4UXlaWoTX4c3MPZOktX6m/vpRJ7TCrJNhJHzjM1imizdEOlzIZcz1F4b0OSXiw1IiDcSOhNJX3Yh5dIig1NDWs=
+X-Stat-Signature: fk3xjfja5u14f9z3aix5zu3ids7qo7i4
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785759668-252829
+X-HE-Meta: U2FsdGVkX19t+ShR182vIssDjontM8FbOSY0Ip7ycXhVafuUyzvWsdXdiUcpqaf9uCKwvNu+0DH+Xq5Ted/FePKTZVMqEzGVGmt1WxJ5KqUfHHdt5113F52X74TvoNMuDGauFAGOegvbk8zXFd79tRotv3Tou8+TLRAOvYlxflrHIcT1rIhzCesEepSU7r2aGEnUpHUgQvGn2qMO9EDE4FR1i4KQIDekMOXey8qqKKjbJtTqXhX4zy/Rkg7o9j8WHXlkaxmvVqg9gBF5E/txa3lBQ06fpjOZ99rZXIGJeZ4DD9x6f4Yg+2hxvSkuizaJjJ3VoGPqEYMdRzXAAtgzhmoVlCATF4XuTnzZxERso34+KU0ozNL8Fw7TKzhO4KQSfsnuDr2A2UP5fxR6WpohNmJL1htLB4FynaRQUWfhvqc7CLHr5FVkkCT7h9AZ5UtwdDayzvTzaRbEW3J5IpJkRJ2ExiLfWhY3x8iudzMxicskb9sOavbl0tuSJ/OHBDnwLZY2yJHzI4BULXR5Ne2aC6iBp+snctQPS9/PFuXmJ44UKp33gHZmgHBF2n98DUMHntHycZCVKlrJcMc5W5epy6jmcq6+k2FsblTxSukz6qt7tV2HB8TOLMYjlp9ONttZfEXmTo6iN4PqjVE4OVEoK6nHckW5jMV4eDi3alA43zKaRE0KlWWCVWIrMs4qM+YFWdDgb0KKQ47V2VXd0AVFtnPQpoK5VNyA4etkrkUzemEKhxtYcLHPcNhO5/XBnG4f09NHwxuijMqh6IRxZzPywoqVPqWd6gInLaxR73icm92tHUMjfDfQCOEbEMaH6yK+SnIUbM/YgzxtRH3hUTvvdR9loyQ3jVgU30rkyVWtMBBfNN9ondCfVfczcCgT05suLuKoJq5qd0GxZq3o8saodA2tFXfROmP7XxsdRwtoOeXLSWY7C1/0GZTKS4g7Dv46Uk23TQt9Lf1mPKT0ZgH
+ R8MCh/yM
+ TMyLJB0jbjKpw/xuqQQ/eJiRJ2uGD7ogbe9y0iXTnG39saeokiCbnxBTTiNtJjMWoY+hUsJKHoiTvJkVZaCKLB7vZsp+IpuWnEzoXZFx0xiaUVJlZqQlNyttiN33q4vjEoEljfhuphfIwMTCL5vxBwxoTWBwiASYqanpLGcWEYRtlN6sbJ6Ag9L8TO1UOd1EzwlV0+jc0pfsrpdYxI1SFeaTeRfGBsnP11lDTued1TVOmwykXPUMPb+llb8SEsie8WyHz70Tp/P5hQzQ4U13MTXiSyvijXo1+N3u0PZ0RJuLwBy7bZK8xnWjY3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,29 +139,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/26 16:52, Vlastimil Babka (SUSE) wrote:
-> On 7/27/26 00:22, Brendan Jackman wrote:
->> Commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
->> non-blocking allocations accesses reserves") renamed ALLOC_HARDER to
->> ALLOC_NON_BLOCK because the former is "a vague description".
->> 
->> However, vagueness is accurate here, this is a vague flag. It is not set
->> for __GFP_NOMEMALLOC. It doesn't really mean "allocate without blocking"
->> but rather "allow dipping into atomic reserves, _because_ of the need
->> not to block".
->> 
->> A later commit will need an alloc flag that really means "don't block
->> here", so go back to the flag's old name and update the commentary
->> to try and give it a slightly clearer meaning.
->> 
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> 
-> I wonder if we need to do this, and instead we could repurpose
-> ALLOC_NON_BLOCK directly. AFAIU it's about removing the side-effect of
-> gfp_allowed_mask in the next patch. But what would happen if we did that
-> using the existing ALLOC_NON_BLOCK (or maybe just renamed to ALLOC_NOBLOCK?).
+On 8/3/26 10:46, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Hm given how ALLOC_NOLOCK and ALLOC_NOBLOCK look so similar they can be
-easily confused (at least by me), I'm not even sure about the rename.
+I'm missing description and motivation here.
 
+This is only about shrinking huge pages that span end of shmem files.
+
+Is this really a problem? And if so, why?
+
+-- 
+Cheers,
+
+David
 
