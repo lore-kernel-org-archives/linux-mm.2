@@ -4,118 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A873CC55196
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 19:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E84C55196
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 19:43:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A437F6B007B; Mon,  3 Aug 2026 15:43:02 -0400 (EDT)
+	id 90D6D6B0088; Mon,  3 Aug 2026 15:43:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1BCF6B0088; Mon,  3 Aug 2026 15:43:02 -0400 (EDT)
+	id 8E4806B008A; Mon,  3 Aug 2026 15:43:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90A616B008A; Mon,  3 Aug 2026 15:43:02 -0400 (EDT)
+	id 7FBA16B0092; Mon,  3 Aug 2026 15:43:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 675976B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:43:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B6688077C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:43:00 +0000 (UTC)
-X-FDA: 85060981320.03.B84C251
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B5B7E1C0002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:42:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qbKoRxLh;
-	spf=pass (imf18.hostedemail.com: domain of maxi.saparov@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=maxi.saparov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785786178;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 50ACC6B0088
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:43:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA9EBC07D2
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:43:57 +0000 (UTC)
+X-FDA: 85060983714.26.C5A854D
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F3508A000B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:43:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gtkkHQYQ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785786236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rwuoYLIZuv5ApTNScLZwtjL2AQGWD4RWVJHiBkDbMFE=;
-	b=bAUVswc+M+BD4ZF4eYfy4m0RR+GZ62Kbb9P7zfbMOJ+xGMJJe+DWmq3UKA50KYPRKQZnkg
-	cXdHbC64pHkCfMQM3Xy54u1avq+LQeJ3OT9ZMOJJOYHiIa5UqmBWzIHrebUOl2v49ep5J0
-	mAhxF/8gwv1jwSw4gjL5kmjId2p0Evo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785786178;
-	b=CO9cZiCvMZmUFXGvLVMW+NhyCflqkV5K5Iifkd6pCRvNGDeh/8UhIYSP732UaUPfJggqWE
-	1K9jXqHQTFzcsAqbEX+FO8wIOcbMnU1jb2kzl7peSOXL0Jnoii8xwZY2lwIh0iDIi8mjSh
-	KZkxGAKFgFkHO7Lp5RE+fsAYMld5SqU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qbKoRxLh;
-	spf=pass (imf18.hostedemail.com: domain of maxi.saparov@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=maxi.saparov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e533aacf2so182067385a.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 12:42:58 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fP7XfXAPHNP7pNiZJKYeFh1C7B3PixBZpsJ42VTDiD8=;
+	b=fgpjSjT5WajwGRVkoeD6biXu0/miwE46WXhHUO/xJhFxRDYxeK189hcgxROwTFzRlmZD/d
+	GuxI+hBvc28b4fqLEj6OlAbw47Y7HWTi5L5G5In1gtf4rE5wP5J8wqdYp399cBErR7mPAJ
+	b3TuQDynWn0psUGDb3BVdz2eczm0PfA=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gtkkHQYQ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785786236;
+	b=x3uKyb9BzeG0Ks7drxMrFqjmmx3lL/KLzZUl9z2RQaY/J4kFP4VveRTLxmtBlnWLrEISCS
+	8lg5rph/t3YicaSSlhR9LSCIH79D7h6E+Emd23Vu9CIusrnj36kxyHAUBin7QeWgyklLBD
+	OHoZaebSs3xXYYedVvJe0u1gD/z6p2c=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c01c79467so66581cf.0
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 12:43:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785786235; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sKK82vXlg4eUbamYfTfV8nDdwBoOtfUFaQdCCdMGq9m/47ptQuSXK1iZYQniJeUprD
+         kxQKdPylADLIgmtKqogmOCkXWOtsT8teh5h5Ux4q+FrDTyhwiOew2GRHGnY9bNflYw/y
+         Ayuo1Vk/dxIZvWKuRqzJSxxrcQHcgJp4oSOJgUmtOvfTgJXLc6xa3fF5VHhszQhvhGZL
+         F320pWDdWet02zL5i/X84fy8WIPitPp7m10FWHCsNToPJB6JfyKaLUhAiVlZRHyQ/R8n
+         mcADgeA4byJbD28SRE3hBM6Y9TnIawY6k7cWCypxgWMmOU9Sy8Rm1hTUFrBaAqVWVmZ5
+         AVPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fP7XfXAPHNP7pNiZJKYeFh1C7B3PixBZpsJ42VTDiD8=;
+        fh=+0q5aUyuo879lvCoQYH4mqugYl/YfYbAJiHbKFDfo7E=;
+        b=ieLwbEWnIPns4sfq6kZrpriO4G6oDPln6IZ8gre3cqhmpyACUyR23rvzWhBsSUDIYd
+         Fm8Rmv3IbjC6KZQXm1mWP9Kzj+JjwWdgAqTzwSDJgbuPZIfMlgG/UycU1ZBNJc5C7V8o
+         zC8cfifDv9Zxhz46q62fpG2Euk5eXgVk+H9gnFVF4Urpq9cQoDL+DR2Or2jZHwD7dbat
+         hAKyQLmjucZvr13P+oZN9m7sj6mes5cR4MqoIMWtUFsPDklGHaqwJbvFw6UCrC7qJXrd
+         dcClIj3TM4Wqb0XyjOcgMXPdLrtDH7sac/ks8jJW8WcI+VSjjV47df5rseyPFlrfuVY7
+         Y5Yw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785786178; x=1786390978; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rwuoYLIZuv5ApTNScLZwtjL2AQGWD4RWVJHiBkDbMFE=;
-        b=qbKoRxLhBXcUw31cryTc0QEnuFsJlm+wkYqMEGQiJuTtoLSLPxpYIsDebVzL1dm1uc
-         MqQoiGSmDj1OvDJDlHFxQeTcjcb1qvudCcKJldQP0cPc7+e3ibg+IvcU07DRuzGUdlm3
-         QycmFLFwN5FZjSZF5LahmnqW/A58tf/UY4WDuD8FHrds1baRhAV14zPjvfl46MVX1/VL
-         6jVQPWekSUrVZAKQ9pMk5EZB8a2vLRALUTICXKmxeYjPMoh0atlOiqrffdDfEZUI5vaK
-         WhcjZGCFUGhvuJIgMtlFpmshDqXT3at9hoFY5irKP4PreEq9prPheITkllfXfksxbNZ4
-         CGoA==
+        d=google.com; s=20251104; t=1785786235; x=1786391035; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fP7XfXAPHNP7pNiZJKYeFh1C7B3PixBZpsJ42VTDiD8=;
+        b=gtkkHQYQOaHq3Aea3/zhFuQJfW7wEkcc2gYomfjLjFM25JcoujxxFjj1npemUvP4uN
+         o3kUr2bujHejKNcAdGS6MwmKd0fNGpvWzFm+NPqq4gu/G+JWCPE74ZLMZYXO40P5u7i+
+         43FAzIWrN/fsFPRPZbKTPcqNpMJEdWOqyFbsoZKEeYg3vfT4wPOKdqmxzuUbBJuXFzBH
+         kKdOZiUuDsFwvtv7WfiRbHw1zY3m1vNu8VzSoz+hjIQLSRs3DG8fTAHMpsXHOHVuZmMO
+         OWoARszMAtTU0Ky1X73bSotfDIbtwgMsJMWhBKqP9zIjHUtAnZv0yacQPZocdfa2O06L
+         Agpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785786178; x=1786390978;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rwuoYLIZuv5ApTNScLZwtjL2AQGWD4RWVJHiBkDbMFE=;
-        b=ONYIgwKz9WBGlpPsYDyDwTjbCHh4g8wHGGwJc7w4W4rC8veVCuI17ikPB06jX2BdOE
-         ZpCS6ZwGUOY9fQQk5lSFSsgtGXSEr/Szty3+UazELHB2XUUpoYNxXPh8v2IvDQBl7NeY
-         0JUxc6tVYC2fbuPHYWqwUJQzcVL0E7mQmWWBDuK6r/9W7GD7NSB3rREMIn/qsDwaGttL
-         XA5GHSa6uffu6iF0Oz07fRg7YgSBtWFCndMqBNFRJ3vtujXTdvfvKKutS5K8aagh1mOU
-         2/9qKJNtypK/H1odxpS3eImq9b8i3ePB//W2TbiHAQAHaPbIHKs7QvlD0Qae05RCXjNa
-         KEXg==
-X-Forwarded-Encrypted: i=1; AHgh+RqtjNrh6dS8h/lLBJn0sXk9m1rdxxg0trl9zBF0wIGSEP+jsFAK3y8mt1pndsn1y9KgqMrf+umrZw==@kvack.org
-X-Gm-Message-State: AOJu0YyXh6O/BsfyIMmdhbgrm4QUZrPUpDwAjeqjqIwwTMdSKUnIlwlJ
-	M36QQBOFaaTUqp+TIlc4rBnCPci10VKuZzmpnY9bjqzbFnKTmjdc1bGL
-X-Gm-Gg: AR+sD11mN/io1rBG32upEh5Mk4gM2JJN9NmwtKfq3w2oLB8aWnXSqC/2E2TcUavVR+A
-	dIf8WdwCQaA0MnOXCry96iYcSrxFzofYSuj3xCS6RQcSZz9D+uv7Dy9BzL2FNUSG08ecnh2dXmn
-	OAU9tbv08RPW3xb+sjiwufmZ7WfDr6DJ5jqyHTlDlW+3mblv3ia75HpJMmgCeQ24PbZtJp/ofC6
-	xHY+uxMThHqrwMqW/Mm7e1aDIbJVAedmdea23kQvHMX3vej1XQLqDtibMyLqKili7XkpO3LkJ6C
-	+X3Nb+CorJxIJXsJszPM6i7BmHkB5pJ/jdZCz/kTf7GZwBhAqZw5Qq4iQOEsnWV3KapQiveYZTl
-	9JPN4zqDXQqXc2wCCoeUf6OZ+6D78r0Z6yBHWC/bAix+0dDBOeTGVJHUjrq9bcy26+ttx2J8zkx
-	LptQDCiLGkhlN8khBd0xEaIHfqpMCiKVY5L1/xmTZsYXFSDIaUVk4kjX1cHlwKxp6jZTwnhECry
-	BmATG65AMvfyJ6bFNp5Fq1Z0pyUdh95CW9QAr9H9rj/xM0H8Nj8Hpc0wTqPLBgoWmWHXPkH
-X-Received: by 2002:a05:620a:284e:b0:92e:db1f:185c with SMTP id af79cd13be357-934a0aaee08mr2254503585a.43.1785786177782;
-        Mon, 03 Aug 2026 12:42:57 -0700 (PDT)
-Received: from CW-D0XG2Q16P7-L (pool-173-68-111-115.nycmny.fios.verizon.net. [173.68.111.115])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9349bc25410sm729451885a.7.2026.08.03.12.42.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 12:42:57 -0700 (PDT)
-From: Maxi Saparov <maxi.saparov@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Evangelos Petrongonas <epetron@amazon.de>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	sdimitropoulos@coreweave.com,
-	Maxi Saparov <masaparov@coreweave.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] kho: do not reserve scratch memory in the kdump kernel
-Date: Mon,  3 Aug 2026 15:39:38 -0400
-Message-ID: <20260803193938.8778-1-maxi.saparov@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1785786235; x=1786391035;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fP7XfXAPHNP7pNiZJKYeFh1C7B3PixBZpsJ42VTDiD8=;
+        b=i7MVev1lf6McmLZghPVDjLgUgjZ++7+7mM3OWlZy2GrABjqobDlF7gT4UXUmHlcgUq
+         ciLyJxtJPpUfz9Zw/fv5ZhuU0ia1eLy1MP/HB8uqEUZCMAQ50tlK83f4R+rpp3KEEmIk
+         BYph7sv5OnJ4icMxPN4vZr3sg+8memsfYyMJHn/Tnwh0O8X5O7RNgLT7OFSXWWsgYgJD
+         olXfjGuwaXsvQ/oKiDReQNSgc9MZ85nTOpZA5GJKTgR2KkYtIaUD++2XJXvYwQgsKQ4U
+         zc8b27vt/MCkD9MUdU7qQmzuWMvfiQwNtlXlYROKeyPNzOdbXsEdtqpEPggUUtcpviyb
+         xZwQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpQfY0X0JIDfpMdppaN3xsZ3G/nwzF5l8LBJxCw0lFDssTGdUp36HSBsk5m6JrTjjrkJEg01xk8XA==@kvack.org
+X-Gm-Message-State: AOJu0Yx75TiODOIgTqqq+k9/S1tlaAdEYiju3/BAAhKk6CL3tHbI5Yt5
+	/oWtVn/dGCdnfdwYk2k2qOt1FBG7RgbmFPA2Qbp3NE6ToLhMN5CTlRimm+sNSJdCsDPnd89P1Bz
+	CYM78SXH17ZZgloGOzeSYjKeltPxS/A2DKJEaLC0v
+X-Gm-Gg: AR+sD13TEL2tg1gD1LFYMqFJbIZC55FmXJ9/g7RKuQvlIhdFO0QH2bNh1X4IMRchF3J
+	WudznmGkjIhR+dNw7W4tqyFdcGviWTrgLH3bjH6bbV/xVIWfXVpxMaDaqX9NLBmgT8UXqlUMj/t
+	tQ5ctA4Vacz7A/Itc1jz/Y8DVVW4ERBddBBs9TbZJvfhSVqiVELfBhZF9cMpQzALy0iiRg+Bhho
+	Xy8SmsFKljmLZdY9w7QHhep72zDh4IYl2SJeYxrH3HxPdYmDwQah6GDArf7FZDbaWLlFMtRp5bm
+	X+fJhDUI8N4o+RYxIAIU2OKxOk6Dg/saCOztKYEukUA=
+X-Received: by 2002:a05:622a:900c:b0:517:5ac7:332e with SMTP id
+ d75a77b69052e-52cd4de760amr2551621cf.6.1785786234518; Mon, 03 Aug 2026
+ 12:43:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
+ <CAG48ez1w6oPobKZPzoRRN+Nf66PrVYRJwKQx=qwTLTR3n0EFRw@mail.gmail.com>
+In-Reply-To: <CAG48ez1w6oPobKZPzoRRN+Nf66PrVYRJwKQx=qwTLTR3n0EFRw@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 3 Aug 2026 12:43:43 -0700
+X-Gm-Features: AUfX_mwmOzbiGwES3hfijNvnxdpVgWNCN7Te1gwkygr35PC2cl0u--Vvs-L81zk
+Message-ID: <CAJuCfpEaYgMx0HF8SDRPOfBJusdyAiJOM3S0TRjeFGwtmSHj8Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+To: Jann Horn <jannh@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B5B7E1C0002
-X-Stat-Signature: usnrtu5fbhmfbs41tj55qcwj8d7n5rw9
-X-HE-Tag: 1785786178-687341
-X-HE-Meta: U2FsdGVkX18fTEFatLYVRz8OAEyKiIPFnqzKmO26Oa7KeACyDeak2QGPXCTL9Gim7/YMNbD8eCnFy4sMXQcKzebqY4SY8Ief8XFFQ0rn9ZuLYqxKPVv58ZO2NmgFaBGOUdZA/RfIvwqWiTQ41Jf3BhoZcRSU7rnXtTkby7LjBeFwnLyVMUk+iqe8RBJV8NV1CB9rGZs+K9sg1GmPKZGajq58stehal3wEFwTdFvyZi5dUXSIHUkJKYsOFYoNPub7q7AyJjBcf4xGt2bYpWMyJNi0aeRAlnZ3rk3+U+ZNhl7kwfP1IUE5et7w1ea3K/T14sXWeS8jWcA2gd4WxN17cVkCECmOl3G3rUZ8THEjzdVdycVyelLk/m12weeMHMqW3HAYV+Unswe4s+sS2fD1d3lXJmSUUuJqhkgJUNvd52VA38B6X2fBENYOPclfzQ11D9I6bOZ2NkIB5auLX7VYXBY12/lKJ0XgJ5dJcM2dQi5HV61aEgn67ZsLuqVW8iE7TItoY4WMrLho5vBwHThOczkynIFL+i28t4NtYsQZy7cZzw+kkQe8sllE32N9zMJDMTVuvR1qic4iFyOsRFKHgyCTaw2f0zEX20ms7Z8E6zoFrtRVsfYF97EblwaPJVotEKfnmXuBJ6GD8oWWAbtsFyITaLDFVS6kFTtT/0nc3UAogHgImPj97+c0ycwmIukBARR5JNU1vbRz0JvxuMh7DcDyLK3ln2Ut1whBTmYulQKHLcCP2CzEUFQSPARgufc1n34NhZsOKYplRlWqcYW7VIrL3RTW2JSeHlH57HsiGaq2g8486Oiiy5BusRdNZorKP/WvALGf2z+gE2fUE4CHejEUnUWc+TkKSItH3HXsiSFol0be76hCQ2uNADoaDGW8aV0ZjLT458/W4bBBIWebym/3ayvp/l6Vtj+4tXZ3xWdjFwMvPyzg3eH7dfeaF0bfxGYMZMM3rkvYjPQd+pr
- XsKH3IZL
- z5EJURdS9+Pu0JdZqLjUlUeJFSht3BzM9EDTK19ggiO0EZRazGtDlHIbGhEHWtW3mN/iF19pTuEEtyF0f67CXhVFBeXny9aa7sN/TOGU3NdPT5M4NxbXoyIjf67T8vtf65XRQ5tusatkzKMG4DYmzRvwqKfd94nj50wDQDrTiEcPIBRaOYMaFm0R+FVWxGpv2Bfam5DYCJWG+5fBcAmjMuV31OgYg+UnM3Sfyrswqf8WG8X+sl+pLVqmgnf9uEn6/Y1GY6M0+fyToFIa6T7CKhLragqLs6zV2aJX1eqr+mKaF6rZlvmYYkY7GMopyv72BIWp9UOYJsY0G51agmmTegiNWnvAzNKIhfNbEeY9hQRtYigMIrmHV9PkYr2j9atqlDFAfgjYFlpL5evJZjp4PDJSrOSxNf0s9w3bQ5gQGI3nGi/tfEuiiCrHR2S4yfid0d0QtJGG4QAAaNdeycQVMmxH1o6NjfbzEBXHjfXoPqTPk9txUPmKg484drdMrvs6L1v0M
+X-Rspamd-Queue-Id: F3508A000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: bcgnexgr1f4hem3fbh8ex3o7nfxp9rwf
+X-HE-Tag: 1785786235-773003
+X-HE-Meta: U2FsdGVkX1+HdOHhYafU6E9ihSBa1gqoP4rQbqx8YW8LDnvofknEfe19nRAdWqNvhtWqiua2YIpi2ADW6hAYqh+UzG0FRSs8EfwP/X4I/eoSyh2KnXswJYb/IFN3r+kUsxmooUOvCwdNT0GYB4sTw9rMijJwRW8rPKImKMMcoeNs7qpOWyhufQDz0/it2F9THr1S8LVntdsVknX0zCUay+2Y6vdrJEMYoYIfD9IxYXFmsPaxCSkEeZ6V5hjIEm+ZpPKYRK9t7o8rqf3ExN4UY0qOIOmnKLNWExf4GlOtXaW/mEav8zS0Rghmh6jN/kOP03I1pPNWvDsxDxPRaei3TnoGKcByi2IfYjj0YdbRClygKc4rRWVXPDam5CWH3bKk80kP900D6WBnLumSN05h/bh8nCZdXAgSDkRGJoRyn3A1qMblqZL6/BCq4RrFH6MF994xte31+OkihKkVC/rgByUfWSXU/27LfmTS8iVi6K8RiGltA6ZnmS5FxDCWN1hQsEEj12GZiqNq3aN4asplYDk4su7k6lwJwFfjBIXeiyJq+C3J4XyQu3O9ygy39mgrae/6r1ELx7CJac3ankataqQa1zlVCpfzgYSR7+igRw8po4ShCyjSNDLjWb5F0Kf5YCWLt9ZV3wV267XF7VKvpkzWttsPjnZ3JVngCXdFvM0R5GFflYB0Y7qhTHIqpdB6mLNj+6zhSTjvYokg29IiHTUUaTzc1r6qNJBU72mYsge20KmUrBatl7NQrHVHOOXA0JgYlNQQbwNH4dz6DgVOejxHCejbATtgRM7SRYVTq84X4fUpi/VpBhtmVR8BdioDpk+Y8q52ZZWiYM0Vo682V1y8rtoaFWLQgtluD4gUeLxp6vcfvbjjDOz1Vqnkv7uxt/v0gCLS6Ugx0H4UfKf7ZiEqCGbqJ7S5klhBsOpvg4tjc3/vlbj5eOPriF9FWOcRZ/iaOZfDRRwuhjG045s
+ KDSl5wrt
+ jDolkbmPm7ZmJQ4E14O6SOvjusjJ+/HN7lr+tvJyNbwm1QfQu+WNEgBtbXZD0deCUvEUJiiqbn9HX+TONdL7cwSdRKrsQGoIeJm19K7iSp3HFn+7U3RK0H12ikPr3qGwagzimOvM0T2WCnRnQdzCExS6ZftWfQfOcPhdsOfjnupvQKdK7ck8UwweldoTH1o0gIz7X8HAr7Lq8W0eIWHbPdctK2+mUTp2tQZmv0N7aBSDr9RsCrWLZs+LSRxnnpTQ2jlrxtcVd3xqZhwXD7NG75JNfqnlAyu9SH8h+JMk4lq6y8FxS2gHqgAzELdwCTDV/swMKrFcOgO2ldz05WKJPH80PtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,65 +145,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Maxi Saparov <masaparov@coreweave.com>
+On Mon, Aug 3, 2026 at 12:34=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> On Sun, Aug 2, 2026 at 11:55=E2=80=AFPM Suren Baghdasaryan <surenb@google=
+.com> wrote:
+> > The per-VMA locks have been around for several years. They've had some
+> > bugs worked out of them and have seen quite wide use. However, they
+> > are still only available when architectures explicitly enable them.
+> > Remove the conditional compilation around the per-VMA locks, making
+> > them available on all architectures and configs.
+>
+> Reviewed-by: Jann Horn <jannh@google.com>
+>
+> I've grepped around in arch-specific code in the architectures that
+> weren't already opted in to look for stuff that takes the mmap lock in
+> write mode and manually mutates VMAs, and couldn't find anything, so I
+> think this is correct.
 
-If a kernel with CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y (or kho=on)
-does not receive a handover FDT, it reserves KHO scratch memory in
-kho_reserve_scratch(). The function computes the sizes from the early
-memblock reservations of the kernel. The default scratch_scale is
-200%. The lowmem and global scratch areas each get twice the size of
-the early reservations. Each NUMA node gets one more scratch area at
-the same scale.
-
-The kdump kernel always takes this path. Since commit a6715d7ec472
-("kho: skip KHO for crash kernel"), the kernel does not add KHO
-metadata to the crash kimage. As a result, the kdump kernel never
-receives a handover FDT and always reserves scratch memory.
-
-The kdump kernel boots in the small crashkernel= memory reservation.
-On our x86 hosts, the kernel and initramfs make approximately 176 MB
-of early reservations. The scratch areas then use approximately
-650 MB more of the crashkernel memory. When a large early allocation
-fails, the kdump kernel panics:
-
-  bio: can't create integrity buf pool
-
-A kdump kernel has nothing to hand over: its only task is to dump the
-memory of the old kernel and reboot. Disable KHO in the kdump kernel
-so that it does not reserve scratch memory.
-
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxi Saparov <masaparov@coreweave.com>
----
- kernel/liveupdate/kexec_handover.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 6fad9152387a..53b59edb5b36 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -12,6 +12,7 @@
- 
- #include <linux/cleanup.h>
- #include <linux/cma.h>
-+#include <linux/crash_dump.h>
- #include <linux/kmemleak.h>
- #include <linux/count_zeros.h>
- #include <linux/kasan.h>
-@@ -1636,6 +1637,9 @@ void __init kho_memory_init(void)
- 
- 		if (kho_mem_retrieve(kho_get_fdt()))
- 			kho_in.fdt_phys = 0;
-+	} else if (is_kdump_kernel()) {
-+		kho_enable = false;
-+		pr_info("disabled in the kdump kernel\n");
- 	} else {
- 		kho_reserve_scratch();
- 	}
-
-base-commit: 3a0b8fa2eb36afc88b62a95f33f0c77c71fa5ded
--- 
-2.55.0
-
+Thanks Jann!
 
