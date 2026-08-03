@@ -4,195 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC96C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:54:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863A2C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14C426B00D5; Mon,  3 Aug 2026 09:54:26 -0400 (EDT)
+	id 93C166B00D7; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1250C6B00D9; Mon,  3 Aug 2026 09:54:26 -0400 (EDT)
+	id 913F16B00DB; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 014376B00DB; Mon,  3 Aug 2026 09:54:25 -0400 (EDT)
+	id 82B1A6B00DC; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5AE06B00D5
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C58D140675
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:07:48 +0000 (UTC)
-X-FDA: 85059380616.23.F3854C4
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4128F4000D
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:07:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZtAqIizZ;
-	spf=pass (imf01.hostedemail.com: domain of jgross@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785748066;
-	b=Wj6QYa3BobDg5rB5Qtig6lUBTDYN/YX/s/9R29pxlUAIlHmATfvSts3ckx600fvIA8oiTB
-	WnmOdQ2vI3KbyF7o1asQM35VDbRvMxnhHMocvhyK0I89ZblQQUpo4gdDytKiLCBoUgCZmF
-	Md5piRKMOceXvRPTTROnOP4i/i2HOFE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZtAqIizZ;
-	spf=pass (imf01.hostedemail.com: domain of jgross@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CE8A6B00D7
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:54:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52531C06CB
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:27:24 +0000 (UTC)
+X-FDA: 85059732408.30.6A08D01
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7F2F0C000B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:27:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrOWJ/T3";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785748066;
+	s=arc-20220608; t=1785756442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b16T4GW68hAFFc0osm9lAVRPnORne6TE2Xjz+8jsFek=;
-	b=DV9nOG+eohWUbsVyeAouaz6Zi2BvHDUuJJvAmLtyaBO6N6uKQiEt5VcCLk28CGVaxYIZHW
-	U3sKsAg8raXdvp2HWj/9KidruZGhz1vSCHbrhSbrcfcF/8we9+dwTLJQvhYAa5ggpeZgWQ
-	dfsGMFbM9wQoqEsXuCgX+gr5PGQGvHI=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c167bda216fso468183566b.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 02:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785748065; x=1786352865; darn=kvack.org;
-        h=content-type:in-reply-to:autocrypt:from:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=b16T4GW68hAFFc0osm9lAVRPnORne6TE2Xjz+8jsFek=;
-        b=ZtAqIizZJUsAe5iTWGYzF0sUyvKt7yuqZp3jJS/gl4b+Xxnmn0cHdYAF8SzRqRVLYM
-         ekw2Q116bu7YYlbXJqopbrgWsSPk07+EwuqukleOl9OZt8vtitHWnpPBQVAph18aCYUN
-         0sSkep/l1a1aa/NkNFcY3OFh4RgJvkVhJ+0RXJzD+8B/X8Svbx+iWAKeE+s1Ig8NiaW6
-         MhjPFMOCqtjGjhunjAwVIC6M6uT0Ak6vG4W1EmMqrjQChDR7isaipFtDL7NSHPJUCaRX
-         jdD4IEcjBcqRom+FuXaDfFDvotjsOWfJs4EKmoXdtIf3WhyAgayQgpzRrF++U43wcUTj
-         M9qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785748065; x=1786352865;
-        h=content-type:in-reply-to:autocrypt:from:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b16T4GW68hAFFc0osm9lAVRPnORne6TE2Xjz+8jsFek=;
-        b=mS8rAaavFo/KtiN/U1IXAx7IoFi5RWIINKhLHfs8CYu2FJ17dSgXlbCLps1XtjCkpj
-         yo0JBu33Ps8N0Ydbf3iAEJT7vEAVFNMjzdKV71Fek3k5Zk9oRChvJyZTRbqhacv5eB7S
-         GZJ6YlVKxnPhsiQ4Jv+w5ZPCgojJXfOJzUzI/iULUonc68/QzTAftB+F7FnSvczqwwkP
-         DxpNwAdcP+LHtI6UUwOp9NSyX9uk8upwsv/I+c3KsAiuwmBZ0TFrmp7k7eouIcagxRlq
-         FyCDfPqWMeW0SKLMsPiq3y9N4WlvO9dXxNKKXx/EqJm+rSK4q/CxLVLIpPGgc7K9eq4V
-         yAvg==
-X-Gm-Message-State: AOJu0YyYWzxpHC1mirUcBVG/fKzwH3WKQFdnJnX1DyvsmIORlAYvB07q
-	TD08Rxt2WQAp6KXHp0g4aNkarYCyd8mCtCmFp8biLKbSTV0Sihy8TZiak+KGMVX7WtU=
-X-Gm-Gg: AR+sD102N5eXyrs+GDY164TVx3H4YkvDN7gg0cugkeNh7Dyb8zB9SF43TK2Glato8n1
-	gjs3Ln2QlcZAO2sU/vQwmI3rQqwNv5eJLroG6vWc5nxuuNOTTYlKH8IGHpuJrRFLRiOdq9dgMeF
-	g5V3zpw7HLG3ESJsvrH9Benj1SJ735OodtYSYoL4z1GpwBm1dZKqxwF8DvfUJW4NgzHN96sdHFO
-	zFNFUOHCLrEtvNggGGljGdiTwOm0wsEJ/u90ZA/nyBM60BpUMqdnBmFAiD2+mZ5kqKI/OJ8Jd1a
-	Ii66xLiUshE6RQ71BwFvZUg7DH0U9+tIqVM5DOEzLb3g1T/0rYCvzEk2dRSkzFAkK9EmJUyo3EH
-	VgAJfF55tbEz+is5wg9rMyh2kmQeccOwzq0audp064ViF+NRQDhn/F7MTS4oQJtYYJfOO8t/WgW
-	TudT9Jlnj77LpcGHy2j7q/dLLDT6c2eoIK9+II0g5GIYROrLM6M894hn7k528WmEFunya/UZgj2
-	e/qLtJGU4J/hT5sEbnTzAqPbQJ6e/lYD0kf0c0LibqRRvMJWGB1Edl2CN6sMdpOvOaVfDISu8SM
-	86BrJUznr9UIPyg=
-X-Received: by 2002:a17:907:76fa:b0:c19:fb6e:5ff0 with SMTP id a640c23a62f3a-c1fe81a5d9fmr582774266b.15.1785748061532;
-        Mon, 03 Aug 2026 02:07:41 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd445432dsm507440166b.41.2026.08.03.02.07.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Aug 2026 02:07:41 -0700 (PDT)
-Message-ID: <5ca4d0e4-1747-45a7-a916-a7516bb1692b@suse.com>
-Date: Mon, 3 Aug 2026 11:07:39 +0200
+	bh=YSw9uK8dJUH+TEOnxzh6YVpEYxvD00f6y/AeO3+B2bY=;
+	b=Ec9zAJaZgW993Wgud1qDkCubFsdyoaKp3kMQcBBZ0GUH9w5PV98VoLRDd2BBbg6JaEX1+b
+	1hNd7db6Xk2gGg4Y2lR65LXOmzXr1OKr83Iujpy2hUjiaUGiMSLcaRqPashXR6YxGStn7p
+	fVkjh0I1G717hmHZ5ZUtHe5R85VUMK0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrOWJ/T3";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785756442;
+	b=RUYXpyRX5lVov+aCvEt6hzfX84Eh/YD8fTZ8JG1lTUGbYm9QkKaXaPPpa+ijQmSjFTLlEj
+	yKvWdur9YeAPXD5x5IB4XGEE2g6ak11/s1ept25aGxc7PK2t/gmUPXurEzyDI2okp5eijc
+	3T4Rk7rxRjQzcly7ayEobfDn9jkWEt0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 754D044F61;
+	Mon,  3 Aug 2026 11:27:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2CB1F000E9;
+	Mon,  3 Aug 2026 11:27:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785756441;
+	bh=YSw9uK8dJUH+TEOnxzh6YVpEYxvD00f6y/AeO3+B2bY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BrOWJ/T3RZiSPYgsiuttXsyJmDns/XBJdG5Ezs0djh/inyu3iPhd4Q1b3mTHBBMc5
+	 NIXKwWXd4Tin/w6AJcPCoy5wDc7/ncbMzVCTe4HjbCjTM1ZneLr387ymLfCAcv8zaZ
+	 ehA6Jm8+NEtL1lUSbPVd5Vi9Klfj4D2x4uKSdia0JWCsH2TwBsIti7Mt45ifq2Yf8K
+	 FG5lkt6UaziiuuM3kkese1CWMncs+AbUJ4gWEXuNTp4K0Rl2BbxZnyVqd6H6IImH02
+	 hQzgQw4qdzvWIFstsJHmLRQhGrMfbD7u4TofoGgR1ldLJrrrZ4f8FFAwHijJDZyoad
+	 ujEyyYQvqbhwg==
+Message-ID: <0d9f3040-825d-49af-9d07-1e7945dd3e9d@kernel.org>
+Date: Mon, 3 Aug 2026 13:27:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/14] Remove PG_private by using page/folio->private
- checks instead
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+Subject: Re: [PATCH v3 08/15] mm: introduce and use linear_folio_page_index()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-fscrypt@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
- Gao Xiang <xiang@kernel.org>, Jan Kara <jack@suse.cz>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>,
- Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
  Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-trace-kernel@vger.kernel.org,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- linux-nfs@vger.kernel.org, Song Liu <song@kernel.org>,
- Yu Kuai <yukuai@fygo.io>, Ilya Dryomov <idryomov@gmail.com>,
- Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
- linux-raid@vger.kernel.org, ceph-devel@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
- linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>,
- kexec@lists.infradead.org, linux-doc@vger.kernel.org
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-8-e8ecfefea812@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------Vg9NJvq3ine0Gyx1IX0BEzQC"
-X-Stat-Signature: whtxdxr71k4po81xc1j6z3pf6x9jk15p
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4128F4000D
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-8-e8ecfefea812@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1785748066-672316
-X-HE-Meta: U2FsdGVkX190b5K7/iqEovFrEfS0+Rr0QndIlAq9rX7EK5663bGAj47wV+9DKhG3h1jPv1xlN6aiPC19PvaVCvpMRyXMsWtKKsLE9K4PsLYqGZein6daEma7DnnUopKWTtBw1qCw+Uemabz+CMWa4RFRhDSRuNji1wLobAUId63vm6uaGRlaVwZXKgxprAd7rAtSMZoq2j0eOmthqfmtqgGjOuwq3TDS8BIsVF8FGVV3LWLXHcnftH9VdGhr8QZrFRPEnyNKqTNm8hSSrg4bpELlO3LXY1rfURTUevz9gUxBlhokEWt8awiImDiG1KZNhFGV1hJq2FktrMBastZUI6hCZTJyfhZeQz61ua13YSlfS901zH5yTzRHCirvLbzU9YGlePsj8VO9jhf6FldzFw1z+EnJGoHKkoBMu2V8ZgUo8ReLOnAirUSlIEiCS+V1TC4iYXJBqcea/7MXLawvkcMQsZ2ZsHJN884xkktZb5o4JZM4sO8DwwDvueakJa9TLni4L6bq++Ofaa3FFI0IIHLRJoc0uA8vrX9KlURy0qEKaALNaJfpOscLJaKgOPSrMoAIXFM/+XyuLxY+b6HBh3Nl3KlI7TjqCMu+mxpnQ482SOHrZ2ou5FDbycjH+Xk5DTak/1ksNT45qlck7bhoOyoA95ynw+8Ylss/UVkHY3U2faUlo4h4n1ktZoSZib/upGMaSCzXAj+lLTDo+HwrEJUNJJaodBwpe/ShPvZwb7bPFVPetQhUVzfbDCif9CIhAlyBSSBucMMB26t9/XJiQJz/Km+17SW1tB6Vg2WkhrTbTBeY7CV0Tp+lmbTXOvcp7omgSSZ5VzIjzaNAWp5UbL8nEn0ywcb25XVgc/I0ThfvuAaoMRNvX8qx0l2oW1+eGYUEBMimN/gkdVkTwLAHoOrTyNrB+9dlPoIEg+MCCQr9niNtdulKrkAXf0RL/DWigx/4dX8Ai/HYT2+bUFk
- MCndTNqt
- 41wPmWa+f1CkGM7R8CktXv1s+E6HvqnM66/EB9muKZofoIIdvD3UvHl+m1GjwaMarIcsBUY1afrxrlt0HuJ3NK4asC4GQ4x1uwx4M/N/eAIzo0KG4JliuiZT2hlMuXrv8MZx4NsLgHYsMAnkRLvNowpipcy4IKM0wny0uvW747ndkN88RhAPHI2LUdtMGpaPgRspvi0eS2Ldd1aDo6JI4PM6i+WHsVMAciY8Yth8UtAJp5qmUwLps0a4HLm4mQ+u0coLw/20ZOYnPiCcnK7YGRPOxnOqH2bu/zD06c/E1lVXFRq/n2wjOmngGuyxMvpHEmpjAm+vUFJ0SWn9iXp38SfbiERmrVqfQOlw82MENl3vRr+wAtI/gHRLaqYanib9JNv8HtxNLC11bkf9W2P82jN5MGFMGaSrRN2RyhFX1EYtPCv4QGpYHvqzbMYzQlNNg53PDa1IuhWl3xb1cXyogkMniDWai6EEagx86kquoFra3f55N5d5xZc3ilUpEdg9VWuOvkagIYmKYvM23/5MP4CWQOsQqB1sNeJzlPOOe67Xll3zEP+zwHmt5pVtaHQhAfYY5GYD/q6CbacuVLpouueYRLIaIvRR49s81loEqLY60JMP72VGSKqesoeMbPqEx1lKnF3bPSmJW2hSV5fL40olYWmkr4V18TG3YKWm852tfRFsPtmeBRiBiVopIGSFQRPFkjBkEd+e9U2nbbJul9UDH/0NkEqVXcAlvFq42P8NZYedlBvpm28LadbE8EjknG+VAvdCnMooLcD+ykpA6cMdAm4SQJrA7JUHvWAF8Zg8PCNjfQWqqpmdVlUNmfDYZmhy0SGu0i3GTG3v8bld/Tv7KfxiG1y+1hDs3uvbkjXDabLEJHaAf3xLcRmaeYJx52QBYpRE2G3Dbu1+LFc3W36TLXPRUERjlG4RssvE73bPTAqM/tPKM8/WQeK4S3P7jOOcljbI46Lgh/jU=
+X-Rspamd-Queue-Id: 7F2F0C000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 545a39dchiyfx5h3wmsomyeweququiwa
+X-HE-Tag: 1785756442-909077
+X-HE-Meta: U2FsdGVkX1+afHrGQBlq02rS8WMMZVaUufc6bwwWL8Yov4/R0DY4mGCqMgR92VrRzKFCfTZgYMUe84wDOpotSa62BI6E9cuNQ3gOiRMsVhD8mNvDYZVDKc9SKrNKGRpOXagckeeNGwVAiiQc6a7XBcrCxSh5qpacAfJbZmwwtmlvo9g77ze6MQWRhk6vwgfu0c3+OYaedctkhQnFhdU55H88a+k4/tqQODtIdyEwSis7u2mnpHemw7KXFGNZb4NCAMLZcZLPtYTLZkm4IpTRc2IH3PKQRlhgYxmkuzxqrs4wkSvETzZyqwZWyDpXTzn8P3R7AMom91TVo/z9SWLeecq2R+tQwf7YLw+1v72lxf+60LN3Irh78ooxTFoiuBeAmrWMvw0+zwlayPEASGLMQcSufNIL52mOYuPBeRqE7jTWTSNmbKwrT5818+k5H14pc6qkdCJeadXyv90liYxBooAkTG3VvCm2aekDPH2nJg5+t2TurBsoZSo3BinE1lTFjjMq5JEeEtiMfW2ruF1w/r5HlpCDFhQ3kZoH0YHdYK8Sl7Mkgny8KIYkpjBusTMtfsZdBGVOb9eLbebihVqryqMJkGbYsZeCH0d+Vv8RmQ6i7jrpjf49by8gE0AJKK1lQp1uP8Bf3WdmLnI2Gu5t30kCTyNvEglATxUaEL/3X66t9CS+FK95wtdJoPPIv6yIvGudmnqeMhGgcA3i4Y6ZL3vWuV5esaRrXO4nmb2p09y7qcJx3e6hg4+CHKyU03bcZ7oMce+GkyASTimno+7hCBTu1ktzTLdeFbQMmDo+afTbF0YaOd2ImTaRWS8mE85q3LBoXmpFK2szGl2ud9u2J018kQ53KxnVxx6nzhnmPlFb7jyhJhFcCSa5QELBTfmP22fnN6jACwug4a3AGa0LhDQ4dCpj5j5yD6D1DTht/wbeL3TgMYxF3OOpMrJo73tCvjnfxm32VLtWG6L6tuN
+ 4Ctz8tg8
+ PSJYECA+8KVSXrqpovp+udDieEGkkJ/rtqZ8e7o5+gi3yPLsYYi9mVYuamTdhuyhv5aJnZK+ZYwkFKOvfNMFSGm4huyVPVwNQxm8RXLoCtEC1j8GrFuvNuBea8So7Y1gz0Io1P/4Jitob9ChtCLQLRRtnbTgi1AdLmZOpsse+iQsW/+BVNdx0Xftxw26cIszGqhQus0+vKsbE5MkyEg2ls6x508SrGcmN7fxV1IVUZjQnLd41n/QmhNZuZmp56qiPN8Gq2rO5axiIRvjTP7Evbov9jUsZH31x1bh5PY1jiFFfvchASxU/9Rm2wnfkT3mxfUJIbCptHhM+HTS+DnSZjSh2EaG3y06zoWm3gQCp8AbbHCyb2i95A4zMxayw83USAf9t277olVEhsCSLnRRudO1ZQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -200,179 +159,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------Vg9NJvq3ine0Gyx1IX0BEzQC
-Content-Type: multipart/mixed; boundary="------------1XNOHvG0ftKOzuceeKWaT2Id";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-fscrypt@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
- Gao Xiang <xiang@kernel.org>, Jan Kara <jack@suse.cz>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>,
- Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-trace-kernel@vger.kernel.org,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- linux-nfs@vger.kernel.org, Song Liu <song@kernel.org>,
- Yu Kuai <yukuai@fygo.io>, Ilya Dryomov <idryomov@gmail.com>,
- Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
- linux-raid@vger.kernel.org, ceph-devel@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
- linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>,
- kexec@lists.infradead.org, linux-doc@vger.kernel.org
-Message-ID: <5ca4d0e4-1747-45a7-a916-a7516bb1692b@suse.com>
-Subject: Re: [PATCH RFC 00/14] Remove PG_private by using page/folio->private
- checks instead
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
-In-Reply-To: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
+> This function is, for now, a placeholder; it will be used in future to
+> determine whether to use the anonymous page index or not, based on whether
+> the folio is anonymous or not.
+> 
+> Currently it simply wraps linear_page_index(), so this does not change
+> behaviour.
+> 
+> We update callers that will, once the change is introduced to track
+> anonymous folios by anonymous page offset if MAP_PRIVATE file-backed, need
+> to determine which index to use based on folio type.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  include/linux/pagemap.h | 18 ++++++++++++++++++
+>  mm/huge_memory.c        |  3 ++-
+>  mm/migrate.c            |  6 ++++--
+>  mm/userfaultfd.c        |  6 ++++--
+>  4 files changed, 28 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 259177544b03..6eb8d811ba4c 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -1143,6 +1143,24 @@ static inline pgoff_t linear_anon_page_index(const struct vm_area_struct *vma,
+>  	return pgoff;
+>  }
+>  
+> +/**
+> + * linear_folio_page_index() - Determine the absolute page offset of
+> + * @address within @vma from @folio.
+> + * @folio: The folio whose linear page index is sought.
+> + * @vma: The VMA in which @address resides.
+> + * @address: The address whose absolute page offset is required.
+> + *
+> + * For compatibility, currently identical to linear_page_index().
+> + *
+> + * Returns: The absolute page offset of @address within @vma.
+> + */
+> +static inline pgoff_t linear_folio_page_index(const struct folio *folio,
+> +					      const struct vm_area_struct *vma,
+> +					      const unsigned long address)
+> +{
+> +	return linear_page_index(vma, address);
+> +}
 
---------------1XNOHvG0ftKOzuceeKWaT2Id
-Content-Type: multipart/mixed; boundary="------------emnYBJyIfA0mAuf1FBk0JrWD"
 
---------------emnYBJyIfA0mAuf1FBk0JrWD
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I found this to be rather confusing, given that we now have a "folio" helper that
+receives a folio and a "page" helper that doesn't receive a page ...
 
-T24gMDEuMDguMjYgMDQ6MTMsIFppIFlhbiB3cm90ZToNCj4gSGkgYWxsLA0KPiANCj4gVGhp
-cyBwYXRjaHNldCByZW1vdmVzIFBHX3ByaXZhdGUgdG8gbWFrZSBzcGFjZSBmb3IgdXBjb21p
-bmcgUEdfZm9saW8NCj4gKHJlc2VydmVkIGFzIF9fUEdfZm9saW8pIGZvciBpZGVudGlmeWlu
-ZyBwYWdlcyBmcm9tIGEgZm9saW8gKG1vcmUgZGV0YWlscw0KPiBpbiBOb3RlIGJlbG93KS4g
-SW5zdGVhZCBvZiBjaGVja2luZyBQR19wcml2YXRlLCBhbGwgY29kZSBpcyBjaGFuZ2VkIHRv
-DQo+IGNoZWNrIHBhZ2UvZm9saW8tPnByaXZhdGUgIT0gTlVMTCBpbnN0ZWFkLg0KDQpJJ20g
-YSBsaXR0bGUgYml0IHdvcnJpZWQgdGhhdCBwYWdlL2ZvbGlvLT5wcml2YXRlIGlzIGluIGEg
-dW5pb24sIHNvIHRvZGF5DQppdCBjb3VsZCAoaW4gdGhlb3J5KSBiZSAhPSBOVUxMIHdoaWxl
-IFBHX3ByaXZhdGUgaXNuJ3Qgc2V0Lg0KDQpJcyBpdCByZWFsbHkgbm90IHBvc3NpYmxlIHRv
-IGVudGVyIGEgcGF0aCB3aGVyZSBQR19wcml2YXRlIGlzIHRlc3RlZCB3aGlsZQ0KcGFnZS9m
-b2xpby0+cHJpdmF0ZSAhPSBOVUxMIGR1ZSB0byB0aGUgdW5pb24gYmVpbmcgdXNlZCBvdGhl
-cndpc2UgKFBHX3ByaXZhdGUNCm5vdCBzZXQpPw0KDQoNCkp1ZXJnZW4NCg==
---------------emnYBJyIfA0mAuf1FBk0JrWD
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+I guess the problem is the "page" in "linear_page_index", as it
+reminds of legacy page->index.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+I wonder if it would be better to have a linear_folio_index() and
+force that address points at the start of the folio.
 
---------------emnYBJyIfA0mAuf1FBk0JrWD--
+Looking below, this is exactly what we want for all except one case:
 
---------------1XNOHvG0ftKOzuceeKWaT2Id--
 
---------------Vg9NJvq3ine0Gyx1IX0BEzQC
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+>  		/* pgoff is invalid for ksm pages, but they are never large */
+> -		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> -			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
+> +		if (folio_test_large(folio) && !folio_test_hugetlb(folio)) {
+> +			idx += linear_folio_page_index(folio, vma, pvmw.address);
+> +			idx -= pvmw.pgoff;
+> +		}
+>  		new = folio_page(folio, idx);
 
------BEGIN PGP SIGNATURE-----
+I think we could avoid this index work entirely by using the pfn, which is much
+clearer to me, and similar to how we handle it during other rmap operations.
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmpwWlsFAwAAAAAACgkQsN6d1ii/Ey/i
-jgf/ZwJPxlL37xKWgHvTpcOyxx9OjPwR5NnmxhKYC+qK1G+dCKRR2aNsNRd92IvtuR/zlwoSK3Bz
-7Knn/QAX+Sr8+MzzkoSZZy4464mITxuVnjBsYOy1wmVfTRA9xJ5kPDsLcow9h9fba5YWY5JKjJEr
-fuIk59vC3iZC8TXbrwFnUB118QfIzPMfnHvl18ioDjqN/X6ooFJudXLB3hTrlpzsxtdu1OFI+TsY
-0FUiNapbbcLYtM5X9v/bo7LSqQNdjZKmfV2DVQHs8Vj2bH/TyrIG+SvEggEztdqBgec9T7Ix66uU
-FOasApx6jWOz0UmYAKKBF0iBOhSZaPnQhSA6xqkzCw==
-=lraB
------END PGP SIGNATURE-----
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 222c8c15f782f..686351d353203 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -362,17 +362,12 @@ static bool remove_migration_pte(struct folio *folio,
+                struct page *new;
+                unsigned long idx = 0;
 
---------------Vg9NJvq3ine0Gyx1IX0BEzQC--
+-               /* pgoff is invalid for ksm pages, but they are never large */
+-               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+-                       idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
+-               new = folio_page(folio, idx);
+-
+ #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+                /* PMD-mapped THP migration entry */
+                if (!pvmw.pte) {
+                        VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+                                        !folio_test_pmd_mappable(folio), folio);
+-                       remove_migration_pmd(&pvmw, new);
++                       remove_migration_pmd(&pvmw, folio_page(folio, idx));
+                        continue;
+                }
+ #endif
+@@ -385,10 +380,14 @@ static bool remove_migration_pte(struct folio *folio,
+                    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+                        continue;
+
++               entry = softleaf_from_pte(old_pte);
++               if (folio_test_large(folio) && !folio_test_hugetlb(folio))
++                       idx = softleaf_to_pfn(entry) - folio_pfn(rmap_walk_arg->folio);
++               new = folio_page(folio, idx);
++
+                folio_get(folio);
+                pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+
+-               entry = softleaf_from_pte(old_pte);
+                if (!softleaf_is_migration_young(entry))
+                        pte = pte_mkold(pte);
+                if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entr
+
+
+remove_migration_pmd() will work for now. Later it should just receive the folio
+and do the same thing through softleaf_from_pmd() -> softleaf_to_pfn().
+
+-- 
+Cheers,
+
+David
 
