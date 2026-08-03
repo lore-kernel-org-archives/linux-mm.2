@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67817C55175
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2ACFC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B2076B008A; Mon,  3 Aug 2026 03:30:32 -0400 (EDT)
+	id 804A86B0092; Mon,  3 Aug 2026 03:33:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 763346B0092; Mon,  3 Aug 2026 03:30:32 -0400 (EDT)
+	id 7B4F06B0093; Mon,  3 Aug 2026 03:33:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651706B0093; Mon,  3 Aug 2026 03:30:32 -0400 (EDT)
+	id 6A43E6B0095; Mon,  3 Aug 2026 03:33:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 452D76B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:30:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4553C4060E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:30:30 +0000 (UTC)
-X-FDA: 85059135420.22.4AD414A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C278CC0005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:30:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AGJZ0+Xh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of slopezpa@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=slopezpa@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 474666B0092
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:33:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB303140644
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:33:01 +0000 (UTC)
+X-FDA: 85059141762.04.328F458
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 355AB1C0009
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:33:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cztgAZfE;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785742228;
+	s=arc-20220608; t=1785742380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZHfgjHxp7rmkfsNqOH842ODn9NiNueK5c8Sz1y2gF0=;
-	b=XVa2h9PpeChlcXqsqwo44lA8KlOm0CAylz2Z2bQmtr4UrjElSqT89fpVvT4pXnRoa/fMmz
-	cVqFZqQgTCFtY010j5MtmWaN4PVB9sngIE4IteuJCN9IOCC9fYePpymt9Eocs+p3bTPtbu
-	3Npmlq7JO2bR8m1WvUwUWEnoivpQ8ts=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AGJZ0+Xh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of slopezpa@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=slopezpa@redhat.com
+	bh=Sc3ti9VahDQD+o7JET/jvG499uuDfICvW9Jpo401Cww=;
+	b=1gt5TlLEua6vJ3YB+d50v4H7Fc8K396BCOZHawb2i0fd1mObeeCwT7jLkxAc0jSm27Qsvp
+	sVOKD/Jx+dK5CCwl8epHmsOK2V5R2GneE19k/gq0mRdxjvJ3LMZteWlLTe7PoywtGZO7f+
+	Ida2u+6ZdKORgYJTlSXnOOg3ncK1b+k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785742228;
-	b=eJWK0QRC5TBYpO7+y0SHIQOnPfXcor9jc5YQCpNAW8JBuN+oYgi5TZGzDZNnrsFBvUiPKd
-	JsykqIaTk0zH8GBjzbhtxYDnGBSmSch80095TZFLQZIQR5ZU52N4RZXGV4Jk1rAyDGUr4T
-	019MZJMh7bzagylKivOC+6nXsbPpq+Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785742227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aZHfgjHxp7rmkfsNqOH842ODn9NiNueK5c8Sz1y2gF0=;
-	b=AGJZ0+XhbjUJi9/e9lLwBK0D80lF8PMuQRBJ7LeCzlIkdEBJMLkiAREEf0SlOXhQG1XPkF
-	Zvifc6j8V+hhvtyLGX0tjhmal/xDsgRxPEa3ZyPW5ApzUP3J1CZ77zk+SL/c9O+1MFX88f
-	C9eA7UW4jYSHpndkb4K4uFW7fKsIJvs=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-mBQIrhLUOv6Wg_zxHasuVw-1; Mon, 03 Aug 2026 03:30:24 -0400
-X-MC-Unique: mBQIrhLUOv6Wg_zxHasuVw-1
-X-Mimecast-MFC-AGG-ID: mBQIrhLUOv6Wg_zxHasuVw_1785742223
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-907a1e04111so39842036d6.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 00:30:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785742223; x=1786347023;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aZHfgjHxp7rmkfsNqOH842ODn9NiNueK5c8Sz1y2gF0=;
-        b=bazvAzGoPAoSw4zu7TAgDM3fxrt42pML4/0Qaldj4rFO3KzYy6oo02VQldqWAd1M1p
-         9DkiCJ/hjaQpzrNNxFCDRQMZsjkdFlLPa8d29+dP/W+qnMlGf6KJDjkrNPIRnNbgAE2k
-         oAwFubD4aF1oRt054oWf3R4QQwSOcThhwCOcRIU7l/qiG9hfhX1QgtWoiwUCc5dW3tWo
-         JtaS9dqQJqIy8+1xYcJr1369t/5sEwIXq2DixZirZgDim2rWqDt6I43vRvMM9Jw1l2+o
-         UtOx/PsGyZ+HJQPbnGzxfNQxbdOmEwy+42AP7GRonZSeUC+uQfBMRqH1k/YHns2l4VpK
-         R4hQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr25/nRV/53eU+Yjkjh5ODJ22FpB+IDlCl5eT74VLRGwtrdSamjzGjgC6psUcDKAVD9XLyh1MrZug==@kvack.org
-X-Gm-Message-State: AOJu0YzQnWDAhFuEUJca/ascAyzqPcIVPrMA7yjgm8cg90jSEnQsd1EJ
-	MT921MuITGvop4vuEt/9tfLSyCn9WVxaoC9MzZClF+IPsRD0/b8MmPe3ZIAc7peHCebHqaN5TSv
-	RF3lP/5T04iKTPEMa+femStJn7XNM6hCJJd4/WxxXvccJGAuIiUSuAQFgHMsMc7l5f8V4wYtUkL
-	1BaUMXNZCk9UC9/qxaWEnO1IBKQ3TU2+8SqiU=
-X-Gm-Gg: AR+sD10Hu8474RQ7f+9hF01cmJpeg/LKtMU4fGQZfrVtYw4rNbv0M0tWfjfm4PBlPZJ
-	+TraVUCBayj5EKKWyLiLUdUEOObyPx2ws+WZsrVD80TP/IIyNMSIDPHbwvNAoHpO6YVbXymldye
-	SqfsBkothwyGD6himDEi0ZhlRwMmuoiv3aoOFVEEJuKLRH/g3kverPG2E=
-X-Received: by 2002:a05:6214:84d4:b0:908:4a89:587 with SMTP id 6a1803df08f44-9084a8905acmr175819836d6.25.1785742223354;
-        Mon, 03 Aug 2026 00:30:23 -0700 (PDT)
-X-Received: by 2002:a05:6214:84d4:b0:908:4a89:587 with SMTP id
- 6a1803df08f44-9084a8905acmr175818926d6.25.1785742222720; Mon, 03 Aug 2026
- 00:30:22 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 3 Aug 2026 02:30:22 -0500
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 3 Aug 2026 02:30:22 -0500
-From: Sergio Lopez Pascual <slp@redhat.com>
-In-Reply-To: <20260731164341.1109827-1-pbonzini@redhat.com>
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
+	t=1785742380;
+	b=FYGPyGG9UTKeVqKzgzohZXlj9rcvT8NRbCT53W1uVn/yRjHRLd6kjunLfDmdNdjv8tw6t4
+	dmin0VkL9N/uDGnpCDF9F0NSGsWSrhBswZoL7umzfDBI5jH76hZxFbAV1XttgKyC7xsc2W
+	W52qhmDqKT43jLSIYtr5ZDt77yxwLXM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cztgAZfE;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A56A9600FF;
+	Mon,  3 Aug 2026 07:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A807F1F000E9;
+	Mon,  3 Aug 2026 07:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785742379;
+	bh=Sc3ti9VahDQD+o7JET/jvG499uuDfICvW9Jpo401Cww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cztgAZfEmYTOrL8/HN5y0Tqx9RlVBCjGy0NB4QPs1EtIp+pbpOPpxQAKmPNEf5XjL
+	 iLZ3k2g+Q4pMQuCogHdLGTNpPrBFknM5Cl9BR7ULlPxjLw5cem27D4LiF755dyETIS
+	 O5QlV5MHCtIbh3K4Jffxtlxu/tht28sF3TburoHUY3f5jvngPfC6BwyeZw7OXUYek2
+	 6Jwa387Vj9LUpvRu35yR5buDduvlFdwJ82cGRXs3YXfHg88KUrVuLTMmiEtfpRSVby
+	 9hfm3mOnMBaSbBrQak6FARwj26RmHR80wBDOTOYusGIubEyvxeA/GR7Ma/1gQ+O6Ko
+	 qBrW0LQFkAcjQ==
+Date: Mon, 3 Aug 2026 08:32:40 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+Subject: Re: [PATCH 1/2] docs: ksm: fix typos in sysfs knob names
+Message-ID: <anBD-_khxIX-FzW-@lucifer>
+References: <20260731083526.3953421-1-tujinjiang@huawei.com>
+ <20260731083526.3953421-2-tujinjiang@huawei.com>
 MIME-Version: 1.0
-Date: Mon, 3 Aug 2026 02:30:22 -0500
-X-Gm-Features: AUfX_mxqss-rUQV3mA_uJr2b_Y5VtnMHlbVczKQGwfQn5ZXTxPjmLx2yGIYEeRg
-Message-ID: <CAAiTLFV-n3hdY3dUGSeEwfmAAgLE+tXBqZH2=eAU7EHiYorD+g@mail.gmail.com>
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, 
-	bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org, 
-	linux-mm@kvack.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: C67tRKyU2j7vTG3ZMtz45slnI8lQu9kZ-1auo9dV-4A_1785742223
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C278CC0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731083526.3953421-2-tujinjiang@huawei.com>
+X-Stat-Signature: 6hjgr7yw8th9xufzu163uqp36mxw64cr
 X-Rspam-User: 
-X-Stat-Signature: apr6ord5zt7k6pq4rmau4rgnabhut6qa
-X-HE-Tag: 1785742227-464056
-X-HE-Meta: U2FsdGVkX19PPVKqP7JqAN5E9NEdnFjaSLlImVVM+grAmRWdYY0g5W7fDAvYAz6ipwPqUga+CcsfPZVNMpzheXlnoPOZWA/SXK+Y4/8mtyGNQSJrcpda7DogvBSJtjOQ4H6d3Ra0SWQJYIUN+4GRj+hCNOMnGbGg3GL+S4sbqjJfWZQ41E1o6RQlMTkgC39Ocb74qMGbVR6S2E9u3Vtlg2D3d21iF8YoGJKGNkyfR2gJdOJ5NMWAhjTwbJiAU/+UtmR/ZAqiDDGjzjPD+TXKGqhCHPOHd4VQb/t6YIBLG1UCoFPZMasRGuFh8xlM4kaPN/xHcHGdguf5DjfmUdmfwdyD7BArdw9sgYNxChkp7SuQx8QLOeiufWSkLRXMwJq1aoR92LvevvBB5XW6xacAvwiE/lTlW6L5peLYuZ//DNpbrv1i8Wj3yaDGdO98X01MNKQ3h9fM5Y24nzYVYshd1i7qtTe83WNqvkkFqp9aCQMc/SRsOXN8ywgIIxnnivS3QiY5Tvw3Erls/zL3xSpiJAGZL/t9m9EVn7BcC669ANjSVrs0+YUQvJPjg6kWfAzmEzghKlC9ZYA17hz+hcBR/xRdwn1behisGiCWSX4/o76+2fWBwPEytn0oD+O4dMUtsKuWI1zek8o9LX9CWJ18kzae15/lZEPHzAP9LQPPrWTB399Y551PmERXBI/BdJBqwVy+ygpsSi1jkYxWa5BCGnNyoy0a8Mdis9bfiwPw57KmfolA4swzSiC6lpUXGuEMVBYf9YcyfyYcmh1Yn3nfCZLCx+XL/mJ407U4GfxSWEvq222Zf7xiB/bylErei0UKvoUQd/dT+dRJ0qlOJ1nghWfskliktsGWFtxIvoPneKun0UkqWbhn8NUDUqagGMraoGlPHPcL4Uzwpkw3cV2FeNI3N0VcwTldWx+YCga763cwWeBMfr9iYeP8pQ9jlXJtVoWBbe/PKe2eS4T8hQb
- Mroy/HG/
- AszlFXv14AquW2vTIFU+VWdf+7pQ9ZqurACt0AINLr5rGp6mKj4sPBnFwBVWvA3DoDMERYvtKx0bOA/ZI9NXzC0u/wppzga646KnbhjNbCNdJfL3Ff6o/B6DZnFphnfRJ2R7yOyqfR6K46IKRbWyt0eewiMhZuFkNIYA3om+ebP1SRH6Mu0RbWPxxr974wabLuePwQkCs3/3WpAWcrew7UiZgVJPN+x9aiO5NzVjwclZ92JsuyVEJHDf5MdbuspL/bp26rt2mMC56zSjHsEDLGp2JPMi2ao0Ep7+QVWPnEVWNImFaZNSYPDhzxbqMfQMp8nZszUu5A16kIr90qcpEoeoEW1K+Upx2vCHpBm9FzjSsWaNbZ4Oe/lEiXIPFU5mt0sl6esmdkFDurCIl84v2wH+WKPVZQgko/bjJBCV4XeFcRlNYWgO74AhVFBVjeooiPxwjULnmzw3OR15GV0dfNm4C7Rbt6Em91De0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 355AB1C0009
+X-HE-Tag: 1785742380-222645
+X-HE-Meta: U2FsdGVkX1/CYd6pV3ZMDLQv3D4nW/6jgIvOKyVOsLcIW4hfNgIAEG91hUdUtFDsYj+gouwkqu9OAWFTCbey1nPSGr2VoWTz2sbTiDFt7zM1JQ90oRoexz4ZAznQKZv3TlKsopSqGEgmSsVd8Jnl+lJ0tA2woYoPAXIKbF/+2WaLylcFsn3nfylUEczLo3T5lOCpweXryB/MHbcnqoLWxelbUMIFzQ5940gd//ic3sYbRHRlDo/e78voo4iVAnk7XiQy1W1izJHYYe3Ohe+L8Wp0qzXy+neBHAAlRq+gVV5RKpK697aUEiggg8k8ffjH36zksHyzpMn2eExuH1vMWWXEH0Pdn7Me6+HvyaqHauIDyeKAhsgWJpXBCu6GOp3VSmuOx3YjqVrsOKAsuJyKyi6Cqe7w0eIJXWusX3QHM3Hv7iloychv3kcPmgcnOr7TcisEAgw7Ol8WUl5IcMMlDYUE0aNaqJ2IrVGjNUjoom2AK2i6IRJf5cGIB7FxaLPSmvdtVRpUiItAiTrsLMvLb7fPFWD47Ri9H68QBYPh1SS0fy7U+T7dCCSnfOjfVfY0OmOjAnwubMKnKguvMWfEG3lY6411iJVHnKgpR1LfZqCdTDIj91iHBvgXSXJIBONqX2lS4qkBx99QMgHY5a+BlOCMXw5eBXGu45LcZ6AQ+DW4bpvS9m/0/wxX/RgM8DIggbKruLiwOFGyC05e9wHBU2mii9aSaY0WR4nx9ep4SHWCJcfR7q4+e+3I5V7qNk7RI4UrcWFZHKUdG4TtFJkrFl82IwmEekShrts8WZ4sGKmkS3cZxn4KRAZ4paCd8CBTu9+L/EF/s1Srb5nwgcexEusjsGKdkeP+u8daazL+VVA3cz+28hRs+PGjf+ukTFgOI/G6xJ11WA0vBMHSfiq/VK2X5a7vt9HoAfc89k+xiygrNV40frSSi3KZucEgbOsP02zhWMfgeeqkerGClw2
+ D/feqL2M
+ 9utom9/cKu4sOIl9fxiYGTQhbcwH9S1ocG7Wfu7dRUXlrkxPTd6Vr1nbId5jo6FyJ1HxsFPJnoMXrkapsVxQ8iLdSdiVTrePAXmVOP850e9e14dy+Ug7LLuZUEpqOh+LI5bCujykgDiZKzxQwCu8vZk/Ia9HEg8nKd7Hzt/ECsPFC73aB7KwFowfEZSqAT1IE/pqCNCBMyk4h1W3YbGEtrgpatBBCaZOXUkK1Jgfl7da4p/Kmu6/+cVhyQRhBwRLmVIbq5lsIpVrPXVZKoYZazb7+cmpmZ/J/Bud+UFnSlFxnRsg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,20 +94,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+On Fri, Jul 31, 2026 at 04:35:25PM +0800, Jinjiang Tu wrote:
+> The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
+> "advisor_max_pages_to_scan", but the ksm.rst documentation spelled
+> both as "adivsor_*", fix the two typos.
+>
+> Fixes: 0710f38ad26a ("mm/ksm: document ksm advisor and its sysfs knobs")
 
-> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
-> the reporter to help with testing these patches.
+Same comment as David :)
 
-Tested alongside with the mm fix [1], and it fixes the virtio-gpu
-mapping issue [2] for both the absent PTE case and the pre-faulted
-read-only PTE case.
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 
-Tested-by: Sergio Lopez <slp@redhat.com>
+Anyway LGTM, so:
 
-Thanks, Paolo.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-[1] https://lore.kernel.org/kvm/CABgObfbkqYNsPQnKxK1_4adXF_tSdtScPU5-Xrg-sXyeWfMVfQ@mail.gmail.com/T/#t
-[2] https://lore.kernel.org/kvm/299bddc0-fafc-48b3-a9c6-ec171136a46a@redhat.com/T/#t
+> ---
+>  Documentation/admin-guide/mm/ksm.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+> index ad8e7a41f3b5..c9f533b10f6f 100644
+> --- a/Documentation/admin-guide/mm/ksm.rst
+> +++ b/Documentation/admin-guide/mm/ksm.rst
+> @@ -174,7 +174,7 @@ advisor_mode
+>          The section about ``advisor`` explains in detail how the scan time
+>          advisor works.
+>
+> -adivsor_max_cpu
+> +advisor_max_cpu
+>          specifies the upper limit of the cpu percent usage of the ksmd
+>          background thread. The default is 70.
+>
+> @@ -186,7 +186,7 @@ advisor_min_pages_to_scan
+>          specifies the lower limit of the ``pages_to_scan`` parameter of the
+>          scan time advisor. The default is 500.
+>
+> -adivsor_max_pages_to_scan
+> +advisor_max_pages_to_scan
+>          specifies the upper limit of the ``pages_to_scan`` parameter of the
+>          scan time advisor. The default is 30000.
+>
+> --
+> 2.54.0
+>
 
+--
+Cheers, Lorenzo
 
