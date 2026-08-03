@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3617C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FFBC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 121A86B008A; Mon,  3 Aug 2026 18:33:21 -0400 (EDT)
+	id A79786B0092; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D1F86B0092; Mon,  3 Aug 2026 18:33:21 -0400 (EDT)
+	id A2A2E6B0093; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29A06B0093; Mon,  3 Aug 2026 18:33:20 -0400 (EDT)
+	id 93F766B0095; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E096B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:33:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69336A0854
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:33:20 +0000 (UTC)
-X-FDA: 85061410560.26.6B574D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C7AAA100010
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:33:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jhWGubsx;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD926B0092
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:37:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4716740858
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:47 +0000 (UTC)
+X-FDA: 85061421774.08.5853F3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4C76340008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1BtXtRv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785796398;
+	s=arc-20220608; t=1785796665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/zBzIQlhYJkUcdP0zgsu/KndrX4arY4rYTrRL6zaSuM=;
-	b=ASBouFWQUAKIXjc733XxOrXvj591QEcZMQam5KD8b8ANpoDAWb+XAou2qiLz1WnjZpnkqX
-	rWwq2mnt2WsBAZdjV0DWbfdz4VobVpyvyFjn9zwDW/4xpIFHddNzXNrqPvLw6wOgMhavda
-	069NAvOGVQdYywoPJW3ppwXxvof8q1A=
+	bh=+uMo1mqds7+ytfGnAG4j5G/sObQBuQqDwF+7pp06uTM=;
+	b=Nh0MwO3+XZRfc/x00hQfrT+Z8JfXu+gICSQe4dFCoEvq3y/AfoxCtHt2QO46sVeolZbJHy
+	fiPId1NKEzHJvP91jh3Rg38Dfr5I1Gj/zH/Ex/4/AybF5PMOjxR37lgTxM8uNodYbyr+Tr
+	0NG2Lx4ZsRsFiQVpxNsdcFImFRa4UAc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jhWGubsx;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1BtXtRv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785796398;
-	b=p30wffeflHMSsq2W7aRgBevXl4H8ZvvKEGYg6OFHGWjYLjUk3zBuWNPPuBmp3GJQ47vynv
-	sj40KVHjBRA67WmMWS4ktCAy1C9QAUJRlQR30RLGvV0CVJACCiJi9wV/ocBxHIdsthIlyT
-	mIbR7LaT+b2ugq+Y/xrV7gbNLZ4e4Y0=
+	t=1785796665;
+	b=AIbZSrUDxjMD/qfO8QPDTFkd6uNB77I9ygpx4NDmVlfZN32Z9YPy/uo42X35eoOti5pRlS
+	psEIAsuaTxgveJeuYTdhbQaFJcLtaAqWQFAabWeVrZSLD8KmrBdn8RZ3nr/3Kl1up+ItkI
+	EeCNyTdQ0tPWOl0tBVwzlunJJ7BJvWg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40C1360A59;
-	Mon,  3 Aug 2026 22:33:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004941F00A3A;
-	Mon,  3 Aug 2026 22:33:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E08D43FBA
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612EC1F01558
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785796398;
-	bh=/zBzIQlhYJkUcdP0zgsu/KndrX4arY4rYTrRL6zaSuM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jhWGubsx0hIxnInyYVZYdjDxvK/3LN690IRGX/hPVDQ12pGBceWhjDIr1dr9OY/T1
-	 Q7ayBE7zUnN78znoRQ7vBuB1al3NxIl2si3y3ShSlxUWuq8KR66IypraogmNMc5M5l
-	 QU2Xt7XeWsIEtMt4DcjNP4kiyqa47lmGTr5JARpIiycIanibdWK3hzIcum20n+FJPv
-	 9JXWzZbd66GHQpiGGC/dmd72IWkytEsrJAPqIHMsNJV7IFWK0Tp3lWBKGs+QObnU40
-	 vn4F57ofrTv4y9yD0mxitvAB/jYcuUfdAPiXA7LHHjybFg9FxtOl+jmPhi2kvx5smG
-	 CHbMsUcn+vFIw==
-Date: Mon, 3 Aug 2026 22:33:15 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 08/26] x86/mm: move LDT remap into mm-local region
-Message-ID: <anEW1APDhN0UfPcD@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-8-6f5729aa9832@google.com>
+	s=k20260515; t=1785796663;
+	bh=+uMo1mqds7+ytfGnAG4j5G/sObQBuQqDwF+7pp06uTM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=i1BtXtRv4xGPqlKGtwXrDU4q5r36CweAM1IiXE7Sp5iOJ3efGsRXBGZDn1Mbkjwh5
+	 BUI4HdjrSKmaLqEdrLwZ3fe193A82tAdMHasMPvWknEzSgHR0CnBuxgeOR4CTnv778
+	 Tals4QQoYMf5obfygtaAl4pPwyFqjtrMEhlycg4CP7eBzRgR6JdrRrfiPgVwsWM7nK
+	 VxJ0xeDWhMgnLectVPMTCNqnvZTbK47DqxqeeVLIux6TiE4yD451jDxK4QJG33kUID
+	 3tWT/wdHVNrKrg6TN8BztbjwGLT8IHQRDr/f3XzBCUVFk2VXQyh0yjdt6augvQKB6Q
+	 SAvdE4o8Pm5jQ==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e602d2c0fso27656185a.0
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 15:37:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrL3oVnSnbGzGonl9r3HUSlE+yPd6pgO8Jvicq1t1SoFPg+IVXlVy2O+ENJVbeDmGKIHdDirXECXw==@kvack.org
+X-Gm-Message-State: AOJu0Yx2yAtAJTphSKsqstdcRZW5ORB9OEB6Ti3zcW9Y9YbFGPjyuOt0
+	nyx7MHjdJJz4qXPVXBh+CnSc/v16BpWoCQq/QrH5LfbhuEtxYgCa0dypKyrAoXznoNPllSf0Cil
+	Kc9RxW5AuMr9hbu3fvXtly+lr46MZf5c=
+X-Received: by 2002:a05:620a:11aa:b0:92e:d2d4:2d04 with SMTP id
+ af79cd13be357-93631984d68mr248278285a.23.1785796662708; Mon, 03 Aug 2026
+ 15:37:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-page_alloc-unmapped-v3-8-6f5729aa9832@google.com>
+References: <20260802074018.73887-1-baohua@kernel.org> <20260802074018.73887-2-baohua@kernel.org>
+ <anCu3DOrXDeMrwi5@lucifer>
+In-Reply-To: <anCu3DOrXDeMrwi5@lucifer>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 4 Aug 2026 06:37:31 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
+X-Gm-Features: AUfX_mxObWP2k3KVrcuv9diuYZ831nvuzQqkRHE7nkurJp-mPMd32XGLmVpvk58
+Message-ID: <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/2] x86/mm: use VMA lock for kernel faults on user addresses
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, surenb@google.com, liam@infradead.org, 
+	vbabka@kernel.org, shakeel.butt@linux.dev, david@kernel.org, 
+	linux-kernel@vger.kernel.org, zhanghongru@xiaomi.com, willy@infradead.org, 
+	zhangbo56@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wi71d19k5x81dki7mpbsqrqrp4s1hwyx
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4C76340008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C7AAA100010
-X-Stat-Signature: kwgi4nj3s6j39543u4nrudamte7e7d1q
-X-HE-Tag: 1785796398-985821
-X-HE-Meta: U2FsdGVkX193oU0atN0ZefRZDxyMK8JX384b+wM33MM2VbN5I9WYKCzrtt5kQI4N/zkZWp3pjroNuLux2kltRfFmYpee6esOwaBeoAUXw3aU5f28dVM88O+H6o7vOxqCLE76amdMuHHoexCBkTk0Fb3n2K1MC4xpWoC8AsoWcYPha0iaeO/hCZzaaRYzjwsLdbGtyEvlXaqUYEHjjtuWWwRF5Mr/HOHVPMaWcMejce33OQe/OLcmYmtyJ8TScyvfR+cozwFbXZ/fvonGOTLLMTO+IEtX/JefNKFlp1147sbzMVUoeqHjbQ3yFsTsikIRt5dvQJcDkpHGejugN1nU0Fm91XWO0koXGUwin6tOVxHbU9inkKzoPX+ADYs1uQtHjuxcY3tSFHnPKEfveub+s708vt1b4+DcD5e2jCerJLax2iFeb0xpaFweu//B2r+KYG5edeL2kbYujjukUHQhFzySRcLCliHvDGU0Mo/rxvii9dCxzQY8XzY3s9mqNahdauE7o/arat7Iy3jIY1zwZ50BYmrQ1WIm4yy3Hr5GbqReoHZAaHrpYrQ+kr2ST1E/mRKVH4+FpdQP2Ie3yc9IxJsgjMJyQwGCYQVVM4tiFSUANx4ncRZINw7y8EcmMSI3Aou6YvE1v7BG4tGZQqvrY3Cmdh9FL7WQy9m6nqMMvdJ42zLwjRSx39Xp0hrQNd2pOrxoqUXGfTs3uJetA6ujvUe/svGWPD7FZJhd7yDi2yRMiZ2HaDBClwfo9+syPHBVWk5AJIA3mTvvkIC6iA4ds4Opt6/lAe5P76CGQnIwwwPjlpNkVa4AREUuj95MjtQboe2KReUCjjZ+6qU89rKlRMaoaEfHm6eLAItP/Ww76uLtU2lrRCmL/S7/BcDeDGh+UkFrXcTs/C2meiAlMgRrcrl/AubqTjfbMMOPmqKc2kieI5IUV6Pneq+kGKsqgqpM+dsBfAzU6Jur93jf9n9
- ZnEFogOD
- y5wE7l+F0r+CLwizgwFuNlfpbRDvHWbdiVF+fGU8D8gwSbAdzytT6ojVx9lz811AD/M5KAu/odmbsre/LU2PPW8WXm8fFsydK07ykT0XUK54YME8drN9TLF6RdAYlg1+EwTDpgOYNY4EDGjJ8fK60AwybMhw7EKUMrAaGgWhFyb8qRqD6V/n61TSU+stnTb2PSCS7HSXdLUqCWV/s5d+cCoTdGC51RqbwErlW2kh0F2Mv+OBrlzW+kT+5aE8FwMTskIIUaEMtuxXvXn3+HmDDjp0XGftE5p4LumeAsyl2aJVEYjE1v/c+WlFzyA==
+X-HE-Tag: 1785796665-911352
+X-HE-Meta: U2FsdGVkX1/cnBYnj/DfTzd7aMFLhJ/cHXafhD3VWoOzgHS3sebvqsqkn/9gbKPFj5Z0Yo/KGd4za+yy9oCXifXSRHxbJYwgWTk0TBG3rJU2W4UpKvX4c6QJr7o2jnIQqIIv6LLzhfuarGT1iIcjM8z6TbovpJvRUa8XvVc75YQOPuynHKCTTjOUkHZZWI3CWRsP6yaB+5vd00ieNwagHFVN6tB0/FxzPh1FaJRxvZ09IshbO+SM8QV3B333nJO8U9mltCcLC3DkmdTssfm5hOsWgIiQJTtT1bAVGg7wOzXQrahvXq49eaAKuqdnw2Gt9T9mYmcDYCUWqlyp47otcNCnHCqD/C6DgYkQwMC5+T74o3FAkpd7PgNPIzJHC111jSYjW+B7LVZmMrmeeuH9B/sCJcG88i84S+1fvcwwj3SGEr/0BmlKwMUSEAZifgq+CWI/RKlXA9woI0fVK6/xxQYEL/hCYjGrFGcGe1vpWCC23ny5fcg/PT1A8/6JIWzWYNPRB1c7SJEQsIcfpTq5odvZ8+Xc1E70Pn+1i+UppnzzG+n1mXZ/OPgg3rP4IoyyB7At1fG5nmUu5nC158ad+RpqWwMzQmeWJnGYnN1h8njVer/InlemjOxwCR7PPKkK5P/1OSFz3dAlWpTAp6yrV4RiBUW5Vu+S65y1p0FlzdnLInom/7/rVIKIqYh7b9KcRiMLpD70U7iKjDCYSAA5fqKteb6KwJO+XDsq91fOj8xif1RLm3oeSZ7LCLmIn2uowvbZgvL4jbARnNSgcHA+FJ+eMg6p0tFteuxC4EQH1Ac9jYCGit/ZdfHbeIafzdIh3ak2sR7cfkMANJlQpjgTYVsoIdtWud00BAL2iCQUy0jJC1qUuOsQPOgEssab+0j0Iyf79CFAYEsAnxwN78Xs6GGknZCdVN4weCBUmbRn/Rv/d/CINhFlWeZJlaJQZaCXNiCqLdacb7hFX+wzhnn
+ M1RgcBq2
+ Z84xAtVgC/pW4s+598qn60Oi0AObs8iGuVmpsyUPpnfEDIVfskXiXuv6HxTNE3xg0U7Xay22TosOj18hTKTd+C4l15pRQCsY6tPbrHBVJqfxsMjhln0A407Zp6U/a30fjuLwLjcu54vMnkM8Rricis1NhMJlp8C2U1Uso8aJpHXV3I7985lNVoQbGfpRS++V7WQj0XnNknhsBESZNsmO7tRx2ZOeyV2UwMnZngVu5SN5cdUVopd0oFd8+QlCVKIXcJFzGzXElHQXZrBvswdzoHdf0UqNaYQjJbeot056Bsr6iIIyZKnlIDeJjP9HGMpkUPu3txwcRHcUxbOc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,58 +106,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 10:22:41PM +0000, Brendan Jackman wrote:
-> Now that x86 processes have a general mm-local region, the LDT-specific
-> management of the higher-level pagetables can mostly be replaced by just
-> using the generic mm-local API.
-> 
-> Drop all management of pagetable allocation and freeing; that is now
-> handled automatically by virtue of the pagetables being in the mm-local
-> region.
-> 
-> Drop explicit logic to map LDTs into the user pagetables under PTI; that
-> also happens automatically for this region.
-> 
-> Unify the sanity-checking logic between x86_64 and PAE: use the generic
-> set_memory.c mechanism to walk pagetables. This means the
-> sanity-checking is slightly more relaxed, since lookup_address_in_pgd()
-> is more flexible than pgd_to_pmd_walk(), but this seems to be worth it
-> for the simplified code. It means that ldt.c doesn't have to know about
-> the exact structure of the mm-local region's pagetables.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
-[..]
-> diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
-> index 40c5bf97dd5cc..685664c1ee770 100644
-> --- a/arch/x86/kernel/ldt.c
-> +++ b/arch/x86/kernel/ldt.c
-> @@ -186,10 +186,16 @@ static struct ldt_struct *alloc_ldt_struct(unsigned int num_entries)
->  
->  #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
->  
-> -static void do_sanity_check(struct mm_struct *mm,
-> -			    bool had_kernel_mapping,
-> -			    bool had_user_mapping)
-> +static void sanity_check_ldt_mapping(struct mm_struct *mm)
->  {
-> +	pgd_t *k_pgd = pgd_offset(mm, LDT_BASE_ADDR);
-> +	pgd_t *u_pgd = kernel_to_user_pgdp(k_pgd);
-> +	unsigned int k_level, u_level;
-> +	bool had_kernel_mapping, had_user_mapping;
-> +
-> +	had_kernel_mapping = lookup_address_in_pgd(k_pgd, LDT_BASE_ADDR, &k_level);
-> +	had_user_mapping   = lookup_address_in_pgd(u_pgd, LDT_BASE_ADDR, &u_level);
-> +
+On Mon, Aug 3, 2026 at 11:18=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> On Sun, Aug 02, 2026 at 03:40:17PM +0800, Barry Song (Xiaomi) wrote:
+> > Use the VMA lock for kernel faults on user addresses. This also
+> > makes the existing code below meaningful:
+> >
+> >   /* Quick path to respond to signals */
+> >   if (fault_signal_pending(fault, regs)) {
+> >           if (!user_mode(regs))
+> >                   kernelmode_fixup_or_oops(regs, error_code, address,
+> >                                            SIGBUS, BUS_ADRERR,
+> >                                            ARCH_DEFAULT_PKEY);
+> >           return;
+> >   }
+>
+> Hmm yeah :)
+>
+> Bit weird it uses user_mode(regs) and the early exit uses the just-set
+> 'flags & FAULT_FLAG_USER' too.
+>
+> Some horrible duplication here too... the user_mod_regs() etc. code is ju=
+st
+> duplicated in the mmap lock path.
+>
+> I think you mentioned it on Suren/Dave's series but vma_start_read_unlock=
+ed()
+> would avoid all this and could lead to a nicely red patch.
 
-As mentioned in the previous patch, this patch is difficult to review
-with the current arrangement and patches 7 and 8 can probably be
-structured in a better way.
+vma_start_read_unlocked() could completely avoid falling back to
+mmap_lock for binder. For page faults, however, there are still
+paths that must retry under mmap_lock, such as
+__vmf_anon_prepare() and swapcache_is_device_private().
+So we may not end up with something as clean as binder, but I
+think we can still achieve a cleaner design than what we have
+today.
 
-The unification of sanity_check_ldt_mapping() by using
-lookup_address_in_pgd() can also be done separately as part of that.
+>
+> >
+> > Right now, the code above is dead because !user_mode always
+> > takes the mmap_lock path.
+> >
+> > Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
+> > Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  arch/x86/mm/fault.c | 3 ---
+> >  1 file changed, 3 deletions(-)
+> >
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 45b99c3b1442..c22b74e0eeaf 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -1328,9 +1328,6 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       }
+> >  #endif
+> >
+> > -     if (!(flags & FAULT_FLAG_USER))
+> > -             goto lock_mmap;
+> > -
+>
+> I'm not sure why kernel faults of userland memory were excluded initially
+> (Suren?)
+>
+> Given that it's OK to take the mmap lock here and we're necessarily in pr=
+ocess
+> context anyway surely it's OK to take the VMA lock?
+>
+> It looks fine to me but want Suren's input.
+>
+> Also given vma_start_read_unlocked() is coming maybe that's better for a
+> cleanup.
+>
+> And finally - Willy is working on a grand clean up of this stuff _I think=
+_ so
+> you probably should coordinate with him also?
 
->  	if (mm->context.ldt) {
->  		/*
->  		 * We already had an LDT.  The top-level entry should already
+I have no problem waiting for Matthew's work. It is the right
+thing to refactor the duplicated code across architectures for
+the VMA lock page fault path.
+
+Thanks
+Barry
 
