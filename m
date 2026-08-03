@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02829C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A6FC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 21:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25F906B008A; Mon,  3 Aug 2026 17:20:33 -0400 (EDT)
+	id 6ADD86B0093; Mon,  3 Aug 2026 17:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20F8B6B0092; Mon,  3 Aug 2026 17:20:33 -0400 (EDT)
+	id 6858D6B0095; Mon,  3 Aug 2026 17:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1263D6B0093; Mon,  3 Aug 2026 17:20:33 -0400 (EDT)
+	id 5C2526B0096; Mon,  3 Aug 2026 17:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E76666B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:20:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 293D66B0093
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:24:30 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A669A223C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:32 +0000 (UTC)
-X-FDA: 85061227104.27.0CBE4AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D4BA580005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:20:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0in8WIyB;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785792031;
-	b=37Mt8DUbOvefyjfumOxu6pcRlgw89jCDs5rZyR4s5J+LN6r0ok02QR8BC8MwsnpneGqyF3
-	moh9o+/G729UO0D3wUcH+1XzTBlphu3KCGVnU7qVGpDeiodekd/GiZLPR9WehHvPNEYNpr
-	45VyBLfDCWUKF1/A2+yP/bcrNsrMrJI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0in8WIyB;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2B8D1A0829
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:24:29 +0000 (UTC)
+X-FDA: 85061237058.27.C086199
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B439E40002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 21:24:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="sZjaW/H/";
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785792030;
+	s=arc-20220608; t=1785792267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ovGrfL8FA9IcoXlsdJxZJSu3Nem/9OzLoCHFXhOX0sI=;
-	b=CFrL2tIeY15A1xNXoeOL0AZ7R2vfdejQ+IbDN6RMGX2PyWdrWUjaYK5OgBRiq4WFqckp/2
-	EyuABptEm8GDplN5Rn6kJ/Ky5aWVKhJwXh3I8cFXsKIUBghpl5c7+CxrCR2Ov7SMDTKTTi
-	36+XK55kGzqFt12qMZyotGuKyOJuMoo=
+	bh=4/s1uYeP5LpdSxptfZq3KO4hNuSZaOPea27UnwFRZxA=;
+	b=jMcOKiqCS+kydA20fAhWQKCT2JyLhLsjzpbF/GuXD++sFx2GudvdHhn6wKBz8xQX8vTcP5
+	fgXGvJzRXhNY41KhN5Q/BgIYLAewXEbzT7G388sFH17lxGg+bxMkQDhvOWAHSnd9gkoUPV
+	IpRLCm1DO+zPYmlHzq9SHxV/CBRKRHw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="sZjaW/H/";
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785792267;
+	b=S19InsqXVpSAcS99ABUnU+y2Hk4CiJpULK1GPpIkkV59YQBDch+WxILroHlqYPoTCvNQe3
+	X4yj8EA4LWdAbQ6V00pWNklSE/wofamnrRgcisAgxICt1cmj459TCJXqpdQIhu1HavhBIe
+	xADyHdgFalkkZGLu7OKH2QXyzQmcjKA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 87BDC600DA;
-	Mon,  3 Aug 2026 21:20:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7011F000E9;
-	Mon,  3 Aug 2026 21:20:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C2AB14192B;
+	Mon,  3 Aug 2026 21:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C981F000E9;
+	Mon,  3 Aug 2026 21:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785792029;
-	bh=ovGrfL8FA9IcoXlsdJxZJSu3Nem/9OzLoCHFXhOX0sI=;
+	d=linux-foundation.org; s=korg; t=1785792266;
+	bh=4/s1uYeP5LpdSxptfZq3KO4hNuSZaOPea27UnwFRZxA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=0in8WIyBlnv7a1VnK2h1m2MHWw0wWOVuRRb9xFVnTt6Ha1lVPz+GREdAwtncfqCI3
-	 sHCsq6sOE/FwDZRfiKg2ikO+gp3+kJ/1MZLexFScZohQLBcLuKohB8ttZxOvcmFCjh
-	 fRDPHECut1vXZR1NLGbKqKeskVZ7PykPlW4mq+SA=
-Date: Mon, 3 Aug 2026 14:20:28 -0700
+	b=sZjaW/H/cSVDuDuRANXP6PrJ4w6e6HndnsBqWTNR2Yu4OEEN65acPJrTJ0wrLZJnh
+	 qNcwSIWTTbpX617M5tJCF0pvSFDa5KI0n/GQDPkAbuqIoyJGOWQcdMtK6WWHChI0Pc
+	 TJDfdICPEgG7k2jGJGnYv2GYpIjRYo5f2DZK/alg=
+Date: Mon, 3 Aug 2026 14:24:25 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Qi Zheng <qi.zheng@linux.dev>
 Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
  brauner@kernel.org, david@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 1/3] fs: fix missed removal of
- super_fs_objects_eligible()
-Message-Id: <20260803142028.1facefdbff955e593aa36e53@linux-foundation.org>
-In-Reply-To: <139ec7ff190eeddc52f40e215ca5c950af5d087d.1785746588.git.zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 0/3] make unused huge shrinker memcg aware
+Message-Id: <20260803142425.fd860e19e77a11ccc3c84439@linux-foundation.org>
+In-Reply-To: <cover.1785746588.git.zhengqi.arch@bytedance.com>
 References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
-	<139ec7ff190eeddc52f40e215ca5c950af5d087d.1785746588.git.zhengqi.arch@bytedance.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D4BA580005
-X-Stat-Signature: yanq64wijkz43npoqftpigjye8m4rjsh
 X-Rspam-User: 
-X-HE-Tag: 1785792030-570003
-X-HE-Meta: U2FsdGVkX1+4AfUAS3qqwv9/M6K13/eL6qVI7apH0JvEyyTKcL+JHUgwVlhb3dJPqeN+rce+WFV3/HZXk3TXAbRILSbbU0Lu0iPl69DD86NHVlv0uTFogqYSfJD31T8jOeEOO8NxJ/KnJOEUtHwqpgH2StabAB+9p0QaQpH3h0ZChQn6Ste2m0mlxV/z8LIXgcWBGELjbxwBRIoOXcYg6SHwjYLFr943fhifi4lPUaAW5Q/OvB1XcRKcbqwgAWnS/iW6Q2ZQEIzD+2NQIlwPaHwU8RKXbD9vUpJ94Tv+Xbokj7l3pq6Adz8kNEcSPxKlrE6gELr9VnxojklJYdu6r0NIs2ydoPCN/t67oIBgz7ap6pdipzCgJpF1XylzqwBqeLKdWh5Ipi/DddCQPYWo5izcDJyV/NCsPPgzaAKnxSWAzVFlrciHr4SJDFNBJDhYPeE0Fvqtu4w6F9+yTQFP8SDpLwzhm/j5BdiCilmiRE7dltp++y4SOpOR1+C/J0oQOxX6fb/Jcwg5OFlxMJkXl/Fnt2tz373TYQO/0oB1Fxvp5gPsrrHZRVmOkNHBbfq8WImEOPCSGyjgnucDnNNXWJlDwGwS/P1gyrkKJbXWzoX2wgmn9lYhFSEzghUZFrFIn7fTk+2g7pi6rv3MQhFNYmanIBpUfFXVzhIAwqyfAtHcOeuP/gUk8NB9Fq/eTUr4QgMV68IScSfrMd0ab3qJnHVQ3NlNKeSoHcmKUli2Q6zQVOxaJs/cScDR6VhEuWMBsy9JmtyhaJqxnb8KQ4W+jyRMPdT2WKqbapnUdLulL+PBub1vn4vu3VMIZV/14zQt1Nclwd0e6uIcyIZR7+xqqHySFZ+4XZuvwUd9DKtWcCdTwaWrNToi2Dugtgf5pjRptxZe6PydS1NOGeDsykNgVERzWuUHlZndnxcXjOHZox43p0OLgj+hVsjupKb/EGZKUEmTLcTzHPYNFLXDA9k
- wMpSe0bP
- QBSDJiwfWdpE+/XVQDFur453zDUUaqSFXBGLHgt4pbMBo/JZR1l3RYuG2oxcRKpZRyDpE3UKVbRNbJSBGHrlNovBfnJJtYJiVQAtHF4KvQ5/8bVup+t6LFpJzEDB0gp/5Xjzn8iQdKAfZQUNFv6/EQ3Q949qwX+xbzV2jbeU2ipEZ3VYKtQ4KDRrlMCmCsOoVY8EWklCQw3fNY9gOdSUHX/optmDjPnctNQB3p5K4gNT4bCcy6ZhhVfvGjToOv6roLBMPqTHdT8p35kscjZlv8wpQE2NxxPvDx9k+D6Raj1CEYYE=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B439E40002
+X-Stat-Signature: 6hn8pjfmazysorgr6iaqdkkfqkwn374m
+X-HE-Tag: 1785792267-324046
+X-HE-Meta: U2FsdGVkX1+L/p/EffSe/yLB09TPpuIkIFCqcR4Q2dtx8dfGS3An1I5BspAKnsxv59BdWxXehkrwJoBT2c9fYJjefVzJQtTa4zK7RKQg1uZ8mFtjm+dP10Ap+x/47LaJZcLEKG0YD/r/0yyq4pYqNCNsIMhbhWjwrTYYXBqkW8CvGI4ObYsLaRcc5uOjSrdYK8i9jpChOTJmcTrq092gxrBDKl81tJxXDNfmjjWGTDgdLHLNnylGJoqDsUkFTG/X7iP/gcEwDvC1ENV3lVaCD5bfcg9O417R4YvXBnn6cRKAlfLfU69ay6j8IH0CiuNXiOGWgvIAAA4DyWo+wPm7yX/k9XEgjui5i3pxjUqzZ9QJyf1Ov4UdyoMvsCj+jRNhwImqcHy+QEDZe9PBmCvtTQawkWMvmAyLm7Oc6UvOGHeq1aRjSj5FQo+pTEWw0klys0LQciHeBg3MvZ+XQVXfnsa6SWgSU2x+gTxv8cU0OiMkUkkk7Us9BcXJfHMMRBeZu8iRtibwq8ZlokoP4C98Z7z/UuWxy97VjZYVo8C+sWosO0QvaxVLm7zSZd/SGyMm+vCeUOkG9SQ/3WCwAyWJkaDB7mQTVX+VlVQVwMsPFsXG45QMN2EB8bAtEZVPYN/IN/xPR7sN0hqs2H4a8L3oTiu6/hX3zwl9JH+/Gg/ARQANjOrdRxwH+YdyJKzAmsq1qM9DTU2pw+exQG4DAU4nsBVn+oJeDo7Pl26YHOBu/zK1p+SPfVxO7iGKl4Ulc9sgZIvTfmok58gdGzaCQ4hTid+ktpRIT4IjzW4Qqqos0I3NGrThQV8z5KKRvohwFX+ptNaWjR+VAdsYVQHYLZLNX1Kvn0nrsH5cF2JVYrLrYBWJ8z5Gyp/8VLzkj5uoESjVQEuGZIxplUYkfcb+zczYciIR4BshUH2P2DmA5CQnWJ3ASORDE7Q00P4wHsqer9EdAXx9cgQIGSkByjQghRA
+ oAJ9hCcF
+ UTYpbTdII5eJOuyvR1BVhSjQr0EeRP2KxrId/JGwlqba15Prpx0r6mawOlyrzw7GNn7+x0zrLTAHJ1V77iSDvmKSaYW57pGe7C/0WgnMofmL/hot1PbiOslrY2z9KnctG90+7dboSrzYYrsLJe3YkmocehaA12y1UXLWkYEemk4D6qQE4QLuGcDWy0p2c/se6bvNcqXC73L9IOz8CD6FQi15UFHtTi0UgN8Vp7DNO+u/tsMOp977/9RB3BwqHw0Ac+y18EGpGc64tI9kMyzTdy6HTP53ybmUto11GZnC6thBSDobZXUj9uPzZqYMVBUWotjADytkjrT1RXT/8V/MGJ4jAiPCJAyLrPcoCuoc7wcMrinER9lja0+i4JD8O7G86xx9H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,16 +90,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  3 Aug 2026 16:46:33 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Mon,  3 Aug 2026 16:46:32 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-> Commit 0ef8faff490be ("fs: push nr_cached_objects memcg gating into
-> individual filesystems") forgot to drop the super_fs_objects_eligible(),
-> just fix it.
+> 
 
-What are the userspace-visible runtime effects of this bug?  Please
-include this info with all bugfix patches.
+What David said.
 
-Should we cc:stable?
-
-Thanks.
+Also, AI review might have found a couple of things:
+	https://sashiko.dev/#/patchset/cover.1785746588.git.zhengqi.arch@bytedance.com
 
