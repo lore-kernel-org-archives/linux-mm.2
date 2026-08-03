@@ -4,95 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A92E4C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F09DC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:49:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C411E6B0092; Mon,  3 Aug 2026 09:49:36 -0400 (EDT)
+	id 600106B00AE; Mon,  3 Aug 2026 09:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF15E6B00AE; Mon,  3 Aug 2026 09:49:36 -0400 (EDT)
+	id 5D79D6B00AF; Mon,  3 Aug 2026 09:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2EA36B00AF; Mon,  3 Aug 2026 09:49:36 -0400 (EDT)
+	id 49F756B00B0; Mon,  3 Aug 2026 09:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92E426B0092
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:49:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A17A1606A9
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:49:36 +0000 (UTC)
-X-FDA: 85060090752.11.6948CD1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4012540009
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:49:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pyBDnvjD;
-	spf=pass (imf12.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 22F9C6B00AE
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:49:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6775C0693
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:13:35 +0000 (UTC)
+X-FDA: 85059546390.04.0ACC5E2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2DA2E1C000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:13:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LBnsXI1z;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785752014;
+	b=4/t6Zeqqw1zUp+KH8yv1cLpBVSSnNwm/OJRCA/6zwO315QTC14iVi8uHpEf7XWrlmpos1J
+	cWWxvOXsEHyCB0msQbNo1Ydz7BKx3ex/pC66fpFsOuV4dBPzE2ykYWvlXZUAUUi8HS0C4P
+	4f8BaMppOylm4Ddx4187VaOntRvE2JQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LBnsXI1z;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785764974;
+	s=arc-20220608; t=1785752014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yjIW+VRJtzsg7DbnLhnMVxD+3GdhQu5Eec9BWT6UUdw=;
-	b=z55P0MTK3xOYUjGZXA8eeUZzKclveJ9cv9vG8RsDJ6eUMtbMgzxMasFGQ/3r9e9AX9DD4+
-	2BoI9vQyphM3a4s+/wNgw1KHr7AqqPqVMkDHy4kt5uRYsqNe/ifN1HjEhXnQ63PxlDi04T
-	upCT1kCAQCTI0J3vA8v1LzKc9dLWY2E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785764974;
-	b=TW35yfld51MTaGhrxQXNkhrjcpeOVzuyBhGRhnoOg0U9iJvShHufzw3bWtIE8ZdaNEfi29
-	jOlJyitL3e0SJCqjAU5id2OZ5S9XaiQ96rSFpqUHofHI258lOLd2NLd7e3p9cBFMVzdq5H
-	9MEtyDTgZy0hnzMqmzQ5zj1d7gz2By4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pyBDnvjD;
-	spf=pass (imf12.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55DE81476;
-	Mon,  3 Aug 2026 06:49:27 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C81693F66F;
-	Mon,  3 Aug 2026 06:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785764971; bh=RDdpyCKc15NK9uw2pBkfSrDD+en2rKAJPfOEa+//Elg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pyBDnvjDoyaRYk+MG4Ev641S05Hf5gyE3GRP2/eECObJNpWEoJpix+UF3tgrxPLeW
-	 shzjjcdLwOqIitUYsR5c5s1MO29/Z20LMTALuHB+BQG2Wb2zqndYK40IL0XKqr6Unn
-	 Ux4+f+2YDpu/9ILumuY2Ivo7LwrFHp7wxItKeMbc=
-Date: Mon, 3 Aug 2026 14:49:25 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 3/3] selftests/mm: kmemleak: drop stale
- min_unref_scans default from comments
-Message-ID: <anCcZUynHWBDoLLr@arm.com>
-References: <20260731-kmemleak_hardened-v2-0-7b9689ac77cb@debian.org>
- <20260731-kmemleak_hardened-v2-3-7b9689ac77cb@debian.org>
+	bh=avyOmjvyQonHxvBu4LC6bxN7dVZH+praK/SydX29h6s=;
+	b=Og40b4exg3K+++dhhT+pwS+D0CJYSLTpm3DygTo1jil196Db5yXUdxGFtpMXq367WXRSC2
+	1ES5Cnb0A56IlY9bKvWf8xF1VWjQJVrcwhmajOGXXqMqeABvXSXFV2ki78BdjuVjyW12nY
+	0wP0pvIEHqXlLhKNC0yS2eANQtSnmU8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3284F438BF;
+	Mon,  3 Aug 2026 10:13:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D771F000E9;
+	Mon,  3 Aug 2026 10:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785752013;
+	bh=avyOmjvyQonHxvBu4LC6bxN7dVZH+praK/SydX29h6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LBnsXI1zzy8U5QQIUHC/Mos03wpfdQVKtDBqc4faBMfEsjWNtpruxYt/PNp3Jzqae
+	 KDa4U5rsiIS7KR208wO4M5NvFyflHjlhKFi+RpkpEmckGrjvUamhlSVlJaJr6W/RXH
+	 eP7H/ibrWz1deWm1abIQXzJDyiclABNBC+rLA4De4NM3CPqtHDZflZbixp/BSq+98p
+	 3nAI1BEmHwb93dj27p+qI3KPc6ppCUfNRGlXar3lZ3008Ew1e/mf0DE24XJMjjYUPv
+	 fkDBKUNIyhGY1YvaoYvKfLieMTvuY4tBipkAGxJZmbjdblYuU+cwNIiSqbPlmsH/eJ
+	 5ZG5Wn8J2ppNQ==
+Date: Mon, 3 Aug 2026 11:13:11 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 01/15] mm/vma: introduce VMA anon page offset field
+ and add helpers
+Message-ID: <anBpLadvsoCcKzqU@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-1-e8ecfefea812@kernel.org>
+ <2ac2746f-18b4-4960-8628-82e87c2140ce@kernel.org>
+ <anBjLV4CvmpBzEiw@lucifer>
+ <1d84f43f-6f59-4685-bd4d-ac7a724bff5a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260731-kmemleak_hardened-v2-3-7b9689ac77cb@debian.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4012540009
-X-Stat-Signature: 15a59n6byzzryq9wbz7j7s41eg4cw5z6
+In-Reply-To: <1d84f43f-6f59-4685-bd4d-ac7a724bff5a@kernel.org>
+X-Stat-Signature: 115w778afthz8xfeoozsag6nidf6d94n
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2DA2E1C000C
 X-Rspam-User: 
-X-HE-Tag: 1785764974-232779
-X-HE-Meta: U2FsdGVkX1/Gja8YSZY5JXmziH+myrwAx5k0M9oLEkQIuCcTevJQuKB0t3csylfY5YY9/xXCkMTUWEtp8b+3VUzGqOwoxjSNI7Q2Y6wX//7of/9li67I9sws9SRv0rUDTiDGuxPb5liqyQ2GteWhdbDI2JL/2noDm7eMH4z+RX7hn6oZtxEotuiaAtFtzoCm3jkOkoAGC82HW3IuvAZcnpyuWFDtjce3bEFHtg+HLoQfw7b63HfzEOcNKsVuDl41g6l5LezYtLBgLL9JmFBDOINed9y1W8UEcXD6HAbCue5w/OZsrJxvOnIdF7vkXB3Td/Leg6r/p07VUujXhB2e6UZQ/pljDxN5yBnf8Rn0VjIL1YlO+3fR4oR1qTeZcRQNecK/YM/HJTUMmGoHiyv4JShhAh6Ddso/zZ0Hgw6fwapV82CKxhmInFVtFd1DwejZiXY0+z2kGzy6WVujIfTuMWuqPwF9wtSKDq+FriYaezx3GdLXBDp0pq8N9nMOAyycuti1rpt1uy0heCBgCfHcFMlqZ7CRE8hJVoJfqfaOe6qtfywOEKT6GYeRLUgFUIY8a4C1NdYjEkW2899b4912drylQ8GsY+twuR0pT+RLoNOHvlR9Zq2a089QKG3W5liwbX9A13Jqd3ECVIobmO+Gqio6/GwSAjrBZzGpg61qwGh5KPLfkyWrBJLQlqnjANAM2yGI2Toa5wOC3weDPqHGFFBoZCZuopCGtOC44TEE35jxqcmCOelV/Fatpg4vaMK1Pv1t3zdznqJaNSxUE8oMU8MdUhoyO7dXFNoLnlZeHFZHqKVHnAcVS1eOV4D1dWe3wMPcMhr4v7YjVbyLJdVW/Guze0PLMbKZtCXDJqj3QRWP5OF78luIN06BL4NxOqg+BHWqCIbMLJOGUPTVv0Z+wrEXIBPYcYbleos9tGjecCPE5UZvYsFq25QJgL3Bg6JdEUfPXaldYxvOMMghZSE
- mCmNlvhZ
- mdIzIaYKnp3SebEOaUeUPcaOoI3lbKccZcRIivcPFlsMlXFLXaX7H33ZegLrAurbHr9PT1eMADw3BuhSgvL+BX/5+PY8Kwm8w4OkeDngJxUFEMbERg2MUgrkeJNM08KG5NuWtFrOVwgB+4svIApy5qSUZRPycP437bghY0T40HkpC+6bM871SvK8l+QkZs80dFWc4hEMMSWxOIb8ubgREa8SFcXx9DShV/P0+lmo2WOWiaeUFSCjYZOEm583F9rfYTSI4jKKYmBjmqdZGRzEs2G8vq82Ocf0TCzj/oNu+BjHebOObe/plk2tAN4lhg0/qs/aFwa0NIesUBvVtR6MYMSskP04rDZVD8/eBf3sr0q8mvV4=
+X-HE-Tag: 1785752014-52649
+X-HE-Meta: U2FsdGVkX191ttWYfbu8/v/IASCynV32G5xCdYMDSL2z0XlQdeAFEM7iwtvBOuPFLKfJZTgYZeh23zENIk+bYdNmyu0P2vtsl5sZuGoJDxDJ+L3cXA4zjVaS6U7gfbhSFlifoslcsQ7Qpas+g8erNcxhUCj6g3PkhwnZKdCXtgXmMLYrzCYQXcY+DIyqaCQGm9Z2bBnXZ96fin9V8zQDPeRmHEPRkddSIj6tPbwO0Jsm0bRySd3zXbZmL18XMQi4R9ybnrpSWPkvsrvH+sfPJNeoTmGDJat3qVM3PWAwNjRc5oJpk4bzZAyJyMSLTlw/0U14gJrxBdZfIddqYmB40ZsvEqpO3sEanbnd3AKbRaXqH3UXiiyx5fIaa0rS4reSfoH0SQp4KFr2bO4niEBRa2RTzeL05fkO3vcOHJuaL+4mXWxoGk4CA3UvZGoKojFcb8xBPNY+7mbjFbYkKnigq+q8wsVYcTArfXlIIp50qWOfuSiCL//sICGYz0t6aVw8ihn5eCohjR0xsbKDXlQ0VqnAlbnJCxOP2RRdLEOByZmygTdvfG6ugl++TVT0BMV4DarJukgVz9aG8Ctegn19NtNmoGx8Ru4JtRZwMzDTHP+5pUmLcs3B1ZHcmIF/KYIQtDMI3rbPLJS4Q+1WHzEGiY3TUwdmpB+X+eFRIjJZBYxt/XBr9Z/xa9lYh9L5MjX8BUeLsARL+X0czLVr6+V4/3RCoTLxLv2VHSYLB1WF0vXxCFsFaIOGFcNTEi3XF/PMgLq89G2LqEtDI80ua6BKVGe649vF5YkcKz+0strj9leEptGw/Kxs3Dg/NDziL8E46yJtm+MaX8cQ/VyFwHnIq5EHGwudbzBmrvJZFfXgt3iU3wJrcN0Z5jCsiYNyMai2Y9wQ4MGIj4L3W/yLzNWRk6s4KKwZ2U7nacbzYgkfMBI2mFL+LoTQ62SBNmYyXH/cQkGp6Om+qrL5n9fH9zc
+ u55aNmEs
+ PkxoIuJA2EwXYgM4tls4AhY4hM1crfDryAxB94jQJkLI0svasmIjK4VlWsW4pkRV149x+1CgzTHWnaRI8MyIj+Pxmiab7Qrax2JUzR5LpOXlC1aSF+Jld86QOMZsA3rHGYSzMP7KTg/DFbhWhq4njDDtDq53QCydV7VJxEQIsTYqybcMGcgL/lCpgUiHGduNSsttInETik5vBtytysLUS1wUlFhB7niuMROAgCRPeDzOPPG7Lkq1b7FNFOfJJJxKBNh1lt2ukxDX1lp9cbL/R0uYwxCQtnmYE6GWe1ROkiGSFb1Fsm4DRl8pdiZny0uN4rysU7NxlHF3nt+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,14 +109,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 03:13:06AM -0700, Breno Leitao wrote:
-> The test writes min_unref_scans explicitly for every case, so its comments
-> describing 1 as the default are both unnecessary and, since the default is
-> now conditional, wrong. Refer to the threshold values directly.
-> 
-> No functional change.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Mon, Aug 03, 2026 at 11:58:02AM +0200, David Hildenbrand (Arm) wrote:
+>
+> >> The former would be better
+> >>
+> >> 	__vma_set_start_anon_pgoff(dest, vma_start_anon_pgoff(src));
+> >
+> > Ack that's fair, will update it.
+>
+> But looking at the existing code
+>
+> vma_set_pgoff(vma, vma_start_pgoff(vma) - delta);
+>
+> etc, maybe we can keep it as is for symmetry.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Sure.
+
+I mean putting start here is valid because you are setting the _start_ page
+offset of the VMA, but then the field itself kinda has that implied.
+
+Obviously could rename vma_set_pgoff() too but then it gets churny and adds
+noise so makes sense leaving it as it is also... :)
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
