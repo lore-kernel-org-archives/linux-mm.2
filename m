@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8654C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A273C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBB546B00B1; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
+	id 874606B00B2; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91F26B00B2; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
+	id 825556B00B7; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA82D6B00B7; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
+	id 6ED3F6B00B8; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 986766B00B1
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9450B406A3
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:44 +0000 (UTC)
-X-FDA: 85059675288.10.D60BD9C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EBE8980005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:04:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SbnvzZMl;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 483176B00B2
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D93A406A1
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:05:02 +0000 (UTC)
+X-FDA: 85059676044.28.40E960F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 82C75180007
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:05:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+nsVYnU;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785755082;
+	s=arc-20220608; t=1785755100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eljn8Ny6rhPTzrLYH+abslck/G8K3E0nYOeGDjQhH0s=;
-	b=J4vaThPa9YS33qywUI7zR8DAumaxMGq8sqB3RUsUgk8qCqBN9Uepr5RLc7HiqtGkIJudPO
-	DgPR2pZhwQwkFlXvzHw3mnSPC/JclgmoOJ2Z9cEP9iVbkWETPyg8DwfW/xOIM8Lo0QamXB
-	mNnq2IJr8y5RHh8fhLUA4ULqlHvd6rs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785755082;
-	b=EBCGDnUSGDt8zT7X3SKzWIDuTuV1wbuNVwyJTDbzZMdhik9A5B1860WPaZPrmroysyRCyO
-	B6zBb5W6QqiotBYQT5R1v59xK7ylIMB48AZNqKJ06112NJtyOVHC6zC8HZoH/PZcmS5c90
-	vnXG8lgfE8gioZDr1xaDlci15/eYvfM=
+	bh=CSclC3PexhFyC24ms1bFI3qAAPSJzj7fNSSmbcM3kdc=;
+	b=i2gmBo5shEI5jh7on7336aXcqogpx/ZkCace2NYbXRTXF5PIho8mXQy80kaMZgq+wWdIrG
+	nB5eJiigSvznX8Do6H5CVXTryqxPQHsnP3kInSwtq3KhYD7yAb0W4JXykcu2b07dHMQ9LM
+	PZ4kyzMbLaMGYnLJJw2aRKqtvSrxmIc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SbnvzZMl;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+nsVYnU;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785755100;
+	b=41D4NfSVIVXoTUkIuEfg47vpMaA7/bUpK9fTPnVLgh/ZKB01tvPj/Hjow5L1IZ6mbAdsWI
+	/G2Z53OVtsGOzHGQggdMz4WJErpZY+5mmjYGSst425+I7rlWs3jXE5YJOIf4MKhltafdn7
+	65UJEyE1+TLuX+zX399ILkb+YySk+Zk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78BA160A84;
-	Mon,  3 Aug 2026 11:04:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6591F00A3A;
-	Mon,  3 Aug 2026 11:04:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C4CF543FFD;
+	Mon,  3 Aug 2026 11:04:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2641F000E9;
+	Mon,  3 Aug 2026 11:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785755082;
-	bh=Eljn8Ny6rhPTzrLYH+abslck/G8K3E0nYOeGDjQhH0s=;
+	s=k20260515; t=1785755099;
+	bh=CSclC3PexhFyC24ms1bFI3qAAPSJzj7fNSSmbcM3kdc=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=SbnvzZMlM/voSC7+sBfc7otUzGuJs5uZzzFTrVXzuurPl1aDwibu4lf+ckuMsBoHu
-	 z3zd8CsNBXdKp83z/0oGh6x2tuGeO9ZyWyT2LmgH7d5vkBov167h1XwmHYyoRbkAce
-	 aPYiQd8Mh097JYBn1YrVEmVe/KOmpd37QeZ5VJu+Y30XkltL5iO1zFHZ59I5EkCK5W
-	 SitiSkw/jA1JlJeGPikvUrKqZgqtUrrl7fP+8K4Rji0525a6ZPrzKd1sO3qMDvpm1X
-	 7gelXVBLkh+wS2A2lbDkftGdUYiLEi/BmKS7QJ9J8s/RlA1BEKn3kQwCTqcTrXzdgG
-	 YG5How9yhG9tQ==
+	b=Z+nsVYnUwqIylKDUiKbZFMu5IoWyM+rHGKWzwxhVTZ8be2ctWc+ho7BRpcm2dKCNO
+	 8hMepafUAxfkEECNtSqjgjCk4342A+R+vf/0krTVFmztk50mqcnSvo46uToQHs3lJP
+	 ZlnQfGtzHrhyWiMQnp1estwur3gL6/81q5JVuY+VY77mM58mETNeoh+vj2dxnJnN2S
+	 TE0rhi1+4tZz7uqYjdeaoGa8+Su2Nv6cLTkYDBsnmFbeL0PWoXS7ntTFblpvD4A/KF
+	 VtThhPwcMhv/jloqOxxAcUfcnFnPOHAYsPDhxKWNKAXaF4uggOoQU9jjx59cMX+1Kg
+	 shrICogUvxqsQ==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 01/16] selftests/mm: move is_backed_by_folio() into
- vm_util
+Subject: Re: [PATCH 04/16] selftests/mm: add order-parameterized khugepaged
+ collapse cases
 From: Mike Rapoport <rppt@kernel.org>
 To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -83,20 +83,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, 
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-In-Reply-To: <20260802195254.1937477-2-kirill@shutemov.name>
+In-Reply-To: <20260802195254.1937477-5-kirill@shutemov.name>
 References: <20260802195254.1937477-1-kirill@shutemov.name>
- <20260802195254.1937477-2-kirill@shutemov.name>
+ <20260802195254.1937477-5-kirill@shutemov.name>
 Date: Mon, 03 Aug 2026 14:04:23 +0300
-Message-Id: <178575506323.1561566.15724813374821403024.b4-review@b4>
+Message-Id: <178575506331.1561566.14498717581313061864.b4-review@b4>
 X-Mailer: b4 0.16-dev
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EBE8980005
-X-Stat-Signature: 89tptji4c3dy7etfjpbj7piwmcwg5ub4
 X-Rspam-User: 
-X-HE-Tag: 1785755082-509619
-X-HE-Meta: U2FsdGVkX1//c+iSlhDw07jKtmTIW/5NxlGTbMTFbAa6lPbkNXILQqeiCCMdH/OI63dSf2PYfEmF1gzdlKdrv8n4b+EmuvDbRlWiK2/7lxgSBUMq16TUPLVxRatZqpS4avO7an0eIoi04vpVLObsm8fw9Ca+c2DSctyNbAle7SdznOVRmZnYchzEtjBSHlKbWfex7L/u1B4nR6MHb1YcaTYvTMOmloNUA48GA217dl9RolAVflAHN4n20vHBe2G1o+YEvlZlk+6c7kJgIaskU/o0IyQDIaybkzR4oQSTUtSSvE2YG7+zVeyhHZBPNKt/WpeH1HTrjgbhVzkVazy68JGanF+W/lepXoWJ0huMmHs7+ifJ86njaB053Jvl70DPENm0Qu7BS6Kv/QAmZHnFeGJnrtV7bcVvEjNUcoEfjHBNsuosOxj59yQI8KqWMVrkaNj+eRqMxCXnHSv6QoZ7osFRP5TcjuVA4ME4MYemdk/WEm/sXMKwkhiO6R6kwfRTGJwIPMCl/JXGLHLSbYStyMRoL8TIctgAX7/bDmUwnvPul05U9pAUKb/nrzkGokhvHu3q1QioAJVrlZ1Rm4WdqpXMV3mlHk35spsxmO7WJurQhu6e68QqWOPWTW4OobaJlHmrY5StyhmBW4lzhmKr5pIrlSulQaKRidGm18EiRnFGcxezfKkqpD1aksuOQd4XmVhs30TU8p3Sx5B/zEe1b4jjHMLLIm5pteoIcdl4Vq/q8rSmwK/+rC4EPzT3vpnK96NkUYxq4G1TEwYujrqV5LMcbYARgxM4CudUsa+PoIG/GB7K1WE9fzU2jtblKgneILT4K1L1bgZ6psIIp0tzGNl1RuC9sRSQDFu8zzVyfiPzFYzN0Nem52CAnmyiEOycowlw4tcREu8pz0AA7Sd5XVdymzQapKSZUQwPcoj2q3U4wzEfy2hRa1bxeNaO5XMU+bPOyKrTJmNrj4Z1z9b
- KeevR3e+
- VwO9lDsFw8z+TSZz3eMwzr5sbRRogXdEE2T/R6Ei10BhJMHW/bhemWIT0CWsntyy8kvKrXBmuFfRIhmbrOUcmamdprau/O/HK0n61YJjKXSdO86OPbkTBQPCIGLfXW4FeB3qWsUiN3M8idJ8nEj/41om9iZPFEkurjjRpeYddwRkwshZ8EFwgilqTYoYj09aQlRvxL3tw6Et+x9QRtDCd9W/fBmQnvoTgn88rBVypjgHmJYagOC8lkdGdDWAWv8zXOc/jYvTQ1nPag9EiFT8Rxc6C4YVwRKasJuSLhnbUJGIOyuMgXMyjcYPyAg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 82C75180007
+X-Stat-Signature: a137p8xso5k13autqts94xk1fjeqmnsb
+X-HE-Tag: 1785755100-971989
+X-HE-Meta: U2FsdGVkX1+DMeaX2tCXWTWr1jJkIq3cRYOSXb6P/9ORihv/k65OrgqjXnFRzLUa3CEfvXuS1mJDd7bW/Tpvrbh6sJGSRrYhzJKgRd3uY3sbiNS9kNk+IKsJGDW6M84Hm+e2LEk6okuTrYjESXK1BNDm6CrYBEP5m+BEmaLaTtgum5h3cF382cTU2WMwrSq29eXiGVQviqmKoHoJGmR+cMii5TTHEFkMIdrH5I5gBASZJUYkKFFhSB/1Nlpwo4/EJH3C817XxR6RfBkij5RrKcgMgcGXyC5bsWGrTaFrJIWtryHyB1Z3G9FRmedS34gwcYXHUoL6KlJNl7MvIfd/8drzTQps8BRg95LWMXbNz7ZVlavx2+vtPLg3EXe3wlF7u1kts74I4HBZr4wtfhVxFwq63iyTSQHsqXSy6IUXMskmluw9RT56z7ehFpAkLbr3QFbPsghpONDxSYG8U4BU9qpHH8o2EIHoBmeTyVlEXkOkOST+pdwfPvd1DZ30P+ysEQJ0d+KbLxqRzzVM8/C7nHLsxrDc7MAilyNTDebzzD27hEr6/OvqPtIxRFI5QZtGMWNBGz2AM7oYNAfytukjdlxhpObsKf01UMGRloTaOkhR2kkjXLYZLf4tklql73CxqYr2yg43cZDSfrV+MdZ/pma0UFiMQNPEZcV0PdxwfA6bl50yN5YFDmB3iFqNbsQ8cgBtqHdT3v+rHsSABiKOPZfePRLwKJTL47cyua2rrE0gVG/QWiBbcVKZWfESh/PPEZTGh2iWEhevBf0KBRHPdFo2/ycK8IGrcnl8pmNp+ZBdH+EPsZzrV9KMpMrcoD1M+3X0LdKg8ctBryK7eO7lmKrGK9xZVQYpthQtPMpKg9ADbMQZfJs0v4nEWQoUGYriuYGpHFVmM35/aHGzUMlBVywGB4wCMYvdMJYOJWsV8g34/f4K3Gufxg6O7HU0Ar1EkLDeslMc/7k09mwq9QW
+ MsCpqVqz
+ jiiBiD3qRyVdRYT0XTH0wjaIVoKk4Ii+Tgn7v1QsrEbS4CEa8JqJT7oWwuQXKLVn0OBAfQD5XVHCmQhG8RSCLcPMIqUGJJfP7nRBYZ2y+Cu60u71Pm4UksqTKSrUkInknZO278sbtIkycHEsrX8YeVMIPLh+JhxonYy+HJyn3S2+bYcv5LR6zyat217nh3kqMAMGyiqOpjbIJjBSC3ZX5Ai8KF4roM98Bc1rP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,18 +104,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 02 Aug 2026 20:52:33 +0100, Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> The khugepaged selftest is about to gain mTHP collapse coverage, which
-> needs to verify that a VA range is backed by a folio of a given order.
-> split_huge_page_test.c already has the building block for that:
-> is_backed_by_folio() classifies the folio backing a page via
-> /proc/kpageflags compound head/tail flags.
+> All khugepaged collapse cases are written against PMD collapse: the
+> regions, the thresholds and the detection (smaps AnonHugePages, which
+> only accounts PMD mappings) all assume the PMD-order product. The mTHP
+> collapse support merged in 7.2 has no functional selftest coverage.
 > 
-> Move it into vm_util so other tests can use it. No functional change.
-> 
-> [...]
+> Add an -o <order> mode running order-parameterized anon collapse cases
+> against khugepaged. The region is faulted to order 0 first (the target
+> order is "inherit" under enabled=madvise, so pre-MADV_HUGEPAGE faults
+> cannot produce large folios), then one full khugepaged pass is awaited
+> via the full_scans barrier, and results are detected per aligned
+> window with the vm_util folio-order helpers:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Having options is usefull for targeted testing, but I think that the
+default should be to run all supported confugrations, like e.g. cow test
+does. That's the point of a selftest: check that everything works.
+
+Can we refactor the existing code so that simple 'khugepaged' invocation
+will test everything it can before adding new options and tests?
 
 -- 
 Sincerely yours,
