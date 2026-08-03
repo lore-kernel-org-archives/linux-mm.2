@@ -4,91 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18E3C55174
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 01:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A294FC55162
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 01:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 501A86B007B; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
+	id 36A986B007B; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48BD96B0088; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
+	id 341BC6B0088; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355E96B008A; Sun,  2 Aug 2026 21:21:19 -0400 (EDT)
+	id 2304C6B008A; Sun,  2 Aug 2026 21:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 03AED6B007B
-	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:21:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94B4CA055B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:21:18 +0000 (UTC)
-X-FDA: 85058205036.28.FE4B018
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 142541C0002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:21:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QEISm6gV;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id E369F6B007B
+	for <linux-mm@kvack.org>; Sun,  2 Aug 2026 21:31:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA9D1A05AC
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:31:57 +0000 (UTC)
+X-FDA: 85058231874.12.BB88641
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A533B1A0002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 01:31:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=hHbdq4au;
+	spf=pass (imf19.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785720077;
+	s=arc-20220608; t=1785720715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=42NsJQFvkSGCAxhpN3JTXKrMrElWaI1s02NNzRaLxS0=;
-	b=u+N6LctBF4hLLfWNQbl4IQRl7j75A8w3B/pn00a+01Kt2kJD9aBWW7oitw1k8Oebs721KZ
-	4WZsBXJGHZMj1MbBtOi1etP5f2UK7f1NB1SDLPu0lXFZod1q7R6PcPCNxh7vFvu8IemFz0
-	58KiYyMrZ4qUrTEYv32Y1PQO6zmZXcY=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=09rkTuMDDVqF9abH3X0B/t3sherUeOedU/4OBZrumvI=;
+	b=cy0vLENRAHkyOzN7uQXimeKKVT/khBIZ2tVDDKxNuPPFqQT6+BnRYKdXS+q24hTBmlnvbs
+	AcJitIvW+fcT7MloDcgp/ElOTqd0s3kQUYva1Ejj1ZkXMf7ArsgiWR5qzgJcSNO0G1HIYS
+	AauMAF7NHQbVHpQLAwnm5tcUt+rxaxg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785720077;
-	b=JkzpW2oVSf4TrEq+vTZKHQZd27kSHChwPdap2nuZ08uHjiLgd1hSyrROlssZcH6XzxJixP
-	As4K5XlVgN0AneSXy7tWB4O8heH4OrBeb8ulgNE21TX9gF7Sl09bmp2SzZzK2FRAPGKywS
-	Leq0ZAmFSzHDw7tJCSXGV48NkraoKSU=
+	t=1785720715;
+	b=ht4LNDEljujZg7GdQq/OHLwkMRjpGnQkq/BqGAJ2qXhQmdGDvXIg6e3L4itz3kQ3zp63i8
+	kFyOO+cYbgk9MHpXNRJRj7yfGk0FMx0kkT7qVqtEiK5sL1hPlCXrn1RgcRs7lN8cnJwJDJ
+	QFg2kuS9lohR1IHG/ysCy/DnxmEO0X0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QEISm6gV;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785720072; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=42NsJQFvkSGCAxhpN3JTXKrMrElWaI1s02NNzRaLxS0=;
-	b=QEISm6gVTo32Ga+cDIWZ8shxdgRPC9jmN1zUk+DA4RI+Rd6RnXLZqiAbLyxuCZsPnktdzV0izZOtOhh5c1RoFkO0zn9B+UehAZ1kbOZAgDIzo7ZKV7FzjdJYSWmqe5vFb4KcASMtruHhpwKfi0Mouroj2BeKBcqPNjyHmh/jYYE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X8D0ULo_1785720070;
-Received: from 30.74.144.148(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8D0ULo_1785720070 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 03 Aug 2026 09:21:10 +0800
-Message-ID: <f9f01bc0-490b-4d06-85a0-e4693b80696c@linux.alibaba.com>
-Date: Mon, 3 Aug 2026 09:21:09 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] selftests/mm: improve khugepaged coverage
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Nico Pache <nico.pache@linux.dev>
-Cc: Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Hugh Dickins <hughd@google.com>, Lance Yang <lance.yang@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260802195254.1937477-1-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260802195254.1937477-1-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 142541C0002
-X-Stat-Signature: h7nhfedpdf3fuewmrc4umj6wcerpdg76
+	imf19.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=hHbdq4au;
+	spf=pass (imf19.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
+	s=pkvm2402; t=1785720654;
+	bh=09rkTuMDDVqF9abH3X0B/t3sherUeOedU/4OBZrumvI=;
+	h=From:To:Subject:Date:Message-Id;
+	b=hHbdq4auDq4ewFwLLVu+AyeTdfVnrigxl7vWKGimytBHudjH2RW3EPUayLjnyYBjL
+	 izbtHsO5tknu9cC7ifwc99GppE1AfQQqnuQkDq0h19N64eHdFJqCcAsq9j/RGreZpw
+	 8KCSurEsSxwvtQ9k06EV2kzvjZP+A54rTiQhNehY=
+X-QQ-mid: zesmtpsz2t1785720645t91937be5
+X-QQ-Originating-IP: bzQf6HnNiJZYwmOVBHh+2fwKuDqnUpmM2SuA4MLcqjQ=
+Received: from localhost.localdomain ( [113.98.201.214])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 03 Aug 2026 09:30:34 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12329309936361500638
+EX-QQ-RecipientCnt: 13
+From: Warren Xiong <warren.xiong@ugreen.com>
+To: akpm@linux-foundation.org,
+	shuah@kernel.org
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Warren Xiong <warren.xiong@ugreen.com>
+Subject: [PATCH] selftests/mm: read memory information without popen
+Date: Mon,  3 Aug 2026 09:30:15 +0800
+Message-Id: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>
+X-Mailer: git-send-email 2.7.4
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MvEJ+bjyN/5DUN+4NULqj7ZVA2R91Rc9YXEuRgxs6ST1csaLr6YVrMR+
+	beVKgz0Og8dFqNSOdTqzrJkX6EikjfyiipYzLI9bojkPGVGzFvoNCOcZYBCWZtukavsf2lT
+	MBc5eSLnzjWZawWRKcEIWFxADhthBo5WQiCHgTzfouGMspuqxgMnlqOBw+ad83g1YNyxQBX
+	ySz9noUNkbG/t7UDllFyHNcYFh3qCk1nMoSCt10R3T6banwAs0Ftb/Eqllc2ubvcKVL7wZa
+	/1Gwei6PWmx13MBG4OyrU7rwc+nVx9QfNeKcIDHOWCDVpTDkeHS+vpL1NHN6GFFkA0dyyZu
+	tbvuF5R/2DmOFzmLAz7Ti8FTdKt/5QJ0cwZhRW5kGdX3Sq+aAyO2JE5Q3DOAaqypr8MBxRR
+	mxhW1k3599TRqb1I/aIjDYnsWy9OCOn6W/p8TB6wr9123oPeZ4tHnm8tGRslTWzeYdrfxon
+	S/oUcXWn/yTFsAD/eN7hBXvjggHDFBdXEA7mGeQPd9jMUsaQrNndJa9KHfdxTxs1z00NDgk
+	4dX4XCKdvH/iPMtBcVZY20zyVZLTlwaFUL5l2FwUTO/DmWNwZv+DPAio7Ac6MaK37Dojeaa
+	v+hMTr+KkzmXOXAEjGz+lKaAnWTP/qE6P31EegVBbI81JgzS0VWr0YSTbBOMFeVAeNUaOaP
+	7HO88LFLkuVxC9fmRpO0E4nfBocD3A0757YxfQazuLeY9+fpokTaa9ISCIQnko/EFSwoPuo
+	MBhTASxSoY7mfssyhmZAL2rUELWSrXcOP/9wHZTr9mkcxzUhPqHl6aARrsurIjCe75Pgupp
+	N21M6PjG+p16JEkyR+chdzxuSJYqYUVmZKjhCSbk7iwtYU+f0crwjOxMpOgJM3PuK9J2/GJ
+	jZYKlzSzO8UPkX1kMmPhs/CzTeSd3hNK/HLBGI10lPojySKAQSTuxQbp3Iq9YlYqb2G86oP
+	6qSKbWN4vGbFSlq5d1WOYMihEucf00gEombfpcZJD6+gKMR0DE3P43ZGEHAgRxWmKQ44yPR
+	UMYLSO0ilPk1p4pPjl69GMffJ06EG7Gc5T9UMd6zcfTrW/loktjOAx959pC1i6IG6jsiR4L
+	8fKzCqU5KE6EP5zZdhSrOg=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-HE-Tag: 1785720074-83598
-X-HE-Meta: U2FsdGVkX19JLWiTjAdBiQZe/Y2nmA3Q8+Hra9OaBvYbLfJNleknZnUxyoC0qOfJEW88lu2H7UDKwfgOW6vV6B6mOmWYPHO2qGX9+CpYqn36Y24qWHWscQUDCu4aKFt8MXR9zyyruyKczBMFcam6r1g1Tt1nR3Jtw9Iu5yxshx3sMJxGeHnluhXQCzYdwpsnblsFmrTm6/Gwl2OyL54HoRGLRUOr3NOPoCwDhNqpKONK4NqFHdCVN/zX46ew/EuKpM3RwLLpUUs76MEhYBac00Ihvig0OhNgSxGVB+rzrMrQu05NdOWc9zPgoHRhj16YWFRmqXIs3+HYqoD923Hi0f8IjC/X9w32R2zC2kzT+0++cRpbvO3+pXBLGHhxtLSHrPAAi65cEE9am4p5MycMfcrVSgwsZG4WhIKhe24cXQDktscQDovxg4fSfGQU7aKuth2tQzaZFgFZ8vnRTgsg1JCGFVfHbzxa358r/nsaGIbYTJXrgioERY1xKiQUS3lo1NPNN/75RlUZOLikwQgcd6jT4G+oRBt5G8nAwAvo2FzN90EeXvDeFyAmKA/AxNbwzTvg7CTrFK56Xv1LJ+oRu+N4v2mYvfHMJvEA4TdsLTyuBjLFrmmRZDsPUHus+GYS9E8Na4swM3/FRCKnxfuyNo0JNz7xkyOoZJApxlHpxg+P+8zDWtQtCymJvOOgyMhciUA6FFPbyUor7hAAXoDHrJ4xGo8VBkNxGYmTc2+HFX8vkbzmbnKruSMcFubOc0sotbsL4ZYYme1AQdmxZRP7+JYZ6UiyOOof6B40jdJ4e4doAG+jx8RK7BcVVAVZGMVaHKmy2JFbab7ZgQLAsMzDMmf9Z+f5a4M2SD0rfo4Srn6+LjNre2qU9AmgZ63zxNLaMQnv5hEa8eRwyQFtOOz2nEf9AB0YiepdBpQDfeWGmqu+V0pKspxUKjKLWqAfsJdfUa9yjI2TKvPjOnGsIyy
- dSsJqwuY
- Gph1bgmhffFBn2oNfqEWSUxIf60bRm5IRUoWoP/FGS00yO5JZdcG9WHRV1MY7eGEBC5yHpM5J0X04td+PH+EdY042F90F/UTYQDjO2CZo8Q5VXSrCUzPXu9AUhA0kKYz4T60BllaFXm9wGmywZAcb5WibgnPj4xIhmFz0xE6xlx6sBo12jrH2qWNOa4I3ddCDGr9VBXwZ8PirMaF9VKrvZaRrYW0W3bVL9SjiUOencRFtfO/IULrqPCe+8ZO0a6n96xADEaWeovfhbRkvpidagV9hI19cXr1MHUqaoQT+6x4WleDadZ71QrKiUTxOddCCkFqr/5Q24d+bR8JPU32xwOt4bIeZsyYkZNjC
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A533B1A0002
+X-Stat-Signature: whwxdmz9ygiyxesyzuygcb5wprmejx5h
+X-HE-Tag: 1785720714-643216
+X-HE-Meta: U2FsdGVkX19yYhCfZZ7XC2MUpAd898J3MpXCj3/mrLFaf1WaiBLm1/v/jAo0WLH7y28xGUYgrd1JHY8kqtF0e9HTH8ZnRXYGnNuO9L86XnV1YSYorvEc5r72/zMzBKTVp0HooNnSyVba7O2/lkjfQhOmR2Pkd0kqXA4TPay8Zu3pgA8931g5iyjUtxxPVzt/K6LEhdSXpUdcLn8EIzOj+vn/xe2rGMbCDailOzbxcFGjeUCV/FjNLBC+jL/dVeL5gaIFfw6kolscmOhL6s9IIdINELGuRXSHWl0IX8qSUNn0khZW62N9FkDOz4AP8bpy6flzekqd99acp34x3UC44OIWpwq7NRT6bGoaw8nIG8XwfymR6O+GTUNu9ZiqI8IGq9Y3Mb1nw6DYKlfSCHss9/iBcZoWttK+QMwidMzTC/22dtobKlrsgIpPuVjOiqJDkqluFV1D0NYNMxDSQzoaUE8/QyuTbItdVGLpIhykup3lx+x4bYYUyd17aSBMdHRoZoiqXSC66Y3UDIsUeoCTOQaT9xcIeGYHBH8Vn3IAJwExaGEyaDumOLifRADC4iqETgh4xgTRUsNRz16VgP1LEu3bKL8a/uNh1w+bJiVKTbCjTJTToxJR66gqljDPAdG2aWHPh5/0r3E1tPi+VFBguje7Reqb0wMgGbBjp+A5tL4cMZZRgfXRiwS+yiqLwmtEzu8nJK4X8JRpeGl2WrwqIhhq15Fb82Jq8JRlpQjWkNGZoPnRC2Qqo6Ah2puIZ4fYt2Tn8Nc0pGo0dUSlAlgLsIWrTeFvoAlfFvlaHzQkGN6VT3D/6g/IDHFyPmw92auqhJ/TlBV5Q/qh62/TqW+ChMq9KT1MGhB+BQRhOBJpzqJIaYsmE1ibEm5h6BoTuZ0CTz3Ipm6eTkE/nqxNen4PpOFLjdYHTe1bJN7d0l4SNtV36iIYm1r7WYPYesYgkEK9+UzBKMBHvhkWb12kLa5
+ 00pOzO3m
+ CgEZ8WrludxtwlEHF+ZFXuRej5ss6lMp35FL0ZJMTCkmaTfGynj/M12OVIOWVQAAxNOKs1qWRJT0mAjiW4Q+BjuoDVYPKtysByKPKeJEvIvR8cLBdAqTL+1YdHVkYHbKSDFoo2I/tAJYvxG4Y6vU1CUIYSEyMnbYxLtyKtP/IG/Kg8NndZ3mtAcfGg5EIpe/hN8Qar5ZLpjd9hh8l5S3Erf71UM9idmaa07OYKLKbJx4BbTF/sB8RRNm2hmmQ/59yqDpjmKrhwqOsVfnX0mB4lSXOiKjFrASN3PW78frNIZkV6dHOW6MwxA7Gd7iant4Wf2ScPoU4GRYztElCjZa3yPKZtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +117,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+read_memory_info() invokes two shell pipelines to obtain MemFree and
+Hugepagesize from /proc/meminfo. It does not check whether popen()
+returns NULL before passing the result to fgets(), and it does not call
+pclose() when fgets() fails.
 
+Open /proc/meminfo directly and obtain both values in a single pass.
+This removes the unchecked NULL path, closes the file on all paths, and
+avoids dependencies on external commands.
 
-On 8/3/26 3:52 AM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> mTHP collapse went in for 7.2 with no functional selftest coverage. Every
-> khugepaged collapse case is PMD-shaped, down to the detection: it reads
-> smaps AnonHugePages, which cannot see anything below the PMD order.
+The compaction test continues to pass after this change.
 
-Yes, I’ve already sent out several versions of mTHP collapse test 
-cases[1]. Not sure if you’ve seen my patchset, and it looks like some of 
-our work overlaps :(
+Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
+---
+ tools/testing/selftests/mm/compaction_test.c | 43 +++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 16 deletions(-)
 
-[1] 
-https://lore.kernel.org/all/cover.1785564857.git.baolin.wang@linux.alibaba.com/
-
-> I am also reworking khugepaged's collapse mechanism, and that wants a suite
-> worth trusting before the mechanism changes underneath it. Nothing here
-> depends on the rework -- everything passes on an unmodified kernel and
-> documents what khugepaged already does.
-> 
->   - vm_util grows folio-order helpers: is_backed_by_folio() moves out of
->     split_huge_page_test.c, and a range-level form asks whether every
->     order-aligned window of a range is backed by one folio of exactly that
->     order, mapped head to tail.
-> 
->   - folio_order_check validates those helpers against the kernel for every
->     anon THP order it supports, before any collapse test trusts them.
-> 
->   - khugepaged_full_pass() drives exactly one scan pass through the sysfs
->     wake path, so a barrier completes on the daemon's own cadence instead of
->     needing a short scan_sleep_millisecs.
-> 
->   - khugepaged -o <order> runs order-parameterized anon collapse cases: a
->     full table, only the populated window, default max_ptes_none and
->     max_ptes_none=0, and collapse upward from smaller large folios. Any
->     order up to the PMD order, where the same cases baseline the PMD path.
-> 
->   - khugepaged_race races two faulters, MADV_DONTNEED, transient FOLL_PIN,
->     fork and mremap against one of three collapse drivers: khugepaged a pass
->     at a time, khugepaged free-running, or a MADV_COLLAPSE loop. Every
->     racing page must read as its pattern or as zero. -z collapses
->     hole-bearing windows; -p adds pageout and compaction, the only threads
->     that elevate a source folio's refcount from the reclaim side. DEBUG_VM,
->     page_table_check, KASAN and lockdep are the other half of the oracle.
-> 
->   - A shared-source write race pins the CoW isolation contract: a co-sharer
->     writing throughout a collapse must not see the collapsing side's pages.
-> 
->   - Four tests fail on the environment rather than on the kernel: the
->     collapse wait is a fixed three seconds whatever a huge page costs to
->     build, collapse_compound_extreme wants a 512M page from the fault path,
->     the shmem cases want a PMD-order page cache folio the page cache caps
->     below, and the swap cases fail instead of skipping without swap. Scale
->     the wait (a 2M PMD is unchanged) and skip the other three. This is why
->     the suite now runs on arm64 with 64K pages.
-> 
-> Tested on mm-new (1dbd7c34bb92):
-> 
->    x86-64 4K    105 pass, 3 skip, 0 fail
->    arm64 64K     87 pass, 7 skip, 0 fail
-> 
-> The skips are structural: sub-PMD cases decline at the PMD order and the
-> mixed-source case at the smallest order, and on 64K pages
-> collapse_compound_extreme and the shmem cases skip for the reasons above.
-> 
-> Kiryl Shutsemau (Meta) (16):
->    selftests/mm: move is_backed_by_folio() into vm_util
->    selftests/mm: add folio-order check for VA ranges
->    selftests/mm: add folio-order detection self-check
->    selftests/mm: add order-parameterized khugepaged collapse cases
->    selftests/mm: add khugepaged completion barrier helper
->    selftests/mm: add khugepaged race harness
->    selftests/mm: cover a shared-source collapse write race
->    selftests/mm: skip collapse_compound_extreme where the PMD is too
->      large
->    selftests/mm: skip khugepaged swap tests when no swap is configured
->    selftests/mm: verify synchronous khugepaged driving is attributable
->    selftests/mm: race-harness variant for permissive hole occupancy
->    selftests/mm: add memory-pressure threads to the khugepaged race
->      harness
->    selftests/mm: parameterize the mixed-source collapse case by source
->      order
->    selftests/mm: zap whole PTE tables in the khugepaged race harness
->    selftests/mm: scale khugepaged's collapse wait with the PMD size
->    selftests/mm: skip khugepaged shmem cases without a PMD page cache
->      folio
-> 
->   tools/testing/selftests/mm/.gitignore         |   3 +
->   tools/testing/selftests/mm/Makefile           |   3 +
->   .../testing/selftests/mm/folio_order_check.c  | 138 +++++
->   .../testing/selftests/mm/hugepage_settings.c  |  66 ++-
->   .../testing/selftests/mm/hugepage_settings.h  |   2 +
->   tools/testing/selftests/mm/khugepaged.c       | 430 +++++++++++++++-
->   tools/testing/selftests/mm/khugepaged_race.c  | 483 ++++++++++++++++++
->   .../selftests/mm/khugepaged_sync_check.c      | 198 +++++++
->   tools/testing/selftests/mm/run_vmtests.sh     |  17 +
->   .../selftests/mm/split_huge_page_test.c       |  62 ---
->   tools/testing/selftests/mm/vm_util.c          | 157 ++++++
->   tools/testing/selftests/mm/vm_util.h          |   7 +
->   12 files changed, 1490 insertions(+), 76 deletions(-)
->   create mode 100644 tools/testing/selftests/mm/folio_order_check.c
->   create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
->   create mode 100644 tools/testing/selftests/mm/khugepaged_sync_check.c
-> 
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 5b58258..0df2000 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -7,6 +7,7 @@
+  * allocated.
+  */
+ 
++#include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+@@ -29,30 +30,40 @@ struct map_list {
+ 
+ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ {
+-	char  buffer[256] = {0};
+-	char *cmd = "cat /proc/meminfo | grep -i memfree | grep -o '[0-9]*'";
+-	FILE *cmdfile = popen(cmd, "r");
++	char buffer[256];
++	bool memfree_found = false;
++	bool hugepagesize_found = false;
++	FILE *file;
++	int ret = -1;
+ 
+-	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
++	file = fopen("/proc/meminfo", "r");
++	if (!file) {
++		ksft_print_msg("Failed to open /proc/meminfo: %s\n",
++			       strerror(errno));
+ 		return -1;
+ 	}
+ 
+-	pclose(cmdfile);
++	while (fgets(buffer, sizeof(buffer), file)) {
++		if (sscanf(buffer, "MemFree: %lu kB", memfree) == 1)
++			memfree_found = true;
++		else if (sscanf(buffer, "Hugepagesize: %lu kB",
++				hugepagesize) == 1)
++			hugepagesize_found = true;
+ 
+-	*memfree = atoll(buffer);
+-	cmd = "cat /proc/meminfo | grep -i hugepagesize | grep -o '[0-9]*'";
+-	cmdfile = popen(cmd, "r");
+-
+-	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+-		return -1;
++		if (memfree_found && hugepagesize_found) {
++			ret = 0;
++			break;
++		}
+ 	}
+ 
+-	pclose(cmdfile);
+-	*hugepagesize = atoll(buffer);
++	if (ferror(file))
++		ksft_print_msg("Failed to read /proc/meminfo: %s\n",
++			       strerror(errno));
++	else if (ret)
++		ksft_print_msg("Failed to parse /proc/meminfo\n");
+ 
+-	return 0;
++	fclose(file);
++	return ret;
+ }
+ 
+ int prereq(void)
+-- 
+2.7.4
 
 
