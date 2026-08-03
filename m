@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E5EC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 16:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CDAFC55838
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 16:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34F2B6B0095; Mon,  3 Aug 2026 12:44:32 -0400 (EDT)
+	id 0B7686B0098; Mon,  3 Aug 2026 12:44:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3279D6B0098; Mon,  3 Aug 2026 12:44:32 -0400 (EDT)
+	id 08EA36B0099; Mon,  3 Aug 2026 12:44:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23E156B0099; Mon,  3 Aug 2026 12:44:32 -0400 (EDT)
+	id EBFBC6B009B; Mon,  3 Aug 2026 12:44:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAD676B0095
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:44:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5890980769
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:44:31 +0000 (UTC)
-X-FDA: 85060531542.11.DFCA704
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5BB0F2000A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:44:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RCnX9DvB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xaIbUspi;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=giVnVJGx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KQ3BcFN2;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CAC416B0098
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:44:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 593A5120751
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:44:37 +0000 (UTC)
+X-FDA: 85060531794.24.ACB57CA
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 468B480008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:44:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oI+Ftq7Q;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SdaodsKJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oyC4x8nG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zhuzRUQD;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785775469;
+	s=arc-20220608; t=1785775475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wZBAh6Nw2Wojw1x1c/oIpX3LymyujgAPhMLX7la+5sM=;
-	b=3ARTvt4aB9xolHbGf9z/KVSOazA5N8Jb6RIfji0/BMmoc+MtpAkJtehmBFmt6xuxfWX6F2
-	ptHjg93/FFrMvgA9sZtGBj8B2QXtnuQStVT41Kv6aT2XCTRi04bIA0g8cNmYQxu4M//A3z
-	b1tbFQedRRUNXXKX4hoQmq9HCrM8C5Y=
+	bh=t7EZt6KO7lG8FcX9WT699sYwppoB9LUKhBecqXvd/dQ=;
+	b=QSbS+VlX5JzUm807AlD8/QBng0V5VacZ0fBzVCadCouX9mZjTTZ0cSLTJNUtNYXCUcx6ZE
+	nfriN2ogwVFJfS/TpjiGm3TFaIfTHd4u5EDuwAzkBbg0H3Jju2dVv/4yQYWGLwK1dvMBV4
+	IfSvfmHfvBaiKEa2Aky2YgPEkShjFL4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785775469;
-	b=EGfnh+s3OWp4/n0dtTiOpa5cI+scX/aEaBUU5atsWAhdYz6HRzrLdSKV0zzDdkYlUM3j2p
-	KdS4K/V/VLR5B+qpoxyUnr9I9lpTXgL6JbO0+da1o2LoA4c+Y8Q7pL49zM/6SBHDkltSG7
-	n0+N4A4KAyPjI6PZ+j1zitQ9Wr5domw=
+	t=1785775475;
+	b=SISqLkEY3/11Qj1L/5bEqeOXT8tSnU/Rzso1jpQFlAMZvOSAVmylZMP3r/o5uqbaN5c/yW
+	S/m3sBuLn6fltwW/00OskKNKY+1BXjgI4ChOiCpUYnSF+s4491d8qY0LwWyC7qSmGjsutV
+	MOyU/68z/t8xfyCNJz9CDke2UsIHM+0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RCnX9DvB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xaIbUspi;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=giVnVJGx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KQ3BcFN2;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oI+Ftq7Q;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SdaodsKJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oyC4x8nG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zhuzRUQD;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 01E9F3FC3;
-	Mon,  3 Aug 2026 16:44:20 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 04F437F29A;
+	Mon,  3 Aug 2026 16:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785775464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1785775462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wZBAh6Nw2Wojw1x1c/oIpX3LymyujgAPhMLX7la+5sM=;
-	b=RCnX9DvBdusp51QYUbBf7leNC2m/jnhcVFM5tmPTP/BhTZ3DqFPAqeh33IRpZN6BmPwqoP
-	rzIo4y/i0IiJp8To57XQsHwj+IPT7FV5Ll5C7nv8aEmi07CIq112ysW2y06eVZEf2dH6wJ
-	r3lk9k8/HQ6YyaSYXdsLZN6KGB8gFDQ=
+	bh=t7EZt6KO7lG8FcX9WT699sYwppoB9LUKhBecqXvd/dQ=;
+	b=oI+Ftq7QHwNOamWLfQlxR1s+VH5H/xHD/n59sLRhbDnUPY9Jvs7OPu/wS6fnjjFWyQ94kH
+	L6sBuRsm/vM98uxrAHA2p0PLJrArW8I+I4OKkUUSbVrF7M8JJrzCSxgB3JFmrDgmRulE9/
+	pLR5gNZLJOIdmogEzhi5DC5wm+3GtZo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785775464;
+	s=susede2_ed25519; t=1785775462;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wZBAh6Nw2Wojw1x1c/oIpX3LymyujgAPhMLX7la+5sM=;
-	b=xaIbUspi5o6OZc06hALwJZqRpjo9E6iu/FYAsULDovkl6o6a+EctY/7NZl8UBxV14mSYy3
-	LqsBwv3e4TeH+9CA==
+	bh=t7EZt6KO7lG8FcX9WT699sYwppoB9LUKhBecqXvd/dQ=;
+	b=SdaodsKJpIffkXl0rAXcmAW1realq0Vrdd5uFSKLcyUr6W4xjRiWN7LDYcdlxw7f73wVY0
+	BSW6Vv0K1rRX8ZDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785775460; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1785775458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wZBAh6Nw2Wojw1x1c/oIpX3LymyujgAPhMLX7la+5sM=;
-	b=giVnVJGxPhlzAiTUyO5cLvObJ3wJUrZwgTqO2byoJytTwsPx5geUMg3NE+GQojJgRcLFfW
-	nGXGK8yEXMPkiUXaTlVnnCK1/idDeaoYBPP9wfBAGdYiKRQ9MMzDN+N8K1AAGzciOFRYLJ
-	eZ2eJWx57aPm670VdUoqq6RZMBZewhk=
+	bh=t7EZt6KO7lG8FcX9WT699sYwppoB9LUKhBecqXvd/dQ=;
+	b=oyC4x8nGdSsYhE7uDhFy3mpsZSTObX+6KaI5+nPtQCCSmMzdAbivpkEH580bXfATRx/499
+	/rnbBCrFvwRNm/TnnaBO6iCsti8Q5QbYfshEt7TrUbVEgvi8IhaeAPJYfsjflNMtSyP0YU
+	D462sgy/vukAbxb8Zj7r80eCdhkeJ1w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785775460;
+	s=susede2_ed25519; t=1785775458;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wZBAh6Nw2Wojw1x1c/oIpX3LymyujgAPhMLX7la+5sM=;
-	b=KQ3BcFN2qLOwnr8xm81Wv2EiUTXMUvdttWl+K12ejsYXnidRcK53HVXpu4yybbDfE5Irjs
-	3RgNNZM+XdnbmZBQ==
+	bh=t7EZt6KO7lG8FcX9WT699sYwppoB9LUKhBecqXvd/dQ=;
+	b=zhuzRUQDrnP+Domlzo3/1FCpIz6k8srBWDErZHHbFo3HOpyS4OcSjVjI8vhU471Qe7a4LZ
+	81LYndPgkMk3LsDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1C744779A1;
-	Mon,  3 Aug 2026 16:44:18 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CBBD779E7;
+	Mon,  3 Aug 2026 16:44:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iCzPA2LFcGp/SQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 03 Aug 2026 16:44:18 +0000
+	id sB/XA2DFcGp/SQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 03 Aug 2026 16:44:16 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: David Hildenbrand <david@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -140,22 +140,22 @@ Cc: Pedro Falcato <pfalcato@suse.de>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 6/6] mm: constify the pte_offset_map_ro_nolock() return value
-Date: Mon,  3 Aug 2026 17:44:00 +0100
-Message-ID: <20260803164400.531199-7-pfalcato@suse.de>
+Subject: [PATCH v2 5/6] mm: constify generic pte_get*()
+Date: Mon,  3 Aug 2026 17:43:59 +0100
+Message-ID: <20260803164400.531199-6-pfalcato@suse.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260803164400.531199-1-pfalcato@suse.de>
 References: <20260803164400.531199-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5BB0F2000A
-X-Stat-Signature: ww58qhtt9hu3s4fmj59uh1c1tad6m3i8
+X-Stat-Signature: oyj9k85ftu5od3r9nzi7y55u563bd8hw
 X-Rspam-User: 
-X-HE-Tag: 1785775469-99390
-X-HE-Meta: U2FsdGVkX189rxQvlhfeayaYa9PwXso8nlDfCr4Bdxf0A1K/IjoXoZ1zqAYU1oMD7RPjbz7TQCqS98wpiLsmBbpyWvgM/sJFzbLbQoJU1bfTb/pGPTN5YjF0D+QHVAIN2I9XtwaxtUXopqYicBXqIFTRwBmmMaIhZNggiz0IMOp6uRr1QbyTJM2CDBdBPwmpUo6rWzUQd2MI5xPr1lvLRzKSSklk6xW+O10F5eLy6YTJW56eT1Cu6GDMkOwaue6freKzslq9d4MwMo/dDZspPVasSO5mZv3xyqdoqOK8+0rpDpNEtuT+25hXxfxNAnDT67PGoh7pdjo6ySxKfv71IlEfe4v+c6I/OVfkIeThP1r+0s9+1KE81LU65Nccup+XAxF/QvgeDY66DJfP+wzaqWks7HhsGQXlzd+bVIFih9Vjq8gEfmMtqrjHGouTUD8gjB4JrOtO1N75CGCEN+zl1vaTQxX1ojbhx8+Crh6okMziyPLgYdujfp5VtcxdvG8afkI1IVqPjSwdpl+zQ0gdL7O0ROpvZwn9yzT27Ssvb8tbfS0SmQAClXB/GjA1TZVFfb8zGOjLTGTHODThsO+4ue0L+h4S7SrmevLiwFrkQWndbwzl93IjCu/XGIbgg1ncDR2ZAZzWX1PPqppxxhNmLK8eeVo+Un1ABfBplV+ZHv3v3zfv1YLgzBJRfgSrYWRM1cNLW3v8zz48HPsYkQAnXzAOlUkfPGMD0E6+/9BG29lp34QJdSrIV3GXHcPuHIXavgXuFKE5qpn3w/WRGB1G9Xj5fBG7h7kleRVa5fgL1U1klXS/ajn0xpYtEmsoIMlyFS8cG5ipzq3YvFkkOtuz5gKUy7M634Q5zBWIRvSif/N2X4PTKwTxXt+/nHBwKCFb543PheuyYDgxjn566gxhCR9OFw5Uin4vF2ZbyQKV9NGSMjCOk0BhHKh8wJV6wntuiex9/1qAZPg+XMX6eQ8
- E6aMIVbI
- 0eiJj35S2PYspy3RJC2/6LCJXvp55+cLQdZGn0qsusHHYXCwdvjKTodWp0ClFLOho4fhz6CIelMwS4gpiBMI1nRfBkMFIaXFfGb00t5iiZM/ZJ4W+AYhQK17lml6KFVv8KepjCTKCvE40K8+n8Ehd4SiqDY/ra55ztzM/T3zHppDNZs5szRY09VpSopNjnFvujGcly7speqHBtxXqNtM5m9yv0CA+XDt4I3aqKkmEDM4SD1il5l4FE3NXVoKMorHcqCOfWtV1E8K5vSGlNBBCAncJFVgckFi65Yc7sO0gfXAZ/1wttZppe1DW/ROEJASJZLLT9RmliZSUe8H8fqcKeJzC0rpWutHKp6N0jrQATr9sXVhPs74l7qlee3qqqk2KuBMdiRyIJlQnpd3ZGr73iY9uUA15W+N06mgxGVOLrxCoys5P41tWR8s/16pol0tDaKvaT6v1lVFBQXSoRxTU1d/rt1XJQpdVpOVkj5crtConNDjtBJrelbAyyg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 468B480008
+X-HE-Tag: 1785775475-192323
+X-HE-Meta: U2FsdGVkX191Bs899sF84k+PU5diDDOedyaOnvMRHWwOCvodHrEL/8WBcIoQkI200j/XvWkCZJr8Z6ELb/f438PUuBGIkgJ2XnYbyMte4Njr4UD4TcMFblzEKXUGMlNLUXpQqIB9KakMdWdLYy11kSvfomTFFJvu0khKEHdFf2gob7jryrY0JBWr3Fd27uN0c8Z2p3PplwADyN9azPoveTyvwMTKKk55zG/ryRL820Eh0oMYvuU6f9/qy3nUbr1tZBt/BwI0GcOm3wfvFdFs+kvKXNir1EwWPhyR5y47V/hys9OImwRtDAfnDprButwGbm2OWwkfjvHPsWtaT4Oq7RE3IO0UTTWwlQSlhzgct1byNIEcT8KUyRV36sjNdFUHEmKsZHvXkDgqDC5G7YunTT3JOBd0olJgcXgpOiNz/37pnzqGqIOaog+IJX0ukzNxRSkFp2eMkkov9FlUK3o75elPH2H9Gy2e28K01Gd75iyQt3ler/xjgRnRNR/wmGrY34Wu8P/ItnKXlYp6+SLDcNkw26hm2qmy6NwKMenDIod6rXg6Z1LWJ8KOFT/T9cpW2dwYPU1oQ+d9uymJnUqP22bqzBcKsAG0xfZMA9l3MaeYTBQC+V7ngKUn4y4s9zWJEfCmaTpqPIBFLZZMUWly1YqRGrCNesMLYDg32jGo0BP5E4nzMLw5xRQMAtsYOoE5Sr9q6Qtc2clqH8aAsHmyKvxy8Kv5hCd0mYlwLtmvVjYH0iOU1LupI2ZP7F5D9zX3tt4hSgI6UvJdtUYpVFJEXO8H/W8eirrfj5V6AzYTxqBmsah6hiT5tUYZN413WckFjoX5MUxjp9DrXPGZIX9UDyYUAF5j5vahmmOIss2ZqFhpFkqcqLI7VtAjX2L9QaUbrCxF5Rpn+ZxkYqcOP2hc6MsEo1/Afg8AVFxcK4/UyV6sya1mJuVK7nGmo6688CxI5juDC0t6bP/Hsezav7k
+ uq4cKY67
+ 2pADEEgmMn1Xxw8EHx05cAkGf10olt8/RyQ5WurAyP37vNeDEexWM5nQpEWmzAioMFH2PfPf2fXr63P0xGbrGOhEAhtt5IwWVLsJf2L/ZxnPA4nR9jBmNz6QvrQfdMFmc7atYQi45GbPW0M/sRKg8KWxTnTdVdhpxi7hPj6smN89+cwiOlGVXutdJJ3hFs2bRavQZvciD0zJqO0M6GRVx9NLqXz1FiGbZ8M37WF6WqEO5ZqLAjV+xe296lcB1fJngMaPCp828WDv1y1EMpJq3nh3D17a4+0CxwMEfse88tb8J+vxgpo/NSD86537lixYE2E09qEKdXMvcueCrt0NBfB7jRoQ0jvwoMf1neEIJVBYOt8QmM+tDjSfJs8ZCLZDYYhViiBICI54WkcftjDBUN5zLq9dv+Msa4i70GGjdR1ly2iJ1uefded2C0eSdQip5RArXBM2P3MLunRC5MFU7iTNWl0k8BDKv/ZxX57rz/jq+B1cwkRJalqjZvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,111 +163,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Constify the pte_t * retval from pte_offset_map_ro_nolock(), for which it is
-already pledged that accesses must be read-only. With it, convert the three
-treewide users to use const pte_t *.
-
-khugepaged passes the result right down to fault code (do_swap_page()). This
-leads to a complicated set of conditions that, in order to be correct, must
-not install anything into *vmf->pte. This is not trivial to work around in
-fault code, and as such just trivially cast to non-const pte_t* in the
-meantime.
-
-The other users are far more trivial and the conversion is equally
-trivially simple.
+None of the helpers need write access to the PTE. Constifying the param
+allows for const typesafety.
 
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- arch/powerpc/mm/pgtable.c | 2 +-
- include/linux/mm.h        | 4 ++--
- include/linux/pgtable.h   | 2 +-
- mm/filemap.c              | 2 +-
- mm/khugepaged.c           | 2 +-
- mm/pgtable-generic.c      | 4 ++--
- 6 files changed, 8 insertions(+), 8 deletions(-)
+ include/linux/pgtable.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index a9be337be3e4..e29db41b6043 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -390,7 +390,7 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
--	pte_t *pte;
-+	const pte_t *pte;
- 	spinlock_t *ptl;
- 
- 	if (mm == &init_mm)
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7fabe6c66b4b..acf5a5e31d34 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3885,8 +3885,8 @@ static inline pte_t *pte_offset_map(pmd_t *pmd, unsigned long addr)
- pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
- 			   unsigned long addr, spinlock_t **ptlp);
- 
--pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
--				unsigned long addr, spinlock_t **ptlp);
-+const pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
-+				      unsigned long addr, spinlock_t **ptlp);
- pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
- 				unsigned long addr, pmd_t *pmdvalp,
- 				spinlock_t **ptlp);
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index dc418553e57a..dd51e722c535 100644
+index 8c093c119e5a..dc418553e57a 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -112,7 +112,7 @@ static inline pte_t *__pte_map(pmd_t *pmd, unsigned long address)
- {
- 	return pte_offset_kernel(pmd, address);
- }
--static inline void pte_unmap(pte_t *pte)
-+static inline void pte_unmap(const pte_t *pte)
- {
- 	rcu_read_unlock();
- }
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 6afec636881f..af5d3fcd1b05 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3490,7 +3490,7 @@ static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	vm_fault_t ret = 0;
--	pte_t *ptep;
-+	const pte_t *ptep;
+@@ -490,7 +490,7 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
+ #endif
  
- 	/*
- 	 * We might have COW'ed a pagecache folio and might now have an mlocked
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b237f6e7662a..09efac93a8c6 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1170,7 +1170,7 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
- 			 * Here the ptl is only used to check pte_same() in
- 			 * do_swap_page(), so readonly version is enough.
- 			 */
--			pte = pte_offset_map_ro_nolock(mm, pmd, addr, &ptl);
-+			pte = (pte_t *) pte_offset_map_ro_nolock(mm, pmd, addr, &ptl);
- 			if (!pte) {
- 				mmap_read_unlock(mm);
- 				result = SCAN_NO_PTE_TABLE;
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index b91b1a98029c..2cfc6e608ef4 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -308,8 +308,8 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
- 	return NULL;
- }
- 
--pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
--				unsigned long addr, spinlock_t **ptlp)
-+const pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
-+				      unsigned long addr, spinlock_t **ptlp)
+ #ifndef ptep_get
+-static inline pte_t ptep_get(pte_t *ptep)
++static inline pte_t ptep_get(const pte_t *ptep)
  {
- 	pmd_t pmdval;
- 	pte_t *pte;
+ 	return READ_ONCE(*ptep);
+ }
+@@ -739,7 +739,7 @@ static inline void ptep_clear(struct mm_struct *mm, unsigned long addr,
+  * present bit set *unless* it is 'l'. Because get_user_pages_fast() only
+  * operates on present ptes we're safe.
+  */
+-static inline pte_t ptep_get_lockless(pte_t *ptep)
++static inline pte_t ptep_get_lockless(const pte_t *ptep)
+ {
+ 	pte_t pte;
+ 
+@@ -777,7 +777,7 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+  * We require that the PTE can be read atomically.
+  */
+ #ifndef ptep_get_lockless
+-static inline pte_t ptep_get_lockless(pte_t *ptep)
++static inline pte_t ptep_get_lockless(const pte_t *ptep)
+ {
+ 	return ptep_get(ptep);
+ }
 -- 
 2.55.0
 
