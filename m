@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74E9DC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47100C55843
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 22:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE5846B007B; Mon,  3 Aug 2026 18:17:40 -0400 (EDT)
+	id A9C7D6B0088; Mon,  3 Aug 2026 18:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C96916B0088; Mon,  3 Aug 2026 18:17:40 -0400 (EDT)
+	id A73FB6B008A; Mon,  3 Aug 2026 18:17:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B86116B008A; Mon,  3 Aug 2026 18:17:40 -0400 (EDT)
+	id 9898F6B0092; Mon,  3 Aug 2026 18:17:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D72F6B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:17:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BC98A2266
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:17:38 +0000 (UTC)
-X-FDA: 85061370996.20.A36B2D4
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D095D4000A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:17:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o6HIk+oH;
-	spf=pass (imf12.hostedemail.com: domain of 3fxNxagcKCMQz1k3wkvqyyqvo.mywvsx47-wwu5kmu.y1q@flex--pratmal.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3fxNxagcKCMQz1k3wkvqyyqvo.mywvsx47-wwu5kmu.y1q@flex--pratmal.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62BA86B0088
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 18:17:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCEC7160826
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:17:41 +0000 (UTC)
+X-FDA: 85061371122.08.CD47BC2
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2556CC000A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:17:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PcbFgZXq;
+	spf=pass (imf10.hostedemail.com: domain of 3ghNxagcKCMc24n6znyt11tyr.p1zyv07A-zzx8npx.14t@flex--pratmal.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3ghNxagcKCMc24n6znyt11tyr.p1zyv07A-zzx8npx.14t@flex--pratmal.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785795456;
-	b=x/TYViWMKJV7XkP+qr7ma4JBodCZ6uASzOT7vqF9NcGUp/e5y5e3hPMcOBPwHtQwLGZ/qn
-	43vesSWJaGGSFYSkil1aX8OG4Ov2tHXEWu0znBbqzvL+79QsqDM3605TlduIXGQeuiOUEf
-	oE/8amTJWS+fVx6afvWlA6YNlqbrTss=
+	t=1785795460;
+	b=YP6upXlwgrKv4M/erThwJ/ZiZFPc41GGK7nYHOt3GWnCSC2MvF6UHu4R+jYPzB7Jgjqlda
+	N05i7K2v9b3qDHllQzB8RL3jo374Zd5Xlfd6aB4EtSrxMEmb2dVH28IKVi3rTL+wHSsCBf
+	HawYwi9Tjxe7H4CZWKzFMzaIP2tRjoQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o6HIk+oH;
-	spf=pass (imf12.hostedemail.com: domain of 3fxNxagcKCMQz1k3wkvqyyqvo.mywvsx47-wwu5kmu.y1q@flex--pratmal.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3fxNxagcKCMQz1k3wkvqyyqvo.mywvsx47-wwu5kmu.y1q@flex--pratmal.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PcbFgZXq;
+	spf=pass (imf10.hostedemail.com: domain of 3ghNxagcKCMc24n6znyt11tyr.p1zyv07A-zzx8npx.14t@flex--pratmal.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3ghNxagcKCMc24n6znyt11tyr.p1zyv07A-zzx8npx.14t@flex--pratmal.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785795456;
+	s=arc-20220608; t=1785795460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wDkXq62PUaK1OEdpjdaABy4j3I9dWut5oFZmmgzetIU=;
-	b=Y6pdHi89LXwdYy1nnyfi2BTdE4wOELY20/QlyiwlwFll2hLnEyy13JeZqVo53ZUoCIbu0H
-	KPue2/k+XKqBM7V450rhvgx8p+acvQv30GP5M1/rgp/E4TxtTcWuXN0Y2gaOVZTOvsUNuG
-	clcwEzaa3QsWAM77VVQFBcAjZ7cgF0U=
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb835525b10so5210349a12.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 15:17:36 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2m7uZHClv1XrW6044CiQwNw33tdPDy6nZL+JxysQdrg=;
+	b=ClM4Z49fiS6vwBggjWLNu9LLikXSpmcmRM/qpApoDAmsRVGhhKNH1ATPC9QWhiAodStXKF
+	+ceXsLmR2Y4i6OGi5xI6Tn0V5lNJIyDrh2+vgGi5cfrJe/zDugZM4ofQT3KtU2nry0NuFt
+	GRsnOCp45AS+S6SmVpQgc4uupmR6rA4=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so4117364a12.2
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 15:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785795455; x=1786400255; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wDkXq62PUaK1OEdpjdaABy4j3I9dWut5oFZmmgzetIU=;
-        b=o6HIk+oHAfNhFaJvQOrLOpY73SKXv7bEKlq6n+1ZV9GwJgMNUu/eNj1E1Hrd9ut9kH
-         pH7PgrbGH6LaF8UwkMoxaFJv9s70e8UgwwKdXY7vKzSF2AXMbIo7ZfHAO42lA8jJLmp4
-         jTnbzMCWw+lXV8IVbz21aiHIFXApvLHbQac6CdOJF5qZ1H5b/7oaZmkJDDwQ+Fm9u3L4
-         PMontdLtno/8nTD4MahT/ZTKEnVTtAD+2vIrXFNVrzN2T2vQXndbgoPL4mafXj/0ELv+
-         5r5eQ5K9nwdX10a1YPYqsm5DnPSoMYTNRZhswDgGFHjgHyPzcUBexGBYk7bDO/9RP1uW
-         Up0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785795455; x=1786400255;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785795459; x=1786400259; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wDkXq62PUaK1OEdpjdaABy4j3I9dWut5oFZmmgzetIU=;
-        b=eP6+D3TWqC7d3okkvvz2TwCZfehBMZjnHrrPnlV3lVFYVnzlpbVFzf/Dsk2IPAfWrn
-         ICLSt7ThABDm70+ykO2ifXb4Y642sYLu6zoF/AwwLIwVIjPTHeY4NsLdeM25YZR1T7kj
-         QGNn/TYUsWbRPRsurEXq6EKoPpD20Xg89VLNNpWAkl9VgUs32UvcXW8eJl0EcVLGZCcS
-         NGnmzEFj4l6Kw5Vs2gU1lVkmP4pQ8J+fshnL0DSBz7J9n0gAsuV0TET+1JBRAoD9t8vA
-         rw6Q5RwXrQ/D/0pFU41cWN6f7EuyCZZLT43WKnBQJxCIorEGagD+Aq0TN+ZHjw0nuUw2
-         UHFQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5WkjZ8yFbdedhaEjgb7tpXUYVrY9p8aKHCLyVk0tA67bY6xbP7yoLVQQrMZiphgN7re57RZicKg==@kvack.org
-X-Gm-Message-State: AOJu0YzjTQhBuSbHLBPg/7YoqZ632GQUwwW6ku842zy7M6iKIrDCKB7M
-	0at+/WC9g8wu5umRrALHOCc75dEHz1FhCMt0109seRPG2u3/8RebJV7gw13WOsbkraO2Xlp1//h
-	LqUuoAcDlYQ==
-X-Received: from dycne3.prod.google.com ([2002:a05:7301:c83:b0:2f9:af7:504e])
- (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa0:b0:3a2:d316:de53
- with SMTP id adf61e73a8af0-3c92a26b16emr11210688637.0.1785795455279; Mon, 03
- Aug 2026 15:17:35 -0700 (PDT)
-Date: Mon,  3 Aug 2026 22:17:30 +0000
+        bh=2m7uZHClv1XrW6044CiQwNw33tdPDy6nZL+JxysQdrg=;
+        b=PcbFgZXqL9/ck70s+nWg3x6EQXpkvo9Tmqn1o97WWRuB8BIDS4Kw9/E0ukdVsy6SAA
+         2oVvKfOeoR5eoZmGs5VzPUc6sy4OhtURJRspj9b5vPBBk4IDGKDEwXpTYXE5lMcHz7WW
+         hyFQg/Q9oicEWCNOFCw6kSm1JDZBZ4Cg4UUjQ7pQEcVfYQ8nQyG4rABw7SLryJwKrN7b
+         MwRsipVxaH3hlXgCAjZTKo3LcJ0nW859nwZ67A+l/CKTvgPD7iGMHIATlVccl6065DXu
+         QQQyXTFrxXC5BgiBX5XUITVc9pzbwGnYuIifKjE7d7ipeopucj4seER7Ack24NAKZoSK
+         eR/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785795459; x=1786400259;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2m7uZHClv1XrW6044CiQwNw33tdPDy6nZL+JxysQdrg=;
+        b=tFS9xo1unJnWMQWevHH8hSAGEIUT3hraUdmuPbxETv8QuzMleZwblxQ+MD4CCU8cnG
+         0CiDqScQwoCKpkGhV3/1Xi+XGiI0oEhhYsYIz8R9GoO03jxnNPKg8McU11EVnttE5x3i
+         wg6fBob80WBQgIWoi+P26azuNimqLDHXD7AoRzB02HsElqZtiUlQQekweeHaqsTEHtPI
+         2PZWOt/1OGFj/z3Qx3SN7JqC/VOetyXKR9v4qvXzgdpK9bqhZci+e9pJi/Tpzt2g4gjg
+         JG4/o6fPAX/bAnEeebCYNk4uzvIHniZkeSwbIZlbrjup64KxXRBCvsX8Ip4N6D6fEYi/
+         /v5A==
+X-Forwarded-Encrypted: i=1; AHgh+Rpgc3UvVWXLEc1jSWDsJhgBcprRNWCneef2A4rRO9PgnjNilQIfYNhiS6MAnhUQ5njUTmsP8lYCOw==@kvack.org
+X-Gm-Message-State: AOJu0YzLHQi7Sn/49Uw1JVem2yaRYyvRfCRhWeIby7EmPhMPlR3x0R52
+	1Y/w7qEW01YGbUEvDhE0XVQSumSm6VxTl2qAMHWeSgDSL8U3axrLbMcAbj3D+LLwyOteGLvVVD+
+	YOG9lMuAfRg==
+X-Received: from dyaz4-n2.prod.google.com ([2002:a05:693c:6384:20b0:30c:86eb:3114])
+ (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3390:b0:3c4:3ada:384d
+ with SMTP id adf61e73a8af0-3c92a57baf2mr10389215637.30.1785795458586; Mon, 03
+ Aug 2026 15:17:38 -0700 (PDT)
+Date: Mon,  3 Aug 2026 22:17:31 +0000
+In-Reply-To: <20260803221732.3651981-1-pratmal@google.com>
 Mime-Version: 1.0
+References: <20260803221732.3651981-1-pratmal@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260803221732.3651981-1-pratmal@google.com>
-Subject: [PATCH v4 0/2] selftests/mm: use pattern matching in .gitignore
+Message-ID: <20260803221732.3651981-2-pratmal@google.com>
+Subject: [PATCH v4 1/2] selftests/mm: rename local_config.h to local_config.h_gen
 From: pratmal@google.com
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>, 
@@ -96,13 +100,13 @@ Cc: SeongJae Park <sj@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>,
 	linux-kernel@vger.kernel.org, Pratyush Mallick <pratmal@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D095D4000A
-X-Stat-Signature: sj9z9txda8krbi1swjamswstn9ns8zez
+X-Rspamd-Queue-Id: 2556CC000A
+X-Stat-Signature: xb7jykzpf1mmwg5g7iandcwexg3r1pja
 X-Rspam-User: 
-X-HE-Tag: 1785795456-466027
-X-HE-Meta: U2FsdGVkX18WULwl9SFxhrzajxz3UOTZIV1llnX0gZpzzElS2sh/Exu9wb470WTxORsTfF7w0UPYuQiSAaBtyxAS2+68yjjVfbga5bi2QJu30Vj7/PGoO1SCF4DlcOymR5cU+vZxiK8x7qsEFoiR93/Pu+vdu6OQle9Nl/8yp+IoB+RxN3RBqVd/SLxshrRuY2lAcKdCU2ISVXWaC0OeTP809vgnj9kQvT1RxXlp9boLvpVQ+EvFV9QQW3i+5PoCJ/mjyIXHv4rraMKBEJgguusL14L+TIwLIJg8EDjaf+4XbwARQPDimmeW8aPxspxGmrg/+MRmOJgR95D7+Jh2XQNwslQcaC5lgOWzMmR7HhDNMmEgx/eA1enwbbOb9jG4VH0DB6od81hqmByKcuDs97MyeXg7cE5uxkqADMM8pluuDrh4/3gDN9yzysttIu9CaXnlGwPHrNWXsWaWv+Wfcy7FzMEa4VMl8Z8uLBElvCR4ryHAzmOHZIDnRfDW6/RoAV6q1Y3urCifOUI5Zgf8Y9L/ZZgcBjrbuKg5GkVNBiIIDKJWc4H9sbwhIZQzRs/iR/vuICLGXc90NI5riGnhmOHeby4eIRPreBPQK9nIILd86OXOF3U0EojcLyZVeWzE8L57ZX4CpAUfWHA8yP+Ba3eTNkwdsLaY/3XvA1QwFUbF1iPB0FU1v3JoOJpkBTXcUvolWAInX91OIRvWSlD81mjnlbWC0/TwWjw90WGiSG+W6bNSu4oCDThRwP1moWt60nss5pHWHnH+sunb01QYW/EX59yiCF2Kfn7dLjCS1yfLamDbFK+4QT1KDT4GoefFgaabl5r6P2X4Pu/6HOWTL35dmANHeLYIJ/z+8olDcBh0ExV5cS4DwEeQARbGrA2Te3/h6ROIWdFr8psNedvH1Urhn6Sb6Mjsu411uTdK9jkYfJ8Q9f/i3Bgy3Ax7L7FfW+5pVlG0IJbcgQphqBP
- VGsm4564
- f64JGtfxJQwOPm01PSz8KZFZsiesBe1xCxzANEZm+oM3G4wZmjldSK41yV/1FNsj+DVuWgeBqTA99cidlL18vIgIBYlGYrJ4/TDAwEkZwdy8pWXPmQSpFsLZygeYxFDcbK0OG/D2cl2RFMt6V8962NPrZ7chZTHG6sfxMa/kRY7fRcLpajFAfdNJAu8IP18/nEh3y/sihIN6E5UuUo/wxcbt66Kr60mk7svC+HGpUmhMUG4qD6/WUJ0XatZhAr0B9LznwfNvxOvqOGUX8Q/s+RT1L/PCkRUFxLMcnW2J9TFjUJTZJeAsoeGAYruEcB23bv17imNhkIvMJQWJ2TyCGT8ybG0+l4DcAoOsm90S5EjkWiw5oQcGAfgICkVUyAb1bUSXpwiz3FkX0idBd0Fy7gSD7R8O9W2n/MplwcWiK0LRQJ+B2GibV5bRsKzQLkVg694FMtAudn5tLhU4lRlkspN1VwFAcMVJ2NDKiQX9HN4QERUh0qh1ZXdiqZ8tKqSLq6LsBz3Cw1xEzzqEIJRD4WonzlRZ7goxUsBoT/QybJvw1JYP/57IGYu1Ufs3+Gk9zkmurCYFx2odYEXgmHDdTVTJ5fQYJjqtIGl11xXJQf2rbA3Kpv7jqHKgfsiQl4KG4fhSmwX+AyKJOQc0=
+X-HE-Tag: 1785795459-652525
+X-HE-Meta: U2FsdGVkX18cGPJ82gC7l3fO12MNYfLMKLqFZFVBiZpwxGDbcLJbsxOxUdSyyBuhPWn3qhf2yRGIe90TOV2kYC1oK87y8m6OZNfnm33E8e5LT517HPN+FtcSFqNgacJLnwmhAj4YBApKZsRg5zkZDxduJbg1WUcxf7ilIFHbuD3hJG6XVUbdqHI1Ic6ffcPnR5hsZm556KJN2YOGU9MLEcb8yMeOKlVSvsyYA2ctKTJb6/lWmMNA4ZhbGKjzdJNRiglHRgK1A/JJilkfHS5C16C9i+AyMIp+GBTJArU6C/qHKiX5inYd+BJe2k6IvBqko1MeiWsOK3LxsmGphxGLxuJx7Lbc0nm0ov91CyTYuq07hxLEDjrXLpwk9kCln2Vte0eyPJt0uVaTYxcWMbmaoGJvgabuplX6qNcGyjQyPWnperYMgyJzWQhkA3/0p6WjEYSejsxA39c612byJ3143dLNZJvFN10Pq9ARQf7LEis5Xp8mvu8rPzJfVXJxApQ4C6RKtkJFaPFvaxwoooSkF4kxgyfom1mK2/UXQDOS8qHQ/EUJyK6zd2oZd6Ds9Zh4Y/6gkw0JHiHNx9Gq6bdiTJn//41mwFd5FyCEKadezaIDFGGwnZ7vUlhSh1QsmkyUil6kI+EZLytmKanMS14zE2NjZLH4/pqccFLZSpyI+0HvXv/JOnfQtgXTgikb0YMqZG2PMmn05EUqbMVHhCAcNgbQxbi2/gEhshDM+ZTDbVds5w4rdiS0Q3htNuZlXjxYAuoOiDBL97ZZBXTLnYgi8rbLeQvLkfiSmPosC1u3TNaxEnuXN8uNN27+RBF3TnTZCZuZV8n2qjEXAQudZ1yjf7mjgMaX76VJAPNXvPcQdo9O1w21b0HEW6wl0XqQfvMTm35kgRa1wLCqIvVUxy929Bz87to0oWwKV+u5ZR463ct4xLAS/80UoUt3pcEBIvOdpqXPTeIhoqDqHt8E/AO
+ tr5pcplb
+ tjtI13sYXWekPZv38E/uNDISf319vOQuZ0+tgc2WF7k3Au3CKChaiGP2lWaYggIS3DFQqM4isl43tGxclYmvXkh7ten9D+90yZ3HC9Ka7h8nvJe7XAU8Ww3z1fWdYz5FzEKm/Enc507oEXu+UVYVrlUIHNQ1chi2klI5yYchBsoQCDoLQx++NF/offXgBbS7fRQLS5Ob9dM8P9OGVhoRAmtsvrFGXtp8Pkm86fSXyM4t/XQaHbi/UKoSis+3WIHnEzNBLFYp6nRvbDwqK6c61w1RRuhk/rIU7NsI2YWu4+T0dsu5mbVwePo8uf/rbivx+hHcQU5B1LTcbK0SipKGevZt7vj9Clu4Qf0S0WtJBdHvG6G8c/ELqDOlqGKo33+VVdoa7R6zOMpDu1Otiwo4LY4XiK5tJXdUKcljDWHw1la8bk3u3X/hza6qWt8UvCe8Se0M7nZ54UeFyqo8dm+zOmTjP2LHWpm70bNb1qM9K05+pxggCudDsP5S79kqCsCoo19Fkplf/HGbGMlCUGQTSZmsHAzIrnFnu5Q/8G2PVl3/PpVR0N5+qyFcmqEWmkLbnulWVaYLjNL1Fxrk7nwQEtjbQHUBOd6i+n5tUwHltBYRPyXxZWyExC14m6kgMfotVeKDk/KvcabKYCzY2RChDXs4wK8eLdk65TI9C7cBdxaKrjTNeqrNzbP1TNM+RqMZABXz0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,47 +116,94 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pratyush Mallick <pratmal@google.com>
 
-The current selftests/mm/.gitignore hardcodes each generated test binary
-by name, which requires manual updates every time a new test is added.
+Because local_config.h is a generated build artifact, un-ignoring all
+.h files in .gitignore causes it to incorrectly show up as an untracked
+file in git status.
 
-This series switches to a pattern-matching approach (similar to KVM
-selftests), ignoring everything by default and allowing specific source
-extensions. To accommodate this without tracking generated headers,
-local_config.h is renamed to local_config.h_gen.
+Rename it to local_config.h_gen so it no longer matches the !*.h
+inclusion rule, preparing for a subsequent patch that switches
+.gitignore to a pattern-matching approach.
 
-Changelog since v3 [3]:
-- Reordered the patches so that local_config.h is renamed before
-  updating .gitignore, preventing local_config.h from temporarily
-  showing up as an untracked file in git status (SeongJae Park).
+Update Makefile, check_config.sh, and affected test sources (cow.c,
+gup_longterm.c) accordingly.
 
-Changelog since v2 [2]:
-- Split the changes into two separate patches (header rename and
-  .gitignore update).
-- Added Suggested-by for David Hildenbrand for the header rename approach.
-- Dropped David's and Yosry's Reviewed-by tags.
-- Kept Lorenzo Stoakes's Reviewed-by and added Mike Rapoport's Acked-by.
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Pratyush Mallick <pratmal@google.com>
+---
+ tools/testing/selftests/mm/Makefile        | 6 +++---
+ tools/testing/selftests/mm/check_config.sh | 2 +-
+ tools/testing/selftests/mm/cow.c           | 2 +-
+ tools/testing/selftests/mm/gup_longterm.c  | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-Changelog since v1 (RFC) [1]:
-- Renamed local_config.h to local_config.h_gen to avoid conflict with !*.h.
-- Updated Makefile, check_config.sh, and affected .c files for the rename.
-- Removed *.mod.c as it was unnecessary.
-
-Links:
-[1] RFC: https://lore.kernel.org/linux-mm/afnMAaz1jY94db2n@lucifer/
-[2] v2: https://lore.kernel.org/linux-mm/b6717dee-486b-4c61-8ec8-0e4269959469@kernel.org/
-[3] v3: https://lore.kernel.org/linux-mm/20260511173411.267628-1-pratmal@google.com/
-
-Pratyush Mallick (2):
-  selftests/mm: rename local_config.h to local_config.h_gen
-  selftests/mm: use pattern matching in .gitignore
-
- tools/testing/selftests/mm/.gitignore      | 71 +++-------------------
- tools/testing/selftests/mm/Makefile        |  6 +-
- tools/testing/selftests/mm/check_config.sh |  2 +-
- tools/testing/selftests/mm/cow.c           |  2 +-
- tools/testing/selftests/mm/gup_longterm.c  |  2 +-
- 5 files changed, 15 insertions(+), 68 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 7a5de4e9bf52..32f4b016b74f 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -5,7 +5,7 @@
+ # script so kunit knows to run it, and add it to the list below.
+ # If you do not YOUR TESTS WILL NOT RUN IN THE CI.
+ 
+-LOCAL_HDRS += $(selfdir)/mm/local_config.h $(top_srcdir)/mm/gup_test.h
++LOCAL_HDRS += $(selfdir)/mm/local_config.h_gen $(top_srcdir)/mm/gup_test.h
+ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
+ 
+ include local_config.mk
+@@ -259,10 +259,10 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
+ 
+ $(OUTPUT)/rmap: LDLIBS += -lnuma
+ 
+-local_config.mk local_config.h: check_config.sh
++local_config.mk local_config.h_gen: check_config.sh
+ 	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
+ 
+-EXTRA_CLEAN += local_config.mk local_config.h
++EXTRA_CLEAN += local_config.mk local_config.h_gen
+ 
+ ifeq ($(IOURING_EXTRA_LIBS),)
+ all: warn_missing_liburing
+diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
+index b84c82bbf875..b46bf2d2e7f8 100755
+--- a/tools/testing/selftests/mm/check_config.sh
++++ b/tools/testing/selftests/mm/check_config.sh
+@@ -4,7 +4,7 @@
+ # Probe for libraries and create header files to record the results. Both C
+ # header files and Makefile include fragments are created.
+ 
+-OUTPUT_H_FILE=local_config.h
++OUTPUT_H_FILE=local_config.h_gen
+ OUTPUT_MKFILE=local_config.mk
+ 
+ tmpname=$(mktemp)
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index d9c69c04b67d..87710c5a2d3c 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -21,7 +21,7 @@
+ #include <sys/wait.h>
+ #include <linux/memfd.h>
+ 
+-#include "local_config.h"
++#include "local_config.h_gen"
+ #ifdef LOCAL_CONFIG_HAVE_LIBURING
+ #include <liburing.h>
+ #endif /* LOCAL_CONFIG_HAVE_LIBURING */
+diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+index f61150d28eb2..00ea0dd2f655 100644
+--- a/tools/testing/selftests/mm/gup_longterm.c
++++ b/tools/testing/selftests/mm/gup_longterm.c
+@@ -21,7 +21,7 @@
+ #include <linux/magic.h>
+ #include <linux/memfd.h>
+ 
+-#include "local_config.h"
++#include "local_config.h_gen"
+ #ifdef LOCAL_CONFIG_HAVE_LIBURING
+ #include <liburing.h>
+ #endif /* LOCAL_CONFIG_HAVE_LIBURING */
 -- 
 2.55.0.571.g244d577d93-goog
+
 
