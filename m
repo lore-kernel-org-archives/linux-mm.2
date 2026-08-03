@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A26C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E76A9C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24DBE6B0095; Mon,  3 Aug 2026 09:07:56 -0400 (EDT)
+	id EACF96B009D; Mon,  3 Aug 2026 09:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D77B6B0099; Mon,  3 Aug 2026 09:07:56 -0400 (EDT)
+	id E84A26B00A1; Mon,  3 Aug 2026 09:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CDD76B00A4; Mon,  3 Aug 2026 09:07:56 -0400 (EDT)
+	id D73EA6B00A4; Mon,  3 Aug 2026 09:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE84E6B0095
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:07:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E8E012064D
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:34 +0000 (UTC)
-X-FDA: 85059443028.21.1DC2460
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CA74C4000B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:32:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcKJhhXR;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ADFD96B009D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:09:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5DCF14066D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:30:29 +0000 (UTC)
+X-FDA: 85059437778.24.D34D579
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 007FB2000E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:30:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8vyRB9Q;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785749552;
+	s=arc-20220608; t=1785749428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tV++lx5wKqCLqTJkSKjN0rIr4B0HTe85fHGLY9zxVMQ=;
-	b=0nor4WZn4F6j8Zbi1xY0ZcoSgtTtvps82Oi1CI0Et5YuxMxcBPVIpefYX3F3UoFetbLZ37
-	UGOzES7uD01S3fawI/512/K7rW8+8D3cQntXRmJHelSJ3vtk5Cl1CJEN/vppxy93NTlhCI
-	1ecacTTAylS/SjNhQwwmcaKZkN594D8=
+	bh=Zjh5R7JiqdaVW/vRw+XBY0BM+01RpjpIK/UObm893hw=;
+	b=lC7qfip+6D6C4mynth4RZj08rmmNyj2NoF6kABEkHg/0xTZj5wgbST9YZzpp2jN6AG2X0N
+	qms90J/2sjOLWKFADt3nxUqcnqic+yhEkLiBoENrPzacq0Ltuj3J3oD31VIokwTQUOPJug
+	YTtck2e6SA1SELdlTCnejl3a8+DahW8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785749552;
-	b=LC721aL5BhAZ7TQXlFVLgDNhTSuGeDoQi7hnHb0DEYvEsckuCRVwgJJEWea5x/1hSe4eHK
-	ki77scKQkPfsTGtjAmYHG4KlYkD6GcMFDO7pgamspT78SPKCiGuI6AASK6eW/HunYgHIOf
-	KTCmI+rnnboryeBKkPJ56s7Opk/6WZs=
+	t=1785749428;
+	b=CJs6rg1xWZ3Hqsr4y7ao3NbpY3cvDEycfCJmOWyJFU1B4MPF/D/cHNrpP5fNvnhi5sa2pa
+	+T7m8Y+PR9aOAQgPg/Uvadsv9BZ5PB8LiqX28SNf8XguKYb3brYpu/H4W+FRaB57jai+mL
+	ebmt5oWhfwss3dsohXiOrVgwEdRVPbE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcKJhhXR;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8vyRB9Q;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99FB24389B;
-	Mon,  3 Aug 2026 09:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834281F000E9;
-	Mon,  3 Aug 2026 09:32:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8959E60A69;
+	Mon,  3 Aug 2026 09:30:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD37C1F000E9;
+	Mon,  3 Aug 2026 09:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785749551;
-	bh=tV++lx5wKqCLqTJkSKjN0rIr4B0HTe85fHGLY9zxVMQ=;
+	s=k20260515; t=1785749427;
+	bh=Zjh5R7JiqdaVW/vRw+XBY0BM+01RpjpIK/UObm893hw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BcKJhhXRkiRbXC2AN5t9Z7i08hpKfJ5oidgPQpSKJtvyeNJ72f8EcgJaFO1j8zNwX
-	 Txx0uWuhckidz+69oyvI+5Q4gIn0MUcuD25eCNFxJhTsPySR5o9z85BubiJujY3Bbp
-	 MSHK8dvgri/+2FCewZK56HAI4qA5VW8EwByNSIid/uLwC6EbWRrtygckVww8FGyD0d
-	 0cuKb4B68lXnGkLMledMj0J3Zd3IlFsBHjueGWxjg4iUH0um8JYjRyEAaHpGxlF0pS
-	 MlABDvPHsMP00IH4vr2PojwL3Y14mA+tM9F4NQQjb0hun6IRsY9hkNnuY8VP+Gzvnr
-	 aeKgffwvHzjgA==
-Message-ID: <9a820779-606b-4a67-affc-5fdb85a00289@kernel.org>
-Date: Mon, 3 Aug 2026 11:32:25 +0200
+	b=V8vyRB9Qh24DBIJLDfn63WPRgS18/lHWUS4HBAJ0kTRWs6ZmedVmrCFmdddwSe4vT
+	 5a0v2VRt5ZYF6TJxFZwRb1kVWG0YzNUsPMwcAAGbA4uDcJEF/RKLQSX8rqVzICiBFK
+	 wnYqhWReKHBGiV7anEVAJaGcQmWGl3MSdB9t3zQ/iEg40HOuduZvuPpHYG05/754K7
+	 XG+lX0uv11g4BdHt+e1xaoiyCkvEbxHPh73il4Jr5qzEZqtI84vTO82GyeRuaXCF2j
+	 g+Bocdwto/LOymtNfLqr2FLm519accY0LBWjIBRxn4mX676u+9ri7OPH9VwSB1th1V
+	 JnRJiYNYE+Jpw==
+Message-ID: <dee6920a-c0e0-4cc1-bd5f-d503da0492ae@kernel.org>
+Date: Mon, 3 Aug 2026 11:30:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/26] mm: Split out NR_FREE_PAGES_BLOCKS_[UN]MAPPED
+Subject: Re: [PATCH v3 22/26] mm: Minimal KUnit tests for some new page_alloc
+ logic
 Content-Language: en-US
 To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>,
@@ -86,7 +87,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
  Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>,
  Sean Christopherson <seanjc@google.com>
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-23-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-22-6f5729aa9832@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -127,17 +128,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260726-page_alloc-unmapped-v3-23-6f5729aa9832@google.com>
+In-Reply-To: <20260726-page_alloc-unmapped-v3-22-6f5729aa9832@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b8y8qqj9y7x1od5uc1c3pokorzafpiyy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CA74C4000B
-X-HE-Tag: 1785749552-157762
-X-HE-Meta: U2FsdGVkX18NYOjVP6GMgh8tG9BL7KwELZAMqmR+hmRJpS1rv8X028vapG+hm4LHpha4fUTn8/HDFXPu0aPvVxc+vcOV2gzvkCaLxmFk5dQ5PZug3OaGt4i1ben+AWstU2SLhaQMcrSz3FLOPJFC/Igjy5fMbBJ7YnkDRyJWNBCafdWHjML8TitR2uw3K8EK0I9JHiRZa2fltudxOMBfVYlgm2lxXQHC6hzFX7uW2Z3nUQuwHYeHibBR857dLWLxehdy/bDls+Os/BqO5mc26JGAgO/z+4BiL6QlQf7FfaoCKXRbAu/U5MiUq1HftFWHayMJtEq4RbKJySgzDuJVgTEwJ1aWFHvan/eCj88+JNO1pZ/uyF+KKo+Z0xHColpcfr1LWpPuGxhgsm5RMqVO2Usi3IRyztxt3PHscveIUVj6Q243FkXb5pbEJcZ2eSCJ5KsDiLYn8G4kl+m2YVtySTpuyqdwC33CJfBKaNPjBVNmvxC4ljfQIWASGfivMi6wzxhsLUhFMBjwCv/HwtxC6edME/TFoIMY6Nia6Y4cd2gZ8cKCF5J6QAMCnxoh3CfOhSX2ONafVqp0d9zQDg3fEPgJa0yFjf3cAq4w1RiD8h7ifF0XAslUQAiFCAXHvz0KDhyUHJabRwbqyysxsLZ2IUwKlrXA5Pm64nGPB8FmQLQomMjzrT5PVKgaD4lJLJAXfyYJTWc89htkygHRScYoXphSmTeIQKIA+eDG2rEqP3LkJoqfWbmmgv2uIfKLtyCqFwCKoI90jHVWeYM/F+ay3G9HwQmk7BmCUqwAglMdZ5Fqnod/DVirDE7y6wpg0N7ZQ2pXaUi/N62OvQdnkaA4D/EmX6WaUv4BYh7jPEYthgT0mecWfR6ydtR2vpyVUl7MZt7/x+wAM5ryvZ/fN4AUUOPNRRcOWberwjyFjwwE2I5JHpBolGvo4nHJxVgPsrRJaGDc9v9laL5gEVbFXci
- jnHwu9L6
- uEAZfHXLGBe+JKfs5nY8rbwefAQ/bNaT/e4LJzFQeeRZOKPFTk8tdTZ/Vz1aANQAGUxL5Fcrk3/hN+5rAsFWsD7x0VcKMKUnyBsGDuGhbVxtGPg4Nm6X7wWxFoO6hjxJxd1DWwodz1ASXAUn3ZotDFsOJ6AGbTnTOuNTJhRyDzfIx9KOHWfhoAs7qrUhHCHLn46sttGJl6iCvqU5ifYjFrHDW02gYj4wuFEvTDKilsqQYSHj+FpLi21kaYzYGlHXGqC6skTLaLnQxphZCKhJuvwsyt/blQG/y9vEGHmYw7jSkdYZb7XnPCulR9+E3e277QOwDdBmwnrYfpnEdfUF0SNg6ikcbN8s6OOrQ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 007FB2000E
+X-Stat-Signature: byw9jjjnfka1jdeybnq5jfeh34aj7pta
+X-HE-Tag: 1785749427-649073
+X-HE-Meta: U2FsdGVkX19IVHyb6qbvR9MZxmaCUGtRb3jFNaltlKa8t2HlQGfxrSa9ecLP7oNrSG8/rxdZATmVGtcrhwbPCQ/DLO5Ew9RA0pSl8sOtJJHUlNiaeION6I/Y0XIzPnxjdfSIZrTDW+DjDkQpklzIxFH+EY8fappCEWhn1Dq5TKj+Zo6Tphe72ZOnEPOtVH/TflsBmpxe3q2ilTDuUGnztTct/u5OznREUpHw2nlS1P6wStGN9sCthsddEE8Uwd/wwYWLiwLWEqTQcescmPcs61ePpMzVlN3Zhj62rw9HsSV6ssr8WkZBI5DR9QPsW33sQkevwDjw/i/ob9jRHgIJjAXJDsw1I8NYHDvo3Sr1U0mDE0eZZ5eBpI+RnsDtZ5qbtlc2OM6K16BWmpL0osKvm3t3l9iAfJ61yUqht9hGBi94cGoUMRSO8U4+h4I6L1f4f0VzBbkOM5oKVDUVhUaTX7E4CFzd5UkRV1TW7mQI7oz4ZRFQsFzV5e3bxMoFzHKuWUx2VoBFEvuqx11D8T5y9e+bpH8dzkuAMpOnh03IqJUZ5grRNQ7EAFEJ9i/d0h2DPQ+Agp/eG9CqiKAgWhhCapd1H0OVsFiIKntmXI8AWHLO3V8FaQTDp//rIxvWIKrT00s7Fdvd44EaR+11zSOwONBXN1bzkNl6izX2bx8Z3i96nb7WgSBXVA76xwqbRqrUI2y1aHgIsPYI2f+ri+3526zkTVHclXPJz/rSwZLuPxtgRdsabGRfFmKA70z3jBtD4nzUlLv1Dy864EU3fJi039jlcaI/Ak1LEgDsZAV9d0ir2LijFTxlvePqiDoywawzhjJA6+oPYEg2+ismBv7RomRKxLBS1gTV75IEUirn/yLs4haRthyUSkdeSaRdYkA1dQydCDknJ+Fyeskb4kPLR7PnDLT21uCoM9TIRw9QiESbsYmwEBIuSC6bJ9L/nqCgFPGV+txOiogMmpMgO8/
+ pmywWTBO
+ CDMNUWhSd1KfIjLTpA1fE125+nS75NA+wwPrboIBdbSBihe0EWijdfcI6ZSjUO44kTxQpm3m3NcWDi7ax2Y6LD5Yi4UppwS8/mzm5SD4NQBjshwWJHVcOxf8/G7Y/cYdRay5bQSoGJEix8ftAQdz+pVPnOjfN5I6JMaPFPmyhacnAeDFWQcn1/8wmRXn5vJKKMm8hMIaoP0Xce95pMKLZ2iEj6LaodXH2JiSOqW+IpFsEK2f27CfeCgod/nd+OSj5bOl8yJkn7fX5u4NczLXqJUZDG9y/pEIGrYPS56c5T9QTVdbw7MzhtCnVBK+oFzkuGL1rscUQhQ99t+rLsIPE34teU6uazuMPHr0p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,12 +147,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/27/26 00:22, Brendan Jackman wrote:
-> In order to infer whether compaction is likely to enable an allocation
-> that maps/unmaps a pageblock, we need to know how many fully-free
-> pageblocks of each type there are.
+> Add a simple smoke test for ALLOC_UNMAPPED that tries to exercise
+> flipping pageblocks between mapped/unmapped state.
+> 
+> Also add some basic tests for some freelist-indexing helpers.
+> 
+> Simplest way to run these on x86:
+> 
+> tools/testing/kunit/kunit.py run --arch=x86_64 "page_alloc.*" \
+> 	--kconfig_add CONFIG_MERMAP=y --kconfig_add CONFIG_PAGE_ALLOC_UNMAPPED=y
 > 
 > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
 
