@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F768C55196
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 19:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3845C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 19:48:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB9746B009B; Mon,  3 Aug 2026 15:47:28 -0400 (EDT)
+	id 656636B00A3; Mon,  3 Aug 2026 15:47:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E91866B009D; Mon,  3 Aug 2026 15:47:28 -0400 (EDT)
+	id 542C76B009F; Mon,  3 Aug 2026 15:47:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D31D46B009E; Mon,  3 Aug 2026 15:47:28 -0400 (EDT)
+	id 3BBF96B00A1; Mon,  3 Aug 2026 15:47:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A70C66B009B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2D86B009E
 	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:47:28 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 455741C0F6D
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BAC31A07CA
 	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:47:28 +0000 (UTC)
-X-FDA: 85060992576.28.C72A580
+X-FDA: 85060992576.11.CAC6998
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5A8091C0003
+	by imf22.hostedemail.com (Postfix) with ESMTP id 70F80C0002
 	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:47:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DR6NlXu1;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785786446;
-	b=pCajWXhGZ6smPOPxiT0wDYoJv2KEv/iMAOgW4B4PT2HR+19dCI9LMRjBhFxyBz469PH+vk
-	CkZO/iLIy1nBfGAcM9Mko+IFJ/Vt1YZ24NWIeDGu+r3QpPFyOIfIr/wjm1JJqvm3bB4A6F
-	aFE9DwbejRPaFGQ2xbPcVH4B9Llu4w8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DR6NlXu1;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUq52jCl;
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785786446;
@@ -45,36 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=thnldr0/Gbto0mdkDBuQHq8jA49n+XZslISWD3XgMUE=;
-	b=fz8lojV8iA6+xYeoEnbwq8EjcciQZxzHXD/I5WNU1uORWYWapv91zPNBTndKPt/su8bg/c
-	xzaCRncUk4Hd9MaHxzN1Wyuvwzxlcpu0ZN4Owbg+qyV4Dyr6V+e5tESfEmeJzUoPoOydkt
-	yhJBG3T5GJotBKYBneObBCOjG9mW56Y=
+	bh=sRxEREMbKgpUrYeruME3bMKO+IUF9VRvK8Ne80eGmP4=;
+	b=nQHPPZqBdxuypv0IFiD23RdoQaucFH7LHlr/tQ9fbtvtdf4peaE8CU/QOVAieRp8ACwhfW
+	oRwUTNnT1V8PD2CuiyDmCjA6b0gYtgO7Zu5saA+7APWeRKfpG+ukWBh0A/ihd2i0McDrih
+	qwLjRJ0OQokE9wwgC+9uRImXdOa73Zs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUq52jCl;
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785786446;
+	b=YAeYDY00wj0qT9AmnLJ/6Z9/iPf2C3ih98JGgTnliWwlrYEiYCkKgccad4JFyize57W0Z1
+	8gPRxwLLnfko6Y9PDJlrVELAtgRI2OHc5EZ7I9YQqR9LacM6RFhdRLX7cXgwxp5UZBHz9Y
+	teeQ7W7EiYtnywI4Tj5ePpvC5XWCUi0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0742644FB0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0ECEB45013;
 	Mon,  3 Aug 2026 19:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BBDDAC32782;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D0011C4AF14;
 	Mon,  3 Aug 2026 19:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785786442;
-	bh=cYbOLfejrKyQ9BPd8CMH99ZNpXZ1w9drr+TtG7Ncs1I=;
+	bh=sFUdOmE7PPq4dTTxszgE5i0xfhfb5mMlbqX0i1zr9aU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=DR6NlXu1rq5Z+SXhDN9ulerai7GEJwrzpL9Q56W/L9ph2wNEmAl6eYzYKPIeLnBsn
-	 NgZAi1VRVCaYS0vFiXM+6nfNaChvZoDUTxS7se3JaKl7wkHXinNHVOBblqePpDMDKF
-	 9iz/D1V3MZJeehVkPHTeffNs+iRIP/Zur2ckBO+qxQhZCDHgnXolj2iJ1VES1sIrAp
-	 EHRKdgFz1n993debHt7uHf1+Cb/4LSsNfpSSLksax6/8KgV8/mMg3pw+BirsymwJqY
-	 qii9NSRFISffUDeKF6BuX/lzEKGvUyejypMd/sxebeJSJXVh4949yokP/lf4MG1NLW
-	 PUWum8Y5zcOJg==
+	b=ZUq52jClfqCojXBb7kZZeNU1BU0+C14rPWs5LSmrSLot7mRQPqxYH7HZN8pT4lyIv
+	 XJKm+VV9jWxwZOIbxBfBm0drKR8pQX8YVsh/ZTV7tAlGDznW98wxaWmAaLpBgDjvfK
+	 O0pBgmRo60yQhS2T85Sx9edHG+54OcMp+2x6Dnrcp0wiFSfNRGmqsGK94o9gVtEJIE
+	 5kbKn+diWyCivlu/yL9VSo+WVPKBm8M6OfxAJ1tsuQU8dFF4C4EuB+6EM0S7LKLmcQ
+	 dcnc8fB/eMTj8GYwv8Bn4uQxqZ4ctz7QjaILV1dnDsh+XL8a7DF+0n+mU1y//xtwz4
+	 ZGZOaLcmkMzug==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A426DC55184;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9AA8C55822;
 	Mon,  3 Aug 2026 19:47:22 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 04 Aug 2026 03:47:03 +0800
-Subject: [PATCH RFC 07/15] mm/mglru: move refault workingset activation
- into lru_gen_refault
+Date: Tue, 04 Aug 2026 03:47:04 +0800
+Subject: [PATCH RFC 08/15] mm/memcg: add folio-based lruvec live helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260804-mglru-fg-v1-7-4d8dad39dad6@tencent.com>
+Message-Id: <20260804-mglru-fg-v1-8-4d8dad39dad6@tencent.com>
 References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
 In-Reply-To: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
 To: linux-mm@kvack.org
@@ -104,25 +103,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <kasong@tencent.com>, Baoquan He <baoquan.he@linux.dev>, 
  Nico Pache <nico.pache@linux.dev>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785786439; l=2070;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785786439; l=1942;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=1vC+xi9jNiCocZFLKmWvRW3U2STkCUDTFpNlV8n9RbA=;
- b=52vn6IfvHhVTl+P2eITAdJpvk846TJfwLfY88yxmTc88qbpfSMc32svILrESnyC2fHKo7ZD0j
- ZaK57q/2igSCfTqDJ7iXTgDStAVyQJT+CccWDakvux35J5eCy4eOMqP
+ bh=CYaQx+ZxB9rM3tJj/qRBO+O5Fxa1QWpmGb5iZwXshX8=;
+ b=++Am5L1YzqiSnxDr9o1VMbCVEwEukS5UN1/zmmuMnpfuljIk/qOzAXVOhUiwyoRYhYQDYt45R
+ xgE/vtt5N5wAukyhcBnL6BpQE79+Z9dNxi2hwZQC227lqiolRkVLMAv
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: a6d8fkgxoh514x8zfxz8oofj4jgqtzor
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5A8091C0003
 X-Rspam-User: 
-X-HE-Tag: 1785786446-432531
-X-HE-Meta: U2FsdGVkX19naal67iybUCoHN957JXphBhJQjVX5A9Qv74m478rCP5up+w+NLYM0oXbNHR6UFe4yfDNDKdy0GHqogh7Tx9OEiRXKLgFSIp4OF0wjvj0FqKQo9PHIXh7+j/0DuclzQ5QozcjY6sAB2QCFPvXwqfRZUrllj9EzVw7HZ83cSnVKQ/L/+b5YnWCE1q1Q+37l+i+uV3jtjgHvpaJ+FscZgWMbJ25tV8f2NJbc/Bc6vRpVVVTPJl4aZvo0PDzxMSL6qh4HEEpk2x/oVN0+dHRXz/0qznEjtufylSCmSJ14TYlUmG52CwlrZm0468vcPqRT+zaTrXIjBdcHLzKz/aKJIkjzVNpFoapuariv4O+LG9CmS0qqTc1iciopTpIt/F1h0XC4keDbhVoO+7HQaB+9Ye+pnSfEmC0k7eLqQXEsRcvkBOhq65uEoZ/FCPzdZhdVLgNBxqVU/ZiVgmkyuVhGDyJzkmdFKRZy2xx0owj6Az5Ev1XyI4uKCeJVeJBeiZwhwao6BKlw9S7ml46fEUWHX5Cxhid6/pWX//d2FzLbZWNjfLyJhMHRL2eXZQ+C71sdNL6hd/eyWwesTJ5EG0dR+DBRVrBfy9A0wtmj/REc+rAPTR13w6CIb8I6hec1V1udTiv96LyET0jcDEYJMORJn9rU9zgSBABvL2oXawlACRo9SIQIFfP2tV1slg7htfVEbkJgla6x1viLB4I7V0tw0evkDc8b053FT83m2ZkdzdgSN8jxaNWXTtK0GNKrqq9y/cYX/kC51yQo9tK9MEArFX+hqCTwHH9w63A+MtaHA4HftLlwGfxJtQxRuTwSnHRJFd7FmAiO44i7F4AKcpe7eBDlS/IBp9BtakG1NmIyMrgAUzaL/jk43Cu8Sapl//9PrDi6odtnxNhfYxi2rtf9fuctrx0TC67srBWejNd+Lr/W+iqa+kjGfZeBAHjOtIgMTgB2u5/Jhbe
- eDkbcCNt
- tBuzUm1PCqgslWVYcH7Srze5XOy4xjH2H9xmUvxhK8NvWzjL2fyBPuvx1casGRtvYUy0vk37shTGSDaSauFxh2l1haOX/U86oZsN30eIVejXexFtgFIDsXzflHDA0VynzMc41TBP5UF3JEtc+O7v6x8Gm2SryY19on0q459S7KLnxKOaK7YXwNzBRofScO+M2wblSqF5VVddPEX6C0PbSIDEUl6an/o+xGL1x7LG1QM7WXvUbWVr6mEpIg/FObsNk5dcI1TKvaF4PKWCFQtzf5SuvEojHn0Vjytp6GhsIFJa+LGhqMS1OdzFqtOkWi5Rasu3k+gD9232A+VyfFIEcopuTNJT41v77sKWfUprpUPpQYATDez+LdcHRvycgMIkz55Zg2zLx0+t7HPNmD40DuM1YFQuNtdxUIOCaaUod/qSthuPpax6RWcXn3Z+aXNvjVh5uxmlPp9/E088=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 70F80C0002
+X-Stat-Signature: 6wka3qn6uyntnsupku7f9r4p4nwgq7yp
+X-HE-Tag: 1785786446-851518
+X-HE-Meta: U2FsdGVkX18zf5m64Z+M8sp1/5iIGeArAChc3ftVv1PsnFONMlIPKh+xLxvccK9zE+NXi5GwJALpS29qNzn1nwhzYv6gFCm5HT/FycLrcnO2mM7c06BLe7wX6djWv3TtKKd1ETFyePrCJSDYbcoILtgatHtG449OoiWP6tCU59GZ7T3+BRZ45JhU7uDBIHK+mSWfBUQD/96ETc5NfmsW/FY10/j9PkQgvl1MCaKJLbi+/iDHRxtniBB4C+7OfeLuQ5evNlwF6bobOlvdsY7zpYzTTQm/D5tM0NyU9tFKcmPgk1Tlgkmxeb1q0Yk0zMUfwmhsv4FJfHJtqNjz5qGQZVDrua77PfrIMVRvzk4aOzIzUhATb4bKR5RT3KNWVPDWkT/KF8uqD84u6tdgX78uUFFLtg1emOHEdEAalV4FPeR8icscsPbqI8P3r/GCukatC7LoKzdfW2S4+1EZXZoJJ2df3+5uCibLN+mdUU5mlw+zNRasDR1FoSK6RTEqdw+Xt5J5Cj5Joj0AFE/SV3NdFjKvOQhJVccHEQqMwf2eTno5/6SVK38JDRwAIuo1Nq32CRZ0i3CVN9EU0lnyxubeB9OQoMO68EcSd/1BpmIOUEkg1siPiKxuW3MJQMRQ7akQeSkrn0OrB9p2XiJAqqYOb/qdQ83IgrtpyMk7JMnvt0NdQKL/ptCRmti42fCUMxQ5fQdJb5AspmJqDWnhX5+ICeIVAec113P7V9WiSbvTgTv3Z6g4uzSVhwB+7BlBlLtK3PvGiJckaSarSdFOhBiQmZ4LcMtiUAf72fvQmIrws54ApkP7chpi+IQ+ZkP2/Lyc9hiPJSQprjojedVSdLVO2jiOSfyRtoRlP0o+nrwFeQTxZWzYyps/2fMLxA4kaEOx5CfkhE5VqXp/QrdF3GR1eyxHYJ5MsW8k96MzspXtqUnzznNrcbJVtil8Nqs8tGGEzeV6i+jpYzTB6/YA1Hk
+ LyQQ5H9X
+ dPPv1LBtJoSJ0Gh4Qy4Y++3CRRtBOQdvS40W10Jq8pAK6cKtQchCwIfqoMntQS8K2MXww+CwIq0LZcFgRPpMzRsGL3UuFF4Y9hh/zHGqB+5jpEZmDkmolDdlSmFpI81Dp+erZGmxRBG65+I10akvrH1IKRue1kNJTbgxgBFdFKb5NlDsnA65jzj0lapTrfOKFOBWwKL3JAk6Q1xHiQdqpFio/4gjnNzCYe37it9h/nGnmFrIyZQ246+KUvn1BDtFK9gr39uwRlSbTNWm9VBcX5kLwsWUHoizHOFRJfDWzCrO7RjCuVxWk0JD6iZ13KgQqrIsppZSH+SDpHNQQVKfOsZqeyPJcwZk0G3ZeaaVrOQiFYihjnQreDsKuDf+ec6qvkPxzyfT56DsU+y0ZMe/Idzqz6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,61 +131,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Move the folio_set_active() for refaulted workingset folios from
-folio_add_lru() into lru_gen_refault(), where the refault detection
-already happens.  No functional change: the ordering and logic are
-preserved in all cases, and no other paths reach the removed branch.
+Add a helper that resolves a stable lruvec for a folio under RCU
+without taking the lruvec lock.  It takes a folio directly so the
+lruvec lookup happens inside the RCU read-side critical section,
+which a lruvec-based interface cannot guarantee.
 
-This is a preparatory cleanup for MGLRU-FG.
+The lock-taking variant now inlines the ancestor walk instead of
+calling a separate helper.
+
+No functional change.
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/folio.c      | 6 +-----
- mm/workingset.c | 9 ++++-----
- 2 files changed, 5 insertions(+), 10 deletions(-)
+ include/linux/memcontrol.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/mm/folio.c b/mm/folio.c
-index f90b7f86dbe3..fab00cb02970 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -474,17 +474,13 @@ void folio_add_lru(struct folio *folio)
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 68f363000d7f..ea0111392b9b 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1506,6 +1506,44 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
+ 	spin_lock_irq(&lruvec->lru_lock);
+ }
  
- 	/*
--	 * For refaulted workingset folios, set PG_active so they
--	 * can be added to active generations.
- 	 * For prefaulted file folios, folio_mark_accessed() sets
- 	 * PG_referenced so lru_gen_folio_seq() places them into
- 	 * the second oldest generation.
- 	 */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
- 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
--		if (folio_test_workingset(folio))
--			folio_set_active(folio);
--		else if (!folio_test_referenced(folio))
-+		if (!folio_test_referenced(folio) && !folio_test_workingset(folio))
- 			folio_mark_accessed(folio);
- 	}
- 
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 7ac2b88c80ae..5438e9390011 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -320,12 +320,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
- 	if (workingset) {
--		/*
--		 * see folio_add_lru(), where folio_set_active() is
--		 * called for workingset folios
--		 */
--		if (lru_gen_in_fault())
-+		/* Send refaulted workingset folios to active generations. */
-+		if (lru_gen_in_fault()) {
-+			folio_set_active(folio);
- 			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
-+		}
- 		folio_set_workingset(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	} else
++/**
++ * folio_lruvec_live_get - get a live lruvec for a folio under RCU
++ * @folio: the folio
++ *
++ * Computes @folio's lruvec and walks up to the nearest live ancestor
++ * if the folio's memcg is dying.  Must be paired with
++ * folio_lruvec_live_put().
++ *
++ * Return: the live lruvec, with rcu_read_lock held.
++ */
++static inline struct lruvec *folio_lruvec_live_get(struct folio *folio)
++{
++#ifdef CONFIG_MEMCG
++	struct lruvec *lruvec;
++	struct pglist_data *pgdat;
++	struct mem_cgroup *memcg;
++
++	rcu_read_lock();
++	lruvec = folio_lruvec(folio);
++	pgdat = lruvec_pgdat(lruvec);
++	memcg = lruvec_memcg(lruvec);
++	while (unlikely(memcg && css_is_dying(&memcg->css))) {
++		memcg = parent_mem_cgroup(memcg);
++		lruvec = mem_cgroup_lruvec(memcg, pgdat);
++	}
++	return lruvec;
++#else
++	return folio_lruvec(folio);
++#endif
++}
++
++static inline void folio_lruvec_live_put(struct lruvec *lruvec)
++{
++#ifdef CONFIG_MEMCG
++	rcu_read_unlock();
++#endif
++}
++
+ static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
+ {
+ #ifdef CONFIG_MEMCG
 
 -- 
 2.55.0
