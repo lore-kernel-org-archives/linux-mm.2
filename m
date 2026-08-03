@@ -4,138 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F1CCC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:57:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8742C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:57:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 852A76B00B3; Mon,  3 Aug 2026 08:57:54 -0400 (EDT)
+	id DF9C76B00B4; Mon,  3 Aug 2026 08:57:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 803C56B00B4; Mon,  3 Aug 2026 08:57:54 -0400 (EDT)
+	id DA9296B00B5; Mon,  3 Aug 2026 08:57:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71A006B00B5; Mon,  3 Aug 2026 08:57:54 -0400 (EDT)
+	id C22C26B00B6; Mon,  3 Aug 2026 08:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5456B00B3
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:57:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 436A212063F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:18:26 +0000 (UTC)
-X-FDA: 85059407412.02.8164C7C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7D350A000F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:18:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IrdoSGOU;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 95B626B00B4
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:57:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8E5C01A06DA
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:39:55 +0000 (UTC)
+X-FDA: 85059763950.07.A889C81
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DDFBF8000D
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:39:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cFYvRvF3;
+	spf=pass (imf30.hostedemail.com: domain of 3CH5wagUKCCEMO77KDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--praan.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3CH5wagUKCCEMO77KDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785748704;
+	s=arc-20220608; t=1785757193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xn83HI99RLRyM9dqp7AW3fodbu0QXo8i20/TewQSCBY=;
-	b=rz0owRurZpeS03WqoQtANwCIufdT5ZDou4OMoVDlRd4NUogKEHMfLKhrkylxCKdsLMSnKq
-	QFCslgj6+rpJ9lmCsY4h/BQq2zr8U4flr58C7Y8B5iJ+Y1yDgegPXSTZumiA3+CJj4qTZt
-	RTmU+3cgTSmT+vpWJLOaoxth8XTtNm8=
+	bh=3WS6p2C4BmwdiRsncUpnqm0L7Z6/0c6U1cXqlGa6Rj0=;
+	b=QQQNoZowGC9cbESIRQ0BofijA/8x9a8hidc/KqG6kmUB6Jc5/uB1a0ORwcJ34V+y/QgOmK
+	XqEzqw7HU6i0IrBZl3jj5bN4pKYwmH9yQziVuMqv6D+Wcm1hSJKiu9uPB9Z4u0a0BpOpwF
+	Al967h0QZ+mYHW5ukkkakjAqFHMZoaE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785748704;
-	b=xgTYiHx3Et+jooiQdlZslFrRsS6fRktkk/F5yz1yzhWquvTVcoM012D2ioHhaOLA85nbNY
-	QPlGlaWig8ImftPMG3EG5lpAZEwLIvct90x85ND9ZfagC1TxckJqtkQixcfBlD1FUwVSYL
-	lR11uJWSWd5P3Cxyq7O2ia30d6G+g7Q=
+	t=1785757193;
+	b=L7RSDo4RbHFgvVLG8efGBSzuYQpPCtCmZPrniCnqLbc7HY4C/uTcrK+GcpUVI+eC/gBTx8
+	WPN53OKFrUm5T+wiSWZ2uo6LlDhI9iEuX5ZoBPpFCaToZGC+d/Tc3TAvMw5W3FM75ioAQH
+	h+i/VbpSsQOwHz9Kh0HrZglgc8sguQU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IrdoSGOU;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8928E414CD;
-	Mon,  3 Aug 2026 09:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF211F000E9;
-	Mon,  3 Aug 2026 09:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785748703;
-	bh=Xn83HI99RLRyM9dqp7AW3fodbu0QXo8i20/TewQSCBY=;
-	h=Date:Subject:From:To:References:In-Reply-To;
-	b=IrdoSGOUS0xaPyg8WtkUJkOsN2a/zrc6MvPRN+6nBMwQUfWmqunWVRFyNm4Oz5NPQ
-	 t8lwhdEtaflQhWnAB+iYx26+VKdhh/zqF8PhOeydSCsWofdNfNLgCOB4jDOmAL7c5P
-	 05OquVmtuWbMYhVw096tU9tL2Q2OwC31WH7LNbOtw+jQp/Yn1tHTDCznKmNNTQf6HV
-	 z2xNfHM6kKwO+xJr0onXItJjpe08nEo45cKobjImwhZCQO40kGv7XJlExgQwcaHXqk
-	 6L6TP5z243QYVWCJZbRSoZcbv1UTAsU0xRH7YLoj3jRioGF362hCTH+5eKeBA7TQC+
-	 +0H2K9VDucM/Q==
-Message-ID: <f679cc17-643d-4c39-8bfb-9816e5f4b5a0@kernel.org>
-Date: Mon, 3 Aug 2026 11:18:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: TLB free bug in 4c640eb4181c ("mm: move pte table reclaim code to
- memory.c")
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Andy Lutomirski <luto@amacapital.net>, zhengqi.arch@bytedance.com,
- "Liam R . Howlett" <liam.howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Linux-MM <linux-mm@kvack.org>
-References: <CALCETrXbj__SFQMzPZhES5y6-sh4np-ZHY5T_=4QY5+Fn8BM4A@mail.gmail.com>
- <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f2eb26f4-62e2-4a16-a56b-706adf230cb6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cFYvRvF3;
+	spf=pass (imf30.hostedemail.com: domain of 3CH5wagUKCCEMO77KDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--praan.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3CH5wagUKCCEMO77KDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca860baea9fso8477603a12.2
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 04:39:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785757193; x=1786361993; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3WS6p2C4BmwdiRsncUpnqm0L7Z6/0c6U1cXqlGa6Rj0=;
+        b=cFYvRvF3s984qXeHP9uP37QhYzGC69eJJBLfUFGEmghFxzdY1ukvxbpn7EQxj6Zs9u
+         ac5+MRALwCol4FSVR8VTxqvwN0CpYwwZ6T/gQtuyrqcweGT7/Mjp08Am6bszEr0EaiqZ
+         F60u3SE01ao9gf52ZyzioOI1z6XDTnPGcdfEYCtdxpI20S9+cXrRmkgkeQDeFOS/XyZV
+         /p7tjWMagB79IowXmg1Mg1ReRwDEbAFufO4L0rewENRT06G/Cz1dji63zQH38dpIsa4s
+         RaKdK2Cr9rBKC0rOgDECR6xfPR+qrUb2UbSfrtkJC2RPLPsSghu/M42vYj39Y4C+ykuH
+         DpGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785757193; x=1786361993;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3WS6p2C4BmwdiRsncUpnqm0L7Z6/0c6U1cXqlGa6Rj0=;
+        b=V/ZzBPoBZMqLUOpQwCHkbNhytxC7Vc8ovqIahwikSTYlfD+BPxlZwuY/ZOPd9ho7b1
+         X13oe+iXcHKPL79MQ50Ct9WuNL9dPoNMwctsenOp3yDidcq+BMxBecPayE/rlVSk9oTr
+         3mNUR925PH2sL+XiPgwBAML37DYBTmMsQCzCMF8AYFYm0LXulgH4nY1L1+6ghEzSVb1d
+         p4A67qXLpxgrE2SZBRHOSfDWPamnlr3hImzoEkprPOBOiXvhxGrpXVTg5ZS85DFFSMAq
+         FDzkCdcYBEN3SzxvlA/LA1XXIgisAUaXPbjLFbKXWOnecUW4ND/zAfKu0G0gDpKZhPOX
+         8anw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrr3BkfZlpkXvRF75Zl7nUeKmJh2hC7MkEyt5vVUvpAZL9Fwdo79Gi5xNVts4K8qdp9h02B+ozRlA==@kvack.org
+X-Gm-Message-State: AOJu0YwJRQKqrGeeAa8k/XMBZyu4Ws/drKhMnLfpGrg6skPSWCqmSiwb
+	vrYevauEFIFqe5okQy+7jNeid4gsBBW+BgdqZh3sZVJkr+Q9TrArOyIjKDetV9pzbOzT55yBApK
+	XZg==
+X-Received: from pgno7.prod.google.com ([2002:a63:7e47:0:b0:ca2:10cf:5d95])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:710e:b0:3c3:6528:c87
+ with SMTP id adf61e73a8af0-3c92a519c67mr10067044637.1.1785757192568; Mon, 03
+ Aug 2026 04:39:52 -0700 (PDT)
+Date: Mon,  3 Aug 2026 11:39:43 +0000
+In-Reply-To: <20260803113944.3694290-1-praan@google.com>
+Mime-Version: 1.0
+References: <20260803113944.3694290-1-praan@google.com>
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260803113944.3694290-3-praan@google.com>
+Subject: [PATCH v4 2/2] kho: Introduce preserve/restore APIs for high-order pages
+From: Pranjal Shrivastava <praan@google.com>
+To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Pranjal Shrivastava <praan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7D350A000F
-X-Stat-Signature: jxj3mtbiewsweir7urrb4c83tw4o1tym
-X-HE-Tag: 1785748704-510654
-X-HE-Meta: U2FsdGVkX1+IcU/hACBqzEbuovOkinla4KbsLx+1Sc0nEzBYrLPkrScMGyPREEUO/XHsi/kJaszveJpKM3I+YU5dAYDdtTrr/4pfc1yldlcAXRwS/Bd2xroqiM27JALDJBr/WN5xys4xOPbYLN0O3+LJo2BF2CoUC0l0q0V9bOF5YLlkNnxLglLsuxJH1TgBq2coM9CaWbTvXPn7xE3FDqYnmxiqah55ozWduphqlv3WjLbDZFF/Wu6RmuLu8E8Zqj4bTDM9hhpKivhjogkksmT7ETCWcc2OM1sMEHcoj9r56wFPL7eJhQ7EqmEL3hNzEGoKrogFIDI5P6MxQ55jP49ozzpYPwn25gW+WXKU2jQNQnL83dAT7ujUNo7xxNOsaDi7JQOQsrzRihaP2qVsKT3/nkZvuvSv/mtcpKy/d0Oyt/n5fbthhvuJbOd15BAxVnqu8QdkJJdJaQkAGwnenzv67b1dmuAhAl+ezLVzqfurILjNaqlLChp4175d5UIG5a3tJsB74sdrnW5Xdj808hMgzc9KuOxjXVKvelJu+4UPo0hHK5LvYl4HPuoE62K+WCOdEaReBk9TSLEGZdz7DdW3v6WD79JN2o1KP94+kAE0eCNe5KoaHMPJnjZhYoLZgehE24iOpazeBJGeOjf4k8CdVPNxyawLsNEPeFWwFkOVuh3RNvz3SsAJKo49WHAKod3iI44zT2dinkTJIkTkTTLGouDaBgcRSuYQhe3q9opGwcsx1oEYWrPh+XgpZtO6ZIF6nhaRRzdT40+OZWZGeKC3FqjDJua/CJ/405241o/HsOSCAaZHzsm5kPGRSbWtheFds/GNYCKOZBoivCX/72ZHhJGyior9G8uShg1mBqg9TcBH3PbVzW52fdrsKgbVbcJfj5jc5Jh0bG1T28VGGZWM/kIHeVO0FhEJfZjrfIyL0IaenA6sw1ri3zCoS+UZjSmLoCRuRYnSxYEFt6o
- TJuY/YIL
- BkP2e59BEcHsN7WtnmFIOpti81BP5CsugrFFYhedKvWNAiGaL3U5g8FUEhPDVCW0/TuCuvi4nXNQQnSQQZyf+33q7jilcZR9B+awskrKTkwea5wjmZ2A9azWviy91fW/KAesgs5ldqJuDRdaEfK4AvsuiOV6t0ph7+m/dYdXXnbdj8R2I52pt8UfvVQNglvbLCoDxuqJ/aiDPo2l3LfLQGZu9hL85VisA/vV/9JbRLA6sJ3mPuyfp6sx1I+aNdE2H3jJmd4zPxbmjqmfNnx9iXZZLvQ==
+X-Rspamd-Queue-Id: DDFBF8000D
+X-Stat-Signature: zjgwyjix5iay5ipf8iub85iyaqds35p6
+X-HE-Tag: 1785757193-246499
+X-HE-Meta: U2FsdGVkX1989JVl3UUnTOr9/guAjew4Cb0BCDQMdYWbb4z9eF58PbKOUhHfrZo+rUcGO9spxz3BY1onKNPxtW/uvqQKSXZ20T13WnyhsEVeo68quGHh5qvdh53hFKH/Qt4tQlFBLYDJdwHBPR+t0Nnqq3wONyKqitG67votSEEF+ZZgsjip1wq2WazNMTWJ5vsLZp07Pt2Us5lPygsv+lOycaTQl5fCO7fw05cZ1EMH2MWtJvdyDe45N0akGBY0GKIS6RvSp0PTbu5z05CISEFWtZM82c4TgkaByLNu8ICIQo0UwfooMoervW7/PDBU7NAQRI00+FiuicObZb7EUvEswUQpE1+aozwHXqxKvFVVBw977NVUQetMpX66s3SbJApqHRdT/JKRGzwHUVopPj7+A+4yaQeZuV9yZg7pmm3p77aAr9HvhzZN1ce/PMsJXcgKW1AIVz3LJpwaaBQbX4CaIgvwaC7cO/HSGdELnh2nL1M3WCJCyXqIsxf8HIC3CaU9cMT0MkBMjs8adg+JhZNwYIrjCZzFQ1ZJaXTh3nAD45bbmrhUmVsQI0jlJJgC0jD/FpGY2Q9lExch+/svsYS+d5LOr3HegPsWHbP1YWYlt16BBbsB1sPfc9U6jvks1AB9lPeXSEplytYj4ih/Fc3OfOxq3xs3q1mDKThWkvRZUmJ5Jf8CKBrcFe5eWYqSpvOo3SILwTFwRUDIdZ/aWqdkgxdrVap1QHv5a21H5YU17mFVcuhejx07re3QGIX/sp+RNCi10JTCnZcFWSmxkrx5k/13FtFWdTudwkyw9+zjdZEJhUmlNUDgXx2o3+Q0rhcLqwnIqf8qkiMKdLeuVPe6dUEjKlbTosSIoLh2uREBD0GVCmbI/2XNWOOxD5KQp2mu3W1RRE154azBQgT2gCaSewfO2CbwWZzF1h1lGyKbmvQ+QPoiITPGwNH9ReV8osMhKAQ3iyGiuG4OGH/
+ VpTMMhro
+ KWiyYtuQjnuMGDHE2XY/TI/3Nve3tGOQR223eXXWOaTZY5CM6XK5HNbWQ45iN6iTRtTWfGgJw+m4dNsX1uCPMpx7uSK7eXfVrgnbnYUtvnQd6otBa66R5vrHdtj+WeCf08xCbNbQWYHC/trHMXiNq80aE7EbY84lsczYsQ4sBoHEeFrqD3GAGc4DMpB0u9jx6stMTXqc8GaH0THaPj5y3C96tA8Hco5EXd8RPVawnU/nGN0911yvDPe6EGp3bs21cSY0LoVGLKyf/L7rdkwgNSCdj/CTShpS3FvrqSrJhiqL8m1xhvk7vpLc4gbM49QPtw7U3Oy9JLVa6TQTDOCrQsKhiqbcApleierfjOUk86MTXRRFiYQWRxqjWWuLU53GtqFcOxUMO1OvjCzCPIbRrTa+wc8tupP3n9wzd6tLBBJHm8RelDVidaMwCQKSYQrh43LsARGpmKc/hVCUahY1hpwHjBcvlP9iOxFqqmgyMxF8fwx2q0mS2ZX3uGJXkFpMyYDXYFVMUyFFznPHFLZMe0kbL28N/QbPXYWg3phzFUGu7qgRuYY81ZfKVpEVFV7Hdkhdd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,25 +111,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Original report here:
->>
->> https://github.com/BurntSushi/ripgrep/issues/3494
->>
->> I haven't sent a patch because I *still* don't pretend to have
->> followed what all the tlb_ functions promise to do, and I don't want
->> to submit a subtle patch based just on an LLM telling me what *it*
->> thinks those functions do.  I could trace though all this mess
->> manually, but I bet that one of you actually remembers :)
-> 
-> The memory.c code is definitely broken. I guess the real question is,
-> what the effect of that is.
+The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
+that multi-page blocks are split into independent 4KB pages during
+restoration. This is incompatible with high-order non-compound pages,
+such as DMA buffers, which must be restored with tail pages having a
+zero reference count.
 
-We should end up in tlb_flush_mmu_tlbonly(tlb) -> tlb_flush(tlb) ->
-flush_tlb_mm_range() with the wrong range, so yes, please send a
-fix asap, thanks!
+Introduce explicit preserve and restore APIs for high-order pages,
+which preserve and restore a high-order page block as a single unit,
+applying a refcount of 1 to the head page while leaving tail pages at 0.
+Rename the existing internal helper to __kho_restore_page() and
+consolidate the common restoration code into it.
 
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+---
+ include/linux/kexec_handover.h     | 10 +++
+ kernel/liveupdate/kexec_handover.c | 98 ++++++++++++++++++++++++++----
+ 2 files changed, 96 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 8968c56d2d73..6e2c75b16209 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -22,6 +22,8 @@ bool is_kho_boot(void);
+ 
+ int kho_preserve_folio(struct folio *folio);
+ void kho_unpreserve_folio(struct folio *folio);
++int kho_preserve_page(struct page *page, unsigned int order);
++void kho_unpreserve_page(struct page *page, unsigned int order);
+ int kho_preserve_pages(struct page *page, unsigned long nr_pages);
+ void kho_unpreserve_pages(struct page *page, unsigned long nr_pages);
+ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+@@ -30,6 +32,7 @@ void *kho_alloc_preserve(size_t size);
+ void kho_unpreserve_free(void *mem);
+ void kho_restore_free(void *mem);
+ struct folio *kho_restore_folio(phys_addr_t phys);
++struct page *kho_restore_page(phys_addr_t phys);
+ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
+ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+ int kho_add_subtree(const char *name, void *blob, size_t size);
+@@ -65,6 +68,13 @@ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+ 
+ static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
+ 
++static inline int kho_preserve_page(struct page *page, unsigned int order)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline void kho_unpreserve_page(struct page *page, unsigned int order) { }
++
+ static inline int kho_preserve_vmalloc(void *ptr,
+ 				       struct kho_vmalloc *preservation)
+ {
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index e836efd98795..dd41d324c213 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -393,10 +393,9 @@ static void kho_init_folio(struct page *page, unsigned int order)
+ 		prep_compound_page(page, order);
+ }
+ 
+-static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
++static struct page *__kho_restore_page(phys_addr_t phys, unsigned int *order)
+ {
+ 	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
+-	unsigned long nr_pages;
+ 	union kho_page_info info;
+ 
+ 	if (!page)
+@@ -410,17 +409,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 	 */
+ 	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC))
+ 		return NULL;
+-	nr_pages = (1 << info.order);
+ 
+ 	/* Clear private to make sure later restores on this page error out. */
+ 	page->private = 0;
++	if (order)
++		*order = info.order;
+ 
+-	if (is_folio)
+-		kho_init_folio(page, info.order);
+-	else
+-		kho_init_pages(page, nr_pages);
++	adjust_managed_page_count(page, 1UL << info.order);
+ 
+-	adjust_managed_page_count(page, nr_pages);
+ 	return page;
+ }
+ 
+@@ -432,12 +428,41 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+  */
+ struct folio *kho_restore_folio(phys_addr_t phys)
+ {
+-	struct page *page = kho_restore_page(phys, true);
++	unsigned int order;
++	struct page *page = __kho_restore_page(phys, &order);
++
++	if (!page)
++		return NULL;
++
++	kho_init_folio(page, order);
+ 
+-	return page ? page_folio(page) : NULL;
++	return page_folio(page);
+ }
+ EXPORT_SYMBOL_GPL(kho_restore_folio);
+ 
++/**
++ * kho_restore_page - restore a high-order page block.
++ * @phys: physical address of the first page.
++ *
++ * Restore a high-order page block that was preserved with
++ * kho_preserve_page().
++ *
++ * Return: the head page on success, NULL on failure.
++ */
++struct page *kho_restore_page(phys_addr_t phys)
++{
++	unsigned int order;
++	struct page *page = __kho_restore_page(phys, &order);
++
++	if (!page)
++		return NULL;
++
++	kho_init_high_order_page(page, order);
++
++	return page;
++}
++EXPORT_SYMBOL_GPL(kho_restore_page);
++
+ /**
+  * kho_restore_pages - restore list of contiguous order 0 pages.
+  * @phys: physical address of the first page.
+@@ -457,10 +482,13 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+ 	while (pfn < end_pfn) {
+ 		const unsigned int order =
+ 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+-		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
++		unsigned int info_order;
++		struct page *page = __kho_restore_page(PFN_PHYS(pfn), &info_order);
+ 
+ 		if (!page)
+ 			return NULL;
++
++		kho_init_pages(page, 1UL << info_order);
+ 		pfn += 1 << order;
+ 	}
+ 
+@@ -890,6 +918,51 @@ void kho_unpreserve_folio(struct folio *folio)
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
+ 
++/**
++ * kho_preserve_page - preserve a high-order page block.
++ * @page: head page of the block.
++ * @order: order of the allocation.
++ *
++ * Instructs KHO to preserve a high-order contiguous allocation (like a DMA
++ * buffer) as a single unit. It must be restored using kho_restore_page() to
++ * ensure the tail pages are correctly initialized with a zero refcount.
++ *
++ * If a driver needs to split a block that has been preserved with this
++ * function, it must first unpreserve the block using kho_unpreserve_page(),
++ * perform the split, and then re-preserve the individual pages using
++ * kho_preserve_pages().
++ *
++ * Return: 0 on success, error code on failure
++ */
++int kho_preserve_page(struct page *page, unsigned int order)
++{
++	struct kho_radix_tree *tree = &kho_out.radix_tree;
++	const unsigned long pfn = page_to_pfn(page);
++
++	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
++		return -EINVAL;
++
++	return kho_radix_add_page(tree, pfn, order);
++}
++EXPORT_SYMBOL_GPL(kho_preserve_page);
++
++/**
++ * kho_unpreserve_page - unpreserve a high-order page block.
++ * @page: head page of the block.
++ * @order: order of the allocation.
++ *
++ * Instructs KHO to unpreserve a high-order block that was preserved by
++ * kho_preserve_page() before.
++ */
++void kho_unpreserve_page(struct page *page, unsigned int order)
++{
++	struct kho_radix_tree *tree = &kho_out.radix_tree;
++	const unsigned long pfn = page_to_pfn(page);
++
++	kho_radix_del_page(tree, pfn, order);
++}
++EXPORT_SYMBOL_GPL(kho_unpreserve_page);
++
+ static unsigned int __kho_preserve_pages_order(unsigned long start_pfn,
+ 					       unsigned long end_pfn)
+ {
+@@ -927,7 +1000,8 @@ static void __kho_unpreserve(struct kho_radix_tree *tree,
+  * @nr_pages: number of pages.
+  *
+  * Preserve a contiguous list of order 0 pages. Must be restored using
+- * kho_restore_pages() to ensure the pages are restored properly as order 0.
++ * kho_restore_pages() to ensure the pages are restored properly as order 0
++ * with each page having a reference count of 1 (split).
+  *
+  * Return: 0 on success, error code on failure
+  */
 -- 
-Cheers,
+2.55.0.508.g3f0d502094-goog
 
-David
 
