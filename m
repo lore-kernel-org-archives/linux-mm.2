@@ -4,135 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69446C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC08C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CA7A6B0096; Mon,  3 Aug 2026 13:07:59 -0400 (EDT)
+	id F07FD6B007B; Mon,  3 Aug 2026 13:18:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 553A66B0098; Mon,  3 Aug 2026 13:07:59 -0400 (EDT)
+	id EB96E6B008A; Mon,  3 Aug 2026 13:18:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41C3C6B0099; Mon,  3 Aug 2026 13:07:59 -0400 (EDT)
+	id DAB116B0092; Mon,  3 Aug 2026 13:18:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 035CB6B0096
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:07:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85AA9A014E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:07:58 +0000 (UTC)
-X-FDA: 85060590636.17.9E1A361
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AAA71C0002
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:07:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WG95luHu;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785776876;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B89006B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:18:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36C5B12074A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:18:29 +0000 (UTC)
+X-FDA: 85060617138.22.31AF5A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9781140011
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:18:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBresFUf;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785777507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AY9HtAJR9GCk7X7iJyKID8SJ5OmIiurLNVFZdWTVieY=;
-	b=BNAMBmPI+or9IU7h7tpYdV01nY+qqkU+XIyMo/LN3JHPxG8Wc4f8B8ccIntv0P+8SMaXgf
-	+2Vi9ITnTmdG9JcoxViAX3CcH9nnDqQuLOh4aviAQpbmVOPMhLnhJ8xx8sMVTQbsJogEyj
-	N9MnLx15RUundIFlPCSPYjtpdwrk3Ok=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785776876;
-	b=kQvI4YVEElglDBFbHsKBwXiI/LpuAXDJRcA2LJPGOMdYukBhUjQmPCWZ3m9N0INb0MEQGS
-	cEy7vk31lCPCclqhVpriVO5Uhbr6r14VQzw3eTXJBnpx62O6ZoNzePa+bQvSNyv2mCS0ez
-	mNix6hzlwXC56MEh22h9T4jK/EUKC7A=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WG95luHu;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495437bb891so830315e9.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 10:07:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785776875; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fHaq9RJx+h2Hn7/9QoWkqWFi6zjpYTb3BQXw8HlfvbCKaD+TTJrFBB+HR7w7KHmadm
-         g8+YYnTnr1ovC0XL+d3PaqtrfCoOWgfGAENA5bOOT2YVsWixP3/n9Xe58VA+0fk89Jzc
-         lAdLGBHT0jSMmTktrdcZmxrbJL6MKbiOVOPbJbNw3CGYJyCDNQ38UPF9s4hOeTNSjW00
-         VmoHQDnrfAt3KB4/X9BN8ot6oBeEDetMXZ0HX7/FXddqDhzqI2UC8I77T/k4JO2d+6fZ
-         ufrxXc9HMeCHnkb9TWo1xy6oUr+hGwfkAU6bgSQn0+Ka1pLcZZwptsK03ao4B3ZILXUB
-         oGkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AY9HtAJR9GCk7X7iJyKID8SJ5OmIiurLNVFZdWTVieY=;
-        fh=7lPRTsSc/L8+y0rfDoD1SVK6MNBIJnc0+oHSvwOvvGA=;
-        b=H48vFIfIgh1mA005uxvaZQFCwodXHvpGtPTjc5dNCGcKg/lCEV3jviBr5+mW2pYmjx
-         FvKQ5D4xkO6v6Erh0BKzYHsk3pcBKqNmXBD3zQbHE+0oYuqThZ+MvqUCfcYtHPbIKgGL
-         totJftXUQ/gZxJO9qQ7wlxYWwvWO4CCLsyj9fqrImj8b6oYZJebrbSOyeaTJfQTdpm9Q
-         X4dHR721qaxUwp2Kdm8rVAQ1CpAqZvmxkws/FFkaYQzNGrc0HnwEFiTWDK+8SgcA3SuZ
-         fiZfz77OQHTOaBBOwMNfTnHrQsa350gG0xtlqmt7w1UA8Ejp3TzqJLO4zcro+K/OOC9O
-         qb1w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785776875; x=1786381675; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AY9HtAJR9GCk7X7iJyKID8SJ5OmIiurLNVFZdWTVieY=;
-        b=WG95luHuJrat5STZSstKr/JZJ//+w070fLTzFOzHaGwLWhgCcQajcs2AyNX9sT6xVb
-         S1Bqd5ZyBJdUTQ8uc+pOme4glnC8Di/+hOifoRKa+zKkNEsww4S3aZzG0HKftBQijTtH
-         v1WouKCWwQ2lmEmO64iA62rkY/qGo3NXT1GiPAA1Fd//NwYXF8ZG7n1pS1FMdf0T3k6n
-         lzvFOKf5fDZADXCRpIuEVS0uWfUU/yCKmyZ+klHAco+iDwd1eW/gXmeHHKi9/Rj5ZVqD
-         hbfn0FJh/8AK9sy51VWL9+ILL8Lu3z5ml1wwVqaa9VrDwWYLsoR86N94Kp/J6Fs2/WKl
-         2RlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785776875; x=1786381675;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AY9HtAJR9GCk7X7iJyKID8SJ5OmIiurLNVFZdWTVieY=;
-        b=VK4bTipDaOubbSa/i+amF6kzDGqWplC5pDth6hT/Unq8/TuYFp9UHfP2QvYVMZcIM8
-         kOxBhGxtp6rDP86dbtdnCwBes82WmU2NKepTSFz+kYkNKz3BixqxiwnyRANYH/UjPR6P
-         TIYqNlHPz3W5z6iI1E88P6PrJd98Pkj/Ui7ofGH48/76qWVbwy9PBm1SgZPCbLUHboz6
-         hDmobaNVOA130eKdcrPDOtiEQT+HaIkjcdSHD6heWMI/hKiDaQReTkK06Y+4JSA4nBaN
-         gh8JD2a3hiKt0GNfxi7sxlTgMDR0fBfAlPp8Wj22+tj/Te8xOsbKdVR+aN7WH3NpSUil
-         fgvg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1x7dllhqLPiGNI7OtkHbPVkMsuqzxE2iqSaMVFbPvF6FDB5QsEQg+JzPEVCjFr+kM/W9vuSt6tg==@kvack.org
-X-Gm-Message-State: AOJu0YwsxrzsbOxV+LkaQZMoYkwVUYxkV4U71/uPCx2QQa4we0pRhwag
-	qnSPFbhC0QU9F4m6pZJSB3zzA1PaRg3hYvyv6OKv6ZOMw/OJhiLpO0J8mtNWoWWxhV0c7CQGyAi
-	d4iWGNOvQtCaXxkl9P7oPX0SpkcQAV7Y=
-X-Gm-Gg: AR+sD13QP6SmoOzZCpP9XxOdNbZUilsBNYDOtL4CLBNZ0tvSK/iYoI6+ayaT7QdmOaf
-	PcSl0L6cwIIIAldFHVQQDndIS1PvmYnuW6GFRu5q7vpwXrhIRsM935a+ICC2t+ohz6PpNR0uJgQ
-	lyari3Vl9YPfPZ1WCyjNcAwK4X4yZpnRUsBw7WjjUklsKSfrph+ZBo+yY2nuHrXbDoQ+WsymoH7
-	4b1bnw/pRCPgBIEOp7U9ewqqLrn13i56smINUJFlDLNIaIOZYUdCeMklrIERNDcw2NA33j3zbNf
-	u0CT/lOpcp0KVC6maSy7c1eudi9zAbcUWCh5UFk+MFEVW0CDyaR/jZPjTCuckMJ6lat85LEmUMg
-	+
-X-Received: by 2002:a05:600c:8010:b0:495:4f84:7280 with SMTP id
- 5b1f17b1804b1-4994a0f6838mr8934005e9.4.1785776874996; Mon, 03 Aug 2026
- 10:07:54 -0700 (PDT)
+	bh=KDMlJ8e58+/poOlXD4ClH4FCQ9XO9ZMSS6kLO52PMNM=;
+	b=v9N/AkX5hOKVJAwETBdQUZaTtv22EMQmKpB5QFQgVUYX4IRDFegeqf3ZJPf8S+FnunbKBt
+	nBlbTv+kQhLcbBnKdPEu+R5RqDm5l/1Tyx3lnZMd3A2MkW3I1TbCX/paPfzxqTAwWBibfl
+	nFEr7mkKXBYS1VJLIoeAoyXKRriDy00=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785777507;
+	b=zfoIuPOPrt+K2IzIoHnpD0j8ncjKhhHlTTbSp6YRZWOIhyJPI10OS9TqJ+H/aBrLj/5QD8
+	Tipw/jm7jf+gHk8iuHfUf4if5zoJMogRuqvCNzPvhiABi9z6LQU+zhh1eN6uSXh8TuigLN
+	72F6lDtfrpqj7JdJsI7Vbdu/roF9Vhw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBresFUf;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4ACCB60A62;
+	Mon,  3 Aug 2026 17:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D4B1F000E9;
+	Mon,  3 Aug 2026 17:18:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785777506;
+	bh=KDMlJ8e58+/poOlXD4ClH4FCQ9XO9ZMSS6kLO52PMNM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BBresFUfmOVFLxHMnrnvu7JP3JWOhzC21LYcTYOFodH5w2Zquzjfo0dPA6XoES5KA
+	 70fB+/Tq5OuZiZ7UQRsaQzXm2aG2lNP7bZTYbaPkJLjQCJMh/jQ+50IZ9B6H4QvNmB
+	 kRFVbhr/jRcBwBs1R/SCaOva1iH+gpAx9LDN1YE2h2kd39Lp+xUZYKQ7oie0S/6o/z
+	 /4eoMokHPGRek/O7WCHNE7+GJKZnxyTu8yXiO4P9uOc09AGWC+DyQkzZsoYGrjJaCP
+	 Ec4AN9CPwftDrCLAnWhCi1GmO6XjE6ggjnmkv4A2SjmWhE1bd5ku/9meYywEhi097u
+	 +y1LS81KzmVCw==
+Date: Mon, 3 Aug 2026 19:18:17 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Farid Zakaria <farid.m.zakaria@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	linux-mm@kvack.org, bpf@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, jannh@google.com, 
+	mail@johnericson.me
+Subject: Re: [PATCH 1/9] binfmt_misc: let a register string create an entry
+ disabled
+Message-ID: <20260803-notunterkunft-wildtier-restaurant-1733e9660017@brauner>
+References: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
+ <20260730-work-binfmt_misc-preopen-v1-1-4a0b0da71f16@kernel.org>
+ <178571387898.1880415.17662890925792360904.b4-review@b4>
 MIME-Version: 1.0
-References: <20260731053721.1412304-1-wfelipe@google.com>
-In-Reply-To: <20260731053721.1412304-1-wfelipe@google.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 3 Aug 2026 10:07:43 -0700
-X-Gm-Features: AUfX_mxK2pE7QLD-Afi_iM4HLF7xsV2DwxivLERlho7rxO9QErLlXLVDFWruvGk
-Message-ID: <CAKEwX=PE1N5ah-8JhwdOk3=gAniiNZ5rqcYGp5Kjif9=r84Ctw@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: drop list_lru param from zswap_lru_add() and _del()
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AAA71C0002
-X-Stat-Signature: tkqxb45cci3habdpow8475w1b1t6apgp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <178571387898.1880415.17662890925792360904.b4-review@b4>
 X-Rspam-User: 
-X-HE-Tag: 1785776876-325539
-X-HE-Meta: U2FsdGVkX184pv1vv+tmQWEBYD8gXDDf8zeIynmobmd2jq+tYZAPvOJAG80i6KiLM18VOQCPn+VQ6tr1eF7Z9kAPi9pyrlmmy8QKrn2fFY/JuaxeqBL3SFvK110+68Un/3BV/I+TSCNWQwo81mcKlLrkNp2So4yeO0QFn3GSCVQleM8AW/olSF/AUuEhZPTvoY/T/v/f0Elsb2zyAUIOEXm00k1pXZnPqLM5PkrOFewMgdOQPJWACnzOeZ3Qku4jMbc/g/V2OfU06//suG9VYeRxziBlI5WA2h0wv9/RWaCt/vrn+ZT7BjoaAERpJpl2ms8rL/GZ3uSIJpO9jyF734PLdCSUt/HllrjBMGYvlt9dm8ItJL7KfRrqRPwgyfNLpXxOi0dpRhNhi+VpGaaRsTjQ7iCyUH8R0u8SSP8J/gUkzkJkXpqNneOvMPNx9HH6HCedLq88xJxMm1aiu/3i65EH9FGmK+Zeo+b528DdLPn7ZBAPEDxs0LwDGI4dC+PAksULEkGkAzio9xRTWIoRknWVmN0gF713A0RFQrIjhhFw+ibIeq+aprGI9V9hfLgc4sqAJSb3y89XWm8DY+2l1oW/R/cxr0aqcZf6KqOLZDp+zKCxPVtLnHfXKL7Dk5Vx4AwMeYyTQh4ZHvf3fFZd/8PpY4X+lKlDDjKDZ6c17Za63Hfab1/KzUjoIoSS12NQ1wdpy0WOfqQpSHGIF6DcGBoxBeGiE4YSe1lCqd1ncQzLwyYkD+86sE1+N+xHgMkrs/G+2BqRYLonhiMyZ89derXTYhpNHnv9TVyANKqEp22wa9FU4deHEdXVUGcYzKbJzkLA9obqRhCH+5XxjylXEPT922pcPsXDo7QvP/y/k8fMB8VUYg8YcciOAzwVFAdkZtrZdq3oRW/c9K0Ps29L21RXEcNplLKtCiJb0hCBuJYhCUxH7ZTXNfGEI+WbSbeclHbTj02mUhD66NPBFTy
- UAd4By33
- dseSxWS03D1KOcJ2aNG+iQ8C2YWrVLuCNnHJM+0SR6mxclgUgwPUY6O36vM+ulOrg8nKPKw0tsiztOvg38prP2wtEr/Dji3ofSKWSME+J2TAfpi5WsDuMY97warAOjUcZIMPZUzSM9rRG3ZZ6tQjtE2Anvrtid9OGY10IsLLa8Da9cR3dxBTNPtQSO+ihAStFb5/I7tfF0t+0klVzxEf+/AZkGjhhv2EEQX9GAetgbQWxCThvvCV8luxpjkZWs/NtbsYkR2qnnN1EqERvOSx1ZOROlJ21731DS+kHCzharPBxWji1HBqVCawBNrCOZWy74KslIU2rIOYIP6ir47Xt/6lpdokG6/IO5cdgcAA+SVxivg8dQGLV4JUrCOvGF/avcdZuBL0Bx6jXwnBo0jUlHz0SW2oqTD4CyKaLNcYr/xRdhHtG8w5kftGnpUnYQYkzV+ipptvtmlAkJPuS4TjepAo4RQtrg3U51W8XB1RvATQv12noQNXV8QBXeQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9781140011
+X-Stat-Signature: 8pr6mgb3ync3sdiuwg9914yp4yt9ijia
+X-HE-Tag: 1785777507-119116
+X-HE-Meta: U2FsdGVkX1+7oiY5AqTyBYaiH/QC/RpiGQvdhWM1ntg6iUopvqc0ZZYMcqEX/VSRp9TnVLaPMw0l0bc6STWowiSyLBSCzF/2WKcVNvndx8/AsoZKafCae+KWf3rbBTLTk8OcdyZfsXBeZO5bKKzfecjyS4zYYIKdh9AAtWUDmTbrdIZULKH9V8lVytKmbobDcfcJs/5hnBFbT+hhQuLPS8tX83EmqAzxMPs5nMUUsfobYI23yZ08BzAg6YnFjJV9E5VbdTaSHTLyNPPMqYFNToeaxmoYQ+xi4M7gUm0GLkUpM/STC2rULUhK7xCYlcqUc9qikCoZ8Jvu7pNJUkucIl9jao5qGvRRIbIMte1ly4qj5a7SoYM7WW/7JMXRWoYeLzehxuOtHOe1wG2iX2a7+vyza2hAtRcoUB3R14c+grCgQmchEuQrxtmb7hO+VpmhInnIXnGFAiYyz2LuFMCubxDdmFxJktkji4Sn9nQ1vyfnt4vtCm3oE1m9avXyLreb/sbic1zO6AhtIFTI0zuR0tRT3agydB1iPEORj+1t4RITUs2jUe/OkRxHeo+2Nw4Efp0QG3ytUVTg8rtT2HevtHOWSw6Sjmf/KuDJVaCiQuoMRN6piiZmV1GoWWNBZQz6W3mtowcUyTvXQd8pk8e4k5ETPWlggY9+ztqxOFCoqf9A7WqVyVpOerZy22EtpqF2YkN3WEdF/eh1h1S3jtOnHDn2kYi9nHgvxeDlZnz8g9zNy4u8KxIBIQK6l9uNNmt8elugNihs80MPNMt4kZAGGc23K5OqYcWrgGoMlkcHyRE1IoeZT386Pni29KhNlkyeu0mgRajN6gYQrM6TFlkqIVTTr3yXuMuE+ast7FlUC4PQtSwGW55C4V4Y1VHlsT8YOywjV9+Vn0h4I+56mhEslh5N87k0HBigORbEvpI4lkF77Q8xQe0uEzLPbtRViv8pBJ7cQyfttr64+7ugLuT
+ 76WdiT8U
+ faqFOwGN5Hh8lEedq5DNs1H+ewbcX/zpBUsa1CH0Da0NfBPdsF4boqXZxXEWNOODVLlKRqNX8st17EzSJaNsk2BnRtM6D/b+pFi+qhmzu5jbbRld3jd6gIDkjq+/buQcr600PsQIgKWIiOFA86h+/9AL1mBj6KLwR9EPnEdvPjnEiJ14Yq9oibEGBpD1haqDtNIkSEOSG5E5b9XdfKmUUlcItZeI+J73r+tVQicy89VHVzPYK54y57M8gqYHVtT8tBgIB9wKb6zQ0KsdGXPDV0P7v9mmD9U0KpcVtrkvr5GEf0JQmgI0Tma5akRgdCQRvvmIfk6OkSVn1pJdFHqddXt2q00T3B8BeVG3I/67EJx/HXUDimMOLWjUNBy4ul2EtIU0S9dkOOSENLkejVcFGYrOwvbs++5Ehs88lzl7inxoNU5m09dTGPb9I8Y6nBKMH41BYn6bT0AWNDxcjzj6MFym7Bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,16 +96,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 10:37=E2=80=AFPM Wilson Felipe Pereira
-<wfelipe@google.com> wrote:
->
-> Since zswap_lru_add() and zswap_lru_del() are only called with the global
-> zswap_list_lru, remove the redundant list_lru argument and use
-> zswap_list_lru directly.
->
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+On Sun, Aug 02, 2026 at 04:37:58PM -0700, Farid Zakaria wrote:
+> On Thu, 30 Jul 2026 15:34:03 +0200, Christian Brauner <brauner@kernel.org> wrote:
+> > diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+> > index 707f8a14f8a6..ca7840b01a2b 100644
+> > --- a/fs/binfmt_misc.c
+> > +++ b/fs/binfmt_misc.c
+> > @@ -75,6 +86,7 @@ static const struct binfmt_misc_flag misc_flags[] = {
+> >  	{ 'F', MISC_FMT_OPEN_FILE,	0,			"open interpreter file now"	},
+> >  	{ 'T', MISC_FMT_TRANSPARENT,	MISC_FMT_OPEN_BINARY,	"transparent"			},
+> >  	{ 'L', MISC_FMT_LOADER,		0,			"loader substitution"		},
+> > +	{ 'D', MISC_FMT_DISABLED,	0,			"register disabled"		},
+> 
+> AI brought up an interesting point that this now changes the set of
+> valid delimiters which you might want to call out in the commit message.
+> 
+> For instance 'DnameDMD0DmagicDDinterpD' was allowed before.
+> It might be a very obscure feature to pick a delimiter because
+> https://docs.kernel.org/admin-guide/binfmt-misc.html does not even
+> mention it beyond 'where you can choose the : upon your needs'.
 
-Beats me to it :) Thanks for fixing this!
-
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+Yeah, I can send a separate doc addition for that. But that's kinda true
+for any new thing we give meaning. So _shrug_.
 
