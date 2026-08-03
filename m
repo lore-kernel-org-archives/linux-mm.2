@@ -4,132 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC7FC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBF9C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F79A6B00A5; Mon,  3 Aug 2026 09:24:38 -0400 (EDT)
+	id 9EA1A6B00B2; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CEBB6B00AB; Mon,  3 Aug 2026 09:24:38 -0400 (EDT)
+	id 9C2616B00B7; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BDE26B00AF; Mon,  3 Aug 2026 09:24:38 -0400 (EDT)
+	id 8B0956B00B9; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 025716B00A5
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:24:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08CE7C06E7
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:06:02 +0000 (UTC)
-X-FDA: 85059829764.25.378A3CB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E724720007
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:05:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oOx541gt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FLE+1tID;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Drjhk3Pq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V/OcfPZS";
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785758760;
-	b=qScF6i8F4DgJhEWio7Eh5jHt8Kn2smPwlLs2+7geIFuRwsG2NxCqZ2Iti+/+15Tc4Q/UdP
-	XCKRzNcpdLWc5RodiCjPsC0nSCNVTaWLeR3AU7v4QsJ8wc1K9/MjPMzNh8QrDmF4ArgfN9
-	VzDExAxR50qA6fFGEYu0QX8ro1U8pto=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oOx541gt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FLE+1tID;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Drjhk3Pq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V/OcfPZS";
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 676666B00B2
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:24:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 688F680612
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:38:22 +0000 (UTC)
+X-FDA: 85059306444.17.A9CF603
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2EA41180005
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:38:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="iGOhIT/r";
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785758760;
+	s=arc-20220608; t=1785746300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2k/812Bz06aoM1Nozk9NLcznOhQ34rc/L2cEjcJolMw=;
-	b=13O1GFMNxKQnB0hhDQgm+sE8ozvEF6ODAJVpfplXthHLJtuV7BgxPQdGzPaYlk6Lh9IipZ
-	tIdDEddnoZqGfVB5VRHbnF9Gqhce8DvTLHZNH5R3A3YH7FF17O1vPe9jIULZzr8kaKjp9w
-	t4HteTYkixNUzZCbObv93+Etbh9glpI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9A6D07F0AA;
-	Mon,  3 Aug 2026 12:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785758754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2k/812Bz06aoM1Nozk9NLcznOhQ34rc/L2cEjcJolMw=;
-	b=oOx541gt22lq0QRWXu05uXqeeieN9svZv+KvcMIQRImXrRzMOUwVLTZdNErb5NtrdYGB/z
-	8Zhm5/2jSj3eKXit14/TXb38D7L5/mlfpE+wJ65q6TNL8KfGt93bxn7YlMHX9m1gmizD78
-	9M8x8WUVGODr0S/CnGaQqkFLQZO6ZYo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785758754;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2k/812Bz06aoM1Nozk9NLcznOhQ34rc/L2cEjcJolMw=;
-	b=FLE+1tID/Wg9Wvs7Ii4sUKFfMXzWF6OgwZ1IPgy2Y6hEnkjXmLVf/iCseBI+2F6DnN5h2R
-	4XwjEl47MmhbQbBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785758750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2k/812Bz06aoM1Nozk9NLcznOhQ34rc/L2cEjcJolMw=;
-	b=Drjhk3Pq9Sl/s+EUwvpzBJ0Qfz33eMwIckfN+kal47jxKyxzyxY7SoSg5mfiVtJFkhtD1Z
-	QUtvxkO0/KxvPqx4wYOgqzrTCIcHapmvPHARtlZCIpTN8EYAlE9yOYyJv2qpuT7Y7hqP9m
-	RzVA9a3m88BVWyS39jBZ7rzohJB1tjM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785758750;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2k/812Bz06aoM1Nozk9NLcznOhQ34rc/L2cEjcJolMw=;
-	b=V/OcfPZSDwBwcZJAnrKc7JHCc1svX0Q0GGpuWlRO1F1ux2MiWqrbUx/ffnzWldyufmkJRj
-	vYbE+01VEWYc7GCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 907AB779A1;
-	Mon,  3 Aug 2026 12:05:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B1tGIx6EcGp+NQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Aug 2026 12:05:50 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4EC94A13A4; Mon, 03 Aug 2026 14:05:50 +0200 (CEST)
-Date: Mon, 3 Aug 2026 14:05:50 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Amir Goldstein <amir73il@gmail.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	Laurent Vivier <laurent@vivier.eu>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] binfmt_misc: don't warn when the mount is completed
- from another user namespace
-Message-ID: <lp42anrqt3khwf4fyp56odomifxeuitf4ejxahhxns7ze7nyha@dblztvmz4ocj>
-References: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
- <20260802-work-fill_super-warn-v1-2-4e987911a39a@kernel.org>
+	bh=8qzlmodlEBIbxJqlmoucNkpiYME5cpAY3OvwuNsbT7w=;
+	b=bu5/YRusq+CEDvahmfHuOEfJyU0Nxmk4C9UYyOETbPS/h9gfnruf/g1fVHOuaYWVooJQGJ
+	aJaTffW/pEG4r2OKBUrNDBYgpqSvGYDOxNLlXQYQwj/GVnHoGNgvEdddMbQ5Ah721376HF
+	6aEIZfmllVRCt+fbtWbDDxeX4qddYSA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785746300;
+	b=4o9i/8JK2gPWo5fvJjOCZwua2e9wSPnAkuK1Tm9JzxdzjMbd8u2aI8JSWztiPTQHd8jNTN
+	luL8dYtfDD5XrCb+zIQZ7uhzLyNSTp104viFKlAVF6SJbMLYmiz9sDnIWkGRZEdIfxBvD4
+	iuuyEq5DWxdnGDCyHKMMX4MOqigKTcc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="iGOhIT/r";
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8qzlmodlEBIbxJqlmoucNkpiYME5cpAY3OvwuNsbT7w=; b=iGOhIT/rZCy864LHT8ew/VfJLo
+	OLuWnwA/E94in/is4ajYmq1OpX0LjjLy9+pRvB3su3w/QlwNEtPcbCebh/kcwZeRHnblHF/txAdGP
+	icul/0LVvnbxoMBrGl8S+S3orrIFPE6Iz9tOclMhcMb84nN2W+Bxx359psgjOIckgOny0GXyvcLMY
+	ZwP8dcD2eM13KpVOz1jrqyDVbPdwd3T+DyoN5cy+JcQD4/Q80xhSOcG6Ugl/w7DFEcptDVqsc4Iar
+	0x6jB5f3BtZOcDUxzOz35yU5NHePIe4qcWjtKh27s0qHS29Q6t7Ft3fwMrcH0+/M6tctvr7znAPe7
+	B5ivSTCg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wqoBE-0000000BI5c-1vwb;
+	Mon, 03 Aug 2026 08:37:52 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A2BE9301127; Mon, 03 Aug 2026 10:37:50 +0200 (CEST)
+Date: Mon, 3 Aug 2026 10:37:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Eugene Mavick <m@mavick.dev>
+Cc: Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/5] tracing: add ref_trace_final_put tracing
+Message-ID: <20260803083750.GA49951@noisy.programming.kicks-ass.net>
+References: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260802-work-fill_super-warn-v1-2-4e987911a39a@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E724720007
-X-Stat-Signature: if1w3k6ndr8dqmp1kouao3dnymyarf9s
+In-Reply-To: <20260801-refcount-final-put-trace-v4-0-2e58678f0ffd@mavick.dev>
 X-Rspam-User: 
-X-HE-Tag: 1785758759-476167
-X-HE-Meta: U2FsdGVkX1/QJOoTJyh1jo/jUHUwUg7ve6dmahccWo0hm8tKbaUZIzDVRMHALIDPeid04LP/cCfi25Ui8m5X49fKOYZHjlGu10mXFOdEeuepq7WyakXiV9+KoHAqVY1LnU8iEbcfKXJZlh5Oq/oW9ruvk2ed5gNYd1OpyJunMwcVtUPt4r11LoYhJVUrmdDOP2960f2hyNzEOPRuMSl4sUOufyjVY8slYiEZOL6wiHPWDhv3tHGXt7ne3GSqeC/qB/C6hgsH5GLIIPrRndMqMU+CyfyohOpI44KY+EGt9F7dxiDXYDjvZBcDs1+pAKe8GR7voGD20Oqqd3+h8C7qoA0eswr9Szk8rMIeo5+9n92nzFB7Zyt1TRk8uPZXRfPDSuK3FVtsuR9Gl06kB42AinWg32c3NckUv97Pa8ld5+zhCQ8Geb4jaR0+wfcpRTZ/ixa1ekXMvYDYD4YIMl4/iC7U8V00D5awkhOBTM9WfKot9SQInxwEE4DQipcFk2wQNO0ccuiMMiOhSBuK25gOj6fPhAJn7gNXiMGSW4FsZJTAu3GK7lMfBJFZ+qzBnfQyxav4DTZnhhFBJrd7RV2vP+b5z63i/SKrSbnE6nAhIaLYe3DrsKb2VTLk9hATg9GsMFj0Ron5LXXhfF/sAtn2mg6lnxmXH9o1vShhPj5fX1D5ExJ0PI/n+ZxqVYutL+yHSmR53S+XwGptI6giXZrGEGw6ulrzc55U7TJc2q2HXLUZHAcnbf/S+5fdraDAAazgwaSVX5m5hWy+f9au1HfU5f3m9FgvTjRsrZTa1CQzrO1XgBxa7zw+jeipodMtHDkz//laLIeOlN+8IlXC3CygS3FiesnfKkmsgvz3g5mIYoegPdYY0JsIM9BxvIKAXQB/I/F4YrmxkCEq38LyZ5tGyfrwfstpfaiPV8FdnG6nOSClrQFXuEK1WDSpGm9Dx+AFUWKRnZcHqeTW8x+0P0n
- yAAd7CxK
- CK9CvXlAFtWPsqdXExzlaBnJ0K53t4RCEa793czI4DMYJVJWAcKT2cAHfsX7HKQZJEQLqVvSRN+DbkIy1CP3cUTQDoJMFNN9h2s1LXHdKg3hMNzBw/mvZn60slzrIFfC0d45VnlEQDOqiNfoIAtcDsVgxO5Hw9pGr61GOjBllCiGdV4sbECgJ9pgNV6WBRQ9y3iRidWapbYazn4tU5XLLiqxjKOFTlZDpHpMxV/8uxz1klcYs43X55MUY5pdM4ZmPcaiE0e96BN6HYdqA2w2ApVIzTIq1Pu5sZQhjc78z1zhk76DQQA2ElVnGqaZ8rkkK64KzKx/9pa7cJzmZAy0skXDdlkOS37VsIS204nyojpAM76a2rV0mhLEDfP8j7CgALZp5G6Tkr5jZiRyFsyEJXI59qGvdWgJSfT6vL9iF3g1SCQdu1Cx6mm/A7Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2EA41180005
+X-Stat-Signature: xreqjmjoa8sps9rygoedgosok1ge6tk6
+X-HE-Tag: 1785746300-810075
+X-HE-Meta: U2FsdGVkX1+eGWMlT1zEU/Avi1WSFuuedGXlPnhdQuiDxMhKEy5d3Yk8RXXVLY9hD5q8M//WNsFvlBhW4SEy4nYXO2887ABmzU8ya0l1xFFOB6cavhDUMz8vuQ7C/Ki79X3v4zt0CsFdNo6Q5uWyAxjy5+w1HlyXC5waeI3ujNXqGKhppeuG+u1WBhv10Et2rJExCo68O+hOapFrDK7JSu36RVfePKE5cH3FEyKB58dgecGpT/KLRrpjDRqnnqlLSU8uThBTAkCIT79qAxI77g2uyE078g01TnDZ66Ew0lbeG3kY+eC0PXfTyubdfrBAXbEE4NGnrl8WW9FP8cqZQuxweSrYgIpOBZ9LGchb4OXVYx8NCbbbGy+moVKJCePYezoaVrj/aPoQoyJuZQopqSB95PA2q7sj4kZIdXIZzSx9ctuT3jCfeERVf77jpBiPRz6S5ai+U+1KtzPTjxDwd52iE8ppJgxJLMKYZUpQY+OsU2JY+LKZPyXgkLPSA4yabaXKYEdk1WL6IXUmxntYXxhWsXY0oF085jAaJL4cuCPpZUkmzdLGlh+7SUzeN/JOGDMQ9SNJz9yTqUj8PSBzTlXVavXAUreqDZ9UtxmeTA/r3hPQiHb3Fc3iNq9oGKVX5zvBCAgqFlI61kkAfgl2es1XGQ7AjUu8PVyQhXqmKZpoe5JDacrTxbcz8iWF8tpToX7B6T7beTpCnI+obcy7fPSkWB5dLVv8kVHSdNCuVrgYIG3Swuydp8ShJLGO4KAVCSPieOp81Rbzj0jyGwG62fuGb/PU5XnybmWyINDePA3gQIoL6e/EtwhMr3Xmea3lsW45tdGnBb84Ql2Qq5J02rSz2TJj2+QISiuzsIZ/MQDHOsCZp8rdq+TdB87wNCxaindP3syGeBjzZ50Fmpuei4z/mUJtkUmsXJtGU2JCiYt7ur5nq/wUKVMni5kZvgOMlMSk8AgfVLfoIOgkuB1
+ H0UI/NmY
+ WRkVgFICFDigoCDlTuQwDNOaTC7ugYQI5jPOALx/87onWGqFd4jLMnK7Rjm28nSnYo2uD+iss1c5fYUBHW6b864h+Go9hDb6x5R/2OGWzHcHULfvDi2LQ1E30UXLLzXuhQkqbZ6rhyzaz4HEhWC1W9HoJpo8a/ENDQD/kvWs5WxMknjv5k0kijFQUdG5GbhDAheAfTNyzGdn6VaDNothYDAh45l/rEylQondVx66R4JFOf6GzYFgy8MxVnsu85rPtt2z6ukfjfqCVzKVDdP2S9M/tSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,77 +98,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 02-08-26 20:00:44, Christian Brauner wrote:
-> fsopen() records the caller's user namespace in fc->user_ns and hands
-> back an ordinary file descriptor. Nothing ties the task that calls
-> fsconfig(FSCONFIG_CMD_CREATE) to the task that created the context. The
-> fd is inherited across fork() and exec() and it can be passed over a
-> unix socket.
+On Sat, Aug 01, 2026 at 06:59:40PM +0800, Eugene Mavick wrote:
+> When debugging use-after-free(UAF) bugs, knowing when the object reaches
+> 0 references and enters final release can significantly aid the
+> debugging process.
 > 
-> Completing a context from another user namespace is allowed on purpose.
-> vfs_cmd_create() authorizes the create with mount_capable(), which for
-> FS_USERNS_MOUNT checks ns_capable(fc->user_ns, CAP_SYS_ADMIN), and that
-> succeeds for a task holding CAP_SYS_ADMIN in an ancestor of fc->user_ns.
-> So an unprivileged task can reach the WARN_ON() in bm_fill_super():
-> create a user and a mount namespace in a child, call
-> fsopen("binfmt_misc") there, send the fscontext fd to the parent and let
-> the parent issue FSCONFIG_CMD_CREATE. Both namespaces come from a plain
-> unshare(1) and no capability is needed anywhere:
+> There is currently no universal way to trace this information.
 > 
->   WARNING: fs/binfmt_misc.c:938 at bm_fill_super+0xa2/0xc0 [binfmt_misc]
->   CPU: 15 UID: 1000 PID: 3243382 Comm: fswarn
->   Call Trace:
->    get_tree_keyed+0x7d/0xb0
->    bm_get_tree+0x34/0x90 [binfmt_misc]
->    vfs_get_tree+0x2a/0x100
->    vfs_cmd_create+0x60/0xf0
->    __do_sys_fsconfig+0x4b2/0x500
+> This patch series implements tracing of the final puts in the
+> most widely used refcounting implementations,
+> refcount_t(and thus kref which uses it), and percpu-ref.
 > 
-> The child needs the mount namespace because fsopen() itself gates on
-> may_mount(), which asks for CAP_SYS_ADMIN in the user namespace owning
-> the caller's mount namespace. fsconfig() doesn't repeat that check.
+> The tracepoint records three fields:
+> - caller: function that called the refcounting
+>   function(refcount_sub_and_test, percpu_ref_put_many)
+> - ip: return address of the trace wrapper macro call
+> - obj: refcount object(struct percpu_ref, refcount_t)
 > 
-> It is a WARN_ON() and not a WARN_ON_ONCE(), so the condition can be
-> raised in a loop to taint the kernel and flood the log, and it panics a
-> kernel booted with panic_on_warn.
-> 
-> Keep refusing the mount and stop warning about it. Nothing in
-> bm_fill_super() depends on the two namespaces matching, it derives
-> everything from sb->s_user_ns.
-> 
-> Fixes: 21ca59b365c0 ("binfmt_misc: enable sandboxed mounts")
-> Cc: stable@vger.kernel.org # v6.7+
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> Signed-off-by: Eugene Mavick <m@mavick.dev>
 
-This one as well. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/binfmt_misc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index c97f10b48b5b..613dd28e3f1a 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -937,7 +937,8 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
->  		/* last one */ {""}
->  	};
->  
-> -	if (WARN_ON(user_ns != current_user_ns()))
-> +	/* The fscontext fd may have been passed to another user namespace. */
-> +	if (user_ns != current_user_ns())
->  		return -EINVAL;
->  
->  	/* Never exec off this instance and never let anything stack on it. */
-> 
-> -- 
-> 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I'm not sure this Changelog is convincing me. To me this just looks like
+more weight / bloat without benefit.
 
