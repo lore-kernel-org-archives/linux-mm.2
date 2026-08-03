@@ -4,133 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719A0C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 130DDC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 775A36B0092; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
+	id F414A6B0099; Mon,  3 Aug 2026 11:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74CF36B0098; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
+	id F17F76B009B; Mon,  3 Aug 2026 11:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63FE16B0099; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
+	id E079A6B009D; Mon,  3 Aug 2026 11:34:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 344716B0092
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF774140753
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:33:18 +0000 (UTC)
-X-FDA: 85060352076.12.69085C3
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D416F160008
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:33:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cJw5qID+;
-	spf=pass (imf08.hostedemail.com: domain of 3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785771196;
-	b=bfstYiJmvblZfVlWAQGj0O8opnSfFCQr27DGBWFeHyKrsKMirb49RIJl27WDWwiIuRHM42
-	gmF23EnFQkAGR01GBV4q791WgnHL00rcnAwL20QYjfYyIE2VRFg/K8ZAy0wKU7EDQygqHv
-	d1kvnCvwEbAcN+JUZ3br4QiDC9coY1s=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cJw5qID+;
-	spf=pass (imf08.hostedemail.com: domain of 3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785771196;
+	by kanga.kvack.org (Postfix) with ESMTP id A4E7A6B0099
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:34:48 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37ACFA1B94
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:34:48 +0000 (UTC)
+X-FDA: 85060355856.14.290FAB9
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012039.outbound.protection.outlook.com [52.101.48.39])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3FA131C000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:34:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ts8X9Y7S;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.39 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785771285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
-	b=5XM3ua4WXnQ50nyDdyYLXTErOXGZtgtCbWf8++A/QZgFdvb+f1QkMl4rhNqfbuMHqVBlcn
-	DjVYNttUHinaN7LgXrlMdR5pn/xOB8jT2ZceeujyER0AhUdgkNKIhm407yDZtOgktPVtE8
-	DAfC2QGOAgLWXUCfQVumzSvf42AGqhg=
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84842381150so6977125b3a.3
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 08:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785771196; x=1786375996; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
-        b=cJw5qID+5KSSJVAQTeTT8lIQfWHeYDiulAip18RAByp9lJZTkRkNVcq03p36tR02yf
-         8ISYFsdYU6kJp5rOQIjGrp8pYDJO4B+PqHpBQJx5r65hIVpSXmbJDnnMYwcYP15LnCk+
-         LZD1Uvj+GxCk9RPDK0MBdjkRskS3T9KxWDZo+hmhckSHukSdiceoTaJqwp2dMqjW3v2b
-         6iOAw31vDDeKyp88z2vihAvL76pzzUbHzDRzLDcKgO5PBD3/uh1XfjAsynidmdmA+dre
-         SwgaunWWBxnlJLtYHdz6rDx5BffRiMtVAp8JAoW+JZjmc2ehTcqS/bQMGWtA6GRRFTUN
-         GiQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785771196; x=1786375996;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
-        b=Co8pUuNPN47yUJ9JYPvi/pwrXgK6nKavRGhiaLynjF7fsUiK0MjtydpeoVjLPBZF3I
-         F10Tw9NsnekaKGljbW2gOkaQm1cXNKx8ElqgTIja1q45vhDz/mt8efO6K/OxyEBqAIfi
-         R6UcBdXlyRM45nSmEGcol5JJdL3B2XWeoHGIWqHkntq2VGISiUeFPKB8CCcR8LgnbxcC
-         IoQhY1WS/ZN+lIVOEMqTuVaKvqRz2LRrfhHlW4bSj7/acauo6qkINij9SOyk3PBH0+fb
-         Cdh7QOtlo3BKQS/DO/QzPwK8ge4H+5qRQX4cv6q8He7JbFnAK2PHNitG9K/kZ16KJTOT
-         LQyA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrr8/E4MwkCmimAQE0oO3+bZ0JHR3uQd29PHfLy6IHiX79m/yREXT/eLE4HFuVIU0RmWTIkH/g2Eg==@kvack.org
-X-Gm-Message-State: AOJu0YzsUDboFn+ISZhUGHzm1p7uAHmXCR3a5nVTkfmO5qFvZ4IAHS5t
-	6bUUJk/+mkZV9CzEKgNxsgTPg3LyBBg8NcFPYfbBd6BgCBoEyachZh0+J4dCwf+kzurzSYFXaTE
-	13gtlYg==
-X-Received: from pfbhw1.prod.google.com ([2002:a05:6a00:8901:b0:848:46e6:1aac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4613:b0:848:3fe2:c88b
- with SMTP id d2e1a72fcca58-84ee477539amr8885723b3a.6.1785771194900; Mon, 03
- Aug 2026 08:33:14 -0700 (PDT)
-Date: Mon, 3 Aug 2026 08:33:14 -0700
-In-Reply-To: <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
-Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
- <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com> <amzMtg4K6qEEsudx@google.com>
- <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
-Message-ID: <anC0uuZIrbxlGubN@google.com>
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: multipart/mixed; charset="UTF-8"; boundary="t+KByEqIRolqunqf"
-X-Stat-Signature: jtbyp9qtobdqp5ns37j7nhpwjkyt8h5k
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D416F160008
+	bh=ivloSloBsPfVSxHQcNFVB1STj59t6hZ3rSk67HO8O54=;
+	b=5eB1wA++TzZzpp1Qve+QrwntavGopmTfyfv+GwoQYH+zTked936u1ukk3pQzNmkGUqdGQf
+	fVqTrAVqCiwwR/4zQiw5Hv0NhRuK2wUUNTeNakyd03M90e+60ioZYE68LoQcaIndnQCAdz
+	ZgrbR8i2/NkWH+uqE8Nx9sWLv9vbwfk=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785771285;
+	b=zAWA7glzyqWTs2SWepxhUOBHbEUzLwscfqHxRUA+eqpRsB1Ibj7l6KpKjp3PJbeT8Jxndg
+	En7KxL1Mn5ixPNMRUFZ5B8LlpTDNaG/TH8ausc4oOA7V9Bc5EsjNhpN4NRArI83+fQ+s9K
+	w/CFX2TjQXFCDP2SsxuD6mgX43TS0QQ=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ts8X9Y7S;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.39 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wEI/Mxb8+DCg5cmS0hna1VjEdcL/sj3/x4izPJvjyO3JbtG4FaaoY+dyreezDr6QQlpYAipWNN7ReM3hmmi4t0la7egpfxkkDG9MNMdgIWkAXf59RNnKWhfhMkRbSB4b80Kqe1egGS7+wt2h3NjTsqvCJReaQixpVsbxt20gACc+w22UHvyZTlrQOH8xc5wBoRenN1S4evoiuF2aW5JYzeijGWZaA9cQx56aa6iYZXxIH4GLzcsOnQeFuFci2ktSo04GyOZHzCkHT2tB46ttmwaBmbcjf+uc22a317dC6WJSy3LsSAsSgYXgbOc6mpOzvRLQfM81wxaprXLjxwChGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ivloSloBsPfVSxHQcNFVB1STj59t6hZ3rSk67HO8O54=;
+ b=cgx9O7QgWaByDwKBC2V9S3jG5gohdCN3hzDkzaGaPk5GrfKNC9lOHq81MGPOC+LYjfxU5HAbvHnlACpXsyl4Ajzmz5+1gZCn85WAAozdpyr1ZLWRXPrOH94GrDkQHGC0FVdZq80kwZUKASJk5LQACttKE2hNQEWGIb9UTUvS8qGtZDE4xcddIMwi/MjqTQ5WYtQhOhn0zOIFmF5wUMCL9jVUzZKWIpegR6wpD1uZUVOwEsIloX1t80+dRQr2AWjjMKZ4C8OrMWFWhfV5l/lgVKRLvVgtFpyLDtWC0RHW+pSv4So6UshtSJoKRvqcJ1eM+9MplvHZSiI87mjmbwDVVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ivloSloBsPfVSxHQcNFVB1STj59t6hZ3rSk67HO8O54=;
+ b=Ts8X9Y7S++w0upZcdMrEussGHlQMCBsFGc4H4Kvy5kyZSo7MT77pd/u/wAnGhgt/mJaNmWWemZA/yEJSYyMlp0bStcMzkk3qiU5EynWjq62kDEh0q6+TcWWZHVr/JsQdkl/vMKkGimUGAC+G+g4rdwf5ACaw8SXD7T0gM2cM96jCgQMoxeMYZrOqd283/6QzyCejdXMjJrCAUoykn8XBJlqtOrMPsk13c9lN18QoZN6ntkTGjA2fm+EK9Dd7kp3vhn/aCk83M94bNofDfj60nrM8WEEYKZj7L6rYT9pcb0PrAIu+pAZ1cpZEJPwHKN3M3WHqUXlYm2NrAWh9QYI2Ug==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CHAPR12MB999224.namprd12.prod.outlook.com (2603:10b6:610:302::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
+ 2026 15:34:37 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
+ 15:34:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 11:34:35 -0400
+Message-Id: <DKFF32LRYH32.16JIXI4LUS5E9@nvidia.com>
+Subject: Re: [PATCH RFC 01/14] mm/zsmalloc: replace PG_private with pointer
+ comparison
+Cc: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
+ Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Gregory Price" <gourry@gourry.net>, "Ying
+ Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Kairui Song" <kasong@tencent.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Minchan Kim"
+ <minchan@kernel.org>, "Sergey Senozhatsky" <senozhatsky@chromium.org>
+To: "Johannes Weiner" <hannes@cmpxchg.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+ <20260731-remove-pg_private-v1-1-142c97ba3562@nvidia.com>
+ <anCuGbQ_-pTajAed@cmpxchg.org>
+In-Reply-To: <anCuGbQ_-pTajAed@cmpxchg.org>
+X-ClientProxiedBy: MN2PR20CA0038.namprd20.prod.outlook.com
+ (2603:10b6:208:235::7) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CHAPR12MB999224:EE_
+X-MS-Office365-Filtering-Correlation-Id: 944a8050-9975-42b5-802e-08def174b9c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|56012099006|4143699003|11063799006|5023799004|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	mkWuVfgZmIk4bf7Kyv02TdjWybujH9kag5c96OyaWQtiwSw+lskNadeysybtVqMf+0I4InoL/KvlFeBubL+9797RzGKsahbIjgPfHo7s1xcWsg4QA9Be4GOgDT50nCvoQ+7/HGhQOhBlDTvuYyIXDPQajCAjqprJONtisrTJ1lGpkwynM81v7NJ6RgSKuvsxLPBi3vv5f0m3BiQdJFGqfX5lHs76nKqhNFRI9M3snyBEYNY+VS4hcPdJWDInAcf1WHXAJcqtdlg/4+c///CK00IFIPmuFpwuHah6oiI6myVBfpiVUVoXe8z1wPKW7XCcohBGK/s95nBzHO1BLrKky1rs/15JakjcGhu+HqhUe+FKJsydYxOEU7XFn11RDFPizgeFLErT2d9+jrKg75biqxKuydggCYK0AW8v4fT/E52qrydyAr6xl7ZVN+9rH10pafJRhtqJCbDOoZOMmZG3AU1MwlQpmuj7OhiaawfZnMcIczevSNyu73GbF9bqdvX2xRB+oA7xKkZlAnXTNKYBbOgZSq85hqwBut7NqPZE1obu7iqDjynmaPnEMzG9oXjEaBtVanHlf6uGpbjIBlir5p9+3Nhn0xqd5E06ebqYQHdTPEec/kZQMdOL1TTR5mnAFQhK5D9X4Czxh6YBO3BxSBZc0TFQdsyaxe4UHJJbZhk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(56012099006)(4143699003)(11063799006)(5023799004)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TDNQN2x2eGF5bzB0TWt3L1BVZCtrbXdaRjZ6cURyVXgyam9memF0ZmFVcGJM?=
+ =?utf-8?B?clV5Q3h5ZS8yZ3Fwd3pIZUdNSmF4UkNNTk9RaHIrY3h0NlFBWHNJTlpyblJt?=
+ =?utf-8?B?TzlndFBzNlpBSHNJb2RGM1poOXVYZDRGR2RxYzgvcVZkQ0F4azNXRDNFWllN?=
+ =?utf-8?B?d2VSQkNqK1NrWWlEa3E0Qk5VOS9WTVZNcGVRZUFFVEg5OXJHYWc2ays1Y1Bq?=
+ =?utf-8?B?S0xtWEszcVh0VkpoYlVhVzlyb0NMeFpVbERwVW0wZG9TMWt4QitqMUpQNzdy?=
+ =?utf-8?B?YXZWV2dsY1BHOGFQWkViRTYwN09Oa0YwU2c5MzJwTFZkSFNKUzk1SG9XZEw0?=
+ =?utf-8?B?emdEMlVWSktZaFFwQm9UNDZ5aXZzSVMrNEloby9vaCszUUtTTkNiQS9MVVo4?=
+ =?utf-8?B?UVYvS0gzeTM0Vk93Y1puTGRzR09UTU9tM3BIZmtNRjMvYWR6cEQrQ21Wdjdi?=
+ =?utf-8?B?eHVFQWIxZnZuUWswNjFPY0tvT0Yzc1FUVHdVV3hoM3ZxZHdmT1BrTFJ3WmtM?=
+ =?utf-8?B?dmYzMFBPbmd6N252QklYNWdpYU1CczVrWTFnaWh5QWdoMmFPME5KNVJ0L0JZ?=
+ =?utf-8?B?ZW5OeUdFVDZQN25vZC9xMjNrK0NZK3lNMkJyajdsL2dMNlpsUmJNK3FCc1BD?=
+ =?utf-8?B?QnM4cnloVGpCeTc1SkQ3SkgzTEU5R3dYN1lSV3dmVzZ6RkR0UCtFcmVLdXdv?=
+ =?utf-8?B?WEpucGRObFVNMjV5TnNMUWpoY3B3OTZrcmp3T3FUMXBkM0RYZFJFL0tFOStk?=
+ =?utf-8?B?aTM1RjBtTFMrL0p5L0JZU1dGY2pOU21QcUtxQWxVVmFRU3pVNnVQb1hmSGRa?=
+ =?utf-8?B?b2R3SThBa2JDVTVZKytpUHh3clFqMmRLUDZnbElpS25JRzFqUHFFUUZPNzRh?=
+ =?utf-8?B?Rmttck1tSHhuc0ZBc0k1OGZJakJpemFzNkJORVZVTy9yYkJLZis2VlJPOWYx?=
+ =?utf-8?B?d2FYZ05LVzBPT05Hb0dLLzZ0VnFHUVFMOTNYeUwwanhpS0UvNm1OcFZhL3dE?=
+ =?utf-8?B?Y0VxVXM1a1hZTHU5dmUzVjBaRjJYMkJjMCtOQVNBbGh3SllQU0tQWWE1L0xw?=
+ =?utf-8?B?eDlTVUEzQUx3RytGb3ZTY0dteHlTUUhQSWkveEdpYTFsTWFIVmF6MGxDc2hx?=
+ =?utf-8?B?T09EUHhHS1VVMGFSRUFvbFNTL21PVlNBaEljYnVnUmwzMnhTbVpOTm5EUktn?=
+ =?utf-8?B?clN3THlLQVlNM1c0aGErWGtJVlhPcnBERDZ2V1BGVWxPK1M5NGlzOXVoZ01U?=
+ =?utf-8?B?ZFhmdnBzd2h4Q1pkYXMwNHJJSmJLaFRsTWQwV2tuUmhPSXphZW9TdHRaQVFM?=
+ =?utf-8?B?a1dvM0c5TkFBeGhqdFVheFZtZjRYY0lBcWVvTmZ2cGY0c0FTUjNwWFkvSEVW?=
+ =?utf-8?B?VkRyNGNqWG1aRTFFOTEwUldLdWlManlpVjFZSEpGUVd2dW14dlV1N1o0eFE0?=
+ =?utf-8?B?OHlLcmk0b3puZTh5ekVNMlpkMVJ5Q2hDT09zOHpLQnYwMnF2bUtFMVBtYzds?=
+ =?utf-8?B?dmh3Z0xVUTBoTEV2K3BIZzVQSzVsTzlkdmRNakhSRGhabzh5azh1ak9TcGlu?=
+ =?utf-8?B?cmE1UTdUT2FoZzgwTS9mdUVwczkrUVdlTFlubjVzK0x5dGkyN3k5MFgxOCtG?=
+ =?utf-8?B?UVpZUkpBamk0Y0lhNTFUWnRwT2t5M25NUW5Zb0dhQWFjK3VKcTAwQi96QkM0?=
+ =?utf-8?B?YVdsb0plblBTT21KTDZibFhJSGNaQU1zYk5OYmdPbE04N1EyOXFOL2p4TnBz?=
+ =?utf-8?B?dFhDVE5oTi93cE93TFdSVWJaVFZ0MnRnNUVTZWFIM0hPamdpUnB5M3hQSVBw?=
+ =?utf-8?B?Wmh5NlVPQUtza25SWE1IZmVSRTUyM2VoTEN5WjNaRTNyeE5rbTN1bURUaEtx?=
+ =?utf-8?B?Z040aExoN1dFNXJheFBYS3kvNDFEOHp3VVY2eExNZ0NHUjN0OWNQTS9BL1lL?=
+ =?utf-8?B?MU1hZWNNY1pxNTBHV3NuMXJmVVhuMk9NMkZsVHFweCtlQkNvaUpuY1N0K1RJ?=
+ =?utf-8?B?QUs0K1h4WFlUMk1xWUo0WXFQZHQ3MUNMUXQ4bURQMmlUckU2ck84WjFKY2xY?=
+ =?utf-8?B?eEdyQ1dyeWZTOEJydEE2bGE5UVdEbnRnU1htb2RFU1JPa3hLQndiWXlGSzdo?=
+ =?utf-8?B?WnhDVHIycmZET0dvZGlMN3dqeVhMY2V2ajBwK01KTnk5RzE5Uk13TElYRU9G?=
+ =?utf-8?B?cDQ0SGJWYkZVYXJicHJBSzBTdTg2R3BidXhSZHVDNTBudWg2MmFvcURQcE03?=
+ =?utf-8?B?SjZKbmZJRE5UazVnZk80SUphb3BLVFMxeHZwVGp6MytWK05kSHpyZjBQOUxS?=
+ =?utf-8?Q?VIcSye4DmLMWvgz0p8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 944a8050-9975-42b5-802e-08def174b9c5
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 15:34:37.0468
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QPomLv+30xcv97Yrj50aHMlsNg/1iLo5BhJYGGxrMHx6+RNn3BUBAxq5LfMHa2G0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHAPR12MB999224
+X-Rspamd-Queue-Id: 3FA131C000C
+X-Stat-Signature: fjoxhqho556swygxjsmogr7b1sdrcbet
 X-Rspam-User: 
-X-HE-Tag: 1785771196-822296
-X-HE-Meta: U2FsdGVkX1+oNpwp6K6x8bUJ3OQdb2JyXTWne9XKUMEEZdXu4E4CCZeKvz+ynfq98Jto15sWvOVgbCjg9XcAbvbZnI+Ps9GT6pBkWh0oQp4ycJEnUCobrf/mq4YZCVT8/xErazR9Xutfjcg/Dous/IVq5OpMXfO0DitcI2BQas3u1HFKg8ahXuBhperfJeA2QEjS68PsxcQqtwPx61YNE31ST1VpP6hRnvQQV/OYCWHu+u8UP204a9tF4FJaP9d0yE6WHV8WKP+DWvbpO11TrgC08x8UMY8KZT//GMToRXpYwctSWtG+SkNjXykEtCAyuhKgtZAsuobErascchVYp3PE8aqJwIxDHw2w952//58gakE1IX+9K4rJCXlmbMt7c28ll3vfCeC3Nt0yMFBrHEtixx9Es8uM/clwr3zAPsNciCfq//QEiftEpN+UVNCY2b3Wsrk4togYLXP72EiQh9Lt/1iseI9fb3gCdS3RbUw/l5sj6C64rLgocf7yxIaoFqi4Sqr78FELp7lvIPhxOufl2wvT/+UX9LeabZkrPwjlNEbHMUMt5sTW8e3ggRXXTeqf0egaMOj0Cu0soXeMLhhmhW9s1RzxmtV6T6DZqpmNOmQxosLP92JYHg4IUXOBlWkhLtTwaYO9KS5yqKQxDVQOsMSdKLQvJJDhuVpsCa3D3fQENkywsAYw/Qd7xtfb5c7xPx8YO8PqKB0JsEIf3gzXj69nruZ5/NbH/rnIxm4vKsG/W9RKMt/Q6hxHkxnuNL261z1IRMcXIFZ1kD90ra+zA+AA6QTcEB+pD3rUnrBmJ6WZK5WYA4Okix+LKD5c6p19rTjIIdAvoK8AA3JID0KB7ZmPPlZtciCmdAZUuEHqbCyhz2eReSFAfA37ZsO8V+oSagvPAnsJqcq5sbmFvR5/yHNmx1osybZ9S2sILYd05a2rm07aET2HWFCrKr7d8mHGTZ4Y17M/AlPI6eq
- K8MQSrxM
- V/MM6gFKDwuHhDQz+Pidz8k1eeM6pmYEHdhfJHfhotkKBtUHf5ryyodr/NaXIjtAL0mwGe5PqvJpZojvOVih0m9aOEQRKRHeDthD5EvPSF3vku2PPcZivUXGTxmblJprOpF0iWfZbw7H35X/vlWMRUbAQWd4cjXi+E4m+ovP8DWnW9jjNbCntEpRkrG9qDZtKKJBd4U2SFoUKXOpQ658AeRhS6/DOutsnZ0fmAOLzJcTb25+yg1Yp43e7kXlmDOr2hr6yHqeWNkCvvon4dxAEbPR0vML0LnQAVybX51tkfM8XsvLXD81D2uioKjXZVFIGsmknJcDd+Yykh6Rq/CoerwxGZzesqvd3/bpGmiHu3O/D7YWqrrVkr/P9HwgpSrRJL2cZflKDedxz7C4sXzWAqIRDfsiXb5sSZ456uvc0sLbuv0P87FlT7fBOVPSzSfxfFYlusqA/xf93nJKNEK5m+3mD2SxzUY/8YRA7ylFbyu92FpdNRIdYwZIn3zCuhrcHWW8qlLEaxKDwhqpjv5CEXQ2MzUjeJc+gViaX99opw+u/vUVrm35SFQXBd9fKmWg9yR133kbWtsJphGqmM3YQWQe7wHFoJYZVuqE34y6Wj6ub1uGrD9oGlx7LXVIsamQnUKXGsITT3D5mk9PFtJvqXKskdnno1oq58Qxow34EYQHku+bdVZSnD5N63J2GlajVKp1kVCuSS2T/Yz23jQnMVMhskrYTW9+8T3XtMGjBXYOmYAjGeXdI4AhW6HvI8jwg+fBKBzwIqltxjE5covG9Gw6/frgT1Cnbg65umyj8SgXoMmMwAhRF0OiOroqEsNthFcw4IwrAIteV5lOUeAw8LzzZLQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785771285-288648
+X-HE-Meta: U2FsdGVkX1/FkTJttdoxQgZMEkjGk7KA1sCDxu/laNWHbvONDt1pkOmPd430XXq4Yn6ih1Nu6RJRZaTnNAJ7WOFsZgK2Zc4Xa/jNcYYPly38GSpEaj0K9vbVhO1m0cIw8DMBjVG8QI7OA/V/h2jWckZ1Un/cE2h/FzCvbSeNbESA6x2pQKklIpIcdoSQpSdc0fbcbe1W+sIZWvxznfr7x7AOsPhmmIegjrEMX0/nXLyoHoz2zTHwTvjjHBJ2wCoaMc1LcP2FqcwFNZ7rp+oEtb15jerpEcNYNkEzSpntAjBBSMinaTcYUqU96D6jH2n4wYb9r59VQChx5EmWQ71TOpy05NdQ9aDucmh6ZjYGGdw0RAd6vGKjxB1tlZDcW8AaysDIYstmuyiOHw87WCAcJHyWCn+5xBwkiT6UywdJdp+mOCYCqebuaQtdB9b7BKD3nuGxy4JQ/FjpZ2ja/JU00STkVwTolNi90/aDNgnc2wUVEJeKeINWgaFSYyn4k1CnJlJdwsgGnJHusquEtxtJm5bnR+7vFj6Z8CAUEQ3g4T4dkmsqjL1QIZtJdvGEdzjExdg+4FJArO8kOyGdZT8AJL+VJX4hU63T5Cs1idUvkwYe5m74nS7ilT1HvsJvfx2ac+j0bw6Emb/U4sFUWIc3X9BkWjZlwM45u/2+yHdGpPKqbU7p9YLVYcc3JninP8JPDHLecSOvuQpFwjM5omIqu3xJ2nubVXrUrMOzwd84EllBOosorJV4fUbqbl3HGvv+6IsFwbxd6071u/INSfK1Vg9eCbS4SbnwIIPfU/2kGjgC7/VAGtrtCl64CtC1lMJDEDzmptcjhKylK2X0l2C3YH63OdxBaf86NFMPMxB3p3z1RkdajrrmLvXihe6RQbTQ7NeYb/Youc0jcoybrbJIkp1Yk9HiF9QDWFuI/kEETLJ6wFObP//+CgwstO9Ya/NBme1T5+Ab0EyLji0SmdN
+ /PGpRr7M
+ 1OXf3BfXoYZ9QaE+EG9tpOpcPcxUr4VvAHPbpcsrdhqHMRScIV/X/VDi3X75HN5BqNQlYGAttvAUBA9r02ai7r8TtVdgBaTqFJbNzQF0HJjrUwK4oRQ2RCJDsw/KDB/7siR5YwQF9r34aVcFYKUfxwFHZgXiSpNdyc3TbIXRBnNbYIGzqwgn/6maDcBrz5XkRF5E6liBOts7DggsHWnm4PDcvOocd4xWQml0rNbM+0pHSMm/tIwjKkzTtLyuQZKB6IPyECm0DgvNqChB3YBg44GrXcM4IgueqJbCPhDgQxI0ur1cVSQxB5GSs508+NIyN4tdeDmUXVF6JexJhB24eKeJnUgyvnOt3XpA96li57i4M1iagaZpIJWAuUHqanxGdXK8hcoaCPn7Y7rv4YGncMNcPoj1mChsjfwANf4736lW2PrY4K0xLpwCRpyOf9/SQUQSGduurx4lM2Z/j4iXLBhcbz8LQFVUJXAfc17UQZBOa8k4IIFqiwZU9bcgWhIf111McSPKZxfMgx0noykrjSXDUdf3lVFjPbB2J8UesEGAmcG3YdLVXERUQn+HXt0hPgY7TwV5XEiI25XMXgoDmYAfgCa/Kmja3NuWBQKE3qx2fXLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,239 +185,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon Aug 3, 2026 at 11:04 AM EDT, Johannes Weiner wrote:
+> On Fri, Jul 31, 2026 at 10:13:24PM -0400, Zi Yan wrote:
+>> zsmalloc uses PG_private to indicate first zpdesc in the zspage chain.
+>> Replace it with zpdesc->zspage->first_zpdesc =3D=3D zpdesc. The check,
+>> is_first_zpdesc(), is only used in VM_BUG_ON(), so performance impact
+>> should be negligible.
+>>=20
+>> It prepares for a future commit that remove PG_private.
+>>=20
+>> No functional change intended.
+>>=20
+>> Assisted-by: Claude:claude-opus-4-8
+>> Assisted-by: Codex:gpt-5
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> To: Minchan Kim <minchan@kernel.org>
+>> To: Sergey Senozhatsky <senozhatsky@chromium.org>
+>> To: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> ---
+>>  mm/zpdesc.h   |  2 +-
+>>  mm/zsmalloc.c | 15 +++------------
+>>  2 files changed, 4 insertions(+), 13 deletions(-)
+>>=20
+>> diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+>> index b8258dc78548d..4fd81c2e80769 100644
+>> --- a/mm/zpdesc.h
+>> +++ b/mm/zpdesc.h
+>> @@ -26,8 +26,8 @@
+>>   * with memcg_data.
+>>   *
+>>   * Page flags used:
+>> - * * PG_private identifies the first component page.
+>>   * * PG_locked is used by page migration code.
+>> + * The first component page has zpdesc->zspage->first_zpdesc =3D=3D zpd=
+esc
+>>   */
+>>  struct zpdesc {
+>>  	unsigned long flags;
+>> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+>> index 8204b76f78308..e8ef227624efa 100644
+>> --- a/mm/zsmalloc.c
+>> +++ b/mm/zsmalloc.c
+>> @@ -290,11 +290,6 @@ struct zs_pool {
+>>  	atomic_t compaction_in_progress;
+>>  };
+>> =20
+>> -static inline void zpdesc_set_first(struct zpdesc *zpdesc)
+>> -{
+>> -	SetPagePrivate(zpdesc_page(zpdesc));
+>> -}
+>> -
+>>  static inline void zpdesc_inc_zone_page_state(struct zpdesc *zpdesc)
+>>  {
+>>  	inc_zone_page_state(zpdesc_page(zpdesc), NR_ZSPAGES);
+>> @@ -478,7 +473,7 @@ static void record_obj(unsigned long handle, unsigne=
+d long obj)
+>> =20
+>>  static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc=
+)
+>>  {
+>> -	return PagePrivate(zpdesc_page(zpdesc));
+>> +	return zpdesc->zspage->first_zpdesc =3D=3D zpdesc;
+>>  }
+>
+> There are two checks: get_first_zpdesc() and obj_allocated().
+>
+> static struct zpdesc *get_first_zpdesc(struct zspage *zspage)
+> {
+> 	struct zpdesc *first_zpdesc =3D zspage->first_zpdesc;
+>
+> 	VM_BUG_ON_PAGE(is_first_zpdesc(first_zpdesc), zpdesc_page(first_zpdesc))=
+;
+> 	return first_zpdesc;
+> }
+>
+> If you expand the helper, this seems kind of pointless now:
+>
+> 	first_zpdesc =3D zspage->first_zpdesc;
+> 	VM_BUG_ON_PAGE(first_zpdesc !=3D first_zpdesc->zspage->first_zpdesc, ...=
+);
+>
+> Mayyybe it could make sense to assert first_zpdesc->zspage !=3D
+> zspage. But that's a separate issue that the previous check didn't
 
---t+KByEqIRolqunqf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Usama has the same comment about this.
 
-On Mon, Aug 03, 2026, Xiaoyao Li wrote:
-> On 8/1/2026 12:26 AM, Sean Christopherson wrote:
-> > On Fri, Jul 31, 2026, Xiaoyao Li wrote:
-> > > On 7/31/2026 4:42 AM, Ackerley Tng wrote:
-> > > If kvm_range_is_private() is useful/required by huge page support, then let
-> > > the huge page series to introduce it. It has nothing to do with the in-place
-> > > conversion series.
-> > 
-> > If it weren't for the fact that the range-based search is used later in this
-> > series, I would 100% agree with Xiaoyao.
-> > But since the core logic is used and needed elsewhere,
-> 
-> I don't see it a problem. Without introducing kvm_range_is_private() in this
-> patch, the core logic of range-based search on gmem can still be introduced
-> as kvm_gmem_range_has_attributes() directly in patch 10 or in a separate
-> patch.
-> 
-> > and because kvm_range_has_vm_memory_attributes() takes a range, my vote is
-> > to provide the plumbing now, even though a small portion of it isn't
-> > strictly necessary.
-> 
-> So my initial feedback was "we can just use kvm_mem_is_private(kvm, gfn)".
-> It makes code simpler.
+> necessarily catch. And might not be worth checking, considering how
+> trivial create_page_chain() is.
+>
+> In any case, it doesn't seem worth keeping the check as-is.
+>
+> And with one caller remaining, you could delete the helper and inline
+> that expression into the check in obj_allocated(). What it does now is
+> self-explanatory; it doesn't need another name like that PagePrivate()
+> check before did.
 
-My apologies, I hadn't actually applied v9 to look at the full context.  I agree,
-providing kvm_range_is_private() is completely unnecessary.  It's not even really
-a problem with this patch, it's a pre-existing issue that can and should be
-addressed with a prep patch.
+How about the version below? Basically, I made is_first_zpdesc() more
+straightforward for backpointer checking and first_zpdesc checking.
 
-> And as a bonus, the logic to choose between gmem-based attribute query and
-> vm-based attribute query is hidden from the static call.
+1. get_first_zpdesc() needs the backpointer check; the first_zpdesc check i=
+s
+meaningless, since the assignment is done above.
 
-I don't follow.  What do you mean by "hidden from the static call?"  The whole
-point of using a static call is to select between gmem-based and vm-based private
-memory.  Or are you saying the populate() flow doesn't need to manually check
-gmem_in_place_conversion?
+2. obj_allocated() needs the first_zpdesc check; the backpointer check
+is meaningless, since the zspage is from get_zspage().
 
-> The second bonus of dropping kvm_range_is_private() is that we can eliminate
-> one more chunk in patch 20.
-
-Ya.
-
-Untested, but unless I'm missing something, patches 6 and 7 of this series can
-be replaced with the attached patches (6 and 7 should be squashed together no
-matter what).
-
---t+KByEqIRolqunqf
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0001-KVM-guest_memfd-Use-kvm_mem_is_private-when-populati.patch
-
-From 77bd0524535d65d7c6beb4a0cc70a65fbacc9f81 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 3 Aug 2026 08:10:09 -0700
-Subject: [PATCH 1/2] KVM: guest_memfd: Use kvm_mem_is_private() when
- populating guest_memfd memory
-
-Using kvm_mem_is_private() when populating guest_memfd instead of using an
-open coded equivalent.  In addition to simplifying the populate code *now*,
-this avoids the need to provide a range-based gmem lookup API in the future
-as well.
-
-No functional change intended.
-
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- virt/kvm/guest_memfd.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8c7709a352cc..48c13d18af15 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -881,9 +881,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	folio_unlock(folio);
- 
--	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
--						KVM_MEMORY_ATTRIBUTE_PRIVATE,
--						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+	if (!kvm_mem_is_private(kvm, gfn)) {
- 		ret = -EINVAL;
- 		goto out_put_folio;
- 	}
-
-base-commit: 17548ee538ef4f476e16fb5dd3ca8adfd8a852ed
--- 
-2.55.0.508.g3f0d502094-goog
+Both conditions are needed for is_first_zpdesc().
 
 
---t+KByEqIRolqunqf
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0002-KVM-guest_memfd-Stub-in-ability-to-enable-in-place-s.patch
 
-From 02db86dc193d969085bbc0c98c6117e59d469cb5 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 3 Aug 2026 08:17:34 -0700
-Subject: [PATCH 2/2] KVM: guest_memfd: Stub in ability to enable in-place
- shared<=>private conversion
-
-Stub in global variable to enable in-place guest_memfd private<=>shared
-memory conversion, which will eventually be exposed to userspace via a
-module param, and wire up the __kvm_mem_is_private() static call to the
-guest_memfd version when in-place conversion is enabled, i.e. when gmem is
-the sole authority on private vs. shared memory.
-
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- include/linux/kvm_host.h |  6 ++++++
- virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
- virt/kvm/kvm_main.c      | 12 +++++++++++-
- 3 files changed, 43 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 65fbce46b63f..9477ecebbbce 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
- 
- #ifdef kvm_arch_has_private_mem
-+extern bool gmem_in_place_conversion;
-+
- typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
- DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
- 
-@@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- 	return static_call(__kvm_mem_is_private)(kvm, gfn);
- }
- #else
-+#define gmem_in_place_conversion false
-+
- static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- {
- 	return false;
-@@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #endif /* kvm_arch_has_private_mem */
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
-+bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-+
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
- 		     int *max_order);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 48c13d18af15..e21c7122539a 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -474,6 +474,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
- 	return 0;
- }
- 
-+bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
-+{
-+	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-+	struct inode *inode;
-+
-+	if (!slot)
-+		return 0;
-+
-+	CLASS(gmem_get_file, file)(slot);
-+	if (!file)
-+		return 0;
-+
-+	inode = file_inode(file);
-+
-+	/*
-+	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
-+	 * This result can become stale as soon as the lock is dropped, so the
-+	 * caller _must_ protect consumption of private vs. shared either by
-+	 * holding guest_memfd's invalidate lock for the entire duration, or by
-+	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
-+	 * against concurrent attribute updates.
-+	 */
-+	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
-+
- static struct file_operations kvm_gmem_fops = {
- 	.mmap		= kvm_gmem_mmap,
- 	.open		= generic_file_open,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 081e3309359d..e5654baa8895 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -101,6 +101,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
- static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
- 
-+#ifdef kvm_arch_has_private_mem
-+bool __ro_after_init gmem_in_place_conversion = false;
-+#endif
-+
- /*
-  * Ordering of locks:
+diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+index b8258dc78548d..4fd81c2e80769 100644
+--- a/mm/zpdesc.h
++++ b/mm/zpdesc.h
+@@ -26,8 +26,8 @@
+  * with memcg_data.
   *
-@@ -2422,6 +2426,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
- static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+  * Page flags used:
+- * * PG_private identifies the first component page.
+  * * PG_locked is used by page migration code.
++ * The first component page has zpdesc->zspage->first_zpdesc =3D=3D zpdesc
+  */
+ struct zpdesc {
+ 	unsigned long flags;
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 8204b76f78308..d89253dc6dd40 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -290,11 +290,6 @@ struct zs_pool {
+ 	atomic_t compaction_in_progress;
+ };
+=20
+-static inline void zpdesc_set_first(struct zpdesc *zpdesc)
+-{
+-	SetPagePrivate(zpdesc_page(zpdesc));
+-}
+-
+ static inline void zpdesc_inc_zone_page_state(struct zpdesc *zpdesc)
  {
- #ifdef kvm_arch_has_private_mem
-+	if (gmem_in_place_conversion)
-+		return 0;
-+
- 	if (!kvm || kvm_arch_has_private_mem(kvm))
- 		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
- #endif
-@@ -2633,8 +2640,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
- 
- static void kvm_init_memory_attributes(void)
- {
-+	if (gmem_in_place_conversion)
-+		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
-+	else
-+		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
- #endif
+ 	inc_zone_page_state(zpdesc_page(zpdesc), NR_ZSPAGES);
+@@ -476,9 +471,10 @@ static void record_obj(unsigned long handle, unsigned =
+long obj)
+ 	WRITE_ONCE(*(unsigned long *)handle, obj);
  }
- #else
--- 
-2.55.0.508.g3f0d502094-goog
+=20
+-static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc)
++static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc,
++						  struct zspage *zspage)
+ {
+-	return PagePrivate(zpdesc_page(zpdesc));
++	return zpdesc->zspage =3D=3D zspage && zspage->first_zpdesc =3D=3D zpdesc=
+;
+ }
+=20
+ /* Protected by class->lock */
+@@ -496,7 +492,7 @@ static struct zpdesc *get_first_zpdesc(struct zspage *z=
+spage)
+ {
+ 	struct zpdesc *first_zpdesc =3D zspage->first_zpdesc;
+=20
+-	VM_BUG_ON_PAGE(!is_first_zpdesc(first_zpdesc), zpdesc_page(first_zpdesc))=
+;
++	VM_WARN_ON_ONCE_PAGE(!is_first_zpdesc(first_zpdesc, zspage), zpdesc_page(=
+first_zpdesc));
+ 	return first_zpdesc;
+ }
+=20
+@@ -833,7 +829,7 @@ static inline bool obj_allocated(struct zpdesc *zpdesc,=
+ void *obj,
+ 	struct zspage *zspage =3D get_zspage(zpdesc);
+=20
+ 	if (unlikely(ZsHugePage(zspage))) {
+-		VM_BUG_ON_PAGE(!is_first_zpdesc(zpdesc), zpdesc_page(zpdesc));
++		VM_WARN_ON_ONCE_PAGE(!is_first_zpdesc(zpdesc, zspage), zpdesc_page(zpdes=
+c));
+ 		handle =3D zpdesc->handle;
+ 	} else
+ 		handle =3D *(unsigned long *)obj;
+@@ -848,9 +844,6 @@ static inline bool obj_allocated(struct zpdesc *zpdesc,=
+ void *obj,
+=20
+ static void reset_zpdesc(struct zpdesc *zpdesc)
+ {
+-	struct page *page =3D zpdesc_page(zpdesc);
+-
+-	ClearPagePrivate(page);
+ 	zpdesc->zspage =3D NULL;
+ 	zpdesc->next =3D NULL;
+ 	/* PageZsmalloc is sticky until the page is freed to the buddy. */
+@@ -1001,8 +994,8 @@ static void create_page_chain(struct size_class *class=
+, struct zspage *zspage,
+ 	 * 1. all pages are linked together using zpdesc->next
+ 	 * 2. each sub-page point to zspage using zpdesc->zspage
+ 	 *
+-	 * we set PG_private to identify the first zpdesc (i.e. no other zpdesc
+-	 * has this flag set).
++	 * The first zpdesc has its zspage->first_zpdesc set to itself, no
++	 * other zpdesc has this set.
+ 	 */
+ 	for (i =3D 0; i < nr_zpdescs; i++) {
+ 		zpdesc =3D zpdescs[i];
+@@ -1010,7 +1003,6 @@ static void create_page_chain(struct size_class *clas=
+s, struct zspage *zspage,
+ 		zpdesc->next =3D NULL;
+ 		if (i =3D=3D 0) {
+ 			zspage->first_zpdesc =3D zpdesc;
+-			zpdesc_set_first(zpdesc);
+ 			if (unlikely(class->objs_per_zspage =3D=3D 1 &&
+ 					class->pages_per_zspage =3D=3D 1))
+ 				SetZsHugePage(zspage);
 
 
---t+KByEqIRolqunqf--
+--=20
+Best Regards,
+Yan, Zi
+
 
