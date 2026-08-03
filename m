@@ -4,82 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFF3C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B363C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 12:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 478466B00A0; Mon,  3 Aug 2026 08:52:54 -0400 (EDT)
+	id 2A6D06B00A3; Mon,  3 Aug 2026 08:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44FF76B00A1; Mon,  3 Aug 2026 08:52:54 -0400 (EDT)
+	id 257026B00A4; Mon,  3 Aug 2026 08:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 365A26B00A2; Mon,  3 Aug 2026 08:52:54 -0400 (EDT)
+	id 0D4696B00A5; Mon,  3 Aug 2026 08:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 132586B00A0
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:52:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 681A5406EB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:34:47 +0000 (UTC)
-X-FDA: 85059902214.05.97F2A80
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6EC6B00A3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:54:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95539A1C39
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:16:40 +0000 (UTC)
+X-FDA: 85059856560.08.1086519
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B121740005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:34:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWiG8wLi;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id D6A2420010
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:16:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZhilxiHV;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785760485;
+	s=arc-20220608; t=1785759398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FvxejhTP4YjhICa+U9feAto+gAswzfWwuxi4C6BTOBM=;
-	b=rdqT+l85jqPekt8WSnDOqjE4AnWxlu+Zf+CGl73bwW+jPfEJeZFR2SmqPdBmXsoVEeEKAN
-	Tt9gJnVj7tWemCWkjH/qSwGL8cO2hk0K23EuDb0a8ApVqE+ew8+xeDoAZOzC82HxnHhZa3
-	bUas0aSpBtx4sLqO9WmkaRgs2U2ZYgc=
+	bh=55xmHsjPqzaGV0ly1LUi624NBcwUFcBTGLs//q+Aif4=;
+	b=lPNKJ9quhG6w+jxxoVQThqlbQzVtWDTikgovb9GlnQemCBpJ75IPDijZuKQXqi9NKJTxRT
+	q5AaLn/lGlRW3VCX1fwogK0t8e3LCnyxVKB1lovOYEq8nNv2gRIPrKwcSV9RXn9DF/Ng8W
+	mE4XtITkYvRrKnp8J9XDL1v/sw5RvpI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWiG8wLi;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZhilxiHV;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785760485;
-	b=X7Br46NRm9Nvx+eQ5+r61Z82F6YdcE9NvuNGcMd4FkIxz4/o77qCSDs9THiRSBxfaQ/Ome
-	gZ1NhE5bK5O6r5IxaJVZaD22zWgHXfou+YgauLlhLWz17rJnB14q6gEDksLBm11UpJeNE2
-	TmesUxNsdzW5Yv7IAJZDtkuEDqtF0D0=
+	t=1785759398;
+	b=eopKbNNxxyP+ZneFEGNPLO8yxsxy36guRP4of8AAhPn/xJT1wzhhx2/LkLo/NLov49YlG8
+	ZS8LVsCDBill0nch10FSyvPZuS8s6+/BS1GXuI7iSlNEg6tRyUssDMpnm3RvPAkMincVfL
+	4bfNHZUALoH15WV/9ECa0QeM34I9AFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29C3460A78;
-	Mon,  3 Aug 2026 12:34:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777DB1F000E9;
-	Mon,  3 Aug 2026 12:34:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5BA2360A81;
+	Mon,  3 Aug 2026 12:16:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0933A1F000E9;
+	Mon,  3 Aug 2026 12:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785760484;
-	bh=FvxejhTP4YjhICa+U9feAto+gAswzfWwuxi4C6BTOBM=;
+	s=k20260515; t=1785759398;
+	bh=55xmHsjPqzaGV0ly1LUi624NBcwUFcBTGLs//q+Aif4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dWiG8wLiIGChnm0xxMpUtGn/AJjxURBqLwsiYwR5SsU30zaGZ7v44kqC1i5F/V43E
-	 gXExPllep59KzmJXmKxQCphfepcfWHZ5pGMCsVPE/VFBIYm7A5T1QxNRMBKMA1+9gW
-	 NGfJrZMhyzQN5IHPpPONZ0t5ICuctB8tj9p7yDchv+y0glP1MUHmR+H641GzeAyidZ
-	 F7ET7iNpvyfBfcjTqTY2e7QOmGgZONlU4p4ZzD5TsL00fgL+z1sPDkQ/8CHDi8j4pz
-	 BADW+tayOZX3TMDTo3FL0zDDxdknp/nRnc8BA+crsdQT9ztnmnFLUlnm8++Hjg9waP
-	 p1X7EhtVuoF0A==
-Message-ID: <6e594ae3-88ed-44f6-ab92-091955cfd14e@kernel.org>
-Date: Mon, 3 Aug 2026 14:34:38 +0200
+	b=ZhilxiHVcGglLBMt5PIQz/4XhyzmurGW7f7hDst5wFgXLkEJ7Ql4j38SUeUjDtxpo
+	 iujYsQK51eOkQ+gMwj9rS2dVQ7eOYOVNnhbZESsOAcqCXH+mx1d/0Fdd9WEzcoiI8c
+	 vDP9WGdcT7/uIbYeu3lbftJzQrqcB1xe98RAX036DKn6XJXwFInPs1bs1Ka5WOVZcj
+	 h7OmESiRPlzjasLU3dDExgLYViNgbcUhxF4UfAyoDE9r+H+KGPx+tuBH7/2OUI0/u1
+	 /x/TJ2Xr65rD94DLz9eth0zXRCVGm6UE64DiY5TolS1I3TuHsCYsINlPMG/kPcDX+W
+	 4IjSrT+t9CKJg==
+Message-ID: <bf97ed0d-571f-4c61-b761-5b45d435c4c2@kernel.org>
+Date: Mon, 3 Aug 2026 14:16:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: remove wait_on_page_writeback()
-To: Tal Zussman <tz2294@columbia.edu>, Ilya Dryomov <idryomov@gmail.com>,
- Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu>
- <20260802-remove-wait-on-page-writeback-v1-3-6c35d6b3ad36@columbia.edu>
+Subject: Re: [PATCH RFT 1/3] mm: export variants of vmf_insert_pfn* for use
+ with pfn_mkwrite()
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <20260731164341.1109827-2-pbonzini@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260802-remove-wait-on-page-writeback-v1-3-6c35d6b3ad36@columbia.edu>
+In-Reply-To: <20260731164341.1109827-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B121740005
 X-Rspam-User: 
-X-Stat-Signature: waua6xz45mqekkcscj8wjpd994axhc99
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785760485-88613
-X-HE-Meta: U2FsdGVkX1+FDHDv/6SZQLkhvftUNXw4OBABSaK1JeMv5ffM4RzQxxwpF4SEW02EYHI+GbT+XNNK73SAvotwbkrvP8W6va6sP0aFi3jjrLM5RrolSTuZL9eS1p7js2ad3unXVgzkVBmSxp4EHJWy4o6HAdbMPeBzEaADz5p3OSREwlPB06LmlQ3OjyJvoZtzIX2II/NFJGVmDlFDW1rK0AexNOW+JO8/h1Wzivg+MC6T+m8kI7WTa3l7ogIGRyvj5D7jhTsVeG1y6RvYmtgcbGltBMCDJAR5ysCUhU/67WDoMU82aBqjrC+jSlaPeZ3Yy5E/nmHj9CRFR7pjeyD0QVHpUHzrYBHfW+5ZLG+5oCb5jiUA704J9z4I2ERkso4iIgdKgyi1m9kre7PqQ+Ev1EqHNV5RQ6kDAVC7mOg+/Qw9Jjkr2uYSBcMWyTOQnlz8d8HscJH8IiY+fQXpV9PcjzzVqSmctxjm69ExxRlBIX4/foYSTdd2VDyy7I0QbtY1Yv8rmUpN6Mr0B1CWCZNfrpErxoqL6KOLsBXxUXuL7uGgZ68+6BMKC/STfmX74HyYne+vQz2NLjvk9ou7TSOPjPVlrXnlMeRsyle3u+f8jMa4YqzPONfqMeO1XlgVEnJ/wRR8YaN58YLccxcx2Ejm2x7al4ppNhvo8/yIhx0Tilj80e3dxFhj9+uYMM7kd0SQi1+IGqWRNXl8mPhrla/hhyISEm1Fw6coeN0ubJxr8/ehxxIIrVXmozr+LMDAZQBNNEg/MwYrSp3kMrErYS4c4L3Q5zypgFj84j6SjLJtev7+PbJd/6bZ2nrpGZUwmRMH9Ccl6cVMwz9RfUnq/eVXmZLABoysPxirTFRqSMA/A91UoI3ncojLNE/p62hzqdXR4+NbWze8/zZM9K6CA7HFcsXHKIqYW91hgFtO2wSGTNjMuIUS+DtH3eUP6DjGuyywLJjTQpRUB5GdeFqxF8z
- JzYYgV+K
- ytcxI79w68+X0zJti1Pl6/BezvbqN3rjHJY3CNUziS0yar58ms/D9fI1xMhVCjFNe3xr41ea6dS4GVFlC0VZb/Hc1SQrseBXPoBas5rLYkARDQxM+oq/7jw2XiU08Ph/+TdSDrd0YPfke80tCU3r6PqsXw7wOknFbLpRfAS6d1/otrMDcquWETLDMDu4g2TXiiSPVdXTm5WmBzPDVNaeXejyxik/Fi52OCOBqL6Jrp+/Owq30XKngTX2Mv4ZvwXwYyNKGev8e8yP7HRV95lrnp44TVpc/QT2c8qIKT9Jf4Og/vJl/q0GmsLcXshKKkmZn1YOPr1AxbddFgGQ=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D6A2420010
+X-Stat-Signature: b8fg8k1xzuxqtur3mtc5e3schfe4aa7a
+X-HE-Tag: 1785759398-887635
+X-HE-Meta: U2FsdGVkX18MEmxrhDLDeJTQqNqmaDFYBcZ4zALi2adMEooHTRsTbaGR0sTFFzSg/yQ0MFVNzTcn9EI6MN6k/AOSp/4IqTriiXss7XxP6guuLNa4HSFU47eMGkANXctYJ6FJq/MUU1Uro3bj8iM7IXH9nbUPa0wXeS3rELByWiVnRt7IQ7UPxJVFMS9vRV9ZbTlQiaTgP8yKQHaynF4B3bDHbt1jK/OXuRSPGJQOAHeVPaYXquDSR1Rqe5mm3L9xhZl45uIFh04Pwm7UCSzt7lRnGHGrPVRgpkW2+nQkGOKEdQEA+hiQEAxaIF3/iOJyqqT9dIikwY034LHiVlRt+RZ81B9Vak2HKS71FyjGYl9lAAP4fFxG2Gs6bSOeb51LvifVDj7yiO7PhztYBlDx5qNqjambA2dBarshveazbjIUCY3Hw0dkpJ92aPRAgG3Pqrc7U7pI4EWaxFWeW6UGrndZfPRTcAE8T0T6rI9ocsGJUyXYQdYJg5vYqZ8VEBpfTWsxskHM4Z3Zu2r2gYKtPAJR/UcQMWbuUtDCANC4PV6XGZvrmKkeIx9YltBZ1jffZjZ6k1ofM7HtPk7CkMUpAFej+NoHTATzmRLuhVlCe5vRQrBQEjFPgp3yAF1HqLOJRo9SQHqDCgqjIXksH1PKK5SYcd19U2BHEtpDpAd/HGKt50tLx9pyh9NKZaZpzfBvzFyvRjiu/XEEyFy/hkF8A2EVyWOP+KjSvKUVQeVcDRYWrTjTroRs3Go+qUSM7BO6l18xnoE557XTPMjwFNJDf1x9ejd2rLtldqzO1bHu1ySWTwgMMgiiDujbyVcYJUXzDyWzAmEukgDgnT51xG2S8RMU3P3WnDJFyFy8bdFYAgTMIOixqGZN1dcRvgH96DlttYyWacef27NehItuV0ZlSmPwoH/yW41s655rHqz1/M4Que4qKa7msyxpV09r9VKSSdKqTifqshIxS1vtla0
+ KQ4U7PdS
+ aWeTFPp6w01dqdNl0K/AGrjtf1CHpyiBzS1izxPbrg2HQTMOmgsyBQ2R1exzGM9h4OfMHl/+mUzx4K7ny1Ys8O1q342zzxayME20QWIz+lAykuBmZym8NONO70MThPZS21x/4HuysTwEQ6e3qL0y8ml2kAOcOd3nhoFihWeAcw+AnjxHWj/3h86ZymSOxsOpOjUMCfmxw8HITl8Gz34/i7INRxH3z9G0wSNrt9/uJnHvEnx6YNpxpiJWEy+T0l/LLPXuHr4O1J03hg1cMswhn4IehEAvehweDFbO1ahUnPWRcGYjRkZhA0ag4eoWBvss5tY73M5aFRyO5POHhfdFVF2nmKfGQZtQ/97Sp6+2NlT/d1wg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,14 +143,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/2/26 18:50, Tal Zussman wrote:
-> The last caller was converted to folio_wait_writeback(), so drop the
-> wait_on_page_writeback() compatibility wrapper and its declaration.
+On 7/31/26 18:43, Paolo Bonzini wrote:
+> Right now, users of .pfn_mkwrite() have no way to create a PTE
+> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
+> will have cleared the writable PTE bit, users of fixup_user_fault()
+> will see a read-only PTE and have no clue that the page needs
+> a *second* fault to reach its final status.
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Handling this in fixup_user_fault() is problematic: the information
+> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
+> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
+> knows how to retrieve it.
+> 
+> There are actually some preexisting functions that suggest how this
+> is supposed to be handled, namely vmf_insert_page_mkwrite() and
+> vmf_insert_pfn_pmd().  Adjust mm/memory.c to export two more
+> functions: vmf_insert_pfn_mkwrite() for the common case where
+> vma->vm_page_prot is okay, and __vmf_insert_pfn_prot() when
+> really all parameters are needed.  This makes it possible
+> to fix drivers that use .pfn_mkwrite together with
+> vmf_insert_pfn() and vmf_insert_pfn_prot().
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
+>  include/linux/mm.h |  4 +++
+>  mm/huge_memory.c   |  2 +-
+>  mm/memory.c        | 75 +++++++++++++++++++++++++++++++++-------------
+>  3 files changed, 59 insertions(+), 22 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 34c79b5fcb9b..33c7de36b214 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4551,6 +4551,10 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+>  vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn, pgprot_t pgprot);
+> +vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma, unsigned long addr,
+> +			unsigned long pfn, bool write);
+> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+> +			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
+>  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+>  vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b5d1e9d4463d..2f4dcaa819b7 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>   * @pfn: pfn to insert
+>   * @write: whether it's a write fault
+>   *
+> - * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
+> + * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
+>   *
+>   * Return: vm_fault_t value.
+>   */
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 40997a26846f..7b950be8f511 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2718,6 +2718,34 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+>  	return VM_FAULT_NOPAGE;
+>  }
+>  
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+[...]
+
+> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma,
+> +			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
+> +			bool mkwrite)
+
+(We indent two tabs, I assume vmf_insert_pfn_prot uses 3 for legacy reasons after
+renamings)
+
+Hm, having a __ function that looks like an internal helper exported to drivers
+and then not adding kerneldocs.
+
+Why not simply have
+
+	vmf_insert_pfn_prot_mkwrite()
+
+And add proper documentation?
+
+I guess we could also turn vmf_insert_pfn(), vmf_insert_pfn_mkwrite() and
+vmf_insert_pfn_prot() into simple inline functions in the header. And I'd even
+say that a single excessive documentation of vmf_insert_pfn_prot_mkwrite()
+might be sufficient, and keeping it very short for the wrappers.
+
+
+> +{
+> +	/*
+> +	 * Technically, architectures with pte_special can avoid all these
+> +	 * restrictions (same for remap_pfn_range).  However we would like
+> +	 * consistency in testing and feature parity among all, so we should
+> +	 * try to keep these invariants in place for everybody.
+> +	 */
+> +	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
+> +	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
+> +						(VM_PFNMAP|VM_MIXEDMAP));
+> +	BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+> +	BUG_ON((vma->vm_flags & VM_MIXEDMAP) && pfn_valid(pfn));
+> +
+> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	if (!pfn_modify_allowed(pfn, pgprot))
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+> +
+> +	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
+> +}
+> +EXPORT_SYMBOL(__vmf_insert_pfn_prot);
+
+If this becomes a dedicated symbol, why not GPL?
 
 -- 
 Cheers,
