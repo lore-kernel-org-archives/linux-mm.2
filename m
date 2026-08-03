@@ -4,104 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9785DC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:33:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB28C5518F
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A10A76B0095; Mon,  3 Aug 2026 10:33:22 -0400 (EDT)
+	id 84F4B6B0096; Mon,  3 Aug 2026 10:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1F76B0096; Mon,  3 Aug 2026 10:33:22 -0400 (EDT)
+	id 7D8D56B0098; Mon,  3 Aug 2026 10:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D7FA6B0098; Mon,  3 Aug 2026 10:33:22 -0400 (EDT)
+	id 6CAB66B0099; Mon,  3 Aug 2026 10:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A4DC6B0095
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:33:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C426B0096
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:44:26 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF2D3A20EB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:33:21 +0000 (UTC)
-X-FDA: 85060201002.02.E9107A4
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C608C1A06C3
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:44:25 +0000 (UTC)
+X-FDA: 85060228890.02.29CFC6A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4790A1A000C
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:33:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MbmNiW3/";
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 11AD818000C
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:44:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=obSbc5rm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785767600;
+	s=arc-20220608; t=1785768264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mphLP5S8b/9n/v2PFE9M1KkdjdKyrA/jY3VZr3lL4rI=;
-	b=H3cJHOM/hdBdbsGOGM+apc2nZo02rVhjzC404yS3rSfBq9xTPPSUjmLMwDP2kRVu5+okpM
-	97QuHNH81b1CSUCmmbgW4JKQbCFwpJDDDRRYeyYakdpODkn5h8auqJjvA3hiorZ7WXcyTY
-	Xt994Ek44AkHSiIRvK9t+7URlpVOmHs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785767600;
-	b=tiBhlZDesVDF0TmI99NkZYj7Ss2XGP56nsvD8twH4C3Y1tDdJEkQ9/L/jJrigEpsSPKo33
-	gkhTDfRKKVzasfPYNQGgrVRz6HpkibMNrGYDfQjyn9jZ/yYR2SsFBRTTPXHbiZMCiXDUnE
-	pk8dL+YbQTgRqYaAyWVEemsgFPlSHgM=
+	bh=2SUYehOCR35MQolMkuC2vU/2PksZiE8FgZrQCvTUjUA=;
+	b=QlLRUDc4mI2vq+nx6C/8mtggtLQnaJKL8vlQXeOOQyANJZ+4IX14un1nMk2dMg7CO7rWyH
+	q+PIxOlDFuY//8UiJECfBt9I9CqOnUp6gLIQe5fn/FJ6zUXZC/GhStTlj2V3/VOze2UCd/
+	1Qfrw7jkob9NpxW5UjIXyZQQecQnwRM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MbmNiW3/";
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=obSbc5rm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785768264;
+	b=OhkJKNYFVe8AdcF5zKiHpHk0TLTaYN4sJUyj2Ck9oTcv4n6Sl9D5k8X7GF0xfwoybTF0lD
+	KoMOTyx0gufGrEc/GcM8IKheGJ0PqaJmOpRBwXMUNa70pjEhHQCs7u4e1QT0RIb/Jr556K
+	mbCOu6fNJt8y1w+vPKwM2bz7INvUp2U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 566CA41175;
-	Mon,  3 Aug 2026 14:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F94F1F000E9;
-	Mon,  3 Aug 2026 14:33:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EAF3F42E6A;
+	Mon,  3 Aug 2026 14:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266BF1F00A3A;
+	Mon,  3 Aug 2026 14:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785767599;
-	bh=mphLP5S8b/9n/v2PFE9M1KkdjdKyrA/jY3VZr3lL4rI=;
+	s=k20260515; t=1785768262;
+	bh=2SUYehOCR35MQolMkuC2vU/2PksZiE8FgZrQCvTUjUA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MbmNiW3/tIvlutcDN45W36ceGJ2hcM79xennooUYVZBeIVDH0aG/tT9HWNKOWm+xh
-	 G/r0e2vBuWTrZI/VUsJYQZ8SANxl6iIw5Y1jmVW5+dj0izkc6EuYTcrRwfVaAVg3vS
-	 64SK04ven+xr+o9Exw3nTVdXa9avymUeBspH8jnoyFDrT38dgW08ABefRcxDFSxY0V
-	 wDe+RsJeUwV/j3WaWqNtiqWDpd6x8tSwtufta7hgLv07MfpBDMjSleZyrdlVugbui3
-	 UGj2iD5YIX/WvXdNTGOPqq1oxyntG6uGXvQFZSqtWFzAH23kAwJgpfihRlffNDWoKq
-	 r2L2Sgc5AEvOA==
-Date: Mon, 3 Aug 2026 15:32:57 +0100
+	b=obSbc5rmSMshpAxPQHkZdfm/Uilr9a4TZbJqrNfsXs85jGXw8T6SoPDRSevaKT3bz
+	 kR561dD5bwFhWH21PaxOsKHUEXx3lT+06NjTAcrOQP5pgEfHC/jnDHd0G5nO7vOKtl
+	 yQxQLoWPeASNSUUB+gcQyAXa7GUO0PqtYqnQ8Stf2kdhz8tFIoH9WGxkiplXPf5oVs
+	 kPxaL3RwmRPWHsa4MF7y1NTeULvApDZNqkAm8q3lp4cvmm8vMK3+TXl2RcvPwO/9oA
+	 dhhM5SIcr1inX24cLkSI7UkZzo5xU0/zDocYyrf08EaoMfiTCIhJm2IiGMVHm/36OU
+	 VjdYrPpVxALlg==
+Date: Mon, 3 Aug 2026 15:44:06 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 07/15] mm/rmap: track whether the page VMA mapped
- pgoff is anonymous
-Message-ID: <anCmQdKzZFRMqcxs@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-7-e8ecfefea812@kernel.org>
- <1b48cf7d-8906-43d4-a85d-5cfad10a12ac@kernel.org>
- <anCcMvnsux22LaWU@lucifer>
- <007258ed-3fd7-4d90-b909-6fdda15e0485@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Aristeu Rozanski <aris@ruivo.org>
+Subject: Re: [PATCH RFC] mm/gup: batch contiguous pages in follow_page_mask()
+ and return them via a pages array
+Message-ID: <anCn2Zol3HywR8Tk@lucifer>
+References: <20260730035350.1fc95dd8@fangorn>
+ <amyUQahYOgov0z8c@lucifer>
+ <e969b38ce882b32d041b7279499fddcd00f18b35.camel@surriel.com>
+ <am2_dWJKZBzwd8EK@lucifer>
+ <517bf6a8072a6e66f28f8ec08bec4b604f29491d.camel@surriel.com>
+ <f31c2c50-2239-4fd2-be3d-dd70c3d6140a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <007258ed-3fd7-4d90-b909-6fdda15e0485@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4790A1A000C
-X-Stat-Signature: qft6z9ssr3qzsat73yx5jbftghmohtud
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f31c2c50-2239-4fd2-be3d-dd70c3d6140a@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 11AD818000C
 X-Rspam-User: 
-X-HE-Tag: 1785767600-794379
-X-HE-Meta: U2FsdGVkX19IHrppOI7GvFXaG9uwptczG/wL1cBvl5OunTsYTTByhdHqyxGYpTLi6tJG2mZZZ98/6kvdAMYOJyQJBYmv8XFPOUuD79XEdyGTUeynHUROtRSoBsHBqsyr0baPNPZJInbmxf/ftC581JWMLKxBhbdAnw1+GX8xCY7MwzN3VGVLSjEm7o67RmGEV/f/pEe1+csAy3cgpNRoFHWdAjOcJ+6jAWTmkhJmHxxC1yA9jZnTU3ZvMcP22jUmptk7hxyYmLmW783ny7hw/7lvvx828jxIYrtmYr2hFo9YVz3n4AlFSf2PUaCWwIRi861kI6DjVvVGAc8ZYkXACWtxRgC+TR9+rRnSjH202C48hzYIy+6wCzfOF87k4WCGP5U0F5xvvUyJRIuD9hYZvn6xPHK5qPQju49JMTVXmh1ig9S7bALJbMxN44aulj9aUX29qwyWufE6KdNrzB71D9ZDvLF/vWG+UEaLMxCsEBTvCGC3ohQKYJJAEWXtEfY9ofh1tUssVRTK+ZWMz7a+WJ93aD4AvcfcVjJElPDtAwjF3LS8AULKpfTya05ODDS29abDhoCAYUZWQo9u6e+AXIlzYg5ahHlRKefAvBnk0VVIfVb+upaXn9ihELNIepDE+F0ojAjuGmjp+V3zYk6jT6dqWbEO6U+H5j5SMs/wmbt+638ltN37P7VjoyNvG7mLSna3ELd0JanGL2MWT8dBR5qgCi7YdwmZexHEYvcOEMq6zmJHrEi/uIl5PcJRpQhZNuehYFU5LBFXelwOT+W4Vs5AbqgKokPjx8R6aAVgUSHbzWIqsri9+RHWoBgRcE/TMB3hMhX3JyT4SDht7Ei+Jxfgu9FUhPzagXqU6BKmSdFipAqOZn/CwQNX+m0h+E5B6WViFTzQ3yVAHKyJvtJK25cEVCUG1y50U+xttEoCBDTJ8z/pJPuQfgDMz9NvTjdfbKdRhDxPXG5Tx37HX4D
- l1AyefaP
- h9H8eV9iF2UavcmZVw/M5A9fkjsTU/WZVivssivmxF/AHIZbi0z1m2mLpMQBzJaYGSS013kta0UvwfmwO1eXsMK5sB0AvGwuNmHd/6yfvGGvEz4jB5XQZOaUI+blKFRVC4Xn5HQVRpst6l7oAEaiXkF6xlMX9cFgjjbqeDsrsAmplUmDUEth264DasDeQScA+H74tj/cOn2frlA53WcRy2VaLoMwG+VYEsd5pobd1B4/8N80P1ymn4IInyOSyd8IVVW5E0fqiqpMWBwW8gmn94lGmq/LKrrrPB6b9k8+pDCgm8pBCu3T8bDXyqzHcBkJaEegLDWWONLwwdhA=
+X-Stat-Signature: ubsqwd4ooym6b8inncz5a41rbtr3zxjh
+X-HE-Tag: 1785768263-560074
+X-HE-Meta: U2FsdGVkX18WwD7UUfiiAplnA6Ewt3VNb26YttownuTxmwnZNtI4YUCl8k7ZETOM4UffBiL+SyMraOnweDMxHZLLrPOfSdtzvFZtm0baGsVlxQV2l4VwuUbo2448sGARoNndvEuNCGPhs4sKCuKsma33ImH0+fiwrlM8ntXE5ehHIUW5XHh/6khScIVRcMdyeWlf8mjrjj/uJhsrXb37XqWshu032F675plX54Exeu9lyiYZr+QD0LKWcFAyQ4THeQb5/HrA+/N9drTuJU9JYt7vp80SrrCai79cx36T1mCBQpuZnn4BI/c9GjKm02LXMYzzvt5gb4MNdoQgg+pRNAEGxG0bKWuHleMUGPekQJy+1HNLpXc+qdQ9dsgoBnuz/Le/d0O9HAZpCIGSis+0qMkpm3LB/l65mChuwvPacJ1ympalgUDcC8SAd932YfKMV8nQB9VICc3moeGoeyEWVj5GN6a/BLD3RYc5wgTlmUTswX6LQG4T9HVH0/x1aSSWj9UsJi0NZSAmpKEpREZOFDbgaXBv/8GM2M6dsaetncUXiYopbjeSQbDSwhgfdG4oEcqy0pOgbL7115vGvHBaWDCCyrOACqkd40ygXAZsC5VYgzd0ZA01eNgqjDFm3wbpFN//IZ8WwqgHMxBnJZBEM9DSMnbdVhGBJ0Usv0xs/uQuBw8k/iwjGCk6iC2cnnWs9fS/aUeosbIlkdDbtADCVZ4f48/kwKwdnZEFm8/ZEqdSls1MT+I05FSa3D4PKLslMNlOs3pnQu7Hr7tQyfZFgrlsWYmNg70qN03MhmnOEB3/RJ0xAD1/ZMwYJ+SL5KU52imaNi/r2aBxa1qameFKFiEHxM21JHjwE3DKrxsCbUeF2l2pMqBcM2frxFCdKgVMlFDqlm1Dqewmn2/99/FDbqxaEEkmUIy8OkMOUYutOp3+xLfZTU8UIph4rkwtr7EBu1o5JISD7I3CN3nPk4W
+ IeVsZPkK
+ 5/OSkcvpMINUiOgVwraX4c9Chk7K7nVqJOC9O7aoiHZWbJwFtmcMN3hUWtbmHW0loyfKnNjVjo6v9XFKWeTYqyWhqr2DkjBt6z0S2Mld8+UjPZz9kyrBYrkQNEuwxHLKiMTMYXVnXUrRi5u2/jViSD4VRFn4OEABlYOQlGtArulITyQC3z1D9eoYZ1Vgpzhtl+lEE7OcDJt3LSidkf5dTaJIrR6PsQwC/yAfnYsyU82Ymb1eFXBuGTpY/UysFykMU/dpisJ5Dqtqec38T4gQucVdUYF6VVG/3pJWBrBkbj2tdGbsZpQPNB5RKEjUZOziZxRr0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,65 +100,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 04:02:45PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/3/26 15:51, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 12:57:44PM +0200, David Hildenbrand (Arm) wrote:
-> >>>  /*
-> >>> - * Then at what user virtual address will none of the range be found in vma?
-> >>> + * At what user virtual address will none of the range be found in vma?
-> >>>   * Assumes that vma_address() already returned a good starting address.
-> >>>   */
-> >>>  static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
-> >>>  {
-> >>> -	struct vm_area_struct *vma = pvmw->vma;
-> >>> -	pgoff_t pgoff;
-> >>> +	const struct vm_area_struct *vma = pvmw->vma;
-> >>> +	const pgoff_t pgoff = pvmw->pgoff;
-> >>> +	pgoff_t pgoff_vma_start;
-> >>>  	unsigned long address;
-> >>> +	pgoff_t pgoff_end;
-> >>>
-> >>>  	/* Common case, plus ->pgoff is invalid for KSM */
-> >>>  	if (pvmw->nr_pages == 1)
-> >>>  		return pvmw->address + PAGE_SIZE;
-> >>>
-> >>> -	pgoff = pvmw->pgoff + pvmw->nr_pages;
-> >>> +	pgoff_vma_start = vma_start_pgoff(vma);
-> >>> +	pgoff_end = pgoff + pvmw->nr_pages;
-> >>>  	address = vma->vm_start +
-> >>> -		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-> >>> +		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
-> >>>  	/* Check for address beyond vma (or wrapped through 0?) */
-> >>>  	if (address < vma->vm_start || address > vma->vm_end)
-> >>>  		address = vma->vm_end;
+On Mon, Aug 03, 2026 at 02:33:35PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/1/26 14:25, Rik van Riel wrote:
+> > On Sat, 2026-08-01 at 10:54 +0100, Lorenzo Stoakes (ARM) wrote:
 > >>
-> >> Am I wrong or are all all changes here completely irrelevant for this patch?
+> >> Thanks for doing a human pass but it LLM's habits really carried
+> >> through
+> >> here. In general:
 > >>
-> >> You mention
+> >> - No walls of text please - fewer words are better, clarity is king.
 > >>
-> >> "This is necessary in order to determine the correct VMA page
-> >> offset in vma_address_end() when pvmw->nr_pages > 1."
+> >> - Don't write the code in English as a comment/commit msg - redudant
+> >> and
+> >>   distracting.
 > >>
-> >> But I don't spot an effective change here.
+> >> - Sensible patch separation obviously please.
+> >>
+> >> - Write as elegant/reasonable code as possible. If the code you touch
+> >> was
+> >>   some horrible mega-function, take the time to refactor it. Pay down
+> >>   technical debt.
+> >>
+> >> These are all things LLMs are extremely bad at (even fable). So they
+> >> need
+> >> to be done by a human.
 > >
-> > As per commit message:
+> > LLMs can apply those rules, when expressed in a way
+> > that they get interpreted unambiguously by the LLM.
 > >
-> > 	This is laying the groundwork for eventually using anonymous page offsets
-> > 	as the index for all anonymous folios.
+> > I'm slowly building up a collection of such rules
+> > in the kernel-style repository.
 > >
-> > 	No functional change intended.
+> > AI can write in any style you ask it to.
 > >
-> > I cannot enable an effective change here, because if I did I'd break the kernel
-> > and introduce a bisection hazard.
+> > /*
+> >  * Long in the Halls of Rq the weary wait,
+> >  * till __schedule, herald of the turning years,
+> >  * calls forth the next to walk the road of fate
+> >  * as prev fades west.
+> >  */
+> >
+> > AI can also flag such issues, once it knows to
+> > look for them.
 >
-> You can just throw in a patch that cleans that up and avoids messing with confusing pgoff?
+> Just the important note that people can use LLMs to make themselves
+> more efficient (if they think so), but not by delegating the hard work
+> of sifting through slop (code and/or comments) to the poor souls that have
+> to review it.
+>
+> LLM exercises should be done behind closed curtains without us noticing.
+>
+> >
+> >>
+> >>>
+> >>> In order for them to produce code that is at least a
+> >>> good starting point for editing, they need to follow
+> >>> rules.
+> >>>
+> >>> Once you apply the rules, Opus and Sonnet do not
+> >>> produce results that are all that different from
+> >>> each other.
+> >>>
+> >>> I just added a few new rules, so the tooling won't
+> >>> even let me create too-large patches any more.
+> >>
+> >> I mean, sure, but what's needed here is human Rik :)
+> >
+> > The 80/20 rule comes into play here.
+> >
+> > If AI produces junk, the person starting with
+> > LLM-produced code can spend days cleaning it
+> > up, without getting things in a reasonable state.
+>
+> Right. But what happens instead is that people think it's okay to not do
+> that work and instead workslop us.
+>
+> That is simply not acceptable, and we'll have to start ignoring people
+> where this is a recurring theme. We simply don't have the time to do other
+> peoples work.
 
-You mean do a separate patch for this change?
+Yes exactly, this is the problem and this patch was a prime example of it.
 
-The existing code is already very confusing :) it becomes worse with the
-anon stuff added, hence the change.
-
-I will separate it out assuming this is what you mean?
+The theme here is 'please don't add to the impossible review load' or you will
+receive a >/dev/null resolution to the problem :)
 
 >
 > --
