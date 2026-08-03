@@ -4,80 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62A8DC55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A641C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51B246B00B1; Mon,  3 Aug 2026 09:14:47 -0400 (EDT)
+	id 0B4066B007B; Mon,  3 Aug 2026 09:17:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F2E76B00B2; Mon,  3 Aug 2026 09:14:47 -0400 (EDT)
+	id 064FC6B0092; Mon,  3 Aug 2026 09:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42FB56B00B3; Mon,  3 Aug 2026 09:14:47 -0400 (EDT)
+	id E70026B009B; Mon,  3 Aug 2026 09:17:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A8CF6B00B1
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:14:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 922528067A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:55:03 +0000 (UTC)
-X-FDA: 85059802086.09.44921B0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B73D5140004
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:55:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQXmk3Kn;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B5FAE6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:17:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 578961C1120
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:37:45 +0000 (UTC)
+X-FDA: 85059456090.17.AE354F1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AC94740004
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:37:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhSdC25k;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785758101;
+	s=arc-20220608; t=1785749863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFi+EA9EOv5ZOt8q1SqzBGAoG8UY4elQgS2T1OsiJu4=;
-	b=jfx89dLLyT2oEso6AmUsC+EsRSk1sR0TUnxsWZGJr1eO86kN2IZ8KiZkISDcH4OvMEq7+9
-	IRnlhhrsYaNILZ4A1DTHVjakqxjHzP0Vw1EgLopXlsO8ZV0jHapVzWU1OlSVxDCayjBWhN
-	7PoZFbE9cXGPK9ihNSnvWRgYq/GCKDA=
+	bh=hXyZXVLZ2cKjGQ01KvKu8F68JgDydaJTqMDqaHQUQGU=;
+	b=mZsvtnq1h51W8ZijZTMpv6G2JgA/SPOwq3NHHQw+8RTjiECjLvcK8vuP14IsPy08UdXKhl
+	FGvjiHK0gNfcA+rx8K4HXiXWHrdiJa/Quxn6jYVuSFeWzp2tUZXC+vpF7s7bXkl94YbI1O
+	zotLkbEvaqX8CeRpshaQuVkMUHs0iW4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785758101;
-	b=ksMsZu3i9wEoz5WcRNrX8vwZpt3wrEnd0IKrEAthQ3P1IFXzYT1MEYjb0GAiu2+1+QsuY8
-	eRwYTx7UsHU2iP1zn9wWGXR3fxF4FLW1mx6/ydT5D6owL+yr1xd0MtQKkSo3jNdsZ69OZd
-	7Y8dEOISlTPKfwVJu70tnvnEG88POzE=
+	t=1785749863;
+	b=rpB2iAPnsd2/XE1vjbL/PYM34q+VmAoSmSNDG95m2egqScSoDHCBklvhNXyKIWXzwNCOm9
+	2XPnpyi5HzsjbDYR6wabj5TIwqYyDHKl1s1PclhulDZAmWqHWEBSk9YHGdtPvgM/QtMohf
+	8zdJ2wGLD3OnwzwFNIWgq0+FL14nPHM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQXmk3Kn;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhSdC25k;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DACA41B18;
-	Mon,  3 Aug 2026 11:55:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B81F000E9;
-	Mon,  3 Aug 2026 11:54:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 37F7860A64;
+	Mon,  3 Aug 2026 09:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380EF1F000E9;
+	Mon,  3 Aug 2026 09:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785758099;
-	bh=JFi+EA9EOv5ZOt8q1SqzBGAoG8UY4elQgS2T1OsiJu4=;
+	s=k20260515; t=1785749862;
+	bh=hXyZXVLZ2cKjGQ01KvKu8F68JgDydaJTqMDqaHQUQGU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cQXmk3Knvg7dM/zcDgDPmpTPAliR8g428C/ZeCCRqCHRD7/0zZaATfRYXIafsOIzJ
-	 v8Y1ds4rE7OyDP+Th0j1Q/K9EYDZHAjVOdhQEa8LX8XzqN9eiEy2B3e+1kpLpsKbPy
-	 v2SNYPvCk+QvxRGpZKHNRkzhvkXVT+NYNCNPTMmP6JRzDgeErtSD7mgMkrJp3xOxPQ
-	 ZpRzfKgTS8Lepastwp3BkcxVPafPBQqFOI3IKvlR7C0HD/ZiSPTKQBhxVy0G6E/Cg9
-	 V4v0G3TVy8x8r1wYLm13toU6vqeEMNKwHJPMFl+IejDzzi57fsLc02iUcIgpwaLgJ2
-	 BlxjkdChydpVg==
-Message-ID: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-Date: Mon, 3 Aug 2026 13:54:55 +0200
+	b=IhSdC25kYuJBV/OO+NKRzjHxPrWMZItLLRr9nl5V5uI7xEgOV5iXkntOSXjjYIZui
+	 65vvEhard0FtHNQg1rwnAyyeH2J5nRVKmPsnSBC4wcmJrE+SYFnNEwEzbcWj78LbPN
+	 wCfdsGki3O/7fQLhDFx4bfOSZoOpngoXt+u0vokfTAnQ9FQawmJ/XPYcG46OP5jIF8
+	 adFoy9xdUxiPjgl+5C9qYFp27CjoFI9ZtPhgW/9hKZ01HXRNUp0avT+EkkvdKzG/6d
+	 S/6MHgYT2jsnzRPU7P7SD6Pn0yOuuJgy93+FSrxlVaOcMJOVo5SuZkY+IOr+HxTAd6
+	 KTb9HbgmtmkAg==
+Message-ID: <5d34aa86-c083-46b4-adde-8dfa520d51ab@kernel.org>
+Date: Mon, 3 Aug 2026 11:37:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
+Subject: Re: [PATCH v3 03/15] mm: abstract vma_address() and introduce
+ vma_anon_address()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-3-e8ecfefea812@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260731164341.1109827-1-pbonzini@redhat.com>
+In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-3-e8ecfefea812@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xy5b5zr4x1e1d4yiagq5kqjq64q68q3f
+X-Stat-Signature: ftup1hzkigodxpt5intifwo7d6z5arr3
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B73D5140004
-X-HE-Tag: 1785758101-335380
-X-HE-Meta: U2FsdGVkX1+4pS71OL2yQuWBiuPm6wHo/yPNR6GWPcyOv+yJDLj7X8Zf/u+hfchfMNxM1XEE1SLp4eXd0GiIc4Wpe6vxWfK5pZRzU1UOHPHteznoSmPJ2ISHoMxK4verOq/txs/QnhCtsnU/Drg85p6+vH4R80eLXOPXvxViOPV0RgY1bH0thIkL2eNuYa47zjt25c7Dovt5L9dsrCr+cgMkwMZFCg6nhxyzKkd9Jtg8YNVP1bT/uIjmLdh7YDgJLu1L9ZpLWPNN5yDyVaisHkEhhDZjMZ0a40/W6crq/hUtDCeekdOfZcQVY/TAxEe0BbIByOP3/+cKabLVelROsAei2V0p2/fJ1RGc7oSkBqmHKSl5UlfMrtEUryeNNH3Xwz4l/Zsy/lSmOLy07yUnPk2OxCWn/rF+Ud0dLpNsOkKkSbzTzOPz53uMe7OCsuLc2xnwmgxQ2vhyiv684YdYbzA5rOrQbqk+YAGO79+9QdZT1mCwLvtHRfg1GLHcFDP2dm5mx2gXhtG7m0KrEVXuymgXTXhAqc8hDKAFOoeB1v4GTTXFuXeTiu5iNb43pV+KidBlRRjVwIfGzzTAQyiDUdweX9ncTjhGKfmfGn2rMfsP+mv9mNTYk++HTlrhn9P67SEgr8eqs1E2ciVE/5akoFNOt3NT/2veR+gDJ8/0A+6petz2XwAPESbM9Zu32eIEon0FQVOIMwIVI0SkCtwn8asxabUrvas9KfFpUzaU321rUdU/1GUl7QGXWN5Bue0L9qgQJF2HidOzQpNRpkbGMosIzNhdjAlwBE/naElauMI0NehHCP3ayX5g5nXQ4gocHCdF4v2TOS2pSf8jSulwBj4mkX6XsE9YQVhrmN/8WjF3lVD4MmXu8T3EXW+lL2o8Al1olcaKQlbwnNnkVFjt2a4K294ndGQ8W/4vBX3RRxOZZzoZDiZCXOHF/tPn2XBF7YSDr0Pb7qiKQL3Gfl4
- Vb2V6ujD
- TTui/IS9lyObg0ibHKoCwrVjlx+Hdxbx6mgXUMgqEksJb9r2QIm2xrg5hxcemuTYcZsd8xDT5R6fm0IgFNAFbbstAjEHFpul+mErMsTD/l6FYao06JRmMm4NMGMNN+aJJKmB5cUTTHCShTSlvlgxAwO+woOyKe86JTpsVY31RGAiNt8ufJevwFB5Sisdn4evuTdxidur0OL4QF48aV03GGFhnwqMFEPJBbdZutckn8YEmgzTb5aArbWmI/fnoEUKGxw94229ZQC6wXmLbMApuNvjYvx4Pig4kdT4rMJkQtPM3EXx5jmxqoNfG0g==
+X-Rspamd-Queue-Id: AC94740004
+X-HE-Tag: 1785749863-279765
+X-HE-Meta: U2FsdGVkX1+hZoZ6f22puTEX3wr5Z9wnQj0/sUbOI3OpAFxa//Zuyha5ZaQNRnDqps9GCEJPYZbY9X4jSmzNFPQjpYCL0CqKTQvN8BivsTinaLydLMSvW+lFgMd9dsdaWv7MEri3g9kEVO7hv71i32zzhuFxm/T+y0cUpE2Wm4ImLp41dFNm3dCT/zhTOnqvTbpDFY4/J+DmzoDIKKNsisoIl4BoKAvdfGflbvzFzLHazOTA7JUKOGD5SxqXxiYkdBz/thEF3kCiXxlqqRMfxVPVd064lo8QwK7REAH4q3pnrwVlRhMJ1GdP+icBq0LEBURpIk/j2AYFr061BN1FMsYobbnqpzkDaAA7QscTgKXa/F4iG/EYJizox/mjs7mJmGj9nF70fhbpFesePG5siaIaxjE2JbHJlBKkPWvjEbXW6LMScwRdB8YAN+jlXNVZBvSyCFoMMTZUMfS7T/kRcnwUai8CR9cA6iZSo13S5S5uN55qCApgAZeNHtOdzFKmjz9gi6O/w8SObKSCeEXQAfwRS/VVskj7muME0JMQvufaSJ4QtKvEsQ3vHIY+AnY2VMdOtqx53H6nSWCei/gZmWJUv9clyYHv3ntrF0VfYQWtUAPQWGUoktZ4A1+CL9tMCjgWYc7IOo5leU9YcKIx83kQdD25r1kYtvYIZlM8Zwk09CvoF64mBoiPTTZeyMkSbu8H9Qgtu/LXu4M2L5x3lYmZmIYF6Rv1QFJ4VAmRzuXgKf4PA0o1cCtmU/8S8QcDvdo0CfGiYcJVea0L3dQ7SkMjEBZIaGSgXy0UpzycB88Okpu/SN0062/K3p226RoHMrhmJIxTUAysgOOiO3sCtQdteBIMdXAjwdxxLrBoqcKVkUqACoJKMt3Vp1xvcyjFbSJ6ws72yewGtntgEtGGuwv05sHFbUKkaG48t2gdLp8LorPVkKj3cvXPLG8EgT6jTqGn44cNlPC7CICajWZ
+ IfdHmpXy
+ 1YD24k5l2VD2h0GLt3Kd0upGrCfVz9UojaHvGh7T1soBsbHT/2bnDUHjMahp/LpyYaP5fsP/38aOSVkxku/DODvTLFx3uXnkbO2Rsr2l5VXPke1GRrAxU6ivkYPEwkCUWxkpN1FWO6Dp8K+CTGeUySMtnP1DKnzwL4n31sR6tEYVlkCaAE35zGAK9X4AkT9PDZjWbj2CRvzG10SPD0my8ZIn/o+Ig1ILq8OaQcK6V11fLGHAROneqLGLo7qYkUzh4ZorAIC242REoUlIrWPOeHM2CzRNY1Qc6vlycB8hj2HRJS59IteJOnQ7rJX4o3uVDGIxEaU1RvLoomImbllRcgP2rhHZ+ZevrpKJU2EZps4pmPaCDCMUbHWcFBuXogMBCx4mIVE3zE4c4pyobJ7EJjYEY5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,22 +160,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/26 18:43, Paolo Bonzini wrote:
-> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
-> the reporter to help with testing these patches.
+On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
+> Introduce __vma_address() which abstracts the VMA start page offset field
+> as pgoff_start, then update vma_address() to use it.
 > 
-> Right now, users of .pfn_mkwrite() have no way to create a PTE
-> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
-> will have cleared the writable PTE bit, users of fixup_user_fault()
-> will see a read-only PTE and have no clue that the page needs
-> a *second* fault to reach its final status.
+> Then introduce vma_anon_address() which does the equivalent of
+> vma_address(), only using the anonymous page offset of the VMA rather than
+> the file-backed one.
 > 
-> Handling this in fixup_user_fault() is problematic: the information
-> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
-> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
-> knows how to retrieve it.
+> Also add an assert to ensure that the function is not called for mappings
+> which are file-backed but not MAP_PRIVATE to ensure it is only used in the
+> correct places.
+> 
+> This will be necessary for determining the address of a folio's index
+> within a VMA when the folio belongs to a MAP_PRIVATE file-backed VMA but
+> has been CoW'd, and thus is anonymous, once the anonymous VMA page offset
+> field is used for the reverse mapping.
+> 
+> No callers are updated, so no functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
-How is mprotect() supposed to work in that case?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
