@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63CB3C5518F
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 23:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BDFC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 23:55:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 160DA6B007B; Mon,  3 Aug 2026 19:41:07 -0400 (EDT)
+	id 12FA86B007B; Mon,  3 Aug 2026 19:55:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 112486B0088; Mon,  3 Aug 2026 19:41:07 -0400 (EDT)
+	id 0E0EE6B0088; Mon,  3 Aug 2026 19:55:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 003686B008A; Mon,  3 Aug 2026 19:41:06 -0400 (EDT)
+	id F11F36B008A; Mon,  3 Aug 2026 19:55:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CBDC56B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:41:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 487BE40870
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:41:06 +0000 (UTC)
-X-FDA: 85061581332.17.47B3782
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8F56F140009
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:41:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M0BJuQs9;
-	spf=pass (imf09.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C35BC6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:55:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46514140891
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:55:23 +0000 (UTC)
+X-FDA: 85061617326.29.C21A66D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9B70180008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:55:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RtGEZUNf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785800464;
+	s=arc-20220608; t=1785801321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q4ebMADhzsqGZo4g2q++EvXNBy8Vyr9f7ox5xCdjmho=;
-	b=uu2NbeHF2yF4t7ZC0Hr/ZsSZ1+fhHRoSWB5Z8vGXHbu7k6kNJkooCKfMrZ5VbVQGIUdpZb
-	hkut7lAp6BTNY7ztw9aVMypOsVSk2s/FMNpFHjI0NcCD0pxQawG7w+4ljGwKQvF5r1R1xL
-	oKatxNTMiZF42Z22WR+/zlLxyX/n5tY=
+	bh=QvcmvXr4acqUWBRh7hziDDp8JEZdMtVWzfIqcampLcw=;
+	b=BeHWBJQiGyqpll5/cyNmdwp/PZiu7RyYBpAgpUxiXMfHvsUnQ0lKMLXeYU8wae+9aQWUE1
+	TUFe0KpP/11C1Vcr2etOeRu7S0BcmTctNsasWY45/4VL95P/DwneCjwVVVQZpKHUD3jOYK
+	oBDeM2ez2Lz0u+F0s8wSeL1g+c5h94w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M0BJuQs9;
-	spf=pass (imf09.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RtGEZUNf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785800464;
-	b=mUUmVhXF1FnK8HQ9a1lG7cSvXBJ9d3UmWPICV1BaTe8ls/ZyHXK8jNnErtmMu9AH4iJTCF
-	L05jseoEIuF0dxizzosvH4mpCcx4nCB6HOU9KpkPyJ2gI4LZbmCRAQJBhGXWhaZKPuWYtm
-	5G2uSRQSX7XErpeHcihBzxdWtdC7+f8=
+	t=1785801321;
+	b=Oc8DafMtLhLGeLJ03758K3UqRa6lVCDpXTCvp9KlqKP7/eYi4eWkT76cc30+yTHbyXiQH9
+	Hb9uNTkchS1GVwThrhH7TSaDu0LAU267g1hMZ+SzjYJzOt5MAQJlBNDOyMoh5zNb6QG5Fk
+	tujwLwFAcIKO9Jgjwze8SDZRGb1UfYY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6707741278;
-	Mon,  3 Aug 2026 23:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536C21F000E9;
-	Mon,  3 Aug 2026 23:40:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D0A1B60A60;
+	Mon,  3 Aug 2026 23:55:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A071F000E9;
+	Mon,  3 Aug 2026 23:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785800463;
-	bh=q4ebMADhzsqGZo4g2q++EvXNBy8Vyr9f7ox5xCdjmho=;
+	s=k20260515; t=1785801320;
+	bh=QvcmvXr4acqUWBRh7hziDDp8JEZdMtVWzfIqcampLcw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M0BJuQs9xua3UyQqpC0j/HzH7OM14N+1DH/hAcRO2svjCN/3bZujd0RW2lU8qu0gF
-	 ms2psthVQ+Nn0B1T4dQrABCA+ZDBBasfUnRp/v5Ge2rO3aOrRBt44JK6kxceO1smfC
-	 +NENk9pw7T8+tnz/l1hYduFQgbEGkdavPuUyokC1mw/5s2qQGMvHBI8BNY7u9dCnCn
-	 FTya97HCJcY9vSR2Ruzi/PBnCmFr+tfKc7uGUpg+GF6CztprtvmAxO/pgbOWouZ9tp
-	 9pZWn6ovDywvRZ3mb2zgd2ZZKbujQRR6deEJmd8zMmKZZPLSZSnghcWfhIKIn9CHEC
-	 LmUilB2cQBumQ==
-Date: Tue, 4 Aug 2026 07:40:53 +0800
+	b=RtGEZUNfVk1jOgNOJwApSJ93O6cVC45ktiN2j42C43XLae4gT7K0HxtErE329zu6Y
+	 4q1mEBzTDnzUbmn1OURLkSbBTmQJewI+Y6tf5wHTwUYU05Z3Meug4Fm+oc4/qqZqXE
+	 xSaSxhssLrPHFanyR2w62mPUk2uHFQDsY+APGSl/m/zgFlQfzvQqSXOELjBmVyK5Z2
+	 ZH2j1I/wSxiSXllvvgkwdz24/JoVF76jb877bCjAEig9Bko1o5oI3KFWoKE4hg+/Cl
+	 /ZTzrxndYjiGyPujGg8KW0p1CK5WBj4Vxu8QsyZXgGXwSUpyd7LTOBAIHjESgRcrXJ
+	 skL+Bc38weOCA==
+Date: Tue, 4 Aug 2026 07:55:09 +0800
 From: Gao Xiang <xiang@kernel.org>
 To: Zi Yan <ziy@nvidia.com>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -88,14 +88,15 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>, Jan Kara <jack@suse.cz>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
 	Sandeep Dhavale <dhavale@google.com>,
 	Hongbo Li <hongbohbli@tencent.com>,
-	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
-Subject: Re: [PATCH RFC 08/14] fs/erofs: use folio_attach/detach_private()
- instead of direct assignment
-Message-ID: <anEnBSAOQE8LyKdI@XiangdeMacBook-Pro.local>
+	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
+ readahead_folio_reverse() to avoid folio->private
+Message-ID: <anEqXXa69OpwJ7ej@XiangdeMacBook-Pro.local>
 Mail-Followup-To: Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@kernel.org>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
@@ -119,25 +120,26 @@ Mail-Followup-To: Zi Yan <ziy@nvidia.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>, Jan Kara <jack@suse.cz>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
 	Sandeep Dhavale <dhavale@google.com>,
 	Hongbo Li <hongbohbli@tencent.com>,
-	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
+	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org
 References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-8-142c97ba3562@nvidia.com>
+ <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260731-remove-pg_private-v1-8-142c97ba3562@nvidia.com>
-X-Rspamd-Queue-Id: 8F56F140009
-X-Stat-Signature: upwnjxheyhxxpnhj4j6m7ygjqq8xom37
+In-Reply-To: <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
+X-Stat-Signature: 1zi6uarrdiey19af1uupa6wakp1oh161
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9B70180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1785800464-419206
-X-HE-Meta: U2FsdGVkX19THzE0bspDdOX6zyN8WZ+6l75U3zjXwg0rVdIDpIWmLWaD2qRtq9an+vg44fCEme0+HWKo7hPCdwZ5/PmwRm4xZHPCgHsGxYqjpybmEC0L/LosXUGX82iYYVROlEew7G6e4Hva1rVg7gX3sXdIeUSz2ad9vmg+SL0FrJ+LY7R98bcgqFftJidY5v/P9UNiB7ARHc8vhQFAIs94AJU13B8UQOveDt/DOlRdYH8mD5k0LpW4GyEXMklyi8SeJkpNOOiIOViWdqtweROxC9kfdoQ2HrhVtWIL7oyDdZVyud7GuA/QOKs6+52O+denjPt3fCCxdpRFQxbj+jihMUqhHoGt119p/hZIUbd24ihmPf7tAgdqYz8wl5EUO74fQLaKPEmxlmibSX6JMsEvLPMtq3m7J84Fdy7hjx/36mEmooKksAwgxDCcir7KgGd0sm945BrYnBe558qdR6y+tkQpW+pOg4CMBO/dpiDSSSWjo3WrgoV8l/H1gtlsgzT6jvUjpkJ7tfuGMmVvy/xL5cVPGPOU6+UcAxVW2N7tyShY3i/7bOWgwHkctRVtG3n0sfKpin2HfkfGbvDGA4tdV4fObIItXJhcX9wNuHNu9ZMdCDZlwlULjV6rbiXcPtggOFj3f3ATbv0KwqrYSvt/W25AYMyGEDRoPO9R7bD3f2PZCIpG0X16s6hHoKyHxgNGPSiE2wyk3KhGm+dfEE0WAbpld+y7C7mE+KdqqGublvffyejHwWmWPMM7x0vXnesTXmb1RPTgUCrWn9vzbLu0ejFQ+yC8vjVc40I+q7HTlc3WeSyoASwDl35w8QkSPZuMwKTcsHthplEJonxvVotcO8l7uvAjCniPpCVDI9cWXW5zfy+qcm1QE7ukejB/dR1FCNruvH2bX8x7rQDh38BMgqHcvy3m2aKPJaiQTxVuHdLmVWo51e7N7kw02jITPzxy8ALHGbjmBIZr8bA
- czLaXYki
- 8xe/iq5p19ve+pX0MIOTmby9sUh/QcC4mBzO+4RQe4t5y51ImDAtWLDkGLYZylYszYpRQaGpGBBlNiYQ7giG6yZFf1oTrwDTwZB8opFB/YVqLRKByO28kQQbLTa2Wo6ItPbH587EZteYmfwxh1O5uBB/sEHQop7dSaomaJ1BjxRBx9QMAMLwRaoVrsi5yx3PK++vqz/TaQwTacj1pRL6cEzXs08PhkGJQsT3E078ZKsvEV9YLj5XtwnbrTnubi4Ee/jzNnSOKqsYL2PFsMAPbVs+RnAWqKaFTaakt4cumNJNN8vQc9ETb4YQhb5dOK7grEnYIISd4Pg4yBcC3nPXgLbqw1/MOyyrjbtJXAmCHfnk3ECPpRdh1ivXUbTzJasOy1FTroKU/XudD82k2Hf+97vfxr89YO9QRHqsmu0nzzdF6ZBubvgia8/OQjsjenO8sA7WHKlJDo9RIWg6NvaUUjocvuRaZNQ7Brqvau82fZa6F7+jRrAlLsydcJphm1K2NI43TmVdXAk2UXiPqJqLz07wpyA==
+X-HE-Tag: 1785801321-461711
+X-HE-Meta: U2FsdGVkX1/RTKIfXw7RVg7M/wGJriAMU2Zb6M2PV3e7x5OuxIjb0SzQuj/dxm0TI0jkysi4NhYQv+cIM3flLLFt1HPjnH4Z42DXaMwdalhctcyRDVW9AktyE6wfPaBoEPOjzB8wYjY9wZkcJNl+9n2TyXO7Ofki8GFh4iS2ZhPenXRxa65QH8MGzT6XMa8T6FpAMjYq6zrJEG55BQdNQU0l9rgZvLoi9GAX91cfdQ+U6gEBlhNVNPND8p3pinFNHmups1tGndQUzGhW6/YzbUHRRDwjrD2u+4xDOxoZrEnZO1RjKzl1Xebies3plGVu/jFPPneQRR182Tsqy/MFqJbLjr6k4eFIcH+vvz2XIPGTCPRGtPoVrHtN5Fso6CppIiUQ1GqG4Elg8fDA3rz+1S+wwbPa069wJ0Z164E6q7WYneVYHMCrv+CuSv86NjHxhrp3G456ip+kIhJSKMR8YCWQPEnD0qDB2dNi7p/G3kf5KildyGsXT6U6VFREXjv+HfJK3G2YQNbusLAxLSqczXmmOSezqCL8AB64xl3NnBe/XOla66EzL4efW51Y6m7TEivpxHqJo8lXRT2v6SsgjavSejwpFIQoY+dEEX3kDVonC7flRL5YDneA1DibI8KaTtVp91ViSRPa1UQigzqduJ4mdPP4yKbIWV3Cr+CmxAt8CFPswlJKJoczli93bzw+RZz2Ej97eTwFwOwfhHnA4IqszYRdYROcccsUrZp+Yot4KDnsBMLA+OPkuUb9jO16h1GtIDbKSOHlMul8J88xVG9/ycw39C89YwCmr3JzTWqBHkLhepsFtIAsbvElcqCy62jKxuQSMgBh4HAD4P/ntJiDkuzTbI2b4yxbN0/qVTORAvk4eP4+Y9LD9Cv7izg9SkkDG7jWKFrtkO8FB2YiByz/5g9sGDOhwxMaDs/AtdOSD2x8v3LPDBeKEnDWbqUAY7PESPBEMa4Mi6zHCE5
+ 0+L6hlvK
+ t30WR0/N7xeBk1xi9CM9hqsqYLEhliUO/kFbd655+ahlnvcFedpNsTpDbwbA8936IbPj0H9rO9SW3YWqLfAx03178pTBfptxtZCE8BN58ObqYpx/OQq8hHMOzprbNC8r8F77UcAxFMJz/jMx3Ch4T1zPwLLCfb3RltQovTHrgsN4jYmdPYSSfBNgZrk0qTE5RJuSzrE3QHfcH08r6MaTmA5VhPR2Ysvz2nKvg/qKuhHFgczD7Kc3+ZJkkm11DmBZI8h28jBj2uq6NbyiS9cRyd/enthsaPPudV/hZyNM9LoLRkxaoQCLs0VfPCGJeGAaNNadghxq6TqAl5GpIF/uviFyOcO6WXIavFAE+ZSjNVc+2nseepuWx5sjPNHWcMm3tGRDVysXTeuVnAxKC+P/OfSsXIpYfrEYPDyb2XLOUnTLEr9rdyUEhPktSUZU88U8//onrmKz+/1ExBh+EBg81uZlRrhXnxKSie+TnocnKmIFOUK0HBwDfB/EFYa4oCM8TCVvPiSFEh5OzFenbr1oVfgfcjzOIVqbN8QbQAYybZ0i9a0KDwXbzQU76SPtfDdoLJ/Ym4iTVb224zxNHtDcyufVz7JVVGA64pxLIYoZfvF3sYMYlV5XNxRvovvhbu1aRLz6xvbfaMlPOGDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,16 +147,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
-
-On Fri, Jul 31, 2026 at 10:13:31PM -0400, Zi Yan wrote:
-> erofs_onelinefolio_init/split/end() use folio->private without setting
-> PG_private or increase folio refcount and it works. But after PG_private is
-> replaced by checking folio->private in a future commit, it can break
-> folio_expected_ref_count(), since the folio has private data without
-> elevated refcount. Change it now.
+On Fri, Jul 31, 2026 at 10:13:30PM -0400, Zi Yan wrote:
+> erofs needs to traverse readahead folios in reverse order to achieve
+> maximum performance by
+> 1. reading all folios from readahead_folio();
+> 2. storing the prior folio pointer in folio->private;
+> 3. traverse from the last folio to the first one.
 > 
-> It prepares for a future commit that removes PG_private.
+> Add readahead_folio_reverse() to achieve the same function without using
+> folio->private.
+> 
+> It prepares for a future commit that replaces PG_private checks with
+> !folio->private checks. After switching the checks, erofs's use of
+> folio->private without bumping folio refcount can cause unexpected
+> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() becomes
+> reachable.
 > 
 > No funtional change intended.
 > 
@@ -163,6 +170,8 @@ On Fri, Jul 31, 2026 at 10:13:31PM -0400, Zi Yan wrote:
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > To: Gao Xiang <xiang@kernel.org>
 > To: Chao Yu <chao@kernel.org>
+> To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> To: Jan Kara <jack@suse.cz>
 > Cc: Yue Hu <zbestahu@gmail.com>
 > Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
 > Cc: Sandeep Dhavale <dhavale@google.com>
@@ -170,11 +179,50 @@ On Fri, Jul 31, 2026 at 10:13:31PM -0400, Zi Yan wrote:
 > Cc: Chunhai Guo <guochunhai@vivo.com>
 > Cc: linux-erofs@lists.ozlabs.org
 > Cc: linux-kernel@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> ---
+>  fs/erofs/zdata.c        | 11 ++---------
+>  include/linux/pagemap.h | 31 +++++++++++++++++++++++++++++++
+>  2 files changed, 33 insertions(+), 9 deletions(-)
+> 
+> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+> index 74520e9102596..b59f2745a8e72 100644
+> --- a/fs/erofs/zdata.c
+> +++ b/fs/erofs/zdata.c
+> @@ -1902,21 +1902,14 @@ static void z_erofs_readahead(struct readahead_control *rac)
+>  	struct inode *realinode = erofs_real_inode(sharedinode, &need_iput);
+>  	Z_EROFS_DEFINE_FRONTEND(f, realinode, sharedinode, readahead_pos(rac));
+>  	unsigned int nrpages = readahead_count(rac);
+> -	struct folio *head = NULL, *folio;
+> +	struct folio *folio;
+>  	int err;
+>  
+>  	trace_erofs_readahead(realinode, readahead_index(rac), nrpages, false);
+>  	z_erofs_pcluster_readmore(&f, rac, true);
+> -	while ((folio = readahead_folio(rac))) {
+> -		folio->private = head;
+> -		head = folio;
+> -	}
+>  
+>  	/* traverse in reverse order for best metadata I/O performance */
+> -	while (head) {
+> -		folio = head;
+> -		head = folio_get_private(folio);
+> -
+> +	while ((folio = readahead_folio_reverse(rac))) {
 
-It looks fine as long as PG_private flag will be removed in the
-follow-up patches:
+Yes, it's needed due to EROFS compression metadata design and on-demand
+partial decompression, the last extent in the readahead request can be
+parsed as a partial extent (means from the starting logical offset of
+extents to the necessary offset.).   Since there may be many extents
+in a single readahead request, so it needs to iterate backwards here;
+but the actual compressed data I/Os will be issued forwards.
 
-Reviewed-by: Gao Xiang <xiang@kernel.org>
+Previously I tend to avoid touching core-mm so it uses folio->private
+but if MM folks can provide a new helper, that would be very helpful
+(one more words: all folios are locked in the forward order previously,
+so it won't have any deadlock risk).
 
 Thanks,
 Gao Xiang
