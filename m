@@ -4,125 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD4A8C55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A1BC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 14:57:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EAD46B0095; Mon,  3 Aug 2026 10:55:58 -0400 (EDT)
+	id 9EDE76B0096; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99BBC6B009D; Mon,  3 Aug 2026 10:55:58 -0400 (EDT)
+	id 9C49A6B0098; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88B816B009E; Mon,  3 Aug 2026 10:55:58 -0400 (EDT)
+	id 8DBB76B0099; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E22B6B0095
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:55:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA02614072A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:55:57 +0000 (UTC)
-X-FDA: 85060257954.23.52B72F8
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0646C18000F
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:55:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dQWWikaM;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6440D6B0096
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 10:57:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE8DB1C11B0
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:57:23 +0000 (UTC)
+X-FDA: 85060261566.06.E2068C9
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 20E96A0003
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 14:57:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oq+G0WrB;
+	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785768956;
+	s=arc-20220608; t=1785769042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=peHvlhUw1Yu7SWf3hmHIsOYjE7R2xNdQVjGGTstXJYw=;
-	b=a2ceGohWt/XGBazI9u79RlOPUFXeqTtl0SUE69HEZWVsyh9+ROLilB01MIATH8iq8p9hNB
-	HZtTsTMz0Wt7/QqNgs0U1AyWPdT2HSftKeRx+WS0HOIJ8muNaPhdCxG9fmqcNt3a8YKPMV
-	WaNgJZOV+dxkiDjMx20MY/mo4cHHwRw=
+	bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
+	b=aDhIfoqVYK69Ja5ifyT6BxvG/o8zmnm50+4Z2oq356qo2/1E3PTp/PpDEC7N68+9TrGFph
+	VdbUBD/BlHnJj0EhqIh+582dZ/c7F3df53+/tuBqXEwH5nF7zcUu+TZfybRnV4SKii2gIb
+	TXY8ZOwoputmywH74i1CxEC06d59aYc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dQWWikaM;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oq+G0WrB;
+	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785768956;
-	b=C/OTSQLMJrYliWci8wr7EFQzgatOc02+rcYmEIfDij3NiB+prI/gnjj+irP9V3ly+wLDGG
-	+15frUgX1aRCxc5VL0YqRjoCYUtwo0qMKOAvTejaq5ngz4CE1Dp1DghBWO+wCdV3S0Odb2
-	Gf87SGGnjFBQkH8jwUPVrEic8cRuS1w=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e99ef0902so173689985a.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 07:55:55 -0700 (PDT)
+	t=1785769042;
+	b=tUHZM4bFbg1pfW5gf18whlRz/EsD7qtyefbigVPZkxUZFSTZ0UQGeeJDRabLwxAtoYQnpP
+	lFJyaNSzho+D8CJ+DjHa+7jcOefpLOe2XKsox9jKEQDZ0JFaQUqEnZvrQo9T2InkhCEli0
+	zpPw4Pn1yIcQmFtMbc938dc2dWkJ/Ds=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47f84023916so3490363f8f.3
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 07:57:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785768955; x=1786373755; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785769041; x=1786373841; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=peHvlhUw1Yu7SWf3hmHIsOYjE7R2xNdQVjGGTstXJYw=;
-        b=dQWWikaMYzZTHPAi5KsX3fyewTVc7Awfy4zu3UyQUyy9EWfxBkVFwDhm+iUnVcSih6
-         NwKNY5QIuJI5abvLXHoovMpe+rK7Zjl1zO4XpSt5EVIDJJDmLT5DUUAl5xmNVXAdAqJ6
-         nhXYHdUxQ1gNhklEB6wYBUtaVfDO92rQBxQTWhOVb4UCDFXZwq+fEJVmjBaLXv4AwjU0
-         1Ruy3MX/WCFICTc3nCMX/gjalNUF0zWXmprH/Cx13C/n3GeNSkEMCUuXJ7WYmBgR+Lx0
-         FQR8sCUf0ZANZdPCZKLZaZL5nExZd3wzlWjA4Q7lHqLYM7mE/9W0TMPUBv3QCicji3Qi
-         WuOg==
+        bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
+        b=Oq+G0WrBW6xKXCVfUBl+Dqb8CDE2siZxVOzQpNcPU5hO6wH8jXCJVsjnUForNxkEk+
+         ka6RaWVRs6kHBHMTcBjl2fvQf2n7L/mvnmWVhxj2WZUoXLHajttwDjOZ/Ju3vIXL8KMD
+         GncMKW4zeowPsfVL24lk1b7zCgSawGstzFYQoWEA/2K3mag8GjVr4XMWqnbzCduR9F2j
+         UtisLnyi2kAnsH+eIPjkB1oN2Ms84+tOB3wiKQ5xCQwjd8Wz/NG/HJnZY4S9KdYfTgEP
+         KmVAaGSpkXI2XeteziTF47WJdms2/eSLDQl9rIW3myDkk57Zj0SN21ffgeuk8na3KVe7
+         Y0bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785768955; x=1786373755;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785769041; x=1786373841;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=peHvlhUw1Yu7SWf3hmHIsOYjE7R2xNdQVjGGTstXJYw=;
-        b=I0g9js52GO9y8lD0E5amOx+X3KAFkcSnpF0FmqpJ/CyqaNKV4nhwZG6aiUat7lMnl9
-         r683SvTn9pp1asGpeWounWkHQBa7sULPMeqqzf8w+Y4ZH2BQ9zKDQAYUh21JMoqazXCx
-         7uI56n1kzZm3NOf1sGM2xxqk5wHVkESfyWLE1oG6jHyLOm7dV9vc7a8fuPrUUEb984Ic
-         hz5TS6ryoovaOuPh4dhoMcGY2Ync0O8Qeehl786ZRL1mlhavrTPNdF2bag4OZZd9QEv9
-         GMO8MBLHRsOcSyNiYxlO4aaTaPewzWX8E0ydRuJp5fwWrJD1YoCGP+y1tvQZJ7GBICoO
-         wIuw==
-X-Forwarded-Encrypted: i=1; AHgh+RoLb13AyRvvUI7KndpOW6G9IX6O1Dw/n4u+yLFUy+c0JtcDUvz+u8GStNtehqesDjyvxy+b2z25Yg==@kvack.org
-X-Gm-Message-State: AOJu0YxqX/P7RC71IYkbpWwvcHQuqdZuUC4Hr+PxLKt6d0BW5my1BLel
-	OouqC/CF2m4TMy2vdTkTFfGiyB/UvigEeguKDOqlxieQDsSnu1M8U0FXnKDzUcghI+M=
-X-Gm-Gg: AR+sD13pyXzpQ78+9zzYFxiTsCTB1z0diKIK8OoCxfDHVlRjFwvRFeHdx58Yu0ANtgg
-	da3NuAvKCCB12Yrtk1AVyvfxZy/q/0lS7MF/9IdRgIaDz0X9Z5V0TFh0sHqlc3BjZ+RMDWRrzqO
-	oFeS6aL32Lj5hbYpWq4fepwyXSPJhazuNeGo6r4TQBH45FKn/kwu9FIHAb54wjNEiHBVh2R8sDu
-	igOFlfcUa4hDKtJNPE3a5RIzTBaJGD6h4RolFQHQATxRQyqbs85UfZhjw1PJ96bYdef64pjk/h/
-	vCy2wt5eGv8YiV+Tdv1F+uSz2OC8FLN2kAMKs5RNNqOQQRfOnjvgzQ0zK18bAiCktIPy1uUVNBN
-	9aG443f4NJqtJF/5SNKED7IpsduJBoja/sIcuUokQNOSa//ch922WNhxd45SjjNrYa7xS7KgyRd
-	j4rZfRjgTWKejILYOpQ2qip1cMneGdVE4IN++cSPigO7xCTH17iouu+xeHwNmgMBhAYsGwUpZMQ
-	PYhT12mE4oqtOtjIULJNT+AwW8Zo7+kjSrP14Gkl9z8
-X-Received: by 2002:a05:620a:4e83:b0:916:14f5:8866 with SMTP id af79cd13be357-934a07a61d1mr1708987985a.16.1785768955096;
-        Mon, 03 Aug 2026 07:55:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9349c206b00sm683232185a.46.2026.08.03.07.55.53
+        bh=doE31CPU3agNQxp/VoBL0iESGBCUl1rgFFpxig9/S98=;
+        b=JBgI8leBL3r8UaEWsOdoK/fnZ8OtL94DLkuP1uqo+8lRyKtMD63wL0MreR/JX5nmN4
+         /JXc0t+ccpRD7Oh9l18g7FGLtrbYiOUnEJtq9S1eWSZgvOJ8hOqMO2VNmXwGkEhFQlHr
+         yqdCaqWBjn0IkqA5A1GqiOi5EdnATOEtkxf98eSlCXUKXt7Ro+9g+lipZ9jCUWaOQ6Dh
+         VwvKJYbpouYDxiyjkNcvpbPsquVR0qnt99BJOCnLV/7BoGr/W0cZUC+nSyrK3Qet2D7M
+         6a/6TNxVt1zniOQO2W2bqn7dPyxJswmgyvM3gWEf2/y9R8A//ciyd+Ix5E8S2TsBuPzQ
+         baoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rru2tu+WzkslXsgofhaHFzz7ZdAF/praWPLU4G2yTiCBQ8ASi8RhMQYAhUfkxusFZ3iUK4JYdOk/Q==@kvack.org
+X-Gm-Message-State: AOJu0YwTtv2QWejmmJneONUo8XYFfpmYQcFG+T5X1i8C4Re1A3jICpNo
+	hOilVLzRj1b5xvB15zVg3u2o/pdWuW6rK1p4iTSC831hZuocGy4v9Zor
+X-Gm-Gg: AR+sD13aAAjRm7zVYHfZtUaSUhcy+Q5L/lpnKBrcIm2rCn1A3SSN7dUJjXmucyuE4S2
+	U3YKDJPYJl0AouFjdNOheB55q/qfsMi9XA1/hqMhNWQJE6DA/0zBYaooRLxTYgr8vdJpxPHr+c2
+	e5i+vYVVqG5F8x9DYexzg8gZK/7GRZSmzFSWl37vjnxGjGDOwbYUMsG4XzC1pqpJfiGh51Y88A4
+	Nn5ctYBxDanQ0l97Jopn1Xmqv5ZXWXV7r6ahkRPElraXnZmW3RFqRIN8SDkPxgHzu+LkKnj4g+o
+	bhNQX7O6wuzxbkYPhtaUfqn/z7O5J4rHjSiplWRRrUtETrrjlzUrlWYIkrFOPh0g22SiqGDxfmW
+	NAftejaeUgkfNmuwAhTM03X3sbBgMwrmaozxckiTmiBu60g7tRpJdOQ7N24ee4R+Wtkx7MZLdcj
+	pqPB9HI5TGq8C1uzDP+PX3p/h+GeKAlFq0I6YRvKvmd7bUzmzr0uMmV5tdWIoUyLMEMfevXZCQD
+	29kJH9H9mgYhZB4eh9RPDue8Q==
+X-Received: by 2002:adf:fdcd:0:b0:47f:8fc8:af01 with SMTP id ffacd0b85a97d-47fd72f1fd4mr22343046f8f.27.1785769040415;
+        Mon, 03 Aug 2026 07:57:20 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd458bf7csm35015001f8f.32.2026.08.03.07.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 07:55:54 -0700 (PDT)
-Date: Mon, 3 Aug 2026 10:55:52 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Byungchul Park <byungchul@sk.com>, 
-	David Hildenbrand <david@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, erdemaktas@google.com, fvdl@google.com, 
-	jiaqiyan@google.com, jthoughton@google.com, mhocko@kernel.org, michael.roth@amd.com, 
-	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, seanjc@google.com, 
-	shakeel.butt@linux.dev, shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 2/3] mm: hugetlb: Move mpol interpretation out of
- alloc_buddy_hugetlb_folio_with_mpol()
-Message-ID: <anCqmhFw_D29uiuo@gourry-fedora-PF4VCD3F>
-References: <20260803-hugetlb-mpol-interpretation-v5-0-af2b7089f8a9@google.com>
- <20260803-hugetlb-mpol-interpretation-v5-2-af2b7089f8a9@google.com>
+        Mon, 03 Aug 2026 07:57:20 -0700 (PDT)
+Date: Mon, 3 Aug 2026 15:57:15 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+ damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] mm/damon/lru_sort: error out for >10000
+ active_mem_bp
+Message-ID: <20260803155715.08868ca7@pumpkin>
+In-Reply-To: <20260803134034.15217-3-sj@kernel.org>
+References: <20260803134034.15217-1-sj@kernel.org>
+	<20260803134034.15217-3-sj@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803-hugetlb-mpol-interpretation-v5-2-af2b7089f8a9@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0646C18000F
-X-Stat-Signature: oaz51qhoh5ikna6izexz386459epmm3s
-X-HE-Tag: 1785768955-558057
-X-HE-Meta: U2FsdGVkX19KFRzoyCJeot8DUEoy9kXHUixIyTSH/26O807Yw89SRmk6z+91ESCZUy43Myc4blM12bE+JW6dlml8n7iYS1Ubd+IlAiye6rVsXuO0/HOqxdTeWzvJHS8kMXzJVgMsQ4qO0OM4DKh3VGsHA2XZjvbuB33ormnShuQzaQomM4xAafQLBsLWNSqNzlJYUcT9ssQx719pk3B7vIkmVPJsQ1spPvthzy75y4IA09nERHb+RDge8T+MbufNuei+zBisAjVkN1U7tL/cicAgnaXSdZwkNz3yEviRn6PoPTPLwlf2siUokG55alX81vJ/aXW9BvZqa7vVq8gELKCMVnLnnMEG+X1UFrIJR3OnGvME1MCyNsx/CPcWIX6yYN5z7xyTfnGQP4RFYjfNMlg7qgLCe4wjM9a14Vph02/8B2wBcI+rc8zDReD0Z3eVVbhctJY8woR46fgh+qvdEtJZr/ac2F+eUPqNsJBl+x7kRoaWoEfmFPj/FQS6D5/RNCSvjAb4hwBFsjuOCurF4ze912cAr2GE0x/n+iEVgxyGO5QE1FKwZg+g7Dr1zT+Ftfrrcj6ZngU3vPE4l2G+Kkmm5fzDfSq69ZtVv7dDi4fF/4QxBxfjndSzob7X/7sx7jeGoslFaK7pdV1JRPZouAxT7NGKdaHZM7eNhHVGH7yZ37hzB8281WOqyERqNsogqgh8dhOE+hqA7K+vPfBYuwue3kg8X5HKb1+hJ5vIEib92lXF7a/SgWZbHq9Ubvj4SqLVawrL/oJD6B/9/JdHyy6SVMoetdniWFaOer38bCsnPQNGA/iMHaJYpdbKkq/hSpFV6IStujfJdNG4pGRDDol5u/fS3zIKw4IC40ejUVKz3tJ+39yrZqAZ4FNiAtIKjU+T1jAgLjM/Su3uecpUlQILXiWz0hNE0HIvOXPjIMFbIePJeRI8C1mkijL4ewrbjiXM7b0JtF3nekFp97U
- XSyy2Ahx
- 0/s1BvW0gLAAn6+gCoqUshtlFBJRdA/ccBN2g6rZ7+bylDis98ChSNNieIUQwlM58H1q1RuMSIwidFcXCs/0ilVyKZityYdAp7NDZiz1BQFQibtQtGrnaN6rJWpFklteivK9fMWdTUsaxTIV7Qm4JT8vmB7cCWvswDThuIIVXmU7+YaBHzVLdZC7eSJYK5KngZ8jStOjPPBd0xEbpFhQbr+FauMLDTKIgYTdRX9CEmd3G0AScqRkbZum25xSzzaCPmGg9Ek5EUI1Xs9Z5EL60sh7/ejFzYqHtU63vmyvsrQ4DjnTfXeEwpeUYjEpHG2yTtoEFzyjxk3zoAjNXBITpcXaFmnKmw2bJeuSzMHq2Vjxm7q2R0davKAX69KcLY9DMzooOZIh5B/EPxd9Ie2yfaCWf/3d0hFOuP705Sn1QeV5kkgX33lqBsfiu8fsSIUsyuf3UIKi8Giy/rSX9GCVJGLyo4eGMuFaUFr8/
+X-Rspamd-Queue-Id: 20E96A0003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: zj68313zwox57q15itwnh1itbnf9t9no
+X-HE-Tag: 1785769041-191994
+X-HE-Meta: U2FsdGVkX1/xigSXbp5jqzmMDK8QiwNL9D7IjQk5Txj3+jbmwh72UB9u31Fuy6d8BrsbOwh6WNds4+gFBTwGT6Q66GebSoAFNE43doX6Wwo87q6zTDPxKZieeVjjwHwqVHSoS/83nYx40petrmOuv7olG19PpeTorQEUfj/lhKJ1fQnEyTtaylWZxzVAh8IGyQKXexAQWt5XN7L9VD66iQfzc6Kw/EvEGx4vwKL9uh9VF7Br8Ky4JjHCvgXDGtHgZnrZKZ52LvEa3igP1xE8gU5RghVuqozYMNi3xCQfycyqoqbqLHKKMAV9YUP4oHqOgQygPhMOvge6Dfk2xflYRreCMkdALpMvBI4FhFNL6euAp0PjcXnWCKbXVdMTRI95BaPElH4PR3fSdxS5N4+yOwjf4InTsUEk/EZU6HI35GQh24/R0ICEpWQ82Q5lldA8jyb/SnNlPzOWzORiOR17U0Lf48B4txga5qXCd62P2mrZd1HTY7x6asyGfiqXftIhJGt404HPiOPs14drHrWreeOx5MHJoNmS9GCxvMIgSCXzQ8zz3Wl7bZp6nxqmCcC1xXlQT5eTGWbUDcUwlz8G3jp2G8HHPPwoGcdma6NZnbGSij39TMyoWKIb/BAU3SErUb1QDOoNfH59N4hEFm2vBTyPZssdtUOFV6vkGBel57w80fgmKH/baaOXEYCE92mPLu1OJsm+KqHOWVkoKgc33TUWdfuEJHOcAtRK5GofEsNWsLeRRDCAlRSiy19BLGgVyon+hGEqOojPzMriTWAV1uEjTK2X9gGxmqZgFSiv7z8jz8r2qXEhOfS+E9gijLPkpZru07BFEc5vkb2VL+dbcfiz6soYtl3CJLZ3/ANDtDaRBtpmrbcvwwjHL+550jmrR+Q/G1/kNebF4D/ZKqrN57lq0R7ODCTdy+Js6P6YtiHWUyJiYrDrWK3kXL7/C03Eu2HPGhpROTqpvpvfxIM
+ OKNrtsCk
+ 70sb9sgCPYPFR1DRF6DJTqLbp2swQ9rjfx7lsB9mwUbtfaSWCKFDLVWB6AnEYseLzZWi5vwMYAy4CfuNyRaqr7Fe4GayvdFlOUGXiBhc7yGRd+KraD6DQVSThzn6kDVWfP4zcNMFXH72Kgjru0uLWLdtcmx3ax1GJgkM4ScEBl5xSXuXlKzRvQOpG4X/KVqW3ablZMIeO2eSG+MBxRCIv95Ap4uPztbEBl9AgQLg8IUfUivVzzCqjtTozgRX6psuxwwPg4/lEbILgRES1PGDVNz0lLXiY1dcbI0OOzbsmbAuORZfTAuFjbOT67rN7MmJhvL/kFpv3adLIOhQUrOjK69tggyuK7Rn0yKF7EVYheHErhSc9br88a+KkXWLr4C34VF1QbHd0T8gooJwnZhhEXtgm0bgtME5hB8FOeql9AQDj3kJvcHY97Rs/xNzeRjALD8YT4znM3pQpIOyyvNeSTS7MrL+3RPW7h9O06Zc0GnmRExRyqFqRBQebEA3O9T7jSS5+c5wpd/Qvvih/iLRpShPjJ3wK5I78GyjS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,89 +123,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 06:37:59AM -0700, Ackerley Tng wrote:
-> Move memory policy interpretation out of
-> alloc_buddy_hugetlb_folio_with_mpol() and into alloc_hugetlb_folio() to
-> separate reading and interpretation of memory policy from actual
-> allocation.
+On Mon,  3 Aug 2026 06:40:33 -0700
+SJ Park <sj@kernel.org> wrote:
+
+> damos_quota_score() can trigger division by zero if the target value is
+> zero.  DAMON_LRU_SORT lets users set the target value for the hot memory
+> scheme via active_mem_bp parameter.  It avoids setting it as the target
+> value if the parameter value is zero.  However, it also sets the cold
+> memory scheme with a target value that is calculated as '10000 -
+> active_mem_bp + 2'.  Hence, if a user sets active_mem_bp 10002, the cold
+> memory scheme's quota goal target value can be zero.  As a result,
+> division by zero can be triggered.  Fix by returning an error when the
+> user tries to start DAMON with >10000 active_mem_bp parameter value.
 > 
-> This will later allow memory policy to be interpreted outside of the
-> process of allocating a hugetlb folio entirely. This opens doors for other
-> callers of the HugeTLB folio allocation function, such as guest_memfd,
-> where memory may not always be mapped and hence may not have an associated
-> vma.
+> It makes no sense to set active_mem_bp with 10002.  It also requires
+> module parameters write permission to reproduce the issue.  That said,
+> the consequence is quite bad.
 > 
-> Introduce struct mempolicy_interpreted to hold all the components of an
-> interpreted memory policy.
+> One reliable way to reproduce the issue is like below:
 > 
-> Rename alloc_buddy_hugetlb_folio_with_mpol() to alloc_buddy_hugetlb_folio()
-> since the function no longer interprets memory policy.
+>     # cd /sys/module/damon_lru_sort/parameters
+>     # echo 1000 > wmarks_high
+>     # echo 995 > wmarks_mid
+>     # echo 0 > wmarks_low
+>     # echo 10002 > active_mem_bp
+>     # echo Y > enabled
+>     # dmesg -w
+>     [...]
+>     [  597.421247] Oops: divide error: 0000 [#1] SMP NOPTI
+>     [  597.428848] RIP: 0010:damos_quota_score+0x6f/0x480
 > 
-> No functional change intended.
+> This issue was discovered [1] by Sashiko.
 > 
-> Reviewed-by: James Houghton <jthoughton@google.com>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> [1] https://lore.kernel.org/20260801213028.5127-1-sj@kernel.org
+> 
+> Fixes: 40d98d31cd70 ("mm/damon/lru_sort: support active:inactive memory ratio based auto-tuning")
+> Cc: <stable@vger.kernel.org> # 7.0.x
+> Signed-off-by: SJ Park <sj@kernel.org>
 > ---
->  include/uapi/linux/mempolicy.h |  2 +-
->  mm/hugetlb.c                   | 54 ++++++++++++++++++++++++++++--------------
->  2 files changed, 37 insertions(+), 19 deletions(-)
+>  mm/damon/lru_sort.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1317,6 +1317,12 @@ static unsigned long available_huge_pages(struct hstate *h)
->  	return h->free_huge_pages - h->resv_huge_pages;
->  }
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 7e077084cb03a..3920d5042f109 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+> @@ -233,6 +233,8 @@ static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
 >  
-> +struct mempolicy_interpreted {
-> +	int nid;
-> +	nodemask_t *nodemask;
-        ^^ const please (mempolicy owns it, it should never change)
+>  	if (!active_mem_bp)
+>  		return 0;
+> +	if (10000 < active_mem_bp)
 
-> +	enum mempolicy_mode mode;
-> +};
-> +
+That is backwards...
 
-Is this intended to be an ephemeral struct that will eventually be
-removed?  Because it feels like mempolicy.c should just be handling this
-directly instead of needing this cached structure.
+> +		return -EINVAL;
+>  	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, active_mem_bp);
+>  	if (!goal)
+>  		return -ENOMEM;
 
->  static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
->  				struct vm_area_struct *vma,
->  				unsigned long address)
-> @@ -2138,32 +2144,28 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
->  	return folio;
->  }
->  
-... snip ...
-> @@ -2926,8 +2928,24 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
->  
->  	if (!folio) {
-> +		struct mempolicy_interpreted mpoli;
-> +		struct mempolicy *mpol;
-> +		nodemask_t *nodemask;
-> +		int nid;
-> +
->  		spin_unlock_irq(&hugetlb_lock);
-> -		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
-> +		nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
-> +		mpoli = (struct mempolicy_interpreted){
-> +			.nid = nid,
-> +#ifdef CONFIG_NUMA
-> +			.mode = mpol ? mpol->mode : MPOL_DEFAULT,
-> +#else
-> +			.mode = MPOL_DEFAULT,
-> +#endif
-
-This is not great, and tells me this interaction should probably
-be sunk into mempolicy instead of pulling ifdef/else into hugetlb.
-
-> +			.nodemask = nodemask,
-> +		};
-> +		folio = alloc_buddy_hugetlb_folio(h, gfp, &mpoli);
-> +		mpol_cond_put(mpol);
->  		if (!folio)
->  			goto out_uncharge_cgroup;
->  		spin_lock_irq(&hugetlb_lock);
 
