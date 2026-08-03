@@ -4,92 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B256DC55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719A0C55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 15:33:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B5856B0088; Mon,  3 Aug 2026 11:32:48 -0400 (EDT)
+	id 775A36B0092; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48DC16B008A; Mon,  3 Aug 2026 11:32:48 -0400 (EDT)
+	id 74CF36B0098; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A4156B0092; Mon,  3 Aug 2026 11:32:48 -0400 (EDT)
+	id 63FE16B0099; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C50566B0088
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:32:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F1181A076B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:32:47 +0000 (UTC)
-X-FDA: 85060350774.04.FB53716
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C5A6B1A000E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:32:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WYg7oONs;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 344716B0092
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:33:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF774140753
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:33:18 +0000 (UTC)
+X-FDA: 85060352076.12.69085C3
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D416F160008
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 15:33:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cJw5qID+;
+	spf=pass (imf08.hostedemail.com: domain of 3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785771196;
+	b=bfstYiJmvblZfVlWAQGj0O8opnSfFCQr27DGBWFeHyKrsKMirb49RIJl27WDWwiIuRHM42
+	gmF23EnFQkAGR01GBV4q791WgnHL00rcnAwL20QYjfYyIE2VRFg/K8ZAy0wKU7EDQygqHv
+	d1kvnCvwEbAcN+JUZ3br4QiDC9coY1s=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cJw5qID+;
+	spf=pass (imf08.hostedemail.com: domain of 3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3urRwagYKCEEvhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785771165;
+	s=arc-20220608; t=1785771196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dtAprwl9YVKSgx2qkgDkJIY4Tilcw0HSTK5NvGoGEC4=;
-	b=AtvCMWMyF3RPdS3LOPGtCw83zRdtWaGZuzFfdqupivbvkfM5Eusgc40ENzRDLFqLdkMcOO
-	q3aMa6CZyuXPYsmEtagiyFoLJcuEpKYaH1bj+iGs6SD8c3BIjxWdXcgwkdS6q2C1gia/oy
-	+QuLkGTy7WId3MDBdIWoV1ATIDukuQU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785771165;
-	b=up995c//k53aOv4X94QsGd1ywiU+yRZVDNs4xWkNltlDwLGR1j0dzXUnnU72IfDBEWdPFg
-	fL26MjFIYYL22hBSRDp3kwOOJ2YJ/6/Zxik6CkfChn6YZpzh0kIOniXFpzsbVFvsr1QnL7
-	3QePTE5QUzLsjCNIaddDJtLa+ftglRE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WYg7oONs;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C52060A81;
-	Mon,  3 Aug 2026 15:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD9F1F00A3A;
-	Mon,  3 Aug 2026 15:32:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785771164;
-	bh=dtAprwl9YVKSgx2qkgDkJIY4Tilcw0HSTK5NvGoGEC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WYg7oONsuX2Brvgwjitwk77p506v8el7XNP2buJRtdOxkH5PrcmxYad/4+siEEvi+
-	 ngSsM83nqgyT19k3ROzH+GFDDT5o/PdfUBmLFewVJst0NyLUX/qVomM71taDAJmPaq
-	 qLRAesXU7j0fYjZpY71Ek+ECQFOynvtixDxkRJcrajEscwc/yi09TElybQ69+x6HlN
-	 eeBXN5dBQHJ4QARAv6jl96Oomj3R74GNuK59qp+vsBFi2/iL+5lahu1rYeQGYcZ77W
-	 n28Lu+D73MJvHHClLynmaxonmzIfYJ3AFSgBZ1uJOFvvzH5gExH+hhngKNOB5+JwHv
-	 7MXXCtl99O6IA==
-Date: Mon, 3 Aug 2026 16:32:27 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, surenb@google.com, liam@infradead.org, vbabka@kernel.org, 
-	shakeel.butt@linux.dev, david@kernel.org, linux-kernel@vger.kernel.org, 
-	zhanghongru@xiaomi.com, willy@infradead.org, zhangbo56@xiaomi.com
-Subject: Re: [RFC PATCH v1 2/2] arm64/mm: use VMA lock for kernel faults on
- user addresses
-Message-ID: <anCxz6JqVtebHxg7@lucifer>
-References: <20260802074018.73887-1-baohua@kernel.org>
- <20260802074018.73887-3-baohua@kernel.org>
- <CAGsJ_4wLG77Y5r9Dy6QOqgmjNM5W1E5aGqKyJb7Bp3WGemNFmg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4wLG77Y5r9Dy6QOqgmjNM5W1E5aGqKyJb7Bp3WGemNFmg@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C5A6B1A000E
-X-Stat-Signature: e87nahupwdus3qxyti3x9gdkks63naye
+	bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
+	b=5XM3ua4WXnQ50nyDdyYLXTErOXGZtgtCbWf8++A/QZgFdvb+f1QkMl4rhNqfbuMHqVBlcn
+	DjVYNttUHinaN7LgXrlMdR5pn/xOB8jT2ZceeujyER0AhUdgkNKIhm407yDZtOgktPVtE8
+	DAfC2QGOAgLWXUCfQVumzSvf42AGqhg=
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84842381150so6977125b3a.3
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 08:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785771196; x=1786375996; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
+        b=cJw5qID+5KSSJVAQTeTT8lIQfWHeYDiulAip18RAByp9lJZTkRkNVcq03p36tR02yf
+         8ISYFsdYU6kJp5rOQIjGrp8pYDJO4B+PqHpBQJx5r65hIVpSXmbJDnnMYwcYP15LnCk+
+         LZD1Uvj+GxCk9RPDK0MBdjkRskS3T9KxWDZo+hmhckSHukSdiceoTaJqwp2dMqjW3v2b
+         6iOAw31vDDeKyp88z2vihAvL76pzzUbHzDRzLDcKgO5PBD3/uh1XfjAsynidmdmA+dre
+         SwgaunWWBxnlJLtYHdz6rDx5BffRiMtVAp8JAoW+JZjmc2ehTcqS/bQMGWtA6GRRFTUN
+         GiQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785771196; x=1786375996;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gtEGWO1V/3oKubYEJFYO8Yg77TA8PdsLMD6iXufqvFE=;
+        b=Co8pUuNPN47yUJ9JYPvi/pwrXgK6nKavRGhiaLynjF7fsUiK0MjtydpeoVjLPBZF3I
+         F10Tw9NsnekaKGljbW2gOkaQm1cXNKx8ElqgTIja1q45vhDz/mt8efO6K/OxyEBqAIfi
+         R6UcBdXlyRM45nSmEGcol5JJdL3B2XWeoHGIWqHkntq2VGISiUeFPKB8CCcR8LgnbxcC
+         IoQhY1WS/ZN+lIVOEMqTuVaKvqRz2LRrfhHlW4bSj7/acauo6qkINij9SOyk3PBH0+fb
+         Cdh7QOtlo3BKQS/DO/QzPwK8ge4H+5qRQX4cv6q8He7JbFnAK2PHNitG9K/kZ16KJTOT
+         LQyA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrr8/E4MwkCmimAQE0oO3+bZ0JHR3uQd29PHfLy6IHiX79m/yREXT/eLE4HFuVIU0RmWTIkH/g2Eg==@kvack.org
+X-Gm-Message-State: AOJu0YzsUDboFn+ISZhUGHzm1p7uAHmXCR3a5nVTkfmO5qFvZ4IAHS5t
+	6bUUJk/+mkZV9CzEKgNxsgTPg3LyBBg8NcFPYfbBd6BgCBoEyachZh0+J4dCwf+kzurzSYFXaTE
+	13gtlYg==
+X-Received: from pfbhw1.prod.google.com ([2002:a05:6a00:8901:b0:848:46e6:1aac])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4613:b0:848:3fe2:c88b
+ with SMTP id d2e1a72fcca58-84ee477539amr8885723b3a.6.1785771194900; Mon, 03
+ Aug 2026 08:33:14 -0700 (PDT)
+Date: Mon, 3 Aug 2026 08:33:14 -0700
+In-Reply-To: <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
+Mime-Version: 1.0
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
+ <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com> <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
+ <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com> <amzMtg4K6qEEsudx@google.com>
+ <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
+Message-ID: <anC0uuZIrbxlGubN@google.com>
+Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: multipart/mixed; charset="UTF-8"; boundary="t+KByEqIRolqunqf"
+X-Stat-Signature: jtbyp9qtobdqp5ns37j7nhpwjkyt8h5k
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D416F160008
 X-Rspam-User: 
-X-HE-Tag: 1785771165-685541
-X-HE-Meta: U2FsdGVkX18hG6M9sx8G5lgvgqiFPPiy+UxVJKep3rzvWk/ItnxtQMcZz4WwVfSL3l4XKr4K4mPDrKI+wdmewn36+QIuTMJvatYe62OLiv4Q1DKaMLo6RHrTHm8MOrw82unKgwKv6M0SYSzfC0KZ7kRqmc0lJ6dpMrf5xKAsIzqlXjl7zS0aV2vc9GYmH7Ux73/mo7ZiyB4Ht7z/31cOhGOSZcZeB4OGXuzQk4ER/mRpjwD748XdHLgXp8irjzjZPQAWxWIE7hVdmVTyH/aa1RrZtKEVrCAVImUDHKmiZKGCpd3cU3aFw/kyIweGq90zy90Z3gGFCsQUTfO8VxRqfkwspsX3rxxI6yixqXdcSdYMftg1QnJCQKiRP6GuD1uOYClGRFpuDOo7T+u17Kl0kkYrh1h1waqsLwyIDbPgO0UDWTk8ypkXh0niE6plfA///rPzaxnKZ+u4i991usSSnxD+oGd14p0vZM8hsN3oQF6SGE6c4jwl161jQZtO2+HrHHGtCF/srxiZDqb4XRE32mp75QG6a5EuKMgU3fMrKlJzxFIm45G4/eFbqS/TC5lbdb9S3lxhqYd6hxLl73GjJdbmDJYl6OYChogOd0n0+8Us3r9i4burXP9pvqdWxt/qe4iJrfqDMVNQ/zIdfQH8svfjcdBYcqY7I7Gh7baVYHPDGsuRZPEe+IITfLbS/hHenHjlvhdDczjGcV72xCLaYBIBVXKT4E78mYFSxAK8nMj3SbG6Pn90goexA+qpiLgaH4G016M/TCOtFqMwpmuCliTTNjwB3KMkF3fyKWyxBbFyku94lexys9t27T9IyQdRG5s7A+dkV050RJ0HtFlDC+VvxNA+3uQs68QAO1TcuZjWJ4YDj1mTCV9koAQF6sG7Tq9G9Au1DPX2l0pBI6HxJbpthzDjhUrD4dYiG2H5xL6Zr6kIz5OcBOXBMxkgPO8RYB21xc5rolNmpd93onb
- UlS0at2T
- mDKST1CEBpwug/AnIqFQomxfF0CbTMvYgm56f4pZyOGPxqjVaYeCKEcsnJiTE4Pf9w8ne0XMOrsr4Z1U526m+i9nsojc0p5NSHGMM3Mzej6EuojwbA4P8icwq7+Q/J0NtiusVhcpQl3UdH2Pc6kXaynzp3k3rKPsHRUzwpZ3OI3bleqLoMq0/NXb6eDNzg7bYO7XySqakrNIw73VCSlxURKi5LDPd2U07ySENrIfeqSUWI6nP7O/3TMnThnTnqClJ5ojfJIMd9jyCZgx0m3HpGG/WisIla//k4tLV1jdChXDE/NTw3noCuB9ZCV6OfbbKhPTqi96eCMpOV97Avw7JC2di2J30AewrmR1zWLqaGRm6OOU+da0YpvvaTyksTz3xyme4
+X-HE-Tag: 1785771196-822296
+X-HE-Meta: U2FsdGVkX1+oNpwp6K6x8bUJ3OQdb2JyXTWne9XKUMEEZdXu4E4CCZeKvz+ynfq98Jto15sWvOVgbCjg9XcAbvbZnI+Ps9GT6pBkWh0oQp4ycJEnUCobrf/mq4YZCVT8/xErazR9Xutfjcg/Dous/IVq5OpMXfO0DitcI2BQas3u1HFKg8ahXuBhperfJeA2QEjS68PsxcQqtwPx61YNE31ST1VpP6hRnvQQV/OYCWHu+u8UP204a9tF4FJaP9d0yE6WHV8WKP+DWvbpO11TrgC08x8UMY8KZT//GMToRXpYwctSWtG+SkNjXykEtCAyuhKgtZAsuobErascchVYp3PE8aqJwIxDHw2w952//58gakE1IX+9K4rJCXlmbMt7c28ll3vfCeC3Nt0yMFBrHEtixx9Es8uM/clwr3zAPsNciCfq//QEiftEpN+UVNCY2b3Wsrk4togYLXP72EiQh9Lt/1iseI9fb3gCdS3RbUw/l5sj6C64rLgocf7yxIaoFqi4Sqr78FELp7lvIPhxOufl2wvT/+UX9LeabZkrPwjlNEbHMUMt5sTW8e3ggRXXTeqf0egaMOj0Cu0soXeMLhhmhW9s1RzxmtV6T6DZqpmNOmQxosLP92JYHg4IUXOBlWkhLtTwaYO9KS5yqKQxDVQOsMSdKLQvJJDhuVpsCa3D3fQENkywsAYw/Qd7xtfb5c7xPx8YO8PqKB0JsEIf3gzXj69nruZ5/NbH/rnIxm4vKsG/W9RKMt/Q6hxHkxnuNL261z1IRMcXIFZ1kD90ra+zA+AA6QTcEB+pD3rUnrBmJ6WZK5WYA4Okix+LKD5c6p19rTjIIdAvoK8AA3JID0KB7ZmPPlZtciCmdAZUuEHqbCyhz2eReSFAfA37ZsO8V+oSagvPAnsJqcq5sbmFvR5/yHNmx1osybZ9S2sILYd05a2rm07aET2HWFCrKr7d8mHGTZ4Y17M/AlPI6eq
+ K8MQSrxM
+ V/MM6gFKDwuHhDQz+Pidz8k1eeM6pmYEHdhfJHfhotkKBtUHf5ryyodr/NaXIjtAL0mwGe5PqvJpZojvOVih0m9aOEQRKRHeDthD5EvPSF3vku2PPcZivUXGTxmblJprOpF0iWfZbw7H35X/vlWMRUbAQWd4cjXi+E4m+ovP8DWnW9jjNbCntEpRkrG9qDZtKKJBd4U2SFoUKXOpQ658AeRhS6/DOutsnZ0fmAOLzJcTb25+yg1Yp43e7kXlmDOr2hr6yHqeWNkCvvon4dxAEbPR0vML0LnQAVybX51tkfM8XsvLXD81D2uioKjXZVFIGsmknJcDd+Yykh6Rq/CoerwxGZzesqvd3/bpGmiHu3O/D7YWqrrVkr/P9HwgpSrRJL2cZflKDedxz7C4sXzWAqIRDfsiXb5sSZ456uvc0sLbuv0P87FlT7fBOVPSzSfxfFYlusqA/xf93nJKNEK5m+3mD2SxzUY/8YRA7ylFbyu92FpdNRIdYwZIn3zCuhrcHWW8qlLEaxKDwhqpjv5CEXQ2MzUjeJc+gViaX99opw+u/vUVrm35SFQXBd9fKmWg9yR133kbWtsJphGqmM3YQWQe7wHFoJYZVuqE34y6Wj6ub1uGrD9oGlx7LXVIsamQnUKXGsITT3D5mk9PFtJvqXKskdnno1oq58Qxow34EYQHku+bdVZSnD5N63J2GlajVKp1kVCuSS2T/Yz23jQnMVMhskrYTW9+8T3XtMGjBXYOmYAjGeXdI4AhW6HvI8jwg+fBKBzwIqltxjE5covG9Gw6/frgT1Cnbg65umyj8SgXoMmMwAhRF0OiOroqEsNthFcw4IwrAIteV5lOUeAw8LzzZLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,89 +138,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 02, 2026 at 04:49:04PM +0800, Barry Song wrote:
-> On Sun, Aug 2, 2026 at 3:40 PM Barry Song (Xiaomi) <baohua@kernel.org> wrote:
-> >
-> > Use the VMA lock for kernel faults on user addresses. This also
-> > makes the existing code below meaningful:
-> >
-> > /* Quick path to respond to signals */
-> > if (fault_signal_pending(fault, regs)) {
-> >         if (!user_mode(regs))
-> >                 goto no_context;
-> >         return 0;
-> > }
-> >
-> > Right now, the code above is dead because !user_mode always
-> > takes the mmap_lock path.
-> >
-> > Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  arch/arm64/mm/fault.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> > index 85e23388f9bb..241f1ab07ab3 100644
-> > --- a/arch/arm64/mm/fault.c
-> > +++ b/arch/arm64/mm/fault.c
-> > @@ -607,6 +607,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
-> >         unsigned int mm_flags = FAULT_FLAG_DEFAULT;
-> >         unsigned long addr = untagged_addr(far);
-> >         struct vm_area_struct *vma;
-> > +       bool uaccess = false;
-> >         int si_code;
-> >         int pkey = -1;
-> >
-> > @@ -663,6 +664,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
-> >                 if (!insn_may_access_user(regs->pc, esr))
-> >                         die_kernel_fault("access to user memory outside uaccess routines",
-> >                                          addr, esr, regs);
-> > +               uaccess = true;
->
-> https://sashiko.dev/#/patchset/20260802074018.73887-1-baohua%40kernel.org
->
-> "Does this conditional bypass translation faults? Because this block is
-> guarded by:
-> if (is_ttbr0_addr(addr) && is_el1_permission_fault(addr, esr, regs)) {
-> it appears uaccess is only set for permission faults like CoW or PAN
-> violations.
-> If a kernel uaccess routine accesses an unmapped user address, a translation
-> fault occurs, making is_el1_permission_fault() evaluate to false.
-> Would this cause demand paging in uaccess routines to fall back to the slow
-> lock_mmap path, missing the intended optimization?"
->
-> Good catch! I should have only modified a single line. Then
-> unmapped PTEs would also benefit from the VMA lock:
->
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 85e23388f9bb..e1b406d667aa 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -674,7 +674,7 @@ static int __kprobes do_page_fault(unsigned long
-> far, unsigned long esr,
->
->         perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
->
-> -       if (!(mm_flags & FAULT_FLAG_USER))
-> +       if (!(mm_flags & FAULT_FLAG_USER) && !is_ttbr0_addr(addr))
->                 goto lock_mmap;
 
-I mean honestly it feels like, with the permanent VMA flags change, that maybe
-this really needs to wait for Matthew's series?
+--t+KByEqIRolqunqf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-There's duplication here too of course :)
+On Mon, Aug 03, 2026, Xiaoyao Li wrote:
+> On 8/1/2026 12:26 AM, Sean Christopherson wrote:
+> > On Fri, Jul 31, 2026, Xiaoyao Li wrote:
+> > > On 7/31/2026 4:42 AM, Ackerley Tng wrote:
+> > > If kvm_range_is_private() is useful/required by huge page support, then let
+> > > the huge page series to introduce it. It has nothing to do with the in-place
+> > > conversion series.
+> > 
+> > If it weren't for the fact that the range-based search is used later in this
+> > series, I would 100% agree with Xiaoyao.
+> > But since the core logic is used and needed elsewhere,
+> 
+> I don't see it a problem. Without introducing kvm_range_is_private() in this
+> patch, the core logic of range-based search on gmem can still be introduced
+> as kvm_gmem_range_has_attributes() directly in patch 10 or in a separate
+> patch.
+> 
+> > and because kvm_range_has_vm_memory_attributes() takes a range, my vote is
+> > to provide the plumbing now, even though a small portion of it isn't
+> > strictly necessary.
+> 
+> So my initial feedback was "we can just use kvm_mem_is_private(kvm, gfn)".
+> It makes code simpler.
 
-But it begs the question of every other arch that does VMA page faulting.
+My apologies, I hadn't actually applied v9 to look at the full context.  I agree,
+providing kvm_range_is_private() is completely unnecessary.  It's not even really
+a problem with this patch, it's a pre-existing issue that can and should be
+addressed with a prep patch.
 
-So feels better suited as part of that change I think?
+> And as a bonus, the logic to choose between gmem-based attribute query and
+> vm-based attribute query is hidden from the static call.
 
-Maybe Matthew has thoughts.
+I don't follow.  What do you mean by "hidden from the static call?"  The whole
+point of using a static call is to select between gmem-based and vm-based private
+memory.  Or are you saying the populate() flow doesn't need to manually check
+gmem_in_place_conversion?
 
->
->         vma = lock_vma_under_rcu(mm, addr);
+> The second bonus of dropping kvm_range_is_private() is that we can eliminate
+> one more chunk in patch 20.
 
---
-Cheers, Lorenzo
+Ya.
+
+Untested, but unless I'm missing something, patches 6 and 7 of this series can
+be replaced with the attached patches (6 and 7 should be squashed together no
+matter what).
+
+--t+KByEqIRolqunqf
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename=0001-KVM-guest_memfd-Use-kvm_mem_is_private-when-populati.patch
+
+From 77bd0524535d65d7c6beb4a0cc70a65fbacc9f81 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Mon, 3 Aug 2026 08:10:09 -0700
+Subject: [PATCH 1/2] KVM: guest_memfd: Use kvm_mem_is_private() when
+ populating guest_memfd memory
+
+Using kvm_mem_is_private() when populating guest_memfd instead of using an
+open coded equivalent.  In addition to simplifying the populate code *now*,
+this avoids the need to provide a range-based gmem lookup API in the future
+as well.
+
+No functional change intended.
+
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ virt/kvm/guest_memfd.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 8c7709a352cc..48c13d18af15 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -881,9 +881,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 
+ 	folio_unlock(folio);
+ 
+-	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
+-						KVM_MEMORY_ATTRIBUTE_PRIVATE,
+-						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
++	if (!kvm_mem_is_private(kvm, gfn)) {
+ 		ret = -EINVAL;
+ 		goto out_put_folio;
+ 	}
+
+base-commit: 17548ee538ef4f476e16fb5dd3ca8adfd8a852ed
+-- 
+2.55.0.508.g3f0d502094-goog
+
+
+--t+KByEqIRolqunqf
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename=0002-KVM-guest_memfd-Stub-in-ability-to-enable-in-place-s.patch
+
+From 02db86dc193d969085bbc0c98c6117e59d469cb5 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Mon, 3 Aug 2026 08:17:34 -0700
+Subject: [PATCH 2/2] KVM: guest_memfd: Stub in ability to enable in-place
+ shared<=>private conversion
+
+Stub in global variable to enable in-place guest_memfd private<=>shared
+memory conversion, which will eventually be exposed to userspace via a
+module param, and wire up the __kvm_mem_is_private() static call to the
+guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+the sole authority on private vs. shared memory.
+
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ include/linux/kvm_host.h |  6 ++++++
+ virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c      | 12 +++++++++++-
+ 3 files changed, 43 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 65fbce46b63f..9477ecebbbce 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+ 
+ #ifdef kvm_arch_has_private_mem
++extern bool gmem_in_place_conversion;
++
+ typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+ DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+ 
+@@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ 	return static_call(__kvm_mem_is_private)(kvm, gfn);
+ }
+ #else
++#define gmem_in_place_conversion false
++
+ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return false;
+@@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ #endif /* kvm_arch_has_private_mem */
+ 
+ #ifdef CONFIG_KVM_GUEST_MEMFD
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
++
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+ 		     int *max_order);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 48c13d18af15..e21c7122539a 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -474,6 +474,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return 0;
+ }
+ 
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
++{
++	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
++	struct inode *inode;
++
++	if (!slot)
++		return 0;
++
++	CLASS(gmem_get_file, file)(slot);
++	if (!file)
++		return 0;
++
++	inode = file_inode(file);
++
++	/*
++	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
++	 * This result can become stale as soon as the lock is dropped, so the
++	 * caller _must_ protect consumption of private vs. shared either by
++	 * holding guest_memfd's invalidate lock for the entire duration, or by
++	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
++	 * against concurrent attribute updates.
++	 */
++	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
++
+ static struct file_operations kvm_gmem_fops = {
+ 	.mmap		= kvm_gmem_mmap,
+ 	.open		= generic_file_open,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 081e3309359d..e5654baa8895 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -101,6 +101,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+ static bool __ro_after_init allow_unsafe_mappings;
+ module_param(allow_unsafe_mappings, bool, 0444);
+ 
++#ifdef kvm_arch_has_private_mem
++bool __ro_after_init gmem_in_place_conversion = false;
++#endif
++
+ /*
+  * Ordering of locks:
+  *
+@@ -2422,6 +2426,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+ {
+ #ifdef kvm_arch_has_private_mem
++	if (gmem_in_place_conversion)
++		return 0;
++
+ 	if (!kvm || kvm_arch_has_private_mem(kvm))
+ 		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+ #endif
+@@ -2633,8 +2640,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
+ 
+ static void kvm_init_memory_attributes(void)
+ {
++	if (gmem_in_place_conversion)
++		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+-	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
++	else
++		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+ #endif
+ }
+ #else
+-- 
+2.55.0.508.g3f0d502094-goog
+
+
+--t+KByEqIRolqunqf--
 
