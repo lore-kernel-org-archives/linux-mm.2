@@ -4,101 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1779EC55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:31:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4930CC55182
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 17:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E87BD6B007B; Mon,  3 Aug 2026 13:31:56 -0400 (EDT)
+	id 267126B007B; Mon,  3 Aug 2026 13:41:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E39C36B008A; Mon,  3 Aug 2026 13:31:56 -0400 (EDT)
+	id 218BC6B0088; Mon,  3 Aug 2026 13:41:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27696B0093; Mon,  3 Aug 2026 13:31:56 -0400 (EDT)
+	id 1082E6B008A; Mon,  3 Aug 2026 13:41:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB8786B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:31:56 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4789B4079D
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:31:56 +0000 (UTC)
-X-FDA: 85060651032.11.D1420B6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 69E0C140011
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:31:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6LhpyNa;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785778314;
+	by kanga.kvack.org (Postfix) with ESMTP id E012B6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:41:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F08A40764
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:41:45 +0000 (UTC)
+X-FDA: 85060675770.04.346909A
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 78EE4140002
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:41:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Esam6oyi;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785778903;
+	b=VmYNG8VyANTPFNs6EO38dtdWciV/AVM4y+hE3+VMH+IHGt72oL0EWlLmZXxvSH6ZtGTLsz
+	CfqQAOQCv83PCg5/rH1Axr85Cvf8WDaQ7rpXNd00d4xalI6Qil0Ldo7fGf7nkondORu8GQ
+	7hfAqpkVxBxZBqfnN/8uMgCX8Zk6Ve8=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Esam6oyi;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785778903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kP/as4F13JIZLEq7A3z9xVybs0LHJUVnzLyJAncMekY=;
-	b=4NQCdixzKDjg5sU6yRiRg3fCqGQdw5UdmN/B/eoxZ9byvomWUdpbuIVILiV/yP+U7Hei13
-	tv5/EzhcAhetzPoCKhm/GO0Xzrjyqdbe+pK7wGwbRbQQwEVUmuA2jFf/iAS5yYXPpCKG3u
-	U7auVgxj/ZCRqbFRDj2ZLDrfVzv5fnc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785778314;
-	b=lUlgAtEy1pVIYHem2TloT7dguX46Q2a/5jYt4wgMgs8zUxMa79iRP9kGf+pSRcu3EqZK77
-	eQwoPeEbEiWOQa3S9gWK35oeEvxv2WCu/lhSBQY6TyYyoDKvHT0i2uOQS9qRvRX+TxW3Cy
-	H54K5XbSPiDjq6OPvokNVGR7+gechmw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6LhpyNa;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E52C260A64
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B67E1F00AC4
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 17:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785778313;
-	bh=kP/as4F13JIZLEq7A3z9xVybs0LHJUVnzLyJAncMekY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G6LhpyNa1Vhjx5jvqEQrnshyjhLapNMnrCCk9UDAELk1mM2usl8xOnPKb2erTrypf
-	 fKBzKmmjgC4iVC+MtyCY5Qj1qhDpIpMfuYD3uOx6EQLftQjF4//Cw1zvMgBCpK/HAy
-	 Arj55ZvVpklCrnpkSGhGGQUApWcywzz95WP64h7Ry32gycTLGDsD+eLkHoFqD/zo77
-	 zQex9keMt7n1Bs7Sv2I/0SDmg/3urwhmHHQKHsBv5wAZ2mGY1+Q1onwAvpNrjZmW2y
-	 EOZKGmAE2GGSuU4xYwUC85eT6ZsujqpuBdavjIwR9uGot/4vyrkFLqgnogErVUFgtn
-	 Ul7vCmfV2Rzgw==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a0ddef4e35so2150511a12.2
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 10:31:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrmaqlySUmVStUTLQ+meD1K97y+Ml/6791iMY4QHKAWYXpGIn9uVEQClcBTMYkjWyGK1Akx7JTBuw==@kvack.org
-X-Gm-Message-State: AOJu0YxNfBttiD1gQE7apzY50VI1cwNUg4Y/GJAgr0ZYs+e995W9tSfi
-	ntR6/eAWwSRQHtPpXS8+zvUVaVgHSNpC1AwZpHE4zmBJ3Bai3SL0DssZ3p+0gcOxFg1Sj+wncVf
-	uPgFODvtMt581TRxlXrt+QpLeEG5EN5I=
-X-Received: by 2002:a17:907:e1ce:10b0:c12:9e83:643 with SMTP id
- a640c23a62f3a-c1fe80ba536mr626054966b.10.1785778312482; Mon, 03 Aug 2026
- 10:31:52 -0700 (PDT)
+	bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
+	b=ElF8nH9VmPGFbA3ckK1vF1LWPlXpZhDwW3tBDK8TsObwVlrNW3GwHvJXqp0fhL+nQOzyE7
+	QxHV0BYWdXqc8nBTVeEXfQISgXHFf8BmiBgyWAxrdxGFMmKQISv8i5j1hEAUopuFnXhWYm
+	ZDaqhHB0C3CsjSkZoFrS/v417PrlBsQ=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c15a5b265so15631cf.0
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 10:41:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785778902; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GpgSHKys5AOp5jX5lBs7YYLPKRwkzURQ91YK8CL9BpfLyR4CbRLBnBmtEUgloXrKLj
+         bZI/LdzsN+YNao3NAsBJDpQpM6OFeyJelal/o+LN1WZEST5A5+2XUHxC9ZIuSLQJsH8A
+         Zk3gsVtMD9OMzDL9lnMERDrEQhxwY5W7iEFnaYVIQnb4F2228f4SYEsf2XPDazEUycqJ
+         +O4dCiT1UotSz7TPwG2dqA/vIMNnmwwtVpaGAJfiVu36+BupzX5iUluhF8FdnknVXfEY
+         gdb0ij3D2vlrg3k8H6FzH9dhmEN6cP5gKt6SzEupejGQRl29JhUxUAo1pGkXbxPL2pcw
+         NWwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
+        fh=roDlx8Q+Ng+TvpdGid5Od+qq+OPQudT1DUrh79BkTlA=;
+        b=D/Ars7KXfmFq2MH7oINgDuzPNI0RtKukZ1MDtrtVR3SKNo2izuoVLMxJWE1Yteymfs
+         5aqzkreZsmyTVRRPMD3CRqTObgH15zMhDdU1hBcph82xGOV13ag50yelf5Gksmq80W73
+         DjQrg6h/gowFMHkgbsDB9OlTUmrxg3D1b9+xZS3SNzsuvCHVLByDZo3B6ISwXp2jJZOl
+         1L/TYC0G1g5o5ZKtRWJn54bpuOjyK8l0O6LyhmysNoW9gfhIjIDNqjwI1TwjQM0oPIrd
+         ffx+TVl2I9TRAQK4/radolD+36bDvZDeEN5yH/SKRkN3jO559OMmDo53uBA0Xrt8xH9Z
+         i0Xw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785778902; x=1786383702; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
+        b=Esam6oyi8ZDyUiInH7lLeyx5xFkmRHXnlQE7YQGpWrkU4PH5xHozE1LiPL5MOeAdsC
+         0iG4p6dTEoFaD1TB0JilvR94ABJsy8GZpB0EcML5t0DdcWrAvk9vZ62HnA+cVsGupwcA
+         6zzbKOUMKB7Xs/AwH5gZvzZsWdkJOrC3mfIh6UtfLqIF3NHL+BKuq6vCqYtq2o9j1mzI
+         IUDRgJnOi7ZAXZjyn5C5b0nWSqODZ9th3k9HQodF0Oxd/zR4B2golWMvFHyWIhM0ruSs
+         a1eYSvwth+9fWhjxirXsYjXDakhnqQO4AQLLCDnb+N+ePsyk//xcrezLqgtXm2ziUrab
+         PugQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785778902; x=1786383702;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
+        b=R7+N3LmuLEKw6nf6eyL3ziIa89TffgTMSTKOXBOrGcxGY3idGYzIrdcXGkH2rDHu8B
+         Phgn0NuIp+0MvvEiW4bFoqSKd+FCvJAA51Oo81WpCScg3sjOnXwzKXjE45DR1UR/2RS0
+         8bhryoxG6Mb8fj7PlnZ5uM5b8wDI6GYghmp3XAqVBlRezR4fb352prJomBFoeW77xGOR
+         EFN2jU/tnCLpVgzeX46OqJ9bf97YsDmUYwDM6jBOvhFbW1BqoDQrEPWj+QZ0Y+oiz6qF
+         sOTMt48iVY1xar4zyoYr6plApoZWAeSFpA4wDQVtY4F0G4213HgaeKcqBanDUw0jXMOd
+         yQKg==
+X-Forwarded-Encrypted: i=1; AHgh+RqlYrvFNyPWmMC4W1Cub/swMsSGZscgtOaBHejljDEA128RLL/DKN/n9QEdK7d4WMiYDYFkBm4e+w==@kvack.org
+X-Gm-Message-State: AOJu0YzjZDgy7MgCJqTuUBvJ7hU7IeFio8PlItbo0vSIhWaODW67nMl/
+	pL23plqPXZTfMyV4+Lt4Gun/72clNLljmuaLsCZ13yJcTJ/ar/HX70Ui8hcfL+lGfYbqtlzx6ik
+	ss0J/hCHE6f/TecRjL97B2kSgoLpBZ3EsD2bvGPGI
+X-Gm-Gg: AR+sD13+tpYkaZtgI6pU1cjjzh4gBgmL+a1AzYqAmhDuwxQ5Cn2Io+MXL0M0PSZoVNP
+	bjnhCO5oTsm1cs5myMiJXBnbKR1iIpicOtyNkj6GT45MEtUCqBpcOG88nUeZ4vdsEJISJHr5tD0
+	QyWMvIYB6y3bozYvHkNlZllqOXqgeoMU4Q40anAUCcTOPd1yHcZzh2QaH8MG/kCzke9/ia7b5N/
+	QBMJQhxkIR3N/Z0YVgP8q8M9qztHDEGBygJVhO2nanci+dP3X7ME8gAfy73PhjyZVJQmr1mV6w/
+	jAfH9nM7cakj8BXib4pLA4PPDL/y5fsVMDD/dMJrZnVmvP22DhgXUw==
+X-Received: by 2002:ac8:5907:0:b0:516:3f51:81cb with SMTP id
+ d75a77b69052e-52cd52bfef5mr290051cf.13.1785778901815; Mon, 03 Aug 2026
+ 10:41:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260801041255.752039-1-wfelipe@google.com>
-In-Reply-To: <20260801041255.752039-1-wfelipe@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 3 Aug 2026 10:31:39 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMRqS4JfqMPVc6GEDUFEVh0iGJ-aJ1Qkyc6HsZrX-5fqw@mail.gmail.com>
-X-Gm-Features: AUfX_mxohrESAVBn6B2CetOPgdBGq9v0PbqUo2sqAAkMgwT_OKc2RepE-CGcklY
-Message-ID: <CAO9r8zMRqS4JfqMPVc6GEDUFEVh0iGJ-aJ1Qkyc6HsZrX-5fqw@mail.gmail.com>
-Subject: Re: [PATCH] selftests/cgroup: test_zswap: skip test_no_kmem_bypass if
- debugfs is unavailable
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
+ <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com> <anC1iE21eonDK06n@lucifer>
+In-Reply-To: <anC1iE21eonDK06n@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 3 Aug 2026 10:41:28 -0700
+X-Gm-Features: AUfX_mz51-1HJtZcwW0CSKHbqGIW5hvrnHOcHh2u8Z-lL_RgDncrj5lYR4-cybc
+Message-ID: <CAJuCfpHNMHKgmP=JLPKY65e6gO6MRpGE5MjUtjd_-2+LHr2Gpg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4di4iqa69k9hnk66fgm4hdnziicmzqr4
+X-Stat-Signature: wb7fk7xmpxt7gtfkc5ueco634tmixi4j
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 78EE4140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 69E0C140011
-X-HE-Tag: 1785778314-273239
-X-HE-Meta: U2FsdGVkX19+Rvpf/DFjQ/VH/r/gPZ74wafOg1mBSOJr/QB55pfHk9nHhJXhwxo7KktkBqWXWEcLHbcy7AVERU9CGkibLTL8TxKAJHuvqLQXAYnqVYlXsTDN5XIMPOxuqGlENzguqHWaWZuJRY6S+4bE4FJB2+sxUsneFbXd8kHHkzfdTxh/5Q4IwC5fhYpqt3JtKkgjfr2VnhIiIWs0lB6Te27PoHtTaWTwOn+EIntaRpNaXV05qo+nUVa+ysBMyZRwyvPViSalEYMj0nwGp+qgeEvV31fBXBLvaFPjeMegDjgcBWETsC8bNtkNMGCAydEnzh+e3sehx+denLnIXWhWkkpSLmxJjAmfJTCX3+ibF3gD67yjIM2nv2DfEIYGfKLRTGYgsrmVfj1VHMXDvOtP098e1w4VxA+o6AHDPoD8kdhlVBlPXIgBOTYzKIcfFizdDt0jSLq08ghpNqVeqp2r36fg9CQ2IKzwCXxdE4FFDYtP+uu6+q3bDW4W4kjeAmWyXuFpnyKCjkHXOFc0Ak2wTEkz6k1jn+nBDviQbwFVAZPb9eO4Jm5BNIpAEiuBk0gtIzJgo+wcd+VGDZ6xKjjo88sDOPg9WUe13XzulvPkKDb7/n/wa3cTXIc4RVPZVMWa+zzVTg6fqgmy+o0jx/F4FXNdUSl1vTR5M9yw4gfsc5bJte58t1VBVEDhbrnGL62cVemDSYaiitFHqsJ6P1WPXGy0Rk689QyIuUC/QjdRcvRYDRjgVaXowjJCSLR5oDwwz5sYtbfjKfm7vZdzusbj87IhYjxZEu1UZQvNnuTsO3JViUawRTsCBB2bW+i79HF6wlnc5c8qfyMe00Q7/l3oHy6L4hpYpp4UoCC2qVBURh5TEzEmX0kohXPGqUItM83XJg6XF/ELWgzrLiTVn5gM/YWEHfpmTgncM8wFk3++el3TSJcl3afoFFvMH6gmrRe2KNaIsDUM96l73F3
- 4MISy3+j
- iqqudIDMxGcSKmj+RWm7cvtH/useZVdFDawMOKq9cQ5nkkl53iyisjp2i+5VpKfdNYU+vgxakySYOCzMy/pXLOCtT03PgC4EEBNm1HWmRmCC70ta6cees0ZT4N4SJpvcJDJmwQ8+y9YTm4G1/rv4kID4KrsX71v5JENxepmOQoYT6vtfqCVeAs8Ecyv49vWR4EpQMu8kPC+uvnnKYgdbYFha1j0mysIbilUB/wv2X5a8xZFP0FiGqV2X7Dwzslk9o3Fq0xmnk3DG18zoKMoJgNj8JWFRNVgS3zH5Bptgj4aiK19fZ+tyW2yzLOYpK/GUqo0SXWQFUWAMO7yLilSc7NRqGIR914KOiHIty
+X-HE-Tag: 1785778903-672842
+X-HE-Meta: U2FsdGVkX18hwbRdfrplZhQZjzNt25eeyZUYewgqMXQKXKRwyc7IfBE/df2zzGZLFuhE8gdLO02sRiWbohGph8a6fYSjEWYIjbgyymFE5tzdT8YpuaigrJi6LcaAai2+8Cag+fnE/h/VF5t+gR9jLHewW0MAwnBGFS/eTccOiXfSops9GYwL7xwIES6dHWkIQ7x6jaZtyESbY4laEu1bT93KdQUjYNCOlu7P845WrfXoJBC9KO+sqhDeDl1odBM6v1hT5Gz093ru/vv2mHFiFUjvtmjSGfkASONPQzT1QrSF97Yb9ckUXBRROt1bkwyEM0dn5BhszcA9X6SGN1GCYU8e/j6eEYUhWsyqYxbKlozluGC2vxwc3OQoLHfZpQattGB+XeHWy4kyTjS3kOknAxCxqOS/mJYdPSYqjkjIez5eElhu5QuWD1S8RAFA7NK+iEZqlIxx6dCkSlmHCZfKmlCOzJ1mqbOcpN2jxiU9DfPOfjV97fh2hO5Q+kZXEC9d1rZL/u2Ml+EeVLpb4kAMb4ytZNKJonWmTa0q8cOseDGflFnY9qIqH/wznN2h+rzO/uojzJE16nertGub6W1sa94X7otcnJXfZk9sfN3YxnpkYLroxKF1NRuuWj2+lS2ebBjIPak/KChiV0aWit6RSQ4f3ez7kfKmPfcPUwC0H49fKl867mqoDT8GFuyzw73Yb38QUzalzid88NlgNZ26TVq4rczcFY4V68GIGgWyQzIoEZZp4AQUV3akyi+E781cLiob9Wu6RFyK17Rax6+w0jvPxdCLNZGKDAZf/Y30IP/kFoW9CUEfo9HfNfFJtz8KGX5eCI7edNIe+3XXE7FHT73JQ43NX9sS7XR0D6Le/jMD3jPIK6mqRdsV4o3cQ+AHO/mrgPcxXiqUPERXCIrIJSvPMDW6w2Zs/2zpr58m8lQQkDyheEcxYKg9PszH8SiJPtX0AkRZMrTlBzju7vj
+ tDB9X5O3
+ tO7rCvyYxRAXVzwsp38U292nsAZd7/Iw/lrexYNsObKmuR1T7lbGH4P25mLJLnUfLF3LRUxSuvDcAXP2IDbszA97lfJnx0MJp2eNIGhX10FVXU3u9S5MD6ngPYEfSZPKbvhFY5yyJOsx+OyaWU4W116HtCM6uNuA7fTwyyU0Mt87o5nqzT4yVwz9esSc8H6SyYQd0P77XOkwWZAHv2OXb4aKIKv/3Njg4gx6Fog6c1DG1NZft+BTohrdz+bpaE+pT1w1J2mKxtkaGLqMl2uREGPBWtiQ0kEM1ijeKW/OJPPpaPgTH4UAi9fRbHOgNC5C9eJzL0IHEi3prsmVVxyx0M3FqagJFfoQB0A0y2F0U/tiEb9oCXMuWEqQ6rAUv43/HgjG+yB2wk9+bCqyz/cH2yVxUFQMmIutjrzxgz7SL5pfe/jPBl7Nrf/KEali9lYTAp0UV2PQLNtYFn8kJ/7ZEbptyNo81erRzeLaXlyRWJ65HZpPeTS3S5wJiy7TM88SHCqy4h/75tWEbVZTcdcPUs9hxX0HfThJThGxWovTj5Slxf5CJsszRrqx8tQk4M3PxZ78wCJWzdjcoq6x1AfT6rHFRKZv2cxHRMXRo5czckV/zs+IWIrWPLEWptUtKeFG35LqUwEEwiTGknI4TqiikMkDEIeFeQefhB+ja
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,83 +145,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 31, 2026 at 9:13=E2=80=AFPM Wilson Felipe Pereira
-<wfelipe@google.com> wrote:
+On Mon, Aug 3, 2026 at 9:08=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> test_no_kmem_bypass() needs to read
-> /sys/kernel/debug/zswap/stored_pages via get_zswap_stored_pages() to
-> verify that compressed pages are charged to the memcg.
+> On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
+> > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> > >
+> > > From: Dave Hansen <dave.hansen@linux.intel.com>
+> > >
+> > > The per-VMA locks have been around for several years. They've had som=
+e
+> > > bugs worked out of them and have seen quite wide use. However, they
+> > > are still only available when architectures explicitly enable them.
+> > > Remove the conditional compilation around the per-VMA locks, making
+> > > them available on all architectures and configs.
+> > >
+> > > The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> > > when the architecture started using per-VMA locks in the fault
+> > > handler. But, contrary to the naming, the Kconfig option does not
+> > > really indicate whether the architecture supports per-VMA locks or
+> > > not. It is more of a marker for whether the architecture is likely to
+> > > benefit from per-VMA locks.
+> > >
+> > > To me, the most important thing side-effect of universal availability
+> > > is letting per-VMA locks be used in SMP=3Dn configs. This lets us use
+> > > per-VMA locking in all x86 code without fallbacks.
+> > >
+> > > Overall, this just generally makes the kernel simpler. Just look at
+> > > the diffstat. It also opens the door to users that want to use the
+> > > per-VMA locks in common code. Doing *that* brings additional
+> > > simplifications.
+> > >
+> > > The downside of this is adding some fields to vm_area_struct and
+> > > mm_struct. There are likely ways to optimize this, especially for
+> > > things like SMP=3Dn configs. For now, do the simplest thing: use the
+> > > same implementation everywhere.
+> > >
+> > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > Cc: Lorenzo Stoakes <ljs@kernel.org>
+> > > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > > Cc: linux-mm@kvack.org
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> > > Cc: Todd Kjos <tkjos@android.com>
+> > > Cc: Christian Brauner <christian@brauner.io>
+> > > Cc: Carlos Llamas <cmllamas@google.com>
+> > > Cc: Alice Ryhl <aliceryhl@google.com>
+> > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > Cc: David Ahern <dsahern@kernel.org>
+> > > Cc: netdev@vger.kernel.org
+> > > ---
 >
-> When running in an environment where debugfs is not mounted or
-> CONFIG_DEBUG_FS is disabled, get_zswap_stored_pages() fails, causing the
-> loop to terminate early and report a false negative (KSFT_FAIL).
+> <snip>
 >
-> Selftests should not fail when if debugfs is unavailable, and it
-
-Nit: I think either "when" or "if" here :)
-
-> should print a message when it is skipped.
+> > > -#endif /* CONFIG_PER_VMA_LOCK */
+> >
+> > Now that I'm looking closer into this, I think we would break NOMMU
+> > case because nommu.c does not take VMA write locks at all. So,
+> > lock_vma_under_rcu() for example would always succeed.
 >
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
-> ---
->  tools/testing/selftests/cgroup/test_zswap.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> I don't think anything's broken actually.
 >
-> diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/=
-selftests/cgroup/test_zswap.c
-> index 49b36ee791606..c4f7b66f1b206 100644
-> --- a/tools/testing/selftests/cgroup/test_zswap.c
-> +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> @@ -566,12 +566,19 @@ static int test_no_kmem_bypass(const char *root)
->         int child_status;
->         char *test_group =3D NULL;
->         pid_t child_pid;
-> +       size_t stored_pages;
+> Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA fl=
+ags,
+> but now you have stuff that happens that didn't before but:
 >
->         /* Read sys info and compute test values accordingly */
->         if (sysinfo(&sys_info) !=3D 0)
->                 return KSFT_FAIL;
-> -       if (sys_info.totalram > 5000000000)
-> +       if (sys_info.totalram > 5000000000) {
-> +               ksft_print_msg("requires less than 5000000000 total ram\n=
-");
-
-The message is hard to parse, we should probably write 5G instead of
-5000000000, and probably change 5000000000 to the actual number for
-5G, 5368709120. I would write it as (5 << 30), MB(5 * 1024), or add
-GB() to tools/testing/selftests/cgroup/lib/include/cgroup_util.h. It
-might also help to print sys_info.totalram as well (in MB or GB).
-
-Also, the comment above the function says 4G while this checks for 5G,
-so maybe change this to 4G while at it (or update the comment).
-
->                 return KSFT_SKIP;
-> +       }
-> +       if (get_zswap_stored_pages(&stored_pages)) {
-> +               ksft_print_msg("debugfs at /sys/kernel/debug is required\=
-n");
-
-IIUC get_zswap_stored_pages() can fail for other reasons, at least
-theoretically, than debugfs not being mounted. Should we explicitly
-check for the existence of sys/kernel/debug/zswap/stored_pages
-instead?
-
-> +               return KSFT_SKIP;
-> +       }
->         values =3D mmap(0, sizeof(struct no_kmem_bypass_child_args), PROT=
-_READ |
->                         PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->         if (values =3D=3D MAP_FAILED)
-> @@ -604,7 +611,6 @@ static int test_no_kmem_bypass(const char *root)
->         /* Try to wakeup kswapd and let it push child memory to zswap */
->         set_min_free_kb(min_free_kb_high);
->         for (int i =3D 0; i < 20; i++) {
-> -               size_t stored_pages;
->                 char *trigger_allocation =3D malloc(trigger_allocation_si=
-ze);
+> * vm_area_free() -> vma_assert_detached() - fine - it's always detached i=
+n nommu.
+> * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to 0 =
+(correct).
 >
->                 if (!trigger_allocation)
+> AFAICT nothing else.
+>
+> So seems fine to me?
+
+One place that needs fixing is in BPF iterators. They use
+lock_vma_under_rcu() which would always succeeds even if the VMA is
+being modified. Instead of removing !IS_ENABLED(CONFIG_PER_VMA_LOCK)
+check in bpf_iter_task_vma_new() I'll need to change it to
+!IS_ENABLED(CONFIG_MMU).
+I'll look into other parts and try to verify they do not affect NOMMU
+but ultimately I would like to run some tests with this config, which
+is not trivial...
+
+>
+> >
+> > Extra per_VMA lock-related fields in the vm_area_struct and mm_struct
+> > would also inflate NOMMU structure sizes without them being used. I'm
+> > not sure if this is an issue we should consider.
+>
+> As nommu co-maintainer, no it's not :) I won't have that stuff blocking
+> important changes for real arches.
+>
+> Go ahead! :)
+>
 > --
-> 2.55.0.508.g3f0d502094-goog
->
+> Cheers, Lorenzo
 
