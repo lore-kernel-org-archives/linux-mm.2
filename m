@@ -4,97 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1053CC55179
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 494A7C55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2309D6B0093; Mon,  3 Aug 2026 09:12:46 -0400 (EDT)
+	id 4C91C6B0098; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2082A6B0098; Mon,  3 Aug 2026 09:12:46 -0400 (EDT)
+	id 4A0786B0099; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11E876B0099; Mon,  3 Aug 2026 09:12:46 -0400 (EDT)
+	id 3B65C6B00A3; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DE9126B0093
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:12:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5DE9A0665
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:34:48 +0000 (UTC)
-X-FDA: 85059448656.06.9019179
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2D96B0098
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:12:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7334F40643
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:24:51 +0000 (UTC)
+X-FDA: 85059272382.13.7FABFF8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 02B6C40005
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:34:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+KN6TcL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id C5FAD1C0010
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 08:24:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNcjlv3x;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785749687;
+	s=arc-20220608; t=1785745489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=382LMWt504+2jkfqSbYK7EUjiXjWZcpNaa+hKKGGLFM=;
-	b=h9pI2X9r7p3Rg3hNPNahlIhRcU7dvuLULhZm2y9RUWP982Ew0huk2hG4o8ZfGJQW9owvG/
-	z33xXIvznx0ePEYRD0oYDpUeEzXGG7duLyAd/ze+YUGvrHFRltAg+Dtim6K5SvzMrJQfzG
-	QyNA8Tz3Aixf2WcStSrZhHBoNiQ+17w=
+	bh=uZW8Xe7TSzJ7FXXnug3vpzOQOy16s7g8Ksg66fFK9aY=;
+	b=uw1HKlKCqwT4EYIFSeaaCCOvKbDi5kAplWi6ompsTzRvQfmNleVxbhGKKCMpaFgtRhTH2j
+	hrkJzOvhQfOhXoclMu2mrA8HMLbCVJodx9In2ecPZ4/fmllLFvXpBNJG7zD8Hh0utOqM0K
+	+at1eKgsewNSgAMMdrI0WpzyN0Usv0k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+KN6TcL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNcjlv3x;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785749687;
-	b=0TAYfkjdTlVeujZA8nhhk0z1ICN1KA+nBFmzwAJd01/j4bxTk95KqS6IHH4vruU6Un/Gov
-	nSuUQTfIuP8KG/6t6gedDmAr7VzY3d/yCPp7vaZZus3R1GI6bAIAfAU4lZoN0Mj9vrB0jg
-	pS8bkeRVcppWVZB6dq7S2q/lfdnmwWM=
+	t=1785745489;
+	b=xtsl0/b2JdseJYqOBG+MOLX+j9mov9g0n1ij7ZNKu4FrI+cqdy+kWO8DKMEoMPjoqbckGn
+	2ugXZ9FdsPes3uXcBmrtY/Lu9fqdjXtZF/DCU2sSFlkv8HeUmybqRQWoiNuR7A2PH7t0W7
+	tg4cIHIC2j2PGCm1SOyOjry5Izs0aqY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 56BDF60A69;
-	Mon,  3 Aug 2026 09:34:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33121F000E9;
-	Mon,  3 Aug 2026 09:34:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 457FD600FF;
+	Mon,  3 Aug 2026 08:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84AE1F000E9;
+	Mon,  3 Aug 2026 08:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785749685;
-	bh=382LMWt504+2jkfqSbYK7EUjiXjWZcpNaa+hKKGGLFM=;
+	s=k20260515; t=1785745489;
+	bh=uZW8Xe7TSzJ7FXXnug3vpzOQOy16s7g8Ksg66fFK9aY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h+KN6TcLykHRka+xeosMd5gaCISdNmI1P19kqrM8Tiw/DcRiI3i69fuenkkHVrWei
-	 0MNjjo7PEi7K5845/dexpfVKFQreJo0po2TUOeCK2AkgJISKcwhoWjIJDgNSlLpDt0
-	 7/NTrTewIVEEl/PTE1KnTZ/CLia86wzMih+xie3c+pjQgHCZzu/sfdQxxcD+lmYFIw
-	 yGYa+Y+hHDLfOwaiFpMYgVuMVx5oj4+WQxlsjtdseNBlApj0/+KVtrcFu+EOAKl+Un
-	 4jzt4K/x0dWhJsL6siS6/oNjJ2HOHFXxXsH+rCfZgWkOYLpkQ8LlyVjhgDKPuaTBlF
-	 LEGXV+7FKEcRA==
-Message-ID: <e01ad01e-715c-486d-9a26-1126c666947f@kernel.org>
-Date: Mon, 3 Aug 2026 11:34:32 +0200
+	b=hNcjlv3xU4tfnME+np5OMyup34YXRO6fAka2C7GGyUBrNGRXsfICH5gbQCIikY6IP
+	 Hn4mbWmNO6rpbymygca46hhgJ/RcVVEttBlJmFAAprsBePsmjSf6t6tzC50FHRKwtf
+	 qxYHufouiki31FOR8CeIeLuvwrOoXk+lmOC0LSXtBprHWtSnhUCxBWDPdmO4Lp518b
+	 R5TOuV5ltQmcL4n7CHveqTmUuqUUFTdUvkcWLe3SrHsQ/BWkHASQtnpL68RovVEHou
+	 KTSJNJh3E0T3dC2Zu51Befi+P/bJIKTze5d3yXZgZtjG/juNXzQOsajw2ZVfz3TwOC
+	 9xQLuvWAo5U/w==
+Message-ID: <27485af6-fd17-4092-8c3e-6571b9bbe222@kernel.org>
+Date: Mon, 3 Aug 2026 10:24:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/15] mm: introduce linear_anon_page_index()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH v2 3/3] tools/mm/page_owner_sort: show available sort keys
+ in usage text
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260803062056.1518070-1-ye.liu@linux.dev>
+ <20260803062056.1518070-4-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -141,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
+In-Reply-To: <20260803062056.1518070-4-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C5FAD1C0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 02B6C40005
-X-Rspamd-Server: rspam01
-X-Stat-Signature: utef17d1jt9d41pcdimozzx7ohhpdd6f
-X-HE-Tag: 1785749686-310305
-X-HE-Meta: U2FsdGVkX19giWnlPPEZKGBGXsfjlE+iREsn95XwQEpF0lUap2Y2hAjrEssU4CJT00OU95gaLI3K0olVyM390T3iBqQlq+C7tB7ZZq0aySwZUcfpkv/fNg4Rt6wFFF78GXIjRHBz4j3lQtNKL0Nu4fJOzUSuWCpvQ59OuLac+qyRKyK27Ch5VL22Eus0WovJnOD9jZvoMO8OGAbmUB2EL8OgV5mTLJ/Uh/fYnXewMrXSmUt8gkOLIUfjdBO/EXkYCjNF1AtcM5otLRfE9uOCIRzOwP3BDDGhD2NKKQEinj5vA7UQ96tPLnUsJ96evgtgeu0rNlbsu8cr+Njo4ADIHIH2XnZYMnGmK9PyKtY5+sQsO44hawsNcGGh1DOmSlrHOnTlhrcYse35LSTaWp4Q1ChQtsL0/EvdNYBSTz6FzTh6ZJPqQ879kQRFhe1wba2W3gjnVPAItiRmncIpNmHHvH17O1IHF+TBPkuyC44M+QzbRJhdLgw/MI2hNi64MnsBg1RvuPbRKKc9rIoDlehlBBFOU1pd1lQrToLEHGT0hFaX99PVe0TdohjEbPhqz03adcfNK8NOLektHb8E0p2OjsX72eihFi/a98l0Dppk/SaRxR4tuNSJbTBjSXDY+mpGGOpcTROlba00R9Mx7nYr553q6JBXKYIBa+zP5ywem9DfunPsrmyhU4mmU1k9x9waYfZhBybK22qHKzbsy0ixtrkNTTAT6frWbW1Dcnqcw0fRyYz+g6vsBkf1vbtDgkvNtph/O6ytPR5aUsqbORNA1dn55B3B/YuCH50XxaoyiVsbR7K75BpbT+I3sCxEqOO/zUW0WqbwfsqYGtqJmYsEuQ/rptpX3dj8TNbgkhfuqikBhS2NR8VfxZDciXRa71bhkSykFTEqg1q1AWQAWNHwLZMx1XB46qF4syGpclhtoOGEFb+EhuhNzbAvS731QJIcqWkSLL7aL/F6XlNl2PI
- 0uxq0+IM
- 9EQA+fRPL5Xs96UvF9SJX8f0ga54fNiW6OQpgzw94bSE3fWQRb1oxtRipojdyYWb911u+4X78cvEpxQKgZW0SqAkBDoEcPi+6YMv5pHoYl3KB3NUZZPXPaD2YQaXz0rq3N7yV4vZOPgKgYFcR3AENM+Uk0onqOYIlYahYbpaSjoDq/IwzEq0dJQYtPt8ZhLbhjcebo/Ku4QJj5ezyxIKF1PMwaga/ZlJCLuaj+W/JpVIJ3ZuciA39pnI9fGm2TtjIKrfgM4zLlzY/W0b3QeDcbjxcbiwEZSf3l4Mav8ii0JxRe5Lu/cUeQ3Ad8tiYZgI5d7KYdAl7l9FKYn3+9FQsdrrPBFuSQqtgp0IS/s7lWwKjataKHAvKwMc7Bu3vaNE5gY4LLYsoPCOC6Hj3mZi4waLF+Q==
+X-Stat-Signature: 97rgbjnctp7dcohozgd6n3qwu9t5fi86
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785745489-700642
+X-HE-Meta: U2FsdGVkX1+6ktmpkfTOs56RhN23cRLN/tCwt4ruycoa4TzhRoLYZ5Ak3wSPxCutYgK13CEcFhj45DwXEpkW3joptHmsKDGDLJFMF1B10t8NpXq0JLY6Q2n8E5JoUr8D+VGqRPkxb37qTVQjlpdZgGJ0WH/Fgph6JOPcFMVbRcf/ZuZMh6hlnez8mf3rG925sJxRjE2S5JJcq4DUUOhhkOUR2Ew4i0+jhx7alEKR651crD+oA3ZY7Gl9Zr57X1oKW6c1YnYt1zfrMlOkGPu3Mzn2eeX2+w6f1MLW3GwZ6pelEFPps8Or7TZTZqdyiJZjrf0j1uA2WcEa61lNgciCAFX7o3OtuUV9ozHaGpCWIm4jz04V6i6ytOBxhmz7ECdJemzBoHs1DhgyknnNqmLWkGoV1ROByZFkzlB7yFwa998esYDhIKfJYQvr7tPZdaS/t6VU44QECxm6Nqy4F7vKy0QLTbakraIwGQWxp9A+i0+u622E9Yrqe+8aem59dIcrNBUkm4sC4GIILG2uWcjjqgK04gZ6NSQe/7VXK2GdkioZPrk3AY5fDmjQHPO/68Aa6DRDxZjfLVun2o/nZf7HuR/VUkrfU4tzvjpIGy9MyIJ6xMpjV/wW1a/r1JVqUtDME6SBwfyjOWTsll6VwI8tiU9oEMI5WCS2dem/2ozaprQQt6OK5YWttKHGv+q3OdVNSG7HQPrjMkrl1cfzRmmVWLRueAx9h3ptMccfYPnBL34GhVnX5hhOXEibuakG6oAfMpK6txvxBPEZgr8pfy+FgQeQEAKjwrLO0TtJrfhsDrq7jU2EPYzEofFyuho7Qbd0kP9L04UHbyVCQokVy63vRX9GPFhXlV5jpfMib2HeGIK/wrt43FLvikZlaiI7vrQi1gx1IRunkGYrJC3cUzqq2acMnju050Q9usVd4wiS2i3RGFD3oafmhW1fzUBhKDFuxe1lrLOD6zGvTzW7tJN
+ jSsHbXmo
+ nQoZsvq63MCATOLOfLgP6dC3JGMAv8LOGqODZXAeJbguXkxr8Zh/5Mtrn/9WxoqeiRq471t7x5y+iOBZlBErEzviQA5qnWWE1I5PrH1E2bhGSdsqnGnuSeXJg/dJXiSjg5iUzkzUV8nioRGDxSzPkrum7dXUVd+8h69x7g6QaXPhosux9pyau18FBG1OOWtHHxrTuKBDJRJU7IdWrrUblmYwY+FpgQjfSbNpfck/8DXFARuZ48bFaXVEo2rq89WsPEVRO9SbKB2l39Xw1vt1fOoVUNIKasH5Ii1wAeTk/aEydfQIgRmk26EqY7jtdRmjr2J7XQs5/85VsfYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,127 +143,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> This function provides the anonymous equivalent of linear_page_index(),
-> instead offsetting based on the anonymous page offset of the VMA.
+On 8/3/26 08:20, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> It is valid only for anonymous or MAP_PRIVATE file-backed mappings. It must
-> not be called for shared file-backed mappings.
+> The --sort option accepts abbreviated or complete key names, but the
+> usage text never listed them.  Users had to read the source or the
+> documentation to discover valid keys.
 > 
-> For pure anon VMAs, this will be equal to linear_page_index().
+> List all available keys (full form and abbreviation) with a brief
+> description and examples directly in the --sort help section.
 > 
-> Assert that both of these invariants are true In linear_anon_page_index()
-> and implement the algorithm in __linear_anon_page_index().
-> 
-> Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
-> but not fulfill this invariant, so when asserting this we check
-> vma->vm_file to account for this.
-> 
-> We do not update callsites yet, so no functional change intended.
-> 
-> Also const-ify vma_is_anonymous() to make it compatible with the
-> const-ified linear_anon_page_index().
-> 
-> VMA userland tests are also updated accordingly.
-
-In general looks good, some comments below.
-
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
->  include/linux/mm.h              |  2 +-
->  include/linux/pagemap.h         | 42 +++++++++++++++++++++++++++++++++++++++++
->  tools/testing/vma/include/dup.h | 25 +++++++++++++++++++++++-
->  3 files changed, 67 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index df78847f5f07..64214191e7c6 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1556,7 +1556,7 @@ static inline void vma_desc_set_anonymous(struct vm_area_desc *desc)
->  	desc->vm_ops = NULL;
->  }
->  
-> -static inline bool vma_is_anonymous(struct vm_area_struct *vma)
-> +static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
->  {
->  	return !vma->vm_ops;
->  }
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index c6fc783aaee5..259177544b03 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -1101,6 +1101,48 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
->  	return pgoff;
->  }
->  
-> +static inline pgoff_t __linear_anon_page_index(const struct vm_area_struct *vma,
-> +					       const unsigned long address)
 
-Nit Usual "two tab" comment (same below) :)
-
-> +{
-> +	pgoff_t pgoff;
-> +
-> +	pgoff = linear_page_delta(vma, address);
-> +	pgoff += vma_start_anon_pgoff(vma);
-
-
-I'd simply do
-
-	return vma_start_anon_pgoff(vma) + linear_page_delta(vma, address);
-
-> +	return pgoff;
-> +}
-> +
-> +/**
-> + * linear_anon_page_index() - Determine the absolute anonymous page offset of
-> + * @address within @vma.
-> + * @vma: An anonymous or MAP_PRIVATE file-backed VMA in which @address resides.
-> + * @address: The address whose absolute page offset is required.
-> + *
-> + * This returns the anonymous page offset of @address, which is the page offset
-> + * the address possessed at the time the VMA was first faulted.
-> + *
-> + * For anonymous mappings, this returns the same value as linear_page_index().
-> + *
-> + * For MAP_PRIVATE file-backed mappings, this returns the anonymous page offset
-> + * of @address, which is the page offset the address possessed at the time the
-> + * VMA was first faulted.
-> + *
-> + * It is not valid to call this function for shared file-backed mappings.
-> + *
-> + * Returns: The absolute anonymous page offset of @address within @vma.
-> + */
-> +static inline pgoff_t linear_anon_page_index(const struct vm_area_struct *vma,
-> +					     const unsigned long address)
-
-Dito.
-
-> +{
-> +	const pgoff_t pgoff = __linear_anon_page_index(vma, address);
-> +
-> +	VM_WARN_ON_ONCE(vma_test(vma, VMA_SHARED_BIT));
-
-Could we test or COW mappings instead?
-
-VM_WARN_ON_ONCE(!is_cow_mapping(vma));
-
-Because we must never have anon folios is non-cow mappings.
-
-[...]
-
-> +static inline pgoff_t __linear_anon_page_index(const struct vm_area_struct *vma,
-> +					       const unsigned long address)
-> +{
-> +	pgoff_t pgoff;
-> +
-> +	pgoff = linear_page_delta(vma, address);
-> +	pgoff += vma_start_anon_pgoff(vma);
-> +	return pgoff;
-> +}
-
-Same comment as above.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
