@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8433C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E66FEC55179
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 13:39:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 461D66B00D7; Mon,  3 Aug 2026 09:38:09 -0400 (EDT)
+	id D3DCD6B00DE; Mon,  3 Aug 2026 09:39:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3ECCD6B00DA; Mon,  3 Aug 2026 09:38:09 -0400 (EDT)
+	id CEE246B00DF; Mon,  3 Aug 2026 09:39:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 216B56B00D9; Mon,  3 Aug 2026 09:38:09 -0400 (EDT)
+	id BDD876B00E0; Mon,  3 Aug 2026 09:39:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF4B86B00DB
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:38:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 708401605CA
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:38:08 +0000 (UTC)
-X-FDA: 85060061856.10.51812DB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FC3F6B00DE
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 09:39:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0BB66A1654
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:11:58 +0000 (UTC)
+X-FDA: 85059693516.13.D5345F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 745E520007
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 13:38:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OAr+9fs8;
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785764286;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0J3U5C+0r7XiBOUW7yG5gex9CJ0pPmgF2qipeeLUOdA=;
-	b=GZOBry0r3PodqPuzwVlX5vYx0w5P1IKz/tttgskBsGnznT2YQHZzwgti9VYa0On/8SkzA0
-	oW4L6TgrfUQgFO3X58cpUp9BabyYnDyyR5B9zDBz6rT9V3lDAmKfc8tHvaFPBSBus0+jjd
-	ENgcHIv9k/V69CzrVVIp1KEpQxb3oag=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OAr+9fs8;
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5E82040006
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 11:11:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VYy7zN9D;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785764286;
-	b=qq0jbWUuAsJUuHtaWCRjE4RYz5tztB4Ob6rpt5ELVd++Em+U4ba90ytrn6unckBr4Sa1TU
-	mEpo/BN03/DDzb4KR1tddKbMj0/n7Zv0fVh9aaaZa70gDDaXdm7AQivlJXHy/ohXToHQNT
-	uBU5hqfwa9v5mHGLs77iAvi3TIqOyjs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C6F243B97;
-	Mon,  3 Aug 2026 13:38:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2C152C2BCF6;
-	Mon,  3 Aug 2026 13:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785764285;
-	bh=1sczfEuOl5XyE2+dFqSPsBh7HifK/3TttmuhFQr34MA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OAr+9fs88Eie5X83EVkqf8msca0QFAUS4awl9Z+/gyCptTS+0PPtzO/Xe5udWhr6R
-	 N+YCHIMuu041rNUZE2LJ29wC/xgjNk6QnysCXJfnAOrFQkz5eC+kjAjgVebsLRhV06
-	 hS4RRuC4DX7Nqcer2D0IuPIcle1imYrWEfyplyO4lHqkE5acNdKCaUgt+TPOuSCdkb
-	 ZvGtfS+01R8N/uzsIlDF/spCFPrZvIOz5ax66Ti0b5j897D2AxgI2XsGqCwiZtDYkl
-	 90MXLyR6wU5cya6A5gPBgAtlcstm0BqNgxHQRa6UMk2VlpttUj1XNfOiY+eI+49cNX
-	 p4bRmcXlWCpoQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 112C4C55838;
-	Mon,  3 Aug 2026 13:38:05 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Mon, 03 Aug 2026 06:38:00 -0700
-Subject: [PATCH v5 3/3] mm: hugetlb: Move mpol interpretation out of
- dequeue_hugetlb_folio_vma()
+	t=1785755516;
+	b=XqsCKZtxlNLPRACUozriUoELICBsQBAgh8VbQMjiyaa2PokO8FEx5gsM5Qmzo6ICRWj6RG
+	qyX2e25DZ4M7X+sCFpc/nioRvxTaGKYzAcArKPgjZ9cjhgVu21Vz/8T3cCiYvj1dZkpbRU
+	Y9gy8Q49eJdYs9Jy1pVr5q3qWztnY7U=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VYy7zN9D;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785755516;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WJjA9p12tFsV6zkH5AhowSQn8yCnJRFh98dmbQ7S74A=;
+	b=OLhBt6hK8ESDPG/ZYxZIVD390QgfmW8nJXU94icO+mU6TWaTBSneqYrF00+B2SOgC829hu
+	IHBbYn76gGQde4vp1tgXyTYIEGhoYlzXqTA5JTEMCDV6QMmz9xGQYdUk3Wt24fqcIFY3iM
+	LhM0dUsft9nrmKyvuGc0JzptQv1VFKc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 832B6408AA;
+	Mon,  3 Aug 2026 11:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10E51F000E9;
+	Mon,  3 Aug 2026 11:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785755515;
+	bh=WJjA9p12tFsV6zkH5AhowSQn8yCnJRFh98dmbQ7S74A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VYy7zN9DQKeubwiuG+IrgbF+ryVDfowZogKwDDz4NWIOW5URub+pUL/pVNmMh24YZ
+	 tpQUlAF7BYw18DWmWlNETeMUjNpu9opaVkR9p1HpuWg0MN4zG9782rUewY1BG+7cyO
+	 Xo0jlKsFEPT4Ar0HfyxhRJtEy1IurhpiRKDK+IOiu2qFXH9JxL9D2eMsfRjz9lK/+f
+	 RPVTiqwaX4ty51kutN6Q8ZKy9cpufqJH56nA5zFp0w3wfg0QYMnNu4WDpiSA5qcAvs
+	 H+jL4E4WW4PpVHOgclHuw5ywFycKD25HzsTuONfE0U55xDuEy+13soDMv86Kv8S27G
+	 ZImetKrLspSxQ==
+Date: Mon, 3 Aug 2026 12:11:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <anB3XVHI2nVgz_T8@lucifer>
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-3-surenb@google.com>
+ <anBj40CVAhcGMnQ4@google.com>
+ <anByayBh6Ed2bXox@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260803-hugetlb-mpol-interpretation-v5-3-af2b7089f8a9@google.com>
-References: <20260803-hugetlb-mpol-interpretation-v5-0-af2b7089f8a9@google.com>
-In-Reply-To: <20260803-hugetlb-mpol-interpretation-v5-0-af2b7089f8a9@google.com>
-To: Alistair Popple <apopple@nvidia.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Byungchul Park <byungchul@sk.com>, David Hildenbrand <david@kernel.org>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Zi Yan <ziy@nvidia.com>, erdemaktas@google.com, fvdl@google.com, 
- jiaqiyan@google.com, jthoughton@google.com, mhocko@kernel.org, 
- michael.roth@amd.com, pasha.tatashin@soleen.com, pbonzini@redhat.com, 
- peterx@redhat.com, pratyush@kernel.org, rick.p.edgecombe@intel.com, 
- rientjes@google.com, roman.gushchin@linux.dev, seanjc@google.com, 
- shakeel.butt@linux.dev, shivankg@amd.com, vannapurve@google.com, 
- yan.y.zhao@intel.com, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785764284; l=4241;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=mxYJ9ZfIJDNqqNET+i798zl+eMXnvPpSjYi2l1OPxHE=;
- b=QivN7sN8I31WwiKn12XzM7zIcnCzCJFKMeumY1BlC2xQSYMVmWvVkTmcw5squW1hr8iXtI4B0
- wOnsLFdhs81A9khAN94v1qQa86hSPfKdAOJ4qgacYrp7gCr0+NrP8kz
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anByayBh6Ed2bXox@lucifer>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5E82040006
+X-Stat-Signature: x5m4muhfascapujgorrrg78sy8h4utf9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 745E520007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ztx5ztxduqpbbf96qy6suh7eyumog9gb
-X-HE-Tag: 1785764286-636716
-X-HE-Meta: U2FsdGVkX191XyJqahyWOvBbgNZ1/WhVIrQe0gUVdPw6dtveJ/5mKCnkanESJQYr55FxxXcX4UycC2gvdRqWqUTAGoie7DeZ+qglz3EWS6bG//4XoIhEP0ACVVcX1QyQTs0pq5HIarDfPbgjGEWvZ3Pt3Te3z0UdeQx8NiBvh3YJTc3Dh4DlF6PdTcSqgDY5/gFFbxlATZPmjd9HRwa3x9WNE8Psa886byb9AwzCP8+I/Tf7oaKMZZu/JEWcoIwhUDNba0gr06LJ5/L6SSmxQv6wsnUoz8r7BaFBXv3I6PEfSlYIfyPlMugsu5gtVEgmNWHRYshNq5vDxHi/f1F4koFYPLjDhK1NAEKHuA/WyHP0g0A1uZo2eH1rcx86TSz276BnEAid+Af0Edpb0u8hxPoY1IEhw91Hfxs3NbCBLHeASOAgHwUzA5YLgS3XP9lzNplqjjeuDiLGxxs0FvYubCNUcrv0zXtEnfBuEN9RltUgLA8dnn7cq8UfTXzuM3BOt35fi0e5ocwvn36ECDI+aHM9+UmbW7HJnUppwlWimgQGQFdjoXoDdTvh53hOMZxkylaSyiWjv1w5kClWzXTumFJ+vq0fSYRCpY2E//DaMPYlFpTQGYUoxL9Ul6IsTw7mJVqenqxi4UM8Ar+WmIcuCO4YGOLc2k9Mt0/8kmq91tbnpA4R4inwtN8oIAMLW+pL/b76eotWqJLuc0K3ygzPeg9n9ykVcPGRi4d8m1KlIfhQ4ym6MAGet7z2dm7zbjK+9WOX2OyUK/36BWLdhsSeU3chwSySmZKCWiwW1Ak+a/e3QCnvZGgJl1woyXQDH5GZiip6eoB0q97xNgCdp5itsVo7qE3lyKpozUu/1brOIFIM4kz85URTBDyP5T9YY6SfH102BlvQpByPrS0YIAo2yS8EqoYRNUKQE3hxKU7MRuhECZAZ4HhU87JgCG3NrHgwfXNEyaqOO6eakwHWzdv
- watcNcZx
- HujSmaIm8xhill+/fz1M1MyFIQ1dOxQbYBmLrR/kNCA+pXuBSKypDQ3A3OLhf0X42uoxOFgo9Sj99ZGpgVGeEqo6hH58skFF5YBxK3o9IEWT/nyjcb7c1aDVa16l1JgcciDCCK23GTbOUxa5niMtB/W7E6Ni+Ge1F6fETnUNLBdCNQsXwK9rITNmcdGkTmibDIZqiZM0IY598WZnTrKLrKhFk9A9AEkPcyOFXQVTF5H9YTGdFlEiXSsebiLnUdMDK8ZtTkr45uQUU61GmER9jpWEYr9HMDtqnlDVqPd8OXZpd/j1O7z0Nf2QSikrrMf9ve1N4ovtCDdmns8184lX1OfAp8ranwnoVGSLmLyKdUlDUyIEcAh3QF61xanAbDx9ptRdyHkMwcsfnztjxBvbVJ+7kyz7HVxcG+/VUzzkHTsEMMRs6F+F18S2hHuu8BYg8qXTop+HPJLlP34uZZZSdgaVO4R6o8aeo1L7YyanFLgehhqrgHYdL3th1hw5lkI+84G1GwNBNB7hNru/63j0MQCZ7t9qju4aUk11R
+X-HE-Tag: 1785755516-304075
+X-HE-Meta: U2FsdGVkX19VjII13lu85gnP5+Wv9oCNiBXnL2poawxXvjmkkg/yfwvmaUIlPkL/t2W9Vb73y69bovXevOGLpcj1YBbG3ki/GklXn040wDetqe4bQI/tTf7plOG+HS9+7BSc0ThJ4N4j01EB17CpQl79rrLnHJW0+UcVGN7lZwu+g/ff3wKt9XH5g3sYY6XjmEPSSMvt3ooT/aGkzY/hOR8plS2fbHCIePHb6dDtvrZKjkCcsdANM71UtUPJ6Aa3xhc+keVAQzoNv5uwuyM14FvnNZUAcfFBFnDynfj/1GF/WcqTwe0zPxTnnCDHaSgmhSils504bgdo6vTqUs0nePSy9ut7BW2Vr3i5TKUzKQ0q86PBvPeJwcwLM2TgBGD/xvzr38GWRLfMf9xxH7FaFwCM2dpZs3w/0i9HBqPt1Cv4DjnGTpa3wNh2CVez/5qRD8ZTxPNKs0FsHo7/Rr9TU8HnC7Od7MISXVpD1eunDp4JqhgtJnuk0Fhel+O9i0tpiLYZ1WpswIw8bNxIcqXPuAqCF0FH73E1LeMR6IGkcv2kItEL7pnz2isT6p8MFpa3Wf/plzSHl6kdPnEoYYFcaEe432PGvXCgCnpjwcl3YQIUqjKNq4ABpjoAexsczhrkUxqQen88JvwYx5CeeYWyASbMzcJwJwYob0B5n35AnMIKdFYL+SNV1U0bAOHncDJJVonY5mSFfGGG3elaLtW5XoYRVRsJFvC8Z8ZpkV4/DMB1SQj3TsuoSRLmsM/hBriTxNjsFBT+h/XU7gYL6Hw+ILmfb6AVcQQuHyDeXqGZMGiuUmk3s+tT4OrTiPl13kzThz+MRyCZv6Mm1P8HMzufubZ78eoVgTu5UCk67wN5ZCuRlP2m9B0pLo7gLiFLg/5aImC/V8rXDi5ie85VA88XqwZD0grT7MBwWTSTQvIRCRi6MBT0t/XMzeOL9RqFRrimBUfyHpPD0FJQWNNsm+U
+ px0oBCbR
+ 7nQY2ur2LWu/Bdi+VB169bskB8ONMlbM4J6XLAS/+BCSO3JCrM2hM3lRjUcp1vWbwzB880LsRnK6VjmgPysZ8huU9mvuXZI+AlKzK+vf6gPNp+Bf6Gfz8U3HAkwEIl9frCKrmJ8CF345cEzo/rsAhrCqtOqm0/urQlq4sLjuSxg5oDUUyF1WoKlOXFAbEC+fBJzxfSZ+QZOeDs7HY8sVErU+dzpF7zSaFxFUjsUiBizsTjEbXFNa2fjMgjfTNuPuT5c8qt4tQebMrvMXlhjxM6NdR8RNui02635eI8k4Ptii6fdvBo3bRvKhxs4LiSam5OcyTuRsSTQFGGQK3XyUKaOTUfTZ309mGPcmmZKrt8BwxO6emxvwd2vxmKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,153 +97,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+On Mon, Aug 03, 2026 at 11:50:41AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Aug 03, 2026 at 09:48:19AM +0000, Alice Ryhl wrote:
+> > On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
+> > > From: Dave Hansen <dave.hansen@linux.intel.com>
+> > >
+> > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> > > it and mmap_read_trylock().
+> > >
+> > > Long Version:
+> > >
+> > > == Background ==
+> > >
+> > > Historically, binder used an mmap_read_trylock() in its shrinker code.
+> > > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > > support for the per-VMA lock, but left mmap_read_trylock() as a
+> > > fallback.
+> > >
+> > > This was presumably because the per-VMA locking can fail for several
+> > > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> > > to mmap_read_trylock().
+> > >
+> > > == Problem ==
+> > >
+> > > The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> > > essentially already a non-blocking trylock. The main reason it fails
+> > > is also the reason mmap_read_trylock() fails: something is holding
+> > > mmap_write_lock().
+> > >
+> > > The only remedy for a collision with mmap_write_lock() is to wait,
+> > > which this code can not do. So the "fallback" after
+> > > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > > likely to just be retrying in vain. That retry in an of itself isn't
+> > > horrible. But it adds complexity.
+> > >
+> > > == Solution ==
+> > >
+> > > Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> > > will not persistently fail. Rely on it alone and simplify the code.
+> > >
+> > > Full disclosure: I originally tried to do this with
+> > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> > > trylock semantics. Claude caught this in a review and suggested the
+> > > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> > > I guess.
+> > >
+> > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Is there anything on the rust side that needs to be changed also?
 
-Move memory policy interpretation out of dequeue_hugetlb_folio_vma() and
-into alloc_hugetlb_folio() to separate reading and interpretation of memory
-policy from actual allocation.
+Ah ok addressed in 4/5, disregard :)
 
-Also rename dequeue_hugetlb_folio_vma() to
-dequeue_hugetlb_folio_with_mpol() to remove association with vma and to
-align with alloc_buddy_hugetlb_folio_with_mpol().
+>
+> --
+> Cheers, Lorenzo
 
-This will later allow memory policy to be interpreted outside of the
-process of allocating a hugetlb folio entirely. This opens doors for other
-callers of the HugeTLB folio allocation function, such as guest_memfd,
-where memory may not always be mapped and hence may not have an associated
-vma.
-
-No functional change intended.
-
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: James Houghton <jthoughton@google.com>
----
- mm/hugetlb.c | 66 +++++++++++++++++++++++++++++-------------------------------
- 1 file changed, 32 insertions(+), 34 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 3a159de08a0b6..a11cb919e00fe 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1323,32 +1323,26 @@ struct mempolicy_interpreted {
- 	enum mempolicy_mode mode;
- };
- 
--static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
--				struct vm_area_struct *vma,
--				unsigned long address)
-+static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t gfp_mask,
-+					   struct mempolicy_interpreted *mpoli)
- {
-+	nodemask_t *nodemask = mpoli->nodemask;
- 	struct folio *folio = NULL;
--	struct mempolicy *mpol;
--	gfp_t gfp_mask;
--	nodemask_t *nodemask;
--	int nid;
--
--	gfp_mask = htlb_alloc_mask(h);
--	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
- 
--	if (mpol_is_preferred_many(mpol)) {
-+	if (mpoli->mode == MPOL_PREFERRED_MANY) {
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
--							nid, nodemask);
-+						       mpoli->nid,
-+						       nodemask);
- 
- 		/* Fallback to all nodes if page==NULL */
- 		nodemask = NULL;
- 	}
- 
--	if (!folio)
-+	if (!folio) {
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
--							nid, nodemask);
--
--	mpol_cond_put(mpol);
-+						       mpoli->nid,
-+						       nodemask);
-+	}
- 	return folio;
- }
- 
-@@ -2855,7 +2849,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
- 	struct hugetlb_cgroup *h_cg_rsvd = NULL;
-+	struct mempolicy_interpreted mpoli;
- 	gfp_t gfp = htlb_alloc_mask(h);
-+	struct mempolicy *mpol;
-+	nodemask_t *nodemask;
-+	int nid;
- 
- 	idx = hstate_index(h);
- 
-@@ -2914,6 +2912,18 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	if (ret)
- 		goto out_uncharge_cgroup_reservation;
- 
-+	/* Takes reference on mpol. */
-+	nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
-+	mpoli = (struct mempolicy_interpreted){
-+		.nid = nid,
-+#ifdef CONFIG_NUMA
-+		.mode = mpol ? mpol->mode : MPOL_DEFAULT,
-+#else
-+		.mode = MPOL_DEFAULT,
-+#endif
-+		.nodemask = nodemask,
-+	};
-+
- 	spin_lock_irq(&hugetlb_lock);
- 
- 	/*
-@@ -2925,35 +2935,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 */
- 	folio = NULL;
- 	if (!gbl_chg || available_huge_pages(h))
--		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
-+		folio = dequeue_hugetlb_folio(h, gfp, &mpoli);
- 
- 	if (!folio) {
--		struct mempolicy_interpreted mpoli;
--		struct mempolicy *mpol;
--		nodemask_t *nodemask;
--		int nid;
--
- 		spin_unlock_irq(&hugetlb_lock);
--		nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
--		mpoli = (struct mempolicy_interpreted){
--			.nid = nid,
--#ifdef CONFIG_NUMA
--			.mode = mpol ? mpol->mode : MPOL_DEFAULT,
--#else
--			.mode = MPOL_DEFAULT,
--#endif
--			.nodemask = nodemask,
--		};
- 		folio = alloc_buddy_hugetlb_folio(h, gfp, &mpoli);
--		mpol_cond_put(mpol);
--		if (!folio)
-+		if (!folio) {
-+			mpol_cond_put(mpol);
- 			goto out_uncharge_cgroup;
-+		}
- 		spin_lock_irq(&hugetlb_lock);
- 		list_add(&folio->lru, &h->hugepage_activelist);
- 		folio_ref_unfreeze(folio, 1);
- 		/* Fall through */
- 	}
- 
-+	mpol_cond_put(mpol);
-+
- 	/*
- 	 * Either dequeued or buddy-allocated folio needs to add special
- 	 * mark to the folio when it consumes a global reservation.
-
--- 
-2.55.0.508.g3f0d502094-goog
-
-
+--
+Cheers, Lorenzo
 
