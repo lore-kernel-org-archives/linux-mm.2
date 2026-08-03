@@ -4,143 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C6A9C55182
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 16:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A16BC55184
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 16:53:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AA2B6B007B; Mon,  3 Aug 2026 12:53:00 -0400 (EDT)
+	id 7A7EE6B0088; Mon,  3 Aug 2026 12:53:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55AC86B0088; Mon,  3 Aug 2026 12:53:00 -0400 (EDT)
+	id 7588D6B009B; Mon,  3 Aug 2026 12:53:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4234B6B009B; Mon,  3 Aug 2026 12:53:00 -0400 (EDT)
+	id 66EF66B00A2; Mon,  3 Aug 2026 12:53:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DDF86B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:53:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E1721C0968
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:52:59 +0000 (UTC)
-X-FDA: 85060552878.09.629A6E9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 289661C0008
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:52:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="SMl/LxQt";
-	spf=pass (imf18.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B4EB6B0088
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 12:53:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D16D9A21AC
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:53:57 +0000 (UTC)
+X-FDA: 85060555314.11.558AA6B
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BE4D6180009
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 16:53:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ewzfty8w;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785775977;
+	s=arc-20220608; t=1785776036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtGzPJBXwX7RRhGk6ithqcA8P+0XZi1RHBFh3/RG25U=;
-	b=CbEiRK957QqwHSlfYkRsONSrLaFP/N9yMN+3Ma8B6/Qu8SNlwXpwNDWCm908/Lk2dn4zpK
-	pIUf6RJcDlpwHaAFSyu5vZNrsB92ZM/d6CRYD2h7sdPsH2oTIdNFS+IYpP+SLGhPjyBr+D
-	S5dmc9gkfnwwnwNCe+FsSL6fcfSZPmw=
+	bh=z9IfHCJ55TIpuuGVduSHBR4SUqDeJcna8GIDAX/jjGU=;
+	b=O8xjVrGS1mYETFoBGOWEv/P9JgYI2FHo0ZDRD4oOYUTXDycZHw1EHqihoMP3pOmScXZUq9
+	utt3Jmge35RqVMgppF5ERBZL00cfoIab6t0DdPI0cZ6oduKJC5lxwqOmMefFMRVBsLgFLY
+	PakmTrF1QdQrmV9U/zUIzvKLILLBe8I=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="SMl/LxQt";
-	spf=pass (imf18.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ewzfty8w;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785775977;
-	b=6WMhRTSaRIl7fdL8gRa2CyPE7VYdwZh5jHmvDjq6KUQzFSqNVOEfE4wWwn9Y6yvG50Xv3D
-	naJLNx9Vfkvld5lj96ImsRr2JZ0vFkOKLyImATH+A2gJ51EHn9ZosvJXeMcyiWkpTIuNOZ
-	YuLikvJYy0t8z4ypE5/JsHiMLQJ2kl0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785775976;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZtGzPJBXwX7RRhGk6ithqcA8P+0XZi1RHBFh3/RG25U=;
-	b=SMl/LxQt2/cjKPhQKFSyh1FjVxkOUXomjPib2q6vvzOIXm962W4rkKapUWeS2FM6qDFwtm
-	tJoj4kiO6WToLLiCWUt24ul9UAqMvOIVIM6ZGcaknE69OQskrAral/vQFsPkpcT/we8iYK
-	hWhyqavG00T9rH8FIIPnc75CvtC13B8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-IL494TFFOpGy18qDZDNHmg-1; Mon,
- 03 Aug 2026 12:52:52 -0400
-X-MC-Unique: IL494TFFOpGy18qDZDNHmg-1
-X-Mimecast-MFC-AGG-ID: IL494TFFOpGy18qDZDNHmg_1785775970
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F4011956069;
-	Mon,  3 Aug 2026 16:52:50 +0000 (UTC)
-Received: from [10.44.48.18] (unknown [10.44.48.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 38B111956087;
-	Mon,  3 Aug 2026 16:52:45 +0000 (UTC)
-Message-ID: <d439aeaa-a29f-4732-b4ad-3932bcc26520@redhat.com>
-Date: Mon, 3 Aug 2026 18:52:41 +0200
+	t=1785776036;
+	b=cUhJdfDWK9lcEtvpO8934QhLExvO8fSnRMJ/HkAPPoBwFzH2fonDtEtI8l/pXNWW6CMKMF
+	gTm4ZDfguqzS2/BGSRuf06PhD6YjZFbxPrINou/X3y11mGY3H0Y9WAiadTLFf2hfOEdTYg
+	m27g3KEbM1nVZ/xzBN0TUHkOaWteTCc=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8f29ec73064so23822976d6.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 09:53:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785776034; x=1786380834; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=z9IfHCJ55TIpuuGVduSHBR4SUqDeJcna8GIDAX/jjGU=;
+        b=ewzfty8wfjXV2QUOJQztgK3oNYOZsSQfW6kJTANMDmJkARAZYjO8r+5ol66XK6VqwG
+         avDszX8f6SYxfM11dY3uDRxWjCE9aSItJMmJWiwH6+I6BOovs8isoz3DW46iYmJBUX4w
+         i4AfCI0K1gjizEPq9/3tEEZiRoC6aVVsDALDaEkVMtlQykeDWQHiaviwt+vMEbrdYOND
+         pmawrbgD+HG7T4uBLupFwMemgFpZmsIPZvcPYxAlIAOS6U7bOnLT92mS9SPTiwMPSbWP
+         O9k0YYJHZ8Dbild5ut3Jx9c5BFeawJ14XufKgJv807XaHZFCRzSeBwlvaIAPlzOpX/4r
+         upNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785776034; x=1786380834;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z9IfHCJ55TIpuuGVduSHBR4SUqDeJcna8GIDAX/jjGU=;
+        b=mGk4DU9CNCaME8WD7lyyKByvSySpgrb3fVrOhfvHaTemhyHKDfG6SkrjAwQMA8+tK+
+         56/hXa58AMO/fd2JA8FYz5QI6jV67nt8PeZ2vEfHDPHkcVGL3De+O6LswJUSINjKydc0
+         gK3mEhD4uL/s0zn0VjmdkhIPy3pz2QFaf3OL9O8arfRS8I9H7EGA2Q3yf+i+LzyJe0A1
+         qwghLPsALvnWRsmTQ2DP7YTgN2o1q6aV66oskczwl4y79pzDMZoBo0Z8rlVZxvGNHyax
+         5czIpzTDXUdOWwng7ipTv9D7SksV/KV+K87PdheTdWsm5yx7M7tTLGT/c1fYekMwCC0p
+         0TiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqgP2kY9e4PDcj9vEmWWLQnyfZ0TCL0XJfvQP7tS+0R0J51fIxnZW6l0Z7SJZoTDDu5jzeMpaP5bA==@kvack.org
+X-Gm-Message-State: AOJu0YzCuiLMvjWIM1Fyls0YGAeJ0PUI4Z8TP+zEDMFV1KzazR+HXwzD
+	J5ejObDhcKT/kSSnrhqDYd1KDRdEp0Uuv2IwydSxEJ7t+jILNyMiv+VcLTaAkYXO9cg=
+X-Gm-Gg: AR+sD10fnuTRg7sD8vW7EcLpk47Tsd1ECaQIouBeeP1GUs0+mNuyFvbrUcfQGFnwY0K
+	rJcVbjDBxVn4knRrInpsKLJv+JoAumdWEOa+2ZwQH11VNpTmnU1Wme5k7ZaEn47L6mTDwwKaeIk
+	S/+V1QC+8AvzHbGkg6TfwAzLHvM3JJrN/U5Zl/QKU+a7a/3+BjBiQyAqt9YHGp91xNMqcswTYNI
+	8rueLUAbpzCGIXmewUbjxRWRBcRWWtHr8j9XlCCVaRGSiXRu1jArMfXr9GS8VJ3ys5u7I5Jja9v
+	Cg45l32qPzlq+hY8Y8t/K6pEFvZ+ZHNVVH09DoGoc36++cAzIBBIctlDGs53vAsPV/5a0CxdFHW
+	zlY568zdvJLIeIm7AyHChs+F2NCEhIvLnGAbzNsmjcncx43ebKxpRC8fDNUlwFp41xZjNsvmTRp
+	F8Hoo2sedJqaoejiv8BnFzO3yR/GdLPasyPLiEcCbXgWSDy5vb5BXKGzMLRwg=
+X-Received: by 2002:a05:6214:5548:b0:8f0:d59d:78d2 with SMTP id 6a1803df08f44-9084956313dmr242376206d6.5.1785776034484;
+        Mon, 03 Aug 2026 09:53:54 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908435b6948sm79412756d6.27.2026.08.03.09.53.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 09:53:53 -0700 (PDT)
+Date: Mon, 3 Aug 2026 12:53:53 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH RFC 01/14] mm/zsmalloc: replace PG_private with pointer
+ comparison
+Message-ID: <anDHoYNn0lPc34cK@cmpxchg.org>
+References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+ <20260731-remove-pg_private-v1-1-142c97ba3562@nvidia.com>
+ <anCuGbQ_-pTajAed@cmpxchg.org>
+ <DKFF32LRYH32.16JIXI4LUS5E9@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: 1TJQC4-2u-Z1GY_Wg7CMjJYVAg-sUDBdOpzuNlBxRpc_1785775970
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 289661C0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKFF32LRYH32.16JIXI4LUS5E9@nvidia.com>
+X-Rspamd-Queue-Id: BE4D6180009
 X-Rspam-User: 
-X-Stat-Signature: nwtusdkyn7d3ohki394645gh1g5g6gsn
+X-Stat-Signature: qsqrb1wbzatqdb1pnrzpabeg6uyx4n4n
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1785775976-854424
-X-HE-Meta: U2FsdGVkX19Qp89R5lJVbDao6G1/xTxIucgEsqbSHqObo+dCiNtMFD48KMTzu/UUGhowuC53EDSlFo6SHDpMtD4XXjizNB3Ry1p/m8IBeHwPqCTB5f+GboIuhndHbYQEGjPgTnavy4srzfqzIxFzyxkvoH+5KyTLvisxeynILw3bNmVIULAV6n2ymHT0FLzXs8ao3Vbpv2HmpWcTKFufg991q+QZ4BUPl4FWFOdbbu9UvR2xf1sQ8JXNvSDuVowiYa+8zqoN4PhAvnfSMzfLVlcyFuCvGUnXvULOpNU88eFmGH17fjwxakrciSlKVPLs6z453HDF7v5TaoC48z3rTVukCJ6Wv7D2dQ8BiomaQRV1Gx5q3TmRnM/kzsO4jhZJw4XlegpYEZWzzLJbDQmvfbIqPekq0vynb0vjDunUxffRLehGdGOZz4XkPdVBFiT8odMfbLOKCMQZfKGsCYRNt0bH6sfJY5e4cJgwD8IsYuLBRDHNwT1F047eIuzsaMgXb+y8g0edfCeyHWDzMA6/4MUVuRT7/cbFZgcvZ8tLvtrbcAs2b5mBWURIq79xQEpopf2sfY3gs47CKivwFNoFFUWKXXNtGrm5eE9b2jjiEoKLCUDsJ3U8Co6I0mlEq3l5U5XQUMMFNKltVpaby/jzUN3HgxYGnBLEJxeG5VTDK0Q1iLeJaiLtdBFFD26qCHoiTR4P4hKdDOEHodWCldYUehaykQxZRMqA37OZYWkbNjZBsPW+774lmzBdOsd+Fl8UFfePk8rsxIp5a993mwed/p+ayPqhomGrfhVOGgOk6tg87jkvIu51gxl7W+hmMtlEDLUd1YzlroXZSP7bWo3qUS4HLi57QuphLX0vr43Vuk3G3jmAqS8T4BHdKrYwcJxYsMF+8JWM384P2VA3zB45OK64lrSyx5NME4zExBvDrB1t6Z1I12JOo6R78MmOeMXk4iTLtsoz4MeinN6piF4
- /b/aNYXL
- deVRQXjn4mWDtg9MbsaEHdhsSrY8R4czOolYrnfqUzTgb3cX8ZqpYdlQQIGtVuy0tUfC7yJDmc3ZvV++MufB9Ui4RLFHDTf2CbPXHaDbjoO/d3ETqSXfvBTgUKexaGErPLqmTTemrrpL+y+VUNIphkAOQ/NdoVMqjhKJBW6Gz47/RzFFy3709NaPV1UQIOkFf1M/Xqd81XPihzO1Otla2pGm6Jr6DLMAGhVALwNydv1BLH2K5EoMZmmqiWZws6Zhewu4Cn6ArUuOYmiZ+uTPxC7mLLdxhdwcp545s87+0zkJiTdU/S5Xp9d9Vi0ZWQxAizknCM7upfYwiU/OWO0Bmz37np9VrGxOKafjBMh0+4h8v3k38sXg44PtqzyLjmpRf4S1QQKrPNbB+9ds=
+X-HE-Tag: 1785776035-34498
+X-HE-Meta: U2FsdGVkX19YLhSOSPAKoxPyd7Ksi4Mi8B6cpW+0mNhCxNzzIWce8zfJjsL5gI8OU0YGqUNPzSI2ljPhz/i+lZ33Z+TminQ9SWiZPLjtzXNg3I008JaNln0BAgJo3Wkhnj0d7xCzqD+S59DqcFVW3/hk8wZZzechzP8A/sBMGUV+jgURPv5yyKS1OjwbY1QfmVXOLlj+OgqumO1AMCEoFJ5k7xVT4yQtl/+wGUTzamdgwt55mWUx0IDVQh938LM6lA6h/RbHZj0Mh0es3i4XlIcSuMIDLEUZ61WAV9/KLI/IW5JAB5vnVnIAJ210hnHizxNXobmqdQSM4xJDYioImTgGI4Og2cU4181IlUYmFm456D0K9ORfpDiG9UIZZPKA7pfSLsApnnJ1FN62XwKjn30zd/oJ+JHa6zewN7XvOa0UQ8q8quzCIqAzFMnGkqKmIgI14QYsFQWlu+QybgZO1P0QCUmqHzHdTUlcaBFfRW4j2Zdy4w1iIRkv+0vnR/aOq1eJeKMT5tNrMYpcFHKkJnew9yKSVRmQ1+SLbbjSzRprgeQTGXTaQ9fUE+fA/OnVISfx3fkJl6rxBFmBfX3Bh3BWh4DR/2RiPG74sOhMXB/zUusb5XZsr/B3ScpxdRgMBcDGsBOZzdQvhL1ha7hj747zBnKBUnezNpBJXyVdLVU3MVWarmAfjQfQ9lZhg8qG62Ru8IubFDtAS8/e8YN6tD/F2zvvfwBUgSpOYymP9PpPwuezZthnbQIfkyrbt607C7xjZh427HtYwoOddhWIS212WeodenwTJ6CsRYvTwXuSrtQOEiZRAvoDVPcodgOIHOjE3dFE8O5C1k6vNn/bTRyTkUlN5OyAPr7ALPTHx90pMlFatMusD24nxGNQqwqGS3nMOtv7tT74osDs4ZoCKKItYnK99hZRBsWidmbxWrJsJmUr1Ewggah6AVcTgRXU97yRsZPLDr2ynkvQHEm
+ qNbToGSZ
+ nal7ZT86dqo/w0JVv3qlgDNlV1EL57EcJ2rSNmiMpUfkOEB/Bm1Z112M5OY3Cl7NvihVxcHzbPN9v44iG0IGRGX0pPQNJ99rNgpDSR5H2RMZOR7rRg4RO5Ucftv4LdSqjQxaceauGLkJCuLiq6cF0AvRGIMDW656Z0fSFf88aBbMzlJAMaEIwGEvl4Ee5lrhnePkg80D3TghlEw7GpkQiO3bNZtzzACmDHuUy3D78jPj4cGAvnXh+bdX0tT8oXvEoqI2JK5UABVFb1+tlOl0EkiZLl1j7DNJJW+8tV0D8md+oTeRyGf1DDZwdv3pfr4xgZ1N/P+rdL6QJf0j35JCXGdCHp493r0zULtiqkNnQbB7pDSkyr/NisyOSkFuBOHwdHmcaz4FE1fGFX7euvFF3p66ie0xK/LdYUmAMoIzjO2KeUeXp/M0qNuGvnK+MWjGwGizPG6F9X50+B308fYwH4ac623ioEmisMb+Eew4kpH813JE8s/TVk7hzEUX/HJpENowIc7KvhvykHmRGMXekQQN453WGnY6Liv0vXx+wgpby6THKc9dj/2clOrlg2yZubgHENjBy7pGleKAjmpG/tG0VoKW8l6miBcidqIZbJ8Mlls/D/XK9OGyhvPxoHl83x9q4/20hgUyX8KQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,44 +142,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 10:55, David Hildenbrand (Arm) wrote:
-> On 7/31/26 18:05, Paolo Bonzini wrote:
->> Reported-by: Sergio Lopez <slp@redhat.com>
+On Mon, Aug 03, 2026 at 11:34:35AM -0400, Zi Yan wrote:
+> On Mon Aug 3, 2026 at 11:04 AM EDT, Johannes Weiner wrote:
+> > On Fri, Jul 31, 2026 at 10:13:24PM -0400, Zi Yan wrote:
+> >> zsmalloc uses PG_private to indicate first zpdesc in the zspage chain.
+> >> Replace it with zpdesc->zspage->first_zpdesc == zpdesc. The check,
+> >> is_first_zpdesc(), is only used in VM_BUG_ON(), so performance impact
+> >> should be negligible.
+> >> 
+> >> It prepares for a future commit that remove PG_private.
+> >> 
+> >> No functional change intended.
+> >> 
+> >> Assisted-by: Claude:claude-opus-4-8
+> >> Assisted-by: Codex:gpt-5
+> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >> To: Minchan Kim <minchan@kernel.org>
+> >> To: Sergey Senozhatsky <senozhatsky@chromium.org>
+> >> To: Andrew Morton <akpm@linux-foundation.org>
+> >> Cc: linux-mm@kvack.org
+> >> Cc: linux-kernel@vger.kernel.org
+> >> ---
+> >>  mm/zpdesc.h   |  2 +-
+> >>  mm/zsmalloc.c | 15 +++------------
+> >>  2 files changed, 4 insertions(+), 13 deletions(-)
+> >> 
+> >> diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+> >> index b8258dc78548d..4fd81c2e80769 100644
+> >> --- a/mm/zpdesc.h
+> >> +++ b/mm/zpdesc.h
+> >> @@ -26,8 +26,8 @@
+> >>   * with memcg_data.
+> >>   *
+> >>   * Page flags used:
+> >> - * * PG_private identifies the first component page.
+> >>   * * PG_locked is used by page migration code.
+> >> + * The first component page has zpdesc->zspage->first_zpdesc == zpdesc
+> >>   */
+> >>  struct zpdesc {
+> >>  	unsigned long flags;
+> >> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> >> index 8204b76f78308..e8ef227624efa 100644
+> >> --- a/mm/zsmalloc.c
+> >> +++ b/mm/zsmalloc.c
+> >> @@ -290,11 +290,6 @@ struct zs_pool {
+> >>  	atomic_t compaction_in_progress;
+> >>  };
+> >>  
+> >> -static inline void zpdesc_set_first(struct zpdesc *zpdesc)
+> >> -{
+> >> -	SetPagePrivate(zpdesc_page(zpdesc));
+> >> -}
+> >> -
+> >>  static inline void zpdesc_inc_zone_page_state(struct zpdesc *zpdesc)
+> >>  {
+> >>  	inc_zone_page_state(zpdesc_page(zpdesc), NR_ZSPAGES);
+> >> @@ -478,7 +473,7 @@ static void record_obj(unsigned long handle, unsigned long obj)
+> >>  
+> >>  static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc)
+> >>  {
+> >> -	return PagePrivate(zpdesc_page(zpdesc));
+> >> +	return zpdesc->zspage->first_zpdesc == zpdesc;
+> >>  }
+> >
+> > There are two checks: get_first_zpdesc() and obj_allocated().
+> >
+> > static struct zpdesc *get_first_zpdesc(struct zspage *zspage)
+> > {
+> > 	struct zpdesc *first_zpdesc = zspage->first_zpdesc;
+> >
+> > 	VM_BUG_ON_PAGE(is_first_zpdesc(first_zpdesc), zpdesc_page(first_zpdesc));
+> > 	return first_zpdesc;
+> > }
+> >
+> > If you expand the helper, this seems kind of pointless now:
+> >
+> > 	first_zpdesc = zspage->first_zpdesc;
+> > 	VM_BUG_ON_PAGE(first_zpdesc != first_zpdesc->zspage->first_zpdesc, ...);
+> >
+> > Mayyybe it could make sense to assert first_zpdesc->zspage !=
+> > zspage. But that's a separate issue that the previous check didn't
 > 
-> Reported-by: without Fixes: is odd.
-
-Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API") would also be odd :) 
-but I can certainly add it.
->> +	 * @write_fault: if true, fail with -EFAULT unless the mapping is
+> Usama has the same comment about this.
 > 
-> Just wondering whether EPERM would be better.
-
-It would be EACCES if anything, not EPERM; but almost all callers 
-already pass EFAULT to userspace, and write() to a PROT_READ area 
-returns EFAULT, so I don't think EACCES is the right choice.
-
->> +	 * writable
->>  	 */
->>  	struct vm_area_struct *vma;
->>  	unsigned long address;
->> +	bool write_fault;
+> > necessarily catch. And might not be worth checking, considering how
+> > trivial create_page_chain() is.
+> >
+> > In any case, it doesn't seem worth keeping the check as-is.
+> >
+> > And with one caller remaining, you could delete the helper and inline
+> > that expression into the check in obj_allocated(). What it does now is
+> > self-explanatory; it doesn't need another name like that PagePrivate()
+> > check before did.
 > 
-> "write_fault" is a rather odd name for this, given that this function will not
-> trigger a write fault.
+> How about the version below? Basically, I made is_first_zpdesc() more
+> straightforward for backpointer checking and first_zpdesc checking.
 > 
-> You want something that matches FOLL_WRITE.
+> 1. get_first_zpdesc() needs the backpointer check; the first_zpdesc check is
+> meaningless, since the assignment is done above.
 > 
-> "write_access" / "check_writable" maybe?
-There are no for_write, write_access or check_write in mm/,  but there 
-are a handful of each of these
+> 2. obj_allocated() needs the first_zpdesc check; the backpointer check
+> is meaningless, since the zspage is from get_zspage().
 
-	int write = (gup_flags & FOLL_WRITE);
-	bool write = vmf->flags & FAULT_FLAG_WRITE;
+Personally, I'm not a fan of "super predicates" where individual
+conditions are only useful for only some of the callsites. They tend
+to become obstacles to understanding the code and lead to subtle bugs
+when developers misunderstand context requirements.
 
-so I'll go for just "write".
-
-Thanks,
-
-Paolo
-
+IMO it's better to just precisely express what each callsite
+needs. Only factor a common helper if it's actually the same.
 
