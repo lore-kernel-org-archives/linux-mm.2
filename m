@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF5DC55175
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309CFC55162
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 07:19:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C51236B00A4; Mon,  3 Aug 2026 03:16:15 -0400 (EDT)
+	id 4B5E96B007B; Mon,  3 Aug 2026 03:19:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C01F76B00A5; Mon,  3 Aug 2026 03:16:15 -0400 (EDT)
+	id 440796B00A5; Mon,  3 Aug 2026 03:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3EBB6B00A6; Mon,  3 Aug 2026 03:16:15 -0400 (EDT)
+	id 308126B00A6; Mon,  3 Aug 2026 03:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 965846B00A4
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:16:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20C1F120462
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:16:15 +0000 (UTC)
-X-FDA: 85059099510.18.841C09B
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8B81E4000E
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:16:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pk3T118R;
-	spf=pass (imf17.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785741373;
-	b=eBfGs0hvmtnTAZaer4V9eioVHdu5ML0bJoSSM9vRVFFzKMuCJWnmj5myy9t0gsM25tDrIU
-	CxosQgzgiWaTx7SMFlA79jk5eVvel4GL5DvGwVTENShI/bMfTu+Zzm4wN4KsDjfVYFUm3p
-	+WtBYnJ122AotiotELZFJ96vTH/yrP0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pk3T118R;
-	spf=pass (imf17.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D03B6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 03:19:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87A1B16029E
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:19:37 +0000 (UTC)
+X-FDA: 85059107994.26.9D29C85
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E8CFFA000B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 07:19:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzaAoMly;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785741373;
+	s=arc-20220608; t=1785741575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dnw6NXnk8kwvNdo93WmVYhkyxHlgOe+nTgmTwSoBbA0=;
-	b=xIcEkKruSdI99rWs2wpVb+8ttA3CTJ+S4hFkZu46UEeqbOuJxyrGovWVcnDhyYEOoG6DBV
-	3O9aGKQBTTVHOvKd42jJdr6SqVkpMQpdVfgYnP0EUExh94tM8AH+ejRMypSNR7MRFwRdTr
-	XVwrc6Oo4ju3uKo60DEW7ft+RJw5gDA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Dnw6NXnk8kwvNdo93WmVYhkyxHlgOe+nTgmTwSoBbA0=;
-	b=pk3T118R/N20RkVgzptuQsU4dRxKrumW4ZfmyC+goiTs1lYHKS6TxU524NPqGLdT2dvfZce2Q
-	2B7Bk6kr16aPvTvIgWJ6mPvT9ujUaMKg1IFCgniKP9oVjKqIXoeJgDtkdxG78G4NLEdIIvLKdKu
-	E89KFLrJXoW3DEMYgfKSc6E=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hD7526HkGzLlX5;
-	Mon,  3 Aug 2026 15:06:30 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id E350A4055B;
-	Mon,  3 Aug 2026 15:16:00 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 3 Aug
- 2026 15:15:59 +0800
-Message-ID: <fe724e58-f525-4eee-9471-d1765f6bdb0e@huawei.com>
-Date: Mon, 3 Aug 2026 15:15:59 +0800
+	bh=ykiHD7DY9G7XaqnDrtXQxXTCaNG81ozB7o0StBvDD0I=;
+	b=vCCtoULCJUF9x1mvpr/6uXhXMtqFYuLPDIEsW+32dbrnOxqy7BZ1z05tCLSRjFSXE8s4wT
+	wKkEwJw++qyFWl2xXVB0oaY5cyNQoIwSIA6rTmXAtYegES0r55rbHPaHCs5Vq29OByJNyp
+	LirgIcjRLmpVi8yQFZ+IMkgFApVrLdk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzaAoMly;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785741575;
+	b=r11UfNgDtgpmyZ0cIot2uwHv+P9kW4A8H3ogi0xq/GNC62bWm8mOPsI0y/3HJ/zK2AT1yq
+	ke3gX9U0tKzyzC6zhQ16IvMS7eBxax/4sVyJPV0OFjjzfiHIBziKKiFY7ZsrqFSa3n4PDC
+	PQ6CqMUOiCtFukDyGwdQBV+Vq1O3Vic=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A00CE600FF;
+	Mon,  3 Aug 2026 07:19:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC11F000E9;
+	Mon,  3 Aug 2026 07:19:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785741574;
+	bh=ykiHD7DY9G7XaqnDrtXQxXTCaNG81ozB7o0StBvDD0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lzaAoMlymuF4kOmQnImnMrd2VoWNnAasbFn4o2tBj12KoFhxjSN8hLToPrUhEiPO3
+	 oEu01foRUuD96Mip7GJ/acAD9l5u9VkO4iDzOrj9beBTGIyLAiEW/He4sdcfIWR3n7
+	 RoN9b4qjdAuINP2QHcnwf5x1HZN43ZdyVyrsWPcMNbDbNFueIBK0loDZwVDtJPb2SE
+	 rcklEDK89DM7Xmy1+ytTbF5YZCEtiis0hg+Kv8tXcbAnKEat5wDNORC+GyfsWBPVwO
+	 T0B5vGq7AyGeM/xz3vlVg9E4xxxTYVvJpOLWt9rRX3QR2pByMJ/nbp0UJrLour9D6V
+	 8QwW0AVgNn8CQ==
+Date: Mon, 3 Aug 2026 07:19:32 +0000
+From: Harry Yoo <harry@kernel.org>
+To: hu.shengming@zte.com.cn
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, ast@kernel.org, 
+	andrii@kernel.org, puranjay@kernel.org, ameryhung@gmail.com, bigeasy@linutronix.de, 
+	clrkwllms@kernel.org, rostedt@goodmis.org, paulmck@kernel.org, frederic@kernel.org, 
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org, boqun@kernel.org, 
+	urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, 
+	qiang.zhang@linux.dev, pfalcato@suse.de, surenb@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, 
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v5 3/8] mm/slab: use call_rcu() in unknown context if
+ irqs are enabled
+Message-ID: <anBAiTl_16H7NqEr@dev>
+References: <20260729-kfree_rcu_nolock-v5-3-a28cdcda9673@kernel.org>
+ <20260730192119586UvhYMv4xrNqaZLKIJH9X0@zte.com.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] docs: ksm: fix typos in sysfs knob names
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260731083526.3953421-1-tujinjiang@huawei.com>
- <20260731083526.3953421-2-tujinjiang@huawei.com>
- <d9236dc0-3332-4fab-aa26-e74d10ad0cda@kernel.org>
- <f1f5c486-f14c-44ad-8285-a9df437f7974@huawei.com>
- <3066dc07-31b5-48ca-b14e-51b284bbb9e1@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <3066dc07-31b5-48ca-b14e-51b284bbb9e1@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8B81E4000E
-X-Stat-Signature: y5b8b19tduyy8h15uwn5hregaqx37mbk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730192119586UvhYMv4xrNqaZLKIJH9X0@zte.com.cn>
 X-Rspam-User: 
-X-HE-Tag: 1785741370-568096
-X-HE-Meta: U2FsdGVkX1+ENUdufvebrbOJ8yisw5UVDMjgr884edImCh4ieNgDesNfb5UUoLRoCpDkCP+QniZn3h6Cyq1QXuwNdU1LqOBJvmfZuPCkkaAGx+9QFcbh4bneCiymmRI1ZS0QjJXHHcZxjkpSMzew7KG/YvJsOM5CIfyagvx9RnCypuO/9u9+9RfkwBFWD2SVTKRuQsUeMAYgnb5maD8UJrxk3JDKnukaU4CkLNIcqhZSJnD4mpVTIM4d+yO88HxEHWtjeDdQ1wdfMnADGXt4Ux06qPi3dcoUUxXiyiQfCykOj52FoK/A9NzamUYfVO3yWP6dSU0xfIWq/5odGrK9k6JeR0V2fj2XwPLQDaJxcQ4gIuYWqdJUNQ2xHTnOQ7MmQ0V42jRriVRztEOUizuPXwtNuaUz8x7yj2fKnoJ5X3LuRrPv/qwnmnS8gt28L9GI+5gML2P7j43rI6a3s4YSWj0m3A5JbUnDhvAgnIOEHrEP2EX+w0qkOsCSpXEafErIHU+lQpLd62gUNgnT3TOYnAZ6es94XSnQ38JedisfmOVsiM8nafRkBxE1ljRxf5qp2qkKmG08RQLEYJEcIKurPG+Tc02d9t3kDmyStNXjf9aOn3ApNP5OBrawhuRsUY1HL3bw4B37B+pehPTISLi543+k59MfWX4rbGCIT0YiSVTESK7vmTzHZOJvvhZU6p1rTAhEMRm9tOgzpIJYc/7KVBzx7Y0rM1WUB6vZTCdLvQDRWxF3adfy6x/gWIBK01eDQKuVCTBeYQ7oszktWdkCs2JRS20UhMFum41u3cttTvu2BEd/bqqcC7U3Z40yJAMzxBsQAUJcWy55bq7QlFbcHStcver3sBTvroFvUwoNgx3qUSveO7QDh9MnbNGE7NhXnW71/gFGVO1OeKnY+egzQb0WEh5R979mdznnSNY+AfOjrp01Z2zz70YgBwWn9BcbFb8dzpAT7o3niYW9DXz
- 8bCGlBfl
- b7Wm6GcFbDb3A+sd/SY4mBsPEBveY0UjdXwLRypmc9nIp3NP0yRj4E+cV6QVCuGRYTxOQbPb2U+0ds1weYvF36oDMdLa+2l94FbqpvdXSZXFvB/umUcEx5NoP0Zz4H+bZ7jsFPtcpKEQImlkUoSNeUl0JRhJvXPDBjMUZjVtmI7TwEzth1zGz+hhbpSuR5Y7u3oYcQDpgKFxmeLO5T38m80I+DJVqIZyzvmsVcEIfUYZbMMlYW5LguPoXKLFCv6CkYSdfn5HAgwVRaUPUTQFiPoQpRZQXtSk+UdQ0b3tY0aHXMiZSaQjINWdnKNQCXCeXnbTYpvzNHXTbX+wr98IgUsJsUw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E8CFFA000B
+X-Stat-Signature: 9sy5arruyjxd1k5gf1b6z918nxjmmuhi
+X-HE-Tag: 1785741575-95072
+X-HE-Meta: U2FsdGVkX19qYwDDZmvgHinCW3oZpldneXjkklQUgXAp2CuJFFGvZEdpJijWkU5kiEqzrpIkCh2ENTrjPYicX/MPvOQBWCjagwaIhwEEaNFURbRbh8mFq5RrrLhuOUkUFoc3rO4XugxcDIFcxrhXjA8OmlBreP6Yx+q48IroHHKDMJDTrFe6hJ+BBEmVV3SErZL+3RuxRCLgXcbsbXc05dSkthhiRz4WVcqux8e2p+xxIWqJFIJkmn16KoyacvtYVP9C24AcsKWZ1rq5gCj/ME5+33PcQaqPcUH3+G4hiYEsiyWs4neQlUF9+Gd3mvVhdtl9Q3zdz+TfEe9vCGJZGpxaLgIG63fpobmiGKml0oi37xem2N5qWo45P2k9SFlMAxc0jAH/AEz05AfwnXv2Lys8lvkCDs6WkLzpuPJOidyDXbu2e+gy6Ess5xRC4sM0uKiEKEaDspvmzG0kWjredt9fRsgWzL7/XkjZ04sHGnPk4v8GZeUhrihANJbzXusgHeRLLtzLr0fLmCWv/Qmptbssc9SAwU0+dEJOO9avLyeytfLvvKM97TPCuniwHyR9oFCfkanjiAm0tZ3Gwt58vyv8tfrkTkZ1gMw2nqFztcTzuboxKy3OjWYwJz6TRs5aiyVaE2u1iVNZrTo+CYO4qiuSxYn7WKcF8lpnnE9Z583+So52Vt7LQmiU4/8vUZNYe07CRD+PFEJwIQEf3ATmaydw/zagtkfJGAvWnCWDihRKiZSFPk6ra8hM5YZbuNWiq1Sogp9DDlE+EjAMCEzWf1Xl3Nu/JT9QH+F5GRPhnNd5a3qf82F3/B3gJRspNl4utWbse7j6N/WZiW2FvHY+/h0SZqc5Qb0nhCoJ9409et+BMuT1KUyoDjICSflOqesOS0wHx55e5LLXcFUVwyKrwSQJJHk36O7RZm7gpN9qdy0rMYghU74GlchO8uJGsEIls8+8PwIDbVrtNrmwoYx
+ SXbDiOFE
+ OLbRce2d4+mDyOvizZCSzR6phMtUvzqfOXZaXniX3tKwh7DNEHfeh/pOQgQ8LSP+j9gHda9HbriH+n4hc2OXiaJi68JoM7Hr61cx/1OEa77OODwJ44UuSPrcW57dEB6WfcNT1le++Vpua4ZIHtf/54CBVeKfAGDN/hC5melnPfcU4S9ZWvOxdeV9E42QWqQn/ee9oba7lZ/6k6+Aeis+ME/rkivkkFw7kYj+U9ZOUu+/cDrnjx3vt7+813A+dH68FuY6WlZAMvvi8K8Xj4f0nG2aFfVH16hV9/QaStr2JayY4k7XhsHGq67Tkj7YhUBQfpHUv+XPrFtSdRaBYeNjeqVWiW2ebUP+i8r4Hi2jRHdDNWbD0lnDe6mo/79NoV/UEV7jOWE/e5n4sWVgVT7K57rCHIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,50 +99,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 30, 2026 at 07:21:19PM +0800, hu.shengming@zte.com.cn wrote:
+> Harry wrote:
+> > call_rcu() disables IRQs with local_irq_save() to protect its per-cpu
+> > data structures. Therefore, if IRQs are not disabled, they cannot be
+> > corrupted by reentrance into call_rcu(). So fall back to the deferred
+> > path only when !allow_spin && irqs_disabled().
+> > 
+> > The RCU subsystem does not guarantee this contractually, and this
+> > optimization relies on RCU's implementation details. Ideally, it should
+> > be removed once call_rcu_nolock() is supported by the RCU subsystem.
+> > 
+> > Link: https://lore.kernel.org/linux-mm/CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com
+> > Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> > Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> > ---
+> >  mm/slub.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 2c5ba8c326e7..bb0f2975c95b 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -6157,8 +6157,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+> >      if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
+> >          rcu_sheaf = NULL;
+> >      } else {
+> > -        if (unlikely(!allow_spin)) {
+> > -            /* call_rcu() cannot be called in an unknown context */
+> > +        /*
+> > +         * With !allow_spin, we might have interrupted call_rcu()'s
+> > +         * IRQ-disabled critical section. If IRQs are not disabled,
+> > +         * we know that's not the case.
+> > +         */
+> > +        if (unlikely(!allow_spin && irqs_disabled())) {
+> 
+> LGTM!
+> Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
 
-在 2026/7/31 17:25, David Hildenbrand (Arm) 写道:
-> On 7/31/26 11:22, Jinjiang Tu wrote:
->> 在 2026/7/31 17:11, David Hildenbrand (Arm) 写道:
->>> On 7/31/26 10:35, Jinjiang Tu wrote:
->>>> The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
->>>> "advisor_max_pages_to_scan", but the ksm.rst documentation spelled
->>>> both as "adivsor_*", fix the two typos.
->>>>
->>>> Fixes: 0710f38ad26a ("mm/ksm: document ksm advisor and its sysfs knobs")
->>> I'm not sure on fixes tags for documentation stuff.
->> git log --grep "Fixes" Documentation/
->>
->> Many commits in Documentation have fix tag.
->> I think both are ok, since documentation changes are needed to backport.
-> What? When? How? Where?
->
-> :)
+Thanks a lot, Shengming!
 
-These commits only modify Documentation/ files and contains fix tags.
+> I initially wondered whether in_nmi() should also be checked here.
+> However, irqs_disabled() already covers the relevant reentrancy case,
+> since call_rcu() disables IRQs while modifying its per-CPU data.
 
-0c13ed77dd2b Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
-0beba407d458 Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-d7f00084f686 Docs/admin-guide/mm/damn/lru_sort: fix intervals autotune parameter name
-652e1a51465f mm: fix docs for the kernel parameter ``thp_anon=``
-14e70e4660d6 Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
-da2a06188888 Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
-1beb8ae302a0 Docs/admin-guide/mm/zswap: remove zsmalloc's lack of writeback warning
-0ff11f103f5d Docs/admin-guide/mm/damon: rename the title of the document
-465d0eb0dc31 Docs/admin-guide/mm/damon/usage: fix the example code snip
-205498012513 Docs/admin-guide/damon/reclaim: remove a paragraph that been obsolete due to online tuning support
-dd21bfa425c0 proc: fix documentation and description of pagemap
-a8db400f997c memory-hotplug.rst: fix wrong /sys/module/memory_hotplug/parameters/ path
-d83fe3c99d27 memory-hotplug.rst: fix two instances of "movablecore" that should be "movable_node"
-72a3e3e25a51 docs: hugetlbpage.rst: fix some warnings
-8867f6109b84 docs: fix numaperf.rst and add it to the doc tree
+Exactly, that was my reasoning ;)
 
+As a side note there is an attempt to do this in call_rcu() instead of
+slab:
 
-But there are also commits don't contain fix tags. Such as:
+https://lore.kernel.org/all/20260729162207.1567770-1-puranjay@kernel.org
 
-abdca14655fe Docs/admin-guide/mm/damon: fix 'parametrs' typo
-78a00cac1e96 docs: fix 're-use' -> 'reuse' in documentation
-eb14b12c8c22 Docs/admin-guide/mm/damon/usage: fix and add missing DAMOS filter sysfs files on files hierarchy
-472098f23323 docs: mm: fix the incorrect 'FileHugeMapped' field
+Just FYI.
 
->
+-- 
+Cheers,
+Harry / Hyeonggon
 
