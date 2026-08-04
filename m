@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F60DC5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C464C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:39:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76C706B00D9; Tue,  4 Aug 2026 10:39:37 -0400 (EDT)
+	id F0DD16B00E1; Tue,  4 Aug 2026 10:39:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 743C26B00E1; Tue,  4 Aug 2026 10:39:37 -0400 (EDT)
+	id EE5C76B00E8; Tue,  4 Aug 2026 10:39:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6594F6B00E5; Tue,  4 Aug 2026 10:39:37 -0400 (EDT)
+	id DFBE06B0103; Tue,  4 Aug 2026 10:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 402716B00D9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:39:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F1DAC0117
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:03:13 +0000 (UTC)
-X-FDA: 85063300266.17.6F5E9A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E19181C0010
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:03:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C1CFIKAx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785841392;
-	b=tFHgPRWoY1yeMM3JCfQfQwZ2VWsZCrtY+5LKj9z2zYsmSk9AITXcz5P0EOpeAHYdg1iah4
-	htWqAEgIsNThPaWJsRtnYcMT7Tptn/1TyiZUDmlE3ClW7QfzS0VVzrsEzKZ2Win4quEZdb
-	Xs5n41Vf2HA7USrXAlIU6EXVXMy9ijg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C1CFIKAx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3836B00E1
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:39:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 208CE1401B9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:39:50 +0000 (UTC)
+X-FDA: 85063846140.12.8180D74
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3414F160004
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:39:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U7wFuYSI;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785841392;
+	s=arc-20220608; t=1785854388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXDxYwSV7g9rYp8p++FwfQHg69A92970L1sFpqaFceo=;
-	b=qg81roz4U7EPcqaABSCDV2sIhJPLNu24WVk6Dis8G09HXcsfCFFTW45pRV3CHel99vhtni
-	/0iJV9aOeca/EsJeO/H4I4VhdIudXlsq4MQZgUenHZC0AyMflIDv0bKYWXdtD6b8NDi8Wp
-	29iImDpW7Iw5ga4EhM5BmgvXUjCgtDo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01E4C400C6;
-	Tue,  4 Aug 2026 11:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8397F1F000E9;
-	Tue,  4 Aug 2026 11:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785841390;
-	bh=iXDxYwSV7g9rYp8p++FwfQHg69A92970L1sFpqaFceo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C1CFIKAxTrKJZVBjPFRcEhLN7GNjDCw/br30yzoAZTvVgSaOOk4tglexKWkvwX04i
-	 4rm/a8Nq9zIxpxfupCXwKSTmzNs5iC/TLUg50TnsOG/27O/spRwljupOB1A3tAjjgK
-	 GqDLuHJJwigJC+Md/pZUAcodmGDJfFMUo2HeuDlD9O+/rUsIMSS7AuShfNBkFExFC/
-	 xAqLprQ9A+UR/BpWx7o2cMemDAkFhJ+KYHhW3q4UV7nIreJJwbTGIo6K/nnuUt+qEi
-	 Xx9D76OxLKhR0eF/1XMdE4qRuNnRGleZ+Lw0esdYH50cYlpT3jAJZfOXASatQTL3bX
-	 17+St3fDz7dUg==
-Date: Tue, 4 Aug 2026 12:02:50 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH] mm: add some missing includes to mm-local headers
-Message-ID: <anHDNwlcBlIfC-Hv@lucifer>
-References: <20260804-fix-some-local-headers-v1-1-a7beb173c116@kernel.org>
- <8179be78-a35c-4d0f-8034-27f3154db0e7@kernel.org>
+	bh=MhtpiG6+kpUvMAJXfjVRt16vMjujdjPL16yVvDUppsw=;
+	b=uXdcId12dqgxJNVGUPsxM4gZh63wLlKdq/mrkpzf8QHj5rDuDD7N0C8Lduad8PUUtaT/Vw
+	eE6zNOloN50Cx6F++6yDjzFMvRFhKBH2uy1eZv1uFRoKi0BZcLsAxuJ5V+/QjdbK8BD0MD
+	PeoI9sSSdzDyJYF+m7JX+FxHkBwigx8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U7wFuYSI;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785854388;
+	b=6gGNed2hBOWa59lEcyqxuGrbOb6KcnZ73G8ejRg1puC+/L6T5Ub6vygYTeeTH2nPHrcxuv
+	G3hzyY1DGt00agiOs7oCsl3yMgSKpGtAta04lyZAevtQdONVV6muO1AcA3t5ldxKQbEGvd
+	gDZASuOygYiHdbIMK7RdnjmigIM5KF8=
+Message-ID: <7bb32d25-2c3e-40ab-904a-ba22fff60cca@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785854386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MhtpiG6+kpUvMAJXfjVRt16vMjujdjPL16yVvDUppsw=;
+	b=U7wFuYSIWMyC9a+9Dlg3QesN0lxz8QWO+If9NxTlXwHrZuvJRNbSG+onU+hMktdtXASsHE
+	Nu2Jw5IjVUkvtpmQYQFNyWs0BQRB8raZ/euL2FThU90zruNA+9LXeOa34KIlW+VF0E9/f2
+	OpPoaUEKIR3WC8cqRAEwxgi9J/agc8A=
+Date: Tue, 4 Aug 2026 15:39:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8179be78-a35c-4d0f-8034-27f3154db0e7@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E19181C0010
-X-Stat-Signature: g65681zi8rwunpj5ze4h4upb47gsy4m3
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, alex@ghiti.fr, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ willy@infradead.org, linux-mm@kvack.org
+References: <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org>
+ <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
+ <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+ <amy5ZKC2Kc7RX94Q@cmpxchg.org>
+ <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
+ <anCpdjEoDNgVbfzP@cmpxchg.org>
+ <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
+ <anE27CtvCFx7sAuO@cmpxchg.org>
+ <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1785841391-873149
-X-HE-Meta: U2FsdGVkX1/iwaQgRShxKT5GzDcMAfzKQVX28A5HvZNgZN6v23s6pAQVbP4znJ5gqE1PkLMeop01v7t/+I3jR6FSy3O+nzprm8Iw0hNPVz0V3IyyEE1fRR1n/aaidal97Ui7jx+8EiGPzpWgzY1d4A7bvNmH8wjZYP3ONlImGegrGHJtHLf5QL63ydh8yyukpPP7Dz46C4HDAZKmiv++rqu+wdIS807fTbg22A5/7qgpdCjvG+GT/IhjRo8C1DmycbeA/S7azBOLURNpGJF3gtt4qGKxCdSWtSUJ7GWso2YYoLELfT740F32JL3xgPozLiO2YnJcU0wxufI0VbLV4jQHy3gslGhSKcEexQ5z1QcXDR41xTHxqYky9r64tMvRlrFkzK0rnL1rUuyhtRd8uQDMD9zttTzyrTQ8z1+9HwbDMWcpQKURzYn55dBePZVuqkYaRK50HyrcB33tbC6y9sYOGZyVFb5Gc6647TVmvHon7aF0+EKYbKOaLTmJEMgq/CPryid6xYA0zL/X0dFmHJbCgivJVVMyVft+MoePAs6rud3m46IJPbG5ZUT9LqCoTjb+CshdyFzaRwzRc2IacHq1u5TQDC9VE4O/dZIT6bEqoxhgXyPDV0regZUyL1eR4pZiH/ex7Gh+kIcKhGjMG/OG7FSOAoy1ZtIsYmPR8TLhxfhya0wuSd5gdHxV/RNpQ0W3RT8p3l9WNM8h2ke/7fDAmv3FZY4Pi7yqBr4ZH3dCQBa7rzHj9rCwNrbXjhmctVskUjagnZAxJewhQlgS3AL7wWvdKw/+eAYvFSprcNdUs4Oa44ywj23jPSxglgthF81qwv2DztIR7KYG8L5jbgHRKYemBYBefVBB0WpaDfN6f3S2jYYNqmCd0Mv87JDueuKVFBFOOdW8oO6m2eB8acB8XWCina96l18tdiH7ZO9RDTRqnqA5IJUCsQes6hO6KYYJcBKrq6amAInO2Sv
- tNH3QbXK
- ZZ+xsRxKAL3IgE+YKJXBupkI8PBAP8CJfz4IRF88tIUUYqB3QJq1A0cbeY6cz0u1eLipm6ZEctFhJft7h/xBZg6X8BKZML9jgM6k+uorIBog+kZNnLxl4vcqh9PRsCI49kkp5ovbWZYf2cXy5Qbcbq4DA7l8kuPLlKmzisygpFtT/4INjjikGBbGCxiFs/HkcMNTpab4jCjbWOs7XKw73Iey3Py/16k8oTIWap7lv6v3v1idY+pUuTaer/TFTOp7SR8lr
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3414F160004
+X-Stat-Signature: u6ftm7wfqcwnpxwnt44fj6a5kh5m6b5q
+X-HE-Tag: 1785854388-179851
+X-HE-Meta: U2FsdGVkX18Ucwrga3dhMCYNR5Y3ax9iV9R5mKD8lkLy5Fr4yW4J1QknQ+o1s4MVw5VWKOLtZzGj3flbD1ujO0YJQ8a6xBpLwibKxfG49BNb7YNDy+OgjRhlduoJts2KulGf3Jfe412isimePRAx0wAkgD830meYBuwQHP19Np2hAD7TxcUVu5RW8xGEYKaZwiuJ3CUQcP4iboS5ODEPFGA+5H64WDiidotK2Abt1kMnPay0AhlYP1LBSAw2Rt3nvdds+O9HD2cuxLAuyugNtC6VH6PmmD0SoEV3rrb+KamtKV0+fkOc5VYvzPxlgsBtTuE3zri5xBGbAThOf16GoTU6oRbKcvfLIWMOl/BZ0oK7Nzk6i6IQ3YVy5Y5DKTAlSY7v6XmFex2R9oB+oHaiXg6jtYva2B8uopwgoMXlVOQbrhpsEvz6ZTSoYaSe/Ie5rKCgjc4F6TUk0LZVnslx0EdJ8nMyGKg+be4JEWvA3iu/+NGDd/dPVKq1gGCEB9gQZzoGxKdYSQVBM1nUS8AacAi6TdIo5tpedreyM2kLKSVoJdSDpyDhgwxD14MGxRQp0goLcwtZ70+iSndxm+kU9l0rlZ9puUvSZBYoa88+4xIU0psToTel59sEQPwzcAtkBpKRr5+8pNENz9y5MoHC0w+pjAtAej3K4KHn8sQ8Hz9suLV496P776UJ9GiQ19iYXPIOzLgnsl99Wn9snAN6Hvd8nO3JnxgaqNW/DNZcSoldOmk3w5wZxeTOotc/hwB3ubPH6gBezoOSVxixNicPjai7q44gIXkhiZGG6gV5l/ygZSxYmp2fvcf6oIViXPLzdzmKAoO/oBkRJI+29O7Ust+egaLYXPH7mZ6iHnjJG8qVWM3/sA4zyU0k5V7z6sv/7N2WCnKSCSt7/f4WmNigTUFvz3XALr3jilg+ZuMwkCkIZU00xzN/HUtCUYglzdJfHZxeQ3UC+9AJBA7TN4k
+ amk/B0OE
+ hKf5V/OK3OFAC/KC2FYcpSOilWQxF0MUExhiRweGOEOEkLiOY4ACUBEsZ/E39iDVYBEDdN9zPj28q7FYnXqIs9V0sgL2jorT6oFQKc+C9mx1eAfMYnMunM3oltfKTqY01/I1djxslw1BFgr0OnnhZi/PszTEQCop4eIxLT2xHuC1RrJ/2yt31Y0dHBGR2OR5J35x+2q4JWKakBRmPr6xY6gMV2C1NydGnSNQMQVzgRgt/t2hCrC7yQButc9EaK3jHIVAeHRerFUNu19iBV4mvfzB+YBxk+sffZG9YjAyEtQwysVk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,44 +106,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 12:45:22PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/4/26 12:08, Lorenzo Stoakes (ARM) wrote:
-> > There are a number of internal headers local to mm/ which reference
-> > functions and data types without including the relevant headers.
-> >
-> > mm/vma.h is a special case that intentionally does not include additional
-> > headers, but the others are not.
-> >
-> > This breaks tooling like clangd (which is where I noticed this), though the
-> > build is OK due to the C files including the headers happening to include
-> > required dependencies.
-> >
-> > It's better to be explicit about dependencies anyway, so add the missing
-> > includes and fix clangd as a bonus.
->
-> I'm curious, how did you identify these? The mm/vmalloc.h is rather easy, but I wonder about
-> e.g., mm/shuffle.h including mmzone.h.
 
-Well I got AI to look them up ;) but I pared down what it gave me to a simpler
-subset and checked everything so I don't consider myself in a state of
-slopper-sin :)
 
-[this kind of check ideas, look things up stuff I don't consider warrants an
-Assisted-by tag btw].
+On 04/08/2026 03:03, Barry Song wrote:
+> On Tue, Aug 4, 2026 at 8:48 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+>>
+> [...]
+>>>
+>>> #define LARGE_FOLIO_ZERO_SCAN_MIN_SIZE SZ_2M
+>>>
+>>> if (folio_size(folio) >= LARGE_FOLIO_ZERO_SCAN_MIN_SIZE)
+>>>      deferred_split_folio(folio, false);
+>>>
+>>> If, someday, people find that 1 MiB also helps, they can provide
+>>> data to support it.
+>>
+>> I am very confused. Did you not see my proposal above?
+>>
+>> Why not this?
+> 
+> Hi Johannes,
+> 
+> For arm64, if the base page size is 64KB, a PMD would be 512MB,
+> and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
+> order-5, not PMD-1 on arm64.
+> 
+> BTW, I assume khugepaged_max_ptes_none is intended for collapse,
+> not splitting. I am a bit concerned that reusing it for this
+> purpose would be quite disruptive.
+> 
+We have to use the same parameter for both collapse and splitting.
 
-The headers for everything but shuffle.h are obvious, so that's the tricky one -
-it's for pg_data_t and struct zone specifically.
-
-How I discovered this with clangd initially was - Do something like 'C-c l g r' or
-'C-c l g g' in emacs via LSP and it reports 'no symbols' for something I _know_ is
-compiled in.
-
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+For example if you use a new parameter for splitting which is set
+higher than the value for collapse, then khugepaged and shrinker
+will constantly thrash each other. khugepaged will collapse
+and shrinker will break it down.
 
