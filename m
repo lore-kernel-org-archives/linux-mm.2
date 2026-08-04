@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCB3C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 13:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1782CC55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D82CC6B00E7; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
+	id 2B4546B00DA; Tue,  4 Aug 2026 10:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D59AC6B00EC; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
+	id 28BC86B00DB; Tue,  4 Aug 2026 10:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C723D6B00ED; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
+	id 1C8E66B00DC; Tue,  4 Aug 2026 10:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A44EB6B00E7
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DBE8160167
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:44:10 +0000 (UTC)
-X-FDA: 85063554660.08.D7D43C6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F2F796B00DA
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:02:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B7B7120160
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:43:17 +0000 (UTC)
+X-FDA: 85063552434.04.ABC5156
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B90F14000B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:44:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+v+kmdg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8DE73180005
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:43:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWOdWAkR;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785847395;
+	b=a3ObSefYGO8T6eJb1YUQLSC2Pd+QedDEK8ME19soTAYtKch5btd8erG8CR0kSFgybBNkcz
+	JGnFKQ5Tg+XnS+zwjEV6WNf7HFheEkaLo8g2UCtXJtJJ9NkDLocIyTQZScX9diYmAtOzjo
+	8dB27cPXVYZfXADhgo8TGK19VdqJezQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWOdWAkR;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785847448;
+	s=arc-20220608; t=1785847395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GKB4l2IZdbP/Q0kXwbUuYXowkK37syxnhhgXnRPRqN4=;
-	b=kURBhxeR0nvLwPi4bfMy9wBbFpJ6kKt+YPJh2jprTxnJhDqis5cZYRmO3fueSI8Vr2lFtB
-	rpCMYq7W6sx8OiDr1NcwQVvuw2dQmZl242p2cXK1JVU5Jty2o+PYJiIgaTgBdMtssyfLMf
-	9AtoyHN8pMjvmdKkXP2nwgYIbDq2ctA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+v+kmdg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785847448;
-	b=Rro6VzTvQb4GqZIeT0OUtCNgSwSS0g5F0JBABMN18cWdsAXr+Tj9OQ2cusNqcOnbqkFMRf
-	+JQ5fpT9/elmtwGJl2cFiZmslU2iVF02aZaN9XkOKJr+iuGB29UAZ7OgQcrXCuanuSSXAB
-	1nzqulqTu4iLagbNR4v29W1bEwq29Ho=
+	bh=84QprRHwhrz+Nkiqha49/PA9CxYa6FBg6w6noEz86g8=;
+	b=Rd/R4KqYYzBc8Vw79heTuC5lABs8RTmyI9F8XAn9qWDxe0IGuHGVRLbDGrqJGxCL9VouxL
+	do6RfTEmODoHVspfDO/ebHSlXvWzHjucm/9pUSvHsH44Q9hCMrel1kam0nJGa8C/Dp1Vtv
+	oxXDG16XbhxJZjfKyeWb4cfgO5nZ4tY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E3D9543A4A;
-	Tue,  4 Aug 2026 12:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034D81F000E9;
-	Tue,  4 Aug 2026 12:44:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2F5441B35;
+	Tue,  4 Aug 2026 12:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F3F1F000E9;
+	Tue,  4 Aug 2026 12:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785847447;
-	bh=GKB4l2IZdbP/Q0kXwbUuYXowkK37syxnhhgXnRPRqN4=;
+	s=k20260515; t=1785847393;
+	bh=84QprRHwhrz+Nkiqha49/PA9CxYa6FBg6w6noEz86g8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T+v+kmdgCi3T4UxR1mhAPlH3L3GeQtz+35K3qNK/vTqxJ2yOhaKoAVspBfOMxLtsn
-	 FIWPLNKujn5Olk6Z1+BnoEkDpCRSlRtCDxuydX1h9GeE6Eo2MOGwzDqGMneFaBwi/s
-	 k1oHBA1ZQ6LyPgdPLKQitX4rEDVnEILfBvI9RX+oJ2Ihm42LEJmI4EzjPJ+9HlvHfA
-	 kAMfGranFVW0VA+QEd5XUJV+yYuDvEayQq7xHv1OcCe6lMi7yMbcz8Nt00EWijb0Sc
-	 z41BRatoKPG4RoVOTuLaS2r3qLW8wT6a0YEEg0Aik0zKahizkE1Pp51jHOmksup38v
-	 HLAh1qHJ/KsIQ==
-Date: Tue, 4 Aug 2026 13:43:45 +0100
+	b=UWOdWAkRkJHZkJxmRSHFZYlpGkORiS1kGH2fYisI2uada2AxRE+GeYyHciAVPQr30
+	 MNZd6q6kuVhstTX1GSsaMMzewptHToT1kUH0WuveZ7i5IRR9AZFh985L1e0HOxs32H
+	 wXbHaoX6vi/rrkSLGy0movwuGO/cWJNMbN6vwTmSwcxFllPwoOqPNM4CgVKNryMIWa
+	 OEW9DeHljNMC9Hvnie84zgLGzjIjuFDoip29CmY7iUbIDxnCzqtPygXPJBrUyyRV78
+	 YpoweashigOAa2jiQFa9l0ujqRtV9rDaln9png6xRNUr3jCjFaCfpjuh2tbsAOeuHv
+	 zbwT/VJNUydlA==
+Date: Tue, 4 Aug 2026 13:42:51 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: David Hildenbrand <david@kernel.org>, 
@@ -79,25 +79,27 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
 	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] mm/powerpc/8xx: constify ptep_get() argument
-Message-ID: <anHeZx6Gg7waNWjL@lucifer>
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	John David Anglin <dave.anglin@bell.net>
+Subject: Re: [PATCH v2 2/6] parisc: Drop own implementations for ptep_get()
+ and ptep_test_and_clear_young()
+Message-ID: <anHd7ho3daZFZ-4r@lucifer>
 References: <20260803164400.531199-1-pfalcato@suse.de>
- <20260803164400.531199-4-pfalcato@suse.de>
- <anHI4B-lMu6AJJfA@lucifer>
- <anHc4aUbwxWx9YJF@pedro-suse>
+ <20260803164400.531199-3-pfalcato@suse.de>
+ <anHHyiHqYf3yLf2K@lucifer>
+ <anHcJZYyz9Zrshdm@pedro-suse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anHc4aUbwxWx9YJF@pedro-suse>
-X-Stat-Signature: gaacrhiqnuk8o1khruwcobkgz1cqf96t
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B90F14000B
+In-Reply-To: <anHcJZYyz9Zrshdm@pedro-suse>
+X-Stat-Signature: ra9ua1inskkbbe3twrjs6dki1b49rq51
 X-Rspam-User: 
-X-HE-Tag: 1785847448-279298
-X-HE-Meta: U2FsdGVkX19yzMO4KeyKvYwtn9k68vMG5VP7yIi+RIhWX9/PC5eFHmOeVBQ+8UlfPMtAIqJXZEZqbHo4QZnCCUDLH1rb23u1TsTjlBBklMWnS8GvFfNg35p+PffUXyRyB5QlK2VBX7b89n9ITlI9x5fkD+jkh6TpT6ci3m7P3d6FwS2lE3LYKLc3zg4zgReT5YVw4fiD6+GQRDTsyw8fQ/vARMp2ZB0+tOypbGgCj83oJiYiNtLqWYbf1AjL+s6G6Ej5GHFryJTS8wVKugG/8l+x1vxp6zbp6ZUVixqjDdT/+Wz9QUAdlz3MPaZritsYWUNNeOtl9Gb449WO5bBrVLaKi8pxlaxQM9G9sfeWHml/Yh0SZkcZjAaljZ4PbLlxBuoCHSTKjMEetjS702CgQ1oVg2sW/ZmrUiFo7r3bEuUaPcBV+XAVp3VCeV/jYdE6fiaOAiw4v6yJVURy0xwdj9NynCJLxeGu3ZkjUYrGzhRog/ckGvsv/b2rcMeUaNRO+A2QfZajNwTkz8fLuO/GGl5dfIW+84cO9dP5K1t+EU1uVMAaIvnOoZuG186mWHAqdxG1JHUQ7PKgTsGLPonzORC7/YZ+7Yn2EgXTN3SzVq6UOXj52jojwpBWO1y4w1epLrA7eGmr7a62MhsBaPItceOZbox131dk5lx7VzM1V5aJyHGH926+ij7sc4uz1DVYeUUT3K9Ou6J9vvFp6ozbxl/EEt1wonAEy98afC4yqbr2eKW7NmTjULrfF7377VhsyiBgas9s1eJPhkRutE6iToT4yFbfyXaUewh4vARjk+t7be3UjIeM2xfPzt8IVhS2HmP3QRN+GbuSqxoOW3BSbZBJR/tH9/OJopN+nuHbzXNU8XavOgKsMeDNZg3lhA3ppB79R1piH8QiQYDeTC2iAsX7B/+MrAfJEImn+RdHDD8cu1EOaAny+K9GRdW80FDOHc7QxhARPH2EEctltkx
- OdEhYnaG
- tt/9+PvgHRPjQM1dgIUg7e49V0VSqbZKdakbbjcKvpfdruOVT/LAAE3mImmaYoyoqQ7vf5T7WYif5A/69P5B9cCEa8dHeOEhPy/VehYebayOei52Oa9Wb2rNtMg88pL3CP9pX3EHtMpwfum+wJV/XDD6rKHUg6ozV0GzWgsABsR92uN8tvVEDWtzv55nOgJUxi4pvM209u5el6lH0RzkK9YeQs/nSevIjN95EhpZjlmuGK6eHh5PcCKq2/ZPT8wDI8yhP+pUvkSMtYB43zzP3xL1vXsB8RAKPUgR6ZRLAnqiBxSARro1yJt2TjgRcXLM4i7qKjCszAGmsckLBrN/v/quhhy1+igYOu3bg69Go3FOUPXjm6v1ZDLlsMUkO2Gub35/+nTKbzGXiAhVFcYkm14YU9A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8DE73180005
+X-HE-Tag: 1785847395-149985
+X-HE-Meta: U2FsdGVkX1+ohJZ6qew3pBaC0mmCrBKnfkxCk9DCUUPMg5It5YHxpmh1wgIIUXHdktUCj4PRameWEH+EBcrh7uQT1rCvVkjVHpjK2815wMFmjzgmNf9e8neM8vLwXIQdDUZqOGbBcCgocnAw4zxPN8aP+F5R42J/2vRaIKxlLidPQG0cZ7c1gpA8YfZMxLw7eCn7Hc1ovicBoKzY2D4pZM13FOrFW3iI2xNsUeXQRyeHeeQZXOJU8nz9yfHsFdajuKlP80Mbyr5tcbqNSDIhwMq/OmyAgaikbheut6u5IAOh+nI7HCAjWl/OAEhJ+LfypVTxSk2Sraf5o7OlX1m6gUJqyEVcLdsnx+R+9mTrPKgBPEPeEE8owmjM7UTcsenjxNucjvLB3HjqSUO5LUfFabtIggOpk+GCo1/d87Wt1tE8JHt0A0ueS8PN0hp5RSaxuFkahmO8iwGyQDqe96mDWaunuRr/SAW5MsVyEJwtHJ+3NR3OBO+ozrftCQ/NfNdb5hcJw0hIfTloli/K2xexmnHGJCNrbLPeDknoQ1794xunoxISK1NFaXi0gTmwlwlDEX/jRzhcv7gHqHc+YLBsLTervvqB/yaacU6Azsv/gfylw7chk/mVADbtMUAtuSut3/KST5hfM5hRXYcMFWKH3AZe3SXoUQAh30Vo0sAjoddeRbhnw7naLJW+2v4/CUUYTKeVu7Ap9sxqVohtDqBFTU+Mz5KA/2bAhVHqxFIviJnV2a/Qq4eIrhPzAt8xoWTnePk8KxTkWMpYUQEwmAmdqf+HDIqueQubXvl22gjubYfy0fE8nQ04V9B1s29+ceGTg0B2VDor6w89ndCcD24GUQt24NR5YVPro/GZ3+6fzDer7nKGAnrzZYSNTLwSQ79TtV1j5SA6ozvUgoodGeVZ45o+UTdVq9wdpcHS9bvJtViECELJhNL1it2OpbcvZRLMxnP2rgoCkrUMbELXrW+
+ RPowR1Wr
+ UtnsKmyJy1NKS1COtibX23aAs74MKTSFktUELOdUdJmJq5dMOPY2Q1HjrbAKTJNL8jsqN0c/RCN1JID9+6gQAbeOW6Pjgt7GHFL8EcRE0uTpnY89V4rPcoGv4jd/Yf02zMKqgv+aSPNbL+bv1PsQtK/Vf2LL1wHZ+Su8fcgIeYjeu6G14286dQaBKZLtn2iE5JAJNLo+DV7FAyUk9F8V4wECIWP1D7mW6FRs70Q7dp/bJGeniCGdEtksYjLl5HVL8MHPUFzxe6XVuDpZ5LNOODyG4XuLaOpj34w8U1Z2wFXNObTmWoKpqA+b7lv9ZOAsZSy7QG/TWnnZgoIAcq+LzyNnQxOzTmfRDe5gJCr/iJS4PeFJM8A0p+SLSkaN7b71pC7Oaw2AvjbtL77fMOYMepq6ZUBpTFZ+OjW4dqOI9hCQT4rCkXJRGMN8iSY6kgwfOGx0JTAf10BAssuk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,46 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 01:38:52PM +0100, Pedro Falcato wrote:
-> On Tue, Aug 04, 2026 at 12:13:13PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 05:43:57PM +0100, Pedro Falcato wrote:
-> > > There is no need for write access to the PTE.
+On Tue, Aug 04, 2026 at 01:34:41PM +0100, Pedro Falcato wrote:
+> On Tue, Aug 04, 2026 at 12:11:08PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Aug 03, 2026 at 05:43:56PM +0100, Pedro Falcato wrote:
+> > > From: Helge Deller <deller@gmx.de>
 > > >
+> > > Switch to the generic implementations, which are identical.
+> >
+> > You sure do like succinct commit messages :)
+>
+> I didn't even write this one! See the From: :))
+
+Lol well then feedback addressed to Helge ;)
+
+>
+> >
+> > Maybe worth saying by dropping the __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG and
+> > ptep_get defines you get the generic versions from include/pgtable.h which are
+> > functionally identical.
+> >
+>
+> I can touch it up though, if you insist.
+
+Yeah, I'm being pedantic here it's not vital to have this change :) but be nice
+if you could, I'm sure Helge probably wouldn't mind too much? :)
+
+>
+> > (Being pedantic, they're not quite strictly identical as the
+> > ptep_test_and_clear_young() generic function does some weird unnecessary
+> > indirection with a local variable and the single {} is dropped etc.)
+> >
+> > >
+> > > Suggested-by: Usama Arif <usama.arif@linux.dev>
+> > > Suggested-by: John David Anglin <dave.anglin@bell.net>
+> > > Signed-off-by: Helge Deller <deller@gmx.de>
 > > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > >
-> > With below addressed LGTM so:
+> > Nits above notwithstanding, LGTM so:
 > >
 > > Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> > > ---
-> > >  arch/powerpc/include/asm/nohash/32/pte-8xx.h | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> > > index e2ea8ba9f8ca..f2bab31040c7 100644
-> > > --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> > > +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> > > @@ -226,7 +226,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
-> > >
-> > >  #ifdef CONFIG_PPC_16K_PAGES
-> > >  #define ptep_get ptep_get
-> > > -static inline pte_t ptep_get(pte_t *ptep)
-> > > +static inline pte_t ptep_get(const pte_t *ptep)
-> > >  {
-> > >  	pte_basic_t val = READ_ONCE(ptep->pte);
-> > >  	pte_t pte = {val, val, val, val};
-> >
-> > Worth making these const too (that {val, val, val, val} horrifies me btw :)?
 >
-> This is PPC code, so I don't know if they have any particular opinion here,
-> but I could definitely do this.
->
-> (FWIW, it seems we're more aggressive in MM in doing this than other places
-> in the kernel?)
-
-I mean I can't see why there'd be any objection given you're already const-ing
-here :)
-
+> Thanks!
 >
 > --
 > Pedro
