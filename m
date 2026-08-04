@@ -4,134 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 546CFC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D410FC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD106B007B; Mon,  3 Aug 2026 20:30:16 -0400 (EDT)
+	id C813A6B007B; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD556B0088; Mon,  3 Aug 2026 20:30:16 -0400 (EDT)
+	id C32196B0088; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14E8F6B008A; Mon,  3 Aug 2026 20:30:16 -0400 (EDT)
+	id B47E66B008A; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D02D06B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:30:15 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A90F9C086A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:30:14 +0000 (UTC)
-X-FDA: 85061705148.24.15CF2B8
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B166920011
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:30:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tzoHR0mn;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785803412;
-	b=a3Mn7AV4AmA6ALCWNQ/qCQLrIQf4jtuhKClDQtttaJNqqIV5fs5PnCvMbzvjE/ItavROOE
-	rAb/TiJzjTYq1E9dl4e9IwH0LVRhUiZgPcoYbPVVPga/9yxNhjW1YYo4QfyV722KcGYlh0
-	JDgVpdEIY9CtMBe3Y7wBojxPgpOh7Y4=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tzoHR0mn;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785803412;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA116B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 098CC1206F9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:37:37 +0000 (UTC)
+X-FDA: 85061723754.30.F29C4F8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 817BE100002
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:37:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GbDL8vOf;
+	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785803855;
+	b=xHMAXe6vSuKkATfkmeLDxWBkb3PR5f4UeOFHJ1wsMtjuoUGEJWwq85BxqH05DkAvOCHu2U
+	3zWE0PV0r4fQIU35X/mu7cGdCdCLCigRaAazO6r9aBr+kHgkQy/O9a/ACHNXm4+N0Q+fiL
+	yF3ut+ZJlxzxCgMBDQ/OnpCbAWmwBhs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GbDL8vOf;
+	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785803855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aRnJbvJF7b7ctthMpHHeJt6vmkfGn1MSaF5k0E7zTb0=;
-	b=8OvVXhRH/RuJXxQau1Yw5kf4RO/Zb7smX3ZFUNFRKmzHUiIoe5topoosmm10BBJx9yRRFp
-	zeYkw+LChA8Y+RBPJCZKBp+eAFZdQ904Xu4nCiDFE8eYHP6tKIjZXfx+aLfTG2Qx3ABHHs
-	N7NX3dCY07ZsoMp+6fwRLB/28ijS5uc=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c01c79467so133551cf.0
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 17:30:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785803412; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hSsQAhcFT7YY1rHhMMA2m2obwXXSJFzMUA+uVk49A36+ME+3bE/zslxHRAs6Rj18xY
-         L9SKtxx0L3ftMrZxjBi/k53sW1qdsNTr0ajCOuA4ru4WZQGWTZHDJMfm0wPrdMLE0pgf
-         4CfVsSMymmJWFG/cIM6CY7oUxqrcNnQ5byeFYxbs5hnlz2ebG6KIGBKbsEYt3ahchtzq
-         tgPSeKtD8IiEKLDVfxRzhMaZej+ztx8/F/AL2hdqBXG4kiFU+zrhB/n0F6wZrr512QPK
-         RIIC6yaoqYTCMD/s22u5vdwncWa0i8ESuLN+7S2UgtmISafVodLfEwwrVCHtbVN4eMbk
-         F7aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aRnJbvJF7b7ctthMpHHeJt6vmkfGn1MSaF5k0E7zTb0=;
-        fh=lcECzixYUxJrRXs42D0haeEuDEngN7GscKFGtYCIg2E=;
-        b=EyHhFPcHEbOg4LNi+6ft6QJjed9awh8gKPJ0RbMbwPf77q7c4IUbVJNc+baIWrtBfA
-         yTO8ZcTLDi3i0ddwp1LlQE0eC+p5JEt8/NgcwDufmZ7ClYs1RmlywG0fJcaGx3stdBE9
-         dhJoMdT53Ndl5n+MiTkXLHLp3miC6y0seVq9ca66SSDfUa0UKwdo0rrEIBa4skWa767/
-         iAvTxe7bq/bSjJYSHKoz/FK+aBDR7EPCtylwK6gZvJPmP3njcu5qFfSNY1yq+Iz7jJKP
-         0p/rlHzrGr9zzIWi/8y4X5CjOzoki7coW1XhWWFUqNNnEQADy7bGToT7cb4H9tCSBke6
-         8GKg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785803412; x=1786408212; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aRnJbvJF7b7ctthMpHHeJt6vmkfGn1MSaF5k0E7zTb0=;
-        b=tzoHR0mnbxchPJAqgLxY8GO2I8DqXEpnUIDZEoNP1fzsDDvFjfiAYbZDE7feR3Sc7P
-         fmUuYXhewBSQau/ySCcavca1xWGtWFuWlXHV1kFMF0elYI5JotE1qelu+aCGSXUnYkfj
-         gusJB9NTw/R3DTibyAaLxrtMNiCgKhkKMuxi3wlj+QpHv1gzQuQ5VUsEEIgCC8j7FK8g
-         LbZBbIveg7HMsY3GLmoZa+d4qwIXdrrzgD3IfsHLNK8GqiSXs6ZvmxXb61Begayiu/bb
-         gmz9x87GrjU/ztaF1SgfDlVDoZCBLH5Zrx6rgWxRvCXcWe+SZxoQLRdJqVwK0X2xF+Av
-         ++eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785803412; x=1786408212;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aRnJbvJF7b7ctthMpHHeJt6vmkfGn1MSaF5k0E7zTb0=;
-        b=TG/vooT5x0W2vS0NNklZ3SO7U9wEPRLzYwgwBmeuLH75S1vz4Uu36O5kUV+iYzGpmG
-         3eP/aMB1qbliyipcZF4AshdWn/QdajgaFQTDkFp2CFBY3ZCoTgwjE7I6tz+PNl4U39wM
-         FIpj9czhlsavyEKtQkJsaFID7YMkl+DoMegfxi1XQ54fdHnwOBaWdrFcv4Mtl2LZEppv
-         QMkf2f/WmalcNUHXrzwU0QiSHUrn4qP09jk+lG0xjEuL5N3rLmLn33Fr+pyxXx/7Yj0C
-         erVcwVxKPWCRSEfEheEzvOzFkmM3Tbf0i08WYhFUMXfmthk/7P7HCBJNtTdrojFFbYGW
-         gRqg==
-X-Forwarded-Encrypted: i=1; AHgh+RoOZ1A5A/AQi2XvFgB93k0S03/DNJKYyIHaC7qFUVQXx3LTX/z5Zh/HfdWLUsrL/TPvF3a7ppRsjQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywa10dIUn/4e46YHgObfBstF46A17NqlLI1Dl0FNNU3PTPRU4Vu
-	SX8X1lcQ/9lrWnUft4odr7VHzNuBZ4el07NR5nzDi+5IA3sHTEp5BE/1OFwDt8QKYN8TKiLIzOW
-	Q/AGCrqfHw/NgFQsydX7aX3j2NLNdyhYrX+KIIhva
-X-Gm-Gg: AR+sD10QsexxfwXyRw3AgYF6wNmHug+tlK8eHq+axeRcYXamO/BSVllM+IwZ6NoqOz4
-	Dt3ollRqQD5HbrAO8mr1/gwatH09vU4Se9yfUG2yojMb1JGfD5Z+e89Gs2BQ9L0jP+7fOwPdB6/
-	guqqDL0Wy7nN6b3gV1egpXTpC/AWr6/3xh5aeFJ4b1/qJNoF9RMW9pNolGca0pm/MJCvTilTzTg
-	A++YAVcFrSYHiExbO1ocHbgP3SjsDzCX+LcxPqiQwjGC4lUAHiCcEP0P4sfGj3v5ZlAydcCESgM
-	Pe00n5Wqh0WDe+aEowA7KTllsIvWGOcfNy8ZNG9kjt8=
-X-Received: by 2002:ac8:6f1b:0:b0:52c:d3a1:358a with SMTP id
- d75a77b69052e-52cd4fc8ac0mr6861461cf.14.1785803411052; Mon, 03 Aug 2026
- 17:30:11 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=W9DygNyHW+E1VUj2JEzj3GqHGlULW7/nccPrZjgZMO0=;
+	b=eigNwh0J2+AgqCwOmMOts1VpkkraGy2DBYotrvVOAPcB8jS63xfnEmZrhsg26b689EtOb2
+	+I1hIq0dIYnXqsr2Pg2EmGKg3hwnHq32PFQbcOz0YcxFVijl6j00yGdq+S2h+bq1y3jOWx
+	X+m6sh4PKeStW+vCKWVjBYWBfZOtpfc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF94960A59;
+	Tue,  4 Aug 2026 00:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC981F000E9;
+	Tue,  4 Aug 2026 00:37:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785803854;
+	bh=W9DygNyHW+E1VUj2JEzj3GqHGlULW7/nccPrZjgZMO0=;
+	h=From:To:Cc:Subject:Date;
+	b=GbDL8vOf3FtW0krOJtwvRUdJj00bVX4UPXzOsLf9u6y9J14kK8XTFR80E2XLKgSRl
+	 IBRZ+jSj+s15+nni9G58BlRT2xUfRPJROpqkS2gkMOsboChxiNEBB1Oh1z7/odKuD+
+	 O9Ed9Yo4Nsy41UpI0IoC0oIveGEKRbsQgCeT+LDsg3krjl4sfq63hO8oJH/yW0JFyy
+	 jjmQxdzN+oBadG2o3fpDgoa6CspsxhLH67diEvw2S9Rhu8KWCA2H+4TBqRD+1BazX7
+	 qCACpxgDDfZMMn2FI3XLBXB/b+IJ3o4839nBKPLtiY0+BUjRh78yTPbo/a17+I1CZs
+	 yR06vRXtPoHxQ==
+From: luto@kernel.org
+To: linux-mm@kvack.org
+Cc: luto@amacapital.net,
+	Andy Lutomirski <luto@kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] Fix incorrect flush address in direct page table reclaim
+Date: Mon,  3 Aug 2026 17:37:08 -0700
+Message-ID: <20260804003708.49830-1-luto@kernel.org>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
-In-Reply-To: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 3 Aug 2026 17:30:00 -0700
-X-Gm-Features: AUfX_mzJ7vIskMKOWg3ju80qsSVBzbe0PKGqEXcRxfX1OauzzIWTM3-ClPE7tI0
-Message-ID: <CAJuCfpGA7F80yW1=bSXsZre4=Tx=peqNbkWvKF0up8xJdSvrgA@mail.gmail.com>
-Subject: Re: [PATCH v3] alloc_tag: expose profiling and compression states
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Ge <hao.ge@linux.dev>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: kmmk9xmz5p96crph4e4asbjxynhnwntf
-X-Rspamd-Queue-Id: B166920011
+X-Stat-Signature: o86brs6dt5x3e43ft919s1pumbitoaq5
+X-Rspamd-Queue-Id: 817BE100002
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1785803412-340197
-X-HE-Meta: U2FsdGVkX19Y5r3LgF+7gUP7maKUiRlWXZWKeacjIyPmdwagubVVT2E6mO+Cdl7MVRhYGj2oQHKQJcyj5p+ylQi4T4PQgJhqtkWJ7zVvd6Nm7kBrbJwN2mYXD4NmXgUGs3Rr0P3dEaxPiUNhctCWVbl8WuLEbzV6Gh7B20JeZKPgTlYr2TcLDyNVxBmZwYc9vb9qTLNcw9nNm2UQrst8aqVwrtVmjCiuv+6fHrKnvu93+u+hjmemOoU+7kG0cYlqwKR/6MqGCfN12f8q9Zag8CmBBxP0z6K7bcxIVhM/mMRBohRu1s/cvil0lrrgifnGh5SOMZmHrcaxcvxt0u1VxwFFMsTaBLbiyVpmqFD1ZL21MuZj4dA5xHnI6ArLvDnJFkCG8I3C1q/eF4wADCJDfjbBnkODrvTNkY0wLX9ZbcDAz7gmpGm4Y6BwkiNCLWJfvh3pcX1pUIKVD+Q9BQ44FiE8C9IuZElw6EP81lUZTQPN3TV9nQUWE/U9kUhDjJ+6HBPlOCf7Xm3ch4Oh7JoBKYhzmIUmNCBjFqN1AQqpEK0NeRACd5d9nkrDCPrsaB9INErPguBsfO5TrCqE4yvdrLsEJHGArmoeW1MgWaH1H0LmZROswcIXEQX/0ftcRW3hM1iFd4PSoq2s6LHT4Z36ZSHl6oNOv5Ncjd8CCuIWDOjhMieMwpu7h/ME61oKK8tsuVZjbCVCEhaemMEVQxoGF++k3S2pmrHg895b1YvYfC+icobnbrDaBq2CF89ovOODHMimnvlgphobaHKpMcerdkpwZbxEbIA5nvP38DkS3nN9Ba5Jfks5gDggu1kDPzMPA27HWJlDfN/NngeWJcWb25Gsf7VP+VgZVA2SNolIWW4xJ9yv8EZw60Mydai97pg9V572MKssQwEfWgYLVRfH01E+fgUxO+YQEvfHN8TJHFC+d6crU6ANiuP7GEZdTIpU/fNxZ9m3/94k1M8a1ST
- cDb7V3/0
- 35ABuHwIAA5WIEgEMewdS62qnp/d3XTYwXZ5uZha5n+Pq1O9YImaXSiJGm39GqM82y8H4+Ah5sSIQlprJ6mjTwppIVdLRFr7hbI+C3K+7CFBkwTAcleobYlEx+b5go2o0c6eMv7/Zo0NR0sobr5I3vlYIrZWSh9FjkLx3jJfpYJ70IUhV3HrptCM1YEB/amKhVSq7Jy/SbJ4CJ47iL02UlfBOrSl9Y++QGLqfC/wg872TPumf6YJz0T5M+jz8g3YfNiuiIebwp14YkYYWdgzcaXD6jXpNPTQYFXnD5I1dR7RtWZW+1djFN4NblQ==
+X-HE-Tag: 1785803855-491138
+X-HE-Meta: U2FsdGVkX18hAgfffa2yqlBFtJCB6CQ7iUXtX4qaItM8wgEHCyQ7hPlVptk5Q9KoUcMVlAAIih+c1GsMDZZXjsP1zP4AftLRCmjRC4BNcvTluJbYyw/R2FDgRe9ZOWsEI0kssPqa2vJe1xYoX76InnG0fk+Ono5bR+GnFXm4syEQ7iVLKYtIveHsMaUfhX9Ha6wNMwSD1CxYe0LHj98dnzyx5tFGHioFq6tB2tg0oeOdcrcy47EbC+StlZQ+wLq04QL3Uouy8BQMrbJq8sN6PObFO/SPcbvpvxlh/mBqjlLGVXRuEI22IUAEjj4ixB9QoHLi5+PW/gG2zwYeUuS/P+UEQv92Lzi4NddWndsdqboPLi1nSLE4o5mNbZZqpfJhtWTfiE3ZEhpdbDVfLWxT8EWcWpNqI8SRmNgSTrkVc5DSuaUlsZ5x0I04S0TO7HZ9RRQoKZvpDjSp24obXJCZkRYh3ZPlVQu43/HcieRYzpUv0HFeyftDOpv73q6vEn7kE/dzzvtrAUj4CtfSwy9FRnbfGw++a7Olrn3K2AIWLytSiFVXSNRVAwhFFhJivtGF4kCyM24Cvf0Dy63NzCsJvs69rAQkuzJkAfOFyTf/cSwx5TEfXQaoyMQdLJaloZo2jCaRvi0bS/PTzd7aoOUINKlrjfZFnHiMnk84SVMLvPdXlqTg9V08s8hAbMSwhHpavpUHzYdF+Eaj27sQVX9DiydG5zP4BnQFNn0xrUII1dZGS8WHURtfkIzGxd0DzdFmn50UDV3JEGX0Gax1uGHwHlbizfh7VdwM+M2k6TTJc30AQWQvPV7bWsnuookwn8ZT3GJdNKJ2aqvhmbyJyHooR5txLLkQ7P602b/aNeqtPs95cCqClUOQGLTZNGrhNvG83/VSYG4AabyyUvLL7TkKrGG5I5YqEQGW1DriazyOkPFq43Lil9QrhNOmaDfolE4BWK8/GpGoYLyA36Q+3JM
+ bRkwugED
+ 5Fw+EScAxbZeLTc3Bui/vXYDOzltwRo3wTpq2PwBu6cXOJ6bDHSHzf6qWc5sjZrLGbevELWJZ3nCLx99o9Qak5ekft6qrPsdT1DhdHZzFZoRexdMaXJYlJrbdFmokHAoMjdNCiP5X2omoNlCZcuCHa+aXWYwDG72y4328yXedBOr2tLM2gXq0e45nkvViW6Lrp0U2VWTQrvBDf4zCrFsPhYNSsPAer63pmvFr3trJeSlDSgV60ksvuCYBjzpAxwLsJ9ellf1pUDSxQkF2IRmCWzzQ+eE1CKs3SwWPzf9ncxB+p26zR5UfwcPOQxW2o9/KMluSobWbERYL9yGGIIxck18ytUjeNXLRSN1JS1jT/iePeJx5CtaXb4GXf/tTxIgxhCm8nkwK3v/+rD3pjkiLyCVlTB2ZfywJ8ECaVKQCFmMGC5j+ENlW2AbklIP3214b55bdJTUIaxxXyI8mOKwgVR3LfICOHhkmV1/tcmU2pQZ/H0HG844BrA9y4Lx2CDIiwlL3FsKQFQpBeqF8Dze2w58BuuT6+WtQGSZW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,101 +99,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 3, 2026 at 2:54=E2=80=AFPM Abhishek Bapat <abhishekbapat@google=
-.com> wrote:
->
-> Currently, userspace has limited visibility into the exact active
-> runtime state of memory allocation profiling and its page extension
-> compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed]').
->
-> While reading the sysctl provides basic on/off status, it is currently
-> impossible for userspace to natively determine whether page-tag
-> compression was successfully enabled without scraping dmesg boot logs.
->
-> Resolve this ambiguity by exposing the active compression state by
-> adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
+From: Andy Lutomirski <luto@kernel.org>
 
-"Resolve this ambiguity by exposing the active compression state by
-adding a new read-only sysctl" sounds too elaborate. This also
-conflicts with the documentation you added which states
-"`mem_profiling_compressed` represents the state configured at boot
-time", so your description of it representing "the active compression
-state" is incorrect.
-How about: "Add a new read-only sysctl representing how compression
-was configured at boot time."?
+When zap_pte_range reclaims a page table, it does:
 
-> state.
->
-> v3 change:
-> - Added documentation about the behaviour details of the new sysctl.
->
-> v2 change:
-> - Moved from displaying the state in /proc/allocinfo to a new read-only
-> sysctl.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->  Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
->  mm/alloc_tag.c                            |  6 ++++++
->  2 files changed, 19 insertions(+)
->
-> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm=
-/allocation-profiling.rst
-> index c3a28467955f..3ad1e9aacb9a 100644
-> --- a/Documentation/mm/allocation-profiling.rst
-> +++ b/Documentation/mm/allocation-profiling.rst
-> @@ -43,6 +43,19 @@ sysctl:
->    warnings produced by allocations made while profiling is disabled and =
-freed
->    when it's enabled.
->
-> +  /proc/sys/vm/mem_profiling_compressed
-> +
-> +  1: Page extension compression is enabled.
+    pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
 
-We are not compressing page extensions but rather page allocation
-tags, so "Page extension compression" is misleading. I think "Page
-allocation tag compression is enabled." would be better.
+and this is unconditionally wrong: if this code executes, addr *always*
+points one past the end of the range covered by the table.  The addr
+parameter is used to flush the TLB (really the paging-structure-cache)
+to drop references to the to-be-freed table, and any architecture that
+cares about the parameter will flush the wrong address.  (But they'll
+still free the correct page).
 
-> +
-> +  0: Page extension compression is disabled.
-> +
-> +  This control is read-only and reflects the compression status initiali=
-zed at boot.
-> +  Note that, unlike `mem_profiling`, which represents the current state =
-of profiling,
-> +  `mem_profiling_compressed` represents the state configured at boot tim=
-e. Turning off
-> +  profiling at runtime will implicitly make this sysctl effectively dorm=
-ant. However, if
-> +  profiling is toggled off and then toggled on again, it will resume wit=
-h compression
-> +  still enabled as long as the value of `mem_profiling_compressed` is 1.
-> +
->  Runtime info:
->    /proc/allocinfo
->
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 52aece27b00e..877068241f06 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_pr=
-ofiling_sysctls[] =3D {
->                 .mode           =3D 0644,
->                 .proc_handler   =3D proc_mem_profiling_handler,
->         },
-> +       {
-> +               .procname       =3D "mem_profiling_compressed",
-> +               .data           =3D &mem_profiling_compressed,
-> +               .mode           =3D 0444,
-> +               .proc_handler   =3D proc_do_static_key,
-> +       },
->  };
->
->  static void __init sysctl_init(void)
->
-> base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
-> --
-> 2.55.0.508.g3f0d502094-goog
->
+I think it's worth contemplating why the kernel works at all.
+
+If we hit the offending line of code, we will first clear the PMD entry
+(line 1954, zap_empty_pte_table), then we will issue pending flushes if
+force_flush is set (tlb_flush_mmu_tlbonly(tlb)), then we will skip the
+retry on line 1979 (phew!), and then we will do the offending
+pte_free_tlb call.  *Or* we will clear the PMD entry immediately before
+pte_free_tlb (line 1983, zap_pte_table_if_empty).
+
+If we have any pending flushes (i.e. we actually zapped any last-level
+entries) at the time we clear the PMD entry, then the flush really ought
+to flush all references to the table (Linus certainly seems to think it
+will on all architectures [0]).
+
+The condition under which we have no accumulated flushes at the time of
+the clear is very complex (the whole zap_pte_range function has absurdly
+complex control flow).  If we do hit the bad case, then we will end up
+clearing the PMD entry after the last time the range is flushed, and any
+CPU is free to cache a reference to the (empty) page table.  If this
+happens due to an ordinary read or write, it would segfault, so it would
+be rare.  But the cache could be speculatively filled as well.  Then
+we'll flush the wrong address and then free and possibly reuse the
+table.
+
+On x86, even flushing the wrong address works on non-KPTI Intel systems
+because INVLPG flushes *all* paging-structure-caches, not just the ones
+for the target address.  But INVPCID does not, and flush_tlb_one_user
+will use INVPCID if it's available.  And then we're toast.  AMD systems
+are more susceptible: we set the EFER.TCE bit, which makes even INVLPG
+only flush the target address.
+
+P.S. IMO zap_pte_range is a mess.  The control flow is excessively
+complex.  The direct_reclaim variable itself has a confused meaning --
+for the first part of the function it means, approximately, "we should
+free the table if can_reclaim_pt".  But, later on, it means "we ALREADY
+reclaimed the table".  And the goto retry on line 1979 is IMO just
+asking for trouble if the condition ever changes such that it might
+happen after clearing the PMD.
+
+I think this might fix an issue in ripgrep reported here:
+https://github.com/BurntSushi/ripgrep/issues/3494
+
+[0] https://lore.kernel.org/all/CA+55aFzBggoXtNXQeng5d_mRoDnaMBE5Y+URs+PHR67nUpMtaw@mail.gmail.com/T/#u
+
+Fixes: 4c640eb4181c ("mm: move pte table reclaim code to memory.c")
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+---
+ mm/memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 86a973119bd4..13b70861c8a3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1981,7 +1981,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 
+ 	if (can_reclaim_pt) {
+ 		if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
+-			pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
++			pte_free_tlb(tlb, pmd_pgtable(pmdval), start);
+ 			mm_dec_nr_ptes(mm);
+ 		}
+ 	}
+-- 
+
 
