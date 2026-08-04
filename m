@@ -4,165 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E044DC55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 19:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77241C561E6
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 19:59:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C75426B0098; Tue,  4 Aug 2026 15:59:24 -0400 (EDT)
+	id C9CB36B009D; Tue,  4 Aug 2026 15:59:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C26A86B009D; Tue,  4 Aug 2026 15:59:24 -0400 (EDT)
+	id C74AA6B00A0; Tue,  4 Aug 2026 15:59:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15516B00A0; Tue,  4 Aug 2026 15:59:24 -0400 (EDT)
+	id B63F96B00A3; Tue,  4 Aug 2026 15:59:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8341A6B0098
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:59:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 092BBA16D4
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:59:24 +0000 (UTC)
-X-FDA: 85064651448.11.ADA8F25
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011015.outbound.protection.outlook.com [52.101.62.15])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 287C820006
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:59:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=usw2EYWa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785873561;
-	b=C9kw8o21ppv4JrSVDGDvdrkKzeUnp6V816DBh1Gdw5kUql66i3wKTCmwWyoZ1lO6KRWvfC
-	hHhQdvw8mp9YmxIjzf5Dqsm/5sGXmf6JB36aXLV0jHVwtMqzMeIegArlaoV+6zhNeXVAov
-	IkpW/mYxno6KUmswUB5V/e9t31lr8fk=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=usw2EYWa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82A586B009D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:59:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08FF6401DF
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:59:26 +0000 (UTC)
+X-FDA: 85064651532.02.4D0BE21
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E4A7020005
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:59:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=J2Gua2pl;
+	spf=pass (imf13.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785873561;
+	s=arc-20220608; t=1785873563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmJrYLNemZq5eJzgebwoj4EhazKrM7Zp5K32QI3gFL4=;
-	b=zFol3MiIW9ExnrJFIetsa2CDfK+yU26hcagc+o/xUYyzhpLEMEoy89Ss9W12K52A6HlAJM
-	dL7Zv+ynz/vlJznq1S3YAmCG2ggZOHNnR65bK4U+RbA3Ydme5FAwZ3ncCz24FgaMc1B/TA
-	Zl8aidLNEh1JbO2tdnr9bOelvKQ1i8Y=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kylcZZICfvEOtzjAtTUsZf+A85Hc6CzX1GsCZPPBhg0qQabLjB8FZS14EMPZchU7bFz8RCi0kCJPSRieZbiSHD36YaMgppzUEVt7j/c7beXMplUpN9ywNSki8mfmMud8nNv2XtKd+0wzQTeTVMG9xDA3xQaNJUrciYS3O2vNqiaB5OGOHEqfVAiL0hJxmax6+X4etP6vdXKV2rR++K+gkmoHSswTu/52qRzIbBHAalfpyZXBn9n1qQ63CkxtM/Zu9m+O94jF+DiRcDi9yfSOx2cC19WHSIGTu7DEWlwKdPzyX2KqOOoQh6Ko19HGNhre/Xd/OO8a0NJDYm5KLK73tQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zmJrYLNemZq5eJzgebwoj4EhazKrM7Zp5K32QI3gFL4=;
- b=NPD9N79asGKZ+kA3Tg+gvw+3zH+/0/LReAD4v2sMUVs16TJ2i6eIxtiOf2FB/wMi/iqwePFrrcp2Vho9WnSf2armVjAJ691Z3C7hRJUAHa+oucsGfyP9yR5ijLOcdTonuF+vhtAMXXVmqSauf6tLXwar2jnBiJsF70OYAAOQ3aC+M2y6VCXug3i9weRRDkWRf7kV/1NrF20moUUx76AbjB6jxjdyGIy0mWxNqPEuGYLmlvjb96NWf126Q1u6DQJECqtX7Ehg2BifzStx77hLx8i0lTw+EiVn0+PqkYaxBTYcI95n77GXwzOm/9pohvtjbu5r3HJOj2ixH4udA+FKOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zmJrYLNemZq5eJzgebwoj4EhazKrM7Zp5K32QI3gFL4=;
- b=usw2EYWaxWW1JTbt2GQuR0VUG59aMknGeZONCAa3bUzZDFCYiXJ8n9HG7Sczgsr5AhG8xG30Bp2lIj8yVVq4PsKARYBfuz8g/kV4ihUBIdEzHwTHf2g265ENd3lMpa6U7tKnSOWr2u4wZvOVYUQAsP7VkCcnncJIyDOoDzOH5G1np4zZyugJzML/xgHvljsYenDLvaz2+LCMd43El8PPDF0AGTVllCKvKMq+lzjaBQTSUszcMq/vecqv5dE3pi4RElRlGv541kApppRlWOuf/CsPPm57mlWVK0RxwqNjHk5+OI/IqLvX20hxTDeUCA8l06+nr7kSxfz7aV6Zl55eGQ==
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com (2603:10b6:8:e9::18) by
- SN7PR12MB7274.namprd12.prod.outlook.com (2603:10b6:806:2ad::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Tue, 4 Aug
- 2026 19:59:17 +0000
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a]) by DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a%3]) with mapi id 15.21.0270.017; Tue, 4 Aug 2026
- 19:59:17 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, ceph-devel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 01/10] ceph: add ceph_folio_snap_context()
-Date: Tue, 04 Aug 2026 15:59:14 -0400
-X-Mailer: MailMate (3.0r7024)
-Message-ID: <F6B9E1A7-D812-4F28-B9BF-CAFEBE68915E@nvidia.com>
-In-Reply-To:
- <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
-References:
- <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
- <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BL0PR05CA0013.namprd05.prod.outlook.com
- (2603:10b6:208:91::23) To DS7PR12MB8371.namprd12.prod.outlook.com
- (2603:10b6:8:e9::18)
+	bh=12t/KpEWJ9OZ/EDgQulX30VA8XxZwBhkHz7JGZZPgHc=;
+	b=PjVOjod8AsQMvF+dtALgNFFE3P0IOIrDLQVmDXVWx1Y8FlNjsvTO4Abeq7eorN/PF68fa2
+	etXJudthZIPQOHhtqIYQAonaFb01XZFUOF7jqpO4Viu0zrZ/U1rK523OYVHUkzKWmYl7oK
+	S0gwzSaTSSd+yNdIsKX/lobbxr9anuM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785873563;
+	b=yr1IikUP3gWsfmHPt8tPsB+vN+6UoPbUkrPXZBFY9btLTRnCtExsFIRJ5CkGkPQkPj3jIU
+	VFjQG9P/N5Z+gdqtaRwOMvAlMcSBqtbrC6bIjPRkqeetbmFVBk9LClC2h8/dbr+9qO6Fzd
+	1Dad2Cs5jW8QU6laSuxxWb/v4nscqng=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=J2Gua2pl;
+	spf=pass (imf13.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cab97c86bdso3425ad.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 12:59:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785873563; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WcyQ/NW4yCf9FiTQ0WPiz7mi4oFkoBoKA32xuriWvWWIuVHMnuKC48Xaxq0UM0ZtDW
+         FHBWNZ1y9uQG5GxRcg0AwWs8T/IrZks326WSUTSyCOt41q9N1MHGP3riPHeQjt0vxX3C
+         0vYmz1IccUeOdXn+AbiFxfzJD+PYIJ9UmwHf34wQ/cNQAJnTrZ2NfHAMN/x0V7PGfMZ1
+         uZksnTnfYo4gnzFklSPH9rtMQYEBwz5OTVIg1gbr2CzdKUHVH8oWEgtRKuFTpfI4cB3Y
+         RELKh51w8HTrmT+Y5ZmUjQZ2iEiPOcjqNyE/n6VL4fBgMmrvoRDyg8+BuVzsvoL/dvpd
+         AJtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=12t/KpEWJ9OZ/EDgQulX30VA8XxZwBhkHz7JGZZPgHc=;
+        fh=AhOVF0j0pHKUX/G8A9BY3JLb28OLWo4hVd2p7bHoaow=;
+        b=Nfj0A0UIod5EU2i5d8+Eyf4PVWjsJZZ0rOtTYRDRjWAvXG+zC8/XS6X/aRTOw3/ChR
+         +gqFx27icO6GtJfgjUObZlLueineiBnESssbXZh4/Iw04AhmWwCOPI3z8stGEM2yQ1Jv
+         TD2Jdn1FhBksOF3pwYOHKNHD/fKvyrnm16P0037Lhr4FyeqnSEuqDNR+cng3gLF0EW9B
+         JQvLbarGFfaOTHozwyRuKxLoPuYg1ur6JB5K7hwxz7EFeEnDT3PMi02YpaznDR856eQT
+         92aJhlB7jxwrALvtoRC7v0ROfvMUKm5e4zFUXmGfeE5d3ZIcq0hJ+QHBaK8gp2j+QOYg
+         +MKA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785873563; x=1786478363; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=12t/KpEWJ9OZ/EDgQulX30VA8XxZwBhkHz7JGZZPgHc=;
+        b=J2Gua2plokKyZZHOFnZiBewx4aFzWIIfY8THrjmIUh4iXkLkwYtrJKRJbNfaoUAcUZ
+         o3SmX3mZ9LoPkWFV9zfqpLoqcrhnDLeJcWXipk0TVCmiM35Xa7xZFFAWRZ2motETq+OB
+         vrNlYRm+8Yzh0vc9vuxp0MXCdvh5Iyiok7vZQ3rj8lEIRvqVLwVB1ClinIbQ6qGM0FhM
+         MpX4SecrB0JyYxOQ9RMfwEHinU62AJK4pqv3/9VgWw7CvcEt7G8KeHg1Cp8r76p4th1h
+         wPHEadc0DAQegF/ioK0iRQJReOZkWwd4l3vHyA//1mFwMYj/w0Rk14wiU8gChgUcSvOD
+         kZJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785873563; x=1786478363;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=12t/KpEWJ9OZ/EDgQulX30VA8XxZwBhkHz7JGZZPgHc=;
+        b=CqW7opKlOUJOiulHXhjRTqArCglu4fbtxJZqCzjQ0rLI/tLleKyyfvq7PTYAacnAKf
+         IIzo/t7i4jrLtkRPLiPsMawua8WvB0UHcj9t53h8EWc0JVg9Kb7BiiiSytQ4nnlhFoaC
+         lWRVVtQ0MVEv6emA5CwwqLdyO1R0kaCew2j5nMqBGxIN9ulrhZyFljvc0acdI1PiTBRC
+         falQoLEzKLZZOBMSV70XWNDYGWa8ELKOcDmD9lWxXqCYJMHOrucHbOpjnA12V1m0vQsF
+         GpnLNWM3NFZVPh0j+EaD4IP/vCcF2wsIAG+cA+IKNw7vuya+YKgzpe3mfe8UjKXi7XKl
+         pa7Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro3TWYODaLNGQSXvCJf3Ct2JsKHIyXYK2tfjJmEbAV6ys2uG8Gh3xHCgTXtaVeMMo7j0B9ekI7b0Q==@kvack.org
+X-Gm-Message-State: AOJu0YzlqJVz/m49WQUGjpL2WFmbYORknR/mOs529PgeE+uEGUEtRWgZ
+	al4yQIrIXCwmI3ETHPJKfdQ1ilH/av+3Xc7S0a+faTDw7PzptEn18x5ql6/JWfaBmoPcMGHGsWJ
+	0pQGaxCPnhiBseqgaj4gvWO3B1AYoLpyUawr+G/ag
+X-Gm-Gg: AR+sD10RTgdQkNJwXb5/Y4K6xjnlnpHlnrOkKg4xFLlFdViiwQF/g8GbSaewarj44n5
+	/JvjSi1AH1xF9mgeaLrw5spdySRym3Vpqe+FEAbFVykA8IkhUgNn7bTSNTJCcjFXO2OZOPG9AGO
+	pHEPsJF6krz4K0xKB8VmU2GEG4DSoZtgywALU7Mhc3Qffi7YQSf6pHdhlarhgyuG+Gxynpwxx4Q
+	jap6EB2A+orxfAqjJp6yhJrLbhWwxqUWTzFA/Ih1L0ajda7R5L+G5FXAq3RjkpTpPZFLmyWO+qm
+	5nKHbMSpGB2tYa8CMSVLLyhMrLEj2JuVnkTzeUUH+YhsU5zImDKZpklMtD2f2lAKPesGVvW6ihR
+	wITN/ibVRTo0=
+X-Received: by 2002:a17:903:90d:b0:2c7:a13a:7fe6 with SMTP id
+ d9443c01a7336-2d0caf1ac97mr1446015ad.10.1785873562130; Tue, 04 Aug 2026
+ 12:59:22 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB8371:EE_|SN7PR12MB7274:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72ca4e3c-93ef-46df-e50b-08def262dd61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|366016|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	d7oGf2cmpDDFYRStVrPxxU4ZQzA50HmbZu9pbjlCO1V57HhtHs0xMGYsBJx2keo4thp6+I/S9tfmVqq3guYPPFRgUR26AvkMNI/F0aSg7U/XXX4c68VtMoDGDAR8yEm6zk3/l/u85qAUebSj++16OyeRxPJm+ZxxwzFv1mYLIHBoXyRIlA4Kuck21WDHBMqvaHEUL1RSizSnRF3q8KG3Q22akUoTTn5pIv3LTGM/mbVGoSWSFD8Kp/7OzPDN/rx+4cuqttGEjlJLtXExLkNrurqIWvUDnEYkGiSuLznDKg7Uz+mxG3gVipnHxh7E2athrrXd0Qns73IK9a3jOKSIBPhgQAtsrM0H4fVbCmTQg1ErGe7Co9c0tCdccYi8+y7rVZ9Uxq0yiqOxEJJQn/gXZt7dwbElt/xbDnNbC7g+k4jawUHHEfARC+nuRwhjkcRYTYAjvnoSoDH9PsuayR+ugJ7t1MZYKNVOZTPKwWR7W1jhyx4cx/ciGHMTy9rowELLchyEnd0LpASfuTXWmwQv5OzylYrZyTdysHUHOPNVDA7hoMoe1d/JO+PeMZzukt8kS5H/z7yH9CeL/yTgznChYlY0Xk8vvupFOkBQ5P+yrki68AaHaUajiqB+me4BkkRqyLQHngjCvPiCngeNrs+Z1l1/nYNRhJoe5ubiL20y7N0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(366016)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SjfNn05A9cd+OCEYQYh5L7LVuYj9ppmso1jv3ukvzjg25NbeqkizMjCkS5am?=
- =?us-ascii?Q?f4rWkuGcnmG0L4g1JQnS4PctGlRJHXp7CPCjXRFzpiSOGMzyl1G3P2+0VyB1?=
- =?us-ascii?Q?dog6n4BlG8G3xSh5cwJMChFcYTl+x6p7kioTsNiqb0U9EVeAarevpkMjpUIT?=
- =?us-ascii?Q?S5X9srVsVJoYTqWiiAaSFEGCzQelWwTS9q5MjiHs6rLLg4MWocGN9YNNlt4R?=
- =?us-ascii?Q?Y0WpKgg2OGw1RNahSGb8h/C1EkIe3npzV6gQPCNGsEEydz/0APEuyaFujbzs?=
- =?us-ascii?Q?JXTUvLIy6xK8cTVDKtXu/xEIyQmBQ4hR+NeB7HDtpcnpPEdMVQBGtB63VpSD?=
- =?us-ascii?Q?a+dxPWF/PnYxvs9lGKz0X1F56SYFNyZtNGGiciefj3u7PRGJBPsEdKW9MZRg?=
- =?us-ascii?Q?fK6+Yx3ABORodtXPa4ygDGqiC19CXyTA2wTnr/3wBnaTPp/ZVZNbcsdymPQj?=
- =?us-ascii?Q?oYo7owjWsDlumWFd5v3oxFfe/2vQ6oTOsSIq9ZWgOlSaznKPZ6JC8+k5daUj?=
- =?us-ascii?Q?4C8raURZ0RC14vuhgqwEhLZP+kYBGgWnxH8Lxl9MCKwk+DKCvAjNxe+tOaqW?=
- =?us-ascii?Q?PQg0+YndKiU35BJoyKfkbm3BqMUul6T8qNlzdn/9C6oOCin+dhMF5SVOWeUF?=
- =?us-ascii?Q?OJ/mYUM2/+UNyfE3GBdJSZfO5teWUMRXYhvf1rXAJyCzhLHXIsP375mNlIHL?=
- =?us-ascii?Q?RKRe5CqfmD5uMLnIFa7IqA2UmIMhqkZrfQmwNaGOX8WulpVvRlrvg7q6meeL?=
- =?us-ascii?Q?SlB1DKNgPvIFgnEFrjK/F8az6emmPAHnvPu5E4x50S0WkSyVegrQTlf/TkJL?=
- =?us-ascii?Q?xH4+AIwjeGPMcCgyDRjV4nGF0eQGzuk9nGCRIskgS9QqOevaJbinNFu74cCI?=
- =?us-ascii?Q?kATlNtw8Kg/w4E74OmRREnCOtB+0bH8sQEVUW4KvdsxYeO9yu10IODK+L57t?=
- =?us-ascii?Q?Ek++025cSuc8aPf/rXrWDniDTYMgbwp8BQcZLGqKjkcfCDgLwCHcYyAKRyvU?=
- =?us-ascii?Q?V9ZksGUInNimWv+nasxap6miUvb/5mriURUSpL0PH87nqSWE43AIpalKs6NW?=
- =?us-ascii?Q?YSuStpC6yf+hvoAPPVTTqfX5+jYGAm1eHpgz5CJ1AUqo5Z82p8m5MSgIEJP5?=
- =?us-ascii?Q?jug8yNNWdiVfLp4c9wakRxRwDgzHdllNLYIt3W73W1XdrbF/E4iainAoHJmS?=
- =?us-ascii?Q?SQhACu9W/t3Nj75mjE9ShgA9El/0xoGO57yIqiL12PIXDx8WAESVS1uF0i7Y?=
- =?us-ascii?Q?RlntV9azdA8xUugVv5Y4K2qTfuVJJlNFRGiOExv2VrYY+VSCodMfRDJA+mZ+?=
- =?us-ascii?Q?Uv9oR4+H3X8DTjiISFuzh066rJdxK3Nj7qNy92kK6gUPgUVDYLyX3BZ38gnS?=
- =?us-ascii?Q?XWZ7D3E/pXkOflDwG5OT3aij5PSFMcIRQMg3NVp/8GAeO8J8TEiLLx4s6h+K?=
- =?us-ascii?Q?Q1MvgOY/GqQQO960t9o+7rhev+dMeDVByHWQ/+E9Un1zG1x3VTufu0pzZ4bE?=
- =?us-ascii?Q?C19JsOiBBsMx7QlaCyWj/EoaygKImndQT835lXZj4L0WhIH83WSqtbP4ymeQ?=
- =?us-ascii?Q?3ACdivykil1CCY8ldrtsSg3BVaJpc1x3x2an71ESx2NXH4xkoL9cen3cP9My?=
- =?us-ascii?Q?qVf+Y6QjJp4Ow33lpcM1h8FbZfvGBrDv2Mmj5NRK9gpKOwbH5NFJFJAV+UmF?=
- =?us-ascii?Q?mSanMr69RdrhtARgxtQjI6yRxXqfFAx/hFY7LzWSL055KfN7kwZ52mJzLeGm?=
- =?us-ascii?Q?/FRjrvd4gA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72ca4e3c-93ef-46df-e50b-08def262dd61
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8371.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 19:59:16.9679
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aiyhydHK1olWm2+4nGF9FBkx9kYOcl+d3m1cEarw9yqrQfOox86hjilohAIN5HIy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7274
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 287C820006
-X-Stat-Signature: mkphegejmytttixrbrpypxn5pkxnac5o
+References: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
+ <0b95c0df-8cf6-4ad9-9552-d7c4a657a25c@linux.dev> <7e71f6d4-7bc9-449c-a122-49f0e8397150@linux.dev>
+ <CAL41Mv5Aa3XtmqVbDTnsf8RX4nxC7J7mUXZzFaUZ9NSMyAbpFg@mail.gmail.com>
+In-Reply-To: <CAL41Mv5Aa3XtmqVbDTnsf8RX4nxC7J7mUXZzFaUZ9NSMyAbpFg@mail.gmail.com>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Tue, 4 Aug 2026 12:59:10 -0700
+X-Gm-Features: AUfX_mxZ-0FNc_HLNdFRRnXxcn0NEdF_SMSpzT-y9JHOFU6Z-NdT3iHXOQVSrHk
+Message-ID: <CAL41Mv4aBfcNtDCA=s1saJSrK+e_FiNEin79U9WQu-Ww-g9aPA@mail.gmail.com>
+Subject: Re: [PATCH v3] alloc_tag: expose profiling and compression states
+To: Hao Ge <hao.ge@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E4A7020005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1785873560-80935
-X-HE-Meta: U2FsdGVkX18y3zqG8foR5GHphK9HYMPVWfKqdi6+Y/O1Ect2C33qQcvLLPvZElQKLFZvhxeMbd4rCf5sqp5mh2KAJH55s1qwmjC7GoNImubrqjmP7kRrxvjtTQ27XkbxZiKN9sn+th20JGTJTWmcrF1K0IJCC9mVzUvIK3uCjlY7FOnCIFfOaRgNGsgXF0pBmBFJ2AVbxw/DxTknBcaRwMubNNHSSbEAxP/Az+iHznBtaKzjBIksZK47qEB/hQzJ3JMn8i5lCw9UAsn5hbPE27MuKJyf4ZMHdTsDWoNQkiEgFZgTNRDGNW6KYWkLRAgRGQFiaspV0lQ5FXaNGM9J7Xwi1EgXpwAOYjHSR0vm+Q+r3Joh3owKlY0rV4uJVEf78k7Ts5tjdWZiKn5hNI0glI+BLJt4iCpJjeBtD0+sitipIMF8fvZyWj+1awSsG8U5TkyV2qhdI70YcB0sKurFi3l8jZvQ9dnTi+h2TyFjoIxn3II4sX7ttoEKNQXZpGlMmt8KQvUlxOD+ikXhVL/6uHBXh1P3rXKS2X7bK9+qi2LTOkResQZ0fqhVSE8ZcGNLxqz4C8FgvnpNZCSda85tmAxFNI0+JqSAxh9DWhsaKE4lOzehJ17oiqZQ4dWJnFEJLl5Jk4wTAl97IumKrg2fFTlZDzFddgG7TOc/psRr0eXCB8RNHUXo4MlbZdtWM8Kc6LZV0+zZ111yqUiC9gV2LhxVtCDNfUKSWurrn6ZAzhVTWu62UpdF9xIVinOLNSK4Z/O89mf+103R/uAOfce3Duxcb6DqDiEHyNEOZSRAVkFUPr5cggL7Nil/TFQEMHcSNeO31Z4zB+GED2lzX/5Ug8MTKSlitFjIPLeSVmBYH+Eof5IJinfDzWh+RhU9ae7jpFgL4vn6kAIfcLwCP1X+7hMqcuzrY7yPgpt/jp6TM/0nHAhbYGAclHjXZoRT+Vjz+Gsfw66Z8q4o2/BNk7S
- Sbucswnr
- Sa5kr4oEQzIB2NGmb32zI1o9ArX3Z1TWMt5r1T9Txr23ivTFdWqv2HvTdJPdyr3vhjcQgp+nu0vF7aCC6Y+QmfaJQgKYZoBmuKTGHYEeFc1ITmUqJ/uz/FhbPHZeksuugYHwVEkawJKXMuGUT/GFpCAGU6cXVVHmBBb7QJZgw6X0G35LG7UV/aMkSDBu1JUfwwW3ulRJkx9aA4EVCxZyF+z6ZhLbRbV74Cv+jS1aNRQFw+36uEIyjxFEXu1YPKTuF0KfgoL3JlDyyBZPAPB5jTplGfzw5oA6IHJk71HE22ub+nwe38QIW099JCT79bUVFvx8CCY86rq1OF6fVGvNkKFDD0V1Gt9b4zxv1bS1vM5wiYKbx85MVeYfUu6FgRyjQxV8n2aPCJsqKO8RjeHcBFEhO1yB/B6MxUj1Ahhb7PlExvS58Y64aVIt/+Q==
+X-Stat-Signature: a1h7yjyidfq7tf9uyszfz94huecxa7yw
+X-HE-Tag: 1785873563-18189
+X-HE-Meta: U2FsdGVkX18da0wEqpbeXjs7/XLDgeYNMycBzSFO2/bexsYXHtVzeNW9fu/6Fbmf3P0Al+EHUJS8njKzUNgvipsAvaMcMbp/+6V/QlkDDVnuKdTz6oq/F/9wDP/UdB4Kyga7ng8l/N0nN1RuEYPhqljKGNw5Q6wKTmlDFtog6pEO+zf3MoWGrPJi4FMvl9R05MJp28/K2v3lummKYJwDPWC0HskDGwJwC0ry0a7T2Nc9cFz9zB6/QIdPLHDKa5c+nMxc/vfZcx3a1VQPrLLXE2pOou4WvYqa08eNLJ7MQ/6h5Q0N+DuTDD0ASLi+T4mTly14PIHHSN3pwwCx9DYz/TnHhSFv94nQpYZ/IyP8BxjqFLFJFbL91Q3gcLPlaXoa5yLbRYjKV6lgLl236e/WKyWqcStm1tGIoN6M1duLotF30mpBFQEvb7p68oteLICSKMvt4Vqe0sHkd0Mh65bMkNruvzGw5I846RFG0GZStfvUKmhldz70UQQJtcfcyjSjN5/QwBOLdXeIqQnEFKxNT/LVa8+9s+YHR53Rp5hi2QMRgnX4qhqNU2b4sFGtxlI469ib2Hxb/esJJWbZWONzEO/jtwp7xkADWqgHtDjHuutdLMG4OiMZ9FI0zm7XwE0lPBNN3CcbmeZr9HpzpDFySuS1O4mAGkM7HjrHCfF2DhttkY/a+4me5aDKTcEPEqvNS/iS0kJ2Ojyx6AzT16k8AfEkxSOmNn/PalHvPatqU/TmeHNmTHsu0zRmlpkRVJYnLuzD1AiRhnTb8aaVKak1x1DvtEOLXh2k5KPooPphmvuFmm0B2vnFBdd4MIOAqxx15jdB8l9K4/z57nOBomG5iNyGRbOwHgMDbBfUx9/jUiMZulWW53ShCdZ1ZQKwjnCQwXpnQmP2ORZe1f4VLjD3aiAQ9uT95fghRHtQY9+dVlCWDM0/vIYqXJKU1CALF1dkhbVxLPwrj1zwdNbY+cC
+ U01Qha0P
+ 2xuVn78FrYjIDGdTQVj+VJt4zLz4GXK3G6yynNimWIM6JFESbRCTXleoYW07jfN5VVBtDuRBGd3DjXHibCM9bmntQIPC2SHL+qe1T3ZHuviC9SQ2lO/beNCXkoxsvMyKDEQ6N2pxPlk2vujzuwSEZzFScyE5UXtvFTamhuxZknGJ4we6DWRN+e+haQoEcZxiEkFSg8dZdNirwJ54Sw2P9DexD2EWVa+UvF7HYm8G3f4F/zoafg6up1DBU7RyXssMryXfjV8V9c+2iHzQAkIgnl7lJOH01CazkcQUdyPjmHfnDa6zurBYCwaRcxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,22 +142,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4 Aug 2026, at 14:52, Tal Zussman wrote:
+On Tue, Aug 4, 2026 at 10:28=E2=80=AFAM Abhishek Bapat <abhishekbapat@googl=
+e.com> wrote:
+>
+> On Mon, Aug 3, 2026 at 9:14=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+> >
+> >
+> > On 2026/8/4 10:15, Hao Ge wrote:
+> > > Hi Abhishek
+> > >
+> > >
+> > > Subject says "profiling and compression states", but this
+> > >
+> > > patch only adds the compression sysctl. The profiling state was
+> > >
+> > > already exposed via mem_profiling and is untouched here.
+> > >
+> > > I think we should make this more precise, like:
+> > >
+> > > alloc_tag: expose boot-time compression configuration
+> > >
+> > >
+> > > On 2026/8/4 05:54, Abhishek Bapat wrote:
+> > >> Currently, userspace has limited visibility into the exact active
+> > >> runtime state of memory allocation profiling and its page extension
+> > >> compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed]').
+> > >
+> > >
+> > > Profiling state is already readable via mem_profiling. The gap is
+> > >
+> > > only compression. Also, as we discussed, this sysctl reports
+> > >
+> > > what the user requested at boot rather than the actual runtime state.
+> > >
+> > >
+> > >> While reading the sysctl provides basic on/off status, it is current=
+ly
+> > >> impossible for userspace to natively determine whether page-tag
+> > >> compression was successfully enabled without scraping dmesg boot log=
+s.
+> > >>
+> > >> Resolve this ambiguity by exposing the active compression state by
+> > >> adding a new read-only sysctl `vm.mem_profiling_compressed` to outpu=
+t
+> > >> the
+> > >> state.
+> > >>
+> > >> v3 change:
+> > >> - Added documentation about the behaviour details of the new sysctl.
+> > >>
+> > >> v2 change:
+> > >> - Moved from displaying the state in /proc/allocinfo to a new read-o=
+nly
+> > >> sysctl.
+> > >
+> > >
+> > > As this is a standalone patch, please put the v2/v3 changelog below
+> > > the --- line
+> > >
+> > > instead of inside the commit message.
+> > >
+> > >
+> > > Thanks
+> > >
+> > > Best Regards
+> > >
+> > > Hao
+> > >
+> > >
+> > >> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > >> ---
+> > >>   Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
+> > >>   mm/alloc_tag.c                            |  6 ++++++
+> > >>   2 files changed, 19 insertions(+)
+> > >>
+> > >> diff --git a/Documentation/mm/allocation-profiling.rst
+> > >> b/Documentation/mm/allocation-profiling.rst
+> > >> index c3a28467955f..3ad1e9aacb9a 100644
+> > >> --- a/Documentation/mm/allocation-profiling.rst
+> > >> +++ b/Documentation/mm/allocation-profiling.rst
+> > >> @@ -43,6 +43,19 @@ sysctl:
+> > >>     warnings produced by allocations made while profiling is disable=
+d
+> > >> and freed
+> > >>     when it's enabled.
+> > >>   +  /proc/sys/vm/mem_profiling_compressed
+> > >> +
+> > >> +  1: Page extension compression is enabled.
+> > >> +
+> > >> +  0: Page extension compression is disabled.
+> > >> +
+> > >> +  This control is read-only and reflects the compression status
+> > >> initialized at boot.
+> > >> +  Note that, unlike `mem_profiling`, which represents the current
+> > >> state of profiling,
+> > >> +  `mem_profiling_compressed` represents the state configured at boo=
+t
+> > >> time.
+> >
+> >
+> > Sorry, I forgot to mention this earlier.
+> >
+> > I wonder if we could remove this section:
+> >
+> >
+> > >> Turning off
+> > >> +  profiling at runtime will implicitly make this sysctl effectively
+> > >> dormant. However, if
+> > >> +  profiling is toggled off and then toggled on again, it will resum=
+e
+> > >> with compression
+> > >> +  still enabled as long as the value of `mem_profiling_compressed`
+> > >> is 1.
+> >
+> >
+> > mem_profiling_compressed only selects the tag storage format (page flag=
+s
+> > vs page_ext).
+> >
+> > mem_profiling controls whether allocations are tagged at runtime.
+> >
+> > The two are independent: toggling mem_profiling on/off has no effect on
+> >
+> > compression. Only shutdown_mem_profiling() tears it down, but by then
+> >
+> > the entire allocation profiling subsystem is disabled anyway. There is
+> >
+> > no resume path.
+> >
+> >
+>
+> I added this based on Suren's comment on the previous version asking
+> me to explicitly describe the behaviour in the Documentation. The
+> original version did not contain it. But personally I do think keeping
+> this here makes sense.
+>
 
-> Add a folio-based counterpart to page_snap_context() that reads the
-> snap context from folio->private directly.
->
-> Convert the three writeback paths that passed &folio->page to
-> page_snap_context() to ceph_folio_snap_context(), removing three
-> open-coded folio-to-page conversions. No functional change.
->
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  fs/ceph/addr.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->
-Acked-by: Zi Yan <ziy@nvidia.com>
+I checked in with Suren offline and he suggested I reword the
+description to make it simpler to understand. I'll shortly send out a
+v4 patch with updated documentation. Thanks!
 
-Best Regards,
-Yan, Zi
+> > >> +
+> > >>   Runtime info:
+> > >>     /proc/allocinfo
+> > >>   diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> > >> index 52aece27b00e..877068241f06 100644
+> > >> --- a/mm/alloc_tag.c
+> > >> +++ b/mm/alloc_tag.c
+> > >> @@ -1303,6 +1303,12 @@ static const struct ctl_table
+> > >> memory_allocation_profiling_sysctls[] =3D {
+> > >>           .mode        =3D 0644,
+> > >>           .proc_handler    =3D proc_mem_profiling_handler,
+> > >>       },
+> > >> +    {
+> > >> +        .procname    =3D "mem_profiling_compressed",
+> > >> +        .data        =3D &mem_profiling_compressed,
+> > >> +        .mode        =3D 0444,
+> > >> +        .proc_handler    =3D proc_do_static_key,
+> > >> +    },
+> > >>   };
+> > >>     static void __init sysctl_init(void)
+> > >>
+> > >> base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
 
