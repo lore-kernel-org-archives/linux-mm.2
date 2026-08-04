@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC7B5C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 19:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3C0C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 19:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 243D86B00F3; Tue,  4 Aug 2026 15:25:45 -0400 (EDT)
+	id B1D696B00F9; Tue,  4 Aug 2026 15:25:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A68E6B00F9; Tue,  4 Aug 2026 15:25:45 -0400 (EDT)
+	id A7FC46B00FB; Tue,  4 Aug 2026 15:25:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E3146B00FA; Tue,  4 Aug 2026 15:25:45 -0400 (EDT)
+	id 9BCF76B00FC; Tue,  4 Aug 2026 15:25:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3E496B00F3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:25:44 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8712B802DA
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:25:44 +0000 (UTC)
-X-FDA: 85064566608.13.D283B06
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C3B1E16000F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:25:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X69nTRUF;
-	spf=pass (imf08.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 7587B6B00F9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:25:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1099FA1751
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:25:48 +0000 (UTC)
+X-FDA: 85064566776.08.E19DD47
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 53D9818000D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:25:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qSsmQLKD;
+	spf=pass (imf06.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785871542;
+	s=arc-20220608; t=1785871546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bk+Ag5nJI+yRxdGaF5AGAZX80rlbQeLkx2hO1upBMEY=;
-	b=13EevG60tJEZH8FCYi9Zxks/bIJ0NhDx+Q4Xtj3o4QCv7TBriI3O9FA0WsaKwE9zRgK2AH
-	pNt0kmUu3LpFvQkhzB9YQ1WGr5JKbVJxRWVuYYyLPBpxvLeUd+g5Ylu894W9f8c5BV4R1C
-	8QcGi1SI3mJw3KMv8igy+9tshAMnwGc=
+	bh=3iffTJZ4gsF2OWsNoVggLOj4bK9TgyKNkJM9kuPC+3g=;
+	b=WSpFSP4yOvhvgnKi50dxo0LEzSpAy4d2voUSNQQSNymrsbCu6eHMhzQdm4dZNvIiasLZAu
+	RXaEW212rlOKP34yc2aIG+52Bc2RHlxUCocVKoRdWq/LGvNeF4FKiBeVYgzWUL7xLBbMb2
+	zVw4eYzQLV07iwL1ksizsO06Nxz+ats=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785871542;
-	b=8g626po7FqRYl7e6B/ULaLDfCc/Xv9MB/s1osEMzwYP5ItlC6IF4s/NlLFF4JW9mG2WwSX
-	LQVo3A1PnXrsToUyHWXThOhNPZwa/nYR/idbaJxnyeR/UJsFT9sJcZng7hSR1ovl5OvFrS
-	D/TP/9nsfrMS+3dq1LYCj0uAPOcH7yU=
+	t=1785871546;
+	b=v9v1IMUNXfOVyS3cXgREISvOUBJrr8VWxcuW+sMt8c9tk5Wx3i1SuafVunHqRe23yMSLRj
+	kA5zXApCkC1FddH6+LKqEcdKHZAynYqvCgqSu6FPSbuNmY5TbyfbZDtm8iMkeIyro9gOe+
+	5UDyOAbJ3SHviELG+J+aaq0oX0lD/6M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X69nTRUF;
-	spf=pass (imf08.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qSsmQLKD;
+	spf=pass (imf06.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785871541;
+	t=1785871544;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Bk+Ag5nJI+yRxdGaF5AGAZX80rlbQeLkx2hO1upBMEY=;
-	b=X69nTRUFN7jj6tU0Ubf403CSxDuMzgXz+l03s90oUMDMZmK+V24Et9J5ogOrK20R5yccC8
-	u+ShBM4blOyVVsBjOjP3bWKlOHIG510Z2kTlDYajcNRMEd6SQNKkz6w5y9T4/lzrbuPRnl
-	66SVtfVx+s6seG8eNX2YK4PYPSQEhdo=
+	bh=3iffTJZ4gsF2OWsNoVggLOj4bK9TgyKNkJM9kuPC+3g=;
+	b=qSsmQLKDG+su5L08CzBDeV30gg942uokAFegFqOCix6z3aLDWtxhNsSgA3pGn+t96/rE2n
+	YyDVIIj2SD7Y1LIQzkHktqyMCuttHzaCCRGBpbaZpG9ibGuoVl3j/WzHblQfxbtB+/l8A/
+	dD5Ka58kDy3Ta+d0jJuNOMkkldtwluk=
 From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Date: Tue, 04 Aug 2026 13:25:04 -0600
-Subject: [PATCH v3 6/7] mm/khugepaged: unmap pte before releasing vma write
- lock
+Date: Tue, 04 Aug 2026 13:25:05 -0600
+Subject: [PATCH v3 7/7] mm: Documentation: clarify where the mTHP stats
+ live
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260804-khugepaged_pte_refactor-v3-6-0364cad642a0@linux.dev>
+Message-Id: <20260804-khugepaged_pte_refactor-v3-7-0364cad642a0@linux.dev>
 References: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
 In-Reply-To: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -83,14 +83,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
  "Nico Pache (Red Hat)" <nico.pache@linux.dev>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C3B1E16000F
-X-Stat-Signature: i11yo4y3wruwybygj49hy8p5qhfy13eo
-X-HE-Tag: 1785871542-417148
-X-HE-Meta: U2FsdGVkX18m7DqXPFg8q6Fzlcfnbnf/MRfI7ODYjxh9rfNNmtQdifggg/h1p2D5FoUFAqwLt3Vm/fwLugvnqfkPmjGoPlrD4/my1wLsN337Ixmf2D8H67jqDjJS23Hwa2+pG50GzGX9CalcAtWveP9tfCQrrDuOPk25N9xwgdndW96GLDrwaerWCM8ZM5U/y3uJSFFl3Bnlx/5k6pFJmUwK2IeBhSDQDjjZr2qqJ1X5RxVrIkKnmRf0V8CCBhGYmMnrM0uBw24LcY0TL7pQODLeEJh0ia5eI9toyEJAlYWc2igYUk1FYLBEBJFDgL/BqTyj9wKdxDjCFDkNk9vNeowZZ4F/gGeiYN87x1JRk7hXlxWnLYUKo/le+2A727aZ2r2OJUE/DUe9vPKARFbi6soax+khCQ8Y8cyiL6GAtvAyu+3Hy49PNmCgz9RIdCfhgi3aCLf3rqXsU2mKpzAhps7C4GgLIJyIWqrUXOFMUQ4F2OfH56SqsrQeeO8k1fmlE81d55AIAOd22Igx3Dgb7jXcU25O9g2Whxjm6IjEOkwbOisbp44XRBmTR4nUGzq6UeoiyV5S4Wqlt37Yo7wriRYoiihEGTU/nbDENLfY8JHtmb67+3KtRjFIWgLMg50Vr03dzH2ob/QhelzH3vvZjBogL/3FY3lVZWPJ2rx4QpS+MQqzj95uRHBQOIzPXIR4hetSGDbLrom1xe6x0iicqZFRj4itJbqeLcWdIYRBZI0+4hkL0iXYgFo+8sKfBLP8h+Z3EUgdiuAzUwucWnlQwTYVw0p80hgLtk3pOPOJz4Y1lAz/RHiWRrlgfRtCqDj3YeeiyyTWBzKEwlO9XBtiCsTt2uHfGEXkLyjEZXz2f1R7NNt36R+/DzlmPcQG0kmOqXwcqj4yxrVrFmK6IlNAwuCDBWO2x1D2cFCm7gX9Rs563cP6t0HkW0OCJLAmvhV4LL+pY25isL6obSBYtPf
- onITB4P1
- 9Z++JCgFEXvh/EsL00wm1Sp1e+WM8W3U8RBsBS8xk+z8mpUH5G6WuL70BA+so8xratk/U2rbJhbj/qlQTwROwftKQnkIItJJUr41kfwWnucvm+Bof3SS2PQR5FXSc+gHhTg8+4Tvr+X5exsbRbqeKfdiTzYKP1d31tyDvz1p1yL8BU8h/+/qsJqLz8QsfMzY0UH/HOygfrjcDWlhd9ibQpmjsP1IMwYOH3CE3SZKgnj7XCok=
+X-Stat-Signature: 388w8zyuz4n7pusrc4mh4jqs9yp7bszh
+X-Rspamd-Queue-Id: 53D9818000D
+X-HE-Tag: 1785871546-430306
+X-HE-Meta: U2FsdGVkX18/hfVYgZwx/oVk5B8NvvIi22RIV32T0XiPBme6ZPh+vVSgjUYJgRVDN4BEpREAiFHMHAoZKn4THuC6mxWnaykhCy899LjFpbxO9YbPhkELK6jfjKDoG7z/u3KNOB54oxHO3sv1QX84s2A2/OMj6PhG5mSHUP8L58JG5VAed6m2Fhtf4G6La6iMyUGXC4xgS4xzZ9+mNeZKlM2GSFh5PZOxP1fguqXVltGRL+fJiaR9T2UKl8q3LfYIWNbNsqLyLkHEeXMOq4Mo9Jujv2VMBxOp8sEhCN00Q/BjVifZLceO6i3v2zacu6i7RvcJFoc/st2DnmXnSS9zBmH3o/qs3EeiNsHyy+WZlp3xCqtkIVKApgNVEpkM4VH5HuYUK8lSAkVG2lnKMEtr46aZE/OHfljh/6TGwCR9NactwLrh3Oe1HwjgMJ5zSuRJK1WONKeu/VIwxdouhQnI0bRtU6pPxM+cspWUpKzF6o9nRRjL+uVB58URLOrVYIsjl2xaDMaq+pjpJB3Y1TmkLzHwsPD4wiSzNMWXrM4wVlNjD6jespTSfx1AchPg+ICrhLxzYOGEyDnrXkrOCuDBe07yAE6nZZrcADoSjvYgaK8hp575Q/SHZLdwssdsTvaGQvQyJZHQxmLO/4xyUc/UbU6RpeWMjtO12sICQB5NSCHWLKYRLhJA/OEM2urH5dBe+rxFO1V8eMg0KXPNU2XT5Tww8yBYXlHx08cByO/TZnchymTTvYkqfRRNm2BMa9TRi4RIOsJmr9Jj+89lUFY5udtMyDs6GtEHWe4RYxGv9ZUqq1m91+frE6/tAxKcOOSqfDhqO1H4ZOy8Z2vvI13FBbuf0mkFM0bgtRnq6720Te3ujZH99r31DOGUWuR4RCn0Z+eQm5+7NvYEBTzhA9rgGUdJEleUa/AwDkpDIkWgeeneCpt707egPJaAfko3daaoYyudAtKMEPisYWWs6fk
+ gtuwp/yY
+ 5S07KAUlZYHM+UxnSkUfetzixigLWKmjdQiHXu9S/f4bTfeVJWYpLh6E9EN4fLng9D5R0yk6oTltTkBOVaPaV0AwnU8tB9lz5H8hxXXaFY83mTXrp5eCGSvNMCrDRnAKcEDconN6XPT6AVaPikZh4/d2LR88o5GCAIjW4kjkdmex+Wgytvd2fOI1Dskm0Xk4sGPyzR+s/I5p76HhlnoCR/TFpKp0b4hkZizotp3G57ck71JABfzbf7kTxOO995grFnLAu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,34 +98,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We are currently dropping the anon_vma write lock before unmapping the
-PTE. Although this is safe, due to us still holding the mmap_write_lock,
-its safer and less confusing to switch the order of these two operations.
+The note about khugepaged counters references /proc/vmstat for the PMD
+case, but never mentions where the mTHPs stats can be found
+(i.e.: /sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)
+Add a small addition to this section for clarity.
 
-Suggested-by: David Hildenbrand <david@kernel.org>
+Also fix a missing period while we are at it.
+
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 ---
- mm/khugepaged.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 068368d27c2f..3338e9dc11dd 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1546,10 +1546,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 16f37135ed80..b187d618452f 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -224,7 +224,7 @@ khugepaged will be automatically started when any THP size is enabled
+ (either of the per-size anon control or the top-level control are set
+ to "always" or "madvise"), and it'll be automatically shutdown when
+ all THP sizes are disabled (when both the per-size anon control and the
+-top-level control are "never")
++top-level control are "never").
  
- 	result = SCAN_SUCCEED;
- out_up_write:
--	if (anon_vma_locked)
--		anon_vma_unlock_write(vma->anon_vma);
- 	if (pte)
- 		pte_unmap(pte);
-+	if (anon_vma_locked)
-+		anon_vma_unlock_write(vma->anon_vma);
- 	mmap_write_unlock(mm);
- out_nolock:
- 	if (folio)
+ process THP controls
+ --------------------
+@@ -301,7 +301,9 @@ being replaced by a PMD mapping, or (2) physical pages replaced by one
+ hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
+ or together, depending on the type of memory and the failures that occur.
+ As such, this value should be interpreted roughly as a sign of progress,
+-and counters in /proc/vmstat consulted for more accurate accounting)::
++and counters in /proc/vmstat consulted for more accurate accounting.
++Per-order mTHP collapse statistics are also available under
++/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)::
+ 
+ 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
+ 
 
 -- 
 2.55.0
