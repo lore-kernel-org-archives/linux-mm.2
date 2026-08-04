@@ -4,101 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9FFC55182
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A1DC55182
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:21:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8465C6B0095; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
+	id BF6846B007B; Mon,  3 Aug 2026 22:21:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7896B0096; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
+	id BA67B6B0088; Mon,  3 Aug 2026 22:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E6FE6B0098; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
+	id A6E606B008A; Mon,  3 Aug 2026 22:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 35EBF6B0095
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98472120850
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:57 +0000 (UTC)
-X-FDA: 85061979114.20.294369A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9D3F7C0002
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 682BB6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:21:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E79C31C11BE
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:21:19 +0000 (UTC)
+X-FDA: 85061985078.17.56B2508
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 77BDFC0006
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:21:17 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrgEMC1E;
-	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=intel.com header.s=Intel header.b=n5URVGG8;
+	spf=pass (imf10.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785809935;
+	s=arc-20220608; t=1785810077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fBGKAE05xJKKiYIOYKeypVavHcHnoSNrfvRL+QYpZOE=;
-	b=hu3wojRg2FluLJjp6QOkOqEguZtlyKoPjUdjgmddlJ8bH497kYJ6a7AumSIZ/3P61NJDxv
-	Bj2GT6K8fxFawgaBhx1SJHsfu0V01++XM3bbgSHhdBKwmv6VdBO2j2drwQplL6DkV4/RmO
-	7ui9Nm5y84OTr0WFU6XnI5Xp5cOmONs=
+	bh=4flt237WY2Z0ZHSYYroEZi6u7igH3Hfpwu43V+wrtU4=;
+	b=GeCUauexDulZC2PpjxZ4CZWIIykO/RUCEsQousor4J0/D29oMuCrJvvw0Li/n3x3TSQvXg
+	1G3t8eWSQEG0mKq5rFI8/RXKajiDpX5W+8WqCEi3mvH0OCowM4SIPul6U0hPmkp3elnNS2
+	tqzztRy+pMT2tgDDrKUJNGyOPUUPgWs=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrgEMC1E;
-	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=intel.com header.s=Intel header.b=n5URVGG8;
+	spf=pass (imf10.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785809935;
-	b=fMb//hGu+pQLEk8X4ARDcFGQsWpi5f1CArKJ2e/zweagH2GoRIadZnq6H4QEX/TtLFcGhG
-	8u4x+Kl2uRfvEBkZu3wFZ5c+TLTYM8iFsu+tD2fxKaAiaGmRis/WLcUr3KRuJZ0BR8Ue8W
-	rPKyqVfm7atprt5uAUslx2ND54I3tQg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 712D942A83
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561861F00ACF
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785809934;
-	bh=fBGKAE05xJKKiYIOYKeypVavHcHnoSNrfvRL+QYpZOE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RrgEMC1EMnhNXw99Hbu6DsDJlmu5Y3X8F1ErJMke0IA4B3r7HoShqkBJTWgR6BhVV
-	 k8dmPyKBZC3Y84e6tayzMvxsd/EiCGxy5KzWW/XEc+TghWcx/zXVY8OxV8KiUvcnFC
-	 2qEhQQxnYvw9Iv3OH4NFiqq38L/6zZ5lHacse2M1tMAGzcuF31iU7BUJsmqBi/MEtX
-	 u6AFtCX2bXTvpNOILRJm/91Yj7CCqzQfbpA6fVyjCOY2i3g01vkWjJEX20V8UsDR+M
-	 OT2YTbWTAienRaw9oaexc0S5+BaYLSNsAqU4g7tvY11GWETaRHRNFdIxmOJOdRornY
-	 KKefdeEEAwXdQ==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39c908d6cb6so46022601fa.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 19:18:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpgDRAap98cqAAYRBn5mPPRpmnnThWWfcO/K4RtQF9RSM7mOz1BwGo5DXpcx0FvgsM4r92j+optUw==@kvack.org
-X-Gm-Message-State: AOJu0Yyf7+uWx5bYO+8G74xx3oLhFXU6+rqtsrarFGbxrEtAMW10WzcT
-	0vVDvo3JaAuZJlYDA9DFygLGWlJ+yC0J/ITxLPSsCl8Z9gnrYsndDGq7BkHRlbFjhXshrwMigLs
-	q4x/9SfxJ6k8kqvv5g6R0hUPfZTnb7wPJH8obu1M5
-X-Received: by 2002:a2e:a88a:0:b0:39c:828a:ec28 with SMTP id
- 38308e7fff4ca-39f864562a9mr27536451fa.31.1785809932740; Mon, 03 Aug 2026
- 19:18:52 -0700 (PDT)
+	t=1785810077;
+	b=r8P/EU2bO7r7rKgmMGH+TXUi99FEju1BOIsI/hHLeypH0qYiGl2wvwPjbiI3+xCsu3rcmR
+	jSjyO982rUQ9sjS4hZi06WDmQJNqy+KzwGmc8LFKe2wGZG/tumC3dtVolYkhj/eNt14bne
+	ltvOa1EGYCQxxNor5b0PkD5L2mvrGNQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785810078; x=1817346078;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+ungbiIvue01mlh3xVvXxn27VLIAH9BlA+zmntBJ5rM=;
+  b=n5URVGG8eAdSZ5BceLrtT0gG2GrtVhUeIixoI1QzWc/6TZE/5O3Rm3ek
+   Tx/IFWssCbBE1qzH4JfcqiQVyRyYeKC+RU2cmnMTTpuHorsV4BGxTIWrz
+   2Llm+9EfDasg0T2WyIFT8YMPRc7MHpjNUQCVKhuMieWl+Nf99Me2kwhx+
+   JchT/ZVxV2wp3TeW62wAc8H28cVdZ63GtgYNDLeSPpjGUOx4LRCsChsIP
+   caTLW6cYwQSzp9oFIyO+9BmzZ7Yj9nR1qydejXr+w+TIJfiB/JBh4gF7R
+   sa8NVyIE5UEDVUMKBheqE9x8g7z/XRrlrvzCVfzBnRpLJ/nWSRg/LFMym
+   Q==;
+X-CSE-ConnectionGUID: eLPb5+g3TKiLE3X9X6003A==
+X-CSE-MsgGUID: GPzatvS5S6m2EGkYmZIgwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86122361"
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="86122361"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:21:16 -0700
+X-CSE-ConnectionGUID: wexSi1NfRrucV12fpDeh0Q==
+X-CSE-MsgGUID: Ov1ycEjhQ0S6ouDKkZLVyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="266496543"
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:21:03 -0700
+Message-ID: <8baf2065-b07f-4555-9c16-1330ecec4903@intel.com>
+Date: Tue, 4 Aug 2026 10:21:00 +0800
 MIME-Version: 1.0
-References: <20260804003708.49830-1-luto@kernel.org> <20260803183032.7cc1fb1007d309c2431855ea@linux-foundation.org>
-In-Reply-To: <20260803183032.7cc1fb1007d309c2431855ea@linux-foundation.org>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Mon, 3 Aug 2026 19:18:40 -0700
-X-Gmail-Original-Message-ID: <CALCETrVxtFyMoOrpTckrs3HU7evczytau0fGgyCWidt4oFS=CQ@mail.gmail.com>
-X-Gm-Features: AUfX_mz1zN5nkOVZ7C7UnstYQ8n2S9i8_HR-owWrYtZZxw5U9nyHOpOlZpXyzv8
-Message-ID: <CALCETrVxtFyMoOrpTckrs3HU7evczytau0fGgyCWidt4oFS=CQ@mail.gmail.com>
-Subject: Re: [PATCH] Fix incorrect flush address in direct page table reclaim
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: luto@kernel.org, linux-mm@kvack.org, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, stable@vger.kernel.org, 
-	dfoxfranke@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 18/41] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
+ <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
+ <amzJQ8u8I18B4Gdm@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <amzJQ8u8I18B4Gdm@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9D3F7C0002
-X-Stat-Signature: 6e6jc8dkdoyik969fumrnq6krm365wfi
-X-HE-Tag: 1785809935-813048
-X-HE-Meta: U2FsdGVkX1/1C4c3sKJVrxaG5PF631gGTw9dDUdVzhJydYJz0o7hh3b01AezWAS/XWe2sOWS9i5fEdjTDtUpt9jooPCb7zDKkPmaCN1YP6B01Nl0jpynxsZniOmfMIk/38+7Y5sJGtOyq8Ir95Kv057GeeBSnw2VFBdBQ6fo/6xSIZXYkq5IS/kOL1Xq65zSSJ9cbXgW7zInhyR1c9qvbFLTHoMnMd51YCf5pxJMeddyJuQYirsMQ4VUmVbgW1pFn3Lkt9FYXrbp8b3iuERe4BvQfT4v9LLRZXaX5GEEdhrlJpyhUlxSZzdGjNRwok8WTACjYTT93ILsgKbyUYw4zngyhQOF7+8b5Kfa8hddU1uxwlQjENeomvmxAFl7Dj3DZzyTn28aP03cRMSbT6Qo5ILsXutsAF/FOazOarjFqSLJOc/d7yJ9lK+fZ3oC5nuOTt44PVpdwqROjcad4aSWhwXAnA7Ni8Y9JfjM+NhY4nt4VBP4Fb1Ovrpg1xDdPFgWV0FMKVMxH19rMOnaRQXH94DRKCacvJxi/2a2zB2Gbx4NTND/NJ8GTbt/uTA73pVdbmh4EGXrhlDwoU/62US3gSUDvuDrK/GKCW4Z3C3+s/06vvALB5qJUnO5GKdxbUpXfJmFZuhSJPkwA4v1fPCSA80tD+EOQinxhPge+Mq7uSD8Rxcs1z0WAElNo2N+EzSLR3fzWEzmiLnBRZK82fpmo28OOcTez8bZThABXZWQiHfiRXcYiEs5AT2RG+R07w1GYNSB/wIOK3RU0RrwBT7W4irZCSIoW0l7lz0eNldKDlh5mcRG+apOLV7yqrbVeECn5W52mkAXbHIKwpGXdeM1cL1X+wjd77SA4klkIy8WSpFsbKbMIfR5+pto2W6ksFEJKhkV/V+27uQCmHtqqYy5JeefTaMfD0IFqCsbvkwkTU1W+s+A0MMqRWNnFF7juRBoa5TIy7sqUMf5whquU2E
- mIqEePXL
- 2ffd2n+OsP8QrUsuQiaOkF1GLhotWt5qA7Z2oQ+OfLxiZa5HLozlsPnqNQmAmvmB577F7eJ3uY+XM3lIxfR2h8BS7tWCRQNnYYezef2ZenAt0Gs5ZZBYg54vNo604bmq/gathFCUBSGPkNs5OSmS+g0WZUq+7dRpV52TxVtt714KaXFWgeFzEtpDk4Lm1KEWbhJtxqUyU5/UQkUgWkIc3mudRtfnNTUUaBIbcG8ukubYSFnJgxSJIVcMQGqda9kw8pfYvGibjA4wP7t05V7fH1jvlmrKTrExVoKHTctXm6Gt/+RC0ZlImYHNGiw64jAKBTpYHpTY+fhbq1VvA2ZOjzpmO3kCofi4oI/UryfzWhUQ97XcUJdq5W3uzGuDMR+KAlN2iaGeYcohbBFw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 77BDFC0006
+X-Stat-Signature: qxrm6s535innbx43wz4jcp5tnhc55dc8
+X-HE-Tag: 1785810077-153423
+X-HE-Meta: U2FsdGVkX19xczZcdlD7nbKCeTM7Z7o5HIPu1zBMy5zgpAs1pzJ5WwfGiw2VIe+1X0ZKpOVHRDbCjVzZ79PxMYjSC1URWZCqfF3my9/XylHUeYPLhMKJmnVWSXSiG3oKzbugMWvFh9BjhNPJlvvXYw+0+DuTVcKfu+FE5v/+bgMJMopkEJlfhsRj3it/KJ6PL+AkFtoHug613WYAXyWCXMsry562FyUQcq+fKZHuDV0nAMHQA2ihIJ63un+nqiWUftGsI5y/g34q/4fuYNuxSXhV0xaGypTsQJxjnm8DQ4Qt5mW4GxWkjO9lxt7z/mVb6a5Vz4tQWpRGGXBcs01Btq173jPjZ+BTPa3gFUPGzRExJHwwuAL7inRrwvFhkvXCsoUGGKFrBCQXCV2rU8yIoOz5M0DCOnEqSaddv70mAHlshWAYrV59mKHndnC3Cb4tBOUu0e0WgfxInJFiYkGkQfim450ydTEbbDkXJDIlyWfam5f1zbKSdkVuvscHnBAH2hZbpz/nPRKDdBMMyfQxz6ep/3L3elwUzMHN8g0fTA3A/TQ836EGQ9R6OekU68grPClsuPK87T2+e39MODVNdwM+HKKBqN+We4CWKWDApFDnZWnWz5Bqpg1gY9wepyyqiJI8FcTP3mhv/SdiNK+EcW9l7DifiCzwkKZpcyM8FNAVhVnsSvxb9+LffWfARnHhedN+6eGbCekArB/ElZyOj3/OGhZlqWHMeGqyrqXr4nUviLq0+eT7ZIxSSYH5JU0bQH3xEVSYOP6wlhd39LJv0b1589vi60svclXTWk3E/9Fa4JL03rlW3wQKmSKCFhhRJm4ZPeBFuFuzfjWLe7tqFPuWPA9V3gFnsSHJ5KIEeYKSx/zP1lh43KrfDOYOWtIy3K0KrFTrIr1+c5+l9Lg1VQQzdMApszJhUugqhxQ24W9mF30HHE2Amu/sdclNgL5dAMXZd0RXtgW8E4ReEaF
+ YW8enwdV
+ O0vR2zhmN6tGpXGltpX7ElVqXwmTkm0SzmYwa1XyD40V10zwccyFz0UvtU1e1c8oBMIw8CFIJSC9bIUlDNymRdr2N61+C5t0yNwT81KouwG2wJKpSffUWDKNfvBKFAZf/CMMlgkOB4M5tY0OTxd0PENMlM54JdBbiumpNsGvVbvMyxduJxAkwEVQTnsy1KgHDjyddDma6oEAkkWsuHu5XuToFE0XDGnV5pyfPt4YNZBiwXpCc3sva/pC6Ry+/MTV00Q/NINQhIbfXjrY2mrGpi7U9DvCs2SQYfBt7ZaW/heRTb/GP1jLJ9qLz3H6KZ9nGoMZD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,109 +137,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 3, 2026 at 6:30=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Mon,  3 Aug 2026 17:37:08 -0700 luto@kernel.org wrote:
->
-> > From: Andy Lutomirski <luto@kernel.org>
-> >
-> > When zap_pte_range reclaims a page table, it does:
-> >
-> >     pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
-> >
-> > and this is unconditionally wrong: if this code executes, addr *always*
-> > points one past the end of the range covered by the table.  The addr
-> > parameter is used to flush the TLB (really the paging-structure-cache)
-> > to drop references to the to-be-freed table, and any architecture that
-> > cares about the parameter will flush the wrong address.  (But they'll
-> > still free the correct page).
-> >
-> > I think it's worth contemplating why the kernel works at all.
-> >
-> > If we hit the offending line of code, we will first clear the PMD entry
-> > (line 1954, zap_empty_pte_table), then we will issue pending flushes if
-> > force_flush is set (tlb_flush_mmu_tlbonly(tlb)), then we will skip the
-> > retry on line 1979 (phew!), and then we will do the offending
-> > pte_free_tlb call.  *Or* we will clear the PMD entry immediately before
-> > pte_free_tlb (line 1983, zap_pte_table_if_empty).
-> >
-> > If we have any pending flushes (i.e. we actually zapped any last-level
-> > entries) at the time we clear the PMD entry, then the flush really ough=
-t
-> > to flush all references to the table (Linus certainly seems to think it
-> > will on all architectures [0]).
-> >
-> > The condition under which we have no accumulated flushes at the time of
-> > the clear is very complex (the whole zap_pte_range function has absurdl=
-y
-> > complex control flow).  If we do hit the bad case, then we will end up
-> > clearing the PMD entry after the last time the range is flushed, and an=
-y
-> > CPU is free to cache a reference to the (empty) page table.  If this
-> > happens due to an ordinary read or write, it would segfault, so it woul=
-d
-> > be rare.  But the cache could be speculatively filled as well.  Then
-> > we'll flush the wrong address and then free and possibly reuse the
-> > table.
-> >
-> > On x86, even flushing the wrong address works on non-KPTI Intel systems
-> > because INVLPG flushes *all* paging-structure-caches, not just the ones
-> > for the target address.  But INVPCID does not, and flush_tlb_one_user
-> > will use INVPCID if it's available.  And then we're toast.  AMD systems
-> > are more susceptible: we set the EFER.TCE bit, which makes even INVLPG
-> > only flush the target address.
-> >
-> > P.S. IMO zap_pte_range is a mess.  The control flow is excessively
-> > complex.  The direct_reclaim variable itself has a confused meaning --
-> > for the first part of the function it means, approximately, "we should
-> > free the table if can_reclaim_pt".  But, later on, it means "we ALREADY
-> > reclaimed the table".  And the goto retry on line 1979 is IMO just
-> > asking for trouble if the condition ever changes such that it might
-> > happen after clearing the PMD.
-> >
-> > I think this might fix an issue in ripgrep reported here:
-> > https://github.com/BurntSushi/ripgrep/issues/3494
->
-> Huh, cool.  Very recently I was scratching my head at Daniel's ripgrep
-> report.  Upon which he obviously did a ton of work (many thanks).
->
->         https://github.com/dfoxfranke/ripgrep-3494-analysis
+On 8/1/2026 12:11 AM, Sean Christopherson wrote:
+> On Fri, Jul 31, 2026, Xiaoyao Li wrote:
+>> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
+>>> From: Ackerley Tng <ackerleytng@google.com>
+>>>
+>>> Update tdx_gmem_post_populate() to handle cases where userspace requests
+>>> "no source page". To handle "no source page", populate (perform
+>>> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
+>>>
+>>> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>>> Tested-by: Shivank Garg <shivankg@amd.com>
+>>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>>> ---
+>>>    Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
+>>>    arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
+>>>    2 files changed, 9 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+>>> index 6a222e9d09541..d8d9409120e61 100644
+>>> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
+>>> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+>>> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+>>>    Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+>>>    provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
+>>> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
+>>> +to represent "no source page". A source page is required if in-place
+>>> +conversion is not enabled or not supported.
+>>> +
+>>>    Note, before calling this sub command, memory attribute of the range
+>>>    [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+>>>    KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>>> index d1af0a752e97e..e890da5f18aed 100644
+>>> --- a/arch/x86/kvm/vmx/tdx.c
+>>> +++ b/arch/x86/kvm/vmx/tdx.c
+>>> @@ -3192,7 +3192,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>>>    	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>>>    		return -EIO;
+>>> -	kvm_tdx->page_add_src = src_page;
+>>> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
+>>>    	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+>>>    	kvm_tdx->page_add_src = NULL;
+>>> @@ -3238,7 +3238,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>>>    	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
+>>>    		return -EFAULT;
+>>> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
+>>> +	if (!PAGE_ALIGNED(region.source_addr) ||
+>>> +	    (!gmem_in_place_conversion && !region.source_addr) ||
+>>
+>> Sorry, I still want to discuss why we only allow in-place PAGE.ADD for
+>> gmem_in_place_conversion only. Though Yan raised this opinion[1] in previous
+>> v8, I'm not quite following her argument. So let me try again.
+>>
+>> I think in-place PAGE.ADD of TDX doesn't need to depend on
+>> gmem_in_place_conversion. There are two use cases actually.
+>>
+>> 1). Userspace sets the gmem page as private, and invokes the in-place
+>> PAGE.ADD by passing a 0 source_addr. Due to patch 16, the target PFN will be
+>> ADD'ed to TD as a all-0 page.
+>>
+>> 2). Userspace sets the gmem page as shared, and writes the desired content
+>> to it. Then converts the page to private, and invokes the in-place PAGE.ADD
+>> by passing a 0 source_addr. The target PFN will be ADD'ed to TD with desired
+>> content.
+>>
+>> For gmem_in_place_conversion == false, only case 1) is possible.
+>> For gmem_in_place_conversion == true, both case 1) and 2) are possible.
+>>
+>> Basically, this patch is changing the behavior of KVM_TDX_INIT_MEM_REGION.
+>> Before, it returns -EINVAL when region.source_addr == 0. Now it wants to
+>> allow the "region.source_addr == 0" case. If we can allow it
+>> unconditionally, why bother adding the restriction to allow it only when
+>> gmem_in_place_conversion == true?
+> 
+> As I said[*] in that thread:
+> 
+>   : Because retroactively adding support for out-of-place conversion is pointless
+>   : (requires a userspace update for a feature that's being deprecated), KVM can't
+>   : generally support using the source for out-of-place conversion (it's effectively
+>   : an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
+>   : scenario is valuable for KVM developers, e.g. to help newcomers understand what
+>   : exactly is and isn't possible.
 
-I'm pretty sure that's AI-generated.
+Fair enough.
 
->
-> Daniel also pointed a finger at 4c640eb4181c ("mm: move pte table
-> reclaim code to memory.c").
->
-> The manifestation is that a tiny race window causes the zero page to
-> magically appear where an anon page was expected.
+Ackerley, please update the changelog to add the reason why we decided 
+to only support in-place PAGE.ADD for TDX for in-place gmem only.
 
-The analysis says:
+> [*] https://lore.kernel.org/all/akMPZePBdwQlD74H@google.com
 
-pagemap reports the page present, soft-dirty, with PFN 0 =E2=80=94 the
-kernel's zero page.
-
-ahem.  I would be quite surprised if pfn 0 is the zero page.
-
-If whatever code the AI wrote that generated its trace is actually
-correct and there was a PTE entry with pfn 0 and the present bit set,
-then maybe we have a genuine race that corrupts a page table.  But the
-analysis seems quite sloppy and I'm disinclined to trust it too much.
-(A quick experiment suggests that even GPT-5.6-Sol high (which is
-supposedly pretty good) will rapidly go off the rails if you ask it a
-leading-in-the-wrong-direction question about the kernel.)
-
-In any case, the original reporter was using an AMD system, and the
-bug seems extremely sensitive to tiny details, both of which are
-consistent with the possibility of a narrow page table caching bug
-like this.  I'm frankly a bit amazed that he and his AI were able to
-reproduce it as many times as they apparently did.  I wonder if the
-specific offending assembly caused the CPU to somewhat reliably
-speculatively fill the paging structure cache during the narrow window
-after the last correct flush and before the PMD entry was cleared --
-if so, this would be consistent with the AI's observation that even
-tiny changes to the asm seemed to make the bug go away.
-
---Andy
 
