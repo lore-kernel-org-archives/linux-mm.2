@@ -4,142 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5630C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461A2C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B84656B00FE; Tue,  4 Aug 2026 11:01:13 -0400 (EDT)
+	id 546F26B0115; Tue,  4 Aug 2026 11:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5C4B6B0102; Tue,  4 Aug 2026 11:01:13 -0400 (EDT)
+	id 51C426B0117; Tue,  4 Aug 2026 11:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A721E6B0104; Tue,  4 Aug 2026 11:01:13 -0400 (EDT)
+	id 45C846B0119; Tue,  4 Aug 2026 11:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A5BD6B00FE
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:01:13 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16EA61A01F5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:01:13 +0000 (UTC)
-X-FDA: 85063900026.07.ABA3A8C
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CFF9AC0006
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:01:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eNXWLQLA;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785855670;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FA786B0115
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:07:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3BD6160179
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:07:25 +0000 (UTC)
+X-FDA: 85063915650.21.22D0ADC
+Received: from va-2-54.ptr.blmpb.com (va-2-54.ptr.blmpb.com [209.127.231.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A784D40014
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:07:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b="hWciGx/n";
+	spf=pass (imf12.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.54 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785856043;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=okK/WmcHe/IlDVg3t8yFB+GYShke2LQvsImQ/EEfJDU=;
-	b=gOhfFx+otEcY29/JoSWSNiy4gwp71F4tTRqa4PAQZ2ajdBAe5Pkw3NiOLnSQmIusFukCBu
-	Ps+/1ljyGBmpeOrNX3Ve0iRgAVjte1gxpmdIMDcGhQPOUwGosq+dX/Shz73gphIaO6vWoI
-	sh9/atE71u//hrTM7b3pD5wfLYfw9kM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785855670;
-	b=HSeiEexq2HpL19yaRjeawudAiT/WU726HkqzY97nH8/dIFPJdPM+zA0mPxmJRq9dXE8Q3G
-	CQEZDI3wPeAkqwRpn9ybT+TzKI6S0p3vWQBBOJ5GDh2bP37FiqjEvurEkyPic8wa+fqM8a
-	Ru3IqnKHbHd0becmEaOhuycBFEY1Peg=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eNXWLQLA;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c10ed63c0so266691cf.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:01:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785855670; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YwVcvBr/e+E33qrhYoTsrDEdkXIKp5xzH6+H3wGX6b14hE43Sd9yS8Nwvo6qeT606j
-         08kqHU3/cRuM9BcPquVkVbHACrgq9ThZdDek9TSnROBNNiG+wIDLizs4MeqM54r1mr7Y
-         SYszQvKfZMcwCvawK1b5rpd+C63pPGULvV/BWuy2GmDhRMmfW5DeV2vdFcgjbZ8P/Vlh
-         VPfEqY3LbayXVEalCFTtT401fRJQNVb2kneoW+UNEthjQAtYbOzR7vu1h9gSVa+AYW7K
-         hOCnqL4GZjRIl1O7QLi6KN343YGb6d6/K176b5pZYGosrraOFbGwObIykl5oB54Y3chk
-         itVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=okK/WmcHe/IlDVg3t8yFB+GYShke2LQvsImQ/EEfJDU=;
-        fh=nIim6BVloaYrQ83mPvrsXS62SezehkFN6QfUpFMcClM=;
-        b=JykcwSqgLKOhMXEsJNLBQG+lSCssgwZWUUvDzdXFKr3OcUhBAXfDbVrj49c3anYiJi
-         745kY0a1G4R7DYXwUKk/8wAdRGdsj6PgJHgeKmzS76ZQ3QhhfbcFURz09X0IjJrekPcL
-         KkzyTe+zGD3BkyOw2RtOOr9IZcs0DKBJXgL1MKZ2qyzju3vcULCsfafKwssvqy8gDBFj
-         f+6F6Xf9/l/H+9SDIGtucftt5Kux7OkWU7pi3N6MoJOvvap2hPSRmwJZanpNeCKoc+1z
-         CNu7dN/dy7ZYaDO6U1EHfYJK7kmvGcH0V9ea7FtX7trZpQ99eneSpDIp7R+OKD3qOKOX
-         pcEg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785855670; x=1786460470; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=okK/WmcHe/IlDVg3t8yFB+GYShke2LQvsImQ/EEfJDU=;
-        b=eNXWLQLA1fuNFt4XDrN8ReJbWCKpoGonkQyXeXqOM4Q8s/UFHTRI5NLxzO59+HbXWo
-         SyZkyq7zeixL0qPlsJH3EJ50+LlA519YGQvT+vs1EWrIbcQpVm68G82HSC8jFw8zto+5
-         TMPpb3k14bb1NyeXahWRlB72SNyyWqjRC2DxOJOwTJI0VDh9xhrqvNpg5+JVe9tqRJMH
-         0Z9PXjw403LpTWrmRoDHx8pituYqdtAYcKqFHudCJvg1xzbI6My8KQCkWSstNF4+N+8F
-         DzS6MwvtCLY8YY78RYjDYiEYf63V2wL5GqufNy33Z85S3i2uUF4vfKzaMC2w9s5GBYD7
-         9NQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785855670; x=1786460470;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=okK/WmcHe/IlDVg3t8yFB+GYShke2LQvsImQ/EEfJDU=;
-        b=IcEGYYWR209Ts/YO4meNCUHBgmuyAvK4I9mGcLa0cMKC+B3HlGyMi2GNQmfXpmfVPp
-         tr1k8GODg0uEJ2lqZUqRPTmwxdiBwJ3TwsrC/h4ZiY34epEfNO520pzBwaZykr/CCX8u
-         B6hOn1UX7yzL5g2f32RTPEQXcv3dybt+O0naLPL1pNpb9RsW3ytoBYRBoR+uDhh8sccY
-         ZLDCJIMGxpS37B+5umbARLz/mmiLGfhZmCv+CholYA41OGffAkZRq6Yw2tN/c8iFsety
-         qChEHUT1YwD/k6rkf07AOO0u83yQuIt99nQX3GjGZ6FvR665ywmgM7KIVknyOac7SS5x
-         hGDw==
-X-Forwarded-Encrypted: i=1; AHgh+RpKgtynWbqeHR7ENy5gTXSvohCM7xkDz4KvTxiA9khIEE7nXGX7a/8+QLaSDMXWqNf6pFFLP/G4sg==@kvack.org
-X-Gm-Message-State: AOJu0Ywsl/nHjCiucANmLv17696znNMST1/7qmXK8dvEMsQb27KDpGrX
-	CUsk8jAgxzke5tAPrsQ7ME/zidA9/Ysp4Tir2yld0UFAAEtBNcEjsGY/T5RDGYnFojgHrIPRFnA
-	qjeKwMDz0AJ/Q4is2PgYz/BRxyysksVyx24CfujDP
-X-Gm-Gg: AR+sD12nOhwY6l82lzLBOAuXsLl/JKFce1CoRU4RMerZLmUvUZVqCWA2XlptgniYGqW
-	j2JMlRro/FepaMA1OhkNcK6MMJycRcyTLj8KrwDUAlxd5SQhm0VzLjaAVvJDc65nguQFkpwMT3d
-	IkCEt57TwAzpqskIU2k7LjXeLQAmwUPHQJGNj2uuhB3G1gCRKgfId//7JbwOW0B4uOjggs2d/H5
-	cbwRr0bmUKzJsNo+l1P1ggdCnW6atEyjWKhcET4cjLY9ZL+H9WYOPgkLKJtfcig2f0Sji1IY2Ba
-	2OiJs6zgOJOh4S/QOg+KLzglv3dfvIMfxxqV3wLCIQDOZI79ckRpDSeSNvk8lLGRpy3+kOAmA5s
-	=
-X-Received: by 2002:a05:622a:a95a:b0:50d:edb1:6bd1 with SMTP id
- d75a77b69052e-52ce4064fb9mr2261011cf.13.1785855668889; Tue, 04 Aug 2026
- 08:01:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-4-surenb@google.com>
- <anB4uxEbKsa1Re0w@lucifer> <CAJuCfpGXk8jfRrJ=JwMLvpzxbNnzJUOYRHfWUX5e4vgP5j72Og@mail.gmail.com>
- <anGmhgqk-HjhejJL@lucifer>
-In-Reply-To: <anGmhgqk-HjhejJL@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 4 Aug 2026 08:00:56 -0700
-X-Gm-Features: AUfX_mwoQHKou16DXo1Jd8x9iBvGN2J9-cFV_FJyi4l9zQdBjRr8a96kthPtQMw
-Message-ID: <CAJuCfpH1WzCBgRbp3R5FAxked534ewTaMA_TxPjw1wCkDFZuow@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=aTkMnMJBZbmBk8aXgbvQ0jabgPpSOlUfMkXtPY+IHFY=;
+	b=15iLv1sbqNsB9QbsWQUuF51iyFwehiHcCZ5qhGzv8JdsURzhpE9Oh7NuFqH6443i/TRXKg
+	VVNTJVtMwJEr0D1iGTJ7v5tSBUioikiCgWYVioAq38R15vfO9B2JrzXTVCsADmIOBTk5gq
+	bDnVfLqbGm9iuCOIL7ytdBPepl9SFhI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785856043;
+	b=SsE8agQSP/6hXt0GsctbVaSzjaPQ363xzJMTN9K4ifw6LEnVdIgAXrSSR6eCCEvExZ0GS9
+	9dyTfppMBCqhuWglQxNaLO+7p6voXpl5BI1fDMmmsVqemwYlEzS2TEF9kuSj5ScCRB3lkA
+	Ut7rig0oawnXiTFI4SZN8qdIQloQbFc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b="hWciGx/n";
+	spf=pass (imf12.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.54 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1785856033;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=aTkMnMJBZbmBk8aXgbvQ0jabgPpSOlUfMkXtPY+IHFY=;
+ b=hWciGx/nfSr6Hw5Z64Z2T3Z5ANa+tTAGOmZIvBkd9YhOh9q5nVKiFYBbmu2+8mwtGf7Rpr
+ v6ZKlDEVMbUd6752vqSdIZxr8aGtnx1gp0KOOfPc8CfEMIv3l6xB9LaL1gDEGxnvxtzFd3
+ 2DiI/V4z0yWJYiCRcKLnrhkdkO0/7v42/ljEU3GGL6rMpqB4ztTeOOz9wQXY0lHQuXTiPD
+ 2ZKXLeD7kBDLDrn3KoKExk/wd5Y6haSQlj89wFXxRZTGCJEWmyaL/sZcTiMGqgw+jjbNgo
+ Su7dhb354fuaJvhWkgCzW4p0RJXstOl7HrscXFC91/s8ZMUNAlouz74tYp59Gw==
+X-Original-From: yu kuai <yukuai@fygo.io>
+Reply-To: yukuai@fygo.io
+To: "Christoph Hellwig" <hch@lst.de>, "Jan Kara" <jack@suse.cz>, 
+	"yu kuai" <yukuai@fygo.io>
+From: "yu kuai" <yukuai@fygo.io>
+Date: Tue, 4 Aug 2026 23:07:03 +0800
+In-Reply-To: <20260804132527.GA8078@lst.de>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a720020+d3308d+kvack.org+yukuai@fygo.io>
+References: <20260804065313.2092022-1-yukuai@kernel.org> <20260804065313.2092022-2-yukuai@kernel.org> <prx5s4rwbgoeh7wtgyo7vwydh5iwqn6qc2utamowirsplspfmp@e3eteq5xwuyf> <20260804132527.GA8078@lst.de>
+Cc: "Yu Kuai" <yukuai@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, 
+	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
+	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	"Jonathan Corbet" <corbet@lwn.net>, "Josef Bacik" <josef@toxicpanda.com>, 
+	"Coly Li" <colyli@fygo.io>, 
+	"Kent Overstreet" <kent.overstreet@linux.dev>, 
+	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
+	"Mikulas Patocka" <mpatocka@redhat.com>, 
+	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
+	"Dan Williams" <djbw@kernel.org>, 
+	"Vishal Verma" <vishal.l.verma@intel.com>, 
+	"Dave Jiang" <dave.jiang@intel.com>, 
+	"Alison Schofield" <alison.schofield@intel.com>, 
+	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
+	"Andreas Gruenbacher" <agruenba@redhat.com>, 
+	"Matthew Wilcox" <willy@infradead.org>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
+	"Nilay Shroff" <nilay@linux.ibm.com>, "Tao Cui" <cui.tao@linux.dev>, 
+	<cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>, 
+	<linux-bcache@vger.kernel.org>, <dm-devel@lists.linux.dev>, 
+	<linux-raid@vger.kernel.org>, <nvdimm@lists.linux.dev>, 
+	<virtualization@lists.linux.dev>, <gfs2@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
+Message-Id: <a780016f-8f94-4337-b700-786f5487ca3f@fygo.io>
+Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH v1 1/3] blk-cgroup: add helpers for bio cgroup state
+Received: from [192.168.1.104] ([39.182.0.181]) by smtp.larksuite.com with ESMTPS; Tue, 04 Aug 2026 15:07:11 +0000
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: emigg7498dn85yijxf6cgu8eshay5rnr
-X-Rspamd-Queue-Id: CFF9AC0006
-X-HE-Tag: 1785855670-221381
-X-HE-Meta: U2FsdGVkX1+3+KopnINrJ1Q5RAdpSIMLPxP2smzQU+cB6gP1R0ge76C7+OeKy1IUYDvGI7UlVLNZ5q/gIazYXqlFMhRj8lk5+RoJOA2v2JiBtSplRYGDEgLCshQvgovlTRsXx0KSWLUPZa9lOQg+C3YNca9QmqdiqblWWnUhoOqXO+Ya/iMLI8m2iDQ3kZ8llSgBgBUjEgU+q8GAt7Ifv+5TnDRmuaRLDQwlj3hn4mRu9UyPSUSLxvwGkn1UAchUeCBt90Lgl+E9FNrI/EPzpbC5S3GwL6ijb9PbAwvvUB0MhwyAWdsGMvXPIVa9Wg+UFBR5qPsSjO54xEgKDr3Ax9awa/0HnFy5Kzs9Bd/yMoH9GHev6Vz2CcNBB06ceq4mZXarxCNvynDxqbVp22gd+b+vzVGl5VRLfpOyBjAAGEf8QJSikAufvl4asXkQSsVwobBysP8b6liRcmz/vmIz7bHonlVTvc5oWL3Z0y5vkkNnhKBr7tBetA889SUQAFI9zjj8vdMUn+rpFRun17ij4Af9mOjuYg8O5xkxvlRW0Nd1h80zL6rnKNcFBfN1WSX2eFHbI2LFLtMuRbpjVaftG0NGnlM73xAOG6CICjJGHnWn/m/i3o5yiXQVqKqUK8/KmDs649BEv4jmdWMccZ5K5NckbjIp+d92mEOq4YbWnTelp/B0NUGbjyQc2f1JJtp0VbBdKfg/OFG3KOi1LGF+EBI25tv+d2KmHDC0BkccN3J2SJPN9hRX6C4PI5YR9MiHmUmCBH/7fh0IY9rYlWSo6tpb3kH5Z/BA2eWzHNg2GrMJm44imnX7YAq2+wxrj8XG46vzJuZrcbW/5Gm8z1cGUsMGwyRZ8TLcVMdYwZbYZLBIlwwsN59TLx5gCEz1v+WXKXDeo5T5m8pn8DdBK90uKtFdV8Tu/ka3179FiOSzMd0rMQj5mEUDGlc5Y4Pnd5edazfqXwITFkag8WKE42K
- kzyPITJX
- oE6kaoErkcdlKVLq+EYD2jiMjjsdO3aP9Xl/kGuMcN+bJ/1KE9FeUdY/S139ztyCGIB6OYQ7TUnOgB+j2kvGUrW2Lpdl48WXEJFSogz+xSUToJOOOWCxzZyLK6a2NhyqKmi8akREP7Kw5BpUsruVweA/RAe8Q8Fl+GSBerGk98du8agl8/zYjHdpIkuSw4rWNKUNVxSSOIts5hxioBoPAmb2yXVtW9iLvPokQTZMwCFeJsdX0RPMYUVXtVH3h8j+cb5SrP7WIZR/RE5VlK0GQwktiH7gjHdro1VZzjxDHaBcwRMxr1G9aYttcUEm6eNcV+9G1f+sz3fNKpt+K2WYhXhHXZw==
+X-Stat-Signature: 1zhp958hbkk1ps3jnzjjkomth6a74okf
+X-Rspamd-Queue-Id: A784D40014
+X-HE-Tag: 1785856042-609377
+X-HE-Meta: U2FsdGVkX1/eds586pYz6i86lRnqEjp84AIc91uDRzmGYhz9FO4oK1NmA9oX0LrxfMsCISdBVYo+zCQbR00cZwH9462NntMbWAi05RqckZ5V2GCNCLEXGIrPszcGMECXwEybsGCMzetWlf06H4bYFpLT+bUhVQG4ZWv66xY3ESr3bnMaGmZ/l1hLBCSHMy1KBildhsY80LWK3GICBx1J3KJH338x8fiG6NJy7ZtoHOTaBRntyOeBYIGtsORO0ddJwWzyuBcHdkhelpIdGcW+JxSoxrs29JWLMiPr6FKDykaNv5qOD2xUEuOW16pSj2cmT/pxJzd7vdxqxZquWtvdnsllDV9SiYEc2IKj7shEVACebl7DCrNvTRVV6sDMq8mTJk/2FeEA6VIPY5c0NZLR4uCQ65QNMfFNFwHb6hDr4QkzdkaABwMyPuRqNumaKYop5DePCXd9u2FzGvLQMtBCAEcxtyCSYorYUrx3W5IJHaFS8iL9Z7RZFmI9Inf6R+QJyefdiTiW6Xh65i7JmsW1k4OR9tjbyg7CHf/TMnCI63MdgxnAvLvMOYuQU2VZmD8mWP2owmtB6mf6UZ9faz0hYcNiQdb2YFmMUcU/bm57qwZpG6pMRqwaPfWzCVOVZeZ0l/+k5yHlIUsA2vvlYmPtgBJzpjzRzTG9K9M15eAdymG7+s7hqqFV1FM8ucFnlC2nbJqXcUHfMqiwghK8jBA09HHs0ijLyXbbTi9O2OtE6GFRT1O9nBHAr81jTSOvc51JAv2wF1YNtwZ7ofWeVdX5gdtg5ZKUSbXEDPfhhC0VOJ1W4MvKtElcyCrqbZ0m8lS8kaNJbK0Aaw43aT2znI3W0QIztuCWwyBqZkTiReDqDRe11tSWdrstwjJOD8Uwz7YAM/+Rsagy9vL1Dz0LqVB3S813ShmAkvv8ODpNlIjgU5EgdFzaBogeQyEIVehRRgLAO2VCVkCt/Ggn+ox/T5P
+ b+r4CNv/
+ kfZoyxc1ZwuAMcEkU55uV9DvO8vOnhaFZ3QJWUy7V3ysk/mBA+l+LHuwb+b6rC9H+vaniAGRi8mtTXR5q59+5gkvWJMUl2Ijt0oZpL15fOjwicoX0uqwdlCCrOulTJDlNfRrQuMHV75mFhZezxhpUH/AflIpp3yxklKY+/DAA1TPyHOURqqPNB6yT1fkxfurgH1DyPn5wpjUJf3ryG+PEIjZsTiVsBDEWGIDBxpg3LP6Em2W1E0MryWXiEECJNiGQyYfnp/TC7SCxgwtFV0xF+W/e54TwYvbCbiBnivu8Yvpjk7yZOKu+cAryrOTh9yaH9g0x+VU2kolLd/idOsyqPnLFhQwAJY7XElGIAgChBnBCZhjJfYlgI1IXToHL/Wlztm3enJKJ4P4X+uzUYYqjSqvtUCJYd4HN79vMFHUKvjnlAk4/am/id0jS6U+PB67/w5tswOfD2fXKRo6kX8yQgQ8CtzcG53Fa7FV/C+AlvD1pPK6dqVt+7ebafOUJa0JBT6R3JS5LBHdz6mtrMsLb4Unlg3jb6FknFSBERsGPC+bAYjPAlbItQ4k6nhfkpWymTu+sJRDpdHxZa9oiaLDv/DuG3XscbKb71+pzKqGb1sV1WEtyuFIgIvxcXpX92iXmZuh1kQLhFZd+S7LQRmpW5KcP/BzDpS96zZTJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,149 +115,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 4, 2026 at 1:47=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> On Mon, Aug 03, 2026 at 12:01:21PM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Aug 3, 2026 at 4:28=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kerne=
-l.org> wrote:
-> > > >
-> > >
-> > > Would be nice to have a:
-> > >
-> > > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> > Ack.
->
-> Thanks!
->
-> >
-> > >
-> > > Here given https://lore.kernel.org/linux-mm/af4Zx0gJIWbdDeY2@lucifer/=
- :)
-> > >
->
-> > > > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> > > > index e20d01e8d38f..6ff05e68e61b 100644
-> > > > --- a/mm/mmap_lock.c
-> > > > +++ b/mm/mmap_lock.c
-> > > > @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(stru=
-ct mm_struct *mm,
-> > > >       return NULL;
-> > > >  }
-> > > >
-> > > > +/*
-> > >
-> > > Why not a kdoc comment?
-> >
-> > Indeed. Will change.
->
-> Thanks!
->
-> >
-> > >
-> > > > + * Find the VMA covering 'address' and lock it for reading. Waits =
-for writers to
-> > > > + * finish if the VMA is being modified. Returns NULL if there is n=
-o VMA covering
-> > > > + * 'address'.
-> > > > + *
-> > > > + * Use only in code paths where no mmap_lock and no VMA lock is he=
-ld.
-> > >
-> > > Well, a VMA read lock can be held which would make this a noop essent=
-ially.
-> > >
-> > > If a VMA write lock is held you're also ok as the mmap read lock will=
- preclude
-> > > an mmap write lock, meaning vma_end_write_all() will have been called=
- and the
-> > > write lock released.
-> > >
-> > > So I think you can just drop this line?
-> >
-> > Maybe instead of this I should say: Use when mmap_lock is not held,
-> > otherwise use vma_start_read_locked() ? I think that was the original
-> > reason for this comment.
->
-> Yeah that works thanks!
->
-> >
-> > >
-> > > > + *
-> > > > + * The fast path does not take mmap_lock.
-> > > > + */
-> > > > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *m=
-m,
-> > > > +                                            unsigned long address)
-> > > > +{
-> > > > +     struct vm_area_struct *vma;
-> > > > +
-> > > > +     /* Fast path: return stable VMA covering 'address': */
-> > > > +     vma =3D lock_vma_under_rcu(mm, address);
-> > > > +     if (vma)
-> > > > +             return vma;
-> > > > +
-> > > > +     /* Slow path: preclude VMA writers by temporarily getting mma=
-p read lock. */
-> > > > +     mmap_read_lock(mm);
-> > > > +     vma =3D vma_lookup(mm, address);
-> > > > +     if (vma && !vma_start_read_locked(vma))
-> > >
-> > > This maybe warrants an unlikely() given it can only happen if refcoun=
-t
-> > > overflows? Also worth having a comment to that effect here?
-> >
-> > vma_start_read_locked()
-> >   vma_start_read_locked()
-> >     vma_start_read_locked_nested()
-> >       unlikely(!__refcount_inc_not_zero_limited_acquire())
-> >
-> > already contains "unlikely" clause. Do we need to add it in all its use=
-rs?
-> > I can modify the comment for vma_start_read_locked() stating that
-> > refcount overflow is very unlikely. Would that work or do you want
-> > callers to have that too?
->
-> Ah ok not an issue then. But good to add a comment at least?
+Hi,
 
-Will do. Thanks!
+=E5=9C=A8 2026/8/4 21:25, Christoph Hellwig =E5=86=99=E9=81=93:
+> On Tue, Aug 04, 2026 at 12:52:16PM +0200, Jan Kara wrote:
+>> Mostly looks good. Just I think bio_blkcg() should gracefully handle the
+>> case where bio->bi_blkg is NULL (and return NULL in that case). That way
+>> you can also get rid of somewhat odd pattern:
+>>
+>> 	if (!bio_blkg(bio))
+>> 		return ...;
+>> 	do something with bio_blkcg(bio)
+>>
+>> You can then just check bio_blkcg(bio) directly which is much more obvio=
+us.
+> Yes.  Looking at the whole series I'm also not sure that this makes too
+> much sense as a split out patch as the next one touches more than half
+> of the callsite anyway.
+
+Yes, this make sense, I'm trying not to cook a huge patch, but patch 2 is g=
+row
+much bigger than I was expected. Unless I figure out a nicer way to split p=
+atch 2,
+I'll merge them in the next version.
 
 >
-> > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > > > index edd90892f8cc..c3a0c38a3dc3 100644
-> > > > --- a/mm/userfaultfd.c
-> > > > +++ b/mm/userfaultfd.c
-> > > > @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_an=
-on(struct mm_struct *mm,
-> > > >   *
-> > > >   * Should be called without holding mmap_lock.
-> > > >   *
-> > > > - * Return: A locked vma containing @address, -ENOENT if no vma is =
-found, or
-> > > > - * -ENOMEM if anon_vma couldn't be allocated.
-> > > > + * Return: A locked vma containing @address, -ENOENT if no vma is =
-found,
-> > > > + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma re=
-fcount
-> > > > + * overflow happened due to high number of readers and the caller =
-should
-> > > > + * retry later.
-> > >
-> > > I'm guessing you're fixing this up as part of the patch? But it feels=
- a bit
-> > > random, I mean fine but you should mention this change in the commit =
-message +
-> > > explain why.
-> >
-> > I'm fixing that because Vlastimil asked about these inconsistencies in
-> > his previous review :)
-> > I can package these fixes as a separate patch or add a comment in the
-> > changelog, smth like "While at it, fix the comments for related
-> > functions". Would that work?
->
-> Comment in change log is fine thanks!
->
-> --
-> Cheers, Lorenzo
+--=20
+Thanks,
+Kuai
 
