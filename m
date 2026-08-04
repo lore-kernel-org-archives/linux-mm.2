@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311C0C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:39:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF6BC561E6
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2DC06B00A3; Tue,  4 Aug 2026 16:39:26 -0400 (EDT)
+	id 63A926B00A4; Tue,  4 Aug 2026 16:39:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C04E46B00A4; Tue,  4 Aug 2026 16:39:26 -0400 (EDT)
+	id 612A16B00A5; Tue,  4 Aug 2026 16:39:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF3F66B00A5; Tue,  4 Aug 2026 16:39:26 -0400 (EDT)
+	id 4B28E6B00A6; Tue,  4 Aug 2026 16:39:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FB4E6B00A3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:39:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0811D16024C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 226C66B00A4
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:39:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E635140287
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:39:28 +0000 (UTC)
+X-FDA: 85064752416.30.C407041
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D82A440011
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:39:26 +0000 (UTC)
-X-FDA: 85064752332.29.EECD8A2
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5C2FF140005
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:39:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PLXXap5m;
-	spf=pass (imf26.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B2x5fsct;
+	spf=pass (imf17.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785875964;
+	s=arc-20220608; t=1785875966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zl3F0byEfCXmpsT1iK6pCikvkisM6Tdd2cy9rwtmU4A=;
-	b=1v36ZCf6lDVeX78qa0/9fMZkW8F744Y60TRrKGNbf65hHyZUTeg4Kv43wYchsu5rG2evOx
-	4nZreUBL+zzTSVX3rhnuEquOgtjwk1kzrQPkiawDWrKm7P5nycyjjN8Tmgywuz5TT9IVrH
-	dgVahJynxxRkdPYNMSYPwxg+iDG6A0E=
+	bh=zX4G9KtIkLWVCOjh6ITiwbytCOR5Bx+nS96H45NLpYk=;
+	b=3Qah/VrS4Yvo5H/Q2QBbNCJQHxCt0lAHVq6e/AL32VGP8LhqJp2I9hSeZidrwJ4DWk1FYO
+	bmaIDmoci3eJZadv+mxPlEhJCB3dJyn4kqCv21WRbvZrgBNTZahdy71CP7UM//+TFHL0OS
+	yASN26rSh9Kf42NOVtABri1toDQdTnY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785875964;
-	b=OGIZz3lyVtA6TXIH4T4Lal35yXPEsjz/qBAv0uYpUvfDpovLPCn9K7meRmJpXFrb8hJ56Z
-	t96TmvEa+7rnlyln3Cgp/DmegIaFJMm5EHOTg1k7kuByqZ/L4BvYfa0J3qcbQY8sTde2le
-	XlTcL75jjiNkxAgStg20j5+UpocnujI=
+	t=1785875966;
+	b=hvVdm9KW5fiVvhdu8yfrc1Oe5b4xwOJNksE4PhiOAzm8zZlUBtPwOGNFwT9Ht5zu2OAd8q
+	N10WmgKtQ4GxG0i2+TPKvIxU0axyLzW/kKPvOlLI11GXK2hCs3j5tx6p2MLmqcxcNh65uX
+	ZFsavQBrFc5bTqzQi7z2RuXvHDqRFTg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PLXXap5m;
-	spf=pass (imf26.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B2x5fsct;
+	spf=pass (imf17.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785875963;
+	t=1785875965;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zl3F0byEfCXmpsT1iK6pCikvkisM6Tdd2cy9rwtmU4A=;
-	b=PLXXap5mJ1LFNToXKpJsMN9j5+GgAbveiW0Z9jXk3tqj6eCtJkgy59l5yHABxDG3yoTQYu
-	SyyfqdozSOzQTMGx294dJyJaBY1sMi2XOwOXiTa6AfQAs5W4oZG5A9R1gXlduTMiE39W09
-	ucQIqk3VRYjQu7/i0U/RBMB0XwxNJhQ=
+	bh=zX4G9KtIkLWVCOjh6ITiwbytCOR5Bx+nS96H45NLpYk=;
+	b=B2x5fsctVX5UOg6LWiPPPuknHansYyABd//bMP1rKjwDDQK/7MI0hKVoM8E5NKgMLX3s5x
+	uS+dsTbilTjSLCIiGLLAa8ePjYqWjSZwsX285EUhtKmP5V4+RWPuGTLgz56T7hKzLcI1TJ
+	zwHcK8PsmcGQhJtpfSNPcjs11RFedGA=
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 3/4] selftests: mm: implement the mTHP-sized
- hugepage check helpers
+Subject: Re: [PATCH v2 4/4] selftests: mm: add mTHP collapse test cases
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
@@ -72,20 +71,20 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
  ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
  usama.arif@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <dd8013c1ddada90913876e3bd912c07e613fba8d.1785564857.git.baolin.wang@linux.alibaba.com>
 References: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
- <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
+ <dd8013c1ddada90913876e3bd912c07e613fba8d.1785564857.git.baolin.wang@linux.alibaba.com>
 Date: Tue, 04 Aug 2026 14:38:43 -0600
-Message-Id: <178587592371.79283.12308029831149013352.b4-review@b4>
+Message-Id: <178587592371.79283.4567177442714493894.b4-review@b4>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5C2FF140005
+X-Rspamd-Queue-Id: D82A440011
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: qtgkmqoowmouqh38emr6ymz364im6qip
-X-HE-Tag: 1785875964-635253
-X-HE-Meta: U2FsdGVkX1+2Ux1cM93PcEvP2z1sqfCYobmSl3wH5dNeJjZF6JuA3hHGAohaufZ9wwahx58Z03JlWE6LE1RslQYWdaOCL4wXg2ywnbE/rizXKV9bTOo3UkeFlz536+B0uOSbR4L+wHTZ/i8FVPH4qAk/ttcW4E9iCAcr3XRWKFwdRNh/iCA2D/LdtN2M+DMIrzNIr0gXr9YFegIrah92ZIjgzzCUJr/ep9yjZavHdX30/4ZKuzKJXbUALbtcoDaCKYIF0bwMYrbt8bBkHZCbnZa/6sAukAU/40OjweBGz8Y252lswRozQFeDT70mFyqh+uLSRSw0w/e57fpuxo7X1EwiGZ/I1UNc332WnTsEv5SCjtBxG8kdMr8JreNDJnlwdtuMQplYBainbTKktpdr6l5git1CtV+BjZk9fVGCdvq+haMxpC4PIHJX/eFffXkgz0sN7XWos5D28lmrdMzZn47waqr0il4ri7Mezh0RJCnobNrhFiQpa6PzwKLdw2pq+OlzgR864BsURHAWpJ1SRx7Ax1ECPw5ih+IwNxqPCkdyqe4pE444PH8GXwR+BjzUAbuy3VWo8wuxivPPZ+TJLR1S/DLxq+mZbeoa7D81oofL4Xg22v0DMQ2Y73hST3pH/7lzzQ3e/6/3IIfme++1Ss5SsQ0gY/NOklbSa0JxD3tde5dvWlRX5xIWyQNQOBtFBc3ubL3kk6myFtrXCmp0dExzqvHrajyzPpSKIyEkToDZKRIkv2TTFDFO4cqkCJp2vq7+H1dPKRLO1M3VLaQ44MaKv5mPKw7UbfSx7A/7WbNZ4Eo9r3bsHZvvsF+t9vWRMdNQxx2bTmHDWjfHh0SiQg33ixueK21LRUb83yhpfpdkDHbRTWYS/40umIn4Cic44Ct1uKVNb4/YvqbTN3EPk1AjefYOgNt5DvOpy/ppfLaRG9CjSPUpJwNE5/1e/Hmy1ZavuGKItXfBKlTnXx2
- 7AUm2TEP
- TynYgF4Ido6ZGCLsoWmxhKb2AowHFK3d0FuW548JJRu154UT5579gsMjzbXnsia0CkJGr44ZITNCfgcgEVEp/bS4ZKP8+1/WbOEZvmZUok6g1g4fG6TQUAI/PzZyyKn063+HRJjDxtxT3Yve4tK9Xty6uz0pSUOcpYFac9IYAm0gwT3J67NeRkIuYRpVuS62+AX/weybD+jSo8nH5WNYfSt2SOsoAvlXG3iZN63M29DBhYFoFLxDERvCJE6nrWMmcL4+dZDsmogSkg8sNQeppLoD1ExmpOnRAd80t+xGbRgiEJVI=
+X-Stat-Signature: m54oijhh3cedb63j7dqz77159fz5c5bd
+X-HE-Tag: 1785875966-569332
+X-HE-Meta: U2FsdGVkX18H1l3tgvxHzo3OlA1s/TNuw6ybaf7YgFXMpMs57TUiICQF8tpbTsbYG2bDQ7RpmochCmQsQCQzBK+ofLYPe93D7rII8gYuF1TP12JjI8pQmkj79MvfW9QcsbeQVFDrCj7tVJHOHZOvd3Q0N1dEqYfBmZiX9rcnBaUiZYeY849xBmYxMgdof2e41Yz/omAXVGu1OygWJh71g4xEHdUKXRkBxM2Lz4EFb0SD/JPbNEHQxEqQNIVgGptYwmN2xoZMd3wZVDXrVGpD6pb2K65bzeDM8ZkoqS8GGyRvSJ3eZdhEMrqpecLmK5YXHETAuoeKfrdhiyM7/yk+AqwbNxmO+ydISayReumsx0P7M4gTOOmcPgHu9Frk+CE+p4GZ8GdjfwVcEa+6NA60Y3jO/uGe69Wmocfkojcddj65NkXAnBHauF4Xihr31iWTI7tNQ8ex/8eMyvMt6f5F9Xw+N9bAiKNK7YXb33kVxsfEo+hL0VugsnnIethjQ/tk2HzdEyRIEF4eF2pq+mqoV+ovqSOOSlf0TzAMYq26VkCIcQeblOIUjwuQH31eEqA5+ZYBuqJzU7Pa83+l5THiAWgH60pL2MRiem94avCIDfmrjKmF82SLQyk+3ujDt4fs062Pupu9jisoLVQsb8jKi5aQvLlk7Tf64kBwxZxPHCOAO84terZfWPUGiyUMGQBpbLE75zAHAyvIE12m8C71XT3hpcloCl9OmQ7nGFQs/k/06XY2fp19bKqSxxJZpqckPF6NCXeGExBUECDHm7SDUbf1UZJNXb4v6C4vQnrPXPM9nUaa7Oikh9SLH1p8Dx/WFlNtglEswuzWADA5G2FnUyeZBcFZA8ULzcbe3j5sAucqKX5KTVpTHkBk0FR8+srw851zAr9AKUdY7qOGM3NvR3XmXfToZd+efxkP30/neOlwZINEAEnTqJl8AajmKAJXEaS1ncs76ay02lKzrkl
+ 8AD5m2Nh
+ ItNWxJ7jCCi2F4uFxzzZgJU7AP0mPSFuM56sLjA3xCMUz4svuNUzivDOgtzLb0RlxJOC/IsGlg3s/CO4PfPukGFH7rjnMTmusVsOpX/XsWF1JpHcsxDXPhMhcwR0bbJsWIVkkiKFo+Wxb+pW86vVBhlaGOSszt036W2kL18NFmjqO5otDdK0FPWebKOiU9r+Ym8vsPaaUf3waOuowUDPWiIVAGNrPu/JKm4GmUhhdawMnceQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,13 +92,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Implement mTHP-sized hugepage checking helpers using gather_folio_orders().
-> Also rename the existing PMD-sized huge page check function to
-> __check_pmd_huge() for clarity.
+> Added a new command 'mthp_khugepaged' for mTHP collapse, along with the '-c'
+> parameter to specify the collapse order. Additionally, added mTHP collapse
+> test cases for 'collapse_full', 'collapse_empty', and 'collapse_single_mthp'
+> for anonymous folios. All khugepaged test cases passed.
 > 
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-LGTM!
+LGTM! I will try to come up with more test cases, and send a followup in
+the future.
+
+Thank you for working on this :) 
 
 Reviewed-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 
