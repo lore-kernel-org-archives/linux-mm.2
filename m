@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0756C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97731C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CADD6B0123; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
+	id AE88F6B0092; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9556B6B0120; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
+	id AB3526B0122; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86BF86B0122; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
+	id 9C8F26B0092; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B3976B0092
+	by kanga.kvack.org (Postfix) with ESMTP id 6FB216B00D8
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:49:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 292F5C0122
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:13:38 +0000 (UTC)
-X-FDA: 85063326516.11.DCD59BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 77A7816000C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:13:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3bqKum+;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785842016;
-	b=SwfGBM83pbswN1TI3tUiIp7/FoYO9dYbJY4wkGCIDTfcB1VUtreSS9pJ77Qv5lu/QvhROh
-	74JCB036RaMv8Ixghew/ylRWBHnhItVryIgJStkq64G7IMzcqzs7Tmm15t97rKW2XEW0E1
-	dGoKoXLIDEE0vIDtcHUriBafM0ylew4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3bqKum+;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13FFDC011D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:32 +0000 (UTC)
+X-FDA: 85063321224.05.24ED311
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 84BEAA0008
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nR2VBNRV;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785842016;
+	s=arc-20220608; t=1785841890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8cqD4Td6cmzUoT3kOqg3vmAusK+bPeDWcDnl9ayoHm0=;
-	b=daicZCSywoSB1pJtu0P03ZsaZyOYM9fq9qIH7YxFcHSsdN5IhBG1LOLbdxViWRgeAPTR6a
-	A7BgdOqgISitdP52fbxpsmo+3tz/zj/pdC/E28mHlrjVm2VJ3vAECNy2KsIpwdZivDJTSO
-	ocLB9GgUmpbz32NwkhF6wEpJMe+pw3I=
+	bh=lPlMqpw1IDLRtYVeniRNxYTVPDHrNiexqffQCORp34g=;
+	b=7H40WEuWyLiT3O3H38ohByMfNhGq+cdrdzjh2NGUagBEW78G7rY6Don+j8isZLIh3o3gFW
+	MvnL9ydVDkIavkxPfM4XBgkxkvl47jf47sId4S/Y61pK4omczQufiMxiXlsXsIBlvVHP3T
+	hyTnqbMtS1JIJzM6vtWkX8qXP4BvNNM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nR2VBNRV;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785841890;
+	b=k4VfLQtfgI4zJjh/87HcsfY31GcYg+krm0FiwaYp1ZMwU8s0QEM10f1qC2bUArWXxvC2cU
+	j/LuUCUX4hvfyHj+FHy3CxAJ//yCX7OEMBVXOoXTYlSSFos673UgnPTJJlg/RnQf8i/aQx
+	7acaGX5gwjdT/Wx31+T4LuPxTTTgV80=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B6C1D41FB5;
-	Tue,  4 Aug 2026 11:13:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE311F000E9;
-	Tue,  4 Aug 2026 11:13:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1586060A71;
+	Tue,  4 Aug 2026 11:11:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189511F00A3D;
+	Tue,  4 Aug 2026 11:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785842014;
-	bh=8cqD4Td6cmzUoT3kOqg3vmAusK+bPeDWcDnl9ayoHm0=;
+	s=k20260515; t=1785841889;
+	bh=lPlMqpw1IDLRtYVeniRNxYTVPDHrNiexqffQCORp34g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V3bqKum+zDMz1wDVK7/W7/Cpna1axIZ8waZJbfhnPeWsV+7SrDqLU8PWSJUbb+3he
-	 M4Ja/j3rIk+CPOSW1G/w+YnERDAPmXk+3AzaT1Sz5HuG9ZnCWZDSLd/bqdFHK5D06a
-	 TsufOI4BVEZ5xRT2DqCq4kvbr+jQRDVOYtzymVbxhGAK5wvEuNEJ5/0Nz5YX2pMOHT
-	 goPV5EbvfQBEpDb2ziiFBVoHsjypWl7xqNlDJ+SsYzL7n3M7DBvJP+LxEDAdh4CuOV
-	 XpjxHXJY+Wb/A1v3WDrBJxb6mVTS1u6Ems+3MMJol5M0Iioj3XhSxbtErG49jJSQwY
-	 wJA5izhsuzVzQ==
-Date: Tue, 4 Aug 2026 12:13:13 +0100
+	b=nR2VBNRV0pk1/OgzMczs6p6psKwdhUOyZldMBZXdygQAo/uvz9Wm+fZryWyxvHs1N
+	 tugMO3FuAf8iTrlmndYjOm/Bb/N2rPZdKEmFl846PR+iMA0btzcbh2c3EJcd8mHuuN
+	 fdGFsBi04TbQFLPu9RVEjd22d+D6Cay6M2i7vOJMy6U9VB1zlCfalZJjnNA8BRXlsZ
+	 cbAldKjKURmWlZZvTpkRiXIqqL4UOmUjNeH/t+yvRz0qMxgWP69xU+r6rms3nYh3Ei
+	 EHdYt4bqTsBxaFdvBxzCK1DLNkVJdNj41y96psFb8DllhxnbvJ6lbCR59BEPua/jAx
+	 QNUZ57jLN53YQ==
+Date: Tue, 4 Aug 2026 12:11:08 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: David Hildenbrand <david@kernel.org>, 
@@ -79,23 +79,25 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
 	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] mm/powerpc/8xx: constify ptep_get() argument
-Message-ID: <anHI4B-lMu6AJJfA@lucifer>
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	John David Anglin <dave.anglin@bell.net>
+Subject: Re: [PATCH v2 2/6] parisc: Drop own implementations for ptep_get()
+ and ptep_test_and_clear_young()
+Message-ID: <anHHyiHqYf3yLf2K@lucifer>
 References: <20260803164400.531199-1-pfalcato@suse.de>
- <20260803164400.531199-4-pfalcato@suse.de>
+ <20260803164400.531199-3-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260803164400.531199-4-pfalcato@suse.de>
-X-Stat-Signature: br6dgxwyuqzocq6jgp6wmh9hoyaew95r
+In-Reply-To: <20260803164400.531199-3-pfalcato@suse.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 77A7816000C
-X-HE-Tag: 1785842016-19481
-X-HE-Meta: U2FsdGVkX1+vLYmNNv8Sl0YQLEzKNFH9mmYmZqknXh1j0L3vpDHb1Rx1Bw60vzTkpUMlneyZmUmvatigc0lH2DioBQtLwXVvgiYThoI1+En1jkcc95Jr5fqxw6m4mg8/BHqTcWyxZ53S3Zzl/RcCsriecp+pBY8o+8WBcR/SSWvEgx2LXXBBILQTrEAk31EAPnD6fxggjuhuTVvatQmyQvoR6huljVgDRsRLfkJBLHY+Wy3X4SqgSshC8/OoRce1h2kTBsl/6mKHgVMiDW7dOxngwvAtzSIE0HwIrlGMLDZV3oMI31nDQK3x2eyOMVQDTY2cvTf159whM3onrRwVWgAx+HHBhLsDNlmhO6PP7lKe4V8SOmZv/YgkGlaVoHeP+3/Zqmpo87hXgTlIkf5OR/c8M5ia/Imq3KnsToqRcKgpAdXXDjreRbrlnQ4FfunjNheevQSPhS92JJwaEaTWr3M/MblbPkAc3mXyWiQVxfypBm7X2M1VYTK+WclazbEWwWK0SdcEwobzV7awuVjH45OY7eTtzmzRNdXg36GfpR/DKgdpIpCWuXLbx9kxTUQ3I6CEZ3v55Mk/fvsxZi5kIrOxKRunsY4sTGfe6r44+Nt9jf94Zx3GKEpVdTTFpMIA9WYjkajg1jgAzrf3rc1mxygtMt6QNTfEH0oCTov3gDg3iGxxDGiIzvaOuwFFSg+ImP9ngvbP15Oe/3WATi4S79CIeP92kBfD74HnevouUw3dFgxoNaXzcLN/3K7rOw55nTVXOkSMJbD9mNuazRECSJxzk7G7Bu1n8Zh18Y2QbQbYu1VC+G0gZuKwvFpP8jH8zTjzhbnmxp/zDP4MmcbMFynVACT++JEyRDHaKIK3Ikr7pAHE1N8NyW/cF+P1EORR3o62hrqeesGh6lV8GdBXnOlbqn7dplLB5KkO4UPVtmLqTITD3cxOYcYFYRrRa2ro1o3VTTnRR846wF/xGTa
- OLQfYIHa
- qvCGXj/CSedFMIjkSL4O6NwNb4Gh608x5rVC48nEla3yOgrpCq2VrF99Svddq7KU0TJvT6ZVTfRskrmLbWPZ+tq0hePhj4r6yGrQRm607uJOtmu63axz8oa9DYQncq9mgB237iWsn1IGr/+EvAtHTTeKJnqFx78aWBgRJX84ltyIwcYJ6J/bS791wEqj/lqt+4oCLjRRwB4c9Fqjb9EiH1CRvx5L2IAbtRLLwpPzJUEqvQ89/C0MbkIEixdnNYjwRbl3aJwgUWD34vzOSDI84AGFmcHuHhE8x/2FDgvhyFl5OO0/uaueeMY2Zy5R1xaGWW01y07bIZOsc3/RKs83+dCJxaN2mj/GzUnyTMad8Y3dissqIDvr9I1V1NoFxBDJijFujgw8NVoW9bP3KzruzjTik9g==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 84BEAA0008
+X-Stat-Signature: nffixtmx4c94wh5crzxkxx48mppjyckj
+X-HE-Tag: 1785841890-661910
+X-HE-Meta: U2FsdGVkX18Sk2L8BH5WuCI0iwPksOoMZnrLzUwBPcx0rAUaoGKEyuDB3rE0VCa9gnFja8qLVRVqr/djokBVd+/i0Jw/8fxi90QOHX7r/702aM6vEnP+CMF/9cQeRnl5OHEGuo3kd0wl0ojDtPG7Yp/IYTE/3M1b5gooh/0DarhVT5IXvv4yfu9yf8UCqZKQQebpzpPR6yBgouibQqItjVvt0ONKN8Og1XwyT7KFV6Mw1vJcH749Xg4nIZAm0GnG+g7N272IXFMysSajZi/4IqL5vnsIjB2lF0zaLYvcDctTtP+2WY6kweukwQo5JzE4re6xLgGmcle1fJv7UTRs6rKsXFiOBPKtGZ3px2AsRbidnbdVI+uZcRSxvDBHWs73niN09jP+O0yP7/hrnj+3FDonQ7Ja5IzzMKRdI2wH4DrR3oN+FMoFmtKcmQtJCg3qatj6CC7D0F2PIwcpDffXiXQe4m0wMM1hWVxz5TaI9JxtvFYiOzTDLHoA1khPFafqPIStgqkNvqTD0n9rH4lkUKVlx5+gFVSsVn3/5E8gAb300FfyHVQOWDRYAwLSiv+YKbih55yOnzozsM8eSXwE1MlGK/aLq3Vh7AiX9C7ltNqX2orJVkOv8ck8onXalKTM2+YHoEeYMGXCKLEe80rASGpk9zVno+gUb3t0XK/44Qb4He7EYzGzpO0ebtQWItRyynZLfMeT1u5/OtV4oytmoF0TzN7yCsgzrVtJKlwDp+qpgBZTw0gZ5Z44yjvP7lFTPHfMxO9dGdNoKh7cYxrQUq4LRO/UNUfnaF/xbyeKbolyd12cHg8y9q2f798F+kwRSLfUpbhRtrmbOJVNebovDu7fs2B4uFkq4prGsbK8sC/8hIUn9Ux06wWj8b87/0ErUnaFJxrJle4f/sts4Q9UQnamvDq3Kl86+3euf1LOSMrwBdsgdZ5eSuqVdSSDID6DYjZD5VSHq7KRW4FbsoJ
+ 9bVryzcH
+ Je9K6cL9EtIFoGaeWBMJ4Cz4FA6P3CjOqBgAUNbf6ClI9YMluKjRyX5gZMBXGtJd6q6Ng6yNUgXPw2Qt79uOnBYnF6LAidoc/7Jx5kf217lmYcRLJuPmbER8f/pkgYBCw9yuCpvPTTHuv7PUcD0kRoy3vi1qzXQGXusFv7N5NosWS8tOVmK/BS17fnAU+7O3pOhuhjx9bjDU8cBr548ooI7+OpmPSN2I+Ru5jZEqQmd0KoMUx6ejwVEd6rVI1+4+chUvIvlBC0PW71oDIX7QespvWPY7ux5TxKj7dC1xNOGqM6D7fmJZfsyTx7bKBujZ5BE7wSTpVCAFrNdJZKwsWWHi2QDU0lYr+hQZf1MMiHM8CnGTK0sOQqWHPlM0zBwHsSH3gg18TfdLNoDOwQbV1Gxhyg2rvvbqcqOAv0rQSD5D3Ax4PstWqLeisgdQtorxySJOR9RpxY7s1vgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,35 +105,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 05:43:57PM +0100, Pedro Falcato wrote:
-> There is no need for write access to the PTE.
+On Mon, Aug 03, 2026 at 05:43:56PM +0100, Pedro Falcato wrote:
+> From: Helge Deller <deller@gmx.de>
 >
+> Switch to the generic implementations, which are identical.
+
+You sure do like succinct commit messages :)
+
+Maybe worth saying by dropping the __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG and
+ptep_get defines you get the generic versions from include/pgtable.h which are
+functionally identical.
+
+(Being pedantic, they're not quite strictly identical as the
+ptep_test_and_clear_young() generic function does some weird unnecessary
+indirection with a local variable and the single {} is dropped etc.)
+
+>
+> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Suggested-by: John David Anglin <dave.anglin@bell.net>
+> Signed-off-by: Helge Deller <deller@gmx.de>
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-With below addressed LGTM so:
+Nits above notwithstanding, LGTM so:
 
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  arch/powerpc/include/asm/nohash/32/pte-8xx.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/parisc/include/asm/pgtable.h | 20 --------------------
+>  1 file changed, 20 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> index e2ea8ba9f8ca..f2bab31040c7 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-> @@ -226,7 +226,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+> index 467b8547ac8b..d92dee9fef3f 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -432,25 +432,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>  	return pte;
+>  }
 >
->  #ifdef CONFIG_PPC_16K_PAGES
->  #define ptep_get ptep_get
 > -static inline pte_t ptep_get(pte_t *ptep)
-> +static inline pte_t ptep_get(const pte_t *ptep)
->  {
->  	pte_basic_t val = READ_ONCE(ptep->pte);
->  	pte_t pte = {val, val, val, val};
-
-Worth making these const too (that {val, val, val, val} horrifies me btw :)?
-
+> -{
+> -	return READ_ONCE(*ptep);
+> -}
+> -#define ptep_get ptep_get
+> -
+> -static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -		unsigned long addr, pte_t *ptep)
+> -{
+> -	pte_t pte;
+> -
+> -	pte = ptep_get(ptep);
+> -	if (!pte_young(pte)) {
+> -		return false;
+> -	}
+> -	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
+> -	return true;
+> -}
+> -
+>  bool ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
+>  pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
+>
+> @@ -491,7 +472,6 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr,
+>  #define HAVE_ARCH_UNMAPPED_AREA
+>  #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+>
+> -#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+>  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>  #define __HAVE_ARCH_PTEP_CLEAR_FLUSH
+>  #define __HAVE_ARCH_PTEP_SET_WRPROTECT
 > --
 > 2.55.0
 >
