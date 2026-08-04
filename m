@@ -4,165 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF205C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC26C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:54:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBDA56B00E9; Tue,  4 Aug 2026 14:52:58 -0400 (EDT)
+	id 361576B00F8; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D733A6B00EB; Tue,  4 Aug 2026 14:52:58 -0400 (EDT)
+	id 3387B6B00F9; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35B56B00EC; Tue,  4 Aug 2026 14:52:58 -0400 (EDT)
+	id 227A06B00FA; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8783A6B00E9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:52:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2581C801BC
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:52:58 +0000 (UTC)
-X-FDA: 85064484036.20.1B65730
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9BD32A0013
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:52:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=P7C0CHDi;
-	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED0566B00F8
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:54:16 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75074A02CC
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:54:16 +0000 (UTC)
+X-FDA: 85064487312.12.664D365
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 33D2B1A0003
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:54:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=hH6y0yN6;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785869575;
+	s=arc-20220608; t=1785869654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IXGGw2at+L2vnEOc5GYny4bpp2wSKxYA9ebiI09IaVE=;
-	b=P7Kky/Dm6KK2ds1uNwMo+qFIEtPVz474491mE67uagUeK2PG8c5r2z8avc4EAtwonrP8r9
-	lqNWj4v3YuSoWEADVyg0RT0DWJG3Ap2FGSVaTVIgHjWja108FbPmDLBsDS8OatslXzj+IH
-	GydnFQn61KhvhqxS+WDntIjq4L+LJNI=
+	bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
+	b=ncGXwh3XLxWMOgERlgUwsQD5ajmu4U6vgsyjYpF2bmj1PN1yKm+IN8uZh7rnNvBGOmUee4
+	KPguzf9Y9PnF5mm+8bmboca+HkytzXgfvlSa81Dc8HkcS4kBlhqfOJ9VEfiSzYbVuQEaXr
+	BNQ919JgYCEvd8jJA+G5X1y8v+ppgrM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785869575;
-	b=DOZM65vgN8Td4lWhdVQf18ONwQ8/72SP4K3s7EFxn91w9CiLaCFjsfVwBeWraSYWjsUQeQ
-	JbhFDrjUr6vgEpRyaMp95PQ5UFha3F77DrxSUYrR1Y17CerPykwLow2LCnzP4wKPSLFYwi
-	P+9DubvyINL3xzj182fZwPM6FjDDp70=
+	t=1785869654;
+	b=3jMIsha9+Xxs8SKfCqnce9iXNn2GbxuG2jL3Ik4aZGE/MJEBwECGviY/HnGwG0cy0Ncn8C
+	hB7Wwpas/Sr1tkkSSYaLDvlvvQhp0pW0RZcl5rttEh4PHumjJU62z5lXMEslINqSODb8+E
+	zaSLvD8m7rL4qHNRo1v6j0cb0H72cjY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=P7C0CHDi;
-	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674IYOYO2598213
-	for <linux-mm@kvack.org>; Tue, 4 Aug 2026 14:52:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=IXGG
-	w2at+L2vnEOc5GYny4bpp2wSKxYA9ebiI09IaVE=; b=P7C0CHDiaLIMwRlERVCQ
-	2JS5t1syYGUmkwtfAi4bkz3mbz0/zBvmII5X/9F7bQopsz6mbaEwVC/gm4Cxmx8i
-	N1jgbz26Hs6k1PkFKqKmzWfR2gFjWsHwNImqgzJmhoIteaEpMFp1wDv40+vHf6x2
-	+m1YVI8YOAHYv94djGb2Tg9dQN/K6CnSKWo17X51RkWmZevfH35nQ9TrYeztgRI9
-	hmB+IJ2rcRgYg7iXpx0WLaXmWo43pAzj2TGNgWgKjglYg2D6Kx8xzhlN4yiL9gZ8
-	/yhLAlgaZE4a1r156ZckLlvpA+VC0x580HwCaQ5OnIXpW7TdO27iVYuMBJfHaa5V
-	jQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fugvvapfs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:52:54 -0400 (EDT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c20762d21so1325061cf.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:52:54 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=hH6y0yN6;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-9034b6b7674so1177246d6.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:54:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785869653; x=1786474453; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
+        b=hH6y0yN62+f6x69XkU+4NeuGKI7MWR00Dpx0Afu6PHgwE+cY/2ndLNyyRMPvMzzFVQ
+         pqVwKio+fJWNa7zqfAUq4sKx6TtVjUM900eX867w8uK6hwuBSzu/eO0cTbojr1Dg8mKy
+         yR3aXyykdVi53O8ST6Al38QacgxP3LXvE5bRMP8MPTN9S0bIay3/FJOLYaPnk38wYO2g
+         K7WWoasKgE/5TYNpfoIiWZm+WLOZsG40h+yF/lBv8x41kZzUBmnnP1zjFo28c/fcg084
+         IkVARs2AEKXn78hBkdXavbWJTsRLTpCKQqQwlqgGibKarIP+7lTiJUZ5+K2fOFwPOq66
+         WnMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869573; x=1786474373;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IXGGw2at+L2vnEOc5GYny4bpp2wSKxYA9ebiI09IaVE=;
-        b=IbV6uUCO91HPVxyGNHeg4kYInLiWK5i/EVAIVJiGgf+z08knMyQ8rb6McpC2EpEcSv
-         rlhSU+3Y3hyFZSkaEjhf1wETeV1YEqIU2RppfGSaTt2iPhFmKI+iukjsS5kdRgRYJ3xo
-         09u3TnXOFw/+kFMDanrJGgD9tohScigcQXKMoDdxFotgRYW4VKKZe48EywHpq2fMS0wn
-         oAQLQQ/LQWHlJeXRo4pNhhD0D8ckasimYjACpAEMb9nHGnT9kh7MB3OSqNcXtWmtGAPi
-         xbFVWGV6/rl3mEnY24bLlrPvcubNLTs886NTYVPdTES5KOjTKBCjSSl8mcK5/rrHXE4L
-         yhTA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqrms1U9yU6NPJtpOUC0L3cFaCLG6A9iK99aR1tbg/SCChnWyGvWfsf+ug6OFPEe1FaFoJB8CZ82A==@kvack.org
-X-Gm-Message-State: AOJu0YzXpOY7Rb8triM1PYMmbwponGYWBuZf4mDADFW4IiDxZy+ifdQ8
-	aMvRCLeTF3jKLIhP+xX37QL4DNAlBZM86Q3izwt4kyjWF0x2zP3CM01m3Dn1Y/h8ZNX2TLzHVC+
-	5BSaERZ35Wvv2FdbFy18Lmi/uEfQKVX8CuJEuoPv8yWrV5bqvv5ekfPYt
-X-Gm-Gg: AR+sD10T8bXanOY7qzBXy5SpxBwAgvAQItE+W1PlBMl94qu828khBEuYayNcN+TKMbY
-	tDDHim/ieijrZkxQmMFQESDzO3/rI9Ijm5RkE64x9AfSWWRXUNPR1v2j89BwDT2yn30gqtYaaEO
-	D3S9d1TVGVtGTPygRE+/PCsBGdEO0yjlBQPNpERLFg51ZPXgGWV6TXRZfxXjxYgWKiYdFJV3DIU
-	ibyl2m4Ubm/bd54uf0JGkBRcXoN1Z9yBHU18ck07eR3ElELufvZKk831ib5wxCBle1+VbytHkR+
-	m2emK2a29ZQ2b67cotxYvQ0q7aLgK1AlmLPsXw1xL3pd+0iMOpbpLNzH4NjuA6t/G6QkfXW+m1G
-	k68TCs9At
-X-Received: by 2002:ac8:5a12:0:b0:51c:1f97:e860 with SMTP id d75a77b69052e-52ce5f2752cmr13886961cf.3.1785869573302;
-        Tue, 04 Aug 2026 11:52:53 -0700 (PDT)
-X-Received: by 2002:ac8:5a12:0:b0:51c:1f97:e860 with SMTP id d75a77b69052e-52ce5f2752cmr13886441cf.3.1785869572780;
-        Tue, 04 Aug 2026 11:52:52 -0700 (PDT)
-Received: from [127.0.1.1] ([77.137.77.124])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232d7fsm2313275f8f.20.2026.08.04.11.52.50
+        d=1e100.net; s=20251104; t=1785869653; x=1786474453;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
+        b=j7fvvn3GlsIDmFC/lHeaqCkUzFtolhnMRQcvrPt68estrz2ZZw8q0Pibwm1GIZqApj
+         5nw6soZv29Jq/liS0FUOkWV/aDV8IK+7Mkjnl/WdR4tcQwSWpeuee5dBlxXycXyEQ63p
+         kIXFd3imVGEmHYo7HCIWwXCPm/fWrTi8md4TIduW6SsVGj06zfUL3UGTU0vR7byEnDUu
+         7YysZ5sz0vZCuwhuyOWnaqYZp8XvQTtM7NMIPQPjC3sRmHTDPnMicWxgYNrqcGb4aHLd
+         XwKWZp+qQRV9Mo2vWyW/MXXGIiE/P0vY2CDVZnpbf+a0CNce6oR0AupESFS7OM1Pb2N2
+         bOHw==
+X-Forwarded-Encrypted: i=1; AHgh+RoE2+MrEX8yOkK/wx27Ut2xYVJ6AiwC54jv18sv8rgEJufXIip9MB7s7A9dbT9o+DeT6JkNz0/XDQ==@kvack.org
+X-Gm-Message-State: AOJu0YzZr3OKQFl91efO69nNGZlkFftxxeMAlV1DZIHd41URddPH7DiB
+	0m5IHTV1vPWS6k+d/evDot84ONYRixTdqFqhlcIAb9+CRX7jyo0kkSzVKZNM//HUDkw=
+X-Gm-Gg: AR+sD13GhZZtfB4S3ty9qmmbjdrmJW4nGmkdFAgQrt40S5YWvfZNCW+9x13W81Jqrch
+	HH+tBpbkJ1JI7SV7WYQNjao+6jgnkrs3uvKPViQx+4wnoFGnlHDWUUNkgNobHE6/PNEfiSvEFTM
+	vxHtt52EK78oaQI7KHs0tf5/MQPzrLEo+gvLonBcU0rkpRLpDiXI7IYgLwN1JdQ2zYtNzeuF4go
+	7TJU2lZFvGSoJrbtTWiKUkxBnlDlsW0CeS7O5XauSWr18XpX/B9jbeXmpXUps4caw1nCAt1xR0X
+	wSHZO6WDGw2RW/nxWZiUZZwlJvTdja8i0S6vCedajYVtwPGUMXQ8ydpeXxUrHq/sA3LmvphAcGJ
+	lGzV3uLug2OhaXk7RNEn3WKPuGW8BA4g7CCl6zcZbJMErXq1HVIfsT4evzIUC2E01/4+AnySvRy
+	u+D6ch1QlAIV2WUej72ssjhxk6lfe6L/PhZT0tVdM/2jy6dh3teKcLm7Gh9oc=
+X-Received: by 2002:a05:6214:4a87:b0:907:c056:d63a with SMTP id 6a1803df08f44-9088125aa14mr18471346d6.20.1785869653206;
+        Tue, 04 Aug 2026 11:54:13 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d04csm9065436d6.3.2026.08.04.11.54.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:52:51 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Tue, 04 Aug 2026 14:52:18 -0400
-Subject: [PATCH v2 10/10] ceph: rename ceph_check_page_before_write() to
- ceph_check_folio_before_write()
+        Tue, 04 Aug 2026 11:54:12 -0700 (PDT)
+Date: Tue, 4 Aug 2026 14:54:11 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Barry Song <baohua@kernel.org>, Joanne Koong <joannelkoong@gmail.com>,
+	akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev,
+	alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	willy@infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+Message-ID: <anI1U49rFrlhPx2x@cmpxchg.org>
+References: <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+ <amy5ZKC2Kc7RX94Q@cmpxchg.org>
+ <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
+ <anCpdjEoDNgVbfzP@cmpxchg.org>
+ <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
+ <anE27CtvCFx7sAuO@cmpxchg.org>
+ <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
+ <anHxPU17Ui4MTcCb@cmpxchg.org>
+ <65b4baa3-77bd-4d2c-a128-9884f858e63d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260804-remove-wait-on-page-writeback-v2-10-81f0ab065284@columbia.edu>
-References: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
-In-Reply-To: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
-To: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785869541; l=1302;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=Fy0wHmd3j0nRih2sYwsjYIDOGoKEx9pprPd7Ycd1PEY=;
- b=0IePVxuLC7vw8rtzQUNlq/BT2+vfHxRsOOG3aH3xK67+jgzeo9E2ec8vR2z6rFQq+G4a62iq2
- yew0TORASoFBpyZLd/LrUzrNW1mBhpUUwLMTTyU+1n577jdtw9woP3n
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE1MiBTYWx0ZWRfX+t77N+XpXoBY
- JjLGPwFkWhdekCOJeyrlyTZJVGeaD8F19/Qme2w33DkpKh0RagN5G/YDYNgEYvaAKhi4rAXtTqf
- A40VaaTD4uf8pNDtPdsVP9/0z+FkVUM0PFquyBSa9WB+tk9CZMTs5bOyM9hOMq4xeZuiABGY9/G
- dbiTPJiuMRmVJogCopInAM0Xn34lMgss+2vvhA170hHOLzKKbzQYbw2bMqZgVqWjDlLEfbQ9MJI
- q3g1bIpiqSsDcxBPRzCelwcb41zZZ4TuNv47z8dQ83FXF/RtJ9m0DDYcSlZ5IqNFTotsEEy6KAe
- uQ9KYU9SA1OxfKFXbdA3dm085IoUC7edVKALNYSSoqR84TKZYYAjzIR9aPbPeHzXZ6HzVVcluPL
- NZUjpoqTtUqFOP3llq24+iW29rcABxLLszTQoSpXRsLS5q12XMobEm7N97pzApcgkkq4BY//bX4
- eRIxq1kpNb5fpVIbfLw==
-X-Authority-Analysis: v=2.4 cv=ZpLd7d7G c=1 sm=1 tr=0 ts=6a723506 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=j1J1DEHOHTVaJYOjuVnKiw==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=pveTg1YcNyQK2WBy6c8A:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: ftM8t5afF0yPJRmVpjhHc0i3m-BvQetN
-X-Proofpoint-ORIG-GUID: ftM8t5afF0yPJRmVpjhHc0i3m-BvQetN
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE1MiBTYWx0ZWRfX+Hp4aCCjWP41
- I/v8tZXOmYiTR8a7QrC3jpdzWbW352QNM2qrGuxAn3ZoKqPqBlNFr5VXwVFspC+ATMEFKRat/0U
- qHieyd01EmLjt5zfzXkUWlQqfP171FVXqHUInuIm0DbgmRoLXdhn
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11865
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 lowpriorityscore=10 bulkscore=10
- priorityscore=1501 suspectscore=0 clxscore=1015 adultscore=0 impostorscore=10
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608040152
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9BD32A0013
-X-Stat-Signature: x9ej99ubf7bmtem7ar7cmiqzq1y9jebh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <65b4baa3-77bd-4d2c-a128-9884f858e63d@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 33D2B1A0003
 X-Rspam-User: 
-X-HE-Tag: 1785869575-316281
-X-HE-Meta: U2FsdGVkX18FSFQGxHSnBhvGmMvvXYhJGmv65iE+ncrXJjRJvo2d8yVTShdlaJM67t6EESQxBirC2BcsVH34PntDttfuZLnaFzsSlctCqbSALOmjcti9tG3AIwqd0GGHI1ghePVpLX35axidtTlJo2NsNHPzHBeFwZ/gaUzGXO5CQwZO9t5qXV5Fqs1t3SRjmnmF7xB0+7f5PzW1a44o0ONdp4C+pb9g+0wYRleZNQ3g7o872YYNUd5uX8k+dWn+mI97OjbSWV4c1dqMc98lxwW6BNRVe4Tt8bQj2Wtjgv2w6es9+v6wgXP0dVXL5oSuaUhlM7ZVy2S3iLr1RDXN2StC2b2DyH2z2DxiBNAFwnjKL8Fn87+YCH5npMLaRwiuxzf/97+0C5lGienryr8Ui8vRYf2D3xixQUH3GXH87JMSoP3YC4QWqH/uH72iXDdFoady6CXYnYARqDZ8A4qMDHGCiH1Q+omcyMyyVQMnok9nm4WWVpj3KwTvqov+oDzfvg22z8KmfaL1kW3Uu5zCTxeukglwrkoQfiFd1wjtqGprcksCz6JJsRqkkHB070PfF60A3LA7gY6+uhgUUXEqWr7a8xPofJDsLmENLny+LgYu9bf1dvy0ngBYapD3oOQWdEvG5FcyoHuAKXyc304omRfrZLbIPQvvQMoa7aLkHadJHshfgkJhHari23jxhtYchQVB3j78NcrjHcAhGP6IWkd/cAr6O1pfLdBqPtDp4QKq7UE6SZr3A0ekpe77uLSidx21SMArAznCp5k2jpqVVhj8Cx5el9rWkrk26AvId3TUu8hc4L6BTdE3/rx3jTKcEKk4uq49PDtF7tDW4g2NzR8av891WRuegGlrEThzTzir3LdBbIK/RYCyI1FFMJ7CwbcfJjLAxSuA8/I2EK822sNzIqieCFxAwFfu9F+Eqnk3rl5mVJM2zjGwNrxnxhOVRgaVfbSXZNOO31O4H2+
- YDxvhLA9
- Dz1yPmDZ+7BjxSI8HMa/nfzCSWbTplrAXkero1Y52mvyoY24GcfKKjWaeXqdQLtpj/FVetoR1z76iOBDeRk4ias/f4YgAWY5Chu8nIBnsmrn/qmsbfjlDdQvuH201TMMtwjHXOspkt5/MBFvxz4NjLh1AmnWC0VDJzX0CGkdaYbEkRWlLC3sdKMSRrCJYJjZsZiajfoOQRNmJRm+b8WRlgGVt1wlSvlqdecAbhttr2Af1u4n3lka9zfWmUOvfUG+pGSqAdJevn9Ef/OuwHori9wEJKxfe+VzZ/gudhaavq8EuvWVEl34RZLbB0NfW4J05jhIjkOhC6LSK5PxbAR/yPhkDXK/1qcWzKIa3wxK3Wl7zTm/TaSgmOMBad5unw4Hnh6/sSwTzzEPbDTs=
+X-Stat-Signature: wdhghm3cxmwgpmnexuxtm53oc3q15i7m
+X-HE-Tag: 1785869654-413142
+X-HE-Meta: U2FsdGVkX1/B7tAnBt9w2YV7BGd55JYKoh28hHyF7R08+E6hYAQIiIARVMkaqVoLq2iMj8ZjyPVdYOAcemFQHJOiAe6k4n0I6Z8a1VOJGobs63P+TgXvaKOk8CG6DC8N71y+azorqW7mPR5NaGv1+G2sZumi4aBFvkllINnrnLRJiOV/lo901a7JpOitggSpP1eNL9okyUMdiUnLNhGZU+lBPMZCnvR8u1pTWPY2PH8SqOjtsKCZ7VaDwV4JRsgckLez4Yndr91DyoZl7u5+jXfmSy4O1U/ru9BNOcqR9v1my46Lr1TN9lXZgGVMjguNlp9R0nsap6+CGFWKja9W5Io7m4luAmG7gTRkJlGBzEDOj5rA+JVpaRdrK+ECSBDeb3rJ81zvDfjoMHESiDVkGD/isFWt4ASFBfItTCJSTFuAfNn+IFPbic/9v/5X7QWZdUbRVo5W7n3ipFMmdh6tvyPBx25zVjY+A1mKbsJgBV08nr7HQeNHzDGet3J8Lg0jARdRlhgPxbUE6RF8G3te2LWNkKz3nrPQ9Vk7UIrb00tnGUoVX8jThKhn3pULuLM76CgzhRL7B4PB9J0CXgBm0SdGOUOYEunnmoov4dueFr12O62OHmA9tnKijil+Zrs94ECP0XrBE6mZFgK1ibHPjSZa2Jn9o2aDMmzKD/iueG37XMEHXaSrWRLxabLjfb69LhLLHIiOKh0GmvJIwqZRVyuOQZl6bjrrcueW+38ZgJxUSOnLcsBDq4KD+wljvkMxiOx1y5N9RIdDi7MmSKd/82Eeje469AoxVSxupDbemc7NtZ+aznPIMlUFCqjelQ/5YUCdJfzYnPPSnEHS6kvqKrt5t/nhEeRjECJ+oIH21emclirCyo1g8fQSUlpjdJR/SBnekbBS4pIKYc3XlASWgGx6ba8lhz0IqGGRgb74Alpf3PTxIh7BweYnydnn4aW/CyYGme0woxOQVpvneJq
+ qJodPXnj
+ VobAq37UemkGaNIXItnowVNZxl3CUeemc9zlwMZcJ3velFQpAPPwPVkyVwy3gJEZhwVHbvaGNgHfGtdJWuZPlXrlVfIZdmowz/IxMlyngXGBqXB7I+1Yg0cN96CCc1L8Chl6U9cood+zI2nESPUm3+Qw91yu9UQIFpTvZFFOhftQuBhK0A/pl0yCcapw01jShLGStQWCTocXQ3SJjXDP3gxWeQ5bZEUUcEwq1X8cYSm2cDbP6vCLDUv6QNSlUZFlAPwcEhbxAI0/L++VToVGlMyqzb5qIBYCWfuHqAUeXut2ymh/BsctEO8Zc6BM6D/GbUIt9Myv14mLEbs7XOG6nPqstPwJMPaV3GF94uaRpoNYAiO4cmgOglOgWxArSoxslYdMTbs3r82j9PDt9QabRBzDEUV0epjEnDu2Xj48E8edydqIgyMruLgeMrNKndg+0Ridf1+JhHd1pz1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,45 +135,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function only operates on folios, so rename it accordingly.
+On Tue, Aug 04, 2026 at 04:11:02PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/4/26 16:03, Johannes Weiner wrote:
+> > On Tue, Aug 04, 2026 at 10:03:14AM +0800, Barry Song wrote:
+> >> On Tue, Aug 4, 2026 at 8:48 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >>>
+> >> [...]
+> >>>
+> >>> I am very confused. Did you not see my proposal above?
+> >>>
+> >>> Why not this?
+> >>
+> >> Hi Johannes,
+> >>
+> >> For arm64, if the base page size is 64KB, a PMD would be 512MB,
+> >> and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
+> >> order-5, not PMD-1 on arm64.
+> >>
+> >> BTW, I assume khugepaged_max_ptes_none is intended for collapse,
+> >> not splitting. I am a bit concerned that reusing it for this
+> >> purpose would be quite disruptive.
+> > 
+> > It already is:
+> > 
+> > static bool thp_underused(struct folio *folio)
+> > {
+> > 	int num_zero_pages = 0, num_filled_pages = 0;
+> > 	int i;
+> > 
+> > 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+> > 		return false;
+> > 
+> > 	if (folio_contain_hwpoisoned_page(folio))
+> > 		return false;
+> > 
+> > 	for (i = 0; i < folio_nr_pages(folio); i++) {
+> > 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+> > 			if (++num_zero_pages > khugepaged_max_ptes_none)
+> > 				return true;
+> > 		} else {
+> > 			/*
+> > 			 * Another path for early exit once the number
+> > 			 * of non-zero filled pages exceeds threshold.
+> > 			 */
+> > 			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
+> > 				return false;
+> > 		}
+> > 	}
+> > 	return false;
+> > }
+> > 
+> > That's ABI and setups are relying on it.
+> > 
+> > All I'm proposing is to only queue pages that the shrinker would
+> > actually split under currently existing rules. That's a mostly
+> > transparent optimization, not a new policy.
+> 
+> I yet have to reply to some stuff here (sorry, it's a mess :( ), but one thing
+> that annoyed me right from the start is that we have:
+> 
+> static bool split_underused_thp = true;
+> 
+> But the default khugepaged settings actually don't result in any splits.
+> 
+> I think it would already be a big improvement to not default to adding all pages
+> in default setups.
+> 
+> When we last discussed changing that, one concern raised in the past was that
+> changing the khugepaged setting later would then not be able to reclaim pages
+> allocated up to that point.
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- fs/ceph/addr.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Agree, that could be unexpected.
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index eaf5b3f6d13f..08d854ed663b 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1153,10 +1153,10 @@ bool can_next_page_be_processed(struct ceph_writeback_ctl *ceph_wbc,
- }
- 
- static
--int ceph_check_page_before_write(struct address_space *mapping,
--				 struct writeback_control *wbc,
--				 struct ceph_writeback_ctl *ceph_wbc,
--				 struct folio *folio)
-+int ceph_check_folio_before_write(struct address_space *mapping,
-+				  struct writeback_control *wbc,
-+				  struct ceph_writeback_ctl *ceph_wbc,
-+				  struct folio *folio)
- {
- 	struct inode *inode = mapping->host;
- 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
-@@ -1340,8 +1340,8 @@ void ceph_process_folio_batch(struct address_space *mapping,
- 		else if (!folio_trylock(folio))
- 			break;
- 
--		rc = ceph_check_page_before_write(mapping, wbc,
--						  ceph_wbc, folio);
-+		rc = ceph_check_folio_before_write(mapping, wbc,
-+						   ceph_wbc, folio);
- 		if (rc == -ENODATA) {
- 			folio_unlock(folio);
- 			folio_put(folio);
+> When someone actually changes khugepaged settings such that the underused
+> shrinker would get active, could we walk the LRU and add all eligible anon THPs
+> to the underused shrinker? We could remember "already scanned for underused" per
+> THP, but maybe we could avoid that initially.
 
--- 
-2.39.5
+Recovery like that makes sense to me. I don't think we have to be
+extremely performant either, that should be a rare setting change.
 
+Would it make sense to use khugepaged_scan.mm_head? That could be more
+targeted when policy == madvise, easier to skip over shmem VMAs etc.
 
