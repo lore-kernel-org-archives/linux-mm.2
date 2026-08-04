@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41476C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D9A0C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C4406B00F4; Tue,  4 Aug 2026 10:46:33 -0400 (EDT)
+	id 09F0B6B0107; Tue,  4 Aug 2026 10:47:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09D0F6B0101; Tue,  4 Aug 2026 10:46:33 -0400 (EDT)
+	id 051916B010A; Tue,  4 Aug 2026 10:47:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1B0A6B0104; Tue,  4 Aug 2026 10:46:32 -0400 (EDT)
+	id EA9266B010B; Tue,  4 Aug 2026 10:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BE8D46B00F4
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:46:32 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4199112016C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:46:32 +0000 (UTC)
-X-FDA: 85063863024.03.800AB07
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 85929C000D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:46:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkxaN2ik;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C80286B0107
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E63781C0049
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:14 +0000 (UTC)
+X-FDA: 85063320468.25.25622C2
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E8B75140009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pENtFhKN;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785854790;
+	s=arc-20220608; t=1785841873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uUvC+y0j8JFjtE+XMJ9UQGtCiCNbH3kOeZKEuG06DWw=;
-	b=QwHbp8dOww9TYuB2cnPMjQGVqhX0NedC9kAS5xE7pTS57HHKXP+4WrxdblSY/afNhUbewT
-	NMVRFBPCtxNvCZsC2v4zm41Q5bFzNVkwmy56s8KZpzJd3+0xTVJA/B32qKcc9YAlbsu/oj
-	5dTtu05Gm1mMvdPm5PYNp5d73E8AiDM=
+	bh=hXdQdLXk3DZj8XyxfTld1Y9wOF/hPoBLP3p20wObD2s=;
+	b=Cd0lxWpZIbcw9OlFRwpfUsoZsmBiQjYjGG+5NkST122M1MZVFN2LpzpTdwFbAoZpb/4nuY
+	QJQbgERypWmzUKkVgR1EN4KkpZGX/MexQLPemowXchTmznooULNVGfELW7Xa0EAMA1ywEH
+	VzysU7TKTtDqIy4WcGyheBQHJ9UBmRo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkxaN2ik;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pENtFhKN;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785854790;
-	b=jKebLHzYV3owyTmEeEyul+p6IKkQsLWCMi3qL7K2z9mxPAlx0w33QSSusl88gacDTX1WaY
-	sk90AL4fYvlE6avI2p+PZM2i5GGKpg+4TuApgO2lnX+GZxaMjfgIBj9nVvznS4XnwEXzQB
-	EPUP/1TBuSDSXnI5DTelokbMYGetvR8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7611040BFE;
-	Tue,  4 Aug 2026 14:46:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2510B1F000E9;
-	Tue,  4 Aug 2026 14:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785854789;
-	bh=uUvC+y0j8JFjtE+XMJ9UQGtCiCNbH3kOeZKEuG06DWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RkxaN2ik9P4rS1+/q3KgKb/2D2Eh7uomzp+QNGTLlcFGiVoRdD2vuChwYpMjwFQp5
-	 ECUUHTxHFDlqwTii01KYRocgyxJj35A2kS9tX/ei31yWKYaIN9L9YFhsn2ZlSdxdyB
-	 gu0aWTswPsa/XnAveSiWQSG8fjaOZEZV1PuVweKw3vJk8stnyIOtCX8KUpkc7OCrsx
-	 n5diT9WhcnlnZyAygOsDSKKw9mkehqfM6GW24BR59cBzv+d7NN+rcYhlTya9qTqOqf
-	 dxbLbJyZSgtJtNT8G+GckekF/SFjztBDfoEeCQENfohv6Y+9YdnN1HvSiqsu4FzBxO
-	 kMbSJgWnIjbXQ==
-Date: Tue, 4 Aug 2026 15:46:11 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, surenb@google.com, liam@infradead.org, vbabka@kernel.org, 
-	shakeel.butt@linux.dev, david@kernel.org, linux-kernel@vger.kernel.org, 
-	zhanghongru@xiaomi.com, willy@infradead.org, zhangbo56@xiaomi.com
-Subject: Re: [RFC PATCH v1 1/2] x86/mm: use VMA lock for kernel faults on
- user addresses
-Message-ID: <anH3jVrBlUMLd-28@lucifer>
-References: <20260802074018.73887-1-baohua@kernel.org>
- <20260802074018.73887-2-baohua@kernel.org>
- <anCu3DOrXDeMrwi5@lucifer>
- <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4xM7mmv_Xa3g2mB_0gW0_VtYhMtwz0idgYLyoAYiHFmfg@mail.gmail.com>
-X-Stat-Signature: wdm9r9ss3sa9xa7r6sikkcctdxzezqwu
+	t=1785841873;
+	b=ck+NhrMeuCT0dMOOh/Kja/w13vLbvNpqFI7ZtDf6ITXrbCNTzK9TVLkaZeTr7tytaEs8NZ
+	UZXMlyhS8yhQ8KyDo8VoeEl8aCn6OeGBPLbh/PTS9QO5lxmYZliPAPR7UUhIlZiiG32nNk
+	xNtJDP+ntcOplI8lAp6/sbe4ijjTgnk=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785841870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hXdQdLXk3DZj8XyxfTld1Y9wOF/hPoBLP3p20wObD2s=;
+	b=pENtFhKNVLZQk5LpJk8jZHmxaccxVINc33LymFRkBbJY8kjTIhsyWiV7F4a1geeoeqDsr3
+	hU9LqndipGiSVW6Dx9Vgs0uVDns4+LDEZpCaGP+k8HLGqY66bZv5Uq84a+/zctG5BjtOfC
+	kHBwhDM6bQH3QOyNa4203XiB7nbXyFw=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] mm/sparse: keep mem_section_usage_size() internal
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <9314195a-2704-42da-8251-d2df618d630e@kernel.org>
+Date: Tue, 4 Aug 2026 19:10:50 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <06FBFFEA-BFC6-4F97-BE21-0574FA3FACA7@linux.dev>
+References: <20260804100114.16627-1-songmuchun@bytedance.com>
+ <9314195a-2704-42da-8251-d2df618d630e@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E8B75140009
+X-Stat-Signature: mntq438awtwegr6yq55cpcqmkx3ynbwq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 85929C000D
-X-HE-Tag: 1785854790-524475
-X-HE-Meta: U2FsdGVkX1+BfvS58ES9ZsTXOAbNarLTlO8X9NcqLf4dloC3O+sEQVoF0GBbrPGIMlZtIWxTTpQCXMbv+Z8eBS2AdxR6yef++VQhH7eabDsarlcNDaplWd876gbWZOIZqX+Zj6J5etVgnG36TT85C4s+nUZT6fEYma7dYRnd8Ql801PdB2kh1QZtAOAQ9lIqkhtcVjQ9tKTJrnk4EUGZVtDH+9bLCRlur5Ziq1LR5FAZtZ5RRD0LyPHdNqlnaKz688xi4k7oWj4NCHerb2Re3eaOcFWTGn61+2D1jPPYFrU9u2E4Xo/NMj58DXeoocWDKctNewbGY+kspanNDRxtl/E6L7uflFwd4Z4yGEDgXIoSOlHz/vqZDVb5YZ0HEqUOJFPJIySX+2xX6uUTX3mUA7vbdRvYNFVRXXKJ/IjL/D9Zvck0gOvlR3+zdEa4zrXG+MBb+B8NB1/T50Nk+T3mPHolk9kpThRPsaVRcgPaIVpnxGVgC8UEK0+Qk10UKk9BH7pGG9fTqtYiZDma3rJZvPD/Zgio6OdTRlKnLeCPpT9qq06VFr2KRM7zPkV8VmfiDE5+56TVetFrIlNp7aYSSk84OmzczqTmwjDy50+l4xe1q4Xg9TuG2bMSZV8jiQe5pJTWOBLAlH38MXfRX6ur2ZwAq6vQwoVwsZUTu7QM7jlNfCPFw0++KCk7MNi9FzlyZ4SsCt/op/6bhKU+MjRLy6wsiyiqxbO9wKWI5CSwcN81n8NtYWU5JwBxwPNrK646fMdRnfkx7rArbtwI22GdvsM5NhG/0ikv9nXDUWTJCu2sTUIrxk4gOmklex1fPEr2Mlajjl0V2TZmWKzSfcM8CNk5HVgdODRlTPHXa5C68+Kg4fRAyNEB28hGZ+xi82PHfy2UdJRbEsmoNG333gjOzA2FYmOEG785xintw4ibjr6hKOYpxsIQuD49uzT9UiA9rQFoU2oGjQpMggUSTSc
- 2bctVvtO
- AAHfKmJrdwOw4oJ+CHYyQp+hN2iEJVolPwaAXBz5mvmUhRxQaF77+23ZJ5G2vNigbxyaN+JLBXQgeTkOZ/bQs9+3siVAPaL4ew23bBxzAEhWvcMIpVp4FRSrSRZMCB4TkI1AjpapFLcmYK9ZF/lqeFcsd4cw8QsNoOSwZfXqQZbvELDpDoXP7V9QmL/EjE8yOO4EPYRvxqKoi1XBswYhqezLyWXjz0uohGphyipnL4nN3aWynKZPM05i1yQIA0LQfierp2ibCHKou2uwmJ+bWdlJP3/i2Syx12B6+mTyS8/cKPLy/rkt7dGZAvLxsnB4BrvWL57Q9pBwYwAk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1785841872-372191
+X-HE-Meta: U2FsdGVkX19ubyvoifPVxFsLVhCMuQrIFh5pwNeaZ+gJcaTZpZxOcSGmqgMaPok0Q9XeGGH0ZgCabal+0iae1XEU0KsMsYCanjEb03qcrnIFgu1HEuWuLgu6Eq70tLJmq5d2Pc86QUsa+WpkJcoIhH8pcTrPASQmIkcmizUryNoPq7BcScp3S7scSTRC5kkgP4BfDutffswjGnTn1IPOdYaodcA1LYr9LPeftu8Y2zPheT2OCUyuxSKl1dnuh5sRwEPEvg7ToV6gl9BjYTReKagymnbbEaYOtY5vBOOyMZm41y8x3+Z6XSXBshZo1NDj1HSxoI1M+U2na7F9y444FcIh40eoKbqEYQNN5hOojfOFk2+kgH19nxfBzXa91bskcUOarhPd5chQutgc5BMqoZ76+gnBonFlosv9y1TiZLLF2vHnu/YTW+WtbSu71FmJ5oSKAgOjXYZMYfkDl//KUtU3AwIbOOAjIxv9q7grBWNtNWq7eyxYS61nXXiDeCBH0n9KOOkA6xXpTxLsYRf9/+nivnxbE7EgkgZvrCdz0LuolebRqNfNcLkQm91cMNpBZ4E++chhcg3rdEUQ5rtdr7r3T/Hf2cB4pkc0YX3KfSiYjRWihilIj1KpIt7ke/IFpUNAjGLbDeP+GelB24g6x6fLSzoOsAJ2xwMEetFfr+2xuwbBfxEtE5LBojHtAgZ+/fo5COuGutTCmQzemxHcthd/HC/mRNHe4X1Vqq7/Na7O5xsUpSUSukUd0WxC+8yLHko48r36qLP+DkBUepQi5DIT2sIWYNaEsayWMo7NQeWZ4H+ucCDOZg4DFcRtoJjNI4ylLIa5YKHdHKjntHbh0B6EjnqvLKslVCkjk9XX9RCzPtPB1TYr+Y3b0+YXHnmSxtq/ay0g8ac2cTG/tnPK7D8AzVSs1OXi2iCddTKInhQebIFo7fGlbHkxyCpzoJ7QFPLRP40gVnCXZfEeKrI
+ Jnn8BiyS
+ R91f3dK0TeWVHTOjr1UKNzyUDpKl79svz1gMRKxmDOKeGvGrEXdK2xkZvGGXhgPcjSD9HRYZSRrEqV9w/PAVuHiNY6WcFI0caeGORl+6vzVz5oNHkUiiUbQAOApyvdIqVulPhf/OxwfP5PaZeexHE7gNWuSnXp2xduiRbIUp7KNUhYpDPvwna4QWPGOx1lFBUDRYsnz+mepXToeARyTBrfirQPnHWsfHXQAgP3zvV49X4nPPeMdtpaI/8W54aIWb0Mh9A+Pve5J7peNiYmGON0CevAfo95oovPxdVMCqGOzvXqW2xho5rgdktZxHTEL3yZNjCsgQBj/mlauI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,95 +98,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 06:37:31AM +0800, Barry Song wrote:
-> On Mon, Aug 3, 2026 at 11:18 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > On Sun, Aug 02, 2026 at 03:40:17PM +0800, Barry Song (Xiaomi) wrote:
-> > > Use the VMA lock for kernel faults on user addresses. This also
-> > > makes the existing code below meaningful:
-> > >
-> > >   /* Quick path to respond to signals */
-> > >   if (fault_signal_pending(fault, regs)) {
-> > >           if (!user_mode(regs))
-> > >                   kernelmode_fixup_or_oops(regs, error_code, address,
-> > >                                            SIGBUS, BUS_ADRERR,
-> > >                                            ARCH_DEFAULT_PKEY);
-> > >           return;
-> > >   }
-> >
-> > Hmm yeah :)
-> >
-> > Bit weird it uses user_mode(regs) and the early exit uses the just-set
-> > 'flags & FAULT_FLAG_USER' too.
-> >
-> > Some horrible duplication here too... the user_mod_regs() etc. code is just
-> > duplicated in the mmap lock path.
-> >
-> > I think you mentioned it on Suren/Dave's series but vma_start_read_unlocked()
-> > would avoid all this and could lead to a nicely red patch.
->
-> vma_start_read_unlocked() could completely avoid falling back to
-> mmap_lock for binder. For page faults, however, there are still
-> paths that must retry under mmap_lock, such as
-> __vmf_anon_prepare() and swapcache_is_device_private().
-> So we may not end up with something as clean as binder, but I
-> think we can still achieve a cleaner design than what we have
-> today.
->
 
-Right, and also fault retrying (though Hongru's series is looking at giving at
-least 1 more try under VMA lock there).
 
-Let's maybe wait for that to settle first and see how that looks :)
+> On Aug 4, 2026, at 18:09, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 8/4/26 12:01, Muchun Song wrote:
+>> mem_section_usage_size() is only needed by sparsemem implementation =
+code,
+>> but declaring it in mmzone.h makes the helper visible to all mmzone.h
+>> users.
+>=20
+> Worth mentioning that
+>=20
+> commit ae751d567baa08342e5e34b378b72a6f9b2cfada
+> Author: David Hildenbrand (Arm) <david@kernel.org>
+> Date:   Mon May 11 16:05:34 2026 +0200
+>=20
+>    mm/bootmem_info: stop marking mem_section_usage as MIX_SECTION_INFO
+>=20
+> Remove the last external user.
 
-> >
-> > >
-> > > Right now, the code above is dead because !user_mode always
-> > > takes the mmap_lock path.
-> > >
-> > > Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > > Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > ---
-> > >  arch/x86/mm/fault.c | 3 ---
-> > >  1 file changed, 3 deletions(-)
-> > >
-> > > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> > > index 45b99c3b1442..c22b74e0eeaf 100644
-> > > --- a/arch/x86/mm/fault.c
-> > > +++ b/arch/x86/mm/fault.c
-> > > @@ -1328,9 +1328,6 @@ void do_user_addr_fault(struct pt_regs *regs,
-> > >       }
-> > >  #endif
-> > >
-> > > -     if (!(flags & FAULT_FLAG_USER))
-> > > -             goto lock_mmap;
-> > > -
-> >
-> > I'm not sure why kernel faults of userland memory were excluded initially
-> > (Suren?)
-> >
-> > Given that it's OK to take the mmap lock here and we're necessarily in process
-> > context anyway surely it's OK to take the VMA lock?
-> >
-> > It looks fine to me but want Suren's input.
-> >
-> > Also given vma_start_read_unlocked() is coming maybe that's better for a
-> > cleanup.
-> >
-> > And finally - Willy is working on a grand clean up of this stuff _I think_ so
-> > you probably should coordinate with him also?
->
-> I have no problem waiting for Matthew's work. It is the right
-> thing to refactor the duplicated code across architectures for
-> the VMA lock page fault path.
+Will do.
 
-Seems sensible thanks!
+>=20
+>>=20
+>> Move the helper to sparse.h so sparse.c and sparse-vmemmap.c can =
+share
+>> it through the internal header. While doing so, calculate the =
+allocation
+>> size with struct_size(), which ties the expression to the =
+pageblock_flags
+>> trailing array instead of open-coding the struct header plus bitmap =
+size.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> include/linux/mmzone.h |  1 -
+>> mm/sparse.c            | 10 ----------
+>> mm/sparse.h            |  6 ++++++
+>> 3 files changed, 6 insertions(+), 11 deletions(-)
+>>=20
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index a26c8b855222..86891163e0ef 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -2070,7 +2070,6 @@ static inline struct mem_section =
+*__nr_to_section(unsigned long nr)
+>> #endif
+>> return &mem_section[root][nr & SECTION_ROOT_MASK];
+>> }
+>> -extern size_t mem_section_usage_size(void);
+>>=20
+>> /*
+>>  * We use the lower bits of the mem_map pointer to store a little bit =
+of
+>> diff --git a/mm/sparse.c b/mm/sparse.c
+>> index 704a9dec2b9a..46458e5300e2 100644
+>> --- a/mm/sparse.c
+>> +++ b/mm/sparse.c
+>> @@ -213,16 +213,6 @@ static void __init memblocks_present(void)
+>> memory_present(nid, start, end);
+>> }
+>>=20
+>> -static unsigned long usemap_size(void)
+>> -{
+>> - 	return BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS) * sizeof(unsigned =
+long);
+>> -}
+>> -
+>> -size_t mem_section_usage_size(void)
+>> -{
+>> - 	return sizeof(struct mem_section_usage) + usemap_size();
+>> -}
+>> -
+>> #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>> unsigned long __init section_map_size(void)
+>> {
+>> diff --git a/mm/sparse.h b/mm/sparse.h
+>> index 95aa031213f2..4960a17b706f 100644
+>> --- a/mm/sparse.h
+>> +++ b/mm/sparse.h
+>> @@ -47,6 +47,12 @@ static inline void __section_mark_present(struct =
+mem_section *ms,
+>>=20
+>> 	ms->section_mem_map |=3D SECTION_MARKED_PRESENT;
+>> }
+>> +
+>> +static inline size_t mem_section_usage_size(void)
+>> +{
+>> + 	return struct_size((struct mem_section_usage *)NULL, =
+pageblock_flags,
+>> +			   BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS));
+>> +}
+>=20
+> There is struct_size_t() that avoids the manual "NULL" trick.
 
->
-> Thanks
-> Barry
+I hadn't noticed that API before. Thanks for the heads-up.
 
---
-Cheers, Lorenzo
+I'll send a v2 to fix this.
+
+Muchun,
+Thanks.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
