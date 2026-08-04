@@ -4,105 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37789C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A81C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:09:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30C666B00E3; Tue,  4 Aug 2026 10:07:54 -0400 (EDT)
+	id AD8AA6B00DC; Tue,  4 Aug 2026 10:09:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BBF76B00E4; Tue,  4 Aug 2026 10:07:54 -0400 (EDT)
+	id AB0A96B00DD; Tue,  4 Aug 2026 10:09:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D3046B00EB; Tue,  4 Aug 2026 10:07:54 -0400 (EDT)
+	id 99E726B00E0; Tue,  4 Aug 2026 10:09:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F1D846B00E3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:07:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72F046B00DC
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:09:43 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F1044015E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:50:33 +0000 (UTC)
-X-FDA: 85063570746.14.20F3197
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D7E42160008
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:50:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YABf4fdg;
-	spf=pass (imf08.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785847831;
-	b=wjgVUUHwTBemPWQVeh0GSDz4tiwRXHZgqqB6Obw8hh0MUvRyzMEnyRkXKxxE8m1RnAqBAn
-	Oicgcr1jf/2HkCGKr9OaYQQaaVzeHI85IUsepT+a5a3lP3aspQ9tPWvJTpCcfJBAoEVxLW
-	qSIyxqrnyWyY4ECRsrMEy1kRBCE/s5M=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YABf4fdg;
-	spf=pass (imf08.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9153F80177
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:53:59 +0000 (UTC)
+X-FDA: 85063579398.14.5A23919
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4879814000B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:53:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=TcAiTksA;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf23.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785847831;
+	s=arc-20220608; t=1785848037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwIlf/7Evmvt247IE4OinLG+J81ldxUzqSmjbn1lj4I=;
-	b=newq4Y48EdkwVjmtfcuAsiY6Q7s7dlJObGHYnP6mfUWYOQDtmHNCz4K+fmexEsybE+fMJz
-	44xFEHKhZsRk+mIxAGmeed72DL8tEH4yv26I6deH2LNZkithcadijTTXANiAvqwAVKF3fe
-	n9kWvo59momn5MGxpDVpGsCnaKVFgVk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4524360A77;
-	Tue,  4 Aug 2026 12:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA74A1F000E9;
-	Tue,  4 Aug 2026 12:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785847831;
-	bh=dwIlf/7Evmvt247IE4OinLG+J81ldxUzqSmjbn1lj4I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YABf4fdg/D3MZ/bWjeLut7tnE92glPPUblZGjARSmDu+SgTZpTVi3WlLm5HquAEGf
-	 J2bpoFXvno4uXAcJ7Qo2ETmUHwVx7QaU4Q6WWLBRWh0ptmCIMDZ7RFbr0vY3E7y26f
-	 HxBmGepETc20zSML41v9hWk4GYBDyII5UeitdQ7FJ1clvB48Hd99D6tRp7kXQbSc+/
-	 XRPUWDoOmZMUHaf+U1rl7d5ImlwquVOEdD/uQN4srP+6xLmPHZhNDl1rgq1RFigrZq
-	 Gs2boYFuSu/p89NeE3nlhVrLloKDlGkdWJOQ09Yz3skgBGv9l0vTzQ2rYw7eRih4tx
-	 ETPFvsGGDEVUQ==
-Message-ID: <dcdb8cab-c18c-4995-ad1d-2f2d4700e7c1@kernel.org>
-Date: Tue, 4 Aug 2026 14:50:19 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xlTXk6MwGxjipigz9cBt80RtymoaNf/U04D5MwryiXY=;
+	b=YXE+AniXE0d+/V4hrz4zOpcukri2X+QPmsLPrbwWxdFts6hS0KUHTEd7Rbec/XjEaFukGF
+	XPOmy0/LEijrGr5V6S9lgfPP5RsVKYoVaG88rQHrCw0BRLvXjPP0h5q0ub7j6ue5UZG0se
+	bO3uwzTMXJGJLMYIBrhOTYAICcPrzzc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=TcAiTksA;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf23.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785848037;
+	b=2oc927HJUsfuHpa4dthI9Rq+tkZfVQl8PWFSzyz8b9GDNQvmMpCBf8GEuMl/tf4QqAw/Jf
+	e2GMgcMv557IfpEee2PL9cM537VVJsQIPLOl3DkXe2b2q1Bt0UBLOZmjV01kFgXPLjgIX4
+	iDobUbW1Hf7mFy5t1YjnnPUhlVuAzTk=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674Cm3Ls864595;
+	Tue, 4 Aug 2026 12:53:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=xlTXk6MwGxjipigz9cBt80RtymoaNf/U04D5Mwryi
+	XY=; b=TcAiTksAKZuR0Bs+D+YES/NHVaspYm+r82MbE5+UxDE6yya2Z1ys3cAHK
+	njmLIuUig9g4P5U9Xck61e1DiXb89ZRLPi48pXfJ3sSwkIghQrJY+1Uv8/UpQRUt
+	yDfmrKsf1xjB9HJQeG7YZoAjKfsSNsu+sA56XW97uCjywxEuEPSbSz2r9KNddp4A
+	hnDC1ij+0EBWwEAuWJjrEeKp4QSc8utDKEcGkreGjnB3KEOhacVyPJwy315tNOwj
+	SBRfO5lMWh5TlYxjSYjK0ZRrQKZMM+IUjl42gCFaUQlwyARuT6NdPapPsOYSIUUG
+	n/9coTPoHOr0yJ4Ay/OUwKezZS3nw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3wve8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 12:53:54 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674CfjLc009496;
+	Tue, 4 Aug 2026 12:53:53 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbg9rs3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 12:53:53 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674CrpMC36569406
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 12:53:51 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD1022004D;
+	Tue,  4 Aug 2026 12:53:51 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A84B420043;
+	Tue,  4 Aug 2026 12:53:51 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue,  4 Aug 2026 12:53:51 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 8B4F3160DF4; Tue, 04 Aug 2026 14:53:51 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/mm: khugepaged: skip swap tests when no swap available
+Date: Tue,  4 Aug 2026 14:53:51 +0200
+Message-ID: <20260804125351.1715708-1-agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] mm/powerpc/8xx: constify ptep_get() argument
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kevin Brodsky <kevin.brodsky@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-References: <20260803164400.531199-1-pfalcato@suse.de>
- <20260803164400.531199-4-pfalcato@suse.de> <anHI4B-lMu6AJJfA@lucifer>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <anHI4B-lMu6AJJfA@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cipgpp3anwph38u51ipcwapme7guozet
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a71e0e2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=20ODRixJnTVtJwgKIyoA:9
+X-Proofpoint-ORIG-GUID: I5TXJGCz7qIhxc_gf-V5rSg-4zXJDRLW
+X-Proofpoint-GUID: I5TXJGCz7qIhxc_gf-V5rSg-4zXJDRLW
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDEwMiBTYWx0ZWRfX5CiOSaCP8kLg
+ up9IvNS9qwGCWBM/JNfoYxOgqTrzCVZTzwMyZH5WtFJmZmnUNLgJD3zG2XQHhaCLN1o23MInjva
+ iQf/qatyYehA7QIoUr7zeQ2BAXn1iGY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDEwMiBTYWx0ZWRfX0XeQSf8lH5st
+ hkVk81pCEm0zzd5NxLpBO94nl8y3fpf/Cbm27xPyStRELOaf04CnZytApWHrbERYppQY3nc8WUL
+ OLiBV2vJTquXzAf0Cub01fJStoIcpx77WH/1f0350aBW/+9iM/EYRx6ZWQRNgdKPOusjnsQfvmc
+ UOWLFglyaxHqwIflkTktbNxo6b0RFF752AGyCPvcJ3BTXL/kLryWpAjf47FY6GDMlKZdNc50ntg
+ S+y4yhaNYybSLmfc5ldwUNweBl3dalA5TLihHBNh//4EGze0UnLIQn012cY88B4BUwcjDhT+rie
+ 9ORrX4aFzXRz9T2+zAtm94Nvy2HH4zPqt2jkbUdf2PIY/Zx89hd/K0J4SuMlZHAz4hiEk0XQU1r
+ /E/NHooTQ279qN6a0WdFVLJcLOelljIA1SEhEFJeekxUemgB23r2bj6D2MEvCcdddLNk+RSlyD1
+ 87cRqoi3AqyZ2xrVasw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040102
+X-Stat-Signature: ku3e8j4wiq8bo1kihpz78q9od8t6gbsc
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4879814000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D7E42160008
-X-HE-Tag: 1785847831-771548
-X-HE-Meta: U2FsdGVkX1+UpkjppVVhx9dUPzNnYR2Gdv4UKoBm2hwymEs/E6HEObPSDc2Qh6X8wRY1h3UKK6ypfAVqRTmQ3WxteaVuAguoOk4EhPO7qeUN2TxpDemLmeGsNBsMqryWNxPaUIq5YBQz2/2hayiztNItfaSM461Aqsm+XkY/ToOuseDdL1qw881ImdZGO2lSh3CNlNGXVXVeQoY16FvARQdkLVokXnrMl0EfyBD6zjVABAit3FQYJ7R56LXASIqxaq/lellUn/qZsqErDj+9jpaPp1+F1FAZPq4XnPMfj1g6vUw4Rdd9sGRVreE+ybSCYngu00owx1HF5VFG5sx3ldW5RXRLyCzTvM2JwrGcqyAT3yIIGk6SNEZMAHWZAfvpKq8iKB1N9LpVc0wY5SgS9lHo8UqiQ3tPR1IhuXz6bj92oku5gyQvUJTVJNqXo98Gw0PwgG0ar+s1eVEnf6xAfJydDa9LLLtu+YbSlxTBjAytyKaymL8vW7LOzp+8/TLyqWopAFB8rCVhEWVGuRBB75QKbScOg9EpG2xz5/9x2PmRPfp/lJjqB+BTn3kxf9UK5doTAmKzpnawfsXBGq+81v7SwwpvElaEFR5VWSISYGp15ykpaw5S5anNYyu+KJhq/1eZy3G6NMUCIDJASiVBcXIispwXFpos4SfptT095b1Y7yoPThdNe14SMNWc5+T+1rSorVgsSCl4SH2e5LVgTAlCUeTme7/5O7pr8lKslWE0bIax3vZEcXeldcb6j6SGmVUqRTO9h/nUDUax/cK7OH+8NKGI9A343GPZVrVb9hJC6Dd3/Td4fWyw0FwIcYqwaEwxa0WL/m2SATfTeOOTIQAK5SFGJNWkL688MkarPOEBeggWWUPa4b4+z7ZhqaidvhnDo220JjMO1NmtRd1/GCuZI9qRSyx5WgvVOFaXnYK3xA62zQdwjQNGlgZWxWmFBBxCcXw5oIBUlJJzqtA
- 9REaU1n6
- IFgL+1VJnTGxPMxJXdYOJxNtVZ/HP1ouuKahTGV8YoiSOZ7DJoKiMaARo7kxo3nrdsCH0RrZ3dQJzXKrCtDS6lKF9qfgn6HoBNsbC0sdkiCP+1b0CeQobMKUxKK640XW2HBlKCJ+9quyH9vTm5dA2bncXZTZ+5v3JpxR9nBA97kwokW8nT8yoWFwD9fHTsY/K2Z/9TRfnKStdQ8e4g4IpjTNIPm6al1P8MuNqEfAfHk8iQ5eLR/e3338CCzxonFJODoVxw8+KyuWV0fYjj6J7hqosrV5/M5qNzXYMFZ2aMIkewqGW+0SwLoqYvg44g/XMiKaRkChtI4ScR41kNILP1pXrTN7dFLMp7CDGQer7jnAi5fNS2PFTy6vBsUwvnEVCLV1yaxWtHQzm/sk4vj0FcCIcGLuy1QJubBYvoXRfLv/TOM8=
+X-HE-Tag: 1785848037-961466
+X-HE-Meta: U2FsdGVkX18IziMbQqzeD2lZBhHc0PZ1MOfu7tzDUJgaf+Xvsg25p9kdLR4durTPwon1/liKK3nTTmrBnzFdF7Ck2K9ZEYwkcnsCJdJwZ/P+EqRuf1/5n5e681YFZYW/zDdAJXaR23wGuF5Y94ns5nAHYm1OshtYuFlwQ427UNJDt8pX50+WBES/bxllSUAuE1pCQLjnaK82o+ixB601TpBNiSnX6I0LUd6Qbq88gm3qE57NlRDhEHcejxduBE8RINb/VEkoSqFZyfELyDDrDk0T1sNRcAl2JfarkDEPjt4WPtr7S9ULMQLzLYArv8dAay1aWfQfyPsZPdC2h5oMyrZ+KQkjsZcBv3dGT1A7jmYBSU2gbcBJsxuy6XakoM1RcdvD0y/fYH9zHMQrEWjXfyuiXgnvVUCcOv86BQobxuw0kVnoNOIoM9iEn/kpJ4K0iwWM6rMrtBVHlsyJvZPVexpbRWfFzFgGGWVrR5WfrK/qzCyNGfrb//cZJONv7P/Jnh7O2BisYiZj1WDqxIo+GtV1WrdYbSoOV8/fMXIdeZNqYRl2nRoV4gVC0SdA9OBWx9Kz1fEiqah3GryLhNfoaYFbijKA4JT/tYWSPQ6QRi2MIoHrpBL72ajIB84CP87HxXmPiJuOTkasLizUPP7YHJDHWqknZ+nhZR9WOAGfX4po19q4Nlzz18W9c7g/E7l02m6WzmvL/CUE8aTUWgilYowA3sy3hTC1zVmaV14IKIGSeQP1le1rMTEcnYSOvsj6iNoDbg84I57wb9THdCTBMAK8a16Cr6jWPbXMHcItFmQqloL16Z3pMVzuD6ExGPsybryWGUN9ctTxeGrsBxvAcbFQ/E7EobQuiUIOdev1+6rGI58WO9Ulok9+IPzxGwYJRfmsdukaSRbKQejPaHZxmfMY1UIj0s7HcaBMbJu2sVCduL+RQoYiVREv1mjlhdgUanotdowVjxEKeRZvCH7
+ XQBkUiNT
+ 1rIa/IVSVJRRncDTCT04vz3hqZjBYsGWA20mDYtnJEieP7YSu87lrVOZhfouQHo0Dkh3iG1uXJgMUGq+V1w9ptVhUkGIwrQ/S2udKtYOdeJtYx3OOuW3Gs3uaoq0qP7gqmXeMxlLiGGp+DLLhNKoVJG98HVrW0p3TR7lYElR5ceuJ/LKK2gXG8KX0snlNOXlrPfZY8Cq+hwrJWLba8mdbJzU6Cup8oJ3t6XB+JaFgodB3KOH3pNYOGbbSD4f+9Yu93wMa2/FWNrd1teAzwo9zWORe35j4BBQv9jcg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,46 +139,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+When no swap is configured, swap-related tests fail because
+madvise(MADV_PAGEOUT) does not swap out pages. Add a helper
+function to detect swap availability and skip these tests.
 
-Le 04/08/2026 à 13:13, Lorenzo Stoakes (ARM) a écrit :
-> On Mon, Aug 03, 2026 at 05:43:57PM +0100, Pedro Falcato wrote:
->> There is no need for write access to the PTE.
->>
->> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> 
-> With below addressed LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
->> ---
->>   arch/powerpc/include/asm/nohash/32/pte-8xx.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
->> index e2ea8ba9f8ca..f2bab31040c7 100644
->> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
->> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
->> @@ -226,7 +226,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
->>
->>   #ifdef CONFIG_PPC_16K_PAGES
->>   #define ptep_get ptep_get
->> -static inline pte_t ptep_get(pte_t *ptep)
->> +static inline pte_t ptep_get(const pte_t *ptep)
->>   {
->>   	pte_basic_t val = READ_ONCE(ptep->pte);
->>   	pte_t pte = {val, val, val, val};
-> 
-> Worth making these const too (that {val, val, val, val} horrifies me btw :)?
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ tools/testing/selftests/mm/khugepaged.c | 33 +++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-Any suggestion welcome.
-
-powerpc 8xx page table is independant on page size. When you use 16k 
-pages, depending on the address you hit the page for the first time, the 
-HW assist page table walk will fetch one of four 4k cells in page table 
-that need to be identical as they all four define the same 16k page. Not 
-sure I'm clear.
-
-Christophe
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/self=
+tests/mm/khugepaged.c
+index 10e8dedcb087..b254baf9e0b7 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -216,6 +216,25 @@ static bool check_swap(void *addr, unsigned long siz=
+e)
+ 	return swap;
+ }
+=20
++static bool is_swap_available(unsigned long size)
++{
++	unsigned long swap_total =3D 0;
++	char buffer[256];
++	FILE *fp;
++
++	fp =3D fopen("/proc/meminfo", "r");
++	if (!fp)
++		return false;
++
++	while (fgets(buffer, sizeof(buffer), fp)) {
++		if (sscanf(buffer, "SwapTotal: %lu kB", &swap_total) =3D=3D 1)
++			break;
++	}
++	fclose(fp);
++
++	return swap_total >=3D (size / 1024);
++}
++
+ static void *alloc_mapping(int nr)
+ {
+ 	void *p;
+@@ -734,6 +753,13 @@ static void collapse_swapin_single_pte(struct collap=
+se_context *c, struct mem_op
+ {
+ 	void *p;
+=20
++	if (!is_swap_available(page_size)) {
++		ksft_print_msg("No swap available...");
++		skip("Skip");
++		ksft_test_result_skip("%s\n", __func__);
++		return;
++	}
++
+ 	p =3D ops->setup_area(1);
+ 	ops->fault(p, 0, hpage_pmd_size);
+=20
+@@ -760,6 +786,13 @@ static void collapse_max_ptes_swap(struct collapse_c=
+ontext *c, struct mem_ops *o
+ 	int max_ptes_swap =3D thp_read_num("khugepaged/max_ptes_swap");
+ 	void *p;
+=20
++	if (!is_swap_available((max_ptes_swap + 1) * page_size)) {
++		ksft_print_msg("No swap available...");
++		skip("Skip");
++		ksft_test_result_skip("%s\n", __func__);
++		return;
++	}
++
+ 	p =3D ops->setup_area(1);
+ 	ops->fault(p, 0, hpage_pmd_size);
+=20
+--=20
+2.55.0
 
 
