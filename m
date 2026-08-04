@@ -4,108 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE975C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:03:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2287FC55182
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6042E6B007B; Mon,  3 Aug 2026 22:03:32 -0400 (EDT)
+	id E29E36B007B; Mon,  3 Aug 2026 22:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5706B0088; Mon,  3 Aug 2026 22:03:32 -0400 (EDT)
+	id DDAC56B0088; Mon,  3 Aug 2026 22:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CAAF6B008A; Mon,  3 Aug 2026 22:03:32 -0400 (EDT)
+	id CD1CA6B008A; Mon,  3 Aug 2026 22:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 20C6A6B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:03:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4F46B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:11:29 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FBAD120843
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:03:31 +0000 (UTC)
-X-FDA: 85061940222.23.F6FFB8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9D8CDA0012
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:03:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdxtIEh5;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785809009;
-	b=4K2Rq35GqoAhKP1xsweUy9b8ZOvWYdjusPGLwQwbTrZMTU0gNk9XfT0778SiIC+VUl0RyM
-	o28Yh3VNa9cwsf6lKUMYQObJc0NzEH7KJ8mZZ7bRV36U5rO+7B2lu1nhY2OK2OGrHi8HBt
-	/x2iGJJ+m7RCazDC0nzEOCuyOxqRSAY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdxtIEh5;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2413BC0882
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:11:29 +0000 (UTC)
+X-FDA: 85061960298.23.43AC079
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D870818000A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:11:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=A+oAF8ee;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785809009;
+	s=arc-20220608; t=1785809487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dSc4Uw5Xqh9ZeGdTyyeW3oEwdtGmi1JwnwyGIoORKj8=;
-	b=PyHjEA8Mgrb9r4PsgHBbqX0eB1AR6V7xsRIDSssSSdF+QxZPhvtF9Rt3lXdPNHdDHvRzrV
-	oWGURPtwuFi9E3Ty44SmsJiPrhF9mZmE/CrIUL5H+PkD9xKLMfIHmB4ykhgo6tmJ4bz/wy
-	OOVx3bVQPHF5+CFy857/j5GAw/Bo8DM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8E9B60A59
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:03:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9299C1F00A3D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785809008;
-	bh=dSc4Uw5Xqh9ZeGdTyyeW3oEwdtGmi1JwnwyGIoORKj8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MdxtIEh5PlpwFasslRvb6n6w/sPeQo7tCLxcmudKSnMoEXuh6K+lVzUUEmQbpp5d/
-	 ixupwCUlgMiLWjdE8Sj50WUfJ5Uadvk4mmnY7LSU7AWIIdhBJRP+M5/nBrfq8lCT23
-	 +VR1A9eA80YrcLJqgUVmOPN6AneOc0MQiLOw4AQBJ/N+VIk4OjRxVyL8uxdzSJIu6s
-	 gf0WU5rBkMsZkKPGelH/nCO3IuZCUtvzFzgx/6r+r7v35eBv+E+WpAozt/+QM/0W6V
-	 OFgiosk1LUhGfCs4NUO5Tot1KVFMnG1OraEMzqNAVaXA7x2hckpuRteDllgbDbfZrM
-	 f5vQDv0cWFXDw==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92ed19f4d60so35344485a.0
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 19:03:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rou6l3fcJZm1DHDIwCblabYLmWBD7O8vdLqXDVtClFJijMfZUBamivOFFsIq/JqZwQMtS/JXTTlfQ==@kvack.org
-X-Gm-Message-State: AOJu0YyKlNHEe2e71uITf6u4wnFDnuR3kCJdNhpnnOStJCX6HBP+YRnh
-	5HhZ/aLu2x5W9Fklalwu11Ft41ySXWdMDVlBO7i3V3rOXmtFlUppF4QFXPK6qDWI4kN4f+ofOO4
-	u5s7THCWt9SmabUFHARee0ZwBsurG/Pc=
-X-Received: by 2002:a05:620a:44d0:b0:930:e82f:7bd1 with SMTP id
- af79cd13be357-9363180373cmr344354285a.1.1785809007961; Mon, 03 Aug 2026
- 19:03:27 -0700 (PDT)
+	bh=D/Q8BcsMvD5vcB9uR0g6nP6rv7bgIShwoeJhURxwbjA=;
+	b=6pake8c1yc44laHxLOW6ZiC0jHLwe2Vr8vegKiy6NH/uLfrUbCA86lLrEiZuevVmHdwJty
+	Qt229SHLhr2thmvS0KyAo+DUoRPSKFZWUiil5wNArv15hBkTyQR/i+GZ6/tQ4Jcq2bfTES
+	0XCzoyp8cvcWOjVm3byZttzmvdGsBJ0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=A+oAF8ee;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785809487;
+	b=RTXoWKjkFAygaPV0fA3qWrLgVCsWDpmAeJmVSrxQn3gGjir5BFrX9bGRWEs3839XK42/3q
+	Jq8UJx2Nn9GhYZ7K+H4dw2vB2LUSo0CbV2ziWxoIaBq+QJVY7v/3EG53sH6aU1X3AkajXC
+	1Z4GYc1IHooEEhAHmHwnGMKuP2Q2jeg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785809486; x=1817345486;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=B+nmhdc2wKhIJIpBwW+MwyfYVUtbdARoiSCqxXo6ddg=;
+  b=A+oAF8eeBHKrpZaY1LdAkHVb0p5cuNRNYkCA6I6j1+b7Yf1zX1PXq5xC
+   CCYLuXyr+5mEDduReFopmvLCEIR6zHbS4fHruNdJiRjUHcaeFheopJiEZ
+   ao1RkAhUDfhzFrmsAGZlyIHeeN1c1dEy4Spp/famWMwvqGeoRbY5Io4f2
+   qwvET9cFahYkjuX+go+sEVC0YKGPs6WMVlxBLri6KDKvdO5RrFtdry58W
+   tBAXZM0ll6ez8pNcmJHUko35kLPwFVYqKtnFK6N/ObtOdPYPq9RZX4NVC
+   BWpYAtpvma6v8ABVCF9NJXq/ABgLmLuVJWQ4lN++IIpGccr27mjzOqlxQ
+   w==;
+X-CSE-ConnectionGUID: fCEe3JI2RPKORTBhvdLSwg==
+X-CSE-MsgGUID: 9Cf/Wl4wRxW2EFsVMeDnBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86121611"
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="86121611"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:11:25 -0700
+X-CSE-ConnectionGUID: KUMwzY9FTRiSU0SR1Bn47g==
+X-CSE-MsgGUID: U8Dg8g26SGOUT5Pc2eda4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="266494953"
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:11:07 -0700
+Message-ID: <aaaa3463-87b7-4e01-9f0e-8ff1b732d260@intel.com>
+Date: Tue, 4 Aug 2026 10:11:05 +0800
 MIME-Version: 1.0
-References: <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
- <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org> <amoWjOnPayHVQU9v@cmpxchg.org>
- <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org> <amtv0YRbSrN6iUEo@cmpxchg.org>
- <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
- <amy5ZKC2Kc7RX94Q@cmpxchg.org> <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
- <anCpdjEoDNgVbfzP@cmpxchg.org> <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
- <anE27CtvCFx7sAuO@cmpxchg.org>
-In-Reply-To: <anE27CtvCFx7sAuO@cmpxchg.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 4 Aug 2026 10:03:14 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
-X-Gm-Features: AUfX_mzYrtzSk7DonRwb13-6njPtAjHgbw091CmXhuCAKLObudyTcslwXuU6Wa0
-Message-ID: <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
-	ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	willy@infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9D8CDA0012
-X-Stat-Signature: ng9g918d541wjrr5xnx8xysoycp4tzan
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
+ <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
+ <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
+ <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
+ <amzMtg4K6qEEsudx@google.com>
+ <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
+ <anC0uuZIrbxlGubN@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <anC0uuZIrbxlGubN@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: h55qbfzy4jgpp19dsfscr36c1a8csucg
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D870818000A
 X-Rspam-User: 
-X-HE-Tag: 1785809009-158781
-X-HE-Meta: U2FsdGVkX1/CTkDTD3Gh91hqzyksHXbZCn1Ggj5ML0PUt/3mJo3yVvNmzzJp8uslxgVXV5p4tNd18kuISo7P2GagBkz6LdjLNxIb8KnoQTSkfA1GZ1/KTjzOZV8SEV1gbG+vtC/RadCe2mx+jy3pjFKeR+5cuFo22SNVAITkSVQh5wquTRGV+/rESD+ZOxAhgKz9CLEHrL7Baa7/k/jo0MKkfnNs2X8oYBd8vuuarF7PKakbOUKJnsvAxpue4t0u8RjfTZOY5gOFL6e7ykeLCXTuBlnxmMPlG9e87SXYvM05xZW+GqYXW8iKa39vCyNGkW8JbaIT1BeJQyIBKVaL152C370Ja5lp9xeyVj78f8WyQ2jdvNPKg8Ullt/X9jrMFZol5lcm73GE3qoi/qVbm+VhtGs4KoMCq/2g2cKHrRP4CFrA8jc8N3qRlbCyCP5os+pV7KrSaQFzHpeLIF5n11trvcOGWq+gSWFgrTxFZhxqGccsWFmvys+YbIooPTG2pKEM5W084sWdO7oml3EBMBM2BxHwd4UJg7YY6f2zxX+TCYI5tHqpQR0B/9ERysFBHd+JC7XZwvNyB9HFVRKeFg2WxQWjZ+7dQOgt9Wg6SnvGfev5Z0zK76LQCW8LqrKkDWEzgY4mUs0+3lgz0N1yimyWQzLOiViOBqntP4vgrFPP8zGpABOvOlgp01Yz9WcAEHAoeeOyC9rV22QR2FmmqsRTi0zJTJdbPvfPOKCLxdhC+5rW2lXmHl3/WSeAafoIZFxN1jas2ZnumJjQ8sWbsxHUE8dhGHx5wHX847S4LLdp8bcG2/YVuMaWfl2sl7DT8M1gY6ME5IrOKuU4qgv24vgo+/Gxcn07o/f5WHgbuYbAuyU2/ri1OlZxY23UX3d4t9O3nmx69UEErhJ0A7ArFj3IKhrbcQhEAq0KFH0JfQniEh20GEFYu5EvRTum7l4OEUMcPYDvfz37U6A85M3
- sH4PNfhO
- 5hOhMdvAKN3g4ZF5ROaTz4vJw0kCLMinLJpUqeMpmrqBX+ReO9UQh/XGMObqryshdfvf3qPtjR4lFeDwIWswLN2KIk8d7WtkI6jV50era2R6xpdDYVB0jXY96S7BrnNZ5jcAAwIQ797HhUULVwvQBv/8aaxV+KceQtzM6KbC/L0CdGaeGhSP+s3HpSPb6+Tc7O+jV5en3FlKnyKJTWu0CSkd/NsxzN2w5IFowXaxCIjc2fY2UNqJsYqn6Ie21kosLerKAOg+XkUkWRbtqkG+VLo5jQh7jtVMtvBzoznz+g69ZdGLy8OOj24gyFbb3Io49IBh/Qjhh3j4FUcKmqaeSrj+S1kACn1CxM6AQ4ez+4r4Nzw72Br533Nusgge3RbfPbzjd
+X-HE-Tag: 1785809485-376916
+X-HE-Meta: U2FsdGVkX1+KfyldyPCKB+A4S5HsA5cWznGek/5nhZ6M1bw7QMZegxU7/ZZJX0aGeiZRL8d0NpsPY3IPkPK46QD7CPu3gSIB/gG1ibP4vWczZ8xU+JUgn9AhQPZk7BMp7xxxZTCJIiMmUUe+C5QHz/+14floIaYK58naR4KY2dPc3o0SKRgUt8g3SKHhI0N3mrFy1PtrWbb0uRP4Cq1RRAU5fuImY7Q5pjtwSOWl26qW4NqQRq7hWxnM6sJh2/pyrjI3zJHNln0ZcotVFtEMnLgN8+//yyHxYKsEhLkAYlHqzVeFxpOLiqsdj9Qphe8+IZBxn9zZbzmq0JPOdAB+7LcL5zbgW6wT7fG47qH4CiM9ZwL9O42+ALfCGaWBtfjFLkr4561igu2ih0pusHHq+L8/Tc/f9QgoS16jJrChKHxOzr/eUeU4bk1Mh8OX8kPCh9zo7Oly2FeXoqmL+K0IkcXfESiTIV7m0VY3RWpqLyLUoSEnpHdBnDYJGQuIz6w/gD640yqEou6T1BFj5McFB2nZGR8G66iN4YWxnjxUDtqRerAAJmrRMTmRarbSz4u94H0VIsP0Y17hQYZ5jB1EMG6nZWdkPylmTBG83IdqIUYY4R9+yltoR/l8dkFE4BIsKK8GhS3DKm9JJGG0sStR4tfMOJY/n0Xvwv/m4Wu+1QMQJszOO77L1sb/XKh99blM35XsOszINax0mJXarq6V5fVv0A4r424x+oZ2E2F2eCT/unSReMFDDPB8egTjQXipgO8LYPS3o3nKvjaAVhsNKTu0hEVKvlnJlEBsf21ZeAzt83rHenT+MzF8DhcLDJh8SunaLRALGAP8yoLL5tbz2p/14IPMVFzu9orpWloLT+h4cENYXpFguS7Vv1W4NQ5JS2XjgaTzdaV3bJENIE+GtrQB01ECZMzV91vZeGwJNy7I1T5O5B1ZmNlGme8HcbdfOqNtgfwNMHrSH4KZp4u
+ eAqxen2+
+ /bO5xV0xbNUmvIzkm2wf+UrGxIL33aUfrUaeDo8eqG/40pvscvtOHPdXzrqR2tIPknlnY+682lTGPUJfIN3TQjl7zvucVFDqFcBQjIReXZfqwK8DVvdkP6AlYo/XRW2aoquzscpyrNj5l8t6ST3R/BZuicevxa/kacw7WTog0iwLI4TZKPmr1zesBY2jEcwNvkSeX7JXYKzFMUuFxXzAW1YAfYlz1MiDdaK+cmrlWsxIp7cfy5+6MW+/iZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,58 +141,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 4, 2026 at 8:48=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org>=
- wrote:
->
-[...]
-> >
-> > #define LARGE_FOLIO_ZERO_SCAN_MIN_SIZE SZ_2M
-> >
-> > if (folio_size(folio) >=3D LARGE_FOLIO_ZERO_SCAN_MIN_SIZE)
-> >      deferred_split_folio(folio, false);
-> >
-> > If, someday, people find that 1 MiB also helps, they can provide
-> > data to support it.
->
-> I am very confused. Did you not see my proposal above?
->
-> Why not this?
+On 8/3/2026 11:33 PM, Sean Christopherson wrote:
+> On Mon, Aug 03, 2026, Xiaoyao Li wrote:
+>> On 8/1/2026 12:26 AM, Sean Christopherson wrote:
+>>> On Fri, Jul 31, 2026, Xiaoyao Li wrote:
+>>>> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
+>>>> If kvm_range_is_private() is useful/required by huge page support, then let
+>>>> the huge page series to introduce it. It has nothing to do with the in-place
+>>>> conversion series.
+>>>
+>>> If it weren't for the fact that the range-based search is used later in this
+>>> series, I would 100% agree with Xiaoyao.
+>>> But since the core logic is used and needed elsewhere,
+>>
+>> I don't see it a problem. Without introducing kvm_range_is_private() in this
+>> patch, the core logic of range-based search on gmem can still be introduced
+>> as kvm_gmem_range_has_attributes() directly in patch 10 or in a separate
+>> patch.
+>>
+>>> and because kvm_range_has_vm_memory_attributes() takes a range, my vote is
+>>> to provide the plumbing now, even though a small portion of it isn't
+>>> strictly necessary.
+>>
+>> So my initial feedback was "we can just use kvm_mem_is_private(kvm, gfn)".
+>> It makes code simpler.
+> 
+> My apologies, I hadn't actually applied v9 to look at the full context.  I agree,
+> providing kvm_range_is_private() is completely unnecessary.  It's not even really
+> a problem with this patch, it's a pre-existing issue that can and should be
+> addressed with a prep patch.
 
-Hi Johannes,
+yea, that's why I said "it seems can be a separate patch. "
 
-For arm64, if the base page size is 64KB, a PMD would be 512MB,
-and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
-order-5, not PMD-1 on arm64.
+>> And as a bonus, the logic to choose between gmem-based attribute query and
+>> vm-based attribute query is hidden from the static call.
+> 
+> I don't follow.  What do you mean by "hidden from the static call?"  The whole
+> point of using a static call is to select between gmem-based and vm-based private
+> memory.  Or are you saying the populate() flow doesn't need to manually check
+> gmem_in_place_conversion?
 
-BTW, I assume khugepaged_max_ptes_none is intended for collapse,
-not splitting. I am a bit concerned that reusing it for this
-purpose would be quite disruptive.
+yea. By using kvm_mem_is_private(), we don't need the 
+kvm_range_is_private() introduced by this patch, which has the 
+gmem_in_place_conversion check.
 
-So maybe just
+>> The second bonus of dropping kvm_range_is_private() is that we can eliminate
+>> one more chunk in patch 20.
+> 
+> Ya.
+> 
+> Untested, but unless I'm missing something, patches 6 and 7 of this series can
+> be replaced with the attached patches (6 and 7 should be squashed together no
+> matter what).
 
-#define LARGE_FOLIO_ZERO_SCAN_MIN_SIZE SZ_2M
-if (folio_nr_pages(folio) < LARGE_FOLIO_ZERO_SCAN_MIN_SIZE)
-        return;
-
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2bccb0a53a0a..1670e9869bd3 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4364,6 +4364,9 @@ void deferred_split_folio(struct folio *folio, bool=
- partially_mapped)
->         if (!partially_mapped && !split_underused_thp)
->                 return;
->
-> +       if (!partially_mapped && folio_nr_pages(folio) <=3D khugepaged_ma=
-x_ptes_none)
-> +               return;
-> +
->         /*
->          * Exclude swapcache: originally to avoid a corrupt deferred spli=
-t
->          * queue. Nowadays that is fully prevented by __memcg1_swapout();
-
-Thanks
-Barry
+The attached patches are just what I wanted. They look good!
 
