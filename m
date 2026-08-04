@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619D5C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C25C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29B8B6B010E; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
+	id 13B6B6B0111; Tue,  4 Aug 2026 10:47:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2729A6B0111; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
+	id 0CB486B0114; Tue,  4 Aug 2026 10:47:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 113E66B0113; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
+	id ECF366B0115; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D5C6B6B010E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:52 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75D26120135
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:18:33 +0000 (UTC)
-X-FDA: 85063490106.11.E6E06FA
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BAFBD80012
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:18:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=pOBKJq+e;
-	spf=pass (imf30.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C403C6B0111
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 021FC4011D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:20:29 +0000 (UTC)
+X-FDA: 85063495020.07.AE514B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 71D801C0010
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:20:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLqk64lr;
+	spf=pass (imf21.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785845910;
+	s=arc-20220608; t=1785846028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=N+5x2O0AaXVTBFLcJOSpjdOEEsG7GciUWuhMJqvwAwI=;
-	b=aM8o12KbMNjfQIaRV5eEo+apuecsKiK5djqbX67bU8RKjmtRIFb+aNaGTC2gGIW8CR/6lV
-	8kqNMbkJV4kGmAQhTZhTc2iH4H62Zbp+8abshIvg2mcjhpHCsE+/hep6+Ic8F2x/Z6RVZb
-	Io/DCcOtpi/gcfEbmgw0igrhy3jjBQc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wDC0uMZjurs3Uj84WLY9mj7POWsFSEVlaT546hjHpF4=;
+	b=xqyuS1ELVgO7XBOoIspmBmMXEc52aaRf8kUUQJf7ugglDRk3C9sbG1zu66g134j5CGGg8y
+	5B3MD4hjIfee0Ykn97lT1TNKm6T1d6dC5PAkdgmtPPu6iRA9ZeUSz79ybelvrmJ+OmJfBZ
+	l+QkaU4eR9RUYT8acBM6spNpZOMGlq0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=pOBKJq+e;
-	spf=pass (imf30.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLqk64lr;
+	spf=pass (imf21.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785845910;
-	b=nq/rtUk9DKI7x4ExWi2iYJ8EGFdsnWdRTOK2HQ7m2GjDiPLSacfixeTIeKw+efLo8535Td
-	ez+LfiZvC9ElvuhK5PSZLN99z4UggEQ6q0hFfE/VLPYtuqMbUKn0rY5Vpx08glri+KVv9r
-	HZTu2u33TzOffbAWQi0FkAdttRafI1A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1785845863;
-	bh=N+5x2O0AaXVTBFLcJOSpjdOEEsG7GciUWuhMJqvwAwI=;
-	h=From:To:Subject:Date:Message-Id;
-	b=pOBKJq+ehAvshgC2NVJcF+ad+g6SSQk/NzFlJeVlCYbINbIYVD2EV+k852VdqX2m4
-	 Bs7/NLDoPiklgXbTgpH+cJNKqU9wmlJXn18nYBFlNzh5+1lPdG9LWczMIUQNRyNYsj
-	 I+5cpUIrn6tqToffbAKZEJZvBXGy4T46D3baVhpM=
-X-QQ-mid: esmtpsz20t1785845853t7f5c10f7
-X-QQ-Originating-IP: P3vIaFGclNI048NjNJM92lV3lMKWV/wY7CS5UTrKovc=
-Received: from localhost.localdomain ( [113.98.201.214])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 04 Aug 2026 20:17:22 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15148486447510069967
-EX-QQ-RecipientCnt: 13
-From: Warren Xiong <warren.xiong@ugreen.com>
-To: akpm@linux-foundation.org,
-	shuah@kernel.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Warren Xiong <warren.xiong@ugreen.com>
-Subject: [PATCH v2] selftests/mm: read memory information without popen
-Date: Tue,  4 Aug 2026 20:16:58 +0800
-Message-Id: <1785845818-3131-1-git-send-email-warren.xiong@ugreen.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>
-References: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: N0LiquuQTBPGbvut7+gGg42CMggaO4zDxX6wZzL1FAngnus2iIxgeysR
-	9iOPmmMKuXeEfXe9FdXqdMj1tncfA6vob4vNBQ8OW6d+ZBw7OeASRalgdiVIifo/396MUik
-	logXuzG34U10qe0aJgIKiJXjq37cgi5KU+Z/1VhnqNoVeGA8Q9JK1pcznaPvmKNyOpf0IPt
-	igCPD9vjM2C34E8CxYeUNcYosEkIju+W096HFB0Q02fv6GfalDyWGwPlDyC4MCkD0vPZY1X
-	Q7sOjGTw/psxj21IdXtTwWx1Vq18CmEYsUv5RDE7DI7XKmMVMLdFiYcklXvNEdYCKkQ3HYD
-	iVpQtHa0Eu2sFrwvhjUNw5Lg65573/AcUUzk26ze27uzvT+5+5m1DASvZYlL0u82I4jThdR
-	YIv3T3OY6kS+dXBKMk49DI+VwMLhLKHZ2bd9tF1syAoiz54M6mROkdn5Bs8tXdM7Q7aDA7o
-	ckCb9eSO9sVbdF/TmlH5BIpjurzj8W+YquQgu5Kuu8I+XPNPHMFRFUmbWGn4hINgZn0Dx6v
-	RXWqUz/2MwU8k3uMrYuM9GYHaqzXxUb1x2d9PxZQM1/toCcfBBPjdaFFwrblbIhQ+8/M5mt
-	FU9vUNv+X2AAv4K2MghdGhY21nguFSEfUdDtG5CqYJPPKpOWpFgusdDJ6FUgLVmQHZ4GDEj
-	vUHTzehJ7rzgkbYJrInT2xQs3/jWx9Q+UmfRipE0kl7XrvLF9bIpxDlNxTzqaPRh+uKmFfA
-	VKcjvlC8gRp3/PKviA9KNDQvlLVgpNfR0dwebT7x8WzsmMqfqfrYtWN1tTxlAHdjLySyl/L
-	ncP92U92Wp7lcaJenS0psuvIBYl0H2OkylblJWj0snkSpxJyTsfsuXj/79xw1gf/Gp5Qmzy
-	Xy79zP3pU0FU4FXZ0aIpYGeN0W1OONUl/mVl2HDTLbYLGzwY7feHv2+dwAUZwANjdUgXSF6
-	jPdrR4khrJHk1a8BpIdjV02u/oSu5FqmsPqtqwdhGVL3feQCxjIdG1zT8hEBPIIUEPuxIG9
-	1UAN95afU0wR8PIn6cz/D8je8PkiEuvObyndtM0bPWk39UkYwKGrXAqeDDbL1YYfF2iOvzC
-	+1BLexMyzULp1vGEa8b46j2aiqchOV3Hg==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: BAFBD80012
-X-Stat-Signature: 4k7hbnfgadj1ajasr5nhmhyi5o6tpdbo
+	t=1785846028;
+	b=aoQPe9Z8N6pqCNCiZ83Kl50yPPYpXkrOSyeS4gY7YbtwAFhQXd9m9p9F2BNHzIPIPGcMoW
+	1a7QnXPv/gHNHYbi7ilYt1WM2BFlXqKnxAdSZ7Be2q349mdNto578amsp/JkOEVHWXaquB
+	KStvM9ZE4BkthBW7fGZhrTNSw1tEm2k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 14BCC60A6C;
+	Tue,  4 Aug 2026 12:20:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFB21F000E9;
+	Tue,  4 Aug 2026 12:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785846027;
+	bh=wDC0uMZjurs3Uj84WLY9mj7POWsFSEVlaT546hjHpF4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CLqk64lrwlUiW+LniTHuHSiPL4Zm0XIbOhURFl/WyhRY2spYMNwEB/vwz2OkYatpT
+	 IAA8d9D3VZY5W/YB5yEf42UzMJqPhG63ocC4Jp27WAF5XOn9gh8OI31jlH3VqMZUOA
+	 EdiEMY//+FE0Lgr1V31T0hODHGcZ7ThWe9QbxmJk79pfMyKWLA1m+eq3EsTbnL/WBn
+	 ZWBGHGGrJ5kumLdrRNPacNFIX8tcAFbJDbXQ4pD6mYWZbfNiZl+YLHEv7ilL5FxIYQ
+	 YeIjia4oZGTd8UpM14pNAkRcfLxl9DVmrbSjREoNLc63uXa762pimbE1IWZcdoZVRL
+	 9vYuMUI7l25uw==
+Date: Tue, 4 Aug 2026 14:20:22 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jianlin Shi <shijianlin11@foxmail.com>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+	hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	ziy@nvidia.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+Message-ID: <k53aljpl7v7naqs5fj4i4po6tu4grkzu5nui4h37orwt6v7bqo@sw4frf2ystmi>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+ <tencent_1BB7A5C4D5EEA67346634417753190E92A09@qq.com>
+ <20260801114434.232c97a74d9616c43aac2456@linux-foundation.org>
+ <f983f6ca-7d45-4316-94bb-8b4d0fd58079@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="btblr7xwjmfoogpt"
+Content-Disposition: inline
+In-Reply-To: <f983f6ca-7d45-4316-94bb-8b4d0fd58079@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1785845909-76016
-X-HE-Meta: U2FsdGVkX18myUmGblTlzBisoVMgL/oc19r6300SoWEadDZN3jHIq4TihY5P5pC1GJVmBRQwOusCi0MjQED24O4ONJDFV4hOy2hFWrUpwNnubSyrlQHzn3B5uHgbvj3HQbOFExEp4Pd60Fdb7TXYuLt94sITcBQKrZOxrnxDvk1yAcslGMfrJPcMqxcgDjMyBTVT5NIWxe3PcU93P+CYcAjekApaYfSUOekLbks524PSOhvV3aE6zjf7IN1t8Z5RkN4TPO51DUi8Xd4yVckL7bKiO26vRFrIXW4e+nFbaWIAL3m4qgnjVZ57xYAthEI4zOuHFOXOsvXNdOl7//eml+i/EtEAW1VCP7DpejCbSj1op8cb3HjuMZxI77WfpG45bWcaurvq8AGgXRaDZbMT+b2Cvn6XJ4E+TuhBfQr1n9LMCZDPbadGMOE4fQfB1xQrKwZPR6oQW6y2G3uzRO8WaqN4NcyH9vtsjI3JEfAE50LJ077aoImTsliAhv9cn9vZCm071UgmLK485ocv2la1ASK1voO9koDF9xPhm7ojHVWP76MZAj/oll/r4z+KkxvCDifkPAHuCmhdI6KHe2g63uYTotbEPLFH46dKWHbdkQSdWNffJJRCk36P5ExQQF0+GP5oNbt/20wwaBBWmKtChGJz14PETFCxDfVQT2+UNVxVNICpUu5PrIvr1jaL2cI3bjkplTYmh2O6ZoLYwa3ffAHIWqUwxy1GnbdhWIFhlAwbnDCwByxaA6UQamwLqO0dcE8IqJwzBTR2w4goOcA1CaUenUtFFqfxaFoxfI/eYyZSkmQnGxn8wqKR+3h/b2IMROmJPPH343NchUt3SzZgx2w3QQ+1GqApK9LDduEhVOlN1e9OjWWhHqKzhJURm7Ug5uMNIY8p0Pn5tr5U46nK41EtGHIuJ4u8u1esX1d7+c42tWM1M8BLPOwPZLbS0x991E91ozNiWsBwPCDKQab
- sS39L9qE
- W774En8ueNFHsdYe4zQN7ZKAnVLoI1n7aPsidO57X08nR2KE2SR/UAsNGKgY7NVjSf78/rjmf9PzKcQg97EXhnDDEnTMdSzRuR0beK3RygM0u3o1qtAR8mZWN3UwhZpAc2myyjnCmRSydd/pTllfO5xmyY0wJl6sLScIfyPNFJt0cPdco1ziesgEJacv2scPfYpM2e2VM+IoEw5VGM76u6SyH2NPXAkhAIzk6ltOuJX9CT/wVJQFF0VM8CBVD2k26cqI2zgJbVX4mz+oU5hUY8h8HIBq90rVAiVzgpsBSQl9S0wdm2lynsz+mqCjJZktu6bpM5Ucw/QLkrhAUz9TXjJzQhYTPb9zVqmr7EAjsdYKb/40=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 71D801C0010
+X-Stat-Signature: mjznj6sesberybogxtuifhfudk34bxic
+X-HE-Tag: 1785846028-335413
+X-HE-Meta: U2FsdGVkX1/gEz/N3+4duTXu7jSSxAQcV18LOQ6wZbbKgvds73++nzacjPXNBuJJj1giSVh+no9AA6ZrU+G1Crp5KQA9tWYVXvL2afz96ZScOTFRn1ZwXY8K19tsEQk+M5vL4hOYJ6F/mfdioq3j5tcDY5pLKoo+maJaX5N1tFv7mKG0pNjuWjx/fOG0zDtSEUcQq5dZcZWkukYU2QFCXYikzelJU5jxK8lOeU53Csd4BwMvGAyK9HsMwE25fcsBUqq0QB7v+ZlHFBsE3Nx1Mhva77kHBOIJ56s0/GR4XhsC5AnzgWyLQSbLcXnurIusq5RUJIBhxTpBLpmY1ITbA6sHHYfDMyE7Ri+EZw1CL0AGkt1HSQC4NOQoJe/XyCge+Wsu6NELiT4OMtHG0mmnlyP5w5q57hdTrUevhaJZIaLS+13sKzTtMRUakL+l80Uqq3c7/fulIFGGulTJAw2HmLGatF2UevqoptVVbh+Yl3eYsuaDCCyRcg72Eu1LXtDvxT5rArFQo4Hzxqh6k9veD/m9gJTvvccsZevrBo2nnOmsNZask10VZ5TCmUpthHHJhA6IvweB4Qg3Kmq/mNdlov0gYdIYtmhs2a0gt9WOjWQLTfWt7WwlEKQYskIFuzw3RbpxqHNte1fWADtcWXrjSY12fGTUbQEzcBuMViPhlYBH2veumv0zLqrffYQG8ldTkQpb1OnWuaJeAyxRoOWrdIYbng5tYC5UEAZBTgj9lD2qr/w4BksGqEAf63BOqkLij0ZJ3NY8yz2JMPgm6Rh2fNNBy2S0Zw+EMoBLu0iUTueykLwhbR6ruuNLxOn0eiEmGHFZBMT+J8nLiiRs9znRkGfp9NoCQn9N0CdQ7Llqar6rbKQ3yJ0sai3d8k3gEnddAhmR1SAxnl9NzTolv8LWF0gfRLfOoati26xsNw+o6WPBKmAyAGGsO+ZNsp/QOmw76gZBAUnHgy2mRZStfit
+ hS9OaMEk
+ eS/uFvYx/kTHFbegLcrBZTxRajmj0ZW598mM8Lcmc2g8RBYFytAyQW/sEWcRKSZtBm8l+Z9Z+YpaCy0q9DrIFcL8BWlRLKuL815iDyINqWlukkNbHIuSQP4+g252dVqhBcG8WUCN7tuY+ZEzDBn0V/hA+utBJaort2q1op28R/6KSA1Wyz/1YLthEKS8iFKuLsbMtEcgyOhJLuZaN0+B2EaIe2bdqkPMhjNEU8mJLnjXi04IEs7WgLBKd42UoLMz4ehM22DCUhFz/PD9NCIW5kMnWNLtzaz9RALOvxGbTifQhHPZMu54yeggUbD3qWUASWRR3KF1DdnbYpDiN1FPICeR4Wd+3BIil7UZfIRhfm1WiiPDsVfAwlqXk8XC+asUlEcKMXCIK/NJWa6gRu3Xo8KkDyWXnIdPnvSxUCN+8kNtYdbPGYeuCv4Eb17PEafRlywBpRVWGPfpdw76QSPaVC2PWMNmtqaRYUFZ++LuWOraKlXliQn7UY6ZWNEnZNMtba01Vdnoxjb07NHNvp0OeGOJNR7j9koXswXSV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,84 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-read_memory_info() invokes two shell pipelines to obtain MemFree and
-Hugepagesize from /proc/meminfo. It does not check whether popen()
-returns NULL before passing the result to fgets(), and it does not call
-pclose() when fgets() fails.
 
-Open /proc/meminfo directly and obtain both values in a single pass.
-This removes the unchecked NULL path, closes the file on all paths, and
-avoids dependencies on external commands.
+--btblr7xwjmfoogpt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The compaction test continues to pass after this change.
+On Mon, Aug 03, 2026 at 10:27:46AM +0200, Vlastimil Babka (SUSE) wrote:
+> +Cc: sysctl maintainers
+>=20
+> On 8/1/26 20:44, Andrew Morton wrote:
+> > On Sat,  1 Aug 2026 23:11:25 +0800 Jianlin Shi <shijianlin11@foxmail.co=
+m> wrote:
+> >=20
+> >> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
+> >> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(=
+),
+> >> even for read operations.
+> >>=20
+> >> Fix two issues:
+> >>=20
+> >> 1. Propagate errors from proc_dointvec_minmax() instead of always
+> >>    returning success.  For example, writing non-integer garbage to the
+> >>    sysctl now returns an error instead of silently succeeding with
+> >>    unchanged values.
+> >=20
+> > AI review suggest that this caused a new problem:
+> >=20
+> > 	https://sashiko.dev/#/patchset/tencent_1BB7A5C4D5EEA67346634417753190E=
+92A09@qq.com
+> >=20
+> > Not sure what to do here.  Perhaps pass proc_dointvec_minmax() a
+> > temporary then copy that into sysctl_lowmem_reserve_ratio if all
+> > proc_dointvec_minmax() returns "OK".
+>=20
+> Seeing the v4 [1] it seems easier to keep the current fixup code until
+> proc_dointvec_minmax() is fixed.
 
-Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
----
-Changes in v2:
-- Replace the two boolean flags with a hit counter, as suggested by
-  David Hildenbrand.
+1. V3 -vs- V4:
+  I would prefer V4 as it actually prevents the partial write of the
+  vector in case of an error & returns that error back to user space.
+  Whereas V3 returns the error back to user space but keeps the partial
+  write.
 
-v1: https://lore.kernel.org/1785720615-5826-1-git-send-email-warren.xiong@ugreen.com/
+That patterns of using a temp ctltable entry is seldom used but not
+unheard of.
 
- tools/testing/selftests/mm/compaction_test.c | 38 +++++++++++++++-------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+>=20
+> > But really this is a flaw in proc_dointvec_minmax() isn't it?  It
+> > shouldn't update the table data until all the data has been validated.
+>=20
+> I agree. What do the maintainers think?
 
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 5b58258..30d4ace 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -29,30 +29,34 @@ struct map_list {
- 
- int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
- {
--	char  buffer[256] = {0};
--	char *cmd = "cat /proc/meminfo | grep -i memfree | grep -o '[0-9]*'";
--	FILE *cmdfile = popen(cmd, "r");
-+	char buffer[256];
-+	int found = 0;
-+	FILE *file;
-+	int ret = -1;
- 
--	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
--		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
-+	file = fopen("/proc/meminfo", "r");
-+	if (!file) {
-+		ksft_print_msg("Failed to open /proc/meminfo: %s\n",
-+			       strerror(errno));
- 		return -1;
- 	}
- 
--	pclose(cmdfile);
--
--	*memfree = atoll(buffer);
--	cmd = "cat /proc/meminfo | grep -i hugepagesize | grep -o '[0-9]*'";
--	cmdfile = popen(cmd, "r");
--
--	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
--		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
--		return -1;
-+	while (fgets(buffer, sizeof(buffer), file) && found != 2) {
-+		if (sscanf(buffer, "MemFree: %lu kB", memfree) == 1 ||
-+		    sscanf(buffer, "Hugepagesize: %lu kB", hugepagesize) == 1)
-+			found++;
- 	}
- 
--	pclose(cmdfile);
--	*hugepagesize = atoll(buffer);
-+	if (ferror(file))
-+		ksft_print_msg("Failed to read /proc/meminfo: %s\n",
-+			       strerror(errno));
-+	else if (found != 2)
-+		ksft_print_msg("Failed to parse /proc/meminfo\n");
-+	else
-+		ret = 0;
- 
--	return 0;
-+	fclose(file);
-+	return ret;
- }
- 
- int prereq(void)
--- 
-2.7.4
+I agree. The arrays being changed are not too big so we can easily have
+a staging variable that that gets written when all validations are done.
+The only "con" that I see for this solution is for when these
+proc_handlers get used with temp variables; in these cases we will be
+staging an already staging variable.
+
+I have added this to my Todos
+
+Best
+
+--=20
+
+Joel
+
+--btblr7xwjmfoogpt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmpx2QUACgkQupfNUreW
+QU8Qkwv/fPz+ltet7pLkvz28K9W7ZeeQ1dzKM4/bQdIYZxqlMljMlarMc8WAlm1R
+7KDlkxnxe8BT2+RuQJLihpOG2lWYpyRuhBiGN/YtiM+1NJEkTtqu1gYL7C218UK6
+MwRLPsaejC4WK7IqZlvC1xjTuexaNUe3RcLVwDmxNc+I+5LSjcuku/aPb0/o6i9u
+MXgvxweMRhiJ3oZ0WhN+VZayLAf4Nxz9+1qV/24mU/khekmBLficWy+KbBbrKRrp
+lUqNObbmUseNJPij/Vx9+SkZoq30id5jb1bOoHcoI0KmO7VbTSLoDuJxXjjy/Lnb
++yBZ5fdevWFEFdYKsvfvYMyfBMo/fcnHkuXihKbn9FG/zKRaWssr/3H8Yi4SODyl
+Wk5Bpr8TFuhY7RbzJQ/rb4QgjmdYo7uaNeHz6pieddZBL9Cqj0K955Pc22Gwza+z
+Jn2CgWwRkvVQnPKrbWiUYubcyf6RdN6nLTeiIMkC7wVwVrjbh/pwfUzeOUrtM4JY
+rH+bzQjU
+=stmO
+-----END PGP SIGNATURE-----
+
+--btblr7xwjmfoogpt--
 
