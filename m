@@ -4,135 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3091BC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:33:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC12C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BBDD6B0107; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
+	id 421B76B010D; Tue,  4 Aug 2026 11:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46CDD6B010D; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
+	id 3D2546B0113; Tue,  4 Aug 2026 11:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 383536B0112; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
+	id 2C16B6B0115; Tue,  4 Aug 2026 11:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 02E106B0107
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:33:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CF911A01CE
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:33:11 +0000 (UTC)
-X-FDA: 85063980582.13.E2AF636
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CA11C10001A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:33:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3oNVVsx;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1218E6B010D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:35:30 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 964B1801E0
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:35:29 +0000 (UTC)
+X-FDA: 85063986378.21.12024EF
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 965701C0011
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:35:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jP6W4WUb;
+	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785857589;
+	s=arc-20220608; t=1785857728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+B2tyHlxtOIYFFAEVjuBTTR4kj9wHrzaGATG1AU1+pI=;
-	b=NlTf1STI6zZz/usqfqMJkVtitRlAZypBoyWODPkb2rFMvzXNns5UpOFVFYX3gNPj+857ih
-	dJ0LuTADHFfRPP1j3drad2DL/DgKQ6rKphKBQS3o2WZTT04VXROYM2A7cJdKS6VBiSXRkI
-	zPUD/G10NzmzBxF+OHaxpU61fJsub2A=
+	bh=r67WbSGJFOJ3m1cb1BTsiBKOB/G7xLlz+d84UQNgMrg=;
+	b=yIlMGJrNrlP3qTUiLd2irD1EpKIuMNXzT503+EfVX5CJR1i5IFd9Gkf+Mk3patXuOx+65I
+	pZYIvblkQ3NJ33DsK25duggPo+0SR04tvqAr73sWBTF5lY5sVFNbpkDWqz+//ZaeUPorEZ
+	sPOD1kgXNZeqfnWAfFd6y76URwBMyCc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785857589;
-	b=N0iImJ5XOaeYLw2W1nWvCj2d+SvWChmHFVeB9xE6bfe+KscxKCDlft9whR1Sdyj1TJ6fNS
-	EtLyP0BaQ3IEeQUOZYWrxr7oPAw7/FyP0aTn+1W7KUBwzfK+f1M/CDvssANsQ3YM3YA2l+
-	hzAkvsTDx7xL4geqIGxc56HI0sP3Rcc=
+	t=1785857728;
+	b=EAUCbXSifKSZZE59T3yiRnrDNbzmrgeLZ3i1hzMCfC4Hnbr/AJ851lWnTwG+m3jqynrQFd
+	C5Pw6DCjI8hCjGSOOg5enK++HzTdpA/6kuipHw+ytohZfmNwwe2ExhpsJbvGE7/WczmZS0
+	NTb0755n7YZfGSlURb8H4Q0haDSU8b0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3oNVVsx;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC5EE43AC2;
-	Tue,  4 Aug 2026 15:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A651F000E9;
-	Tue,  4 Aug 2026 15:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785857588;
-	bh=+B2tyHlxtOIYFFAEVjuBTTR4kj9wHrzaGATG1AU1+pI=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=R3oNVVsxuCEWsgVHp9L06whtvAu65m31eI7YTUDVmBGTciHjhmbGlv6QUnaWentP6
-	 iKLvzeiIIVg5Ghu1QbNkxlP7j4IS8pCBYrP2hqN5M3VwDO3VNlOGkYXUJZbP/QqIUY
-	 jDQEIQqJorCqz2ZmxeN9MyAQ4406Pc51zTU7Sf3uVL3FNPQ6V/gAqkzY9x567zrxhM
-	 bfstcUfhbLbTZldGnVZ+Xe+REaXQCRTAtHrfQNoDSivsMH8GjVZgEpiFVsUhWgRs6D
-	 Kj6Ww6zTa/zxFhnYHtMLGQpKCTNtF/CX24S8/PBlYm3B3hGjvCYaLeiw9n/12iBL7O
-	 avzTCd2u4JoOQ==
-Message-ID: <2a4423d6-7934-46b2-97da-a20c372b0d17@kernel.org>
-Date: Tue, 4 Aug 2026 17:33:02 +0200
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jP6W4WUb;
+	spf=pass (imf20.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r67WbSGJFOJ3m1cb1BTsiBKOB/G7xLlz+d84UQNgMrg=; b=jP6W4WUbd+BQvlFAif99nMriLt
+	QB7Z5FQtFkh9MEJFpTavQl03ecClCBbb+ORaTP287JSk6Wxbwy/GqFhBaM4UosHej5/AgcWkYtniZ
+	t+HGWIVJIs+ADEa/x46vd54UfcpKvGLhbXJTnlvIAVXqDJiKXmDr8cG7+PNdYokV8TD3s5JnD2Xwe
+	UcRZNBNbhqAnAyU6BOK4CEJoDazO9mHSIFyNkXFQ1u+1AxwnKrn7pjVjKJuFYGhe7kReo3a0CbVSW
+	QNn0OR88uSrnYvcM/TCiCOpMf5B7Cxd19YZGYV47wU8d4CsetablOYuc1O2uSF687oeOhsUtqF0fe
+	R6vB3+qg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrHAm-000000048FO-2n8G;
+	Tue, 04 Aug 2026 15:35:20 +0000
+Date: Tue, 4 Aug 2026 16:35:20 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: jane.chu@oracle.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v8 02/15] memory-failure: Prevent hugetlb freeing during
+ unpoisoning
+Message-ID: <anIGuLZ-x2pIb6mg@casper.infradead.org>
+References: <20260731200802.574821-1-willy@infradead.org>
+ <20260731200802.574821-3-willy@infradead.org>
+ <2f5fb8e1-67bb-41ec-af8f-b4da60be4583@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] mm/vmstat, mm/memcontrol: add _monotonic vmstat
- readers
-Content-Language: en-US
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, hannes@cmpxchg.org, roman.gushchin@linux.dev,
- muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, rientjes@google.com, kernel-team@meta.com
-References: <20260727162550.2032-1-usama.arif@linux.dev>
- <20260727162550.2032-2-usama.arif@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260727162550.2032-2-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f5fb8e1-67bb-41ec-af8f-b4da60be4583@oracle.com>
 X-Rspam-User: 
-X-Stat-Signature: n4wweqahk5zabokwnw711mftd341qgeu
-X-Rspamd-Queue-Id: CA11C10001A
-X-HE-Tag: 1785857589-39180
-X-HE-Meta: U2FsdGVkX1/pG+FerpxtylBI6a+DD60UeSpabBICe5PybdwYW8KFI1XMLyYblz6Z9CFZJ/RSWeleDLvZUF7Sc7QR1t90wq4KomcQO/Pj96f+9G9ybx7O4So/6LuA6dTtxRnyBd4AfhqrqIUXtgN9r0cuCO6KxES3xaJMeRyaLz6CcNIQARP2ODeIeDV+vBa5tbfiV2MkuOYqk3zud5OPWjBm7F36VGQRwaLD9EiO58CFRUgtgxxEY9ZfaW7MfdR9HknwUoio7+rngWWYv9fLSXs5otm1EXwu2QYT+HwnrXYkB6RLmlpJz2IXVSkHlOQ7l59zVgLde4ApiJiW8oBANl+r2SL6POIjyFc2Ysz00xk+DZ/8ODkllIyerQszEjEWg4q3R0o3TFPbk22tvFm6VFyKEre8NeEvmpRazfQY2Tfqp70I/ZocPiinpwbN7SLwprbVpFgwRibOR/m6U/NVnY8iBD+Pp2pJdlRiGZJOVFLI5ESdXWDX8ODXXE1bBMWMTGtzcvpo6Asgjva12BNS7LZgiojC3hW3JETHKg8TsKKCAFyCyZU7g57BL4vsYBs8lYKBq/1BOXMJPGFEdfP5hv4JemZgqKu4zHUNsXGr516tt7Q2usYaDgbbJESEqpEWjtO2ZVMUYfZeNVg63mhkz/MtE9Aiaq6M0FSOgcMmFUbvkqGnFFDJdj0Sx0GBGRBnStnndtaTXATcb3TxzrXJQXzcq2P8axh26tFG0m2rqPOSpAunNWXk1iXr3XNr39oSJOQOybjNvdIMj0FLT6DnDgwWbaS3cn9cVUpTF1JLQorskw4p++PFqU7ZGHjw3AcRt8CGjCRGTQrHlTUyN8J83GVYnOy30YbtXRAw5MFEEAGMsXU69GLlvCQyRiNx7IRjSoiJcYWdjPXfsAsLB1yjAFG6HyhRIYrLiTBQF3D1jV/LPWanxhefeoGDN8ObuNhhXxNcHMFUvpKjQPGDS9V
- f8A0A46W
- BHpQT9fBs+evk0udUyYEKF1VUy0gWRRdHqpOXS5u7t0Tw3bA1w9xDd3D73dy8GQBA1upF4HUC0mMtv6WtLs6dlE1majd6d/wx2Z8EHD1gzJd82uZAJHBm6pBtYNTv8j2sDFTTZlLwBkhfb9L0CKFy9TWlxmCMDnA3AOPj0mIitgBFGKr545S9pFeDOboItTYAPn5cmfS+JhYqyWDPKjH5JieUdvWOraOzcrBLVHv68jPRCFJuihiBPwXqAzhZsJb4u6yaRNCUftvmAP+t4oYPDqjoo70ZfUmhlZffWdtSw26vkvHb/sdDTUN3tmFGArnzo9N5ji3oTREjrxm9WjVzcc5+ve4U70sF8x+kM3IfmaPFBj3Ek3D6OOiSk6qt3HdVVE/opWWMZ24w530=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 965701C0011
+X-Stat-Signature: m7banjthycgqtxm1or467owdcm7p6w1c
+X-HE-Tag: 1785857726-181443
+X-HE-Meta: U2FsdGVkX18aY5wtvH9GKCFOLNIruYnPKnDdN70HljtjJIhAqjzdOWbazzvgTBfpnC/+l12WJhmAfFLaOWvJcHvNcYhZslVJ0GN/2nBf6zJ62pizdLeto5pQFCuCNdlb24v0gpQd0O9ovG0znVLmTFWiTLBvyKOz3YZ8furja09kuEu4fJOZy7s6grH5I0MNe4mTQ5jQEpHY4HsTTAPf1MwX1dIsZpvs+0w/QqFWoQ8+Cd/qDh/REJOJoUoLGESdFQk1CnSqaSZ+rjTNIQi8MyoPrSqFOlR6VbIJPSFV//+bD9ALC9v3w9ZFz/cv+cGVyvMclvZBTnm7PJnPLd+t8B9UZCu3PkEHXzx0UI4bvpyfIdEpjGCNSc4s0KcwHyLSBSxjkhZDNN4NzSwN6PH2+SBOSyVs1cGOqMByWuG2SsN99uwsZKjlyFbvifZSWuYHOqwpm0s2TzBfp4jwCrWOvq7Nkv3dXBYgDhRVqmQoBiNR7xSOV+dxLZc43uw0YkEpRMfRQvmvxag7X6+tRaqCBxTvxD+CkXAw07yA/PWx4uFD8csb35x33XqP98soGOin6pefraoYd59pfRNb0d2BOcq/gt5NjBU9c1iIdTLBXCBxRjOL3hLvOt9Rrt59ZAHJHHqEyV7OvudgecD7QRAJyWFuxvGuIaUUD7U3WB7Hm+s0+yfwKwOKq+at5Ud6bMwB9ZHzVxhP9MdAH6EhgMR2jX26UaEo5u1zu7Z+a8f+/VdILC4p4uymOfrmnOWFOM9lSdTxFlhHjg7BByKPiA0A/by/Gbu3SpeorSD6TPqgB9YgJU981c0oFxOqRUu4C22R3Te4lSUCdcY9Z7Ktyv15eWvLV90WKgKdCjkosfZkFtiaFQu8l2dBhHkw0hsOOxXJ+/XboAkc2OScNiPO3hU7vocgE3mHGWu25XaI+bspDz+5e9cPZM5rFBD03KQ0DyiKeZNhWV1iusBo70P6qMJ
+ LuQR2vaC
+ v2ep45D5mm2n7fZx+TuOvfCr9OOaWlXuL/7ZhnFtr8a8XNzWT+4QZ9l9eBBmzvqMpA+l6K6uujQTp4qU7WTZULSFPVMcljLOL90i5FNUyeSupgr3a+l5ZXql97jKtJGpuGlP8REAmn8ZL2Y5E6buCKgFe9kVufrNbye+gkMd7214/faQ8mM6ZuRfFl6zlETe09HHXDENpAp2rlxK9lTNk1XgB2bKE0Tbea0EkSgBjdvZQDOHgkz1mdQH36hbHQbCSQs55bVu/Y4v/KE9N2wMKa1F25qRiZAAq6j6KrbKupAPfPmdsGsdddOoMITil7V3mJXpJOzkx4649ygJZHyvBYi3FMFEQiy9Mh2eYyL0VzI8t76cAtQsDBMez2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,49 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 18:23, Usama Arif wrote:
-> lruvec_page_state(), node_page_state(), and global_node_page_state()
-> all clamp negative reads to zero on CONFIG_SMP so that a transient
-> per-CPU delta skew presents as zero pages rather than
-> as a garbage unsigned value. This is the right behaviour for
-> non-monotonic page-count readers.
-> 
-> It is however incorrect for callers that snapshot a monotonically-
-> incremented event counter and compute a delta from two samples.
-> Once the underlying signed long wraps past LONG_MAX, the clamped read
-> drops to zero while the previously-recorded snapshot still holds the
-> pre-wrap value; the unsigned subtraction then underflows into a
-> ~2^31 spurious delta for 32-bit architecture and corrupts the
-> caller's accumulator.
-> 
-> Add non-clamping siblings that return the underlying state value
-> cast to unsigned long:
-> 
->   global_node_page_state_monotonic()
->   node_page_state_monotonic()
->   lruvec_page_state_monotonic()
-> 
-> With both samples read via the _monotonic variant, unsigned modular
-> subtraction stays correct across a signed-long wraparound as long
-> as the true growth between two samples fits in unsigned long
-> (< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
-> practically-reachable one that motivates this helper.
-> 
-> The variants are only safe for monotonically-incremented counters.
-> Non-monotonic page-count readers must keep using the existing
-> clamped helpers so transient negative reads still present as zero.
-> 
-> This is a prerequisite for a later patch which
-> replaces the producer-side anon_cost/file_cost accumulators with a
-> read-side accumulator in prepare_scan_control() that samples
-> monotonic per-LRU vmstat counters (PGROTATE_*, NR_VMSCAN_WRITE,
-> WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
-> their unsigned modular deltas into lruvec->cost[].count.
-> 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Mon, Aug 03, 2026 at 11:40:25PM -0700, jane.chu@oracle.com wrote:
+> Patch itself looks good, so Reviewed-by: Jane Chu <jane.chu@oracle.com>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Thanks!
 
+> That said, there is a pre-existing issue:
+> folio_free_raw_hwp() should check HPG_raw_hwp_unreliable, and fail the act
+> of unpoison just like what __update_and_free_hugetlb_folio() does -
+> 
+> static void __update_and_free_hugetlb_folio(struct hstate *h,
+>                                                 struct folio *folio)
+> {
+>         bool clear_flag = folio_test_hugetlb_vmemmap_optimized(folio);
+> 
+>         if (hstate_is_gigantic_no_runtime(h))
+>                 return;
+> 
+>         /*
+>          * If we don't know which subpages are hwpoisoned, we can't free
+>          * the hugepage, so it's leaked intentionally.
+>          */
+>         if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+>                 return;
+
+I'm not sure I agree with that, but I'm new to hugetlb & hwpoison
+handling, so please check my reasoning.
+
+We set the unreliable bit when memory allocation fails (ie we can't
+allocate a raw_hwp_page).  That does mean that if we have a real hardware
+error, we can't know which page was poisoned, but for a simulated hwpoison
+which we are now clearing, it doesn't matter which page specifically
+contained the hwpoison.  We're going to unpoison all of the pages in
+this hugetlb folio anyway.
+
+Maybe there's more to it than that.
 
