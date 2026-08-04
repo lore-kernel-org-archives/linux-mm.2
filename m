@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65823C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A6EC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:15:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EBF36B00E3; Tue,  4 Aug 2026 10:15:26 -0400 (EDT)
+	id 8C1F06B00E7; Tue,  4 Aug 2026 10:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 675596B00E7; Tue,  4 Aug 2026 10:15:26 -0400 (EDT)
+	id 871E66B00EA; Tue,  4 Aug 2026 10:15:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 564B76B00EA; Tue,  4 Aug 2026 10:15:26 -0400 (EDT)
+	id 761A46B00EB; Tue,  4 Aug 2026 10:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24EC16B00E3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:15:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE72814013F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:15:25 +0000 (UTC)
-X-FDA: 85063784610.14.59CE99B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ED1E618000D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:15:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BnF3lgKM;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785852923;
-	b=GnGBuecXZ4gWVPjDasb2xIBNhxJ8ZKN+IPIgkpi2Yq+n3Vq53obLLZQecAt4o2mqxz9rke
-	Lsvww7QaFD0JZjzQ0aw35z2/CC9gBP5pvLCWRRB3YMxQfKWNIouYWhngSzgCD+cGKniYml
-	i32yVQekyty0i3Vk8Mjd0I+EUSeCQ6w=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BnF3lgKM;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F3A06B00E7
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:15:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CCE7E1A01BA
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:15:57 +0000 (UTC)
+X-FDA: 85063785954.22.24C70B5
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 090ED40002
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:15:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=U9Y+ykcr;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785852923;
+	s=arc-20220608; t=1785852956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qJcR7YXWrmqdZ6avQy5eZ7W5n6FvlWwC3YY2riy4eDo=;
-	b=3hIgJ2pqYysRQAnKfEFv7hBpubFIcb5ez945gIzdQZ2N67cdSn/okAy5EH+4xdd7bMP33m
-	eYHXbQyKx7z95UJklDW3SBZ/7gs3Ix2/jtbfEl53p4LByoenKxzeRu4B/QPwZs7nB7sUQL
-	byLDC0ioWvpekpEIveOnCUnfQnvq6FU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2BB6560A8C;
-	Tue,  4 Aug 2026 14:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396951F000E9;
-	Tue,  4 Aug 2026 14:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785852922;
-	bh=qJcR7YXWrmqdZ6avQy5eZ7W5n6FvlWwC3YY2riy4eDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BnF3lgKMxDaKGMfseCBsysay5w1WAhXZwaefobS1+NlG9tpktpOCz3c/7EuUBIr5L
-	 Nku+ESaLfFmLB/UkDOOnJTp4FK+SIUH/whZfKiQDAfdhFABb4vFMkL6fg9c3EaxtyN
-	 JQO0goEGVAQGH5hQXlCxtYmh95VAyy9u8sdQOw0yZ2wni6JYmtRasSR5PfNywQU4RK
-	 Zmu62yC10jpcnXCb+4mfrkza2JmpRMTVvmXYuaaruwweWmg2HVYJbawtzLswJO6fvF
-	 Lhx+DQClat2sSGDOkf6y6oHJVVfD5VN+xjIAQGuQCghSq/BJ25yZ8LaElY8YDbuy+S
-	 5LrLdS9PwYrow==
-Date: Tue, 4 Aug 2026 15:15:03 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Yang Shi <yang@os.amperecomputing.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org, urezki@gmail.com, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <anHuLy52o5S9Nlwp@lucifer>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+	bh=8W8JyDPmzm5UCFlTscqzEvqyD9BPaBjnzevjHF84zPM=;
+	b=2xlzvE3K6qfRTOB1C7UmnaWb+e32wIUrQdy0e7C46I0mVTVIoylj6EQ+oKlTug7d76zjzT
+	zQkmGFke6AOkyzth0GQeSC63HBin93Kc/iUpQgwkV+ShLAuzU2mC+A6RanI5vb00wBsXwu
+	VeZZbwg5LSzfNAFsJvuIy6i+qKk6u/U=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=U9Y+ykcr;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785852956;
+	b=GRYAYfpJpdbxgjP+B30DGfgDoblw/89Nps1k3wmAQ31M7yxLyjp2EPfXMiFotAGFDbIX1m
+	qodtazS+rLjwgzjOF9SXTlm8deCY5nrd7MQKX6ohdJxjVM/vr63ng9gZ1irKhh7kCeHyjr
+	J8zIyuDY+GWZF16CiZ/X4y7z8Fse9Zc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1785852953;
+	bh=+3Z5rwHR3Npu6BOoPBa6/MBmkSks84W8RMudMGSUNxc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U9Y+ykcrneFm0SMzgD5Wequ5C+6YI9+5KWqJjq6MLqKcdspZXPBqRSTKLAQbn0Dwe
+	 Jh4DlMKtwG72LHsJHkUlb16WIQJUUj+18D9Om/xq2DDIQYHJIqqeqV+cs4S2K8ll0u
+	 4Xn8vps1thOfJAuih04f0ajvJ02z0b+dNM7G5KG4vsA9uJkF+UPMtoBzuOl8N0d9/o
+	 Axxxz0skaIMlF/q2UUrgx2HHInYAouN6PFta0IFcrqGw7mD/F5MJfrJPa2J0b9Xe+D
+	 51C3Oe/EKywkLcUXr5kjR7m7lRQJZFO/08vh07hJlCOSImCykqaB0uJfKf5qoEjrQj
+	 v2Cf5nQUhFxUg==
+Received: from fedora-21.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8ABF017E0048;
+	Tue, 04 Aug 2026 16:15:52 +0200 (CEST)
+Date: Tue, 4 Aug 2026 16:15:49 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alex Williamson
+ <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, Christian Koenig
+ <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>,
+ dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, Huang Rui
+ <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, Michal
+ Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez
+ <slp@redhat.com>, Sean Christopherson <seanjc@google.com>, Thomas
+ Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+Message-ID: <20260804161549.4cd9a66f@fedora-21.home>
+In-Reply-To: <20260804120529.1730187-3-pbonzini@redhat.com>
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+	<20260804120529.1730187-3-pbonzini@redhat.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ED1E618000D
-X-Stat-Signature: 6bbb9b3boxgt5wwwnfg4grbk991ogdkk
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: r5wnqmkqugt9iie5pmbryu35tddutou3
 X-Rspam-User: 
-X-HE-Tag: 1785852923-304588
-X-HE-Meta: U2FsdGVkX19axlS6tC+fbzyY16D2qvTuLbBveJxl0TQrcGNfHUHwNG05dI7UF6E04fak8lMo0dsNp8bDHyHuUjaFXVq0Ydk09+fxTpxRwoYK9AGycP/xTKT9ZNGIPJfjuCekShAqTEJL/jbf2yaA08Cp3B4p/ijpxyLUqr9KLQiHVSG9E3GYvqYN4mH3JDmwu3zzfzGfOEHsclGJdlvDMOr6b5BkxLBbUqV9lL8mUAnJG4UPdXHObxdsAYHrTO6vJGHv/cEew8iPU18mEjrAmm9R8051MsLbYC4wwqghxq8oQReWhMueQYzL2Dv91KRuaMauGaNciLKOgTICLDa5fZo70uh6o/bmrrpgBvYOuA8w6pRM392CLYz/BXg6f33qXIu0hx0tJWoRWb+Rz6YRdpJweW+KZgAmvNlPxQceCAheehVaAvSthNiT3guLA57UyPEH4YkBBjdy8uMHoNgAfuvk1IPcMW9fOd2LyfLECNxFz7GLpOxgDBZeEGF1xyPxcIkQVQXzD3aoXzQvczWTXLTuY0lGHvmnoQDZU6nGwB63SCa1fjyb8pR6v79mLqYKYtkOXYcI9DNmqD/Oc0HAt2+sdTQq5SXZ5Kta4TWgMpsfQoSMIj3EvEpBM2kJJbl6Nx+1WGkYSMLOUaR5oO8a3/gm+w588dekShqhVRW6O93PFNNBoQbbERWPNLej5WcgRqcSshxDV+ZZHPo/UBYnvv3CtyldNwsAlbK8cF7ZXFS+QkHIuEFlMgUeaLs9AxK7eiAuL1A0l6QTm9UXUgxoWu3CLF4SHvOmBtAHACy9qla4VVvOi+OzNW7+i/ljG6coOr09wUr3XT3eF8zknC99NPnCJewec68wwgAziVCVFd5j2rY4aDDcoEUV0OKcYyQN2ESUPiS3aEs0B3C7xnc6VA5i/K5IS2Z/VhUhCYxM9PKughrR3Cv8qdkzZxnMS67dGIhW4s0Ddya4PdTzrDJ
- EzoNKV3q
- RyNdryDbZFd6+iKrsJOqjPd7mSlVYSI2f6m4iqiEqEggLK6byBoPUOKDyYlzdCFsmtPmu0F0tC0f6xC8o3vmV0QhxgzqrmtKPdMD2GGvKx80h6882TccbllGs7837otsaxTk6DSVyTianDwBB+XmzgW2MDT+68tsOb4Yb9BkgZCq6YGlpI41rRdj8AIXqA5c5pr4CJ2wA4RRzrLufbLubLnxcfbWhMaweo44jyqhzFCOk4iyg/I2wFRhvO5yDZV1C6SJRJ2w7y/4CLztHA+8pk5OlPOBVwYRXfXWuFYnGNIUpZurc5vyAtbyDNikaPTozac3WnqPzxmYSoideExi8QF8CVj2NHflEHbayNTnN71fK7Y07bmuL5H/W1Y76bXHyTkipJ5/j6ZnkIUsOYYEsC0bE+Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 090ED40002
+X-HE-Tag: 1785852955-970707
+X-HE-Meta: U2FsdGVkX194fgkrGccFvJV5THSdvFkhA0dOWKIrFjUvkCoSMYIqAwgJ6/UuwcQOG8bkiHgd+ggMucLy9qrjHFVH1Er43PYvAClExMdGzM1HkBj1HO0S6LRFiEBXiY+UpiEHFD3b80n8iJP2PFdvSq/Kwg+S7g3iXq1orKXYGROc35NbmGhk9pw3iwuGB8v7eVQAbFS/Vz9c79393udxS5k4O41SQftYmRCyBywA6YQF3hvq71Yzye0VtNlh27K26WhmuUcc2G2/He3kEv1+i6eybpI98nLkk6/mcOGymOeG+SB/cUTni4yLRshl8RW8HtXuq6YKQVh9n2hKWc7dFhPFxcPos3vkNOxi25PRvRGomx6mGyFf4mJP6wfMyf1BjJynp8YYnT0ZKyoPCVjRnz5h0o7R3poC5bjJGFA7zeBnpyHduYKign9oDy7dpEBzSWyWTuAGxbksAqy8oknN8Qgucq2FewlcIRxpt7Iw/4PDTNg6sxHZzBlL7bZpp/QF3mGsPAqg5/FEKTq6Rx8PHsTsSnTxnXrW5yxZUvZVk6+c0d9Dp/QLdFlQd/rOKVFRQ7Xv5hOeH8HahBQB23WLHMrUGsKQh8z35Cv+lTe3xSCIUga+fCK0E5TxPrZ0XNgpqKJVFseYMj8YmL6NX59fLsScXNsGYcv2Ed1a1wJFtkcA5BLofT4ZKUhtquMTD5/ZZG8OsPw5gzWnmdkkVAo47ChESr1uc+o7lRB/Y4uPGCKNUmldx4p66VX7mXojfWItxgTQuN9hqKNpLF0H/ykPyAF0je12vVj3Vt+Mo9pPPPwVWAkpEOs19ChaIdsy+Alf25/RIC9BS4ELqJBrybJNf7rb6VdbLiN63gl+oYuyvkipbuHLmj3lfROoS7JclV8xmH2MuX3e6OvjhuHHbkhbFr9c4SHlvyTcX3mcpoqQKAUOftnPmlFPDi5gw2r0M2/9IZQ8e+rg5B4OZ0H92xI
+ YH4KDct5
+ JUNPg107IabUft48AapgdfcavJhNCYdhopGTAt74exJBLw8Q8OJcaNoxLEN8+6aYTg7+S9DOjm/AFCUuhW9rClNq+CzBa292KIxnp0oZ23+qyD291SZmh23tceOMGORN3i3OdG1nzPLSkUKcExAvVQ1/yjgzNsh4TEjAHBQ2MfC3xIhzbDE5wVCV41aBKuv+ceNMhEDDbDM4KCzWhi/mmsfhdzM1JF35sfWv7lcN4zfRpN4xrdLLapiHxZ36ito5MVzJrYxtoxLYp6vSRP/MovBjmRlYNIteX9PKJjxbUgxgh4mrHZ6xNpP+8RBQL3V3HekR/1QNCH+k0j65rVa+FPx+5n8zF2lFAP3vchR9o63U54Onl57DxS2HEPbEAhLHwK/dx3TiDM2qaqecV5viStkigEi+xe6bpCgRJfZqmNy1mQI7m/F7fwfBg74kaFADUqJwKQ8KRgxXTqHA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,100 +102,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Linus, Jason
+On Tue,  4 Aug 2026 14:05:24 +0200
+Paolo Bonzini <pbonzini@redhat.com> wrote:
 
-On Wed, Jul 29, 2026 at 11:28:02AM +0200, David Hildenbrand (Arm) wrote:
-> On 7/28/26 00:06, Christoph Lameter (Ampere) wrote:
-> > On Wed, 22 Jul 2026, Mark Rutland wrote:
-> >
-> >> I expect that should come with a reasonable benefit, but I don't have
-> >> benchmark figures yet as I haven't finished converting the xchg and
-> >> cmpxchg implementations.
-> >>
-> >>> It sounds like it just moved the cost from one place to the other
-> >>> place and it also seems hacky TBH.
-> >
-> >
-> > Yang Shi's patch has *no* critical section. There is no additional code
-> > for the RMV instruction. The RMV instruction is executed on the correct
-> > per cpu area. One of the reasons for the performance win is the
-> > eliminattion of these critical sections. Your approach still has some form
-> > of prologue and posthandling like the current preempt approach and
-> > therefore will not be able to have the same performance gains.
-> >
-> > The code is more efficient, there is no restart necessary and the
-> > technique is already widely used on x86 for a long time.
-> >
-> > Having the ability in general to map mmemory differently depending on the
-> > cpu opens up a number of other optimization like
-> >
-> > 1. Per Node areas. Calculations of addresses for per node data and RMV
-> > operations on per node data becomes as trivial as the per cpu data
-> > handling. This will further reduce and eliminate critical sections
-> > currently necessary to handle per node data modifications for NUMA
-> > configurations which are increasingly becoming important for large core
-> > configurations on ARM64.
-> >
-> > 2. Kernel text replication. Kernel text can be replicated per node or
-> > per whatever memory is closer to the executing code. This avoids transfers
-> > via the on chip memory busses and increases performance. We have seen
-> > 20-50% on that one.
-> >
-> > 3. Readonly data replication. A similar approach is possible for kernel
-> > read only data.
-> >
-> > 3. Read-mostly replication. This is a bit more complex and the writes
-> > become more expensive since updates have to be made to all copies but
-> > a read-mostly variable is rarely written and the replication will reduce
-> > the latencies to reach these variables.
-> >
-> >
-> > 4. Custom sets of cores that operate on shared data that is replicated
-> > per node or some custom set of cores. This is for example
-> > useful for network devices that have the ability to do I/O via a split
-> > PCI bus or other construct where I/O lanes are duplicated to sets of
-> > cores.
-> >
-> >
-> > What we are proposing here is a basic new feature that simplifies code and
-> > allows addititonal performance and functional features that are so far not
-> > possible on ARM64.
->
-> Most of the features you mentioned above are not supposed to be
-> architecture-specific things. IIUC, Linus strongly objected per-cpu page tables
-> in the past, which suggests to me that such an arm64-only thing is not the way
-> to go?
+> This ensures that KVM or VFIO correctly see a writable PTE when
+> they request one.  Otherwise, a guest write to an unpopulated
+> PTE from a mapping backed by a DRM GEM BO triggers a VM exit
+> with EFAULT.
+> 
+> The code actually is simpler, because the same logic already
+> applied to the hugepage mapping case using vmf_insert_pfn_pmd().
+> 
+> Reported-by: Sergio Lopez <slp@redhat.com>
+> Link: https://lore.kernel.org/kvm/20260729072044.25796-1-slp@redhat.com/
+> Tested-by: Sergio Lopez <slp@redhat.com>
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++++++++++------------
+>  1 file changed, 20 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index c989459eb215..c81be3e97317 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -589,11 +589,25 @@ static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
+>  	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
+>  }
+>  
+> +/*
+> + * Because the vm_ops have a .pfn_mkwrite() callback, vma_set_page_prot()
+> + * has cleared the write bit from vma->vm_page_prot.  vmf_insert_pfn()
+> + * would install a read-only entry even for a write fault, relying on a
+> + * second fault to reach .pfn_mkwrite() and upgrade it, but that second
+> + * fault never happens for fixup_user_fault() callers that directly
+> + * walk the page tables with follow_pfnmap_start().  To ensure that
+> + * they don't see the read-only entry, pass FAULT_FLAG_WRITE info down
+> + * to install a writable entry right away.  Because .pfn_mkwrite() is
+> + * not invoked, record the write afterwards.
+> + */
+>  static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+>  				 unsigned long pfn)
+>  {
+> +	bool write = vmf->flags & FAULT_FLAG_WRITE;
+> +	vm_fault_t ret = VM_FAULT_FALLBACK;
+> +
+>  	if (!order) {
+> -		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+> +		ret = vmf_insert_pfn_mkwrite(vmf->vma, vmf->address, pfn, write);
+>  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>  	} else if (order == PMD_ORDER) {
+>  		unsigned long paddr = pfn << PAGE_SHIFT;
+> @@ -601,27 +615,15 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+>  
+>  		if (aligned &&
+>  		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+> -			vm_fault_t ret;
+> -
+>  			pfn &= PMD_MASK >> PAGE_SHIFT;
+> -
+> -			/* Unlike PTEs which are automatically upgraded to
+> -			 * writeable entries, the PMD upgrades go through
+> -			 * .huge_fault(). Make sure we pass the "write" info
+> -			 * along in that case.
+> -			 * This also means we have to record the write fault
+> -			 * here, instead of in .pfn_mkwrite().
+> -			 */
+> -			ret = vmf_insert_pfn_pmd(vmf, pfn,
+> -						 vmf->flags & FAULT_FLAG_WRITE);
+> -			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
+> -				drm_gem_shmem_record_mkwrite(vmf);
+> -
+> -			return ret;
+> +			ret = vmf_insert_pfn_pmd(vmf, pfn, write);
+>  		}
+>  #endif
+>  	}
+> -	return VM_FAULT_FALLBACK;
+> +
+> +	if (ret == VM_FAULT_NOPAGE && write)
+> +		drm_gem_shmem_record_mkwrite(vmf);
 
-Linus - I assume you still find per-cpu page tables totally unacceptable? (had a
-look around to see your take on this recently and found [0] which seems to
-confirm it :)
+Actually, if we're making the drm_gem_shmem_record_mkwrite() call
+unconditional (for PTE and PMD updates) in that path, can't we drop the
+drm_gem_shmem_pfn_mkwrite() call living in drm_gem_shmem_pfn_mkwrite()?
 
-Yang/Christoph - You ran a LSF session on this but it seems there was
-significant push-back there also - https://lwn.net/Articles/1073395/ - it seemed
-pretty damning on the approach as a whole, so given Linus's and the community's
-rejection of it is it really worth pursuing this any further?
+Also, I'm not even sure we can end up with write=true for PTE updates,
+because our pfn_mkwrite implementation returns zero, not VM_FAULT_ERROR
+or VM_FAULT_NOPAGE. This means the default RO -> RW PTE upgrade
+implemented in finish_mkwrite_fault() [1] will take place. If we really
+want out try_insert_pfn() to be called for those RO -> RW updgrades, we
+need to call try_insert_pfn() from drm_gem_shmem_pfn_mkwrite().
 
-(Adding Jason as he was involved in that discussion.)
-
-From my side, having recently done a bunch of work with kernel page tables and
-the absolute mess they're in, with intent to move to RCU kernel page table
-freeing, I'm very concerned about this adding additional complexity and making
-the already very fraught page table situation we have in the kernel even worse.
-
-Since this work seems to be very much arm64-focused, perhaps it's therefore
-worth looking at an alterative solution that's specific to the arch, like the
-one suggested by Mark ([1])?
-
-[0]:https://lore.kernel.org/all/CAHk-=wire3dzhHx=KiL_f5Rj0=1u9ustsa33QoR-F9-v-NU9Ng@mail.gmail.com/
-[1]:https://lore.kernel.org/linux-arm-kernel/al_DpFJFcmVhxpvW@J2N7QTR9R3/
-
->
-> --
-> Cheers,
->
-> David
->
-
---
-Cheers, Lorenzo
+[1]https://elixir.bootlin.com/linux/v7.2-rc5/source/mm/memory.c#L4021
 
