@@ -4,85 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3256BC55172
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AEA0C55172
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A00B6B00AA; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
+	id 5C24B6B00AF; Tue,  4 Aug 2026 00:21:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1507F6B00AF; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
+	id 5989D6B00B9; Tue,  4 Aug 2026 00:21:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091036B00B4; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
+	id 4D5C26B00BA; Tue,  4 Aug 2026 00:21:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D75236B00AA
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:19:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5772F408C5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:19:58 +0000 (UTC)
-X-FDA: 85062284076.24.7F831C5
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9D803140004
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:19:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U19WtwYS;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2372E6B00AF
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:21:19 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22B24A230D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:21:18 +0000 (UTC)
+X-FDA: 85062287436.28.BA54C15
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8D66940009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:21:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CWiwLOck;
+	spf=pass (imf01.hostedemail.com: domain of 3u2hxagcKCKwiRQXUbQSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--wfelipe.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3u2hxagcKCKwiRQXUbQSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785817276;
+	b=2J0EMd4gXcuhguABQeEfcY7Ht5EWBBxONCfXZskEDWTlAdPPdKM+bAhTwcEG+LOJDdZH/B
+	RN2vCSLJ7Z1LiuqlfWlv+W6/NDg2/zlXMpLZb41J8oROPeSC6vq6rsBRL6S8Akn7aUnR2H
+	DGQJtr8HTrkk1DGZ8xvvTqTSwucV2/M=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CWiwLOck;
+	spf=pass (imf01.hostedemail.com: domain of 3u2hxagcKCKwiRQXUbQSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--wfelipe.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3u2hxagcKCKwiRQXUbQSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785817196;
+	s=arc-20220608; t=1785817276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=175EbZHBL3F1dS8YR8Z8r9c4iZSEBgt9aiiE8BBHiOk=;
-	b=RdVqYF1A4R2QX/8YpOJNCS5BvcHbbxQ4oR9W+2ZKE7CphpORX2085noVRxOMiWuIGoKTsU
-	92vSC3F6akXAkQpX6f9fMhyokTAe5F/k6rGTKdS4OXlA/A+DxMTOMANgamarKWMJTOypG2
-	h4VQntjhZm84CVd0U/KtFhTET6hKQkM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785817196;
-	b=OARCFf/0DdsNWtqQxTHoqPNWxhP0Vp26u2uG8wLd+DyzZm9pRkT2KMSaYkPBoRNnrLxJFW
-	Gb9SmIvFdpcw/wtewa3qzag6NbxnvBQW9aGjY45x0AdKp+E9xDkvOOfZEUSjuQg+U+ZO7t
-	WFVhRm/JFaqZLO4hy7ukzQaw7fZP0r0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U19WtwYS;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <b222ef30-10b6-43a2-8f77-f6108182ba77@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785815514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=175EbZHBL3F1dS8YR8Z8r9c4iZSEBgt9aiiE8BBHiOk=;
-	b=U19WtwYSY+G/DxpEAUy0NvLxRrtwwQB3fY/g3kYKVDJ5jSacqCxKWrwubGS+4hgGL6Ly+K
-	K9Z0ZUvXaCyC89C5BoKR8x3xVMQ5ztYfY0QEsUYtkfYX2sTWdQi5kUb5LDM6nnh9fppXoK
-	veIcqGqIT/+lBi64DhqGRk+uyws/YcI=
-Date: Tue, 4 Aug 2026 11:51:38 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/3] make unused huge shrinker memcg aware
-To: "David Hildenbrand (Arm)" <david@kernel.org>, hughd@google.com,
- baolin.wang@linux.alibaba.com, usama.arif@linux.dev, brauner@kernel.org,
- akpm@linux-foundation.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
- <944bfc30-68e4-4ccb-8b00-f0f86d27cb56@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <944bfc30-68e4-4ccb-8b00-f0f86d27cb56@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1EHxIenGghG1qcflV4x5EPNN6hTPv19+mMdXwN3odLs=;
+	b=IYbU1qC2LX0MT+U4eWzk0xbUshD82bc8pcI7i1U0Ut1ich5pm7W4mB9tDCmDY75eYuTsJF
+	1wfOMkA9pJ5lD/6F5ptfaTjHs8mw+GTa9STKvHfVeSuW4nF2i05nrmqC2ukiKzofZt8aO/
+	U7fRlJKGgaWnWCPtFi7e44ytrNoGLaw=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so4243293a91.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 21:21:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785817275; x=1786422075; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1EHxIenGghG1qcflV4x5EPNN6hTPv19+mMdXwN3odLs=;
+        b=CWiwLOckLuCjCngOQ3BVLHar5XUbyjwpBBb1reepFDILBqxxCkgDr/764GFp/KOAuH
+         bPINb/uRHYr4PFwjdpuBdMtzjdgX1RfB76ZkNp3eJOEvFPpDYd2w2xCCfRD4cRdIlpyL
+         nEPOZQ+ysL1SoMxU3BacH+4//zGCLraI90gge7Q8AQHJldVCJGMWriH5PLPGxqMicEcm
+         IDBdHMC4OEFffSDeU51wi9l/+J9rlaR+tI++Gn5q+Q2+GUhUChFNDiQ0BMxdYrzI6MI1
+         GGXr9dy6XkrElnfDu4PZYQ+g3HWHxxS3FfSEhqfyz/tLw1ve2gVsjIWaSXg7q9J8T9QQ
+         iSsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785817275; x=1786422075;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1EHxIenGghG1qcflV4x5EPNN6hTPv19+mMdXwN3odLs=;
+        b=dnVnpFc5irlC2JFrWCT0JNu+sbOwID1ouVvqEkk8am3eTj3EQGwsfXSVyJoAQUPE1o
+         HjvbQrqsqLmaW8xuFpQPZdjZcD1GNfWBKocZari0PFo3Mp/U2SEePw/yClNoR8hekJbM
+         hkHPD7Iagy2tqM6MnnAW/5MiNPfgcJhePnclEq77QGzwY+Z4a9erBHQOSn5Ufp+aieYS
+         goWFTgGUzL5xBvmZYuViiWu0gObVRQij4b4G9AG/gqG0SqkKFtTpKubEVB/7KWZUMdj7
+         6CyuGzWK8f8Nz9Qi9VNK5yXtaXwE8wRln/Nskvo/Cu53RkrLlSuyfc1LbOHhKxoZ5bXf
+         DE5A==
+X-Gm-Message-State: AOJu0Yzylf4TImflhGihkzn6yTfGywyM7wnKogdvJDEWe4gHcoTGUsHt
+	LxJv5ECLmIKxlpbS5ihDmBwTxny9MkSDV5A3NkocY82RFfvePyCELNExmCbmGPtntIW/tCxcNpE
+	pS2LJeeFAIw==
+X-Received: from pjot9.prod.google.com ([2002:a17:90a:9509:b0:38e:1db:751c])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c5:b0:38e:7168:281
+ with SMTP id 98e67ed59e1d1-38fbc424a3dmr10661157a91.10.1785817275127; Mon, 03
+ Aug 2026 21:21:15 -0700 (PDT)
+Date: Tue,  4 Aug 2026 04:20:43 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260804042053.56940-1-wfelipe@google.com>
+Subject: [PATCH 0/2] selftests/cgroup: test_zswap: fix single-core flakes
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Wilson Felipe Pereira <wfelipe@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: axgyaitekn4d5ignjt6i5x5qjgc96b7u
 X-Rspam-User: 
-X-Stat-Signature: woszx4ditdb6m6pwgmpcbr1awkegfajj
-X-Rspamd-Queue-Id: 9D803140004
-X-HE-Tag: 1785817196-256613
-X-HE-Meta: U2FsdGVkX1+vjav/Ujayi8faHPv6ncu5VxgvdJkM87d2VpL3Fao+4M4y3JHCNMivA0rf6LFKSk7b82tis5Yg43xfP58KUcJB136cwRX+AYb8oCJUKKuJJ8diIZY9BoScyYzVe2qRHzWber585gN5LqskI4XCgwiEiV0TWvzNlE88L+4LTWZjCEL4BOSQkzG3+T3L6K3pKlFbSRxk7tZAWZLxmQwXcUoIO3c7Wk1n/ZK69MXFfkms7fJzqCrjvqbU7tPihvTAmdfaZmaegs50xe9eFBQxMUchm6m0OyMTiJxgKD0hWI6Zp39v8c0CzVS8n/LtN+gDAcgA2OwzRuJfdC+YzvalZT14OD2AiFeQPeh5zfp78qqj6xtHuQbH36nLtldyGKW6NKl5zvT+q9+JuilzqaDvfkXDkiQNiFOHoTxC0IOLI2Zoya80JGWBhbQcDIUHtdU/1Q737d5yp5YYSxyVMeSZC7XHWAhWCJARPMI8E/3PCXkR27ghIqTh2OyllKJ7vhWWTdlUru20q5LkwG2eMNaciN73y/bPRHlphEWRlqATbZ1gbWjr3uTwZ46KLQLY4f/VoqtjyJbC6jdnT9bu3rIcsS2PG0hOE5PKZzlHBgH1phwNYPVnaezYnbKhX6bi2STLSv4PH7+MHb4T6EwLE3+wKG19N/BHXevW9ai+LkToWCv06NvMHXCj/d7isHUk0BmXBhbWwQydSz2HIH59aYyF02eNO82rqDzbVVmHK2DF5VkY+aQfOxR4J/cmic7DzjP/NWlPzrkIWTAzFibqE1WXqsUAsCoynaGTJDNIsxCx4q8HxT6LNeywTdAZD5IV+VP3gkF9N2RlgdBa5iSLci82JSlsFvrcenmCjeWE7uWMllLEDPyFhsesRakzTYMCqsWiIxvC8eCjo4bDmUHMBf2DDIOYiePqMBFK18gYbZJPKmcAAAZ6WiBTZz2H0LUDPegrEjqX8fUqoap
- vEunXdr6
- YORKZvE7mT/Z0ioS5blH4ixDRURkjpy6yCkJC74egvOBt30JonN63uqXOSMj5yeR7Ff/lBXqoz2jvx95Ul+EkYYg87NYJ3fbecWpztFIKbWpjZJF5B5LtNNJaAu7nGYXwKY7j13t97jBIl0zgBNakvQk0SD+YrUXi+l10RxStv4pEC1RZZnGkp0STeEvdG88PcHAErMWj0MEO6R03KjZR1D8PXyoxMdYGvC8e43pjbi52MyTLuSLhpJZu4vDf9OkU3EMk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8D66940009
+X-HE-Tag: 1785817276-175911
+X-HE-Meta: U2FsdGVkX1+qha7381kl1bq2Yq2t2+v2opE+Z1j1oVua66rgafh2Qz2yC+lQDP79wh9AEQSk7Rj45GO+W2Vz5b8+CNhJPMG+Xd2oO1huvuUEnElNrUXeBgCoWMHJEEwEacpx+o+39YKTqM/hTlwOXWVM6/Lj9WIsEmUMi9GruNg7vATY06VAE2P6mrTqnm1cTXfVUXM4vTqfF/nDXwYyAE5Oh7OFGOW2RrV6ssSNOEHfGuBTGxcvgs7BhX2OGa1B+0JuDx+NKaeCZyLil3fhaRLVPY6bJ8TR8dRbNT70qwIM1lVjZRbf+yB0P7bcvBIBtrE7pfWW7s9s6yJn7td+HaiehEfRSjctt7JiPTfrhTW6NAZ5+0wTgS+AVOze1y35LiRpF8ffgbf8GdTAhHKuQZRjlGCRad2d1twURaJxznnPpA6yVmhhiCJwDfDutQgactqjqXZLIhbFjnJ0zLPkWW3hfB5tYCj31PGca3rMifuhZiuta4h0iiCSPanFEWm4RDbsx3yr9c/N/iLt4CDmlOiOPyAzIzlZaVh1VADJEOOuTEQjCTXiuBOxZJKPFBRBoGFFjDTer1hoS2jlobVaVUEeu1W8OooGLSWaCDFr+v868hL0hC8+TtcabzoZDgpbXCEcKQvmUI7PrQ4O2l9wBdsjgVUX0UzybkoirAHV2Z1vqt4JycilqrNavx/HVapkhtVvRR6ohZ6Dy8YXMgqeWTmoZxh3WNp23zy9dgslViFA8/i7vBcqD0w6JocLSvjaGkC03wGDdxN/R6PlNleC0aOuznplItBn6zDYxpr6C0bMr3WH4tknTayyr7xc9+M5oqlRAQhpVpzDgS6eueuwWRGHKrpUETkFdzeIlkKadrZan4jgU+pt4aCNVt5ZaIVVFOTkLdAN+W9jIEExgGPJ8FRac98NsJMQj/Ol89n4TQgFxRIbkJmAwuljm/NHKJ2gabFJYfVVrP3kRD2noBy
+ MHP6e/jD
+ eal6kBtiHwKDW4E4u46LQQkfDpJH+6SadRotQLsv3OCnqnOGP/LdT5tjGsnrbgXQjVwEt+KLilwnTO3UvOqdRfvMGpOrpbZ03r470YhVmzeH5T0GYGh/+Khe0cdjV4Gq8WZLFcxidmwSasRnxdVplodsRgovBpn7iPMlp2h5acXbpmNvP9wGiuL1MmgZ+igroGUHK1eip6rnkYJ3IEdSxgDosVxQ0SKepkgBE7KJoUdlhHEBc3SSUnm9H/lOHTY+hNvYSD+JTN8IaLlYrEa2bOTppIArnjKAUyPWjZP5kDW/rzyA6v3sa4wBJ7vK6GUptRTNseMe2Kp7vucS5/FufVPdEDu7KOwCdu/iEPJzv7P9p82O1ZdnYz92JKH/TJ4rnM/a6zQJ+BwXqmztMbrxhn/WJe0R0GgguAPyUq+QrRrR0pUKx7RrST61vQup7c8r+azulDrHrm08oZhegtNbTpnOjT0+HCxF9XrKON2g5z2iO2EG62j4yFjWPynvj/Le5oflR8jq0zK2tasRi2bkWZT9Keb7RKgYMS1LSa6Mn34b32gUpFhqbPzbCw8cML4WtVflHtITmF1exmyRCMwOdwFn2xI0gFl38DaxUwOsW0EO34u0SUenhbrUzmAVJoZpWmbFn6fXRRcg9BD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,63 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+When running the cgroup zswap selftests on a single-core VM (-smp 1) with
+4GB of RAM, test_zswap_writeback and test_no_kmem_bypass reliably fail on
+the initial run after boot due to timing and asynchronous tasks not
+completed.
 
-On 8/3/26 8:21 PM, David Hildenbrand (Arm) wrote:
-> On 8/3/26 10:46, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> I'm missing description and motivation here.
+This 2-patch series fixes both initial-run failures:
 
-My bad, since v1 was just a single patch, I got lazy and didn't bother
-adding a cover letter description later on.
+  * Patch 1 fixes an EBUSY race in test_zswap_writeback() where writing
+    "+memory" to cgroup.subtree_control collides with the kernel's
+    asynchronous RCU removal of dead child tasks from cgroup.procs.
 
-> 
-> This is only about shrinking huge pages that span end of shmem files.
-> 
-> Is this really a problem? And if so, why?
+  * Patch 2 fixes an implicit unsigned integer promotion bug in
+    test_no_kmem_bypass() where a small negative delta becomes large when
+    compared to an unsigned size_t threshold.
 
-Yes, this is a real-world problem that we encountered in production.
-
-The root cause is that shmem unused shrinker used to be non-memcg-aware.
-This could lead to a scenario where reclaim triggered by one memcg A
-reclaims the shmem of another memcg B, causing unexpected impact on it.
-
-Even worse, memcg A might have no reclaimable shmem at all, making this
-completely useless work and incurring some performance overhead.
-
-such as:
-
-tid 11340 comm scanner locked a page for 182264 us! kstack:
-         unlock_page+1
-         split_huge_page_to_list+3135
-         shmem_unused_huge_shrink+767
-         super_cache_scan+329
-         do_shrink_slab+291
-         shrink_slab+533
-         shrink_node+400
-         do_try_to_free_pages+206
-         try_to_free_mem_cgroup_pages+262
-         try_charge_memcg+591
-         mem_cgroup_charge+136
-         __handle_mm_fault+2431
-         handle_mm_fault+194
-         do_user_addr_fault+462
-         __do_page_fault+176
-         do_page_fault+48
-         page_fault+62
-
-Later, with Usama's patch [1], the shmem unused shrinker is no longer
-triggered during memcg-level reclaim. But this actually doesn't make
-sense either, since we can clearly just reclaim from memcg A individuallty.
-
-[1]. 
-https://lore.kernel.org/all/20260715103516.2410175-1-usama.arif@linux.dev/
-
-Thanks,
-Qi
+Both tests now reliably pass on the initial run after cold boot on -smp 1
+VMs.
 
 
-> 
+Wilson Felipe Pereira (2):
+  selftests/cgroup: test_zswap: retry subtree_control write on EBUSY in
+    test_zswap_writeback
+  selftests/cgroup: test_zswap: fix implicit unsigned promotion bug in
+    test_no_kmem_bypass
 
+ tools/testing/selftests/cgroup/test_zswap.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+--
+2.55.0.571.g244d577d93-goog
 
