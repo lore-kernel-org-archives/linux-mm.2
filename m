@@ -4,101 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89909C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5506C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:08:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 976C56B00E0; Tue,  4 Aug 2026 16:06:10 -0400 (EDT)
+	id 3132C6B00E3; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94F486B00E8; Tue,  4 Aug 2026 16:06:10 -0400 (EDT)
+	id 2EBA86B00E5; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88BB76B00EE; Tue,  4 Aug 2026 16:06:10 -0400 (EDT)
+	id 201A36B00E8; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6484E6B00E0
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:06:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD970A02FE
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:06:09 +0000 (UTC)
-X-FDA: 85064668458.23.129CE4B
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 417941A0003
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:06:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cUkCVqFD;
-	spf=pass (imf19.hostedemail.com: domain of 3LkZyag0KCN09AGHRGDJA9O9SFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abhishekbapat.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3LkZyag0KCN09AGHRGDJA9O9SFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA6A86B00E3
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:08:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5419BA18CD
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:08:08 +0000 (UTC)
+X-FDA: 85064673456.06.4322ECC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F25AE40008
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:08:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GK1l62VE;
+	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785873968;
+	s=arc-20220608; t=1785874086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eQhbFyKvr/ksFI2xyvWzjFX+sMde4ZiHz3r5KlqPdxA=;
-	b=ygtUZCyiOLZ1bDWovfa7tyMqFxn/BjMtEJgEq6YoCXk6gEITrMdPEnXJrPkytXT3YYV58c
-	bx+dkAcwrWbPXGFrxzKOaH2PGV9sk6eejR0PUjrpJLZlR+Bt2VnUOBEJq0Z4Rcofgkd0mR
-	7fgPQ80MojAPFReZO8lyrTWXP9568LY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O3WVbx9DjizmWqebKqOWEDE2LbnYDmLdJ6MN0TdoWno=;
+	b=u02T8fNObeIab4EPKEaDNw3eGVHEC1UBBcA3WbnAFFZdK7Ss/+QddqjgMYa777K3NpbZS5
+	+66SAuBWvBnz4G1aBwYgsqW1r3w9Z/QtOQbUCxlcT+p7Saqfa0X9IWjzJcWf7l7g2k+QaQ
+	Q+Ug033HVzoZPXjYbbpCJd3JadvExM8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785873968;
-	b=zfGq1fGRz9fMo8zlLVyiwxhsl66eS/c0EPgxXMMk8pB+tfpxIfBOSMQVyImZlTR3CH0WIR
-	BDqGxkg4LFxlc00/yh8uOT64XBRmexnzBjmI899tq27mjEoupppzbl1AlSSFfzO3r3i4NG
-	rcNoomuq99tcx8PvQeLqTdkK2AKBOkI=
+	t=1785874086;
+	b=FXUg4xef12J0lVy9h/Rmi7YJlkNE+zsOI3Mk+GInTHynTB7Hb/Pdtl+TE4xecNxgRbBt3u
+	fcBYvzjcXeN9KcRC/eBQBsW3MIbekzxCLW61hRhBe6NDgRW8BBXuBd27cHclreURf6iAWT
+	srmNsFcknw1eWkpaSkhhM2QsSIebe9Q=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cUkCVqFD;
-	spf=pass (imf19.hostedemail.com: domain of 3LkZyag0KCN09AGHRGDJA9O9SFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abhishekbapat.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3LkZyag0KCN09AGHRGDJA9O9SFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb6ef846b33so165849a12.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 13:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785873967; x=1786478767; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eQhbFyKvr/ksFI2xyvWzjFX+sMde4ZiHz3r5KlqPdxA=;
-        b=cUkCVqFD3YRH0pm01QkLKL2lBqyGGgUaa7g0lq4ZjGQs8ntt0U7TttxCdUD54rX3iD
-         dK6ySPzRQovZdumxqVvvnHGFn474zmfMLbdZkpguF/fGoqq6bilCVkVhKdB0qRiScmwO
-         TMb59f0Ia4+IYqrBXm+Wcy64KQa32eeYrnJxKlKhT4UKx2vSRaeD7eJqU+G+BJoFvZAk
-         V3ak4n5/ZqVn/mHLtjNkUJZpapFoz2KMhoODFEaxHIFdn2JwT9wULD0gi6szOAAAZMpM
-         Qo+Sc1fShu5AB77wHk6xOTg+YAyCI2ZC72zFj0KqFPQHAelyhKdHFWsc+iKzZFtOjaCF
-         DCAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785873967; x=1786478767;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eQhbFyKvr/ksFI2xyvWzjFX+sMde4ZiHz3r5KlqPdxA=;
-        b=s24QdahSmngGrbTWTThBIecQdUbnTHuRmbF5i7XbXcaqTMuwoUiDGSasXQSMp2thKs
-         f9IUvU0xHQmjq9Tntc79r0gPZlxub2QSIwXmngvDU6L6uCZF4xxcknl+pB9fN+l/362t
-         L8YU4T5MRg188TgSslUxboEfM6lfYAoo3Vr0ySDLb4+XKvwHpFBoLMrNJKgxxxQKveM8
-         gJ5qO2edNL6jqi11VWv/r3z1gaf1g+OLqM7XxuqjXtjGOodNydzyh0rS6Rjqhm5FHuDr
-         LAS2YCPd1t+BYRGFvBHMQHvex8rGccOr7UvNVnkHzexDGsWUasA0cWh5t//SPgG9gPWI
-         nUKQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpY0OYsHODStRRA+XyWJyqP4waVAI929UrZMF4q2fvMidLK+PHZPLVuWW/jLBfyXi1blcRMVOKKQg==@kvack.org
-X-Gm-Message-State: AOJu0Yyro3MoEwiTU/nYyYaGc5I6Sz8cBu4XzWGnBnlDb/TDpePDKYrY
-	HIaPLPpFh+iBDxSMGCZF2ok/hHWa+YPspkot0CyEA/FIeZkPx8DRmAGdR6frszeMii2YivSMw1S
-	yJslquFnNV8LKcC3mPdTxytjDLh8hcQ7DlA==
-X-Received: from dycjx24.prod.google.com ([2002:a05:7300:fd18:b0:314:7337:26d9])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:329d:b0:3b3:3506:cf3f with SMTP id adf61e73a8af0-3cb6c7530abmr5445770637.1.1785873966841;
- Tue, 04 Aug 2026 13:06:06 -0700 (PDT)
-Date: Tue,  4 Aug 2026 20:06:04 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <d779f2cf4105448e0fb04eeab82acb20dd05d6ed.1785873902.git.abhishekbapat@google.com>
-Subject: [PATCH v4] alloc_tag: expose boot-time compression configuration
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Ge <hao.ge@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Abhishek Bapat <abhishekbapat@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 417941A0003
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GK1l62VE;
+	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785874086; x=1817410086;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=A6fH+vHOIZ6I29oLKNkELdsCOM1BEX4zSX5AjzmFPqw=;
+  b=GK1l62VEuyLoNW/Qh5T06HTDRTrED4VIgqIzfB7SzhlY69h/QxFXddUH
+   j6MO3sAU7C1PnAzF+3rLHBBHzsmZy/KX1spXHzNpjBS4GtKa94ShFH/UW
+   ubt2GnlYqnVfQMHBsTQ+usAkMPhWwxPrc6xZckPdeZIyHDGc4SCtQhht/
+   BPno5nPD1xtOhWeLzgktEXNojkMEKEDsxPqnws5iURd4oD+dJZcTavHoW
+   sy4GV2aKQtsZcRFh8BH9y5jV0Q8XQV9Ja2x0TaCnLgnEEfGGN59RIxEEQ
+   IdXhKOSeTSh4wLBcDZC5eeCUMciQrV1dVa53Yb4I19zeyYEGdLAaBYL+9
+   A==;
+X-CSE-ConnectionGUID: cjPSou9dQ0qEd6247hbs8Q==
+X-CSE-MsgGUID: lsHlmDw5Qfy38dZG+rrW7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="90112330"
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="90112330"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 13:08:04 -0700
+X-CSE-ConnectionGUID: 9//HSCuCRqGyG7LmJWxQJw==
+X-CSE-MsgGUID: o2VVLwpiTl6XG//kyLCaDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="286238876"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.108.232]) ([10.125.108.232])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 13:08:02 -0700
+Message-ID: <5c5df75f-6226-402f-b223-abdcb85acc17@intel.com>
+Date: Tue, 4 Aug 2026 13:08:00 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] x86/mm: DEBUG_PAGEALLOC musings
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Juergen Gross <jgross@suse.com>,
+ Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>, Mike Rapoport <rppt@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Toshi Kani <toshi.kani@hpe.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, linux-mm@kvack.org, x86@kernel.org
+References: <20260729110807.797920433@infradead.org>
+ <2ea2881c-7202-40e7-8fa2-f1c649c0d445@intel.com>
+ <20260804200134.GK776954@noisy.programming.kicks-ass.net>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260804200134.GK776954@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: b5xspg8w41m73bea33ymhfebg7im1kck
-X-HE-Tag: 1785873968-237199
-X-HE-Meta: U2FsdGVkX1/PYcD17or9XJuA6ySEmFpMX5IUZPqOktLU8v1MsJNzVZqfVroze5E3ZFfk2Ob0Qlb+bczZ9bBZ4yNfH0aMWmG9jKza/jaW307DPysM7rvXCMKVGGBDgGaeYMCMWQ8IRFolOuW4xTXmY+xomATeiL6ghwU7SudBu8Rh6CHfgZkbBV+TZ/5Rs9ry00C7er3DT2G/rzAgDf6gfLCRqbDuRRM0/KPKlrb6STn8TPvK1Av5crgsK8dtqWGkA4MI+ajmx5PwlfW8HWV5qoC1AqkbFbCldF1CBYTuIm5I3BNLhOvlc+9kFmxxy+eJCNbEg0mmvnOfIk0Mk6q0GeKx/2np2AARAWStk1VX76fk1XzEWNoeFdlW3Viq4+2vkUVBUFo0KoCnZojAKwmjbW1rn6ZWOFU0D2LAQfEZApC2Ga2TcRRbzsR8bQhDKTzqqaClTdH/EPk+38J7U14Lo/0hFtZrCbw3GqV2ymieKPbVFhbSWSMUabbliJ+whIpCT0TufMdQYoukEp+BHrJjiZE8dixNl7D2e6YUEqQCcdF8E5vyQBJct+tC5fjE8C0Pt2uKUrjnDEgYzMSmU7ycqkgRoPGtcVvMfFFarnfcUaMjOAsVnqbWZecJeV+IV0vKvBbtFpWCr35bgODfwWeiRXmG8iGgn/wU+Ew9Uyv6zwFUSU4/0MBRlLi1q88Nk4MePVpeof7iRdx3+0xTteZ6iw8iE7j7ZIrXCLcKpimVQC1oet5t0PQztSiuymOwjD4tdvrzAkYqTO/FcNOxKNWkSXItFhWM/5zN8P8U5V6jS40MFW+tqB2xM9XDPFSVyUy5C5eGl0eccN/s3CntcHzu7AdzuiWYwPeGLA9Pq/nZHcD8kLDQ21y8u5xkWZc0e7Jb/fvLuXSQRDBiLJQcP7xnc7Jlq3JIs8qz8iajZsrIz6MyrcC6Y0iO0u9PUqz5sUOn2e3wnZn2Z6wZ23TONZK
- ZPfN7U8m
- oZ1aG3Vtwnn9XJquvKHe9x8nbaJEemj7GHW8/MN1HsSW/Oso24Fq5P23DhgawUkfWk5owcVENK4Pd71tJVkCeTXpealjpAayC+4LJQdoBStGBL4j5rEVuotDwe1bZeVmmtxEAi3HoJcF9yZrhbadXEeISNr21HY5OID8Ah2R9GJMdP1TLbdL2FOhOUKV+YbXHd2X4joj6b1iAVelQZimSsKu8kTHuns8kOX0lnCq6VaQNrUiNzScFBIpJxsn8Yjc4jOPQ5m1oRqF44qVp4/Cib3X7iEfmuYPg2X/KaTVk+rE+D/Ai4+OoSU8zCW60FiYwKaXs4HixVYTzAk4zCKn+pmHhrRTdPa14seon8fegiy+jehEkf4Dm/QejxNRtz59IiMW7Hy4DeI6toXSwNV7cihVuFsH6FV53O9Tsn7/5lxUQP42kL7Rj/sZqDZPrgQO80etQAvZoAP1Yolv7oY7JzHsCuNfoIKzrmnOPz9nWpL0d9YR2SQ2rj8R6V4+7LtP0+vQ5LSodWD8dIbS3IgE9DCpXY/XazgI5L1H8IFaVFqXLUMttIHOIPAdegC+ucJGSnVPFTOgIfRGZT7TENChyW1UI6o16Vs2CLn26CzKr3FD70GTk/WB51kES+m+Xj03a5QuJmXMrzoMupJEUi6xgI0Z6q6xcS7UWfrV/o7AkAHYca5w=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F25AE40008
+X-Stat-Signature: n6m4kakh5n8ugex5cc96bjhh44eitxuq
+X-HE-Tag: 1785874084-333010
+X-HE-Meta: U2FsdGVkX1+mRlI2cTwxgqjayaZdkoxVsekX1HsEk4zz/KqH/zvxDWVhRTXaS+2PoR9ani4xun6uwQTyNgrRlh43xMJYdry+FYv0rLZ7Mp7hRsPDUMmmnRWAL67JY5TihnAhPiEvrywRqMX7O8AUkkpTCA7RQquB6QrRaYZEHF78tiZsOARUhzcbWyjOnKDY2Kn8FpsIVynrtMvgi/0dxU4ucTEf4D5OrHMgEn/w1QdArduMxHwI0c5nFA2WBgKc+irojmvri6S/rIccKZZv2LJfSqfRe0neaG/HzIkfDYqhKGqBofMc2IZ/aGiKRvb84rW/Cl1IA6+zGLTr8C7X39qW9jyzNILgZ5OJYDMRbFINw3lvBp0w/eTcLnzC/+X5FIz1tuolf3q05/ZU/+3RGubewuiIfXeZOfVkut+O0rDVHP4xhqKNhDhH4FRD0yDz5X6kkvizbLjNy/aGjaYmJM8Z0XimSeTuoxoNm64IFIWSCpsoY+CvmVJynKUaVZEZilhv1gQMeCL7fHrfl2i3WFEE/cNrPmVwjTFFRnHDOxyPHaM25EYnpNDTo1oosHeeVHIim+bnrgex84sG7dsQmuLXcUkUvPihXkqbbvQk6KAMDljNZ6hYdBbENE401XjQ0TOxLxRXlVrR5+aToDU3GnqOpY3YepEh+RA4YWtoOaKCW/vWoZ8fb32oOmrf4bzlhDX4wJIOEUF/i5zQCzsng8/C8j7ws1fNBFQtTsoJEfzr/srbi7nhs5C9JlLT9fFt33zOULKlvQG78JkhWy+x9d81/Jad0H8devif7N5xaHibs1mxRtAFRgo8I+aOagrhJMyfClXC0BwoydTctx48W7xTMV67T4SF9n/KWWc5TFWmPhhrV11+oJPGFWcH3wDBALmIopvUBu8wMKbUf8LuO0t4oIkVluujexnjG8ZwGfFI8feDIde/0oqixVHenpv3a8BQArWRU/KNL/meaAI
+ m6Cso4Zy
+ ZtbcvAevuvoSqdeGt1TK+gQ3CXKHF3aASbQQJNTNbxrV+z+nv/0zuBtYRz24VCrrLB0zA33C0D/tG37hODBKSh4l+WlSC2oT3DpyuzT5/ums7A/RZqEHmdMo44yT2X7cC0QIX03NBN7Fxwpisl3P/7fXk01j2ONHV7eHPblVAp7LU5mZJKCVXnxN/sphokoDwUlB6Rq9NGoKdjAxMsag2+BiMJV+9HvYOmzye3j31blwvo7BNzCAQNmCnATJf4lbz1XkLoHb+KJew2NlDoQ9nCf+QsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,76 +159,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, userspace has limited visibility into the exact active
-runtime state of memory allocation profiling and its page extension
-compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+On 8/4/26 13:01, Peter Zijlstra wrote:
+> On Tue, Aug 04, 2026 at 11:34:36AM -0700, Dave Hansen wrote:
+>> On 7/29/26 04:08, Peter Zijlstra wrote:
+>>> my take on how we should be 'fixing' this DEBUG_PAGEALLOC thing. It appears to
+>>> boot in qemu with debug_pagealloc=on and such things.
+>> The approach looks fine to me. The only thing we might want to do is add
+>> a warning of some kind in the split/join paths for CPA_DEBUG_PAGEALLOC.
+> So if you have lockdep enabled hitting them will scream bloody murder on
+> cpa_lock and pgd_lock.
+> 
+> But if you want I can sprinkle more explicit warns 🙂
 
-While reading the sysctl provides basic on/off status, it is currently
-impossible for userspace to natively determine whether page-tag
-compression was successfully enabled without scraping dmesg boot logs.
+That's true. I was thinking of it more for self-documentation than
+actually getting it to spit out warnings in practice.
 
-Resolve this ambiguity by exposing the active compression state by
-adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
-state.
-
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
----
-v4 change:
-- Documentation and commit message refactor.
-
-v3 change:
-- Added documentation about the behaviour details of the new sysctl.
-
-v2 change:
-- Moved from displaying the state in /proc/allocinfo to a new read-only
-sysctl.
-
- Documentation/mm/allocation-profiling.rst | 11 +++++++++++
- mm/alloc_tag.c                            |  6 ++++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index c3a28467955f..f28358af927a 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -43,6 +43,17 @@ sysctl:
-   warnings produced by allocations made while profiling is disabled and freed
-   when it's enabled.
- 
-+  /proc/sys/vm/mem_profiling_compressed
-+
-+  1: Page alloc tag compression is enabled.
-+
-+  0: Page alloc tag compression is disabled.
-+
-+  This reflects a static boot-time configuration of how page allocation tags are
-+  stored (in page flags when compression is enabled and in page_ext when disabled).
-+  Toggling `mem_profiling` at runtime does not change the state of
-+  `mem_profiling_compressed`.
-+
- Runtime info:
-   /proc/allocinfo
- 
-diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 52aece27b00e..877068241f06 100644
---- a/mm/alloc_tag.c
-+++ b/mm/alloc_tag.c
-@@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_mem_profiling_handler,
- 	},
-+	{
-+		.procname	= "mem_profiling_compressed",
-+		.data		= &mem_profiling_compressed,
-+		.mode		= 0444,
-+		.proc_handler	= proc_do_static_key,
-+	},
- };
- 
- static void __init sysctl_init(void)
-
-base-commit: 486855239e38a91d3eae26618ccb7845c1764625
--- 
-2.55.0.508.g3f0d502094-goog
-
+Folks are always copying and pasting stuff and not realizing the context.
 
