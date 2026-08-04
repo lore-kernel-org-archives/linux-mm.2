@@ -4,126 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08E59C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B89CC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A8226B00F7; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
+	id E184B6B00F9; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257866B00F9; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
+	id DA1A56B00FB; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149E36B00FB; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
+	id B574C6B00FC; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D286B00F9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:33 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D83DA1112
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:33 +0000 (UTC)
-X-FDA: 85063832826.22.188B7BC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D1F46A0003
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ix9ZmZ4W;
-	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C876B00F9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08F571601BC
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:34 +0000 (UTC)
+X-FDA: 85063832868.03.7587CFC
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 28604140004
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=ji9LdWq4;
+	spf=pass (imf23.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785854071;
-	b=rOnVUDwyWTBaxTXH9/jWAl99yyyAnKbg7KxrS3QgsGmS1PT/yBHsTTFASoHajGET4wmoI5
-	XopZyihKIVyLUPYtYzrkMPreepUou9FEVFBIuq7nm+wQHnPdMuJl2b2Aj+3YYpPd/ryAT7
-	+z7qu5jMS+nzKQMhL4Evq20NYbA9Jf0=
+	t=1785854072;
+	b=szIFCyk49xv0+phYDWBsEvQzNIF5cp2kl3dLlSjDi7vvU+Q9NyH2bgM4lOxKgcVMA+JKJL
+	z8//VKVzjbRC4Hv677k+A34jzwjfOtFBHexyLFlud+TXkLTIIAtJANaXpafaRirPvz3WnT
+	gNyD4zKVJz7rD7Sv36I1o8oAJcOWhV8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ix9ZmZ4W;
-	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=ji9LdWq4;
+	spf=pass (imf23.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785854071;
+	s=arc-20220608; t=1785854072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
-	b=BdpKHJWZc1mcchJz/mytqXl+KbeWSu8AZyqae0o9DJnL69AOGwe457Skjfu5HYFr1vmGlb
-	wfpidnvctwiEFjXzk7XSCjWT2l5XgOFrFr0hO1O5YRlfmio8dDmoDHDS85yy/+9ZCWjo8/
-	G8PxaTlK5J4sTtMe2NRoxqdX1tai1Ug=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785854069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
-	b=Ix9ZmZ4WRYoxds2pDL9KA7iey9IBtFV12pU4CqvvtADUFN12AJW3fpSlwXBbu49dt0ZdJ/
-	wgX2HYHi3j9vL7okwWAYWIkiWPbfoO4jj6NnWVviq1H97WQfRTNHIsLFV/zuYsBkMaZOhN
-	f/7tVNS65NWFETbz9/J6Z343Rs7pqa8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-Y37kaKJAM1eLsH6nAfZsmg-1; Tue, 04 Aug 2026 10:34:26 -0400
-X-MC-Unique: Y37kaKJAM1eLsH6nAfZsmg-1
-X-Mimecast-MFC-AGG-ID: Y37kaKJAM1eLsH6nAfZsmg_1785854065
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955d314945so18084605e9.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 07:34:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785854065; x=1786458865;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
-        b=SakyKR3vrrHf/m0UzYm7SDZvKUWP8PNzzvbH7pJUgngk6QP70vvcyYBQ9v4CwUurQa
-         hw2OCC1MFoHJSeEN/KSbEWgJe8sU2SkEG0ul8cVi5k6n1uNRdKaduDBxDwrR6ZMh+wvl
-         pxEA11gaCsYe2ctLYjygl5017nHJ1cH864jeLUxshEp+Tjk2V857zCuQhk2OYbt1yR+g
-         mTVR7XMOaxIcB3uYLI1j2FLbaXlMxHiLBbCscB/awNJ/6zGgq9O/BKRfaTRTX6p6ZlJU
-         2UaXFqumUP4lIYyCO1UnVCSPDEZIPCkr59ZFlpVpro4a7cxF50fIYAPmjjAZdCIc5JMs
-         ZaaA==
-X-Forwarded-Encrypted: i=1; AHgh+RpTl5GfXwc4D96WKuC56rV/pT3i2FeJpZbZO9XH9/+GoDoxTDK8OhQ5vxq3Ob3ZSgy0fGQHLkf0OA==@kvack.org
-X-Gm-Message-State: AOJu0Yy/xBb3vZsp5SLqEE/HvPlClA9z0Rhw3d3bwzMvEEaScwYNe18X
-	AvtKR+HKo9pg9wh5sC4+ergcfHLcYabAPJSXNR8GIMyDv6wTtoStdPyF7bmvCQYhKMyPVJcAuaZ
-	XeWFY0LfuV504S7bGgqi8H4CbBQ3Ymsr/tB28BDUD8OiOb8tLfMIfpaiPtacwxywLj4890R9hbs
-	mkVrRBZAo27fjfXJA/RNzXPR2a104=
-X-Gm-Gg: AR+sD103NqmkgYJaHsdujQUSUF7KXeH3Dqg3D6G6FPjV4xZfhEesRiC5WU8nmTU5IHr
-	smLs45L/gsHc9A0u9BVga7JEqCo+nvodqnyF2IISihuWu2V27WDXk1q84L/sL5CPr7pBOI/4hDu
-	mG0+AHHeKqiMTcJ+7OKLMXsP3cFkvRJMeyNW/UzPy9H8i6lfnmipvA+lcjBqipBcrwCa7Lzhlbi
-	L6ohPYzaO1FX6v7F9IaFCpgPXTr8dZkrLFA1ThEqwoaKlAtADdYB+8FMWE=
-X-Received: by 2002:a05:600c:4fc5:b0:494:6baa:ccef with SMTP id 5b1f17b1804b1-4980f23257cmr337369085e9.11.1785854064950;
-        Tue, 04 Aug 2026 07:34:24 -0700 (PDT)
-X-Received: by 2002:a05:600c:4fc5:b0:494:6baa:ccef with SMTP id
- 5b1f17b1804b1-4980f23257cmr337368035e9.11.1785854064514; Tue, 04 Aug 2026
- 07:34:24 -0700 (PDT)
+	bh=21zjkfFx8Bd2QE70xWkHO29FtkTbLcjGqTShMlcEBzk=;
+	b=V5GhSu+N38FZtZwq+GNvEBO1SSAdmRKRx+QlFs6Aq7q8xRL5HMJ3OPl0uu5H9T392m3uAC
+	4C6B86fCOMti14aeWkgdTeuqvuYR9BuC+5iSizp+06zLraLr+iDRvrZdmH4J4a+DQNzQO0
+	fasXxO5YNE7wKrbW1WjfPxCvMN352Sg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1785854070;
+	bh=t2/dzBTyaqSCZw1EvUdAXRFRaOxYUcoJjZpvMK48UmE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ji9LdWq4IpXUZokTPsvP3oo9BStidXc2recnK8/+iFL9Y8o6+NnLTnCJs+GB9JQ9L
+	 hanbzWxBOzLyFyo6sbIwq9ZTDVglTxtf6Lk66TZuBzDSP5mzaMNj3ExUwlQgay7i7k
+	 ZH8CfDwtm40bknAIMErFhO9MJb9ReNGLQCQIupnDmy/n1klNsxWTYpsPcspS7tXD/8
+	 biUPBVMwHpAoMtneUja/ZUobixgeKbkPsa/XOMt54faiF0NzHN6cCLSSRj/PLw54iB
+	 tGGGVKRhhC8EeqJ1406CJB6fbHqgsbBJKO58uqbrBeA/0lX/076oF6hw58qiocDdYD
+	 rue0kw9cYTJxQ==
+Received: from fedora-21.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9C2E417E06DB;
+	Tue, 04 Aug 2026 16:34:29 +0200 (CEST)
+Date: Tue, 4 Aug 2026 16:34:25 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Christian A. Ehrhardt" <lk@c--e.de>
+Cc: dri-devel@lists.freedesktop.org, Pedro Demarchi Gomes
+ <pedrodemargomes@gmail.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] drm/shmem_helper: Check VMA boundaries for PMD mappings
+Message-ID: <20260804163425.222363ca@fedora-21.home>
+In-Reply-To: <20260622215718.1532689-1-lk@c--e.de>
+References: <20260622215718.1532689-1-lk@c--e.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-3-pbonzini@redhat.com>
- <20260804161549.4cd9a66f@fedora-21.home> <20260804161850.58c55c6e@fedora-21.home>
-In-Reply-To: <20260804161850.58c55c6e@fedora-21.home>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 4 Aug 2026 16:34:10 +0200
-X-Gm-Features: AUfX_my1qzxj9_dJklyDF5G5un-IXavjOuTxcyczoqFAniCfVGichGNEROtCVP4
-Message-ID: <CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
-	Christian Koenig <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>, 
-	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, 
-	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, 
-	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ayMQt_SkPP-Vw9GA6wmoBfpAyzAd9SPIqmjvDmW-xBw_1785854065
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D1F46A0003
-X-Stat-Signature: yrynnze6gsq1c3yi3pmzg8jjjkn79b6a
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1785854069-556063
-X-HE-Meta: U2FsdGVkX1/H3n9DVNhwE8agY7X7Gjyl/cD/aBZ+PU//U/WOgUFBGaeX//PsXPg4g6aujX6ykoJmQ5ok6KaZ/TO0sEByV0rZUpqwtdlsmS6qgZJ4cAgZCMz9CJmKJwO6QYlGKPzfCE+It1egUQOgo9/f43FzmEHU4kYN1ysVjI3zcv9Aipd5SETn3UI0AjpplWsP95UWGke+23ekbS8REqousfvIILNSOA03vQKKCaP4qpJnW+LGDYbilVVLW2lzY6DCqtV2bH+YYwqq8klEJF4/UghxCq3BvzYJhz7FzqiL+CAmbr8lTzrSjPx3cpzfiy+ps7noDFlYfZXRj0+LLIb/xSS3J9OvFVFwRfQx/oVpySke9kNjudoRiS3De7O5ykY9OVDR4QmYJrXBtuyj9U2k7FZpqPkYPfqhhikZek6h7Xb6uUjGhfa4kulJGLhOex7zo4VU5sZ7K3Lp8QLbsRjZQHhwJVbDq5SQ4D+AoYiSh4vO4hZGbYqZgq8QBJj884jGl93CZihGmwNLmksuvDyIoaaROpzpfX768D/LzqyyKYaZTEXfa9VhNroRwBMKY0GOYT/Q0o3xmReZb1WuEvSgVPpK/U7F1vMdLFVY0VNAEDKrA8cIoTnJjyPK1k21qLzUkZMvIQ8EsV2X+Nj+dBgGow8Oel7qnwgIgyx2IWwg328lPUIMdfpOy31ldT9L7/MonLex/C/RSLnIb3/Em6Ca+VBsVrPUv3683osUjVj7aZQh31d3g9qiYF2xp5TJh8b/iNIE9OxIlwqJhbLADkRHoyMRVgi3jHZzBtJ9ylI0fycK9lMEZokmnp4Rikx1rKdRLun9TwHSzc3tlFkOb+pw0EHjGxKqLI+Afay3A3NDWXlPIww1NwrsOq+gBaBHC7kzcsozvTrL8T+enfYRG53W3UpWE8RGSus3bNFHBCVs6luHVsJGXJCw6jS2FMsNs1+CXzdi2ydmxaVWkrP
- Rrld4xW6
- Z/Pr5dorhvlj87cKaAUT4ciQ9FgCqYAg/9Pk8qSwyTtgnaCP1PwWCmzGMRHMqq8kY/mobdkk4xV5+f0ug7TAXjSfD2Q0GBFYzaW+Mk/V1471KAE/pSl1fScnAZ9Juaf7N9lo7Wf4AJDj6Y564WfpOUGpuHq2IvONatRVrrS7k411srhCbUIKei2OtcyqR7uSd9eNzCrEyV71fuxnnLhP4cnP88qR2r43FphG3SLzPmQ0vsdSCGoyDW878+e9Re5RH6rmzR9/uzL20Zx8DRZXEFbrrREffdl3aX0QACL9qVa0mgl7Ow8fvr6e61/EtVzVv9QYd
+X-Stat-Signature: 5478buafi6x39ehz759tfw4zsyrxe47h
+X-Rspamd-Queue-Id: 28604140004
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1785854071-389794
+X-HE-Meta: U2FsdGVkX1/jFIuzFeHnRWAK3HMoUo1CNd7CHVH2XgLUPySqad6Rt8qOpQ5Zal1LfxVh94TOVpTKuFA6cJCE1EdYAmvkKfB4pNOc0Eb8FLm4s5B5MaF/uFZlIcolNpI4In2mnAZMY2WfUI9bN3FuB6VBtbbYUZNuE6kuHjVHjhbp83gXHkeq0vLsBpc8bj/xvjBGls3CH8ufx048pPqtGNjdeIBvw98+SqRWZK1HO+KfULlTqZCTA82dhXHXygMc/zm3Lve2RLIx4lnUUxXeriBlqrNoG5UZyNLwuGKwbDh6JQhLip6Dm4rb4obMPoFnhjmAeXgOPpjMWps+SOR0jcpvb/KkFqUfD/HMpUr2vlrvdn82ycsaNk5Ww3S+o3HXljPVnxEt+lOglWXvTCokxSqn7apNSe3tAHPMA46U/MSgdNGRQgJ40SF02p1Mibb6q2I/i+HzBA60D7ixMNtceWymgqSD50Jhec59Z3+c/FAFhYSadmIUtkhNK3NotL16TEsx5No8UTIeknlCZru50C3g8jaTaACqmnGNemTflBQSPd+sR1QJZk5/Ucbusw9+u3Cfk1PpJpTuIE7YtSq6ie6CnDHeIVN0Q22tICCVtfcSSFO3RtM6rcsnggY5RNhDs56zWeOzsfeP2G8Pqh7VTL9QrTnNX0ggNvBYVW33UjkVpu1Rg1aidoMw4ngWP+yLvKicFMetVWXEm6z7I8JUafQKO+iC3PuV5PqsVpZ5cMRI29V9TXzLeCE8JOb279KMv/XKsib6Fg5jLzyrHgecM+0I9bJy93GoeM6rtMThOtMUVSQ4tN5ppUzkYVDLuqZX82uEd/Jp+KYE+SVZUb+Lt+lQ12tptovyiQPY8JzUdWkfI3+1X8qvFaSuMntZaNug0Nb6FcIf7z1SdEyXylu7KqccCsx9C968i+mGTLBDQ+/ZhGFYMYlF6VxuRSr5Shebq1gV/hgRPX91RTb7X73
+ sZc2Pwee
+ 4rxN/PdCbiSvlywDgbVJZab8jntWp/ZQ5rzt+dX6Bx690MHQNfV4WEZ8RFJN+BFRbue+St94ZNdNaFU3d4k/eBUPPsfbVdp3XxFC546Kh/fel8a16FpSFswBjvN/vCzPI1AMN/2bfjVPhirQuyW+6xuA8bkb6LNwQkOXeZKtzcbyVL+7GWy3nv0LYy82BULyN6G6qS/fEiOUNwTEwpB3mSRw5jhsvOPsnQNipElW2OxpJj/OGNbel10VMeCb+T3Sovxgy9OHmpu+apfbKhEX2Sdc+/hGxYRl6lQvn+BpEZPGZuCcfN9VEgG9BrSdhb8ebeMHS7NFjK3EFVFthb0hQvcPzBDhA8DNT+wDBKujQ5ALH5Qc0TvrTuZ3mHHRp3DP/pth7x9a41Ab0kPr8YQ+6ND8hgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,31 +99,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 4, 2026 at 4:19=E2=80=AFPM Boris Brezillon
-<boris.brezillon@collabora.com> wrote:
-> On Tue, 4 Aug 2026 16:15:49 +0200
-> Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> > Actually, if we're making the drm_gem_shmem_record_mkwrite() call
-> > unconditional (for PTE and PMD updates) in that path, can't we drop the
-> > drm_gem_shmem_pfn_mkwrite() call living in drm_gem_shmem_pfn_mkwrite()?
-> >
-> > Also, I'm not even sure we can end up with write=3Dtrue for PTE updates=
-,
-> > because our pfn_mkwrite implementation returns zero, not VM_FAULT_ERROR
-> > or VM_FAULT_NOPAGE. This means the default RO -> RW PTE upgrade
-> > implemented in finish_mkwrite_fault() [1] will take place. If we really
-> > want out try_insert_pfn() to be called for those RO -> RW updgrades, we
-> > need to call try_insert_pfn() from drm_gem_shmem_pfn_mkwrite().
->
-> Nevermind, it's all explained in the comment you've added. Sorry for
-> the noise. I keep wondering if we shouldn't call try_insert_pfn() from
-> pfn_mkwrite() though, like is done in other places.
+On Mon, 22 Jun 2026 23:57:17 +0200
+"Christian A. Ehrhardt" <lk@c--e.de> wrote:
 
-No, the .pfn_mkwrite() callback is invoked when a PTE already exists,
-and mm/ already takes care of making it writable. So there's nothing
-to insert, you just have to take note which you do with
-drm_gem_shmem_record_mkwrite().
+> In the ->huge_fault handler do not install a PMD huge page
+> mapping if the huge page exceeds the boundaries of the VMA.
+> 
+> All other ->huge_fault handlers have similar checks and the
+> resulting mapping will trigger a VM_BUG_ON_VMA() if it ever
+> reaches copy_pmd_range().
+> 
+> Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+> Cc: Boris Brezillon <boris.brezillon@collabora.com>
+> Cc: stable@vger.kernel.org
+> Fixes: fc3bbf34e643 ("drm/shmem-helper: Fix huge page mapping in fault handler")
+> Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
 
-Paolo
+It looks like this one fell through the cracks and was never queued. I
+just queued it to drm-misc-fixes. Sorry for the delay.
+
+> ---
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index c989459eb215..00807039f8d7 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -597,9 +597,13 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+>  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>  	} else if (order == PMD_ORDER) {
+>  		unsigned long paddr = pfn << PAGE_SHIFT;
+> +		struct vm_area_struct *vma = vmf->vma;
+> +		unsigned long start = ALIGN_DOWN(vmf->address, PMD_SIZE);
+> +		unsigned long end = start + PMD_SIZE;
+> +		bool in_range = vma->vm_start <= start && end <= vma->vm_end;
+>  		bool aligned = (vmf->address & ~PMD_MASK) == (paddr & ~PMD_MASK);
+>  
+> -		if (aligned &&
+> +		if (aligned && in_range &&
+>  		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+>  			vm_fault_t ret;
+>  
 
 
