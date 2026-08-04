@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 634EFC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 03:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBF7AC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CCAC6B00BA; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
+	id 9B0166B00AD; Tue,  4 Aug 2026 00:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67DA16B00BC; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
+	id 959BA6B00AF; Tue,  4 Aug 2026 00:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BB06B00BD; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
+	id 86F366B00B1; Tue,  4 Aug 2026 00:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33DA56B00BA
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7738C08A0
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:58:54 +0000 (UTC)
-X-FDA: 85062230988.15.D7C2072
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6FDA420006
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:58:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=TqRboD7T;
-	spf=pass (imf03.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 675286B00AD
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:13:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFB24A198B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:13:18 +0000 (UTC)
+X-FDA: 85062267276.30.30671BD
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A83FD1C000A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:13:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xc0etAQ7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785815933;
+	s=arc-20220608; t=1785816797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JvaRAQmBPU7Ni3GnnolVzKElnN3Ho+ns0cBS2DbZAc0=;
-	b=cvKPYrZgPZOF3oK5zi3NdnD/iwiWdC5KIk4wwzXDqPkIrHenj5XU2LumafhKGAp5kFxbAr
-	nJV7fmce8N6HZjR6xOVC4zbp0vPJqagganDzGMKIEuebg9pWER1NY92CJy9+xu5gG1SeX6
-	XnMvWBFdFNO3GmYQkZWKlLmn4hJP3Ok=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785815933;
-	b=qXTamY/usDyD5tzdYfffVCeT2ktdBdIjGj9Wh9Hk7GvqONXw4Ez8stcXeYdA6Mncqot5B2
-	8Rjr3OPC9cTghIf41Hv1DO189sA458lEypvhWkPTexatDv9qqqjq12EWZyNUylnGKAgKoz
-	/6xJottr81z4mlBbofJVrZFUby/su/8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tGAcbF/aClnVAzYmccj+436eDJyX2PUbjNzvGxNNzNM=;
+	b=dKB5rkgm3lJzZ7wKqLc5q9+kdtLHKqOMG64BxChU2hbkAasYZAC2YVckcxjmloAse5oGBj
+	Og9Pk1uPDitqi/SuXWucn1Md1IVxQCr8GWFV9EtZ6zwNmHgRqCbkt/tJl36QKA3vnJ0hPv
+	PxrQRp5EVwZhWQMxC9tO5kVAsxanSsw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=TqRboD7T;
-	spf=pass (imf03.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jv
-	aRAQmBPU7Ni3GnnolVzKElnN3Ho+ns0cBS2DbZAc0=; b=TqRboD7TckaublcJke
-	pd/PoMSicJyGr5iZQ5KeIiJDPNLFyRcEpHkG09qTjwgXpcuw6aKP96i0rcWYnS/b
-	ksueAEtAd3slDCyHrxTpANuswZBCW8RUm1FOf8W9qS1akAzzfku5yZ4lKFSsUmnj
-	ImVc7RWFjkjBFjY2ABM8/7EtQ=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDHDfZrY3FqWF_PNA--.48287S2;
-	Tue, 04 Aug 2026 11:58:35 +0800 (CST)
-From: dayou5941@163.com
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: ziy@nvidia.com,
-	linux-mm@kvack.org,
-	liyouhong <liyouhong@kylinos.cn>
-Subject: [PATCH] mm/huge_memory: avoid TOCTOU race in min_order_for_split()
-Date: Tue,  4 Aug 2026 11:58:28 +0800
-Message-Id: <20260804035828.2684059-1-dayou5941@163.com>
-X-Mailer: git-send-email 2.25.1
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xc0etAQ7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785816797;
+	b=P05kFq1JvWe/yvup3d8u5hlUaUX0cEVU9WUUyE8uXDMaY/bggkFX3evRxmk/DvbMLfICAD
+	BhS9Tm7zxjMNYo6x5vDHsyAqky/NcwAhqc6Lx3b7MWUpuuKxhGJ9eHtZY1eTq4LMR4fQx2
+	UthgpKItkJRU3cKLtqBlsLh7LLQRd3g=
+Message-ID: <0b95c0df-8cf6-4ad9-9552-d7c4a657a25c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785809723;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tGAcbF/aClnVAzYmccj+436eDJyX2PUbjNzvGxNNzNM=;
+	b=xc0etAQ70reFjdwiMXEOqTEtJx6A2/3WI8/bK+VG3j+U4CkeKUzhIY+Brak0CZTxmxz+9n
+	UmbG3q06FTSxw/KCM02eZh+Bm7Jg60zh2t6h1s93dClDyTEWmSA6jM85mvoFV9Nqlgmfee
+	aKgHON3ewX2AUm6enbrGDd77vFVYI2A=
+Date: Tue, 4 Aug 2026 10:15:14 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHDfZrY3FqWF_PNA--.48287S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww48tryUtFWfXF4rZw4rAFb_yoW8AF1UpF
-	WUKwn3WrZ5WrnF9r4xJayUJr1Yq3ySga45AFZrCws3CFnxJ3WjkrWxCa13Aay5Jr48JF4x
-	XF1jvFs093WqkFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UG-ewUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC+QvpmGpxY2utRQAA34
-X-Rspamd-Server: rspam02
+Subject: Re: [PATCH v3] alloc_tag: expose profiling and compression states
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 3os18wjcex6krt6o683337ewxbkrdj57
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A83FD1C000A
 X-Rspam-User: 
-X-Stat-Signature: wd6c11cpy4druhp4z41ijq1umpf45g83
-X-Rspamd-Queue-Id: 6FDA420006
-X-HE-Tag: 1785815928-765656
-X-HE-Meta: U2FsdGVkX18iIa71e5aMgbJE5VcZusLqNpxJN7nHJo3dDOP53gYnmBeAEysoyAY/UitLSW/T/wv2XqLrHILFpoNPgfdsAJR2XL9IX4JhT0VaMwF15+t8QimAF/3fPN8E2WWwLvG0RjMK2cUdNr9y2xxCc5f3ElnPOHs2FWQa3boDC1APounxb3DaxrnRnjVWwxq81zi63lNQPXyYOH7ML4LXy4x4peYekWu3hjWcx3bU1C7sOwMHcOA99gtkbkbsOQG/wdMxUkJyMx0ue4O6MXjYHcS/t7RThNS5HtSfo5aH84vOjTJwEVGGLeAsHct6GpicsXD4q7obWNhUUbOlnjYiqMMQeUZmAGCRY3LFyEsZ6da2PrJ8g7GELgjsEGw3c7hs2eQOskhYkJYg22QJ70dX4Fd85stc8JoYZydGuCiDrLxAN0eXHRZPFoYYt5efo8S/rkRFvzFbYtdrWC8yFoLXwOPTw3Flv839ETC6Zw+E2WW5O66a10TiEYd6Wi1CIzIedJdq7kLJJgqB4GcpJP72fN7A4ICmmYTHlgHBLyxBGcsCZw1IlIUcJBxmVF6FDYQpsv5oKx5mBToMgusJ5IUG03oiZHDA3lfqSkSifCsIO67DntQ8vjIzun9175AT3OsNclxxhDpXXLhhuJKW44rqJReiG3pXCF+jiNGgY1ZZhQZ9WagSdI3iEpheKAJkp4WjAN3jaKuQQCL/w2xO7uK/UgWzDUHz4kNF8cF6RtpMTakJPYP1IycDpxIxsyfZsjNRmp/5MTDZKiusKRuPl6uSptZZoEbUcCkfsLtCzHnOsMcSnFz25h9seogSykdlNZSBzwYUb+oyeC+elSu6pCzF7XPowhXzG2b0TUxk4BjlPMRAB0bxfX4/JbaiuNWzWMQEx7B5+/YghZRQtpVdsFoRMTN/zTR3DKAmX08ToOKRue0dESYoJ4wMI9Ymzu1mRnSol7SQMAwnpFgDCV+
- Ye/+Xyk5
- g7yOdxYi4jdYA9HV1eDg0tsohwG6ZUVHBEDtmZjoVhGl6xTeIyn5ZiLz97XV5mcJTua4f15N8vYYflKYf1pS+1GOxf3Xch73EtPCexdqJ5RA/YzRQmofU/kOtgFZf7hx0Pq3Os6qHuJQPP+BPZ834VArkSNZL2TwRThUc7zRb+ykA2pAfWWlukSvq6NsTFwQAdH+JIvLRWtcaiUou47ViHSlApx5MBERuwi6xaQuEviS4KsCeQDWRzJn61VPHFaY6Ql73o1e/0TKJeSzXXMbCA/ouNMOnsAdsNi2W5i3f+eoa4MjY9TIoIB5ERVOhCQ83eO8tdNcG2lYwhR5aueFwDRnRzZj/Og6S/zup28eX+ECNfmtX7Bnrcyb/60YlX2mDmDVVpM+AqhjwlKu0l1Y4fXtQa2PJ0XlCOpVKHXG6vKuQx1asNfeOOLYglx1amc+KtYSJcPN2JM3WVR3wO/FjGe+jLg==
+X-HE-Tag: 1785816796-141221
+X-HE-Meta: U2FsdGVkX19971sgc2rqycYuv4XWZro5+Tk0dfNXxH4Vh5fnO8LmITN6F0NJwEGyxKIpQflyIFUfns74ef75GwZ5IZgPWfUAEUNRK6k2m6XzK4cj7BLUM6iuoHBkutn5gcA/gDKXHw1XeVTaG4+m+OHfVcEifu9HRyq0DVskM+xs+ShR9SxfIMT6iKrOJjU4zW74lhk2uq9glZtRJkPwu3oVXMyJ6bsj7eMWzZ3/X/+ono5OzsZUAA9imC1XeFZHIqabMxbKlmT8TjEr8nQ77Z+lR+VsJCksxjwxE90vGFn7vkx03h7kKO/NSB7Ri84pAm/iTNXnSCGxDLGB2HUlmK+ghHe+YCUG2xm13NrHmmibVBtIASfRMCgEZ1e8buczJLNmhsAZnCItpfJfG86+3H2dy405eNRJUU9C8jRP2NylEGhNbStRSVXjii8DtiYm2F3s14TKnZ9ivz0OYMuRqdUZpwOkNDY1l1rYFXN78iEEurlKj9UWj3krvQV5L2EtIyJHg97Vh9HL+X6GQfFeziNH68mEDyK6ShzOnj66YTKCQJ2CudTwvfGzTvgZKLLl7DV+C8P9tLNQigRCBgCLTkUtrzvIZn3BS8DsR06gc8MXohtHkDW36nOf0Hh6+M6Pmga3YPUw5sk1nFibPrujl7EzDAeJozCGjksS8NVd7SBj90dl7bBvjcKpoZwvpiwQOswHcqxjefGiBvakZLFXszcfqd9CrcGjDevziqeAO2s0r7slbTCZGlFkveWOjvPVSMCnjUguVozWcxEnqIut14d+umEAsMB3DlNl6RtaFnOQm8o2AvIZqq4nHO4fSSwX/KJJmhPEAGPiYggA+HLy44DxLErxkY4RS0kW3V1BY9DhusQU/X2iPrsAvzrTuejFgLRKuZRpZK0m0tkGzmSLQUuRm+A9/CpzGmUM8Uz6yN6JDAUEhVNvqtirbIfUaPcZqGITL5ZPTdm60h82SGE
+ RB38WY2l
+ 1VotNuLBLY6kivjBjqbXmL+oPcyCju4fRy1B30uxTXKlCBjktelZ5aTszTT+gfIQgWH1a2FmuUaYndIC3B0sD1mlct+wqC7fkvwT3II5h8JBOs297AzHiEVidHK7yszfPEisCENCUFSgufPq3/tGC116oQ+/ss2wWq1u8cujDTR5TLAeMR6rCNT8zv1lfAvGr3FYopDVbhFoPyQARFwqJZ8wuBSriGxynMVFgcwgCwrC9B4TA4bwqk7v9AaHtL5PmidcSdulYTSON1TJZS6qhKlFB3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,56 +90,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: liyouhong <liyouhong@kylinos.cn>
+Hi Abhishek
 
-min_order_for_split() reads folio->mapping twice without any
-synchronization. Concurrent truncate or invalidate can clear
-folio->mapping between the check and subsequent function call.
-Even with a held folio reference preventing the folio from
-being freed, folio->mapping can still be overwritten to NULL. This
-TOCTOU race allows passing a NULL mapping into mapping_min_folio_order(),
-which leads to a NULL pointer dereference.
 
-Cache folio->mapping to a local variable using READ_ONCE() to guarantee a
-single memory load and remove the race window.
+Subject says "profiling and compression states", but this
 
-Link: https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
-Signed-off-by: liyouhong <liyouhong@kylinos.cn>
----
- mm/huge_memory.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+patch only adds the compression sysctl. The profiling state was
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..54d4261a2a15 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4284,19 +4284,23 @@ int folio_split(struct folio *folio, unsigned int new_order,
-  */
- unsigned int min_order_for_split(struct folio *folio)
- {
-+	struct address_space *mapping;
-+
- 	if (folio_test_anon(folio))
- 		return 0;
- 
-+	mapping = READ_ONCE(folio->mapping);
-+
- 	/*
- 	 * If the folio got truncated, we don't know the previous mapping and
- 	 * consequently the old min order. But it doesn't matter, as any split
- 	 * attempt will immediately fail with -EBUSY as the folio cannot get
- 	 * split until freed.
- 	 */
--	if (!folio->mapping)
-+	if (!mapping)
- 		return 0;
- 
--	return mapping_min_folio_order(folio->mapping);
-+	return mapping_min_folio_order(mapping);
- }
- 
- int split_folio_to_list(struct folio *folio, struct list_head *list)
--- 
-2.25.1
+already exposed via mem_profiling and is untouched here.
 
+I think we should make this more precise, like:
+
+alloc_tag: expose boot-time compression configuration
+
+
+On 2026/8/4 05:54, Abhishek Bapat wrote:
+> Currently, userspace has limited visibility into the exact active
+> runtime state of memory allocation profiling and its page extension
+> compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+
+
+Profiling state is already readable via mem_profiling. The gap is
+
+only compression. Also, as we discussed, this sysctl reports
+
+what the user requested at boot rather than the actual runtime state.
+
+
+> While reading the sysctl provides basic on/off status, it is currently
+> impossible for userspace to natively determine whether page-tag
+> compression was successfully enabled without scraping dmesg boot logs.
+>
+> Resolve this ambiguity by exposing the active compression state by
+> adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
+> state.
+>
+> v3 change:
+> - Added documentation about the behaviour details of the new sysctl.
+>
+> v2 change:
+> - Moved from displaying the state in /proc/allocinfo to a new read-only
+> sysctl.
+
+
+As this is a standalone patch, please put the v2/v3 changelog below the 
+--- line
+
+instead of inside the commit message.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> ---
+>   Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
+>   mm/alloc_tag.c                            |  6 ++++++
+>   2 files changed, 19 insertions(+)
+>
+> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+> index c3a28467955f..3ad1e9aacb9a 100644
+> --- a/Documentation/mm/allocation-profiling.rst
+> +++ b/Documentation/mm/allocation-profiling.rst
+> @@ -43,6 +43,19 @@ sysctl:
+>     warnings produced by allocations made while profiling is disabled and freed
+>     when it's enabled.
+>   
+> +  /proc/sys/vm/mem_profiling_compressed
+> +
+> +  1: Page extension compression is enabled.
+> +
+> +  0: Page extension compression is disabled.
+> +
+> +  This control is read-only and reflects the compression status initialized at boot.
+> +  Note that, unlike `mem_profiling`, which represents the current state of profiling,
+> +  `mem_profiling_compressed` represents the state configured at boot time. Turning off
+> +  profiling at runtime will implicitly make this sysctl effectively dormant. However, if
+> +  profiling is toggled off and then toggled on again, it will resume with compression
+> +  still enabled as long as the value of `mem_profiling_compressed` is 1.
+> +
+>   Runtime info:
+>     /proc/allocinfo
+>   
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 52aece27b00e..877068241f06 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
+>   		.mode		= 0644,
+>   		.proc_handler	= proc_mem_profiling_handler,
+>   	},
+> +	{
+> +		.procname	= "mem_profiling_compressed",
+> +		.data		= &mem_profiling_compressed,
+> +		.mode		= 0444,
+> +		.proc_handler	= proc_do_static_key,
+> +	},
+>   };
+>   
+>   static void __init sysctl_init(void)
+>
+> base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
 
