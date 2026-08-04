@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D447CC55838
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD258C55838
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FCC26B0092; Tue,  4 Aug 2026 19:42:40 -0400 (EDT)
+	id B3F9B6B007B; Tue,  4 Aug 2026 19:53:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C85B6B0098; Tue,  4 Aug 2026 19:42:40 -0400 (EDT)
+	id AF0636B0088; Tue,  4 Aug 2026 19:53:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E339B6B0095; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
+	id A07BA6B008A; Tue,  4 Aug 2026 19:53:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B60F16B0093
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D8F2140296
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:42:39 +0000 (UTC)
-X-FDA: 85065214038.23.E3426BD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AF138A0006
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:42:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WNMaRDqS;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 763956B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:53:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A9EEA0317
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:53:23 +0000 (UTC)
+X-FDA: 85065241086.17.8C68AEA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6D9F0140007
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:53:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iG8hn585;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785886957;
+	s=arc-20220608; t=1785887601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SgPfd1vWJv9VMjxLkdcbY3fOZgi9Hm1oyp5+bOca4VU=;
-	b=zWmLXfFr4V7sV4E00Z6Cdx97muE19/rW7/Qlpvicy9YHdscc4WXUQNEPd+Gq8CahCTef+0
-	n6C30lbnrHMSE29Dr2gm42WXCSMSZIIkEE+GY0jbaTHkZ79etWtvuEPFuNdLVSNnFh7hdB
-	wZNQEJx/zUCVlKYz23HEpCAevePwMI4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WNMaRDqS;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	bh=tX26UcNQcpwpUpKUI2NES9lwWKY+4sm0L85R3xkQmIs=;
+	b=cnmEcZE+QRpEGjWD+25eEwY2UqbH4IHQfEugVVhFlbsv6m4G9j/DDDjXT6KNbnG76eLcR9
+	BWK2ZmGpxXT4qZsG+rcKt0UzE/IqC7Kpkttqwj0GVD1T/BP5vgsB1hwKEQ/aKVoRNVZdam
+	9JKVVs21NXevOOCgeStLpYhbGQEAZIo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785886957;
-	b=O5KfLr3ybtoJ0To5BriFmGbEpqnsIrMJTJLdHYcIuOAbyag4MXaKjDDp3cKzeYPvGjZj1q
-	rbUYL4YEzytu+q6sv3DOeoY7Wn/yxQ5Kdw1TIl66wYMwCwd3iHqjj3mlfndppaMYHTI0xj
-	PBDG6phGRPFQ/0xj33xRug5SR0+O/Kw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SgPfd1vWJv9VMjxLkdcbY3fOZgi9Hm1oyp5+bOca4VU=; b=WNMaRDqSCSBUUlGBay1cyFZnkU
-	e+Wvan9+u3JSGYm5Sbpjr8yOnb6zQiP/f+Leip6u7U3R5MYSU9vhdDR5gQT2jsTpZi0w6n+L54NiK
-	nMOVVJcb1xO057pFWx0Z/NvQ6KZ9zuoID/Dh1JgEq/RgaHUddMYAx8SFuDm228pZ/WzqfG1aBRnLK
-	gC40Rp725xJeFpWFjORymbUeyOsLDxL0Toy3QAW01TdgS5JBI4clidRO86tPzREdN1xotN8w/Ul26
-	VlXcxYd4ZACD7AbPPWy0IEIfgQl/XmLVX8Dtth4tmkrei+zVHXpitlXRaHJPWkE1B8F9pbKh+Ztv9
-	yZ3/QWsQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrOmA-0000000524Y-0wVJ;
-	Tue, 04 Aug 2026 23:42:26 +0000
-Date: Wed, 5 Aug 2026 00:42:26 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 01/10] ceph: add ceph_folio_snap_context()
-Message-ID: <anJ44lo6HHFLlkNZ@casper.infradead.org>
-References: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
- <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
+	t=1785887601;
+	b=0VQ+IitLgA+EdTwwKOOlCVYh24BfaroqbaOmv98IFS5EIyshibESVfSNsk/JwoJhy+MUPC
+	XezNyiBSUIS/h2645IQ+hBoxngW5TXJN3r7pD5/l7wq/svxhnml9FTeGsu25+xI2b2YHyh
+	JzDMx/laeUqlLLPaAQpR5cA7q4uckhw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iG8hn585;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C4A5407F2;
+	Tue,  4 Aug 2026 23:53:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DFB1F00A3A;
+	Tue,  4 Aug 2026 23:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785887600;
+	bh=tX26UcNQcpwpUpKUI2NES9lwWKY+4sm0L85R3xkQmIs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iG8hn585KZjy4uzOYteMLKfwvP9TDZPmFZcVX5eJFVwLKnl9TPstHf9Wm3UAVkn3c
+	 hj3up0ugG7+ZX8Lrmmzt33db/0s9/G91PdHu8Uz7F12GCF+k7Eb7dGoQwJ/xAKXXEi
+	 RBniR7/peOQTyLuoClZQPIZ5poNh5pivybeg6RroYjrbQaUN9x8WOh1kVqt+jwyjus
+	 tMRqvIjclZoK7Yn/n1JMXfXm2AQntM7g1q1wHV1LnaP/dxdsRKmKdPTwLP9VmhEaFh
+	 ymP+U+6defhJTs9+cCp6ZRZrHrN+J7zsM7Pa4aIxuwin16w/BFGX/jpxtyCK780CuH
+	 djm33OTIc3NMg==
+Date: Tue, 4 Aug 2026 23:53:18 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
+ allocations
+Message-ID: <anJ45UK0MWvskzlK@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AF138A0006
-X-Stat-Signature: o9i6ddf8yidteu1wt51yupr1qbyudua4
+In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1785886956-678373
-X-HE-Meta: U2FsdGVkX1+xe+1/d3GcuvxqFUiyS3nKTOZjx4KpwUB5oKi2izx8dwsacZweHgcejVo6rW0z8+uMBJulU1c3qCj+xi9ca6iD/uXEUjVsI/YamSqyP0hRVadT+dKY/wY7vwqG99ajOVwmZrnmSjWiFEgkd4yuVla1wCzubtFb62A1B6iEXNkWZo5HctHecnAzu+0FspORTFoapdLMO9BsRFLA3K9n7FTynKJDidUagC/KkIquU7Qj6RE31orbK3rMDXQ6pjm75PTpoGierg/lC6MnDrGiTH0sQPp+AXd67UHdtRqUpI64P8krhCjl4eiOyNbOxrcoChf55yiZRrv8mR1GuY8ym95mJf6gs1agUTh0B4sO4RUz63U5zoY1U2/ZBxnGsHeXgia7beNIKMFAlyEYXRPDZ7QjPNBCqPvJmjpQDx/32VXhUALorNEiII7SFKR5eT1csp3SScXgshMaj+YI6j8u9kx2YUO1wE16XEIFvc3UEcXMDHhjaDuSyJsmLooYqWq7L98RtD4USF5Awx4xmRtiDZ7DshaSoK9tlStV/zAyb8ON2ig0iBFE0q9X+e06ZkV0zJfdup9g92U2sT2dPJvcDPofqS70My9amtuZ5+VS2zeIE6H4uQrOxKDirLXH/VRZApCbfC0FHaTib+J2SKDAUqEopoAd5suBA5+YH85+O2Iv4mxke9P3Nv9TZYQpPpbquoKC7jDzWbaQtQ1NGJRaYSawQ3SB5TvKNjUZIBSLz51WVFrWuRQu6qnOfFzpPZTnsJ02qJDBr22ONNv7pxjizBm9cwG2NmwMIbOCAM4eWO+ycHM4CnDuIIeIlh0rZ32yxHE+nEIkeP2GDfVr2i1ev/aXvd5GpVfWMCkfSBoPDVW4lgo9ufmUQnj66cY87/fFVn/wqGQ6c1eB79+kXWv4+Brp5/5EEC9bmlMQBIRITtLbT/rYBRxSSMIfUw13wh/qepy7JrH7ykX
- nBlVIrug
- 1z4yRa2K4JFWrZw2wBdbickhQ7UL9Wkf2fRyBmYjYNyBOhCM37xrYRm90Gv9GuIQsxHP21HR04mqklX0Z38z92dZXhdqOLawCIJ31AGuPjGZ7rULAJh9lDZXsVd53gONqz01IauhQfFWAUBXuYmDNYzP1etZGW+PAGcp/hGqGYhrhWbL0ZDH2M+Cs9ZzUNSAUSff6C2IIaxTyq6hvhXQZtwDT4orJJqAeKb3i/GLpU9yaF2ZukAko2+kxFU/gKKWiMXs8MMPdbLjG65xRyvevBXqAUHG/qNSu78srDCM5roPyp4+KC83o1gmrgtzIi11cfakRs+MX6z3heg0M45EB8nq4lThAEsEQPOGgS/XSFKVwOFbxSXhK+0ra8nNqdCYl2Xqz
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6D9F0140007
+X-Stat-Signature: 7jmh1uou8kso9q59jz4pwi6beq5ujrp6
+X-HE-Tag: 1785887601-719714
+X-HE-Meta: U2FsdGVkX19WD9ZiuwXTYI0SiiXhqmqdGn+aQpradWie07OkqO9oz/W0bffYKFEeEN8qRc0X0VQy6MWo5M5ZQDKx7DGrr1YIZzVFChYI2vx7GXGxFm2lJcXRSexvzsSrYtJkm6F+9kDEpy/B7g8fFtmQf+a/B9b6Jz8i1J7ZTszXDisRtsLoOKe51Ir35rjWBJHzkmbe8YHmUnZlFqDfy+v+h0lLAJsTDOiWCd23MqYRaY4kQ2ZlVzDwEQLqRyhixKqG76i9e0hOF8rikR4LtwmH49fWg6De5HJJaE7cywL+qXl6Ac4505PO6LPpMvRzhu1kKFvA6l1F09eggQjgUm3MvyR70LWIdpdgxnjD5uEz+LXJZOsjTRW5kNKIYSbEvN1UD5qH6QlVHhXDqgQW8455cc4qe0OLfFjgkANvM8NnCxmrcWWGepCC0xz136UIMNSg7/h4JTdkf4B6YoHVVshnxC/+DUhFuaKN7RGelYoIEJWlzJUBWuiw2uH/pY1gbycMCP6ITaT5yE1db28PQcrlVVWYeDOurj+O9ENkRYqOYlRcab3O0l83rTq/kZQ1kL1IEuMQNz5xQPW11ti2dbieQwYekIBAxRFDBPGJfPyJq4GHU7tsgmlL1u8Q86qmLQrOO//4ZftefW+elsABenSb6k/1JYrmB7cL7UpDPde+XVLIPSsOH+wZL+z3g5PioM78DMIJlNGLSpKGXxGUh8nrhdyC8yxCYUNRLnBVCxGYAHlIfHgd7Ey3MZ7tWUCP7NftxBIOuyqHvwkDQZFb96S8B03meYl1AkhmRb6lrRdrosv6gKyWx/NVW/YOOSmAuwuedSq3/HmAgKZj2D2VnD9kFSsdifL5HrH7HVmt9DwcBVSSra+j/UYlgRUQMSBhCwr0dMn2LO1STHaymE3xMVQNIBbJ8kVIw3oEQNnWaJelbPcpvjMj8R035VhpD9yv9BbWQlAJ31HhrveFB88
+ ZNUPaaFc
+ 1LE18EPoYltNgS4Jya/OqHgOU81Rq5H7snwV3CIuseC3RqSiiF+ReN/kHg1Ls/RceglsM5tEW00AAfbnT3t+dZHhMfsjYQBF0DuPlg10dh2aL/3SygXB7boH2ESTKBgSuUIZCMcRIe0rFtgbEOFoRMuWEsFejSNmdWfI1M2jNAADrIF/n0yB3JEWul9FS/eg/crS3c2r7SJ3yb7NRDLf+8x6a3WmPzC+aUYUVCZAAste2v93CpoZ6znvBkHoDOX9kLspivSEDijKc1zKdyesr1rCmUBAS//KoxhhV9sJH70aC2kEHz7ukoaFEnlMhCrG+uq7ryifnwMUBYcoqo2/v2xl+hENs51EdIGaStOFKoxF9cVdyZwU+1uagZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,15 +101,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 02:52:09PM -0400, Tal Zussman wrote:
-> Add a folio-based counterpart to page_snap_context() that reads the
-> snap context from folio->private directly.
-> 
-> Convert the three writeback paths that passed &folio->page to
-> page_snap_context() to ceph_folio_snap_context(), removing three
-> open-coded folio-to-page conversions. No functional change.
-> 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> @@ -3400,6 +3426,127 @@ static inline void zone_statistics(struct zone *preferred_zone, struct zone *z,
+>  #endif
+>  }
+>  
+> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+> +/* Try to allocate a page by mapping/unmapping a block from the direct map. */
+> +static inline struct page *
+> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
+> +		     unsigned int alloc_flags, freetype_t freetype)
+> +{
+> +	unsigned int ft_flags_other = freetype_flags(freetype) ^ FREETYPE_UNMAPPED;
+> +	freetype_t ft_other = migrate_to_freetype(free_to_migratetype(freetype),
+> +						  ft_flags_other);
+> +	bool want_mapped = !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
+> +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+> +	unsigned long irq_flags;
+> +	int nr_pageblocks, nr_freed;
+> +	struct page *page;
+> +	int alloc_order;
+> +	int err;
+> +
+> +	if (freetype_idx(ft_other) < 0)
+> +		return NULL;
+> +
+> +	/*
+> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
+> +	 * safe if the caller holds a lock (in case the other CPUs need that
+> +	 * lock to handle the shootdown IPI).
+> +	 */
+> +	if (alloc_flags & ALLOC_NOBLOCK)
+> +		return NULL;
+> +
+> +	if (!can_set_direct_map() || alloc_flags & ALLOC_NOLOCK)
+> +		return NULL;
+> +
+> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled));
+> +
+> +	/*
+> +	 * Need to [un]map a whole pageblock (otherwise it might require
+> +	 * allocating pagetables). First allocate it.
+> +	 */
+> +	alloc_order = max(request_order, pageblock_order);
+> +	nr_pageblocks = 1 << (alloc_order - pageblock_order);
+> +	spin_lock_irqsave(&zone->lock, irq_flags);
+> +	/* First try a block that already has the right migratetype. */
+> +	page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+> +	if (!page) {
+> +		/* Fallback to changing a block's migratetype. */
+> +		rmqm = RMQUEUE_CLAIM;
+> +		page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+> +	}
+> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
+> +	if (!page)
+> +		return NULL;
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+IIUC we only try to change an entire pageblock here, but what if we
+can't? If memory is fragmented enough that many pageblocks have few
+unmapped pages in them, how do we serve a mapped allocation (e.g. a slab
+allocation)?
+
+We'll go into reclaim/compaction, but there's a chance we'll end up with
+unexpected allocation failures or OOM kills even though we have free
+memory, because unmapped memory is not movable or reclaimable (as of
+now, at least).
+
+The same could happen if many pageblocks have few mapped but unmovable
+pages in them, and we make an unmapped allocation.
+
+I wonder if we still need a fallback case where a pageblock contains a
+mix of mapped and unmapped pages. We need to carefully handle such
+pageblocks:
+- For unmapped allocations, we need to unmap the relevant PTEs and
+  potentially do a TLB shootdown (if they were previously mapped). Maybe
+  we should always flush the TLB for simplicity for now.
+- For mapped allocations, we need to map the relevant PTEs. No TLB
+  shootdown should be needed.
+
+Assuming unmapped allocations are always zeroed by the users on alloc
+and free, we don't need to worry about zeroing pages either way.
+
+We may want to track the number of unmapped pages in such page blocks to
+now when it's fully mapped or fully unmapped and change its type, but
+maybe this can be a followup if needed.
 
