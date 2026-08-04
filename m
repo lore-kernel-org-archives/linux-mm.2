@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48620C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 13:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF24C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 13:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 968376B00CA; Tue,  4 Aug 2026 09:42:54 -0400 (EDT)
+	id 4AC9D6B00D1; Tue,  4 Aug 2026 09:42:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F0A46B00D0; Tue,  4 Aug 2026 09:42:54 -0400 (EDT)
+	id 48C526B00D2; Tue,  4 Aug 2026 09:42:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 833B56B00CA; Tue,  4 Aug 2026 09:42:54 -0400 (EDT)
+	id 3C0E36B00D2; Tue,  4 Aug 2026 09:42:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 639C16B00CA
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 09:42:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E565640181
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:25:34 +0000 (UTC)
-X-FDA: 85063658988.10.49EDD72
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2A1AB14000F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:25:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	by kanga.kvack.org (Postfix) with ESMTP id EA63B6B00D0
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 09:42:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 939C41A0126
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:15:08 +0000 (UTC)
+X-FDA: 85063330296.01.C2585B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 02929120012
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:15:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZnHoS2uq;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785849933;
+	s=arc-20220608; t=1785842107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=utDL+0SiwwsJ9i2G5ufIopnYuVFiBbA1aRS1XwnJLRk=;
-	b=cHBndmPy5Zuydas5smLx3ponH6YprfPorxmrWkU3Qj2iegZhcdlZ5+LZ00J8x+95vdQBRS
-	PD/b51WmlbY3rHEEcJjnG7bnnDjQshl6brpFUD6iaiYt8Pb0YugUYlEeMfuWcl3uMS3GwY
-	Dr9OLwI41cziQLEW//bjwS3M07vFBzs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NlvQqMPX1ZBZq6vczB6DK1Q1sg9iUABmibDLc459ooE=;
+	b=B69RzzMlGrxKA6ov/VzlbJYFj3sNgM2VMvIJtAsZwjNE1G2/yVsS+D1T/DRYST45rU/Ef8
+	//f1phkmQHeeCC+WU3IXDZa3+WcbzMBNpkOFyL4SK6Nx/xdMBMLTT7izfm4qJ73ATgN/XX
+	lFbx8nY2gk93vaOOeiIbrMx1rXSgaiU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785849933;
-	b=eXs8OsTBePzCQb8Vlc5iEpxdkNcX9F3554k1CdmQDHo4nP/YWjXTgwXRAk4W5OzVsp85+y
-	GThvpDoJsDnjFVzOo5Bi+85IHnMw5bnaGE/8xY8aQ59Wl1uIHwwfBl0/tOcJZ4Y+J0dF8t
-	b2YjKovmp7AiO062KfLwjAj6ZTecEW0=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 353036732A; Tue,  4 Aug 2026 15:25:27 +0200 (CEST)
-Date: Tue, 4 Aug 2026 15:25:27 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Jan Kara <jack@suse.cz>
-Cc: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>, Yu Kuai <yukuai@fygo.io>,
-	Josef Bacik <josef@toxicpanda.com>, Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>, Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>,
-	Tao Cui <cui.tao@linux.dev>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v1 1/3] blk-cgroup: add helpers for bio cgroup state
-Message-ID: <20260804132527.GA8078@lst.de>
-References: <20260804065313.2092022-1-yukuai@kernel.org> <20260804065313.2092022-2-yukuai@kernel.org> <prx5s4rwbgoeh7wtgyo7vwydh5iwqn6qc2utamowirsplspfmp@e3eteq5xwuyf>
+	t=1785842107;
+	b=MSfEyV7lw9vpvdfgBURI+YmaNF1sZwogAstirqaQyK3s3qv+s7izPoxoNqSzKfRt5RSzI7
+	qxBpmLeacJErerOc3kmzvZ1uwizoKayWV4IOxtVETTYBEI9ClZAYMgZ0zXKuhba3Qk9HCz
+	AaNDXl6zkQtMWSU5IWx9l9Bh6kHBI9s=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZnHoS2uq;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 25FFD60A59;
+	Tue,  4 Aug 2026 11:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211D21F000E9;
+	Tue,  4 Aug 2026 11:14:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785842105;
+	bh=NlvQqMPX1ZBZq6vczB6DK1Q1sg9iUABmibDLc459ooE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZnHoS2uq+Wpn11Z4etXu+hxwCLOTiTcnmGh7C2+5V3PHkGFMDITE9z6uYgjCeYU/L
+	 fC2NEuRAvvmECwZZAk2YEwJi/IwoCe8YsK5WKKXZVKTQd4iez0HYq95u5/tbxm135G
+	 BW+tRjPZmgs+NDRQXQS+Z1PArA8qMZ3MY68n34Q2d8TV/awui74P0GXMnIVCuorty7
+	 wc+LZ/aDpCuNW+K8lOzK6vW28Jlb7Q6F04ycjuf6wruLgZ+JZ8nOR4jzNd1mJrn889
+	 QN98PED33opeHD+Qj9pfIsMlzShSZ8hTwHnXReg/xD7GXlIty0nulMgyNHSoKB2eaN
+	 uL1Z8zxWAFNqw==
+Date: Tue, 4 Aug 2026 12:14:43 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] mm/s390: constify ptep_get() argument
+Message-ID: <anHJh7rPomeJgVHc@lucifer>
+References: <20260803164400.531199-1-pfalcato@suse.de>
+ <20260803164400.531199-5-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <prx5s4rwbgoeh7wtgyo7vwydh5iwqn6qc2utamowirsplspfmp@e3eteq5xwuyf>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: gnrd68chdf1dp3q8ozy93e6isy69tqhk
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2A1AB14000F
+In-Reply-To: <20260803164400.531199-5-pfalcato@suse.de>
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1785849933-60038
-X-HE-Meta: U2FsdGVkX1+U94JmAb2A9mq0lyW7Jh9uCN6Ke6Iwn+xLbkE/eJjyVkMY46o0d3PTQGQQ3BcQtLFmclM5LhdbehmsrG2ixxM93pwvX7xzZ0+PBHvBnLNbEb7A/PID5MfXGyZskeU9w/9drciWTMtDBAay8KAcKhaNLFvum2v0ikWGNe4f02JRhic2La1kRYw6KGkKHm0h9WcnL7CvyRqAItLtxRnpJ2dU/CSUJ+koT2nS8JMXMt5BEbBRXvNXLZGo1GcfapgRuRPuQuPHb8lhd1x2AlZsQWbx8uLTpKhAVMWqslE6RF7ed/m5vJRTCiWnBcqLM9o0rSagrqVpCwZ8VFERn+sY9MFqrfzXOe0dZ2QyK3PUdVp00Yb43fSROyM6IVAF2S2rp7bQpcS0tZ19PaKVWo1mz7noTmBtorTeKkZbBsq8tVFulXr0bd/GSfIkYzy0iOjxpbMYSasot/pQ6N7qkAnKVP7OBCeH8hcCTRiMok65t6P7tQBu50qlL3LnekkBDT6tWhn3n6CtlJqYGKZPlS+6VXqdzfp+dwEzegW0uvQzBeCwGd77U1ClJ+Ri+PPsbLrRJiz0wKJNMIThVl4/boFBojFJ+Tdqf1qJhVWexLZp85OfAFcVOUIDCybRMAHSw4wxCw9KE1K30NdT5lAz4GKYW+X+To3OLRhRFOklC76cOZa/qGJIM2PIUkjH/oD3LWvpIQtRj0jxwsBXo+qjJQOD/eBzJgDLAk4VJ4zi7noQWVyHxTq20wPgwM30WjhCqqXO4Rdb8CiLq4tIhT4WXEJOB6XdS3tt+M2wf/DIzhmIL218vJ4PkGw6cmjANXZbxqjWeM/H3z7xnOsraAsWPqrQ6BeHbzKT6W+GW/wFPJ3PT69qkRkeV0/KaVYKOFG6OYv7i5nnUfpwfMrCl4N1UBMh5t8JVwvHpC73mMrzx1fBeiZBnXlK9QpS9UHjujKW4ZtoSBWU5Dyk25n
- XfSRJ6hD
- WbJ17GKQH37pfNG07glLIN2cjVrdM/7vSNj5BiQ1/4VcjhPTfTNRdUdKDouoEN85qvvsUE5fFmulXO9jbgwo/3b7xElBjtKEEdsRQGdJmiqo0rUgFPrcxIBNw5r2H1qgZK0i4jjuzJRfejCBIygG5yol0CuSgUKXS6jk8YaVxQ42W5Q4=
+X-Stat-Signature: hxxmqxm3e4fidhmx6ccr55s8mm8dgs76
+X-Rspamd-Queue-Id: 02929120012
+X-HE-Tag: 1785842106-65501
+X-HE-Meta: U2FsdGVkX1+6MFFWs8WJ9EwFizo1ZACcWzQZHhkukbjA0z/1csDQOqIkxT5+n3VXt0ZyyjM+fgpPaLNy0adI8N6yAvzoo9SBb1AQ5I67/f+x14ywh+s5fVGgAvIlqoKhEiZEtumsgHNzN2weeynhWttz20sRzCDfbdaB5kaFlUpgWYGecXUX6WbPESpJ5vE1LLwhZP3pjEDG+lGPF8JzQgDy0+wuEdIZAScW4OEvua0+GIx3hN4mWsIUrNdl3E65yYZT8KU7veKRAPtPZv4tZ2pkCsqfu4YtIekM/l0RUSusHOAl7Jil0B2uJwe0APCJXjU7HqnCwNCi/+HLkT2jQKG3nxqsOspeGEGWU/C9o3nJlb01FUyCIV4QSlWF4L++t21VYq1Xi8G6gTIpfbi525Gq4g8GmaJk/y3sZKr8K+6zmADXjY6SCHSD+YOgE/wwyuVTptt/kzl5bdCmWL0AERaOxGJ3c2MmZCbCmtQPZmALVU77qtrq0fRCqMZPt8NCMRXvGrerASSjgYYTQ7AVQexm5tQ8RAbMvdWyjGTQX4KADZzZ+4H3RQHkj5HuCBXqFELgoseplijv7MxGq3IYfqdw0EFEIYe7ImFhQt3ZSmHEYlF+kp3Yf5OxflJGljKUHFFxTOlzIjrNnemdAIC2axoAnOF803eT+M6capeet1tcVbJUC/9MbJRt/mzMSorJWNFH4zCs+bxVJ+ur9nlKs9GVOQvoeKTws4Pgm6tqq+MSXjG5TkUrdz44NYcRyh7hRosMnDErZGrKo+/cHt/DWYbtgkb8pXpUG6xCDNISLJOFu/cYaoIEqNE4kh/TS8HTGlLtiijC59tUKIZrH8/BCeBE9J0lRKgTsxy2O8+fHxaVb8CgffZ+4in5mrRYCrwOn8/M37YxZwN3IgjZwgmeO1Lc4ndvjT3XTC487gimWQGXDG/xHZcoKD3v9Yg8biIavWv2lUhew0YZFDMFQ+F
+ /Se+jbQQ
+ AfhAHnCq5GR79TZGM43zZzFUdagnF8JkK9vlRQsZAHrYbVx4mXEZFIw3e2sy24Rp7UF9tRPPIzD/yhlddBu1KM4Db/f9KMIop9b/9UqqvydTCZKOe/yHfjP0LXO3ZBZyRyXxMhgKWS1EWhe4qwqIfy7otnSLyG+r5SOjvTuqPpL+KwRLpIrk9zNy3qMbGD5OBxQIbOdzJMwOskKhzo1kBx6ryKv28/gx6thUZCO0nJzCJLsfe91oJEvoHe6toIq9Pfve+qgPMd1ai08UVh23W7WCDvzNXztAUU+qtG1dv9BUpqI65Nf1IvQOkqfLh0b6IOsKRwbF5acKDIJLt+jGQQ6V5eAUYdLTFboo0xFUyLGIYy79gtNUJ7vmZvgWzxSYfxWhZkzhuyLm5RRQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,19 +103,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 12:52:16PM +0200, Jan Kara wrote:
-> Mostly looks good. Just I think bio_blkcg() should gracefully handle the
-> case where bio->bi_blkg is NULL (and return NULL in that case). That way
-> you can also get rid of somewhat odd pattern:
-> 
-> 	if (!bio_blkg(bio))
-> 		return ...;
-> 	do something with bio_blkcg(bio)
-> 
-> You can then just check bio_blkcg(bio) directly which is much more obvious.
+On Mon, Aug 03, 2026 at 05:43:58PM +0100, Pedro Falcato wrote:
+> It's a simple READ_ONCE() dereference, therefore it can be const.
+>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Yes.  Looking at the whole series I'm also not sure that this makes too
-much sense as a split out patch as the next one touches more than half
-of the callsite anyway.
+Even I can't be pedantic about this one... :) so:
 
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  arch/s390/include/asm/pgtable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index e882663a58e7..ec331ec92943 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -986,7 +986,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+>  }
+>
+>  #define ptep_get ptep_get
+> -static inline pte_t ptep_get(pte_t *ptep)
+> +static inline pte_t ptep_get(const pte_t *ptep)
+>  {
+>  	return READ_ONCE(*ptep);
+>  }
+> --
+> 2.55.0
+>
+
+--
+Cheers, Lorenzo
 
