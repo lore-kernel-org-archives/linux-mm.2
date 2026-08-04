@@ -4,139 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D62B5C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E257DC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713CE6B00FB; Tue,  4 Aug 2026 10:34:37 -0400 (EDT)
+	id 035966B00FD; Tue,  4 Aug 2026 10:34:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69A8C6B00FC; Tue,  4 Aug 2026 10:34:37 -0400 (EDT)
+	id EDAFA6B00FE; Tue,  4 Aug 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C8AF6B00FD; Tue,  4 Aug 2026 10:34:37 -0400 (EDT)
+	id D547C6B00FF; Tue,  4 Aug 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 134926B00FB
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2C44C0133
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:51 +0000 (UTC)
-X-FDA: 85063458102.26.EF5C417
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3F6BEA0012
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FhGBwKRc;
-	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB82E6B00FD
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3C1D80158
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:08:46 +0000 (UTC)
+X-FDA: 85063465452.22.572EE7C
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DD578C0009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:08:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=sxp9iNtq;
+	spf=pass (imf22.hostedemail.com: domain of warren.xiong@ugreen.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785845149;
+	s=arc-20220608; t=1785845324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-	b=KHKqK2uAhVAh65UFaWMZFMGXaKWF9KfkvOoMQc/GMZxAi1/hehbHxzNauOu/u8lLFCuHav
-	uA6J2RHHmnaDRj/sd81pF8agLK1hx92A+uaIzMBHQ1LOYuMlqHcPMuBVc3RtTQUMMcFCC4
-	nES751nr24TpTY46uHTnPDkeowpUt2g=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=WVzOVGhL3ScBIKzHNaZR3JJAAN7d83JLK3IRC0LY71k=;
+	b=3q2Cp9+DZVRoUZrrsOS01+HAI7h6GFhq52sVs0LW4Oqu05rM9kYvTE7KZHBrjAeCto6tyO
+	P0IuHuceQMWFjMu68SABAVTq+vWk89LuUsFkqVsd68PP4zlkvGQGnrOeUGOqZ1sJI1cdCQ
+	CLdHnwRbqRaIUhFE28q04mYqF6JEJaA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FhGBwKRc;
-	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=sxp9iNtq;
+	spf=pass (imf22.hostedemail.com: domain of warren.xiong@ugreen.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
+	dmarc=pass (policy=none) header.from=ugreen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785845149;
-	b=8PBwH8DWATyWu4/MlomfoeoF2LKNEgQgMWNUx91WZ2w7HPPDj++9Ur0J8ezy/cFN7fxiyX
-	0yVmyYIHlxYkoKcfdpH6csGTvdRHY6rX2NOIDz9AIuXaR/ewnz/9aR3RQdwtvP1uQ7Cisa
-	uREDbDrv+NiIBpcMGeSdONjBkMcWC9o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-	b=FhGBwKRc2hjV63slm53PYKXuAU+KNXe3nsUwIOZNM0ENN7y5EZIYkTfEE6l40McXnCI+cD
-	A+dsLZyCh2ei9lXpUa13Y/jzKrV6q5MUDTrgXB177jnHKznUNJHdfGTVCYgPuWqN/Uck65
-	qZk3zZDkNG8571+nBkIiGWfykBno2I4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-NH6TWh4XMF-aBnM2J68VAw-1; Tue, 04 Aug 2026 08:05:47 -0400
-X-MC-Unique: NH6TWh4XMF-aBnM2J68VAw-1
-X-Mimecast-MFC-AGG-ID: NH6TWh4XMF-aBnM2J68VAw_1785845146
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f4601af62so2019145f8f.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 05:05:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845146; x=1786449946;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-        b=sRl0OEKn3op5w/HTeuQ5UjDpn5WWRs9xkF/X2M89yvCHEiF59K33aaSJ6jvmREV+yi
-         ZzeSwkFtu3UAsdCYIHRQwNwQJAwm6iDqLUlntP5UJgdR0gW7QwS4j70QCQsAuO8toT0n
-         gPkPD2EjvS27+SLJL6vZgT6WlXqomVGLMf87K49VaEF0zd+QnUaObPL/H+ZRayR3QNhF
-         liYfjFzFaSIzbLitPNFYmU/HrOrQB0iumyKUJ3xmsgzB3fZMpy9pTeWVfcPzjxeJN+/M
-         BBPtjPYOlD3GynCiVqd6AgRwF21p4m6cm8COpLXiuf1dRy1LctYa9/zbYm6brBLoVuH3
-         MpQg==
-X-Forwarded-Encrypted: i=1; AHgh+RoneX6aXyd7xQz7BfrpUJoshZFIOB2eFPIu2J2zVReoI1kep6Y2B5tyFV2+/1xpqok1rnWZYdZqOQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz7g4Z7+8uQdBplDBojd8gbrvjCEWE5jH8egxb15Xk68IEjbfeX
-	s2JpTFWLAtO74bMLas0WOsRCMH6O/+sd1Km3vSTitO8xY+qRWfHkkEyzVsuzqOCegLaxZPSKuT1
-	YUxRe2ew57coq88CIjLm66t6Y//+nwsnhvmUDKjLsXg8AV21FpIqy
-X-Gm-Gg: AR+sD13XyMEUDvGXQTk9z0vzRAVL5PWd03v4VfMpcv53cHz7P22QufkCnTpjs6zO3Kw
-	Q2pj37zHWY/C+0DUFG+GI6Ikii6K81vWR4tbBivG4FQcN4MVY7I9icd+WWHoCsPO4OvY4Ht7YbK
-	UmODaM0Q1mhXXv4nGh1BnM7wmHf1I8jfLimBDHPX/sNr1xqIjwcjMshMElMQga2V6PbFG5+X+4+
-	stMtlebJONuWt1JPk6Rn2aOsTrzSNIFEhLhcUNXAiCFJRjRv9Fwk4mP3KXfw0v1q8GZ4sk70q2M
-	bVLauBcMoMN4BtuC4dirdbdSe8Tj5arKLs0WtZMboJfyJg7Oc1iORSiT/srWA8kmpkFzmnKJ0NJ
-	KK2GhSb3VVi1H3uUkjL/HmWIYeVPclND0uCLb8JSf1OQ9V+mO8Pa4g2rMCnzpgChfP5fbeDB9Ah
-	qT1Ok=
-X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813790f8f.9.1785845146063;
-        Tue, 04 Aug 2026 05:05:46 -0700 (PDT)
-X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813677f8f.9.1785845145601;
-        Tue, 04 Aug 2026 05:05:45 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd4562667sm45367660f8f.24.2026.08.04.05.05.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:43 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Fei Li <fei1.li@intel.com>,
-	Huang Rui <ray.huang@amd.com>,
-	linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	Michal Hocko <mhocko@suse.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/6] kvm: apply VM_READ/VM_WRITE checks to all VMA types
-Date: Tue,  4 Aug 2026 14:05:26 +0200
-Message-ID: <20260804120529.1730187-5-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1DcF-u1nHqkyRK-eNHV8rv4gtAUCN42N9ZtuPjxzvfw_1785845146
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 3F6BEA0012
-X-Stat-Signature: t6t8aksmwg745bypde6i3nu5qypc9fy8
+	t=1785845324;
+	b=LfTNPcLzo6+wU9QUbdoW0uqmBJxpFVhzI8Uau/CJAlVGYQuIt4I0ZTXG7HHjA7pyYlDfFz
+	dAC9b79lSiaW7JWoOTVKxfd2HQeVxxbCITDujIFneW4dE7tXEn5jzuYDu2eBmbUUGqPCOi
+	5zIoYRw/WJQZsTVMIe7M0hU/l93pZvg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
+	s=pkvm2402; t=1785845277;
+	bh=WVzOVGhL3ScBIKzHNaZR3JJAAN7d83JLK3IRC0LY71k=;
+	h=Date:From:To:Subject:Mime-Version:Message-ID;
+	b=sxp9iNtqCHVhpxWCcTwbp2WUO9R1cwFMi6Iy8LxHYY5wjCIT3+3eGEhVIqc12mm85
+	 KuA6aq3wTZmC4PHJudFzkhNcM7NcfpqrhHr9UOEDqW5Hsi4P/vffFvbERsOpYBHWxO
+	 3JKT+dhVB+UwBZfOnksUiulKhfSM08QKUWH54Yvg=
+X-QQ-mid: zesmtpsz6t1785845268ta4df477e
+X-QQ-Originating-IP: SbpYCiuIeh2i49dOMexVIMA2BdCLnWLr8WrNZip5xzc=
+Received: from DESKTOP-0F77FNS ( [113.90.157.158])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 04 Aug 2026 20:07:46 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12050393277505098255
+Date: Tue, 4 Aug 2026 20:07:47 +0800
+From: warren.xiong <warren.xiong@ugreen.com>
+To: david <david@kernel.org>, 
+	akpm <akpm@linux-foundation.org>, 
+	shuah <shuah@kernel.org>
+Cc: ljs <ljs@kernel.org>, 
+	liam <liam@infradead.org>, 
+	vbabka <vbabka@kernel.org>, 
+	rppt <rppt@kernel.org>, 
+	surenb <surenb@google.com>, 
+	mhocko <mhocko@suse.com>, 
+	linux-mm <linux-mm@kvack.org>, 
+	linux-kselftest <linux-kselftest@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] selftests/mm: read memory information without popen
+References: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>, 
+	<9dc3b457-65aa-40ba-99a1-7c703facbd32@kernel.org>
+X-Priority: 3
+X-GUID: DDF96A50-4917-49E7-9481-06C0E69467A1
+X-Has-Attach: no
+X-Mailer: Foxmail 7.2.25.492[cn]
+Mime-Version: 1.0
+Message-ID: <F297CB3DADE37E96+202608042007461850804@ugreen.com>
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MuYE5/Bk7PRmha4DTaYPdD8txZOf99zYDNT/ocumvDsFpz513+bMw32+
+	1tkYBbLFD0wfYv9DZnRo8+p8iYm/7iFlUFoCTvpZnZuOTAKJV02WRCo4vWeIkeWuzxmHqDb
+	oq70Qv25/nFQVHqXD/biVEK4Z/cFSFc5HpzuFEWJp0axW2wrM3yA5n91sPaCQcFoqs1UOIk
+	VA9+a1rlV9I/6bofzrDQ21Am5E1TXnRkaUGGxPHiLqrB8hYuoVy5Srbsi9nj5Cmd8XkMn7F
+	VnODlbpAaJE/M14HPBIKjJlPFT5xvyfQXxek1fKp1kCcv3hNHkJ92kfPfJsxK2iXvFcPfn6
+	8wh7f1GsFPakc+cCdBFLO0N5H9gnuaFBDW/nMf50gG69/qHqj8A+K+UobTPBLP49f5VuIqF
+	5hUKRk30PStJ8iZTFcCIx5MPBiiwyngEPxDnwN8MvwBcET0g8x0rfTc6RTqfqeyDySAFJSg
+	F8+urBguhgLc0AtLugZj9rTWWfeIo5TaPcaUW4noNUXnMw3JtZu8F0llh9FLtzhAg6Bnwq2
+	MewG/RDWLhIZk71ud9SA3qqp/OmwpW2eIt+VUs391EwL9u4W1Ok3x5sCfcSHE0l80ZjMkeB
+	gDpKDQAmYW15qvY8yFE6ZVrbjEbIJE3ghA79AUD0KTtuXam8vS+Ijrehj3y0gOcq7iKPFgI
+	UYX08zVChBFzjzTBsHYV/zVX6WQZx4+CsPRJTpI9NLio1aUbqLZaGb7t7iYPZY2ngZdkbBn
+	cQKhHrXgWhBYqi8W+MLDYPHDEFS601dRiynmEcdSAqhaKkld/ZPvlbWT1q9G3uoaMF+M5vq
+	wtyn0+5MTOmfjFxoCEV7zEQkZsz549POf8R7EAbnd9b4zdfZ84eocp/kr65ioEALX1DwzHl
+	IlRV30/zzLVbmboShFI1gNTrvlFJDjYWqrG14bNyzXcm6gnw32Gn0Ci9PxMRMsggWSF9+Lm
+	2DM4kN270UcXkTeP9M8Vi3/cKisw+oOAaneIa8YM+Iy17+cm876HEBuIpjodHx2RAUHP0Iy
+	bUOGklYAI/tW9lN/VA
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: DD578C0009
+X-Stat-Signature: gg8dhw7icyn87yz5dmtjpf5c79bkz1xw
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1785845149-870778
-X-HE-Meta: U2FsdGVkX18nOc8OEH/5QJJ0zltr0VXSrGZBos/cHPQjiws8gBHn+Yjhpm/KxvImizySG9aLudjQjCAgsn0NyjNRlZaFyryULi8yYNWCjPyscjJqqexkf3xbhySW4lDmTSnsQVwgg9yT/i8boNHWB9ikfZrrqkc+mv/oFxfFPpDA4zb+/MqWrVrj2Awmci5yXFMaOkMeAazz9aBvCzHQzhmpJJ3pFaQ0u7bkDndfmefTZqHrBKdmYdsbu6FM6u9V3eIAnJVazjS3wDEwijAsEW28eeT/siFpCMtm8k0tnFCz2E73s1Ew60edK68HrTz8EaDD3+447xXWiM+wz1asXzTJwASSnt4Jnvy4l9sytZ333F4uciPNUX/mVMgEGWhRiPT2MtzTt0lXyCXHlMZuYoZqKPpKkaWu2yu1pDo4/Iz27VVo//mSTu1kxucD8PIzapHVrQffye3aoAT2HL8D9ENIkGC2YS6Rdt7EuEch0FVEv1uEZnTGWgIcIPEihXL7Mqe68UIEmQyxBZz0kFP4L5Gcaotqf+2ni/jFMrNM7VlJ7udzAGKuBe+yDSWs3OK2PniFFnOlQ/HeTeBDtX8JGcjnzRgaICuB9g0hz7u8WT8dUmvunBv9M7tj4AwCvvXYGgXgw2HrNc/iOyXe+/gPuNWZLCgR0+uQgJDmIBVDUYXlqJD9/r7adVLKIoXOZxc567gAMH76XnJHcpcWUrqL6vR82CWFYOPN/KXvbSpg5mpOl5anwSN7JPVMl23QdhUPUS9HzBmQZOKAnkhMu8scEBKcWJRxeUs+yDPrOCTYdt+xaAe40nxBg3MF5CK+hD8PIuwPX6oFs4agXgRIUyMQ6sAUWKB68gq1Qsk/rFZBYWksJgh2NRAM82X/QlHu8ekuHz5DW7tUCqgN2e45P4HOLixUdw9eCBcNS2ur12Lot1FC1ypdrzec+INMgU6xxTycUPu1F5RVQjW83auI4ou
- gseUjjiE
- gjopEAo7H0JKGuh/ZMdNiZtHYUnCEbCVk+xEirsy2VdQJUI7mkIDO8q1CW9QTRIy3yb/gt1lejUaTGIF7SXEoOVcaSZunk6LdErcM/CuOgGNCeASqEzHjZpe658JYe4oNpVie/ZkwNvuSyv6aaUhh4F9sS2XDnymI28YyU1SWBELMlLKCqgVqin3NJoE+p+ceo0fS3oqUXd5fP81Rtd2k66HgTOt23YuYvXTl8mNOzbNFH2oxuwcpdXnCKL0mTZPXQtRR6Sy/NtJ276ca5FYdzEo0kUaHxIawTtZJQf8XRZCGkF9tMc5FvlujuJ/XQnIdxcdfOWch0oAhyZpO5oEvBdsqM93hcu5syUYHLVEqY73lsyrYAlzrWQ9z5XPZd3dB9YDifl+wOYujuu8JeI4FE9oNrxAeceq49TRgcN8wd/7hF0g04ed4WdNk93OtfXODO3TeJbVStx0KKhs=
+X-HE-Tag: 1785845323-4853
+X-HE-Meta: U2FsdGVkX196Agw7awCaQLpTXzWKF+r5rAQIovKyQsxECIpSSIvneV8a6LiEKepl9trFS6wWNsm+fTEABNipnKq9eyXhPMTikLuooUS2nlT7vGyuOzB14VZq10/LhoPHxHRMgu1+o8gx1zXEr9OuOZJnJ5m3xvU1w0LmEHXRiCfxNJ6oItqga9xkTSA4MT9dgYriJHo6jmM1Z882Fuj2oY6sXQbrFBH7lCA93PFYdMiunZJt6ZMkKP471Z8lXCXOQitZRuQnirWzPy52nxYJ43enK/4ADOKvbVfmjxJYqNAm0p1+rB0qApy5D9tZbRX+XGx/W5EixADRfVqD7cHswAPPpKYkYREkRRKZd4F9IPwv6OesrDq34XIaREgIcNIXbiXTF2gxxXguDIT1aL5m57HzrMEfhSQ3mE0tHxD+GmiiyZhZFzksysGtaU99NiAy7eQi5C36WZzfCLE0m/0jAC7Kz+Y7y0viGQq+yiBIJkYdx+G0qsFFTcwIDO3iyyvd8RElAktxK5goa17SJ6Vx+C5M6Y4u/aRZ3pKLSz1rz6nBA4V0hynCN71uYBCHKJgLRMcq5Z6a+0Gv1O9tlWTkd6kI54z70NA3mBGAmSgfnfcXNidMtd91YWbC4NQ24zmyRVsjZBxq5MoG+ktQcYwko9C6jez5imp3HFzmDJCU02DoSWkbf0pEz5SLX7CmpabW1r+cTy3hoFoGhyIz5f06sklBoaf7HxgmbnNxrkJ34Suv9o2+XnyNOmaMdJT1HVqh+L1Vs1mFma15H6M7jQ7P+MmuYBD5kA87KdQErfErEh/IuY0hAS6nKT1to0pOsCpaunfPXbqRet8d5k9z2si+Wlrkkk+ilERHW1Gm767GoiZRvo2W28VpTYtUU8QOf1LLvWwXiW14M9D5w0+XvmyrUPqvf0/K6IFnYqL8OgOojn5aCziP9VYfGtry4vkbvXYRIfDo8ak/zH6fW9+1Abq
+ pL4WLF1B
+ 2AFY5trQCwD/W82nkkmmtwuwTqzm0SmNR14tH0DerzQvEOKVDvmzn0mIRigEnRVWdnur3saF/ijv8aD1Ne461AXmNLEwyMBHu6m6znralG1xjw0Zj5pz/xOJ47H/fS0ElrTQ72/Uid+yjMdw6VgIKYuRNjGDGEcCT25JFeoF5/wM76DnDFHMRpGyKD/JesldrMaGz1oNFXP6Ac6+RC5KEKyxkQREfmyc+JhfBsjgJprvbICzkwmR5Z38J/IuPLEEzO5xX/idc2X1lVmYDqe6T64xf/wV4bny2O5PeMLiPfYzJeKq3qtFUXgq+DDO7nosayMot3TLohHVnzAWl7Ggp7+J9wMdN/NLPo3dKWChxSejItSMEsp7ELADjOwVT9pEaJJ5h7ix/yY3VJ3rPw3VWjSFmUChztDf3UPUUE0ZoTlFYASilS8ybg1ZeeYfq42G2a2hqtERMZTaHZO96j9jSWhqu5G5s2qd/Mf1pmEkGN9FfboJcd+TKyvnitw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,110 +125,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The VM_READ and VM_WRITE flags are checked only at the very end of
-hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
-mappings, this adds unnecessary cases and inconsistent error behavior.
-
-For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
-detect this situation.  This is fragile because hva_to_pfn_remapped()
-returns different error codes for a !VM_WRITE VMA depending on whether
-the PTE happens to be mapped:
-
-* if the PTE is present, follow_pfnmap_start() sets args.writable to
-  false and KVM_PFN_ERR_RO_FAULT is returned;
-
-* if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
-  -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
-  up returning KVM_PFN_ERR_FAULT.
-
-With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
-a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
-pte_present()[1] when the guest attempted to read it; with the patch
-instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
-avoids these special cases and also sidesteps the issue pointed out at
-https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
-
-For regular mappings a PROT_READ VMA, if placed in a writable memslot,
-would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-the guest writes to it.  This would cause a -EFAULT exit to userspace,
-instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
-however it should be considered part of the KVM API because mmu_stress_test
-relies on it.
-
-Still, even with this snag about the returned pfn error code, pull the
-vm_flags checks in front so that they are done for all VMAs and the
-above inconsistency goes away for the VM_IO|VM_PFNMAP case.
-
-[1] on x86, for example, such a page would have _PAGE_PRESENT clear
-  but _PAGE_PROTNONE set
-
-Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..576bcb21be3a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
- 	return npages;
- }
- 
--static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
--{
--	if (unlikely(!(vma->vm_flags & VM_READ)))
--		return false;
--
--	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
--		return false;
--
--	return true;
--}
--
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
- {
-@@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
- retry:
- 	vma = vma_lookup(current->mm, kfp->hva);
- 
--	if (vma == NULL)
-+	/*
-+	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
-+	 * or the page might be absent.
-+	 */
-+
-+	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
- 		pfn = KVM_PFN_ERR_FAULT;
--	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-+	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
-+		/*
-+		 * Exit to userspace for PROT_READ mappings in a writable
-+		 * memslot, as this is part of the API.
-+		 */
-+		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
-+			KVM_PFN_ERR_FAULT;
-+	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
- 		r = hva_to_pfn_remapped(vma, kfp, &pfn);
- 		if (r == -EAGAIN)
- 			goto retry;
- 		if (r < 0)
- 			pfn = KVM_PFN_ERR_FAULT;
- 	} else {
--		if ((kfp->flags & FOLL_NOWAIT) &&
--		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
--			pfn = KVM_PFN_ERR_NEEDS_IO;
--		else
--			pfn = KVM_PFN_ERR_FAULT;
-+		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
-+			KVM_PFN_ERR_FAULT;
- 	}
- 	mmap_read_unlock(current->mm);
- 	return pfn;
--- 
-2.55.0
+CgoKLS0tLS0tLS0tLS0tLS0KCgoKd2FycmVuLnhpb25nCgoKCj5PbiA4LzMvMjYgMDM6MzAsIFdh
+cnJlbiBYaW9uZyB3cm90ZToKCgoKPj4gcmVhZF9tZW1vcnlfaW5mbygpIGludm9rZXMgdHdvIHNo
+ZWxsIHBpcGVsaW5lcyB0byBvYnRhaW4gTWVtRnJlZSBhbmQKCgoKPj4gSHVnZXBhZ2VzaXplIGZy
+b20gL3Byb2MvbWVtaW5mby4gSXQgZG9lcyBub3QgY2hlY2sgd2hldGhlciBwb3BlbigpCgoKCj4+
+IHJldHVybnMgTlVMTCBiZWZvcmUgcGFzc2luZyB0aGUgcmVzdWx0IHRvIGZnZXRzKCksIGFuZCBp
+dCBkb2VzIG5vdCBjYWxsCgoKCj4+IHBjbG9zZSgpIHdoZW4gZmdldHMoKSBmYWlscy4KCgoKPj4g
+CgoKCj4+IE9wZW4gL3Byb2MvbWVtaW5mbyBkaXJlY3RseSBhbmQgb2J0YWluIGJvdGggdmFsdWVz
+IGluIGEgc2luZ2xlIHBhc3MuCgoKCj4+IFRoaXMgcmVtb3ZlcyB0aGUgdW5jaGVja2VkIE5VTEwg
+cGF0aCwgY2xvc2VzIHRoZSBmaWxlIG9uIGFsbCBwYXRocywgYW5kCgoKCj4+IGF2b2lkcyBkZXBl
+bmRlbmNpZXMgb24gZXh0ZXJuYWwgY29tbWFuZHMuCgoKCj4+IAoKCgo+PiBUaGUgY29tcGFjdGlv
+biB0ZXN0IGNvbnRpbnVlcyB0byBwYXNzIGFmdGVyIHRoaXMgY2hhbmdlLgoKCgo+PiAKCgoKPj4g
+U2lnbmVkLW9mZi1ieTogV2FycmVuIFhpb25nIDx3YXJyZW4ueGlvbmdAdWdyZWVuLmNvbT4KCgoK
+Pj4gLS0tCgoKCj4+wqAgdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMvbW0vY29tcGFjdGlvbl90ZXN0
+LmMgfCA0MyArKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tCgoKCj4+wqAgMSBmaWxlIGNoYW5n
+ZWQsIDI3IGluc2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQoKCgo+PiAKCgoKPj4gZGlmZiAt
+LWdpdCBhL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL21tL2NvbXBhY3Rpb25fdGVzdC5jIGIvdG9v
+bHMvdGVzdGluZy9zZWxmdGVzdHMvbW0vY29tcGFjdGlvbl90ZXN0LmMKCgoKPj4gaW5kZXggNWI1
+ODI1OC4uMGRmMjAwMCAxMDA2NDQKCgoKPj4gLS0tIGEvdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMv
+bW0vY29tcGFjdGlvbl90ZXN0LmMKCgoKPj4gKysrIGIvdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMv
+bW0vY29tcGFjdGlvbl90ZXN0LmMKCgoKPj4gQEAgLTcsNiArNyw3IEBACgoKCj4+wqDCoCAqIGFs
+bG9jYXRlZC4KCgoKPj7CoMKgICovCgoKCj4+wqAgCgoKCj4+ICsjaW5jbHVkZSA8c3RkYm9vbC5o
+PgoKCgo+PsKgICNpbmNsdWRlIDxzdGRpby5oPgoKCgo+PsKgICNpbmNsdWRlIDxzdGRsaWIuaD4K
+CgoKPj7CoCAjaW5jbHVkZSA8c3lzL21tYW4uaD4KCgoKPj4gQEAgLTI5LDMwICszMCw0MCBAQCBz
+dHJ1Y3QgbWFwX2xpc3QgewoKCgo+PsKgIAoKCgo+PsKgIGludCByZWFkX21lbW9yeV9pbmZvKHVu
+c2lnbmVkIGxvbmcgKm1lbWZyZWUsIHVuc2lnbmVkIGxvbmcgKmh1Z2VwYWdlc2l6ZSkKCgoKPj7C
+oCB7CgoKCj4KCgoKPkxvb2tzIG11Y2ggYmV0dGVyIGluZGVlZC4KCgoKPgoKCgo+PiAtCWNoYXLC
+oCBidWZmZXJbMjU2XSA9IHswfTsKCgoKPj4gLQljaGFyICpjbWQgPSAiY2F0IC9wcm9jL21lbWlu
+Zm8gfCBncmVwIC1pIG1lbWZyZWUgfCBncmVwIC1vICdbMC05XSonIjsKCgoKPj4gLQlGSUxFICpj
+bWRmaWxlID0gcG9wZW4oY21kLCAiciIpOwoKCgo+PiArCWNoYXIgYnVmZmVyWzI1Nl07CgoKCj4+
+ICsJYm9vbCBtZW1mcmVlX2ZvdW5kID0gZmFsc2U7CgoKCj4+ICsJYm9vbCBodWdlcGFnZXNpemVf
+Zm91bmQgPSBmYWxzZTsKCgoKPj4gKwlGSUxFICpmaWxlOwoKCgo+PiArCWludCByZXQgPSAtMTsK
+CgoKPj7CoCAKCgoKPj4gLQlpZiAoIShmZ2V0cyhidWZmZXIsIHNpemVvZihidWZmZXIpLCBjbWRm
+aWxlKSkpIHsKCgoKPj4gLQkJa3NmdF9wcmludF9tc2coIkZhaWxlZCB0byByZWFkIG1lbWluZm86
+ICVzXG4iLCBzdHJlcnJvcihlcnJubykpOwoKCgo+PiArCWZpbGUgPSBmb3BlbigiL3Byb2MvbWVt
+aW5mbyIsICJyIik7CgoKCj4+ICsJaWYgKCFmaWxlKSB7CgoKCj4+ICsJCWtzZnRfcHJpbnRfbXNn
+KCJGYWlsZWQgdG8gb3BlbiAvcHJvYy9tZW1pbmZvOiAlc1xuIiwKCgoKPj4gKwkJCcKgwqDCoMKg
+wqDCoCBzdHJlcnJvcihlcnJubykpOwoKCgo+PsKgIAkJcmV0dXJuIC0xOwoKCgo+PsKgIAl9CgoK
+Cj4+wqAgCgoKCj4+IC0JcGNsb3NlKGNtZGZpbGUpOwoKCgo+PiArCXdoaWxlIChmZ2V0cyhidWZm
+ZXIsIHNpemVvZihidWZmZXIpLCBmaWxlKSkgewoKCgo+PiArCQlpZiAoc3NjYW5mKGJ1ZmZlciwg
+Ik1lbUZyZWU6ICVsdSBrQiIsIG1lbWZyZWUpID09IDEpCgoKCj4+ICsJCQltZW1mcmVlX2ZvdW5k
+ID0gdHJ1ZTsKCgoKPj4gKwkJZWxzZSBpZiAoc3NjYW5mKGJ1ZmZlciwgIkh1Z2VwYWdlc2l6ZTog
+JWx1IGtCIiwKCgoKPj4gKwkJCQlodWdlcGFnZXNpemUpID09IDEpCgoKCj4+ICsJCQlodWdlcGFn
+ZXNpemVfZm91bmQgPSB0cnVlOwoKCgo+SW5zdGVhZCBvZiB0aGVzZSBib29scyB5b3UgY291bGQg
+anVzdCBoYXZlIGEgaGl0LWNvdW50LgoKVGhhbmtzIGZvciB0aGUgcmV2aWV3LgoKQWdyZWVkLCBh
+IGhpdCBjb3VudCBpcyBzdWZmaWNpZW50IGhlcmUgYW5kIG1ha2VzIHRoZSBjb2RlIHNpbXBsZXIu
+ICBJCmhhdmUgaW5jb3Jwb3JhdGVkIHRoaXMgY2hhbmdlIGFuZCB3aWxsIHNlbmQgdjIgc2hvcnRs
+eS4KClRoYW5rcywKV2FycmVuCgoKCj4KCgoKPkxpa2UgdGhlIGZvbGxvd2luZyBvbiB0b3A6CgoK
+Cj4KCgoKPmRpZmYgLS1naXQgYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9tbS9jb21wYWN0aW9u
+X3Rlc3QuYyBiL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL21tL2NvbXBhY3Rpb25fdGVzdC5jCgoK
+Cj5pbmRleCAwZGYyMDAwZjRhMmIxLi4zMGQ0YWNlNzE1NWFlIDEwMDY0NAoKCgo+LS0tIGEvdG9v
+bHMvdGVzdGluZy9zZWxmdGVzdHMvbW0vY29tcGFjdGlvbl90ZXN0LmMKCgoKPisrKyBiL3Rvb2xz
+L3Rlc3Rpbmcvc2VsZnRlc3RzL21tL2NvbXBhY3Rpb25fdGVzdC5jCgoKCj5AQCAtNyw3ICs3LDYg
+QEAKCgoKPsKgICogYWxsb2NhdGVkLgoKCgo+wqAgKi8KCgoKPgoKCgo+LSNpbmNsdWRlIDxzdGRi
+b29sLmg+CgoKCj4gI2luY2x1ZGUgPHN0ZGlvLmg+CgoKCj4gI2luY2x1ZGUgPHN0ZGxpYi5oPgoK
+Cgo+ICNpbmNsdWRlIDxzeXMvbW1hbi5oPgoKCgo+QEAgLTMxLDggKzMwLDcgQEAgc3RydWN0IG1h
+cF9saXN0IHsKCgoKPiBpbnQgcmVhZF9tZW1vcnlfaW5mbyh1bnNpZ25lZCBsb25nICptZW1mcmVl
+LCB1bnNpZ25lZCBsb25nICpodWdlcGFnZXNpemUpCgoKCj4gewoKCgo+wqDCoMKgwqDCoMKgwqAg
+Y2hhciBidWZmZXJbMjU2XTsKCgoKPi3CoMKgwqDCoMKgwqAgYm9vbCBtZW1mcmVlX2ZvdW5kID0g
+ZmFsc2U7CgoKCj4twqDCoMKgwqDCoMKgIGJvb2wgaHVnZXBhZ2VzaXplX2ZvdW5kID0gZmFsc2U7
+CgoKCj4rwqDCoMKgwqDCoMKgIGludCBmb3VuZCA9IDA7CgoKCj7CoMKgwqDCoMKgwqDCoCBGSUxF
+ICpmaWxlOwoKCgo+wqDCoMKgwqDCoMKgwqAgaW50IHJldCA9IC0xOwoKCgo+CgoKCj5AQCAtNDMs
+MjQgKzQxLDE5IEBAIGludCByZWFkX21lbW9yeV9pbmZvKHVuc2lnbmVkIGxvbmcgKm1lbWZyZWUs
+IHVuc2lnbmVkIGxvbmcgKmh1Z2VwYWdlc2l6ZSkKCgoKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByZXR1cm4gLTE7CgoKCj7CoMKgwqDCoMKgwqDCoCB9CgoKCj4KCgoKPi3CoMKgwqDC
+oMKgwqAgd2hpbGUgKGZnZXRzKGJ1ZmZlciwgc2l6ZW9mKGJ1ZmZlciksIGZpbGUpKSB7CgoKCj4t
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoc3NjYW5mKGJ1ZmZlciwgIk1lbUZyZWU6
+ICVsdSBrQiIsIG1lbWZyZWUpID09IDEpCgoKCj4twqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgbWVtZnJlZV9mb3VuZCA9IHRydWU7CgoKCj4twqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCBlbHNlIGlmIChzc2NhbmYoYnVmZmVyLCAiSHVnZXBhZ2VzaXplOiAl
+bHUga0IiLAoKCgo+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCBodWdlcGFnZXNpemUpID09IDEpCgoKCj4twqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaHVnZXBhZ2VzaXplX2ZvdW5kID0gdHJ1ZTsK
+CgoKPi0KCgoKPi3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIChtZW1mcmVlX2ZvdW5k
+ICYmIGh1Z2VwYWdlc2l6ZV9mb3VuZCkgewoKCgo+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHJldCA9IDA7CgoKCj4twqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJlYWs7CgoKCj4twqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB9CgoKCj4rwqDCoMKgwqDCoMKgIHdoaWxlIChmZ2V0cyhidWZmZXIsIHNpemVvZihidWZm
+ZXIpLCBmaWxlKSAmJiBmb3VuZCAhPSAyKSB7CgoKCj4rwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBpZiAoc3NjYW5mKGJ1ZmZlciwgIk1lbUZyZWU6ICVsdSBrQiIsIG1lbWZyZWUpID09IDEg
+fHwKCgoKPivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3NjYW5mKGJ1ZmZl
+ciwgIkh1Z2VwYWdlc2l6ZTogJWx1IGtCIiwgaHVnZXBhZ2VzaXplKSA9PSAxKQoKCgo+K8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZvdW5kKys7CgoKCj7CoMKg
+wqDCoMKgwqDCoCB9CgoKCj4KCgoKPsKgwqDCoMKgwqDCoMKgIGlmIChmZXJyb3IoZmlsZSkpCgoK
+Cj7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAga3NmdF9wcmludF9tc2coIkZhaWxlZCB0
+byByZWFkIC9wcm9jL21lbWluZm86ICVzXG4iLAoKCgo+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cmVycm9yKGVycm5vKSk7CgoK
+Cj4twqDCoMKgwqDCoMKgIGVsc2UgaWYgKHJldCkKCgoKPivCoMKgwqDCoMKgwqAgZWxzZSBpZiAo
+Zm91bmQgIT0gMikKCgoKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrc2Z0X3ByaW50
+X21zZygiRmFpbGVkIHRvIHBhcnNlIC9wcm9jL21lbWluZm9cbiIpOwoKCgo+K8KgwqDCoMKgwqDC
+oCBlbHNlCgoKCj4rwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSAwOwoKCgo+CgoK
+Cj7CoMKgwqDCoMKgwqDCoCBmY2xvc2UoZmlsZSk7CgoKCj7CoMKgwqDCoMKgwqDCoCByZXR1cm4g
+cmV0OwoKCgo+CgoKCj4KCgoKPi0tIAoKCgo+Q2hlZXJzLAoKCgo+CgoKCj5EYXZpZAoKCgo+CgoK
 
 
