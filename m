@@ -4,139 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90995C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA9EC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AEB26B0098; Tue,  4 Aug 2026 10:58:08 -0400 (EDT)
+	id 171426B00DD; Tue,  4 Aug 2026 10:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 938556B0099; Tue,  4 Aug 2026 10:58:08 -0400 (EDT)
+	id 148ED6B00FE; Tue,  4 Aug 2026 10:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF236B009D; Tue,  4 Aug 2026 10:58:08 -0400 (EDT)
+	id 0376F6B0101; Tue,  4 Aug 2026 10:59:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EBCB6B0098
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:58:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6506C01BC
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:58:07 +0000 (UTC)
-X-FDA: 85063892214.17.2838778
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E1ACA40002
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:58:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nTsG2v3F;
-	dmarc=pass (policy=none) header.from=gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B77F86B00DD
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:59:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98D851201F3
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:59:16 +0000 (UTC)
+X-FDA: 85063895112.13.072162E
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AB5C22000C
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:59:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HGWmyV1q;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of kfastov@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=kfastov@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785855485;
+	s=arc-20220608; t=1785855554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZXmm83TGVs8V0++ogZvMrKHltLz+j+PoXOcZxjRNY7o=;
-	b=PKf12PG6srFi1Sjt6MQk7nkB28mCldW0UqYfI7xj1F2YOrZsbSzslDLPprL/W/pCQucMF5
-	KPBZiQ83BsZRxGGyV45U8KHzEcWfsi0X2hGhUyOHqKZ75U9l0/E2yuG5qyQ7/dyELHXBrw
-	5Q/jTzy4u1Am4NxEISz9JTZMLwAFL5Y=
+	bh=6N0+o6o8vh4ZAONfoxI8DFf15MDBQKWEc1yozc9H+WM=;
+	b=K2isKUMmfrsF/opJ/Spv6BcbvUMozrNhQ5NxIO4oabGlnNVKa01JmsUbITrKMrYD38a7hh
+	O7+MFbcvFvt7/fOFOrDya3Cyg5ftdjRw97K1IMjzpFnrPgvVlHeDWnsSuXBK5AYFcy/wq2
+	wguSyX2lLyuMvyzsnMFF3Jh9ARD89JM=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nTsG2v3F;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HGWmyV1q;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of kfastov@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=kfastov@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785855485;
-	b=6ocfvum5SEHsqby7aV6m7M5D3AIqtlagYpQGpTkYMHKMytDF0unCWRcKOEzb4SWaRyFwoy
-	dgZnJxohhQxUaHh87E9k+VFRwBSWugIWTSI7vtVcVEISSvgpvzAdycr6Ruoneda9wR1WGe
-	FQW8HbLA4D7uvo6OQNnNQxIIgGW6slM=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso5789044a91.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 07:58:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785855485; cv=none;
+	t=1785855554;
+	b=srZ/4AS39bR4py9CdaB2qXas2S2s5PGtHi+hbZDrKoNkWi0IjMsErSHHSOqEiAsdWPf/U1
+	I8dxgNYyDTq4o73wb+QbYZutonX5klWoNB5GSRt/S9sqbF3iT9kbqM5pzB3GoySYhKCghJ
+	twcgbBcgdgIVGMp787Sz8VR84R8vOLQ=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c10e86e52so272731cf.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 07:59:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785855554; cv=none;
         d=google.com; s=arc-20260327;
-        b=aPCs8b/Xj2hJ+IzVBiSOnB5/W21r8ufU4ki0K7m03h27pGe58sNCeRK8SAGT6lxj8b
-         t7ozDSDfl7Bel7AQ4qHzajtTps1KopddU4a0BW8A7H7lA475vhH0GNGplA9EPxUobLNu
-         h4Sh7a3QP1Yo3rMwtRyK3jd1717cZXdKBUC8t6iTfOTsvCqgWCkdpTSlQ0081eyHIb/6
-         S9jZ6o2GCuNPdtB7LA+lBQI+jdGbR0tQdK89YoDoUKrhpUiqXF3pZwRtxD8sCEUaxVuZ
-         7mA06lpcL96ccWoFzZMT8+lbp7L4XSzbjto7DccO2W+oZ/XAEsUP1VchNdFh4JE0AjaS
-         BwKw==
+        b=VUuttBawBvD9AT7Ctcn7RNpoa92P8vAu1S6uMEmt2B/m+WpSXLCBrJaKuCbLa8xx1a
+         88zfiJq/8KYQ4usDD+WV0OUpJBkqExtFcNAWoPKF4qRrbqtGsLp6wAGAzbJ/YVMT5Iup
+         LfiNE9iT+63D7dg9VMVi7/myx9e5gV7ot/lP3P2T3Jkc5Rp7e19onYayLkKfV1So2hs9
+         8/9/ASfJItc/Wah1wsR1CTpEk0RKc2cMBXnkzgK54nmxM/seGCyRWR/M4x05jLhyXrcR
+         cIcR6sMJKxKlbLCxVk95Gu4CNcjbFNf64zYG4aivR6LoVgHI8fNjf5jSMZJVSd98cEUH
+         pnmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZXmm83TGVs8V0++ogZvMrKHltLz+j+PoXOcZxjRNY7o=;
-        fh=Ppm+xMWCAIpFIvUzh8nIL/KtZDdBNmB25/7KL0e/4Kc=;
-        b=ntikARgB1Gnwj4sbelE451FDwYVShZC3xyIMmOi0xDwHpnkCaTT6yymhdr6VaieO/h
-         6zCDAl1aF+Wzrb1EdBpQEEMFt2JnwmhxPKPHXx42zuul4Ppav2rkwgot6W/mx+5ulh7J
-         9fpd0m2aueacZda6muRALZCqxrUH8JI6gUIxi7wZLjrGTSBsPqETSB759uae3VQK1B6Q
-         hw3bnBZqRshlMcpDXe8+hd15YHk3kCXjd5VDv71t4FImxBeQHbK+Mm4E6Str1fYuZQRD
-         zObEU7SR1m8jQVhpZzluooj8nRePGHGq2vWbRSOgUfWSEAdTKM//kdMkeSLVNHEzE5cz
-         YEmA==;
+        bh=6N0+o6o8vh4ZAONfoxI8DFf15MDBQKWEc1yozc9H+WM=;
+        fh=C17gkYDMLpY1RNXEuKo/ElVhR6DNFIaN/SmOyej36Mk=;
+        b=ZBS0YQ4/OputYM3y0fsyAHpNnT6QJHwJMRCIAQZYCVhAcB+iE7fYLoYuNS0Q36k6sY
+         YHJKZBd7s3LgM5OmWUF6UGuSB2ipBM3UrD6HWuAbPw0CAaOTUY0KmkhL9vgzxJH8/1SR
+         l24VdZ9liB27uBo/sMZiFusgw/67gSjCdOKYAR98KKMLur+rNCz/+g9encC8hVrv0wQI
+         iwUk/9F0BInuMkR+G0h0TwD6Ie0ofISS+XJLTNrbc/OZ40oOVPndEjfADT1DhZ2ZMaUH
+         QMYrUNchf7Yan/d/KT/xJ16FHUtRTfMZ33A1YXTPpe44MN+14cREPMsXd9Uhd8RXDLz1
+         0Cdw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785855485; x=1786460285; darn=kvack.org;
+        d=google.com; s=20251104; t=1785855554; x=1786460354; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZXmm83TGVs8V0++ogZvMrKHltLz+j+PoXOcZxjRNY7o=;
-        b=nTsG2v3FXg/yRJPD/m0EFC+hzAKWRUGCPl+HDUxEzycUHp0np9icIiidRJEhkL9yrE
-         /v+GfpGHWdUKeZQg2+NmFe2SKlYFuMdpsBXtibZBk0HoY/GN2PYgtufOVfbNXIRJO7Mq
-         itdAIrPfKTQsHzC6HvcjYuQevfuPA78pZswUXRCOmH8gMU5CCRMqaxzZ8LyJZVvbGaY8
-         7F0j/LHja2FPQljnYsCa7EdetHMmlxAuLWqgumieFFtAMoLH1kA8pUGXaiXUU2hFNGWy
-         O41Gp42H6hMpqmH8gaKPTobx83hm7jT8CI7YohuaxYbwbOMJoUHR+/1ZsEDKzf65N/Rz
-         ehSw==
+        bh=6N0+o6o8vh4ZAONfoxI8DFf15MDBQKWEc1yozc9H+WM=;
+        b=HGWmyV1qC2DgUSyDINE0I1BoVBly5gR5y49mwAT/8ubqrON+REHyv7v8y/FFHvsgi5
+         c8JNgwZAo/Oyv/I0tWrPskKBO7qcJ2zCWs7i/FLgAkG/OlWFAiBdvpmbSzCxCresyaRz
+         32v9fO0asq1lnhqI3u6e9pUekrkL+j2EQ/o4m5uy7UaRqPNPeO4aepJfhS0Wau2ox6NL
+         tI/qfE8+r10QPi594Vlyqy8TbWrXKmjHiFG9yBvpP93H299AtT92QmGl6viiYKe/gOSK
+         VanDbbKK4ZXYrtwxdcVYl0hr1yeXJhltPzaDRxw9BeVmKWTVUpx6NTBKo4wEo54XZ6td
+         OvBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785855485; x=1786460285;
+        d=1e100.net; s=20251104; t=1785855554; x=1786460354;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZXmm83TGVs8V0++ogZvMrKHltLz+j+PoXOcZxjRNY7o=;
-        b=E/vfAg2lbWMce+wZ3RMjg8/kwkrvYfCfMSXyLlFPy6ddzn7JJzWbbIzTECh+vAc6Tk
-         twPr5hMA+2efnJfX74t4j7LGCP5RWuniY0CZL+INCJ5qw2fbsGBy30cNhzOpslvr9IYV
-         ZQbx+TFsICHiO9yqjQ8UgymoU9RBX7+Qtqgj+xhT/hu501tNa67P20v5ix+2G7ztrPdT
-         STZmU8sbSxkVrH7hnO/B8+ryC1DnlI0fY1aBGeXv7xJF6XU8uAzYsFA2Y4dl4XmiAd9W
-         qzgkDet0IN+xpVzIwZ/Yhs9ERg9a0Oz4r70Bg3Je+Uq99pnv1Y5CsnUumNBoUCATapSj
-         Z49g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr654yRPDjSm/hGOjIYGRE1hclli5mu9O8KKpmVMzsHChUolfaaPBWMZK8Oen1vQGilKeMyMpcPJQ==@kvack.org
-X-Gm-Message-State: AOJu0YxRbAmbUcp8MQKoLEbgD2mWsMcNRcM6PnuEz2WK1LhTsdJnu5IL
-	PonZ+9R7qD76HDKwPRVl8UHmWBkW/CegWXoguii4G/B+N1ITFW16gyq05Piyzz7cEXigJ/xGgeN
-	TgG4Dj5W/+yyjNDK5IP4HvPbeC6EY6Qc=
-X-Gm-Gg: AR+sD12Gi151OBwhZY5/C6/tT/di2jjCRHcbw9LJIvAhkr2GBNH462OI4hbq8DDub0M
-	ASJG3Ug5DFvCOWzK2W39caQbOGuAg1XQ84hpp85UKc27WnGxyFnwDTtk4mKMgHQJnLxFqQDW0b+
-	5aTJbZdVCZ107FAD1Z232Zo1AiyMJIMYPTvLWlXstV2oeOTAhk0THmSCmTRFcWPEdfvO7dKJJnZ
-	YSDUg27Xjk26I8AUnbXciZBDH5r2CUbCzbE1tkQIL8ajU9Yye/td7kZQ/Vg4eQ6u8UFmDq6KNjx
-	NW61EA/IpQdN1rnSvAORXegu0Qi7iVm5HJM6kOBtsxDNQ35wARmekRnw+S+6pVPbHIib/aMLLTo
-	S7nu9EmlXyEci1r9YDRgvh70=
-X-Received: by 2002:a17:90b:1c86:b0:38d:ef48:b04 with SMTP id
- 98e67ed59e1d1-38fbc4249efmr13503882a91.10.1785855484729; Tue, 04 Aug 2026
- 07:58:04 -0700 (PDT)
+        bh=6N0+o6o8vh4ZAONfoxI8DFf15MDBQKWEc1yozc9H+WM=;
+        b=Bl/ciN5rTc3O2H8g65mhO6XLmET2meSF/HLZWkqqJ7Qpmcvw2CMzu/pTOqT6oxGx7f
+         I/WWAlQhFjs1sL3X4oooqOaBjAw2fMatGZSNOdieYkk4tZhUHmv2rFjiwaYBwHmwCWvH
+         PdhgsOAr3MjYQAg8HBTF+6zDmM6I0gGaTDhL08eV4ZweRzyGBSnv68/OwMFOm83wmQc3
+         jRgO1h/UXVGWrtY5vIwfI9sPISCsB6n6TUDlEVn40mB11RtCmVDiPRr6PKoydIckSDjw
+         N+CkVytijXU7N72o3o7tVplFTsYfK0F8OvcmXw6DTZD0ZerEiAmGgni22aNfGKuWJvV0
+         t4rg==
+X-Forwarded-Encrypted: i=1; AHgh+RoF0zOwMk6R7MgoGKTbOF9CnUf0KAkoI4hO+djSKWLzUnTMD0tluKEHhSbLK4c2fbbvjMoHChgEpQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw3DRXuekO4fZho/a70YFuyczL4P+4iHKUPA6VMI7TOIy79FNUN
+	8pJkY1EHAQrg0K7g7M9Dm7f5crRe+PyTYMHCx9w0zCeLZcKeDct8bpzXEc9hEoq95asFOrjNDQp
+	Xvrw7mRnVAr25+UA5byOXcMOWEFCa2IZ2P7dqWmUy
+X-Gm-Gg: AR+sD12pE1R8sJPGr9bPYIC9ITvvgZ4Gyf0JqoRCpUORam8iShTWSxpePv/kbC51rn2
+	jcZiHRp8z5KbO53m/axJmv9r8fkX2pRz0poK/nXTPfd+b2cH1OCLn9l8rL4Z39tETt2j25wn+cZ
+	EOsR/REezzYnkQPg3lqjc6QdNoD7YGvPnb3Qd0rOz3QYhKNXP0kw3WXEiH1Qz2deVAyOWM1WFMm
+	NBmTgu7MKRIzkft7+E/ict6hxTSTQrpyuLXOjTAoqZodxjUhDnMTaUtgfXopPClUlez4CvxeXgz
+	6vbOkMv+i64HABeDI6e/gP2TugVfvIoRo7aW4//krOI/NQyk8XaxoI1Klz0rqHpJvS4xsYasluY
+	=
+X-Received: by 2002:a05:622a:6850:20b0:516:ccc0:ee38 with SMTP id
+ d75a77b69052e-52ce4056a53mr2078511cf.9.1785855552922; Tue, 04 Aug 2026
+ 07:59:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260804140403.16337-1-kfastov@gmail.com> <20260804162924.0268f80a@fedora-21.home>
-In-Reply-To: <20260804162924.0268f80a@fedora-21.home>
-From: Konstantin Fastov <kfastov@gmail.com>
-Date: Tue, 4 Aug 2026 17:57:52 +0300
-X-Gm-Features: AUfX_mxmYF7mTsV_kCbKDVkg1SSi2DOX7EMuysDet_SV7d52zqlljQHcxRDaOHk
-Message-ID: <CABWhNekebS6dt=Ft+74iG4YpCq-5ZcV1EvvERNxT612VUOC9Ww@mail.gmail.com>
-Subject: Re: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
+ <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com>
+ <anC1iE21eonDK06n@lucifer> <CAG48ez1=_O0g7rArdpoVwg84jOJuELEAXu5sw=TO_CWBsK=T7w@mail.gmail.com>
+ <anGnOHgOd1q1jYXK@lucifer>
+In-Reply-To: <anGnOHgOd1q1jYXK@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 4 Aug 2026 07:59:00 -0700
+X-Gm-Features: AUfX_mwQTNrlkV3j7o_hqBHBqc6QYgTKXR7FHG-xiWygkBEgZziw2u25uHKbB9Y
+Message-ID: <CAJuCfpFCBr127TJEWvanRtYxM2G21h-Y5NYK_hw9y0CrgWQF5g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Jann Horn <jannh@google.com>, akpm@linux-foundation.org, 
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: o1eyaww6guu9r9msg6ghoo6u9pryq34g
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E1ACA40002
+X-Stat-Signature: 5d6t54k37rchhxuyuoszzzzmg5g1cq1g
 X-Rspam-User: 
-X-HE-Tag: 1785855485-560894
-X-HE-Meta: U2FsdGVkX19WGaBDremoMnxU7EcT9jdnkTdtC5OO1iUriyDMBD5HKo7YKrjruRJWlQPpfvy07dRIkXMQtSlH+o3NQZkFaozFMCgaMpHKfy5Yh1t7/w/m4jaO8/JXhkF8YxZgqP95ydrqanEHUToKWqdVect8yXGGtzEo8t1BCwYDojavTB9VD+jSqJrZn4IrsroiFM2U9tfW/Wq6WhkqHL6GPcG7shmLAmfIU3Hgjo/pXwJOnb/AGaxFE3It+bLzXAWSgepwarV1/k8+JAICCy6qVTplo4Thfucl3MrgmU+texVGfWLe3Rgs/RTjmBfP0ZGYUnWxaYzJHsffcqRy0SZ6qeMiv4xVxaIX9dSZRoNbDtVfUKT6i9DC/vTa7/4YNTpa+Rl0MDaTEu0H2djfNFFu+4xhJllwoUYrZSwLBlCMzCY+r5If1IwUN96HfKM6V0zfB1kEEmL3tbfVPy36CyS40s26N377Oo2JRvp2ljDn8C0fdqXr+n/lVbPZIgn24gPO3sjqGEHCm/5CtF11kx3R3Jo/I85hBIWAGWR+lUY2oj8sUS3I3iUbK9ou7cGJr55Ju8OA/wE9SJ7k7iUB/86d7Zza50sMFrhS1EGWld+AORkba5H/egEnKTzK6BQhtePNkxpha9yrbmoG6d9y+v+ckrzCqj1fw+a0115e1n0g3STtR20EG5J4vtebPi/IsG42tacvCrMUiw7/Cor59VUkZLKFVcsEbYwetoY8kYFVgb5WQDOaFSbS1SJOAHQAFwafoY4EQQjtXXIhIVOlsD+OCKzhFktT19WTOKLcFvqQCrRLWwA2hdrmgu3zMBY5A8ofImXcSQnb1bFL3lY0WZ4dbYjBBF/ibWI4nTrF62ZarXRWhGalHMhkzPDEpJy+R1+z62IttYSgKADwqoI1KiNNNz4aVonYqYwi2o2yslKOuBly0MhufKSTqohpuD7IGci2JIpum7RNI1KosVH
- +wwYfL25
- sowYAOfuscLNVQe68KfErVX/LfnGRyxSsS7i0xpZx/xUiT8bBCGk5BkbVwu7lLM+MTSsWW5idoxZXSTckf42lzWQ+LoP5ZLaQEyylbBNwF+9xjwBzevXqW3rs3OYc9tIY7yheD7x8vm7FEy6375h6WyDybPhx6OF1kG0kFL2dCrT5Cvem1VoLZdFlThfYjPrLFMNf65QhACCaEsZ5xHnPZdh0pD44F488NlJaoJS3BbGJFsCmLlPOW8VXwENhgw20CrR8BxdFQTQvxvhQ2mLXNoL9bG8T98ubrZQI+owVY3TAkAPcTnap9iy7Z+d84aAlO3G02M2oDxp7d7fmFcv2kpSxHaf6RtduF/0nRp4WktFxs9mZK/C5ZCJ23Am+VNsADRxETm9aZVdtKZpD/Z1F7gCQ8mrpLerJnlQ6qZwSMABZZBTRq3mwfhEqDg8IQgQ9JnaEdF6eRpR0L9i56th8cdfG1UNdHYV+derAPF04r6i7I7kygvhGJlThmy6zYlxLZPSklfod3z7fS+n7W+3gI4haZQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AB5C22000C
+X-HE-Tag: 1785855554-589694
+X-HE-Meta: U2FsdGVkX1/h6+hXXOl7bxQMNoqX5GlcLJ/aRiSW1lwJXN0uhGX6ApKoKK4rWZpDmYVIe2CZPNHe6LUya7MlCAzDqV3AXlVCFrr08GlBwNkTzPlWS4I2J/g/ZGfDQxIHip5CqOmMhC9wwvs3c5ZFCSvKDfs+TakExbJPo5VZ2XtDz4IPbFrwhCtsfZ3c0/j9weCXZALoXEmAg8+I7h/eiu/WuN3H5pkANC+pGLAoDZviMpkueFehr01GS20SoyDHMj9Wao6vlw6eoVagWx5vMlOwrYz7gkNhr5oEegBqn0aPC86RSg1cHtjA4sYTn7Cmsq9L4OGXHUY8BQbHF6evdzS2WTSpuKR6h+HjhVuTMBGdQt7HJKdSk+j6Ljszi8A0yQvNsnxFUbzrM9DGffqP7kZXZUI1/QgFubnWQ3qTla3GQpAysB+0yk3r83PCLHH38r3utCTtwmKO1DfNJWJJ3gUt2KHDPNPvncn7f5nTf0cRX9Coe2Sp3TyQmjOoUdM1qtwRqJH0culGEmneXQ083PVTutpwn6AthVH7MV8UM5ykFkgcqdRPYJhjylMW+uVEOp9y29MJ44HBtUD4u42gc+FhCul+BeznnVlTrBzO8E7BQEvlLIW6sjlkjpfvHgxdwia8++y4WUR3Gsb5Ykd+o4wqxHg8DdwD7V89Jfz3g3iFziRQLaZdkBC3gWdUVP31T7glRwp9Nfe+6WlyYPRWTQtJxopO8CY5XolvnTy18yXMN10tdzGtD1498LqcGc/FP20K4CVgmF9MKxulOfA4DtHIhPZnUF58xhRIwkuqZ4RLLjGWrJKLyqMMPmOn8YSmjL8KNb3h35gY0S8zN/wJOcUOKoZkDovn2SrX4VnFyJDcE+MhzL64awT7wIM1gDQUB2c2g6yYkfVuf/yj4/KZxGFfuKkzVBoqo1rF5ThPo7REeOg1MstsY1U6BwMf1zXVvvuMsNVsANQeJbGskpQ
+ FIq+LRuj
+ lsabLMDbv+bKr5Fnly0h24fpO5bKViMgvFmqYpJsqMW0kMj94hSfgM+AtufzQuJglO2kQQCYGFtYHbjxlUegTw0aQFfFMsKIM3AdwKGCkH8SYpQ4jErJDYobBMPHkmov52SAk8ddDXN3rNiox2Bme+HDW2QBpXUEyCMYtB7JB0H5OZj1ATS6g6xIgwV9FVwP+l/Tr1XM0xVoGVdS2AwFHR2XJdOPBQOEE5vMYZjBxsqWJYzeHZ78Vc0Ott4LbiL41whQyHkx7KMTyhMod5MYQkJhA2gKZjyf3h6xUjkPF53sLdR2o5YTQFFUBmtySZj3iDyAGChITgSkee9ysqUgUjHbxzYA09qpizuHIPFA6DFyk6Qc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,70 +148,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Boris,
-
-=D0=B2=D1=82, 4 =D0=B0=D0=B2=D0=B3. 2026=E2=80=AF=D0=B3. =D0=B2 17:29, Bori=
-s Brezillon <boris.brezillon@collabora.com>:
+On Tue, Aug 4, 2026 at 1:56=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> Hello Konstantin,
->
-> On Tue,  4 Aug 2026 17:04:03 +0300
-> Konstantin Fastov <kfastov@gmail.com> wrote:
->
-> > Since the introduction of dirty tracking, drm_gem_shmem_vm_ops has a
-> > .pfn_mkwrite handler.  Its presence makes vma_wants_writenotify() true,
-> > so vma_set_page_prot() removes the write bit from vm_page_prot of
-> > shared mappings, and the vmf_insert_pfn() call in the fault handler now
-> > installs read-only PTEs even when serving a write fault.
+> On Mon, Aug 03, 2026 at 11:12:01PM +0200, Jann Horn wrote:
+> > On Mon, Aug 3, 2026 at 6:08=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kerne=
+l.org> wrote:
+> > > On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
+> > > > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@g=
+oogle.com> wrote:
+> > > > > -#endif /* CONFIG_PER_VMA_LOCK */
+> > > >
+> > > > Now that I'm looking closer into this, I think we would break NOMMU
+> > > > case because nommu.c does not take VMA write locks at all. So,
+> > > > lock_vma_under_rcu() for example would always succeed.
+> > >
+> > > I don't think anything's broken actually.
+> > >
+> > > Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VM=
+A flags,
+> > > but now you have stuff that happens that didn't before but:
+> > >
+> > > * vm_area_free() -> vma_assert_detached() - fine - it's always detach=
+ed in nommu.
 > >
-> > For regular CPU accesses this is transparent: the retried access faults
-> > again on the present read-only PTE, goes through wp_pfn_shared() into
-> > .pfn_mkwrite() and the PTE is upgraded to writable.  But consumers that
-> > resolve faults through fixup_user_fault() + follow_pfnmap_start()
-> > perform no such retry.  In particular KVM's hva_to_pfn_remapped(),
-> > after "successfully" handling a write fault, finds a present read-only
-> > PTE, treats it as KVM_PFN_ERR_RO_FAULT and fails the vcpu run with
-> > EFAULT.  Observed as AsahiLinux/linux#560: muvm/libkrun microVMs
-> > mapping virtio-gpu blob resources die with EFAULT on first GPU access.
-> > The traced failing sequence:
-> >
-> >   follow_pfnmap_start()        -> -EINVAL   (no PTE yet)
-> >   fixup_user_fault(WRITE)
-> >     drm_gem_shmem_fault()
-> >       vmf_insert_pfn()         -> NOPAGE    (read-only PTE installed)
-> >   fixup_user_fault()           -> 0         (fault "handled")
-> >   follow_pfnmap_start()        -> 0, !writable
-> >   hva_to_pfn()                 -> KVM_PFN_ERR_RO_FAULT
-> >
-> > Fix it the same way commit cb2a2a5b37ad ("drm/shmem_helper: Make sure
-> > PMD entries get the writeable upgrade") did for the PMD path: when the
-> > fault is a write fault, install a writable entry directly and record
-> > the write for dirty tracking, instead of relying on a refault that not
-> > every fault-resolution path performs.
-> >
-> > To do that at PTE level, add vmf_insert_pfn_mkwrite(), the VM_PFNMAP
-> > counterpart of vmf_insert_mixed_mkwrite(): insert_pfn() already
-> > implements the mkwrite semantics, there was just no wrapper exposing it
-> > for pfn inserts with the default pgprot.
+> > I don't think that's true, AFAICS vma_mark_attached() is called from
+> > vma_iter_store_new() which is called from the nommu version of
+> > do_mmap(). But I think you're right that one blunt workaround for this
+> > would be to add a hack that prevents ever marking VMAs in nommu as
+> > attached...
 >
-> The same issue is being discussed here [1].
+> Thanks Jann, though also ugh god at that :)
 >
-> Regards,
+> (Really the ideal solution for nommu would be a 'virtual' MMU with noops =
+for
+> everything IMO.)
 >
-> Boris
+> Anyway, I think we could fix this with a:
 >
-> [1]https://lore.kernel.org/dri-devel/20260804120529.1730187-1-pbonzini@re=
-dhat.com/
+> static inline void vma_mark_attached(struct vm_area_struct *vma)
+> {
+> +       if (!IS_ENBLED(CONFIG_MMU))
+> +               return;
+>
+>         vma_assert_write_locked(vma);
+>         vma_assert_detached(vma);
+>         refcount_set_release(&vma->vm_refcnt, 1);
+> }
+>
+> Here?
 
-Thanks, I missed that series, I searched dri-devel but not the kvm list.
-Paolo's patches 1-2 are indeed the same fix (down to the same function
-name), so please consider my patch superseded by his series.
+Yes, I think so.
+I also need to make sure mmap_lock fallbacks we are removing are not
+used in NOMMU, otherwise it will fail to lock_vma_under_rcu() and will
+have no fallbacks.
+TCP zerocopy and binder are gated on CONFIG_MMU, so that's fine. Need
+to check the BPF part...
 
-I have a fast reproducer on Apple Silicon (Asahi, muvm microVM, dies in
-under a second on stock 7.1.5) and an automated test rig, so I'll run
-Paolo's full series on that hardware and follow up with Tested-by in his
-thread.
 
-Thanks,
-Konstantin
+>
+> >
+> > > * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount t=
+o 0 (correct).
+>
+> --
+> Cheers, Lorenzo
 
