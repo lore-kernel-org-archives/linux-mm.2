@@ -4,102 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86B9C55182
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:02:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47841C55182
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4E06B0096; Mon,  3 Aug 2026 20:02:28 -0400 (EDT)
+	id F2D6B6B007B; Mon,  3 Aug 2026 20:08:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8C7F6B0098; Mon,  3 Aug 2026 20:02:28 -0400 (EDT)
+	id F054B6B0088; Mon,  3 Aug 2026 20:08:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CC6B6B0099; Mon,  3 Aug 2026 20:02:28 -0400 (EDT)
+	id E41F56B008A; Mon,  3 Aug 2026 20:08:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 791C16B0096
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:02:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFA2C160854
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:02:27 +0000 (UTC)
-X-FDA: 85061635134.29.9441747
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C086F6B007B
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:08:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2892940884
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:08:42 +0000 (UTC)
+X-FDA: 85061650884.14.8CD7F0E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4D9F5180009
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:02:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mwYM55Vh;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6BB4FC0009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:08:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INrp9BoK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785801746;
+	s=arc-20220608; t=1785802120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UrwJW94kDrg4+m+jnC59gn9JDVrDxdlujcdhUvF1Qqo=;
-	b=bSlFlBn8xdslZKMK3u8VGei8+duN5FlBt3MErcDa2oKba9kJGxwGffMjYP9VvLaJYJW4b8
-	IuQTWs7ms3NVWqaZ6BfBjpkvWZULYOhX1At0nqqECZTORPXL/T82tEA4hJmq60jpuIxNv/
-	TqRg6xclzetJTNZeK6cpsqr28A04N5I=
+	bh=UEVPjOd239FULOvZJt9FR49Oi4ffilzOlCFErD9Rzjg=;
+	b=4EZ1BE5HRAnkm1C+gO8AAl3JV0yU719zMRXNz/w32CR3t3M1l8RHZZJbSLvmk/JNsSgTQ6
+	giFFLAThrlCJptPm4dkOWZDt+y0CPD2NTRC0fVc+NUMUS7STbdNzFdOS/anyffxWXeDQ/1
+	4udpVLYF1c6M8mbDBPTgy5zb+A9o6Yg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mwYM55Vh;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INrp9BoK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785801746;
-	b=7cjYRvqhFZIaaV2/8ijgXNDeBuG8cmzZqnT6ka9pmIuaxwlP789O8u6ujJHmseLf0eJpCh
-	RSjNRU+7/sLuV01oBxR6CV5LMRo378N5rYCydXhpth69Up5OH8i6ma8UuCPaVWEUGqDFTE
-	bzP/BZG9s62UKd5ar2dGEJ8nxGWYFXk=
+	t=1785802120;
+	b=Q1SRMJoLYv7g8D6W8HyF4fLGI3wQgUQNpXToBAfa4r8Kg9jyeekzP1qHpXG4WtNU8aXg8u
+	5dJTqDszhIW+EE2PLocY0izOoiawWdS6AbNFa6GU/UsZTSVsB5dXdIat4kDlK1XacEfbVb
+	3PhXe9rkwyM1AenRE75tJ8OuPQZTo9Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DB1C40599;
-	Tue,  4 Aug 2026 00:02:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9584B1F000E9;
-	Tue,  4 Aug 2026 00:02:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 80FF143818;
+	Tue,  4 Aug 2026 00:08:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D501F000E9;
+	Tue,  4 Aug 2026 00:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785801745;
-	bh=UrwJW94kDrg4+m+jnC59gn9JDVrDxdlujcdhUvF1Qqo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mwYM55VhfbMkU/n3grzHTwZ6ADhGXEl3Cs9odiqF3bcMRAq8LFNe93Ru/RNNE30zf
-	 DHIS1P9kFCDUmgM36OKE8VtU9hpUTtefPlpuwLihxx0vr0YffDftcdyhl5/nLTyiSJ
-	 qbtgdfliPAL+JkMtGLC4Fa348VMWjN4GDxZ8sgJ3gfhRXeLBW6y3Pz7S7Gvuw2H397
-	 xiiHRSkLlL0951SW4fsucIOkoAqxnfOFncLL7nScLUS02URdlf1qTbxPggR+gekPFb
-	 yWZpSH7w/B7EjOGpTp71A0fjmdOJK7Gi9jMIMjos2lxUahQVXna6SB1bADCk5pqkFu
-	 0VNCswPiCNEWA==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: pratmal@google.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH v4 1/2] selftests/mm: rename local_config.h to local_config.h_gen
-Date: Mon,  3 Aug 2026 17:02:22 -0700
-Message-ID: <20260804000222.88232-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260803235743.87939-1-sj@kernel.org>
-References: 
+	s=k20260515; t=1785802119;
+	bh=UEVPjOd239FULOvZJt9FR49Oi4ffilzOlCFErD9Rzjg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=INrp9BoKCaDD3HljHkktfuaw0iKD8M8iLP8gQ+THjIJjQxWsXpwGwmFSSHjBm2FiG
+	 uPPiqgNn6v9t+CORTpzeQ+g7qSaga65SX4V+WvuraWbYXyS5QR9Xu/zGXhmNLIEFpS
+	 7LWyLkeFd+dPKLYC8XbZrxZH2xrjrcPiEtGqp8EXLP8pGOfyvRz/+V7/HWvHBYOLQF
+	 kKKW8X6xq9+QDLJY/JyUV9Fxdv3HIMmjMurIk64DZ0KtEUXGkKQCCh9vD/cWQ95IMh
+	 PRRcZvkVIxeXcZ2xYnvV4YqvNjtG16xoDO3rqoHsNU25hNm8opUirunagcJ3jTu4pk
+	 v0mGX89YWJC3Q==
+Date: Tue, 4 Aug 2026 00:08:37 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v3 10/26] mm: Add more flags for __apply_to_page_range()
+Message-ID: <anEnO7KbDQg4k5nf@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-10-6f5729aa9832@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: juchbdk49pa4fdmspgsq1rnicdfxpewo
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4D9F5180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-10-6f5729aa9832@google.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6BB4FC0009
+X-Stat-Signature: h456qgntzkh3eggnekmrj9qdrjos77qy
 X-Rspam-User: 
-X-HE-Tag: 1785801746-822162
-X-HE-Meta: U2FsdGVkX19RfKzUxDEQuEDVoL44UiQrm+DOskXqODO3lxYmKKwyT2XuFS5cUOab56ItcF0/EyoDu69/zkpoe6MexSmv+JXgslzGw+5LJCNC47+6jfEtZ925MwIKHs6kkWjl62fdBCJzPgKfPcfbsjqkcUss6jU+Y1wd+eyTc8/BQEuMBsGzm10uJSxgJ2uexsBKC5n6DitKStWgYkcEtdfXvM+zVoXBCNVcdp/tIiwjOyhTrVf75ArWRcspzjTSCz0uwVWu7bgSgfSa2ZmBMWhgSED97ssn7Ef7z3F4LsBqix6f734Nn1K0iLDIYfmo9fNRiAT64G+i+eqhx1gw6NaYWijVIMyJJ4knS+3U599WuFVetLJFCylJXNDVOTtr1MkHfC+DWytBMDKyEW5KvbvACC2xDmdPJ4HyH0VxNhLLYD6lBdBq8UZIx+bmCLo1nf4UW6hFG7nf/q6+TDccS+9whYfq7JdFuGureVHv25INxCKoXtOZ3P5iPxQS340TqrJX7pv7CIBMOXUte+yhINSXisfsYr/PW/PH4xurVpqBeftIQ5coKqcklpyLKVCKJzVdFliDwwccTbDwtIgAj1Oha6fvM7sd0IEsXXkGqutnvbDF8mpwt5dOAJRTU9sRD5ib2HdA+tGX+I1/nxRDMdoL1zBAujFFEYep8ny2tmAxOGl7fW0sCs+X0e6A7Lds8MpAcYW+w/lYJ4Hzcw5K42vuxn6AaKVfwriWfxUcaUF0Ad0zO1o/6xZpqbODeRjkedG4xKwtjlTon3tl3CkMI0KozOu/+FhG11kpsDACIwFp5XoHG/tXaIFDXdfP0LXoFV6y3iW1HE14Qpx5GjDnPL/nb68TVBkECFNOZTpt1pArNGD6/JUmgpgI7oCNYgr1JEhqrRMW48jfipko1Jcbg/mYkA0O5/skmVL0YkdshVarMiOeB2pYkbhU1qrGPuQyB8uIsIkSj4rDxTLWR6Q
- tNwNd3XU
- S/v1f55zbKgj4R3+eHuxRTcAKbK9+Salqlen0XaM03f66etmIBVu5McLWImnkAtpinKW0oBh1bLEe3NzhAkKJNkztCMdDwD/QI8KM45ZxUZG0wJTRmDMpltRby5bZKwBBCZApkSfyvrvnApWOID8U9xOoaboV7VrQdO8rdT0/LcBikYERVU+vnNxhzIi1/1MB3BmdfDLI+X18wq45krLMnUw1ZQo6q2ejGpfm9LfULLBR+w51G1NAa2ECwiAE5E6DPrb5uHHJs+UBy4UDCLO02OfdL20wXpQP4T6bo1SUNRqwls7KDLOji0p2llXHjab/DHlbrwC21i7dJHzg19RSDc1Tg1pl4CiTIR9h0S5jKY568fA=
+X-HE-Tag: 1785802120-131274
+X-HE-Meta: U2FsdGVkX1/iOlJExRVG8SkwBFGsR+1btD7JIP0EmIQYpPrkJSbcDEjqNf/v55yC+IIc4gFVDv31gJCIbaaJCmOs6kH5OJdFlNGvevfaYEazdLn8+N7hwpeZS/l3sXZGpflrTO2774J35g0jQh5SNYSolFmeFw9kO53LojB9nzD9rpaqGu7pjYGy8teem8t5gA0wpTY+UJWkHChZ1Q1gfDqzCkZr2kyNpEVl4SXlqR3JqNwQSEQTIxAkcLX3gMIvkRH4MHSoUvmzj6uCvTVXZddEVdjv1hcbe1iyfW5gBSRu5em2czczGMEV7AtBM862ZpWlcPAQ38PeoqiWt8YniJ0VI51oXIZrV8JUmzXEI9AmbbseCnvCnhzR+2MwbA4Kqc/eBZw5VqzuQYhGYDIFboQNuWQ6xw8dGhfuIS4aVRsCnpClwwNYsJE5eCBNDAPiUP1Vglul2d8clGWgKL0xCNVyKP+pwETOKvHrzIi0As3c51owtTw04CAQEaKLnqOv1X/sFafEmXAzYHHOt9oXC+WIO/lmWxWvJs1JPP7U8ufswFSr9dN5ijBPzoUZkVz2ZUvzi+15rf2lJxnqut3JNTMnVxgBtoefcY2g6sJTUA3zrvuwoYGxnUlMg5n1DPUjxD4xXMOzmBvw5iew5/qoqtbQVMDVhTKP8lcAQj0JGkBxah6d9ypyfROjiCKVD84q0S1+aJn3hBlb/A7HcQcN1wqo9J9k2evJt4ifJT1XWo8dtTJDnvsfLhEbZcC31DhJUu6Z26UxCY89A8ptxf3JUt4sX/Y5ySQZmymf0G9Uh3uBrekYdb7qjmKsyY1aEWm9nCkayTIMhXRyvRU9MMyQK1cOwUlppgZE55nToU9qbUlbn7OZ7YqslRliv3kW/YGVH2tUSdr1XqBGYtL62ukcB4e0fSmTCzqp8T6OaIaEERDkQrVvweZ9j7PHxPknbf9U1bzGTywuZ3NUUxnY5tD
+ ZX5WsLYE
+ WHIyx0X1ha2JZ0Ry8T3OiHZbGAL77zytFJgCRS77/3PbWO+P/RH8JhI4L9RBxeCGbqvCvInE3YjVc6Qws/5Wp9LU0breOFIkB+QkA86kI8Ns7S5ejcXE4Nqg4ej176oQ4hFGFckRY/svWuTCZLCPqMYFr8qr+Pt4zd9rSFVr62Ffj0bdB9NwOF8V3SMfkMbZJceuyGt5ufvPnMqVGzizkLbir6Fqw4mCe28mkG86e4Ki0r4uAg1kzENYd6ZtQzVYZZbAtLyeHYlwa67vyquskyF8dQrAVpj71BLo+Q0nD2Ui0sKfOtFAGuIh62fUULC2wSX57FNqzfFnmDXlggBgCTRe5jT88reRoWZlhh7NNP4feauY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,19 +100,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 03 Aug 2026 16:57:51 -0700 SJ Park <sj@kernel.org> wrote:
+On Sun, Jul 26, 2026 at 10:22:43PM +0000, Brendan Jackman wrote:
+> Add two flags to make this API more generic:
+> 
+> 1. Separate "create" into two levels - one to allow creating new
+>    mappings without allocating pagetables, and one for the current
+>    behaviour that allows both of these.
+> 
+> 2. Create a new flag to report that the caller has taken care of
+>    synchronization and no locks are required.
+> 
+> Both of these will serve to allow calling this API from restricted
+> contexts where allocation and pagetable locking are not possible.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/internal.h | 26 +++++++++++++++++++++++++-
+>  mm/memory.c   | 59 ++++++++++++++++++++++++++++++++++-------------------------
+>  2 files changed, 59 insertions(+), 26 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 395331a12d62d..5a237d9c5fa96 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1662,9 +1662,33 @@ static inline bool can_spin_trylock(void)
+>  
+>  /*
+>   * Create a mapping if it doesn't exist. (Otherwise, skip regions with no
+> - * existing mapping, and return an error for regions with no leaf pagetable).
+> + * existing mapping). This doesn't allow allocating, most users will want
+> + * PGRANGE_ALLOC.
+> + *
+> + * Do not test this bit directly as it is implied by PGRANGE_ALLOC, use
+> + * pgrange_create() instead.
+>   */
+>  #define PGRANGE_CREATE		(1 << 0)
+> +/*
+> + * Allocate a pagetable if one is missing. (Otherwise, return an error for
+> + * regions with no leaf pagetable). Also implies PGRANGE_CREATE.
+> + *
+> + * Note that __apply_to_page_range() assumes that pagetables for the area are
+> + * already initialised down to PMD level, so this only affects PTEs in practice.
+> + */
+> +#define PGRANGE_ALLOC		(1 << 1)
+> +/*
+> + * Do not take any locks. This means the caller has taken care of
+> + * synchronisation. This is incompatible with PGRANGE_ALLOC and also with
+> + * mm=&init_mm.
+> + */
+> +#define PGRANGE_NOLOCK		(1 << 2)
 
-[...]
-> I found this patch cannot cleanly 'git am'-ed on mm-new, mm-unstable and even
-> mm-stable.  Maybe rebasing will be nice?
+I assume this is used by the mermap as locking is not required because
+the mappings are per-CPU and migration is disabled while the mermap is
+used?
 
-Never mind, I just found Andrew already added this to mm-new.
+Also, why is this incompatible with init_mm? It actually seems like
+apply_to_pte_range() is always lockless for init_mm (uses
+pte_offset_kernel()), probably callers are also synchronizing in their
+own way (e.g. exclusive access to a vmap area?).
 
-[1] https://lore.kernel.org/20260803230818.437641F000E9@smtp.kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+> +
+> +
+> +static inline bool pgrange_create(unsigned int flags)
+> +{
+> +	return flags & (PGRANGE_CREATE | PGRANGE_ALLOC);
+> +}
+>  
+>  int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
+>  			  unsigned long size, pte_fn_t fn,
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c4defefea1574..d00508db1021e 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3441,30 +3441,35 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
+>  				     pte_fn_t fn, void *data, unsigned int flags,
+>  				     pgtbl_mod_mask *mask)
+>  {
+> -	bool create = flags & PGRANGE_CREATE;
+>  	pte_t *pte, *mapped_pte;
+>  	int err = 0;
+>  	spinlock_t *ptl;
+>  
+> -	if (create) {
+> +	if (flags & PGRANGE_ALLOC) {
+> +		VM_WARN_ON(flags & PGRANGE_NOLOCK);
+> +
+>  		mapped_pte = pte = (mm == &init_mm) ?
+>  			pte_alloc_kernel_track(pmd, addr, mask) :
+>  			pte_alloc_map_lock(mm, pmd, addr, &ptl);
+>  		if (!pte)
+>  			return -ENOMEM;
+>  	} else {
+> -		mapped_pte = pte = (mm == &init_mm) ?
+> -			pte_offset_kernel(pmd, addr) :
+> -			pte_offset_map_lock(mm, pmd, addr, &ptl);
+> +		if (mm == &init_mm)
+> +			pte = pte_offset_kernel(pmd, addr);
+> +		else if (flags & PGRANGE_NOLOCK)
+> +			pte = pte_offset_map(pmd, addr);
+> +		else
+> +			pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
+>  		if (!pte)
+>  			return -EINVAL;
+> +		mapped_pte = pte;
+>  	}
+>  
+>  	lazy_mmu_mode_enable();
+>  
+>  	if (fn) {
+>  		do {
+> -			if (create || !pte_none(ptep_get(pte))) {
+> +			if (pgrange_create(flags) || !pte_none(ptep_get(pte))) {
+>  				err = fn(pte, addr, data);
+>  				if (err)
+>  					break;
+> @@ -3475,8 +3480,13 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
+>  
+>  	lazy_mmu_mode_disable();
+>  
+> -	if (mm != &init_mm)
+> -		pte_unmap_unlock(mapped_pte, ptl);
+> +	if (mm != &init_mm) {
+> +		if (flags & PGRANGE_NOLOCK)
+> +			pte_unmap(mapped_pte);
+> +		else
+> +			pte_unmap_unlock(mapped_pte, ptl);
+> +	}
+> +
+>  	return err;
+>  }
+[..]
 
