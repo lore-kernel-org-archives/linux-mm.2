@@ -4,150 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD5AC55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5708CC55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37BEF6B007B; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
+	id 185076B0092; Tue,  4 Aug 2026 18:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32CEB6B0092; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
+	id 1363A6B0093; Tue,  4 Aug 2026 18:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21D926B0093; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
+	id 0256F6B0095; Tue,  4 Aug 2026 18:07:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFC246B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:05:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84D98A17EE
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:05:58 +0000 (UTC)
-X-FDA: 85064970396.29.7745C32
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2BF6B0092
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:07:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DE361A032A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:07:55 +0000 (UTC)
+X-FDA: 85064975310.11.961A2BF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id ACB348000E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:05:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0fkrlLd;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 50F06140012
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:07:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRSDaf8A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785881156;
+	s=arc-20220608; t=1785881273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xFvycaE6HyRvj662ncTXzZ2lEUnpPku3d1eDVKU1XJU=;
-	b=wo6Kxi0LJEAHlikprr6ltosIOb1SkuULMqcf2PYiuinUvdV4eCCTBeWGd5Bl+AwjKIRufZ
-	180+yOyEg37eUdV7E+GJ3so40GluO6dI3qfr9N6ppd+JqbaPdOxsou7weuMYlmea4p75+s
-	CmJYmqKMX5FzYXQiNQH+WgnXt0srEyE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785881156;
-	b=1S738kWaJHQ0wraFvkvOYoDy3hUiPnsiw5mU814XpQLR69NZWzsCx9cy6dsO6C3m7EMPsw
-	jKwW07/T4yvQYXrzcRyuUx8mmz8+pDzD7uUsFZQGPhtefd1iNZDSypqTUw6Gz84m0Sh7FT
-	58lPEZ8vWJGg1UkIK9uKfE3HdWboe/w=
+	bh=1K8MeR43pcYgs7xCjQWaZQWqoBNoVjxGBt+/XlsqQMo=;
+	b=vlZf8nIvooWGS2PjmIOEDXbPmnm75JE/O2B+J+ZD1PWurC+UTkBMhXPL8JV2+/iBMDu87r
+	4ZiakLLl8KZzx5xCGCRNEMvJLubV6qdQw37IpNofdKpFhCfyK50YwlOE3o2yYl9YVdtSy6
+	xOWQ72KwwAL66lVPddxI4uaqjYdC+CI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0fkrlLd;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRSDaf8A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785881273;
+	b=g2qH5jp+fsqfddIeD3vc7Czzbd+uwlg9Txr3EH3Erc8g5MpjZXqmkuu2JzMi8zZCpuz7AV
+	QhFWG+LovOVy1Ie3WkxWMXCyl04VyGtMsDXgV2qJmGVeBE1OS3WVihnDDPyIW9kjwdg30V
+	Xw/65TuVJRQS77fOsiKT2cjYWQLzTI0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0531141760;
-	Tue,  4 Aug 2026 22:05:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD101F000E9;
-	Tue,  4 Aug 2026 22:05:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7242443EE4
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592DF1F00A3E
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785881154;
-	bh=xFvycaE6HyRvj662ncTXzZ2lEUnpPku3d1eDVKU1XJU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S0fkrlLdOdV6vmDx7sATY5Wbc3Ki/D2mR7nyYdpaLQIg9+EIP6+0yZey5MClouwfw
-	 2r4FUQxf/+7EymJKF08yQq0sOy4Ba+t9CUwoZOkWxiW+dlF7PqZJMJ0rM6KRFz3Lbn
-	 0Y5+Otc/BsOW5Xh2EvfEdDCxUzKDcHoyAJ3S6wfdggFf0/oZiAMdG/5X8iUyXr2lZc
-	 6Uh8WwNNc5AnKVVlWjg3sF3PQ5c9l5xdIAtcRJeEaqIYe4x5RNFCRcupDJuRpPs6wf
-	 31bnIwJCiTNv/nmCaige1dL14rs4IzpcKfCnOBkvsYeZMpOPZPhgHmA1PE8LzUbYzt
-	 YTnIfrCSYbcsQ==
-Message-ID: <94c7988a-3ecf-4b26-b0a8-011bdc76283b@kernel.org>
-Date: Wed, 5 Aug 2026 00:05:46 +0200
+	s=k20260515; t=1785881272;
+	bh=1K8MeR43pcYgs7xCjQWaZQWqoBNoVjxGBt+/XlsqQMo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QRSDaf8AhoGGwyxJTw6E76y1L2glbzNF18r/CUmWEJwfC7T6bhyZcl0tqGbYbj2bA
+	 IybxXrO/rcyVNHxcujIVh27/V7k/kmMscc6MJtO0jWPlTbFDq4A1ykn+fjw3bHjo2C
+	 fPrjDdUVTWp0SgsFa34Kjr5isVOKGFPqDnSp/J+oWxj5cU20HBDf7h9g6+chz7Hcsx
+	 reu46BCaTGTyuVHgmCIjVn9katVKyvxfyZAmd0oUU2HORS26pkaW5Bz9Zg6utaD0ae
+	 d0dBdWE61fbUSNxGQrgsZyP+2fqSYhcQNqUA7yoI0R30C27CC/iER8wMHHyHZXXjVU
+	 HobjcY4C6ovxQ==
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51bfa429aa6so10013381cf.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 15:07:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqsrYYsqCutYJyijlDL+Fw9buO3EJYjEdaosUuvuJAWfvd2yRfihOJ37eXmldaQt9IlUTIaxqQOFg==@kvack.org
+X-Gm-Message-State: AOJu0YwH5OJOMrFHlQ9IHPSfGmUdvSwvWC8ymuLeEYxwvYngbV81d2P2
+	wmMfnBjd401MjM1zp6Ruxfdbm4QsiY/8nvruul9b04zWHSOeNQFqIIZDfiQPyRiDH2THJM3LC12
+	uKor3TuLKLKvjzZBc6l5QWJU8kVy2BVk=
+X-Received: by 2002:a05:622a:148:b0:51b:fb5f:b263 with SMTP id
+ d75a77b69052e-52cd3357119mr98710671cf.4.1785881271571; Tue, 04 Aug 2026
+ 15:07:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-To: Yang Shi <yang@os.amperecomputing.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
- Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- dennis@kernel.org, tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
- <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <anIXr4Kbn59Ac31Y@lucifer>
- <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ACB348000E
+References: <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+ <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org> <amoWjOnPayHVQU9v@cmpxchg.org>
+ <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org> <amtv0YRbSrN6iUEo@cmpxchg.org>
+ <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
+ <amy5ZKC2Kc7RX94Q@cmpxchg.org> <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
+ <anCpdjEoDNgVbfzP@cmpxchg.org> <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
+ <anE27CtvCFx7sAuO@cmpxchg.org> <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
+ <7bb32d25-2c3e-40ab-904a-ba22fff60cca@linux.dev>
+In-Reply-To: <7bb32d25-2c3e-40ab-904a-ba22fff60cca@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 5 Aug 2026 06:07:40 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yn5w8b=YQYHEk==8cEc8psB8NHADyrmjBK+YbKtXbdOw@mail.gmail.com>
+X-Gm-Features: AUfX_myIDUb-IuTF3llNOsxo0q5MMkyaKikfEVZ2JFa86kzkXyHArk7dLyIVUBA
+Message-ID: <CAGsJ_4yn5w8b=YQYHEk==8cEc8psB8NHADyrmjBK+YbKtXbdOw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, ljs@kernel.org, 
+	alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 50F06140012
+X-Stat-Signature: udtco5k5j97hbm59ocg7f1hx9itdr573
 X-Rspam-User: 
-X-Stat-Signature: nzc61h5sdhz41jdswsu9hyjrng4dayo5
-X-HE-Tag: 1785881156-490059
-X-HE-Meta: U2FsdGVkX1++ENbJKcovIqef9NJ18SC6hbOxvfteAspgDEUbzuJKQYBeD5gk+1ekZYvgQsxQDxFlny8c8rwCR6UCber3udgwopF10ZlNG6wVIN4HycGGCjJiBIoZ9mpTOsEcUQpkmkelPtBhmWbbWex+tSMUb1ntv+sEwm4dqs/G1uwjm1ztDIIpRb3sz5xfkWGy64a7wrJmxNEKekIDI2tng8Fh9VPhXcKsDTtDhWMn9S8qMIa5ea5Gp9WA7CWClcbdUsFTYIPWdP5oS5jY0WRGrnE72a1MO0izD2XvCdpCXL53bFDMnuuuoP4MZRLLslSN4NrSFU69JB97VwGOi6fjdo0+oBT7PdhPKGR3MIJHqo2jZdzxMPDqls81BKaftzlIgPMAfe1ODJBUB2pKmkA4XnEyPJhUeM/jdqC0RBff+TCqCLx14eGcbaisTkloopYaCCVsW2DzaZpzrEQaGG8pyXXJOQsOqzCtZYUaRmlHc0l7sW+gmrzznZOmoEh7dEEyHKzavamtVy5jKaL4l+mbYo78/g+U1m0qmADJJPNl90fJJRdFXJyQVweLsAHUNhxfUBHvm0//ZraZsg129kJBQJdDCufIXGtdWRVyxqlPIsTp0pdKaAXH/b8c7xIYriy+k1xdbN5tDFi5CabzhiXZ+DcRxkmCGlYptxLRKnryz4cYgGOn+rSkUgvKDTh5O4GN08ENag1bSB1vaIm7vVj5X94KqHqOzPaQGFyEzlMRaG/meOeGXcyFJsKehUy/aSfjjoqyoF7Q9ZNUUNu1EItuT+6gtYdI5lLFOHiFrdjVF1k1jxcKT+5nDWGd8O3Uqb3shgcpQCHsqggG1cIBC0lelQH0DIivHxIjXWix1oP9azxi/kWg5A5By+SvswfJAXge0//tMM2L7fwo3oCjyXT43TLdjZH1Rla9Brqf596AJw3dWkcldY2GhWEGCE0Lloz89D0HPbiWb9o6Sqg
- D7v++X53
- mub05WUPxjv0N+Nzop58GX6/YNKUcJ9SWV+hLCzHsRGWlavejcUrjt2Mxur9JG4u3RQQ0wSsg91a5JkOrP/3osMLSvsn4dRWbe/YQvjKHbX8e2YwXvb7vfO0bs0Nl7dUzrLamHaHAVTVefXF7OWqnPSwzdtacAMbAXsdEB1KxmEN56hmA34Wpwl8Mmc4c1TZj2Ftb8YJY7uKTo79cgVVcDHQ4xm0MD3qA5o9eIZu4CIbQ0qh4Exlnlr4wmCKKLPLx/YuuAiAz+G8YmFQTFUIh8zwCRMKbuKGEuHg9gP5gNVqd761OA+W//6WRHQ==
+X-HE-Tag: 1785881273-315322
+X-HE-Meta: U2FsdGVkX18IzLBtDLmX2p+hZGmqRnvynYPR2dMoit7jr7nvm8lQDo4e7EPBSFHb46mHqGYBFm2OgrXNho74DLpMjB924DPhQqGGIUyHzD/UNpgI6dcfMjOE6jC20qE6YhsYawyDCKNfe7NDpI+yMVyLhTZdd3hfkHOU9ca72CrC7XhlrSJxxE88Pa5BIwh9Ie2nN6qBsx6qYKnbydgRaHq96y416fNPRlQdPTEfemt/+zYkoQ0G+r9ppBibfV7N6t/2188IvVhdUMgnXaHEFx2ZMUIw+Aza6mXRi/4ejE8SbUTAcxTqJWbPjI/8X83pm8vqB/eJpUwaaQIz4dDzbkvTeHZEBU97dgsjwSHZr9MN+KS99YvP+9hgUCLgtAp/09rG1oQ1dUIdA/U7RSBXtyi66QZKU1KZXcju7aV2NU2J5TWi7pnvHBnPHdOi5RUxc1MnQyxyfcB+KYIin3NPKuhJZGDzVUdAo1rKBMUADYhh22Co2NBRugrptKyiS36F/sGW2glDddn/k6X2mdyXDWtwLWGmpOHC6D81WWJtdQT5Wxprsiqww8w8PYXvk0Iz6UCqO9c6lr3CJU5OXcLSlHOpcSMoWUt5ssL7ZdkhWe0bhaTI8k7k2JdWUNZc/wr6HqZS7EcZKAi5cOjRQ3N9dfg8N0iqW5+sA8FVmASH2bQ2Hd+QY0OhIm8s7/c1mKlhpCV7yCahIXSwxA0OTP/mMFFoCriQZyKHGmmlG69lVI0YIFBz3c1tG3BJDEn4ujWOJKQkWjYvnPM/s3mSmfzGLeIZqrSctRdJcJJ+Rt3YxGWeV54FLeQ5eZZ2b6O38+FFwDKj4BVMHJUDdpMA5OGqAL+eE7Ta2M63KNd8GMaim0abUrM6pEp3O3rtHXTbgug/oNwg0rW3z1OdU4SEzQcyJhIzcumSajTx0Cu+v6c80XqeMt6GNllu7sz0TmXQZjzaRTFv+sW6F7QePgFVPrb
+ HE9z9Eiv
+ o+tWlPie8osPDs0J0+C1QLOWssNfTcNMFQAuUVatqroQEEzJh/GMKLDogpzrvw8ipNqeIRgaa6HCsh4TlKtEqeNSBseN3q64wRKJMrs6CzSSCn9WXBqhBhRv8fLqAVbr1FWYpn/MkGIXSMRdOGuHOUBPNJ2OK9zPLufAA0B+YvHe4tx7t9u6Hf7MduKjRHUmA4A6qh3py/sNsr3gIMn0ZaiAxNQ7bcz0xjR9VNrTgdk9oslm+BRKzGWN/PvRf2yyPVBmHpqwt/T8Zyf/gthhDho/SSQZYEvBfAe9LzCsU24jkE8WXyyNzMHEFhl01/h27J/mGP9R/62au1USVVO9hJxrq9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,25 +114,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> The LSF session was not encouraging ([2]) and as an mm maintainer I'm not at all
->> happy with this myself, nor does the arm64 community seem all that enthused so I
->> would against gently suggest to Christoph to be a little more open-minded about
->> the the proposed alternative which he seems to have dismissed out of hand.
-> 
-> Nobody disagreed Mark's approach also achieved good result, we just thought the
-> series can do better. 
+On Tue, Aug 4, 2026 at 10:39=E2=80=AFPM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+>
+>
+> On 04/08/2026 03:03, Barry Song wrote:
+> > On Tue, Aug 4, 2026 at 8:48=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.=
+org> wrote:
+> >>
+> > [...]
+> >>>
+> >>> #define LARGE_FOLIO_ZERO_SCAN_MIN_SIZE SZ_2M
+> >>>
+> >>> if (folio_size(folio) >=3D LARGE_FOLIO_ZERO_SCAN_MIN_SIZE)
+> >>>      deferred_split_folio(folio, false);
+> >>>
+> >>> If, someday, people find that 1 MiB also helps, they can provide
+> >>> data to support it.
+> >>
+> >> I am very confused. Did you not see my proposal above?
+> >>
+> >> Why not this?
+> >
+> > Hi Johannes,
+> >
+> > For arm64, if the base page size is 64KB, a PMD would be 512MB,
+> > and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
+> > order-5, not PMD-1 on arm64.
+> >
+> > BTW, I assume khugepaged_max_ptes_none is intended for collapse,
+> > not splitting. I am a bit concerned that reusing it for this
+> > purpose would be quite disruptive.
+> >
+> We have to use the same parameter for both collapse and splitting.
+>
+> For example if you use a new parameter for splitting which is set
+> higher than the value for collapse, then khugepaged and shrinker
+> will constantly thrash each other. khugepaged will collapse
+> and shrinker will break it down.
 
-Okay, you thought it can do better. Did you only think that or did you measure it?
+thanks for the clarification, Usama, Johannes.
 
-The cover letter obviously only compares to upstream Linux, not to Mark's
-series. Are there performance results I am missing that directly show that the
-additional instructions have an actual measurable performance impact?
+For your case, where the base page size is 64KB, you want to split
+a 2MB mTHP, which is order-5. So would you have
+khugepaged_max_ptes_none to 16 (i.e., order-4)?
 
-That's really all we are asking for. If there is a measurable performance
-difference, great. Share the results or point us at them if we missed them.
+So, for example, once you have 17 or more zero PTEs, you split the
+folio. And if you have 16 or fewer zero PTEs, you collapse it?
 
--- 
-Cheers,
+If so, it seems Johannes's proposal might be the simplest way to
+go.
 
-David
+BTW, do you see any issue around 16? To me, it seems more
+sensible to use different thresholds for splitting and collapse,
+with the splitting threshold higher than the collapse threshold.
+That way, there is some hysteresis between the two, avoiding
+thrashing around the threshold.
 
