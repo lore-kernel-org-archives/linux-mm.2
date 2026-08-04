@@ -4,92 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C25C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B817BC5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:48:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13B6B6B0111; Tue,  4 Aug 2026 10:47:54 -0400 (EDT)
+	id C37BD6B0114; Tue,  4 Aug 2026 10:47:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CB486B0114; Tue,  4 Aug 2026 10:47:54 -0400 (EDT)
+	id BE86F6B0116; Tue,  4 Aug 2026 10:47:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECF366B0115; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
+	id A89FB6B0117; Tue,  4 Aug 2026 10:47:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C403C6B0111
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 021FC4011D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:20:29 +0000 (UTC)
-X-FDA: 85063495020.07.AE514B8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 71D801C0010
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:20:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLqk64lr;
-	spf=pass (imf21.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7BB356B0114
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:56 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FD081A00E9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:22 +0000 (UTC)
+X-FDA: 85063320804.28.1352042
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6D2E640009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YF8xGfBt;
+	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785846028;
+	s=arc-20220608; t=1785841880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wDC0uMZjurs3Uj84WLY9mj7POWsFSEVlaT546hjHpF4=;
-	b=xqyuS1ELVgO7XBOoIspmBmMXEc52aaRf8kUUQJf7ugglDRk3C9sbG1zu66g134j5CGGg8y
-	5B3MD4hjIfee0Ykn97lT1TNKm6T1d6dC5PAkdgmtPPu6iRA9ZeUSz79ybelvrmJ+OmJfBZ
-	l+QkaU4eR9RUYT8acBM6spNpZOMGlq0=
+	bh=LgjopR4+sMbnTCcng90CwjYxmC8eTU75ghK8mDOW5JQ=;
+	b=onZ1yaO+mBatVHpa+flxGi1/yZP19khdv1MgGiEsUC4Ys38IlRNTeaSsGghaDmH3tuIWIC
+	g8yZpQvbfo4x7TotESnH6pzg45MqtxdbAPvw6CvgCCprEX7I62obe3d5v3GXq/dxhpSZCI
+	kfpaldoke8cUwfa0Ji+nmwQv04SpXCQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLqk64lr;
-	spf=pass (imf21.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YF8xGfBt;
+	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785846028;
-	b=aoQPe9Z8N6pqCNCiZ83Kl50yPPYpXkrOSyeS4gY7YbtwAFhQXd9m9p9F2BNHzIPIPGcMoW
-	1a7QnXPv/gHNHYbi7ilYt1WM2BFlXqKnxAdSZ7Be2q349mdNto578amsp/JkOEVHWXaquB
-	KStvM9ZE4BkthBW7fGZhrTNSw1tEm2k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14BCC60A6C;
-	Tue,  4 Aug 2026 12:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFB21F000E9;
-	Tue,  4 Aug 2026 12:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785846027;
-	bh=wDC0uMZjurs3Uj84WLY9mj7POWsFSEVlaT546hjHpF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CLqk64lrwlUiW+LniTHuHSiPL4Zm0XIbOhURFl/WyhRY2spYMNwEB/vwz2OkYatpT
-	 IAA8d9D3VZY5W/YB5yEf42UzMJqPhG63ocC4Jp27WAF5XOn9gh8OI31jlH3VqMZUOA
-	 EdiEMY//+FE0Lgr1V31T0hODHGcZ7ThWe9QbxmJk79pfMyKWLA1m+eq3EsTbnL/WBn
-	 ZWBGHGGrJ5kumLdrRNPacNFIX8tcAFbJDbXQ4pD6mYWZbfNiZl+YLHEv7ilL5FxIYQ
-	 YeIjia4oZGTd8UpM14pNAkRcfLxl9DVmrbSjREoNLc63uXa762pimbE1IWZcdoZVRL
-	 9vYuMUI7l25uw==
-Date: Tue, 4 Aug 2026 14:20:22 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jianlin Shi <shijianlin11@foxmail.com>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
-	hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
-	ziy@nvidia.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_alloc: only update lowmem_reserve_ratio on
- sysctl write
-Message-ID: <k53aljpl7v7naqs5fj4i4po6tu4grkzu5nui4h37orwt6v7bqo@sw4frf2ystmi>
-References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
- <tencent_1BB7A5C4D5EEA67346634417753190E92A09@qq.com>
- <20260801114434.232c97a74d9616c43aac2456@linux-foundation.org>
- <f983f6ca-7d45-4316-94bb-8b4d0fd58079@kernel.org>
+	t=1785841880;
+	b=h4vhd5BDLM0DHmmd2WFTWWUdwemI+7L64+VoIgjPHMLKLXpxadepRS5Mk7p5YpteFrAnFg
+	iqp7Aoj2hWNCNDaCY6NdSzePUJziL3XVUaiSQfyds5kK6a/lqJyYLLWWi/mk0XR5Jgo5Bw
+	Zc6VkBPQVPKY9kFSyS627lH6ZAHbK8g=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d004f135b1so45309705ad.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 04:11:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785841879; x=1786446679; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LgjopR4+sMbnTCcng90CwjYxmC8eTU75ghK8mDOW5JQ=;
+        b=YF8xGfBtwIbbr1xI+mOS5g0XyIEp6XgcwaxHhXf68WOBsrPNA5Wlxor0trGTn93WJz
+         FKoszKT0eNRtU+53zE4OztQn7doJK1YsDg2Jl5pFfVjDCbfp3WP1PGweGUrdkIqXaofl
+         VMgzYdw6yWeHqTZrRFIdlPOBhNE/etHJOuhH7gQX98gc/8JROVetZL85sQeqV15219Yr
+         mR1LswYV6rMKsjBn1qGFQErFBlzlGY0EcATEyXpgGQnRura/S56PzKLeRqFEFV2uvyqf
+         ti5DUoWBcHGnYBLlCKuxxIfVQUZd1gL7P4+TuRori2H6PJ8VqVZ0jF8zmxsaMqFqhPgv
+         ZJGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785841879; x=1786446679;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LgjopR4+sMbnTCcng90CwjYxmC8eTU75ghK8mDOW5JQ=;
+        b=G4IGEMjQ0qlFzYwefxIbUYvegtKQ+MkZQEA6cxxMFzhbnt/Lu6hL6M9WQ8BAoXrM4b
+         2v6RUALI4izE/22rRiyLEK3fXxZgHvtFMOSbIHgsxJqN390tZY2h5AXcqIP4XYqbdI3H
+         RhtVcN6lWZttwgrPsTVI3qyi0Xv1gUZFLEwe26sqBDmNhHsmzNiqWz9xKNsYvjVGzb9i
+         KByHxZvLNqtzUgmiG+nIhc6/NpVZDB/2rvZQFdViKeJ1u7Xvvl4XLE3+rja317mFFRG8
+         zrFeO7VNKF5dK5ytSL79QE4Gz0Jbp+qwnUD7nbPcD17fD103qZgav7p9BXyuBO2nQeXI
+         2uQw==
+X-Forwarded-Encrypted: i=1; AHgh+Rog27VxXzoDa6N/G/yOT1NPHLL4fpBoD5mVAitOvD4boSo/fvnFpTCD2E6stMq9zB+Y+WZeV4knNg==@kvack.org
+X-Gm-Message-State: AOJu0Yz6Xss5fNe1lFAgFNq7TfDCb/nbl0GZlgtjQpga9bqWW7cCNvXW
+	WWxm6xwjxZYv/UNK6eXik+8BGcjv/a3sF5138fM2gOmsGoHbyG21YxUV
+X-Gm-Gg: AR+sD10wX7hpqa+OoM48ZxFS3Pu3m2dAHX5d0DEtc6WaDKNPnTWLsIzTRHewEbaLfYT
+	8x0aOkgAK3PoDFbh/xHGHueoeXLxNhx0EpMdk60Cwsy7pP4OFN1zRQERRT3AnIoD3CGa1pR6nub
+	oNmEERLH8TsooTNIattQlPcQDySW0eTmeetI79i6PojB9DGr63lDMHgtrqSdCRVbapS8wANV1Ow
+	EP735JjZZt/vxHbsp2pAE0GMk+igvDDJ9RZFDcofcPRoNzyYfGRdTATIpYYamIcAhNfVOPo7AoG
+	9qv+A3hngRtb++gnzomg4+dlD738HsfZ/zKT1cIY55NOlbtQ3Gkvb6Xw8ysh7Kqj4MHzmsSXI9h
+	UPb8cIdJRSiMQNakT6OtNg/3M79bQ+YBX0zRm44Me3yOhon9crD0n2BoW6uTDjPXJ8zUlvEvwM6
+	bDtOehCCY4NIp0Q1Jw7BUP0yszK+8wv10UByl4c/CaPZ/EihW+k6pY+6VEGRAajdxG7wbxF1hkC
+	Y7WP2lkLgHdvov0tqbKiubxOKsegKlcHA==
+X-Received: by 2002:a17:902:f541:b0:2ca:5970:732d with SMTP id d9443c01a7336-2d0524810e8mr139202435ad.41.1785841878309;
+        Tue, 04 Aug 2026 04:11:18 -0700 (PDT)
+Received: from NV-J4GCB44.nvidia.com ([203.18.50.8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9f9370esm5403285ad.8.2026.08.04.04.11.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 04:11:17 -0700 (PDT)
+From: Jianyue Wu <wujianyue000@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Jianyue Wu <wujianyue000@gmail.com>
+Subject: [PATCH] MAINTAINERS: move mm/folio.c to MM CORE
+Date: Tue,  4 Aug 2026 19:11:09 +0800
+Message-ID: <20260804111109.393127-1-wujianyue000@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <anG0QwQddFNo8PKJ@lucifer>
+References: <anG0QwQddFNo8PKJ@lucifer>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="btblr7xwjmfoogpt"
-Content-Disposition: inline
-In-Reply-To: <f983f6ca-7d45-4316-94bb-8b4d0fd58079@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 71D801C0010
-X-Stat-Signature: mjznj6sesberybogxtuifhfudk34bxic
-X-HE-Tag: 1785846028-335413
-X-HE-Meta: U2FsdGVkX1/gEz/N3+4duTXu7jSSxAQcV18LOQ6wZbbKgvds73++nzacjPXNBuJJj1giSVh+no9AA6ZrU+G1Crp5KQA9tWYVXvL2afz96ZScOTFRn1ZwXY8K19tsEQk+M5vL4hOYJ6F/mfdioq3j5tcDY5pLKoo+maJaX5N1tFv7mKG0pNjuWjx/fOG0zDtSEUcQq5dZcZWkukYU2QFCXYikzelJU5jxK8lOeU53Csd4BwMvGAyK9HsMwE25fcsBUqq0QB7v+ZlHFBsE3Nx1Mhva77kHBOIJ56s0/GR4XhsC5AnzgWyLQSbLcXnurIusq5RUJIBhxTpBLpmY1ITbA6sHHYfDMyE7Ri+EZw1CL0AGkt1HSQC4NOQoJe/XyCge+Wsu6NELiT4OMtHG0mmnlyP5w5q57hdTrUevhaJZIaLS+13sKzTtMRUakL+l80Uqq3c7/fulIFGGulTJAw2HmLGatF2UevqoptVVbh+Yl3eYsuaDCCyRcg72Eu1LXtDvxT5rArFQo4Hzxqh6k9veD/m9gJTvvccsZevrBo2nnOmsNZask10VZ5TCmUpthHHJhA6IvweB4Qg3Kmq/mNdlov0gYdIYtmhs2a0gt9WOjWQLTfWt7WwlEKQYskIFuzw3RbpxqHNte1fWADtcWXrjSY12fGTUbQEzcBuMViPhlYBH2veumv0zLqrffYQG8ldTkQpb1OnWuaJeAyxRoOWrdIYbng5tYC5UEAZBTgj9lD2qr/w4BksGqEAf63BOqkLij0ZJ3NY8yz2JMPgm6Rh2fNNBy2S0Zw+EMoBLu0iUTueykLwhbR6ruuNLxOn0eiEmGHFZBMT+J8nLiiRs9znRkGfp9NoCQn9N0CdQ7Llqar6rbKQ3yJ0sai3d8k3gEnddAhmR1SAxnl9NzTolv8LWF0gfRLfOoati26xsNw+o6WPBKmAyAGGsO+ZNsp/QOmw76gZBAUnHgy2mRZStfit
- hS9OaMEk
- eS/uFvYx/kTHFbegLcrBZTxRajmj0ZW598mM8Lcmc2g8RBYFytAyQW/sEWcRKSZtBm8l+Z9Z+YpaCy0q9DrIFcL8BWlRLKuL815iDyINqWlukkNbHIuSQP4+g252dVqhBcG8WUCN7tuY+ZEzDBn0V/hA+utBJaort2q1op28R/6KSA1Wyz/1YLthEKS8iFKuLsbMtEcgyOhJLuZaN0+B2EaIe2bdqkPMhjNEU8mJLnjXi04IEs7WgLBKd42UoLMz4ehM22DCUhFz/PD9NCIW5kMnWNLtzaz9RALOvxGbTifQhHPZMu54yeggUbD3qWUASWRR3KF1DdnbYpDiN1FPICeR4Wd+3BIil7UZfIRhfm1WiiPDsVfAwlqXk8XC+asUlEcKMXCIK/NJWa6gRu3Xo8KkDyWXnIdPnvSxUCN+8kNtYdbPGYeuCv4Eb17PEafRlywBpRVWGPfpdw76QSPaVC2PWMNmtqaRYUFZ++LuWOraKlXliQn7UY6ZWNEnZNMtba01Vdnoxjb07NHNvp0OeGOJNR7j9koXswXSV
+X-Rspamd-Queue-Id: 6D2E640009
+X-Stat-Signature: heb73f48nsj41j1hnc1izpctpxhx381y
+X-HE-Tag: 1785841880-124932
+X-HE-Meta: U2FsdGVkX1+TnWnv8Xm9JwBt010fngCHZyqj1R5aT1GkzA5FKIntXTTfN84x292hCPArXsU6dASlKPxkwnau9EeN+11i/TI76Zn1WU+Uf8RFIFgAFkAEFcPVV3QRv2SO8uOJEwiNOEOHeN+lcmZvStgie2umpnA+t1FWBXTqehN7AmQbnc61IA5OGejE1ZRViHDrP4HCq6WkOdeAdjugW47ROguBk2exvSgIdWrE9kFrV6IFZTnvnxNTeabSTDGoZXKBS+/uFgClvl9W/yswRM1A+ZMJGv9yMlqPrTFkzHcEKgZmOPVY6GSM8E5y/lBRHITWXfDDxRsJZpvYdiRLLUOezCO+NONtBv97wc15zfzb/0qO2e4TgWBmmobTGpJyQWy+CqgLaEZNqjTAXsAyxYZqq/Fd2Yfscf9/7kbZ4WvgbV6/feJsWrBzN/fjqkb6c9zWwdyApaMHVDg5gi5DDaFTAXxtfe2OwhPQFsfHomZfFXaO3LdanQYICszEOaWiml9Fp9oUdDFtVNkR8TvejE58Xg5tmez0ZfNFfWp56KBOcSXXJ743v0wbHFH1Ms39Q/87BffBh01ciPLm/PvWks3ROL5moLVI9u5It3LgynKCphgplnJgRCtGpjGjoSXRUK67ahrZ+bigIJcTj+RaEv1HXs2LjK7mvqja7ULUk/MU79sYRw6rBv2Tde9wZue52Lxh4AUJvM+1yKA7kMwzlLMw1YAHTSfkxnv4WJ/XMTqXR+mvJq13IZY8hFhERWiT1KhqykdwHHlqNKkF8RGnoF7tZDU1M9joIzE1SoHiWCMDRs26bcAWk8c2so+WLlqYNZvJbt68EPzqxRH1I2zuMHQrb5gpRQ2knGIeNxjd5GONuwg5g41391nrj3+OLJD6B21JQhGqFEEzxc1UehYWnfYXZMx3FFV5b360RfegjSFol1+8oqqbrjluObkCrNn6BAYOnuFpRV7DVCxn8an
+ Xk+hCOFr
+ O8QH094VjZDBMtcvM6nEQ3YF7pl5TxqqnG37NyXx61fL1N/VrcZml+RWxIgJJhPhePPUVXbRVIQXzTzdhIeBoKNIHMr7O73ZhPi4wX5f0hiqq67burTTqIS+GxMnRpOhvpLrP0VkQioH0eWRFl5cLDIOdYGxv5bmFuiB7qiUldklyxPpjXqpmGeDn9j9PW8RXUg0QrjE35bBMRUUYKD7OrDzaK6AV+RBlIjE7hRobQ95gax5frelINdKyhDNtrHZZcM/fMIiFcuc2xRh+U1THqfJvGZvqIOUhh3Lkavh6pQl3DXh+tTFGNag8ok3lvH244w0eZWjMKtpultGFKFx2hTj//w07BJAMotT78hs5BtvN6/fWtlrnRPFVWHpmF2VfceSRtXd/Wa8e9S8IDjlhqk/2JmyeYIUtcyRQ4H0a8e2nx/YsQJjY/CYVV1tccBZbfsziwUTCm3omasP7ysT40zvOGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,89 +136,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mm/folio.c holds generic folio LRU helpers, not MGLRU-specific
+code. Move it to MEMORY MANAGEMENT - CORE, next to
+folio-compat.c and folio_batch.h, so get_maintainer.pl routes
+reviews to the right people.
 
---btblr7xwjmfoogpt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 8ed6d702d442 ("mm: rename swap.c to folio.c")
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Mon, Aug 03, 2026 at 10:27:46AM +0200, Vlastimil Babka (SUSE) wrote:
-> +Cc: sysctl maintainers
->=20
-> On 8/1/26 20:44, Andrew Morton wrote:
-> > On Sat,  1 Aug 2026 23:11:25 +0800 Jianlin Shi <shijianlin11@foxmail.co=
-m> wrote:
-> >=20
-> >> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
-> >> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(=
-),
-> >> even for read operations.
-> >>=20
-> >> Fix two issues:
-> >>=20
-> >> 1. Propagate errors from proc_dointvec_minmax() instead of always
-> >>    returning success.  For example, writing non-integer garbage to the
-> >>    sysctl now returns an error instead of silently succeeding with
-> >>    unchanged values.
-> >=20
-> > AI review suggest that this caused a new problem:
-> >=20
-> > 	https://sashiko.dev/#/patchset/tencent_1BB7A5C4D5EEA67346634417753190E=
-92A09@qq.com
-> >=20
-> > Not sure what to do here.  Perhaps pass proc_dointvec_minmax() a
-> > temporary then copy that into sysctl_lowmem_reserve_ratio if all
-> > proc_dointvec_minmax() returns "OK".
->=20
-> Seeing the v4 [1] it seems easier to keep the current fixup code until
-> proc_dointvec_minmax() is fixed.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2657cbf6df90..e9c8567308a7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16990,6 +16990,7 @@ F:	kernel/fork.c
+ F:	mm/Kconfig
+ F:	mm/debug.c
+ F:	mm/folio-compat.c
++F:	mm/folio.c
+ F:	mm/highmem.c
+ F:	mm/init-mm.c
+ F:	mm/internal.h
+@@ -17091,7 +17092,6 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+ F:	Documentation/mm/multigen_lru.rst
+ F:	include/linux/mm_inline.h
+ F:	include/linux/mmzone.h
+-F:	mm/folio.c
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
+ 
+-- 
+2.43.0
 
-1. V3 -vs- V4:
-  I would prefer V4 as it actually prevents the partial write of the
-  vector in case of an error & returns that error back to user space.
-  Whereas V3 returns the error back to user space but keeps the partial
-  write.
-
-That patterns of using a temp ctltable entry is seldom used but not
-unheard of.
-
->=20
-> > But really this is a flaw in proc_dointvec_minmax() isn't it?  It
-> > shouldn't update the table data until all the data has been validated.
->=20
-> I agree. What do the maintainers think?
-
-I agree. The arrays being changed are not too big so we can easily have
-a staging variable that that gets written when all validations are done.
-The only "con" that I see for this solution is for when these
-proc_handlers get used with temp variables; in these cases we will be
-staging an already staging variable.
-
-I have added this to my Todos
-
-Best
-
---=20
-
-Joel
-
---btblr7xwjmfoogpt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmpx2QUACgkQupfNUreW
-QU8Qkwv/fPz+ltet7pLkvz28K9W7ZeeQ1dzKM4/bQdIYZxqlMljMlarMc8WAlm1R
-7KDlkxnxe8BT2+RuQJLihpOG2lWYpyRuhBiGN/YtiM+1NJEkTtqu1gYL7C218UK6
-MwRLPsaejC4WK7IqZlvC1xjTuexaNUe3RcLVwDmxNc+I+5LSjcuku/aPb0/o6i9u
-MXgvxweMRhiJ3oZ0WhN+VZayLAf4Nxz9+1qV/24mU/khekmBLficWy+KbBbrKRrp
-lUqNObbmUseNJPij/Vx9+SkZoq30id5jb1bOoHcoI0KmO7VbTSLoDuJxXjjy/Lnb
-+yBZ5fdevWFEFdYKsvfvYMyfBMo/fcnHkuXihKbn9FG/zKRaWssr/3H8Yi4SODyl
-Wk5Bpr8TFuhY7RbzJQ/rb4QgjmdYo7uaNeHz6pieddZBL9Cqj0K955Pc22Gwza+z
-Jn2CgWwRkvVQnPKrbWiUYubcyf6RdN6nLTeiIMkC7wVwVrjbh/pwfUzeOUrtM4JY
-rH+bzQjU
-=stmO
------END PGP SIGNATURE-----
-
---btblr7xwjmfoogpt--
 
