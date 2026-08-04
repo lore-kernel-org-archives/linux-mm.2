@@ -4,139 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6BBBC55838
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08E59C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:34:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2166B00F5; Tue,  4 Aug 2026 10:34:05 -0400 (EDT)
+	id 2A8226B00F7; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B106B00F7; Tue,  4 Aug 2026 10:34:05 -0400 (EDT)
+	id 257866B00F9; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA60F6B00F8; Tue,  4 Aug 2026 10:34:05 -0400 (EDT)
+	id 149E36B00FB; Tue,  4 Aug 2026 10:34:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90AFC6B00F5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C998A0838
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:49 +0000 (UTC)
-X-FDA: 85063458018.30.86A7CB5
+	by kanga.kvack.org (Postfix) with ESMTP id E7D286B00F9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:34:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D83DA1112
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:33 +0000 (UTC)
+X-FDA: 85063832826.22.188B7BC
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F1A8540008
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cxTqsXHD;
-	spf=pass (imf07.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id D1F46A0003
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:34:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ix9ZmZ4W;
+	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785854071;
+	b=rOnVUDwyWTBaxTXH9/jWAl99yyyAnKbg7KxrS3QgsGmS1PT/yBHsTTFASoHajGET4wmoI5
+	XopZyihKIVyLUPYtYzrkMPreepUou9FEVFBIuq7nm+wQHnPdMuJl2b2Aj+3YYpPd/ryAT7
+	+z7qu5jMS+nzKQMhL4Evq20NYbA9Jf0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ix9ZmZ4W;
+	spf=pass (imf15.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785845147;
+	s=arc-20220608; t=1785854071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
-	b=0pShCD89fu/geN5wKmrH/9xd/umgbeowjh7hmc6/0skA+d35UXcBvYntF9/09FXZlvV09t
-	J05aufChtcW57o+xPq2EyQrMueZkIoQV456vXhDc9Z1qgFcINraHldC21JkBtg1CYsmCYd
-	8NKTbsGJc+eyx9I/OhDXzyl81N7CUes=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cxTqsXHD;
-	spf=pass (imf07.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785845147;
-	b=vbUEaBhUC2nscdTtDqN5Zwf+P/M0GGluyEJuxaZCktVf5XWMSXnlU5/UD6FET/s7jvntPL
-	DpzTIT3xKM7o/tMfv6yOTv5J5C4voEDQnViY43vjFZ8+9iVoWe6wU17b6vR5cMvj/Uo0tr
-	pNcPukAoum21ajABkw7dySNc2e2CleM=
+	bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
+	b=BdpKHJWZc1mcchJz/mytqXl+KbeWSu8AZyqae0o9DJnL69AOGwe457Skjfu5HYFr1vmGlb
+	wfpidnvctwiEFjXzk7XSCjWT2l5XgOFrFr0hO1O5YRlfmio8dDmoDHDS85yy/+9ZCWjo8/
+	G8PxaTlK5J4sTtMe2NRoxqdX1tai1Ug=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845146;
+	s=mimecast20190719; t=1785854069;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
-	b=cxTqsXHDlToD5LRWMCSUNB85DJXYfEmWUmCb8W85muQTWqMvFLIhJwpygpXXpqUPYhi+96
-	H4dCxPtrTH4BuZF+G/USm//9Ob2BmNFWz1Rp/QW2pYZKBgWP1WGNmeb0MuQ+tk9lxHQdp0
-	hvIFv1QlEqnpTcwKG7mKdFoDSiKPPHk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
+	b=Ix9ZmZ4WRYoxds2pDL9KA7iey9IBtFV12pU4CqvvtADUFN12AJW3fpSlwXBbu49dt0ZdJ/
+	wgX2HYHi3j9vL7okwWAYWIkiWPbfoO4jj6NnWVviq1H97WQfRTNHIsLFV/zuYsBkMaZOhN
+	f/7tVNS65NWFETbz9/J6Z343Rs7pqa8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-64N1BX6oOyyPW9mKVoMGpQ-1; Tue, 04 Aug 2026 08:05:43 -0400
-X-MC-Unique: 64N1BX6oOyyPW9mKVoMGpQ-1
-X-Mimecast-MFC-AGG-ID: 64N1BX6oOyyPW9mKVoMGpQ_1785845142
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495529a93f9so33867235e9.3
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 05:05:43 -0700 (PDT)
+ us-mta-211-Y37kaKJAM1eLsH6nAfZsmg-1; Tue, 04 Aug 2026 10:34:26 -0400
+X-MC-Unique: Y37kaKJAM1eLsH6nAfZsmg-1
+X-Mimecast-MFC-AGG-ID: Y37kaKJAM1eLsH6nAfZsmg_1785854065
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955d314945so18084605e9.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 07:34:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845142; x=1786449942;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
-        b=qLYOgvbNd0fagNvnCi6Y3O2wUXWZPsurXvINmV9lZXtPbOyI26SGlndTmJFyOzFRu4
-         D6eTFypArFaUT/TJ2ra2Ack3pvJk41gp98FMurPOtjUGaC9BxerGmiKDoUO+cMrTn0yz
-         +BPIIwN3KRSH6p8a0j/R5mAZfJgL6ItvOwR+9PSKzSjc9sQfDfu4DdTzZYVaADBZ5Ffg
-         pjkRkTUBi8m2Yl5THX0YJ0Jk8rqMI7Yi0jnRnYKiNYpW6aIYoGifGbz26BqnsObwYMqa
-         ueehjWnfzWFB9JFGzl1Mh5eT48ZerI5wnElOnVIhIE+L9E36ZRnZeCrK8n2K9ru87+IN
-         KcJQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrxzjg0oN9/AdUzvXLW0f8ioef+DR06wXTqiKZtRdAkt0uIESUp288BocAA9c2IZin6+50U8dNJ2A==@kvack.org
-X-Gm-Message-State: AOJu0Yw3C6/3amrzHAcVBavrfjuDIobObZwDJX32OJy+p6e/uZEzETa6
-	enJaDRsgWHMI9BeWmLl9VGD1U4L/U8aqqnC+PSjlR4WbcB2wPwUDulmkblx3gIfX3EacOA9XMme
-	tmkyp/kbJ7nwACuF4sJyy7IpIwii54bcAsT6mDDLiS89PZxOel3fUANXQqh8N
-X-Gm-Gg: AR+sD13x0q2xHhI1VnVnE8DpOvOlkbGdEbnZQ+1EUbQQc2FyGqaT/q5mdwyrn06QJC5
-	mDLVC6GCdsmsNg6G4s0qgUDjXI7BI5Qm5AuolaIG30vt205Ejo5nZ411TnERLlmr7+qfHi1gU5R
-	en19DTPhCBqApOtJqOYKPSlGNqHPxPS7VNe78NqoR1VISYQsMwRnU/1ANYChBtU1w3Sp7kBc4Wg
-	awwuHM013dxbDZyW2UHsTI1uTcWNZwLeNikOPErLipbgV/dUOht1xfs2MQ5ohlRIyHr2QWCm7Kh
-	1Pa0asziJQtDXO/HyCBIBlpbxVc06b93uhB9+K0TmWAefeIg2EnOYL87XWOmffrP3XXptuin50N
-	jLj9UKunmmLLX3uQEX2VHVcBAXoQLCL1kwJ8uHljgu1O9E1hzCnVopD0RAv6+FX22OB+blVCHmE
-	uJLwM=
-X-Received: by 2002:a05:600c:c8c:b0:495:4589:707 with SMTP id 5b1f17b1804b1-4980c6452f7mr312396145e9.5.1785845142101;
-        Tue, 04 Aug 2026 05:05:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:c8c:b0:495:4589:707 with SMTP id 5b1f17b1804b1-4980c6452f7mr312394755e9.5.1785845141410;
-        Tue, 04 Aug 2026 05:05:41 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949fc2ff6sm79768615e9.1.2026.08.04.05.05.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:39 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Fei Li <fei1.li@intel.com>,
-	Huang Rui <ray.huang@amd.com>,
-	linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	Michal Hocko <mhocko@suse.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable PTEs when mkwrite is in use
-Date: Tue,  4 Aug 2026 14:05:25 +0200
-Message-ID: <20260804120529.1730187-4-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
+        d=1e100.net; s=20251104; t=1785854065; x=1786458865;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AkpbKoqkLE2ago1nKO8zeKKdehNgTrIPaOMhneanm5Q=;
+        b=SakyKR3vrrHf/m0UzYm7SDZvKUWP8PNzzvbH7pJUgngk6QP70vvcyYBQ9v4CwUurQa
+         hw2OCC1MFoHJSeEN/KSbEWgJe8sU2SkEG0ul8cVi5k6n1uNRdKaduDBxDwrR6ZMh+wvl
+         pxEA11gaCsYe2ctLYjygl5017nHJ1cH864jeLUxshEp+Tjk2V857zCuQhk2OYbt1yR+g
+         mTVR7XMOaxIcB3uYLI1j2FLbaXlMxHiLBbCscB/awNJ/6zGgq9O/BKRfaTRTX6p6ZlJU
+         2UaXFqumUP4lIYyCO1UnVCSPDEZIPCkr59ZFlpVpro4a7cxF50fIYAPmjjAZdCIc5JMs
+         ZaaA==
+X-Forwarded-Encrypted: i=1; AHgh+RpTl5GfXwc4D96WKuC56rV/pT3i2FeJpZbZO9XH9/+GoDoxTDK8OhQ5vxq3Ob3ZSgy0fGQHLkf0OA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/xBb3vZsp5SLqEE/HvPlClA9z0Rhw3d3bwzMvEEaScwYNe18X
+	AvtKR+HKo9pg9wh5sC4+ergcfHLcYabAPJSXNR8GIMyDv6wTtoStdPyF7bmvCQYhKMyPVJcAuaZ
+	XeWFY0LfuV504S7bGgqi8H4CbBQ3Ymsr/tB28BDUD8OiOb8tLfMIfpaiPtacwxywLj4890R9hbs
+	mkVrRBZAo27fjfXJA/RNzXPR2a104=
+X-Gm-Gg: AR+sD103NqmkgYJaHsdujQUSUF7KXeH3Dqg3D6G6FPjV4xZfhEesRiC5WU8nmTU5IHr
+	smLs45L/gsHc9A0u9BVga7JEqCo+nvodqnyF2IISihuWu2V27WDXk1q84L/sL5CPr7pBOI/4hDu
+	mG0+AHHeKqiMTcJ+7OKLMXsP3cFkvRJMeyNW/UzPy9H8i6lfnmipvA+lcjBqipBcrwCa7Lzhlbi
+	L6ohPYzaO1FX6v7F9IaFCpgPXTr8dZkrLFA1ThEqwoaKlAtADdYB+8FMWE=
+X-Received: by 2002:a05:600c:4fc5:b0:494:6baa:ccef with SMTP id 5b1f17b1804b1-4980f23257cmr337369085e9.11.1785854064950;
+        Tue, 04 Aug 2026 07:34:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:4fc5:b0:494:6baa:ccef with SMTP id
+ 5b1f17b1804b1-4980f23257cmr337368035e9.11.1785854064514; Tue, 04 Aug 2026
+ 07:34:24 -0700 (PDT)
 MIME-Version: 1.0
+References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-3-pbonzini@redhat.com>
+ <20260804161549.4cd9a66f@fedora-21.home> <20260804161850.58c55c6e@fedora-21.home>
+In-Reply-To: <20260804161850.58c55c6e@fedora-21.home>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 4 Aug 2026 16:34:10 +0200
+X-Gm-Features: AUfX_my1qzxj9_dJklyDF5G5un-IXavjOuTxcyczoqFAniCfVGichGNEROtCVP4
+Message-ID: <CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Christian Koenig <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>, 
+	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, 
+	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, 
+	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _RJU3TIsKyOHxSjmV4zjY8ByPA85xKbyT62jZrTjN0g_1785845142
+X-Mimecast-MFC-PROC-ID: ayMQt_SkPP-Vw9GA6wmoBfpAyzAd9SPIqmjvDmW-xBw_1785854065
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D1F46A0003
+X-Stat-Signature: yrynnze6gsq1c3yi3pmzg8jjjkn79b6a
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F1A8540008
-X-Stat-Signature: 946d9it1b7mf3t1gzijuc3xfgpddp6cd
-X-HE-Tag: 1785845146-728343
-X-HE-Meta: U2FsdGVkX1/8xSzt+5I3us/X6zC4sHObvDMKqLfseUkNVKvzCZhCVYbQIre6oo7ztE80HRX+cnmuy8bSWLWrDd+Ee5N31ujo7E/Ty3/dAZc9DF3aqd6QsJeovcA74hZws7AyoyF8IVdTR5qsIfCNeSqJ652ZktldD8EdXgTDh7ecxCs5KAiVH/Y/3Q5fpKL0/MpdSXpnhte5erSQ07T56fQyy+uDDopbWYVJhQMnY0i7E9EtQeOqHSxHId2WsERpIVSuESlq7of0qvTYNebNp0kJTB1W+fkQit7jriBdodaa90Rhu3+NpmyxZbbtD+wJ2yaKCbc0cR6c5/aZhUMfHQhqNpFeb8yWRqXp4y5IGMB41dnvNN7a4WIaOHIEIueKki3SR8f1W/r7cEepSWsrxlcmgDy1do7vr7zGSOcNzFJGmrqhoUZy3UjtN8++teWKaO3aAalxhLlsdlzN3ORuI0/Y0kPII0fTkirnnCLOb1putbTbU2E3gPEWZhNlLe1SyJ51/M4HHJq33/5vrRnw37UyWaUEwASQpaVCngmcwGkCr0hncC8kf/H/FN+yo59HN34KnOjA58yppzgvqNuFhsMLpRygkVZAFeZ1tzSDorPegS1rut06jHn1xRkV/PqdkXEkQupyDMrmD4dRKfBVFK8zXWIUg6KsSbeSd7tFW0qCTlIcNEiI9ZyyvihQzIo0lVEOgj8FsktxtdG+5wRF0ixoWgtSKl7TWNEJdKkzgO7SfXjuYoPOyaa5JdgBDP7PeB+3RrbBi+Jm0ZC+fyPNpPXzL70LzNK0DpLoxgq+XI6//R6bYIc4Ug14/laULAf/rl2p0dhtkIAvLsGRXKHntyl+RrWArj2oRlIiL01HzTfhHsD4e72uRpGRXBGLz4WA5Z6bYvwBqAL7klDdculXTfM2noqaqeBYOwwXnER+81Qx5YfBhgsNv3Qw3rd62v8iW5tll6w+m3/w1ZQ1ix+
- 63KJbS4h
- z4N6nhlVvvb2IH9EcM/f6I2TXMEiZFWl5nmy24BBJJTBfhMoU6vxmSW5mSkLPIQc/rc0ZZpi0sRpvvIKHzzEaZtWT9j6iz0Geaf0zu162gixwQMO04rtKiW7pGWlaJXtpPlD9fE20jCFGsnBypYCeA+fKD/IgzZ6EJ5uZSxrEt9pfNXRZW6bpyruixM+5jZHxLxDOxr5fxRnYOYeutNvMueLzkDXZIpjYkJznvCHV+0htyiNoLtNBLPzrPXOnJrJo0OjJBpXqxQ8lfXxJL2UHVllTMHPUINT0y80LrXH4e96qtt5CzMmY6z8vjH++p5YWosX+SopOlAms86vFtJJN2J/VhLxDf3yaiPZH
+X-HE-Tag: 1785854069-556063
+X-HE-Meta: U2FsdGVkX1/H3n9DVNhwE8agY7X7Gjyl/cD/aBZ+PU//U/WOgUFBGaeX//PsXPg4g6aujX6ykoJmQ5ok6KaZ/TO0sEByV0rZUpqwtdlsmS6qgZJ4cAgZCMz9CJmKJwO6QYlGKPzfCE+It1egUQOgo9/f43FzmEHU4kYN1ysVjI3zcv9Aipd5SETn3UI0AjpplWsP95UWGke+23ekbS8REqousfvIILNSOA03vQKKCaP4qpJnW+LGDYbilVVLW2lzY6DCqtV2bH+YYwqq8klEJF4/UghxCq3BvzYJhz7FzqiL+CAmbr8lTzrSjPx3cpzfiy+ps7noDFlYfZXRj0+LLIb/xSS3J9OvFVFwRfQx/oVpySke9kNjudoRiS3De7O5ykY9OVDR4QmYJrXBtuyj9U2k7FZpqPkYPfqhhikZek6h7Xb6uUjGhfa4kulJGLhOex7zo4VU5sZ7K3Lp8QLbsRjZQHhwJVbDq5SQ4D+AoYiSh4vO4hZGbYqZgq8QBJj884jGl93CZihGmwNLmksuvDyIoaaROpzpfX768D/LzqyyKYaZTEXfa9VhNroRwBMKY0GOYT/Q0o3xmReZb1WuEvSgVPpK/U7F1vMdLFVY0VNAEDKrA8cIoTnJjyPK1k21qLzUkZMvIQ8EsV2X+Nj+dBgGow8Oel7qnwgIgyx2IWwg328lPUIMdfpOy31ldT9L7/MonLex/C/RSLnIb3/Em6Ca+VBsVrPUv3683osUjVj7aZQh31d3g9qiYF2xp5TJh8b/iNIE9OxIlwqJhbLADkRHoyMRVgi3jHZzBtJ9ylI0fycK9lMEZokmnp4Rikx1rKdRLun9TwHSzc3tlFkOb+pw0EHjGxKqLI+Afay3A3NDWXlPIww1NwrsOq+gBaBHC7kzcsozvTrL8T+enfYRG53W3UpWE8RGSus3bNFHBCVs6luHVsJGXJCw6jS2FMsNs1+CXzdi2ydmxaVWkrP
+ Rrld4xW6
+ Z/Pr5dorhvlj87cKaAUT4ciQ9FgCqYAg/9Pk8qSwyTtgnaCP1PwWCmzGMRHMqq8kY/mobdkk4xV5+f0ug7TAXjSfD2Q0GBFYzaW+Mk/V1471KAE/pSl1fScnAZ9Juaf7N9lo7Wf4AJDj6Y564WfpOUGpuHq2IvONatRVrrS7k411srhCbUIKei2OtcyqR7uSd9eNzCrEyV71fuxnnLhP4cnP88qR2r43FphG3SLzPmQ0vsdSCGoyDW878+e9Re5RH6rmzR9/uzL20Zx8DRZXEFbrrREffdl3aX0QACL9qVa0mgl7Ow8fvr6e61/EtVzVv9QYd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,130 +131,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This ensures that fixup_user_fault() users see a writable PTE when
-they request one.  The flip side is that vmw_bo_vm_fault() now has
-to record by hand the write fault, because .pfn_mkwrite() is
-not invoked.
+On Tue, Aug 4, 2026 at 4:19=E2=80=AFPM Boris Brezillon
+<boris.brezillon@collabora.com> wrote:
+> On Tue, 4 Aug 2026 16:15:49 +0200
+> Boris Brezillon <boris.brezillon@collabora.com> wrote:
+> > Actually, if we're making the drm_gem_shmem_record_mkwrite() call
+> > unconditional (for PTE and PMD updates) in that path, can't we drop the
+> > drm_gem_shmem_pfn_mkwrite() call living in drm_gem_shmem_pfn_mkwrite()?
+> >
+> > Also, I'm not even sure we can end up with write=3Dtrue for PTE updates=
+,
+> > because our pfn_mkwrite implementation returns zero, not VM_FAULT_ERROR
+> > or VM_FAULT_NOPAGE. This means the default RO -> RW PTE upgrade
+> > implemented in finish_mkwrite_fault() [1] will take place. If we really
+> > want out try_insert_pfn() to be called for those RO -> RW updgrades, we
+> > need to call try_insert_pfn() from drm_gem_shmem_pfn_mkwrite().
+>
+> Nevermind, it's all explained in the comment you've added. Sorry for
+> the noise. I keep wondering if we shouldn't call try_insert_pfn() from
+> pfn_mkwrite() though, like is done in other places.
 
-Prefaulting works as before because only the first entry comes
-out writable, while the following ones still end up executing
-the .pfn_mkwrite() callback.
+No, the .pfn_mkwrite() callback is invoked when a PTE already exists,
+and mm/ already takes care of making it writable. So there's nothing
+to insert, you just have to take note which you do with
+drm_gem_shmem_record_mkwrite().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- drivers/gpu/drm/ttm/ttm_bo_vm.c            |  7 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 42 ++++++++++++----------
- 2 files changed, 29 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-index a80510489c45..3ebde936ce60 100644
---- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-@@ -191,6 +191,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
- 	unsigned long pfn;
- 	struct ttm_tt *ttm = NULL;
- 	struct page *page;
-+	bool mkwrite;
- 	int err;
- 	pgoff_t i;
- 	vm_fault_t ret = VM_FAULT_NOPAGE;
-@@ -242,6 +243,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
- 	 * Speculatively prefault a number of pages. Only error on
- 	 * first page.
- 	 */
-+	mkwrite = !!(vmf->flags & FAULT_FLAG_WRITE);
- 	for (i = 0; i < num_prefault; ++i) {
- 		if (bo->resource->bus.is_iomem) {
- 			pfn = ttm_bo_io_mem_pfn(bo, page_offset);
-@@ -263,9 +265,10 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
- 		 * at arbitrary times while the data is mmap'ed.
- 		 * See vmf_insert_pfn_prot() for a discussion.
- 		 */
--		ret = vmf_insert_pfn_prot(vma, address, pfn, prot);
-+		ret = vmf_insert_pfn_prot_mkwrite(vma, address, pfn, prot, mkwrite);
- 
--		/* Never error on prefaulted PTEs */
-+		/* Never error on prefaulted PTEs and never map them writable */
-+		mkwrite = false;
- 		if (unlikely((ret & VM_FAULT_ERROR))) {
- 			if (i == 0)
- 				return VM_FAULT_NOPAGE;
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-index 45561bc1c9ef..3099558c0762 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-@@ -398,15 +398,33 @@ void vmw_bo_dirty_clear_res(struct vmw_resource *res)
- 		dirty->end = res_start;
- }
- 
-+static vm_fault_t vmw_bo_dirty_mkwrite(struct vm_fault *vmf, struct ttm_buffer_object *bo)
-+{
-+	unsigned long page_offset;
-+	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
-+
-+	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
-+	if (unlikely(page_offset >= PFN_UP(bo->resource->size)))
-+		return VM_FAULT_SIGBUS;
-+
-+	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
-+	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
-+		struct vmw_bo_dirty *dirty = vbo->dirty;
-+
-+		__set_bit(page_offset, &dirty->bitmap[0]);
-+		dirty->start = min(dirty->start, page_offset);
-+		dirty->end = max(dirty->end, page_offset + 1);
-+	}
-+	return 0;
-+}
-+
- vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct ttm_buffer_object *bo = (struct ttm_buffer_object *)
- 	    vma->vm_private_data;
- 	vm_fault_t ret;
--	unsigned long page_offset;
- 	unsigned int save_flags;
--	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
- 
- 	/*
- 	 * mkwrite() doesn't handle the VM_FAULT_RETRY return value correctly.
-@@ -419,22 +437,7 @@ vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
- 	if (ret)
- 		return ret;
- 
--	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
--	if (unlikely(page_offset >= PFN_UP(bo->resource->size))) {
--		ret = VM_FAULT_SIGBUS;
--		goto out_unlock;
--	}
--
--	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
--	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
--		struct vmw_bo_dirty *dirty = vbo->dirty;
--
--		__set_bit(page_offset, &dirty->bitmap[0]);
--		dirty->start = min(dirty->start, page_offset);
--		dirty->end = max(dirty->end, page_offset + 1);
--	}
--
--out_unlock:
-+	ret = vmw_bo_dirty_mkwrite(vmf, bo);
- 	dma_resv_unlock(bo->base.resv);
- 	return ret;
- }
-@@ -484,6 +487,9 @@ vm_fault_t vmw_bo_vm_fault(struct vm_fault *vmf)
- 		prot = vm_get_page_prot(vma->vm_flags);
- 
- 	ret = ttm_bo_vm_fault_reserved(vmf, prot, num_prefault);
-+	if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
-+		WARN_ON_ONCE(vmw_bo_dirty_mkwrite(vmf, bo));
-+
- 	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
- 		return ret;
- 
--- 
-2.55.0
+Paolo
 
 
