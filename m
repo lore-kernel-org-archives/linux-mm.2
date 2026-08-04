@@ -4,108 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D769C561E6
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 21:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C945C55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 21:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62E7E6B00CF; Tue,  4 Aug 2026 17:08:59 -0400 (EDT)
+	id 32C2B6B0096; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DF696B00D3; Tue,  4 Aug 2026 17:08:59 -0400 (EDT)
+	id 303F06B0098; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F4A66B00D5; Tue,  4 Aug 2026 17:08:59 -0400 (EDT)
+	id 240CC6B0099; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 308C96B00CF
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:08:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6175C02D7
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:08:58 +0000 (UTC)
-X-FDA: 85064826756.12.1DFDD7B
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 17C5D40009
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:08:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aghz9Evy;
-	spf=pass (imf17.hostedemail.com: domain of 351RyagYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=351RyagYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785877737;
-	b=EL7erj+vnOWZodpdYtuT4wIuDn9ilDdX/jYa3vobmOr4QfZfKnMq0awPMCxOhKoyxFDuBl
-	H3VrNlL5mLi/Timi68J3Dq2AzlMeVaLg7MqN0kLqBl4lFLyCm0+Wjp81DSpnvEj8qFojMI
-	LW+wkDyLvLgNLpONe4sdeLh0vAfJ6QQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aghz9Evy;
-	spf=pass (imf17.hostedemail.com: domain of 351RyagYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=351RyagYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 028BC6B0096
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:14:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 755F6C02E6
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:05 +0000 (UTC)
+X-FDA: 85064839650.07.A61B462
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 67C79180006
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRdWik1s;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785877737;
+	s=arc-20220608; t=1785878043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nz3aCp4Uyw3qY+MX7Sv/bu2ByRkx6w/quCe3kJ8ANw0=;
-	b=VAepN5QOXem7pAKL7DEocC5QItrSmAednbKyS8Sco4Y1mpxRWTVqGsDw7YkP4eq+3nudRE
-	q1+spMjyn7KdAYs+TTEpLBs9eMBlwKv6hj+an337wQmit1yS0hzOPIsZlGHcKEc/iLlIin
-	aAo3caQ8LaX6wDz7e3qrlqLb4SAFg3o=
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so337963a91.2
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785877736; x=1786482536; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Nz3aCp4Uyw3qY+MX7Sv/bu2ByRkx6w/quCe3kJ8ANw0=;
-        b=aghz9Evyi9zTgX4rej9OyoF84pBtkD3RuIhsFQAyj6VnAQFkosrra8T1QGiB4N7Pat
-         6EDMoxkiY7IPzp29KuOdbqsmfOGUR1Kl4yj4mZR2LtGvW7qN496TUtAcBfkTw9dZHVOI
-         uTRx7lORXKr5kFqjFGKwqLPVQ6qClI2IfdvEX56HlYN455byKqhpn/4z/aDdubB9wCkc
-         uj5yXd7pDpmgovalfFck7UoZJpedBsGTJYAZK61WfxOmnM5wRFCeccacLaE4CsF/joHE
-         Rjdok8cunbqsufBQYTWfcgqMPXKB/N18FurZsM+XlueZSKu1B1DovGZUY/JgH1BBFr3+
-         gdug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785877736; x=1786482536;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Nz3aCp4Uyw3qY+MX7Sv/bu2ByRkx6w/quCe3kJ8ANw0=;
-        b=JLtwTuZhXcnluADy9tWOycm+2hzKh6+TeHJ8FKKLulW/3fvxEOScU4SwmPkp89El3j
-         Y+rEluEx4Az2J8/PExpC4Q2gFVYijATfV0MaIOpRZ99+UbMM2NRAcz3M3TcrS9tXeigi
-         GcwVbUEo4CJKrTFk9JnjBx0NYJunh4oVoZEQ3wjRm87u+Hujp4xhygdWAu/FNrGvnrdW
-         aCzI90sPCitSJ3voMy9K4vcE4kC29rUc5NG/imI2X2Wklu38MEzWaq0a53icUJTo0nBO
-         737L0uvQmXl0MOOhw4ufifcXoxN1RRZER9kUjdmKlvemfn63ChHNcdxU0FwRHF/GtQz7
-         /GNQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+KKMq9NNT/elRAtmlVr+htOms2nwvHinApQwxtgB+wBF/nCznOzFKRCmbXhzG5OdgNi4pq+I9mw==@kvack.org
-X-Gm-Message-State: AOJu0YzF7vTAD+4BlFr3tfy1XEn4GaAvzZ8eXVPjD7xN+zKirNR3qPDQ
-	tY9xC2SO5+h7/Rnq1v0Iepx621eJ4x7GreGx8cEEexN7vY0x+Kdxm9IUoa/eH+onsUaHrnQdvqC
-	niKh7Sg==
-X-Received: from pjsa12.prod.google.com ([2002:a17:90a:be0c:b0:38f:e6f2:5944])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d644:b0:38e:2860:253f
- with SMTP id 98e67ed59e1d1-3903c582511mr1841710a91.12.1785877735649; Tue, 04
- Aug 2026 14:08:55 -0700 (PDT)
-Date: Tue, 4 Aug 2026 14:08:55 -0700
-In-Reply-To: <20260804120529.1730187-7-pbonzini@redhat.com>
-Mime-Version: 1.0
-References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-7-pbonzini@redhat.com>
-Message-ID: <anJU5-5xi3bcW0jf@google.com>
-Subject: Re: [PATCH v2 6/6] kvm: return -EFAULT for writes to !VM_WRITE IO mappings
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
-	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
-	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
-	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
-	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 17C5D40009
-X-Stat-Signature: j15z73aa1fcphuzsw7514t3prposo4gn
+	bh=ak4eb7x82hyzr8ov8geZx8LKpCLMPbm88Qx3xLS8pnI=;
+	b=ifIzjhsWETZRqE9yEEoLVwc6m30DsH31/k502HVyDfsSKTbCid9MbHI+PbppUE95eT/htd
+	M13TBVWrcVOTm2MpvG1zdHOln5p66nraUZ9PanS+znTIZNs5ASt6Qw9t1gVhFGU/2WUJTp
+	MdzMql3SRFWRxajZLvdfyIm3+o3QIhg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRdWik1s;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785878043;
+	b=LNnRMfwSQ0cJOR2hj9xv8UpvT7FRvkL8NK8Qh5EO2jYY7Zc6kJ9FxPlUuTuxura1TL/TST
+	kozLaf1yAXbOZnSCYzTwLHNbsa1SwBmh2sjTg60syV9ybZx/S2/tAfhK2XCC2No+uIZ79X
+	f2Q8vk41BjSpSi17LjLQC/OFHQNwqE4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCBF4411EE
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B82E1F00A3F
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785878041;
+	bh=ak4eb7x82hyzr8ov8geZx8LKpCLMPbm88Qx3xLS8pnI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VRdWik1sQ4yV/u9NXlzXdRb52gFL0zXl76yKis08qooA0A1IChP/tGrwg6ApPP3+D
+	 gCU1sjhR2GWLHioxNR0fPRgMe1jKcdgg2kgJpb0n92sUds3wRmsM2HwPnWLPrEsrzQ
+	 FuVzoXJPMJCcdrK59Qv9uyKh80tSdYnSc49l9vEGcgGES2VMetQp7UPYuq5E8iDveh
+	 W4fcDwjlK9c8WCINuO8ZoJGHTcmYUq0sUDiZgMi7V6G+LmbZ888Aiafk5YqmX7tbXK
+	 z8aM5NgMaNSVbzO/NFu0Tg0SKzvXMQSxJbHDSOjbWrQjQpIZ6Di293r3mToKxXEhJ+
+	 /urL8V4mZcEnw==
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-934956bee57so32246985a.2
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:14:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqwBOI2Ddhf6j1deTCzwtU7hiYruxncDqCv5hu9s5CEOkFkvbNuGakeyaJthuRNAgOpgCFCJsX9wg==@kvack.org
+X-Gm-Message-State: AOJu0YwabV98e6D+GrrNTGJAhhhsBLBkBtZYZvbttAdxh5D9jGGsAY7W
+	UD/Gk6qJXF38CDgBx5PwXMuvw9yEFXJ3yp4yymPZytqT+Zq+5Em1bl27qcpQRTiDgpj567z86Bx
+	MiW/cqTmUxqB2/8o3vCqJYSu1oWocsBU=
+X-Received: by 2002:a05:620a:9046:b0:92e:62d8:1faa with SMTP id
+ af79cd13be357-9364921c204mr102766985a.46.1785878040982; Tue, 04 Aug 2026
+ 14:14:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260804095219.46213-1-zhanghongru@xiaomi.com> <anHMe4jFT9EIQe5q@lucifer>
+In-Reply-To: <anHMe4jFT9EIQe5q@lucifer>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 5 Aug 2026 05:13:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
+X-Gm-Features: AUfX_myvaI_2Xa1nIyqQr12P8ShUZE1bi8PR-nAZSpWQ3BvQUdcHiygb9ktNvo4
+Message-ID: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	david@kernel.org, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	vbabka@kernel.org, willy@infradead.org, zhanghongru@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1785877736-585732
-X-HE-Meta: U2FsdGVkX19TumNT7RxUXJzfvnC7LL2iMsPZxafgwFT7f0lyzp6SCMJlmQ2d78c+EGts76gKzcATjBw0vew/8DoyMCxBfRgxYq9bQiaCGvmXnCKn9r58b23P8JIa+ffRwXbXwL8fGIvje4vkeqYFhnFRzMMAGjEPC5ZSgyVavuULCiyEDUfeMeikiXCf9rHTqD5pEvaTLVvZSgBv/oR9l1fW4FTsTfTxa7Lk2icmNnRrvu4Mjqu5rpb4wkoOVk+0GobeX4c037S7TUP4H+KPBg4T+brj1Lm5y/zAIpyBri4aB3Z7ISOXO1bh8Z5/7gC9eJw+oBIrOG+oa3e/H9SGjyflvhjQh5Ow5n1tVtmLoZQK9PgArrP2NWfjJ6J49JoHlKK7fECppIlMUhjmXAWtjI3aql9Ds4ZMfcYKKG7J7+oZkd8OJ8Lexpg+SaEs1PupQ1l/8Mb5eFf3bhqbfr/bJDegyBco5f0E6JMo9+B8KMpRFVEfh+XHRgFw3Qgt9XlLzuTJ5v84LU05yjpnHRGEjf6S7r2MfozRwW3VTDBQiKcnupdd1afXIaXJQLd0B/lqX4R7y3F0uXAo4XU1xTlrKwlwiAhghuC1OZju1FdVWW0vxbNeekLQZQ331wa3alABRCT/Dt6xGb9a5+QkFkSG7745nLLPGAXc8AAVTV+T1Jxe//MH5Qm3Dnh5/KjN6tKQi7zEEbD32Sr07PSGylziAzr+WQNKU65hrtAlIdjyVYJZvym7EB/Eu313E6Njen7UtHlhES6Z55863+PUMuRGLygXMWBRg1PH28ASsoXkdjVsnPhubEltAlgRZ03YqOhiqfnxdI+OtBU6FyKLu8N3cVskK+mVxFWyJhk97RhCasiZMIotfFoVf09U1kpm6DpH69w1ILtTVvPY7o+kLx7JP9yZKjRqTkLKI3k1kIGfWT80i6Dh0BkrZIvzrVU+0mYtvZG4KC4V7S8zuLO1wNE
- 5uqgNmyN
- 9b2fv8+JgXz1/gaVtlHV7dxnbKpr0vJbkkungBfczqYXUB3DMBjSRnVcyvkj3kwKLeDwsyE5y7CMYZ8V0FvypXviMuf2i/8gQDGvqlOXXHEQd9CUbfI9C0mHav75ZqkMoFP4JUjRjWSZoxxPiiU0oSJjPd7SjV96ByRGoql3mtn04M4U7x/qkDsOv2BR0qKoNDg3bvoGmwsdDOl7Z+/u2vQGvfA5YP2QEFpc64hL8y5amZQzEPXPgZDhuT1l7uen+f9kxMBSSZ5jBeT8WtHOrYWOlE3QU/WJruyCRfWg+R/UisKchnYxsKgelbXqoi3UBBTxfKX6C0QozlkTQoZu3u37SExUt4lvnn1BaFMTGACmEvmLFLYvjpGremcmDcysqRCP7qi2Utp1FGbfu0OZ24GDxg+6Lylr5julujFu/7Aea497s+YWLhUUsSdX/hD04RMxKn3vy4RtEbLKESwzVjBbcZ65P6M3DapEPg1oFwzrBJwog1giiy84hpWrxJ0GQGYxbGQpRNbMdtmeDHDqll29I9IyKFWsFl9cDb/oJrP3ZcU5QmQKsbv++qIYzLBm8oVKzGv0xDKG3KNzoiKBMd4u48YAKBZ71WAvuo8Y08lR3G5+L3kXcP+5if8ez8MyIRdhQoMYyXpsSwqmw9jaB+eddd/xN4H/3t23vbA7B7OIdnsh0RTBJZmhG10YDsI6Bup5NSvARg5qyVJeb8TI8/ye+fbT4/hBhdTeK
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 67C79180006
+X-Stat-Signature: ht8aot1eu16yophssuxk5by3d3dbr4x1
+X-HE-Tag: 1785878043-511453
+X-HE-Meta: U2FsdGVkX1+7RGiyahrnSxS/MBRvVwGTJSSZ6RwURBeU2m1FpDwEMshoJmP/nqG1ltMBsXx2s0DhQyuzAolH3i/4VI6pC6w42KAHwtI9/fsl+KeXff6svAz6Vz6YWoGbFbg14lpaYdp+9MPaLs6wQdQHKWSFzSmQMCExMxAMqOWdOXTp0BXP3VkeqKzMuC8Beo1Qy/4pmc5yxPpn6aIMmFK2k3KYD1SoepcycPLX37ifQGXP2MpH44jxJFP9oRklopjM7fthzpPJzE7PK58Tbv/5YcGwkK0Esv3p3RVcXPOy+Hw2/NGepZuAAlvqMK14BtrKthZvzRAunf9fv83Lu9WMo239BhzY2E1Bd+IDOmOYGJerkWDNmWyAMu+EisCAvyPCXZV7njiYh/Sk+sItT7vOX6WEZuXwm1yaqKpeFB5KMDBqdXfVM9Xqmd5cvgIuwnRhQuXTPkdDBD8ohnK1a7UVD7szXm9t73B5Sn1IcL0GW2S2RS6r1qOMCfgS+S2hit7l6rI248vDZWpwt3jpi7Qwv+PTbyxcwCZP9soD0oWwpb0POpZcaxNizcF02Oi/S71Yvcwp96UYdIKCUNG5V9TK4oTFM3OV7AcZWBSMhxcp1D51wQ+y8CYKUE1AIqEnIqRGuiBt6sCDCIE3ykAaM+F9AR1l/k43u8K7mVELVuex7mdQqOk5nuuJIGB6Wi78NPwKjJGBPkQLXuvNZoHbSYd/GaDJoiVe3yCvXGf7eFjwcH+Cb/1TvJvswE3HRcJTb9iuShqLjmHI/KysGit5IokllK91nMcOPQ2CI3PPcAQGhYLZjD6zUoQ/MyKnYJghbduhLfgatDVv3YBdic9eS11I5Y7E5lB2ACfYxI7IdEja3Msh3x4IFyRQ0mywYmRuazej0QqYPo4eyIBTJFRFvK763debRUYKW0CorGOIYNpeOocJ4QEUvxJCI6F8pVjw0JsJOvAhxOQNnhF1k9L
+ xuTP/Nm5
+ OLkgSlStTtC/F+o5ruZVTHzkr68i4AJ/SIcsZ9ANo8jb0RNZaaKpwuuu0WBCgyFR2segPV5itT1dj3pN1KZyLg6fNDX2xCph1ORuBac7Vi+dJySWBXIFAp10JtpNEJKHdIIeIWiuElsOYPAAzf1kx3tl5TIVGLZC2kKVVxARkJcJRJFLhsmAFRzuFYfGNMNVwzGH+iyZO1Cs/aYNmiqEae+Z5xN+3Jp3I1LY7Lyj3czkHU15rVd5DkhzcJ/N0UDpNe7izKcB+0p9DUcJkylowyy8AVMJbCn6NMHtufzhaldjkCSo//AY4Q3aJkQB+pf3Fde+aH4gt5x5OsA0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,32 +104,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I strongly prefer "KVM:" for the scope, and it's waaay more common.
+On Tue, Aug 4, 2026 at 8:32=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> On Tue, Aug 04, 2026 at 05:52:19PM +0800, Hongru Zhang wrote:
+> > From: Hongru Zhang <zhanghongru@xiaomi.com>
+> >
+> > Page faults handled under the per-VMA lock currently fall back to the
+> > mmap_lock path whenever handle_mm_fault() returns VM_FAULT_RETRY. This
+> > means that lower-level fault handlers have no way to tell the
+> > architecture fault handler that the retry can safely continue under the
+> > per-VMA lock.
+> >
+> > Add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit that can be returned
+>
+> I don't love that name or that faulting retry behaviour is _modified_ by =
+a
+> value that indicates fault resolution state... ugh.
+>
+> It's kinda confusing things 'VM_FAULT_RETRY' is 'you have to retry this
+> fault'.
+>
+> 'VM_FAULT_MAY_...' is starting to bring in effectively configuration
+> options into it and that's kinda horrible.
+>
+> I mean is there any reason we shouldn't ALWAYS do this if a VMA lock was
+> used?
+>
+> It's not too expensive to do a single retry with the VMA lock before
+> falling back to the mmap lock.
+>
+> So maybe simplify like that?
+>
+> And like that this series becomes a single patch right?
 
- $ git log --pretty=oneline --after 2015.01.01 | grep "kvm:" | wc -l
- 1298
- $ git log --pretty=oneline --after 2015.01.01 | grep "KVM:" | wc -l
- 16249
+This is a brilliant idea. That's a genius insight, Lorenzo.
 
-On Tue, Aug 04, 2026, Paolo Bonzini wrote:
-> KVM's behavior when the guest writes to a non-writable VMA is inconsistent.
-> For regular, page-backed mappings it returns KVM_PFN_ERR_FAULT and thus
-> returns -EFAULT to userspace (which is ABI, and relied upon by tests);
-> for VM_IO/VM_PFNMAP mappings instead it returns KVM_PFN_ERR_RO_FAULT
-> and thus exits to userspace with KVM_EXIT_MMIO.
-> 
-> This behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM:
-> do not assume PTE is writable after follow_pfn"), and even if it has been
-> in place for five years it is unlikely that it is relied upon by userspace,
-> since it is inconsistent with KVM itself.  Change hva_to_pfn() to return
-> KVM_PFN_ERR_FAULT for all non-writable VMAs, and restrict KVM_EXIT_MMIO
-> to the case of an explicitly read-only memslot.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
+I guess the conceptual model could simply be:
 
-Shortlog nit aside,
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..3592bcc9bbd7 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+        struct mm_struct *mm;
+        vm_fault_t fault;
+        unsigned int flags =3D FAULT_FLAG_DEFAULT;
++       bool vma_lock_retried =3D false;
 
-Reviewed-by: Sean Christopherson <seanjc@google.com>
+        tsk =3D current;
+        mm =3D tsk->mm;
+@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+        if (!(flags & FAULT_FLAG_USER))
+                goto lock_mmap;
+
++vma_lock:
+        vma =3D lock_vma_under_rcu(mm, address);
+        if (!vma)
+                goto lock_mmap;
+@@ -1352,6 +1354,11 @@ void do_user_addr_fault(struct pt_regs *regs,
+        if (fault & VM_FAULT_MAJOR)
+                flags |=3D FAULT_FLAG_TRIED;
+
++       if (!vma_lock_retried) {
++               vma_lock_retried =3D true;
++               goto vma_lock;
++       }
++
+        /* Quick path to respond to signals */
+        if (fault_signal_pending(fault, regs)) {
+                if (!user_mode(regs))
+
+Nothing else needs to change then. I wonder if there is a cleaner
+way to implement the idea, but it is really stunning.
+
+Best Regards
+Barry
 
