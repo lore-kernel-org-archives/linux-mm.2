@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D410FC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07A5C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:39:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C813A6B007B; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
+	id C5E626B008A; Mon,  3 Aug 2026 20:39:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C32196B0088; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
+	id C0FAC6B0092; Mon,  3 Aug 2026 20:39:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B47E66B008A; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
+	id B25046B0093; Mon,  3 Aug 2026 20:39:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FA116B007B
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:37:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 098CC1206F9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:37:37 +0000 (UTC)
-X-FDA: 85061723754.30.F29C4F8
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8196B008A
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:39:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E12AF120714
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:39:39 +0000 (UTC)
+X-FDA: 85061728878.19.20C3CAE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 817BE100002
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:37:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GbDL8vOf;
-	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785803855;
-	b=xHMAXe6vSuKkATfkmeLDxWBkb3PR5f4UeOFHJ1wsMtjuoUGEJWwq85BxqH05DkAvOCHu2U
-	3zWE0PV0r4fQIU35X/mu7cGdCdCLCigRaAazO6r9aBr+kHgkQy/O9a/ACHNXm4+N0Q+fiL
-	yF3ut+ZJlxzxCgMBDQ/OnpCbAWmwBhs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GbDL8vOf;
-	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id B62A1180008
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:39:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DlvSKUc+;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785803855;
+	s=arc-20220608; t=1785803978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=W9DygNyHW+E1VUj2JEzj3GqHGlULW7/nccPrZjgZMO0=;
-	b=eigNwh0J2+AgqCwOmMOts1VpkkraGy2DBYotrvVOAPcB8jS63xfnEmZrhsg26b689EtOb2
-	+I1hIq0dIYnXqsr2Pg2EmGKg3hwnHq32PFQbcOz0YcxFVijl6j00yGdq+S2h+bq1y3jOWx
-	X+m6sh4PKeStW+vCKWVjBYWBfZOtpfc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NBixw/d6HA9fsIHjVOC8TKnF1tclRjfp4GIg/F08u3A=;
+	b=hoI8pTYQWoNC0StTHnq3zEbnuS1Z6+8Q+EqHDRSiQNtmAG/4ye2s0e+pkz8GxbYs+xfLlq
+	rXOEspqgM9oDwIM5AKC5yhHis1ysM7xXR3gpTguG9lPJPM8j0cFVGlB4N4/KPZQv+3SrBi
+	aLOUxMosQaYRoKJxszPfMLg7D/6E56A=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DlvSKUc+;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785803978;
+	b=5OWt4xEMKreFx0X+xLqz/lJyUd1He+7083gy5qyKBZg54xB4JZeKoLpbN6K1dXvP2uZMan
+	pX6OWjRtOiCHX81bxdQL13b7x7Z987eVwW7gG9rkobVZPBA029gYS14tCv2QXrzBwOU5i/
+	1K5kmVdO2QbHRhmIJFEYSKiP6pe9CME=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF94960A59;
-	Tue,  4 Aug 2026 00:37:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC981F000E9;
-	Tue,  4 Aug 2026 00:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785803854;
-	bh=W9DygNyHW+E1VUj2JEzj3GqHGlULW7/nccPrZjgZMO0=;
-	h=From:To:Cc:Subject:Date;
-	b=GbDL8vOf3FtW0krOJtwvRUdJj00bVX4UPXzOsLf9u6y9J14kK8XTFR80E2XLKgSRl
-	 IBRZ+jSj+s15+nni9G58BlRT2xUfRPJROpqkS2gkMOsboChxiNEBB1Oh1z7/odKuD+
-	 O9Ed9Yo4Nsy41UpI0IoC0oIveGEKRbsQgCeT+LDsg3krjl4sfq63hO8oJH/yW0JFyy
-	 jjmQxdzN+oBadG2o3fpDgoa6CspsxhLH67diEvw2S9Rhu8KWCA2H+4TBqRD+1BazX7
-	 qCACpxgDDfZMMn2FI3XLBXB/b+IJ3o4839nBKPLtiY0+BUjRh78yTPbo/a17+I1CZs
-	 yR06vRXtPoHxQ==
-From: luto@kernel.org
-To: linux-mm@kvack.org
-Cc: luto@amacapital.net,
-	Andy Lutomirski <luto@kernel.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] Fix incorrect flush address in direct page table reclaim
-Date: Mon,  3 Aug 2026 17:37:08 -0700
-Message-ID: <20260804003708.49830-1-luto@kernel.org>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id ABCCB60A59;
+	Tue,  4 Aug 2026 00:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC361F000E9;
+	Tue,  4 Aug 2026 00:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785803976;
+	bh=NBixw/d6HA9fsIHjVOC8TKnF1tclRjfp4GIg/F08u3A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DlvSKUc+Vsrtfye61sNEFPlB3usZCSqALGCQPb1/D5dfxdteOTivfEVFbplTGk0t0
+	 iqeTdvPezt0pEJSH4KqWR97fClBrd6Ql8qdLIrcK4YWVynH+7SgUczzbEpfsMKbmQA
+	 zDHJrksbcl7IG1jhy9gzimA7ob9Gz1MZ/8I3RwzA=
+Date: Mon, 3 Aug 2026 17:39:35 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
+ willy@infradead.org, shivamkalra98@zohomail.in,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] mm/vmalloc: make vm_struct.nr_pages an unsigned long
+Message-Id: <20260803173935.132156ba2b86293ffecb0e8f@linux-foundation.org>
+In-Reply-To: <am9numIMZZ4s7UMl@milan>
+References: <20260730130923.9e71be5f477ee3db333cf0f8@linux-foundation.org>
+	<20260801114915.115224-1-iprintercanon@gmail.com>
+	<20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
+	<am9numIMZZ4s7UMl@milan>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 48h795omngr88szbtw3max8swshpidsy
 X-Rspam-User: 
-X-Stat-Signature: o86brs6dt5x3e43ft919s1pumbitoaq5
-X-Rspamd-Queue-Id: 817BE100002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1785803855-491138
-X-HE-Meta: U2FsdGVkX18hAgfffa2yqlBFtJCB6CQ7iUXtX4qaItM8wgEHCyQ7hPlVptk5Q9KoUcMVlAAIih+c1GsMDZZXjsP1zP4AftLRCmjRC4BNcvTluJbYyw/R2FDgRe9ZOWsEI0kssPqa2vJe1xYoX76InnG0fk+Ono5bR+GnFXm4syEQ7iVLKYtIveHsMaUfhX9Ha6wNMwSD1CxYe0LHj98dnzyx5tFGHioFq6tB2tg0oeOdcrcy47EbC+StlZQ+wLq04QL3Uouy8BQMrbJq8sN6PObFO/SPcbvpvxlh/mBqjlLGVXRuEI22IUAEjj4ixB9QoHLi5+PW/gG2zwYeUuS/P+UEQv92Lzi4NddWndsdqboPLi1nSLE4o5mNbZZqpfJhtWTfiE3ZEhpdbDVfLWxT8EWcWpNqI8SRmNgSTrkVc5DSuaUlsZ5x0I04S0TO7HZ9RRQoKZvpDjSp24obXJCZkRYh3ZPlVQu43/HcieRYzpUv0HFeyftDOpv73q6vEn7kE/dzzvtrAUj4CtfSwy9FRnbfGw++a7Olrn3K2AIWLytSiFVXSNRVAwhFFhJivtGF4kCyM24Cvf0Dy63NzCsJvs69rAQkuzJkAfOFyTf/cSwx5TEfXQaoyMQdLJaloZo2jCaRvi0bS/PTzd7aoOUINKlrjfZFnHiMnk84SVMLvPdXlqTg9V08s8hAbMSwhHpavpUHzYdF+Eaj27sQVX9DiydG5zP4BnQFNn0xrUII1dZGS8WHURtfkIzGxd0DzdFmn50UDV3JEGX0Gax1uGHwHlbizfh7VdwM+M2k6TTJc30AQWQvPV7bWsnuookwn8ZT3GJdNKJ2aqvhmbyJyHooR5txLLkQ7P602b/aNeqtPs95cCqClUOQGLTZNGrhNvG83/VSYG4AabyyUvLL7TkKrGG5I5YqEQGW1DriazyOkPFq43Lil9QrhNOmaDfolE4BWK8/GpGoYLyA36Q+3JM
- bRkwugED
- 5Fw+EScAxbZeLTc3Bui/vXYDOzltwRo3wTpq2PwBu6cXOJ6bDHSHzf6qWc5sjZrLGbevELWJZ3nCLx99o9Qak5ekft6qrPsdT1DhdHZzFZoRexdMaXJYlJrbdFmokHAoMjdNCiP5X2omoNlCZcuCHa+aXWYwDG72y4328yXedBOr2tLM2gXq0e45nkvViW6Lrp0U2VWTQrvBDf4zCrFsPhYNSsPAer63pmvFr3trJeSlDSgV60ksvuCYBjzpAxwLsJ9ellf1pUDSxQkF2IRmCWzzQ+eE1CKs3SwWPzf9ncxB+p26zR5UfwcPOQxW2o9/KMluSobWbERYL9yGGIIxck18ytUjeNXLRSN1JS1jT/iePeJx5CtaXb4GXf/tTxIgxhCm8nkwK3v/+rD3pjkiLyCVlTB2ZfywJ8ECaVKQCFmMGC5j+ENlW2AbklIP3214b55bdJTUIaxxXyI8mOKwgVR3LfICOHhkmV1/tcmU2pQZ/H0HG844BrA9y4Lx2CDIiwlL3FsKQFQpBeqF8Dze2w58BuuT6+WtQGSZW
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B62A1180008
+X-HE-Tag: 1785803977-203295
+X-HE-Meta: U2FsdGVkX18uaOtyZmUE2WM6OeRQp5B0Atj5kAsyy41VmWlyttwnCSJXyqnHxYr7t37LIWCzhzFOHP+bUIYtzmwsNwZAeVlkrx+yfw4ddQVn3ZCaolOmKoKg5QXjEMz3vB30Ox0xlvfboYy+8MgoZymzD1nIiplvAjn2I42CcaA5x6QamXTe1KM5vYdaXrjV86XgnTpdqWyjb3e8s5OeUeJ3xZ5roufjc8bTZjixXfExnpIPaZzYVXbde0ggE+pdhP8bRiSRvDXkIvyIrqvDqjrzosG1j5IPfQ4PiyRAq8LOkcyXBrk9Sxv4fbhqSgcxwQLtnEJSbNqiyFry1YQGoq/k5tSK9NfBiyCng8tejmDzSdu7uj3eMTpakTeWA+HsDI66KCey+XpfNcq/bipb1w6am6LoOORyBE5UlBnwnHSIRkrq1mJ/AlGYBDiBUaP5aKbrL7vx7WH/kgbxIfpyXLUt+qJHya3QVutRiQDY4wMltnR5SH0EnATjO/FerhXslM1L7Wem4rwauCgftekQqTWyKSSgeZnxtm0/Xy0FF4DZB13VDgGMVm/GZ4oxGHfgqglmGragZRVpWu230Vyc9OMH7GkR/WKsGqKr6DMCnrmkeHTW1HTvxGK7K67QU5qn6mTQ2ZUj7Epr+dfJUG3l5ZWayAdXwGnlt15XIVFsL092s7xcutT6t4V+tr1DyxIhN3Px7xHGQ40XIujLVEfvzV7xYVWTaeDBCfnvfEKdqCCuk+okYhG0+Q3+9mytvKseRGJpuNKILXy0iNfI+59fw6Ue5E+29TihV/ey8gu8nEKmDx7+7mQ1SNjcMd5lOpFeT+0Y5YAIfpqZm42g9Vp56LmYiqihVFFrSePJOwNTnv8ACRe0smTqkKhArKoR0AhiS5uJRaqbSvUGLy0JwV2Si08nRmrLwsiGzwbos+nF/9glbRytZ36BI44eUc/gPgKhMXyGo43AofQieuz8mZs
+ 8x8VEzwE
+ 0eWxywz6u+/VK8B9mhMsV76lbZBenAOk390ENx7oWCczkKti1y/Nh1pACU2FryOmBKHrn5UAeZmedR2t81fbqbwC59Z1KDgZnl6JVfm5jRXtIGEvAJBlP9UdPLqBAqSbzQi6bO39D/Cc8iiILZ5nNnOcgyLRz2Gq4mLHIr770qwDTm2Vm3Xt6j31htiKYQrJryjokZk1u7HJ82t/FwzX5SiBKrBFmEhip6PgnqgrDPEPqmEUGfLUOoumUOfMNDzbHFTLlUGbJf1a4u2JG4aHhDPFx7uzLL7xeVvuvpxRxwjEOg6VhKGfvttWMrAe4C2rtnIhC0Ni0siP9L214bNAHcGmwoPvdStYRLNwWwI016prChTFygOOF+CQRqrvpbRabCste
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,93 +93,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Andy Lutomirski <luto@kernel.org>
+On Sun, 2 Aug 2026 17:52:26 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
 
-When zap_pte_range reclaims a page table, it does:
+> On Sat, Aug 01, 2026 at 11:52:02AM -0700, Andrew Morton wrote:
+> > On Sat,  1 Aug 2026 14:49:15 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
+> > 
+>
+> ...
+>
+> > Ulad, AI review suggests that vrealloc() has an issue handling
+> > __GFP_ZERO.  Can you please check?
+> > 
+> > 	https://sashiko.dev/#/patchset/20260801114915.115224-1-iprintercanon@gmail.com
+> > 
+> I have checked. I think the AI is missing at least one point.
+> AI argument which is:
+> 
+> <snip>
+> If a driver initially allocates memory using vmalloc() without __GFP_ZERO 
+> (leaving spare page capacity uninitialized), and then grows the allocation 
+> using vrealloc() with __GFP_ZERO, the caller expects the newly exposed bytes 
+> to be zeroed.
+> <snip>
+> 
+> In the vrealloc_node_align_noprof() header documentation there is a statement:
+> 
+> <snip>
+>  * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+>  * initial memory allocation, every subsequent call to this API for the same
+>  * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
+>  * __GFP_ZERO is not fully honored by this API.
+> <snip>
+> 
+> AI argument violates the documentation, i.e. mixing __GFP_ZERO is not allowed.
 
-    pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
+Sashiko is talking about the initial allocation not using __GFP_ZERO
+but vrealloc() *does* use __GFP_ZERO.  The documentation you quoted
+doesn't address that case?
 
-and this is unconditionally wrong: if this code executes, addr *always*
-points one past the end of the range covered by the table.  The addr
-parameter is used to flush the TLB (really the paging-structure-cache)
-to drop references to the to-be-freed table, and any architecture that
-cares about the parameter will flush the wrong address.  (But they'll
-still free the correct page).
+Also, developers don't read documentation ;) What happens if some
+caller *does* use vmalloc(!__GFP_ZERO) then vrealloc(__GFP_ZERO)? 
+Silent misbehavior would be bad - it would be good if vrealloc() were
+to drop a WARN() then ignore the __GFP_ZERO.
 
-I think it's worth contemplating why the kernel works at all.
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4294,11 +4294,6 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>   * __GFP_THISNODE flag should be set, otherwise the function will try to avoid
+>   * reallocation and possibly disregard the specified @nid.
+>   *
+> - * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+> - * initial memory allocation, every subsequent call to this API for the same
+> - * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
+> - * __GFP_ZERO is not fully honored by this API.
+> - *
+>   * Requesting an alignment that is bigger than the alignment of the existing
+>   * allocation will fail.
+>   *
+> @@ -4415,13 +4410,12 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  	 * We already have the bytes available in the allocation; use them.
+>  	 */
+>  	if (size <= vm->nr_pages << PAGE_SHIFT) {
+> -		/*
+> -		 * No need to zero memory here, as unused memory will have
+> -		 * already been zeroed at initial allocation time or during
+> -		 * realloc shrink time.
+> -		 */
+> -		vm->requested_size = size;
+>  		kasan_vrealloc(p, old_size, size);
+> +
+> +		if (want_init_on_alloc(flags))
+> +			memset((void *)p + old_size, 0, size - old_size);
+> +
+> +		vm->requested_size = size;
+>  		return (void *)p;
+>  	}
 
-If we hit the offending line of code, we will first clear the PMD entry
-(line 1954, zap_empty_pte_table), then we will issue pending flushes if
-force_flush is set (tlb_flush_mmu_tlbonly(tlb)), then we will skip the
-retry on line 1979 (phew!), and then we will do the offending
-pte_free_tlb call.  *Or* we will clear the PMD entry immediately before
-pte_free_tlb (line 1983, zap_pte_table_if_empty).
-
-If we have any pending flushes (i.e. we actually zapped any last-level
-entries) at the time we clear the PMD entry, then the flush really ought
-to flush all references to the table (Linus certainly seems to think it
-will on all architectures [0]).
-
-The condition under which we have no accumulated flushes at the time of
-the clear is very complex (the whole zap_pte_range function has absurdly
-complex control flow).  If we do hit the bad case, then we will end up
-clearing the PMD entry after the last time the range is flushed, and any
-CPU is free to cache a reference to the (empty) page table.  If this
-happens due to an ordinary read or write, it would segfault, so it would
-be rare.  But the cache could be speculatively filled as well.  Then
-we'll flush the wrong address and then free and possibly reuse the
-table.
-
-On x86, even flushing the wrong address works on non-KPTI Intel systems
-because INVLPG flushes *all* paging-structure-caches, not just the ones
-for the target address.  But INVPCID does not, and flush_tlb_one_user
-will use INVPCID if it's available.  And then we're toast.  AMD systems
-are more susceptible: we set the EFER.TCE bit, which makes even INVLPG
-only flush the target address.
-
-P.S. IMO zap_pte_range is a mess.  The control flow is excessively
-complex.  The direct_reclaim variable itself has a confused meaning --
-for the first part of the function it means, approximately, "we should
-free the table if can_reclaim_pt".  But, later on, it means "we ALREADY
-reclaimed the table".  And the goto retry on line 1979 is IMO just
-asking for trouble if the condition ever changes such that it might
-happen after clearing the PMD.
-
-I think this might fix an issue in ripgrep reported here:
-https://github.com/BurntSushi/ripgrep/issues/3494
-
-[0] https://lore.kernel.org/all/CA+55aFzBggoXtNXQeng5d_mRoDnaMBE5Y+URs+PHR67nUpMtaw@mail.gmail.com/T/#u
-
-Fixes: 4c640eb4181c ("mm: move pte table reclaim code to memory.c")
-Cc: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
----
- mm/memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 86a973119bd4..13b70861c8a3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1981,7 +1981,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 
- 	if (can_reclaim_pt) {
- 		if (direct_reclaim || zap_pte_table_if_empty(mm, pmd, start, &pmdval)) {
--			pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
-+			pte_free_tlb(tlb, pmd_pgtable(pmdval), start);
- 			mm_dec_nr_ptes(mm);
- 		}
- 	}
--- 
-
+OK, thanks, I'll assume you'll prepare this for real when convenient.
 
