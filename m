@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014EFC55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:02:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19AF2C55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AC806B0088; Tue,  4 Aug 2026 19:02:48 -0400 (EDT)
+	id F2D0A6B007B; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15BD86B008A; Tue,  4 Aug 2026 19:02:48 -0400 (EDT)
+	id EDDC56B0088; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04AE16B0092; Tue,  4 Aug 2026 19:02:47 -0400 (EDT)
+	id DF3126B008A; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DA8D06B0088
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:02:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70DAF1C078F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:02:47 +0000 (UTC)
-X-FDA: 85065113574.01.599719B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BE02B6B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5666DC02F7
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:12:08 +0000 (UTC)
+X-FDA: 85065137136.28.65B5D93
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BBDE740003
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:02:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b1n/7s+S";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9126B40002
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:12:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qdlse2fh;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785884565;
+	s=arc-20220608; t=1785885126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u5UncBf9PwoRD0ejcHo6g/DrJr0SQ17oPbMYwAtLhTs=;
-	b=Ywf1WbFaeDENm4pEj/VZvcBaL8iCbDJQcRtB23ha73+L/MvcqojhIb5R0dpAJLLItM052X
-	bc/E6v8++ZllDhleA4YHtzBhpmLEN0flqq4dYtdma3xqXuEOsjVaOI0YUYzx5XTw7+9DXs
-	mXFm+11eDz2DTktRswB4pRKQnh6Y0JM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b1n/7s+S";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=h4QTWJQpnYCgvZMOp8Lec9E0diWM87JoBrgrWTI3fCo=;
+	b=FrL50FGkI9tzrL49V+7ScSmt+jWF3OxIcSz/zXBNA6AfComY33MckpdZemTZK/XRgeCqot
+	r/T1xbdKgDUWHfJ1VVqQMXu2WZqaLhL3rOeCPMxf255c8rjkBq7GVxgLaOV0zlIk9hlMgU
+	a8KCyIx2wPVsQvQRY5mSVfdndeRh6Qk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785884565;
-	b=0ShnFcdSCCf0M/lrUBdKEcY16X2FaltBQEi8edR6qZIL3kopGLIEAfRKgiMhT/iC8DC/46
-	jAr8LurCPVLTwFsjRqqEuq8eiwgBSmZIq13jxJja/Ehq4090DxrDwHnMWR90LoWcXIJIVL
-	E7shuqLJis+wHKEsaOFaEKt6BIKyHeI=
+	t=1785885126;
+	b=67QuUzOA5H3Kh1RF+sgdKgpjV7v/MrcKenmJLEw4xsQ2sYb9PAtHxyp15o1It+ERtEUR3F
+	0HUyrgD2SuMM+VNL6let6MZnLLZnYrjgoDWNpFFmAk7mMg7WrqUccXhf6D/iCuJSfbjQIc
+	PRU3aVeNNZcs3+DlOtmBjQK7/IN1lhM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qdlse2fh;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1562241978;
-	Tue,  4 Aug 2026 23:02:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB051F000E9;
-	Tue,  4 Aug 2026 23:02:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785884564;
-	bh=u5UncBf9PwoRD0ejcHo6g/DrJr0SQ17oPbMYwAtLhTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b1n/7s+SUku3EzUeCDV5pq7MAn9cr1oatGCiJRui3LH1bxVXpgnrp1jOzORgPA0f/
-	 jvxHc/0YXHAvXxLhwobqqM7Bp60timPVvggk6pD+PEDPmkvQp4q6lbdtQUKuVcJA3o
-	 ghTz4EpNp/JjsGf13OXUAYDkV65BeG1vFoTPUGTd/QVysPIoc2YNpwa4LVgKD1cCcp
-	 XbFb+ewiW7ssUAKomW5a0SRfnfw717hT9vAsFjVFGLefhyYo50i0MGZPyJxBj+T3mr
-	 RWoG+1NRSTkuKj3hgvIPQFRFu+KzsIOMfpCqq87QrHa2uM7cUjxKgKcnM45VKmd4Rs
-	 pdU64IKZIEiCg==
-Date: Tue, 4 Aug 2026 23:02:41 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
-Message-ID: <anJvFVPmdpURs2B9@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BBDE740003
-X-Stat-Signature: zinqkbejddaapi6ozrds3homotdrrg4t
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BC1A40AF0;
+	Tue,  4 Aug 2026 23:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3DF1F000E9;
+	Tue,  4 Aug 2026 23:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785885125;
+	bh=h4QTWJQpnYCgvZMOp8Lec9E0diWM87JoBrgrWTI3fCo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=qdlse2fhDvX1iCH+zgWT3U3of8I1Z+o+aamxuKtzmTGoXI59i313At07ihexnsu/m
+	 g8hEgtaAnrvi+IZR+Ve5r/boz1nLIcfZf97yrtcCd4uRq2vwUTx9x0sFepV+kI6eMD
+	 MTAsoJ7ffNw+2qTiBQchiyETAYCVEbLdtnNI2UFU=
+Date: Tue, 4 Aug 2026 16:12:04 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v3 0/7] mm/khugepaged: several cleanups
+Message-Id: <20260804161204.140bb3b8e482c43cbbacc2bd@linux-foundation.org>
+In-Reply-To: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
+References: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9126B40002
+X-Stat-Signature: qcz7xazo6bxc84e897snffgbza3of3fe
 X-Rspam-User: 
-X-HE-Tag: 1785884565-67974
-X-HE-Meta: U2FsdGVkX1+1y7KFClK9F8c0WtLxltiYcuxG4P9sM/8fX9KUIayTJiNsRCoak0ythlLDXAK2QIM5r0//P4GxQsuhsO7J4e2REnDQzGsYuft2bgz2khGWp3q81rdwWD5MxEHbE0rTb72ByGrwr6UwboUPhI8WS5lyCXQXoAAkYbQIaynZeFIx/H6XtIMq2tCk0+ScYWZCCaMJOfDp7MQVCfp0KbBk+bPEiKcbCrnz6dCozqfIGkov6jZZopS4e9Ulfs31+dPnzMortTPt4/qCN2RtM+UTYn2CJze8yp3DGbsFbBXJ7fQcs2b2qrofOnjBV28Rj0SWtCJ5+0QAIiwxZYp7B1Oeyn2kTxTWilaoDxCF6Dy+AsiDsRtSVwNc96+w8n/WZjNWY3rVbW2CHWmZcH1hRB/1DBSMj0cKl49qGVE1dsTot1nhxbfP2SL+y5hYkclWywFMpYtx02WuUAvwAcGp/0lPw/phAKWgNR4N+qpxE5YbqP0h6GWAHeF7o+W1qHvTJiop9FjFwSS9nxUTyJiTtyZBF1uwTwRXBBI7wrgGwdYMe70GH0KdXqX6Kzudx5XeZm7u1uWjkb4ucNqzc6YeDJHTsn3sj5eMJN42T70dC271eE53x1LCTxlkhpSy6aNZ7TwhcRf7C/5e9ljbVfFEjXpPDQ7bOt8biQLU9qQIyOPSDSrqHoPM1YWluHvO+38lDzjtwpigfi+0fA42b0yGWKJLgiWUe/Krb5LAz4lRPI2hNF46gZHmf+zQ1vTsizbiM1TxJqno9R900mrKKyHoUhDNxksB83IeOsXGfwvOnqdG9nwPMqYs9uQmekPBFdWiJ6U4iKEjJ8AzooL+UXc7OpNAbzztkYcHRldrYwifHcBVLMFWdrSvSMTANhTNyS8i2yWjNqnbHfy2Nvq5mK4sdoLcR81YoNKU74wy2cXJClH5SfifGhdn2f9+aZ2HiZWTysCHhgPdH/s8E5L
- uaS5x4JP
- t0r1jQnQVPnA5RfwbftlwEqOxvZYga2TaZLsHaYBnFJ24jCsmryEbHv/1YAF/lDjbausNELCVci80tcTDb298zBFJDh4vKknv3oqXAnnjfCsgzqE//O3kedX9D+gELjtWraNabSoMVMPSOKVAWfNgZXwrQAxwWjuf81cccaFQaOTQpQsD1R1dSXVcBFKXlHMT9WqvlbjauWvO+O7ScGIv4PvY7xSYs9OxPxG2i+KGuVWHpI7ALFNIl1NrmOPqb3qNtg8v+Wn6nUUdhKfaUoaLO0WnpjsCIE4hNOvbJm5h/yxE11i11DOJZMyOEaYckVVQRIbcBpfGlB9abtPTogT8wUDMw/Sg8cslMYRXLn1lFqFzGwO5q0/BMo1Ftw==
+X-HE-Tag: 1785885126-50434
+X-HE-Meta: U2FsdGVkX1+r9SeeV0yQilq4GnB81QRrwPFExDYL7v7lDdMBWoEIh5DJZKU6yMJdpBS0MAqaV8UpZqt3OY4OLSYDdurl60nzbMZdw2dgjMyBgFjSY4qx9hShgpkbvV8kqmsN8git4ATHrYRT77oJ9jI056RhsAbft+o414dmxxrqAIA1yQ3ZxaSdPB+FbGYGysQslY1+vhi3JJ5mvbHQKCpkvGt8B6kfYm2fV2OLPpjCboyds1t6YCw4uxFpHZVg2u2xpoWiw3PX8OFslvn/96wCLKzK+N55IDDXQBiQJ4qLkvAECKwBGmwddiarKYatsIeWlpcs2jOU+M2gKoA6jE5NANAnjReTIdgOoScGB8Pve7xMAGtPclpyJksWtj8+C+muX//LcWkFaiyn6sJfLOatFTD4WRcViM8JIPV0iAlpLg2kc5p8AnqhUNRJxhTjekg8dm/cng2a/I/YE/dRX2kTEVFTkNYEZujUm3fRoPsFbgYttiwfLAZBN5b6tIfiCH66psu++uuapWAbVdXHiz8Bqj9hCMYNcUGJobZGiRGHwPm15NRQteQKE7WM+Xy8bswQL2d6iHrALCFxBE78Gz41O7IDt3WhBtaSI294Tg1ABDuaahcSkCCam3/2fqwA95D6p1+LOvI8RPw3Tknd28BOEZ5azRrKdcABsFDCrRhEdWzewQKgv4vcq1C6gX9m8JJWzWOqGsRvlR4mQhbAkjcvRQwNe+hXQk5X9MRj5mapKkSKjbWVJHFJD5ejuK+cktgiR0ssL0PRZQPIQZcVZ/oEp9LHr8DAutvQU8QCmbLmBRLeMyYBwfp+7uzbMp9Ur+C3WJirFPGg6lU0nc3QitpFY19pmm9jNt1mNZoj1DVsZ13xz+EXmlD4qfNCSOZWl7ODp5KRaOlIhwsh1nBPNt1cwaBmWujxwx4+b5Qi9fou3XuXh4jJ1srKN8nh5/vYoywrIm22Vll3i+z+Y2F
+ 9bBmytLh
+ ZlYfALdvEYRz8hhAFnXVwAjRdT9u1USXD0EKeSfsHYGRgaHz98+XB2z2+e+oI9YjArFEJRiYofhH5Aun5XyBcMM7SUZgkcgsnNry/OaA4TEuAOfMpZ6cY4fzI3SuEM6N8GWF/CBlcIJDV6WNEqLaQy3mvbpMaxernvAkMnlGHTL1+OBWlm8AZjA8kqlSiZYXbOPA8zB25jEXKdO/J3tjLEEr2s83uQ7rX8AyYv5jZhxVXDALYNvpKMWckYJgjAHs5guqF5SjXdUIzllf6Wwt6FohA34lbd1A7+GXAEM0R8HmNKj8hSM0IIqvcoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,58 +97,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> @@ -3190,9 +3272,9 @@ EXPORT_SYMBOL_GPL(split_page);
->  int __isolate_free_page(struct page *page, unsigned int order)
->  {
->  	struct zone *zone = page_zone(page);
-> -	int mt = get_pageblock_migratetype(page);
-> +	freetype_t ft = get_pageblock_freetype(page);
->  
-> -	if (!is_migrate_isolate(mt)) {
-> +	if (!is_migrate_isolate(free_to_migratetype(ft))) {
->  		unsigned long watermark;
->  		/*
->  		 * Obey watermarks as if the page was being allocated. We can
-> @@ -3205,7 +3287,7 @@ int __isolate_free_page(struct page *page, unsigned int order)
->  			return 0;
->  	}
->  
-> -	del_page_from_free_list(page, zone, order, mt);
-> +	del_page_from_free_list(page, zone, order, ft);
->  
->  	/*
->  	 * Set the pageblock if the isolated page is at least half of a
-> @@ -3214,14 +3296,16 @@ int __isolate_free_page(struct page *page, unsigned int order)
->  	if (order >= pageblock_order - 1) {
->  		struct page *endpage = page + (1 << order) - 1;
->  		for (; page < endpage; page += pageblock_nr_pages) {
-> -			int mt = get_pageblock_migratetype(page);
-> +			freetype_t old_ft = get_pageblock_freetype(page);
-> +			freetype_t new_ft = freetype_with_migrate(old_ft,
-> +				MIGRATE_MOVABLE);
-> +
->  			/*
->  			 * Only change normal pageblocks (i.e., they can merge
->  			 * with others)
->  			 */
-> -			if (migratetype_is_mergeable(mt))
-> -				move_freepages_block(zone, page, mt,
-> -						     MIGRATE_MOVABLE);
-> +			if (migratetype_is_mergeable(free_to_migratetype(ft)))
-> +				move_freepages_block(zone, page, old_ft, new_ft);
+On Tue, 04 Aug 2026 13:24:58 -0600 "Nico Pache (Red Hat)" <nico.pache@linux.dev> wrote:
 
-While poking at the code with AI, it pointed out that new_ft here may be
-an invalid freetype (e.g. unmapped movable). I don't think anything in
-move_freepages_block() or its callees checks against this. There may not
-be an actual code path that would lead to this, but it's very subtle.
+> The following changes stem from a number of reviews during my khugepaged
+> mTHP support series [1]. Some of these are minor code cleanups, issues or
+> reviews that we decided to deferred to a followup series, or in the case
+> of the more major patch of the series, changes [2] Lance Yang attempted
+> while my series was in-flight and we decided to wait till later to try.
+> 
+> The first 3 patches introduce helper functions to increase code reuse and
+> readability. This includes a per-scan state clearing function, extracting
+> the young page check into a helper, and a count_collapse_event() function
+> to reduce a repetative pattern used across mTHP collapse.
+> 
+> The 4th patch was the byproduct of me throwing Claude at all the
+> comments in khugepaged verifying and looking for any outdated info.
+> 
+> The 5th patch is based on Lance Yang's commit series [2] trying to extract
+> the PTE state checking into a helper function. This required a bit of
+> rewriting due to differences after mTHP collapse was introduced. I also
+> took into account the changes requested during his patches review cycle.
+> 
+> The remaining 2 patches were review points during my mTHP series that we
+> agreed can be deferred to a later series.
 
-We can add a check to can_merge_freetypes() (introduced in later
-patches) to check for invalid types.
+So "no functional change intended"?
 
-But I think we may actually want a check in prep_move_freepages_block(),
-which is called by move_freepages_block() and others before moving a
-pageblock. WDYT?
-
->  		}
->  	}
+Sashiko had a little doc niggle:
+	https://sashiko.dev/#/patchset/20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev
 
