@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32F43C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 03:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 634EFC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 03:58:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282A56B00B8; Mon,  3 Aug 2026 23:57:02 -0400 (EDT)
+	id 6CCAC6B00BA; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 260606B00BA; Mon,  3 Aug 2026 23:57:02 -0400 (EDT)
+	id 67DA16B00BC; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FB156B00BB; Mon,  3 Aug 2026 23:57:02 -0400 (EDT)
+	id 56BB06B00BD; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE9E6B00B8
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:57:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DEA6C08AA
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:57:01 +0000 (UTC)
-X-FDA: 85062226242.24.B1BACA7
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 941E0140004
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:56:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YcDC5E8I;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 33DA56B00BA
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:58:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7738C08A0
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:58:54 +0000 (UTC)
+X-FDA: 85062230988.15.D7C2072
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6FDA420006
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 03:58:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=TqRboD7T;
+	spf=pass (imf03.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785815819;
+	s=arc-20220608; t=1785815933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mqxr9eZTBHl5pXezv3m2vidjAQ6kefgcXwuYmW18Fa0=;
-	b=ZrxVX+lYuBANmZ31JFo59B4u3RJQTWBhGgTFlIBw5oEadkzM28OljBwiZW9eJgwJseFpv/
-	1kIJgANPv+GNYibno+bjvup3hnrupuqp5ZAdUaPYraBHeBvKvrmiq0uncVe4ah0toF4Fnt
-	TbUdx3K1ifanIrFfMpiRGzu7n1ZxZ5U=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YcDC5E8I;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	 in-reply-to:references:dkim-signature;
+	bh=JvaRAQmBPU7Ni3GnnolVzKElnN3Ho+ns0cBS2DbZAc0=;
+	b=cvKPYrZgPZOF3oK5zi3NdnD/iwiWdC5KIk4wwzXDqPkIrHenj5XU2LumafhKGAp5kFxbAr
+	nJV7fmce8N6HZjR6xOVC4zbp0vPJqagganDzGMKIEuebg9pWER1NY92CJy9+xu5gG1SeX6
+	XnMvWBFdFNO3GmYQkZWKlLmn4hJP3Ok=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785815819;
-	b=zqOivSpnB5xH2NZerJt2riw4CsNdWXUYcECuww07rtSishB4l5yXlRtfwfJ3fyK/WtcI41
-	x/XAZ8X8JIKR9Ny0I06eFT3/6ZkXKeQF4D3XKTBE+KlXuclq0ghqlhtKZqqHe4ztCMWeTA
-	pPSvvwMkMMJ75D+NNcfFxELxouO6D4s=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce7d2adef4so65479045ad.3
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 20:56:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1785815818; x=1786420618; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Mqxr9eZTBHl5pXezv3m2vidjAQ6kefgcXwuYmW18Fa0=;
-        b=YcDC5E8IhzFveHBlm9wf04L2hHJQ4EksLkxD36EMrJXF28q15t+CPV0bUf1L6lS2ss
-         53Fy1i0SVlAlju1rWZ6xPvKXdUnnSQh5EMRYAZlDor+v7Vg5wYeUuAczNgfVlZUTpe5B
-         sLsPz+0OzzM/crHUjktLFEXp4wPEUtr+MHUdFunaxI3lsEy7Whv5Ma1WathhuTTtZRZV
-         Psq7o/s+68fskUgK6DJEjwY99FtyQRH1UTwyFCUWBOKrb3lZQsiw1RZrM8pyc5GsHbJM
-         stCWUXYP8EejiHG6eEjPsFabLik1VlAiBokdI0JdqTzZRusj4JEPRTwHWml4bVVwbRU9
-         F8Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785815818; x=1786420618;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mqxr9eZTBHl5pXezv3m2vidjAQ6kefgcXwuYmW18Fa0=;
-        b=Vy9nBnkWxzHQ4hkUGlx8c1H03L2cPAFL/L6D9BK64DI6ZlZ0pw5pdmD9q2cr1mfi8G
-         S7WvyLF5YGjKYnOBsIVycV0yE15ErEkM+tH+AgTh8jyN9vEdQXZAYbnZDzYXmYZXe2xJ
-         80OhvXz7o61FedBsQ/iQnS+kKvgOWBy7yNhR8HKA/0f8u7Pxt17P+4g1q66foJdliDBh
-         hhVhqF59e0U9VYPJiK+EqQE7Qye4c2jr4UQd7lM4lsxB3wf0BVYItYbrSLSg4AFI/xrt
-         fyUPkKiVweNqK2OEEevXkqePnH3RyxgooPYfXvMmnyC7cxo/QfssCd725FcUeUbEJ4Mk
-         ra8g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro4mPkdmV3Q/lvtz79u7t6o88DFKLmkktEVNohdfanjWqKwNymVJ+7uRzWqWW5QGFRTbUCp0vqIDw==@kvack.org
-X-Gm-Message-State: AOJu0YyNNksbOH2iLnhvykmigH/N9arnupyZiP43d90rniFXHTcC3Rkx
-	+n7gDh72UTEu8BQyG8YhBFfXcr76kp28K8ApdcgF1co1yn/5FpcUkB8LfRDdoXIYs+k=
-X-Gm-Gg: AR+sD1355qQM332cf98B+AD6vDecs+R/0yE6rjWWXU2PgxqaC9lgkFm41FTVlHxyP6z
-	lkf8ObV59Ir9yc/N8OmbAprTR7WtIvEXK026RrAvV5/9mzU2ZtY9wyb3WVi38igRsBJoU5jTnYD
-	66tASi3lNQxwLsjNCdOeun70WtpAGKrd/88cQgABhUmAIeK4ytIR2oFNx4POyzRcdalw6CHNyem
-	mTwaAe+z+HZ5+1j21pzvI5+HWFvErAHdd1ySw1G53fzmvF0FEzOrS1qUunE45qH56saGH0ORzyH
-	dp2SgIKl9ebwBKIVGkc3w+bChbv/aHdsv99k105KBW0fVS59qTDJcmUYA4g8zUu3055Gnc0ijlM
-	Nhm2vf/6+G7pJ6TVWWJjOyip0UTLl2iEtpDgKQiMMlWjuVYe9bSj+GyxCqWr+NJUR7YxngHdW72
-	F8Pr4dCk2tDSYk08awWFbS/NqE2GQPfZ74CfxKs5QZHQMrVXxHtLdchDuNhPrjjXenppsX9FGPp
-	NVl7Rtg
-X-Received: by 2002:a17:902:d2cf:b0:2ce:93a3:c168 with SMTP id d9443c01a7336-2d0521a4f6emr120492725ad.7.1785815818485;
-        Mon, 03 Aug 2026 20:56:58 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae99af1sm46313695ad.33.2026.08.03.20.56.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 20:56:57 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Laight <david.laight.linux@gmail.com>,
+	t=1785815933;
+	b=qXTamY/usDyD5tzdYfffVCeT2ktdBdIjGj9Wh9Hk7GvqONXw4Ez8stcXeYdA6Mncqot5B2
+	8Rjr3OPC9cTghIf41Hv1DO189sA458lEypvhWkPTexatDv9qqqjq12EWZyNUylnGKAgKoz
+	/6xJottr81z4mlBbofJVrZFUby/su/8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=TqRboD7T;
+	spf=pass (imf03.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jv
+	aRAQmBPU7Ni3GnnolVzKElnN3Ho+ns0cBS2DbZAc0=; b=TqRboD7TckaublcJke
+	pd/PoMSicJyGr5iZQ5KeIiJDPNLFyRcEpHkG09qTjwgXpcuw6aKP96i0rcWYnS/b
+	ksueAEtAd3slDCyHrxTpANuswZBCW8RUm1FOf8W9qS1akAzzfku5yZ4lKFSsUmnj
+	ImVc7RWFjkjBFjY2ABM8/7EtQ=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDHDfZrY3FqWF_PNA--.48287S2;
+	Tue, 04 Aug 2026 11:58:35 +0800 (CST)
+From: dayou5941@163.com
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>
-Subject: [PATCH v3 17/17] mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
-Date: Tue,  4 Aug 2026 11:55:35 +0800
-Message-ID: <20260804035535.2846016-18-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260804035535.2846016-1-songmuchun@bytedance.com>
-References: <20260804035535.2846016-1-songmuchun@bytedance.com>
+	liyouhong <liyouhong@kylinos.cn>
+Subject: [PATCH] mm/huge_memory: avoid TOCTOU race in min_order_for_split()
+Date: Tue,  4 Aug 2026 11:58:28 +0800
+Message-Id: <20260804035828.2684059-1-dayou5941@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: isxtayquh6rcect3kzq1wx3czciwgcdf
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 941E0140004
+X-CM-TRANSID:_____wDHDfZrY3FqWF_PNA--.48287S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww48tryUtFWfXF4rZw4rAFb_yoW8AF1UpF
+	WUKwn3WrZ5WrnF9r4xJayUJr1Yq3ySga45AFZrCws3CFnxJ3WjkrWxCa13Aay5Jr48JF4x
+	XF1jvFs093WqkFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UG-ewUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC+QvpmGpxY2utRQAA34
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1785815819-600200
-X-HE-Meta: U2FsdGVkX18z38nOZeB/0wvn6p2vQqazWThdIM9kgXcV7aHQIjY6oC7LrwZQpou88Rj2WfAgEFBrcmQ3j3CSWcd8jy/S+c6HMXmhZYywhZ2keSmVL21wZm6jNwD5m3OT/l0CNqWtAdoWZCQjG7cGIlXhkiPzMzNE2fVMmPlYCpGRg4P9YYQjq6L8Ks9ZnASb1evzh8y2ZFnsD8FrpGbBlVMqHSPs3XAMPZhsoGJC/LCKUyLJVW2RG4/ll5wZAnQXlxhw1BBnfMUDipdPU3Mcs6f4elIigyN5yz5yX3tlQX1uoCwwJ2h3vvCsXrEuScgGyVGQbvfuW61p5OfpjKJ2AWyCEmnFCfuPnlHVRS9hpp9/9PHXp/dUN8BOeW7iu0OsUf0v/Al8r/t+/aEzrqp8MOVeVl1r93r0lAxOCOn24O6lvVUqsJbXRdLF1Kh5JGx0i61i3UR7GuT/YeKRikzRgpWE8IHCDBXmN9xaEHiQnJiEglvRhBOwg03WsQVLDzThWSq15H8/AgtL8W4GmRjntv73p+P6vZ6oaBzCt+9PucM21+sk5OB1/FzlqBqquYDq4Bg0qOQVgqmywjGJiq2UKKDLl9hP/KcKcbFOpJ8pHv89qc+YS/cnKeulOsfwu1HwoYHcEKZuZcN/ZIclRv3sT4RFrjXyYrbSidKMeNvoPHm+8vSF/5Leqs2iJOzWPuqg7/K9uD+tyfCyhtpVdXUvE+PJ5ab1K3cHCOaZ5mbJGjH6YdpRKumY39Nqy+RJUlnHI2D2gD05VEwV9Q8DuPd5C1Xe0tsthCM1eWAB/w/4HQjvEdyNA6057ZksoanhCdboTA5jFEiuZztOa2i+TlT4ccAbRZlH+lF77iltJB1GmEQ24MitLZH76KoZs2uimaDqXOif8JI1Qedv/9+FhivV2BXNuWulEaCDZfBLPSpRmA9BLiR8bFIa4Lf86qXua5H5TdrenCcYNYDN1Ijwo0D
- kSppfwok
- xwvQr8PRGMSPNNdeTk0GXkNPXtDKjKd166gZ4R+lYyEHOiXHWqkqBCZIb+JSxgIKagp8VJcL0L9GJLxQ4/JCZ2I0LJZAU0Y7iuh5HlNQYvPaE/XLRgaI2xPmTPN5X5YBHrUgVaWe0Ht7WLTiPyqbpS8EWraWbqrP+ZIBoObg3FRUqe5CWhIBpjoVtHTT0kmabpfmsDNTGGR7Mo8n3WrFdCtuCx2X1B7wvKUR2y3AJROn4W/bTRVI8/7pcXh5UHLUIm1wsfK8cLgWiHeW/xoD7RThWljqJDl57e7vkwHIH/H16FI1k3FJWMob6G/0mKTjB7kQHzWuE0nvCY7QeHe5mJrZIwym+QORhv7OJKIybFAOPARoOjJO4/P0/f2R0b+W1dpInP+zysK86PUhJIOd/mH3Wx49uNdqgV58NE3o3B/NEjlmZJ7SIQ7jqEL2X72A8CXykDPFCVyLH++I=
+X-Stat-Signature: wd6c11cpy4druhp4z41ijq1umpf45g83
+X-Rspamd-Queue-Id: 6FDA420006
+X-HE-Tag: 1785815928-765656
+X-HE-Meta: U2FsdGVkX18iIa71e5aMgbJE5VcZusLqNpxJN7nHJo3dDOP53gYnmBeAEysoyAY/UitLSW/T/wv2XqLrHILFpoNPgfdsAJR2XL9IX4JhT0VaMwF15+t8QimAF/3fPN8E2WWwLvG0RjMK2cUdNr9y2xxCc5f3ElnPOHs2FWQa3boDC1APounxb3DaxrnRnjVWwxq81zi63lNQPXyYOH7ML4LXy4x4peYekWu3hjWcx3bU1C7sOwMHcOA99gtkbkbsOQG/wdMxUkJyMx0ue4O6MXjYHcS/t7RThNS5HtSfo5aH84vOjTJwEVGGLeAsHct6GpicsXD4q7obWNhUUbOlnjYiqMMQeUZmAGCRY3LFyEsZ6da2PrJ8g7GELgjsEGw3c7hs2eQOskhYkJYg22QJ70dX4Fd85stc8JoYZydGuCiDrLxAN0eXHRZPFoYYt5efo8S/rkRFvzFbYtdrWC8yFoLXwOPTw3Flv839ETC6Zw+E2WW5O66a10TiEYd6Wi1CIzIedJdq7kLJJgqB4GcpJP72fN7A4ICmmYTHlgHBLyxBGcsCZw1IlIUcJBxmVF6FDYQpsv5oKx5mBToMgusJ5IUG03oiZHDA3lfqSkSifCsIO67DntQ8vjIzun9175AT3OsNclxxhDpXXLhhuJKW44rqJReiG3pXCF+jiNGgY1ZZhQZ9WagSdI3iEpheKAJkp4WjAN3jaKuQQCL/w2xO7uK/UgWzDUHz4kNF8cF6RtpMTakJPYP1IycDpxIxsyfZsjNRmp/5MTDZKiusKRuPl6uSptZZoEbUcCkfsLtCzHnOsMcSnFz25h9seogSykdlNZSBzwYUb+oyeC+elSu6pCzF7XPowhXzG2b0TUxk4BjlPMRAB0bxfX4/JbaiuNWzWMQEx7B5+/YghZRQtpVdsFoRMTN/zTR3DKAmX08ToOKRue0dESYoJ4wMI9Ymzu1mRnSol7SQMAwnpFgDCV+
+ Ye/+Xyk5
+ g7yOdxYi4jdYA9HV1eDg0tsohwG6ZUVHBEDtmZjoVhGl6xTeIyn5ZiLz97XV5mcJTua4f15N8vYYflKYf1pS+1GOxf3Xch73EtPCexdqJ5RA/YzRQmofU/kOtgFZf7hx0Pq3Os6qHuJQPP+BPZ834VArkSNZL2TwRThUc7zRb+ykA2pAfWWlukSvq6NsTFwQAdH+JIvLRWtcaiUou47ViHSlApx5MBERuwi6xaQuEviS4KsCeQDWRzJn61VPHFaY6Ql73o1e/0TKJeSzXXMbCA/ouNMOnsAdsNi2W5i3f+eoa4MjY9TIoIB5ERVOhCQ83eO8tdNcG2lYwhR5aueFwDRnRzZj/Og6S/zup28eX+ECNfmtX7Bnrcyb/60YlX2mDmDVVpM+AqhjwlKu0l1Y4fXtQa2PJ0XlCOpVKHXG6vKuQx1asNfeOOLYglx1amc+KtYSJcPN2JM3WVR3wO/FjGe+jLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,49 +92,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HUGE_BOOTMEM_ZONES_VALID is only used by the huge_bootmem_page flag
-handling in mm/hugetlb.c. Keep the definition next to that private data
-structure instead of exposing it through the public hugetlb header.
+From: liyouhong <liyouhong@kylinos.cn>
 
-No functional change is intended.
+min_order_for_split() reads folio->mapping twice without any
+synchronization. Concurrent truncate or invalidate can clear
+folio->mapping between the check and subsequent function call.
+Even with a held folio reference preventing the folio from
+being freed, folio->mapping can still be overwritten to NULL. This
+TOCTOU race allows passing a NULL mapping into mapping_min_folio_order(),
+which leads to a NULL pointer dereference.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cache folio->mapping to a local variable using READ_ONCE() to guarantee a
+single memory load and remove the race window.
+
+Link: https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
+Signed-off-by: liyouhong <liyouhong@kylinos.cn>
 ---
-v2:
-- Collect Acked-by from Mike Rapoport
----
- include/linux/hugetlb.h | 2 --
- mm/hugetlb.c            | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ mm/huge_memory.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 255a258f11d1..900c95e346b2 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -675,8 +675,6 @@ struct hstate {
- 	char name[HSTATE_NAME_LEN];
- };
- 
--#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
--
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index d978992e2770..cddcd752505f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -55,6 +55,8 @@
- #include "sparse.h"
- #include <linux/page-isolation.h>
- 
-+#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..54d4261a2a15 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4284,19 +4284,23 @@ int folio_split(struct folio *folio, unsigned int new_order,
+  */
+ unsigned int min_order_for_split(struct folio *folio)
+ {
++	struct address_space *mapping;
 +
- struct huge_bootmem_page {
- 	struct list_head list;
- 	struct hstate *hstate;
+ 	if (folio_test_anon(folio))
+ 		return 0;
+ 
++	mapping = READ_ONCE(folio->mapping);
++
+ 	/*
+ 	 * If the folio got truncated, we don't know the previous mapping and
+ 	 * consequently the old min order. But it doesn't matter, as any split
+ 	 * attempt will immediately fail with -EBUSY as the folio cannot get
+ 	 * split until freed.
+ 	 */
+-	if (!folio->mapping)
++	if (!mapping)
+ 		return 0;
+ 
+-	return mapping_min_folio_order(folio->mapping);
++	return mapping_min_folio_order(mapping);
+ }
+ 
+ int split_folio_to_list(struct folio *folio, struct list_head *list)
 -- 
-2.54.0
+2.25.1
 
 
