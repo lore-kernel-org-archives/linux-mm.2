@@ -4,130 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC26C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:54:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE77AC55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 19:15:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 361576B00F8; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
+	id A6B9E6B00DC; Tue,  4 Aug 2026 15:15:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3387B6B00F9; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
+	id A1C5F6B00DD; Tue,  4 Aug 2026 15:15:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 227A06B00FA; Tue,  4 Aug 2026 14:54:17 -0400 (EDT)
+	id 90DD66B00DF; Tue,  4 Aug 2026 15:15:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ED0566B00F8
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:54:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75074A02CC
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:54:16 +0000 (UTC)
-X-FDA: 85064487312.12.664D365
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 33D2B1A0003
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:54:14 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=hH6y0yN6;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A6086B00DC
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:15:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0294940294
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:15:41 +0000 (UTC)
+X-FDA: 85064541324.08.BBF3587
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2F1AA2000B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:15:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ken2sQLb;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785869654;
+	s=arc-20220608; t=1785870940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
-	b=ncGXwh3XLxWMOgERlgUwsQD5ajmu4U6vgsyjYpF2bmj1PN1yKm+IN8uZh7rnNvBGOmUee4
-	KPguzf9Y9PnF5mm+8bmboca+HkytzXgfvlSa81Dc8HkcS4kBlhqfOJ9VEfiSzYbVuQEaXr
-	BNQ919JgYCEvd8jJA+G5X1y8v+ppgrM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785869654;
-	b=3jMIsha9+Xxs8SKfCqnce9iXNn2GbxuG2jL3Ik4aZGE/MJEBwECGviY/HnGwG0cy0Ncn8C
-	hB7Wwpas/Sr1tkkSSYaLDvlvvQhp0pW0RZcl5rttEh4PHumjJU62z5lXMEslINqSODb8+E
-	zaSLvD8m7rL4qHNRo1v6j0cb0H72cjY=
+	bh=k1Dta2RSeoe9YdJLecTqGrTMMuZ8ntJIXx9AmBauxos=;
+	b=rn0vAv7wdkeUvJmQ+6npOFrNaj3NWfa9I2n3I3V9XQ6qgQ4Pilnhgv7JPDp626MjQM2kr3
+	wA+BaVpKgyPqvin9+2bA+unH+hu7e/vW4haU+spcbDhhti1oKfVO0HQ1o/KIPurMwUzxYl
+	tccS8k31a58MMmIVJ8ZsPSbAZ+eTDC4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=hH6y0yN6;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-9034b6b7674so1177246d6.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:54:13 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ken2sQLb;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785870940;
+	b=ZuJxBkXU9dbj+Oar//LTEk+jwKzzJCnMqGYPz77u3CeBuSFYvsY+GBYoBxlaMCCbzPiGDc
+	YLZWTVfRkPoReMDB1T1ghTWGz1ZijSzAy34hH4PssyT+gbDitvCL61S13UpsmyqF8xEGHU
+	Z3k/RmoSWwDsQHYFFYC1lq2ii8oxl6s=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8f0e5e36912so1062736d6.2
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 12:15:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1785869653; x=1786474453; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
-        b=hH6y0yN62+f6x69XkU+4NeuGKI7MWR00Dpx0Afu6PHgwE+cY/2ndLNyyRMPvMzzFVQ
-         pqVwKio+fJWNa7zqfAUq4sKx6TtVjUM900eX867w8uK6hwuBSzu/eO0cTbojr1Dg8mKy
-         yR3aXyykdVi53O8ST6Al38QacgxP3LXvE5bRMP8MPTN9S0bIay3/FJOLYaPnk38wYO2g
-         K7WWoasKgE/5TYNpfoIiWZm+WLOZsG40h+yF/lBv8x41kZzUBmnnP1zjFo28c/fcg084
-         IkVARs2AEKXn78hBkdXavbWJTsRLTpCKQqQwlqgGibKarIP+7lTiJUZ5+K2fOFwPOq66
-         WnMQ==
+        d=gourry.net; s=google; t=1785870939; x=1786475739; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k1Dta2RSeoe9YdJLecTqGrTMMuZ8ntJIXx9AmBauxos=;
+        b=ken2sQLbTRBK4yIMXvRhrcvSrGlO7PBdGYOCndHZWgQdC4LgcDW07t79sQ92uU+Itb
+         J3bRVxDa2rK8utm495/lEMvCWbCFqw8Jo2ObLyAv+YiRGMe9H1x3xhMez440rEXNUEno
+         8+9WoZQaCG0mfaCcfj0ZwgiIaN9gcIQCWxDhB3o85tQeWetOKpqgR2QgtmCKE9Km5E8p
+         Rgbo8vhXaWvVeippH8J1E+D/TLFroRqiwAEPcYbDwyAcqpud0pvsx2tRk5Afuree3QyC
+         gKTNb5f/UO5dC5brrHQYu5liPTvHfGzFnKlD5xphHKGR4bA7Nab83+88G91qz4peKD+W
+         aI6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869653; x=1786474453;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NcyQc0XO5NGrQMyUDH1X0CTRmn7y5N0IBsdkP7EGScA=;
-        b=j7fvvn3GlsIDmFC/lHeaqCkUzFtolhnMRQcvrPt68estrz2ZZw8q0Pibwm1GIZqApj
-         5nw6soZv29Jq/liS0FUOkWV/aDV8IK+7Mkjnl/WdR4tcQwSWpeuee5dBlxXycXyEQ63p
-         kIXFd3imVGEmHYo7HCIWwXCPm/fWrTi8md4TIduW6SsVGj06zfUL3UGTU0vR7byEnDUu
-         7YysZ5sz0vZCuwhuyOWnaqYZp8XvQTtM7NMIPQPjC3sRmHTDPnMicWxgYNrqcGb4aHLd
-         XwKWZp+qQRV9Mo2vWyW/MXXGIiE/P0vY2CDVZnpbf+a0CNce6oR0AupESFS7OM1Pb2N2
-         bOHw==
-X-Forwarded-Encrypted: i=1; AHgh+RoE2+MrEX8yOkK/wx27Ut2xYVJ6AiwC54jv18sv8rgEJufXIip9MB7s7A9dbT9o+DeT6JkNz0/XDQ==@kvack.org
-X-Gm-Message-State: AOJu0YzZr3OKQFl91efO69nNGZlkFftxxeMAlV1DZIHd41URddPH7DiB
-	0m5IHTV1vPWS6k+d/evDot84ONYRixTdqFqhlcIAb9+CRX7jyo0kkSzVKZNM//HUDkw=
-X-Gm-Gg: AR+sD13GhZZtfB4S3ty9qmmbjdrmJW4nGmkdFAgQrt40S5YWvfZNCW+9x13W81Jqrch
-	HH+tBpbkJ1JI7SV7WYQNjao+6jgnkrs3uvKPViQx+4wnoFGnlHDWUUNkgNobHE6/PNEfiSvEFTM
-	vxHtt52EK78oaQI7KHs0tf5/MQPzrLEo+gvLonBcU0rkpRLpDiXI7IYgLwN1JdQ2zYtNzeuF4go
-	7TJU2lZFvGSoJrbtTWiKUkxBnlDlsW0CeS7O5XauSWr18XpX/B9jbeXmpXUps4caw1nCAt1xR0X
-	wSHZO6WDGw2RW/nxWZiUZZwlJvTdja8i0S6vCedajYVtwPGUMXQ8ydpeXxUrHq/sA3LmvphAcGJ
-	lGzV3uLug2OhaXk7RNEn3WKPuGW8BA4g7CCl6zcZbJMErXq1HVIfsT4evzIUC2E01/4+AnySvRy
-	u+D6ch1QlAIV2WUej72ssjhxk6lfe6L/PhZT0tVdM/2jy6dh3teKcLm7Gh9oc=
-X-Received: by 2002:a05:6214:4a87:b0:907:c056:d63a with SMTP id 6a1803df08f44-9088125aa14mr18471346d6.20.1785869653206;
-        Tue, 04 Aug 2026 11:54:13 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d04csm9065436d6.3.2026.08.04.11.54.11
+        d=1e100.net; s=20251104; t=1785870939; x=1786475739;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k1Dta2RSeoe9YdJLecTqGrTMMuZ8ntJIXx9AmBauxos=;
+        b=GNch4/wLnZOKIsqGvq86vQQaETEw7yNXjWIW1SG87fqrxr6HNd5MZVHi5zTb42fex9
+         EnV6QF7goBwKLVjvcNzAIc0/Eu2DE5MfKTNwRQBcTctWFDtcvlNz7pwB5/oT0qcNHeEs
+         rBMPq9YaWlRXa8befQWv2tV8M4L6VNh1qh28nE1zgHZZeXHDx3TEZx66bIEZCocATKFJ
+         IWtq5Il5hmpIxCImnphQKDUoq0ddmsf8fLI1PV9WD4JVNClsAm+1DIHSJvj6SofGV3qx
+         Nu+3j47WmraaeGgSD/bThh6hznRMSoTSQ26Rcg48X0x0Ee2iIKny4JCHNS31stQfexKT
+         b3BQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp//TZpNICCyggDRjF+M7X8cjuBt8l2HVvZezJbei2V7ETab3XsqhyPYIu0LyulCaADQwUEX3asQw==@kvack.org
+X-Gm-Message-State: AOJu0Ywae0k42xXKyPSYT9PyJcqaiG3iObVZ74lsvuz+0ENgqEfQ9d3c
+	jpAYoIv5NZ7IYszGBluvNZxNfrnmJcmvlg+IUP7/48f3qy93QPgP9iWNAMB/biZhb6o=
+X-Gm-Gg: AR+sD13nXcI5ti4qev6jZgScVQY3sa+YM+G9Vh+g3z942oaHxwYh3LUtM/IPfMEACUj
+	W1D8SSQSJs15Cei0Q12q8f2rOkYUk35Bif1bkEs1tP/GUq6xIHER7jAr7LfVATklVZpSemUckic
+	kKn9j5Xy2XgyI7tHxbL3kxWdf+5aQIh2VSNxay8cTRYvLXWIbJfbQ5o7v3yPBiWooLYrlfbz8Hv
+	s7xV3+xiDGH/Ldqhycm2XdPzkpBNGBrbxcRlRvTcupydHgZwv+G4kDsUHx8YxkrvHj6eJ0AJIQh
+	caxD974lynAtN3ESvM7KIITrsFdg79hueq9gTROyFMWM9EPLbOC5e7C717xJ/mxaiYDVbVd3aYn
+	OsQez8I2iK3027Zq4dz/YiQujGV/uLpLhO95pD8wUetC//sOGGDp74Ja0Aj5NaVYhicSiJ4jqgs
+	yX1V6L9ZLlIArRfEepjW5oYIwZDknjgGw/G39lDGr+wUtuD2r4x93OLgjLpw+Ug0GS/CORDjEIv
+	/h9S9fBbp73igRlrH4X/2tEhycNDvnyhicPYKvpzQqHTA==
+X-Received: by 2002:a05:622a:4c14:b0:51c:2633:9ddd with SMTP id d75a77b69052e-52ce61eabd5mr16510221cf.41.1785870939179;
+        Tue, 04 Aug 2026 12:15:39 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d814sm8251026d6.10.2026.08.04.12.15.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:54:12 -0700 (PDT)
-Date: Tue, 4 Aug 2026 14:54:11 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Barry Song <baohua@kernel.org>, Joanne Koong <joannelkoong@gmail.com>,
-	akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev,
-	alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	willy@infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-Message-ID: <anI1U49rFrlhPx2x@cmpxchg.org>
-References: <amtv0YRbSrN6iUEo@cmpxchg.org>
- <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
- <amy5ZKC2Kc7RX94Q@cmpxchg.org>
- <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
- <anCpdjEoDNgVbfzP@cmpxchg.org>
- <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
- <anE27CtvCFx7sAuO@cmpxchg.org>
- <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
- <anHxPU17Ui4MTcCb@cmpxchg.org>
- <65b4baa3-77bd-4d2c-a128-9884f858e63d@kernel.org>
+        Tue, 04 Aug 2026 12:15:38 -0700 (PDT)
+Date: Tue, 4 Aug 2026 15:15:37 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v8 10/15] mm: Check individual hugetlb pages for poison
+Message-ID: <anI5bPVScck1WXvh@gourry-fedora-PF4VCD3F>
+References: <20260731200802.574821-1-willy@infradead.org>
+ <20260731200802.574821-11-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <65b4baa3-77bd-4d2c-a128-9884f858e63d@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 33D2B1A0003
+In-Reply-To: <20260731200802.574821-11-willy@infradead.org>
+X-Stat-Signature: osidhpu43n9dpwdi4d58wq5ri79t1gee
+X-Rspamd-Queue-Id: 2F1AA2000B
 X-Rspam-User: 
-X-Stat-Signature: wdhghm3cxmwgpmnexuxtm53oc3q15i7m
-X-HE-Tag: 1785869654-413142
-X-HE-Meta: U2FsdGVkX1/B7tAnBt9w2YV7BGd55JYKoh28hHyF7R08+E6hYAQIiIARVMkaqVoLq2iMj8ZjyPVdYOAcemFQHJOiAe6k4n0I6Z8a1VOJGobs63P+TgXvaKOk8CG6DC8N71y+azorqW7mPR5NaGv1+G2sZumi4aBFvkllINnrnLRJiOV/lo901a7JpOitggSpP1eNL9okyUMdiUnLNhGZU+lBPMZCnvR8u1pTWPY2PH8SqOjtsKCZ7VaDwV4JRsgckLez4Yndr91DyoZl7u5+jXfmSy4O1U/ru9BNOcqR9v1my46Lr1TN9lXZgGVMjguNlp9R0nsap6+CGFWKja9W5Io7m4luAmG7gTRkJlGBzEDOj5rA+JVpaRdrK+ECSBDeb3rJ81zvDfjoMHESiDVkGD/isFWt4ASFBfItTCJSTFuAfNn+IFPbic/9v/5X7QWZdUbRVo5W7n3ipFMmdh6tvyPBx25zVjY+A1mKbsJgBV08nr7HQeNHzDGet3J8Lg0jARdRlhgPxbUE6RF8G3te2LWNkKz3nrPQ9Vk7UIrb00tnGUoVX8jThKhn3pULuLM76CgzhRL7B4PB9J0CXgBm0SdGOUOYEunnmoov4dueFr12O62OHmA9tnKijil+Zrs94ECP0XrBE6mZFgK1ibHPjSZa2Jn9o2aDMmzKD/iueG37XMEHXaSrWRLxabLjfb69LhLLHIiOKh0GmvJIwqZRVyuOQZl6bjrrcueW+38ZgJxUSOnLcsBDq4KD+wljvkMxiOx1y5N9RIdDi7MmSKd/82Eeje469AoxVSxupDbemc7NtZ+aznPIMlUFCqjelQ/5YUCdJfzYnPPSnEHS6kvqKrt5t/nhEeRjECJ+oIH21emclirCyo1g8fQSUlpjdJR/SBnekbBS4pIKYc3XlASWgGx6ba8lhz0IqGGRgb74Alpf3PTxIh7BweYnydnn4aW/CyYGme0woxOQVpvneJq
- qJodPXnj
- VobAq37UemkGaNIXItnowVNZxl3CUeemc9zlwMZcJ3velFQpAPPwPVkyVwy3gJEZhwVHbvaGNgHfGtdJWuZPlXrlVfIZdmowz/IxMlyngXGBqXB7I+1Yg0cN96CCc1L8Chl6U9cood+zI2nESPUm3+Qw91yu9UQIFpTvZFFOhftQuBhK0A/pl0yCcapw01jShLGStQWCTocXQ3SJjXDP3gxWeQ5bZEUUcEwq1X8cYSm2cDbP6vCLDUv6QNSlUZFlAPwcEhbxAI0/L++VToVGlMyqzb5qIBYCWfuHqAUeXut2ymh/BsctEO8Zc6BM6D/GbUIt9Myv14mLEbs7XOG6nPqstPwJMPaV3GF94uaRpoNYAiO4cmgOglOgWxArSoxslYdMTbs3r82j9PDt9QabRBzDEUV0epjEnDu2Xj48E8edydqIgyMruLgeMrNKndg+0Ridf1+JhHd1pz1k=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1785870939-618278
+X-HE-Meta: U2FsdGVkX18dWX0rUQQtDPkEjMWuSdd1nh4D146JQ+2NQ6SkBJ8HUxTICoLYP4OST6s6LliKr/4dSxnHqsTs56LznXiwReCTTA2JqqEHJsKo1Q7h+LX9GTAJ914mLHR8NANf+J5QVj1dBPCEX+S7ExbnQysrCMHleRnuahqoqAHE2uocDoIDveWB3toYQSK3DpDx27jjYN3uQWp/x2g5gdztO0PoQV7sWA92HZOSjETRO+GBSa24Ld3t3RT/fEFf0vODPpSrWKTC/teaTmiZaprtobe2X/OkuLmdvjYsi8VmnhwkClo20Kdjfge112e9gUiCzKgZzkJEd546z8jeGq4iUpJi6xBgqBdlgqHRrszDbbK+foQVG8ukUFr7PcgjFdJ4EM/Ynitd+7vieNzuLTVYSpjALr2DQ2Q9w1MWSt5YtERtD3eWiNcHsorKMHX7oi2m7tE6nKptTHRe56LJih5ldd1wRo/MN4qYOf/SU3hLoIyVjXzFsSAWeQjZIO3UN0RReUYvIRwXPWqEFC/49q9U3eWEPl12NzyQxUWC5eeVWPG8/JkdWaso0BkzgQbPZ5O0tlW2sZ7xvVqg9tGPaePZdwbMsB7/9wYN0qTHmYGI1JTe6adjCLvlQumZonKOexqNTFmwxU3lxevOMY0g0CklwpIwRe7X/r7emvXyabHwQWdVH2OmJQEx21autOD4a99eMzvK5wVaoNMGQ38XkcMKBag1bRBfzCRbAtmwJkr5jl29cyU2AnECYHnwCUTGF6JPBwCvxesFVnyJ+O/9+2QAU9C9wbQzbFUdZyw/pXHz/4DwWnEXWQ+C5MD9qpJPB16bRyTaDJ1LPIjo0w2W/i67tFZMWsiz55+XEzfOBHkHhmcKU+up8FtoBI54XgyFwZelfy7IdYe2CFLRRco6FLuIvAe4PSZDZKsU0OsinFsaxicVWv7vxKGTuVI3T5EMICqRU4Me03oh2i1L9PN
+ F4pTGn/z
+ PSCRDLPZsakVyPReYvawTY76eipT9ifPDjk6evS4nr6fLKauGd7FuxhsiPRCUC27SB1f1wEP/hDE6aGTYHu/Dvclb+NOV6XzB6+7KW902tODmjoFmRC9Bzb9sOj2ucL8SMKnsySLiG8xqVHThvi6Pv1OgF/Je1Qpqc4tMXAm/RWq4F8XwOddtAwIWSLG51P67wzJcQp3JeHAMg62q2yqDNpN0u9t9z/uxK0V1/wrv0xdOZ9qa/67Hzq9jZf5T7LfL+1U4PX7t6ZrzNQDRo7bdwQlOGKgBQ0mqSVsoVsh3nWEmyIVZINmLTbnxF62k9lUT/Uz6VSgJYNvTwwHfjaEzikvr4da4zZYA+h4QBOYf7fzdpURCtk8Vocz6IR1YjiT+fbHpYGkS93gkxGP1VEJHOocWwbo1bX3yxmP1dd4A3IUi25rW25rNpYK5aZgRf8PwoR1d699+CXhFowNR4yvGMzABZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,86 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 04:11:02PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/4/26 16:03, Johannes Weiner wrote:
-> > On Tue, Aug 04, 2026 at 10:03:14AM +0800, Barry Song wrote:
-> >> On Tue, Aug 4, 2026 at 8:48 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >>>
-> >> [...]
-> >>>
-> >>> I am very confused. Did you not see my proposal above?
-> >>>
-> >>> Why not this?
-> >>
-> >> Hi Johannes,
-> >>
-> >> For arm64, if the base page size is 64KB, a PMD would be 512MB,
-> >> and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
-> >> order-5, not PMD-1 on arm64.
-> >>
-> >> BTW, I assume khugepaged_max_ptes_none is intended for collapse,
-> >> not splitting. I am a bit concerned that reusing it for this
-> >> purpose would be quite disruptive.
-> > 
-> > It already is:
-> > 
-> > static bool thp_underused(struct folio *folio)
-> > {
-> > 	int num_zero_pages = 0, num_filled_pages = 0;
-> > 	int i;
-> > 
-> > 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-> > 		return false;
-> > 
-> > 	if (folio_contain_hwpoisoned_page(folio))
-> > 		return false;
-> > 
-> > 	for (i = 0; i < folio_nr_pages(folio); i++) {
-> > 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-> > 			if (++num_zero_pages > khugepaged_max_ptes_none)
-> > 				return true;
-> > 		} else {
-> > 			/*
-> > 			 * Another path for early exit once the number
-> > 			 * of non-zero filled pages exceeds threshold.
-> > 			 */
-> > 			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
-> > 				return false;
-> > 		}
-> > 	}
-> > 	return false;
-> > }
-> > 
-> > That's ABI and setups are relying on it.
-> > 
-> > All I'm proposing is to only queue pages that the shrinker would
-> > actually split under currently existing rules. That's a mostly
-> > transparent optimization, not a new policy.
-> 
-> I yet have to reply to some stuff here (sorry, it's a mess :( ), but one thing
-> that annoyed me right from the start is that we have:
-> 
-> static bool split_underused_thp = true;
-> 
-> But the default khugepaged settings actually don't result in any splits.
-> 
-> I think it would already be a big improvement to not default to adding all pages
-> in default setups.
-> 
-> When we last discussed changing that, one concern raised in the past was that
-> changing the khugepaged setting later would then not be able to reclaim pages
-> allocated up to that point.
+On Fri, Jul 31, 2026 at 09:07:55PM +0100, Matthew Wilcox (Oracle) wrote:
+> +/*
+> + * We have no reference on the folio containing this page.
+> + * The hugetlb_lock keeps hugetlb folios from being freed.
+> + */
+> +bool hugetlb_unref_page_hwpoison(const struct page *page)
+> +{
+> +	const struct folio *folio;
+> +	unsigned long flags;
+> +	bool ret;
+> +
+> +	spin_lock_irqsave(&hugetlb_lock, flags);
+> +	folio = page_folio(page);
+> +	if (!folio_test_huge_poison(folio)) {
+> +		ret = PageHWPoison(page);
+> +		goto unlock;
+> +	}
+> +
+> +	ret = precise_page_poisoned(folio, page);
+> +unlock:
+> +	spin_unlock_irqrestore(&hugetlb_lock, flags);
+> +	return ret;
+> +}
+> +
 
-Agree, that could be unexpected.
+I ended up with the same question as sashiko - i think this behavior
+implies we must hold a reference on the page, otherwise the folio can
+be invalid and all these accesses are unsafe.
 
-> When someone actually changes khugepaged settings such that the underused
-> shrinker would get active, could we walk the LRU and add all eligible anon THPs
-> to the underused shrinker? We could remember "already scanned for underused" per
-> THP, but maybe we could avoid that initially.
+But that must be the existing behavior for poison checks like this, so
+this is at least no worse. Not sure it's worth addressing.
 
-Recovery like that makes sense to me. I don't think we have to be
-extremely performant either, that should be a rare setting change.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Would it make sense to use khugepaged_scan.mm_head? That could be more
-targeted when policy == madvise, easier to skip over shmem VMAs etc.
 
