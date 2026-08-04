@@ -4,130 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B373FC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9DA1C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:04:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ABFB6B00F4; Tue,  4 Aug 2026 13:02:08 -0400 (EDT)
+	id 569F46B00FB; Tue,  4 Aug 2026 13:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90E376B00F9; Tue,  4 Aug 2026 13:02:08 -0400 (EDT)
+	id 51A706B00FC; Tue,  4 Aug 2026 13:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AF936B00FA; Tue,  4 Aug 2026 13:02:08 -0400 (EDT)
+	id 3BB5B6B00FF; Tue,  4 Aug 2026 13:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E446B00F4
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:02:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92A13160213
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:02:07 +0000 (UTC)
-X-FDA: 85064204694.12.AE56A46
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6A04E20009
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:02:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=I0M2r6N1;
-	spf=pass (imf03.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DCB56B00FB
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:04:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EC9D1A024E
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:04:21 +0000 (UTC)
+X-FDA: 85064210322.29.CF9EB25
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AA0A240014
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:04:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NzP7nDte;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="0I8ng/Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JcfVmEHS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ACZaZmlW;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785862925;
+	s=arc-20220608; t=1785863059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PmIiry7aZvfcYxK9grtKj+mdFQrBZ0Yxe0X8buy7AyY=;
-	b=L11d56L9CYtEAahVMiwHXtGbqVNnmY5edx8/brmHQB9wb593Mbba1DDh9FyF5ipPfF1d/9
-	/rmVQWVxGd4WMtROUgE2Emnhwi4pG5E1xKQcjeWYLYrSVBtuD9JHNcweZ57iSpEOzBE4UF
-	lpnbAQb88268giJO8NWgVG668NY09fo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=I0M2r6N1;
-	spf=pass (imf03.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	bh=+5v7MkDI4Dtpq/Qliw3bpPtxAQ4VzKqgcoQOQ2I8B4A=;
+	b=SOpbduY+f3GElAlno2DUQ3YdINd8LOw9GbeUuNeDbqQ/yOpNbY1LDcY7J8QFN9aD+IyA0J
+	dA6310sozWcl9yOUDa7yC10y/OmeALFr7ooXXG4n5zJkQ+KPO5XkAWfoOGQsLd1+gIlqja
+	18tHG7WKAjMSYXbFp92jWm+K0nNdhTo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785862925;
-	b=we+3itINqVo3wkIGz3fg5mTvWJRUyJq/7MXBYqGql+x6kdK+sr0bqceHIPXHVELdVR6h/A
-	pF/fkmV807hGmudejVYddFhbHDjAyAAJL/SgF4DALQMMXZzbDJEmnD5kWR05PX9zJTUnM2
-	V0sto3SKm22BNP4ZG/A4QlLcg450PlQ=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a0ddef4e35so85a12.2
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 10:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1785862924; x=1786467724; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PmIiry7aZvfcYxK9grtKj+mdFQrBZ0Yxe0X8buy7AyY=;
-        b=I0M2r6N1vHwEyJ7FnaKhADHLlG5h8ubHDhL5Jw6bPjE5M0nZA5VL71lEhPXbInap1i
-         WnpFw2OjbpH2KViVyh0df8V5UTIEXSL+DEqrCGIcIY+WQN8lzoZ8U3XG2NFIeoR5U+89
-         gci3dX1PSPA+ZXi3VpTWU1wfBUUUreHndEkd0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785862924; x=1786467724;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PmIiry7aZvfcYxK9grtKj+mdFQrBZ0Yxe0X8buy7AyY=;
-        b=DAEzmc+wcPgUEe9NZuHOgD0UdfpGpuAasNH3Tc1ekYYhw6qPrT0iE6It91syI6Hqtt
-         S9SnyVUaD+COQl5bw4+GNZMiymNX6w80c7B04qkOAgsPeqnXnyNtznApybY/WuwSazqM
-         Vj/GrMzOdKZTU+igqWiCUOxu45OuaB9w3Wz+oh50OgnkX8c+bso1j7Xw/n8oOVes/cER
-         ZTfRlvq1LEHgDQ1Q3nVSE8IH6kV9gg24uQMC3rIaed3MD895tSmnB+G/1qEdSE3tqFgo
-         1LHbMukBxrlsS3fOQJpvh9AqyFLWan9k9YI0INi0ny+0opFH5nP0hkn0PHHSaUGI5pBi
-         J78g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/G4sRyGVhavCzIc7CkByOlKhQ9+vfiLjmo/4b4rFNH/DU6L/n86UNonhg3opddZRFI1ikAWsULA==@kvack.org
-X-Gm-Message-State: AOJu0YyZ7lpxasLKQbmsphqFL4d4DwB06NZefvxG03SdRV4G4mEIWhh2
-	1c14VTgKFj0O38yLvAgGlNIvS3YSypXWD/KKDgatpsoFI1Or7Qw1juNNOz3SELpyE8yH8esLXgh
-	jXj3Fyapmeg==
-X-Gm-Gg: AR+sD12bmg6THlYR4cpPwAwEpUU7eBcOZ2A58b3FlndKSSxtorhzb/OUxx5LSrjaQTP
-	sF/0xpgn7YFSPCA4QTrReWVYZmP/tqiXdg230FeqONa0LKRRzNZp1VmvwlfLS0Nol/VOV0raMaB
-	zhik5fIbafZRiX6Xm1e0DiQunwMhzNQ9uHr5bC1LwVaxqB9BnqQtWlzNLMSJJLxQzDtNEi7Qc90
-	UXmluPgbkpuojA8uM+nqGN1BvNRcSa+QBDMsg5uxD6Am5Chp5mtAW89uCET00Q59DKfgodq/GOu
-	7qWEgOKSTtovcFMpNpybbNuyHqok+TXIr9kR0JwGEu3LXzRpBLLZI/8RRk9tZ2vO1gM9MZyLkYd
-	9Lvpj+2eJ9a2IO2XUSKEY4TBr/I/J13wYxOudSvTTYxOQtYa/IYxw4tlOH4G12Kje5QK/naR1vv
-	PvGYbIrAIyRMf1QGz30ZAJgDqNGT00VjrIGhegc4ZA9evD/TJKasn1zVk9AqmuA8mkWbtZmfNoz
-	ObYTuck9wVAuMrcdCEWbeUxKXG0QHdx3WcaYGKKqo0gji/ueDz6QFShr+VH
-X-Received: by 2002:a17:907:980c:b0:c20:3679:a2e6 with SMTP id a640c23a62f3a-c2039b4bf40mr1194966b.10.1785862923629;
-        Tue, 04 Aug 2026 10:02:03 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2036428e13sm34925866b.45.2026.08.04.10.02.01
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 10:02:01 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15d111ca99so15228166b.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 10:02:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqaEpEo/bXjznmgNFw+aIKhLdKbahHgHZ7yEm+XiHGw0T+/pjrl4OQMrsiWQkBRuGpo1sIMJS1D8w==@kvack.org
-X-Received: by 2002:a17:907:d644:b0:c20:34de:5050 with SMTP id
- a640c23a62f3a-c2039afb05amr1859566b.7.1785862921642; Tue, 04 Aug 2026
- 10:02:01 -0700 (PDT)
+	t=1785863059;
+	b=A0B9+bg8Mvvj07vq8+r6zKiK7rYmMby9RK2rnicI7JWhvrFqxiMAXX4VblxI5Eozubqbco
+	C7IH/cH/WFjlNohJsJ/s4SgYArhgpwqxtvG7MKknwo8ea4ltRAz8ltDFjbRoYqk43/8+i2
+	TzanifZTzlPRdV4zB0Z1LZuUN1kov5g=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NzP7nDte;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="0I8ng/Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JcfVmEHS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ACZaZmlW;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 834C37F9C0;
+	Tue,  4 Aug 2026 17:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785863052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+5v7MkDI4Dtpq/Qliw3bpPtxAQ4VzKqgcoQOQ2I8B4A=;
+	b=NzP7nDtelMe+b+taflIEH1Ih7EA+zpoaRjoHxBaRJg4zRkipq6bc5B+Qtlij/L0b5HdzX7
+	dklukd4c/qkMwnBiQmBsZnhHpUk/Z+iDNomLyEShRjrHbMNfNW4mT4bcApJdri/KWsiswu
+	mI4GxjZmNQyM/SRbX5Z0o8wqarNJ12Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785863052;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+5v7MkDI4Dtpq/Qliw3bpPtxAQ4VzKqgcoQOQ2I8B4A=;
+	b=0I8ng/Lb6ZboK95ZUQpPJxJUIWJ1vDVgwjOkNHKh+nbd/uUPb9jQxNimxSvW8CEWTQDG+Y
+	1OT2iULKP+GXDlBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785863048; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+5v7MkDI4Dtpq/Qliw3bpPtxAQ4VzKqgcoQOQ2I8B4A=;
+	b=JcfVmEHSRj0suLTD08CtW028Ianxbe8YUbG6aqBAK7sSaVNnYXuJQ3MN4/fiOwiwMvJTr+
+	fewzRc+rw7H3AQo2s57kMiRIFWNy0obiW3ukVmnHdUWmfVxTtX5qGw7E2RBn+sMQKvOi5e
+	jesn+3ZJ7OOXQDG7Z5M2+VzlLnE9sHk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785863048;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+5v7MkDI4Dtpq/Qliw3bpPtxAQ4VzKqgcoQOQ2I8B4A=;
+	b=ACZaZmlW7Js3yZLwzUjecV7cs2WuHQYbJZx/VOwQikbrXC2XRa+qQYJmWNzZ/f8xHiVtCM
+	Y/+g0pEvgZY6MJBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 732CD779BB;
+	Tue,  4 Aug 2026 17:04:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RbIYHIgbcmpQYAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 04 Aug 2026 17:04:08 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 14D26A12F2; Tue, 04 Aug 2026 19:04:08 +0200 (CEST)
+Date: Tue, 4 Aug 2026 19:04:08 +0200
+From: Jan Kara <jack@suse.cz>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Jan Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, 
+	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
+ readahead_folio_reverse() to avoid folio->private
+Message-ID: <2evaxdu6cobpnzzer3y7fsrqvmtmhj7gm3e5buebdaw564igx6@7bs5enipxnpx>
+References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+ <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
+ <332rknj4vo3cfhvfhhlf6pvg37s3lbrnzbbnv4swa6gctsiu6a@ndotgokvnglc>
+ <DKFGTVA0XD01.OZYNYUOU9FTX@nvidia.com>
+ <huzyeqj6a57nbcqc23v6f6rdhkob5552fcwy4mlrsagycqi4rz@ggsapkumc2gq>
+ <DKGA508ERSYM.26RBD4HYM1SL8@nvidia.com>
 MIME-Version: 1.0
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com> <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3> <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org> <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
-In-Reply-To: <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 4 Aug 2026 10:01:45 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whjfRaeYsAVS9VfYO5uaSB43sT7zPOmNWR6gC8h=t60=g@mail.gmail.com>
-X-Gm-Features: AUfX_myV459rrh5aLothtZtKTDoxBGv6XJzHteSXTBWGF6tQ5Ts34uDH3FMsq0Y
-Message-ID: <CAHk-=whjfRaeYsAVS9VfYO5uaSB43sT7zPOmNWR6gC8h=t60=g@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Yang Shi <yang@os.amperecomputing.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org, urezki@gmail.com, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKGA508ERSYM.26RBD4HYM1SL8@nvidia.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AA0A240014
+X-Stat-Signature: 5exdwtqdc3y6xqzksy74ym7cw4f3zfuc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6A04E20009
-X-Stat-Signature: jz7bf4mu4zz4ob1hnayuh6yhogo5qe5e
-X-HE-Tag: 1785862925-518394
-X-HE-Meta: U2FsdGVkX1/Wk/ZvhYMvdEXsR1A82M4aKC1Zoc+ezm52xXdZdHiTR1VtS+XnJ+EgUjopN7nSUk6uoCEGNuAbn196prndcY5JodBClnIDmNaF/ds6BhpAxuazqKNX3MBLozqRiITX8eOJsD6y6RkzvAkARrlgPKmwLHMf2eJK2s+JkNUjt0ZXarWaVFIHAuebGZY0palm+DqFhrzTrH2fA+rIZ/j0KMcNBxk4kIc1ykynxfh3/3HHpyRCayqW9a/AZuk35h5WFBFG6RtxE0In+5gjAFZah7sSRCRUVvaRA077K88EXGog4M5HvTCcstjSc7jhhc03c6yoy92CRn7oQKzZyjnOCNom0THHd27upfm9t8L07UP4x/kK3ib7uZHIlAlSTG+WQv1bC/3IgizELtGIAgoLBjJMvD2uGA3zZOSImTg9XC8n6jFLHgfLOnxQ/XCYREp585iC3fOssWtYyZGMql/y4E83Rat6cx44uA5v7eoaX6q4MZHfg8WH/Ycfms5XxmLJhCTwk3JxpW8SZbfR9EMdm2PctBZN09Nw1z6Izd0a3Q0ftHwPwMcJ/L+6dCQORWexOMthbN/amNddwoL1Eh1Iu0AT146t9hoze1v3ysGpu0YlcclJT6EUi4F1felUeIe5IVS8DGnJ12xGJdjVUNwIfLuUE5ER57AM0xawxrB5szgOzigPpCrd4PF6glNAyvUW3oMz1chB0q25cPPjhtIO0/vqrnWvyL91WETNfssTTw2YJHU9623cVD9LDuA38fZE6p/B3K0loFYuCjnJp6bpCgI8CUubs9I4Xqsk1I5GTeMVB2Im401U3Ppzse4/qAGJgtA5AaO6l7JOPwkiahpOKnGJSBoej5CbbSTPB2M4pPjKQjLkbfigJccfd2rYt0xgsm/IoK8cigjrHOI0MfbirmAYUV5/kvGOq9U8672Wb9UAlbwOPqUmWwbMiCLXOWOgJrSkuxtV+F0
- 127XsTZu
- CiPBtOxvYKLLlCKgZgvPq36bR5luhw42pKjqoFbxXOMVkvUVJxUv9CsF4zGgeIE8tv4yCS2QhmlLXs27Y6vWCuFiCCeC4UtzVA5G+pj3KeG9lTMeojQEIOc3npWlDqQMl2XSxuABlOigREtMo0lBY3vGyZllTij4tmsdtaX5/LE3LKudNz2991NNAS4bMWJfHShQ6VLUdaIIlS4U0k/8kqtfEa7uNWUsRDIj/DU1AZhuzDjbJZ79ftMO5qRrVbmQv9UHZvhIq08YPyhnuS30+w/fBi4FutaTF1yOTZERFraJPAGs1ChrBFmU9bey9PKfUgmX3b/LhbLDh+6euAWXux3YFUJWQCJInQ5+vOIkkKRMUxNWZFSV1ZeW7NcCJQ9PNV48y7gKGK6wYYLBh+j1HqxR97q+UzTRJeW6ZwHGldWxrifwq/2OyfN2QG1+bY1vWyMg7x1h3fscgVgnPLDvv9QZZO/Iinn6R8ZeUd0GRy7Hj9PG7w+YnVk2s06tzr+kNIMdQon5Sl6VxxUI8JQDjWzXoAeNWisC8jWmA9qM8o6aRZX8ih+6bnUxW78/TfanUCOOYYu1kBhhHJ1o=
+X-HE-Tag: 1785863058-104144
+X-HE-Meta: U2FsdGVkX1+dGcivIoEb9QnSkbFXLS0mTDIuQgcF14PB2QUTLw1E+oG8pqaawyrPFQFa6DyiEOXl/ihS+Dpwu48VHG+L39arc+/DrfUlD5+IosCuPwOHtqTqMZ4cJKNqhBebbpKfrSI+pP5Ry95QuW99iInuEcnGwENfLhWF/njBfqIiX4wehEmfaHdHaxZ6Ta2YK7dSQqafeiLlTWPvlf4ArSwBhVLvL0fgEj51Osb5F57HlHj9kGGtkKKehbJE6pNTVhXZaVjHapihZtB1HVLc8wYB8/iWMVzITpA/Af+NBzMJEZMwhooxfNzeRwY1gYkDFU4DRaIKB0Im6Gv7YAgAVUnngmTdNm7Zq9DH7HAdiV7Iid6PpPNK5dGjYAvuwIv+kkINAQ6WGd59IEZcI89RMB4rkCHKQ+tRP2mXLBsblMdLz9q2wkWMWjAfF/cRDwkFeCZxVUzLvk1Ee3yRga9XLJl3OnUud0xUIqS7SlZmzSoGnyGs/u2NSy7btXaT261QSlIb6Bi8nHw2FavVv0UCh5rN7BjPFTn9c8CtZqhpnj+mlAV4zCyoSqVEol1UY+U1mrHwvyKVmkUrw5EJeVvBty5g9O6CjL6EyQUBUpBm8WQrX5SxoAxIiUurYfz1FGyH2LTFfP9vBiNwkU+ZBT9O/BlxCEAwjR+fmcmyiVTwAijw4MH2mpVB0BJi0VqyfJdgms+phqB4ydmdkaoDseOkcFBQaN9/kCkhu8Kgi1wAYjrZ0Pn8d4D+8R9Py1ewR+wBtXmtJxFXHcVnJH/H+pwCj9PGy/jrssYYAdhrehZpPIMm+o+g3iZzaNpsJ0wM/o006BO/HAgiI1YocnXaVtd8nRAJTIbgabpNPwr1bzsP4bnKGucZlaYb849OA6kXMO68qs/h/8+FZ9cpI3g6pEEL0TKrfxD5ULe/1jBPP5HurS1M4GshZEkaWkn5LgheLj1AmlmG3Gy5vra5FWZ
+ B/2wjdkQ
+ 79TOiTUMf6Bpq0c2XOlfus+hmQDYXwXfDWG45hxzdmIY4YfArfXMnpUtTsaIUZIIKrtRtAFjSEv1hjsgKTBvrkAUfAY2DUH2W1dCYHMbZqV03BC8LopMuTqMOxCeBQjnoN0W1jDmU4CDOBmZ4NnJHWo2YPSPPOEUlSGR0m6wsSj9ybCtG5fpQjB2jozr7LDJgGC1SBrbT6yeC7iuDPUiSgYUbQalRTVAhWjovZEdT3XvSVnSN1uj8lhRy7oS0Od1pbS8stXzshF/k9S8iMwexSWJ3InPU6c059ibOcTiyIGXUNta2k3350NSHuBckXrFcrir4JVteU3mPjjJmgTy3fRUNw/gQWzdFJDOwzSb6c8tCUq6B0wnmZ+qaIT0HISSAerJAJkkV5Y7vueU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,39 +151,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 4 Aug 2026 at 09:30, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Because people really have wanted to make it a "this is how the VM
-> works" thing. And that is very much what I object to.
+On Tue 04-08-26 11:54:41, Zi Yan wrote:
+> On Tue Aug 4, 2026 at 5:32 AM EDT, Jan Kara wrote:
+> > On Mon 03-08-26 12:56:36, Zi Yan wrote:
+> >> On Mon Aug 3, 2026 at 5:54 AM EDT, Jan Kara wrote:
+> >> > On Fri 31-07-26 22:13:30, Zi Yan wrote:
+> >> >> erofs needs to traverse readahead folios in reverse order to achieve
+> >> >> maximum performance by
+> >> >> 1. reading all folios from readahead_folio();
+> >> >> 2. storing the prior folio pointer in folio->private;
+> >> >> 3. traverse from the last folio to the first one.
+> >> >> 
+> >> >> Add readahead_folio_reverse() to achieve the same function without using
+> >> >> folio->private.
+> >> >> 
+> >> >> It prepares for a future commit that replaces PG_private checks with
+> >> >> !folio->private checks. After switching the checks, erofs's use of
+> >> >> folio->private without bumping folio refcount can cause unexpected
+> >> >> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() becomes
+> >> >> reachable.
+> 
+> <snip>
+> 
+> >> 
+> >> The below is what I come up with. I did not add a bool to
+> >> readahead_control, since I think that is the decision of caller of
+> >> __readahead_advance(). But let me know if you disagree.
+> >
+> > The reason why I wanted bool in readahead_control is that if some code
+> > ends up mixing readahead_folio() with readahead_folio_last() things will
+> > get confused (because __readahead_advance() really wants to skip the batch
+> > returned from the *previous* call to readahead_folio[_last]()). With the
+> > bool in rac, even mixed use will properly advance the state of the
+> > readahead_control. I don't think mixed use is very realistic (at this
+> > point at least) so I'm ok with leaving that for later if you don't like it.
+> 
+> Got it. I am trying to figure out your mental model of how the mix of
+> readahead_folio() and readahead_folio_last() works with the bool inside
+> ractl. By looking at readahead_folio_last() code, it is almost the same
+> as readahead_folio() with __readahead_folio() inlined
+> (__readahead_folio() is only used by readahead_folio(), so the inline
+> can happen without any issue). As a result, we can get rid of
+> readahead_folio_last(), add set_readahead_direction() to set the
+> embedded bool read_from_head, and use readahead_folio() only. This
+> removes redundant code in readahead_folio_last(). One thing I am not
+> certain is whether we want to
+> 
+> 1. use set_readahead_direction() explicit and warn readahead_folio() if
+> read_from_head is not initialized, or
+> 
+> 2. set read_from_head to true by default, so that only erofs needs to
+> call set_readahead_direction() to change read_from_head.
+> 
+> The former is less confusing but changes how readahead_folio() works;
+> the latter is simpler but implicit read_from_head state might confuse
+> people at some point.
 
-Side note: it's not that I object to small helper functions for some
-common case that a couple of architectures take (ie arm64 and s390).
+My idea was: readahead_folio() will call __readahead_advance() and then set
+rac->forward = true. readahead_folio_last() will call __readahead_advance()
+and set rac->forward = false. __readahead_advance() advances from beginning
+/ end based on rac->_forward value.
 
-But I do object to what looks like some kind of "this is how
-architectures should do it". Because I don't think that's the proper
-path at all. This is an area where there are lots of commonalities,
-but there are also cases where an architecture simply doesn't need it
-at all (x86 segments are an example, but so is any architected base
-register) or might take a completely different approach simply because
-of how the architecture does TLB fills (ie different areas may have
-simply different TLB walking: the pattern of "top few bits of the
-virtual address picks between different "segments" - different from
-x86 segments - is not that unusual afaik).
+								Honza
 
-And I think David is right that there are different forms of this all,
-where that kernel text is another special case where some particular
-architectural choice might mean that it's trivially cheap to do *that*
-entirely differently (typically because you know there are no writes,
-and no aliasing issues).
 
-So I'm just trying to clarify my stance - I don't hate percpu TLB
-contents per se. I hate the notion of codifying them.
-
-For example, if you have a SW-filled TLB - which is admittedly a
-horribly broken idea even though it feels so clean and nice and has
-been done multiple times - that changes how everything like this looks
-for that architecture.
-
-             Linus
+> > Also I have some minor comments below.
+> >
+> >> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+> >> index b59f2745a8e72..23f423c22ac8c 100644
+> >> --- a/fs/erofs/zdata.c
+> >> +++ b/fs/erofs/zdata.c
+> >> @@ -1908,8 +1908,8 @@ static void z_erofs_readahead(struct readahead_control *rac)
+> >>  	trace_erofs_readahead(realinode, readahead_index(rac), nrpages, false);
+> >>  	z_erofs_pcluster_readmore(&f, rac, true);
+> >>  
+> >> -	/* traverse in reverse order for best metadata I/O performance */
+> >> -	while ((folio = readahead_folio_reverse(rac))) {
+> >> +	/* traverse from last to first for best metadata I/O performance */
+> >> +	while ((folio = readahead_folio_last(rac))) {
+> >>  		err = z_erofs_scan_folio(&f, folio, true);
+> >>  		if (err && err != -EINTR)
+> >>  			erofs_err(realinode->i_sb, "readahead error at folio %lu @ nid %llu",
+> >> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> >> index 5ca5aa365f319..2cc3de5594518 100644
+> >> --- a/include/linux/pagemap.h
+> >> +++ b/include/linux/pagemap.h
+> >> @@ -1510,13 +1510,21 @@ void page_cache_async_readahead(struct address_space *mapping,
+> >>  	page_cache_async_ra(&ractl, folio, req_count);
+> >>  }
+> >>  
+> >> +static inline void __readahead_advance(struct readahead_control *rac,
+> >> +		bool read_from_head)
+> >> +{
+> >> +	if (read_from_head)
+> >> +		rac->_index += rac->_batch_count;
+> >> +
+> >> +	rac->_nr_pages -= rac->_batch_count;
+> >> +}
+> >
+> > Maybe we can add:
+> >
+> > 	rac->_batch_count = 0;
+> >
+> > as well since after the advance the _batch_count isn't valid anymore? We
+> > can then also remove it from the callers.
+> 
+> Yes, for __readahead_batch(), _batch_count is zeroed right after. For
+> __readahead_folio() and readahead_folio_last(), _batch_count is either
+> zeroed or overwritten by folio_nr_pages() before any use.
+> 
+> >
+> >> +
+> >>  static inline struct folio *__readahead_folio(struct readahead_control *ractl)
+> >>  {
+> >> -	struct folio *folio;
+> >> +	struct folio *folio = NULL;
+> >
+> > Not sure why this initialization got here...
+> 
+> Will remove it. It is some leftover during my development. Thank you for
+> pointing it out.
+> 
+> >
+> >>  
+> >>  	BUG_ON(ractl->_batch_count > ractl->_nr_pages);
+> >> -	ractl->_nr_pages -= ractl->_batch_count;
+> >> -	ractl->_index += ractl->_batch_count;
+> >> +	__readahead_advance(ractl, /* read_from_head= */ true);
+> > 				   ^^^^
+> > This is not really a kernel style :), please delete this comment. I'm ok with
+> > pure false/true here - it is an internal helper used in few places. If
+> > things get wider use, we tend to switch to 'unsigned flags' with explicit
+> > flag names to ease code reading. But that's not the case here.
+> 
+> We did this in some MM code. I will delete the comment like you
+> suggested.
+> 
+> <snip>
+> 
+> >> @@ -1583,11 +1594,10 @@ static inline unsigned int __readahead_batch(struct readahead_control *rac,
+> >>  {
+> >>  	unsigned int i = 0;
+> >>  	XA_STATE(xas, &rac->mapping->i_pages, 0);
+> >> -	struct folio *folio;
+> >> +	struct folio *folio = NULL;
+> >
+> > Again not sure why this initialization got here...
+> 
+> Will remove.
+> 
+> -- 
+> Best Regards,
+> Yan, Zi
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
