@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F30C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD5AC55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 483EF6B008A; Tue,  4 Aug 2026 18:01:33 -0400 (EDT)
+	id 37BEF6B007B; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45B976B0092; Tue,  4 Aug 2026 18:01:33 -0400 (EDT)
+	id 32CEB6B0092; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3724F6B0093; Tue,  4 Aug 2026 18:01:33 -0400 (EDT)
+	id 21D926B0093; Tue,  4 Aug 2026 18:05:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C4F86B008A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:01:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9219B4023C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:01:32 +0000 (UTC)
-X-FDA: 85064959224.19.ED041C8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D57F716000B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:01:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAjw7zJu;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFC246B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:05:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84D98A17EE
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:05:58 +0000 (UTC)
+X-FDA: 85064970396.29.7745C32
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id ACB348000E
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:05:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0fkrlLd;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785880890;
+	s=arc-20220608; t=1785881156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wUuLD8pBXpxetyWSDP6sLwCx7hfJucK9OdsS4BwclOA=;
-	b=JemFTihMq2GGMeHbyK39sObZOmYuXEc0caDOT5M9h+XcFOHnYfmfdhz0OP9idUWlPy3vfE
-	VtHnITCrk7pVuJ+oPY6SVhblsb7oYQaSvEtzd7MIyoMlTDJQ/jLrAElhY6X+OQdzxh+gXC
-	5fmQwJD60cbLvkDK8yU43jFmpB6iTsE=
+	bh=xFvycaE6HyRvj662ncTXzZ2lEUnpPku3d1eDVKU1XJU=;
+	b=wo6Kxi0LJEAHlikprr6ltosIOb1SkuULMqcf2PYiuinUvdV4eCCTBeWGd5Bl+AwjKIRufZ
+	180+yOyEg37eUdV7E+GJ3so40GluO6dI3qfr9N6ppd+JqbaPdOxsou7weuMYlmea4p75+s
+	CmJYmqKMX5FzYXQiNQH+WgnXt0srEyE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785880890;
-	b=ErDX+kB7jRgalU3A8V1g/kWyhriPPtrqD0qfTUhRQap+9citvty+NAMSzRRNTw9gfkGeRx
-	ogi2XMkhOpDsKXOPQWMC3gTRXwBoTiN/3ukid611k0cP5r5t3Exb2mwGOe5FutT6cjVH8X
-	EeYpRn6wDw+BOPuB/2KSbsCvdpiUNUk=
+	t=1785881156;
+	b=1S738kWaJHQ0wraFvkvOYoDy3hUiPnsiw5mU814XpQLR69NZWzsCx9cy6dsO6C3m7EMPsw
+	jKwW07/T4yvQYXrzcRyuUx8mmz8+pDzD7uUsFZQGPhtefd1iNZDSypqTUw6Gz84m0Sh7FT
+	58lPEZ8vWJGg1UkIK9uKfE3HdWboe/w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAjw7zJu;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0fkrlLd;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F8D6600AA;
-	Tue,  4 Aug 2026 22:01:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1001F000E9;
-	Tue,  4 Aug 2026 22:01:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0531141760;
+	Tue,  4 Aug 2026 22:05:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD101F000E9;
+	Tue,  4 Aug 2026 22:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785880890;
-	bh=wUuLD8pBXpxetyWSDP6sLwCx7hfJucK9OdsS4BwclOA=;
+	s=k20260515; t=1785881154;
+	bh=xFvycaE6HyRvj662ncTXzZ2lEUnpPku3d1eDVKU1XJU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kAjw7zJu6exQmrGC2lB1KRNaAMyyXdP5zNcwwsxzJN3yYvdjwq2FQPEGrwoGc/uQ9
-	 EEoYiJT6sfuDPBk9VFp23uX7QZSc5r/PJQdHmzNH+2rc0ZHooSkpNqCngF4SLCdJtY
-	 ORAGz3f0eo12Gy+YG5MyyeyOiGS31NAvx1g97a5fvhtAytRAtMzvLPEk3xLNlxKemq
-	 yEmvF6eNsopNkIsuo+EIREPNBC/n1Z7/lNVlkGCreiXSCLC8OtQoqS9oyyRpdlOS/8
-	 4+GXN3PvOjEIpycgoZO8M2neVs2cc68J8FZBIEz6Tg8+VzHDpxOx/5JkHxnMQnrUGY
-	 JAQpxBe2spC+Q==
-Message-ID: <44a20360-c791-491d-bd84-e161b7c6a9f0@kernel.org>
-Date: Wed, 5 Aug 2026 00:01:22 +0200
+	b=S0fkrlLdOdV6vmDx7sATY5Wbc3Ki/D2mR7nyYdpaLQIg9+EIP6+0yZey5MClouwfw
+	 2r4FUQxf/+7EymJKF08yQq0sOy4Ba+t9CUwoZOkWxiW+dlF7PqZJMJ0rM6KRFz3Lbn
+	 0Y5+Otc/BsOW5Xh2EvfEdDCxUzKDcHoyAJ3S6wfdggFf0/oZiAMdG/5X8iUyXr2lZc
+	 6Uh8WwNNc5AnKVVlWjg3sF3PQ5c9l5xdIAtcRJeEaqIYe4x5RNFCRcupDJuRpPs6wf
+	 31bnIwJCiTNv/nmCaige1dL14rs4IzpcKfCnOBkvsYeZMpOPZPhgHmA1PE8LzUbYzt
+	 YTnIfrCSYbcsQ==
+Message-ID: <94c7988a-3ecf-4b26-b0a8-011bdc76283b@kernel.org>
+Date: Wed, 5 Aug 2026 00:05:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
  for this series)
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
- Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org,
- urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
- akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, linux-mm@kvack.org,
+To: Yang Shi <yang@os.amperecomputing.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+ Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ dennis@kernel.org, tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  Jason Gunthorpe <jgg@nvidia.com>
-References: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+ <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
  <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
  <amCPBrdltFSE_fEf@J2N7QTR9R3>
  <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
@@ -88,10 +89,8 @@ References: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
  <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
  <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
  <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <CAHk-=whjfRaeYsAVS9VfYO5uaSB43sT7zPOmNWR6gC8h=t60=g@mail.gmail.com>
- <anIhSGs70TTzymHM@lucifer> <8d6119c7-2216-fcdd-d0b9-cc60ccc8caf3@gentwo.org>
- <4baf6edb-c84b-4da9-b905-4d40d4bf5fdc@kernel.org>
- <7f2b2030-b912-70ee-5019-02dad2e87ca6@gentwo.org>
+ <anIXr4Kbn59Ac31Y@lucifer>
+ <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7f2b2030-b912-70ee-5019-02dad2e87ca6@gentwo.org>
+In-Reply-To: <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D57F716000B
-X-Stat-Signature: jbxt3cx5f6tzbirfa1twezp7fts8qdxb
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ACB348000E
 X-Rspam-User: 
-X-HE-Tag: 1785880890-897244
-X-HE-Meta: U2FsdGVkX19yHshUWpY2mUuKhEwPVbz6lpwDY8oV3ap8zLkXRpV7Y9NaM/zg7SFixc9BHwCYIUOSYzBaMMbUEXJrayN65BIwq/p/biKSahyo2LqRcMPN8yrYX1hRy3R4kVjehWFCNn8AX6kQpXVqBlJqOj+U2NVBgHd2bJy+UfF8V+wU8LCiqreZc0IO3Dw/G5UjwajbUad84T7yVmo1uXjRvAnolbCxq3xTmQggqsaZkWxWor7TTwiU4exK4nbqR91uwA91Z/B8DLRtKqvEqygADlBjZBL22pZBwRFztOzzFXIhgAplEKrGqGaxqyuM2iD080mjt3H6AQBK+eKfUL7ShKBfkF+wYXtC502ZmdYTUftN/0pbhGOCPb/UVAN4/ibciNHrgtUTbq377r8GlrPk7//8K1hZUvcvjtkglqJia++0KEkdskjC+uKRcD4FqH8V419r6YIOrBkBnu7f7kMpTyT5zmfkxMFtgySLJgl0AgA1Wm97akRK1b0ReNRlfw7t7ZgPKB1CvI+M9cRBdIQpZPNaqnYD1Kpjtuec3ZYav0ZTb0QUlwxCKfamFj2MHUA4tHmV1bBluyCQp3mlaiIE+DR6LA8RBOudMMAfZv+bMBEKcE8VDMoWbyhR9Cey4nDQiEdTMr1F8/S6GkPVznX3LmX68uSeXspvzdLJJF0RcYTH+Xpbyin3DP5iZn7g7SI3IPWE7aNpfH+g7tpic+SxB73RQXtHDPEsXycL6IWPKHBBm6P0COj1P+cJtk34fNahavgPrOULWqob4JixUngN2Jw3D5GM3W7gQ8cf1KsQ4c3zxL/t6ytQKE1tZHgceAZH4GUPG2JokuA9k3G3KfYPxDW3fhBLJswb2o6/itStRkRihPRyHinj3o6zpXZtSaRj5tsegGMD2sR4khHZQcj+850rFQ8ZhOvJUPSTKTiYSL89xRDQwXMKL1l5PtvbY2xS62QKOFtztdMWSwh
- j4BWRsaw
- wzlM9IjzRnCouEfNUcpn9CoZTEdVeMHS3tjwkayZUgXh+0ZmuxfREYKd0YEjNJNXf30p7yC1khPdO4RpTVi7tKnaC4xSGuUirlIMvAw2QEiQviPIROBD2ZiF1LVUPs+ebfjVGcpWXnaDydsjcXrMU/ENB4b1XxK6VgAdMV2UMhIBS/TQH7SDEWqTFXxqpbYOiUyqI0iJy0IXGIHfGApuKRgdoct/WPxISbY25ffOyc9fp6kqi99vsC3xFS6+Xag0jgzTTzF7lwusskAh8bqhwhRreHje7q3RoMq8mSNdjPZuzbU764CvDqFtQeGRrpaQOx16rNneGFXrM32k=
+X-Stat-Signature: nzc61h5sdhz41jdswsu9hyjrng4dayo5
+X-HE-Tag: 1785881156-490059
+X-HE-Meta: U2FsdGVkX1++ENbJKcovIqef9NJ18SC6hbOxvfteAspgDEUbzuJKQYBeD5gk+1ekZYvgQsxQDxFlny8c8rwCR6UCber3udgwopF10ZlNG6wVIN4HycGGCjJiBIoZ9mpTOsEcUQpkmkelPtBhmWbbWex+tSMUb1ntv+sEwm4dqs/G1uwjm1ztDIIpRb3sz5xfkWGy64a7wrJmxNEKekIDI2tng8Fh9VPhXcKsDTtDhWMn9S8qMIa5ea5Gp9WA7CWClcbdUsFTYIPWdP5oS5jY0WRGrnE72a1MO0izD2XvCdpCXL53bFDMnuuuoP4MZRLLslSN4NrSFU69JB97VwGOi6fjdo0+oBT7PdhPKGR3MIJHqo2jZdzxMPDqls81BKaftzlIgPMAfe1ODJBUB2pKmkA4XnEyPJhUeM/jdqC0RBff+TCqCLx14eGcbaisTkloopYaCCVsW2DzaZpzrEQaGG8pyXXJOQsOqzCtZYUaRmlHc0l7sW+gmrzznZOmoEh7dEEyHKzavamtVy5jKaL4l+mbYo78/g+U1m0qmADJJPNl90fJJRdFXJyQVweLsAHUNhxfUBHvm0//ZraZsg129kJBQJdDCufIXGtdWRVyxqlPIsTp0pdKaAXH/b8c7xIYriy+k1xdbN5tDFi5CabzhiXZ+DcRxkmCGlYptxLRKnryz4cYgGOn+rSkUgvKDTh5O4GN08ENag1bSB1vaIm7vVj5X94KqHqOzPaQGFyEzlMRaG/meOeGXcyFJsKehUy/aSfjjoqyoF7Q9ZNUUNu1EItuT+6gtYdI5lLFOHiFrdjVF1k1jxcKT+5nDWGd8O3Uqb3shgcpQCHsqggG1cIBC0lelQH0DIivHxIjXWix1oP9azxi/kWg5A5By+SvswfJAXge0//tMM2L7fwo3oCjyXT43TLdjZH1Rla9Brqf596AJw3dWkcldY2GhWEGCE0Lloz89D0HPbiWb9o6Sqg
+ D7v++X53
+ mub05WUPxjv0N+Nzop58GX6/YNKUcJ9SWV+hLCzHsRGWlavejcUrjt2Mxur9JG4u3RQQ0wSsg91a5JkOrP/3osMLSvsn4dRWbe/YQvjKHbX8e2YwXvb7vfO0bs0Nl7dUzrLamHaHAVTVefXF7OWqnPSwzdtacAMbAXsdEB1KxmEN56hmA34Wpwl8Mmc4c1TZj2Ftb8YJY7uKTo79cgVVcDHQ4xm0MD3qA5o9eIZu4CIbQ0qh4Exlnlr4wmCKKLPLx/YuuAiAz+G8YmFQTFUIh8zwCRMKbuKGEuHg9gP5gNVqd761OA+W//6WRHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,26 +155,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 23:56, Christoph Lameter (Ampere) wrote:
-> On Tue, 4 Aug 2026, David Hildenbrand (Arm) wrote:
+>> The LSF session was not encouraging ([2]) and as an mm maintainer I'm not at all
+>> happy with this myself, nor does the arm64 community seem all that enthused so I
+>> would against gently suggest to Christoph to be a little more open-minded about
+>> the the proposed alternative which he seems to have dismissed out of hand.
 > 
->>> These are operations that are key to the performance in critical parts of
->>> memory management and this code is replicated by being inlined thousands
->>> of times in the kernel.
->>
->> Cool, then it is easy to show the difference by running micro + macro benchmarks.
-> 
-> And we have done so repeatedly. Look at Yang's posts.
-> 
+> Nobody disagreed Mark's approach also achieved good result, we just thought the
+> series can do better. 
 
-I'm getting tired of this.
+Okay, you thought it can do better. Did you only think that or did you measure it?
 
-So to be clear: claiming that the additional instructions are unacceptable I'd
-expect something minimal like: "removing these 3 instructions speeds up
-micro-benchmark (a, b, c) by X% and macro-benchmarks (d, e, f) by Y% compared to
-Mark's approach". [1]
+The cover letter obviously only compares to upstream Linux, not to Mark's
+series. Are there performance results I am missing that directly show that the
+additional instructions have an actual measurable performance impact?
 
-https://lore.kernel.org/r/ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org
+That's really all we are asking for. If there is a measurable performance
+difference, great. Share the results or point us at them if we missed them.
 
 -- 
 Cheers,
