@@ -4,122 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ABA0C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61BE6C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:52:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3A46B00D6; Tue,  4 Aug 2026 14:47:09 -0400 (EDT)
+	id 8178D6B00D5; Tue,  4 Aug 2026 14:52:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17B2F6B00D8; Tue,  4 Aug 2026 14:47:09 -0400 (EDT)
+	id 7C8AC6B00D7; Tue,  4 Aug 2026 14:52:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091806B00DA; Tue,  4 Aug 2026 14:47:09 -0400 (EDT)
+	id 691436B00D8; Tue,  4 Aug 2026 14:52:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D70A96B00D6
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:47:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6ABF1A02C1
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:47:08 +0000 (UTC)
-X-FDA: 85064469336.19.844B2E6
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9A38F14000A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:47:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DXtBj2qK;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BD906B00D5
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:52:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6AD3C02B4
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:52:28 +0000 (UTC)
+X-FDA: 85064482776.08.7BE8AFD
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F1BC740011
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:52:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UowxIcw3;
+	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785869226;
+	s=arc-20220608; t=1785869546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0XhFL1Aufp21Ws6fsSI1vIe2k9HSzrqnJkS9QsV30Gk=;
-	b=zdSVP1XxywGEXO8hxiTuFqSD11vVQUQKFZJoHZwQgcCg5KBSF6kKYOTUNzxRKeppTyhaGD
-	KkgS7Dbwp/N9O2nat0vxumnAli9qpQWiKYvZFvnX+/Ncoh5TlXsWMRTuxPgk/1aAGuvajC
-	3CoaEtdMUhJX4c/bn/NFVcUM+eJZIbY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7YfZUeIFW9TVPjgB6SoqKQpgS0HUMDYLvGLEC86SVCw=;
+	b=sZy7rKumhxHBIZy/MrklYrorMJoWoOo4sqzqBdpS/pvQr3hg/yAqvC1ohxRNvswLOPtd2a
+	yBg38BSyHeJZxvqaZUjCROmrNDnNC0K4OSSTI6FR8iYO0G5EJcdcvtSyj+1Y7aTKXCrtV1
+	axNvlQj4jn1GtsXbaDsidzbqT/CPGEE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785869226;
-	b=pKnkB9UrU0CJu+waNh9GshuHaLwmAXlteeU773TJSjPBg+rkpOiIWBAB9KQNypUZiCan61
-	9QBddfEoknKiofeFmhpwGQWevdEDEFJdL/JQ6afTN9n+ndzaHtfLmfO0zJaPtwFKhUbncT
-	mF/7XSwQGYdWUchr3UdcemQHcbnMKOg=
+	t=1785869546;
+	b=mfdWNQrMeT0GB2vgziMZHkM3IDjtFjxb9LXXHyknFOeTB1vf3R0jH+s5etBLT/iI5s3sRD
+	xJWnlhhk7OlM3GPd/ve+7ufYP1hF/QQgXzx1nheUsnlxQ6S1BWBm7cH8+6YZGqZzj79/WV
+	8FGHdlZvdbseZX6R4zvDIBEuf3lUORI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DXtBj2qK;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f186025973so1598656d6.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:47:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785869226; x=1786474026; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0XhFL1Aufp21Ws6fsSI1vIe2k9HSzrqnJkS9QsV30Gk=;
-        b=DXtBj2qKT8wrLvsw2/D5ZZc2tG0gSeS7NvDhE+umRNgkrQ43PGrS7dGyccX6my37eU
-         4fNyGgLeZ1NQ/cTM4rl6lCt18KirY/RJ36KtlOgjtANx7JtVA78BozM67g/RdMXN1Zvi
-         X2jt4WzV385WLTJ6ffW0c4aKa9+Hs94PkVre0MyfkWE10R74TC4hE1RKeoX8mevarBe1
-         vap2RlVaMedhI2m2fww1S1HA6hJhdFXL8tuuJ+aSVBjZvlVqHZd6e1xAp7mxWzQ+GqD/
-         7cnc9BARd9Obeh4k7/zdOrhQNEWR1QNLrJoMRLYRFFKOfqbKn8blcwkbRWFDNqiqWcNp
-         BvcQ==
+	imf01.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UowxIcw3;
+	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167077.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674IYDNI2126308
+	for <linux-mm@kvack.org>; Tue, 4 Aug 2026 14:52:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=7YfZUeIFW9TVPjgB6SoqKQpgS0
+	HUMDYLvGLEC86SVCw=; b=UowxIcw3t3wlAFDlemaKlByrLPdlI2o72gL5wLyZGT
+	3X+Plr2b9u0eN0d8sTL1eMoYEv3VOcAZriW+ZfL0uXbvwZobyV0CxBiillFFSlkF
+	NKa7df5UgoioU5Jf3R6TXVK/fP5jURHOjiQuR2OL5l9MAnZYdO0ButMqwbYCadVg
+	iNjDOR1V8U1JI3KwMVi3BFe7VLfiIzrXFRlKezajPClhIoISeYk8tTtsJGP1DqVI
+	oEiL8Pq0LHbS1tGVSjS7MOtrQapJr37nUM97XJRHVq0x8GV/6GW6tG32UIf2k7JJ
+	nSW0yHhQ2U9exk3fU+lP7jmykSyJ3jE3kRrNz8aIQLDw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4fuj0et13f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:52:24 -0400 (EDT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c1d137a68so1643941cf.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:52:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869226; x=1786474026;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0XhFL1Aufp21Ws6fsSI1vIe2k9HSzrqnJkS9QsV30Gk=;
-        b=N3K48p/xhntcHFfLdgJJjIaI3leozQJiaNqRKnRVtAP39EXiYKVKdGiB7SbVjmvR3L
-         WxTJPGHs20gimp4AR3704HLL2xu8llqnvi2yRjHVdbzGqTbAU7Se7+tlnmp7rDdBUSX6
-         AYZ2p4c94u0HRvPTqV39BOyctKoaXB7WipCglktriVkn/91zvnJR6oWxN9pF/PGcqgOJ
-         lbLRH9Xtn2JbxmyMiti0jmf/sZfNz7+6aNM5iE3a9I5yJcj1HcQuYenx6BMjYoFdbZRr
-         MnTAVTbffdOkIfqpgFcbfqKG757FgypgUu3Kaa+gGcYsk3lZoEXnq05XBLzRMFZfr4M6
-         T07g==
-X-Forwarded-Encrypted: i=1; AHgh+RpkWb53ADNZnI3ZfPwcnmr8+grxNFkiEPQPQM5uQl4yrjiyg0zJxiKdcButU7Z7THM+9aKJGZfuPA==@kvack.org
-X-Gm-Message-State: AOJu0YxwzpqV7JsqMPIzUIrVkf7dv9jAgKH8WCAO/hGcFzwYzZ4EYbXF
-	ns95dmhleb9sVLJNmIWyIimbY6yhrF14phfu9cod0sKt6pHbNsUaSbuu8KaBDbdHIjU=
-X-Gm-Gg: AR+sD11Sth89Xir+XjGPkg2jFZSF+2J+1wc7bKhPAEi/+MHAs6jakBljSXYpiOU8BhX
-	+shQDDt75Rssc9uRj6+2CCP0BU7E/DUjyK0k4+hPmjf7XxF/QPC6oKCaqnOpUehgSsxM/XJDwOr
-	2RWtipo/Kk+yJK8M4mqkmvsSGqZDntO+lqcNK9QmaE9BUahDQG82FQZjI0LiNUlMg6yYGluhmUb
-	NRhqlge+4NV7AE/uV/JoPGu3h02GkixFdBxXh9HPepm3BBkjRV0svXKFY+pJN+cK0kSUZre3Una
-	+lQzadnWUZPy1/b9SpObVrL4rkh/tbQ/pXmihu0ZuwR7pO2Ab44jR+XTtzVPAylQgRAIK8mL9f0
-	O7WxlzQw+HZ6wKP2l5eMWppOrxcqKSmIRUji75pSMZ12kDyD8lHl1qO+kiRXOBHwIld1CBLqGCq
-	M81b6UHL92E5zCGOVAu3Y+CHdPmDRWv0eaCSgAtrktxYWTZn9i7gmDnBw6r/boGIUD+cuyyfTK1
-	Ibj2C1KfrK2naBUQ5BoJJjpgrGNZLbcycT2AZDduBiA
-X-Received: by 2002:a05:6214:4687:b0:8f3:e97:59be with SMTP id 6a1803df08f44-9088124bbadmr16733196d6.17.1785869225675;
-        Tue, 04 Aug 2026 11:47:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d79bsm8203346d6.6.2026.08.04.11.47.04
+        d=1e100.net; s=20251104; t=1785869544; x=1786474344;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7YfZUeIFW9TVPjgB6SoqKQpgS0HUMDYLvGLEC86SVCw=;
+        b=lSRzqn03jZpeCZv33+HgJKtGsmSsLawgmhxq+0wIGD962shC7RHvhd6nz8goIkgTIs
+         yR1iSGgZ4YEHVCULECwVPDrC5t2eeYonzHvvWPmyOT8iNdkO6MMHiZy4C7NMUGHiMbM9
+         +dOXIxs9csbibBE/tIhtADX1a/tOCZGcvEiV8kSaxA2/zOC5TGhUoGzjHNxKfv3BJU8a
+         RiaPnsbAwAYxrKaCjrOtDRGa/14I1wKpBNpKlTfc77ElbgwLO/JqrGCGEh7myqP4RwCz
+         gm0GNKTTRMoPJ0GUDWYlhpQURoYc5MUvfHNjSVOF7ZsqsLB/U1VGIfKoTpzqoFRqo/eA
+         +MSA==
+X-Forwarded-Encrypted: i=1; AHgh+RoHVSNPJPxE8PVM0XQpgyNEWAx3yFkTSy8y84UqwVLHQM3HDhIaOQadkTcxxoDC7TkGKO96Xak3pQ==@kvack.org
+X-Gm-Message-State: AOJu0YxNYhAgjrgUApX4cCN62CaOH6Xvukc+uQrxBVmi0IG+oU/Pk24B
+	QiUk+UOxQTtmwOdXFVNilq5w//t+JE+O2G4qeRoG7dpw0jOYkzcgzZlInGCgBIxI8QRmTnfKrHV
+	O2wpDR6vTqLsRVjFRY3TxXtIf1/bfJ2pjZlOff34Acou+nLLKY7Y9XBiT
+X-Gm-Gg: AR+sD10B4gRdPWMRC/I6wKeTnqh6IRC5WrjqwO8firw0UpVHIPvgng4XgI/+TJl3ZCv
+	0nD0adf6YxGN8ybOxsIY4UCD3GKMJpiTDmJIZ2joj1Gjh6Qmftotp7QHaCYvCjsotHpo9Y/cIgx
+	ctL6+ojHvDDPR1AT3QhiWJ3MksJA1Q2en4lgBSgb+Vn4jtZu1eHMRZUrU9JibjpAatl0xBbjUtc
+	lOpOkF/RePUszp8oVYSNrUg3hzXLxCxYx6cIG6orrh1GzpTnqoPrYGZZLRrIjcj68I9crY1maQw
+	4kiQ/MhfPa5CHGXnK/ot60pcJHcC/RnkOpJ0AgJw23+0SipchveNVNg5O0MzAnAx9ZMvc4NwQNu
+	xxpCfkco/
+X-Received: by 2002:a05:622a:2487:b0:517:a7ff:935f with SMTP id d75a77b69052e-52ce5fa471emr14549131cf.9.1785869544305;
+        Tue, 04 Aug 2026 11:52:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:2487:b0:517:a7ff:935f with SMTP id d75a77b69052e-52ce5fa471emr14548641cf.9.1785869543831;
+        Tue, 04 Aug 2026 11:52:23 -0700 (PDT)
+Received: from [127.0.1.1] ([77.137.77.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232d7fsm2313275f8f.20.2026.08.04.11.52.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:47:05 -0700 (PDT)
-Date: Tue, 4 Aug 2026 14:47:03 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v8 09/15] mm: Remove locking mf_mutex in
- is_raw_hwpoison_page_in_hugepage()
-Message-ID: <anIzMHAH8dImAcsk@gourry-fedora-PF4VCD3F>
-References: <20260731200802.574821-1-willy@infradead.org>
- <20260731200802.574821-10-willy@infradead.org>
- <anIUe_Zq8bFX0-Dk@gourry-fedora-PF4VCD3F>
- <anIaMs7XtXp631QU@casper.infradead.org>
+        Tue, 04 Aug 2026 11:52:22 -0700 (PDT)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH v2 00/10] ceph: convert writeback path to folios
+Date: Tue, 04 Aug 2026 14:52:08 -0400
+Message-Id: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anIaMs7XtXp631QU@casper.infradead.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9A38F14000A
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANg0cmoC/42OSw6CMBRFt2I69plStBBH7sMw6OcpT4WSthQNY
+ e8W3IDDk5yce2cW0BMGdt7NzGOiQK7PIPY7ZlrV3xHIZmaCC8lrLsBj5xLCpCiC62FQWZk8RdT
+ KPKFGbnQlpT2aiuXG4PFG761/bX4cRv1AE9foarQUovOf7UAqVu/frVQAB2nKk5W6VLaUF+NeY
+ 6dJHdCOrFmW5QvsOSvR3wAAAA==
+X-Change-ID: 20260802-remove-wait-on-page-writeback-8e0cb766d4c7
+To: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Zi Yan <ziy@nvidia.com>
+Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785869541; l=2554;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=zWM2+49jEMwBQwNik+CFCtiOiR0VjtZ6SxoPtniyer0=;
+ b=fEDv7IHpkI8eMWnAST4q4BAmT9PhWrien1UJlpvi3iP8NJEIOvrTfVJt2EbDPSyKLSLZeHGWS
+ jpYM3a1TgRsCm5MC1re6zBif6kyMG+VfIUTLjNCYLi3vuoSxRq6czKk
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Authority-Analysis: v=2.4 cv=ePIjSnp1 c=1 sm=1 tr=0 ts=6a7234e8 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=j1J1DEHOHTVaJYOjuVnKiw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=QOCMdifcju39GKoXhKua:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=CvbYRxD_FV8rGtwQpYYA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE1MiBTYWx0ZWRfX3h3DK0LJ23D4
+ +wivMQVyZmqBfXgQ4e1NtXjyWqprpt2Sdz8irU/sO+d0o42xNa3lAWufiyXrMm4dscv64ocrpqB
+ 2Eg8hEXJu1uLDf6Ve6ESuQLfrx+vIVffk6iYWd8W4TVWxAK1RwOu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE1MiBTYWx0ZWRfX6MLo6w425Q/7
+ Nrd/ALZTcFfrLzoJ+rU2P3aUd8j2QA/X4hCSXXyNsF/jlJc/zTBjRCD8hchcx6+8kqmfSjbitF9
+ mJrXoAzOOI7ZnexSHNpkDBD9xch3lk05/GF6ss1UsWUdnlPCZEsXh60/2E7Zsmqxz7PKIl9Q30l
+ DK0oIQ9MkEKj/k7il0KwVClSv1eFOSPLDhXs0dyb/r9qu20x/q3eS4AgxvMl0D9L8tfpRSPCJVp
+ jNq3fNVvYoEmnk5AhAU9eG0LEATHiRygmOOKAawBB07w7DTUxLoeKa/RoivzEyGTl4jKtffyhMG
+ MtAzeBfxy4Dfxx4UgzOlwHJ3Sq+MO614H6OM9BzGrUGA1dkFWLv6KOwT1jmMqj6Y5d3nXI+PL+U
+ V1ZY6WQJmxENi5WoEI+HnCIdDIIPnYqRwhjNtivobNgB+TrQE486Nig3l0x/rG9xT6O/1hHVg/M
+ R2E25KyfI1GZynh9KJg==
+X-Proofpoint-GUID: hVq8huta63UZjGCLaVj7e_CBv7mIWEKV
+X-Proofpoint-ORIG-GUID: hVq8huta63UZjGCLaVj7e_CBv7mIWEKV
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11865
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 adultscore=0 spamscore=0 priorityscore=1501
+ impostorscore=10 lowpriorityscore=10 bulkscore=10 suspectscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040152
+X-Rspamd-Queue-Id: F1BC740011
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 1acumrqi3pc7zcok5xghqckdj6tshjbo
-X-HE-Tag: 1785869226-8132
-X-HE-Meta: U2FsdGVkX1/yjpCUsJbEOjdjh39TfZHxijQLezBvh9VACdWVZlpLCJxYRZ9hfc9L2IYNYOdNs/OdZ+9HA/efdUvMGGko8siD4L/0i6OK0yvcl71Mumw77/J8UN+9HtKr1jIag4qj6iKjBoUcCcmldVtR4PmhP4Wc2u9B1j3Rk4vCkhvrKW6fNYnA8sQuEC80TXFTrYWNh4pBMbYEK6d5OR1mSLqzEWVszft9+pg0LQrrqAy77TbPXeRcW4/gxhXPtxQk8Yfxm62YKhiaqOjm6NeqjuP9WUzqCXFDbSTbHScG5U0XPRKrdQ61Fp4U1M6p6AS8Z96VKUjKKMYoP5vjHtjjPOVCIVM7kKGHACrAb6y2nryaRuPuCyfOwAqS90dfrj3hhl2hS8z3GSg8qHuij0Ky7WwpUAiK7KIAWxLFOfS4KJGByKxMTnY2wB36PE3X+qi/RjrDVUHbVKJ1XVgNIpuYgU2Z0GEfybxAUKHr0Arkmub/JKXfDKjkk8LbZfo3JeT2A3wo9Bk8+Vc+/BbTnnlc79AcC8ylJ+HN4eJsZvmiexE1azDGpDQRdrzccdXErQjtKDVvX4bsRls1QiidSSRq1G2m0kd7etEjHiHCRsuymvRT4GJ7cxaXqnw4WMDKg//E/3ggJ++fII3gqRroL/t6zxw7C4q2ggE6Zyz6HWdij3HDIaZunG3E9tXYc0rwPgIcz/cDP463mE4iuycwb3ism5GaZ+SXz8sP+7BymlRAzNIedF8aH2bN0uj+KqdCbkKotDaxxn3G3wjyFysgriSDQ6uYPQT9HYbwuM6xeInsqgqhTLVQuoi0TX+A3SAaozf/PquB3OuxSbu1jCwTL727SKxXcT2X8sGI8hOsojwpxrwQ/RkicmfoPUqeoevYSwYsZCA8O90oXfg6N4XVZ8YFQp3wxuWCAJsMXK975gcZ/Ovlh4y2UifdRCsjcHPeoBbZs+896hwtNxbJFB9
- sUQgyFKG
- WXi7cO28LdocY6PK1s7Eco8fbd2DBwRYGC7BlBH1/AtlJ1dzjHIYOsGhaYho4++qB0+Dqn5XK33Ub0XPhHSqS/yS61s2oyEyL3bCsSUErwmsA+IQBCbxpbGml+9ieedT2TpjF+qlkiKMcw5RPY1Q5XM69pS3/mcMwGlyBHWGjsPSkIBTnvwpw9RUgGszSBbaXAdQizJ9I6kilk9YH914lV+ifizEtz1GWcEesHDUFyeruzHCwYfnuMAViQqaG+VWeuXpRF9X+8jd1pUPmA8+PAEVNzkW1gLfd6A6H/yaO2nxXOg/LIgDsLZdTBm9w9VRgwVzA29ijoMwSv5TFfme+enQhfdcKbkYyJvbY+mePKcLVSSFXZZIkhfas1+eyHDlmFC/5FZdR/UpgyVOB4WQux0eHZNj/SkEujCR1VBe+CWSDuzmM5vDkyiD5Jlo34NpOaZNoLc+KlROnabk=
+X-Stat-Signature: 4w3w48faoqsby8e685te4j6pufhug4z1
+X-HE-Tag: 1785869545-772691
+X-HE-Meta: U2FsdGVkX18FR/WAsnzVWiaBFLr0m8I6hLEnCKXLkSDhBgJxTPyJo8pGX9t/8bV1C0Ns6ZeA2mYyz9EjVsIRjTh6DM52/85JuSKX6VjVve3CUzJuyNK4kGDmo61+llgXF70TqRw6ym7ox7kCAWJTO1GmOT5qtU+MMtuyVW695vKJC9c7Ee91tiuNnXd2ghds3POGncoEHOKmMCOAu44VacyytnOgzX+dXpMApDV0zfnLDgCdTHSIy3K88lNq3EH4o+t/USndoe8leEaKFY8lvYfhSAIOIcG8KdE0s81ktqfZZBVgzve8lMS3zwpAFXmPdhET92BLkr0qh3QMrTkrYi1VxqUsdcTjT5pbArM5bD7pCr+gLc3TRLb+CujmBZgI1FN745yC89Po+Dr0PsZcrABrm21C4KoaW4zGtWGE7b1eXnMzWq3YjPTLWP8xJrs6T/Pme+onz2Q7vM5SlFjzyUNImvjPKl/qgg1Z0tj9NSOkgVu+JruaAWjSxgQtyGX+MTWkQfmAQiunpmfODaZRGaB+s1CZhRI+RO3LU4mLPfod1aJC5MrNuPMx/9u8Pj3HokVlVYV47wxSeYCgq2vJMgWO5guZZzlQsJY3bTnee7l2WM6HNx2qeiciSqlfkkyCmLFg5agKIjI7Rq3ub7bigtAfAZgy6FXyfpgffsCIaUW11TWszrIMP73tw8iRMG4ZXonnapx8bkPIKwhXpBhd56QhwPo4+m6j3XbWIlyyamgZgv/83DownKrtWKWl5QJgMyvIt/3skLqzdMCOVIPukFU/xnRfw8Zw1QL6C66S1xASWezx8khuL8fUJd/bCZL9XgKH9IdfbnUt6XFquhDqSDFB33ntE4uGFmrgUhpYAhZU5xKXvipj5llbBbgKa5O+gS090Nqo+f4aKgJQhwKncX9Q5Nm6poEL02yOU9pNMUE1qjJrTXcAyqU924BZoXpngnmZilvXJlb9BcgTDOE
+ WSfeNidh
+ aeVcNoXG/yV0jgL2BNmQbUzxOPZmLL9fJfh1K34PbcV/PPYnvKxqNieuBa6LRjA/B+2j+wvIcR0jH27zl2+E3MNPg35ovmkV4exq24a39n9mV9zG2XB1Bro6PRArhRQ6B49TnonJYLiHFsGyYFw2p4gUkkpTx4NkR8A7lqELE3KEtK4bDC3qvduqAE6ZKqheEJAvNPH+0ojydjHSmWLM7iHF20RM9AbrPRZyFbUU6i0oiEkVCRp4iswjiVHOeautEjFBs5JAE+CFH5yxolQ0kEqPM8C7pO/L2UQihIV6ndmh5/AbvE5HTKszNjx97X2pLZ4VUVeMmzoNYHpvYc4pk8gqy/jLFyOCYJftfXvX/3s5qh2wnZ71JEgTc0EArsOgOC5EBG7yIxsp2ZQU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,31 +170,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 05:58:26PM +0100, Matthew Wilcox wrote:
-> On Tue, Aug 04, 2026 at 12:36:00PM -0400, Gregory Price wrote:
-> 
-> So we have all manner of protections that prevent us from taking this mutex
-> -- the folio must have a hwpoison page in it and must be hugetlb, but at
-> the end of the day, one can still be preempted while holding a mutex and
-> we never know when we might want to call this from a non-sleepable context.
-> 
-> I'd be open to arguments that this should be an rwlock rather than
-> a spinlock.  Or figure out a way to shard the lock per folio (lockdep
-> etc make it very hard to embed a spinlock in struct folio).  I think
-> it'd also be profitable to change how we record poison for hugetlb to
-> not need locking or memory allocation.
->
+Convert ceph's writeback path to work on folios. With these
+conversions, remove three mm compatibility APIs whose last callers are
+eliminated: wait_on_page_writeback(), thp_size(), and thp_order().
 
-I think such complexity needs to be driven by an actual demonstration
-the spinlock is problematic.  It seems like if you're hitting devastating
-contention here, you have much bigger (hardware) problems.
+Some page <-> folio boundaries are deliberately left in place where
+ceph borders on some gnarlier page-based APIs:
 
-> But this is all a very long way from where I want to be working -- cleaning
-> up the page fault path.  I think I've made a reasonable set of improvements
-> here, and somebody else can come along later to make the code even better.
-> 
+- libceph's OSD data plane is page-array based, so ceph_writeback_ctl's
+  pages[] and osd_data->pages[] remain struct page arrays. Folios are
+  converted at the array/libceph boundary.
 
-Agreed.
+- fscrypt's bounce page API remains page-based for some functions
+  (fscrypt_encrypt_pagecache_blocks(), fscrypt_finalize_bounce_page()).
+  Possibly-bounce array entries are unwrapped to their pagecache folios
+  via fscrypt_pagecache_folio().
 
-~Gregory
+This series is based on the ceph-client testing branch [1].
+
+[1] https://github.com/ceph/ceph-client/tree/testing
+
+Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+---
+Changes in v2:
+- Propagate tags (thanks David and Matthew!)
+- Rebase onto ceph-client.git testing
+- Rename the series to "ceph: convert writeback path to folios"
+- Patch 1: Drop the folio_test_private() check in
+  ceph_folio_snap_context(), per Matthew and Zi.
+- Patch 4: Introduce ceph_fscrypt folio helpers and use them in
+  get_writepages_data_length(), per Matthew.
+- Patches 5-10: new
+- Link to v1: https://lore.kernel.org/r/20260802-remove-wait-on-page-writeback-v1-0-6c35d6b3ad36@columbia.edu
+
+---
+Tal Zussman (10):
+      ceph: add ceph_folio_snap_context()
+      ceph: convert ceph_wait_until_current_writes_complete() to folios
+      mm: remove wait_on_page_writeback()
+      ceph: convert get_writepages_data_length() to folios
+      ceph: convert ceph_submit_write() to folios
+      mm: remove thp_size() and thp_order()
+      ceph: remove page remnants from write_folio_nounlock()
+      ceph: convert page cleanup loop in writepages_finish() to folios
+      ceph: remove ceph_fscrypt_pagecache_page() and ceph_fscrypt_page_offset()
+      ceph: rename ceph_check_page_before_write() to ceph_check_folio_before_write()
+
+ fs/ceph/addr.c          | 120 ++++++++++++++++++++++++------------------------
+ fs/ceph/crypto.h        |  12 ++---
+ include/linux/mm.h      |  21 ---------
+ include/linux/pagemap.h |   1 -
+ mm/folio-compat.c       |   6 ---
+ 5 files changed, 65 insertions(+), 95 deletions(-)
+---
+base-commit: 30c0913a2b44a66dc17283a88489b3f3e12f4327
+change-id: 20260802-remove-wait-on-page-writeback-8e0cb766d4c7
+
+Best regards,
+-- 
+Tal Zussman <tz2294@columbia.edu>
+
 
