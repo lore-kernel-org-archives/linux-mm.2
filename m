@@ -4,159 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4D1C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE78C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:41:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F5E56B008A; Tue,  4 Aug 2026 19:33:44 -0400 (EDT)
+	id 4E46A6B007B; Tue,  4 Aug 2026 19:41:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A7EC6B0092; Tue,  4 Aug 2026 19:33:44 -0400 (EDT)
+	id 4951B6B0088; Tue,  4 Aug 2026 19:41:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5968D6B0093; Tue,  4 Aug 2026 19:33:44 -0400 (EDT)
+	id 3ABBE6B0093; Tue,  4 Aug 2026 19:41:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C3836B008A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:33:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C05A81A034E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:33:43 +0000 (UTC)
-X-FDA: 85065191526.06.B498C93
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C4A131C000E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:33:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e5vywcvT;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC40C6B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:41:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58F7B1202C9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:41:41 +0000 (UTC)
+X-FDA: 85065211602.04.55D59EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C51C420006
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:41:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KwDcKFe5;
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785886421;
+	s=arc-20220608; t=1785886899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9MJn2efyYx+aesbUzNhwwCfbZijkW5RJZCFgDwcElxc=;
-	b=xAknCahPgnPhc7TWJI/8xcre6WGlKbXjPXdL51fNWhhK9qe+Sbm0OwnQlGbnrTB9reb0NY
-	zL+TP0MdbQbjYXicjAqtPjxHD+sDP/P/sUEW3WzSziF3LlgEiDziRlEGrqL32XiPr2WMD8
-	KyP3AftzFLd/rehT2+9Kghe0m81p5KE=
+	bh=2EUCMgHBanhRcpfI756++H/l3l8ZfGyKrWQyzXhKbkY=;
+	b=iN2+rGnUQ9MjreR0u8kcEtgiFXLSgINgKeViP5F0yduXLyBM7Mtbs0WfxARattcDF4E6K2
+	eWrURZ2yqzee8s5NyYF6FzuT0BErpyceh3PlSaLCxdMWxSkTSTz1wqhhxInpQWSlXDmH3l
+	ybyt9mqJ5BZqmGsyfzhkPu75H7/3q7g=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e5vywcvT;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KwDcKFe5;
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785886421;
-	b=cRrCY5CA0/hoQxBsBIsVfzNwHPd5PBSOIRtskGfgZOu9x+D0AcVPgfd8sAQIvBfk/EQQkK
-	0eWL5linueLmbqEeXPcqN7Fjspl63JS3NwTFQxcYVFQfgI2jnepvTojlJzQS+KZtxbk6wW
-	hsx99Gazm/Aeg7tHYturZP+ez1etLA0=
-Received: from pps.filterd (m0499198.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674Mn2xC3049806
-	for <linux-mm@kvack.org>; Tue, 4 Aug 2026 19:33:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=9MJn
-	2efyYx+aesbUzNhwwCfbZijkW5RJZCFgDwcElxc=; b=e5vywcvTTA/6436SInVl
-	fh4GPAFFlzbh13Di6M3azfwc4Kdd/id49TzXyk8HOp9qbv+kKN7K7uuBjSAb9Mzz
-	Ha23tt9rZQKSBR3C3T5yb1OD9dSELc61LwFL/eu3I/xSClWsSkgqdzEOx3wyHxcL
-	Y5EJgfBihjsgKa51KjZuNlA2wjZFMMmEgpQucGP8zO8NrljKbNy73K7zVS2EDwiK
-	gL3w8hHJTB3fzaEO4+qpiAaySGzAVnaMyZXb5r+ATS7NvscoG68CvqjBI8w4ENLF
-	pRDN9f2HObDurJgkVTCojapDlretvOmu2bjD1iWvfj7201eT0BWKxqCBi1A1M45f
-	vQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4fum1pjhxc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 04 Aug 2026 19:33:39 -0400 (EDT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c12e43b98so4077041cf.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 16:33:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785886419; x=1786491219;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9MJn2efyYx+aesbUzNhwwCfbZijkW5RJZCFgDwcElxc=;
-        b=E3wPgjkUDqCrakIMlvL+SI7MoutzF7Q/dqwQbfPwvjODzqvjOEMtsLZadlVzBPWRJm
-         wtJ/eeWb2rm5RzLhE6tt8xq9vgqtsoJmzNzWH0pqoF9ZBXfsAUskicY3KRejyt5Wm9rd
-         T1GJw6gezCtzX7EWb6I+9sCtu7V2J1FHZZB9S2beEL64/ota5s0H/4Sxp/DrS/kRS3rs
-         MVExm6m0Syek/WnIDLGONk+zhyY82FE7c9Ko58hIj1Nb1a+0Get6IySaCI4kPCJtkOA1
-         bo08/ty91WgjZ3vJqlxYscDwC7inGvqDl/M/yKhnEe9/MIvBtR1CZiC26CZmafv+GNdK
-         NyuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp9AgVttS83wiuF+vpuvIA2u+z1QBymc4lG6PPUjE56G6EV6PzUzpwVJHG52pooWB2Sd04Vo9rboQ==@kvack.org
-X-Gm-Message-State: AOJu0YxxhuPza42++MrO8lNClxT4tUWyZAiI7EBeZ2VUav1KXN5m/XCg
-	6MuKh/blvPpT3+iWApL9suoiMWSyc7XrWjIhl0BduwI9RcPwNkepMiZdjzPWRSz3e5UY6ISmDQm
-	x8xUfYyURtJhCm1ZEZijywyUNaRyibNY/p9KeEFUUPIrIrV9r
-X-Gm-Gg: AR+sD11yBYD5CyPr8sty/Uo99LmnIlhleanaPATF2dvYFzJ49+anql/aF4I4bxltDHf
-	UsdFLOhMkye11NC9Z2cyzMq56pjnwO7+TypLdDc+QRQXfLCt7f4C9svsY7hoHTpvX+Qo0+DVWJJ
-	G3ODhuY0Mgv6kQKWXvft5ghs5eFYgJH7abDAyiHuq1YvoZxAmxwJAqXkSbOYUc3lL/mXDSWb2b0
-	/Xhm63O9nHYG0s4Oak2Z5ZV1NhB/hZhshP75QUxeRSbLSy9i9UC+Qxn5ogYPvQ75X/09uiJdK7z
-	oRVqjX2mLVEKitczXdY0WN4iOFlh7w85wt2D5jXgvkm91+eJkQT4CV58k8tMaiZf891qSCThVT/
-	vh0GE3QpmKWgeaiVMCdleWPr+W/64XABFPT+Igo4S96ZVU4teUkUN38tPituWNs4A
-X-Received: by 2002:a05:622a:1650:b0:517:8011:3a4d with SMTP id d75a77b69052e-52ce60d5147mr28750651cf.20.1785886418765;
-        Tue, 04 Aug 2026 16:33:38 -0700 (PDT)
-X-Received: by 2002:a05:622a:1650:b0:517:8011:3a4d with SMTP id d75a77b69052e-52ce60d5147mr28750181cf.20.1785886418238;
-        Tue, 04 Aug 2026 16:33:38 -0700 (PDT)
-Received: from ?IPV6:2a00:a040:199:782e:a06d:5a37:92fe:4fac? ([2a00:a040:199:782e:a06d:5a37:92fe:4fac])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec23e533sm3873005f8f.28.2026.08.04.16.33.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 16:33:36 -0700 (PDT)
-Message-ID: <c0cc3539-be7d-47e0-82b7-9d7239c37907@columbia.edu>
-Date: Wed, 5 Aug 2026 02:33:34 +0300
+	t=1785886899;
+	b=ypBFhDmyIXgR4tX+udHGAx8srvnSt8BC/PFES8mgtxA27Bm3jzgCs97QHzn+eg8fAUPBOQ
+	BwaBnDGa1KoMER6LUYqPae0mbd6Obdo06CL31sjNnHTgxAUmjb9eWIS+KWWQmhAgMiTUOD
+	zfHBJb6qPBzXoRTAMUZpLG25RkaNex8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0216060052;
+	Tue,  4 Aug 2026 23:41:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E21F000E9;
+	Tue,  4 Aug 2026 23:41:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785886898;
+	bh=2EUCMgHBanhRcpfI756++H/l3l8ZfGyKrWQyzXhKbkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KwDcKFe58ufznJCPvjxMCvF7i7E2j8fGLj09mChK0reeO8Iml6E+/DNaZqGa6vz/P
+	 G44jbZMvSbZ/dnNXUsZOAh43aDCsIYtd6Oocrmpues3F+LNyqAc0bFmlEMQZ9rBQYp
+	 e/sxYQsDKPxjP7qQ5wNQwTrYskuM4vgR8HEoXV9SHYDLk9ryEqAkGU/IZm/E2Jysnr
+	 67n1UxBR8fySD6NNGMTo57owUnIZXkz1ca4eVosHLT6blttfAcScUVKpM2XF4waWF0
+	 TaspZrmX9L6crp1j1dk5UM2IKnq7sKEQa7lnyhH22vb8NW14yWYAXxAuKZqhEsVRbB
+	 2WA37Q0SpG1ww==
+Date: Tue, 4 Aug 2026 23:41:36 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
+ allocations
+Message-ID: <anJylMTl6GeM8OHx@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/10] ceph: convert page cleanup loop in
- writepages_finish() to folios
-To: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
- <20260804-remove-wait-on-page-writeback-v2-8-81f0ab065284@columbia.edu>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <20260804-remove-wait-on-page-writeback-v2-8-81f0ab065284@columbia.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=PII/P/qC c=1 sm=1 tr=0 ts=6a7276d3 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Da8U98TiO7q1upZEImrf:22 a=BpGzv1V74M3SfeTrGa8v:22 a=wrtZYR0IVx0RtIOIqSwA:9
- a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE5MSBTYWx0ZWRfXylXpnJ/nqdar
- eShYz+Kj7kUNIS+ub9YZq95f57KAWIzedOLt5RR+8RE+8PIp9/e6/QaaasDInQdMK4tMwa/Eqrw
- 60rvxtc8MdGS2au3bOqzDunElntTIGN06rCJSg5huCu8zY15v3DqMsKpLY8sI7+4JlqjxZBzAAI
- dE75R5Z1fhQj995Yk9iur+bw6icWBIYkdRU9CHp2qG2zErMKmVhixqijOVHECtUHI1sNiXIYGwn
- 8XrsC+NdNU5Obf8aaqu12sPZhXdT1ay1tvV4xxPehPZ++SLStJJPYmWD6c31bKPCC4jwQZEDJmF
- r6VUyApl+s6pQoeF6WA5h0Jipulb25jBbtftZqUJt6a44SvnotEGsCGB+Zst4US+To45Rm88Ww/
- XD42xX1Q7ZKSogivkYpcoDgZxs4kh9Gz5AvC8cMFId65YSTFBWcDVR+P7NPXq4zGVb//7aFeVnf
- QNqY6Stq1PuAfBxKTEQ==
-X-Proofpoint-GUID: 5ctW8IPlmCXuynbvGZ0W4fEHMnlk-dF_
-X-Proofpoint-ORIG-GUID: 5ctW8IPlmCXuynbvGZ0W4fEHMnlk-dF_
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE5MSBTYWx0ZWRfX+h9M8okp0bcK
- f0yfJt7SYFsHzM4Dl1YTMmwFghrJFkg8SOsrjWTxB1vlVFrYYEzY048ISzbt7cLAjOiiZ+MHJkF
- wMIPNkRiEI5zPpK6tTIGuIcvn9lHBOp5GoTAdo4MDUbpbrfamBo/
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11865
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 malwarescore=0 spamscore=0 bulkscore=10
- impostorscore=10 priorityscore=1501 suspectscore=0 lowpriorityscore=10
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608040191
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C4A131C000E
-X-Stat-Signature: xhh1d73ohtf6xik54r449egnbxd1b9bt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+X-Stat-Signature: 44jeqboast3ncx4398yd9jow1fpyc8bd
+X-Rspamd-Queue-Id: C51C420006
 X-Rspam-User: 
-X-HE-Tag: 1785886420-768100
-X-HE-Meta: U2FsdGVkX1/G6HuiXTGCNbUtoH49q3EBQAEmrVD80rRzhT6VYsUbYMn6fAniHmc7IqHf3v4xT5UC9GNKIbwE7CQ++8zig9eEnWLUeiimZr1PMtmCVpWzHeLbHi+jhF6gidaimXjasRdYol+mWoIN+qN4RS+PN+BjYvIw9BjU1pqDhPJywbnRygtDAhT6Ed0xGl3/kqmNmgoCySzMkKaka5HAkuNrUngzcTwaONO2tOV1L5qac/JPZ2dmJ9k0Rqe1BTLaYAH5/ny399ZSG4Qgkz8CxzK35vTG3WVIo6NwAIp7Wc+pnTsEudIKrhIhxn2CKuzdktiQkqiLN0ZVWPsAxasbPV4Hz8ZzhJbDq8qUoMtWGNumUNB5To+TR+yN9ZvSmqETbH1R5PsX3NkHQRkSIchJxtPOEWzl1UStANJJIrvFjycqATnCzEEfdsEOOGAYxPSWN1SBF0iSCbqShN3z6lYUfFp68CJ3esvVFRj6NZengVU1JAB3//+KjZojp+8F1/djNBwy0xBWCQbP1ruwlVXXIEwwqL8xg9CWcZahVFALJhn9XMfIVxi3v/fHmEAy61gStGO2PaaUsZ5aluYSCabiPv2bI/t4TsJIuAIfPWUrz3qxKv4ctxWZ7mq+TBauk43hBUB6PX6fdEIrowYoHv5aPktmmUko5qdKjQXK+OUKFoCqWOK379pp3jtVQc7332F1Q6cvBr4DD4i2A3hFYa1QFxKDJ3xTKcpNL5de6GlWN3OQxJUVqhEPrPP6di6BRrPgmggbxoN1XYeLWIGDiNhiSUn2UO1HO028RSvfRCjETfb668gdX7PungjJV/rTij+V2/vEg7OYkU9SpzkV+S3EMsqDzSkGiHQOXStfqQ9h/cUZ9yajrYa5FHFXrdFXBEEBzY+Q6YAywYWEcX32bG04EIANmanIm3jFRmu2LC30Uz7QDSWyam+HCoYt9NuTWXzVIPeMs7ZtPQiHOSJ
- nJpM39no
- OelwSUe/Fd313VYypQN7ncnhCmsBiYaKprV0pZ3UbE1slic1gWirCtvGs140ANBbafOxrQfY8CdLDa5svYiItIfzS37zphUzXTR3iSY+fBRBC70AdQKrxGH1QJ5XB3LItkxvAbXbv0WEINrs7SWxHzZ4Sj7jGq4lZHG7TAWY684/EANQ9nFxGYRRNWISl5RkBddZM3Ju3r+Byessvp/houe8x27+Kit1wkMrPnkeFtVPa23uGAGmDGfjzRBzkgAHo2fL8tqff4hnMfrH333UiYv7nCvZbZ1zaL90e7AqQe19f0x4X54G1wmCNM/ZbwSDORLhajM5eqCNSy18ETMitoQvx7fJu68a4o9xYaIG5woGOH08YXBacANOtYLYEr01o7o4f7UG+GLHGno5lww3W7ZKGS8xOcCwoozK9POcDbdBWH+WNKvQLarsktaVG2JobNWVYK/hKpTS8NZJevBXziDHXVdC6TjzenUXgk9xkbjzmKC54WaAmpfKVPhOr3Wiyxs+WdLo2ubjf/+s=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1785886899-931240
+X-HE-Meta: U2FsdGVkX19t8/IzYn2WlmF0zESAf7DBbdkMQ/MfrsXYl9t3PDuopqfjwLqjgNkKhct8Gh4jCUvgDtqh+fHbOE9omwQhVyGl/9HIU1tEj+oUFZ92gFonch+ylzPQkJD4UXlAQNnlQaasRJKermWev8kOvqIr+07dHV0f1uyDc+d5St82SLNhNw8VBVQTXMbTDTSC6OK1B5qRXTX9zUE7c91LlPwO1sZw22gc9Wp2LcY8N1qNkmYh1vPxlc3mgqaZ+nyuocUq8uF5rlII4PIjJKGkd5gMzFgt/V7nMtI+85JpHm5O3UQHE+QgypnIAWNIfyl2lDw6XL497hMLHxSn6lAZvlj8Od8WlXB4qlTdXuVeWdHGtl1vw81bBiXK2EROM+ehRYsTrTsURPfAXUqrXL9+eMxc9hp81eltU2Je2HLQvME7dPXl5ksllfsJElrPwqnSmpUthkE2WP+18gnJN5hM5F+miu/XQDHgr8cws25F5HkOE/eG68Y66DvQumpdBOI4gwsQGwxDJQGyV+pnM8Sn36nkUBNM8Vam6y4lRPQAQoN9Uu4mJ/Q1KcjySY3pht1gtqiUqmexcpfpEKCR1SzFqJ/1e0QDi+fvlQpRX/bijlpM5seAGAkJIO6QQvRhdvgomvCGQpK0hy83/kYN+w8BV148wU+m8uNFY+kdzoKjbi7JnzFBIYaCmnnP3HaxwFExMKB8QlP/kV/hP9ZBc5MlRKd4vQGGlV3N6WnjOQdML8rkus+JvM7oI9zPPKko5IArjz+KopYSdaUmY6vyFC316+2jJDcseXDY3GT6mG5UVKtgAIaZpK0auPitqlQpvOoaD8BU1vClbo7OqPwlQhjxuwYmbZuuSJjo68fz7JvXhrGe09+BChA0mWFkhi9Uj31omRH9Kcyyjd8GRjYsy26wd8miu0/i8una2Wm/NWS05iQGxPqgJwo8KLqwVm0XUFvPrJfg8rOP2eEo+rt
+ bHN+O3hA
+ SHwF938yM2pzyw1zFcu9tcbjHMlHmZN3z7cPoWlz11/zuR8+/wtxzehVBC3VUU8g+jw9ZM1tQtkcRBsYbLGGzHHSqZBSAgctPlIPAtO7FI8f9le59H30PNob+d8fdr7T4TAjohc34j/GIRh0lfJSdNtvRjSgK4udyRskrrmggsRfbKJFyi/WCg+5M7iqoPT8zJtJbR/a9lXz24T0jYELgynRNYanK2N/9K2PH3UI+fWOu2Aj+nxoPocbNq1mdORqW2CtRhHav25K1Tlf5lMmwnYIkZsCbmo5QmJIPyq9LQf3T/csw8928duAGcEjX8UdACDg6dkBuRH1PN/AlFUFcYHZ3lYq618/Z/uGtRlcbmTOV8GQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,89 +101,302 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 2:52 PM, Tal Zussman wrote:
-> Convert the page cleanup loop in writepages_finish() to work on folios,
-> resolving the folio directly after fscrypt_finalize_bounce_page() has
-> replaced any bounce page with its pagecache page.
+On Sun, Jul 26, 2026 at 10:22:54PM +0000, Brendan Jackman wrote:
+> Currently FREETYPE_UNMAPPED allocs will always fail because, although the
+> lists exist to hold them, there is no way to actually create an unmapped
+> page block. This commit adds one, and also the logic to map it back
+> again when that's needed.
 > 
-> This removes a use of detach_page_private() and five calls to
-> compound_head() per page, while adding one back via page_folio().
+> Doing this at pageblock granularity ensures that the pageblock flags can
+> be used to infer which freetype a page belongs to. It also provides nice
+> batching of TLB flushes, and also avoids creating too much unnecessary
+> TLB fragmentation in the physmap.
 > 
-> No functional change.
+> There are some functional requirements for flipping a block:
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  fs/ceph/addr.c | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
+>  - Unmapping requires a TLB shootdown, meaning IRQs must be enabled.
 > 
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index 59e559bdfdff..eaf5b3f6d13f 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -896,7 +896,6 @@ static void writepages_finish(struct ceph_osd_request *req)
->  	struct ceph_inode_info *ci = ceph_inode(inode);
->  	struct ceph_client *cl = ceph_inode_to_client(inode);
->  	struct ceph_osd_data *osd_data;
-> -	struct page *page;
->  	int num_pages, total_pages = 0;
->  	int i, j;
->  	int rc = req->r_result;
-> @@ -943,31 +942,33 @@ static void writepages_finish(struct ceph_osd_request *req)
->  					   (u64)osd_data->length);
->  		total_pages += num_pages;
->  		for (j = 0; j < num_pages; j++) {
-> +			struct folio *folio;
+>  - Updating the pagetables might require allocating a pagetable to break
+>    down a huge page. This would deadlock if the zone lock was held.
+
+We also need to zero unmapped/sensitive pages before mapping them again,
+but seems like the current approach is to differ this to the caller,
+which makes sense. The only annoying part is that
+want_init_on_{free/alloc}() now silently skip the zeroing for those
+pages.
+
+We should document somewhere that the users of ALLOC_UNMAPPED are
+responsible for zeroing memory before freeing it?
+
+The current users currently always zero the pages on allocation as well,
+I am not sure if this should also be a general requirement, or perhaps
+only if want_init_on_alloc() is set?
+
+> 
+> This makes allocations that need to change sensitivity _somewhat_
+
+s/sensitivity/direct mapping status (or sth)?
+
+> similar to those that need to fallback to a different migratetype. But,
+> the locking requirements mean that this can't just be squashed into the
+> existing "fallback" allocator logic, instead a new allocator path just
+> for this purpose is needed.
+> 
+> The new path is assumed to be much cheaper than the really heavyweight
+> stuff like compaction and reclaim. But at present it is treated as less
+> desirable than the mobility-related "fallback" and "stealing" logic.
+> This might turn out to need revision (in particular, maybe it's a
+> problem that __rmqueue_steal(), which causes fragmentation, happens
+> before __rmqueue_direct_map()), but that should be treated as a subsequent
+> optimisation project.
+> 
+> Adding alloc_flags to gfp_freetype() requires moving it to
+> mm/page_alloc.h so it can refer to ALLOC_UNMAPPED. It was already only
+> used in internal mm code.
+> 
+> Now that unmapped pageblocks actually exist, exclude them from
+> migration. Migrating unmapped pages via the mermap should be possible
+> but that's something to be added later when needed.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+[..]
+> @@ -3400,6 +3426,127 @@ static inline void zone_statistics(struct zone *preferred_zone, struct zone *z,
+>  #endif
+>  }
+>  
+> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+> +/* Try to allocate a page by mapping/unmapping a block from the direct map. */
+> +static inline struct page *
+> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
+> +		     unsigned int alloc_flags, freetype_t freetype)
+> +{
+> +	unsigned int ft_flags_other = freetype_flags(freetype) ^ FREETYPE_UNMAPPED;
+> +	freetype_t ft_other = migrate_to_freetype(free_to_migratetype(freetype),
+> +						  ft_flags_other);
+> +	bool want_mapped = !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
+> +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+> +	unsigned long irq_flags;
+> +	int nr_pageblocks, nr_freed;
+> +	struct page *page;
+> +	int alloc_order;
+> +	int err;
 > +
->  			fscrypt_finalize_bounce_page(&osd_data->pages[j]);
-> -			page = osd_data->pages[j];
-> -			BUG_ON(!page);
-> -			WARN_ON(!PageUptodate(page));
-> +			folio = page_folio(osd_data->pages[j]);
-> +			BUG_ON(!folio);
-> +			WARN_ON(!folio_test_uptodate(folio));
+> +	if (freetype_idx(ft_other) < 0)
+> +		return NULL;
+> +
+> +	/*
+> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
+> +	 * safe if the caller holds a lock (in case the other CPUs need that
+> +	 * lock to handle the shootdown IPI).
+> +	 */
+> +	if (alloc_flags & ALLOC_NOBLOCK)
+> +		return NULL;
 
-Sashiko complains:
+Should we only check this if !want_mapped? IIUC we only need a TLB
+shootdown when unmapping.
 
-"Since page_folio() invokes _compound_head() which dereferences the page
-pointer, won't this cause a NULL pointer dereference before reaching the
-BUG_ON(!folio) check if osd_data->pages[j] is actually NULL?
-The previous code checked the page pointer before any dereference occurred.
-Would it be safer to check the array element for NULL before passing it to
-page_folio()?"
+> +
+> +	if (!can_set_direct_map() || alloc_flags & ALLOC_NOLOCK)
+> +		return NULL;
+> +
+> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled));
+> +
+> +	/*
+> +	 * Need to [un]map a whole pageblock (otherwise it might require
+> +	 * allocating pagetables). First allocate it.
+> +	 */
+> +	alloc_order = max(request_order, pageblock_order);
+> +	nr_pageblocks = 1 << (alloc_order - pageblock_order);
+> +	spin_lock_irqsave(&zone->lock, irq_flags);
+> +	/* First try a block that already has the right migratetype. */
+> +	page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
 
-The BUG_ON can just be removed, as fscrypt_finalize_bounce_page() cannot take
-or set its argument to NULL as constructed, so the check was unnecessary
-to begin with.
+IIUC, this is called after __rmqueue() will have already failed in the
+caller with request_order (a potentially smaller order), so why are we
+trying this again here?
 
->  
->  			if (atomic_long_dec_return(&fsc->writeback_count) <
->  			     CONGESTION_OFF_THRESH(
->  					fsc->mount_options->congestion_kb))
->  				fsc->write_congested = false;
->  
-> -			ceph_put_snap_context(detach_page_private(page));
-> -			end_page_writeback(page);
-> +			ceph_put_snap_context(folio_detach_private(folio));
-> +			folio_end_writeback(folio);
->  
->  			if (atomic64_dec_return(&mdsc->dirty_folios) <= 0) {
->  				wake_up_all(&mdsc->flush_end_wq);
->  				WARN_ON(atomic64_read(&mdsc->dirty_folios) < 0);
->  			}
->  
-> -			doutc(cl, "unlocking %p\n", page);
-> +			doutc(cl, "unlocking %p\n", folio);
->  
->  			if (remove_page)
->  				generic_error_remove_folio(inode->i_mapping,
-> -							  page_folio(page));
-> +							  folio);
->  
-> -			unlock_page(page);
-> +			folio_unlock(folio);
+> +	if (!page) {
+> +		/* Fallback to changing a block's migratetype. */
+> +		rmqm = RMQUEUE_CLAIM;
+> +		page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+> +	}
+> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
+> +	if (!page)
+> +		return NULL;
+> +
+> +	/*
+> +	 * Now that IRQs are on it's safe to do a TLB shootdown, and now that we
+> +	 * released the zone lock it's possible to allocate a pagetable if
+> +	 * needed to split up a huge page.
+> +	 *
+> +	 * Note that modifying the direct map may need to allocate pagetables.
+> +	 * What about unbounded recursion? Here are the assumptions that make it
+> +	 * safe:
+> +	 *
+> +	 * - The direct map starts out fully mapped at boot. (This is not really
+> +	 *   an "assumption" as it's in direct control of page_alloc.c).
+> +	 *
+> +	 * - Once pages in the direct map are broken down, they are not
+> +	 *   re-aggregated into larger pages again.
+> +	 *
+> +	 * - Pagetables are never allocated with ALLOC_UNMAPPED.
+> +	 *
+> +	 * Under these assumptions, a pagetable might need to be allocated while
+> +	 * _unmapping_ stuff from the direct map during an ALLOC_UNMAPPED
+> +	 * allocation. But, the allocation of that pagetable never requires
+> +	 * allocating a further pagetable.
+> +	 */
+> +	err = set_direct_map_valid_noflush(page,
+> +				nr_pageblocks << pageblock_order, want_mapped);
+> +	if (err == -ENOMEM || WARN_ONCE(err, "err=%d\n", err)) {
+> +		set_direct_map_valid_noflush(page,
+> +				nr_pageblocks << pageblock_order, !want_mapped);
+> +		spin_lock_irqsave(&zone->lock, irq_flags);
+> +		/* Important: free using _old_ freetype. */
+> +		__free_one_page(page, page_to_pfn(page), zone,
+> +				alloc_order, ft_other, FPI_SKIP_REPORT_NOTIFY);
+> +		spin_unlock_irqrestore(&zone->lock, irq_flags);
+> +		return NULL;
+> +	}
+> +
+> +	if (want_mapped) {
+> +		/* Exposing formerly-protected data; scrub it. */
+> +		clear_highpages_kasan_tagged(page, nr_pageblocks << pageblock_order);
+
+Shouldn't all unmapped memory be zeroed on free? If we solidify this
+assumption we can probably drop this here (and maybe replace it with an
+assertion)?
+
+> +	} else {
+> +		unsigned long start = (unsigned long)page_address(page);
+> +		unsigned long end = start + (nr_pageblocks << (pageblock_order + PAGE_SHIFT));
+> +
+> +		flush_tlb_kernel_range(start, end);
+> +	}
+> +
+> +	for (int i = 0; i < nr_pageblocks; i++) {
+> +		struct page *block_page = page + (pageblock_nr_pages * i);
+> +
+> +		set_pageblock_freetype_flags(block_page, freetype_flags(freetype));
+> +	}
+> +
+> +	if (request_order >= alloc_order)
+> +		return page;
+> +
+> +	/* Free any remaining pages in the block. */
+> +	spin_lock_irqsave(&zone->lock, irq_flags);
+> +	nr_freed = expand(zone, page, request_order, alloc_order, freetype);
+> +	account_freepages(zone, nr_freed, free_to_migratetype(freetype));
+> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
+> +
+> +	return page;
+> +}
+> +#else /* CONFIG_PAGE_ALLOC_UNMAPPED */
+> +static inline struct page *__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
+> +				unsigned int alloc_flags, freetype_t freetype)
+> +{
+> +	return NULL;
+> +}
+> +#endif /* CONFIG_PAGE_ALLOC_UNMAPPED */
+> +
+>  static __always_inline
+>  struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  			   unsigned int order, unsigned int alloc_flags,
+> @@ -3433,13 +3580,15 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  			 */
+>  			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
+>  				page = __rmqueue_smallest(zone, order, ft_high);
+> -
+> -			if (!page) {
+> -				spin_unlock_irqrestore(&zone->lock, flags);
+> -				return NULL;
+> -			}
 >  		}
->  		doutc(cl, "%llx.%llx wrote %llu bytes cleaned %d pages\n",
->  		      ceph_vinop(inode), osd_data->length,
-> 
+>  		spin_unlock_irqrestore(&zone->lock, flags);
+> +
+> +		/* Try changing direct map, now we've released the zone lock */
+> +		if (!page)
+> +			page = __rmqueue_direct_map(zone, order, alloc_flags, freetype);
+> +		if (!page)
+> +			return NULL;
+> +
+>  	} while (check_new_pages(page, order));
+>  
+>  	/*
+> @@ -3660,6 +3809,8 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
+>  		return;
+>  
+>  	ft_high = freetype_with_migrate(ft, MIGRATE_HIGHATOMIC);
+> +	if (freetype_idx(ft_high) < 0)
+> +		return;
 
+Does this belong in "mm/page_alloc: add support for freetypes with no
+freelist"?
+
+>  	if (order < pageblock_order) {
+>  		if (move_freepages_block(zone, page, ft, ft_high) == -1)
+>  			return;
+> @@ -3975,13 +4126,15 @@ alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+>  }
+>  
+>  /* Must be called after current_gfp_context() which can change gfp_mask */
+> -static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
+> +static inline unsigned int alloc_flags_cma(gfp_t gfp_mask, unsigned int alloc_flags)
+>  {
+>  #ifdef CONFIG_CMA
+> -	if (free_to_migratetype(gfp_freetype(gfp_mask)) == MIGRATE_MOVABLE)
+> -		return ALLOC_CMA;
+> +	if (free_to_migratetype(gfp_freetype(gfp_mask, alloc_flags)) == MIGRATE_MOVABLE)
+> +		alloc_flags |= ALLOC_CMA;
+>  #endif
+> -	return ALLOC_DEFAULT;
+> +	alloc_flags |= ALLOC_DEFAULT;
+> +
+> +	return alloc_flags;
+>  }
+>  
+>  /*
+> @@ -4770,7 +4923,7 @@ alloc_flags_slowpath(gfp_t gfp_mask, unsigned int order)
+>  	} else if (unlikely(rt_or_dl_task(current)) && in_task())
+>  		alloc_flags |= ALLOC_MIN_RESERVE;
+>  
+> -	alloc_flags |= alloc_flags_cma(gfp_mask);
+> +	alloc_flags = alloc_flags_cma(gfp_mask, alloc_flags);
+>  
+>  	if (defrag_mode)
+>  		alloc_flags |= ALLOC_NOFRAGMENT;
+> @@ -5085,7 +5238,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  
+>  	reserve_flags = __gfp_pfmemalloc_flags(gfp_mask);
+>  	if (reserve_flags)
+> -		alloc_flags = alloc_flags_cma(gfp_mask) | reserve_flags |
+> +		alloc_flags = alloc_flags_cma(gfp_mask, alloc_flags) | reserve_flags |
+>  				ac->alloc_flags | (alloc_flags & ALLOC_KSWAPD);
+
+Should we pass in ac->alloc_flags here to maintain equivalent
+functionality, maybe this:
+
+		alloc_flags = alloc_flags_cma(gfp_mask, ac->alloc_flags) |
+				reserve_flags | (alloc_flags & ALLOC_KSWAPD);
+
+>  
+>  	/*
+> @@ -5307,7 +5460,11 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+>  	ac->highest_zoneidx = gfp_zone(gfp_mask);
+>  	ac->zonelist = node_zonelist(preferred_nid, gfp_mask);
+>  	ac->nodemask = nodemask;
+> -	ac->freetype = gfp_freetype(gfp_mask);
+> +	ac->freetype = gfp_freetype(gfp_mask, *alloc_flags);
+> +
+> +	/* Not implemented yet. */
+> +	if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED && gfp_mask & __GFP_ZERO)
+
+Nit: Add more parentheses for readability?
+	
+	if ((freetype_flags(ac->freetype) & FREETYPE_UNMAPPED) && (gfp_mask & __GFP_ZERO))
+
+> +		return false;
+>  
+>  	if (cpusets_enabled()) {
+>  		*alloc_gfp |= __GFP_HARDWALL;
 
