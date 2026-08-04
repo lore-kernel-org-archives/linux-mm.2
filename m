@@ -4,154 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5506C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CCAC55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3132C6B00E3; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
+	id B9FA46B00E5; Tue,  4 Aug 2026 16:09:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EBA86B00E5; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
+	id B50BB6B00EE; Tue,  4 Aug 2026 16:09:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 201A36B00E8; Tue,  4 Aug 2026 16:08:09 -0400 (EDT)
+	id A66D46B00F0; Tue,  4 Aug 2026 16:09:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA6A86B00E3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:08:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 775DD6B00E5
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:09:04 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5419BA18CD
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:08:08 +0000 (UTC)
-X-FDA: 85064673456.06.4322ECC
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F25AE40008
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:08:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GK1l62VE;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785874086;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E474DC02D8
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:09:03 +0000 (UTC)
+X-FDA: 85064675766.06.0C0C530
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E76E5A0012
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:09:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BMHXyfJ2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785874142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O3WVbx9DjizmWqebKqOWEDE2LbnYDmLdJ6MN0TdoWno=;
-	b=u02T8fNObeIab4EPKEaDNw3eGVHEC1UBBcA3WbnAFFZdK7Ss/+QddqjgMYa777K3NpbZS5
-	+66SAuBWvBnz4G1aBwYgsqW1r3w9Z/QtOQbUCxlcT+p7Saqfa0X9IWjzJcWf7l7g2k+QaQ
-	Q+Ug033HVzoZPXjYbbpCJd3JadvExM8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785874086;
-	b=FXUg4xef12J0lVy9h/Rmi7YJlkNE+zsOI3Mk+GInTHynTB7Hb/Pdtl+TE4xecNxgRbBt3u
-	fcBYvzjcXeN9KcRC/eBQBsW3MIbekzxCLW61hRhBe6NDgRW8BBXuBd27cHclreURf6iAWT
-	srmNsFcknw1eWkpaSkhhM2QsSIebe9Q=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GK1l62VE;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785874086; x=1817410086;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=A6fH+vHOIZ6I29oLKNkELdsCOM1BEX4zSX5AjzmFPqw=;
-  b=GK1l62VEuyLoNW/Qh5T06HTDRTrED4VIgqIzfB7SzhlY69h/QxFXddUH
-   j6MO3sAU7C1PnAzF+3rLHBBHzsmZy/KX1spXHzNpjBS4GtKa94ShFH/UW
-   ubt2GnlYqnVfQMHBsTQ+usAkMPhWwxPrc6xZckPdeZIyHDGc4SCtQhht/
-   BPno5nPD1xtOhWeLzgktEXNojkMEKEDsxPqnws5iURd4oD+dJZcTavHoW
-   sy4GV2aKQtsZcRFh8BH9y5jV0Q8XQV9Ja2x0TaCnLgnEEfGGN59RIxEEQ
-   IdXhKOSeTSh4wLBcDZC5eeCUMciQrV1dVa53Yb4I19zeyYEGdLAaBYL+9
-   A==;
-X-CSE-ConnectionGUID: cjPSou9dQ0qEd6247hbs8Q==
-X-CSE-MsgGUID: lsHlmDw5Qfy38dZG+rrW7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="90112330"
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="90112330"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 13:08:04 -0700
-X-CSE-ConnectionGUID: 9//HSCuCRqGyG7LmJWxQJw==
-X-CSE-MsgGUID: o2VVLwpiTl6XG//kyLCaDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="286238876"
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.108.232]) ([10.125.108.232])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 13:08:02 -0700
-Message-ID: <5c5df75f-6226-402f-b223-abdcb85acc17@intel.com>
-Date: Tue, 4 Aug 2026 13:08:00 -0700
+	bh=gLpRO5dH+fN1LCShnLYbtBYMbkUOmAnIe7RU35Aq/BY=;
+	b=RxCgkE089pkxykg7vo9J6sK6qMgsMkoHFtzwf3Xno+zLFP2EZNk8OV+KAwz1B6DHNwienM
+	J3oYA6S1m8TqCTe9OBajh8qJHu8b/2nF/D/K4W5B2sRmo1qvZTK0+gfQR/aO3VChP3o6tk
+	0FJMm9dasdJjaZEOaWyYRxqgFQsqhk8=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BMHXyfJ2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785874142;
+	b=IvyjXBwjb3imVWghgrz2UZNfoNj3xrLZuEXmlV5J1+h+iglwYS2xcdsURDeLHULZ/MSvUl
+	pfXYIC3wC2hQtO/aInBYiQBkLnu13sWItf6d7fGxsml44Du4xmj5fk2POsfVtPU94MAYk1
+	sFUoUmun8kb8ki49xmqPYbZ/A8/Txho=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c15a5b265so70081cf.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 13:09:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785874141; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cL3oKNtMySul6amnC+t2LVoA9t0PpJLin0imBOYl42rhJ961duNl1hwH2QQaKFOZrW
+         DMrWfUed3SyUxWMaL9d9CjXlNAlNZlbK2cy24TZbZnnAe23bp0RxsqF6rJpj0sjS5Aob
+         grzk74bXe7y+Nv/iVrlGG0B/oGLPIOQDOmfF8KP09DpGNWmRPKO/Lb8vEx3ibkUgB0xr
+         q4KdeTDjBjKdSmLn+MF+WQ+YxbVc3rq9eE9McQpVrBUnV9OlgMC8a/jmuMMgKOBHHuCt
+         GzYodNWx5uRPvBDIalCRVj8/BQMDrdYS7m0RnhCdwrbuWTOpIZQ0cXqTddnYcTz8svZv
+         jpsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gLpRO5dH+fN1LCShnLYbtBYMbkUOmAnIe7RU35Aq/BY=;
+        fh=V2S0UZ1kwbFdBhlI6NjZJ1CVrxYu3RRBdDJ/fgiJc68=;
+        b=GDM/qfvjac66zoUjEJZMLm5/Infigd4NmwwA+4iA+02ypXWuwWOzKgmsVdb89wJ3HC
+         HmqHxu60Vkcne6ziojc5eE2t7vuknC6rMGbKJO/aEJZSKdbROmOMLMfiiaZa8c0izSXI
+         24hcHtjA0fOI5hsdWR+hRF6LFt2SDS31A8LlaXMRvoHeSb6jT/0lLfITFnL69V5LWeXt
+         ooAfZ6VV1IrEuOjfGkAe+4Ka85cTXKsegS5QairhEafujqEIQZrRl/Se4xgtiysYuAw2
+         d689feyxkenYDq3WjH9mv4WWwIK0TmzZ/ZVpF7+HXjA/SGDPmU5n6HRi+QwHmprKlBh9
+         lokw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785874141; x=1786478941; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gLpRO5dH+fN1LCShnLYbtBYMbkUOmAnIe7RU35Aq/BY=;
+        b=BMHXyfJ2LewYxCIjUdl4u5rXKUuahK0nTeDixiiqP+24IB9GXOXFEPP5AcPi1sMDk/
+         fqQe6omG3HkXotSiNze1r4cqkdWviLCs4PnAVXlvHOmkUpPyCpR3HfzbqTp41K4NreoK
+         dd0cAFSFyg4m5ud/v3l0QhaEfhpbmadfGYl52Z3yfDqeahtkf6vu0pmNvr02/RMNaw6n
+         YG1BhhNCIGbSK0k0PE2FfWmhVpfXqljAwWod47OwIvZuWW7pGcIYHvuyMjnOual+qLyl
+         En+FbEtQz2ResdN8l8BoeIkNCI4PqS0+8BH2c90Fk+5JVsWrt0AuxhnmiE5vEjCvtkp3
+         fSYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785874141; x=1786478941;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gLpRO5dH+fN1LCShnLYbtBYMbkUOmAnIe7RU35Aq/BY=;
+        b=brkK0ySdIhy4NckgWC5VtlG9RGCuSDltyz7iRfxwnpPYGb9qK8gcwS+QyDfYEPrVMz
+         +HHIDf7FyQZ3/zug503uHRCstEqtO44k6zSWUuRK8Ewx7j1L2HCXBNVvzlqdWsZBMEYa
+         BTIkHzzckcdAYTiZYF/YtCgrdd5EbxhJPFjeWRj7xT2CsB/8sJR7grj7GFXv5LMHE691
+         W9dRKRpeZvsGplRnoTQoyvMmFNWA4LYAJ2HDuG66XubGZ/MNl0FZoy+F68FHDcigf35G
+         wZK4m1xZazx8KUfHInZvy5goRj3uw5MlKYO7rXZttrvzK2ekg4RKfgVrtyHR87RjMLgP
+         V5ig==
+X-Forwarded-Encrypted: i=1; AHgh+RpZ1eJ23BrVsTGNbEc3lhHnXQLU7QwcTntdEv+y3VDM+tyaEydpnRdhCqmixs+A7TGC1fdYvciC7g==@kvack.org
+X-Gm-Message-State: AOJu0YxDejvxO2u3M7fWP+LzZr3Wdf50pNfeDnL/gUlHPN48eDnrZIMI
+	pUcFf0sgPa7DF72lfWMjKaQJ39PB9fl7qCJkgNWlA10/IC6yVAUkxI8eJ3wWUfsfJmnj2njt+b0
+	u94p7/QtsqMI5hzhS3A/jcQeWAnp9oQ9KDiX1UbrU
+X-Gm-Gg: AR+sD12K3uNKXga5KUW603Du9H7vDd5qXxfvTubzBZjRSzjbobHuahitnKOXJlyGDs0
+	dNp893F7dbTk9Gi+ZvoXZWnIndyoGUP/UiR6hVqyMOExNK12gxUHLzxMzElrflHnFUzuBDocohX
+	M5pAKavFbBAzzQNEfOkbGUTtegkatAG1Ne/xwWNS3pG+uMi5J+f26+eootVe+dGaJHvFK2vzdR2
+	VhhHXlb4a0niwRAqXhsk4J5xdWahZ8LYjdYCmT8AWM0nQf9OL6zS9yhThkAJDhgsJvTzFPlv8nV
+	VeIaF+qbBvZxgoJT1JMSLe/Xk+JLTIumJrj6TLb348Q1JbiUe8e13/Bto9ccUgOV+fFkDQPoAQA
+	=
+X-Received: by 2002:a05:622a:a6c3:b0:51c:ae6:a57 with SMTP id
+ d75a77b69052e-52ce6c8ef40mr4163801cf.11.1785874140324; Tue, 04 Aug 2026
+ 13:09:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] x86/mm: DEBUG_PAGEALLOC musings
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Juergen Gross <jgross@suse.com>,
- Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Lu Baolu <baolu.lu@linux.intel.com>, Mike Rapoport <rppt@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Toshi Kani <toshi.kani@hpe.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, linux-mm@kvack.org, x86@kernel.org
-References: <20260729110807.797920433@infradead.org>
- <2ea2881c-7202-40e7-8fa2-f1c649c0d445@intel.com>
- <20260804200134.GK776954@noisy.programming.kicks-ass.net>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260804200134.GK776954@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260804122038.190270-1-hao.ge@linux.dev>
+In-Reply-To: <20260804122038.190270-1-hao.ge@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 4 Aug 2026 13:08:49 -0700
+X-Gm-Features: AUfX_mwIgnpCsSpVuGaJq123_P9l9T9DSb_2ViQo7h1MG8JSNzWnfW8YjiUletY
+Message-ID: <CAJuCfpGit7zcNPGAB9D2A5+718NY-qdksxt7gUaN_eRcB_5+Ug@mail.gmail.com>
+Subject: Re: [PATCH v2] alloc_tag: fix undetected compressed tag overflow when
+ profiling is disabled
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E76E5A0012
+X-Stat-Signature: jpzuq4e3cj7w6myk3nygpwi1ob83ydru
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F25AE40008
-X-Stat-Signature: n6m4kakh5n8ugex5cc96bjhh44eitxuq
-X-HE-Tag: 1785874084-333010
-X-HE-Meta: U2FsdGVkX1+mRlI2cTwxgqjayaZdkoxVsekX1HsEk4zz/KqH/zvxDWVhRTXaS+2PoR9ani4xun6uwQTyNgrRlh43xMJYdry+FYv0rLZ7Mp7hRsPDUMmmnRWAL67JY5TihnAhPiEvrywRqMX7O8AUkkpTCA7RQquB6QrRaYZEHF78tiZsOARUhzcbWyjOnKDY2Kn8FpsIVynrtMvgi/0dxU4ucTEf4D5OrHMgEn/w1QdArduMxHwI0c5nFA2WBgKc+irojmvri6S/rIccKZZv2LJfSqfRe0neaG/HzIkfDYqhKGqBofMc2IZ/aGiKRvb84rW/Cl1IA6+zGLTr8C7X39qW9jyzNILgZ5OJYDMRbFINw3lvBp0w/eTcLnzC/+X5FIz1tuolf3q05/ZU/+3RGubewuiIfXeZOfVkut+O0rDVHP4xhqKNhDhH4FRD0yDz5X6kkvizbLjNy/aGjaYmJM8Z0XimSeTuoxoNm64IFIWSCpsoY+CvmVJynKUaVZEZilhv1gQMeCL7fHrfl2i3WFEE/cNrPmVwjTFFRnHDOxyPHaM25EYnpNDTo1oosHeeVHIim+bnrgex84sG7dsQmuLXcUkUvPihXkqbbvQk6KAMDljNZ6hYdBbENE401XjQ0TOxLxRXlVrR5+aToDU3GnqOpY3YepEh+RA4YWtoOaKCW/vWoZ8fb32oOmrf4bzlhDX4wJIOEUF/i5zQCzsng8/C8j7ws1fNBFQtTsoJEfzr/srbi7nhs5C9JlLT9fFt33zOULKlvQG78JkhWy+x9d81/Jad0H8devif7N5xaHibs1mxRtAFRgo8I+aOagrhJMyfClXC0BwoydTctx48W7xTMV67T4SF9n/KWWc5TFWmPhhrV11+oJPGFWcH3wDBALmIopvUBu8wMKbUf8LuO0t4oIkVluujexnjG8ZwGfFI8feDIde/0oqixVHenpv3a8BQArWRU/KNL/meaAI
- m6Cso4Zy
- ZtbcvAevuvoSqdeGt1TK+gQ3CXKHF3aASbQQJNTNbxrV+z+nv/0zuBtYRz24VCrrLB0zA33C0D/tG37hODBKSh4l+WlSC2oT3DpyuzT5/ums7A/RZqEHmdMo44yT2X7cC0QIX03NBN7Fxwpisl3P/7fXk01j2ONHV7eHPblVAp7LU5mZJKCVXnxN/sphokoDwUlB6Rq9NGoKdjAxMsag2+BiMJV+9HvYOmzye3j31blwvo7BNzCAQNmCnATJf4lbz1XkLoHb+KJew2NlDoQ9nCf+QsA==
+X-HE-Tag: 1785874141-420968
+X-HE-Meta: U2FsdGVkX1+ZcN+ROZlzRk1mzJT4q/GYIEr/gkTtBl8+e2DhbE7xg61lCUVLzE4vpP9OsO9XK6B7kDQcGqezDT9eq1YZqbAhFvbw8fGvKLZ4fKuuEL0MWqMeHXjzSmWJimW+Q20Hpu1UAdX0IPn+BPOp/nCU05cFe36MyMnUG2+zl6a9WdjHVymes8CA3jIK38lIzUIJMaOlG2wA685TvV6EWoJN2U6rLQrv0wSFblqjTdE72S3bXaBccrgxj0dCmuyes/VjHawug2PKQ35EQoL1Hl7kBeGY/GnEcIpSbH2Ltewq/7Se9oAgag9klVIHw581cAnwPQ2nmVSMvUqVxx0jx9hiC8Oq7DXrV/BssnkNHULNwXbj6WDzyOWcC1uWBT/gQybPcySnB3eInDh5GneWOM+ewkNZiGG8wodhbiJOS6ToXXKHFUGI3ooP3XkuI5Z/x34REHDon7MY89L4V6PbK3Gw9D8RW2Og4YbOBNJA1NG5fsXgXjMKJKTUFXMLkgPrfjzCJcEGCwp3qWY8EMWYS3sznwXyWzA4rTzXeZ/J6Mnq1P1wN7pu75s403FFxQuTP4M4KJGX83WecRl1s/ZuMOxHcyebG2ZNpolBAaMgk2HgqEev3PtGfoy3UvonhrqwP4kJl6HeBMperk5zfJtcrV0lgi2vLvKaSgerQPb160stnfnbCOG+IHxLDRU55vaCo9+yN27Zd61eiuq689IR2lTtszC0hyEVI2F3wjBgzUCHvAg6LUqNKU0i9X80IKvbItetqoyPpRxFxG6uiY8MKFaj0FdwEOz234ZyF3zcSXphyFzXouhjRf9y+Op35kEAKCTFE9VgdUVziMbo0UKTJMRZxype4X57fKSAmul7zOXSnF5QUdLkCLHjmHCYRHPDps7eLUWlSS2JSnLRO2IQEwPxdl0CnszaKr11VvWR7kiVXiFrcmoAQUNXmRJZ0ifsdYVM3BrkX97lzFL
+ tM5y5IEz
+ kShCqypEAwtC9qCdLpgDb2nopoiqVXz6/qm5eF0PY181tovO07O1eV8CjAqzu/yIeCjR7LyFWzsRXRM0U+LD2RNRA2Q7JM+YFFTRupOjcvhXl/DdRxPJ97C6xByLHqWRNGsJXBnyt2hrgSDHnIIQWU4fFDCrFNLTHvNEXnJHhA3QlHgy1U/OpCWrMPTnFjngQ41DuBh1Cjsvq6gr/AdOJ1FAGvHjRz9sKOgYrc074ylu2HmbaDuVNNVW9Qm/hk44sNTC9vNq8LY69MY0upC2yzluwBLXU3YWF/jTVXYqNYGyl7GCPrdlb/rA2DhIta5czlFsBvD0NM35gs9aSPb9xxfBV/L9A8lwUsCuemVT8piMK4b2GvUZkvLMkRWxrXwMZqlzKtT+r7cZOfEc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,20 +142,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 13:01, Peter Zijlstra wrote:
-> On Tue, Aug 04, 2026 at 11:34:36AM -0700, Dave Hansen wrote:
->> On 7/29/26 04:08, Peter Zijlstra wrote:
->>> my take on how we should be 'fixing' this DEBUG_PAGEALLOC thing. It appears to
->>> boot in qemu with debug_pagealloc=on and such things.
->> The approach looks fine to me. The only thing we might want to do is add
->> a warning of some kind in the split/join paths for CPA_DEBUG_PAGEALLOC.
-> So if you have lockdep enabled hitting them will scream bloody murder on
-> cpa_lock and pgd_lock.
-> 
-> But if you want I can sprinkle more explicit warns 🙂
+On Tue, Aug 4, 2026 at 5:21=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> In reserve_module_tags(), the tag overflow check is gated on
+> mem_alloc_profiling_enabled():
+>
+>     if (mem_alloc_profiling_enabled() && !tags_addressable())
+>
+> If profiling is toggled off at runtime and a module is loaded whose
+> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+> skipped. vm_module_tags_populate() still maps memory for the tags and
+> the module loads successfully, but the total tag count now exceeds what
+> NR_UNUSED_PAGEFLAG_BITS can address.
+>
+> Once profiling is re-enabled, ref_to_idx() computes each tag's index
+> as its position in the alloc_tag array. update_page_tag_ref() masks
+> it to alloc_tag_ref_mask before storing in page->flags. Indices
+> beyond the mask are truncated and idx_to_ref() resolves them to wrong
+> tags.
+>
+> mem_alloc_profiling_enabled() and mem_profiling_compressed are
+> independent. Once compressed mode is established at boot, it stays
+> active regardless of runtime toggles of mem_profiling.
+>
+> Remove the mem_alloc_profiling_enabled() guard. Also return an error
+> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
+> the mapped pages would never be reused - shutdown_mem_profiling() sets
+> mem_profiling_support to false, so no future module load enters the
+> codetag path.
+>
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
+ion")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
 
-That's true. I was thinking of it more for self-documentation than
-actually getting it to spit out warnings in practice.
+Thanks for the fix, Hao!
 
-Folks are always copying and pasting stuff and not realizing the context.
+> ---
+> Changes in v2:
+> - Return error after shutdown_mem_profiling() to skip unnecessary
+>   vm_module_tags_populate()
+>   v1 link: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@lin=
+ux.dev/
+> ---
+>  mm/alloc_tag.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 52aece27b00e..d8c36430f1c0 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -904,10 +904,11 @@ static void *reserve_module_tags(struct module *mod=
+, unsigned long size,
+>                 int grow_res;
+>
+>                 module_tags.size =3D offset + size;
+> -               if (mem_alloc_profiling_enabled() && !tags_addressable())=
+ {
+
+Makes sense but how about replacing mem_alloc_profiling_enabled() with
+mem_profiling_support? Otherwise this warning will be issued multiple
+times if we are loading multiple modules.
+
+> +               if (!tags_addressable()) {
+>                         shutdown_mem_profiling(true);
+>                         pr_warn("With module %s there are too many tags t=
+o fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+>                                 mod->name, NR_UNUSED_PAGEFLAG_BITS);
+> +                       return ERR_PTR(-ENOSPC);
+
+This ENOSPC error will be propagated all the way up to the init_module
+syscall and it's not among the error codes currently expected (see:
+https://man7.org/linux/man-pages/man2/init_module.2.html). I suggest
+returning ENOMEM instead.
+
+>                 }
+>
+>                 grow_res =3D vm_module_tags_populate();
+> --
+> 2.25.1
+>
 
