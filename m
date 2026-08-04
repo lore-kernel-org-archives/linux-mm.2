@@ -4,188 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 868B7C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34ED2C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5745D6B00F7; Tue,  4 Aug 2026 13:09:57 -0400 (EDT)
+	id 3D53E6B0088; Tue,  4 Aug 2026 13:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524C26B00FB; Tue,  4 Aug 2026 13:09:57 -0400 (EDT)
+	id 385A66B0098; Tue,  4 Aug 2026 13:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EC616B00FD; Tue,  4 Aug 2026 13:09:57 -0400 (EDT)
+	id 24D356B009D; Tue,  4 Aug 2026 13:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F0CCE6B00F7
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:09:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DA81120237
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:09:56 +0000 (UTC)
-X-FDA: 85064224392.07.096B652
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011004.outbound.protection.outlook.com [52.101.52.4])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B05D61C000B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:09:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=krlOF4Qx;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785863393;
-	b=UR6dM264w2qzRegjN8QJqhQrH73YNKgkrLK0EQIY+sCYVEDoqlfXyTqxkNrQgQGxlie04f
-	t3KPqWVJ4YJM32Q1eD/qQG4q9X5F8Yfg7HvIxbOVQnerZYvxDLTQAZm71LUaeITOxdZzV9
-	8Ee84923Vyc0Qbmqj4HCLdB8UUUMoW0=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=krlOF4Qx;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785863393;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EDDB46B0088
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:17:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B6241A028B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:17:14 +0000 (UTC)
+X-FDA: 85064242788.26.1B08867
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AAE2140010
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:17:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AwBfps2x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785863832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bxYnPNQqmSWeESnueY2FEcMEGz8M3x8w1XfCAVhdjbQ=;
-	b=Q215UJJKkqzeGmGHbsPGXxJaRxDoB7dNZ8THceMVOuX8sbmKAl/3+S96mvDaeA9wgppCoL
-	zxOnw5aOR8+q6KGgP0SD+OIY4B3fWd8pzH6wFK5Zl1Nzhn/ePK9EYpAzGT+hpxJuc2g0Wq
-	by7PvHGuv+P7okzPo73YIq7bYxd8lEU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bZ/8FcT3Q6zDqc7PmYr4q8pfgFJfYMiYVqQGV1+CnE+SdOj5KcduNsNmkRa/I068l4/5tDbwwgNR3DGxno+6AIUiApG7cPjVm/VFrFYXTn8IUjzEKYzuDl+6MT4VDlLA+uS0RagfWes02VXBToB+rMiIHk1SYIcbiK+8y4ongRJpKUtVT8f/c5JBNH3J4oDo2uYTONRes/3m0m/jW9UulAHsGXJENu58MAesHtBEeweB08qnPiIYHPTFGEziJsTQ6vNH2045DkgHYH3TRh1zs/pzLJNx3Qc0/aCzAnUpp2Dr6TByZa0wMfFD8+3AHLg0cbE3ZB7CAPiDXndu1IYBdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bxYnPNQqmSWeESnueY2FEcMEGz8M3x8w1XfCAVhdjbQ=;
- b=aYmkybBUCA+F59CVWtaZsL3SvdS8INlhRkFd3EQObnn5afmaF5LumXBeGQd+0c+0vY5XoC0YfM+o+K38xeBmA95PPWHyFb63UOh6CVJx+2rLcCziMllp/D9/88/7dZ8rLa0eliIzS23CSJIYOjJd1zwGlsuYwYTiZxlP02xHr387msyGbC0+mnqaDJFUllYlzjtT3a8B2qL+mY5R2OmQpzsmbmNqD8CJ/gIH5xAxjVcELI6ga6J7zAb+i7GGN85FfZpC5cEm9mKfgfsqZc9qdCI1Dbi6GR6tTh4GT3gNRhCWtC+E4n2k/Er2P/k96yDolG0rWEhcvVJJuMSK43/cwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bxYnPNQqmSWeESnueY2FEcMEGz8M3x8w1XfCAVhdjbQ=;
- b=krlOF4QxMJZegQUJyDE27TykcHBaathCM2NnPfkKbdHfl18L1ByJz1W0iBwhQVSGMyLWMKgNnOsy+FlNvJN2WcPIFfjiwrvWOVTEvxQfR4/0lycBltHmMWqven40z7sV5x0nVoFr67huvGkwCiL9c5AUPKCgxWs96ZgleVpbzWI/R2VCEHJxAC5J8DVMHPbBAYshQNxMLrDWiKtkqsA6PgKVzY8nV91RZaF4L61U7sNMgwG8VB64iCr38u1lO597iTlrGWq+jgwUZqg49E1uh/Jok57UXFFdpbEaZlq4xJ79tJED9vf41yxgHLQzsSCH9xUVRmPlY5TfFnwZJiI6ww==
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com (2603:10b6:8:e9::18) by
- BL1PR12MB5945.namprd12.prod.outlook.com (2603:10b6:208:398::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Tue, 4 Aug
- 2026 17:09:49 +0000
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a]) by DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a%3]) with mapi id 15.21.0270.017; Tue, 4 Aug 2026
- 17:09:48 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Aug 2026 13:09:46 -0400
-Message-Id: <DKGBQHP25RE0.3NKUQSDULAQSX@nvidia.com>
-Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
- readahead_folio_reverse() to avoid folio->private
-Cc: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
- Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
- Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Gregory Price" <gourry@gourry.net>, "Ying
- Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng"
- <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui
- Song" <kasong@tencent.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, "Gao Xiang" <xiang@kernel.org>, "Chao Yu"
- <chao@kernel.org>, "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu"
- <jefflexu@linux.alibaba.com>, "Sandeep Dhavale" <dhavale@google.com>,
- "Hongbo Li" <hongbohbli@tencent.com>, "Chunhai Guo" <guochunhai@vivo.com>,
- <linux-erofs@lists.ozlabs.org>, <linux-fsdevel@vger.kernel.org>
-To: "Jan Kara" <jack@suse.cz>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
- <332rknj4vo3cfhvfhhlf6pvg37s3lbrnzbbnv4swa6gctsiu6a@ndotgokvnglc>
- <DKFGTVA0XD01.OZYNYUOU9FTX@nvidia.com>
- <huzyeqj6a57nbcqc23v6f6rdhkob5552fcwy4mlrsagycqi4rz@ggsapkumc2gq>
- <DKGA508ERSYM.26RBD4HYM1SL8@nvidia.com>
- <2evaxdu6cobpnzzer3y7fsrqvmtmhj7gm3e5buebdaw564igx6@7bs5enipxnpx>
-In-Reply-To: <2evaxdu6cobpnzzer3y7fsrqvmtmhj7gm3e5buebdaw564igx6@7bs5enipxnpx>
-X-ClientProxiedBy: BL1PR13CA0081.namprd13.prod.outlook.com
- (2603:10b6:208:2b8::26) To DS7PR12MB8371.namprd12.prod.outlook.com
- (2603:10b6:8:e9::18)
+	bh=J19P9P6+ypat/OvYRKtICP+Obahh1CzQhSviP26PwVM=;
+	b=26R+KOAOXxc+DXM8FS+snNpJ1mjUWVE5KvECR5uBI/vMLFJ59pgGZFh9GgytDKedXJWAx+
+	hEnA7T9c++Jz4bH/y+FzaXHcbWu8+VOQsAvsPwcepH3Wiqf7b+ReMcrkkzwrHvdYb9UYly
+	RG8MKJmD9K6rm6v3f3o2wXUu7Og0Xnw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AwBfps2x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785863832;
+	b=nu6vD+fwBoLnVIHYZvSV9EFPVFXJlugc2Iulqt6QuY/Cpx4MrMFNbg7qlx9TqJZXkTEgYP
+	et3d/0+8q1sd3mf2k9HWAEK4DO5dbVrhsQa52F6Sye3O4rh0er1QEcWom62zqk84qWSyY6
+	V/u3z8+whyUY+mES0/i0PDqsRQcjYTM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E94C543657;
+	Tue,  4 Aug 2026 17:17:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D601F000E9;
+	Tue,  4 Aug 2026 17:17:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785863831;
+	bh=J19P9P6+ypat/OvYRKtICP+Obahh1CzQhSviP26PwVM=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=AwBfps2xwIykpE1Z2NV6S4OZDKZOxIC4vaRgBzCHqVlRGKyU2UJHFFDDTNZ7o2sza
+	 frhAZK+MTE0MsyGoY1llOM3iJWO527/XtMoo0HE0HkjGpAiBtpNaex5sz8AAg0kkeT
+	 SbepXc+0fw4p/vKTGYKwhHKayur0/FR+SO5skpa9HMNomgQUakdNWDpId3HaZyRc0e
+	 ACHKKHrxYd5+IXQRT8DYBLlgIUgydvZ4byJHJEkTPlTCXtjqCpl3tRXxeHyja3PpQY
+	 dXqCxEFlHQvdPQPRRw66sj6V6Tqw+za0zoN1znkD+myqYRSnKpSs/JsHPSYzTO4vHG
+	 OR5N0J8xIV2ow==
+Message-ID: <f2820a92-a694-4dbb-90b3-503a83b7eb4c@kernel.org>
+Date: Tue, 4 Aug 2026 19:17:04 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB8371:EE_|BL1PR12MB5945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a975512-31a5-460d-1803-08def24b309f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|4143699003|5023799004|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	ZARgyfms6DfUb8F0jCvMT2HkFcM8S+RblCEnTZUdK5sTzhL6HJjh2nYLmjeBBghS3zekOnTjIS31UDN1xenBZxZiUQj58XHFi6I3cg9oFPdbdnHc3n7iGt9lsf+sy3/Y5sLhVHhI463MxvDq+UqK2R3CruFbZ36+OwIEqsa6YMt6Q7Rlp1wb7VGK95Cr2imAqHYgqPQLim87LG9PfwchAb8PWUZGtmY6PhtMiNOaP5Br+PLuRPHIWuyyiewGgfULHkR2Pv4zf7u1dIJ6PVOpRiRo1nyLGHwiMAlhP8qOdKyN53tAmTO10Yy7Hq0m63+wI4sarmF9UNqVMEt48MGuCS+LcVezFi3L3mjF0nZ1RTil4Nkx1swS0v1pbkQPXQ6ZhttUmI3cEVx4IIkR61qSGfrqJcnslYeWp0GjlgSVi/EBcoCdo/zVTInprgzn42CHh0C9A3/bDTqissFyNeQltmT8A8l/Rubevby9tWXfVASRvWMmxI/uxOqIfmsQcB6060fQZ5kDYmOLR46K0zTVjSekbevtupGfkYI2PpI/M3lmmRPpb7muKl6feOI/Fna2jhXUe1THUtgb3w0wjGYcBvA2MKXBFYdizz0XdBWn2jUSe8uyjquu3HIU8tXm+3blZQde3Y1bI9eZCe+hBrcJEOBYoOuhgaq79bISdAZSZnk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Vm8yOERRZW9XdWQ5dU4yVXhCNEQ1ZzV2VGE2V3F6eTVhSFo2U2UrL2FkUTRx?=
- =?utf-8?B?NFRkZW5ydTZtZm55VmNDY1I1aHFXekdCNVBZaEd2SnNFRjlUSk4rOUZOR01v?=
- =?utf-8?B?Wkh6SHB6ZHdxaEVOV2NZenZuU1dmT0NoOUdHK0NQRXZlbDVOK0JNclc5RXZ2?=
- =?utf-8?B?WGZmaDBOTitFM3FvV3p2bC9taXZveTBxVC9CUWNibG1ueVVKQ0EzZC8vbG10?=
- =?utf-8?B?M1R6djdobjhPRTR1V1RhWDRpc3NWWi90K21laCtjNFMrQmVNbnBBdjlGR0N1?=
- =?utf-8?B?TGJ5bkdXOWJVdWxnb1FOUHZBQWRHZUxqaGdDd1pHUVcvbTlKclNaOFo5SWp5?=
- =?utf-8?B?MjFFdFowVlMzTk96YmZUTWhkd1ExcXZRenBxQllUdndFTElrZjRTRk9meERl?=
- =?utf-8?B?aGs5TndXUExkREYrRlk3ckQxZk1kYjZucUhxQmFGajhJdjBaSkNvcWZsWnNy?=
- =?utf-8?B?Z0U5cUhDNlR2L3dPeU9MM0xiNmxnYjRBV01ES2NkcDJscWh1eGlKSDRpajN0?=
- =?utf-8?B?bTZMWWFOMVU0TzhSeEJJSTVjZmNKaklsdHI5OW1lSWhLMWJOb3dsYndhWVJy?=
- =?utf-8?B?UDhDV3FBQzBaYk8wUWs4OHlHYk5iZnpuUjVVdTVQNysrKzlza3pQMEJtNnNr?=
- =?utf-8?B?MWUvUy8xUmZxQ2tDaTRSbHJuZUc3aWZiRGsxTWVmSXI1Tm53YkVGMU1DVWVC?=
- =?utf-8?B?S1lYUVZFWmJZNVozSlNRWlc4ZTR1R3M0RTIvcmw3Y1dNZlcxN1dFR1drUFNs?=
- =?utf-8?B?bE1KdVB0MDVxaE10TDZ2N2Q3SFoyYzNEZ1plclpMK1pVaGJScS8zbVdRV2Iv?=
- =?utf-8?B?S2w2MDJMdlRvL0VmTVV6V1doTmdsNk1qcFk0UFhsMnJHVDBVbWRCYU1CQmRE?=
- =?utf-8?B?RmdUV2xFY1ZUemtBUDJ4MTViZWVzNEJDTnlLRnRaZ3VLenNBMm5XaDFtdTg3?=
- =?utf-8?B?Y1pkRC9HN3d6UStWVlFlQzlWejR5TlVHRWVzbTFGaEJJVXFHa2g1TXpDNFRx?=
- =?utf-8?B?dlVnenplWG9ibloyMWR0Uy9oQ28zUGlqNWozZGZwemVLcmQxMk1ya2tYL1Yz?=
- =?utf-8?B?OFJPazQzcThVSTlZNXhjNTZITURjYmxBa3BocmR0ZDdmU0NEU2ptR2xlUTAw?=
- =?utf-8?B?Yi9tQjNtb2lJck0xbEZzVzlhNXMwQ3ZLalg0dW1iQTRrcXdjZTh1ZmtrQklm?=
- =?utf-8?B?ZEJZNVhsWGNyZURzK1oxcUdpUDkvaDF4c2tkczNQWHQ5TGJ0TmJUUzNyemY1?=
- =?utf-8?B?RGpQM3NTME03dHk3cWx5TnBjeW1oQi82MG1mdm5mWHMraXcvZkZSclgrL3Fn?=
- =?utf-8?B?a0xCRzVCUjZzSHM5a3gzek5GU0U4QjJTSTlEQWYxcFd6ZEQ0ZWVMb0ppL2xj?=
- =?utf-8?B?V29lU3FPbWtzU1F3aXVhdEw0TlpaMW5VVlhETzZOcDI5Tlh5VE1DbkxJNTJH?=
- =?utf-8?B?TVhHOC9GR3FTbStFZU5DaUZtQU10STJzclZwaTFZWTI0d09MS2tLRFhKdTZS?=
- =?utf-8?B?T0lDSTRxaUVtOFBkRUs2Qy9RMDdWOE04VUVGamdTQUZiUFk2aElSV1N1eDFm?=
- =?utf-8?B?R0ppQ296NDRKNHN0ay83aExiNHJpRjFGenUzSjNEMTdRUi8yVDJvTFBXaVdq?=
- =?utf-8?B?OXVYamwwR0JHdkVaSHllOUFrSHVGTS93M1JicjhWTHduVnpPQ3V0REd2QTdV?=
- =?utf-8?B?WGdLekZJVVJrZkNrY0lnTXpQV2hzSUJDRmFrQ0xRd1pzWk8zME4vOXEwbVhB?=
- =?utf-8?B?TE1KUzZ0bmdkS1V3Nm9GNll2b3o5ZWhtcFFhREFpTTVyUHgvd282cjkwRFRt?=
- =?utf-8?B?RTFqYkRRMHZTUGU3RXYxK05PQnNUNkxTa29JK3JxVllGU3lLeVMyYklEeERZ?=
- =?utf-8?B?L0RITnUrc0FIaEFqOXZPQVNLdCtxdzdlbGwwWHFaVU1EWWk3Y0VsQzZpTU85?=
- =?utf-8?B?ZmJiOUZiNnJocUNWUXB5NUE5MlhZREZHekFnNjV6QU9yQUc1d2lsSlEwc3Ev?=
- =?utf-8?B?YzYxcmhXQTc1aS9LbzBLTGpMLy83TTBCdDlzbURNcjJzNmNRajd2WFZsQ1Ux?=
- =?utf-8?B?Tlh5SmV5STBwV1FkZzJVbVI0Y05Va1g5UmlUVjNrQW50ZGM2QXQ5bUVnaWF3?=
- =?utf-8?B?cXg1QVd0SVIvYzN5U20wdm40NkZhVC85bmNyczY4dUdPZmVML3l1MmUzUGtF?=
- =?utf-8?B?ZkYrS1ZVY1JwOUxONFF1dzVkUUJYTWNwd01zODBQUTlwTEdyMUF3R1ZOTVZP?=
- =?utf-8?B?VElKMjl5QndlUldFRDcydkpaMDJzVmJyTWtiVzNDdlVCVjFhZDJHRnR1ODFx?=
- =?utf-8?Q?IcvmbrSvPTJIbM6GRG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a975512-31a5-460d-1803-08def24b309f
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8371.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 17:09:48.7379
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BMyyt8eoB9jokY5p0pwBISKHYf0eKMNWMe6sdz4xe8viFd8YbLoDvyqWDFoReaTA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5945
-X-Rspamd-Queue-Id: B05D61C000B
-X-Stat-Signature: suhs93is74ofiiofg38z58j19e8itqa1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/3] mm/vmscan: reduce lru_lock contention via
+ vmstat-derived scan-balance cost
+Content-Language: en-US
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, hannes@cmpxchg.org, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, rientjes@google.com, kernel-team@meta.com
+References: <20260727162550.2032-1-usama.arif@linux.dev>
+ <20260727162550.2032-4-usama.arif@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260727162550.2032-4-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785863393-464809
-X-HE-Meta: U2FsdGVkX189F/YOM+ekeVcl1RuvSzGwSgIdn4UZjrasHTu25gvBMtYVdphtHeME5VYLH9zaP31YwgeRw1MI7qQpJlxLLOh4CoZ254G6bFgpdBp2yv7Ubl8o708S1N9RI4EXgfLghTOg8IAGqyfRs4RWiJ5GQRkEW+QhHcpmGb2VUJJ+HJ56r9x4H23fFkVQmxQMI6CKsCUQDrLvJW0/OLD4ElCnXTkOJNI0M0FcJcW9TTO4UBL+ypUSsIr6W3KQlqwKyJMDHXJc8yrpqSkrvE0ApetlQGHfsT48MhW/yw9zD+RDLc7yzkaAwfpK+E3mZsovEASFcCjM6c291Azj+D0g4JXDhc1yF0qr8kC1JoKvxeXPcTZlACipXFvtz+YixfVWWokG5d0AsNzGiEtw6dW+/0cXGsqS9tgFKcm61mDbeAsxVy/zT33ERZ2MAX7+LtgFh3BOLHntrj2u2QwsNpWLNMQSCE4oqLSKlS12JjFO8fj78q6IgIUqCZKfxrLAiNI1gVL//PPPJjwQlHOBPMu/bMjZHm+0/f+KFAQz1+uWr4sjq0dMfS3ceR2kdRk/RkJjHfM9/HVWH9E5MQmjHUfrXbN9Be7gqiyhvBy3VOzJRfqCUhY9Qb1QwN4pjPQxr1NKnVB/aNvLbHJRPfUR4xdq7qOOScnTd0t7NtWlKsgipUwFtpaS8HZN1fyJSnPXypMBbuBFvzKMMsFeQ0mEgfQITFe4cm0gzGtk2xtY7ZHiS/bfSBGfAMW5VOHFvHfgRuWeddGHpmYX4NEvvQlCDscuELHmU/A/HBVZ9K5IvhVVg77s0CdbuIGH4KCnmFR54azgCO/yGJKSPtJjQow/4HKnVxBZQeYHyGVAvA4oAcWOW1ci0ew/fYes12+G4siRMNk9HtUQ+GrPcVPzEDj9Wd7RsN06KyEwpAIBOv4Smn8gchvj6zjhiFhHuSjOOzWvE4K9Fx/bsLFVzlps0sj
- uHoceRy+
- 7LNiihrzVuZjKYKFBzt5DMFmzLeAMgBds7Ib3zpgibASovHY3UoycDhTtq+hhfkXyoveoUv374oSRkEyBwuGhvrZHgrGcHylA5F6Dqx2IMyjllN+4IPH/EtwvnYOSspy6vcft24XEw95jpzj71ABJEyCsXR1nsTfDS0tyeKM04NQBmDpGFfJphD2O7j9Fe3la5OlOFbtX6w7O57XrMR0bfSqYHpS+bQqfc5VpYWNIy2GljYC/430K2TdwYShWGGmG4JwKaWkdAJfN2cmtGPeaXGV1Rm1/ZsGRXVbvoD3l1x7uGBPIFqJAmaKSDBmsnGgz6b1XbNXxf70ouNGcpgVJWAkdTYYWHrR/UbwThsHQffOhv05ryKgRPVkqildegXInKWwfwCrHQpjxoJOXOVKnRk22fjdZxD1x/drOPgdef37gGcc=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: cjriwrsuty3363ee46njxhw38m6eq8yq
+X-Rspamd-Queue-Id: AAE2140010
+X-HE-Tag: 1785863832-798246
+X-HE-Meta: U2FsdGVkX1+EjHIDtlHe9Tu/7IN2Gx94i72HaAEURtUA/h5yWxMVAuKCjP2KSoee/cA0OLg4IlPPuONalvv6a/lkki03lVQQDWWOHnF8RrPzwWAz1HWgLqzxQ75bdVhSbW7X5FlakvHguErtOxLwl/psmPpkJ0RcpurI5RzHhSAX0zGwb/xNQ5GygRwpKmoKbKD4E0gINEmhAiV+/3xfjAzsc3tAqsAFwVEe7XsYQ18hkSYwxUhpGKuN8HSUuTfUoF74VYXpelzUhGd0bLq5+5x2wrmwjy7jnj7jQEfBg8gVJi6Q8P5Fnp+4NMSfJ33scIeHRUBGY03U3GRNIUNsvAAI0KegfU+g6MoiU3szqn/KwhdtUZDXG1/ISdJch9Mahe7p5UBrNcFE4PqqhsOBzVEJGSXNvmfTDkLreE4Da0f2cyYNthnR7bhzixuHt0Th504fIkjbBE6CDZJi3wBuZeubRFzqOe+Q8f2jNY2eHbt944oUM+psE7l1BtHnqhZoDIV9+mNnYMP+sG054g8VOm9GwBIpm0Je/MIEhTygujaLi0nMXlcxvhdouuLXUB2qA4cjzQGReIjUFKjAcTZ9NM+LiK2kVQ4veudhP7D821+sbNzTkrglpVaOxYez/PGxIawHlTps2uGiX71gUQ3REiCG8RqQ3sbSt8RDXU4mYQwd+ZBxMOuPw97B8k3lfy3FsFa7oQK3a9YrAhhk3HIPr3Gtl6cZ7TWvK7vXegilouSLmph7UjBjobHVlhMJIOoUO7qums/0UZC6CLdMUuv8cB4slGxQaLJ6o8qazqpT3oYrmAq/C+cfyEpBKPHWAUejl+g5nRh+uCNdPdZxWwMzWp+I65VBc/BYqtk2meebXK1n6wcsCgE8qyzKu0SwzFflEUFH8AMa9v6gyjT6u7ycT1EeomrmUGS+D3qUsXqDyqjtpTC4nlu6bNYS+Kg+MHPS2Oz5CnEghLieCF3YG4E
+ CG3huRGz
+ e2lJBaXEeD4UfwMtC4ptNY9izxsqbI2R7ZMj2MAM8PG86IfLhv3iM7TrBm6mlCm3WvbLvZ47EbqDbhM92n2mah6I1h59vpEcRk39KII81LV6dMss/gqlMkjzezuH0i3GVTR6/ARffDft2n+8LVZuqTvp1HLf19OW5TJ7hlI+L1qel3O8bzCXc0LmBFcofq8wLn2VviVzHfhX7IvACytqngO9FF3ompSoYS+K+ThdlaLOraRnn4sRiohxHeLgAolJop/Uvcuq3tq1XFH48e1W9L0X9tBiboa4lTMM7LNRd3xFI7hnJxM8k3DidrhGcDaNP9ZN9gQ9tCA6Ak4C402zHtqnDEm2L3/WsAPTHk6grBOgqcz7mb6MmcqIweWsAsdQ0+iV/hQB/OhEPEyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,86 +140,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 4, 2026 at 1:04 PM EDT, Jan Kara wrote:
-> On Tue 04-08-26 11:54:41, Zi Yan wrote:
->> On Tue Aug 4, 2026 at 5:32 AM EDT, Jan Kara wrote:
->> > On Mon 03-08-26 12:56:36, Zi Yan wrote:
->> >> On Mon Aug 3, 2026 at 5:54 AM EDT, Jan Kara wrote:
->> >> > On Fri 31-07-26 22:13:30, Zi Yan wrote:
->> >> >> erofs needs to traverse readahead folios in reverse order to achie=
-ve
->> >> >> maximum performance by
->> >> >> 1. reading all folios from readahead_folio();
->> >> >> 2. storing the prior folio pointer in folio->private;
->> >> >> 3. traverse from the last folio to the first one.
->> >> >>=20
->> >> >> Add readahead_folio_reverse() to achieve the same function without=
- using
->> >> >> folio->private.
->> >> >>=20
->> >> >> It prepares for a future commit that replaces PG_private checks wi=
-th
->> >> >> !folio->private checks. After switching the checks, erofs's use of
->> >> >> folio->private without bumping folio refcount can cause unexpected
->> >> >> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() =
-becomes
->> >> >> reachable.
->>=20
->> <snip>
->>=20
->> >>=20
->> >> The below is what I come up with. I did not add a bool to
->> >> readahead_control, since I think that is the decision of caller of
->> >> __readahead_advance(). But let me know if you disagree.
->> >
->> > The reason why I wanted bool in readahead_control is that if some code
->> > ends up mixing readahead_folio() with readahead_folio_last() things wi=
-ll
->> > get confused (because __readahead_advance() really wants to skip the b=
-atch
->> > returned from the *previous* call to readahead_folio[_last]()). With t=
-he
->> > bool in rac, even mixed use will properly advance the state of the
->> > readahead_control. I don't think mixed use is very realistic (at this
->> > point at least) so I'm ok with leaving that for later if you don't lik=
-e it.
->>=20
->> Got it. I am trying to figure out your mental model of how the mix of
->> readahead_folio() and readahead_folio_last() works with the bool inside
->> ractl. By looking at readahead_folio_last() code, it is almost the same
->> as readahead_folio() with __readahead_folio() inlined
->> (__readahead_folio() is only used by readahead_folio(), so the inline
->> can happen without any issue). As a result, we can get rid of
->> readahead_folio_last(), add set_readahead_direction() to set the
->> embedded bool read_from_head, and use readahead_folio() only. This
->> removes redundant code in readahead_folio_last(). One thing I am not
->> certain is whether we want to
->>=20
->> 1. use set_readahead_direction() explicit and warn readahead_folio() if
->> read_from_head is not initialized, or
->>=20
->> 2. set read_from_head to true by default, so that only erofs needs to
->> call set_readahead_direction() to change read_from_head.
->>=20
->> The former is less confusing but changes how readahead_folio() works;
->> the latter is simpler but implicit read_from_head state might confuse
->> people at some point.
->
-> My idea was: readahead_folio() will call __readahead_advance() and then s=
-et
-> rac->forward =3D true. readahead_folio_last() will call __readahead_advan=
-ce()
-> and set rac->forward =3D false. __readahead_advance() advances from begin=
-ning
-> / end based on rac->_forward value.
+On 7/27/26 18:23, Usama Arif wrote:
+> The anon/file scan balance in get_scan_count() is driven by two scalars
+> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
+> producer under lruvec->lru_lock. The acquisition sites for cost work
+> specifically are:
+> 
+>   - shrink_inactive_list() re-takes lru_lock at function exit purely
+>     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
+>     nr_reclaimed). One acquisition per inactive shrink.
+>   - shrink_active_list() does the same with (0, nr_rotated). One
+>     acquisition per active shrink.
+>   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
+>     purely to record the refault cost. One acquisition per refault.
+>   - prepare_scan_control() takes lru_lock just to snapshot the two
+>     scalars into sc->{anon,file}_cost.
+>   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
+>     re-acquires lru_lock on each ancestor to propagate the update,
+>     adding O(memcg-depth) acquisitions per producer call.
+> 
+> This hurts because lru_lock is already a heavy contention point on
+> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
+> and folio_add_lru() takes it. The cost work itself is trivial (two
+> scalar bumps and one comparison), but it contends with and causes
+> contention for actual LRU manipulation. The parent_lruvec() walk also
+> multiplies cost-update overhead by memcg hierarchy depth.
+> 
+> The balance formula for anon and file, respectively, is this:
+> 
+>     cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
+> 
+> Instead of recording cost and running averaging logic directly when
+> these events occur, snapshot running vmstat counters once per reclaim
+> cycle and derive the balance from event deltas since the last run.
+> 
+> Use PGROTATE_* from the preceding patch for the rotation input.
+> WORKINGSET_RESTORE_* and NR_VMSCAN_WRITE provide the remaining event
+> counters. Charge NR_VMSCAN_WRITE through lruvec stats so all inputs can
+> be sampled per lruvec and aggregated through the memcg hierarchy. This
+> is overall cheaper and has fewer lock acquisition sites.
+> 
+> Moving accumulation and decay to the reclaim side also improves the cost
+> model across reclaim gaps. With producer-side decay, events that happen
+> while reclaim is idle still age each other before reclaim ever samples
+> the costs. If a workload refaults a large anon set and then a smaller
+> file set before reclaim runs again, the later file activity can age the
+> earlier anon activity out of the cost model. The new scheme observes the
+> whole between-reclaim delta and decays anon and file proportionally, so
+> the scan-balance history better represents what happened since the last
+> reclaim pass.
+> 
+> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
+> extraction, the cost->count update and the halving loop against
+> concurrent reclaimers in the same memcg+node.
+> 
+> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
+> no longer needed and is removed.
+> 
+> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
+> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
+> The reported values only refresh when prepare_scan_control() runs and
+> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
+> they express is unchanged.
+> 
+> Under pure MGLRU the scan-balance signal itself is not consumed (both
+> prepare_scan_control() and get_scan_count() are short-circuited on the
+> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
+> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
+> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
+> either reclaim implementation. The preceding patch also bumps
+> PGROTATE_{ANON,FILE} from evict_folios(), so rotation-driven reclaim
+> work is accounted consistently across both implementations.
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Got it. I can do that. Just to be clear, it should be that
-readahead_folio() first sets rac->forward =3D true, then calls
-__readahead_advance(), since __readahead_advance() advances based on
-rac->forward, right? readahead_folio_last() as well.
-
---=20
-Best Regards,
-Yan, Zi
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
