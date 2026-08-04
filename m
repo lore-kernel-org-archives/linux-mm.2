@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E265EC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D447CC55838
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 005B46B0093; Tue,  4 Aug 2026 19:42:40 -0400 (EDT)
+	id 0FCC26B0092; Tue,  4 Aug 2026 19:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6F86B0092; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
+	id 0C85B6B0098; Tue,  4 Aug 2026 19:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBF786B0096; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
+	id E339B6B0095; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE326B0092
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B60F16B0093
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:42:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31BF51602EF
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D8F2140296
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:42:39 +0000 (UTC)
-X-FDA: 85065214038.30.BFC0C55
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 383868000D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:42:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=l69+uLQL;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+X-FDA: 85065214038.23.E3426BD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AF138A0006
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:42:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WNMaRDqS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785886957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NBd1rwNWfwuAmmO/dMbZ4a3bEEwd3WjdrKV1S3LKHaU=;
-	b=cmT7lcheS9IAO/2O+w8AuuH9AgMxRTu1aNIZQkmJju+PJxFmCw5ER8gQZMwFaK52YzbdaZ
-	ivmtf/4to7kKwb3L2CV27e2Eip8rvRwX5ih+5T/wId+sVYEV83jRMVftC32mjudT+uA1W4
-	58cKmCLEYaVXB3o85R4ucqFMkG915wU=
+	bh=SgPfd1vWJv9VMjxLkdcbY3fOZgi9Hm1oyp5+bOca4VU=;
+	b=zWmLXfFr4V7sV4E00Z6Cdx97muE19/rW7/Qlpvicy9YHdscc4WXUQNEPd+Gq8CahCTef+0
+	n6C30lbnrHMSE29Dr2gm42WXCSMSZIIkEE+GY0jbaTHkZ79etWtvuEPFuNdLVSNnFh7hdB
+	wZNQEJx/zUCVlKYz23HEpCAevePwMI4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=l69+uLQL;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WNMaRDqS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785886957;
-	b=ZhIuoH6yenZORdG6vQ1zBngcmIrDCN+i6FY+FI8LF/SrkrL8ngc293eYluJr1N3cRBZOxl
-	JJCzgvWzZsRJwuME3Do5cJarxi1qzca+VRTqsJ7wwoJtc1EoKQLL+mvh+SEr5tOr6ARUd9
-	OqxzxQLMT745BXK1F2zluzIg4TdrcQ8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55FE8600AA;
-	Tue,  4 Aug 2026 23:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78631F000E9;
-	Tue,  4 Aug 2026 23:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785886956;
-	bh=NBd1rwNWfwuAmmO/dMbZ4a3bEEwd3WjdrKV1S3LKHaU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=l69+uLQLaueo+kUy81oaqCg604IuBYcBj99+Xa4QOJ3UnC7oPzW++BUGer7yFKkpL
-	 NQBTuh8fnTX5w4DYSlrEC62FZwYfCEujKbH3nRAKcP24mseR/14c2EsGT5neIfwdUC
-	 40xG9LMtdeH5dWu58QdOLFCSEhpEq3Wm3qONH9Ss=
-Date: Tue, 4 Aug 2026 16:42:35 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-Message-Id: <20260804164235.69c9473cf00ac70cd2e7ed4a@linux-foundation.org>
-In-Reply-To: <20260804064408.105033-1-hao.ge@linux.dev>
-References: <20260804064408.105033-1-hao.ge@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=O5KfLr3ybtoJ0To5BriFmGbEpqnsIrMJTJLdHYcIuOAbyag4MXaKjDDp3cKzeYPvGjZj1q
+	rbUYL4YEzytu+q6sv3DOeoY7Wn/yxQ5Kdw1TIl66wYMwCwd3iHqjj3mlfndppaMYHTI0xj
+	PBDG6phGRPFQ/0xj33xRug5SR0+O/Kw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SgPfd1vWJv9VMjxLkdcbY3fOZgi9Hm1oyp5+bOca4VU=; b=WNMaRDqSCSBUUlGBay1cyFZnkU
+	e+Wvan9+u3JSGYm5Sbpjr8yOnb6zQiP/f+Leip6u7U3R5MYSU9vhdDR5gQT2jsTpZi0w6n+L54NiK
+	nMOVVJcb1xO057pFWx0Z/NvQ6KZ9zuoID/Dh1JgEq/RgaHUddMYAx8SFuDm228pZ/WzqfG1aBRnLK
+	gC40Rp725xJeFpWFjORymbUeyOsLDxL0Toy3QAW01TdgS5JBI4clidRO86tPzREdN1xotN8w/Ul26
+	VlXcxYd4ZACD7AbPPWy0IEIfgQl/XmLVX8Dtth4tmkrei+zVHXpitlXRaHJPWkE1B8F9pbKh+Ztv9
+	yZ3/QWsQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrOmA-0000000524Y-0wVJ;
+	Tue, 04 Aug 2026 23:42:26 +0000
+Date: Wed, 5 Aug 2026 00:42:26 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 01/10] ceph: add ceph_folio_snap_context()
+Message-ID: <anJ44lo6HHFLlkNZ@casper.infradead.org>
+References: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
+ <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804-remove-wait-on-page-writeback-v2-1-81f0ab065284@columbia.edu>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AF138A0006
+X-Stat-Signature: o9i6ddf8yidteu1wt51yupr1qbyudua4
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 5hamjq7zx5adbxbjha9ip3a9zspt91dh
-X-Rspamd-Queue-Id: 383868000D
-X-HE-Tag: 1785886957-138852
-X-HE-Meta: U2FsdGVkX19LeQwAbDxANivODgYjBWS55wio0QWPZ39HJyIVJOzw/OPPaCw5gsW7GrauXAiubOl7SKf/Dnl+bNMiKOFWNUBPscD98ytFgwNA5jVQCxPG15h7hbwZZ4sulNofMfm0DreE43716GncFbqLCfTdHVqSKUAhBuF58NJhrd+1Tva/B3HJXNlgSxLAkXJU5RtjjhXlNRxivtsmxFRfhsv8GL/QS1EY7OY+ixGednAolfK0s4FkyUhrR88VM/0ZGJGJ2sAvMUrHCm1KIRF6l4cIh2VSqdwiLSQfC+inqtFSpBF3/2ianukaqiCjjmmW/qd21ZUBQcF9Vne2QDseicq8V1hZyqjf2HjH2eI4SMs69TZ+WxBw//WGgQVELr41H6dviipM+C5+/6B9QYNUH8FlVQfxNa9iaGJKhmGpMsNb9f3fwOjhj++Lfpxhp90ID/u1nyx7wOOXbwpSFOyfmJXPI01FGTOnNT//CJYx83LsnrSo37UPxaMQGINLu10dUZsgDmrrkNA2xVSumg8SUhzlkD4LBCo83XttnUeQaiboGXQalS9dVYMahFppFdlmNUuRApsbtHd19S4243S6D/B9HefJAfv1OFWDotAisU6JCIn2gOlg0fhM8MOawkNgVxGPoA+GrUBd0A1MjH+Ka38rrPz38gJUz09Y7bZeMmXTaJpGAxjQlXfB/fGKr5ZFaVnj2eRDjJoBqYIAITsqkKHk58RGTx7/mT6bL0q25BwpgkQZieCZIOG1nL+8dlmlORxgHJSD2dSjdr1rYCjdadDFLcmRPHvu3FB4LewIDKj8bSsVb9uNNl7qa4merDoFOkma0OMOpkFdXrcBCI3TA9dcIB0YchcRcLhTo+5of6XzgPdOVOYnMcqIbW4c6ApNvc+j/ei6rk+iRYkn4hmlUVJCXfUxsJMYNDIrB6R4hOems6e4qiSkyCBkAe5Gtf98tIKrEZ2f0Qt7tW7
- TFy6Td2D
- fwwAkKOHHi7cEhlomZGMME1KCz3XOYJu9zt0glG8bDvvrhYw4mWRvFME1m47upMYf8VZ1mN0K42qfTAJh8QummMrZ+PJ7M5zC7gDD1SLS2ro8aQQr0YwENzJuheUjj2cNQXrC5Md+rjZ6XtOL+W5Rv/6VKcZGedQYZVLAGUou8Vcu4dWehyoq7FVjzweUNVWGIyUbZdHRcx/+7pQE0OwLAKCvVW6tJ6Naf0X6ItC/rucTebz8j23SrF9cxOPsM4+T7DGiwBjcuQnGlbltblIGfDLy4VN64T4sBmJEQ/OLbpmkoq+7NOKOQNXM3OH51px7nuiftquVrCpxHj1jXXCgHhZSVyQFy7VjaIrt
+X-HE-Tag: 1785886956-678373
+X-HE-Meta: U2FsdGVkX1+xe+1/d3GcuvxqFUiyS3nKTOZjx4KpwUB5oKi2izx8dwsacZweHgcejVo6rW0z8+uMBJulU1c3qCj+xi9ca6iD/uXEUjVsI/YamSqyP0hRVadT+dKY/wY7vwqG99ajOVwmZrnmSjWiFEgkd4yuVla1wCzubtFb62A1B6iEXNkWZo5HctHecnAzu+0FspORTFoapdLMO9BsRFLA3K9n7FTynKJDidUagC/KkIquU7Qj6RE31orbK3rMDXQ6pjm75PTpoGierg/lC6MnDrGiTH0sQPp+AXd67UHdtRqUpI64P8krhCjl4eiOyNbOxrcoChf55yiZRrv8mR1GuY8ym95mJf6gs1agUTh0B4sO4RUz63U5zoY1U2/ZBxnGsHeXgia7beNIKMFAlyEYXRPDZ7QjPNBCqPvJmjpQDx/32VXhUALorNEiII7SFKR5eT1csp3SScXgshMaj+YI6j8u9kx2YUO1wE16XEIFvc3UEcXMDHhjaDuSyJsmLooYqWq7L98RtD4USF5Awx4xmRtiDZ7DshaSoK9tlStV/zAyb8ON2ig0iBFE0q9X+e06ZkV0zJfdup9g92U2sT2dPJvcDPofqS70My9amtuZ5+VS2zeIE6H4uQrOxKDirLXH/VRZApCbfC0FHaTib+J2SKDAUqEopoAd5suBA5+YH85+O2Iv4mxke9P3Nv9TZYQpPpbquoKC7jDzWbaQtQ1NGJRaYSawQ3SB5TvKNjUZIBSLz51WVFrWuRQu6qnOfFzpPZTnsJ02qJDBr22ONNv7pxjizBm9cwG2NmwMIbOCAM4eWO+ycHM4CnDuIIeIlh0rZ32yxHE+nEIkeP2GDfVr2i1ev/aXvd5GpVfWMCkfSBoPDVW4lgo9ufmUQnj66cY87/fFVn/wqGQ6c1eB79+kXWv4+Brp5/5EEC9bmlMQBIRITtLbT/rYBRxSSMIfUw13wh/qepy7JrH7ykX
+ nBlVIrug
+ 1z4yRa2K4JFWrZw2wBdbickhQ7UL9Wkf2fRyBmYjYNyBOhCM37xrYRm90Gv9GuIQsxHP21HR04mqklX0Z38z92dZXhdqOLawCIJ31AGuPjGZ7rULAJh9lDZXsVd53gONqz01IauhQfFWAUBXuYmDNYzP1etZGW+PAGcp/hGqGYhrhWbL0ZDH2M+Cs9ZzUNSAUSff6C2IIaxTyq6hvhXQZtwDT4orJJqAeKb3i/GLpU9yaF2ZukAko2+kxFU/gKKWiMXs8MMPdbLjG65xRyvevBXqAUHG/qNSu78srDCM5roPyp4+KC83o1gmrgtzIi11cfakRs+MX6z3heg0M45EB8nq4lThAEsEQPOGgS/XSFKVwOFbxSXhK+0ra8nNqdCYl2Xqz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,38 +99,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  4 Aug 2026 14:44:08 +0800 Hao Ge <hao.ge@linux.dev> wrote:
-
-> In reserve_module_tags(), the tag overflow check is gated on
-> mem_alloc_profiling_enabled():
+On Tue, Aug 04, 2026 at 02:52:09PM -0400, Tal Zussman wrote:
+> Add a folio-based counterpart to page_snap_context() that reads the
+> snap context from folio->private directly.
 > 
->     if (mem_alloc_profiling_enabled() && !tags_addressable())
+> Convert the three writeback paths that passed &folio->page to
+> page_snap_context() to ceph_folio_snap_context(), removing three
+> open-coded folio-to-page conversions. No functional change.
 > 
-> If profiling is toggled off at runtime and a module is loaded whose
-> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
-> skipped. vm_module_tags_populate() still maps memory for the tags and
-> the module loads successfully, but the total tag count now exceeds what
-> NR_UNUSED_PAGEFLAG_BITS can address.
-> 
-> Once profiling is re-enabled, ref_to_idx() computes each tag's index
-> as its position in the alloc_tag array. update_page_tag_ref() masks
-> it to alloc_tag_ref_mask before storing in page->flags. Indices
-> beyond the mask are truncated and idx_to_ref() resolves them to wrong
-> tags.
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-With bad effects, one assumes.
-
-When fixing a bug please always include a complete description of the
-userspace-visible runtime effects of that bug.
-
-> mem_alloc_profiling_enabled() and mem_profiling_compressed are
-> independent. Once compressed mode is established at boot, it stays
-> active regardless of runtime toggles of mem_profiling.
-> 
-> We therefore remove the mem_alloc_profiling_enabled() guard.
-
-It appears that AI review has found a pre-existing error-path cleanup
-issue:
-
-	https://sashiko.dev/#/patchset/20260804064408.105033-1-hao.ge@linux.dev
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
