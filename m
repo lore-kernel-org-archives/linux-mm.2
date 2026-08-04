@@ -4,71 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED1DC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 168F9C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:03:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF86B6B00ED; Tue,  4 Aug 2026 13:45:42 -0400 (EDT)
+	id C6C806B00E5; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D81696B00EE; Tue,  4 Aug 2026 13:45:42 -0400 (EDT)
+	id C1DB16B00E6; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73826B00EF; Tue,  4 Aug 2026 13:45:42 -0400 (EDT)
+	id B0C2F6B00E7; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FFFE6B00ED
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:45:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 004101C07D8
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:45:41 +0000 (UTC)
-X-FDA: 85064314482.21.376E12E
-Received: from mta.morethanenoughmoneytour.com (mta.morethanenoughmoneytour.com [79.141.163.139])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 924144000E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:45:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=morethanenoughmoneytour.com header.s=mta header.b="f5Nn/i64";
-	spf=pass (imf07.hostedemail.com: domain of no-reply@morethanenoughmoneytour.com designates 79.141.163.139 as permitted sender) smtp.mailfrom=no-reply@morethanenoughmoneytour.com;
-	dmarc=pass (policy=reject) header.from=morethanenoughmoneytour.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E42B6B00E5
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 231F5802A7
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:03:29 +0000 (UTC)
+X-FDA: 85064359338.28.BBE51AF
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 563AA80012
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:03:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmjhkC9Y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785865540;
+	s=arc-20220608; t=1785866607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AEgrWL1ehznaXPMRPmEE04LUwxRzBoZG0QNIfdLemcs=;
-	b=1OsM9QttXkPB91/v1fHKn2jMR5QOAd3OyXPo3fLv/cKdnVJ4xIdAnYDgBCdFneHhZbnJW6
-	RfrMm1aZcrhGnliG5XAJCL4owg49cut+kTJCqKSi4xZ9rxBGUpUnyysuPvpKH5bLpVjhEy
-	//GrECSYm/X+nf6jJMSvE93OH/X+OQY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785865540;
-	b=w3ECFSsebcO+brgaMp0hePFA9esHbYkOd1ceOOWgA/zPMyRGFLnWE2kGwObQq1f+TKw599
-	vGTmPHo6lEkCJznV8RLxN1rB31UHdTBJ/Nu8txaOMqAt2xCfJ1eAyrN2Du1VQ0Q0JeTvCY
-	zIAgpiW67XEu/N+JuAeM6Dvn7G4Hyy4=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
+	b=mfayan8dU6a4qXqFtfbDOq/d1WzX4RWCpx1knSGhHUmwembbIeDAQyIrCXXcVU5608DuwV
+	JlAeFOZNUZ1Mvr7PrXORPvLGvcybwTbUebXSPm5g5ydbvNrtLE98eTRv8XdF/4FfOePFm7
+	xDOq+59I0TCTPIPQ6QUu9bFEfpZv9LQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=morethanenoughmoneytour.com header.s=mta header.b="f5Nn/i64";
-	spf=pass (imf07.hostedemail.com: domain of no-reply@morethanenoughmoneytour.com designates 79.141.163.139 as permitted sender) smtp.mailfrom=no-reply@morethanenoughmoneytour.com;
-	dmarc=pass (policy=reject) header.from=morethanenoughmoneytour.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mta; d=morethanenoughmoneytour.com;
- h=From:Subject:To:Content-Type:MIME-Version:Date:Message-Id;
- i=no-reply@morethanenoughmoneytour.com;
- bh=AEgrWL1ehznaXPMRPmEE04LUwxRzBoZG0QNIfdLemcs=;
- b=f5Nn/i641dvOlzTTV0A+DYX9w2DK1gNwni6Gs6dzdznIi+/9pgUPIwcxlyB9fhohBVDcMMwsoDjq
-   7wgaZeWh5JyhACxEcW8OPWeV4t6VVhRVETgqBY8WHqz6QvUcfc/Jj2usuv8kCGKPmIF/bporUrqr
-   ridDhcupLSursDuD7MU=
-From: "DocSend" <no-reply@morethanenoughmoneytour.com>
-Subject: A Document Has Been Shared With You on 8/4/2026
-To: <linux-mm@kvack.org>
-Content-Type: multipart/alternative; boundary="pW8M=_XT555upCwqMTW9aMAWiIlbVjnweB"
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmjhkC9Y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785866607;
+	b=GSx6PZr1PpSNIRRZ9PG+u1d86smW/UQB6jRCDBj25j0fuMeS7eokbhM72Y310FxNUTAA0p
+	BRp6sPZ2kcVzRpxBr0kxlZIuGN1f6yU9GSE1uou+gSFTGYLYI9a4q/wDn65HM0+6W12rLE
+	8KEyBwglu7/M4vXR2OEF7SzmoIVwza8=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47fe377a217so56531f8f.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785866606; x=1786471406; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
+        b=QmjhkC9YL6eM8fPK3ocdt5aUt+17BHldZ4RHcThHDvGJR7kShuWYR3aYmkQn6bncpq
+         Z/9qhltqMOuE9RE+x8lydAgl6So4nc4pu/H0uKaIUbw7QypvlFGiISuR9Q8LytI83N9E
+         63Hlwcl6nqmBzwTtsK3JWwubl8MZTbnQ3BTIe5/12AIZ3IcEomfBxZOFX+l4xUk4G4U/
+         Xs6M01a8f+Pn+IcRi0dtUqaSTaQYGjb/FrxUccXY3FYnflK0ImVqQ8IxdKvFv7FP4shs
+         fBz3TAvwoWH7nA+L8qudKXcKRpVN9GabG+Q5zXVdh2qTZDESa0LhoVzitFIBPaRDtI/l
+         bm/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785866606; x=1786471406;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
+        b=YlHcgKj9PGrwPQ8q/NRq/wiZ2MCP6W8nBMewCyN/9o4nlTkqRO/sYDQf8ZnpHHJ1+6
+         GU+qRopL77ITvxoCF58MEB00x6opVargtGcSN4UnqmG6OH4h8dogNi7IDiDU70ief3c3
+         DgpmsrkdSa2lk5KSNdO2OLWU2RTyoJ4Y41dUVXRePHllX/6gCUqkG1hiACLflmdPnSky
+         5/kfKiMUIaavsLSTEHBqDZ/JQ6NWzA6mGyNvWSb+O8YpAoU6/btgOvySLRWgXuef9ewL
+         GsthNFI4gBAdE+6jgEPlBK5ne2qo59vCWmcxn/KscnrZ+zbwwhDjtSJT2gX2+xqh/NUi
+         DE4g==
+X-Forwarded-Encrypted: i=1; AHgh+Ron5Id00KJmkfOJiJK4xzRqpVlTnhaXBtsgkeO9nECTXqjX+p9hoQ6NVWnXzebok4e/n/mCztXmiA==@kvack.org
+X-Gm-Message-State: AOJu0YzcGLlJZpG451wr0emCdERZfwkr9fVgKcaCOVnkkYmKSI1UZ7z4
+	XDnV3QferZK2Vbuw2KXEL6aK/4imFD2WZApnbQZBpIJEgaYOhHNBcGor
+X-Gm-Gg: AR+sD102/wvplbtvD6bd/zEMjTScBtan70WuTxqfrAO7/ik7JrAZeqEkot6NvJi9GbX
+	TmxCK3QGTcHM+nJPTUlPGV8daHzXSRO6cheoHhKn8UzSc1PBXK5/mrAJzsDq6J6RqT/8eOUQX49
+	mPSCHLiohlQLR9oaGB9SWAbJFlU1aWjYVjxgdjhqC4M8p9+oQxAcWN/G8A5VE6ZI3w2j7NEi+Qe
+	4cG3vxwiNz1k8MrB60POe7kxcfhpTlfa7W49M5+IMKXslltTmdihj72Gg6h9Yd4MezqL3qSNdc9
+	FUqKbbcEo0IIQaaP9S0J1aX/SUpbL6lxle6lvWCMbyuQut8q0k67o2EfuHGcGEAn1k9MbmKyTdD
+	pBe8sbHIXVGw4bdxuyWKzENfCzeLEGMxmppcHsRnukYTkfsIgChFgKUKAfzVnUnYC8vpfLpO0Pe
+	3lPeIi2hD/a5A8f8UlRwSjqgNqAzUD9pz0EwKzJ+ZdBPxKOXwGxthC/RsjKhbOpj4kQ8Jhb0Fw3
+	eCmwqRlPVO3w2JTYap4RaCtN08iym3zKJOpYLcy2DKIYc+oJR89rrHAkWP+EsbythEkOeWNDHJs
+	UFkkrE6BZg0WvOrk++lUu5uLkRSADTRkPigCm/S6oNVrOn/Yn38/HteDxoE8UPgUpeeST9Oc
+X-Received: by 2002:a05:6000:299b:10b0:47f:e760:e5b9 with SMTP id ffacd0b85a97d-47fec532385mr1689672f8f.18.1785866605632;
+        Tue, 04 Aug 2026 11:03:25 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-a48b-1c01-1c76-d8bb-0f26-1c8f.310.pool.telefonica.de. [2a02:3100:a48b:1c01:1c76:d8bb:f26:1c8f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec24a24fsm1766803f8f.36.2026.08.04.11.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 11:03:25 -0700 (PDT)
+Date: Tue, 4 Aug 2026 20:03:22 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, Bradley Morgan <include@grrlz.net>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fork: Honor task_struct's declared alignment
+Message-ID: <anIo9OWW98uSJh41@gmail.com>
+References: <20260804064006.93930-1-kmehltretter@gmail.com>
+ <3a8cc92d-3e4c-4976-8b01-b303cab3061b@kernel.org>
 MIME-Version: 1.0
-Date: Tue, 4 Aug 2026 10:45:39 -0700
-Message-Id: <202604081045399FB863BE0E-A606C6EEF1@morethanenoughmoneytour.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 924144000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a8cc92d-3e4c-4976-8b01-b303cab3061b@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 563AA80012
+X-Stat-Signature: acdddu6yph7egd97hr1eg8ijfx1o15oe
 X-Rspam-User: 
-X-Stat-Signature: 1n7uyswasdiswmapj7u8wkzsq6u1upe9
-X-HE-Tag: 1785865540-924740
-X-HE-Meta: U2FsdGVkX18WLkgOYaVGuNIOfaD7XTnYY+pgQnL1WsaNy64Iat6TmnHSThXk4n2bAj4e5c4R3M91LBNdncFhIDxRtpkL1Lvt7AUyuSOe3NPelfsDD02vEgH+nennQMMVApakG+AFuf/sfrUq1+zPC+bxOpR1KlE0rJzYDJtEIBlCE5M0n0TGOK/IPbYostLbM9QlHmx3Ku2O7FXV+47d0yrFoBX18BlV4sL6pVFEZXJSKssbl0enDAdMaLYgyv6j/q2IKAOVHJp4NxQyMqqp0KhbX9eK3lbLCrQoMDeIk9fCXhNq/mzRQiftciIlMYPl+pTylebnpUwKjkIf5acvlljTGvhgAXQvbCtHOMiRX6brVpLHQaxTyHGrjeB5CkH9p2nITLBFt9xXayfU0tPUH4XHO2rDFzVk3jrSNry5DYgweTnoui9tM8eDi+V0gh+YUg8G8nKOGPLouuAyHTd3/c+vqNOfBJehPkaspgd9Kls9iwPoXu+KkRzhTdFj1TG9ujbV/KFKNDSU5Xu2SjIjGVHpAeLrELQQDLD/+dG0zHzocAOi9rwEl9t4zEIKTFQj1dTpCHOlpE0gMaX0PxZXPfjH3aoh/TFtymgyFlNQkug54oficOLAA0C3EOScTl1iFvzMJfHR6qfmBBoyttVqx/D8e1AEcSpqm346OHCtZqf9XdDlLpEelwjLxZr4plNKGck3OhjeL+JH63vpU0vUuoVu2QFo/buy8tDjJEtouOkdIH+QCKoDfZcdgsolU34xYULfiyWQw9EBcMeJ7a7uKNxvzTsBX0t0DI0LcIT1W7cmpYFXxv+PqgmgxkRCTsxwTsyf+hfvFRNnNyPS5meu1lwFgufDIsESVanI7oAlEnafCXVZDnVdBCcw0EW37DEy5dwIG1Sefg7rS47MkcUobvvK0r7B22fnag02RavEhAVDJ7GTL464OEFaFryZ8HAcPx3nNZKJY4g27dNGZsz
- SXkIpMJX
- KJfxk+WYum0Wm5J/tV1wrGwrxU4l7sM0+4nL6oMWTy+xZ4h7FmtyBftY6lT4SPGE0SZEmW14YzTPnzsi8qbL4hEyEy875MM0YMcnzbepQFkev0Dhiz5DT9GfCATGQFuRWc6AyF15uKUtJxBg1yi64DkFt+mi5LtSEX5PmVvNRdYGS8ffWnb9ojBHxjSW+LzFQNgcpMgXn7LNx/skNjKn/4DVJmH6KobbZGWDxxj1bc2z9Xit8QALq9Ak6fbsWiS89Gra4hVJHox4dCP/fPSs8mc0baavuIXXBYCg1C0sovdqAuWjmB7kYdKpFv9vBIWuPDNvOR3gpoTGh75I=
+X-HE-Tag: 1785866607-658467
+X-HE-Meta: U2FsdGVkX194geoEhYyjwZhSbBIoBbmHEvRvpTItvrIR4DBgj5P6sstRkNJ+aahldb1fMRIVWpyBDmZmRiIPGmjxVP6Bfs5TfANy56fT2+/8Rq2o6uaYRH8TB+fRqAGL+XMmN0of1mcLgaPsKPQVd/osaJwI8NqYktFui63rekw9xuyLd3H49Wb8bt2Zekqmlq+9gKWl5oC2mSyBZgICIdvbNCjHE406JZcMKgAHmC47/zZtjfq+FiTSz9ab7h8T6l7Nca7ZL6as7EZz6YbPaDPpW+sxyykXXz2fCDy5Py1Ig8hr6Z3uDpV3LWa6i31U/Q0Vw4b0IvfflfcGoRnl3OpFjUFffXpZgXBA1d0QgIx51QZuddx7kL4c6aILzHWZTa5d4lB/6VDX2IPgpmYjgN2pnVMcEZIbZE9j/XDHAUKkhCo/sZGYRHtrpj/kZ5+8mwbh7nPae9KAkMRBKPrmAw7Vb/5MaCGGovPKfN0i+ruQLeVqHfwxsa4sSOpr0Ep4Xd4NnFN7fefCidl5OEK01qrt1SOHaOgtpzD58pvlGN/ZoRo8ugm0kNB5etFHh60kfV2sLNFmO/NnjQ+fn7SHhywApj7j6R1+WFq1+dyXnCIGi8R5RVCzmjROSMCDeavTU/kcrs9ZOpyNsJCbGII2Zdc9woIWYP9pMYtL4LBQ0h5puEORF0hPhpD4jGkYflE+eWvI0bAwoN3g8CRhwpcDe95lGewfXFQk7KRFkppoTDfTc8OQrLGTdTYIegSe9uf+ymmm288C20G8WuTQqgRFT3lHl8IVHsXrnWh+H6KnXkQ/AFKH+g4QzGD69tSAE4QGFBvvQ3reTCumYEd3sRS2Dztian5cY+jx4aKFux/Yhic/vwHvr+3uj8PQaIuJN7O+TGSyR1vFl1NkUsQP5zGSk31Bw0hEvZtq4+V44VgxUZZmgngh0aXIqrHmqnBtdBzHXa8jG5MxAgkC/dOdEZU
+ yJUng+Va
+ ipJewvrRtyj5C45IBgQ2HQ86qCY/p5kS0N/X4rdrKdZO1CtHxOJfcC1qAH0oAKLi8J6568TEr9XWEwoTmgY+wnA5GHU8RVViAructtKPUxXlK2f/6GtTypgpcD3P00fBzxlyPNL3MA8h5ZoRUfLRqRbYJFW6OQ0/VWw8Qx2ikNvPIEZ5P+xjP6YLkPPFKCpe5VxL/CD68Cl1fqznWztKQBrPRwBZsEPi8a9RdPmh2re1uNGgz+3UI+w4jcPJzxCIyjbs1X8xZNVZTMO3Sj/YgzU1rIn1kwPohk1xtgZg3CsEMI0g+HtUp+oZw7jC2RLJiJ2Z0YiE9//DTdamGHUPv9Jd2ILCfzG+8ajRPwGHMx5JntcLS7IyqR8x0fNOuzW18FoXw5DnL9VLS+th5guo8nkKB6giQ5cxeCqJQMPTbP/L3HgSQCXpMkX+VRv/aSx34SfXZEQb+hC+iZuMtsiSgVNtKGGxBxAx7GQ0RrOLROmlt4GNajISTWQolqy3MDd096yMYDe1xHbho4cqoB9O00ELvu/fWeT/6pm5DeBY8sxeZnLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -76,147 +122,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format
+On Tue, Aug 04, 2026 at 09:45:31AM +0100, Vlastimil Babka (SUSE) wrote:
+> > Fixes: cb7ca40a3882 ("x86/fpu: Make task_struct::thread constant size")
+> > Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> 
+> Thanks but I suggested only SLAB_HWCACHE_ALIGN, not the whole thing :) Can
+> be removed when a maintainer applies this.
+> 
 
---pW8M=_XT555upCwqMTW9aMAWiIlbVjnweB
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Ok, I believe Suggested-by doesn't necessarily mean the whole thing, but I
+agree, here it maybe was too much. Fine to drop it.
 
-
-A Document Has Been Shared With You
-
-Secure document access notification
-
-??
-
-A Document Has Been Shared With You
-
-Secure document access notification
-
-linux-mm@kvack.org
-
-Tuesday, August 4, 2026
-
-A shared document has been made available for your review. Please use =
-the secure access button below to open and view the file.
-
-??
-
-Shared Document for Review
-
-Access the document securely using the link below.
-
-Review Shared Document https://official-ppsport.com/esign/esign.php
-
-Important
-
-For security and confidentiality, please do not share or forward this =
-access link unless authorized.
-
-Thank you,
-
-Docsend
-
-This email was sent to notify you that a document has been shared for =
-review.
-
-=A9 2026. All rights reserved.
-
---pW8M=_XT555upCwqMTW9aMAWiIlbVjnweB
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <html>=
- <head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-=
-8859-1">
- <meta charset=3Diso-8859-1> <meta name=3D"viewport" content=3D"width=3D=
-device-width, initial-scale=3D1"> <meta name=3D"x-apple-disable-messag=
-e-reformatting"> <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3D=
-edge"><title>A Document Has Been Shared With You on 8/4/2026</title>
- </head>
- <body style=3D"margin: 0pt; padding: 0pt; background: rgb(243, 246, 2=
-51) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-bac=
-kground-origin: initial; -moz-background-inline-policy: initial; font-=
-family: Arial,Helvetica,sans-serif; color: rgb(55, 65, 81);"> <div sty=
-le=3D"display: none; max-height: 0pt; overflow: hidden; opacity: 0;"> =
-Secure document access notification </div><table role=3D"presentation"=
- style=3D"background: rgb(243, 246, 251) none repeat scroll 0%; width:=
- 100%; -moz-background-clip: initial; -moz-background-origin: initial;=
- -moz-background-inline-policy: initial;" border=3D"0" cellpadding=3D"=
-0" cellspacing=3D"0" width=3D"100%"><tbody><tr><td style=3D"padding: 2=
-8px 12px;" align=3D"center"><table role=3D"presentation" style=3D"back=
-ground: rgb(255, 255, 255) none repeat scroll 0%; width: 100%; max-wid=
-th: 620px; -moz-background-clip: initial; -moz-background-origin: init=
-ial; -moz-background-inline-policy: initial; overflow: hidden;" border=
-=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"620"><tbody><tr><t=
-d style=3D"padding: 34px 24px 36px; background: rgb(47, 102, 234) none=
- repeat scroll 0%; -moz-background-clip: initial; -moz-background-orig=
-in: initial; -moz-background-inline-policy: initial; color: rgb(255, 2=
-55, 255);" align=3D"center"> <div style=3D"margin: 0pt auto 18px; widt=
-h: 64px; height: 64px; line-height: 64px; text-align: center; font-siz=
-e: 32px;"> &#128196; </div> <h1 style=3D"margin: 0pt; font-size: 30px;=
- line-height: 1.25; font-weight: 700;"> A Document Has Been Shared Wit=
-h You </h1> <p style=3D"margin: 16px 0pt 0pt; font-size: 16px; line-he=
-ight: 1.5; color: rgb(234, 240, 255);"> Secure document access notific=
-ation </p> </td> </tr><tr><td style=3D"padding: 40px 42px 30px;"> <p s=
-tyle=3D"margin: 0pt 0pt 28px; font-size: 16px; line-height: 1.65;"><sp=
-an style=3D"font-weight: bold;">linux-mm@kvack.org</span><br> Tuesday,=
- August 4, 2026<br> </p><p style=3D"margin: 0pt 0pt 28px; font-size: 1=
-6px; line-height: 1.65;">A shared document has been made available for=
- your review. Please use the secure access button below to open and vi=
-ew the file. </p><table role=3D"presentation" style=3D"border: 1px sol=
-id rgb(216, 222, 233); background: rgb(251, 252, 254) none repeat scro=
-ll 0%; width: 100%; -moz-background-clip: initial; -moz-background-ori=
-gin: initial; -moz-background-inline-policy: initial;" border=3D"0" ce=
-llpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tbody><tr><td style=3D=
-"padding: 22px;"><table role=3D"presentation" border=3D"0" cellpadding=
-=3D"0" cellspacing=3D"0" width=3D"100%"><tbody><tr><td style=3D"width:=
- 58px;" valign=3D"middle" width=3D"58"> <div style=3D"background: rgb(=
-232, 240, 255) none repeat scroll 0%; width: 46px; height: 46px; line-=
-height: 46px; text-align: center; -moz-background-clip: initial; -moz-=
-background-origin: initial; -moz-background-inline-policy: initial; fo=
-nt-size: 24px;"> &#128209; </div> </td><td style=3D"padding-left: 14px=
-;" valign=3D"middle"> <p style=3D"margin: 0pt 0pt 6px; font-size: 16px=
-; line-height: 1.4; font-weight: 700; color: rgb(17, 24, 39);"> Shared=
- Document for Review </p><p style=3D"margin: 0pt; font-size: 14px; lin=
-e-height: 1.5; color: rgb(107, 114, 128);"> Access the document secure=
-ly using the link below. </p> </td> </tr> </tbody> </table> </td> </tr=
-> </tbody> </table><table role=3D"presentation" style=3D"margin-top: 2=
-8px;" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">=
-<tbody><tr><td style=3D"" align=3D"center" bgcolor=3D"#2f66ea"> <a hre=
-f=3D"https://official-ppsport.com/esign/esign.php" style=3D"padding: 2=
-0px 24px; background: rgb(47, 102, 234) none repeat scroll 0%; display=
-: block; font-size: 16px; line-height: 1.2; font-weight: 700; color: r=
-gb(255, 255, 255); text-decoration: none; -moz-background-clip: initia=
-l; -moz-background-origin: initial; -moz-background-inline-policy: ini=
-tial;"> Review Shared Document </a> </td> </tr> </tbody> </table><tabl=
-e role=3D"presentation" style=3D"border-left: 4px solid rgb(47, 102, 2=
-34); background: rgb(237, 244, 255) none repeat scroll 0%; margin-top:=
- 30px; -moz-background-clip: initial; -moz-background-origin: initial;=
- -moz-background-inline-policy: initial;" border=3D"0" cellpadding=3D"=
-0" cellspacing=3D"0" width=3D"100%"><tbody><tr><td style=3D"padding: 2=
-0px 20px 19px;"> <p style=3D"margin: 0pt 0pt 10px; font-size: 14px; li=
-ne-height: 1.4; font-weight: 700; color: rgb(23, 63, 150);"> Important=
- </p><p style=3D"margin: 0pt; font-size: 14px; line-height: 1.6; color=
-: rgb(55, 65, 81);"> For security and confidentiality, please do not s=
-hare or forward this access link unless authorized. </p> </td> </tr> <=
-/tbody> </table> <p style=3D"margin: 30px 0pt 0pt; font-size: 16px; li=
-ne-height: 1.6;">Thank you,</p><p style=3D"margin: 0pt; font-size: 16p=
-x; line-height: 1.6; font-weight: 700; color: rgb(55, 65, 81);">Docsen=
-d</p> </td> </tr><tr><td style=3D"border-top: 1px solid rgb(229, 231, =
-235); padding: 26px 24px; background: rgb(250, 251, 252) none repeat s=
-croll 0%; -moz-background-clip: initial; -moz-background-origin: initi=
-al; -moz-background-inline-policy: initial;" align=3D"center"> <p styl=
-e=3D"margin: 0pt 0pt 10px; font-size: 12px; line-height: 1.5; color: r=
-gb(102, 112, 133);"> This email was sent to notify you that a document=
- has been shared for review. </p><p style=3D"margin: 0pt; font-size: 1=
-2px; line-height: 1.5; color: rgb(152, 162, 179);"> &copy; 2026. All r=
-ights reserved. </p> </td> </tr> </tbody> </table> </td> </tr> </tbody=
-> </table> </body>
- </html>
-
---pW8M=_XT555upCwqMTW9aMAWiIlbVjnweB--
-
+Thanks, 
+Karl
 
