@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F58C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C31BC5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72F856B010A; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
+	id 003396B010C; Tue,  4 Aug 2026 10:47:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 706E86B010C; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
+	id ECE746B010E; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D0E6B010D; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
+	id DE4036B010F; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3DD6B010A
+	by kanga.kvack.org (Postfix) with ESMTP id B48C86B010C
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C9A8A0104
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:14 +0000 (UTC)
-X-FDA: 85063320468.15.8857C4E
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D31C1A0161
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:19:34 +0000 (UTC)
+X-FDA: 85063492668.07.A42A870
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 51C4C40008
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:11:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+5pAPYK;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785841872;
-	b=TPrEd1GuVaLKJW0eZzGWP2HMjMdm8dzaH9CMW8G1PyLkWR3iiczgKV/Irk8uqDV6Yua6y4
-	OUpuUokYyRbD/JRst8MRkSx6O1jA7l1DKOFs0lwzBIiCfp3jX2LXtVOVvGbFbaqnjiAg2t
-	uuwgKDS7ytvynGEk9rtCd7ar1CU8hgg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+5pAPYK;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 342442000D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:19:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbW3RS0t;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785841872;
+	s=arc-20220608; t=1785845973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9WTrnnkHbtsN+MZWjYTlUGilo8WkuVoi8BtyG1CVyc=;
-	b=WaRcYhNr7u5V89CxTMNnz+3isxg5iqY8j1+5SiyyFRKlywyBfVDbc/d8hO41SiYzjxJ0Q1
-	xw6+Y8r9MCicDCYTFeY6l8z5rzDwzpH0OzJ0qznRKinJBturVx9nJ79CGf5/GVMdtUuTBV
-	8ZlGzTY0IPx1SSDMCxu4sXa+NcfKMI8=
+	bh=YnG7feqGPr3glInpiahRtXG3Ss1XHoRJf3kN867vDlo=;
+	b=IeW4l2nTMUmZoWY7qvEqpGK+dIykWFukSaby6htEsyKlfefJXl4HRhjJrng1nTAsMxcCrk
+	44ZLRlGdXe8IFXLf8FhMBeRouvs1MehpKQAwoFn64AuG1JzmfdCackzbQgWs67sJmoyLaE
+	Mz1k+lDeoTb4ysy2CDkYvsceGbrQx9k=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbW3RS0t;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785845973;
+	b=IS9qdUyjQko1gwbldJoqCJfDvUGs39mlm5C0iPeuHQRV16JdEO0itfPJ7eTx0WEe40YEO4
+	A6tCXLSVExkaL3ryp2TCYzuIFydofgjPCrYMRUCX7VxlD/8lXUW1IHK7Ubegkz/R0C0LQB
+	jzxnD3CrkFrybP4EPdl5y0JT+KS/QYQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5C4A60A59;
-	Tue,  4 Aug 2026 11:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EDC1F000E9;
-	Tue,  4 Aug 2026 11:11:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ADACD60A59;
+	Tue,  4 Aug 2026 12:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A571F000E9;
+	Tue,  4 Aug 2026 12:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785841871;
-	bh=x9WTrnnkHbtsN+MZWjYTlUGilo8WkuVoi8BtyG1CVyc=;
+	s=k20260515; t=1785845972;
+	bh=YnG7feqGPr3glInpiahRtXG3Ss1XHoRJf3kN867vDlo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=G+5pAPYK+UtORNM3sYcJFo94oS+gLZCs4XBiYmGGfFeHwS/SK9q2DYm7hyLcFvIU0
-	 fraYmEKWxnutqgnwVh1FyxQapPubGQbF2nho9kc9lJ8+hCsAG+NRgG0PbruRaxXJoW
-	 vYdxWr6VVAvzIQ/gVw/PE92V6stO3/tHUi9/ZHDnDps9Cllxr1OkDaOcSoOe0eBy1Y
-	 ZsbRrbpXe18U+ACn+kxOkvEGCyVukK137ErQTUo7tvSK8r8K0pK2YR/qom3af91OHh
-	 tHhBfVQtF+VRkokF0L6eIHv/pqfyVPvBiTLQpAxbgTuLCLy5Y1/U3SarcPaWlwoexQ
-	 Vd1OigOBjaV0w==
-Message-ID: <afa0ec96-3b85-4d6c-a89c-61366a10ca53@kernel.org>
-Date: Tue, 4 Aug 2026 13:11:04 +0200
+	b=UbW3RS0tmox4G54zCmQhTvzkJ4nFCysh2QS9WiBci8mLUuJqlzXrOhHKldYkM3eV6
+	 t/HB9Ei981t0S/PNR5BWOot1UWjzcoU0xSFrUTUYUlr4yckN9/ZqnNv9TeS/cDYMJX
+	 FuQ9chnVxPPVJ6c+gBV6ctzfr49seahePZCqOt0TeYm6RMcGch9tqKPZy7jhVrcY6d
+	 mD9Pl3bM47SYND+5PV/FhkLPniPNt3RGWE/Y6cjTTKmDLF/RmpZ7aFyk+RxVFCyOG8
+	 lzqcqXBgVUGCbluEJAOnYXO22o9MRpNQ+hqgQkXI/Ho/t+QkA9vqoZBRbDgbfEBPA/
+	 O5oVcmeQdhclQ==
+Message-ID: <4b9233dd-4f1d-47e0-b583-8e1436d4a074@kernel.org>
+Date: Tue, 4 Aug 2026 14:19:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: add some missing includes to mm-local headers
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Uladzislau Rezki <urezki@gmail.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260804-fix-some-local-headers-v1-1-a7beb173c116@kernel.org>
- <8179be78-a35c-4d0f-8034-27f3154db0e7@kernel.org>
- <7e7c8e04-646f-4135-9ba5-e0c7fd6d8b41@kernel.org> <anHG7BcQ8EFrwvGm@lucifer>
+Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
+ followed by .pfn_mkwrite() for write faults
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+ <58fc5ce1-b6f5-48df-bd3b-054443c60cdf@redhat.com>
+ <f556ae97-efaf-4e7e-b4f0-0f90087c8555@kernel.org>
+ <CABgObfaCTroScRykMHRk6fLktzG7CT2Prp2f-CCCANfuagv_MQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anHG7BcQ8EFrwvGm@lucifer>
+In-Reply-To: <CABgObfaCTroScRykMHRk6fLktzG7CT2Prp2f-CCCANfuagv_MQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 342442000D
+X-Stat-Signature: 8tuueegi939yb4niarri1ifc7d1er15r
 X-Rspam-User: 
-X-Stat-Signature: ssjtann4ii6j9hpdcpz8cebqdyd8njtq
-X-Rspamd-Queue-Id: 51C4C40008
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1785841872-813269
-X-HE-Meta: U2FsdGVkX19idE8ywCdtqHgzmzVVz6UO9BC99uMV8j1kfV56Ml6MHiJHqKcO5fBhCnMFZpQDHtJnplRRyoE6kmRq3RnvmtTz9yLyi2/X6mPkVwgUU/NCsRxQzTlBqIMWVS0NcbpaLFveETtrsJEXraigDazYkSDAIDASnD3xyoFmtpclVmZb2FvP+0VMWKZ9BCK/VoIwRx7WXjgV6ighHCzi30TAX9W16uU9UB+4Q4gz/E25/obxIIuV6o0DGvaIafWb8LqWPA8nI7w/eJXBqVNXIYZjcvmbTraZ8Jdv44RX6amAjMoPYdkKh6ZD+Gg+K6VVf1Auo2HxI14SFu0svlYBG7wX85DdLFhekef40B1k+NCIfSitc5sGouChyM+DRRSUw9j1/AJI1CsM/GfKJQ86oU1wOKyDDkognh1j429EvZFnNF/QsfIfMmChRMRd2EIONiQeBqHyVLs5dpzNn5SWbf9vfBIDMrkJJ5v7FM2Jtybry4OXC/WPy0IOorGKdRI8Umww+ML4XLmeMbp0bfFEVmi6skTkxsW0fkbf7OSyFBe3vq7RO7gb/kUT96UtVQ9sm5t2Fsile1KK9s24eQYGIYDqM3AIeBPrskdpfD0ZA4NKs+oaGO46OZz7j0DGcbySTG5mf6tOSV127N/+cw5LD1iGW29DzLO4REgP/6v0qHwSEkkzENYsFNqXOt+uNG3KqTDQCbE+5RbHUiv83y+Lw4U3TlMxsN810o1P2RM/ZtkriG1kuGj5nB1jkmYVDnZrzY9E9N16ionLUwJ0gMGu2/IYoWdqrLaV7Bu3nI/iC2Ubo3+3S7V5E4+Syc1Tw05bLD5+o1ZBCBPU/S8c/2t/8WA1eZu2oQqMbg7+iFu4Eft0+4+jM5QhG+otCGZb1XtfugKc5gPOXqCywJShO3TB5zTaBeojTsjx+XyV3NoJLBHKYS+PmOP4XhsRiT9QK1txNcXuoVrwmWfL68l
- wkqC4hSL
- V4O0EBhePCQ/j47izXm3ge4RVXuO7RUlqNKKpmWdIe7gKcpo3ofFBlrtHe17rFLxs589bjJT1mxbUxbolcQeJB8Wo/NHIzVr2BH1mxw4Xu+gueuSDs0fGHtwD39PMIJh4XeruDKZgqhL6mvGfesUR5byHv8OnHMdit8u0E7dmlOB3do0g4coGmuzLnzqkiXA/Y7IW8RqvObIzJHdiu2f85h3TPHrLrANQPgo77I2ZyylvIn54Gyu7leqFBwgqc1LInBJL
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1785845973-271711
+X-HE-Meta: U2FsdGVkX19kw5bNuCXEgHibj2qx8TrrWmw4kTTUMWfYfUMgXtW7mX0y/Eo1kLgWATZgDvk04aN9H/LVDFDccTNAUUNHCyelL9Hpn/RKhkBoGtvVvVRudpzgW6drc6htAF750udGDBFne+DVZpNXNFWFSRaS8dPAN/eT5PIk+YhQr5Ku+R2C3zQemIueIUesvLK2fTyIz1QtUTMXt4/IWhw9A7/JC99geIHK1YQIbQVTfQVlJx/GtHeAI73PttIdUKNkRK2bss6JWD20mImenrRRuP0PDfTuVaa4tbkkbeGVbhAGyr/KksGcPb3yed1esUITOJPjHxja4zWaeWH+rDiuTZ8PrdS0s3P28iT336gbJokSnKyKbrtuuFPh3O4S6wHPixv30m11TOxoQYA8cRYeqVO7TtWimWjIVY2VttM9XF4lV6r3vokyF1+q1fzrCUI6vRPYQ5aLEFrK/DC1p8B8du+Kv0CUj/6Kccw6DU2KHwW9H87G1OIiHXWUG43c1SkklxPSZbQILaqpl9KK72oC6bwZ1PjpeUU50cBLXe4PalyO33Fcsh/CFDbF5h0GGg2mMWaKlqs5UNsw4J6Tnlwsuzs4UgnkOXhJBqwIg0UDK8KQxS3am2SvqWCOnj8rp7vdF2/fOFl94EDxZq0lw+IqIlMNoHKfuoa0t0lRPs1EHjwUVJ1FUFpE6McIJBzOdrt6doMJNMZ0ypIhOg8iBa6u2t2P9JiBWmCNrOPOlJ8MQEWKzZKu+qj6QKWbV4RfNDLLlkVFbOBO9++OL8ja/prKvio8wWjodUU2nXQoZeUTM9DwpMbQLVhGIkLa1Cz4PzqbVoD7lmBxs+YAJ5m+QmzFN4zVSbxWCbtHR0kY0uVGAkfERs3SDM1dqKq+CrXoXfYRvLmduZKpGWFbIHZDNzdKONmSRRU/424kVXbmenNR6n0Ykunh8mzJIkLzuvG/kNAKBPxQB8O4cC4amPg
+ SETjuYU7
+ /tofa+IeTpM7HDqxx2p2cf0OoGBVdbIZxnsLKBeHfIvNAG2XSkoYiT7gVEs6qe8SmfCQXho+CxMprqg+BC8S2EbaGyYXf5AwhJNu7Ww47fyXzWcuXi1K3L7msmkzVvpWO2lsk2G810jzeziewseTmdSWpl3acuOVKzDfBFpbQJhkkm6T7G/rBGhFLaPYhAc3LJ7sg643K7uHmd9vY9aFUVB7PBd2xhN0Mkk1ius63SA716qymGb/aI0SDu/qdHnfQ4fTii8hpPQmyxF95MVs0YTHR+IyFQzxaQ5oHbOeQWcNcQ52641GHZ644MysYRLJsg3j9qQF6ZAYvwD4+wnSBgHpI29H4/ArK7bgQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,52 +146,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 13:05, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Aug 04, 2026 at 12:51:40PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/4/26 12:45, David Hildenbrand (Arm) wrote:
+On 8/4/26 09:50, Paolo Bonzini wrote:
+> On Mon, Aug 3, 2026 at 5:18 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
 >>>
->>> I'm curious, how did you identify these? The mm/vmalloc.h is rather easy, but I wonder about
->>> e.g., mm/shuffle.h including mmzone.h.
->>>
+>> I was wondering about the following:
 >>
->> To clarify, I have clangd running behind a vim plugin, and so far it just worked.
+>> mprotect(PROT_READ)
 >>
->> I had to generate a weird XML at some point that does magical things for clangd.
-> 
-> Well for me I get the kernel build to generate compiler_commands.json and use
-> that via:
-> 
-> 	scripts/clang-tools/gen_compile_commands.py vmlinux.a arch/x86/boot/
-> 
-> In a build script.
-> 
-> But maybe I need your weird XML... I do get frustrated that it limits things to
-> what I happened to compile. It'd be nice to get it to index literally everything
-> somehow.
-
-Nah, it was that magical json I had in mind.
-
-> 
+>> followed by
 >>
->> So I'm curious how to invoke clangd manually to actually get these reports.
+>> mprotect(PROT_READ | PROT_WRITE)
+>>
+>> You'd similarly end up without the writable bit in the PTE, and apparently there is not really a way
+>> to recover from this.
 > 
-> See other reply, it's just that I noticed missing symbols.
-> 
-> Actually this happened with vma.h (I sloppily got AI to figure out any other
-> cases) which _intentionally_ doesn't have includes.
-> 
-> But clangd lets you work around that in .clangd:
-> 
-> If:
->   PathMatch: mm/vma\.h
-> CompileFlags:
->   Add: [-include, mm/vma_internal.h]
-> 
-> :)
-I was hoping for an easy-to-run script that complains, instead of people just randomly
-running into "missing symbols" and then having to fix it.
+> Why not? mprotect_fixup() calls vma_set_page_prot(), the PTE as you
+> say lacks the writable bit (unless pte_dirty(pte)), and then the next
+> fault calls .pfn_mkwrite().
 
-But there doesn't seem to be a low hanging fruit.
+Ah, if this works, great. I guess I was confused about your explanation about
+fixup_user_fault().
+
+So this really only about avoiding the second fault, makes sense thanks!
 
 -- 
 Cheers,
