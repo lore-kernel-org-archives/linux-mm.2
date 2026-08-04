@@ -4,131 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC58C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C63BC55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 17:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28AFC6B0098; Tue,  4 Aug 2026 13:28:25 -0400 (EDT)
+	id 4FD966B009F; Tue,  4 Aug 2026 13:29:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23BDE6B00FC; Tue,  4 Aug 2026 13:28:25 -0400 (EDT)
+	id 4D4C06B00A0; Tue,  4 Aug 2026 13:29:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A7C6B00F8; Tue,  4 Aug 2026 13:28:25 -0400 (EDT)
+	id 3EAC56B00A3; Tue,  4 Aug 2026 13:29:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DD5A96B0098
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:28:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B6B3A0243
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:28:24 +0000 (UTC)
-X-FDA: 85064270928.19.F97BAB4
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E45521C000E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:28:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=M1zeU8qZ;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785864502;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A7C76B009F
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:29:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84F8AA15FA
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:29:02 +0000 (UTC)
+X-FDA: 85064272524.21.2C16597
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 998F380005
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:29:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EWg1S6qk;
+	spf=pass (imf30.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785864540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qMQxCLJgeqLxaC8AdoGbjrTjmuR1B3PyJ70bBmktR7k=;
-	b=LyNae9y8r69FDwsl80NMg1zOzIS1jhMDOqfkBVS/XIlFDDFu9/sruC2xJ8usCwK9P/kzTY
-	io1AbmY5NKaGO62sGsrYjAJbGL6haB+1JnM6eTnjvlbrN4TZ39PKplKwLZyJmhAQn4V4Rm
-	aWn0cbjP+2p65raXUr17i+XPMBoZLS0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=M1zeU8qZ;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785864502;
-	b=hcofl5msPo0z+0MrxFAqQSXZeHfNq8cqxgN3PSKD8fVienpxU30tZnSBPBGwHn9bKkR4rh
-	K3wyacmoVUEctQNwWxn7FabTbapKGMUWNvHGJTx4DBe+To1WtX2YxkBCtBwKkyowhFohuu
-	/vmtSQ3C2ce1denfCknsWhlb8+Nf4Rw=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15cb6f5c12so27795766b.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 10:28:21 -0700 (PDT)
+	bh=IoTO8KW+GDReBkSkpnRl4suzyOO4Gn2RcvhBsIn37Bg=;
+	b=43mc+/sfyVaYVwAiy2s9Iy6iMYEG/Ev00tuJg1fG/U7L1iwKDbz45122zdI9AbZWeFtrG+
+	8qH7nWXE7I5Wzyc6e2qAjxOaCQzTybTWS5qmd0CTa8rMQGA/Jlymw4GlowD4y9REJV4zV6
+	ybPEEp8vlNTEiLkXsl8gLu/5BHdIBLA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785864540;
+	b=urt/N2XeT2qCr04nPcK+GFGb8MlfcR2W5ZLcMKfx3jQjZ+ITZp6d4C0a94cv5HZASu5B1u
+	R6KsIwoCjFpXcb0eUysGZsopMHDlTQfNisBD/zq9SV8xkz0tCdC7Hc9CGODCyryAkoxv2c
+	KT42avfiYNvswWoIUs2w/PCevCip18U=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EWg1S6qk;
+	spf=pass (imf30.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cede6375caso6605ad.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 10:29:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785864539; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZYELPtVy5zuzTOEeBWGrSQIAc7syEUpcUdf/Rd54ukxDWXLTSqFU4/0frOx8UMBM4K
+         CrE+2rdNgbAqj41eiKqhJNTtwV8bM128J5K3OGEKK1E2hQoWmFHg8BLdKUbyVGQfCvRa
+         aKxItgaNDXlN/VwL6I0W1uiU9czTxP11OKzPspCocK+tUelrgySFlGBzdnE2J3m03TXj
+         VN6Trq2OOj7aOIWtnSmGCHaqscxnj7Jw/sXgwot85wn2SOe896EfBnp2+L+VQR1RjAdz
+         9KT6gIx/d+1rRGbo5Z6hiTUxJLW57Pl1/bF21GfKzn3Itq1xkosDJarcTIaAa5DJFMoP
+         CmBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IoTO8KW+GDReBkSkpnRl4suzyOO4Gn2RcvhBsIn37Bg=;
+        fh=+AAY35rhTsUxj1eoMgbDhnJ3sRAyzUvt7r26Wl8lflI=;
+        b=aGEl9v+vy5019k5NY22iVNCV+xczIGutoqAOh0e+g/cwx+kn2VbWiHpcvA/Vjrd/ar
+         yFP2NDPp7zHMY9A1bxow2KMbo7l0m7x1fmmTgJnBja+5tGhanUv4VvNMwkuE3arxkXCs
+         cNGKPOIm4BWrNhfiYwpOFnNvFFnb7NkuCNsRYdXN9jtLJsEIk9741nFRZFf2iZ96nNTJ
+         nbBfRMFN5pafRux0FkQnJIl5BSX7Go1KAKtvk1RK0r/dqsqDQOWJ0tVIHHZRTvcv0WVO
+         4SPWKXjyLw3E4UiWamr0E3f5oKaTYkXhzMC4xYYhlYd3RNzyNaufZ8HgpFh67gbCVnB1
+         +jWg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1785864500; x=1786469300; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qMQxCLJgeqLxaC8AdoGbjrTjmuR1B3PyJ70bBmktR7k=;
-        b=M1zeU8qZ3eDKWnqvgw/exhsuKs4qr+nldVqdF+xuvjOA3x6qenMXCXkS9aKONacisr
-         8ezlTZr+a6qqri2AKFVv3fnoRvwgfrAu/VDjqYYqv7QFaFpYmBJwxxrXY2WjSvDzWEfg
-         bnla0OsRO7hEcDAJke59ir6ygmS+hFjONPXNQ=
+        d=google.com; s=20251104; t=1785864539; x=1786469339; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IoTO8KW+GDReBkSkpnRl4suzyOO4Gn2RcvhBsIn37Bg=;
+        b=EWg1S6qkHxN0llP+SVwHee3GNZwrKDkAEoFWKht+Mr6Zq1XlfAp0ENv1XYc0pdsGEo
+         hkLA7Gzv9nvdrCTwJWTc396j876dd37N2nimlEiMPEcqNMAIEHV8bW7tcw/v5FxqiKb2
+         1K+sVcgdqHKKNmeXSJh3/8lNOjSWpBogHPt8AeKxMLe+Rr6x7xn/O8ppGsedXW7xXBGH
+         Q9U9aHBh3gZasUIkvfJbpOeIo6sZ0YlOyHIXfoibGUkzummpVwdWgMIPvKHjexVEXHjp
+         SIcuWkY9TfTjbbujT8f6dseZJcMdsHeWRPe3RgdUDGShQTWggyf2k2O3C90sIOrtDZ+O
+         tRQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785864500; x=1786469300;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qMQxCLJgeqLxaC8AdoGbjrTjmuR1B3PyJ70bBmktR7k=;
-        b=AAPDHSraGACSOKHzPAvDQKp82QU2AMHqzKDz6xhq+I5esh/gA8DkXdz5zcO/aST3Bb
-         LkrZeMYiIbHoqRpEEC50KLZL9WLPjuCqkNBNXd9BO4T6CbMUv9KysAoZ7pIrqvXkBmc5
-         2xb+1L/Er9Zl/NTCk9M3+EkfWjo0ukU+apvxq8xGA4miDuIHT6wPryfVFV6os9kUC5Wn
-         qX+hFzQUYS1qpO7+CXP8aJyC60dnu6Qz6wHhbDjqvxrlvJH0CUv4WlLQJVvaAdglwFfD
-         VwlUGscZmsHkC2o6ExVUrLbOVlJqpXrhLOFHTrKafGZUsjXxpSbiCZBww6wSTCIrJafk
-         k5/w==
-X-Forwarded-Encrypted: i=1; AHgh+RpD9y6Hfs+PvBVi6Hr9VGfZ6EEMS1q1Po/pNO+8LYDW7Om0CLfNL2sXtAxadguFHwCO/YlbGk2eQQ==@kvack.org
-X-Gm-Message-State: AOJu0YwXEt9nIGOQOCU/9hqwTiDxdAjIur91S1ohitHBJ4+JoTrAayZ0
-	ZwM/NYwMFZweOlBUixJV6nUK7cP6uZvz3uYTYbWW00Vj6cOTMRNVkgsWonQF9i3eSBw2C/x+qno
-	JURKPNt2BgA==
-X-Gm-Gg: AR+sD124EfzM2dwu3O6rqXesY2UIj+RPADfyC/rxn5UsH6nNpXefVRj8e7oSF6Gm7Wg
-	a4ZToP/NFymKorUHoA3GZweu1pL/NCog0gQTo+rxLfX+a7YrfcTGLyEvhO8wHwQffgeLAXsiirx
-	Eq+7A3b8sOGCBjwliDu4d6ncJ55ejZe0JN5stF4CEDRX0YN/+n5SUxoqPGiHo7ld/h/NeAxOPtn
-	Ep2SiDS5SbHQtNUNwSBBdry01dDCNjyDuPy4BZP+ga7yQRywUCBtO0tRI29I1piZ9eqFYohKJjN
-	akih0XuE+qr1qIrelNr+tcELYEhWR7QMMUWOBeL7A3vb60DEphiJO3SclDPRV3s2n1yTrlUqDIT
-	SW1Mdb9il1cRX+zbZ9T20BHH9aRC/XgXVbB7xTviod4wFJYePcrvXwyMOmk8HnF5FHrMrcgK89b
-	0KYotUGKJDZU76MdP1Y4h/QQmwa2X+OIdqYmenoAAOFiO9ptW8l+/jfMTMGNX2Ivq/Rp97Rgyp4
-	ZCgVI1Z/eX8f35fEkXnzb0pTvBzBE+HHJgmkA==
-X-Received: by 2002:a17:907:9301:b0:bec:64d4:3872 with SMTP id a640c23a62f3a-c2039ec8d14mr2918866b.24.1785864500269;
-        Tue, 04 Aug 2026 10:28:20 -0700 (PDT)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c20363e71ddsm37569066b.34.2026.08.04.10.28.18
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 10:28:19 -0700 (PDT)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c197e7e4e94so23911566b.2
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 10:28:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ro36FSiWGNdgT/TI2Z0L2+ByMKS1p7OgiEvKbhVqyLMjlG8u6h7XtNOjjFv0n0mde5JkfZuCIf8/w==@kvack.org
-X-Received: by 2002:a17:906:9f8e:b0:c1f:1520:56d4 with SMTP id
- a640c23a62f3a-c2039eef631mr3030966b.27.1785864498518; Tue, 04 Aug 2026
- 10:28:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785864539; x=1786469339;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IoTO8KW+GDReBkSkpnRl4suzyOO4Gn2RcvhBsIn37Bg=;
+        b=m6kJmgsXCI2RnxKUuE21H0nXl2Dt4olMdx7tulSIZO+bipWK0MK0Qz5ZGEnbrHvW1Q
+         i0BVKfAoKlsJBh+VYLV/ZFbuvvPjq1f/XFw2Ij5Btns1JAJY8K1UiOAWfjcw4kvAo5i+
+         Gti0XxAjj6R052ONoHLzxSUQ2H4nvfSVd10bZY3EqjSYSCrOn+Je4sHLq+dGNDxZMfSj
+         /NMuy0MMiXI5EHFHmxIT6ZKDBKhWUdXs1D7HGCV6na8eOJI27hvLMa7Y7+QQVn5Q/dBh
+         aLylWTm0xOsd0vi3fN1vuujvmlWpoeMECel6sR5UoC08Lu13lK+rlPyWhgrqzzWWfqeS
+         AMuA==
+X-Forwarded-Encrypted: i=1; AHgh+RpirO9G2z+2a7UNvExnUcS4JQVpj+l6ulZGcAt8Nqclw6cvxNcpw1hWf60b5GPDb593CXNlIxwUuw==@kvack.org
+X-Gm-Message-State: AOJu0YybjaL5S24DNWw3H2oAmgxSwySlRRRAw2RLkI93og33ejD2Egcz
+	742yEi1DFcr+pnd41kSklbgjep+jWuCThCIZMjB6A2cxJD7E/e6m+85wiBTd4UtTOK5TClxkj/d
+	CejCZNTRbWaUgYiSoXvtkUN3JHf2nxPims3bRj6ck
+X-Gm-Gg: AR+sD11+Aywfmk9ndpfpB4du6vDJ+gPWJKoXl5OQwd9RcwJnKwFyrQV6Sfx3q0llX/W
+	DG4gORH632Ne4SMxltGvJgLiDu4K0O4izXmWodRtMBE51fOZarPp3VQTvQ1PHYFX3H20Fii42zS
+	lDRrOslk7sla2uaoun6keXlNNvNQRaIfO8wMz25dHz9Wb+EkKRGtJWoVSqbvA4oSPsRUZGjFZfN
+	RS9jS1D2M3Nro7kxMfTzFb94Qs75db9LCr0tUEBp0iLZfGBNa/w6UgGG3VGPRzOPD9hxczlZ6FF
+	uje6e13E/PP8UQzRaApCnX+rPXilB4GuYfzsIFG4m21Ix/Wk0akDOMeNUn8C8veLfmcTp7iviNQ
+	=
+X-Received: by 2002:a17:902:f64b:b0:2c6:a078:bfb7 with SMTP id
+ d9443c01a7336-2d0cb6b9a76mr301465ad.7.1785864538734; Tue, 04 Aug 2026
+ 10:28:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com> <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3> <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org> <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <anIXr4Kbn59Ac31Y@lucifer>
-In-Reply-To: <anIXr4Kbn59Ac31Y@lucifer>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 4 Aug 2026 10:28:01 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg=7QNs-g6MgswMQqYhGgz+N-8E=cphaQs1jQRN61_2wA@mail.gmail.com>
-X-Gm-Features: AUfX_mx-6mcM4e2v7OXIfeWa0mf90unJuraAWyzsuvI99MhNN2FXKW2aco4PiMA
-Message-ID: <CAHk-=wg=7QNs-g6MgswMQqYhGgz+N-8E=cphaQs1jQRN61_2wA@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>, "David Hildenbrand (Arm)" <david@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Yang Shi <yang@os.amperecomputing.com>, Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, 
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>
+References: <d635115cfafcd35c8e3344b418acb1020aba1052.1785794035.git.abhishekbapat@google.com>
+ <0b95c0df-8cf6-4ad9-9552-d7c4a657a25c@linux.dev> <7e71f6d4-7bc9-449c-a122-49f0e8397150@linux.dev>
+In-Reply-To: <7e71f6d4-7bc9-449c-a122-49f0e8397150@linux.dev>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Tue, 4 Aug 2026 10:28:47 -0700
+X-Gm-Features: AUfX_mzTWJ1d8mXgqjC6vG6rlblnvvC1NJAGSXdHLoVAarBVhoUh2YSDpDTIuZk
+Message-ID: <CAL41Mv5Aa3XtmqVbDTnsf8RX4nxC7J7mUXZzFaUZ9NSMyAbpFg@mail.gmail.com>
+Subject: Re: [PATCH v3] alloc_tag: expose profiling and compression states
+To: Hao Ge <hao.ge@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 998F380005
+X-Stat-Signature: cms18by4kay3e37mx6ojai4gwrfn95to
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6jnesgtmm7obg4sgikeictqjaw3nkwc4
-X-Rspamd-Queue-Id: E45521C000E
-X-HE-Tag: 1785864501-687212
-X-HE-Meta: U2FsdGVkX1+l/h2stxpfHtDzRdKYCkKHsPaS1/wgFvKsk6vUrQZ94xEKtgKhhGaUxetfJGT7n4O/bWTkA5PxUHRTXvPWysUxi+L00C1Mw0IrLGDMp7weVBfjr+GxDQo31dNqOkt96k/WnIjRETsWJe2HA7SJjCv4aobRYAcQRrF7yaH2v5XJebbr4fYojwaZ/VfQcQsoytDuXiiickkdbzrL2oE0QattybvMJR0ukg9Zyi7KaNgKGOmvzqdqq0VCxhfwm+Z4lrLSbGTMxkDThsDp60D5aje8JkjV46z5QIajqffKwx9oznjq+C9hs3TXbFJFAtmBE6iST1/bFbFAgWERdsgRQJa7mHLI3/1sDW8e/BiFGOSdmWds3+fOuIm2KsYx7wcTogKaeVW8LHQcd1hKo6OhfTmJ2yHWyc7KjGYQ/5E6QI5TysHMio0Kwpgz+MHzu4PtLK2I3nrzKwFifIwVTCIkubwEbuPyZ1thy0bsrYTW4gQoXYdWdnPmnB75DwnXagaCut272XwXOfky8jAWme/5iaC2TFLDQONRGGPHGmyYtOvAWdoo+GOpOr5k53Zu9Nq8QS6RSGsxnnFV5mAX4NeQ1nxzvzPtfTVwFCDvgevWjZbSupuE2C6055OveD3IUGXU1RTRDa0UxeBAA0pqX/07FJ5elyYu3b6n4u4KfvVDLgHMqQIPS+fKv1fUZ7QJu6kt8Lpy1Y9NcfAKJ3Ub8iRffVQ3La5w19xOtiB5FoEWp2JxSrAPFzXvW2SGDeg4uB3ZPEVgF9KcpvzppvIpuz3V4C6SLd/b9TFA86o1shYFsF58pQerAiYNMhm6AxEwFHc7Phy+8rvJ3zyl2mhuq3OxwbFc0+O4bNNa4qgJ8N/vTtGeNR7MMm95HCPIakAEKeL7f9Q9DTs5DJwcSbV1pvs4tq6+2EOp90BgmsRbP2dYDR4wZ/YCe2p+MvxM+DfdpHf0uyicmjhSkMX
- +/dRRPWa
- N2VmXRDS9zycZmi49Jl8ldtGppOC0PHnB+VS5HEh6v8DWOPPZjAPvoGhdBN66maGw2yTheFMAl/O6lykLa8KT7xvrq2vMJSq9I2AgHGWW+Y32SZl7eDUujcu+iYGxjHOgjztlKEu8YDqsibJoMAfF6NGKhe64FFZOM3NkWTwR5B4NOVjP4WHvOoxPZL+U/4ho1XvCGFt+MKl8u1uxxSuRLpdWjwhvyRCAL54lHyJkujK+kt1uGn0U5yWbXp7IevqOhfWFTbz+AHjC0uhyAFlAiFC8sHXWCpHv78w2TgPI4zJSM9pbLX8gArjsfObginKmXdLcd0cjuI28jNk8PvY7WuO5lyekrGRfS94hMTYIDKaunu42uUSbkQxbKoyVa+qF2gUb6B25Q1eUO8AysaisWKFafglH64LPWXWf2aHadHwOZhuvGjaWVXEPVOolvrDHUCuko+gfv61BzfKYbKqyARB+vW3xQpkr805SsbPE32saH6wqphYNMsvspk+JJOjWRvFaj8Sz+vep4y/CzCuMMbCUATKYvTzzl/wKXHjzOR4xQWyBp9TMaZET9bR1Yh2WpjKg2Ge/pzgEpyk=
+X-HE-Tag: 1785864540-616072
+X-HE-Meta: U2FsdGVkX1/Uv/guQvfIZg2LkDIST3Ht2RBqYZXBSUV/iktFsMkGKRqrQionRB/k4fR2bQ7NTdVacSKEyyGwR3dlmDXnDw24OYYxk/71T+hftmarawIGumx5zv9iGKtgiqG+EPIlsBZP7EG/sww9TvtnYiWKHXUFdBCZgblMX1962+zUg03G4VXpJpGikm4JVFZEvOQfxLBMyEmZV6V/61DEqM+qEJrDC8zONxS+dKu7Jc4cdZNHlna07RSbAwMEfUQdEJSOTcEcRTHmIMG45TYB7D8f2I6zsuEpZX8i3di4uJuhTOIwjSrl1SoxMg87lc3GGWRoazIq6nlQCPsKTG1T1G+3GCrBncmI+5LlfHClTHwzvZ3pj++wS4tFzCSGwXgpxG4aeIv0xQ0epjVM6/OVMHNdfIao1+s/mWz0SthoCd5FgLv42zoUZXLwUOWbS79Rg+nW+ig+HjuAXC7L1gA0p44pO8HZea4tkIL3MTRFy5d+UPm48ep1Z9uOaE2tFvMv4a7VZkhfeiccEX+jz7Hrnsv6QSUDsr1uk9EnfpIhLANnGZJr7S4E19myzgv8fFzarwZiIPAKhI+vMVs4E8eSMnWnHkzkTYIP/85wUVJGyye0iKqlfuMqL6T1AXRpwXth1aRNwjyCS3GWDS9S3yK+Db+EJ2EJbC0M4fwwZG2X192T5Yowc1VicCSvPLkzV8KHQxrAeq4ncP1lBGqVTZJW6wytw4/Zp5WdZed35s23izmMF6hP1IBwMj2Eoh9gEFZaf7FJKCa2MFwL0VZ0XTphkQyDu5noIKdE9cJNM9y4itbVDHUx26Pd5/zw+E23EY2XWR5qGsuM1cH/9d6Fg1qsGt7vkRVMdnNRCDkaM0lKKBvbDpceF166mmbBzb6hDZQuRfhm1QP6Y5xPPvhcdasWaqO9NppHONyxgbWfi5paupptGP7i1oYoOun5JchObxRElVitNePsDS4p706
+ BjQqvnXh
+ qTqQD4RSBXednaKYzhF7S680fum0rMHDtm5+yKg0j15YYThoH+4FrbI0w8X6clkl+VbE7aSXmCcE6yfE3uWO3UqQQqwgE61K60JU9h7TLV+UtFWCd2ScsBTw0DUKyVYLcdsXAUPq4HuygKfb+PrUH12Z88n2Mt2YeygvB3fuT2o9RwdbzdbKf2Y/fXXNJpTDEh96zFiCKoI9Rvwc3Jr7gZ5rM+SlrcXm47t5vXFmoKtG+4JwXpUqjEjh/ZnpYKIWEl5X1EEIhkk5jtCQFm+XjfqzezWl/UntxamwViNbEUM2w2Ev4roP3g7xasA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,16 +141,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 4 Aug 2026 at 10:24, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+On Mon, Aug 3, 2026 at 9:14=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> Well :) it fundamentally changes how mm works - now we have a whole new set of
-> kernel page tables and PGD's that we have to think about.
+>
+> On 2026/8/4 10:15, Hao Ge wrote:
+> > Hi Abhishek
+> >
+> >
+> > Subject says "profiling and compression states", but this
+> >
+> > patch only adds the compression sysctl. The profiling state was
+> >
+> > already exposed via mem_profiling and is untouched here.
+> >
+> > I think we should make this more precise, like:
+> >
+> > alloc_tag: expose boot-time compression configuration
+> >
+> >
+> > On 2026/8/4 05:54, Abhishek Bapat wrote:
+> >> Currently, userspace has limited visibility into the exact active
+> >> runtime state of memory allocation profiling and its page extension
+> >> compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed]').
+> >
+> >
+> > Profiling state is already readable via mem_profiling. The gap is
+> >
+> > only compression. Also, as we discussed, this sysctl reports
+> >
+> > what the user requested at boot rather than the actual runtime state.
+> >
+> >
+> >> While reading the sysctl provides basic on/off status, it is currently
+> >> impossible for userspace to natively determine whether page-tag
+> >> compression was successfully enabled without scraping dmesg boot logs.
+> >>
+> >> Resolve this ambiguity by exposing the active compression state by
+> >> adding a new read-only sysctl `vm.mem_profiling_compressed` to output
+> >> the
+> >> state.
+> >>
+> >> v3 change:
+> >> - Added documentation about the behaviour details of the new sysctl.
+> >>
+> >> v2 change:
+> >> - Moved from displaying the state in /proc/allocinfo to a new read-onl=
+y
+> >> sysctl.
+> >
+> >
+> > As this is a standalone patch, please put the v2/v3 changelog below
+> > the --- line
+> >
+> > instead of inside the commit message.
+> >
+> >
+> > Thanks
+> >
+> > Best Regards
+> >
+> > Hao
+> >
+> >
+> >> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> >> ---
+> >>   Documentation/mm/allocation-profiling.rst | 13 +++++++++++++
+> >>   mm/alloc_tag.c                            |  6 ++++++
+> >>   2 files changed, 19 insertions(+)
+> >>
+> >> diff --git a/Documentation/mm/allocation-profiling.rst
+> >> b/Documentation/mm/allocation-profiling.rst
+> >> index c3a28467955f..3ad1e9aacb9a 100644
+> >> --- a/Documentation/mm/allocation-profiling.rst
+> >> +++ b/Documentation/mm/allocation-profiling.rst
+> >> @@ -43,6 +43,19 @@ sysctl:
+> >>     warnings produced by allocations made while profiling is disabled
+> >> and freed
+> >>     when it's enabled.
+> >>   +  /proc/sys/vm/mem_profiling_compressed
+> >> +
+> >> +  1: Page extension compression is enabled.
+> >> +
+> >> +  0: Page extension compression is disabled.
+> >> +
+> >> +  This control is read-only and reflects the compression status
+> >> initialized at boot.
+> >> +  Note that, unlike `mem_profiling`, which represents the current
+> >> state of profiling,
+> >> +  `mem_profiling_compressed` represents the state configured at boot
+> >> time.
+>
+>
+> Sorry, I forgot to mention this earlier.
+>
+> I wonder if we could remove this section:
+>
+>
+> >> Turning off
+> >> +  profiling at runtime will implicitly make this sysctl effectively
+> >> dormant. However, if
+> >> +  profiling is toggled off and then toggled on again, it will resume
+> >> with compression
+> >> +  still enabled as long as the value of `mem_profiling_compressed`
+> >> is 1.
+>
+>
+> mem_profiling_compressed only selects the tag storage format (page flags
+> vs page_ext).
+>
+> mem_profiling controls whether allocations are tagged at runtime.
+>
+> The two are independent: toggling mem_profiling on/off has no effect on
+>
+> compression. Only shutdown_mem_profiling() tears it down, but by then
+>
+> the entire allocation profiling subsystem is disabled anyway. There is
+>
+> no resume path.
+>
+>
 
-Yes, I'm certainly not enamored with that patch series under discussion.
+I added this based on Suren's comment on the previous version asking
+me to explicitly describe the behaviour in the Documentation. The
+original version did not contain it. But personally I do think keeping
+this here makes sense.
 
-That said, I only scanned it quickly, and I'm also admittedly less
-involved in the MM world than I historically was, so I don't think you
-should read *too* much into my opinions.
-
-              Linus
+> >> +
+> >>   Runtime info:
+> >>     /proc/allocinfo
+> >>   diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> >> index 52aece27b00e..877068241f06 100644
+> >> --- a/mm/alloc_tag.c
+> >> +++ b/mm/alloc_tag.c
+> >> @@ -1303,6 +1303,12 @@ static const struct ctl_table
+> >> memory_allocation_profiling_sysctls[] =3D {
+> >>           .mode        =3D 0644,
+> >>           .proc_handler    =3D proc_mem_profiling_handler,
+> >>       },
+> >> +    {
+> >> +        .procname    =3D "mem_profiling_compressed",
+> >> +        .data        =3D &mem_profiling_compressed,
+> >> +        .mode        =3D 0444,
+> >> +        .proc_handler    =3D proc_do_static_key,
+> >> +    },
+> >>   };
+> >>     static void __init sysctl_init(void)
+> >>
+> >> base-commit: 94f9b3980dd446b56acf1dfed649e9b32a9f3813
 
