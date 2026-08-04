@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB73C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:12:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86751C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595AB6B0106; Tue,  4 Aug 2026 11:12:36 -0400 (EDT)
+	id B3B606B0107; Tue,  4 Aug 2026 11:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56DA36B0107; Tue,  4 Aug 2026 11:12:36 -0400 (EDT)
+	id B121E6B0108; Tue,  4 Aug 2026 11:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA686B0108; Tue,  4 Aug 2026 11:12:36 -0400 (EDT)
+	id A28C46B0109; Tue,  4 Aug 2026 11:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 273186B0106
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:12:36 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08B1DA0214
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 767076B0107
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:12:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E120A801B0
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:12:36 +0000 (UTC)
+X-FDA: 85063928712.26.694D94D
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 129AC20003
 	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:12:34 +0000 (UTC)
-X-FDA: 85063928628.21.6811877
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 51CCF40004
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:12:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kskfDgkl;
-	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rLAs1AMa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785856352;
+	s=arc-20220608; t=1785856355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=NndyXklxS7W4h5DCgCy33b3712+WNFD+HzxBt9t0wQM=;
-	b=N4B0ZaPw60lOUbGRt0LCAwNQ7lJ4Tos65cFAgHPTPjo4dey8FeTs1IQkit6LZiTEKEkXFL
-	NkQ0/cJoKwkzH4yQpOPWXVQSlvU1Y00Ak4BsHNAnhsoGgF5jNto/SdpDdy+pdWQFjR2k93
-	3wLQHN+TU2rErb919YsPKhJzkjGylDg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oZg/83J6jaYapJ+FDWL5X9kFic1mYHbSf6imxqk8cwY=;
+	b=IdaOp3whRGPm1Q+bCFDpxUQP5J38fKZjIfplgdORr7Mn5Bls9Zt2UJxgInb+hP1GwmJWBv
+	SnU0I6QGHyHbCFNTOVI2Ls4XOx0t7JNtO8r/PQvoTC83xi5+jwI1Igd/BxhdM4FnPPwqIz
+	weFSRw6Jae950a3UWH73w7ED2/qSdj4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kskfDgkl;
-	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rLAs1AMa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785856352;
-	b=Gdbdrf0Ae2m6DW85I9kzRkdyTUeNYnedz39M3QyGJEGnzOsE6MXygqxajOFwNLavGs++qf
-	1tKazza+XrO6MkzuHgtUZZMvQ4yZs2PycD3Jn+iG4aumqGPRQg/ViYLfq9weM5H3iC/45p
-	CTrpV8O2cIvl6I7qYa8xZ8juLwJrlX0=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ce7d2adef4so74069035ad.3
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:12:32 -0700 (PDT)
+	t=1785856355;
+	b=MD5uyqGUl+J+h/wX0el51XNVBR0/Oc9o5X7ji0DEzixE1naB4/E1oSfD5YGdQPi4Mm6LHj
+	fwtnE5EWNZ1tyIufG8VT8tPgyE2HnlL8auoAW+bpWFj2DKic+dX/gl8/9IR9qJo5eUyK8G
+	/7NTj3MhF3tF8gUhQibUGtIaajjPxNk=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ccf2360620so43044565ad.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785856351; x=1786461151; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NndyXklxS7W4h5DCgCy33b3712+WNFD+HzxBt9t0wQM=;
-        b=kskfDgklQijZ+NqucMLZbLrBxWVHsgoqDoWIJWdZXpdmtXTlqY5v+Q4LLWfFPYEkFi
-         8lbnwOHUf8xx7zxT+6rb9WVYgfqOtCkMoiypwKBZ2t6kXbGh6+iETDbyYCqwZq8bs7b5
-         74mOKaKdvWKqe4RqbcVElcUG3Ij5w/LWZYD1Xjw4e9cQyufff7u039YnXjka8BfS4i5m
-         SLcXo7MlDuH1+VJ9qrqwMqjQQl9xHqX3gDrKjE1Urr+IiuLRS/Os3+GEItp/0KwyFQDb
-         1/IAZq6xzetMCN73rzqZ72q/Q3elNx4I9YJKsvyr7IrWh0KOntydy0v3H65uA1LZw+ov
-         c/ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785856351; x=1786461151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785856354; x=1786461154; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NndyXklxS7W4h5DCgCy33b3712+WNFD+HzxBt9t0wQM=;
-        b=CbK0Gvb1ZbzorFIDvi9nay7dVE+T0poeH8xUN4g2TPUADamFGefxvjzBsrS9s7IUeB
-         k1EvNDvZ22jDEOc2C6BrHLc2R4O05+iDBUonz70wJnZQ2j7BBuervTW5SbhiA4X5Scm0
-         IYkBN5xECE5YMXpciScD+RbcBrjtmpszrPuRV5VKORx4ZiDxrIVglsrWAP2btFmrk+2L
-         FWFCpn2FQl6choI1LRHFDp8wd5a1cu/o8iTd2rlMJfuNul8xoE0xSdwmYPUmu6nbeXod
-         eDHrjih25JPSQ40tkqi5HOBU5ZZtXQ/uEDBT5Wsc2ZJGhAGoe3NMrpQilxC6Kloe8X9v
-         DY2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpF98O3lex4jMGZHCf4ZhOD7MJ5rTyahikCJ7nxw2jO0fw7BZquDpdtE6rLKT5PxHOqE+y0yTncvg==@kvack.org
-X-Gm-Message-State: AOJu0Yyl3k05VNfFCh3tIAg1tnvc02oVUge8v74//KYfmi8dVXIdMC6K
-	trqMnTyo+sXUOP3gUvYQgI0xsuvaFqmrOz+ZCQoVRCl5gB1EVNE/xyD0
-X-Gm-Gg: AR+sD11Of3QDVCGF3AY1sl1C7PlISh82GW1uVU6wADAtXcHkxyU7znV46sn1Qf5TYJ9
-	MiB2ulfHiRG+zfSnKBvKUfTil9BN46i7qgY9/7y17GdalqLw6+e18D6GmgNSTYl0Hm6egB5hB+P
-	7UZPCSID44tG4mfLHQkjix03JKx7b5lduIM6cvQykXNqC8FUYqy3nNDOA7FkZZRo9CQJlLIyai4
-	O5wnxyhEJ/YO4wR0PjrUk4y0T0rH1z8OL5gBxpzq4BbiyodX7rGDX+7e5BbE6MYL/Ea7Vf2gOBx
-	hsxMXUQ9JzgnWJ/gpW6UposlzpBSNRGP03qzIVAvkcuU4E5WpfTCI3YKo9NdW/qRbGO4w4UzSaf
-	vxPdYaAKMOZFo6lHqEKo22E65QGnAkncjJ444h651yAP7XJK5Fzodx/vnu2NSY4Z/7ixth/nqLg
-	b47EtXoW9BjwTOjS9fHd/1kxCewYNsgSoT9Dd8lmuJHJbYdoWXudQFBmo=
-X-Received: by 2002:a17:903:f8b:b0:2ca:b8fd:1a8f with SMTP id d9443c01a7336-2d05240892emr153289395ad.39.1785856351073;
-        Tue, 04 Aug 2026 08:12:31 -0700 (PDT)
+        bh=oZg/83J6jaYapJ+FDWL5X9kFic1mYHbSf6imxqk8cwY=;
+        b=rLAs1AMaHNHBRhABhDSNdQUHlVrb7z2JHDBgLEjKd82OJMGR7VitZmPVDEZzJ+NG2S
+         pwCH9dSjUqqhexgc/a8CKAD5pDk6gt+mg5Gu/oY4x7PwsNERvkwBY3P2T/wCVCr3YRLW
+         d9cZ6JEQAJkElB7ed2Kuznrwov8H8+N+9oejNy5xOkbyKq+kKVEMCXu5e+eUKxLwEZ3P
+         imoB5o/CEC1hnaUMPtvK+7Iyuj8c8SotaXDI2bljZ6C/nZsWX+ea/anAr0KiVRRsZVMp
+         YAuIFHZGvZMZmVncLpz3uTAGaFV9djrsvBaain6lyClw2l9/69rLtHM2UXnoRN2Q12Da
+         /noQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785856354; x=1786461154;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oZg/83J6jaYapJ+FDWL5X9kFic1mYHbSf6imxqk8cwY=;
+        b=msmPta2ybiwWsZnM6xwe1xd5m1EMGDRWMfjGXfS8eQR3p5CC3SzebMrTymp7/UZuSQ
+         IlomZVtxifQw69D4Xy0qCBC3ZfX19knpBm0vszW/mQU4tcR3Zz4vubVLuAnF1jMv2wny
+         ERL1gn1mz9rcP8TX2rufJVebucg2qZ7/PBa2VVJOm2ItWDI0Bh8yTnKONDJtbgRhKzjI
+         ztPw8xDzSWQQT3IYd8I+Yl/teJVo4zxHdQgSaTlKjk2G/PUz1PxpAEoV5MH7nDQH+bcl
+         yDWgJD3OW0wt+dXqv4y4mCA2gnwBnsuSyfXqOx8H6FKAIqTxViwUc3PGc0uA97aFUSAg
+         5AGw==
+X-Forwarded-Encrypted: i=1; AHgh+RoRKS5BkyrOLh1jmp6cTL4Sr6N1iPbNznjjsfOJgmrcOjr1+gyr3q8h/5wyhaH9Ko4DpHD4Vr6Hhg==@kvack.org
+X-Gm-Message-State: AOJu0YzCT6xtlPzApltTCCPhE1Lut1wsrSw4LnEoGUpdbTABVBUqkfWr
+	ZB3DlzcOowbu3haJt8LdThFxW07kwRgpwfwsrklR2xDO0jwU67wvqF2c
+X-Gm-Gg: AR+sD12FTiwyNtbR6Nhh8lfJNdcC5a06iqQpyHoTG37frWcRRHXkMXYRMumR1C1n9N5
+	1vMycYgKOVNcD/NtxOwlLoZkAE5za/B3Pku5nhh26451g+o2QYVvu4mdb+RfDESFHTzCizgmzQ0
+	pMIGudixc9ulJGG3AqkQ2Ee/WsiN5wEIY0u5aTvJLw0jzsNvfgE02zwH1+FWTsBc8EdAyZFV6PW
+	chizBhIo1S3N0z6VASURpODGLt1iCWhdc/x/uw7cqojHyGXONSkTVT/LiOG/LqTYVOGIeKtN14t
+	LQjn4pxI+Rf6/IPH/QhMTFipWN06NDaAbD9s82LEH3aKY4UEUYaYzkh4mrlvzc40Aqs/WKMgnz6
+	M6M5rw3pHtxOaAkpjuz+sffJm3Sflj+4+NPY1CDrn3H4UprdmIm7fuELQehgMHznuBGkBEvwEXL
+	5C6Fg5ouMfRlyTRGp8np+0/XaBoSZgT+gyQjaTzPi57DEuy8bZ/e5DNvU=
+X-Received: by 2002:a17:903:2347:b0:2c9:e9c7:2b59 with SMTP id d9443c01a7336-2d0523f7767mr135616285ad.35.1785856353923;
+        Tue, 04 Aug 2026 08:12:33 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4d67dcsm9219905ad.70.2026.08.04.08.12.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4d67dcsm9219905ad.70.2026.08.04.08.12.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 08:12:30 -0700 (PDT)
+        Tue, 04 Aug 2026 08:12:33 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 0/2] mm/page_ext: remove pgdat_page_ext_init()
-Date: Wed,  5 Aug 2026 00:11:40 +0900
-Message-ID: <20260804151145.3419768-1-ekffu200098@gmail.com>
+Subject: [PATCH v2 1/2] mm/Kconfig: make FLATMEM depend on !NUMA
+Date: Wed,  5 Aug 2026 00:11:41 +0900
+Message-ID: <20260804151145.3419768-2-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260804151145.3419768-1-ekffu200098@gmail.com>
+References: <20260804151145.3419768-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: urdbzqr65ybmsrdzwkkqcofgncbezjfm
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 129AC20003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 51CCF40004
-X-Stat-Signature: iqwa6adomk9a79xmbpcf45m7nwww37ao
-X-HE-Tag: 1785856352-791463
-X-HE-Meta: U2FsdGVkX1+XxJ5Z7RZO+pbpldvzRZxZhJtIrCpEr2eOKp/RYfg9O5iiBsBdHGfKYLz6N6lcH9AJXsX6xkI7dYd85PQ9Y7qZDt+rb0pr9oqAfLO/jduNWgoaEsLshS7f7Wsp6e8RUFM48y3n+UQAcd+w1VBA5HItSG8v/90UTwhO1HhGbO/PbQ01fAE5F7byAlgo9kzg2WsIdCEb7ZB8XAE3uzVc1OiO8hAPBfNgfQi6kPHsfV5uGJwCGRbNOvhiaoBa/Rp5Df9oyV6iFL/urzClHWtx0BdkRb3GT+IVJJunpbU5yy36yU3bWxzc/cqWTiuF1s3tvJJr91hAg+TRlxjErAspxuCygteePJkK/4pHo0v+GH27uUrsOmXFJCwK+m/kq/0NbjD27gfb2fvbG8dbTp3bLJPBnfd3RANFOYMLZHtkGEeEXYDrKQ6Y8bCXLHjKZeLVAE/wlbAOABDVTaNIE5w855ftqQVTYOFAzQm9RzIb7+3ansDKtpIULiwF5cnPp+T6Jy/nCglPTIVBrYmYGHTsXBlqCkWLJT14DuW2lgCuan4ADIq5tsnJVTsK0I7jkcIqxXnRn5q310LtXUKNUBktxYwwwAesYypEsltY4J88FtPRFufC/KnrYghvEfzrfk0gz3ilbBlp/vqH5M4mLFre9mPrZ3bGF/V9YqXWW2bnJIYCeTUG+CjCBNyZ/uHm0US5l/0I3/afB9WtSmcZ9TYiy5njnAbmvFtcxZ+qcvvZPgE0ntlnQWLkzcPX2XiV6RlcDT7QiEvrnkRZrkL7sz1e0TOVHqKccrZX1mgFILf9GOzkTUT71qZOFskw1ccpOPhOPa31CqGIqLg615PtjqTz5dpQFFQc3QDfUVOlhxZeXwWmFwVfvLI2NkSBjgK98Dwj5hiq0LS5TjqKAPu3GTDC1RUM33Zz9lzG9DOmvuKg+vXfts5MapzI/1LI/XuTnReokgbTP2sGrwA
- tUXQxx8V
- oYEM53tb1vv0HZFwA1pCdwhlIcyUi/QkcTuEMs9sbTZq5+8QETey0zksXs6KT7CpOtMWy802+uxsoJDoOWJoOJ9L8My0yhpwHjD1ZJI4+GJmvwdm6adRn8jffFzjO3YmZySHDvtVdDfbPl5h1eOX1l0mloBtvTFDTMMy3PwqUW93jq3r+l4Ig+yZNv+YT8ITNgkaQDlwGiWlV1N0Qf2lh7xvU3CmIBB/QlE5V7IdBGZKloanR8z/gXnTuxEDwcAJbWIcjLmI0KIx0mfZS/joCeY2a4hhbHXQxIpK5z98BURC20hXAFYF5IjCRkRjV9kEcUk2YJp8RSs73X45S37H//GOswrkP3ChWUKnGWVNWfzoI2m2XdkvO5736F7nG0FPfEItj7lkiFWSaMRqnNt5Kt1eMULpmZlA8GlFU0fTh2VA3FJrcquN/AAcwdG0cR8RERNF+Kdcoaozn5K6doJ3i7+123LmRgvYSrYJc7ZHujJAXXFk=
+X-HE-Tag: 1785856354-744621
+X-HE-Meta: U2FsdGVkX1/qNtDgPxSikJmYtjJeCjfjgIlN69j95aaHl2jGV6Zgkm565P5jEfHj8nwOORfJ8YOU9qmxBebNvgykyWLTz9tIcPPjZ8+AgeVIbZbMofKklWxmNYtWpQ583DiDBEfcTAxGd0UhIDlra4umkuCtM0p1xP7Pb5boByDaG63ft4qB9mYpVNDyV0JBLhoFsNzRlGY5w4/3oQxwLnYU4OPY1dCzP9OBrSF6hDdGOF5FY9DV4Po/NVQtY9iU7LmX2D/muxXCd5BKZh0k82PCLUBlotbTY/KBlJjDvt+RInTNcvfxhgioLHSER/0bZRtZN/eJgzlOHp2XWxl8RLt3kp3e4IeOjPwe00Mcx0ZbSkSfm96/w/N9/DQoawZeIrQc8/rBEfJ1QVr2VrM41N5ywbD1rzGhKrTa+dtUL6Tg/1Y8AQYaTZvosGXUoGJlsRLj1Orglju+tBFxx+XUxQEMttvUTRpjAJqFCgo8KQ6ECCd1b3REJH6ZY5h1ruIo+knURMMPU6fzich1VoGxAtmXRK1EArpywDL6nBuvmqOQhj8UUR7VqMjYh+1aiuJk5JQnu3hMSwmbiWEi0+aLdsckgVnDbCl4jeaJKPdlpXTfV1ttJ8KHT52FeIdlMC89TJI/hP0VPj7zcx4fQNYmurX0fPO8bF2y6CMZlABpik4Ha7htOIawbVL/QLD9IcbjLuNRWAu53hhcnhfPkVcPkLkxgNCHwU0omKwJthwg+gyApOLZ973XEvqmoWTL+3SVhpfyeJAi3YMv1RiYUDShUGZMA0MHbPWRsLtOPPoaRSDnaBxYSEDyjG+pdFthUzGItw7OnArqsuDtxsJPneaEZWBlhBdlQC2wZp+HTAbEdSirqkkYT9WNg1X0NYZC1xQdNLlJKJDaP1Jmn54Y85z0IkWqVC/as7ZdOVdfACfF7Hl+JoK7ty8KzWh0n/BsW4iEH7WTKWjJMBo8MLds0ka
+ 5MmeKKCa
+ LxUCa6B2nCq7kR5e4XlQ12M2omB/TUQWxoSvvgkw7H4GsWOmx//DyA1tq/eYDcfbEePwR/NoScL1GNgF/apMdQ5w9D+8PYQ+jhP9f6Ez0wq37fh7r9y78BoHoMan2viNAMD5be8CFvjUrhxE2N30SWCj6RzffHAxUWbI3YINNkeSR+z09P9/V2wpR9YoRwxfplWVG3Ds+0LMtMQOqg/sv9v3J954xqWrTkakQvUXAE4fxdFmcHJSwyPOCPKm3EgqvTl4P5NER9uiIuex3AsiY0f/REJ8rRtYD0MmUBwv8Y/IoQZHzlmirnwoi+HjFHEMXWHZsZSrWn3thE0vrHqCeDTX4Q+ztNHINsSLAUUNm4Ci+yCrST7WGokeERO/RPlWJlqSglUh7pIrbl2eotwQPVbyKNSPAiuFmULix039u7ctlQu/55rN+kZpWIve4zilaJIrdAYU8rW1TDPpG515HdQvNXkOT6ug841ZQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,34 +125,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+FLATMEM + NUMA is not supported by any architecture and fails to build.
+The constraint is only implicit in the arch Kconfig files.
 
-pgdat_page_ext_init() has no effect on FLATMEM. The pgdat is always
-the zero-initialized contig_page_data, because no architecture
-supports FLATMEM + NUMA.
-
-That constraint is only implicit in the arch Kconfig files. So patch 1
-makes it explicit in mm/Kconfig, and patch 2 removes pgdat_page_ext_init().
+So make it explicit in mm/Kconfig.
 
 No functional change.
 
+Suggested-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
-Changes from v1 [1]
-- Add patch 1 to make FLATMEM depend on !NUMA
+ mm/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1] https://lore.kernel.org/all/20260803134822.2568766-1-ekffu200098@gmail.com/ 
----
-
-Sang-Heon Jeon (2):
-  mm/Kconfig: make FLATMEM depend on !NUMA
-  mm/page_ext: remove pgdat_page_ext_init()
-
- include/linux/page_ext.h | 5 -----
- mm/Kconfig               | 2 ++
- mm/mm_init.c             | 1 -
- mm/page_ext.c            | 9 ---------
- 4 files changed, 2 insertions(+), 15 deletions(-)
-
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 060190e12bce..331daf7fcfab 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -390,6 +390,7 @@ choice
+ 
+ config FLATMEM_MANUAL
+ 	bool "Flat Memory"
++	depends on !NUMA
+ 	depends on !ARCH_SPARSEMEM_ENABLE || ARCH_FLATMEM_ENABLE
+ 	help
+ 	  This option is best suited for non-NUMA systems with
+@@ -424,6 +425,7 @@ config SPARSEMEM
+ 
+ config FLATMEM
+ 	def_bool y
++	depends on !NUMA
+ 	depends on !SPARSEMEM || FLATMEM_MANUAL
+ 
+ #
 -- 
 2.43.0
 
