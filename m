@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC449C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C794C55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ECD26B00C4; Tue,  4 Aug 2026 00:27:20 -0400 (EDT)
+	id 6E6956B00B7; Tue,  4 Aug 2026 00:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C5FF6B00C7; Tue,  4 Aug 2026 00:27:20 -0400 (EDT)
+	id 690796B00C9; Tue,  4 Aug 2026 00:27:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0A26B00C4; Tue,  4 Aug 2026 00:27:20 -0400 (EDT)
+	id 5A77F6B00CA; Tue,  4 Aug 2026 00:27:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 569416B00C4
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:27:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD2F7808C9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:27:19 +0000 (UTC)
-X-FDA: 85062302598.30.94E0EF4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 87AB8140008
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:27:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y0ONHbuT;
-	spf=pass (imf09.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 29D176B00C9
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:27:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE831C08B7
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:27:30 +0000 (UTC)
+X-FDA: 85062303060.20.1871570
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7688216000B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:27:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PMHqxnmn;
+	spf=pass (imf08.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785817637;
-	b=oMGQrPYDIWFyU5K8g7H4pwX/h+UmZJkAQdJpQZJVlBJqhZyrAUC5QHb5CYBdoMaJKiCYLK
-	cj7TJXVUP2CV4wMEOa1V5tvcHZk/wNgm5gVil6aDCjbyiYgvJiw8iHuT8KEzM0YLXvR+xE
-	IWz9FdDm6nj9jaVAgCYqQFXmfn9U0Uc=
+	t=1785817648;
+	b=k3kHnKCT1GyTQXCDr8xjPDWtQZThNNsdG/njDq0ayWnnZMQPKdoc+JWSPFzHt2l0rc+lMz
+	PDKBeTy1clzNSY9lKZfFDSIa2J3fjsCgtsNBa3Ej29obWulQ0kw1J+26uvbEaH7dMYkbet
+	yocsMrNeTz+QD1+/5XzSFGtk4OBsJ3g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y0ONHbuT;
-	spf=pass (imf09.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PMHqxnmn;
+	spf=pass (imf08.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785817637;
+	s=arc-20220608; t=1785817648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NWLoSmzvlWrra6TV4DFt42DXFKEy+9KqLNEl12wX4Kg=;
-	b=F5Jfa9b9UYuYfy3+xmCWmW9oqcY+JJhj9h9hCObCUU3dksXhTZneJ5xHtcwJm8OM8NowB8
-	XqA401iBtRXMaOpZGcRNPb8ayGSX38Ii9N2HirF/K2Xm4pnc3EyVgfIJ5jyga9wKUA7eKv
-	5jUv6HAoxXbjLH4gDpFEPT2V+fPtpO0=
+	bh=p+Wrj+fEG23grALcs/D4e+T/chcmptdybXX8nN5bDvk=;
+	b=0TnN3rGilSpO1QjZLwtGtIWgiDvFGnA1YCWcH+VTWqjz5qr7gjBleXUIG1l1PsRfzKgtCG
+	Ah0boE5wJLkq36w08bvz2dF87QT8Z6D1g6a5vhgS+l57KgHb6oxjXnkkAFlKO52RR70gsX
+	YbTU5zpq2ZRmcdIlQmTF2zZKz8ByVwE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785817637;
+	s=mimecast20190719; t=1785817647;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NWLoSmzvlWrra6TV4DFt42DXFKEy+9KqLNEl12wX4Kg=;
-	b=Y0ONHbuTotaUU4rMZWfx1EomJsCc+pYkdxzeCJR9CAg3UknwkYGq+rCz3RF6GqHSAhds+e
-	92qjTTXMHz0u0hAMVt4/JRfaW16mTSGt+VVXQVMA5ehUfGsk7osSOxYbB2Ic04Q44a/096
-	WgIObD6fVeCBcLsR5BIzbvIO3JWb/tc=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=p+Wrj+fEG23grALcs/D4e+T/chcmptdybXX8nN5bDvk=;
+	b=PMHqxnmnaO0GZqN1I1AClAeIrRPY4UU+2HTIex7bGHXrhpkVDJY/bzlyCMt01eIKeVmOPY
+	I2sgDZA1L6YaSTTbWUAAYZ/XByPrBBP5FCQHsn4UZUqiOUYsDvm4A2wwLvJa61zsxsIHjJ
+	q9XmkGRZ34lAnNgWxmz38pIcBcOrNl0=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-6vCnbUFlP2mJjYK4BSKWLg-1; Tue, 04 Aug 2026 00:27:14 -0400
-X-MC-Unique: 6vCnbUFlP2mJjYK4BSKWLg-1
-X-Mimecast-MFC-AGG-ID: 6vCnbUFlP2mJjYK4BSKWLg_1785817633
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5aebf128d45so282112e87.1
-        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 21:27:14 -0700 (PDT)
+ us-mta-665-g8vkwBv1MTG3uXFXUx7Ovg-1; Tue, 04 Aug 2026 00:27:26 -0400
+X-MC-Unique: g8vkwBv1MTG3uXFXUx7Ovg-1
+X-Mimecast-MFC-AGG-ID: g8vkwBv1MTG3uXFXUx7Ovg_1785817645
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-39fb3a7fed6so486121fa.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 21:27:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785817633; x=1786422433;
+        d=1e100.net; s=20251104; t=1785817645; x=1786422445;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NWLoSmzvlWrra6TV4DFt42DXFKEy+9KqLNEl12wX4Kg=;
-        b=qYa5bEy7wqqP43CZD7uHf6Qodq3iiKi55oOuMNFUNYSaeey4GaxrLJ5iZp9XWA4Epy
-         uUD5SEvpfvSakjneYIiIaTIIFY/+x34eDXyd7WF8Kz4+vQw/CIh7gLxy2fAdN82GeHIA
-         301AF8SK9XPQ1Q7HjU83wG8yiUg5BCDZvxtkwvk7kghH7reIw1u+akAnhGxMwhHeaTnt
-         rt8PiwIUnAQ8TIxD3FFL0draljEKhZEwFVFMsybylyvKkhbCFNbbXyFwFz/o2b2UxFXS
-         GWJlPqlA8s7Tzx7rVBGX+shM0bmrdVt+K7Pgy604V6CZVSwewpLuIgyqk26LcirnyX2a
-         aXeA==
-X-Gm-Message-State: AOJu0YxhHQd2k57y2oL/gWJ0s3Zl+zYKRNy5uAI0Wq2In6rCYEj9YDVx
-	TBPFQC6eaq6lvdKCKazPPGO7lippshHu+QEfbDrdJHDWGuxIelBRRHyH3MX8BAqtgrCszfRdqjl
-	VZrgd91ymqmci5SMhLg4qp58ZGmMpI+kLsXHjUAsUeCM20Fgu5Q2/AK3kIpNxDJghaOlLe6YQFU
-	dLRKLAIybK4C3e2Ei2NYyazLcJWto7EiPIp7hosw==
-X-Gm-Gg: AR+sD10+SNnfH1DqGNRTPtxKMiP9NR5C9wYBc3ruzkpHyBLEzV1FKtxEkEtzN3iNg9/
-	An7tl72JH3xFNF6qqy7IeVwzQnXFBfEm0ktYhkQn3Ll1R8LPVsz0/XybkjYS0hOYP8XcBgQ3yNH
-	56tF5o1Paud3xfzPo8pAXPsyTEJy88WY8M5TluX7Onceigl11G50SAR/dQagY+YbYQy+Aaa5d+b
-	RriTcUBsAVdNCvMLR5w9zkdVaIBKzC9qSJDbxAdM41Zwgj+YD6V+YmOy9w23i08q4LgFTC8zYwh
-	/MMROcMFNDp9h5uZHW0+id5kMcKKU1f8WwvpDc0He63Q8pAItiuv9fk5JeT6bQbw+LCOcahObMp
-	xhBp7UZD1tyCM61qJ
-X-Received: by 2002:a05:6512:6ca:b0:5ae:b7c7:5334 with SMTP id 2adb3069b0e04-5b2ee622c99mr384797e87.17.1785817633395;
-        Mon, 03 Aug 2026 21:27:13 -0700 (PDT)
-X-Received: by 2002:a05:6512:6ca:b0:5ae:b7c7:5334 with SMTP id 2adb3069b0e04-5b2ee622c99mr384770e87.17.1785817632836;
-        Mon, 03 Aug 2026 21:27:12 -0700 (PDT)
+        bh=p+Wrj+fEG23grALcs/D4e+T/chcmptdybXX8nN5bDvk=;
+        b=n2a3LB0YWUVdK+8Izg1TpW5QiD5/iJHPKPJW9KfZ+VVZLzJnu6B2Yi/s+pqhQ5+B1k
+         L+6CHSDbkbzPRo2oJbXfMcJjqLifP/Brpa+/jCSpS29EIrQYmVzkIyZVsRpgLgr5bsf6
+         XYRHAcAkB5fmOJDCxcup37xosBQI8KZKQvfuXFNlnvnCuPJv00Zidea1tW2iW1mYy00e
+         yC3pNbRa1UXaEz0GZg3iRJhYRk2wSKggVdNjhQlnyfN5oLxErMcjfyLuG8Q5CkKYp944
+         5b63NNvXEDIxNWL44u+fLT8p0GuspnGNWPyB6p+FfkmPgh0zb9VgdG4JBpPrSyZ21QAR
+         zqwA==
+X-Gm-Message-State: AOJu0YzIfiFDxMxP1CDdWpXA8WKg65afyYNx+8gk7d49vSIMXpa7FE5y
+	JJFW0H2CHREC/B/qpPbLDyoN8Z9quytfxLHDhjLwF9wgO+57zRdZ3RxyUi7jmRM4TvixQlQhnv1
+	PNiDoYcq0I8XXpf2LX/ytqxVLMQYoCAVu+k3u+kmVptTnYE87k2ssjPXuTk+Mv8aLQIgNmQvi/F
+	aql0huuEBF0dv/wo1u0rqBie2GcF3D3xk33NnraA==
+X-Gm-Gg: AR+sD13wvldaVDlDryVVAJiakM9uV/KK4az9RwCVU2SWXAXZFhIYioutBzvOsHsKULT
+	xJr7eePAImxN7N/Sdlykt7Z/7iJE31KOS9cyRhwdZZn/UzEXYTYw/K9pIEXSls6/NyBEeUHxUqt
+	A1W46hvkUt6t0c1aP09rk2jd5wFW1LvHILd49271gcRjwkSG07kowgONIXreDqa7nEDSBk8UNkI
+	pPJJLssjGUKW4AFO9tgsro9Eg1C5hOGuEdRWE/yyMAByyHC3rizvzscX4MajL/PkSFJrBDVMxwf
+	CzcSoYWuRC1PbYnWxmVcJGrcsGBJap4K0Q4YIbXvq+Fhb6Ladve1G+kiqho/Hya65Yaqt0gzvzy
+	mEXJWNledA4GvkqBx
+X-Received: by 2002:a05:6512:400a:b0:5b2:aa73:ea5c with SMTP id 2adb3069b0e04-5b2f282e27cmr151477e87.20.1785817644659;
+        Mon, 03 Aug 2026 21:27:24 -0700 (PDT)
+X-Received: by 2002:a05:6512:400a:b0:5b2:aa73:ea5c with SMTP id 2adb3069b0e04-5b2f282e27cmr151455e87.20.1785817644120;
+        Mon, 03 Aug 2026 21:27:24 -0700 (PDT)
 Received: from fedora (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2e23c46c4sm2311351e87.17.2026.08.03.21.27.10
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2e23c46c4sm2311351e87.17.2026.08.03.21.27.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 21:27:10 -0700 (PDT)
+        Mon, 03 Aug 2026 21:27:22 -0700 (PDT)
 From: mpenttil@redhat.com
 To: linux-mm@kvack.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -118,26 +118,26 @@ Cc: dri-devel@lists.freedesktop.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v13 05/11] mm/hmm: implement folio split for migrate needs in HMM pagewalk
-Date: Tue,  4 Aug 2026 07:26:25 +0300
-Message-ID: <20260804042631.2175585-6-mpenttil@redhat.com>
+Subject: [PATCH v13 07/11] mm/hmm: migrate collection in HMM pagewalk - pmd level
+Date: Tue,  4 Aug 2026 07:26:27 +0300
+Message-ID: <20260804042631.2175585-8-mpenttil@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260804042631.2175585-1-mpenttil@redhat.com>
 References: <20260804042631.2175585-1-mpenttil@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bDFykN2Zd9jGFeBHW8OTfyQSTDe4jcHN7phzcweor88_1785817633
+X-Mimecast-MFC-PROC-ID: 15h3DPnOsv4o1OITSAtXRFsQWPShdxS3Sj_Zg5Q_RW4_1785817645
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 87AB8140008
-X-Stat-Signature: 6jks7xq6xytps9oo9beemb6qygds94zq
+X-Rspamd-Queue-Id: 7688216000B
+X-Stat-Signature: 64q7yuosxgq4yhx53b3ay3kdg3ay1snb
 X-Rspam-User: 
-X-HE-Tag: 1785817637-819840
-X-HE-Meta: U2FsdGVkX19v1LY1bGWi6z0G0AnPZMccDMn1xtkTqHmSN3/DCgyjc4jPqQMjEdwhYmPVFGJxMUD6O0aB5unwztDqX7xWE0q7onxeyprK1JpcNGzuFHHy9GrIxgEcHd4QwD1H63GAiWHvJRWj8nnu5C/iG4GgOJNDsWRle2l1y8KnteJ49NZ1SEomIfcjMG17DW4davKsGMOo6bX/NrBCA1BwQr59RDfPwMjV9Oc77szZzFH2qPAT323kW8wbTD95D1pgyFT4RfK3K/IYZd5ucRVfW7OPnpJSgkJiEKhXMWYAc1tIYA/GREYD2gx0YAPXbXOFzMLTcJ4jZvGTojxVs8Z7qJRqRE6Je6YNnnRuyk2NNfGKZ+hM4fDf7HRlo3BRmdtbqxUKAWbW8nmYrtNnjRFo9mudY0vDRy3URO8+PimhqULT7u29uP5IPG2xgE0yL9EYzMi57N8RiV/ka8OxzlsJyRLjI8WLmbGQLJ9lfeMIL7YeBN9RqO+ZJ+bAtSOY97kpwLZeqTWKaN3WkSqMTrWH0gqgyaV3LhK+YyjakADBpG2YRqaX/PHlSRXYe4w3SVv3wFdOPn21TvRbbAx3TGF6Sjmp3WRamHmko328Wf8INGPEWRCAG1Eg52VjSVIpqOjhVlXGHMR7FQIW/Ig8P2bjFpCFhfK28srnzhatDhqkViFCLczOSHBMKBzcIZGrU11DQCDzIUNNcPjLdCMpCOBOhINuT3/W2iivKVlWvAVQLcA8lTRQBabohYi9jMpcO7PrTrgBzD5W3QZLoDmcmOYyzVP0mR3mW584pr3NrxLJYrilTQOJnJXEf3MmRH+X1rUlwu+Ixeq9rxWcUSQTPEjggxCmMt8igaUKD8VkCJlzVwXEABcrfHo7EWBY8x2/ItN8TcbtibJsQRpd2xRM4whzKbSs55brgM2PSLAS/iOMiDT0vvKu005UJl3XB9tInbOwaR1W3pe2VoAKRgo
- JSNhEmb7
- SgHGWgRT9a3SwfXgr8XsHFcKCbEO9dgPNDiZJPw3FOtVNJ+pDbKSqjLeNYoUZBBoG2ekQZmd33l6Ti2HMDCK7033MBQfPsonx9BIK+VdWD7lq8JaNYM+VGL2HUVqOAqJM1hxDNLrBy7cnQvL1CZEoNMJeHib+noD6xqdJvDl5fL3SUHV+Zj+WKeoF3NEbPBfUSxC1DIXSx7b2XsUAQ4g+UYW1oxmCw8Fov/yFXKGeJovKvdUEZlzIVbc2w/QyvQuAKYDwoBqYKSi6M166d+NYEfSOsYlJ7HnVxscxJ0IIGo1xVgk7j4kT0huqE54lJ3CjLZIH/fXqnAGzvocmPf2K30xG74y3cQm4U/C8o9ERUf7ha+JYE+p7fwSxcsqvgMdfZXyplPJXLTK5p1DbXxhumhglw6afgzPmDrouvTDeACZxXDckOUASI87dwP9dzw8URN+lbdy2qzufhrRHm61/IdB8xVG7ElrbHdzzmq/UOQ98pb0=
+X-HE-Tag: 1785817648-179659
+X-HE-Meta: U2FsdGVkX1/ZsLG+0JrH/Cpkb+a0KXTPo/lWXZ3pLCnLAXQXSlhydAS4mEWEsU0ZuY62AUFg3Y1lb3ymNiTJCHJtC3xx+H/5/PC2j2SS5mBJqXKdMVax+mIiJfMvrNp0mHHZ+EtF9uQCZp0t+YEkG8Yl6qrXiGdyBHEjFG1eQHS6hLDprxYlPBKs5Cmx2XCSdbsWw14dG9JUOVgL80TtpSrrDIbGODnrIsSZZ87ennGpJPvTA3B6HGTP5HRpy157yb/66LZQiOsskbt+i89A8kkNMMOniTjvsPp2IIdrWNKssKfCIH0jZtcagapMAjmuf/pdVqyx67y0OLvqTQnTNsIfZZkh/WcGp/8nny1MgAP12rDe80JAPHhtVqvgdPIrdrf2AFCP/s8ProhnwVegVqVvC7nDMcqSCUUuVRK0jruZgXyKTjubhvb3tj1dRflDHK80vbyGYUFJj85rTpOFNPe2kWy4rTOoDM3t2VbMWRURWmeWUCO57pluDNrZAR8dgMBwQcbR2Lx6Fd11lzNtUNK6gOOv0pNBpwrhrwljTHXPlMw4YPV5SmYzOW0wfB1AghbyhbH8YeIch5Al3wTk1jNAX8dV+sKsYUU7vjtgHxppoDjikFN4FqSX3R3vp4osTgQwEgt2XTSg8Lm4Malzu9Zcojf1XMlU2MhQbqbbaaebgkPgcfg5Bqm8HKwmXY0dCgdAOBNlU6o3KsBnPQ5XdZ8hzLfK2Im5QmaOoc4fyJcwsECnw31I/TMQAx8uPbmrFGtHaXh6pIz79ryoFjVky+/EKnW0R5xjoJSCel7T+KJ3zDKijPVEtYycE7RfV8BLV/j4A2GF9kMk7RawaRk5C5HDZd2a1mM62yQHS4OMPP30J0dYwWvA+ktC30UIySANViXvp9/LdZ+jnM18w6fVC5hHKPcOgkD4VPuyAcgA7J7p8CBzisBPp/27YbzFRhOx3fySt+zAK+jW+Gi07Bb
+ hADAEOpG
+ +vhA6FdMExi6Uw6MiEe3tPNOWDkFkY2sZNIApH/PCcaBnzW1Aq6Hg8m82+j3P5GbgNRhURpEiaeECDzfdHkHcZYtNj/DcrZSgMt8IPd+IhpUa3nhGllCLT0HfesvpMb1v5j/36nMrV+lVezl+3f6WRAHfHz0fe0mw5E+7lRTKNd4hTnbyn5EFNJiTT/42zLTNKL9Diz9WcnRNOTIafysZttTsp+hqAXvFmT9ZjKnE0BYwCrY9B6/1AxUR9maJmo7RkEkz4VsnoaDojxiVJHuQ29v31HF1uZOswGgSy6idavZhpGcri8p74Og5glxQwTa7SgEmFSUyAQSMNfOs12Dk+k9kMKmIY6q64wK1KvYzWFPdxpvmiU3cwClWfpDjlB7Kr92Iv/Zthj3nDrziOtztiCljCmlitjiOifd6PjA6t1LJpDm1Ty0YkZFKeK/f7X2Xgw//jrCp12QiQNcUu83vulEFA+XGR08IPemI7JpVI0uUD0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,9 +147,18 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Mika Penttilä <mpenttil@redhat.com>
 
-Implement the helper to split PMD size folios during pagewalk.
-Splitting is needed if the start and end addresses are
-not PMD aligned, or setting up pmd migration entry fails.
+Implement the needed hmm_vma_handle_migrate_prepare_pmd() function
+which is mostly carried over from migrate_device.c's
+migrate_vma_collect_huge_pmd() function.
+
+With HMM pagewalk based migration, the idea is that
+hmm_vma_handle_*() are responsible for faulting,
+and the pfn collecting part. hmm_vma_handle_migrate_prepare*()
+do the migration decisions (with HMM_PFN_MIGRATE), possibly split
+folios, and insert migration ptes/pmds.
+
+HMM pagewalk based migration is enabled in later commit, for now
+now hmm_select_migrate() returns 0.
 
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Jason Gunthorpe <jgg@nvidia.com>
@@ -161,68 +170,116 @@ Cc: Matthew Brost <matthew.brost@intel.com>
 Suggested-by: Alistair Popple <apopple@nvidia.com>
 Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
 ---
- mm/hmm.c | 47 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 3 deletions(-)
+ mm/hmm.c | 96 ++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 94 insertions(+), 2 deletions(-)
 
 diff --git a/mm/hmm.c b/mm/hmm.c
-index 75e19be6ef76..3621d1df51d3 100644
+index 2d902b8bcd58..61b9147fd8ed 100644
 --- a/mm/hmm.c
 +++ b/mm/hmm.c
-@@ -511,10 +511,51 @@ static int hmm_vma_walk_split(pmd_t *pmdp,
- 			      unsigned long addr,
- 			      struct mm_walk *walk)
+@@ -549,8 +549,100 @@ static int hmm_vma_handle_migrate_prepare_pmd(const struct mm_walk *walk,
+ 					      unsigned long end,
+ 					      unsigned long *hmm_pfn)
  {
--	// TODO : implement split
+-	// TODO: implement migration entry insertion
 -	return 0;
--}
 +	struct hmm_vma_walk *hmm_vma_walk = walk->private;
 +	struct hmm_range *range = hmm_vma_walk->range;
 +	struct migrate_vma *migrate = range->migrate;
-+	struct folio *folio, *fault_folio;
-+	spinlock_t *ptl;
-+	int ret = 0;
++	struct folio *fault_folio = NULL;
++	enum migrate_vma_info minfo;
++	struct folio *folio;
++	unsigned long i;
++	int r = 0;
 +
-+	HMM_ASSERT_UNLOCKED(hmm_vma_walk);
++	// Do we want to migrate at all?
++	minfo = hmm_select_migrate(range);
++	if (!minfo)
++		return r;
 +
-+	fault_folio = (migrate && migrate->fault_page) ?
++	WARN_ON_ONCE(!migrate);
++	HMM_ASSERT_PMD_LOCKED(hmm_vma_walk, true);
++
++	fault_folio = migrate->fault_page ?
 +		page_folio(migrate->fault_page) : NULL;
 +
-+	ptl = pmd_lock(walk->mm, pmdp);
-+	if (unlikely(!pmd_trans_huge(*pmdp))) {
-+		spin_unlock(ptl);
++	if (pmd_none(*pmdp))
++		return hmm_pfns_fill(start, end, hmm_vma_walk, 0);
++
++	if (!(hmm_pfn[0] & HMM_PFN_VALID))
 +		goto out;
-+	}
- 
-+	folio = pmd_folio(*pmdp);
-+	if (is_huge_zero_folio(folio)) {
-+		spin_unlock(ptl);
-+		split_huge_pmd(walk->vma, pmdp, addr);
++
++	if (pmd_trans_huge(*pmdp)) {
++		if (!(minfo & MIGRATE_VMA_SELECT_SYSTEM))
++			goto out;
++
++		folio = pmd_folio(*pmdp);
++		if (is_huge_zero_folio(folio))
++			return hmm_pfns_fill(start, end, hmm_vma_walk, 0);
++
++	} else if (!pmd_present(*pmdp)) {
++		const softleaf_t entry = softleaf_from_pmd(*pmdp);
++
++		if (!softleaf_is_device_private(entry))
++			goto out;
++
++		if (!(minfo & MIGRATE_VMA_SELECT_DEVICE_PRIVATE))
++			goto out;
++
++		folio = softleaf_to_folio(entry);
++		if (folio->pgmap->owner != migrate->pgmap_owner)
++			goto out;
 +	} else {
-+		folio_get(folio);
-+		spin_unlock(ptl);
-+
-+		if (folio != fault_folio) {
-+			if (unlikely(!folio_trylock(folio))) {
-+				folio_put(folio);
-+				ret = -EBUSY;
-+				goto out;
-+			}
-+		}  else {
-+			folio_put(folio);
-+		}
-+
-+		ret = split_folio(folio);
-+		if (fault_folio != folio) {
-+			folio_unlock(folio);
-+			folio_put(folio);
-+		}
++		hmm_vma_walk->last = start;
++		return -EBUSY;
 +	}
++
++	folio_get(folio);
++
++	if (folio != fault_folio && unlikely(!folio_trylock(folio))) {
++		folio_put(folio);
++		hmm_pfns_fill(start, end, hmm_vma_walk, HMM_PFN_ERROR);
++		return 0;
++	}
++
++	if (thp_migration_supported() &&
++	    (migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
++	    (IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
++	     IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
++		struct page_vma_mapped_walk pvmw = {
++			.ptl = hmm_vma_walk->ptl,
++			.address = start,
++			.pmd = pmdp,
++			.vma = walk->vma,
++		};
++
++		hmm_pfn[0] |= HMM_PFN_MIGRATE | HMM_PFN_COMPOUND;
++
++		r = set_pmd_migration_entry(&pvmw, folio_page(folio, 0));
++		if (r) {
++			hmm_pfn[0] &= ~(HMM_PFN_MIGRATE | HMM_PFN_COMPOUND);
++			r = -ENOENT;  // fallback
++			goto unlock_out;
++		}
++		for (i = 1, start += PAGE_SIZE; start < end; start += PAGE_SIZE, i++)
++			hmm_pfn[i] &= HMM_PFN_INOUT_FLAGS;
++
++	} else {
++		r = -ENOENT;  // fallback
++		goto unlock_out;
++	}
++
 +out:
-+	return ret;
-+}
- #else
- static int hmm_vma_handle_migrate_prepare_pmd(const struct mm_walk *walk,
- 					      pmd_t *pmdp,
++	return r;
++
++unlock_out:
++	if (folio != fault_folio)
++		folio_unlock(folio);
++	folio_put(folio);
++	goto out;
+ }
+ 
+ /*
 -- 
 2.55.0
 
