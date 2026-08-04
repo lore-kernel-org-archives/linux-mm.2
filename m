@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81377C55184
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Aug 2026 23:57:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 807CFC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 00:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 701EF6B008A; Mon,  3 Aug 2026 19:57:54 -0400 (EDT)
+	id 7CBE06B0093; Mon,  3 Aug 2026 20:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1C26B0092; Mon,  3 Aug 2026 19:57:54 -0400 (EDT)
+	id 77BF96B0095; Mon,  3 Aug 2026 20:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C8AD6B0093; Mon,  3 Aug 2026 19:57:54 -0400 (EDT)
+	id 69E3C6B0096; Mon,  3 Aug 2026 20:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5586B008A
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 19:57:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9B39160854
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:57:53 +0000 (UTC)
-X-FDA: 85061623626.15.486C85A
+	by kanga.kvack.org (Postfix) with ESMTP id 496A46B0093
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 20:01:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E090216084A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:01:15 +0000 (UTC)
+X-FDA: 85061632110.05.D33DA03
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 35CB940007
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 23:57:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XcD4DoDJ;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4485BC0014
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:01:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlBFQwNa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785801472;
+	s=arc-20220608; t=1785801674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZmYc75+xUIj1m8RE7awP8Cx8x9wPSvBtIIHehJ0UPw=;
-	b=OFPuO6tshNDXGYL9i0nc2/kWyGV3awt2rnweGs5W/y39doJ5rCxHZrj4Q/2QCN2fsrk1nQ
-	EW9jlesIRTqElkNc6IJk22unqW33eKIsgEbgaUo9VLLXI4lFWvXQaef4Werd9TBticKjvK
-	Ts5gAHQhB3cNVgo70FsjJ3z+DcmA4k8=
+	bh=SrYwbPOy2yIk5FHEvKwglgY2XVDGPUlhU0jiXIg5xrg=;
+	b=InLBo+9wZzX6D/xLkSlBa1bNcIQo+HCR95qTFrw5pETJYGEp1Y/9pkraF9bySzlEAjhD9/
+	j8zsM8m+RA+n8KR2kU2j/47CKdXR65DFB/4EurnC52Js7PSnFUvIEB6gBegmTWBe4J3/qM
+	5kLr6iOgIPHgCl6kRLx1L99kipUToms=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XcD4DoDJ;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlBFQwNa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785801472;
-	b=WOS1tj137zpIJvqMDzSTstFjMEFuql+EGzFc9Oqwu+f95FF8pj1vTwKGL+ItCJQFDHuoYJ
-	mhpieho+yJLMJZExwsIsM0YwZIW7D6f0f1g9B6in3dpueO3c+TK8zMQeNybXG3YaG0daEm
-	amfwlmVx344Fa+SSdm2I1ZaaSxmp21g=
+	t=1785801674;
+	b=fGpydqvC/DIVVsaOaGkCGr/WOS5/F0HDnYBpazAsdh+Fhg+6Rpy/QCjuhj6CGO9nOhheUi
+	EZOWyPk6UfPgzAdsyMqF4StwaIuvYTmZKS7WnvCe+8ESMHPnvyvvdMa/YaVcLNigPLh83B
+	+3ssdHCR1QA4cE4ol0aOyJk1QHps+jg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4068843F53;
-	Mon,  3 Aug 2026 23:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F751F000E9;
-	Mon,  3 Aug 2026 23:57:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 586E24323B;
+	Tue,  4 Aug 2026 00:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7141F000E9;
+	Tue,  4 Aug 2026 00:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785801471;
-	bh=XZmYc75+xUIj1m8RE7awP8Cx8x9wPSvBtIIHehJ0UPw=;
+	s=k20260515; t=1785801673;
+	bh=SrYwbPOy2yIk5FHEvKwglgY2XVDGPUlhU0jiXIg5xrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XcD4DoDJ/afmjHhO9gRYV15U96Xfhh/5gguJGfPtTRA4iznd979IRwH3Hx7OeCucr
-	 ldSt26dtSUl6O8cY39bU/XRe6Vm9L5xDcstWGUxWOKQlwFh3M3s6kpU2saae7edste
-	 LHu99zPrhWrVQXEcfJaFpHz6OYNXCESV+4TAOvrlf6WKb1v9TQOL8K8FfwpKX7xjOH
-	 AMNvPY7Da8Dj+dNgC3FUjPJpPsonSrDm4mNq625X/BtZajNVqMKhXcCbL530B3yVGk
-	 pSxq8PcesGxXRXPPnbYdBrnoxLWUyQk2KagZHHlKEJm80fkLkshUTQaZRaQneem2JK
-	 SPuDAeqiHDPCg==
+	b=IlBFQwNaqpm7L669/HlLVm5IY7RK+ZyhVhr2wlWZcfE2ruqfov3HOSfpBdMGygSEL
+	 Mz5IxyTYcIE6mmym7kFHlk78ECyss49H3UmlJs47PvjVEABPcuZonRYiaIXkz7wSgY
+	 vNxxceaNwYYZHRCewK1dgDKvO8eKikO4KniSDCr08v6CMzfHQgqbUCR55bMew/oOj7
+	 LlZqfTJusXGFaiqbWnp7uKq9ObcF8BDR1KyyztH83FOQCxN/dblA4HlOG9qbFGUo1z
+	 nN4wttmEw/3SMvdeYuH/JFNGblzW7mLMi5693/7fHWMEvYKgw1a5DTC2kJPAMpHDnR
+	 Q6JoNH1Nk2H/Q==
 From: SJ Park <sj@kernel.org>
 To: pratmal@google.com
 Cc: SJ Park <sj@kernel.org>,
@@ -84,22 +84,22 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH v4 1/2] selftests/mm: rename local_config.h to local_config.h_gen
-Date: Mon,  3 Aug 2026 16:57:42 -0700
-Message-ID: <20260803235743.87939-1-sj@kernel.org>
+Subject: Re: [PATCH v4 2/2] selftests/mm: use pattern matching in .gitignore
+Date: Mon,  3 Aug 2026 17:01:03 -0700
+Message-ID: <20260804000104.88098-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260803221732.3651981-2-pratmal@google.com>
+In-Reply-To: <20260803221732.3651981-3-pratmal@google.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tbg8y91qa1odsdt4ezkbuw3uy9q7rdcq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 35CB940007
-X-Stat-Signature: thn1e8km5j3kp34fo9s7tz5ygzzdssd5
-X-HE-Tag: 1785801472-293667
-X-HE-Meta: U2FsdGVkX18fVmm64rnK1wHPpYOXeahqZF4yPAd0xmo1njJVEVWloo/svewNC/Dg+LC2wS+AoQuHj68GKIIrehergZUoDmTlDGzKpVHGGwB6CsMGNVNBrxh4dF93UDMVsQLFWCrVD3Vgbiog94kOMf1vIZ/5eEoeTHZW1eaFCqlUH3K52TqFJd5Z3Ab52PsZVckLYSChQcRsPArDRpHFAjzaLNxgkmS7c6UHzeXEoMaKEq0dp4hhqIT/jINRK93SQIGJm3+wqrZuwcyMR72f363PkE5EvX1aXl/WMTIF3I73J8bUPXav5pI/d/Itm4fJGap5Y8IRry7hbRBxR+RS5QMXUotSyVjYSuCL1oJOWS7wM8cu8jT723mDfhqAxKjwfPG34/lzyhoWsGxedRkYOfluUGhr8Dz0U5hc+bLnCftzoO62iZGk0NZrsX5uFqvWTqFbjkPqjHcaa6ct5KDDti7p272vIHaUpMWMyP8/FpG/resh71umpsmmaRf6pgCwnk+zftpY5kbnZt7s0kBZ8xum8iqHm0tzrPyxfU9I87gRPBJUeKGGGEec8+VAX8gzN1bKgYOZbrQ44R0qpcDwIC504V3DQoSqGDqf62vPtckEeaCPdvF2bjT6N1kHPlqTKQiqeDGAaQam4urYegk3ZhM16cSEMNzYtXnBo6e1Jh4Rg029tQ28+I0vnEpiQd1HvFwllV4sNyRnS8Lmj/KZv7kB66ygR2T7xH3dxQfFK3nAq0WIzO36WBUbFjrJyviFqZxOI1E11M2Y9biDtujb1ncOpWb47HUfKGBcfy/dUr/tMcF9vU3AN4pMha8nGebEQNqN064FPrzhQmgQwOvKlOIrTPkkoPlmLONLaommx9T2mJYhocsk1r9NAe0408vPUxGe8TMaBPXdQ2uz7Ef9Ptopn7lhKfg4gtRRofMo8JEUpqu5S1yBNdz2rIvrAw5fMT7rymCIjIdjz0eB1sF
- Onwz0Pam
- upBTzB5Pn+9XpGjjSrtu0jtsdx7KabgKZb4JibsvORF+6M2L1STezMqNW2rmCUIel4qO9JLkyT6Ieo0CAlr5MDHb3IhFn4f+nKaWFEdC4lt1ASSp1uSxQ5cykeZHBAxhJmSQN5Sdl9aNhrY/4TNUtRzEw+27cERwBRNXJh6d0Q6eYR8NfLxM1MgwYC2AJ51fFznAmSC0zGih5n13PSx06NHhhgqkdBwGqmQm1rv0i1oix8OcJDJr9uKC240CMTUVcOeCvr99wnKEzhKnt9lh2cDKGD1PowNojZw612EjWbwMCyMumu9wuQkTUvGNVRjseKCwMA11Hwyc8RVml6B+xuxlsc25dL/4vWPiVEfrMBfq1o9SHsDWmRPdnKYpIN9JTRCMU
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4485BC0014
+X-HE-Tag: 1785801674-684749
+X-HE-Meta: U2FsdGVkX1871gjosCo2yXAIJXYpPUr4M6BY3sAWRKA4rWn+SCNFC354KUvWU3nAeCd0a7JGasqFp6JoTQ4Xqji+LeeMl3/O3BAM6mCff5+JxzNNHDH/Bhrp3FppPxUoZfvVzaSk9K15FcfxURWWEgS8OJQsr0OI5oDC56FSXtWzqmISlik9oEogJga9HZEAKMp6gGcoX24JfoW/geP7RBsZenPJvjXZDyuoTikdxZSsvAtcZWNvsgzhj+zm7jJxxupfKib9GDHScl6m788PM6skYMnqM/SRXHgOt3UoZbPifXHdao7uR88hXvCclxpa4cA0ZnKc1N8vPjtIJiQkKYOeCzHn8pq+B55QAQ3CvUNB/bxr0mNQDvVoyrbKrEE9FklwzLvRL/MxU2a21NmW+9Gx0Elq+oG8rmTQ1fvw4UZH4/P4bCjUGi8j6frDPYRadqxxSkqMlnx4DCiBepgTl3eElNYBNVJhMTtJbWuEAnFxAqaBwDzUT6tGgxeFO/MXBCtOOj5f4VGKBueEid/PYICZ6uWvNHWcpo05OiiBYaNNryGc/vuUxG6e8pwUdvaqdBZwVkpe90wOqKZTaQ0p1gDYD2L4dayW/E0kSowbX8iulXJS23ffl27IuRZtiEJSndy+JGKKEonmHtWYSZvN+3p675DsE+FDR+Qd111Ut3hfGgQcOfheJxugrMlW7AjTRenLLv8uMtOV07nwVWR1RhfWpwEr3H19p6/oy9Zy6pZafwFE8UlJNSNn+fXX61u5Jolz6xPH3lZ3fv1luxR4K2Vv4NG/fL1g1H3Ca93o5SGUvPmVTvCyhTI9NbHlKUF47H1GAcTnr1nqcdLPCIj6IvUSRK0U13lsIEaDSES71OQTPYeSVaqGJHHw+y5wWVqAlFW7zaE9lZJ8qW99o/fjjf/8XhQwkFvyqbpbkTdgBu0PvrAlZthdoyBmX62GlPQhVQxyWGxvQqQChmLQMaC
+ NmfwMqJ/
+ paKGLoRD8vM/TVCjc+YWNIjya1qHFeZDetUmV9tBPxNLo39Slyel/8rO96+CjVZE2oM9D/eoJTOk/uvu/1xQBn08RDTYNqFMBS3wKdKzQ1h7RxEzDLkUpLOtV1p+vGji3zAhgXt1ylEoOXjZIZOzCPmyOmgjQTUZbkKQrPMr+WQTfcNxwCHlcgiolQH9s3E+yS7d/5A57JQsc8w0+fdMvPkG5GYnLUuHRu/N6aGlbFXLSINTBwqhvngTeb14SrYKacGsSrJ1VYtLT4oMsMw5r2156ZfN1o3hOUatbbpgY4deFk7BKcLGnWtZknKEkruxaEw5U2bWCHRRFNJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hell Pratyush,
+Cc-ed Liam's up-to-date email address.
 
-
-My recipients checker found you are using the old email address of Liam, so
-added Liam's updated email to the recipients list.
-
-On Mon,  3 Aug 2026 22:17:31 +0000 pratmal@google.com wrote:
+On Mon,  3 Aug 2026 22:17:32 +0000 pratmal@google.com wrote:
 
 > From: Pratyush Mallick <pratmal@google.com>
 > 
-> Because local_config.h is a generated build artifact, un-ignoring all
-> .h files in .gitignore causes it to incorrectly show up as an untracked
-> file in git status.
+> The current .gitignore hardcodes each generated test binary by name,
+> requiring updates every time a new test is added.
 > 
-> Rename it to local_config.h_gen so it no longer matches the !*.h
-> inclusion rule, preparing for a subsequent patch that switches
-> .gitignore to a pattern-matching approach.
+> Switch to the pattern-matching approach similar to KVM:selftests.
+> Ignore everything by default and then allow source extensions (.c, .h, .sh)
+> and tracked non-source files.
 > 
-> Update Makefile, check_config.sh, and affected test sources (cow.c,
-> gup_longterm.c) accordingly.
+> Note that local_config.h was renamed to local_config.h_gen in a previous
+> patch so that un-ignoring *.h files does not cause generated build
+> artifacts to become untracked.
 
-Looks good to me.  Thank you for accepting my humble suggestion or reordering.
-
-I found this patch cannot cleanly 'git am'-ed on mm-new, mm-unstable and even
-mm-stable.  Maybe rebasing will be nice?
+Looks nice and smart to me!
 
 > 
 > Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Suggested-by: David Hildenbrand <david@kernel.org>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
 > Signed-off-by: Pratyush Mallick <pratmal@google.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/.gitignore | 71 ++++-----------------------
+>  1 file changed, 9 insertions(+), 62 deletions(-)
+
+What a lovely diffstat. :)
 
 
 Thanks,
