@@ -4,122 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F6DC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DA9EC55838
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:15:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB01D6B0108; Tue,  4 Aug 2026 11:12:40 -0400 (EDT)
+	id B63CC6B010F; Tue,  4 Aug 2026 11:15:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12896B0109; Tue,  4 Aug 2026 11:12:40 -0400 (EDT)
+	id B15016B0112; Tue,  4 Aug 2026 11:15:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A500C6B010B; Tue,  4 Aug 2026 11:12:40 -0400 (EDT)
+	id A2A636B0113; Tue,  4 Aug 2026 11:15:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 77E156B0108
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:12:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E10561C0102
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:12:39 +0000 (UTC)
-X-FDA: 85063928838.14.022F1C9
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2A827120010
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:12:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 76B2A6B010F
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:15:17 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE844120215
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:15:16 +0000 (UTC)
+X-FDA: 85063935432.05.770FF8B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1E35D120015
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:15:13 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sNNMoak+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=frHzcpl4;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785856358;
+	s=arc-20220608; t=1785856515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m+EEI8OmXFAV5iwPGEDdFyR14Opwttq92Jr4Rn38Aqo=;
-	b=vn+ifu1PRVioJbAOH+FliNqSYnFIsenAn1BqVe+d/YibtYKlWcVKAPvwcorkpeKeJuZwse
-	yQj0rerrfod9XMt7EcUewvH1Ni0XPSi19LD8W7BR2WHTwqqD2YB2P50w/jcP/nVM/DEMaw
-	6Er23y2uaSRZ2I2emywqeAHqRbny6gY=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=1884uuM82Be+Kv8zXAI7cwWYT/kOQrlHum6RIRg9KRo=;
+	b=iCZPr2eorP7EBY/5cizDU1tAu3W//kzvYLKIPH9/fBHdYmhZY95qz7A5j0fgFHcpiJRAJf
+	SHkgK2RPrbInFuxS19eUciF1lc6wD6lJh/QXksS6ftjTzEaB7SbS0sbo1dOTCz1J39t8HV
+	v0CEU3rqgpnGYQuxOJr5NIFebHTNKaQ=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sNNMoak+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=frHzcpl4;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785856358;
-	b=gxqhDqf0bBHZ5I7Vpvd77i+sqhwxMVvjgz9Ppt35+GG/Ai3ZcnJyP2HbUF5JZZ74Wd9QK9
-	h8cLJEOD1ByDis5/MKb94+IBTUXkDfY6XTVWLl+7Jr0UI0knXBHaHhaNWarCyHnh4vx4Ch
-	yBCn7nV+MoQu3ATxuIQETMpStkO13GI=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so2265373a91.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785856357; x=1786461157; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m+EEI8OmXFAV5iwPGEDdFyR14Opwttq92Jr4Rn38Aqo=;
-        b=sNNMoak+4zbsJDObyLf4BT01hgbRmVI8D8FvSskt+pqZLQ6r1AJYCdc5QpNSoNQqxG
-         RVcakyV6AtluJ4Z2FH1olKRnymCxw9bRSnbLaN67DffRKcr2a3WQkRV6i3m9/qCeIFsj
-         0RJMgtiM1QgeDqPHZ9n49WNRzWG71lbbmCXOqwldAxEVNLRgBhMLQOIpO/UIyhHFp22g
-         XsZrt7HVAbgtVh5T1srh46Ce09kbMabIHYNJM4vAqxTaRovvLGcGpAbf+HG3HZaIYeSV
-         zJ97fCnVhzmYNiOZMeXY339wXAKoBUauymNJRWEJjRWHBRErRxaTVUZ4dPu4cGU4Urf5
-         RhoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785856357; x=1786461157;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m+EEI8OmXFAV5iwPGEDdFyR14Opwttq92Jr4Rn38Aqo=;
-        b=I2pwM+/clYregdGO6o+BCqIzE2gJtv6VEDhd8F5MrES3Vtads7HtZeIWrX53/Kz+pn
-         3BMvl2C+d+OUbmuCZqbf7Etn1CIRrR/titsdH0wd4uXr6deUoDH8xvVp2sLjLC9OdC9S
-         VIcju08wwJTL9x36iI5FCDT9VvxX92loJJca+x+PGzkdJPHVhnjUuvODeI/vPxed5D5S
-         NDkrPmQZGe0wCc33+qdVGSK8Qm8ZcC4D/2vvARy5fW9sjI+GF3Dmyfc5BSDc+sr72IJr
-         gyeUX5qdZU9tunf2LR+e9KnGI3AWxxW/bMyCnU1bAzUoFHRW2wKnIBhw6/rig73iSGQL
-         Vwdw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq3RWiTS7lFKA+I3rkl7TlaI4srpdP03al1f4qZJIujM20MNkY5Po0O2zzBEN/w9HPcgqahsZFeSw==@kvack.org
-X-Gm-Message-State: AOJu0YzpDDhaMw8YGpyFHZYrWSEw6giBIHaN5UsusIRoSJIUcslR3Fg3
-	sljt42OkuRchQfG/uzA/LUoPzsMWIH+eKlfN4kqdN7WfjS6l1fe/13F2
-X-Gm-Gg: AR+sD13rPMBCV55FKN0I2MV3ke7V4cb0Z4jyzfGE/e2zkcfUHgA25Z6dmVSKsCcyHvU
-	f4DOLA/WgExiA0oFMkrebEIPYK0KDBF+dUqyaCPoaOWUdlycCW4UDSTSetl5xJ6AEiEuuQZY/g/
-	ZC1jDItL45dDuOnUSr2jClWoh98ixhrgf+tUlIru7aQxiFUI+l67GKVCGHVpL8wJGF+WDShlejZ
-	D6qaye9Uz/QOIGdKuUbper2LawZ8jGA5wI+LWkmehYlT065AzPeRmakZhe408qA0dynSV2tA18H
-	SAYiYtaTbSYYUaIOyIchEtd+OdLJP2oS2eTpqCemnW0jd4nG1DY69jQzw1RcHkdSnc+s9nj6mWF
-	ATyHs+EtHUL3kOS1MngiNC/KKha04KmZ2YJTAEUnDPZ8u42p/0ReCx0aA+SDPNCN2Lr0IedwXVS
-	sl3DQ1calcyzntbipvE1cffsazdXjsSjmJSQJi1cMVwRJljnF+o+9oTjQ=
-X-Received: by 2002:a17:902:e5c1:b0:2c9:d298:6c06 with SMTP id d9443c01a7336-2d0523fa272mr147650405ad.25.1785856356894;
-        Tue, 04 Aug 2026 08:12:36 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4d67dcsm9219905ad.70.2026.08.04.08.12.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 08:12:36 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 2/2] mm/page_ext: remove pgdat_page_ext_init()
-Date: Wed,  5 Aug 2026 00:11:42 +0900
-Message-ID: <20260804151145.3419768-3-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260804151145.3419768-1-ekffu200098@gmail.com>
-References: <20260804151145.3419768-1-ekffu200098@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: he31krchb5t9zsjxsoui3zt3g98so8s5
+	t=1785856515;
+	b=JQd/ePLehRU1/ygFKroYTjwPTWgF/xocH4U1hrBcrN9QEA1ezNd6CBOpn29kiJ9q8TyU+2
+	yl9PMu5nDzF/kbCu+vrdtR+USMQU8KwuxLwrmzSWMd4TCHrIbv6JdVyuoU76e7Tbh19ZZj
+	qMCexKrKeIppLxMaEjwOM4BVyj7Wc8g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785856514; x=1817392514;
+  h=date:from:to:cc:subject:message-id;
+  bh=9NJ32ltbcB82qemSEoG7hUOvGbjw59Kq90HTXiUebBA=;
+  b=frHzcpl4r1h6HL4e1dHhAlraHeayyDqDa8B0L5zTrDdp5su6+XuXDHMJ
+   mHmfsQMQSWVWSZoPfCgvt7DOzOqJP2PtbTA9A4Y+msAeh/5nRDW1TFBMm
+   992g8I2uPxItrNdH3ehDGOsoqteBAkjFv6rS7ooBqkJ8UnlbN0pUpNWDn
+   BJM4eZ+rBK2H9dzY2StzNLJ3mnTP/+HjNmSSsd3yUAhiMAQmbxoKvgAbC
+   Yz0t0pmuB298nfXwqGgEy8n5U4Myp88JQc4xRPnq6idUvwv3yO+HnJzEs
+   DlHxEeLIhUZam3pZq5M/wkj3ZviNjXsPhYc37SHJAqbHe1SiB5QB704bf
+   A==;
+X-CSE-ConnectionGUID: Ey7v/L/HSm66Wx5Tgw68AQ==
+X-CSE-MsgGUID: ww9tgYpZSGmK3KZQPW9yCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86441905"
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="86441905"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 08:15:12 -0700
+X-CSE-ConnectionGUID: SirvBuQpQ/6ErkRXpQ9eXg==
+X-CSE-MsgGUID: TWKi9LnJTDmscDnyOXkNzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="265359660"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 04 Aug 2026 08:15:10 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wrGrE-00000000A5b-0Kia;
+	Tue, 04 Aug 2026 15:15:08 +0000
+Date: Tue, 04 Aug 2026 23:14:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pratyush Mallick <pratmal@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ SJ Park <sj@kernel.org>
+Subject: [akpm-mm:mm-new 448/454]
+ tools/testing/selftests/mm/.gitignore: warning: ignored by one of the
+ .gitignore files
+Message-ID: <202608042227.XDO54bZk-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2A827120010
-X-HE-Tag: 1785856358-761895
-X-HE-Meta: U2FsdGVkX184SMQpoQOLUXVhMOIXEeCfplW4UwDmj0bjLSrtbtuEuRKfFH6ZWJcM86yHhUgumoS37TizbiSZRQHdxAYK3opR9lYJVpdw8Btc7jYtyY0czTZ4Igu3cCRt9LvYyWXtdQ20BRUkckCS3+kJT8Z+kCh2TCfZ0r3wNCqMaUo/p0SB8AGnxIcuv8WAK6S8N8+etPicjSkk2WInuoxsIbaNZjoEh3z0BC/ix3I7zpWrV/EpNf2LJEaqDYVUvnglNevZOq5w2M8nGvRzRlTRmmI9p6ryIQkA4XpSsKXPpdk4mpdQTcuCDJZwgbAY+JMyukHwXg70mfG+GpOjVgAJ8fzkkwmpwuimmVevhXuBu/WfVztI7x8FST7LdU4lm1TfAXuloVkNxHgEszByLW1Wh2rIo0+Yma+JoUKQfJi9Jnjpg/DawNvnaahCxZC730gBgQsRJ6T92u0m+8YkrxVk2Hdw7TABVxinedYWpPr/cP1KROAF6J37ubwk3MeAiFLoVeJKixufx/eI5Kd8X6PSFh3N4gwEWIjVqv2bnQnuyFPuBlaKlN87dD4o6qq7sVx99q6cOTrEdIQQCQK+Hz+xxTF0F4v/KLP2q9w8pCI7oFH1LLc298+bPIzYROVXclT/K2LLmKlx1ElXxcZa7KgpV8iKOkBPBjSIR261B8OiK3rgyDjBHEwksSzT2XAB6awc07WSsTvNqKfan227EG6Q7OFAlZmAgg9xx9Y6Cqp0+vDsivI5BukXDWnCsKryqHDO46UGQ2mUHOjMvf06e/S2NF3y2mSee94LDHi/9PRGpGT06Qs7uDk0Mm2qnZtTfPrFDsdiF7NhWH/hZaD8BUgO0egt9wasJDgGtIAQFtNlap3+TL2XxISZEiT3FwWxWeHPXGqp9zqyRP3Qvy06MmWVW3UhosaEujRY74R7Up2b/8He+629yNCEgWNzVXNJvzuYpAZMiGpyXCU7ikc
- 1g0yGNfU
- DpmJM37OU3z0XlcCs7zX70a9kHuneGVfizm0gp4mv8rr7Pw8FV/bYxACTWTxP6WBZV470UmrObQUxUUzSHCOKW9rS9RIoUPc7Y9yKdIw5VOapi9CzaztcKLe+Qnt0LXM19WZDHzaCoo3hpbzixVwt+9xvO104B2RfPTwmF56N3IAzvFbMxz3gA7aYIxecg+pfaVWSuINuukh3RwLyu0v3g0Io2gTGEvZ9H/DBtJqhTsGBpqAE0sJKkfg+K2EsUOTzApC4S9jkD1ZETwuIUXP15+wRN75+Qcgy6vCsk87H6ahOLc9jZ96S4at5a4WZ6J9s0jLdZquzfqAIG6KMPHbw/hvzbxoaqDRW4Poyj4NL1RGjBoljOINNiaLVQNkZzxLdufVAfGVD1mjtogFWxybS+rosiZhUNlw5OYHxQZ5BcKZv0F2kHHy1L6QV9OjlVAQujqIv8IfYzj6Z5Qo=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1E35D120015
+X-Stat-Signature: g1m635jmg6c6qyjo48af8cibyibah5p6
+X-HE-Tag: 1785856513-245424
+X-HE-Meta: U2FsdGVkX19isDw3peYWgLA228pyB5j9B8S1iF5gcKaB3v2/HhqHygOMGwhw6KefFpEESLHrgVcXbDB4E0H7pwjPQ5jFRFA8YcmMPtknzigwzOyET2vuzX5SeY90QhycHkww2hO/o3bsgN+W6Kig0ohNtMacB732GpnyrztGF8BhZh33U0yngUOMCD6XLURY9tUi3TrQYSAHK57vE9YVBBo3cotdqx7hC7zIHpKWsrokd66jLq8SMZpAKKO62WDT1B6+irFPZIc3ViQhkGYyxekGOo5zZ3Ge1+3hrZk2e4NBPYBSKcuLw4BICkf1lJ4Ks8UvTMll5uep1dPutV14WlXsXQ3bLIq4mNMLtN191j9uLJox0yIDJ5l6NhaakQi6duTdetZz30kpLsto3UDh4Tee/cb/4kwERlPlvW7VVKFh0cs6G34S+NbI9xOtD97i9GTeds8zayMCUC6uNZo31HrNkkz4sbYnPDjjorsqD+Mr7ImXvptwyZn2lSZCST3w/j09nGvOL55Hn65o/cMS+06sMmJTDPJ53LyLPFXBCrxq+ntk4DZL3O23sgQ8juFbKmPl4XQU606M2ZS3DGhCdYPMiWAlk6Wc7l/jgTsVYyY3/aqvhnRJdbkNl8ScigCsPtwZU7OR/6VlJnfW+avwqkuvJfm3r9ftaAW0Z8bmp6Ggu+otpWcEkVJrc/N4rfzTQP62zMVgfIpI2iIS8hS9LyTe5+nyUo6/WtDHb/EvnaR5i6LDI6q/osv+eKRtl12+UJ1X/KV89Am3Yaw8OlRRg5JahvkPhNvF6rvULAg2j9YTMwmZ5sIdRkwMGcDFpYbGziZ7g0y8I+31Z9fDJB6ealcy275fbYLBrAdaSPKizYUq9o3Ik4I9lhIrnUpYbZ9cYnLMeCjhpQpVgP6gBl1EDJ46WFCBznOCAsuzXcE3DhC1fDsRqZem5BsiTsn0/tJwbNvP4VZi8nabsqcKrQp
+ gSeb+z6A
+ RJj2S8lW94F6YNLLu+d5zyJegPdYieYD1LxV9IRbBJe/cmCmplgvsloIqlflKe9J1FMEmD5qr6YkCmy8K7W4Ljk64eDBF9EgGKArzBW+c/OQo3aVPsL/tuC7NOhkqJvELJoJ43Q3eU1RushNUKvMMPdHPjb09ycYjks5uV+Is2/LoipaKnh3G7oOxEcePE/3s4aRl9SUDTLKwJW3zjY7UgdEuEyRfI/RSWdGXqmTeI+Bhhxc+p0pXlutF54MlbTandFeE6VLV9OCHqgpy2KuW9HAEdySD63rdGxOb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,84 +105,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pgdat_page_ext_init() sets pgdat->node_page_ext to NULL only on
-FLATMEM. FLATMEM depends on !NUMA, so the pgdat is always the
-zero-initialized contig_page_data and the store has no effect.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   e47602c51d20a93fa1711ed896dc9480de4374d9
+commit: e051bf0188c9ae10e822a532aac5821c2cc0632a [448/454] selftests/mm: use pattern matching in .gitignore
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260804/202608042227.XDO54bZk-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260804/202608042227.XDO54bZk-lkp@intel.com/reproduce)
 
-So remove the call site, the unused function and its declaration.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608042227.XDO54bZk-lkp@intel.com/
 
-No functional change.
+All warnings (new ones prefixed by >>):
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- include/linux/page_ext.h | 5 -----
- mm/mm_init.c             | 1 -
- mm/page_ext.c            | 9 ---------
- 3 files changed, 15 deletions(-)
+   Documentation/.renames.txt: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/.gitignore: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/Makefile: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/charge_reserved_hugetlb.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/check_config.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/config: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/hugepage_settings.h: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/hugetlb_reparenting_test.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_compaction.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_cow.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_gup_test.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_hmm.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_hugetlb.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_hugevm.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_kmemleak_confirm.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_kmemleak_dedup.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_ksm.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_ksm_numa.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_madv_guard.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_madv_populate.sh: warning: ignored by one of the .gitignore files
+>> tools/testing/selftests/mm/ksft_mdwe.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_memfd_secret.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_memory_failure.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_migration.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_mkdirty.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_mlock.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_mmap.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_mremap.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_page_frag.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_pagemap.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_pfnmap.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_pkey.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_process_madv.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_process_mrelease.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_rmap.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_soft_dirty.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_thp.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_userfaultfd.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_vma_merge.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/ksft_vmalloc.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/mlock2.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/mseal_helpers.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/page_frag/Makefile: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/pkey-arm64.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/pkey-helpers.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/pkey-powerpc.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/pkey-x86.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/run_vmtests.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/settings: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/test_hmm.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/test_page_frag.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/test_vmalloc.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/uffd-common.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/va_high_addr_switch.sh: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/vm_util.h: warning: ignored by one of the .gitignore files
+   tools/testing/selftests/mm/write_hugetlb_memory.sh: warning: ignored by one of the .gitignore files
 
-diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-index f23d4b218da0..79c53ec45dfa 100644
---- a/include/linux/page_ext.h
-+++ b/include/linux/page_ext.h
-@@ -55,7 +55,6 @@ struct page_ext {
- 
- extern bool early_page_ext;
- extern unsigned long page_ext_size;
--extern void pgdat_page_ext_init(struct pglist_data *pgdat);
- 
- static inline bool early_page_ext_enabled(void)
- {
-@@ -202,10 +201,6 @@ static inline bool early_page_ext_enabled(void)
- 	return false;
- }
- 
--static inline void pgdat_page_ext_init(struct pglist_data *pgdat)
--{
--}
--
- static inline void page_ext_init(void)
- {
- }
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 711f821f7b3c..e9c4204b73ad 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1394,7 +1394,6 @@ static void __meminit pgdat_init_internals(struct pglist_data *pgdat)
- 	for (i = 0; i < NR_VMSCAN_THROTTLE; i++)
- 		init_waitqueue_head(&pgdat->reclaim_wait[i]);
- 
--	pgdat_page_ext_init(pgdat);
- 	lruvec_init(&pgdat->__lruvec);
- }
- 
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index e2e92bd27ebd..b679a8c1f7d7 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -164,11 +164,6 @@ void __init page_ext_init_flatmem_late(void)
- 	invoke_init_callbacks();
- }
- 
--void __meminit pgdat_page_ext_init(struct pglist_data *pgdat)
--{
--	pgdat->node_page_ext = NULL;
--}
--
- static struct page_ext *lookup_page_ext(const struct page *page)
- {
- 	unsigned long pfn = page_to_pfn(page);
-@@ -494,10 +489,6 @@ void __init page_ext_init(void)
- 	panic("Out of memory");
- }
- 
--void __meminit pgdat_page_ext_init(struct pglist_data *pgdat)
--{
--}
--
- #endif
- 
- /**
--- 
-2.43.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
