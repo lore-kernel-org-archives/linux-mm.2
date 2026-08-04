@@ -4,84 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C31BC5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 250C1C5518F
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:47:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003396B010C; Tue,  4 Aug 2026 10:47:48 -0400 (EDT)
+	id DE63C6B0110; Tue,  4 Aug 2026 10:47:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECE746B010E; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
+	id DC54B6B0111; Tue,  4 Aug 2026 10:47:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4036B010F; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
+	id CD3806B0111; Tue,  4 Aug 2026 10:47:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B48C86B010C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:47 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D31C1A0161
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:19:34 +0000 (UTC)
-X-FDA: 85063492668.07.A42A870
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E17B6B010E
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:47:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A90C120148
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:21:43 +0000 (UTC)
+X-FDA: 85063498086.30.239EF08
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 342442000D
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:19:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbW3RS0t;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 68D021C000E
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:21:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NktLoOFf;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785846101;
+	b=CEcglhLymw5IICqdhPeMAK8abOqOCpmWd0qo8XAwDYbrmXJWtQ2CG5+UMrU+/58LLrS00P
+	qQDHyVM4vYLLxcj/HbootUCLkaifXQXB63X6ViuTUjd8hwJFUNBba0oDPLDTWl2j48ej+q
+	O2ZBp/bEejy848ovXh/jUQJ2fa1LvJ0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NktLoOFf;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785845973;
+	s=arc-20220608; t=1785846101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnG7feqGPr3glInpiahRtXG3Ss1XHoRJf3kN867vDlo=;
-	b=IeW4l2nTMUmZoWY7qvEqpGK+dIykWFukSaby6htEsyKlfefJXl4HRhjJrng1nTAsMxcCrk
-	44ZLRlGdXe8IFXLf8FhMBeRouvs1MehpKQAwoFn64AuG1JzmfdCackzbQgWs67sJmoyLaE
-	Mz1k+lDeoTb4ysy2CDkYvsceGbrQx9k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbW3RS0t;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785845973;
-	b=IS9qdUyjQko1gwbldJoqCJfDvUGs39mlm5C0iPeuHQRV16JdEO0itfPJ7eTx0WEe40YEO4
-	A6tCXLSVExkaL3ryp2TCYzuIFydofgjPCrYMRUCX7VxlD/8lXUW1IHK7Ubegkz/R0C0LQB
-	jzxnD3CrkFrybP4EPdl5y0JT+KS/QYQ=
+	bh=efM8AzxF8bqG1DJUbVqdvBnISyKCHBsMBtlf3nlIbeI=;
+	b=Lt1DsL3oBTZ519Pjckaaa6Mn/fO3FQZOjVlRBNrZys1WRfwvYFLIXU9NyMinXgBPFiP69w
+	0h0FnW64ZZJieNfHqH/BY4ov10rcs9HseLhnMTRgyTS6g4yym9iRxIoN9u3oZArHt2sM3i
+	edht/cEqJ8TE1rTsxaxkTtCLyIMmEfg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADACD60A59;
-	Tue,  4 Aug 2026 12:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A571F000E9;
-	Tue,  4 Aug 2026 12:19:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E007260A59;
+	Tue,  4 Aug 2026 12:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02071F00A3A;
+	Tue,  4 Aug 2026 12:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785845972;
-	bh=YnG7feqGPr3glInpiahRtXG3Ss1XHoRJf3kN867vDlo=;
+	s=k20260515; t=1785846100;
+	bh=efM8AzxF8bqG1DJUbVqdvBnISyKCHBsMBtlf3nlIbeI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UbW3RS0tmox4G54zCmQhTvzkJ4nFCysh2QS9WiBci8mLUuJqlzXrOhHKldYkM3eV6
-	 t/HB9Ei981t0S/PNR5BWOot1UWjzcoU0xSFrUTUYUlr4yckN9/ZqnNv9TeS/cDYMJX
-	 FuQ9chnVxPPVJ6c+gBV6ctzfr49seahePZCqOt0TeYm6RMcGch9tqKPZy7jhVrcY6d
-	 mD9Pl3bM47SYND+5PV/FhkLPniPNt3RGWE/Y6cjTTKmDLF/RmpZ7aFyk+RxVFCyOG8
-	 lzqcqXBgVUGCbluEJAOnYXO22o9MRpNQ+hqgQkXI/Ho/t+QkA9vqoZBRbDgbfEBPA/
-	 O5oVcmeQdhclQ==
-Message-ID: <4b9233dd-4f1d-47e0-b583-8e1436d4a074@kernel.org>
-Date: Tue, 4 Aug 2026 14:19:28 +0200
+	b=NktLoOFfZHRqade73gsXm7Fzc5b4FzLM4PGUbDUVlnpQDQaw8N/f5k913OBECAMbI
+	 +HrQpHcH7kDUKErVLUGaVf8BOsenwxAhTCnJ80Zi5Y7vJ6KHLTaXYeUYtg7wj5C5QO
+	 GCXA1aFt9zsiU7VML2j8AYS+RfVV1MGt1/1WdSDJlK4LpEcPWMi/wERqDgID67QlVy
+	 L8Hfby7sAl47LHuEj/hmDV/a7JU6j+aAxepgJJyJy5TTrSIGSke3tTYNcRIXOLYAnJ
+	 gL/KHnJ1olazm74vu3gaqMYB77bCAyXV3Ykv8NmW1cOye60bJmQTydS7rzQmMC6BYV
+	 s/W9MW/K/Rx1A==
+Message-ID: <6193876b-adcf-4cc5-9101-67454a359053@kernel.org>
+Date: Tue, 4 Aug 2026 14:21:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
- <58fc5ce1-b6f5-48df-bd3b-054443c60cdf@redhat.com>
- <f556ae97-efaf-4e7e-b4f0-0f90087c8555@kernel.org>
- <CABgObfaCTroScRykMHRk6fLktzG7CT2Prp2f-CCCANfuagv_MQ@mail.gmail.com>
+Subject: Re: [PATCH v2] selftests/mm: read memory information without popen
+To: Warren Xiong <warren.xiong@ugreen.com>, akpm@linux-foundation.org,
+ shuah@kernel.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1785720615-5826-1-git-send-email-warren.xiong@ugreen.com>
+ <1785845818-3131-1-git-send-email-warren.xiong@ugreen.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CABgObfaCTroScRykMHRk6fLktzG7CT2Prp2f-CCCANfuagv_MQ@mail.gmail.com>
+In-Reply-To: <1785845818-3131-1-git-send-email-warren.xiong@ugreen.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 342442000D
-X-Stat-Signature: 8tuueegi939yb4niarri1ifc7d1er15r
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 68D021C000E
+X-Stat-Signature: 44x3wm74arpx4wbsn1sq5mdmp11xyhii
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1785845973-271711
-X-HE-Meta: U2FsdGVkX19kw5bNuCXEgHibj2qx8TrrWmw4kTTUMWfYfUMgXtW7mX0y/Eo1kLgWATZgDvk04aN9H/LVDFDccTNAUUNHCyelL9Hpn/RKhkBoGtvVvVRudpzgW6drc6htAF750udGDBFne+DVZpNXNFWFSRaS8dPAN/eT5PIk+YhQr5Ku+R2C3zQemIueIUesvLK2fTyIz1QtUTMXt4/IWhw9A7/JC99geIHK1YQIbQVTfQVlJx/GtHeAI73PttIdUKNkRK2bss6JWD20mImenrRRuP0PDfTuVaa4tbkkbeGVbhAGyr/KksGcPb3yed1esUITOJPjHxja4zWaeWH+rDiuTZ8PrdS0s3P28iT336gbJokSnKyKbrtuuFPh3O4S6wHPixv30m11TOxoQYA8cRYeqVO7TtWimWjIVY2VttM9XF4lV6r3vokyF1+q1fzrCUI6vRPYQ5aLEFrK/DC1p8B8du+Kv0CUj/6Kccw6DU2KHwW9H87G1OIiHXWUG43c1SkklxPSZbQILaqpl9KK72oC6bwZ1PjpeUU50cBLXe4PalyO33Fcsh/CFDbF5h0GGg2mMWaKlqs5UNsw4J6Tnlwsuzs4UgnkOXhJBqwIg0UDK8KQxS3am2SvqWCOnj8rp7vdF2/fOFl94EDxZq0lw+IqIlMNoHKfuoa0t0lRPs1EHjwUVJ1FUFpE6McIJBzOdrt6doMJNMZ0ypIhOg8iBa6u2t2P9JiBWmCNrOPOlJ8MQEWKzZKu+qj6QKWbV4RfNDLLlkVFbOBO9++OL8ja/prKvio8wWjodUU2nXQoZeUTM9DwpMbQLVhGIkLa1Cz4PzqbVoD7lmBxs+YAJ5m+QmzFN4zVSbxWCbtHR0kY0uVGAkfERs3SDM1dqKq+CrXoXfYRvLmduZKpGWFbIHZDNzdKONmSRRU/424kVXbmenNR6n0Ykunh8mzJIkLzuvG/kNAKBPxQB8O4cC4amPg
- SETjuYU7
- /tofa+IeTpM7HDqxx2p2cf0OoGBVdbIZxnsLKBeHfIvNAG2XSkoYiT7gVEs6qe8SmfCQXho+CxMprqg+BC8S2EbaGyYXf5AwhJNu7Ww47fyXzWcuXi1K3L7msmkzVvpWO2lsk2G810jzeziewseTmdSWpl3acuOVKzDfBFpbQJhkkm6T7G/rBGhFLaPYhAc3LJ7sg643K7uHmd9vY9aFUVB7PBd2xhN0Mkk1ius63SA716qymGb/aI0SDu/qdHnfQ4fTii8hpPQmyxF95MVs0YTHR+IyFQzxaQ5oHbOeQWcNcQ52641GHZ644MysYRLJsg3j9qQF6ZAYvwD4+wnSBgHpI29H4/ArK7bgQ
+X-HE-Tag: 1785846101-20606
+X-HE-Meta: U2FsdGVkX1+INrWdwG5AMQ4DsF+CuVOAkniyfuFTZb1JIvV/gQVqWch01bTPGPAB0k0FtdROUHUvJa6Q7p0iJCCDCiiOwmVS8TT/rIA+8tXPD7NETaM0AhlZVKqEa9F0j40wJqhnFp6SD/isCNaU8T3IUHl2mWnQ/jXnlpm0OGSVOjqsZ7Tjc0JhpsR0GtmgNc2GcqmkWKqdXDd9GR0uwv3L4eDVee5uhNbmEE2K8tQHCekJWyD9v8RiychRp9atpl8vDQ/vmn2gRVNYyaTu59YstHZzloJmp0Gd+Qby5uphTeCkl51fTYkq+nJezFNQfN/6CDfwglN/90Lq9Tr0/iwwUAJf72MZRb51jsEBvNk4FStzatvWXXvJ9v5/ze1nxegEOfbxjJIMSYli/RXfhYfEGkOoyxIi8BzlK2Fd/7yXl2D+Y30YJ9ET0V5lkqljvahCtzFti8h0L4PQMC0zygpKRdS1LVMB01Ri1HAocYBKk+/qmk08gdpuoZYTovWWIXq1hMhIdM/eht5RnGt6dO61stQbz2LcBFlccACsz/O2UmVbQFmv4t/d4UVldUCGY/HrXbzAJSXCQuj918uhVoVEQbcFJcHufUgNLG8HgXSjlzcFo/yOHeVxjvS9Sm5nTzNm5zgZXAJwe+aHx0ZFnaUhXrbllDddnccUiXayuJpFCqc6Ce5glomD7SLTx3LSB4dbL0emhVyBgqTJE9F4AxDGVngh0pCSIV9KAZ1HvBkm4BDrRqdCwUmXnDkouKo8OOhzujKMTkU0z+XtcsHiCQKN/FUnz1GU6HDDq4mDJ8CFmV0GPh/yUPfwnxDpFY2fdWpHcljTiF5Aj5JC/IXkKPxinNLBho7OblBliTq0OsdNpvYviYu3K2AmFbxjl4Tu95rZ601XLZ4fRKau5Rj7NTSolP5Ct2VuFf846A3bcTa+Ka7Gjg7d+vmYoQLJjbh01faXYKblDqdMGn3ln8U
+ TrM0+n9u
+ NYVGKSxjsHwmx2nNcD3HdXBLvU3b3emrI07azSeTOoJwoRwEzMjvEnMEJG55meEmWPQwc8XPFzWhQQi/wmMyAT6v5S92+bMbAM0umHzls/bYXq2LnVAZl4Cwg0G6EQXIv8DODwohE4dslJRMwOrQbJwCFl5vfItb+bo06wMHBNKhO+4wbB8jcruVpPCOFwD/sGPhO+aJJECp60/ILEKAx5WMVFKkPpPJ5xYKR+b5n8MVSOZaMZ7qD1an//5n2B0TjDKLwR9E27ttJ/1/HOeoZcHnL6FLkMKd9O1VGhH9T3ibntwm2qaa6izdxfFYyigYWw0T5BI5FIr//NgxPvks8kZWmUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,28 +140,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 09:50, Paolo Bonzini wrote:
-> On Mon, Aug 3, 2026 at 5:18 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>>
->> I was wondering about the following:
->>
->> mprotect(PROT_READ)
->>
->> followed by
->>
->> mprotect(PROT_READ | PROT_WRITE)
->>
->> You'd similarly end up without the writable bit in the PTE, and apparently there is not really a way
->> to recover from this.
+On 8/4/26 14:16, Warren Xiong wrote:
+> read_memory_info() invokes two shell pipelines to obtain MemFree and
+> Hugepagesize from /proc/meminfo. It does not check whether popen()
+> returns NULL before passing the result to fgets(), and it does not call
+> pclose() when fgets() fails.
 > 
-> Why not? mprotect_fixup() calls vma_set_page_prot(), the PTE as you
-> say lacks the writable bit (unless pte_dirty(pte)), and then the next
-> fault calls .pfn_mkwrite().
+> Open /proc/meminfo directly and obtain both values in a single pass.
+> This removes the unchecked NULL path, closes the file on all paths, and
+> avoids dependencies on external commands.
+> 
+> The compaction test continues to pass after this change.
+> 
+> Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
+> ---
+> Changes in v2:
+> - Replace the two boolean flags with a hit counter, as suggested by
+>   David Hildenbrand.
+> 
+> v1: https://lore.kernel.org/1785720615-5826-1-git-send-email-warren.xiong@ugreen.com/
+> 
+>  tools/testing/selftests/mm/compaction_test.c | 38 +++++++++++++++-------------
+>  1 file changed, 21 insertions(+), 17 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+> index 5b58258..30d4ace 100644
+> --- a/tools/testing/selftests/mm/compaction_test.c
+> +++ b/tools/testing/selftests/mm/compaction_test.c
+> @@ -29,30 +29,34 @@ struct map_list {
+>  
+>  int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+>  {
+> -	char  buffer[256] = {0};
+> -	char *cmd = "cat /proc/meminfo | grep -i memfree | grep -o '[0-9]*'";
+> -	FILE *cmdfile = popen(cmd, "r");
+> +	char buffer[256];
+> +	int found = 0;
+> +	FILE *file;
+> +	int ret = -1;
+>  
+> -	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+> -		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+> +	file = fopen("/proc/meminfo", "r");
+> +	if (!file) {
+> +		ksft_print_msg("Failed to open /proc/meminfo: %s\n",
+> +			       strerror(errno));
+>  		return -1;
+>  	}
+>  
+> -	pclose(cmdfile);
+> -
+> -	*memfree = atoll(buffer);
+> -	cmd = "cat /proc/meminfo | grep -i hugepagesize | grep -o '[0-9]*'";
+> -	cmdfile = popen(cmd, "r");
+> -
+> -	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+> -		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+> -		return -1;
+> +	while (fgets(buffer, sizeof(buffer), file) && found != 2) {
+> +		if (sscanf(buffer, "MemFree: %lu kB", memfree) == 1 ||
+> +		    sscanf(buffer, "Hugepagesize: %lu kB", hugepagesize) == 1)
+> +			found++;
 
-Ah, if this works, great. I guess I was confused about your explanation about
-fixup_user_fault().
+Just as information: when proposing that I was assuming that we would never ever
+have two times the same entry in /proc/meminfo, which i think we can reasonably
+assume.
 
-So this really only about avoiding the second fault, makes sense thanks!
+Thanks!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
