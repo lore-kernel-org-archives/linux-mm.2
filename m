@@ -4,135 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27728C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5850C55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 20:35:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08A686B00CF; Tue,  4 Aug 2026 16:34:21 -0400 (EDT)
+	id B157B6B00CD; Tue,  4 Aug 2026 16:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03A1A6B00D3; Tue,  4 Aug 2026 16:34:20 -0400 (EDT)
+	id AC5DC6B00D5; Tue,  4 Aug 2026 16:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E45CE6B00D5; Tue,  4 Aug 2026 16:34:20 -0400 (EDT)
+	id 98CAC6B00D6; Tue,  4 Aug 2026 16:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A76216B00CF
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:34:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45A8016027F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:34:20 +0000 (UTC)
-X-FDA: 85064739480.30.A932F68
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5A683C0009
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:34:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uCHa6FUw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785875658;
+	by kanga.kvack.org (Postfix) with ESMTP id 6989F6B00CD
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 16:35:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A3FA1602A6
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:35:48 +0000 (UTC)
+X-FDA: 85064743176.28.4959101
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 945AC14000B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:35:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=HmEN5pZQ;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785875746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2GdzhqENSucI1DjCkcPXwFLmRUs/MsFB0Hm6NilxhU=;
-	b=ZrbYhxbFcXhInUi8ytL4G13raooW76WVS2UL6e6ogxVfZ2E5pImUOgF+/5JEflTGETw6zb
-	RHzDwqoc7404DohcQambYCutQlXl5tZZt+S7GRC8bcGkowzdgDRsP8FzvikbDJNGSNrE8B
-	qpfvatvtd6Pg+k15g1CWpHA2N3TjGrQ=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uCHa6FUw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785875658;
-	b=lME4Ru1R50vsEqzPH8iKv5jgImSTciZI/x8K/1p03pudenJGzPeW3aHQ3GlEjD6bZilKHu
-	h1slR2cUzfnkbcR3pGCTpS8n56H4VIeWLiyX46vt08M/FrA33Am80ufwAt4797XLCE1o7j
-	bDhyY4q+GVSAOa0NkZFTWhRwDi1JeZE=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c15a5b265so76991cf.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 13:34:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785875657; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xt8/ovT/nO5tC8Pd/o60YxI3lx76HKUu20y3U2/fs89Sxisdd922iO89EHaOE1JOYP
-         iLYJV/Ua00BdtmYfLbZtY3NuNaBhEGbLz5N0Y/nSNwcRjeOrplppIshLeaMpZnVmfXs7
-         3IUjY40fplVhQZ9Z7A9NMx2cKtcofcWQrkizW4FDDPdSv9gbqXPmvyHfPhEzNxKI94E3
-         J3GqJcM+Zq1BHa1YHd6QX5LPgcSjL0qeRZUGmbHsboXf8iZglsdxBBTtaOvgZZ3sCXin
-         V8ds64XOD1sVZm68rgt5QEOlxxFQvG3WNKRbZdX+32ElneZtfla4em02V9bYIdS5EEeW
-         WI1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=u2GdzhqENSucI1DjCkcPXwFLmRUs/MsFB0Hm6NilxhU=;
-        fh=Qc1Wm8EtDv2K5L+KpHv8rfdUzOYvDS9yIwqNdQiJ3NE=;
-        b=ckVUujthdTUPZ5wisWxwQmp9sWk4mJlTgY8R94kvkHZwndTb655NPODGlih9i9qa9Y
-         h2G6tKddbZWPf05Unk0PGoq46T4t3jtpfQYNRHgL4Qkrd96evqeuw8SiIIPFjG/Q5vNF
-         cJ5jZCWhnddzs139WVPf+g193ffhC+yosWb62gyY9ttLcWLCEkUyhYLfcfgzFxZrTcVk
-         qng11vYNCPK7Hos8Z3x6RsugS6ERevWoxCzav8ndPCJ+RHo1MExZqixmN9liPu93UNjf
-         D3H4LPvjTxZ7IJzJ/hIwNFZZ9p0DlIhQKjT210GcIwqF12iTtwYyZULPk67aJXicth6l
-         HGVQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785875657; x=1786480457; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u2GdzhqENSucI1DjCkcPXwFLmRUs/MsFB0Hm6NilxhU=;
-        b=uCHa6FUwFQytJ61cl4sx9xNPle504XV4PhgRKA2yV+NJVA1MzBovhDRO3YIVfnfe/c
-         af00iC5vbFGeJTHN7FK4t8Ws0N6mbAYORH1XvJsq/3/F3lXsbwB+Ppnb1C2NP6l7J4QR
-         L8Vs9/1QenrmvBgh7beYv6UURDVVteA1/GTxZikpJipnYIO1/EQ7glXJ/P1SyhOtM/XM
-         tXspIyIIvupjoPtB+P8OdgpNAI/pa6UodAfAC+ZcrJkWdq0YLcAxH6ezPCHpV/3JSav4
-         9tlcfVJSkk0xjFYdsREz/rzRZAeMLY++Qd1R1nmwzMiUtmGQg+6tZkf3dHU0OWSOGfCz
-         SKyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785875657; x=1786480457;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u2GdzhqENSucI1DjCkcPXwFLmRUs/MsFB0Hm6NilxhU=;
-        b=dVSY4hTjCupxnUhBFX14u50U8xZQ/0x/pCF/43JvWtpuLJkeOIACBssq2Q+XMyJ/9X
-         EtnTg5vFlYbe7RpUpE6elYpE8mXbIm1OdjrHc9nr2QSqfcNkp7MvN94BZ9DV7j+CZn2J
-         3ljqgHR8dqdCYM/yoHsqmL04momoYJTHrpQDD5MmVY/obXKiC3LmfrkJWUqsY8E3XjjC
-         sxzgDvR1LC15v+XYsMk0gVeexpHDOD+iVh4/XXXSBtUUzuPtBWYis5hUfhupIR+bIAgz
-         2hbAv3CxlmhfgOBzg2XLEa1PIusTHpTH0+NOXzr84FdEbyavrKxRwgtrvxxkkmUGBGtx
-         uY0w==
-X-Forwarded-Encrypted: i=1; AHgh+RpqKKLqnESfSSXxWvEEJD/4wrlCwIxxwkkXgW3rM/shx1eHjJb4GY62ZfCyHkv2O94fmG7cGZ6y4A==@kvack.org
-X-Gm-Message-State: AOJu0YwUAB9LycWlFrIGmg0wxRLoWOFGFR73BjmeCwIyfaFZjza98KO1
-	o/xh1UMt15g0jMke29tzg3pkaIbFsgErbQM6jmryhFsX7deutA+jm8shCiv1sHmlABGhTrP9t2q
-	j/U4FM+G9kbBjXcI9UhCisnoMSPNTeMrX8nRXOeGU
-X-Gm-Gg: AR+sD10zD8axj7nCUzgGUx78cwF9oY0b3ZfZ3zQVcKsyTpLJ58NBncrbd3+9ZdR5utg
-	FbTnCO9nGpVAYGuA3jvJbtNAOUCN1h7K2cWhSU+FiRfNpTLLkhlg70eM1dEn/E7WTWfkAn73VHz
-	plsVKAm5X28zm99704V6pfAYkwE+Z89ILswYzM2tcr66Z+2wfLojXUQQYrVLrYeiiiTw3avsT+p
-	jXYr94gCkszB9h4EkEckPRTd/xJpxKy0UTFSLJcR/LVGG1H/XzSaBwigG2fqr3PoMHYeEG6aYi8
-	q4c33wi7/zMkb2ApwR1OZvgeYapS2L9zlIY2+ZPKsj408XM9Fg9SccQhu4Cr+C1zW7mmfBWaYPr
-	912AYYKmxzA==
-X-Received: by 2002:a05:622a:6d13:20b0:4ff:c0e7:be9c with SMTP id
- d75a77b69052e-52ce66f2b98mr3989971cf.0.1785875656796; Tue, 04 Aug 2026
- 13:34:16 -0700 (PDT)
+	bh=DfPSIGNtSNCrYmnAjCAJSktSQDthCNJqrL3J4J7+FmE=;
+	b=l87RzoAQMG9HqyC53a4O1RcHBzGCJAMQup/R/uwVRLGlM9/I/izNsyPgCWX0P0FciznvyY
+	DdlMNtzxhoRhsxBVf0v7FxPOdawCwvJipBn9d2Y/P5E0ylBFaThDmAJFH1Z5VTDV07dcKX
+	aLQpIMhzPdrDw4jqBIRhj7OK1hI/Efc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=HmEN5pZQ;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785875746;
+	b=CfMcbAKeq7pYtDO+C7JzaqjyNw1vCVt1GoCO44BMN/RuPfvGR4Q/GVq3g9Sb52S4/OhTj5
+	AiyuiXz8dhtQnqeWGnKdOKgZ3mmgsH7YFbgcCcIdYh4mnhxloi6gzsikHh3blxjjUownzt
+	2PIcQeFL4nlluMKZcZV1qnDg4+RfPh0=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2942640E016E;
+	Tue,  4 Aug 2026 20:35:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id G9xu28hJndJV; Tue,  4 Aug 2026 20:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785875729; bh=DfPSIGNtSNCrYmnAjCAJSktSQDthCNJqrL3J4J7+FmE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HmEN5pZQO1cKYlPgMAo65EnTIgwNhdAim8xqmSG4ttbRFwy8V4QH31OiveIXudeHz
+	 lLQ2DBk62mVo4s5DRFi0K4KwxKTtllyenYtsO2ePAG59cJ0XTmWRt/fxJYqlCyzDRn
+	 Bqq93WIV6BLQlmZUoH+OwNIAjGrIkDtRtdKoEjgNbDr/6wpVRpvTxiN4RaN2Gd7s34
+	 ACmBPodoaYPhLKgx86l1TEty8mDHTSe496UMG02V3It8ayzdoJ1mur2Q6Jxw2g5bXF
+	 wqel4Euvgie89cJw5ANYmuCqBJLyVUkKKabFB0jMeFyhJhGcvxVw+JG7gO9g5zYy3e
+	 DlLU6aLhbbZ/VjQT7p2H/TuatxG4W6XMxFB3Jc0T8Xi+vODVNzn5hM8ejf8mWi/9ZL
+	 3/mnZxTldZZxcJKdUfgHeRRefjevS+7plphaeJCViSoUrHUj4uaJTAJvhdKNHuRRl3
+	 X3KnAHNz39CiACbbFAkhdPnNqIWnalVxKRrkYrHJwNNrcTciE9IHNXIaRmZSpDtH5w
+	 /yHtiw4nnoKLk1SZY9WCjAoXZ4UtHCk2g3Ujm+EjpNMXtnkLa2bhWWGVl47QUga4Pe
+	 03vn0uLw7tjwQNm/AHyG7AWe105MjvuAqYWIVTrut9R5oq/MT6+ytYyTnybnjAuFbj
+	 VCdtX2dFjL1b+Q2otoXv4sFc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3B33640E014A;
+	Tue,  4 Aug 2026 20:35:12 +0000 (UTC)
+Date: Tue, 4 Aug 2026 13:35:08 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+	balbirs@nvidia.com, dave.hansen@linux.intel.com, david@kernel.org,
+	kees@kernel.org, mingo@redhat.com, muchun.song@linux.dev,
+	rppt@kernel.org, tglx@kernel.org, linux-arch@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH v9 8/8] x86/string: extend memcpy_flushcache() fixed-size
+ fastpaths
+Message-ID: <20260804203508.GEanJM_LGXmItYhFKZ@fat_crate.local>
+References: <20260803070929.86075-1-lizhe.67@bytedance.com>
+ <20260803070929.86075-9-lizhe.67@bytedance.com>
 MIME-Version: 1.0
-References: <d779f2cf4105448e0fb04eeab82acb20dd05d6ed.1785873902.git.abhishekbapat@google.com>
-In-Reply-To: <d779f2cf4105448e0fb04eeab82acb20dd05d6ed.1785873902.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 4 Aug 2026 13:34:04 -0700
-X-Gm-Features: AUfX_mzmafCd6VIc_CPe4Aw_YNNNBxWfwo6zWJHpDBEeFz7tKno1HX-jRBLIzXs
-Message-ID: <CAJuCfpGCHFhAwCkd8JX7fd1fee0JkJbS_SO8Q00ZM9dgi2TDjA@mail.gmail.com>
-Subject: Re: [PATCH v4] alloc_tag: expose boot-time compression configuration
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Ge <hao.ge@linux.dev>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5A683C0009
-X-Stat-Signature: 6wees1umjpha8j9ne9nh3owe8ps9uxpm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260803070929.86075-9-lizhe.67@bytedance.com>
 X-Rspam-User: 
-X-HE-Tag: 1785875658-73686
-X-HE-Meta: U2FsdGVkX1+b+zW3G+p3iznY2n0Hls2yDyJlnAiY7Ig6LeXLcpfIUlHgWq3pZexOZ1aib5HawZJnnM/958hIstlndo8mmniWc3i8x7Khu9Yt1I/ZxECmnaNa3CYZwOsdiI8O6I0VItU7+9iXNZyc9W/btsOe8qlAYBH/lheMux2h6cdZPc6Cp6QMAqW3yFapZ3+UrvTQqUrvCM+8Y1CSBzI3vM37w52j8sH94BJEMXkFJ56gszRmIXKOODGRIouM0TctE0KIbYfogvPZGfk4afDPaK5qsRw4iS0DhsBwXSCauReVoQiB8qr7TCwjY28KMjfXe+ET/lrUOn6+scEtt6sEzq7ttlo/9o9ql/FMe68pkkhCvj/Q8ePJP706PsfXqBB/c+Ro0j3fiNBvGALiqI1tpV0EAdZisHfRWazAOXiYJ06CYrrvcia3g7d09PDRdLiajGw3VX4ILWdePeVNE6MXx9zwwouoEFFzwhYRTNg1pF+3BvL/1zf8gvbA3pVnswHMcNIroclRGjqpqpCHW7BcU4i/2Y0KDKgyB9h5/myjFfyNc8A4SSRr5+7nvK/Hs1HNBcPuy5O2VBJVuU5Z1N1kAfu+VeLxfmyi4T2SZ/SYECnicZGq/co/mmzprWRyuXPjNTxF9w41lfGJ9/dPoIoNIbzpPIX4NnAJBbDDB6WReXkLsOoSW2oBzhXRrPuHQcDrIZa3C0crKWihP/n2WGda0igUK1RZifjXsYRsJbitaAg+XeXTC+xUc2VPM0r9kARnh6B8bh//D8C7m1SUIJlnAbcnFdFzXxrL+QvYJLIaGsuiwZ5U+zuQKgNVsrcroxikf6mYa5GpiZdJmn97DJyfdfWCerQdRzjUxfDiaHYA4yb5pRnYrxbM5Qko3/69hgyFoEMWvUTIzDtksT2B6WYVae9g80JC/1liKxRcPiqmg4dGXgPV2895+z7ZSFEr3wJ9AAU+fRUJDz/EKbf
- tZVze4Pi
- tQmEX6eukZP+sI414V2ezEKxqlIwCIaYe3yrF4lTHvwwzDfrg6/QAsHgWoYlwbxz0rhLJf0qloJWFsBuXPp8xB2ys/o+m3qyzNLduXD3iiIC38XA/3OLUJJgXGbEPWIT56SSZ7w3CPImbGTUpb2kz7SXvfh5dFhBhg9DURii/EHDbeuSknCgRBh2IgagVDz9ajdHoBOQkRGxtNpFxQSAJ23WVlDRZOZRJWaObnPvA/9+7vAzF3T9fowMIP7x0b21y903mjgn5ATVSXDnFKOuCyzq6hwrRkOu103lb8nUeFI/csHoI3hIuFMzo+fxjv94lC3nmo2Tm1Updv6n9c20OmHZNDFVEIZ37Nva2
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 945AC14000B
+X-Stat-Signature: sdtcnm5szzxpp3fy9y6ymn7hksjnkoge
+X-HE-Tag: 1785875745-238753
+X-HE-Meta: U2FsdGVkX1/rId0IT4/clFEZCW875XA98AlisE2UVsZr53t4SxlSVr5FEApLckPz7/DM1URSe2jT+tme1T4dvUSvHB4BFHBP3/KM2eIpfW03O79ChhRlQg4onn7l/a4kMAdG1y12ATu1DD3JAOiGwSgdoE8Rv62tO6jTch6dPZ6Uu3+jjMZ2ABdRCYEbEfppNDfqYOA51FES9y5tvuf27gdWJsdutkhvulyBq1OCMPiT/f8zxyL5EvrcrEXRYdpICyCUVloedCcgJnv/6L2q1zn24gKAlrHFyX5kR+t1TVZTlZcbuI4gYOh1SO8KIMbkH13uVcdQglrIAoomwIOvhz4f/85EeSdCXS4fDXErjvs0/YScVbR1RyA5Aq4XkSvXkDtRepKarzLXSU0jNvXYXWxQYqsHVSEkmjbW6D91OjLA+bH6S0hJ9/l1Zhru1iAoyamcRXKkyTVu5nuByp44scFYN5WKJJ1dVJCwY6eHKXCRl+Zt5rJ4CiVIfefkK3KrFOrYfUM+l8KMthAUvhBDsBmT3sRP+q4wtmvB3qFrbbYPvPS+o5R6RPkO1Od0Ej8vdhHxWyH5hV6gPj+OSfMRnGPMFyGTbgvUMBBaGbhkfc/Gsupq+ewjcQK1BC8WXMEmTEv+VhTAZMF20u96wY2TqxzoJWf6hjtLcsB9FWZ7tD0ryVQ3Enr5JA1u7vK192bJtJ0Gh70hJZ0q+Til4+b8b/d/5fViS9gacT51rdMnDwlP3IOazwS+dNgFcek5Mth6OoYhTva73ZYseemGnly1xjDKdUUDZ/lbiMDB2+LX+W7i86A0mOI1ZlEcTPl1lJWpWCmexXIszMDQgxo9cypHeTGkYlJtoCBkh+bej3vtpCkHroCptoxkYn6PgcoS9C8/viEqvcKu22jHtRJvQjpYinC4TY6aftF/t30WsLrJYlllf0R0paEoMEGPfe20q2ekkaIUozt/0bgDI8c+/+t
+ wSBg5Bpv
+ MDNj5doMeeQO5idin4pyeTrzwodgOygXsIx3Mw8dK5TsHPZpnEtHbuS1mMTKEEYi4Mecwzwqzr3lmu198ksOkNbfh1Fnb6h6TifBPnTdTpdFpwGbML85WQXnrTHBJbBd6f9yP2HKI0YSt7G54+g2ty4FsPp6g1VcOstG3BsVpSt3AoIdJ4bfi3fFcGNpf5Zz+9l9VT1Dtr+0LQFLTM/aKVs3qxotUk9c1ZMrM1xP5F709sDc3ORK9G0JWbyXEkPzV5dsZIVOUjYon6DWpAhOLEjcjSrZBzYbFg4DshaPbOYuWOaXp10Y5iYy/0b+HDa3/V5WD+IpQBQPi47SiELnabvVP4wnbF6NfT1PtIwnUXFvWNeDXLSyBBxlxpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,97 +108,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 4, 2026 at 1:06=E2=80=AFPM Abhishek Bapat <abhishekbapat@google=
-.com> wrote:
->
-> Currently, userspace has limited visibility into the exact active
-> runtime state of memory allocation profiling and its page extension
-> compression ('sysctl.vm.mem_profiling=3D{0|1|never}[,compressed]').
->
-> While reading the sysctl provides basic on/off status, it is currently
-> impossible for userspace to natively determine whether page-tag
-> compression was successfully enabled without scraping dmesg boot logs.
->
-> Resolve this ambiguity by exposing the active compression state by
-> adding a new read-only sysctl `vm.mem_profiling_compressed` to output the
-> state.
+On Mon, Aug 03, 2026 at 03:09:29PM +0800, Li Zhe wrote:
+> Tested in a VM with a 100 GB fsdax namespace device configured with
+> map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
+> server.
+> 
+> Test procedure:
+> Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
+> initialization time from the pr_debug() output of
+> memmap_init_zone_device().
+> 
+> With memcpy_nontemporal() used by the ZONE_DEVICE template-copy path:
+>   Average of rebinds for nd_pmem driver: 150.83 ms
+>   Average of rebinds for dax_pmem driver: 153.55 ms
+> 
+> With this x86 fixed-size fastpath patch applied:
+>   Average of rebinds for nd_pmem driver: 96.79 ms
+>   Average of rebinds for dax_pmem driver: 119.04 ms
+> 
+> This further reduces the average memmap initialization time measured
+> during rebind by about 35.8% for nd_pmem and 22.5% for dax_pmem.
 
-I guess you missed my first comment at
-https://lore.kernel.org/all/CAJuCfpGA7F80yW1=3DbSXsZre4=3DTx=3DpeqNbkWvKF0u=
-p8xJdSvrgA@mail.gmail.com/.
-Anyway, that's not super critical but would be nice to fix.
+Testing methodology doesn't usually belong in the commit message but under the
+"---" lines below but this is important enough to keep it here.
 
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 > ---
-> v4 change:
-> - Documentation and commit message refactor.
->
-> v3 change:
-> - Added documentation about the behaviour details of the new sysctl.
->
-> v2 change:
-> - Moved from displaying the state in /proc/allocinfo to a new read-only
-> sysctl.
->
->  Documentation/mm/allocation-profiling.rst | 11 +++++++++++
->  mm/alloc_tag.c                            |  6 ++++++
->  2 files changed, 17 insertions(+)
->
-> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm=
-/allocation-profiling.rst
-> index c3a28467955f..f28358af927a 100644
-> --- a/Documentation/mm/allocation-profiling.rst
-> +++ b/Documentation/mm/allocation-profiling.rst
-> @@ -43,6 +43,17 @@ sysctl:
->    warnings produced by allocations made while profiling is disabled and =
-freed
->    when it's enabled.
->
-> +  /proc/sys/vm/mem_profiling_compressed
-> +
-> +  1: Page alloc tag compression is enabled.
-> +
-> +  0: Page alloc tag compression is disabled.
-> +
-> +  This reflects a static boot-time configuration of how page allocation =
-tags are
-> +  stored (in page flags when compression is enabled and in page_ext when=
- disabled).
-> +  Toggling `mem_profiling` at runtime does not change the state of
-> +  `mem_profiling_compressed`.
+>  arch/x86/include/asm/string_64.h | 56 +++++++++++++++++++++++++++++++-
+>  1 file changed, 55 insertions(+), 1 deletion(-)
 
-I'm not a documentation expert but Google tells me: single backticks
-(`) act as interpreted text for semantic cross-references or links,
-while double backticks (``) act as inline literals for raw code
-formatting. I think double backticks would be more appropriate here.
-You should also CC linux-doc@vger.kernel.org to get their input.
+A quick and untested cleanup ontop with the potential for a bunch more
+unification. But later.
 
-> +
->  Runtime info:
->    /proc/allocinfo
->
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 52aece27b00e..877068241f06 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_pr=
-ofiling_sysctls[] =3D {
->                 .mode           =3D 0644,
->                 .proc_handler   =3D proc_mem_profiling_handler,
->         },
-> +       {
-> +               .procname       =3D "mem_profiling_compressed",
-> +               .data           =3D &mem_profiling_compressed,
-> +               .mode           =3D 0444,
-> +               .proc_handler   =3D proc_do_static_key,
-> +       },
->  };
->
->  static void __init sysctl_init(void)
->
-> base-commit: 486855239e38a91d3eae26618ccb7845c1764625
-> --
-> 2.55.0.508.g3f0d502094-goog
->
+Note that you're inconsistent about the "memory" clobber. The current code
+doesn't have it, you're adding it to movnti_8(). I've added it now everywhere
+to be on the safe side - it would be interesting to know whether you see any
+perf difference with and without it in your use case.
+
+Thx.
+
+---
+diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
+index bc6a9f34b346..3a1e1f17431b 100644
+--- a/arch/x86/include/asm/string_64.h
++++ b/arch/x86/include/asm/string_64.h
+@@ -83,6 +83,14 @@ int strcmp(const char *cs, const char *ct);
+ #define __HAVE_ARCH_MEMCPY_FLUSHCACHE 1
+ void __memcpy_flushcache(void *dst, const void *src, size_t cnt);
+ 
++static __always_inline void movnti_4(void *dst, const void *src)
++{
++	asm volatile("movntil %1, %0"
++		     : "=m"(*(u32 *)dst)
++		     : "r"(*(u32 *)src)
++		     : "memory");
++}
++
+ static __always_inline void movnti_8(void *dst, const void *src)
+ {
+ 	asm volatile("movntiq %1, %0"
+@@ -112,47 +120,26 @@ static __always_inline void movnti_64(void *dst, const void *src)
+ static __always_inline void memcpy_flushcache(void *dst, const void *src,
+ 					      size_t cnt)
+ {
+-	if (__builtin_constant_p(cnt)) {
+-		switch (cnt) {
+-			case 4:
+-				asm ("movntil %1, %0" : "=m"(*(u32 *)dst) : "r"(*(u32 *)src));
+-				return;
+-			case 8:
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
+-				return;
+-			case 16:
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)(dst + 8)) : "r"(*(u64 *)(src + 8)));
+-				return;
+-			/*
+-			 * The relevant fixed-size copies here are the
+-			 * x86_64 struct page sizes: 64, 80, and 96 bytes.
+-			 * Keep 32-byte and 48-byte copies inline as well
+-			 * instead of sending those nearby fixed-size
+-			 * cases back to __memcpy_flushcache().
+-			 */
+-			case 32:
+-				movnti_32(dst, src);
+-				return;
+-			case 48:
+-				movnti_32(dst, src);
+-				movnti_16(dst + 32, src + 32);
+-				return;
+-			case 64:
+-				movnti_64(dst, src);
+-				return;
+-			case 80:
+-				movnti_64(dst, src);
+-				movnti_16(dst + 64, src + 64);
+-				return;
+-			case 96:
+-				movnti_64(dst, src);
+-				movnti_32(dst + 64, src + 64);
+-				return;
+-		}
++	if (!__builtin_constant_p(cnt))
++		return __memcpy_flushcache(dst, src, cnt);
++
++	/*
++	 * The relevant fixed-size copies here are the x86_64 struct page sizes:
++	 * 64, 80, and 96 bytes. Keep 32-byte and 48-byte copies inline as well
++	 * instead of sending those nearby fixed-size cases back to
++	 * __memcpy_flushcache().
++	 */
++	switch (cnt) {
++	case 4:  movnti_4(dst, src); break;
++	case 8:	 movnti_8(dst, src); break;
++	case 16: movnti_16(dst, src); break;
++	case 32: movnti_32(dst, src); break;
++	case 48: movnti_32(dst, src); movnti_16(dst + 32, src + 32); break;
++	case 64: movnti_64(dst, src); break;
++	case 80: movnti_64(dst, src); movnti_16(dst + 64, src + 64); break;
++	case 96: movnti_64(dst, src); movnti_32(dst + 64, src + 64); break;
++	default: __memcpy_flushcache(dst, src, cnt); break;
+ 	}
+-
+-	__memcpy_flushcache(dst, src, cnt);
+ }
+ 
+ #define memcpy_nontemporal memcpy_nontemporal
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
