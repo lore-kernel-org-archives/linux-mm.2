@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F63C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 898E4C55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 22:32:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79ACA6B0093; Tue,  4 Aug 2026 18:23:47 -0400 (EDT)
+	id 86FFD6B007B; Tue,  4 Aug 2026 18:32:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771866B0095; Tue,  4 Aug 2026 18:23:47 -0400 (EDT)
+	id 820B16B0088; Tue,  4 Aug 2026 18:32:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663976B0096; Tue,  4 Aug 2026 18:23:47 -0400 (EDT)
+	id 736256B008A; Tue,  4 Aug 2026 18:32:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9EC6B0093
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:23:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FDDB1A0327
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:23:46 +0000 (UTC)
-X-FDA: 85065015252.30.D33B62B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A9FC2140009
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:23:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOhYh+q6;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785882224;
-	b=cHagU6wsyw8j+LYJjGsy2sTqxSy3s8Xp+Bx5rUSMK8f0E4stLI/D//F7+bZ1/ANYd7UuON
-	ZuvVu0fWeSnDyz2H14Gz8A1cPCfCi11OygfuHmRiWtWJLoSmPg/DDm5v2dAwjNPhd/HMxk
-	xWU0j4Mr/ZkuC1TCohMw3mAHa7H5Qpo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOhYh+q6;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 52E046B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:32:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C64A61A0332
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:32:36 +0000 (UTC)
+X-FDA: 85065037512.26.FEA5732
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3EEC41C0008
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:32:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=at2yiKLY;
+	dmarc=pass (policy=reject) header.from=gentwo.org;
+	spf=pass (imf18.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785882224;
+	s=arc-20220608; t=1785882755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YDuligrWm3GQ1Hajj0YRyyRR0KMoYVN0stn9doAF0/0=;
-	b=ExqTRpgROEEtSU5I5v8WZK4YbeHchmbnVcBNt1ZrRgo3SP01d/IO/wuKBYfLnwJ0ecBI45
-	WDItlDGUdQJz2lSggPs1gAvhdotxIzVk0imCwbOvd3pqRlFG/QCp/31B3q6+TGQHDwTyvZ
-	4dmtSpg/646X97BTBtzceXqc2TJnymk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2AB67600AA;
-	Tue,  4 Aug 2026 22:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62A81F000E9;
-	Tue,  4 Aug 2026 22:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785882223;
-	bh=YDuligrWm3GQ1Hajj0YRyyRR0KMoYVN0stn9doAF0/0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mOhYh+q64mgLa9mE9b00qnIiZUBxEnuTjNasZESqshmBlJAbsbKwmaJ+HinFaGema
-	 +CZ4odWQIsG6Rjgey50luzivYAivATdovO59sXCxF8tetSYLdbwyzdtzFHiZLmBPnt
-	 iiQxpRJ7vsYyMSKcx8Ll1OHbZiWOJm2qRm8eSmxSiVYOuAmXdO9zxMND9tinSfOxG6
-	 v4Y0mrFrQNeslxU9zisxnqjDRTXtsJNh4NvVU9Gl5rHdq9PODuJlc4i+RKpcuqBv09
-	 LBq+R/Z2WMsMwX8stlPy/ajjNGMHOHGjO/9Y1gdU0DtOw0b2a9X+GMSL4iGFHfB1by
-	 mJcs3HM0tBIow==
-Date: Tue, 4 Aug 2026 22:23:41 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v3 13/26] mm: introduce freetype_t
-Message-ID: <anJmOMqCVugycC9x@google.com>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
- <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
+	bh=4i1mGJ+FRQRfIxKQvXxnnfkifi+5HFhjIAJsj6nqa5k=;
+	b=Dyb0yLhi6oQik/vp+AlfY/My4Bb8WYY7kui4h1IqA7eZihEDfuuo5f81lrdPQqnFOOreZ3
+	Q62DTcoRRRMDzXv1dq0pxIXqykIwgVG9lCn+Fa857uRpYuskr0EgglQ7I7L83yGQQ33jEz
+	HIwSjOUFkT9o2b8NuwbC7pss8KeljuE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=at2yiKLY;
+	dmarc=pass (policy=reject) header.from=gentwo.org;
+	spf=pass (imf18.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785882755;
+	b=bJDef/ka4GPLrcM/+CJfBaJtD4OccIXAMUrMDEyXt6czcD7zwzMDlF6t84wJ/3C8mphUf4
+	gSmuTRhr2ZnuNK+4/P8jzLnmiOcfolax7g6+zC01HHzft6mJcba0suJKdBnVE/EIaIuq3C
+	ly0+dRqQhRl7b3uaRnTCJI/TfUjaaBo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1785880881;
+	bh=4i1mGJ+FRQRfIxKQvXxnnfkifi+5HFhjIAJsj6nqa5k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=at2yiKLYfZC3fVakZoWLhCksz0PMrkI6/d0TYKBPoXpIGPtfNc7LU+ViWv+A6CxMf
+	 GC7DQy0jW4XLySRIheErfnG9B0tvk7yE/mUQWds+3h9H8PtzC63PmrbXcK6D3O7ooq
+	 2NcakzJJtfeuENJUfR891WT/5jvSHVkQBfAfP5dE=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 2788540E6B; Tue, 04 Aug 2026 15:01:21 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 264D540287;
+	Tue, 04 Aug 2026 15:01:21 -0700 (PDT)
+Date: Tue, 4 Aug 2026 15:01:21 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+    Mark Rutland <mark.rutland@arm.com>, 
+    Yang Shi <yang@os.amperecomputing.com>, 
+    Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org, 
+    urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
+    akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, 
+    agordeev@linux.ibm.com, linux-mm@kvack.org, 
+    linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+In-Reply-To: <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
+Message-ID: <b4b79f6b-e09d-bbb1-2181-07e756e849bb@gentwo.org>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com> <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com> <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com> <amCPBrdltFSE_fEf@J2N7QTR9R3> <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+ <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer> <63ea8156-a109-b2a2-6d35-1c17ad7f1a9d@gentwo.org> <84b31836-1d10-4bec-a469-468b91fd4645@kernel.org> <9f146ce0-4adc-0c00-a2d8-c01b47edc9d1@gentwo.org>
+ <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-page_alloc-unmapped-v3-13-6f5729aa9832@google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A9FC2140009
-X-Stat-Signature: fskgabja1iunewqf64b8tn3kgfb7igq5
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3EEC41C0008
+X-Stat-Signature: jhztdzdkuf79j4pzqiykbuz8mhhdguqo
 X-Rspam-User: 
-X-HE-Tag: 1785882224-294929
-X-HE-Meta: U2FsdGVkX19BW2/doYksDRJOvgbsg1VmjAA9nrOp3MFwr4+nI0zol+uKpdL5H77tckZcQLdtc8S1CVtupF8wig+T40/0aOEYzqJhdOEfEEvv+mpWO/9Q8S/M5r5ncdfNuDMIuMjf+JVKKkkyNqE75webWlCprbHSFzi9UmBAZ0oZ9PWdjqkt7KpZ76cQ//dfOfrDwWij+w3oxs9F03l0KoE6EfHllHkcnaIhf7zDzWlahm+VnCzGDcVYeSA2zLOpyqQWO99/Q7wWmiDqZSGj0/qHan3YrWfdv5lXF3jdp9pVGxpDfbKDhcRtnMN/nKilj8p7PfHvUDdWhLZjHhmg7ONH4+Pm2WEvqAjo6BJBJh/JpPAqKmxUubZUnRbILWm+Gl0Lc/rMx730FGG50ioYrXexYnyMFbWnbM5hyBgNHDUdqVmNzbFUbJm6B7EpoTKXBLNd2/sWh4/IL6A9XCueo1vLp+tLfUvim+qwriGdYyfqXZh4XFzVZhGNZishfZSDJi/2T6rxxP+RXDIqJpOsTMUZFFWd26+Tpo4UXz210in0nnJvRx2i/z5KCBnxMaSRzTBJ+tIaF7L1sVFZgOeWEQtK6DgPstlUvdquyv43L/hf1DXQjaprJz93leu3a6RkevZTcX+B8XF+bpFvkd3JJjC9HooO2prbwI//59GnElBFwrWViP6Q8NbuWk3dEky8K0t7dAM2PZj2l5UdwoeD/ddJMzldw984dsuwa7esCVkgSZZtnk5dsYF5+JGR165rXx5lU5YTDXvOkrGXUozjgKLDH+dsC41p7JAu5ZslMj5+KGsjDVQ48ouWb5NB3dfXbFYIu0vM5kqGNAaD4in5XV0FUc4EMR51Gx/aZ058ae1i58ePMjL6aJvuNCyVlap4g5XpkeTu8O+LDzYnIyi9szXdU2fZgjo0o1nCRM3qnok9hK4VAUQKENJ03gmc9QAvw6bwdfe9JNW6YDzfFcS
- ADWS+cxC
- kBnL2GzP8NiU/QmDyzLpZqz+RZepWOHd/cY3vqCwvngY4xsKVi0aD13T1vHk0LEMl/6GqBhcuYauDoZkGPLHJbqtq6TXJnceRwrUgaN1tcKAURzmBY19cKRkyhysdVNkUaWvpbo30lVcnhxVcHCF77GBmudfdb20oFHXaOOR+D+oJ13RN+St4Gab2d96wh9a+/8I8fIo2rutixMGW16xjYy2hTi2MuhgcWVnjK8HLWqtd9TxMC0mvwU7BKpZqKSwwkUcf4Zqe0WJrmb0W/SVGpoSdRKZGG7utrmz2/5S7ruSg7Mg+S5SrDIHyFUiTMh37hJy21xpPZxowj75QhVQ8Ds+CaT8XVFzl5u0j2cuNNHU3L6cIC+H0e95+xw==
+X-HE-Tag: 1785882755-439456
+X-HE-Meta: U2FsdGVkX18W7UsYgOEd4a0qWbo3aWn5A2XZh4abc2ffnSCJG1D6RsIHO+IkbBeWMPqcITQCACB6Fv8LzT/jx3cnbY8A23wi4UtLsMkGwFK7rFVrQHK4fb/ZqWjXaqzAgI4beu9IAgJ8DRrhsjtweWkGytY3WxACu5nvGag88EDjXcQy4A2qCOQNCKzbmmU4pOiobJ2NvnjWdChsfOD73S4//en3NlWIekk9g3PQ6VYIFusLR1oZXXkAzEo4dsZXINt35Cof2jY8ZMf0+/7j7lHt7IqwdWvhDmqTSvewmx36k2IQxcv7ObCOKU30XhO6gtbptykCWtD6szHxQGrHL1EK+/xj4UfrHDMk/LKRAcqZcQwAXpyXLRA9pRaWrL7hZ/T0kH3MhjwAtq2e/rs0LB7kngLqaGiJxr3aUdMkFTUZBXJ9L5rWWoolivxU4Ran2VcyVWfbctQO/ypF7BdLNH2MbxiHjzjF2Sm9xP/VmY7XH/rLj7Nq5L7j9KgK7IuX6/gdHXPjixNmf6KkjHcegm48IQQrAjAhE7Tp21kNN0MZUe57/ch1O7Sdn2A91LHEo4r51KTpCYw23G4skmSTCpNi5pqZFNNHBhj5/1zkJz9+4+2QHh579k+MF+AG2dwjRTkO9p0CBjp4YjK8cmh3bOxsYZIyTrY53W+b/nEATYBGsuYrhkBHUulzPIkpGQ98NZZtEjn1ArDG3jDh1tbc/+j5bC/+QLqE37MWecYMlmE+c+H9CPvpiDGCw30JJkuy4VEWZXBa+HjT6lniaQWD37Dj4Ip4Z5hYJVRHvfyhFlx0fIl6cYtQhgSccF26rMmNXcXF3PMBnWsKTYEQ0lkv0X7rTJxjDKSgAvg8bi7RrPO6D7escH+8wALf32+OktSQBn6iZHVhNt9+cnTvZhvqhKc3OB1OEYxEM6V21/BPDr+XebFbyCcMw7Tg85hfiWTx3nRmzA2jeeFpRYPRccs
+ v8paXtBE
+ QzE6YRuIfMYdKjKbDzDIM17JRDDwRt4J0GZvEdYu2yGAK0vX5bbbIKJnHt+4ez/VyT0xLGDG4XXvkJ0fVFdDl3Lu6uLkYaabOxT4jMubRl1gY4n5a2355bAWtFELbXj/tiK7sfLLfph2a2KBugz5p5gqzWaP5T20wP5CiYSwKDwO45iQbEQjmlNy9ikl04wzOdLm7DxOhIP4aYt0CP6tGcmBb2tyaW0RnDHznbV71WR5hlNeqrPNYPwUBQpXT9LSr5CcLhC60UgQxNUjWlBfHlJ+F1iAEuS6UWBPGIH7Z9wuacsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,70 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> @@ -179,24 +180,62 @@ static inline bool migratetype_is_mergeable(int mt)
->  
->  #define for_each_free_list(list, zone, order) 				\
->  	for (order = 0; order < NR_PAGE_ORDERS; order++) 		\
-> -		for (unsigned int __type = 0; 				\
-> -		     __type < MIGRATE_TYPES &&				\
-> -			(list = &(zone)->free_area[order].free_list[__type], 1); \
-> -		     __type++)
-> +		for (unsigned int __idx = 0; 				\
-> +		     __idx < NR_FREETYPE_IDXS &&			\
-> +			(list = &(zone)->free_area[order].free_list[__idx], 1); \
-> +		     __idx++)
-> +
-> +static inline freetype_t migrate_to_freetype(enum migratetype mt,
-> +					     unsigned int flags)
-> +{
-> +	freetype_t freetype;
-> +
-> +	/* No flags supported yet. */
-> +	VM_WARN_ON_ONCE(flags);
-> +
-> +	freetype.migratetype = mt;
-> +	return freetype;
-> +}
-> +
-> +static inline enum migratetype free_to_migratetype(freetype_t freetype)
-> +{
-> +	return freetype.migratetype;
-> +}
-> +
-> +/* Convenience helper, return the freetype modified to have the migratetype. */
-> +static inline freetype_t freetype_with_migrate(freetype_t freetype,
-> +					       enum migratetype migratetype)
-> +{
-> +	return migrate_to_freetype(migratetype, freetype_flags(freetype));
-> +}
->  
->  extern int page_group_by_mobility_disabled;
->  
-> +freetype_t get_pfnblock_freetype(const struct page *page, unsigned long pfn);
-> +
->  #define get_pageblock_migratetype(page) \
->  	get_pfnblock_migratetype(page, page_to_pfn(page))
->  
-> +#define get_pageblock_freetype(page) \
-> +	get_pfnblock_freetype(page, page_to_pfn(page))
-> +
->  #define folio_migratetype(folio) \
->  	get_pageblock_migratetype(&folio->page)
->  
->  struct free_area {
-> -	struct list_head	free_list[MIGRATE_TYPES];
-> +	struct list_head	free_list[NR_FREETYPE_IDXS];
->  	unsigned long		nr_free;
->  };
->  
-> +static inline
-> +struct list_head *free_area_list(struct free_area *area, freetype_t type)
-> +{
-> +	int idx = freetype_idx(type);
-> +
-> +	VM_WARN_ON(idx < 0);
-> +	return &area->free_list[idx];
+On Tue, 4 Aug 2026, David Hildenbrand (Arm) wrote:
 
-Should we return NULL here if idx < 0 instead of an out of bounds
-access?
+> >> If the proposed solution has a significant benefit over Mark's solution it could
+> >> be discussed as a next step; and it must be backed with sufficient data to
+> >> warrant all this complexity here.
+> >
+> > You cannot accept that one instruction is faster than the same
+> > instruction prefixed with another and something else at its tail?
+>
+> I am pretty sure that you got exactly what I meant, you likely just don't have
+> the data to back it up.
+>
+> Proof me wrong!
+
+Well you seem to have alrady seen the benchmarks that we ran and are
+running. So I had doubts on your sincerety with this comment. Seemes to be
+be just there for effect.
+
+
 
