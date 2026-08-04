@@ -4,110 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6552BC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3091BC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F03B6B010A; Tue,  4 Aug 2026 11:31:29 -0400 (EDT)
+	id 4BBDD6B0107; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A0D66B010C; Tue,  4 Aug 2026 11:31:29 -0400 (EDT)
+	id 46CDD6B010D; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6296B010D; Tue,  4 Aug 2026 11:31:29 -0400 (EDT)
+	id 383536B0112; Tue,  4 Aug 2026 11:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 456AE6B010A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:31:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30BB1C02F3
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:31:28 +0000 (UTC)
-X-FDA: 85063976256.05.1858252
-Received: from va-2-52.ptr.blmpb.com (va-2-52.ptr.blmpb.com [209.127.231.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5327910000C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:31:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 02E106B0107
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:33:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CF911A01CE
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:33:11 +0000 (UTC)
+X-FDA: 85063980582.13.E2AF636
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CA11C10001A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:33:09 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b="Ugpcwxw/";
-	spf=pass (imf05.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.52 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3oNVVsx;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785857487;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	s=arc-20220608; t=1785857589;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LX/Wg0tks/cc/fTlAyp1t5QsfNTLQnLsZm1iWKs61Hs=;
-	b=2TEw/qqYowSWLBNeC6VkWQ2KalLvskFbILnW0FARdGANqnLOBGz/46aHNFIp0TpAXFPxDx
-	dYsLxVu2YE6Fj1FcB72zwBa+nPWBhWugFPOkcYFoJfTnT4rE4K0Wy2Ekw+jxokINQizhaM
-	1nr0x9tmfa3pXXTRlhRzYGYQvW9Asrc=
+	bh=+B2tyHlxtOIYFFAEVjuBTTR4kj9wHrzaGATG1AU1+pI=;
+	b=NlTf1STI6zZz/usqfqMJkVtitRlAZypBoyWODPkb2rFMvzXNns5UpOFVFYX3gNPj+857ih
+	dJ0LuTADHFfRPP1j3drad2DL/DgKQ6rKphKBQS3o2WZTT04VXROYM2A7cJdKS6VBiSXRkI
+	zPUD/G10NzmzBxF+OHaxpU61fJsub2A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785857487;
-	b=cxFDbIPmHtEy8XZzui8iwiVN+WleHQ6QEOrrn2xqvA/wVr1U0zHX6hJmztsdbomQgNn1PX
-	Hx6ER+5+7/wQNC2isXAob7x+wC+4ytcLVdDnSmp+Nif/eACHkoTFF/OIbDnlCtlVJ9J5IH
-	PXDlQ5RYyzmmnAzaxJSpzudm/XXzIR8=
+	t=1785857589;
+	b=N0iImJ5XOaeYLw2W1nWvCj2d+SvWChmHFVeB9xE6bfe+KscxKCDlft9whR1Sdyj1TJ6fNS
+	EtLyP0BaQ3IEeQUOZYWrxr7oPAw7/FyP0aTn+1W7KUBwzfK+f1M/CDvssANsQ3YM3YA2l+
+	hzAkvsTDx7xL4geqIGxc56HI0sP3Rcc=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b="Ugpcwxw/";
-	spf=pass (imf05.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.52 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1785857476;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=LX/Wg0tks/cc/fTlAyp1t5QsfNTLQnLsZm1iWKs61Hs=;
- b=Ugpcwxw/MLB06WtiIAfB5P2nWUYcfZ1JBLSFiNEOIwJj4O/tQycy8y5B6ZDE2QFMTxHmCm
- y4+cZEryiYE6qw6X7oG7cJ+HuK1He/MbW1nTH3zQTSwXdgAT+1ob/SrYV0dRlVMu+LSOXb
- wqj0zE16Y99BiUMi6B3NO0wF5E5j8m9qu5+DO+OMFXILwfPJOOxy+Rxt+OI+Lev69zr87e
- y0UxF8Vd2Z6S/9Kg6Sc0mmHHafyf+VSlABinDkKjA95ySdsP6Y47IY8Guydj4lPB0FIo86
- o4tzkGCBQigUXRpCKnUoXciFpD3GFxlup0RSQy6jZiSqEOHNy9KyK0vVgofldw==
-Date: Tue, 4 Aug 2026 23:30:55 +0800
-References: <20260804065313.2092022-1-yukuai@kernel.org> <20260804065313.2092022-3-yukuai@kernel.org> <a677f581-344b-4d99-846d-a00801e26033@linux.dev> <20260804133208.GB8078@lst.de>
-X-Original-From: yu kuai <yukuai@fygo.io>
-Reply-To: yukuai@fygo.io
-Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a7205b8+6b76ef+kvack.org+yukuai@fygo.io>
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260804133208.GB8078@lst.de>
-To: "Christoph Hellwig" <hch@lst.de>, "Tao Cui" <cui.tao@linux.dev>, 
-	"yu kuai" <yukuai@fygo.io>
-From: "yu kuai" <yukuai@fygo.io>
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3oNVVsx;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EC5EE43AC2;
+	Tue,  4 Aug 2026 15:33:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A651F000E9;
+	Tue,  4 Aug 2026 15:33:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785857588;
+	bh=+B2tyHlxtOIYFFAEVjuBTTR4kj9wHrzaGATG1AU1+pI=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=R3oNVVsxuCEWsgVHp9L06whtvAu65m31eI7YTUDVmBGTciHjhmbGlv6QUnaWentP6
+	 iKLvzeiIIVg5Ghu1QbNkxlP7j4IS8pCBYrP2hqN5M3VwDO3VNlOGkYXUJZbP/QqIUY
+	 jDQEIQqJorCqz2ZmxeN9MyAQ4406Pc51zTU7Sf3uVL3FNPQ6V/gAqkzY9x567zrxhM
+	 bfstcUfhbLbTZldGnVZ+Xe+REaXQCRTAtHrfQNoDSivsMH8GjVZgEpiFVsUhWgRs6D
+	 Kj6Ww6zTa/zxFhnYHtMLGQpKCTNtF/CX24S8/PBlYm3B3hGjvCYaLeiw9n/12iBL7O
+	 avzTCd2u4JoOQ==
+Message-ID: <2a4423d6-7934-46b2-97da-a20c372b0d17@kernel.org>
+Date: Tue, 4 Aug 2026 17:33:02 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: "Yu Kuai" <yukuai@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, 
-	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
-	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	"Jonathan Corbet" <corbet@lwn.net>, "Josef Bacik" <josef@toxicpanda.com>, 
-	"Coly Li" <colyli@fygo.io>, 
-	"Kent Overstreet" <kent.overstreet@linux.dev>, 
-	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
-	"Mikulas Patocka" <mpatocka@redhat.com>, 
-	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
-	"Dan Williams" <djbw@kernel.org>, 
-	"Vishal Verma" <vishal.l.verma@intel.com>, 
-	"Dave Jiang" <dave.jiang@intel.com>, 
-	"Alison Schofield" <alison.schofield@intel.com>, 
-	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
-	"Andreas Gruenbacher" <agruenba@redhat.com>, 
-	"Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, 
-	"Andrew Morton" <akpm@linux-foundation.org>, 
-	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
-	"Nilay Shroff" <nilay@linux.ibm.com>, <cgroups@vger.kernel.org>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-block@vger.kernel.org>, <linux-bcache@vger.kernel.org>, 
-	<dm-devel@lists.linux.dev>, <linux-raid@vger.kernel.org>, 
-	<nvdimm@lists.linux.dev>, <virtualization@lists.linux.dev>, 
-	<gfs2@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-Message-Id: <0fc5dd22-7a8d-43f0-8555-d2ca966efff6@fygo.io>
-Received: from [192.168.1.104] ([39.182.0.181]) by smtp.larksuite.com with ESMTPS; Tue, 04 Aug 2026 15:31:03 +0000
-X-Rspamd-Queue-Id: 5327910000C
-X-Rspamd-Server: rspam10
+Subject: Re: [PATCH v5 1/3] mm/vmstat, mm/memcontrol: add _monotonic vmstat
+ readers
+Content-Language: en-US
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, hannes@cmpxchg.org, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, rientjes@google.com, kernel-team@meta.com
+References: <20260727162550.2032-1-usama.arif@linux.dev>
+ <20260727162550.2032-2-usama.arif@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260727162550.2032-2-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: reurff3zk4mb181quzqauj8m1h6b3rw6
-X-HE-Tag: 1785857486-153193
-X-HE-Meta: U2FsdGVkX19+3hRXYavC9J3uM/1QJhCYl88FnSPxkViWzgC3ZhIdfU6km+tFsUV3VnnJqrlnubeNRvoqIuRpgIDCa+pRFOlk4XMTukO1LCnZjZEqqtkxLFC9z6hxfhszsC5wovYbwtLoNf7vOL/sIO6zQk+/DZxkOKkNaEaedS6LLjfXXiQGv5GP7RtbRX0RoMEJkPBoZYyTlBj8A3FIFr0CiSvOV+u1XLYTswULOYSRjoY26/GkPeWlyjgafPqenE9a+g6hLyxc73Kgz+EJT7FsncgswgKjPk13YL02XKWZz4SNJQAv+wjNAoyA92YCE6IoM4KiB1h/f4/DNAXoLFyk46LmLy80IYaAOEgJ1nfiWYSiFt0032n+4dx6gmB5mOcAkKBoeFz1XyOYjXkBv9IXfjZWQhM/8FDIlAOwOoetjCa0HINMDk9Uk3Jfdb9ABV3Oa17yksDqCfseyTfFRkXRxRFoyc0hXJ7HCLLjMjPnLkZrvtM5vOV+VNxlVYsRZ7YwoiesaJqc7LwncaJUvfV0BH2hCpOzLptcxClFaH4PA0qRE+eR7GRy5P8z/iWla103vzOYlvAagaq6c45xYFljj2Ud4EdwXQUzhkVIni8rVbieALK42hV6qSu7sYYGnjwOctmFUrHP5iHN0e23e0gXAtL4K6ZUfbtU12XIEvnMx29icINLCexBqMDWvCGdlMh+jq36wLKuLlmrnBtGNfmC1qJWwHeb70k/bhLnINU6wpurTGps01lxWV91GPLu4KWw/ScnA7EVWg/32ufE4H6esrw+TMs8m8CNQuQUI1W0gQR+jnCe/EqpUnnjhHQmeLlEdruDL5y1oDw7ol00vk3BinDVOXm0ZdYAt3n8x39Zga1G8nuKJS1U/e+8naD0y9r2t11SCcgYWtreMI3CewFLW3L6ilvXYV+hsB7u1M7SDZPnw1OhYTWk8EyQ96RfR2rt5shYylSBTorG9/z
- EnE41/RW
- 9eSYVaT2K/OX2vIfJieYRClp3kpdlLjvwLhsTRybmTRTvKDAHLRqWaUt2FgCn3VspYym3mkLuIMFsv3+gWM0Qv/ZoapxvIkPM1qZrW8CTtJk8str4Y2karJua2Zuha8Eaf9q7VTQgS8k3zP6VGl8JXcOAb8Fmqlr/DK/OkP+XAPr8b3E/9D1sHmqS10gD7eOeDqy0BiOtpjM/dWSY3aAkdNFTty/kJtwQaLJXUntFE2Yu4kEivM3ltIzfSi9yM7+d8uPwUXZNpxohz0AnyFvWBDd+IbLwsKjS/XZC/yu1RwVn07Fbh0N5a9hG0igNdRLW4M5Jv0uK2UTeNjqvPHRy6YbTn5DEbinNpWiXcNGWd6Ej7ut/HwXZ3IkoBxpQXEMCYSRe9ieP9huVIw325Aa1mOIi6i8IM7Zqa8D+oeLzz5gz2YVipt/r+HNtPj2qAAIPnYY67Psosr/qelb5Yz4+3GR7p2fR//e6D8/yhxTv6tiHY9jlo9T62x47mxbNgg7kSDrTLn5ZgVlKIuv3lrM8ituvsI3nniN8Vf5iS2OZ90mshezGFT6500TQ8wWEDsZOHe8YY1GCXNeRACCcpY7eRHacKOlv94uUzHJK0ZvVJb5oYOej7POZTI8ErFhgoWTIMwkp2vyr5vdXA8U3clXTr6mjiKXvBZj02n/g
+X-Stat-Signature: n4wweqahk5zabokwnw711mftd341qgeu
+X-Rspamd-Queue-Id: CA11C10001A
+X-HE-Tag: 1785857589-39180
+X-HE-Meta: U2FsdGVkX1/pG+FerpxtylBI6a+DD60UeSpabBICe5PybdwYW8KFI1XMLyYblz6Z9CFZJ/RSWeleDLvZUF7Sc7QR1t90wq4KomcQO/Pj96f+9G9ybx7O4So/6LuA6dTtxRnyBd4AfhqrqIUXtgN9r0cuCO6KxES3xaJMeRyaLz6CcNIQARP2ODeIeDV+vBa5tbfiV2MkuOYqk3zud5OPWjBm7F36VGQRwaLD9EiO58CFRUgtgxxEY9ZfaW7MfdR9HknwUoio7+rngWWYv9fLSXs5otm1EXwu2QYT+HwnrXYkB6RLmlpJz2IXVSkHlOQ7l59zVgLde4ApiJiW8oBANl+r2SL6POIjyFc2Ysz00xk+DZ/8ODkllIyerQszEjEWg4q3R0o3TFPbk22tvFm6VFyKEre8NeEvmpRazfQY2Tfqp70I/ZocPiinpwbN7SLwprbVpFgwRibOR/m6U/NVnY8iBD+Pp2pJdlRiGZJOVFLI5ESdXWDX8ODXXE1bBMWMTGtzcvpo6Asgjva12BNS7LZgiojC3hW3JETHKg8TsKKCAFyCyZU7g57BL4vsYBs8lYKBq/1BOXMJPGFEdfP5hv4JemZgqKu4zHUNsXGr516tt7Q2usYaDgbbJESEqpEWjtO2ZVMUYfZeNVg63mhkz/MtE9Aiaq6M0FSOgcMmFUbvkqGnFFDJdj0Sx0GBGRBnStnndtaTXATcb3TxzrXJQXzcq2P8axh26tFG0m2rqPOSpAunNWXk1iXr3XNr39oSJOQOybjNvdIMj0FLT6DnDgwWbaS3cn9cVUpTF1JLQorskw4p++PFqU7ZGHjw3AcRt8CGjCRGTQrHlTUyN8J83GVYnOy30YbtXRAw5MFEEAGMsXU69GLlvCQyRiNx7IRjSoiJcYWdjPXfsAsLB1yjAFG6HyhRIYrLiTBQF3D1jV/LPWanxhefeoGDN8ObuNhhXxNcHMFUvpKjQPGDS9V
+ f8A0A46W
+ BHpQT9fBs+evk0udUyYEKF1VUy0gWRRdHqpOXS5u7t0Tw3bA1w9xDd3D73dy8GQBA1upF4HUC0mMtv6WtLs6dlE1majd6d/wx2Z8EHD1gzJd82uZAJHBm6pBtYNTv8j2sDFTTZlLwBkhfb9L0CKFy9TWlxmCMDnA3AOPj0mIitgBFGKr545S9pFeDOboItTYAPn5cmfS+JhYqyWDPKjH5JieUdvWOraOzcrBLVHv68jPRCFJuihiBPwXqAzhZsJb4u6yaRNCUftvmAP+t4oYPDqjoo70ZfUmhlZffWdtSw26vkvHb/sdDTUN3tmFGArnzo9N5ji3oTREjrxm9WjVzcc5+ve4U70sF8x+kM3IfmaPFBj3Ek3D6OOiSk6qt3HdVVE/opWWMZ24w530=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,65 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 7/27/26 18:23, Usama Arif wrote:
+> lruvec_page_state(), node_page_state(), and global_node_page_state()
+> all clamp negative reads to zero on CONFIG_SMP so that a transient
+> per-CPU delta skew presents as zero pages rather than
+> as a garbage unsigned value. This is the right behaviour for
+> non-monotonic page-count readers.
+> 
+> It is however incorrect for callers that snapshot a monotonically-
+> incremented event counter and compute a delta from two samples.
+> Once the underlying signed long wraps past LONG_MAX, the clamped read
+> drops to zero while the previously-recorded snapshot still holds the
+> pre-wrap value; the unsigned subtraction then underflows into a
+> ~2^31 spurious delta for 32-bit architecture and corrupts the
+> caller's accumulator.
+> 
+> Add non-clamping siblings that return the underlying state value
+> cast to unsigned long:
+> 
+>   global_node_page_state_monotonic()
+>   node_page_state_monotonic()
+>   lruvec_page_state_monotonic()
+> 
+> With both samples read via the _monotonic variant, unsigned modular
+> subtraction stays correct across a signed-long wraparound as long
+> as the true growth between two samples fits in unsigned long
+> (< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
+> practically-reachable one that motivates this helper.
+> 
+> The variants are only safe for monotonically-incremented counters.
+> Non-monotonic page-count readers must keep using the existing
+> clamped helpers so transient negative reads still present as zero.
+> 
+> This is a prerequisite for a later patch which
+> replaces the producer-side anon_cost/file_cost accumulators with a
+> read-side accumulator in prepare_scan_control() that samples
+> monotonic per-LRU vmstat counters (PGROTATE_*, NR_VMSCAN_WRITE,
+> WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
+> their unsigned modular deltas into lruvec->cost[].count.
+> 
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-=E5=9C=A8 2026/8/4 21:32, Christoph Hellwig =E5=86=99=E9=81=93:
-> On Tue, Aug 04, 2026 at 05:19:24PM +0800, Tao Cui wrote:
->> While reading 2/3, one spot in bio_pinned_blkg() made me wonder, so I
->> gave it a try =E2=80=94 and the WARN_ON_ONCE triggers every time for me.
->>
->> I may well be missing something, but my worry is that the bio's ref on
->> the blkg keeps the object alive, not its entry in the radix tree.
->> blkg_destroy() runs throtl_pd_offline (which only schedules an async
->> flush) before radix_tree_delete(), so the queued bio ends up dispatched
->> (blk_throtl_dispatch_work_fn -> blk_cgroup_bio_start ->
->> bio_pinned_blkg) after the blkg is already gone from the tree, and
->> blkg_lookup() returns NULL.
->>
->> I applied the series and wrote a small reproducer:
->>
->>    - null_blk, cgroup v2, a child cgroup with io.max rbps=3D4096;
->>    - a read issued in the child cgroup gets throttled and queued, pinnin=
-g
->>      the blkg;
->>    - migrate the reader out and rmdir the cgroup; the queued bio is then
->>      flushed after the blkg has left the tree.
-> Can you add this to blktests?
->
->> Maybe keeping the pinned blkg pointer in the bio would sidestep this, so
->> the lookup can't miss?
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-The problem here is that blkg_destroy can be called while blkg is still pin=
-ned
-by blkg_get, in this case remove the cgroup directly remove the blkg from r=
-adix
-tree, that's why blkg_lookup can't find this blkg anymore, and the extra bl=
-kg ref
-is leaked :(
-
-> That would grow the bio, which we try hard to avoid.  I think the way to
-> avoid this is to have active/passive refcounts on the blkg, where an
-> active one keeps it in the radix tree, but a 0 passive one would prevent
-> the caller from getting a new reference to it.  The users who rely on the
-> pin for the I/O completion path would then just keep the active reference
-> and use a pure lookup without getting a new passive reference in the
-> completion path.  This would remove the need for BIO_BLKG_REF which
-> feels a bit kludgy and eats up precious bio flag space.
-
-The problem here is that remove a cgroup can also remove the blkg from radi=
-x tree,
-even through it still has active refcounts. I think this can be fixed by ch=
-ecking
-the cgroup online_pin first, if it's zero, we can search the blkg from the
-request_queue blkg list, where blkg will not be removed until blkg_free_wor=
-kfn().
-What's better, if we can convert the blkg list to hash table with key as bl=
-k-cgroup,
-it will be much better as we can lookup from this table instead of blkcg ra=
-dix tree.
-
->
---=20
-Thanks,
-Kuai
 
