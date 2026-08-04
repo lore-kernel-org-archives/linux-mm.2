@@ -4,147 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E76C5518F
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60390C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CD346B00E2; Tue,  4 Aug 2026 10:11:12 -0400 (EDT)
+	id 64ABB6B00DB; Tue,  4 Aug 2026 10:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5086B00E4; Tue,  4 Aug 2026 10:11:12 -0400 (EDT)
+	id 621D06B00E7; Tue,  4 Aug 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BB526B00E8; Tue,  4 Aug 2026 10:11:12 -0400 (EDT)
+	id 5377D6B00E8; Tue,  4 Aug 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A4816B00E2
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:11:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBD02A1078
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:11:11 +0000 (UTC)
-X-FDA: 85063773942.11.567A513
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 00B531C000C
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:11:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYqiid8N;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2379F6B00DB
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:13:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DED921A0157
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:55:42 +0000 (UTC)
+X-FDA: 85063583724.30.778381C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F0D61100006;
+	Tue,  4 Aug 2026 12:55:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="b1Kg/eLb";
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf14.hostedemail.com: domain of BATV+d7a51db447a6f215910b+8381+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d7a51db447a6f215910b+8381+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785852670;
+	s=arc-20220608; t=1785848140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AufxVfVqAXJ04dLvj2G+UKWqnrgLOywdNZpBIg0K+AA=;
-	b=pLXFP7Q7JguDejABGKWgtajvP0gbNgMeZqS3ELD1FuSmtmyR0ClVlWLkQPph9es4Vruuys
-	M3qzfCtcWeeKrgysgfQgnfuSVklD9+Zwff0URNqOSm+0rBl6vmbldXkZwu5ee92H33dNIP
-	algx8NKnR3nk93Sm+LA2Si7xsUod75s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BQEuAZ2arJsGFIE3GuxvC06xXOl5VMmGb4FBQO07XKY=;
+	b=6cqt09AThSXylm7niO60ZiLlydXzQwwf8ujNSSgx1/1sL6RXHh2V6TwO4rkz7xy6fY2Zu3
+	+x6i6tajfO3ACDbaG0Hv6/CLlmE3KEeBlH3B/7hyAmGwSTRFjOXZUYkaYYs8SITTSRPbd4
+	aucx26lDp7cypRKOgozRsT3yLGnpQ4g=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYqiid8N;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="b1Kg/eLb";
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf14.hostedemail.com: domain of BATV+d7a51db447a6f215910b+8381+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d7a51db447a6f215910b+8381+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785852670;
-	b=vKzwOJcDgc6/f6f3/emK7/YzD0MscFQgTK3ok5vG8GuSLmHgr8FS0IjPmR04KgDLKy/WLF
-	m+emF8pOCsCSOY+ZJl2IXB+r6JNNuIFpDfKCmetlKMEShHe9KFlu7p/hafGIrQ4tY+C6Oh
-	JAW2E4/wuVZLyn0uOzlGT6CeZ0h7hdI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5BB4D60A83;
-	Tue,  4 Aug 2026 14:11:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C9B1F000E9;
-	Tue,  4 Aug 2026 14:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785852669;
-	bh=AufxVfVqAXJ04dLvj2G+UKWqnrgLOywdNZpBIg0K+AA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YYqiid8NmHYJgTJOTcM/2lckkag+h29MgmTSxhEyDoqLjxn4b7Mw4M02LJS+QLHfP
-	 712NEqVkBYpA1fcQ36d+VAYTuvfkJY3Cl3PP5y+3zppwx48xfBqSVGbAHhIVOmnkIR
-	 IbFkzcZmN5WFb2swCGl2/lm1Kcjk2S6fXRCk8nzdmsc7Y76n4Flx667YFinV5LwlTh
-	 xDWR/zxga8xRlBixGmMBc05wzFo/ePD/rzt5r8v8jaZp42j7huD7BO+C2cMVpLLUC2
-	 qB0zL15MXilJaPTAq1VbxnIlCNcBB0vxNdZAEegzIrZR3dw2A2kiN3sfQUPeo5Cx+x
-	 VZlqDFz+CX0GQ==
-Message-ID: <65b4baa3-77bd-4d2c-a128-9884f858e63d@kernel.org>
-Date: Tue, 4 Aug 2026 16:11:02 +0200
+	t=1785848140;
+	b=xylAFOlaSafCTp9GiVFwl0vbeIOvlkSXI1hpLsMMMgJXgWywOJK8BcL+plH+7cSOnGAEiW
+	IxNDw1nWweGNYxaTcnDpiorvUFHf2ZPSWrOB+gRAFf4mjazjG/YNhkIsJiAx0y/ipCKDtw
+	q9v9Q4+PxAosrox428OyjehesB0QGQQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=BQEuAZ2arJsGFIE3GuxvC06xXOl5VMmGb4FBQO07XKY=; b=b1Kg/eLbQE46Mycpi8QoVjlByI
+	LGn3HirFzkV2qSe1TSSpfgTYscLDSRlwATfmKCgZ/A/NCno4UEBnQ3T7zu60xllabtu/zrdRGJg2S
+	0au+adsn9CB/H6BvWWN8rxh/OeVRaAVibTKEjrD6igjhbslGBSJMWRBshrbr4xPpjF2u8pq3ST9D2
+	N4hpWxi+4QPb/84GIsJyh2Sl1h6SRc0V6NCKTZddrTC/6QeNDTgoWCjUNz1bIOuAMzQ9enek+vkkw
+	gE/wbGS2NR3GNLbmweIsumcImXt6Qlq4loYRfB/Yoz9F44Thq/j+GM/DcnVAyPB0g1+rgWW5yV5jh
+	y8JavISA==;
+Received: from [93.123.20.94] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrEg8-00000001rUa-45ES;
+	Tue, 04 Aug 2026 12:55:33 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: axboe@kernel.dk
+Cc: linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-aio@kvack.org,
+	linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	linux-mm@kvack.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: [PATCH v2] block: split out a new blk_plug.h header
+Date: Tue,  4 Aug 2026 05:55:10 -0700
+Message-ID: <20260804125524.740996-1-hch@lst.de>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-To: Johannes Weiner <hannes@cmpxchg.org>, Barry Song <baohua@kernel.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- willy@infradead.org, linux-mm@kvack.org
-References: <amoWjOnPayHVQU9v@cmpxchg.org>
- <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
- <amtv0YRbSrN6iUEo@cmpxchg.org>
- <CAGsJ_4yWAUcXmVr7Oe1V42szqi2Od-0MhDBspNKURZcBnub9+Q@mail.gmail.com>
- <amy5ZKC2Kc7RX94Q@cmpxchg.org>
- <CAGsJ_4xhbEAiLFt-3N7738zJDoJ=hPRYLpP3tpU2sGOz=ORiaQ@mail.gmail.com>
- <anCpdjEoDNgVbfzP@cmpxchg.org>
- <CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1RuZoBeUBR1iFqOA@mail.gmail.com>
- <anE27CtvCFx7sAuO@cmpxchg.org>
- <CAGsJ_4z7bsDzMtO5PzaSHV4CBYBFS=wmmG3H8xfj-mdUo4VyxA@mail.gmail.com>
- <anHxPU17Ui4MTcCb@cmpxchg.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <anHxPU17Ui4MTcCb@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: ogbzfaanby8ohghi4hp4jmk54jiaw8a5
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F0D61100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 00B531C000C
-X-Stat-Signature: 3g3s8fpnj5i4krmebsipuzu8q6fbkcog
-X-HE-Tag: 1785852669-614903
-X-HE-Meta: U2FsdGVkX1+mXtqwAwDszJaiR3e+YGFwuWySP0VhUqDoPS/rZZrg5D75H+GSxCOSUIf+sdmTUAftz+AcrcwnW8PqvXuy4jinaqqrkw7/YyScvgIL/m67f9eZ7O3HuHv6jzjPjgmuyGzz1bhgEXEGBysuUYW0O+h5LujduNCkMxGARnfhZJ2+VxnG2Ol0/bI8mw+YmZytFNuXKSUkMvCBOwBqEEnJLADR7EZ1T5uIZsC+FxoRcRY4cLa/4VU1odBWIDGzsuGrpLHOXWckcgA7HpS1xC4h/rdPww3WR+qlUWvJhqyy/h7iI3NRabBWMB5Mjf0awdtRGY9p2GRyiOCbeWQtPXNn2Q4tNdGs9PXxesWz6i2+w0CAUwoAeWd0GrNnmZYpOJa9oL9Qrez6I84KPuPyyt+Blqp06sPW8hkQJNaKFjJwLakIgu4g430c0n8wuTLIzdUjh6m10Zz9RjdvzWY7zkmgApacFibkW7RNyvtJJKuYJJBwOV71gqJ213fbjDKyxpnQLECKoglt405P/EX2u7Wn2joM9pqWtwh7EPk9IMYzFSJyCHXkMgpqmB6q5VwfPx9SBGW7Nr5173gysg2XU4K3KYwdMLaRlmSbYU9ilw5sr/4teNVBMLe9puOafp8++YS8nfVF9KpZDJNDz9+b2agD6TDgSxBE8ssXtD5Gm9Cdtj2iY+wfi3+TVbad96n0IBBULcGb8D5wRNie/Y7QCT1Zg0LBvJ1VV/pmzjqucs+thaKBzqP9xkJoz64HqZ9zF42mp+Dhfm9h70X3RbUpIYBuAWBulmRG8JK6RIBorzbAb7rE6uB0GoaCrpMg0l6z710+BJpOFU38dtngyqZm+0WvkkPg0mx+fkt5M/1RoRi97whW2GDtG4JkrRf69RnsbwvgJfjSVAVglOpviPKCi6iYHamZK4TzuHNqInWK5CdRGFbpR1ZtGaKEDYdJSqwweXq6fJZDvZ8CuYY
- oECZLkR1
- xOyNXjCv/tP4CO1xis5kYBEmOTAyWoKDQUXhU3uE2tWGMT+UU4dCNJGbMp12nS4ontrqfZifWf9R+rMk1EYCIOUQX8Aqd0+8AjP7QfY67mqtuqCd5JEAwdKaerVJIDiJhXugZTVrvLJSLCb/Ykr5lzydAGGNSwt2XUgBUQCXX2+econB5xlk3i4bQ70mWEPpSO54l+u/fSrhwtgB2ifFIiyXUTRGR4jP4/+jRJ0E40vOGB2U2Y6LvkJo51NO3LEReRuKxXhXIIMlYvn0qkHmP8U0sUrD5hdPW2Ze8lcRr3UCa/cCnVqwam0JhGCXOa7ioA7rsULf+nIl4c25tXsZ17q7TAA==
+X-HE-Tag: 1785848138-583944
+X-HE-Meta: U2FsdGVkX1+w/EB1CN6BPggneyf2dFknV3RIh1hGn7ADr7aI1OiNdYj4vj5tAbwg2Z0E5S4pPS94IlEo9YPlqt0cQd+dd/FOo/YrgoEQsWzAljBpFKHhmKNvPZ1Q4i5AIu4bSU/20TETPXTQheNbgch+KdGFtVQ6LUsoB9fOaucBCOcWpEXj7UklhddrvmY3EdotOKMhpB/baB330Fz6vrDHyMC7gHCiPx6eqHskoKVNRdc2q9oXFhrIPlJ1efSasdqKgsmyX8QdKUNuR32rovhxIYds9Of5S42+GR2nS7SD5Xt/Vgwcfh79WGawuef1m3QGgxjxQERR5Y+zP9+6IatJBEaXkiwwwfUC4blYidi8IanRNPHqLIAUIRsLNyOT1RsCaWm9F/XCQ0yxr6dXSGEwhBdivlOyb6Ho7Gl9aau65LMKYNh8CecXgppgMPW5JmzyV1cLELn6XrbiYwPvCo0kCfDKhn8ic7Gu1ufR7EuNLnjuIV3z8Bp7/QhU8yY/qZLs1JRBk5zpvYUZLWJyuk3H8Eny07K0bAvg/veAu7mUHCTvwO1FQG/tnBxnIuyF8GmH4wlRlX3dxKIuhKQtD9SzlqszuWaaLIvBOzkiCLeOtcmN3MBccWtYSHmk8l6C+yC79dxHcmV8UfWOsWLCxKlF+TWPPM4/KYHSesk/cdEfZBDxHczYn65xPZavO6POrKfQcWBKkIDTlQgxNAxEF+04/Tsweo7IR7O5y7Yz0SbNBqx8mhuz0T4ZhEuzMms/QUh0m5diC0dXabmYB0k0cF/6VT6Ot5crSNNCJHfmFDJIUziOQx/En9+bqBrRzGtfG4NcrLAb5BpZYop5/UcH9xPY7cwWghgu1AyGKiShkLpP3XJ7Xs87nsJhVtU8tRmXU5WZR1DyISlkNfKCOT5beJo/S3+K+tRksldm9ZcRapJ9eP/Qg1sGMnf7mk65xS10fTL1Jr70DEGG89f+kaT
+ VjMpLpTB
+ mBaOZ7gG0xikAVkdbVjrMS/YxMe0QuP+/n9lR+vfjKOEk4rgpo3JnuLqvIC0Aoh0LJMJBw3u0K4gSlP3Gs15+5SWZxd/zkNudRSHCvDKAYPzj/7Hoi5whzHv7ng+eqGq8u0ToNTYC6+QZEzXhcfixxAOHWVOk7hO+XfCEyVI+4avbATko3nL9wrnLoufUqNKFEh9p+Nk13LdWHOuu6xdyCjK3pBt/apYctooTMHzA2nlI579SsJE/jhmoQacrcKJWnvcWqdROAnKf86HbrWmpqY7W9V7paG/kaHy4fjxfkZRi9izzYLovE5JuAM/Kn+SkhKEI5IoOcSUs+LDNBjBVKwMndukzeKHLgbZgFBP+bwKpXpwzEWeD8sPsUE6x+cYmNTlyDSILFUDP02w26hrzy014uXvU/Oh0k9CDqiCwZw4ofwydumpxKmwNgGcZDdEBUlNHkuEqj+GfpTK/7x0xh+kKHyFwv1VJpDbzGZAdwvrfP6rSO6N2cQKHGu3W+5ahSs1id47JjLINyQhuH04F7lsRJYcX28lzIZIjj7qOJ/xc0XxWYjgKRJxNIgrc1an6PTUIofTR1cnA7yBpS6LKm1pPoPCBF/Wsz/5l3vZ/25MPh573LEwv7ztvaU8iGjesAgcZWP1pKb6kB3+0FxTIjauV0oXjvUmd4+rju3Ym7kSFVxnSrqsyTXPXNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,82 +94,438 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 16:03, Johannes Weiner wrote:
-> On Tue, Aug 04, 2026 at 10:03:14AM +0800, Barry Song wrote:
->> On Tue, Aug 4, 2026 at 8:48 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
->>>
->> [...]
->>>
->>> I am very confused. Did you not see my proposal above?
->>>
->>> Why not this?
->>
->> Hi Johannes,
->>
->> For arm64, if the base page size is 64KB, a PMD would be 512MB,
->> and PMD-1 would be 256MB. Usama mentioned 2MB, which is just
->> order-5, not PMD-1 on arm64.
->>
->> BTW, I assume khugepaged_max_ptes_none is intended for collapse,
->> not splitting. I am a bit concerned that reusing it for this
->> purpose would be quite disruptive.
-> 
-> It already is:
-> 
-> static bool thp_underused(struct folio *folio)
-> {
-> 	int num_zero_pages = 0, num_filled_pages = 0;
-> 	int i;
-> 
-> 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-> 		return false;
-> 
-> 	if (folio_contain_hwpoisoned_page(folio))
-> 		return false;
-> 
-> 	for (i = 0; i < folio_nr_pages(folio); i++) {
-> 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-> 			if (++num_zero_pages > khugepaged_max_ptes_none)
-> 				return true;
-> 		} else {
-> 			/*
-> 			 * Another path for early exit once the number
-> 			 * of non-zero filled pages exceeds threshold.
-> 			 */
-> 			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
-> 				return false;
-> 		}
-> 	}
-> 	return false;
-> }
-> 
-> That's ABI and setups are relying on it.
-> 
-> All I'm proposing is to only queue pages that the shrinker would
-> actually split under currently existing rules. That's a mostly
-> transparent optimization, not a new policy.
+blkdev.h gets included in various places outside the block layer just
+for struct blk_plug and related plugging functions.
 
-I yet have to reply to some stuff here (sorry, it's a mess :( ), but one thing
-that annoyed me right from the start is that we have:
+Split blk_plug into a separate helper to reduce the amount of code
+that needs to get rebuilt when blkdev.h changes and to slightly
+reduce compile times.
 
-static bool split_underused_thp = true;
+In io_uring this requires pulling in a few other headers explicitly that
+previously were implicitly included through blkdev.h.
 
-But the default khugepaged settings actually don't result in any splits.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+---
 
-I think it would already be a big improvement to not default to adding all pages
-in default setups.
+Changes since v1:
+ - spelling fixes
 
-When we last discussed changing that, one concern raised in the past was that
-changing the khugepaged setting later would then not be able to reclaim pages
-allocated up to that point.
+ fs/aio.c                       |  2 +-
+ fs/fs-writeback.c              |  2 +-
+ include/linux/blk_plug.h       | 95 ++++++++++++++++++++++++++++++++++
+ include/linux/blkdev.h         | 86 +-----------------------------
+ include/linux/io_uring_types.h |  2 +-
+ io_uring/io_uring.h            |  1 +
+ io_uring/kbuf.c                |  1 +
+ io_uring/rsrc.h                |  2 +
+ io_uring/rw.h                  |  1 +
+ kernel/exit.c                  |  1 -
+ kernel/sched/core.c            |  1 -
+ mm/madvise.c                   |  2 +-
+ mm/page-writeback.c            |  1 -
+ mm/readahead.c                 |  2 +-
+ mm/swap_state.c                |  2 +-
+ mm/vmscan.c                    |  2 +-
+ 16 files changed, 108 insertions(+), 95 deletions(-)
+ create mode 100644 include/linux/blk_plug.h
 
-When someone actually changes khugepaged settings such that the underused
-shrinker would get active, could we walk the LRU and add all eligible anon THPs
-to the underused shrinker? We could remember "already scanned for underused" per
-THP, but maybe we could avoid that initially.
-
+diff --git a/fs/aio.c b/fs/aio.c
+index f57fa21a2503..ebdb0e5b95fd 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -35,7 +35,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/security.h>
+ #include <linux/eventfd.h>
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/compat.h>
+ #include <linux/migrate.h>
+ #include <linux/ramfs.h>
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index fdb8766d275a..d064072284f4 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -25,7 +25,7 @@
+ #include <linux/pagemap.h>
+ #include <linux/kthread.h>
+ #include <linux/writeback.h>
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/backing-dev.h>
+ #include <linux/tracepoint.h>
+ #include <linux/device.h>
+diff --git a/include/linux/blk_plug.h b/include/linux/blk_plug.h
+new file mode 100644
+index 000000000000..2ac1265662ad
+--- /dev/null
++++ b/include/linux/blk_plug.h
+@@ -0,0 +1,95 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_BLK_PLUG_H
++#define _LINUX_BLK_PLUG_H
++
++#include <linux/sched.h>
++
++struct blk_plug_cb;
++typedef void (*blk_plug_cb_fn)(struct blk_plug_cb *cb, bool from_schedule);
++
++struct rq_list {
++	struct request *head;
++	struct request *tail;
++};
++
++#ifdef CONFIG_BLOCK
++/*
++ * blk_plug permits building a queue of related requests by holding the I/O
++ * fragments for a short period. This allows merging of sequential requests
++ * into single larger request. As the requests are moved from a per-task list to
++ * the device's request_queue in a batch, this results in improved scalability
++ * as the lock contention for request_queue lock is reduced.
++ *
++ * It is ok not to disable preemption when adding the request to the plug list
++ * or when attempting a merge. For details, please see schedule() where
++ * blk_flush_plug() is called.
++ */
++struct blk_plug {
++	struct rq_list mq_list; /* blk-mq requests */
++
++	/* if ios_left is > 1, we can batch tag/rq allocations */
++	struct rq_list cached_rqs;
++	u64 cur_ktime;
++	unsigned short nr_ios;
++
++	unsigned short rq_count;
++
++	bool multiple_queues;
++	bool has_elevator;
++
++	struct list_head cb_list; /* md requires an unplug callback */
++};
++
++void blk_start_plug(struct blk_plug *);
++void blk_start_plug_nr_ios(struct blk_plug *, unsigned short);
++void blk_finish_plug(struct blk_plug *);
++
++void __blk_flush_plug(struct blk_plug *plug, bool from_schedule);
++static inline void blk_flush_plug(struct blk_plug *plug, bool async)
++{
++	if (plug)
++		__blk_flush_plug(plug, async);
++}
++
++static __always_inline void blk_plug_invalidate_ts(void)
++{
++	if (unlikely(current->flags & PF_BLOCK_TS)) {
++		current->plug->cur_ktime = 0;
++		current->flags &= ~PF_BLOCK_TS;
++	}
++}
++
++struct blk_plug_cb {
++	struct list_head list;
++	blk_plug_cb_fn callback;
++	void *data;
++};
++
++struct blk_plug_cb *blk_check_plugged(blk_plug_cb_fn unplug, void *data,
++		int size);
++#else /* CONFIG_BLOCK */
++struct blk_plug {
++};
++
++static inline void blk_start_plug(struct blk_plug *plug)
++{
++}
++
++static inline void blk_start_plug_nr_ios(struct blk_plug *plug,
++					 unsigned short nr_ios)
++{
++}
++
++static inline void blk_finish_plug(struct blk_plug *plug)
++{
++}
++
++static inline void blk_flush_plug(struct blk_plug *plug, bool async)
++{
++}
++
++static inline void blk_plug_invalidate_ts(void)
++{
++}
++#endif /* CONFIG_BLOCK */
++#endif /* _LINUX_BLK_PLUG_H */
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 9213a5716f95..20cb8ed7d987 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/blk_types.h>
++#include <linux/blk_plug.h>
+ #include <linux/device.h>
+ #include <linux/list.h>
+ #include <linux/llist.h>
+@@ -21,7 +22,6 @@
+ #include <linux/rcupdate.h>
+ #include <linux/percpu-refcount.h>
+ #include <linux/blkzoned.h>
+-#include <linux/sched.h>
+ #include <linux/sbitmap.h>
+ #include <linux/uuid.h>
+ #include <linux/xarray.h>
+@@ -1169,94 +1169,10 @@ extern void blk_put_queue(struct request_queue *);
+ 
+ void blk_mark_disk_dead(struct gendisk *disk);
+ 
+-struct rq_list {
+-	struct request *head;
+-	struct request *tail;
+-};
+-
+ #ifdef CONFIG_BLOCK
+-/*
+- * blk_plug permits building a queue of related requests by holding the I/O
+- * fragments for a short period. This allows merging of sequential requests
+- * into single larger request. As the requests are moved from a per-task list to
+- * the device's request_queue in a batch, this results in improved scalability
+- * as the lock contention for request_queue lock is reduced.
+- *
+- * It is ok not to disable preemption when adding the request to the plug list
+- * or when attempting a merge. For details, please see schedule() where
+- * blk_flush_plug() is called.
+- */
+-struct blk_plug {
+-	struct rq_list mq_list; /* blk-mq requests */
+-
+-	/* if ios_left is > 1, we can batch tag/rq allocations */
+-	struct rq_list cached_rqs;
+-	u64 cur_ktime;
+-	unsigned short nr_ios;
+-
+-	unsigned short rq_count;
+-
+-	bool multiple_queues;
+-	bool has_elevator;
+-
+-	struct list_head cb_list; /* md requires an unplug callback */
+-};
+-
+-struct blk_plug_cb;
+-typedef void (*blk_plug_cb_fn)(struct blk_plug_cb *, bool);
+-struct blk_plug_cb {
+-	struct list_head list;
+-	blk_plug_cb_fn callback;
+-	void *data;
+-};
+-extern struct blk_plug_cb *blk_check_plugged(blk_plug_cb_fn unplug,
+-					     void *data, int size);
+-extern void blk_start_plug(struct blk_plug *);
+-extern void blk_start_plug_nr_ios(struct blk_plug *, unsigned short);
+-extern void blk_finish_plug(struct blk_plug *);
+-
+-void __blk_flush_plug(struct blk_plug *plug, bool from_schedule);
+-static inline void blk_flush_plug(struct blk_plug *plug, bool async)
+-{
+-	if (plug)
+-		__blk_flush_plug(plug, async);
+-}
+-
+-static __always_inline void blk_plug_invalidate_ts(void)
+-{
+-	if (unlikely(current->flags & PF_BLOCK_TS)) {
+-		current->plug->cur_ktime = 0;
+-		current->flags &= ~PF_BLOCK_TS;
+-	}
+-}
+-
+ int blkdev_issue_flush(struct block_device *bdev);
+ long nr_blockdev_pages(void);
+ #else /* CONFIG_BLOCK */
+-struct blk_plug {
+-};
+-
+-static inline void blk_start_plug_nr_ios(struct blk_plug *plug,
+-					 unsigned short nr_ios)
+-{
+-}
+-
+-static inline void blk_start_plug(struct blk_plug *plug)
+-{
+-}
+-
+-static inline void blk_finish_plug(struct blk_plug *plug)
+-{
+-}
+-
+-static inline void blk_flush_plug(struct blk_plug *plug, bool async)
+-{
+-}
+-
+-static inline void blk_plug_invalidate_ts(void)
+-{
+-}
+-
+ static inline int blkdev_issue_flush(struct block_device *bdev)
+ {
+ 	return 0;
+diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+index a2c623a67a25..f302bb3fcf8e 100644
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -1,7 +1,7 @@
+ #ifndef IO_URING_TYPES_H
+ #define IO_URING_TYPES_H
+ 
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/hashtable.h>
+ #include <linux/task_work.h>
+ #include <linux/bitmap.h>
+diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
+index cb736b815422..9771d4557ed3 100644
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -3,6 +3,7 @@
+ #define IOU_CORE_H
+ 
+ #include <linux/errno.h>
++#include <linux/file.h>
+ #include <linux/lockdep.h>
+ #include <linux/resume_user_mode.h>
+ #include <linux/poll.h>
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 1cf5be62bb65..7c309173dd19 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -7,6 +7,7 @@
+ #include <linux/slab.h>
+ #include <linux/namei.h>
+ #include <linux/poll.h>
++#include <linux/uio.h>
+ #include <linux/vmalloc.h>
+ #include <linux/io_uring.h>
+ 
+diff --git a/io_uring/rsrc.h b/io_uring/rsrc.h
+index 98ae8ef51009..eacfdb70f203 100644
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -2,8 +2,10 @@
+ #ifndef IOU_RSRC_H
+ #define IOU_RSRC_H
+ 
++#include <linux/bvec.h>
+ #include <linux/io_uring_types.h>
+ #include <linux/lockdep.h>
++#include <linux/uio.h>
+ 
+ #define IO_VEC_CACHE_SOFT_CAP		256
+ 
+diff --git a/io_uring/rw.h b/io_uring/rw.h
+index 9bd7fbf70ea9..1179506f929f 100644
+--- a/io_uring/rw.h
++++ b/io_uring/rw.h
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/io_uring_types.h>
+ #include <linux/pagemap.h>
++#include <linux/uio.h>
+ 
+ struct io_meta_state {
+ 	u32			seed;
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 1056422bc101..2140d0515f9e 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -48,7 +48,6 @@
+ #include <linux/audit.h> /* for audit_free() */
+ #include <linux/resource.h>
+ #include <linux/task_io_accounting_ops.h>
+-#include <linux/blkdev.h>
+ #include <linux/task_work.h>
+ #include <linux/fs_struct.h>
+ #include <linux/init_task.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 96226707c2f6..616774777dea 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -40,7 +40,6 @@
+ #include <linux/sched/rseq_api.h>
+ #include <linux/sched/rt.h>
+ 
+-#include <linux/blkdev.h>
+ #include <linux/context_tracking.h>
+ #include <linux/cpuset.h>
+ #include <linux/delayacct.h>
+diff --git a/mm/madvise.c b/mm/madvise.c
+index cd9bb077072c..f6b7ef0f8b1b 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -25,7 +25,7 @@
+ #include <linux/ksm.h>
+ #include <linux/fs.h>
+ #include <linux/file.h>
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/backing-dev.h>
+ #include <linux/pagewalk.h>
+ #include <linux/swap.h>
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index e98748112d1e..d1fd6ba58ae5 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -25,7 +25,6 @@
+ #include <linux/init.h>
+ #include <linux/backing-dev.h>
+ #include <linux/task_io_accounting_ops.h>
+-#include <linux/blkdev.h>
+ #include <linux/mpage.h>
+ #include <linux/rmap.h>
+ #include <linux/percpu.h>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 558c92957518..6e5563290287 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -113,7 +113,7 @@
+  * ->read_folio() which may be less efficient.
+  */
+ 
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/kernel.h>
+ #include <linux/dax.h>
+ #include <linux/gfp.h>
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 9c3a5cf99778..727a17ee7821 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -17,7 +17,7 @@
+ #include <linux/pagemap.h>
+ #include <linux/folio_batch.h>
+ #include <linux/backing-dev.h>
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/migrate.h>
+ #include <linux/vmalloc.h>
+ #include <linux/huge_mm.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..b957664abb26 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -25,7 +25,7 @@
+ #include <linux/vmstat.h>
+ #include <linux/file.h>
+ #include <linux/writeback.h>
+-#include <linux/blkdev.h>
++#include <linux/blk_plug.h>
+ #include <linux/buffer_head.h>	/* for buffer_heads_over_limit */
+ #include <linux/mm_inline.h>
+ #include <linux/backing-dev.h>
 -- 
-Cheers,
+2.53.0
 
-David
 
