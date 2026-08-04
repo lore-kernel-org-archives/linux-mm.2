@@ -4,128 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E26C55822
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8463BC55838
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 15:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3E756B0105; Tue,  4 Aug 2026 11:21:59 -0400 (EDT)
+	id 812A16B0104; Tue,  4 Aug 2026 11:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D15B26B0106; Tue,  4 Aug 2026 11:21:59 -0400 (EDT)
+	id 7C2CE6B0106; Tue,  4 Aug 2026 11:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE08F6B0109; Tue,  4 Aug 2026 11:21:59 -0400 (EDT)
+	id 663CF6B010A; Tue,  4 Aug 2026 11:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E92E6B0105
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:21:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1EE6F1A01FC
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:21:59 +0000 (UTC)
-X-FDA: 85063952358.11.911E367
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D339A180019
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:21:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=G4iENgtj;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785856917;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BBDE6B0104
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 11:27:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA67D120221
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:27:00 +0000 (UTC)
+X-FDA: 85063965000.19.E7ABCA8
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B5178140015
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 15:26:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HKcyR+R+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785857218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=olHXb2geGlzeL9y04Jg6NOhgFWnbCV9DjEXTlnJrZf8=;
-	b=OdhzkfI8ruPryNz3GKpE84fROXwksrTNHudES9X1B8t0k6vZSdHbQ4RZ5nmlxIHCR5V/N2
-	ghONr3ZeY3LfMm8OcBmxv5uBqSQuFpOjusAqbCYEtcI36F7SYhABszwO2wsgKAO7sZhhvo
-	aroJCx3DDQ7jbbMkdkc5ob/TwAUK+A8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=G4iENgtj;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785856917;
-	b=GQx56hjfk4O2XB9E2TVMP4Wzw13KdaqJUnGLtyMFWoIVcOYoQWDlKbNAkukmyGfG4FCDYa
-	PXAYuRXzdbzWs+BiIzEBZCjYsF94acxmdytxbW/4545HnyAcopLfjh93IVXxDjF7uyqI6q
-	C3qwY0Y8ZG0QzGoEEJPT0lXrNsYdvaY=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-69c5fda04a8so8189122a12.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:21:56 -0700 (PDT)
+	bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+	b=5/Xt3poRXUdj4QAzfMN+KJ42xzRu0tmU5FZoySxS44xHtUIDpE/KhZfcq9bOWPggXCMm7K
+	X30WV2vwdyErJ9MqtzvWeIXz7as8NtpuUsw9bGEMl2uRuXUwqxdtOVXocN6ao0kQsDAdyG
+	RC4tqMM0sIYZUysNoLsosHqkUpCXTdM=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HKcyR+R+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785857218;
+	b=txrKE7MVXCRIhvIuJB8/0pi0QPTyDY7I+ncVjrOw1LM65eaHO2uVT7/g5pgqptCKagImoA
+	5ZRaP5V737vaczJ9XSzdAPw2fAqQKjJpvBh/xUo5leWf/MbZTEeJ143jXP8Sd0yY2eU5sC
+	sANF9i5mOAxBmcELoxtERxFiI0bLjjQ=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84830c774a0so4625448b3a.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:26:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785857217; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UGZjcKvdZGm2obDhWIx0NIHCd4YmV8zoK4xiXxFwtKIPi6FLQD5PpO5jrWXjTN23X4
+         OJjkl+czRt5ZgX6Cv8C5w2V5R2fjX2y5t0JM+IdPatJpu8vw84FXSf9jhkYOmUYkXexA
+         upEITOgdOIOQonARa8HYGiA9SLwRyu46hStQpQ1FbIPnvhs7h5WTSD2CJKZUf/v0XRG2
+         LsnP5ARbJwEI80Ib7ZQwPBsYfFOM3mlmtN+HxJqeS7mjoUJbiM2qzU+F+Kvm/m7J9D5D
+         2NmfBrC8f4CoDsb6VEIOLtTp5EpH4FhTq63pgY3ZeNfRp6PLPqXqbWU/p/Dcq7F9b/zj
+         1xBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        fh=FULuderwxMjljY8wGUcux5EGsszr/683Sd3mS27bHfc=;
+        b=cKycWLFesfXvs2sekHW3hyDE5etwEYFew8uQ3cCj7Rjr08wuqmwVX/7qxGXi5UTBI/
+         n8T4OqzAt4RD1cPGDVszoXWr5EoPIclfxbQ0vClfjJp+ZTLjtP9J/zv5UYzWwUtEFZ87
+         Ha8in9FkoRDHdQI5swP7aHP781tMajPwG53iIYwXN3zVFywvWBu3+7MEjktVyi1Q8lv4
+         RqXgqTY+5wylsqROKWwbYL3icH/3zyhIalL8ZlteYWFYr2Z7CKN8ct1jNeQKnq9zO4Gv
+         aPcqgt/9jvk007pS6lR6vxqM6x1A8Wmb5NNEPsHiEQpiZvQTfA2yqWKUBMwGvsUh6jE1
+         A25w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1785856915; x=1786461715; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785857217; x=1786462017; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=olHXb2geGlzeL9y04Jg6NOhgFWnbCV9DjEXTlnJrZf8=;
-        b=G4iENgtj4HvlN8CRydpIIJSx5X7phfbKddMYXPVNunJ7fPw05Gs6cOLGdshBIb6Ikh
-         sIsv7i2lN1Yu5VRIZOcjY36jxJupP/a5hYNI2W2xFNqr78FZtjfvPDbwYQ5n1ZSXbCbQ
-         UkdMpxObOYFe537ON7TzFhnNc3nOTdIYyfbCI=
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        b=HKcyR+R+Lb4yLN5jbs3WRxgjaS8b0WfJCg5tzhD0FehjgM/SbrZ5LWONfgaFC4QvWp
+         O6XSmY+uQ3vto01G4yS6e5flKhNivj4glIeF589ZyG9dFsMtyOyjQvpwOEOFFYw84xEV
+         nzj0sBL6SWF7cVvY7QnTy75hwq5OprEarwQDqQRpwL5sBRNcKpPeGoRjExNM8AQ7lGc5
+         72AxjVbX/yN+TZQFwWAq/2P5mhpN+TgqhMCPyBUR6ghFgbpCUwm64S2JxZNmVp8FW8Kj
+         vU7Zg4szxLiRBwkvxE92RHU8eRi3Mocjw6cZTQioUDsQNCrf/PA9ghS9kt9C+9TA17Hi
+         I0qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785856915; x=1786461715;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=olHXb2geGlzeL9y04Jg6NOhgFWnbCV9DjEXTlnJrZf8=;
-        b=FM/aouvLI4ekeHGil4kml1756clYX6giIHPjsythW+tEnIBLL8ujTYMHm0fYjzkpcB
-         XTaAEHs8kebinoy8C6FCo1qEQxsJHG1uD9zXLQehpeIbrhsEJA24P14SwnCTxyfc2LFU
-         wm7QiflATYrI0Hy4XYlxryNIXX0UNuabXOpGyK6ytUr/ujxrf0Qc67P4n+MlayLzWjLd
-         0XIQe2TiIxVc20N5+WiFEC9pRLa8XnUlFwGKgQagesJQeoufjcsNtvH4LjpSLAkU17I3
-         T/qYvP39IESnh4ZRHgvkDlOxbY5pjhgQC1YtLQTPvJQP/7KNqcsPV4M15y/Gos9LfXBa
-         tgjQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpmJg+rqmoS442KPVOGLN69wFSCzxNT498Uhvnu/pFzB+77DKk3W63Vhw3Q98mL0LyF/cnj01LrNA==@kvack.org
-X-Gm-Message-State: AOJu0Yxwm3saWV0qsgJHVBC034EwfumsvVEDw8RTvxLi4mz3SqWY8Mm+
-	zwMMwFrcoanbXk447ytPlE1p7BdDi8zv6xQrJ/bwBZQsW/oasXwWWzEqPehqs5JIryUOGuk7H7w
-	Upe0nmmk=
-X-Gm-Gg: AR+sD13ImQSHGhRLpuOle4dKmt9+xS9+WUcqoeohE5Y8TCMv1B/JyEkM/x+LKH31Obk
-	VknT2zkSf68KwXCVQUCwk2KL/fFtBq9F6HFwmrI4FsO0+EU0vBv/0wUG6kfrszwaJ4K38H99PiP
-	ZJcFK71yPtmRXhiCYhPU5tqyy5ssyRtkw2G3H0ZK0y6Fuko65qcS+fqB/yNXyrqYFajGlvV0FPO
-	kuNjyua5MRtjfPKqAYjl3tW1/F2tBbMXr74etdrncehgX+lRnj9sIemPZ6iUHojg1PotJRORJvx
-	SkAAy7rsyEtqLERbpXl86Ko5jVgFkFuLHfkN6WAaXryD4dQ6wCFMlncS18jf/p3RRqEtQsJJ8NP
-	VKBpH1+MnEXfqgpmCBfrxH6nysN9SwJzBmp30kxLn7cjittzHHXn9tEXfdDDBd3tTRbnCB6aC8d
-	/8o3Z9YY2pGuVFaO3AuGQjfp4pAjt/pD76TY04F1a3/mf/9E/qlBXludhGqJPx42Egl/LyfgDRp
-	CP7a03sQO0jUanOeTl81ymuoE9uEEj/LHbISkg96WQpledt
-X-Received: by 2002:a05:6402:1f0e:b0:6a1:23f3:26b7 with SMTP id 4fb4d7f45d1cf-6a123f32de1mr5004469a12.14.1785856914610;
-        Tue, 04 Aug 2026 08:21:54 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a145c61883sm262189a12.13.2026.08.04.08.21.54
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 08:21:54 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso2287166b.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 08:21:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpjXv1IZ5NStEKMDHUCq5WJgAr6oCFwdyDiOL66v4Xy1RY0lf14u4Zk1sSVuiMkYa3Df1w7wTL92g==@kvack.org
-X-Received: by 2002:a17:906:b17:b0:beb:133d:cf02 with SMTP id
- a640c23a62f3a-c1fe7f4820emr985414366b.26.1785856914199; Tue, 04 Aug 2026
- 08:21:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785857217; x=1786462017;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        b=CCfuVQ5fruWmpKsc2RCMjMI7QC326fLhzsAiko8nSFMnNzld7xzDazD2+XIw07+lfR
+         NBr6+iavlnnmRHdkMFmNAqo/PapGhHwKx5AN5+UDJzitMyY7I05oOPcmh/cM+VGqlFMP
+         XVjXuD+eAZRwPyqvzI4Z0p5DF95k7BhoFeqfFxHNjaBrETdl0S7FBl3ATmuO+Zwbo7qu
+         p3QhGzUUidys9VaGbbxPUiH7GjeuXhyccFpVau3QuYDdn79XYP9VwJNwkjKCAFlFzsoR
+         kF7w6IJt08fJPuCdgWnoDtwkxNr4sPbheKgbttkNtPe/DsK4egzL+tXVxbMj5q+o5mM0
+         pq2A==
+X-Forwarded-Encrypted: i=1; AHgh+RqDbirDKSNFM+D1K9wpfbXqn5LcyaaYx7Xa3cRXD2yotN5S2Tp89tbdnNxGSbm1txNpZIXmk3Clag==@kvack.org
+X-Gm-Message-State: AOJu0Yxkz1p0e6qDpQggn2OSPPbz9FYYeO00qmogZkTdzDkzSHsfIgJN
+	Xho4FNeXqkxTVVv98K2ysyLIQH1gcF5TZTY3Snc6ZwjOriXdbUT2GpZzDgGvSj6I+GO2J4/RMh4
+	RL3AyiWRntW9QZn/jEJqjXTeRtlh0eSyktyBu8Nl5
+X-Gm-Gg: AR+sD10ELrPkylZZ2iXBBh9VmZdq7Fm5n9u0g/TTQj+81ksonv84E9BxD1CeRvDfKHs
+	znNlNO9/aHm6l//QGtpEytW7GKG0+tZi6TEgP2w95CaQR0hYvvQCLcDXXEvZ2j6P5o2prT093O9
+	3r/tEw4CzBBFyq1KGkCIofWK7T0D4BtNXuAQoN6wuSSC7P+cqY29BizUeVKpXLQsPZjkZ6hhDtm
+	GIo0ehXzCR1dcotvNNx/llx/asqp13yOEMGG1S3ARTAC15BA4L4Wc7ceYdaLp7GbAHFzsDFoAXO
+	pNTpwwyKC16PEHcVrdjbCnG9uBBiAuxPMpHLiW17fYd6lswFcOZ/ojx5CmguMcTsiDrxkPOJgt2
+	x
+X-Received: by 2002:a05:6a21:10d:b0:3c3:fb32:a004 with SMTP id
+ adf61e73a8af0-3c92a7b762fmr14007551637.34.1785857216492; Tue, 04 Aug 2026
+ 08:26:56 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 4 Aug 2026 08:26:55 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 4 Aug 2026 08:26:55 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+ <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
+ <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+ <anCtzQrUkFSSq8De@google.com> <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
 MIME-Version: 1.0
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com> <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3> <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
-In-Reply-To: <anHuLy52o5S9Nlwp@lucifer>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 4 Aug 2026 08:21:37 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
-X-Gm-Features: AUfX_mwOSZaa8-SU_wYYQrsqsCtSQEpSAzadouc4bRT6EdTnltAB_HFZw_konW0
-Message-ID: <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Yang Shi <yang@os.amperecomputing.com>, Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, 
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>
+Date: Tue, 4 Aug 2026 08:26:55 -0700
+X-Gm-Features: AUfX_mw3K43XW2l_796XUZJmj5MHabkxfpPYa5bbOl_mkX2g5tRDzjfPiVyB1Lg
+Message-ID: <CAEvNRgHYhKACDfx9ZZy4a-TTS4yWzEJt=Jc92=eXxS15LPnTYg@mail.gmail.com>
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D339A180019
-X-Stat-Signature: pfj17pz9mkhsg467aawni9aar81mwckw
+X-Rspamd-Queue-Id: B5178140015
+X-Stat-Signature: 9pixgty4jmj9seqz5d96h9taxqj83rih
 X-Rspam-User: 
-X-HE-Tag: 1785856916-471856
-X-HE-Meta: U2FsdGVkX1/ZjKzOTAhZKlTXXYKNsrp3+J6Q9Rj7I+x5hw1CnGgoqDQroiW2wIFXVenEPehCiNlF01YfVRwJw1tuYy6QgZIdXo31OAAYA8tE2ETDTPE6gPvqY6iz/e7C322u16Yl58lfpGkKzXAx1kkcZsK9JRED/JhGid8cVPKWqKd7tH7LQT8FkfZdY3+8kRiVeTzu/01lRG2XkWQrBDZFzmdZ1tIlFaTNdQvVz1lRANE9pdL1VyAq0OKJE5pwOXBuHtLcIZNtw1f0zRheu9vVO3peLQYrd3AyzE6GYyjVvtvqNKxilz6H2ti3gHBJm5MHjJ780m1Wy9r1hUD/wEYBSObdB+yIn13xfQU1sWHN72bPTCIzKDGDlx75gvqTJAP6UcNc9SrRlZslvG+aJC1zyU4XKdSLH1pEYy1WvwWFP7CssMnHguOeJRVf1o8vfbcuKVwTdrLJDWsnMqeE8LEQoHNAAAyX1dr4AvjczH+++ilkyZEuKg1AY0LRAuSKF13CEDQcIcArH54SJ+IP5qDne/9fsceU8+yH5xIzoY2FIZaRzgnyMCu0ypBlyd4B4aFtRUbAQKnhanHT4INdKIGn/viFqpvbxICICNs0+Tfi7swo0AQO8Zv71YPyC5Fn6O1I+lRSwR8ghNFOEdDM+hgvp/tWODctlUoCazF3tPEgjP54KSuuCVyMYvxW2n9U14porLXlAw8Dbt1cbVbrOVpbJnobnZREOZguZwo8jYdG9yieHR7yz4cSblsJmnSew/7BzTp+pa/aLJxtFPSbg64Yn98F/PjZIsSAtEHB1udVkFLD35AHcvkAGRJpMeUTY7GJhRUetUWNeGjWsjEtvmEoXDjBat1xKX7k7+Su8AFKO5y6Fo4aqi9WIq2QmFG7gTjpAg/6p76iloV30nSHaaaZ0Z6c8gbr6CLQS9eiYIzvf/zzEBdPewmEdVRLEDcJkyRcB2x20Bfv2aH4cwi
- DCOLXlsD
- DWchWA8sDU/RmcSoqWQz0PJwemSDzj3d4ogLu3oFx6Wj8IRLZe7l962ml3Rl/TmBw5w2i6xeY3rKKSqfAn5X96L+dhuwpsnYQi88fCtoKOfYEawSh52nKV2c/6TeozmwQHuxX4eXGoOIZFRx16iaalYF9tkeGH148rEX/kDGA+sjWm0wuLiWO1LuHH6VsI1OUVzQBocRQTj/w6hzTs9jtPakp2euA3ZQhtPAFXTgy09IXe7aSZs50Y42Uf1DeeWrjTWpR7Farz8v1wJmkLGJsX1A6umZbWt2voDC99U8QM5GG7BstCvUSI6E0RbiYQ/8oADWHg2gO8c6HqGptKwMtbyeGysWsHyibB/iBqCClZ4QoHWNrQz2JF3eEemP8vFMEt8WbqzCLkZ5jmJWUUvDk2ESgttt4qajQq8qS/HLJqm1KAmP9z/+qDitSlpYKBd4iRrMR6WnKVHpO8YANP2eNSL8Pt9RkvrMcM37X1a1nvcpEAA9QubuD+mFpsax1pYfm1cAK6GZ0JPW4QGS5euMG6BXucK30sWbDFPWH/Vz9Kirh5M+RCr1wp8j+Jl70OkXWh79+YAC9QL35rXY=
+X-HE-Tag: 1785857218-459694
+X-HE-Meta: U2FsdGVkX18PBtW/DVjKNoJWlMO8vqw3CSO4tspeAhyXHKpC82Okvis9zXP4nyQzoY2JXmUoQRus5xDgRz1V1iUzuR9A509BOu3slAJ7gdR4qfLCsX0JqrZ1pioGaGFDMg9wu31GMKhMpaU23SVQHSpOYDsZv4knrQaHjbyibm6CEdJ6MI3nzQcrRlufW5aMFtbHgzvJ6iWYcYo8Dyel6QS0w5LR93rKJGp9KUO9aaiqpqTyJkVrywBLceqL0F331KtbY3X5TtiXGENyMsWhs2L4pLmXoVre5NhKyiN5AwCdtM0/lTXcsL9Bg2JahPwuCJAWMYn86g4mGZ6PU57QmhEwoFwudeO1UbqbX88CIscOmIs6bmRy9NBLbZSZ/e2TmwoaMYGFVL0rhJM6X1ASRsvLuDfohN93Xtl6+jf1iD4wXePbsHMaGutJx73PawEaK+oaAw5eJMA69f/v1jsaXpAzQ//5jJp5co0o7eLbNTQav2MuxMPR3LYmiCLsntEyC0oHblvSHzvSEn8kQ3/itwhaBmEMEhQtuY18MrOK6mN0x/FQPdKEtl9breQtB7oezFn44tbNd9QXde9uEm4u7vScoSRPQWK0WZERkzyOOiDvFP9lNj5b6gOpMgrZF2k1Fzr/YB1oLyJH/FUP3StSGw20W1gj/GKdj1Bs561TbMMU3ihVE5hmY/tIfh0ds7pSYsOLIjFl06TxGc6NYjcyQfKTVQdI29Wte6GIIYr1ThI3TW8lbWaJ1Lw0HlUVbS2weWw5AGuaCBDrA6QzVdZ1TIEB/FQJjfY/W92idAv43aQ08CfZya9cfKxMBaPSwKQlssCHX72yJApNeo5l87uD9yX4FGq336LqPq4ZwuEjDCFRXX3SFW9oAsZPQUH78AtI3y9nNZ6UyCOSa1QXCUBMarFUFbsp1K+nUcXTaLZTAlS7/RZCgRNi2h8/PAr6ed5bqozqQj/XfI5jtqxXST9
+ BXgf71X/
+ aVHQF4/R1ozfYi7dZVaYIEPFr6dyNrAz+WokHgK6PokQIeYL9/4pkO9HUNDKqjLLxPtteiRO6YBmh5DojghHGqZKSTMu6ZhcQoqr8C9tISN6V23efQGMalG4T32sQJaJvufEwfm6e3f+ryPKrWDaJ7SYjbJ8shvcLhY0htD2ALLQqvZOftvhStxWDGCN0YKxRGFL2QmrgQtepDfFN5eTUJ9Vc3GbkmTE0SnErKbmp3/uV9VYeUFQuT9GSJzNxJRwPfNbQ7vDZf1waKEcgTQdiXe3lPftjy1Mo5/NI0u+MRlMkcZtJNdj31pO2VDrA+7caGQlKlACSOoc4rn4Sy64/011JWt/zGiQae8HCfRQXDM1+E/tZVLOwzXON9S34kZhUVgB2ZBKoTaBcNEjqjRCKkUVPmPQZbyDMJ22SgUQofXIx6/pvkdH2+NWqvAkyOSfVeYHq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,48 +171,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 4 Aug 2026 at 07:15, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
+
+> On 8/3/26 17:03, Sean Christopherson wrote:
+>> On Fri, Jul 31, 2026, David Hildenbrand (Arm) wrote:
+>>> I sent a fix for the GUP code that always makes us drain right now:
+>>>
+>>> https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
+>>>
+>>> Would the following (agains mm-unstable + fix) work for you?
+>>>
+>>>
+>>> I assume that you'd have to call it as
+>>>
+>>> 	lru_cache_drain_for_folio(folio, 0, NULL);
+>>>
+>>> But maybe there are indeed extra references that are not reflected in
+>>> folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
+>>> there would be a problem.
+>>>
+>>> There is a small problem for merging:
+>>>
+>>> (1) The patch depends on the fix.
+>>>
+>>> (2) mm/swap.c was moved to mm/folio.c in the mm tree.
+>>>
+>>> We could write what I have below against Linus' tree and have the conflict be
+>>> resolved when merging. Topic branches are unfortunately not yet a thing in MM
+>>> land.
+>>
+>> Are you expecting the aforementioned fix to land in 7.2, 7.3, or 7.4?  If it's
 >
-> Linus - I assume you still find per-cpu page tables totally unacceptable? (had a
-> look around to see your take on this recently and found [0] which seems to
-> confirm it :)
+> Andrew wants to give it some more time in -next, so I'm expecting it to land for 7.3.
+>
+>> 7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where the fix
+>> will presumably land soonish), and target 7.4 for in-place conversion. Then v10> can be applied against an early 7.3-rcN and we don't need to juggle branches
+>> (assuming Andrew is ok taking the proposed patch through the KVM tree).
+>
+> Agreed. We'd also have to get the actual preparation patch into 7.3. I can send it out
+> and coordinate with Andrew.
+>
 
-Yes, I still think that per-cpu page tables as some kind of
-architectural design is a horrible idea, because it paints us into a
-corner where you have intentional duplication and then end up having
-to have coherency issues where you need to lock for updates just to
-keep things in sync - and may need to do extra work on hardware that
-may otherwise already have hardware coherency support.
+Thank you!
 
-I honestly think that people who think that cache coherency in
-software is a great idea in general are misguided and should not work
-on kernels, but should go back to eating crayons and decide if purple
-tastes better than yellow.
+When we were discussing this earlier at guest_memfd biweekly, before
+deciding to refactor out a function like lru_cache_drain_for_folio(), we
+did say that the likelihood of actually draining in practice is low,
+especially on a machine with heavy load making allocations all the time.
 
-That said - per-cpu page tables as some kind of internal architecture
-choice that limits the damage to some simpler case is not necessarily
-wrong. We've obviously done things like that for page table isolation
-etc. It can be horribly expensive, but sometimes that is the price you
-are willing to pay - and sometimes you can avoid the expense entirely
-by knowing how the particular hardware works.
+I think the threads with Xiaoyao have resolved, I can put v10 out
+tomorrow. Would it be okay to go with the following from v8, and then
+clean up later when lru_cache_drain_for_folio() is available?
 
-Very specific example: on 32-bit x86 with PAE, the top-level page
-table directory is fundamentally per-cpu in nature. It's just four
-entries that get loaded into the CPU on page table load, but it means
-that you can do things like having one quarter of the page tables be
-per-cpu, and the rest be shared. Several other architectures have
-similar "regions". So it can be an architectural choice to have some
-kind of per-cpu TLB. But I absolutely do *not* want to see a model
-where the general MM layer dictates that design.
+I added in David's suggestions to check for dma pinning and mapping
+before draining to trim cases where draining happens in the version
+below:
 
-And there are historical reasons to really hate it. Plan-9 had a
-completely broken threading model that depended on per-thread page
-tables. It was literal garbage. It was broken beyond words exactly due
-to coherency issues, and I still do not understand how otherwise very
-smart people ever came up with such a stupid idea.
+static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+					    size_t nr_pages, pgoff_t *err_index)
+{
+	struct address_space *mapping = inode->i_mapping;
+	const int filemap_get_folios_refcount = 1;
+	pgoff_t last = start + nr_pages - 1;
+	struct folio_batch fbatch;
+	bool lru_drained = false;
+	bool safe = true;
+	pgoff_t next;
+	int i;
 
-We are not making _that_ mistake. We have made enough other ones to
-not neet to shoot ourselves in the head that badly.
+	folio_batch_init(&fbatch);
 
-               Linus
+	next = start;
+	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+
+		for (i = 0; i < folio_batch_count(&fbatch);) {
+			struct folio *folio = fbatch.folios[i];
+
+			safe = (folio_ref_count(folio) ==
+				folio_nr_pages(folio) +
+				filemap_get_folios_refcount);
+
+			if (safe) {
+				++i;
+			} else if (!lru_drained &&
+				   folio_may_be_lru_cached(folio) &&
+				   !folio_maybe_dma_pinned(folio) &&
+				   !folio_mapped(folio)) {
+				lru_add_drain_all();
+				lru_drained = true;
+			} else {
+				*err_index = max(start, folio->index);
+				break;
+			}
+		}
+
+		folio_batch_release(&fbatch);
+		cond_resched();
+	}
+
+	return safe;
+}
+
+I'm hoping not to push this back by a full cycle to 7.4, and also hold
+back other series dependent on this one.
+
+> --
+> Cheers,
+>
+> David
 
