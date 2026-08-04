@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC61C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65C9C55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 14:32:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0C46B00DD; Tue,  4 Aug 2026 10:32:46 -0400 (EDT)
+	id B07EE6B00E0; Tue,  4 Aug 2026 10:32:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88DE6B00E0; Tue,  4 Aug 2026 10:32:46 -0400 (EDT)
+	id ADFC56B00E7; Tue,  4 Aug 2026 10:32:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1446B00E6; Tue,  4 Aug 2026 10:32:46 -0400 (EDT)
+	id 9F5F26B00E9; Tue,  4 Aug 2026 10:32:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 96C696B00DD
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:32:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59494A0136
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:43 +0000 (UTC)
-X-FDA: 85063457766.21.3568CAD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 613F56B00E0
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 10:32:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89B2212012D
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:44 +0000 (UTC)
+X-FDA: 85063457808.11.7E57586
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8FAE910000E
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XE9S42x0;
-	spf=pass (imf14.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 23849180009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:05:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PKygjsxy;
+	spf=pass (imf24.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785845142;
+	b=rM5P15LQjXFsy8LeV9gV8ZZ2jPL3qMAeQdSC0vID0aJKUj5L0+JepRcpdVsN/fIwT4iQ0w
+	DsCv0KCB+BexIxLqGGxMVnlJ+v77DFuUoFy1DiMitklF8ARiBdycFVV89gSSFcVwk5W6X/
+	ty45Ne9xtmSqFxaE3tMLVYLPG0/BSzc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PKygjsxy;
+	spf=pass (imf24.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785845141;
+	s=arc-20220608; t=1785845142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-	b=Mggp8fcf9+O+Umq1wOjOXnx1DzEAQZxOowqicxNRwh3GyZmdt7/xN+GYypDT31qlcV8/JS
-	Mce0yPqiGMa3uG+G0aMOd/QnYG4kNwZmtimvcw996SU8jMGyCbdW5Xp6BOm0yFcShvbKBF
-	HI4411vLz9xH+/dKetu8m6GT/Jf/5Ao=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785845141;
-	b=BvQFq/cWPXhL146umqNa2M+IRg4A6hd2lm/z/G6i/ixY1O5ayyaIvaAK+lT9LI2IRLJYmb
-	1xdkgKhYGb8THrq5CMAAw0DUNX1/M5L9xUc2OaB0N9AIJjyJigkAC1Y6+ZaouO0lG7u+Dx
-	9DAJ5qhjsA3JXaNpya6Ki1g74anIoag=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XE9S42x0;
-	spf=pass (imf14.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=taQNLA8VzPi8pIAuKLKHCaHnQR8Qtlo0OLpkQO4wnlM=;
+	b=tuf2RDmyJ8JILjQNNhUAiKC9mX64EeoyDBqwqmPYjrIGSOWZiKbissJ9HrfjY3ZSf7tXdy
+	sBbCoY75ZtWnuiP1HShnDKzwylp/83DmSha4dds9krjvFwmNFHib+91zX21M8erK9p4onl
+	3i0daIlCaneS/gEpJrPosgNMdA2T4UQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845140;
+	s=mimecast20190719; t=1785845141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-	b=XE9S42x06ZTsevzjLgayCOkpJTy0ApQkOUItzo5EktVVJqG3LBQtkVf936jzUQBfTa74ed
-	zmh9ClLICNxb1+TvuG/kdB7O+vClwYlKpG7qj5EY4rpfxvTdPGaecAF2kCZyTyH3e6x/di
-	QTwc3xGPsmP8mE3qur2ke9lCYDmoUn0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=taQNLA8VzPi8pIAuKLKHCaHnQR8Qtlo0OLpkQO4wnlM=;
+	b=PKygjsxym/UgwOezMMJO4uguIgX2PhyH+vFXK+H7jEq/yusCrAEDpA18obMZf5TR7EmRi9
+	kdsncBZ1P+MjSqMoEebSfke2u070bkgKwrrFfc+oqr1xsRJow0iO3Z5SrK287NyQ6XPhtl
+	Jbc2crVt75K/g1FrMvC5qQROcb+Kl/8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-Oc51kA1aNomhBlHMKPmlKw-1; Tue, 04 Aug 2026 08:05:36 -0400
-X-MC-Unique: Oc51kA1aNomhBlHMKPmlKw-1
-X-Mimecast-MFC-AGG-ID: Oc51kA1aNomhBlHMKPmlKw_1785845135
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso29383405e9.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 05:05:36 -0700 (PDT)
+ us-mta-206-ar1jPsXTPt2SCVkByZtGlA-1; Tue, 04 Aug 2026 08:05:39 -0400
+X-MC-Unique: ar1jPsXTPt2SCVkByZtGlA-1
+X-Mimecast-MFC-AGG-ID: ar1jPsXTPt2SCVkByZtGlA_1785845138
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4954dcd6131so33952925e9.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 05:05:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845135; x=1786449935;
+        d=1e100.net; s=20251104; t=1785845138; x=1786449938;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-        b=K8EuoLQMPFTePO3xWpZSUBWPR+/cR6puuHccR8RPltu56VOFiqZAAHYMjwVUjL+Ksx
-         m/ifF+UXYn5dYDezCKICnBMK3s8CfScP886It/n6SzmeldNFzzIaCQWkS+8w67E1p4Rp
-         owOFxQxQaiA7vjoqIiw0tJ5qnyV6HIlLpH3YeDGvU26EZxMhe57cGKm5FqNE8Bs2f78V
-         GvuAU1yTV6NUIoeI9X/KF6Juf+Id6ii4LsgNt+Oq1V/1djRw342La/gERt+22Ae35a7t
-         RuP+vgefhQVJV5rKYWnbSZ1NcwIgk+5cCMz3Ds4sgOQv02sJDikGh5PBaQ4ZX7bRBbPS
-         qVRQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoMS7WERgO0uMOcf9IvQkbK4+EUOnQkzCLXeQssGLmQv8HoKATxKFH9eUlIuW9heB5xViQ0boEzLg==@kvack.org
-X-Gm-Message-State: AOJu0Yxz94vK57MUsG9Xf1YtBmQFbOwfclzN2OAeEtKohwPQI9eKiXvq
-	U4C8fOf8vEVKMrFf356JdUI2xuolB+mg9bAHs49aoN58tmdLomaNX8hUBWXLmfB6RZ6cBAdnxt6
-	GRfAFmh+Oh7Fr5F+BDsSKSiX5fiTa/0E2DtJVpKR2cg4qgsJv44hW
-X-Gm-Gg: AR+sD13SBAl2u9nADLebSia/OtuGsUkBroWUKp243CXE11TtsCQv38mLA7pdwMZI0eb
-	//rpplqhSumzRzcIg4p346dMPlumfAFJByycU44g7oyytBfzq72aLi7ASjykkSe6oiNM54hFpDG
-	TW1b12R/y4r3Xie7niyjsOBLdXuDnQTDzkT3763eSL2Sar+cVnKW9o2BmAAzTNIVTuXfdJQiOz2
-	RiLLGXzZUrwSb9cloCdgnkyujVMGiqdvh2p79MiCHJy77TWI0DB8eja8n+f/YhHnFSl+W5fOPVY
-	NXYTPcnIwYHqutJQqIfLUoOePiPib/Zba6ESMOqgqLaQZaPyinemzIp0rBTJ21BwR3+WLdXkVEx
-	DD3ys8sH2NAT38LFXe4/CzXrJJGOGD9igCaD8jAJVrHy5F2ZN/bfgLHa3yJQuZZtUNVjJHkTcnR
-	i6IWA=
-X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217894825e9.15.1785845135174;
-        Tue, 04 Aug 2026 05:05:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217893395e9.15.1785845134667;
-        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+        bh=taQNLA8VzPi8pIAuKLKHCaHnQR8Qtlo0OLpkQO4wnlM=;
+        b=i0ctl6zUSlzZwOTqqdHE+gpRrmbjvYfdnHDAcIBfPKGhW18O77CbVz8Dg6x4ONngbB
+         rmWy3MvFRS8OJm06lKy5lvkl865baVBajcU97+/rWGD0dhU8fJQlEtbnoxKFaBQKSoUX
+         dkqNb6yA8CyFkyG8Z5QsKyxHE8M9FyQRhta94/ufXr+bGyzHEmEHlwwuk5+xyAoXOdx1
+         PE1k/hFn7F4mzjvC5JWTX7AQFFT//VP8/IGyP2Iq0gsKk5Pob295AjVVA1/YPsglYjqe
+         EGfwE085QF8s8oOtpI8tgsleqDv3NQpIMZL5V9Vm1ykDFR/ikEFGcde78hzeL5HoVcGI
+         t2IA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9bhlM42SrSP6RMmGLNhc2Cq+VpTVNQxIK/FAWf2qFy22rf8vOh7ahT5Hlf4QcI0KUXzDUzwFMiQ==@kvack.org
+X-Gm-Message-State: AOJu0YxCEsXziBboaq7PfPW18mgWUGbv0iTA2wGSdBcYuOZmt6wZ06ys
+	8zVgNXRvTF9yn2idNsWq1/lD/Km6uMjwnkCn2HQ1ZAfT6FRalx3G7KQb4fO1n1qUfeE+qJ6+t91
+	mlWVm+y5qoAjDRq2fqjP8C+iQYaDd3ff83QjVrA9IiO6AuWq76Qa3
+X-Gm-Gg: AR+sD12BKycbmerskugqE7g29861FsgdkY5CMgyfXadbQwQdl5PI4hf06VZoTQD0u7U
+	osK7xweUDNd2E8JoNv2e2Rlg4lsWXYVq9tjp1uHOgZezov9FQ/8U5RiPD7WAnj6yNKoD52dHhwp
+	ELzXY/0ZP+vttbF+WE7XtRBiiOEohTgK2I06iVttNkuINhZmrtKTK7fPIqxoUVhGazP+OuHFCkw
+	G8PKpnuYamzF6UV2jLNkLcQTBhBaODIAUOm5O0jELPstWCItwtRv5Q3nBUdllcIQhHn7j9H2p9m
+	Jjub++tLke8aJazZ3WV5YAJN6DBxHvniPznlMhVfeiq+S8OHJXat8rZnJIxgKOX1OVE1pqzc2Av
+	mSQ6C63TvdoGDPePx31BzkZ+2HI9IgqGg4e6myTaJeg0yL5AXJZWdRJMOpNdBAY/9q5KS/6Swes
+	/p6b8=
+X-Received: by 2002:a05:600c:6298:b0:499:484a:7644 with SMTP id 5b1f17b1804b1-499484a7693mr122467155e9.9.1785845137696;
+        Tue, 04 Aug 2026 05:05:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:6298:b0:499:484a:7644 with SMTP id 5b1f17b1804b1-499484a7693mr122465915e9.9.1785845136990;
+        Tue, 04 Aug 2026 05:05:36 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949f66168sm92311515e9.0.2026.08.04.05.05.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b8d04fsm453070475e9.3.2026.08.04.05.05.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+        Tue, 04 Aug 2026 05:05:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -117,26 +117,26 @@ Cc: Alex Williamson <alex@shazbot.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/6] mm: export vmf_insert_pfn_prot_mkwrite(), change variants to inline
-Date: Tue,  4 Aug 2026 14:05:23 +0200
-Message-ID: <20260804120529.1730187-2-pbonzini@redhat.com>
+Subject: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+Date: Tue,  4 Aug 2026 14:05:24 +0200
+Message-ID: <20260804120529.1730187-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
 References: <20260804120529.1730187-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -kaEG78GgEYIwgjJSC7xg-XCHMXKwBhQk0Ztr2ANaao_1785845135
+X-Mimecast-MFC-PROC-ID: 6_Xt5Fkr9wBtb1xiPT-_YcCkwYJYhTgBN2jHtm-obTY_1785845138
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam02
+X-Stat-Signature: qn61c6fy5yrpgjcdea4n88df5zyus6ag
 X-Rspam-User: 
-X-Stat-Signature: 5gxuo8ob64g4jz8ert1xcag4fgjsptrh
-X-Rspamd-Queue-Id: 8FAE910000E
-X-HE-Tag: 1785845140-886703
-X-HE-Meta: U2FsdGVkX195pE3GHUTFdwaoxyRR1KvFiNu2F3VvWGxFnOUxed6HppCzRNCIv782CyIIktNI2LBJhTc+oOAsqGR8TNNmGHUDFFuHLeAiPyy4RkHHG7+/2WgilcqtUKaB7LAVEQGSm9CvO3Ytt4D0ti8adRyKKWvUbk+sV76k+prCsDOKVJ0kWkT035gkimfEmp/pTfpGzh9QEuauYuE5EbVdbFBB70qbT5tcc3cki5g1HYv4eWsGzLnHcZn84Uv2sznauDhVa/pjf3RkCPJ9yOiLI3AMQUeubW8PcB7HIJZNGGXfk1ULrXgONKJMhhpdhllLGjG7f1KihAYuu/1ZLbYOSkKe6wldQr9HRZPUQFDz+2HZXUQI9y7fzqw5/FS7r+xGv4cFpKWfae9scUfsbz0R61gU/NxmKs/6qb7uCzyfNyrXnc5k4qZowC+/hvzrlejfsNyWWLVxXmrtt6iPbo650V8IQUBoSUdnIWc/zUNB1JDgd7ndej98J57SoxYszjRD4eDQ03mUqjE7COP5ETNqnAVBEa3n1ydk5vbdWzK5ua1htDbFmIlzqT1J/E5gM9/vQsOwmOrAKpTmuz4+a2JVTFm5VQ+HkPXFMmmmpUifMU9ea+JgGkzwFkE1TcG/21ql58/6rsxPXmdCyPYE7dOh6IbmevEkII+8XVNNwn8QrsRxq/kZPe5eyqfT82BdmtZqT0bOWCVhQPvArvs2IOP1XdU4g+A3XXP1qIk6srFf1A6d6y1duFsSJ6eyFXN6LuVBwtbno7UnvgUHUcsdaOD2P92Bwl1guakneunTxaueWjiejo3W/pmcHq4jR21Cccs/+yZdl+DkPctNOlFQ7cP240om9ySMVRh2VtH5dJ02NIoWl0QSBARFYvc3Lax48XIPArHmnKMZeGt7/8Pnqy2FFLjyzveLJIXumHwtG9NsDzVR9Vq21w7kEK10noQ1wezP69Ldgo7udW+GCOK
- D6+BAcjE
- w/Jt8nCLbsDI77K9uXTv4oUuKeP9GZEOdFubjm2+RQxmRgqPdv6uOpGkZujXPaB6KOjDKh/tU8I2cgCxJvjY6nYAClY9wcC2QBNadE9mTKrH3/3uaV6YG2lUIgUh0SxG8Y/CJyTIbePvGk+ZoWPyUO2PH4pKiWaj1lmcYo6SB1tlvDVwf0pjVe4P2qhqin/wEV0tgTB859cGZS+tv0ch1WAkx/y1bzfkKQVIYjIgzwAgDEmV5wdmmTPtY8UcKHGz2RBwEZ6xZTPHclSUfYcmU7JxAOwFGiaqY/r8AZvBPNmoj7UYXqG1DadRp8UKQ23r9DT9bg+cetY6iYUXm3jGpHnymV/8VjdRgh/2fUsQGphMf2Crz3SEO9U0ouhYH/TwQHEFMFn2IjeTw6oc=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 23849180009
+X-HE-Tag: 1785845141-386459
+X-HE-Meta: U2FsdGVkX18QXmFXVoO0sxiGvvtN21OPVQEAP4veVp/5Qay0d7DR9auCJ8FXwPViQpuj4Rwhfs5FQZhZ4r9bOBsmC1CeC4slZeO65MykXlqmtr3Rg9BRYwt/3flccKqNXstGI8dUGGSal91FYtN4NTNvrILTWO13lBhyvhHJVFdmxbh8QxWJgGMoinX/45Bd3Kqn+tPQtOr9pnEp21QcOcOV0s5TU3PUe7knx0LpF6fjKnafV2XkubtJlI++epxUoCIfNwltZrMaFQBxM/4iKb0xYKOgnb2hcX1EujTDko/FpK7VrghhA6rFR1LnHi1csQTQuq17T9WyTo2QeO7SzuaLlvc0lx0kuZS+OR0YKhX8EN19NA3g2aZ1+gVj3e80n5wkH+7fkp9M0nufAuzBO2BU+Jy4x5QwEr8aINDJ/61ULMogCiMUWHgHBQsEMGtFRN1e4SrLYXmTnPTIyo9CZj+rIRzcm9hVjohoOq5wDnJ2NVFy3eeSt8e/MpMRrqZvCjyYR41I58Ow6OneIj3c2LQEIgAih73ATvydruvaHCBzPzivGV8FNAKltMGXX7QULChYqiG1//Q1awGECV00uxTVW3Lq+PgGEfBB+A3FHxRqYeFENOJmgR++joIbNfCHJFZ6tJb6YdrJLdPt1w/wZJaL6XlE52Df0H4gw7LCPl/xIP7gFLrbXJeSQ/VYdCeVy5vY/qR7R5hC1T5hXtSINif/G1yt3g+pXE+EpNonogWCr3YE9PTTdcE3WPrU4YneK2XL4VIpQDGdhQUv27PgxkDobdxHkRRlVyRbvW59Jif9evcKPvPeNgjZmi+yW6B1Fun25I975Ldm8WEeYT2ywg+SF/DKCfqbiF1zZqVyugDYkbpINw5zL6JbCAiOAD0zlW3tEbG/wESVz+pHrTw9vNKu8JL/iLexhEMJCsgAw99/s8mgJEH5EFf1Iyv6HV6S02pp8MWxyD3oLI7q8Ch
+ SWohxrIZ
+ unBIwECgePuSsj0FjNlUbtQKE9f2QgaWbZ3kexIRi0U2P5axaevcCozBy1fbH6klnIq54GaoDaOTF05fHrMvBEIzMpYcdZG746OkO1WzCaJotpKGsmg+YiBeNLu0zXokwVCv3XmSV4NRH/lAwydjRhbze/RcWR/4tCm/wshi8OdcjCJK4Y//m+foO+CELma6+MB4gBo7C4GXNG8mVPHXN8h9rDwN3dzKYiS1LJWWHiFfu5Tx83zUkyeYuN0ZmpTzc9QOgxdS7jlT1KLO6xVhMoRqrEvJe4ItMEdKJLR5uaOizkcndkmsZ8ezIqUuX4cJmQa0Ho18jjdDCle6bftozcl5muGEY2SZj8P+jzVUfUnkgAI7b6v3m7twlNR3Vv5UwPG26XpiBmIAcGwWCTaLrnioIeJPjSjvHfi0bSGCpo1uJaYisFgvyteDHsCyhNrYKCmp8ZwisBQwlZrk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,268 +144,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Right now, users of .pfn_mkwrite() have no way to create a PTE
-that has gone through maybe_mkwrite().  Because vma_set_page_prot()
-will have cleared the writable PTE bit, users of fixup_user_fault()
-will see a read-only PTE and have no clue that the page needs
-a *second* fault to reach its final status.
+This ensures that KVM or VFIO correctly see a writable PTE when
+they request one.  Otherwise, a guest write to an unpopulated
+PTE from a mapping backed by a DRM GEM BO triggers a VM exit
+with EFAULT.
 
-Handling this in fixup_user_fault() is problematic: the information
-about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
-which is an opaque pgprot_t, therefore only follow_pfnmap_start()
-knows how to retrieve it.
+The code actually is simpler, because the same logic already
+applied to the hugepage mapping case using vmf_insert_pfn_pmd().
 
-There are actually some preexisting functions that suggest how this
-is supposed to be handled, namely vmf_insert_page_mkwrite() and
-vmf_insert_pfn_pmd().  Fixing the drivers requires similar variants
-of vm_insert_pfn(), namely vmf_insert_pfn_mkwrite() for the common
-case where vma->vm_page_prot is okay, and vmf_insert_pfn_prot_mkwrite()
-when really all parameters are needed.  This makes it possible
-to fix drivers that use .pfn_mkwrite together with
-vmf_insert_pfn() and vmf_insert_pfn_prot().
-
-Since vmf_insert_pfn_prot_mkwrite() is the most general variant
-and all the others are just special cases, turn them into inline
-functions in the header.
-
+Reported-by: Sergio Lopez <slp@redhat.com>
+Link: https://lore.kernel.org/kvm/20260729072044.25796-1-slp@redhat.com/
+Tested-by: Sergio Lopez <slp@redhat.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/linux/mm.h | 81 +++++++++++++++++++++++++++++++++++++++++---
- mm/huge_memory.c   |  2 +-
- mm/memory.c        | 84 ++++++++++++++++++++--------------------------
- 3 files changed, 114 insertions(+), 53 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++++++++++------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..01184a4bdd6f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4544,16 +4544,89 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num);
- vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
- 			bool write);
--vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn);
--vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn, pgprot_t pgprot);
-+vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma, unsigned long addr,
-+			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
- vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
- 			unsigned long pfn);
- vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long pfn);
- int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
- 
-+
-+/**
-+ * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ * @pgprot: pgprot flags for the inserted page
-+ *
-+ * This is exactly like vmf_insert_pfn(), except that it allows drivers
-+ * to override pgprot on a per-page basis.  For more information,
-+ * see vmf_insert_pfn_prot_mkwrite().
-+ *
-+ * This only makes sense for IO mappings, and it makes no sense for
-+ * COW mappings.  In general, using multiple vmas is preferable;
-+ * vmf_insert_pfn_prot should only be used if using multiple VMAs is
-+ * impractical.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, pgprot_t pgprot)
-+{
-+	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, pgprot, false);
-+}
-+
-+/**
-+ * vmf_insert_pfn_mkwrite - insert single pfn into user vma, possibly writable
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ * @write: whether the PTE should be installed writable
-+ *
-+ * Like vmf_insert_pfn(), except that @write allows installing a writable
-+ * PTE even when @vma is under write notification.  For more information,
-+ * see vmf_insert_pfn_prot_mkwrite().
-+ *
-+ * Note that neither .pfn_mkwrite() nor .page_mkwrite() is invoked, so the
-+ * caller must itself do whatever they would have done if @write is true.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, bool write)
-+{
-+	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, vma->vm_page_prot, write);
-+}
-+
-+/**
-+ * vmf_insert_pfn - insert single pfn into user vma
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ *
-+ * Similar to vm_insert_page, this allows drivers to insert individual pages
-+ * they've allocated into a user vma. Same comments apply.
-+ *
-+ * This function should only be called from a vm_ops->fault handler, and
-+ * in that case the handler should return the result of this function.
-+ *
-+ * vma cannot be a COW mapping.
-+ *
-+ * As this is called only for pages that do not currently exist, we
-+ * do not need to flush old virtual caches or the TLB.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn)
-+{
-+	return vmf_insert_pfn_mkwrite(vma, addr, pfn, false);
-+}
-+
- static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
- 				unsigned long addr, struct page *page)
- {
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index b5d1e9d4463d..2f4dcaa819b7 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
-  * @pfn: pfn to insert
-  * @write: whether it's a write fault
-  *
-- * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
-+ * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
-  *
-  * Return: vm_fault_t value.
-  */
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..b5555217b121 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2719,40 +2719,55 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index c989459eb215..c81be3e97317 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -589,11 +589,25 @@ static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
+ 	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
  }
  
- /**
-- * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
-+ * vmf_insert_pfn_prot_mkwrite - insert single pfn into user vma with specified pgprot
-  * @vma: user vma to map to
-  * @addr: target user address of this page
-  * @pfn: source kernel pfn
-  * @pgprot: pgprot flags for the inserted page
-+ * @mkwrite: whether to make the page writable.
-  *
-- * This is exactly like vmf_insert_pfn(), except that it allows drivers
-- * to override pgprot on a per-page basis.
-+ * This is the function underlying all the others in the vmf_insert_pfn()
-+ * family.  It is the most flexible, as it allows drivers to override pgprot
-+ * on a per-page basis, as well as to insert the pfn as if it already had
-+ * a write fault.  vmf_insert_pfn() is usually sufficient, however.
-+ *
-+ * These functions should only be called from a vm_ops->fault handler, and
-+ * in that case the handler should return the result of these functions.
-  *
-  * This only makes sense for IO mappings, and it makes no sense for
-- * COW mappings.  In general, using multiple vmas is preferable;
-- * vmf_insert_pfn_prot should only be used if using multiple VMAs is
-- * impractical.
-+ * COW mappings.
-  *
-- * pgprot typically only differs from @vma->vm_page_prot when drivers set
-- * caching- and encryption bits different than those of @vma->vm_page_prot,
-- * because the caching- or encryption mode may not be known at mmap() time.
-+ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_mkwrite(), the
-+ * @mkwrite argument allows installing a writable PTE even when @vma is
-+ * under write notification, i.e. when it has a .pfn_mkwrite() callback.
-+ * In this case, vma_set_page_prot() has cleared the write bit from
-+ * @vma->vm_page_prot.  This lets the fault() callback install a writable
-+ * PTE in response to write faults; note that .pfn_mkwrite() is not called,
-+ * and therefore the caller has to do by itself whatever the callback would
-+ * have done.
-  *
-- * This is ok as long as @vma->vm_page_prot is not used by the core vm
-+ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_prot(),
-+ * pgprot can differ from @vma->vm_page_prot.  This typically happens only
-+ * for caching and encryption bits, which may not be known at mmap() time;
-+ * it is ok as long as @vma->vm_page_prot is not used by the core vm
-  * to set caching and encryption bits for those vmas (except for COW pages).
-- * This is ensured by core vm only modifying these page table entries using
-- * functions that don't touch caching- or encryption bits, using pte_modify()
-- * if needed. (See for example mprotect()).
-+ * This is ensured in two ways:
-  *
-- * Also when new page-table entries are created, this is only done using the
-- * fault() callback, and never using the value of vma->vm_page_prot,
-- * except for page-table entries that point to anonymous pages as the result
-- * of COW.
-+ * - core vm only modifies these page table entries using functions that don't
-+ *   touch caching- or encryption bits, using pte_modify() if needed. (See
-+ *   for example mprotect()).
-+ *
-+ * - when new page-table entries are created, this is only done using the
-+ *   fault() callback, and never using the value of vma->vm_page_prot,
-+ *   except for page-table entries that point to anonymous pages as the result
-+ *   of COW.
-  *
-  * Context: Process context.  May allocate using %GFP_KERNEL.
-  * Return: vm_fault_t value.
-  */
--vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn, pgprot_t pgprot)
-+vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
-+			bool mkwrite)
++/*
++ * Because the vm_ops have a .pfn_mkwrite() callback, vma_set_page_prot()
++ * has cleared the write bit from vma->vm_page_prot.  vmf_insert_pfn()
++ * would install a read-only entry even for a write fault, relying on a
++ * second fault to reach .pfn_mkwrite() and upgrade it, but that second
++ * fault never happens for fixup_user_fault() callers that directly
++ * walk the page tables with follow_pfnmap_start().  To ensure that
++ * they don't see the read-only entry, pass FAULT_FLAG_WRITE info down
++ * to install a writable entry right away.  Because .pfn_mkwrite() is
++ * not invoked, record the write afterwards.
++ */
+ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+ 				 unsigned long pfn)
  {
- 	/*
- 	 * Technically, architectures with pte_special can avoid all these
-@@ -2774,36 +2789,9 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
++	bool write = vmf->flags & FAULT_FLAG_WRITE;
++	vm_fault_t ret = VM_FAULT_FALLBACK;
++
+ 	if (!order) {
+-		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
++		ret = vmf_insert_pfn_mkwrite(vmf->vma, vmf->address, pfn, write);
+ #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+ 	} else if (order == PMD_ORDER) {
+ 		unsigned long paddr = pfn << PAGE_SHIFT;
+@@ -601,27 +615,15 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
  
- 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
- 
--	return insert_pfn(vma, addr, pfn, pgprot, false);
-+	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
- }
--EXPORT_SYMBOL(vmf_insert_pfn_prot);
+ 		if (aligned &&
+ 		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+-			vm_fault_t ret;
 -
--/**
-- * vmf_insert_pfn - insert single pfn into user vma
-- * @vma: user vma to map to
-- * @addr: target user address of this page
-- * @pfn: source kernel pfn
-- *
-- * Similar to vm_insert_page, this allows drivers to insert individual pages
-- * they've allocated into a user vma. Same comments apply.
-- *
-- * This function should only be called from a vm_ops->fault handler, and
-- * in that case the handler should return the result of this function.
-- *
-- * vma cannot be a COW mapping.
-- *
-- * As this is called only for pages that do not currently exist, we
-- * do not need to flush old virtual caches or the TLB.
-- *
-- * Context: Process context.  May allocate using %GFP_KERNEL.
-- * Return: vm_fault_t value.
-- */
--vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn)
--{
--	return vmf_insert_pfn_prot(vma, addr, pfn, vma->vm_page_prot);
--}
--EXPORT_SYMBOL(vmf_insert_pfn);
-+EXPORT_SYMBOL(vmf_insert_pfn_prot_mkwrite);
+ 			pfn &= PMD_MASK >> PAGE_SHIFT;
+-
+-			/* Unlike PTEs which are automatically upgraded to
+-			 * writeable entries, the PMD upgrades go through
+-			 * .huge_fault(). Make sure we pass the "write" info
+-			 * along in that case.
+-			 * This also means we have to record the write fault
+-			 * here, instead of in .pfn_mkwrite().
+-			 */
+-			ret = vmf_insert_pfn_pmd(vmf, pfn,
+-						 vmf->flags & FAULT_FLAG_WRITE);
+-			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
+-				drm_gem_shmem_record_mkwrite(vmf);
+-
+-			return ret;
++			ret = vmf_insert_pfn_pmd(vmf, pfn, write);
+ 		}
+ #endif
+ 	}
+-	return VM_FAULT_FALLBACK;
++
++	if (ret == VM_FAULT_NOPAGE && write)
++		drm_gem_shmem_record_mkwrite(vmf);
++	return ret;
+ }
  
- static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
- 			bool mkwrite)
+ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int order)
 -- 
 2.55.0
 
