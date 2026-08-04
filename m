@@ -4,117 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 168F9C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0363BC55184
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 18:07:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6C806B00E5; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
+	id D5E776B00E6; Tue,  4 Aug 2026 14:06:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1DB16B00E6; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
+	id CE8406B00E7; Tue,  4 Aug 2026 14:06:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0C2F6B00E7; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
+	id BB2CE6B00E8; Tue,  4 Aug 2026 14:06:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E42B6B00E5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:03:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 231F5802A7
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:03:29 +0000 (UTC)
-X-FDA: 85064359338.28.BBE51AF
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 563AA80012
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:03:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmjhkC9Y;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 89F436B00E6
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 14:06:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E55180278
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:06:59 +0000 (UTC)
+X-FDA: 85064368158.29.7A470CD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 02A3B1C000C
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 18:06:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TpyaRaYZ;
+	spf=pass (imf18.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785866607;
+	s=arc-20220608; t=1785866817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
-	b=mfayan8dU6a4qXqFtfbDOq/d1WzX4RWCpx1knSGhHUmwembbIeDAQyIrCXXcVU5608DuwV
-	JlAeFOZNUZ1Mvr7PrXORPvLGvcybwTbUebXSPm5g5ydbvNrtLE98eTRv8XdF/4FfOePFm7
-	xDOq+59I0TCTPIPQ6QUu9bFEfpZv9LQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmjhkC9Y;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	bh=4pNvk/hVxan4X92LEuNLrhC26XmWg6H10cQTm3nYIy8=;
+	b=PkSFXGersb73HNfQQz/FWtLwa6OfebdrlzZyzCmEbTykwlo2Ppwku4sZ+ZuD9E5UVsIyAv
+	Ex170p2/pqoCskyU+T4NJhgQ8zNAtUDkOgYfZ5syhBPVU9oBrkLG+7Hy0DjgKLhMIU0Df9
+	AksxbBQHxlth4Zr/4YjPxcyrObpc33Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785866607;
-	b=GSx6PZr1PpSNIRRZ9PG+u1d86smW/UQB6jRCDBj25j0fuMeS7eokbhM72Y310FxNUTAA0p
-	BRp6sPZ2kcVzRpxBr0kxlZIuGN1f6yU9GSE1uou+gSFTGYLYI9a4q/wDn65HM0+6W12rLE
-	8KEyBwglu7/M4vXR2OEF7SzmoIVwza8=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47fe377a217so56531f8f.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 11:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785866606; x=1786471406; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
-        b=QmjhkC9YL6eM8fPK3ocdt5aUt+17BHldZ4RHcThHDvGJR7kShuWYR3aYmkQn6bncpq
-         Z/9qhltqMOuE9RE+x8lydAgl6So4nc4pu/H0uKaIUbw7QypvlFGiISuR9Q8LytI83N9E
-         63Hlwcl6nqmBzwTtsK3JWwubl8MZTbnQ3BTIe5/12AIZ3IcEomfBxZOFX+l4xUk4G4U/
-         Xs6M01a8f+Pn+IcRi0dtUqaSTaQYGjb/FrxUccXY3FYnflK0ImVqQ8IxdKvFv7FP4shs
-         fBz3TAvwoWH7nA+L8qudKXcKRpVN9GabG+Q5zXVdh2qTZDESa0LhoVzitFIBPaRDtI/l
-         bm/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785866606; x=1786471406;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m6Br5ulzAgFEdHoFBcM0EnFFM+QKsDegbfeoyZAEsEU=;
-        b=YlHcgKj9PGrwPQ8q/NRq/wiZ2MCP6W8nBMewCyN/9o4nlTkqRO/sYDQf8ZnpHHJ1+6
-         GU+qRopL77ITvxoCF58MEB00x6opVargtGcSN4UnqmG6OH4h8dogNi7IDiDU70ief3c3
-         DgpmsrkdSa2lk5KSNdO2OLWU2RTyoJ4Y41dUVXRePHllX/6gCUqkG1hiACLflmdPnSky
-         5/kfKiMUIaavsLSTEHBqDZ/JQ6NWzA6mGyNvWSb+O8YpAoU6/btgOvySLRWgXuef9ewL
-         GsthNFI4gBAdE+6jgEPlBK5ne2qo59vCWmcxn/KscnrZ+zbwwhDjtSJT2gX2+xqh/NUi
-         DE4g==
-X-Forwarded-Encrypted: i=1; AHgh+Ron5Id00KJmkfOJiJK4xzRqpVlTnhaXBtsgkeO9nECTXqjX+p9hoQ6NVWnXzebok4e/n/mCztXmiA==@kvack.org
-X-Gm-Message-State: AOJu0YzcGLlJZpG451wr0emCdERZfwkr9fVgKcaCOVnkkYmKSI1UZ7z4
-	XDnV3QferZK2Vbuw2KXEL6aK/4imFD2WZApnbQZBpIJEgaYOhHNBcGor
-X-Gm-Gg: AR+sD102/wvplbtvD6bd/zEMjTScBtan70WuTxqfrAO7/ik7JrAZeqEkot6NvJi9GbX
-	TmxCK3QGTcHM+nJPTUlPGV8daHzXSRO6cheoHhKn8UzSc1PBXK5/mrAJzsDq6J6RqT/8eOUQX49
-	mPSCHLiohlQLR9oaGB9SWAbJFlU1aWjYVjxgdjhqC4M8p9+oQxAcWN/G8A5VE6ZI3w2j7NEi+Qe
-	4cG3vxwiNz1k8MrB60POe7kxcfhpTlfa7W49M5+IMKXslltTmdihj72Gg6h9Yd4MezqL3qSNdc9
-	FUqKbbcEo0IIQaaP9S0J1aX/SUpbL6lxle6lvWCMbyuQut8q0k67o2EfuHGcGEAn1k9MbmKyTdD
-	pBe8sbHIXVGw4bdxuyWKzENfCzeLEGMxmppcHsRnukYTkfsIgChFgKUKAfzVnUnYC8vpfLpO0Pe
-	3lPeIi2hD/a5A8f8UlRwSjqgNqAzUD9pz0EwKzJ+ZdBPxKOXwGxthC/RsjKhbOpj4kQ8Jhb0Fw3
-	eCmwqRlPVO3w2JTYap4RaCtN08iym3zKJOpYLcy2DKIYc+oJR89rrHAkWP+EsbythEkOeWNDHJs
-	UFkkrE6BZg0WvOrk++lUu5uLkRSADTRkPigCm/S6oNVrOn/Yn38/HteDxoE8UPgUpeeST9Oc
-X-Received: by 2002:a05:6000:299b:10b0:47f:e760:e5b9 with SMTP id ffacd0b85a97d-47fec532385mr1689672f8f.18.1785866605632;
-        Tue, 04 Aug 2026 11:03:25 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-a48b-1c01-1c76-d8bb-0f26-1c8f.310.pool.telefonica.de. [2a02:3100:a48b:1c01:1c76:d8bb:f26:1c8f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec24a24fsm1766803f8f.36.2026.08.04.11.03.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:03:25 -0700 (PDT)
-Date: Tue, 4 Aug 2026 20:03:22 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, Bradley Morgan <include@grrlz.net>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fork: Honor task_struct's declared alignment
-Message-ID: <anIo9OWW98uSJh41@gmail.com>
-References: <20260804064006.93930-1-kmehltretter@gmail.com>
- <3a8cc92d-3e4c-4976-8b01-b303cab3061b@kernel.org>
+	t=1785866817;
+	b=TLg5GlyjERBc4CL7x4EV7YHBRS9QscCSinzq01SAedrSkjx74Y5wccQsjAtA6MRTElDqyB
+	0acppTR/HNPAGI1LV0cy76CtO834/Cp65Ia7v8NVBsL8FhOVhYKIg7TZi0KxNxWypA4ve9
+	StbwdA1Od0GDdEGWsRHQhDtJQc9nLHo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TpyaRaYZ;
+	spf=pass (imf18.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=4pNvk/hVxan4X92LEuNLrhC26XmWg6H10cQTm3nYIy8=; b=TpyaRaYZLg/n2BYtHJXErQH29W
+	6pY46PDbcU/PJH6PFMKJMixpiZtwudk778hqs51AMMiK/YZTaHHmwNyd5NQnvASuFayXom6gJ/viN
+	CBa9xLRHNV2SDR9WVxhUb9u1vohm90k5Vqbs4Kh+XAiMe28Xfa2rKTBBJzp7xy7LZ5N4maISrddCD
+	M7UQfCBzU4lu+qb3CLknfmWgfsJ0R31KepvHYgd3/fWwlH9ldg4ILGUOdWyEnfN9MxQDjwF0pv4q8
+	ZJeRe9Wqm1Ij/J4TxN4bPCrPtfEEv30uJE5Z2zqzfPZ7ZRjDlgfbTtm/YYGyDbgIERxzyby5g2tsA
+	ITpE0eFA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrJXP-00000004SL5-3nTg;
+	Tue, 04 Aug 2026 18:06:51 +0000
+Date: Tue, 4 Aug 2026 19:06:51 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org,
+	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
+	will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
+	gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <anIqO2AiVlLTEPOd@casper.infradead.org>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+ <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+ <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+ <amCPBrdltFSE_fEf@J2N7QTR9R3>
+ <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+ <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+ <anHuLy52o5S9Nlwp@lucifer>
+ <anH1CgpwS3PHeDRq@lucifer>
+ <20260804144054.GE27883@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3a8cc92d-3e4c-4976-8b01-b303cab3061b@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 563AA80012
-X-Stat-Signature: acdddu6yph7egd97hr1eg8ijfx1o15oe
+In-Reply-To: <20260804144054.GE27883@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1785866607-658467
-X-HE-Meta: U2FsdGVkX194geoEhYyjwZhSbBIoBbmHEvRvpTItvrIR4DBgj5P6sstRkNJ+aahldb1fMRIVWpyBDmZmRiIPGmjxVP6Bfs5TfANy56fT2+/8Rq2o6uaYRH8TB+fRqAGL+XMmN0of1mcLgaPsKPQVd/osaJwI8NqYktFui63rekw9xuyLd3H49Wb8bt2Zekqmlq+9gKWl5oC2mSyBZgICIdvbNCjHE406JZcMKgAHmC47/zZtjfq+FiTSz9ab7h8T6l7Nca7ZL6as7EZz6YbPaDPpW+sxyykXXz2fCDy5Py1Ig8hr6Z3uDpV3LWa6i31U/Q0Vw4b0IvfflfcGoRnl3OpFjUFffXpZgXBA1d0QgIx51QZuddx7kL4c6aILzHWZTa5d4lB/6VDX2IPgpmYjgN2pnVMcEZIbZE9j/XDHAUKkhCo/sZGYRHtrpj/kZ5+8mwbh7nPae9KAkMRBKPrmAw7Vb/5MaCGGovPKfN0i+ruQLeVqHfwxsa4sSOpr0Ep4Xd4NnFN7fefCidl5OEK01qrt1SOHaOgtpzD58pvlGN/ZoRo8ugm0kNB5etFHh60kfV2sLNFmO/NnjQ+fn7SHhywApj7j6R1+WFq1+dyXnCIGi8R5RVCzmjROSMCDeavTU/kcrs9ZOpyNsJCbGII2Zdc9woIWYP9pMYtL4LBQ0h5puEORF0hPhpD4jGkYflE+eWvI0bAwoN3g8CRhwpcDe95lGewfXFQk7KRFkppoTDfTc8OQrLGTdTYIegSe9uf+ymmm288C20G8WuTQqgRFT3lHl8IVHsXrnWh+H6KnXkQ/AFKH+g4QzGD69tSAE4QGFBvvQ3reTCumYEd3sRS2Dztian5cY+jx4aKFux/Yhic/vwHvr+3uj8PQaIuJN7O+TGSyR1vFl1NkUsQP5zGSk31Bw0hEvZtq4+V44VgxUZZmgngh0aXIqrHmqnBtdBzHXa8jG5MxAgkC/dOdEZU
- yJUng+Va
- ipJewvrRtyj5C45IBgQ2HQ86qCY/p5kS0N/X4rdrKdZO1CtHxOJfcC1qAH0oAKLi8J6568TEr9XWEwoTmgY+wnA5GHU8RVViAructtKPUxXlK2f/6GtTypgpcD3P00fBzxlyPNL3MA8h5ZoRUfLRqRbYJFW6OQ0/VWw8Qx2ikNvPIEZ5P+xjP6YLkPPFKCpe5VxL/CD68Cl1fqznWztKQBrPRwBZsEPi8a9RdPmh2re1uNGgz+3UI+w4jcPJzxCIyjbs1X8xZNVZTMO3Sj/YgzU1rIn1kwPohk1xtgZg3CsEMI0g+HtUp+oZw7jC2RLJiJ2Z0YiE9//DTdamGHUPv9Jd2ILCfzG+8ajRPwGHMx5JntcLS7IyqR8x0fNOuzW18FoXw5DnL9VLS+th5guo8nkKB6giQ5cxeCqJQMPTbP/L3HgSQCXpMkX+VRv/aSx34SfXZEQb+hC+iZuMtsiSgVNtKGGxBxAx7GQ0RrOLROmlt4GNajISTWQolqy3MDd096yMYDe1xHbho4cqoB9O00ELvu/fWeT/6pm5DeBY8sxeZnLE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 02A3B1C000C
+X-Stat-Signature: n84geadbr9ze513drppgg3ca8brm4o9t
+X-HE-Tag: 1785866816-280206
+X-HE-Meta: U2FsdGVkX1+/M18cdTmwDFw9WHQD6qMABA3ojveecIfikcl4G1WWmerJ4MYevYi394fZJ3tDloL9OJN9nhb+vhAReWJG6m60akdZGrVfsHQZCAcg/n1Y+8oY82LYkfpmYVdqPbNH3zoT6lHjOuCQuyLcUWkg11wqTPvUXnPbZSTchg2b0yZLdSQp7tAIT2aCK27izH4YQgeK8MJanRDbTh+lPJeXywg5k2U/q9H4F/8izJ2koCbITB5xAWrwz04AfNmUyvsairXCs8ZWWKd9baAq05HehyCv8b68UdTUQQW5aOXg2O8jI0nwCAfWSbexVLBLZGQS9tRTYPj//4XNvsO4i9nV+H7TKutdEDDHNGdUs0sTmJ0fjjpC273LLWFeqW/Z5F4MJcJinVnLIYMh+H0xWrCI3giXHlWXAJMXlNpINKl+dwUyl2eteAnR2OQRlJRln5V1ruAX1Tx9ruI2JNwgrYcBaOEbxIQFnGwO1GVv6cJ7IJvw4/lxRQWduDlwsc09xD55Hit5LIiCTUA6InJ/DLhJesx1giTERJMWSzVoKDota8wyyn0vseJreFTTi4f6A6ZziJExzwqhWSzqDy84aSRtU7uA8JglWqBRT6E1O9X3S0XkPTP19rGWYQF4ISAjCTdgqozAbdsrEltYfDLARkaJ0iSfm9ET09iAcQ+84hU190+eZC60Zb2k2fxuKvrz/J3Sr9o8bsn7pXD3AuDU2zlXvO+w4LDco0t73msB9+qChkPw08sgAJIyRboLFFQGhBEBGA8SPXHmDv6ZIz6kjI5A0qnkXwh16L0zp6BYk/5X1rH3KRy9NIrExQnJ022yw+++ejP/DG62mNUPtTcK/iDj3v7WplIU7ktk2sEPxKPl1jVO6nfe1OpcYaO5QUgAl2xZGoSx4zvIU8WQwjyUbguqGdDUi9MqYnqDlLU+sEQWMw+jL1nW6cWaNB1Er0TKEZrI4CGKNqBBl7R
+ ftNuXeJh
+ VOl6LeBWe5cszroGHnHzIc9F+dbqs9VcX9eGN6RkwTWI3vItk3TSSEQ8LXhAkDznnTeJxMbOXcoN0X+rxb7878OVJjaO3g+uwgnGlV55O94rRu0dyx1DE0H6VtseQ3z4Fevf79ZUGm+45np9GTykwuu24nokusJgm5rhLEJV0lw7vvD3jO1GtplAEQfqhbVGgbmoJHLw7RK7ZLokmsMQcb5ZvNqljv9hAVuZU2xgIsuG3XQeuTerISTYwGjPBoyYUZSOnTz4/cgOBFDmR8B6V7O9iR4fMN363EKrQnyQMAnJvfFXX8SsYLJJv6T0A5VI617oJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,17 +106,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 09:45:31AM +0100, Vlastimil Babka (SUSE) wrote:
-> > Fixes: cb7ca40a3882 ("x86/fpu: Make task_struct::thread constant size")
-> > Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Thanks but I suggested only SLAB_HWCACHE_ALIGN, not the whole thing :) Can
-> be removed when a maintainer applies this.
-> 
+On Tue, Aug 04, 2026 at 11:40:54AM -0300, Jason Gunthorpe wrote:
+> That said there is still a merit for things like replicating .text, and
+> I think we will also have some multi-socket systems that would benefit
+> from this too..
 
-Ok, I believe Suggested-by doesn't necessarily mean the whole thing, but I
-agree, here it maybe was too much. Fine to drop it.
-
-Thanks, 
-Karl
+Are you referring to kernel text replication or userspace text
+replication?  If the latter, I don't think we need per-CPU page tables
+to do it.
 
