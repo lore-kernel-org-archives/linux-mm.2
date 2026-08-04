@@ -4,102 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B257EC55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9FFC55182
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 02:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15BE6B0093; Mon,  3 Aug 2026 22:15:45 -0400 (EDT)
+	id 8465C6B0095; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99E886B0095; Mon,  3 Aug 2026 22:15:45 -0400 (EDT)
+	id 7F7896B0096; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 866C06B0096; Mon,  3 Aug 2026 22:15:45 -0400 (EDT)
+	id 6E6FE6B0098; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B3E96B0093
-	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:15:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFD731A08A9
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:15:44 +0000 (UTC)
-X-FDA: 85061971008.15.5BEAF5D
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 817241C0007
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:15:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=SLJlQCJN;
-	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35EBF6B0095
+	for <linux-mm@kvack.org>; Mon,  3 Aug 2026 22:18:58 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98472120850
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:57 +0000 (UTC)
+X-FDA: 85061979114.20.294369A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9D3F7C0002
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrgEMC1E;
+	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785809743;
+	s=arc-20220608; t=1785809935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gh8Fd4rP94suOy7JCk3n/TSIF7NrslTncc4aDwf2pwE=;
-	b=bYri7x7jtsIsweXdO2pyeOHLNf2rP9pob3x31rCbiSQWvOncHSyw1d9djWT4UrX1ZI5byN
-	muRvbJhvc5hOWxbSNCojgJfSc6x9r30YiebTZEk+1kxnOAiiL2A05lDyQ62024UQ8nHnuC
-	y0lkSkh95kGHd9el08kjpalrwOe0Yfo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785809743;
-	b=wMRQ6lO+i3Jw1atd9/y/rkiCXlJfxdbkEleKyZIvhcudCd+LUut6k4RKkpSCtSABZvlpdL
-	RtoUpqg2/Tj8avd4QE8GesXQLoh2n3FhPl3V4Fnwx6DC0LkTvsZ+sTN6YEYIeouhleVQwM
-	sf3X6k32MKyIIOBmrsQcZv5LxaZPU5I=
+	bh=fBGKAE05xJKKiYIOYKeypVavHcHnoSNrfvRL+QYpZOE=;
+	b=hu3wojRg2FluLJjp6QOkOqEguZtlyKoPjUdjgmddlJ8bH497kYJ6a7AumSIZ/3P61NJDxv
+	Bj2GT6K8fxFawgaBhx1SJHsfu0V01++XM3bbgSHhdBKwmv6VdBO2j2drwQplL6DkV4/RmO
+	7ui9Nm5y84OTr0WFU6XnI5Xp5cOmONs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=SLJlQCJN;
-	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Gh8Fd4rP94suOy7JCk3n/TSIF7NrslTncc4aDwf2pwE=;
-	b=SLJlQCJNlHSpohuZTPY2E+kIwSLZltoJd4ITQeHkQPJypG1mxt9MrUYrwhIdebzDPLQOh/quX
-	Ouxsi6vaW71EP9g1xNC+D6myqw5Qol4V70XY9k8vVNBQ92LVezSo2W5z7AkPcRCCFot+/8qnRxM
-	OSWBPT68cY3sQs5g6CJHgQg=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hDcMx73QbzLlVT;
-	Tue,  4 Aug 2026 10:06:05 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 84433402AB;
-	Tue,  4 Aug 2026 10:15:36 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 4 Aug
- 2026 10:15:35 +0800
-Message-ID: <32d2d3e5-2cbf-4c95-97b9-5d618dc58378@huawei.com>
-Date: Tue, 4 Aug 2026 10:15:34 +0800
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrgEMC1E;
+	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785809935;
+	b=fMb//hGu+pQLEk8X4ARDcFGQsWpi5f1CArKJ2e/zweagH2GoRIadZnq6H4QEX/TtLFcGhG
+	8u4x+Kl2uRfvEBkZu3wFZ5c+TLTYM8iFsu+tD2fxKaAiaGmRis/WLcUr3KRuJZ0BR8Ue8W
+	rPKyqVfm7atprt5uAUslx2ND54I3tQg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 712D942A83
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561861F00ACF
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 02:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785809934;
+	bh=fBGKAE05xJKKiYIOYKeypVavHcHnoSNrfvRL+QYpZOE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RrgEMC1EMnhNXw99Hbu6DsDJlmu5Y3X8F1ErJMke0IA4B3r7HoShqkBJTWgR6BhVV
+	 k8dmPyKBZC3Y84e6tayzMvxsd/EiCGxy5KzWW/XEc+TghWcx/zXVY8OxV8KiUvcnFC
+	 2qEhQQxnYvw9Iv3OH4NFiqq38L/6zZ5lHacse2M1tMAGzcuF31iU7BUJsmqBi/MEtX
+	 u6AFtCX2bXTvpNOILRJm/91Yj7CCqzQfbpA6fVyjCOY2i3g01vkWjJEX20V8UsDR+M
+	 OT2YTbWTAienRaw9oaexc0S5+BaYLSNsAqU4g7tvY11GWETaRHRNFdIxmOJOdRornY
+	 KKefdeEEAwXdQ==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39c908d6cb6so46022601fa.1
+        for <linux-mm@kvack.org>; Mon, 03 Aug 2026 19:18:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpgDRAap98cqAAYRBn5mPPRpmnnThWWfcO/K4RtQF9RSM7mOz1BwGo5DXpcx0FvgsM4r92j+optUw==@kvack.org
+X-Gm-Message-State: AOJu0Yyf7+uWx5bYO+8G74xx3oLhFXU6+rqtsrarFGbxrEtAMW10WzcT
+	0vVDvo3JaAuZJlYDA9DFygLGWlJ+yC0J/ITxLPSsCl8Z9gnrYsndDGq7BkHRlbFjhXshrwMigLs
+	q4x/9SfxJ6k8kqvv5g6R0hUPfZTnb7wPJH8obu1M5
+X-Received: by 2002:a2e:a88a:0:b0:39c:828a:ec28 with SMTP id
+ 38308e7fff4ca-39f864562a9mr27536451fa.31.1785809932740; Mon, 03 Aug 2026
+ 19:18:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] docs: ksm: fix typos in sysfs knob names
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <shr@devkernel.io>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260731083526.3953421-1-tujinjiang@huawei.com>
- <20260731083526.3953421-2-tujinjiang@huawei.com>
- <d9236dc0-3332-4fab-aa26-e74d10ad0cda@kernel.org>
- <f1f5c486-f14c-44ad-8285-a9df437f7974@huawei.com>
- <3066dc07-31b5-48ca-b14e-51b284bbb9e1@kernel.org>
- <fe724e58-f525-4eee-9471-d1765f6bdb0e@huawei.com>
- <c075be8b-4213-4ba4-8e95-6377986d7c8c@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <c075be8b-4213-4ba4-8e95-6377986d7c8c@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam02
+References: <20260804003708.49830-1-luto@kernel.org> <20260803183032.7cc1fb1007d309c2431855ea@linux-foundation.org>
+In-Reply-To: <20260803183032.7cc1fb1007d309c2431855ea@linux-foundation.org>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Mon, 3 Aug 2026 19:18:40 -0700
+X-Gmail-Original-Message-ID: <CALCETrVxtFyMoOrpTckrs3HU7evczytau0fGgyCWidt4oFS=CQ@mail.gmail.com>
+X-Gm-Features: AUfX_mz1zN5nkOVZ7C7UnstYQ8n2S9i8_HR-owWrYtZZxw5U9nyHOpOlZpXyzv8
+Message-ID: <CALCETrVxtFyMoOrpTckrs3HU7evczytau0fGgyCWidt4oFS=CQ@mail.gmail.com>
+Subject: Re: [PATCH] Fix incorrect flush address in direct page table reclaim
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: luto@kernel.org, linux-mm@kvack.org, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, stable@vger.kernel.org, 
+	dfoxfranke@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: mzwygec4ozndhkirj7o35d4s35xmaj88
-X-Rspamd-Queue-Id: 817241C0007
-X-HE-Tag: 1785809741-955020
-X-HE-Meta: U2FsdGVkX1/o9LYxRQNBaOOwHj14yLw2PR5AhAr92LvQVGeO6g+o2vAqbEOCK1VQ3N1uIrSkCmKPioR9LDnmX09bMxP72thRp5+oCUr6ekLhryLSJOyBhV6zYKHa29eSOqM5bSKp/vq1MYrxcCWX+LKmkNyp4kxdw/u3n1U2PMx1z/FJ6mfUWf2tDEdS341zdXSCfKd2JvKMUC+QbQHI2EWxqGHl2cvRmcaDPyi2KSsSZJnV7ptqDuS6g77wNmJKIQikVFmG2FS8CzJTW6T056/JmyilCddA36dAseLy6FPjbYt/QOV4y06TAr7n2v7yGfGHy3C2lwkVbLJ4UUXMvhPmRduByJvoVhw7jJAXmn6MpQ345NBnf/pXMO7L/VmNiqPUgULOq2MeRvS3hF1YPCjlqS3FN9BDq5JgmSAbMVv+NexuAwitnjgz76a1iKMG1RAl3By35kSW6Gt07u3GMIA9YpxxPJH2FLBazXJwL1aoG1DGkFEDwkUOPrr5u/ndMHXdibySzRk46VyyghkQiTEMOQl70Wn/M3mSpdGJxrfgU0Sq7Y1hUS1u6hFDEOIP39+hLmPfzMU2UB++LivsOjvK1askirarzLbuvaPBIHO+CpayDA/QVkpITNW2arMC35gmSo5pzSY2USds0fM0R6lKoQoxMwU6YenqKgiXwyQM77DdQz9Dikwty10zujAuvJXLDwBIwteVon8GLAZTY6jeeFagiZUBjqHekG/WWcknVvuLBKT0Ki4DpJdN5U/XZbgMke3Ts3BFoNSAoxdZVac2XPoYPzbei3uR2vik+LwtmFgm9S3dg5BCZSdNifhquDOi7cVQrnt62BencNq49pdpgGLItjdwo97A8Ey2je47h/K54sq8EpG0ZsZNn+b4GlaWWq1/2sF5EB0Yos3RIHAYqkpk+8MEa0LN5S5vxLZHGEHhMoPBBFj09Af635/usgMrjQVMd6TD5krWx5v
- G/xmgSdM
- PJ6IzjLAeLsdSrjbsoSPdKwqaEfRBPqWGhI+qOOIe3W2Q7U137BqfVlDRpe4MW0N1278zJMJhtyhvPh25pJH4lWEc11a5Ox0pTIEmuHhzo7tP2Vwb50sqwh6PLvZZ2HjTIfUKIErrc4U7E24nFuxYsG9mDedCyXJtSf2BPNOVLts3WfIIDXjf58xoTB4erK0MN32Kz12JYrrsGiTtdBfiai6IfkWXQADXqTAYSl3l3qrMK/P2jKqx0T24zRe9xIpInUwHlIifuktwqdKtxb9C4L9WDxJ8vCHEKepcLfi/81xm2tI5SMsytgDeSG2WPebjDu0xOuh0gLrJxrBTRd+nn1+v1A==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9D3F7C0002
+X-Stat-Signature: 6e6jc8dkdoyik969fumrnq6krm365wfi
+X-HE-Tag: 1785809935-813048
+X-HE-Meta: U2FsdGVkX1/1C4c3sKJVrxaG5PF631gGTw9dDUdVzhJydYJz0o7hh3b01AezWAS/XWe2sOWS9i5fEdjTDtUpt9jooPCb7zDKkPmaCN1YP6B01Nl0jpynxsZniOmfMIk/38+7Y5sJGtOyq8Ir95Kv057GeeBSnw2VFBdBQ6fo/6xSIZXYkq5IS/kOL1Xq65zSSJ9cbXgW7zInhyR1c9qvbFLTHoMnMd51YCf5pxJMeddyJuQYirsMQ4VUmVbgW1pFn3Lkt9FYXrbp8b3iuERe4BvQfT4v9LLRZXaX5GEEdhrlJpyhUlxSZzdGjNRwok8WTACjYTT93ILsgKbyUYw4zngyhQOF7+8b5Kfa8hddU1uxwlQjENeomvmxAFl7Dj3DZzyTn28aP03cRMSbT6Qo5ILsXutsAF/FOazOarjFqSLJOc/d7yJ9lK+fZ3oC5nuOTt44PVpdwqROjcad4aSWhwXAnA7Ni8Y9JfjM+NhY4nt4VBP4Fb1Ovrpg1xDdPFgWV0FMKVMxH19rMOnaRQXH94DRKCacvJxi/2a2zB2Gbx4NTND/NJ8GTbt/uTA73pVdbmh4EGXrhlDwoU/62US3gSUDvuDrK/GKCW4Z3C3+s/06vvALB5qJUnO5GKdxbUpXfJmFZuhSJPkwA4v1fPCSA80tD+EOQinxhPge+Mq7uSD8Rxcs1z0WAElNo2N+EzSLR3fzWEzmiLnBRZK82fpmo28OOcTez8bZThABXZWQiHfiRXcYiEs5AT2RG+R07w1GYNSB/wIOK3RU0RrwBT7W4irZCSIoW0l7lz0eNldKDlh5mcRG+apOLV7yqrbVeECn5W52mkAXbHIKwpGXdeM1cL1X+wjd77SA4klkIy8WSpFsbKbMIfR5+pto2W6ksFEJKhkV/V+27uQCmHtqqYy5JeefTaMfD0IFqCsbvkwkTU1W+s+A0MMqRWNnFF7juRBoa5TIy7sqUMf5whquU2E
+ mIqEePXL
+ 2ffd2n+OsP8QrUsuQiaOkF1GLhotWt5qA7Z2oQ+OfLxiZa5HLozlsPnqNQmAmvmB577F7eJ3uY+XM3lIxfR2h8BS7tWCRQNnYYezef2ZenAt0Gs5ZZBYg54vNo604bmq/gathFCUBSGPkNs5OSmS+g0WZUq+7dRpV52TxVtt714KaXFWgeFzEtpDk4Lm1KEWbhJtxqUyU5/UQkUgWkIc3mudRtfnNTUUaBIbcG8ukubYSFnJgxSJIVcMQGqda9kw8pfYvGibjA4wP7t05V7fH1jvlmrKTrExVoKHTctXm6Gt/+RC0ZlImYHNGiw64jAKBTpYHpTY+fhbq1VvA2ZOjzpmO3kCofi4oI/UryfzWhUQ97XcUJdq5W3uzGuDMR+KAlN2iaGeYcohbBFw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,52 +106,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/8/3 15:54, David Hildenbrand (Arm) 写道:
-> On 8/3/26 09:15, Jinjiang Tu wrote:
->> 在 2026/7/31 17:25, David Hildenbrand (Arm) 写道:
->>> On 7/31/26 11:22, Jinjiang Tu wrote:
->>>> 在 2026/7/31 17:11, David Hildenbrand (Arm) 写道:
->>>> git log --grep "Fixes" Documentation/
->>>>
->>>> Many commits in Documentation have fix tag.
->>>> I think both are ok, since documentation changes are needed to backport.
->>> What? When? How? Where?
->>>
->>> :)
->> These commits only modify Documentation/ files and contains fix tags.
->>
->> 0c13ed77dd2b Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
->> 0beba407d458 Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
->> d7f00084f686 Docs/admin-guide/mm/damn/lru_sort: fix intervals autotune parameter name
->> 652e1a51465f mm: fix docs for the kernel parameter ``thp_anon=``
->> 14e70e4660d6 Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
->> da2a06188888 Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
->> 1beb8ae302a0 Docs/admin-guide/mm/zswap: remove zsmalloc's lack of writeback warning
->> 0ff11f103f5d Docs/admin-guide/mm/damon: rename the title of the document
->> 465d0eb0dc31 Docs/admin-guide/mm/damon/usage: fix the example code snip
->> 205498012513 Docs/admin-guide/damon/reclaim: remove a paragraph that been obsolete due to online tuning support
->> dd21bfa425c0 proc: fix documentation and description of pagemap
->> a8db400f997c memory-hotplug.rst: fix wrong /sys/module/memory_hotplug/parameters/ path
->> d83fe3c99d27 memory-hotplug.rst: fix two instances of "movablecore" that should be "movable_node"
->> 72a3e3e25a51 docs: hugetlbpage.rst: fix some warnings
->> 8867f6109b84 docs: fix numaperf.rst and add it to the doc tree
->>
->>
->> But there are also commits don't contain fix tags. Such as:
->>
->> abdca14655fe Docs/admin-guide/mm/damon: fix 'parametrs' typo
->> 78a00cac1e96 docs: fix 're-use' -> 'reuse' in documentation
->> eb14b12c8c22 Docs/admin-guide/mm/damon/usage: fix and add missing DAMOS filter sysfs files on files hierarchy
->> 472098f23323 docs: mm: fix the incorrect 'FileHugeMapped' field
-> That is not what I asked. You said "since documentation changes are needed to backport".
+On Mon, Aug 3, 2026 at 6:30=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
 >
-> Who backports documentation fixes and to which tree?
+> On Mon,  3 Aug 2026 17:37:08 -0700 luto@kernel.org wrote:
+>
+> > From: Andy Lutomirski <luto@kernel.org>
+> >
+> > When zap_pte_range reclaims a page table, it does:
+> >
+> >     pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
+> >
+> > and this is unconditionally wrong: if this code executes, addr *always*
+> > points one past the end of the range covered by the table.  The addr
+> > parameter is used to flush the TLB (really the paging-structure-cache)
+> > to drop references to the to-be-freed table, and any architecture that
+> > cares about the parameter will flush the wrong address.  (But they'll
+> > still free the correct page).
+> >
+> > I think it's worth contemplating why the kernel works at all.
+> >
+> > If we hit the offending line of code, we will first clear the PMD entry
+> > (line 1954, zap_empty_pte_table), then we will issue pending flushes if
+> > force_flush is set (tlb_flush_mmu_tlbonly(tlb)), then we will skip the
+> > retry on line 1979 (phew!), and then we will do the offending
+> > pte_free_tlb call.  *Or* we will clear the PMD entry immediately before
+> > pte_free_tlb (line 1983, zap_pte_table_if_empty).
+> >
+> > If we have any pending flushes (i.e. we actually zapped any last-level
+> > entries) at the time we clear the PMD entry, then the flush really ough=
+t
+> > to flush all references to the table (Linus certainly seems to think it
+> > will on all architectures [0]).
+> >
+> > The condition under which we have no accumulated flushes at the time of
+> > the clear is very complex (the whole zap_pte_range function has absurdl=
+y
+> > complex control flow).  If we do hit the bad case, then we will end up
+> > clearing the PMD entry after the last time the range is flushed, and an=
+y
+> > CPU is free to cache a reference to the (empty) page table.  If this
+> > happens due to an ordinary read or write, it would segfault, so it woul=
+d
+> > be rare.  But the cache could be speculatively filled as well.  Then
+> > we'll flush the wrong address and then free and possibly reuse the
+> > table.
+> >
+> > On x86, even flushing the wrong address works on non-KPTI Intel systems
+> > because INVLPG flushes *all* paging-structure-caches, not just the ones
+> > for the target address.  But INVPCID does not, and flush_tlb_one_user
+> > will use INVPCID if it's available.  And then we're toast.  AMD systems
+> > are more susceptible: we set the EFER.TCE bit, which makes even INVLPG
+> > only flush the target address.
+> >
+> > P.S. IMO zap_pte_range is a mess.  The control flow is excessively
+> > complex.  The direct_reclaim variable itself has a confused meaning --
+> > for the first part of the function it means, approximately, "we should
+> > free the table if can_reclaim_pt".  But, later on, it means "we ALREADY
+> > reclaimed the table".  And the goto retry on line 1979 is IMO just
+> > asking for trouble if the condition ever changes such that it might
+> > happen after clearing the PMD.
+> >
+> > I think this might fix an issue in ripgrep reported here:
+> > https://github.com/BurntSushi/ripgrep/issues/3494
+>
+> Huh, cool.  Very recently I was scratching my head at Daniel's ripgrep
+> report.  Upon which he obviously did a ton of work (many thanks).
+>
+>         https://github.com/dfoxfranke/ripgrep-3494-analysis
 
-Sorry, I misspelled the word, what I originally meant was"since documentation changes don't need to be backported".
+I'm pretty sure that's AI-generated.
 
 >
-> We usually don't backport anything unless we Cc: stable. And distros don't generally
-> care that much about documentation backports either.
+> Daniel also pointed a finger at 4c640eb4181c ("mm: move pte table
+> reclaim code to memory.c").
 >
+> The manifestation is that a tiny race window causes the zero page to
+> magically appear where an anon page was expected.
+
+The analysis says:
+
+pagemap reports the page present, soft-dirty, with PFN 0 =E2=80=94 the
+kernel's zero page.
+
+ahem.  I would be quite surprised if pfn 0 is the zero page.
+
+If whatever code the AI wrote that generated its trace is actually
+correct and there was a PTE entry with pfn 0 and the present bit set,
+then maybe we have a genuine race that corrupts a page table.  But the
+analysis seems quite sloppy and I'm disinclined to trust it too much.
+(A quick experiment suggests that even GPT-5.6-Sol high (which is
+supposedly pretty good) will rapidly go off the rails if you ask it a
+leading-in-the-wrong-direction question about the kernel.)
+
+In any case, the original reporter was using an AMD system, and the
+bug seems extremely sensitive to tiny details, both of which are
+consistent with the possibility of a narrow page table caching bug
+like this.  I'm frankly a bit amazed that he and his AI were able to
+reproduce it as many times as they apparently did.  I wonder if the
+specific offending assembly caused the CPU to somewhat reliably
+speculatively fill the paging structure cache during the narrow window
+after the last correct flush and before the PMD entry was cleared --
+if so, this would be consistent with the AI's observation that even
+tiny changes to the asm seemed to make the bug go away.
+
+--Andy
 
