@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D557C55184
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 13:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCB3C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 13:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFC1D6B00E5; Tue,  4 Aug 2026 09:58:39 -0400 (EDT)
+	id D82CC6B00E7; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA9956B00E7; Tue,  4 Aug 2026 09:58:39 -0400 (EDT)
+	id D59AC6B00EC; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7A06B00EA; Tue,  4 Aug 2026 09:58:39 -0400 (EDT)
+	id C723D6B00ED; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8625E6B00E5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 09:58:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1CC3801A4
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:58:38 +0000 (UTC)
-X-FDA: 85063742316.28.18DA6CB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A44EB6B00E7
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 09:59:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DBE8160167
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:44:10 +0000 (UTC)
+X-FDA: 85063554660.08.D7D43C6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4BE56140002
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 13:58:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtNpQIZn;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785851917;
-	b=ZfMLeSLplJJnVaSSWwT742yGl1pwm0BwR/qibPCkA2V/HXZ64alhouGOs17NACUO6a0oep
-	IixIcu7lLWM1qV4llji13FA6oZGp8paXx/wnlhRwkXEtNpY3fZ7Tq5KWFqbSHvPKI3D8H6
-	SSfWsclGRdMqHUYvZFgAgNpe73MfBS0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtNpQIZn;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id B90F14000B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 12:44:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+v+kmdg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785851917;
+	s=arc-20220608; t=1785847448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DU0+E3W+eQadbym8RaRuTNZS2KUE2FrjK/dIbBsihDQ=;
-	b=5jLKmDEHmBIir50seZ+mhq6pVcaj4hzPc/wGCTAsqkFqYZEK4KlqWMfSB4YMmO0NOdY8GP
-	Up6c/g/fogILurQV8gn4a8SxUrwwhzTQOy38a+5YJug0Wi0dNRXYtyhYrfFJ/pI/eA+6pO
-	jFYJfyeYAjNCF7ppsepL9fgPpMjkbBI=
+	bh=GKB4l2IZdbP/Q0kXwbUuYXowkK37syxnhhgXnRPRqN4=;
+	b=kURBhxeR0nvLwPi4bfMy9wBbFpJ6kKt+YPJh2jprTxnJhDqis5cZYRmO3fueSI8Vr2lFtB
+	rpCMYq7W6sx8OiDr1NcwQVvuw2dQmZl242p2cXK1JVU5Jty2o+PYJiIgaTgBdMtssyfLMf
+	9AtoyHN8pMjvmdKkXP2nwgYIbDq2ctA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+v+kmdg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785847448;
+	b=Rro6VzTvQb4GqZIeT0OUtCNgSwSS0g5F0JBABMN18cWdsAXr+Tj9OQ2cusNqcOnbqkFMRf
+	+JQ5fpT9/elmtwGJl2cFiZmslU2iVF02aZaN9XkOKJr+iuGB29UAZ7OgQcrXCuanuSSXAB
+	1nzqulqTu4iLagbNR4v29W1bEwq29Ho=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BA6A403ED;
-	Tue,  4 Aug 2026 13:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDC81F000E9;
-	Tue,  4 Aug 2026 13:58:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E3D9543A4A;
+	Tue,  4 Aug 2026 12:44:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034D81F000E9;
+	Tue,  4 Aug 2026 12:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785851916;
-	bh=DU0+E3W+eQadbym8RaRuTNZS2KUE2FrjK/dIbBsihDQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gtNpQIZnQh8lQRERkNoHf2vK5fudFe8UQgx70t4vhPWxz9Z59y/QD9ta3hYGWrUDy
-	 bPHF+fViw2S7vLmZU+GxAJVbi9anE6OL+IgkJPKjv9sbiEsliUTsl1ogNL+4yf/drr
-	 ahsJuQ8N4RzJCuoQWSN1lVHSoGZHSgL+/6ohrWMxrGph8KyMnTVUjeV+6WvSoTw7eo
-	 VsOW0IqYAKjG74xEuXHm8Ck6Nbe3qZWkasiwWrQB/MhlekwrTFn6OIqIfCUmq4b0bs
-	 gUwNBx9on663FjPRFGZO6TxmNj4kXf2DKPuNQcxI7w1VNRIaWQcToaR7IulstmBNkt
-	 +Uhq3tGtA68kQ==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: introduce damos_sort_type for re-ordering regions list
-Date: Tue,  4 Aug 2026 06:58:33 -0700
-Message-ID: <20260804135834.86511-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260804100719.116538-1-aethernet65535@gmail.com>
-References: 
+	s=k20260515; t=1785847447;
+	bh=GKB4l2IZdbP/Q0kXwbUuYXowkK37syxnhhgXnRPRqN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T+v+kmdgCi3T4UxR1mhAPlH3L3GeQtz+35K3qNK/vTqxJ2yOhaKoAVspBfOMxLtsn
+	 FIWPLNKujn5Olk6Z1+BnoEkDpCRSlRtCDxuydX1h9GeE6Eo2MOGwzDqGMneFaBwi/s
+	 k1oHBA1ZQ6LyPgdPLKQitX4rEDVnEILfBvI9RX+oJ2Ihm42LEJmI4EzjPJ+9HlvHfA
+	 kAMfGranFVW0VA+QEd5XUJV+yYuDvEayQq7xHv1OcCe6lMi7yMbcz8Nt00EWijb0Sc
+	 z41BRatoKPG4RoVOTuLaS2r3qLW8wT6a0YEEg0Aik0zKahizkE1Pp51jHOmksup38v
+	 HLAh1qHJ/KsIQ==
+Date: Tue, 4 Aug 2026 13:43:45 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 3/6] mm/powerpc/8xx: constify ptep_get() argument
+Message-ID: <anHeZx6Gg7waNWjL@lucifer>
+References: <20260803164400.531199-1-pfalcato@suse.de>
+ <20260803164400.531199-4-pfalcato@suse.de>
+ <anHI4B-lMu6AJJfA@lucifer>
+ <anHc4aUbwxWx9YJF@pedro-suse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4BE56140002
-X-Stat-Signature: nyizbowefi7g7zp3wnssmuptwqi7qw84
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anHc4aUbwxWx9YJF@pedro-suse>
+X-Stat-Signature: gaacrhiqnuk8o1khruwcobkgz1cqf96t
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B90F14000B
 X-Rspam-User: 
-X-HE-Tag: 1785851917-433445
-X-HE-Meta: U2FsdGVkX1+aRv3m4c4GcAt68KkgnaBkgeT0CWzVNEZdRoiPpGoIA03nvZvPNIZRbzlSet30uyNyUVX+98BkHUessAymFx7mbK82UwfDStSUK827eKkqX+0AoNmdHz5Dghc+1RrmFugB8MCHBRnSHesZuWshTWc1inx3wx11TWpTwjSYJsRM7PFoOTMUmU4uBaRlg94f/v4amP6DQkmwb8k9KrtLFRb3Kem2ShuwnDn735q5Timbtte5mVD3oJXds8VH9aYVQVO3R8cNtre6VKFYk3TdXsburYpqf6YZqlQtyKFrnJrZlUScm+FZ7mQ3BpLuR61Z94oxYXR+w2hikOaEYTdD58pmU6UJpPzigMiJOclwHocPYWuB7wNAsnIu21s8yza8TIuCA34ES3xHUEgdV1tkcBhL5RTKtzd3/kVqw0NuXpq7ZDX/WmBFo17szrMCKpfADzMqAzWRgbgopfPSLIIY1jJV3rNDFzHU3FQHpr1Y7FQnXiqfWSEjQaggmowh0+2B4qDTQT+SbSMRJwTeFS9HZ+q0PddB/e/F3q605RoBdf4DncCtO7RjmDXphoiL4129hsWkWVl9LlfvEj0WKqpb7Z7KJdLvq+Q3tephQgdM1pSC4y1l0dCDnLyEcveMwrNyoRxeNCsnR1OXm0d2bh7qIGnU99EWZQiDWqddlvizQ5qj+VGRmZ9CG/gzu6LEjZr0ZyFuIGVkeUIuZoCYTKrhLBb5zHxpR/W+b41JfkVV6Z3bYDYEg6SW2nIcfMPRpHTpMN6wRDy3mUNsafoki81K4mduf1vfjY+d1+fj7Cq+b/BANtk3GbwfV1N84ZTTWSvfPs80RjIZFB79a3m1q/6/33xxMUqRUzYYDUrYti5LtUpmiIShEcwH9NfRZTKPxevkxxpaOlptltpWlwS6qxxHpLeZ9Q1kju5aUaJQxi7CCorwCc8NHO5Arqxqe8mxlAPffyvsg49cqQF
- hPIRy55+
- wSJDOEmp7ZGDuq/Xp/RQMtT2Ujrhg55lGQDjd2F+887CeRkZ1zldfcCMJUZk3svVjQ7vQ7j/8db8LsKoDUOyit8InSuBjKxsswbyIDxQaBbtPmgCDXeh1xU4cPtoIWugv+cqotAs3Wu1P2f85m3tWz+Kv2fF8uJLF08ge+OPwszr/skC6Ah4HJPtl4tJQxuOxaCbHQwtni+W0oi2zC3OpAsiIzNVDDMnDjP0X+l5AHNarMHacZaQbnlTktnQv/1iDyF7Gua6+9sE5GIWyBndPmz71yA==
+X-HE-Tag: 1785847448-279298
+X-HE-Meta: U2FsdGVkX19yzMO4KeyKvYwtn9k68vMG5VP7yIi+RIhWX9/PC5eFHmOeVBQ+8UlfPMtAIqJXZEZqbHo4QZnCCUDLH1rb23u1TsTjlBBklMWnS8GvFfNg35p+PffUXyRyB5QlK2VBX7b89n9ITlI9x5fkD+jkh6TpT6ci3m7P3d6FwS2lE3LYKLc3zg4zgReT5YVw4fiD6+GQRDTsyw8fQ/vARMp2ZB0+tOypbGgCj83oJiYiNtLqWYbf1AjL+s6G6Ej5GHFryJTS8wVKugG/8l+x1vxp6zbp6ZUVixqjDdT/+Wz9QUAdlz3MPaZritsYWUNNeOtl9Gb449WO5bBrVLaKi8pxlaxQM9G9sfeWHml/Yh0SZkcZjAaljZ4PbLlxBuoCHSTKjMEetjS702CgQ1oVg2sW/ZmrUiFo7r3bEuUaPcBV+XAVp3VCeV/jYdE6fiaOAiw4v6yJVURy0xwdj9NynCJLxeGu3ZkjUYrGzhRog/ckGvsv/b2rcMeUaNRO+A2QfZajNwTkz8fLuO/GGl5dfIW+84cO9dP5K1t+EU1uVMAaIvnOoZuG186mWHAqdxG1JHUQ7PKgTsGLPonzORC7/YZ+7Yn2EgXTN3SzVq6UOXj52jojwpBWO1y4w1epLrA7eGmr7a62MhsBaPItceOZbox131dk5lx7VzM1V5aJyHGH926+ij7sc4uz1DVYeUUT3K9Ou6J9vvFp6ozbxl/EEt1wonAEy98afC4yqbr2eKW7NmTjULrfF7377VhsyiBgas9s1eJPhkRutE6iToT4yFbfyXaUewh4vARjk+t7be3UjIeM2xfPzt8IVhS2HmP3QRN+GbuSqxoOW3BSbZBJR/tH9/OJopN+nuHbzXNU8XavOgKsMeDNZg3lhA3ppB79R1piH8QiQYDeTC2iAsX7B/+MrAfJEImn+RdHDD8cu1EOaAny+K9GRdW80FDOHc7QxhARPH2EEctltkx
+ OdEhYnaG
+ tt/9+PvgHRPjQM1dgIUg7e49V0VSqbZKdakbbjcKvpfdruOVT/LAAE3mImmaYoyoqQ7vf5T7WYif5A/69P5B9cCEa8dHeOEhPy/VehYebayOei52Oa9Wb2rNtMg88pL3CP9pX3EHtMpwfum+wJV/XDD6rKHUg6ozV0GzWgsABsR92uN8tvVEDWtzv55nOgJUxi4pvM209u5el6lH0RzkK9YeQs/nSevIjN95EhpZjlmuGK6eHh5PcCKq2/ZPT8wDI8yhP+pUvkSMtYB43zzP3xL1vXsB8RAKPUgR6ZRLAnqiBxSARro1yJt2TjgRcXLM4i7qKjCszAGmsckLBrN/v/quhhy1+igYOu3bg69Go3FOUPXjm6v1ZDLlsMUkO2Gub35/+nTKbzGXiAhVFcYkm14YU9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,126 +105,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Liew,
+On Tue, Aug 04, 2026 at 01:38:52PM +0100, Pedro Falcato wrote:
+> On Tue, Aug 04, 2026 at 12:13:13PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Aug 03, 2026 at 05:43:57PM +0100, Pedro Falcato wrote:
+> > > There is no need for write access to the PTE.
+> > >
+> > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> >
+> > With below addressed LGTM so:
+> >
+> > Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >
+> > > ---
+> > >  arch/powerpc/include/asm/nohash/32/pte-8xx.h | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> > > index e2ea8ba9f8ca..f2bab31040c7 100644
+> > > --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> > > +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> > > @@ -226,7 +226,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+> > >
+> > >  #ifdef CONFIG_PPC_16K_PAGES
+> > >  #define ptep_get ptep_get
+> > > -static inline pte_t ptep_get(pte_t *ptep)
+> > > +static inline pte_t ptep_get(const pte_t *ptep)
+> > >  {
+> > >  	pte_basic_t val = READ_ONCE(ptep->pte);
+> > >  	pte_t pte = {val, val, val, val};
+> >
+> > Worth making these const too (that {val, val, val, val} horrifies me btw :)?
+>
+> This is PPC code, so I don't know if they have any particular opinion here,
+> but I could definitely do this.
+>
+> (FWIW, it seems we're more aggressive in MM in doing this than other places
+> in the kernel?)
 
+I mean I can't see why there'd be any objection given you're already const-ing
+here :)
 
-Thank you for sharing this patch.
+>
+> --
+> Pedro
 
-On Tue,  4 Aug 2026 18:07:19 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> Problem
-> =======
-> 
-> A DAMOS scheme filters its target regions using an access pattern, which
-> is constructed with the size, the access frequency (nr_accesses), and
-> the age of the regions. The age here means how long the current access
-> pattern of a region has been maintained.
-> 
-> For the pageout action, the age.min of the access pattern effectively
-> acts as the minimum amount of time that the target regions must have been
-> unused.
-> 
-> The definition of cold memory highly depends on the devices and
-> workloads, and thus setting a proper default age.min (e.g., min_age of
-> DAMON_RECLAIM) is both important and nearly impossible to make suitable
-> for all devices and workloads.
-
-The recommended way is setting the min_age naive, and auto-tune it using DAMOS
-quota or aim-oriented quota auto-tuning.  Have you considered using that?
-
-> 
-> Solution
-> ========
-> 
-> Add a per-scheme sysfs attribute, schemes/<N>/sort_type, whose default
-> value is 'none'. A scheme can set it to 'score_desc', which makes the
-> scheme to collect the target regions and apply its action in descending
-> order of the regions' scores, as calculated by the ops.get_scheme_score()
-> callback, during the application. For a pageout scheme, the callback
-> returns the coldness score of each region.
-> 
-> Instead of modifying the region list, DAMON copies the target valid
-> regions into a temporary array, sorts the array in descending order of
-> the regions' scores, and applies the action in the sorted order.
-> 
-> With this, the scheme gives absolute priority to the highest-scored
-> region. For example, a pageout scheme with 'score_desc' reclaims the
-> coldest region of the target first. Users can thus keep the age.min
-> relatively small and let the score ordering do the precise
-> prioritization.
-> 
-> Note that regions are applied in the score order, not the address order.
-> Therefore, the address-based quota charge resume mechanism is not
-> available for such schemes. Instead, the quota is spent on the
-> highest-scored regions of each charge window. Applying an action
-> resets the age of the applied regions (except for 'stat' action), so
-> those regions are naturally excluded from the next window if the scheme
-> has a non-zero age.min. Also, when a region is split for the quota, the
-> age of the split-out part is preserved, and thus the highest-scored
-> region is continuously applied until it is fully reclaimed, even when it
-> is larger than the remaining quota of a single window.
-
-This sounds like very similar to DAMOS quota's regions prioritizing mechanism.
-Have you considered using DAMOS quota?  If so, could you please add why
-proposing this new mechanism, with some comparisons?
-
-> 
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-> ---
-> I am currently running the corresponding benchmarks to ensure that this
-> does not introduce too much performance overhead, at least not on my
-> device.
-> 
-> The purpose of sending this patch is to make sure this is a right
-> direction.
-> 
-> About my device/VM
-> ==================
-> 
-> CPU: AMD Ryzen 5 5600H (12 Cores)
-> RAM: 8GiB in VM (4GiB + 4GiB ZRAM)
-> 
-> I currently foresee two potential issues with thiss patch, though I
-> have not obtained the test results yet, so these are just guesses.
-> 
-> 1. Excessive memory allocations and deallocations 
-> 
->     The default aggr_interval is 100ms. Executing at least one
->     allocation and deallocation every 100ms is very likely to cause
->     unnecessary performance overhead.
-> 
->     I think this issue could be resolved by having the scheme maintain
->     its own buffer.
-> 
-> 2. Performance overhead of re-ordering
-> 
->     Although on my device the number of regions is not very large, and
->     DAMON's default limit of 1,000 regions also helps avoid performance
->     overhead, I suspect that large servers might not stick to just 1,000
->     regions.
-> 
->     A solution I can think of is using a Top K Min Heap, though that
->     might significantly increase code complexity and reduce readability.
-
-I'm indeed concerned about this.
-
-> 
-> As a reminder, these are just my __guesses__ and do not necessarily
-> reflect what will happen in practice. I will send another email after
-> completing the benchmarks and micro-performance testing.
-> 
->  include/linux/damon.h    |   6 ++
->  mm/damon/core.c          | 125 ++++++++++++++++++++++++++++++++++++++-
->  mm/damon/sysfs-schemes.c |  57 ++++++++++++++++++
->  3 files changed, 187 insertions(+), 1 deletion(-)
-
-I to be honest feel this is too much for "just guess" based patch.  I'd like to
-get clear reasoning of the change and/or test results before reviewing the
-code.  So I'm holding the code review until the high level discussion is done.
-
-
-Thanks,
-SJ
-
-[...]
+--
+Cheers, Lorenzo
 
