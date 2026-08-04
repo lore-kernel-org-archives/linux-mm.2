@@ -4,99 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C945C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 21:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D37BC55ABA
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 21:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32C2B6B0096; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
+	id 5C97E6B00CB; Tue,  4 Aug 2026 17:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 303F06B0098; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
+	id 579266B00CD; Tue,  4 Aug 2026 17:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 240CC6B0099; Tue,  4 Aug 2026 17:14:06 -0400 (EDT)
+	id 467BF6B00D2; Tue,  4 Aug 2026 17:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 028BC6B0096
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:14:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 755F6C02E6
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:05 +0000 (UTC)
-X-FDA: 85064839650.07.A61B462
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 67C79180006
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRdWik1s;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C7E26B00CB
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 17:15:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 884D31C08B5
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:15:45 +0000 (UTC)
+X-FDA: 85064843850.22.30748A4
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CCFF540009
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:15:43 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=p1U9IteM;
+	spf=pass (imf11.hostedemail.com: domain of 3flZyagYKCE89vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3flZyagYKCE89vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785878043;
+	s=arc-20220608; t=1785878143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ak4eb7x82hyzr8ov8geZx8LKpCLMPbm88Qx3xLS8pnI=;
-	b=ifIzjhsWETZRqE9yEEoLVwc6m30DsH31/k502HVyDfsSKTbCid9MbHI+PbppUE95eT/htd
-	M13TBVWrcVOTm2MpvG1zdHOln5p66nraUZ9PanS+znTIZNs5ASt6Qw9t1gVhFGU/2WUJTp
-	MdzMql3SRFWRxajZLvdfyIm3+o3QIhg=
+	bh=rHQOfCFF6yaKH9HqGSLDO98Dtf8szKrkpDeyDbaXUEA=;
+	b=niXTInSKZYWZG/ZN7aZHpdfa5P3jKyV4gWAPlwf6KrxUv079b5KdDffhw5tz22XE522aEF
+	mUNjwHJy3hyYL5Ubr6GISUurYp28V6/Ck/7Ggnr55eFv7rUGRYrHLIUk6gmqKGyJc9bFw+
+	1kSda8YZmvrZMSIRw622PELTtwndV4w=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRdWik1s;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=p1U9IteM;
+	spf=pass (imf11.hostedemail.com: domain of 3flZyagYKCE89vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3flZyagYKCE89vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785878043;
-	b=LNnRMfwSQ0cJOR2hj9xv8UpvT7FRvkL8NK8Qh5EO2jYY7Zc6kJ9FxPlUuTuxura1TL/TST
-	kozLaf1yAXbOZnSCYzTwLHNbsa1SwBmh2sjTg60syV9ybZx/S2/tAfhK2XCC2No+uIZ79X
-	f2Q8vk41BjSpSi17LjLQC/OFHQNwqE4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCBF4411EE
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B82E1F00A3F
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 21:14:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785878041;
-	bh=ak4eb7x82hyzr8ov8geZx8LKpCLMPbm88Qx3xLS8pnI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VRdWik1sQ4yV/u9NXlzXdRb52gFL0zXl76yKis08qooA0A1IChP/tGrwg6ApPP3+D
-	 gCU1sjhR2GWLHioxNR0fPRgMe1jKcdgg2kgJpb0n92sUds3wRmsM2HwPnWLPrEsrzQ
-	 FuVzoXJPMJCcdrK59Qv9uyKh80tSdYnSc49l9vEGcgGES2VMetQp7UPYuq5E8iDveh
-	 W4fcDwjlK9c8WCINuO8ZoJGHTcmYUq0sUDiZgMi7V6G+LmbZ888Aiafk5YqmX7tbXK
-	 z8aM5NgMaNSVbzO/NFu0Tg0SKzvXMQSxJbHDSOjbWrQjQpIZ6Di293r3mToKxXEhJ+
-	 /urL8V4mZcEnw==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-934956bee57so32246985a.2
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:14:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqwBOI2Ddhf6j1deTCzwtU7hiYruxncDqCv5hu9s5CEOkFkvbNuGakeyaJthuRNAgOpgCFCJsX9wg==@kvack.org
-X-Gm-Message-State: AOJu0YwabV98e6D+GrrNTGJAhhhsBLBkBtZYZvbttAdxh5D9jGGsAY7W
-	UD/Gk6qJXF38CDgBx5PwXMuvw9yEFXJ3yp4yymPZytqT+Zq+5Em1bl27qcpQRTiDgpj567z86Bx
-	MiW/cqTmUxqB2/8o3vCqJYSu1oWocsBU=
-X-Received: by 2002:a05:620a:9046:b0:92e:62d8:1faa with SMTP id
- af79cd13be357-9364921c204mr102766985a.46.1785878040982; Tue, 04 Aug 2026
- 14:14:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260804095219.46213-1-zhanghongru@xiaomi.com> <anHMe4jFT9EIQe5q@lucifer>
-In-Reply-To: <anHMe4jFT9EIQe5q@lucifer>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 5 Aug 2026 05:13:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
-X-Gm-Features: AUfX_myvaI_2Xa1nIyqQr12P8ShUZE1bi8PR-nAZSpWQ3BvQUdcHiygb9ktNvo4
-Message-ID: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	david@kernel.org, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
-	vbabka@kernel.org, willy@infradead.org, zhanghongru@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	t=1785878143;
+	b=C6xaQ9/BIVfSR5zRLcKW8o5mpqx4mBCqk6QObzoTLFX2zdpOTqDMRMbhdu1Va2PW5+a/KP
+	qhURAQbK2Y9AHJDoVY5YM8UxSN+HOkhK/NG0K+Fd65NSzyZ4biQE+1Qob5B3fB9FPDGwq4
+	LlIYUc1Dj4o7jyq3uRI3JdN17w2HdfI=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so373683a91.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 14:15:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785878143; x=1786482943; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rHQOfCFF6yaKH9HqGSLDO98Dtf8szKrkpDeyDbaXUEA=;
+        b=p1U9IteMVriVuCrHxao3W0TtiDlE5E2d0Qa8Hndie9rnyo+TuZke0g5DoS4Lb8KVHk
+         F8CA2TeABc0QSDUdoTSsbtt5uJywkYIyPxMbPZ42WSrJbbit1oBZY4KRlqF9COg++vPf
+         0NxZt7YruJbgZwo0dnFIAJcAdoSheZU0UQqKTXBO08JWkDknog9lyubQ/p36FwWc+Pu0
+         hxcPha12VaRg4wAlsejxoWp63eHVyms3OmfEjKNq0PwDJA1XQn6yD/Sgh5o/tsFXK3Jm
+         ptX/eOzFBCb6EDDFM8tgCUzmJ7NVYPNNrEZKx79Pz46tZlsHz2XI7Dd1r7cderljrMS1
+         Td9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785878143; x=1786482943;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rHQOfCFF6yaKH9HqGSLDO98Dtf8szKrkpDeyDbaXUEA=;
+        b=rb8HTW3fNofX8CaVDt3n7LZRRAbpB28RVBsoRvTcYk5yccglAQG7cNs/oaWkoyfsWJ
+         qMD/hgUG8GMjjkynbqpMUH4HTrgNq5KehxRim+zgcZmh4IxlNXUWhkBzgL9Q0Ttf7+Us
+         O3KUTQZQ5cS/TbEWlPh3qNPqPkK3Ub8ctYl3b3WFpALNh1d7+L2ADbxSfFlpdPGMlZDu
+         3V1bmpL7WicrQpEzJ03vrD2WPnG36XNdncTc3Rw9y8d3FkVcy7FJVwpJd+9D4ibOb7XO
+         150mekHayOfLNSL1pQOsm0bY5hT4lgFTyyk8lnWpmZxDZn8X0/44f9f47zQSDmtDWmrk
+         p+Ew==
+X-Forwarded-Encrypted: i=1; AHgh+RrdM5qt/8w7qCI7g94bEyAviFoBc2ciSKg+/QCEchhqnHXmq0PXfGZSUN13LXEoiwscuUn68grsIQ==@kvack.org
+X-Gm-Message-State: AOJu0YziWjcWCj4yYoJg4oVPj1z97/q73c3/zns9r0TZnGBDvHVJbr5b
+	XCEzhUV0qwo7OXQaheHIQeR0gU8aboabHC/Vc+4j9S5WJqvEtX9Gr+Of8wkd6MjDLz2yLWQCYql
+	8h+x6Pg==
+X-Received: from pjot9.prod.google.com ([2002:a17:90a:9509:b0:38e:1db:751c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:540e:b0:38e:6a30:4bbc
+ with SMTP id 98e67ed59e1d1-3903c681346mr1785320a91.21.1785878142058; Tue, 04
+ Aug 2026 14:15:42 -0700 (PDT)
+Date: Tue, 4 Aug 2026 14:15:41 -0700
+In-Reply-To: <20260804120529.1730187-5-pbonzini@redhat.com>
+Mime-Version: 1.0
+References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-5-pbonzini@redhat.com>
+Message-ID: <anJWfesPj1C8fzFr@google.com>
+Subject: Re: [PATCH v2 4/6] kvm: apply VM_READ/VM_WRITE checks to all VMA types
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
+	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
+	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
+	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
+	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 67C79180006
-X-Stat-Signature: ht8aot1eu16yophssuxk5by3d3dbr4x1
-X-HE-Tag: 1785878043-511453
-X-HE-Meta: U2FsdGVkX1+7RGiyahrnSxS/MBRvVwGTJSSZ6RwURBeU2m1FpDwEMshoJmP/nqG1ltMBsXx2s0DhQyuzAolH3i/4VI6pC6w42KAHwtI9/fsl+KeXff6svAz6Vz6YWoGbFbg14lpaYdp+9MPaLs6wQdQHKWSFzSmQMCExMxAMqOWdOXTp0BXP3VkeqKzMuC8Beo1Qy/4pmc5yxPpn6aIMmFK2k3KYD1SoepcycPLX37ifQGXP2MpH44jxJFP9oRklopjM7fthzpPJzE7PK58Tbv/5YcGwkK0Esv3p3RVcXPOy+Hw2/NGepZuAAlvqMK14BtrKthZvzRAunf9fv83Lu9WMo239BhzY2E1Bd+IDOmOYGJerkWDNmWyAMu+EisCAvyPCXZV7njiYh/Sk+sItT7vOX6WEZuXwm1yaqKpeFB5KMDBqdXfVM9Xqmd5cvgIuwnRhQuXTPkdDBD8ohnK1a7UVD7szXm9t73B5Sn1IcL0GW2S2RS6r1qOMCfgS+S2hit7l6rI248vDZWpwt3jpi7Qwv+PTbyxcwCZP9soD0oWwpb0POpZcaxNizcF02Oi/S71Yvcwp96UYdIKCUNG5V9TK4oTFM3OV7AcZWBSMhxcp1D51wQ+y8CYKUE1AIqEnIqRGuiBt6sCDCIE3ykAaM+F9AR1l/k43u8K7mVELVuex7mdQqOk5nuuJIGB6Wi78NPwKjJGBPkQLXuvNZoHbSYd/GaDJoiVe3yCvXGf7eFjwcH+Cb/1TvJvswE3HRcJTb9iuShqLjmHI/KysGit5IokllK91nMcOPQ2CI3PPcAQGhYLZjD6zUoQ/MyKnYJghbduhLfgatDVv3YBdic9eS11I5Y7E5lB2ACfYxI7IdEja3Msh3x4IFyRQ0mywYmRuazej0QqYPo4eyIBTJFRFvK763debRUYKW0CorGOIYNpeOocJ4QEUvxJCI6F8pVjw0JsJOvAhxOQNnhF1k9L
- xuTP/Nm5
- OLkgSlStTtC/F+o5ruZVTHzkr68i4AJ/SIcsZ9ANo8jb0RNZaaKpwuuu0WBCgyFR2segPV5itT1dj3pN1KZyLg6fNDX2xCph1ORuBac7Vi+dJySWBXIFAp10JtpNEJKHdIIeIWiuElsOYPAAzf1kx3tl5TIVGLZC2kKVVxARkJcJRJFLhsmAFRzuFYfGNMNVwzGH+iyZO1Cs/aYNmiqEae+Z5xN+3Jp3I1LY7Lyj3czkHU15rVd5DkhzcJ/N0UDpNe7izKcB+0p9DUcJkylowyy8AVMJbCn6NMHtufzhaldjkCSo//AY4Q3aJkQB+pf3Fde+aH4gt5x5OsA0=
+X-Rspamd-Queue-Id: CCFF540009
+X-Stat-Signature: nrq17xgnebk9js3oetk1ebd57pqfnuxc
+X-HE-Tag: 1785878143-9582
+X-HE-Meta: U2FsdGVkX1+PEQ9CLGqHJdquSbso8ZoQ43eeNhyqA8FWxE0xpyS3cB8r7gCPwescMJhK5le2kHC1KPIokg7b71d/2rLmno/ZBpJyWcUIGYDyBwqg0TolGEZLIkehZNo+JNz6D1KR1J4W/9CK80Y5plj6uLxyrMgYMvguryl3Rh5ax0qPFax3amsZnCzKyUrjzE5ScXprwmltoV80uAQePBBfrAzE8FeC16GcR7L7Q/9jOrjkpBQM0Yo2wJGZw3pvlOXhgY3eZLRuuX0IcdnYIRSCx+OtZb+HHK5TjyvMoQT2GAWB2UTUL+P3qftwwljyB+pAq+mB+NZuUMMOWvdTthG+NuhF12XaSCLmLg0n6Mt4cEmGzEBbsDNBRyhLaYbi2EDKl4WjRjHA19oRaHQkF3N5O2CENv4/FHl8NAsbHfm+Auriunk8mGcuAnHp+7P4ttviHwrEibe3yiL0wWwVBfVIgm7dAHSbbWi9NW5KcG4hxL82/oefA+/6nQHO2SCgpVxhNkuU2MmqBxJHukfOnzR3JXttryZ/VVmqNKoiO651GglbXTz8Tm+SjN47TTitF5Uu6zUR3nIBa7iAowV3WXS5AGPPcWaUVCUponSR120Awtou25swVuaHr2WdUobV0t/do2Ir7IVnqBlNVcmKQxCqHvaO3mDUykVllYk/nwBEmETyF2MSifLnKYO/7gVIisqygYCe3HHBd4trphxiFNOqSVULR1lzJsmEYYJeomQwZNrjLxa3BzcR7E2kHK0FWq6hZUH4H+4w1FsO0BG18Tw6hk/6dbRlIzBHtulv01bGsPQ5+4r3NmuIz5HwwvvFIYbxR+9oM/G5clVBpRl+DzJFbSgNK2o3rsE692HJPrawcEbTPMYAUFTDgu4lkJFMq0eIHQePV34nM5Y/cds+07PUxwKQ1kIPftrMcOz9RpTQkXzGW1cw5GSqjqLNFijIj1VlumF7AyPp1EVusQZ
+ RnfYHeL1
+ p6yf3+YMcEVW9xERg0y8yr/CUbzIogMc0ttE1hmHzEVCzUDvzeuph39OQGqg9s2bXNsTEg2M5aXlQ1i7tw+heMldvpTlgfS4j1fjjO6QlWAa3PNa6XnUPFKglNsHvtrtMmaISTULQeO3Fg+S13zKnrUfNkWR6miQ93cB5eIU32qEYSsojy+1EUx4ZVM8AqHTTPsM7FiVfeLQgKX5viLO3Px5AYbLej7CNElvg1Dt2+ZvxWKCMm0d+r6xrzVwHE9yarQU+rMFh3TwaP/LTzbDwTD0VqiohNQBQUSiPLsPrb9O+lLXRQdlqL8TugZ6KjGP/i5i88h0eU8MxiSu+TvQNuuNSfaxq7g+yrS7wzRSBvYVi1PVSUnDQZNQhpppM6oiM6ly3Xoghsf+VRKPpPwNG9Qwd0R/NiUzp2ivfnbcHue02Vzo540E1v9MmkN6jFPvr6kA8fOT/wS82VQLR7RVGzYU0Q2DZtNpZUhS1kmfNLEE6L0zUmXA+M/zTeIFDRX3139Bmrta3nmFpxFYnHFDU8RcJSkbc07sLz7dgFqNEe48HnLRowDjedcM+AYDCoVIwnW++dmL6covmu3dkJ0dcCZvmtq/IowEjfUyn1WbZF0ACiQyjslDx6TxyDXiCMam0bIRmh4Wz6DlT+D6lAUYqykH9mZ7lzzdtUEx4WsHuqXoZy8jMGn2oXtdaMDp316D3KAArGpcrh0cH5eD6S7zwKoQJRnra5gN5H1hzVo9ctSSyPj+BuYx/4fHJeNEBm3oL6QVBERSF5PPxR1r4F98A/hxHNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,80 +113,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 4, 2026 at 8:32=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> On Tue, Aug 04, 2026 at 05:52:19PM +0800, Hongru Zhang wrote:
-> > From: Hongru Zhang <zhanghongru@xiaomi.com>
-> >
-> > Page faults handled under the per-VMA lock currently fall back to the
-> > mmap_lock path whenever handle_mm_fault() returns VM_FAULT_RETRY. This
-> > means that lower-level fault handlers have no way to tell the
-> > architecture fault handler that the retry can safely continue under the
-> > per-VMA lock.
-> >
-> > Add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit that can be returned
->
-> I don't love that name or that faulting retry behaviour is _modified_ by =
-a
-> value that indicates fault resolution state... ugh.
->
-> It's kinda confusing things 'VM_FAULT_RETRY' is 'you have to retry this
-> fault'.
->
-> 'VM_FAULT_MAY_...' is starting to bring in effectively configuration
-> options into it and that's kinda horrible.
->
-> I mean is there any reason we shouldn't ALWAYS do this if a VMA lock was
-> used?
->
-> It's not too expensive to do a single retry with the VMA lock before
-> falling back to the mmap lock.
->
-> So maybe simplify like that?
->
-> And like that this series becomes a single patch right?
+KVM:
 
-This is a brilliant idea. That's a genius insight, Lorenzo.
+On Tue, Aug 04, 2026, Paolo Bonzini wrote:
+> The VM_READ and VM_WRITE flags are checked only at the very end of
+> hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
+> mappings, this adds unnecessary cases and inconsistent error behavior.
+> 
+> For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
+> detect this situation.  This is fragile because hva_to_pfn_remapped()
+> returns different error codes for a !VM_WRITE VMA depending on whether
+> the PTE happens to be mapped:
+> 
+> * if the PTE is present, follow_pfnmap_start() sets args.writable to
+>   false and KVM_PFN_ERR_RO_FAULT is returned;
+> 
+> * if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
+>   -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
+>   up returning KVM_PFN_ERR_FAULT.
+> 
+> With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
+> a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
+> pte_present()[1] when the guest attempted to read it; with the patch
+> instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
+> avoids these special cases and also sidesteps the issue pointed out at
+> https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
+> 
+> For regular mappings a PROT_READ VMA, if placed in a writable memslot,
+> would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
+> the guest writes to it.  This would cause a -EFAULT exit to userspace,
+> instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
+> however it should be considered part of the KVM API because mmu_stress_test
+> relies on it.
+> 
+> Still, even with this snag about the returned pfn error code, pull the
+> vm_flags checks in front so that they are done for all VMAs and the
+> above inconsistency goes away for the VM_IO|VM_PFNMAP case.
+> 
+> [1] on x86, for example, such a page would have _PAGE_PRESENT clear
+>   but _PAGE_PROTNONE set
+> 
+> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
+>  1 file changed, 16 insertions(+), 18 deletions(-)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 45e784462ec6..576bcb21be3a 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
+>  	return npages;
+>  }
+>  
+> -static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
+> -{
+> -	if (unlikely(!(vma->vm_flags & VM_READ)))
+> -		return false;
+> -
+> -	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
+> -		return false;
+> -
+> -	return true;
+> -}
+> -
+>  static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+>  			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
+>  {
+> @@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
+>  retry:
+>  	vma = vma_lookup(current->mm, kfp->hva);
+>  
+> -	if (vma == NULL)
+> +	/*
+> +	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
+> +	 * or the page might be absent.
+> +	 */
+> +
 
-I guess the conceptual model could simply be:
+Unnecessary newline, IMO.
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 45b99c3b1442..3592bcc9bbd7 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-        struct mm_struct *mm;
-        vm_fault_t fault;
-        unsigned int flags =3D FAULT_FLAG_DEFAULT;
-+       bool vma_lock_retried =3D false;
+> +	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
+>  		pfn = KVM_PFN_ERR_FAULT;
+> -	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
+> +	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
+> +		/*
+> +		 * Exit to userspace for PROT_READ mappings in a writable
+> +		 * memslot, as this is part of the API.
 
-        tsk =3D current;
-        mm =3D tsk->mm;
-@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-        if (!(flags & FAULT_FLAG_USER))
-                goto lock_mmap;
+Can we say something along the lines of "for backwards compatibility" instead
+of saying this is part of the API?  Because that's definitely not KVM's documented
+API, and we're hoping it's not part of KVM's undocumented API either.
 
-+vma_lock:
-        vma =3D lock_vma_under_rcu(mm, address);
-        if (!vma)
-                goto lock_mmap;
-@@ -1352,6 +1354,11 @@ void do_user_addr_fault(struct pt_regs *regs,
-        if (fault & VM_FAULT_MAJOR)
-                flags |=3D FAULT_FLAG_TRIED;
+> +		 */
+> +		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
+> +			KVM_PFN_ERR_FAULT;
 
-+       if (!vma_lock_retried) {
-+               vma_lock_retried =3D true;
-+               goto vma_lock;
-+       }
-+
-        /* Quick path to respond to signals */
-        if (fault_signal_pending(fault, regs)) {
-                if (!user_mode(regs))
+Please align the two branches of the ternary operators:
 
-Nothing else needs to change then. I wonder if there is a cleaner
-way to implement the idea, but it is really stunning.
-
-Best Regards
-Barry
+		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
+							    KVM_PFN_ERR_FAULT;
+	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
+		r = hva_to_pfn_remapped(vma, kfp, &pfn);
+		if (r == -EAGAIN)
+			goto retry;
+		if (r < 0)
+			pfn = KVM_PFN_ERR_FAULT;
+	} else {
+		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
+						 KVM_PFN_ERR_FAULT;
 
