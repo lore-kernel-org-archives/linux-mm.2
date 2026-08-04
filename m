@@ -4,92 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19AF2C55ABA
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:12:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F62C55822
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 23:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2D0A6B007B; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
+	id 4113F6B0088; Tue,  4 Aug 2026 19:15:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDDC56B0088; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
+	id 3C2736B008A; Tue,  4 Aug 2026 19:15:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF3126B008A; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
+	id 2BA186B0092; Tue,  4 Aug 2026 19:15:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE02B6B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:12:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5666DC02F7
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:12:08 +0000 (UTC)
-X-FDA: 85065137136.28.65B5D93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9126B40002
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:12:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qdlse2fh;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E9B3E6B0088
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 19:15:53 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8504D1A0309
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:15:53 +0000 (UTC)
+X-FDA: 85065146586.06.7B5E7C8
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A97461A0002
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:15:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=stw8DfIx;
+	spf=pass (imf19.hostedemail.com: domain of 3pHJyagYKCK0fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3pHJyagYKCK0fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785885350;
+	b=xwo6Hl6cMCH7nVFcx69dwcjqJIYoiVf6MHXGl5IMLctUfq2gpsFZ+0VTNhkafYccTojClZ
+	+H48bqEqaZ/OQlrFRbc/30muW8zflUQ9z2LRORPPIdgM4+/NsuZVI4XcWogRDTLpYi/KWM
+	vkYcbz08Dho3EjOmpmCxG07mhJJtfzw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=stw8DfIx;
+	spf=pass (imf19.hostedemail.com: domain of 3pHJyagYKCK0fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3pHJyagYKCK0fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785885126;
+	s=arc-20220608; t=1785885350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4QTWJQpnYCgvZMOp8Lec9E0diWM87JoBrgrWTI3fCo=;
-	b=FrL50FGkI9tzrL49V+7ScSmt+jWF3OxIcSz/zXBNA6AfComY33MckpdZemTZK/XRgeCqot
-	r/T1xbdKgDUWHfJ1VVqQMXu2WZqaLhL3rOeCPMxf255c8rjkBq7GVxgLaOV0zlIk9hlMgU
-	a8KCyIx2wPVsQvQRY5mSVfdndeRh6Qk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785885126;
-	b=67QuUzOA5H3Kh1RF+sgdKgpjV7v/MrcKenmJLEw4xsQ2sYb9PAtHxyp15o1It+ERtEUR3F
-	0HUyrgD2SuMM+VNL6let6MZnLLZnYrjgoDWNpFFmAk7mMg7WrqUccXhf6D/iCuJSfbjQIc
-	PRU3aVeNNZcs3+DlOtmBjQK7/IN1lhM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qdlse2fh;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BC1A40AF0;
-	Tue,  4 Aug 2026 23:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3DF1F000E9;
-	Tue,  4 Aug 2026 23:12:04 +0000 (UTC)
+	bh=lz3QUw22bh8QYe/ZiAsreDFp91isZAPnzZuU7CX+ujA=;
+	b=iMvfgaWKKdobbIkXgsUJJS3y6+WMbe3kz65WsGKsEbBwX2lG1ux2kjKex29oJI44xUJkON
+	5ZhAuD/pdPVIJmP4gxX+NhUky2RTVmWJYoF2XDwEAvOk5FeYMEn3BykNShUdh/VK8l109U
+	eIM8yr5QIr6W9AoVfJUptxE0rbVlH6c=
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84870e7f498so314585b3a.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 16:15:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785885125;
-	bh=h4QTWJQpnYCgvZMOp8Lec9E0diWM87JoBrgrWTI3fCo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=qdlse2fhDvX1iCH+zgWT3U3of8I1Z+o+aamxuKtzmTGoXI59i313At07ihexnsu/m
-	 g8hEgtaAnrvi+IZR+Ve5r/boz1nLIcfZf97yrtcCd4uRq2vwUTx9x0sFepV+kI6eMD
-	 MTAsoJ7ffNw+2qTiBQchiyETAYCVEbLdtnNI2UFU=
-Date: Tue, 4 Aug 2026 16:12:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
- Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v3 0/7] mm/khugepaged: several cleanups
-Message-Id: <20260804161204.140bb3b8e482c43cbbacc2bd@linux-foundation.org>
-In-Reply-To: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
-References: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1785885349; x=1786490149; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lz3QUw22bh8QYe/ZiAsreDFp91isZAPnzZuU7CX+ujA=;
+        b=stw8DfIxE6Q3ypf86EqfvYM0JmBELYu49PqlqNnZgrX9RXB0+0zwrtI2cptuwSTLcX
+         qecVu3N/hKdVUr8fdphR7/U2JDdn6Kz+E1fGQl6ier1lQB5Ip804cBVK+ELqwN9kKvNc
+         1EuV5rNHOTvDjfe04PrhC+Ti2V3GOahGoCk6KWT2q1abBCWfU/J2/oW+pQSxWTRXjOBs
+         8uDeNEsOD0JPq3agWwxWP5CGw+vvdDgaetF0xhaeIo4lyvi4W9sBdhMacV++xewAdbQM
+         Cn6qBXTjuPOuS4+Af5nqqSBcOW91PFpNhDGeEaNbxVAFT/H5vDW/fB6DArRzGXnGt8u7
+         P+ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785885349; x=1786490149;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lz3QUw22bh8QYe/ZiAsreDFp91isZAPnzZuU7CX+ujA=;
+        b=dktiICYJqQy/aQxXNFnnvuxW/FiJxR59eTjZ7/lexRXzfTM/lJmLIxwKQhfHSt+Lyn
+         TPI7HXZlvuVT4CG732EzwAdMU/rzQ80wqXLzOCJi5y17/bJX7h/meGd7X0dYBh+3o0Po
+         bSmgG1yo0WYZ/GNb2Dy57npH6BocbgYjcFlH0ML0PK3jdC7i0TLrBO17cJKok5U5goFn
+         qTXIs8Gu2D/CthaLoOdzcNUulcqQWv4A16rtOUkN4ELGaNKZTTlH1Ey7PEXx/zFxx3pY
+         BbiguRDQC43jQe+ADNsYg83BgCkvNeGOdS9sF+95UYtbZrtX97kCH/18/gWTeK6WskNz
+         R1MQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqYDLYg125BWL3IJlpvP6QbFDg6FZjLVuzM1QS0T5HBTahUEnTCKUwQ2x4hNfMCc6UgnPLWlvhPmA==@kvack.org
+X-Gm-Message-State: AOJu0YxcEsSxeI6Hvt9ehrQfwEVjElweXFeh+kte17FxEn7NEwkbGPSJ
+	J62hO/j0AdJQweDNwaP/LkjJbAFL+Ue56Y6HSQRI5B8IJl2RI0hHPh80n0XybJKCXGQuXKytax3
+	rDwIWoA==
+X-Received: from pfbbq18.prod.google.com ([2002:a05:6a00:e12:b0:848:5740:db83])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9517:b0:84e:e809:dd49
+ with SMTP id d2e1a72fcca58-84f2e12d02bmr2017520b3a.36.1785885348892; Tue, 04
+ Aug 2026 16:15:48 -0700 (PDT)
+Date: Tue, 4 Aug 2026 16:15:48 -0700
+In-Reply-To: <CAEvNRgEOE5oeFVRYYucsCGJaFAQYS1oNRXAwGKzRAyqmoHT9OQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9126B40002
-X-Stat-Signature: qcz7xazo6bxc84e897snffgbza3of3fe
+References: <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+ <anCtzQrUkFSSq8De@google.com> <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
+ <CAEvNRgHYhKACDfx9ZZy4a-TTS4yWzEJt=Jc92=eXxS15LPnTYg@mail.gmail.com>
+ <anJbMf5GBe0Pxh_x@google.com> <de780cc3-8c43-46f8-b8e6-3ddfe93d753d@arm.com> <CAEvNRgEOE5oeFVRYYucsCGJaFAQYS1oNRXAwGKzRAyqmoHT9OQ@mail.gmail.com>
+Message-ID: <anJypPblO8ww0IHY@google.com>
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: A97461A0002
+X-Stat-Signature: ghzee9wzcc997mb5b5tifkhbjwjej16j
 X-Rspam-User: 
-X-HE-Tag: 1785885126-50434
-X-HE-Meta: U2FsdGVkX1+r9SeeV0yQilq4GnB81QRrwPFExDYL7v7lDdMBWoEIh5DJZKU6yMJdpBS0MAqaV8UpZqt3OY4OLSYDdurl60nzbMZdw2dgjMyBgFjSY4qx9hShgpkbvV8kqmsN8git4ATHrYRT77oJ9jI056RhsAbft+o414dmxxrqAIA1yQ3ZxaSdPB+FbGYGysQslY1+vhi3JJ5mvbHQKCpkvGt8B6kfYm2fV2OLPpjCboyds1t6YCw4uxFpHZVg2u2xpoWiw3PX8OFslvn/96wCLKzK+N55IDDXQBiQJ4qLkvAECKwBGmwddiarKYatsIeWlpcs2jOU+M2gKoA6jE5NANAnjReTIdgOoScGB8Pve7xMAGtPclpyJksWtj8+C+muX//LcWkFaiyn6sJfLOatFTD4WRcViM8JIPV0iAlpLg2kc5p8AnqhUNRJxhTjekg8dm/cng2a/I/YE/dRX2kTEVFTkNYEZujUm3fRoPsFbgYttiwfLAZBN5b6tIfiCH66psu++uuapWAbVdXHiz8Bqj9hCMYNcUGJobZGiRGHwPm15NRQteQKE7WM+Xy8bswQL2d6iHrALCFxBE78Gz41O7IDt3WhBtaSI294Tg1ABDuaahcSkCCam3/2fqwA95D6p1+LOvI8RPw3Tknd28BOEZ5azRrKdcABsFDCrRhEdWzewQKgv4vcq1C6gX9m8JJWzWOqGsRvlR4mQhbAkjcvRQwNe+hXQk5X9MRj5mapKkSKjbWVJHFJD5ejuK+cktgiR0ssL0PRZQPIQZcVZ/oEp9LHr8DAutvQU8QCmbLmBRLeMyYBwfp+7uzbMp9Ur+C3WJirFPGg6lU0nc3QitpFY19pmm9jNt1mNZoj1DVsZ13xz+EXmlD4qfNCSOZWl7ODp5KRaOlIhwsh1nBPNt1cwaBmWujxwx4+b5Qi9fou3XuXh4jJ1srKN8nh5/vYoywrIm22Vll3i+z+Y2F
- 9bBmytLh
- ZlYfALdvEYRz8hhAFnXVwAjRdT9u1USXD0EKeSfsHYGRgaHz98+XB2z2+e+oI9YjArFEJRiYofhH5Aun5XyBcMM7SUZgkcgsnNry/OaA4TEuAOfMpZ6cY4fzI3SuEM6N8GWF/CBlcIJDV6WNEqLaQy3mvbpMaxernvAkMnlGHTL1+OBWlm8AZjA8kqlSiZYXbOPA8zB25jEXKdO/J3tjLEEr2s83uQ7rX8AyYv5jZhxVXDALYNvpKMWckYJgjAHs5guqF5SjXdUIzllf6Wwt6FohA34lbd1A7+GXAEM0R8HmNKj8hSM0IIqvcoA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785885350-276374
+X-HE-Meta: U2FsdGVkX18izh0es8O/nV5TDOZsdQOy9F6awWcY7bZUpze8ktXMXxl0KvtX4WXlVKmDgeohp2XPJTyF3bbmojcPibP8S27Ei1FDeJC3SiDE8oJDNqlAn8HCRXFNhQJ9E5Za+CFFupNUWWkFvOBMoSIWTTNAEv0f7E7znZ1TbqCwm0ITDUvqIosGP6WBcpEL5JxdkXjjfyZkYe3E+0Xrl3ucHlbJErbvZOeu6J1DaDfGOa374+zKz18KeO+s8rqz4fg0L8SbSXjPt6dwFrpuqTbdy1I6coveoJ1JNBwNsEah60wNGh0puJXBz52i3ppa6RP9PE2VHx22T8D6dUeRM0QSIn9tiM/9SNRCS+zHgX6QPYUpFPSpxM0gLefE95zP8SKLp2yXBkJ//WVbGz2T/nDo2QdCrmLMb8qv5Zf+FkRnv4pMnb3qSFkZHsn8PXRs8MbAWFh+ksfn5qykf/PfreIjcoDvo1Cruo+mbpNyT9DQNZIT3cMP41EvzMLLEEdhiy5KzJ3q1EMUY2bkhom4iwfLNqpyi4P6ZuprpeqzEJarxBcQHYYOK6K2MB9VTTjwWrxxHdtbYrMP1h4W1MNDRuA4RUyLHK4hPetdYdPXjQwSVGVd7XSpbjb/q4hPuKEIV7nnln69JZo5gekPls2ZCFx98AdDso5NkQwH45P3QJswoVr7O2uSwE620m2+roY0m4U8TxaMiCiCLS8dKFqXTj5/MTETnQBgWz6+ZrcIwqi0+udoJnUfkw2zMSIFuGAZvJNS0XcCUF3Dy3j4zKoaX6808/V6jPM4vWPNSr9vfTENDJvSN4uEGByUFI2d4K7OFc2dJq5iOmSoJ7tVoXhRkOgd0lahVhH5uCk8i8jT2GbQRkhKenZQBDPPePkXdluxi3trvOPmwG5V74yCWnd+xlT9MP1vOV+cfBV5ikIvSz2oCQIzMJdEXXuio6D2UfdEoLggIS63rr8gzC2OVMC
+ 9Zses5CA
+ 7On8AWAFlR0DdFvilCvX1HBWqICSUxzAmPiEiHUC5/B7DcUqYbNnxKRVB9/y2pt0OZ1rlhbkC8M330qM+LzwWEyPVPq04GxlnJiEPSzHRuFjNsWWdjIIvvOEygQIqYY4a3XwLapywbCuRlnA8t2V0X2n8zYvj8g+OIcJnL0T/2CXx1uoI8Htdq7hdSWCZJiwnrQDFuJ28q1KP50XI3vBqeumZ4XN2eIESyr9XbZGpLpskVFOzDEXrPP7pOFPpoNqLpASG+H/4SUkEas/EeoWbHAC7kPQ5z38hIp53husylp45HA83Vl129NEeZ3VexK2a8KQESqPl7Gf4psjFXjSWH+MNmXICj+vSHXF7VlfdhpTS8HFbWeG1iuR6ctyFoBZLdh/ph24IV4+gqUjYXuDn/wXFqlEosDr8rcd6n9b0oDAfOGQhpObPCm9Qrp4/hLddOe/n0zRXKnE99ejtF98U7lk7B9o0RKEae9RkSD+iPy0uW7SNzbhX6facDNL7EtuQCM0UG1CANQSjpwsXkA4VxZ8MoWqIDb4ANbjCrLl3EHeJU5fSuk+6I/ls3lRj8AXBGmPX1tNygIZ9JWf2m1IcI9qvk9GkwfTetLNIO1nwpT4uAaC92vtrfFdUr/E4DNi0H8De8nhEix5Xu+6BCsMm72Lv/WNqsg3KsJLONKroin+Xy7z2SUKQAC8Iasz8B45nZFHIbGjbo9tsWRMpak+P7Uy4mhjj4gVVqpUg22EzDtp2seAyuYRdBYRriIO53YlijTRyMnmSNbhN9uY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,32 +137,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 04 Aug 2026 13:24:58 -0600 "Nico Pache (Red Hat)" <nico.pache@linux.dev> wrote:
+On Tue, Aug 04, 2026, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> Sean, for the two attachments you left, did you intend 0001 to be the
+> first patch in the conversions series, or separately handled? 
 
-> The following changes stem from a number of reviews during my khugepaged
-> mTHP support series [1]. Some of these are minor code cleanups, issues or
-> reviews that we decided to deferred to a followup series, or in the case
-> of the more major patch of the series, changes [2] Lance Yang attempted
-> while my series was in-flight and we decided to wait till later to try.
-> 
-> The first 3 patches introduce helper functions to increase code reuse and
-> readability. This includes a per-scan state clearing function, extracting
-> the young page check into a helper, and a count_collapse_event() function
-> to reduce a repetative pattern used across mTHP collapse.
-> 
-> The 4th patch was the byproduct of me throwing Claude at all the
-> comments in khugepaged verifying and looking for any outdated info.
-> 
-> The 5th patch is based on Lance Yang's commit series [2] trying to extract
-> the PTE state checking into a helper function. This required a bit of
-> rewriting due to differences after mTHP collapse was introduced. I also
-> took into account the changes requested during his patches review cycle.
-> 
-> The remaining 2 patches were review points during my mTHP series that we
-> agreed can be deferred to a later series.
+Please include it in this series.  FWIW, it doesn't have to be the very first
+patch, though that probably does make the most sense.
 
-So "no functional change intended"?
+> and 0002 will replace these 2 patches (in-place, in terms of order), right?
 
-Sashiko had a little doc niggle:
-	https://sashiko.dev/#/patchset/20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev
+Yep, thanks!
 
