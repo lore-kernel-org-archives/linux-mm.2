@@ -4,108 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BDEAC55172
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3256BC55172
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Aug 2026 04:20:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19C716B00B5; Tue,  4 Aug 2026 00:17:43 -0400 (EDT)
+	id 1A00B6B00AA; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1732B6B00B7; Tue,  4 Aug 2026 00:17:43 -0400 (EDT)
+	id 1507F6B00AF; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 089D56B00B9; Tue,  4 Aug 2026 00:17:43 -0400 (EDT)
+	id 091036B00B4; Tue,  4 Aug 2026 00:19:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E037F6B00B5
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:17:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF919A2373
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:17:40 +0000 (UTC)
-X-FDA: 85062278280.10.F17DC5E
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8B9F520005
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:17:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Hc/REYrJ";
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D75236B00AA
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 00:19:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5772F408C5
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:19:58 +0000 (UTC)
+X-FDA: 85062284076.24.7F831C5
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9D803140004
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 04:19:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U19WtwYS;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785817057;
+	s=arc-20220608; t=1785817196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=64J9NQ8wINxMWeOp2Yatp476UcvWi6dCmOU/qEHakuw=;
-	b=DmionSez0KaKIQ2RSKhDnMiRpmMcfsl1SvnhjC5q2BUYGSzN/fOUnQ3bxM5VMtShGdB4IY
-	SXU1NTnAstFiPG0lpnCvxA5AgIOYvwRViSbsDLYWgjwcnHdZbqJCu48V+ysFgfhdGRrQDo
-	iCC06jqL5lBaRl/b6y0EWy+ulJzKkQg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Hc/REYrJ";
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=175EbZHBL3F1dS8YR8Z8r9c4iZSEBgt9aiiE8BBHiOk=;
+	b=RdVqYF1A4R2QX/8YpOJNCS5BvcHbbxQ4oR9W+2ZKE7CphpORX2085noVRxOMiWuIGoKTsU
+	92vSC3F6akXAkQpX6f9fMhyokTAe5F/k6rGTKdS4OXlA/A+DxMTOMANgamarKWMJTOypG2
+	h4VQntjhZm84CVd0U/KtFhTET6hKQkM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785817057;
-	b=QsJ4iOLC4LSwkW/OGCDZYIfncKy/JJzIHNgWSWRM4tvQ176tb34ay/UobTFsQW4vzBuCjs
-	8bM8mqB1hlFUVzWjMGdSbrjoBnff1HvQZYYViFXcKZF7eFQ/ClTDq+jNZPL0elBYFmL3Ai
-	Z7OXeSy95qt9VuWbVjYXSYtapCnnRoQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	t=1785817196;
+	b=OARCFf/0DdsNWtqQxTHoqPNWxhP0Vp26u2uG8wLd+DyzZm9pRkT2KMSaYkPBoRNnrLxJFW
+	Gb9SmIvFdpcw/wtewa3qzag6NbxnvBQW9aGjY45x0AdKp+E9xDkvOOfZEUSjuQg+U+ZO7t
+	WFVhRm/JFaqZLO4hy7ukzQaw7fZP0r0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U19WtwYS;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <b222ef30-10b6-43a2-8f77-f6108182ba77@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785772104;
+	t=1785815514;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=64J9NQ8wINxMWeOp2Yatp476UcvWi6dCmOU/qEHakuw=;
-	b=Hc/REYrJ28ABa30xrZ1S2G43zd3wYxS73exkn7ftrzeE6o48WnpuEbf10dM7FlgtRX0zIu
-	WAbiZSO2Oti/9AmQcDnzXRIizlL4Q75woxE1p5gOjf8tcfILoGLFnqI6oK1iOwaONhC7UM
-	olzNTFCByzZQd4kxyfr5PJN95Cd6BME=
-From: Usama Arif <usama.arif@linux.dev>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH RFC 06/14] fs/f2fs: stop using PG_private
-Date: Mon,  3 Aug 2026 08:48:16 -0700
-Message-ID: <20260803154817.3112697-1-usama.arif@linux.dev>
-In-Reply-To: <20260731-remove-pg_private-v1-6-142c97ba3562@nvidia.com>
-References: 
+	bh=175EbZHBL3F1dS8YR8Z8r9c4iZSEBgt9aiiE8BBHiOk=;
+	b=U19WtwYSY+G/DxpEAUy0NvLxRrtwwQB3fY/g3kYKVDJ5jSacqCxKWrwubGS+4hgGL6Ly+K
+	K9Z0ZUvXaCyC89C5BoKR8x3xVMQ5ztYfY0QEsUYtkfYX2sTWdQi5kUb5LDM6nnh9fppXoK
+	veIcqGqIT/+lBi64DhqGRk+uyws/YcI=
+Date: Tue, 4 Aug 2026 11:51:38 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 0/3] make unused huge shrinker memcg aware
+To: "David Hildenbrand (Arm)" <david@kernel.org>, hughd@google.com,
+ baolin.wang@linux.alibaba.com, usama.arif@linux.dev, brauner@kernel.org,
+ akpm@linux-foundation.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
+ <944bfc30-68e4-4ccb-8b00-f0f86d27cb56@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <944bfc30-68e4-4ccb-8b00-f0f86d27cb56@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8B9F520005
-X-Stat-Signature: z15mszbd6jxeb5soh6abga5fqp9yo5nt
-X-HE-Tag: 1785817057-7266
-X-HE-Meta: U2FsdGVkX18ju2Nh5UfEIipUwWX3DepIKT6foGn/SHLA+dMyhq7vgm9e8sYvH3r5RzxWlBaGvy3K9d8Je3/kN8HolHK9YGHzeafPuTRAaTClACV2eLgLgF1aSwgf9sWINZHr+G1Hdvpqy5qVUvHReF2J+gaebcG7oMY6y+G3cNvjct662pQ/Vxg72fnI0La1Ui+QAeJH+bOe2BoTgqgWsTBUENR3mB2u1CJ6IIRJknB0/RlaFQBHJsDKXR0Ebbgq+Gd8sijSgb6WbZaeOSKE0KdXDfzt2vCxxyWeeqvwsAGsy5lVtEs39QYFSh9sU9tEsiiZjx+kY7ghNbJ5kfLTp4X1+JDee1vfapAVFfetar24YMDYnoUBRIy5x+9GiP57tJ7fj+MKdrGo0xavWNN0W2hYbACKnvUj+TLEs5kjw3og7zg9b/D6/ggR7QzzevCy2VQwuH8pdw7V4SQjkbTocj0qw3DfzqhBBRmXboDD1kgU5OT8/pnQ4wDJ5Fzb9EwXtlIFMTl3bFdfMgxQCRkTjsh2zWbO++5YyeDlLJ7ltIs1MkHQ80p9bjqplbwfjtwQqLYhP+aiDnzOLua5HG1pKM3ozmR8Q/VDNlM/Una+jrAdF7mRa/PiY3TIUuuKY7T0ReZlLk42fFf+seVESoAqAIg1Eyjt35cN1C2cZnZcc4zU+xo6qjvCKebExvI7qyuJYD9CgUBXp+aPMNPYhEDWEJ4BOPzBgB0bxnwwRLO6elSt7+VurTE6i6zJ+NwDbBxBFnxmDZtdX9DmJzkbjr6AGWRtqpdPKpAkiE/RQAo4YWZLY4o46K1TdUQl6QT/Ye5EoSbh7a0IonC/A/l2fNq2It6LTe7b16tsz+S51oLm2A+rE4Jg/6+Ox/+MMnfREWDzIYVICoMzIKoMYqDCwJiAbo61y38Z1+GjObtrBxIbC+AEnZOfkm1kO+sBAVCGX/XQDYxT9r3bQ1vtKsMj4L8
- SRC6Niy0
- R6Ld9Zred9HhAlQ5WvaFVwjjPQVqEwhppkimD+JybpknlfCAymWWhqKcxqFqf2WgfhjC0R49aOdIG3+QcGmDptX2p2MHgFR6g6BQ+ipZ1JfSt+SO7ZIfmwh/hflL1KmR7aG0GHr3Pj1cn9kdeZCLKWv754gRl99z6+hZX+KxhqrPaZx+Yz1sigIwmdcDdI2Rl+7lrvo6xij9FM3wNp5g/IuKZ3wf9hJzFJBipmTBdOETBld9k/AWPeoYxU2fJsOcX3kh1ZGkbVLJr+CREJOw2LY5bIVXnnA0B+HQMoAElk3jKRNkDvnnERj05JWAyhTXYCzii
+X-Stat-Signature: woszx4ditdb6m6pwgmpcbr1awkegfajj
+X-Rspamd-Queue-Id: 9D803140004
+X-HE-Tag: 1785817196-256613
+X-HE-Meta: U2FsdGVkX1+vjav/Ujayi8faHPv6ncu5VxgvdJkM87d2VpL3Fao+4M4y3JHCNMivA0rf6LFKSk7b82tis5Yg43xfP58KUcJB136cwRX+AYb8oCJUKKuJJ8diIZY9BoScyYzVe2qRHzWber585gN5LqskI4XCgwiEiV0TWvzNlE88L+4LTWZjCEL4BOSQkzG3+T3L6K3pKlFbSRxk7tZAWZLxmQwXcUoIO3c7Wk1n/ZK69MXFfkms7fJzqCrjvqbU7tPihvTAmdfaZmaegs50xe9eFBQxMUchm6m0OyMTiJxgKD0hWI6Zp39v8c0CzVS8n/LtN+gDAcgA2OwzRuJfdC+YzvalZT14OD2AiFeQPeh5zfp78qqj6xtHuQbH36nLtldyGKW6NKl5zvT+q9+JuilzqaDvfkXDkiQNiFOHoTxC0IOLI2Zoya80JGWBhbQcDIUHtdU/1Q737d5yp5YYSxyVMeSZC7XHWAhWCJARPMI8E/3PCXkR27ghIqTh2OyllKJ7vhWWTdlUru20q5LkwG2eMNaciN73y/bPRHlphEWRlqATbZ1gbWjr3uTwZ46KLQLY4f/VoqtjyJbC6jdnT9bu3rIcsS2PG0hOE5PKZzlHBgH1phwNYPVnaezYnbKhX6bi2STLSv4PH7+MHb4T6EwLE3+wKG19N/BHXevW9ai+LkToWCv06NvMHXCj/d7isHUk0BmXBhbWwQydSz2HIH59aYyF02eNO82rqDzbVVmHK2DF5VkY+aQfOxR4J/cmic7DzjP/NWlPzrkIWTAzFibqE1WXqsUAsCoynaGTJDNIsxCx4q8HxT6LNeywTdAZD5IV+VP3gkF9N2RlgdBa5iSLci82JSlsFvrcenmCjeWE7uWMllLEDPyFhsesRakzTYMCqsWiIxvC8eCjo4bDmUHMBf2DDIOYiePqMBFK18gYbZJPKmcAAAZ6WiBTZz2H0LUDPegrEjqX8fUqoap
+ vEunXdr6
+ YORKZvE7mT/Z0ioS5blH4ixDRURkjpy6yCkJC74egvOBt30JonN63uqXOSMj5yeR7Ff/lBXqoz2jvx95Ul+EkYYg87NYJ3fbecWpztFIKbWpjZJF5B5LtNNJaAu7nGYXwKY7j13t97jBIl0zgBNakvQk0SD+YrUXi+l10RxStv4pEC1RZZnGkp0STeEvdG88PcHAErMWj0MEO6R03KjZR1D8PXyoxMdYGvC8e43pjbi52MyTLuSLhpJZu4vDf9OkU3EMk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,64 +90,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 31 Jul 2026 22:13:29 -0400 Zi Yan <ziy@nvidia.com> wrote:
+Hi David,
 
-> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
-> page->private != NULL is equivalent to checking PG_private. Change
-> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
-> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
-> but it can cause confusion when PG_private is removed and
-> page->private != NULL is used instead. Change it to initialize
-> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
-> semantics.
+On 8/3/26 8:21 PM, David Hildenbrand (Arm) wrote:
+> On 8/3/26 10:46, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> It prepares for a future commit that removes PG_private.
-> 
-> No funtional change intended.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Jaegeuk Kim <jaegeuk@kernel.org>
-> To: Chao Yu <chao@kernel.org>
-> Cc: linux-f2fs-devel@lists.sourceforge.net
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  fs/f2fs/f2fs.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> I'm missing description and motivation here.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+My bad, since v1 was just a single patch, I got lazy and didn't bother
+adding a cover letter description later on.
 
 > 
-> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> index 8f3e632f315cc..edf01eb4b3b30 100644
-> --- a/fs/f2fs/f2fs.h
-> +++ b/fs/f2fs/f2fs.h
-> @@ -2643,7 +2643,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
->  }									\
->  static inline bool page_private_##name(struct page *page) \
->  { \
-> -	return PagePrivate(page) && \
-> +	return page_private(page) && \
->  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
->  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->  }
-> @@ -2662,9 +2662,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
->  }									\
->  static inline void set_page_private_##name(struct page *page) \
->  { \
-> -	if (!PagePrivate(page)) \
-> -		attach_page_private(page, (void *)0); \
-> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
-> +	if (!page_private(page)) \
-> +		attach_page_private(page, \
-> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
->  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->  }
->  
+> This is only about shrinking huge pages that span end of shmem files.
 > 
-> -- 
-> 2.53.0
+> Is this really a problem? And if so, why?
+
+Yes, this is a real-world problem that we encountered in production.
+
+The root cause is that shmem unused shrinker used to be non-memcg-aware.
+This could lead to a scenario where reclaim triggered by one memcg A
+reclaims the shmem of another memcg B, causing unexpected impact on it.
+
+Even worse, memcg A might have no reclaimable shmem at all, making this
+completely useless work and incurring some performance overhead.
+
+such as:
+
+tid 11340 comm scanner locked a page for 182264 us! kstack:
+         unlock_page+1
+         split_huge_page_to_list+3135
+         shmem_unused_huge_shrink+767
+         super_cache_scan+329
+         do_shrink_slab+291
+         shrink_slab+533
+         shrink_node+400
+         do_try_to_free_pages+206
+         try_to_free_mem_cgroup_pages+262
+         try_charge_memcg+591
+         mem_cgroup_charge+136
+         __handle_mm_fault+2431
+         handle_mm_fault+194
+         do_user_addr_fault+462
+         __do_page_fault+176
+         do_page_fault+48
+         page_fault+62
+
+Later, with Usama's patch [1], the shmem unused shrinker is no longer
+triggered during memcg-level reclaim. But this actually doesn't make
+sense either, since we can clearly just reclaim from memcg A individuallty.
+
+[1]. 
+https://lore.kernel.org/all/20260715103516.2410175-1-usama.arif@linux.dev/
+
+Thanks,
+Qi
+
+
 > 
-> 
+
 
