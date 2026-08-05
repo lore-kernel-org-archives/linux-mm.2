@@ -4,133 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D470C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 12:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBCC1C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 12:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 824176B007B; Wed,  5 Aug 2026 08:26:30 -0400 (EDT)
+	id CCB226B0088; Wed,  5 Aug 2026 08:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F3C46B0088; Wed,  5 Aug 2026 08:26:30 -0400 (EDT)
+	id C7C006B008A; Wed,  5 Aug 2026 08:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70A446B008A; Wed,  5 Aug 2026 08:26:30 -0400 (EDT)
+	id B91E26B0092; Wed,  5 Aug 2026 08:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DC2A6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:26:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2C804045E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:26:29 +0000 (UTC)
-X-FDA: 85067138898.27.40EBCC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 18EE8A0017
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:26:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dg6zYRc/";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785932788;
-	b=rL3ckcnYRBthark1OW9r0ELZZxQE6u6y/KvZ0qo/RukxkIDnKIkaEJMrww7cznyJT/V7lR
-	b1ebYu9RVia7CsLCG4bMgnrHml/ry8uGp4MwlAz2qgUppuvYLciy7o9lPTBfRSJc+XoJ4a
-	+p0EvUwqdzCzlet4SjBje440o806GE4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dg6zYRc/";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BD5E6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:40:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27B18160439
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:40:09 +0000 (UTC)
+X-FDA: 85067173338.04.B8EC058
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2EB0940014
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:40:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785932788;
+	s=arc-20220608; t=1785933607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IlmD8FVPU9Qx/uX6OcnYNun+6FlLqKRo+qT2MOzGSIU=;
-	b=bdyN3tVXejDWbIhAiwIvDq5VOCmt76IwM9su+XdoRMC1JJzYzhA3tNw3SSuSOUqpZXw0/j
-	8d83YbaA8yBiWuJl+6yhTDLlULlxSFeSKek2DntRU088sLH76VY3D1Hs5QwY7M4Z4DPPDJ
-	7vm4l3MOonLDIkdtxlXatW75DsSESfE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7DB146011F;
-	Wed,  5 Aug 2026 12:26:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB18C1F000E9;
-	Wed,  5 Aug 2026 12:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785932787;
-	bh=IlmD8FVPU9Qx/uX6OcnYNun+6FlLqKRo+qT2MOzGSIU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Dg6zYRc/F+HXAaWcCH3YDVw+oVkVy5xQ843u9Mg06P1nQWAODPPiN69tCAOSUMWFx
-	 xNX8IwFsVAAuXKL/HgvcaLVCd+mb08xFxHXEBujJsfJB3GcM2/b39+TlflP1VI8wZg
-	 Oun4Re1ly9m4dFRtaERiX8xfVxv2HIWSxgF/+o3h7S53fXvv3T/nMTL94ZiitMDXwP
-	 mF5j3ByA3FNuZOUj3lhyYvzai1k9zQHyd0tOB+cYpXrEfbvYeumkVc4ogzE8EsI7qZ
-	 qoB/R+7NdsLygrWoKlg5rInGhPPscapYMQLQfRXsCXkk7ZDBj0lXpJCtN0vyRNmSWS
-	 OmNJXco9KW1qA==
-Message-ID: <6bb83027-07fb-4152-8edd-f349e6fbcc42@kernel.org>
-Date: Wed, 5 Aug 2026 14:26:22 +0200
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFHIi52G0DLGh2jlHFvMQOsriC8Uz3afVC7wSChQQrE=;
+	b=frkRu77HUeTjXkfiaPtZ1dbICE/cBQvZVO2uw2Deb8ZEAB4nreThedOVmOncN2xfHEeI+P
+	Aj+BmloM8XMnsgtYMnxJ7pzk0EZfynUQ5XYECXoN8rt9aHrhmeCvPOkBsdPlIE8eZ4nNDG
+	nKa8tqzGfqqpbrNPSnH8tcuti3uvoCw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785933607;
+	b=amSngtzwm5BbeiWjtqemrafTkIjKh4j4UieQoNUvCOD9VZUFdZTAz24xYt2K5q9f+pED2M
+	qzmIKm1tZoCGjmDcB7uZXseNO27eLqZlySuOp70/usgvzcPcVPx9xgCEdLISSjMZNgY0Qo
+	VfjBvXiLqaX0UCHZMGb2rFUG18pQfLQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C7D8F3E26;
+	Wed,  5 Aug 2026 12:40:05 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CBBE8779C3;
+	Wed,  5 Aug 2026 12:40:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5Z90LiMvc2owfAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 05 Aug 2026 12:40:03 +0000
+Date: Wed, 5 Aug 2026 13:40:02 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] mm: add basic PTE const type-safety
+Message-ID: <anMrnsN1xf_Psn3w@pedro-suse.lan>
+References: <20260803164400.531199-1-pfalcato@suse.de>
+ <a5afofuxhzwkeb76jdheottyxt4mms3arg2iucunztczbmd3lf@wiqp7yccjzlt>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/ksm: avoid missing ksmd wakeups in ksm_enter
-To: Longlong Xia <xialonglong2025@163.com>, akpm@linux-foundation.org
-Cc: xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- hugh.dickins@tiscali.co.uk, ieidus@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-References: <20260803152115.3479919-1-xialonglong2025@163.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260803152115.3479919-1-xialonglong2025@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 18EE8A0017
-X-Stat-Signature: e6g5t91cc6pjbrxiw4yqciofrj5sme6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5afofuxhzwkeb76jdheottyxt4mms3arg2iucunztczbmd3lf@wiqp7yccjzlt>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2EB0940014
+X-Stat-Signature: s4cmod4sb8swpg7gc8srikzt4w16wadn
 X-Rspam-User: 
-X-HE-Tag: 1785932787-995503
-X-HE-Meta: U2FsdGVkX1+u1fssQBQedoaVL9gmmP4ZT88MsasjEyWaDC6duUibQipO25CenZqxZV59rvc10ngzv0tY1hiL9mMgUDwBGmHbEZkKj91Pcxhc+/eTzhJTmucC8S8GomZIMZ+YooQkAgLz1QiMmGMPge+Lq63ugkku4n42K+wiTfvTiiBcJMNY5tDcQwkvP25mktOaTjrQ2WKmqJboUv99FpG4l/EhYCN+k3an4Fi0yYX8s+DqlGky14fb4LQHnbpXnO6EADBOvmxaCWw+DyOxQpaD8ujVjhXqTM1WyOCNTV+VYxJZ1xkgfpNhrJ/Yu6SMlHqmTYO3twp+ZOFT70Fi0JJdlAubJGngQj9TbTtFib1fIZ8nto8i60hT5vlQxtfmr1rd25MftmPjGPTjdHKKQKKNthf9sM0nbgK2tI3OQGidnQhHTk5SQlPd2hUx+3RNbcN9/e5aEUi9a6z59TgNAZsKeELMYxU4L3ClnlljCYQScoBL2+HP9M0WtQgpsE16iTnPTMxBEwU/dQ0cPdGFKWW/quvPnlFVzOtZOe0VqJUC5CbQm1O70dyUSMTgIZBvf9XGUBfl8hFmMIw4r1xQDvz9PU52Vk+cRs7t7rLxfml+Eofrpa/F/tL8PFwHtwrdf8MKV+NxKCJQM73y21NJRVJwFIwiAFw33V8CmKhLCoTwL5C3fTuLni3Lq1KivTl1N2b8vaS5WygXGiE6i9at8tH+TlfdSQYMcPAsiPjop7f4XnDYmCa2k5pcBXBwYnQCyLKFvo3WDQsFO8uOruPXy+MhTUyvQAeDwYxBJsrnn49SK7mEndkWP4k4/o4ErOIZDPj/avk6+cA8USSp87E3obfOJOL4FgFyr53Q1Q5TSPOp46PPBdG1TYHWvudkx/XFCjZBDbeElHRIcgonj5yU9p/bc1gAHAdElYuf8Onmc8OBphmyGFhnNbCssZcaiCHXEcP+XSX6XPLH7WkbcXY
- ELyfovHu
- FhVcvgXkepVk/QPu9F7Dlwg4IPzgNsbOUK895/V3tRre6y4ShzLt1m8qFDK9KisZKAn6vJ49sNlZMHKATPOAK8bLnk1QFsU/dK2KadFnPmQ2gSxoZBDbVkur2VkUWQX0tOElU2f+M4/TXB1iPPjm0cFUoEyKaTfSylnUGaEsicn81Mo4siwtmrKT3Ic7avdoq9yQQNqACURmMw/53xFiHaME5rF5AG3ELS/Aial7GxvrBKK9oUES4zUOuS24PT/sVLjYt5CPWlxuoZRq7355/fIvGyMvlUgH/GPt1PRNrLDMc1Xwe6ib57IhktktVSHvHARXHxTMEAdtG5bQ=
+X-HE-Tag: 1785933607-213571
+X-HE-Meta: U2FsdGVkX1/m5vYp4KNJbN38knQPEo5rY1jMGM4HlK3e+0v6imaLKqbpi4HLmeIfy4wKw/rXO4BiW7v6c/S+pDu5AS2x0ko2PEWdvgGEv9cv43bYh84J8kZm6ukazov4wfPh4Uk13VBsfv5cZ1/71390DGEM95FWt2i821utZ8tutAnsywAUqh0iQzDtKxkniafYAy0S/LH7IozsqyaRLrlGG63Ew4IvhgNce/dQDvcVLaBmdE4y6OPv+STQXZtEODibLALSI31ZQBkA9fF1T4V2TW91JV0vfGpSjYmRXFreaH213+74cZovi3AJ+XmdSLF4h5g6bxSN9QrWRhn6xZHoGtOWjufe1lxVE0gh+xYA0TbHnVnyde+VgvgeMznYU2f7daSR9kQZdN+/lNqnEqyNVil06Bup7hwxqvcp9Hrcm4eOqldDg1totxMV7UIGuNKS6pSE5VwT4lYN1Lqp5O3QOF9R2rfwXXU/L8dZXLKNdgQTfK3kHy0IKmp33hYhYxWoD8vA3vVEN1AAeEpCOI5NK+9/4FINefU85SwZOfWLBWvLoR53tXKTsk+eiW4snVXp1yBdHNB9a13E53/kA9+j2GQ9xjvtaLoehocqgbERxuqBg0LS5RPhonNCJiVxZAD4mea5IKxVtJtHyYNvtFTjOqzJhr8Eljg30kOEN5Nfk/XXmyftIGQLXZHI2RroO1hPPD9CclujKTrIFoPD86rZ6INBv52wlVZ/Tfbzs1AF/ut0XXudzTXZ2GT74Z9JGc+0BYRG8HplIXFObne/0z3/R3bBVXnCr5hjipcJkU/gjj+q6ZSu2ThEXCS9THF1ebd1FUCWHBH+FaSCATiwonv9sWu6bUOTKfiu2Vem3QPv8DsCDSIr+rG24Nxu9/nsxSeVZNbOASuuq9YqkoOkFQFg3vEDZ2NjHLhi4ZaJmSdUTg9SIFEXW+iO58HLTTZzqMJ4ByYQKk25wTPvS0+
+ zKdR2x+a
+ 8D3KnjprPtinv2X4etGoiS8Vc4Q+mByrxPS3MZVZ56llR53mHx+EXUqLDy/oun0Do7bQ48gBXRkSuCbfTo8l/1zaulbc84ieMeHeDschrARkXYV/RQuF6wpTtw5AyG6Rt6nq/OWCXU1JAWCDB8yDLXoiKhKtiluDeUVMktcF/oAi3qGIBnTUxBDy92Ji+ifzG2n8um8+G3tGpB1Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,62 +112,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 17:21, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
+On Wed, Aug 05, 2026 at 04:12:21PM +0530, Anshuman Khandual wrote:
+> On Mon, Aug 03, 2026 at 05:43:54PM +0100, Pedro Falcato wrote:
+> > Since forever, MM code has thrown pte_t * around with no concern for const
+> > safety, or typesafety of any kind. This is confusing. Attempt to address it
+> > by:
+> > 1) Making sure pte_get*() helpers can cope with const pte_t * arguments
+> > 2) Constifying the pte_offset_map_ro_nolock() return type, which by definition
+> > already pledges that users will not write to it.
+> > 
+> > These two simple steps were already able to uncover code smell from
+> > khugepaged + do_swap_page().
+> > 
+> > Separate steps could include introducing pte_offset_map_ro_lock() for more
+> > widespread usage of this.
+> > 
+> > Benefits of this include less confusion and better type-safety. It could also
+> > futurely aid in efforts such as [0] which may want semantic annotation of these
+> > accesses.
+> > 
+> > Based on mm-unstable and compile-tested on a handful of architectures.
+> > 
+> > No functional changes intended.
 > 
-> __ksm_enter() decides whether ksmd needs a wakeup by checking if the
-> mm slot list is empty before inserting the new slot.
-> 
-> The empty check is currently outside ksm_mmlist_lock.  Another CPU can
-> remove the last slot and let ksmd go back to sleep after the unlocked
-> check, while this CPU inserts a new slot and skips the wakeup based on
-> the stale result.
-> 
-> Take ksm_mmlist_lock before checking the list so the empty-to-nonempty
-> transition and the insertion are observed as one critical section.
-> 
-> Fixes: 6e15838425ac ("ksm: keep quiet while list empty")
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-> ---
->  mm/ksm.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..3f2f4707ca9e 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -3019,7 +3019,7 @@ int __ksm_enter(struct mm_struct *mm)
->  {
->  	struct ksm_mm_slot *mm_slot;
->  	struct mm_slot *slot;
-> -	int needs_wakeup;
-> +	bool needs_wakeup;
+> Even though the pte accesses should always be type-safe, this series does
+> not really address the problem completely and instead changes things only
+> for a small set of pte access sites. So just wondering how much beneficial
+> this series really is ?
 
-Unrelated change that should not be included here.
+This series is meant to be a small step in the right direction (while
+feeling out what the community thinks, which seems to be receptive). The
+obvious next steps would be to introduce some sort of
 
->  
->  	mm_slot = mm_slot_alloc(mm_slot_cache);
->  	if (!mm_slot)
-> @@ -3027,10 +3027,9 @@ int __ksm_enter(struct mm_struct *mm)
->  
->  	slot = &mm_slot->slot;
->  
-> +	spin_lock(&ksm_mmlist_lock);
->  	/* Check ksm_run too?  Would need tighter locking */
->  	needs_wakeup = list_empty(&ksm_mm_head.slot.mm_node);
-> -
-> -	spin_lock(&ksm_mmlist_lock);
->  	mm_slot_insert(mm_slots_hash, mm, slot);
->  	/*
->  	 * When KSM_RUN_MERGE (or KSM_RUN_STOP),
+const pte_t *pte_offset_map_ro_lock(struct mm_struct *mm, pmd_t *pmd,
+			   unsigned long addr, spinlock_t **ptlp);
 
+and use it in more places. That will obviously involve a bit of churn.
 
-Makes sense to me. With the above variable change removed:
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Cheers,
-
-David
+Pedro
 
