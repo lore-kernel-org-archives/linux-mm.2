@@ -4,137 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72FAC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:48:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7593C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:49:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 874DC6B0099; Wed,  5 Aug 2026 10:48:46 -0400 (EDT)
+	id D58996B009D; Wed,  5 Aug 2026 10:49:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84C9E6B009B; Wed,  5 Aug 2026 10:48:46 -0400 (EDT)
+	id D2FA06B009E; Wed,  5 Aug 2026 10:49:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7635E6B009D; Wed,  5 Aug 2026 10:48:46 -0400 (EDT)
+	id C1E6C6B009F; Wed,  5 Aug 2026 10:49:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9136B0099
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:48:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8E3791A031D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:48:45 +0000 (UTC)
-X-FDA: 85067497410.26.A4B0346
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9B2F0180006
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:48:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TSX0e4pN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785941323;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 991856B009D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:49:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 297C21604B7
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:49:14 +0000 (UTC)
+X-FDA: 85067498628.14.96A545B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1F85F40004
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:49:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i0kpysDp;
+	spf=pass (imf17.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785941352;
+	b=fJ/14Ti9BXwwaxs8nc7GSoJExWwHuu+uJAtOC8TQzgGc8ut6ZA1DJlsJxujuFBA3B0DXmq
+	85l0qPU8sq0nBTzTtN0+R2I2xqE5Myl1zSefucAcqQ88h68OvMTBefWM35946CXWc2tOd3
+	hRQTQP28B2KNAGwgp3ovNLVSzpw61WE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i0kpysDp;
+	spf=pass (imf17.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785941352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74JnmzC+AtkPtezOthxS7FXM4/QTh3C+xB8eJUSwR4c=;
-	b=R4kzkABLn8fGxzZjd+E0ke2pmd8lEDQEuZPQv+EZEQwycGF5n0XUZf95Dm6laqV/+4DP3B
-	xjhVus0G9hmA167EQO5+2/EOaIjFf9OQsQLGvtsSOCTwJ2nUNQ6/meu0+uaIYC3P7QRcYc
-	SxuK67+Gom+EnJUUHgpQbq33b/Bf+g4=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TSX0e4pN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785941323;
-	b=lSAOTB6RYNFGq8LBiOvc4AzAnUzo3wjTCqlXZ6sjn//JXU9ixkZD6YMQFKZ8OxRYtto0lr
-	bjGZ+3UNDw4WzfHawYQ5eP1i4zWMrncgteiDb3Glj3FhdXUp2EIoNpNaCDroTrdg0x/3ke
-	4TFiYWd2S/D826TObjYYGoSf3ngPOhE=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a177b2dc8dso9083a12.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 07:48:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785941322; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aD1pK5wwjrSAv9zPLxyVTiSStebq2OIVo32gohGheUP0Rif54dwOX3GxPAHKwCYR+e
-         8g508T6iVb1PRKRDx4nehCNv6LwvrfpEvl6vD3JzU8t2u/1wszB8XgDdRukGeTGLXUiK
-         z4qIrkrlHPyu6FDvQEIjv9U0GHy9CzJNy+GG+ZrAEU7KKsORbputqQOrd3t1AT1BW3wS
-         8UFfG0oC8szHnY/Utd4HGUHqrcfLGzA+wpCZYdBr+3xPlYdOzi9XbQhXNxnukpKBPvh+
-         IjmTWY30+hjckeK9UV+LHRCdOONto1lE+/ebgmyFJh8f92e/VXmlL+JXev949C1dSAvW
-         8gRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=74JnmzC+AtkPtezOthxS7FXM4/QTh3C+xB8eJUSwR4c=;
-        fh=NUDfSoN80MmePXYc/438Wn8cTxEAsaALSl4jrJFpg3E=;
-        b=iUfHps/+7/2QkWoBjCsLumG47qs8V3aY6YFxffnXeqb7b9b4wJGSv/nT9mYO04CJ1n
-         vZV7wdhl8JwDIUss/61O51WcLed+QT8B5PJ1vcqzdxxSYtl50/EjcYqxD/5EW04fE+11
-         CAACTMDFz0C9U+sid0/T0FMidyz2tbGchgmKHv7NYA722AdhkJwLB99RH4gxZDVTjoXT
-         TBYWrMxV3Sw/Gt/jjctUmDqssMuae/Fl4N9tJzZRBGIQCBalwcfrzUpxeIV7PLDS2/3J
-         ZXCuSjR0R6Bhtf3nWMD5M50fdWNfLaVDKnvWtqpBnbnF/j6+rcfQxbCixsRSJKifRhWr
-         eo9g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785941322; x=1786546122; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=74JnmzC+AtkPtezOthxS7FXM4/QTh3C+xB8eJUSwR4c=;
-        b=TSX0e4pNtpCpQDiRQsYxjcXiPnlcER0oUT+/tm78aKLlv/Ebw8IqX0VuCBHUD9vfR/
-         OA5joOxGeaZnq8+738a4j6XwvvYaK7tgXRPoAFMIsFSnw7LJtld9QDvcf77ObklfiEx3
-         9SIWHD85EI5Wke10srSTBElytD0etvUUpYLW4saHcPzlYHfBNLEmEclkPZ8FeIH8ci16
-         s+1A2ZpDDuTshOyyVposEnD7kqPrVdWxhcPQri/L1u2KiaZUTCHaULskoQDYaK5SJJqm
-         pWacnzIag6Vnhl/BvBcCoHN1rcDIBFLjSWR27QZrS8cYqJbDW3/4X8mWnwMd5fg1s36N
-         7seA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785941322; x=1786546122;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=74JnmzC+AtkPtezOthxS7FXM4/QTh3C+xB8eJUSwR4c=;
-        b=MEb+EN/yaVbEXnA+3WIouhvXv4CYfniANncfYh7voTGfTwyYkBdAQMLxvCuXlJkzIg
-         VtswlO7AUQ1kxKjjOJGr0oh3ibchs5z2EOx8VoMwsh8P09FsreV8iinuQiqjCOw+f9VG
-         geD4Fs66o+9RjrqcxIcgJCn/jcorBTJq6HIf5AfRnbSwuHE4hPij90cJJ0GcgWFzy6TE
-         rny8DsGHFzvzg6wBQFfggENX+pPfVooyo4lRUwHFH06Woo2c2ksbTV0ZZiTeThB2x6O2
-         iWnHAuPc2W8458cnC6auCdoX8RAfAT6JLWdO4yHbXbErOBQ1GOTqHP72cEcKGwXIgHls
-         7Fyw==
-X-Forwarded-Encrypted: i=1; AHgh+RqcIiA/GbOdAozeMdMyE+n33nG/iWpcsFBc4e6MAKtYNz7uegu1WNqBDQFvCgawIm5xr2TrqH1T2Q==@kvack.org
-X-Gm-Message-State: AOJu0YynNV4iEGf0HllZ124zgV8jNhwES+abK4VGx6cWAtgnppHukHcI
-	gk9wNirVRJINfSf0ggklOXZ+MH+jkqLWwRzLym3/EZ/813VcHigCB+0nBfUbTkH2wFQdlJdqbid
-	AFYrKzMBNh52QaIKUp62N4Mi5BF2K8mUCzwDNulZXhiqAbL0yAwB3pXbv
-X-Gm-Gg: AR+sD11g+H1Z+RK6+V55r0X64HVWX63KUgAsESYnniAuiv+JyG4cwaVyHeDGhK9AopX
-	o322glBcFiHP62V+D3/jvs8eY4v61PLYhpsMh1wVQXHfjL8RBesQKoa2Gk+mi5XAjNZ/SE86zsB
-	VwimuH2IswUeg/iZN6Rlok+6ayNLX5eM2aa1yHH4gfUAJs6BX0bWONYHHvX1iHsv5wF3ENJH+0c
-	8GHiPqUAMX55VLGRj+quiJJiNv9TfJODShdVuvQ6mqo8vFLz7lcGDOqD/KRbOoSGYA1PqN2Ay8h
-	PAksXqS6Q5sq2ud+4EbX8C12KeaNiKyaYNFxpWpbZ4RQzCxhsuiEQigSSoQzJ2m+wJ7F18AUwfc
-	=
-X-Received: by 2002:a05:6402:44c8:b0:697:7f69:48e3 with SMTP id
- 4fb4d7f45d1cf-6a14fc7db15mr73328a12.10.1785941321666; Wed, 05 Aug 2026
- 07:48:41 -0700 (PDT)
+	bh=1JhdEbvWEhrHfPPwqh3xlPX09FvDSySuhPj71HiPhw8=;
+	b=YPZ/2dBKmQoA6YRa8cKOrVya4e1AnMWIOtXNu4ASa8MsRIB9CfukxtG20c3raLvDo/nDxA
+	jOn+jPjDlVzOpGykFEGK98wVGf9kSHU3FMp2XcoZbmn/jtuK5SXScNvxOLApefjsDVgL5b
+	HgdWeXYVkN+9mfO2gNR89a2AMo+gIbA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785941351;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1JhdEbvWEhrHfPPwqh3xlPX09FvDSySuhPj71HiPhw8=;
+	b=i0kpysDpqy8KNyfkFw3R0iFXqG/j/un8sxPQlBCMy74Pw6scj7vSZCiK6h3xpSpGH0lwbX
+	wSGwrG/6Yx/nE6eA43M3Q2u2qZawtQlxjra54gFV2wkm4Dc+KjDImETyE87FHdI6VRRPT8
+	Fo3xeilryO2swgZR5P5i5WaUq8xmwSs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-ljrUInx7OHWIUGmNcJXrYg-1; Wed,
+ 05 Aug 2026 10:49:08 -0400
+X-MC-Unique: ljrUInx7OHWIUGmNcJXrYg-1
+X-Mimecast-MFC-AGG-ID: ljrUInx7OHWIUGmNcJXrYg_1785941345
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 681D11802566;
+	Wed,  5 Aug 2026 14:48:59 +0000 (UTC)
+Received: from [10.44.48.18] (unknown [10.44.48.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 617CF1956041;
+	Wed,  5 Aug 2026 14:48:51 +0000 (UTC)
+Message-ID: <12bd995c-e320-47c9-adb1-fff3a14bddc7@redhat.com>
+Date: Wed, 5 Aug 2026 16:48:45 +0200
 MIME-Version: 1.0
-References: <20260805090633.141001-1-hao.ge@linux.dev>
-In-Reply-To: <20260805090633.141001-1-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 5 Aug 2026 07:48:27 -0700
-X-Gm-Features: AUfX_mycrpDzhEJqHYmTeNBhjo08UvV5vnN10hZEYxiggLM3MZtoYjhTvx18P2w
-Message-ID: <CAJuCfpHUqqD_GttG3bmxEPxeYNA9p7SH3aseWJFHAWN8aYKJAA@mail.gmail.com>
-Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9B2F0180006
-X-Stat-Signature: 5t7d5yoyoe7or9ypmqcpbmubtxbrmey7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFT 3/3] drm/ttm, drm/vmwgfx: directly create writable
+ PTEs when mkwrite is in use
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Hildenbrand
+ <david@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Huang Rui <ray.huang@amd.com>,
+ bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <20260731164341.1109827-4-pbonzini@redhat.com>
+ <c1652ce8-0b0a-49a1-a842-bf1a5290cc1a@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <c1652ce8-0b0a-49a1-a842-bf1a5290cc1a@amd.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: xXzdpKLTm8LxFgc18pYyBvO6CvauZsb_FJS2_rpIAK0_1785941345
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F85F40004
+X-Stat-Signature: 1rihbqnmw811cizu1c8uffyariqmdtwr
 X-Rspam-User: 
-X-HE-Tag: 1785941323-790340
-X-HE-Meta: U2FsdGVkX18K3knPkOaRBq2A5/8dm0c1pV5AqH4PRgUW/RyI5j28GqSf+o1qf1OgF71RgNa0xzAg7TCOFqkyf0CdtEAwuw0+58N1twGM0btA3yEqH41wHJVf3qKay+/A1gvhTHG/GB9xBaYsd3yOitsbFfkTOEC6WSq/BhPb2pXG3JzOTSC3UCQc0WQOIaUHbn70wOD4Cd+ovbNdpiEeaC4yppyNyGlh/FJNIiPT5OZmbHbhTmEjBqQj/k4174Dr1istvjjUdB5BobEJS93rU+bQM7Lg5o3r6BWxOl1PF37Nvn72auMAjw70iXtbzzVDIoec4JzjkpjVYu2X42YaQn9xlmw/amzhcJonIh4xZR1Z0D7u7OUg/vPa1sro8OHmFGNxxUdW1m9UdCnNPX33xuwXQZ+TZ5Gd6Qstm40MOXkwkVF9c7YIql0tFeKAWV93C0lJbJDpNLUd+rvPqZ93J0JVZsPq4s7w6mguysDFiPxP+e2Vv/yfDToD+yzni4Mhdr1qUM+DfhIe7fC+VroZO7ta01Wikr3GkQmFkiYrc3Jo+XUcLcg4Kcr3K2dHYKxfORp7Hq132orX4mmsWLlo8NOCysRY4Pj5KLspnW+83dVG1+A9wKWaeUrbCuCqziC6SR+BVbNfqJzzRhCDBLtG1Dnc+46xFkxTEm3AVJVU76xpYOT3djObZGXsPycrsmrDihBZOa5M+Y/um2Jc3KJ+sWbdDwQ/6scTgn6TGlzX/ASQ781LiJRGuzzi8sTWNnDpLGsbz3h2Y1wkfYMFGNdpqU1M2xvM0IXX3jxMz/aMasNuSk0m8KTLTTxBQRF0YJhXYW6q5w8am5iHJs667nB7ieiMQZ+HlD93f8BQkxxcJbz7oqAdPii9h+NE/v5Dc/avItInALRV0PuNgkn6ktTnOnu/MD7X4DIF1tFbVaLAgG4GYjgm5RH1rUU4BeuP4P+kLONb6lD4FfGYafMT8dj
- U6GlJ0Z5
- lQVgMj5m7qj501yZMKBxhMeHM/PSjOnUW7+CXh9dU3gikxjfl5ApNebVpDTIQO9f2tiSSGMaesepVpR6AJmWhc+ysZIROzMNWDQECKqhXPvlDCH7J6/4zc9ZBYcWOgt1NovNS1kMS8rEfefb3wbVDawMyISOkZzTHZGsBoN2poy9IxZXqLLx0Nkl/xThsLMEqe6oRNer40Y4qcqBsvSDkht5jpPN93wCFeghL7jps9fTj29RSJxgbRDcaHpYY8r6R0ziFJLrRPaWpfrAHQHcRtC8gxXfes+JeR+1anAb+pYDZUJmM7I0bB6cN2BKlMH9RGX65fw0513lY66Y=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785941351-943609
+X-HE-Meta: U2FsdGVkX1/uciiMv4qZnRwQ7rEDh99ETyXUbfRGGQHti+G7dwHCF7k3UY1aaH9undIeh6UDSFf75RiZ93IGYGNdEF6W5lDqTddxOt9bkXTZdQ18+9zU+VFNPcKCoFTvtoxSytYViVWv36rW/UzlP17hlTvYandSwXs+kv+jhaEEYq72LfKnabGQ2px5XfoqpntJz89KbdJ1Ie0xa2Y38X6479YWhcTh4w9gxR8aY5sU+IuPgI2KOTPYm/AxJGUm71ZygoMiezll280VlKcPUQp/k0J3uaWpieCarGbIlHTVqfuBnkiR1kg3FB99yw7mONpvnONRBsM98gmZNhkHi3GJrB90kF4qZvl01RniMFZzbC6ltKF26akLxrMtsj0Z9x59XH/s5oTGzqjyW7tG899Pf2nZ2DL0UN2ml6sJx0oFMrAztgfDoBFHIs79H+87r9XM+a0rN0npLvVo5kRIqsr5N63ldbEAm3nVVb8v7nPjhIpCzc0Q6tiN45igCydK1coHurHEIPZeUb6T+wxuTbUlgX/u6CgcNdX+QaN6r0+2ZY26oWiJaxaNOf8wnQMRuiblyZrpLDERue5W4MlK+T6H19WEu0W37pIzlaMX0hYvSdDvDy6khL8hJOjNF8BLmKRonM8X7oXEDBkAGf8VL6a3rN/qV82Jbf05JkL3V8v2P4vPI0s4jULOmQUQspx1KGK4/AYcdsfO/qXiLQdclMrDGtMtKiWklqhUatLVcoReb9lhrw93o/Yn9utfwNM1zL7a31HbaWVwunONmchp6N1/g3ejOCpyeBfmeK8inGUeQk9q/ClJZXdhOhNokKIzpI5TVSFiUbC5OVVUiHP9pREQGa90mHoQIZblcRxBq4qxuoNjKzy0Z+HTXwjKbzaQFxV/MQIFjmRuQRFbXk/h8kdYgq5Nnut67xxR95uj86uB+qJkPCS+wDn4M1T4RFEOGl85V43c2n7eUWDykFG
+ KjEvtDad
+ LU4bkbbYQBlF48t3QfJpEPibm91cx81rh/rebrTMjKfhq64iwc8MYKiD+C/3J8+WeG7zLvNjhShLQW+E66fhKYJCMF/uvRifde+SxBTL8mKP/q/1MXKNet7evr9m+9ib7sTJhaQNQBEbQRM+bYVa5TPPp9w5aaEi89TFihGF8vSfeoSVe4WJFo9mloboyg37YQCCzhcrQ9zZIppIvnrNnUxYBKEMf3SHrjCkjbygSZ8bNNVOHNi69DZhIPiicCapiXxkekwsws062bAk9fxussdp3FIGpjlRkKmIvpkDB8ScsdGCeVjQPmNon0tTARF4oI7loy5QhXxQ1N/ktHqVvC9sTClJuZGJUFFcRIWt0z3rkCQBKjbWviZU2xdeDU4n0cikPofpg2RL8T6DM39rPsBAe4rjoUuZzT93W8oKyyeCnrG/u/wjZyJXBIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,87 +150,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 5, 2026 at 2:07=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> In reserve_module_tags(), the tag overflow check is gated on
-> mem_alloc_profiling_enabled():
->
->     if (mem_alloc_profiling_enabled() && !tags_addressable())
->
-> If profiling is toggled off at runtime and a module is loaded whose
-> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
-> skipped. vm_module_tags_populate() still maps memory for the tags and
-> the module loads successfully, but the total tag count now exceeds what
-> NR_UNUSED_PAGEFLAG_BITS can address.
->
-> Once profiling is re-enabled, ref_to_idx() computes each tag's index
-> as its position in the alloc_tag array. update_page_tag_ref() masks
-> it to alloc_tag_ref_mask before storing in page->flags. Indices
-> beyond the mask are truncated and idx_to_ref() resolves them to wrong
-> tags.
->
-> This silently corrupts /proc/allocinfo: allocated pages get attributed
-> to the wrong call sites, so the statistics it reports are wrong.
->
-> mem_alloc_profiling_enabled() and mem_profiling_compressed are
-> independent. Once compressed mode is established at boot, it stays
-> active regardless of runtime toggles of mem_profiling.
->
-> Remove the mem_alloc_profiling_enabled() guard. Also return an error
-> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
-> the mapped pages would never be reused - shutdown_mem_profiling() sets
-> mem_profiling_support to false, so no future module load enters the
-> codetag path.
->
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
-ion")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+On 8/5/26 14:58, Christian König wrote:
+> On 7/31/26 18:43, Paolo Bonzini wrote:
+>> This ensures that fixup_user_fault() users see a writable PTE when 
+>> they request one.  The flip side is that vmw_bo_vm_fault() now has 
+>> to record by hand the write fault, because .pfn_mkwrite() is not
+>> invoked.
+>> 
+>> Prefaulting works as before because only the first entry comes out
+>> writable, while the following ones still end up executing 
+>> the .pfn_mkwrite() callback.
+> 
+> Please split that patch for TTM/VMWGFX. The TTM part looks
+> reasonable, but VMGFX is a completely different beast.
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+Note that the TTM change alone would break vmwgfx without the other 
+part.  This is not obvious, and it's why I placed them together given 
+the TTM part is just one line of code, but if you prefer I can split 
+them (the TTM change can go second).
 
-> ---
-> Changes in v3:
-> - use pr_warn_once() instead of pr_warn()
-> - return -ENOMEM instead of -ENOSPC (Suren)
-> - expand the commit message to describe the /proc/allocinfo impact
->   (Andrew)
->
-> Changes in v2:
-> - return an error after shutdown_mem_profiling() to skip
->   vm_module_tags_populate()
->
-> v1: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
-> v2: https://lore.kernel.org/all/20260804122038.190270-1-hao.ge@linux.dev/
-> ---
->  mm/alloc_tag.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 52aece27b00e..35ef2bbfa13a 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -904,10 +904,11 @@ static void *reserve_module_tags(struct module *mod=
-, unsigned long size,
->                 int grow_res;
->
->                 module_tags.size =3D offset + size;
-> -               if (mem_alloc_profiling_enabled() && !tags_addressable())=
- {
-> +               if (!tags_addressable()) {
->                         shutdown_mem_profiling(true);
-> -                       pr_warn("With module %s there are too many tags t=
-o fit in %d page flag bits. Memory allocation profiling is disabled!\n",
-> -                               mod->name, NR_UNUSED_PAGEFLAG_BITS);
-> +                       pr_warn_once("With module %s there are too many t=
-ags to fit in %d page flag bits. Memory allocation profiling is disabled!\n=
-",
-> +                                    mod->name, NR_UNUSED_PAGEFLAG_BITS);
-> +                       return ERR_PTR(-ENOMEM);
->                 }
->
->                 grow_res =3D vm_module_tags_populate();
-> --
-> 2.25.1
->
+Let me know if "looks reasonable" counts as "Acked-by" for that part or not.
+
+By the way, see also 
+https://lists.freedesktop.org/archives/dri-devel/2026-August/586696.html 
+- it touches the same code, and the mistake was noticed by sashiko when 
+reviewing this one.
+
+Paolo
+
 
