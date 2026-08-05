@@ -4,86 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCAD6C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 707C0C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25C376B007B; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
+	id 5C3A56B008A; Wed,  5 Aug 2026 15:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20D366B0088; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
+	id 574516B0092; Wed,  5 Aug 2026 15:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FCB76B008A; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
+	id 463E06B0093; Wed,  5 Aug 2026 15:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF44B6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:29:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B52114057A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:29:57 +0000 (UTC)
-X-FDA: 85068206034.17.09B7C50
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DE5FC40009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:29:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ddXl1mwi;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18D8D6B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:35:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 953D71A05CC
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:35:46 +0000 (UTC)
+X-FDA: 85068220692.12.DAE9D18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7C6CB40008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:35:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TovmKB2V;
+	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785958195;
+	s=arc-20220608; t=1785958544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=elA1Ms4Gn/MoVQix4/8a+mH7M22rfFyFqVGiYAr4QAc=;
-	b=aS/5ns1v7ES1zPYDRawosuz+YUQW/wqqDCzy0JF3lkaOEQttTwIYG17Jqwa8f1Ro+UoMFz
-	2E/yy93eSZnRcmRTlZuWXUwdoNdAvzfGnuouhJr4PaF6EtidzzxvvrCDgDqyC5l9LPBx3M
-	b8Q5G4lOYqk0ia51lTgbdjiH3ZN5kIw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ddXl1mwi;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BmjNo2be7cKeikOm5yF41o8c5ENF9J8dq21/6q/WtK8=;
+	b=8YGhpHajV3SXlMeKVQpCqYaZXuL8WgRxEsKgEqBvwZ7mM62YFlJJ3IHEIu6MPxuGItGkCB
+	8AWjo//e0z33vAz72gXBR4qxN7b5qEeCyp0U4a3I7sB+Ae+tnd2XKKF3YKWl4vYF1JUlGO
+	YCS6rgZq4msWgRC+WWDnt4YR4uJVxKo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785958195;
-	b=LHHeONqPtknKVSfa+mkk+rCGjBwsvMqFjbNcnvFYUgO0Of1Idips9pxbrmaRvWXSRocXQ9
-	32i1fM5VYbklHbbdYlbq4ngRmpaoI1BI/YT4aEOGdsLwC8H/R9iZ8J06joeWZASx44EMed
-	HXGRGetJQ5ZVCRMR3HIz8Yxb6IAs6j0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E48541896;
-	Wed,  5 Aug 2026 19:29:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354AB1F000E9;
-	Wed,  5 Aug 2026 19:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785958193;
-	bh=elA1Ms4Gn/MoVQix4/8a+mH7M22rfFyFqVGiYAr4QAc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ddXl1mwiNzIIB+yCm/bWxetoXBwryCujiM6Iar1NzfSxbqsd/zqXnVjuwPJPisVje
-	 NMJlB97zWZ1OCO56xatydk1M6zkMUbL/opllmxgSpe09KzTORuRbnYiRosv2Db61/z
-	 7c2PgcGWEk44csfDq2Sa9PQOD5jgEMsmlkAkQ51c=
-Date: Wed, 5 Aug 2026 12:29:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>
-Cc: hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com,
- "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
-Message-Id: <20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
-In-Reply-To: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
-References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DE5FC40009
-X-Stat-Signature: h1jc6owie9ybb9t8b41f8zs8tfpiso1k
+	t=1785958544;
+	b=HgnUcV5JeQ211KCIlohQW5QXnd+1RmtYouXaaQuigpi6b8iJ5c+fXt75VIynbl1wwYf/ty
+	ZNxgMMRq7Gz0BB4K/aQP3RsnXewYyXvbgcrl6BQ53injR8Vi/kj3w1uCtdmDd6X6u6we2J
+	yo4K5lCLKnmdWly8WAD8Wb99x+6c0Lw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TovmKB2V;
+	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785958543; x=1817494543;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sDSmB04u7511d8QYCqjiDsa689yH07QzsyscRbCuKVs=;
+  b=TovmKB2VHCZCrwPoVBq/yp+gMrRg/cuqfl5aWOycbnAXRirG88PbAJly
+   arWZzTPHLB0xeJlhUHl3zgPQmX2E8Rvg1DRWlmSSvKUjGSAr9xgA0C5tL
+   UwTmpI1fFUnx6IR+wXV42nZI+VEzrSKU1LpUl4LZoqh0t0uWEnZo5BDSv
+   i7qIzQUlCXQ2E5zRA4SW8iF7i+ky+4RIA21pKdYK+1JAXOaDfXcVsle4/
+   XIHxY5Cr0xWGYQWyKt4aacePBgqn+DgQ+xZd5ul9bcTOmIunNpowYwtEh
+   fwJT2OXFxKbmJpYP2g9Rb78UsZaIbYkQbng38kbl8ybzY5O66+id1+MS2
+   g==;
+X-CSE-ConnectionGUID: YcyMwFx2TO6Jwp3p2d/HaQ==
+X-CSE-MsgGUID: /UbS1fmPS3KdFYC1GV3J3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109332914"
+X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
+   d="scan'208";a="109332914"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 12:35:42 -0700
+X-CSE-ConnectionGUID: wi5TCODVRw2LpdBi1XBMNA==
+X-CSE-MsgGUID: iFC1GBGTRZ6KFQ5eCCRW/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
+   d="scan'208";a="285263511"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 12:35:42 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] Fix device page migration in low memory fallback
+Date: Wed,  5 Aug 2026 12:35:31 -0700
+Message-Id: <20260805193536.3756457-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7C6CB40008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1785958194-365194
-X-HE-Meta: U2FsdGVkX1+JxIyN2sJhqgLYtHMdfI+Qe0ZV/0byGr5Zic/ZW/v1ZyG2Q8EnLwsFF+jeGDHIab8mpqCCZyYUhEn3jMx4pr8C+G1DmVBKFi4pNKHEfn1FdPONjUuiBLt5mmxrYncC0nBfHk/SwU4+SejbgMg4pNcXWKoKg69IgXNZvLFBlsdUVwG5D1erDZXD3c9pAfVq9RlXyEhjJDeKdc8ec4zGM8xYSdBlImKIcwSrB+p+Xca5Y+oOcpmXXphcG4Ujh/yRz7/M8vtXawkqZ1bXRAOEWwKl6zxFPN745oiAeCdCyqzlS+dU4b9eYI9uZ5quvR6UsO2kgrrgVBSJlhxqSNGQUTb//YEoKbLDRJQARhb8ueXU1Q/VLFcQ63uZMhl1jiLbxRMyFp962uCoQ2eQlG3jbJjqlK7eNzRqME4W6N6KpJTtbFlFt4O9tBcCj/YRG2xFpp0E8eod/s+gNmfi9AfvRmT6X+vok/g53iQlv8Fk9CmBvz1KQCyJ3Ll8ukXdDSnOM+pPnZI78sT2abzmycc9gEK6p/SU3aU8X+P+pnZcJaNqG17HNJVySAwURsVoyPTOK3Yeh6l8Rc97Qt7Nlv1E5MRHn0tYVZMI83K+taYxyjYBoZCK6DtXVnXu29Y9ag9wGFZjnt83XsiP+MUz6pxvX8/iPf1smb8BzU4+ECAuJTXpZWQAY8yA2dvf7dkHdVHBFDYT1ce6gUT+hthz0GGHG8LhnHgXQOVohHp3hP1EpOg5wI9mZoH9RgAvlYOTz/SHQ6yRkiT9pE9IkPhXnC5Wxif92WcYikwXn8l6EL9+/ULwGdwOpJ4RPPk6Lv+wY3hUZF/nC8Rw5m11qAMKwXkjvSsQTl2N8KPJuVlQovA/Jfo6cyqdmhC2+fRrxJnCKrrF4CghICeskqJZQ5WVn5ZxhBcLdoSHhnOA4B1pyabK5K/LV8JwC2TRFf1lxkq173LGEIJ19WoabYu
- cCAQGHlq
- b68+jhwM0mhcxFxmyucNA0nlJP96h8LVMN58RDgcmDixhbGEom+Zb+snYRkcS3JYXwt2COINE3vtdOF0WHZxM3LfKGuXMdn52YX7zJb1s7knEtBaMQJyRGJdR0t1+EPZQK7g1FHyMfcYjDzFMKGEuHG97ii+QiXNtqi4pYpoxwFv2OKUYXJy8spQz+lKjrYUkkQJL4Y6WKo1Zxh35UwNmcsD4Mr/ByS4V0zav1NKZXtDSGigCe9a42YJb9AvHJ2G/T4YUOUZneLPrHyP0ZU5Lu837Giu/WP2MccT4oZQuUPkU8LDOu+TdUDxFyhMf+g53JQ9M5MOAXU8+uiQ+kb4uaq+wBYxM9JLDUlysYA5SbLJCtgT97ON/ZsD28JN111rtoz9Yf4J76Std3ZJfItTGgBfPFlG7zLEwW//uzpXAc/7aWziLWLVAijvPS7Nu5bpGLEZ0XsCOk9ZHaxr1zmXUCd7r6yXft2gP5sSQyAlvhovltP1Ttd3QxYBSYSN1A3v/auifqby+iXSxsapN7n8qfJ2M92chMwSS56f0CjPU7YfX5Br09YDu0fhPQElML9D/CAbq0cqknB73YlMpnvFz1Wr32ZMG6wZxr2AeKXWxFkHJz/uSjqX0SQaHvNUvjvBKLxFyLzmtfEenLZda1TpeJW6XnEVx7l+NLcViYWqgoAi0XBtI0wB5mxuhF+cRRN4Ohjb7gxbhs1p6t1YZegT1wioTyg==
+X-Stat-Signature: yaf9ptusss6aw4ftcedchan5dy69iggo
+X-HE-Tag: 1785958543-485057
+X-HE-Meta: U2FsdGVkX18uFfSXxaK+V8567QPxrALUBXMocjUxAfuk+pkjmT0fIPYKO+RMWfvIAgbcnbDdsv5SUBYf9lzdRVn/K/vgI3KFMZ4cbzw/oIe69vxAD5f2ke39j7GXk+O3UKYRV1REReWGpd7K0Pvl4KYqdXOrHsP0WW33AqXjfgmljDdNgk5d2nnnKFFFs7FtGzGiqYrdXtDyr61Wwu3FS4IO6Rzz397sbAkGUGJI3yPxL76buEYNMLlyckB3PtM9x5LJi6YJmlhQuZxkbzantwyYQM5dd7d8AdAaQnm6ktIl8ffUlocJOuH+ZLajmc3XhnLYqJGLApk+3Aa3qNbq50Ca+dIqfwG3EacyvDqu514CxDk0vTssHu7s5Cc7YhyLyy4AYLmNoQOwOcwXrJ5YxbXbC/16tKPaA3HGp3gpCfr91DZM7jf3Ahza3Or+B7DvwsqHg6dJhvxoteVGBQZ110DUSDAVzcD0ox3/rHsGTiGgc547q943/8hcLbDbK1qtTMgihTZfxZLFKd7GplOJUlD4FgX7S4mPbc0L/j+XLiMX6OPbIFGZ+M3vieE16fS2edtsQTA/aGqRA86l5HDmucGhLmf0QtfYp9q/suglt26h/OCY01akP/wwyBFYfZPJPzMpH42gozhdTkL6trIe+Xhc+m2NAODgYLRWkczTakJH3f0AjRyNSU3fIIlIwJNgcgp2F/BKwV5ZG5nGN9asKOOLO3pHvr2tT4D2h9h11n2+5EcPsPo6Q7uRdFtpecOn9uMwqskU/P3Zmo2GatjhovjZa1rZsvwnmqKCqfqK+Vtn1usAb6BhUlSzXDpIca+ZKOiy2go3nh+C+CET5wBZiMLTewbPMfGU+RJyIW8usuHTQ14WZRLZ4upYvSOKvPwBMNt/JjP8/p9Dsr/P2i+ZvUz3KQx5ExbR67CXdt+d1RnMht9oaPtVqlT6hmDCJKG79Rcm1HuIDEWvUdHHswL
+ UQrmBNuu
+ k4HHwchZtmjzlyzbI82/gSIJGu7LYTB8z7/emCHTS4rv9miEuSPpx6inyw0AHSCkkHie94BlR2/vtWHiJTBNet5IYIvAGlXNvwcuKFCFq4lVa+p/jsCmJ7F+JUq0WWCUTR8JryKAphnjyAXxw8ONqrt9Kl+sU/9xreQDIXxBbBxeAidLKFCfUQMbx0q2qGF8US9n8oDrFbLXaJ/GtTb54bh69Lomjim2zQgNhcEZTU+YZsGQgj9ClErSrNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,57 +102,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 04 Aug 2026 17:01:48 -0700 syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com> wrote:
+LLMs made my breakfast, lunch, and dinner. Not really. They served as an
+assistive tool while I performed the debugging, testing, and analysis
+needed to isolate the root cause in core MM while fixing a known DRM SVM
+issue involving THP allocation failures in the CPU fault-to-device page
+migration path.
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    3708dd948844 Merge tag 'pm-7.2-rc6' of git://git.kernel.or..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=11ac703e580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d2401aeb74cc84adba04
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
+When a CPU faults on a device private PMD and the driver cannot allocate
+a compound destination folio, the source THP has to be split. That path
+is broken: the CPU fault reference makes the split always fail, and it
+demotes the PMD only in the faulting VMA, leaving any other VMA mapping
+the folio pointing a huge PMD at an order-0 page.
+The latter is memory corruption, previously masked by the former.
 
-Thanks.
+The DRM side had its own problems in the same fallback: there was no
+order-0 fallback at all despite a TODO saying one was needed, the error
+path computed folio_order() after put_page(), and once the destination
+is demoted to order-0 the source page array has to be populated per
+page rather than per folio head, or the copy stops after one page.
 
-Lazy optimists (ahem) paste this gunk into Gemini and ask "what the
-heck just happened".  The results are often useful, but should be
-treated with skepticism.  In this case I think it came usably close.
+Validation was performed using xe_exec_system_allocator. The issue was
+initially discovered on systems configured with an artificially
+constrained memory footprint (mem=8G), where failures occurred
+intermittently. Error injection was then introduced to reliably
+reproduce the failure condition, enabling thorough validation of the
+fix. Results were confirmed through pass/fail A/B testing.
 
-	https://share.gemini.google/vq4TLhTiLBih
+Matt
 
+v2::
+ - Add assert in 'Fix folio allocation fallback and use-after-put' for
+   THP placement invariant which Sashiko hallucinated as a bug [1]
+ - Add 'Clear MIGRATE_PFN_MIGRATE on all sub-folios of a split THP'
+   (Sashiko)
+ - Fix checkpatch issues (CI)
+ - Swap cache issue flagged by Sashiko [1] not fixed as this code doesn't
+   appear reachable (i.e., dead code). Can address in a follow up if
+   needed
 
-tl;dr: khugepaged's collapse_scan_file() is taking too long and RCU got
-starved.  I don't think khugepaged is doing anything wrong here,
-per-se.  There's a lot of work to do and we're doing it.
+[1] https://sashiko.dev/#/patchset/20260805113338.3742178-1-matthew.brost%40intel.com
 
-An appropriate fix would be to take a break, let RCU do its thing then
-get back to work.  But I don't think RCU offers interfaces for that?
+Matthew Brost (5):
+  mm/migrate_device: Clear MIGRATE_PFN_MIGRATE on all sub-folios of a
+    split THP
+  mm/migrate_device: Fix THP splitting of a CPU faulted device private
+    folio
+  mm/migrate_device: Apply the fault reference to the correct folio
+  drm/pagemap: Fix folio allocation fallback and use-after-put
+  drm/pagemap: Add fault injection for higher-order RAM folio allocation
 
-collapse_scan_file()'s main loop has
+ drivers/gpu/drm/drm_pagemap.c | 164 ++++++++++++++++++++++++++++------
+ mm/migrate_device.c           | 129 ++++++++++++++++++++++----
+ 2 files changed, 251 insertions(+), 42 deletions(-)
 
-		if (need_resched()) {
-			xas_pause(&xas);
-			cond_resched_rcu();
-		}
-
-but that won't help with the RCU stall detector(?).
-
-I suggest that a suitable fix here would be to add the analogous
-
-	if (rcu_i_need_to_take_a_break()) {
-		rcu_read_unlock();
-		rcu_take_a_break())	
-		rcu_read_lock();
-	}
-
-(iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
-needed here)
-
-Paul, wdyt?
+-- 
+2.34.1
 
 
