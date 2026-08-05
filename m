@@ -4,80 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71034C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 12:03:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F8BC55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 12:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18D986B0093; Wed,  5 Aug 2026 08:03:52 -0400 (EDT)
+	id DEBB36B0098; Wed,  5 Aug 2026 08:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E9446B0096; Wed,  5 Aug 2026 08:03:52 -0400 (EDT)
+	id D9AD26B0099; Wed,  5 Aug 2026 08:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC9C76B0093; Wed,  5 Aug 2026 08:03:51 -0400 (EDT)
+	id C62F66B009B; Wed,  5 Aug 2026 08:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABFD96B0093
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:03:51 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5CAE160428
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:03:50 +0000 (UTC)
-X-FDA: 85067081820.18.195ACAE
+	by kanga.kvack.org (Postfix) with ESMTP id 907B26B0098
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:07:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF1901C0E26
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:07:20 +0000 (UTC)
+X-FDA: 85067090640.05.A2D40FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 350441C0011
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:03:49 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4748F1C0010
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:07:19 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NDYF/i3G";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G08xuQ9v;
 	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785931429;
+	s=arc-20220608; t=1785931639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/TxnOeGfIBpnExbybgGUK7PctnBzRbPKKrr+zPKrO7c=;
-	b=IwNywKJ+YJebU6Q1tcraHzkg/I0JeyjN0EA41Q2u1MfoaeU3FulwgvREP6l3MgE/X2Ny7k
-	KLfmlOcKYJnIaE55qJYiXodr9sip+g5URHvraoAtO3GW+H8O7CrvVBk+AEz/BMhFARQI7b
-	c4rfr+ezTDg/NBnEwaDKPLk9eRTAAMQ=
+	bh=aGl+2n0y8opMkIO+tIk0uV2YGP/4CHQ7NMUa3eVt6C8=;
+	b=Y/PIeVZ5ByrbUS4lL18M6FKFRVD6qreudCk/WPC2xgLWl/B1aOoI0W9oMbxHQbluuKUssP
+	Prh447KTPUOJtdmQ+aeTWZ9MPQVIqFzEepF4dZk5kq6tIKzzOQWjtN8qIBLnuIwfRf3fY5
+	TSwxSoKDQYzyjWzd83oaGLEjtRqSLWw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785931429;
-	b=Xy6BSZ+12ubO8mgL7MDfBCyHT+LAEEaiRUuIA7HYfdBcw9ExZNQhK+GOsngZsXaWhD3Wek
-	zcoiPP9Bo+ADyAloI20rf/vfDczcjXef9GGbN9riM7smk6UOla/Mi6pas+qmEV1ItRGOzV
-	zjUCEaiGjsC0SDwIj0+bWqh+geyZlG4=
+	t=1785931639;
+	b=ZNrOvJOhpb+5vCX2nxZrpryUB9orLXZs3Q+n3Q214qZ1h9gxVNoz5fxp6Al2qhAJxynXJl
+	uL9GWFqw40T+LFcdTgsx259d3nX1k50TsDqPPmsplGv/SRQW7jUIo0m8Zg9Dq9xX232pPx
+	HTlT32MkCeY158Sm7ptw/bCmywzco/c=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NDYF/i3G";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G08xuQ9v;
 	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA82860A9D;
-	Wed,  5 Aug 2026 12:03:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB64C1F00ACA;
-	Wed,  5 Aug 2026 12:03:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BFC4760A9D;
+	Wed,  5 Aug 2026 12:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A82F1F000E9;
+	Wed,  5 Aug 2026 12:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785931428;
-	bh=/TxnOeGfIBpnExbybgGUK7PctnBzRbPKKrr+zPKrO7c=;
+	s=k20260515; t=1785931638;
+	bh=aGl+2n0y8opMkIO+tIk0uV2YGP/4CHQ7NMUa3eVt6C8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NDYF/i3GHNA+/IHT24tL5hwQavM5fu/ZoSDW+J9bbFkcuRP8SsjnM15hTBdETAfkV
-	 Wakg7UP63JLO7jYu2GYy/+4FSFdzK2IX6KKeddR7B26sh1Db8DtfOj2SQ5wVgBi2xx
-	 uW2Wail8EKoiFOuj38AdJp+kl07jMXgbGa2gbY0HVGuxg/0BPNAouvXX7dqzRdnOnx
-	 jvR41xDH0Vp4VOFDL3/uzlyafGPdiBMP7uhbK8fTFRY+zsXgkILJeXMIZuVAkDDIxP
-	 vn6U11lvFwg0nP2qEx2bNvUcI/86FTiemcTKX/YLgMiuWe2OpWdeUnd3/s3WIBfnQm
-	 2WmAhmyrhRrOQ==
-Message-ID: <0b48002f-8e2c-41b3-b8ef-69f200b02330@kernel.org>
-Date: Wed, 5 Aug 2026 14:03:41 +0200
+	b=G08xuQ9vztT8MWAY4GWQjNu0SA3oW0WrAzxB+WUMH6xTvVM4MnCCvAzMX4Y2bXu9/
+	 wMQarK/Q0WzmH8cJs2dytIclXaHZiQrRUQW2XaJHZZyivkVl4Hy24GBiNCN796Df+y
+	 2CzrddHZ/z5jmR+FqtxzKW00oGiX2uY3jNIgcnVBHu+JGJoYG6tUcNsk5lKbqM/zi4
+	 nvu4A4Z/uwi6godbKpH5dHpUVRyOLRICUQPbrtp8FehB8uI3y++d5t0FWhLzy/JTGh
+	 PJ9ozl262SzjHQNrxDhcJRvOBQJo4aA/7EyfOJtrMCFELMOATMaHl0coqmtItf6c/P
+	 aGqVAA3RBHoPw==
+Message-ID: <33fc9d31-2866-4315-9510-0004deb93994@kernel.org>
+Date: Wed, 5 Aug 2026 14:07:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/page_reporting: Add page_reporting_delay_ms module
- parameter
-To: Andrew Morton <akpm@linux-foundation.org>, pratmal@google.com
-Cc: vbabka@kernel.org, sj@kernel.org, corbet@lwn.net, ljs@kernel.org,
- skhan@linuxfoundation.org, anshuman.khandual@arm.com, gthelen@google.com,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, liam@infradead.org, rppt@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260731193705.2902728-1-pratmal@google.com>
- <20260731143420.0787387ce2ca120ecee15338@linux-foundation.org>
+Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
+ init_mm
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
+ Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
+ <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +154,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260731143420.0787387ce2ca120ecee15338@linux-foundation.org>
+In-Reply-To: <01f07ea2-8bdd-4450-8a49-548f8b646cfd@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4748F1C0010
+X-Stat-Signature: zrtxhx59w9j7hxqqemdszjy8y3okn6ha
 X-Rspam-User: 
-X-Stat-Signature: rw83q1zrcopx4etieyb6aqdnoku5ez3o
-X-Rspamd-Queue-Id: 350441C0011
-X-HE-Tag: 1785931429-224846
-X-HE-Meta: U2FsdGVkX18WyxMO2p6Dlu9ulBHLFtBAWA4fQ/lTz18TeulKRbVadjJS34tAH0WRL440/ja0tLu+SBznLsNWCRdwZwc9ipZLlpcffOx/XT2JSo43vJwSXZLdNg+GgVHxtOcOYAtf6ZtKAS2JhaGfbpdxIiHFBrdVn3UJNcUkDX+EugzXTHowd3hXg09ksJsDT1RUyW1MQGGkncaTOaDWarN33UDlSW/1wh5rpcBpj6FXW9C+hvaDp1CahVp23KPzYUAh6BKtOBoYnoOijD/E/ro5j+PLWC53y4w/TsoqapFQDGYgEPVWYZRQackuvXHpXHOtgcW7vRqIp4Fzq1FYKOSJ7iyjf9nPTu/96imF/DGD1bS6kVb1CxhsRlAG/jb6aVQpoSqxDkCmLHx5L8GDRfZ+ZbssfZIOlP0j7dh3RFVDZS+UJmT6UidFCcq6nWQUUPIezP9j/uQtua5t7H9K8ElAhq40pBLb3jO2NV0RXv2NSxfQYGQmZKY5MFh5E5x3RuRrpDF1u1vLs1gYWvXZ3w0sy9rOBLjSa/Km8cm3NIofZYWemquDfkx6F04JbstI3iKTJcFFE1LlybIsmKX/fpYzZ5dOLCS64mZZLYL8ZBohfhgwnL6DYoso8wwAUPfkITsRJySrV1swggAmw705g1h4aSLRcShi4DJ+4vXL3sAnVh6BJLedTO0UyTP46V6bvWXPXee3Cc00cxbN1cOXOBLICazZHta7byXW6XDw9D9ZHY1pLaqnDij1UdjSWzie8H2feOHgXrCYVKOWFDd2IbsdqtNoLfmfmPDEQVdbnKSiMkHCmcrJJ/5LS1Vh2WK4OtXfXGERVVAGt+99qS2+vSHo9bYpf+nrt6jQDsCS7cW5TkmN8TGGXi0yMj1fBNR32Hd3DetGtlgtnBgqlxvqVsVDjV3v4URosO+8q0mOhGGdy4ZNSyrVBTp4LiFgsIQ3VEMIVk8+5U3LvHL9J5/
- k/kAXTUX
- u4tdIoXHkeYMSjSslEQQzWSef5rNsZ2Wc5mCJLIaS7mUU1jeFtIdKgp9a0vRQuFAQcSaWRDpKw9vQJZdUJpz7EteL/6UmPHawwy/2Le3/pzx73A5r201HHTfQXjHh6jj6g9UIcGSUim9TmK7jfYoVeIh72hIxNrvDd10BJ3/vClDXyHZ3+/v4/BD/on9vVxXU+RDke43t5CU2SxPN1XV4QYnV9LidZ8TjDTVMyl89gAC2xhaq1IPPI0qzmUsaVjjiWADRHrxZfcYqu9kNEF/JENo1MHD9y9WB70jlHdssamzid7BJC+aeXmSbjAlomeF9ZAonoEtU1huWHLOYlZwLp7OzZGM3BtiPx4Il
+X-HE-Tag: 1785931639-402794
+X-HE-Meta: U2FsdGVkX19q8loCeliDOcG/OUpzpjAK9SX35Egr6A6aj6kRSz18InC0RSsGVCZJGcG5NnBjZIadqh5Yipy3T8ElfhDaTvN+8eONl9hoTi7lwr3i6JGubbrjC/gtjjKjCsJbkuV905ovvQCUYfFVTDxKN1xDGgWx2oTUbcWXVECogpAUX6RMbKF1WrN/54Rptgaws27FBbyZUwjvoRpt1GGMBLR0n+xuvh29h6SupnVE8dEoSIVZczBfNr07k0UUpE+lFsyW65/PfVD/tSvzILvrOi0RQFZObLF+Owv5TjEFieQb5vtATu2MBnKHqFsitA3Rn+zy1OIiA60dNjihoa7/QCM8i2Z24gvwJ/Pe1TN6pUKu9mmG7x8WeXTj8DewvWVLwTkY3nabFaTZgHUp33TUsGqybpXBJgSfQi1xmkaZi+Qgat6Z1EEjksnCw4RFrr9EkIM0RzSfUaG73SjJ6was6IsZxhiCeTaaddM6NKg7od8RmxfTivea/JmzC1ZogiBXmZ4qjqmLFq9tMp6HCPAzvblemhWBZxArY3bwxyGWTtFNg2JVi4Uyu+2H1dgwFRifq+AL13E/ttdNEDBZaJY+bcpmU4H4Vja7K3kJzh6pn7r6GFoU6N7hfd4W59Wf2qpt9Y+aJGqdyH5KjGS0C4rpBTfi6V7FRZrm9ONz/YQRlJoitFHUdcLJ6R0yjYLNx6XNbjtPc8XiOsA/t4ELzzvwWDfgkstYP0ANmggKPl3t4eY57oraHg0fx9SOecKQ3e4fErt5OZD285MktydDNAkx9tuZJagUrHG2tQMiBMXcarnBErDCwvqYzQ9sByDHJyf1KtJOBOKbTrd/btuWFghfbxSnZilVGNVfsaKLJfmztujCYdmzOH3bdD5N4P/L30krce9MROJdUq6SKSrZdXu5FXu8Xaqd5duAnTxa7YCf0U06urc9CqRda0E8e0bcxdkYzXn21Iu/ZNe4xL1
+ wwsApghN
+ yZfTWUP24X1AUvme/oNWFQWzLeVlSvPIFrbNUCLyRO0FiympzwKyaF5c7katCJvQA0gTsBiInsvX+rtGWzyEQLtd8KxwkFgQB9dultu8xz1OdNeYjeGfUI8mosqpMVeJS4ONF84+Z8M3EhraQwRVUsQfUyaAy8WlC3nZpML142jUnvT3qBy1AXyIBszPIdXgz1GSzW4IPuAnDqBeNhNIC33kncF4XULIImohymL5a8A3IXoONEyDh0rZ+gace+KMn44+nVdruVFMhPTpcmkCSvouMh77Nl5XwRTA4cVhbueS8I75WicW/Nufr1NpKwU1jBpEcmWznTbPJZ+sYv7CgT0ZoWZTdjY9awOZE2FGR66xETdcB+OjbYkgX5xpCiaTJQmVwmQ6sqn94CCmTQmGHUFDZXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,60 +172,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/26 23:34, Andrew Morton wrote:
-> On Fri, 31 Jul 2026 19:37:05 +0000 pratmal@google.com wrote:
+On 8/3/26 15:59, Christophe Leroy (CS GROUP) wrote:
 > 
->> Free page reporting currently hardcodes a 2-second interval between
->> reports. This rigid delay cannot accommodate diverse guest workloads.
+> 
+> Le 14/07/2026 à 16:03, Kevin Brodsky a écrit :
+>> mm code often needs to know whether some mm represents a kernel or
+>> user address space. This is currently done by comparing the mm
+>> pointer with &init_mm; besides not being particularly elegant, this
+>> ignores the fact that other mm's (e.g. efi_mm) may also represent
+>> parts of the kernel address space.
 >>
->> This patch introduces a module parameter, page_reporting_delay_ms
->> (default: 2000), allowing users to tune the reporting rate:
->>  - Lower values enable aggressive memory reclamation by returning unused
->>    pages to the host immediately.
->>  - Higher values help batch pages during spiky allocation/free churn,
->>    reducing hypercalls and nested page fault overheads.
->>
->> Setting the delay to 0 is safe and execution is strictly gated by:
->>  - reporting is only triggered by high-order page frees.
->>  - expensive hypercalls are bounded by a slot capacity watermark check
->>    before proceeding.
+>> Introduce a new mm flag MMF_KERNEL and set it for init_mm.
+>> Subsequent patches will use this flag to replace comparisons with
+>> &init_mm. No functional change is introduced for now.
 > 
-> This conflcits with the just-upstreamed 0b45f6927a1
-> ("mm/page_reporting: use system_freezable_wq to fix UAF during
-> suspend")
-> (https://lore.kernel.org/20260721005603.1710551-1-linkl@google.com).
+> Did you consider performance impact ? This test is usually done in quite
+> critical memory handling functions.
 > 
-> Please review my resolution:
+> init_mm is known at link time. Before your patch 08/22 there is just a
+> comparison of mm (r3) with a constant (loaded in r10):
 > 
-> --- a/mm/page_reporting.c~mm-page_reporting-add-page_reporting_delay_ms-module-parameter
-> +++ a/mm/page_reporting.c
-> @@ -48,7 +48,11 @@ MODULE_PARM_DESC(page_reporting_order, "
->   */
->  EXPORT_SYMBOL_GPL(page_reporting_order);
->  
-> -#define PAGE_REPORTING_DELAY	(2 * HZ)
-> +static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
-> +module_param(page_reporting_delay_ms, uint, 0644);
-> +MODULE_PARM_DESC(page_reporting_delay_ms,
-> +		 "Set page reporting delay in milliseconds");
-> +
->  static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
->  
->  enum {
-> @@ -57,6 +61,13 @@ enum {
->  	PAGE_REPORTING_ACTIVE
->  };
->  
-> +/* schedule work for page reporting */
-> +static void page_reporting_schedule_work(struct page_reporting_dev_info *prdev)
-> +{
-> +	queue_delayed_work(system_freezable_wq, &prdev->work,
-> +			      msecs_to_jiffies(page_reporting_delay_ms));
+> c0014048 <assert_pte_locked>:
+> c0014048:    3d 40 c1 09     lis     r10,-16119
+> c001404c:    39 4a 03 98     addi    r10,r10,920
+> c0014050:    7c 03 50 00     cmpw    r3,r10
+> c0014054:    4d 82 00 20     beqlr
+> ...
+> 
+> After patch 08/22 we have, it first checks that mm is not 0, then it loads the
+> word located at mm+528 then AND it with 0x1. This load might be costly.
+> 
+> c0014048 <assert_pte_locked>:
+> c0014048:    2c 03 00 00     cmpwi   r3,0
+> c001404c:    7c 85 23 78     mr      r5,r4
+> c0014050:    41 82 00 10     beq     c0014060 <assert_pte_locked+0x18>
+> c0014054:    81 23 02 10     lwz     r9,528(r3)
+> c0014058:    71 29 00 01     andi.   r9,r9,1
+> c001405c:    4c 82 00 20     bnelr
 
-^ just double checking whether that is indented properly .
+Is that a real problem, though?
 
+What we could do is to just keep the == &init_mm check internally on configs
+where we know that there is only a single such MM context.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Just a thought.
 
 -- 
 Cheers,
