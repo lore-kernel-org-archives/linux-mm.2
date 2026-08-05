@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFDCC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AB6C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEE296B00A6; Wed,  5 Aug 2026 02:29:36 -0400 (EDT)
+	id AD39F6B007B; Wed,  5 Aug 2026 02:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E966B00A9; Wed,  5 Aug 2026 02:29:36 -0400 (EDT)
+	id A83BD6B0088; Wed,  5 Aug 2026 02:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8E666B00AA; Wed,  5 Aug 2026 02:29:36 -0400 (EDT)
+	id 9757D6B00A9; Wed,  5 Aug 2026 02:33:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B0086B00A6
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:29:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1192B1403B8
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:29:36 +0000 (UTC)
-X-FDA: 85066239552.11.E889B1E
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AE61BA0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:29:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WwXWcHE8;
-	spf=pass (imf15.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785911373;
-	b=fw94I0NjjQwHp7G7c9aFarIocOIee9ghvFDXxW6vH7WsLYE4VoP58b2CvYVQ9B60k/1dTz
-	BE4qERFQ8LwFEZR5QqX9M2NoPFbCd9nOJIQ+p3sCOymsFsbAHJgkVEqC4nKGHPsofuzLyE
-	AjCqliDde1aZv36ZyeG8AsO2V9q5xcs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WwXWcHE8;
-	spf=pass (imf15.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 68B3C6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:33:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB6F4403EA
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:33:46 +0000 (UTC)
+X-FDA: 85066250052.03.4B51E89
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B30D940007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:33:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iBtLqhFB;
+	spf=pass (imf27.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785911373;
+	s=arc-20220608; t=1785911624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=095QS7upVPuSHTC8a3xiMOI0ni0TS77b5nrnsLPg5w0=;
-	b=jFg4FxP/e2E8qiGimC4wWMOwEJmvXziOrP/x0WKW91Y39JRpj/s2wSxAyPcQSocdP+/4KE
-	2IZcjVVrS/pTF+ZFZmj3K6A9x0qm3afYmJFM77joHb0jqZn4ymMQoPV9B++HFyCWeQE5hw
-	HFAZbkt6sa+UKWrukmdHUkjwqQNHoRc=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755lrxa1121596;
-	Wed, 5 Aug 2026 06:29:23 GMT
+	bh=7mkcadJVmAqJI9buap6E5CxELlfihDwaquThutvKHd4=;
+	b=MCor+cS5b8H9dqYxJdopd7ww6flvf7CBg08ig1Vt6AsdjAkm+BI/U3xLm4N8vrCiHI3wK8
+	KdiXilWUniFWetwn9d9dA5kQ4LBFf59Uf4jNNCtZehm3HLM6pAwFJazm9CwqiyoEJnLMDe
+	C3nuX+46G7rfm/yFI9+t2qmCnm9ytOo=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iBtLqhFB;
+	spf=pass (imf27.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785911624;
+	b=P9/h7KZZqB2cQOUT65vX5qQFDMRwuRVGvNiA/HpW5DQr8fcgMVU+x5zoBBpM1ePLmG+3uq
+	ANIDusT4Tz6XJduztNUa1LH++Tc7Nz7M4Wqs/rARnqcglmcU/qtxpx6a/A44HM/7dEqJOm
+	89+WpMqNgZFMwIcyUp6ZvYWOrlfcSJ0=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mYMR2910700;
+	Wed, 5 Aug 2026 06:28:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=095QS7upVPuSHTC8a
-	3xiMOI0ni0TS77b5nrnsLPg5w0=; b=WwXWcHE8zersWTROIS/lWp2pNcCZ62BlJ
-	q0/uX4Fkz7Rp9ayC6yyUoxSg+MO/PffWXmiAO4Mqx36Elm1JSlS5pSmSHVCd7uPE
-	JIKVLjFmmwNgjFtdvygQhPB7uhhzKvRFmBcHcX8g+KPvXSpkJxh6/xvZh3hV/+MY
-	BsZEpftbLw0Yhf4ydx2R4CJJsKPx1HvAnEIYp6t2Vqe6YL/IdIICDk08PrxsNIxd
-	nqBDKDmYXOnJtynD+P2ykWEof5PSmv412su4auKt/aeme6QG8SEaIz8gGwWYj+nJ
-	+XxmATjpdfJQnPXNVdGWzZ8MP11Dcje0ht9ncZQzb1LTsHdvQDumQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqsjdq-1
+	:mime-version:references:subject:to; s=pp1; bh=7mkcadJVmAqJI9bua
+	p6E5CxELlfihDwaquThutvKHd4=; b=iBtLqhFBgUmsk9kJLMFftzKOe75YexqsD
+	YXuBsgZi9G5Qgm1zsshk5BcyA7kZMjYOJM9nI5MLQLeLYaJz+/xJUMyuCmBdDs+H
+	xNuhNcptmzRo0Luoa7Bp3DFUpXVyQ0QQ0mCAdsy+TECeBLTUV0I024g8vXATeiL3
+	IOKw9J6KiBRWsQ23xMZx0G4sUKsjQxMit/xFu2SAIDObi9fevvD926v/aVyNSrXT
+	C7MX19drUWgihVc6G8BYBWVAQGS9BbUYS+B9lH3uscO5KXTQnZcRSCxoj2V8Pym0
+	xQfWSo1U6QYS2dLXDuMDFfTJwU9+vdGc76x5euZ7tgEqMls0WOOkQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g99ka-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:29:22 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QFeP001943;
-	Wed, 5 Aug 2026 06:29:21 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyn3du-1
+	Wed, 05 Aug 2026 06:28:30 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QJdg026819;
+	Wed, 5 Aug 2026 06:28:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbgd4ja-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:29:21 +0000 (GMT)
+	Wed, 05 Aug 2026 06:28:30 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756TJMZ16711962
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756SSBS37224742
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 06:29:19 GMT
+	Wed, 5 Aug 2026 06:28:28 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 682D620043;
-	Wed,  5 Aug 2026 06:29:19 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 37DD720043;
+	Wed,  5 Aug 2026 06:28:28 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0697020040;
-	Wed,  5 Aug 2026 06:29:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0F80020040;
+	Wed,  5 Aug 2026 06:28:24 +0000 (GMT)
 Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.211.239])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 06:29:14 +0000 (GMT)
+	Wed,  5 Aug 2026 06:28:23 +0000 (GMT)
 From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: "Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
@@ -96,9 +96,9 @@ Cc: "Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
         Pankaj Raghav <pankaj.raghav@linux.dev>, Theodore Tso <tytso@mit.edu>,
         linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org
-Subject: [RFC PATCH v3 11/11] iomap: Handle deadlock due to repeating folios in RWF_WRITETHROUGH
-Date: Wed,  5 Aug 2026 11:58:17 +0530
-Message-ID: <7eb663a29c18e40d0000422792543ab3512c5a7e.1785908600.git.ojaswin@linux.ibm.com>
+Subject: [RFC PATCH v3 01/11] fs: Add counter to track inflight writes that need stable pages
+Date: Wed,  5 Aug 2026 11:58:07 +0530
+Message-ID: <548c55490029490e68287aeae3d737454fa78e0e.1785908600.git.ojaswin@linux.ibm.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1785908600.git.ojaswin@linux.ibm.com>
 References: <cover.1785908600.git.ojaswin@linux.ibm.com>
@@ -106,40 +106,40 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: SPXSXqyhPvFwPef82RKiMuNzwMeR5-Ch
-X-Proofpoint-ORIG-GUID: aFxx8t1NCBaaen8xHPZ-fdaFxQOl4vLd
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX6eAuWzQHDpRr
- R2qOTHDtgR5OiyzdWVJgrGDxpk16QRR5kKFq56ulmWg9iVHHJ+74Yh9D57EP4Rns4NzQHbFjs7f
- EIOarrUvspL6qnID0G4pwERs1h4BiKs=
-X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a72d842 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX15tpIh4spCjU
+ AUcBnujClBo+DcVOKF9/a4d+yMeUkxJ5qnaJaksPvwrcCxrQG2PrxUfOZkSb175hfmMH5EDv3mZ
+ 6TB0NfHcB/uhQpMY/KDgI4lImdFaLPXDrzg21NL29ZHA8+6mLXywd92C70/k1QnReNU2QLgZz1Y
+ rFZKLuwMuhNmDyu4Fd9qYAzIIyy3mH5un8k1r7rLF7y8i8Q0/ZmIBRYykn9jum0n6pdl/y1jxTo
+ RFFt6T+3PRZA073j5H9eG1ONxb5kzClE75Es6hSXGN2BjL+G1nEk+Q/FENzNXbRLvoY5iFqumIU
+ gQZnuSsijadoRJD8a6w9PyrNteQSD96TtuXzzVoJLUdKgyjeYW5mKyy/z7uJWa7gXN2FdZ/wUAP
+ i1HePB3ul8Yt3q19raTo9oeNERTXwcVWc5CHf+n4QmTuG5dgZvUKz7+MV99tv3YImqSZHsq/2z9
+ pgkruvU/V5NJrC04bKw==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a72d80f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=2R8uCszOOhyw9zs8MNsA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX/YKbZ8sa0jQK
- dN9yhXJyqVxKbEaEm7mNWtHA7fYNkN8GfdHYq6nIfrnbTkbujt0hKd5xatg+4Sux66N63vG7fW4
- NsL5lQD/xcC+Fa0PLsr/xGJty2Qo0xqBA6nqjriMW4/PHnNXVxIFPotef1QN0OoWn94LfNM9PWH
- tjdOECD4nmfqmKsITMMcf64tFaDsrwsU5EtOvFaZH+iWLykbOLepw+qJAB6diPN2lsRf5ybrp+j
- XljEuYrP+pe2xa6Irn2lnkAvTX+hvz7k8VrMFQa0vqw9ild136hkSN6Sdde+Mqt5DQv5cRrbIro
- KdstbJQ1/1GmK4ZgNqCI419wpVTL/bzzndjdzPgamJ5Egl4D0OjsmVpEc9KP9D7ZSAOQNULeUGJ
- VjP+X8Bh/NMyEDokK+JanIRQNZMHKyfoaDJYhYY6vL5UATRjHUudX9k/EdOY5pc/emmbnM4u07I
- gQ63yecp/+kCySsbZWA==
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=8ZJD85kOQxw6bUDZt3oA:9
+X-Proofpoint-GUID: p518RXZYhP7QoLVp4gaKCUOUg2x3O4co
+X-Proofpoint-ORIG-GUID: eDeq56Fk8OMNwfiGb737VVWlvKkwja-m
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX1IpFCQCXKwec
+ BBy1Jy/YmMXefn5MKSIRJo8UceAH/bW5AJGsBf0q8w9WjU+wzE0wEy0DlFSGg+lBdY4OAn2zrPv
+ Vn7UQIPyqrutiackW3bN19yB7uOg26o=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 impostorscore=0 bulkscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050047
-X-Rspamd-Queue-Id: AE61BA0007
-X-Stat-Signature: 3rsgdubmh9htkfsyf79pqx9zm7o97ro3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785911373-368423
-X-HE-Meta: U2FsdGVkX18hH6q1s7DrVydGkXdIQjM7KIvlcaFhE0thrc0X4nVIKnjTtbj6EnYlB7rOToktl27Bx1LySQ8uFw0ECc7aORrgICDXKZ9UgKCKj+jcRRYYO9sn7R4XcOWpH4Vn/Aq8DD6Tmir/r3ZGMPzVBqoUm8gMPT9Ln8d2bZBbt0MolS0v9G6GcGELiY0IqSy7QW1EAhg+Sv4jWt5TzkZQNHt0IXQGC3Y3EKU4vWBRkF9zaKnIuJH3BNHxqY1+tiV4IiNSYckBcfr5t/UP34mQtp3rSlmZJp0jXiIsj71RvIy73MnJKaKjLjp6WabuQ3m4Vtri5FaB4LkgWcE13nT3xIoc40QUNchlFDcwYTyfqnhsLXAQOVSlgf1pahEpuaCngQDMNL6Xlx0tCVqAQAqoZ6jVSA0McBMA5xkc2qwyz4zU5YKL25T2fVlbeTqSAR5MnA4L+agk+w9pwB/7sBVZtM5txKW6F+RTiVZxxwPTvV7r2hvwhjXt4tBu2n3e0QvgeHQsBOjc08v/MzZFqW1p837s7ZxYDwWQaVf8jyIOcACQdhgazvFGO9XC8zAaCJIk5eRHA4qB4nt60GOaE4z1Q8dp+x04Sunep56MKM6EEzRCE7YYILu+mYVc3PLkb1zDZEy7demAj4RkHtUFG+/YxQ03zP7vfh2yhQXW6EJBhkdIRBlnb96I4lVhIornNKXVwAh/mTYqK0ZqDKogC6cN3iKBZmPwFCoDRMu99DZp3/KjbIgrR+x6YmxU58iFpJiFMW5bmjgAm1xoHfzmrbnU1MPWFOa78BeXQDdiIXPBmYhOf7azmV/ei0QWX7j9v/oqXRe02dW8Rey/8JD3sIMa9RrT4e0ge9juLd64tZLzXn/MzdPaGh/0FTwQ8Nay5EXv036FjRpLLmBbaHFsjWH0AtET0gBdwA8dH4Sa3o3iDOFyOZ3VByQjGK9mQTh9Bf5fWU/M6ils5hemKG5
- nQaemQ01
- KQzpus3JVY0NEBBgCXaLlfXjRz/MPpmOlWQ3l6UHtSJfWDF1zCaSiMLdWcYFfkAHL67D/SPfrrjI9tU8L4UAqcil/XWEJrojRP2es2NxYXSu0y8y7hJDb4h+ZBxLtR40iCQGGRluZxo+uqEHvAhgrclf9X2AVpfCQ9Sl4HVouoovXFzPfF/ibVNO7uLULoIQdQ+mp73ZLmwEgC13BaNPNN8EFJkzQueaEjMM/+5KwcT1/r49p61biv9dm8/vwVN+AhaQh6KahoOTbiebz3WVN75wUHFOZqoT63m81OGLLw91YjEBHcqLNsRfyTlJMBgzfdDBa6NUCMwhrkeaH7LtKRcwKUEqUopXxhwIaaTR4m/yqVjgEs7XbSKutTtu3TaR4CRjSPIL/hEyf4nCdJHsmRJbXgwFnMmayMDwGoGle19+bwDRL69JTZMV3Kg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B30D940007
+X-Stat-Signature: 19pu3zo9hxgogc5urxr69ni3zbyp5r3g
+X-HE-Tag: 1785911624-582706
+X-HE-Meta: U2FsdGVkX1++2ML6j+IEZAb9sDk8UBkRY2DbwmnRqz8VNbVoUvPa++weftTATvYHXxa7uhlHwT7//pdoB6WZuIbNJlTPR/fmbtdqvSRaOTpPSb3AErFr0X7IRSg4vUS1KXogYG/Q/fa1+SvJOy9v4/wiUeJi9p7Jhd6EPaC1yImWXi6VIlpWica2u2V3EVzvCZgr5kHomKXYGs9Po9F4H43QuY51Wy1iBPTdgNXlFYVS3bIHK/ukcQii4kKVv3YoC3ge213kL624If2XJq+8X7WY8IZsalEblWjkNvLGBLHjUrXkbdMuEQbZi0rIiJnwd1RWaYSPeqi/KM5vulgRV2O1YPPQmCeNVENiN2387Dr8a6lVpmx3pa58wP6ylpizQTrTcHptNga7VCPcvgCqKKQ+3p/EqCCDtFn6g8DjisRzcONJJzVb+9T6j06/58vnEnk2g5CjHkeOVvTX+g5von+SFcnZTnRHJtBxMkgMLIsxHg/ShD1pHjNlydYIE9Er0ohNatTUi3/VB+g/9VYyz18UhXPycFELUO1qGV+gEFRXv6rwdIKHoVsPO8hcwPnAiZpFkP80IShZor36bp5Xyw3EXxCg38Rkea6+nmBXzKSaxoBFNFe9PzTEg+CzI8Olg5PzjLVBkQe/9XVMFcnKZOAGf3MYYado2X1vlK+IwitH4i2jPSye33zuZCAbTCoMIqQw4HxxACHP9MEXIuwxfD8+8KpiuxD0vlyiL0qmYGTYZqsRknMuLX5fp6CTidfm9mcPs0RlXywAf+CBdreUYGbd61HcJbv35xvRrUmMn0Xv3zNuyTDZ73afwLvTWZa9ZfTwKD6hcSvbdMIxrQzTEA/5eT+eWNbMbHF2lpohkCXyJle1MabL/eta5BbTupraWtVgsP0uXgH36WkhOP0ZsJiIQOhKS2dJuQ+FltqkeeiiJRCw7JY1xX2CsjGMTbluwML+22Dzq3FKsL/6OSL
+ LgPVSxMZ
+ Vs44yYvFemrcbWXRH5NX8+BYNAZlJJZUbHsk/QPFkTThn3JrjqXGCicPT0fSRqnqwqDN/5J6OLbl/wNwdkzk63eRZR6eme1PSpx3cWYtQUJyTUhl8i4FF70TphVAj0Mi9AqUUfZF/svaUIto6BXTglYrFF5ti30NtsSASCxD+LBZLbRkndJge+wGHlwp17r5KWIvVG1oi1CwOausZw4CpuHW8Ei/eT9det90G+fnpk5vneEcY6Y32+cnEXhrZ5XWRTH9UWjEImnGFfaxSN0OO6RAQSHMvgemu5x/EUWheoQdUx3OnayWU+dM0C2+86lvvsAX9VyYhA5i94B6Y/8wnhgtOutvPcvx/dE+OLUzicLvKvaYeZcauX/mW14LDqbedvi57PgGbKdZmP4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,139 +147,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In iomap_writethrough_iter() we might encounter repeating folios across
-multiple iterations. Repeating folios can occur if, example,
-copy_folio_from_iter_atomic() does a short copy due to userspace pages
-not faulted in. This is an issue because a previous loop might have
-started writeback on them but not yet issued the IO. In the next
-iteration trying to get the same folio with FGP_STABLE will result in a
-deadlock. Since repeating folios will always be encountered back to
-back, we can just use a simple cur != prev check to detect them.
+The current flag-style stable write implementation uses idempotent set
+and clear functions. This is okay because the users for the most part
+just want to set or clear it once based on factors like underlying
+device support.
 
-Use this to avoid waiting for writeback or starting writeback on folios
-we have already processed. Note that in ->endio() we might end up
-calling folio_end_writethrough() twice on the same folio which can cause
-issues with folio_xor_flags_has_waiters(). For simplicity, just change
-the folio_xor_flags_has_waiters() call to an idempotent variant.
+However, this scheme doesn't play well when we have parallel users
+wanting to temporarily set and unset stable writes. For example, the
+upcoming RWF_WRITETHROUGH patches need stable writes to be enabled for
+the duration of the IO. The current scheme can lead to bugs like:
 
-Reported-by: Pankaj Raghav <pankaj.raghav@linux.dev>
-Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+RWF_WRITETHROUGH write 1             RWF_WRITETHROUGH write 2
+
+enable stable write		     enable stable write
+submit IO
+disable stable write   <---- WRONG
+
+                                     submit IO
+                                     disable stable write
+
+The 2nd write loses the stable write guarantee midway which is not
+correct. Fix this by introducing a new inflight_stable_write counter
+which can be used by parallel users safely.
+
+Unfortunately, due to the way the current users are designed, we cannot
+directly migrate them to the counter approach hence for now we will
+have to keep both methods till all the users adapt to the counters.
+
+Suggested-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 ---
- fs/iomap/buffered-io.c | 37 ++++++++++++++++++++++++++++++-------
- mm/filemap.c           |  3 ++-
- 2 files changed, 32 insertions(+), 8 deletions(-)
+ include/linux/fs.h      |  1 +
+ include/linux/pagemap.h | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 0844361fe0f1..70c1565e5416 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -804,6 +804,13 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 8e9bc9dda0cb..5f17aa0ed4c7 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -483,6 +483,7 @@ struct address_space {
+ 	errseq_t		wb_err;
+ 	spinlock_t		i_private_lock;
+ 	struct rw_semaphore	i_mmap_rwsem;
++	atomic_t		inflight_stable_writes_count;
+ } __attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 	/*
+ 	 * On most architectures that alignment is already the case; but
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 2c3718d592d6..eb8b7e292478 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -306,7 +306,8 @@ static inline void mapping_clear_release_always(struct address_space *mapping)
+ 
+ static inline bool mapping_stable_writes(const struct address_space *mapping)
  {
- 	fgf_t fgp = FGP_WRITEBEGIN;
- 
-+	/*
-+	 * For writethrough, we open code the FGP_STABLE logic directly in
-+	 * iomap_writhrethrough_iter() so disable it here.. See
-+	 * iomap_writethrough_iter() for details.
-+	 */
-+	if (iter->flags & IOMAP_WRITETHROUGH)
-+		fgp &= ~FGP_STABLE;
- 	if (iter->flags & IOMAP_NOWAIT)
- 		fgp |= FGP_NOWAIT;
- 	if (iter->flags & IOMAP_DONTCACHE)
-@@ -1383,15 +1390,12 @@ iomap_writethrough_try_submit(struct iomap_writethrough_ctx *wt_ctx,
-  * need to clear the master dirty bit.
-  */
- static void iomap_folio_prepare_writethrough(struct folio *folio, size_t off,
--					     size_t len)
-+					     size_t len, bool already_prepared)
- {
- 	bool fully_written;
- 	u64 zero = 0;
- 	u64 tmp_off = off;
- 
--	if (folio_test_writeback(folio))
--		folio_wait_writeback(folio);
--
- 	if (folio_mkclean(folio))
- 		folio_mark_dirty(folio);
- 
-@@ -1409,7 +1413,8 @@ static void iomap_folio_prepare_writethrough(struct folio *folio, size_t off,
- 	}
- 
- 	task_io_account_write(folio_nr_pages(folio) * PAGE_SIZE);
--	folio_test_set_writeback(folio);
-+	if (!already_prepared)
-+		folio_test_set_writeback(folio);
+-	return test_bit(AS_STABLE_WRITES, &mapping->flags);
++	return test_bit(AS_STABLE_WRITES, &mapping->flags) ||
++	       atomic_read(&mapping->inflight_stable_writes_count) > 0;
  }
  
- /**
-@@ -1426,6 +1431,17 @@ static void iomap_folio_prepare_writethrough(struct folio *folio, size_t off,
-  * Folio handling note: We might be writing through a partial folio so we need
-  * to be careful to not clear the folio dirty bit unless there are no dirty blocks
-  * in the folio after the writethrough.
-+ *
-+ * **A corner case to be careful about**
-+ *
-+ * For writethrough, we open code the stable write behavior to handle the case
-+ * where we encounter a folio that we already started writeback on but have not
-+ * yet submitted. In that case we must not wait for writeback again to avoid
-+ * deadlocking. Repeating folios can occur if, example,
-+ * copy_folio_from_iter_atomic() does a short copy due to userspace pages not
-+ * faulted in. Also, repeating folios will always be encountered back to back so
-+ * we can just use a simple cur != prev check to detect them.
-+
-  */
- static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
- 				   struct iomap_iter *iter, struct iov_iter *i,
-@@ -1439,6 +1455,7 @@ static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
- 	size_t chunk = mapping_max_folio_size(mapping);
- 	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
- 	unsigned int bs = i_blocksize(iter->inode);
-+	struct folio *prev_folio = NULL;
- 
- 	/* copied over based on how DIO handles these flags */
- 	if (iter->iomap.type == IOMAP_UNWRITTEN)
-@@ -1530,6 +1547,10 @@ static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
- 		if (mapping_writably_mapped(mapping))
- 			flush_dcache_folio(folio);
- 
-+		 /* Open coding stable write behavior, see comment on top. */
-+		if (prev_folio != folio)
-+			folio_wait_writeback(folio);
-+
- 		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
- 		written = iomap_write_end(iter, bytes, copied, folio) ?
- 			  copied : 0;
-@@ -1544,8 +1565,10 @@ static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
- 		off_aligned = round_down(offset, bs);
- 		len_aligned = round_up(offset + written, bs) - off_aligned;
- 
--		iomap_folio_prepare_writethrough(folio, off_aligned,
--						 len_aligned);
-+		iomap_folio_prepare_writethrough(
-+			folio, off_aligned, len_aligned, prev_folio == folio);
-+
-+		prev_folio = folio;
- 
- 		if (!wt_ctx->nr_bvecs) {
- 			wt_ctx->bio_pos = round_down(pos, bs);
-diff --git a/mm/filemap.c b/mm/filemap.c
-index a1a5f8837e03..fc3ed0619838 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1711,7 +1711,8 @@ void folio_end_writethrough(struct folio *folio, bool error)
- 	if (!error)
- 		node_stat_mod_folio(folio, NR_WRITTEN, nr);
- 
--	if (folio_xor_flags_has_waiters(folio, 1 << PG_writeback))
-+	folio_test_clear_writeback(folio);
-+	if (folio_test_waiters(folio))
- 		folio_wake_bit(folio, PG_writeback);
+ static inline void mapping_set_stable_writes(struct address_space *mapping)
+@@ -319,6 +320,17 @@ static inline void mapping_clear_stable_writes(struct address_space *mapping)
+ 	clear_bit(AS_STABLE_WRITES, &mapping->flags);
  }
- EXPORT_SYMBOL(folio_end_writethrough);
+ 
++static inline void mapping_inc_inflight_stable_writes(struct address_space *mapping)
++{
++	atomic_inc(&mapping->inflight_stable_writes_count);
++}
++
++static inline void mapping_dec_inflight_stable_writes(struct address_space *mapping)
++{
++	WARN_ON_ONCE(atomic_read(&mapping->inflight_stable_writes_count) == 0);
++	atomic_dec_if_positive(&mapping->inflight_stable_writes_count);
++}
++
+ static inline void mapping_set_inaccessible(struct address_space *mapping)
+ {
+ 	/*
 -- 
 2.55.0
 
