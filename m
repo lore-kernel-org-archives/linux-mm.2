@@ -4,82 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D53DC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 23:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5775C55ABF
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 23:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE02A6B0093; Wed,  5 Aug 2026 19:10:58 -0400 (EDT)
+	id 6B3456B0095; Wed,  5 Aug 2026 19:10:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB6A56B0095; Wed,  5 Aug 2026 19:10:58 -0400 (EDT)
+	id 68B856B0096; Wed,  5 Aug 2026 19:10:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E436B0096; Wed,  5 Aug 2026 19:10:58 -0400 (EDT)
+	id 5A0FB6B0098; Wed,  5 Aug 2026 19:10:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 806DF6B0093
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:10:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB435A052F
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:57 +0000 (UTC)
-X-FDA: 85068762954.03.0CE15D8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC3F6B0095
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:10:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0227FA222E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:54 +0000 (UTC)
+X-FDA: 85068762870.27.608C4D1
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9402340002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MHFl3VwX;
-	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id BAC0E10000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kSXx9g0v;
+	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785971455;
+	s=arc-20220608; t=1785971453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5tWoyXH5IwDrcMy+oPeVQieBozDA3geoCdyfsWWrJi0=;
-	b=qWu9ppUNsieUib1wGQYLUFzzv5E8+6EpOUrZd6K89H9Sqv9CDnE9xRhO+ssrfHW88H7bcc
-	hZBkLtSZV3d17fUluZkkwvEkt8HXUpiG2aa+R4KxnHvAUiXf3q2NKnpiZjr0bWnAO3tMZa
-	VmaW22uN6GIbQdBUoIw6jxKraWv4FOA=
+	bh=iugKL66iLcE0ahFbQ5VGJD9xa6YtjYkcaWbCk9ue7Fw=;
+	b=Tt+Y8LV9BWWPu047enXqvqZ60oofgvjNZC+s8m+xyVV4QOXe0CQ8QG+PzzZkawasxQbVXY
+	7hRz3gYBFm0mssOrLkZ9k5WBlKLX8PYDTrhYPLaCYTyBZUCKmMpFnjIe9OTWfmo0vWUZTQ
+	4GRpD/h9ooAMoeZs7L6UBC8zcoqtoRM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785971455;
-	b=V7+O1QzdzyYO9oQ4RviydNUMJX8YyD3TWCuk9U7MC+GWKCMZiAnjPO00RrMyWj4sZgU4Fo
-	yKsl7h6ZDn4Q5ZKHmqfe6Yhi88zSASqN/13dvz71GlaFuRIuDX38rMfSgA2S4J0zIws3YE
-	Ca+AO1cn16eLg5/E3sONsVl8xn8HDAA=
+	t=1785971453;
+	b=KC+T1ETxPIfOJ8W48m1UhIeic4xf8SN0hA3zJV18KFPBrOAPq/CIbXyS274KuYwYB3Q1cp
+	3gxtEZsZ95w3AGp7wOfs58PHnufBNVZj/nMvbnrEcNwhJ5SlfNjTf1oxZdiVv+rCCvNKcE
+	dsR4XALD9Pvp3SSinELuo4MsSuj/r/0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MHFl3VwX;
-	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kSXx9g0v;
+	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785971455; x=1817507455;
+  t=1785971453; x=1817507453;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NZLOXaen9jDVMjpnEaM9wnAKmSoircGZzGky2M1Tvb0=;
-  b=MHFl3VwXmfmrqRNuD5pS+6Tghg9kgGZS1DqDdG8Fy99of5118li++iK0
-   y64EpA067BmC/sZ/yFeJ4eE8xPbI8cxUEoeUOBS1MplkwjvlSxMlIiYFF
-   GR+M/kVJDFmtDkZMP/lEmBOGMz+npjkb661nzqltTkpiEVEzog1bv+EtX
-   UeIoKtdPbbwjlcTijV22R34fBw6sX6/YyhESYaHB/O9xQXH70FCZYhqkI
-   J4IStgoZ1RozMmVnYB+L0PtckjGtOrZXtgNQpUDDo+6+xp0QsejmhRPUT
-   lo1Ch3ZozL2OYkdlZukW2zEvB7EAfs+GJhYxZJ+6Xs/mlP0LUnKaac+Qm
-   A==;
-X-CSE-ConnectionGUID: qZvMWjl+QeiRag5ENI+faA==
-X-CSE-MsgGUID: Cm5BpnycRsCOPDGbVRO+zA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="90376907"
+  bh=/Jjq0f7O0WvJkLs4JYtXmw67Rzu5MIrXEQREZTu1NqM=;
+  b=kSXx9g0vVpWyowDRvoEh2h7Wx1/LaBYfxbzDO4WhRACavNJ/jBnwqz9F
+   YDwRnnZtyP01d7+6nfD6/EuZbaWrEq14LuKzs9bDXxC6GFlE2XkM0pk6k
+   qfxH+K16wf0WWuM/CuN/dWr5QQ/kDakYXjA4zLM6CFRj+fQrlSgOLniSQ
+   B87/aQMqch0BVq7vm2iCZPpNZYpR+aogfWCANF68gOXaf5eVPxGqK72pN
+   mVF0a/UY3hEw6LpyIRuy+t2PWyNUu4gDI2XCadApbOex7jLtLvhKt+JYr
+   28dzNKLKQfSwfkEXtpUA2/eMMJJ5l/iDg1MlfBfUVTw904M2VSeHOlHTm
+   g==;
+X-CSE-ConnectionGUID: U++D3HvNQbCmuK6dg5yjqw==
+X-CSE-MsgGUID: BwGfUoeXQxiOZl3uWHhYoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="90376845"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="90376907"
+   d="scan'208";a="90376845"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:52 -0700
-X-CSE-ConnectionGUID: Mu2CKANrRdOv2SSKNqnKZw==
-X-CSE-MsgGUID: W3bcdhw1So+UvqvPffSiGw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:49 -0700
+X-CSE-ConnectionGUID: dbZ5mZZVTkeTIfdkt0zbgA==
+X-CSE-MsgGUID: 9Pr+QSRTQgSOCeG8Ps6dLQ==
 X-ExtLoop1: 1
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:51 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:49 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Cc: Sashiko <sashiko-bot@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Zi Yan <ziy@nvidia.com>,
@@ -104,10 +105,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH v3 6/6] drm/pagemap: Add fault injection for higher-order RAM folio allocation
-Date: Wed,  5 Aug 2026 16:10:41 -0700
-Message-Id: <20260805231041.3791771-7-matthew.brost@intel.com>
+	Francois Dugast <francois.dugast@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 2/6] mm/migrate_device: Do not write past the end of the src_pfns array
+Date: Wed,  5 Aug 2026 16:10:37 -0700
+Message-Id: <20260805231041.3791771-3-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260805231041.3791771-1-matthew.brost@intel.com>
 References: <20260805231041.3791771-1-matthew.brost@intel.com>
@@ -115,13 +117,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9402340002
-X-Stat-Signature: e8ztgu6tiicckm1w3cybgeq9zienk31o
+X-Rspamd-Queue-Id: BAC0E10000B
+X-Stat-Signature: toanp6u3kx4datjmin7z4ejifk46up37
 X-Rspam-User: 
-X-HE-Tag: 1785971455-787889
-X-HE-Meta: U2FsdGVkX18QBj8GNo9Dfngu1HDx3ykiT6xeMHHyZJYsDUFuQT3xwOQMiFoMJXIMfGod6sN0oqSh7XjUqaW2qS7crYSQdfxG/qkAq/f/sEbHwDmCWvvOnjiqPL2P7fvXZ66n2z8Hm1SZIHshDQ7eYEeBCZIUveFxDj+IJpxviLxWBki5m57oM9hsa5dlAbtHYOik5KhmqIYsRZwkv2+/OGbbP1LBThmyzRZ/kMw7m0OpFu/RRymJE9JQKDFVgrk3+Ar1r4CznFRApnFOKayWnx6aSStWSsr53LUg0EHHpOGgfZ3e/PHYAiVPolWHWy1k/xFBlvFOt8yCHMKXFRmacMDpjGZUohN5Yr8O+1oqh32h8lwePmAHHiexuh60miLr2XRHFslQ9eH1Yl5zt5zUqnhu1th18r17b7NSipE8PGFnYw5nuHGneHZ4nnR5nly1T3umzuyXhwNPq0eGYC78M9ZixXnqQU+tunA4Mt30EUQ5Lmjv1m0cogHEirQeL2S38ft1ZmH3Z9tpXKRGTiMdvhxz74mc2XfVDTwe5C9lOM2jxO8NC4Rq9uR/R0nSc8JnsssV0Y95agbENzIL3ggGevrn2gnHqPf6KaaoLxSnDUMTHDINRx8/FjUmT83Cw2jYna99X/X1ZDBXyoNqvQMCmPUDFlfLANmy6spdgcfcguVsiw73+QkLd1JpL9o8/uEQUEEEePJ1wHeUzYPM6Nt0GIaawJkXpxE5gpazWkuxQuUpheHbXYw3qeE2JYkY03IrqhmU3qTaSoB6Am2VWlWAZykzt4BLmJPh9zAuSF5pkIw4c6kG/V7OVguXLdQU7rwQKoWqGqQtwy5ref7BCZdVtX/VeB2nWqzYA7VutoHiN5tunQ2+3M+GCT3K3jeIEFaDpFKWMDkwllWBlS2dzZ1wDvuZ9yYOoa0mtGCCD5vBbnibARg9NSASJLhyCCV0eWJGpHjOIOzJOQpcOet6BCF
- DTKnGKoL
- onW+jEMa5Nd2jINLan5n+psIanPBA373K2JMRps+QDjr6U5FosTK1jtI9uI+7Qe9KMOZynERmCzENYr93dvRspiWqLbrjVeZCOdp1lhTcvsIafxI15lvLj8Y+zPOlVGMMTCK0Sley0fMr8aosWrDgbjylRCXAtJxDTay7+p+eH1P2qJstciEIpU7UvKS9qBEJ4IsENp/51XN8Zc1inmBg58S0QKP7yy1CI5yLY8RMPQuE5AT7t+W2sz2BzwYH4D7z8g1HmrrsxmbrRQt5K81ahR1EMr26ge3ySIKH7Ej20bwZuFeH07nwqzTlPAHde4qCohPn03X7OebPpASVyQUiFAlsPANh3NVUl669yCtNiK/cMNDZOd9mVcqSroOlS/xFkkokaWskYdH+eoGCDuCc1RqBtbXgTs4V5e37xLXpNPSm3azQYWYtIrkoGPa997JIrh4aLNWVRygcsPmDwXbc3oPxqreN0rRzRSBa9dmwahzwhC2aRZO2LPtDwWFxJ4QT3CbGrKkollRPHwLIigfX4iAgS03Ay5k5VPG/tvO6JaNy65zVskH1VstXwwfcn+59GRk72+rq9GkMMDColBQsmpk1GKYX3SLaanR3wkfMTOhcwFAVNT3kh+pduT2AAcOra7tJzzUmmOxBW3V1Xp52suGIu2EF5LkFCJ0yNUm8dYeLucgW2rEK6lQZz4MmtFFLAWYULaBLdvT/UFpod4kyE6BhsKBGInxYbDC97gSl1rG5Z+exE3RID/KGe+QdgTI1ztKAC9qMq9BtSB7yMnotjChyBp0yPwZM9aF1WLEaCYM15nqNX7kK7iEaQwgiJSlCsvtTlo8+Rx5pkRMnj8S+FGFxSoDu4InMT9+ovxFZA9H6Sgu9ke/0zti+JaynYkaiwrcQEz1jKu6cn2gOK9hb+QhgJuSElggOJ6k2
+X-HE-Tag: 1785971452-731538
+X-HE-Meta: U2FsdGVkX1+nqxWRjvgQGQ30wnJhFa2zyF9qI5tFL8Mgf7kT8feDyz4AKMTV4EvwBocSfjABsQgUajvIDi7iWXRJc940QIQSw+sNmvS9uKt7c6cp9fbrXy/SgozVNgzkGm70N2z4Pmha2sgenQBVU0Cu3hzGWqOqWCcGooWOJ5fiMfpxj71AYdSeo4gOv0Coehqkzr6CRQJKIRaQJK457pUgqeA1F0HvVza70b16zySGrAC4UaCkB/zK3/kEDRXWfjsHbYg4ToIqWnCkra1RC4ss/KsorPA3dF49y6SLU2p8hdWL3K2ylUDYAPpnvb6os2csRqdsHsgEhaL0EK5Q1uNtZFBCFyXCEX+XuhyYn1x756bBkI5A/Q80S4uthL0Jpa47c9lPqeYXTPGZurYhZ9vMOn3NA3hXaCFnLQGd6eVfkD+uzgIsf8UlM5/rLlLrHT5SgmD9M6LojvQ3iHXus35+21me9gZKUdVloKffPr6KATqK7LU3B8DlFR0O0k1LPxS/sA2k8+cY7RVO3fanO6qFdtqTmcfTUVpqWyJgL58EIbXuICb4pzOlKqisve6l/VgRIJGXZz/vAQds5y6+2AfhvpjSjbk+fVPOmkAGnHdflNWk2R2dbSY87JJZFRPrpLG+a8gMPPcpO7Ia9LckcaSPh8JoPQMB8bF043VBNhQ+zT6QcKInWAEs6L492ZCR4kqluVNZJ65EoD8XMdStXQVW4VX4Cq4PdyyjAfNZAoVTz3kFW0tts2j/0rnSpLor2jrcc+UhLcSiQM/1Xkpi5XDqVGcDbLVM2QEsqkFWGewLGmJFvLeAF6X75rpKth5kVGTvakCSq0jUrL3qd1bmUBX0S4RZtARdQdQIynI3vgeiiaunX3l0BwllFldj00IYln0+JdodjVf3VLLpiFbQsbnWpKMImz08ft10qTz1oCbA/6g4R9CEjMvnRM7z4VwtJiB+66aIbOW/zumOfEW
+ bM9qkBvF
+ vnnI9q6eVerWTABkjHjDPPefYOqRqGpp/FTxwUnnKDV3DEZD3KFd4f9pyyyUtKRmGk6xlEX2m3K6PO9N7pFjnwcVaTOdFSLUrOw9VMMlfvF+ZPMbISH+ceE9PTk9iWXq+SeIgzOFKApbbAHwrA/FsQTMSJLhHToiiG61R5oDpwt9ErEm06z54VIoq3fCvARmd09Dg2QNzWq7pf0VjkFLjB3fR/oK5lJPb7CCy82MtKQ32iBnNyVMIodksWO9+3kPZK9BIDQ48LMhO4h5sNjYtoEvzd7yTZ63xEPjo5R3ydPAbH+l96OgQeQGDId36XbjcLapO0lmjye7DiSzUn0TnQ3pp6fTgCPRSMin+Nf24M/aRBl5VRlOW4m/D9SQBT2EsbtLl04/ahwndFYGNRiYFH9Zg7p9n/YbO7y8B/ikwjkhNVEWF5Ykb4AuIMZCGgZNj2M7LpFhrDcDF3NCoWHBRID4pcZfUxLePPCJAEDCAFDrw5Q/JJWe/IlFFHzpgKSaY3bHfV50MC/fT+4g5thazYZJGCg65WSL77FaL66teenUZA5sr7jJTGo1eHdnjyKLS7k0Y+Z4mAQqFdEvF/Z+XrC4cyd3DRvfF9xu9MwipA42uXCWALDBVnlN2AUhr6e1mUQw31yc8qrfKS0X6orN7hv/LhgAdaVG5Y2oO2cmTJxH55j4V3/7VTIGxmXGDX3t3+eEIfpYIfO9hkjzWfrHhKNRX8deaUMtF87IS7qY+EVwwaLRMCOEiR+M303FvNnVM+2LMBO8AqiKmWqArt7FKU+ARzZoFmHAvX20J+7TPRsd8Byh/iauRn7P1f2NEeUbNCqoTBGjgbu31+RgOI2xfjBkmIz1KXbyQ+uvH8yl/tFBS672gn1M/fA4/Mg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,27 +131,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Migrating a device-private THP back to system memory has two distinct
-paths in __migrate_device_pages(): the fast path where both source and
-destination carry MIGRATE_PFN_COMPOUND, and the fallback path where the
-destination could only be satisfied with order-0 folios and the source
-THP therefore has to be split via migrate_vma_split_unmapped_folio().
+migrate_device_range() and migrate_device_pfns() zero the tail entries
+of a large folio without checking them against @npages:
 
-The fallback path only triggers under genuine memory pressure, which
-makes it both rare and awkward to reproduce, yet it is the path where
-the interesting refcounting happens (the CPU fault holds an extra
-reference on the device folio taken by do_huge_pmd_device_private()).
+	for (j = 1; j < nr; j++)
+		src_pfns[i+j] = 0;
 
-Add a fault_attr, modelled on backup_fault_inject in ttm_pool.c, that
-forces the higher-order allocation in
-drm_pagemap_migrate_populate_ram_pfn() to fail so the existing order-0
-fallback is taken deterministically.
+@nr comes from the folio, not from the array, so a folio that extends
+past the end of the range being migrated writes beyond src_pfns[].
+Callers size that array for @npages entries, so this corrupts whatever
+follows it.
 
-The attribute is exposed at /sys/kernel/debug/drm_pagemap_fault_inject
-and requires CONFIG_FAULT_INJECTION_DEBUG_FS. With
-CONFIG_FAULT_INJECTION disabled the helper compiles out to a constant
-false and the injection has no cost.
+Bound the loop by @npages. The subsequent "i += j - 1" still terminates
+the outer loop correctly: on a bounded exit j is @npages - i, leaving i
+at @npages after the increment.
 
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
@@ -179,80 +177,35 @@ Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: dri-devel@lists.freedesktop.org
 Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/drm_pagemap.c | 36 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ mm/migrate_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 51c6f12e4256..6ae8c9aa36cc 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -3,6 +3,7 @@
-  * Copyright © 2024-2025 Intel Corporation
-  */
- 
-+#include <linux/debugfs.h>
- #include <linux/dma-fence.h>
- #include <linux/dma-mapping.h>
- #include <linux/migrate.h>
-@@ -12,6 +13,27 @@
- #include <drm/drm_pagemap_util.h>
- #include <drm/drm_print.h>
- 
-+#ifdef CONFIG_FAULT_INJECTION
-+#include <linux/fault-inject.h>
-+static DECLARE_FAULT_ATTR(migrate_to_ram_fault_inject);
-+
-+/*
-+ * Force a higher-order destination folio allocation to fail in
-+ * drm_pagemap_migrate_populate_ram_pfn(), exercising the order-0 fallback
-+ * (and, in turn, the THP split path in __migrate_device_pages()) without
-+ * having to drive the system into actual memory pressure.
-+ */
-+static bool drm_pagemap_fault_inject_folio(void)
-+{
-+	return should_fail(&migrate_to_ram_fault_inject, 1);
-+}
-+#else
-+static bool drm_pagemap_fault_inject_folio(void)
-+{
-+	return false;
-+}
-+#endif
-+
- /**
-  * DOC: Overview
-  *
-@@ -960,7 +982,9 @@ static int drm_pagemap_migrate_populate_ram_pfn(struct vm_area_struct *vas,
- 		if (order)
- 			gfp |= __GFP_NOWARN;
- 
--		if (vas)
-+		if (order && drm_pagemap_fault_inject_folio())
-+			folio = NULL;
-+		else if (vas)
- 			folio = vma_alloc_folio(gfp, order, vas, addr);
- 		else
- 			folio = folio_alloc(gfp, order);
-@@ -1554,6 +1578,16 @@ void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool is_atomic_or_reclaim
- 		kfree(dpagemap);
- }
- 
-+static int __init drm_pagemap_module_init(void)
-+{
-+#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_FAULT_INJECTION)
-+	fault_create_debugfs_attr("drm_pagemap_fault_inject", NULL,
-+				  &migrate_to_ram_fault_inject);
-+#endif
-+	return 0;
-+}
-+module_init(drm_pagemap_module_init);
-+
- static void drm_pagemap_exit(void)
- {
- 	flush_work(&drm_pagemap_work);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 162d29b2807a..ae9027421b80 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1415,7 +1415,7 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+ 		nr = folio_nr_pages(folio);
+ 		if (nr > 1) {
+ 			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
++			for (j = 1; j < nr && (i + j) < npages; j++)
+ 				src_pfns[i+j] = 0;
+ 			i += j - 1;
+ 			pfn += j - 1;
+@@ -1449,7 +1449,7 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+ 		nr = folio_nr_pages(folio);
+ 		if (nr > 1) {
+ 			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
++			for (j = 1; j < nr && (i + j) < npages; j++)
+ 				src_pfns[i+j] = 0;
+ 			i += j - 1;
+ 		}
 -- 
 2.34.1
 
