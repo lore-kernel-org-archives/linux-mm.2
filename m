@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC1BC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81175C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4DA66B00A0; Wed,  5 Aug 2026 04:15:49 -0400 (EDT)
+	id 423E46B00A5; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFEA46B00A1; Wed,  5 Aug 2026 04:15:49 -0400 (EDT)
+	id 3FC2A6B00B1; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A17366B00A3; Wed,  5 Aug 2026 04:15:49 -0400 (EDT)
+	id 2C6266B00B4; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A7C6B00A0
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:15:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D67F1C0C1E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:15:49 +0000 (UTC)
-X-FDA: 85066507218.03.62B9574
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4F33240005
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:15:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kHT+RewT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 029116B00A5
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:16:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C9601C0BDA
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:16:52 +0000 (UTC)
+X-FDA: 85066509864.12.CC45F8B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DBD51180004
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:16:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1dfoJYr;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785917810;
+	b=iNwbBpOurXjfqCmDeC9YYXE5PxF7Zfu8is5/VpTAx/KHD8BS9ei3sju/lT8vMMGZPTVuL6
+	mZH+ZRiMzOEUDNyK0/yVI1ffASe2IFFaMqjE1IUsy8BYCtdYlZDVHaBeFZGoIoRTEdUEm/
+	tZA2v9/zONiiWuPXKP2v//Mtp5VbwsM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1dfoJYr;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785917747;
+	s=arc-20220608; t=1785917810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lzmyTxvmXxprlAPCgRd0UqqVb7Yl/SSQCszNPTVuf6c=;
-	b=4vjU3Ud/9GepEIO1141npnakBWxG/GWXe9nPUxcCFoIBI488yqSRezjfE4bxnRQpB81Ks3
-	5k82imckNXeFUAFBfGmYkwtYeNy0Hi7TCvLT3I40RivsZmtPGru1SuQfpuXENdJptBhFMz
-	JULicNPNw5+O6mSDR5D3WZBcpZ3sI9U=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kHT+RewT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785917747;
-	b=iAV19qcwBdFyJQdWsNe9JOtzM3npWWanqnwq8eYliu9RUnQEhwkyyUXqA4rPQt/Biv+H8c
-	x5k8czCb2gaAwBT/ebZ9A9Hyb8LQirsTy0wUnMer7nthDb27afEl5CxMEJ2XSJCV5yg8o1
-	9JkaX3l06AfYBPS9F90YkibZsU/+EdQ=
-Date: Wed, 5 Aug 2026 16:15:34 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785917745;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lzmyTxvmXxprlAPCgRd0UqqVb7Yl/SSQCszNPTVuf6c=;
-	b=kHT+RewTiod0knktRTZrH4gLYx9KBQgtTZlBLKpn8BzpMybhx8PJQcORpuSP/9NSdVMd1O
-	DYuIZo5245/oIxf8v+YGysl9JfhluavOJUq05+VlF42Yg2ih1Im8PL4+J4V9HywHD6SYT9
-	dl3d23iKXZ6g/dQjZegWGZaNmaAOKmI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com,
-	hannes@cmpxchg.org, yosry@kernel.org, david@kernel.org,
-	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 11/11] mm, swap: serialize xswap map/unmap with a
- mutex
-Message-ID: <anLxJlKBnNUwC4BA@MiWiFi-R3L-srv>
-References: <20260727135029.1059441-1-baoquan.he@linux.dev>
- <20260727140503.1060918-1-baoquan.he@linux.dev>
- <20260727140503.1060918-10-baoquan.he@linux.dev>
- <CAKEwX=NNzJ-7uoHFG8jxeN=PYi_O9D42xc4or3O1im0UJpF2ag@mail.gmail.com>
+	bh=GmYyrdZe1B0PBpV7nWZEHOZ78x8Fhml0/nyFckT8Q5U=;
+	b=QoAbCKTkxjVR4KIPZUIRugpv1POBS64rEvy7G1SHim4BOQbkJLOc6skTkU5HluxoEUYdfA
+	jh7kC+QVFkBxi+5lpilBKoxwZiSgkLmCn0qryEO7wVkAAeA6bsCH9jolsryKDEC/VBP7dO
+	hzAqpXsBaQhz4Rjs0rx8Bs1wvl8Pwgc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 124D7600AE;
+	Wed,  5 Aug 2026 08:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6411F000E9;
+	Wed,  5 Aug 2026 08:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785917809;
+	bh=GmYyrdZe1B0PBpV7nWZEHOZ78x8Fhml0/nyFckT8Q5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T1dfoJYrP3ggTDguqaQhaDmZLHe3mJjru4jCT/1ANuiGL1fot3+s/dHfHfhjYoyEX
+	 Y/aoGoTTs2LxtCJHGd5OZv4Owb8anEX7nZ58Cgw3J9H/zzQiBn6w/oiPjSeGxP3u+E
+	 mYDuXnJmHjwfW6tfBp1xS0WGTKuLh8ZX8Yh8rSfPMcpsINud33uvR4MdiF0syKhk7T
+	 utgpQXaaxlwgXTCPSMKCC9+pkhuX90w61xunWQsdzZiRliIxSsrtcJDlhjr4Ykn/nQ
+	 XHnITQrz2tNu+rbNWvGoQt9hshksDufbzvK3Orz/AFL06/C0FFAzaDTVmR0YTcEHVn
+	 UuniWlaO51HGw==
+Date: Wed, 5 Aug 2026 09:16:30 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Yang Shi <yang@os.amperecomputing.com>, Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, 
+	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
+	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <anLr5Xd-sD7frihN@lucifer>
+References: <amCPBrdltFSE_fEf@J2N7QTR9R3>
+ <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+ <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+ <anHuLy52o5S9Nlwp@lucifer>
+ <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
+ <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
+ <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
+ <CAHk-=whjfRaeYsAVS9VfYO5uaSB43sT7zPOmNWR6gC8h=t60=g@mail.gmail.com>
+ <anIhSGs70TTzymHM@lucifer>
+ <8d6119c7-2216-fcdd-d0b9-cc60ccc8caf3@gentwo.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=NNzJ-7uoHFG8jxeN=PYi_O9D42xc4or3O1im0UJpF2ag@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <8d6119c7-2216-fcdd-d0b9-cc60ccc8caf3@gentwo.org>
+X-Rspamd-Queue-Id: DBD51180004
+X-Stat-Signature: fr87tir87bwkse9o9d7s4sx17xcaebw1
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sug7wh8sxxh3h7cx6dnq67sfb4hotixj
-X-Rspamd-Queue-Id: 4F33240005
-X-HE-Tag: 1785917747-496259
-X-HE-Meta: U2FsdGVkX1+PdMsXaLcVEsFf4X1ChWXwj16VT9ejr+ySvnv1VGni6TUCcxuuj6peH0MyN1dHfDCfc3vyjwKaqW4mV21jjzKktyDZHwQN8KsnKeQWPFj/cHqDsveM/7Qom4Fy5RH7Dkx+efXqcj8yahGGka4iaxLN5V6JjkXPeikBb0otTG0BTv65yVSjncsyptvo0mqgMfYphnc3oYzdpSc27QvLZ1WU0RI3M2FRZ7Lnd4AH1G16ddI2V3dVrYG2HzaRK/8NoS99DbV4jmtdP/Svx/hnUP/0NS8VHIPHQ/1ReziBc6RIgqAMu5KCvhY3x8NuAc/Sd9e2iDjI5WdqmPyW6vWsEX5GRm/i9W8mKd46yLf5AQWjKQnR88c142MVF0JzSPvSL1bKPkanUA3Cz1N9oB2Nb/UxPnfHW4ngzIXWnqrm6CTKLjkqlw+/B4Kfrvb1aPA6Wra9eiCyH8/VtH1X2oT/KMPoFBt3Lmdda2zwWl/qoQS8zFQ0W5RNCFpNCou+eXluaDumEk206oWUXUKqT/3669vxm+kqrbK7Y+VRd3RNQXy/U2PJoMqkTg00L7OGNgdTBB3lnBo9xBTOwlbZlm3MFmvwfolhfZlBCz7G8rF8tWQQ9AgGO8jKuXIPlptwW24mrbiw1yNro0k2LEtqIMVtNiY4JqoEu4cakBUcwpKYWeCp3bBClCZ4BU8gFJAIsnykNrk3WCT1MImzzdIcMa2rMj/5pAXRmjbh2NTfZL4UQ+xkzMk9db18YX43wfUmUehDYzYubxGglrw/4i63RqGTrne11HW1PG9QCXWcwXSZz9pkxHREBt+wNiDEH9n2d9h4LZ/aeh91NGwby5vSOZmTCbEPfgcZvp+7GfQeX1wQmdEbBoLJFF9cFLaz/yAondHJKx0J8yow6186vgwT3l7nqi7A9a8ZmJ4tEBRMz3tfsHZHUMmPOiHDdHlPW9/SGZ+qJotqKmoJ5N6
- ijyOxvXB
- v0YYVJkCPZfzA+VXp/ZYGctFvRUFXKatPCb0A9A1JcrgW9bMGd/A1avGb99iqPz2yXtDg+OOTtTj8GFPyjkFLIaqz04UylDs2sfMcGUVXiYklthqz5FH5VRJG+PMxx5tGebUY87fx+azKdXsnaufiKNJlDmw/cqqLcTooBDScTU/Sw21vvn47JkK42Lk1UlKfTYWMEUlxr3I3YvoH+DGnXgibdPMvmDVUOsO0YYHczg5rHw1nXf8N1E+4swvvoNq68etAZ28wrOJhc15hO8Ao0bJ7ng==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785917810-666579
+X-HE-Meta: U2FsdGVkX1/FzMC11Q6dcF9GGMlqS7S0RaBVjV84Ox6EEj6aesL1cR6zvKTwormle3VMiA3vqoYQuO2ROwU4/Vi/57r7YnMsuMVjZixgIfWJupQG/7Zw53dJ9Ul1zuiU8HDGs0vVjWPmIwPQxhb26spDwDeJOJYoknGdmIfeTF4BG1mvqG/Du4D1NjdGdiL5v62oxkXMrJRoO4duab+5dNAaZXo+hCGLDZuyU61qkRp9yYG9d0oHm3cPBk5w5e1Pk9NxtluhbGNOuWnUjeb5pzCOSotQAXLx61s52UfrRTKkJYVvEU9h2pxa4tBbc67w/AVSWR3woBuRYUnj4GYf63daXyuHvJ0niqZXdLi55eYCqEpkllBtS3/RqsuKqLi2T1ALOMnjgwby3SLpEljaYyYT1raxpfAol1oxZDMFVpBt6OfeA+L8QCxsriY0j4xS4TxLzvDKNup7KEc/NaI9iVHw9t8Nge4T4UXlPrboIh0KN54+/eNh4ZFAeBkYc+KQx1xv64Ashxea86IfA1WBWVZ1f3RN4HK5o7qEO3IH+PvKbIwClaUZ2bbpVPeKI8RR0ieCn7lPcqcAKEBQNeUM/YpbFSG9YIn0BuTM2+9wgOAxmmDvbrRYUSQcSYfYh4k+aFw1bA0aPLGYLm0h+Gr/ssybnRf/E2cOBqWtpuvFixOr6UoTTvtBBcHr9CyAzb5/bXaIU7tIQDIGeD4hVh6VHahEXwcZLtdoZLV/8hSTlDfKnbXGyd9eW59NPrVkROQXdpprmiGNs84vCR+imMSDZdqN1avFGgCxbIZdnjKo1W3OUcDCXgr9LBjlJuwqfQlq9Suq/YLdGziq10rTfOmBvlwlvnh0V1qaqzXzxeUKpZ0IaKKSMLkTw6jVsNU9EBXi3+tpDlxaVIslu2dVqAQkgMbggv86cSBDmAI3xg1DygcUFpLpw8YXILsI8e7KF9JzyJtwyxE8tlKjdl35bF1
+ jMlBkDxF
+ Lj9MKBOYdnocDtHJUhCY61yJ+Rudaj+HDqk/Al4RCPTfwNGGKbPB0pwXfW2uHFZqHZv6nSuCZpNjcko3D276Zzy4DBDgDIR+P/T8Du0k10dk6L9zbmFKcnKqDJxpjqS1aNSH5b/MTxDAgjFLqBWtpBp4m9GfK2lxUoaclbHyDzfcvDTupySlhAaD3/giLKJ3NvLc7lmPBd0BFT+Z3TQOignPf1tmcf57qooSQ/oUiFQsUZr8ir8iO009G5QweY5iBs/swIaGCvqoWgLNxl7ffJv7A6eDgbIN2fuPR3bDgsymgWiI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,28 +105,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/27/26 at 08:13am, Nhat Pham wrote:
-> On Mon, Jul 27, 2026 at 7:06 AM Baoquan He <baoquan.he@linux.dev> wrote:
+On Tue, Aug 04, 2026 at 02:40:27PM -0700, Christoph Lameter (Ampere) wrote:
+> On Tue, 4 Aug 2026, Lorenzo Stoakes (ARM) wrote:
+>
+> > On Tue, Aug 04, 2026 at 10:01:45AM -0700, Linus Torvalds wrote:
+> > > So I'm just trying to clarify my stance - I don't hate percpu TLB
+> > > contents per se. I hate the notion of codifying them.
 > >
-> > Concurrent xswap grow operations race on vm_area_map_pages(),
-> > triggering WARN_ON(!pte_none) in the vmap page table walk when
-> > one thread sees a PTE already set by another.  The -EBUSY safety
-> > net catches it but the warning is noisy and unavoidable without
-> > serialization.
+> > I do worry that changing per-CPU data structures to support this is exactly
+> > codifying this (and will encourage other arches to follow suit).
 > >
-> > Add a per-device mutex (xswap_lock) held across xswap_map_clusters
-> > and xswap_unmap_clusters so that only one thread can modify the
-> > VM_SPARSE page table at a time.  The shrink path is already
-> > deferred to a workqueue so it does not contend with itself.
-> >
-> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-> 
-> Seems like this should be squashed into one of the older patches, no?
+> > And I really don't think there's any way to implement this without
+> > fundamentally changing core mm or assumptions that core mm can make.
+>
+> Would it be possible to discuss the technical issues instead of throwing
+> up this and that foggy objection? Lets not get into the complexities of
 
-Both is fine to me, because putting it in a separate patch can get a
-specific log to describe it with more details. Have squashed it into
-patch 03 as suggested since they are small number of lines of change.
+Christoph this is very unhelpful. I and other maintainers have raised
+_specific_ and _technical_ objections. If you are having comprehension
+issues it'd be more constructive to ask questions.
 
-Thanks
-Baoquan
+It's really simple - convince us or the series doesn't go upstream.
+
+>
+> The fundamental problem is that your patchset does
+>
+>
+> <preeamble establishing restart point>
+> RMV per cpu op
+> <post handling cleaning up setup of restart point>
+>
+>
+> What x86 does and what we can get ARM to do is:
+>
+> RMW per cpu op
+> Why do you think that your solution that requires a complex restart
+> mechanism is better?
+>
+>
+> These are operations that are key to the performance in critical parts of
+> memory management and this code is replicated by being inlined thousands
+> of times in the kernel.
+
+I mean this is just silly :)
+
+Provide data to back any of this, and no your benchmarks of your approach
+vs. nothing isn't it, nor do they demonstrate anything about what you claim
+here.
+
+You've been asked for this multiple times now.
+
+(And please no hand waving about 'critical parts of mm'. Be specific
+please.)
+
+>
+>
+
+--
+Cheers, Lorenzo
 
