@@ -4,153 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA8BC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C28BC55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:46:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BDF36B00A6; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
+	id 992E76B008A; Wed,  5 Aug 2026 04:46:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967426B00A9; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
+	id 969F26B0092; Wed,  5 Aug 2026 04:46:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 856616B00AB; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
+	id 8820F6B0093; Wed,  5 Aug 2026 04:46:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 539CB6B00A6
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD1E01C049D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:45:19 +0000 (UTC)
-X-FDA: 85066581558.15.82F923C
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 96E0A1C0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:45:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=h7UzM6Xy;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CA3F6B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:46:11 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D18288037D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:46:10 +0000 (UTC)
+X-FDA: 85066583700.29.7798FC7
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EDF99140005
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:46:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=MKZQdoBy;
+	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785919517;
+	s=arc-20220608; t=1785919569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JD3nmw7/uCpHKQFNLBdXItUa70PfNLL451+71cdShtI=;
-	b=rSEXq0wxe/qYJEkIyXkTWLyspfm5kBCfpbVt5ULYJ9gVzjp7RaBDbIp1mLFD+sHh2wugjN
-	iXslYXwoe3emPnHdXdVQxZCRUqNjv8W1Rv3QgrDoSrzGcv6c9Z3f/MRssAbTgbPPLXsVN4
-	hTONli6LVhtj+54fZwMItcpMLLxQ1zE=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=h7UzM6Xy;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+	bh=Yani87D2vkchIXW/xJvT3dpw4a1HdmFyNSK8oLbUwI4=;
+	b=qy//8oPRwJdreKyuf75MsrFfbbEF/gZtO7ONoftgToYEg/btDEFBcQOtst9cMNCD1h/xNG
+	hmBlwqXA+ZvG2Y6htYLjqbjStaR500yhNs0gZXr74DvpNqw85CbmI12LeiosTOiTHEj19P
+	/U7YOOk72mSMriOYCnVjQAhjm+yIugM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785919517;
-	b=7qISCeJETCP5tPt+z0RQzeERYJRmMi/6Oc8snUba4q2kARRq4/lHPbgitA2bCx6gGhAPqe
-	RqhVD47aZSNxynlALUAGnVXO0sDYjixOWDKbQMO9oMtCgwEw5G1TA3E680lHNIxM00Wy1f
-	+akDobMnOyd/0yn1RIjLp+1fFR8F4QE=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mcwH3057752;
-	Wed, 5 Aug 2026 08:45:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=JD3nmw7/uCpHKQFNLBdXItUa70PfNL
-	L451+71cdShtI=; b=h7UzM6Xyr78usgCRR1hJ7/iAbqW9yfFhu+STygjpydYljN
-	KP4FN0nLHlTh6AoQafUPkes4WckzTrFzpTthrjk8SddikrxZI+FfxfDLOdegXd+f
-	3OYs4PfOTeMVR0qP/aA0bkcRv8s/62AuwchucxkV/w4a6gpdA5UbfUdPJXpe1ywz
-	3iEDLvca6NeK7DmZwCmekFL5oiAyfdqRSp7XngXnkjaHoYPzvBqxCyu0m7bDIwT3
-	oONTXLH9weEQc0Xs+7z+Wm/v8RZ3mlhcwismUAWi8qQAhFiDcUpsDDLqTFQzb7QF
-	ooirbwHieQ4ADNFD69xKP3Uw8xx+6UC3WanCMwFA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8eusn3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 08:45:10 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6758faPa000582;
-	Wed, 5 Aug 2026 08:45:09 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtynhe0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 08:45:09 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6758j5bE17170808
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 08:45:05 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 405CE20043;
-	Wed,  5 Aug 2026 08:45:05 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A1B920040;
-	Wed,  5 Aug 2026 08:45:04 +0000 (GMT)
-Received: from osiris (unknown [9.111.89.228])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  5 Aug 2026 08:45:04 +0000 (GMT)
-Date: Wed, 5 Aug 2026 10:45:03 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
-        "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Yang Shi <yang@os.amperecomputing.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org,
-        urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
-        akpm@linux-foundation.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <20260805084503.37016Aa7-hca@linux.ibm.com>
-References: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
- <anHuLy52o5S9Nlwp@lucifer>
- <63ea8156-a109-b2a2-6d35-1c17ad7f1a9d@gentwo.org>
- <84b31836-1d10-4bec-a469-468b91fd4645@kernel.org>
- <9f146ce0-4adc-0c00-a2d8-c01b47edc9d1@gentwo.org>
- <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
+	t=1785919569;
+	b=q/j6rh6z6Dy1BxtUeia31wkCIidLVUHKAa+6qdpYMOgvDQoTv/Mtbx0TDqg8dAZepzaYoX
+	SLQIXS4fRjWdm9aaPdkpf4zq8xhdlkV5BbsS5IUfGkuPWB6dnZQ1ym1gQFVu/oGOsjZaL6
+	m3piE+0Wx8MRvpOEzt/91O0luS2cJwY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=MKZQdoBy;
+	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c99eaa1f020so716546a12.2
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 01:46:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1785919568; x=1786524368; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Yani87D2vkchIXW/xJvT3dpw4a1HdmFyNSK8oLbUwI4=;
+        b=MKZQdoByok0srBIwxqVEEtpVO8RLNYDZbrj1U+j3pEXanzHwUt5no+UH1MxHy0F+7J
+         WEPvBvjdHBG2aJIL1Gtn8uARkY0Y7u766teCfkyd5KwW02Mjc1kDiri8xSiIKKrquI7x
+         O1VuliW9EQNXiOTfiApmRKUKztkRG+coOpKHU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785919568; x=1786524368;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yani87D2vkchIXW/xJvT3dpw4a1HdmFyNSK8oLbUwI4=;
+        b=gQ437bafiyAtT1MCNlEuiemHUbT7X+9PjlWHgyHfvR9XMpRCtBBQ9CBKKuX6tjuHJh
+         NZRUQdtnusfFRLsYIEbYaiBjLoCQuB4OLUzjSQ2DSGgPiUm1XBU27YOr/uksMTw2+L+1
+         qCZMJd7XekiJXxUKbgogxGW2xxx3LrCTsPqDHq5tltX8CEZ17P4aMwlAiyoYq4Y3MULP
+         S5a1SaCT6ZpryPjLeP3PQsPgGPRwQ9qd+PZFPV0uJhvjKyTjNwKhOJ/xlptLkri53Yvj
+         /6gIG2NFhLYqxBSzaQgKWlkxbswwckOZAvYKUnhTpuwdV9wCISM5vUyH8mQbVMoENTmY
+         QSGA==
+X-Forwarded-Encrypted: i=1; AHgh+RpgY4O8MxijdFl+y2zT/TJWSte8S3a0OJNxbQ5yJeix/HRmVMf7dx2YnLuX1bOVsjyHN6Cw0aoIPg==@kvack.org
+X-Gm-Message-State: AOJu0YzK/vDeGtLNhN9gR4oHWJzvVbJ5hoi9eNMyoDGY2RQFoDI82NE9
+	cmpz1Ga0dqQbUfOo7ienBU6hgaxLJrj8EDnYT6Dj3nsyqbktn3QfgsOYr/YDDYchPw==
+X-Gm-Gg: AR+sD12fNzKaYHP6jfiLCOY8kA3ZqujHZxObMWedVWPkmvj1qt6cvT7wUB/3l9m6Mih
+	zKdLqqYZsN8tT81d2Q7Qv0W0EE1baaakul/q0fd5sr93D2Qhpy41cK87sX8cQQ240m422N+ngnE
+	vc/CH9FrAnqRaj/uqGqJn5TJc/3QwlopGpNn9h6BJAUAYg6fUBhJEa0OH37MCTUoDDc2bLD4uIn
+	TOdmeAXS68SgDvsqTQmLtL3mgZuw2OC/gG4Gb9VTdrtNIQni30Arz4F0gCLRLXxOTiNaSmETNkJ
+	XMPHvU0sDNlk9xGwYAZv80ul2f2+EytdPJxkcoe2uyqG05lOPH6PI+PojBhmKlPK2U1rjom12qt
+	defGKh9fQrr9aPQny8XXHrfauEcEHiP1+0a30NoQP98flV4nheyZ4rl8IKGB5ZB3N37eDzkE2IT
+	qQQtB+khWuDXv48eC5HMmFkzzwROzuQe/1EXRubVp+1aTfbhhLgAhfrNXF5IHD3DKXvIxNF63Le
+	2AxSg7O1txAHMSmK/Yh7/Yin0V7
+X-Received: by 2002:a05:6a20:ac44:b0:3c3:8440:f6da with SMTP id adf61e73a8af0-3cb85ea6fa5mr6036539637.29.1785919567859;
+        Wed, 05 Aug 2026 01:46:07 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:8002:2a47:a704:5a58])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe708be5bdsm1024528a12.15.2026.08.05.01.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 01:46:07 -0700 (PDT)
+Date: Wed, 5 Aug 2026 17:46:02 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	akpm@linux-foundation.org, bigeasy@linutronix.de, hdanton@sina.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, 
+	yosry.ahmed@linux.dev, surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
+	Suleiman Souhlal <suleiman@google.com>
+Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
+ backends
+Message-ID: <anL0utxGYeGOGwjt@google.com>
+References: <20260805005545.66112-1-baohua@kernel.org>
+ <anKQ_qZ1-Q6FchZ9@google.com>
+ <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
+ <anKaU6VStrW8zaQo@google.com>
+ <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
+ <anLGxk3iShEfCB30@google.com>
+ <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: nSjLujXPpUt8SCl8nOyvj029YFqLkigw
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfX7fUH1t4maqRx
- //StpMY7nBAPQ+rfUQ94r32tTMY279r1ppR8Gj908SIS0YCI/74Rww5hM9FqqtmS0G6XLIdmRKT
- USc0wMZF7U4lzqn/dcK7OfujfoIqeNM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfXzxKbMyGLKx1O
- 1Epm2xtvxNNJqwrMSFnXF/YhlbXForSZBwSH+5SDOKDizeDdEGMV20RzHkD8I1ihwB3WfRRGN0f
- k+6ck6dUq3nARmrn+SfcBXLWldNNt8bjgMUMLwGs+/a8PUH84W8E9c/aRgH4b5ikrkEFOFocb8i
- EpK9ooplvHBWL+0uVt2j3KIl+cykuSy4WZy/BMmBYfPXB6wE193F+22le0In+h0b3pR+N/HNNys
- cHhVoq9vfJOkr4dB4lxwuv5bht2c9KveHfaH1e3LA2zEiZxwJoKhWUqIczjdzDet8j0dnPKkMce
- xF0cHZT4wLnV2TDUwtWB94Drdn7vrQBriDfNxhnhne/n03hUi2AC+RUPgPGbBhRfgSeGY1lLxNf
- yutMagTLlbIPLdFF2jVJtqmiZ/06t/F8yJYZ/wl0nUjOw8N6PzsSDL++DKiiRnUxlIyOHDIVKMT
- KMDA68PPKmiR8Tw/Wnw==
-X-Proofpoint-GUID: 2xVSsLtkyg8UVaGyPMgocFxMjtNVlPI4
-X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a72f816 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=YN_xvx8HUdd5Io_IMJAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 clxscore=1011 priorityscore=1501 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050064
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 96E0A1C0007
-X-Stat-Signature: 6757a6dttngy8t9z7cwmddbhghdmcmja
+In-Reply-To: <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1785919517-53630
-X-HE-Meta: U2FsdGVkX19sAupcULY5mnJT8F9+c0+kLk/9bqDrXh1uQ4RD06DSLq2w+q1r2dz3tUR6M+Una7kUrmdH0k0jNfqwCGiARalLAnbVi3GfX9qN9xMTRRj9ovraE5OSvso8K5ZYzIS36oOtPUbgmrcwx2SMSuurMaOHgzlRIWDYZUngJuhToxNSdrbK7Cai/n2WCTFxGQ7DeUuCiLN3c2B9FUgWwb5qeKjGsdohu/wT3G5eYmGByIgtwZrW0aWV74r5mozrypE1l5a4/1d9uGqIdJCeY0MHfFIwqx8BH/QFTzuYa4UKOw6C1px79VKu1kk5Z+0MOsL+ey9u+nZB/lSA2Y5VksNb/9jBS2Zx8npNwOiRpOKIN2OFRq6LQU3TXvAmbjAaloUIcfOtffGKWqg9BOWX40y1oUefiY26x+aJO/LAy/1sGf7ESCFLPKKvqSA2DIzJGQau7WYZrDKpPpLtP7H/9xo8qBBUllHxv1JZI9gzkWq6c7EQ86ISEU7jjSWNIsn0glEZzdvw27I2A5NkZfk5uh7odGjRxHdKlyK511TnMHII4SXg5+d+Jq+8bA39rpasuth99/ey7edjIcHExrNUq6lOneyDxN4paB+8RjuxP9AOdsSok9a73bsZq/KuuEMJNrw8Yl5Gc8mYP9JGGwDizD0vXbg+tB72DxXyne7mILW1R6z1xBtpYf6jvWEI6EkvFnLperhqvj8GCX/t7yjJDDvgwutOk6QaRXdzyFFdQeYN9zSry1KueJWzBZQhLRul+uWq4HpO+yut8vQHE2AMM6IaKGg4S367O7zeh2pxRruvf1egoH4WD6mXCOJezdxgL5pCPW4rBn1xhtbcB9PfAY/y4fuyyeTvUN/5ShYkVZenzAUi4Qee2d8NIG4C4VXQ5DPpJe1xGbc07MjEb+aEJviXALMI6L3bBTkszAaTO0yGxDEUCNViYps5Bt9UaICUUQSk/0lVVadQgSu
- Gt59YsEn
- lggVTppEBPjJqRIejgAjLYI9dHV9DrY3YQ69Ew1QCIcifyJghRzJSg70PwmgfE8YHL+iIadrQjfj9fDA3hQfvNVMeS97mtxv4aATXilMKEK3grO+kZqFQeDhu0tiliBVQhEQdXC+I9lEQB7qu5FS7ArFIwwWhhGINolDPD0SPgm7frDwAxze12hRnbPNA3EoKxy/K2LPgcMdrSptXEeLSwFlZ7SOOHwyOB/ZVbFnT2TNfLUnZ7vkJvaQ64erf7K1Tghjm3S5rPA1MsDSZfow8ayI4aMtp4/RXf4zn1zR5DO6GD1MK7h7/JyLQ5LQ+vspsbPQ2z8Zk7Ng2+Zb2NIFYFx5aAdbcOdAaniNUF0mJ1fudlPdCjlbvN7zkpndNp5oYY8am3x7oVyolEU3KYUtY9T4NL7pu+g24u40K
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EDF99140005
+X-Stat-Signature: romfhxjgm9beq3gti4j6swxaemexdjdr
+X-HE-Tag: 1785919568-809479
+X-HE-Meta: U2FsdGVkX19S95yD2/7YPgtKjrzqAFeMy0DCaR9ee6QfStkoPazU0vldo/cLebSGOhzJ5C51KQpiudAWVCtcIlxRYQeKxEDN/XYAtSM4kPFc98RJgHwpwyo5N9X3dFiyW56kZeZMz7va5IZTQ4Ion/bPlKS9IanKtVxxCb3qmbpYuv0FbO4f9+qybmYIGqrO2ScU4Vq/PLEDqLqx0c3ShDZ4nJQBlwVHN1JXv70OOSMxp91pm0kOTnNr8h5jkGKrSAbd/AGkHUjxRUfEC3o/2W12XMog1mBYPRA5IKaPRgDsv0uD4JtlVlFB+u+6/JPvJV1n14OyY9SF75DQEpeJU61HNvh8kCb29GdeFsCm6AAJ2RgqNpGXiA4bvj/Wx6tiNYyFQ+J4Wh4V+WJbYSAsN9P5UpIK1Yvbx7Vl8xghGQVPfM0EvJ8Ny+Iq3tC0hEGtXfzbbRR/ZLnlgFKFcMNhE7I36aN4gIoda9YorIs//qqnqvplUwlzVp7+ufBn45n2joJUI7ZiDEssR7FjWE1yYo2lE9zVXPaQBvLfa4xgda89dQ5ezN8wbeQ6L4n8i0jb8c2tyCK09JkYAh4YRI9Ftxhv9Du89WOFpKiKMvWmpcPRf3gqt1703K9wGm36tTICBWRiA8WUXNLIfZGWoVP0zl0FmzYYDngUVF2G0Z/QG/HM3w1PzR3jJWLIzneqFpFTGVjyO0s+z/CWusgFU1swnMv0kSXpsoMi/VoKJin6zxFhZkTiQpKcXQhxcxSfmzFIMtP859e9ficX8Sy4PILn0jhRzgzbg2BKUsK5hxJ8RS9D9rnV+b2u1g4xo63xH6kYuSX49rrhXJo+eGJzTUgUSi+MzRnLt18HbVGQiWLje8rAcXhfUFNcdZzGW6Vxs9ltMQSYFItTyKnH6OglHYhxg4oF/qb1qkxicRStvx2BvSxUr1elBjBclbZ+ueuTSbAmt0jkzOgdyilGNHF3Fdv
+ lswNbcEY
+ yTt1QRFyO8TPZpl2xImcQallOe6FE4JsM8Ly0QYDIgODoh5vr7AsJh6WLwBtCNIi+SGjiemtrGX+F9LIreL/nDoZ/0Yl4O5yYplitm7Asqj2Qgn0nXfaMzusV3bOW3RaU3Ak/zvufhFR53ILGLk6Nn89qK77jCZps/H9owLR0fZYniKTm17hz+Wlp+oxp0skM+KOoVQ0MpHQ5slb6w5JVjePT5KhqAT4ZjUC6C8/N0YLmt6uVJvX4/Ra8ENkbyiwrDMNwzfQBWaxJW8Hs6rSVbbuGa5rCIS45iUnwcPFS23rW6euklHZliSRT+PZsoQPg5g0SAQJ9O4GNuMn0qXb52hdcgTOPTDzl4SKcNno4lLlG+pQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,49 +126,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 11:47:03PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/4/26 23:25, Christoph Lameter (Ampere) wrote:
-> > On Tue, 4 Aug 2026, David Hildenbrand (Arm) wrote:
-> >> Mark's solution is the obvious improvement to the problem, doing it just like
-> >> s390 already does.
-> > 
-> > Well there is interest by the S390 folks to move to what we proposed from
-> > what I can tell.
+On (26/08/05 15:50), Barry Song wrote:
+> > > talked with our engineers reporting the issue. i believe it is all
+> > > about priority inversion.
+> > > proxy execution wont resolve it as we have a sleepable zs-malloc
+> > > within the mutex.
+> > >  i believe i need v2 to release the mutex before doing the 2nd stage
+> > > zs_malloc with
+> > > direct reclaim.
+> >
+> > Well, we cannot just drop the stream mutex and do sleepable zsmalloc
+> > allocation, because this will invalidate compression buffer.  So we
+> > then will need to do re-compression.  Something that I was really
+> > happy to drop [1].
 > 
-> Heiko said that as reply to v1, bit he's been replying a lot on Mark's patches.
-> Only Heiko can tell. (on CC)
 
-I said that before Peter Zijlstra proposed the restartable sequence approach
-for the kernel. I took that as input, and provided the current solution for
-s390, which does not restart anything, but only fix up register contents if
-required. Now Mark provided an improved implementation for arm64.
+[..]
 
-That said, there are some performance numbers [1] for s390 available as posted
-by Mete. A performance improvement is indeed there, but looking at the current
-s390 implementation I'm not sure there will be much of a benefit if we now go
-to percpu page tables.
+> BTW, I wonder if compression and decompression could use separate
+> mutexes. That way, a sleepable zs_malloc() in the compression path
+> would not block decompression, which is the more latency-sensitive
+> operation.
 
-Currently we have this code sequence for e.g. this_cpu_add(...)
-(%r2 contains the to be added value).
+This sounds interesting. I think all of the S/W backends that we use
+have stateless decompression, so we probably can just split per-CPU
+stream mutex for R and W paths w/o the need for any additional scratch
+buffers.  Wanna give it a try?
 
-larl    %r4,1b33300     <-- load address of percpu var
-mviy    960,4           <-- mark start of percpu op section
-ag      %r4,952         <-- add percpu offset
-laag    %r5,%r2,0(%r4)  <-- atomic add
-mviy    960,0           <-- mark end of percpu op section
-
-With the proposed percpu page tables I would guess / hope we would end up with
-something like this:
-
-larl    %r4,1b33300     <-- load address of percpu var (same on all cpus)
-laag    %r5,%r2,0(%r4)  <-- atomic add
-
-That's certainly better to what we have compared to now (no performance
-numbers available), but I'm not sure if only this would justify all the
-added complexity to common code currently discussed.
-
-Read: I'm more or less fine with the current s390 solution, and not pushing
-      for percpu page tables.
-
-[1] https://lore.kernel.org/all/18ca706f-ef45-4207-a55d-025f90133978@linux.ibm.com/
+Back to preemption:
+Is there maybe a common hot preemption point where stream mutex owners
+get scheduled out? E.g. inside zs_malloc()?
 
