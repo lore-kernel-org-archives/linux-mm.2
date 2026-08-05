@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 246D6C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:07:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCAD6C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11BD56B007B; Wed,  5 Aug 2026 15:07:18 -0400 (EDT)
+	id 25C376B007B; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F39A6B0088; Wed,  5 Aug 2026 15:07:18 -0400 (EDT)
+	id 20D366B0088; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 009226B0092; Wed,  5 Aug 2026 15:07:17 -0400 (EDT)
+	id 0FCB76B008A; Wed,  5 Aug 2026 15:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB8EC6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:07:17 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5750812058B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:07:17 +0000 (UTC)
-X-FDA: 85068148914.21.D6E0D28
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5A13C2000A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:07:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M60DEs3g;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF44B6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:29:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B52114057A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:29:57 +0000 (UTC)
+X-FDA: 85068206034.17.09B7C50
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DE5FC40009
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:29:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ddXl1mwi;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785956835;
+	s=arc-20220608; t=1785958195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bf4C1433YPmcAdrQ6UIsaaRwbBD1WIAriLgZrgKPaRQ=;
-	b=LVTXAD77BxaWF9+8hiTmWoRbdyJe06OA4En/vDbvGIZsjLrXzDYMDDpEFDul1JojPDle/5
-	Jevyum11ZD7opLGly7i9JGytl4uJYaGlnPTb380qLl8Hjl6l0laCCjwcUAKIzxzx+BAAlx
-	h7oumyzc6ivBRBr1FVh2a4d2GPZkcds=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785956835;
-	b=Th9QHAzLuSuSynZB7OZo6uD9V950lLZqxR1bmtcZPpUaHlu/7mjIc13oitXPStlN9wyK62
-	1MaRT4a+T3ruw2Sf+cd728BuPuTWH0yLWcYLE+v6mDJnLH3gfaEq845iIJc5ufBvQV9Skt
-	8ShbUB9qtGm5fyLGL9PwjU4pOc1Jk20=
+	bh=elA1Ms4Gn/MoVQix4/8a+mH7M22rfFyFqVGiYAr4QAc=;
+	b=aS/5ns1v7ES1zPYDRawosuz+YUQW/wqqDCzy0JF3lkaOEQttTwIYG17Jqwa8f1Ro+UoMFz
+	2E/yy93eSZnRcmRTlZuWXUwdoNdAvzfGnuouhJr4PaF6EtidzzxvvrCDgDqyC5l9LPBx3M
+	b8Q5G4lOYqk0ia51lTgbdjiH3ZN5kIw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M60DEs3g;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 5 Aug 2026 12:07:01 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785956831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bf4C1433YPmcAdrQ6UIsaaRwbBD1WIAriLgZrgKPaRQ=;
-	b=M60DEs3goINApcTnMMkH7P4umo5bL3SnRkEtbYYGALGh+oH0lBupYZjDycgk/IagkfGepL
-	ftVvRczp/9J8MF3oM8m9/oa3oKoX0fEXA0ad0EZq1tin8wO43dhv8WWnvZxLvPDKrxDYmL
-	TgKPs2JsYyQEOnIavmRToQ9s14v9tjg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, qi.zheng@linux.dev, 
-	kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, cgroups@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] mm/memcg: folio/lruvec mismatch after cgroup
- offline: lru_size underflow and list_del corruption (7.1)
-Message-ID: <anOHDekdEne06P97@linux.dev>
-References: <anMmd1ADrDVwMO6v@work>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anMmd1ADrDVwMO6v@work>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5A13C2000A
-X-Stat-Signature: 56d9pwe6tiuj9nca97hbxy4koxmw1d45
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ddXl1mwi;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785958195;
+	b=LHHeONqPtknKVSfa+mkk+rCGjBwsvMqFjbNcnvFYUgO0Of1Idips9pxbrmaRvWXSRocXQ9
+	32i1fM5VYbklHbbdYlbq4ngRmpaoI1BI/YT4aEOGdsLwC8H/R9iZ8J06joeWZASx44EMed
+	HXGRGetJQ5ZVCRMR3HIz8Yxb6IAs6j0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9E48541896;
+	Wed,  5 Aug 2026 19:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354AB1F000E9;
+	Wed,  5 Aug 2026 19:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785958193;
+	bh=elA1Ms4Gn/MoVQix4/8a+mH7M22rfFyFqVGiYAr4QAc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ddXl1mwiNzIIB+yCm/bWxetoXBwryCujiM6Iar1NzfSxbqsd/zqXnVjuwPJPisVje
+	 NMJlB97zWZ1OCO56xatydk1M6zkMUbL/opllmxgSpe09KzTORuRbnYiRosv2Db61/z
+	 7c2PgcGWEk44csfDq2Sa9PQOD5jgEMsmlkAkQ51c=
+Date: Wed, 5 Aug 2026 12:29:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>
+Cc: hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
+ syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com,
+ "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
+Message-Id: <20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
+In-Reply-To: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
+References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DE5FC40009
+X-Stat-Signature: h1jc6owie9ybb9t8b41f8zs8tfpiso1k
 X-Rspam-User: 
-X-HE-Tag: 1785956835-607031
-X-HE-Meta: U2FsdGVkX18y5weR7MpZrQk9hOwVkW1v07a5t05csBDIZyrpbCR7qYDsnAVzjCT1rB/954jm3e6ceIVucAqAQN1fsibpEe4FXJorWjdOemxMB19vgxBxkHQQyv3BEWb5SQ+X09OXbKgEj8SUfwwcOOgykuhqadcAIFKHqs1bca0gVKQSPkg32TwoP6STFC+bzP4v2dI0EBLa6GFDitCS6Unr/3xY5pGXUQeoLaDU0F/F1Ezo+cn3ZXXGIzFDOstpoLpjbWJ91ds7vB0+1sO3irZeb8tAMSNnwf857C8bcMDRkX20947e0pLbfv7QtSUL6+g+Ab+0ZDP8CfKnVIAKTI9vx46uzpSxyfzf61BUjysLQ21w5Km85WkhZGwTHgCKJnOBKmf+gsHou6Zbrk+GcpSliMJAarxr2HwvcbScctJFlZVQSZ505VmjqTAWZfGEv1NEdX1PZqbuUgzuoKUC2564p1jYL9jeXr7QaWdzFeGaRZOm30Jz/W5VI2+w1Dm32e60esyaCgy1bnEZShf4Bpb0iXL+suhfebsjw/Hnc1PCduiEiREYraJr4T1/i8xrHhqKtvyWZdz67rowwDF8zcn8ejuf1ZlXh3Y5lcoPkEPuhVSUYe3f0kc7CGbbutKBO1GTBuDAHkJq25LkzyD2IVmIjhs1owrtSjefjels7SNbrTQzT5+GSjiUWr1VyWEZ7GYL1ExOWwcrXfC1wj1UgJafF0NNw/9i32YD7C2/t7q7xcnyVtAUNexDxlclvpIsGUMABl7d3C3bj4C8gmnCDcufaqDGA/CjhtT7vPRQhzokM6ICfq++ohJQInZw/MSlupVkaW65SXrVsLZ/5RzVUCWNTTLYMiqc3zl6FxMBXS2XUyJXX7Qsg9EOmljmK4DHrAIdiIPmG0djUN4RLY3GVcPhG4eCOuNfZ71l0bTBW5pMG0zX4OrE66Jdzd8nBDz4mYEQO4jqeM7qdH7gWpM
- qATD4/e7
- WkOBDqLDYc5fSHYD3KWh965S3h9JWsF2+hrWUx7ImvJ5UzIU2BFWZ4Rhyuez7qq+iorY6vHUnyb6W2Tro9EmdJv3j9JV7KPFrLFcAi/h/lpff97XNrFulyV7tg6l922+1Z3iyxR+dWVscvdqiQ/CJJ8mulXRCaGLdhmRqcC6EnEaI1KzRnf05ohtc5fKxi4ABOTeYFpYlaO0Vm47/rM9WWAmffTwnnz4FamV5fxYuDv6eR2wqQfOmzhkxMeja5gTov2i2
+X-HE-Tag: 1785958194-365194
+X-HE-Meta: U2FsdGVkX1+JxIyN2sJhqgLYtHMdfI+Qe0ZV/0byGr5Zic/ZW/v1ZyG2Q8EnLwsFF+jeGDHIab8mpqCCZyYUhEn3jMx4pr8C+G1DmVBKFi4pNKHEfn1FdPONjUuiBLt5mmxrYncC0nBfHk/SwU4+SejbgMg4pNcXWKoKg69IgXNZvLFBlsdUVwG5D1erDZXD3c9pAfVq9RlXyEhjJDeKdc8ec4zGM8xYSdBlImKIcwSrB+p+Xca5Y+oOcpmXXphcG4Ujh/yRz7/M8vtXawkqZ1bXRAOEWwKl6zxFPN745oiAeCdCyqzlS+dU4b9eYI9uZ5quvR6UsO2kgrrgVBSJlhxqSNGQUTb//YEoKbLDRJQARhb8ueXU1Q/VLFcQ63uZMhl1jiLbxRMyFp962uCoQ2eQlG3jbJjqlK7eNzRqME4W6N6KpJTtbFlFt4O9tBcCj/YRG2xFpp0E8eod/s+gNmfi9AfvRmT6X+vok/g53iQlv8Fk9CmBvz1KQCyJ3Ll8ukXdDSnOM+pPnZI78sT2abzmycc9gEK6p/SU3aU8X+P+pnZcJaNqG17HNJVySAwURsVoyPTOK3Yeh6l8Rc97Qt7Nlv1E5MRHn0tYVZMI83K+taYxyjYBoZCK6DtXVnXu29Y9ag9wGFZjnt83XsiP+MUz6pxvX8/iPf1smb8BzU4+ECAuJTXpZWQAY8yA2dvf7dkHdVHBFDYT1ce6gUT+hthz0GGHG8LhnHgXQOVohHp3hP1EpOg5wI9mZoH9RgAvlYOTz/SHQ6yRkiT9pE9IkPhXnC5Wxif92WcYikwXn8l6EL9+/ULwGdwOpJ4RPPk6Lv+wY3hUZF/nC8Rw5m11qAMKwXkjvSsQTl2N8KPJuVlQovA/Jfo6cyqdmhC2+fRrxJnCKrrF4CghICeskqJZQ5WVn5ZxhBcLdoSHhnOA4B1pyabK5K/LV8JwC2TRFf1lxkq173LGEIJ19WoabYu
+ cCAQGHlq
+ b68+jhwM0mhcxFxmyucNA0nlJP96h8LVMN58RDgcmDixhbGEom+Zb+snYRkcS3JYXwt2COINE3vtdOF0WHZxM3LfKGuXMdn52YX7zJb1s7knEtBaMQJyRGJdR0t1+EPZQK7g1FHyMfcYjDzFMKGEuHG97ii+QiXNtqi4pYpoxwFv2OKUYXJy8spQz+lKjrYUkkQJL4Y6WKo1Zxh35UwNmcsD4Mr/ByS4V0zav1NKZXtDSGigCe9a42YJb9AvHJ2G/T4YUOUZneLPrHyP0ZU5Lu837Giu/WP2MccT4oZQuUPkU8LDOu+TdUDxFyhMf+g53JQ9M5MOAXU8+uiQ+kb4uaq+wBYxM9JLDUlysYA5SbLJCtgT97ON/ZsD28JN111rtoz9Yf4J76Std3ZJfItTGgBfPFlG7zLEwW//uzpXAc/7aWziLWLVAijvPS7Nu5bpGLEZ0XsCOk9ZHaxr1zmXUCd7r6yXft2gP5sSQyAlvhovltP1Ttd3QxYBSYSN1A3v/auifqby+iXSxsapN7n8qfJ2M92chMwSS56f0CjPU7YfX5Br09YDu0fhPQElML9D/CAbq0cqknB73YlMpnvFz1Wr32ZMG6wZxr2AeKXWxFkHJz/uSjqX0SQaHvNUvjvBKLxFyLzmtfEenLZda1TpeJW6XnEVx7l+NLcViYWqgoAi0XBtI0wB5mxuhF+cRRN4Ohjb7gxbhs1p6t1YZegT1wioTyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,24 +91,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 02:03:03PM +0200, Karl Erik Hofseth wrote:
-> Hi,
+On Tue, 04 Aug 2026 17:01:48 -0700 syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com> wrote:
+
+> Hello,
 > 
-> The following KASAN slab-use-after-free comes from a Fedora debug kernel
-> build of 7.1.6 with de4660898b7a applied on top, provoked with the
-> attached script. Further down are OOPSes generated by workloads in
-> production on stock Fedora kernels. MGLRU on/off makes no difference.
+> syzbot found the following issue on:
+> 
+> HEAD commit:    3708dd948844 Merge tag 'pm-7.2-rc6' of git://git.kernel.or..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11ac703e580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
+> dashboard link: https://syzkaller.appspot.com/bug?extid=d2401aeb74cc84adba04
+> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
 
-Hi Karl,
+Thanks.
 
-Thanks a lot for the report and I think I understand the issue. We are not
-handling the case of folio migration causing folio having objcg different
-different from its node which breaks the assumption memcg_reparent_objcgs() have
-for its locking lru of child and parent per-node LRUs.
+Lazy optimists (ahem) paste this gunk into Gemini and ask "what the
+heck just happened".  The results are often useful, but should be
+treated with skepticism.  In this case I think it came usably close.
 
-Thanks for the reproducer and I was able to reproduce with inceased workers. I
-will send out the fixes soon.
+	https://share.gemini.google/vq4TLhTiLBih
 
-thanks,
-Shakeel
+
+tl;dr: khugepaged's collapse_scan_file() is taking too long and RCU got
+starved.  I don't think khugepaged is doing anything wrong here,
+per-se.  There's a lot of work to do and we're doing it.
+
+An appropriate fix would be to take a break, let RCU do its thing then
+get back to work.  But I don't think RCU offers interfaces for that?
+
+collapse_scan_file()'s main loop has
+
+		if (need_resched()) {
+			xas_pause(&xas);
+			cond_resched_rcu();
+		}
+
+but that won't help with the RCU stall detector(?).
+
+I suggest that a suitable fix here would be to add the analogous
+
+	if (rcu_i_need_to_take_a_break()) {
+		rcu_read_unlock();
+		rcu_take_a_break())	
+		rcu_read_lock();
+	}
+
+(iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
+needed here)
+
+Paul, wdyt?
+
 
