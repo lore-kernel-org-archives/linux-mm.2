@@ -4,117 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E90C55838
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:09:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC06C55184
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:16:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E572F6B007B; Tue,  4 Aug 2026 22:09:17 -0400 (EDT)
+	id 194C16B008A; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E08016B0088; Tue,  4 Aug 2026 22:09:17 -0400 (EDT)
+	id 145FE6B0092; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF7826B008A; Tue,  4 Aug 2026 22:09:17 -0400 (EDT)
+	id 05D896B0093; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A9B0A6B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:09:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1AA8C140370
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:09:17 +0000 (UTC)
-X-FDA: 85065583554.16.78B2DCD
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4665B180009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:09:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FNLBAO+B;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CDE036B008A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:16:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49C92A037C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:16:18 +0000 (UTC)
+X-FDA: 85065601236.14.27904C3
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6FD1B100007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:16:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NJi1XOp4;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785895755;
+	s=arc-20220608; t=1785896176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+S6S6s3ykcDL+sn4RRyfl6V6n9KypIakUfUNmNrjYg=;
-	b=VzOfXoy0hGTyuOd17IoOmmN8MT/uKtIiLVl23ttjH7AMd+4upFsfBV/1Xt4HDfgnLuzTpJ
-	vtSdvGD3z3Ww+wxOrKHn60J9L/Z+BMYXY4nld/zXuQvtn7sxAsSbU6t+P9zAP4TUNr3iaB
-	w7kvXSpUc2CNW7kS1OTCHnGDCZqqMFY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8poeoDZkGdDv1roqY9qI4+IwjPDa5UcGb8SnGgss8Eo=;
+	b=e8p0pUjC9rcWIfGdyZc1HkVRUptPKMOayJJw+74MMYVtQId3VKMdnap0BV/ZEap5UqR6kH
+	oPzV8zcziZMUXAurgQoKoJOBrJfGjzJ2jxhHy4KoQTyBHTXWS6KulZqt4zRGmvpyoUiavJ
+	sdGVWvb7awowbI51TyS2VghDMwavkrQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785895755;
-	b=VAsGFQSyLdNuRbJr1N/b8yIN9Trp+m0UbtnoH4r/JrXPJfu19F6Gu5Q/vAX6j3TCOIWG48
-	R2xTZW9JCI9Qu8l1fdVoCcwg1/XZggrNegCZBnsCm1jYY5YSx79JR0nxXOvixTKPcdN0jk
-	JVfNOrx3FSccKZ0vkPcuzTLBUaokF5s=
+	t=1785896176;
+	b=viXH9w/+GI3MpMwoAsL4Sa9xAkZW8XBWK6pZBmHZk6qJuUbJlB4L4T1bAiT5G3b1Wzb2gu
+	z77XEmtrCOGDZHvY1uGb/VIy/Lrxx9Pu9i7ojrdofBXpPiCqE07vy2zo7oNPTPUTx5mSeY
+	a7qokC2wA03u9aZ4XO6ip08EPSktEl8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FNLBAO+B;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ce7d2adef4so7392555ad.3
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 19:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785895754; x=1786500554; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S+S6S6s3ykcDL+sn4RRyfl6V6n9KypIakUfUNmNrjYg=;
-        b=FNLBAO+BwoFPYtABzEQzK4NaRdmTxihc4zYMLJTtzAm2c83gVE2oPifAtmpMxWlbWK
-         Z5qkZkEWUqyAQxfezqQTHVpjwVf4NwlGneiqjckv8goEX6bwKBJN5JFj3zhlvICd7yuD
-         a1VAJQMoZQPn+bQr1btfbW70pGTaqyyrfdxbk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785895754; x=1786500554;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S+S6S6s3ykcDL+sn4RRyfl6V6n9KypIakUfUNmNrjYg=;
-        b=kXvXQ6N1B9OC/XtMrKYBo+gqB6tircSvSDhQAo2eBWmq31AeXDoVrohZ1VGAWSPvqx
-         j9CdUg2DbbvnX9L39pYo6uV63zFM8tPYkVvTZd2OH2/5fR0OZELfMUZ8IWhoDU3yAU3M
-         gwjaTDr3yGOyC9bO/bIm98OyxAqvVMYgk3d37wR51P6yijxSqZeT2OG930uo2hWJywsZ
-         QUkUSlXO/VWwMrLf1CN2sqnltep5S7SeSmUoE4O8bZn4K2c6q3HUpZVVzY5ljkckqN5h
-         bGRympAqcWwI8zv1lA84vHSg8PMdqkJUS4XJsVJHA1G4gBevYiOmyKFkhBXGnNFjsY5U
-         eqHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrlwPuaT9o9NdGK9eqr4lpEpit2p3SffniQM8zIHxpX92rU06Ofz3nGx6FW8rul9EyiH15smqir5w==@kvack.org
-X-Gm-Message-State: AOJu0YxB0H4iP0beDpaS8W6KOUlXrb/UT+MbMD2lKyr6eJm0m9CEwA6m
-	+t2JAEbH+fr8xTWV74IIDf2HpCFJQSOyCn1GhhrdJsM/rtKobKPV+IEI+zU40nW8AQ==
-X-Gm-Gg: AR+sD13lUerBYFA5A20annRc77YtLDEckIbB4z61j5cOit1wFWeFMaII1Ib3vLQ9ZRI
-	zRyQ2VLZuqX6E0Mg7aoNw09NQlCtVgT1AInagDQUg7r2ZSFJtYCLrxKxwfM02A0EC6+uJQmagVj
-	SUGDYVIgven8H6cnReOEwuH5O2pldRfCCuwV+U4mJowwQHVlpijEQJrAW3Siq8phLagatI8voMH
-	q32S3aQgfSW+x744VWzemcrqJ/AgUPeDigZ3mSDbeNQ23Y0FkI2MKmlR+RGID8O9FCC1BoRI36D
-	Ym/+spfN1VCSsMEOvEhtc5y1rtow5DIw57bd4/iSvMtjOCrvwUNe/HVP587OqAySXak8WuNuqqn
-	00Ms7zQncZcwdfApPhkjrwGiZ+2rV6Iehw2zJgRuAqnpRMftexFRX6pp0Lsv6ExjeEO8CPMLrMO
-	ZSPiImfLm4eZQfQAdxYh+lzENe89Z/NfNCpcpIaYr9Vw2XM86QdhX7JO/eRntTrNtIBuJ2iYFll
-	6hUZpbFaNCAglKlqEuu4m3d5scd
-X-Received: by 2002:a17:90a:ec86:b0:38e:bbf1:de34 with SMTP id 98e67ed59e1d1-3903c537a12mr3426590a91.7.1785895754136;
-        Tue, 04 Aug 2026 19:09:14 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:32eb:b46b:e9eb:65c5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390392b2b7fsm1235640a91.14.2026.08.04.19.09.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 19:09:12 -0700 (PDT)
-Date: Wed, 5 Aug 2026 11:09:07 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Barry Song <baohua@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	akpm@linux-foundation.org, bigeasy@linutronix.de, hdanton@sina.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, 
-	yosry.ahmed@linux.dev, surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
-	Suleiman Souhlal <suleiman@google.com>
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
- backends
-Message-ID: <anKaU6VStrW8zaQo@google.com>
-References: <20260805005545.66112-1-baohua@kernel.org>
- <anKQ_qZ1-Q6FchZ9@google.com>
- <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NJi1XOp4;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785896174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8poeoDZkGdDv1roqY9qI4+IwjPDa5UcGb8SnGgss8Eo=;
+	b=NJi1XOp4s/Zqe1TxxE/+26J0CV4BkBzHPNeQAp9vL8qRNRi0R5VhnARjfSbD8bdROgDzhw
+	a1yhhH9xUzMC87xxPcAWpXImqZHoxGaAxYJs5RYURpoBLUKKw5vOmOR2sLaTkuJ8QLPQtX
+	SfG+ilSsD3EwiDw87ltvi5hsV7E44CU=
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/show_mem: fix format string inconsistencies and type mismatches
+Date: Wed,  5 Aug 2026 10:15:55 +0800
+Message-Id: <20260805021556.1908807-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
-X-Rspamd-Queue-Id: 4665B180009
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6FD1B100007
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: yrjq96jm8mf4qs1m7k35c1fe7xhdanh9
-X-HE-Tag: 1785895755-796209
-X-HE-Meta: U2FsdGVkX19ftZ+1MzcWN5bP3mMf/rgDBLFYDj0ZBkPb+wTToy5b5qiCIChuk7nn7DCnPu6fA9BTojHXV6BgxOLhAxZBt1dZHbpigkyQ1irZGxgvBd5bebn2piL9G4Tv0cqP6Uvwax2aSZwwGYo/V+UzyZZwzXKh8jDa8voPuMCVRNVBq7P9OcA8SNII0h2uDsBfI2pczBn3EC8XwmPvq6rykH5PwkVU/Z+fNZ/n6n0Q8pz6oNb73nxWOqkIU91kj2r2ZLuSKTMSPBGjTtRonJcp9wPxzH94zdueP7NKLYSLs6FaODDcfZzMsqZccans3nG2wQ+9mkFDHmRJ/CYVEUpAvfbqSzg7NmVw0vl8LoQLfxKGOV+8QXC22pjmeIBly0R60QgEG8+sVS5b/Peatp+Ff/GI53FS3IcGdGCR8gYUesIxOlacdMi/QxLx05Kd/do7wXaecK5E6t1k8dGzO6ykjMfweqs4ojejNAfk72+ftQzL8Galrb99KsZ9lIZX4Q9pvS+wOYa3aGHooup1rii04cwrMAfqlahI5jaOhK8mtQ3E0N6TUgW1fpPQFV+QfX1abl8eiC7hkAAZg6s01LKAFBhXHdDNDrw5ecgJsc7JUykY5bIkUXN52x0OrVbEmoW4UYLZ8VDLAOaY8p6EvuTUsG0DbkFiUu9Zm8py3BKPsmw5GDizBqGlZILBGZYNiUwhTiZMJhDf/bZ6TB1HiQ0+RGx8k/ZbXCg6KScdlRLGh6bN+qlQiu1dVJmv4bxGVj3u3b2PL+o7GawlfQNqF9Vm1sgp6TbB63YSw4iVdOJUfLExdoU4hZmZhuF9ukcx5Husze7h48Y3B8YSkxJSeIXyo7C63SuVVyzF+U5G9uI8FjvEjSc0kDRCyA1aQ5flsMqYDX9ToafYa1O7uQ7dszfznxDGYue2eYLpt8A/KS63AMmu7nLxldd7/lpiuc72TkPAEnn4k83iJnfQgO7
- 1PMEwsL0
- LKc1/A76uykuPb2yjdf+5fgs5Xh3SxU3Jb3j1V8U9HFqJheuuqFWZiS4EemGlgawz2S4ZJ94/RCMW93DVcJ+uTbG0y5SCy9eguaU67Y0rTbcMoeL5z5Db93lQdMmVCWFv6K/91BB2ncjR09p9VsZToHWT7q7NKibIocOZgShjlJRjTrAYF2yQgBgL7r0aS1jTFMg2E0WsZhXomKcn0m1i770HTXmJfRjyP19z0Gf1mdTOZJe/fSTIor1XTWxAC4tGlIt7H/qVfRudjLLwIcRlj93z9VZG8T9UAEnbiJb0HMsNscYsF9e10nioxTMSPaVRH0G5wIO+3V7vVzrTIaVGW/UEKkPMdFHO+FglJQgckE0GS6A=
+X-Stat-Signature: ib41d3kaatz4eu8o6xaby65jbgp7r1rb
+X-HE-Tag: 1785896176-616518
+X-HE-Meta: U2FsdGVkX18fENnxNPe5PS8svYEGBH74axRTv/FvFkJ6W9pnKKCo9HncwUVluz+BOwgR37OEYaVexzWlF7xXEHxEzY8F66f2YzyEbcTfuNBTmz9vIECB+2mAPwx6WywGGtvZe3QBlfrGtE1Er9ruFTRUWedhooO4XNdYUy5kum0bS+gI826m1Inc1y7sQ5bZmXjH8suE8XZZX4JXG+c0lnXyT/hD0N6/TZ0c1jnT+d21s+nN7pudd7FE8iqxWn59XwFs67X+H7lhAX6F4TEL6uuYMKgMECtt9IXeQYRHlE1IjhfI7pPQsGXpb4AY8tEWP2vJPiBLWAwMpi27Zix3cSr9rCr5gkzDINb/xNh2W9gOJJU//DjIVf6/TepFQVpH0lAXpoMmdjUGRG8G22Lg8b7gXXPOmkKamulXnJrNtGpfb6ww6XRPVj0RzhVMWvzMRDRGQIJ0/XW6A8pAkzUn8/CVD0qCifUkL4fl42Gm1GLz1dNk8CtWPMCegYrAgxnLup/U3xSilUfD6JyVvxxDGbTasRRrETW/+0DGu/KoGMdZA1TeWIXgnCFWx6geGqk88wIE73CBSrBacg/MaIDLhrNkXh9O0WNFy9OAmLwR+FK65YxBZEeJqXBpvZV7B2T4ZPY9mA99L14b46BMM8pq3GOnF66A7BV1t0a9y+dNVDoqMXGIkCWDzl4dzRA6J3kgWG9AH6B2yr5+hKqqinCL1HbsAkqZInH6qRUrMkcVBi4rF9sUFuUBCaExHC9hawqVCQXBd+Hf0D62mWZNg6MsesFRKXMWIiSF77nyOsDllgFEiqYU/Ke01I7tzlLkEngltRRyxS+qq0cFF58CJYhtwrGTbdhjy/ZF5pIRGXnbZXxUz1tdFb461rdKnnvRPrwB0sicsA5ypy7a5lCzGomV9UihKSlFRm0NF48Ex0tWMvyAH0DgQ97xNhWrbKVlCnRE1ct9F9naMK07By+Uuq+
+ LKzlMGOp
+ WhAztKVbpVGCly4NsEBUMx1p7Y+zv+WZCW51PDwr34c7/U8GqAaXGnmZIBk4vZrxUAEUMgD974mLIyAqUNy2tDRdi4Z+h/9ev9ii/ESsm+q3vs1R4pefyFGI2mHY1Hvy53ZcOKHnAsJHfyhEamrBLXu/COZttljHsHcVmoNbyvVPojWXO2vZtYqf9Cm7dAxy1BqmaNR4jsFcQid6u/CXlx8evjGVX7At6e3t9Uj5OdM/uwquVPLhJ4Fdsaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,31 +90,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc-ing Suleiman
+From: Ye Liu <liuye@kylinos.cn>
 
-On (26/08/05 09:57), Barry Song wrote:
-> > On (26/08/05 08:55), Barry Song (Xiaomi) wrote:
-> > > Since commit 2efa9e9eb4db ("zram: permit preemption with active
-> > > compression stream"), a major Android regression has been reported.
-> > >
-> > > The reason is that compression/decompression is now sleepable and
-> > > preemptible. This means a stream may be migrated to another CPU or
-> > > be preempted while holding the stream mutex. As a result, high
-> > > priority UI threads may get stuck waiting for the mutex during swap-in.
-> > [..]
-> > > We add an async flag (currently false for almost all backends) to
-> > > indicate whether a backend is asynchronous. For synchronous
-> > > backends, we use preempt_disable() in the !PREEMPT_RT case. A
-> >
-> > I wonder what does that report say.  Is that what I think it is
-> > (we discussed something RT related privately recently)?
-> 
-> This report shows that the zram mutex has become the top lock
-> contributing to UI frame drops, even surpassing mmap_lock, which we
-> are also addressing in multiple threads. :-)
+Fix five format string issues in show_free_areas() and __show_mem():
 
-Any chance you can share more details?  Are there perhaps RT tasks
-in the mix, priority inversion, starvations and so on?  Can proxy
-execution address any of those (if it has relevance to the report
-you are looking at)?
+1-2. reserved_highatomic and free_highatomic: %luKB -> %lukB
+   The uppercase "KB" is inconsistent with all other fields in the
+   same output block and with /proc/meminfo convention.
+
+3. local_pcp: %ukB -> %lukB with explicit (unsigned long) cast
+   per_cpu_pages.count is int, so K(count) yields int. Using %u
+   was a signed/unsigned mismatch. Cast to unsigned long and use
+   %lu for consistency with all other K() usages in the file.
+
+4. total pagecache pages: %ld -> %lu
+   global_node_page_state() returns unsigned long. Using %ld is a
+   signedness mismatch caught by gcc -Wformat-signedness.
+
+5. hwpoisoned pages: %lu -> %ld
+   atomic_long_read() returns long (signed). Using %lu is a
+   signedness mismatch caught by gcc -Wformat-signedness.
+
+Verified with: make KCFLAGS="-Wformat -Wformat-signedness" mm/show_mem.o
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ mm/show_mem.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index d1288b4c2b64..b938cbcd774a 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -309,8 +309,8 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
+ 			" min:%lukB"
+ 			" low:%lukB"
+ 			" high:%lukB"
+-			" reserved_highatomic:%luKB"
+-			" free_highatomic:%luKB"
++			" reserved_highatomic:%lukB"
++			" free_highatomic:%lukB"
+ 			" active_anon:%lukB"
+ 			" inactive_anon:%lukB"
+ 			" active_file:%lukB"
+@@ -323,7 +323,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
+ 			" mlocked:%lukB"
+ 			" bounce:%lukB"
+ 			" free_pcp:%lukB"
+-			" local_pcp:%ukB"
++			" local_pcp:%lukB"
+ 			" free_cma:%lukB"
+ 			"\n",
+ 			zone->name,
+@@ -350,7 +350,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
+ 			K(zone_page_state(zone, NR_MLOCK)),
+ 			0UL,
+ 			K(free_pcp),
+-			K(this_cpu_read(zone->per_cpu_pageset->count)),
++			K((unsigned long)this_cpu_read(zone->per_cpu_pageset->count)),
+ 			K(zone_page_state(zone, NR_FREE_CMA_PAGES)));
+ 		printk("lowmem_reserve[]:");
+ 		for (i = 0; i < MAX_NR_ZONES; i++)
+@@ -400,7 +400,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
+ 		hugetlb_show_meminfo_node(nid);
+ 	}
+ 
+-	printk("%ld total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
++	printk("%lu total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
+ 
+ 	show_swap_cache_info();
+ }
+@@ -430,7 +430,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
+ 	printk("%lu pages cma reserved\n", totalcma_pages);
+ #endif
+ #ifdef CONFIG_MEMORY_FAILURE
+-	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
++	printk("%ld pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
+ #endif
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+ 	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
+-- 
+2.25.1
+
 
