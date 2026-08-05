@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE25C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8189BC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048206B008A; Wed,  5 Aug 2026 02:11:41 -0400 (EDT)
+	id 6177B6B0093; Wed,  5 Aug 2026 02:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41186B0092; Wed,  5 Aug 2026 02:11:40 -0400 (EDT)
+	id 5C6996B0095; Wed,  5 Aug 2026 02:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2CE56B0093; Wed,  5 Aug 2026 02:11:40 -0400 (EDT)
+	id 491A46B0096; Wed,  5 Aug 2026 02:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B42DD6B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:11:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B4BD8038D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:11:40 +0000 (UTC)
-X-FDA: 85066194360.19.BE0632F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A0706B0093
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:12:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7540D16011A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:12:28 +0000 (UTC)
+X-FDA: 85066196376.05.109F4A7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6EE3C180003
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:11:38 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9C451180005
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:12:26 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkwWgCSq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuE1953L;
 	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785910298;
-	b=DbQDad2od7VFMAojpP9aX2ej74vXX3ZKnVjRbrCt0joJsN9hrFBI6IEtb7KNGvZ3ujo2SU
-	LAp6xnnsyp8dZxjrr5tIxgZUO/NtAXgea7si0uBvGrUM50qSX8FGgq2LeybRBy4Q/O5edP
-	cRIJuhFmXHra6Q489PIPBrNmPEzoccM=
+	t=1785910346;
+	b=yzzCaM2wCmgPjxqpypYYe0zGD2LqiWzUNuihVupW01coD4aW+vXxHSAeWxKu0kyPy7hxbF
+	eKTqI4ZRvYQpA4KKg+wpst43xbSfF5vlPFXP7rhXuX0cZe5kEg9sqVswDl6TZ5ZMa+oIIc
+	phtyZgoxnUAmHHU4ueKAgb6GnG2woq8=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkwWgCSq;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuE1953L;
 	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785910298;
+	s=arc-20220608; t=1785910346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o06/6FPH7j0zA4EIe85PZVZwlMghUXEo1x/4oJlkPUw=;
-	b=5Kh61SsrDKSBwqa1jPi4FoW+OyH5RNZ8SNSEVxECFjnjWDlBslqUn9m0lEFi46REqO/aHb
-	nqCC0iKxQVt8VzhA4hqdYTGPECANzd4huXEZ6Gut3hYLqV1FUGAuzCvVu0AK9PuXGDtNa8
-	ZozBR75HPeczCLto1hM2Cpvu4A7ebUY=
+	bh=1hLSDYK85M3wvI1xgsH2onhHuYsbD0hLp15Rb5kZzBE=;
+	b=mOr2ojwKv+q1Qyk0/+66q9ScPiZuT5Uf0Gni3X3VBRP+F3lUQJ01fq406rqizbJ1QrkaIp
+	gLE231oAlekCh1HBKt3kOri+zW+xhhiVW3E9wqm+RigwNi/0HTHTRiu9FdPXOETF8A5yNZ
+	tJm2nOsLkoS+VzNVolpYggQRMy4kyZk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DCF85600B1;
-	Wed,  5 Aug 2026 06:11:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0455F1F000E9;
-	Wed,  5 Aug 2026 06:11:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 37141600B1;
+	Wed,  5 Aug 2026 06:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875871F000E9;
+	Wed,  5 Aug 2026 06:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785910297;
-	bh=o06/6FPH7j0zA4EIe85PZVZwlMghUXEo1x/4oJlkPUw=;
+	s=k20260515; t=1785910345;
+	bh=1hLSDYK85M3wvI1xgsH2onhHuYsbD0hLp15Rb5kZzBE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LkwWgCSqVEHenrGLY5DwHpwv7bCvEcjU1bM/SAkxZR2C7FbjCYG3GZB5To0YtXKhJ
-	 BROZukET64rl4TaA+ifSfCscJVUF45Sj1Mbg8SEyLyuM5osT/W4PTtOdU+dpW/5eRG
-	 lT1en6InMlUBFn/zGgyPhjerWsf2AfB8VVnhSXw4voTEHz6UfS0qFAT9XSyOwjJ8fM
-	 f54q8nYfmXaOeDNfFsURdyQ4grrm1xxLOlAzlipOCf89+cNJXPeLxgPi2gG5ZvQVWv
-	 qF4AxGW4BsKoX4/f0sTLmGSj0EsjUXEQ/4Y3hV+0ZhQ0+P1Cw/fzmiNjZE2Z54f5q5
-	 k+NL4/dHq1Unw==
-Message-ID: <17add1ab-4390-4e8c-95ce-b8f0723d4c79@kernel.org>
-Date: Wed, 5 Aug 2026 08:11:29 +0200
+	b=nuE1953L+3uAi2FMf+5JWzAAPNWofIinBa7crSNrCgsraRRSMNncnBoftKUUhA5LL
+	 /XIkABmVioCXWD4/nqjYmth/a1BqShCVNeIs7MmkY6QKmNe6Dvi3MLmVkn3ZW8hp4r
+	 J1JZnb8ds2VXplLPxeIVmoCSL4Fg7LHyb2LyBN0peX6uskmvX2dh3QvTH2gYNSjJsO
+	 8Zp2JJSrNU+DR4D6sh2qRdh8Yz+JWGD+C/ptATgjG917Ygf+zbXpdqYGkbZe0pJynV
+	 5DJCfmXRCnd5OH1mNCKU7fwmztu2DGU0+YCUuG0hbBKL1otTwnPAT8MvOcZWn9Y0nD
+	 ckE0cMYWtKaww==
+Message-ID: <3d5f0435-59a8-4eb8-825a-d8451c6dfb81@kernel.org>
+Date: Wed, 5 Aug 2026 08:12:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
  for this series)
 To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- dennis@kernel.org, tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org,
+ urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+ akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
  Jason Gunthorpe <jgg@nvidia.com>
 References: <20260715180455.515692-1-yang@os.amperecomputing.com>
  <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
@@ -86,13 +86,11 @@ References: <20260715180455.515692-1-yang@os.amperecomputing.com>
  <amCPBrdltFSE_fEf@J2N7QTR9R3>
  <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
  <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org> <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
- <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <anIXr4Kbn59Ac31Y@lucifer>
- <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
- <94c7988a-3ecf-4b26-b0a8-011bdc76283b@kernel.org>
- <29edec61-8f11-b9b1-3df9-2a51815ee771@gentwo.org>
+ <63ea8156-a109-b2a2-6d35-1c17ad7f1a9d@gentwo.org>
+ <84b31836-1d10-4bec-a469-468b91fd4645@kernel.org>
+ <9f146ce0-4adc-0c00-a2d8-c01b47edc9d1@gentwo.org>
+ <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
+ <b4b79f6b-e09d-bbb1-2181-07e756e849bb@gentwo.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <29edec61-8f11-b9b1-3df9-2a51815ee771@gentwo.org>
+In-Reply-To: <b4b79f6b-e09d-bbb1-2181-07e756e849bb@gentwo.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6EE3C180003
-X-Stat-Signature: ewjtjdfwu1maejoyhemn5s7zqybd6ji9
+X-Rspamd-Queue-Id: 9C451180005
+X-Stat-Signature: myarrp5k7sx5n76byfz5x97ue8fjzmwe
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1785910298-643705
-X-HE-Meta: U2FsdGVkX1/uUt/6lJLcVCr7wulWABoJRSjxo8SSLeNjxnK2RSlIps3L7RJRwcGexYon/XgVpOPTXAg6ADMrYWw8xV1ZAlva2nnmOLRjWsA67hmkr4ZRbvAq2MQo7ybo/oSxXv8g/5UPafk1DuiIbbN5Dj9eU1Ig0ICkCmmmNEA35twGuLil0A+xMrCnUoRFVnFlzHtTXZGxEQzG7oYxXCjpyvyEsOXhESDxSgCREynfq/YFtNLflIfVgOfSM5aYQqoXx4WuuF0c6qdzrgiu/hkIwg6ZANFbec3H/wN/GqojMPCZ//vE1q8YdMsCn+Y9u5RQ00B25IaWGrESsgoM+/loV0K+xh6uNXVkXqvl9ffvwQi+X4bpUSUfMRzUadF2XhzcRrs16/YVOuHKroaeaX6Fx/1PxSnOftsA691xqBNs0+nFWKlZDIaJbdRptonFeNS3XCekz1GQvJnGxiafKMSGXR9KSg/mKAvHCgJ9XVxZEUxtCtG2naHaTL4RRHtigZiNPcUJAm624dRGXC+iFWJH2Cd8LkhtrnTIROJDXb48Ru8s8C1bOrS76y9SIHYrKUuJJqTwxyFYIw5k0cQNdAh4nhLGByY/+zXftaTnq7Qpz7A3VOBu/vyouQcvdu9eZqLY1MJy3gUJ6w+Fqx74a+Oc0ajunbSxbieDBruYWNMkV+mSAXB4N7mKhbUnM6yIX3WiERfqrqvxqu/5AhIbWyF/Msfq4WoJuUHsO9qzRxqKg95J1N6S/DBCdSw0t2bkD+hTetTjDLtybuA6LT0bWXjSHpU20cPVa3MM/HJg/yJx6yfZnN6X9yRyIbmz6NB42omHDF4DeGvWcJ5aOGJwktSfqkXXEcDy4/g6wD35aKHyrVJjxygGzkNfp/N6yMt4HUALRzj3e6hQH67EYUjaKDwXWKAfSiTxcmg6b67CXFRKkKOOi09pTfsabtt3AjmY/1C2ZGRlQkOVtrvKYzo
- B5J8pg9c
- Fi3lQgnpL3b1If4XHzATGHLlCJUOlMvIWZ3ZZFJ+x/9pgMhu6X/AcZb49Uh9cu1RV5sJvtrQhMxnBximlgx70Memm0FfQ67fBwpP10wJu8owhMiSA0ADcpJVhZM8Vg0HN4fMKlacJLriOlyMqRK5VOiwp5RQOREjRkhZTHn5Kc/kdTeHVjM1z4uI5zm+wSVTpHvq3gsKLj6KAcDMNFHYmkV2iotYx+VmqRST44YYJtJJbwBjpb0wePzJ0wqv/5pKB6V+y1h5qqiaWpO0jM0k7LAYA9YO0MhPMU4OQhusVCKGjyvfTW7GCqhjsxA==
+X-HE-Tag: 1785910346-406773
+X-HE-Meta: U2FsdGVkX1+am4ZATKzxM0LtkBLQ2BqRctxpWtwu9I0gKou9KvPUl9HelpQvNBXteE77pt7xC/UzkH26fd3WztozsUt/RNaGj7bEaxfOeeE1xlQ7+CRI62dKgiHu34LO2gpAEzJeSDxHa53R0bgS5SSAomtBydP2tFxwTmxGUxdpBsZ0Dg3P1LDzF9Tr3T4NUst0RNHDOK31paoVN+kXyrOTtwbAGcuEBzweo3baGbvvjPzNJI2shIZ2KjBC4BkrrwRaNh/cF1ohVWILVRQJHJP8aR806j12n9yvASIZ3WctkSSlrNNPYo0NNdG6XYCClzaCjDWLNcs7cG9ZyygqWOp1G5kmoIUvticH5dTWplJSB7l7+0oSkx5RTTNi0JucPCerqn8NUGTwTAYtMSvzu5Y00HRniKvkJuecVH8PdwC0zEPZT08ornetyFrV6Mz4KSsPvtx+vooqlAGrA3WJSfwobOJy7S4Grqa60fiDJF/oUxnmsHoHjrbGsBRJxM76RJPzN1+oLPYexKyRQuuQPVFRVvu1aQLYuCR24zRmp9AxNsPDr9wJfJs+H6wn8jJfJJyLAtq9AsKQwg+PuBHsPoKERrUj/G9H/gtrg+SNh8/gbIN4zYfxtmcAPVKjsH6Njgohqug2hqSON4yxJDpd4pDO++pBELBvKfPOyzqHR6lgHLDWC3SJNFNXGQX3YeyP5yIHD6VDAriJpK+uyplME+FjU7pnMrwUVEFx7K91HPol+ij5RouGx/kQ7mV0reX6PvPrzR67C/mCN9u/dXTes48BYWlPxmNiex6s3PTHZ88oAXPppofYwj8NSlAxmKwFXURDiLpgrJcL+L1bxOmOkbG+GbH7heUtxK/K0SpV5LVmTuwPA2d342yThHLF4xJuFbphxPHBCxOS2oPD/3EMyKWo7oexhw5HfpEGLuK91FHcTvblCU4rB4GZI4HIjAINd9erQjW92KePPb5binB
+ rNcghDqK
+ YF/WJhSokI/PpfWeCkaVZXdXiSROk6F7LiWBOCj9CCFhKt9zwrodzjZBh7JoVhPs9l6njE4lU+1sM4GyJWKZ/WBNqO0GdtAgfTw8MwZc3RqrN8n7WRBhXbnhBn8lHSGnxuKXyYJ7id34ZE6Y3yyqqsxU2uAZfYvnMVqWAGlVZvsCfE4ZalwQa4rmQJr8610pysqJmBTHmycnKd6zfpHqbawduKNcOGThookL6xnGe6Bo3QNF5vKWddOF7JBq7xSqsAiIN8L2zyWPZWO9uA0DNnNv3BRPQz19IgOstaKn+OGAOpIjLBoMUPXrl2/E+rDxgtusD4QM9yXIEPvk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,15 +155,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 00:35, Christoph Lameter (Ampere) wrote:
+On 8/5/26 00:01, Christoph Lameter (Ampere) wrote:
+> On Tue, 4 Aug 2026, David Hildenbrand (Arm) wrote:
 > 
->> That's really all we are asking for. If there is a measurable performance
->> difference, great. Share the results or point us at them if we missed them.
+>>>
+>>> You cannot accept that one instruction is faster than the same
+>>> instruction prefixed with another and something else at its tail?
+>>
+>> I am pretty sure that you got exactly what I meant, you likely just don't have
+>> the data to back it up.
+>>
+>> Proof me wrong!
 > 
-> Scanning over the patchset: It seems that you are using a special
-> instruction that is unfamiliar to me. Which processors support that?
+> Well you seem to have alrady seen the benchmarks that we ran and are
+> running. So I had doubts on your sincerety with this comment. Seemes to be
+> be just there for effect.
 
-That's best asked in reply to Mark's patch set I think.
+Let me repeat a third time:
+
+So to be clear: claiming that the additional instructions are unacceptable I'd
+expect something minimal like: "removing these 3 instructions speeds up
+micro-benchmark (a, b, c) by X% and macro-benchmarks (d, e, f) by Y% compared to
+Mark's approach". [1]
+
+[1] https://lore.kernel.org/r/ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org
 
 -- 
 Cheers,
