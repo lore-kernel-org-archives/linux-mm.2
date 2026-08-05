@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD6DC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 21:29:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34EEFC55ABF
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 21:29:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C32476B009B; Wed,  5 Aug 2026 17:29:25 -0400 (EDT)
+	id EA0E76B009F; Wed,  5 Aug 2026 17:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C07F36B009F; Wed,  5 Aug 2026 17:29:25 -0400 (EDT)
+	id E783F6B00A2; Wed,  5 Aug 2026 17:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44CC6B00A1; Wed,  5 Aug 2026 17:29:25 -0400 (EDT)
+	id D8ECB6B00A3; Wed,  5 Aug 2026 17:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 660546B009B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:29:25 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2337A0632
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:29:24 +0000 (UTC)
-X-FDA: 85068507048.18.818306A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A67F46B009F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:29:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F9351C10FD
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:29:29 +0000 (UTC)
+X-FDA: 85068507258.28.403E5C4
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 42C0E40005
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:29:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MpMLTFwN;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id BB1C016000C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:29:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=b8iyLogG;
+	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785965363;
+	s=arc-20220608; t=1785965367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ma4zHx7bJMFjy6oLtPyEY9Y1gbp/GxsGhVs6sSsTh+c=;
-	b=4S64xzjKLiHb+rMEPZ9DO3u0JHoy6VI+UpyOqlVJhsyJ8RJI8H7kze67h8jUA1F5gIrheH
-	95QIlN0wgJsra/ZLGBybVHEg0+4I6h4p398VoVepypVtxE2sMybNX89eJnzmZ7wWrCMcbT
-	iWJc2skHaN7eyq6YiKlYYa5ZylF8Ir0=
+	bh=57pqVUBnNmX4cL7er9o4/zfu8e545pjnuaBSHsFeFDE=;
+	b=8F2j6gLLlG/hCmxPVpNRIJ6pnu8Am9cXUR4XnacVQfRuvUz0t7y2qzf6a6hRWZYDLJ2cvo
+	VRRaAvhqs3jG8D88JdfRJSwhHqVsCdyBJ7Qz+DlWe/tzmsV4L3i+s1n98qs5IYO0jjA8JT
+	lBfrmkAj6Efn5FpIgMqx4RErUJnUoTQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785965363;
-	b=uRHGaJnAqlMyDuCjfGIkm/YZs66GUG5iOkf9WORUFXSOiK8A7vFhV+0NRA75Cr12wlNaEv
-	vrh9tsj88MgIaHZ+XS6ENAla7RTs3w3uE+Ae6We9arGuxE29T3ueDiDKdXL0/1UzgWUrn/
-	S/jGN1NfLyrFajLcKxd4eZZrXcluN9w=
+	t=1785965367;
+	b=nnvADxjJ5ONwaYx1MovKAiliDM26YMnPAvWNxM4yigzSWzKwco1BSTm2WUPwvU2NcuCMEb
+	cC37ZML0OCZX2YHtKhuWNi/EuVHNvVam4Dwue6X46GghXfannieA7fawYKGFp9+NdMkQCq
+	++yZFXoLUAphNdOXDETqR/V870bKMHo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MpMLTFwN;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=b8iyLogG;
+	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=ma4zHx7bJMFjy6oLtPyEY9Y1gbp/GxsGhVs6sSsTh+c=; b=MpMLTFwN3V9WHEZXYfPOhi/3j1
-	MhzHyiANdaHqWZ0GG86xRti4sH9nb/vvmkYPm+6EDV2DYfV50IvLAQlOK6o/5Pg03EHnEE1VgK9I8
-	6riq+KsTj0rjk9XSG2+WhLvHnSFAKg6lZy5n0K4WWQ+PFwQeunALxZdfsiSsXngpd/Q9VbA65eR04
-	qijnLBwZWjH6Jmsg444WEb5KyRKWesQEAIGtI2hSllc8Uk9IsqCzgG9fwy25KVFK+s/O5Dksb3V2m
-	OZA979jlpBWp3mtm+mI3FHEp9I+pZlStc6ydciY+FsO9ugf1slpKFc1+eJa9QIGWHNG8rOx8ZWwhU
-	UJY2J3GA==;
+	bh=57pqVUBnNmX4cL7er9o4/zfu8e545pjnuaBSHsFeFDE=; b=b8iyLogGZWsewW/fwjv9PC7QQ1
+	K4q20HeVSAYmtkIesVcvUexqCSW3n98569Yc/t+a/acUUPw+brfYCuDNjkK6P9UhkLUFpkuRJGMhG
+	zrsY3vxhU774pTVDkESi40r+Ihz0VJYpyGfkSPBTAwT//WTu5prLiqkEfETryGeNY0r4v9yzWK5Ii
+	5Ez9efFZW14/UXRW3IQk2LX2ZuPHBnC1pIejfuapERWhujUB936JuzTbplSQRy2Ls5meXVfqpU1gu
+	OHIkVVE25WG3liME5CcoVyBxKaOFdttxO1+6S1hhTARTqizWZWcijiSMQfAjUzh4+IE/6CRnkTe2Z
+	8maT5eSg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrioL-00000004h6X-00KI;
-	Wed, 05 Aug 2026 21:06:01 +0000
+	id 1wrioJ-00000004h65-1IK8;
+	Wed, 05 Aug 2026 21:05:59 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
 	linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>,
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
@@ -74,24 +75,24 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
 	Jiaqi Yan <jiaqiyan@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	stable@vger.kernel.org,
 	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: [PATCH v9 15/15] hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
-Date: Wed,  5 Aug 2026 22:05:55 +0100
-Message-ID: <20260805210557.1118966-16-willy@infradead.org>
+Subject: [PATCH v9 01/15] memory-failure: Fix hardware poison check in unpoison_memory() again
+Date: Wed,  5 Aug 2026 22:05:41 +0100
+Message-ID: <20260805210557.1118966-2-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260805210557.1118966-1-willy@infradead.org>
 References: <20260805210557.1118966-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BB1C016000C
+X-Stat-Signature: 1qu7tiu4h3neoierkibja55qp73pu7gu
 X-Rspam-User: 
-X-Stat-Signature: a47deu31dci83zeigd78jbqcwrt1wz7d
-X-Rspamd-Queue-Id: 42C0E40005
-X-HE-Tag: 1785965363-434370
-X-HE-Meta: U2FsdGVkX195//lKfIBEKILN+D+ePY0grTH9RW5yQiGUyxkCJwhJfStMtw+s6AbMToHCTOSIb7woIClF917zo0aToDvfT7EZuOFAHJTdosh2OYEMi7Kmvc5oj1SlaXp4OdthVo2VUZJ2vXCkuO4Ii9ux2BH+R9Iac58Rt6UDOUED8OBYsufL2jgPrSPgTaancYpOgpQdVp8LtpYMBjEmJNjEczNbI8p0NoIA9yVdxxRczYrXyrNS23E1GbnAcCatcaaFNCvIAT71QUeS2v/VttC2KQZvATo6uzOCtXrs7QcbQF+d6tMWC5+zjK0zlbWuOyspRYTW+Nck/5pyfBYQQPC8TmyyG+I6YjQ88UlBY210xvseKsSpfsqq61tn3KFfJGmHD/qS9TINFjaOhJsJua72TEXdTeIEK62y4/Dp22a2z3lOqLrfZUxhv4VuNYMphG3HYOk/M9znhmoptBM6uTL0D+ybZ/N9lruMT2YjCfBZEmpKWDeZOdHWQuB4W9eTxcsIbyHG8bdE42Rk+nItFzIf26+Ppwd5RZO+tCnWenhkBXBNRH2+b6Wn2vx+rjrHhqMZS/zGPj8qP+dS8bQ/uQM/M/vc+gLdQGuEc7h3PQGUo2GLFryktXZuNWrakwseKMXB6/Tekmk6UL7I2P4iFpJwwjD+7xuOH+IyGorIP0qdfvUM2nzYB8vp3WOFL39G2blQ99QP+BNCZ9zg6sUm6Mn5SPcLDknJPeRrDyLutCS6693x1RNbl1eo2sveSf4MXn3tJNOUNWhz24/MKjSTnwzz63OQ1Y+iSRwhahGhQPoTgKIcvjN1DNCmS5hdmrf5vRNtZBPFLRGfhGnbfjreKB6JLYV0KFBFI9UoLFBndffHsE7HclFUJ4jxSzoonpd6uOofqAT52IJY532U6VZHYqHWAiGj4MqjL8LKtwLTtpwfiUGAxuaQjIuutrghJeHmb/uqo+/paL3Cr4Omsqz
- VA3OASmI
- MzJNCrhyRQHaVP2DxYIDOoh/4HCMDCAvsFyq80A9nICB15S0m8vUH6Ug22Lv0NRgTq+qcULqR1jKYELeq+BY5gZnwbc0g+9++PX7bRJr/+5wBalY+64zsSQBDUil1Pcbv1rUyz2YgUKfZO+r3D8tU3rl2cqWVmiDXvjU0ZxWrbDgQp77mtAukrttay1SJIN+GAf1f43legbTt+R3n+fF52JwFN6z9+f7MxA6qWE+WQOMdujxc9yfIOGG5xNPfpndR6HMTkDUY2X9mxsrMgPc1dMTm9oQ0D2manPOjW6tUmTelzV0e6eTxDblfHcg7L8b6YohBEtcUe8bPV1co/sdiLMC/1EYK9a0vacRCoc6RaloShkX6R0yfoM5Ur8ilu2QYyyW4PdB7ElNeLqffGycYpS0opa3/wQEvaYujye/egtAH2rumkE03T+izfOIzOb7QkagvOrz6dLs4e3qCfv2FYdPaYECWqjITyE3TYOQWYBj2qfc=
+X-HE-Tag: 1785965367-473310
+X-HE-Meta: U2FsdGVkX196kRRhLsnIvpVraJgGutWCyUlcQsawingwtgSpAo/cFfr3I20CuabpZ1mqjKxnbwIUPRKKGAxrIYFyjxXIgCEfdjsk2Bv5Q/qYzJWyfIZBDKdrqo5GPCQDSeaY+9+QLu/tTTiDX/dCL0xw7mSRThd9MX6uCBw0B/hJKwPiieefcfckVDyPwRgcuK9JWjLWsg58s28CVG6vnNzkkr5HccZjH/PvAZpHljjIUSG7cpBonqvBHEPIP3uF7D0qMWkM5c2jbXQbBmvJ+bFXCvzkef4uXUef82fBWovlkLdjOYccczZo0EWYF3J6TRuoEAAOiT0HLlmpoi7lllpjVXmpJ9CtiV6J9RkJXvxIpQ0otizFdec/YLBYv2/FihoIvv6loq4+BD4alV3ps6x1IcKw0JhkTJTzrj2kFUcR5M+lCeHSYtiRm2i+PVO40eWCajnclenGK+9Kw3MXdxtnD5MFu7QcqZymyxe1y4Pn7AywxFImsY1aYV29gYMDi5nLNduPVW6iILoiiEEWFBlc6uW5lQykvFNsBJ2pbMjCLIP4aF3fTjsLoXonGDNV5rcQdS80cLnzePepG913VwbRt2UMcneltuMAUiymC8v5BJu5hlXTZ5XsXt5YMG57zB3eZXPNxsOPY2nEAkbpyJ320e2s7acTrRDsG9CFBtChzDurCfFyP/WH1QqJC49EWDOGIGpGgdEAC+ztHEP54nTeu4F9iixGKr1FH6rl7glohnNYkEZX/ZKS2CbKvpY/a155XBnWXRDAqFVONiYM6KK2d1khH+bcVvyJijJoh26Ed621d6REjMmgTNwLAvXoQZDrCwIOWkXZeB8IY10mcPjKJ+aZj39ZGBbGx1LuGhu1MyBClnX3khA6TDuS41EiKmWryiEMeIZeWyMadLYsC4hmVXUIAQd2Pw9sRcOs4OnTAn4ao2o+Db+YDX9Qq9QTjeBDSoj0Pklko8SmeN4
+ +Pas6VLW
+ OzVvVTrNXdnn+uDLhhTRUH8RTdiDYxUnSwB2HTXCamoK76yiIhyqPJA34YYhYAzHUrL4eltLeJIMsboZ9MAdxjm1RYt6GuheVJvNIlpNAvAELlQHBckTJIQrF222zzfMBeWArEOP11iMx67adNT0nAVlHyt+ByU7AwWKWI3lerqKM9jGqX4apwAjy1TViuJPfDk1VU052YZf1PFnLqg7pvlxrlygccSlFf2CvlRTSDch69mLX1I10vfxkriWa6a4urSNmrglnk8kDCVERlznZH9c8/Z9uBKi5vQ0cojQECvkvOKdWIrZveNGZdqsLv7SoWxPvwUBu74mw+kliJ9/5XMx6wZKwmaFdCQA2MmeA+QD1k31ozk6x/SNl58kMLjgOn0V9F70MP19p2h0j1J3KTUxG6NbFkgnBsONtFlfYubKTdkdv4pJo9UNqVmwQZI+K676+JtmIdyztdwjSCMM7qgi14f4t4aQgL9U67X9VIN7RsbohMz4A4e2Vmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,155 +100,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jane Chu <jane.chu@oracle.com>
+The earlier patch (6c54312f9689) that attempted to fix unpoison_memory()
+was incorrect for hugetlb folios.  Before a6fddef49eef, we checked
+the head page for poison (which was correct for hugetlb and incorrect
+for THP).  We are currently incapable of unpoisoning pages (other than
+the first page) in a hugetlb folio.
 
-generic_file_read_iter() now handles hugetlb poison, hugetlb page
-size and missing folios correctly, so we no longer need a separate
-hugetlbfs_read_iter().
+Use is_page_hwpoison() which handles hugetlb pages sufficiently well for
+this purpose.  This is racy as we don't have a reference on the folio at
+this point, but fixing that properly requires deeper surgery and this
+is a CAP_SYS_ADMIN path only so this will do for the moment and can be
+easily backported.  It's no worse than the situation before a6fddef49eef.
 
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Co-developed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+The other bug in a6fddef49eef is that we currently clear the HWPoison
+flag on the precise page, which is wrong for hugetlb.  Fix that too.
+
+Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
+Cc: stable@vger.kernel.org
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
 ---
- fs/hugetlbfs/inode.c | 110 +------------------------------------------
- 1 file changed, 2 insertions(+), 108 deletions(-)
+ mm/memory-failure.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 8d15413a67ee..cef7e61b827d 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -187,113 +187,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
- }
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..944e6e1d4971 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2695,8 +2695,8 @@ int unpoison_memory(unsigned long pfn)
+ 		goto unlock_mutex;
+ 	}
  
--/*
-- * Someone wants to read @bytes from a HWPOISON hugetlb @folio from @offset.
-- * Returns the maximum number of bytes one can read without touching the 1st raw
-- * HWPOISON page.
-- */
--static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
--		size_t bytes)
--{
--	struct page *page = folio_page(folio, offset / PAGE_SIZE);
--	size_t safe_bytes;
--
--	if (hugetlb_page_hwpoison(folio, page))
--		return 0;
--	/* Safe to read the remaining bytes in this page. */
--	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
--	page++;
--
--	/* Check each remaining page as long as we are not done yet. */
--	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
--		if (hugetlb_page_hwpoison(folio, page))
--			break;
--
--	return min(safe_bytes, bytes);
--}
--
--/*
-- * Support for read() - Find the page attached to f_mapping and copy out the
-- * data. This provides functionality similar to filemap_read().
-- */
--static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
--{
--	struct file *file = iocb->ki_filp;
--	struct hstate *h = hstate_file(file);
--	struct address_space *mapping = file->f_mapping;
--	struct inode *inode = mapping->host;
--	unsigned long index = iocb->ki_pos >> huge_page_shift(h);
--	unsigned long offset = iocb->ki_pos & ~huge_page_mask(h);
--	unsigned long end_index;
--	loff_t isize;
--	ssize_t retval = 0;
--
--	while (iov_iter_count(to)) {
--		struct folio *folio;
--		size_t nr, copied, want;
--
--		/* nr is the maximum number of bytes to copy from this page */
--		nr = huge_page_size(h);
--		isize = i_size_read(inode);
--		if (!isize)
--			break;
--		end_index = (isize - 1) >> huge_page_shift(h);
--		if (index > end_index)
--			break;
--		if (index == end_index) {
--			nr = ((isize - 1) & ~huge_page_mask(h)) + 1;
--			if (nr <= offset)
--				break;
--		}
--		nr = nr - offset;
--
--		/* Find the folio */
--		folio = filemap_lock_hugetlb_folio(h, mapping, index);
--		if (IS_ERR(folio)) {
--			/*
--			 * We have a HOLE, zero out the user-buffer for the
--			 * length of the hole or request.
--			 */
--			copied = iov_iter_zero(nr, to);
--		} else {
--			folio_unlock(folio);
--
--			if (!folio_test_has_hwpoisoned(folio))
--				want = nr;
--			else {
--				/*
--				 * Adjust how many bytes safe to read without
--				 * touching the 1st raw HWPOISON page after
--				 * offset.
--				 */
--				want = adjust_range_hwpoison(folio, offset, nr);
--				if (want == 0) {
--					folio_put(folio);
--					retval = -EIO;
--					break;
--				}
--			}
--
--			/*
--			 * We have the folio, copy it to user space buffer.
--			 */
--			copied = copy_folio_to_iter(folio, offset, want, to);
--			folio_put(folio);
--		}
--		offset += copied;
--		retval += copied;
--		if (copied != nr && iov_iter_count(to)) {
--			if (!retval)
--				retval = -EFAULT;
--			break;
--		}
--		index += offset >> huge_page_shift(h);
--		offset &= ~huge_page_mask(h);
--	}
--	iocb->ki_pos = ((loff_t)index << huge_page_shift(h)) + offset;
--	return retval;
--}
--
- static int hugetlbfs_write_begin(const struct kiocb *iocb,
- 			struct address_space *mapping,
- 			loff_t pos, unsigned len,
-@@ -891,6 +784,7 @@ static void hugetlbfs_init_regular_inode(struct inode *inode)
- 	inode->i_op = &hugetlbfs_inode_operations;
- 	inode->i_fop = &hugetlbfs_file_operations;
- 	mapping_set_folio_order_range(inode->i_mapping, order, order);
-+	mapping_set_authoritative(inode->i_mapping);
- }
+-	if (!PageHWPoison(p)) {
+-		unpoison_pr_info("%#lx: page was already unpoisoned\n",
++	if (!is_page_hwpoison(p)) {
++		unpoison_pr_info("%#lx: page is not poisoned\n",
+ 				 pfn, &unpoison_rs);
+ 		goto unlock_mutex;
+ 	}
+@@ -2748,6 +2748,7 @@ int unpoison_memory(unsigned long pfn)
+ 				folio_put(folio);
+ 				goto unlock_mutex;
+ 			}
++			p = &folio->page;
+ 		}
  
- /*
-@@ -1215,7 +1109,7 @@ static void init_once(void *foo)
- }
- 
- static const struct file_operations hugetlbfs_file_operations = {
--	.read_iter		= hugetlbfs_read_iter,
-+	.read_iter		= generic_file_read_iter,
- 	.mmap			= hugetlbfs_file_mmap,
- 	.fsync			= noop_fsync,
- 	.get_unmapped_area	= hugetlb_get_unmapped_area,
+ 		folio_put(folio);
 -- 
 2.47.3
 
