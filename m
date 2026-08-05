@@ -4,86 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98205C561E6
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 13:51:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94A0C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A636B008A; Wed,  5 Aug 2026 09:51:36 -0400 (EDT)
+	id 5440C6B007B; Wed,  5 Aug 2026 10:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603A96B0092; Wed,  5 Aug 2026 09:51:36 -0400 (EDT)
+	id 4F51C6B0092; Wed,  5 Aug 2026 10:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B536B0093; Wed,  5 Aug 2026 09:51:36 -0400 (EDT)
+	id 3E40E6B008A; Wed,  5 Aug 2026 10:11:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 31EEB6B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:51:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BF5EBC0494
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:51:35 +0000 (UTC)
-X-FDA: 85067353350.30.6F18E19
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3870840008
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:51:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TP5/G0WW";
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 03BEC6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:11:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E9831204B0
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:11:55 +0000 (UTC)
+X-FDA: 85067404590.08.377B00E
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B86AA18000F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:11:53 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdFSzv1o;
+	spf=pass (imf16.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785937894;
+	s=arc-20220608; t=1785939113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A55ICr5PoqB803qOLx5Egg13p9sfV6/wfqeAQSAkVsc=;
-	b=Zkr6sB36y4zTH2qA7KBFizKOFgdvGZ3yoDjGkfBxsAbHBtCCJjhnNMC5rYIyDnp6O1v2/V
-	9W6PS25+MIT6VHwPARQd3wTdWZmeHmkiPUOubL8bQER5oOsNhx87fGM3nryl6VZoO2x8No
-	TLfhEb1u43wpe3DB7TkZ8zuMPWgdZz0=
+	 in-reply-to:references:dkim-signature;
+	bh=eFjaJr+M2H0kL5N6nM0BTOJS3VJmwR+FQgMk7+rxLY4=;
+	b=UNukrsE5x7XUkmfv/AceMOqE0pFijNIfeZdQbh/DfocIJSPYnHSsgIzKEZhUn9vwTaOWgc
+	bQlka3OQvgPNsBaKn2nipFcBekobbMJ2wCgURokuUwFllGs8Rc+Bh9OxGaXNcX2luv5QHI
+	rpp5AkmG1s6e6F1KHWKWagSYiED5uB0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785937894;
-	b=nKbceWdRFwkAJ0vuYz0WuX1iBw1w2Bda7iy79xvm3unlfS+12LE4AFeNUcf/eTgaKJwG5t
-	7d+QaDZ15/Jh/xgwj39CKevovduJmPh45uH+AoJLin5ycvgFxKqFemwi1s3tAaYjpSr1v3
-	SuH3937ZoGeGJ12zwMmTYAGXMiQB6bQ=
+	t=1785939113;
+	b=YmiMNUrpZCQ7aIH79T8Zdkp4bs5zTNjEyppR7SNfeiWrauP9gSQLmovub3CszSCwtrSqSn
+	baj9r9lUqlneVN2ZVAqcZfNAgxe4oKZhoAgo3s0oklw2Cmb3H8M8cFVb5GddIdN4i6VDAn
+	rbSPjupMNzqHokZUeIox6CMU02ea8kA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TP5/G0WW";
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FF7060A6F;
-	Wed,  5 Aug 2026 13:51:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9131F000E9;
-	Wed,  5 Aug 2026 13:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785937893;
-	bh=A55ICr5PoqB803qOLx5Egg13p9sfV6/wfqeAQSAkVsc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TP5/G0WWd+nIsJt0gJ9Gr7EqVH6u+8Cu5Lr5BdVrwMZW56gBU2KTB41AIXm/FchtO
-	 yY8133jsiqG/QqGTM9g/QOgnNl90fEA0cuRSLJbpp2wW3nnzil4eOLi9p7rgfQWPQv
-	 +MNNYtHnMMfK/2dNCAbaKGLJeBoIJx28a8ztBJNV20WMxryYJNeRqlUP5Nc29UUcm0
-	 YsO/0txrBW6HqAPutp5HccdhYsLteo6dUwY0AQruRx9MF5PaKn7/hNK8+/S4zhVGmF
-	 laHGkQ5I37wruJrH0e8kZRULW5XeUbizORisvljjwvgr5W2blbNktKpJ17kI6ZX453
-	 9dgzWNZSin0Mg==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: introduce damos_sort_type for re-ordering regions list
-Date: Wed,  5 Aug 2026 06:51:23 -0700
-Message-ID: <20260805135124.88619-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260805081246.39417-1-aethernet65535@gmail.com>
-References: 
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdFSzv1o;
+	spf=pass (imf16.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-848761b5897so784590b3a.3
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 07:11:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785939112; x=1786543912; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eFjaJr+M2H0kL5N6nM0BTOJS3VJmwR+FQgMk7+rxLY4=;
+        b=kdFSzv1oaWUTpPnby1OCOPz0s/NnPBB8/6S6PjivXpc9jOaYPlie/l5NHoV034vTy8
+         d9tfHIZas4xvHR9+7mQ/JkaE4yC9M26xo/vcBq/r+IEoXwqBJbsZOhqio3l8eeh0u95D
+         4lc8uPXzoH84xPudFaKwInMhJbGvy4Lnw+fuMkWLH9HWDWaJaR9jZtvy6PyRHIJWavdj
+         FaUa/ZRHdgbZmh6YdMTd4Tg/QEqASenk1YRHku2uRpNWOCjI6j2/tfpkPPvgleII+WyE
+         OsfS8T5l6kGokG2owrUb2veO8NpQRtwWNnG1muNm4U1Z6+V7WA1/5q2PYQyRPQigtHFP
+         wY4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785939112; x=1786543912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eFjaJr+M2H0kL5N6nM0BTOJS3VJmwR+FQgMk7+rxLY4=;
+        b=HIpaGeh/tmgv9gItMqa6qPhz6Dx0xsVm2G2f+qJ7uVQlhxzQ7Y3pjPYpwgfh2AqNzt
+         Gfgzl0EbOOUliR9fPzpMhrHabBt5mgc5ZndWJy2MBLpzZPuQGqd+eHRY+uvctrZnGk3Q
+         oRnrvty31JELdX9g6lfemzE0zZn4iqI6x8nedkWROT/xlZ5sJSFLicZWBWwZGGuer9uz
+         Yi1PyZork6mTZD2VZFIsnCzcidz2A2Wv6TNzmk24dQoNHaPYMI/Dw821TO5/5qLDN30K
+         3LhZDH8+1ISGDeUwxaJ+6M8zSZVkSjXI3LoDjG/x6usrSbwNBZ0wclKngIKqnRbhhO6q
+         j9Aw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3nqNxzdfByH55qmim747H9sz6ZxsZIxaqHtRUdGvQUDhntHEP7ccwN/rtBvmFASL44obI6kDwOg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5QMsps81UwKgRFx0bbr7Xua+1xBLWF3shBd4fSGKwWbXrlw+I
+	8nlJXCLq6bhlzrZE80tUHtnQFWoDe8sUnnGlmbny/Q+RW//9gvEXalPD
+X-Gm-Gg: AR+sD12Up3vF8FEbDibm80yHAcy9tO2+pHqM9w2dXle8P5FM/09UPZy04UF1XLketGh
+	eD3NXALos2lppC7HcPF7NCro6dsoftPx6ZMomMp8o7eNCJpG+t+h0NoRaS8YhG0DT+QOJYef9ek
+	IByY2B7BO/BzgVWj2Vw/kij6p6iyjCzpfXEGZmmhEV1Go56Xmeh1PsRysckDHUgj9DJOcO1PgG6
+	UrZFkqKnghR46BlNNncudctu8uVSPdF7QmCAxW3vMJLtRhD5WwYo1F1/sumGItLyAeGval8CQp6
+	iAjM33NS9B2PA42oAPd7wzTuOSKGphY3tf76zCdDWiltu33c8olHz0i6mAYifd0V/FR4GsVazNv
+	ZdzK0gfbPSRjXyzaR7Rbg14RDr+58n0GJ8hD2AR571YQ5i719gq0BKL+1jQhId0IBjbARckdVKs
+	a46MkcAUt61bUgNI7l0TKlTUwczI4nzVEx0OwgYxibGGYUy115g9V/qpZ5PKqYYXWsIfUUpKbTB
+	OcHl+QDLt1W+Bnl1jb8wc4+RGZigzAd28SbAwmgAp+pfnoBHHDUpRvrOl1H
+X-Received: by 2002:a05:6a00:194f:b0:847:8971:87bb with SMTP id d2e1a72fcca58-84f2e00ea47mr6381590b3a.21.1785939112218;
+        Wed, 05 Aug 2026 07:11:52 -0700 (PDT)
+Received: from localhost.localdomain ([220.85.166.190])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f2e50846esm913940b3a.46.2026.08.05.07.11.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 07:11:51 -0700 (PDT)
+From: Youngjun Park <her0gyugyu@gmail.com>
+X-Google-Original-From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	her0gyugyu@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] mm/swap: skip empty clusters in the swapoff scan
+Date: Wed,  5 Aug 2026 23:11:44 +0900
+Message-ID: <20260805141146.127776-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3870840008
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: sxap75iwaejy7exsfg9rc71dw1yofqys
-X-HE-Tag: 1785937894-187111
-X-HE-Meta: U2FsdGVkX1+64YtY0UaSx6LuUTLEjlcCoG0jkDg845e0X4VRYQKzxAVIgTYV9D5QQWlZ6qQ/FAgrzXqm/5csZ/0g9Q8fGPwJqLbb2nDMpocozlMy/7M6OHW+QhxKwFYyFnfkz6a3ziF38iULE9aAL9BVB+pXsjdXh/NyAj/qAT3+7wJ0aNyHHcAgWi7AKf3fTPdfrwA70xaJlE0Y753+7y/oFbcTS88dd1OoFljdFqhoaF6kWm1VN25OHVmRai2DuAWmaQa7ODHXYx42F56+dRDQSODyMnxyoIO27AyoZ+ILEHHEmycp6k8Zxq3G1UqTa2hbXWgozaotGfluTR4KXZ1W+VHzi516BCVywHj+eE/EExD0+zGldzXbXPLIqbJOoqef3t16uud6MwHBSM4N2cNQ3YNaZXTTgbLoM7CNQ2GKnqI2Kxp88Zz0WjzdZ0qsdomIidaCUajH/DYsSFYcMOaT4jdwh6yo39ZOK/ncsvm5U8OIzIm+olkNAc/d+OWi+JuVGemYuWrfY6hrFRGu0uWclIHI6Usl/4tvdPPlwF7P+5544IxKJtR+J6XzgAenPfW5Uf1n3gTM2asYtFAMhc3nWtjefW2vbY2f4vMmnjnR6diNtUx+gfxdpYTNynTIlCdIeeFnZCg/DFB9aqtX6JWI7B+9IXnBCgrb/U61dL4tJtKp6s41H41pXH95giDsSlq/yADzPWvGIre9ebK+2oGRLmnFQj8bMDOen4tPAXO5uBMZq2Zrr+65cvSIauhYgWnRzC2cpTyiH7ajmvU6dtMtheAG3S9+dpICZ014UPKmpjseqS5VOuLtT0SX0IQiDEIfB34FAzas28A3Ei4Qc3STNdw5VvSoIIvo9A1W4B31O/pgVndbMtHAYE2n2xxCqnOofrSvHY4RqUbO3KJpbhMXpGvr+ZfHgAdXuVgGH8RQUqs/S2PGHYhs7NlPu3P4fC0SE3whhYHHcEeC1Lj
- WCiEEVtk
- OLRyhlc9hpjM9OLjQwaQT31EWPg63IYbfzxyJPUCD+1V78ZQqitZbL9/icDLzQCIS5l+5A1hMzw2HiZ9W665cgnFsgz/wHamK4uNn+m+Mev7lbxweIqlfk+xzqsGj8+AUQpuzLzBOsrrj33X03AEEXkhxwaaTy5udP/O/3dyvrxbKvFbSGtvJy0W8KmeYOvCQJpyscVO47Mfy/cS7MwI3In4x1JidyiWEuWyYCwWyyUk3mCArIjz/vIEdk+qZfOfKYIY+eaeTG0bz0TucTe4quSRWcUIgRs9/3NnNYOmJsSdYK5w=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B86AA18000F
+X-Stat-Signature: o3ezejrhzjkxnpnps1y4i54cb4ghugoo
+X-HE-Tag: 1785939113-479729
+X-HE-Meta: U2FsdGVkX1/8SYxcVFXRmxGNa8voq6ADCsPTLbMmbmf5cNWlue2LBGdGmS6bIcsokrlM+Y9U53R/PV7ejK7B9cKSzeAsC5D1ThlupceJIATi8N0dLF1/Q5jUzfrZWez6lzMC5IN9lrMsQBZX00/z/bCSOh0sIlLgkjxdcSNidWXpcgkmirLxBGNNCBznzplkS9dO+t7uWm+hRCqNlgXw98WV0/+wwRI/Qi/fa0KjlNKFTaRo6+5gAOA2yJIM326TfOAbPwAhUUe3NTVs5lhN9kNG+7Vj8cGWGVu6UvgWdCqjTk9cMKWw0UBvXh7Lhb+5iLLHowj0PM3n5XcffFSUGv/7Lmtne3N5mDwdRSMgPHsdH94A6rYbaxijd+AVA2S2sZuOXCUoD/Kwmget417YorqednarV4hJLY4z/nTLNT+CDNGc+02qk/k0inq/mZcy3X+gnD3BqtzPumIIVH90sT0T4fFrvvZfV8dWwt5ECM/LXIKGTa3WvDiVn4uAeiwHb/hqJShMvzrZVhcwHR/LwqU+OV1tYx3Pt0dnragWx56PpKcaCDVJefzGM2DBNlaAqb6ZO3Pf4/+OqdKSTw+3GZq5T1T8RhgJZf55pB35vxkELkaUysW/qZVIX2mwrczBKgkwqG2db/0zz+c0CgbEtb9PeVPIP/T28aGOOFUJNM3x4RrVPmjNq4qYxiAiarAan7tHLBGHWL3pEfuF9CjIxkwR+JQPFY0qoSBlbHsSEp23RBQxdaL/IuppWFMyX7PMOudIjV1yvWCJQb2+CsbKwz4wyIxjEpdInm1T5bR3m/Q3JEf5kEkZUe9IotmAWekkWhKvLSc/QDNOfAhdn11Syg72UHPLyn8jAmDitPnfaBlhjlmtKaJmJIS9daBA7bKCRaMLIYImY1xSHxrSVGxJ/yXJgsT3ZCrZs4+hOXcVKyTA85pWfPEyUfgJXVFxQdQ5UYfB70PN1nMRAyj5Uth
+ 7nTcTcJp
+ Zjs/2ZiLf7V2j1jI4LZ30kc6tXlXFjhcGynbyAJZmUXowOdaOFf4mHJS+GWK6BCJq816WkcHg0onWdUvtyySjnUq1NVSpCKHWE+cc2c8tiRdnXljoyGFkXtdbH2Xl5biZvFOaOXqS3b7ep+6FSkDLBQEtvPkML9C0mdsAkz9mpqeAtdSdwLCPT4/CutqE8uoSaOTvlFpt6dUD6/YXms/MvEEFbgBojb7/A38BNRmnIGRm2xSK+iY7RfHrbW+jMhGoW353ZQYi5m0JMPjZb2tzDfScQ5pYQWhMv3ZpzlxUsuxlzH/wgpRlxod7991t1bNK66b2is19IOyWvrd/rgsakDZLRkhDviW+mxp8UHoGtmOAaOfyHTdr1ogkigkg9KlUYyAYCeY9G5vpt6Dn9XEvNvGEA6VrssGBSxph3UvNNULDbnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,64 +124,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  5 Aug 2026 16:12:46 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+From: Youngjun Park <her0gyugyu@gmail.com>
 
-> Hi SJ,
-> 
-> First of all, I apologize for the noise, and I will drop this patch.
-> Secondly, thank you for pointing this out, it made me realize that I was
-> fixing a non-existent problem.
+find_next_to_unuse() walks a swap device one offset at a time.  Slot
+state now lives in a per cluster swap table, so patch 2 dismisses an
+empty cluster with one counter read instead of SWAPFILE_CLUSTER table
+reads.
 
-No worry, it was good to discuss the idea together!
+Patch 1 is an unrelated one line comment fix noticed on the way.
 
-> 
-> On Tue,  4 Aug 2026 06:58:33 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > The recommended way is setting the min_age naive, and auto-tune it using DAMOS
-> > quota or aim-oriented quota auto-tuning.  Have you considered using that?
-> 
-> > This sounds like very similar to DAMOS quota's regions prioritizing mechanism.
-> > Have you considered using DAMOS quota?  If so, could you please add why
-> > proposing this new mechanism, with some comparisons?
-> 
-> Yes, I have. And you are right; the existing mechanism is better. I
-> wrote this patch because I misunderstood quota.min_score and did not
-> even check the implementation of damos_adjust_quota().
+A debug test confirmed the skip path runs, and swapoff completed
+under load with no DEBUG_VM or lockdep splats.
 
-Thank you for transparently clarifying these details, Liew.  This is very
-helpful at conversations.
+Changes in v2:
+- 1/2: reword the comment to "array, one entry per cluster", dropping
+  the redundant "on every device" (Barry)
+- 1/2: pick up Kairui's Acked-by
+- 2/2: drop the min(), the swap table is always SWAPFILE_CLUSTER entries
+  and swapon() masks the tail past si->max as bad (Kairui)
+- 2/2: mark the unlocked ci->count read with READ_ONCE() for KCSAN
+  instead of cluster_is_empty(), whose other callers hold ci->lock
+  (Kairui)
+- 2/2: expand the commit message to cover both of the above
+- Rebased on mm-new
+- Link to v1: https://lore.kernel.org/r/20260728155907.391820-1-youngjun.park@lge.com
 
-> 
-> Whether when implementing dama [1] or this damos_sort_type, I failed to
-> realize that min_age might not be such an important parameter on a
-> long-running system, and there is really no need to introduce
-> auto-tuning or a new mechanism for it.
-> 
-> > I to be honest feel this is too much for "just guess" based patch.  I'd like to
-> > get clear reasoning of the change and/or test results before reviewing the
-> > code.  So I'm holding the code review until the high level discussion is done.
-> 
-> Moving forward, I will ensure I am not "reinventing the wheel" or
-> "fixing non-existent problem".
+Youngjun Park (2):
+  mm/swap: fix stale comment on swap_info_struct::cluster_info
+  mm/swap: scan by cluster in find_next_to_unuse()
 
-I appreciate that.  That will be super helpful.  But I understand we are human
-that cannot "ensure" everything always.  Please try not to spend too much time
-on unnecessary thing.  But don't be scared at making some mistakes, because we
-learn from mistakes.
-
-> 
-> Thank you again for pointing this out. In the future contributions, I
-> will try my best to avoid spending time fixing problems that do not
-> actually exist.
-
-Sounds nice.  And feel free to ask questions or help.
-
-> 
-> [1] https://lore.kernel.org/damon/20260628085155.20828-1-aethernet65535@gmail.com
+ include/linux/swap.h |  2 +-
+ mm/swapfile.c        | 41 ++++++++++++++++++++++++++++-------------
+ 2 files changed, 29 insertions(+), 14 deletions(-)
 
 
-Thanks,
-SJ
+base-commit: 0b53bff4fa05ff0d3ffbd3d3bb10fae69dfab498
+--
+2.48.1
 
-[...]
 
