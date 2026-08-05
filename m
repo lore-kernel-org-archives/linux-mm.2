@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5412C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BA3CC55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:49:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C11566B009E; Wed,  5 Aug 2026 05:49:00 -0400 (EDT)
+	id 7A2BB6B00A0; Wed,  5 Aug 2026 05:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC10A6B00A1; Wed,  5 Aug 2026 05:49:00 -0400 (EDT)
+	id 77AE06B00A1; Wed,  5 Aug 2026 05:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD166B00A2; Wed,  5 Aug 2026 05:49:00 -0400 (EDT)
+	id 6B8346B00A2; Wed,  5 Aug 2026 05:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71D006B009E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:49:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04DCCA1D16
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:48:59 +0000 (UTC)
-X-FDA: 85066742040.27.DDE47B6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A35B6B00A0
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:49:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B36E240419
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:49:01 +0000 (UTC)
+X-FDA: 85066742082.05.B80A4D4
 Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CEF141C0003
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:48:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=OQwTPY4F;
-	spf=pass (imf21.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru;
-	dmarc=pass (policy=none) header.from=yandex-team.ru
+	by imf24.hostedemail.com (Postfix) with ESMTP id C656F180008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:48:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=yandex-team.ru header.s=default header.b=bdUXnjOx;
+	dmarc=pass (policy=none) header.from=yandex-team.ru;
+	spf=pass (imf24.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785923338;
+	s=arc-20220608; t=1785923340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=txy7XdeWKzueWCucPRXi6adETsnhStuNq13oMYnNdp0=;
-	b=rM6/FfxB312Ni8wJSslO9q67/RLT9i4pxzr4u7waga6fHrngHh/Vhshy3Pl1C/AObvj24/
-	qvJk7nOh8aXybe5eGvVAqSg7TEMzENNAfkp7+cxIGv9kJ6kHG26y4XJ0KWGeJ6FcXvIn2O
-	6TZ1+JRFPlBuAfzZsP/DsBVd70gHYnI=
+	bh=OEgYGOPyUdkWmhmw/xLhA86o+THVk2n1bh92QDcf71k=;
+	b=MbVlufYdikjzAOEtYZhBH2FI08AWJwiEmKoohTnXTwliSinlVBZg0lIgQs+DNOl8PHpWdt
+	np8LYZ55UtNvw/AEVKiZBTnhHMIS+lmL4mbrvObb61xwE0RYKa396VtkxoOyfjELpe28Rr
+	LyzPUVxFG1rqbEd4F7vefZohWcq+xLo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=OQwTPY4F;
-	spf=pass (imf21.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru;
-	dmarc=pass (policy=none) header.from=yandex-team.ru
+	imf24.hostedemail.com;
+	dkim=pass header.d=yandex-team.ru header.s=default header.b=bdUXnjOx;
+	dmarc=pass (policy=none) header.from=yandex-team.ru;
+	spf=pass (imf24.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785923338;
-	b=Gv/7ZYmILn5qO629jSZVycQjYGEi25QAkUEqGovp/x0mhT8lbEBEBzG6qh2bZPgPuBra1x
-	4IkiM2dWLIbIYRstVmdr4zKL3gLw21CND9dno6Fjd5MEMmjN3EZT4TxDj+ctYw4KCRjb1Q
-	qcfYb3+ar6ivv/KgsgVqKiBUORJsV4g=
+	t=1785923340;
+	b=Im4/fgWrV8FRb2g9HPNnmYHqzL7TYZm0ti/ERkVtaJS3HWP9YBLxaLSRvRZQkpsKso8K/r
+	5Tfl2hYvZtFi6WaFJkI/7uvi3bO5xU3VxUJKjqXziCv9FDsZns22Q6y8+Oj7Ir2O6w0Amf
+	6hLjzamnCySMlV7ufQnSOwIQojwDnR8=
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:43a8:0:640:574d:0])
-	by forwardcorp1b.mail.yandex.net (postfix) with ESMTPS id 17FE9808E2;
-	Wed, 05 Aug 2026 12:48:56 +0300 (MSK)
+	by forwardcorp1b.mail.yandex.net (postfix) with ESMTPS id 8713A808EE;
+	Wed, 05 Aug 2026 12:48:58 +0300 (MSK)
 Received: from i101646577.yandex-team.ru (unknown [2a02:6bf:8080:43c::1:39])
-	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp) with ESMTPSA id lmErQB23hCg0-WtxDo90n;
-	Wed, 05 Aug 2026 12:48:55 +0300
+	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp) with ESMTPSA id lmErQB23hCg0-GTyl9azN;
+	Wed, 05 Aug 2026 12:48:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1785923335;
-	bh=txy7XdeWKzueWCucPRXi6adETsnhStuNq13oMYnNdp0=;
+	s=default; t=1785923337;
+	bh=OEgYGOPyUdkWmhmw/xLhA86o+THVk2n1bh92QDcf71k=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=OQwTPY4Fl4gi2xKppKdVfGp0Edujpnzp9YsYCCxa17juxvZdpMOfSJN/JPWhAzpkJ
-	 Yry6H/cCawKYQOdfA8qX8Uh04Sb3x3Fw1t2QcQSaTMXlf555rhTf5Jsgk/QglDR0AC
-	 GpsarBNTeW9HI6jJs6U/NeW4y9dpPhMPaZamoMaA=
+	b=bdUXnjOxIJbJYiNdTjGbNTzkBxiVQ3SdcnT1P5qghHticrfxnq1e/xKGktvs/H4xA
+	 S+zvLyi/kSOot3/D/cPt8SM6z6/zUKiBxFU6T8y6y+S8nkrLLo29v9Dl1tt5b5kK80
+	 nwPiHJBSIQi5MuYFDRVX+vXLa5poj+IolBlcaHhY=
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -82,22 +82,22 @@ Cc: Christoph Lameter <cl@gentwo.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Daniil Tatianin <d-tatianin@yandex-team.ru>
-Subject: [RFC PATCH 1/3] mm/slub: allow capping the order kvmalloc() uses for kmalloc()
-Date: Wed,  5 Aug 2026 12:48:41 +0300
-Message-ID: <20260805094843.292134-2-d-tatianin@yandex-team.ru>
+Subject: [RFC PATCH 2/3] mm/slub: count kvmalloc() allocations forced to vmalloc()
+Date: Wed,  5 Aug 2026 12:48:42 +0300
+Message-ID: <20260805094843.292134-3-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260805094843.292134-1-d-tatianin@yandex-team.ru>
 References: <20260805094843.292134-1-d-tatianin@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C656F180008
+X-Stat-Signature: mp14dc578st6wspie6px83b7xfqxtsqz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CEF141C0003
-X-Stat-Signature: bitwetk9rbozm61px9e9sdedytk1hea4
-X-HE-Tag: 1785923337-525707
-X-HE-Meta: U2FsdGVkX18XfcSgMpyOSmaLEfM3WPV44EwXWXrnQzqvdZW4pmQMhTRjX7cx2BT7ibx7BqTefrb+G74dTtDJEAJIBvnNTMYWBxRLrCYq4NEyFd9xLgsSlRL5+HJG4rRfxcABjDtYNbTX7nu8tMmJ9wi7diZst8cF6Y8oKD1Irw21xkMbPse3rJh05MabzCVkD7R6O/D0APPrw491RicP0djO9h7HcUr4sVHrWEPu1vg0p9x5buB+5/KGZlASEGu8VQVHdZ3IR1Nh1UA1WnDGaGMWzN5527yrQXdhXE/+vmR8UcB7l/MMIm456IYCvJ+uydoO+Mv401xg+p6gtfLqS5yBT95utQlqcELkq6Il+Nkav95m5r0PyxKaQdHRz5us94wK4y9UBIC7DtDUVvtKTk1giN+FUS6Swkgil0x0kowTs6g4yAnLJJVnZMPADIUlPmfZsKEdX/HN4EsNROsRdTbJMrqeQLi1ohOkhB6iCxvyuygyGmfoK5Ed1qFRkEwUWnxaV+9JiIgkgLI8WPjlPOJRqhUnTBuyMSBPwV/ho8kJmc2yPzl5wh85OQPnz1PG4YCkf7ttyNfR5hMytWDrnKLLoF+pd0bozMbp6rqjMzplGeW78yDq3KD5EpAWEREeqM7EuFqqt+gpMoQySz78zuIpYuXmnRy7u2TBoSy8BcadoH0Ux0ABDHLzYe6DRfKVsOB6zH7sGSAAP0NQ+/JnjTen25H9grT7yhuwje/5bfzcvdKUPxyrgurtmhU6bf2v/YWyaMyi2CLrnc3s9f/YfZjSOqoFqgky49+T5irO/ygIgfobD93x5MoTSCpp4YyScIY6F/lppSaq8ApTwvQB4KXhhrY7lE8r0UYxTbRofT5wo3mL7NseLtTBqgOc53QNgsBiOczYtKTXy9XPAaBGzDUcOnX9t+A1T6SGpxFkGR0stzEyUJxRkEYD3C32y9h8Iw/StydKzfxAmqenLb5
- mROFqH5S
- cwvT4UDbEkch9WqMPZQONcK2gAGsaQ7qQ5gp8+pNckLrAeRCmfM6Z8vFedQzTHWqgM6zIYI7kLJTZveP3fi+w86DT7P4NPEwFqz3JY3zdHqAvztnbXmaUxkJcxdl5LW0VBhGh5KremB+7i7U5/48o4og665RnYcFc4a9d+Qlf+qzaaIQZDpPEXImVbtnPJzO7CpDTbwtYpLGXF+9cVzEK7uvTj6mQpAnaQ6aQrETPOPIX/hCRXARM2cffWgKm42ZfbR2xvzcCfnKCsRUwNy49DVfbJIr7Ci1ZF3rW3WVBc1Ak+oESOLsulZmnJnuiwkGBNscpGKd/XNultUGRVe5wCoyURkLOz49JukLf
+X-HE-Tag: 1785923339-852379
+X-HE-Meta: U2FsdGVkX18XpnAUO4vgKrH9dkIQmzd1Y2dBKzFg+WyrB2Azdq/K4p7v+jiteRpZeTAKF1ImnA3EA2/hMkKQs/WTCtR+Uij20aSwOcDNPcubTa9rHfi8iyO418l22Ly0u28CBYlya66h5ft5/so3++rfGtFLNfn35Q1N0XgrD8cmKsy7Ub1rzzubcv8O5HLxV6nkTUQMv8XzpopwB2a4S9uVP7HreRdw/Di8N5xyKBEeOHnITCuQqd7HRzPADjbNuSEhb76lTRl5C+dOCJTQ4nWr6lZV+OLrGc4DtW2h9biRIeazhBqyzysO0SY1pOcHiUc/4Pr+3WEi63hUGFVfgbs/NGXGuZcmU2WJ30NKeUrVO/QAO532RlGa33I4wuxrJVxFOpUgmammARWgxZ1TOeVC4SW+HTCb+zNf2y6vHwA++x3pf7x80daXn3dbZM+Z/O13tVffnvI4gCjU/1n3J7nkoqd7O7+GzWKilXeGLz0a7boKUtVRxYyEeIPaoDsXQkuGFyKIithBgS+66586Jx2ESiI8KKXCXrbRwqLEAOx6oAayzCjLtmei0mgfP3/RMbY9lcy6uEM50TwswLK9SzMF8E4JL4b5QnHI8x3j5b97Bgyx3DvhI82ceCoS4mReAY7LM/BhX04Ig6B5AxhkmURHZ15l1Tu4GTTheacqrnkWZuuzdk4KNFYbt/63+BtQnY/mK92cxfdrYTNctlm1CgK0U52bCH5g1w9ls57DEFWclxyuGnpSq3Hc9wGGchHVHIJKqEFrmYJoxTgLw9T0eVtBzVg+xueSG97XspgNtobRre7MV+wU6lY8SCwucvmPvTmL++gpjucLswcfjTw4oDCgL4wE5GyW76wSNTI1byq5NyeUSOdLmSgJq0Dr2i7EHpuPtq0M2exeIVlFPPX+aLbkSaEb5wJcgzt//yHV/qC04lFdJqI2wOaQqwy+z2dIJ/TCUye5COxsE/tLZUq
+ /Bq6oSL+
+ 2StGfYHee4FX1dVGB6ZED4d9b7hT/CjefBFNvD/UQc2Z3UTZGD60mYvDUxeeVJapUqAByBpCmxCdm4+sKIU3dCSdh14q04gefrgiDNJVY4P6y/+OY1E3/qRHh5pYG+FeqZUH+EOPc7UulgEKL2qFEwr3O6Z7fZbZmY2CN8JWTqouolyXhX2hC7LsWudWp4C+nUSgzD80uXJrdrGVA7dEyB0cU7fPb8z1DAqZlEqALalx6FUiKQnIbChCGtgx/0QyHbXCRyTjHxoSwmo/kz8Q3W0NjknV33SLPQEWtflcVLu/TuyJNNV1PixSaO0s3BBGFlbmnSenPH9JHpoo3qcBeIcMynmZ62YAfGLP5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,240 +105,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kvmalloc() callers explicitly state that they do not require physically
-contiguous memory, yet every request is still handed to kmalloc() first.
-Above KMALLOC_MAX_CACHE_SIZE that becomes a page allocator request of the
-corresponding order, which the caller cannot observe any benefit from,
-but which the rest of the system pays for.
+vm.kvmalloc_max_contig_order changes allocation behavior silently.  There
+is no way to tell whether a given value is doing anything at all, or how
+much of the workload it affects, short of tracing kvmalloc() by hand,
+which makes it hard to pick a value and hard to notice when a workload
+starts running into it.
 
-Commit 46459154f997 ("mm: kvmalloc: make kmalloc fast path real fast
-path") removed the worst of it by dropping __GFP_DIRECT_RECLAIM, so the
-caller no longer stalls in direct reclaim and compaction.  What is left
-is cheaper, but not free:
+Add a kvmalloc_forced_vmalloc counter to /proc/vmstat, incremented for
+every allocation that skipped kmalloc() because of the limit.  Requests
+above KMALLOC_MAX_SIZE are skipped by the limit like any other, since the
+attempt would fail regardless, but they are not counted, as they would
+have reached vmalloc() either way.  What is left is the number of
+allocations the limit actually diverted, which is what is needed to tell
+whether it is set sensibly.
 
- - the attempt takes the zone lock and either splits a higher order block
-   or steals a pageblock of a different migratetype, which is precisely
-   the long term fragmentation kvmalloc() was trying to avoid,
-
- - wakeup_kswapd() raises pgdat->kswapd_order to the requested order, so
-   even an attempt that fails makes kswapd do higher order work later on,
-
- - when the node is balanced but too fragmented for the order,
-   wakeup_kcompactd() schedules background compaction on behalf of an
-   allocation that ends up in vmalloc() anyway.
-
-Callers who would rather not pay any of this have no way to say so.
-kvmalloc() has become the default way to allocate anything large, and the
-overwhelming majority of its users have no use for the contiguity at all.
-
-Add a vm.kvmalloc_max_contig_order sysctl that caps the order kvmalloc()
-is willing to ask the page allocator for.  Requests above the cap skip the
-kmalloc() attempt and are served by vmalloc() directly, which is the exact
-path they would have taken had that attempt failed, so no semantics
-change: __GFP_NOFAIL is still implemented by the vmalloc() fallback, and
-the INT_MAX guard still rejects oversized requests.
-
-Anything a kmalloc cache can serve, i.e. up to KMALLOC_MAX_CACHE_SIZE, is
-deliberately left alone: it comes out of slabs shared by many objects and
-is far cheaper than the vmap area, page tables and unmap-time TLB flush an
-equivalent vmalloc() would cost.  That is enforced by the accepted range of
-the sysctl, which starts at the order of KMALLOC_MAX_CACHE_SIZE and ends at
-MAX_PAGE_ORDER, rather than by a size check on every allocation.
-
-The default is MAX_PAGE_ORDER, which is also the largest order kmalloc()
-can produce, so out of the box behavior is unchanged and this is strictly
-opt-in.  PAGE_ALLOC_COSTLY_ORDER is the natural value for anyone opting
-in, as it is where the page allocator itself starts treating requests as
-expensive.
+Note that the counter stays at zero while the sysctl is left at its
+default, since no allocation is denied in that case.  Determining what to
+set the limit to in the first place still requires tracing kvmalloc()
+directly, or setting the limit on a canary first and reading the counter
+there.
 
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- Documentation/admin-guide/sysctl/vm.rst | 30 ++++++++++
- mm/Kconfig                              | 20 +++++++
- mm/slub.c                               | 78 ++++++++++++++++++++++---
- 3 files changed, 121 insertions(+), 7 deletions(-)
+ Documentation/admin-guide/sysctl/vm.rst |  5 +++++
+ include/linux/vm_event_item.h           |  3 +++
+ mm/Kconfig                              |  2 ++
+ mm/slub.c                               | 15 ++++++++++++++-
+ mm/vmstat.c                             |  3 +++
+ 5 files changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index b9b0c218bfb4..bc669052c50b 100644
+index bc669052c50b..4581fb68c974 100644
 --- a/Documentation/admin-guide/sysctl/vm.rst
 +++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -41,6 +41,7 @@ Currently, these files are in /proc/sys/vm:
- - extfrag_threshold
- - highmem_is_dirtyable
- - hugetlb_shm_group
-+- kvmalloc_max_contig_order (only if CONFIG_KVMALLOC_ORDER_LIMIT=y)
- - legacy_va_layout
- - lowmem_reserve_ratio
- - max_map_count
-@@ -365,6 +366,35 @@ hugetlb_shm_group contains group id that is allowed to create SysV
- shared memory segment using hugetlb page.
+@@ -394,6 +394,11 @@ the order of KMALLOC_MAX_CACHE_SIZE up to MAX_PAGE_ORDER.
+ Requests above KMALLOC_MAX_SIZE end up in vmalloc() whatever this is set to,
+ since kmalloc() cannot serve them at all.
  
++The kvmalloc_forced_vmalloc counter in /proc/vmstat counts the allocations
++that were routed to vmalloc() because of this limit.  Requests that
++kmalloc() could not have served anyway are not counted, so the counter only
++reflects allocations the limit itself diverted.
++
  
-+kvmalloc_max_contig_order
-+=========================
-+
-+The largest allocation order for which kvmalloc() attempts a physically
-+contiguous allocation.  Requests larger than ``PAGE_SIZE << order`` are served
-+by vmalloc() without attempting kmalloc() first.
-+
-+kvmalloc() callers state that they do not require physical contiguity, so the
-+contiguous attempt is only ever an optimization for them: it saves a vmap
-+area, the page tables backing it and the TLB flush when the memory is freed.
-+That optimization is not free for the rest of the system, though, as high
-+order requests fragment the buddy allocator and wake up kswapd and kcompactd
-+even when they succeed.  On workloads where large kvmalloc() calls are
-+frequent and the callers do not benefit from contiguity, capping the order is
-+a net win.
-+
-+The default is MAX_PAGE_ORDER, which preserves the behavior of always
-+attempting kmalloc() first.  Setting it to PAGE_ALLOC_COSTLY_ORDER (3) limits
-+kvmalloc() to the orders the page allocator itself considers cheap.
-+
-+Requests up to KMALLOC_MAX_CACHE_SIZE are served by the kmalloc caches, out of
-+slabs shared by many objects, which is cheaper than an equivalent vmalloc()
-+would be.  The limit does not apply to them, so the accepted range runs from
-+the order of KMALLOC_MAX_CACHE_SIZE up to MAX_PAGE_ORDER.
-+
-+Requests above KMALLOC_MAX_SIZE end up in vmalloc() whatever this is set to,
-+since kmalloc() cannot serve them at all.
-+
-+
  legacy_va_layout
  ================
- 
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 03fe95f5a020..c060c06ca2d2 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -145,6 +145,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		DIRECT_MAP_LEVEL2_COLLAPSE,
+ 		DIRECT_MAP_LEVEL3_COLLAPSE,
+ #endif
++#ifdef CONFIG_KVMALLOC_ORDER_LIMIT
++		KVMALLOC_FORCED_VMALLOC,
++#endif
+ #ifdef CONFIG_PER_VMA_LOCK_STATS
+ 		VMA_LOCK_SUCCESS,
+ 		VMA_LOCK_ABORT,
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 9e0ca4824905..9b1fcabb6d8f 100644
+index 9b1fcabb6d8f..0ca7fc5321cf 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -248,6 +248,26 @@ config SLUB_STATS
- 	  out which slabs are relevant to a particular load.
- 	  Try running: slabinfo -DA
+@@ -262,6 +262,8 @@ config KVMALLOC_ORDER_LIMIT
+ 	  This enables the vm.kvmalloc_max_contig_order sysctl, which caps
+ 	  the allocation order kvmalloc() is willing to ask the page
+ 	  allocator for.  Larger requests are routed to vmalloc() directly.
++	  It also adds the kvmalloc_forced_vmalloc counter to /proc/vmstat,
++	  which tells how many allocations were routed this way.
  
-+config KVMALLOC_ORDER_LIMIT
-+	default n
-+	bool "Allow limiting the allocation order kvmalloc() may use"
-+	depends on SYSCTL
-+	help
-+	  kvmalloc() attempts a physically contiguous allocation before it
-+	  falls back to vmalloc().  Most callers do not benefit from the
-+	  contiguity in any way, yet large requests still have to be served
-+	  by the page allocator, which fragments the buddy allocator and
-+	  wakes up kswapd/kcompactd for no gain.
-+
-+	  This enables the vm.kvmalloc_max_contig_order sysctl, which caps
-+	  the allocation order kvmalloc() is willing to ask the page
-+	  allocator for.  Larger requests are routed to vmalloc() directly.
-+
-+	  The default value of the sysctl preserves the existing behavior,
-+	  so saying Y here only makes the tunable available.
-+
-+	  If unsure, say N.
-+
- config KMALLOC_PARTITION_CACHES
- 	depends on !SLUB_TINY
- 	bool "Partitioned slab caches for normal kmalloc"
+ 	  The default value of the sysctl preserves the existing behavior,
+ 	  so saying Y here only makes the tunable available.
 diff --git a/mm/slub.c b/mm/slub.c
-index 0337e60db5ac..0a9910602cec 100644
+index 0a9910602cec..7287949ea247 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -50,6 +50,7 @@
- #include <linux/irq_work.h>
+@@ -51,6 +51,7 @@
  #include <linux/kprobes.h>
  #include <linux/debugfs.h>
-+#include <linux/sysctl.h>
+ #include <linux/sysctl.h>
++#include <linux/vmstat.h>
  #include <trace/events/kmem.h>
  
  #include "internal.h"
-@@ -6887,6 +6888,62 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
- 	return flags;
- }
+@@ -6916,7 +6917,19 @@ static bool kvmalloc_order_denied(size_t size)
+ 	if (likely(sysctl_kvmalloc_max_contig_order >= MAX_PAGE_ORDER))
+ 		return false;
  
-+#ifdef CONFIG_KVMALLOC_ORDER_LIMIT
-+static unsigned int sysctl_kvmalloc_max_contig_order __read_mostly = MAX_PAGE_ORDER;
-+
-+/*
-+ * The limit only ever applies to requests too large for a kmalloc cache, so
-+ * the smallest value it can take is the order of KMALLOC_MAX_CACHE_SIZE,
-+ * which is KMALLOC_SHIFT_HIGH - PAGE_SHIFT.  kvmalloc_order_denied() relies
-+ * on this floor, do not lower it.
-+ */
-+static unsigned int kvmalloc_max_contig_order_min = KMALLOC_SHIFT_HIGH - PAGE_SHIFT;
-+static unsigned int kvmalloc_max_contig_order_max = MAX_PAGE_ORDER;
-+
-+/*
-+ * Decide whether the physically contiguous attempt is worth its cost to the
-+ * rest of the system.
-+ *
-+ * Requests that a kmalloc cache can serve are never denied, as they come out
-+ * of slabs shared by many objects and put far less pressure on the buddy
-+ * allocator than the page tables, vmap area and unmap-time TLB flush a
-+ * vmalloc() of the same size would cost.  No explicit check is needed for
-+ * that, as the floor on the sysctl keeps the comparison below from ever
-+ * denying a request that small.
-+ */
-+static bool kvmalloc_order_denied(size_t size)
-+{
-+	if (likely(sysctl_kvmalloc_max_contig_order >= MAX_PAGE_ORDER))
+-	return get_order(size) > sysctl_kvmalloc_max_contig_order;
++	if (get_order(size) <= sysctl_kvmalloc_max_contig_order)
 +		return false;
 +
-+	return get_order(size) > sysctl_kvmalloc_max_contig_order;
-+}
++	/*
++	 * kmalloc() cannot serve anything above KMALLOC_MAX_SIZE, so such a
++	 * request would have reached vmalloc() with or without the limit.
++	 * Skipping the doomed attempt is still worthwhile, but the limit did
++	 * not divert anything, so do not account it.
++	 */
++	if (size <= KMALLOC_MAX_SIZE)
++		count_vm_event(KVMALLOC_FORCED_VMALLOC);
 +
-+static const struct ctl_table kvmalloc_sysctl_table[] = {
-+	{
-+		.procname	= "kvmalloc_max_contig_order",
-+		.data		= &sysctl_kvmalloc_max_contig_order,
-+		.maxlen		= sizeof(sysctl_kvmalloc_max_contig_order),
-+		.mode		= 0644,
-+		.proc_handler	= proc_douintvec_minmax,
-+		.extra1		= &kvmalloc_max_contig_order_min,
-+		.extra2		= &kvmalloc_max_contig_order_max,
-+	},
-+};
-+
-+static int __init init_kvmalloc_sysctls(void)
-+{
-+	register_sysctl_init("vm", kvmalloc_sysctl_table);
-+	return 0;
-+}
-+subsys_initcall(init_kvmalloc_sysctls);
-+#else
-+static bool kvmalloc_order_denied(size_t size)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_KVMALLOC_ORDER_LIMIT */
-+
- void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), unsigned long align,
- 			     gfp_t flags, int node)
- {
-@@ -6899,14 +6956,21 @@ void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), unsigned long
- 	};
++	return true;
+ }
  
- 	/*
--	 * It doesn't really make sense to fallback to vmalloc for sub page
--	 * requests
-+	 * The limit never denies anything a kmalloc cache could have served,
-+	 * so a denied request is always larger than a page and is therefore
-+	 * guaranteed to be vmalloc-able.
- 	 */
--	ret = __do_kmalloc_node(PASS_BUCKET_PARAM(b),
--				kmalloc_gfp_adjust(flags, size),
--				node, PASS_TOKEN_PARAM(token), &ac);
--	if (ret || size <= PAGE_SIZE)
--		return ret;
-+	if (!kvmalloc_order_denied(size)) {
-+		/*
-+		 * It doesn't really make sense to fallback to vmalloc for sub
-+		 * page requests
-+		 */
-+		ret = __do_kmalloc_node(PASS_BUCKET_PARAM(b),
-+					kmalloc_gfp_adjust(flags, size),
-+					node, PASS_TOKEN_PARAM(token), &ac);
-+		if (ret || size <= PAGE_SIZE)
-+			return ret;
-+	}
- 
- 	/* Don't even allow crazy sizes */
- 	if (unlikely(size > INT_MAX)) {
+ static const struct ctl_table kvmalloc_sysctl_table[] = {
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..e7139c0947ce 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1459,6 +1459,9 @@ const char * const vmstat_text[] = {
+ 	[I(DIRECT_MAP_LEVEL2_COLLAPSE)]		= "direct_map_level2_collapses",
+ 	[I(DIRECT_MAP_LEVEL3_COLLAPSE)]		= "direct_map_level3_collapses",
+ #endif
++#ifdef CONFIG_KVMALLOC_ORDER_LIMIT
++	[I(KVMALLOC_FORCED_VMALLOC)]		= "kvmalloc_forced_vmalloc",
++#endif
+ #ifdef CONFIG_PER_VMA_LOCK_STATS
+ 	[I(VMA_LOCK_SUCCESS)]			= "vma_lock_success",
+ 	[I(VMA_LOCK_ABORT)]			= "vma_lock_abort",
 
