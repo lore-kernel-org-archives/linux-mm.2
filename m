@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57259C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3358C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4FB6B0095; Wed,  5 Aug 2026 15:56:05 -0400 (EDT)
+	id C78F36B0096; Wed,  5 Aug 2026 15:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28C026B0096; Wed,  5 Aug 2026 15:56:05 -0400 (EDT)
+	id C50FF6B0098; Wed,  5 Aug 2026 15:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1064C6B0098; Wed,  5 Aug 2026 15:56:05 -0400 (EDT)
+	id AF1356B0099; Wed,  5 Aug 2026 15:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B93FD6B0095
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:56:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 159C1A060E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:56:04 +0000 (UTC)
-X-FDA: 85068271848.28.041C261
-Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 237D48000F
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:55:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=aSglA1cl;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+	by kanga.kvack.org (Postfix) with ESMTP id 73DEE6B0096
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:56:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E27A0A0611
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:56:11 +0000 (UTC)
+X-FDA: 85068272142.11.B1ED972
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C037040003
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:56:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=UtfK2P3T;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf07.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785959760;
+	s=arc-20220608; t=1785959768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=A6YRrOHe0n07eDhyujNLz0NzuZtgx5NtiK+tf0cV4ZA=;
-	b=1pqinkdvXjhQPxxrVsYKoViRkuoGYYzqh7yK9vu40TCwgAKwRpU1f06bwrQ3QwrZzgvEEa
-	to19wGbwbcyCCCBenCPj5TPYgu1fu6Fy8i+ZxIHq04ZEtKKNRvkkcfeD7DMqSLhsCqwC9m
-	inGIjcRk9QYL8xQJQiwtN6Jb15xv4qI=
+	bh=ImTKuihAW9CxEm6nexwxIK4uNd1RW95VKO9iC6q1npI=;
+	b=R5AzhXvbgA160rVL1RQbf+A/BfvHyJQ5Z5EQKkivvhFZ3SePWsco57IMMM3I54ZYDbN4pj
+	7vkDTxRWJMp/Qw7VMVUJS1UxvMF/87b3wsDFEt4tIb0SZueilxhARaCyqmW7bo2UUXSzT3
+	0itSUhQgKUercN4PZReBcmyXtwYnApY=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=aSglA1cl;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+	imf07.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=UtfK2P3T;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf07.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1785959760;
-	b=OkkIwk2oWwJxWFFkesnBa/gMJfYyC8rnugURsUDgcYlSkSqkAkvfs+dfBjPQG39ou5Hrxl
-	xqFAJHzvGGHv3fHCnnfPIk/akJlVJX/UkStqXtVnaDbqErL3t0rbk3AFk/OvEKGKtNJZqU
-	0HirFn+4q+KVeEwxrqavE1DWa/FxFFM=
+	t=1785959768;
+	b=UwU8UTBzfQhAmzJmG3uJT81FHasuBg4YgDbuHb8y2o5JE+HUy6RbV4q3IdcXYk53jn6Xpg
+	+LkyOKDCTarBGRF/OKkUqomvD6Iv44/4++4iycLHmxwavOWWeEmyXLxlQUyFs5ur47SOPW
+	CjCDCbaCbZsgr+TC/1AgkmWnE6WMVDg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1785959760; x=1817495760;
+  s=amazoncorp2; t=1785959767; x=1817495767;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to;
-  bh=A6YRrOHe0n07eDhyujNLz0NzuZtgx5NtiK+tf0cV4ZA=;
-  b=aSglA1clCYPZ4mNMsqq2KZ6mMLHUVFAgRd02qeisyNxFZHQocbM7gWPT
-   Drz+NWaCzKWtDCLyWvrEo64VapwG21uzTCEaKlqqRgAkzSTt455B0DHv7
-   jCCn+IKGcjFyVj0k4nKRUqW2nev1AcGoDS02o1Qp92+9C8vXfVbl7yFKv
-   IlMkB54esCzqXCWmK1PQF4aFOaqvwkvLAB8Q57DTNDqu67lDiiEM+QdUI
-   DTkvrefLFsjr9PK/Ynl2583y19eN/g1NoMnCO5lOF3YBKPw7cPHTPNGT0
-   dKEydb3H1Pr3+eZRgxNFKCF003cKg/3I5QYnsqLZ7XPI8g1JdSb/lMYrx
-   g==;
-X-CSE-ConnectionGUID: Aw0cB8VaQKOBCPwmI26GuA==
-X-CSE-MsgGUID: WTJxQZOBRbWeVNNBIKZKJw==
+  bh=ImTKuihAW9CxEm6nexwxIK4uNd1RW95VKO9iC6q1npI=;
+  b=UtfK2P3TJVU4GQWLi4NlmmFb5EFeBpCn/yUuryopd9DXMv4ZWLIWQ22H
+   lhJ1iJKisVcNTzgnrCf4hL1oTDGXiLcbrIry19Hwya2oPTfPMqmucO3/P
+   0g565kpgw6bStppp9xsZcSRUb90eSje0qPOY3Zri0FbkvBX4ftS1G2ivI
+   qY+xxYw//7K9nElbUS/GXKBNrGdp1O0W2gO5KgOyLD53mPHZK2T9Ik3nQ
+   800NbQPo/Nclu0ZD2H2Iad8/OhlKcUKTzcU2VqniPsdS82pIancjfKp4u
+   QsdiTOCFEZ7U0mV5AOigzH5CVofkZUUau1/52g7Ch5g+iY2h9YX0k80zT
+   Q==;
+X-CSE-ConnectionGUID: ud3C8OPsTMG97/HF3J2Avw==
+X-CSE-MsgGUID: lav1pMF4TiCniU/DLQwFCQ==
 X-Amazon-filename: smime.p7s
 X-IronPort-AV: E=Sophos;i="6.25,207,1779148800"; 
-   d="p7s'346?scan'346,208,346";a="17446053"
-Content-Type: multipart/mixed; boundary="===============0447233886121387104=="
+   d="p7s'346?scan'346,208,346";a="17337878"
+Content-Type: multipart/mixed; boundary="===============1397031566656956887=="
 MIME-Version: 1.0
 Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:55:56 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:29451]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.0:2525] with esmtp (Farcaster)
- id 85377bc1-e35f-4d8b-87d0-c3c4a5bc5575; Wed, 5 Aug 2026 19:55:55 +0000 (UTC)
-X-Farcaster-Flow-ID: 85377bc1-e35f-4d8b-87d0-c3c4a5bc5575
-Received: from EX19EXOEUA002.ant.amazon.com (10.252.50.139) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:56:04 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:30963]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.17.230:2525] with esmtp (Farcaster)
+ id def77a63-6e72-4742-ba79-15e496ad56c4; Wed, 5 Aug 2026 19:56:03 +0000 (UTC)
+X-Farcaster-Flow-ID: def77a63-6e72-4742-ba79-15e496ad56c4
+Received: from EX19EXOEUB002.ant.amazon.com (10.252.51.83) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:55 +0000
-Received: from EX19EXOEUB001.ant.amazon.com (10.252.51.80) by
- EX19EXOEUA002.ant.amazon.com (10.252.50.139) with Microsoft SMTP Server
+ Wed, 5 Aug 2026 19:56:03 +0000
+Received: from EX19EXOEUC002.ant.amazon.com (10.252.51.145) by
+ EX19EXOEUB002.ant.amazon.com (10.252.51.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:55 +0000
-Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.51.199) by
- EX19EXOEUB001.ant.amazon.com (10.252.51.80) with Microsoft SMTP Server
+ Wed, 5 Aug 2026 19:56:02 +0000
+Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.50.44) by
+ EX19EXOEUC002.ant.amazon.com (10.252.51.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45
- via Frontend Transport; Wed, 5 Aug 2026 19:55:55 +0000
+ via Frontend Transport; Wed, 5 Aug 2026 19:56:02 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X+mhMP09kOgSKKQOMgxDniqlWFqWigbhSfgaHjfRPxxbwFWmcy0MCk9J3fBWEvVHcZA3/yiNDurL9EWIajUEYSgU/2YgHdjDh9yyec64bDm2jDlcsvCBvFvwtf9yehuJBNVV7BRfl6XnKWW+tWwd+yBJYW03DyW4ZcVXTYik10HhRxbDqgqmwJvqbgNUQZ9GVGILBk/03QfTVs7aZ3jcg58ViqifY+5enzZlQVPGZpmDlYsQgrDng5nFNp+5mfF+sPviBvB2eIaU+ZxvhYEvCNhCBvkxVc/GR8+5XFN59YhMtH2rrP3VfIFD9iXivCvWeyzkrD78yQC//42n6bZ0TA==
+ b=lGsbMY8Nuhxx5xT+Nex/7+gni+WgrDeZN4Se5SHAGfhQw83u1fb9j0i6eNQat9TFHBPgyjaDJwssOQA3Mh30QgO7oW6mz3UisnGvCxYNd9aMV5R4lepi5/WPi0XPE/BjS0kSdGZ2BRn8fNvLM9xaYu2bEB18a3P2Yq/2a0prYogtUImvfg1AikQQuQQZdcbeqTv2cSenLHcH8U7qaPcfxCtfLriOpJIn6aseSUWvUAQOhrKBv7CKcPyjNGTWOpq3QILbcL5cFiJp9J5WCeIE/N7N7/P0yapx86vv/J20ECtUZakhITOJf86xccaMCnbLWaxZ91p8UGBZ2t/cFhh0aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=u5dLiskRACBoTNi8Nai0ORlxzMpznAZ/JGXzS/6pEIU=;
- b=EdtiYR8eKRQy182CwoYDMqfU4mVS4qGG5/Gka0+PwKfODLZ+Mkg2shVqOQKKnfS2cArU5Xa15zkYacgsfDgpMCZ7vCXDDur5l2sKuzEXyvFmLcjd2Rnpp9nffxKMrgB84tDfLjZmSmWhLXs5Rb77rxmGGojdcehs7C/79MtqXUvJTkHN08R7XCzY5ivKaDIzAEWKJk4mvgxGuF48PWrwNnkbmvNWDBHbHXLYmipgU92DY0BXdQTTpBYWWNlpcAZ55gcZBy25ZMu4JhVJ8r+Cq+VSxgvz5r8+HLUYxocITOSt4laa1Lh4v1qG7D532F+6cFNrxFL1BhDhROtvZxFzjg==
+ bh=O1e8zWjsccn0G5w99S0guKKVZ7Nj8DD0k/9gu4JfBY0=;
+ b=G1EHzJUbcCt2DNPjqm/y4eh/1eyK2RxBLQvGJjREOOPSU/u3qJFIczLos7oUozQ6aG8P1ZCURLNmqoI8df4JmXzt/WZq+JVVjWGm9LEdOo8LO7rEmzTXrmDdbUsbZRLDICrRUTN0dzEUlVZfxNjcamjKDqDw8gMDuCXOwfGaccVGl2Or5/d5peAAbSH98jl6sgb5UH28q2Im2D1HILKzOKyCmb7j14VxTSw5uJW1kbWk2ZOGRJCypmoES8wIf5yslomITHt9TyukIabMLMavXCsKJkpTaoqbBVv6kd0uYlKbPp2ZfblztgaeLhAtVQMEUekzsaZkvpgcZHLJdzLTwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amazon.co.uk; dmarc=pass action=none header.from=amazon.co.uk;
  dkim=pass header.d=amazon.co.uk; arc=none
@@ -102,11 +102,11 @@ Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:4b4::12)
  by LO0P123MB7404.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:334::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 19:55:49 +0000
+ 2026 19:55:55 +0000
 Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6]) by LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 19:55:49 +0000
+ 19:55:55 +0000
 From: "Woodhouse, David" <dwmw@amazon.co.uk>
 To: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
 	<pbonzini@redhat.com>, "akpm@linux-foundation.org"
@@ -128,15 +128,14 @@ CC: "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterz@infradead.org"
 	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
 	<hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org"
 	<kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com"
-	<syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com>
-Subject: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a rwlock
-Thread-Topic: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a
- rwlock
-Thread-Index: AQHdJRRpFlpkWk3u/UiNo2AE00Ua3A==
-Date: Wed, 5 Aug 2026 19:55:49 +0000
-Message-ID: <20260805195528.3853473-4-dwmw@amazon.co.uk>
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU into a
+ separate helper
+Thread-Topic: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
+ into a separate helper
+Thread-Index: AQHdJRRtvv9/yRgiRkSAahpXSy7JMw==
+Date: Wed, 5 Aug 2026 19:55:55 +0000
+Message-ID: <20260805195528.3853473-5-dwmw@amazon.co.uk>
 References: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 In-Reply-To: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 Accept-Language: en-GB, en-US
@@ -144,75 +143,66 @@ X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LOZP123MB8516:EE_|LO0P123MB7404:EE_
-x-ms-office365-filtering-correlation-id: e8b6d328-80f9-40f9-b264-08def32b8c22
+x-ms-office365-filtering-correlation-id: aedf672e-d32d-4bea-3815-08def32b8fdd
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|6049299003|1800799024|376014|7416014|23010399003|22082099003|18002099003|11063799006|5023799004|56012099006|3023799007|4053099003|38070700021|6133799003|10067099003;
-x-microsoft-antispam-message-info: T+J9MdTO9lY0V6ZeylXVr39zQ/K6ddnpWPQJ8DlKa/OA/ubWSBCiRmbGLMD/06H5asq+rWtQ2TUYZEGT+KEjBSWyBmegqZmJotbIiwuJS8S003GgB49L42Ow0O123gSLoQ6SijKXgmX9PZGMsUJHbhAJOXfmRnmJcIQvC1MU0iRVlIatcW4E9y1KtARzVxki4tvH7assekOEH+X8r6TmUvfzbg/C9Zd+Tva8qHBEHcUU7kAaS91Aa7Pg5jMW8faW7+Je8W/lYkC9fNQgkY5cfZDhuWHGF+b2K6FF8sE1qMYzr9Wi3RmtGNzdTfSgvQGDEXAnf2yvnnbGxeDpgwgLW/rR3MGdgcx0TdhJd9BF2pDTjP/s4/eI0RHqgN/ZFJFs/IhFjph5g1AhcxuevyvGw2khvAdsQuzBUKnhfiK3iuCutTTgXKSSF5KWUIlULjkbBBqqeK6vQip1Nq0I8sKv9lcVIihl1FgUwP5XS0MgRZWT7R4EwWxG0DbHuCm9Xe3MC1Hwp9KhXpBrJgLLVMgB/q4GRwHiQPloX2yOV+RiB+5lNFozwM7xoUQhMLtkdTjD1jWIhfqTE2HmuYTI14ols0XSgn5GOnExEg8h5v5iDGhoMo1s17HzSvOG9Oui6D6ddb/gaPussYLD6QYV9BAtulIS7VGULCjTcSzyIfld/PEMRDWOriQ4nOxNQqw1zPah0whlzjNfA9IXBd8Ma/6nAz/P7Qx18NXdwfyKUYp24C4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(6049299003)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(3023799007)(4053099003)(38070700021)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|6049299003|1800799024|376014|7416014|23010399003|22082099003|18002099003|11063799006|5023799004|56012099006|4053099003|38070700021|6133799003|10067099003;
+x-microsoft-antispam-message-info: PRmebw+lcmK8PaC22mOVpW87pK+74vtAnXegVYNnwYxR7FvnNvlmo5EhQrOxLvLwk+ohJkULJY5MxBWVPj7Qjq2n4xBSMmmaaEDmfWqiW5Vpd8Y63cJoYtVGi8sPYNy9f9iMlhQNfGU7ZJbgDZxv8IYyEK3EMpBG50ume3ooTA6rWZ3QgMJMlut9idW6sHDB9qLhq3Z+K+d4bGNRgyJvbgrwtcuAai5TaCQ4dGGABFTqpWDSDcUWWJUecspF13PqvYoBK1spiau5FXhLrFRnoE+9Xqz7vxbrYqzSyANpIi0qGhQUyCaV8jVh0LmjBVeLMrG9rzc3UXPixFWFUQy9IFNu14/kjka8vRm/zZKfZ305qZD2JzYELzYIZEhLOPxTbq0nh3eNT+VjwoNUt6F3HtklkM7WRUQsMNLe8XPjK1ZzRjlKOng3VLZ8S4Hkrtkx+XG2y//I2RtxjqtOUe5XSBZh6ZLICYUaKwWnbFyiRIIATlBaTV3tCG+U8CKrGCvIpv6Jfz89nYQaHd7ic+NUCI66MI9m6Qor8ObpbUeSbDEED6NexDonkmGsvhwB/nnDmsm9IqtH5hqOYwmlwr2aoQ7qeys3v5OuZEaGWfDkEDxqSgncqqEVQUntNNfXMCtnKhoz4XdJ1u8zcOR3jBByD1fkMd+nkrw5o6bx/ncL7BC/D3ViTTYYGSM5nsgX6W/eK2ZG/yoS3ZhTprrIt4GvqAu67saa0qpBLKVP433LSSA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(6049299003)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(4053099003)(38070700021)(6133799003)(10067099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bEplcHgwbllQVmdJc2tIa3BWUHBWM3pMTUFKa2ZRdTVtbVh5Nm5ENC9tVXY1?=
- =?utf-8?B?NjhwdTBROFgxck9rZG1sS3dEVXVQMFRVM2g1YStqaWtVR3JJc2FiM2ZQcHNI?=
- =?utf-8?B?M1pHcTNwWHluUFV2b0NlOHlMVkFkcmRzKzVURlNsajF0cUdRM3Fpc1RXZm5U?=
- =?utf-8?B?bzgrMVdVL3d5bHFpTjhrbkFZa2kraE85ZWRZUURoNGRrQUl1RGc5VGMrRTQw?=
- =?utf-8?B?S0dQcnBoRnZtaGxjUmM3dTc2QXBlc1MzYnBMNjNNamx5SC9zeVF5TDFYQkJL?=
- =?utf-8?B?aVpaNFBPUUdlemtoaGxnRVdIK0dRK0x6dXRxNktSZUZIb2VxK01IUlpITlN3?=
- =?utf-8?B?WjJzWDZ5aXcrV0lkZnJqb3ZSc21ObHFhdW9BSHZNZ1JJWWxxbDhVbWZxV3lP?=
- =?utf-8?B?aHlyODE1Ykg5NkptcTd6cDlJdEpzWmdvYzFya3kwYUNqYnpJYk1BbUZyN2pW?=
- =?utf-8?B?RmtlencrQm1aSFlrbVd5R2V6ZXRidGN5QmI5aHdveHRTd04wSzRsWm8yWUJl?=
- =?utf-8?B?eEFZaWdkZnc1ZG9makl0VmJ3WjBFRGtCRFNpc0VIOWJhMldiYUcxbVo2bTNN?=
- =?utf-8?B?QkxWSngxSkpVNklYWE9FZTYxRDEvK2FxaWJ0Y0tzRERNYTF1VVd5Ri9CMkc5?=
- =?utf-8?B?Q011bDJzY1YwVStwKzFBcnMxMDcwVkduTWphSlpIZko4MWJUL0JnamVnL0h0?=
- =?utf-8?B?d2dzdlhxbGhvSDUxeDNVc0w1UjlDOWNXQVZBdzVrQnQ0aDdQYUtCeXA4SXBq?=
- =?utf-8?B?VElZUVZWR0ZTNDg4N2JkK1dsRVBLazZucmRsNTZYc21leDZKQllnVEFxaStL?=
- =?utf-8?B?a2ZPK2pOUVVvT05ZMC9YR0pZT3VXT1pPcGdreEcwN1NaaENOMG9CK2JCS0pj?=
- =?utf-8?B?RDdOUkZTS2VvbzNva0hnWkFzSG9EUW9zUjljTU1BczRqZWZjdTkrY3M0TEkz?=
- =?utf-8?B?aXIzbWkxbEMwUWRKeXlFc2NqQy9pMGI3NU8xa2hJVjNJU3BaS2g0VVFVcGlC?=
- =?utf-8?B?SUxvcmJjOWpmV243by93Rm9zTUw2c1plemVPaVFaRGVFZVBiNFNIYWtSM3Jj?=
- =?utf-8?B?Rk1GT1BIQ1NiakZnTjl1NFFweVEvRnZIT1NKRDlYZXQ1WERFZ0l2anl3MHY3?=
- =?utf-8?B?ODFaVTNTL1JsZTVldzBCZ3VBNmtaOXd6Z1M4VEdvK3FFQStQeEQwVWhJMUZ1?=
- =?utf-8?B?SGlzTlFkbmNwTU1Ec2pFYzJuT21yYjFMMHNsVEt5YWIxb08yTTlWc3pVSE94?=
- =?utf-8?B?RmRwRk9KL20rK1FzbXNtTmg3eW9KN1UvQStlYnU0ckZSNTlzaGJEWDFUWGto?=
- =?utf-8?B?cnNPYmc2NSsxZm5jdFZ4R2MvNmkwb2huWmNoOUF4OVYvTm9VUVdpeFc2UUJU?=
- =?utf-8?B?YVd2Z05UYjF2R0FOSmE3TVQ3SDN6NGRGeGdpcnErVThuK0l6bnVqc3U4cHVQ?=
- =?utf-8?B?SFlMSUxVa2hDUFV0MVlKRkJyME1EWk9QQlE1c2VzdnU1elJJdXRYOWNUaTBt?=
- =?utf-8?B?ZEcxcldyYUlIT0xiS2QvTmlVM0d3TG52RThkTVlxYkNjOE1zQ3hPUHZ4ZG5J?=
- =?utf-8?B?SHVIS216Qm5ibFdXUEJ2QXJhZks3NFFwWnVFUldTY1FwRHMxT21SUzJHMW1y?=
- =?utf-8?B?aDNxOFVVTFhoSXVHVE5PVkM3R2xyRXRNS0hSTEhMSDhEQ3h5RDdsMDRQMmVO?=
- =?utf-8?B?K1Y0TVJiUFpqcVFKVWIzUGd5aU4rOG5qWWdvK2ZQRHc1Z2ZTSWw4ZGFCV1Fz?=
- =?utf-8?B?NVBYeFhGV1poRWIzKzJ1TC9lMjh4STlxUUJXeDh5U296aW1CQ04wbUdNQVZU?=
- =?utf-8?B?LzNRbkJveEVENUxwR0R6M1hlTkpVSHhSUkFZbE95M0d0K1BaajJJR2xuR0p6?=
- =?utf-8?B?L3o0SEZQTC9Cbm1kS0lJYlE4OTlIWXJETWYxN0NTU0Zzak9BZmVIMG1ibnF6?=
- =?utf-8?B?ZThERFdPaFFlUkMraFd3K0VndEU3YWhobkJtN3NFUGVPRVRNcS9yaWNtcnc5?=
- =?utf-8?B?am4wV092ZGlESEVvcGg2djhSbExoRFBKVzZubVlKOVdXR1VxWXBPbldWOGJY?=
- =?utf-8?B?WHRmYUpYZ28vY1dJbG5CeHZWVTBwYUV1dngxQm05dllvL0tmVzdZNnFZRVhL?=
- =?utf-8?B?QWhrS0dNZytROEVFbzhLaU1SUFZyTmJJaCtNaGVGU3JoUHBuTVhBTTRmdHlC?=
- =?utf-8?B?UjlKc1dnamZWK1lQaElLWVFRb1NmVFZZVG8rZ3hWS3dYam8zZkxyOHRlQjVy?=
- =?utf-8?B?TG9XbnlNK2lTQXN1ZGNEakFLYU4wK1U3V0FLZ1htUjV3dzRybTlVT3ZtSEpR?=
- =?utf-8?Q?Lkg7z5hGeQH44okkUL?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?8zJC8Ka2LTp+J54nsOW0wc+s52rj7KZpy58ikN6jxPXux/jp2RGpteiPpC?=
+ =?iso-8859-1?Q?U2gAFTZd6v36kRSVu4tN6udIo8DOSLhErURa9B1VgBNODHPkq4TAa5ZnNW?=
+ =?iso-8859-1?Q?QR+9kX2A+IS2/aF3OFFmJVtLgPieTGZs1Se3+3KgSwdpFgBzs+CkTTZhgj?=
+ =?iso-8859-1?Q?+RY9UWe/wYSBo+uGMYiZNP2wEdCGz2MpgjWt9VGZ0v+ldr8tumXPXkLHcT?=
+ =?iso-8859-1?Q?PALV10M0+nrO/aQ8mmIM5a36Z56nhELEXRkA08c6c/g4h7IOFhOmsjMA5b?=
+ =?iso-8859-1?Q?r7d5+5vX99tkpfKPTYPYTHL7YpFGzSw+8Q1c0LcsRums8IFS3staSnGNti?=
+ =?iso-8859-1?Q?8rXa5nKf6gv8MWyLaC4HgbYVK7Hn4S9H9Aq9+TBt/keMmfpuFX6h9EFkOf?=
+ =?iso-8859-1?Q?H+qKcYA3Lv06pBFaES0Usm+rsOLNmt5ApLPhk3nRZuFlgjw414dXRmLXxB?=
+ =?iso-8859-1?Q?mPElFcl3WsOZd93o2JgtP27vIw3D83iZ54V/4El4tvd+HIRJiqBsqXSUkR?=
+ =?iso-8859-1?Q?m7DkROReAeCeRdX+BF8iLuRl6ezdyToKqW7AUNREDbEAiR07/OPanwbjxi?=
+ =?iso-8859-1?Q?QAAB13YWsA8iXGijWv0GAqj2/fcG8U7+RLBnLE0cf1fxyQPrDam/GkrhIr?=
+ =?iso-8859-1?Q?qtdldlUqZZsoKsa9AuC5VcjH65gwV5gozgPGQAiqx6GAxyTUTHUkaQA81/?=
+ =?iso-8859-1?Q?GNJqU+Np7zCOjI8EeKaztVdP0a2Go7ScrGlr2K6vcilmKKG0zTDqndpxmF?=
+ =?iso-8859-1?Q?VpumAn8VXGGiyHLVuyOyo6LwNsH//qG83OOeiMZ2CNPsu7wJbfwewgZLsJ?=
+ =?iso-8859-1?Q?oQMKL3yOMncU1oiN5YxGczNcMX39VcwPsUL1jrAbrfdE8to8twuAg5a32K?=
+ =?iso-8859-1?Q?W2SpsyyroM4AnF+b7PBL2MKHnxhHKonAv+AfSOMWpJ21AaLqfXRZzkMCrv?=
+ =?iso-8859-1?Q?5oGh60bIQT2nJBadZ9XYKLQMp+rG7y2dckyZWj8bFAlVoYyDrAVkeTojfw?=
+ =?iso-8859-1?Q?PyYYGh+m2EMNLvgakU9nP6/AwMZgyHTAT2wIsrDtSD0CVws7zpcXwiAY++?=
+ =?iso-8859-1?Q?zoxAvzV2uqF4r5s5po7ryW6dIVkVkfnUxLeDYynheE2WYKHJ/ACjphdDbH?=
+ =?iso-8859-1?Q?+h2rAi/3butNbIzEqKBG3mv5KvyWbTFgn+5y6GOXCNTCntyRyZS69QYh1s?=
+ =?iso-8859-1?Q?VAzeLAfeD0BV5Kl0mpxsB0vJvR7s5usgHfBmVrbaLUQn7OqcLj9w18OacW?=
+ =?iso-8859-1?Q?PFq2ioeeIwbzc8FrdPAqiQRGMNZuXiDbzu4IboNR+X7Yae8sOyoccj9bG7?=
+ =?iso-8859-1?Q?ChWR6MoSaXfkv0RaG/yiZedJ2l1ByN9N/Lplo/5avH83VsiTKGMqCWQgD9?=
+ =?iso-8859-1?Q?rmgoPHNVuYWeuL22aXAeBa0W925WvRhSx71eagg95eKipdoIvJGw2HSYiQ?=
+ =?iso-8859-1?Q?YLnJP8faJRGfPdQqjCbMGQlFGV6cD0Hv1tTQV4IrHYqbHvQHjcetzD6XU/?=
+ =?iso-8859-1?Q?a7p+fIrspZegkt9cfliDeo8hg1aPRw1Y/i9THENGFGYqhk4LfO0G5fYh4J?=
+ =?iso-8859-1?Q?tEAeWEMIft0u6tNH21rjGR/ADA6zQXVBVy4lnz9CFNibsnB5naGOaoy6hf?=
+ =?iso-8859-1?Q?O5qXu6LOYD5NNNFYO39r0dSndcN2Bf4+HvO3B4cKptnvPDhmpQKLJ8x0s9?=
+ =?iso-8859-1?Q?fuo/W1z9POJrNkWXSgweVLUnuFbukZoNZtRJ0Q3pTjgHp1TGgctaXKd7X/?=
+ =?iso-8859-1?Q?uk3MTcauhJnE+JHODItbmhYsl3YQ7wFM2ghPUiLaL5qbpk?=
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: ihu7BnxtnJsOINsVKvAdWwWaBcubwG5IENGuBeFot/MUVEfQMV49Pzs8q1BX0xssmUINSSrSvbGcLZhtya8Kb4fdN8MnJXTjhfFDLIEMArtkVA1+FHslgd1IeTGLedtV84Td/NRX9znz3UsQd2/nqbBmNUetMHeY9mtofk32QCvOA24SMH9njyBGUmA+wcErZxCLITfL7Y/hLLUW78e11SmPBBrNqgJjsb3XlHpcu9kX323FJ5l3pJ1qNVl8QwkZPsysMweWBVKMHdgnPWUx06fk1U4wuLZxy6a33LMXHlTR8LoN94vMVGieFtc4MUfgNsBbKDel8STiTh5q+WNiig==
+X-Exchange-RoutingPolicyChecked: W3Wc1NuT60w/0D3kfBOe3JNw/7ymwlMMb4iYPSzyFCiLcXf3r6/E3kDRnLdlgII6DIWyYOmBpm6sDHAXFyAErKsNZGfpYriVEpl2zH4pYqvloezZQlqvgrzvQljd2O1JjARVk3Fno02l6vgfuKXKMfFtt6pjc3pPB2RWZ0NSPDRfGyHmLTL4M4cdwyBa7ANiJ84fpJeu08TBHOAcuRKqWa9Opxg0NuGDZwUsOg/xwbp3W5Hb7TiebtwjEPSlg9Erx0bOztj3hT4YIpYROKnmn4O8uK4+pD9dUg1FG4D/LeZwsVGfGl6ZMjtKZVwG4hYWqQIfuwuSfE7Jw+ITe07U/w==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8b6d328-80f9-40f9-b264-08def32b8c22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:49.3212
+X-MS-Exchange-CrossTenant-Network-Message-Id: aedf672e-d32d-4bea-3815-08def32b8fdd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:55.5678
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L8/EjAGolOaL26TINbO7t82pWhekNjRUKkGSE8nE267sePqNm61xZXcUu6M2PpOmzrdIAywI87SXXri1RzxIgg==
+X-MS-Exchange-CrossTenant-userprincipalname: pS2AMTK9oRcaXzt+NBma4Av88MBN4Ou9GBYSDRyQdf0GPamY65omMDv73FiLoOZp9HWKoLYhoUl/wGkOzNXeRA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P123MB7404
 X-OriginatorOrg: amazon.co.uk
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: orkg5izgj8ursw7kcj6fgt8ejtacj9xx
-X-Rspamd-Queue-Id: 237D48000F
-X-HE-Tag: 1785959759-485315
-X-HE-Meta: U2FsdGVkX1/fNX6Hr7iyvnDXoBjVqvz9FarnDR1j+Fz2rwPjN0ClZFFvpJe5IaBKhSI2C2AFT3Vpzwy6V9GEEiBBFd5tLgWsKlvPhUJAY1jKMdz66KHUb2112VRc7IVTAlq2gcQX0qGa9TCO7d7MGodXUo4ee4RH0orBN8l6OIT7XBRXQj60B+U7BTV6uRG2GtkJcf4ti98gB1TxElKQV5gnwvD6xotfl0a9az1Okh7GOB7zYsHVCT4By4HnOy6aDRUNGsuRln/NLWYQhO0j6tVFUZq8wgcwvW5WuJmS1n86UDEmqndsKtwimwjybvkqORu5ZpwOSdgjDma+10Wu8LJ2K+hFSNeuC/ZsaamnBjW1uABPBA3jUES6KlWlxBJsvcQsWVSxpIbercO/qG3FA/YDWfeTC6VAIDhARs/mtmZrJSrSI6+zC0Y+Lyh/RlUYAEsAfW8fKmzUkKfOjb+xtHdR+HgLdv9YlmRNgKKczy8xx4UPGZiLNv+uxaGU0QBIdjyo3/R/FC2vxztDFvuevjJVj5PHroRgdBXvVoieCBOl8yG86E1gWIV24ZwQgeowbB+khMG6j29DAgz1hCntYlH+QPI32veTiKDnQuEDBxzBeUVHZOp4B7dKPz5i22Hr9IC6J/6QLHY9MbBq35dbjsQH3YZA0gS5jqtQDF6QEvUy5fy+q09rfIkOf5zcZ21qzCFUmenOAtEUNZQCltKTHZ2NjAsgl2qXGsROMoQl5c8mN2Kwpaaf9rbSjCqbWnS2gWrbMCrVXeXxFk6oPjZibeb8z3XxOz9PPTitQjKe9dEcUjc0hUmdh0EhHvRVRrnPQnqoKAGrkhP3+v/64ATMpwCad6KIDiMVvmjRmY2YfVzWcXCI6jMK/TllGNvN8SbMPWHUjP+cs6WKhItaKvkJwxe3pLZDVn5sY99kccw8tOaBzrhsp9x69DoDXD77v9wihHcJ37M2YBtK2XG0fze
- wmGW859g
- b/obUF4KrP6o3w8ZTTFqHlEQBh2v/z3GQCHe7rivRRkA2xQxHxmcbaQkf1f3Dv4fhMeBRv/qdZrFbRsUie8f9ODRcCk6lHwFcEFcipG9GzZGs81Z0C6hJC8TdtupRTs5tTGlYLHX+M7xMeF8gDu2sWqHR2vQN2Fu5Ds86fxm4CO7fznOoIv39JmsX9hTYY8eh9WNFnS5llztNlO++2kmhIhvuoo5HrsXs11ypKLhFh3c99t2kjr2EW1sxpPZilu3C1mvGf80AZi2cwaT5z+t5Od/4Dag8ps6SR9mYNPnOwliJ9S4C5j1ri2zAIBPMM568xMq4+OoJ3TnubiLHJlwS+rpm9l+eMBNk52LqufbjiZdJW86Uosw43Az52dZ81kR/oNI/aNKmYDQZmeYdmI+xjRJ3QdHB6XUc3vTnRs6sk8lTvdjk5WC/B80QiZk8uopf7w+xnbK1YSyaSkq2/K7m95BdWdMFJt8r+e/G2JL75ZKxwenDHfFyNPx9ppezlp5wsU0TID9LpQy7jXSYEBWznj8+KdjxQXke0HDwOOl1MYlL2bk2ZeOahuh3bVZOcTRfolYbzp6JDn3CXq+dQlVp40RYXZQcKx4fXhvmNqKFNCHeb0hNIGAR4PBMxyhjjlmKBUOwwZLJBy8iFXbXQbJNLEIZmnhLu+Njjlcvr3Tt0E3p2tXeUEB3hYeVVoT85D7TUKywSVLpZy4vViLwG9hrn1bYxDlemg4x4Qs6owjCc8/ncT077jlRRJdDC7jRXtLXsnneiIlDBfxoCsYSU+n15lVh+vf9i/gBpIjjp0tSfDRzZP5xSzdnD/No7usgnxEg8iNK2l7ZRPZFew8RwyY+1oIzGJKOhdyX8pjhjL2LUsABAjVZf3Ujq+w9Xh2D8Zmxo1tqfZNJqoqwQIgY9Pe8vu6tPCDXAgHLwtRu54VxAZreJHsMUFurXqilb3IO8dDgSWzVL43REOKYtDv3qZCTXDrCzrvn
- 13q77afH
- 1Mh6424uDuy1dh0XxfZZyiJxQKDb47HPAbYFwCKIO9mK52HVdIw80mX1vRex3xtIcgGXtKWpm4oA8nYfc1kZgol12AOti6HRDxvEIARaUWQSRyt1kgcVDrHo17duUyNve0JiyL+3EKXeoaLSrBcO1nGdeNwkIVpq9FuO9DbSOF20ZkgU/Tip11u3lsxJlY7bpy0LF4hXbzJ/9sWt+EKfg4P1lPb2je8egtkmhPkdJ+sWtEFwySx8imiVPrO/tdeexwL/KLDR5lfgkJJR5NIYWsw269ZzYeEwCQxrPXZt+iMBAtt4f6coFad9LYYSrIXSGIQcX4nR0U67mpj/jwlz3C8K2kpL77/NDilw4pza7rrwrHELdkWVxHpxWhJMEIFNNsxTRuLn0H35vVTWfJ7vww==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C037040003
+X-Stat-Signature: 4yki4iuwk85esgsheonhuf1s7n99efqp
+X-HE-Tag: 1785959767-368132
+X-HE-Meta: U2FsdGVkX18f5gUKNf8mlAl/2C+HEl1tUPaelATB/UsiSNoY7HY64phxhP8/VLTxAOMmfe6ZMIoo4HL5EzCNIC56M+EuweKJs1tC9fQCHs/4cG7TNJ4mNPkPYeK7Z9kCicdctAAng3B4nGRXbPiIbr1Wo7zBSsTE0hjs7+Gd12lHdDa7hw5ldea+XmMxi6XytqzPZG0DjaoyeXlFyIuXV94U4sz1S8ZgAe28ezSPx2Ce1r0dkLN3DlP7E1Q0b9uwRIq/Fnz398LrDEFd96kc3d5RKO4Ooy30zDbawiVto7gP1avKIRcP1/aMDiS1N6ZlovdJC75dCTPL+bUP2fPGmrTxrTJBvF/s3X37PVseo4Jb6YbD4Ngiam6Wdt5eYD4pnLj3taGnF6+ZLTupxioGCO4yfruQhD2Y1U8idcd1aSIzzjJCRYSYuZOlSjCmNakZfKm9EjQfO54lqa8CpZU1Pt3RMgp6fXAhkzj2zAIy7wfhZxufPWhGwuj2sxRiTtFpAuOoPt0OD5jS6LccOgcuVUWRButfPO1i/x7SONjxv01kocEF8ik9XcW8TSgLD0cmYlufF5opr1NWfiF26sk0NAfq2fqu0h8rkRUiuMbfmm1OxS2YuYMY+rQDUbv51Gn38uMgEwUu8wBOcYwvChiF6ne+k2CEwIiq3NchpQO1ZRVGb90ggbiNYvwKxjfevpTiChKADjtNUWwG+4OmS0uf7YOpg/j7OVLgETfEt49OraUi8C4hy497R5d3JFjft9hx4zpf+n43AO3ClBiTZvXJu9BUyejQmiALRvftqASOCqfNPeITR8MtWsFkY89Y1rqltVeOFNMpsQ2kqKL40x7mGOD092Z8ktKGYBBjgAXQzNPD9V7oc1wqGLIPxrB8q78Icie/J49osrEymkMsdBWl15/nS1bcGq2Gl+9V3SBKCxsQLGAAybBpxw7TIZ3hLYrhtbx6rMA9WxH+9bWQ4Ux
+ rp5qsYno
+ mlgHMaoZw4vIGwLaZOflWTKzKSK9GaOvSCjmLCovFEkKezbxSnSssqc5Z7pXs6EbQyEKDuXgLWef7mNiR1FhBtaESBISz+PC5yQhj/7zZYz/puqCaj4ObFN+IQGhKvx1vt5LY6X3V6xczUXdU7L1rlmHV137VWz4HhbwMBX4o3S3ppx8e9Ahfvg6zmyoKPZG730LgX9voiBTDOZNhzsNFiH6Jb+fzb17jFJQWRNv9BFMNqJY05MMNsRhzdhqKfX0TsGgTaHY3HEQwwqFVw3b4Or2RLDfX96W5kKYHVUIFqfCEHnIWptmE3YcmoyqIW1gwQBxZyV6Y73oWgTR9kYOXeZFiUiz1r7LJtnsfg7ESCkaWK/WagmtPAFGab5GXUi11B/I+XU4W0dYKZVikUoAYErIGOVCsxl9mwk+6n+DrGlB+U/FzHwfDQEfbE5ZIvrjPlwhsvl5RePkioorLoFCh66L0f62+uhzoUusB+XtQ6CsjaNvcS5Wv4NfBYllzj3YVCLWwJT0T1Jn0mzylZ/xpWYJPmO6I0M+8kYnw00FBJFNupJmsCmpl+bx7BlbUbUpDHeGcbQth5BCSSY6DZ3WSbru618F817haJvMKq5940XVuVxGaSz+4Za3YC3a6iBVWo0BueMobzXVyBEhUHR0kcxs7VFySTkqruAV1dfBPwXWAZHweihVd8ZpLGiWaDXDhA3CfAr7ldtZbpdv4ec9d0mwkPzD+QXyL7uE4mipet/hhDeTK8PZDaQlouDxdj/4Jp6G/0hojKfgh/k+2MsYXK0mPiCO2siSjipiBzFJhoEzbhsz2buFZiy3MvhQBfXLi9ASHRjHN6n1RjJJspxohHuWoa+KfI8d3T7hlsE2tlbmItPjoCDmwb01B3rV+1qfoU73jxYPqLZ8vPHy50GdPC56jmxmGBty/zE8R3PmKqZ3P2YjjqtT+4UFK5tzDbEF9BDnqvLG/77nchFN1pB1cyHFcyg3m
+ QTNDSh03
+ vnHW++vm31/MWazQHlvmwQG1AiQf5+FSH5OzAjjGWTClpUhviB+ARY2gqQlomKVbM4j4Oho+86zdAKe1v1OOJa088CYtYfcVpRZe7sTypozFBDF0P0v3xgcUn81QUG1L9+7IT475vt7TAEGaTI5cgwPjE7wx66rTTBu4f/ae2tXIP7RSg03vAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -220,858 +210,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============0447233886121387104==
+--===============1397031566656956887==
 Content-Language: en-US
 Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";
-	micalg=sha-256; boundary="----EF41DE7C369FEE6126A3D401734EB001"
+	micalg=sha-256; boundary="----CACDE43EAC4A1469C09AD890A959AD0A"
 
-------EF41DE7C369FEE6126A3D401734EB001
+------CACDE43EAC4A1469C09AD890A959AD0A
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Replace the per-cache rwlock with RCU for the read side. Readers now
-run under rcu_read_lock() alone, which works in any context (including
-hardirq and sched-out paths) and never fails or spins — eliminating the
-read_trylock() contortions in the atomic paths, the double-lock dance
-with the lockdep subclass hack in the runstate update, and the
-PREEMPT_RT problems inherent to taking an rwlock in those contexts.
-In particular, kvm_xen_set_evtchn_fast() is called from hardirq
-context (timer callback, kvm_arch_set_irq_inatomic()), where taking
-gpc->lock is a sleeping-lock-in-atomic-context bug on PREEMPT_RT.
+From: Sean Christopherson <seanjc@google.com>
 
-The invariant is that a cache's fields (pfn, khva, uhva, gpa) are only
-ever mutated after clearing gpc->valid and waiting for a full grace
-period, so any reader which observed ->valid == true (with an acquire
-load, paired with the release store publishing the fields) has stable
-values for its entire RCU read-side critical section — including
-writes through khva, which are guaranteed to land before the backing
-page can be unmapped, exactly as with a TLB shootdown.
+Move the marking of an event as pending in the target vCPU's vcpu_info
+into a separate helper, __kvm_xen_set_evtchn_fast(), invoked after the
+shared_info processing is complete and its RCU read-side critical
+section has been exited. This makes both halves easier to read.
 
-The mmu_notifier invalidation path clears ->valid on any overlapping
-cache and then does synchronize_rcu() before returning, so the primary
-MMU cannot proceed to zap the page tables until all readers of the
-stale mapping have drained. This wait happens even on unblockable
-(OOM reaper) ranges: the actual constraint on those is not "no
-sleeping" but "no blocking on anything which may itself depend on
-memory allocation to make progress", and an RCU grace period has no
-such dependency — GPC readers never allocate, never take mmap_lock,
-and never sleep. The previous patch removed the over-broad
-non_block_start() debug annotation which would have splatted on any
-voluntary schedule regardless.
+No functional change intended.
 
-As with the rwlock version, a refresh which resolves to the same uHVA,
-in the same memslot, for the same gPA does not need to invalidate the
-cache at all: the gPA => uHVA translation has not changed, and
-gpc->valid already asserts that the uHVA => PFN mapping is good. Such a
-refresh updates only the memslot generation and returns, leaving
-concurrent readers undisturbed and skipping the grace period entirely.
-This matters because the mmu_notifier invalidates caches on any host
-memory management activity (page migration, NUMA balancing, KSM), and
-the affected pages usually come straight back at the same uHVA; making
-each of those cost a full RCU grace period in the reader's refresh path
-would add seconds to a guest boot.
-
-Refreshes are serialized by the existing refresh_lock mutex, and the
-gpc_invalidate_seq mechanism continues to catch invalidations which
-race with the (lockless) HVA->PFN lookup.
-
-Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
-Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=208f7f3e5f59c11aeb90
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[dwmw2: rebased onto the RCU conversion of the GPC locking; the
+ read_trylock() failure path in the original no longer exists. The
+ caller's kvm->srcu section now extends across the helper call, since
+ kvm_gpc_check() on the vcpu_info cache consults the memslot
+ generation and the irqfd path enters holding only irq_srcu; in Sean's
+ series that was covered by a guard(srcu) spanning the whole function,
+ which this series does not carry.]
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/x86.c        |   9 +-
- arch/x86/kvm/xen.c        |  91 +++++--------
- include/linux/kvm_host.h  |  16 +--
- include/linux/kvm_types.h |   1 -
- virt/kvm/pfncache.c       | 260 ++++++++++++++++++++++++--------------
- 5 files changed, 206 insertions(+), 171 deletions(-)
+ arch/x86/kvm/xen.c | 104 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 65 insertions(+), 39 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d94b59140c45..09425f72f4a5 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1719,18 +1719,17 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
- {
- 	struct pvclock_vcpu_time_info *guest_hv_clock;
- 	struct pvclock_vcpu_time_info hv_clock;
--	unsigned long flags;
- 
- 	memcpy(&hv_clock, ref_hv_clock, sizeof(hv_clock));
- 
--	read_lock_irqsave(&gpc->lock, flags);
-+	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
--		read_unlock_irqrestore(&gpc->lock, flags);
-+		rcu_read_unlock();
- 
- 		if (kvm_gpc_refresh(gpc, offset + sizeof(*guest_hv_clock)))
- 			return;
- 
--		read_lock_irqsave(&gpc->lock, flags);
-+		rcu_read_lock();
- 	}
- 
- 	guest_hv_clock = (void *)(gpc->khva + offset);
-@@ -1755,7 +1754,7 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
- 	guest_hv_clock->version = ++hv_clock.version;
- 
- 	kvm_gpc_mark_dirty_in_slot(gpc);
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 
- 	trace_kvm_pvclock_update(vcpu->vcpu_id, &hv_clock);
- }
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index f2c6757fc1fa..6bcece2439f5 100644
+index 6bcece2439f5..75fbe88c2102 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -46,15 +46,15 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
- 	int ret = 0;
- 	int idx = srcu_read_lock(&kvm->srcu);
- 
--	read_lock_irq(&gpc->lock);
-+	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
--		read_unlock_irq(&gpc->lock);
-+		rcu_read_unlock();
- 
- 		ret = kvm_gpc_refresh(gpc, PAGE_SIZE);
- 		if (ret)
- 			goto out;
- 
--		read_lock_irq(&gpc->lock);
-+		rcu_read_lock();
+@@ -1759,6 +1759,67 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
  	}
- 
- 	/*
-@@ -97,7 +97,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
- 	smp_wmb();
- 
- 	wc->version = wc_version + 1;
--	read_unlock_irq(&gpc->lock);
-+	rcu_read_unlock();
- 
- out:
- 	srcu_read_unlock(&kvm->srcu, idx);
-@@ -154,22 +154,21 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
- 				 struct gfn_to_pfn_cache *gpc,
- 				 unsigned int offset)
- {
--	unsigned long flags;
- 	int r;
- 
--	read_lock_irqsave(&gpc->lock, flags);
-+	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
--		read_unlock_irqrestore(&gpc->lock, flags);
-+		rcu_read_unlock();
- 
- 		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
- 		if (r)
- 			return r;
- 
--		read_lock_irqsave(&gpc->lock, flags);
-+		rcu_read_lock();
- 	}
- 
- 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 
- 	/*
- 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
-@@ -324,7 +323,6 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
- 	struct gfn_to_pfn_cache *gpc2 = &vx->runstate2_cache;
- 	size_t user_len, user_len1, user_len2;
- 	struct vcpu_runstate_info rs;
--	unsigned long flags;
- 	size_t times_ofs;
- 	uint8_t *update_bit = NULL;
- 	uint64_t entry_time;
-@@ -416,20 +414,12 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
- 
-  retry:
- 	/*
--	 * Attempt to obtain the GPC lock on *both* (if there are two)
--	 * gfn_to_pfn caches that cover the region.
-+	 * Check *both* (if there are two) gfn_to_pfn caches that cover
-+	 * the region, under a single RCU read-side critical section.
- 	 */
--	if (atomic) {
--		local_irq_save(flags);
--		if (!read_trylock(&gpc1->lock)) {
--			local_irq_restore(flags);
--			return;
--		}
--	} else {
--		read_lock_irqsave(&gpc1->lock, flags);
--	}
-+	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc1, user_len1)) {
--		read_unlock_irqrestore(&gpc1->lock, flags);
-+		rcu_read_unlock();
- 
- 		/* When invoked from kvm_sched_out() we cannot sleep */
- 		if (atomic)
-@@ -438,7 +428,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
- 		if (kvm_gpc_refresh(gpc1, user_len1))
- 			return;
- 
--		read_lock_irqsave(&gpc1->lock, flags);
-+		rcu_read_lock();
- 	}
- 
- 	if (likely(!user_len2)) {
-@@ -458,24 +448,11 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
- 	} else {
- 		/*
- 		 * The guest's runstate_info is split across two pages and we
--		 * need to hold and validate both GPCs simultaneously. We can
--		 * declare a lock ordering GPC1 > GPC2 because nothing else
--		 * takes them more than one at a time. Set a subclass on the
--		 * gpc1 lock to make lockdep shut up about it.
-+		 * need to validate both GPCs simultaneously. They are both
-+		 * covered by the single RCU read-side critical section above.
- 		 */
--		lock_set_subclass(&gpc1->lock.dep_map, 1, _THIS_IP_);
--		if (atomic) {
--			if (!read_trylock(&gpc2->lock)) {
--				read_unlock_irqrestore(&gpc1->lock, flags);
--				return;
--			}
--		} else {
--			read_lock(&gpc2->lock);
--		}
--
- 		if (!kvm_gpc_check(gpc2, user_len2)) {
--			read_unlock(&gpc2->lock);
--			read_unlock_irqrestore(&gpc1->lock, flags);
-+			rcu_read_unlock();
- 
- 			/* When invoked from kvm_sched_out() we cannot sleep */
- 			if (atomic)
-@@ -574,13 +551,11 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
- 		smp_wmb();
- 	}
- 
--	if (user_len2) {
-+	if (user_len2)
- 		kvm_gpc_mark_dirty_in_slot(gpc2);
--		read_unlock(&gpc2->lock);
--	}
- 
- 	kvm_gpc_mark_dirty_in_slot(gpc1);
--	read_unlock_irqrestore(&gpc1->lock, flags);
-+	rcu_read_unlock();
  }
  
- void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
-@@ -639,7 +614,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- {
- 	unsigned long evtchn_pending_sel = READ_ONCE(v->arch.xen.evtchn_pending_sel);
- 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
--	unsigned long flags;
- 
- 	if (!evtchn_pending_sel)
- 		return;
-@@ -649,14 +623,14 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 	 * does anyway. Page it in and retry the instruction. We're just a
- 	 * little more honest about it.
- 	 */
--	read_lock_irqsave(&gpc->lock, flags);
++/* Called with kvm->srcu held, as kvm_gpc_check() consults the memslots. */
++static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit)
++{
++	struct gfn_to_pfn_cache *gpc = &vcpu->arch.xen.vcpu_info_cache;
++	bool kick_vcpu = false;
++
++	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
 +	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
--		read_unlock_irqrestore(&gpc->lock, flags);
-+		rcu_read_unlock();
- 
- 		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
- 			return;
- 
--		read_lock_irqsave(&gpc->lock, flags);
-+		rcu_read_lock();
- 	}
- 
- 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
-@@ -686,7 +660,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 	}
- 
- 	kvm_gpc_mark_dirty_in_slot(gpc);
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 
- 	/* For the per-vCPU lapic vector, deliver it as MSI. */
- 	if (v->arch.xen.upcall_vector)
-@@ -696,7 +670,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
- {
- 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
--	unsigned long flags;
- 	u8 rc = 0;
- 
- 	/*
-@@ -712,9 +685,9 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
- 	BUILD_BUG_ON(sizeof(rc) !=
- 		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
- 
--	read_lock_irqsave(&gpc->lock, flags);
-+	rcu_read_lock();
- 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
--		read_unlock_irqrestore(&gpc->lock, flags);
-+		rcu_read_unlock();
- 
- 		/*
- 		 * This function gets called from kvm_vcpu_block() after setting the
-@@ -734,11 +707,11 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
- 			 */
- 			return 0;
- 		}
--		read_lock_irqsave(&gpc->lock, flags);
-+		rcu_read_lock();
- 	}
- 
- 	rc = ((struct vcpu_info *)gpc->khva)->evtchn_upcall_pending;
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 	return rc;
- }
- 
-@@ -1437,12 +1410,11 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
- 	struct kvm *kvm = vcpu->kvm;
- 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
- 	unsigned long *pending_bits;
--	unsigned long flags;
- 	bool ret = true;
- 	int idx, i;
- 
- 	idx = srcu_read_lock(&kvm->srcu);
--	read_lock_irqsave(&gpc->lock, flags);
-+	rcu_read_lock();
- 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
- 		goto out_rcu;
- 
-@@ -1463,7 +1435,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
- 	}
- 
-  out_rcu:
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 	srcu_read_unlock(&kvm->srcu, idx);
- 
- 	return ret;
-@@ -1802,7 +1774,6 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
- 	struct kvm_vcpu *vcpu;
- 	unsigned long *pending_bits, *mask_bits;
--	unsigned long flags;
- 	int port_word_bit;
- 	bool kick_vcpu = false;
- 	int vcpu_idx, idx, rc;
-@@ -1824,7 +1795,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 
- 	idx = srcu_read_lock(&kvm->srcu);
- 
--	read_lock_irqsave(&gpc->lock, flags);
-+	rcu_read_lock();
- 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
- 		goto out_rcu;
- 
-@@ -1855,10 +1826,8 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	} else {
- 		rc = 1; /* Delivered to the bitmap in shared_info. */
- 		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
--		read_unlock_irqrestore(&gpc->lock, flags);
- 		gpc = &vcpu->arch.xen.vcpu_info_cache;
- 
--		read_lock_irqsave(&gpc->lock, flags);
- 		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
- 			/*
- 			 * Could not access the vcpu_info. Set the bit in-kernel
-@@ -1892,7 +1861,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	}
- 
-  out_rcu:
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	rcu_read_unlock();
- 	srcu_read_unlock(&kvm->srcu, idx);
- 
- 	if (kick_vcpu) {
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 3dd04605f2e5..da0b3669f1a3 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1510,12 +1510,9 @@ int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long hva, unsign
-  * @return:	   %true if the cache is still valid and the address matches.
-  *		   %false if the cache is not valid.
-  *
-- * Callers outside IN_GUEST_MODE context should hold a read lock on @gpc->lock
-- * while calling this function, and then continue to hold the lock until the
-- * access is complete.
-- *
-- * Callers in IN_GUEST_MODE may do so without locking, although they should
-- * still hold a read lock on kvm->scru for the memslot checks.
-+ * Callers must hold the RCU read lock across this function and any
-+ * subsequent access to the target page, and must hold a read lock on
-+ * kvm->srcu for the memslot checks.
-  */
- bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
- 
-@@ -1532,8 +1529,8 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
-  * This will attempt to refresh a gfn_to_pfn_cache. Note that a successful
-  * return from this function does not mean the page can be immediately
-  * accessed because it may have raced with an invalidation. Callers must
-- * still lock and check the cache status, as this function does not return
-- * with the lock still held to permit access.
-+ * still check the cache status under the RCU read lock, via
-+ * kvm_gpc_check(), before accessing the target page.
-  */
- int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len);
- 
-@@ -1974,7 +1971,8 @@ static inline bool kvm_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa)
- 
- static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
- {
--	lockdep_assert_held(&gpc->lock);
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+			 "kvm_gpc_mark_dirty_in_slot() without RCU read lock");
- 
- 	if (!gpc->memslot)
- 		return;
-diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-index a568d8e6f4e8..fdf7d2273298 100644
---- a/include/linux/kvm_types.h
-+++ b/include/linux/kvm_types.h
-@@ -88,7 +88,6 @@ struct gfn_to_pfn_cache {
- 	struct kvm_memory_slot *memslot;
- 	struct kvm *kvm;
- 	struct list_head list;
--	rwlock_t lock;
- 	struct mutex refresh_lock;
- 	void *khva;
- 	kvm_pfn_t pfn;
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 3659686b97c2..3bae4df49165 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -26,35 +26,49 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
- 				       unsigned long end)
- {
- 	struct gfn_to_pfn_cache *gpc;
-+	bool cleared = false;
- 
- 	spin_lock(&kvm->gpc_lock);
- 	list_for_each_entry(gpc, &kvm->gpc_list, list) {
--		read_lock_irq(&gpc->lock);
--
--		/* Only a single page so no need to care about length */
--		if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
++	if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
 +		/*
-+		 * Only a single page so no need to care about length.
-+		 * A cache whose refresh is in flight has valid == false
-+		 * and is caught by the gpc_invalidate_seq check in
-+		 * hva_to_pfn_retry() instead.
++		 * Could not access the vcpu_info. Set the bit in-kernel and
++		 * prod the vCPU to deliver it for itself.
 +		 */
-+		/*
-+		 * The acquire pairs with the release-publish of valid in
-+		 * hva_to_pfn_retry(): if valid is seen true, the uhva read
-+		 * below is guaranteed to see the value which was stored
-+		 * before valid was published, not a stale one. (A stale
-+		 * uhva paired with a fresh valid could otherwise cause a
-+		 * cache whose new uhva is in the invalidated range to be
-+		 * skipped.)
-+		 */
-+		if (smp_load_acquire(&gpc->valid) &&
- 		    gpc->uhva >= start && gpc->uhva < end) {
--			read_unlock_irq(&gpc->lock);
--
--			/*
--			 * There is a small window here where the cache could
--			 * be modified, and invalidation would no longer be
--			 * necessary. Hence check again whether invalidation
--			 * is still necessary once the write lock has been
--			 * acquired.
--			 */
--
--			write_lock_irq(&gpc->lock);
--			if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
--			    gpc->uhva >= start && gpc->uhva < end)
--				gpc->valid = false;
--			write_unlock_irq(&gpc->lock);
--			continue;
-+			WRITE_ONCE(gpc->valid, false);
-+			cleared = true;
- 		}
--
--		read_unlock_irq(&gpc->lock);
- 	}
- 	spin_unlock(&kvm->gpc_lock);
++		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
++			kick_vcpu = true;
++		goto out_unlock;
++	}
 +
-+	/*
-+	 * Readers may still be using the old mapping, having sampled
-+	 * gpc->valid before it was cleared. Wait for them all to drain
-+	 * before the caller proceeds to zap the page tables; like a TLB
-+	 * shootdown, this guarantees no access via the stale mapping
-+	 * once the invalidation completes.
-+	 *
-+	 * This wait is safe even on unblockable ranges (the OOM reaper):
-+	 * the constraint there is not "no sleeping" but "no blocking on
-+	 * anything which may itself depend on memory allocation to make
-+	 * progress" (see the reasoning in commit 312364f3534c and its
-+	 * discussion). An RCU grace period has no such dependency: GPC
-+	 * readers never allocate, never take mmap_lock, and never sleep.
-+	 */
-+	if (cleared)
-+		synchronize_rcu();
- }
- 
- static bool kvm_gpc_is_valid_len(gpa_t gpa, unsigned long uhva,
-@@ -74,6 +88,22 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
- {
- 	struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
- 
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+			 "kvm_gpc_check() without RCU read lock");
++	if (IS_ENABLED(CONFIG_64BIT) && vcpu->kvm->arch.xen.long_mode) {
++		struct vcpu_info *vcpu_info = gpc->khva;
 +
-+	/*
-+	 * Check valid *first*. The acquire pairs with the release-publish
-+	 * in hva_to_pfn_retry(), so every field read below — and any use
-+	 * of gpc->khva by the caller — is guaranteed to be from the
-+	 * published generation, not a stale value reordered from before
-+	 * the publish. The fields are then stable for the remainder of
-+	 * the RCU read-side critical section, because every mutator
-+	 * clears valid and waits a full grace period before changing
-+	 * anything.
-+	 */
-+	if (!smp_load_acquire(&gpc->valid))
-+		return false;
-+
- 	if (!gpc->active)
- 		return false;
- 
-@@ -90,9 +120,6 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
- 	if (!kvm_gpc_is_valid_len(gpc->gpa, gpc->uhva, len))
- 		return false;
- 
--	if (!gpc->valid)
--		return false;
--
- 	return true;
- }
- 
-@@ -134,8 +161,8 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long gpc_s
- 	 * is elevated.
- 	 *
- 	 * Note, it does not matter that mn_active_invalidate_count
--	 * is not protected by gpc->lock.  It is guaranteed to
--	 * be elevated before the mmu_notifier acquires gpc->lock, and
-+	 * is not protected by any lock the refresher holds.  It is
-+	 * guaranteed to be elevated before the mmu_notifier walk, and
- 	 * isn't dropped until after gpc_invalidate_seq is updated.
- 	 */
- 	if (kvm->mn_active_invalidate_count)
-@@ -171,21 +198,12 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 
- 	lockdep_assert_held(&gpc->refresh_lock);
- 
--	lockdep_assert_held_write(&gpc->lock);
--
--	/*
--	 * Invalidate the cache prior to dropping gpc->lock, the gpa=>uhva
--	 * assets have already been updated and so a concurrent check() from a
--	 * different task may not fail the gpa/uhva/generation checks.
--	 */
--	gpc->valid = false;
-+	WARN_ON_ONCE(gpc->valid);
- 
- 	do {
- 		gpc_seq = gpc->kvm->gpc_invalidate_seq;
- 		smp_rmb();
- 
--		write_unlock_irq(&gpc->lock);
--
- 		/*
- 		 * If the previous iteration "failed" due to an mmu_notifier
- 		 * event, release the pfn and unmap the kernel virtual address
-@@ -213,7 +231,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 		/*
- 		 * Obtain a new kernel mapping if KVM itself will access the
- 		 * pfn.  Note, kmap() and memremap() can both sleep, so this
--		 * too must be done outside of gpc->lock!
-+		 * can sleep, which is fine: this path holds no spinning locks.
- 		 */
- 		if (new_pfn == gpc->pfn)
- 			new_khva = old_khva;
-@@ -224,20 +242,17 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 			kvm_release_page_unused(page);
- 			goto out_error;
- 		}
--
--		write_lock_irq(&gpc->lock);
--
--		/*
--		 * Other tasks must wait for _this_ refresh to complete before
--		 * attempting to refresh.
--		 */
--		WARN_ON_ONCE(gpc->valid);
- 	} while (mmu_notifier_retry_cache(gpc->kvm, gpc_seq));
- 
--	gpc->valid = true;
- 	gpc->pfn = new_pfn;
- 	gpc->khva = new_khva + offset_in_page(gpc->uhva);
- 
-+	/*
-+	 * Publish. Pairs with the smp_load_acquire() in kvm_gpc_check();
-+	 * the pfn/khva stores above must be visible before valid is.
-+	 */
-+	smp_store_release(&gpc->valid, true);
-+
- 	/*
- 	 * Put the reference to the _new_ page.  The page is now tracked by the
- 	 * cache and can be safely migrated, swapped, etc... as the cache will
-@@ -248,8 +263,6 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	return 0;
- 
- out_error:
--	write_lock_irq(&gpc->lock);
--
- 	return -EFAULT;
- }
- 
-@@ -259,7 +272,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 	bool unmap_old = false;
- 	unsigned long old_uhva;
- 	kvm_pfn_t old_pfn;
--	bool hva_change = false;
-+	bool was_valid;
- 	void *old_khva;
- 	int ret;
- 
-@@ -269,11 +282,85 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 
- 	lockdep_assert_held(&gpc->refresh_lock);
- 
--	write_lock_irq(&gpc->lock);
-+	if (!gpc->active)
-+		return -EINVAL;
- 
--	if (!gpc->active) {
--		ret = -EINVAL;
--		goto out_unlock;
-+	/*
-+	 * Resolve the target uHVA (and memslot, for a GPA-based cache) before
-+	 * deciding whether anything needs to be invalidated at all.
-+	 *
-+	 * If the cache is still valid and this refresh resolves to exactly the
-+	 * same uHVA, in the same memslot, for the same GPA, then nothing which
-+	 * a reader can observe is changing: the gPA => uHVA translation is
-+	 * unchanged, and gpc->valid being set is precisely the assertion that
-+	 * the second stage (uHVA => PFN, and the kernel mapping of it) is
-+	 * still good. No mapping is retired, so there is nothing for a grace
-+	 * period to wait for. At most the memslot generation needs updating,
-+	 * which no reader consults except via kvm_gpc_check() itself.
-+	 *
-+	 * All of the following must hold to take this shortcut:
-+	 *
-+	 *  - gpc->valid: the PFN and its kernel mapping are still good.
-+	 *  - the resolved uHVA is unchanged. kvm_gpc_check() validates
-+	 *    'offset + len <= PAGE_SIZE' from gpc->uhva/gpa on the reader's
-+	 *    behalf, and the reader then accesses gpc->khva for 'len' bytes
-+	 *    with no recheck; moving the offset under a live reader would let
-+	 *    it run off the end of the page.
-+	 *  - the memslot is unchanged. kvm_gpc_mark_dirty_in_slot() uses
-+	 *    gpc->memslot, so replacing it under a reader could mark the wrong
-+	 *    slot dirty and thus lose a dirty page for live migration.
-+	 *  - the gPA is unchanged, as it provides the gfn for dirty tracking.
-+	 */
-+	if (READ_ONCE(gpc->valid)) {
-+		struct kvm_memory_slot *new_slot = gpc->memslot;
-+		unsigned long new_uhva = KVM_HVA_ERR_BAD;
-+		u64 new_generation = gpc->generation;
-+
-+		if (kvm_is_error_gpa(gpa)) {
-+			new_uhva = uhva;
-+		} else {
-+			struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
-+			gfn_t gfn = gpa_to_gfn(gpa);
-+
-+			new_generation = slots->generation;
-+			new_slot = __gfn_to_memslot(slots, gfn);
-+			if (new_slot)
-+				new_uhva = gfn_to_hva_memslot(new_slot, gfn) +
-+					   offset_in_page(gpa);
++		if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
++			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
++			kick_vcpu = true;
 +		}
++	} else {
++		struct compat_vcpu_info *vcpu_info = gpc->khva;
 +
-+		if (!kvm_is_error_hva(new_uhva) && new_uhva == gpc->uhva &&
-+		    new_slot == gpc->memslot && gpa == gpc->gpa) {
-+			/*
-+			 * Nothing to invalidate. A concurrent reader may be
-+			 * using the cache right now and can safely continue
-+			 * to do so; only the memslot generation, which is
-+			 * read solely by kvm_gpc_check(), may need updating.
-+			 */
-+			if (new_generation != gpc->generation)
-+				WRITE_ONCE(gpc->generation, new_generation);
-+
-+			return 0;
++		if (!test_and_set_bit(port_word_bit,
++				      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
++			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
++			kick_vcpu = true;
 +		}
 +	}
 +
-+	/*
-+	 * Take the cache invalid and wait for all current readers to
-+	 * drain before mutating anything they might be looking at. Once
-+	 * the grace period has elapsed, this task (serialized by
-+	 * refresh_lock) owns all the cache fields exclusively: readers
-+	 * check valid (with an acquire load) inside their RCU read-side
-+	 * critical sections and back off. This mirrors what a TLB
-+	 * shootdown does for the hardware page tables.
-+	 *
-+	 * If the cache wasn't valid, concurrent readers were already
-+	 * backing off, and any concurrent invalidation is handled by the
-+	 * gpc_invalidate_seq check in hva_to_pfn_retry().
-+	 */
-+	was_valid = READ_ONCE(gpc->valid);
-+	if (was_valid) {
-+		WRITE_ONCE(gpc->valid, false);
-+		synchronize_rcu();
- 	}
- 
- 	old_pfn = gpc->pfn;
-@@ -286,9 +373,6 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 		gpc->gpa = INVALID_GPA;
- 		gpc->memslot = NULL;
- 		gpc->uhva = PAGE_ALIGN_DOWN(uhva);
--
--		if (gpc->uhva != old_uhva)
--			hva_change = true;
- 	} else {
- 		struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
- 
-@@ -308,12 +392,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 				goto out;
- 			}
- 
--			/*
--			 * Even if the GPA and/or the memslot generation changed, the
--			 * HVA may still be the same.
--			 */
--			if (gpc->uhva != old_uhva)
--				hva_change = true;
++out_unlock:
++	rcu_read_unlock();
 +
- 		} else {
- 			gpc->uhva = old_uhva;
- 		}
-@@ -323,21 +402,16 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 	gpc->uhva += page_offset;
++	/*
++	 * Deliver the upcall or kick the vCPU only after dropping the RCU
++	 * read lock. Both paths end up in kvm_vcpu_kick(), and the MSI
++	 * delivery also walks the APIC map and takes APIC locks; none of
++	 * that wants to be nested inside the GPC read-side critical
++	 * section, which must be no longer than the accesses to gpc->khva
++	 * above. Invalidation waits for a grace period, so holding the
++	 * read lock across the kick would extend how long a memory
++	 * invalidation is blocked.
++	 */
++	if (!kick_vcpu)
++		return;
++
++	/* For the per-vCPU lapic vector, deliver it as MSI. */
++	if (vcpu->arch.xen.upcall_vector) {
++		kvm_xen_inject_vcpu_vector(vcpu);
++		return;
++	}
++
++	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
++	kvm_vcpu_kick(vcpu);
++}
++
+ /*
+  * The return value from this function is propagated to kvm_set_irq() API,
+  * so it returns:
+@@ -1775,7 +1836,6 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long *pending_bits, *mask_bits;
+ 	int port_word_bit;
+-	bool kick_vcpu = false;
+ 	int vcpu_idx, idx, rc;
  
- 	/*
--	 * If the userspace HVA changed or the PFN was already invalid,
--	 * drop the lock and do the HVA to PFN lookup again.
-+	 * Always redo the HVA to PFN lookup: an invalidation of our uhva
-+	 * may have raced with (or followed) the valid-clearing above, in
-+	 * which case the notifier walk skipped this cache (valid was
-+	 * already false) and the old pfn may already be stale. The
-+	 * gpc_invalidate_seq check in hva_to_pfn_retry() is what detects
-+	 * that race, so the lookup path is the only safe way to publish.
-+	 * If the mapping is in fact unchanged, hva_to_pfn_retry() reuses
-+	 * the existing kernel mapping for the same pfn.
- 	 */
--	if (!gpc->valid || hva_change) {
--		ret = hva_to_pfn_retry(gpc);
--	} else {
--		/*
--		 * If the HVA→PFN mapping was already valid, don't unmap it.
--		 * But do update gpc->khva because the offset within the page
--		 * may have changed.
--		 */
--		gpc->khva = old_khva + page_offset;
--		ret = 0;
--		goto out_unlock;
+ 	vcpu_idx = READ_ONCE(xe->vcpu_idx);
+@@ -1825,49 +1885,15 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		kvm_xen_check_poller(vcpu, xe->port);
+ 	} else {
+ 		rc = 1; /* Delivered to the bitmap in shared_info. */
+-		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
+-		gpc = &vcpu->arch.xen.vcpu_info_cache;
+-
+-		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-			/*
+-			 * Could not access the vcpu_info. Set the bit in-kernel
+-			 * and prod the vCPU to deliver it for itself.
+-			 */
+-			if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
+-				kick_vcpu = true;
+-			goto out_rcu;
+-		}
+-
+-		if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
+-			struct vcpu_info *vcpu_info = gpc->khva;
+-			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
+-				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+-				kick_vcpu = true;
+-			}
+-		} else {
+-			struct compat_vcpu_info *vcpu_info = gpc->khva;
+-			if (!test_and_set_bit(port_word_bit,
+-					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
+-				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+-				kick_vcpu = true;
+-			}
+-		}
+-
+-		/* For the per-vCPU lapic vector, deliver it as MSI. */
+-		if (kick_vcpu && vcpu->arch.xen.upcall_vector) {
+-			kvm_xen_inject_vcpu_vector(vcpu);
+-			kick_vcpu = false;
+-		}
+ 	}
+ 
+  out_rcu:
+ 	rcu_read_unlock();
+-	srcu_read_unlock(&kvm->srcu, idx);
+ 
+-	if (kick_vcpu) {
+-		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
+-		kvm_vcpu_kick(vcpu);
 -	}
-+	ret = hva_to_pfn_retry(gpc);
++	if (rc == 1)
++		__kvm_xen_set_evtchn_fast(vcpu, port_word_bit);
++
++	srcu_read_unlock(&kvm->srcu, idx);
  
-  out:
- 	/*
-@@ -346,17 +420,12 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 	 * valid, leave it as is.
- 	 */
- 	if (ret) {
--		gpc->valid = false;
-+		WARN_ON_ONCE(gpc->valid);
- 		gpc->pfn = KVM_PFN_ERR_FAULT;
- 		gpc->khva = NULL;
- 	}
- 
--	/* Detect a pfn change before dropping the lock! */
- 	unmap_old = (old_pfn != gpc->pfn);
--
--out_unlock:
--	write_unlock_irq(&gpc->lock);
--
- 	if (unmap_old)
- 		gpc_unmap(old_pfn, old_khva);
- 
-@@ -384,7 +453,6 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
- 
- void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
- {
--	rwlock_init(&gpc->lock);
- 	mutex_init(&gpc->refresh_lock);
- 
- 	gpc->kvm = kvm;
-@@ -415,11 +483,11 @@ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned
- 		/*
- 		 * Activate the cache after adding it to the list, a concurrent
- 		 * refresh must not establish a mapping until the cache is
--		 * reachable by mmu_notifier events.
-+		 * reachable by mmu_notifier events. (Refreshes are serialized
-+		 * by refresh_lock, which we hold; the store ordering matters
-+		 * only against the notifier walk, which holds gpc_lock.)
- 		 */
--		write_lock_irq(&gpc->lock);
--		gpc->active = true;
--		write_unlock_irq(&gpc->lock);
-+		WRITE_ONCE(gpc->active, true);
- 	}
- 	return __kvm_gpc_refresh(gpc, gpa, uhva);
+ 	return rc;
  }
-@@ -454,13 +522,16 @@ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
- 
- 	if (gpc->active) {
- 		/*
--		 * Deactivate the cache before removing it from the list, KVM
--		 * must stall mmu_notifier events until all users go away, i.e.
--		 * until gpc->lock is dropped and refresh is guaranteed to fail.
-+		 * Mark the cache inactive and invalid, and wait for all
-+		 * current readers to drain, before tearing down the mapping
-+		 * they may have been using. Refreshes are excluded by
-+		 * refresh_lock, which we hold.
- 		 */
--		write_lock_irq(&gpc->lock);
--		gpc->active = false;
--		gpc->valid = false;
-+		WRITE_ONCE(gpc->active, false);
-+		if (READ_ONCE(gpc->valid)) {
-+			WRITE_ONCE(gpc->valid, false);
-+			synchronize_rcu();
-+		}
- 
- 		/*
- 		 * Leave the GPA => uHVA cache intact, it's protected by the
-@@ -473,7 +544,6 @@ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
- 
- 		old_pfn = gpc->pfn;
- 		gpc->pfn = KVM_PFN_ERR_FAULT;
--		write_unlock_irq(&gpc->lock);
- 
- 		spin_lock(&kvm->gpc_lock);
- 		list_del(&gpc->list);
 -- 
 2.43.0
 
 
-------EF41DE7C369FEE6126A3D401734EB001
+------CACDE43EAC4A1469C09AD890A959AD0A
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -1343,28 +652,28 @@ gZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1Nh
 bGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xp
 ZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEFQru/eJkU7BxeS7T6sWKmYw
 DQYJYIZIAWUDBAIBBQCggeQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUx
-DxcNMjYwODA1MTk1NTU1WjAvBgkqhkiG9w0BCQQxIgQglTvrgwAoPPesWsMCemOm2pmeqYkZwbTr
-UKMheLOSwXEweQYJKoZIhvcNAQkPMWwwajALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
+DxcNMjYwODA1MTk1NjAyWjAvBgkqhkiG9w0BCQQxIgQgEds7c53s2vYKJBJlscpo2id3G9Q+2wWy
+27mQPBtPOakweQYJKoZIhvcNAQkPMWwwajALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
 SAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4D
-AgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggIAkBGKjhNhZGfdN6/7RJy18Z7CHtRc
-RbqRTycXkEnhJ0OUj1B48IdC1cn+EchqZf2UKm/+yWLTjG8pHhNIlS3bdKo2RVkn13HhJdPb2HQg
-uK1FNVtKmclfGmbRb55I0pKKV/UAEObo0wK/cZ7dLdRATOCDdZPsWKsaFdvshPq5mFgxbZoWLGQ1
-vw+FZ1RDjrm0JehPOUssKgv8isyB0/5OFmpkcRmI5KNGRsfSgb1c+2O0ofgSYXNX7m6525gCHNke
-eo8dWrSqOFJ7F9IebG2gkMrrLtNpJmJF8f8Edj6oX/6rv58U5isBmrNRrp1KYQuJ6ylda35ZSTF6
-jzZoqZxxlSrtzOKgzEEtnYZ6j0rGQrf+ZIU9llqCaLqKHsDBT9ps6Vn9uAB8/N0nZJqpAg0l0Prj
-FvGvL3Zn91ftwuZmY5VeHfuki/q64cR0Hi+haR7pPovmRQDgNsUcRNFXrE3lRVBXnTMFD6ndW4Ow
-YBeJvTLncoAEovBNVGPhQc82jZ+j1yJLrfuA90Z6LT5fAxUqNLYIY1u+Ma/QxWRjXtJ36wBOL2AU
-nc2W07FQss8Ql9Hmh2qQW+OK79LCYP+dA/OihS9ZjTIojztbQ3iEWe4zGgryNguELVN4J0UIcZwe
-MU6fV4xf6R/cyg4TNSWgFzobH9jOT+s7g4PGiv/V2Amtvsg=
+AgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggIAGYBnKPBDLO3bi7Psg2XtkzY6A/dB
+ojSkFVWfmrJiouuJCe6a7WCILcITBn24yzovD5Dvx2V3TAdjc3O49XJukHBHnFmKGVCFcMN39RfO
+j7/Ard4rI7m++6xIXENM6ItbJcCNlm4CAiZ0OuBg0YRb8+tsjOiwB3zNGKutwTb6omegbOefk4aN
+fPa6Ii/k4evszoSGBU8dp+1bjOouPEcqkJ8NnTFB4TVgGhqAfyLHNoMViyV6SScKGQ22OAI5KBO9
+qtaXcXdG6al+m5z/eQFwnZqNC67FOJx57DF8BBDaupYvJlknIy7c8jqV6nJ7N262cDL4lM6HWOcO
+9lmGqrqoqRwvXSGDc8pD43CRDt6U1sFnFxW/mxZaJhPUs80j/kI1BnMNJiE1TwHcEykpHd/vkyBd
+nOT7JqiMK4hvZcuSlVmmsPL1njMuG0e9dFKDwoeskpKNInigbgsSn0ax9r0T3FQ+Sf41TbUj4LVP
+nTQVGpkTNyBLIlbsLibqmZblVj63IVHNiRGJ4tymdy3AsMj3onVvRhw4mT8tIS6nlfnT5sQFsHmW
+YXIWQfe6jz69YhGFYHf0ZAjzWjxBo/MT62y9mvotdIImMR5Blpqc4wuUPfYv8tKLwwoC4ljmJMWn
+ssiVjN40hKQSM0UeEUDpGltmwi/tScOnydZ9bpD+ECO7S5I=
 
-------EF41DE7C369FEE6126A3D401734EB001--
+------CACDE43EAC4A1469C09AD890A959AD0A--
 
---===============0447233886121387104==
-Content-Type: multipart/alternative; boundary="===============0707045358344018747=="
+--===============1397031566656956887==
+Content-Type: multipart/alternative; boundary="===============4278924174069478766=="
 MIME-Version: 1.0
 Content-Disposition: inline
 
---===============0707045358344018747==
+--===============4278924174069478766==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -1378,7 +687,7 @@ ace, Worship Street, London EC2A 2FA, United Kingdom.
 
 
 
---===============0707045358344018747==
+--===============4278924174069478766==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -1387,6 +696,6 @@ Content-Transfer-Encoding: quoted-printable
 d Wales with registration number 04543232 with its registered office at 1 P=
 rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
 
---===============0707045358344018747==--
---===============0447233886121387104==--
+--===============4278924174069478766==--
+--===============1397031566656956887==--
 
