@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86ECFC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0008FC55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:12:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76F4B6B00B0; Wed,  5 Aug 2026 04:08:48 -0400 (EDT)
+	id 04B056B00A7; Wed,  5 Aug 2026 04:12:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 746D96B00B7; Wed,  5 Aug 2026 04:08:48 -0400 (EDT)
+	id F3E986B00AD; Wed,  5 Aug 2026 04:12:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7C86B00B8; Wed,  5 Aug 2026 04:08:48 -0400 (EDT)
+	id E09236B00AF; Wed,  5 Aug 2026 04:12:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AF436B00B0
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:08:48 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AFF97A02BE
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:08:47 +0000 (UTC)
-X-FDA: 85066489494.22.E5A5890
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 695DD120002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:08:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HjR4yllr;
-	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785917324;
-	b=ntpPsGzoWBzSYae0O8fNeVwg9RD7O5Ozr/s3uzM7hy02Cvz255GImNdwufnA476PSloKzK
-	LzkzJgXe0OLsNdgV9TnKuw8ZbhqL48jH+VAR4hovodC/OD4opHKNfrKL4x0BN3TN2k4C3X
-	DrfLNn/tMW+6i9FxzDChfnvHTBRNuVA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HjR4yllr;
-	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B12156B00A7
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:12:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 190031203E2
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:12:40 +0000 (UTC)
+X-FDA: 85066499280.12.F01ACAC
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 55725C000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:12:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qvf8r0m7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785917324;
+	s=arc-20220608; t=1785917558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNTYfYPWVn5gO8iCYhFkdTqm48nYcVoAs5BXPHIVpNE=;
-	b=bu5/wt84z/ZAV/U5Xv4oJHDkM6Xo47yzpapFMH/DrkelzN+SVblhLfZ05GabAHWkAmZ8B2
-	sl/kIgI/mDh1pURln3zaD8Aa6J0k/vtclN04daKx4AkxGvLz9q2KdWepzMeSzaniP8jzpe
-	slsGdqSGVTEeb1eROrDdsyVFvRmYIwA=
-Date: Wed, 5 Aug 2026 16:08:31 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785917319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VNTYfYPWVn5gO8iCYhFkdTqm48nYcVoAs5BXPHIVpNE=;
-	b=HjR4yllrAeLtrzLaCEHuwj8pyey5QsbSq+OeatUB6oWNw/Ta0F9V9B4BkD0nkHHaiiaSIC
-	cpkSwFbFWYq0N/KhocsSTBH0VDXwa2NF2HZs7/fiTpAst61oLPfhZ6aClnrGJRXPVEAT4q
-	DyC/toxXkKZgBtoofiiZnIGB0WoTzbo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>, chrisl@kernel.org
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	baohua@kernel.org, youngjun.park@lge.com, hannes@cmpxchg.org,
-	yosry@kernel.org, david@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 03/11] mm, swap: add xswap cluster grow via VM_SPARSE
- vmalloc
-Message-ID: <anLvfyS3S_uc6OYx@MiWiFi-R3L-srv>
-References: <20260727135029.1059441-1-baoquan.he@linux.dev>
- <20260727140503.1060918-1-baoquan.he@linux.dev>
- <20260727140503.1060918-2-baoquan.he@linux.dev>
- <CAKEwX=Pe+qMZd2xhnU-PAGQtgXkp56c-JwYCbt2Lux9htgB67Q@mail.gmail.com>
- <amoYawUn3y2eFbPS@MiWiFi-R3L-srv>
+	bh=9tI8sU3Lw9QYzBWqTxRt0CmjJbY/DDf+DIW/Y/dz+Tw=;
+	b=q+CLL0lFOY7C58n3TPDY8GQvkAmUerq98X86i7A2oFxxpNI176of8JI6jbT0Jzl3m7Re5S
+	e3+aw12Tzgn01g/TZ5T8gOlvb/rmZBrzspXWQ8Jc7tatmTp3aGmIKsDj40Qt7ZbfY55Mh9
+	yYC9lpUXaBz0P5LdFTmpojBCtK35Aig=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qvf8r0m7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785917558;
+	b=rSAuXBmix3+HWyzpZ2ZI/x5w4Q7GyVMtbm2EOgG7qbXU1FyJ+4dw/yz5vjkUzBWBCDiKYq
+	lBBHQtLVvT0uezVJZ/VoBTd3IOzxv5iq0Si2MBNe9JRiE+toIOM4Fc8X3tI19CWoZf/02/
+	AUIYYlXICFWJpO8xzDs5vzSR0VFOLPA=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so523081a12.2
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 01:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785917557; x=1786522357; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9tI8sU3Lw9QYzBWqTxRt0CmjJbY/DDf+DIW/Y/dz+Tw=;
+        b=qvf8r0m7QzR7YqwCx0DCgsQoJY3RnKYTA7TQ7o8YN08KwFXHSCeLQxehAKUB4EL1T5
+         peM0XjmGBJ+ojxR5zRzMiLkswp5N5Wa4L/V/mlWGWtERSHb2YvrtJMLXZUrfDntgi2L3
+         oCuhrdd2BtZrtGHWgc9K3ey8nA6JKKoYvegDdOeU0I7sSFmE+ZdPe8HvObdRBHbWCb3S
+         IpBcnQw0e2cQvDYtiUqy3XBOov+wJLRDrRZ+00q4+VmeXdf95OMOCuUcixef95ffmilr
+         h95Vxw2q/bR0+7zd0t2JkUrEMELIxenA/S7jIiWID+/AjM5rha/x0WTEHV03wpstuTd8
+         KhQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785917557; x=1786522357;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9tI8sU3Lw9QYzBWqTxRt0CmjJbY/DDf+DIW/Y/dz+Tw=;
+        b=FZTNQZuVOp8wdt2RBf5iE22CDBKLU8AGDB8r3xzuYG6OFQd45IJXsEcssUO6uRovwu
+         7CMkgXFBneFsUltdQTtHDyrX8nF4N1CJQ9unw24fYNOily4OU3TlxSIXh+m1LdJoi0Dd
+         uNLvgywreIU7uYVhg/FVQJZUsbSxj894BN5mTkTI3sgTQfSLf0GlPlaZOxNgnqlAMXGP
+         VP2dcPNJzYeJqOkAv/1terHLh2tswkCkWqOQnnLak4he0lQmb0Xsuy0Xy07YxMBSvWZQ
+         iglByQ9UyPuzcW3VWSUkuEuibrdUKiLfFhpCRYImH1sezWEpLTV7WppGTXfYOqvISaWZ
+         ypUg==
+X-Forwarded-Encrypted: i=1; AHgh+RrXkIu1h0DH2qazZHGa7kB8zm9hy4qYn12VzfUba5bIc1eyTcNrPdAdZXplctcIZWM1SbCNxDJMeA==@kvack.org
+X-Gm-Message-State: AOJu0YxKcMCjy5nVowzcHIvpv/ehyNBBcYiaxVvU+lBMWy8FW1/S0oGf
+	9SCmja6kd3m1D3mbno3Z66zkSHNFEkKqvJmFXaQOfoEQCi3W0ZoWgIHA
+X-Gm-Gg: AR+sD10Xyvi9IaYHyf68rPQsLCPlVY4VeZtBqIJ6OdRp12ucyuRoJtdZaYNTEC1cwiu
+	niUE2YXbCupCfgNTHXKOHLwKhSJXO8P1MnRq4jbbeolgFRUk/4DQArqT6IqhRY+ImBLUTJb0Y4g
+	5SSAT83A/V1mr42I/qDJsLJQ7Ir5iqtoYuwHQ1z9CX+dIlYTtqYI2kqFQUFw3dmTVVAVJgxGfp4
+	WAHwIIESi4Vr0M9LfyUZzokBwe7cpbQ2JsmMKVisi0UKBD9GXXRGDcLzF4D45cHj/2zd+DyKhUF
+	zF50omt1Ri4ZSbUu/tlz7LVO//1FFiY7KUZu8d5wLfgGLRIGStKmf/b2FmqwSKNJGNzQH3FsQMo
+	Z6n35mI3rrMDOPp2BZUIhjx1IK/ujaJ//MislGGCc1RneKARvVTCfohF9W8wF9XpteERM8g+Pgg
+	+geef5D/Oc0bK+jzuqse/1ZMOwhoNbg3lZJisheKbWHyvCkmDtUBukp7Hg+lAg7wI0
+X-Received: by 2002:a05:6a21:4685:b0:3c0:b766:74f4 with SMTP id adf61e73a8af0-3cb85f4a279mr5957110637.31.1785917556844;
+        Wed, 05 Aug 2026 01:12:36 -0700 (PDT)
+Received: from celestia ([2402:1980:935:f4a7:6f5c:e816:9aba:2090])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe7092b9c6sm1014573a12.31.2026.08.05.01.12.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 01:12:36 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: introduce damos_sort_type for re-ordering regions list
+Date: Wed,  5 Aug 2026 16:12:46 +0800
+Message-ID: <20260805081246.39417-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260804135834.86511-1-sj@kernel.org>
+References: <20260804135834.86511-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <amoYawUn3y2eFbPS@MiWiFi-R3L-srv>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 695DD120002
-X-Stat-Signature: u9dxheaeirqh5kb4ijpnnsj8qrx7jwej
 X-Rspam-User: 
-X-HE-Tag: 1785917324-613811
-X-HE-Meta: U2FsdGVkX192y/yW9SdrOnCBjodJIQVLHyGT43t2KXYQENVxRJ8zteXG63tGiDUO8MTmVWjhKygAhXwtdyoPdM41t3QVRFy8c4PJs6myQGeWVjfl8g20pjYEYdn3VTyzOsksw6awJtYyeWR7FewD1KsD+YvYkovShB7fgLFzh/rjW4Mif5Zj3XNqFOuRoIT3pe1IoEJYiwiMnflxqRIfomPjw5yOWX5U7ER1Fk6/ABPPlMWJG1Gx1Ivh4mEgUxsbgdWjzuy4JCFBAOgw9nUUUZOQ61HDmenfK8KxRT/DC2JGpoOfHJ3sEP2fTjwf7Jkkb1s3vXidik/Bs9xvlNrh41JhXNO28qGrm2Wy97SAPWt1E6IiJGGQGd8hYT7mGtYmA4GLpynhoMiqJ9dpjhrwltGJw1/v16dEFAuSbctfVfvUFGWZtMdSQr9aU+wwHda6lznumntDjxK8tLi2ccMYsxlsQmbF4qoQI9DWQdf9QzUxDNj8dRB29mc1sqNtAVS3rqXUuz9ayY4lajiKb+/GCl6BWlVl31Vg1fI9m+/KUR9g/HDQ35Tqtiie+rriL8OKpluXAHd3tay0u0SIlOLtdfUkxE8b9e66Ll4GCqxn5AjuwuwJL342Rxkzb8Ddd5Bx7rppLq4Vgjr2XhrcXe5To6IYlZTrc7AwWzDeAXRnF9unxRNzlnu9feu4+cpQ3KyAfrBSzvaEQbKVFhG+lETwVujspAWN00fLfIf6hcOnZ4wsYiVcd3TO0VckMNB/IUFWDRiDtq4Sd3s9JjGRpn/7hPOQA7yrN3pfTKAzPVNSIwbFlqTgMqtiJyR0GqvhjkvzVdTwFeSITvOca0YYYuhWGAO1zejlcvgMZr2Fb7qyAT3ESyiz902/9eqpzv6O+fnYYkyzGN39KRAEpKXLAuz+SwT6jGT3ThTD2dJv3aWxhDjsqVd62X1MfubUjy6wkmz1inrklE9IBATv4H1Fyfm
- Cr9XhzHX
- P19bDlp4uzUHOSG7+eIilBDp6/q9MECbMNPPgAwjycs27zVzNbqfVCss+qctrsj+bNLDMC4mUf3ApFxQGCALFGV57CxonL/BB7DnSuM9DaLSz196lT9iQOjL3Ps8zdlx7qx2r+QnT9xgKXg2X+Q+zio2uELz8mj/xMmab1WiltTC1TvalPplEf7YcjLKw7gyVxcWJDrr3iujtELsmOBGhCNM/rEzag9IZMty+Xtg9XahhlZsZDhGxf6p3mGMEGVPBJreG1ZJmuAuIx93fU0uzxVKUUOTgDHH9eobBurEgcWz1//FDB/dzkM666VaNSgSoAhZh
+X-Rspamd-Server: rspam03
+X-Stat-Signature: dq7dryszfex8j3zggq7gohcfqxrddbng
+X-Rspamd-Queue-Id: 55725C000B
+X-HE-Tag: 1785917558-919690
+X-HE-Meta: U2FsdGVkX1+Ts2EZyd6W31FpXGTxvrEsbtGK4XOGjP8QEh1kVW8zw1UHL6CjrceCjyQM6CqmE8NzxDDomULgh8+ZvC/QLKHbhoE9eX4JJrAPsrVfLpZ/88yOrfzYA2evH5/hmT1BO4lHJkSxfi+49iq8e+iIa1E9PXY0F4qvy7fulPOqqfOXNwK12BT/nYTqcxlVrWORRyKmGngi3g8OS4Imh7O18f1NlFw1yeHT1RG1f4milBlHYc17dmtsR/LBpBjhfff8alBkDDQvOYa9vVdirmNoCzu4KpsnfIVTs3DWV25w3GtpQO0SWaNmG9FA/miIAD/JdHStBAewhcyfzdJhZRwky4ibZlDFWSpwdtpw10t+qqTcSCJVUbVTlJAhUcuRccUCbbPcR/ilDr+TI49vtl86GawbDkoNeVAYh47UAJ4M0RvOLg8R+JvF1yo3Xk6f9BFlI96Yr4KDY37gddfrHwUMsODSaVCpMvlXld8sSAqB0VkXq2cs9Esbg3DD7awEPA5aorAdvLa4oKUlIVjteGH9yuTe1BrIGzkAMZM7VIJhM+0jDWnmnh5nhMPu3UE0XY4nPpuHlL9y3d9n0pBNVXRPqZ8AkDs8Rfn5UWy9ULTA2cC9rltJcGY9jdJbv+zI12floLEzKrudpAwyqDIXdWkYDqCC+wKGg9Yat1b5KwgIoMJr+vjW35lTqMNnhQ1NJCxESWZ3lOg0ScT4HW8BXKHVAe2pd+HIbhxdQZlaF1Wek6xXx+BxMAPax+/6aBqhW3xIgJtpWGWzFoY5/gMAVi73Huv1HAc4Ng8JvBDAIMokX48hFmmOQaJI81Qll1oucs46KbJb53ILgl3uJ/Pt1m4SzN6P60kT3MbggPa+lMi/aqzrVjvvi6wKD61ATzIesoH4QJfHZNxBLIBXSHjJTNciierAGvWZFivLH72/Z+VAURGTiFehudDlEWJVKuHWJ6VfEANWY0GV9w8
+ H8eN9zkI
+ ZkDVlNui+Xv4o5+g94UmJqrexfp3TchKS6itHp+RAp0h8b2hYIAR97MOpT4d8UsoARo2dooocglF0n3w8Q7xb0/cm0mAoIP+kWCYwA2J01BIVblNjyHyrxkWmtpqhLTJ8luaePyCAPS6sy2wi+d1qAk+8WIbAg/ABFuCdhcGavZ71Ppod06mGM6tp+jRE1GQFkQB6mMLLypeTPhGfoS/By6LXbtNX2RyAzooVdRSqt7+NjpSCmg38Z2iiJj8ztHRCs2DT4JrU0Q53rIvRiiF7o4NfMw5GCkA6oKSSK3UkaCqhk1HIiZCA7ouq7oyCkSIJOz+dQ7ShjHvyBt0KdWfR5Yg+EtbJbSVfJCzxInJnn+2oc5KaP/vhbIyIE8B6bmMbQIUwWVQCyw4r/HSDgIoMcm01gmiuiZuG1br7JY8zbPpNsoJgQY621JMvn9ry1iwpNqoBKc4ssmC3JEP5Vj3uKVywpglkJC5UfmDIMiC7ZLof8ZI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,186 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/29/26 at 11:12pm, Baoquan He wrote:
-> On 07/27/26 at 08:05am, Nhat Pham wrote:
-> > On Mon, Jul 27, 2026 at 7:05 AM Baoquan He <baoquan.he@linux.dev> wrote:
-...snip...
-> > > +#ifdef CONFIG_XSWAP
-> > > +static int xswap_map_clusters(struct swap_info_struct *si,
-> > > +                             unsigned long start_idx, unsigned long nr)
-> > > +{
-> > > +       unsigned long start_addr = (unsigned long)si->cluster_info +
-> > > +                                  (size_t)start_idx * sizeof(struct swap_cluster_info);
-> > > +       unsigned long end_addr = start_addr + (size_t)nr * sizeof(struct swap_cluster_info);
-> > > +       /*
-> > > +        * vm_area_map_pages() requires that start and end be page-aligned.
-> > > +        * If start_addr falls within a page that was already mapped by a
-> > > +        * previous batch (grow path), round it up to skip the already-mapped
-> > > +        * partial page.  Always round end_addr up so the vmap page table walk
-> > > +        * terminates correctly (the walk loop exits when addr == end, and addr
-> > > +        * advances by PAGE_SIZE each iteration).
-> > > +        */
-> > > +       unsigned long vm_start = PAGE_ALIGN(start_addr);
-> > > +       unsigned long vm_end = PAGE_ALIGN(end_addr);
-> > > +       unsigned long npages;
-> > > +       struct page **pages;
-> > > +       unsigned long i;
-> > > +
-> > > +       if (vm_start >= vm_end) {
-> > > +               /* All requested clusters fall within already-mapped pages. */
-> > > +               for (i = start_idx; i < start_idx + nr; i++)
-> > > +                       spin_lock_init(&si->cluster_info[i].lock);
-> > > +               WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
-> > > +               return 0;
-> > > +       }
-> > > +
-> > > +       npages = (vm_end - vm_start) >> PAGE_SHIFT;
-> > > +
-> > > +       pages = kmalloc_array(npages, sizeof(*pages), GFP_KERNEL);
-> > > +       if (!pages)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       for (i = 0; i < npages; i++) {
-> > > +               /*
-> > > +                * __GFP_ZERO is critical: cluster_info structs contain pointer
-> > > +                * fields (extend_table, zero_bitmap, memcg_table, table) that
-> > > +                * must start as NULL.  Without zeroing, stale data from a
-> > > +                * previous user of the page would look like valid pointers.
-> > > +                */
-> > > +               pages[i] = alloc_page(GFP_KERNEL | __GFP_ZERO);
-> > > +               if (!pages[i])
-> > > +                       goto fail;
-> > > +       }
-> > > +
-> > > +       if (vm_area_map_pages(si->cluster_vm, vm_start, vm_end, pages)) {
-> > > +               i = npages; /* free all pages on failure */
-> > > +               goto fail;
-> > 
-> > I was evaluating whether your vmalloc array can be extended to support
-> > kernel-driven dynamic growth at least (either as a slot-in replacement
-> > for xarray, or as a follow-up optimization if it's too complicated),
-> > and I stumble this mapping action.
-> > 
-> > Seems like it does not take any GFP flag argument, and under the hood
-> > it calls GFP_KERNEL. Would this be safe in the swap allocation path
-> > (where you slotted it in in patch 4)? Kairui used a more precise set
-> > of flags in this path, for e.g for swap table allocation:
-> > 
-> > ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
-> >    GFP_KERNEL);
-> > 
-> > 
-> > I'm guessing this has to do with the fact that we often entered
-> > swapping out paths with PF_MEMALLOC... Is there any risk of deadlock
-> > etc.?
+Hi SJ,
 
-Hi Chris,
+First of all, I apologize for the noise, and I will drop this patch.
+Secondly, thank you for pointing this out, it made me realize that I was
+fixing a non-existent problem.
 
-I gave the kmem_cache approach a try, but ended up keeping VM_SPARSE.
-The kmem_cache approach has two structural problems:
+On Tue,  4 Aug 2026 06:58:33 -0700 SJ Park <sj@kernel.org> wrote:
 
-1. With individually kmem_cache_alloc()'d clusters, ci - si->cluster_info
-   no longer works — cluster_info is a pointer array, not a contiguous
-   array.  Each struct swap_cluster_info would need a new field to store
-   its own index. VM_SPARSE preserves the contiguous array layout, so
-   ci - si->cluster_info continues to work for O(1) index lookup everywhere.
+> The recommended way is setting the min_age naive, and auto-tune it using DAMOS
+> quota or aim-oriented quota auto-tuning.  Have you considered using that?
 
-2. The struct swap_cluster_info ** pointer array itself costs extra
-   memory: 8 bytes per cluster.  That's 8 KB for a 1 GB swap device,
-   and 8 MB for a 1 TB device — paid upfront at swapon, regardless of
-   how many clusters are actually used.  VM_SPARSE needs no such
-   indirection array; the cluster_info is addressed directly through
-   the vmalloc area.
+> This sounds like very similar to DAMOS quota's regions prioritizing mechanism.
+> Have you considered using DAMOS quota?  If so, could you please add why
+> proposing this new mechanism, with some comparisons?
 
-By comparison, the introduced change in struct swap_cluster_info isn't
-that great.
+Yes, I have. And you are right; the existing mechanism is better. I
+wrote this patch because I misunderstood quota.min_score and did not
+even check the implementation of damos_adjust_quota().
 
-How the GFP concern is addressed
---------------------------------
-Hi Nhat,
+Whether when implementing dama [1] or this damos_sort_type, I failed to
+realize that min_age might not be such an important parameter on a
+long-running system, and there is really no need to introduce
+auto-tuning or a new mechanism for it.
 
-You were right about the three layers of hardcoded GFP_KERNEL in v1.
-In the current code (the version I'll post as RFC v2), each is fixed:
+> I to be honest feel this is too much for "just guess" based patch.  I'd like to
+> get clear reasoning of the change and/or test results before reviewing the
+> code.  So I'm holding the code review until the high level discussion is done.
 
-1. alloc_page() and kmalloc_array() now use:
+Moving forward, I will ensure I am not "reinventing the wheel" or
+"fixing non-existent problem".
 
-     __GFP_HIGH | __GFP_NOMEMALLOC | GFP_KERNEL
+Thank you again for pointing this out. In the future contributions, I
+will try my best to avoid spending time fixing problems that do not
+actually exist.
 
-   This matches the pattern Kairui established in
-   swap_cluster_alloc_table().  __GFP_NOMEMALLOC prevents the
-   pfmemalloc reserve bypass during reclaim.
+[1] https://lore.kernel.org/damon/20260628085155.20828-1-aethernet65535@gmail.com
 
-2. The internal page-table allocations inside vmap_pages_range()
-   use GFP_PGTABLE_KERNEL and are not directly controllable from
-   the caller.  To prevent these from recursing into swap reclaim,
-   the entire allocation block is wrapped with:
-
-     noreclaim_flags = memalloc_noreclaim_save();
-     ... alloc_page / kmalloc_array / vm_area_map_pages ...
-     memalloc_noreclaim_restore(noreclaim_flags);
-
-   memalloc_noreclaim_save() ensures __GFP_FS and __GFP_IO are
-   cleared for all allocations within the scope, so the page-table
-   allocation cannot recurse into filesystem or swap reclaim.
-
-3. The residual risk is that the page-table allocations still lack
-   __GFP_NOMEMALLOC, meaning they could theoretically dip into
-   emergency reserves under PF_MEMALLOC.  However, each grow
-   operation maps at most one PTE page (XSWAP_GROW_CLUSTERS
-   clusters per page), so the total order-0 allocation is tiny —
-   typically a single page-table page.  This seems acceptable
-   compared to the complexity of plumbing a GFP parameter through
-   the entire vmap_pages_range() call chain.
-
-A variant vm_area_map_pages_gfp that passes the caller's GFP context
-down to the page-table allocations. That cleanly solves the problem
-for all VM_SPARSE users, not just xswap.  I'm happy to work on that
-if people think it's the right direction, but I'd prefer to keep it
-as a separate improvement rather than blocking this series on it.
-
-The shrink path also avoids this problem entirely: it runs in a
-workqueue context where PF_MEMALLOC is never set, so GFP_KERNEL
-is correct there.
-
-Thanks
-Baoquan
-
-> 
-> Thanks for catching this.  You're right — there are actually three
-> layers of hardcoded GFP_KERNEL in the VM_SPARSE path:
-> 
-> 1. alloc_page(GFP_KERNEL | __GFP_ZERO) in xswap_map_clusters() for the
-> backing pages
-> 2. vmap_pages_range() hardcodes GFP_KERNEL (passed only to KMSAN, but
-> still semantically wrong)
-> 3. The page-table allocations inside vmap_pages_range_noflush_walk()
-> (pte_alloc_kernel_track etc.) use GFP_PGTABLE_KERNEL, which is
-> GFP_KERNEL | __GFP_ZERO — also lacking __GFP_NOMEMALLOC, and
-> completely invisible to the caller
-> 
-> When PF_MEMALLOC is set (as it is during reclaim), __gfp_pfmemalloc_flags()
-> returns ALLOC_NO_WATERMARKS for any allocation without __GFP_NOMEMALLOC,
-> meaning those allocations can consume all emergency reserves — including
-> the reserves that the reclaim machinery itself needs to make forward
-> progress.  That is a real deadlock risk.
-> 
-> One way is to fix them one by one. Another way is to drop the VM_SPARSE
-> approach entirely and implemented Chris's suggestion instead: cluster_info
-> is now a struct swap_cluster_info ** pointer array, with each cluster
-> individually kmem_cache_zalloc()'d. The grow path (xswap_grow_clusters)
-> now uses:
-> 
-> kmem_cache_zalloc(swap_cluster_cachep,
->         __GFP_HIGH | __GFP_NOMEMALLOC | GFP_KERNEL)
-> matching the pattern Kairui established in swap_cluster_alloc_table().
-> All allocations are fully GFP-controllable — no hidden vmap page-table
-> allocations, no hardcoded GFP_PGTABLE_KERNEL.
-> 
-> With kmem_cache, shrink is just kmem_cache_free() — each cluster is
-> independently allocated and freed. Seems the logic is simpler. If no
-> objection, I will give it a shot soon.
-> 
-> 
-> Thanks
-> Baoquan
+Best regards,
+Rui Yan
 
