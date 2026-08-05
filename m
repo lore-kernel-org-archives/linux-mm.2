@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B7EC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:03:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209E1C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:05:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1B2F6B00A0; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
+	id 0BEEA6B0088; Wed,  5 Aug 2026 06:05:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF40D6B00A1; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
+	id 076DC6B008A; Wed,  5 Aug 2026 06:05:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A09566B00A3; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
+	id E7CAA6B0093; Wed,  5 Aug 2026 06:05:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 77DC26B00A0
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 109F61603D2
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:03:31 +0000 (UTC)
-X-FDA: 85066778622.13.A9DA6DA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B6C946B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:05:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F06A4042E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:25 +0000 (UTC)
+X-FDA: 85066783410.10.62C2ACA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 52991140009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:03:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3W2w0pT;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 87DDA1A0002
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jq5Q3685;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785924209;
+	s=arc-20220608; t=1785924323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MwtspZMnFWA7BsVmyrJkIUlpBk6kNAmUxfeVp4Cf1pc=;
-	b=tDBKlRSzIL1is+/irPeQtdDnDVOk31OxDYQiCagtOVG60gwoz7mCscQWniUEJOaj2lIrSy
-	/FdMh+v6tRytShqAVWoVAmybPPNeja4q5huT7XjHcNR5k2KRY4krtBFkGd6zGf3mtF5p9E
-	cxLVRLMOUQRHg6NVdlHmnKESYmGQjVI=
+	bh=N+XoGNyWpxU/eY/FyPFqlR/DqODGXul3yoJNnUeWuhE=;
+	b=SUmhFbL0JAtVSap/NS05Iid0RLcz06LXjCRaz7WmQcHqBSZ7CiUqaEDZdpeLVEQt5SXcBs
+	vRmqbAaifVHXumSw9Ev9qAL5ELGj8/C5cd/dOSW93/asmwvygBls9R9Gf8ixLXi6ovwOMo
+	Yyz5B6wb+T7sLJyoHM67yQvzr5wl8Zg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785924209;
-	b=haSB06yu3MIQ0s8EpftpNLRgsgj4IiX8G3rGcZHo/scttmR27R0FrRtLpKIgYNLF4jJbTR
-	NwEI0Pqms5nR33T66PjonJIqfv7lH5wyK6Ba6qGL4f0zEwtpEwH5yaWJYuSD8nX7ZapxXf
-	pDCKDURKp+7Fr2YEKKIS9gKf3enk9K0=
+	t=1785924323;
+	b=s5i573qvBfy7aAuw7qVhJ6vF6eiJFW7itZYL5P7//k/SF1yz7p/hcMHFw0HBNpHicp1jVc
+	OV3mD4MvTrXgFVubKkuKxQksH10wYmRtnoX8eTbEqiB0ivq7TP8OIktyB0Kkkbd+zBW6eZ
+	/2im48POhvjkXq0ovqS/hczTDbe8C2o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3W2w0pT;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jq5Q3685;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BBC8D600AE;
-	Wed,  5 Aug 2026 10:03:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8C01F00A3D;
-	Wed,  5 Aug 2026 10:03:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 26A0B600AE;
+	Wed,  5 Aug 2026 10:05:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813871F000E9;
+	Wed,  5 Aug 2026 10:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785924208;
-	bh=MwtspZMnFWA7BsVmyrJkIUlpBk6kNAmUxfeVp4Cf1pc=;
+	s=k20260515; t=1785924322;
+	bh=N+XoGNyWpxU/eY/FyPFqlR/DqODGXul3yoJNnUeWuhE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S3W2w0pT4H9XaHeVc3HvSp4e6zheDeu7X5ZWPFNNRqiiuueGH06xDeAlFmnXdk3db
-	 HrShB7eMwOiofu4VTNY3lo12/kxB9fV02xBLwAvZjbOeULv9ajKJeSucjVcYCqsGEd
-	 crmHKxHiV3483alYvtccbiz8IBY3AHXoH05eHAIa2e6d9KJmdyCzE/pBFXMF9KBCWx
-	 MTD/30gGuw2TGcbGRP3iK6B1/bnno+pGQH6S8834/XWtpKmTdZ1OjL8GJLEJ078ium
-	 Tv/DIFkxBXEVT1i/YkmBMO/cSRmcHCIXOVEiLT7oVKOlnkOqdxf63j/oSrhgisMMuE
-	 Xf1XlyNHZcT5w==
-Message-ID: <aaa9503a-348d-451a-b44f-9221517803c3@kernel.org>
-Date: Wed, 5 Aug 2026 12:03:24 +0200
+	b=Jq5Q3685rsYbHd98SqLdispuOOAbuxQVAV5qRbxrzcHBzXgG7nqb8FzpzT0WIuSKo
+	 M6pQRdJXQKtoMiT3xXZ0CyU9udjbFDNEumCVYu9Z2ufAtQeqWlqpYwARYZhPgMGkO1
+	 cpkmDQM6zY3iu8C2TesSH62wmXFe9ZGVIr/LLZIxDWjY/B44DslMxJTi3LSWZZwLGd
+	 z6QFZg/Fy6XgosId7YuQX1J2KscHahhqpjEkQsOCwxa+CNVZK/V+Ebx7ylMVK/f9QR
+	 /way7gBdRtRpIrHpZNM2gd4s31OoGQUPZTfFOqx6uP8UUAx6Eos+1thjlGs4hRJFpZ
+	 +YOyMYCS/u0Jw==
+Message-ID: <bcc2d2ef-7ee5-4d74-bdfa-6dbaa679971a@kernel.org>
+Date: Wed, 5 Aug 2026 12:05:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory-failure: fix concurrent access issue in
- min_order_for_split()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: dayou5941@163.com, akpm@linux-foundation.org, ziy@nvidia.com,
- linux-mm@kvack.org, liyouhong <liyouhong@kylinos.cn>,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260805072625.2437636-1-dayou5941@163.com>
- <dbdb0f70-669b-4c68-a9cf-89d30c20f12f@kernel.org> <anL_I_2o3vfAaRLr@lucifer>
+Subject: Re: [PATCH v2 1/2] mm/Kconfig: make FLATMEM depend on !NUMA
+To: Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>
+References: <20260804151145.3419768-1-ekffu200098@gmail.com>
+ <20260804151145.3419768-2-ekffu200098@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anL_I_2o3vfAaRLr@lucifer>
+In-Reply-To: <20260804151145.3419768-2-ekffu200098@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 52991140009
+X-Rspamd-Queue-Id: 87DDA1A0002
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: c89pa7biqj1szgojdprzondc6m74fruu
-X-HE-Tag: 1785924209-601808
-X-HE-Meta: U2FsdGVkX1/hM0baO67pjjkgMtokt0JSHd7iCxwV3aFX+PhNoV0z7uNd//KZk4ZgybA4J+gD2mcwZ5b4C4fO4XYvpyjS/KTN7RLfHkYUcIqrD5ty6YqvHWhZs4gZ3cWoqmI0T9HLtxQP1SQGREVMsjNvyiYfIPAPSEFCuDOUlmWeZxppm11r9Hm0fxSb4t6iMoPDfPkOx+86/apyzWVlF96ApMXm0guzln0dG/eOtdi4tafnqIlYw1IfPRwnv2opDXuPoLX3eScKWAtOWMbPxb5M+La8jbuDnGhtFw9GVDe63Eccua6kyygoNghBXI1J2poNtgcJ1qfjCox7fWGbhLQ7Tsv51W6lrl1JUS/2QIRyKAz8z9FkfY7Vq2v57jAA+H0DrCEK7dsUbiMt+NSCnKYWogwiihMlxvwoW1dvBElyfZRAE4m2C/dS9pyVGJjgpV2Mh67h6jjsnmnBpbuXh/o24+iV2ySQNVddoDE1y3wUanpM0krF20qTgvkTgQ2lPVXvpSkiWHv29ecsq3tolJK5Xcgj9mM9xSqgB+kFdmMGLZbxO2xEcNItMvxk8vjfpfZuHwGiT9yK8m0HWDwFKyCIH3lKwP4DTOmra2Uk35miAjzgIT6Ms8hi8mNARIf4XwkkbbBCzx0830qt3pwQGJtibc6mVTYTpEk/JxwplN48BsCPAVN/RFI6g7lq58HzNgAVBYvqFpeUsscQrAVC3Liti7hnf6vgwrzz1pJWAq1nipWmYVqPOaoiUZ0JMTBipkc7v8f0LzYnS7cWbaQU6oXpLZCYpiN1WcFvoFMgdoUn8lo+TxJ6n34m4VQBzubZISBYgAr+eB4dIb8sRXvZFc1H00cC2AV01v0CyKD27s+oIT8OnKUh4lIJ+etjbSc+KjQoBoPGG64Ntwg/vNEzYtp14BHWVsCgq0QzbRAro+tC9CZDZM8/SAtg5E4dx4+l5jHlLfOGzMinLfcQE+V
- 4uybwEkZ
- j64kwmqumKzewcb0VNxqNE+EjF7os8XJIwgO2+8L/SmHYiW8vp8/s2+OrhWS43sJDwIdgtZgzuTgxrA7m+IyLoBe+AkVeOXFTxJKMOlPZV0acoBBHdmhUtETCHB+fU8uFVp3bTw/drchuzMfAJs0SVgtJ7p5f7o/wopNXtZt+/iRUyMK358DrSpQtbWV2KyonJ8HWgQdwsThow2qbcX2COii17uw4PPCtv5hpyu7x9Gf5dZI5pFEyRXuHchplBKkL3t4jI0C6VW3HSlmNlA44M+kqxlJxHwfDCpIflOnZlc3aAbdFmV/ZDmyI2w==
+X-Stat-Signature: 5yopmcbn8hyipapewwx7o75fbkdrdt1n
+X-HE-Tag: 1785924323-169625
+X-HE-Meta: U2FsdGVkX1+ElSzRQ0ASRCdZTEt0Y0GVqmpmyN2TG5X/WVwP5rfPkuIxdUGmnOxug4ftkPpkok2PtKqU9sm3Am4cJKmq8mR/CMqNMB69Zkon2KVlg5dgPMandSZg0RoJw3fCC/Vxu+6oP+l88vuQo1y96eykoPBQCPMNTSmdW932i/k5P3SGWT+cXFizE/9WaJVJ0tmLE1j/ipF0V9/wRpSfFRdqGvUmHMbPyVjavar48kM3SB4phjUlkSYFgbeyBNvTHDHUtnjFBR4duWRz5B8SNPhJB7EZ6jdz7SNCpYTFLGvTRRbVFX7AgLeFh1wigtuefdhi/KjPp42keyrBY9e2x1trHDo3IWIdPWAdgEwyeutuux3qoQi4pT+CGMpvtn8dbdZECT/hMA2BTBpm78w66wGWhFFmBwO5zIpxXXaMDp7z2Hmyt1EZiWGDPmC6SrxToielG821R6goAb03syDGY5ysOEklllL9GbtY/wyX2M0D6C07sjBPBL91O/bOxwuhjG/hz+Ca89Pl/yb9S3rOGprZYmx8RUIw7nwARFsuOZ4BZUdSJOe2Ssi3WJy8ZNGHFzVwSLJgw7jE4SDNh38huApCg4wMdl4Tl+Nw2kOvITqbHnPzob238XJ2IsJjOG7hnzv0D3+liSQshKallUUevOpOWH34jirRWwz7DWahl3THs+F4r5y27Ev3ykfZDL5SY5JRjQkEb5M0VyqZhoQIEyvTlMejCYBiC5a6F0NocbuDJdLSboP/tdRHuj6FLKayhYLSyCtMOk+NRm/m6A/GuwBlUhmVYyf9Ck72oCAePqKP0HJ4s5rwFWZuZCa/QcpIVWmX+4zWk9l9vJu1fXHEtWFNQ/IoNU0rDrdluK94HzoFDyPd0roSpgca4d+/It0PSYS4/+1TaEwOQ+EMFxngR5R7w85wxLMPG4Qx/hRYmlby3U2skQyHm0Os9jPbAz/EEsc7786zCBe7eY/
+ wKMqWcx0
+ +7lCjS53NSFKJmJuTzG96UcyWUy7+Sxr8bHpTcmZ7WKSOnEZDtSTmEz1ek9Kn9RpnKc5/DX7P4bDj6PKZ9jyUsVZ+utYOV1coQ7OnzC4dtZcfj0a7Rp/4FMr8Zq7eDeo3oXvKJulfE35bOqPBnowEyJY6A7YolvAbGN222hP8ETiM2JTmWqACWXQ2M9vsbrDFobCbyx/h2s/zVnyD6ujJc5vdpXVZO+hWu71ME1MLYsxrQfkkN+abHSZG19T5b7/CjyZgwo5pi3Fd0EYQKGuV5jTI4I0j2QvBIrvcwhyDlgvkniF0fiieVjVrxEcDBCYkZ0t2wk94h+q9ByS58yyWF1S+2papW4/4uezskFwtFcbgZP+KdjCE6Bmoug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,39 +142,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>  	/*
->> @@ -2862,8 +2841,7 @@ static int soft_offline_in_use_page(struct page *page)
->>  	};
->>
->>  	if (!huge && folio_test_large(folio)) {
->> -		const int new_order = min_order_for_split(folio);
->> -
->> +		lock_page(page);
->>  		/*
->>  		 * If new_order (target split order) is not 0, do not split the
->>  		 * folio at all to retain the still accessible large folio.
->> @@ -2871,8 +2849,14 @@ static int soft_offline_in_use_page(struct page *page)
->>  		 * preferred, split it to non-zero new_order like it is done in
->>  		 * memory_failure().
->>  		 */
->> -		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
->> -						       /* release= */ true)) {
->> +		if (!min_order_for_split(folio))
->> +			ret = split_huge_page_to_order(page, 0);
->> +		else
->> +			ret = -EBUSY;
->> +		unlock_page(page);
->> +
->> +		if (ret) {
->> +			put_page(page);
->>  			pr_info("%#lx: thp split failed\n", pfn);
->>  			return -EBUSY;
+On 8/4/26 17:11, Sang-Heon Jeon wrote:
+> FLATMEM + NUMA is not supported by any architecture and fails to build.
+> The constraint is only implicit in the arch Kconfig files.
 > 
-> Maybe return ret here? Seems a bit pointless to set ret, gate on it then not
-> return it (even if result is the same)
+> So make it explicit in mm/Kconfig.
+> 
+> No functional change.
+> 
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
 
-I didn't check whether a caller actually relies on -EBUSY. So I decided to leave
-the behavior unchanged.
+Is this survives the compile bots, perfect.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
