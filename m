@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B1DC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25284C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66B66B0092; Wed,  5 Aug 2026 02:28:49 -0400 (EDT)
+	id 43A556B0095; Wed,  5 Aug 2026 02:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D266B0093; Wed,  5 Aug 2026 02:28:49 -0400 (EDT)
+	id 411CA6B0096; Wed,  5 Aug 2026 02:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A05B76B0095; Wed,  5 Aug 2026 02:28:49 -0400 (EDT)
+	id 300CE6B0098; Wed,  5 Aug 2026 02:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 680D36B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:28:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E18B1C039A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:48 +0000 (UTC)
-X-FDA: 85066237536.30.B337387
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 943BE2000A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=f58NkVRW;
-	spf=pass (imf03.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03FFF6B0095
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:28:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 832808037E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:58 +0000 (UTC)
+X-FDA: 85066237956.09.055103A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 27F561C0006
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="s1jB/175";
+	spf=pass (imf18.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785911336;
+	b=dPKn9PC/XwEq23LRhrfMSvhl9Yzvhk4FJAGTeFxSBqxzKXoJ3zi095V11uwDQJHCbYCt09
+	1JUpXAObXLs9pqSQBG/xJIZ47VpCF/IiMcQ/hp1pqceDapP50RWVQx+fS+PCamYB4nHmiP
+	ktUToA55v00BUjlcA1dT1h8jb3kAB20=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="s1jB/175";
+	spf=pass (imf18.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785911326;
+	s=arc-20220608; t=1785911336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BstbCR8L/CfAYlmhbr9LI7ifPPjor2ZWMfhQAtVhUeU=;
-	b=lAOs3DGcBzhMDOmhu2zpSVtV1iBQBNCJG0fMgCF/VCuugP2TGlPwSXKVyvOQNB4PDN4Cms
-	rIo9MDLHc8zjmsDj47lRVrvvKzZKeBIRWMSj/YbMtcLQIikW0FvxPdQ4lwsk0iLOpZ1Ix1
-	oyKy+pNwLr2mnE7xfCcfvL++vVlLyNM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785911326;
-	b=lnIXzVNscHoQXS79DtPPcU7R7Zp53Hyh/wQbqxEnq0pyy+/66i9hsQz/iuOVCL1mOk2zm3
-	aq0jpkD0pQ+a0/hjG0giWmP4daDZQQrmQamo41+4b00JMskFTddLK39bCrHqPIYU6BYGWD
-	DhmBPRbFW/SFF6cBwnlR4ZQjjvAXzeU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=f58NkVRW;
-	spf=pass (imf03.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mBOW2909902;
-	Wed, 5 Aug 2026 06:28:36 GMT
+	bh=4gSdh3sr2ycHT3EukmQjBtk1Q919hgqEMrec8njc2Dw=;
+	b=kksNLHTq1Ad2tVGQSCAhjqenGLUzBm+RUtOaBvGOjyC7BTGIpj3IVVqVaofcHO0nMT3WY4
+	Nu6UFU0snFMKn2BkyjJDjTSZG4ACwUoBQd3daoDA0poUQT+4wkX8UjiFzL2RZ10X1mHnAe
+	o/+PbnqSLM/USamgm3Le7cWranBw9PE=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755lvoP1121612;
+	Wed, 5 Aug 2026 06:28:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BstbCR8L/CfAYlmhb
-	r9LI7ifPPjor2ZWMfhQAtVhUeU=; b=f58NkVRWqTInkQcnHf2SSWXLsuXe/L+m6
-	KQpuSh6Mj3ois+fZgpRLzx06CQmpV5bGl0L3midtZ7x42gq/6nNBd8jyRN1KbmTu
-	Wj3+GHncMt5Afl6jPFlgnpsGadNNUbNwSqaIKUYm/PIzaQTmz30jjwlSpm755j9b
-	YsZpJIojuGNQIPZVHAKmSnaoLCRjJ0I2DLQuWVBq9QfKv3PdvP1XTzRyUXdWAoaz
-	bL1XU7hUWTlaxwHHN2a8KrsUBr+gJrL7RO136gGLPVrct71n3CFkGHqgQ7ncTnz4
-	kXsuDvAqviuw4dZ9+6KFBpmrzb5fKOnwZ3IQBbI91umatReza+fag==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g99mc-1
+	:mime-version:references:subject:to; s=pp1; bh=4gSdh3sr2ycHT3Euk
+	mQjBtk1Q919hgqEMrec8njc2Dw=; b=s1jB/175e8VH2EsR9qoQ8dSt6XYww+ZWR
+	eOkZJSN45KgYml+6R3cLj4t8dJqIqV0KjSl3M+36YTJS9ZqvCpHi8ouzCGdk0yrG
+	RI+7gRuQLYwQ0W3UdAlxxjpHDLj7sNsv0FjcdrE9uP8QAjO8Kob2HTeJmLLBCIpT
+	KmgZ5OdVJ45hzK8C69o9ZmDfH4WCqLtNygAi1nsgCPvNEwgo5cq/RT+KgAVZ+0ps
+	vJlqRfS6259CU6M3egXpNyyxon8FTHvoW8cYGy3V8W+KcvxMPJnalWdUMl1pBhY9
+	0qxi1bxh6uYMFIaWSZsPiWbOHXn/y+eDaIkeSX+ty9ZNFOL77M2Vw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqsj8h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:28:35 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QGiM028129;
-	Wed, 5 Aug 2026 06:28:34 GMT
+	Wed, 05 Aug 2026 06:28:42 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QHSD010639;
+	Wed, 5 Aug 2026 06:28:41 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qnfbw-1
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw5ee6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:28:34 +0000 (GMT)
+	Wed, 05 Aug 2026 06:28:41 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756SXT629294948
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756Sds531457622
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 06:28:33 GMT
+	Wed, 5 Aug 2026 06:28:39 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DECC62004D;
-	Wed,  5 Aug 2026 06:28:32 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F07072004B;
+	Wed,  5 Aug 2026 06:28:38 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BD5720040;
-	Wed,  5 Aug 2026 06:28:28 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6D66920040;
+	Wed,  5 Aug 2026 06:28:33 +0000 (GMT)
 Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.211.239])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 06:28:28 +0000 (GMT)
+	Wed,  5 Aug 2026 06:28:33 +0000 (GMT)
 From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: "Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
@@ -96,9 +96,9 @@ Cc: "Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
         Pankaj Raghav <pankaj.raghav@linux.dev>, Theodore Tso <tytso@mit.edu>,
         linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org
-Subject: [RFC PATCH v3 02/11] mm: Refactor folio_clear_dirty_for_io()
-Date: Wed,  5 Aug 2026 11:58:08 +0530
-Message-ID: <79acedfb7f3cb1814a68954974da30fd81c655bb.1785908600.git.ojaswin@linux.ibm.com>
+Subject: [RFC PATCH v3 03/11] iomap: Add helper to revert iomap iter
+Date: Wed,  5 Aug 2026 11:58:09 +0530
+Message-ID: <c688c9ccbe13fda329d2bfcd423d5d38ec9ac561.1785908600.git.ojaswin@linux.ibm.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1785908600.git.ojaswin@linux.ibm.com>
 References: <cover.1785908600.git.ojaswin@linux.ibm.com>
@@ -106,40 +106,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX8vvbnxdDAfRP
- a6yid2dbDjNjKL+a4utEqt0iJZ4X6j3w7m6yICuI78XPtEaoNKgt1FSRJQ46V9ErM4VcykwAenb
- Qr8uoqWvzw41WmtwjQAvgJpu6dAZitDhHEuRerc8mHEv2R/iPaCBhZ4Ewz0j3QTSGCezeUwthgm
- QN53aN/RalRzgI/30tejS4IpokGLjU0f29YNfKCkXHrwuLtfzH+EshWE2X7/yJvplw7bmzWtavX
- tnx4SKeviPhRdxZbVLhg/JCZmGsSAFq+ocRYkevETa5iWiQs96VK3aYZNm135l9InyejWjl0O1c
- bXiuYjOA7M2vhJfhHQbw7WQ3RI6X6J0wAYFCd3F2zGD3fApwewsPO9BjrK0axBV7Zh3DxL8/qRm
- z3qseVb1OvJxuuEKp3cPeFkD7BcgIezQlA+ft8SDeYSQSHXqg5FEfXQhQKr4f50my6H6LUId9ic
- 5GHvHotRelGklvyEuxg==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a72d814 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-GUID: LonUA8QG8JHck5z9DjLFdbCjPxe3fRjO
+X-Proofpoint-ORIG-GUID: HQc6MlCSscsYcwTphpnZSkOKguor5Xs-
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX/rVMYMlnGX9p
+ nT8eKbRD1ttQw7DughHsM3iPyZLw/hfH+Is0CFRzdoSFJpYpBhK9emmwkrhNhl2nJsN1K759f+z
+ Nr+R9Z3JjkQQUm1LgwKRJJnjxSMrnNU=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a72d81b cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=GwQEhMSs4eZOB5FW1yQA:9
-X-Proofpoint-GUID: _Cu7__fDUJK1eBU0cjcnDPFT61jAT4oL
-X-Proofpoint-ORIG-GUID: rCElAljz-VkEQ2Q1yGTn4bfQj2YDmix2
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX9P5Qk2vGZbE6
- xGac7B6zFtoqopEDEkWvw/e3fN7rzlz6TgyWlX1621XLY6+VI7BXaBbzQJi1rrjhSqpQN/+9zx7
- m3HoDAp6JFvJtaSlgIgFLhafxusR3gU=
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=EiUwcbAk3iOqCFawNVEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX10VcwEXMqktr
+ +S/UFnL70GiUKVXlYY0cCvozuvypPIJgBCHxjhDCDbIZhMm/a93vKQb28I7oPh5tS4SA8f4xH1Q
+ DF8f4jd47DRQCLvsAxONfFpKvqjBk/voYjW02yljWfssblg5yXlCrKtP/mcAJnkRWtfRayJsKQs
+ vMyPBk+eO9M4DQZoA4EVgThV2/9LPf3bqU9TSOZQ5j/OsTksSexIbXVo9aC80BDfyEvBkUv5AHM
+ 1lQzlr5ZOhN7b1nV8Bc3nnD7a9Qc0p118sbmxjGk5ovAIZYphtsHxUaW8enkIDq/ljzG9C0Raul
+ U24pScs778VG69M4qRq+ftI6voEQ/9T3dyiELKOJUodJvvteISS/I1N9o3gVod+7Daft6QkBl12
+ mkP99TM42MUKhQps3TZpLLNlhbMRgq7yZpq0cijN2T7dt33iV7Y61bHCmJLAlEhb82r80+3JqQq
+ GqPcb1SB0QR0mNpqJLA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1011 impostorscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050047
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 943BE2000A
-X-Stat-Signature: tny81jjgo4uuahzmaxktqem955yc44br
+X-Rspamd-Queue-Id: 27F561C0006
+X-Stat-Signature: we9nirwdmoif3nsynwz978pcxzuzqutw
 X-Rspam-User: 
-X-HE-Tag: 1785911326-828760
-X-HE-Meta: U2FsdGVkX19ye6uhVa5KOS+aSBF2yrYdp9XQUjY/Pu97kvG1oaG44W+F4oQDC7aySRo4+kbT8LGlUS5cuGG1HOJajVtF6A+FEzxP3fuxYcUmi7FkqRKlRevx6NN949OrmiGJVqqNTRj7E/vMFwXtEFU3yAWeBTZmgx3xLI+xQ0D0HyXLYRiFtCr5puT6M830z32TgmgTgYJstFT2Sjvj/BSLoKOiUXraiJFD+dR30zfjbMlmtEg/NZgmye6XHe1KWplHr0K8fiq4g6Y9pta5w2tx1lOK9YUdWEMulnLbq1/uRi+WYM3G3h2cNCfLohWxMmpxLRd+AlXn1kBrGOJJBQVDH4T14Z/lxmUTrq4AkKSxyYvoVZjqH2Nh81UE/05ynb2R4Wf1qHoY12z/M3f8suV2AIaNrBwJ3gxl9VZvi9QQY6tuVnSFVx40PYK1/xfHHB30vfwMpxYyai35hzAaS9VXuCrGVoHUwWjWSdnmHZoxz+Eo157GomPJLtRnt1iz70fuQKslacpjCkw8WKvDUoRfcOD3ivsv1e1Qp0TpX5KB6BLp/o3SrS9UFuAPzHQ+vOZUUOkE3YPGWNEnYMt9Vna1QduMyJeGvJ8IfAbVJ0pyg9tH08WrOKHktGz57RXp0DSoX5dntt65SGnoFqQ6K1eCObDyZxPmenT/hkD4YvrWDXrsC7iIyyQDpTn5bTc6/rh/b4wbDWbv6fkJHmMgprPhcBEvzhFrLUBn4P0PYTu8UMPMfFH0tVj5Us3NEOeDO9rZ2SLLLQKwLeFubfXTh6Kr5fvSr2RzAkAl2NttuUi09zTcuXkpIBktL6dkrClRtDQzzNwIQf2L+LGCytLQcvUDGubwVR84gWXLOpUNTYdXldDFOk2pFZIrQspH1IRG/Xf0S0tBQy6cXQGkewkTg4s408cBaXnEC8umcLsyXMWxzjFc7Gjfn05wpRuDi4h6GfusUrCF+JfYJhTkhfo
- wQuaiQJM
- 3yNFzWIaHg+RTzw1cNDGLD4PA3G04Wocd9w/XjP+8Ll5HlAscAqtP/WfWDIxPD3XOQBNbyaRycDm3KGnmMArtg+0d6B5uBYLJwHSf3Bh1n++FTCoO48FsjmjwJOhsHUw3vgE2PhdDdD4VkKt+wirNYEfzcRpu7Ba9FnoTxKO0ZsHVknq7k3o9beWavpaDyZf1jf0sa876jYm4isual6t07WB4E/vHIZjjOv/QqzuHBK26c0SSiXLtqR/ZWSOJ85lhNT6WCHlhI2Q5Y60th3E4H6Jz5dOyQyVGZdp5XCkZ2yo9NTqlJ9Q6Eb6J50EOMW62Vzr8CnwB7lotyow11X38gfiJsMdIihGMNBOzcKiEUj6e6q2q3tXglzmFmhLl4fil2RDZ0lbhwAdvsh6Sd36aR8qdHl/j7iIY3oVG3gpMzU7YRgYPFBSEXTdl+Q==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785911335-88277
+X-HE-Meta: U2FsdGVkX18SoXxgDIr38HlvEhKP/RZ2s4RJEyeI5gLyAolm+EkeYODCehK+4/p0FuTx0Bhg24UoD4uquERQ1kjqLR98tOYY1rfxVJciLZU8UmMQlWeY5vwDHWCprkspkTVoij+OLJKfeJcMScxxlg1oH8l7nImsK3xw9rS+sX3ck6jdz8+/l2FymMCcp2KA5c22DzUgDFrIEdb92i42+kxx+kfdDUa0i5ONTH/txIQEs98VKDcKfCXtOXFcnMEK6eidtw34t3MHJin70hkKjrGVEQ1DmO1qd67YB4I8GZ3jfe1ZA6w0DAEl1YqBMiUnnLWlYlMByhXqwu9Vx+Lmw9tm7JUOJydkqs0AfsPWTdf/j4UyV+YgLDU6ChbuZWivByTZp7volWtvNjRPyqo0EzolzybrjatCZCHqsKLOdtPzwGPa+wKIafW5LgpKTGTI4ePIYh8pY1fMaitIw5tZkypX4idMHFkqzUAMW5xdpTrH9nkKFcIu0MQeb3Nch3OF/O6vCLHj8p5UWCWheTLvVDW71PLhDv/chSG9EHDJh/lGuHvBuShOK9rwsSrCD5LatQoEUe2sM7GLF3shYtn2RUEvxjY/cqHD1F95/cIasJuXF8xZTextFzY35uPsrkq9sKbSi1nG8bPyJ3hDz23CdoRhN67OMQjruOVfPM5/EfESVbt2haZfc+B7MBUPFmAurm8g+XcpuwzKSZXUAuULJ2yG7kHPG/Ctmdiw8TDsq2YrBekkEoEJYyPiU6K8SOyUH+r30mHygTS6zhKq218+BpU4rDNL7iQRGoZolisRLXOwf+AwjnZKkb56TAuvnwFEX0O1vgSYk29rh2O/bnJMwKVfrc+e5jr7BY74HPg9qWsbvP1OiIMf1z1VXwz0wiOZtNZxTuDk7FOH3dW9Y0pVtqmmlidH9U7Re3kIg5wlJxligTHiYv7hKEE31XUF6vTfBw5u8aS0+gWio22UDem
+ 6tJZvEay
+ +wp16hqEH9Z8d/LDNQu40b3NYDDrN7MkH97aCVuAuWGHZtZQIeiJgFN9+iYj3TmtoYX/VjkODniCOjDYXkIpnEzdmZdWiWfXxfAsSRakZVJwCb9GaqHK4Zsq/zWyEEspp/MjapQDePbRfJyPiCugtO5CfN1kgmE1MId16hjyQziu1RM/KjCqP19jX2B0xSQEUL8IUHFG+IGPUdAMZPPp7fr2bfVITWZiK7XuyKG1Gpr046AsfMHMYMSTOJQXV2L5ZXvsUfoNJWeMt7HZ+J1kEm+cwzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,83 +146,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new __folio_clear_dirty_for_io() helper which takes an extra
-parameter to indicate folio_mkclean() is needed. This is in preparation
-of buffered writethrough support where we already do folio_mkclean()
-before calling into this function.
+Add helper to revert back the iomap iter by count bytes. This will be
+used by upcoming RWF_WRITETHROUGH feature to revert the state of the
+iomap in case an error is encountered.
 
-Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Writethrough can process and park folios so that they can be batched
+together for IO later, this also advances the iomap iter. However if we
+encounter any error, we would want to cancel the IO on those processed
+folios. In this case, we want to revert the iter back so the upper
+layers can know how much we were actually able to write before failure.
+
 Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 ---
- mm/page-writeback.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ fs/iomap/iter.c       | 9 +++++++++
+ include/linux/iomap.h | 1 +
+ 2 files changed, 10 insertions(+)
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index e98748112d1e..3d184ca316a8 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2856,20 +2856,12 @@ void __folio_cancel_dirty(struct folio *folio)
- EXPORT_SYMBOL(__folio_cancel_dirty);
- 
- /*
-- * Clear a folio's dirty flag, while caring for dirty memory accounting.
-- * Returns true if the folio was previously dirty.
-- *
-- * This is for preparing to put the folio under writeout.  We leave
-- * the folio tagged as dirty in the xarray so that a concurrent
-- * write-for-sync can discover it via a PAGECACHE_TAG_DIRTY walk.
-- * The ->writepage implementation will run either folio_start_writeback()
-- * or folio_mark_dirty(), at which stage we bring the folio's dirty flag
-- * and xarray dirty tag back into sync.
-- *
-- * This incoherency between the folio's dirty flag and xarray tag is
-- * unfortunate, but it only exists while the folio is locked.
-+ * Internal helper to take care of clearing dirty bit on a folio in preparation
-+ * of an IO. For some cases we might not want to do mkclean, eg, if we've
-+ * already taken care of it, hence pass the should_mkclean flag to indicate if
-+ * its needed.
-  */
--bool folio_clear_dirty_for_io(struct folio *folio)
-+static bool __folio_clear_dirty_for_io(struct folio *folio, bool should_mkclean)
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 	bool ret = false;
-@@ -2906,7 +2898,7 @@ bool folio_clear_dirty_for_io(struct folio *folio)
- 		 * as a serialization point for all the different
- 		 * threads doing their things.
- 		 */
--		if (folio_mkclean(folio))
-+		if (should_mkclean && folio_mkclean(folio))
- 			folio_mark_dirty(folio);
- 		/*
- 		 * We carefully synchronise fault handlers against
-@@ -2931,6 +2923,25 @@ bool folio_clear_dirty_for_io(struct folio *folio)
- 	}
- 	return folio_test_clear_dirty(folio);
+diff --git a/fs/iomap/iter.c b/fs/iomap/iter.c
+index c445a38b6285..8ea849e7ccef 100644
+--- a/fs/iomap/iter.c
++++ b/fs/iomap/iter.c
+@@ -32,6 +32,15 @@ int iomap_iter_advance(struct iomap_iter *iter, u64 count)
+ 	return 0;
  }
-+
-+/*
-+ * Clear a folio's dirty flag, while caring for dirty memory accounting.
-+ * Returns true if the folio was previously dirty.
-+ *
-+ * This is for preparing to put the folio under writeout.  We leave
-+ * the folio tagged as dirty in the xarray so that a concurrent
-+ * write-for-sync can discover it via a PAGECACHE_TAG_DIRTY walk.
-+ * The ->writepage implementation will run either folio_start_writeback()
-+ * or folio_mark_dirty(), at which stage we bring the folio's dirty flag
-+ * and xarray dirty tag back into sync.
-+ *
-+ * This incoherency between the folio's dirty flag and xarray tag is
-+ * unfortunate, but it only exists while the folio is locked.
-+ */
-+bool folio_clear_dirty_for_io(struct folio *folio)
-+{
-+	return __folio_clear_dirty_for_io(folio, true);
-+}
- EXPORT_SYMBOL(folio_clear_dirty_for_io);
  
- static void wb_inode_writeback_start(struct bdi_writeback *wb)
++int iomap_iter_revert(struct iomap_iter *iter, u64 count)
++{
++	if (WARN_ON_ONCE(count > iter->pos))
++		return -EIO;
++	iter->pos -= count;
++	iter->len += count;
++	return 0;
++}
++
+ static inline void iomap_iter_done(struct iomap_iter *iter)
+ {
+ 	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 8c754eb974fb..1c8f13948f81 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -275,6 +275,7 @@ struct iomap_iter {
+ 
+ int iomap_iter(struct iomap_iter *iter, const struct iomap_ops *ops);
+ int iomap_iter_advance(struct iomap_iter *iter, u64 count);
++int iomap_iter_revert(struct iomap_iter *iter, u64 count);
+ 
+ /**
+  * iomap_length_trim - trimmed length of the current iomap iteration
 -- 
 2.55.0
 
