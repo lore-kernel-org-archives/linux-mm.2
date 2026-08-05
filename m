@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CB6C55838
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 00:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F9DC55184
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 00:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D49616B007B; Tue,  4 Aug 2026 20:55:55 -0400 (EDT)
+	id EFE0C6B008A; Tue,  4 Aug 2026 20:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9FC6B0088; Tue,  4 Aug 2026 20:55:55 -0400 (EDT)
+	id ED6006B0092; Tue,  4 Aug 2026 20:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C10886B008A; Tue,  4 Aug 2026 20:55:55 -0400 (EDT)
+	id DEBCB6B0093; Tue,  4 Aug 2026 20:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 979A36B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:55:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2899A1202D2
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:55:55 +0000 (UTC)
-X-FDA: 85065398670.04.0E8E571
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8D32318000C
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:55:53 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hpc0r50a;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785891353;
-	b=XlLx5YghVeYd38kLZRLNqedbTJQDtQEzy9kBoG3A8TK9tJku4b8IEoTwrrEG8jGcuJM1yY
-	6nsXdGqcK5Rtv+YEgGdg5M+X5mfEx4/hfE9fh636QDigK/DWdlzn2xeTlh/dVcB7tdl67L
-	0wy/3N52uYjv6gee7rMCqTyNAQqdG98=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hpc0r50a;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B09056B008A
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:58:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3461FC031D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:58:56 +0000 (UTC)
+X-FDA: 85065406272.02.7FB8771
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DDFB34000E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:58:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UKD+o0Q9;
+	spf=pass (imf17.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785891353;
+	s=arc-20220608; t=1785891534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jU/YPH5ZMaDPonl6evfZrzgqXu89q45sAG6O5iVL8RQ=;
-	b=SZcwUWnTpyrOoaOllAneWwUBXwsl4uxmyJHw59ThWXSzfJRxrkJiQoMlUp8X/7JkosCQcg
-	uQtrfL01bgNB0vnB6DL2hNNY6NVZC63o6IPDy3vTksjh5AocOWQAXZDiRgZTC63bo6v8Hx
-	gmeoH07CXQMNeiPrxdvKPVAXuQd8fsQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B132040255;
-	Wed,  5 Aug 2026 00:55:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E53D1F000E9;
-	Wed,  5 Aug 2026 00:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785891352;
-	bh=jU/YPH5ZMaDPonl6evfZrzgqXu89q45sAG6O5iVL8RQ=;
-	h=From:To:Cc:Subject:Date;
-	b=Hpc0r50aMBHL5TJU8j0igr0yS+FvqaKEFtczekYlw7K7m0O1bycocxw5TADDCGJ9D
-	 GAcrGsExTsbOuxfacAeYZgAzKXMSMbYtQqY/GMiwVZ5SigbO8q/B+wjnYkkkmq4IQD
-	 X5b1rvnUjlQoFEm2JU0EFcSmvWhVN/h9PHuhVNjE4H6euBTBZaM/L1a6takguv1sIp
-	 0AegsKDqDELMxFVNSoApeC/z19ntaK1pscIztmGQpMbIuNqAJFNLlBz9KGnTVWnZ2E
-	 j+2pY836pn/wRGmie4Rnh/480+3n7CtjQV1UzuDtPhzDVjeVMRXBfxOsDojdw8nk7k
-	 +uPl1B8bPmChA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: senozhatsky@chromium.org,
-	akpm@linux-foundation.org
-Cc: bigeasy@linutronix.de,
-	hdanton@sina.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	minchan@kernel.org,
-	ryncsn@gmail.com,
-	yosry.ahmed@linux.dev,
-	surenb@google.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Dongdong Zhang <zhangdongdong5@xiaomi.com>
-Subject: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
-Date: Wed,  5 Aug 2026 08:55:45 +0800
-Message-Id: <20260805005545.66112-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kXCZx29YWK0KuSZTNZlcIo3NjcMPu1Ep/GSGxvMq9+g=;
+	b=jq+c0IvjaAVtHHuCS0aD6G9Q9YzdhRc0difDAtdhpG3SkCAT6PLU011E7v+BTL4+8v3Yyh
+	USMLBugMf0AFXOFFQ/UPkuZye5ClY5CqxjL0YGlOTWRz0UyxrX82bCd6pQKo2815V6qQdR
+	HyGZhU6a/KsvUGwAgWiXnW45DZeB0sU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785891534;
+	b=anTcW/xtNThDZXRuS56+hxODhuznab8fxbH6gy82myzdNiRrJ7j6b32eD4A/n9V4zileAY
+	TsDrfocaXMnev1APN2ih1eZyNRfS78YOhPecVDob3lV3Mb0VCDsutPD+CMD2EZSPpICoTI
+	MXIBQIyeOONx66BGlbcsyiZTX1nVrWs=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UKD+o0Q9;
+	spf=pass (imf17.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <a340d525-5713-4cf4-b88c-77773ae349d7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785891530;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kXCZx29YWK0KuSZTNZlcIo3NjcMPu1Ep/GSGxvMq9+g=;
+	b=UKD+o0Q9O0GP/b1+xVPt8DW6AJyHnKdGgtR0kNlepREPLrvPQUsgmz6uhTn2BgsnwwgsW7
+	6FERSa+9CQu0aEvQy/RHASDL9rD1MgLiRdBkudQn0F5tsVVNDL9YEXbEVMFS961KB/SsYE
+	mzNcNjONJWNh0bFcrOTll82xxRN0PX0=
+Date: Wed, 5 Aug 2026 08:58:09 +0800
 MIME-Version: 1.0
+Cc: cui.tao@linux.dev, Yu Kuai <yukuai@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josef Bacik <josef@toxicpanda.com>, Coly Li <colyli@fygo.io>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Alasdair Kergon
+ <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+ Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
+ Dan Williams <djbw@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ Andreas Gruenbacher <agruenba@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Nilay Shroff <nilay@linux.ibm.com>,
+ cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
+ linux-raid@vger.kernel.org, nvdimm@lists.linux.dev,
+ virtualization@lists.linux.dev, gfs2@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
+To: yukuai@fygo.io, Christoph Hellwig <hch@lst.de>
+References: <20260804065313.2092022-1-yukuai@kernel.org>
+ <20260804065313.2092022-3-yukuai@kernel.org>
+ <a677f581-344b-4d99-846d-a00801e26033@linux.dev>
+ <20260804133208.GB8078@lst.de> <0fc5dd22-7a8d-43f0-8555-d2ca966efff6@fygo.io>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <0fc5dd22-7a8d-43f0-8555-d2ca966efff6@fygo.io>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8D32318000C
-X-Stat-Signature: ohnz53t1ncs5gz8nzomyiw3kp9kj89kh
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1785891353-504166
-X-HE-Meta: U2FsdGVkX1+oGQ2afZFJPNI/OavrUs/RaWr2dnakYb7Q6CNDsGGd+AIn2ibfgvemmrRav9C81seUaBr6JDlxvzmp2IQYjQmBgdUGJs6HJUeTRbTY7fmnt7DlGM6XCALbpst+xzKG3pjv2hQEQGcsb24uxa54CO6DfagDGJA5ObdYEYo8qzpQArcaM88pGz38RopqFGvXIJrRpN1jk3E6iB1nvVwiKqErBCQ2NHB69xP2vbkoLm+LFhCLb+rYfymaLdb1p12wLf4U6iRAcWjpwMu9kZETpDmoaw1ZvHhBNhdxdlP/To0XlC5ahZSxLlB1DnO8z9IG/xS8y0AyQ5HbDaq6hhrGWFjdwSIT1hunrXTFXDzd/QEPuGxKGKErf1iqadm6BhE6MbLwVxehmry/VZuHpC2A9F3MT5BVB09ZvANir31+0QujxF2UMTNnDKcTUvgitBamcLk3bgVafmfqkR8u9fpTGxFJl+4p7fSZ1MjNYYVz6u2/CtVCtMG+K+YN2AJhPWkYf6lgAHpaSzqBt++CPBZVc2Qp8qyHwrhpQ7XhpaVclnzZ42qu7vK5BZYsFvxmuzy13kDzljPNWl0gBB2Z6VTYRZfrxSr72aFaOJnHIHADHDqMmAPMorZYJWFbgq6IeruUsSsj9bBWLvrNKaKMIAGGMi4Gb0Zf0FoE9iFwsW/smnwl1ZiAsrJkHq8FUJzATFunWtU2KHmZpylrxybfE4x8Jc7u4weP5New567yLJhqTl7CEVu+F17ptT+xqZ0yniwlPi7ZQhj8sQ4AWw5VK/ubuQk4PgetbYCxRY6AgC32InZwKSGIn9ItLO7E4OhGh/r2xawE32CopB4AjkZjZtWiAkPaXzVbw5h+H9VmDEfKqwV6d0ns5vjMRnl5k2IM6W7WZLQTlYi3H/XANKjkIFE4Ta6W5jT4e74Q+gJGzKt1qXHYFmvPOFZ7cLGHbRLPEyvXPWmQQtV1VMu
- 67jj2TQ4
- aKmXUnj9Hri173pMDPIR96oMWpWNVmnYbw4T0dI/quYU+6J+R2lmlIQ6YKb4iRflVVg5l/tMBRhzbfzkvIA3HRCg9lni/PTSJs47PbBZSbLj9HIIY46J9/qWv6pZ7U7moA1+LxZoiED80dkxXBMDweQWGTVk/0Tt+gA5fh2C+8LxXj7NhY/PrBm3wOXFr+xBiMYVmshg8mMRfDJqFJysBmqBsdiPkTbZztTUF6T2ITlh/iFmpNbyf+dLKWnzgEvTZx6ik
+X-Stat-Signature: wiwhboecze6n9k143xnw3ch7wqk19peo
+X-Rspamd-Queue-Id: DDFB34000E
+X-HE-Tag: 1785891533-370780
+X-HE-Meta: U2FsdGVkX1+v+PUKCQpuwFkyf6ERuSZUgWXufBW6t2R1w9uQB3IcDHixGn7hB7aW0mtMmsHuMiP9AX8fB8mw8LHfhkiX2ZzrVQ+upANiNg2op2xpnEMy6GgdOiz6J+QxpwJMCebgyprnhzbkjrjZzrAa0hQD2IJxRuNwa9z2vNRLA8cty/itzzcV7xPPniOhIRBV6SIF2ivzQzG+kVcy1DKdahKDVXrYfKL6Y0Fq1rV+Pn8QCZ3rO52LeWqdQUqVGMnPRxcMycclzFC2ma6lywaVMSsxwSEx3THaHDcL3KxfXi6+mfg//RPz+r/rBnGkzo2HpKswcYY6eGmKTZ7HlhFrLdhsdIbgpI/kjas6rKSSUQLGceHY6/oYmODKGTMD5/OHp2UzM7vzJQLJVnysyHrbF1E7noGRj1i9ej73G+IO1nqLCin8fip/E4E6Y1R5p+YeOTDhh23hLmq4INYqe5ZmFoSm5gud0muiM6yJdfVFSxMSAbMA6qVesG71Xp2uxiHJpD8UOe90d64/Vih+ANflHbYi6vA1tSwvToGrMhpirvEaUEqiPB2P7PBkEVNyr5z4430KtM05FvxQfLfERukNNrWY87itRwHpyZUUZ4FxUF0zWP/gtF75zxjpsvRpDeY9p+23QYkf8aCjTnX64NLvDGevJLhZnNyyG72nMFRWR8rnXzwIITezwY5HpmS3YCoqObiXFFUe4fLKljJPdGAY+SkMDFHKz947fre2++89c96P+a8QzvUtXBFyOuPzkDN0HnUykIafIl+nyr39ApOKSpCH1Q5qpt4qGtK2DDe6TBMpD54Uav/K0omU/YehXWOr2KncY2MJINlRVT1ZgN1zybfJbkNJ7xJUmWlg5JcLjfUF+3LH5iRrVyIdx/+eR97B57oInRjEmpn3ayxDPGtWVl0fZqW8OQp7pTA6oZ47rGDxZ3bZdqrdQ1rlmn/k43mVUFW8g09N0Orh57h
+ qDpcILKT
+ 7o5zk1zG8/2H3x6n28LY3SbFGeQW1aK9VW6bzbLl2yPxBQQLJRk/r3EBuMLzIfMfNZPkY6/8XmMyCTnEmVZNMCyqNhWAuETJ251UkdZNRu1Za6cBO+we79Wh7A9+o26fTTCQOQj+Mbxj0oFykb9MGnmH1oj80vi+UGPbDr5ybVQHv/IfId4htI71NorgwinIltwJgPEVMgbIwMUdHxgIxgZp6Qni6j9W5/JfQVfnYlj+vksi3RXdnxGvJW+kjVatxbg7OmzpzAlnBuecQLdTf/qqajQpcoGYp0mm6pzgDh8AeZ62O4YJpDee5UQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,306 +112,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 2efa9e9eb4db ("zram: permit preemption with active
-compression stream"), a major Android regression has been reported.
 
-The reason is that compression/decompression is now sleepable and
-preemptible. This means a stream may be migrated to another CPU or
-be preempted while holding the stream mutex. As a result, high
-priority UI threads may get stuck waiting for the mutex during swap-in.
+Hi Kuai,Christoph,
+在 2026/8/4 23:30, yu kuai 写道:
+> Hi,
+> 
+> 在 2026/8/4 21:32, Christoph Hellwig 写道:
+>> On Tue, Aug 04, 2026 at 05:19:24PM +0800, Tao Cui wrote:
+>>> While reading 2/3, one spot in bio_pinned_blkg() made me wonder, so I
+>>> gave it a try — and the WARN_ON_ONCE triggers every time for me.
+>>>
+>>> I may well be missing something, but my worry is that the bio's ref on
+>>> the blkg keeps the object alive, not its entry in the radix tree.
+>>> blkg_destroy() runs throtl_pd_offline (which only schedules an async
+>>> flush) before radix_tree_delete(), so the queued bio ends up dispatched
+>>> (blk_throtl_dispatch_work_fn -> blk_cgroup_bio_start ->
+>>> bio_pinned_blkg) after the blkg is already gone from the tree, and
+>>> blkg_lookup() returns NULL.
+>>>
+>>> I applied the series and wrote a small reproducer:
+>>>
+>>>    - null_blk, cgroup v2, a child cgroup with io.max rbps=4096;
+>>>    - a read issued in the child cgroup gets throttled and queued, pinning
+>>>      the blkg;
+>>>    - migrate the reader out and rmdir the cgroup; the queued bio is then
+>>>      flushed after the blkg has left the tree.
+>> Can you add this to blktests?
+>>
 
-The worst case is when a stream is migrated from a big core to a
-little core. On the little core, the stream can be repeatedly
-preempted by other threads, while a high priority task running on a
-big core is blocked waiting for the mutex to perform decompression
-and swap-in.
+yes, I'll turn the reproducer into a blktests case and send
+it out. 
 
-We add an async flag (currently false for almost all backends) to
-indicate whether a backend is asynchronous. For synchronous
-backends, we use preempt_disable() in the !PREEMPT_RT case. A
-zram_zs_malloc() wrapper is provided to support a two-stage
-zs_malloc() path, allowing allocation to transition from a
-non-sleepable context to a sleepable context.
+>>> Maybe keeping the pinned blkg pointer in the bio would sidestep this, so
+>>> the lookup can't miss?
+> 
+> The problem here is that blkg_destroy can be called while blkg is still pinned
+> by blkg_get, in this case remove the cgroup directly remove the blkg from radix
+> tree, that's why blkg_lookup can't find this blkg anymore, and the extra blkg ref
+> is leaked :(
+> 
+>> That would grow the bio, which we try hard to avoid.  I think the way to
+>> avoid this is to have active/passive refcounts on the blkg, where an
+>> active one keeps it in the radix tree, but a 0 passive one would prevent
+>> the caller from getting a new reference to it.  The users who rely on the
+>> pin for the I/O completion path would then just keep the active reference
+>> and use a pure lookup without getting a new passive reference in the
+>> completion path.  This would remove the need for BIO_BLKG_REF which
+>> feels a bit kludgy and eats up precious bio flag space.
+> 
+> The problem here is that remove a cgroup can also remove the blkg from radix tree,
+> even through it still has active refcounts. I think this can be fixed by checking
+> the cgroup online_pin first, if it's zero, we can search the blkg from the
+> request_queue blkg list, where blkg will not be removed until blkg_free_workfn().
+> What's better, if we can convert the blkg list to hash table with key as blk-cgroup,
+> it will be much better as we can lookup from this table instead of blkcg radix tree.
+> 
 
-Fixes: 2efa9e9eb4db ("zram: permit preemption with active compression stream")
-Reported-by: Dongdong Zhang <zhangdongdong5@xiaomi.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- drivers/block/zram/zcomp.c    | 14 ++++--
- drivers/block/zram/zcomp.h    |  3 +-
- drivers/block/zram/zram_drv.c | 87 +++++++++++++++++++----------------
- 3 files changed, 61 insertions(+), 43 deletions(-)
+Both of your approaches go further than my store-the-pointer idea;
+looking forward to the next version.
 
-diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index 974c4691887e..dd4db4a8af73 100644
---- a/drivers/block/zram/zcomp.c
-+++ b/drivers/block/zram/zcomp.c
-@@ -128,14 +128,20 @@ struct zcomp_strm *zcomp_stream_get(struct zcomp *comp)
- 		 * so then unlock and re-try on the current CPU.
- 		 */
- 		mutex_lock(&zstrm->lock);
-+		if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
-+			preempt_disable();
- 		if (likely(zstrm->buffer))
- 			return zstrm;
- 		mutex_unlock(&zstrm->lock);
- 	}
- }
- 
--void zcomp_stream_put(struct zcomp_strm *zstrm)
-+void zcomp_stream_put(struct zcomp *comp)
- {
-+	struct zcomp_strm *zstrm = raw_cpu_ptr(comp->stream);
-+
-+	if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_enable();
- 	mutex_unlock(&zstrm->lock);
- }
- 
-@@ -150,7 +156,8 @@ int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
- 	};
- 	int ret;
- 
--	might_sleep();
-+	if (comp->ops->async)
-+		might_sleep();
- 	ret = comp->ops->compress(comp->params, &zstrm->ctx, &req);
- 	if (!ret)
- 		*dst_len = req.dst_len;
-@@ -167,7 +174,8 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_strm *zstrm,
- 		.dst_len = PAGE_SIZE,
- 	};
- 
--	might_sleep();
-+	if (comp->ops->async)
-+		might_sleep();
- 	return comp->ops->decompress(comp->params, &zstrm->ctx, &req);
- }
- 
-diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index 81a0f3f6ff48..5293d638da8f 100644
---- a/drivers/block/zram/zcomp.h
-+++ b/drivers/block/zram/zcomp.h
-@@ -67,6 +67,7 @@ struct zcomp_ops {
- 	void (*release_params)(struct zcomp_params *params);
- 
- 	const char *name;
-+	bool async;
- };
- 
- /* dynamic per-device compression frontend */
-@@ -86,7 +87,7 @@ struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
- void zcomp_destroy(struct zcomp *comp);
- 
- struct zcomp_strm *zcomp_stream_get(struct zcomp *comp);
--void zcomp_stream_put(struct zcomp_strm *zstrm);
-+void zcomp_stream_put(struct zcomp *comp);
- 
- int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
- 		   const void *src, unsigned int *dst_len);
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index cfa98846ac48..52b9fbe3e0d1 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1364,7 +1364,7 @@ static int decompress_bdev_page(struct zram *zram, struct page *page, u32 index)
- 	if (!ret)
- 		copy_page(src, zstrm->local_copy);
- 	kunmap_local(src);
--	zcomp_stream_put(zstrm);
-+	zcomp_stream_put(zram->comps[prio]);
- 	slot_unlock(zram, index);
- 
- 	return ret;
-@@ -2098,7 +2098,7 @@ static int read_compressed_page(struct zram *zram, struct page *page, u32 index)
- 	ret = zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
- 	kunmap_local(dst);
- 	zs_obj_read_end(zram->mem_pool, handle, size, src);
--	zcomp_stream_put(zstrm);
-+	zcomp_stream_put(zram->comps[prio]);
- 
- 	return ret;
- }
-@@ -2124,7 +2124,7 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
- 				zstrm->local_copy);
- 	memcpy_to_page(page, 0, src, size);
- 	zs_obj_read_end(zram->mem_pool, handle, size, src);
--	zcomp_stream_put(zstrm);
-+	zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
- 
- 	memzero_page(page, size, PAGE_SIZE - size);
- 
-@@ -2218,20 +2218,40 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
- 	return 0;
- }
- 
-+/*
-+ * try non-sleepable allocation for !async backend, then try
-+ * sleepable allocation; for async backend, we always begin
-+ * from sleepable allocation
-+ */
-+static unsigned long zram_zs_malloc(struct zram *zram, size_t comp_len,
-+		bool async, const int nid)
-+{
-+	unsigned long handle;
-+
-+	if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		handle = zs_malloc(zram->mem_pool, comp_len,
-+				__GFP_KSWAPD_RECLAIM | __GFP_NOWARN |
-+				__GFP_HIGHMEM | __GFP_MOVABLE, nid);
-+		if (!IS_ERR_VALUE(handle))
-+			return handle;
-+		preempt_enable();
-+	}
-+
-+	handle = zs_malloc(zram->mem_pool, comp_len,
-+			   GFP_NOIO | __GFP_NOWARN |
-+			   __GFP_HIGHMEM | __GFP_MOVABLE, nid);
-+	if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_disable();
-+	return handle;
-+}
-+
- static int write_incompressible_page(struct zram *zram, struct page *page,
--				     u32 index)
-+				     u32 index, bool async)
- {
- 	unsigned long handle;
- 	void *src;
- 
--	/*
--	 * This function is called from preemptible context so we don't need
--	 * to do optimistic and fallback to pessimistic handle allocation,
--	 * like we do for compressible pages.
--	 */
--	handle = zs_malloc(zram->mem_pool, PAGE_SIZE,
--			   GFP_NOIO | __GFP_NOWARN |
--			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-+	handle = zram_zs_malloc(zram, PAGE_SIZE, async, page_to_nid(page));
- 	if (IS_ERR_VALUE(handle))
- 		return PTR_ERR((void *)handle);
- 
-@@ -2268,6 +2288,7 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	struct zcomp_strm *zstrm;
- 	unsigned long element;
- 	bool same_filled;
-+	bool async;
- 
- 	mem = kmap_local_page(page);
- 	same_filled = page_same_filled(mem, &element);
-@@ -2275,6 +2296,7 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	if (same_filled)
- 		return write_same_filled_page(zram, element, index);
- 
-+	async = zram->comps[ZRAM_PRIMARY_COMP]->ops->async;
- 	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
- 	mem = kmap_local_page(page);
- 	ret = zcomp_compress(zram->comps[ZRAM_PRIMARY_COMP], zstrm,
-@@ -2282,32 +2304,30 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	kunmap_local(mem);
- 
- 	if (unlikely(ret)) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
- 		pr_err("Compression failed! err=%d\n", ret);
- 		return ret;
- 	}
- 
- 	if (comp_len >= huge_class_size) {
--		zcomp_stream_put(zstrm);
--		return write_incompressible_page(zram, page, index);
-+		zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
-+		return write_incompressible_page(zram, page, index, async);
- 	}
- 
--	handle = zs_malloc(zram->mem_pool, comp_len,
--			   GFP_NOIO | __GFP_NOWARN |
--			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-+	handle = zram_zs_malloc(zram, comp_len, async, page_to_nid(page));
- 	if (IS_ERR_VALUE(handle)) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
- 		return PTR_ERR((void *)handle);
- 	}
- 
- 	if (!zram_can_store_page(zram)) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
- 		zs_free(zram->mem_pool, handle);
- 		return -ENOMEM;
- 	}
- 
- 	zs_obj_write(zram->mem_pool, handle, zstrm->buffer, comp_len);
--	zcomp_stream_put(zstrm);
-+	zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
- 
- 	slot_lock(zram, index);
- 	slot_free(zram, index);
-@@ -2423,6 +2443,7 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	unsigned int class_index_old;
- 	unsigned int class_index_new;
- 	void *src;
-+	bool async;
- 	int ret = 0;
- 
- 	handle_old = get_slot_handle(zram, index);
-@@ -2447,6 +2468,7 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	 */
- 	clear_slot_flag(zram, index, ZRAM_IDLE);
- 
-+	async = zram->comps[prio]->ops->async;
- 	zstrm = zcomp_stream_get(zram->comps[prio]);
- 	src = kmap_local_page(page);
- 	ret = zcomp_compress(zram->comps[prio], zstrm, src, &comp_len_new);
-@@ -2462,7 +2484,7 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 		*num_recomp_pages -= 1;
- 
- 	if (ret) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[prio]);
- 		return ret;
- 	}
- 
-@@ -2471,7 +2493,7 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 
- 	if (class_index_new >= class_index_old ||
- 	    (threshold && comp_len_new >= threshold)) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[prio]);
- 
- 		/*
- 		 * Secondary algorithms failed to re-compress the page
-@@ -2485,27 +2507,14 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 		return 0;
- 	}
- 
--	/*
--	 * We are holding per-CPU stream mutex and entry lock so better
--	 * avoid direct reclaim.  Allocation error is not fatal since
--	 * we still have the old object in the mem_pool.
--	 *
--	 * XXX: technically, the node we really want here is the node that
--	 * holds the original compressed data. But that would require us to
--	 * modify zsmalloc API to return this information. For now, we will
--	 * make do with the node of the page allocated for recompression.
--	 */
--	handle_new = zs_malloc(zram->mem_pool, comp_len_new,
--			       GFP_NOIO | __GFP_NOWARN |
--			       __GFP_HIGHMEM | __GFP_MOVABLE,
--			       page_to_nid(page));
-+	handle_new = zram_zs_malloc(zram, comp_len_new, async, page_to_nid(page));
- 	if (IS_ERR_VALUE(handle_new)) {
--		zcomp_stream_put(zstrm);
-+		zcomp_stream_put(zram->comps[prio]);
- 		return PTR_ERR((void *)handle_new);
- 	}
- 
- 	zs_obj_write(zram->mem_pool, handle_new, zstrm->buffer, comp_len_new);
--	zcomp_stream_put(zstrm);
-+	zcomp_stream_put(zram->comps[prio]);
- 
- 	slot_free(zram, index);
- 	set_slot_handle(zram, index, handle_new);
--- 
-2.39.3 (Apple Git-146)
+Thanks,
+Tao
+
+>>
 
 
