@@ -4,129 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EE02C561E6
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED583C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:04:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 629876B007B; Wed,  5 Aug 2026 02:03:05 -0400 (EDT)
+	id 198FD6B008A; Wed,  5 Aug 2026 02:04:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B3BC6B008A; Wed,  5 Aug 2026 02:03:05 -0400 (EDT)
+	id 148D56B0092; Wed,  5 Aug 2026 02:04:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 407BD6B0092; Wed,  5 Aug 2026 02:03:05 -0400 (EDT)
+	id 038466B0093; Wed,  5 Aug 2026 02:04:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08D866B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:03:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83F8B1C0BB1
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:03:04 +0000 (UTC)
-X-FDA: 85066172688.25.D63948A
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3D9310000D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:03:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JeCaAgp5;
-	spf=pass (imf14.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D1BF86B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:04:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53EFCC0372
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:04:12 +0000 (UTC)
+X-FDA: 85066175544.05.D67409E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8F22F40008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:04:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvoOOyBk;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785909782;
+	s=arc-20220608; t=1785909850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYGJAHMfaG43a10+DAahsWI+BDlKwBdKnhIOAj6soTQ=;
-	b=Dyv9qwWhRojTXYyxotKaInTopXsasegLLJMTSK/Q2FVWTdXsYLeztKeMwLx16k1R2HhB+y
-	SGgDB+tId/WPOFA+TnYqyaFAPO71tK+dbnTuDbc75UPeqcD9UxjRAuNCZhmkws4vUPOiLQ
-	saaX9fmxAIwGIils68o00J5qdAT9etk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JeCaAgp5;
-	spf=pass (imf14.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=1V6xsKbzv4Oc8g71CDUBCGBJx1R/W2/HokkoKbrrkd4=;
+	b=wDb9VjvI5H6hRMw9NXB1i1GqVv0tB7xGLUD1lWDtc/lDLNVI4Tg9lYWl425r1itpTMDGlA
+	rKvDy0AlnKTVjugWG9JBctVBLIHliji5F/UFJgV4otdynGaaD5vip3jZ/n39E6Ah5YGqwm
+	JbZaMn1J9GK0CoSpm00CCxUtJBoR/hw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785909782;
-	b=8Y8gGdJuFf7xGh6aF52iKgQatVmlq11vMueI64wawphekvtYkjwcZoNqLVoHYW34qzY0fG
-	yk8xTxBobovTqrGeobNIwb1/km12t45Ij89Dsvm77xac3+KLT3/YEQNwabjJTkEJqr1efL
-	J6Iqmumi25NmZwzjmRhGio+ZWp3xQL0=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab97c86bdso59635ad.1
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 23:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785909781; x=1786514581; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kYGJAHMfaG43a10+DAahsWI+BDlKwBdKnhIOAj6soTQ=;
-        b=JeCaAgp5Vms7oLRxX/pknhXM0v0pfpt6k+43oH1UreFOnhNsihl50XzXP+W0Dcx7bk
-         +Nz6E4NkuWploLF0pHa/iWRTJCd3nldQ0WQtQthPEiGuzy8gcZnX+RiYU4HCzJIkEhsj
-         LbVrWfeKP/4tme514UHr7UwCbUcKPtyM79d4DuvFzT4y5bKS9t0SHQuP/rpCPtwEYFMi
-         w/1t7Wl+r4t3GCZqb4YKaa+PRw0OvKVfiCNvqYjL7OvYLu0gTZPv79eFw9LM2H1MKnpi
-         /b9/s2BvvYAZGif4Hh92hva/FPPCq88S8GJ13ZlJpUmidDZJpo3W1GrwHIyDDwl3Shf3
-         HPeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785909781; x=1786514581;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kYGJAHMfaG43a10+DAahsWI+BDlKwBdKnhIOAj6soTQ=;
-        b=UhmOP2iiOUgziihwGV9p8HrnezWkApUDlTFUDBvKV4ULdHRDajndrE9TjwGtfPCwzw
-         t2aR6hYrzx0nirw29YBpGaGuh3AYUntYhvEGw+IAbeToHRc4KpmgXcmlMKbA1J9l2o87
-         AmKg6SLp6Wv3an6kGgd2DyPdlTjeeHBBXx0ICSGrpkHuMrGpXBd2x1arSg2wuh/CRHMS
-         2U/9BqOeiSITTPRerLw8SaF5yPYf7/zgSYD4uCciLZxGDnl+uHMrlNyK8ek9rp5YMx4/
-         x8Gh5nuxjvKQlyMgAtpnUw/oK5ItKXgnY9BxZPRPa+rd8RTYpuCmkm7W4PgnyodZ9JMQ
-         0Wog==
-X-Forwarded-Encrypted: i=1; AHgh+RqtEu8vdv0cIap3TruSe4c2RQJiuN46NbwufevysBeDMRxxxm0dUY0GtJPUbGDjk1tjJpszK0chAA==@kvack.org
-X-Gm-Message-State: AOJu0YwA5qltECqgzzSMbtX/b9DB0gKA4+sXREpg/repEZDTtO+7iqy7
-	aQeDNFSaCT2t/KAr40D+YzuMzNl0vnFhdBNY8abxzm4Iv+5Qfw1Um/5Q5tmvywhGRw==
-X-Gm-Gg: AR+sD11Fe4IjO1Igf8kes6g0R2NGBcLMw0zTWAJULbnjHBSeok3EK9Jr6mOIA3kxYOp
-	5lLMCXB1OO4FoMUKkXbYOJl0ZW2tgJ+X8mksFzyUCtsYibaC17TxlwaeKOuInvWTa4MWx5aC9e+
-	PsTXH/uDXt2t4rvfABTtI7mPfpK9NMhqIDdWFpXgd60WlZro2USsaphNMX/2q+cv4QsSdZfai2B
-	FpO/iRIVUG41S+rJTlB2l2g+Qg2brbPK4iL0hqh32/csyIfjiM7ecr1HiodC+JniSMwcWH46LvI
-	4zD+7XDDzfY0q6cbcpwm9xntZRv44uFA6mv5mhExsmS/wqUBzI6ptmNlTIwz9UTd/9K43tn7H+b
-	NLfIxSAbhTVZ1ECB0gAjHkVmPARI8feRbyAjdgXQfg2KPDFUS5XHzPNCnl6Vqtzvqwkl6fH7sbC
-	TKceVPI9qC5QcUN3qTL6HEvHhJhDg7FW2UnNwLIGoH+g8Nv+W4wUtklnFwr+dVG3i8M6D4+4/I3
-	fJiYb8+vPWcb+U3PmU+YPU=
-X-Received: by 2002:a17:902:ea0e:b0:2ce:b436:272a with SMTP id d9443c01a7336-2d0d0704d14mr5233675ad.3.1785909780734;
-        Tue, 04 Aug 2026 23:03:00 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38febfdae85sm3462574a91.3.2026.08.04.23.02.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 23:02:59 -0700 (PDT)
-Date: Tue, 4 Aug 2026 23:02:55 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
-	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
-	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
-Subject: Re: [PATCH v5 17/20] vfio: selftests: Add
- vfio_pci_liveupdate_kexec_test
-Message-ID: <20260805055042.GA806762.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260714151505.3466855-18-vipinsh@google.com>
- <0556e2fc-3be5-4023-a9a4-8482fa8c88b2@linux.dev>
+	t=1785909850;
+	b=SrLwo3NEjIRKlb2zzm5MKQxEO6vvu4WlSzHtBExiH7s6WoVvzi9ev/6So9UsAJ0b/gpPDh
+	IOXas1WYBgvpF5E0+0Z9/3ZKQhQKEFhgwmWxHBwwACMUDh06degVeuuKiGZ8MoOJTPtyWg
+	bXBLnK6hMs+UHw+h1O1IlBIzDpDORPc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvoOOyBk;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 45B05600B1;
+	Wed,  5 Aug 2026 06:04:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D481F000E9;
+	Wed,  5 Aug 2026 06:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785909849;
+	bh=1V6xsKbzv4Oc8g71CDUBCGBJx1R/W2/HokkoKbrrkd4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PvoOOyBk2rt8FR13TEdaLNbyQP1d2nEQVNOU4bNv4bcviSP0ehpl+/SnJuSGQZuRy
+	 UPSudhakGWGdCcplBvaKYUR6um2zE8cQGbt5SkLdDB+ovpLzgt9iYgfjy45qTSW7XF
+	 Q0c+94YoSmxJeEY0DdNIbvzDygYexdAhpWlvHQveFKOCkacZSQkuTwzOH6fz5DCnMa
+	 rIAojzMjaH1XC4DUpp1d/DdahzNQYrqi9NoskmZo3FWAxgnMA80v9+ioHTZbGzVpGz
+	 07pB/SGPHhmok+JGRWiMemvLc9upsYLhBm9ps3QSLA4syZOaLw1zpcB1tjzwPNvPF+
+	 v1pXBDINTDyXg==
+Message-ID: <5130d601-84b4-49c5-a9f7-454d54a7412e@kernel.org>
+Date: Wed, 5 Aug 2026 08:04:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0556e2fc-3be5-4023-a9a4-8482fa8c88b2@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fix incorrect flush address in direct page table reclaim
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: luto@kernel.org, linux-mm@kvack.org, luto@amacapital.net,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Liam Howlett
+ <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+References: <20260804003708.49830-1-luto@kernel.org>
+ <0adaae9e-7086-4213-811e-ba6e4181e145@kernel.org>
+ <CAHk-=wiO8NDCyBYrDMpjh8zMKnzgD2XuPYo0nk4Hwgq44R_jKg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAHk-=wiO8NDCyBYrDMpjh8zMKnzgD2XuPYo0nk4Hwgq44R_jKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8F22F40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A3D9310000D
-X-Stat-Signature: dc3mx35i6z1zx9m15pyqffswzrru383k
-X-HE-Tag: 1785909782-535634
-X-HE-Meta: U2FsdGVkX1+4TzHLbEqIdVL0D12COfVNxY7BupsS66pUe6B9sfK/CQ5InAqB8IYF3p3uzffws/0HA3hpJM3El8CFCgrhc6dSNABFuUby35mp6bR4np9WnLyLO6iF+rPYXwaR+R8RBDu6za2jHuTnbEhfFVL/21cUn8jh/l7P+ydH3XukzjmOAovvVrQkUbIZoGPiopGp9kXtI7sbnvdxRk6baEu4CgPq4LOMFUNrg10mBff9zI/rQTO6wyP0tmufmgRu/VbqqF8ugkXHBpOLtML61fYQhuwcnR0M3uowkY/yyuPZC5vr2p7OEVBXgsW0rbw0uYQdzngLPUVOwJWeFXL0BY4ET9Y9lCSrjiDK664GPJRw88W9ihKPDxrO7hxFirrc5ElxlcH0piHiKR9C/6+Ebjv65uuYwbL/MGXw/P3khFzNVBzKhLzZsPbRP2isiKYFItqRMQ98YcZhJWSHwivRIxZ1tY4OwLiZcl9kdOr5PpesN7K6oPXPZ4lfK4mqR6Dg82ODkZVriCVSZDqxQcjXsZh4ATTXwolZTUWxKPy4/18wQYFI5aqrGvTIS8EPWS4zAodXX8w7zDj72aPZTsKh/R55FREav0FXZCNwresu4RvBchD5C9q5UHmWQnYoZZPnYsEIsDKr9I8n6FItrw4nXXEQtV6BJrwYVf4Dcislqn4Vj3sjQzAKWfinjQ9lYGcfC7VmR6ITvL2Z9AFJrZEPWzW8uhp8rvQdvaUCtOV9ljCyNGXvGN1ZcDtXFESCRmg6MevJY7QNMZRpERgVJs+GMIBPmssMH57renNF/WVeW2kDNp2bC/FFJiEZLJepo3rDkYZUBtUPsEFHhP+K49zCXDKp6OIXDNVwuHRGmUPD94DaDgsJp88kxEu8HuzlM8od2Q7MuleydJat5w1hmJrbm77frGe9o6tJdXsOFbWH2r2prhKNDoIdsizgADs28/BNlcivNnh6VVDV5EK
- nrbWFaVU
- Glk9hm0nAItZmy0/X4gHkSYBw8+lDdO9kgzSGO9lnyX9dwcbybbdWSAt9ImxPfGOdObOybBl0vx7unnNQHYHHKKwC3YTuLHZzIkFqimBxPJzhfnO+Dj8WTsGp4JMFJi7MMQxZupB8puCrSz9SD8zc1tx2isOOA26oao4RsTchYo2gnrEzWNJD5TpaTiFgAoqL6pmZsgfjxMIT8Ee3UHoank6HKkzvG5CBJiuinTId6SAPTx9+OJU8JodyWgyxfDaZT4QV97Gin6RWQS/o7wpmgkKvn+x646CtPWf/yMCyKGHkmVaDCgz7DOr5CLEkj5vua4qv05CSpPQ00VwT9k98VVOpo4mZs0TZ6gnuXNdvPYvT+eayS0mc4biNGGJpfcUrulII73Lk8d1vf697b8xgvdEaXB7ro6pDhG/GbZrlmv0yRQzGsK0TkVhH0Q==
+X-Stat-Signature: kuhm9t7nqe7hx7jm8m467w9ftqrq813h
+X-HE-Tag: 1785909850-383217
+X-HE-Meta: U2FsdGVkX1+AewLLKjCYAy/ycSKxExrtnCz2TCHOj8PbKlJht1BKt3tYzNvG0bw+wRB0mQSMsUh/yu1rOvKOluSSFNUr7StsAcLB4ON0rTZ4Kryik2W6svIOpxmosWGcwtjwVYjcCPCcCkSA0T/P5OGLo17WKoJSeHIuFbgLtfcgRiGKPyPJITtY/XsCQRnsazxM8KopML6RWKTacal7YJkpa5IrdIyoj1YrYpIFfBWgdwNOOWt5zqZrh33CayFz79k5RUIutqpbq8M3F+qWvWbwHsxya0UDx7F6Dty/87EBITBKtYmd6DBsN+scy8vgzDA5TFAxMONpsCOqFSYFGMhaeEm6Bc6d+l40klNa2nSXXLb7X6CLlCe/QwORXrhli2aqC6u8o7PO+F+gUy3c3KiB7Opp7+22tmDI8iSCDwW3S+t1eRo0P0RW+ExQUYEI3Oe4D5Iv7KCyCAlMKtehur5uMIcmYAnGU38chgsdoDh7B7UUlnpu/NpkY4Fyuo/tOc2NunlCSiuAuRvZtUV7NJ1LgFNoab5gI7yInVHdxg6S71Aeuq9Orl7UvKwLPnOU974c2HlnyrAhuOQ53SOySFAHejn37QiPQ92pQ7/AgYII9650vo800iWjvhZ1X78AxITbRAaK+L5xFOUhr9w3ZlgRgs6/fAipoFdhqF6woGdSJkjLbMFpBrdp11qjspLwiEVMU1gKDFvzDl7bGnxFpxOtZ8O/QBF/zIPTY8VzUEorOjzU/4q5IwYlSCsPsjQP/LUcH0Drf2NpuFVvwaB4Q9yAuvKAO3C/QJT3Z1ZrJ+SI6sM03uijc7d1f5crPIAAMHrWuvFYLr3D0wlHmVTjfKeCl4HoXBQiblifloxvETGc4MkyjUZtaQEeCdYYE6lOaKJfoWXNc6fHsvPnX+8Ly04ZjKMkx+KYlQJLkrt3rS38t2Ub0+sdUf21A4C/HhKc4QyiCFaVMd2+kFccHVB
+ nB7q0Orj
+ 3iTOcMxgxgU0nQhwDM9G1AvB80geDOEz81jF1THxnY2o3aocF8jEm3PUPr2ROBUQ9qoj7VYcH0ryazUPnwfITPg9ZBs4/Ruug/SwjEcmjfjZge15pu24wY8BII0dlnCRRM46sGJK6ukMDOz3KOIgFigU7FjPam2TD1n36LKgepOF708gB5JZQlXxVqF0ske/lNyCvx/IYLk+4zjyzlVnsC3erwTycT6qkZRL+ajNYjY41fAo4bWK8yImIv2+f37A9CCPdGUzv4ppU7HxPj3KDZrOmlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,94 +144,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 03:19:34PM -0700, Yanjun.Zhu wrote:
+On 8/4/26 17:54, Linus Torvalds wrote:
+> On Tue, 4 Aug 2026 at 02:49, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
+>>
+>> +Cc Linus for nerd sniping purposes
 > 
-> On 7/14/26 8:15 AM, Vipin Sharma wrote:
-> > Add a selftest to exercise preserving a vfio-pci device across a Live
-> > Update. For now the test is extremely simple and just verifies that the
-> > device file can be preserved and retrieved. In the future this test will
-> > be extended to verify more parts about device preservation as they are
-> > implemented.
-> > 
-> > This test is added to TEST_GEN_PROGS_EXTENDED since it must be run
-> > manually along with a kexec.
-> > 
-> > To run this test manually:
-> > 
-> >   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
-> >   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1 0000:00:04.0
-> > 
-> >   $ kexec ...   # NOTE: Exact method will be distro-dependent
-> > 
-> >   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
-> >   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 2 0000:00:04.0
-> Hi, Vipin
-> 
-> Thanks a lot for your help. I followed your suggestion, vfio-pci setup can
-> work.
+> I don't know what to say - the patch looks obviously correct to me,
+> and I certainly can't disagree with the verbiage in the commit message
+> either.
+Can we get that fix into 7.2?
 
-I am glad your setup using virsh is working.
+-- 
+Cheers,
 
-> 
-> The followings are the test result. In the step 3, after kexec, there are
-> some fails. I am not sure if these are known problem or not.
-> 
-> 1. Before kexec command
-> 
-> + modprobe -v vfio-pci
-> + tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
-> + echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
-> + echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
-> + tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1
-> 0000:00:04.0
-> Preserving device in session
-> Preserving memfd of size 0x40100000 in session
-> # [STAGE 1] Forking persistent child to hold sessions...
-> # [STAGE 1] Child PID: 1236. Resources are pinned.
-> # [STAGE 1] You may now perform kexec reboot.
-> + set +x
-> 
-> 2. Run kexec command
-> 
-> 3. After kexec command
-> 
-> + echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
-> + echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
-> Checking open(/dev/vfio/devices/vfio0) fails  <--- I can confirm that the
-> /dev/vfio/devices/vfio0 exists. But open this failed.
-
-This is correct output. Test is verifying that open should fail. If it
-didn't fail the ntest would have exited with an error. A preserved VFIO
-FD can only be retrived using Live Update session ioctls and not through
-usual VFIO dev path.
-
-> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
-> (vfio_type1_iommu)      <--- fails
-> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
-> (vfio_type1v2_iommu).  <--- fails
-> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
-> (iommufd_compat_type1)  <--- fails
-> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
-> (iommufd_compat_type1v2). <--- fails
-
-These are all correct output. Test is verifying that userspace should
-not be able to get VFIO device FD only through Live Update session
-ioctls and nothing else.
-
-> Retrieving memfd from LUO
-> Finishing the session before retrieving the device (should fail)
-> Retrieving the device FD from LUO
-> Finishing the session before binding to iommufd (should fail)
-> Binding the device to an iommufd and setting it up
-> Finishing the session
-> 
-
-This is shows VFIO FD is successfully retrived by Live Update ioctl.
-
-So, you saw expected output from successful test run. I will change
-the message getting printed to avoid confusion. I think current way of
-printing ".... fails" is confusing.
-
-Thanks
-Vipin
+David
 
