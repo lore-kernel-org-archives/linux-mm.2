@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD98EC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE92AC561E6
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 19:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2A216B0088; Wed,  5 Aug 2026 15:55:50 -0400 (EDT)
+	id BDC206B0092; Wed,  5 Aug 2026 15:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C026B6B008A; Wed,  5 Aug 2026 15:55:50 -0400 (EDT)
+	id BB3BB6B0093; Wed,  5 Aug 2026 15:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA3076B0092; Wed,  5 Aug 2026 15:55:50 -0400 (EDT)
+	id A546C6B0095; Wed,  5 Aug 2026 15:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58C846B0088
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:55:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CAA921C0DB4
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:55:49 +0000 (UTC)
-X-FDA: 85068271218.19.F175AB6
-Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DD09D20006
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:55:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=Rnk2uolt;
-	spf=pass (imf31.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 674136B0092
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 15:55:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85BA580593
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:55:56 +0000 (UTC)
+X-FDA: 85068271512.25.BE60036
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9BF7710000D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:55:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=RDGQxwOE;
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
 	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785959746;
+	s=arc-20220608; t=1785959753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=J6ayiSCTaQlH1glWOxR280+LBKoVrczZBGAn4hq2B5k=;
-	b=24Rb9JEjBoSg/BG7Wk8ptd4m4rftwKxDuUma2oub/o6bGznLLuvFm70idtDAik4Ejdq1+x
-	GRQVwI9BRyGOyEAIVrtdJ4ocxIChXT20gunJxyIUz9XVyON9l3nsf1tARjr1EyGe1mlMfC
-	F2W16MZuAIrswG5dbE3dGD2FMn8KLKk=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1785959746;
-	b=e+4TqJ/vZ5hi2xgGV0TXTz/Q8Wxobh81lC8TeEC5nXNF0Mue1CcQ8by/Q/GKl8xA4JhCcb
-	LoKuD8NuyVul6lpp2NvwiHztJ3Gaxfx8X1Q2M2zk/v27pCAvOVhUK55v5m5w8WzDHurtGJ
-	c8Whuld4qF44ei4Pk43PaaTHS0XJ3Dw=
+	bh=njTDX1l4CAMUN/iEQUDf+0M5RTBTQgWABYStuDaS7VY=;
+	b=GJ2rlC+aHWg+un3vIwjrtxQsy/BCTF7Kv2cA94QUsZ4JOa7U3nUDDk7lY8zMERLURFg+5O
+	LoTy3LCKJ63HksCPd2Ld3ZIU3d6USqy+5BCogqQruN0n/Xt/RSn1TiZ27wXr0FROs5jKS9
+	LWAMj2Y8nyzQSj5Edx8YyNx5TVb/hOU=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=Rnk2uolt;
-	spf=pass (imf31.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
+	imf14.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=RDGQxwOE;
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=670a93ad5=dwmw@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=670a93ad5=dwmw@amazon.co.uk";
 	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1785959753;
+	b=xqo/mkWtEaYmlVZfNeXnYk7VIQLe5nL/DGObAYB8PnedzRpZHTUCvQhGK2gJx8gTbCPLq6
+	GrKeUucQT2AgjHUULeQ8oFGCqtqYEjHIfGL5Et3NM8jCY5Cg8uvK1xlU7QKwH3PJ9bPBQx
+	xXN+k/PSihAkm/vXbnFuiZT+hR/IBuc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1785959746; x=1817495746;
+  s=amazoncorp2; t=1785959752; x=1817495752;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to;
-  bh=J6ayiSCTaQlH1glWOxR280+LBKoVrczZBGAn4hq2B5k=;
-  b=Rnk2uolt8YmeUZ8hcDWdEtn8F/0E+MfGhOUpnHossUxmWla/8b1NOWk3
-   2NoP08WSGGHjSdmHPx4mq9ELry81E3VPnsK5HNdC6Jfi/LE4okQ2qI08g
-   3htu2w71XJ284441NI7k/GP742uCuOYfTZcjJ3msFPtT5f3RE4WnbsX9Q
-   AZSyLwUjqYRdwISYa+/WLfjvTIPfEJ2JFfn96ENmDQ1vLDQcXYiDCkRFa
-   jUjtHeJ/Wj15qNKbdvZIaicEFI2da8PJHaQ+NpHNtHsXiyzJicng2h5TI
-   pWtJYGs/1fOKWLTI2e4yZAjwbFUe4LmDqVcEJ1yFc8EbQY/71yyyxlFOO
-   g==;
-X-CSE-ConnectionGUID: AWcTbD5NTDiQdiPVH5FpMA==
-X-CSE-MsgGUID: qslL7uG2TimdjU3L6hv9Cw==
+  bh=njTDX1l4CAMUN/iEQUDf+0M5RTBTQgWABYStuDaS7VY=;
+  b=RDGQxwOEnn2YxHtWou57LRb4hviVqAa5McDb28Q54x2jnbLLgPJyqLFK
+   IjKEp2V9JmSwVLlGmDQwOyrxQ6GcYQk2wnhPU5AoKA61AlHU/+caLHCck
+   FCnfAO6+GJmsL2XC3S0W0IStoNHlsyhyEWLpgqt+sQW9GOPC7oWwQ0THx
+   4r2OYPlF5Nyx37OAJmjfg2NoTfOa0f1WQKNwETS+lyS2o/noZF0BDYmQ9
+   mHsB6YVzMJj+KtVfum4S4SbPQxqIQX2fMGJuF5LZkUx+aHc3x9TW4X9TM
+   zRz2FdGdo2+YSILF0Pzjd/VcygivCShLLKaLPh66ojLyjRFG1tLMbIh3n
+   A==;
+X-CSE-ConnectionGUID: dJr9cmJqReS75e5DfuF/1w==
+X-CSE-MsgGUID: fzKmzQ4wSomoJ7AkBdW2FQ==
 X-Amazon-filename: smime.p7s
 X-IronPort-AV: E=Sophos;i="6.25,207,1779148800"; 
-   d="p7s'346?scan'346,208,346";a="17142845"
-Content-Type: multipart/mixed; boundary="===============4076452882560077655=="
+   d="p7s'346?scan'346,208,346";a="17438940"
+Content-Type: multipart/mixed; boundary="===============2525170940429881838=="
 MIME-Version: 1.0
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:55:42 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:1967]
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:55:48 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:29786]
  by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.0:2525] with esmtp (Farcaster)
- id 70c464ee-a1e9-419c-a2a6-745b024a8e25; Wed, 5 Aug 2026 19:55:41 +0000 (UTC)
-X-Farcaster-Flow-ID: 70c464ee-a1e9-419c-a2a6-745b024a8e25
+ id 2fb6c594-df1c-439d-9767-69952b92e381; Wed, 5 Aug 2026 19:55:48 +0000 (UTC)
+X-Farcaster-Flow-ID: 2fb6c594-df1c-439d-9767-69952b92e381
 Received: from EX19EXOEUC002.ant.amazon.com (10.252.51.145) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:41 +0000
-Received: from EX19EXOEUA002.ant.amazon.com (10.252.50.139) by
+ Wed, 5 Aug 2026 19:55:47 +0000
+Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.51.199) by
  EX19EXOEUC002.ant.amazon.com (10.252.51.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:41 +0000
-Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.51.94) by
- EX19EXOEUA002.ant.amazon.com (10.252.50.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45
- via Frontend Transport; Wed, 5 Aug 2026 19:55:41 +0000
+ via Frontend Transport; Wed, 5 Aug 2026 19:55:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DUmIFi8UmyH8e03KV6pyf9/zNjdCt2SsBHC32g2YjGeXFJvX7eO+WYtzckJUdH6NGCGTLDJAlomT5NVYeZWsD0+OniJ7Z6WJ2FBwapi90Kl48+xL8AGrBYP3kgOrtOgTRXJ6Ln9q44RDJMyYZqJP11La2/WMw8beePyTfXXkzMo5jVUVbXAucwStrbPXMpDpQewsM4FaAbQ49IP7L8u2Qe7GWrZ+uLh12MFf9gO4s1jayhH55s//rKZu/kXRAaHnsjpvDlkiXPN5ww3VNudDa4vbHpIvbPwCr1DUshA552gJZZooFMDMLkILMgWdGBd2vJZfMWXXeoKEg02T558NJw==
+ b=P1BqVgaDvHS9XbneNuHQcZfc8QEwjWNbYiFGVQ7wsWiIUvFiAa9vvZTuxXTlfdsDQD/FlMcZch3yYcHSQNljF46SNI7m1zio1TRHGdZZwlmgmJvuujSOOxc1BqQenGRgUCrjSlI6BVwTDGn7korls8qQxjkFx3OOPHEc5xY1SRLw4UbO3VY8HRfgGhGxxCXex/Jm+FsyLDPsnV3DmDvcoJMI56+NApONHaUY8w2VrC6NTeZdrei2sJGjOg4I/t/+uuK1OAbjscqa+2gHJBd7AGgVAfnFLsSeqA+vMJ/6Em7yWO9uj/Aj0ToEJu6qiFxQR9PR6zgyXFfIrze+UvF5qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=QbbaeiSGu/RXJRzRfoK56xcdhyDdwi2icWARLY3jaPQ=;
- b=eGhxlHDmQ9iWxP8jmgDk8FX+bZCv16s2Gpc3KI4xb3h6lInKstzvgx6RBH4Uk9Z/15VTOk7aZyrMSOchepAz05lCrK7seZ5Zr88LxQliaqmDKSu6lnUrUUlClV60umDZUlGfM1BARGR5jAVjfeOdFZRZMhrLCT+yCJ4lcmgkJP2Lncs0T/3qzEjgsJuUlQjQqBSNVRMOruuNPnZZmat3J1HC4bJ7ITYamvh6JYreAp3lqTelUuplNPaUeAJfBZjmttwM0A0PBjQ7Uw5gddZLU1VLrCAqPdk+JveQCP9YvivGYU0Nf4a8mPL7lsobE6x+AOoU5yZuRjpeDxSETN6mIg==
+ bh=bT3fymG17kWp32rRdkPivHdHo5QDE2woxfI3mm9HRIQ=;
+ b=A2u0Rq/IG0FuGmr7WlDaZ30LRkm+N6yyPhIt5VNDy2vGC9Ce3TZQhgKp+x5ggU6PNZQm/n9aREMXMC/6jUCBVI5waaE/7wU+g6EA8fLgkLWHcghtY6hWHcOcxhq8MSvLiVdMsadraWyptt7lMxI4v46uPQ75oRRIxHI1ZzhlUlroM0RIy9cZVEFlxFtS2H2Mv1xB80Jyt01rz8BL+wEDYQbln7J7RT3Z4OOqta2vQ7tvQZP1gCgEkAc+AwHqpjppobyJHnt7PykP0wNB4PGV6H24IIAFV8UojL0uMbEIzJgeVjwBkY28mug7dETKtrIlAue4h3XWXUcgc25J1mB3Pw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amazon.co.uk; dmarc=pass action=none header.from=amazon.co.uk;
  dkim=pass header.d=amazon.co.uk; arc=none
@@ -102,11 +98,11 @@ Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:4b4::12)
  by LO3P123MB3417.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:bd::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 19:55:36 +0000
+ 2026 19:55:43 +0000
 Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6]) by LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 19:55:36 +0000
+ 19:55:43 +0000
 From: "Woodhouse, David" <dwmw@amazon.co.uk>
 To: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
 	<pbonzini@redhat.com>, "akpm@linux-foundation.org"
@@ -128,19 +124,14 @@ CC: "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterz@infradead.org"
 	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
 	<hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org"
 	<kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com"
-	<syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com>,
-	"syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com"
-	<syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH v3 1/7] KVM: pfncache: use a dedicated invalidation sequence
- for cache refresh
-Thread-Topic: [PATCH v3 1/7] KVM: pfncache: use a dedicated invalidation
- sequence for cache refresh
-Thread-Index: AQHdJRRitrDUC7gEH0eDi6O5EYFcdA==
-Date: Wed, 5 Aug 2026 19:55:36 +0000
-Message-ID: <20260805195528.3853473-2-dwmw@amazon.co.uk>
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 2/7] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Thread-Topic: [PATCH v3 2/7] mm/mmu_notifier: Remove non_block_start/end()
+ from notifier invocation
+Thread-Index: AQHdJRRl4fRVBAHJ5keGRxUdcdrlzw==
+Date: Wed, 5 Aug 2026 19:55:43 +0000
+Message-ID: <20260805195528.3853473-3-dwmw@amazon.co.uk>
 References: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 In-Reply-To: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 Accept-Language: en-GB, en-US
@@ -148,66 +139,75 @@ X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LOZP123MB8516:EE_|LO3P123MB3417:EE_
-x-ms-office365-filtering-correlation-id: b84317d5-45da-4122-3cf9-08def32b84b5
+x-ms-office365-filtering-correlation-id: 56523a69-8d5d-48df-e66f-08def32b886d
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|6049299003|7416014|23010399003|376014|366016|1800799024|38070700021|4053099003|10067099003|11063799006|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: MCkAKauzvu2HTthJA3kcxGMkMwRgsM+loGLAK7SlwF7hf0mbWbGtOm/dm7sPTWV/cncY2mzoaWd4vKDjrez/g6fYBT94x9ledvGTLn4Brnt/dxj5Qe6K0rtngT45C1ADfGUaViC92gSAQ5Spo2BV038+9dAo9tkAIZluKxq9NKhRVKlONEGibrdRp6QQsPoZVurjRnqS9lVuAo4hl1zuBq4FSjQ12+3BqbzsNDKOP1eKBHJiGCUPoOdy1oQmLnnBCf3gxvSMDqudAoIdOWcT0sNt+DcwafywaZT2oGmoQFo6BBKit7VB84Kw8tchXMEqAkS52AUULvSe+ZaZvXcUPY6Qt3aAdIH3IxFe5d+XA+E8oOZdUcG5OdSkdfek199vVQxoTZaLFKz7BBhEs4mXfp2HbNwpZD59tDAZKNlbJeEbtQb5WCUJSA6LKBcMzIBDI1PFivh5YpfcGCrfBKe+KDjCx649cOWrNaBSeRLEsRIJGvXYsAmdPSfJN6tCmslpG1wIFiIANazFpxqt+ONTJknLlSxbMU1Xl4tfoXEO3j7022RqOOSyCTxGeE+tJ13l8FxEp9GleXzKelU6C+cKKDpLqrw/cqVpnZ61WLyTk45sXg0M4hi/vi+TGcDJAh/KuZH615y5OuE7NiA2oepmuuC6pg7sEfLyjPZ2HjRgGPmtX1vV9VWSZve+TOf9mpUetHp3j/xXMntmfw6pV/b10wzQPeWshfyuhi29ZS/7FuY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(7416014)(23010399003)(376014)(366016)(1800799024)(38070700021)(4053099003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|6049299003|7416014|23010399003|376014|366016|1800799024|38070700021|4053099003|6133799003|10067099003|11063799006|56012099006|5023799004|18002099003|22082099003;
+x-microsoft-antispam-message-info: +ReZBZezTIucOLcL1rMqgrdvG6rhqGLrejv8hbkKxrBFG3aqMbYdAr0QCWuCm4ZvKQZCqTmeL7VwV1oD4xtNNQGLO5PGknmItxQ0PBjSjmDnBlXwgFrFdrXTeTZLlizxWKlmoJUKxFd6QOZG76dReiZcUBrK9uHfOKgDbBaUrcdvzOa7olGM4ivPmCp0woUV5MA89NBiQ2s9L/HcrjXmdZ0mxUM2gh3iBRBiCriHooHX1ADgTwGeG+NumA7iP+JKsPWQB5Jv5HxpTYvxtRunUdpjp1eBjzPmIu/1DmzyVf1IfTB1Yr0lj/h3xlhGj5JVD6e+mRu5lhFUoA7U2Yvr8DdiOYV2DaaEAgCchAfOqw0/HqXRTOT595W5N+5P8o5qX174t+S5Y0k6yDrYtu1dDnctc+foq2D/5/NkmXCke2PNaPBrHSFl9T0Jnfo5/62VOs3G6Gde8VGPFArTVLM/jJC0E3hxq3cdOjzs0e4ux4SbgMHDFytIPhQGIOs2CmC/aPVgwAu2vAIrrsvfNS/SLE28BdjiGAyg1BynVPnFsESrQX8UxHQDr3aPDNBYti+/kg17kRxQtv98DSfGt47qP3dbg2MD3hQpFILwYOaBUdbz31e7q9Gsux/LNJ7+AojhhMdL9OUAfwdpgDqc58kGw56xWM+czGsk84aGwmrA+ur+E4hDLc0jA2axFA9wevpzCHQrCBkGpYJZXsDUvH3xa9qTAitjZmoht+DmIHPwVn8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(7416014)(23010399003)(376014)(366016)(1800799024)(38070700021)(4053099003)(6133799003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?yQmspfNEIE2y6Gj1u6BwoClPG5z/1vkdZ16wjw/O6bQH1FtXt8wkaMPsuI?=
- =?iso-8859-1?Q?N3oes5+N2LY1DRjj4uBTjqx+yHvA9Hr8bG/IeWhCsGLVZWSF8Fi69SCHxA?=
- =?iso-8859-1?Q?f349/zvZYkqOWa4VW2WCOla6TQ1rw9STAbd8axJCTtKqam07xzynQ2tZ1M?=
- =?iso-8859-1?Q?dCK/8+Brnk4QJRvzoSUKJuF1WEC2BTqK2eFPkPwDkrPV3h8PZ8E0Cq/QJu?=
- =?iso-8859-1?Q?yd6hue5A2CXyf9nSXf/Fo4tByjddPB2fU0h8tInIR0F1TT4zHswiZyIPr6?=
- =?iso-8859-1?Q?/GpVbek0n/LW66lMCG8e2AbCL5uc6t6XlMuYfmFXzYUNK4uq4f5j9QT204?=
- =?iso-8859-1?Q?9nS0W0BIMVlaAg7cD64n8LWE8Cw+A2tLgi3zag0xU3Z0lOV5W3+JkfkLti?=
- =?iso-8859-1?Q?neotfZtejlwQTJhXD+kkZwVdVqg/A78Sk+GDe0YdSb7n9mwTCQ4TYrD87t?=
- =?iso-8859-1?Q?FUglIrbCtxCqYI4rAqrZD9OUGeypTnEiuf/u3lN/MEMYpeV64rednkxJuN?=
- =?iso-8859-1?Q?fgmjM4uVvscbCkWV3fKlTgy03qCB25j/qdVjhfnILF7UTxslCk8bmm6vfA?=
- =?iso-8859-1?Q?IxG3NTi9+XkXPx7p8GIpSMg1BKBktiZgLWeLAmq/GQYC/PzNXG08LNts2M?=
- =?iso-8859-1?Q?2VZrbsDqExAuRDj1pT8lesgD6K4r9EjROuJx5BKPbJABXJ0B8ktCdzAHR2?=
- =?iso-8859-1?Q?9EXQuBpR1TLWZvzTSUzzxdzlDdHxRh5zpUR8vyK/XN5Ro4ldlanto3732B?=
- =?iso-8859-1?Q?ttGB9C9whx3G8koCLen0NaERVsYM+HmbVdcDoxXlxySBTUmSvyt7/iQHCB?=
- =?iso-8859-1?Q?WwBUjTHGznQ+H/tBrwGoNcIL1zDCRKy/h+N77UhD74z/9AZ3rtSPSFNUev?=
- =?iso-8859-1?Q?4bdJ8OyciNG03NfVyUeXqMYV6xa7oIzQUroxrBU3URh0w5AvK6n+gJ7EIH?=
- =?iso-8859-1?Q?TjWX5Ujd56biulVvG6XYKABqXQk4aKtLbeA2oH9I0pGUJILTVGBH/KQM/j?=
- =?iso-8859-1?Q?V2qmcsz4XqenHjKxn8YalP9pZgb5RsZVC/6k9QMZq2mNaYDvGpitkJC9gk?=
- =?iso-8859-1?Q?bftC/qbi2McGBIDYGH8jdJnXtJ+oxCYAJUQ74OoJmwwmkXINuZjmR+Den4?=
- =?iso-8859-1?Q?LoxpIyAnrT6bECtfjMiM7VlDNlguueu0EhnNhsxbFwV0ms1iR7DMVyIsj6?=
- =?iso-8859-1?Q?RgDhSs0co1YnRwtckWatVAT3KikZDMIoBX9Bz9XwYQQlLN9H7JKjCeJQZH?=
- =?iso-8859-1?Q?9hLbrgx7O4geNh2AmxG6H8J7xo60vI94ftMkX8pH8+esQ0CZPXTZ/hmTXH?=
- =?iso-8859-1?Q?K86580TVXw/pN2RBWy8d/gM5xvsBrS4WxVjrYJV5Xh3fNejFYBL1bT/07c?=
- =?iso-8859-1?Q?FnwCnjCJ4LAe5rx1Aj82NSoHvVI9ClzOqq1oYPJTHrDm+0rdpQBsp6Tgpt?=
- =?iso-8859-1?Q?IZ8WIgwOds5Hd67QtLB6+5VF9M8zx1Hyh3NjWmz2ZB6VmumjVt9flFk6/G?=
- =?iso-8859-1?Q?ftbRLmaSOzrm6TstDEKfApNhNBn+QJZ98mstUvpy08OdNSCLPLO211tekV?=
- =?iso-8859-1?Q?CXVMAec+QxaWOxriTKQbj4rEJWgeERyDGbduLdJ+olCLi2mIfSsck5zl1Q?=
- =?iso-8859-1?Q?SH2ariSAGVQV5onEIggSa02oCQkuDIRv1iYQQ+iclpHTeuzwFqw3dW1BvL?=
- =?iso-8859-1?Q?WMtBDiUCBwyOEAbD6PyjRzcrRkB359pwDXaLoom6gwVzV6T1yZIIB7hQU5?=
- =?iso-8859-1?Q?eRWUaGJD7I0xCyZ2rKYgso+ytLAqamHulXmuCubrFYvhrI?=
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q0dwWEVaTHhYcmgwOXdEUm1TTERGckxBOFhvUmZ2Z0ViR256YlZyM0NlNmxl?=
+ =?utf-8?B?Z3pWVDFIRVVMOGlXNXg0c2JTVG1mcitpemtGbWtwakJPNXJFWWtNdkl0U2N4?=
+ =?utf-8?B?YlNGZW5raWwzWWQzdHN4ekl4SzZLT2lnZ1RNMEk5TkdzV0ZqcUZNa0tLSUha?=
+ =?utf-8?B?Y0Zqc0hBaVcwMTlHb1NERktiZHBxOEMzMGNnTjRFYUxMUS9kbjRtRG5UakdT?=
+ =?utf-8?B?VS9IUWRyTHZPQ2pSSzVhTHU2Wm1BSUlXSTVJZFFidHJxL1BpSWlkZmtjRE1r?=
+ =?utf-8?B?cEM5enVISXFKQ2IwQkVIblVQZHdDNXRDZXdTZElaMkhEVnp3aXk3VDVJaWtU?=
+ =?utf-8?B?OEVyMHhzR2YveDdKOXVJVXV5MXdZVDFKb0Evek9KT1NwRGNxZFVuT3JQR3Br?=
+ =?utf-8?B?SURkMzg0T3lzRUlaOHlkQi9HY0Rkem1qL1VzQ0VkQmRVU3RCbnQyWlpGMmY2?=
+ =?utf-8?B?dHRSc2dGdmtMSnhXY2FtanBMRE9hQzNsbzF0aGZybElWakJqVVBGUHFiZVR1?=
+ =?utf-8?B?V0ZGbE9lWjljaERGMGtoeGlvQzFmSFZlWEJ6UzZHSnVmK3V3aWpOWm9GWlkv?=
+ =?utf-8?B?TzVWK2V3WThDejJPVDVYdWgwTWFDamQ4QjZKQzVEb04wT2R3U1hJMzdxWURL?=
+ =?utf-8?B?b1QvQ3BMZHJIcXZrNEYzT0Nma0w2K3UyYjBDYUFyRE00cW1TWW5VdnVOaFRu?=
+ =?utf-8?B?T2NKekorbjRtbTFHSUEwQ3B2YkVnMGFqT3cyd3BBcmR3dUVmczJDYS9GVXRV?=
+ =?utf-8?B?WFBRQU93TElLOFd3YXdvYVR3WUpQV2t4NHI0cnRDN29DeWxMTlBGY1hIc3p1?=
+ =?utf-8?B?MXlkSUZzdC91WTh6eUFTdDZ5SEE2STZCUVJ1SFYyKzhRVnNQM1dMQkxWdzFB?=
+ =?utf-8?B?amMyZ2lQbmpHYlROOE1Ra3dVZ3JTZFpsVVVtU1ZjVElGMEZGS3lUeDdUSC95?=
+ =?utf-8?B?TDhBVTQwaUpSblVjZTdXZER3TW02SkF3em1DeHFLbnV1clpLVWlqYUh2eEtk?=
+ =?utf-8?B?Z1FoNVRMS2I0VlNVVGY1TGxuVmtjaFFidkU4bEJaR3JwTUpZMWE1cEJIdmhO?=
+ =?utf-8?B?N1hYSng2elNTVGZ3UHdJTzJPNHdYenRsc0laSm9pY05tbVl4eGdHUEpBVm1Q?=
+ =?utf-8?B?Q3VoN3ZPTGkrMW5adnRZeWVFMm1DRlcrN1VQbjA2SVVPYm9DYWVyaE00c2c2?=
+ =?utf-8?B?OTV0VDNRSHc1TW5YbTdhTlozZmxDNjdYTjlKWEFHSWxPNE5zUXNSTllsdTRz?=
+ =?utf-8?B?bGZ2L2QrRzN2bUxYSTdWbWdybkYzQm0wQlpydWlYY1NHWndnOWdRZzN3MWps?=
+ =?utf-8?B?TG0yOGF3b1lFWXdZVWNhWHExNjNLVHRSRHpFQkdvbFAxbkdHOEZVN0ZlM2Mz?=
+ =?utf-8?B?WHpnWFB6bU4yMVpVbEFLK1o2VkE2NTB5c2RJeWJleCtwaGhmdnczenFhZmhX?=
+ =?utf-8?B?RDRKczc2SmYvOFQwVTBIOHR1aWpqbXp0S3lBTVpaTTV2OUxsTWNBZ2t5T0k0?=
+ =?utf-8?B?bXBPYnhYY0VmdWZLV20vR2QweWlUQUQxdUkzSUhvUTdqOHNHOWdUVUhZRXA0?=
+ =?utf-8?B?SkhsbEs2YTFaTHVkR1FkeUYrTXRXWUlxaVEyZ0Y4SzV5Uy9LTzM2MVZEN01l?=
+ =?utf-8?B?NmI3aTJuTzA5TnM2azZFTFM1TmJtM2RNMHhHRGlvVDgxallaNCs1WU4zVzcx?=
+ =?utf-8?B?TVhhakxtOEF4em9sYTJnbU9rbXRJMnNUUVdDeERsQWNXSHpPSER1WnMzOG1Y?=
+ =?utf-8?B?K00ySmhYNDVOdXpSRDJUdVAxSTlyZkRsRGhPNFEwVlkrYUxVc1RPeTB2UGsx?=
+ =?utf-8?B?aUZsTERQU0tFV2VPaTZkZ1hSSXg2MDk3SjJBckJ5UkdOZ2tjYXE5cUVPU2VH?=
+ =?utf-8?B?NlpweG85WnBQZitUS01CdlJXOU02TmM5U1lzVUgxY1pyVVZhQld4RzFidzZV?=
+ =?utf-8?B?T3ZLa29KNThycmR0ZFMzakd1UnFuRXlNTG1pcmdUcVozY1hUWlBHbTA4RVUv?=
+ =?utf-8?B?YzRLbjFYYkthMjFmd3FQRCtBNEpqK0h0Z044T2tkdnBhcXJyRGI2RUpBV3kx?=
+ =?utf-8?B?N21hTEtvYTlQSGNDK2FlUzhMZVJnTzJybW00aXNlUkVFRCtBTnp5N0JjVlNC?=
+ =?utf-8?B?bzltSC9KU1NlOFlvUnByQ1RTWE9DV3diTE1SU3RiK08velpDSmNpQmRoUHZS?=
+ =?utf-8?B?dEdtYm5UNC9UNjFTR3l2R2tDZk0zVWwvMkhkcFY1ZGVTbC9HdW5RbWFvQTFI?=
+ =?utf-8?B?R0wvSU5Yd081QlVuNHl1eWIxcm9sanUrOEUzU0dRZ1l5MW5sMm1LWFlvM29m?=
+ =?utf-8?Q?9CuXMmoiJJPNXMrcR0?=
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: LEFif/QFQQ/RdRMkaHE/nQAWg3svbQxFC9M0HJTdnQ3udvJL7wdXdHlRRhwBY+vzoAto6r0NKCkCkkwZ8OHDLjCgmp4S4czT5jy18l9JTpU845tfXB/ZowxwxzFZOYUrdzlzIvEx+gJQg7hkgPLEnzsTb3IN2v7BIa27U6IikO6+fiLUYAebeOxI4NtN/6MgfXppff/0i1nQaq+rS/84I/Nae/Jh/Vzo0rKscwp2mGXD/VmL4DbNLIwmb4vLYlsCcFwMOLn1nmK+GnzH1ynWRt61Vq5avwY4k41kV19PaxO7mVNUGKXE4jlX/Y0vgj7HLbJprzrgr3SOp5ey8Ny3hw==
+X-Exchange-RoutingPolicyChecked: Qx98TTpSbkfvm/mfdOVsNSzMJNIennZjQxEViJJXPcPH6wbeul7biSBa9cEDhd4v3PZuUGD17uKfLPmppX7EA2TwNyND2B1JAwJT7Ja/6RtP4GNHYR4sr0454muMOC8ujs6gD6TZQ2NeRIkjPP9qA8iOeIzNnQmiV9Kqp8jVj6RPBOj/wYOBmsYAC29nK9vpqjWP0fDK8wp38qJ+XxDTaq2ijPdQwpRfNUJVoTHlGwuk5zrq3Crnjj9xv0jI7e1kef0WYby4fcaYHZ8m23bRURrkpYsGfty8pcdoxFvln7fwRte3PocgtYrZ2WUCQIzWfSjvXpj7RYznJSuPjAJC+A==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b84317d5-45da-4122-3cf9-08def32b84b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:36.8510
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56523a69-8d5d-48df-e66f-08def32b886d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:43.0336
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5XFrnTEdDKWxoC4FpNvqBgvxjf93TSl9CxcR4P/jBoLJuCdABoouGkvx+tvLcsRbKXEBy3HtcfxgYQNCSkKj1w==
+X-MS-Exchange-CrossTenant-userprincipalname: fhVgbFydsx4YN+PgABxcRhXzXfUah51p1HXm+wC8NGrgUzKdFX3xqAhz4mLstPq+gy7x+NkVBU+p+EIH0u8GNw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P123MB3417
 X-OriginatorOrg: amazon.co.uk
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DD09D20006
-X-Stat-Signature: 8wp9xypzujz9tcueg5sr1quh6r5we9ok
 X-Rspam-User: 
-X-HE-Tag: 1785959745-712362
-X-HE-Meta: U2FsdGVkX18IhCvlUUtYmh/mVVnIWyCTTU4liClZypULoIH9/h9wgS2iM1h+qwSU59nwt8rytshOdEpX/i4jQKjmzx/SvfXYzuMW/ev9MdOOHLXnFJcL2T0MRHb849mBFzmoIs1Lm0UEti8wAgd1kaBpOMo3F064urcqNwgUhcXnFMDecyrUDObjhS0QUIzfligg3X2tl4sy41O4+EDYgb+P9IAf5FSoYN31hDYNCmQTddkVZv7WonDYTn9o1EE0HpM91tLfsX714oAiyuI+dcEyzIr6FoCrWDmuBLYsZx8MUDXOb153CCe+itXE43Ne1WJs8+UNTsBFjLS2NaFVsr0my18s/U+BR5KGu+sXYastudwpwqz/Nz94/bc0XBLm0Hq7my4T9Z/Eo0MQsJE375J/HSDBoKfjW8isTeEcMr0x/E6AS2nOb2PndiB8UUpv3qWJOselprOjfy98JBHvHU6XkkxtB2msTff94m42+EHz3/Atwpyc/nvdHoNPVDay5rseWt5zAGxuNFKp13XKrIeHuP5g7ydCSIAIwXzZfUvz1a15t+2LCVoTH3pNwDvGsUJRToIlncjhHtDNjSODhAy6QLOf82YtWlFIaqiJ9ofkBEoTszD3RVG24pgchZAuKh7+8X0zumT8mWiKciFpwrT2KMAR0Ef2DeB7zdsHQvqIBmqGXt/VtCRAEnSsDXtyzW/EsnDU8KqkdBUiMUadkM8vgN/c+baFXUCCDfNc8LRLlea86PgOGQ+uCabmRPs3/XhKIdXRxgpMh37ogrMdHbfaKbWSGxJeSE/L+k5eXcp4W3+3l83WQQXFeX/ZGCggXmelXSKIop8sl6j/+BWOy7nibGNU0vnKm94ixBjqI0BZub5SGOIxpBve5N86lWyVf1RfmTAY1xeoz9Kw/epNyfjSNxCi/pLwYYcAqOWDSXxQF2SGxAffkCw0nN/mAuKh7q06r5mxs4NhGQFTISq
- H4d4DxR5
- KqfHt3BycFDYAZ29W6ZkMxu98GYhE6df8gQWzQjv73L8dwF41gB8n903hBBPhuyc+8aV+04GdmTTlhjFUdkf45lUwgsyUvxMsjYM04xX3dDIM2rC4oM4czh7eHJJsXUMDDWvF6oSQSEE96hV6aXlVBRrZL7jFeHbJZpjvHr+sMlHy6QjJSFezcM0j+kFrVOgH/ZhlvTNVPWkj+LupjcxpyFWdmNZ7QoADKtqQ7H3weigZe/COfD/Fi2CDWZsNu1ksJmgtO9v2QNnvjftmZvmf89JsdRTi7i7BwuIGebY5f57VfkXuDAs4M57ysM06UC8rxAFGHCr20cTfhPmF8gu31sc4Sa3kDcccPb0GTOC06I/3zUPON1JiLWL8RlxEqayNNuc/gjezRqwdNr5aWf9ojY7LmhrNrtllUbntSCac8tn0yWC2ZiJQYYGlorKZHwCa011D3kbbfF3rXdfvnBOGCpS7dsZgZIX4wtA+jwQoynt+aZDmrNLFRkBRwTbaz/RupYkyePOgyVx/NyY9tgesMRvGzsto733DczO2pnDGidFLuhaNozqy40QJOIDMO5/WEZHG/sDzH/y+UY46KeLZzdAh7m0Q0bE6G26YXkRN4BftWeAbckjtmuKTf/bSYQBYMc763KHIRHpCKMkAyCtBHwbQh7TeONKu2u01tsPWxKRtf9MT7u0b8JZjrPY5KwqIBmTZOE4NE17VMp0TGUg9YSzWM1Jey/l6iXhhyU0uPq3Gy4WzsJJW0FhZtuFgyxBJkXUBp7Ppeiy+KKoccKQ4XnW8nFrpP6+5qraNZPqGGilo+CQhfUQ6mj1p0jFyMHT19LJsZiP5grtJPaZJeKbBHy0Z1lW3q/FR/o0BAHQV7Nyzxq/HJQuM0pS1GXrvm3sd4If6s2/ju0lxbPKoiiKMOG7PvZGZdDmNwoxEvgmHFWBKhoMWMaWr+oFVXsY7ptS5l0c9IUTJspI7K0V41ITlvHy1u/JJ
- DQyCN96u
- Lfqep8nY0HRNpoFTtn08Q8oKavub2Jz91OlSf525hCMzQvNxVrAArO7aoO47zs+mtX+SYlcoHYfh98QlcB8jEU5B/RkVxL/BrBKCCaIaZxbvVSp93QjszSzT21ssVh7c7YjRTF6tAv6ympA6BItinacnF+UHuYamTZ0lI93Y3SX0sqhFeAV+riQnFSFWSjA5WCqy7k0XNLcR+DSTpwok84f6Yrikb/6178aIsNcZeBmiD5YCY2YEqM6hXNhJYPPg3FxnEmVEHv2zWtshu1bTI4oIjc+LaMqf9gpV/ADRQc0+/PCS0z7f+yQh0DWcvGuJqloWezHzAtcnE6QsqjseBeCds+XMUIVsieXchkgM9swnyfi9yJai18kpY1fSngTMA2vUJImNaz1GdHyDGAqoHn7xaYA/zNWtn5lWsGUTuqUGqGAWcoat2pgQB18VsGJLZjo4yFA3e5c=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: tsjcda5wmfgcr3nxpufpb5chu1yejcdg
+X-Rspamd-Queue-Id: 9BF7710000D
+X-HE-Tag: 1785959752-220606
+X-HE-Meta: U2FsdGVkX1+UopXzzGGXNwsEGX5jT5UAtlyf0gOmwCyL4z5qvWwwELTw8TKDA39P1RJe9T0rXxyUWiu+lI3wi7Mlcpi/G6ToJ02lIjPURSdYOWnrh28RfH31sNA5OFnZFROcmcNorzsQhz7ofXLEsNB+OKhiLyEQB7UiFFINj39Ze/kAj7xlfGIbbxqzsqBR2o5Xcuj8j1ygwLbEwnnJaCj2eTPA0fWi2hCbeBV7eXGxhLebrX50VpLHFZzerNTPNMpR1XBzts4ANgNE5UrwBx6HjX0zijk2K3HLqplRvgSNEiK1bysbkS+Vnkg9bRgKpfAOzquDBPD7UXh2Usj+QDk9mW7aSERxTo8t6F1gcMLRrCUgtGpZBx4icPNck/38ZkDfXsCgCLJYbowWCGpOGE7XLRTx1HTlfV+b77c71/PmuAppFS2euvzXRTS2fKwRdlCXWAiGCRSApfMZACy3n/lT6xYzIaQJXW+jQoqLchOIsyvL036W48dZqeRdX3L5apMl6pBytdn0X2l6cZbrYzAwmSD6+JZG+Yr1V1TQYXG4NftFkjOiys6SkQeZxtoxNDDyKQ7Nr5QZiQiA8Cgs1XWG9TSFH9NtTEfylVK5uVZK4xy04zzbbeJjYP5AC/rLaUf0MN338vPhRyHjPZ96W8BO9DK4hOqJi4nrqMA4sBm42E7RWeaxOS0Jin3tslmX9eN1C0jTKbJaNDWxpBL4ug5AMC87wraUtyNjlMBiLLSBL9IHCV+vILEfbIRy52dFnM7j384nCB+nHGwqIrfaMUKlCULKefJT9NUAChu1+yqSBhA50/CsfLE+Vd47Rkl5hfvH8+FmIieZ2AVnoE9xTmyxI/K87NLoBPE6gDEAwWd9un+lZ8rpyn+aLHM5VJ7Kmt+grNjnWItPspFmB/ZJIq0TO0GBs2qvheda9Eq9jS93kKy4KbpNspNFW3694xvQ70hEL4TaTChNFkEuFNS
+ 7gx0cxCW
+ E596C5BLrT6V+Wdt7eBhJr2y+aMUpuxlEcaPnI00Z9G7mEtJVs4WAMTODqCZ25hn7A/zdEVq/dgt/K4EvO0v/ePUE7mTpjG6EpGDHF1aF2N7kAfuFRNmIFtnWm+fj71PstbZUsXSNRXuTM7VZad+sPyejBx62Yz7tj5tYCwB0odoqFJFWfFr0fzdGAE2haPBQKfDMlTgLoaob7ajb28kYR1yO2uhS9oiCRx3AiMooOsEXcZLRVPdJr3kq4oTJn28DK202GXnGMAN/6JbvWX78uK0wTuvL5pDbpjMkzDsOpQOQ3192VbIpxKlkFoCJsLVtMlMwDkFeImeaGr4bURkE2f0+jKz4HSZnnfgULh6dAam/P1TnpO+ELCGurDZ3ts1/kdrAJg8cY3L4X019DKUMaowvaSeauaj3typYKq4NQaewEQAMPxHrwxw4JF2eiH19YwawDENxZA1rf8A2ncACoidDK0UdLUXOj1iGRfxpL5RZT4UE80f7lzzkYWCTnzlgA/eVFMzIZ6p9caBVk+Q9qjAG0T87hGI13wbrvB03REAV8dDNHDoFDFNKvicXaFQ6HBE1Zyv7pfJGShgph3VxtzvGOchiWuE7rYBwyTswcedS1+FfwNVrK2EoIHuRgoeQTqtNFUbLEpCZ1gYbj5mmuICpnnanV4J9tEo1icSVsCMkTvxNOtwZpeO8rrNkRhk+dmn30jLLEKCjLwuN267wT33l/zvMkoVOySVT2bkMlmfxXdq9L007Z9vSxqzuQYqwNwHPCUaIX++6v2KeHvmZec5NfBBfcXRGb0IhqY+OZ2SsMaKrAmJ84UB3BPGDtUcfHJnybNqrMjgiMRHkeuUZAHwRX/PlEpr0diX3UYM6tfCCjauCiKPTou6CbvgZccTn21QUdqrmpXk7UkqKAMigTO/NtwMXxwHmSCFKEcbDJwCYUybIaOOx5bPk1OojK8SR2MoFdVAlNIaRdlI3fp1beIGVKKO2
+ F/Mdic2Y
+ 4SfDzmk36SurO42VCrCwUby5gdGKSLmxN0fgo7PtV/mNT4IF/3v6N1FG2vtrORFTWC8Ws6mxulGmNl73kruCSLWMazJGm2EzPlmlZYwKf4JPpvXDyu5Y25rFcnQcgeRs5ipxs/ceesM8qHI4vycW/ns8sIKGk17VywckXnpJm599Mk0x4T2rlVoDk8c8toh/2CKhNhxahts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -215,184 +215,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4076452882560077655==
+--===============2525170940429881838==
 Content-Language: en-US
 Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";
-	micalg=sha-256; boundary="----A5620834ADBE581CC9892966FA9ECB3A"
+	micalg=sha-256; boundary="----F3F7044912BB47D11515E6DE65EE77DA"
 
-------A5620834ADBE581CC9892966FA9ECB3A
+------F3F7044912BB47D11515E6DE65EE77DA
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The gfn_to_pfn_cache refresh path guards against mmu notifier
-invalidations which complete while it has dropped gpc->lock for the
-HVA->PFN lookup: hva_to_pfn_retry() samples kvm->mmu_invalidate_seq
-and retries if it changed, or if mn_active_invalidate_count is still
-elevated.
+This effectively reverts commit ba170f76b69d ("mm, notifier: Catch
+sleeping/blocking for !blockable") for the mmu_notifier call sites.
 
-That is insufficient for HVA-based caches. mmu_invalidate_seq is only
-advanced by kvm_mmu_invalidate_end() when the invalidated range
-overlaps a memslot, and an HVA-based cache (e.g. the Xen shared_info
-page mapped with KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA) need not be backed
-by any memslot at all. An invalidation of the cached HVA which starts
-and ends entirely within the lookup window is thus invisible to the
-retry check: mn_active_invalidate_count is back to zero and the
-sequence never moved. The refresh then publishes a mapping of a page
-which has already been freed, and the next reader dereferences it:
+The non_block_start/end() annotation causes the scheduler to complain
+about *any* voluntary sleep in a non-blockable notifier. But that was
+never the actual constraint. As Michal Hocko put it when the
+annotation was first proposed, the OOM reaper "shouldn't depend on any
+locks or sleepable conditionals" and checking for sleepable context
+was "the best thing we could come up with that would describe these
+demands at least partially". The real requirement is that the reaper
+must not block on anything which may itself depend on memory
+allocation (or on the dying mm) to make progress — which is why
+spinning locks were always considered fine.
 
-  BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x3c6/0x440
-  Read of size 4 at addr ffff8880599c2900 by task syz.2.383/7257
+That distinction now matters in both directions:
 
-Since gfn_to_pfn_cache_invalidate_start() deliberately skips caches
-which are not currently valid (including one whose refresh is in
-progress, as the refresh clears the valid flag before dropping the
-lock), the retry check is the only line of defence, and it must fire
-for *any* invalidation, not just those hitting a memslot.
+ - On PREEMPT_RT, spinning locks become sleeping locks, and perfectly
+   legitimate spinlock/rwlock usage in notifier implementations (e.g.
+   KVM's mn_invalidate_lock and gfn_to_pfn_cache locks) triggers the
+   splat despite having no allocator dependency whatsoever.
 
-Add a dedicated kvm->gpc_invalidate_seq, incremented by every
-kvm_mmu_notifier_invalidate_range_end() under mn_invalidate_lock
-before mn_active_invalidate_count is decremented, and check it in
-hva_to_pfn_retry() instead of mmu_invalidate_seq. Incrementing in
-range_end() in the same critical section as the in-progress count
-also closes the variant where the cache is activated with the
-contested HVA only after invalidate_range_start() has run.
+ - A notifier implementation may legitimately need to wait for an RCU
+   grace period before allowing the caller to proceed with unmapping
+   (in the manner of a TLB shootdown, waiting for readers of a cached
+   translation to drain). A grace period completes without any memory
+   allocation and cannot deadlock against the reaper, but the
+   annotation forbids it.
 
-The same bug is also reachable through the per-vCPU vcpu_info cache
-(KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO_HVA), where the stale mapping is
-then dereferenced by kvm_setup_guest_pvclock() on the next KVM_RUN:
+Checking for genuinely forbidden dependencies mechanically would
+require tracking *what* is being waited on, which this annotation
+never did. Remove it from the notifier invocation and leave the
+constraint where it always really lived: in review and documentation
+of the notifier implementations.
 
-  BUG: KASAN: use-after-free in kvm_setup_guest_pvclock+0x5bf/0x660
-
-This intentionally makes refresh retry on *unrelated* mmu notifier
-events; restoring precision (and reworking the GPC locking more
-generally) is left for a subsequent series.
-
-Reproducers: https://david.woodhou.se/xen_shinfo_race.c
-             https://david.woodhou.se/vcpu_info_race.c
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com/
-Tested-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
-Reported-by: syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a426dd2.854d4ab9.360e1d.0008.GAE@google.com/
-Fixes: b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA")
-Cc: stable@vger.kernel.org
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Claude:claude-mythos-5
 ---
- include/linux/kvm_host.h |  2 ++
- virt/kvm/kvm_main.c      | 10 ++++++++++
- virt/kvm/pfncache.c      | 18 +++++++++---------
- 3 files changed, 21 insertions(+), 9 deletions(-)
+ mm/mmu_notifier.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6..3dd04605f2e5 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -855,6 +855,8 @@ struct kvm {
- 	gfn_t mmu_invalidate_range_start;
- 	gfn_t mmu_invalidate_range_end;
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index 245b74f39f91..cd5d15cd646a 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -520,11 +520,7 @@ static int mn_hlist_invalidate_range_start(
+ 		if (ops->invalidate_range_start) {
+ 			int _ret;
  
-+	unsigned long gpc_invalidate_seq;
-+
- 	struct list_head devices;
- 	u64 manual_dirty_log_protect;
- 	struct dentry *debugfs_dentry;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 345d56a15fa4..41c88a8ade95 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -812,6 +812,16 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 
- 	/* Pairs with the increment in range_start(). */
- 	spin_lock(&kvm->mn_invalidate_lock);
-+	kvm->gpc_invalidate_seq++;
-+
-+	/*
-+	 * As with the MMU sequence counter and mmu_invalidate_in_progress, the
-+	 * GPC sequence increase must be visible before the invalidate count
-+	 * goes to zero.  Pairs with the smp_rmb() in
-+	 * mmu_notifier_retry_cache().
-+	 */
-+	smp_wmb();
-+
- 	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
- 		--kvm->mn_active_invalidate_count;
- 	wake = !kvm->mn_active_invalidate_count;
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 728d2c1b488a..3659686b97c2 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
- #endif
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_start();
+ 			_ret = ops->invalidate_range_start(subscription, range);
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_end();
+ 			if (_ret) {
+ 				pr_info("%pS callback failed with %d in %sblockable context.\n",
+ 					ops->invalidate_range_start, _ret,
+@@ -591,14 +587,9 @@ mn_hlist_invalidate_end(struct mmu_notifier_subscriptions *subscriptions,
+ 	id = srcu_read_lock(&srcu);
+ 	hlist_for_each_entry_srcu(subscription, &subscriptions->list, hlist,
+ 				 srcu_read_lock_held(&srcu)) {
+-		if (subscription->ops->invalidate_range_end) {
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_start();
++		if (subscription->ops->invalidate_range_end)
+ 			subscription->ops->invalidate_range_end(subscription,
+ 								range);
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_end();
+-		}
+ 	}
+ 	srcu_read_unlock(&srcu, id);
  }
- 
--static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
-+static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long gpc_seq)
- {
- 	/*
- 	 * mn_active_invalidate_count acts for all intents and purposes
-@@ -136,20 +136,20 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
- 	 * Note, it does not matter that mn_active_invalidate_count
- 	 * is not protected by gpc->lock.  It is guaranteed to
- 	 * be elevated before the mmu_notifier acquires gpc->lock, and
--	 * isn't dropped until after mmu_invalidate_seq is updated.
-+	 * isn't dropped until after gpc_invalidate_seq is updated.
- 	 */
- 	if (kvm->mn_active_invalidate_count)
- 		return true;
- 
- 	/*
- 	 * Ensure mn_active_invalidate_count is read before
--	 * mmu_invalidate_seq.  This pairs with the smp_wmb() in
--	 * mmu_notifier_invalidate_range_end() to guarantee either the
-+	 * gpc_invalidate_seq.  This pairs with the smp_wmb() in
-+	 * kvm_mmu_notifier_invalidate_range_end() to guarantee either the
- 	 * old (non-zero) value of mn_active_invalidate_count or the
--	 * new (incremented) value of mmu_invalidate_seq is observed.
-+	 * new (incremented) value of gpc_invalidate_seq is observed.
- 	 */
- 	smp_rmb();
--	return kvm->mmu_invalidate_seq != mmu_seq;
-+	return kvm->gpc_invalidate_seq != gpc_seq;
- }
- 
- static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
-@@ -158,7 +158,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
- 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
- 	void *new_khva = NULL;
--	unsigned long mmu_seq;
-+	unsigned long gpc_seq;
- 	struct page *page;
- 
- 	struct kvm_follow_pfn kfp = {
-@@ -181,7 +181,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	gpc->valid = false;
- 
- 	do {
--		mmu_seq = gpc->kvm->mmu_invalidate_seq;
-+		gpc_seq = gpc->kvm->gpc_invalidate_seq;
- 		smp_rmb();
- 
- 		write_unlock_irq(&gpc->lock);
-@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 		 * attempting to refresh.
- 		 */
- 		WARN_ON_ONCE(gpc->valid);
--	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
-+	} while (mmu_notifier_retry_cache(gpc->kvm, gpc_seq));
- 
- 	gpc->valid = true;
- 	gpc->pfn = new_pfn;
-
-base-commit: 51ba04112e93ac6e04c627eddcea5caf9cbc0134
 -- 
 2.43.0
 
 
-------A5620834ADBE581CC9892966FA9ECB3A
+------F3F7044912BB47D11515E6DE65EE77DA
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -664,28 +573,28 @@ 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
-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
+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
-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
+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
 
-------A5620834ADBE581CC9892966FA9ECB3A--
+------F3F7044912BB47D11515E6DE65EE77DA--
 
---===============4076452882560077655==
-Content-Type: multipart/alternative; boundary="===============4862635828317429347=="
+--===============2525170940429881838==
+Content-Type: multipart/alternative; boundary="===============3309014326949955468=="
 MIME-Version: 1.0
 Content-Disposition: inline
 
---===============4862635828317429347==
+--===============3309014326949955468==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -699,7 +608,7 @@ ace, Worship Street, London EC2A 2FA, United Kingdom.
 
 
 
---===============4862635828317429347==
+--===============3309014326949955468==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -708,6 +617,6 @@ Content-Transfer-Encoding: quoted-printable
 d Wales with registration number 04543232 with its registered office at 1 P=
 rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
 
---===============4862635828317429347==--
---===============4076452882560077655==--
+--===============3309014326949955468==--
+--===============2525170940429881838==--
 
