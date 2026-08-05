@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21333C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1667C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:55:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24E596B0098; Wed,  5 Aug 2026 12:54:22 -0400 (EDT)
+	id E84C36B0099; Wed,  5 Aug 2026 12:55:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 226426B0099; Wed,  5 Aug 2026 12:54:22 -0400 (EDT)
+	id E5C926B009B; Wed,  5 Aug 2026 12:55:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162D86B009B; Wed,  5 Aug 2026 12:54:22 -0400 (EDT)
+	id D99EB6B009D; Wed,  5 Aug 2026 12:55:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E59016B0098
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:54:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7468AA04E9
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:54:21 +0000 (UTC)
-X-FDA: 85067813922.08.F8C0793
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CD8E010000D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:54:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiYXXsf5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE7946B0099
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:55:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4413A1604D7
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:55:09 +0000 (UTC)
+X-FDA: 85067815938.30.F5E0E28
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5B727C0012
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:55:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v2E4D0zr;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785948859;
+	s=arc-20220608; t=1785948907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LomNrTwfUghBLtw8pruEIdjOnzBlW2jy2hvg6IDyNQc=;
-	b=NdUEZknh8jV81KgTWuftJyCWQl4kMGG+3atlrgGOGODEcxlT/NmLA2gDEEeN/th6821HdC
-	r6kK3WQy1dBXx80EdUyY+tUr98HM+gD7LADbQGQ4YKC5oNMI8ab31TNkfk1l25k4nyiaXn
-	bGR2/33g+CBwlkMIhCwYfPoAOuisYWk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiYXXsf5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=y/Xo6oFfSvfj1zh+rhXXcNboxnlTqNc3vaBkdgumDs8=;
+	b=q73fBh4jq/AyFqPsq3DZWt9px9wcpsLw/XQAtkjKFil4KPdOLMxIgTKweGauLzMTWA+s0o
+	TQOgi08Uy+RZqmq9u4/6yybLnRxCImBnKyHJtP2dLXDD/jB6A8x8i1L8tOmVrrIQI3P6/N
+	FJiyvdeieG+1CMlV22C9xYOqNtUsb3k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785948859;
-	b=XH5pOvOFsNKg8lIDi3AdbN/0vcVEhKJrkgjZxFVwwuYtJVqSDKoKHyrvHNbmSHqT7YVF5x
-	MLeGVxeQSEIFHOorEa5F4GBBHIrIJEIqnM+iGNOwTpXH+iFVde1F9wRtZRyVaynUfvBAkC
-	xoMHRVPHkrhMOjXTW786uPKI5HUJ/9E=
+	t=1785948907;
+	b=lSVgNIaZJhx9+13h/sYl2jHCQxypuo7IfqPhZ19I4Ra45S6jrO9itWWYTiZs2VvEpfwqIT
+	Q/HbF1/FyWQgWH7B6D+d4qS/hREBqGHvEe0F0jAHKsc8ULqPlq/R2l1lXUDG2meqNfoOgC
+	xgqIAJkssYIgLl2TR7JmOMwvggxHJVo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v2E4D0zr;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 13AB460A83;
-	Wed,  5 Aug 2026 16:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53211F000E9;
-	Wed,  5 Aug 2026 16:54:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785948858;
-	bh=LomNrTwfUghBLtw8pruEIdjOnzBlW2jy2hvg6IDyNQc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hiYXXsf5l4ipSWL+908ZrIFpoqj4OiBmGzprF59jomn0pXAbbV56oHNsxUmOyg/ZX
-	 lf2kqn/kxqzB7KjuWPhfApxRkWxGfvFv7KlCrfFqw8YxXg7CR36Q5lDU3g89Rtmrso
-	 fvWjixVKzCDpWgc0UPGqCyY7TgpmpnCJRZxsZcFhaSurgnE/OY8+CJdb5I5Mf3wvCl
-	 QPOJnObFtBnmK0GnjSLVbDxBcrm4cTCICaHwnoDEb//lUts7+SHamUQWdWvObefjtF
-	 DISvPODt1AWo2x4d/07mdpV030QtMItr6BIxX+CYHkmU2FnkNmqPLVudgGVWbVWi11
-	 1aYMtS+2AxsnQ==
-Date: Wed, 5 Aug 2026 17:54:01 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, 
-	Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-Message-ID: <anNqcgYx08JXvm94@lucifer>
-References: <20260805055544.1568534-1-clg@redhat.com>
- <20260805121524.GM27883@nvidia.com>
- <anNkjl0qNHK47WTD@lucifer>
- <20260805165240.GR27883@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260805165240.GR27883@nvidia.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CD8E010000D
-X-Stat-Signature: qjnedq6n4ktmgui859sszai9fcshpfex
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D83A43C5F;
+	Wed,  5 Aug 2026 16:55:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AF31F00A3A;
+	Wed,  5 Aug 2026 16:55:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785948906;
+	bh=y/Xo6oFfSvfj1zh+rhXXcNboxnlTqNc3vaBkdgumDs8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=v2E4D0zrSHz84NoMOT/N5xD2ffO+tWDFQxb+rv7JssylOXqG/9CNmDq6w5SBv6Le6
+	 cKl++OCnqbi+g96XX2whiBiZhAsEU430M8CwOeqTC7VjbdMRG+xZP7Qg6pAvqE9qqV
+	 WvIervouVCFUIY3n97UiCgoh6bbQZwf6w0pxmnu4=
+Date: Wed, 5 Aug 2026 09:55:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow
+ when profiling is disabled
+Message-Id: <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
+In-Reply-To: <20260805090633.141001-1-hao.ge@linux.dev>
+References: <20260805090633.141001-1-hao.ge@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5B727C0012
+X-Stat-Signature: thka4fpepmaeojc13ix757ap3jke59bw
 X-Rspam-User: 
-X-HE-Tag: 1785948859-42063
-X-HE-Meta: U2FsdGVkX19RTxuY1f8BChoNdVxVkM06sNgWiOGqpm8XnQzP94qgKtmXeVOr3bEf/iUO+a2Nh0NwLAHiRhgbBreCVLCSjzWdFLkPVSxjcpiz3SqqBMPbib743IdugxDLD6kbOXRW/Pdbf/pku9vLOqX2R+CqdBDNPlR7pzveS6Z5OZpF9FCkGd6MqWIjYEcXUtCRmpua140jcB4028NKclKBNSvSFntmTgmYdw7YjC+61VSvZQlgGG4J/gGOGjLeLWltN2kiZuIX0kZlHk/XZ1lThVvj0kDV/3bG3moKeyQxnMxgx0kRh2rV8bEI9evaQOo1wCInKNGYKv46kA0r856Yf0+PNE+wlAHgkRRb4CPMs377tjdaDYGbENR6PF2oWdXR0g4+ACN3a5JchTJRrf6zkSsdVhjz526k1jJhrcOk1QofG6yhusZ9QhC0oPGt6kgT7tI0umcTrifZNWS5RcC8j0TMgbI+v3BNFKHz1QVy4DbX+57I5nMIMPTbTTwKpSv6zaGIv0pl22IckcY9VnN7oJpOdlKoDAE+mPC3lifwZ95aLiiAmLeAAmbc+Ivrpuc18DbdY9n389nrIsdgQkS3BCwo2VQvzX8U+UonxjM71e88D2DOFyohnvR7EE95GOjcF+LG/+dUEUeeTU1/CrIHh8KEXbSKnFNtVlpZUSZYaYhA/1TubeD8j+eT1GKqTxhXT4n2Mc27xXrLVBojzyA+uaoMDWDP0UL/DiIxyEzWrO5jdTeOX6LUJACKdewxIxnTj7D+zn8DXag4dYQ5W/yEaMlmESCXnd9rRYMwgD63lIOYFV17NZ6qRo9zep00jXsZYGZnwZ9Nk9GpdHoG91/4yKsacNZNpJDkARbXJSTX2fkbKqso9Jv1o6F36PTW04LQK7xVRJ5yehzRAgVuPsYSbzqSf4KGOz3mV01RddPGvRSCE3U3UctoZrpA394v2tdkVIgd5rLYkoJGw2w
- 6zPyS6wz
- 6OC0boTOKl228lO65k+BTUEg8H5h1po6tfSGJQAlHqajsW8mkNF8bVJHPSJhkV6IvZqoFLqdycOzUEt4GKwXfL/ZnYpjYZovlyhfpd1XhRYES+HBv5GpcUNJ2rqkpiJN3v3QKfAKcXA5hBq3Ysu8FA1rL4jkBLukWVkPfCuH6uJ5Y49kw/TGHjXA45HZR5+gyAoJGQGS6WPNwzYuzC8xJTTSqXOa1eiT1PLtPptM8u+TaoT1/7Y4jaJGG6uJwFlzC3kJPIy+NtcYHo50dhiAV/o/pO+9kGVnMF2dfy0RWOKxmNJHB5bmD7hp5TCaQ0kHUgygl
+X-HE-Tag: 1785948907-162872
+X-HE-Meta: U2FsdGVkX18UCc/yBfiPGIkNQiT+EVdaojhVHF3M0Aj2ZEVCBJ5V01iMs+R2EIoa8X8hdg73mcSU8od/pMOA7/JJSxa69NColxItZhdfuwKKKLvsxq2THjfIO2be4KGLwSx6oanV475aEDbNs9SmmDBRbJpcqApus5qyNnx+SdVY5+s2GV+9q6xqOfZZKeSvHFiYB6/K+th1H/ct6UtJ8Frw3oUJyCJBYaHSfJmXGb8c4GAg+sEH/CRAlWFC3E49UlmsXAi8nxoI/4Dc9KIEpGnBkC4cj/5LqNkF7uIAmlL24wDxSsHSxBAcoKBeAUeoPe7p1xVoKZ5+Wzg07toGyzTZlG3L8j4rrELWCRj7bFhO5nFf766equIPcbKWAMjubbs+CW41WqWcnx/UwQczTCZj5DZOyVlqsgHDDtkNVsbgwGbMZ9saHiPW/fpWOKR3kjnfdkLss0JCv77GsTErsvyaTg2ug0I/t0YhvNB5YPLpt4DEdlTFecavDtV7ECL7e26tVPWqA2KgNs5C+pt1d34PswpKkP2N9ro51a2Yrb05FSqzYlWD4wr7ixj8ZTtuYEPjAWN+O2ZVpR7+OJeTmyQRJSo8CT2KxQXaMaCKIQEeFRGWiNdBbQbnJ30XyzHJf4UUjgHuc3SbUeG4/GrnbFtbsO2wWqekMOzcQs41dCtPxn20uezlF3A+Oc0Sw+hEl67P3Qou/V2egdgnAG84u6eHGWsZuhMX7kXy0lcbt0/JpSSEwzZU//gP2aE/6cLz7uF4WRwcJL+qF/EVVKrevL/3+aJRHOc7BJoLNWTunk1r7Z+f9F9wWyt4wWT92FEmVoCYK4uSzGFAbCau9KZfatkDgtd5NUdtwxkYjtVr3DopV9XinVWqc2SkUWwtMWH05U8Rdi8+hDP8sYcNNSQ5IquIFfMcUbMmH/gvgyLM6hKaeIRKP3+RsQFDOKOrwjmN9nk3yQQOh/F6hqn89cG
+ BzagkMLU
+ XZVo8gZC/BODVwLVGtseaK3xLQr0lCVkshFVuGLwJ+1E2BTgoA+mIIaulKLwNUM/iHCFPxHCB+3ol2Ab2BjdZjhN4W+G2jjmUoU71FS7FZnpDe/mjPRyW1EX/5GvrNVpTh2OVBjndqNBhsluWwXBFZCNZ27PUPmVb4mLYH0nXNIgHrXb3TonlzppBqgLmim2UGza3rOiewFPzsbdzd8BQ0E0n0cZubYyfbXu3eLyyZSxpqRi62XMyUR/WeFcpRqiOkZWiwOCxkfv2UjK/dmA9PmiRDMW6OxiM+7CKChnJdq6F2rG2tINAMFV6XWa8RxDzoKOYGLP48fGu9lv+9M3H3s7QSaNwa0uuiJB9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,37 +91,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 01:52:40PM -0300, Jason Gunthorpe wrote:
-> On Wed, Aug 05, 2026 at 05:29:34PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Wed, Aug 05, 2026 at 09:15:24AM -0300, Jason Gunthorpe wrote:
-> > > On Wed, Aug 05, 2026 at 07:55:40AM +0200, Cédric Le Goater wrote:
-> > >
-> > > > The result: each 256 GB BAR is mapped at 4 KiB granularity -- 67 million
-> > > > page faults per GPU instead of a few thousand PMD/PUD faults. On hosts
-> > > > with 8 GPUs (2 TB of BAR space), this causes VM boot times to degrade
-> > > > severely, with 99.98% of CPU time spent in the VFIO BAR mapping path.
-> > >
-> > > Broadly upstream we expect people to use iommufd and dmabuf for these
-> > > configurations to avoid all this nonsense overhead. :\
-> >
-> > Point taken on that :) but I think it's generally reasonable in line with the
-> > huge PFN map changes to do something like I suggested.
->
-> Yeah, for cases like this working with pure PFNs from some non-folio
-> source the size should be entirely delegated to the driver, and driver
-> should always have the opportunity to place a maximally sized PTE.
->
-> It is definately wrong to intermix it with any THP logic. DAX isn't a
-> special case, it was just the first place to partially implement
-> something that looks like this.
+On Wed,  5 Aug 2026 17:06:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-Might actually be worth getting rid of this dumb DAX special case and putting it
-in the new thing too actually so it's actually normalised as 'statically mapped
-stuff that doesn't allocate isn't gated on THP tunables' alongside huge PFN.
+> In reserve_module_tags(), the tag overflow check is gated on
+> mem_alloc_profiling_enabled():
+> 
+>     if (mem_alloc_profiling_enabled() && !tags_addressable())
+> 
+> If profiling is toggled off at runtime and a module is loaded whose
+> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+> skipped. vm_module_tags_populate() still maps memory for the tags and
+> the module loads successfully, but the total tag count now exceeds what
+> NR_UNUSED_PAGEFLAG_BITS can address.
+> 
+> Once profiling is re-enabled, ref_to_idx() computes each tag's index
+> as its position in the alloc_tag array. update_page_tag_ref() masks
+> it to alloc_tag_ref_mask before storing in page->flags. Indices
+> beyond the mask are truncated and idx_to_ref() resolves them to wrong
+> tags.
+> 
+> This silently corrupts /proc/allocinfo: allocated pages get attributed
+> to the wrong call sites, so the statistics it reports are wrong.
+> 
+> mem_alloc_profiling_enabled() and mem_profiling_compressed are
+> independent. Once compressed mode is established at boot, it stays
+> active regardless of runtime toggles of mem_profiling.
+> 
+> Remove the mem_alloc_profiling_enabled() guard. Also return an error
+> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
+> the mapped pages would never be reused - shutdown_mem_profiling() sets
+> mem_profiling_support to false, so no future module load enters the
+> codetag path.
 
->
-> Jason
+Thanks.
 
---
-Cheers, Lorenzo
+AI review points at a cpuple of possible things, one pre-existing:
+	https://sashiko.dev/#/patchset/20260805090633.141001-1-hao.ge@linux.dev
+
+"Does this unintentionally result in a denial of service for module
+loading, preventing critical drivers from loading when they otherwise
+could have just disabled profiling and gracefully continued?" sounds
+pretty obscure and I doubt if we care?
 
