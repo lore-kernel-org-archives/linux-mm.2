@@ -4,97 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCBBC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B953C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:14:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C0416B00A5; Wed,  5 Aug 2026 06:07:50 -0400 (EDT)
+	id 6C3D86B009E; Wed,  5 Aug 2026 06:14:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 270566B00A6; Wed,  5 Aug 2026 06:07:50 -0400 (EDT)
+	id 675276B009F; Wed,  5 Aug 2026 06:14:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186F86B00A7; Wed,  5 Aug 2026 06:07:50 -0400 (EDT)
+	id 5637B6B00A0; Wed,  5 Aug 2026 06:14:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E14886B00A5
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:07:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76A56A1D33
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:07:49 +0000 (UTC)
-X-FDA: 85066789458.05.CA2A210
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BF1A8140009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:07:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUJU4mD7;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 34F7C6B009E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:14:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1F42A0436
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:14:21 +0000 (UTC)
+X-FDA: 85066805922.09.49043EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0C1F84000A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:14:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUqDLO7i;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785924860;
+	b=2NTI3gw35aF0ddE5ZvWDL250FH7zTqgrYk8emcQG4YPLedZyS4vbxRNpM1om/rsCbCYxMB
+	PT/0OwaLIKOjwz5smxXSODxaEHmB8noqallebZi5mpMPP0wRs2Y7n8UNYSdmNKE59k9J+4
+	4Ct//0l5mL8EuTlP8hIbc8zVU93lHB0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUqDLO7i;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785924467;
+	s=arc-20220608; t=1785924860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OpH6sf3viGP25/XL26BruqgaIkBu5ms7EKOCOM53Zpg=;
-	b=sae1DcGI4OJrkykZOUCAh22H+nAiRkfpxvTtMooaEC7SksKUStwSZBWALeo2Y/6euerGSC
-	CskM/W2VpY6+C+v3aB7MJ9g4HGNcWLaoo6DYjUUtQ1wH43o2eLyx4/D9dwfO9svuacpHyR
-	Co50CyHRwtvZfJYj87uKDSG+AlDS0aA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785924467;
-	b=i3K0EZqGxjXlxrSfUnD5nC5U/Q1drBaH4nSRt5bLbHyqXUF40hw7sMuZJjmj2xumhv2cXk
-	VZAhdduA8j+1FPBBpoJQnOkxCBT97LOGsPHhFsnq0ehCHtu0+mOc2UOgkfyuo6Sz7v4Zwa
-	svY/v8ipRvKOfEo7mlffkz92Tpp1rc4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUJU4mD7;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=dlLlF9LK0MzV1u8H0UYPrxod1v9WUWZh7NTLPM/1pbQ=;
+	b=g5fzWOhTrl2wRw5ep6QsN4+LxTVUJ7sqxw9Vjyg2anY6ZoJTTUb6Du1/x2TIUoYdu0wKGw
+	c3mdgDF4OqIzv9FuUSEi23ZDRVRZmeD2w9VOF02O6hd0qVFruxrHd41jOQ9pb18k4EW32A
+	zzU44TLto756eCB7ZB5pqkmZjodOvZs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 319D5401EA;
-	Wed,  5 Aug 2026 10:07:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFB21F000E9;
-	Wed,  5 Aug 2026 10:07:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8255D600AE;
+	Wed,  5 Aug 2026 10:14:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB21F000E9;
+	Wed,  5 Aug 2026 10:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785924466;
-	bh=OpH6sf3viGP25/XL26BruqgaIkBu5ms7EKOCOM53Zpg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fUJU4mD7++zKSDGatk7iEqLYxdXukaLXAPfjZMSqC3EDLxbHjL6fOn7KHWUu0/6O0
-	 a5JgRjL2pxH68NptmLbnQgkzBnyW9OPJD9cHmXRUVbi4iVHDRJKd5TgPTuLgf+aBxN
-	 DQzxJ+6wYNPmOf5xDpBBAYOdz7qEPGeEW2DFv8IShsI3S817lVGYMAMCsQs+EEyvRA
-	 4w3d9djLloGwuWXm45G6lv5KQqKpi8fygivQVwa8cJlG3yZuOQERmWGbfsst+X97vw
-	 8IqCpw99smpx7MkNGOgPuCMqpyfUbNdhp1ogNOVgXi7MGuF6kzyjbiC13nfPcyP3cA
-	 0XSKVs7p6RtrA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: baohua@kernel.org,
-	senozhatsky@chromium.org
-Cc: akpm@linux-foundation.org,
-	bigeasy@linutronix.de,
-	hdanton@sina.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	minchan@kernel.org,
-	ryncsn@gmail.com,
-	suleiman@google.com,
-	surenb@google.com,
-	yosry.ahmed@linux.dev,
-	zhangdongdong5@xiaomi.com
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
-Date: Wed,  5 Aug 2026 18:07:40 +0800
-Message-Id: <20260805100740.71994-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
-References: <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
+	s=k20260515; t=1785924859;
+	bh=dlLlF9LK0MzV1u8H0UYPrxod1v9WUWZh7NTLPM/1pbQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RUqDLO7iDc/lhRb2Fl7xRPqw1FvnOuR4xpc7tDTIBV/ZFowhZd/odbNSGO/Rw8TAV
+	 Z3DAfdUGbiK9ope86Dc2lZti77U2/Jzlgqcgdot5wNykouszXCvA7deI+Y4Tzpq5Rs
+	 +/EV9nM4jXuMgzbHepUFudAUNWcLyZ6ouW3snVpGGPiDbhNNf0rMbK6Uq2NWJ910fp
+	 +fB4x+jdjvHDGUB6Ft3oTfoU8ijQzeF5MRwb7eUEnsXaPxxVNR4SR29xmxMo42tmxF
+	 IDaeUAgvJJu9iQE8/VDVYFFWsY9twUJKL2hKr0oH+8XzvMm3LoDiUpr6qyJtOp0A7o
+	 Dc0W7vjUbAqsA==
+Message-ID: <b07849bd-b0d5-4719-af9f-453352cf622a@kernel.org>
+Date: Wed, 5 Aug 2026 12:14:08 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/6] mm: constify generic pte_get*()
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260803164400.531199-1-pfalcato@suse.de>
+ <20260803164400.531199-6-pfalcato@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260803164400.531199-6-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BF1A8140009
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C1F84000A
+X-Stat-Signature: ohco9w494jt4nefntcnu96i6e1xhiugs
 X-Rspam-User: 
-X-Stat-Signature: kfr8qmdju3ywz1y55c487mmb5sc841u4
-X-HE-Tag: 1785924467-555847
-X-HE-Meta: U2FsdGVkX1/B/mlocUzfScaShJhr/SqTABczyaKcE1rFjgAvnVpPedLZ8if9z7Dn0KzthJBRcAGGT6+oHcyk0fEUZ3D6qm18NUYTHKGKs6GzqUNCEJ97y39nkNzQiLeosQRdyzJcuV9JBG5vsMYp9vn90iOl1Y373f8fJrpemPVXi79S9pexquMTEe1pPBUlGQ2AaDz8SUNNW5yMbKsOYI9wRKX3PHtzT27RmsSm2l4GwJfH0Xv5o0a4cFYFEZgdx9eK6lP+xyuSKGTEkXRIfuV5k3R/bvouwGuh2ZtTf3yyJ3av+lhrmbZHADaCM2z8MiVb4+Pw4PZfzwj808J8nAFn7Cq85+94ZoVsaYWTc6p58bxMAADMoqBT8lvUEJwupVRPF4mPdhaE1xrwsjhS/wyGR/CcqOX/1SHeBBqB08DiZEzYvRCI+cFJsFuXlkrKvB/fHTfOYXfS64Nof/EhYNHCufW4rGjoKlX5gefZPLeKcC0S3WCA0Q9Pc6k7+QlYM7s1OoqHkyrEGg7kzg0viq1aj7Sue3kT8MY/ZcyAKY6RYtvW82TUcz3ubE0xGlWoYxoJ0wo7hRkBROs0H5RBULKlHULcccYxI6K1YrUdRGPwHIvHd2Ncij6kx86/CfYX324me3Jxdo5WRC6diNWQNRERYrf5/Fv/70SUhEbxhFla6WZ6aiREW2WcLOBNfmV2rf20TtYllYy7UW5HB93HI9EuUI4dsiQGfInoYTJOLu+2v7Ggb2xbp1hsCiYG3qf0vu4QvRdiSRqGvyCnZUtXkoWFY+XemZTpIo9vNMTdjgtXfunalZSXESdakrLDXdSY2vyznVuSPRiSjcN2QZA2Yxv323n8sOAJ37keH2lVsAJk7SVkNHO4I6PIYRymjB3bV/GWLu8kTK4LftuCGvAUWOfIDOpBwTYjD3rhW9yPmvtmSm2VrohTzyaUEPbPAsVrnzQDRmVWpaJ16EjTxhS
- Bb2uEUFv
- v1x6NteQ6qobKd/Dm/lYcxcasuF2PqTSbOOnvSgeVjn5vaGOEFlG6V71UXC2++jLHBTEngRjRzO/HlNGbjfHAo05rYzRG46mnc0RhpWNiVktZ+JHWzatsbf5yX0Rf7oWChyN3moYqkcYtA95Yd/FQe4+bG2u1UaGM+hXIB3FkfWW3yG6h5omnoBNLSEpEdg+HdNCWsJvtUQhn18lbHvLgAbt6LAau6zO8vAsuoC/ySrHnK3JPKeqObj/atRcjkW/tJoGr8mIOF4jIhldFtze/DK+9q9aoxZ1xiAKl7Xku0ctRmJBBnuvkyCuw6BtEFxYh7yMVa0tcPiMEYfm4QFCUKq4kqdlW3Amit0Dw3MZ4nW+LmqyMz4LYPAWWbw+IMzKGFPdYJEegQrDXnrpUvckg7alFdw==
+X-HE-Tag: 1785924859-733259
+X-HE-Meta: U2FsdGVkX1/y16gr5aPaDYGq8hh9enIK1jVQ6d6aYc1sHimW72gAMxQ9nzm/xHQRq/cbegRV1MrmElK8aB27/C8Fy+ums7HKYdm2BvIrGNtqjG+XbljXolX4qrjvdLe+KYmCGtolCld6H+cLk6SfIODvUaMTdtJIrmR2Bxe/kGSb9P0ap26+51SZEwRiGe3ebYi6en+2BX2jd9CqdLtERATXDC8OBj4Iu2kbTIUSpUllo4N20punlwMjMv5PvIEVWXTBz4WVAuzch1yfjveDB4HkCb/42DdcPzeTc9bbZqWkgk1QHPLa3jAzEgbPWnFZcPEfdxM8gNU8qqn/8Cic+Px5ZSbZTI9ubcUxh5tk38UIc3RVnAilpS9GRGcFys2TdkqofSu9D4UIxaeGc4f4GDmGOMLU/hEgcGT40UviKgAcP2iXm33I9eMErgbECEZLUEK4u5MU8poz3xnyHBxKqyFX/MsA+qya4wzVmxhJPqzFDEj5jftx+qjSyO43df839XWTt7wtEpv9dSeUC2BzbQuwk/1PaMIEpoEnws87XaPzwHtLBlDQj2rT8msWkA6HLCb00lZYnYytJcSJYXr4fi5fC90nuxStd1lUFSB44OZ7Nzx6vOZhWKjuUN7BVDqpZLS6FWkW85fI4n13lutieJ5DkrCtZaB9ioUIiXi3mu+QrlED9MS6w9e2XsCozkBN4vKREk9NLcRLF75PTuctVTHkdo4pilPlrQ7dkwZnyd5b295/k4218NW5dzWc6BrPGJvdCMcKcYGSRBlLI0M1qpTxcIgjMlHyr0xRHqAkyBR3oVT1kt8RBIagEvecIts8w68zE6r5vVn217RGUxXhRavc9SuMmLcniL3c6cyyRTyPBS9XxtA1PxrZWo+jxEdq7q9wmK0QNm/kNfBFVhT9d+iRImaVuribn9fB4nXeJwCBa9xrHILecuemCITyzVxmiVzdaJzSweHh+iXCpeV
+ SjfGSOTb
+ 9IoOQ0AttSA/dkH/ZFehNVr8PQtVFgsId6Hr2FzFoXI1KaJqIonCOcblnMBr31ybZDhUNtYkOTmpYnt5kjd7oZPsG7zYTRu5fkw4VkWJosg8nfqL/ZJCCe7j659FliAr+6Lk5JmJJnRgGYREc9n/jpgsC/SuKskspK3OJOpL/BTpnx8uJnmYTButouSUofqi5zP03R7BbUaf3qVVRI79WC231Xdae8SsGmwDF6b5A5EwtDDKdDlYTxvaK4BW/yLmtZGlfzZCsX6csFqXJQ/wdy534kQTJQX/qQD0gUvk20Ezf/JUc1fFDoi6JQzKj6xc95E/PmWxmJEzS3tsctUktTLgK8bjExSjd+soZnQgo0TYOrVfEH2W5n8FjJ3BPfP22419g7yGI4yIawr8a3xmDdNRA/Q0hbY0U7NfJVRkGXMZhGlGjun2QpSSl8CstQnnBG+JAxClK29lT1Y6slA7zl96UuqozEppBZvTgU0UQs7WDDe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,140 +153,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 5, 2026 at 3:50 PM Barry Song <baohua@kernel.org> wrote:
->
-> On Wed, Aug 5, 2026 at 1:21 PM Sergey Senozhatsky
-> <senozhatsky@chromium.org> wrote:
-> >
-> > Hi Barry,
-> >
-> > On (26/08/05 17:09), Barry Song wrote:
-> > > > > This report shows that the zram mutex has become the top lock
-> > > > > contributing to UI frame drops, even surpassing mmap_lock, which we
-> > > > > are also addressing in multiple threads. :-)
-> > > >
-> > > > Any chance you can share more details?  Are there perhaps RT tasks
-> > > > in the mix, priority inversion, starvations and so on?  Can proxy
-> > > > execution address any of those (if it has relevance to the report
-> > > > you are looking at)?
-> > >
-> > > Hi Sergey,
-> > >
-> > > talked with our engineers reporting the issue. i believe it is all
-> > > about priority inversion.
-> > > proxy execution wont resolve it as we have a sleepable zs-malloc
-> > > within the mutex.
-> > >  i believe i need v2 to release the mutex before doing the 2nd stage
-> > > zs_malloc with
-> > > direct reclaim.
-> >
-> > Well, we cannot just drop the stream mutex and do sleepable zsmalloc
-> > allocation, because this will invalidate compression buffer.  So we
-> > then will need to do re-compression.  Something that I was really
-> > happy to drop [1].
->
-> We used to do that by an temp GFP_ATOMIC buffer and memcpy:
-> https://lore.kernel.org/all/1611035683-12732-2-git-send-email-tiantao6@hisilicon.com/
->
-> As long as we copy `zstrm->buffer` to a temporary buffer, we are
-> free to go anywhere afterwards.
->
+On 8/3/26 18:43, Pedro Falcato wrote:
+> None of the helpers need write access to the PTE. Constifying the param
+> allows for const typesafety.
+> 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
 
-Hi Sergey,
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Just as a proof of concept, I changed one path and it seems to work.
-We release the mutex before calling zs_malloc(), which may enter
-direct reclaim, and we no longer need the mutex afterwards.
-also, we can avoid re-compression:
-
-From d1a4cbe63fc2f7336c23bc268b1dffe15b0e7444 Mon Sep 17 00:00:00 2001
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Date: Wed, 5 Aug 2026 17:53:49 +0800
-Subject: [PATCH] zram: avoid doing zs_malloc() with direct reclaim within
- mutex
-
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- drivers/block/zram/zram_drv.c | 43 ++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index cfa98846ac48..e00d896a101f 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2218,6 +2218,35 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
- 	return 0;
- }
- 
-+/*
-+ * try non-sleepable allocation for !async backend, then try
-+ * sleepable allocation; for async backend, we always begin
-+ * from sleepable allocation
-+ */
-+static unsigned long zram_zs_malloc(struct zram *zram, struct zcomp_strm *zstrm,
-+		size_t comp_len, const int nid, void **bounce)
-+{
-+	unsigned long handle;
-+
-+	handle = zs_malloc(zram->mem_pool, comp_len,
-+			__GFP_KSWAPD_RECLAIM | __GFP_NOWARN |
-+			__GFP_HIGHMEM | __GFP_MOVABLE, nid);
-+	if (!IS_ERR_VALUE(handle))
-+		return handle;
-+
-+	*bounce = kmalloc(comp_len, GFP_ATOMIC);
-+	if (!*bounce)
-+		return (unsigned long)ERR_PTR(-ENOMEM);
-+	memcpy(*bounce, zstrm->buffer, comp_len);
-+
-+	/* Don't hold mutex to do a sleepable allocation */
-+	zcomp_stream_put(zstrm);
-+	handle = zs_malloc(zram->mem_pool, comp_len,
-+			GFP_NOIO | __GFP_NOWARN |
-+			__GFP_HIGHMEM | __GFP_MOVABLE, nid);
-+	return handle;
-+}
-+
- static int write_incompressible_page(struct zram *zram, struct page *page,
- 				     u32 index)
- {
-@@ -2264,7 +2293,7 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	int ret = 0;
- 	unsigned long handle;
- 	unsigned int comp_len;
--	void *mem;
-+	void *mem, *bounce = NULL;
- 	struct zcomp_strm *zstrm;
- 	unsigned long element;
- 	bool same_filled;
-@@ -2292,22 +2321,20 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 		return write_incompressible_page(zram, page, index);
- 	}
- 
--	handle = zs_malloc(zram->mem_pool, comp_len,
--			   GFP_NOIO | __GFP_NOWARN |
--			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-+	handle = zram_zs_malloc(zram, zstrm, comp_len, page_to_nid(page), &bounce);
- 	if (IS_ERR_VALUE(handle)) {
--		zcomp_stream_put(zstrm);
-+		bounce ? kfree(bounce) : zcomp_stream_put(zstrm);
- 		return PTR_ERR((void *)handle);
- 	}
- 
- 	if (!zram_can_store_page(zram)) {
--		zcomp_stream_put(zstrm);
-+		bounce ? kfree(bounce) : zcomp_stream_put(zstrm);
- 		zs_free(zram->mem_pool, handle);
- 		return -ENOMEM;
- 	}
- 
--	zs_obj_write(zram->mem_pool, handle, zstrm->buffer, comp_len);
--	zcomp_stream_put(zstrm);
-+	zs_obj_write(zram->mem_pool, handle, bounce ? : zstrm->buffer, comp_len);
-+	bounce ? kfree(bounce) : zcomp_stream_put(zstrm);
- 
- 	slot_lock(zram, index);
- 	slot_free(zram, index);
 -- 
-2.39.3 (Apple Git-146)
+Cheers,
+
+David
 
