@@ -4,92 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72BE4C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005C3C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:02:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FB6C6B007B; Wed,  5 Aug 2026 07:01:06 -0400 (EDT)
+	id 022B56B008A; Wed,  5 Aug 2026 07:02:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D0406B0088; Wed,  5 Aug 2026 07:01:06 -0400 (EDT)
+	id F3CEB6B0092; Wed,  5 Aug 2026 07:02:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BFB76B008A; Wed,  5 Aug 2026 07:01:06 -0400 (EDT)
+	id E07576B0093; Wed,  5 Aug 2026 07:02:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A24C6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:01:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC3451A0454
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:01:05 +0000 (UTC)
-X-FDA: 85066923690.14.2DCF337
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DE8C8A0017
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:01:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KSGDHbe/";
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B04DD6B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:02:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3EBDA40454
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:02:36 +0000 (UTC)
+X-FDA: 85066927512.08.022E5F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 75A6914001A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:02:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a2OG/14D";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785927754;
+	b=35zgUxGKbq+YhV+VeZPuGRiflyJzPPJPLNCgqg6bJ9v80pZYhgBcJVqZs0YJli25H7KhMq
+	duDtxUUO2mSKHpe4x8BowW1hPSHeQ/aJTHQqVh45e9Dl5cxtEGFCvyMVA6fIhGpPgdDPnO
+	5jL5HyK5tbC6MCal91qFYxpfmzjFfxc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a2OG/14D";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785927664;
+	s=arc-20220608; t=1785927754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qDsAuiAwi/V/y/EO85Gmfy8jVW1Pmelx7+mpYdcm6Zw=;
-	b=oigFBu8rfQTaO1L8dAJE5EtdSdVKxA82Kv3jsMRU4dsYWZw3GZpG9t9GUMM7ccMQVTaMRj
-	fggstB1nM3/8N+q873zRAQ//zHym/jKen1wQw5xPUnKh6sgbOUDnZlnrdvDO/UNWNTTPfi
-	DEJOwy1PASxMeYU3Wssq/ab9rfh8xc4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KSGDHbe/";
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785927664;
-	b=qD86TAHZY9+RCCcgbPfBTrAcDK6cVWchmHdihnOjmblrdtjoz9PvcVIpXagklK379lIZyn
-	Kmh5fw/3U8MwJkLVFRoH4k+CbbLjQUjEjqWgM6A8FcHgPpQFTEtsJAcOiIZzXNxio8aiFS
-	RD8dfpECkbTXnSdloY7hBuPfGdEhjzA=
+	bh=pLxE5qUs1sNIGK998MMucs9/LacSHU2wxGh+jo5l8SM=;
+	b=XAId6fkcc6RJgNdjL80cOclGIxJSK16w5tZuja8W4ESZe2AN/vqU3w76AP63ZT0aLv2WWV
+	M/UgQ1tyuUfTlh8EtngKOpuCR6p7CVFCNC/PgTz8IaEvW88hE3VwwXtc+p7MFOKb+5iB/p
+	yveuOOlQe55bBdPON7LBMfZzbsas8Rk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A2024552D;
-	Wed,  5 Aug 2026 11:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E58A1F000E9;
-	Wed,  5 Aug 2026 11:00:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F13BF600AE;
+	Wed,  5 Aug 2026 11:02:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DF11F000E9;
+	Wed,  5 Aug 2026 11:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785927655;
-	bh=qDsAuiAwi/V/y/EO85Gmfy8jVW1Pmelx7+mpYdcm6Zw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KSGDHbe/7YJtFj0m6LTmJpBaFhVs4pI+dlDOkzJJneOzSG/8GNA3lzF5zTblku03H
-	 Dc8YqSOTy6EhJRhp68QHmNeFaP+VeFaX0Ayp4VwHgcphj2jokMinhNCLpHuT6vQFmb
-	 r0CP0o00IkvU2vGB1d55NZbokuqhC29gaDmC0Xmu+4BMeDR5d6VodStxZfD4+eaLfj
-	 8IQGlJH+BQ1FQ5p8Vj/vZOjthOW/4KgTYjMXi784ImfMxxitGx7sqvVsSA0lrEVmNW
-	 f6d1jt9PLXumf8BQLJaKSHMj5q+Ynd1+8t9hJ5WWIQjdDRRgLjmu58OS/Icodq/OEz
-	 MCt4hEYwpDQZA==
-Date: Wed, 5 Aug 2026 12:00:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	surenb@google.com, vbabka@kernel.org, willy@infradead.org, zhanghongru@xiaomi.com
-Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock
- retry
-Message-ID: <anMV_Kf6nqS1oKBA@lucifer>
-References: <20260804095219.46213-1-zhanghongru@xiaomi.com>
- <anHMe4jFT9EIQe5q@lucifer>
- <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
+	s=k20260515; t=1785927753;
+	bh=pLxE5qUs1sNIGK998MMucs9/LacSHU2wxGh+jo5l8SM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a2OG/14DcRTRu37pq6vQtM+Ca5YodwL3Gyv6J3KV7GReTPPQt8gGM9X5001+xQez+
+	 DZwzk2QdEBoKC3jm8wuAKv3soQp7qZsBGL3slKAZ/6dUi02loloY8JHFqdPzgPuGhO
+	 iGM6z6Nk4I38djrfSrrZOZPZGwPOp0nSNfATLFzjyNb0+i0iWpeNGviGCdYUQL8K47
+	 kBYntJmsXQuXce+u39g70sKihTaOor7Iu6V4UrRdhQ/mUMOto+w58TZb3kD/2d4bZi
+	 r22qCVGF/vLWpB9Vx/6m5dw+JPy06gigeRpKtvQX87m1HqcPbQNl+vR230oy5thyK1
+	 hW6YHUY9oCnIA==
+Message-ID: <ff4fe959-c0e2-46f0-91d6-0839c90d62e8@kernel.org>
+Date: Wed, 5 Aug 2026 13:02:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] mm/memory_hotplug: improve shrink_zone_span()
+ subsection boundary checks
+To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ linux-kernel@vger.kernel.org
+References: <20260723084946.189392-1-yuan1.liu@intel.com>
+ <20260723084946.189392-3-yuan1.liu@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260723084946.189392-3-yuan1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 75A6914001A
+X-Stat-Signature: 6mne3z1fctga6mz3oe35gwutso3i64fn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE8C8A0017
-X-Stat-Signature: p6kfia65pqjtbbdjoppjqfmzyyzfxyzk
-X-HE-Tag: 1785927663-176948
-X-HE-Meta: U2FsdGVkX1+pZSm4wZ3X6bVwLDjHIPHLUmbHOY+RpUodPbq/MWw1ZCXrSiGlFz/M8fWw2EQXrqOInSH2028uBpHlRxeMnzHGxVZ2rpzRJEXhbrfjeGGQvHPrPVP8jcLAY2hITUY5+LmJ2iEgviKu1mVMtrfTm7fjUVZxwKHFJTiCeFb3W7WkPbB3mCnbqLEZlNoxHFVZZCIyqxbbkvZ8pFQt+KOF9OUOuTkMIOqKM1R0R9R0BhPPlTMhwSEeWRMNXppK6pjXVcKZYcZdGDrPoiSZQIef8thIriVLGRzSg5SaHJnhod2oHCu/A47hHhiAigKtCv4ynDCgQ3JsrPFFbozGJENGql722XPdwIebQjIEwH6NX/WeNFT8R7jXSYTbP4vd2eRHxIzLxM5Pj7mTic25MK+3lrRzlPpdM86h+17E4Hg2OImKjD7EpyyXIhBPtcRXI3G5KC5uSZzsrRcYug6TuQbDhSJFXnDhliqow+KcGKxai5rhl7zfAHq2LsM7uruqm5otTtro7cwMJZCEog/tEB2+0oyoGpFrCqC59uSs0ekNpqYE4aXfzmV8jlKUvXFhuHDgq3iTdahTAffkSrH8+NdROOY+dUKfPzwNrVX7oKNJjnbgTyMCaSLu6YjnxtbbBtnWTpq+z9/w/5sgXzX59LHurgv6Su4INEOkXoNcpjs43xTMCLyClR6kyycFbNvSx4+oNegcsH5ktcxc3ER1mB30xgaEHe/ihPBXgpTMV7HXcsZc2wlGxhfAnlAKvi/inQwaA7a6prOVHhaPhodKgXeQjipMgG/oi8JnWG+/lOLtifrfeNVikxljVwlPUm3kT4gBBhq97QCXixpiDx8FmGhwQycKrevro9Tu+1zjAGcwMqrsh1ittDp4bERlj4kfccioEh/abA9T1bX2SZV3GoH+E2f1S9WC6X4tAnwj7lO4ooU95HQAx3OQwjUTTJPaYFAiXX9vIV8L/wc
- ybJaG6FS
- UvrC1HNSyNRLfmPYB+kc0wbrqJchxQbpVvi/9Nx2EfWEp8/2m07UIl02CbhNB5F09kaZB1WZBLUtLUP+mgQjNAemPkc4+IqTpBfxR6rYKal29wZMzB+LIIRDbFKxwwbykUVpkbvooDDrjiC7v7OqGx/u6lrsz7DRZh+FLx9/lvtGXMQ05yRujV+cgGXpKB4+BwB6y+HUmzD26cWCwMG+UF0AGS/fm14Ze5TAMyMpR/tSsM5CnWsa2fu5Mh/Xxz1iEpjr9z7SqETHYlgovOL4o6A/gVi//kxo7IyZIh9cfS3YAiOHXa5GyYY7WPyQy0gytiikSOLGE8kjjY3Y=
+X-HE-Tag: 1785927754-888512
+X-HE-Meta: U2FsdGVkX18zpExxKJfxKioZflb0fjUczx/LMyoNZhn8CcZAYpcnMkV1R6FUtCJ3rbj8K59XDWEJfYqDYVW3ipn1LfWpKdES/Q1YkOqzgCuj2LJF2O1x3thSWB7ckyoPVp7IaO78E8Oe7PvVrUbrflAojXDktg4DPT2rdTPj571tkwUUFi2rRc18ZNFCrLVvLnF/bFDldm7Xykmxw/KAgwDhrVoZaaSsZUzZMswShOeYBNgUgPiTpQh0HVjQwhVTa5oPLSmTzl/Q1G9gaJbg5Pi4/P7aq2JWQksJG0q43BgLmeLJymeHgNO17oopJhRPqu4K4cXw61ddcXnPQisF7TcOFfi75XoQVosxpihHUuKfa619t+bJwIIOEKo2MxzpRHcGSSuTmhvNADODzm0Iw2rVqX3SrpV0qSgY6/0xk2Sj+Ub/9AqrDd7xomLapxsqJe3cPo1KiQVeqPrfRqa1R3Lp6Y8VFaXs+ypPD3VrGY2ZC+wM8HlPZOZ6A0DDSY/+8n0FtKbJtSebFHDOiaqp2hsYueXOdpXOga3EPEqhmIro12074vwTpZr/Fdz82dJRbACgiKaHraw70qcIcXo5N+hc+nXYyUup7kCCh6ZMylq4U8w2AeKUWegH4GG+DG+vHvDgvGVa6M4LXdJHo0vDVYiUABcnICf8K2g2LkgoL0THwPose8Hjquwyv5Zhnt+8IrTligeuOqfbfejOz7l12lM5XMiF01JMjFbi+d4pJq2oM4Yw8jqSccDMjm1HtYHrwDwZWJCHlN0uCCn0cD8tCfXqj0FfQEj9Ekk4ygLy/UP+dO833XMm55mU92gDW/F9Zl6FVnAcOhrG+XZSSpFh1q+DQgiZXpI7LeT7ehgz6P3zRWME9xe3x/Fq6OYPkufUqsvbGvqlijeWaoerGV2245Gx8pClXu1inFe8rYhHIxxEdD3ChGe3FUPlJIMDxuIe76uxekp84W56mqBGQ2p
+ VadBYtJ4
+ uD+RBe+8UkLqEQBAFhVyoykePCSKMwtmrzEc+25aRXtTQ2zwrI0ciRlDvCKLIWg/zm4VNzlsamUr5SDg/2uZYxcbZjkd4Q5C5bK0iPf+LFYrs1Q9KRql3uDF3rw7j/Bs/6viUKbZtTVFtUO4pLW5irLkgsrTyfycEuaYpL1een1QvqlcXJ5K/ze/V5j/OSuIws3FeQ3VHC8v1elZbfUMEvmtyVRwV2OgNjwkx8G13QOisMoS27x8/C4/LHbZKwkqnmJaEo5h5Ox0cTRUxNfW6xwRmXOASKg9+KTYmKjp8efgPxEEhuPNjXkA5YpvK7EzO9wE47Vz3ksUdJhrI3fQZhDamY6abLCYrpJmEEBwCz4A/ul9HdS3SWTF0cVEOK3oFnbEpOKxjtFpM1BbqXf6iH3oX83jL/TAmCECa6kznzvaTJjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,117 +142,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 05:13:49AM +0800, Barry Song wrote:
-> On Tue, Aug 4, 2026 at 8:32 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > On Tue, Aug 04, 2026 at 05:52:19PM +0800, Hongru Zhang wrote:
-> > > From: Hongru Zhang <zhanghongru@xiaomi.com>
-> > >
-> > > Page faults handled under the per-VMA lock currently fall back to the
-> > > mmap_lock path whenever handle_mm_fault() returns VM_FAULT_RETRY. This
-> > > means that lower-level fault handlers have no way to tell the
-> > > architecture fault handler that the retry can safely continue under the
-> > > per-VMA lock.
-> > >
-> > > Add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit that can be returned
-> >
-> > I don't love that name or that faulting retry behaviour is _modified_ by a
-> > value that indicates fault resolution state... ugh.
-> >
-> > It's kinda confusing things 'VM_FAULT_RETRY' is 'you have to retry this
-> > fault'.
-> >
-> > 'VM_FAULT_MAY_...' is starting to bring in effectively configuration
-> > options into it and that's kinda horrible.
-> >
-> > I mean is there any reason we shouldn't ALWAYS do this if a VMA lock was
-> > used?
-> >
-> > It's not too expensive to do a single retry with the VMA lock before
-> > falling back to the mmap lock.
-> >
-> > So maybe simplify like that?
-> >
-> > And like that this series becomes a single patch right?
->
-> This is a brilliant idea. That's a genius insight, Lorenzo.
-
-Haha thanks! :)
-
->
-> I guess the conceptual model could simply be:
->
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 45b99c3b1442..3592bcc9bbd7 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
->         struct mm_struct *mm;
->         vm_fault_t fault;
->         unsigned int flags = FAULT_FLAG_DEFAULT;
-> +       bool vma_lock_retried = false;
->
->         tsk = current;
->         mm = tsk->mm;
-> @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
->         if (!(flags & FAULT_FLAG_USER))
->                 goto lock_mmap;
->
-> +vma_lock:
->         vma = lock_vma_under_rcu(mm, address);
->         if (!vma)
->                 goto lock_mmap;
-> @@ -1352,6 +1354,11 @@ void do_user_addr_fault(struct pt_regs *regs,
->         if (fault & VM_FAULT_MAJOR)
->                 flags |= FAULT_FLAG_TRIED;
->
-> +       if (!vma_lock_retried) {
-> +               vma_lock_retried = true;
-> +               goto vma_lock;
-> +       }
+On 7/23/26 10:49, Yuan Liu wrote:
+> When shrinking a zone span after removing a PFN range,
+> find_smallest_section_pfn() and find_biggest_section_pfn()
+> only checked one edge PFN in each subsection for nid/zone matching.
+> 
+> If a memory or hole boundary falls in the middle of a subsection,
+> that edge PFN may belong to a different nid/zone, causing the helpers
+> to miss a valid PFN within that subsection.
+> 
+> Fix this by checking both subsection edge PFNs for nid/zone matching.
+> Keep a single pfn_to_online_page() check per subsection, since online
+> state is the same for all PFNs in a subsection.
+> 
+> Reviewed-by: Jason Zeng <jason.zeng@intel.com>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> ---
+>  mm/memory_hotplug.c | 42 +++++++++++++++++++++++++++---------------
+>  1 file changed, 27 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 4c699fd9c479..3a281d595207 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -427,17 +427,24 @@ static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
+>  				     unsigned long start_pfn,
+>  				     unsigned long end_pfn)
+>  {
+> -	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+> -		if (unlikely(!pfn_to_online_page(start_pfn)))
+> -			continue;
+> +	unsigned long next_pfn;
+>  
+> -		if (unlikely(pfn_to_nid(start_pfn) != nid))
+> -			continue;
+> +	for (; start_pfn < end_pfn; start_pfn = next_pfn) {
+> +		unsigned long tail_pfn;
+>  
+> -		if (zone != page_zone(pfn_to_page(start_pfn)))
+> +		next_pfn = start_pfn + PAGES_PER_SUBSECTION;
+> +		tail_pfn = next_pfn - 1;
 > +
->         /* Quick path to respond to signals */
->         if (fault_signal_pending(fault, regs)) {
->                 if (!user_mode(regs))
->
+> +		if (unlikely(!pfn_to_online_page(start_pfn)))
+>  			continue;
+>  
+> -		return start_pfn;
+> +		if (likely(pfn_to_nid(start_pfn) == nid) &&
+> +		    zone == page_zone(pfn_to_page(start_pfn)))
+> +			return start_pfn;
+> +
+> +		if (likely(pfn_to_nid(tail_pfn) == nid) &&
+> +		    zone == page_zone(pfn_to_page(tail_pfn)))
+> +			return start_pfn;
+>  	}
+>  
+>  	return 0;
+> @@ -448,21 +455,26 @@ static unsigned long find_biggest_section_pfn(int nid, struct zone *zone,
+>  				    unsigned long start_pfn,
+>  				    unsigned long end_pfn)
+>  {
+> -	unsigned long pfn;
+> +	unsigned long pfn, prev_pfn;
+>  
+>  	/* pfn is the end pfn of a memory section. */
+>  	pfn = end_pfn - 1;
+> -	for (; pfn >= start_pfn; pfn -= PAGES_PER_SUBSECTION) {
+> -		if (unlikely(!pfn_to_online_page(pfn)))
+> -			continue;
+> +	for (; pfn >= start_pfn; pfn = prev_pfn) {
+> +		unsigned long head_pfn;
+>  
+> -		if (unlikely(pfn_to_nid(pfn) != nid))
+> -			continue;
+> +		prev_pfn = pfn - PAGES_PER_SUBSECTION;
+> +		head_pfn = prev_pfn + 1;
+>  
+> -		if (zone != page_zone(pfn_to_page(pfn)))
+> +		if (unlikely(!pfn_to_online_page(pfn)))
+>  			continue;
+>  
+> -		return pfn;
+> +		if (likely(pfn_to_nid(pfn) == nid) &&
+> +		    zone == page_zone(pfn_to_page(pfn)))
+> +			return pfn;
+> +
+> +		if (likely(pfn_to_nid(head_pfn) == nid) &&
+> +		    zone == page_zone(pfn_to_page(head_pfn)))
+> +			return pfn;
+>  	}
+>  
+>  	return 0;
 
-I seem to remember Willy didn't love the idea of '1 more try with the VMA lock'
-but this isn't _quite_ doing that.
 
-If we spuriously can't get the VMA lock then this gives up immediately and goes
-to the mmap logic without a retry, so we're not doing that on lock contention at
-least.
+I think improving that should be patch #1.
 
-(We could fix that with vma_start_read_unlocked() though which would handle
-write lock contention by sleeping on mmap read lock until the VMA lock can be
-obtained - though we have to be careful about possible lock inversion vs. a
-writer maybe?).
+But I think we can do much better code-wise. What about the following
+cleanup instead:
 
-So it only retries quickly if a retry is requested by the fault logic.
 
-I guess it does end up working nicely then - because if the retry can
-immediately succeed with a VMA lock again then it does that, but if it can't
-then it falls through to the mmap lock quickly.
+From 6e9ea094daf8d04c0b119b780572a846334f8164 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Wed, 5 Aug 2026 12:52:55 +0200
+Subject: [PATCH] mm/memory_hotplug: make shrink_zone_span() more robust
 
-(And use of vma_start_read_unlocked() would make that more reliable vs. lock
-contention.)
+Let's make shrink_zone_span() more robust by checking in
+find_smallest_section_pfn() / find_biggest_section_pfn() that start+end
+of the subsection.
 
-I think there were cases where we thought that might be the case (though it then
-makes you wonder why exactly the fault needs a retry?)
+While at it, clean up the function heavily, factoring the core check
+out into subsection_overlaps_zone().
 
-(This is assuming nothing in the fault path would sleep holding the VMA lock,
-which I don't think can happen?).
+There likely is no need to check for the nid first: we require
+SPARSEMEM_VMEMMAP_ENABLE where pfn_to_page() is cheap, and the
+pfn_to_nid() on CONFIG_NUMA would do a pfn_to_page() either way. So
+let's just drop that for now.
 
-> Nothing else needs to change then. I wonder if there is a cleaner
-> way to implement the idea, but it is really stunning.
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/memory_hotplug.c | 59 ++++++++++++++++++---------------------------
+ 1 file changed, 24 insertions(+), 35 deletions(-)
 
-Thanks again :>) I'm not quite sure this is really all that clever, but that's
-nice of you :)
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 226ab9cb078ad..79937f9672d01 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -425,49 +425,39 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+ 	return err;
+ }
+ 
+-/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
+-static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
+-				     unsigned long start_pfn,
+-				     unsigned long end_pfn)
++static bool subsection_overlaps_zone(unsigned long pfn, struct zone *zone)
+ {
+-	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+-		if (unlikely(!pfn_to_online_page(start_pfn)))
+-			continue;
++	const unsigned long start_pfn = ALIGN_DOWN(pfn, PAGES_PER_SUBSECTION);
++	const unsigned long end_pfn = start_pfn + PAGES_PER_SUBSECTION - 1;
+ 
+-		if (unlikely(pfn_to_nid(start_pfn) != nid))
+-			continue;
++	/* All pages in a subsection are either online or offline. */
++	if (unlikely(!pfn_to_online_page(start_pfn)))
++		return false;
+ 
+-		if (zone != page_zone(pfn_to_page(start_pfn)))
+-			continue;
++	/* Checking start+end is sufficient. */
++	return zone == page_zone(pfn_to_page(start_pfn)) ||
++	       zone == page_zone(pfn_to_page(end_pfn));
++}
+ 
+-		return start_pfn;
++/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
++static unsigned long find_smallest_section_pfn(struct zone *zone,
++		unsigned long start_pfn, unsigned long end_pfn)
++{
++	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
++		if (subsection_overlaps_zone(start_pfn, zone))
++			return start_pfn;
+ 	}
+-
+ 	return 0;
+ }
+ 
+ /* find the biggest valid pfn in the range [start_pfn, end_pfn). */
+-static unsigned long find_biggest_section_pfn(int nid, struct zone *zone,
+-				    unsigned long start_pfn,
+-				    unsigned long end_pfn)
++static unsigned long find_biggest_section_pfn(struct zone *zone,
++		unsigned long start_pfn, unsigned long end_pfn)
+ {
+-	unsigned long pfn;
+-
+-	/* pfn is the end pfn of a memory section. */
+-	pfn = end_pfn - 1;
+-	for (; pfn >= start_pfn; pfn -= PAGES_PER_SUBSECTION) {
+-		if (unlikely(!pfn_to_online_page(pfn)))
+-			continue;
+-
+-		if (unlikely(pfn_to_nid(pfn) != nid))
+-			continue;
+-
+-		if (zone != page_zone(pfn_to_page(pfn)))
+-			continue;
+-
+-		return pfn;
++	for (; end_pfn >= start_pfn; end_pfn -= PAGES_PER_SUBSECTION) {
++		if (subsection_overlaps_zone(end_pfn - 1, zone))
++			return end_pfn - 1;
+ 	}
+-
+ 	return 0;
+ }
+ 
+@@ -475,7 +465,6 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 			     unsigned long end_pfn)
+ {
+ 	unsigned long pfn;
+-	int nid = zone_to_nid(zone);
+ 
+ 	if (zone->zone_start_pfn == start_pfn) {
+ 		/*
+@@ -484,7 +473,7 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * In this case, we find second smallest valid mem_section
+ 		 * for shrinking zone.
+ 		 */
+-		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
++		pfn = find_smallest_section_pfn(zone, end_pfn,
+ 						zone_end_pfn(zone));
+ 		if (pfn) {
+ 			zone->spanned_pages = zone_end_pfn(zone) - pfn;
+@@ -500,7 +489,7 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * In this case, we find second biggest valid mem_section for
+ 		 * shrinking zone.
+ 		 */
+-		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
++		pfn = find_biggest_section_pfn(zone, zone->zone_start_pfn,
+ 					       start_pfn);
+ 		if (pfn)
+ 			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
+-- 
+2.43.0
 
->
-> Best Regards
-> Barry
 
---
-Cheers, Lorenzo
+-- 
+Cheers,
+
+David
 
