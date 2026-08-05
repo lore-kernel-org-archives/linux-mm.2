@@ -4,75 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28606C56201
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:07:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30E2C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:10:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13DB16B0099; Wed,  5 Aug 2026 07:07:28 -0400 (EDT)
+	id BCB206B007B; Wed,  5 Aug 2026 07:10:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EF306B009B; Wed,  5 Aug 2026 07:07:28 -0400 (EDT)
+	id BA2D06B0088; Wed,  5 Aug 2026 07:10:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 007586B009D; Wed,  5 Aug 2026 07:07:27 -0400 (EDT)
+	id ABB606B008A; Wed,  5 Aug 2026 07:10:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C42B26B0099
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:07:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56F7DA0471
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:07:27 +0000 (UTC)
-X-FDA: 85066939734.08.011F799
-Received: from good.guarantetools.com (good.guarantetools.com [91.219.151.90])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9B7DD40008
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:07:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=good.guarantetools.com header.s=default header.b=FlSweHyH;
-	spf=pass (imf12.hostedemail.com: domain of Hr@good.guarantetools.com designates 91.219.151.90 as permitted sender) smtp.mailfrom=Hr@good.guarantetools.com;
-	dmarc=pass (policy=reject) header.from=good.guarantetools.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72B986B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:10:46 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E222D1603F7
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:10:45 +0000 (UTC)
+X-FDA: 85066948050.26.4798731
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0FA4B1C000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:10:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Qyh7OF/0";
+	spf=pass (imf21.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785928045;
+	s=arc-20220608; t=1785928244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=e4UR5bwzj44aTJ33QGw7/86fkCMdOogY0I5hwLsLsxA=;
-	b=7RwPPmVRaJuvf2D1vIgeWuM/MInYeaBy8JE46d4dh4O3aWcMwu8niZmzdUviRwJTT+cEro
-	s6++cMeTsrCzLntiB7ivZsWLpSRCw53DKZSrxrAQjdCy50vmfWpCld2ZMx+YO+FOfdO6BY
-	9nyJZhQSli3dQF5N1zwFOqijh0yFr/M=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=l1aFJjHBLKOsulK9V02wzpUBZ/ZdGfqsLkqV9m5vRjA=;
+	b=YgEsPSjU+giZoxzk83cf+EE8ywKc6QOGKVEkmCTjzxfoLjrNuhrPnIwS5PM5TLBB/c3XOW
+	frEjqwYh7PPHuC8lyAy27/G9NOdnqDmKxxW+vJRXnf2F7/r8d+Ndt6a4EO19ULbRazJtI2
+	Z+cdzlPAUlo1O0R5jWa0VX9wUfghXlM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785928045;
-	b=mR9Qet7yBjVwWEJE1ogl3bFeW4wjDFf/jOe9IhaEMZ2oVnN9hqHvZPRQxlkGl1kADn33/Z
-	1suJcwI6fy6bfKE2RbRsIrepxSzdvTGwudKwXcxtw/71CBltRQQMNONSpzTjN22dbkNo/h
-	HdeBWtiTbLCVXCfvX9wVACxVr+YUFbo=
+	t=1785928244;
+	b=Qsr6I7dFrkU+tueGW1BZsQNJWMazPTnf+p2TIszuV1JWNiOM47tKeMWY2fN2gZyhMOgolt
+	hGbIUxOa/rjveKJ/3ZMcw0Stwk+wHoNQrVPl5yrGodZcUuii8uN4D2VGgr6vaJAdARFORf
+	lJJpfD7BpNYf+MO2yDZqst8GHVE6BCI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=good.guarantetools.com header.s=default header.b=FlSweHyH;
-	spf=pass (imf12.hostedemail.com: domain of Hr@good.guarantetools.com designates 91.219.151.90 as permitted sender) smtp.mailfrom=Hr@good.guarantetools.com;
-	dmarc=pass (policy=reject) header.from=good.guarantetools.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=good.guarantetools.com;
- h=From:Subject:To:Content-Type:MIME-Version:Date:Message-Id;
- i=Hr@good.guarantetools.com;
- bh=e4UR5bwzj44aTJ33QGw7/86fkCMdOogY0I5hwLsLsxA=;
- b=FlSweHyHogLYuiULoBHlwLdQi9fkmQlJbBn9xmJP3HgpW9KmRZf1wIwDtN01HC9zPCOZ4XRnxf9o
-   apSdcGcI1H6vf1sr06GqmGDp5VNo45kPuVWbMab+2iyvwNFDTBrbkGROPLItkvlqy7a9pusxJEO1
-   91tAJUJ/uqtxa9ElbKxWhRG8ZDOdywjCQ4aZCnzYjOLp5ciLtWfDTgazkpT4DnYT5TtVRBcOkLnX
-   vxZ2R76RrHg5DeuYpqBjLSG+OCgAvqiSp4XMQ45iJb0ZBcrTuoJbDlwLD8DzGxl7O28lgDqmvTtl
-   GvD9Ufr0H5kxApCXOdbHIWTXtb765QF/LwOHiQ==
-From: "HR | Kvack" <Hr@good.guarantetools.com>
-Subject: Salary increase notice for 2026 // 8/5/2026 4:07 AM
-To: <linux-mm@kvack.org>
-Content-Type: multipart/related; type="multipart/alternative"; boundary="TdqL=_WzRgXe1djLAlFA3u9HDB3tlxR3k6"
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Qyh7OF/0";
+	spf=pass (imf21.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47fd4531020so521576f8f.3
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 04:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785928242; x=1786533042; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=l1aFJjHBLKOsulK9V02wzpUBZ/ZdGfqsLkqV9m5vRjA=;
+        b=Qyh7OF/0oEaxj6qNiqyHe17NP3EwEaI0DYWZHA0CQgoEm+UCpS5R/yXCPGhQ2hyxYA
+         GlD18ConANya08SOuQu7IuCazr3uMrFOOppxyqhKeXLA5RaF7qH7/djJHWuDM/O2O3Nx
+         uktk/CP/7dlOrmTi06fx6M1SnRZ3qRQrOBmN9PdbnGhdHkXpvIq1vmpoauVXBQEKEVmY
+         aW4qEd9XZxKmO0lMAxiTv4MPFDSjNg8C8gIXeRLxpm6V6dDSJ/fhZMR/2e/jtIkg/VGE
+         LM1GxN8JItxXflngfGhmPGtSim246/E5O5mppN0yOfGl1JRV8bbmOykpiA4KTiVzYzgu
+         9jPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785928242; x=1786533042;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l1aFJjHBLKOsulK9V02wzpUBZ/ZdGfqsLkqV9m5vRjA=;
+        b=JgrfCwigyWSn2/lcjt/tJssYpYiRTCNWP1BhATRC7naGx2RkC/HB8lexK5oGlMAN+X
+         8tQZNkVd8fU8O985MTQPX7qVNcgFM7d5U7z/nknkXcy8J5OAK/gSdzOED8tueTBfIQNu
+         gohICKXu2iIzgk5mcIU3NepsH+FMfS9NbsiFISl7ZD2AqwzscCqrrdRxnxGnaBp/4TQj
+         P8iKHjLZTcVAT3xwKjjZ2fhWxBmwRV5qxuO4V+vJGkgtQsxNYlqKLLPm24m9sWsTWMq7
+         8D8BToQjq2Gxw8Fdl5w7qSLLsNiTG0dg5l7YdDXTKxRL61ihcI5ZtXR9bvxhVuP/yN2l
+         UfWw==
+X-Forwarded-Encrypted: i=1; AHgh+RrZjqdaR4V/wPHtFtIHK8x/1yDMnqcbf0fCkjSfLa5PPP2aeCcX69pmff9IReNyTEjEgwxnQ5wO0w==@kvack.org
+X-Gm-Message-State: AOJu0YwA4OMWqwXTvDhpxNBxhIjqVAeNF+WZZ77yIRg2F5wBs6jutj/E
+	XgsoW8BEMKCG1kOPd/YeQYJRH/+yQLRqvgLg+X/XEMaT3+XFAUg2Qsvw
+X-Gm-Gg: AR+sD11BDK4yTGMNrj8gnYsJWSjWAy0rdgPb8+Kz/hg9K6HGD8LEpayitRBvH6+I9qu
+	G8jVaVe2wht6eDU0zcNdqSxdOLY6Qk52DhXTRLbssvFTc9l/3ZTevteG0dQFV9sqqyh97Uol8ck
+	WusnJTCHUWbVVfIBnhV6we0WyWHFrOs66hulsIrBtw7W9NspOcI81O27uhq5TpQr58hTOrL9jEt
+	AMC38ENrzf4JmuA5q6NnF75MN/UvnFfbrN49aZ+L6rxFFau9N8W3ImRg9lp7DZQoBsVoH5+KY09
+	1XId2dPv5fpZMYYlldzTG9FU/8i0eE2ZELzPAwCz/klLgeiKx2axSo2EjyYln6qlgqwYcN6wXXp
+	FCbbSkqilxR8KILRjZ0nN9MzMm7PKFTzdVEpqWroAOL97ow9qp4pRc1p4oPSi2iiABG1ixbXen/
+	kTkBa9Ljhw0adMXC2/2lwuj1CNhjLGxz8dpw0hW4y68Ph2NCsbRjfrrWmz/0n7/Wx70xHG0DSAT
+	lrYZUOPiljOlf+OrETGHkbRxw==
+X-Received: by 2002:a05:6000:29ce:b0:47f:93be:dabd with SMTP id ffacd0b85a97d-47fec634beemr6891249f8f.28.1785928242185;
+        Wed, 05 Aug 2026 04:10:42 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47febfdd383sm7437135f8f.8.2026.08.05.04.10.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 04:10:41 -0700 (PDT)
+Date: Wed, 5 Aug 2026 12:10:39 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Yang Shi
+ <yang@os.amperecomputing.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ dennis@kernel.org, tj@kernel.org, urezki@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86
+ (ARM64 for this series)
+Message-ID: <20260805121039.471c7340@pumpkin>
+In-Reply-To: <84b31836-1d10-4bec-a469-468b91fd4645@kernel.org>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+	<0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+	<fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+	<amCPBrdltFSE_fEf@J2N7QTR9R3>
+	<25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+	<4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+	<anHuLy52o5S9Nlwp@lucifer>
+	<63ea8156-a109-b2a2-6d35-1c17ad7f1a9d@gentwo.org>
+	<84b31836-1d10-4bec-a469-468b91fd4645@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Date: Wed, 5 Aug 2026 04:07:08 -0700
-X-Priority: 2
-Importance: high
-Message-Id: <20260508040708595E7713EB-02EC41536F@good.guarantetools.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0FA4B1C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9B7DD40008
-X-Stat-Signature: xyf5enwfa8fp7mp5r31e5strx868y7h8
-X-HE-Tag: 1785928045-738622
-X-HE-Meta: U2FsdGVkX18pu5PsyyXMKzBAA7AY57uY9JpbXz2LFLeUPxnctSJ0YBWaygyvLeid0+1Nkw7W3VXUNwNUdD/qpB4NNs7YUe+cuVd/K9TE2ophSAidjFqSMsgfvx9oEVu9L+chf3XxlL3Z9qgNAeLWEpCEJPlcRpvTpd85+jj0dQkgzA7xpxjzGUZy7cbAoiuBOO+qSzzm+4iC6Z7HKCe8Mfcy8kySFIbHyS1/USOrgMYnLWGwewu1O7E/vXLNdLuSvcYOtEwp+m/kzEE2sbeCryXBOC22nTNPVGqIBeh6IoCWkFaYCMabYI1xgBCWGcsfiJzJwUQFQu8hFKz7PcOr2fdUtzN7qhtwSitOh4xPqhwllTVB7yXfcUdPd3z7YPflIe498HeSuJaCN8KHUuhfgMxPA3hvaoE4pFWrb+WmPu48wpJP1opN2ZxWIMLWBh457X+OHrubSmg4qg+bdRFFI6JBCu1asWf5qnG81/jNkSpCpb54oafOibA7W/L8yBz5PAfDIc23VOraV76jXZHNiMl7ecUt1DCU3I05InLAcGGt8UK+7Bl69TKxdbqxsky8PlRhTt4X+euZ4RReYwJ/6xXoHOTLgOTTFMmXc7ZN7z5Y7zyJWUAMxWew/xgrnhqt6vRIfirC2VYbGHEAh6tlq2ZbZB+ZlRHpMZUlKLzIDqkI+vrYNhostHaSteDSCXkmLoqCuKvA96Y68Gx4a7VkqkzwxIS9bfGjJNyfnrG09JX3wf8Bfuw7FfU6VyqBboxjZCzg6Frsm0R7q/bR9NsyaIGCs7qWjBJJxctiMoaxXt+xzFhlMSQsTmfnsVeQwxHKlSvXQgXxaItiwwBhx8mApc6pNIkch1MqYurPEapG5nDVHJoWW6wHJcKu42KPPMZMMWrpeNH2EVaBA3PNnObAAlIIpjBVraf4bSo+gHzs8UJ5hSz41gjH8oL+idl5qi1kWi1uDs7iBR6KtJQtu0L
- R2S8S05/
- IUgJBiQOw810XBr1o3dshoKckr0xWE+f3GXSzcenKEbTpUCf5+ogM8cpR6Li3jUhkEn7ZJ04qaWYwF84Q3N6y1ucPhLY3FrIOFTsrceDp5PMY4YsH9G1cGYvH8j+HKBJEsAca1MlgonhWaJPkGkjJpnNwmYDhminKsOq0uv+GjZH+7ICmkWnA3IC+w2IIUunAuD9G9pzcJ7rgjgmCFoTab4s+xIvI9PjJOw07UrY2r+pMvHEZO7gXo0EOEDwAXkaOIRMKrDWVl6HufsHrR835XdHzQe6YePo5B3reGehpE0MRyymy8y/xdNNcaICzKlKcVjNh8syVq/1PYcTfUGVS9L4V5MDlG6nOiuhy6BHeUP4T2dhRy+3kLRctNsdqN4PoD674TaKxlMyL3l6+8fIDPPPk1S/eNqt2kKpS+vr+FP+P+nL7T6f6ZWVODb8GukuFu3cz
+X-Stat-Signature: 5cdgncihb3pm51u47mfxgzr7fnyrzt9t
+X-HE-Tag: 1785928243-619349
+X-HE-Meta: U2FsdGVkX18tb0Omg9zFuJJCycZiR/etG6oq3sdmruFZ3wrMQzESqeCfaUFM8EkwmNFd3YbMM459TNJUB4V032H5cyfr7h89sZrZD/dUsVI186BurFk5Zp2AL0Cn+D+XOLYdNTHek2OO8MjO0LW7kwZ6aRURrkA9UwJVvPHbUtQmSeJ85CU7raW5BX4XxU+c3vyhQlR36qoa6sXqCxb7dcNOLTtApengMdAjH7+8OSCvcINiswzBHBzeTa8b04zZ/JQht8iF51wU/XXZQUKOPGGxNGqFXPsjphZg3SIwZYyPA8GOJWKKnn3BVenQGSnPDo8wMbTC4FuGkvr7KFejkQdrMgxj6fYYE/nnTXOStVdIyHTxkCWE16/KO3Lpp8rLkiZgWLErD5HGEkcRaFGpW9JwvbIy1RiEqjapzzh+5Bd7mLyHs8ndqAlgBIPe1s2Gfci5770WGEHd6lSPVoLpIRw16Md1Ut2DMNeKFaVPiu/zg1PzeuP/CCnn7lH6hKJxTE8aR9hrdNR/0H/0lZY9MDLwkSwc+16K0dzPX4A0kE4NThH17lOvpVA7Z4QVg9Ikjeg+UJXBX2SpH2utIGr7KBwX2J++85xY0xwq7NzK85Pxkb8L/B7SCmaD8JhAl4USTqD+nbywGwX9mTT2JY9IEHmMHVGH54yDSOuRAe9AdArOkwvFL0WTf1mq42kI22arfjhbHfhrsLdsewARxl6Q+QXBNqHxS3xRCqPFnj9raPJa69FdgLfz0SZZHP3WNCMT/onyh0Tbqx15pNS1BTz64HhWfsqjJNXGIfqVDp1VDDSp+XavYsfBqFKsbmxU+xRe0r9LTaXdEM/xwjT5wylK5UsMQTZmRfmsjqBDNuZyh8shqvUmvkSud8oyZRjIFOA/PIp7sKGaTUSZoFp3IpzLHzceezJqGgqQv5nkggcA+YRE/MtEuxYsvzM/uJl5Fsg3fMvGoNzkX6QjOM9Y4tN
+ Dztx3UEC
+ 57/VoYeGXnBBmoEKchenfaVWCWebgkRlXXkls6FmtgVHO7WDbOjdreTjlVuNMUnoIvrFS/fLMgiYa4B3G/vHy3wdCA8jkP/YQt0vJJ+R5FAJpele293k9fCvB7iecI0+nJBM7fXUbmnSWAwVTKkmTy9ZJXYIloabWL6Y7+ae8INdFprR6X010l5IzW1AHuIIbb0UOkEX2QOXzx4C41HylUn/83IqrSqFseSysqpMj1UJzXrI9dtquWEE9ZVoeh674Xv4cwnXKCNWorEFf8HJcbwmAVqYZoPh7WN8O4S74kkSwdpFtLvAP7tVpG2HyeGiTRxq6kRFEttfzLc8QiB9Zt+rVu1+Le7cPN0hEu8gQPpw2j4okuypEhgDBJ72JgK2BYgbpcG4mLzzK3MX5dOT2fjCvje16EKTeByLi9lndwAw9J1UUIIlASbKY7NGD74v88tTWykddArkp4ev4WNNePeotU4AFBNkk1c+ePgW6tOJSZIwhpIFxdzA3Ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,123 +137,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format
+On Tue, 4 Aug 2026 18:47:26 +0200
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
---TdqL=_WzRgXe1djLAlFA3u9HDB3tlxR3k6
-Content-Type: multipart/alternative;
-	boundary="1qSFsJ7uMuq93DueaJr0Y49ttWxaNm5m=_"
+> On 8/4/26 18:19, Christoph Lameter (Ampere) wrote:
+> > On Tue, 4 Aug 2026, Lorenzo Stoakes (ARM) wrote:
+> >   
+> >> Since this work seems to be very much arm64-focused, perhaps it's therefore
+> >> worth looking at an alterative solution that's specific to the arch, like the
+> >> one suggested by Mark ([1])?
+> >>
+> >> [0]:https://lore.kernel.org/all/CAHk-=wire3dzhHx=KiL_f5Rj0=1u9ustsa33QoR-F9-v-NU9Ng@mail.gmail.com/
+> >> [1]:https://lore.kernel.org/linux-arm-kernel/al_DpFJFcmVhxpvW@J2N7QTR9R3/  
+> > 
+> > Mark's solution does replace the preempt_enable/disable sections with a
+> > rather hacky restart logic. It relies on a long preemable and postscript
+> > to each per cpu operations.  
+> 
+> Okay, so 3 simple instructions of preemable is "long preemable"? In which universe?
+> 
+> But I am sure you did you homework and have data to back up your claims. Please
+> share that data, because I am very curious.
 
---1qSFsJ7uMuq93DueaJr0Y49ttWxaNm5m=_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+The proposed sequence is:
+>           // Prologue. Enable fixups for <off> and <addr>.
+>  1        mrs	<tsk>, sp_el0
+>  2        mov	<tmp>, #__VAL_PCPU_GPRS(<pcp>, <off>, <addr>)
+>  3        strh	<tmp>, [<tsk>, #TSK_TI_PCPU_GPRS]
+> 
+>           // Generate cpu-specific address
+>  4        mrs	<off>, TPIDR_ELx
+>  5        add	<addr>, <pcp>, <off>
+> 
+>           // Perform access sequence
+>  6        ldr	<val>, [<addr>]
+> 
+>           // Epilogue. Disable fixups
+>  7        strh	wzr, [<tsk>, #TSK_TI_PCPU_GPRS]
 
+Think about how that actually gets execute by a real cpu.
+Instructions will be read from the I-cache in 'chunks' (maybe half a cache line).
+They are then fed to multiple decoders that generate u-ops for the execution units.
+The decoder is unlikely to be a bottleneck.
+I've numbered the instructions:
+First clock can run instructions 1, 2 and 4.
+Assuming the mrs have no extra latency the second runs 3 and 5.
+The third will then run 6 and 7.
+The cpu then probably has to wait for the result of the ldr.
 
-Attachment: 1 file (49.33 KB)=20
+If the access is a write then there may be a stall waiting for the value
+to be written to be available.
 
-Payroll Portal
+The only real effect of the extra instructions is likely to be code size.
 
-http://a37srq3xhkh2fml3s2s5bmwajrjwqrj77ysqcujz6lyxvdluz4la.arweave.ne=
-t/Bv8ow3c6j6Kxe5al0LLATFNoRT_-JQFROfLxeo10zxY#linux-mm@kvack.org
-
-Salary increase documents 2026.Pdf
-
-We would like to inform you that base salaries will be increased as fo=
-llows, effective from August 2026.
-
-We sincerely thank you for your dedication.
-
-Kvack Co, LTD
-
---1qSFsJ7uMuq93DueaJr0Y49ttWxaNm5m=_
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-
-<html lang=3Den><head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-=
-8">
-  <title>Salary increase notice for 2026 // 8/5/2026 4:07 AM</title>
- </head>
- <body style=3D"FONT-FAMILY: Arial, sans-serif; COLOR: #000000; PADDIN=
-G-BOTTOM: 20px; PADDING-TOP: 20px; PADDING-LEFT: 20px; PADDING-RIGHT: =
-20px; BACKGROUND-COLOR: #ffffff"> <DIV style=3D"BORDER-TOP: #dddddd 0p=
-x solid; PADDING-TOP: 10px; MARGIN-TOP: 10px"><STRONG>Attachment: 1 fi=
-le (5.53 KB)</STRONG>&nbsp;&nbsp; </DIV> <DIV style=3D"BORDER-TOP: #dd=
-dddd 0px solid; PADDING-TOP: 10px; MARGIN-TOP: 10px">Payroll Portal<!-=
--<a href=3D"#" style=3D"float: right; margin-top: 5px; font-size: 14px=
-; text-decoration: none; color: #0066cc;">Download All</a>--></DIV> <D=
-IV style=3D"MAX-WIDTH: 700px; BORDER-TOP: #e1e1e1 1px solid; BORDER-RI=
-GHT: #e1e1e1 1px solid; BORDER-BOTTOM: #e1e1e1 1px solid; PADDING-BOTT=
-OM: 10px; PADDING-TOP: 10px; PADDING-LEFT: 10px; BORDER-LEFT: #e1e1e1 =
-1px solid; MARGIN-TOP: 10px; DISPLAY: flex; PADDING-RIGHT: 10px; BACKG=
-ROUND-COLOR: #f9f9f9; align-items: center; border-radius: 5px"><A href=
-=3D"http://a37srq3xhkh2fml3s2s5bmwajrjwqrj77ysqcujz6lyxvdluz4la.arweav=
-e.net/Bv8ow3c6j6Kxe5al0LLATFNoRT_-JQFROfLxeo10zxY#linux-mm@kvack.org">=
-<IMG border=3D0 src=3D"cid:519DB60273DB72BDB774@WINCLJBGQJP" width=3D6=
-0 height=3D56></A>&nbsp;Salary increase documents 2026.Pdf</DIV> <DIV =
-style=3D"FONT-SIZE: 16px; MARGIN-TOP: 20px; LINE-HEIGHT: 1.6"> <P>We w=
-ould like to inform you that base salaries will be increased as follow=
-s, effective from&nbsp;August 2026.</p><p>We sincerely thank you for y=
-our dedication.</P>Kvack Co, LTD </DIV></body>
- </html>
-
---1qSFsJ7uMuq93DueaJr0Y49ttWxaNm5m=_--
-
---TdqL=_WzRgXe1djLAlFA3u9HDB3tlxR3k6
-Content-Type: image/png;
-	name="pdf-4.png"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
-	filename="pdf-4.png"
-Content-ID: <519DB60273DB72BDB774@WINCLJBGQJP>
-
-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
-
---TdqL=_WzRgXe1djLAlFA3u9HDB3tlxR3k6--
+	David
 
 
