@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCBAC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:13:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AC8C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CB016B0092; Wed,  5 Aug 2026 05:13:04 -0400 (EDT)
+	id 2D3296B00A5; Wed,  5 Aug 2026 05:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97BAA6B0093; Wed,  5 Aug 2026 05:13:04 -0400 (EDT)
+	id 284356B00A6; Wed,  5 Aug 2026 05:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86B176B00A6; Wed,  5 Aug 2026 05:13:04 -0400 (EDT)
+	id 175DC6B00A9; Wed,  5 Aug 2026 05:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C2056B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:13:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE1A1C03EE
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:13:03 +0000 (UTC)
-X-FDA: 85066651446.23.095FD7A
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 243F8C0003
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:13:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HaxB1M5Y;
-	spf=pass (imf22.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8B176B00A5
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:19:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF6CF1C0C6F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:19:04 +0000 (UTC)
+X-FDA: 85066666608.18.C8886CE
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 169CA40008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:19:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m8FkTTZu;
+	spf=pass (imf04.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785921182;
+	s=arc-20220608; t=1785921543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNd33VOa+JwOWtsPBLxmQElUX5jQqkuPC06k85UshRo=;
-	b=aEOee7QKZk9BuXugAWatM6OnHAQS5GNVh5WwAHlcx2luW+yxF0phgUWB3UJcw2/6c2/53f
-	OhIKNJmiDIQ/qlh6SC38AQYd27HOoQu6+s/AWnwqA5xrQ/ilDMUQEtuqzOCzQuEROY+56M
-	ocS+o/C/VifVW/W8eOAr7u9HLZeJcp4=
+	bh=yY9/CAJt+CCCGsWRlVdSNtH7ZN1mKB3TuW1AtqU1v84=;
+	b=GNLi1woOoz+gffNfrVLLIeEdfpZXde09ETH/u3XGe0K5dIqLqZ4CSDRiTL1fpPXFmm2Goc
+	JwL0Bsam+D8SnG5Wyfw9M8WB/KD3jzbH2eQtVNACqhSnM0znFs8nBweoFvBNqkbRn+TvzS
+	ytK+LKRcug9R47ZxFrH3TaAM5ipYB/w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785921182;
-	b=WRZ10Sfj4AIwQCEZrv7iJwSsQGDvC6qJg9NEtiWQdFoRrzZDq3lMMtSbWcDQDoOLOxU+qo
-	9DbZkjYiv41vWnbn3ehboCZ0bRq9I2xzctxdHY6NrRTsmhfGRcnaEzlm7ONK/2UyLkHwdx
-	JsKYMWj1/Q9eFKuzlWBb+AjK3tCKGVI=
+	t=1785921543;
+	b=3eJFpouklVK6Hcmn/MemJk3B8wfVRoQkvbx0hR4mejib0GxbFo0T9t9uNgk9WwNUNVzyrJ
+	aKVXT4UpYTJpBYkYsMrFw/8uU2cHdCdBxJnThWsspD+3Wt6CZ6tNvMtdGWBIyC0tsFuIOb
+	iWLZkDafTncZAzCaf8cblOav5Loj1og=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HaxB1M5Y;
-	spf=pass (imf22.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m8FkTTZu;
+	spf=pass (imf04.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f9ab7ee38so363172f8f.2
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 02:13:01 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-476a130c138so679314f8f.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 02:19:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785921181; x=1786525981; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1785921542; x=1786526342; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZNd33VOa+JwOWtsPBLxmQElUX5jQqkuPC06k85UshRo=;
-        b=HaxB1M5YvMBcBgGOOnizm7bSJWl5uWdhYkYfjlj7MmdIfp7Ev/HYVOoA9Lv3Ki/3rf
-         rjh468AstxiMyCPpwum6lAT76rp1nrCF3GtEJMp3fTamP9wnmfv4IMlGQwwra5cYqL5T
-         fm1fXyEG7o2aRrxmHLB6N3jz+qM8d1PKQL5fgpyZ1Kj9j3mQWPZ05zNaWYsNEGpTLImf
-         TMz5Zi4a+U5LNTG0LPtR4C7NsKPDZd/yOBOIMPoVAAM7kW2Qfs1wKeWunfZ6WzpSCwKR
-         pVgzrk5+O6IOTAdU6bdD/kVTOy44Lniy9f5L90RvVWsJ0fMk1gp09xfyd68R8vSoCOMZ
-         YY3Q==
+        bh=yY9/CAJt+CCCGsWRlVdSNtH7ZN1mKB3TuW1AtqU1v84=;
+        b=m8FkTTZuKrB9z7nzKf/8L68QpP23YucDJhyLWLpbVR7QWT2ZlenvnKJNC8SkGlDkUu
+         jg7SiOUiE6/WWg16OfCzbBfWVMA7aWQJxdjFZJVsEv9gxj3BDcyo7XiLwbVWd7MW/VL2
+         S8/MDWNQDiPzoUVQNUlAcOuX84c+Aeg7GZu1ZkEq2YugCrQDfuiOmnNSZ9k4M/NlqovG
+         Qii16eubDVS6gA4QTGv/JiEq/gCT3EyJbO4dtLY4J7qiDzhRaKY2ISq6xraRuGtuD3/5
+         O8JZziK16BdWoWHM6jz9nLl3T5WLYZj/ADfEva+SJmqdnV0hJPz4cwJxIm4vn5i3k0ck
+         wGcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785921181; x=1786525981;
+        d=1e100.net; s=20251104; t=1785921542; x=1786526342;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZNd33VOa+JwOWtsPBLxmQElUX5jQqkuPC06k85UshRo=;
-        b=Gk6fqSxN5SYwH1B13CnH6z+6/5aEH94xaQ+f64/WFPRrWSiu+HE/s4vWcX8F/G+IOh
-         s6ps8yTnKmX3pgEtRcFNuMYB1pIoGdWbp6Evjn3nvKWF5oca4Z/d4f0AnIRlCyp0CAEs
-         hF5kAa47jHr392dhkBVnxULXwSsrjauVmBRyL9yqo9AcXBSd8Pf94Rp/nUTfDAVnApzW
-         zaSNbqTfCH4PeszNHqG8KWFzq+oSRrhszmo6X3Q4u3FFzLXZsLAX/HqDzI0vD1Z+/oP2
-         +3D2Gz2roJrvTCQl8nWjOre1A+FzNh5uS9aut7VIMZ6LubFnSQA0UiajSf85k7wR65uD
-         OmNQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoIFYAQZxjzGs4nwGOrixujKW7AptYzBK9va5J+raShdqcVplGzo7C5p8oVYS7tI2P2FYzwnbumcQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw4WIR6RllE8ThxjtCn/y2T3Bxw0qOS83X02e3i4LqNJTpnJ+3J
-	mRNtJJv4owjenOxOp87rPOR+HUAiAXmkSb/uOu42O5VDLhRDvmNGVl0=
-X-Gm-Gg: AR+sD11l/qg0i4rISy/976+AhWRUM0ApHhGws+RIbxy+2PmqZ4w/XAkyujdyAIERUTD
-	OARFUcGLQShl8oJESUXb3mevlCcZcWUg2WayGOnnk/cUGwIx2QQmGqKEmJ5egClm7GLv0XDu6t/
-	Sf4luf2YKpDn3Urdnm/MBffoI4MieYUhg3VMS9cTg6V3jtRbrbuSUkfPzmIKhZj4eJUEsyl/ygv
-	4pK4gYaAeL+cMUFGXnfTPT8GsZuC96Xpba9NQ1zJkFw+YNZXb+7PZuSZaVq9nPmDIbt77hjsXV8
-	EBtZ9QTKWsAJ8kUGRpZIokW4pkZ4Gl2dcb1wvyrLDgpCJwtT9+Dcv9MGnr+Bqmp8w2vBlpyuEsO
-	agtqYcidKyMSgL5+OoUr+F7FI4E6M+ik/q/X+vxayy2B+mvtCtAxcGxpqqkhL2GmKV3OjSy34o3
-	ph/vM0GKKS44Q8T8bUszGSqZusKkbJq7A8N8Bcy/nCkV7D9OW7uZTQq++GNwMHrYjU+VfNXIJnZ
-	E3CsspfERaPuUnyt6Sfgg6/myEjtPqFwOHP/X4quNk=
-X-Received: by 2002:a05:6000:2995:20b0:47f:959f:f69c with SMTP id ffacd0b85a97d-47fec512853mr7202215f8f.7.1785921180751;
-        Wed, 05 Aug 2026 02:13:00 -0700 (PDT)
+        bh=yY9/CAJt+CCCGsWRlVdSNtH7ZN1mKB3TuW1AtqU1v84=;
+        b=oSRchxB/DmE5P3ZWJWaJXOxuSux/EYxIlmZml7GjmaZAdwZdvrxp7DlMFs7ATmhU+q
+         n8ILl9UKO0qYXUnwFVsecXthjSZea0dUxoIuKoOyaquDBIme1rrn5PmErdPqk6EWiIXQ
+         3jzvJVA0JnYFV6I6MneSk+d4F9+wA9K6Zj+XqozEF87ujmp0KeFOUM+Gbku04XgxsEYc
+         PW/ZFY17li66/8z95WnMe7kHCTyMXsU7FYA0wAAcyXiLyBeboBlBPOP5I50LtHyDQCT8
+         WisE719D/g8XWjYRiPhNVGZpduhlrhBDe5YyGElpDtcxA5UdEUyPWdSrMZAO5rzpAr1C
+         o9oA==
+X-Forwarded-Encrypted: i=1; AHgh+RrG4NqtQrH6xFVb0VO8PtVH4ffk2wb3FHGc9SsCNwoty7AO6MP/RX6nPTMtX7tyQEcVPlGzy77DCg==@kvack.org
+X-Gm-Message-State: AOJu0Yw2YzsiQg9V3B82UwRyraJiFyONEkXk22C8goXjvcLSIapor4hl
+	rUzAaRFwPWw0uWwV2uKb0XpCQo3wGFe5A8Jtn6jRIsDz2xm3RdImbiQ=
+X-Gm-Gg: AR+sD10tk8Bxe96O+2r59Q2lqbAvoFNehfpwOSzYHbMG73BYZZTOc8WynL5C5jW1BRj
+	HVC2JPVov6dQkQPMiFen84VMXVPpOV01CbnQ2hpGcFpjzPPXxCxJPVppMB7+bveovp8+otKssXB
+	bPlMGYqbd5H6HY6e5QF1WuRHpJ+UFYsFTdfSScZis9Lk6Gf+O8WoAuDBefd0MPg3c+0IOmNZ9a9
+	tLtRPEGIx5iT1NoozifBwgJSTu1gY9Pr4532h0hnqokueP1TJG+7xLBJAfPtME3PBOzlIoEC+z0
+	gxDLhpy+bwTYZbJeqD9IIy5nEHeao56SMuKUSnZ4wTIR4S7S68oO0yWUcyalrv0KBIb0K5hzlrb
+	WafJLLv5KPFfz9OH3J9phd7XzLetwBdFzSuTACnl+0s/2DhKzMQZCMMKBqwWCrNNQvej/4IoAmo
+	8fyn150U1B9AH2shD9DOSg1E3rQRvT+apyJks/elbEMeVfiYQ/ZIesBLj7Wl+OQpj7dvZlTtSSd
+	kMdAbojrjQzna9PCiYlnu2g4nf1ymGm
+X-Received: by 2002:a05:6000:2486:b0:47f:80df:3ba4 with SMTP id ffacd0b85a97d-47fec62aec8mr8012718f8f.28.1785921541639;
+        Wed, 05 Aug 2026 02:19:01 -0700 (PDT)
 Received: from p183 (dynamic-vpdn-brest-46-53-134-148.brest.telecom.by. [46.53.134.148])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47febfd9f74sm7450823f8f.4.2026.08.05.02.12.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47febfe5e85sm7167813f8f.14.2026.08.05.02.19.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 02:13:00 -0700 (PDT)
-Date: Wed, 5 Aug 2026 12:16:41 +0300
+        Wed, 05 Aug 2026 02:19:01 -0700 (PDT)
+Date: Wed, 5 Aug 2026 12:22:42 +0300
 From: Alexey Dobriyan <adobriyan@gmail.com>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
@@ -101,22 +101,24 @@ Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
 Subject: Re: [PATCH] slub: print just the function name in
  /sys/kernel/slab/*/ctor
-Message-ID: <0a88d330-54fe-4e71-bb92-f8c705c17881@p183>
+Message-ID: <68e28ff5-8cfd-496a-a895-30de110b0214@p183>
 References: <456c0a37-9074-45b5-9be2-a5f2fe345400@p183>
  <ee600151-85d5-4cd2-922c-d2d8df21878c@kernel.org>
  <73d28cff-77f5-4cd6-888e-5dce5ebae459@kernel.org>
+ <am7NCCxeg3BsoYSa@dev>
+ <c89d1843-e06e-4b8b-bf86-5b0debf489c9@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <73d28cff-77f5-4cd6-888e-5dce5ebae459@kernel.org>
-X-Rspamd-Server: rspam07
+In-Reply-To: <c89d1843-e06e-4b8b-bf86-5b0debf489c9@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: nf99iang96f1pkyxxu1hkq478cs9iz4k
-X-Rspamd-Queue-Id: 243F8C0003
-X-HE-Tag: 1785921181-726284
-X-HE-Meta: U2FsdGVkX18zREj/doQqUpEpFwiuuDcVdIVrYQey+3+7DXbpJAocmGnAFHW0rioEeRj1h0QXxe4Gq6tE1J/PavjDId4pc0S/Cv2xkjH9UtTU9bDj9x5kR+fWW+yTrvPozErk9ml9sBG7GAUBDLC5FDya1URzqBAOjyMHtVhvkKlCzWAwTJftUekrE7c5UQTlQ/SUnkIDmpmH+aPr0fTFlGVHeiH7uK+QlFja7uqyrOhyZixV2iHeoqTN4yB13gpZ9xrhd5Xf1rpAenkgajAS9MNZCdlef3DRAuC5uvPKPzcnPTtmz3U1jx/ACudypRO1G4SRhdOpxTNuBEbR+Q8VgIpSc3RY/G3C/q52jdHErPJv5riCplPGBrCPEdBqfb+l1H1sEN0Wj3eYG4ov20eE932ifnmpRg7L1WNxvkW0QazUochMnMi7EN537sIEBdU7IcoYRtkWDZlKTNESjYPWjbnLzTcxXB9Q2+ggTFwk++9nT2HUt30AlBqJdVPwzIDHPvH2/OLbAQzScOPoer/wxW0e1tgoUp7qY//j64eV87TwxoCKk5+DB2GfsCTUapLZuska41eiFLMQvyPl9LyH0zwwmausGuYkPKAfFFQRggZEF9fCXAHtNbHJBuSJs5chqmss/s3kdPntZQoOhGCo9a6N7W1eDbOL+snVy5nAnVvuqxXltyv100gTXeh4GszIrK22iGuWYTlnE0wUEu3O2tmnOAK8JNBP9gCFrT15MnuQvk8DXX/830X4FS3aFaY9Sor/V2SgZ6ZpUZUB9mH1nAFPTIsVoeAVlHAke4iQl7XyFB+bUyO9+QtvhHPx/aR9IVqOZ1Vt/2FmgsUSP9GWzzMzsnqqmJg6t4dNu64uyWZOaqY+sEjpqRTotikrwxpt2ZD+uNlPoLUvZdaYvRh1g60JIDt6HZfgUDLaA/GPXysoKYqAkzIyYuVQ6X4OrJ7kBxdNIfAuurbg9L7H2NY
- mVshp4Jm
- NGKr4yijD2W0sDHDaGowlU0olBRd1Lm3OZunQBhfE+MnbRgK24+lrO0FB+2Cl9Td2yeVL6b0CsQCeV5whyJi9sEu7KA5itbQ1ZPKAr2iqe7zPb75KdQP2SM6wBC6P7SU6D7U8jpQIG8yqf3QixSBLj6KlohwJHuuN92Rq882oKHFMwkJp9Dy/18KD6G7RCShvAYju3YHpCypeKfR/Oh2kDQ7KkdXThC6GE0p7mzRqlExJwAOykNXQIpsYoDHOK5fDmHh6JqAw+d3GN46m3MmYDMqemzDdiBo3ED9RUw8GaVlAFu8x94eAS5CHDZ35Za09ZtdMJYsma4pyLvDm+qtaFXpxYtHlKIVueGKFa5VBeXY/9J6EYHU5Do4ff+AASvhK+tDHOCkbqSlXUWmIiNMYRuL2ayx4LuQVEXtQ6MPaIryRcPkTscVEeakWe2fNPTri+zd0PvGWnit8yw4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 169CA40008
+X-Stat-Signature: uwsejczf4gxt7mgqsg314fuho9fo4gci
+X-HE-Tag: 1785921542-859590
+X-HE-Meta: U2FsdGVkX19E9vS2xXUJhRlkN1wWg/NMjzr/j7kU3ZaQtiOCMr0pQm9K98PcuIqln697fH3mn/HunaFzIzH/o1YguXGB/OoGe+dxEatHxoZbE8qJtur29w8IIls8vAf0iZVfe4ibRUEtIBLczTNMdhnPvPrwiviyWNeddOccjjqdLVvcGxSP0NDGZqkmOEPiaGyeaSz7M7lMyFafkXvykCQ+J86AozUIj1PhIm2kA+bwySCAidzMT7xdoCMzoWcHv4Mq8nt6aZ10d8vi4NNviIxq/SyewktgUTpO+aCjAXJ6Orjl6t5bVWovofDgQlTKQpdGmsY1Pl4XQEtO4V3qUFlC/XzOlJOAFtZCTOX8zIivZrQdrcVo2bzj2nYT1YGI9xfSwWks5RHBATIjyoo85rYyrR1DFcNSZiQHJkqI78IBY/yFLAHk9PaqGzAKV1DZcGVg/WesRbC0B9v+Bw6ZljnjRygmhfHuellwYYQmyIhZIxQMl5bLKZaL1oEdt9EEz9wL6qlfc4pJyzFE+kg4ybZNfu2BJurOCgfufLzZyhy/fSByOdqbQZERSB1DzWbwpA665YGRJ/KSh6o4TmkT6Jr7Hb0oRgeU8L1STuPfnw4cBW+vCeuHAFrSfQ6O1V7STI5uolfN7n1r/U8C5lyFQR/sr/QhOj+5GEct+wCJVV6OQESbUqTgDPu6uLiLwM0aWpOPJzfpsOYkelNjMvfv2lVIXzM1UoEAs5E0VbNfK21RikWKQoDzxVfLm/eAlh+TofombMEFkhAaO7C0bc8mjJ5W7oFhoz2fnAUTquDdwHPCSpiC8Lq1S4Y3cUa9S0HJMAXcTSaVy4SEKP1z/bmTjPnGJeuKEXYa95/gDEYoi67aFIuBoID0zgN7QJVs1EjgTXtvo1Y6N0GHPnG8sHY2/sw43jiutgSuG4oPZ1s+BMa7NKrc7fV3GVL19viLgrDyazi16HYsSO0JL19kCcH
+ pDHmKCd1
+ VmnA8S8r/9b3kVzFWxsE9yXBvWEoZ7yMum4ycRnjLuUc/z0ZI7W+jP7LzOwKLyawy/WkvPgghOqpGYq/j97KLg3JIZAwxKyL1+gEE8SOa1qQWQhFp8fF/7Kgf7RiGEsjXOjJQaNvz8KYqEBu3Oex8J0fLrc21+NcEciMoZf+i+AR1h74iU62tiPBagP0FJAj/Ra9K5UngN6NtL8Ah0055m2Gok4AFl9/jHIOi6ECQhwgwpr2YQhAVVEhPHNmmhARzUua+bVRGeSzj5FW4/aOt73Ue7k9jkMCgc0c5n/815fuZ5PdCQbE6L2jYRzKjtkyQNdQ/YA3JT23dmAsIw2H8+HT3n+/noZlMfNOB4rfm2OW9H38fzZ4gisCnDKte4TgjpmCh/xGTGTVbz3MgJL/KscTyzFh3gIMsBAt0y7lpSnv+FMJ6lv+C5szlG2lFjpnILEo0oRtBuSAqgAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,44 +126,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 04:15:26PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 7/27/26 07:27, Harry Yoo wrote:
+On Tue, Aug 04, 2026 at 07:25:15PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 8/2/26 07:13, Harry Yoo wrote:
+> > On Thu, Jul 30, 2026 at 04:15:26PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> On 7/27/26 07:27, Harry Yoo wrote:
+> >> > 
+> >> > 
+> >> > On 7/25/26 10:28 PM, Alexey Dobriyan wrote:
+> >> >> Sysfs "ctor" file prints offset/length of the cache's ctor function
+> >> >> 
+> >> >> 	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
+> >> >> 	init_once+0x0/0x10
+> >> >> 
+> >> >> This is not useful:
+> >> >> 
+> >> >> Offset will always be 0 because ctor is a function.
+> >> >> 
+> >> >> I'm not sure what ctor function size is doing here, it should be in
+> >> >> /proc/kallsyms
+> >> >> 
+> >> >> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+> >> >> ---
+> >> > 
+> >> > I'm not convinced that changing this (without strong justification)
+> >> > after exposing it to sysfs for 10+ years is worth the trouble.
+> >> 
+> >> Agreed. It's a pity this was exported in the first place. I can't see a
+> >> benefit for anyone knowing what the function is called. Should have been at
+> >> most a flag whether there's ctor or not.
 > > 
+> > Agreed.
 > > 
-> > On 7/25/26 10:28 PM, Alexey Dobriyan wrote:
-> >> Sysfs "ctor" file prints offset/length of the cache's ctor function
-> >> 
-> >> 	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
-> >> 	init_once+0x0/0x10
-> >> 
-> >> This is not useful:
-> >> 
-> >> Offset will always be 0 because ctor is a function.
-> >> 
-> >> I'm not sure what ctor function size is doing here, it should be in
-> >> /proc/kallsyms
-> >> 
-> >> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-> >> ---
+> >> But possibly a justification is not to leak the function size, which might
+> >> be theoretically (although unlikely) a hint to some attack.
 > > 
-> > I'm not convinced that changing this (without strong justification)
-> > after exposing it to sysfs for 10+ years is worth the trouble.
+> > ...but you need to be the owner (root) to read this :P 
+> > 
+> >> Well at least if somebody complains about getting broken, it's trivial to
+> >> revert and we can hear about their usecase.
+> > 
+> > If we were to experiment with this, we'll change it to print a flag
+> > rather than the ctor's name, right?
 > 
-> Agreed. It's a pity this was exported in the first place. I can't see a
-> benefit for anyone knowing what the function is called. Should have been at
-> most a flag whether there's ctor or not.
-> But possibly a justification is not to leak the function size, which might
-> be theoretically (although unlikely) a hint to some attack.
+> Yep, let's try that. Alexey?
 
-Leaking size is a problem for custom kernels but not a problem
-for distro kernels. Original format can be put under CAP_SYS_ADMIN.
+I don't mind ctor name, it is internal implementation detail,
+but offset/size are kind of useless.
 
-> Well at least if somebody complains about getting broken, it's trivial to
-> revert and we can hear about their usecase.
-> In-tree tools (slabinfo etc) were checked to work properly?
+My order of preferences is
+1) delete +0x0/... part altogeter,
+2) when someone complains, restore it as "+0x0/0x4" which is a minimum
+   function size across all archs (or some other fixed fake size).
 
-I tried to google and grep my local git collection and found nothing.
-
-> >> -	return sysfs_emit(buf, "%pS\n", s->ctor);
-> >> +	return sysfs_emit(buf, "%ps\n", s->ctor);
+> 
+> >> In-tree tools (slabinfo etc) were checked to work properly?
+> > 
+> > Looks like it doesn't read ctor at all.
+> > 
+> > Commit a87615b8f9e2 ("SLUB: slabinfo upgrade") added -o/--ops option
+> > that should "Display of ctor / dtor etc.", but it reads "ops" attribute
+> > that has never existed? Bit puzzled.
+> 
+> Might have been stale code from some previous revisions that included dtor.
+> 
+> >> >>  mm/slub.c |    2 +-
+> >> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >> >> 
+> >> >> --- a/mm/slub.c
+> >> >> +++ b/mm/slub.c
+> >> >> @@ -9149,7 +9149,7 @@ static ssize_t ctor_show(struct kmem_cache *s, char *buf)
+> >> >>  {
+> >> >>  	if (!s->ctor)
+> >> >>  		return 0;
+> >> >> -	return sysfs_emit(buf, "%pS\n", s->ctor);
+> >> >> +	return sysfs_emit(buf, "%ps\n", s->ctor);
+> >> >>  }
+> >> >>  SLAB_ATTR_RO(ctor);
 
