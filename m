@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD46FC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C987AC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:51:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003516B00A9; Wed,  5 Aug 2026 05:49:55 -0400 (EDT)
+	id DE8946B00AA; Wed,  5 Aug 2026 05:51:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6F86B00AA; Wed,  5 Aug 2026 05:49:54 -0400 (EDT)
+	id DC8876B00AC; Wed,  5 Aug 2026 05:51:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34686B00AB; Wed,  5 Aug 2026 05:49:54 -0400 (EDT)
+	id CFEF76B00AD; Wed,  5 Aug 2026 05:51:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C821C6B00A9
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:49:54 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60B44A042D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:49:54 +0000 (UTC)
-X-FDA: 85066744308.11.66EC6E0
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BC1831C0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:49:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SapNL7JM;
-	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785923392;
-	b=vL/a9eQDxc7/nL231DzHmbzeXZEwFpCYyD8ICcGZN1ip83Cv+sDCggWAOSrO+0nCPTAWR1
-	VE+0nh1L8oD4T+iE1IILAHzcjfp8pNWBVrxOI0I2GxOpcM9jMwbE0ShLBFf2xjwD54UecS
-	eDZ0FOxhbziF9Ipf34sohuyq4aSKDBI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SapNL7JM;
-	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFD026B00AA
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:51:17 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B9564041F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:51:17 +0000 (UTC)
+X-FDA: 85066747794.14.28F57C3
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F112C40008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:51:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="jH/beg/h";
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785923392;
+	s=arc-20220608; t=1785923475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y/uAgkm9aok/nQAEqWTWVKcO/AScdnJJ1CYyygt77ao=;
-	b=rNnNYiwUrAh9o5RolKqo0TnBpPJ6P2ZYK7z9OVXdHoHiwSwQhp475juX4Esgb+bWPNSgcW
-	bM+H81MW3aOZUlcrihXQrDjHzSb0Iu8SNSZVQ6oMr4D+RcmsYycBTRmpxoGj4sYFuk21Z5
-	E2bne4N7kJZnHLu1d2Zs/GDjcc7X0AM=
+	bh=kAxC4YTMr3xtaFtujHMyZqm2zshOuBu29sIloAfmWcI=;
+	b=lJ0xuU4rlE/fM/weX4gMqFOoVAgXz6ElhacGHxQZuKbs7XFOpnHN3gFdzcSLoLZQdCYT9L
+	YEpu85pjqRuoSBR7PsHK+IulsEDULIAcfY0TMNmJuW1J5++/plAHXyhPdhazvQTOojwL35
+	kDHh5Ssv5P0ouykkmreO41iB6jFkXLk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785923475;
+	b=FBTNzUzpoFOHXVpVAt+hZPJgH8wcDwtcNquEUNcj6UdPdL9acciMPV8bdvKWfwDntQNLgX
+	DGdSB6vztuAh21IeVgtXCPyMiCgT9BByRa5BgQQBrMpgb9rAI9kng9pcZ295+se46oF2mK
+	PO/TEDYTzzws0CqInZCLlXJyiIDuYgs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="jH/beg/h";
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1785923386; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1785923470; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=Y/uAgkm9aok/nQAEqWTWVKcO/AScdnJJ1CYyygt77ao=;
- b=SapNL7JMPb1FOlhJ98JpcCYff/SGexhYFrVyyr9IdxPtMp08AiOuSpbIoobO1bCjcix+l4
- x0x3gG5Nxlu5wL8jV9lPCk8DGnak+l4AGLb4M13ka3lfnX1Z737gr9lbPvbsPNxTXn+lEp
- +mV3eUrEw7j1OBQ3STL558KJMn2VB1D8DQcAMexAsfL+OKEKh3kaiYcSvl20Ra52zMKwCq
- tdfIX3z4DUqQlxVyq3SKqCbPduETEWvNn4LzXJGoWhC4MWNbde/ZYRC2AkqiIwzrNY0UiC
- AKnpsZQhj5jmhhoukLV6iZMPAhkZX3Xu/CwlT7w944+dyxQeJuRJFI7cp7FEUA==
-Cc: <apopple@nvidia.com>, <arnd@arndb.de>, <balbirs@nvidia.com>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<kees@kernel.org>, <mingo@redhat.com>, <muchun.song@linux.dev>, 
+ bh=kAxC4YTMr3xtaFtujHMyZqm2zshOuBu29sIloAfmWcI=;
+ b=jH/beg/ha4wPgDRvR+8MrMPV8+6y5zsz6MNSTDJGN1sdn2U6FT6H6+3DQta+MYmDeZzvQ1
+ 2WaRdAD+dPbO53TKaC38zBGIb98JvC8qFy2OcwJNv7SaFvjy31l7c8HhY9D5eEGLLXIMOy
+ B7AW8gwCKl06VZ4PO68na5uVQ3r4yaqCwivkB7Wf3omgg5QAi/rghyAYoZU10rN1cBAHyU
+ wlHIS8ffrnpu/9pT8sHmgPdFY8IwgbJsPc6bjKS149Rm4OlOOOgw1+fSkvj19Nm340+Q0k
+ vTd9dDprqPCezT7Pb7RU53L9eYHz8I/Az+e5rNcifyNjNhqHQGs707hs/Dg5GA==
+Subject: Re: [PATCH v9 4/8] mm: add a template-based fast path for zone-device page init
+Content-Transfer-Encoding: 7bit
+Message-Id: <93090eff-7961-47f8-9373-787f6a0f8da4@bytedance.com>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+To: "Muchun Song" <muchun.song@linux.dev>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Wed, 5 Aug 2026 17:50:47 +0800
+References: <20260803070929.86075-1-lizhe.67@bytedance.com> <20260803070929.86075-5-lizhe.67@bytedance.com> <CB22DBB6-0B52-46C2-9A19-4A18A6F6DEC1@linux.dev>
+User-Agent: Mozilla Thunderbird
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
 	<rppt@kernel.org>, <tglx@kernel.org>, <linux-arch@vger.kernel.org>, 
 	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
 	<linux-mm@kvack.org>, <x86@kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a730738+338d5c+kvack.org+lizhe.67@bytedance.com>
-User-Agent: Mozilla Thunderbird
-References: <20260803070929.86075-1-lizhe.67@bytedance.com> <20260803144014.e2d4ebb83e9471b695f6290d@linux-foundation.org>
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20260803144014.e2d4ebb83e9471b695f6290d@linux-foundation.org>
-Subject: Re: [PATCH v9 0/8] mm: optimize zone-device memmap initialization
 Content-Type: text/plain; charset=UTF-8
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-To: "Andrew Morton" <akpm@linux-foundation.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Wed, 5 Aug 2026 17:49:22 +0800
-Message-Id: <7ce88e5a-8b96-4508-91b1-b72a589e6ac4@bytedance.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BC1831C0007
-X-Stat-Signature: o9ygp74gbpjnfn39utphgeu3jj369hgm
+X-Lms-Return-Path: <lba+26a73078c+2fb597+kvack.org+lizhe.67@bytedance.com>
+In-Reply-To: <CB22DBB6-0B52-46C2-9A19-4A18A6F6DEC1@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F112C40008
+X-Stat-Signature: 4oe8c4gxk1pozydmho9y9apqdx8a3r6d
 X-Rspam-User: 
-X-HE-Tag: 1785923391-779960
-X-HE-Meta: U2FsdGVkX1+0r3Ct5TQdI7AdqJvL0MnO/8E09g5VOEPF1zHWyzywFxuwc8Z+X+vKOJF+znxU0PhJpFyYjE18Ylt0xDLXKfpivlVrbVM5UaF9FhFovO33kYmF0GD/8+z0SCTat6xT6bGmOAxDqReq4ft0k64k+MF6Vr+cPfuabnKNho4tYYfaUdA/Czqsx8RU2l5qbGZ4OCXHbgPiiRUYwhUV/EaBpobPXQSIryY4KrWrASJLJ4JFoJGHWKFyNNqafHWLpv7Lp0jC7C7CeztbvveOkebOiUTsb6/YxXcohxxZgnBy4KWJCJkfV18uXg7vws+W49oc3H0hd0aETMA5kdZ1UN/AGG+4IB1NNEHoUv1L5xGc1U99Vz1SG8woMl7ymYHnoq/577wpv68GV8TH6O5ub9U3VWHUfJnEVR20VcWQEF/4ABX8AameEnA8uso3L5HHP4/mOfZJDRaW+fxZis0wCvsnI1sjtn32A5XF+hJznhaz0RENyWeH7mncekiylFjr5LItbps4Ax+X8oJ8WBzGNaKjvAQWNjAoHa4WJVd6x4y/wupLN0sKvLa8bDbEgzGRERd9VRnR4TGkmE08er13V1mW7csTNnrxX0zhtdjuDZhtF6xyA4iErSNQ13o4/DqA0Tdl7ErMr0ycEYN9kFt8TgFtkFHxdzix3hH1HCLvlk5YfWlx1M/gZWV44NcAiHIdZb+ZQ+jgaN0tzyn4UpEVgpw8qvQC5Ax3taieLG8w2M6KaCUxnOQTCEo149AgQIW/KDiFAB9XbHmep3wRGt90vMa/qaD7hC1Z5YHxFK8ohuBBO9/rQO8xv+TtyQUlEBY/ZlfQLaymNViD74FalFmdbMu65qjioFDNRSFDWD95s9DpYzHvcF4ZL/pJpP84eFbnP2r3lDKNOoTWURE2GHucQp0b34QSVirbDf4NLQbSPuLsqWpMlkIW13KcXwvyZL7p02aznEKIu76Z69x
- DSB1RImM
- 6fOfZcEQJgAO2K7/CyP38zMzDXI5hoJaqo0XRaIHaj++xA9mL1r3E7yUtM2Mkv3jgDQ0Vt914ogDWeLyH3efyFPpj2iBMgXiYtuGaZDGjjcDQbcON6TmrfUduy+14aDFx/ywRR0ncZ+xPCh0KD5lBZZ9QRb9btI9sMak9z9ehjDth0vJG9rs0a76wTSTwzB0GehLi1L7WHexVjJ2D/5wMH1dhNCOpt+DJYu8cKr8ahQFNfd/ya9+mz0zlDpQ+HxtcH5GtNFcFJn7ICYAHIMzg3Jc/AySZfKyb/JlQCe1cuYs2/vwWi/vCNq8k46CN8Gvkmp8YHt3ExeyM0cOBNKiD8wocMrZu48fONOb2wtSeHD7BC8Q=
+X-HE-Tag: 1785923474-452496
+X-HE-Meta: U2FsdGVkX19NrogtSBj4eW3FrRtTSUmVjDCUh0y28zgUezAt9lkN4SLxiKTHoBa/wc/nBLApULJVLDQY2blPrhnnV040lIwceTl1+OA9uwtsAL+O/r4J0DkkUnoepfMKQ45PnPRdS4TmBrXS06hiH+W0WoKsMBXT1zlYjL/nXnxq3DVbQA2m6eXCWVSfeSk0f9OUqz9g7wDLBMonwqLeFlCKLEnfnkUbQS1/kHAkB+ye+lTdVfRz2gydeZrA1DRitxJ3xPBDqZjmuW5AHVR5C3u3UCLyKZ+pPuSMV5AmJXPgFxr3d+JBAiy0jbAKfOMx+i711zxmi23QsZVwu22YVUEwxTXguHxJMTaH82N0otDj7/WA+noNsg8DXHHkbAjeO9cpmSLpQyxF1+2QGPhTD3GIjyP/XUgY9X/tSXMBLjq3Gl42jQQKZ/bsfZUV53njZiWEAIUGL4ca0z/1V5RXzTjqvfsGwJdQndKAj//Kl6tmeEqa/ngSB7Kzq2YqR+cAO3o/TQULWPNNprLC1R0zH0cBGEuT+hPVqIO1+RJiAss0hPuLBFUTNRie5gpFAIoeSwbLsTc77+xizuIYX8LLtDMZ5dwpxXztNGRsGWq755kq2pKGXrfqdwHwo6Vn+FhtcvyfsQUU5wT8Jzo0WUrgkluiDBsWAXyjFHvzoPBk3VrXAFAKaI36dbEEJBnALDQloVor/MBxbW5UULclSdGFdw+5RoeEuQAfbXRk+xF1Tq0JzM8GJ1VN6Ms4frEfsfw0++z0MsACsuFVRedbtmdimhPLAlCwsEGFwjCTUko3aDZNYyg+gQHgyxK0Ve0KoqNc1SrRXdLu1GQ21eBIh8xFF6Quy2SmQ/cozvhjcCvnBTDifAyDit7P70OP6TVUK55RJhz1sTCLGzoiYBoNq9aeK6pgA3kU0QUjF0MmaDhDYRqLpGirGCmjAIPTpH9cu1QjvVxHk2j0I2LA/Yza+e1
+ F6cWLcO8
+ B1f5+Ipsl4TIh3TWZZk/liTArinHblVG84B9a5icNCqcCXl2UIgJtw4xN4H5Bb/UfYZfE9WK62IPaypm5MAI9/9KRuPJaYsBXiPbmbfiCt5J1OFhaJ0YmkttzfhzwRSl/DSxDmSwfOftDDPunXUJzkCM2XRbn+sFFaHBx5g/vWdO5eEftPsw9NK1ZCf9roGtjfNJJdzdOfwglPfPTQoykJAErtyAeDdBMYKe8MPYuzZgHQS/5H5brX8ZnCpj5W5Puuc7y40U25VbpXT2lfxtm6nE2jHmQGLU32P1PCfZXoRysNbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +93,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 5:40 AM, Andrew Morton wrote:
-> On Mon,  3 Aug 2026 15:09:21 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
+On 8/3/26 4:39 PM, Muchun Song wrote:
 >
+>> On Aug 3, 2026, at 15:09, Li Zhe <lizhe.67@bytedance.com> wrote:
+>>
+>> memmap_init_zone_device() repeats nearly identical head-page
+>> initialization for each PFN. Prepare one reusable ZONE_DEVICE head-page
+>> template through the existing slow path, refresh the PFN-dependent
+>> fields in that template before each copy, and memcpy it into each
+>> destination page.
+>>
+>> Use the template path unconditionally, as suggested by Muchun. The
+>> page_ref_set tracepoint is primarily a debugging aid, while this code is
+>> still initializing struct pages before they are handed out. From the
+>> perspective of users of those pages, the initialization-time refcount
+>> transitions are not part of the observable page lifetime.
+>>
+>> This means page_ref_set will no longer observe every initialization-time
+>> refcount assignment for copied ZONE_DEVICE head pages. The impact is
+>> controlled because the final initialized struct page state is unchanged,
+>> and keeping a separate non-template path only for this local tracepoint
+>> observability would add complexity to the common path.
+>>
+>> This patch accelerates head-page initialization. The pfns_per_compound
+>> == 1 case gets the full benefit here, compound tails are handled in the
+>> next patch.
+>>
+>> Tested in a VM with a 100 GB fsdax namespace device configured with
+>> map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
+>> path (pfns_per_compound == 1).
+>>
 >> Test procedure:
->> Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
->> initialization time from the pr_debug() output of
->> memmap_init_zone_device().
+>> Rebind the nd_pmem driver 30 times and collect the memmap initialization
+>> time from the pr_debug() output of memmap_init_zone_device().
 >>
 >> Base(v7.2-rc1):
->>    Average of nd_pmem rebinds: 244.28 ms
->>    Average of dax_pmem rebinds: 273.31 ms
+>>   Average of rebinds for nd_pmem driver: 244.28 ms
 >>
->> With this series applied:
->>    Average of nd_pmem rebinds: 96.79 ms
->>    Average of dax_pmem rebinds: 119.04 ms
+>> With this patch and its prerequisites applied:
+>>   Average of rebinds for nd_pmem driver: 215.55 ms
 >>
->> This reduces the average memmap initialization time measured during
->> rebind by about 60.4% for nd_pmem and 56.4% for dax_pmem.
-> Well that's nice.
+>> This reduces the average memmap initialization time measured during rebind
+>> from 244.28 ms to 215.55 ms, or about 11%.
+>>
+>> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> I personally feel you might have used the wrong trailer here, because it
+> implies that the overall design is based on someone's suggestion. But for me,
+> I think what you actually meant is that in a previous version, I made a
+> suggestion about simplifying the code, rather than dictating the overall
+> direction of this entire patch series. So I feel I shouldn't be credited here.
+> This information is already enough just appearing in the change log.
 >
-> Review is partial and it's late in the cycle so I'd prefer to schedule
-> this for the next -rc cycle.
->
-> AI review might have found a couple of things, please check?
-> 	https://sashiko.dev/#/patchset/20260803070929.86075-1-lizhe.67@bytedance.com
+> Muchun,
+> Thanks.
 
 
 Thanks.
 
-I checked the Sashiko comments. The reported items are the same points
-that were discussed in the previous v7/v8 reviews. v9 already folds the
-related explanation into patch 7, so I do not plan any additional code
-change for these items.
+I will drop it and keep the simplification note only in the changelog.
 
 Thanks,
 Zhe
+
 
