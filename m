@@ -4,124 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B14AC55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A744C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:48:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7C96B0092; Wed,  5 Aug 2026 10:42:35 -0400 (EDT)
+	id 120A76B007B; Wed,  5 Aug 2026 10:48:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CEEB6B0093; Wed,  5 Aug 2026 10:42:35 -0400 (EDT)
+	id 0D1E86B0098; Wed,  5 Aug 2026 10:48:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49A3E6B0095; Wed,  5 Aug 2026 10:42:35 -0400 (EDT)
+	id F2A266B0099; Wed,  5 Aug 2026 10:48:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 26AFD6B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF5611204A1
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:34 +0000 (UTC)
-X-FDA: 85067481828.23.1AFEDE0
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F152340010
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NL6frJdF;
-	spf=pass (imf11.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF53C6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:48:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49EDD1404ED
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:48:26 +0000 (UTC)
+X-FDA: 85067496612.17.AE0F91A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 438761A000F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:48:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j5AFHTTL;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785940952;
+	s=arc-20220608; t=1785941304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ld+XQ0JcCd/3+XlB4VjbGbKYAZ1iedXZLkBJ6yeGTpE=;
-	b=jZmQ/WGcqSm4AmSbobeoKAURw/JWRXC7UpDfFmVxneGfxU3+FbWRwe3H/jW1GZr1vWXqgE
-	4nZXxFmB18fYb+fMTXx/xo6KITP00eNKLYfAa3Vee++Acky8pqlT2ByOp4bTGnPRr3pisy
-	Z7yVOgWYl8Try0+utm8b0KGM62ObFOI=
+	bh=ZRTmOAk6cTcHgi88kwVfB7nsud2FRmsRmiePcO6JUf0=;
+	b=zxkz+weIYHq/ZxkZ+AIphlgfyDfBrObhLiZM6OrqLLT1G7177f8Q84nuxNWebcXRyxv7bC
+	MN3XLQMwZXOIkgIlAh4Hy+6vDIarU4/34BP7CidNJ8j3ssdznYFLUV5oBMahB70tX0SsM8
+	xSgG0A5XrNl0ALOBSm90KN+zuPUlwvw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NL6frJdF;
-	spf=pass (imf11.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j5AFHTTL;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785940952;
-	b=ym/6HCIznWic+8c/e7k6ZCb3cQXCxk2WCUwuTuvOrZHNK0cXoz9Sr2ZcD3nC6DYpB21K2+
-	RzSDyLxfO5UEvl85d5OoRK+yl8TAjZrbOt9nAmBj665fxUtHRP6RAAdXN9ol9IQMIvi+V6
-	y2LSyKf1NlHrTlmNZ1kqGDVvQNSmse8=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47f71156e1aso522206f8f.3
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 07:42:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785940951; x=1786545751; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ld+XQ0JcCd/3+XlB4VjbGbKYAZ1iedXZLkBJ6yeGTpE=;
-        b=NL6frJdFmazr6CQuM/tLmiC9AdxWBoIyLRbvC7Xq3OlJiMa8Shcm0tFqi5TlRLMImC
-         SIslThrkBPC5F3zkaMJUkSvpd3ke0yb8FKcDgy4Yfqc6qT4wxskESVH+/AxDJhcFkuDS
-         K64M1b/bL4sejsD0mi1hiSJItVV1I5C9PmGNg8AItofUiEgDz075NNwsl+UfC4wfyfYr
-         TaiEK0rg5tBs56LFir7AcbgKpDV9P3buYMDF2FM9shhXf/w/SzukqiDNWKpUaRXQxKQW
-         Kv0lSRObpbl0SDtp6LAZegSKHe0QTeYPZrxM+GRLyMzDWnAYKPB75qcApFck8LOw7z9B
-         kivA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785940951; x=1786545751;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ld+XQ0JcCd/3+XlB4VjbGbKYAZ1iedXZLkBJ6yeGTpE=;
-        b=YAOkAiXPNvqwu/kuURtXHSGUas1XFLu8/q5UnMGB55rAp/fEjl7+xE+2RV+JjlrGbH
-         dIeqQEg371LK8Mci5+1JeAM6brYFFCwuZ65s5aNbRROzw6pAgPhbcvCNePEbm0BOSd+g
-         Uwr0i4MXuvegKHI42NjnK6CXNz30PbweJC3z/hS1Htj9nLOHHsUoENe8BlY6GaShGlKc
-         BX8KRqUB4p7emkSNxCNmYVrI4VSKF4Mgof5O8ZTpjxW9MrnxbGqjc53KHqJ5GkHwnn/R
-         qRx7ZCsWTRC/EMJ5sPCIuL/g5bdj/i72UJjdN+izXc2uqbmXyMahntsF7tp92BfA93zf
-         evHw==
-X-Forwarded-Encrypted: i=1; AHgh+RrMMlV6iLHR/KH5l3k5rhf5U96wA3ZA42l/eXmVpnPz9xVX1/GvkZSwth/n3Ayai4ey8zYMNhFnnQ==@kvack.org
-X-Gm-Message-State: AOJu0YxNb6rHue0kVxrOU0cyHRqkyGUAY3Gd0dxVR3b/0k8buHW/MeNl
-	qPFXYiEDuhnJKipkAXGnOOn0o0c19BrI7qhPcj2cn7YFI1cexzuxmx6V
-X-Gm-Gg: AR+sD130vMC+SNjr5SJoe08pY70cpjnmlgOXq8mspA0ewFUJKbcjkARAqtcPc+cvwXb
-	x+Co/Bfcb8dy3Cmb9VQxdX/dosQSMn5DYJJU+liBOXrpYzks72PIqvrnlerUktisIYRmHy7uWKH
-	pP/Uy4NSbweXO/DlHbr6atT2UwBOZKSOG94wikFynGA5y6LVvTN3IksSEJ+v5eWj1mu21+Q+aO0
-	SwMBWR9kuQ6ToD14fiWz5/bNBn6lp/4bLTnyeaoZsN0OZwEB3UOVt8mq0yD8KIsKmi9y/FMFH0g
-	i6o/uVxXpNmzi7JMJJFmT3NQ32z3Gdm0u+2BsJBBXnmNzQUK9r/KKSv6Helrx4KdG1DMglACCc8
-	pajD3mm9TklhxjpPFZmO8ejTRK8B5mLcte/2Y9yRjrdxrR84J8PyJjVVMbWXcBsa+9bxqOea9zR
-	gZAxBFwz8RxLmmKEDcmjU8Mh5x8ymOyXH9Y9kPDEHB13yggPXb3yg4xQh0F7NfnbyHoEkH9fQcb
-	AwumNdDF9lD
-X-Received: by 2002:a05:6000:2489:b0:47f:59ef:bbb2 with SMTP id ffacd0b85a97d-47fec634cecmr11644817f8f.17.1785940951438;
-        Wed, 05 Aug 2026 07:42:31 -0700 (PDT)
-Received: from LAPTOP-AVI.taile24b5.ts.net ([2a00:a040:1b7:4f41:6df7:ffe8:d01:255d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232333sm10094289f8f.18.2026.08.05.07.42.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 07:42:31 -0700 (PDT)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH v2 3/3] mm: return -ENOMEM for page-table allocation failure in insert_pages()
-Date: Wed,  5 Aug 2026 17:42:19 +0300
-Message-ID: <a486e90cca91f443552b70ab2a18510bcc5dd8b6.1785847364.git.thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1785847364.git.thnkslprpt@gmail.com>
-References: <cover.1785847364.git.thnkslprpt@gmail.com>
+	t=1785941304;
+	b=CHCYl+7E5fAUW9zwuv3/fIauanJJ9gdxhCGAyHLbRfy4XRxmzeJ7higI9Xv8gPeapCx3Df
+	4GkBir9bKZslr1/Mk6tWJd7P0KVvIFAf8VOrIn9/M2XCVBhZ0X5odgsjZdtK6A1Ar8JcE5
+	eMEwh6bVbfl8NscE3k0Xutlmg1CnX3o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3589B153B;
+	Wed,  5 Aug 2026 07:48:19 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F34F3F632;
+	Wed,  5 Aug 2026 07:48:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785941303; bh=TNWZy6YCwk1Jg/670Yw8+8Dm+5ppwdOabUkzC+QBhQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j5AFHTTLzxiQjtqEvFZsht+b9/H6BjM/x3RwHls947twbgJc0VGaenS9OuNnNIJOT
+	 mEjbZ+iR1nCYefAMDmIk62GyEXF0p+Wocz/2eB8/qm06XSy16S6U1PRVbyU662kBAt
+	 jLhd7uZexScAhraTfyFOENpLJ/diDU8f6Yc/ZhcY=
+Date: Wed, 5 Aug 2026 15:48:14 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org,
+	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
+	will@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
+	gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <anNNLv3pHQwfcZOu@J2N7QTR9R3>
+References: <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+ <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+ <anHuLy52o5S9Nlwp@lucifer>
+ <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
+ <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
+ <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
+ <anIXr4Kbn59Ac31Y@lucifer>
+ <69f4cd9c-bd6c-4e5d-b8d1-a7be8408a57a@os.amperecomputing.com>
+ <94c7988a-3ecf-4b26-b0a8-011bdc76283b@kernel.org>
+ <29edec61-8f11-b9b1-3df9-2a51815ee771@gentwo.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rweun8aejk7scba4rfar7uo8cyg7g8nj
-X-Rspamd-Queue-Id: F152340010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29edec61-8f11-b9b1-3df9-2a51815ee771@gentwo.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1785940952-826360
-X-HE-Meta: U2FsdGVkX18ycsTf2LB0gCXHF31GE5/jcEO8qOLPt8yLrtWvoc3bRIaDQ2IS0rLPifPE42PO7NOmxa70mp6P4nhFi7TejefH8v+OaeL5khc0EI7nyeaFeWudgxvf0xHUD29EqkkgjaASexKiPK1OFjWSTDV+G4MpNeuo956Kk/B/XCJnPQeJLCRruZVEq9si18hHL98+ZQQSuT+SAuxw5gX6972my94qi2rqUNrOFsb1MTpNCuJuGEOuob9T/Rz3o2/OIe+y94IDGX0s+XKYv76Cu2Xe1FdTO72jO9Tq9hOfAegf3wo5kehZ4qyUx3GytJRtpNTnC2MsmcpPK4z8oJ+iXayRCjeA5uzH3wom/CZCGUhmaNMjTrKcH9lliuDZkk50/po0Ej/kpiZqRu+5SZgBuPNtyKw+XnQCU/BmDXW5Hi/rGPKlQuNbX3vZMHVTzrRzlttovcs8yx+UgiZCJeNYAxdZaLE5Yn1rXKzSGduzUFjwxA9V+EwcjhaRe5qV7sFi+7lVozabXPxCOss6JHngtl1ILw1lxfGJ4Gfbke6fJ0uLIvDXuRPxWnxjXcTF4HanANBrPFpB5LCMvL6YdMC0+LlTLyZszGSE3ZT+/fS3m2vyadsjyCjL+YVJWIoqQPkil8SVrf6VGF3Xwqk4R6f2NojjqfaDZIInD9NxQIvdq0+0YPrvo4xlGcEW3tdOwCYSNPcuY+1I/EtK/HrotnfcrRy1sZVymr2uxbxO3AG6rtBwFoSzHiMcbY1nYS3tv5a9S9ogZu5OFwGWil9qZMKgedpJx0D2b8Q1UQcuOo2f3hhs8jLXvS/NZMDbH6+/LBGBnKx1k/RHzeiyhi9QVsWjwaS3L4xAizKLz3kIq1tvQ9qq4abjt9WCUJTTCTN7fLtHcSbcICGPzC0/K8C8/eFszDkL37IiRTSVX9+SdIfeczw5R5pMC36vELHig78rvgk7/YV2vt9JIP8lcTq
- 8M07qd9E
- sxQB9itrQ74VvoCrSoT0MIFY/w/i7+fsrQS79vhx/quhud0dlP2bJaoH0YlryWHlRcF7Pmru902FwMhGdA9ljUBEqZgRz8yoBAWXwJME/93TNCklK2TIYOJ8o4D4UnupK8nzThIFe9QuJrwY2kP1SrUnaxQRPFw4vs6GoTZ6xAs7yjaY446kw0EHnEIpu5rGFZvbPJGiIUif1CdqJTIvHRtr+X/STVZjbfvqTuoOMqNBfbWgFRQetEiQHvfQjME53KjuCdRccmw1mRHI5ALS6wGQntksYLhydTxIo9rXg2RkjpaVh7oAuBwnVFr1kM/OHEMD3gCE8Rpk0+bmvqEal+4k1DDkE3Co1xK2L8wNkaW+3ZDwFS8QG0IFLHZ8yXOHhnEtmXy1lmYOcY8S2he9kL3YslUlEsfmnfC19yDJKIawKnV1+SnzumhDX2vr9t57kGvGZDrG5rDyzhIeLUMAomROIBNF9DgqoKH0SJxVEqMj/enUwulVrJcA4tg==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: d75ecim785wkg4z16nq4q3ztfxeojokm
+X-Rspamd-Queue-Id: 438761A000F
+X-HE-Tag: 1785941304-159821
+X-HE-Meta: U2FsdGVkX1+ASbK+6fTnLqZfLGiPV+aWoVg4C4e0POzFnwgKVllfi/KEMqybB/vPjzYun5ORgnq40I3VbKJo41Aqa23zndvb5bAg+5646C/kdY9L0DsygjBOh2bW9rlVsLkSlcW7W5bCICS15fRTpyXrK6IIlRkamAgcGFdDRf1oEX4Kn+1K4ZoCHIQdD0ef/utVILIP+fII6lY7YyoE6G0GqQAsxpKePGmWRnw2DrprPiO0ixqoW4gw5wKqDIJ/m9wAL+a1iF06O+gEgjoCAtIK4t0VbXROAzHHvbPMufYp0eq/QB3fcM6lYVzDI7WRwlcTpVMFObzME+K5JKdFdncJR1TYKkL/yh/cQSvSKnx9J4qd2BUZK1ATZFCvqxuRW1fEoFTr2pm8dLryt1IyLRDA0Kno4CW3CI1taDHoWSz+ULdgdsURCN8vUzXEibnPj4AZa2p30e71PJhKmvYuC7oczjZHmr82PxF/kMTjfcB1OXDQ1zNTz4KJGPnbpMn7dtdd9/goeI1IVA2jkXrTY7J8chlbZ/9/58qA5pRQJlFO6TG8HIFoiLtwzMnlYv4RcZqssFhs6o3sVwypojT46ZpOdYpEqTbGuXtuWmYAKzTDjcCWNs5Hg/lwFUq12X6JvXElZj+oFodzgNPqIs/c7vLaAfIC/svYGxZeLrUFX18MmXqvW8/Nhnxo/ovls/UDzg+mDm7Rc0GPGXlRTmwkgMWV3nwj/+gKjHysVjwqI7hxnGDSgOiMdS8gTCTL6O5arebwquCGa5H1/Y4Zg12UrSgLuzDtQdu4cmGGu2wYhtqJ8JXg6vRXPVV8sx4pnp81u9WMUMuunWSxwidEucpeBMVDH+mDiSoGG1FzUGLvxdIfcDMBOutjgKdxWoYU4fZ7FEkK6Y6+KMIR1opzLMXlxuXxPBZXvQV3CvLZvyLibJUYX0pTUBwuj7bu0pJBrWAsVNpDw2VCLaecGHIcgum
+ mkf/qThy
+ e2x7qReVmVXh9dkyqiY1vDTIZMokDUvecPibZfY7zQVUtVMdIVRFqAlyZv/tgsZDtu9YwwgdpnDVBTil/6l3Erm4RCSTPgGEMZKxAzzOV3b0IdfSNpj3EN8wRmkuaWg68IZmho5CKiiRQ68FHo6DKPYnJUmFVXaj6NBi6ZeI2VUDv87WKSF2LJj6ZrhVrKMI4+pD3udflGJhCSv98onyhoJEcSji1L5Kjux8ZvlzOrJSDwXSoj0TI/iYRwH5snUWzE0+rLTXsXHzoyKN8G6VRut/JPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,37 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-populate_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
-pmd_alloc() fails. These are page-table allocation failures, but
-insert_pages() currently reports them as -EFAULT.
+On Tue, Aug 04, 2026 at 03:35:22PM -0700, Christoph Lameter (Ampere) wrote:
+> 
+> > That's really all we are asking for. If there is a measurable performance
+> > difference, great. Share the results or point us at them if we missed them.
+> 
+> Scanning over the patchset: It seems that you are using a special
+> instruction that is unfamiliar to me. Which processors support that?
 
-Return -ENOMEM instead, consistent with the subsequent pte_alloc()
-failure and with the single-page insert_page() path, which reports
-failure of the same page-table allocation chain as -ENOMEM.
+Which patch and which instruction are you referring to? There is no
+information to go on here.
 
-Address and range validation failures in vm_insert_pages() continue to
-return -EFAULT. Keep the later -EFAULT return for
-pte_offset_map_lock(), which is not an allocation failure.
+Asking on that specific patch would be helpful.
 
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
----
- mm/memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 11bb4fb98761..16093479d341 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2438,7 +2438,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
- more:
- 	pmd = populate_to_pmd(mm, addr);
- 	if (!pmd) {
--		err = -EFAULT;
-+		err = -ENOMEM;
- 		goto out;
- 	}
- 
--- 
-2.43.0
-
+Mark.
 
