@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B16C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 13:12:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24768C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 13:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C8C6B007B; Wed,  5 Aug 2026 09:12:21 -0400 (EDT)
+	id DA09F6B007B; Wed,  5 Aug 2026 09:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DD1F6B0088; Wed,  5 Aug 2026 09:12:21 -0400 (EDT)
+	id D52A36B0088; Wed,  5 Aug 2026 09:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F3DE6B008A; Wed,  5 Aug 2026 09:12:21 -0400 (EDT)
+	id C66F86B008A; Wed,  5 Aug 2026 09:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2580A6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:12:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2299FA04AF
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:12:19 +0000 (UTC)
-X-FDA: 85067254398.05.92657AC
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4723FC0012
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:12:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of dzm91@hust.edu.cn designates 13.76.78.106 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A28276B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:29:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 315A61C0DAE
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:29:18 +0000 (UTC)
+X-FDA: 85067297196.27.2998523
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 089F540008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:29:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZXFPDcAI;
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785935537;
+	s=arc-20220608; t=1785936556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JN58H+mv9VIBLLtuPiRzjyJ54hny7MkFV6JxtiRRwiE=;
-	b=gx45Yq+/MRZxvOXfeb/6cdHSOns645IKWWkDNLwq9OyZ7Ecvm/4pD5O0lHaOSjC/S39TaM
-	mtCCJxOeedDJ+5ZsuzBT/FI0QHWSa9tMl9KbT/OUOT9dR+Ul8Cy+J6G9nYvBIc0P/4RSLG
-	0omU2qU2ghkDAIFJWKTFpJfFH+KAj3E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QYrzX3s+9Zo4lLKvYnKMmdhUMFtce0S3D9TKTEcWjj8=;
+	b=6vw+H1/Lj+isnKtcqloCD2TRck63Ouk6fh/WBTBFX0zrPaiz8aJssdnqviE3Fl8ARftP2t
+	YMdq3I+qmnGH98oSM5ExTLugpRAu2dgkNqXPMDEMfkPoMa/7dvb6ugTJqgti/Rb8lcT+S0
+	0KZ0+9PjNxZ7NbwIFsUNOLtseyeYZ7E=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of dzm91@hust.edu.cn designates 13.76.78.106 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
+	imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZXFPDcAI;
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785935537;
-	b=HXNPOwXwKLGe0DH3jz4DsiZuInHaNRoMikBTxsR4vDit2qq1jDKnqKes5r+X9iTDz3+WrD
-	upjdXRpjEzaJm2GJ9J6p+hoeLF7Svaf3PF0sc4/jWHEgAcnEoRPaePjVeYpP4Zu1et9i6e
-	T5uHi9t56GeV7xH9m8ZkYdbqpodEVz8=
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app1 (Coremail) with SMTP id HgEQrAAHDiqfNnNqHN__Ag--.63414S2;
-	Wed, 05 Aug 2026 21:11:59 +0800 (CST)
-Received: from [100.81.40.43] (unknown [10.12.191.55])
-	by gateway (Coremail) with SMTP id _____wDn71ebNnNqGPIaAA--.37874S2;
-	Wed, 05 Aug 2026 21:11:58 +0800 (CST)
-Message-ID: <328d031a-14ae-4cc3-a200-462094f0e2e1@hust.edu.cn>
-Date: Wed, 5 Aug 2026 21:11:55 +0800
+	t=1785936556;
+	b=IYE5NkGq0IYbQJQEs1m2POC/77EmrRp5EpLYM8IaFRoszjOAyPNdMCIewE79DI8g6l0qX9
+	CnaGzATgQQDEOkkjerV/h1TtKIWdUaerdhzMqHUR7FQjo2O9z1Dm11Yjq4dm+bs13nYqte
+	kUKOmxI4XOREVOIPT5mEj06cKkFk7RE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=QY
+	rzX3s+9Zo4lLKvYnKMmdhUMFtce0S3D9TKTEcWjj8=; b=ZXFPDcAI2IrVzqMmSj
+	Sog1QT/0p+gLF2JFAX43xNBs4M7KWTHkVRmawSwvE6Wx1jwFx9xuJ+SwBNpjR3GN
+	UeO0ixz3Bp0I10PDszvdZkiUIn3Mm2wINw+A9necSGxe910F3VwDeJ0WoMBuE5AY
+	caNvtCjvkJmOoPIxiHJm8rnOE=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3v6uYOnNqwiGVNg--.7175S2;
+	Wed, 05 Aug 2026 21:28:57 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: david@kernel.org,
+	akpm@linux-foundation.org
+Cc: xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	hugh.dickins@tiscali.co.uk,
+	ieidus@redhat.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	xialonglong@kylinos.cn
+Subject: [PATCH v2 1/1] mm/ksm: avoid missing ksmd wakeups in ksm_enter
+Date: Wed,  5 Aug 2026 21:27:34 +0800
+Message-ID: <20260805132736.1063408-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ksm: update comments and docs to reference folio->mapping
-To: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- skhan@linuxfoundation.org, alexs@kernel.org, si.yanteng@linux.dev
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
-References: <20260805105927.41987-1-hongfu.li@linux.dev>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <20260805105927.41987-1-hongfu.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HgEQrAAHDiqfNnNqHN__Ag--.63414S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWw18KryDJryDXr47ArWxtFb_yoWrWr4kpF
-	W8K34Iqan3Zr1Fg3y8GF4jyF1UZwn7Ga1jkFn8K3WfZFn8A340qr4Ig3W3tFy8ArZ2kayY
-	qFs0kF909a4jyr7anT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQFb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_Jr
-	v_JF1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
-	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw2
-	8IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07bIiiDUUUUU=
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+X-CM-TRANSID:_____wD3v6uYOnNqwiGVNg--.7175S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Wr4UZw1kKrW7tFyfZw43ZFb_yoW8JF48pF
+	4vg3ykur4kZr10gw4DKFWUuryaq397Kr48Ka1rZas8ZF98ta1qgFW3tF12q34YgF4vya1a
+	qa15Za92vayDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjZXOUUUUU=
+X-Originating-IP: [101.82.105.145]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xksJWpzOpk8VwAA32
+X-Stat-Signature: wkph4teqxzes349bxmepnzn31ra3rmmm
+X-Rspamd-Queue-Id: 089F540008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: e67pihrxb6f5nw6mxw3tfcn3b3y6ydcy
-X-Rspamd-Queue-Id: 4723FC0012
-X-HE-Tag: 1785935534-135886
-X-HE-Meta: U2FsdGVkX1+/zPq659BNEM9VlDQp9ujPDUyx7MQsiAO5O/Hl8Zk/NI2Ivv6oVdCmcPotBpEr0kj4ZQR4710ZtDYjNsC+2iJkSKzPSN1mbpV1Rx8GBmHdi6tco0QBBotLxMok2vcglu+mUlP73gvZHDHeQsQ/Vhl33Sk22SkaPb3jN7FVs+7hlpz7aMN4QLlYglrvNkmX6w8xlGcdyzILVdSZNNvzFjl0tZvGlTsPotLENFoDx4e1Acl6WrcUwVdSsa5NodzzLGlCcdysJgqjsKd9gbrYkbaiaw2BDj12usD4+ucCTrsTUBSEqLS5KYmTObhTSsYumxomVmJ0p8vAr/ePl8eQO+fVqSKfjbAL3TxULwRFAOYWkRph/zRIsObKhwo1BZYHGhtnIGpwtwJqrQ4aJHOvAqc0OZIA15Qd3SfRGpfjGMX2/pS6nBgdqVX6Qnr0V2I/ULb4v6d3/58kBzfNBHpeEJ8WGwRMCALml5mz5QXkP1yBv8PcfAULsI4Ui883gz+Xz0hHXsnO+w0ExBSg4h49OF/hOrVqg+oKI0rXd617Mm9H11EKokBIDz9qgf6Gtd1gUBv3wkI/oBS5vVzCGKRp2T1D2fgtQVDMqrk3y26unYmb9yVNASkKf73NwKJ8FqoA9Go4FXxO/16cHQJuGhBaHQBieHjd07vrpjrZArGaXVKT6g4wFMPHX/v/qFO/9FPsBRvp/ZX5O/Yd+0h0P6TRxWXkuBjw9PKA7VG60bRgGQLSw3KkoOStj04XFi8RV1gOiPYUL8dkVFw9yNDJ2P05raM7wrjN9ehy3hWUPSzBL5h+5VQvicYe+DIcUvJZNht7H7lmfpiDiXYlHNjcRK1Lf9TrrFMJkbcZloBIIx4igtkvu+NtJwRKE48J/aFvB0f03HQi5fQ0Xj8ErphDXR3eZmx9dTBcvjRYNusbHeKAMOBsuwH+7zASi0XGxSx0rhoeF+qel/Cj0K/
- CMAnKx9j
- arzfjZIjFeUIRCYqIeDD5FmPpfC2OqH/DvZL4FoIumMPH4nTT8xJ0pzVuHsbs3xM1naUy9rqD9ZsUkecDSmcHL6uCs3gSJp1wDk1/kA/PJ0Z1bFRm4CLMu92vBw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1785936554-192681
+X-HE-Meta: U2FsdGVkX1/3JVMGf0I5tziljP7fPszRcs4BNzU3NcOXHVMtosNsHQrm/0Wnzah289EVf42Hs2AxO5eAGwWDJpspeKzB6JVTng62HuoHg9Ix/53xZSJiVFUyWtHI+GX+C/cGrnVOaOX5CAj9e625VhMnvWZ1/kHObm7OvaZjvpmLpv4dy7kq2gCkH1C9a5HaGDkqAYjmcIcG1DSYtut0UIYAZ4zEgjEcl1VEAb2u6MHKCDIrliUACJo8ezFFcwstmYJM2xyGXsbdUXSMzpirphDoCL1bruvqL58yQzE2dgDqS6RvMoVvB3LiBOtx849hdVb4rPk5JN3BIjl3wmlVl2o7XiByhPqg2qTNqSNSm+H886wZI3S4p8ogrUzIuHOx3QYPI47+YlKzRh4YaoSLikvxUHadoLsAw/zqHgFL8oOHHyAKd0rMKkyPcAbbbbBx+rrXZiVc37RpNQOSffFWbSqmhCTH3JqZFuqnsjRVuBuow3y6hl0Cpi9wLt8eJt+29ag3ujA9ei2ZRCOgBsalsf9KsPp+6XbZddxo1M4ohAknyl1m2uq2xXwIy18YhXRH38u4dYS/vPBoqxCr7dxSxr64fZjRvgAdQ8w8R4cTJpZZze4mtPYINBRZB34FQwZ1Q8+Sv6R7PR0I4i1I8QDIlDOs4Xr6MOsC4H/VQu4BeBjr5z2CBmFcJGOOPBHZGCDgTIOU/GzzOCjhvYBk5h/C9f575QrKTw9Sjfk59hcVrnAa9FdaGpclKHh2Yx0k2PcKLis5acdNHA9oCwmyEGA0FRNBXxQ00pQc9Dhf/6q2iDMLGhc04c7s0cjIo9vPRVUMm3axNFDks9YahdwKuUTQx/7UeXnb2XH/kiN9ZxugcmM2+uz8iuL2vXvNowAzRrk3pV/hoUsPpFBkdR/pGIynGzqi5Et32Zg74umoCfBU+rCjlmGSwhkjWTwANqTrSdF1Z639lLTSwDGqc3kbHtj
+ aB6Pwdfr
+ EDESR6RLkEyqAU5PPSFeXyt9ebYbdDvHp7Zoq503DoEvDQEvFtZULwXfMuRz2jK4UvrSqQBkS3aBwlCRyv00g2FUOMZuoixln6qvTzMtB4mx5mckq/ODJybAhQMo0EZ7BK4BTXsky/vpGquEDKpCOXamq7TE25ULRa4qEZAzMbvmO+f1vO1dziB/dBs1hUiwsO1iQJZHc4x6PJb+OwoCZomLO/XEfCbu3B0bMAHG01NSEBZdHn8Si0UBvk8YuiHBYbl71PXC5UtbTR6opUjdTGuc20mZWusAGiSh3V0xg4oEWxCYb6+hW6fm5S1O3J64y7G8MGmPShg2Lw6GLHYBzHIv5j1oYELHBmFOnE7nmT60WHFZNyd6l8nI6aIc/s5t9R2Zhdq23H3m7uIYb0IpTujTzCK/IAqCNJ39x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,83 +95,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-On 8/5/26 6:59 PM, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
->
-> The KSM code already stores and checks the stable node key via
-> folio->mapping, but the comment in ksm_get_folio() and the reverse
-> mapping documentation in ksm.rst still refer to page->mapping.
->
-> This is a pure wording update to match the folio-based implementation.
-> No functional change is intended.
->
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
->   Documentation/mm/ksm.rst                    | 4 ++--
->   Documentation/translations/zh_CN/mm/ksm.rst | 4 ++--
->   mm/ksm.c                                    | 7 +++----
->   3 files changed, 7 insertions(+), 8 deletions(-)
->
-> diff --git a/Documentation/mm/ksm.rst b/Documentation/mm/ksm.rst
-> index 2806e3e4a10e..2b4f72f1f953 100644
-> --- a/Documentation/mm/ksm.rst
-> +++ b/Documentation/mm/ksm.rst
-> @@ -24,13 +24,13 @@ tree.
->   
->   If a KSM page is shared between less than ``max_page_sharing`` VMAs,
->   the node of the stable tree that represents such KSM page points to a
-> -list of struct ksm_rmap_item and the ``page->mapping`` of the
-> +list of struct ksm_rmap_item and the ``folio->mapping`` of the
->   KSM page points to the stable tree node.
->   
->   When the sharing passes this threshold, KSM adds a second dimension to
->   the stable tree. The tree node becomes a "chain" that links one or
->   more "dups". Each "dup" keeps reverse mapping information for a KSM
-> -page with ``page->mapping`` pointing to that "dup".
-> +page with ``folio->mapping`` pointing to that "dup".
->   
->   Every "chain" and all "dups" linked into a "chain" enforce the
->   invariant that they represent the same write protected memory content,
-> diff --git a/Documentation/translations/zh_CN/mm/ksm.rst b/Documentation/translations/zh_CN/mm/ksm.rst
-> index f0f458753d0c..822c7a289671 100644
-> --- a/Documentation/translations/zh_CN/mm/ksm.rst
-> +++ b/Documentation/translations/zh_CN/mm/ksm.rst
-> @@ -31,10 +31,10 @@ KSM维护着稳定树中的KSM页的逆映射信息。
->   
->   当KSM页面的共享数小于 ``max_page_sharing`` 的虚拟内存区域(VMAs)时，则代表了
->   KSM页的稳定树其中的节点指向了一个ksm_rmap_item结构体类型的列表。同时，这个KSM页
-> -的 ``page->mapping`` 指向了该稳定树节点。
-> +的 ``folio->mapping`` 指向了该稳定树节点。
->   
->   如果共享数超过了阈值，KSM将给稳定树添加第二个维度。稳定树就变成链接一个或多
-> -个稳定树"副本"的"链"。每个副本都保留KSM页的逆映射信息，其中 ``page->mapping``
-> +个稳定树"副本"的"链"。每个副本都保留KSM页的逆映射信息，其中 ``folio->mapping``
->   指向该"副本"。
+__ksm_enter() decides whether ksmd needs a wakeup by checking if the
+mm slot list is empty before inserting the new slot.
 
-The Chinese translation looks good to me.
+The empty check is currently outside ksm_mmlist_lock.  Another CPU can
+remove the last slot and let ksmd go back to sleep after the unlocked
+check, while this CPU inserts a new slot and skips the wakeup based on
+the stale result.
 
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Take ksm_mmlist_lock before checking the list so the empty-to-nonempty
+transition and the insertion are observed as one critical section.
 
->   
->   每个链以及链接到该链中的所有"副本"强制不变的是，它们代表了相同的写保护内存
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index ab1fc59424e8..4bde9fd8d44e 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -959,10 +959,9 @@ enum ksm_get_folio_flags {
->    * seconds or even minutes: much too unresponsive.  So instead we use a
->    * "keyhole reference": access to the ksm page from the stable node peeps
->    * out through its keyhole to see if that page still holds the right key,
-> - * pointing back to this stable node.  This relies on freeing a PageAnon
-> - * page to reset its page->mapping to NULL, and relies on no other use of
-> - * a page to put something that might look like our key in page->mapping.
-> - * is on its way to being freed; but it is an anomaly to bear in mind.
-> + * pointing back to this stable node.  This relies on freeing an anon
-> + * folio to reset its mapping to NULL, and relies on no other use of a
-> + * folio to put something that might look like our key in its mapping.
->    */
->   static struct folio *ksm_get_folio(struct ksm_stable_node *stable_node,
->   				 enum ksm_get_folio_flags flags)
+Fixes: 6e15838425ac ("ksm: keep quiet while list empty")
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/ksm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..bb81ca49ad94 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3027,10 +3027,9 @@ int __ksm_enter(struct mm_struct *mm)
+ 
+ 	slot = &mm_slot->slot;
+ 
++	spin_lock(&ksm_mmlist_lock);
+ 	/* Check ksm_run too?  Would need tighter locking */
+ 	needs_wakeup = list_empty(&ksm_mm_head.slot.mm_node);
+-
+-	spin_lock(&ksm_mmlist_lock);
+ 	mm_slot_insert(mm_slots_hash, mm, slot);
+ 	/*
+ 	 * When KSM_RUN_MERGE (or KSM_RUN_STOP),
+-- 
+2.43.0
 
 
