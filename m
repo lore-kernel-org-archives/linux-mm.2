@@ -4,136 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B92C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 17:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19BBCC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 18:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30C326B007B; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
+	id C69FD6B007B; Wed,  5 Aug 2026 14:13:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BCE86B0088; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
+	id C41656B0088; Wed,  5 Aug 2026 14:13:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AE136B008A; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
+	id B2F9E6B008A; Wed,  5 Aug 2026 14:13:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C90F96B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:47:56 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34E1D160556
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:47:56 +0000 (UTC)
-X-FDA: 85067948952.02.55AA9F7
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 417D214000F
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:47:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T1UKQ9Aa;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B1EE6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:13:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8B6340573
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 18:13:41 +0000 (UTC)
+X-FDA: 85068013842.14.E1889FD
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D29164000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 18:13:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GSWeqdqK;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785953619;
+	b=tJQ6IVuN4JgfeNS6awavynZQRXKEDqDsOyLXu84HiSwAZq7H8OeF3t0savtu9N/xOxcn84
+	zvJ0r612GQ73mi5fXSHxphEMZqMJniwQ8IKUfdOemt1URaHoXFteJCBKyyMFas/kC1IVvU
+	PIpR0SQETigt2ldybTV0HnlvCIanmCo=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GSWeqdqK;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785952074;
+	s=arc-20220608; t=1785953619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
-	b=q6gGb3OKjEa6ErUR18LEs+zoyT8fVTvtil9BCKErsYk8hhaNUFl6fe/NLBcTf+aNhVGlUy
-	PZHCUip5nl3dCCRvsKMAdp9zMXN4PkNyrzcgOUe7/KiLf5Le8qtYG+/ndeN9idOb4/VS+6
-	lCK/u2exsNHiuOnbzD0CXwNbo6sz33o=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785952074;
-	b=bpyHNC6HaRch6YJo7g8kP5ZzWYVgkcXzN/jcBhmaAEdi4MEwUIMtNt8yMBK0FnTWg2EhIV
-	ecUNdKSDy3p9jMM5sJQPWBI7s848OPfbvcWEIJp+6M2C68bxvhfr0W0bA3TtG3+OP8tCDf
-	QSwbq2pr5dxNWTxil9x/QCb8n++PLuE=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T1UKQ9Aa;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c10ed63c0so19271cf.1
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 10:47:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785952073; cv=none;
+	bh=VttIK0xBzWBUBWmIkqwiW97WNyQTZbTR6HIBNbzaOsQ=;
+	b=8MMCrfpGmpxIJRon+wYqPShxWm1kPMavcsNxsrQwblzEWqPKxd0Do4RiRHzRilyooO3880
+	FtHZfZCfahFkQbE6pk/5RzkO86ZtCCYAVd2Ze92GNKl1OjwT0nfxj/Iquo/GbufcUP5wRv
+	TwrQlpNLU7RuavZNtPJ0isl8cIz8xVs=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495635a85d2so11504175e9.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 11:13:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785953618; cv=none;
         d=google.com; s=arc-20260327;
-        b=fr4TIVyrmLGvOVulrwn/U9nYqflr9pj58h3JSeAfQ3awscsw30uYMnTgZggF2J64Ei
-         wcrpTxG2F5JBKr1KhT5pjued64JpNdiURo4GP/pWSZHQJCisRpIUBbslA+Mih0m9Nf8p
-         ozkKZv6rmuogYgX8q4PNntiJZbnqWN+amxt0J+m/+0U2aEe/IXGXHDzsgxLkVyGO/2uP
-         VihkfMGM0uXGuuKRfs0Cs8+gsJhWq5C39Ej93mC+/yu4jD8qAyggFpgDVhwdkEareS8z
-         yRHv29GxpJsCmccNHb33uM4YSqAc6ZN2vVp+d3eWaacXl5m0s4C9PCN9cuJWinnWzMir
-         HOMg==
+        b=VsH+Ys3CMSORGCjI/EJRXGSB2bPlfE78DVvZBwoMkNFJQQjptD+cH7b+ancFABAMCX
+         vwaFwboSxKq4Q6A+8BWZbzd1SzDi0NsVkovGIIDzx1+ShHDLhKcZZIpjb7nqNmIr6Qap
+         KLQf6PSQE2AkA4ZvbbKpzPoF5U5UQHzgoUUOe0H/y6wuwrVMdrcMlvszDRbeWURks7oE
+         xJtkuq40GpVZxeRS4SuouLfeLGLZBkmaHWwqUkGET7eLAmZnkYDorsJjwGfwJ/HXsv93
+         1tT6pnmh5eg2YAN4/8kHgOGOIVnUqxiY4x8sj8blRTCQL5AMrZEyRCsOWK53wPYAOIfY
+         V3Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
-        fh=MZ0+p3LOFPkzaBvX8fQpOMoXUcGQJUjcEID5QZrNqCQ=;
-        b=heTPaTPRJjo0ZmYrwuqkEJOFSrGfzopTfo4gsXqqvjcEucSPUnYgn6VP+YFDsE7TY6
-         pqLUcFdPph1sJkkLQ5p4JfxuFw4SgC7yVWi61DIjSCdaBMSenVQnRqYkbxx2GGMD+UAH
-         JlrnnObmkcSrlIsGS8dLjIzuNP7pq8qYTJySW3O0ld4JuOqA1w/Xc+B0J9lTteVvAG8U
-         ojYvU4kt9SfOzbNHp5LAFvSe5LiW0dgrw0k3enIGKWQglPV0cXo5sD/D2LJIepwjEakX
-         GYU2KTmUPu5CvBh4BVyxt2eRHk9KOv5D/17e+nzQ9Rl06dZuQqSsL7Xdp5EMJs0gMbTW
-         WmKA==;
+        bh=VttIK0xBzWBUBWmIkqwiW97WNyQTZbTR6HIBNbzaOsQ=;
+        fh=K0SL9VhINW/lqX5ph81TISIeeYbMNS7p3uPn7LPG0yI=;
+        b=jteJoz/v6RfTKBIX7fxdQJLVu7jup6GF66d0YuFa0bYJaT99s8Af1PW7iHaHrH+D7k
+         tHLJSvXCSCJl1neddRa/U2G+xxA3rxe2Fna30qYSA3XxFU1rBvy3GcyOGbSzO8tERKVp
+         K57QBvjb426xneQgsW3k/L6OOmc01Uq5IyX8nl9pZZsdNJ5+AO/W7JaJywuGQcvQ+Jy/
+         y/KfjGlGYMp/a/3ZIsTW4Y/IVPhZj6JneAp+W8a8ILyUfnlIAMfCDe8DtA3ehcGYhbbC
+         3NmtpZvVJJKU6mnkqiYt2I9FRiXrhMuG/VJy+MmJyzCfzxzvN8r7c0F2rwT0rC562f88
+         duXQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785952073; x=1786556873; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1785953618; x=1786558418; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
-        b=T1UKQ9Aa5sYlIQyiUR43IQxtjdStb2dZhyPj9LONEuOpfoirSpCMy+1oHJlPi2ch+t
-         6HmLbuMN8Jr1DL6t0ittA0wMpsFxjMF4n6FBdc4i5Yn3mcjbk9GGqV/7IT4fO1xYD/Bw
-         z5WoZNJE61x6SpuEpUKIW268PeZTFS2N8xABRJJSdxV8inFg9EJ0fGB0r95xfAbgFB1v
-         3N19AfCK64Oy3hmHrqukeXZ48ghPVTQgizE8syjeKskcte/lLniisyw6rjKWtII5yCxV
-         93KCxRjqgqssM4h0wmwqmOQ3czUJ50jeBHSOn3DSRYUIyqD1gwj7CRK4Q603/JWa8jL+
-         IfPg==
+        bh=VttIK0xBzWBUBWmIkqwiW97WNyQTZbTR6HIBNbzaOsQ=;
+        b=GSWeqdqKjcrsfI3VfPr4KZGpkMuGdysEtk5bJJjmd3xne09usJSuaROAVWgFLdZUSj
+         nv0C7zG4/SJBov4/mgAArzEv6T+qB4YFumOU2spRKolcESm7yQlaq+VEXBSRhWrVZInR
+         Xzp092RqwErkaDd6bX4tNVZzUx6c7g5XRvPKkOzOigT2LvhgfDOB3HByRBW8Q7yx4KQv
+         Us5mUfCIZevWHqXpkpcCFw0R2LxPvB/CyqP6IpoNNX5QVMYSwTY79e6gAx8ADUla9Fhh
+         Ml3d1IUEdTAAnNbKR60FHd7I4DAyNA1L+acH/U1mJPyXBR3MLM26+k0Y/DFVwGNmofiP
+         HXbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785952073; x=1786556873;
+        d=1e100.net; s=20251104; t=1785953618; x=1786558418;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
-        b=i3p/l/Wufj97iIegjVZXOVL6BJ9/dKA2ZbmdCn1+c9snXammsXakjn6Xq8n84rRDZu
-         rFrp/BTfM2FEnY1ovuIngPqCKvEkLy3KjTMKXe0489nXbemEfNrpBM5RaP8Rdi8BqrcY
-         aCZ+3SGGpY3soQ2xxu/42Y61lZe09l+NW/IuTzSw8Vxr4/KRuYj0ayNqZX1HrWnK/AKA
-         6+J1rl1i2dpW6G09OBAUK+31AuQpvYpezP6rIV3OPWXZfL0eXJhKWqdaYyL58lSKpQPM
-         3zHMcoNiS15j3g8zgA6ti7HhbDWRjHXfeoN/IGYVi0Q/GbUu1oJzhaWDG98mEtMA6wpe
-         Dalg==
-X-Forwarded-Encrypted: i=1; AHgh+RooekKEERzz6Wpnm1p4xqPiEG6fycyDrxTk0Uy/scIg80EryrknLjaMA9IVjyP4AV3N8gVgZjfzbA==@kvack.org
-X-Gm-Message-State: AOJu0YyjpUxpnJc9HGyABVA1zmbaWWo/B6qA248jOHG+gdCgBI15q4gd
-	bLjNkDmgXSCM+69f+RUak+4hFOpZead594GAt2svQkrfaAgqNx3O/O1cuwBEY78Sf1qAjG44AbR
-	YXeRkjwAaJIculx8hOL1OnV2TJAQztFSr6gW952Gy
-X-Gm-Gg: AR+sD11ch+JCloSOxJM6PYC05sga0qHGh88CFDkLDfKnhdyO42VZhH3HxYgf9DdSP0J
-	BkkrDg+E61re8G/CPZksnfIj57uiHXXz5aeJ2BGbDNjQgscPxKHdjgVplB2bZeiC8269y+SzFNA
-	hL6hn6nFB7aFopf/DAdJWBtB0Pec2EUQoGuVcwes2salnq8CVk2MuondMJHWaLcoTNrHAwP4/Ve
-	a2qFIxbRF8VN9PB5U3o8DqtuySr/dcUHnEliLxekalGsIv96IUn9Ol2XIQz9oxTht+3XVom+LRl
-	7dyGToXArbUP2EbhfGoP2Hi4MATliKFpDxjmfccZNpFX0ogwSZVaExStnGZb1jKsaVZbOL18XVY
-	=
-X-Received: by 2002:a05:622a:22a3:b0:51c:935d:8d74 with SMTP id
- d75a77b69052e-52cfc109122mr792451cf.9.1785952072535; Wed, 05 Aug 2026
- 10:47:52 -0700 (PDT)
+        bh=VttIK0xBzWBUBWmIkqwiW97WNyQTZbTR6HIBNbzaOsQ=;
+        b=iy1aH7vfL5nNRu5JvqnUAzPjDqo5B10KaDLHwbWyOwVfOqVqJOdBP+ct3oJzipClYk
+         UYbHB5kvViF9v1mGgBecU0W33DCZNODrmsd++y3Gdb3KqvB2qs1VT2YYgXSIs+oz3m+G
+         MuzScZRnXpV3ujAqmMd7vePR88mw+aUBkLVwJrlz3lkbEE7NO85evF+mLXN3enwDxrEQ
+         +ME+pSY59E3u7IGWZYdViJASb09r+pALI2vmOKZcwKgUBqhNs+3VxoRn2sPwF/PEKvZ0
+         upHbW3wmPn3T66wVe86Dbch65QnZe3sNkrN5Fs2Nll9k8XbyvXnrZB8MzZOM2yyMhCS5
+         b+FA==
+X-Forwarded-Encrypted: i=1; AHgh+RovQzGwjzNGJVwfTYDiaupcZsKia5bytgrVAf/OZX0AsHuWEI+U6MAS0KYEIBNt8+Zyt0injHjQUw==@kvack.org
+X-Gm-Message-State: AOJu0YxcWYDpE0VDLvJqxlnGRfrZ0/6/EQIVWI6N7JZ1gx/nyYVNhyWr
+	Hhf3k3mAYUcDLPkRgQZg3Lr6yt3SBSl0VDofc31zhT2UNqOP6bjqLYq8HGT0hAZMhcuWx4Wxtg7
+	Auyu6TzHgcXFsg58gHnsYE53yA3lXkpQ=
+X-Gm-Gg: AR+sD130kov4s0PlDyOCt8a2JKIAxahMC9BdtUfy91pS5AkSxNMmm6rZ2tkM/1ANbRX
+	a7ywSEn9jx2toK3luDDak1o8SqXMXxlgtbMoSoSqqGK5+tDxZZqzeq3NUfF4esr/ZDtPPUA5Sp8
+	Oii3BocEepz+qcdr0wdGt0KXmoW8Chkn1Zyu7OW2UosYPQusfmsssaExuzIFSBnwJKRSUEcpaZi
+	sEwl1h++ySYGjrEZaCfRCPyICZ59wNOTOfbFLWGw/14TJ6D7ySY/ODDzLaK/r1w+BcD0SBVGtRa
+	tYI9jnqYg6CQ6CCyQ0sl5u39NYRBOgigiJM659XuYOAuZol/O/HN8rC0Tvy51/NwyzQWJMPimEG
+	7iSD87qNxevat
+X-Received: by 2002:a05:600c:1d23:b0:499:51b8:d649 with SMTP id
+ 5b1f17b1804b1-49951b8d652mr45542765e9.3.1785953618093; Wed, 05 Aug 2026
+ 11:13:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260805090633.141001-1-hao.ge@linux.dev> <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
-In-Reply-To: <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 5 Aug 2026 10:47:41 -0700
-X-Gm-Features: AUfX_mxKiYGwyyUljQnBwrH-ct4w_9C4kkNu_d9Bab_VVjkT3TZ1NCyG0rHLGmo
-Message-ID: <CAJuCfpG_XX-Hwy=TCrJ+g6yiMxGXLB=LvnPN_WLP3WQktNZMbA@mail.gmail.com>
-Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Abhishek Bapat <abhishekbapat@google.com>, stable@vger.kernel.org
+References: <amufiuAaZbuDdKkQ@cmpxchg.org> <20260731071900.38942-1-jiahao.kernel@gmail.com>
+ <amy8gAN33W4QsM5R@cmpxchg.org> <6e16a760-d84d-98e1-433e-3233a9dd2236@gmail.com>
+ <94d74382-2e2c-8f8e-35e6-1ecafdcc445f@gmail.com>
+In-Reply-To: <94d74382-2e2c-8f8e-35e6-1ecafdcc445f@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 5 Aug 2026 11:13:25 -0700
+X-Gm-Features: AUfX_mz21OIvgUV13HlTkmRouDqof-qc0oL4x2fG4bWuvZaziIySVbUWkVknIP4
+Message-ID: <CAKEwX=OuXHCV1G67AgJa+S42O0S+u+CGyOKcg9HqJ_6Pu_=5hg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm/zswap: Support batch writeback in shrink_memcg()
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, yosry@kernel.org, akpm@linux-foundation.org, 
+	chengming.zhou@linux.dev, jiahao1@lixiang.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, 
+	mkoutny@suse.com, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, stable@vger.kernel.org, tj@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 417D214000F
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D29164000B
+X-Stat-Signature: xgs417xajgijrtnu4a9dp6y8tfkrk465
 X-Rspam-User: 
-X-Stat-Signature: go16kppnphhuu6g8697ptqpbep3mujw4
-X-HE-Tag: 1785952074-396625
-X-HE-Meta: U2FsdGVkX1907Izzt4qCS5B1rPjDxX84kMZT6h6AbTZXEbGZioPrUiig1ZxsC4vuPHxPyreGzDI0lckzxeCRx8SCvj4SSyOAygwdSp3u7LhLLWASRtAT6apBDEzXAkm0Kxxpf0z28FZ6molPz/BzZwTV2NhEyPDA9Pkfn6uvOxU+eHfaBFn2nMC4dygsnSnlhO3BsXSAhJ/03ZTD3u1RZrjgonaPsqC2SYiwkn4fuLB2CAxFJN4McogdrjlLlgwHTprxlBxn+ziIZNDxeY1H0O4/KD9jYJJqdBe0mk7Oe9WmHVtA5jT3FZN0KvffnwJ3ugh77SMDBjh4zfCQYX7m/EgMBgvyODqDMMXArAhF0AnzPCi6hynuapnGSzATHCjP1VM099R1rCJ3iepGlvcTaFagilryjRAqCS4hQ6dusvOaFBE3DpoyB3108zoXMJJTKSZC0w8+etgZQoseQzduCqwlTCkjUGpwkCXWQ8JrbyVAEs8w5phxU8EOxuR6EzMMjM0e97N2rCJ8Z602UnqOe4oQ2Q1AIZ3d2ZfHsnoQkkzpC2igAsWXlyIwwZ85zYj84hFFFEGQWTgizU8TZFKyk2Pjmu58cnHvH1G1S3sWgzkawq5MyQVqLM9EHjYatoKFg6wa9FsIYurNHbp04tyfHcpD6fykgMkMu/HxPsupa5fKe7ydZMVZEPtq7sCGbf7u3Y39RLFEkbNO906TyPdL/xi24vH/DILfLRW/sggpf2UUg2w1YsAWfD1rxVQzC+N6Z5lUMvyk9cJReP/Je+nzLJ6KhyHd0Hqa3hS0xFfV7AdI4Hh6TZiCFue9f9yDpgETSblUTpK3bOzGZfrOBlTQEga8rtR3t5gG8xlErC/p0B/0ZN6Ir36Gu0OhLXH//MDJQ1X93TRHR+6bAWHswY9AXxrxbCImdbOrhp580ZJwLJveXo8Nk1ujb4p6+8UpLglTYADA+vJi63MbDD/FuUn
- jLvXoJbn
- 1I5KweNXqSI6IgvXtvxYtXyV0473M05Dy2cHxItVvJ/0VuZpuOgsvlLKoE7VrsX5U/LeaC7cAXKKQoYolHDeCibp7Yiwe7prKQ2AlOG+cc9sIZ7z15bJt2jCyNja6inpyjU8A42eiH/YN4shfClXQmJMAn1TI4i0/ihevpcD3YiOhHZE9UZclDemvnJ46zGkFFEETk69hfxo2054gJlcOEFDUvxIAxRMaMBmDouQfaEeuBhCY3IpWFdk8VpUmOsUaFOKSO96GzRxF89jIBlcyEV3vv9S9PxzreXf9vy/tTGkq4pKFeCnvLe70XAqIIlgXHBAUqRDP3pXR1YReqJlsJeeakebScpFfQ3SV1m83hLXDo43QZX4c15db86EdVrdkiQAIpkFEnVWjrAX2sFwTUEevg7ASa4KoPNOx77Q+IqAubhnQNIosYikHw1TnC+VhW9GeRxL0h868wAY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785953619-821136
+X-HE-Meta: U2FsdGVkX1/uaT0N589v9cijq2gTNgoQ6y+zHFClNyLlSeG/ULfpphSvRCjTjIym6v7V5s/v9kbG81NF/8+DDRbGFwzFUQrQOx7yXcfFPG5og0MLFxk2HY2eDPvv2cjbBpbyi6IH2ow0zpmw4q4VyhbEKOVNQzw4Gz5c1TqW7BnUnu+JNFs697F2n5KRjQNGiLadIVWamnljNnn9G/xjiv16H9KCnGJ04vLf94R3NOtIn8+MzOQMrppltrL86ng228lrFUp+cS1tW59+Le4ix/2VRYQtwrXImkCrbvNw69B76Bd4LyPzO9lmXy73zIuw6+8699jyBSNlocKDuAc7bi7f68Rj7ACHzDJdBKK5uJ3m20JSc1XHyWuw3rTUmLsuj6IfX5zmjuwBJ1AAdvxCqCAmlLcxa7ftNwcUC8xO031mS7ARwSsoF+PcsVDiJdnitBd1IqhEZVrk+XmADHQ5iUE1edyP+TpYsSbwqBV2/u98co9PkzUt0DQshJBKpGxSOwuaKk11mtUWAbRvFYWg7MQIZJwLi1OWlzGhsVKEacLh2V0fyun0t8qosgvA/rRZ+CA4oqUWdjl9r75LOygiqSCVfAF538hej1dhP990OiZfJU4X4UbOPlGbB7mOfDJxYH0NUg8M+ddExrwNZDnkKswfbhpPZu4QK8AJR5fkHQ6Va2CXmJ1bcgH+euAJbUkrkBNoVlDVVyGMO0rFI93LDe9N1nWdB6gSOt8hSC8UVlnyj6ReEh8dAooKHKksU9ugizwj3DgwsYZ6HBEM8ebKRGNxNVZA/Plky/crEmCg0HKkCWgJFBLbqSbVSSjA6ivxfAhF9Jx/UgNV/Dtufbwbwco/mh1JockmEHfdYl6Z58/Tcmyt1tmUz/DSQXzaDk6fJhBCgICJ8VzHdSOi326tKxwhBkIAbxl/xkcfm1kl9eIqI28ExyszYJqRa2b093w642GzlFkjDaWZKiVSpfB
+ 1TUPBjBe
+ eKRPlVK0PjeHh5a0T1jrF7AyMI1Ed9Txpzo1+yRz7c1/P6jCQJLqgjyupcck7Ptxh8aZrdpCkdgIjHu/vNTcH5pix/jw+89fi5D1Pf6PI4ZK+0x/Wacqw192LKLlC5YkUwGgywWos3tZgiG6/UwetVCVbpcD31GujE2H1uxygGqfqQznx9+Zgm5aqx2IfGoMxRWCZs52vzN9YRty5Zw+hv8QGjxJCy97rUCY1ny4AwEkSzwWQ4S8A3DP+qF8wpc5J0VBmVWPUL29KimxvupEcHmeqrZIPB94/cNdBRTWR3NtbsfVyYnqTd0R/LKZ96HFt2WG/OpxJD/VuZ4+l3sF26S9SriNLXFTGmRh1WBwp3U6y6bf+DnI5y0xkPLKdj3iEn/QB7ttulNSzCTsxyrK2BFh1zgHDifPL/wbSHBQIQ4steK53BQebOgNjo/q/nREY/YGboU0hULlPPl4J0Dvo3QHQ7SY7AEsgoBwEamPxaB25m+Eo+a8qhauvd+/uUInpLYP/0EwX/6h6qKbC9Joexqb7qIlA3QDvFt48Bi/z5a4zDGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,75 +145,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 5, 2026 at 9:55=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
+On Tue, Aug 4, 2026 at 11:21=E2=80=AFPM Hao Jia <jiahao.kernel@gmail.com> w=
+rote:
 >
-> On Wed,  5 Aug 2026 17:06:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 >
-> > In reserve_module_tags(), the tag overflow check is gated on
-> > mem_alloc_profiling_enabled():
-> >
-> >     if (mem_alloc_profiling_enabled() && !tags_addressable())
-> >
-> > If profiling is toggled off at runtime and a module is loaded whose
-> > tags exceed the compressed-mode limit, shutdown_mem_profiling() is
-> > skipped. vm_module_tags_populate() still maps memory for the tags and
-> > the module loads successfully, but the total tag count now exceeds what
-> > NR_UNUSED_PAGEFLAG_BITS can address.
-> >
-> > Once profiling is re-enabled, ref_to_idx() computes each tag's index
-> > as its position in the alloc_tag array. update_page_tag_ref() masks
-> > it to alloc_tag_ref_mask before storing in page->flags. Indices
-> > beyond the mask are truncated and idx_to_ref() resolves them to wrong
-> > tags.
-> >
-> > This silently corrupts /proc/allocinfo: allocated pages get attributed
-> > to the wrong call sites, so the statistics it reports are wrong.
-> >
-> > mem_alloc_profiling_enabled() and mem_profiling_compressed are
-> > independent. Once compressed mode is established at boot, it stays
-> > active regardless of runtime toggles of mem_profiling.
-> >
-> > Remove the mem_alloc_profiling_enabled() guard. Also return an error
-> > after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
-> > the mapped pages would never be reused - shutdown_mem_profiling() sets
-> > mem_profiling_support to false, so no future module load enters the
-> > codetag path.
 >
-> Thanks.
->
-> AI review points at a cpuple of possible things, one pre-existing:
->         https://sashiko.dev/#/patchset/20260805090633.141001-1-hao.ge@lin=
-ux.dev
+> On 2026/8/1 08:31, Hao Jia wrote:
+> >
+> >
+> > On one hand, this avoids scanning the same entry multiple times within =
+a
+> > single pass. Since the second-chance algorithm rotates referenced
+> > entries to the tail of the LRU, entries on nodes with a large number of
+> > zswap entries require at least two shrink_memcg() calls to be written
+> > back, whereas entries on nodes with fewer entries might get written bac=
+k
+> > in a single shrink_memcg() call instead. On the other hand, we also
 
-Yes, pre-existing issue can be handled separately, it's not directly
-related to this change.
+Same thing happens if you have more entries, no? Say you have 64
+entries and 96 entries in node 1 and node 2, respectively. Then you
+need to go to round 3 to reclaim an entry in node 1, and round 4 for
+node 2. What's special about 1/2 rounds vs 3/4 rounds?
 
->
-> "Does this unintentionally result in a denial of service for module
-> loading, preventing critical drivers from loading when they otherwise
-> could have just disabled profiling and gracefully continued?" sounds
-> pretty obscure and I doubt if we care?
+I think it's probably fine to just pass SWAP_CLUSTER_MAX as nr_to_walk
+- we're applying equal amount of reclaim pressure to 2 nodes. Without
+prior information, seems like a reasonable strategy to me. I think
+what you did is already a pretty big improvements to status quo - we
+can always add more fine tuning on top of it later if needs be.
 
-Hmm, I think Hao considered that in his previous version, but now I'm
-thinking we might be able to handle this more gracefully and not fail
-the module loading. When profiling is disabled
-codetag_needs_module_section() returns false here:
-https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822,
-so if we had to disable profiling, we could return NULL instead of
-ENOMEM and change the condition here:
-https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2825
-to act as if codetag_needs_module_section() was false from the
-beginning. IOW code at
-https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822
-becomes:
+> > avoid spinning repeatedly on entries that fail writeback.
 
-if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
-    (dest =3D codetag_alloc_module_section(mod, sname, shdr->sh_size,
-      arch_mod_section_prepend(mod, i), shdr->sh_addralign)) !=3D NULL) {
-...
-
-I think this would result in a better handling of this situation: if
-we can't fit the tags anymore, we issue a warning, disable profiling
-but continue loading the module. Hao, WDYT?
+SWAP_CLUSTER_MAX is 32, so I assume it's not going to spin for a
+terribly long amount of time?
 
