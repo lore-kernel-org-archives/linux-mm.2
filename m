@@ -4,124 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2E3C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2EC1C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:28:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38FD76B007B; Wed,  5 Aug 2026 02:21:38 -0400 (EDT)
+	id D632D6B008A; Wed,  5 Aug 2026 02:28:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 342846B0088; Wed,  5 Aug 2026 02:21:38 -0400 (EDT)
+	id D3A2C6B0092; Wed,  5 Aug 2026 02:28:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230156B008A; Wed,  5 Aug 2026 02:21:38 -0400 (EDT)
+	id C29616B0093; Wed,  5 Aug 2026 02:28:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3896B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:21:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7DB7616037A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:21:37 +0000 (UTC)
-X-FDA: 85066219434.07.70A0D76
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B14571C0011
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:21:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nXVcw3FI;
-	spf=pass (imf20.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A2126B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:28:47 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D98640307
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:47 +0000 (UTC)
+X-FDA: 85066237494.06.0D19A46
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A2A5118000C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:28:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=fcoiw1zo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785910895;
+	s=arc-20220608; t=1785911324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=90dET2o+stuXHdvr17MtJ609siDKgo9CQdU/QNgsB1k=;
-	b=l2Z6gifgdmM3tFgIw/4bOY4wRKCdpTezoXhteU5OqDd8Kkkpv4Cttjg6ku82JLcwE+mPLL
-	O8kNUfzsy9irv8WN+OXlwrY5P58Jx7mS+o7vrk6TjfcRZ0Nun8jIrNWD5366Z37+in8SUo
-	0tVpnIoTqNlVwGcLwCM0gDiZ8a1vHsY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pkmszG1Na0Plls6Ov9aF6W6+pkS7H87z0OudU7AipEA=;
+	b=JD08A3GJ9WFpRdoftueQqvkKNWomJ5RyMMijTk8wBoVfGtc3QcNpOotyHnwv2Sp5xVzM5j
+	DhTvcZ2CxZ810UTCVX531Wpus2pFDwUdhPmwz8iK580MrkLte+Y7kau1BVdBsDZgCEGShJ
+	W9n5nQZea5L/L60Y7xg57LcDkwiWzl0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nXVcw3FI;
-	spf=pass (imf20.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=fcoiw1zo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785910895;
-	b=u542SPCNVC3fx99uSn/x+tkXvR7q0wBaN40vEnxsjlQ/PcxGos9dXj+C5z3eqGJwHVzcnc
-	+1YFN+3JZgxinJYn0FW0qrcc07GiR02n7U+v+JktvvM6UAjXZWfoARyiDlpw/tcRfX0vzZ
-	c0Q1FgiMv2zT2l0CyHmotFqdQxc7Pm4=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so559236b3a.3
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 23:21:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785910894; x=1786515694; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=90dET2o+stuXHdvr17MtJ609siDKgo9CQdU/QNgsB1k=;
-        b=nXVcw3FIxV5YyqhH4EohCvDVepUEZme82xSVBkpFslzDuoPGldyYLHfGxQHTuH4qZd
-         kskd1tK1RMmmBzkqc5BgH7LPATldQq9HtMYCY9xWb/ydF10aBsiQl7ZL+MOaKCeE47gM
-         bdwrYyEAlB08yDAVoTHHRpKzqE20hnrnb/djTfi1nuF7XUDlIyUm9ODYoNQQuURD8R9X
-         /LpnH3cOJEeId9OQyI6Jn4DtZrjL9zkhD2maKzpCAT3F8ryDpM3zUxLk4qds3fQ0jPY3
-         orRTMRhXFy2TGi/Sa6KspXYzzWrHlWp0j6OdDQ3TuhkoQ0tUPDEHaFz5QkAIA5mNieOv
-         HsvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785910894; x=1786515694;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=90dET2o+stuXHdvr17MtJ609siDKgo9CQdU/QNgsB1k=;
-        b=J2LJpgALt5DcX+tSZ6cpm9BARGOpgFGBNlo0noetg0d+cY0etmehTw+TVh5rFj0fS4
-         TmeNYdDH7fPDKdFGxoyFIq99a+YqrOD7+PZSi5IahGejg9LjClSdBLTyPjqx0WWwfRyT
-         bmFX8ECpfVdioFB8XULGR3oCDI43oUfYPo06ZIuIr6JkhE5gOFmAlu/r1RVJRnsywzw3
-         mxXUkoPMIqTuz/ll3b2DMCDT4/WbxiCF4L3Z4gO8xVALVL70GYcnsnzTMTjEsKnHcRmm
-         v++DRCy8EjlUl8qTuSNxFyvdnKn/6nM8OvQvp53KeuhC7BSmQchpS3M3LdbyBUyCLcyD
-         z/Vw==
-X-Forwarded-Encrypted: i=1; AHgh+RpXoMSLA01VqmT6BEoJafTTpoKROePtVQCAy/Y3J6kJ6kScHASvc/jP7CDtbGPz/Y36XGsGTeBLTw==@kvack.org
-X-Gm-Message-State: AOJu0Yyf+RXwwyzmfg5fxreJ6fCz0iJgjNHw+JaL5raePNdoEi3LJx4q
-	SMmpWsAm4Ph1riTHSeF8ZuTdxdJt5fzMmtt+q+oE/n7C+Bnl/sQLg1Rg
-X-Gm-Gg: AR+sD13E/+rIBVJ9YpO8xWEyhUbufUjwkFd54h1lF5gXTAnIrqf9f29TQ7y1k9djzPm
-	YNwCGiozLE1FjN3ABOgmXLONqWsOxFTtXn8y5zAjgI1j2NhWdBaZNVj/gumMGxv4bRJK+tQ9XVq
-	F6yBLfUVgZGI+CRAbe3y9xWj7ZUAGSbBH33RQVmaA9iS4CXBq/MMza2QtmTbwjd36cHcqLb+NMo
-	2DvL3ilrewhOiL5qRmcWF5kRcqjzRSQl4cn3rhlhMys4iJmC5lmaZLLTlc3u1Mkd5zGQZIhR0US
-	yWa/iLGkslOB9GDOi3xIt38X1W25gxuXJApjLMqMlryr+8oTftpUQ1zjkJum/zonOJQ7Gw44peB
-	dpsd398XDIrhN4lxjaX88iswSnRiGKTFHGJ0JYFCGSMOTA77Ghtr67v2l/twM8Ceqxo8NDrvSXe
-	fcv9gKKyX722hwZLFXLwVpIFNXhA9P7fjttLkNlLUDesibtDH/wzGdYMtAOcp6qz19INxaKcVvl
-	o6TYlA+
-X-Received: by 2002:a05:6a00:3a1f:b0:847:8dec:1427 with SMTP id d2e1a72fcca58-84f2dfc340bmr4646658b3a.8.1785910894366;
-        Tue, 04 Aug 2026 23:21:34 -0700 (PDT)
-Received: from [10.125.192.43] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f2e5139casm464939b3a.44.2026.08.04.23.21.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 23:21:33 -0700 (PDT)
-Message-ID: <94d74382-2e2c-8f8e-35e6-1ecafdcc445f@gmail.com>
-Date: Wed, 5 Aug 2026 14:21:23 +0800
+	t=1785911324;
+	b=45WWYSIUqhx2sLtHoBio7S89WQM6q0Uy5lijD4jaR4gbCip7+DS6rcAlM/2b/iJ3/XYcgY
+	Aw+DcwnMndUVWY2L9bHsUDSZs12/eFFh556BibNP1vJnR4k3mP2stSXw+T7L4VgekJ4Q0C
+	ZlAzqcvM7jQ0FgrSL/Kh7l/nZU3OJqo=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755lb6f3005243;
+	Wed, 5 Aug 2026 06:28:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=pkmszG1Na0Plls6Ov9aF6W6+pkS7
+	H87z0OudU7AipEA=; b=fcoiw1zolg7N2glZkLMFbEgf7O0tbshn53/OKjRxO+60
+	8RGcQCJ9WTS+widBgeR6PeXYbP3YyhJYFoQE/kHlpGhkQezrmRiLJ0IqkjOGP1Av
+	EKPRH7JhnoF/RxkUG29mmdd4iRg+04vfq3NTw/oP2EJIMYCuQjNTjVHeHFcSbb9m
+	JIWf9ZA0ojpPV0eWhpxQjk9fWWlTd9kf2dd8E2iPsIZ4L5vanZ0J8IU9gv091HxO
+	YaWPWhQxkjfpZRXDfsP2rRAOCxlehisFlHUXW4kGQ1TPxmu4qqi6A92giYElQsTo
+	EQAPToBZAqfK0wvH6E5mbVU2gIMRpFPK7chOwgrI0Q==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h51n0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 06:28:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QGEL019919;
+	Wed, 5 Aug 2026 06:28:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhd8nc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 06:28:25 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756SNMd15991084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 06:28:23 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EAA820040;
+	Wed,  5 Aug 2026 06:28:23 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ABA2E20043;
+	Wed,  5 Aug 2026 06:28:18 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.211.239])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Aug 2026 06:28:18 +0000 (GMT)
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: "Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Dave Chinner <dchinner@redhat.com>,
+        Daniel Gomez <da.gomez@kernel.org>,
+        Pankaj Raghav <pankaj.raghav@linux.dev>, Theodore Tso <tytso@mit.edu>,
+        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: [RFC PATCH v3 00/11] Add buffered write-through support to iomap & xfs
+Date: Wed,  5 Aug 2026 11:58:06 +0530
+Message-ID: <cover.1785908600.git.ojaswin@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 2/2] mm/zswap: Support batch writeback in
- shrink_memcg()
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, yosry@kernel.org, nphamcs@gmail.com
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, jiahao1@lixiang.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mhocko@kernel.org, mkoutny@suse.com, muchun.song@linux.dev,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, stable@vger.kernel.org,
- tj@kernel.org
-References: <amufiuAaZbuDdKkQ@cmpxchg.org>
- <20260731071900.38942-1-jiahao.kernel@gmail.com>
- <amy8gAN33W4QsM5R@cmpxchg.org>
- <6e16a760-d84d-98e1-433e-3233a9dd2236@gmail.com>
-In-Reply-To: <6e16a760-d84d-98e1-433e-3233a9dd2236@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX040WrqKKshqY
+ FrS/kJQdw05jrBISY1djrEsj36ImOXuyb4lZwBgsYAJKgty0Nd88B7SRmAI4o8zvmEzMM0I6Gvs
+ hXqQlPpjeHwo/5GtKNoZGEf8WeIfxCk=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX0d3YBn046skv
+ dhDTyn5eolVNzpZNGtKCF3zJ5VibDB51kkf7VjURbWPmxymPFlhHiD032w2hoB6EfoI5pfqOA43
+ F75m5lpxs6SjIs2ZnZUnLOQlZIITBM5WiGUvMmaSwJGa0PQnZ1TeFjJAgIvi7Cbxn82NcvgcP5g
+ QWrH8Y8tBntYoH6kuFMhaHCvmtQs+2yssa76k0v9uHyEt55CYxtAbREC/4g5WNpBA3XcBW+Mso0
+ IQoAEhSQZ0HgCkOEx4L23KKaU7Z+aew9vbp2RrffyDhVNwXPART7hOrMLciaWewDiaGJsTtAl9Q
+ CtEfH4aKrY8Ym8mCb9uvVJOcPLLzospNON2a8RyCVPHT8BPfLV9bi1SehdmGPBmrF1oWcjlMUYT
+ 0Vm4xsLtDav0aGO5hLDIQRGs2qZOpJNVdiW1GdzL2pyyISb1sxUBaFinNvR/Ar4hZK+4IwGbw+P
+ sPn8yGUiJgdlVYWJGOQ==
+X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a72d80b cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=NEAV23lmAAAA:8 a=07d9gI8wAAAA:8 a=hlUArMIrs65LrmiY9OkA:9
+ a=QEXdDO2ut3YA:10 a=e2CUPOnPG4QKp8I52DXD:22
+X-Proofpoint-ORIG-GUID: 5CcLuVUzKl7wftjPtEFqPbcnVio5BxHP
+X-Proofpoint-GUID: _hz0RkEw3IBUz3S1xAiLJDRXO3jCZBEr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608050047
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B14571C0011
-X-Stat-Signature: ywddbh48zgj1ujwj9wdzd8u1eojd7kmy
-X-HE-Tag: 1785910895-410918
-X-HE-Meta: U2FsdGVkX19c5r8JyqaCEdHPprtpdDJZKez30pheZne3VHiOqWSYq0sFzSslUTxxxXCgLJep5JcsLvuaFlJi4kUIVZ3xNbsaMvaKOtg9T7rFAcNHp4WRV8NzYt815GsEOBmF8SwUkdfgcs4kfG7u9gIPrmdeFNusmVktPJ4KwmGQ7C1i0u/hNXresLqIh7nLn7ueIuuwH9VZDpiET8jcBlR/zVNBvk6apAmZTwJKLTmZ6ouP/5NLWunJMpgYLV1UV6CpwiSq6190k004E8yfsme9RYHyIND2ZWcsjoQ5hUPsxqAhABdtL+GbS/Yt3IazwD7L4qIwhizExxS5rdBJhTb++sz45ynO8ppaDQ6fkfwxLqEfNNIJTQFsQsFvF3e9DMhoYf4yAMTh83YAsXGf+UHKqoblHmbRsJ66NqfDEoBT04PO5NWfzoq6h4J2quKWkrSGi2MTJQ3OZwEy9dHg1TFkE7Oy7lv31uM0z31TowtPrvKung0bWNsXbgDeYUnSqhM1meajwZYH2bIY+yeVdd5slRFLCGsBRjSyPmf+lo2TNJKkNZpk8jynH4MMc+4FFY9T4BdIw79EhXeTw4iUpptEMX6CCLmh8+k/AcD+Nm+SXW6NOkYEmgoeBe9Xk5adfAt1M52zrYW0HTbTnRxrKsUyeWVMJOk/pjcOGpQZfXQzgy71H08PmZQvErIW+9Z06Gdv6JOC3vUpGSr/zEKatyto1hKdiPhJZmZTM7+g+uKBmgY25b6VaJXv9M3OAN8tMZmq+z8OsiR75oXR/EWPcdxWayRQM1pMl+xqhgbiz+Uf/SuHSxsmlZcVynncfRHEaUehHBv+svieQ15B+7mS1AGqu46oy/ARuv71wUMN94VCNub6N4cnfsNuto7Xa6/xHM+54i1vlS+D0MNxO5fzicZf0j5HqHQq/u+fNugw5DhAUXIX1G4K4qnCvnpij0u0kkHbQaqRrMu959a0dSd
- reQLdRvr
- EhRNpqmTySSgv0u4f2ssr6IQKcUpS45qLvZcdwGoZggokn5kX390csWAijS1dk6gDFhdOsU9wN25zwBI2ScU917y3SwuEm2OPa4CLk3z1F4Pa0jh0p8ZQa+B3N3Cc39QxwPNfnTCkx1KW5JqgJs2Pdogr1FW6hAH3IeV5pwGvtoGPJZ0NVQH1suEbrmyNF6DxU33w6yt4f/dTAhJkFNqiWI2li5ChItcRtKVH3vo8ztwfKPbYTb4uLXByKrkq6+J2AA1Wc7pq6vo8p+v14nZir+r8QKJ1qo3SL0YPLLLyF0O8PSxtYRRMeONDyLo7XnpYJtm7SpOV7aisrSNGMMqoAdJZ9/Bq1Xtoei/dABal7zfNY0UZVm/9MUEKZdFrIgChPZ9aSMvfheag47NdO8D+b7fJNmalXNpmZaiA6NgdbO2DEEoxYgeZPLEDz7ZwPbuoNM+lYhqXyR/JlTxIYf+wt380S537bz4JvviVgeE2bfelEK/luPYBlUXcq/xTDyheiSYIWKSqwzYbBnVRlQzZ+kIG8YQptdU3goHqmeEp26nH/d2Z71aTF2Kv38OAlea+3Vh6oNVlxbF4X9xrmLwBd+uO6sTA1EFZ5ndMpmWz2+GGghE=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: kyex1oqgcfz9fyj9oosu7m8bd1uswtq1
+X-Rspamd-Queue-Id: A2A5118000C
+X-HE-Tag: 1785911324-912080
+X-HE-Meta: U2FsdGVkX1/uneeNPnwku5j0nboYZo2hbA7hdO5WRn3cToN4CfYxbXmcL/x5fJWaPF0plYK+PrHUwXX8apOAwa6uWAWY2J+7rz4wDwCA1Q1/wqBSF0dBLBq4NBoKiCFPGJN3ZWTtajX+dxkLG7PS1VvoRFpzp43uDJ1NGJ/7RRVIeTNyJXkw+nvwdt8zAn+I8mjkKi9EoNHpqgQh/GIaFVAGnSJnp+VyAwE0q1nsK41xF7Sc5/vTbEMrcJI8qAcM2ljNZJbZwvDc3NrdgwPCCHY68IxWbqL9+bkwltpxcPY6WlvDNw4smmx+QAYjTnndkJNQz93r1I/wd5mLQggowwDMtjGfILQG9SLBbeRiQH7Tek3Ap1W2wkubt6FQKysVYyZRHhqvBGQa0LWDCC1aoxZqiPXMgn/RXJo/traaEFYyaefO97vS7tZopzjirsbVgJ1GUwwsRKN40+fnCcPh3LZuuECe/4DpfIbRaI8oUGdxxyri5T4fNOTlTTUmIL9QCaUBZgMPGGiSMZAbDZunMZrlecDm4JtYwclkB1AnY/13lKyJAjr3/I6Qh4XiNbWdFr2MfBA7bJGQlB8UydfxD6uOxRDK4F4y3Qdtp6YHLY6gj5oHapLruVWIbPz6Bgw+deOqtaVM3Z2shlWdHzYDKtVVug/sxdEvwnE25ht2NKlk0wc9oN4P3GANEXaOOU02R3bEOY/8m2f80EQsxsaR+t8S8ywsB6mEKwVjMB+4Hhz3sKC/JyTSqHCtn9g3KRzw2OERyGh2yLzzDCobBNobXDqXoHVSRaapL2QacMnN8p8ufwaRkdXn/XraGaadGIQhbujpSCriKRx7zl6FWtAJTeyccj8lVgCTfI62vWxCawWNu/1DTfPpYQuGswlIEjSzEL3CKsLtXZ8xQFw3PdBoXrjd9g7eLuZV3R9sAk1a2Is5vPpM+jJYh9NsPkod2iU9M1lm4qO2E2MMd9s3V12
+ LBweNVQD
+ g9sx/zO8LtzEiWkli8PL1qfywnZaTT1i8OKYcPFpYYts+IArClhcyW66igG0GtUlsjC5WUTO6C0brXjgzuf/LwqKhgN5NKUOzPB23NAXNKY9LMfZJSUsJ15aVwU4nCz2oAmDiCVMK9XPf+2KX1hCsSycJsuV3fXhcE5j7YGP3C3OukIz6P3vB4D/fNg4IzTEhkOn1CEKqERERMEUOZWts63hfCdynZaNM1UHNH2N4SmaYGlDiOkjMeaW30PplpRzjiQGX1897IpG2p4L8hasq2S37JgHH889gZ3lIE6FWilMK+kSqzLlM8Yw/eYi8nqoUDPXiShXUrhohE6JImC7NfsHWZ+3EjoXM30AS41+OI7BGBmq8dD7nGm80DKwy1tFvFlAiMRsAzPQJYbw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,192 +148,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is the next revision of writethrough series. I'll quote part of the
+original cover:
+
+    Hi all,
+
+    This patchset implements an early design prototype of buffered I/O
+    write-through semantics in linux.
+
+    This idea mainly picked up traction to enable RWF_ATOMIC buffered IO,
+    however write-through path can have many use cases beyond atomic writes,
+    - such as enabling truly async AIO buffered I/O when issued with O_DSYNC
+    - better scalability for buffered I/O
+
+==============================================
+** Changes since rfc v2 ** [1]
+==============================================
+
+1. Refined the error handling semantics:
+----------------------------------------
+Writethrough has 2 steps - memcpy to folio & IO to disk. Only the part of write
+completely submitted to disk is considered successful. With that in mind we have
+2 types of errors. Suppose we have 16K write and we encounter an error after 4k:
+ a) If have only memcpy'd the 4k and we are able to submit it for IO, then we
+    can return 4k as a short write, since everything is consistent.
+
+ b) If we have memcpy'd the whole 16k but faced and error (like EIO) after the
+    first 4k write, then we return the error to user. Since the page cache is in
+    inconsistent state, the user must treat this as a buffered IO fsync failure.
 
 
-On 2026/8/1 08:31, Hao Jia wrote:
-> 
-> 
-> On 2026/7/31 23:17, Johannes Weiner wrote:
->> On Fri, Jul 31, 2026 at 03:19:00PM +0800, Hao Jia wrote:
->>> From: Hao Jia <jiahao1@lixiang.com>
->>>
->>> Currently, shrink_memcg() writes back at most one entry per-node during
->>> its traversal. This makes shrink_worker() inefficient, as it must
->>> repeatedly re-enter shrink_memcg() to make any substantial progress.
->>> Under high memory pressure, this can cause the writeback speed to be
->>> too slow to keep up with refaults, leading to zswap store failures and
->>> forcing pages to skip zswap and go directly to disk, which results in
->>> an LRU inversion.
->>>
->>> To address this, extend shrink_memcg() and rewrite its LRU iteration 
->>> logic,
->>> enabling batch writeback for both the shrink_worker() and 
->>> zswap_store() paths.
->>> To prevent shrink unfairness across NUMA nodes caused by a shared 
->>> global scan
->>> quota, limit scanning to up to SWAP_CLUSTER_MAX pages per node and 
->>> write back
->>> any reclaimable entries found.
->>>
->>> Test Setup:
->>> - Total memory: 32 GB, 1 NUMA node.
->>> - zswap settings: accept_threshold_percent=50, shrinker_enabled=N.
->>>
->>> Test Case 1:
->>> Set max_pool_percent=1, allocate 512MB of anonymous pages, and fill them
->>> with random data (to avoid compression). Then, use cgroup memory.reclaim
->>> to force a large amount of anonymous pages into zswap. At an interval of
->>> 2ms, allocate a 4K anonymous page where the first 4 bytes are random 
->>> numbers
->>> and the rest are zeros, and then trigger reclamation of this 4K page 
->>> through
->>> cgroup memory.reclaim. When the pool threshold is reached, 
->>> shrink_memcg()
->>> will be triggered.
->>> The test data after running for 120s is as follows:
->>>                                  Baseline      Patched
->>> shrink_worker wakeups              5,363          169
->>> shrink_memcg calls            11,373,201      350,703
->>> written_back pages                40,212       40,241
->>> zswap_store calls                161,190      163,753
->>>     store succeeded (ret=1)       102,743      117,183
->>>     store rejected (ret=0)         58,447       46,570
->>>     store reject rate                ~36%        ~28%
->>> pool_limit_hit delta              55,826       33,760
->>> pswpout                           98,659       86,811
->>> pswpin                                 2            0
->>>
->>> Test Case 2:
->>> We evaluated the following two sub-configurations using stress-ng inside
->>> a cgroup capped at memory.max=1G for 120 seconds:
->>>    Test Case 2a (max_pool_percent=1): Continuously triggers the global
->>>    zswap pool limit, thereby waking up shrink_worker() to perform 
->>> asynchronous
->>>    shrinking.
->>>    Test Case 2b (zswap.max=320M, max_pool_percent=50): Continuously 
->>> triggers
->>>    the cgroup's zswap.max limit, thereby invoking synchronous shrinking.
->>> Command executed for both setups:
->>>     bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
->>>     exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method 
->>> rand-set -t \
->>> 120s -q'
->>>
->>> Test Case 2a (max_pool_percent=1):
->>>                                  Baseline       Patched
->>> shrink_worker wakeups              5,640         1,308
->>> shrink_memcg calls             8,481,500     3,140,972
->>> written_back pages                   260       468,216
->>> zswap_store calls              2,742,756     2,011,269
->>>     store succeeded (ret=1)       934,640       947,988
->>>     store rejected (ret=0)      1,808,116     1,063,281
->>>     store reject rate                ~66%          ~52%
->>> pool_limit_hit delta           1,181,310       196,882
->>> pswpout                        1,808,376     1,531,497
->>> pswpin                         4,288,497     3,635,365
->>> Test Case 2b (zswap.max=320M, max_pool_percent=50):
->>>                                  Baseline       Patched
->>> shrink_worker wakeups                 0              0
->>> shrink_memcg calls              687,608         54,002
->>> written_back pages              639,176        846,663
->>> zswap_store calls             1,224,222      1,228,548
->>>     store succeeded (ret=1)      992,816      1,208,123
->>>     store rejected (ret=0)       231,431         20,425
->>>     store reject rate               ~19%            ~2%
->>> pool_limit_hit delta                  0              0
->>> pswpout                         870,745        867,360
->>> pswpin                        1,707,823      1,216,814
->>>
->>> Under identical workloads and runtimes, batched zswap shrinking
->>> exhibits a significant reduction in both shrink_worker() wakeups
->>> and shrink_memcg() calls. Furthermore, the sharp drop in both pswpin
->>> and zswap_store() rejections demonstrates that batching zswap shrink
->>> operations effectively mitigates zswap_store() failures caused by
->>> hitting the pool limit. This significantly prevents pages from bypassing
->>> zswap and falling back directly to disk, thereby reducing LRU inversion.
->>>
->>> Suggested-by: Yosry Ahmed <yosry@kernel.org>
->>> Acked-by: Yosry Ahmed <yosry@kernel.org>
->>> Acked-by: Nhat Pham <nphamcs@gmail.com>
->>> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
->>> ---
->>>   mm/zswap.c | 30 ++++++++++++++++++++++++++++--
->>>   1 file changed, 28 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/zswap.c b/mm/zswap.c
->>> index 48fc7b575e24..d406c14925d8 100644
->>> --- a/mm/zswap.c
->>> +++ b/mm/zswap.c
->>> @@ -1275,6 +1275,21 @@ static struct shrinker 
->>> *zswap_alloc_shrinker(void)
->>>       return shrinker;
->>>   }
->>> +/*
->>> + * Scan up to SWAP_CLUSTER_MAX pages on each per-node zswap LRU of 
->>> @memcg
->>> + * and write back the reclaimable ones.
->>> + *
->>> + * Since the second-chance algorithm rotates referenced entries to the
->>> + * LRU tail, the per-node scan is capped at the current LRU length so
->>> + * each entry is scanned at most once per call. It is up to the caller
->>> + * to handle retries, deciding whether to scan another memcg to 
->>> complete
->>> + * the full iteration, or to rescan the current memcg to drain its 
->>> zswap
->>> + * entries.
->>> + *
->>> + * Return: 0 if at least one entry was written back, -EAGAIN if entries
->>> + * were scanned but none could be written back, or -ENOENT if @memcg 
->>> has
->>> + * writeback disabled, is a zombie cgroup, or has empty zswap LRUs.
->>> + */
->>>   static int shrink_memcg(struct mem_cgroup *memcg)
->>>   {
->>>       int nid, shrunk = 0, scanned = 0;
->>> @@ -1290,13 +1305,24 @@ static int shrink_memcg(struct mem_cgroup 
->>> *memcg)
->>>           return -ENOENT;
->>>       for_each_node_state(nid, N_NORMAL_MEMORY) {
->>> -        unsigned long nr_to_walk = 1;
->>> +        unsigned long nr_to_walk, node_budget;
->>> +
->>> +        /*
->>> +         * Cap the scan at the per-node LRU length so each entry is
->>> +         * scanned at most once per call.
->>> +         */
->>> +        node_budget = min(SWAP_CLUSTER_MAX,
->>> +                 list_lru_count_one(&zswap_list_lru, nid, memcg));
->>
->> AFAICS you can just do unsigned long nr_to_walk = SWAP_CLUSTER_MAX.
->>
->> __list_lru_walk_one() does a list_for_each_safe() that will exit the
->> same way whether you hit !nr_to_walk or run out of items.
-> 
-> Wouldn't it be better to ensure that each entry is scanned at most once 
-> per call, particularly when list_lru_count_one(nid) < SWAP_CLUSTER_MAX?
-> 
-> On one hand, this avoids scanning the same entry multiple times within a 
-> single pass. Since the second-chance algorithm rotates referenced 
-> entries to the tail of the LRU, entries on nodes with a large number of 
-> zswap entries require at least two shrink_memcg() calls to be written 
-> back, whereas entries on nodes with fewer entries might get written back 
-> in a single shrink_memcg() call instead. On the other hand, we also 
-> avoid spinning repeatedly on entries that fail writeback.
-> 
-> Thanks,
-> Hao
-> 
+2. Introduce RWF_NOSERIAL to allow parallel writes
+--------------------------------------------------
+As per our discussions in LSFMM 2026, we noticed that writethrough (v2
+design) suffered from a big regression (~65%) in workloads with multiple
+writers writing to a single file. This is because writethrough submits
+IO within the inode lock and since buffered IO has an exclusive lock in
+write, this hurt massively. In LSFMM, we discussed 3 approaches:
+  a) Defer IO submission outside inode lock
+  b) Avoid folio dirty - clear cycle
+  c) Shared lock for writes
 
-Johannes, Yosry, Nhats, any thoughts on this?
+We tried a) by only staging prepared folios in a list under inode lock and then
+submitting them outside. However, the initial implementation still showed
+around ~30% regression even though the code complexity was significantly
+higher. As the ROI was not worth it, we dropped this idea (if there is
+interest I can share a github link for these patches). So we finally
+decided to go with b) and c).
 
->>
->>> +        if (!node_budget)
->>> +            continue;
->>> +        nr_to_walk = node_budget;
->>>           shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
->>>                           &shrink_memcg_cb, NULL, &nr_to_walk);
->>> -        scanned += 1 - nr_to_walk;
->>> +        scanned += node_budget - nr_to_walk;
->>
->> scanned += SWAP_CLUSTER_MAX - nr_to_walk;
+With b), we can avoid cycling folio through dirty and clear as we immediately
+submit the IO. We also don't use the heavy folio_start/end_writeback() and
+instead only use the writeback master bit on folio. This cuts back
+significantly on xa_lock contention.
+
+With c), the NOSERIAL flag allows us to do writes under a shared lock if
+possible. This violates guarantees that XFS has historically provided however
+its expected to be an advanced feature that should be used by applications who
+know what they are doing. If used correctly, it can give a very good
+performance boost to parallel workloads. This is something that was also
+discussed at LSFMM 2026 [3] and since WRITETHROUGH is a new path it
+seems like a good time to introduce such a semantic change . For now we
+auto apply NOSERIAL for writethrough and disallow users to pass it till
+we finalize the semantics.
+
+With b & c, we are able to see a good performance improvement in almost all of
+the cases that we regressing. More details and performance numbers specific to
+the NOSERIAL flag can be found in the respective patches.
+
+
+3. Use REQ_SYNC | REQ_IDLE like dio
+-----------------------------------
+Writethrough doesn't go via the writeback mechanism and it's IO characteristics
+are similar to dio. Hence we pass REQ_SYNC | REQ_IDLE in the bio, just like
+dio, which allows us to bypass writeback throttling.
+
+
+4. Move inode i_size update from completion path to write path
+--------------------------------------------------------------
+As per Dave's suggestion we originally wanted to update isize in completion
+like dio however this resulted in a big regression in extending IO because we
+end up holding the exclusive lock throughout the IO. To avoid this, we can just
+take the buffered IO approach of updating i_size in write path so that we can
+safely drop the inode lock and allow completion to finish outside the lock.
+This brings back the append IO performance in par with buffered IO.
+
+5. There's a deadock in v2 that is fixed in the last patch. If needed
+this can be squashed in but I've kept it separate for now for easier
+review.
+
+6. Added a patch to make stable writes more compatible to our usage
+model. Check patch 1 for details. Thanks to Darrick for suggesting
+this!.
+
+7. Addressed reviews from Jan and Sashiko (thanks).
+
+===================================================================
+Performance Comparison Tables (with fio snippet)
+===================================================================
+
+Table 1: Extending writes using (libaio + O_DSYNC) - All writers on single file
++----------+-------------------+---------------------+
+| numjobs  | Buffered IO       | Writethrough IO     |
++----------+-------------------+---------------------+
+|    1     | 133 MiB/s         | 133 MiB/s (+0.0%)   |
+|    2     | 179 MiB/s         | 243 MiB/s (+35.8%)  |
+|    4     | 253 MiB/s         | 358 MiB/s (+41.5%)  |
+|    8     | 366 MiB/s         | 376 MiB/s (+2.7%)   |
+|   16     | 474 MiB/s         | 449 MiB/s (-5.3%)   |
++----------+-------------------+---------------------+
+(fio --ioengine=libaio --writethrough=0/1 --bs=4k --rw=write \
+     --iodepth=32 --sync=dsync--file_append=1)
+
+
+Table 2: Random pure overwrites (libaio + O_DSYNC) - All writers on single file
++----------+-------------------+---------------------+
+| numjobs  | Buffered IO       | Writethrough IO     |
++----------+-------------------+---------------------+
+|    1     | 131 MiB/s         | 391 MiB/s (+198.5%) |
+|    2     | 377 MiB/s         | 791 MiB/s (+109.8%) |
+|    4     | 695 MiB/s         | 1591 MiB/s (+128.9%)|
+|    8     | 1217 MiB/s        | 1846 MiB/s (+51.7%) |
+|   16     | 1197 MiB/s        | 1844 MiB/s (+54.1%) |
++----------+-------------------+---------------------+
+(fio --ioengine=libaio --bs=4k --size=2G --sync=dsync --writethrough=0/1 \
+    --overwrite=1--rw=randwrite --iodepth=32)
+
+
+Table 3: Random pure overwrites (libaio + O_DSYNC) - Each write writes own file
++----------+-------------------+---------------------+
+| numjobs  | Buffered IO       | Writethrough IO     |
++----------+-------------------+---------------------+
+|    1     | 187 MiB/s         | 389 MiB/s (+108.0%) |
+|    2     | 373 MiB/s         | 781 MiB/s (+109.4%) |
+|    4     | 706 MiB/s         | 1568 MiB/s (+122.1%)|
+|    8     | 1222 MiB/s        | 1796 MiB/s (+47.0%) |
++----------+-------------------+---------------------+
+(fio --ioengine=libaio --bs=4k --size=2G --filename_format=.test_file.\$jobnum \
+     --sync=dsync --writethrough=0/1 --overwrite=1 --rw=randwrite --iodepth=32)
+
+
+Table 4: Random 16KB overwrites with sync_file_range:16 - Single file
+(Roughly mimics postgresql IO pattern)
++----------+-------------------+---------------------+
+| numjobs  | Buffered IO       | Writethrough IO     |
++----------+-------------------+---------------------+
+|    1     | 1323 MiB/s        | 1275 MiB/s (-3.6%)  |
+|    2     | 1779 MiB/s        | 2434 MiB/s (+36.8%) |
+|    4     | 2092 MiB/s        | 2519 MiB/s (+20.4%) |
+|    8     | 2272 MiB/s        | 2517 MiB/s (+10.8%) |
+|   16     | 2328 MiB/s        | 2525 MiB/s (+8.5%)  |
++----------+-------------------+---------------------+
+(fio --ioengine=libaio --bs=16k --size=5G --writethrough=0/1 --overwrite=1\
+     --sync_file_range=wait_before,write:16 --rw=randwrite --iodepth=32)
+
+* Environment details *
+
+CPU        : IBM Power 11 LPAR
+Memory     : 62Gi
+Storage    : Samsung PM173-series Enterprise NVMe SSD
+Kernel     : Linux 7.2-rc1
+Filesystem : XFS (4k block size)
+
+
+[1] https://lore.kernel.org/linux-xfs/cover.1775658795.git.ojaswin@linux.ibm.com/
+[2] https://github.com/OjaswinM/xfstests/tree/iomap-buf-writethrough2
+[3] https://lwn.net/Articles/1072019
+
+As usual, thoughts and suggestions are welcome :)
+
+Regards,
+ojaswin
+
+Ojaswin Mujoo (11):
+  fs: Add counter to track inflight writes that need stable pages
+  mm: Refactor folio_clear_dirty_for_io()
+  iomap: Add helper to revert iomap iter
+  iomap: Add initial support for buffered RWF_WRITETHROUGH
+  xfs: Add RWF_WRITETHROUGH support to xfs
+  iomap: Add aio support to RWF_WRITETHROUGH
+  iomap: Add DSYNC support to RWF_WRITETHROUGH
+  fs: Introduce RWF_NOSERIAL flag to indicate parallel reads/writes
+  xfs: Implement RWF_NOSERIAL to parallelize RWF_WRITETHROUGH writes
+  iomap: Avoid folio dirtying in case of RWF_WRITETHROUGH
+  iomap: Handle deadlock due to repeating folios in RWF_WRITETHROUGH
+
+ fs/iomap/buffered-io.c  | 570 +++++++++++++++++++++++++++++++++++++++-
+ fs/iomap/iter.c         |   9 +
+ fs/xfs/xfs_file.c       | 135 +++++++++-
+ include/linux/fs.h      |  29 ++
+ include/linux/iomap.h   |  50 ++++
+ include/linux/pagemap.h |  16 +-
+ include/uapi/linux/fs.h |   9 +-
+ mm/filemap.c            |  22 ++
+ mm/page-writeback.c     |  49 +++-
+ 9 files changed, 861 insertions(+), 28 deletions(-)
+
+--
+2.55.0
+
 
