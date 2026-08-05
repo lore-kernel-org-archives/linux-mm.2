@@ -4,190 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B4BC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 511BFC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:53:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F099C6B007B; Wed,  5 Aug 2026 07:42:52 -0400 (EDT)
+	id 25CEA6B0088; Wed,  5 Aug 2026 07:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B2E6B0088; Wed,  5 Aug 2026 07:42:52 -0400 (EDT)
+	id 20E1A6B008A; Wed,  5 Aug 2026 07:53:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF7FE6B008A; Wed,  5 Aug 2026 07:42:52 -0400 (EDT)
+	id 0FDF56B0092; Wed,  5 Aug 2026 07:53:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A82F26B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:42:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 426B2C0448
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:42:52 +0000 (UTC)
-X-FDA: 85067028984.27.61C9FBB
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011051.outbound.protection.outlook.com [52.101.52.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6E4B040011
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:42:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XwFiOdZa;
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785930169;
-	b=zVIlf/FLJKUr2JGqnZVey6ge/XGLcK1B6bZQe6aASkHp3XRussJOteWshdRBwcrWZ8URer
-	mfxWUXGvvM7egXeG1DnHeANwmAOYsvPAeGovgN/dDOd/g8HL49JB+4OAgJBmlNMpjpm2v4
-	rRi9Cj2wKoTErqDCW74BCtYlPXDb/6E=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XwFiOdZa;
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785930169;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD01C6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:53:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56A32A0478
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:53:32 +0000 (UTC)
+X-FDA: 85067055864.21.3E3D48F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8055C4000C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:53:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n44OP+eV;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785930810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8tXROnhtzWgEtAv1OeMz+DF3v0IIxHXQX+EH+skMVQ=;
-	b=GsUiU4NgEtPBvhUmMcq2ZKOvSz7sNFaFxyQTPPiU6gZ/PSeCWSF0BPTCDaByC7ItZLXIvw
-	ARKZtz/p6oa15YFrV1yF6eMPzu6TJtxsNQzrocYBYIVsQe3Yxtaf14f7ebaehDmL7uswBb
-	fS/cE9j68aT2viDBYE4ThJwvYtOpSwI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fzooYuxINBgfDP4nShN+MHUJesRm+LM1rNd4KTS2Be4hF3U033YWk15adD2YoJ3AiGGfhRsPUa4+mtNf7f2MNzNUQcYeeb3AzelrBjnxT/rdSFddfyxpWEqD8xE4V4HM3CcVLYfG3+VWcEpucwZzwrmYRs6j6xUbzEJ2hE3XAY2tNOaOVjzLR2mk5xipbpz5u6lkNzbWKAgHzo784Bt6wEbSyI0IqeJYlRdOL1AhwgI1Lntd/xY1Q5yQaOKQgkZahHvo6ouFyddcvGFxJV8cbTrOBVkpiItlTpD5cMIzB4eO+UryDQEPImESSEpDH69IDAnEDUPXaT2j5FqQCZY2UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q8tXROnhtzWgEtAv1OeMz+DF3v0IIxHXQX+EH+skMVQ=;
- b=WvpRxJf0cBbXGvJkoNXlYjYmfJGak0p+Cs6RV3uX75cLqn69mMn/gLNWB69y4x/Re2cOcMpKbweZYizOEXgx4t0GXLIZi40GTu4b2Lh4wAhQMFxZp4aitZYkdrC9jB2KdFL2WAhbftmC/WQPNaf9/31dCW8pheMUE4zKvS57mGCRW64ISKN3HNSZRFi3qjZx7K0CKg0SIWpE8csg0rIuS/uiXN+l3lYPf+sxlwcBq9aUKR1S8ceXK7ZGgHbene9zEQUR+e4EbnQaVcYHUPjjLtGEahh1KNfyLhYt8rZ5w4LeXi2p6KygCE7Dg4cXPAXuXC5hlTLP6yrxzvF4Gl3H3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q8tXROnhtzWgEtAv1OeMz+DF3v0IIxHXQX+EH+skMVQ=;
- b=XwFiOdZakfzGH8xqDM+934AdSCoayRkSboBYoOsPEv9ihw+T2hyrtp1D/KUVqaJUbrefbJuRh6E5crYK3jXFrO5VxbZzalTs3isSoKRBgOVlRopFp/nMszHXNfdAQpik4GDlTyWH0nW8QLiUEun5K4qhxpAdnK08u13OW5jI6O6hisC/UGJbUNzOR/x//2GdxI5caOd1Jw+evE0BTNWihobzF73KXLNLbFLRjui12TnwQlNlJYwDiIel7SFekx3ZOvT1Eo9OYhI0wze8Foxna5m9ToBUXZcdMmVLFJe9LiYuuF7Gu3RUqLuB4rCMzAOH5Xb46Fc/DhKeSYEIUEAxLw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by LV3PR12MB9142.namprd12.prod.outlook.com (2603:10b6:408:198::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Wed, 5 Aug
- 2026 11:42:39 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 11:42:38 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Aug 2026 07:42:37 -0400
-Message-Id: <DKGZEK0AQP6R.1RTQEY44OQD65@nvidia.com>
-Cc: "David Hildenbrand" <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
- Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
- Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Gregory Price" <gourry@gourry.net>, "Ying
- Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng"
- <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui
- Song" <kasong@tencent.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, "Gao Xiang" <xiang@kernel.org>, "Chao Yu"
- <chao@kernel.org>, "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu"
- <jefflexu@linux.alibaba.com>, "Sandeep Dhavale" <dhavale@google.com>,
- "Hongbo Li" <hongbohbli@tencent.com>, "Chunhai Guo" <guochunhai@vivo.com>,
- <linux-erofs@lists.ozlabs.org>, <linux-fsdevel@vger.kernel.org>
-To: "Jan Kara" <jack@suse.cz>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
- readahead_folio_reverse() to avoid folio->private
-X-Mailer: aerc 0.21.0
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
- <332rknj4vo3cfhvfhhlf6pvg37s3lbrnzbbnv4swa6gctsiu6a@ndotgokvnglc>
- <DKFGTVA0XD01.OZYNYUOU9FTX@nvidia.com>
- <huzyeqj6a57nbcqc23v6f6rdhkob5552fcwy4mlrsagycqi4rz@ggsapkumc2gq>
- <DKGA508ERSYM.26RBD4HYM1SL8@nvidia.com>
- <2evaxdu6cobpnzzer3y7fsrqvmtmhj7gm3e5buebdaw564igx6@7bs5enipxnpx>
- <DKGBQHP25RE0.3NKUQSDULAQSX@nvidia.com>
- <ivg5x7hjo4tmpd34i6wrd5cp2v56c3vorwru7h6kqxnqlcpte7@lvd7xa4ncwxu>
-In-Reply-To: <ivg5x7hjo4tmpd34i6wrd5cp2v56c3vorwru7h6kqxnqlcpte7@lvd7xa4ncwxu>
-X-ClientProxiedBy: MN0PR04CA0002.namprd04.prod.outlook.com
- (2603:10b6:208:52d::13) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=31aVGJaX8RfL2Z5AdJBa9EWJWJvZ7u5FlbxMmmgXeR4=;
+	b=OWf8z03uKgQNzvIXpAH10rBe2CCFFD+K5Qp0NgLXMUtIRifcfD8qxPAjirjwuZuUdg+WGr
+	DZzvCyuJGyNC4p3pUZITwUBxa8Z/lB/5VZ9ESsyWWVTb7KoN4gI44e0yUDci2eScEMbrEZ
+	aDW/Kx/kogO5EkLqnAn5g2Ex7XQhGqU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785930810;
+	b=qRjypyxEo37EweN2CxuqwVqSXyueO/sPoIKtpnHFI1YNbPWD4SQkf/6HuYILtHD3gDqaQ6
+	RjUUmx0b0QK4A0KSBSeh/FRGRpLFCLEjhy+QiOxTdFMdecqO7S63jKhEGDid6f7OKV+84H
+	vDZxjAiLwq8TNN4PqQYqBDsl3opqx2I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n44OP+eV;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4ED5D60A96;
+	Wed,  5 Aug 2026 11:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A41F000E9;
+	Wed,  5 Aug 2026 11:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785930809;
+	bh=31aVGJaX8RfL2Z5AdJBa9EWJWJvZ7u5FlbxMmmgXeR4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n44OP+eVydoeseseSlqTMb2x/wTcxbuZl44rAjzXQArJ8s8Wh44vNGO6vkJRi34lT
+	 9U3kVOWuU7e/ddFI5EYlnHrAwpElkAbrYaivRUKxvRNqAhXREgJZK4HJ9d2WFjUfFd
+	 leXZtDa2/Fi4vpgRob4krAZdeUYYZFeAJAdPaUgJcLPDWTPrk34qhBaQDABLOtIS6K
+	 kmNXYIhq6nBkMCGzG2nWzEDMBiOZcmvS7GUjxGLo56LoFea9mNBqM9zlcWaKV565w6
+	 GRjm4wiOvC+X/+ohU7xDlGwFzcPz95NoVBBSpgpV3yKhOvZRMUxpAJVTM9tvxhvbRd
+	 hPFZwa9D+LMaw==
+Message-ID: <a15107de-ab16-433a-a504-72c3e8dbf2a6@kernel.org>
+Date: Wed, 5 Aug 2026 13:53:23 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV3PR12MB9142:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ce06ff3-f5f6-47da-36b8-08def2e6a6b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|56012099006|4143699003|5023799004|11063799006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	5pcg7hjAwzLk3sKKuyfkYeoxJG0hhBCvORcAfBPd02sZsAq3hWQPYUsg+vgQy49RihLtV97ksHFGPt9iZyxpTFQRebMGe+i61kepjc8jQS8oIDG/oWrAPVRo6v7UHhcm4zKubhze9476b7I6f4VD8rYpeaGpg/ryksTv0UP11yFpqdRFt7Vb2Z0c36JSEReoPChfJquWuynbVr3ZBLIAbM9v68ZwnNIYINHyl6Je3qwDNprWBS/1uVNKas4x3EeMq5l/dCEsKpsXsGbxOA/jsqzMEbvB8fp7aobfVFrBM7QAzk+jNibpT0zRaxFBFexTs9xY6JFQq7EKVLfma08+wlpkwm5qHndCE2JptM+my0/nkbU5dwOcdRhRJXdP2ndAucqoZPAZfIXZcTiNedM2MCJc434zzGW0QC1rSuod7oW566V+/LFKyoJDEAwTiTvkyxBSryF84+9qNW6NZ4QY7vR0ctb/OqYgSb/vvJrCVe/KJAjVY9/LiMYxbTAufaeTY5WDsFpx5bChe+fQCHqObqdQx1nHml2RCpG+R9+nQwozelEuV8eY3AKnn+YJZaYStjNEPboSABIIBtCXeOgIOOkrcfY9zaphah3qJvEPbNWImoUPFtlkeeGrU1zRRreEbx3jNkw/pwcU7d7YKCSSVonDy8fvpkHa7qUOcQUHF4g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(56012099006)(4143699003)(5023799004)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OEFyeHp5R0FvQnkzdkJIOHE0SW9JZkZCbmE4Mm8vMnJaUEtZZE1VSVV5VU03?=
- =?utf-8?B?Mmp2QVdjcXlTZnloQjMrOW5ZNStpVFVoWERZdXJRK2NhcDNFcHhxekFHeldB?=
- =?utf-8?B?NUdCdG1SR2JKNzhSSk9CbEt2YmIzOVZxYS8vUjVVdVdJMi8zKzQ5em10dmJV?=
- =?utf-8?B?bmV6ZS85eDlabHZjYUpBcWZWRUxsYmJPOTRpNXJKNHR5L2ZlMmYvWUk5ZnNr?=
- =?utf-8?B?eE9DRDVoMWFJeUV0MjZhTDRoSVkvdzRBaDRnVVlHMEYzN1VTeW1sTFY3dVZG?=
- =?utf-8?B?MWNFL1lPd0hjajdlWGhTbytaUlBXdHZ6M1JvSnVwMG4ySFdrbElXWnE3SVp0?=
- =?utf-8?B?TDB1RTVZV1pXdVpBVHo1anZ6Z2dTc1dXeDZPS3doVmFvUnZrUjBoK3d0Ujkz?=
- =?utf-8?B?TDN2TjFQT2RUZjdnc1ZQQlJFVWhIa25CMFB1WXZyT1h0c3ZsV3VrQjZQdk9t?=
- =?utf-8?B?UFBicS9HcXVJREFvV2xZend1LzE1Umx4NmdKUVFQWWZWMGVCb201MnNrbG9Y?=
- =?utf-8?B?aUxGTmd3eEtUc1RxRzY2YmhSS2Y4Q0ZqTTBnY2RIOVVkbHdSMGROVFU2V1F5?=
- =?utf-8?B?YTJJVk92dURYN1J3cmhPOUpxYUlWa0dMSVRMczBtWWJTVnp3azdrQWlEbURz?=
- =?utf-8?B?aG94Y1ZoMHVUZXNSZzFqL29TVE14TFFsZkwzSFFmZ0tJVE5YR211amJqaU94?=
- =?utf-8?B?ZkVrcC8wY1ZpdE8vN0Vic2JoUSs0UlNxSklXSXVFQjhEQkZ0Z0J1WEpjc2Z2?=
- =?utf-8?B?TkU0YklrcnJnbFhDSlhFNitxOXJ1NGpQT1lmRFV1WEpJb2FYMFpKR0lwT2k1?=
- =?utf-8?B?WDlKZzVYeXA3SktiNU9FMXpiZ0VmTkNrT3o0YXpaT3R4MlJjQkQ0bk9YNkE2?=
- =?utf-8?B?Y1J1c0lNMXRlOTh2OFdCU3pmc1ovc2t3TE1lcG9ZZEROd25VSEk2UE9vY2Qz?=
- =?utf-8?B?QW9nK3NuRXpZdlFXSW9HYkxmK0w2VVdreDJsNzhpZG5RTFhsUU5ZZTZXMzQ3?=
- =?utf-8?B?WmJMbGNOazI3YmtnNDhudkR4NWZFYmhuK1d1bVN5NmdqWEhjSGxGMnltU2Nq?=
- =?utf-8?B?aFAwVVJ6aGNKZW9LWlpCVFZnZmJ4NUpDeGFXczBycEJwdUV4MWhTV0xMeDhu?=
- =?utf-8?B?T0pBekUyOFdFMzZBSW0zSjN5VG9RakVKVmxCSzFqdzd2dE9rdFp3VlVTOGhp?=
- =?utf-8?B?K2FRSGhsbEhkanFKMUlSQ0ZoeUdzWmw2eEZmWXBzZ1dLTWNYYXE2K01PMGVJ?=
- =?utf-8?B?bFZSSXlxNTlRRTVlbG1nRVpsb0V6V3dlTVpPYlVXS05SM0taRDlLREVhaTlF?=
- =?utf-8?B?VVlxVnRDaHVuWVhmSUI4dHFNSkpSYWtRZkk5R0VKTzF0TnNGVFhYTURBcmFV?=
- =?utf-8?B?aW9kTDQrWXBHSTVVZE1RK3BjN3g3ZnJBcE42NG42ME1rNU9Na3YxekdSMG9m?=
- =?utf-8?B?dVRiNk1pYjBHYkNYWWRaRm9LbDgwbTZZZVUrRXU3YUdlS1BlWVBIK3hZS2ZQ?=
- =?utf-8?B?QVZDYmlmQks1SWFGeGZUNXhXaEpDWk9BSW9YVmdzN0MzSnhJdGQ0S2JEVFl5?=
- =?utf-8?B?dzFydmhjZmZvSVdGMkVXRUhnbzFwYlRCSVdFU1RzOFhRYzhoTjdSaVV1YjNZ?=
- =?utf-8?B?QVl6MUszeVBBcE5DajVYV2cvdTZWM3lrNThkTTBJbENiTU82RHRLUXJBVVpv?=
- =?utf-8?B?R0d0VFVEOGhXRVJQb1hnaGFzWkluajlxclpFV2RmRlZZZnE3bVZNejdFQXFn?=
- =?utf-8?B?WkJRYXhVdVhPSnZPOWwrckZId3p2QUZBd1M2bjU0Z3ZSbkQrQktIVDdFbDQ3?=
- =?utf-8?B?azVSWW44cmNTLzhRNnVNV0M1a1VHWU9ETkRhYmY0RC9tZlNhNXJDUFQ5UnZT?=
- =?utf-8?B?bXFTZ2pYNlZYcGptUk5sd2x0TVdwU2g0U0pYS1ZxMldTNzlmU2gvRWRCVE5o?=
- =?utf-8?B?dldRMlozVDFzTE5SbEkwaG80dkRkSGd5VzFqT05xVGJkRGVBYTUzOEtmZ3Ns?=
- =?utf-8?B?V0QzUStRcU56YjJWaDU5T05ScnVBWEcwaUxyYXlkTkd0V0dVWTI4TFRSWUJE?=
- =?utf-8?B?SXgxem5FQ1ZGbmFNcTN6RDArVXRoQ1pQMjNNZ2IyVGY1Q0lvZ0pJaVJxR3dq?=
- =?utf-8?B?dEZ1djNpeVlPZ1NPL21oNU9FNE8rMk1oSjdQdWdUMFBsVGpTVSt6ODRycFoy?=
- =?utf-8?B?WjZkRWEyNC9YN0J6MjV3Y1BFeGx1QWIzdUpYNFlpYlZoNWIrZXBaUml5L2w5?=
- =?utf-8?B?UTR6TjhVR0NzelNDdVd3WWtwQnM5RUJKeUtCMUk2czZYYTl0VFZBOVJJWS9W?=
- =?utf-8?Q?4097320iasubhFD1Dz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ce06ff3-f5f6-47da-36b8-08def2e6a6b7
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 11:42:38.8299
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ycGubgkmt6Bk23RwlcSpW/P/8wBBBAozictGVAXAhqQD4+Tg+pcQEX6wrUPsCpx2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9142
-X-Rspamd-Queue-Id: 6E4B040011
-X-Stat-Signature: jhzo7uymmth941p3sq8h6ppqkn8z4opz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ linux-kernel@vger.kernel.org
+References: <20260723084946.189392-1-yuan1.liu@intel.com>
+ <20260723084946.189392-2-yuan1.liu@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260723084946.189392-2-yuan1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785930169-588179
-X-HE-Meta: U2FsdGVkX1+oC9QbNlQlnl3VX+rGlBsWTUnzLho+AoBRH4l+3hquWWJ3LyaHoAL6XX+l0RquYGt0NUJTadf993du0CmUEcGte1U7yrBLLeBFUm6OhBtCWDcCCiUt8M4MyjjvP91apzNcdHYgB8ucA+f/Q3lHwXAW5bIQcf+qLmwtMhZXL5t0i3SwAFIO07Cxu361ij9TqM1PXghXJZ7DFN5DaKiIpguPsMYhsV9lNquACkfdOLu9FK+HLi/NkFDPjpGu/LQ3Imy1eqZNA1eMkdoICiNfznrj+zoN7Eq3yZZVdgUKUS6ElXgiQXMX9z1tUdmTJRDJ4lmpuMThxAIvYcOhjToCYghnV1pRV0zo/uD/ow1NfnTtcZP7ckcRtAyG5RqOqBEKn621650hfzDpDRwn5FHIm9dcPnyUJ4qtTGWlOJnZIwbBTEzJEPsVA2gxHPMo4E4ihF0/To6Nakf3wFKD38LenM2Ntf7d02Ut1nhKqWwnYA47hFe+vCQhpiYUy37vcYeHHXT32Q8ZyYVBjMI0yuSXnIbUlpwEaZXb5sEzRsb5mMUqAZqq92lOqUB4DsnhVo41SfKwgj+18OFyMZCYEc/piKm4BiDmEMgjmXYIKwbIv9z5QQfmrqyeNp2TH8iU8+jGJSu0D1bFjz0sWCRjhZg+C9+RUbLqtJao0xfXudijw8xGO0RG9uFCJqStXUwG4J16hecXtsDi4v0+ebm1l2s0bZK2Wq5CbG+aLSrpPN3YwIVqzQdXgfWsc15G7I6xUqZxVAGd51l6ySuHLziqlrHepD1NcVD/Ul8qm8AoJfx5ciukI+EfwuSD9HMut+Fp3bB7Ub8VV8POctPpolxO9672vnat+lctced5vHBzzDfAfoGb1c1SxjlL0r38qffAM1whDCVBDmaw+MS/Udzi3M3q/Z4vML+/BCBflugrinK5gJhvClfShw1QFi6yvatELqdvegVH90snFDY
- Ga9kks//
- c5TVtRqNSJAWtKDq+2/wuhFOrYqL2jiwIQY6nnh7JDd1h6Dr5UbwMY/mDhpNpA/gtx8A0jowk8DY95YOVlaPQfVVthzDvgsuS3GiE0SCb1EvFxGlw99xccwywL30MrUf7/HWty02vwU1kVdqF/xqGjIISJiW9ahOa2YZNpErFXolZiR4zx60z/HznGXlaCTTWMO6/i0WYo7/+ucEnoAhrw2EcRcLv9MrWprCmRR67zOm4WtXx9uygDAZTA6jjEt3GPZPXEqnhPJfJciEFZDEXLzmoLLWQ8P+lqk9ucp2U9r6MJCPEEtllP1M78pG9a6fgLys5uGnJa0jTOq8AJSiwM8qZdrUjQrPQ8PxNDpbQBRIP4Q893DwQqwiZNtEx3wIfz3ZiQ9Uj8PBomg+Fdh8fODNtJBfTgA89t2KTph5yqqQTwt4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8055C4000C
+X-Stat-Signature: 5r98scw9ifmyiuuxyzsdqd9edzfb643g
+X-HE-Tag: 1785930810-94891
+X-HE-Meta: U2FsdGVkX19lShOgnC5qFWylv69uLuXHGsYfetD5YHNKyOeIdmHmsqvcF8z1ajAN82dY+oqE3pXsrzhilqZ8f3ysPqdHXvUXUfQtifSyrCK0ZmzuLrnhfvMVGvqfNb/CjbwY/N0akL3377uS1E/UohIbh1IVwZu51ACpGn2grNsVnYVqudfg8f1fRqFhgkg8YyGMjbPBxPBMeyK+4m2pgDAqCjvqyECxW2Be9aCXCMAKzWmPL3zfZLLm1zxflMsFchFkiWoIE6FJOxLFTZhUW9jlJwxJIiv4T4SrZQXWPW5uPwq/I/8C2CmavblT60JXlMyAIrGHUlRdiKyHrsLsGvXYkY0tTAkwhCchSlG8vUlVpOMY5DZUpCdtARrrfclVBzPFn7DUwd8VgLocxGvi0LT21rHfbpK0dPdlHeGN83TLtSOQ7Rl52HrseAudg6CeJ8jDYJmNesPShGh8zSpAMkWa0kKRfTSklg892CHSTB+oTINa9OpuyzAGcnyeQxCNLhLX8EgVI2wvUAk/Ov9+zS54EWwJKX5iTLLbdLZAKF5N6u3Y5h/tLpQ25g/CbrQfPsNw+NMeKyOQ69v1OiRNIZCRPZLRKvK42nr5esB4FEW54Uj6C2vsLYwbHIlmBeO2TJMqhKnTtJB3wZJTJz3D72xxOifHKc4psNU8oN7Tyd+P3KIZXVWUUfq9UfVaWDZGONvUPuyx6RcSnZ6GB4Z0RIV3aQd1Qf7NIXt8VRJHzvSkDSK8SwLoP40VaRCrmxWY0dq3EEtny3VJMUcy9bRogVc1OqrovoTaFeqD0Uf6j7SsNyOoYGfsIF8KAc6M/0gzyP+H0nyoBHWhSu4zysyiIh/lH5tPKwdPZitKorlLrpQ4kKpG4DXBltrYuSuImMdbDG1z6S4ZNGebevHoHzSPubDeNp/p9XAHGz9OgG2ZBVITtiUiD9stu7NVP55EWi4u16peiiH4UizZ1uVsxLb
+ dg5YvcMY
+ Irs7tzIBum7SNIkGO5suZlviCAik0a7RtTrRbX2tenSqbi/In9hCbWxKPTUGGSARDgmPLDeKgCes1KKXOghsWwbxpdcIqjTzOgzaNtlsLfA+Rw9QdOE6sbNXnMeWlbAFp1pFQLKVNGE++o8Grg44duwxDcmy57neDZV20WoJ3ewB6Iy9AP9XzCLeBgOs0lYckXhAELguzkrJuphbAnrczY4+mVSZ2u4Ls1r4aXfVvqHXAFfi9eGjkpd3tQmg5lW0o3akHwLFCntopfKaf/UpwE/1MwDQ1Njr2GvMxpbDjnW5YRo3jJAJaBUZGSfksjiI2iPiFM0F7phefyjgaJcjKaEiBny/o05HmqpBNbAT0i2UwR7LYEl4qHa+Q87awnCny/QhDVzD6xuJ6HaK2hykWRIU5Wj6m2+VXgD99K9nuULXaC4g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,132 +142,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 5, 2026 at 5:25 AM EDT, Jan Kara wrote:
-> On Tue 04-08-26 13:09:46, Zi Yan wrote:
->> On Tue Aug 4, 2026 at 1:04 PM EDT, Jan Kara wrote:
->> > On Tue 04-08-26 11:54:41, Zi Yan wrote:
->> >> On Tue Aug 4, 2026 at 5:32 AM EDT, Jan Kara wrote:
->> >> > On Mon 03-08-26 12:56:36, Zi Yan wrote:
->> >> >> On Mon Aug 3, 2026 at 5:54 AM EDT, Jan Kara wrote:
->> >> >> > On Fri 31-07-26 22:13:30, Zi Yan wrote:
->> >> >> >> erofs needs to traverse readahead folios in reverse order to ac=
-hieve
->> >> >> >> maximum performance by
->> >> >> >> 1. reading all folios from readahead_folio();
->> >> >> >> 2. storing the prior folio pointer in folio->private;
->> >> >> >> 3. traverse from the last folio to the first one.
->> >> >> >>=20
->> >> >> >> Add readahead_folio_reverse() to achieve the same function with=
-out using
->> >> >> >> folio->private.
->> >> >> >>=20
->> >> >> >> It prepares for a future commit that replaces PG_private checks=
- with
->> >> >> >> !folio->private checks. After switching the checks, erofs's use=
- of
->> >> >> >> folio->private without bumping folio refcount can cause unexpec=
-ted
->> >> >> >> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers=
-() becomes
->> >> >> >> reachable.
->> >>=20
->> >> <snip>
->> >>=20
->> >> >>=20
->> >> >> The below is what I come up with. I did not add a bool to
->> >> >> readahead_control, since I think that is the decision of caller of
->> >> >> __readahead_advance(). But let me know if you disagree.
->> >> >
->> >> > The reason why I wanted bool in readahead_control is that if some c=
-ode
->> >> > ends up mixing readahead_folio() with readahead_folio_last() things=
- will
->> >> > get confused (because __readahead_advance() really wants to skip th=
-e batch
->> >> > returned from the *previous* call to readahead_folio[_last]()). Wit=
-h the
->> >> > bool in rac, even mixed use will properly advance the state of the
->> >> > readahead_control. I don't think mixed use is very realistic (at th=
-is
->> >> > point at least) so I'm ok with leaving that for later if you don't =
-like it.
->> >>=20
->> >> Got it. I am trying to figure out your mental model of how the mix of
->> >> readahead_folio() and readahead_folio_last() works with the bool insi=
-de
->> >> ractl. By looking at readahead_folio_last() code, it is almost the sa=
-me
->> >> as readahead_folio() with __readahead_folio() inlined
->> >> (__readahead_folio() is only used by readahead_folio(), so the inline
->> >> can happen without any issue). As a result, we can get rid of
->> >> readahead_folio_last(), add set_readahead_direction() to set the
->> >> embedded bool read_from_head, and use readahead_folio() only. This
->> >> removes redundant code in readahead_folio_last(). One thing I am not
->> >> certain is whether we want to
->> >>=20
->> >> 1. use set_readahead_direction() explicit and warn readahead_folio() =
-if
->> >> read_from_head is not initialized, or
->> >>=20
->> >> 2. set read_from_head to true by default, so that only erofs needs to
->> >> call set_readahead_direction() to change read_from_head.
->> >>=20
->> >> The former is less confusing but changes how readahead_folio() works;
->> >> the latter is simpler but implicit read_from_head state might confuse
->> >> people at some point.
->> >
->> > My idea was: readahead_folio() will call __readahead_advance() and the=
-n set
->> > rac->forward =3D true. readahead_folio_last() will call __readahead_ad=
-vance()
->> > and set rac->forward =3D false. __readahead_advance() advances from be=
-ginning
->> > / end based on rac->_forward value.
->>=20
->> Got it. I can do that. Just to be clear, it should be that
->> readahead_folio() first sets rac->forward =3D true, then calls
->> __readahead_advance(), since __readahead_advance() advances based on
->> rac->forward, right? readahead_folio_last() as well.
->
-> No. I wrote "and then set" which means after and that is what I really
-> wanted to say. You still don't seem to be understanding the logic of hand=
-ling
-> the _batch_count. _batch_count is the length of the returned batch.
-> __readahead_advance() updates _index and _nr_pages to remove the folios
-> returned in the last batch from the range. So _forward needs to contain
-> whether the last returned batch was taken from the beginning or the end o=
-f
-> the range and __readahead_advance() uses it to update current range
-> accordingly (before we go and return the next batch). We cannot clobber
-> _forward before calling __readahead_advance(). I hope things are clearer
-> now.
+On 7/23/26 10:49, Yuan Liu wrote:
+> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
+> zone, set_zone_contiguous() rescans the entire zone
+> pageblock-by-pageblock to rebuild zone->contiguous. For large zones this
+> is a significant cost during memory hotplug and hot-unplug.
+> 
+> Add a new zone member pages_with_online_memmap that tracks the number of
+> pages within the zone span that have an online memory map (including
+> present pages and memory holes smaller than a subsection whose memory
+> map has been initialized). When spanned_pages == pages_with_online_memmap
+> the zone is contiguous and pfn_to_page() can be called on any PFN in the
+> zone span without further pfn_valid() checks.
+> 
+> For early boot memory, pages_with_online_memmap is calculated in
+> memmap_init_zone_range(). Since every PFN within a memblock region
+> satisfies pfn_to_online_page(), the calculation aligns both boundaries
+> of each memblock range to PAGES_PER_SUBSECTION and counts the aligned
+> pages that fall within the zone span. If two adjacent memblock regions
+> share a subsection (i.e. the hole between them is smaller than a
+> subsection), the overlapping subsection pages are counted only once.
+> For hotplugged memory, pages_with_online_memmap is updated through
+> adjust_present_page_count(), which is called during memory online and
+> offline.
+> 
+> Only pages that fall within the current zone span are accounted towards
+> pages_with_online_memmap. A "too small" value is safe, it merely
+> prevents detecting a contiguous zone.
+> 
+> The contiguity check using pages_with_online_memmap is stricter than the
+> old pageblock-by-pageblock scan. The old set_zone_contiguous() iterated
+> at pageblock granularity via pageblock_pfn_to_page(), so a zone could be
+> marked contiguous even if a subsection-sized hole existed within a
+> pageblock. The new check requires
+> spanned_pages == pages_with_online_memmap, meaning every PFN in the zone
+> span must satisfy pfn_to_online_page().
+> 
+> The following test cases of memory hotplug for a VM [1], tested in the
+> environment [2], show that this optimization can significantly reduce
+> the memory hotplug time [3].
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      7s      |       81%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      9s      |       75%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>     qom-set vmem1 requested-size 0G (Unplug Memory)
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v7.0-rc4
+>     Qemu         : v9.0.0
+> 
+>     Launch VM    :
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>     Guest kernel auto-onlines newly added memory blocks:
+>     echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> [3] The time from typing the QEMU commands in [1] to when the output of
+>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>     memory is recognized.
+> 
+> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+> Reviewed-by: Pan Deng <pan.deng@intel.com>
+> Reviewed-by: Jason Zeng <jason.zeng@intel.com>
+> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> ---
+>  Documentation/mm/physical_memory.rst | 13 +++++++
+>  drivers/base/memory.c                |  6 +++
+>  include/linux/mmzone.h               | 47 ++++++++++++++++++++++
+>  mm/internal.h                        |  8 +---
+>  mm/memory_hotplug.c                  | 12 +-----
+>  mm/mm_init.c                         | 58 +++++++++++++++++-----------
+>  6 files changed, 105 insertions(+), 39 deletions(-)
+> 
+> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> index b76183545e5b..0aa65e6b5499 100644
+> --- a/Documentation/mm/physical_memory.rst
+> +++ b/Documentation/mm/physical_memory.rst
+> @@ -483,6 +483,19 @@ General
+>    ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
+>    is initialized by ``calculate_node_totalpages()``.
+>  
+> +``pages_with_online_memmap``
+> +  Tracks pages within the zone that have an online memory map (present pages
+> +  and memory holes whose memory map has been initialized). When
+> +  ``spanned_pages`` == ``pages_with_online_memmap``, ``pfn_to_page()`` can be
+> +  performed without further checks on any PFN within the zone span.
+> +
+> +  Note: this counter may temporarily undercount when pages with an online
+> +  memory map exist outside the current zone span. This can only happen during
+> +  boot, when initializing the memory map of pages that do not fall into any
+> +  zone span. Growing the zone to cover such pages and later shrinking it back
+> +  may result in a "too small" value. This is safe: it merely prevents
+> +  detecting a contiguous zone.
 
-Got it. Sorry I made some assumption instead of asking my question, so I
-misinterpret your words. My question is who sets the initial value of
-_forward? So that __readahead_advance() can update _index and _nr_pages
-correctly at the first time __readahead_folio() is called?
+It's suboptimal that we repeat the same comment that we already have in struct
+zone. Can we just keep it vry simple here?
 
-__readahead_folio() does:
+"Pages within the zone that have an online memory map: present pages and memory
+holes whose memory map has been initialized. See XXX for more details."
 
-1. update _nr_pages and _index,
-2. return NULL if _nr_pages is 0 and set _batch_count to 0,
-3. return folio using xa_load and set _batch_count to folio_nr_pages().
+> +
+>  ``present_early_pages``
+>    The present pages existing within the zone located on memory available since
+>    early boot, excluding hotplugged memory. Defined only when
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index bcfe2d9f4adb..237ace435372 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -246,6 +246,7 @@ static int memory_block_online(struct memory_block *mem)
+>  		nr_vmemmap_pages = mem->altmap->free;
+>  
+>  	mem_hotplug_begin();
+> +	clear_zone_contiguous(zone);
+>  	if (nr_vmemmap_pages) {
+>  		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
+>  		if (ret)
+> @@ -270,6 +271,7 @@ static int memory_block_online(struct memory_block *mem)
+>  
+>  	mem->zone = zone;
+>  out:
+> +	set_zone_contiguous(zone);
+>  	mem_hotplug_done();
+>  	return ret;
+>  }
+> @@ -282,6 +284,7 @@ static int memory_block_offline(struct memory_block *mem)
+>  	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
+>  	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
+>  	unsigned long nr_vmemmap_pages = 0;
+> +	struct zone *zone;
 
-after the change:
+Why the temporary variable, and why not initialize it directly here? Note that
 
-1. call __readahead_advance() to update _index, _nr_pages, and
-_batch_count based on _forward,
-2. update _forward to true, since it is __readahead_folio()
-3. return NULL or folio based on _nr_pages.
+>  	int ret;
+>  
+>  	if (!mem->zone)
 
-Then the first time __readahead_folio() is called, who sets _forward to
-make 1 work correctly?
+We already use mem->zone here. So if you add a variable, convert that one as
+well. But I guess we can just life without one.
 
-Thanks.
+> @@ -294,7 +297,9 @@ static int memory_block_offline(struct memory_block *mem)
+>  	if (mem->altmap)
+>  		nr_vmemmap_pages = mem->altmap->free;
+>  
+> +	zone = mem->zone;
+>  	mem_hotplug_begin();
+> +	clear_zone_contiguous(zone);
+>  	if (nr_vmemmap_pages)
+>  		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
+>  					  -nr_vmemmap_pages);
+> @@ -314,6 +319,7 @@ static int memory_block_offline(struct memory_block *mem)
+>  
+>  	mem->zone = NULL;
+>  out:
+> +	set_zone_contiguous(zone);
+>  	mem_hotplug_done();
+>  	return ret;
+>  }
+
+[...]
+
+> +static inline void set_zone_contiguous(struct zone *zone)
+> +{
+> +	if (zone_is_zone_device(zone))
+> +		return;
+> +	if (zone->spanned_pages == zone->pages_with_online_memmap)
+> +		zone->contiguous = true;
+
+Maybe it was already discussed (and I recall that we previously had that), but I
+think we really need READ_ONCE semantics here and WRITE_ONCE semantics in memory
+hotplug code. Otherwise concurrent updates could lead to weird things when the
+compiler does load-tearing.
 
 
---=20
-Best Regards,
-Yan, Zi
+[...]
 
+>  
+> +static void __init update_zone_online_memmap_pages(struct zone *zone,
+> +						   unsigned long start_pfn,
+> +						   unsigned long end_pfn,
+> +						   unsigned long *hole_pfn)
+> +{
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +	unsigned long zone_start_pfn = zone->zone_start_pfn;
+> +	unsigned long zone_end_pfn = zone_start_pfn + zone->spanned_pages;
+
+These two can be const.
+
+> +	unsigned long sub_start, sub_end;
+> +
+> +	sub_start = max(ALIGN_DOWN(start_pfn, PAGES_PER_SUBSECTION),
+> +			zone_start_pfn);
+> +	sub_end = min(ALIGN(end_pfn, PAGES_PER_SUBSECTION), zone_end_pfn);
+
+Hm, I don't immediately understand why we do the PAGES_PER_SUBSECTION thing
+here. Why is that required?
+-- 
+Cheers,
+
+David
 
