@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4FDBC55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA4BC55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC5136B009F; Wed,  5 Aug 2026 10:53:36 -0400 (EDT)
+	id 37A956B00A0; Wed,  5 Aug 2026 10:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C75516B00A0; Wed,  5 Aug 2026 10:53:36 -0400 (EDT)
+	id 351D76B00A1; Wed,  5 Aug 2026 10:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63CE6B00A1; Wed,  5 Aug 2026 10:53:36 -0400 (EDT)
+	id 2903E6B00A2; Wed,  5 Aug 2026 10:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D50B6B009F
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:53:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A73780495
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:53:36 +0000 (UTC)
-X-FDA: 85067509632.30.7FCB164
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 249E440003
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:53:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XgANokC1;
-	spf=pass (imf01.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3C866B00A0
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:55:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 800C6A04EB
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:55:59 +0000 (UTC)
+X-FDA: 85067515638.10.89FC3B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E20A3180008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:55:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqcKapRv;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785941614;
-	b=EfB4SXCzXQeRs7jAIUIrcshBBfVvCQtzp9BJu5mtJpJv4Zg5bNhsPca9oPQBPtdrPKW69V
-	7H9Dws45iE/ixztYp+sjOrJS0tpScehxMer3FyZZNiyVaNMkQLKfSJ0I+dL6V4tWu2O8ir
-	gwdM+/8LQ0Ymp/drMSsrJuByKsxyydg=
+	t=1785941758;
+	b=3EU9xAPba+QgkVAT3nPQlVRX91Ny6OIYic1FRnYD3szbaQDWlwbLcRpseWi4AlW8XMWI+E
+	vBUnkZE434HpPLXYPKensFuKo+QJqSbxLX8jqNKabuc4cZyWUVdeV6/HM3odviSw4GXLHA
+	QDPeq4XbC8mCp1nPbe4JrpM95+f+Tk0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XgANokC1;
-	spf=pass (imf01.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqcKapRv;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785941614;
+	s=arc-20220608; t=1785941758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kov5DddpRaSHaT5QtIBhO+yv3izobi8lORUTe2us6Es=;
-	b=WiL6LcOOi0i/ifaNmdlmcPWgDueg8U07o0DJMiaMYuZRKZQ5pAZE/5oU7IG4s9zOo7VXJa
-	glULwfMjsARXGvjnneJEGkd6Pk6npMGvD54fgq4Hdpagb1zqEIH8a599gKWpDs6CtMdLs8
-	4kNPP/kWN2UAyZi0GSTj5DSSXUsj6Ro=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D705F153B;
-	Wed,  5 Aug 2026 07:53:28 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A06C3F632;
-	Wed,  5 Aug 2026 07:53:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785941612; bh=K0NMuw1cdB8mhCo22y55f2vhoceFHsGS1XGjNj01RFk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XgANokC1wy/pXB+aYJ4f7KYRB1lAKM4KkLXZvORJwCDGWcBvspQ5D2OkQ0mEdzGOw
-	 IfCn2OXVY2KnBju9YVSjsvw24cmBPBpNC0hQn/mS+3lJWMJys3O8g7ZXwNRoex59zK
-	 a9PT5dHCKKnOQwWU2QAJ6XszSUhjjlD/4dkCiI3A=
-Date: Wed, 5 Aug 2026 15:53:28 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org,
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
-	will@kernel.org, david@kernel.org, akpm@linux-foundation.org,
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <anNMvTAvUJkfspSR@J2N7QTR9R3>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+	bh=nASxGYceAPd+py7TH+InOS6PcP614iOzRyIcA7fA2qI=;
+	b=PV6m3vwe2i/f5kKm4BS2S0PtqtgIztm002QXDkpp555L6Oy0ZKMFRFXk8Kuc7jfhTiP3xs
+	27tYL18VTOSpR3HATauAoo4Yn6IUrODTKmaWCYflZz63D0hzGaa4oLryCNg/RaFKonwkgc
+	08/hw/S3tX/RSi3iiNo3wIXNTLiEwSo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 32FBF4086E;
+	Wed,  5 Aug 2026 14:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E81F000E9;
+	Wed,  5 Aug 2026 14:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785941756;
+	bh=nASxGYceAPd+py7TH+InOS6PcP614iOzRyIcA7fA2qI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oqcKapRv3Of+kM5WF0RjhMOufytZiUaRvqbullaKqFxthXLGRSkfrMJvGzYhu0gaA
+	 y6kz+8jpywltwp+P/SGG3AYB2jD/HXUetI0xV10Ev8I4IxUAjQFGxt6Z6MEqmMjK4C
+	 BUb458NF/51vUQb9BbQRfG3T8091l7fqVFJdBB/qf9t9Tp0RcPVUvi6VLfw0VHX2Nd
+	 5IR4ObUhx/CLDTKd7IBjpBJ96dNcA4nLFSCJOmIIv73q7JfUmVr8KfQgRjUe5PJYRv
+	 /H3wTYBmeDTIWhsPKGhTzR/b+x5GtKlG5/Mt07Rov7xEIF+rUXqLXkNrUTX45GkZLl
+	 G8dpE2gUvkICw==
+Date: Wed, 5 Aug 2026 17:55:48 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH v2] mm/sparse: keep mem_section_usage_size() internal
+Message-ID: <anNO9PlAebCdclSJ@kernel.org>
+References: <20260805022536.1206575-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+In-Reply-To: <20260805022536.1206575-1-songmuchun@bytedance.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 249E440003
-X-Stat-Signature: bdua78ih3fyeiouadbb4ebpg17cfygb8
+X-Rspamd-Queue-Id: E20A3180008
+X-Stat-Signature: ztxfcuh7o1xdgqmqd9mp684d5mcqih89
 X-Rspam-User: 
-X-HE-Tag: 1785941614-324180
-X-HE-Meta: U2FsdGVkX1/LtoYWxJny/Uta9+PEJkWNQwQ4RhkLMg5y8uRxYnzwObFh3xTeSlhwqoBF6zOMcDGN+3+Rri3NzV2crSzDigERgtUj9sSaeALXMwm9buobsTBnDA6GqOsBWVXG3L9MbznTLO8f98/+tfCa9o7bVFOlHsWloKkkt0YlPzco2Zlpcnzw3yClwve6j2Xe3xB8ZB6ImO5M5q0wMrFM0pc/bHnx7fhaSCL+Z2l1nED0qOPnRbOOONlx2XOXMW9UJvZ1+OsmnJqSGJuvnxf530wKtgCIq5RCNYYRmEJqyH5yo6cK3ifNwjHB3paOIwiH1THCRlukcy6gimsb63ipPt/QrmMPEiFS33TFUEQfKt9MzsZQaPU/T4NOV/WsB5mliGhFFsVUrmIHxPLVeysGpQ67sp+yUMhigvsSokBy9N9Aag6UE/Ucr5q7lbU9EVlpYSD3vIWQWAOHbDwRr/2xIhtyfB4fr//wuulk1v0viBjX8Lco6g2fABKdBGsbfZiFf8H/eOE2WX+GLzlimfcs7jF1b96Nlbn6ZlnxbL3fINcfVG0nUZhvpQQvyINFVuE4EK26b4VEji/5uyGd+g5qmYJ1uEghfsG6k9WnWyaUIRIxw2dDUt9wMzmP8JZuprfuDEdu9xgXz+tZ2Fklt0cvvcIk9ELiegJLcAPbKt905kfuBw85Q6riOqavWN7F9NdlelR5men7cPPdb/WbKAJJOmVXlGuE5xe85DsygTN9BHl1sqmTkEAGm7Ri/LXPOkVgAHgSQVc860u4lyN2I2R/rcm0F8C0FixIJN+MxYbADDNsOBiGQnHpbqF6Q4tl7oqOueDfZIgtrtVfk/PFkytxHZHp7W2PWK4k1d/VDmKni71oJY0d6fdWO+Levy76IgOz4MUFVvN0OLWS02oHWIaRpotvZp+4ali1E7NcmnHo088MwyIDEhSwI9Q79AECD0l5R1h7tA9DGgL+8ZG
- vnbealG8
- 5K4n6jD3obVfpKzglDL2kf0+LP+vgGqyMtFN4QMRuGzyYxOlkAdNSB0Zg+b/gEZHQry1ajUKg3xPDo9Ol/udJDJtvXhsnlwhLDD/TkkVZV2JUUOqcgVQGlcy8gO0t+5Gg+DC/qK0Lbcd4gwaJsL7DkvN4icj8Ea3yzH9sAgjmNBDx6ve6xfKBj7gNQ+AuUKw/wTeOUrEAvh/qsJHukbMpV9hggC003ydza3Rtzu1ie/CFAWvHIpsbBnc6IBieEif+tZLtmHYjo88XKgC34Vs0dWUEeg==
+X-HE-Tag: 1785941757-831517
+X-HE-Meta: U2FsdGVkX18NQsVP8YHuW4qSinTu1mwt9FkJBqPWUwXCP0MvbLkd7aYsgnIMmC0Qhzor2n1vaI1ZX7WHLysXO7wWbCthD6BETYQFcT8rfw06GyTXx3rWhwGNAjxkpBfr8Kc54nGDRa4/ccyxUk6JTvuzkOwoZBB4TWNxisyb5YO7q/LfnaZeeV337FiKeJbmAHtFtLPE1Bn+IIAp9fzvSqfile5VWm4+sJdZuVyPZV5ZgOMsU4evkm1JphwkBiDqkHZnygWUfzmdvlfa0PL+JajR3p8C997Rw/AEyDsHoKdK+ndUw39ThmPeO5chi1HuClWU32syWmQOq12EaVERAdiWLjZGSHiFqs7HEWRS6iL7kOuHB6GNsl7fnZZykLlRHGMPERAe0ZbAVm4+Ms+sZDgErtZlNQ4xOTMzsKrOt3H7uu1I9ccqOZhVwFQFJOjmiwQyoS5wtPB7HtihLsHy6JkiM82Dcb77ugMIS+qLq44KTIdOixwGaS2DNZmBoh/ZhQ6TKsZVPjqdwCvaHRUhHq6LNa3xou8hIdUfbWKl3Bdd3gbcc3V7P6idS80Eo4YIU8BChbR1nxz5zbtbEMvayWt+mqIi2lZ6HK5jTHjmXBY1wNMJHfaAf2ej1prT1nMGwXTa7cuqR508SQ6SXEaguxq8SSIGR9G6GcDKU6yXYt4mZWTnotePAxTppTXc5lab4ewzRSbIBHY/b3UCBlKvOIYanrSfeXIy9I7Lv4n4qhyvfv6Bw4NxG3x14P7dSdLpYcmRoPxpblN7BbhtSxHR9MVQLzap55sB82ksXnkr3HON6kufEz0FFlZU6ACOJjRBx7iwCnf8ybAlfkqCW/B1xjsFko4Mj3nSFt9aCxQDdXr1GDL19nDzU5GbOojBA+jPtIuOHCAukBnLpeDCtDvm6aaLYpWCy75yd2Kd/m0JdeR6EezJQ9jw4vcJgKVkNQzI6QeNLOTowd6pqEqYMaK
+ BHiJFod0
+ hxj71NhE7DtOXR8DnEqxLE/mxGi5bwOZe6/xcfG8P5zGunlYfwKHS2CX1bQcevOZpwPpY8IruJdSHYfaK0S7sbO9eI0fx1MP1Qo6POfcBx0wXmsm/E1vDNUFnmf9snkZ0Ac/rsCvXoQuzqRgrS7D86ISyJCpvQ9UE33ki1SDdpSVqLO80oanW+yjUtU4yOYHfBBXZU8E6ZAhlI+7poeNLs6x6ID0RS2/BlLWHOvIGlk6OWiENdJm0i+Y5lfWWX6yZ6AyDND8kiLvnutPH63DoWl20bPxowi9RceG6hrE8lkIs25FDCi7W2XVv0vP/PvvazlywbW/OSBGasFqSWSPFHa4FMqajv9jH20np
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +96,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 03:06:27PM -0700, Christoph Lameter (Ampere) wrote:
-> On Wed, 22 Jul 2026, Mark Rutland wrote:
-> > I expect that should come with a reasonable benefit, but I don't have
-> > benchmark figures yet as I haven't finished converting the xchg and
-> > cmpxchg implementations.
-> >
-> > > It sounds like it just moved the cost from one place to the other
-> > > place and it also seems hacky TBH.
+On Wed, Aug 05, 2026 at 10:25:36AM +0800, Muchun Song wrote:
+> mem_section_usage_size() is only needed by sparsemem implementation code
+> after commit ae751d567baa ("mm/bootmem_info: stop marking mem_section_usage
+> as MIX_SECTION_INFO"), so keeping the declaration in mmzone.h now exposes
+> the helper to all mmzone.h users for no reason.
 > 
-> Yang Shi's patch has *no* critical section. There is no additional code
-> for the RMV instruction. The RMV instruction is executed on the correct
-> per cpu area.
+> Move the helper to sparse.h so sparse.c and sparse-vmemmap.c can share it
+> through the internal header. While doing so, calculate the allocation size
+> with struct_size_t(), which ties the expression to the pageblock_flags
+> trailing array instead of open-coding the struct header plus bitmap size.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-None of that was in question.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> One of the reasons for the performance win is the
-> eliminattion of these critical sections. Your approach still has some form
-> of prologue and posthandling like the current preempt approach and
-> therefore will not be able to have the same performance gains.
+> ---
+> v2:
+> - Mention that ae751d567baa removed the last external user (David)
+> - Use struct_size_t() for the mem_section_usage size calculation (David)
+> ---
+>  include/linux/mmzone.h |  1 -
+>  mm/sparse.c            | 10 ----------
+>  mm/sparse.h            |  6 ++++++
+>  3 files changed, 6 insertions(+), 11 deletions(-)
 
-In absolute terms, yes.
-
-However, I'm fairly confident that the vast majority of the overhead we
-have today can be eliminated with simpler alternatives.
-
-There is a trade-off, and there are surprisingly complex interactions
-between page tables and other things (e.g. entry code). There is risk
-and maintenance burden associated with that. Hence people want to
-understand how much of the benefit is attributable to what. So far, the
-statements haven't convinced me people actually know what portion of the
-overhead come from which factor, e.g.
-
-* How much of that attributable to conditional work when re-enabling
-  preemption?
-
-* How much of that is attributable to RMW sequences to modify the
-  preempt count itself?
- 
-* How much of that is attributable to system register accesses (SP_EL0
-  and TPIDR_ELx)?
-
-Any of those could easily dominate the other factors and might easily be
-avoidable. Most of that should be measurable today. For example you
-could restore the preempt_{enable,disable} calls atop Yang Shi's
-patches.
-
-> The code is more efficient, there is no restart necessary and the
-> technique is already widely used on x86 for a long time.
-
-It's true that the per-cpu page table approach will have fewer
-instructions in the fast path.
-
-However, the other statements here are potentially misleading:
-
-(1) There is no restart in the scheme I have proposed, so restarting is
-    irrelevant to the comparison.
-
-(2) On x86, this_cpu*() operations use segment relative addressing, NOT
-    per-cpu page tables. If arm64 had a similar addressing scheme, I
-    expect we would use it.
-
-(3) There are a number of novel problems associated with per-cpu page
-    tables (e.g the various unsolved issues Yang has described), which
-    do not apply to x86's implementation of this_cpu_*() operations.
-
-> Having the ability in general to map mmemory differently depending on the
-> cpu opens up a number of other optimization like
-
-> What we are proposing here is a basic new feature that simplifies code and
-> allows addititonal performance and functional features that are so far not
-> possible on ARM64.
-
-While this simplifies the this_cpu_*() operations, I don't believe this
-is a simplification overall, and IMO, describing it as such is
-misleading.
-
-Mark.
+-- 
+Sincerely yours,
+Mike.
 
