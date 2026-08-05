@@ -4,119 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76A20C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 05:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F1A2C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 05:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BDA46B007B; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
+	id 7CA3B6B007B; Wed,  5 Aug 2026 01:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66DF46B0088; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
+	id 77A3F6B0088; Wed,  5 Aug 2026 01:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55CE26B008A; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
+	id 690996B008A; Wed,  5 Aug 2026 01:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EFF56B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A9B721C07E5
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:21:12 +0000 (UTC)
-X-FDA: 85066067184.16.6BF6848
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D7FD680002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:21:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=h2RJyECH;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C1D6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 01:56:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCF41A1B2C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:56:07 +0000 (UTC)
+X-FDA: 85066155174.19.8581AC8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BE78640005
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:56:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SSwlYu5u;
+	spf=pass (imf01.hostedemail.com: domain of clg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785907271;
+	s=arc-20220608; t=1785909366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
-	b=p+57lm9VbWr5SDRagNYxY8qig/IAON4GBYXjGDtmigRtGMIb4muJlTw+lOu9pgASPx+5Tm
-	T9y4bXPodmVccZBx/rZw9fEtLgdV+E5WRxS5Vh6lfsKjgPYjcUTxAWcDm4PE9T8JDHBOHc
-	WAI3aXZEx4R9fW9Er26LULtRdyKgWno=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=h2RJyECH;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=myGrw8fGktwNQsvE5uYfJTAVudnST/W8PUvvhsvRQII=;
+	b=4HjE9B+AYjIFDJEX629I/0Mq5pPup2zdvCYa8BAq5amkbhCTSDqod5YH52xs4HIy6zVXuZ
+	ciJ/j1WVx8YVMDZ8+4qTenRDMaZSpgrwIxqLgYEAWDauyHVbBjMEzrKBPu088VgmJPYxa9
+	RWcNsUHsovQbZsy5qr12OUw1LoyIRcg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785907271;
-	b=csDOvv394AS2uVniUVcXFZc6aBrr7LPzpnS01aWr0gjgF4fBDQafROTN6xWza+Eb9ouKu1
-	U25pmqYKblh1Zc0Q+/kFgJAwKvMHJ2klRSh6dn+cdcj/DM3HziS2eWFQYXyX3jG69fLxDK
-	pNrCpoXOHYCsbo3+GGe9ffqh40Tl42M=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf27856f9cso6770535ad.2
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 22:21:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785907269; x=1786512069; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
-        b=h2RJyECHZnu9wst9nbZvtMehtLgwsZVW2lfCO8/qt00wWvBSiDQtaUfqwGNMJ+rmgc
-         8lVLUFGhjXol97vVT+J3v4Y0c5jCn/7tj3M5a8AnF5CHIoFHq7iGZ6FV4a39OiLRjiEw
-         l9gIwpbDD8GrH8QfGDE/DIIzDur5YDCRMGynQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785907269; x=1786512069;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
-        b=TaZ2OPDUnCCwlrBFN49VA3rdF/bf7F4OpCTwi9B37RKmU+2zz/GXbfqTal8xYNvYgk
-         Ajq0imTRwK6Dq3uCYsE0Idd8nY8m4mI334etTuMKyZYxXHY4rYkfzlLxrxK4lVV9GMjQ
-         T6pS85463rgouljHIRTk1Fxke3eLbhMY7gdCr6UIRyUR7cu1frJqlGdJGmv8VTEDjG+1
-         HRFpu/mks1l9tayGX6P3Y7U5p0qpyQxsudLDLlmN3Cf8qE0RXKfJi2I3OFyNjBIIQsKy
-         v/+Lk6ZNzaAkrmjx06XQe4aR3Zf0PAxfCBDdx7jvwqQMjfoIPDWTHO6R7DIYAkXfWQJ7
-         9bLg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7naqalJ0oYFNO7AU42X7K3ZvwuRsLi6xk60kZd5scpwiw9A7vqEcf0I9vPIO0rVMA+eYyzTUKYA==@kvack.org
-X-Gm-Message-State: AOJu0YyXZ5jbH3IdLySWfVc4/OjRvW6u3vyyb84ickBKWPng/pBdH7NN
-	tV//l0h4zKvGqXFuEKbSYRFagpBGDC0ow3QciNNMqYQx0sx1f3s7bsbDSv9JoW1tAQ==
-X-Gm-Gg: AR+sD12+zhabAd5F7dBQnFitTO0rxEfAtzDCBxkxeLKLhzZrCOmaNQJ/dXesYInL0Fy
-	GSfEwpuztJdbDyVi5wZoo8vqfhhDrIvdqfgwgl0dGxovLlbyDGFeGd6E0180vYYt+o2rhWena4b
-	h/3ZNGPDRNxAQwrfl8YDJ35MbPsjjYIw9fP35AzUYp/xrZye6rdl6WNF/7CbkPVYYMOfe4t8ifR
-	foz8+EVtGfFhTSUC50eQlc+xl9pHNnmT0Th05w5I/2LAlkfJr8fu4Tcl5cBk3iXzs5sDu3WPHNA
-	3hHX3PhrAqhC5LYHGyGeAtYviZoN2LGj916tkBBiuWm3n5aDeUGPHygmrMrO5tBg94HlwcClgTx
-	T0nMGQFGy8hfTprd8jlSWm4Dc7dMlIitH4p/2yY+Wpe11DR6rW+SKRcvxDq1niWTRdusbOwQTuJ
-	xcoaYpmwBX2mo/m56a4EnL9T8uUIChHU/+aw2UUl7qJDNf3J+F/Q9t5lQwNWWmXK18AhQRYT7A3
-	nOV0h2CfV4ofbtSz59ky1JYflfrp4mkds/iYB6x
-X-Received: by 2002:a17:903:1746:b0:2cf:afe8:b722 with SMTP id d9443c01a7336-2d0ca761e0amr45277575ad.11.1785907269509;
-        Tue, 04 Aug 2026 22:21:09 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:32eb:b46b:e9eb:65c5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4f35d5sm13841875ad.82.2026.08.04.22.21.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 22:21:08 -0700 (PDT)
-Date: Wed, 5 Aug 2026 14:21:03 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Barry Song <baohua@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	akpm@linux-foundation.org, bigeasy@linutronix.de, hdanton@sina.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, 
-	yosry.ahmed@linux.dev, surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
-	Suleiman Souhlal <suleiman@google.com>
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
- backends
-Message-ID: <anLGxk3iShEfCB30@google.com>
-References: <20260805005545.66112-1-baohua@kernel.org>
- <anKQ_qZ1-Q6FchZ9@google.com>
- <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
- <anKaU6VStrW8zaQo@google.com>
- <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
+	t=1785909366;
+	b=LuvtcB8h1WkeUk7z+IFOQlfQRGFG2Vcb517szlbpK2MVFbnqqi3+jcu86aN3zEQxfe9KvW
+	P8X5jSQjSmhfS0PmzBftl9IgiKh+K4QeEtWomFwDyNT5m7lqemmyZ9s6PzUNCYSkGIZ2Lg
+	vLhGku4wEUNxz929YPg+z8Cq647musw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SSwlYu5u;
+	spf=pass (imf01.hostedemail.com: domain of clg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785909365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=myGrw8fGktwNQsvE5uYfJTAVudnST/W8PUvvhsvRQII=;
+	b=SSwlYu5urv+rgwzp7zzFV97xs3HnBXvDy0eNNqCeefCI9usCOA0Js2a6yyqCc3FqZ9dtk1
+	th4uj/cG4iELKXkKc8qbTu6tU5fgqh6/XxKfjBnepuE08FLf9gAHNq+VGmGSiZPlhUFUjc
+	phGcMBA9EbsPVWaO8JxhqAinpH5Vlfw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-52WWm8eOPpWFxk_xvF0GUw-1; Wed,
+ 05 Aug 2026 01:55:56 -0400
+X-MC-Unique: 52WWm8eOPpWFxk_xvF0GUw-1
+X-Mimecast-MFC-AGG-ID: 52WWm8eOPpWFxk_xvF0GUw_1785909355
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 51D9219560AE;
+	Wed,  5 Aug 2026 05:55:54 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.25])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5EAC41800348;
+	Wed,  5 Aug 2026 05:55:50 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: Peter Xu <peterx@redhat.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Cedric Le Goater <clg@redhat.com>
+Subject: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP policy check
+Date: Wed,  5 Aug 2026 07:55:40 +0200
+Message-ID: <20260805055544.1568534-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: -_pfWP9Z4c6U0BUs-MvORvORLmFbDOxzTsrEtW0WMPQ_1785909355
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: yiu834krpn5zf64ni9z45mkitdq664dq
-X-Rspamd-Queue-Id: D7FD680002
-X-HE-Tag: 1785907270-314566
-X-HE-Meta: U2FsdGVkX1+WpYNLGCVq3i3+vYGuNnfhl/c2rod3XRJplfN0ceSNfwgDrX4BwKPfvnQGUcMfbFqxavwPyUyyFOEZgjGAxxgDxxngUtdnaltGEE0Bn+2J4X4JYVmcXOA/XQqPJll06vuXxfSKD8ohi+P4KFm8E35nATDjay/VQibMGzh54TzyEsmMzALJ101uPQCykTUIRLBmqTlo4dZPUeexnFoww9xhFh3hNAzFK4X6BNrEbMe3pWgueljdBw4ZFMg40CyTDtUKH7LjOw+bbnCw61GyOeSZ5RvuGjfpCJM3SdpbCkzEFFK7qt+wMATo0COP4QEbWiv/OxwXGF7W2bX1DQNf1WF9XY8Fn7giHbl2EX/HPq+S+ra1ZtvzM5GeBEbGK/cqy6rWlUfOGeGahplrlxvBUXi8EJc0idOFQzX2Vkc6FYm7RbmSFW/pHviG2C3s73sXG0LaVvRIswT52m5ud38/vrx16wKksthQSA6P20uY1R7zCkLLousE7sPbCUVXJQq8uvP/54dJv9rePGmoriDiYWzILeWQY6nDsA65mU0H0WCnNYdFdWvoMYMCS5lDB8CUg7o+f3VAT0+4wi90rk2aM4WpT7jrJmiTq7xZDCP9kgmuGDkdoPIiWsH07SMU1x0MIcLDUvUu13JKuxNazkP1zBLQ/OHRlrv2TdCTy5+y7dtABil3J0y1ClNasPykq1yk1BNytQAdCzmHeR3Y+53h881ToXnrbO0/CDOuOgNCd6WJC28lMdwBcvz9plA6TwPmUBQ4ep+XahyFD7DI7RTkCD5npbcHNFfdOCD/f13YCl0T+VHSXDWbD0GWBB9Ct4HNP3PRAIvfHe0+WbUnuQMfxbTlcLUAsc0Dga6gNk3NxU4sXiz3LDkn4NYJDh6AOPaIXTnjzIeeywuytb17oew7h6/4fQ2OkLl+kUNVPAUAm/fYchKPFKVAs/hjM9CAwsh0J7mG3WVGfmL
- YnnbPrCb
- JR9r+GLfbphoP0KtM49Vx2dgfs11OWyNv2g14PgApMsbr0OVq6iwKoMLPnp/nsmMkdyJNpeR0SP9palm+Kjb9Or96RRl6cHPqubN291h6UWvhplVFSjWkeGow2CF/pHO1a38qpwwDyCPu2ir64P4WR4Vp1z1qtp70zmg/YBVyUrmb2V2NI+sWSrE9m4SXaodNq1O71HgFjbFyyC724AKs/mRWTiKOmpKXpjfB68jFKuEbUTV7HYp47r+OJlLNEe8PYwTUU9U8CR80/nVgdy+EPkkbziWiTFVfuCTWw3vPhDH0W790FyFe9xDnp87c8VeDlS2F2ZTudVIxPhqOJwn9n/5UVj8tOwPJ9XKzQS1s8299f2tBiT+mN8KbHGAk/9sMW2Si
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BE78640005
+X-Stat-Signature: zrc7gyxdcda4kh3j56ruyou64e8onohh
+X-HE-Tag: 1785909365-709367
+X-HE-Meta: U2FsdGVkX1+PiI9bx6H5V7Gg2oz19xYFMSQY3hMDynVAA14PBLr5JY3m1Oxve2mypOEZFTMj6cKcd5eNah0tM751xszgUWbCGfkV7Fy9PKfjQyRSMkZ7DBQ0kAvXV14OuBHsGqrpxMM6duaPVP08NCegZcdClyiuBhKj5baV0ab9m+SZPaa/qpbAthglNB7BLXsf833Io+LrTwyiMS1YhrsOGMz4U00hqvgb/OpCyQFhKx4ORvVf7cnbNoJMD/eaaolL2zG/y645ZuwlBirBk2AhM+Y6oHgXo7Yyt0CKq0ek25ZM3OciJN770c6EsllOrRnEyknKXyOzmY5HIRanGIldcSnyK7Q080KYpVjfFA6zFandYwcIaZLKEuIf0Kgpfc7H4eZPrR13e4FX4LiRnA7X66IHcucediiISAbKrCQ2KGS8UvPyCv9APo6FGjZj1oflfjIZVAHEGTsOe6g3dLbJLdyPxsdyoNtEwUAYwPYAUThKt8X7S/Ik83oghv0AsKxaepqEQ2nqExg7z5fjTIWQUFK9krqMkEAiMT17ZvYNCGA1FJ250elrYRWpGGDrSJ1ElVmUusdr+mRQdBWJk8iVLeF/MxsNoWZGOVd2RLYFgFlKiWLafbz79/m8XpGf0Gl65LGsptF2wuc+x+Ikun45I8nv2m2PFgICY3vBheuQ/er6J8A2B1e08C3/LpQwsiBz2gYagVPyB/Q7pIBzx7bT+RGjbHaEUyxmPgCrpw44HSUCvI81P5e9g7ckAfun8+aKFUb7kOUK74CW+gyq16FH+R5mKCTJAddFth0joPoeMUuLa77iLJZ2Ex1o3VCtBehH9rv+Vq2ZtWYeTVRUvhi1P5nHGWbbODvoVtJBxaaElw66FDmk4qloajX22YYSkTj2bc12kg27dXPj2L41cuz71/Gwpg1UVTOZMAzjpkNpwLnM8/1AFOHtTuSlUrcu+93gx1TC2eA59++2rfm
+ mr9Wc4ko
+ 4stP2iFxArM+VCqzhspM/hZoQw/pwXNrTPnec+loS/UdgdEYHpszmI/76ziaxQj0n47dW2id6+zhH3uxP0UcsF8qVYk97XNboWOv9UIC30sdYfzWl11N06YrvsWKynPfZSI2kdNN+qzW9IOUXsk6gnl5G21R/7YfJ+IRJoT96HvcDgJRmV4NhdP+zec3gAnEpAi5p1syOLpxjN3EGzs6yfaGzNaicCyQuMDdmHUOyvn5IQkMgmccHsTMYB8QP+GreqkSrwVvXcr02oQFx9nDztzLDbS1xHwNZcN5SvClrpeWYnIQEyEbkQp0+07d2rvXnyk9GZoUutNYFgYq43MZ45/GT5L42wwuiSMJDF1QQO7Q9ZmTJ+71I3wGW7pKptc6HAWdET8V7jRHn8mLiDgLCr4xHMkgIjXieUKNhQ8Hlf3QxNI/RXEkNGqC/VKktP2NkDEYgKBPQH/GSRItKMABkVK6swmqsT2s0Q5OhWHmz1ObthmazNXqO8nkgOkOw1oq/to1rLMEVArHg8zDMABzvw8ZOyrNUSYRiusnf7D+6BZoFgS0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,42 +109,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+From: Cedric Le Goater <clg@redhat.com>
 
-On (26/08/05 17:09), Barry Song wrote:
-> > > This report shows that the zram mutex has become the top lock
-> > > contributing to UI frame drops, even surpassing mmap_lock, which we
-> > > are also addressing in multiple threads. :-)
-> >
-> > Any chance you can share more details?  Are there perhaps RT tasks
-> > in the mix, priority inversion, starvations and so on?  Can proxy
-> > execution address any of those (if it has relevance to the report
-> > you are looking at)?
-> 
-> Hi Sergey,
-> 
-> talked with our engineers reporting the issue. i believe it is all
-> about priority inversion.
-> proxy execution wont resolve it as we have a sleepable zs-malloc
-> within the mutex.
->  i believe i need v2 to release the mutex before doing the 2nd stage
-> zs_malloc with
-> direct reclaim.
+The global THP sysfs policy (transparent_hugepage=never/madvise/always)
+gates the huge fault dispatch path in __thp_vma_allowable_orders() for
+all non-anonymous VMAs, including PFN-mapped device BARs (VM_PFNMAP).
 
-Well, we cannot just drop the stream mutex and do sleepable zsmalloc
-allocation, because this will invalidate compression buffer.  So we
-then will need to do re-compression.  Something that I was really
-happy to drop [1].
+DAX VMAs already bypass this check via an early return:
 
-Is there any we can do apart from making zram and zsmalloc atomic
-again?  It's hard to believe that this priority inversion hits
-only zram and no other locks in the system.
+	if (vma_is_dax(vma))
+		return in_pf ? orders : 0;
 
-I really really really don't want to return back to atomic
-zram/zsmalloc.
+But "special huge" VMAs -- identified by vma_is_special_huge() -- do not
+get this early return, even though they share the same fundamental
+property: they map physical addresses directly into page tables and
+involve no memory allocation, no compaction, no splitting, and no
+reclaim. The THP policy has no meaningful effect on them.
 
-Is the report you are talking about some test or is it a real
-world scenario?
+This matters for VFIO PCI passthrough of large-BAR devices such as
+NVIDIA H200 NVL GPUs (256 GB BAR each). The VFIO driver registers a
+.huge_fault handler (vfio_pci_mmap_huge_fault) that dispatches to
+vmf_insert_pfn_pmd/pud, and QEMU's vfio_region_mmap() aligns the BAR
+mappings for huge page table entries. Both prerequisites are met, but
+with THP=never or THP=madvise, __thp_vma_allowable_orders() returns 0
+before reaching the "trust huge_fault handlers" code.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/block/zram/zram_drv.c?h=v6.1.180#n1376
+The result: each 256 GB BAR is mapped at 4 KiB granularity -- 67 million
+page faults per GPU instead of a few thousand PMD/PUD faults. On hosts
+with 8 GPUs (2 TB of BAR space), this causes VM boot times to degrade
+severely, with 99.98% of CPU time spent in the VFIO BAR mapping path.
+
+Configurations that trigger this:
+  - transparent_hugepage=never on the kernel command line
+  - The tuned cpu-partitioning profile (inherits network-latency, which
+    sets transparent_hugepages=never via sysfs)
+  - transparent_hugepage=madvise (the RHEL default), since VFIO VMAs
+    lack VM_HUGEPAGE and QEMU does not call madvise(MADV_HUGEPAGE) on
+    BAR mmap regions
+
+Extend the existing DAX early return to also cover vma_is_special_huge()
+VMAs. This is consistent with how vma_is_special_huge() is already
+treated for supported_orders (grouped with DAX). The mm/Kconfig TODO
+comment "Allow to be enabled without THP" also acknowledges this
+coupling is wrong.
+
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4
+Signed-off-by: Cedric Le Goater <clg@redhat.com>
+---
+ mm/huge_memory.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 58cabe6af33d031e48250e21db51506bc46c97b2..6dfef5500a054f09f9ece6df8bf7a0194624350f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -139,8 +139,12 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+ 		return 0;
+ 
+-	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+-	if (vma_is_dax(vma))
++	/*
++	 * khugepaged doesn't collapse DAX or special huge VMAs, but page
++	 * fault is fine. These map physical addresses directly — the THP
++	 * policy is irrelevant for them.
++	 */
++	if (vma_is_dax(vma) || vma_is_special_huge(vma))
+ 		return in_pf ? orders : 0;
+ 
+ 	/*
+-- 
+2.55.0
+
 
