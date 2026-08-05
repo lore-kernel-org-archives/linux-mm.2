@@ -4,126 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DD6CC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA30CC561E6
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 06:08:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E924B6B0088; Wed,  5 Aug 2026 02:05:02 -0400 (EDT)
+	id E25106B007B; Wed,  5 Aug 2026 02:08:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E437E6B0092; Wed,  5 Aug 2026 02:05:02 -0400 (EDT)
+	id DD5236B0092; Wed,  5 Aug 2026 02:08:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D32066B0093; Wed,  5 Aug 2026 02:05:02 -0400 (EDT)
+	id CC78B6B0093; Wed,  5 Aug 2026 02:08:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A9DFD6B0088
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:05:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4044160379
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:05:01 +0000 (UTC)
-X-FDA: 85066177602.24.A2C6D58
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C7C05C0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:04:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BkHnq7kx;
-	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id A703C6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:08:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B08FF1C0B3E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:08:36 +0000 (UTC)
+X-FDA: 85066186632.22.D703E2A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 758D340007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:08:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hZFLiu3U;
+	spf=pass (imf12.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785909899;
+	s=arc-20220608; t=1785910114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VSMqYBzIGEd+bEQZKAp6F83EI/D8TARVrS07DYO5Xqo=;
-	b=u5pQCm+bw3FhcMN6wRgpaT65EMIU2UpQDpA5yX6gQMezxf6S19LeeQ5XqaLz7xVsDWd1Uq
-	OOTlhmsC7okACnNb9enaCCK3QBm8E8WYQIxIs5CRcoUHPHu2rXWKIozG3Refe8t4wpBwXX
-	hsXUML5aUc7SymmzGgIJwfcxqqIDwt0=
+	bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+	b=Ov0Gn02JJV9u7QV/2bPOw06kckBsFvE4jsHMrdMq6/pI0FStBYqhedvu1VAC2awSeWnkaV
+	OhZ5dTOl89pYgwKauHvNixTmnCLSRnGGGv2TeE9nfvSir0dbc1knG517gFVN5DMdrggw8B
+	XXL/6GVBcR6HdWwyG14Y8pL0g/xjGs0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785909899;
-	b=K1Jb3HYNcT4T7FeKxC9kOxT8kl7AvcY14gm8a+WMv+Ci0EOfKX3zaCSiJ+ykovmNxTfj4x
-	8dAYiDVxIgRljJccExXI6XpE8SqlcVfnC3ClW1UrpTvbGBMBXGyZzFJ+w+DYuquGXBy6ES
-	fHfLMnOFUVkKgA1WhzCAXx94+2yjoco=
+	t=1785910114;
+	b=umbkNQM609ZjStqu4NgAvHkPxBiMEjW5GQ4crnsff2nsdtSeJdEzpbXkmVHS7cWfv8l3IN
+	naTeXRD12CtcPE8Hy7sBek+/AMEhCBtfeI3ryveaqITw7VXlObT5w+vukKUZAmasajWk0h
+	G5xiLrk1TM/T2ERpLRHsuNEoOngCgPg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BkHnq7kx;
-	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccdf36f63dso84665ad.0
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 23:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785909899; x=1786514699; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VSMqYBzIGEd+bEQZKAp6F83EI/D8TARVrS07DYO5Xqo=;
-        b=BkHnq7kxBQStSK+vuWUdxvuemyWUV/QiqNijvJcdeKOvlfdsQyj/+T2E8yEGJ2T3qF
-         MW7sdHL0GDVQ1pD0iwW5XvcpSJzwBK+V96VHHnHow/scFJEtKRXwILghdipNRnfwa+Mk
-         vd5QNRYOnf+leg3sIZzjGnj2vspCWFJyPtc3/wHihJ20R6SaCYBHkPfLzf6xFECF3KEa
-         8hi8Pwiy323hmpYBdDk5WlMfAM5SQd+mqUQZBwfui0+utIklQ4Ntp+fECc2JwkV8es0E
-         d2VznC4qK+A95UfcvSyZWv+By5mBL9iOdK/sAnKgndjTzys5BKYVbACD9wDY5ydt/av4
-         OMHA==
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hZFLiu3U;
+	spf=pass (imf12.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785910112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+	b=hZFLiu3UwUoW2CwdY6gEUvQDxXKoHngko7VL2leRakgVyhEHNySZZVGhEE3N85C9iKFZtE
+	SR9Xm6562dgTI6qF/wnLs+3EMkGa5lzbkFlQwNZPNsBXioSXpQIdxeRfedTBj5Lx0E0Qqr
+	h+mFlBMv4c+GA3DKqa1wBOQ5iaFmzb8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-702kZEQQOm2gfcaUtWd0xw-1; Wed, 05 Aug 2026 02:08:31 -0400
+X-MC-Unique: 702kZEQQOm2gfcaUtWd0xw-1
+X-Mimecast-MFC-AGG-ID: 702kZEQQOm2gfcaUtWd0xw_1785910110
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f810c8aebso296884f8f.2
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 23:08:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785909899; x=1786514699;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785910110; x=1786514910;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VSMqYBzIGEd+bEQZKAp6F83EI/D8TARVrS07DYO5Xqo=;
-        b=AlvuwhvhJhsSDsaiKR0hizLTN6nZV35WAP7XRFnju9CJdNIg4u2YAcgQMe5mX4QCsn
-         ms3vcShPRJcZ26OuQwlzTDlUAA0RNpLEDi4+CPY9MHG4nYjLuqY2gqOvH4QabjhupUZc
-         wNvOl3evtgpuMIy5Ase3alB6btIg/dXMTB8fzjpKs9ihEoQnzNccrhYocxo0YM2MkHqn
-         p82J4Wg5UZPYuRD7d6DuKVpORxzDowx6eAmx4UIsOoopHnomvn1Mt2NuNGIoeeI6UtoK
-         DN45BVlfAac85kpTd5ht+bpVrGlbnEkttGCTd7Qtw0MhuLrIArrPcZsKSF0hWgu0/vz6
-         lYhw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr50iTtj0rbTr1sXbbjVju3q4Lr/gGNQSlq/cjQ/hO9G/hSXvmCxBeWv76SR7HEV3bCgoExOEOMOQ==@kvack.org
-X-Gm-Message-State: AOJu0YwjFxvFqeNFaADY0r6O5m7SLGBzz1JxeuDVREZERA6dyOMfct6S
-	eMV6XyS5SMxlWFSwem6YMa6cVwpRBBTcqEBNDt6ohuD+onIH/p364F5rYUsMuAprww==
-X-Gm-Gg: AR+sD11Py4cwq9XioLQE8kKx2+8S03wal9+X3bcZ4t5raJW1PWqBHFf8tX/Q1rqIPsg
-	v5zbp8p8k8Pn5RkUWNdHvE99m1/jDJc90QlA2SWp7IFx7UD6ency+Sw6Mq6zwQ8FZod+9UEzaFK
-	ms955xSJkzA66536NLEnbBwL3HEuUYwZQ93cfjxMWXVn3UQUUWXOqbD6e7sMl5pPxUjSEtkikzz
-	raTJL2EVT+8z3iEkxNTXeyQ5/R4yCPAIn9wIkFo1RpaE2ul2XE785XfLRYRMXZvxd0SsOTLnn/2
-	TYD9OxP2d4MLGViOpm7lgrk6YbLLHnL92bP9Pt/TLsV60YiERFN/dDOFAqbCSb+jNOg51HTThNe
-	bp79cLSHMWMlwObhZ+3ZyVZkDyGqSjv2CYr0+qb/fe1xOFC3CWi4hZTEaiTDD3wzFdSXwwaBCGp
-	X4a/CemLFxOrVspp0onJpzPuVDxBvGmnoMhtm9bnFWZCUZcAqIUnZCtBUtL/Ad/DTPwKk6ZyDt1
-	nyvRcM9mmduBR4XgX7MhLlaEA==
-X-Received: by 2002:a17:902:da89:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d0cae8f44amr8339885ad.8.1785909897932;
-        Tue, 04 Aug 2026 23:04:57 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe707cab37sm740464a12.7.2026.08.04.23.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 23:04:57 -0700 (PDT)
-Date: Tue, 4 Aug 2026 23:04:53 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: alex@shazbot.org, rppt@kernel.org, pasha.tatashin@soleen.com, 
-	pratyush@kernel.org
-Cc: ajayachandra@nvidia.com, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
-	corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, praan@google.com, rananta@google.com, rientjes@google.com, 
-	rodrigo.vivi@intel.com, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-Message-ID: <20260805060336.GB806762.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260723215749.GC260824.vipinsh@google.com>
+        bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+        b=qA6cdODzYvLRpmPM8EI0MAmDFpmh9kFAaFoQfEQ0yMBf9zn4mWSPQf/YCztsOaS0S5
+         NEXPULI+27L+w7FiIojEC78YXCUxJl6uLUV9F79YbXMrnnd1T4NI3mHEH9VN9daKE315
+         Jd3gu6cKOvs+FPjUjnd1FpyJgqLZvpVV6ZlmE1ETlP2lE/Y1kDdC9dz7pmji4oNZvwny
+         TsH0ziOH0Bc57bZGqdSxc1XMq+Crktwz2isI6qwc08vg8uq0GLyb+mEK1MgbY2PeHlch
+         FahUsv+0jvaIvVTWi+mgMA0CHQpa8D+gkc6xFkGnWRZiAJMjJg7iDc76Tr8IfvmfNcz2
+         JCSQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrDEVu/jKIpdn3zFXxhf6NUlRvbEEARhz6m0X0gqntq1URZf7UFIV4gBzwz/cCFe3u4M+RTCOT0ag==@kvack.org
+X-Gm-Message-State: AOJu0YwlYpUpHAdaxwhNbwOjOCtthXJGzqtUjzk8vJQQsDkJHLS1USP9
+	o+1nWPnrroqa8Ibsq1h/dhEN8aaMqRJCzOFd6wuheH/8ch0qUPATrKpYAtwMNG0F1iLSQgNOjjX
+	r152SVLqlXbLlRQgzI2OiE0irZUsR1baP9kDmjgfGF2G+j4oVHHZBAE3Q1TfNbok6TOzoNP3TJy
+	bxaQe7pyo9ZXbjWgAvavuKKZhBbfc=
+X-Gm-Gg: AR+sD1015a0CenA3zJ/jTmA/1spQonItIMtI04aAuQ7OQ6O4rd5ffywm1rLnyThCtwg
+	hHpx8LwsKyydGu4+6G65BwQnzFjGZGh84iaXpiJ1VmJF5uvEwmRPDPSIUl81KzzcRi1D6XvQI8k
+	ngA6bC8ryv2yJ3pReVK4tY2SUXawr57XbcTWrHTkUbATsHD7VWmJ2nKEbPjxmfb4UyGJgewNauS
+	vP5p7DTB2HZgktrxSxrCp6XQSngOYLavsdFMnyptCPfyZbthb/NIRmF8SY=
+X-Received: by 2002:adf:e012:0:20b0:47f:753c:5393 with SMTP id ffacd0b85a97d-47fec4e888cmr5402595f8f.6.1785910109885;
+        Tue, 04 Aug 2026 23:08:29 -0700 (PDT)
+X-Received: by 2002:adf:e012:0:20b0:47f:753c:5393 with SMTP id
+ ffacd0b85a97d-47fec4e888cmr5402532f8f.6.1785910109519; Tue, 04 Aug 2026
+ 23:08:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723215749.GC260824.vipinsh@google.com>
-X-Rspamd-Queue-Id: C7C05C0007
-X-Rspamd-Server: rspam10
+References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-3-pbonzini@redhat.com>
+ <20260804161549.4cd9a66f@fedora-21.home> <20260804161850.58c55c6e@fedora-21.home>
+ <CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com> <20260804164206.655874ce@fedora-21.home>
+In-Reply-To: <20260804164206.655874ce@fedora-21.home>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 5 Aug 2026 08:08:17 +0200
+X-Gm-Features: AUfX_mzo9t9ubVXz5xpYzVx4R9t4U8bdls__QKfQW65v6eCkMtC4FUkJ5hgXDI8
+Message-ID: <CABgObfY67mdG9QZ5__Q9GDrEq9Wutc42_tHo8YGSMOPnruZmsg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Christian Koenig <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>, 
+	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, 
+	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, 
+	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EdIVD9y-Zo43QprPzLWU1ZzfoiGgX01xXB_rLXCXepg_1785910110
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 758D340007
+X-Stat-Signature: zm6ucbn5z1brxrrcm3hfr6k6uga7a7nq
 X-Rspam-User: 
-X-Stat-Signature: fx443dtdo6188r5shxrrzquzeknrqfrg
-X-HE-Tag: 1785909899-748307
-X-HE-Meta: U2FsdGVkX1+EDqqX+yJkovL9O8djhpTP0J3ZSLwYyyn3visr+lOOVEEJnC1tYnzmvxXbu/PedSGeD9XL6u8jPLx+cTTHPURz0XTCLFhgEn5+7ikzZaxE9AHjwThitc66Lz5qrnC5ibWU6IKPfIhWUaop2xG3q6qv8Gs+zq+KQz9QNPVKt8SAtcOHNlEuDRVZygHXk0JeA0z2hUUf3oVOXKzPYs6Ci/a6fwTDsle7WEpP3iRFpNKFAcaeA60kjizLrOTHu6RhNr0+0Bn7S4Vu7/WowoV0GZKqOrQhGneqo0s65sQ8k1t2IgoCTAa8eg0REzVoFXVDeL5adh2KjXfFBpnUR7iJeoxtTZ8nTVMX1OEqhTIlhAYLSiiVlXON/hdy0yPtThVee0bhjygkf0XnhAxkFx7UC8hC23iz45JFfOEFAaXK3NuWn/5Z08Nx09t3GQGBpVl3xf4d+1UHzwZMWoc2h+WTX57huuFyrW6fkDERbdiAxru5YbNXpbYs2O8EXISOBEo2kgmeWcqVLOfoINyOsLUtPlNgObmEmVCtKwcFb0prL+e8vt3vm4E1ymT3XGP1M5pY6DIIZ+JqaKqyoWI3A/asUAo75+jg8sFcQu1OW9eDKRL0Q64PvEFXf1ZigQehvwRP+wm2zyVsOf9MG4BdDFqR4i4MKyUsYIVpUp/2jlHLfxdrG3EaI3owNNgpo2BbkGpCUTza9c8l8On+qZAXggf8e8QHdubjUP4GT/yM/KJ/bOfbmW8nRL/u+46ogFz4qQ53i8nhoGI6/DiVII0XfsKqxD1s56azVRegYLvJSSncFqQfelTb2ZLkVhUZ1pasIYalUuchS5kPN6awhL7sKTrdrI30WUkomlaXkL9GuluYqjXNNOyGUVN8hTNOE7YZyDriDlbVK2Yhl9ywC2fEdt077rayy4HFSf/Cb9aRw7/Gzk+MxFDzgdEXZxxMVY61JnACLwVRBm07Rx9
- klBrPykP
- 9LpykQo5GQQbAVuUn7HzCt9VvCpNUkKNGRDM+lTEA3v5V87Cs+Cmogl1FvV0T7RD07Db9q1FuE3d4QZRQ+5tDtrwiFMZeAM6qTeUDIYP+4b069qHOWRJMD+RFl7a+C9rlnZwwQtqdwenI+fRFy9exxEZSoPjWhx67zFX89ZJuCx7LfHKGdLZfN5i4ciFfESMCAf/R8O4bMjSkc4YzjQcORXp18vQ0WYiMhGOcPbvcGVdIooSX+v30qI3vZ0IC+ZHfTXd5ZcuszUSgQ4XwybHYggQcmNZcVGaox4ME48iV1uzVt/VUYAN5sN9jUka9AVWznHDxZun+KWuQyZ4B3b+zToaxhqFFDGz/nH4gb0r9COmU4IBOhK5GVbBSPgcV0qEFIDVYnw7/V8eWGtQ=
+X-HE-Tag: 1785910113-154310
+X-HE-Meta: U2FsdGVkX18M4TD9TYBBE12+4i6KK67nkSSjLDAe4atyeXFeK0DMcI3xM7n04ddH1xfa0i5c/uQW0Sl48Kmr7SBjIQOzg0HjIpVKXv/ccQRt7ehtdeOGepFpKxydGCLMfvaoGD9NQ4k4C9xB/ziVeKNZVE4RN0kdySjyx+vK5C+jW2BLHsnK+7ZNOkL+xaZlZwwWqEokV3+J/QsO1RdE4g0vpSDuO9B9Y50tRg7bEwdJJvaGWK+IeYImxzjNyGGcTAwYqkCEuouavVhTi3fxxgLcUzHTb9PuJ/vOc8mhKumuoLueWtalLAWVsY9nDZXiVS6HMIuVVT98s8PhpQ9kai0LsjAz+7j4ZG+c8tnzcuTiuHUQpACcJEjluP63crY/cjhyWEBkl5w/IaI8180kI1BctmcvfmN7l34w99lj9EX4eA9PT3Ssi/H5ykOrH7Stdzrz8a/ip9JyfljQGcpqGzOukk5KGo0FFf9pB7kSRWjaJD48QLEgUbhw6mrGeTkbfxCK1mzX2qPgcEGQRxffxU6QCMz2tiRoiwD3Ow2KEvbAnZ4sqB++TpRcssaNwnx32DyHVmEZ7/XNQoY3RfLZo3IAPrGHO2qIJuXZcS0yWQOU+UdG4KiStgJ3UpbeBcJXt9QWhCeoeg9sHg3sYQii4nLBYhCZExMVg3Ngjbh1XETf1c9iYO+hcxR2vIDhqbSZvX7jWWU7DeT0XLWTj2DW2bD/s2rfFO+2uPSECiU+A5brHHw1Z03I65GNISeg4HI7RzfdcGNDE2sHK1+/MRUrEcMfAmO9W4RNozpbjKM/Abxl5b5UeYEuLlNfyYf4uIsELx9LIFlnoyEUoUdFU4Z7ipgc6+ZHge/cQLUhXC+UelkUOy87D2Ud0NbJAoo9r/OE3N5WQQ6wNIiGy2krhr9zpaSaTOM4hyq3SJIIXDVJOgTak2psGwEhY5yY5BLgjegF0+WKvOWzDSZNVLuQSFQ
+ ANvy5OKE
+ d0244oFFEM0jSX3aafZRH7Rqh31vxiKQeCwytF2YNCAnkeWr6T7is6+qBiJP7c/ByejSFThhmhWfwHyee2q2ZrXNLRD5up+IXHkvClxf7MOCuy6QDZREXbKGYdclJyJ1LnlWMJZTuWwMobozT0mWTE82kN2gPNSSAGrCdBSNhxQms63PDeNa2zBt1YvwiwyPB2N8DyfU5qss9UP3YeZVacp4kUVoQFfjNm/6gpB8cVh59UmH5rz/1Izk5nVwFUk5YL0NYlfa1K3xzLrgJybgXY0yiDFCzXN4Mc6/dgX88xK4mUsJFh/65zwAkrY4C8ih9akHuCE7ufQ4q2t/P5FMsQd2ji4eJSzZc5V81HTe/ifJ0DyhuAgQEdiPSYXAkV78qSh1E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,42 +132,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 03:58:45PM -0700, Vipin Sharma wrote:
-> On Tue, Jul 14, 2026 at 08:14:45AM -0700, Vipin Sharma wrote:
-> > Hello,
-> > 
-> > This series can be found on Github:
-> > 
-> >   https://github.com/shvipin/linux vfio/liveupdate/v5
-> > 
-> > This series provides the base support to enable Live Update feature for
-> > VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
-> > Handover (KHO).
-> > 
-> 
-> Hi Alex, Pasha, Mike, and Pratyush,
-> 
-> I'd like to discuss which maintainer tree should take the VFIO Live
-> Update series.
-> 
-> For context on related efforts:
-> 
->   - PCI Live Update is targeting the Live Update tree (maintained by
->     Pasha, Mike, and Pratyush, with David Matlack maintaining the
->     PCI-specific code).
->     https://lore.kernel.org/linux-pci/20260710212616.1351130-2-dmatlack@google.com/
-> 
->   - IOMMU Live Update is planned to go through the IOMMU tree.
->     https://lore.kernel.org/linux-iommu/20260614233728.2212104-3-skhawaja@google.com/
-> 
-> Given these different approaches, what is your preference for routing
-> the VFIO Live Update code?
-> 
+On Tue, Aug 4, 2026 at 4:42=E2=80=AFPM Boris Brezillon
+<boris.brezillon@collabora.com> wrote:
+> Okay, I thought I'd ask to be sure, because of all the implementations
+> of pfn_mkwrite listed here [1], only drm_gem_shmem_helper.c and
+> kernel/events/core.c do that.
 
-Hi Alex,
+Also the vmwgfx one in patch 3; and for the !DAX case ext4 and XFS too
+(e.g. xfs_filemap_pfn_mkwrite gets to iomap_page_mkwrite, not to
+filemap_fault).
 
-Gentle ping. 
+> The rest have their "generic" fault
+> handler (by generic I mean a fault handler helper that covers all the
+> order/WRITE_FLAG combinations) called from pfn_mkwrite(), and return a
+> non-zero vm_fault_t.
 
-Thanks
-Vipin
+I see; I think you can do that, it is handled at
+https://elixir.bootlin.com/linux/v7.2-rc5/source/mm/memory.c#L2681 and
+indeed it returns VM_FAULT_NOPAGE. But it's more or work for no real
+reason. Your .pfn_mkwrite is a single line of code and it is clearer
+IMO if you can see that try_insert_pfn() is calling the same helper as
+.pfn_mkwrite().
+
+Paolo
+
 
