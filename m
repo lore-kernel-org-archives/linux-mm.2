@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209E1C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04894C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BEEA6B0088; Wed,  5 Aug 2026 06:05:26 -0400 (EDT)
+	id F17E76B008A; Wed,  5 Aug 2026 06:05:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076DC6B008A; Wed,  5 Aug 2026 06:05:26 -0400 (EDT)
+	id EEF9B6B0093; Wed,  5 Aug 2026 06:05:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7CAA6B0093; Wed,  5 Aug 2026 06:05:25 -0400 (EDT)
+	id E05F76B0099; Wed,  5 Aug 2026 06:05:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B6C946B0088
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:05:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F06A4042E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:25 +0000 (UTC)
-X-FDA: 85066783410.10.62C2ACA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A60F56B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:05:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3722B1C0B47
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:49 +0000 (UTC)
+X-FDA: 85066784418.30.C2B19F8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 87DDA1A0002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jq5Q3685;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7A809180011
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:05:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZT7pZHOU;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785924347;
+	b=dkthNk5oc8ZujqCUMn0SIpX1HY9biVIDebXKbDprjYqammgcftwldzzEvuPXlrbYnkEeGb
+	TQLFxfKQJodiNHoodMTRfAN+fVTwZYwDq41ZwC3Sf0TTmSWBIpCOBtiA5AmIjWSyA3HSdG
+	mgfBQZupqtuSWqZn3VkV4Z3MU0f7Zbw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZT7pZHOU;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785924323;
+	s=arc-20220608; t=1785924347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N+XoGNyWpxU/eY/FyPFqlR/DqODGXul3yoJNnUeWuhE=;
-	b=SUmhFbL0JAtVSap/NS05Iid0RLcz06LXjCRaz7WmQcHqBSZ7CiUqaEDZdpeLVEQt5SXcBs
-	vRmqbAaifVHXumSw9Ev9qAL5ELGj8/C5cd/dOSW93/asmwvygBls9R9Gf8ixLXi6ovwOMo
-	Yyz5B6wb+T7sLJyoHM67yQvzr5wl8Zg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785924323;
-	b=s5i573qvBfy7aAuw7qVhJ6vF6eiJFW7itZYL5P7//k/SF1yz7p/hcMHFw0HBNpHicp1jVc
-	OV3mD4MvTrXgFVubKkuKxQksH10wYmRtnoX8eTbEqiB0ivq7TP8OIktyB0Kkkbd+zBW6eZ
-	/2im48POhvjkXq0ovqS/hczTDbe8C2o=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jq5Q3685;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jkHngmbduQCjxofsIO0vDrPy3snBXaWTEyZFFZpOrbU=;
+	b=sUcQqGw7xS3JqS6bMLTYaBcjmUTn7tt7EtthnZ1Cteb2HPj2Q2nlcILRgiafVsVmIyyAMx
+	95h8UDN4OT5UqPiAZ08f8D7If/UV1hqJAQmfOuwcqGOoSu8Rmqjfat78nOG/TLLNVN9Sn8
+	zYYYEl5lO3Gnx8OgOSIi8bzj69rDYt8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26A0B600AE;
-	Wed,  5 Aug 2026 10:05:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813871F000E9;
-	Wed,  5 Aug 2026 10:05:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1B0E8600AE;
+	Wed,  5 Aug 2026 10:05:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7A81F000E9;
+	Wed,  5 Aug 2026 10:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785924322;
-	bh=N+XoGNyWpxU/eY/FyPFqlR/DqODGXul3yoJNnUeWuhE=;
+	s=k20260515; t=1785924346;
+	bh=jkHngmbduQCjxofsIO0vDrPy3snBXaWTEyZFFZpOrbU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jq5Q3685rsYbHd98SqLdispuOOAbuxQVAV5qRbxrzcHBzXgG7nqb8FzpzT0WIuSKo
-	 M6pQRdJXQKtoMiT3xXZ0CyU9udjbFDNEumCVYu9Z2ufAtQeqWlqpYwARYZhPgMGkO1
-	 cpkmDQM6zY3iu8C2TesSH62wmXFe9ZGVIr/LLZIxDWjY/B44DslMxJTi3LSWZZwLGd
-	 z6QFZg/Fy6XgosId7YuQX1J2KscHahhqpjEkQsOCwxa+CNVZK/V+Ebx7ylMVK/f9QR
-	 /way7gBdRtRpIrHpZNM2gd4s31OoGQUPZTfFOqx6uP8UUAx6Eos+1thjlGs4hRJFpZ
-	 +YOyMYCS/u0Jw==
-Message-ID: <bcc2d2ef-7ee5-4d74-bdfa-6dbaa679971a@kernel.org>
-Date: Wed, 5 Aug 2026 12:05:17 +0200
+	b=ZT7pZHOUH3y9ed8FGJcrN4FaX+l78lvN+80hWqotj6EcjAhnevUXKS3yd4ZeO60zA
+	 hlPKMZ6nPqxjHI7UUw93UV4BRHuQRQXFlyjPay7pRP+Xthq8cKaxmmINWaBMnFfLVS
+	 G/8P1S5EJQbfUSt49djHtEpJowgKgUAOlNVbAsJqmJuUHSvFBJUxXGBeRIr3ng44D3
+	 QsUQr0qKS5dAm6ux61s2H9zv92EspaROERtmENdSQ8feU/ZY7hW1Edbt2I6tLJ/S6l
+	 HxYcZS6JAvZbYkeNjYcVZdvSlPJujI0wsyNZVQuokzde5SAhM+pH0BFeJuUy8T9wO0
+	 iA1ShjgbdhrdA==
+Message-ID: <0b6bddb6-5fa4-46e2-b16a-7195119b92cd@kernel.org>
+Date: Wed, 5 Aug 2026 12:05:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/Kconfig: make FLATMEM depend on !NUMA
+Subject: Re: [PATCH v2 2/2] mm/page_ext: remove pgdat_page_ext_init()
 To: Sang-Heon Jeon <ekffu200098@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, "Liam R. Howlett"
+ <liam@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>
 References: <20260804151145.3419768-1-ekffu200098@gmail.com>
- <20260804151145.3419768-2-ekffu200098@gmail.com>
+ <20260804151145.3419768-3-ekffu200098@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260804151145.3419768-2-ekffu200098@gmail.com>
+In-Reply-To: <20260804151145.3419768-3-ekffu200098@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 87DDA1A0002
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7A809180011
+X-Stat-Signature: hp3yaewqe6u69rzu8bapqkmi33g7deih
 X-Rspam-User: 
-X-Stat-Signature: 5yopmcbn8hyipapewwx7o75fbkdrdt1n
-X-HE-Tag: 1785924323-169625
-X-HE-Meta: U2FsdGVkX1+ElSzRQ0ASRCdZTEt0Y0GVqmpmyN2TG5X/WVwP5rfPkuIxdUGmnOxug4ftkPpkok2PtKqU9sm3Am4cJKmq8mR/CMqNMB69Zkon2KVlg5dgPMandSZg0RoJw3fCC/Vxu+6oP+l88vuQo1y96eykoPBQCPMNTSmdW932i/k5P3SGWT+cXFizE/9WaJVJ0tmLE1j/ipF0V9/wRpSfFRdqGvUmHMbPyVjavar48kM3SB4phjUlkSYFgbeyBNvTHDHUtnjFBR4duWRz5B8SNPhJB7EZ6jdz7SNCpYTFLGvTRRbVFX7AgLeFh1wigtuefdhi/KjPp42keyrBY9e2x1trHDo3IWIdPWAdgEwyeutuux3qoQi4pT+CGMpvtn8dbdZECT/hMA2BTBpm78w66wGWhFFmBwO5zIpxXXaMDp7z2Hmyt1EZiWGDPmC6SrxToielG821R6goAb03syDGY5ysOEklllL9GbtY/wyX2M0D6C07sjBPBL91O/bOxwuhjG/hz+Ca89Pl/yb9S3rOGprZYmx8RUIw7nwARFsuOZ4BZUdSJOe2Ssi3WJy8ZNGHFzVwSLJgw7jE4SDNh38huApCg4wMdl4Tl+Nw2kOvITqbHnPzob238XJ2IsJjOG7hnzv0D3+liSQshKallUUevOpOWH34jirRWwz7DWahl3THs+F4r5y27Ev3ykfZDL5SY5JRjQkEb5M0VyqZhoQIEyvTlMejCYBiC5a6F0NocbuDJdLSboP/tdRHuj6FLKayhYLSyCtMOk+NRm/m6A/GuwBlUhmVYyf9Ck72oCAePqKP0HJ4s5rwFWZuZCa/QcpIVWmX+4zWk9l9vJu1fXHEtWFNQ/IoNU0rDrdluK94HzoFDyPd0roSpgca4d+/It0PSYS4/+1TaEwOQ+EMFxngR5R7w85wxLMPG4Qx/hRYmlby3U2skQyHm0Os9jPbAz/EEsc7786zCBe7eY/
- wKMqWcx0
- +7lCjS53NSFKJmJuTzG96UcyWUy7+Sxr8bHpTcmZ7WKSOnEZDtSTmEz1ek9Kn9RpnKc5/DX7P4bDj6PKZ9jyUsVZ+utYOV1coQ7OnzC4dtZcfj0a7Rp/4FMr8Zq7eDeo3oXvKJulfE35bOqPBnowEyJY6A7YolvAbGN222hP8ETiM2JTmWqACWXQ2M9vsbrDFobCbyx/h2s/zVnyD6ujJc5vdpXVZO+hWu71ME1MLYsxrQfkkN+abHSZG19T5b7/CjyZgwo5pi3Fd0EYQKGuV5jTI4I0j2QvBIrvcwhyDlgvkniF0fiieVjVrxEcDBCYkZ0t2wk94h+q9ByS58yyWF1S+2papW4/4uezskFwtFcbgZP+KdjCE6Bmoug==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785924347-395770
+X-HE-Meta: U2FsdGVkX183OKTpNMSmRK3xi9Lr+3WofmMY+enADOf+kquC69hwGPN9ATGuQ2hRIOI32QZP1zDPCLJMxd6BPOFinZz7r/lQTwqlivA+tp3S0ikBxIpaGtNc7noV5ra/ea/3zIXMqGl0+i7fDGWKXi2GCZaNyio75jEiKAkfqIO2CQBvxJ1PFlXO4cn3w36zUlAk7LRZ65Of7o6/B6nwZkrzaOCIxNjfoXg2o9cqDvciq7N5L3d4Ngo8zp/HjyRrR9+Ta8N23lhm5xhI+TuCoNQf2xRBprkRcXr6leN6Gnz4tCa3tB25yHZEGhtO7YswR67RGb9MTFDIMMRUoOEEtoJvsvG27A2+/TUwqPf/oZc3zeSg7X1hCESSUVezdXLH6htNcGorvo2c55K3Lq+df3lP5X+4f2Z5gj+3xXxiObzY9rTQSc7AFlcA55cVzFy1bfHa28Tiypxe4kIfnKYjeuXru1pLK5Swj30z60N/LLBkIdB/e7zxAM3OkrXcfR5vcFhJbmEvLJrqvGQSpO6jZ6H1GD8KtXf4r5If3u4xg1YHVtA72+jI+Etc1v5RW/MWld+54ptY6Td4CW9nRFxAtd5oJ5P0Pv4SBee2beFBjRXzR3j3ZxLGV/hkYHqdXAjhJhjCMks2frfCzlZu+iwQLfMQUwOnCn0Dg16OQAjosundNJaKglOAXC92AE5qV+NAGAYbB9rEqvi6lSIQnwJfRZbGAlz7PVqt+7b+BDr9GVrm36KH8/lCx8FjwpB+vgi5LXMzaQKrOn0taeX5Br1gWYto4FbvdlP9CYNPsbZXFSyp5d9w1TvFy5TNbxJrnXhyxnpcGiXP5L6+Dieqfdtm3f8oLdlOal8UyLjbd/r2BLSCuO3F4sXMwOaz8xx91HB8eWdmOZb4VuMjfuTTAxyAiNR3ABBlLo6QsTN/SKBppVA4LJXAJVKkS5Z+TeNfmOvjg2YLXIZSV5x6vxftV1L
+ dhTFKW0V
+ Vg9F3qaFXXVlgoWdpYy6cjEUfKEg5ok2m19xD3p+coFEa15JZSOyuQF1S8spoMd5nCwE8nE2oV3OwcLmrvheA4bhzu0nF0giVge0EqZabf2crexIlZEeu1A5Nif1E9yQBwkJxpcdnXGYPlWVDRNw/xtnGT0Crm9XEjpESz5BX0jadpHUkGlM6/GLN8KDuW11YT95VwECWzl+vx3vSS87essBpJoh4d3jqR8p2dNmRWpoxNSCtkziPmu5oLuoPEM3qvjiY4uaTZ+pKDxgvAlLJh/easT/7TbWthd0Jpl+7e6f00UCGPvNDhG0x1rUxd0ZnMhjdZu97SVukBijMfJNpYfA3mAdW8dKG+2oX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,18 +144,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/4/26 17:11, Sang-Heon Jeon wrote:
-> FLATMEM + NUMA is not supported by any architecture and fails to build.
-> The constraint is only implicit in the arch Kconfig files.
+> pgdat_page_ext_init() sets pgdat->node_page_ext to NULL only on
+> FLATMEM. FLATMEM depends on !NUMA, so the pgdat is always the
+> zero-initialized contig_page_data and the store has no effect.
 > 
-> So make it explicit in mm/Kconfig.
+> So remove the call site, the unused function and its declaration.
 > 
 > No functional change.
 > 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 > ---
-
-Is this survives the compile bots, perfect.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
