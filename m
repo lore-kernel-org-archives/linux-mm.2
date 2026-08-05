@@ -4,100 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81175C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA784C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 423E46B00A5; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
+	id 773266B00A4; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FC2A6B00B1; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
+	id 6D52D6B00A6; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C6266B00B4; Wed,  5 Aug 2026 04:16:53 -0400 (EDT)
+	id 5770A6B00A9; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 029116B00A5
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:16:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C9601C0BDA
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:16:52 +0000 (UTC)
-X-FDA: 85066509864.12.CC45F8B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DBD51180004
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:16:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1dfoJYr;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785917810;
-	b=iNwbBpOurXjfqCmDeC9YYXE5PxF7Zfu8is5/VpTAx/KHD8BS9ei3sju/lT8vMMGZPTVuL6
-	mZH+ZRiMzOEUDNyK0/yVI1ffASe2IFFaMqjE1IUsy8BYCtdYlZDVHaBeFZGoIoRTEdUEm/
-	tZA2v9/zONiiWuPXKP2v//Mtp5VbwsM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1dfoJYr;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2364C6B00A4
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7B41403D3
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:30:24 +0000 (UTC)
+X-FDA: 85066543968.15.DF00603
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D1C87C000A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:30:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=p3RP2Zv5;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785917810;
+	s=arc-20220608; t=1785918622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GmYyrdZe1B0PBpV7nWZEHOZ78x8Fhml0/nyFckT8Q5U=;
-	b=QoAbCKTkxjVR4KIPZUIRugpv1POBS64rEvy7G1SHim4BOQbkJLOc6skTkU5HluxoEUYdfA
-	jh7kC+QVFkBxi+5lpilBKoxwZiSgkLmCn0qryEO7wVkAAeA6bsCH9jolsryKDEC/VBP7dO
-	hzAqpXsBaQhz4Rjs0rx8Bs1wvl8Pwgc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 124D7600AE;
-	Wed,  5 Aug 2026 08:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6411F000E9;
-	Wed,  5 Aug 2026 08:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785917809;
-	bh=GmYyrdZe1B0PBpV7nWZEHOZ78x8Fhml0/nyFckT8Q5U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T1dfoJYrP3ggTDguqaQhaDmZLHe3mJjru4jCT/1ANuiGL1fot3+s/dHfHfhjYoyEX
-	 Y/aoGoTTs2LxtCJHGd5OZv4Owb8anEX7nZ58Cgw3J9H/zzQiBn6w/oiPjSeGxP3u+E
-	 mYDuXnJmHjwfW6tfBp1xS0WGTKuLh8ZX8Yh8rSfPMcpsINud33uvR4MdiF0syKhk7T
-	 utgpQXaaxlwgXTCPSMKCC9+pkhuX90w61xunWQsdzZiRliIxSsrtcJDlhjr4Ykn/nQ
-	 XHnITQrz2tNu+rbNWvGoQt9hshksDufbzvK3Orz/AFL06/C0FFAzaDTVmR0YTcEHVn
-	 UuniWlaO51HGw==
-Date: Wed, 5 Aug 2026 09:16:30 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Yang Shi <yang@os.amperecomputing.com>, Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, 
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <anLr5Xd-sD7frihN@lucifer>
-References: <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
- <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
- <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <CAHk-=whjfRaeYsAVS9VfYO5uaSB43sT7zPOmNWR6gC8h=t60=g@mail.gmail.com>
- <anIhSGs70TTzymHM@lucifer>
- <8d6119c7-2216-fcdd-d0b9-cc60ccc8caf3@gentwo.org>
+	bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
+	b=G4hOi/9p74qzNgbrQe/Tgw0csDKD5jYBvKfrOJQjQB9BAy4wmmTRaqytFy3gkKxEiSd0f4
+	6g4HM8bJ+sdz+V9ZpwnsdhtWuVMEVQzUaX9jFHYiUEnMVd4PQNqKcLo2u3pkMynbdxUEYM
+	wev0GIfocLqhby8F/OT9b7eVCpZv36s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785918622;
+	b=U3K4T3uOJE+jODBeVHwsQzQ1A1c1vjGivvdRg9E2/7iUTlMzJ5/Ta4DYZAA5ZRHymqe0rY
+	nGLf9srEFD1B8nqL4sr/AXeekB6bFc5mFABSGq+9F7QMbhOQpR6vg0zHIkKbfPkZe0Qv6t
+	NR4iZ6oN2qGqKEzBo/7HLR3CWQcQcfk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=p3RP2Zv5;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-529a1ee0e62so4289831cf.2
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 01:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1785918622; x=1786523422; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
+        b=p3RP2Zv5beoAoCrORbKJPDRMlSW4EHxJTOJHJJZwwQSB7HmhVsR5kVm2ta3eMI2zgM
+         Jv2V6aRvxS7p1OAvbBCfcLCGo7p/xrby1QwO/VuQ7Skcv8Z3s2L3lfQYplcEDT4bxFOT
+         4uwKFSWKGGm8YKa/bV5h11Gc8i4MAyL5pbsLPHNQ4hPSy1fRGRBtgcLRrn/+W/4RzkNq
+         YWy20hawA2AlvnF1Roq1o2jX0ezHMzAMjNiLKFBeamjWhitDxbZDcBZghrAKIIhOBHAX
+         YPxN9z1A/vgR19y7aPU+0DKB2e9yCKNJdwZt03cPlOCkAxT2XhUes8I3krI5GOeGdPqj
+         jdtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785918622; x=1786523422;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
+        b=fnJhayKwbAXwpAoacOvWf4rSHHyoo3bTF49hoH3hMvyLu/AY+Ax5Atp8DcEBBQwqvN
+         +4Tg39tYFXegltWW3H7p80q+5khNDi0BJLeB/PiniEITx7uoyc+UNyV9H8CfmxyD/fKp
+         iL1c/y2z3bIM8pEVUDmEe78pkY+4zoebzt3awbpctLmqFyHp+kZsfxYvlylYgd6/PBTc
+         Bnqzs5saZKbfXi1nDrhbcZHhFxCZC7MWIexJjacRKMhT4BzV62dswfWsQtjX2W6nE2tk
+         jO98uAkcpSFqm2HC+a/t10OGhrqMvemVYC7PSo1uxOD2zHcaPqvtK1wK1a4UPhf4BXIH
+         h8vw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3bLAO3C2b8rpG7bTn1b6dPdZq98WLeHKihigMvcJ5HxMrOb6Om7RvTRPmBDm1OINDSKQsEyOAjA==@kvack.org
+X-Gm-Message-State: AOJu0YziV9537Y0pD3jC9KRjIM3DnK+5dFvtDMXIJrDSvjVXbBoE55at
+	P3GoysWK8KYTBlesr4zRUoaT5P1HsO8fdkqTTgFJInSya1v/FnhPmQhDdTZ8lgdh16c=
+X-Gm-Gg: AR+sD10GSlalyToFiSjMcfpmnhzlElZTjpiZPmBBnxRgkbwPo5g+d2rgIiP0xdXhfpA
+	YZ4yZYrrCyRUSdIKz5k6f5tx9S9l3emz4LfedZ0QqAK386IQtPoQctZXYKSG0QwDConVcpg62FM
+	wXtDPENkSHk90Z5XKNPld1TRaJopXuTtbpuqnPRRm4olwxYUyDDcMtM+RiOZ5fawZ7PFe4QNC0S
+	6etq3fmutPdOn21OBIC+rX7dVnk1VJxkqsFLz/ejHol9igQETkvKz6MmzoMln2yLu33IXuh46Sf
+	RR9QDrb+8H2sn8a1EixOSrGYW6BSrmG8VUJJEct6ZGs2n5rxCnqW6XPvPEFTQaHw6szFqVzrERS
+	7vdKqCmd9x8maUUqFobvYkj6NyDtYcKeiEp0NkxyLxi4iKE+JxkbEbZx5xFmB4gSpNkTbnOn6eg
+	iQ2q1IJnTuJd14MqLtalBq9n+yTXfA5gdq84sRTrne2JsLU5J2CZQ2SKx2nhoeqVKARKtqJ5IWk
+	8DMjTQAAOjZZKVcHGewgHnhORr9jJxD6JgFqJcI/8YH
+X-Received: by 2002:a05:622a:143:b0:51c:1c2c:a8bc with SMTP id d75a77b69052e-52ce61fa747mr43158721cf.37.1785918621889;
+        Wed, 05 Aug 2026 01:30:21 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52ce8972e90sm14423461cf.27.2026.08.05.01.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 01:30:20 -0700 (PDT)
+Date: Wed, 5 Aug 2026 04:30:18 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
+ anonymous page index
+Message-ID: <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
+ <amrvgjPNfKqWPUU0@gourry-fedora-PF4VCD3F>
+ <fec1be38-406d-4656-95eb-048729afec40@kernel.org>
+ <anBqV9z6hVLIqoIn@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8d6119c7-2216-fcdd-d0b9-cc60ccc8caf3@gentwo.org>
-X-Rspamd-Queue-Id: DBD51180004
-X-Stat-Signature: fr87tir87bwkse9o9d7s4sx17xcaebw1
+In-Reply-To: <anBqV9z6hVLIqoIn@lucifer>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785917810-666579
-X-HE-Meta: U2FsdGVkX1/FzMC11Q6dcF9GGMlqS7S0RaBVjV84Ox6EEj6aesL1cR6zvKTwormle3VMiA3vqoYQuO2ROwU4/Vi/57r7YnMsuMVjZixgIfWJupQG/7Zw53dJ9Ul1zuiU8HDGs0vVjWPmIwPQxhb26spDwDeJOJYoknGdmIfeTF4BG1mvqG/Du4D1NjdGdiL5v62oxkXMrJRoO4duab+5dNAaZXo+hCGLDZuyU61qkRp9yYG9d0oHm3cPBk5w5e1Pk9NxtluhbGNOuWnUjeb5pzCOSotQAXLx61s52UfrRTKkJYVvEU9h2pxa4tBbc67w/AVSWR3woBuRYUnj4GYf63daXyuHvJ0niqZXdLi55eYCqEpkllBtS3/RqsuKqLi2T1ALOMnjgwby3SLpEljaYyYT1raxpfAol1oxZDMFVpBt6OfeA+L8QCxsriY0j4xS4TxLzvDKNup7KEc/NaI9iVHw9t8Nge4T4UXlPrboIh0KN54+/eNh4ZFAeBkYc+KQx1xv64Ashxea86IfA1WBWVZ1f3RN4HK5o7qEO3IH+PvKbIwClaUZ2bbpVPeKI8RR0ieCn7lPcqcAKEBQNeUM/YpbFSG9YIn0BuTM2+9wgOAxmmDvbrRYUSQcSYfYh4k+aFw1bA0aPLGYLm0h+Gr/ssybnRf/E2cOBqWtpuvFixOr6UoTTvtBBcHr9CyAzb5/bXaIU7tIQDIGeD4hVh6VHahEXwcZLtdoZLV/8hSTlDfKnbXGyd9eW59NPrVkROQXdpprmiGNs84vCR+imMSDZdqN1avFGgCxbIZdnjKo1W3OUcDCXgr9LBjlJuwqfQlq9Suq/YLdGziq10rTfOmBvlwlvnh0V1qaqzXzxeUKpZ0IaKKSMLkTw6jVsNU9EBXi3+tpDlxaVIslu2dVqAQkgMbggv86cSBDmAI3xg1DygcUFpLpw8YXILsI8e7KF9JzyJtwyxE8tlKjdl35bF1
- jMlBkDxF
- Lj9MKBOYdnocDtHJUhCY61yJ+Rudaj+HDqk/Al4RCPTfwNGGKbPB0pwXfW2uHFZqHZv6nSuCZpNjcko3D276Zzy4DBDgDIR+P/T8Du0k10dk6L9zbmFKcnKqDJxpjqS1aNSH5b/MTxDAgjFLqBWtpBp4m9GfK2lxUoaclbHyDzfcvDTupySlhAaD3/giLKJ3NvLc7lmPBd0BFT+Z3TQOignPf1tmcf57qooSQ/oUiFQsUZr8ir8iO009G5QweY5iBs/swIaGCvqoWgLNxl7ffJv7A6eDgbIN2fuPR3bDgsymgWiI=
+X-Stat-Signature: khzjpjo1r5iqxfb5smq568tu4nrpwrqm
+X-Rspamd-Queue-Id: D1C87C000A
+X-HE-Tag: 1785918622-325266
+X-HE-Meta: U2FsdGVkX18ENp6XaT1AFPPoUCYx2bn4Di3XsoB5ccc3jrrHlzI4YU6PLObzQa0nA/K57ajXMF6NRoH7Xwfiu+a5OM248SD9fyWVIh0dMlHEecO6PRtRzOvJk9Xcp5jMF0QEe0+4tGJL/AAGs/spc7b0gRkkU6aWUCUfe/gCBmaw6m08mq0wigE3oDzX/hgjmtPa3YpXoZK8gfsq53fXkFEWT0FI729VPyF81AHazY8xLF+lkVNGQOQvZl/viwaGxEbfNSCa0C5S5DPlDCK3ze+5WoAsdPcOpGFTniUAPAy/0BbQlS+OSzXRb73vvyJh4rZSODTmUxkV2anC6WqAjpp8MXBayK6ae9RMH6gZ8EWQVjzhvWreeGu3zpQ3Q8udC+G9VSb+93rKCmtRtth0RcifVrVoOUNoj1YaFgXn/6qD/7HtwLQ9GOCrMCoHRAI/T6xrebzdtp+PsnejtCi9HUJz/EQOGsQxB8EoAXyiRDaZvBXeaULu7yeYllybm56bARoFZnHZJXGm3sjVyfSo02JUajG9DBXItSUxqQEwnxPm/OGe1+pEAMI7gbsjJ7C+gZwnuJYXfzoQ6ag1FiW1+nBP5CMJkoNKn+FY92V7jvGd+XzGjKrP+8eKHqvCyji//i1nmQB4iZ0JTRQhdB59kiBwQ2X+5PIr0ZaVFmMEg04YVQV3KrlrEb0aNqthdIaEEGKolZ4tBovdiKcB2g7olz8pjWZe+ebFjcGZNu5be3n4XPOjMBlxEh7wpL+iuCSH3KWi9pY3+DrfB5b3ZzCw9rSzNMsaENiTmXJq2o6ez5e7DSNKx9VzgGQGwM/RhBIUbuByMt6womHaF640OVeEOYprOgqykQdXC1nP0UsbskPfHOyAVz5z8WM5sS4IfBYMVC2xVcZ8uYi4QA93P12w6iOSveJy7zgU3fiW1FSWYDE9RrE93cn9nO0f+mxGidjv/eDOTtWgwx0iDMc5JkT
+ RhGb/YWS
+ qJcVAjEP8dsbt58VU91q8MyK437FXxACxRbGMSayMkdHeUzKvmEDYbFI917LyIehgrsBZfXByPNJXBKQWobxMRQKiFGAoAT00qwc/DmgNuxo1iyEUrYapZT0MtcZ3+sRivnPxHPwwDPyWiW94i/JtJeDGnNiJkTE5ypY23zzpP0YGv1tcpLyLrngh4gX6VftK+CV0YO5gJvjT1Ku7jRl3ngyMLGlbRq98JCGO8xgd/m9K/23HJ6uzFbSNGBpATVw7smIHuCSNeBL2GCbxUg71k0iRc2roHpy6sgTIhiUOKnATsWd95ba70EXWG/0Kduspsma7u8BWsXpaRmIYGx/HsgBCkqYelPcOj21BphaOQbtPBaUJiMfCtiBQDWg6KzPypisl+QG2aa6eFUaGzIR9Wr8UZMvkcZFU89h0mSQDIhgzf8Arj49owagxzIGrS9LkRpZchD0qkqcftrE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,62 +139,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 02:40:27PM -0700, Christoph Lameter (Ampere) wrote:
-> On Tue, 4 Aug 2026, Lorenzo Stoakes (ARM) wrote:
->
-> > On Tue, Aug 04, 2026 at 10:01:45AM -0700, Linus Torvalds wrote:
-> > > So I'm just trying to clarify my stance - I don't hate percpu TLB
-> > > contents per se. I hate the notion of codifying them.
+On Mon, Aug 03, 2026 at 11:19:17AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Aug 03, 2026 at 11:39:11AM +0200, David Hildenbrand (Arm) wrote:
+> > On 7/30/26 08:32, Gregory Price wrote:
+> > > On Wed, Jul 29, 2026 at 05:48:39PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > >> This is potentially useful debugging information and matches the existing
+> > >> page offset provided.
+> > >>
+> > >> Use the raw __linear_anon_page_index() function so as to always output this
+> > >> value regardless of whether the mapping is file-backed or not.
+> > >>
+> > >
+> > > Begs the question whether we should mark the value based on whether
+> > > it is file backed or not, but i suppose you can gleen that from the
+> > > other printed values (anon_mem, mapping, vm_ops, etc).
 > >
-> > I do worry that changing per-CPU data structures to support this is exactly
-> > codifying this (and will encourage other arches to follow suit).
-> >
-> > And I really don't think there's any way to implement this without
-> > fundamentally changing core mm or assumptions that core mm can make.
->
-> Would it be possible to discuss the technical issues instead of throwing
-> up this and that foggy objection? Lets not get into the complexities of
-
-Christoph this is very unhelpful. I and other maintainers have raised
-_specific_ and _technical_ objections. If you are having comprehension
-issues it'd be more constructive to ask questions.
-
-It's really simple - convince us or the series doesn't go upstream.
-
->
-> The fundamental problem is that your patchset does
->
->
-> <preeamble establishing restart point>
-> RMV per cpu op
-> <post handling cleaning up setup of restart point>
->
->
-> What x86 does and what we can get ARM to do is:
->
-> RMW per cpu op
-> Why do you think that your solution that requires a complex restart
-> mechanism is better?
->
->
-> These are operations that are key to the performance in critical parts of
-> memory management and this code is replicated by being inlined thousands
-> of times in the kernel.
-
-I mean this is just silly :)
-
-Provide data to back any of this, and no your benchmarks of your approach
-vs. nothing isn't it, nor do they demonstrate anything about what you claim
-here.
-
-You've been asked for this multiple times now.
-
-(And please no hand waving about 'critical parts of mm'. Be specific
-please.)
-
->
+> > You mean something anon_pgoff_t or what did you have in mind?
+> 
+> I suspect he means e.g. adding a (A) suffix or something? Like page offset xxx
+> (F) or yyy (A) I guess?
 >
 
---
-Cheers, Lorenzo
+Yeah just an F/A in the print I suppose.  Sorry if that was unclear.
+
+If it saves someone the head-scratch of whether some bug is because it's
+"file" or "true anon", given the ambiguity here, seems like maybe useful
+debug information.
+
+~Gregory
 
