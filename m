@@ -4,110 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57327C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FB5CC56208
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 11:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C6E16B0098; Wed,  5 Aug 2026 07:18:58 -0400 (EDT)
+	id 4877F6B0088; Wed,  5 Aug 2026 07:33:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329FE6B0099; Wed,  5 Aug 2026 07:18:58 -0400 (EDT)
+	id 42FAE6B008A; Wed,  5 Aug 2026 07:33:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218286B009B; Wed,  5 Aug 2026 07:18:58 -0400 (EDT)
+	id 31F0B6B0092; Wed,  5 Aug 2026 07:33:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1F336B0098
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:18:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84D9F140468
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:18:57 +0000 (UTC)
-X-FDA: 85066968714.28.770EB1B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EA1D318000D
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:18:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLkYj5ZC;
-	spf=pass (imf06.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0014A6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:33:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 87F7B12042E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:33:49 +0000 (UTC)
+X-FDA: 85067006178.05.2B0830B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 33291A0006
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 11:33:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hZkzHtLQ;
+	spf=pass (imf25.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785928735;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1785929627;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=arhx8D5Jluxa94xkx/7MGOoRzeQO4N8YPm9nIJbGa/Q=;
-	b=ky5INl2bY8gS9M672mvePavO14phCW/MraavJ05ETNvMBT9inloQa0AKDTJRXZix+INGRM
-	0t3eyt2FRQ4z28YhVeULngnuYN2ju7xGVqdi9xo6kU3Q5YJgmqaw2eljl/ps4ZEeFE6o3I
-	9fVaeZn84MpKUokVA7AuDC3CZ6wyxGE=
+	bh=y4uwfR3GklRQiRMIczoF+4+/ivpNY9OMfXoC7zxxmqA=;
+	b=dBj+LrP2PC5X9MB/jDEBwn39zCmlE0HX3AHODJbP1mPVxrVU72p4lfwrP8c4CLWH8LnI5r
+	8FfgfeWBg+6a8G1JjzUYYHoE8hmlMA1Z5ROInxvauHp/0ED3m/gt7Dcl2bnEZKBfL+oyp8
+	CU2Z7m1eVDMKskW43TdQK7n3ymPQVlc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785928735;
-	b=WHX9bKZKWlXcbu9DNGlrkF1bnRG6aza5eeyWN7QQqzJp1vJamSrJSLjgn+EpNSotljtJbL
-	ZMHqgddWMKkw7s+y9wcHQqq39I1WBsImGH4sLIT0/4kRvjtZVhp2aj3RQdggPnWZ7L8OlI
-	VdehvhYzq/C/Tv+YMUO27DoRtEgk0+U=
+	t=1785929627;
+	b=lHFkTxk0FFxDV33BO+NORQYpO9D5xm9Pfd4PPisYCr6dGlrujVxSCA+W25RsG/DlV5GU8C
+	s8tUlPzrjqf+DHV1X6il0rgexIFVWuzPhkqpfXVvtwDnqqRKiFF+Chim5g4QTq6ynrzVYH
+	mc14oiwy1s0g0C6UccsYPIhGCigPqWY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLkYj5ZC;
-	spf=pass (imf06.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56F564574F;
-	Wed,  5 Aug 2026 11:18:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 96480C2BCFA;
-	Wed,  5 Aug 2026 11:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785928708;
-	bh=ty3w0m+qsJ+EdUZ0OVSMoR+uIMa3yGQbVbQdJHySOxk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=NLkYj5ZCS2eu1VzZ5NrkLjDOHGMSAmZqWjrVLbHr5u05W1pMfRSHQixyGNk67STBG
-	 f2Ybhg0qyToeMfOFJYV2LZtpSFmd8w4SEJg1W/pUlqIbrcbJa7c+OozGxL3YE7p23b
-	 v9gx3xpArrvMInBP1lYnJ8vCGSvvb3UTMMFp3zNz8FM/tSTc2fcfVo6dUTnFq8mRPy
-	 dUHA0pdK6smL+KuamHpHjaWBmEvYtLQHidZMLhJUooQnhsY8N9a22WLtQxdHLnDIpr
-	 WGXC/9sZhT51GBCxNGU3jHrXQewsATYscWjgUvtsDJ6tz5eDB7TeABqmRpm623M64H
-	 Eeo4YnuS5cU6g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 801D3C56201;
-	Wed,  5 Aug 2026 11:18:28 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Wed, 05 Aug 2026 16:48:24 +0530
-Subject: [PATCH 1/3] mm/huge_memory: allow splitting mappingless swapcache
- folios
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hZkzHtLQ;
+	spf=pass (imf25.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785929627; x=1817465627;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3lWJYMs3nbBFgdmv4/bZs0/V4ibefvqdyoqjZL6QD24=;
+  b=hZkzHtLQuFn+oJoW6diYbc4mekFzOpjOGMpnKgEV9MPWuOfG0ZYKACRi
+   bozL4KOJ17ah6K3fusqISwzsV2CuHGNZbG71L41xcyZ6TbxXBPhSzSg/t
+   ysih0jUkuzzTPOO5qZgZ/oYgB95+Hx7sDToc7/FxJdQRL2ZUUyMdq0QQI
+   NKnubVD/0YKeUncW0XSnCcrVbMmqQwDT8tTJSOzr2Ie6DAPx0zlcelObX
+   FWJmK0yC5XnFPa7CEwrrEs5vM/Ebws5wka4sXX27G33O4YXYTevKKTTyT
+   EszWOKwpbx0CiOk/8EA4lKJp0+w3D3Nh4dE4B1gkYYJKd4enRJ5ttJ+Ot
+   g==;
+X-CSE-ConnectionGUID: CZH0eN8NSUGrqXE5m/zwLA==
+X-CSE-MsgGUID: nBQ9TFmRTDOd9fYCNNQz7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86358167"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="86358167"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 04:33:44 -0700
+X-CSE-ConnectionGUID: 8qTpyZacQ5ylK+ugbK5C3Q==
+X-CSE-MsgGUID: s8apNhHaQTGF25KG/UCxNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="265289744"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 04:33:44 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] mm/migrate_device: Fix THP splitting of a CPU faulted device private folio
+Date: Wed,  5 Aug 2026 04:33:35 -0700
+Message-Id: <20260805113338.3742178-2-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260805113338.3742178-1-matthew.brost@intel.com>
+References: <20260805113338.3742178-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260805-b4-mappingless-swapcache-v1-1-b1d78ba257ca@zohomail.in>
-References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
-In-Reply-To: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>, Nico Pache <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785928706; l=2824;
- i=shivamkalra98@zohomail.in; s=20260402; h=from:subject:message-id;
- bh=8FMzJVK2ktfmBA3br5AL94P4EAWSWFZ1bi19CraqMDc=;
- b=vFVVaOmpFpx2FC4WlxGKq8HT1cGRL2x/naOSV50p6GJ3D5FhoW2agZET2hqyQ2/wsIkR5HfUk
- holeEC7s6tKAc9aKP5Ewd/xKNVTkdHwvi2HoPABOU3FeEYcq5KCwa8d
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=U8kQSxcte8P8iZ6zB7phIj+Yl+i/5ntifBGuclgypx8=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260402
- with auth_id=716
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 33291A0006
+X-Stat-Signature: 754u6zi4iwmy35w9r6f8z1913jm4wcqo
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EA1D318000D
-X-Stat-Signature: ufsdcbpmsad9bt4wq5qptxe5us8ecoh4
-X-HE-Tag: 1785928727-595164
-X-HE-Meta: U2FsdGVkX186cUiT4I7tgLxlmxRe/fuyLpXDnZTsjwlimbwAM2gXJeWDKKlKnnRwfyMaQaa28pFCFZNc6hcLLTi9Dqe8gw/HKv9tKS6GW8GXWVp/gCLpwU8k+wsDhJHRUkFEjzWx85lBSAOKn6LFla5rVvO0kdlr1YLtpcfHwe9fo2duuphRyy8fQZuLY4unuSzGFs3M7R12RXMkFvW88zNZd2er/3FADZNk3SIwu063xV600but2mXUWHrH8q6U9c/J79DLgD4iim6CA2qyHtZFsfA5E7ZHoAmoxbyzfy2l3PQ1cifEhuN9rkTy71RYOPbJX6D3+H7B+OWztFGEp1+RKn34HjkqvuCFWBngwRxnjHH6w1IKxsWB+yYPaIDzre0A926rEyEYdeeFbpm6AsY5OhgcTthDVYelqxLBNFvbMEV392v/FCyAYKNjD2yYe+YH9GyOSysejGc4Aik3djYhG+Z6P/UDZtMQzpd0IK/qUMGzG8MzhlgJUfPUyyNuhmRZTQ92sdx+ueCWVL6RiD/sRIrOJ7fJKBtdpJUHj8Qeymdyu+ctbqki+RqQFoc7Xq+FNjFSGyPieTN5mrqVOGhavSwELUwEUJ9974SVSfil/dtp9Jp2syd3BGlxmPGN8Mon1Odo6cSdSWVZIZVAPuo+hEn8GJHLvO9zqGYzRnyP+IerBbR1J1uXM4BKPmrgcu+6m6ygiWeNts2mMfMvJ4iUBypyjgWvSJ/C3ZKy0ttY7pzKJVLVf7L+MK8kLIQpnQ9zZrpuvWS4xdaqy5vWrnXYEM1vIuoqAvOQDfNTO6Dn0jyjeEBSLfq+M2ttSOyBRKjlChvAdHQFFQV5gV+5e1ztSIaA+zATACAIO9evOybd69RlLo2cIUUb31tQNms1Rxa3v9R+evPH22uPrSaMarkxm9M4/IzLUKTK74ov51vKmRbwEJeWBwMW1nvzqDvUCG2ptys7vovI7JiVz0F
- JdqEqc/n
- z8zUzjgNasm2Mks18ovgenbkMp2WqYilCddyCckk0mD0tjuLl2aMgNwdc7vmJGs1Zc5961ShWNEA3Ajlo0OW+uBrY60CZIxGLkFd4NuRwu/N8rS3aT8dNgYVbyE3/sK+T4oer09rGaflfBfXmnWhID9QFhnTC6ftRbVvs1VIGW3P+kW7hDOe4xAZsEM1ZOV3t6414dJRKTv+/a7I23ogGTzLuLQJhZAMek/pLtrhl/DlFLWUr5Mqns8B8kllMYmeHNHQnjMTC3nvboXImRhRCcRHpwCjaaWDyXfKw3TKEf0T5B4IAhK6CfihCYXWfructwu4Pc01cjVAe3jtDkKg3GbbinqermXDAxnbXDGA4IV88JBl73LsSJLoodtmAC8Y2kkjpUMH6WGXqkX3XTSS4ph+G/Zdo+9ZbbkZE9hsUQ3InyCXNuID8nW1ifpKI0jlpn/9hAvQxzhccae4=
+X-HE-Tag: 1785929625-221304
+X-HE-Meta: U2FsdGVkX1/05q4FxI7Qf221G3aVi4gnmbF3DuLjBuaApkt832tWX7Ue4sEHanhRKGmyJqXJpqzIf5uJUXOHshoM1gX4ynShZiunyHr8dNj7N6J/gGcjFWspC2J1n1lIsuT7eVH3Hu+aPQ5ZTNHK9+F0iZuMy08mjkdD4fznWFA06rRaKuot1RO8CZ+6g9KfLwggaq34aj3sCwt5hjZE9kaOw8y7SPIJnben/uFdt39IPOPEeyf6uaKioshNb5uRNMMbZWy9P8IRGJGROd6N4g+8nS8XP2ab5Nxee81i6XXxoQUBEr49hO70amfSzefCScu+u6sSembu3XE2W1AzzxNTegYN63VJh6tlyWc3ZcC4LZ5DJP+Arc8M3vP8Ubfi/DpO3SwYGm6oHhK3K02QCRjoW5neFH1vfmE7Q3eSnPY8gdBT/ra3VnJY8AK1xWBVOIyw32KuavQKv8sZO6npa2CdgcZMjGgtl7WZwA/pIy3RbRKhNvlg7VMlAsivbLEQAv7DKd1O/FIRZV5zLrXS2+s8xT092DGmj9dR9cLGVsHaR61Iu6r+OYi3aVuEMCZBTHkUSbaybNXn+gE0AnDl8djVk8HOGvhsW9GLar2WxS9DKj1h3+H8wRyvNdXGbtTHLunLzllzVN3fYxU3sJYGeAyw4sPasyebAU9tOruQ4OqJnrLjVtRN0Dzk1ZuYiYqCNGzgF944m3wgBfnjM9X6Cxncdpk9ueiF73tzF3kTW9UQj8q2Ryr18jEfGParxenDchuJpspEnRrIc+xwwGE2k0MCyex+886tK+octMXkHKN2gEY7qcpuB7xV4lBKeOsHfxk7P2LYUmF0/OHGW7z9X6LFr+YbHF7xTP58BspoBJgbwVF8NOA6daJkaVsMeDDTSu95Nr96Kt+GvI4mPkDDmcCmMcXpZY06nm6JdlKzkKQMofldpt8cvVl9nEmLC0i38c17r7PkqH09FIeze82
+ KYp9eUv5
+ EtsYteaYctM+rTYu7yeQN4cJTHJOVM6Ej6xLUr0NEbkwFJ5/nnk0oyU5hL6ajIro+pYQDY3pHqM/HS1Umj6DgVE2izRa7j5dwKjGc39yhf9Jo/stT64AEvwB4JtiPCSC3BvaW7705NQRYZT+Ghd5onhWqnGPlP91eUIRNt5Z1I4RbqsRQHgp/N8NuHJHPqYxER7DiHYGp13lhaxOFSI6pfNU2ZlxnUJnh5FVSsOFoVZ8HPbLQeZ0q6xsJBdwXHA4aZGMxq07WS6rfw61BZIQ8t8mA5aVynqistXGyoaeNDkRrlUgUUxDgbg58ITMcG7Hu24O3OM4C5+3nia9LEBm5HDdp2ckfmPFu9ZZ6FPeczrNzyGIY2qKTjWfHRFUsBZricNOpo5z+OJa9kqd2IieHXNKBZg3VVViKUcYK9PQu1kxNduSPhVdONwLbXeGM2IXfxs/0iGx3GTvPNa9/FbQ5L0M9cM0dQIa/4QT1KxJPSxF5y/IuDiaNh0TZrFSkkvW4bBmuiHDHSgWzCzgMGGRMy0SZe6fw53SQbCKmAD31oYZQo+QZpO7TWvwudfJ1/nDyLKZQC1pi62vIz65JnQBLGpnQGXVtybyCkETHUa/RMV6e3AdzeRZlZ7DTmQEwGkrbVPH/Z0a96g4azBy2A996RlTDCvADGj8ZzkB7nAe9GEoncfCxkeetiOmEKZSVPkTevHmJxM27juqN0vydl7JYOVFn0ZOEnEuhepSIhsofW3I8w0lYcAIcabukonzHp/EHqRSu6ZP2fkUmKpRRMWacvZqzyYT7I++3Xt2ygKDfm81qcEz31dIAs3+l3Cz6d2xifEHwJVfayHR454o4UMoH+4BmWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,81 +132,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+When a CPU faults on a device private PMD and the device driver can only
+allocate order-0 destination folios, __migrate_device_pages() has to
+split the source THP via migrate_vma_split_unmapped_folio(). That path
+is broken in two independent ways when the fault is what triggered the
+migration.
 
-A shmem folio is removed from its page cache when it is written to swap.
-While it remains in the swap cache, it has no address_space mapping, so
-folio_check_splittable() mistakes it for a truncated folio and rejects the
-split with -EBUSY.
+First, the split never succeeds. At the point folio_split_unmapped() is
+called the folio carries two references beyond the ones it is
+entitled to:
 
-Allow a mappingless folio when it is in the swap cache. Initialize the
-XArray state without an address-space mapping, then assign the XArray only
-for mapped file folios. The split path already replaces each split folio
-in the swap cache while holding the swap-cluster lock.
+  1 - taken by do_huge_pmd_device_private() for the duration of the
+      ->migrate_to_ram() callback
+  2 - taken by migrate_vma_collect_huge_pmd() when the folio was
+      collected
 
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+(the mapping reference having been dropped by set_pmd_migration_entry()).
+
+folio_split_unmapped() requires folio_expected_ref_count(folio) ==
+folio_ref_count(folio) - 1, i.e. it tolerates exactly one caller
+reference. With both of the above held the check sees 2 against an
+expected 0 and returns -EAGAIN, so the migration is abandoned and the
+CPU fault makes no progress.
+
+The PTE-based split path does not have this problem:
+migrate_vma_split_folio() is called before any collect reference is
+taken and explicitly skips folio_get() for the fault folio, so the fault
+reference is the single caller reference the split expects.
+
+Fix it by dropping the fault reference across the split and re-taking it
+afterwards. do_huge_pmd_device_private() derives the fault page from the
+PMD entry, so it is always the head page of the folio and always ends up
+in the head folio of an uniform split to order 0; re-taking the
+reference on the folio therefore puts it back exactly where
+do_huge_pmd_device_private() will release it. The folio cannot be freed
+while the reference is dropped because the collect reference is still
+held.
+
+Second, the folio is split globally but the page tables were demoted
+only locally:
+
+	split_huge_pmd_address(migrate->vma, addr, true);
+	ret = folio_split_unmapped(folio, 0);
+
+migrate_device_unmap() unmaps via try_to_migrate(folio, 0), deliberately
+without TTU_SPLIT_HUGE_PMD, so every VMA that PMD maps the folio is left
+holding a PMD sized migration entry. A folio that was PMD mapped in more
+than one VMA -- after fork(), for example -- therefore keeps huge
+migration entries in all the other VMAs while only migrate->vma is
+demoted.
+
+folio_split_unmapped() does not notice: the folio is fully unmapped, so
+it only looks at the refcount and happily splits to order 0. The other
+VMAs are then left pointing a huge PMD at an order-0 folio, and
+migrate_vma_finalize() -> remove_migration_ptes() walks into it:
+
+  page dumped because: VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+                                       !folio_test_pmd_mappable(folio))
+  kernel BUG at mm/migrate.c:368!
+  RIP: 0010:remove_migration_pte+0x56a/0x9b0
+  Call Trace:
+   rmap_walk_anon+0xfc/0x260
+   remove_migration_ptes+0x79/0xb0
+   __migrate_device_finalize+0x113/0x290
+   __drm_pagemap_migrate_to_ram+0x278/0x360 [drm_gpusvm_helper]
+   drm_pagemap_migrate_to_ram+0x5c/0x80 [drm_gpusvm_helper]
+   do_huge_pmd_device_private+0x160/0x280
+
+Without CONFIG_DEBUG_VM the VM_BUG_ON_FOLIO() is compiled out and
+remove_migration_pmd() installs a huge PMD pointing at an order-0 page
+instead, along with add_mm_counter(mm, MM_ANONPAGES, HPAGE_PMD_NR). The
+victim mm then maps 2MB of address space onto a single 4K page, which
+shows up later as bad rss-counter state, leaked page tables and page
+allocator freelist corruption in unrelated processes.
+
+Note this second problem was latent before the refcount fix above: the
+split always failed, and the failed attempt left migrate->vma demoted,
+so the retried fault took the PTE path, where __folio_split() unmaps
+with TTU_SPLIT_HUGE_PMD and demotes every VMA.
+
+Fix it by walking the rmap and demoting every PMD sized migration entry
+mapping the folio before splitting it. Demote with freeze = false: entry
+creation in __split_huge_pmd_locked() is dispatched on
+pmd_is_migration_entry(), not on freeze, so a migration PMD becomes PTE
+sized migration entries either way, and freeze only controls a trailing
+put_page(). With freeze = false there is no refcount change at all,
+which makes the demotion idempotent across N VMAs.
+
+rmap_walk_control.anon_lock is deliberately left unset:
+folio_lock_anon_vma_read() depends on folio_mapped(), and the folio is
+already fully unmapped here. This mirrors remove_migration_ptes().
+
+Finally, refuse the split for a folio that is not anonymous. The rmap
+walk would otherwise reach a file backed VMA, where
+split_huge_pmd_address() zaps the PMD instead of demoting it.
+
+Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <nico.pache@linux.dev>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Assisted-by: GitHub Copilot:claude-opus-5
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- mm/huge_memory.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ mm/migrate_device.c | 98 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 89 insertions(+), 9 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 804b8f6aa557..ecfe40b1400b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3882,12 +3882,10 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
- 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
- 	/*
- 	 * Folios that just got truncated cannot get split. Signal to the
--	 * caller that there was a race.
--	 *
--	 * TODO: this will also currently refuse folios without a mapping in the
--	 * swapcache (shmem or to-be-anon folios).
-+	 * caller that there was a race. A mappingless swapcache folio can be
-+	 * either shmem or not yet associated with an anon_vma, and is valid.
- 	 */
--	if (!folio->mapping && !folio_test_anon(folio))
-+	if (!folio->mapping && !folio_test_swapcache(folio))
- 		return -EBUSY;
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 908d2d4ec43a..d1d81bbbf795 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -899,22 +899,104 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	return 0;
+ }
  
- 	/* order-1 is not supported for anonymous THP. */
-@@ -4022,10 +4020,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 			if (do_lru)
- 				lru_add_split_folio(folio, new_folio, lruvec, list);
- 
--			/*
--			 * Anonymous folio with swap cache.
--			 * NOTE: shmem in swap cache is not supported yet.
--			 */
-+			/* Folio in the swap cache. */
- 			if (ci) {
- 				__swap_cache_replace_folio(ci, folio, new_folio);
- 				continue;
-@@ -4103,7 +4098,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 		struct page *split_at, struct page *lock_at,
- 		struct list_head *list, enum split_type split_type)
++static bool migrate_vma_split_pmd_one(struct folio *folio,
++				      struct vm_area_struct *vma,
++				      unsigned long addr, void *arg)
++{
++	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
++
++	while (page_vma_mapped_walk(&pvmw)) {
++		if (pvmw.pte)
++			continue;
++
++		addr = pvmw.address;
++		page_vma_mapped_walk_done(&pvmw);
++
++		/*
++		 * Demote with freeze = false: the PMD already holds a
++		 * migration entry, so __split_huge_pmd_locked() creates PTE
++		 * sized migration entries from it and leaves the refcount
++		 * alone. There is at most one PMD mapping @folio per VMA, so
++		 * stop the walk here.
++		 */
++		split_huge_pmd_address(vma, addr, false);
++		break;
++	}
++
++	return true;
++}
++
++/*
++ * Demote every PMD sized migration entry that maps @folio to PTE sized ones.
++ *
++ * migrate_device_unmap() unmaps with try_to_migrate(folio, 0), i.e. without
++ * TTU_SPLIT_HUGE_PMD, so a folio that was PMD mapped in several VMAs -- after
++ * fork(), for instance -- ends up with a PMD sized migration entry in every one
++ * of them. folio_split_unmapped() below does not care, it only looks at the
++ * refcount, so splitting the folio without demoting all of those first would
++ * leave the other VMAs pointing a huge PMD at what is now an order-0 folio.
++ * remove_migration_ptes() trips over that in migrate_vma_finalize().
++ */
++static void migrate_vma_split_pmd_mappings(struct folio *folio)
++{
++	struct rmap_walk_control rwc = {
++		.rmap_one = migrate_vma_split_pmd_one,
++	};
++
++	/*
++	 * Do not pass .anon_lock: folio_lock_anon_vma_read() requires
++	 * folio_mapped(), and @folio is already fully unmapped here.
++	 */
++	rmap_walk(folio, &rwc);
++}
++
+ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+-					    unsigned long idx, unsigned long addr,
++					    unsigned long idx,
+ 					    struct folio *folio)
  {
--	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
-+	XA_STATE(xas, NULL, folio->index);
- 	struct folio *end_folio = folio_next(folio);
- 	bool is_anon = folio_test_anon(folio);
- 	struct mem_cgroup *memcg, *old_memcg;
-@@ -4158,11 +4153,12 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 		}
- 		anon_vma_lock_write(anon_vma);
- 		mapping = NULL;
--	} else {
-+	} else if (folio->mapping) {
- 		unsigned int min_order;
- 		gfp_t gfp;
+ 	unsigned long i;
+ 	unsigned long pfn;
+ 	unsigned long flags;
++	bool fault_folio;
+ 	int ret = 0;
  
- 		mapping = folio->mapping;
-+		xas.xa = &mapping->i_pages;
- 		min_order = mapping_min_folio_order(mapping);
- 		if (new_order < min_order) {
- 			ret = -EINVAL;
-
+ 	/*
+-	 * take a reference, since split_huge_pmd_address() with freeze = true
+-	 * drops a reference at the end.
++	 * migrate_vma_split_pmd_mappings() walks the rmap, and
++	 * split_huge_pmd_address() zaps rather than demotes a PMD in a VMA that
++	 * is not anonymous. migrate_vma_collect_huge_pmd() does not check the
++	 * VMA type, so a file THP can reach here; the rest of the migrate_vma()
++	 * machinery only supports anonymous memory anyway.
+ 	 */
+-	folio_get(folio);
+-	split_huge_pmd_address(migrate->vma, addr, true);
++	if (!folio_test_anon(folio))
++		return -EINVAL;
++
++	/*
++	 * A CPU fault on a device private PMD holds an extra reference on the
++	 * folio, taken by do_huge_pmd_device_private(). folio_split_unmapped()
++	 * only tolerates a single caller reference, so the split would always
++	 * fail with -EAGAIN while this fault reference is held.
++	 *
++	 * do_huge_pmd_device_private() derives the fault page from the PMD
++	 * entry, so it is always the head page of @folio, and therefore always
++	 * ends up in the head folio after an uniform split to order 0. Drop
++	 * the reference across the split and re-take it on the head folio
++	 * afterwards, leaving the reference exactly where it is expected to be
++	 * released.
++	 *
++	 * The folio cannot go away while the reference is dropped: the
++	 * reference taken by migrate_vma_collect_huge_pmd() is still held.
++	 */
++	fault_folio = migrate->fault_page &&
++		page_folio(migrate->fault_page) == folio;
++
++	migrate_vma_split_pmd_mappings(folio);
++
++	if (fault_folio)
++		folio_put(folio);
+ 	ret = folio_split_unmapped(folio, 0);
++	if (fault_folio)
++		folio_get(folio);
++
+ 	if (ret)
+ 		return ret;
+ 	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
+@@ -935,7 +1017,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ }
+ 
+ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+-					    unsigned long idx, unsigned long addr,
++					    unsigned long idx,
+ 					    struct folio *folio)
+ {
+ 	return 0;
+@@ -1103,7 +1185,6 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 	struct mmu_notifier_range range;
+ 	unsigned long i, j;
+ 	bool notified = false;
+-	unsigned long addr;
+ 
+ 	for (i = 0; i < npages; ) {
+ 		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
+@@ -1177,8 +1258,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 					goto next;
+ 				}
+ 				nr = 1 << folio_order(folio);
+-				addr = migrate->start + i * PAGE_SIZE;
+-				if (migrate_vma_split_unmapped_folio(migrate, i, addr, folio)) {
++				if (migrate_vma_split_unmapped_folio(migrate, i, folio)) {
+ 					src_pfns[i] &= ~(MIGRATE_PFN_MIGRATE |
+ 							 MIGRATE_PFN_COMPOUND);
+ 					goto next;
 -- 
-2.43.0
-
+2.34.1
 
 
