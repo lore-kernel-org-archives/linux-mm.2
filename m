@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1288C55182
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 07:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345F4C55182
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 07:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D236E6B00B6; Wed,  5 Aug 2026 03:55:35 -0400 (EDT)
+	id 44B236B0099; Wed,  5 Aug 2026 03:56:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9C86B00B8; Wed,  5 Aug 2026 03:55:35 -0400 (EDT)
+	id 4225D6B00B8; Wed,  5 Aug 2026 03:56:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0FF96B00B9; Wed,  5 Aug 2026 03:55:35 -0400 (EDT)
+	id 35F876B00BA; Wed,  5 Aug 2026 03:56:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F9876B00B6
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:55:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46485A19B7
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:55:35 +0000 (UTC)
-X-FDA: 85066456230.16.28462B2
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 99A3C1A0002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:55:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GLgVwNRU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1206A6B0099
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:56:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A54E1203D3
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:56:45 +0000 (UTC)
+X-FDA: 85066459170.19.F9ED316
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 02AF340009
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:56:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXlVg2rH;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785916533;
+	s=arc-20220608; t=1785916604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbfFddbqSLBXoL9Z6NQe5+gvAdUEfreYVifyxE81zg0=;
-	b=14pKrrkqfqLh1zXwKI+50SCe0hSmesTwCs4QXz7OaHWbg3nHNOcoQ0IS9sMK3RYnXS52zX
-	hGG70UQ9jwPZD0kkWbGF2ClIwqRYB9tMCI1DWRTOVvGonIu3ApYnvmfz9I88tfVs+mmh3Q
-	8sq9Q67rAhYheFmNjnjSM4ZOnpPyLgo=
+	bh=v1+4NHKehW6dJ5xem9fLO+i3kQ3eYgsR66WFXjwzps4=;
+	b=O+tpzR5khN8h/bLSrM+DR1wEx+/JWf8eynid38ST4Pj1Gw/T8PkBeh57Mx6e78RsNsRUPE
+	Cqxh73fWgnb4+ASiQtu9hBjCHRvH8H13Hqj10Jpl6NPVVAR/ulxSX/wGqhDno8FpjXG9bF
+	MQkvaVlllyHPJKavYZ7q7eM2KowNNXI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GLgVwNRU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXlVg2rH;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785916533;
-	b=rquaz2cikPyTXdq+hu6bDtmBXXhi+211fDDKhae/3Zj/PdusM0LpkXk3RmBaYvy3e+/WUj
-	UYVB2moHsfNnvVG2zf0aNjs0hI8khFnEqKNUc5s+8ZHRj+3p9WXIbztQiXNCeDorPm2ddD
-	8DFafaJ0lm+ALuXjdZXiMM8y14fNPBI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785916532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EbfFddbqSLBXoL9Z6NQe5+gvAdUEfreYVifyxE81zg0=;
-	b=GLgVwNRUwiBcSuY7U3D9LcolFHX5qp94+NHSDFNCWLyiNOSj/IDuA2OtulWLjCHMnDp0FP
-	GBcfFr+2W4RrKIkXygjMqYPSkVmDYXphGEoyWSvWVXWVH/H8YIKDRPjIo6WiWBaP2iyTrV
-	FpdB/Tm+iQCJEZO94Gpyn5ghqq5yloA=
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: chrisl@kernel.org,
-	nphamcs@gmail.com,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	david@kernel.org,
-	shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <baoquan.he@linux.dev>
-Subject: [RFC PATCH v2 10/10] mm, swap: defer xswap shrink to workqueue to avoid lock recursion
-Date: Wed,  5 Aug 2026 15:53:33 +0800
-Message-ID: <20260805075336.3579395-11-baoquan.he@linux.dev>
-In-Reply-To: <20260805075336.3579395-1-baoquan.he@linux.dev>
-References: <20260805075336.3579395-1-baoquan.he@linux.dev>
+	t=1785916604;
+	b=h64sAcd5Wa2jeQtPpR4K29m6XHQfipz9VwBoSJS82J2e7OBWvLbFCTmldqlIrtXvH9TZ3i
+	J5O8FjTsx9iWyy710sDqEfh+q4EfpXAUT6DQZ4eb3weYbEcd/xlUsm7/Im6NfSIVAiB14b
+	zqyNEBOHnXkIPucfUFgjLen1hhIGXyY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 26FF240C1B;
+	Wed,  5 Aug 2026 07:56:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05D71F000E9;
+	Wed,  5 Aug 2026 07:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785916603;
+	bh=v1+4NHKehW6dJ5xem9fLO+i3kQ3eYgsR66WFXjwzps4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IXlVg2rHg3PlC+qUbgpOulXUDtxMZEvwh2x+XsEcdZMeKjtXYo3z+96yHv15gN/My
+	 EK4tAo3j2YaxeCem5uhQ6Dg/uMiUhyqn7dr5roB+OFVTlbRvLJPmmlLEid4Ar98JMj
+	 PBlGG45Cr0HCX/jnogtpaQZsfC2JldbCmjQ/NWpS29PNpbvpqH89oihO5omp2k9zMs
+	 Q7zehXboti07v9CN51FkIMM3NZ68MWbiagFlhKmb0C5DuvesWornwClHCJmSDvfHMH
+	 VcgIn1DS4H1WD5FSCk9IsmUCYEoBPDJFQy5F4S5B9d/8YwoxIudEJpyiCY7iq6/8Re
+	 iLRyA5CkcEAhg==
+Date: Wed, 5 Aug 2026 09:56:36 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Farid Zakaria <farid.m.zakaria@gmail.com>
+Cc: Alessandro Di Federico <ale@rev.ng>, david.laight.linux@gmail.com, 
+	jack@suse.cz, jannh@google.com, kees@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	mail@johnericson.me, shuah@kernel.org, viro@zeniv.linux.org.uk, 
+	Gemini <assistant@google.com>
+Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
+ interpreter selection
+Message-ID: <20260805-koordinaten-eschenholz-ellenlang-b2b8eb93759d@brauner>
+References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+ <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
+ <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
+ <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
+ <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
+ <20260722011217.45e79a08@spawn>
+ <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
+ <20260731004604.53c66732@spawn>
+ <20260731-batterie-galant-zumachen-d4b91acf8af0@brauner>
+ <DKETT5RWDAG9.1AP6L1IJ3CL72@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 99A3C1A0002
-X-Stat-Signature: y3hi7hr7zekehbzz5tatmi9nrr4r6rm5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DKETT5RWDAG9.1AP6L1IJ3CL72@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1785916533-81358
-X-HE-Meta: U2FsdGVkX1+uSD7PPBebEwq2FCYu6y2EpX9rerxErhVbLwPvNwhSrmPacZfPFbzAY5ikLjMUIcBnURqYf/fjhiY+pXyyqMeXcOTkCfS7u7tYglNUMLvMIVhMnBXqZZ8h4Mqfdiq9jaV4fvjAxDHhdVc6UEOG5FQtFG9e0j71maEXHncl1Zz7bcJbBqCe2HUxvK8/hhZa8miyqAAnumcLTEXyNuCY1bXx2arr7D4L4Z+uTpFk/JZwIQWrhSmjRY9kbJKoEQ6AQ4mTqEDUb0NQm8ea3NwkV8C0w6NkNhxC3ldlfI0iHg1a3BdeldWNYiT0PQgDRTJqNhqEAmB2iexcxCEVyh8cDuFQMPsUluvDdsaQPyZ4jQf/TcFdSbQ/fgOVcS+haMJ4KEnYPQZVggd6SahzvbZ9qwqXu9wkn4kdlqonaGhQRbtU/bu++DD/SR0G5HK+gphwG+o1+1kY3J06oMbR8w9YfCd23Qp3ib0hjYj/179rCw50W92Ls+BUv/SgRbD8DQnhM9MMveDT+K37wEOx0uVUIj/DGf4K9TO8v4RAcYtNYs7cDH+MUztzUmzpcardvw7L78WFn/cAV837l0ftTNehICyU+BLVNhsze4cpwpEBiqlwgceNxx5UKGiRMcusrqk9oWDM0i3kpIHLtZHahhi0lsZrT9M97Vr9EMzWBAbePAsI8/TLpQ+yCpaNhUqOzfolDWytSuiSw/wGoyinor+sGiYlV6oMWPg2LmzAeHsLZilN6DBNw7JU+UZWsxMmNanHesIl9I5ocN8N+F2eejnAHEStGMqGjBfxkskHSuitXF3IOQ6nUFwliG4/7iakSP2aXivZB6i1xWbjHY9VDyoQZPrZivekocvhe53+FyB+D3G4q0toXSdvD5EOTwwYCT1Pqk6ibf7zTurcprWk3gKOylNLhUNmFmVPwnAU5f8dF3WGjSR1z0tOlwCrpCzkbRDnHzYJMsYNk8C
- bf4GjerN
- +Sh2CXBCNqmW0ZAr37g/34jgTm9agPl11T1+eLYRmgOTgkJBFuOHEpDigPkPlmHbrIyXE3RO6KL5V2lKJR0QgDubVB5eymony0LagW+MuvtN6leqy3lJCYd+zpFRjnSgFd4v88IWv8LfY3w7p3Fm2TzmZTEEZtMvLAylAZQ0GJUegP/UrMq6zzB5DpjfdhwxrkkrsMy1GEFLRz0nQMdJ8R6O2tfOGZvuqwBY6u+0+fc3VWE76I3+o78Ale7nT7w8scvx+lSWyvqSdMF+Yrba2hg1lIzq63kgcB3xYGixyF1gkz2Q=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 02AF340009
+X-Stat-Signature: nxbrr9uxhkashkeoi7js9ho4ddtkjb7e
+X-HE-Tag: 1785916603-229572
+X-HE-Meta: U2FsdGVkX1/PAaGHhstm2NtSLzohY+LIbaC3C9cN1ZlT2Mqcsk17QdUaE2uhmbC48H1BdBteNakKPUsbQd/yiaFBBQkAW/p99GcXKR/+jUk85HqLY3h1KPqPG5D2qkJa/EyNEpvUSo9cSA2ekT/9BOdQBbNBqNp5Ca4XINLcICIHQ0pYZfjIHdvYRikDCn6ku/PIIuM4W7YLx3RbhlCEzk/MUe8usAhPKqNTCuU1f0cpd3WuU68FLXO5Fohw3RK8A7ngU+HGsV6syLq9t635SIct4esgSvCeqEBZ51BK66bUpvLwDVaC7VoJrveo2cMvQMz8NX26K2iXOd7jQ5CBMAfXYmzeE+E65HFq6UCUEaWAZdttEx+DbWnf+H5X7AKaLKxy/VIb/X99Hp6BX6UhJXKcZzSHKSGRuFCkjdn/M2OkQ2hkGiojHYwk5096dU8h7SAYES9MtKVKQNUCp/0lZyYKCHM2+6kU2/KBwkh+I/zekeIy8Lkfx4V2JoJBI8vuclL06MN8pB8Js/0rIqiHt4/atBO8y0MrqUi07n5qFG5FI6oS2ItFuYgI8GjYMv8lN4u9i9BTlEONrKm8UEfCg2sYk0GUqVjRoXrbv5lpb2foWkNjeVwjDIBzM6CQoVnNIPzrUQgw4WTu13HoY1LhxnhuHn2K9FfeEICum/0oDHu+KWdv2eiwCYDcYPnknYxQtTgjyeXgxcf1igFLrKbZGOFREjLTW9Ex4mIhyLvJJTxmyPweuKUEDRiB9Sy2xSRL+1fuE6/AUof9XLjgD+MUktrbMxnrUM+O/jcM0Y65kTjoAhwRLk+OpshF9JhDvN/wzk99Cf9MYULdCkVNFoIG6+DzKsTD1uHGF3Y4j7Br3iH6nbmfxK0+cdW1UwNttfEu0PgH+PGU11UVZ0U2cNiUAPlA/Nsvz7Qd3CC4BJApeqImPmmwGywEy5gAQGVj3CW3kDCRS4KLpuJP+8ygJ1J
+ UkiMhkz1
+ jYYhrnlDAQuGyeHVgjIhcoTYZYzV4M37W/Qr1CJ/NRR4t5bud1KXXTeSfmc2P4ltgUv58jODLsn811RfL/uGzO6yBTagK8bttLWgSvTkXkyL2VPqrEU76LXogoDn7IiNVLYKg/e8U1yK/XEHN7o1I1BmOtrAnTtzS+hE/g0/g7Pcwvfqx4a8LMWShOpFSfKgcRVe+FtxFmPNvi8ZA+5pdzsheNQPtd2oIxoXDqFhM3QHBjeePJ0FU+bXrAYWE/aaBFB1lSC6EKne7weIH3oVu11PS6wNAPd7xem8e0jUot2IjL/TDnNRZvyFZhYFbQwLw51bxi1ADLFxcewjT89YnYUu/soVcYyHccw/E5RtABQ/kbBGUapiyCVnCN2xjVPto2b0aYzWkykRp+1Lv/ZuvGOeBd9UB01V4xfgVFIL0xQKg/us=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,95 +103,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xswap_try_shrink() was called directly from __free_cluster() while
-holding ci->lock.  The shrink path calls xswap_unmap_clusters()
-which unmaps vmalloc pages backing cluster_info, and on return
-swap_cache_del_folio() tries swap_cluster_unlock(ci) on the now-
-unmapped address — crashing on a not-present page.
+> Christian,
+> 
+> Could you help me please understand how the next branch makes
+> its way to the kernel?
 
-Replace direct calls with schedule_work() so shrink runs in an
-independent workqueue context where no cluster locks are held.
-Use cancel_work_sync() during swapoff to ensure no pending shrink
-work races with the VM area teardown.
+-next is just an integration tree but is intended to only contain work
+that is going to be merged into the upcoming merge window.
 
-Signed-off-by: Baoquan He <baoquan.he@linux.dev>
----
- include/linux/swap.h |  1 +
- mm/swapfile.c        | 19 +++++++++++++------
- 2 files changed, 14 insertions(+), 6 deletions(-)
+> I see NixOS Offers the latest as of 7.1.
+> 
+> The topic for binfmt is named on 7.3.binfmt in vfs so my assumption is
+> that it's slated for 7.3.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 4f4583f9a4e5..a5b323374769 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -255,6 +255,7 @@ struct swap_info_struct {
- 	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
- 	unsigned long		nr_free_tail;	/* contiguous free clusters at tail */
- 	struct dentry		*debugfs_entry;	/* debugfs: type<N>_max_clusters */
-+	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
- 	struct mutex		xswap_lock;	/* serialize map/unmap operations */
- #endif
- 	struct list_head free_clusters; /* free clusters list */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 265f2bac1a12..ca406556626e 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -127,11 +127,8 @@ static ssize_t xswap_max_clusters_write(struct file *file,
- 		spin_unlock(&swap_lock);
- 	}
- 
--	/*
--	 * Lowering the ceiling may make tail clusters eligible for
--	 * shrinking.  Trigger an immediate check.
--	 */
--	xswap_try_shrink(si);
-+	/* Shrink trigger: lowering the ceiling may free tail clusters. */
-+	schedule_work(&si->xswap_shrink_work);
- 
- 	return count;
- }
-@@ -726,7 +723,7 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
- 	ci->order = 0;
- #ifdef CONFIG_XSWAP
- 	xswap_update_free_tail(si, ci - si->cluster_info);
--	xswap_try_shrink(si);
-+	schedule_work(&si->xswap_shrink_work);
- #endif
- }
- 
-@@ -3236,6 +3233,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- #ifdef CONFIG_XSWAP
- 	if (si->flags & SWP_XSWAP) {
- 		xswap_debugfs_del(si);
-+		cancel_work_sync(&si->xswap_shrink_work);
- 		/* Unmap all mapped clusters and free the VM_SPARSE area */
- 		if (si->nr_clusters_mapped > 0)
- 			xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
-@@ -4057,6 +4055,13 @@ static void xswap_trim_free_tail(struct swap_info_struct *si, unsigned long idx)
- 		WRITE_ONCE(si->nr_free_tail, nr_mapped - idx - 1);
- }
- 
-+static void xswap_shrink_work_fn(struct work_struct *work)
-+{
-+	struct swap_info_struct *si = container_of(work,
-+			struct swap_info_struct, xswap_shrink_work);
-+	xswap_try_shrink(si);
-+}
-+
- /*
-  * Try to shrink the cluster_info tail.  Uses si->nr_free_tail which
-  * is maintained incrementally during alloc/free — no scanning needed.
-@@ -4163,7 +4168,9 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 
- 		/* All mapped clusters except cluster 0 are free at the tail */
- 		si->nr_free_tail = si->nr_clusters_mapped - 1;
-+
- 		mutex_init(&si->xswap_lock);
-+		INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
- 		xswap_debugfs_add(si);
- 		return 0;
- 
--- 
-2.54.0
+Yes.
 
+> 
+> So that means when Linux pulls for 7.3.rc1 I could start to test it on
+> NixOS? Maybe 3 more weeks?
+
+Two more weeks - unless Linus decided to do -rc8. That happens rarely
+but it does sometimes happen.
+
+Note, I'm off this week and will be back on Monday.
 
