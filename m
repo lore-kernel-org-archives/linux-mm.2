@@ -4,140 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EBBC55182
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 04:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D769C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 04:43:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 949356B007B; Wed,  5 Aug 2026 00:18:12 -0400 (EDT)
+	id 4E6E66B007B; Wed,  5 Aug 2026 00:43:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA796B0088; Wed,  5 Aug 2026 00:18:12 -0400 (EDT)
+	id 497CF6B0088; Wed,  5 Aug 2026 00:43:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C1296B008A; Wed,  5 Aug 2026 00:18:12 -0400 (EDT)
+	id 3864C6B008A; Wed,  5 Aug 2026 00:43:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEA2E6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:18:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74E3814038E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:18:11 +0000 (UTC)
-X-FDA: 85065908382.26.468B92A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BF0A5180009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:18:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K2is/aMg";
-	spf=pass (imf16.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785903489;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D8AE6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:43:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B9671A03B0
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:43:00 +0000 (UTC)
+X-FDA: 85065970920.03.75F0755
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A29AB40007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:42:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m9o3FlBa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785904978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hadm6xP+PswyD3AihAYzJPsQQhoLmdR6g4whbLAjP20=;
-	b=PuiH7eItydLy5gg/98mD3tVB1aWes1TKuCDN3pk+8Tv0lrhlMWqmuxp/BPm/LO2uMjINXN
-	HEPXeph7Q36zLH8pwBFRMmIOO7WIupQ2L4oVUo2PhAYmgc78rCvE4vfyuAnP8yM1YT7RS/
-	lp0i7K+AY2dGYrO2vurtIdk8iOqVTJw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785903489;
-	b=eXkfOZDioBnLEOukrlBzPRHUTW8rYezO8HE9hgAjhTqMctOiSSuhN59007j+puAgNNhWqz
-	jHMOvHJdMVY/Dhdz2BqHr/zzn5dwy7698xf1LnGxVVYtP4Zyls9R3E/sXayQNagkbIZOfz
-	HecIrqLbR48rVN/GgG5CDi2+Iyb1r0w=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K2is/aMg";
-	spf=pass (imf16.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0141600B1;
-	Wed,  5 Aug 2026 04:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5721F000E9;
-	Wed,  5 Aug 2026 04:18:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785903488;
-	bh=Hadm6xP+PswyD3AihAYzJPsQQhoLmdR6g4whbLAjP20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K2is/aMgoIL59CuN3DzHfIlouW8vHEhx5Fs5A+bV+Hqf222GpKlsjBkviC4n4XkcP
-	 b71KdhcuPGtMqnGOl2K4xdf8uQq4vp06sDQeVs2+DLnHRcHhOGmDz2aPcWpmj7FopA
-	 a0uufkAXnUyfjLV+buwHjQIyGKLW/QrY7pXFi1I5LDSMwXlyBflKB6S62j4pmGM+Cu
-	 Pt1CRdcR2vzTcN9y8vczBcB1zBDei2wYoj08MQWVuyxhG+IuImioTovnVRymkhcnrg
-	 OmAJwtL67EcOJJ7vtFasWWRkNsSJIiuQl264jCIPP+FBEgmwQpuQ3PdPokROuViOWt
-	 4x/Z7RI4bJbAA==
-Date: Wed, 5 Aug 2026 12:17:56 +0800
-From: Gao Xiang <xiang@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Gao Xiang <xiang@kernel.org>, David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <hongbohbli@tencent.com>,
-	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
-Subject: Re: [PATCH RFC 08/14] fs/erofs: use folio_attach/detach_private()
- instead of direct assignment
-Message-ID: <anK5dIF25xWmaHzW@XiangdeMacBook-Pro.local>
-Mail-Followup-To: Zi Yan <ziy@nvidia.com>, Gao Xiang <xiang@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <hongbohbli@tencent.com>,
-	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
-References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
- <20260731-remove-pg_private-v1-8-142c97ba3562@nvidia.com>
- <anEnBSAOQE8LyKdI@XiangdeMacBook-Pro.local>
- <DKGNW5NWY73G.2E0EH28C37POP@nvidia.com>
+	bh=2fS3CRvb6lq0Iuc+rlgHm4bS9etZncctYSA+3VGd6Fk=;
+	b=3kcgHX90uoHiGpPyo5mF59ajw4TnU6BHzUQMGx2Yvdz9N6qu7QSj6Nf090ARkClLyGpxyb
+	xnAjVNoRWoyOGSjzFmYVZUhohvfvo4XdvC/wvSnpI+ffZbESvHHYwhwyQmJGJV1lizTzhv
+	DrXQJ6aL4l5YmkyZbYYmGTcA10SyCL4=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m9o3FlBa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785904978;
+	b=YSDSU06awEgyD4xnWJBGMrqEhkwAlCA0EVVOXMfWUejvAr1m1ywVSSEpQNCertpWDYl44k
+	Jn59hUHkUNnt1QCzB97ptBK+1jpjMr2W60eFAmWPOWomHkwAKPisZul2tTryHXggLSR4+4
+	1cDIfUq34Joc9i3NcYM7IGXC6VlHtkQ=
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5b2a8173142so3111e87.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 21:42:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785904977; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YGsnVKD0HzOwrTWSwkSlXlDPYZZsiISOH7lTNo8gS7oXpmPJOq6/3eB+zKs/a9G3JJ
+         QvPzo9TTQ+fYyh9dZQ4C10A8szK+Ym4edPgnyZULBRE6usLU8StkdH+TMo9Q5AdMktjo
+         DR1CVRnTcBzYhu+BvEVmo6Etcay4Ex+tfZRdD47ELG29sca7jrKTp3tWv5ril0KXJUhS
+         vEPhTlTPXRvESEW4PLyFfdD+2XLqZtZGEq/IyIQ3+O2FGqF5ctV7u1hiiu7vVGtHaLeh
+         oMSocvH88OR+cP2IKT/PVY71TtX581vhv1UmZ+vzjTnpr34grpWQADB+8IuiV5XZCJ+v
+         1hkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2fS3CRvb6lq0Iuc+rlgHm4bS9etZncctYSA+3VGd6Fk=;
+        fh=9wh5sZMvmY8lx7n6GniBcg4Hqzm4S7Uz2EM+rP8FjjA=;
+        b=SOmZfeReuQud6eHEMMXL0+69HhCR+Zq3G2Pnu7yootBsl+7J1To5IX8OYY+Hjfd/Pa
+         H+/hBvInO49F5kG81h9CvU4qZ5iHN9vpebiFuR1wUhP3UMhkKgaIhV7hsAvOqSnfl3Mn
+         9OCaL/XWFDiieylNxq5XbLKc4EhWF9BkaFtaoUzIhe1F4SQ22bL4FwCTjC9ao+LJAGri
+         gn74IpHurOoW9fApqcJiGL0+iqD5tkq3F2qcFjL0e+2nCJrhvz6HSqJLQkRlq6/qHFRV
+         KjDgmk8kvzrB1bAxY6Vod8smCPg4YU230bBZ/4ucJehlUi+4YyT9mqjqig67YHoPjYHC
+         owOw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785904977; x=1786509777; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2fS3CRvb6lq0Iuc+rlgHm4bS9etZncctYSA+3VGd6Fk=;
+        b=m9o3FlBaZ7qNMs9/2ywMOEGkpEVLiV4Bxu+TcyDyU7AS0C05YSklaqMHp8n3yvhPl9
+         pBJncSl4b5aRDLZPSZ7Ox7yb+zUdFt5c94GlK23uCTiYtz1asSkCY2pohWV/FsrWjEmI
+         Z0yOvy8apjq+uCw6QiV8A9AIatZFHD/XrdQdqkG3t9kW0GkpRAzpQGQ1XCymHTlFADYf
+         bS6Tc2Lp7ZYW1iGBBQgoPdYu90ANqsC7g9vfObNBsgaiDKdqccukgqDG3vJf8CjNNXGp
+         9S8ewYDN2x8Q16PAT+M9Fge04AZSISefxvD2PJSkbF0VM11l8N6Hxj+wia4FEGMs3XSd
+         achw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785904977; x=1786509777;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2fS3CRvb6lq0Iuc+rlgHm4bS9etZncctYSA+3VGd6Fk=;
+        b=Yw6oZQiEOrL4+RCMHX8xuu4Apth05sNtA1OfTHUem8iQ65Xh3dl5xXXmffLb2Mc96a
+         y2Nv54UsGBSiylhLc/PJ12auuRG0oVjgKmhx5cCtTvGuYD622u53unDzJh1hB/cuRljo
+         krRoUmAN6P+fieqljbyZlwwrz6ZCTJ/ASMrzPTUXiPn759UdiR2QxFRbZnmOaLjN0bKx
+         Y3sktaa4taxQUgGyDGzsx1tb9yS0vBiawtuLBgVmCx4lXe4ezKVoI5EUeHYJk1z64UQ1
+         M2qw+1hH7jArR/OKZxRDSZvK5MIlmYUauzXUMmzmYmYgK3leq5NmGCLVtahGjiP8Oy6a
+         8dig==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1hoXSGAefdPFtf5n3pn9OVKrYeJHCJ98I0TnAlQ8UeX99FYYrpb0ZjZ6783GHSn5FCxE39UozUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yze+Gm/yVOFDdkj68RmWnDl55qNJFUmLL6PVvhsIL7xpzig0MXE
+	6MED6dlBjUc/wCiP/BSb1uo0fe4AOsAA5I4dl4R4J98Nisvb8oPOi9m/cYVGldox+haF6RSxcWD
+	re6czqRKHctT45etUINJqMCRhhDa2RH4tszyYeQvz
+X-Gm-Gg: AR+sD12asXmmaveZWRcKK9/tDB7KjjRAFX/qPgO+wqmeKEa0mDfkOAln67epGSfJUTb
+	ogGMcnvGOu5qJ1AKvhkRqoI8wGc9O5twmU1cBVvtJeWsxUfVNITNpIQukOTVRMdimHe0QhxG6qk
+	EFam0IPf6HDs3nks/g8X4SPnGmIh2Js87D4ulWD4oPw4V5OPtdgOaCNwOmL8wbqCXjM+ymm/xIO
+	IS3cbqyByj1V5Ch938BBeV8nl2UJNtE8njtA0P/TaTiO98/+YpxJMATTIcSd7yEXZrruE8vDWCc
+	3Bww4ROgAyySLiEhgze8qOsP2BQgOiUEbq4l+xlaU0OPSpshqCIw3EnT8fjrEpmnRmPlUG4kxCe
+	xN0Rs28hTcanWIXTWpVzoAQD6Qvfc3epLAg==
+X-Received: by 2002:a05:6512:685:b0:5ae:cf5f:4a88 with SMTP id
+ 2adb3069b0e04-5b2f4f515f6mr147419e87.8.1785904976508; Tue, 04 Aug 2026
+ 21:42:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DKGNW5NWY73G.2E0EH28C37POP@nvidia.com>
+References: <20260726072935.3513996-1-souravpanda@google.com> <nuoxvxqgb453fuj5ezhjn374chawnrao53tev3wdqigpc6pfnm@q5oamexnzqdz>
+In-Reply-To: <nuoxvxqgb453fuj5ezhjn374chawnrao53tev3wdqigpc6pfnm@q5oamexnzqdz>
+From: Sourav Panda <souravpanda@google.com>
+Date: Tue, 4 Aug 2026 21:42:45 -0700
+X-Gm-Features: AUfX_mw-GmUFn6dujSkot1Lj5wsFMm0m2mFgDWsBvNUle3p6E3QAyWVH0AEGg8Y
+Message-ID: <CANruzcTm5_Znta8ySQpAXJO10EXM8Nqov+SY-ZWG_6b03BTQLg@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A29AB40007
+X-Stat-Signature: 687j5cyq8nkepk9rxuap67sf8mnfkcgk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF0A5180009
-X-Stat-Signature: tssua8qqk313gxpgrrsec4khmscizzhc
-X-HE-Tag: 1785903489-305895
-X-HE-Meta: U2FsdGVkX187SFbCK5y53Rg7veki4AT6tvdwC86TzIiuYGM2wACB2ZtB3uH5nXqSeiLCAiyvWgWss25n6pjwJaF3KMqUmMi7VhwcCaPTVvI0tG2jGXKyzyp4DOoMQLKQpslLonIVwqY5rhnsrH4wcddbliz1bNHGJgHMF0z0BSjzK3Et7oD/abm00QQCbc5LqjMeCBNcOzwjUQO8Tp7en6qLVlS0JNcfIR4+T3azemZi+2rjhiQufwlfDNRf3n10xFW7GH7GhPEFVPUvmMqeGgBYYva/z4R6FfwrLkgZm4Dl0e1tZfdgHOJnsoijLzKwQKL29xWTX4bFkk1i+0A+GGFmjuhLSL069PzgK2AlUDzR0rv+0jE9U+7oc5Wnkm7P/Bxpa0KxFnmSxbPVbzk+F3diGFFBgaKQFjrAwD9o8DYapeVV4DQWTsF230vXSnXE+5/IOc0nYq+cuF+Bxe95IhKLIgtOJe38imYwptIC+sF6T+bbluxXEWSz5u8abBEafmSIrN2eeKV4uYrw0HaXa89envEAfupWVuW3eRdgCJIS8xxdmOgeKTCxRxaQb/4+y2lYYzL2Uy8azztsyYinapZ4XF4qTmeHLVJRFH2w7mk8zeXRG1EzWuKo2M1PnxUll6kBXR7MfJhmNq813jKqKsW70mKUxxS9kfy+RZ2y964HrR+6BiNvJIcSO5/Ncgy+MhASzstrBsCcpOu+t5ExWHeays8fL5NUKHWIM3pGN5klukCTFBPYxzXZCRej2Tgj7YnoQuL1+L49sUSeSyCiKIghNGxbUQXP6RoJWdm89OuuGJYQpIOudp2fzMdj6h3l1qi1JFFyB6N5cM6BAVxhZZ/Vm0wkyLWoXx+KAX7d6b0b7Uen/PQGvtM48m3ZP3d8bgaa5C4gXN38mIDayIK+WCVjTHBFDmdmOm2PtG8vYUxNMO8cFHAiZn7rOUb6XRvsQIflJdagfCClS9KV70s
- xcZma0jO
- oe4AG70IT0G+Ivi5Y+a/zP2TdkDR4yZFK2qg4YEMZAyB6Uhr6IEXczpGO8JcLH15DmDSb2Bkl2gdYsBsnO5fdJ12aEGUb4gDvteMczclu8DVV5IKY3yWVR3lXBsbIBPKtkGeHQ/Er0U6vt40u7GqR4jDeRuK+H7YKddtXo27ENaLvhuXA5wk/DND3de7ysiiS/hMY4F0GivJ4lF6wjiOTL9U7Ob/HxOVTb7KQy6QgWCsXtu8eiDOHyi98hgJ7eH10ggeAbtHJBhhEbWZ1aMVJzVne9WjOmCN4M061XeriENAKr1Nz2iXar2fjXXmbwukbO/xWYEYWR74I0YA01vJ3aGzHxTvwmkr9CuxpiC2sf33dHMSsnOpiETcM8Vr50zAoLNZdnulUWUYaCkDt/qZul914jsaJdfuh/jlyYy2XuN6IORYUjpWRNPnouujc8bpmyKkZJVaXl9IaKGthyAQpC2SxiKh7rt+aI6E9vS44WtN+HeFVBk8lfzqBH3GQMmwCfe3FhO5zQVD6SQBAjIZraVrqk6VCd6Mu3mN02VLeruagDlQCyokpT3u7Psy3TYiubuAUYtycs37+vh4=
+X-HE-Tag: 1785904978-654151
+X-HE-Meta: U2FsdGVkX1/8SL9UxoYaCKYgkB+sPhW8jF2XeuzUuJCm1m/XK2tJaHcM8hOLYBRYmId2Iog8x1hdSwdSREDg/s1K5p80UuGdmj6mj8QG7Qu1AILjK84tHgQSd4+neK/tvKx9l6VxGYgdyjznf3NQohC0HUDRNwaD215Mrvosq6fcuwPSVRJXf56jjW60lGlklehzGbmACADk2CKs+ZBLRjYKFY9tspuqNrdkNmFgvQ0JSGzqMLoaDaSVRK3PvTUhxYv7K+eerd60l6WitYmMKMkbCB0h0d7tfyIctPPUYcMjlsqUkgqqO46HOXltwZJ8xzBtu+DcQPGR2S9RC+R00sVwbMaRIt8jqnT0lAmmx47YyezeMwFc77Y7mqJX7v7+/v/kFfKxoJEd1rEqTOePdtg8hs6v9ZejVFjYHtLs/iazCy776hivOgLtHG/TiGTvG/kgWb0qSoUI3pKf7q6ai3ja75dLMvbDIdVRp742SxQD68CIynKQ2HbBMcRaUWeeWjbDs85S4T34H6OtPX2lWJthWArt5gVGOozQo7xbv4Y2edxn6TGfLxp1TLRVa0w2QyfL+obsk5VC3ydHSwS9x93HlKEk86n4mhJcO3AZU8ZMev5/5KqJ4necwYL8d4nS6A1C0ygB9qFI7muQHTXCmbfcEVD5DfYmMR13HL2OJcA6BHqcbNXCrhV6LSigjOMHfWlglACmmAVvt/fIlr9IcvrM6S3h5/Efg8J9rnkRHDqHcSaje0nBt5GK1Anr5ihsQc1foi/8Fy1WVOWyIZ4yGK7R5/bpzcLs5jm8uS6A4U+fzcZjUekPndgY7eskiAu9wAkHQWIxFlMibcgd76qPAJObFz7+hzewFBuvLAVwiJ8islkDDRT+/pDD69IGTvzL6ok+8W4UqdxA7erDHBCYTL0Z9mQy6Out+RSFFThcxLYjGJypAImWv3pVXlHLjmtg7MBMlKSz80fKVcKXLCi
+ JD5NvRY+
+ ulfJrjz3r7GiER66zXLaxVNLxFMt9RxSVwTiDvM7uhBiHfG+Jdkv5tZanQ4yGm24hcczATweK85+1BSAS56Ggof07CwXG3TyL1ytMPNo7G0/sg52LATwKAQ3FYf3ccuHgz7IycLMjIiVGhazDVho8rAfsy1jYQ8VwReKK4wlMFYUZeW5BOIcfVRoSfkstaFRSjJRVgC3GzZd/Y0lPayx2fP3WH2vTNZd1NFx106XYSKQ4Gf81+C1WNUkDX2fuxlEfdMRy+r4TpmzMSrkJ4IYdY9cg5ChqRP7VCh6M34kzIjGNxMm6J2NlaAtnzKFHGlex9pNFNZQLE5c5ZczSr9JiMkw0ynUfDOtbB2z0H4Atapt7qnYlSmAU4DXkvHD5oxMyPmlARgfpw8aovcyGDHdFfFYYcjBSoYVtLyHdNNNZYrEN6sBVgKmudMTa/L6vV1xBW3oR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,156 +141,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
-
-On Tue, Aug 04, 2026 at 10:41:23PM -0400, Zi Yan wrote:
-> On Mon Aug 3, 2026 at 7:40 PM EDT, Gao Xiang wrote:
-> > Hi Zi,
+On Mon, Aug 3, 2026 at 2:48=E2=80=AFAM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> On Sun, Jul 26, 2026 at 07:29:34AM +0000, Sourav Panda wrote:
+> > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> > alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> > nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> > the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> > alloc_gigantic_frozen_folio().
 > >
-> > On Fri, Jul 31, 2026 at 10:13:31PM -0400, Zi Yan wrote:
-> >> erofs_onelinefolio_init/split/end() use folio->private without setting
-> >> PG_private or increase folio refcount and it works. But after PG_private is
-> >> replaced by checking folio->private in a future commit, it can break
-> >> folio_expected_ref_count(), since the folio has private data without
-> >> elevated refcount. Change it now.
-> >> 
-> >> It prepares for a future commit that removes PG_private.
-> >> 
-> >> No funtional change intended.
-> >> 
-> >> Assisted-by: Claude:claude-opus-4-8
-> >> Assisted-by: Codex:gpt-5
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >> To: Gao Xiang <xiang@kernel.org>
-> >> To: Chao Yu <chao@kernel.org>
-> >> Cc: Yue Hu <zbestahu@gmail.com>
-> >> Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
-> >> Cc: Sandeep Dhavale <dhavale@google.com>
-> >> Cc: Hongbo Li <hongbohbli@tencent.com>
-> >> Cc: Chunhai Guo <guochunhai@vivo.com>
-> >> Cc: linux-erofs@lists.ozlabs.org
-> >> Cc: linux-kernel@vger.kernel.org
+> > hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
+> > node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> > leading to a null pointer dereference kernel panic.
+>
+> node_isset() is being addded here in this change right ? OR was there
+> another path via node_isset() which could have been called on a NULL
+> valued nodemask ? Although subsequent for_each_node_mask() could do
+> the required dereference as mentioned earlier.
+>
+
+Thanks for the review, Anshuman!
+
+Sashiko [1] suggested adding node_isset(nid, *nodemask) in v1 because
+without it, hugetlb_cma_alloc_frozen_folio() could allocate from a node
+without checking whether it is actually allowed by the caller's memory
+policy / nodemask.
+
+Once we added that check, both node_isset(nid, *nodemask) and
+for_each_node_mask(node, *nodemask) became potential NULL pointer
+dereferences when nodemask is NULL.
+
+[1] https://sashiko.dev/#/patchset/20260702215713.627941-1-souravpanda@goog=
+le.com
+
+Thanks!
+Sourav
+
+
 > >
-> > It looks fine as long as PG_private flag will be removed in the
-> > follow-up patches:
+> > Fix this by checking if nodemask is NULL in
+> > hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> > node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
+> > back to any node with memory, keeping behavior consistent with
+> > alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
 > >
-> 
-> Hi Gao,
-> 
-> Sashiko spot an issue in this patch[1]. Basically, ->private can be 0 if
-> I/O completes without any issue or being dirty and it causes
-> folio_detach_private() not to folio_put(). My fix is to add a bias, 1,
-> to the counter, so that ->private stays non NULL throughout online folio
-> process. The revised patch is below. Let me know your thoughts. Thanks.
-> 
-
-Yes, that is a valid issue: ->private can be decreased to 0 without
-folio_detach_private() for a short period so a +1 bias is indeed
-a solution.
-
-The following diff looks good to me, you could use it in your next
-version.
-
-Thanks,
-Gao Xiang
-
-> [1] https://sashiko.dev/#/patchset/20260731-remove-pg_private-v1-0-142c97ba3562%40nvidia.com?part=8
-> 
-> >From d8fadd13fee03e72c03a718af65ed41927ccbcca Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Thu, 30 Jul 2026 11:04:00 -0400
-> Subject: [PATCH] erofs: use folio_attach/detach_private() instead of direct
->  assignment
-> 
-> erofs_onlinefolio_init/split/end() use folio->private without setting
-> PG_private or increasing folio refcount and it works. But after PG_private
-> is replaced by checking folio->private in a future commit, it can break
-> folio_expected_ref_count(), since the folio has private data without
-> elevated refcount. Change them to use folio_attach/detach_private().
-> 
-> Furthermore, because folio->private is used to store in-flight I/O counter
-> and the counter reaches 0 when all I/O completes successfully without error
-> or being dirty, ->private=0 causes folio_detach_private() to not drop the
-> elevated folio refcount. Solve this issue by using bias=1 for the counter,
-> so that ->private stays non NULL throughout every attach-to-detach process.
-> Add a macro EROFS_ONLINEFOLIO_BIAS=1. While at it, fix the comment about
-> ->private bit layout and add EROFS_ONLINEFOLIO_COUNT_MASK.
-> 
-> It prepares for a future commit that removes PG_private.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Gao Xiang <xiang@kernel.org>
-> To: Chao Yu <chao@kernel.org>
-> Cc: Yue Hu <zbestahu@gmail.com>
-> Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
-> Cc: Sandeep Dhavale <dhavale@google.com>
-> Cc: Hongbo Li <hongbohbli@tencent.com>
-> Cc: Chunhai Guo <guochunhai@vivo.com>
-> Cc: linux-erofs@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  fs/erofs/data.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-> index 9aa48c8d67d12..81e9dab247e0f 100644
-> --- a/fs/erofs/data.c
-> +++ b/fs/erofs/data.c
-> @@ -251,19 +251,23 @@ int erofs_map_dev(struct super_block *sb, struct erofs_map_dev *map)
->  /*
->   * bit 30: I/O error occurred on this folio
->   * bit 29: CPU has dirty data in D-cache (needs aliasing handling);
-> - * bit 0 - 29: remaining parts to complete this folio
-> + * bit 0 - 28: remaining parts to complete this folio, biased by 1 so that
-> + *	       ->private stays non-NULL while the folio is attached
->   */
->  #define EROFS_ONLINEFOLIO_EIO		30
->  #define EROFS_ONLINEFOLIO_DIRTY		29
-> +#define EROFS_ONLINEFOLIO_COUNT_MASK	(BIT(EROFS_ONLINEFOLIO_DIRTY) - 1)
-> +#define EROFS_ONLINEFOLIO_BIAS		1
->  
->  void erofs_onlinefolio_init(struct folio *folio)
->  {
->  	union {
->  		atomic_t o;
->  		void *v;
-> -	} u = { .o = ATOMIC_INIT(1) };
-> +	} u = { .o = ATOMIC_INIT(1 + EROFS_ONLINEFOLIO_BIAS) };
->  
-> -	folio->private = u.v;	/* valid only if file-backed folio is locked */
-> +	/* valid only if file-backed folio is locked */
-> +	folio_attach_private(folio, u.v);
->  }
->  
->  void erofs_onlinefolio_split(struct folio *folio)
-> @@ -277,14 +281,14 @@ void erofs_onlinefolio_end(struct folio *folio, int err, bool dirty)
->  
->  	do {
->  		orig = atomic_read((atomic_t *)&folio->private);
-> -		DBG_BUGON(orig <= 0);
-> +		DBG_BUGON((orig & EROFS_ONLINEFOLIO_COUNT_MASK) <= EROFS_ONLINEFOLIO_BIAS);
->  		v = dirty << EROFS_ONLINEFOLIO_DIRTY;
->  		v |= (orig - 1) | (!!err << EROFS_ONLINEFOLIO_EIO);
->  	} while (atomic_cmpxchg((atomic_t *)&folio->private, orig, v) != orig);
->  
-> -	if (v & (BIT(EROFS_ONLINEFOLIO_DIRTY) - 1))
-> +	if ((v & EROFS_ONLINEFOLIO_COUNT_MASK) != EROFS_ONLINEFOLIO_BIAS)
->  		return;
-> -	folio->private = 0;
-> +	folio_detach_private(folio);
->  	if (v & BIT(EROFS_ONLINEFOLIO_DIRTY))
->  		flush_dcache_folio(folio);
->  	folio_end_read(folio, !(v & BIT(EROFS_ONLINEFOLIO_EIO)));
-> -- 
-> 2.53.0
-> 
-> 
-> 
-> 
-> -- 
-> Best Regards,
-> Yan, Zi
-> 
+> > From a userspace perspective, this bug allows an unprivileged user to
+> > crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> > allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> > configured on a subset of NUMA nodes.
+> >
+> > This can be reproduced by booting a VM with two NUMA nodes, restricting
+> > CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> > hugepagesz=3D1G hugepages=3D0), and running a program that allocates a
+> > 1GB hugepage area without reserving, restricts allocation to Node 0
+> > using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> >
+> >   void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> >                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> >                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> >   unsigned long nodemask =3D 1; /* Node 0 */
+> >   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> >         sizeof(nodemask) * 8, 0);
+> >   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> >
+> > This results in a NULL pointer dereference:
+> >
+> >   BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >   #PF: supervisor read access in kernel mode
+> >   #PF: error_code(0x0000) - not-present page
+> >   Oops: Oops: 0000 [#1] SMP NOPTI
+> >   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> >   Call Trace:
+> >    <TASK>
+> >    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> >    alloc_surplus_hugetlb_folio+0x6d/0x100
+> >    alloc_hugetlb_folio+0x3c5/0x660
+> >    hugetlb_no_page+0x3d9/0x650
+> >
+> > Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepag=
+es")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sourav Panda <souravpanda@google.com>
+> > ---
+> > Changes in v4:
+> > - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach fro=
+m v3.
+> >   As Muchun Song pointed out, snapshotting cpuset_current_mems_allowed =
+does
+> >   not prevent false-positive allocation failures without complex retry =
+loops,
+> >   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() already =
+handle
+> >   NULL nodemasks safely internally.
+> > - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_folio(=
+)
+> >   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keeping
+> >   HugeTLB allocators clean and consistent.
+> > - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpa=
+nda@google.com/
+> > - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravp=
+anda@google.com/
+> > - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpa=
+nda@google.com/
+> >
+> >  mm/hugetlb_cma.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> > index 39344d6c78d8..5744de0ceeb7 100644
+> > --- a/mm/hugetlb_cma.c
+> > +++ b/mm/hugetlb_cma.c
+> > @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int ord=
+er, gfp_t gfp_mask,
+> >       if (!hugetlb_cma_size)
+> >               return NULL;
+> >
+> > -     if (hugetlb_cma[nid])
+> > +     if (!nodemask)
+> > +             nodemask =3D &node_states[N_MEMORY];
+> > +
+> > +     if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> >               page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], orde=
+r);
+> >
+> >       if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> > --
+> > 2.55.0
 
