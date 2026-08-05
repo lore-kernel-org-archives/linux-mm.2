@@ -4,104 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55CFDC55ABF
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 22:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BED5C55ABF
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 22:45:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FE696B007B; Wed,  5 Aug 2026 18:44:34 -0400 (EDT)
+	id EBFA06B0088; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF6C6B0088; Wed,  5 Aug 2026 18:44:34 -0400 (EDT)
+	id E96EF6B008A; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C5626B008A; Wed,  5 Aug 2026 18:44:34 -0400 (EDT)
+	id DD5F06B0092; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD9CD6B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 18:44:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3ECE31C0FCF
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:44:31 +0000 (UTC)
-X-FDA: 85068696342.16.2EDB943
-Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 195FD140004
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:44:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=BQbGGlUt;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=67042773c=graf@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=67042773c=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	by kanga.kvack.org (Postfix) with ESMTP id AF0AD6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 206951C0BEF
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:45:28 +0000 (UTC)
+X-FDA: 85068698736.12.E332708
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 778E540009
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:45:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of 3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785969869;
+	s=arc-20220608; t=1785969926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AqdTahBef6W+qz0ca7YQRCVOTpwpbcb4mth3B7j9O40=;
-	b=I2tn/2pATRfO9DVaQkxYxtbXB+8JjYkoRpqYUxULcOrzo08DONY4z/mj9kJDzBl/IOIAMK
-	mzj7+kcu+zNCflBp1RkjUTgm6m68UAMioauVpKO/+1CZiqldGjXWgmRDvBYfRqnaNfRPhO
-	0JoIBLl3LYyUW02vOkgTR73Tvq3TkRQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785969869;
-	b=E/pSongQPNCGGXUZvnMKTJwUa99yil26/bu+T8eSWaQafWOedsPrPIuD7O8w/Qii7L9Vko
-	fCz4FFOqf/XmtL1BoMorI2DdzL3BFjNGYoZOqZOPORdJC4VFO05RLFLsdKSC+8QVZZ3t/G
-	UMemyT7YP8DWkdJZSSRFV7m6dDdgmNU=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=DFpyOldZEHF9Yg/Zc3gaa8k23ww7akWYZmJqKRrl9dk=;
+	b=TX3XkprnEXlf1ORRDJqc8+W+QkoUvB9Rue8+H8qFJMKYG8jSGEIYm4sqeQnCa0kFemmLdp
+	FzPJa1X9Q52K/Vi/ViEk3vtU0STPxif7z5Klyz9iC9yJwLzXmI/lOiOmY+FodTJB/OTyHK
+	B4Qzl9xn+/1u1KmedeHuVPiPvOF1Q14=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=BQbGGlUt;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=67042773c=graf@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=67042773c=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1785969869; x=1817505869;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=AqdTahBef6W+qz0ca7YQRCVOTpwpbcb4mth3B7j9O40=;
-  b=BQbGGlUtkQvBOl1rds2/v6cgVrgMzRTUyy0MuKtW5maWxUuAFSpW6uxq
-   6ba8dSDoRaHqU8Ou9dHYP4ZMAXO1PixKs1eXF2eWhxYT4w8Nz2awJQS+9
-   Qi6RoaCoEUxB0mNzJj0zH/PnpDeyFCOY63VHOf+cKBRHoUQBBprCSYX+e
-   Zi+ECTZYjfi7Zwp0i9CUw+h6rH03bsVmgjhfMSohg4dF/OZpr8B3snEp5
-   o3y50+WmVGeZx8y7i7GeK2vGMl8hHNpcZteXKnKYXTtDRMc5yRQ0csduM
-   RblnTVPeTPAUDzTU+EEQIWvc4OyVDBGd4P1cMK4xZoSTK4BQgipDGuDwm
-   w==;
-X-CSE-ConnectionGUID: 1GH5ZLG8SWGFpXXvU+ZrHA==
-X-CSE-MsgGUID: sNWm2TRFS42CX80lQetBSw==
-X-IronPort-AV: E=Sophos;i="6.25,207,1779148800"; 
-   d="scan'208";a="25093037"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 22:44:25 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:7366]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.97:2525] with esmtp (Farcaster)
- id c8a4d6dc-23bf-4635-99f3-b313ad40cc71; Wed, 5 Aug 2026 22:44:24 +0000 (UTC)
-X-Farcaster-Flow-ID: c8a4d6dc-23bf-4635-99f3-b313ad40cc71
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 22:44:24 +0000
-Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 22:44:23 +0000
-From: Alexander Graf <graf@amazon.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-CC: David Hildenbrand <david@kernel.org>, Wei Yang
-	<richard.weiyang@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <nh-open-source@amazon.com>
-Subject: [PATCH] mm/mm_init: fix out-of-range first_deferred_pfn
-Date: Wed, 5 Aug 2026 22:44:21 +0000
-Message-ID: <20260805224421.15794-1-graf@amazon.com>
-X-Mailer: git-send-email 2.47.1
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of 3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785969926;
+	b=V2PXnCCAIzQpE9mpJwlzWn7wNgZFrNpVm9tLE3DgWOtKE940vpEW2O0e0tTGri95IJDm7m
+	35Vj8lnnotv0BB9OgWgs3MEIgpGWps9UOLU0WeAf8ADDMbx2aNWGmjY+bnl4FNGWskT9OM
+	pZWByBmAV8tHGA7b0+pCGg4RiJuJQlY=
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6ae41d2af58so1197223eaf.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 15:45:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785969925; x=1786574725;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DFpyOldZEHF9Yg/Zc3gaa8k23ww7akWYZmJqKRrl9dk=;
+        b=gYTusLqDmlmOlXG8EXHpF88SGrkecd9OlUH0PwwPoAN7Ib4lhp/aitIG9zaEFZtEF5
+         1ckDJh9esdWDkIzZEM/sheEelqN6ojECCfkBbzTd9twdzHVhRHw1xQ7qnhqi21+iYgRo
+         ORzMHpUkxeeRg31rg7eq7zxbU+mANvhDRiKiTscN3VM/F0kJU85+fewCDChoVpeugQm/
+         +a1+PeJFY4c3BMVcz6a8bx4dJot5Zc/w38HlQyFBnZjbU3SqumRU7TIr+calIoSrEFbd
+         EO2zphPPZVEGd0NS/kbabM1Gjd1kWANSh8z+tiKaIHe3gv2kOxzFRnDOJNmL8G5ObLW0
+         zgag==
+X-Forwarded-Encrypted: i=1; AHgh+RrhYcKAsKemWsemnPp8KzGXD8Lre8lcFzvE6/qhGr8kM4gm9cwCIfbvPcsB+BK6k4nGIkE6cV3Vmw==@kvack.org
+X-Gm-Message-State: AOJu0YwwWTxb0cKRW4Yt9Aw+kQArdTsmZQ5oEY1yivJ+JbVJIhydBku1
+	AkoZB37a6atGuYsu/kfXWgVxZu6DYUe5TRk4YEBsRaG8KjukRM8wM72TYOjkbhWwpU5wpixKXpx
+	fWeoLdVRDO5KfHG5oygJRaNc6St+Oi/OzBVH/5rvoFLqYR5ehTdlUUEETVls=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.19.99.218]
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 195FD140004
+X-Received: by 2002:a4a:ee0a:0:b0:6aa:f810:f579 with SMTP id
+ 006d021491bc7-6ae96c10190mr5678278eaf.4.1785969925419; Wed, 05 Aug 2026
+ 15:45:25 -0700 (PDT)
+Date: Wed, 05 Aug 2026 15:45:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a73bd05.5aeeccc9.207e63.0004.GAE@google.com>
+Subject: [syzbot] [mmc?] [mm?] BUG: sleeping function called from invalid
+ context in mmc_free_host
+From: syzbot <syzbot+0e06aa1bdc6495bac24b@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-mmc@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
+	ulf.hansson@linaro.org, ulfh@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 778E540009
+X-Stat-Signature: mg5bayk7mzqp8dtnn8arg8kybwu7wmy4
 X-Rspam-User: 
-X-Stat-Signature: ijjxsbiz7zb58zd9ea8omhh7oyoojrb6
-X-HE-Tag: 1785969868-266639
-X-HE-Meta: U2FsdGVkX1+Zf+OUlWZS1r9JL/jQvJno3ZG6dJNorKWrZjbo1NWoSo45T4vsSNFb/9Z0ObEe2POvyzqpZfY05tu4XZos/O8qsg2GaU+DCS3bMUSmrUQr+O/Hms+9MnhejyRKEt3hM261Xwh+aHBI2m52CV2H3WqL70LO/XSHmqJOjbxkFisj9oy30GFk/ea5r4ryVZxaJW0YtJwHyltB1m5LJPRAWXppxEJoTkiQMcGhQR8XISBmumIjLpXrf8VteARr31h+s0ajcy0y0xRm6GOzq2jbWb0FZASB+qze7Devpc0rfJxAdHhTVoJPVXm8/Wl1rtGJMAfGQXDL9BYPkD//qYgef5THFQCy6aXpKU6kvC/mTgDlF3MKEgh3zag29Ap27TeogJgAr07vBjZuKp5JtwmgMPnvvpDtD1IBava3SlaqXnmyrQ0TH0UJtyodXri/oxlVNYe+eqSe1UMa10CVWWTQ/38orCavdB3hZWi9QpXvdBv594hZRXZ08zjL0aL3SUyAbvWi+OVP5tOLb6CuwEbNXMrjn3Z0KDy9QNvWdQcZw9w+Zc6XvvRk0HCqw+XdF+pjmjxylYylqngnC6nG+bBHf16CQA6OYdp3NVl3q4fGwVkk9SD2Dp34Oo68mnp0KkKrDXdf0GshGx8Xw9ObL8H6tS/l7S8IvJfcNKM2KEcsyl4g9feXhbaoH4HiJEbJ5mb6uXtejBokwRRze10wpSB58VRqIcFU5D7Byp6PvRiVCqoSGtN9Wq+yIM402CIUa82DO77qK+qVDcLFS4cMYGajde1F3q5STLGUOnsW5IdSAQpaqK9D6F5E12vufzNgeGq14oaiev2tlZHAb+LR5Q92D8yq1ewmXpd25/egvoPiD04Rv9aBCinsuaglFEjKMuQBFcn7ZYblCkpXxrqkPO5XPfw8nvVTFfoDfaiYu6xim60B5uBC6ShlCEULZnT8oM4ZFkWpC9oLYyy
- RF9qS3hI
- euLlunHCSz9nAJTWFTBhqseU52FGKfoABOwfBM65UrfuqJFX/0KatzDR2r7NnW6jjUWvLIyvd3KiOoGbP/T9bGnq+X2kMnoHDn63h6TAVthxfTo88Nk7/zGIO+T7eu/YX9S8vo/z4o19Wf0HzxZ6gs2XRyaDCpheHo9zRGAWxsL1NLhGC4rI/L++YdUAyjbjdec37lv2QFMhEFsMQPZjuZe3+MkY4pUWN+0E5XB1kW/QJpUvdZaxC7XO+/vgg/V/TyllihT6Uj+kqR/jSeH48jw53olBViyqehE8tK8KKMnKxH67oGvyXkq0WKmrWxV7w8DA8GnhAS9H5qad+PkVU9o4gMqKXd10fKHNH/u+YbHEY8biTJFxwnoGHA0IOUwjB2MYTOO57wKe5ksJwBTyB6n5UHEe8RrjuR+Uqdv4xUTZff7n9hnFiC1UUhKV11PN5CdyGy/WpY/DtAsINtw+9FjEnjlhEODCNz2Pwz8eXXdWe1wvwae38nhry9Oz8PrtJfQKEtt89YaB3RdgCcH72D3VKfEHfgtRGdzNi1oGVfrBBfuYE7+F4UWtZsUpb0hxRmEVGrwTVoF2TExd6+FLkXAjgZahB6v8ZorkSCMjSYxFKcdQ+p4u3k/dKrGr92AgFuVQaC8WBjqTL00g61P1W8xsXn/eBZx5CHtrP4SHZ5lKDeFjIxrSMc2LNc9NU0Cck32vUMxVVRUIXW2eKt1gvqPVzknZtPfb5H+M2GtyrkA8a6t9392Z7YX27LSNEaFFtoY447lhic9mUBXymi3QhAYc/phqHpLqhD6mFz0XKCu70+2M=
+X-HE-Tag: 1785969926-141269
+X-HE-Meta: U2FsdGVkX19kVbS/ds+DMwJ++GgQNoWtK5UVdqsZYRYxIO2l5JtP8zVZfgCMyg9ekQCJ+5VYew3aQWk4g7W3b3N8P4AXyNR1SIxqDGdtyUUzDqZwB4ncEQA2JgTaVJYQMYZYq8f+9FfCkV/1ZEl8QtVqY3cmFhHY9Uj46OeGIfneYZW9rZy49pUmwwoBcmaVr++E+o6sRm9ZR0iZaQ0LIh6xSfw9sgMPZeL2aXgA19waS/YbCsA62FNJEt5mVHUmdo46VzA4TaSi6japFBkyOgRsWfghHkqZXSFkVOEXW04iEV8UoaKoh7UvCq44BJsV5Qgk82c4q9MaD4K3hJ4xeCoKMgyYCumn/nfpPiG4qOOnZMUOMSvFSzmuEaRQwz/sEiDPj65alwLaelfcG6y13CZ3i7MZ0skAic1jprmtri4iDbx6rX48+BZj/9PNuBtuVCtFgw2e+Yf46+abMruNE9hsdsOBcwOocHrXNgA2FZmemALY8WZunA4ynktlf3zKcHtOWGZNIqiQJrJIuzGWwOSnyxFglb9GAiydsbX68y6MrPSyerdK6heBnarxLS1UFiHWmg47rCUx/oON0e8EJDrlmM/GuTWA7jy9WIBAUTrpjTFMqvyVuOa6QyIHfiq5diETPIWilOV5bpWjC6vqqN7mrsCjqkLjqJJiyS9JWnQ/64bEAOifY9E/dXYLtQnQZpAg+fJp9eKNBxRQrwacI6l7XG9+E4TUt9+8KLBYQL+slGyNw7EmQ2dgYCY8TxaLdN2vX5wfyj5ROq34gdtiOoXjoJN11e1k8ZHtAXyqqiIcERj7H0C9XUOR3KWXTDVHeYhSFhJmQh9ybL01U0xQqRM/3cTonuiIFQn7nud79yA79KZUbnlo19gtbElAGOkvdjd7aMfYhQ+qdMZ2Ey/kS7bNuRMAObtr4Cm0quAisZBFiu3gT2Jv7t4ITvJDkTgMrvQOxUS85xcPLJ+3qoK
+ v8f6x60S
+ ydgKemurqrREpR69AcyybN6CLGDuFaNR1WFsCAY/AeBGj1Q7+/5jvUxcuxtWGorlb0xCSEc7yzF0q80OOdj/6+OxDQngcBloRDJMQQjNKmuYxHOyhdqKNz7QNYXDuHn32So5yQkrhWGzGLp83ktRLBNJdcjuuxYBadNE31FEiOL091XO/u2okQEeFBU6vb3atL1i1QlGAHjLagoxJxfDN1NkW9fIEjNehK0iz4skBEs904mD5ng7AXi7yiAJJZ56lo6bNeQkd76Kav/gYI4PnzU5TXt+n4X9r6VqlwHLggThUQ9xPJ9rNg+fARpdJQP3MP+c31e/m9cTW1YNE4z5XFJVLhd9uIkFcqVmTWf+oAsOyzSz0WFydAf8AQNS+k/CqGCZKqSslM7D/knWbxgnAsWOSyrSsrnKqFWzkRQc1I/iWo9TXjL1Y9IB17hB/gITjDEgqReJxCP3EiYM8ZiP6hTuTzD8I0Engt/AOjg0AUDccS+SGGJnp25F2D/EvW3daw/RSRhlmaRIEUyX+Bdt/ssGt6t6U7zyeglYVEg6G1J1t2l4hxLJ2mQMPBPgStMP+ScZyvs6ujv3pD5CVcXXGom3v4bAOF34LEPN3tMRYJTvtQvqwDvwZiTP/Fqpv0pdc4y93njEBV0iv+gzc6hIjpsFtCKl9D+LeYIX9JqL6FwtMAptTD0kI20g5RqzYZeR61WgV60WIGjMJgp4DUMsMK5wzvPyN2YMmCkq+FkJxdqqFBZ5rjK/bo5yS8CziVa6YErt50Lxg6uf3c9SRqUo+9n/3l3o7jNS++z2f/HkvKCRcs6bce0FtkD7eWc/3TbSdwCmSXaqHfIv1nTUrgZ5oO9VROPyyiAorUsHUbOH2rd9mTXVr84hdocHkq6DV/AuUxK2T6xz/n9QPuJ04pK5387GADhbFjfzxkg+r/gJW+3K3bWIa/7XWL+PNLxWlumz8M0ZtDrxCh0CUQaKTMt4DNbK8DLue
+ k2gO/B4b
+ jrgoWGqw25M1pdqFHCEp9y/VGCsYzyt1KmXh9N5xHHgwVlJEox9dmX9YDBk18touWH6UrM79WRJuapkrFYthr9BG47RmrYhfypvc4pD8oFLsihpWYgJgfewEdo5FImn1ULpVBX+fR2+AFi1v6JpPaLpS5FY8DSDrGMQCEUCrA8N9FqvTdHmPcSqP12PjuFcA8XT7Ls7pRmwkTZ34k9PwYQ6t3Rk90kP5xD8FEtcImb4KKZVCP6PwEiWM/fYOgCFaWAr5WbmIpgZgnKEdRXc7LOkLKWf38YrS+YWwXz8b6udr8AS9Mu2/uqAzGrqOr4dnRIN2JYYmeeKDqefzDGkS7/C0YI4jrtnkrirMKyJ4P2wa4II2rZ/zUDlYCrpscBKf4Mw55uyN64i0Rx///8sS4o/9ob/1u8OQ2PT82i99d02ByzOTbtMEhGvZx1xA4UNSuVe1FU0dDrc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,100 +97,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-deferred_grow_zone() initializes deferred struct pages a section at a
-time until the allocation that called into it can be satisfied, and
-records where to resume in pgdat->first_deferred_pfn.  Reserve most of
-the top zone early (a large CMA reservation is the easy way) and a single
-early allocation has to walk the whole zone instead of stopping in its
-first free section.  If that zone does not end on a section boundary, the
-pgdatinit kthread then dies:
+Hello,
 
-  kernel BUG at mm/mm_init.c:2131!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 3 UID: 0 PID: 36 Comm: pgdatinit0 Not tainted 7.2.0-rc6 #1
-  RIP: 0010:deferred_init_memmap+0x1b8/0x1c0
-  RAX: 0000000000236000 R13: 0000000000238000
-  Call Trace:
-   kthread+0xdf/0x120
-   ret_from_fork+0x187/0x250
+syzbot found the following issue on:
 
-RAX is pgdat_end_pfn(), R13 the pfn that was stored.  The loop advances
-spfn in whole PAGES_PER_SECTION steps and only tests it before entering
-an iteration, so once the walk reaches the end of a zone that ends
-mid-section the escaping spfn is SECTION_ALIGN_UP(zone_end_pfn()).
-Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk() in
-deferred_grow_zone()") dropped the clamp that used to prevent that: epfn
-came from __next_mem_pfn_range_in_zone(), since removed, which capped it
-with min(zone_end_pfn(zone), epfn), so spfn could reach zone_end_pfn but
-never pass it.  The assert is fatal either way, panicking under
-panic_on_oops and otherwise leaving page_alloc_init_late() waiting
-forever for a completion the dead kthread never reports.
+HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git://git.k..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=152c6cc6580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
+dashboard link: https://syzkaller.appspot.com/bug?extid=0e06aa1bdc6495bac24b
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=132c6cc6580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11137649580000
 
-Store ULONG_MAX once spfn has left the zone.  Nothing is left
-uninitialized: the loop covers a single gap-free interval, and because it
-only enters with spfn < zone_end_pfn() the escaping value is exactly
-SECTION_ALIGN_UP(zone_end_pfn()), which is the last_pfn that
-deferred_init_memmap() would have used for the same pfn range.  A zone
-that does end section-aligned now takes this path too and loses its
-zero-work padata job along with that node's pr_info() and the WARN_ON()
-on the next zone.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/4949138dcfef/disk-848acc8f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/31cc6fbe5b8a/vmlinux-848acc8f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/433919ca6520/bzImage-848acc8f.xz
 
-To reproduce with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y and CONFIG_CMA=y:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0e06aa1bdc6495bac24b@syzkaller.appspotmail.com
 
-  qemu-system-x86_64 -enable-kvm -m 8032M -kernel bzImage \
-      -append "nokaslr cma=4768M@0x100000000"
+BUG: sleeping function called from invalid context at kernel/workqueue.c:4487
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 0, name: swapper/1
+preempt_count: 101, expected: 0
+RCU nest depth: 0, expected: 0
+1 lock held by swapper/1/0:
+ #0: ffffc90000a08cc0 ((&vub300->inactivity_timer)){+.-.}-{0:0}, at: call_timer_fn+0xd4/0x5e0 kernel/time/timer.c:1745
+Preemption disabled at:
+[<0000000000000000>] 0x0
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x378/0x4d0 kernel/sched/core.c:9197
+ __cancel_work_sync+0x6d/0x110 kernel/workqueue.c:4487
+ mmc_free_host+0x19/0x30 drivers/mmc/core/host.c:700
+ call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
+ expire_timers kernel/time/timer.c:1799 [inline]
+ __run_timers kernel/time/timer.c:2374 [inline]
+ __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
+ run_timer_base kernel/time/timer.c:2395 [inline]
+ run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
+ handle_softirqs+0x225/0x840 kernel/softirq.c:622
+ __do_softirq kernel/softirq.c:656 [inline]
+ invoke_softirq kernel/softirq.c:496 [inline]
+ __irq_exit_rcu+0xca/0x220 kernel/softirq.c:735
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:64
+Code: ac 7e 02 e9 93 06 03 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d d3 3e 18 00 fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
+RSP: 0018:ffffc90000197e40 EFLAGS: 00000246
+RAX: 000000000005e681 RBX: ffffffff819b5450 RCX: 0000000080000001
+RDX: 0000000000000001 RSI: ffffffff8e22f174 RDI: ffffffff8c4bdd80
+RBP: ffffc90000197f10 R08: ffff8880b87338db R09: 1ffff110170e671b
+R10: dffffc0000000000 R11: ffffed10170e671c R12: 0000000000000000
+R13: 1ffff11003c56000 R14: 1ffff92000032fd0 R15: dffffc0000000000
+ arch_safe_halt arch/x86/kernel/process.c:767 [inline]
+ default_idle+0x9/0x20 arch/x86/kernel/process.c:768
+ default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:199 [inline]
+ do_idle+0x2e0/0x540 kernel/sched/idle.c:355
+ cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:454
+ start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:312
+ common_startup_64+0x13e/0x157
+ </TASK>
+ODEBUG: object ffffc90000a08a80 is NOT on stack ffffc90000190000, but annotated.
 
-Top of RAM is then 0x235ffffff, so ZONE_NORMAL ends 96 MiB into its last
-section, and less than a section stays free above the reservation once
-the early memblock allocations are done.  The walk therefore runs off the
-end of the zone and stores 0x238000.  Sweeping that free remainder from
-96M to 288M in 16M steps, an unpatched kernel dies on 7 of the 13 boots
-and a patched one on none.  On an 8 GiB cloud instance that reserves most
-of its top zone for a memory pool, roughly one boot in three panicked
-before reaching userspace.
+======================================================
+----------------
+Code disassembly (best guess):
+   0:	ac                   	lods   %ds:(%rsi),%al
+   1:	7e 02                	jle    0x5
+   3:	e9 93 06 03 00       	jmp    0x3069b
+   8:	cc                   	int3
+   9:	cc                   	int3
+   a:	cc                   	int3
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	90                   	nop
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+  16:	90                   	nop
+  17:	90                   	nop
+  18:	90                   	nop
+  19:	90                   	nop
+  1a:	90                   	nop
+  1b:	f3 0f 1e fa          	endbr64
+  1f:	66 90                	xchg   %ax,%ax
+  21:	0f 00 2d d3 3e 18 00 	verw   0x183ed3(%rip)        # 0x183efb
+  28:	fb                   	sti
+  29:	f4                   	hlt
+* 2a:	c3                   	ret <-- trapping instruction
+  2b:	cc                   	int3
+  2c:	cc                   	int3
+  2d:	cc                   	int3
+  2e:	cc                   	int3
+  2f:	cc                   	int3
+  30:	cc                   	int3
+  31:	cc                   	int3
+  32:	cc                   	int3
+  33:	cc                   	int3
+  34:	cc                   	int3
+  35:	cc                   	int3
+  36:	cc                   	int3
+  37:	cc                   	int3
+  38:	cc                   	int3
+  39:	cc                   	int3
+  3a:	cc                   	int3
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+  3e:	90                   	nop
+  3f:	90                   	nop
 
-Fixes: 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk() in deferred_grow_zone()")
-Cc: stable@vger.kernel.org
-Assisted-by: Kiro:claude-opus-5
-Signed-off-by: Alexander Graf <graf@amazon.com>
+
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Notes:
-    Applies unchanged to 6.18.y, 6.19.y, 7.0.y and 7.1.y (checked against
-    v6.18.39, v6.19.14, v7.0.14 and v7.1.4); the deferred_init_memmap_chunk()
-    signature change in cbbbf7795fc3 sits outside the hunk context, so stable
-    needs no separate backport.
-    
-    First seen on 6.18.y and 6.19-rc distribution kernels.  There is no public
-    report to link, hence no Closes: tag.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
- mm/mm_init.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 498d62c4ece3..91177be58a00 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2214,10 +2214,13 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
- 	}
- 
- 	/*
--	 * There were no pages to initialize and free which means the zone's
--	 * memory map is completely initialized.
-+	 * The loop only tests spfn before entering an iteration, so on exit it
-+	 * may point up to a section past the end of the zone.  When it does,
-+	 * the rest of the zone has already been handed to
-+	 * deferred_init_memmap_chunk() and nothing is left to initialize.
- 	 */
--	pgdat->first_deferred_pfn = nr_pages ? spfn : ULONG_MAX;
-+	pgdat->first_deferred_pfn =
-+		spfn < zone_end_pfn(zone) ? spfn : ULONG_MAX;
- 
- 	pgdat_resize_unlock(pgdat, &flags);
- 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-base-commit: 0d839570765118029aa8bf4a95444c6a11aacf85
--- 
-2.47.1
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
