@@ -4,106 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99A58C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 07:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1853C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 07:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D9946B00A3; Wed,  5 Aug 2026 03:25:43 -0400 (EDT)
+	id 76ABB6B00A6; Wed,  5 Aug 2026 03:26:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1986B00A6; Wed,  5 Aug 2026 03:25:43 -0400 (EDT)
+	id 71BC76B00A9; Wed,  5 Aug 2026 03:26:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EF1F6B00A7; Wed,  5 Aug 2026 03:25:43 -0400 (EDT)
+	id 60D6A6B00AA; Wed,  5 Aug 2026 03:26:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA226B00A3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:25:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E24EC1A035A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:25:42 +0000 (UTC)
-X-FDA: 85066380924.27.9BDD661
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 52E0E1A0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:25:41 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4BD6B00A6
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:26:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4204A03F2
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:26:43 +0000 (UTC)
+X-FDA: 85066383486.11.4A8652B
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 134421A0004
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 07:26:40 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JJAnyke/";
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785914741;
-	b=Mi0hW4/8tyiZiMS24lTP7evwwMeEtowFP/C8dorAJZhwLlo/5RE0zl6eHo38a5Me8u6GFa
-	eRpHguFIZCIETojYAdJ4n/+Fetd/13N8Fbb5DbWgRyVSWd9+zwr6a6zBP4tF52w1c1d8Tj
-	UZNz2+YnvJz1GkNBN0T96dYSaUB0vMA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JJAnyke/";
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=163.com header.s=s110527 header.b=hRK9TGUD;
+	spf=pass (imf19.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=dayou5941@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785914741;
+	s=arc-20220608; t=1785914802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2JXqpQV0NjLsf1xiQKEbDdQ70WObdlUyTlYYy/kTGrw=;
-	b=zG48rA5HwF2Q+zaRidCxIOOAuTyo8glaGiDpoxFyWa/frXdptsSkcg7R5FU9Ms3H5JYm4j
-	1yR6+yOINwPjx+He31DQJObDYY0SdFK01JONsLnjhyaRd7xKvzaDd4TQgft7A2lhmUqd8o
-	JVCGhN5A4AoQxkXjIHkWUvzIclTMUHA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C8D26600B1;
-	Wed,  5 Aug 2026 07:25:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9F31F00A3A;
-	Wed,  5 Aug 2026 07:25:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785914740;
-	bh=2JXqpQV0NjLsf1xiQKEbDdQ70WObdlUyTlYYy/kTGrw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JJAnyke/EwYDi87GOHBCKaeCVp0G7y3cs8S/wZaXXAdTXu4eFCW9jV8bXyJz0XTBp
-	 Y59DjAkbYzgJR4Xbn3ijJuOyURRlH2G5QYfD1m/Q/By9/3RR5IzjY3exP70+Lsbr+O
-	 7xfVSGK5+uj8M14+m1XFsPsZu8gb8JRzNUB5Z7Qg1W1pXWKOJocwSBn4muyILbctXe
-	 VnoyaZpBK1wGiQ/B4OBec11Pdl4X7IKTcHnM7rO1RcGST1MZrePAAZ9YROj1oivOBH
-	 kD8eT9e6sBWr4f8t9GuWcPCV7ENYta78+GVmp7jWuRUqPMnoSJc71VBYDTYD/KcwP+
-	 2Mf6eTPlQJzKA==
-Date: Wed, 5 Aug 2026 08:25:18 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 07/15] mm/rmap: track whether the page VMA mapped
- pgoff is anonymous
-Message-ID: <anLlVomkachZWbk-@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-7-e8ecfefea812@kernel.org>
- <1b48cf7d-8906-43d4-a85d-5cfad10a12ac@kernel.org>
- <anCcMvnsux22LaWU@lucifer>
- <007258ed-3fd7-4d90-b909-6fdda15e0485@kernel.org>
- <anCmQdKzZFRMqcxs@lucifer>
- <f31fbd7d-2e8d-469e-ae8d-abe5b7f6e236@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=U3wrcV0k5ZLgN4YIkNlOZPK6c/r+xRI0oP9uZc18DtY=;
+	b=j8kfR6csPSSnkJZBKY+xmh54+Gk6xzW6FspgydB/hr08HnF+pNDVnxsE84PICK6PQBDxOe
+	o1q8fOWbEzIInBCT5DUTL/ZLIKozNXWIXPSU+kebwmN44AjsuEuhaJ8FLlFz+E/5T8N0Xj
+	1E292IQqp/dlHzeL66EiGB2Y4JPbrPQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785914802;
+	b=Vmk5Jp7ziskMY9iCyHmEiKLkHquqXfkdIy8sSf3GaoPsZXeXyaUoAXd55WqtqDI9iX0nLq
+	s8h3EJXLWd3UnYebP/T2TJa0vQp7Amzx5k06ki9PVof+UUVmq2rxm3BNFZdexSfNnG54OM
+	eM6icjpJZGgdT9wRt4AJXWHY2lIHbaI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=hRK9TGUD;
+	spf=pass (imf19.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=dayou5941@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=U3
+	wrcV0k5ZLgN4YIkNlOZPK6c/r+xRI0oP9uZc18DtY=; b=hRK9TGUDUFYwWSlNvX
+	Vfq/LuomIQNXbdTld13rt4HjySi+PhGrWZZhMGar4j//Q40KeAmUT871oeQ/Pm8W
+	MfNuEI/+cLJj0t4NIkSoqrUXC7n1S+A9B9WTr5hm6wdXNkp8wXT7vpG7x8sxIgSX
+	Ih0JihXuclir3NxqN7G64zShc=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3PzWi5XJqs4gTOA--.20967S2;
+	Wed, 05 Aug 2026 15:26:27 +0800 (CST)
+From: dayou5941@163.com
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: ziy@nvidia.com,
+	linux-mm@kvack.org,
+	liyouhong <liyouhong@kylinos.cn>,
+	Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/memory-failure: fix concurrent access issue in min_order_for_split()
+Date: Wed,  5 Aug 2026 15:26:25 +0800
+Message-Id: <20260805072625.2437636-1-dayou5941@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f31fbd7d-2e8d-469e-ae8d-abe5b7f6e236@kernel.org>
-X-Rspamd-Queue-Id: 52E0E1A0007
-X-Stat-Signature: e56ipqrcmzm5zzb9zy5ioefmj6tj8oab
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3PzWi5XJqs4gTOA--.20967S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr4fKrWfGF1fXF47GrWDtwb_yoW5CryxpF
+	W7Kwn8XrZagwnF9w47Xw4DAF1Fk34kWa1UCF93CwsrA3Z8Aw1qkF47Ww4YyF4UGr48AFn7
+	tFyDXF1093Z8tr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFzuAUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC3gPYh2py5aPVGAAA3R
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 134421A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785914741-722165
-X-HE-Meta: U2FsdGVkX192fGieQjmaHfyppk4Vb3nQi/nPjYDS3FwUgjCR2Jiz5ZkacQAVu/mj25dsErKzqa7Nj22w9skI3qrGKlUgFQ+N38k8YOaSxEjbu11G/QRodGbnXYL6KYsVLrLkgqJUV1n8pCEFuEzV00xOBMO1oBva54Lz5QSOsPdCRB2Xv/4PvTUoer9LnDH/rLKnM0kEahR5ozqC6kig+ZcJMl/0XXsXn3dOZQ0YR7PkgDUOt3dcSFxLqQVKDKGtXlcyEL0GuNRqRn4jf1jW2ElqhsHStMoUHyd9kSSo7tvpp1Y8H5VKA7H3q9lkIS+8XRlFfbErtCO3RMv7gBcP73N876qMpaVY4K8lj68Bus1TG2PlaCJbYICk55g58/PlW3lBoybgbxJBWWrrsZaRTkd1Iuv4akv8W/TCf3XXZwba+vJw8YI67PpdAFC82l4vgA6TUkpjVRX54CZwThwJnbuG2gVNvVM4xHdiwtot1EnmuvvzAWuIVqCJyKsoUnEKir1EzGOrBjVPJCziVW6moNFvRpyvGOAm69hT2fvlwuiaghuQRD8UiSslq9aDACjPq2hvMpnU2rYKg+OtN8p31Un1ncWA6WbLFKQp0CKAPB5DdQUljg0YRFQrr/4XMsYTHkhju7+2WKVorauqdqSN9tjkJpa0ftS759GkvU3JHPn5mLE4ryhhu/eRSA0hxpbj+TKzsVSLqSgv/Lb8zD5/iUhAiIjTi276T5UcBMy7WTRTVTejRF5xttkctSW2YB+cwaL/1cRG+Gp0oIG3mGR2zi+oQx3WOAFguHbtbWjLPcZFJDPCYBO4sW5wxtuUixlmASBLTxGgE8x3WtmC4jKoIX+WHs7WxuaE5vXFX8nFiJgJ5njhDBj7bMiKX/iozFwCXRNJY54kbhpFBmhxxnIVu99vT9EVOjztNzfwKoK7famnyPOWirx9mlqZDt9HR0SDsuxPGvJhss66Tx3KoNH
- Rl96Bqmr
- BOHw2tvOD0ipxGMmMSK3zI/91+7Nv9/Umz6/Ylm0YGankcQm8WJjrAxkUUcLAEBd1vjFf2xW6dxJHzfsVT1VacRVvch1W4dtRICUP0hI+f+LaRIYfKHNL3tTtwEWgHLmneiRAMzkRf06nOH+1jf8YHqQXyO/OwAjOO+6oFWmPMMzgiDGZjS41ffoNu0LbhSUVMUndW3FfXqrNyj28lZTkeNaoi9s0PjT53Pc/xnqIFM2it6qBtSB2D67giBpzhfm4vWqAw3ojc4RrfFGXhlORQdxGMzU7HrVpgizbSm03gDqSIHuukSPIWscHdcEyerfGP44+CbHPsbcPfPc=
+X-Stat-Signature: friajymbjh3zyfb5y5nsie3hxzunt5rf
+X-HE-Tag: 1785914800-473314
+X-HE-Meta: U2FsdGVkX18divRomojwfVJd/wcIalq1R5JpjdkK8HkY3y61b8wuADC7VfIEcYZmIMi9wWy+vm5GGZckBAjDkccDH52hGk923tgd2wnRqiUKhl8zPs2FhKONz/dFUSk1O2jlqJoswExjL3gWcMjwR9OpR/hjF6HIKv8zPmJjzC6RXRajHXcjkOgI3NtopeOOyRl4kGpnm8vDJzBnRewafGBIIwlmEKy2+LEN42XcBshATSZ4iqy+jToaxUTv69DiF4PadkxQ6ixjUPNIvvNfwe1dKASW1h6Tx9EFsBi/H1HZn1D+1g1I2DJfKTAgAlJx5MZ6K3GUEOpvKX4Ri/H1ajIKK4Q/c6Ng+Z+9TQn/54pkHbmbW0XismmWC0Foi36P7hbbRFXcckhE1JDCAG1FBw1JnBAwUCYZAZ9P5ZxvInWuogMuD16rPtoEaJxtGzOqk+sAO7FtKAlLH6lPKIeDbaJXeq0jZWAzeSIj46ZgYoKSgqqOAP0bh5FTuPzc+ziq3y/o/pareDLQpuI2M/AGYUYqN/P/V70/qgpreKkWqwXlHrTcTvr2+ukmAUIibsS56TyN8YbGPE+QX2eB5EbdmaG+MKL5gR+qSHU7za66U0FADjzNmLqyjAfC1xmFrKY60NInkkuOl8L3D0DmZoPW3XFAEnva34LxxhddYpL4f5D3QV4RH4wIbXs8xuux0EfL6EVjDR0/01HGqBZp83aitBbnTT9bRfsxDlBKlifrZSXpxASlqD2YiBlskT5dIV/k0Z/I63pR8o3h43OeRQH1Cng2TehBOgua4NrTkPcVAZGk+RHzgvnSBAetotCY5pWGAx1SXXiIB8q6hwUwo30QYvHM25evAcA1j6Tvn6C/9gJ5lprKIOUi/FS0gpGv6BiH8ZBoOzZx7Wm1ehzXyUZLhwKPhbWCG6CNM/OLNFI4dOaVeUs90AGjPs8GWYFUOcgahpvdRJ4o63jlPlrO7mh
+ B/8tFX7b
+ ittDSh3koWGAWMCtPnCDMFWVy75al5nmEGRP2voQGqIbxhMd4RvUR/vPTlFTiuaqydlXkBqg/emGuaftGWkNSo6q1Awspywy1PJm3yFF2X8whiycXtbuRRRRjRkAm4d3Bryj+fRgZRjcQIBjyPuBkOQL3fXlBjR3+U5GvQPRjV7fmsSmpdrkmrUOUX1XmL8gAl2oTKwbzxfc9VLFAg09CtNI+Jyhbcg7cnKKYToeewqmP3oNCD39Z63PGx+piYWMxG3CgMhd77dqWPYif8PvYH2VCqpEOaNQ1S42XGFN9gOLEeupWQZp3Arj2LUS9LhJeFoETc31cHTat98Li04suJAPWW0XtrdSr4uNCkP0N8mPJfuHchJVrA5dPpD6S+4lLyO4MTbHVss1NnKTuilVb1VbpzFvzd0f8AWc1n0pWLUhh1LHcs9SBdc7KN9zvstra57J4GHBOkUPJWH6fWkrEenk07rX4v+Y7Zk5xm6LhyKeOqXumlE+RTLLRIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,42 +94,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 09:17:26AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/3/26 16:32, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 04:02:45PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/3/26 15:51, Lorenzo Stoakes (ARM) wrote:
-> >>>
-> >>> As per commit message:
-> >>>
-> >>> 	This is laying the groundwork for eventually using anonymous page offsets
-> >>> 	as the index for all anonymous folios.
-> >>>
-> >>> 	No functional change intended.
-> >>>
-> >>> I cannot enable an effective change here, because if I did I'd break the kernel
-> >>> and introduce a bisection hazard.
-> >>
-> >> You can just throw in a patch that cleans that up and avoids messing with confusing pgoff?
-> >
-> > You mean do a separate patch for this change?
-> >
-> > The existing code is already very confusing :) it becomes worse with the
-> > anon stuff added, hence the change.
-> >
-> > I will separate it out assuming this is what you mean?
->
-> Right, if the vma_address_end() is not required in this patch (and does not fall
-> under "track whether the page VMA mapped pgoff is anonymous"), just have it in a
-> separate cleanup patch "prepare vma_address_end() for further changes" etc.
+From: liyouhong <liyouhong@kylinos.cn>
 
-Cool, will do!
+min_order_for_split() accesses folio->mapping without proper
+synchronization. While the compiler typically caches the value
+in a register making a NULL deref unlikely in practice, the
+real issue is that the callers in memory-failure.c do not hold
+the folio lock at the time of the call:
 
->
-> --
-> Cheers,
->
-> David
+- memory_failure() explicitly drops the folio lock before calling
+  min_order_for_split().
+- soft_offline_in_use_page() has not yet acquired the folio lock
+  when calling min_order_for_split().
 
---
-Cheers, Lorenzo
+This means the value of folio->mapping may be modified by a
+truncate or invalidate operation while min_order_for_split() is
+executing, leading to a torn read or use of a stale mapping value.
+
+Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
+Cc: stable@vger.kernel.org
+Signed-off-by: liyouhong <liyouhong@kylinos.cn>
+---
+v2:
+- Dropped the approach of caching folio->mapping inside min_order_for_split() in favor of adding the folio lock at the callers.
+- Added VM_WARN_ON_ONCE_FOLIO() in min_order_for_split().
+- Updated the commit message to clarify that the real issue is the callers not holding the folio lock, rather than a TOCTOU race.
+v1: https://lore.kernel.org/all/20260804035828.2684059-1-dayou5941@163.com/
+
+---
+ mm/huge_memory.c    |  2 ++
+ mm/memory-failure.c | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 58cabe6af33d..e3f16dadc1d4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4300,6 +4300,8 @@ int folio_split(struct folio *folio, unsigned int new_order,
+  */
+ unsigned int min_order_for_split(struct folio *folio)
+ {
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
++
+ 	if (folio_test_anon(folio))
+ 		return 0;
+ 
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3b1e6946821b..7391524b5046 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2437,12 +2437,17 @@ int memory_failure(unsigned long pfn, int flags)
+ 		res = -EOPNOTSUPP;
+ 		goto unlock_mutex;
+ 	}
++
+ 	folio_unlock(folio);
+ 
+ 	if (folio_test_large(folio)) {
+-		const int new_order = min_order_for_split(folio);
++		const int new_order;
+ 		int err;
+ 
++		folio_lock(folio);
++		new_order = min_order_for_split(folio);
++		folio_unlock(folio);
++
+ 		/*
+ 		 * The flag must be set after the refcount is bumped
+ 		 * otherwise it may race with THP split.
+@@ -2796,8 +2801,11 @@ static int soft_offline_in_use_page(struct page *page)
+ 	};
+ 
+ 	if (!huge && folio_test_large(folio)) {
+-		const int new_order = min_order_for_split(folio);
++		const int new_order;
+ 
++		folio_lock(folio);
++		new_order = min_order_for_split(folio);
++		folio_unlock(folio);
+ 		/*
+ 		 * If new_order (target split order) is not 0, do not split the
+ 		 * folio at all to retain the still accessible large folio.
+-- 
+2.25.1
+
 
