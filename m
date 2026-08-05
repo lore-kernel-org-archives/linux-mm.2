@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12D6C55ABF
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 03:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB196C55182
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 03:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D5D6B0088; Tue,  4 Aug 2026 23:59:08 -0400 (EDT)
+	id BE2856B0092; Tue,  4 Aug 2026 23:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC6006B008A; Tue,  4 Aug 2026 23:59:08 -0400 (EDT)
+	id BB9946B0093; Tue,  4 Aug 2026 23:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5086B0092; Tue,  4 Aug 2026 23:59:08 -0400 (EDT)
+	id A82CC6B0095; Tue,  4 Aug 2026 23:59:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B7EE16B0088
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:59:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51B8C40386
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:59:08 +0000 (UTC)
-X-FDA: 85065860376.08.A302C3B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79FA46B0092
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 23:59:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B4F280346
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:59:18 +0000 (UTC)
+X-FDA: 85065860796.26.F06FC29
 Received: from lobo.ruivo.org (lobo.ruivo.org [173.14.175.98])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8925920005
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:59:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=Ltnx84Lp;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=XIyJ9w+X;
-	spf=pass (imf13.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id B0C6E1C0003
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 03:59:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ruivo.org header.s=mail header.b="j/Ns2YII";
+	dkim=pass header.d=ruivo.org header.s=mail header.b=XNkV5XPZ;
+	spf=pass (imf21.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
 	dmarc=pass (policy=reject) header.from=ruivo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785902346;
+	s=arc-20220608; t=1785902356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=o4QAi7fBeb6I9wGrT2VJ9NIYmAVe4mq/cp6pnEkzVRM=;
-	b=qAzejGCe/Uq83TK2rzdwW5Ow7tfjVeIixSqfw7hqGspfR/sAfm927mhqrtgK7X1uM82EvX
-	7IJQ6g4DQiXyYA3vyysLxsenj37zIhUnOKbcvMS/vS04oYsX7DBvp5ziuInIEHhxk4laGI
-	79jdz8OtzneEPjlZhgPNPgBTcC9vcmM=
+	bh=AhTA8RQpCp+Aez80rnIu2xxZI6Pa2Fp7Ao84Xp3OzGo=;
+	b=5n93Q7hE1WWpSHMuytAzbsVNh4pwg0s4x1DGVHXm+tkJ8Dh9r2zdAruzyBcvPUPhWQJqNy
+	ntqsJuos9gjKHnLJ54awX46P/usdMK0s2ARd8TkiwmBFEcHfa78CKkjwM/YYwGmVnjrOVF
+	BmqvY7EUlhuFP0l1OGy9N/qkncRqQn0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785902346;
-	b=O/AnshUkvu7xXGsekjkdy8V1Ag8YO6VwQtJC8mvOYY9+x7qAfzXMHcmz29Ny5Gz7t2R1z+
-	r4lsgQ6YK+Y18bvVfZ5jCIzsJzTyoEFF3+Gckcuo2HcE2x+8ZCQ5vikZoT4G5JtF2nMHNc
-	X4v0XhwXNPCNdLooo6+t0zHb+q+eSdE=
+	t=1785902356;
+	b=7usPypF89/apaJb5GW/jInEd12U485j+QpKDXj0rIpZ58pdber5xiBxj4mTV6xkmB12UtO
+	kJgnE5xT8SD9ZQlANBRWXb+SIRvJQQEpLjBh68MYKG1V7xwJCVyXiNOviBHI/JFJcy8lPQ
+	nc9oaITox8GssyHuJg5w3SpqbyA+YzY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=Ltnx84Lp;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=XIyJ9w+X;
-	spf=pass (imf13.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ruivo.org header.s=mail header.b="j/Ns2YII";
+	dkim=pass header.d=ruivo.org header.s=mail header.b=XNkV5XPZ;
+	spf=pass (imf21.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
 	dmarc=pass (policy=reject) header.from=ruivo.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
-	t=1785902345; bh=0XtezHN7lbvhYPS5ZgcLDlQAUboNr9z2+QlaNxwWf/s=;
+	t=1785902356; bh=25GNAlPD9EMD3y2co6dbm3jAj1iMOn3H+AbOO6e514I=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=Ltnx84LpCqO3/KkjZDtKR+TT1+fhVSLFxJtvofp3n9R27D/0hYRa3ejmiOga0d7yg
-	 jd2vi2me6I/n6wtLQZw3JTkyteToETz/wnWD05qNaxa4tE9l++L47rjpIjHSv8bUXs
-	 +WquGSaYfMcdT7MB8bBnMxOYqNBrO2nj0o/1u4GU=
+	b=j/Ns2YIIqx0xbC3NN541OGqfGDHyxkY88kC1JDG3sNhIq6UVFk2gsfZp6caytIENs
+	 RC5YND16Kh959gsFOAHjeJUkVJoIG/35KvthGOYFTgyXh1Our6uiofyQTBzjRsezEi
+	 eol0uVfSw1642Ef6arPfkFCc4FQbFHXvKOSTy3LA=
 Received: by lobo.ruivo.org (Postfix, from userid 1011)
-	id E40B4531D2; Tue, 04 Aug 2026 23:59:05 -0400 (EDT)
+	id 22F5652EAB; Tue, 04 Aug 2026 23:59:16 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
-	t=1785902328; bh=0XtezHN7lbvhYPS5ZgcLDlQAUboNr9z2+QlaNxwWf/s=;
+	t=1785902328; bh=25GNAlPD9EMD3y2co6dbm3jAj1iMOn3H+AbOO6e514I=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=XIyJ9w+X4l9xB7pN/KtOsPbMkBiYSCvixwT5z3XwWNmMLTwpwdZ3E3poP2SMoZuzC
-	 wfKnTo7dqkvwPn0hDXsgQzhsDjLrLOP0tY0kDSprF/KXFmU4ipKIDv0fpeljQR/l2H
-	 U/ODayVhk6GUXx74ecWOBkqDxP/8y36AbHgTo8rQ=
+	b=XNkV5XPZCh0t0S3CR/zPAHjadv6aqmT0Dj5eqj2NWxBZukFGpCJ8J2/fEfJDmoCHT
+	 uJ8bsIWbSjZONZy/fwmVg4d2xxaz5NIYI9Jc/keGP2d+njPOyi5+EBCVlhcYue//Ln
+	 LVvG18ojkcGN4rfEBAY2kpMo66gDt240198EXcRg=
 Received: from helbrecht.local (bob.qemu.ruivo [192.168.72.19])
-	by lobo.ruivo.org (Postfix) with ESMTPSA id 46C6F52E3B;
+	by lobo.ruivo.org (Postfix) with ESMTPSA id 5E79C52E45;
 	Tue, 04 Aug 2026 23:58:48 -0400 (EDT)
 Received: from aris by helbrecht.local with local (Exim 4.99.4)
 	(envelope-from <aris@ruivo.org>)
-	id 1wrSmG-00000003Qw6-0Ute;
+	id 1wrSmG-00000003Qwa-0uHy;
 	Tue, 04 Aug 2026 23:58:48 -0400
-Message-ID: <20260805035848.062492610@ruivo.org>
+Message-ID: <20260805035848.161794043@ruivo.org>
 User-Agent: quilt/0.69
-Date: Tue, 04 Aug 2026 23:58:48 -0400
+Date: Tue, 04 Aug 2026 23:58:49 -0400
 From: Aristeu Rozanski <aris@ruivo.org>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -81,18 +81,18 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jason Gunthorpe <jgg@ziepe.ca>,
  John Hubbard <jhubbard@nvidia.com>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH v2 1/2] mm: gup: move pmd_protnone() into gup_fast_pmd_leaf()
+Subject: [PATCH v2 2/2] mm: gup: cleanup the gup_fast_*() call chain
 References: <20260805035847.936054733@ruivo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8925920005
+X-Rspamd-Queue-Id: B0C6E1C0003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 5pnutziiko6ixqgz51akk7j9suxxneaj
-X-HE-Tag: 1785902346-783992
-X-HE-Meta: U2FsdGVkX19FE6S6pC0NV5MHXEar/TqRid2PvZ9OYnrbi9vSiMpPJqXj/xf8gjd8ZPKyzZkMUxRpqRroNeRAePUIQl1l0cch4MaOAte746u4Kk5hIKiLdgPNMEQvPd/2LXNDyt/GQdMABv5KLiUX+JnmPjib60lazITMoV4BX75EspEDxSYmlWlH7okmQseVOshtenIz4uhBa3AM+JrKUu5ZhJEQjFUvHhl+3Q+esR75qBSukdK15IIU4JMxTtU2uinSOWZ+pb0KsRcOetfZmuCprPrzNCkzqYwLUu1q2/03qZkAx654YljfGQ3bhH75kI53QZeOr8QBcUHTI1KLIWoFRAyfmQ9MlHrksMsL6nM5dXBA4ZQeucNYCz9rUXqOmM77abnOnqZRyhkUkp+1PvL+8865fuKmIl9DVZI/0kA2t9eTS26fj2ibM5GPsdT8M02t4NJIY7oQNxfRdd3FjMi7kocSk1eqytOZMzqnaRGEJAqs33Hchw8Vp9Mnu25BjVOQCxXArQz6ykZFbYLl+KBLlwyxpLev7Hnkuj7bm7IsJo4QgDTd42v+PJ4TxTZJ5anPDXGlmk5Q2VtR+cWLfFRylKUjgWfuI/vETu1N9M8/2YG6Bl0Rh3amoJhFTJiYE8i497rW2Q2tqJ3phjGF05oxt14J/4/OF4u5aAFuRRDp3OoJeWvqRcDlWJCKU7ocMrIU6o41kYFHgFv6H/ry3z4VSrq0va3pjCdtYvMto/bFpNQ4Tk0E4I4BWEl13hnhgRpj+/+FW3aAIc7Vq6ZJH6e1GKvSEw3h3bXDCiEv0g5AqVB8plaAVyfKmWdceqTFjqzGWcvU09fCaZFIfUycHwUanRniHggmV0igJK46NpGwwa1nof2YgIyMmhZRpNlwOZPApTj9ewc0LJFh132M8YdKhR3m7VQPN00Y2YMUk4f2ur5y5azM9Yj7UjNuCFQxLGEyUERpjqa2ENMXrhc
- VE2Se/V3
- ElpPPXHSOBHZO8AUDtNkrLIWRHFF38mg98eWxQSHLIRJvT5UkpMxvwQtfryksUhAXIk4cSnKHfrRNPG3FBszZxrsR09sJ54JZZn/bEeP5hjkc+wQY09XK7oRrF6aB/vw1GIVQ0S2yEnn8LY9xjjL6f69eAZ2w9/0YIb0xiwM6l3WU+znv9yi4+7IcjqvRkPNBdSSI4QA9B+2a6gJs0hOZAq004R6pNDrPaamV6/4K8GOhOdz+G4AwZsVzOzVW1rsnj6rv1Ki45+ZVyJjKo/xaCXr8GMpvl3XpN2u5cVVsX9oYm944UbD9NE7ErqN/AVl5G3PC7VIPRFvQBJtaLVUaNng9YCUP/NW/HFdy87tDsPEuZugOMwOrg4XjRJO6qjrxEoxO8GcKoSh6/3wg/qDu32ulzuIFfn7BZzhAUSkEU7XXI5OqTDJuVDuB+c2wHrwFAi26Iw/ppoGawoMYe3n8XMza8P1Fp3gWzqkl
+X-Stat-Signature: nb3hrn55efnidomb8dpt1tzymq4ay7p5
+X-HE-Tag: 1785902356-207147
+X-HE-Meta: U2FsdGVkX19tQ1g6pG0p0S7o95l0XVmgVYGTU826BZv+ax9z0cCAqZLnDkEfYhgHtXkEONLSY4O/GJwCRnpL3ni7tQZyJq+tggzSx5fgYvs8MF8XkZ9LPBTBW94Y4V8ZtLODw4K4xiLhximOPZqr4PEH40LhWtDsNDF8pQf/nxsg8596WJEV6n6OoH17AbHUThIUwegEWX+gDC7HFRQZBHIRhHnwkZLVEWyQK1o70VrwennqKcDPJNnC3znElWna52QI13WvJO+emmarEu2Q2/yqxP1zVO+39DDlbGpnaYQc8p3Yz13Ss/pXfRYyVnxdDqV0HpuK0uqQWh7eNRPzgaAiFU0VsZnAbEfRxs86nN8UKrHb88Ud1byFnqmA7onGIuZVvvV9gYvWc04VnMK+MX1si+44gOlasgLtlE7YiUY9suqVXGVptpNZWXR7764ubi+zCfWmC4djlJxOsKvWPHdmiJZ1CnPdbbZHIWcwTkrNWFnT4U9bmpVcv6XdccKv6wb6yZ9EtFaLhh/0Wk0APhZtxMuXvBHLfPrQpVVR1OrHh0IWKPa1vJEzdE7mglUbDTM91eVVuJmhKp1CKu0TVxXbzMKLGq0vZB0JmgAimlJcjVC8EVuLih+6IhsBE1Q9Ak/dzB009urITvcwula7n9aP0Viiyic1EcAkeEG4rRhoqKJdZ8dxITQO2d2fu99MV4qRxLlPMEmJGLdAGzyDj8JcldD9Q+5tHCPMhtCfFRzPEtUSnrR/X1KrH3KHVuuT7bbNSsaNh15ROMji7CGp38QoZAwWF3v0baihJjkCQvZJpyle5ViOp/bqEYqva5lQRfz3/D7Tfwvhw8Z9rmTkNqFnCMJOAm9WFrCsiefECSB0vxcmJHQtkUvQ6nX3TofkoyHJkDTzJGaW7538vQ8gsNCBRqO7TcvWpSJnkMAgoHkIrhsu1zEYeBzE/dhDRiK9TreCQhlTJFvtIACDWhV
+ iOI9Zao6
+ KuBLy9kubFGrrEpauY3QCfA9MJrg7xPEe4+a8bGt1l+W4+3Ea0aZzys7Igsgo9AnLOuu9pDueY6BnEBwemRVygGsoxzCXFngS1DxJmZUR6hRMhGZnhOLyazKUnqISjPDuwvL4JWqLwQqPCJ//gjhsvwuNbtE1Qci0eZoLtGWbSrGLn3DUc8V8i5ebef4i3HXJR5IZWOE7EFFyq8xwB+mgmRJOhr1cd5qfTkkBA6PmZm1sOiBjDgbUUCdBOFkgW37bgrH7SpaRfwrPymKGIvfXOX61989OjGXPQjBGkYo84ukd0e/D0QsiV8D0dWP+HYo27nxJnJHEdeInaCq4E5TnrC0w3mKGAOJg95jSCVy9t9bdPHOQAkzLK4d7jxKMtOGIeRB28ICEKqPxLSvRbYlkUeHVAQGNyZgDAMFbqd1goqWFmNz1r8GjO2Zg3h6DNasbhnOZxLdqmDwwbTGQlR8AFi+4CTlFm/APbxGo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,8 +100,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make pmd handling match pud handling by calling pmd_protnone()
-inside gup_fast_pmd_leaf().
+Refactor gup_fast functions so each step of the way returns the number of
+pages pinned. Because the previous step of the chain knows what the number
+it should be, less indicates an error. This way there's no need to pass *nr
+along.
 
 Suggested-by: David Hildenbrand <david@kernel.org>
 Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
@@ -113,32 +115,347 @@ Cc: Peter Xu <peterx@redhat.com>
 Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
 
 ---
- mm/gup.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/gup.c |  179 +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 94 insertions(+), 85 deletions(-)
 
---- a/mm/gup.c	2026-02-17 23:14:22.288234753 -0500
-+++ b/mm/gup.c	2026-02-17 23:31:36.522625385 -0500
-@@ -2929,6 +2929,10 @@ static int gup_fast_pmd_leaf(pmd_t orig,
- 	struct folio *folio;
- 	int refs;
+--- a/mm/gup.c	2026-08-03 22:08:37.484301806 -0400
++++ b/mm/gup.c	2026-08-03 23:01:02.283356460 -0400
+@@ -2826,11 +2826,11 @@ static bool gup_fast_folio_allowed(struc
+  * also check pmd here to make sure pmd doesn't change (corresponds to
+  * pmdp_collapse_flush() in the THP collapse code path).
+  */
+-static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+-	int ret = 0;
++	unsigned long nr_pages = 0;
+ 	pte_t *ptep, *ptem;
  
-+	/* See gup_fast_pte_range() */
-+	if (pmd_protnone(orig))
-+		return 0;
-+
- 	if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
+ 	ptem = ptep = pte_offset_map(&pmd, addr);
+@@ -2892,15 +2892,13 @@ static int gup_fast_pte_range(pmd_t pmd,
+ 			goto pte_unmap;
+ 		}
+ 		folio_set_referenced(folio);
+-		pages[*nr] = page;
+-		(*nr)++;
++		pages[nr_pages] = page;
++		nr_pages++;
+ 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+ 
+-	ret = 1;
+-
+ pte_unmap:
+ 	pte_unmap(ptem);
+-	return ret;
++	return nr_pages;
+ }
+ #else
+ 
+@@ -2913,21 +2911,21 @@ pte_unmap:
+  * get_user_pages_fast_only implementation that can pin pages. Thus it's still
+  * useful to have gup_fast_pmd_leaf even if we can't operate on ptes.
+  */
+-static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+ 	return 0;
+ }
+ #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
+ 
+-static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+ 	struct page *page;
+ 	struct folio *folio;
+-	int refs;
++	unsigned long nr_pages, i;
+ 
+ 	/* See gup_fast_pte_range() */
+ 	if (pmd_protnone(orig))
+@@ -2939,42 +2937,40 @@ static int gup_fast_pmd_leaf(pmd_t orig,
+ 	if (pmd_special(orig))
  		return 0;
  
-@@ -3024,10 +3028,6 @@ static int gup_fast_pmd_range(pud_t *pud
- 			return 0;
+-	refs = (end - addr) >> PAGE_SHIFT;
++	nr_pages = (end - addr) >> PAGE_SHIFT;
+ 	page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+ 
+-	folio = try_grab_folio_fast(page, refs, flags);
++	folio = try_grab_folio_fast(page, nr_pages, flags);
+ 	if (!folio)
+ 		return 0;
+ 
+ 	if (unlikely(pmd_val(orig) != pmd_val(pmdp_get_lockless(pmdp)))) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 
+ 	if (!gup_fast_folio_allowed(folio, flags)) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 	if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 
+-	pages += *nr;
+-	*nr += refs;
+-	for (; refs; refs--)
++	for (i = 0; i < nr_pages; i++)
+ 		*(pages++) = page++;
+ 	folio_set_referenced(folio);
+-	return 1;
++	return nr_pages;
+ }
+ 
+-static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+ 	struct page *page;
+ 	struct folio *folio;
+-	int refs;
++	unsigned long nr_pages, i;
+ 
+ 	if (!pud_access_permitted(orig, flags & FOLL_WRITE))
+ 		return 0;
+@@ -2982,41 +2978,39 @@ static int gup_fast_pud_leaf(pud_t orig,
+ 	if (pud_special(orig))
+ 		return 0;
+ 
+-	refs = (end - addr) >> PAGE_SHIFT;
++	nr_pages = (end - addr) >> PAGE_SHIFT;
+ 	page = pud_page(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+ 
+-	folio = try_grab_folio_fast(page, refs, flags);
++	folio = try_grab_folio_fast(page, nr_pages, flags);
+ 	if (!folio)
+ 		return 0;
+ 
+ 	if (unlikely(pud_val(orig) != pud_val(pudp_get(pudp)))) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 
+ 	if (!gup_fast_folio_allowed(folio, flags)) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 
+ 	if (!pud_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+-		gup_put_folio(folio, refs, flags);
++		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+ 
+-	pages += *nr;
+-	*nr += refs;
+-	for (; refs; refs--)
++	for (i = 0; i < nr_pages; i++)
+ 		*(pages++) = page++;
+ 	folio_set_referenced(folio);
+-	return 1;
++	return nr_pages;
+ }
+ 
+-static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pmd_range(pud_t *pudp, pud_t pud,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+-	unsigned long next;
++	unsigned long next, nr_pages, chunk_nr_pages;
+ 	pmd_t *pmdp;
+ 
+ 	pmdp = pmd_offset_lockless(pudp, pud, addr);
+@@ -3025,26 +3019,30 @@ static int gup_fast_pmd_range(pud_t *pud
+ 
+ 		next = pmd_addr_end(addr, end);
+ 		if (!pmd_present(pmd))
+-			return 0;
++			break;
  
  		if (unlikely(pmd_leaf(pmd))) {
--			/* See gup_fast_pte_range() */
--			if (pmd_protnone(pmd))
+-			if (!gup_fast_pmd_leaf(pmd, pmdp, addr, next, flags,
+-				pages, nr))
 -				return 0;
 -
- 			if (!gup_fast_pmd_leaf(pmd, pmdp, addr, next, flags,
- 				pages, nr))
- 				return 0;
+-		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
+-					       pages, nr))
+-			return 0;
++			chunk_nr_pages = gup_fast_pmd_leaf(pmd, pmdp, addr,
++							   next, flags,
++							   &pages[nr_pages]);
++
++		} else
++			chunk_nr_pages = gup_fast_pte_range(pmd, pmdp, addr,
++							    next, flags,
++							    &pages[nr_pages]);
++		nr_pages += chunk_nr_pages;
++		if (chunk_nr_pages != (next - addr) >> PAGE_SHIFT)
++			break;
+ 	} while (pmdp++, addr = next, addr != end);
+ 
+-	return 1;
++	return nr_pages;
+ }
+ 
+-static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d,
++		unsigned long addr, unsigned long end,
++		unsigned int flags, struct page **pages)
+ {
+-	unsigned long next;
++	unsigned long next, nr_pages = 0, chunk_nr_pages;
+ 	pud_t *pudp;
+ 
+ 	pudp = pud_offset_lockless(p4dp, p4d, addr);
+@@ -3053,24 +3051,27 @@ static int gup_fast_pud_range(p4d_t *p4d
+ 
+ 		next = pud_addr_end(addr, end);
+ 		if (unlikely(!pud_present(pud)))
+-			return 0;
+-		if (unlikely(pud_leaf(pud))) {
+-			if (!gup_fast_pud_leaf(pud, pudp, addr, next, flags,
+-					       pages, nr))
+-				return 0;
+-		} else if (!gup_fast_pmd_range(pudp, pud, addr, next, flags,
+-					       pages, nr))
+-			return 0;
++			break;
++		if (unlikely(pud_leaf(pud)))
++			chunk_nr_pages = gup_fast_pud_leaf(pud, pudp, addr,
++							   next, flags,
++							   &pages[nr_pages]);
++		else
++			chunk_nr_pages = gup_fast_pmd_range(pudp, pud, addr,
++							    next, flags,
++							    &pages[nr_pages]);
++		nr_pages += chunk_nr_pages;
++		if (chunk_nr_pages != (next - addr) >> PAGE_SHIFT)
++			break;
+ 	} while (pudp++, addr = next, addr != end);
+ 
+-	return 1;
++	return nr_pages;
+ }
+ 
+-static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
+-		unsigned long end, unsigned int flags, struct page **pages,
+-		int *nr)
++static unsigned long gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
++		unsigned long end, unsigned int flags, struct page **pages)
+ {
+-	unsigned long next;
++	unsigned long next, nr_pages = 0, chunk_nr_pages;
+ 	p4d_t *p4dp;
+ 
+ 	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
+@@ -3079,20 +3080,23 @@ static int gup_fast_p4d_range(pgd_t *pgd
+ 
+ 		next = p4d_addr_end(addr, end);
+ 		if (!p4d_present(p4d))
+-			return 0;
++			break;
+ 		BUILD_BUG_ON(p4d_leaf(p4d));
+-		if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
+-					pages, nr))
+-			return 0;
++		chunk_nr_pages = gup_fast_pud_range(p4dp, p4d, addr, next,
++						    flags, &pages[nr_pages]);
++		nr_pages += chunk_nr_pages;
++		if (chunk_nr_pages != (next - addr) >> PAGE_SHIFT)
++			break;
+ 	} while (p4dp++, addr = next, addr != end);
+ 
+-	return 1;
++	return nr_pages;
+ }
+ 
+-static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
+-		unsigned int flags, struct page **pages, int *nr)
++static unsigned long gup_fast_pgd_range(unsigned long addr,
++		unsigned long end, unsigned int flags,
++		struct page **pages)
+ {
+-	unsigned long next;
++	unsigned long next, nr_pages = 0, chunk_nr_pages;
+ 	pgd_t *pgdp;
+ 
+ 	pgdp = pgd_offset(current->mm, addr);
+@@ -3101,17 +3105,23 @@ static void gup_fast_pgd_range(unsigned
+ 
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none(pgd))
+-			return;
++			break;
+ 		BUILD_BUG_ON(pgd_leaf(pgd));
+-		if (!gup_fast_p4d_range(pgdp, pgd, addr, next, flags,
+-					pages, nr))
+-			return;
++		chunk_nr_pages = gup_fast_p4d_range(pgdp, pgd, addr, next,
++						    flags, &pages[nr_pages]);
++		nr_pages += chunk_nr_pages;
++		if (chunk_nr_pages != (next - addr) >> PAGE_SHIFT)
++			break;
+ 	} while (pgdp++, addr = next, addr != end);
++
++	return nr_pages;
+ }
+ #else
+-static inline void gup_fast_pgd_range(unsigned long addr, unsigned long end,
+-		unsigned int flags, struct page **pages, int *nr)
++static inline unsigned long gup_fast_pgd_range(unsigned long addr,
++		unsigned long end, unsigned int flags,
++		struct page **pages)
+ {
++	return 0;
+ }
+ #endif /* CONFIG_HAVE_GUP_FAST */
+ 
+@@ -3129,8 +3139,7 @@ static bool gup_fast_permitted(unsigned
+ static unsigned long gup_fast(unsigned long start, unsigned long end,
+ 		unsigned int gup_flags, struct page **pages)
+ {
+-	unsigned long flags;
+-	int nr_pinned = 0;
++	unsigned long flags, nr_pinned;
+ 	unsigned seq;
+ 
+ 	if (!IS_ENABLED(CONFIG_HAVE_GUP_FAST) ||
+@@ -3154,7 +3163,7 @@ static unsigned long gup_fast(unsigned l
+ 	 * that come from callers of tlb_remove_table_sync_one().
+ 	 */
+ 	local_irq_save(flags);
+-	gup_fast_pgd_range(start, end, gup_flags, pages, &nr_pinned);
++	nr_pinned = gup_fast_pgd_range(start, end, gup_flags, pages);
+ 	local_irq_restore(flags);
+ 
+ 	/*
 
 
