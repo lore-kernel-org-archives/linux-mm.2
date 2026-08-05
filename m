@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F8CC56201
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A4CC56201
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5772B6B0093; Wed,  5 Aug 2026 06:42:10 -0400 (EDT)
+	id 6628F6B009B; Wed,  5 Aug 2026 06:42:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52B086B009B; Wed,  5 Aug 2026 06:42:10 -0400 (EDT)
+	id 63AA96B00A0; Wed,  5 Aug 2026 06:42:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418566B009E; Wed,  5 Aug 2026 06:42:10 -0400 (EDT)
+	id 552286B00A1; Wed,  5 Aug 2026 06:42:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 057E96B0093
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:42:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 643CE120424
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:09 +0000 (UTC)
-X-FDA: 85066875978.11.B0A465B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9F50DA0008
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAvR95RI;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FE686B009B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:42:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 129C2803FD
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:28 +0000 (UTC)
+X-FDA: 85066876776.06.C44A843
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 094B412000D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ai1MPx4+;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785926527;
+	s=arc-20220608; t=1785926546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wRDF1mhbIufLQkNvACHtHyLl20FTi2l1DXvG2VDWt8o=;
-	b=hChBeKYmj/YerpdmgC/WJKvwhw0UjYf2GB6T5NwKjy6o39oGAqARrT0EhMVfkG6IL/VNhr
-	NULTrPTminapflzqzQXhVDhAY017p2N00fV6gxmw15ybwIheVWolbFWzbHKVFKG1cJ+DaW
-	INT/Up7VF/DNWsLZNDFksITy+Ya7UJA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785926527;
-	b=IWr0vG+nvh23R75zyDJQJ0YnWPaezpt/2uS+d/bGi1yVM16GXpIivv8m00COX0rAdBQi8l
-	GCLIZUICn/Bq0E8sh+Qhn7X0n24qrbov77QCEBbXIintdV13yHGEUAwCsF326dn9nbPrg+
-	7TuiIIHbTRlphR7UNn5EJKS+wcMU92Q=
+	bh=Q4K8KezGj1uNtUBla4Um/QhzlQ9Qk/rg7DVPoMDL72Q=;
+	b=UhhmFE/ztZSsjL9gRagmHm9/u6cGRL2yfT5zwOtu3dUKAlo4GNqhqBRmlsaSqknwdoNA+9
+	bviBt+/G/DbNMOc8k/4K6BS8sOg8pnJANhEtRrdfXTQRU7lqY2KmVyx+0XNS3qnFOnNoCJ
+	17ck3YAxo02vp8OJqFkwsrVUeuWCpAE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAvR95RI;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9114B45379;
-	Wed,  5 Aug 2026 10:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47F51F000E9;
-	Wed,  5 Aug 2026 10:42:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785926523;
-	bh=wRDF1mhbIufLQkNvACHtHyLl20FTi2l1DXvG2VDWt8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aAvR95RIJiKW62G7z8/H3teFaJ6eqeq/fhV8PW9UFRLZEYjM05xk5/3+82CAkT+AV
-	 aRFL/Gvv0OjCMCMmgdBuu+4eamJRkG5en0zIAzmmErFTm5tUuxAKnphtUdkQoUl8o/
-	 b+c2JwLodMiHbtWnINP5yVQ2vJV9ps9SZ8drYlay8MMH8cLb+mC/8V6FXKi7F0SMun
-	 G2ifAwIj4Xem3RRBO4l1CbGOJegJDR+PS9mjAgtVarw3Va7ld7XbqZGb0BgJnBA0hF
-	 wHazsXXA8CC3WV1tBLa1Z0UpGVmce6pbWK1mmA8p2M4dbmLX+bRMgrOIBziEM1b0+q
-	 joSJCiamNlEvQ==
-Date: Wed, 5 Aug 2026 11:41:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@kernel.org>, 
-	Alex Williamson <alex.williamson@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-Message-ID: <anL-NZkNMSSxN0YN@lucifer>
-References: <20260805055544.1568534-1-clg@redhat.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ai1MPx4+;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785926546;
+	b=u36y5CfzC/IEQEwR0TKjsf4thU4OZJa2o5av3A85nsObmFdYXN3tHNIrfN1oQgX1a+7NrM
+	EpOYvNTfkevIBlPDOdqm0SEeXiLlPxv2vopBIbhAauT+eneWp+89t6MilTMrLoW4H6Txm8
+	RTS6Lw2pYNWOj9UKCVhQtKs7KUxHmD8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA2D2153B;
+	Wed,  5 Aug 2026 03:42:20 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E9F63F632;
+	Wed,  5 Aug 2026 03:42:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785926544; bh=dLnCHFABrcZb/4lMb8OKip2XrApMrTNt9jLEKjSti1o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ai1MPx4+Ir9VhFeH2HWxjevL9kszGJ6grspTTZUKC4wtSs46+DRMHe7SevW8UESlp
+	 nEm2r4W4I9DKOG0PZ90sfhgLuvCLZGB6e8v5MNNQqPMOIVLQnZJ/pyE+ZB356so1Ga
+	 R5xoG9ECl/ieCh3WindUP/tPTEQ7Blav4otAFLv8=
+Date: Wed, 5 Aug 2026 16:12:21 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] mm: add basic PTE const type-safety
+Message-ID: <a5afofuxhzwkeb76jdheottyxt4mms3arg2iucunztczbmd3lf@wiqp7yccjzlt>
+References: <20260803164400.531199-1-pfalcato@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260805055544.1568534-1-clg@redhat.com>
-X-Rspamd-Queue-Id: 9F50DA0008
-X-Rspamd-Server: rspam10
+In-Reply-To: <20260803164400.531199-1-pfalcato@suse.de>
 X-Rspam-User: 
-X-Stat-Signature: jxxk9yghz961obozdgice78f8in65cq9
-X-HE-Tag: 1785926527-385771
-X-HE-Meta: U2FsdGVkX1/qN0/7c1vq77Kvw1+BBh/Sym+0tHxDBd9hGptCZoinlQhf6Aqrbva9QNXnlbyAm6mqxP08w4qH/Wlyv0yJjwia/spAABG4jezzFoDwzFUq7AVP2Nc06uWZ16PfdSVrLYgoZ7oLPvbpxJaqyFzf/S4l8nNrsDzF7X4o6wDfr84ZtnxKgbgx5viypEuKDUp8WPHdo75Y7qSSLou1WOvCue2MucetrimkOG0kpr92PnB+Vjxxgx+2CSFqVul+qOjLyil6TD4yfFkKnrplYPlb0SYVaaZtB9Ths6LF3RMcey+m5vnpMpazXQ3Jvkjd97ROUx4E2O2oSQVbxpLuRFtz3ZtZ8cO5FH/7OVS1m4FcGuZtzbhQc9wjtAK7b3e3z6kZnCc26Ezg2IgGy2ErZ4oFLuh1DWpT03iAs7ugD5uaCbJ49C+v0MLVtuO9FOSYORK/y14JFghY6Lbvh9BZafjhSx3v/2jQbdub27Kb0FujA9FU1dim8+IGSl58O+InZ3TOLRkBQ2zHVc2cKIjk9otXpFQFG7omrUjAQJnhrUfDmZU1YNPp8IgP9jmX342BSayvB+vHrKzMzzUEPvWRqP3PJuPu35eEYfYT48DpQYeSftAe0Fvgf83d2ACBKfWNfRRf+c6CbUqQcBCGbx54pQjH3VYxDL7jMkJ9KXQaSDmQtdt5RT6Ng5Bj7AN32fzca+lVtOBjqUq6HDBZSkDplQaN/M2Q0KfT23GY2WeqsfbLmhgkiKXXdFzCiphLYsZMfRHf82w2PZA7db/yhEYX4kFqYgMh9vg8TMK17zK4bubOM7n5rCDDVvZnTxFZ/tcOES+tBtr3DYXstLMiyW1/QsiyxsB9F3EdyvJNkpsNCo4K1w+pckDc2YdXnaAav24c42n1ES/seAdNoShq2rjqYQi9P7Ot8+LJxUoHWWoukL2/4X1LxMlPI5LMskdLNJ7dh7XXmmjC/86vLZy
- 0ZV2ta95
- RwVOto8grq1GL8CN4C8rSqeZADkGfHC516fI1VPqCTAbSBwr3p6OXUEMPu09YQUVy5G5cgwvUgRv8pc00aB4W+mgEopRfVZ4juGTIKDQU2TXqLa+d5YtZ4CEVcP/hd7fdRn2djkeiTirXjiejJ5vW8Er/WPTaMyK8F5mS2CrUUPeuz0T6ZhlDtp/U7Yqd0y+pcuDBlbbj0Y0mnRriYZdx2GW1zE2yuzCus+gsbqJR7LVszI7J6ugw/uraXuH69tZHXWiuXGHJ+rlvmbokQk7tFnz5mEWdvcGCCZbJesTKxKfKUvtEtoJk0wrpNpZWza0v/jcHyhXwONmoC8rrB4Mey/zUi0mtNcL5/PIpZ18vFqZWL4aQHX4w+Q5EeY/C8I1GS8rVL02pKNQMqyGLJhkm8aUi7cpWwpZkKQcOjwtu5VZ4HU/DEwHQl4TqWkvBG/bLE32uZAyYLaK1Two=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 094B412000D
+X-Stat-Signature: u6kxj811znbzqgioj4pwj45ke66sx7wj
+X-HE-Tag: 1785926545-618822
+X-HE-Meta: U2FsdGVkX1+L4NSZNOzMkXs07cXeUBavWpS42vJP80E2xN1nWF+H2rAnKYRPaM9QL5ChTjpfVDPzEs3rWYNuy5BiMBQPMgzVMfLB/i6aKzCa0VxJs1KFH3XRjvF65gJhcqu9TZLR+k6E9i+GLwhlQvpuPRIYaZhrCRS0AwgkvHrKLrPk5aY7cWBrkpF4ru+yOlKT+ytHkHUj0mDfxwsW2Z84Qj7gtDrQ6OItLUV7ScWsH3A+MoqXcS/zuOSr47Q5fpa2Mdqh8IrtiteRvvdqBvmYo6T5d4D/CcT+u5L0V7YHplJtLTlj5XZ+jqBtXTnNVGQvI1FukXwSmZ/IU1qpGXblU8XkMY1zSNFouoGwkO5ZycT9BQ268+hZt0rTnA+vQsn59d3LsGT2OjtrdGZ51ygCcBhh3pLMqlL8CNMqu2J8OcwagvMn2spzWg10AM5bqpYkvHCdPpSREoUsU4DbM3LOcjKnj9WVdz6c0MeHIRiAkXFjniDvoO2gLpn0U7eM5IlN+hFzSJ8uOQ6DNbi3jt2Fta+nUvuKNto+1pNwT9tbHGIo0gBJDzCq6o4dZFUD+SaSxd8UACUr01KYBhhLO5oVAvjmhytl6yLV0YGgRajxMgqfE+IZZSGk8PIoJpv/g9gnnfIynuXl9WEo5+lCAZSssVOBr+sb2hJ+rsIyiwsFIVaVzYRuhZGyexVwfPsvWpKitFBajFiJenvKWwQmRqIMReErFT0ndA/PNyGOzW/mFlHS1yWvKr0Hd2ftomYNYHmnpbMCPbCWy3CpPUZku+JZ0QNOy2lLdlmdOobtovwXCYz861eVr7IDHEve7imuxvljC0AVqP5Gi59rcEQ6G4seeO4U3ijccDMK/lmYb2bXF10MBB4m6jht4+K54H8Y4BwyEdEMH+kAejbVZ/CrT3ZFR4gG8w82siO6aXNRWRohvZKg/Rk1KpxwPy7kvISxfmFy/HnyJiFtWk0cMj/
+ gp1S7T4x
+ scg7Y8v3ABeS+L9GLbRI/qIaacrJyMvKW4LTm6C2s7XXbNPFZq6/ZtxDEAd56t+USHe3racbCW7DPIIPmZy3MrKddVZ0d36ZcCIIro0vEDuBIEnl/dTMyIUg8M1njBCvwd6fnZCuZ9TswOYh4Xw85NksXijDNzfchlGQcCmFJTHodR6Hgvkr2Mqz1kL0qsS3vmaHonOYEMW8N0fo1ZhZf5pmyrOGME5o78H5y17hTgGuctS/nu0cS+5GDNLXHSrLrSHzPZ42irL+lRvmO2AU0acPnemO11zHufBoXgg+tFeSKmqotYr2kmXD1guYZoDRr93zggc+x7Y0nbvk6373OorBsyWHgZpKwb6NrqdFbArJh2E1ty0MlOkig9lekY+u1F+Rz5S3syfPRcS2C3UyZnb+pNtBwvGQYtlqs2WRuMOQQb7ozW0hAQWhDR+kXvYx6y6YnS5HSeMKl5GrAjVbcJ2TEGBzimhAGj9LSO9xwEXRyo3DgVSDxMLSSBXJXfgaHC3sk9ZHoO/e/Wcb6OUwhVxgIY6r8WFA67G7sTZ5hkFrnTKpuSj6xgOnNOVOdbMk0HNxbAU/e62iSXW5TtPQeQEFIhxtsnbzBmKlqLSuYaxuKVwXp9Bhr3DWRfiOABzCxvOwdae751EfmE4dXfOXKB/ilEKM65GZjUp1OjWiTV5KPUxjM605pGOex+E+zIYf1di+yf4bqw6OqRV91bU9K6xVM03LCff7IoB0/c/XssQzsYyLTU4QG1ON6raA/L4csMztZ2lxBsWE1Wo9DBPyA2pntcEl2cDCs/5M7h/T+zlauiP9lZQq25W09BAo10pfphoCjsPHVNnXOd3Emrl3B7xVnHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,203 +100,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 07:55:40AM +0200, Cédric Le Goater wrote:
-> From: Cedric Le Goater <clg@redhat.com>
->
-> The global THP sysfs policy (transparent_hugepage=never/madvise/always)
-> gates the huge fault dispatch path in __thp_vma_allowable_orders() for
-> all non-anonymous VMAs, including PFN-mapped device BARs (VM_PFNMAP).
->
-> DAX VMAs already bypass this check via an early return:
->
-> 	if (vma_is_dax(vma))
-> 		return in_pf ? orders : 0;
->
-> But "special huge" VMAs -- identified by vma_is_special_huge() -- do not
-> get this early return, even though they share the same fundamental
-> property: they map physical addresses directly into page tables and
-> involve no memory allocation, no compaction, no splitting, and no
-> reclaim. The THP policy has no meaningful effect on them.
+On Mon, Aug 03, 2026 at 05:43:54PM +0100, Pedro Falcato wrote:
+> Since forever, MM code has thrown pte_t * around with no concern for const
+> safety, or typesafety of any kind. This is confusing. Attempt to address it
+> by:
+> 1) Making sure pte_get*() helpers can cope with const pte_t * arguments
+> 2) Constifying the pte_offset_map_ro_nolock() return type, which by definition
+> already pledges that users will not write to it.
+> 
+> These two simple steps were already able to uncover code smell from
+> khugepaged + do_swap_page().
+> 
+> Separate steps could include introducing pte_offset_map_ro_lock() for more
+> widespread usage of this.
+> 
+> Benefits of this include less confusion and better type-safety. It could also
+> futurely aid in efforts such as [0] which may want semantic annotation of these
+> accesses.
+> 
+> Based on mm-unstable and compile-tested on a handful of architectures.
+> 
+> No functional changes intended.
 
-Re: allocation that's not true - vma_is_special_huge() returns true
-for !dax PFN/mixed maps, and mixed maps can absolutely have allocated
-memory in them however obviously they are not rmappable, nor subject to THP
-in the usual way).
+Even though the pte accesses should always be type-safe, this series does
+not really address the problem completely and instead changes things only
+for a small set of pte access sites. So just wondering how much beneficial
+this series really is ?
 
-In general I think this patch description is misleading.
-
-Page faults are gated on the THP tunables on purpose with DAX being
-specifically excluded because it's statically allocated.
-
-So you're asking for a _policy_ change and it's far too broad - now you're
-saying all PFN and mixed mappings (regardless of whether they implement
-.huge_fault) should _ignore_ THP tunables, while citing one specific case.
-
-It's in any case as specified seems far too wide.
-
-So at the very least this should instead check .huge_fault.
-
-But we are _explicitly_ disallowing .huge_fault page fault if the policy
-doesn't enable it.
-
-So really I think this should be instead - 'is PFN map and .huge_fault'.
-
-But it shouldn't be done here, see below.
-
->
-> This matters for VFIO PCI passthrough of large-BAR devices such as
-> NVIDIA H200 NVL GPUs (256 GB BAR each). The VFIO driver registers a
-> .huge_fault handler (vfio_pci_mmap_huge_fault) that dispatches to
-> vmf_insert_pfn_pmd/pud, and QEMU's vfio_region_mmap() aligns the BAR
-> mappings for huge page table entries. Both prerequisites are met, but
-> with THP=never or THP=madvise, __thp_vma_allowable_orders() returns 0
-> before reaching the "trust huge_fault handlers" code.
-
-Yikes...
-
->
-> The result: each 256 GB BAR is mapped at 4 KiB granularity -- 67 million
-> page faults per GPU instead of a few thousand PMD/PUD faults. On hosts
-> with 8 GPUs (2 TB of BAR space), this causes VM boot times to degrade
-> severely, with 99.98% of CPU time spent in the VFIO BAR mapping path.
-
-Yeah but the users explicitly disable THP.
-
-It is wonky that we have huge folio support and THP support... but
-.huge_fault is explicitly a THP thing (at least for now).
-
-But OTOH it seems the huge PFN map series should have addressed this.
-
->
-> Configurations that trigger this:
->   - transparent_hugepage=never on the kernel command line
->   - The tuned cpu-partitioning profile (inherits network-latency, which
->     sets transparent_hugepages=never via sysfs)
->   - transparent_hugepage=madvise (the RHEL default), since VFIO VMAs
->     lack VM_HUGEPAGE and QEMU does not call madvise(MADV_HUGEPAGE) on
->     BAR mmap regions
->
-> Extend the existing DAX early return to also cover vma_is_special_huge()
-> VMAs. This is consistent with how vma_is_special_huge() is already
-> treated for supported_orders (grouped with DAX). The mm/Kconfig TODO
-> comment "Allow to be enabled without THP" also acknowledges this
-> coupling is wrong.
->
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
+> 
+> [CC list editorially trimmed for brevity reasons; apologies if you're not on it]
+> 
+> Link: https://lore.kernel.org/linux-mm/20260526-kpkeys-v8-0-eaaacdacc67c@arm.com/#t [0]
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
 > Cc: Zi Yan <ziy@nvidia.com>
-> Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4
-> Signed-off-by: Cedric Le Goater <clg@redhat.com>
-> ---
->  mm/huge_memory.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 58cabe6af33d031e48250e21db51506bc46c97b2..6dfef5500a054f09f9ece6df8bf7a0194624350f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -139,8 +139,12 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_collapse))
->  		return 0;
->
-> -	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
-> -	if (vma_is_dax(vma))
-> +	/*
-> +	 * khugepaged doesn't collapse DAX or special huge VMAs, but page
-> +	 * fault is fine. These map physical addresses directly — the THP
-> +	 * policy is irrelevant for them.
-> +	 */
-> +	if (vma_is_dax(vma) || vma_is_special_huge(vma))
->  		return in_pf ? orders : 0;
-
-So yeah I think this is wrong.
-
-As above it should be a narrower check. But also it breaks the smaps case
-causing incorrect reporting  (!in_pf -> THPeligible: 0 for things that
-are, in fact, THP-eligible).
-
-It also eliminates the huge_fault check in the !vma_is_anonymous() branch
-below this.
-
-So I think it should be something more like the attached.
-
-That way all the handling remains the same and the override is applied in
-the right place plus smaps keeps working.
-
-Cheers, Lorenzo
-
->
->  	/*
-> --
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Usama Arif <usama.arif@linux.dev>
+> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+> Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-fsdevel@vger.kernel.org
+> 
+> v2:
+>  - Small fixups on the arm64 side
+>  - Re-order patches in a way such that bisection is preserved
+>  - Pick up Helge's patch dropping parisc ptep_get()
+>  - Constify s390's ptep_get() as well
+> 
+> Helge Deller (1):
+>   parisc: Drop own implementations for ptep_get() and
+>     ptep_test_and_clear_young()
+> 
+> Pedro Falcato (5):
+>   mm/arm64: constify pte_get*() and contpte get logic
+>   mm/powerpc/8xx: constify ptep_get() argument
+>   mm/s390: constify ptep_get() argument
+>   mm: constify generic pte_get*()
+>   mm: constify the pte_offset_map_ro_nolock() return value
+> 
+>  arch/arm64/include/asm/pgtable.h             | 10 +++++-----
+>  arch/arm64/mm/contpte.c                      | 11 ++++++++---
+>  arch/parisc/include/asm/pgtable.h            | 20 --------------------
+>  arch/powerpc/include/asm/nohash/32/pte-8xx.h |  2 +-
+>  arch/powerpc/mm/pgtable.c                    |  2 +-
+>  arch/s390/include/asm/pgtable.h              |  2 +-
+>  include/linux/mm.h                           |  4 ++--
+>  include/linux/pgtable.h                      |  8 ++++----
+>  mm/filemap.c                                 |  2 +-
+>  mm/khugepaged.c                              |  2 +-
+>  mm/pgtable-generic.c                         |  4 ++--
+>  11 files changed, 26 insertions(+), 41 deletions(-)
+> 
+> -- 
 > 2.55.0
->
-
-----8<----
-From d6537260722c8741586e6295c8eea68d06087efa Mon Sep 17 00:00:00 2001
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 5 Aug 2026 11:35:13 +0100
-Subject: [PATCH] ideas
-
----
- mm/huge_memory.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index abc65d608c23..5fa01364f089 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
- 	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
- }
-
-+static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
-+					  bool forced_collapse)
-+{
-+	if (forced_collapse)
-+		return false;
-+	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
-+	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
-+	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
-+		return false;
-+	return true;
-+}
-+
-+static bool can_thp_collapse_file(const struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, bool forced_collapse)
-+{
-+	/* Override THP tunables? */
-+	if (!should_obey_thp_file_tunables(vma, forced_collapse))
-+		return true;
-+	/* THP=always? */
-+	if (hugepage_global_always())
-+		return true;
-+	/* THP=madvise? */
-+	if (!hugepage_global_enabled())
-+		return false;
-+	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
-+	return vm_flags & VM_HUGEPAGE;
-+}
-+
- unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 					 vm_flags_t vm_flags,
- 					 enum tva_type type,
-@@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 		 * Enforce THP collapse requirements as necessary. Anonymous vmas
- 		 * were already handled in thp_vma_allowable_orders().
- 		 */
--		if (!forced_collapse &&
--		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
--						    !hugepage_global_always())))
-+		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
- 			return 0;
-
- 		/*
---
-2.55.0
+> 
 
