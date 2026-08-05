@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21074C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBA1C56201
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C4846B0092; Wed,  5 Aug 2026 06:52:10 -0400 (EDT)
+	id 3E0A56B0093; Wed,  5 Aug 2026 06:52:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 193D46B0093; Wed,  5 Aug 2026 06:52:10 -0400 (EDT)
+	id 3B94D6B0095; Wed,  5 Aug 2026 06:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D0A96B0095; Wed,  5 Aug 2026 06:52:10 -0400 (EDT)
+	id 2F5046B0096; Wed,  5 Aug 2026 06:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2C5A6B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:52:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F48F80414
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:52:09 +0000 (UTC)
-X-FDA: 85066901178.03.28ACD94
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 790B480002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:52:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MccCTMFj;
-	spf=pass (imf02.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785927127;
-	b=YnidNvJduKkIciWCpXVWWwli8+o+kqLRvD58YEYRz34UNkAgVUPljPlRaVQegiC/xQGLqu
-	rD3jtpqovDgX4NQiIUL6ZJRQbAHZb6MslrsK3tXoFtBXIXALxVUKx/UDRuJckCFy6MIQji
-	uAadPYeymF6bFTgsPKmyArdaipIUU9s=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MccCTMFj;
-	spf=pass (imf02.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 031AD6B0093
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:52:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C0E912042B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:52:52 +0000 (UTC)
+X-FDA: 85066902984.18.A608A2F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DDEB314000E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:52:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2X7bjf7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785927127;
+	s=arc-20220608; t=1785927170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mvlQKIhSa8gOqDPqoG6za229Ak8znZtWGgBhOteYeRI=;
-	b=FE1Jd01+VAA6nfO75l8bjsbM20KR7K7FwihhJ3Mm0Wlo/lkTjWEjhx5j/5bm0mP5ebk3T6
-	XMzZklFQivzRnIgV2G1pJFA4RrwAUfwbjCLM38Zqele0in8td1qN6a0hlnpMq/fLrthP10
-	Ccskui+p7LOrbhvsedKvfFEHFVIUifY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AB1216F2;
-	Wed,  5 Aug 2026 03:52:02 -0700 (PDT)
-Received: from [10.57.44.180] (unknown [10.57.44.180])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 743203F632;
-	Wed,  5 Aug 2026 03:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785927126; bh=osqcgEZrB4tIRuddtFyChcekiAZrXeFH6SN6KLCXUeQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MccCTMFj2hIMMjW795szcS5FxXktDxGWArGGS9xJv4VDpKX5Fq4pBTHZ+Dqo3dGwn
-	 I3za+Zt5GbrL3mgj2p5MRpqTGbT/okZGd5AlVXHozUBVFgINdiUcI9YZ5TtSpFFehy
-	 9K99FQyL3HUPo3MkG8rpZnXuHfDYEsMZGyYwsLhU=
-Message-ID: <d2584ac3-51c7-4eac-8f37-ae29d899169c@arm.com>
-Date: Wed, 5 Aug 2026 11:51:55 +0100
+	bh=dqMBK15onO+7JT1dZXU8R/Sw5n89R/z58pLEVJzn0hs=;
+	b=CyGhhIyB7JuupItFbbdj2orbcLU/h+20SNScqKrWzq15BdBftQr/o73OVxeRLiX/Z2yoF1
+	gLQ0NNde5XSiCfWAnC9SEjkIdGr0LcUjItKDeaTkIrIXwGbRpt2m6ti+mAWkcwrkFMXzTm
+	VgU7bWSk9KiRpJpXPs4L+s+ml6JRAe4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2X7bjf7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785927170;
+	b=nbC8LiblrgAjlxWqZR3LIeT13o0WrMyswUHxOztwLIFa+ytxiAOwJEqC96SDAysRKKCS9d
+	TYchQaVfxk9qzyU47giHMJ1TNnn4NPI9AfAPqJoB5rvLcS/m2NhGw76vb27iZ2BuBbj5WU
+	8VttImz9u4aa6Y5kNS9Lz6n8J5mcfCw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AA37600AE;
+	Wed,  5 Aug 2026 10:52:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8B61F000E9;
+	Wed,  5 Aug 2026 10:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785927170;
+	bh=dqMBK15onO+7JT1dZXU8R/Sw5n89R/z58pLEVJzn0hs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l2X7bjf7DRVZgmFo0bPic+lRCzPiIWHHmdqPOhIcRSCT2j+hsZ/FvPwed12w3TsVC
+	 iqR5lXso5Vj0GPcXpcC1vhPNZpj7X5fRVo2DMAbXFvi59HcLW/vO2vul3lik0Ncx8Y
+	 D9BxmsIaCDZd8/a5w4PHfl1VgyO4kxP+IBDP+mGP20aN8aN86iR/AI7ltt7DX92LAE
+	 s9SlgwUQPfrlWN9WvIASQR2uS6VpHRY/FI2v4F26zxHJWqcLUU+6916WITL6XvFkpE
+	 WR+/dRHysdFzJ6J2zu3tIWs2ByAaNoZS2BTTPZMq1Oh9UpF1m91kXsAsNsHAKLminE
+	 FiQtrcpjTMvLw==
+Date: Wed, 5 Aug 2026 11:52:31 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	William Kucharski <william.kucharski@oracle.com>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] mm/huge_memory: use folio's memcg inside
+ __folio_split()
+Message-ID: <anMVxagM7db3cT_Q@lucifer>
+References: <20260730-add-gfp_account-to-xas_split_alloc-v2-0-5a56c2361d85@nvidia.com>
+ <20260730-add-gfp_account-to-xas_split_alloc-v2-1-5a56c2361d85@nvidia.com>
+ <am28pV2PEfHsi4p-@lucifer>
+ <DKFEEI2EDS4F.1AHGKB1EL6XRG@nvidia.com>
+ <anCtxQE5hDUH5N6a@lucifer>
+ <DKFEUPDED2AF.22PKCFTWTG6G5@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/41] KVM: guest_memfd: Filter both shared and private
- when invalidating
-Content-Language: en-GB
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 790B480002
-X-Stat-Signature: 73fe6oizhfwjoh1dzbkhotm1y9e4kma6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKFEUPDED2AF.22PKCFTWTG6G5@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1785927127-788048
-X-HE-Meta: U2FsdGVkX1+BL6QVDo5V201kR3f+9R5Oi6kBkYzJlsSaAUtn7uOlneamftqyDjp4PwH/Tbb9H7GXpCe772bIdgRHJ2bvjshOGdf0W3HlX7lBykpwbQ2WywX8HIUKmEiMrb13rf3hD8wyta4Ctd8rLAt06b2N5EJTtD8R0mXwINOso7pvpGAnSZa1qSt8DNbDjdEiiYy/Tho/UwAK+CUBlVfSX1osKAFRNmIEG4A2H5Q1EtvjPf1IUi8YjjF+GG+MyORoume9Gi94dyxZos4adQ7evHSo5ZQpMPKaCtKkiAc3/q2osESS2PmkEj190JKwSaJLtgk0KInwBDb9G8u81jT2tjmzs0dgX87ynkYY/LEz2i/ZTbiuANhMRVNQHk/vueY4Xkf6wo/v+0LVFJFRM1WKe0abuYZ7J9VE70TOlnlgju2AdMw9PUDA/lsRqDPY3AJxEB5Xme9lS+mcISs6w2dCh4k9vrFOUGLL6DuQDseW++C3HhIoj+F1s1Nn7d3nni8FnXU/96SGKJkXajKJKCmZ3fhVmomVYEi4zGvHm3QL/Sw4XlPD7hcRzF29Q2nRW+PWOzkA1WchHaeltzaAdbVnYqPsxfMsVqDBKb2hmt8aF3eHwqg+f5PtRPa2IlU5uCu7HuEkxagV4yo3Q0J/AgHdbBQP10XDQbMssSGvMBCHhsSLVZOds2v66fnMUcRCLs1s9btgXd0PYBg7uNBNkjicrQypg1rSon2dbxaKXfJtQDpgmhobuoWNuYFiV0L3Cc3tDqNGg9FAdwsVHgmTwl1Q7uci1ppbXu9NhvH0VH9rSOYouWPdX0oPiZJNbF+/feeSDmU9wcy4gp2HwPj0dfhRfFjuJJsX3WdHcmP9bHtdlwA0RHBhwi1AGr8fNy2p5Efep8gXWJYJhn6T/C3q/3dyoFfv+JjfB/9kWEVemWQ7d7kC3k5VRprq1GwB8VIwLjfOa87TojAgxRUv6s9
- Wk9CVRNL
- SHe0djJFnQR6Cehnis00BbGz+dMLrr0qO5ERJOaXiOxx4YZe36tIz/7uYElqAMwccSCzykfragtvjHshAbIXpgObt1TQ2tQJU53IgZfAWM6YeQnh9NYc9LonfDmWtB4Hr0UMDKDkhfWEeZUAglIU57JtYDEWqTvYX6loa84BfbRi+COwbKbOteMEsdSC0VyJ06bjilr3uKbcEx6qEqQEm/6KffydMDt287s7J054aEjKWydfLO+pLkCHDbzruTXZyfEF8DRDZhLFhtGTIQvXx7R2jO/fxjPj6n8ansN5im2vNWcE8l9LqP1yCqFHEo6HNEEFy6ZHyH/AxxnQBl1zGPU2zaYZg1XO4DgCkXJDnUg0QZdI=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: mhu1biki8x5aj8fidsti9eauedsxhqaz
+X-Rspamd-Queue-Id: DDEB314000E
+X-HE-Tag: 1785927170-38951
+X-HE-Meta: U2FsdGVkX19Gs2i4lu/NhNdSY7OX3/I4lT7rjdQV5rjAnItL/YfJxmKlCfnQakS3OwjFNqZhvdCUvCXSYWXuUdamwQGt+lGgWlAqMeAWGKeJye7/QV3i/rRSmX7oQu6t8/LbLRRvS5/NAbgsp2gp2UbbnidTFvTtbUhZHoAstWRSigsnXYQepMBIUjDXbpUpY2kBUjrSyz+15xLw47L2qUBFDMmEi83TF/vhCa2+PpokaZQgOYd/o9Be/C3GIaH3woaQ5J3MycVN6cXcYGMf7Y4uhKZfjPVTaKP8zDGWcZG3pnlSRbaPPn/DzVWBAMcINWLHqM3YF8a7H0r1Z+0DzvQIKQZbghj4RG0eKaGuQ95H9vdato21K/xzXitNL7EHFaQ8SN+WQUG5Oi104/NtoRa8FvAtmcx+X3JSqQxcYtHFakWWjkmkGPsG061fcRrTMXwvbAGQgAtsRtmt5cBAHGwsqcuJM5S+gzxwZ1BUpvXcfvsw1/JLWhG5cCB+C9uOiC6103isiPdl0vBUqj4qRjFS33Z9kWmapUzpPNIV+PTSpKO1TcDOK4AL3xjQuzYqC/N3vJLD12+F/QaqjCRI3UbUmcdEjy66YytW20RKhFnu+3CgiATPXs5M4EChm8QkekIBJQ7/+OHgWmTMLqYyTjP3fS74qt+/FzdBc4r4xqvoAcDIu4pLQeGX++0gyWc0fCxAFNDukW5BkWe+2utbAkZqi/7gyz3F0a97BALXCGU+13qshsNkccGhOSuIqSAxYFFxfpi2KVW2dyk+DP1P8jDtTUWh1jw7tIjTPM4RdTmwEhnqs8hX5dC6KTdHgtXh/xgV+u4AE4QDq11+NJ8KNBDBZFesFjVTYtZMikxNQA/9Y5oDf3BT+6ZMcEZBISD/BWmk8Vqr9fmiO9ICU4E1yGwoJ1iw9ohpB+KB7aqquRF0CY1SwelrwBmFgSvE6VuTrpQGmAvTgulne6qbMIf
+ Ik/lta46
+ +mbCNPUzybSCwVRaOlqE3LmKxMdgwTbjNUjCRjWQQaiClEgQwj687FdWLWiWFOmU62g8PM3HiK21Jqcv8EkkWHZzBA36AoQP7Zi3jgDTWFqoB6QaQa1HcgTkhWYq88W7WYRDpIqs421psUOK6VYWdV8Z0mZoKcWMHiVoCZ/ZnUOA3hSlqLQqToh6RwnyrER0Df+O5wk5B62vKiDl2nb1fmlIQ7ySI2WisdzuLnAFEGTGv0lIZo9Z+Y4bLQxGautq7j4wKZUa00agbooNL/x3LlrpbysaRxEhN+pmobO4LBRL+KYWnUsmBZA+R0fiKWkHqAZWAaUCJbhSAQHOE3qDnaeG5W1OobTEhl55mjAxWQXTEMKfXz4gTYTkjmmXK4odczkYkl9p6fO3dS5sGRdsxXPhBVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,24 +102,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/07/2026 01:35, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Before conversion, a guest_memfd could be either all shared, or all
-> private, configured at creation time using the INIT_SHARED flag. Hence,
-> when zapping pages from stage 2 page tables, guest_memfd can filter which
-> to zap based on the initial shared/private state.
-> 
-> With conversion, guest_memfd tracks shared/private state on a per-page
-> level, so a range can contain both private and shared pages. Zap both
-> private and shared pages for simplicity.
-> 
-> An alternative would be to iterate guest_memfd attributes and only zap both
-> if shared and private pages exist within the range. Setting both the shared
-> and private filters lets the zapping logic do that iteration instead.
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Mon, Aug 03, 2026 at 11:23:39AM -0400, Zi Yan wrote:
+> On Mon Aug 3, 2026 at 11:07 AM EDT, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Aug 03, 2026 at 11:02:30AM -0400, Zi Yan wrote:
+> >> On Sat Aug 1, 2026 at 5:36 AM EDT, Lorenzo Stoakes (ARM) wrote:
+> >> > On Thu, Jul 30, 2026 at 10:18:00PM -0400, Zi Yan wrote:
+> >> >> During a pagecache folio split, an xarray node allocation can happen and
+> >> >> needs to charge at folio's memcg instead of folio split invoker's memcg,
+> >> >> because for example folio split can happen during reclaim and reclaim's
+> >> >> active memcg might not be folio's memcg. Switch to folio's memcg at the
+> >> >> beginning and switch back afterwards.
+> >> >
+> >> > I assume this is the only allocation? I guess in general it makes sense to have
+> >> > the folio's memcg be active here regardless.
+> >> >
+> >> >>
+> >> >> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> >> >> Fixes: 6b24ca4a1a8d4 ("mm: Use multi-index entries in the page cache")
+> >> >
+> >> > Cc: stable?
+> >>
+> >> Like you said above, only xas_split_alloc() is affected. And we have not
+> >> seen related workingset regression report (like what Johannes reported
+> >> in commit 7b785645e8f13 ("mm: fix page cache convergence regression")).
+> >> It might be OK to not backport.
+> >>
+> >> Johannes, what is your take on this?
+> >>
+> >> >
+> >> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >> >
+> >> > Change seems reasonable overall.
+> >> >
+> >> > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >> >
+> >> >> ---
+> >> >>  mm/huge_memory.c | 20 ++++++++++++++++----
+> >> >>  1 file changed, 16 insertions(+), 4 deletions(-)
+> >> >>
+> >> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> >> index 04e8a6b553435..b9c2d8908e564 100644
+> >> >> --- a/mm/huge_memory.c
+> >> >> +++ b/mm/huge_memory.c
+> >> >> @@ -4063,34 +4063,42 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+> >> >>  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+> >> >>  	struct folio *end_folio = folio_next(folio);
+> >> >>  	bool is_anon = folio_test_anon(folio);
+> >> >> +	struct mem_cgroup *memcg, *old_memcg;
+> >> >>  	struct address_space *mapping = NULL;
+> >> >>  	struct anon_vma *anon_vma = NULL;
+> >> >>  	int old_order = folio_order(folio);
+> >> >>  	struct folio *new_folio, *next;
+> >> >>  	int nr_shmem_dropped = 0;
+> >> >>  	enum ttu_flags ttu_flags = 0;
+> >> >> -	int ret;
+> >> >>  	pgoff_t end = 0;
+> >> >> +	int ret;
+> >> >>
+> >> >>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+> >> >>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+> >> >>
+> >> >>  	if (folio != page_folio(split_at) || folio != page_folio(lock_at)) {
+> >> >>  		ret = -EINVAL;
+> >> >> -		goto out;
+> >> >> +		goto out_no_memcg;
+> >> >>  	}
+> >> >>
+> >> >>  	if (new_order >= old_order) {
+> >> >>  		ret = -EINVAL;
+> >> >> -		goto out;
+> >> >> +		goto out_no_memcg;
+> >> >>  	}
+> >> >>
+> >> >>  	ret = folio_check_splittable(folio, new_order, split_type);
+> >> >>  	if (ret) {
+> >> >>  		VM_WARN_ONCE(ret == -EINVAL, "Tried to split an unsplittable folio");
+> >> >> -		goto out;
+> >> >> +		goto out_no_memcg;
+> >> >
+> >> > This function really badly needs splitting up and probably some cleanup.h work :)
+> >>
+> >> You mean folio_check_splittable()? You want to move -EINVAL checks a
+> >> separate one?
+> >
+> > No __folio_split().
+> >
+> > Comment about cleanup.h really was the whole pattern of goto xxx for various
+> > levels of unwinding things.
+> >
+> > But really I mean the folio splitting code in general, there's a lot of
+> > massive-complicated-functions with a million things going on at once,
+> > __folio_freeze_and_split_unmapped() is another.
+> >
+> > Feels like we should really have this stuff in something like mm/folio.c anyway
+> > too now that's renamed :)
+> >
+>
+> I agree that __folio_split() is handling multiple cases, anon, shmem,
+> pagecache, all together. Do you prefer:
+>
+> 1. split __folio_split() to handle each case in a separate function with
+> some code duplication, like xarray for pagecache and shmem,
+> freeze/unfreeze folio for all;
+>
+> or
+>
+> 2. encapulate per-case code in small functions, like
+> if (is_anon)
+>     split_prepare_anon();
+> else
+>     split_prepare_file_backed();
+>
+> __folio_freeze_and_split_unmapped();
+>
+> if (is_anon)
+>     post_split_anon();
+> else
+>     post_split_file_backed();
 
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Well these 'post' functions are a bit confusing so I guess I'd say experiment
+with different approaches and see which ones end up with the nicest code :)
 
+>
+>
+> --
+> Best Regards,
+> Yan, Zi
+>
+
+--
+Cheers, Lorenzo
 
