@@ -4,122 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F23C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A31C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:02:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A01AB6B0092; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
+	id 87BE06B00A7; Wed,  5 Aug 2026 05:02:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1E06B00A7; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
+	id 82B996B00AA; Wed,  5 Aug 2026 05:02:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C79B6B00AA; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
+	id 769406B00AB; Wed,  5 Aug 2026 05:02:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67E466B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB197140400
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:01:30 +0000 (UTC)
-X-FDA: 85066622340.12.37C7D51
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F05791A000B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:01:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=MnT5aHI0;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 54FC06B00A7
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:02:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD9EF40406
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:02:07 +0000 (UTC)
+X-FDA: 85066623894.28.1DCFDC1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3C57840009
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:02:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FvDWd5gL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785920489;
+	s=arc-20220608; t=1785920526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
-	b=ANoqeJCh9ZrMZLhrXbCkyMlj4FcV12znpUnv6MA2fKGHNk6wpjXZw7+fJTRmMShTbYUPuL
-	yx9mx96BZYVlVljl/aP1DEcGj41VuXIDnEBH+YzEDmbQRLcitVWijpXoW+hZeZqlX2MxHw
-	fgiOuT8mfFzPTEwOMwJL5rWkEIcae5Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785920489;
-	b=ej8HHbP+5x9I3KdCQRbATuq42xlzIfBB27m7bSekCGNcj5ohYYmoxQzMsKVmGiQMhlyZJt
-	AidNo+uSiJuCgv9xZWBhN6HbDRYCPK9kY2Hh+GKcRiv/16IHmeHldkhnUCizNulE9wIro3
-	2OOup5+mehz6UOTuObIaFs4wJzomoU4=
+	bh=66l5hkhMF3qY+C/lhEJTwIWDv2T0Sfe1Ujylj6oShM0=;
+	b=qplqELBaeCy1FuHSI87hZFdsce+lUaOLQXqOIh9ZggrOn/nwnV2AZcLMy58SrNHSU/A4QK
+	OPIv88JpJmvnqT4cYOfNEjCce7kK35U/ogP3Fiu3AiJzOBvF2twISJetDHVwP/VTib0iLD
+	1Y2ejgnqQXn6JqPZmwbgOs6yuN6B62A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=MnT5aHI0;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38f0f132f56so1464925a91.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 02:01:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785920488; x=1786525288; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
-        b=MnT5aHI0mRtdFa0z3HsmZ4urthbPilK+rL48s/KaI04q3gbs4yODFo8H8EE9CAf1Kf
-         1DhK7C7y9EjRNPubYNnSjV9cXld1SSh+2fBrFGXgySi/DAAQxJmX0pAICPnIXKfhOpsy
-         6N89+4WByd9J2kJcizKb5bJmMYoxUvC3DxApE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785920488; x=1786525288;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
-        b=XUGssfUwc7OwY+DTjLN/bOXUmWb0Zl5ocSdc9LA4tdf4oy/IRPlcQ+7ekOxBUfp4pN
-         PlyoMqlw/mQt6SJxexvd5zc68tIRj6/8mUs0dhmQMaj2+J6YLT0FoC4PkeuCWqrugbve
-         lVwBW0YSbTrTFyGyJTLHzBelBsFwNnO4Fz94Owdis/EWTXo3hIa90IZL80vZezeUXLHv
-         YqLBGuBx4/oXAfGe2GvmlVcecb+EJ2xWuvnEEV2vrmF6PWwgFJPF9HojZDuPvqxkuXE0
-         MkPNj6p4G157btfSJuZWs8APdT+wojgQjfRJBGbbdIp2B45ZJZFCWYG+RdTrLNWoVWTW
-         kEVg==
-X-Forwarded-Encrypted: i=1; AHgh+RqEEu6M58IwamKcQ3WGfA/xCp9p0cAUPIxIjyxNnSdPQaVMfSMEjNoXyPqfiD6iP1h5cwxw21nBeQ==@kvack.org
-X-Gm-Message-State: AOJu0YxclBOHD7zSrCDdH0DOwRRde3wWK6x6wTfLNSYUVkEcwNmv4tov
-	vn6RTQtbQxVDFcazRTD4HkH+KZ52F+FGaNXF8zHkgvxIniOZPIQZ1oPDEZeg6SpYyw==
-X-Gm-Gg: AR+sD13YdJf/XQXyvzMioW1b/cgNv2er3YQX5kmP3J77CizOCOtYZx7kzNIh3dc/XR2
-	Mc1PfXWhAMPlEQ+TeDfKT5qBiKXnVeoTo2nF1dGswQ3MlJPIyDkPp0XljBjrqXEd7rHm1nhk87F
-	owWM3LNcd4Ds3gsRqrqqedAZSLaMkb4XFVvwDDwCq8eSQaRd4A0T0bvcHfU9X5weyy0tl4fCt5r
-	KWj7kTNYDX4uxEvwwMaIU+JcBsl79i62xC6K52LoHStoN3QmP2a/daOIBlJ8UOs5HAYu7WvmJWc
-	BLqVBqZY/a3KpjfFIi/BJf+GiCuTUqD7xr89HLVBPuMWVF6LmrdqlGo9hpQlTNyz1rAMhYxYRq+
-	2lrry5jQN8yzmDAoKlUeVH/JKll0BpUMqEa0xb99ocT91wkfYwG0le17XbQubY/FIMcl4xFjAQE
-	Kp/nMSht5cKv9pqCeihPAw2oa7gz3p/OLrXn2Gm5Jm2W5HxFe5/MkKH75QggUk40fv2nIYhAae9
-	ViRfQLFi/d0Vbb6VbYKPauhzJ30
-X-Received: by 2002:a17:90a:d44f:b0:37f:9e21:91d6 with SMTP id 98e67ed59e1d1-3903c6287bbmr2193012a91.13.1785920479816;
-        Wed, 05 Aug 2026 02:01:19 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:8002:2a47:a704:5a58])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fedc650a0sm3967542a91.14.2026.08.05.02.01.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 02:01:19 -0700 (PDT)
-Date: Wed, 5 Aug 2026 18:01:14 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, 
-	bigeasy@linutronix.de, hdanton@sina.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, yosry.ahmed@linux.dev, 
-	surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
-	Suleiman Souhlal <suleiman@google.com>
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
- backends
-Message-ID: <anL7bK6lbp5qTqQy@google.com>
-References: <20260805005545.66112-1-baohua@kernel.org>
- <anKQ_qZ1-Q6FchZ9@google.com>
- <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
- <anKaU6VStrW8zaQo@google.com>
- <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
- <anLGxk3iShEfCB30@google.com>
- <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
- <anL0utxGYeGOGwjt@google.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FvDWd5gL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785920526;
+	b=2Z6Menj0MBUHtASEcfrtgicBsNvPY7jiXvSusBZ+sxXCHOWtUMvgFVc/mJX8/psoiW0lID
+	Gx6fs5ar3quUHipGKfUFEYaurwpNVsovpOEHmERL/eJzMtYIkOZ7JxmRDFN5Pb06FnTQJv
+	nFz2H6vnPQsRwuMuokzwiXp8MdBctqY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A6FC2600B1;
+	Wed,  5 Aug 2026 09:02:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB51B1F000E9;
+	Wed,  5 Aug 2026 09:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785920525;
+	bh=66l5hkhMF3qY+C/lhEJTwIWDv2T0Sfe1Ujylj6oShM0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FvDWd5gLedAF3nNnMaCJ9oirgJhxdVx4jBcpZAAzC0qzYO75osbFDc+BfDmdihS7j
+	 B1UKpRlg48RQxGFsStggVP+zgbFlW2Ek5FaO2J1gJ4nECj/WeZvwy6nMaCsdvhoR8j
+	 HRty18X26LmzDYN+W3OtJe+e2D5kawLQcV2/OLCbOZsGqfyp7bFqbgY0Ai0PLf4jMv
+	 37COKCxILOlCdxvUYreRvTwSZnqe6W2r2ctkzSTaU4hRzCGxPIYXGwhDWD+qSrRbdF
+	 NntzsRY/ogQRIztXPjMjddwT4tyIGNz8z+DpWOzrwbSvvhCeP8X9T1zlfDPvMxeSRx
+	 B49VqHoTzImaQ==
+Date: Wed, 5 Aug 2026 10:01:43 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
+ anonymous page index
+Message-ID: <anL7eZcHnM5mPr_T@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
+ <amrvgjPNfKqWPUU0@gourry-fedora-PF4VCD3F>
+ <fec1be38-406d-4656-95eb-048729afec40@kernel.org>
+ <anBqV9z6hVLIqoIn@lucifer>
+ <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anL0utxGYeGOGwjt@google.com>
-X-Rspamd-Server: rspam07
+In-Reply-To: <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-Stat-Signature: a5eueus7rjko7cjbxsk1csk3xg7yekwf
-X-Rspamd-Queue-Id: F05791A000B
-X-HE-Tag: 1785920488-710239
-X-HE-Meta: U2FsdGVkX1+N/tcqB2MHqjUhZzR6FrQD0RENG73c8UPVXObQfsv6pdM+SqK60lRGPmUoN3xJSBr9CFpq1hCkQTmvXlm6uQQ7zxzpQ/fnifyaKnZsXyzK4QxqjGbaVEkP86zmFTPLutpAgIRmnFFHGJqwr2E4E7RTa0+v6Px2F2jRUdjlCn7F4FrpV6Ws17Jgj7nA8Xd/GtIXFDkh74p8v4uLgom5lKClW0vvBx65zhPL44r+NKcL7i5Ho76ELfBgG7SKoMM4hVCVMFpXrHSEBQsX8Ch80yFXUfo1bNSuaS91t6uLLyNjhTuFB2hoxgC6DBA/NCYbL8c/MlRX5Lm0MIIVZd2ZLWek2NI6rwcmj+0kNn0itW/sZzWXUGB0NLeYJDwp1F5pNNJBO3bGq13S4TJ/AsSOpiHFoCLbHy13mrwfLyLkSdkVNxTFbRlhv3gTRv9dP76fbv7VlbA2gPrVAvDUYEFsZ/U3NpY4DiEOuIuLAWhT9CuOuLXxjJWrTr4RvO2LkfpBezNaLt0lXCGX5KFt+NK7QR1tYrpyydchGlPwG1YKDHOv+k5ISZyeHnQKKQJ5ePaMuc12X6he5t9uvIi6Uz3OKTQLYKviG1rtucXt3yGN7X9dFFnodA5CNOojwMgM4mHWgbYqUgHKIJDro4QNSbZsatiAd2lybJ3Oc69sb2D9E3STgJLELvhBeinCCtfM7gDk1W+NVlrNQWHu4xi9R+jXGfojfpcYjXZBwDLrNmmGZ1Rgn0SWXZiJfZbhKzqDTSLuRSVgk8vxTaT5cfSeqPMdWrAT3Il0n8+T/A0LnXiS267X3vBRGeYC/MFpYeKnc0Ml9nkCdaWUfGMG7V2TFT8cEMGurSBi1CIyIFjZtwYVJ1dB9AWS/tIfG4mz7wDBlgoK9YdWUF4vYaPbjzm1pRE/cO+5wFHsEMnrM3y3iQIyMAs7rA0OaPlEdY/tm8DqPSgP9NHt01k9sqt
- x5jePHqc
- 11pgWOaoeTy51UVoaLEKYbvgilidXZd9tZjTFD/9w+4N0nX+iolOrt+ONPe65kYevW70qMt1Kk6S27SGmYbdGkkICLpNBEdr3Hc7P8PxfKHU4Cnw6Lwe81K/8WG4sp1PhEgXfbaUguxkJCzvSeae+ZMf82nvl7liqwYpY1CRfXlx78tVYkMVp/wenMTMGU5qTaKhN8iClPi9r4GCsiUTI8ptR7xwDXMaNBj1EzOfaHIFkhayTpTJwdwP5GPQyO1rcg++C0jgNKjPp9h6H/GVVy/gY1afgfbuShQr2QBXK4kvDpB8zX4Z7IMmxPJVyA+8+PstsGSNUhdxDgR6tlfH0Zt3s82XepbQLrmq2Iizc873/eTY=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ekaymufnbf66wk9989iegycqaoj1zamf
+X-Rspamd-Queue-Id: 3C57840009
+X-HE-Tag: 1785920526-407168
+X-HE-Meta: U2FsdGVkX1/X5jdpEQXT3e1MSnwGW4SZVZjCiT0k64G+eXXf942P18bApPxqDGv4SvR4ul/I2xBdKPtaONkBwHVclUpL6KphRyfliEsYRzqP3nXgozmAqq0xxtNdrlU+OeXbozvNg2XEX+Srqw65zuglSMUzTTqFjeoBKjTAXkA87Oe3nMFGIjyPZiaYKTMfLHker46alOifDY1ngyHrJl8/vGfM6hgPsMUdPZPbxAG3hm4H3AcfzGdyo8qhxNvvOp3r+mzVSTatBNbPddw3n3+5LXJxwzGFwH5ymr/+yvggwHizWprZl4R1EloPq75Cv7I+FK+2oA6D7He1H8mTyMgk6WBJqHp9bxsHcXqPck52iaSGBNyLjHFMyAKVHeLcxae4lfkQxj4E2i/C5w7S2zbJdEJ+l9JgWmaZfI7RCA26XHLjTOVx7rbWIuuJ5XtL2uu+Yi9dE/BcAv8AzhGr0lOMdV3Ib5gEBS4qXPV8aazbEqLPGIv09oyfP3jIjDZAuEPAY4KyF64bzkP3ibojutdn5y8/N7jRyiIr1dD1G/lIvBjygbLSOA5MES2cZ7M7LXYiTp1SoNEZHfmXph1AmoNujiK2ZnddK9KJBEvy4XrWLN39avsqq1zgZJeeaNpzmygewSsHIsb6mNNxkFOpa2bAHC8B4fwWAKg1r+J55bhFcMwQIxaeumHv7ObKxM8SUsT8xXUtAi4xxqE2osAySQoFHaXrS2Qb6KKf9O3iDkmmYmzM+owWKm7tAuFUMQPTtiUk7DIR/9HavnwyeCeLHwqMvT38RbfxQkqSgvIDXMxFP4+I3LeSnYiclBImzPdhcBSA0mNOpgnX805eyumlRREPyL9G+OWVpM2aoQFPtsVzEpkUWFxx6Gig4/l+tLwERfh4ikazsiASQDwwKVS6wAtcsx6ME+XCgeLqmkzx/cE4DUuCZEF0Hb8ljSwjFRu2IHFXxguBytAEo57JVeX
+ CyPwPvKc
+ xih3qJOSdzTgZzWUrg0e/lT5F+mELa1snhHA1qmuyJrXYCGYwQmv1fdNW8PclFkCWT6h5q+6a2uDlxmQrUWVHPwfqKOGpNeIJouHzNBn0wQMraTC2FjlBFWfKpdPyKCQQGb5V2dClodxHK3CklNh60m0At/FSstWaCsWY7hrJaGm10bOUXtJg681GeKlYjwsPtf8FivPWT5bUMJ8cHmPbElYDczQTRWAzoSbcbX8Hnb6rhPm5leoLbvmH+iqa065PHYy7mjJwJ+g70rRb+98oPUuMLacwHFpGigW0U6Jc7rAwARv1k9jiLn+RkQhwMTGUQ0EHGJxN+aeJMFlDe5sUyT5StniMLPjfDlsc2WYhCt978Z2+tbxwgEq7QQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,14 +111,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/08/05 17:46), Sergey Senozhatsky wrote:
-> On (26/08/05 15:50), Barry Song wrote:
+On Wed, Aug 05, 2026 at 04:30:18AM -0400, Gregory Price wrote:
+> On Mon, Aug 03, 2026 at 11:19:17AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Aug 03, 2026 at 11:39:11AM +0200, David Hildenbrand (Arm) wrote:
+> > > On 7/30/26 08:32, Gregory Price wrote:
+> > > > On Wed, Jul 29, 2026 at 05:48:39PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > >> This is potentially useful debugging information and matches the existing
+> > > >> page offset provided.
+> > > >>
+> > > >> Use the raw __linear_anon_page_index() function so as to always output this
+> > > >> value regardless of whether the mapping is file-backed or not.
+> > > >>
+> > > >
+> > > > Begs the question whether we should mark the value based on whether
+> > > > it is file backed or not, but i suppose you can gleen that from the
+> > > > other printed values (anon_mem, mapping, vm_ops, etc).
+> > >
+> > > You mean something anon_pgoff_t or what did you have in mind?
+> >
+> > I suspect he means e.g. adding a (A) suffix or something? Like page offset xxx
+> > (F) or yyy (A) I guess?
+> >
+>
+> Yeah just an F/A in the print I suppose.  Sorry if that was unclear.
+>
+> If it saves someone the head-scratch of whether some bug is because it's
+> "file" or "true anon", given the ambiguity here, seems like maybe useful
+> debug information.
 
+Yeah will do on respin I think actually!
 
-> This sounds interesting. I think all of the S/W backends that we use
-> have stateless decompression
+I do think not providing that could result in some confusion like 'hm I
+thought this was file-backed'.
 
-OK, that doesn't seem to be true, but just for initial testing
-on lzo/lz4 we can simply split the lock.  zstd/deflate need
-context for decompression, this doesn't look stateless.
+(We've made our lives hard with varying definitions of 'anon'
+also... [shmem being 'anon in page cache' is especially lol] so it's
+already confusing but there we go :)
+
+I will add a comment explaining things so if anybody still wonders what's
+going on they can see what's up in the code.
+
+>
+> ~Gregory
+
+--
+Cheers, Lorenzo
 
