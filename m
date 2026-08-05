@@ -4,169 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 471EEC55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:00:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C76C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18E816B008A; Wed,  5 Aug 2026 12:00:16 -0400 (EDT)
+	id 23F376B0088; Wed,  5 Aug 2026 12:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13F256B0092; Wed,  5 Aug 2026 12:00:16 -0400 (EDT)
+	id 1F14C6B0092; Wed,  5 Aug 2026 12:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0089D6B0093; Wed,  5 Aug 2026 12:00:15 -0400 (EDT)
+	id 0B9166B0093; Wed,  5 Aug 2026 12:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B896C6B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:00:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4AA4DA188A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:00:15 +0000 (UTC)
-X-FDA: 85067677590.04.37C4322
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012071.outbound.protection.outlook.com [40.93.195.71])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4A35140008
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:00:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ewRXtWGY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785945612;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C916A6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:10:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D271C0512
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:10:18 +0000 (UTC)
+X-FDA: 85067702916.29.FF495DC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BEB6B1C000E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:10:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=h5XQ1L1X;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="EWe59/xI";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xli57Era;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5tcAQy0S;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785946216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1u/G3r2JaX5QaxcioHoI4gyB+Ar4Ocwk1kfs7HTCXW8=;
-	b=miSLcHBJFksj+sfdXNCJVXrhHyU6YL7GiiMkZ9Hx8BhKW90OhrHMzcUTximW4qnKAPfheO
-	WiQFFPpEssEg/68TLZeqPyuc7/XkpI18YbH6efERORzJCYuZcPWm9VebbxHFyEH4/Xmu62
-	VidvaxaF09ZpD34PegbDtLoqIKQ3Fwc=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ewRXtWGY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785945612;
-	b=PurYAHRQRdk1WD4j/STU82x7aTAz5/hvkWEdFkWEjtkkSBPb3M6diawi4+RIvfmM8EDj3T
-	wVxOvZmseOe9rXhp4u6Q3coYmCvtmqFl5jrp1yv/sJWKq6xpvS/MnMRR6y67XMkelSRV/H
-	vDADeZFTj+8XdrW8HpRnBUJOW1zssPs=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hsHtN73QArecYhDYt+CWRcvZf4B3m3Arj/6RCQsqGOV2Yo4wXpxwtUPpLuBWChk6LmqscsqsRtHgesYwPwg9OkGeWogNuqyEDD5O0xHfdxqiEqzhfESBqTX3iSq/GkKq+JsSW4229ZV1N405lk8S5WLeRpO1WDG7fcyOtPMACjBvg98J4xt6sGa/QIoXhitqL8GG1whRHqCL5ZB3oTOvtm0w1AcmyL39f4BuD6y0cy2hitN/YFO1LZbQdN2HHvVNN7eCsi4fMTZZTEYrBiCLm1GTaryjWECvf4Yy8/CpHk2f1W9EC/H3jRgTpyShfyrgdaYuty7PQXlI+c1SqMy+NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1u/G3r2JaX5QaxcioHoI4gyB+Ar4Ocwk1kfs7HTCXW8=;
- b=VeahmdaSYSASHNEJMqZ6fEamlQtA0DHzndPrHZG8FLXgfEPgS5FYv1FObnNMmrK4Kx1O5ywepuZGgtpuwF1XxM2L5y9KRFtepSLa6TnS/VhW9W69nEYeYcrqzKC8Z48hYyLEvngbg2Dfv5tepB6tgzNBJDm/oipwepHRiroYhw8hlCuyfDfWJR3HK/JJKrl8M++E+sQado7QBTAyNqcgVAGRJ/rk99+P0wEdciPE/RF8FcV4/ij1KsjEa0wHMiU+nn264FOD7sH7Ps2g1sloDgxMdEvJvUgykflXhtyj/M3D7j0vJtlWEEHXorUmMXhJV9Fe1mdV39kmYdX7CGMvEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1u/G3r2JaX5QaxcioHoI4gyB+Ar4Ocwk1kfs7HTCXW8=;
- b=ewRXtWGY7wWQmnLHs13xCviC22b/Rs8ZacM3b/jquS/C1FV11ZK6Q1AIWhsTGekwSHGZ5Ir8KrIfOown0xZqLVTFVuGjJMYUspoFo0l/A0ZT2aOub7t57z7IG4A4LeeH2kLLRUMedQKyeJu8gd341GeBh8dn4AYHCuwAb5CsNbnbhvgGLo5hKdwX9ewayLs+uYTI2+03fg8dYgsWYZ6rARDTrQwVAX+Oqm3Op4wu3FqpWMm7MpToyYDpeTQOzIKV9I8cGMB+o+Tm5FRPmlId8w0BQ8kADK6G92AnwDE5F9dds3z//wrZJregzaW4Xx4JSrJm5V0Bqrp4eaGxNpYO2A==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS0PR12MB6415.namprd12.prod.outlook.com (2603:10b6:8:cc::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 15:59:56 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 15:59:56 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Aug 2026 11:59:55 -0400
-Message-Id: <DKH4VJXGIUNU.2ZENW7583Q6K5@nvidia.com>
-Subject: Re: [PATCH v2 3/4] selftests: mm: implement the mTHP-sized hugepage
- check helpers
-Cc: <liam@infradead.org>, <nico.pache@linux.dev>, <dev.jain@arm.com>,
- <ryan.roberts@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
- <usama.arif@linux.dev>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
- <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
-X-ClientProxiedBy: BN9P223CA0005.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::10) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=HskJbUE1aNqCuNXRMEy5hyx9jsFoyh9wIHexTfa7E5w=;
+	b=mtHffLmyeTb81lOirI4olL8pWh/ZhmY0mPnBCynY5ArY9vbnX5+O0RCZYNYi/aUMzSJQoj
+	oVFRl/g0OAA0pjcg2RrQYJ1jNdkBPHBZrUPwAoPi+3VObmRE4NYI1s7X+T8LjEbPzjh+gV
+	smeue75gQMl2dQ+G639vXCBxJ0RnnAk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=h5XQ1L1X;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="EWe59/xI";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xli57Era;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5tcAQy0S;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785946216;
+	b=1S5MSiyJSEz8Fqg8EjaBQvbI65wT61RTodx80pmwZMOU9nc7fZOnqKWpECNJsKDCNP51IS
+	Rlo1ndi05rjxlCA7G/KRFpZcYhlSMibmFcIztCaDUbeYXLmVfYE0guQHlIK61AYr5rCaJ+
+	WcqaqSoH5U5DZdLQT3g1g9ZcoxKJ2qI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AC89B7EFC3;
+	Wed,  5 Aug 2026 16:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785946209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HskJbUE1aNqCuNXRMEy5hyx9jsFoyh9wIHexTfa7E5w=;
+	b=h5XQ1L1XESwBu4lX1BLS0KL8+Qjut/rS9S5KsnvS0BH/pXQUfsfurL8d0Qss8ajH+XLU1P
+	3vYz46qTE2pBShledGfdEuNK/ec4MRZJR7Rfa6xD8OayfWt3I28RL/mpk7hnNcD3hBmj/C
+	rW+kd2jjx46LtCYmqR8l+cMAX9ZwyvM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785946209;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HskJbUE1aNqCuNXRMEy5hyx9jsFoyh9wIHexTfa7E5w=;
+	b=EWe59/xIDiP5vTKrNSNXwLfnMgku2cQdCaXx4qm5Nik5EYSY4GCdLqiTDtBX+4+8ddrWOm
+	Agh+0USaxFyE3nAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785946205; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HskJbUE1aNqCuNXRMEy5hyx9jsFoyh9wIHexTfa7E5w=;
+	b=Xli57Erab/Nk3CLdJjFnHdG6ttlcEODmtSCxIx/RTtO2VnPgP4fDCbbUdQom+mgzPtmYwm
+	VT5eZGsdFQG7Ak4wKU5OceaAW3HgN+ScTaksqBILvtaab8GtVHGeYxjE8MN19dXw0Kuxbx
+	3GKIitNOX7OOBuYbwc1F8JRCmUoRRYA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785946205;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HskJbUE1aNqCuNXRMEy5hyx9jsFoyh9wIHexTfa7E5w=;
+	b=5tcAQy0S/zzzaTqeZqq3rXnGjW2LHS4wwXQqWwHF6UQE5kfSV+RNg3zOCC2O6Ov0qvLYc9
+	lfuT2s/I/hb2bYBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C44B779C2;
+	Wed,  5 Aug 2026 16:10:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Ag0eJl1gc2pxUQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 05 Aug 2026 16:10:05 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4534BA13B1; Wed, 05 Aug 2026 18:10:05 +0200 (CEST)
+Date: Wed, 5 Aug 2026 18:10:05 +0200
+From: Jan Kara <jack@suse.cz>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Jan Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, 
+	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC 07/14] fs/erofs: mm/pagemap: add
+ readahead_folio_reverse() to avoid folio->private
+Message-ID: <44w5y7ehefqmo4jkvxjm7abfm7bmqh2p2uucfu2cqnizmgzvmx@lk3xamijvglg>
+References: <20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com>
+ <20260731-remove-pg_private-v1-7-142c97ba3562@nvidia.com>
+ <332rknj4vo3cfhvfhhlf6pvg37s3lbrnzbbnv4swa6gctsiu6a@ndotgokvnglc>
+ <DKFGTVA0XD01.OZYNYUOU9FTX@nvidia.com>
+ <huzyeqj6a57nbcqc23v6f6rdhkob5552fcwy4mlrsagycqi4rz@ggsapkumc2gq>
+ <DKGA508ERSYM.26RBD4HYM1SL8@nvidia.com>
+ <2evaxdu6cobpnzzer3y7fsrqvmtmhj7gm3e5buebdaw564igx6@7bs5enipxnpx>
+ <DKGBQHP25RE0.3NKUQSDULAQSX@nvidia.com>
+ <ivg5x7hjo4tmpd34i6wrd5cp2v56c3vorwru7h6kqxnqlcpte7@lvd7xa4ncwxu>
+ <DKGZEK0AQP6R.1RTQEY44OQD65@nvidia.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB6415:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfbbee43-c51e-4e70-9bd7-08def30a9836
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|7416014|366016|6133799003|22082099003|18002099003|11063799006|56012099006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Fic+FQ33od9wiLkbsp2sagtgDGB+oaNSPe+bd87+audz57hx2SUYzzUhPavTqo5mCf7hEIdsU95l/PLLCY5aMxW8yDyLtPP1YKFNda5cPAlrSGu5swZFNfPCEevwGJyJBt+7txzmurOFGdWdPhtV8KiJO2eMkYLLy2SKQ8kJ1/1of2TUXBWQUQabBPQIRZR6QscdRZ61WZ7URHDIe6RwHm61EZ31r86iKeKPme0JPqASA8sDhGgBqK2jxrgskHXNnleUvEKMCgvpGkqXsy7l53ijALdEhT0QNZLAqSwInQQLzZcHcbmqI6b61RNYNNdtwUijHFkmJ3mQKB5DTDSxhTIXWaMkmbFtqBpTalG7ejNihOfhoDCRC6eihpi1xVex57MDVbbmZs13MlwHasJh33YYvd4ISshOfguK9i723O0aWs2F+lXHMU8spJT+Pv4LWebwX//Ks9lcx8q7Rjw+WlYMyH8UZ2l1XdsE5L4ILzNLpnwz3H+jtafdJobBJYhQHMU5tWX+BXkFm6OF8XRclGNugwUnDy6o/+hKSCHstg+fswu40Axhhjci8/zvjqsu/34pzM+ps234uEEF7bC8hItwmrUKgQbfz8GrvDCgXJ8ucSoxEJHoR4gFpLiOf0wu7Q/ukOh4KbDZdDlWn/VASRvQOA/M9ZjXHYZCGUQhjGM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(7416014)(366016)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006)(10067099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MS9ZV0lXYnlKWmxudS9WZHE0eUtnNXc5RVZLelpFVGYzZU9KZnBhMStXWGRy?=
- =?utf-8?B?NzgxTElsM0htbDVaUkduQ2JoYkdDTUlzWjc5clZnemdHbDMzbjZ1dlRGeW1G?=
- =?utf-8?B?cWJVd3hBMGdXcTZ0ZzZjb0piYzNpdU50MW12REg4eUNjTWUxS1owWVA0Y201?=
- =?utf-8?B?dnVXa0pib0MrVnFQamxsU1N1cFB3QTB3WVhjekI2emgzNWx6dFU5QzAzMWY1?=
- =?utf-8?B?UnJYY3N1VzJ6RXlwK0E0OGxMNzdMcE1qc1lsK2oxWU9KQW1UcHp1MFd6V05E?=
- =?utf-8?B?TlFaaFhJYWMrWWM1SnFyNGZqYjRXeSt6RlVHYjZtTnF5S2N2WmNLbkxVaXg5?=
- =?utf-8?B?ODNuRE9wY2h5Y2JySzBhOHpSWmp1VUEvTmhnTm5JWW1xbUY2TVpSeU9ydURs?=
- =?utf-8?B?anhxd1BjRmJtakF6UTRsVGhYTTNMekVQQk5VT1lidFY0MFcyT0hod0xiMk1X?=
- =?utf-8?B?aUZzZ21NRUNuVG1PT1JjR0VaTXZvOUg3ZkRZTVZLWUxJVkhzekFoV3dXUjhE?=
- =?utf-8?B?YStyK01aSXRnOUx0ZHpIRlQzUHRsNmxBR1NrbWV3b1RWRVNqMURpMERaMmo4?=
- =?utf-8?B?UDVHOG5ZNCtuRUxNMmR6TVVKUEFCQmFReUpUdVdxbGRWVHhSTHpndWU3dDk1?=
- =?utf-8?B?ZWNXbTg0Y3BrWmZaSUgwNzdvZE00MURGaytGQ2V0NHAzUVBBbXQ3RWUrR1JY?=
- =?utf-8?B?L1ZiVVNDUlVzamFlZ3VQUzNPQm0vT0Z6cWJFTXArMkdjR2NPZ3d4WmJpYUtu?=
- =?utf-8?B?RGxkbFVyRFlSYnFtRmZXUnBoYlBuMmdxQlBxRWQrSVZPUGZFUURCZmhXRmND?=
- =?utf-8?B?RWlyaHJQK3h6OU5NM1BRN243Q0VseEEwekdvNDYrME5LVW9PVFZvekNEaWsw?=
- =?utf-8?B?Uk1SUHc4VHVGb2sxeklqYWRRc3BCUnd1bytpNnBaUjNrNmxYNlRidnFjYVFa?=
- =?utf-8?B?VW8zYmFoaFhzeWRKa2t1WlpReHd6d3piWk56eWJZbCs4L3VRd2xYcHoxT3Fz?=
- =?utf-8?B?NGh2Wm9zYjBCTzBWMG1YV0xVM1YxenhDZTA1ZDl6aHllazg3ajZDanJIYi9z?=
- =?utf-8?B?VEM0TG8xVHY2aFg1SWxiazJlZVZVMjM4RjNxWVdmaGxlRjNmMVZtbURCTFBR?=
- =?utf-8?B?akZ0OEswTzFFTHM3aFp3U0sxL2xmdkFoWkFZYnlpbnRkOWprS25rWVN0Z0xy?=
- =?utf-8?B?clZ6WFpSVmNFZ25TQXFOc20xNWRJejNGcTRMOEUwREwrM0FrVi9SMzdnTUwy?=
- =?utf-8?B?a1ViWm5iUWx2TDMyTzZxSG9qdGlHUmhma2M2NHZVTHRlM2pIK0ExUDFmcFU4?=
- =?utf-8?B?QlpHbEZwaGppM3Ira2ttSEJGVU9mZ1dwMUt1S0NTMTJTdmlOV3BOQkdPTWJk?=
- =?utf-8?B?RmVYNy9vMjFvRTdid0lsQjRCYys4cjZSdXpReG1vWGo4ZDNBYUlqalU5enJL?=
- =?utf-8?B?ZTlSMXNyT28wWmNubjJYM3EwektYazg2c0N6bjNSNkVCNU5GZkhHK3BjOTRt?=
- =?utf-8?B?cjRBVlkvRTZXTzRaNjVlbXJhU3NMaVZtYTlUdUQ2V2hMbTlKYVRvSitMNXdW?=
- =?utf-8?B?ZVRDTkZ3RFJEeHlhcUo5OHFSSXZLUEt2dWxoeVFaY0xndnFTWk52aHI2UmV6?=
- =?utf-8?B?RzdxWXkxazFOOXIyeDJqdlJ2ZmRvS1BxM2JvZ2hLamVuT0RGZVJxTFNMSHk2?=
- =?utf-8?B?eFd1UDhrYWtmd1VGWmlYb2tMMlJYZTZIZ0QxRVEzbmtLNmtXcG9hM3pzNjh0?=
- =?utf-8?B?cEw1WkxPQkN6WWRZWWtiVU1La2FubHJuL2gzMDRhYlhLS1FYNFdCRjJaVGVp?=
- =?utf-8?B?Nks1ZTljQ1NIZXBIYVdQMXZ3c2RiK3FRN2FiOGpQSyt3V0NXd2dreHVxanBO?=
- =?utf-8?B?akMzN09hS0xuNG1IVXlIMGZnVm9UaUtBdnZsME5SVVpuNXVEdHB2MUpOSkdB?=
- =?utf-8?B?S1lYUm1zZDc3MG8wNWRtQmVMdlJtenJ2WjUxU1NUbnV4bFlJVGtnVlFXd3B6?=
- =?utf-8?B?YUsyVmpmb2ZuNnN1MFJqRE9uQTBzdUtHMzFMUnRPWWFrdjNrSmNWdUJZZVI3?=
- =?utf-8?B?RnNFeFZ1TlJEZ055Sm9mMUpUeWdxNHFoRHlwOVRpMjhmVkp6MWMrcG9wVS9U?=
- =?utf-8?B?S0djeXVJK0I5NUVScjVXWVNzeXlWLzVMZnNxait6WTJOd2xDVXVLM1BTLy9M?=
- =?utf-8?B?MUNCU3gvRmRlVDk5Q2NWMWFlNnRNYTFlTzVzU2xkUDFZc0NoeXlRQ2g0NFhH?=
- =?utf-8?B?ZHMrdFZyZ2w0OFVLYkszWW8wZk90MWtMdGRuaFhUa2ltazRBc1VsbFVyS2hk?=
- =?utf-8?Q?QMDRExw49GILYb9la3?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfbbee43-c51e-4e70-9bd7-08def30a9836
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 15:59:56.4008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: las6dw8QnBGGAlgNZKGinLRV7KydeogSa+xeHVkt/N6UpsYDzqtWF/UjI58kk6y2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6415
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKGZEK0AQP6R.1RTQEY44OQD65@nvidia.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BEB6B1C000E
+X-Stat-Signature: 8dr3eym9qe9jkdfgeb1ob5g8enz87zuy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4A35140008
-X-Stat-Signature: d4jbqskn1nf6z4uzhoud9cxdzzcqtbzh
-X-HE-Tag: 1785945612-337462
-X-HE-Meta: U2FsdGVkX1/Od5WOLJFGKc8dVpYAdrmAMRmGxtXrkD2pGsS65vJ6dJ1Srlx4lwS25DD3qVQgT8Uo/J4fUwqz/4Sgq/moeU+aSP0CytpwI+hg0V2HNrJ+aZahcS7RbiTMBRUOTlwdyr10vjSNelaWas1zWxuKa9vA64xO2Fn3U/oCleAtci/QpYcTYRjbkjZwmvwTdexqWUDA4brhV03/SaS1YGrzFyx4S4WWvqCZGje431jQZ+YXWin4Hn5jff8XLHQddYHI8LY0PwEcGOLFl2GBDFcINu7+1cGmsGBo9HZBao2NmboIpm57kjWV3pss6TULVeZGUv55yDgsSYRUiMQeSwj3Ikbkgh2NNnisI50rbkBg2Dh5JH2E2xSGzUQ4VwAaAiYNB2qoLNgQ9UYvY6K6NUdwtRPxkkEno/eFYkrdpU5eejf6p0BFQzvGu5GbiImdeQISOWfe0N7zxaCuIvxB4zk5mXE4hL/+AvC9jt4ti+mrP4r4lxugxmZ+m2hpeFgibF5enAO87QhOJ7ThnSlPekANd+HzcypIszyfY8XXB1Wu56+7pDZi0JyR8wxXA1eQAmrDBYLVjm162PMdauLBzTwY9YMIWv9owxX4y6zoLKXeryCiWijcLSUBCGQfe8eqt2EDxo1uIH82AdRG2ei6a78FzFpai30uPhlj1peIlldrstundoLM2LpQeWfb+tiQEQAemU9kq6Q1+L3ObsvfEGygIbrr+YuE0Ly/zkqL4l2H0/V66/iA7J+NAEcvFdWzLjiOuYqnYMcqYDZJ70lfN75B2BBHKDqfBPh6FmTgAviRfiHVXH5ShzyC+L4waaVW316aXaOJ5tLsPGMTqpJNKAztfUDUH3x2kbZ2vxMw273rSdToswMueCTAVW50aZOcDcFQdAd6Y3TigoerRHN34k/dqxyC3c71lr998kjGmNsiiZVcmZFh0hnvh2OjD0usrdoFsDlr5EowDIw
- anoG8NMM
- yuDk0mnSkSlfxdPmknuHb4AR7TiJk0AtfNVWxMQSnP52K6vPSgj/PX51Bw/GcT6b9ibT/1vHwhek/zTr1ZGdcCxjgqvmBQY0mJ26hUa05xq+e3INDI+dfxnbYGeZJvSa06JQ8LAdFXwWSeDuvgTUqBz1bwjk7vdWPBcjUPe5QB6Ajm3rLZIoU5DWtqlBSvWbuILQZHhNPc/og8VOGfv6qSqCftLD4LFfXL3udI+yaa8fnFQOn/qkhUEFlh0Wk+E5Y056C50o2fzqSWaka5shXV8QqTOYM01q+T1uDkwEACLdINuk7tN4y91S4W/muvbfoGMb2V+s10/NeArllBQbM86hmcH6fslZYpI+7uF/G/aYSIKk5s3CoD/7PXMFNy4W+SHMbM7sYu4WWAKUfr/dcnMreQw==
+X-HE-Tag: 1785946215-269840
+X-HE-Meta: U2FsdGVkX18VcwvIf4MFx00cOz7KZtaLjipiuQn7nG560jr/qJ4w0V69qEHlD+gAh88OvUO01NJkiu4ZTu+KYQRZnORejXsguCyTrCFFEDJXUWLyHWOgH9i8Xz9zNP7qB6sxPKkQ2DnD70gJQTlKOuOQiQcbxgPlYzAi8yxQP8q+OBkMte39KLtzNCkPYcoSx0U1S7PcCA+qqozaWF0NWAI+FdXvbp4LBE7JAxIfpCxXB0Hm4z5y5XzBy6Lkztv7EvjBBMWWbmVVa6cGjlePz+wVuJHkBBEW1VcMSDS6vn3f5NWvxaKMDz+RO1gAlzhZFnDAJk7q1kpqkQuqS9jV44U46vSFmPeoLk7aAHPQeexsS6dYO0AA/tmC7FJH/OxnQYH8D3tj7rkA3gTYCN7czqYlVagXDAz860UTI3EJuc6qTM8rpz3nRZNR4a6j56ir2LnH0InEwCTdmkQ7VKZ74TxBlYwfTIbU6B0WteDfopRNAwbm3jddUkltiUhH6P100Oy2JthbC2FxO5PSIQZiy++B0ZmoT7ZOZ9TH5KB1CONW7g8v9iNjI8ISb8reaw/zZRgfbl/tZtSoWtxlCXKGkA7f5h22nZdW3WL7WSqyy2dfr+6CZvVtLqTnuhrnReMYHFCF23WQJ/bIKQFQMnHXU+O5pMHF9sJruiYj2ugijnnzV7VUFbLL6zMVjXNK6+VU7VNw1abWsdCHLFIEkPC6K5Eaz29uujyLQjFYOa0kUOmzWPZlV4/MLh0Fj9FE2k4JuoUimMKpxABAbfiDLSwizQMgDL7cIgy0EJujstu8QGd21eNXEYNKVW4jLW9c7FEVj8igtlQLuPQNdn8iYvQh8/KnhFw3rbuq8ZEbYcR0yVhEwP4gL+CNJoEECbFZ5QoQQCfqNrZ63usYHE/y/j/pvjP1JuqeQE4HA7YTN7FPsxUHGPfZxRDNH7jKxosVz9ndd9VT3q3fMzTi/3PNUGy
+ xaTJefRU
+ Wg2bmkwaVIr7FRymy2OI4C5PKiuEmuCVzhSFDGhSn1Q1qHSz85pBMTzl1FmvVyUl43bZWke93XdwxcZk78v8maoG+ImRCFBOaT7VECPqxVWD6A/Wpm0qmXj+2b5O8cY30z5Tq+j36OYND9Up1cRzN+E3Fn2wtgzW7iLrsz70L3dR8bsHl23qykEdRrZwb1O1ezXzU4fMh8wUa/IxZKZWoyec0gmeQaBeakcPa46Mnu8wHFjCbLe3B+RGJmo8WQ8Q4wiClmda4WFFmEbEqiMfBMr1vl2tjdB4K6ZG2Fsyxe7sIGPjYiJWFb/sGJ5z3Jo8chxy4QJHJeCF3EI4Wc0Vo5Hpaoc1kYOv5yOfpTKMviwzI9m0JouDhxDxbdrxvUSu/3n3GJWKmo8rGLgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,155 +155,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat Aug 1, 2026 at 2:26 AM EDT, Baolin Wang wrote:
-> Implement mTHP-sized hugepage checking helpers using gather_folio_orders(=
-).
-> Also rename the existing PMD-sized huge page check function to
-> __check_pmd_huge() for clarity.
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  tools/testing/selftests/mm/vm_util.c | 60 ++++++++++++++++++++++++++--
->  1 file changed, 56 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftes=
-ts/mm/vm_util.c
-> index 09e5d5cabe21..1240d783669c 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -15,6 +15,10 @@
->  #define SMAP_FILE_PATH "/proc/self/smaps"
->  #define STATUS_FILE_PATH "/proc/self/status"
->  #define MAX_LINE_LENGTH 500
-> +#define PAGEMAP_PATH "/proc/self/pagemap"
-> +#define KPAGEFLAGS_PATH "/proc/kpageflags"
-> +#define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
+On Wed 05-08-26 07:42:37, Zi Yan wrote:
+> On Wed Aug 5, 2026 at 5:25 AM EDT, Jan Kara wrote:
+> > On Tue 04-08-26 13:09:46, Zi Yan wrote:
+> >> On Tue Aug 4, 2026 at 1:04 PM EDT, Jan Kara wrote:
+> >> > On Tue 04-08-26 11:54:41, Zi Yan wrote:
+> >> >> On Tue Aug 4, 2026 at 5:32 AM EDT, Jan Kara wrote:
+> >> >> > On Mon 03-08-26 12:56:36, Zi Yan wrote:
+> >> >> >> On Mon Aug 3, 2026 at 5:54 AM EDT, Jan Kara wrote:
+> >> >> >> > On Fri 31-07-26 22:13:30, Zi Yan wrote:
+> >> >> >> >> erofs needs to traverse readahead folios in reverse order to achieve
+> >> >> >> >> maximum performance by
+> >> >> >> >> 1. reading all folios from readahead_folio();
+> >> >> >> >> 2. storing the prior folio pointer in folio->private;
+> >> >> >> >> 3. traverse from the last folio to the first one.
+> >> >> >> >> 
+> >> >> >> >> Add readahead_folio_reverse() to achieve the same function without using
+> >> >> >> >> folio->private.
+> >> >> >> >> 
+> >> >> >> >> It prepares for a future commit that replaces PG_private checks with
+> >> >> >> >> !folio->private checks. After switching the checks, erofs's use of
+> >> >> >> >> folio->private without bumping folio refcount can cause unexpected
+> >> >> >> >> outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() becomes
+> >> >> >> >> reachable.
+> >> >> 
+> >> >> <snip>
+> >> >> 
+> >> >> >> 
+> >> >> >> The below is what I come up with. I did not add a bool to
+> >> >> >> readahead_control, since I think that is the decision of caller of
+> >> >> >> __readahead_advance(). But let me know if you disagree.
+> >> >> >
+> >> >> > The reason why I wanted bool in readahead_control is that if some code
+> >> >> > ends up mixing readahead_folio() with readahead_folio_last() things will
+> >> >> > get confused (because __readahead_advance() really wants to skip the batch
+> >> >> > returned from the *previous* call to readahead_folio[_last]()). With the
+> >> >> > bool in rac, even mixed use will properly advance the state of the
+> >> >> > readahead_control. I don't think mixed use is very realistic (at this
+> >> >> > point at least) so I'm ok with leaving that for later if you don't like it.
+> >> >> 
+> >> >> Got it. I am trying to figure out your mental model of how the mix of
+> >> >> readahead_folio() and readahead_folio_last() works with the bool inside
+> >> >> ractl. By looking at readahead_folio_last() code, it is almost the same
+> >> >> as readahead_folio() with __readahead_folio() inlined
+> >> >> (__readahead_folio() is only used by readahead_folio(), so the inline
+> >> >> can happen without any issue). As a result, we can get rid of
+> >> >> readahead_folio_last(), add set_readahead_direction() to set the
+> >> >> embedded bool read_from_head, and use readahead_folio() only. This
+> >> >> removes redundant code in readahead_folio_last(). One thing I am not
+> >> >> certain is whether we want to
+> >> >> 
+> >> >> 1. use set_readahead_direction() explicit and warn readahead_folio() if
+> >> >> read_from_head is not initialized, or
+> >> >> 
+> >> >> 2. set read_from_head to true by default, so that only erofs needs to
+> >> >> call set_readahead_direction() to change read_from_head.
+> >> >> 
+> >> >> The former is less confusing but changes how readahead_folio() works;
+> >> >> the latter is simpler but implicit read_from_head state might confuse
+> >> >> people at some point.
+> >> >
+> >> > My idea was: readahead_folio() will call __readahead_advance() and then set
+> >> > rac->forward = true. readahead_folio_last() will call __readahead_advance()
+> >> > and set rac->forward = false. __readahead_advance() advances from beginning
+> >> > / end based on rac->_forward value.
+> >> 
+> >> Got it. I can do that. Just to be clear, it should be that
+> >> readahead_folio() first sets rac->forward = true, then calls
+> >> __readahead_advance(), since __readahead_advance() advances based on
+> >> rac->forward, right? readahead_folio_last() as well.
+> >
+> > No. I wrote "and then set" which means after and that is what I really
+> > wanted to say. You still don't seem to be understanding the logic of handling
+> > the _batch_count. _batch_count is the length of the returned batch.
+> > __readahead_advance() updates _index and _nr_pages to remove the folios
+> > returned in the last batch from the range. So _forward needs to contain
+> > whether the last returned batch was taken from the beginning or the end of
+> > the range and __readahead_advance() uses it to update current range
+> > accordingly (before we go and return the next batch). We cannot clobber
+> > _forward before calling __readahead_advance(). I hope things are clearer
+> > now.
+> 
+> Got it. Sorry I made some assumption instead of asking my question, so I
+> misinterpret your words. My question is who sets the initial value of
+> _forward? So that __readahead_advance() can update _index and _nr_pages
+> correctly at the first time __readahead_folio() is called?
 
-This is a fast way of getting log2, but there is no check of the type of
-nr_pages. What prevents one using it on a long variable?
+This first time __readahead_folio() is called _batch_count is 0 so the
+value of _forward doesn't really matter... But DEFINE_READAHEAD() will
+implicitly initialize it to 'false' which is fine.
 
-At least you can convert nr_pages to unsigned int and add a comment.
+> __readahead_folio() does:
+> 
+> 1. update _nr_pages and _index,
+> 2. return NULL if _nr_pages is 0 and set _batch_count to 0,
+> 3. return folio using xa_load and set _batch_count to folio_nr_pages().
+> 
+> after the change:
+> 
+> 1. call __readahead_advance() to update _index, _nr_pages, and
+> _batch_count based on _forward,
+> 2. update _forward to true, since it is __readahead_folio()
+> 3. return NULL or folio based on _nr_pages.
+> 
+> Then the first time __readahead_folio() is called, who sets _forward to
+> make 1 work correctly?
 
-> +#define NR_ORDERS 20
+See above...
 
-Why 20? mTHP orders can only be in [1, pmd_order - 1] and different arch
-has different pmd_orders. check_large_folios() probably should just cap
-NR_ORDERS at pmd_order.
-
-> =20
->  unsigned int __page_size;
->  unsigned int __page_shift;
-> @@ -348,7 +352,7 @@ char *__get_smap_entry(void *addr, const char *patter=
-n, char *buf, size_t len)
->  	return entry;
->  }
-> =20
-> -bool __check_huge(void *addr, char *pattern, int nr_hpages,
-> +static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
->  		  uint64_t hpage_size)
->  {
->  	char buffer[MAX_LINE_LENGTH];
-> @@ -366,19 +370,67 @@ bool __check_huge(void *addr, char *pattern, int nr=
-_hpages,
->  	return thp =3D=3D (nr_hpages * (hpage_size >> 10));
->  }
-> =20
-> +static bool check_large_folios(void *addr, unsigned long size, int nr_hp=
-ages, uint64_t hpage_size)
-> +{
-> +	int order =3D 0, pagesize =3D getpagesize();
-> +	int nr_pages =3D hpage_size / pagesize;
-> +	int pagemap_fd, kpageflags_fd;
-> +	int orders[NR_ORDERS], status;
-
-NR_ORDERS is a constant, so you can put orders on stack. I think you can
-rename it to MAX_NR_ORDERS, use 20, and check pmd_order is not bigger
-than MAX_NR_ORDERS.
-
-> +	bool ret =3D false;
-> +
-> +	if (nr_pages > 0)
-> +		order =3D GET_ORDER(nr_pages);
-
-This funciton can fail early if nr_pages is 0.
-
-> +
-> +	if (!order || order >=3D NR_ORDERS)
-> +		ksft_exit_fail_msg("invalid order\n");
-
-It should check against pmd_order.
-
-> +
-> +	memset(orders, 0, sizeof(int) * NR_ORDERS);
-> +	pagemap_fd =3D open(PAGEMAP_PATH, O_RDONLY);
-> +	if (pagemap_fd =3D=3D -1)
-> +		ksft_exit_fail_msg("read pagemap fail\n");
-> +
-> +	kpageflags_fd =3D open(KPAGEFLAGS_PATH, O_RDONLY);
-> +	if (kpageflags_fd =3D=3D -1) {
-> +		close(pagemap_fd);
-> +		ksft_exit_fail_msg("read kpageflags fail\n");
-> +	}
-> +
-> +	status =3D gather_folio_orders(addr, size, pagemap_fd,
-> +			kpageflags_fd, orders, NR_ORDERS);
-> +	if (status)
-> +		goto out;
-> +
-> +	if (orders[order] =3D=3D nr_hpages)
-> +		ret =3D true;
-> +
-> +out:
-> +	close(pagemap_fd);
-> +	close(kpageflags_fd);
-> +	return ret;
-> +}
-> +
->  bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint=
-64_t hpage_size)
->  {
-> -	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> +	if (hpage_size =3D=3D read_pmd_pagesize())
-
-read_pmd_pagesize() can fail and return 0. Either you need a check here
-or add a ksft_exit_fail_msg() in read_pmd_pagesize() to remove the
-burden from all callers.
-
-> +		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size=
-);
-> +
-> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->  }
-> =20
->  bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint=
-64_t hpage_size)
->  {
-> -	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-> +	if (hpage_size =3D=3D read_pmd_pagesize())
-> +		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size)=
-;
-> +
-> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->  }
-> =20
->  bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uin=
-t64_t hpage_size)
->  {
-> -	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
-> +	if (hpage_size =3D=3D read_pmd_pagesize())
-> +		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size=
-);
-> +
-> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->  }
-> =20
->  int64_t allocate_transhuge(void *ptr, int pagemap_fd)
-
-All read_pmd_pagesize()s above need to be handled.
-
-
---=20
-Best Regards,
-Yan, Zi
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
