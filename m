@@ -4,89 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 565B3C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA8BC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:45:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F61C6B007B; Wed,  5 Aug 2026 04:42:47 -0400 (EDT)
+	id 9BDF36B00A6; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CEAD6B0092; Wed,  5 Aug 2026 04:42:47 -0400 (EDT)
+	id 967426B00A9; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E72A6B0093; Wed,  5 Aug 2026 04:42:47 -0400 (EDT)
+	id 856616B00AB; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 180966B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:42:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8A572C03BF
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:42:46 +0000 (UTC)
-X-FDA: 85066575132.26.2BF5225
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 917B8100002
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:42:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gHFZT1OB;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf14.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 539CB6B00A6
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:45:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD1E01C049D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:45:19 +0000 (UTC)
+X-FDA: 85066581558.15.82F923C
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 96E0A1C0007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:45:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=h7UzM6Xy;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785919364;
+	s=arc-20220608; t=1785919517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DxsOeJBgLD6jZEVkGeHk085+Bv5tTcnYZ6Dn+cOzVFY=;
-	b=vcnlf/rvuPFeQ6penCNk8jRaIvr9ANkMHLUmsTCVH3BSfBEmAvzBgaPWqEJnPPZRanlkFz
-	mtAv9UOeLx+62/9878cMg6UYFCv0zorh7WWT03g9aIXgSZBfgME2HE4xXjgTqZnK35HVHY
-	Y9TFhZ7uq7bF6rIKl8MqqtfhM7NGYYo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JD3nmw7/uCpHKQFNLBdXItUa70PfNLL451+71cdShtI=;
+	b=rSEXq0wxe/qYJEkIyXkTWLyspfm5kBCfpbVt5ULYJ9gVzjp7RaBDbIp1mLFD+sHh2wugjN
+	iXslYXwoe3emPnHdXdVQxZCRUqNjv8W1Rv3QgrDoSrzGcv6c9Z3f/MRssAbTgbPPLXsVN4
+	hTONli6LVhtj+54fZwMItcpMLLxQ1zE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gHFZT1OB;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf14.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=h7UzM6Xy;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785919364;
-	b=SSg8Owrm20+G/GKxP6eQ4Nr8ciDgDoERdoVRDbQN6VPeitUvhTl9YnUcldxzny8Z9JMhQV
-	dy5k5mTQWygdUmNW4Z9tcKrdSBROS4kfgwu43AkySFUD1SgRi/5yTz6ZZt4ufI2DWg7yCN
-	0GxFSAySGciV1gf9a+5Vr4Xdsqf0ju8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Dx
-	sOeJBgLD6jZEVkGeHk085+Bv5tTcnYZ6Dn+cOzVFY=; b=gHFZT1OB7HVXln+L5h
-	SWACOdotVQHKoF1PuuQRwTQT82vp2zkWyLcS+j6J4/7s/DZCFZwFKtUjbnkeIss3
-	HRy8VU3mz/vv53xDRBSJaYoEVUBDXK7a0MyPGHRprx32kJzS9Zm29rlhxfwVz28o
-	15WyFZqUVgBEqut/15kEMIV58=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCnwmJz93JqARgeOA--.21852S2;
-	Wed, 05 Aug 2026 16:42:28 +0800 (CST)
-From: dayou5941@163.com
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: ziy@nvidia.com,
-	linux-mm@kvack.org,
-	Li Youhong <liyouhong@kylinos.cn>,
-	Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm/memory-failure: fix concurrent access issue in min_order_for_split()
-Date: Wed,  5 Aug 2026 16:42:24 +0800
-Message-Id: <20260805084224.2597547-1-dayou5941@163.com>
-X-Mailer: git-send-email 2.25.1
+	t=1785919517;
+	b=7qISCeJETCP5tPt+z0RQzeERYJRmMi/6Oc8snUba4q2kARRq4/lHPbgitA2bCx6gGhAPqe
+	RqhVD47aZSNxynlALUAGnVXO0sDYjixOWDKbQMO9oMtCgwEw5G1TA3E680lHNIxM00Wy1f
+	+akDobMnOyd/0yn1RIjLp+1fFR8F4QE=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mcwH3057752;
+	Wed, 5 Aug 2026 08:45:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=JD3nmw7/uCpHKQFNLBdXItUa70PfNL
+	L451+71cdShtI=; b=h7UzM6Xyr78usgCRR1hJ7/iAbqW9yfFhu+STygjpydYljN
+	KP4FN0nLHlTh6AoQafUPkes4WckzTrFzpTthrjk8SddikrxZI+FfxfDLOdegXd+f
+	3OYs4PfOTeMVR0qP/aA0bkcRv8s/62AuwchucxkV/w4a6gpdA5UbfUdPJXpe1ywz
+	3iEDLvca6NeK7DmZwCmekFL5oiAyfdqRSp7XngXnkjaHoYPzvBqxCyu0m7bDIwT3
+	oONTXLH9weEQc0Xs+7z+Wm/v8RZ3mlhcwismUAWi8qQAhFiDcUpsDDLqTFQzb7QF
+	ooirbwHieQ4ADNFD69xKP3Uw8xx+6UC3WanCMwFA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8eusn3a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 08:45:10 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6758faPa000582;
+	Wed, 5 Aug 2026 08:45:09 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtynhe0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 08:45:09 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6758j5bE17170808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 08:45:05 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 405CE20043;
+	Wed,  5 Aug 2026 08:45:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A1B920040;
+	Wed,  5 Aug 2026 08:45:04 +0000 (GMT)
+Received: from osiris (unknown [9.111.89.228])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  5 Aug 2026 08:45:04 +0000 (GMT)
+Date: Wed, 5 Aug 2026 10:45:03 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+        "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Yang Shi <yang@os.amperecomputing.com>,
+        Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org,
+        urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+        akpm@linux-foundation.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <20260805084503.37016Aa7-hca@linux.ibm.com>
+References: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+ <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+ <amCPBrdltFSE_fEf@J2N7QTR9R3>
+ <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+ <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+ <anHuLy52o5S9Nlwp@lucifer>
+ <63ea8156-a109-b2a2-6d35-1c17ad7f1a9d@gentwo.org>
+ <84b31836-1d10-4bec-a469-468b91fd4645@kernel.org>
+ <9f146ce0-4adc-0c00-a2d8-c01b47edc9d1@gentwo.org>
+ <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnwmJz93JqARgeOA--.21852S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr4fKrWfGF1fXF47GrWDtwb_yoW5ZF43pF
-	W7Kwn8XrZagwnI9r47Xw4DAF1Fk34kWa15uF93Cw43A3Z8Aw1jkF47Ww4YyF4UKr48AFn7
-	tFyDXF1093WDtF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFfO7UUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC3RZSAWpy93YoUgAA37
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ea268481-d584-4744-99d6-0b05aade7d5d@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: nSjLujXPpUt8SCl8nOyvj029YFqLkigw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfX7fUH1t4maqRx
+ //StpMY7nBAPQ+rfUQ94r32tTMY279r1ppR8Gj908SIS0YCI/74Rww5hM9FqqtmS0G6XLIdmRKT
+ USc0wMZF7U4lzqn/dcK7OfujfoIqeNM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfXzxKbMyGLKx1O
+ 1Epm2xtvxNNJqwrMSFnXF/YhlbXForSZBwSH+5SDOKDizeDdEGMV20RzHkD8I1ihwB3WfRRGN0f
+ k+6ck6dUq3nARmrn+SfcBXLWldNNt8bjgMUMLwGs+/a8PUH84W8E9c/aRgH4b5ikrkEFOFocb8i
+ EpK9ooplvHBWL+0uVt2j3KIl+cykuSy4WZy/BMmBYfPXB6wE193F+22le0In+h0b3pR+N/HNNys
+ cHhVoq9vfJOkr4dB4lxwuv5bht2c9KveHfaH1e3LA2zEiZxwJoKhWUqIczjdzDet8j0dnPKkMce
+ xF0cHZT4wLnV2TDUwtWB94Drdn7vrQBriDfNxhnhne/n03hUi2AC+RUPgPGbBhRfgSeGY1lLxNf
+ yutMagTLlbIPLdFF2jVJtqmiZ/06t/F8yJYZ/wl0nUjOw8N6PzsSDL++DKiiRnUxlIyOHDIVKMT
+ KMDA68PPKmiR8Tw/Wnw==
+X-Proofpoint-GUID: 2xVSsLtkyg8UVaGyPMgocFxMjtNVlPI4
+X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a72f816 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=YN_xvx8HUdd5Io_IMJAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 clxscore=1011 priorityscore=1501 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050064
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 96E0A1C0007
+X-Stat-Signature: 6757a6dttngy8t9z7cwmddbhghdmcmja
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9profrjjmpfiketdm3ybb87bcda8439u
-X-Rspamd-Queue-Id: 917B8100002
-X-HE-Tag: 1785919363-812381
-X-HE-Meta: U2FsdGVkX18+U+5WWuxZRmJkFAIlcIGGsbOoXa5J1+ep7KYN/unKvw2rXUzRpr63BQ7abr+8kgQH7gvQnDTiN6t4TNdki2KyY0Zf1LPTx83O8AJ6m3+LAw9tRjVXHIw8Umrz9cGlYoO2x1BUoCAAI+gWBHXRHEzzhTg1jZMVLvAzPU40KA7GDL6qoAuICF6TLQiRlK48TIgx5A5s7KsmXe3HovYzixmMVliUWlINVzDp22aS39SH3lK3REbfSEORNiPWp/9DN1oRdwONgfTzD39XgWKRZIUxUgnYb0iabRkiy+iy2Tu9LCvoh2XC7Rfg0qs5hKLbaVxIb2JlromkWaclI10m2u3OmQi0MM5dV9UVH6DaKLo98w7w7LE7YJEmhIkjjaqkgxZ4e6NhTM1MJxKXOXAADOsw2Jl5BOemG/gNw0EUfOQx5WdxM3SFTr5Nx9GFdkTgH+zW2X4+pYoL5PJmYJ+QQ8dcrwq6bmyVPrndbRNGPMw5f8IDBVHe3KXnylRsbRD13egeJ28xGH9bRG3T/MnPWY+uw29gXKTFxRF7Pa715FYqM+gdu+4wmYWw89rRuBITDly2tF2ywseEF66tlC9ZVf0PSqZvFgvLiUvHqN1UIjugt0lRc0nsLu/wdosahLWLwVTW8ZEmDA/XY0NrS5a3YPUZQI7QuArkNs5caorflCGq7PW5Mn4twiRVrZo9Df7Ag7513lYnwAxXfAn1C224PEAcRwlRqI1OWCAamijrwTeV+dwxkGQBrNIhYwockwwgbX5YHtNTKn+F8W3p5wU7KwCI5YOQHHeJcN9gYRC1tYLumJqrrD4TWiDGpJ9NkhRYglHX4hYkRfCaZvHkIT8SnQIYlgIQiSRi2VZxukrk10J1rfSk68aArMfgh/qVC1RWnSGH4oJK6XHIFmfOulceBarwjZBekyTD4ZNPKMSWiyAmkGeVXAuDblzLdnT/WVP/KROZIx+eMXJ
- 3B4IwH+p
- Wey7mZHSz82ZcOBDCcYtLgxXw1q/XHnR7LLLDcBK2SJsbZfvLhTQVK2ksThkaxtWP3eQ8kksN8FjJDV5KvL7d0Pk2kSP/BsA6dPAc1JBOICewLq1cRioh3bmud7NtEBhHNVrxVI+MLmGSCpNh1BfryUenTm4orkyxB87A88NebYFJYwQpe7GJ3aT6e0wUDKuwGCejx7WeyDFxdrYj8LkDrvcaHp4Pm/eWhguts0HbiAYTYqUV2MaJ//5kG5Vlynpn6fPGABypERxZO/CeFXSlEtg0Q0IBLvr5F4plNdMpJHVOFpfZjkbRp6TIhchbfH0OY8mwRw9imvnF/Y2oTZ2c8H9+k+qN65k5Uf/zR7lfDN4as3EjNcPIJMxjzsf/pH0+cZnysP2xL8lPIQZeL6Wih0BFNNj5lSswBOXAze1vlqu9p6VmPYWEpVO4KvfNX6ATZWrzjZMd38+0/Jpqmitcjyf2g7mazIoldpjCNbGLmuYsWZc=
+X-HE-Tag: 1785919517-53630
+X-HE-Meta: U2FsdGVkX19sAupcULY5mnJT8F9+c0+kLk/9bqDrXh1uQ4RD06DSLq2w+q1r2dz3tUR6M+Una7kUrmdH0k0jNfqwCGiARalLAnbVi3GfX9qN9xMTRRj9ovraE5OSvso8K5ZYzIS36oOtPUbgmrcwx2SMSuurMaOHgzlRIWDYZUngJuhToxNSdrbK7Cai/n2WCTFxGQ7DeUuCiLN3c2B9FUgWwb5qeKjGsdohu/wT3G5eYmGByIgtwZrW0aWV74r5mozrypE1l5a4/1d9uGqIdJCeY0MHfFIwqx8BH/QFTzuYa4UKOw6C1px79VKu1kk5Z+0MOsL+ey9u+nZB/lSA2Y5VksNb/9jBS2Zx8npNwOiRpOKIN2OFRq6LQU3TXvAmbjAaloUIcfOtffGKWqg9BOWX40y1oUefiY26x+aJO/LAy/1sGf7ESCFLPKKvqSA2DIzJGQau7WYZrDKpPpLtP7H/9xo8qBBUllHxv1JZI9gzkWq6c7EQ86ISEU7jjSWNIsn0glEZzdvw27I2A5NkZfk5uh7odGjRxHdKlyK511TnMHII4SXg5+d+Jq+8bA39rpasuth99/ey7edjIcHExrNUq6lOneyDxN4paB+8RjuxP9AOdsSok9a73bsZq/KuuEMJNrw8Yl5Gc8mYP9JGGwDizD0vXbg+tB72DxXyne7mILW1R6z1xBtpYf6jvWEI6EkvFnLperhqvj8GCX/t7yjJDDvgwutOk6QaRXdzyFFdQeYN9zSry1KueJWzBZQhLRul+uWq4HpO+yut8vQHE2AMM6IaKGg4S367O7zeh2pxRruvf1egoH4WD6mXCOJezdxgL5pCPW4rBn1xhtbcB9PfAY/y4fuyyeTvUN/5ShYkVZenzAUi4Qee2d8NIG4C4VXQ5DPpJe1xGbc07MjEb+aEJviXALMI6L3bBTkszAaTO0yGxDEUCNViYps5Bt9UaICUUQSk/0lVVadQgSu
+ Gt59YsEn
+ lggVTppEBPjJqRIejgAjLYI9dHV9DrY3YQ69Ew1QCIcifyJghRzJSg70PwmgfE8YHL+iIadrQjfj9fDA3hQfvNVMeS97mtxv4aATXilMKEK3grO+kZqFQeDhu0tiliBVQhEQdXC+I9lEQB7qu5FS7ArFIwwWhhGINolDPD0SPgm7frDwAxze12hRnbPNA3EoKxy/K2LPgcMdrSptXEeLSwFlZ7SOOHwyOB/ZVbFnT2TNfLUnZ7vkJvaQ64erf7K1Tghjm3S5rPA1MsDSZfow8ayI4aMtp4/RXf4zn1zR5DO6GD1MK7h7/JyLQ5LQ+vspsbPQ2z8Zk7Ng2+Zb2NIFYFx5aAdbcOdAaniNUF0mJ1fudlPdCjlbvN7zkpndNp5oYY8am3x7oVyolEU3KYUtY9T4NL7pu+g24u40K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,93 +158,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li Youhong <liyouhong@kylinos.cn>
+On Tue, Aug 04, 2026 at 11:47:03PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/4/26 23:25, Christoph Lameter (Ampere) wrote:
+> > On Tue, 4 Aug 2026, David Hildenbrand (Arm) wrote:
+> >> Mark's solution is the obvious improvement to the problem, doing it just like
+> >> s390 already does.
+> > 
+> > Well there is interest by the S390 folks to move to what we proposed from
+> > what I can tell.
+> 
+> Heiko said that as reply to v1, bit he's been replying a lot on Mark's patches.
+> Only Heiko can tell. (on CC)
 
-min_order_for_split() accesses folio->mapping without proper
-synchronization. While the compiler typically caches the value
-in a register making a NULL deref unlikely in practice, the
-real issue is that the callers in memory-failure.c do not hold
-the folio lock at the time of the call:
+I said that before Peter Zijlstra proposed the restartable sequence approach
+for the kernel. I took that as input, and provided the current solution for
+s390, which does not restart anything, but only fix up register contents if
+required. Now Mark provided an improved implementation for arm64.
 
-- memory_failure() explicitly drops the folio lock before calling
-  min_order_for_split().
-- soft_offline_in_use_page() has not yet acquired the folio lock
-  when calling min_order_for_split().
+That said, there are some performance numbers [1] for s390 available as posted
+by Mete. A performance improvement is indeed there, but looking at the current
+s390 implementation I'm not sure there will be much of a benefit if we now go
+to percpu page tables.
 
-This means the value of folio->mapping may be modified by a
-truncate or invalidate operation while min_order_for_split() is
-executing, leading to a torn read or use of a stale mapping value.
+Currently we have this code sequence for e.g. this_cpu_add(...)
+(%r2 contains the to be added value).
 
-Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Youhong <liyouhong@kylinos.cn>
----
-v2:
-- Dropped the approach of caching folio->mapping inside min_order_for_split() in favor of adding the folio lock at the callers.
-- Added VM_WARN_ON_ONCE_FOLIO() in min_order_for_split().
-- Updated the commit message to clarify that the real issue is the callers not holding the folio lock, rather than a TOCTOU race.
-  v1: https://lore.kernel.org/all/20260804035828.2684059-1-dayou5941@163.com/
+larl    %r4,1b33300     <-- load address of percpu var
+mviy    960,4           <-- mark start of percpu op section
+ag      %r4,952         <-- add percpu offset
+laag    %r5,%r2,0(%r4)  <-- atomic add
+mviy    960,0           <-- mark end of percpu op section
 
-v3:
-- Fix author name and Signed-off-by format as requested by Greg.
-  v2: https://lore.kernel.org/all/20260805072625.2437636-1-dayou5941@163.com/
----
- mm/huge_memory.c    |  2 ++
- mm/memory-failure.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+With the proposed percpu page tables I would guess / hope we would end up with
+something like this:
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 58cabe6af33d..e3f16dadc1d4 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4300,6 +4300,8 @@ int folio_split(struct folio *folio, unsigned int new_order,
-  */
- unsigned int min_order_for_split(struct folio *folio)
- {
-+	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-+
- 	if (folio_test_anon(folio))
- 		return 0;
- 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 3b1e6946821b..7391524b5046 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2437,12 +2437,17 @@ int memory_failure(unsigned long pfn, int flags)
- 		res = -EOPNOTSUPP;
- 		goto unlock_mutex;
- 	}
-+
- 	folio_unlock(folio);
- 
- 	if (folio_test_large(folio)) {
--		const int new_order = min_order_for_split(folio);
-+		const int new_order;
- 		int err;
- 
-+		folio_lock(folio);
-+		new_order = min_order_for_split(folio);
-+		folio_unlock(folio);
-+
- 		/*
- 		 * The flag must be set after the refcount is bumped
- 		 * otherwise it may race with THP split.
-@@ -2796,8 +2801,11 @@ static int soft_offline_in_use_page(struct page *page)
- 	};
- 
- 	if (!huge && folio_test_large(folio)) {
--		const int new_order = min_order_for_split(folio);
-+		const int new_order;
- 
-+		folio_lock(folio);
-+		new_order = min_order_for_split(folio);
-+		folio_unlock(folio);
- 		/*
- 		 * If new_order (target split order) is not 0, do not split the
- 		 * folio at all to retain the still accessible large folio.
--- 
-2.25.1
+larl    %r4,1b33300     <-- load address of percpu var (same on all cpus)
+laag    %r5,%r2,0(%r4)  <-- atomic add
 
+That's certainly better to what we have compared to now (no performance
+numbers available), but I'm not sure if only this would justify all the
+added complexity to common code currently discussed.
+
+Read: I'm more or less fine with the current s390 solution, and not pushing
+      for percpu page tables.
+
+[1] https://lore.kernel.org/all/18ca706f-ef45-4207-a55d-025f90133978@linux.ibm.com/
 
