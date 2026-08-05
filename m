@@ -4,90 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E1C4C55838
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 00:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 737AAC55184
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 00:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B95636B007B; Tue,  4 Aug 2026 20:33:46 -0400 (EDT)
+	id 6317F6B007B; Tue,  4 Aug 2026 20:46:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B46016B0088; Tue,  4 Aug 2026 20:33:46 -0400 (EDT)
+	id 594116B0088; Tue,  4 Aug 2026 20:46:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5BBF6B008A; Tue,  4 Aug 2026 20:33:46 -0400 (EDT)
+	id 436886B008A; Tue,  4 Aug 2026 20:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B376B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:33:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 63CD780329
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:33:44 +0000 (UTC)
-X-FDA: 85065342768.15.E9ED209
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9B9C4180009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:33:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZsAE/KR5";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 233A36B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 20:46:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A872C4033D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:46:24 +0000 (UTC)
+X-FDA: 85065374688.24.62F8741
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B3B4B20003
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 00:46:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=U7Xrcbfo;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.169 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785890022;
+	s=arc-20220608; t=1785890782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jf/xVNbWPols23hslUUwD7fcUT/RrrsqrpMbZwK78iA=;
-	b=2efhhb5ZghZai7BtDPDG8hkS1WBKgiIzBB8EjhQN6K0AZpsm0GrsGumOLG0Tw8S6RpdxsX
-	6L3v/e/5pAvrIMERwlnujtAG7h15BTm2OT9g1cD5rZH8XPmiGvOEuhMpAYZIkruH0uf403
-	vNq3vcbi8TDDHm/+6TyjV8Pj/1DA97U=
+	bh=iDzP+LDxs2nXjdXRyg6jCOTN271Ap2JDGV49rj6+K7A=;
+	b=I4RNtFzOotFy+RQg78L9wciomjjE5r4ehWmukMa7SFznVgksRavLBW23tobf25FGheFdeX
+	VFkMp0uGRS2oGmG+MCMcih0GBnybr8R3fbsWL0wvL78vQPyldGGxpdO9Nj8fI2b1BtjoOa
+	2+0lCzXBc0j18x4evbjd/Vj80TFkkVQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZsAE/KR5";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=U7Xrcbfo;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.169 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785890022;
-	b=EaYoW7hFJx5AiTBJNHr+yTwLraHM26OkUzfgnIWQg1YZ2zgfrooLFOF+UFwcUPy2h2+cYR
-	lzW45WaoYRFyws/x0cqHm/nIKnYX8VMfYOyNKb9AXaoMfAmfuv/RrjUFcKSc3ujXMNFSwr
-	DFqRpBrt4e2VMTsd622WubOG61dlpD8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5FCA40D87;
-	Wed,  5 Aug 2026 00:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8461F000E9;
-	Wed,  5 Aug 2026 00:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785890020;
-	bh=jf/xVNbWPols23hslUUwD7fcUT/RrrsqrpMbZwK78iA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZsAE/KR5jsl+73ewpPJ90yFlmGYeO7a/wU07gbrHhMBmdf2F7ePh3+D6jz4/Yvg+N
-	 675vAD3SbnXCak/e6mSmhMiirV3WDfNQEA2LDct1FWFIuqG+MNwHTbruXgTZbbWtc6
-	 MjuMfKZ/wyvQ0Kd+VFExQUnJyMNZ31FnnYVilc6wfpN8Y6QapN+M/XcDG3My7JaY3S
-	 f0NwSVZ50X7wH3OHI4nJI1uCw5K+6hRv/gDBJBV/KvkvspNC0xGWkbGohBhhbGBZQv
-	 yXlRidHfTfUNxbqlME8YG9BJw8RxuHD6fKpCPpEJhRP3jfYi0XLE6MtCpYBITsXgTI
-	 lxGgiv42yPQkQ==
-Date: Wed, 5 Aug 2026 01:33:36 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List
- <linux-mm@kvack.org>, linux-arm-kernel@lists.infradead.org,
- linux-iio@vger.kernel.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 9a4cdc958dd79fc6c3b20b51a10debec6ca09fec
-Message-ID: <20260805013336.4bd8a298@jic23-huawei>
-In-Reply-To: <202608041404.bOHh2XuT-lkp@intel.com>
-References: <202608041404.bOHh2XuT-lkp@intel.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	t=1785890782;
+	b=cB0UZPaxtkN4eJXdi1NmmW8NArrWkndd1nUW9E68ocrWwKcKXFA1DnPFpvCsJoCFoZRT/u
+	1fH/gvlt1fNYvlpWH6XCZVLOLfFA3ReSyIzhnymfmq7eu7ccPVKHy5JJ1rDKNlvpu4LefN
+	Sd1+CCnQi+HwNW7/zuUR5SsMum2tr4M=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e5c9211d2so35067585a.1
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 17:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1785890782; x=1786495582; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iDzP+LDxs2nXjdXRyg6jCOTN271Ap2JDGV49rj6+K7A=;
+        b=U7XrcbfobiYbVupKLmZqD2MmWyUm9VDC/xVhbwP84UQRMI+UmfxTX7wt/Y5Gs6NSSX
+         Q3BP6NhNKZXoVq0j8cAoDPXxe+wqv74WXZA41C98axzzBljj9yfc7en9MstVa2C/JtNF
+         gQrbETXjUUBAI9wOKIGXg5sXCQoyGbTjci5CTvRhgV0aAX8vvFbAB8MM91TO/4C+wtre
+         M4q64Mu+t5KnyjEJCGKj2DNm2RN15nW3v8lUtyDngqSUJCgFNJRJW0AWzI4h+ctx04GN
+         VCgv21TIeZDRd0XuW5auTkN8iWfKYI3ozl2a3NADgebnSMKUoyYH9DrcFzqB3d2YbaCv
+         +hiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785890782; x=1786495582;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iDzP+LDxs2nXjdXRyg6jCOTN271Ap2JDGV49rj6+K7A=;
+        b=eXjwW2SXlkmCw6pd97nyWFHKoXGdwWdnLBgWjo4lXlvZF3yjMe7kpKxoBxNXgAcXHb
+         DHpS3i95VlMsEEaLzbqre5wd+95UEgvSmjWvNid4lIcUJP2LGR8psPMRtgYnbv9RfBtx
+         1XxIVS/y1yzhIznbSEZtKyc/b/XwZ509doJd3VD9D7sOyhtIP08yA321Hq1wZf/cQ3OZ
+         gVnvmcOcy0CVNEBHOmTJAFf2lsOU94XnucOIJXTqP3KwOcxzuO1gNRGYPxXg1+t4BdWW
+         VjA48YJkAgypIOjyy5T4mha9cMP6SjR1vdj6zgimLO0P84VYvAuRQJn/t5OjCaMe5qhP
+         kS6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrDwsBtMxfsOfYUXijOdlA5udsqAIkuNfuSZKvavb/7IDvBUhilqcpP86NouIi0ZOeSimVjgUTpZg==@kvack.org
+X-Gm-Message-State: AOJu0YzHUNClL28/AJN4NOgYTmBZSsWYmTXoji7idiy2BiCJRsGHlMUJ
+	BfpBBHbnz0vxaWRHo97uDis+Rt//B+LS2oWLT4ECJZO9J1BznR6DQvFdPQ7sNiqGkYc=
+X-Gm-Gg: AR+sD13cqeZATdt0XXsoDiVTf7r6P2jihOEE1WKZ5+mFyjyj7jd1/4zgqAsGUG0nk8w
+	QHUNTYC6v55auK3yObrZ0QJm9ude0EOnONso5PPvxMqnFX7Y3coo5omaxj8El6CEJJOw2VOFS5y
+	EgTLdLwnh+K76UYpBLihz279gO4i1gxkruiBO7Zd+2bdmitAmf9tDoMQ7uNJgFoKaR5OcxXoTFA
+	rMlcLaRtXJllDextJGPKaGwlqjhq3EXWuKaPosgPucxV9OjVBNoZB5yCmFbcHXK25D2KJodGRQn
+	eDt/TUUIRXOkoJjZ1p8RJ5UC0zqV77S47/DUSjKzsDWVgshBuy4ZIbOAmcWRaF8yl5IfZAxdX6e
+	xi5KPmMA6yKOi0wNISB0mB9Uh+p+6rgSbzZhVpjFCEkWoZHlzFykTyUxeQZ27w25XmQeF6ODmTr
+	qUkgL4jPrat/telNrxFrUgfdZ4Pp1U6SyIvFSq1A==
+X-Received: by 2002:a05:620a:6488:b0:930:a718:bafb with SMTP id af79cd13be357-9364901e4a6mr284790485a.10.1785890781733;
+        Tue, 04 Aug 2026 17:46:21 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9364a58d498sm47308585a.39.2026.08.04.17.46.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 17:46:20 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wrPlz-00000000Ciz-0rZl;
+	Tue, 04 Aug 2026 21:46:19 -0300
+Date: Tue, 4 Aug 2026 21:46:19 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>,
+	akpm@linux-foundation.org, jannh@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
+Message-ID: <20260805004619.GA28508@ziepe.ca>
+References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
+ <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
+ <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9B9C4180009
-X-Stat-Signature: ckot9iywpc556frqb1wxkb9dop6tcupa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B3B4B20003
+X-Stat-Signature: 944hxd6bz6saihcwfyqa4ptp548tuqbs
 X-Rspam-User: 
-X-HE-Tag: 1785890022-252567
-X-HE-Meta: U2FsdGVkX19plv4j+SeCMngC8rWT3nUSWLZ17rU8MAW26/bPNEKjCS4I4g6suvzwX1+yHr9RDuIulkCXJk2zRmkBNR+HaSA03QQN/hE+/y8F62LEhwBOpweLDlDQuqG1Uy+H1flBZ6T92tN9UW/FWcrtFMS3DUKoORtwBcTyKDnTp9YiunuHBWnAt6FCI3qPFsJ6geo6TtjJj5DFRw5tDRi5ai3kjQWmXG13Zlz7h5sHag93/jYrgOYUX/U/TgEgsOAIrcei7YCabQseY1HpWRR3SR7+s9+oti+m05kGKm9gssaRYVaYYC+q1t3VNZgnWFjDnoovC/TAqV8g0kai5hjmzjLRQGqin3AJlOBROeeIwqaIAO6pDv0GZpZeqaRXL+Agi+ZwRq3ENLVXZTde7AugSlD0xD4bIiIFoMDkSIfAHBovuEKLXDG9PV22N8RFI+0ci0juJMbJcrM3x/JHn8KsKFTtTnn8a4c2Ivq+ORYDtz1Uv5eK6WeChlpkpTxOAHi0x9M2wpEiKz507G1kj7XTB1fK22Wz4D4dMz7tzMO/kGMKcSDIoqwaSNW/4hUPtBsyTMEV3R0SBcrnkiI2o08V/LXHIWzQH3FJNlu6lFcc8h3u0qw7IsCdqU9H48uAJHe3/PjXCgNYyiLCh3CyGvscp2AfFk+lbELd467dGiEL287NjUU2Y1C30c8ibCNiuMS1ZTgTKRFp7glnxiR/dtvV3A6xnkSMLi1nJhmy2Pi5rLOS2CkExOhfqd07cyypZG2i5yU37WFsEyXlWcVk7IKmHqythihVRMsTiijb499I+CjnPQNYgTuXzniht9e1GgzdNFOGJaSzB6qRmAJ6cH8qtugpxkSPK9/3ZsTaluLRz8xGt/nZeDm1nz2pl/7RsrWQ0T5ZjAOqFhMSxgwjp2dzNntAoXLkkIgJyB6421/qHqIklPrEsDpKI6sn+QMi5je6+SLrUJtfEWnLPsR
- N+/eD6Sg
- d2BuoimZxVn65cEgz9rXg8hp0jxKYAD9gxqqDn2xKebNLG+4tRwAEPDtHj33Vc9ekOMEo2HuKrGQf13q67OxX0YHMY5R35bRW8s/ehblnUpJ6+vDu5ZjNvpm4wEJgpgjHMpyVboFDxkxI0Dix8EZ5HEr+auBfd+NGXX1N12tPj7VxhoKa1Zmtc+aVdl/cKpB7HI6bri1w5iUpGy+Zljiy6ipKrn1QFW9c4xhIBkBqCZnWr4heSk+jeWF2Z+ISprFzSVy/BcYxD1tppKLKgBNOtBAGdgkt5JWCDZuG
+X-HE-Tag: 1785890782-995057
+X-HE-Meta: U2FsdGVkX19te9G7vGQf5KtDTAk3UFmFGN0mRJ1b84bbwZz3Duyr9nGs8zbktrYoNETQxxBn1qoHolOX0zZKyplVG3LPOelO68fThJkEq63bungyl95xzQb2jiZYdL+lv5fR8KiHU7l0fJZGeGFWy9O09Mj/27oJ7UQB/kEhtVlbu1offNC7Bsv+TisOJQY/nPyMSSrOL4WI3x4D7civHvRmzx0mJ6JC8k6mNrGGgu1RqBlvjwkfYTUXsBdwUXA3Mm4T4qMsbmlVHD6xv8AbX4EZ89PaR7zGbOvJgog6QAi2soN0bN07zccqN1DSRtJoAqaNBTH57L2sva0SM2YA8iLNHiixofv4gMP15y+8pFPO1PgGmvOfvNbRE65LyjXyhV7CtUxsY1IBTja/QCF4Zc0x3tM6h5uAZSqC9xVtvoXecjZPBNYuw4y7lKrH403hGQw3MQBpz7IWOioupp8z79myWn+moy/77C/w6xWQbAVJ+CbQhJcN5MoVPYQaqycI2dCLNWIUOkh1hKzvz+1P2mxjNcAdiulI2hBE/m1SEPT41no3P8fLjbmk36S0LfoTxFGlkGFgmL7Ep8oRg86MRqpQp9OnpKYpSuaAw696cuz9C5GkEQMHV/vdxpGCkZYvReMYQGCeFZpyPdz3RfYWRVDNFuv36pUjuQj08NU+K4apTJBno9eBwtW0gaD8PK0Unvj8wneK4FHNoGAGkzwiGSA5drkeyeComfGaOmxDJwcexbU4gXEfiY3+ajaSkKOTFE0rthkC0bUDwVtoOHJ5fEEwociM+KlYj2nDPHPiUnVzg8Q9UVOqssmeB5s4buub/TpZsnFlIOf+snyMeTLksnSsgRThDPuBm3WiWEQweaVrS0vNbr9kmSllMwY1iF0vzuZ+MX4RriMZ7bruNxgcdEMbLJTJAV3nhb7b0M6lXltSZvtidQTzCIVUviUFs4alyKr8TM+lHG/08ZPmyb4
+ 5uIzDjGg
+ HyD2KsZMF7Z2ahYhThBWeK+V+Yj2Kun0lQzbJgkxgYpSGGLz5c5BfJltPQELzKE+JdC7Ka2BY+p8Uj8Tj0s2mkWKlhtpimrwVYs19FvE0oH3rKaPEz54tfdUVwSd7gSgUe+sWzcnipIDqf2/6Kp29MLY7RjjL/SZ2nz2nNy27eKxCOtLDsm6cgVVoNaA3538D0xpveDP5U+oRXyo56pIpWpsw5/MchX14E4NibZuPhnzkBquqSSYbB1etaJ4uFhf39hnngp/E5l/NkA1mSYLxed/0wsQCMAQsLs/30DM2x21FXNFeUm6gHUpRHPZ5cUhu04U2P/VpZzICzIJcTcg3pyVlb+RXIPN85uJtRtb8/IioEdPgZX2WfsMmA4HT84n+IlSwOV97+L4FfXg95ixElVMOw0byo07G50Tp2We0gjOJvN2PdAXWqNpBhUzev5gliclmcVtvyM5Yvju8uL5oLoZn5dreUYq/8XF56iCd0LET2eViGA5NnteYf4zvOH5WDUPNEj4kF2CT0lkoHsXjOmyMK9i1FklBN77yE3jXyePj9kVCmkXAwGJsvPAcLvfuQ4JW4wyM2+O8EPaohivOW8ci2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,141 +127,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 04 Aug 2026 14:24:23 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Fri, Jul 31, 2026 at 06:07:24PM +0200, Vlastimil Babka (SUSE) wrote:
 
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> branch HEAD: 9a4cdc958dd79fc6c3b20b51a10debec6ca09fec  Add linux-next specific files for 20260803
+> > Thanks to Vlastimil and Pedro for the help on the plan.
+> > 
+> > Summary of previous conversation is here:
+> > https://lore.kernel.org/all/20260618152451.GE231643@ziepe.ca/
 > 
-> Unverified Error/Warning (likely false positive, kindly check if interested):
-> 
->     https://lore.kernel.org/oe-kbuild/202608040800.45L57Mym-lkp@intel.com
-> 
->     drivers/iio/magnetometer/qmc6308.c:402:7: error: call to '__compiletime_assert_472' declared with 'error' attribute: FIELD_PREP: value too large for the field
+> Yeah, unfortunately, "too small to fail" is a lie, because in some cases it
+> can fail (such as the task itself becoming oom killer victim) or any of the
+> other conditions that can cause __alloc_pages_may_oom() return with
+> *did_some_progress == 0.
 
-The line in question is setting a 2 bit field (GENMASK(3, 2)) to 0.
-No idea what is triggering that warning.
+But then we are back to the original problem, an erase API that can
+fail is fundamentally broken.
 
->     drivers/net/ethernet/airoha/airoha_eth.c:3470:25: sparse: sparse: division by zero
-> 
-> Error/Warning ids grouped by kconfigs:
-> 
-> recent_errors
-> |-- arm-randconfig-r121-20260803
-> |   `-- drivers-net-ethernet-airoha-airoha_eth.c:sparse:sparse:division-by-zero
-> `-- um-randconfig-002-20260803
->     `-- drivers-iio-magnetometer-qmc6308.c:error:call-to-__compiletime_assert_NNN-declared-with-error-attribute:FIELD_PREP:value-too-large-for-the-field
-> 
-> elapsed time: 726m
-> 
-> configs tested: 100
-> configs skipped: 1
-> 
-> tested configs:
-> alpha                            allnoconfig    gcc-16.1.0
-> alpha                           allyesconfig    gcc-16.1.0
-> alpha                              defconfig    gcc-16.1.0
-> arc                             allmodconfig    gcc-16.1.0
-> arc                             allyesconfig    gcc-16.1.0
-> arc                  randconfig-001-20260804    gcc-15.2.0
-> arc                  randconfig-002-20260804    gcc-8.5.0
-> arm                  randconfig-001-20260804    gcc-10.5.0
-> arm                  randconfig-002-20260804    gcc-15.2.0
-> arm                  randconfig-003-20260804    clang-17
-> arm                  randconfig-004-20260804    gcc-8.5.0
-> arm64                randconfig-001-20260804    clang-24
-> arm64                randconfig-002-20260804    gcc-9.5.0
-> arm64                randconfig-003-20260804    gcc-11.5.0
-> arm64                randconfig-004-20260804    gcc-9.5.0
-> csky                            allmodconfig    gcc-16.1.0
-> csky                 randconfig-001-20260804    gcc-9.5.0
-> csky                 randconfig-002-20260804    gcc-11.5.0
-> hexagon              randconfig-001-20260804    clang-24
-> hexagon              randconfig-002-20260804    clang-24
-> i386                            allmodconfig    gcc-14
-> i386                buildonly-randconfig-001    gcc-14
-> i386       buildonly-randconfig-001-20260804    clang-22
-> i386       buildonly-randconfig-002-20260804    clang-22
-> i386       buildonly-randconfig-003-20260804    clang-22
-> i386       buildonly-randconfig-004-20260804    gcc-12
-> i386       buildonly-randconfig-005-20260804    clang-22
-> i386       buildonly-randconfig-006-20260804    gcc-14
-> i386                 randconfig-001-20260804    gcc-14
-> i386                 randconfig-002-20260804    gcc-14
-> i386                 randconfig-003-20260804    gcc-14
-> i386                 randconfig-004-20260804    gcc-14
-> i386                 randconfig-005-20260804    gcc-14
-> i386                 randconfig-006-20260804    clang-22
-> i386                 randconfig-007-20260804    gcc-14
-> i386                 randconfig-011-20260804    clang-22
-> i386                 randconfig-012-20260804    gcc-14
-> i386                 randconfig-013-20260804    clang-22
-> i386                 randconfig-014-20260804    gcc-14
-> i386                 randconfig-015-20260804    clang-22
-> i386                 randconfig-016-20260804    gcc-13
-> i386                 randconfig-017-20260804    clang-22
-> loongarch                          defconfig    clang-24
-> loongarch            randconfig-001-20260804    clang-24
-> loongarch            randconfig-002-20260804    gcc-16.1.0
-> nios2                           allmodconfig    gcc-11.5.0
-> nios2                            allnoconfig    gcc-11.5.0
-> nios2                randconfig-001-20260804    gcc-8.5.0
-> nios2                randconfig-002-20260804    gcc-11.5.0
-> parisc                          allmodconfig    gcc-16.1.0
-> parisc                          allyesconfig    gcc-16.1.0
-> parisc                             defconfig    gcc-16.1.0
-> parisc               randconfig-001-20260804    gcc-8.5.0
-> parisc               randconfig-002-20260804    gcc-8.5.0
-> powerpc                      eiger_defconfig    clang-24
-> powerpc              randconfig-001-20260804    clang-24
-> powerpc              randconfig-002-20260804    gcc-11.5.0
-> powerpc64            randconfig-001-20260804    gcc-8.5.0
-> powerpc64            randconfig-002-20260804    gcc-8.5.0
-> riscv                randconfig-002-20260804    gcc-13.4.0
-> s390                 randconfig-001-20260804    clang-21
-> s390                 randconfig-002-20260804    clang-18
-> sh                                 defconfig    gcc-16.1.0
-> sh                   randconfig-001-20260804    gcc-16.1.0
-> sh                   randconfig-002-20260804    gcc-16.1.0
-> sparc                randconfig-001-20260804    gcc-16.1.0
-> sparc                randconfig-002-20260804    gcc-16.1.0
-> sparc64              randconfig-001-20260804    clang-24
-> sparc64              randconfig-002-20260804    clang-20
-> um                   randconfig-001-20260804    gcc-14
-> um                   randconfig-002-20260804    gcc-14
-> x86_64              buildonly-randconfig-001    gcc-12
-> x86_64     buildonly-randconfig-001-20260804    gcc-14
-> x86_64     buildonly-randconfig-002-20260804    clang-22
-> x86_64     buildonly-randconfig-003-20260804    gcc-14
-> x86_64     buildonly-randconfig-004-20260804    gcc-14
-> x86_64     buildonly-randconfig-005-20260804    clang-22
-> x86_64     buildonly-randconfig-006-20260804    clang-22
-> x86_64                                 kexec    clang-22
-> x86_64               randconfig-001-20260804    gcc-14
-> x86_64               randconfig-002-20260804    gcc-13
-> x86_64               randconfig-003-20260804    clang-22
-> x86_64               randconfig-004-20260804    clang-22
-> x86_64               randconfig-005-20260804    gcc-14
-> x86_64               randconfig-006-20260804    clang-22
-> x86_64               randconfig-011-20260804    clang-22
-> x86_64               randconfig-012-20260804    gcc-14
-> x86_64               randconfig-013-20260804    clang-22
-> x86_64               randconfig-014-20260804    clang-22
-> x86_64               randconfig-015-20260804    clang-22
-> x86_64               randconfig-016-20260804    clang-22
-> x86_64               randconfig-071-20260804    gcc-14
-> x86_64               randconfig-072-20260804    gcc-14
-> x86_64               randconfig-073-20260804    gcc-14
-> x86_64               randconfig-074-20260804    gcc-12
-> x86_64               randconfig-075-20260804    gcc-14
-> x86_64               randconfig-076-20260804    clang-22
-> x86_64                          rhel-9.4-bpf    gcc-14
-> xtensa               randconfig-001-20260804    gcc-8.5.0
-> xtensa               randconfig-002-20260804    gcc-14.3.0
-> 
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
-> 
-
+Jason
 
