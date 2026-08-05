@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE35C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90896C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:26:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE4506B008A; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
+	id 436B16B0093; Wed,  5 Aug 2026 12:26:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABB876B0092; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
+	id 3E81A6B0095; Wed,  5 Aug 2026 12:26:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D1756B0093; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
+	id 2FE356B0096; Wed,  5 Aug 2026 12:26:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 700596B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5183C1A0537
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:49 +0000 (UTC)
-X-FDA: 85067731938.11.5D2F9C3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E78364000A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=kRQbcFGX;
-	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 10E1D6B0093
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:26:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F3E316050A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:26:55 +0000 (UTC)
+X-FDA: 85067744790.14.ADB827D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CA4CAC000F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:26:53 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ii3HHFaP;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785946907;
+	s=arc-20220608; t=1785947213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PYMoNgzZlL39hMDdf5hIWUsu6zdYs8UUMRGfuY5VR7g=;
-	b=wJfquAUMC9jwoLhoXH+ZKYIJk3mPaUtIkCSeKAlJMIiOE2k541nhEp3pe0FksHBkIYz0gV
-	gKD/dPvR6PZW26JaBQwCWJtD5veLxoJhmfdsKtE3JouHja3CpXmSrdyBkWdo39PM8VBn73
-	JanIB4DGojXv6PAr9QJl7+nCOq2tlCw=
+	bh=fV8b/4Y/yqMyoR8AxAiGFbcq1oDUETRU4WY12VjWgDc=;
+	b=zu3iv+1ExGg1B1WwFOiLgHLYQAPm127M1S7hT/H0Slsj5nK24cQgBu+4Cr0LZQ5F1Z8Wbv
+	P5/SmORBmZo3Ml7Buas26cfFGrV8cr5ltvP+KrUhLvDr4cbO/b0KKNuL3Ald0DKzHN/6jC
+	ynr6WVDX9EgRchUvEWYQQde6lTPz1jE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785946907;
-	b=Lg4Xzlynfw6debvlt54E/o7rk7vOEF576eD183WxQjmn4tmxMWN5/zkM1n5BmTvq8eGwTf
-	UcbtgLaUgxzOyB5b3iW/lZXPK2oWRt7hHpvjdyd1/ExonsvY//s8kvOd7VlzOUPkBG6Wer
-	99x9SVZrdbdJHlRkc9iE1AY7T69B4wk=
+	t=1785947213;
+	b=uy4CM/eIqWjJmvQOxXjEEFHZGs7+cdfupiWVed4LNRJyqsjzaCm2Aj764Tr7IPPIyvQ2FT
+	XnPj8uqKupnViz4DL+VD7u8iV16QYk/FUg53bL4c69KPc8j0kuRGFP+GbApv5KXjflyXWL
+	WO1GLm6A5MifRQMqo+gdiqJeEZb+KUw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=kRQbcFGX;
-	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=PYMoNgzZlL39hMDdf5hIWUsu6zdYs8UUMRGfuY5VR7g=;
-	b=kRQbcFGXjpjH5pjrNS8BUiPc4XI+UukSaeVQhvVkQk5W7gsK7Gk9QT6tXoOjaU
-	7kMl1c2mUTYUXvPruzVBLDQcPvaww9NyRl9Jpy8f3QMVQNTAFwsctbWSxKX4lr8A
-	6yFpAiEwpqUVE7TKB4eB+VowDtSbsk6OuiFK6OqE9C7hQ=
-Received: from [198.18.0.1] (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgBHFCgEY3NqfpN3Kw--.23303S2;
-	Thu, 06 Aug 2026 00:21:25 +0800 (CST)
-Message-ID: <a27c1872-c4bd-4f3f-b2b8-d34e2f055411@163.com>
-Date: Thu, 6 Aug 2026 00:21:24 +0800
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ii3HHFaP;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AA3843B10;
+	Wed,  5 Aug 2026 16:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC2A1F000E9;
+	Wed,  5 Aug 2026 16:26:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785947212;
+	bh=fV8b/4Y/yqMyoR8AxAiGFbcq1oDUETRU4WY12VjWgDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ii3HHFaP+cLRY1G6nl+4ikP+j0AuPQEmO39D9OK2MX5r11FixTJJu4FZ3CBiNVeEZ
+	 WVPF/ni06PFEfU+gLzl3vVmZ2j8E2/SncgOJ6iyKFabAVX+2L16QLJqsEw22X23u2f
+	 2H6MDuPX3ALSchNr75SZhI7Zm82L+cTuuOb7wglYRCCi+FxQIG8Cw4GPEwIH9J5I9E
+	 VIoxuWl5har0rDJMMs7FL+xXcNmxrP7B19vLmS0pOivktsBwidprZjqqDElhDxtaLC
+	 AJBuEdqY7T+NjECJvRMG8eXMJqXPRd/K6RRUV3f/V9Ry0Pe1lS1d1FbZ+v8/61/CrA
+	 vQvyiJrp7LRSg==
+Date: Wed, 5 Aug 2026 17:26:35 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@kernel.org>, 
+	Alex Williamson <alex.williamson@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
+ policy check
+Message-ID: <anNjdDxP5-Oq5eXk@lucifer>
+References: <20260805055544.1568534-1-clg@redhat.com>
+ <anL-NZkNMSSxN0YN@lucifer>
+ <4ddc95f2-8868-4be3-9839-e2d14cf35fef@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/ksm: validate KSM rmap items before hwpoison kill
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
-Cc: xu.xin16@zte.com.cn, chengming.zhou@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-References: <20260803151151.3472893-1-xialonglong2025@163.com>
- <72f017f2-89c5-4e4a-9ce3-ab79f70b04a0@kernel.org>
-From: Longlong Xia <xialonglong2025@163.com>
-In-Reply-To: <72f017f2-89c5-4e4a-9ce3-ab79f70b04a0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgBHFCgEY3NqfpN3Kw--.23303S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Wr13Ary3Gr13tF4rZF45Awb_yoW7XFWrpa
-	ykAa4DGrW8tw1a9ryxZw4q9ryYvwn8Ja10yF47Aa4avas0qwsFyF45Jwn8uayrt3W8G3sa
-	qr47CFsxCFyrtFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UsvttUUUUU=
-X-Originating-IP: [240e:46c:1000:421:34db:efe:597b:d439]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2wVRSmpzYwWVAAAA3v
-X-Rspamd-Queue-Id: E78364000A
-X-Rspamd-Server: rspam10
+In-Reply-To: <4ddc95f2-8868-4be3-9839-e2d14cf35fef@redhat.com>
 X-Rspam-User: 
-X-Stat-Signature: i9bo65ibapnitc9y4sq8r7zfjchedi5j
-X-HE-Tag: 1785946902-222679
-X-HE-Meta: U2FsdGVkX1/f9IQgWa/w08JyKVSApS8zJr4zbkBYxyXAtvUKTliGix51Od/V+SFzwTy1LAoN9rODeg592d3cMfYkW4QqIAWt5XQTGjqGINyGrxQnPYkvMoxni9/Lh6Q/QPFVxDdb2c2HrkKEKUfVpipZdbLdpCBVaBFDPfgKAJ8KsQWzm4xdzr/8Wrut6UryZ5wYP2UhGqh8b3z6BppTILbrKXHPTngJ5qAYIIsOZ6OM33DVkXNH+GT3Pg5DR5huCicI1lJYIfoqKV3YkWgus4OFiITP5/tJh2YwnA4EkGbIs115lxhZWQAD5KEh9moscuMxQRPrNrZ0pxZaeJJ5kYspraZztc5wQaosH6reU7yg/tFhGzDq0YdmblV+N5UF6weLYrPvtg58vD6OCV97O2/SP2fVz9n2YO23x2t/gxPsWz9z+G8n8aNXx++7lm3WqhEzEJe9eJQqwS3bR1weuNd4pQadfm+CHILs/DcLga4Fc5OIrKVnV3k/RGrNF1y998/D6RKzCSj7tjdmfJ4wCuSntvTjCooKZZmR7vhKWZI7aWqyKksMGle+lDlljhJpEiyVX9SYcnuL/l+bzFz+O5XCOGNK/lGdAGZ8500hSd4JSJYj/5mhtHJpFZB2QSQQw/YRD3nwGJa7HOBxix59Y86BIimZWq6IoQEiuikfIFa7yE9LcCba4hpbcM+RradqlvZcQZ1e6c0kbaPICCCKJsV9xccT8oUc8+JNiiFMXjGKcZtQmNyo0AYHtM5skpp+5BvBZEE/IfXjC3vKUCfkCLshF9bSO+WeIvqUK0HHPFmCWAlPKgLLL6Uh9IUFgE4nLd3Lh3k83A5cEjq2xGDsItIgfeCJluy+5iow0nFFs6+0dW9YYqPguOoeb+S0RpU4VIjQdiXmxAf/D9HgfYsClzY5ZWyyy1zG5v1leEV0dD+zdhG+7vtNHMvVQCtzuBNV6F75vINZ3TQ7sGWI2ap
- 7v91QjPO
- /SBGaxLdTN4eR9XwjCromhOaDhGUQXxT2J2TCt3KBLjMRuSgzYJ/u0/F08lAPslVcEamCnqZi9wm1V8eeFFPi6S44T7ubw1MbsajzhmyK/4OkKDH2Y2EeY86flzG6QXCDKhS4UtSKYla8F/w8eZMRyCsmoz1AFwnefzgSitMGwrciKg0mXbZ+tuccdac4si7L6xT8lsuZ1bPBsLh75zSip6h+UMNQY2SHGQRNxGcLgKkOnKO8M4cetweyZLs8uqM7uNbeHrkLUay20PtGFmAlgjiGmPeyK5pQ0EXSLFC/W9rRe8bK0DA4elCQdq7oEJHHpbpaAl0L+V+g2YeiSiF7HCOktpBsjIA6ax6lpjYCGhLyQ5oFrT2Hjwt6c+teENUHxtufJp+S0naht7k=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CA4CAC000F
+X-Stat-Signature: qjhegi3ab3ymrttf3afs35i3umd5sj8z
+X-HE-Tag: 1785947213-979573
+X-HE-Meta: U2FsdGVkX1/Eid3+c7zE+qNcN4emY3IhCQBYS2ijdjcuUQh18N7fIdUHCGWVUYms+Pmam52Ant/ohpWXET/H6lJjm4TwvZFpzid6aP0bZqYnpNR4Gg9RQRruj/ygb6ym8SKM6US7okGPxtiD4vav5DTbRBejXfC5R/exJndG+EkmX8ypI7yxfAxWgdPFL7ImV0V6V8I9agZDLSOPSazMFe63yzhZjRc7w0Gs20nfwxHUOviGbpRpvIeXGF3lfT7eFhu6vrYJG1EdpN+M6dvITRpeDQH8SM5BJj0fBi4U7se9ZmXcXzOnmcZVRwMrUctR8IzRu/NO7q5MFQNPenYjnR2lVHvFJGp7K7C+ca+Qpcw5053sz7EmF+47v6Yvl7OfXdsUrviYX2WLZpgCnFy9K5IbDxKeRy2zbhG2CaIaD0UiND7/SaNw4tB2KHlHh4v2EJKOjmjPooNsdD7x8tkNa9pWuI3DRRVdbtly+k7uIQZ5TZNLdz3shPdIDRVO/I93HAScLw/41sfssktnDOCS9/fu7FZEy5/xTuWhYMOzGhw98cZu3SM/HRNpB8+nR9DJ1uw40woYX6Zp9yBusISHj2F5gHFfovoq95H6lzOLXZ4CplQ2/eZzsw5oS+EM9qQBPKxm5xmZ+HhgtfiN9bwuxUtjajQtsDjYArSvdCZGOW0x7ciPtPQ9mSlASu87LQ1Bkg1YEUeRMmvKkRGDI/zyFLOpSXJDCTVqXCaUnjOEkCiXYrHK8VMHWWBZ5dU2Lxw6dTfZdcM/lXQ9RUS2PslWghadysZfhxXyy2lLtkRSMPbmVw8YXn4q+JFU8Npt9IzZz6crGmNUwxOR11HUK3HZ8JehpvBR28kUAb3O7KGf++aAET8ZQocEXQ1jwvAV2aEBO/48QGs7EHWJsc1DXxgniZKqGInydBHnnuP+1od67ikONdZIqstXgydwJdGXHE28aO3IgsmaC+eUgsftQhS
+ K+zL5eYV
+ gMclNjIDem6+lHqEet1fBao9CG+QtKPjbmQcGWtsJH38vTUWSdFymM7wAdGxlt1FLk0RBox+cpjk3wcoXGGJBRuqnOWLdL9g1nbV7lSNoJvhZhZjOlPFiDWfrSg5y8Zlb5+EwwY6cypTZadlMhuABOImkMb/B/rta139fMkU66J7I7FLdXg/RpMe9p8Ee8DGSNQ079yMfq7cW3Y3vE4LBbVTDPeX6rRlznnbVIcWsk76XblUAkrkujcqeJPe7LI7DSQEbk+Vlj8PgRjnyMq3YgvOJTD33tuk1LdpO/03uaLc+1yvF6M7bnuXBAw+uZLI1nqjnWMqI5oKY3j3r6ax99MB1pEar7J1/1m1q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,174 +97,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-   Hi David,
+On Wed, Aug 05, 2026 at 06:21:30PM +0200, C�dric Le Goater wrote:
+> Thanks for the quick feedback Lorenzo !
+> > So I think it should be something more like the attached.
+> >
+> > That way all the handling remains the same and the override is applied in
+> > the right place plus smaps keeps working.
+>
+> LGTM, do you want me to respin a v2 with what's below ? or you'd rather
+> send it yourself.
 
-   Thanks for the review and for suggesting this approach.
+Thanks, I think as it's somewhat divergent maybe better if I send it with
+Reported-by/Closes if that makes sense to you?
 
-   I will send v2 shortly with your Suggested-by tag.
+I'd like to get David's input on it first however!
 
-   Thanks,
-   Longlong
-
-在 2026/8/5 20:19, David Hildenbrand (Arm) 写道:
-> On 8/3/26 17:11, Longlong Xia wrote:
->> From: Longlong Xia <xialonglong@kylinos.cn>
->>
->> collect_procs_ksm() walks the stable-node rmap list and queues an
->> early kill for every task whose mm appears on the anon_vma chain.
->>
->> That rmap item can be stale by the time memory failure handles the
->> poisoned KSM page.  A VMA may have been split, unmapped or remapped
->> after the rmap item was recorded, so matching only vma->vm_mm can send
->> SIGBUS with an address that no longer maps the poisoned page.
->>
->> Check that the saved address still belongs to the VMA and that
->> page_vma_mapped_walk() still finds the poisoned page there before
->> adding the task to the kill list.
->>
->> Fixes: 4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
->> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
->> ---
->>   mm/ksm.c | 27 +++++++++++++++++++++++++--
->>   1 file changed, 25 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/ksm.c b/mm/ksm.c
->> index 7d5b76478f0b..bc4b2dd894d8 100644
->> --- a/mm/ksm.c
->> +++ b/mm/ksm.c
->> @@ -3222,6 +3222,27 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->>   }
->>   
->>   #ifdef CONFIG_MEMORY_FAILURE
->> +static bool ksm_rmap_item_mapped(const struct page *page,
->> +				 struct vm_area_struct *vma,
->> +				 unsigned long addr)
-> Two tab indent on second parameter line
 >
-> 	struct vm_area_struct *vma, unsigned long addr)
->
->> +{
->> +	struct page_vma_mapped_walk pvmw = {
->> +		.pfn = page_to_pfn(page),
->> +		.nr_pages = 1,
->> +		.vma = vma,
->> +		.address = addr,
->> +		.flags = PVMW_SYNC,
->> +	};
->> +
->> +	if (addr < vma->vm_start || addr >= vma->vm_end)
->> +		return false;
->> +	if (!page_vma_mapped_walk(&pvmw))
->> +		return false;
->> +	page_vma_mapped_walk_done(&pvmw);
->> +
-> We have page_mapped_in_vma(). So I wonder whether we can find a way to
->
-> 1) Modify to just work with KSM (CCing Lorenzo)
->
-> Maybe it already does. I'm confused as so often.
->
-> Looking at the existing caller collect_procs_anon(), it's really only called
-> on anon folios. Could it already be called on KSM folios? What would happen
-> in that case? (does it just work because folio->index is still what we expect)
->
-> 2) Do the following
->
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index d7670ba4147bf..7eeb3c336cfe9 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -342,6 +342,27 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->   }
->   
->   #ifdef CONFIG_MEMORY_FAILURE
-> +static unsigned long page_mapped_in_vma_at_address(const struct page *page,
-> +               struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +       const struct folio *folio = page_folio(page);
-> +       struct page_vma_mapped_walk pvmw = {
-> +               .pfn = page_to_pfn(page),
-> +               .nr_pages = 1,
-> +               .vma = vma,
-> +               .address = addr,
-> +               .flags = PVMW_SYNC,
-> +       };
-> +
-> +       if (addr < vma->vm_start || addr >= vma->vm_end)
-> +               return -EFAULT;
-> +       if (!page_vma_mapped_walk(&pvmw))
-> +               return -EFAULT;
-> +       page_vma_mapped_walk_done(&pvmw);
-> +out:
-> +       return pvmw.address;
-> +}
-> +
->   /**
->    * page_mapped_in_vma - check whether a page is really mapped in a VMA
->    * @page: the page to test
-> @@ -355,21 +376,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->   unsigned long page_mapped_in_vma(const struct page *page,
->                  struct vm_area_struct *vma)
->   {
-> -       const struct folio *folio = page_folio(page);
-> -       struct page_vma_mapped_walk pvmw = {
-> -               .pfn = page_to_pfn(page),
-> -               .nr_pages = 1,
-> -               .vma = vma,
-> -               .flags = PVMW_SYNC,
-> -       };
-> +       const unsigned long addr = vma_address(vma, page_pgoff(folio, page), 1);
->   
-> -       pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
-> -       if (pvmw.address == -EFAULT)
-> -               goto out;
-> -       if (!page_vma_mapped_walk(&pvmw))
-> +       if (addr == -EFAULT)
->                  return -EFAULT;
-> -       page_vma_mapped_walk_done(&pvmw);
-> -out:
-> -       return pvmw.address;
-> +       return page_mapped_in_vma_at_address(page, vma, addr);
->   }
->   #endif
+> C.
 >
 >
->> +	return true;
->> +}
->> +
->>   /*
->>    * Collect processes when the error hit an ksm page.
->>    */
->> @@ -3237,13 +3258,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
->>   	if (!stable_node)
->>   		return;
->>   	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
->> +		unsigned long addr = rmap_item->address & PAGE_MASK;
-> Can be const.
 >
->>   		struct anon_vma *av = rmap_item->anon_vma;
->>   
->>   		anon_vma_lock_read(av);
->>   		rcu_read_lock();
->>   		for_each_process(tsk) {
->>   			struct anon_vma_chain *vmac;
->> -			unsigned long addr;
->>   			struct task_struct *t =
->>   				task_early_kill(tsk, force_early);
->>   			if (!t)
->> @@ -3253,7 +3274,9 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
->>   			{
->>   				vma = vmac->vma;
->>   				if (vma->vm_mm == t->mm) {
->> -					addr = rmap_item->address & PAGE_MASK;
->> +					if (!ksm_rmap_item_mapped(page, vma,
->> +								  addr))
-> jut put that onto a single line, please: easier to read.
->
->> +						continue;
->>   					add_to_kill_ksm(t, page, vma, to_kill,
->>   							addr);
->>   				}
+> > ----8<----
+> >  From d6537260722c8741586e6295c8eea68d06087efa Mon Sep 17 00:00:00 2001
+> > From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> > Date: Wed, 5 Aug 2026 11:35:13 +0100
+> > Subject: [PATCH] ideas
+> >
+> > ---
+> >   mm/huge_memory.c | 32 +++++++++++++++++++++++++++++---
+> >   1 file changed, 29 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index abc65d608c23..5fa01364f089 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
+> >   	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
+> >   }
+> >
+> > +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
+> > +					  bool forced_collapse)
+> > +{
+> > +	if (forced_collapse)
+> > +		return false;
+> > +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
+> > +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
+> > +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
+> > +		return false;
+> > +	return true;
+> > +}
+> > +
+> > +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
+> > +		vm_flags_t vm_flags, bool forced_collapse)
+> > +{
+> > +	/* Override THP tunables? */
+> > +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
+> > +		return true;
+> > +	/* THP=always? */
+> > +	if (hugepage_global_always())
+> > +		return true;
+> > +	/* THP=madvise? */
+> > +	if (!hugepage_global_enabled())
+> > +		return false;
+> > +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
+> > +	return vm_flags & VM_HUGEPAGE;
+> > +}
+> > +
+> >   unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >   					 vm_flags_t vm_flags,
+> >   					 enum tva_type type,
+> > @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >   		 * Enforce THP collapse requirements as necessary. Anonymous vmas
+> >   		 * were already handled in thp_vma_allowable_orders().
+> >   		 */
+> > -		if (!forced_collapse &&
+> > -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
+> > -						    !hugepage_global_always())))
+> > +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
+> >   			return 0;
+> >
+> >   		/*
+> > --
+> > 2.55.0
+> >
 >
 
+--
+Cheers, Lorenzo
 
