@@ -4,148 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49BE8C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B7EC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 10:03:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6279D6B0092; Wed,  5 Aug 2026 05:54:21 -0400 (EDT)
+	id B1B2F6B00A0; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D7D76B0093; Wed,  5 Aug 2026 05:54:21 -0400 (EDT)
+	id AF40D6B00A1; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4786A6B0096; Wed,  5 Aug 2026 05:54:21 -0400 (EDT)
+	id A09566B00A3; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 275636B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:54:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACEF71C0C86
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:54:20 +0000 (UTC)
-X-FDA: 85066755480.08.2B1D9D9
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 84C6F1A0007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:54:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wzR+ohd4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0NO3IQ4x;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sfuHkkSY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OyGd9H2+;
-	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 77DC26B00A0
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 06:03:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 109F61603D2
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:03:31 +0000 (UTC)
+X-FDA: 85066778622.13.A9DA6DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 52991140009
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:03:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3W2w0pT;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785923658;
+	s=arc-20220608; t=1785924209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CU4WpIubcpWK9hCH2PEh/5TTaHzVeki/xiz4teIymqk=;
-	b=oy2RWps7eNMgKCWL+0oIbdHItMoFJjC7EVcvVmw6WMAImhY2Ic7RZCj6iivpVePcFX4rBx
-	fhCm+fLtnWBFkCS0K1KOMTWMuOvletCvnMa/SnLKoaEbnxdqhiMGb9d6jVlOIAKwt8Tlq1
-	i4qe8CUj6VZKm+8zTCP43R6ldXuoUTc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wzR+ohd4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0NO3IQ4x;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sfuHkkSY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OyGd9H2+;
-	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=MwtspZMnFWA7BsVmyrJkIUlpBk6kNAmUxfeVp4Cf1pc=;
+	b=tDBKlRSzIL1is+/irPeQtdDnDVOk31OxDYQiCagtOVG60gwoz7mCscQWniUEJOaj2lIrSy
+	/FdMh+v6tRytShqAVWoVAmybPPNeja4q5huT7XjHcNR5k2KRY4krtBFkGd6zGf3mtF5p9E
+	cxLVRLMOUQRHg6NVdlHmnKESYmGQjVI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785923658;
-	b=k+FA2qpqE+h023dzk6t8HI0HxnciVBLNq+oDpg9sLJTzxhYhnXqnav0VC6WCtgFVon2cSM
-	CTAgOO1HFVFGqj13FEBajpJfuGn2FhzyIPpMwPIQ8nxPQcPykKzeY6qSLadNPgR7KXvBCD
-	i2vrBs9wi6rQ0l47N9AYwE0McAwkZvo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E35817FD43;
-	Wed,  5 Aug 2026 09:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785923653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CU4WpIubcpWK9hCH2PEh/5TTaHzVeki/xiz4teIymqk=;
-	b=wzR+ohd4v+0lgQWsYVhJoHKuZEtEb3YNwJc3v7q8zHLgDVW4LNwaXDrXwWIpNBFvtlK4Mj
-	TKoKJO3eGxFZFt+KE9G87nTZpQhcrz1VGNbvP2VnMvCS7Rs9WCoI3nygsN7hvZ2XNO9V/b
-	w0zcXDOVtiV3ZIsR0/uj9pv0VbIowqM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785923653;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CU4WpIubcpWK9hCH2PEh/5TTaHzVeki/xiz4teIymqk=;
-	b=0NO3IQ4xJEXNmoj/S5jhj6eu/u4nn6+Hww7p8Rcaf6NIkFyJHxb5+ggX0+7QrXFe3cTYaZ
-	BY/vkPKrr8vVfjAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785923648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CU4WpIubcpWK9hCH2PEh/5TTaHzVeki/xiz4teIymqk=;
-	b=sfuHkkSYBH/rMYK9Ymy4w/oFuE/D0G/iXwSNRfeVql/WBcnVstNmrxr04BS1enCpHmVVeM
-	2t3u0+WlVHt1sG3GP4x7Yh9a4D3BVInpfVYmHLxHpBLQuBgvnFYLIAZItUdgpCmRDbP52k
-	x780PSShWatmHhVTu0TKjUxoZm6GEIk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785923648;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CU4WpIubcpWK9hCH2PEh/5TTaHzVeki/xiz4teIymqk=;
-	b=OyGd9H2+JlMMeeivriHeQILv068qUPXI16OSZOsL+0ColwikZcoY/8I86KN0BqQvpuUhe1
-	Vlk/VTgRxbyvOLDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CFCEE779C2;
-	Wed,  5 Aug 2026 09:54:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wl97Lz4Ic2p2TQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 05 Aug 2026 09:54:06 +0000
-Date: Wed, 5 Aug 2026 10:54:05 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] mm: constify the pte_offset_map_ro_nolock()
- return value
-Message-ID: <anMHQn_mBs6DTrZB@pedro-suse.lan>
-References: <20260803164400.531199-1-pfalcato@suse.de>
- <20260803164400.531199-7-pfalcato@suse.de>
- <anHJ48Glq8EdHatd@lucifer>
- <anI6BEyTJFzQY-N9@pedro-suse.lan>
- <595fe323-59d3-4f4a-92a3-ac5d67b7461b@kernel.org>
+	t=1785924209;
+	b=haSB06yu3MIQ0s8EpftpNLRgsgj4IiX8G3rGcZHo/scttmR27R0FrRtLpKIgYNLF4jJbTR
+	NwEI0Pqms5nR33T66PjonJIqfv7lH5wyK6Ba6qGL4f0zEwtpEwH5yaWJYuSD8nX7ZapxXf
+	pDCKDURKp+7Fr2YEKKIS9gKf3enk9K0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3W2w0pT;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BBC8D600AE;
+	Wed,  5 Aug 2026 10:03:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8C01F00A3D;
+	Wed,  5 Aug 2026 10:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785924208;
+	bh=MwtspZMnFWA7BsVmyrJkIUlpBk6kNAmUxfeVp4Cf1pc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=S3W2w0pT4H9XaHeVc3HvSp4e6zheDeu7X5ZWPFNNRqiiuueGH06xDeAlFmnXdk3db
+	 HrShB7eMwOiofu4VTNY3lo12/kxB9fV02xBLwAvZjbOeULv9ajKJeSucjVcYCqsGEd
+	 crmHKxHiV3483alYvtccbiz8IBY3AHXoH05eHAIa2e6d9KJmdyCzE/pBFXMF9KBCWx
+	 MTD/30gGuw2TGcbGRP3iK6B1/bnno+pGQH6S8834/XWtpKmTdZ1OjL8GJLEJ078ium
+	 Tv/DIFkxBXEVT1i/YkmBMO/cSRmcHCIXOVEiLT7oVKOlnkOqdxf63j/oSrhgisMMuE
+	 Xf1XlyNHZcT5w==
+Message-ID: <aaa9503a-348d-451a-b44f-9221517803c3@kernel.org>
+Date: Wed, 5 Aug 2026 12:03:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <595fe323-59d3-4f4a-92a3-ac5d67b7461b@kernel.org>
-X-Stat-Signature: xcowqcum3c8qchphyxtdi1ha3d5m78hg
-X-Rspamd-Queue-Id: 84C6F1A0007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory-failure: fix concurrent access issue in
+ min_order_for_split()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: dayou5941@163.com, akpm@linux-foundation.org, ziy@nvidia.com,
+ linux-mm@kvack.org, liyouhong <liyouhong@kylinos.cn>,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260805072625.2437636-1-dayou5941@163.com>
+ <dbdb0f70-669b-4c68-a9cf-89d30c20f12f@kernel.org> <anL_I_2o3vfAaRLr@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <anL_I_2o3vfAaRLr@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 52991140009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1785923658-547537
-X-HE-Meta: U2FsdGVkX1/lK0pKp2G7mS6I2qbVfA6NYOxV8Ewv2gv9CkVzvakIJkVmhHmecOZaMNRQzZgPuQt+L95jjq7GUpj6cQ2l2zrXO4EVnkLDalwEwcDxUvEk/vnM6Jn59GpxSTJGNWH+jjWCT0YubdTBvJ7550b9oJaEgLmUF/rX0WT3S5OctuT3RjreMk4uwF8zXD8WSS1c4Qm/5PVtrFD4qLBS5VVGIUMqnoLqmjMASG7XqE10h3e7lWMM4YYiTz6ds/lx8k2TypSWJ+KD9mrf5gVCd2Cr+9WguRRYNJuyV28Qt+fCDQiOTEqqkcrraMMqC8mBZ4Szue5FpIZXbIn/B+oLe+WRH8SUCqT3gyw94zlmehDPeYijzGIy6bvW1OLs+wjuJPGQ9v2gerK5pr/sVUqzoIosCUmmg40DgoVjsG4pV+A/OTYb4CcjHo75hTK5c0Str2Exz8ZEjJ6HGkOZBXgKmHYbQ/fF5Fj40iNogxGXB4fKY/iylGjv7n1ShGWaH9H/esh6oDcAfncNC33CCb9dwKP8l/nTip/xlKEgCDsZFq//efRXhetynJoLePuxABEwfSnyiq2nyVAi790TdiBDsGx4Y68qzGH/t6kR+VqSE7K/aHks89nyJuG+eQRcfSXiI/jw6EZst9giIznGUBMK9pV24NfRdtGh09hmF0cHX586c1QKNn/4qWCqGBXWHhCnSWEs/Fc1wj3VS7giLYCjJbr3utZKRzaVFcUnUyxEnONs5UZ5tpvG2gvY6mzgd4LUgUGjdP1VjAYwbdZy2XdCxUtfnRk0ewlYKKv2n/9t1xN0KHy0BjPT/lVB+m2A0d1ag1z+etPTIKrXONbqyZsw7+4pIlm/hy6M5C2zN96QakPWZ4AkyG7eH/72qXRF8RzAuNW6vLKXDiUmNwhqxRXXzPbeCyw4rhkEbbI3HJi+EwSsU8DXkT0ss2HU96b6k/XQeGpqA3WwQC4a3JQ
- YeV9CR+O
- qqpL+TmDX1sIjc+gglo4L9TZjfMvxrVTCkFvQo36EnF6dr+F83SkJyMwWNo2GCS7ySzGVPorSSDUJQmxeDwa5zvPK7Peqn3UIiY8U9aG98EDv2BhSqHE5eQ1FnFX1GSFu16P2cJAZS9GIH4O5gzDzljkhhsQHvTHphLTFYDsdNfyRprVqgh/44FYoWkGR7srAVgLS5oc0nMVSASRoUlKH4Dt2Qk5tDFjlnDezDktnmhpQp0cRE7OjSFrU3op1PuAnHoJLjI7No9vHoQX9exxLqmYh771hy4VVyBSOOEywWnvotrTVLzQBQbFmlBh7ks/vs/e88csxpdUwEC1Yrn280ify9o4pziQM5H5d7o4bsCf31z7FakPKJbsm/d5nqtP/E3Trugmjwl0o98N3Uvcg+oVGFt5GEKR2vQwV
+X-Stat-Signature: c89pa7biqj1szgojdprzondc6m74fruu
+X-HE-Tag: 1785924209-601808
+X-HE-Meta: U2FsdGVkX1/hM0baO67pjjkgMtokt0JSHd7iCxwV3aFX+PhNoV0z7uNd//KZk4ZgybA4J+gD2mcwZ5b4C4fO4XYvpyjS/KTN7RLfHkYUcIqrD5ty6YqvHWhZs4gZ3cWoqmI0T9HLtxQP1SQGREVMsjNvyiYfIPAPSEFCuDOUlmWeZxppm11r9Hm0fxSb4t6iMoPDfPkOx+86/apyzWVlF96ApMXm0guzln0dG/eOtdi4tafnqIlYw1IfPRwnv2opDXuPoLX3eScKWAtOWMbPxb5M+La8jbuDnGhtFw9GVDe63Eccua6kyygoNghBXI1J2poNtgcJ1qfjCox7fWGbhLQ7Tsv51W6lrl1JUS/2QIRyKAz8z9FkfY7Vq2v57jAA+H0DrCEK7dsUbiMt+NSCnKYWogwiihMlxvwoW1dvBElyfZRAE4m2C/dS9pyVGJjgpV2Mh67h6jjsnmnBpbuXh/o24+iV2ySQNVddoDE1y3wUanpM0krF20qTgvkTgQ2lPVXvpSkiWHv29ecsq3tolJK5Xcgj9mM9xSqgB+kFdmMGLZbxO2xEcNItMvxk8vjfpfZuHwGiT9yK8m0HWDwFKyCIH3lKwP4DTOmra2Uk35miAjzgIT6Ms8hi8mNARIf4XwkkbbBCzx0830qt3pwQGJtibc6mVTYTpEk/JxwplN48BsCPAVN/RFI6g7lq58HzNgAVBYvqFpeUsscQrAVC3Liti7hnf6vgwrzz1pJWAq1nipWmYVqPOaoiUZ0JMTBipkc7v8f0LzYnS7cWbaQU6oXpLZCYpiN1WcFvoFMgdoUn8lo+TxJ6n34m4VQBzubZISBYgAr+eB4dIb8sRXvZFc1H00cC2AV01v0CyKD27s+oIT8OnKUh4lIJ+etjbSc+KjQoBoPGG64Ntwg/vNEzYtp14BHWVsCgq0QzbRAro+tC9CZDZM8/SAtg5E4dx4+l5jHlLfOGzMinLfcQE+V
+ 4uybwEkZ
+ j64kwmqumKzewcb0VNxqNE+EjF7os8XJIwgO2+8L/SmHYiW8vp8/s2+OrhWS43sJDwIdgtZgzuTgxrA7m+IyLoBe+AkVeOXFTxJKMOlPZV0acoBBHdmhUtETCHB+fU8uFVp3bTw/drchuzMfAJs0SVgtJ7p5f7o/wopNXtZt+/iRUyMK358DrSpQtbWV2KyonJ8HWgQdwsThow2qbcX2COii17uw4PPCtv5hpyu7x9Gf5dZI5pFEyRXuHchplBKkL3t4jI0C6VW3HSlmNlA44M+kqxlJxHwfDCpIflOnZlc3aAbdFmV/ZDmyI2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,54 +140,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 07:58:02AM +0200, Christophe Leroy (CS GROUP) wrote:
+>>  	/*
+>> @@ -2862,8 +2841,7 @@ static int soft_offline_in_use_page(struct page *page)
+>>  	};
+>>
+>>  	if (!huge && folio_test_large(folio)) {
+>> -		const int new_order = min_order_for_split(folio);
+>> -
+>> +		lock_page(page);
+>>  		/*
+>>  		 * If new_order (target split order) is not 0, do not split the
+>>  		 * folio at all to retain the still accessible large folio.
+>> @@ -2871,8 +2849,14 @@ static int soft_offline_in_use_page(struct page *page)
+>>  		 * preferred, split it to non-zero new_order like it is done in
+>>  		 * memory_failure().
+>>  		 */
+>> -		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
+>> -						       /* release= */ true)) {
+>> +		if (!min_order_for_split(folio))
+>> +			ret = split_huge_page_to_order(page, 0);
+>> +		else
+>> +			ret = -EBUSY;
+>> +		unlock_page(page);
+>> +
+>> +		if (ret) {
+>> +			put_page(page);
+>>  			pr_info("%#lx: thp split failed\n", pfn);
+>>  			return -EBUSY;
 > 
-> 
-> Le 04/08/2026 à 21:22, Pedro Falcato a écrit :
-> > On Tue, Aug 04, 2026 at 12:22:19PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > 
-> > > 
-> > > >   			if (!pte) {
-> > > >   				mmap_read_unlock(mm);
-> > > >   				result = SCAN_NO_PTE_TABLE;
-> > > > diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> > > > index b91b1a98029c..2cfc6e608ef4 100644
-> > > > --- a/mm/pgtable-generic.c
-> > > > +++ b/mm/pgtable-generic.c
-> > > > @@ -308,8 +308,8 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
-> > > >   	return NULL;
-> > > >   }
-> > > > 
-> > > > -pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
-> > > > -				unsigned long addr, spinlock_t **ptlp)
-> > > > +const pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
-> > > 
-> > > Can pmd be const too?
-> > 
-> > I was going to say "yes but then pmdp_get() also needs to be constfified" but
-> > actually no, it can't:
-> > 
-> > pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp) {
-> >          if (unlikely(pmd_bad(pmdval))) {
-> >                  pmd_clear_bad(pmd);
-> >                  goto nomap;
-> >          }
-> > }
-> > 
-> > so PTE mapping actually needs to write to the pmdp if the pmd looks bad.
-> > Tricky stuff :)
-> 
-> But if pmd is const, can it be bad at all ?
+> Maybe return ret here? Seems a bit pointless to set ret, gate on it then not
+> return it (even if result is the same)
 
-Yes, you just need a stray write or a bit of memory corruption and it can
-go bad. And then we need to do clear_bad() :)
-
-(it's unclear to me whether this is actually common or useful enough these
-days; the way this was explained to me, page tables can be best-effort
-redundant; but it's not like we know clearing the whole range is ok, and
-the way pmd_ERROR, etc work they don't even communicate to userspace what
-happened, unlike normal hwpoison mechanisms)
+I didn't check whether a caller actually relies on -EBUSY. So I decided to leave
+the behavior unchanged.
 
 -- 
-Pedro
+Cheers,
+
+David
 
