@@ -4,76 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF04C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1EFCC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:10:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EB796B00AC; Wed,  5 Aug 2026 05:07:26 -0400 (EDT)
+	id 845916B009D; Wed,  5 Aug 2026 05:10:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0957E6B00AF; Wed,  5 Aug 2026 05:07:26 -0400 (EDT)
+	id 815F06B009F; Wed,  5 Aug 2026 05:10:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7226B00B0; Wed,  5 Aug 2026 05:07:25 -0400 (EDT)
+	id 705066B00A3; Wed,  5 Aug 2026 05:10:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFB5D6B00AC
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:07:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48D56403E2
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:07:25 +0000 (UTC)
-X-FDA: 85066637250.30.A7B998F
+	by kanga.kvack.org (Postfix) with ESMTP id 50C476B009D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:10:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B95321A040C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:10:04 +0000 (UTC)
+X-FDA: 85066643928.13.324864F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8340718000C
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:07:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBdhs7jU;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 112C618000C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:10:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Px0z7sfd;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785920843;
+	s=arc-20220608; t=1785921003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6j+r2aySq3vbagzG6uXiIoHKnNOhVDFA/2TCxgRiS0=;
-	b=cHx30ib2MK+vg4CUrvqC+T6fqaehqmOaNhwMzXwmM97g4GR+ZfG460v6UXcAPzZat6+IpK
-	0kyQJ0bKUYvLrxF81zRzhtoEh5PwfbiHq+gRuXr1/btRFvm1SLjsSswIcnbBqBNAz9Tu5m
-	wunYUScVY1v842TvXOe4USy4rBk4QZw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBdhs7jU;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=arisYwSnWIrQ0tx47rogqMxiybhAxWfzJtYPr/R4Eb4=;
+	b=avipJLCvW718a6CqRrnxUYJhfm1U3dUp++ePWMoE1AKjcMyvH29dYbgRAEH1E1XSyzY/GF
+	mfNXv7xsZqxiqST14DfxXp/C6au/oR8WWYg7BAxyspKkqEx1oSIGy+AaoCbsLS05y4WeRq
+	FLn5TQKGFJyE0eYo6CIK1MueWm6rTtg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785920843;
-	b=7h33vslNT3HoyBDNDGfvEOz6ICMx0SxM5f+A9zFhLn2B1hGmpcjEZlo3HlLB4Pa9LEQE7k
-	GaA4dRUrvgC2fwHjsQeQmCAlqA+hZmTywNdZ1WJrd7urWxIsuN/Xj/v4DeLzxq/327Y6s5
-	eEyd+kVU/rouLXWjimpSdTrtNE1pwgU=
+	t=1785921003;
+	b=ElPHEfMavmi0qlhakwp1utA3R7xnpdxhZaccvRsWeQlryI61kpiWGsYdcX8ApG+A4Faln0
+	3FTc0leMCOm65tGn49t3F6JzjvxG+VfzfuwfPdxOHPB7lFwAtx0MfX+2UM3HjGz6oqlX9I
+	OezsvEiBjqSVxlz3aTU7Nkbg3vHw9e4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Px0z7sfd;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EABB60A6A;
-	Wed,  5 Aug 2026 09:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536EF1F000E9;
-	Wed,  5 Aug 2026 09:07:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91FAE60A6F;
+	Wed,  5 Aug 2026 09:10:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B2C1F000E9;
+	Wed,  5 Aug 2026 09:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785920842;
-	bh=n6j+r2aySq3vbagzG6uXiIoHKnNOhVDFA/2TCxgRiS0=;
+	s=k20260515; t=1785921002;
+	bh=arisYwSnWIrQ0tx47rogqMxiybhAxWfzJtYPr/R4Eb4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iBdhs7jUQaHuD4S0GiReJEJbIqkaUBKtt7iV461bZhDSVS24pXpFDQazjk6hUJNZU
-	 a3/vHMxqwTi6TSXMWvlmCKEaZpI+MDD+su2F6wyYH9BCDj9NUJcFnb+KElhOVS17Wg
-	 yQ8jUnmcYvQo4DuXxZmvEU0SYCsMDGdXIYxK2LUxrmQyVzqYvacOIlCb89UJNflFhb
-	 HQwNu6HU+f5lSVKhOu9/EhcPnDfyl+5nBXXQiMbRaO2prRQV8w5H2klhbHC5hGRsR3
-	 jQkDNqRpfkZf7TVSTVW9uqIch8DCeFz4KRHDtf40QbQNHSiVC08Bjc4TnrwHsYPOMI
-	 JyykHZjJ2P86A==
-Message-ID: <dbdb0f70-669b-4c68-a9cf-89d30c20f12f@kernel.org>
-Date: Wed, 5 Aug 2026 11:07:18 +0200
+	b=Px0z7sfdQLWiFeeGeuiGfraKia/ALAVkdoC6cZGvsboSC7PDRrVvINt+qrvlE/Y5K
+	 07KQWxsxUHJz4wVUtIKbNSC8S31uWkYadOZGecrSulQKq784W6DyBQ+aPGdig/5jXH
+	 O8EUkdD1t7FsAsXAnRt57lmSyOgTFi8+0ubHAqX+IkhbQvb6OHbd06JpPopa9w9u+x
+	 58qysMsfszh2cvS5Sjm2RMGUOHHlIobXo3t+DHLYEyKhydIoEQxkbXCpxUDhdYaB/D
+	 hKtbSon5A7qgK5lvI/vZbUzU8/2MakRf1r/sJn7pP4On+5GbeH8+5X4+H5nyH5Ul/h
+	 DtcsL84/b2ccQ==
+Message-ID: <352e1f42-2e89-4445-a20e-572ee35c7a0c@kernel.org>
+Date: Wed, 5 Aug 2026 11:09:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory-failure: fix concurrent access issue in
- min_order_for_split()
-To: dayou5941@163.com, akpm@linux-foundation.org, ljs@kernel.org
-Cc: ziy@nvidia.com, linux-mm@kvack.org, liyouhong <liyouhong@kylinos.cn>,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260805072625.2437636-1-dayou5941@163.com>
+Subject: Re: [PATCH v6 0/5] Only free healthy pages in high-order
+ has_hwpoisoned folio
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ William Roche <william.roche@oracle.com>, Jiaqi Yan <jiaqiyan@google.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com
+Cc: osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org,
+ osalvador@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+ nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ jane.chu@oracle.com, akpm@linux-foundation.org, muchun.song@linux.dev,
+ liam@infradead.org, rientjes@google.com, duenwen@google.com,
+ jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, shuah@kernel.org, surenb@google.com, mhocko@suse.com,
+ boudewijn@delta-utec.com
+References: <20260705180714.3708947-1-jiaqiyan@google.com>
+ <85cb7ea8-8116-4092-8310-69b61eb8602c@kernel.org>
+ <ee6bcc74-0846-43f2-bcca-b1bedff74351@oracle.com>
+ <1dea7b3c-7740-474d-b9d4-cd2baf47f181@kernel.org>
+ <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
+ <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
+ <8e48c288-2183-4d58-b69d-5f78344b5da5@kernel.org>
+ <c5658175-8d1d-4aec-9a66-b07d53f75547@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805072625.2437636-1-dayou5941@163.com>
+In-Reply-To: <c5658175-8d1d-4aec-9a66-b07d53f75547@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6okrad5r4sjah1j8ob6bmqjuh4ss3mhb
-X-Rspamd-Queue-Id: 8340718000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1785920843-990940
-X-HE-Meta: U2FsdGVkX19kXcjfv1eRj7I8rUPqTOE0/anjjstyGv/xi9Z97SCqNpXzbABqGzsE7F7ZXAGC43kKAjdw4zx1Jd7uWoVAXCbuK39cF3ityLW+d268OQDa4DsdnfU5H87IqpuTRZ5+I/MTVKfv4bZjD5qrsv0Dv/gXFRNZd2E36c7UQR+s1IgIA2eCcssOd7WwMUnwDSmYXqNC4Es0vlhxSXUxEycQF+jX+9ONOzfyclV5U/iz8OutK0ydL+htHmGSJyVg5hU2L/dDSrTx0sil1g7hicec6HQwZJtMOuiviUT7XXuVxkDDUwI5Oie8JQqdvqPegaKChcETSQmd8A9NKE88/HRIl9vnVLXJhZ49rt1iJYqqwimoqP+oeLF7CEJ8ghW6LxNsxASwgt5UkoN7S3sMtMWhYqT/A1oUXNKHfroGdogx/8rhnnEGkB7qOGhRglEhqmRQEQrNziCeQ1OhhhGkiXC0tB9DedY5NOCm9hTD1qT5h0INz8Wwc9BBd74U7JsQadQjFe5PU1zkrjnVbxs3fAC4MQT2haqU6BKtlLdUwE3TSYzqpGnpUIpEkKfAWjgh/XQ9F5kO2yMKRDCaiq6K/+OR9F6sAD1laD41/4W0vuCKaaJCuiHV/jqURJC+VgXMauBR/3gTxPm6z+yH1AEpCbNMfjV0CdtOTguZc5xUEOglTIvSW85fWZ4WGq0jW6027H60A/PfTwtkxubk5LAaramqqUKbNTOdInkjT8PPyaKUIvPHLKqC8impq6WHTofhKczJjsuRytqci0gkcRztXq6jOa68mpzTRvfb0p3c4BK2GI9ISmcRIyLybOf4kpRUhYgNs7uhfIQ6Mh2sdoI0LELRFGutPTz2KXi/I6B51AVp43kCq9/I841O6EGmDS1BaMIXYT5TpHpl1s+SnCVx3l+gbuWsOwqEEL/EI3lhuVcc3+txgyjz+uv/5n5CbPtEYKeHsgMw8mIcbQr
- 7xtBxPW9
- iBnzOSJQOV/oU5jbO7UAYAHYK0Ol27NKZa/FaGh/HcNhWtHdWBvMWZI1Tg8ID5RtwS1MCxQ0ydutYxulxrxIwUh4Em41VIqD6siyWRmkPJzIfUEtBURnSTSQuXCimCJIijyNBvKbDh54+ohiYXC7unWH0fZnLBRzzOWZuEgGkw9HuFgENUEdZsS2Yx59zD+DzW7BAnFHyAxGfltZqY5/PuVC4mIdnxJi0P4Z4fnYpm1kdha7Co1fKbiYZlzBEKTAk9doenlAphK4gFINVhfb0MxB+mwS4UmjqN+Upww8O92RIIXgqerqCaUGeVzjIveSANo48IUeyn+kJsTfHciyzZuVyyG3ybls9gSaGI+HqTsePJUZuGnecGvJMVmyYxySSEtSzZ7f1lNOVPbxqOnuBx5bbWj/GyViGoRx+
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 112C618000C
+X-Stat-Signature: sriwbih5phpjcmm8s8syyeh9fu1d1c9f
+X-HE-Tag: 1785921002-332869
+X-HE-Meta: U2FsdGVkX18EaCVHSUj5eOjMk7+iLJddJPAKj++FNLSWKXdqTN0DJ6mA7ciM4oT2bv7lZFTERoxTJHBHD8bKamA6svSiCxzreRZ+Txg4xlWnmiCFwvn3IWZmZhUFuKikFeocx2eAnN31Ij+4GUgEEpFi/vNsiJhCH0R7pmWANuqX1rkER8f/iK7jcXPTNBa6DzwYrF84skgH846CYGti5frBlpXEvPn1JaMnSQsFLFxdCcUyJnvgbbhl5jAxkjck8+EcA966LOA73UP+Yo9iiOkm2HcqKO3AzJTkYV6W+ZvqWQZacS4cUap3ug8pLQYHteExcA3ub/++CsU3KteROzXicuGsHVkEVG6ZBgRq7VBI9Aktwpd2y3RzVUxqNZgP9JtGdYRWXDcoqgYMdqN7XyWzdaEK3WEIGp7FZa0X9TVuUjYm05Gk9MRKNHrwYOVZq3bT1nlyKYIPtyNO9voYHeU9RrfdGYQ3zok+jOLvs4Sr6RBZuk+CWMlWerhbw3ob0Fu8QZfyjO7raqFuotFHq5eVny8CJvk+EKqvfjviUqFOiNGs0wDkrXZMWkrmNVRx5wCJeFRH75Lxk/tbATVAB+L1W3892twfFaHNqwvypNFlE49sFTC3t+jrVCUaExCLDQ6cYDTchquqEK0mewwoGl+C8PajFo/E8mj7B6MkTrLpHm0TZK9hZp/CQTfQxuL1mpOY6JM1L0qyQ+vTehq6fokAvzXmltJjZfSzitA6g4KCOWntbyHtyF9CXeMFuG8eswrsvp0kaoEIsKXeCRode5IK7Z08mYrpBk7PYb0lkuRp7rL55RddQtyUp8cI7rP6pz9OGrUV5AgJXes5LyzWRDqqIDOc3qwYTTbgN1vWsL62+WB9qb6HvIvfBRKtNbZAJHlZlfioMeopBIBkB7lelWmFdrpxwsaxoEtcg2TvEDB0J7MCHPskWj/YKSM5g3BTn9SXsVBtCmBA53dvIdZ
+ XbItIKU3
+ njI6kIYEX2uOaOI+9ZVdfZiGFNtOYckikedistjXVYO8VQ7GB9hF0rTbda0fkmKM+gTeOc8+meTAQ2DkFP9zcN6Hb1Azo2q8eFAczNK95be4lTqlhinabMxa3ubMB9MUUcXqddgYLIWwgY4ZXWO5JRSce3uiEg/tgZNn/dwrMA9mua3QlH5+cRZ3CnAI2SwKK5TcQ0jPgpFH0As1lNNs/Bt40JoNkJ8pDltSdxY7SSBcbJu9zfGlIrWYlx9tvgsFOGQIoDJvHDPNp14ye9U9mTyV+SftICUsW6TYS40AubuQs6fqsdOmjvo0htlnhSORUt5TJNkcFvFlViiATui+l25Jg+bqrIRvHJMjBq8Idd5VnOQH+QT8aZWHc6AXXBC8UzwrFMXEA+n+eM1KVvTalhuwEAuqWfHuLHlYwtp02DAK4VGA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,217 +153,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 09:26, dayou5941@163.com wrote:
-> From: liyouhong <liyouhong@kylinos.cn>
+On 8/5/26 10:58, Vlastimil Babka (SUSE) wrote:
+> On 8/4/26 21:51, David Hildenbrand (Arm) wrote:
+>> On 7/28/26 19:18, Vlastimil Babka (SUSE) wrote:
+>>>
+>>> We check all kinds of unexpected state, when that's enable. PageHWPoison
+>>> could have been considered unexpected too, when the checks were made more
+>>> and more optional (first by Mel and then me).
+>>>
+>>> But indeed it seems the PageHWPoison check is supposed to be load-bearing
+>>> (hi, Lorenzo!). It's intentionally handled before bad_page() (with a taint)
+>>> in check_new_page_bad(). Commits 2a7684a23e9c and f4c18e6f7b5b are also a hint.
+>>>
+>>>
+>>> Yes, the PageHWPoison handling was made part of debugging sanity check and
+>>> then not recognized properly as load-bearing later.
+>>
+>> BTW, I'd assume we can check for PageHWPoison at free time fairly efficiently, as we
+>> touch all page flags already.
+>>
+>> Something along the lines of:
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 520ebd2fa40b5..57f89f8684168 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -1321,6 +1321,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>>         bool init = want_init_on_free();
+>>         bool compound = PageCompound(page);
+>>         struct folio *folio = page_folio(page);
+>> +       unsigned int hwpoisoned = 0;
+>>  
+>>         if (fpi_flags & FPI_PREPARED)
+>>                 return true;
+>> @@ -1347,21 +1348,6 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>>                 count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+>>         }
+>>  
+>> -       if (unlikely(PageHWPoison(page)) && !order) {
+>> -               /* Do not let hwpoison pages hit pcplists/buddy */
+>> -               reset_page_owner(page, order);
+>> -               page_table_check_free(page, order);
+>> -               pgalloc_tag_sub(page, 1 << order);
+>> -
+>> -               /*
+>> -                * The page is isolated and accounted for.
+>> -                * Mark the codetag as empty to avoid accounting error
+>> -                * when the page is freed by unpoison_memory().
+>> -                */
+>> -               clear_page_tag_ref(page);
+>> -               return false;
+>> -       }
+>> -
+>>         VM_BUG_ON_PAGE(compound && compound_order(page) != order, page);
+>>  
+>>         /*
+>> @@ -1395,8 +1381,26 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>>                                 }
+>>                         }
+>>                         tail_page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+>> +                       hwpoisoned += PageHWPoison(tail_page);
+>>                 }
+>>         }
+>> +       hwpoisoned += PageHWPoison(page);
+>> +
+>> +       if (unlikely(hwpoisoned)) {
+>> +               /* Do not let hwpoison pages hit pcplists/buddy */
+>> +               reset_page_owner(page, order);
+>> +               page_table_check_free(page, order);
+>> +               pgalloc_tag_sub(page, 1 << order);
+>> +
+>> +               /*
+>> +                * The page is isolated and accounted for.
+>> +                * Mark the codetag as empty to avoid accounting error
+>> +                * when the page is freed by unpoison_memory().
+>> +                */
+>> +               clear_page_tag_ref(page);
+>> +               return false;
+>> +       }
+>> +
+>>         if (folio_test_anon(folio)) {
+>>                 mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+>>                 folio->mapping = NULL;
+>> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+>>
+>>
+>> Of course, we could also fallback for order>0 to do some smart splitting.
 > 
-> min_order_for_split() accesses folio->mapping without proper
-> synchronization. While the compiler typically caches the value
-> in a register making a NULL deref unlikely in practice, the
-> real issue is that the callers in memory-failure.c do not hold
-> the folio lock at the time of the call:
-> 
-> - memory_failure() explicitly drops the folio lock before calling
->   min_order_for_split().
-> - soft_offline_in_use_page() has not yet acquired the folio lock
->   when calling min_order_for_split().
-> 
-> This means the value of folio->mapping may be modified by a
-> truncate or invalidate operation while min_order_for_split() is
-> executing, leading to a torn read or use of a stale mapping value.
+> I think the freeing part is relatively fine, as tackled by this series.
 
-I recall that a mapping can get freed after truncating the last folio.
-
-But Lorenzo had some cocnerns about the validity of the report, so I'll let him reply.
+I think we should really do something like the above to detect hwpoison, to then
+fallback to a slow path.
 
 > 
-> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260803060001.800638-1-dayou5941@163.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: liyouhong <liyouhong@kylinos.cn>
-> ---
-> v2:
-> - Dropped the approach of caching folio->mapping inside min_order_for_split() in favor of adding the folio lock at the callers.
-> - Added VM_WARN_ON_ONCE_FOLIO() in min_order_for_split().
-> - Updated the commit message to clarify that the real issue is the callers not holding the folio lock, rather than a TOCTOU race.
-> v1: https://lore.kernel.org/all/20260804035828.2684059-1-dayou5941@163.com/
+>> Checking on allocation efficiently is indeed a bit more tricky. For compound
+>> pages prep_compound_page() will already walk all pages.
 > 
-> ---
->  mm/huge_memory.c    |  2 ++
->  mm/memory-failure.c | 12 ++++++++++--
->  2 files changed, 12 insertions(+), 2 deletions(-)
+> Yeah and non-compound high-order pages should just go away eventually, so I
+> wouldn't worry about making them slower now.
+> But it's tricky because prep_compound_page() happens later when we don't
+> expect anything to fail anymore, so it would take some refactoring.
+
+Agreed.
+
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 58cabe6af33d..e3f16dadc1d4 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4300,6 +4300,8 @@ int folio_split(struct folio *folio, unsigned int new_order,
->   */
->  unsigned int min_order_for_split(struct folio *folio)
->  {
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +
->  	if (folio_test_anon(folio))
->  		return 0;
->  
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 3b1e6946821b..7391524b5046 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2437,12 +2437,17 @@ int memory_failure(unsigned long pfn, int flags)
->  		res = -EOPNOTSUPP;
->  		goto unlock_mutex;
->  	}
-> +
->  	folio_unlock(folio);
->  
->  	if (folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> +		const int new_order;
->  		int err;
->  
-> +		folio_lock(folio);
-> +		new_order = min_order_for_split(folio);
-> +		folio_unlock(folio);
-> +
->  		/*
->  		 * The flag must be set after the refcount is bumped
->  		 * otherwise it may race with THP split.
-> @@ -2796,8 +2801,11 @@ static int soft_offline_in_use_page(struct page *page)
->  	};
->  
->  	if (!huge && folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> +		const int new_order;
->  
-> +		folio_lock(folio);
-> +		new_order = min_order_for_split(folio);
-> +		folio_unlock(folio);
->  		/*
->  		 * If new_order (target split order) is not 0, do not split the
->  		 * folio at all to retain the still accessible large folio.
+>> Having hwpoison logic to just sync with the buddy when setting hwpoison flags
+>> would be nicer.
+> 
+> I suggested that (soft-offline does it). There might be some downsides, but
+> I can't judge how much they would manifest in practice:
+> 
+> https://lore.kernel.org/all/CACw3F50nVECJ%2Bk4g%3DQVZ80yzi_awCOcUiCuB0CYcUfxND9-7Tw@mail.gmail.com/
 
-We already grab the page lock in try_to_split_thp_page(). I think these
-needs a serious cleanup.
-
-While at it, we can fix the missing put_page() in case new_order != 0 in
-soft_offline_in_use_page() ...
-
-So i think we really should do the following:
-
-
-From 58c4ccbb04e13c4c14ef7a94f4b44f8901183081 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 5 Aug 2026 11:01:46 +0200
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/memory-failure.c | 46 +++++++++++++++------------------------------
- 1 file changed, 15 insertions(+), 31 deletions(-)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index aaf14608b30e2..de97a7a36764d 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1705,26 +1705,6 @@ static int identify_page_state(unsigned long pfn, struct page *p,
- 	return page_action(ps, p, pfn);
- }
- 
--/*
-- * When 'release' is 'false', it means that if thp split has failed,
-- * there is still more to do, hence the page refcount we took earlier
-- * is still needed.
-- */
--static int try_to_split_thp_page(struct page *page, unsigned int new_order,
--		bool release)
--{
--	int ret;
--
--	lock_page(page);
--	ret = split_huge_page_to_order(page, new_order);
--	unlock_page(page);
--
--	if (ret && release)
--		put_page(page);
--
--	return ret;
--}
--
- static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
- 		struct address_space *mapping, pgoff_t index, int flags)
- {
-@@ -2509,7 +2489,6 @@ int memory_failure(unsigned long pfn, int flags)
- 	folio_unlock(folio);
- 
- 	if (folio_test_large(folio)) {
--		const int new_order = min_order_for_split(folio);
- 		int err;
- 
- 		/*
-@@ -2526,24 +2505,24 @@ int memory_failure(unsigned long pfn, int flags)
- 		 * page is a valid handlable page.
- 		 */
- 		folio_set_has_hwpoisoned(folio);
--		err = try_to_split_thp_page(p, new_order, /* release= */ false);
-+
-+		lock_page(p);
-+		err = split_huge_page_to_order(p, min_order_for_split(folio));
-+		unlock_page(p);
- 		/*
- 		 * If splitting a folio to order-0 fails, kill the process.
- 		 * Split the folio regardless to minimize unusable pages.
- 		 * Because the memory failure code cannot handle large
- 		 * folios, this split is always treated as if it failed.
- 		 */
--		if (err || new_order) {
--			/* get folio again in case the original one is split */
--			folio = page_folio(p);
-+		folio = page_folio(p);
-+		if (folio_test_large(folio)) {
- 			res = -EHWPOISON;
- 			kill_procs_now(p, pfn, flags, folio);
- 			put_page(p);
- 			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
- 			goto unlock_mutex;
- 		}
--		VM_BUG_ON_PAGE(!page_count(p), p);
--		folio = page_folio(p);
- 	}
- 
- 	/*
-@@ -2862,8 +2841,7 @@ static int soft_offline_in_use_page(struct page *page)
- 	};
- 
- 	if (!huge && folio_test_large(folio)) {
--		const int new_order = min_order_for_split(folio);
--
-+		lock_page(page);
- 		/*
- 		 * If new_order (target split order) is not 0, do not split the
- 		 * folio at all to retain the still accessible large folio.
-@@ -2871,8 +2849,14 @@ static int soft_offline_in_use_page(struct page *page)
- 		 * preferred, split it to non-zero new_order like it is done in
- 		 * memory_failure().
- 		 */
--		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
--						       /* release= */ true)) {
-+		if (!min_order_for_split(folio))
-+			ret = split_huge_page_to_order(page, 0);
-+		else
-+			ret = -EBUSY;
-+		unlock_page(page);
-+
-+		if (ret) {
-+			put_page(page);
- 			pr_info("%#lx: thp split failed\n", pfn);
- 			return -EBUSY;
- 		}
--- 
-2.43.0
-
-
-Likely some more cleanups on top are possible.
+Agreed.
 
 -- 
 Cheers,
