@@ -4,134 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA784C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDFFEC55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 773266B00A4; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
+	id 336C96B0088; Wed,  5 Aug 2026 04:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D52D6B00A6; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
+	id 2E8856B008A; Wed,  5 Aug 2026 04:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5770A6B00A9; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
+	id 1D7A26B0092; Wed,  5 Aug 2026 04:35:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2364C6B00A4
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:30:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7B41403D3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:30:24 +0000 (UTC)
-X-FDA: 85066543968.15.DF00603
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D1C87C000A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:30:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=p3RP2Zv5;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9C56B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:34:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 162031C0824
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:34:59 +0000 (UTC)
+X-FDA: 85066555518.11.3304B94
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 15DE74000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:34:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=L7TKQLBB;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf01.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785918622;
+	s=arc-20220608; t=1785918897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
-	b=G4hOi/9p74qzNgbrQe/Tgw0csDKD5jYBvKfrOJQjQB9BAy4wmmTRaqytFy3gkKxEiSd0f4
-	6g4HM8bJ+sdz+V9ZpwnsdhtWuVMEVQzUaX9jFHYiUEnMVd4PQNqKcLo2u3pkMynbdxUEYM
-	wev0GIfocLqhby8F/OT9b7eVCpZv36s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785918622;
-	b=U3K4T3uOJE+jODBeVHwsQzQ1A1c1vjGivvdRg9E2/7iUTlMzJ5/Ta4DYZAA5ZRHymqe0rY
-	nGLf9srEFD1B8nqL4sr/AXeekB6bFc5mFABSGq+9F7QMbhOQpR6vg0zHIkKbfPkZe0Qv6t
-	NR4iZ6oN2qGqKEzBo/7HLR3CWQcQcfk=
+	bh=FCJRy/CGmBSqkvhTOAy8ed0TkN/q6DjK+W7vFmGeK8E=;
+	b=SzOH9fFhsb3xLh+IxpADansQha/2UCneB92Z+7TqtjP4RLzLzkCIicfAVjYZcu64UHALp+
+	ZF+1PLeh8pAPUYa/wN09vNFY5ANSntCX3udwioymot8Vy/EgQFrMkeR/JgSslIIO0y/usO
+	+C7kUJQcVo7DKMPo44jPIbMB40p3Qyg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=p3RP2Zv5;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-529a1ee0e62so4289831cf.2
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 01:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785918622; x=1786523422; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
-        b=p3RP2Zv5beoAoCrORbKJPDRMlSW4EHxJTOJHJJZwwQSB7HmhVsR5kVm2ta3eMI2zgM
-         Jv2V6aRvxS7p1OAvbBCfcLCGo7p/xrby1QwO/VuQ7Skcv8Z3s2L3lfQYplcEDT4bxFOT
-         4uwKFSWKGGm8YKa/bV5h11Gc8i4MAyL5pbsLPHNQ4hPSy1fRGRBtgcLRrn/+W/4RzkNq
-         YWy20hawA2AlvnF1Roq1o2jX0ezHMzAMjNiLKFBeamjWhitDxbZDcBZghrAKIIhOBHAX
-         YPxN9z1A/vgR19y7aPU+0DKB2e9yCKNJdwZt03cPlOCkAxT2XhUes8I3krI5GOeGdPqj
-         jdtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785918622; x=1786523422;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XOBR/YIjpOqevYoPUdylhCXb2OTHUbA6kWHOmhD/jcc=;
-        b=fnJhayKwbAXwpAoacOvWf4rSHHyoo3bTF49hoH3hMvyLu/AY+Ax5Atp8DcEBBQwqvN
-         +4Tg39tYFXegltWW3H7p80q+5khNDi0BJLeB/PiniEITx7uoyc+UNyV9H8CfmxyD/fKp
-         iL1c/y2z3bIM8pEVUDmEe78pkY+4zoebzt3awbpctLmqFyHp+kZsfxYvlylYgd6/PBTc
-         Bnqzs5saZKbfXi1nDrhbcZHhFxCZC7MWIexJjacRKMhT4BzV62dswfWsQtjX2W6nE2tk
-         jO98uAkcpSFqm2HC+a/t10OGhrqMvemVYC7PSo1uxOD2zHcaPqvtK1wK1a4UPhf4BXIH
-         h8vw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3bLAO3C2b8rpG7bTn1b6dPdZq98WLeHKihigMvcJ5HxMrOb6Om7RvTRPmBDm1OINDSKQsEyOAjA==@kvack.org
-X-Gm-Message-State: AOJu0YziV9537Y0pD3jC9KRjIM3DnK+5dFvtDMXIJrDSvjVXbBoE55at
-	P3GoysWK8KYTBlesr4zRUoaT5P1HsO8fdkqTTgFJInSya1v/FnhPmQhDdTZ8lgdh16c=
-X-Gm-Gg: AR+sD10GSlalyToFiSjMcfpmnhzlElZTjpiZPmBBnxRgkbwPo5g+d2rgIiP0xdXhfpA
-	YZ4yZYrrCyRUSdIKz5k6f5tx9S9l3emz4LfedZ0QqAK386IQtPoQctZXYKSG0QwDConVcpg62FM
-	wXtDPENkSHk90Z5XKNPld1TRaJopXuTtbpuqnPRRm4olwxYUyDDcMtM+RiOZ5fawZ7PFe4QNC0S
-	6etq3fmutPdOn21OBIC+rX7dVnk1VJxkqsFLz/ejHol9igQETkvKz6MmzoMln2yLu33IXuh46Sf
-	RR9QDrb+8H2sn8a1EixOSrGYW6BSrmG8VUJJEct6ZGs2n5rxCnqW6XPvPEFTQaHw6szFqVzrERS
-	7vdKqCmd9x8maUUqFobvYkj6NyDtYcKeiEp0NkxyLxi4iKE+JxkbEbZx5xFmB4gSpNkTbnOn6eg
-	iQ2q1IJnTuJd14MqLtalBq9n+yTXfA5gdq84sRTrne2JsLU5J2CZQ2SKx2nhoeqVKARKtqJ5IWk
-	8DMjTQAAOjZZKVcHGewgHnhORr9jJxD6JgFqJcI/8YH
-X-Received: by 2002:a05:622a:143:b0:51c:1c2c:a8bc with SMTP id d75a77b69052e-52ce61fa747mr43158721cf.37.1785918621889;
-        Wed, 05 Aug 2026 01:30:21 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52ce8972e90sm14423461cf.27.2026.08.05.01.30.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 01:30:20 -0700 (PDT)
-Date: Wed, 5 Aug 2026 04:30:18 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
- anonymous page index
-Message-ID: <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
- <amrvgjPNfKqWPUU0@gourry-fedora-PF4VCD3F>
- <fec1be38-406d-4656-95eb-048729afec40@kernel.org>
- <anBqV9z6hVLIqoIn@lucifer>
+	imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=L7TKQLBB;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf01.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785918897;
+	b=0vSx2jeuRk4M6FauE37UiXKdm0iy5BBJkFHw6ewsOPTsnOiF2ePzIGRn6HqXChoP/LqS/b
+	1ied9fA0b0p0/S1gz6WNYOZe+36DsFKmeyn3t3cRx4IRGNKm9exCbgmyDsXx6EdxOPdSYx
+	rfqRTBguFz76EjojEOoq1L4PxqiujtA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1785918894;
+	bh=UaRsb8N+FmKkIzFPZNJZ7dje7nrLAfs+VL19giDr5as=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=L7TKQLBB6BDZcm/tjJnmwzEoc5YC0FRW3VY00t4Q16FzogLxYZ+jHrK54sykLORO/
+	 68/awIHaf0drXn0LmsUw6CA9QBESng2mdWejWx1OaMJtMmtFlvUaFX/zjYefo+ttoh
+	 ItXOquinOrudxaEtNfl68mKH8sTNWiRdOAquGEtudkc9P6W6a/AY8jahW1y9iQSN9/
+	 Xj5+nxbkBBo7+eckCMlN+KRLyV/bm+krwtTPG26BAlYhv4xpZPYR5+ELCSoVW97Wi/
+	 Hd3vOJKh93z31JXt+vS8fQlLySj5zdE97dMLLZuLsLEAmMRI64MCvxaLzzWBiaxnUw
+	 2NJsvgijF7YKA==
+Received: from fedora-21.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 90A6C17E015B;
+	Wed, 05 Aug 2026 10:34:53 +0200 (CEST)
+Date: Wed, 5 Aug 2026 10:34:48 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alex Williamson
+ <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, Christian Koenig
+ <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>,
+ dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, Huang Rui
+ <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, Michal
+ Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez
+ <slp@redhat.com>, Sean Christopherson <seanjc@google.com>, Thomas
+ Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+Message-ID: <20260805103448.44af3ff0@fedora-21.home>
+In-Reply-To: <CABgObfY67mdG9QZ5__Q9GDrEq9Wutc42_tHo8YGSMOPnruZmsg@mail.gmail.com>
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+	<20260804120529.1730187-3-pbonzini@redhat.com>
+	<20260804161549.4cd9a66f@fedora-21.home>
+	<20260804161850.58c55c6e@fedora-21.home>
+	<CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com>
+	<20260804164206.655874ce@fedora-21.home>
+	<CABgObfY67mdG9QZ5__Q9GDrEq9Wutc42_tHo8YGSMOPnruZmsg@mail.gmail.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anBqV9z6hVLIqoIn@lucifer>
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: khzjpjo1r5iqxfb5smq568tu4nrpwrqm
-X-Rspamd-Queue-Id: D1C87C000A
-X-HE-Tag: 1785918622-325266
-X-HE-Meta: U2FsdGVkX18ENp6XaT1AFPPoUCYx2bn4Di3XsoB5ccc3jrrHlzI4YU6PLObzQa0nA/K57ajXMF6NRoH7Xwfiu+a5OM248SD9fyWVIh0dMlHEecO6PRtRzOvJk9Xcp5jMF0QEe0+4tGJL/AAGs/spc7b0gRkkU6aWUCUfe/gCBmaw6m08mq0wigE3oDzX/hgjmtPa3YpXoZK8gfsq53fXkFEWT0FI729VPyF81AHazY8xLF+lkVNGQOQvZl/viwaGxEbfNSCa0C5S5DPlDCK3ze+5WoAsdPcOpGFTniUAPAy/0BbQlS+OSzXRb73vvyJh4rZSODTmUxkV2anC6WqAjpp8MXBayK6ae9RMH6gZ8EWQVjzhvWreeGu3zpQ3Q8udC+G9VSb+93rKCmtRtth0RcifVrVoOUNoj1YaFgXn/6qD/7HtwLQ9GOCrMCoHRAI/T6xrebzdtp+PsnejtCi9HUJz/EQOGsQxB8EoAXyiRDaZvBXeaULu7yeYllybm56bARoFZnHZJXGm3sjVyfSo02JUajG9DBXItSUxqQEwnxPm/OGe1+pEAMI7gbsjJ7C+gZwnuJYXfzoQ6ag1FiW1+nBP5CMJkoNKn+FY92V7jvGd+XzGjKrP+8eKHqvCyji//i1nmQB4iZ0JTRQhdB59kiBwQ2X+5PIr0ZaVFmMEg04YVQV3KrlrEb0aNqthdIaEEGKolZ4tBovdiKcB2g7olz8pjWZe+ebFjcGZNu5be3n4XPOjMBlxEh7wpL+iuCSH3KWi9pY3+DrfB5b3ZzCw9rSzNMsaENiTmXJq2o6ez5e7DSNKx9VzgGQGwM/RhBIUbuByMt6womHaF640OVeEOYprOgqykQdXC1nP0UsbskPfHOyAVz5z8WM5sS4IfBYMVC2xVcZ8uYi4QA93P12w6iOSveJy7zgU3fiW1FSWYDE9RrE93cn9nO0f+mxGidjv/eDOTtWgwx0iDMc5JkT
- RhGb/YWS
- qJcVAjEP8dsbt58VU91q8MyK437FXxACxRbGMSayMkdHeUzKvmEDYbFI917LyIehgrsBZfXByPNJXBKQWobxMRQKiFGAoAT00qwc/DmgNuxo1iyEUrYapZT0MtcZ3+sRivnPxHPwwDPyWiW94i/JtJeDGnNiJkTE5ypY23zzpP0YGv1tcpLyLrngh4gX6VftK+CV0YO5gJvjT1Ku7jRl3ngyMLGlbRq98JCGO8xgd/m9K/23HJ6uzFbSNGBpATVw7smIHuCSNeBL2GCbxUg71k0iRc2roHpy6sgTIhiUOKnATsWd95ba70EXWG/0Kduspsma7u8BWsXpaRmIYGx/HsgBCkqYelPcOj21BphaOQbtPBaUJiMfCtiBQDWg6KzPypisl+QG2aa6eFUaGzIR9Wr8UZMvkcZFU89h0mSQDIhgzf8Arj49owagxzIGrS9LkRpZchD0qkqcftrE=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bji3kgp7yauk3gxk3osenqf3oe5ue5ou
+X-Rspamd-Queue-Id: 15DE74000B
+X-HE-Tag: 1785918896-391728
+X-HE-Meta: U2FsdGVkX1/AjwwXOk+ioVgHSEgRi4Z+kug65vaKEfMRhSjBU5k5HcVc6qtcDA4ab3GKNRovSvs6QOInfrvMfgLb+UCV8n68d4oACBfBWN6Zn0R228XW+l39fiiytofRYblXDKjUMro1aHuPqcyAK9EdbRtCilf2O+8asK3ln5VHFQe18LYnZ1o53JsWIeadZ9OCm3MvIW/dWWMHb/UYzWpfp8vStCxhYHdFQ1wdeHmHEpg0tS3ijpKLJc156shwlvxTmstpvrJlk06znIQ5tKaDCrjc+UIG+Dc7cX7qiCJBK2NeCQwTfV+szkDCH4X8Yka51dK6revDNS3KOZThzJ3XqUsXRinMFGrkQ7tj1cLzzdG64sJhA5SGBA2dAG17wi9K13mknaDzOW472hNoH1DBKqZ58Setq1AEe1u55yz9Sy9ziq0uMniPGS7NllpyVVgB/Reys6b5X5cN0AGxRFSgsQ1ORxImJCX3TSCB+Yy8uEyeQPyMNfLvb02RS75XUS3GxV85K301B1XPi5OVeA/wxbADyUuOVQr6NDW71Tpc9cRhKLsO+eP5iL+ivYdRBGUU6RM3eIwQww4fd2iI1ktdPV+Ik2j3Q2xN2H4Ccsx4N2p1R3BPp6t67ZfuoQwdozsFcAp61Vj4hKz6J54CZjKpHgtyxO4f3KNgXeWFenWCHmhFwKYJQ5fEfjmaU7+uWnLa3ZNTBeSwoEib/XXhKUCjBxSg2L8pUkBjvbErncSX3Z0sWlyFokm9m7gx4l1keQkZ/zaUOHqxPJv0X0x/Q6YSdjS3qD7aXpo6g8Ryfhh2Hzpg0B6jNbPLSjRRhssku9uq1P8+znJghFVVYpIACRfp9q8oHSLMtlcdvQ8w7BsVRw+eSCfcnAtjst1wgPG9BqYwoJh9e8lZenZq+lvqaGRrL0PUorbqdb8kpywxi1H9G4IWxlZhNDrFYf03tkDYaVWz12dnlwocCJLUpSI
+ ie1Z0AKD
+ W1diwTgxfpc8WB/LP0RbVej4XXy1nJsLbOgW2P34AD9QeO89D60Ux+w6LJmhTLeefRaJCEG7rIlSbq376EzIWxR/30ITRB6fmD+9PMTRQb29s64DWT0KXYHsUxl2EVKXn2rhF/FScaPsnKIoAK96s1uRCKx5MJ7SlteKQiYsnuGqQjhSeuyIi2j9muxNLhBc4Mkx6QqEpndoN6CCoZx7BIgulFwuO1vI3+3Ij9YlL39WTkcINWfnfS7AQ61NBUB0qmxp1JT3hD6VjHQA3MlEz5AGI84GCB2iB5n8AkxhSrVDuwHufk3OCwglnetsc/3dOgu1Yq8xiWZogwZCsEKuUdzBrUKfC8hmytOSN1pprdVciuM2UkohR2KagiB3rxCdQOGPOB4+PnZIuKZcSF0p/NaFuNZTf/MUe9PcuEBtmSBqgBsMtIhtYuWTgycWrp+t9woCYAg2uQPxdNDQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,32 +107,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 11:19:17AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 03, 2026 at 11:39:11AM +0200, David Hildenbrand (Arm) wrote:
-> > On 7/30/26 08:32, Gregory Price wrote:
-> > > On Wed, Jul 29, 2026 at 05:48:39PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > >> This is potentially useful debugging information and matches the existing
-> > >> page offset provided.
-> > >>
-> > >> Use the raw __linear_anon_page_index() function so as to always output this
-> > >> value regardless of whether the mapping is file-backed or not.
-> > >>
-> > >
-> > > Begs the question whether we should mark the value based on whether
-> > > it is file backed or not, but i suppose you can gleen that from the
-> > > other printed values (anon_mem, mapping, vm_ops, etc).
-> >
-> > You mean something anon_pgoff_t or what did you have in mind?
-> 
-> I suspect he means e.g. adding a (A) suffix or something? Like page offset xxx
-> (F) or yyy (A) I guess?
->
+On Wed, 5 Aug 2026 08:08:17 +0200
+Paolo Bonzini <pbonzini@redhat.com> wrote:
 
-Yeah just an F/A in the print I suppose.  Sorry if that was unclear.
+> On Tue, Aug 4, 2026 at 4:42=E2=80=AFPM Boris Brezillon
+> <boris.brezillon@collabora.com> wrote:
+> > Okay, I thought I'd ask to be sure, because of all the implementations
+> > of pfn_mkwrite listed here [1], only drm_gem_shmem_helper.c and
+> > kernel/events/core.c do that. =20
+>=20
+> Also the vmwgfx one in patch 3; and for the !DAX case ext4 and XFS too
+> (e.g. xfs_filemap_pfn_mkwrite gets to iomap_page_mkwrite, not to
+> filemap_fault).
 
-If it saves someone the head-scratch of whether some bug is because it's
-"file" or "true anon", given the ambiguity here, seems like maybe useful
-debug information.
+Right, iomap_page_mkwrite() doesn't seem to update the PTE entry, it
+just records the access. But there's quite a bit of locking taking place
+before this recording is done, which we don't do in gem_shmem's
+pkf_mkwrite implementation. This brings me back to some question I asked
+in another thread where we were discussing another regression
+introduced by pfn_mkwrite addition to gem_shmem [1]: do we need to have
+the folio locked when recording the mkwrite? If we do, we probably need
+to surround the drm_gem_shmem_record_mkwrite() call in
+drm_gem_shmem_pfn_mkwrite() with a folio_lock/unlock() sequence.
 
-~Gregory
+For the record, the folio_mark_dirty() doc says:
+
+ * The folio may not be truncated while this function is running.
+ * Holding the folio lock is sufficient to prevent truncation, but some
+ * callers cannot acquire a sleeping lock.  These callers instead hold
+ * the page table lock for a page table which contains at least one page
+ * in this folio.  Truncation will block on the page table lock as it
+ * unmaps pages before removing the folio from its mapping.
+
+I'm really sorry to hijack this thread like that, but now that I have
+people with a bit more MM knowledge looking at this stuff, I'm taking
+the opportunity to ask all the questions that were left unanswered back
+then :-/.
+
+>=20
+> > The rest have their "generic" fault
+> > handler (by generic I mean a fault handler helper that covers all the
+> > order/WRITE_FLAG combinations) called from pfn_mkwrite(), and return a
+> > non-zero vm_fault_t. =20
+>=20
+> I see; I think you can do that, it is handled at
+> https://elixir.bootlin.com/linux/v7.2-rc5/source/mm/memory.c#L2681 and
+> indeed it returns VM_FAULT_NOPAGE. But it's more or work for no real
+> reason. Your .pfn_mkwrite is a single line of code and it is clearer
+> IMO if you can see that try_insert_pfn() is calling the same helper as
+> .pfn_mkwrite().
+
+Sure. As long as what we're doing is safe, I'm fine keeping
+drm_gem_shmem_pfn_mkwrite() as is and letting the core update the PTE
+props. It's just that, after reading all these implementations, I was
+skeptical (see the question around folio locking before mark_dirty(),
+for instance).
+
+Anyway, thanks for chiming in.
+
+[1]https://lore.kernel.org/dri-devel/20260313111851.4c1f89f3@fedora/
 
