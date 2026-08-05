@@ -4,101 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AF63C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 17:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B92C55ABA
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 17:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E7086B007B; Wed,  5 Aug 2026 13:29:58 -0400 (EDT)
+	id 30C326B007B; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2979D6B0088; Wed,  5 Aug 2026 13:29:58 -0400 (EDT)
+	id 2BCE86B0088; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5E06B008A; Wed,  5 Aug 2026 13:29:58 -0400 (EDT)
+	id 1AE136B008A; Wed,  5 Aug 2026 13:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9A396B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:29:57 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7FF0EA05A1
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:29:57 +0000 (UTC)
-X-FDA: 85067903634.20.C41CDB1
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DAD4CA000A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:29:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SGNjgqjB;
-	spf=pass (imf15.hostedemail.com: domain of 3EnNzag0KCCE78EFPEBH87M7QDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--abhishekbapat.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3EnNzag0KCCE78EFPEBH87M7QDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785950995;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C90F96B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 13:47:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34E1D160556
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:47:56 +0000 (UTC)
+X-FDA: 85067948952.02.55AA9F7
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 417D214000F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 17:47:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=T1UKQ9Aa;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785952074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xDb6UVUUSmRTt/O3cIrZaFoVx9KXsBi3AsTvyG9chiE=;
-	b=aDkIeDoA1iBw52WOzo0MW6GZFS+nIrdoeRDEoboRLZ5SH7ZXD0A9jXyalGZN6ptnI72iH/
-	kEwnTt5ycLwbwUUoXJGnjdd/2qwbMhviNIOneSaqXIEMJfJBW/8rff5XQnvcFTbH9vDyvp
-	THE7Dqh9nxNMpiW06guBkD16CkQGs8g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785950995;
-	b=tPtza4livu6FxP4OTzF/7K3iyEkYGgJxZi/RE79UiuHC0YjhHdk4/ZK6WNbCHfE13dbvfU
-	t9/dgMKIBMBbqJOwFaWMsGisR4tCLVumCLvZqpKlqKB+UqXS9SJkquONoZN2IpgA1JgZNF
-	pcuEAdYJaysbE4ZW+7Upk5duXd8agI0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SGNjgqjB;
-	spf=pass (imf15.hostedemail.com: domain of 3EnNzag0KCCE78EFPEBH87M7QDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--abhishekbapat.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3EnNzag0KCCE78EFPEBH87M7QDLLDIB.9LJIFKRU-JJHS79H.LOD@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c9c26587e67so106916a12.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 10:29:55 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
+	b=q6gGb3OKjEa6ErUR18LEs+zoyT8fVTvtil9BCKErsYk8hhaNUFl6fe/NLBcTf+aNhVGlUy
+	PZHCUip5nl3dCCRvsKMAdp9zMXN4PkNyrzcgOUe7/KiLf5Le8qtYG+/ndeN9idOb4/VS+6
+	lCK/u2exsNHiuOnbzD0CXwNbo6sz33o=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785952074;
+	b=bpyHNC6HaRch6YJo7g8kP5ZzWYVgkcXzN/jcBhmaAEdi4MEwUIMtNt8yMBK0FnTWg2EhIV
+	ecUNdKSDy3p9jMM5sJQPWBI7s848OPfbvcWEIJp+6M2C68bxvhfr0W0bA3TtG3+OP8tCDf
+	QSwbq2pr5dxNWTxil9x/QCb8n++PLuE=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=T1UKQ9Aa;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c10ed63c0so19271cf.1
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 10:47:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785952073; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fr4TIVyrmLGvOVulrwn/U9nYqflr9pj58h3JSeAfQ3awscsw30uYMnTgZggF2J64Ei
+         wcrpTxG2F5JBKr1KhT5pjued64JpNdiURo4GP/pWSZHQJCisRpIUBbslA+Mih0m9Nf8p
+         ozkKZv6rmuogYgX8q4PNntiJZbnqWN+amxt0J+m/+0U2aEe/IXGXHDzsgxLkVyGO/2uP
+         VihkfMGM0uXGuuKRfs0Cs8+gsJhWq5C39Ej93mC+/yu4jD8qAyggFpgDVhwdkEareS8z
+         yRHv29GxpJsCmccNHb33uM4YSqAc6ZN2vVp+d3eWaacXl5m0s4C9PCN9cuJWinnWzMir
+         HOMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
+        fh=MZ0+p3LOFPkzaBvX8fQpOMoXUcGQJUjcEID5QZrNqCQ=;
+        b=heTPaTPRJjo0ZmYrwuqkEJOFSrGfzopTfo4gsXqqvjcEucSPUnYgn6VP+YFDsE7TY6
+         pqLUcFdPph1sJkkLQ5p4JfxuFw4SgC7yVWi61DIjSCdaBMSenVQnRqYkbxx2GGMD+UAH
+         JlrnnObmkcSrlIsGS8dLjIzuNP7pq8qYTJySW3O0ld4JuOqA1w/Xc+B0J9lTteVvAG8U
+         ojYvU4kt9SfOzbNHp5LAFvSe5LiW0dgrw0k3enIGKWQglPV0cXo5sD/D2LJIepwjEakX
+         GYU2KTmUPu5CvBh4BVyxt2eRHk9KOv5D/17e+nzQ9Rl06dZuQqSsL7Xdp5EMJs0gMbTW
+         WmKA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785950995; x=1786555795; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xDb6UVUUSmRTt/O3cIrZaFoVx9KXsBi3AsTvyG9chiE=;
-        b=SGNjgqjBIOWm9q+mHjZxk1mFIvQk/Vwq5XvrLR3lKuUbiZV2eHaDIXt6G5AHTBpggF
-         JftdNoGa91ImTzgf7SrH/SiPU2/+YHqzeajoeGEx5Ym/EBB6cHajZvLl/6iRlt2mB9Sp
-         9YtVV8wNxSnXCo4d66L4FlREG+LgGGq6CqR7GhvZG3hUgLveQGc0Mn69y2HFTvezJ6i+
-         /8pNa4lLIMd2yt1fyTrovurO98GbRLpWlv7WAUo3WNWPkEX368Ai8PY1n0zW3luJ7IKw
-         H8Fs/GJmK9tlbR6ooAtuxkGT+vELZEDHnZEnY2mK2yVUEZc9Y8yGwNrzlIEgneMJel4B
-         D5KQ==
+        d=google.com; s=20251104; t=1785952073; x=1786556873; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
+        b=T1UKQ9Aa5sYlIQyiUR43IQxtjdStb2dZhyPj9LONEuOpfoirSpCMy+1oHJlPi2ch+t
+         6HmLbuMN8Jr1DL6t0ittA0wMpsFxjMF4n6FBdc4i5Yn3mcjbk9GGqV/7IT4fO1xYD/Bw
+         z5WoZNJE61x6SpuEpUKIW268PeZTFS2N8xABRJJSdxV8inFg9EJ0fGB0r95xfAbgFB1v
+         3N19AfCK64Oy3hmHrqukeXZ48ghPVTQgizE8syjeKskcte/lLniisyw6rjKWtII5yCxV
+         93KCxRjqgqssM4h0wmwqmOQ3czUJ50jeBHSOn3DSRYUIyqD1gwj7CRK4Q603/JWa8jL+
+         IfPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785950995; x=1786555795;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1785952073; x=1786556873;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xDb6UVUUSmRTt/O3cIrZaFoVx9KXsBi3AsTvyG9chiE=;
-        b=fbO6mYdLcLyP7i/sO/IBalc0G/J7LZSL+32cjQitE/ohSdq/P8S3rGXhi3fVTxipQf
-         BXrNeqLuNkSXSxf7lu2SlDCrd4J0bYACwZeeO+766lSwYLpRNmvpTLgzv17FSsOpSUDZ
-         d1bhrIt4qpb3CHofNx7susc4lkr+VWsk2SYm2+ys2kjNmoTF9dPCh7DX2pZEDHf/iWzW
-         ePjx3jF3N9ScBozUdr+k8LwBqUkxt0QtEW4OFyQgU++e5BW5w20exjexRPzPw06I+w28
-         bvp1aPG8ynQ3pihzFST32jkqM5vdYN7MQ+ueo1QGtojUGxvDhHL97vhDA9W6kBgdTjpT
-         T/fw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6oM4k7cjm8nuRUXhOUiO1vdgBI9lnLgEyQ7A7Eq5bA5dMJlz1WLBMhXAnC7WPA0iLDqF09xMNkg==@kvack.org
-X-Gm-Message-State: AOJu0YyjstjOEmqpJ4RIOVQbyakHFDK3d6tr8VW742TY1I5SztDLDEM/
-	N7dq069PM28jtht/ctTAh+MNCi98BqJBb9ac1wULUDGoF7mahcv/H5h/fACLqUEL1AvKZbhgOYN
-	G2tvlNGSZvLoBEgWpUfKzlunGSuXMer6CPw==
-X-Received: from dlbsi11.prod.google.com ([2002:a05:7022:b88b:b0:13e:596e:f99b])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:a97:b0:3c4:3750:2c03 with SMTP id adf61e73a8af0-3cb9c1a2a27mr962641637.9.1785950994364;
- Wed, 05 Aug 2026 10:29:54 -0700 (PDT)
-Date: Wed,  5 Aug 2026 17:29:52 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <c795f8089f82841e8a6e00d7ca286da2b23aeb7b.1785950530.git.abhishekbapat@google.com>
-Subject: [PATCH v5] alloc_tag: expose boot-time compression configuration
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Ge <hao.ge@linux.dev>, linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Abhishek Bapat <abhishekbapat@google.com>
+        bh=gnWA/DuIIokY8/eXsnQhd+bhj6lSNL2Ukz/5pFHWlTQ=;
+        b=i3p/l/Wufj97iIegjVZXOVL6BJ9/dKA2ZbmdCn1+c9snXammsXakjn6Xq8n84rRDZu
+         rFrp/BTfM2FEnY1ovuIngPqCKvEkLy3KjTMKXe0489nXbemEfNrpBM5RaP8Rdi8BqrcY
+         aCZ+3SGGpY3soQ2xxu/42Y61lZe09l+NW/IuTzSw8Vxr4/KRuYj0ayNqZX1HrWnK/AKA
+         6+J1rl1i2dpW6G09OBAUK+31AuQpvYpezP6rIV3OPWXZfL0eXJhKWqdaYyL58lSKpQPM
+         3zHMcoNiS15j3g8zgA6ti7HhbDWRjHXfeoN/IGYVi0Q/GbUu1oJzhaWDG98mEtMA6wpe
+         Dalg==
+X-Forwarded-Encrypted: i=1; AHgh+RooekKEERzz6Wpnm1p4xqPiEG6fycyDrxTk0Uy/scIg80EryrknLjaMA9IVjyP4AV3N8gVgZjfzbA==@kvack.org
+X-Gm-Message-State: AOJu0YyjpUxpnJc9HGyABVA1zmbaWWo/B6qA248jOHG+gdCgBI15q4gd
+	bLjNkDmgXSCM+69f+RUak+4hFOpZead594GAt2svQkrfaAgqNx3O/O1cuwBEY78Sf1qAjG44AbR
+	YXeRkjwAaJIculx8hOL1OnV2TJAQztFSr6gW952Gy
+X-Gm-Gg: AR+sD11ch+JCloSOxJM6PYC05sga0qHGh88CFDkLDfKnhdyO42VZhH3HxYgf9DdSP0J
+	BkkrDg+E61re8G/CPZksnfIj57uiHXXz5aeJ2BGbDNjQgscPxKHdjgVplB2bZeiC8269y+SzFNA
+	hL6hn6nFB7aFopf/DAdJWBtB0Pec2EUQoGuVcwes2salnq8CVk2MuondMJHWaLcoTNrHAwP4/Ve
+	a2qFIxbRF8VN9PB5U3o8DqtuySr/dcUHnEliLxekalGsIv96IUn9Ol2XIQz9oxTht+3XVom+LRl
+	7dyGToXArbUP2EbhfGoP2Hi4MATliKFpDxjmfccZNpFX0ogwSZVaExStnGZb1jKsaVZbOL18XVY
+	=
+X-Received: by 2002:a05:622a:22a3:b0:51c:935d:8d74 with SMTP id
+ d75a77b69052e-52cfc109122mr792451cf.9.1785952072535; Wed, 05 Aug 2026
+ 10:47:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260805090633.141001-1-hao.ge@linux.dev> <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
+In-Reply-To: <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 5 Aug 2026 10:47:41 -0700
+X-Gm-Features: AUfX_mxKiYGwyyUljQnBwrH-ct4w_9C4kkNu_d9Bab_VVjkT3TZ1NCyG0rHLGmo
+Message-ID: <CAJuCfpG_XX-Hwy=TCrJ+g6yiMxGXLB=LvnPN_WLP3WQktNZMbA@mail.gmail.com>
+Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow when
+ profiling is disabled
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Abhishek Bapat <abhishekbapat@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 417D214000F
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DAD4CA000A
-X-Stat-Signature: m79wbachbe3mdajkch4obdeo9tf5n46p
-X-HE-Tag: 1785950995-389356
-X-HE-Meta: U2FsdGVkX18/ru+9kEe/Q+s60m26LjXj0TauyjA0QE/awu7SQk4FcmJsURD+XACLExF4BzpU20V19G8mTUs2r8rBdACIaDD/jKTOG7cJNnZ/KN/HAQWW6mKNY38fCQDrMNEz+9elfsWuAqVfUQG6FGXXxkSkhZ8R7JcYHjMGUbKqO+LCUzlwPk94D8YfwuhBCbE8QZiiHQ7yKyhX6Pg3hh5juJ16KudOx37VuhjP4aNKrvmrbkW0Zy5iM+DQc/VIL5s19/FyKAmlwnjjKfbqfar0rZLLvoVhm+3sW4kMUN3vJuhOteCCGPTcDz2ztRvU0gIqa7ebqH7U98HjARKRXjlXoMnUHBStHrXi/48mIy/Qe0JtgEbKqvb44nJJP/bqJzqzi6wfggL+GPeUgAHNKCHaBJM1mqw7UH9+3gxM2yr2JzWfOS1rfHyEjuzIrfBZdDeOjsXQat/0sLgPc4wkhXuxYNvi2c7eo9CiIpbaFQPCIqn5YyqGubiEQKwKov+pCSD0r9Y8WEliewdyxRzRDCBRPQ6hO/eJJVA+tdr4gMtuw8xUgyIhaEed09nZLWD0zaNfGKiqQcBJ01isItPf5FQemnRAGa9zJovH/IW5Acb7AZbXlOyZiGAkpaEZL4TCfropsvxYewWBKrQ4OU72fNYrZWRgOVFBfRWtSQLeqAl2T6ZNPhbCszWvMaJTZ36nK5/kVDTAR/JCMOmwsaGj70YXCGM1KA3YVXhpTUvj0JcmpzWxP/zxAeFhysdeO1f4xwZoe95k04FmwSSjY42wvnR9rfQfFcWkhij54Yt9K+mHu2Zd3N2R+u+evIRmqomp049y2igEnwO6K/U+PBlAMXs3bM+WoB39v2f1EX0LgKXxPjUjIXNXakvfIh61gyF1TG4a8MVF53J5bhwqlh9YKE3NJkQQzbtpGreCsgRDn/dI+Wh4aO2VhO510ihu4TEAfzaAl41DnzD9bV9p0LP
- i+6TnQgM
- CIMZ1Nz0iworlD+0PTs+0Ez0e4eD8+9x9F2XOI/49Pi5K2Fp6bc6f9u+Z10/IAKpy3bhCJBbJs1kRcSIUThBq/46nkqaLq/aCiD2fVJ1zhyF4syGKo2bczftuoha2aEJI4hdapIik46ZNfDjSIQGq1f7fGdT87lCOu66NCX+0aXUpJ4l1ACQm0tEZueMdF8nnlX/gzgo2Gwae1gF0KqxDrEu0mUhvVsIlOeZnbG+omaMO2tw7x0tA9Pov+0WsSFZLnP0C6CfKs2eBOt8tUU2scPdk+ELBimywxUNg0YI8NwDNvTgqO9RSV7L14LRB2y64xvAHQtKx//l171yzCPdUzrmrUprMO1v8/89tsWx7Df2qZxi96wEfl0zMjSujgeodpz/17qF1A455X7Fp3yk2dpiBezDds7im+93DhvES7u1q6XcFZzSzzb1NO7UyfbTHfb/ZRDTv966rLEvDXVB6uoU3APMW8j3boHzR56MxkckLYsAzkxPL5afIUNr+jhyjDqjZEM9BGKZSAHsmA2IH1YGcqYZZVAvN2lr9fXMUB60iN1Oc4S2E1LHL1S+DMRYFaIny12eRM+bCOrjvJQS2n+f8FpRNvTzYWNH8qXOjn+wXY4DdXNX3pkSqemCHvluheQZCnzyMq5LoFfUG7lvO6lE3+P1KXbhAnFrJbVJHQ9S7ERwRje9WJXqLfA==
+X-Stat-Signature: go16kppnphhuu6g8697ptqpbep3mujw4
+X-HE-Tag: 1785952074-396625
+X-HE-Meta: U2FsdGVkX1907Izzt4qCS5B1rPjDxX84kMZT6h6AbTZXEbGZioPrUiig1ZxsC4vuPHxPyreGzDI0lckzxeCRx8SCvj4SSyOAygwdSp3u7LhLLWASRtAT6apBDEzXAkm0Kxxpf0z28FZ6molPz/BzZwTV2NhEyPDA9Pkfn6uvOxU+eHfaBFn2nMC4dygsnSnlhO3BsXSAhJ/03ZTD3u1RZrjgonaPsqC2SYiwkn4fuLB2CAxFJN4McogdrjlLlgwHTprxlBxn+ziIZNDxeY1H0O4/KD9jYJJqdBe0mk7Oe9WmHVtA5jT3FZN0KvffnwJ3ugh77SMDBjh4zfCQYX7m/EgMBgvyODqDMMXArAhF0AnzPCi6hynuapnGSzATHCjP1VM099R1rCJ3iepGlvcTaFagilryjRAqCS4hQ6dusvOaFBE3DpoyB3108zoXMJJTKSZC0w8+etgZQoseQzduCqwlTCkjUGpwkCXWQ8JrbyVAEs8w5phxU8EOxuR6EzMMjM0e97N2rCJ8Z602UnqOe4oQ2Q1AIZ3d2ZfHsnoQkkzpC2igAsWXlyIwwZ85zYj84hFFFEGQWTgizU8TZFKyk2Pjmu58cnHvH1G1S3sWgzkawq5MyQVqLM9EHjYatoKFg6wa9FsIYurNHbp04tyfHcpD6fykgMkMu/HxPsupa5fKe7ydZMVZEPtq7sCGbf7u3Y39RLFEkbNO906TyPdL/xi24vH/DILfLRW/sggpf2UUg2w1YsAWfD1rxVQzC+N6Z5lUMvyk9cJReP/Je+nzLJ6KhyHd0Hqa3hS0xFfV7AdI4Hh6TZiCFue9f9yDpgETSblUTpK3bOzGZfrOBlTQEga8rtR3t5gG8xlErC/p0B/0ZN6Ir36Gu0OhLXH//MDJQ1X93TRHR+6bAWHswY9AXxrxbCImdbOrhp580ZJwLJveXo8Nk1ujb4p6+8UpLglTYADA+vJi63MbDD/FuUn
+ jLvXoJbn
+ 1I5KweNXqSI6IgvXtvxYtXyV0473M05Dy2cHxItVvJ/0VuZpuOgsvlLKoE7VrsX5U/LeaC7cAXKKQoYolHDeCibp7Yiwe7prKQ2AlOG+cc9sIZ7z15bJt2jCyNja6inpyjU8A42eiH/YN4shfClXQmJMAn1TI4i0/ihevpcD3YiOhHZE9UZclDemvnJ46zGkFFEETk69hfxo2054gJlcOEFDUvxIAxRMaMBmDouQfaEeuBhCY3IpWFdk8VpUmOsUaFOKSO96GzRxF89jIBlcyEV3vv9S9PxzreXf9vy/tTGkq4pKFeCnvLe70XAqIIlgXHBAUqRDP3pXR1YReqJlsJeeakebScpFfQ3SV1m83hLXDo43QZX4c15db86EdVrdkiQAIpkFEnVWjrAX2sFwTUEevg7ASa4KoPNOx77Q+IqAubhnQNIosYikHw1TnC+VhW9GeRxL0h868wAY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,78 +141,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, userspace has limited visibility into the exact active
-runtime state of memory allocation profiling and its page extension
-compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+On Wed, Aug 5, 2026 at 9:55=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Wed,  5 Aug 2026 17:06:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+>
+> > In reserve_module_tags(), the tag overflow check is gated on
+> > mem_alloc_profiling_enabled():
+> >
+> >     if (mem_alloc_profiling_enabled() && !tags_addressable())
+> >
+> > If profiling is toggled off at runtime and a module is loaded whose
+> > tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+> > skipped. vm_module_tags_populate() still maps memory for the tags and
+> > the module loads successfully, but the total tag count now exceeds what
+> > NR_UNUSED_PAGEFLAG_BITS can address.
+> >
+> > Once profiling is re-enabled, ref_to_idx() computes each tag's index
+> > as its position in the alloc_tag array. update_page_tag_ref() masks
+> > it to alloc_tag_ref_mask before storing in page->flags. Indices
+> > beyond the mask are truncated and idx_to_ref() resolves them to wrong
+> > tags.
+> >
+> > This silently corrupts /proc/allocinfo: allocated pages get attributed
+> > to the wrong call sites, so the statistics it reports are wrong.
+> >
+> > mem_alloc_profiling_enabled() and mem_profiling_compressed are
+> > independent. Once compressed mode is established at boot, it stays
+> > active regardless of runtime toggles of mem_profiling.
+> >
+> > Remove the mem_alloc_profiling_enabled() guard. Also return an error
+> > after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
+> > the mapped pages would never be reused - shutdown_mem_profiling() sets
+> > mem_profiling_support to false, so no future module load enters the
+> > codetag path.
+>
+> Thanks.
+>
+> AI review points at a cpuple of possible things, one pre-existing:
+>         https://sashiko.dev/#/patchset/20260805090633.141001-1-hao.ge@lin=
+ux.dev
 
-While reading the sysctl provides basic on/off status, it is currently
-impossible for userspace to natively determine whether page-tag
-compression was successfully enabled without scraping dmesg boot logs.
+Yes, pre-existing issue can be handled separately, it's not directly
+related to this change.
 
-Add a new read-only sysctl representing how compression was configured
-at boot time.
+>
+> "Does this unintentionally result in a denial of service for module
+> loading, preventing critical drivers from loading when they otherwise
+> could have just disabled profiling and gracefully continued?" sounds
+> pretty obscure and I doubt if we care?
 
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
----
-v5 change:
-- More documentation and commit message refactoring.
+Hmm, I think Hao considered that in his previous version, but now I'm
+thinking we might be able to handle this more gracefully and not fail
+the module loading. When profiling is disabled
+codetag_needs_module_section() returns false here:
+https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822,
+so if we had to disable profiling, we could return NULL instead of
+ENOMEM and change the condition here:
+https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2825
+to act as if codetag_needs_module_section() was false from the
+beginning. IOW code at
+https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822
+becomes:
 
-v4 change:
-- Documentation and commit message refactor.
+if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
+    (dest =3D codetag_alloc_module_section(mod, sname, shdr->sh_size,
+      arch_mod_section_prepend(mod, i), shdr->sh_addralign)) !=3D NULL) {
+...
 
-v3 change:
-- Added documentation about the behaviour details of the new sysctl.
-
-v2 change:
-- Moved from displaying the state in /proc/allocinfo to a new read-only
-sysctl.
-
- Documentation/mm/allocation-profiling.rst | 11 +++++++++++
- mm/alloc_tag.c                            |  6 ++++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index c3a28467955f..b2ebcef8af6f 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -43,6 +43,17 @@ sysctl:
-   warnings produced by allocations made while profiling is disabled and freed
-   when it's enabled.
- 
-+  /proc/sys/vm/mem_profiling_compressed
-+
-+  1: Page alloc tag compression is enabled.
-+
-+  0: Page alloc tag compression is disabled.
-+
-+  This reflects a static boot-time configuration of how page allocation tags are
-+  stored (in page flags when compression is enabled and in page_ext when disabled).
-+  Toggling ``mem_profiling`` at runtime does not change the state of
-+  ``mem_profiling_compressed``.
-+
- Runtime info:
-   /proc/allocinfo
- 
-diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 84c5c3783ca4..b33410310477 100644
---- a/mm/alloc_tag.c
-+++ b/mm/alloc_tag.c
-@@ -1303,6 +1303,12 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_mem_profiling_handler,
- 	},
-+	{
-+		.procname	= "mem_profiling_compressed",
-+		.data		= &mem_profiling_compressed,
-+		.mode		= 0444,
-+		.proc_handler	= proc_do_static_key,
-+	},
- };
- 
- static void __init sysctl_init(void)
-
-base-commit: a946fa1d96648b92c9f37f0488e0e47a85f9e235
--- 
-2.55.0.508.g3f0d502094-goog
-
+I think this would result in a better handling of this situation: if
+we can't fit the tags anymore, we issue a warning, disable profiling
+but continue loading the module. Hao, WDYT?
 
