@@ -4,100 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121E0C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 05:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76A20C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 05:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C576B008A; Wed,  5 Aug 2026 01:09:38 -0400 (EDT)
+	id 6BDA46B007B; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 963F56B0092; Wed,  5 Aug 2026 01:09:38 -0400 (EDT)
+	id 66DF46B0088; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A3DD6B0093; Wed,  5 Aug 2026 01:09:38 -0400 (EDT)
+	id 55CE26B008A; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 639AA6B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 01:09:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B2CB8035A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:09:36 +0000 (UTC)
-X-FDA: 85066037952.23.8731C47
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 94B1D40009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:09:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNXJqqex;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785906574;
-	b=aUAyXbPV1uQBzFMAHUal9U7QQDz2ixI9UUO7OBz0QLikCww1HQYma1iOVo8gJR5y7hZMg1
-	9QsPcDEUqBupC5ANmO7mva026sd5tw5YdnkvqP/Jv401U5Ehv+aU5yPGw7ldlNd92sf7ZC
-	1NZTdPjz0zKpQ+8fWmeIQwMDK3W5mYU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNXJqqex;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EFF56B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 01:21:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A9B721C07E5
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:21:12 +0000 (UTC)
+X-FDA: 85066067184.16.6BF6848
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D7FD680002
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:21:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=h2RJyECH;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785906574;
+	s=arc-20220608; t=1785907271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JGRN8B+oiUCwhIdRFiVGgA/4Mhd/w+5DlIvFXXgPh1s=;
-	b=q98m8dn2V6tf7Va2MGmaNYOrS3rTnGMf5SgpMbOC641Q3TCOvsfBMVLg6eQa01jAM9lqnl
-	uWURCNCJtvTbZNYxNI5Bkm0b8ZFhK43vLiXDXWpd7qnU0xEabFdmpf4lqwiR9mc/hJ5aDI
-	rDNH/IMzubdxAnbkprJr2sIYL0SjR9Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0584860A78
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDF81F00ADF
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785906573;
-	bh=JGRN8B+oiUCwhIdRFiVGgA/4Mhd/w+5DlIvFXXgPh1s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SNXJqqexNJinynfIbC8K7UQzWxa+JvBZb9PQeMWbniaKr7dXoR5HdO+YO+6bPqBzk
-	 6ytHCYPCSceCRMgO6GjwylzyvEQ5JZmTvxO5DqeuS8y/QQXMXlGo6b3cEndUYix56N
-	 nG/1uUTnOkdWoAjEsjYA5KFOFzT/FFDHe2bSNCJnuETuoLF5h92KJwyjYQTpIgjetl
-	 aElb0QWJUzAM04W5D6toZD+BCrseFsQQ9aiI4jK02FiZjejUghGIMIEcZ9APRlNStq
-	 S2qADAno9zEMzBwUXbqYaKhvwPlqpmywSSnAFRLSyVIgte4JB39ahIMc9eJcFPCkbj
-	 389fCMbUxd9RA==
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso3794126d6.3
-        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 22:09:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrP6Hh0K1VIcXgPli/l7BRQbCx3iv8d0FDuGPdl21VkzrVTERGTBawRjWFyawYF/BR9flzhLVCWEw==@kvack.org
-X-Gm-Message-State: AOJu0Yx4EZrLYHMbJp8s/FdOpHFWqurCmlhvjpsCqb/6cJu3gfyOTJ+S
-	T6oSd90YIWKzJgmWKJ4tz3oCVa1gNkYq4tgr2vqIZ0BPnJWgDnC5q1rIxoOFcq3EKuTABWkKekH
-	D4RoFskZGSeFXggAgXgJ4fbDlnPxszFc=
-X-Received: by 2002:a05:6214:440d:b0:8ef:cfa:2a36 with SMTP id
- 6a1803df08f44-908811af213mr55170076d6.9.1785906572908; Tue, 04 Aug 2026
- 22:09:32 -0700 (PDT)
+	bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
+	b=p+57lm9VbWr5SDRagNYxY8qig/IAON4GBYXjGDtmigRtGMIb4muJlTw+lOu9pgASPx+5Tm
+	T9y4bXPodmVccZBx/rZw9fEtLgdV+E5WRxS5Vh6lfsKjgPYjcUTxAWcDm4PE9T8JDHBOHc
+	WAI3aXZEx4R9fW9Er26LULtRdyKgWno=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=h2RJyECH;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785907271;
+	b=csDOvv394AS2uVniUVcXFZc6aBrr7LPzpnS01aWr0gjgF4fBDQafROTN6xWza+Eb9ouKu1
+	U25pmqYKblh1Zc0Q+/kFgJAwKvMHJ2klRSh6dn+cdcj/DM3HziS2eWFQYXyX3jG69fLxDK
+	pNrCpoXOHYCsbo3+GGe9ffqh40Tl42M=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf27856f9cso6770535ad.2
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 22:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1785907269; x=1786512069; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
+        b=h2RJyECHZnu9wst9nbZvtMehtLgwsZVW2lfCO8/qt00wWvBSiDQtaUfqwGNMJ+rmgc
+         8lVLUFGhjXol97vVT+J3v4Y0c5jCn/7tj3M5a8AnF5CHIoFHq7iGZ6FV4a39OiLRjiEw
+         l9gIwpbDD8GrH8QfGDE/DIIzDur5YDCRMGynQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785907269; x=1786512069;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Sv2AxrWwmEwL5gdZKZwxZZ9XYDolhlrE00l6kbyHas=;
+        b=TaZ2OPDUnCCwlrBFN49VA3rdF/bf7F4OpCTwi9B37RKmU+2zz/GXbfqTal8xYNvYgk
+         Ajq0imTRwK6Dq3uCYsE0Idd8nY8m4mI334etTuMKyZYxXHY4rYkfzlLxrxK4lVV9GMjQ
+         T6pS85463rgouljHIRTk1Fxke3eLbhMY7gdCr6UIRyUR7cu1frJqlGdJGmv8VTEDjG+1
+         HRFpu/mks1l9tayGX6P3Y7U5p0qpyQxsudLDLlmN3Cf8qE0RXKfJi2I3OFyNjBIIQsKy
+         v/+Lk6ZNzaAkrmjx06XQe4aR3Zf0PAxfCBDdx7jvwqQMjfoIPDWTHO6R7DIYAkXfWQJ7
+         9bLg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7naqalJ0oYFNO7AU42X7K3ZvwuRsLi6xk60kZd5scpwiw9A7vqEcf0I9vPIO0rVMA+eYyzTUKYA==@kvack.org
+X-Gm-Message-State: AOJu0YyXZ5jbH3IdLySWfVc4/OjRvW6u3vyyb84ickBKWPng/pBdH7NN
+	tV//l0h4zKvGqXFuEKbSYRFagpBGDC0ow3QciNNMqYQx0sx1f3s7bsbDSv9JoW1tAQ==
+X-Gm-Gg: AR+sD12+zhabAd5F7dBQnFitTO0rxEfAtzDCBxkxeLKLhzZrCOmaNQJ/dXesYInL0Fy
+	GSfEwpuztJdbDyVi5wZoo8vqfhhDrIvdqfgwgl0dGxovLlbyDGFeGd6E0180vYYt+o2rhWena4b
+	h/3ZNGPDRNxAQwrfl8YDJ35MbPsjjYIw9fP35AzUYp/xrZye6rdl6WNF/7CbkPVYYMOfe4t8ifR
+	foz8+EVtGfFhTSUC50eQlc+xl9pHNnmT0Th05w5I/2LAlkfJr8fu4Tcl5cBk3iXzs5sDu3WPHNA
+	3hHX3PhrAqhC5LYHGyGeAtYviZoN2LGj916tkBBiuWm3n5aDeUGPHygmrMrO5tBg94HlwcClgTx
+	T0nMGQFGy8hfTprd8jlSWm4Dc7dMlIitH4p/2yY+Wpe11DR6rW+SKRcvxDq1niWTRdusbOwQTuJ
+	xcoaYpmwBX2mo/m56a4EnL9T8uUIChHU/+aw2UUl7qJDNf3J+F/Q9t5lQwNWWmXK18AhQRYT7A3
+	nOV0h2CfV4ofbtSz59ky1JYflfrp4mkds/iYB6x
+X-Received: by 2002:a17:903:1746:b0:2cf:afe8:b722 with SMTP id d9443c01a7336-2d0ca761e0amr45277575ad.11.1785907269509;
+        Tue, 04 Aug 2026 22:21:09 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:32eb:b46b:e9eb:65c5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4f35d5sm13841875ad.82.2026.08.04.22.21.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 22:21:08 -0700 (PDT)
+Date: Wed, 5 Aug 2026 14:21:03 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	akpm@linux-foundation.org, bigeasy@linutronix.de, hdanton@sina.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, 
+	yosry.ahmed@linux.dev, surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
+	Suleiman Souhlal <suleiman@google.com>
+Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
+ backends
+Message-ID: <anLGxk3iShEfCB30@google.com>
+References: <20260805005545.66112-1-baohua@kernel.org>
+ <anKQ_qZ1-Q6FchZ9@google.com>
+ <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
+ <anKaU6VStrW8zaQo@google.com>
+ <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260805005545.66112-1-baohua@kernel.org> <anKQ_qZ1-Q6FchZ9@google.com>
- <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com> <anKaU6VStrW8zaQo@google.com>
-In-Reply-To: <anKaU6VStrW8zaQo@google.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 5 Aug 2026 17:09:22 +1200
-X-Gmail-Original-Message-ID: <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
-X-Gm-Features: AUfX_mxOiqacDMh38a-x68O65S7dwQIaPq8KY8IbJO5yLG69FFifh7gqv84CHnc
-Message-ID: <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
-Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: akpm@linux-foundation.org, bigeasy@linutronix.de, hdanton@sina.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, 
-	ryncsn@gmail.com, yosry.ahmed@linux.dev, surenb@google.com, 
-	Dongdong Zhang <zhangdongdong5@xiaomi.com>, Suleiman Souhlal <suleiman@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 94B1D40009
-X-Stat-Signature: 9zmrsgzo1qkgppommn9htx4wp387exmo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785906574-729645
-X-HE-Meta: U2FsdGVkX1+FrVARbhkUqusJ1wvfo2tBZkoBEalWJnnToSE2dwOX/z6SxlYutwtOqhX81sMAgPbfVGJg3G6kMYPc0n5uoun56L4lYEqTRl7Q/LhRpjfb1yrJ7M5AfpVF4ugjrV1R8XEmGsnUC5BTEYt+Jm8YVSUcFWX8xCzJnPpn0ATRKrKA3v8ILONULvEFWuTMEWgQslII4yXDKPmtrd3EfcNh0KNgO25P/M68rjpiIcBFiHqGfBwGmMOb5DaIrv18PKM/SJUQrmBSa0AfhJ1D5RCX7j1osCEawmafsvpk9zeh0QnF/PBsonuiN002wYC1le3vQV2f2ZC3ZxXU5kp+t8WxyIG0ogX3fHusnGn/p+qVDUr4ykW+aGhGPFsKhqcFFd780+jDrOei26R5CtkUuZla2d5ySpSlPd8Dzng1eX+2FmDmSIeM2xhE3Bd34u2N0zdwqcFBV8S1GKtEM+IHRNy6KGiNC2L+GcgoyLuDAmIVTrYxxPkZdb0c7if3+MNobtEz84R3vsXDBWhYx++WDSlCgRrmyJia0ibgm4od7iksJH2eKUCc3VI4gVfbDMJHLGD58Ejr2qNQPlOIW9Of2Ozw4eyfEdP2+jFOoukfvTvgnlb5awUV43TYMHyJLPmA67PY28fWBYmhsx02U584wqYa8ptPLjQw9jpu9y46dRK8WoWhhls9H2zU+DaGhRnIJUtS/T9as6NAiZp3HOGZxUn14GbYebaudvTVnXanwsgggFmfXf4GByavKYB8zsr5EUb9amlXOVEKrKpovzdm3A0nbBwodtSQ8zfn6M9q19pDU6WeE0DvFWwP75HEwrclYBUNQvSjJtwD1wW1Z29XN4T/DdWuS7Ievv3FrBizBtx2vu3QUpJODBQYaIGDH0XbTAHoj5s/cmZZepTaC4C6F5iEdL33I8yvw3EfUzkVYqGMtKTx5YgJNVBMOeZD6iDir1+ecEvioggNWNH
- WkqAKX4/
- KcWnNFS/7nRMxiNKZw8sek2hTWJ5SlnwKhitTDIwf9P+BcScHI7IN18wr2A4k1/htLzXlywtwV6GT2FSBj7eizUZh/2NhTu3rnV8+eSPijOa1npX6Pl0qUQ7mQnbqLbBgEtBbtFdUd2bmxrmA/pCPRCsnVoS1trqTU9b9MnKheg9PD22Ql+lzYkOMdqjR7dsr8/K38/Vvh7wZzmGNt6Sh1f48dq0La1Xt2q8YpEL6UwruomaVah27CBcNCB7D/ef+lez4A5B7COdhw9VRfczIGofGLyG9qq71WELopkuvHdtbwcqQcq1PZf13QA==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yiu834krpn5zf64ni9z45mkitdq664dq
+X-Rspamd-Queue-Id: D7FD680002
+X-HE-Tag: 1785907270-314566
+X-HE-Meta: U2FsdGVkX1+WpYNLGCVq3i3+vYGuNnfhl/c2rod3XRJplfN0ceSNfwgDrX4BwKPfvnQGUcMfbFqxavwPyUyyFOEZgjGAxxgDxxngUtdnaltGEE0Bn+2J4X4JYVmcXOA/XQqPJll06vuXxfSKD8ohi+P4KFm8E35nATDjay/VQibMGzh54TzyEsmMzALJ101uPQCykTUIRLBmqTlo4dZPUeexnFoww9xhFh3hNAzFK4X6BNrEbMe3pWgueljdBw4ZFMg40CyTDtUKH7LjOw+bbnCw61GyOeSZ5RvuGjfpCJM3SdpbCkzEFFK7qt+wMATo0COP4QEbWiv/OxwXGF7W2bX1DQNf1WF9XY8Fn7giHbl2EX/HPq+S+ra1ZtvzM5GeBEbGK/cqy6rWlUfOGeGahplrlxvBUXi8EJc0idOFQzX2Vkc6FYm7RbmSFW/pHviG2C3s73sXG0LaVvRIswT52m5ud38/vrx16wKksthQSA6P20uY1R7zCkLLousE7sPbCUVXJQq8uvP/54dJv9rePGmoriDiYWzILeWQY6nDsA65mU0H0WCnNYdFdWvoMYMCS5lDB8CUg7o+f3VAT0+4wi90rk2aM4WpT7jrJmiTq7xZDCP9kgmuGDkdoPIiWsH07SMU1x0MIcLDUvUu13JKuxNazkP1zBLQ/OHRlrv2TdCTy5+y7dtABil3J0y1ClNasPykq1yk1BNytQAdCzmHeR3Y+53h881ToXnrbO0/CDOuOgNCd6WJC28lMdwBcvz9plA6TwPmUBQ4ep+XahyFD7DI7RTkCD5npbcHNFfdOCD/f13YCl0T+VHSXDWbD0GWBB9Ct4HNP3PRAIvfHe0+WbUnuQMfxbTlcLUAsc0Dga6gNk3NxU4sXiz3LDkn4NYJDh6AOPaIXTnjzIeeywuytb17oew7h6/4fQ2OkLl+kUNVPAUAm/fYchKPFKVAs/hjM9CAwsh0J7mG3WVGfmL
+ YnnbPrCb
+ JR9r+GLfbphoP0KtM49Vx2dgfs11OWyNv2g14PgApMsbr0OVq6iwKoMLPnp/nsmMkdyJNpeR0SP9palm+Kjb9Or96RRl6cHPqubN291h6UWvhplVFSjWkeGow2CF/pHO1a38qpwwDyCPu2ir64P4WR4Vp1z1qtp70zmg/YBVyUrmb2V2NI+sWSrE9m4SXaodNq1O71HgFjbFyyC724AKs/mRWTiKOmpKXpjfB68jFKuEbUTV7HYp47r+OJlLNEe8PYwTUU9U8CR80/nVgdy+EPkkbziWiTFVfuCTWw3vPhDH0W790FyFe9xDnp87c8VeDlS2F2ZTudVIxPhqOJwn9n/5UVj8tOwPJ9XKzQS1s8299f2tBiT+mN8KbHGAk/9sMW2Si
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,55 +124,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 5, 2026 at 2:09=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Cc-ing Suleiman
->
-> On (26/08/05 09:57), Barry Song wrote:
-> > > On (26/08/05 08:55), Barry Song (Xiaomi) wrote:
-> > > > Since commit 2efa9e9eb4db ("zram: permit preemption with active
-> > > > compression stream"), a major Android regression has been reported.
-> > > >
-> > > > The reason is that compression/decompression is now sleepable and
-> > > > preemptible. This means a stream may be migrated to another CPU or
-> > > > be preempted while holding the stream mutex. As a result, high
-> > > > priority UI threads may get stuck waiting for the mutex during swap=
--in.
-> > > [..]
-> > > > We add an async flag (currently false for almost all backends) to
-> > > > indicate whether a backend is asynchronous. For synchronous
-> > > > backends, we use preempt_disable() in the !PREEMPT_RT case. A
-> > >
-> > > I wonder what does that report say.  Is that what I think it is
-> > > (we discussed something RT related privately recently)?
+Hi Barry,
+
+On (26/08/05 17:09), Barry Song wrote:
+> > > This report shows that the zram mutex has become the top lock
+> > > contributing to UI frame drops, even surpassing mmap_lock, which we
+> > > are also addressing in multiple threads. :-)
 > >
-> > This report shows that the zram mutex has become the top lock
-> > contributing to UI frame drops, even surpassing mmap_lock, which we
-> > are also addressing in multiple threads. :-)
->
-> Any chance you can share more details?  Are there perhaps RT tasks
-> in the mix, priority inversion, starvations and so on?  Can proxy
-> execution address any of those (if it has relevance to the report
-> you are looking at)?
+> > Any chance you can share more details?  Are there perhaps RT tasks
+> > in the mix, priority inversion, starvations and so on?  Can proxy
+> > execution address any of those (if it has relevance to the report
+> > you are looking at)?
+> 
+> Hi Sergey,
+> 
+> talked with our engineers reporting the issue. i believe it is all
+> about priority inversion.
+> proxy execution wont resolve it as we have a sleepable zs-malloc
+> within the mutex.
+>  i believe i need v2 to release the mutex before doing the 2nd stage
+> zs_malloc with
+> direct reclaim.
 
-Hi Sergey,
+Well, we cannot just drop the stream mutex and do sleepable zsmalloc
+allocation, because this will invalidate compression buffer.  So we
+then will need to do re-compression.  Something that I was really
+happy to drop [1].
 
-talked with our engineers reporting the issue. i believe it is all
-about priority inversion.
-proxy execution wont resolve it as we have a sleepable zs-malloc
-within the mutex.
- i believe i need v2 to release the mutex before doing the 2nd stage
-zs_malloc with
-direct reclaim.
+Is there any we can do apart from making zram and zsmalloc atomic
+again?  It's hard to believe that this priority inversion hits
+only zram and no other locks in the system.
 
-proxy execution could only defer the preemption for the compression
-and decompression, it wont address the potential long sleep of
-zs-malloc. we should not do sleepable zs-malloc
-within the mutex.
+I really really really don't want to return back to atomic
+zram/zsmalloc.
 
-i will send v2 with more details.
+Is the report you are talking about some test or is it a real
+world scenario?
 
-Best Regards
-Barry
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/block/zram/zram_drv.c?h=v6.1.180#n1376
 
