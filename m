@@ -4,106 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CA8C55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5195BC55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55D7C6B0088; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
+	id 620F26B00A4; Wed,  5 Aug 2026 05:31:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509EB6B0092; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
+	id 5F8AE6B00A9; Wed,  5 Aug 2026 05:31:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 420026B0093; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
+	id 535846B00AA; Wed,  5 Aug 2026 05:31:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 153396B0088
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A987A1C2C
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:29:56 +0000 (UTC)
-X-FDA: 85066693992.24.9586B12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4BDD8A0013
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:29:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ag2H6Enn;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 341466B00A4
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:31:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8B8DC03F3
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:31:51 +0000 (UTC)
+X-FDA: 85066698822.17.983A4D3
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A63CA40008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:31:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BUoqGyei;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785922194;
+	s=arc-20220608; t=1785922310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/gjtDrTd3eRi22+TbpqZHqyTIg00RD4cowSNfL//SUg=;
-	b=M+tyT6U/KgsQwt/ZMdS+a5sq2aXeJzh3BOW4fS2a9Dn4BGAK9jg77kosNRSu3bFiKIBElg
-	hlOtxbMZ3vdvRZXCCfeZ1Cr3nLIDu69HmzdBatuNnHTHdZbLZDfGbkBVHydpp7NZgAcFnF
-	2P8d3IYL4vuFnJGh69Ngisv2wDhLDRU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Vsx8ohQK/83o9MDCUHCo/Q8Sepsxz5zu7PBe7bd24eY=;
+	b=6W2tXhzERRYeCgZfzaElM7I136qAn0flvMX4gFcHW4zSsDT4UJ7OaTQDE/8Da1PxHsVN4v
+	xpZBLr5mae5shz9toSTlqE1yfO7tGtCj7o4k+h3V5/4LJz8ACcGtMHUIyzd8uG2GonQn9W
+	4W90cFDSvC7W6wIL6+87/xAa4WslQMY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785922194;
-	b=XAp0IEJVo5IWnOjv4XVPdb7/2d+csW14+fdYZdIE/MbJUuPa1AKK4PREgPGsrW+X8BgWTW
-	xTFtK6DgudYyzAq4pYUq360UDcrf/6HKLzsgPhjLUw/ir+SwE3596A0YMl2Vlfdm6F99OO
-	DiKico+jKzD0c9JbAjevSJtp7/KIAUE=
+	t=1785922310;
+	b=mMZIuF/ZkbyE4VLqssBLOKwUEuDDLAtOZn/J7KJ1XCEtGjiQdL4U+H3gorEfTonKD+4JmL
+	ZTXLdQmQzmsc2b6y+zuIcgZJE/IFkGG+hBAM5QH6fxGWJiBOFqEjCADbKrUWbSnLxQUdv+
+	l75wlRodpDh5P/xmUVLLHhU6OEU6H8c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ag2H6Enn;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73375407F7;
-	Wed,  5 Aug 2026 09:29:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CEF1F000E9;
-	Wed,  5 Aug 2026 09:29:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785922193;
-	bh=/gjtDrTd3eRi22+TbpqZHqyTIg00RD4cowSNfL//SUg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ag2H6EnnFi4b+rjAY/vOuSJSppombJiw6yEHEy7W/bgMRsj6+S4B3EhWbErU4pYX7
-	 S/nUW4Om/ISFjyJ5TLWoQxid9jVaN4NTRu1/HmvCQQdrfFiIVpGCQ2PKjOcsZFKbWx
-	 dGsB6hzGq0UoOE95Cq1AwT+O95gAcTcmYnZcUBQ984wiE+110RP5FFe1DF1ry0Rd8h
-	 W57wr2rOnjHXUH06E8Pah5rdwcPf4a3re/C/qRj7I56Op/IKZJ0qri623UPEmi0Sq5
-	 2Ehn5nEPZJSyU1L6GNRn0jYgOpJMzCB4nl18Zr20xgDWMXBYkxWD8Ap43Hy0b9xNTK
-	 dClMMia43hoJg==
-Date: Wed, 5 Aug 2026 10:29:31 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 06/15] mm: propagate VMA anonymous page offset on map,
- remap, split + merge
-Message-ID: <anMBoUbb2_lqiP4d@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
- <4ad4b17b-bae6-4169-8649-bff4a29e7fde@kernel.org>
- <anB9MWSSITYpDibA@lucifer>
- <6ea7cdad-afb1-45af-a63c-30b760fe160d@kernel.org>
- <anLyhaI6kW-EWk13@lucifer>
- <aba0e91c-ab9c-4420-9ed4-9e42cf03ecfb@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BUoqGyei;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785922303;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Vsx8ohQK/83o9MDCUHCo/Q8Sepsxz5zu7PBe7bd24eY=;
+	b=BUoqGyeiVUyNF6/vZtZ+co88qVbtokARpgoSTCa0k52btw1jkwzbLSOPRuS/QokdKRKATi
+	VRKcDwi+RMbxc0Csk7ERUpIon0JTvBVE5hI9/AmCHXodFhFmgVpud/nAeMta5ZDmvVIlQ5
+	wYrGybf2GxSOhUvBaFx7EU6c0lLxKy0=
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: debug_page_alloc: fix type mismatch for debug_guardpage_minorder
+Date: Wed,  5 Aug 2026 17:31:07 +0800
+Message-Id: <20260805093108.2352900-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aba0e91c-ab9c-4420-9ed4-9e42cf03ecfb@kernel.org>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: bog9r9akabqhrqxjif47sym5parmcqtg
-X-Rspamd-Queue-Id: 4BDD8A0013
-X-HE-Tag: 1785922194-777107
-X-HE-Meta: U2FsdGVkX18yC5yCXI0Du1FSPJ+C3QvTL6e8gOv1yTjr5RGrSEPtb8Ds+hu6qcr+p2JO1NX1NpToJCT/Y8XlGRlpRhC3u9GDB+mcfneKRiF3s1keKf2zbMWAC7EZK8IC2/pOGtD+Ql+V/fdrdxUxPyvsMlRdp+bjs6wIyICCX7fGsN8Bpsds+rgzXVQovi1x1A/+ligLheAvYgjRXVEGOeWutRandzfunevSzgs36ttaIIXh8cib31PGVX5j+kGWfYtXKNXwz43hAAcLjmD2M/j8B5lwWmK96K7EerYSSEeAlQvhr8MRfK1/eY9dynViWRYP+IHeDxBZbLe2sluEflv7jIZEbpYCSxIpNYlVKrqRUje1n0MT7BW4jAlzfmokQUzlaqSIrNzMzcsTzKETKpx55zxRarbWuiPBEHcKxwBUoX26ba4z5kQCNNVaw7oaYoY9fOOtLJZNU+NsTD5CeNtSFnvevMUOcsFQqdusZDcZzVjr0OoxuN8YvsRtBkwhWQoxcEFyikh8ZmZFxQkl/V5ypISfAoSnkIKk/TrVAY6YrRUT2M4wnuw+iIko04gUZYZFVXi8t/oi+hLxEakbPyTmey/LKUTQMiP/Wb2Sg3G1LfRitGauHLwHiUSNmpGbixZNjnTs+bAlZ/jtudjtcSYEdbt5GbF5r/9Lnkzon0Gc+uehbbiDp8jJJsdpFF9CxoJLzNJUcOCmwjOGis/sVxHrcxJ2Kf0K8ivNtKlDG1ax5LTjqZ8AvPE00ayKb0tfvbTyEhkUQn+VF+8vBw3jOe72vrOqPLAIumMEaer8kdP++tS8XXfXyOgmJ2IsOONRZjF5Op9KYLN++r9/uKyZASM247fK2RZ+TmYo+PuBBj4kXfUoFNMbWbXjfYdou5MzKLwgJDFdVlTsro3N+inZ0+9g6bpvATQpV/Tj5stp8NGoHOoGc/oa+HvBe8L66IdKE53/Q1K4ihOuAAX/wfO
- j2wIUR7T
- u6u536UxA15tOT21GPFCGE2LypGxeDAEwYHInyveaQkOkcISMC/GdGHu8wKL/xLDe3uBQ9lXgl/Xxp1lvgtgCYoD1VoE+E2sDzPhEgJ1aPTG/3/QScrMbaWbgCGMqSmaOcBRSSyJgdvm8aXaOe77Jxwf3kn1GvmUF5q2XGFPfhyEajdHDJZ0lBo1poTKUvcWt2OtdakL88Cu6zMvmmLS6XbdT/SnMxDp5yTGvC+X6eU/Z1MiVfV1ipjgbNh70dBxCpKY0+Ou2hgPBVXeGS4e2ebcPDWXOEuG2iD4lHcNFDqCKe/9eFJgxLyUcc2A9lxXxqigWxhPKNOG754U=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A63CA40008
+X-Stat-Signature: 9jd8r69m1nxwtzagdwien6gcergmxf3d
+X-HE-Tag: 1785922308-514542
+X-HE-Meta: U2FsdGVkX19pZrUDYVAlc6UcnafMHPNZAwVq3awjK1mFuzwKpFan5QXiKf3Dl/29vcK7bvp/g25JFIvuXe1HtVa8I4KVKf/NIpD/Dlob0S1TV0m5VZnSE5swmYzM5kI58WTI0Dtvo/mD3ECBwVGEfsEgZy3n+ehsue0Yl5xklDtnlkrnHFnfYwFggsdq4IkFHgW8nVbXJjGF6Zou+td8zkWr2vQdtuWJuy8CClNkYTnFOUEBKzbTxpoj3eKjj/KjC/jk/k8uEIsVOK9IJZckQtsfB5o5jfktxecQk17A58/HhxnYrMUJpCmwH2GoVmK7M2myoM0rd6oOvNe+9DIHKWS3/GEAY98qNgXfo9BI07IHF2jkwVxA3ox9Blx8NTTOOrw6U4TkTrvTzhGh1HZfUrI0Gc0X9BQS/J6/Tdqn9KnP+NQ8NZvCkKe+NtM1iSmxX4ESssQa8tmkK5bmPHPImr3hU0w3HjhdqxSYQ2rSS5WY/eqs8axpWdDgsUuR73ZuG/bIeLfw1Nl/R2gsCJ2Uau4v+um4YvQJcqVArKccb99zswps9NaZ1pRWwsTqysOMbDpg45pD5OrzyychIOhS4eUBR3p+/kFMKOQ5AUdHZn+DeT4ODTx6gBisx8AGi8afywAH1P9tmrjtSUY8l2EcKkxfnSsgoFBvtwCKKqSeyOn5HLFpY7RXsjm4iLkQ4fXbG3vfLn/5mz/JoWLLgbTjTEyLP1fpYRuzW6RVtHjgaC7gfBCZN/OQtxmP66D0bKLmc4pyhzIe3b+cd1MyXo2MODqiyJOpA7iVrNzSLJh5Btbp3YPOWc0XdgeL5PEWFLIGg1sI0nzb/nuOY86wvfwgZdT5YIavVM6DCPMaBr1VVGdr98tlsJGSde4sBK+yKB7Q74FmukMIQkrFk0+L7tZmsdLLsBnFBUjRpTxmaomWIAs4gllRpKl8OyUui4eI/y2hAFbYa5YoLFcNFyeQDLj
+ 3jESEcuO
+ DM7GGjMLwEjaTKEbqQiuy+wzvCLdOH2PhR79Um9lYJvfCtgEFyfdXQFCN2VjOYR/Uk6fMMQlQyDE9hyJSIAd0YudlX5w+dq8gidBFRsp9Rpc3GyI0Jd5cgug4f+uLGY8NpgDGTmdZsosZwWg82iCng/YooA/nVJ8bVdaN7tZg84wjhQ258s+DnHKu6M22o/hqVVWhULwRpntMKYA1T0QKpIV6J9svAPQ4fzQonE+drV0iXtvFRxAefzEv0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,162 +90,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 11:19:20AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/5/26 10:59, Lorenzo Stoakes (ARM) wrote:
-> > On Wed, Aug 05, 2026 at 09:35:56AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/3/26 15:46, Lorenzo Stoakes (ARM) wrote:
-> >>>
-> >>> No this would be incorrect.
-> >>>
-> >>> A read-only mapping would become unmergeable here. So this is something apart
-> >>> from the rmap aspect,
-> >>
-> >> I'd assume that we should never even consider anon_pgoff when merging
-> >> !is_cow_mapping(), it doesn't make any sense.
-> >>
-> >> No anon folios -> no anon_vma -> no anon_pgoff
-> >
-> > You can merge unfaulted ranges is the thing here.
-> >
-> > But anyway I actually wonder whether this whole branch shouldn't be:
-> >
-> > 	if (!vma->anon_vma) {
-> > 		...
-> > 	}
-> >
-> > Because that way we keep anon_pgoff updated even for MAP_SHARED mappings. This
-> > isn't necessary and doesn't impact anything _except_ print_bad_page_map which
-> > outputs both pgoffs.
->
-> Agreed.
->
-> >
-> > But it'd be consistent, avoid any confusion about gating on VMA_SHARED, and
-> > simplify the code :)
-> >
-> >>
-> >> But I think I am missing one detail here:
-> >>
-> >>> and it is a contract that upon move of an unfaulted
-> >>> mapping (which for read-only anon would always be unfaulted) that vma->vm_pgoff
-> >>> is updated.
-> >>
-> >> "read-only anon": I assume you mean an anon mapping that does not have
-> >> VM_MAYWRITE set?
-> >
-> > A MAP_SHARED mapping of a read-only file becomes a MAP_PRIVATE !VMA_MAYWRITE_BIT
-> > mapping and must adhere to the same contract.
->
-> Right, but that is not an anon mapping, it's a file mapping that similarly
-> cannot have anon folios, ever.
->
-> >
-> > Also mmap hooks can clear the VMA_MAYWRITE_BIT.
->
-> Right, but again, if we'd have that being done to anon mappings, other things in
-> MM would already be broken.
->
-> We assume that anon folios can only ever end up in cow mappings.
->
-> >
-> > However:
-> >
-> > - If you're a driver clearing VMA_MAYWRITE_BIT you should only be doing this for
-> >   'special' mappings anyway (I have a series I've not sent yet that establishes
-> >   this as an invariant also) - and these are not mergeable anyway.
->
-> Jup.
->
-> >
-> > - If you're a !VMA_MAYWRITE_BIT MAP_PRIVATE-file backed mappings you never set
-> >   vma->anon_vma and always update anon pgoff so you always have alignment for
-> >   purposes of merge.
->
-> Jup.
->
-> >
-> > So I think also we can then change needs_adjacent_anon_pgoff() to:
-> >
-> > static bool needs_adjacent_anon_pgoff(const struct vma_merge_struct *vmg)
-> > {
-> > 	return vmg->file && is_cow_mapping(...);
-> > }
->
-> Agreed.
->
-> >
-> > [I have to create a vma_flags_t variant of is_cow_mapping()]
-> >
-> > With those two changes we gate on VMA_SHARED_BIT nowhere :)
->
-> That's much clearer.
+From: Ye Liu <liuye@kylinos.cn>
 
-Yes agreed :)
+The _debug_guardpage_minorder variable is declared as unsigned int,
+but the debug_guardpage_minorder_setup() function uses unsigned long
+and kstrtoul() to parse the value.
 
->
-> I was thinking for a second whether to have a more expressive
-> "mapping_might_have_anon_folio" or sth like that. But it's a bit mouthful.
->
-> Most instances of is_cow_mapping() in memory.c want to know exactly that.
+Use kstrtouint() with unsigned int local variable to match the actual
+type of _debug_guardpage_minorder.  Also fix the format specifier
+from %lu to %u accordingly.
 
-Yeah and obviously once scalable CoW is in even that name will be wrong :)
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ mm/debug_page_alloc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I think the semantics are a non-obvious but I do like that we are explicit in
-saying 'is a CoW mapping'. We just maybe need to be more consistent with that.
+diff --git a/mm/debug_page_alloc.c b/mm/debug_page_alloc.c
+index 6a26eca546c3..41e3d1f1ad96 100644
+--- a/mm/debug_page_alloc.c
++++ b/mm/debug_page_alloc.c
+@@ -20,14 +20,14 @@ early_param("debug_pagealloc", early_debug_pagealloc);
+ 
+ static int __init debug_guardpage_minorder_setup(char *buf)
+ {
+-	unsigned long res;
++	unsigned int res;
+ 
+-	if (kstrtoul(buf, 10, &res) < 0 ||  res > MAX_PAGE_ORDER / 2) {
++	if (kstrtouint(buf, 10, &res) < 0 ||  res > MAX_PAGE_ORDER / 2) {
+ 		pr_err("Bad debug_guardpage_minorder value: %s\n", buf);
+ 		return 0;
+ 	}
+ 	_debug_guardpage_minorder = res;
+-	pr_info("Setting debug_guardpage_minorder to %lu\n", res);
++	pr_info("Setting debug_guardpage_minorder to %u\n", res);
+ 	return 0;
+ }
+ early_param("debug_guardpage_minorder", debug_guardpage_minorder_setup);
+-- 
+2.25.1
 
-Maybe once scalable CoW is in can work to improve consistency of that...
-
->
-> >
-> >>
-> >> I recall that that's a combination that cannot be created. While you can create
-> >> something that does not have VM_WRITE set, IIRC VM_MAYWRITE is always set for
-> >> anon vmas.
-> >
-> > For pure anon yeah, see above for the MAP_SHARED->MAP_PRIVATE-file backed weird
-> > case.
-> >
->
-> Agreed.
-
-Cool will make the changes as above then! :)
-
->
-> >>
-> >> --
-> >> Cheers,
-> >>
-> >> David
-> >
-> > (It's funny to me that if you want a truly read-only MAP_PRIVATE file-backed
-> > mapping (no idea why you would but anyway) you have to MAP_SHARED, but an
-> > actually MAP_PRIVATE file-backed mapping of a read-only file is writable [which
-> > makes sense obviously] :)
-> I guess this boils down to
->
-> MAP_PRIVATE of a read-only file allows you to COW. Which is usually what you
-> want when placing breakpoints / letting the debugger go wild.
->
-> MAP_SHARED of a read-only file doesn't allow you to COW, and can consequently
-> never become writable.
->
-> It's confusing, yes.
-
-Yeah indeed, it's just amusing to think about, but in practice makes perfect
-sense.
-
-Though honestly I wish we didn't remove VMA_SHARED_BIT in this situation and
-then rely on the hugely-confusingly-named VMA_MAY_SHARE_BIT for stuff where we
-_really_ need to figure out whether it was mapped shared.
-
-But that's another thing :)
-
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
 
