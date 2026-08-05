@@ -4,85 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC06C55184
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E4F8C55184
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:20:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194C16B008A; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
+	id 370666B0093; Tue,  4 Aug 2026 22:20:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 145FE6B0092; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
+	id 321536B0095; Tue,  4 Aug 2026 22:20:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05D896B0093; Tue,  4 Aug 2026 22:16:19 -0400 (EDT)
+	id 1E9C76B0096; Tue,  4 Aug 2026 22:20:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE036B008A
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:16:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49C92A037C
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:16:18 +0000 (UTC)
-X-FDA: 85065601236.14.27904C3
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6FD1B100007
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:16:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NJi1XOp4;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E7BA86B0093
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:20:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEA8D40374
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:19:58 +0000 (UTC)
+X-FDA: 85065610476.29.1C555A9
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0380E1C0002
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:19:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EiYHXD48;
+	spf=pass (imf18.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785896176;
+	s=arc-20220608; t=1785896397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8poeoDZkGdDv1roqY9qI4+IwjPDa5UcGb8SnGgss8Eo=;
-	b=e8p0pUjC9rcWIfGdyZc1HkVRUptPKMOayJJw+74MMYVtQId3VKMdnap0BV/ZEap5UqR6kH
-	oPzV8zcziZMUXAurgQoKoJOBrJfGjzJ2jxhHy4KoQTyBHTXWS6KulZqt4zRGmvpyoUiavJ
-	sdGVWvb7awowbI51TyS2VghDMwavkrQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785896176;
-	b=viXH9w/+GI3MpMwoAsL4Sa9xAkZW8XBWK6pZBmHZk6qJuUbJlB4L4T1bAiT5G3b1Wzb2gu
-	z77XEmtrCOGDZHvY1uGb/VIy/Lrxx9Pu9i7ojrdofBXpPiCqE07vy2zo7oNPTPUTx5mSeY
-	a7qokC2wA03u9aZ4XO6ip08EPSktEl8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JvpaW75bfRjFkTSUVq3ChkXPyDkLZg3HVOtO3k7VNc0=;
+	b=H3sF48Aq23XUYnFHOdj6wYmVnjO1L2D2bZ+mhk8P5HpLknV7uHvBGtcwVz9iZC95ottSqN
+	skLMuePf4Kj9LGmEhdj8ZKXgKbjFtoFQAKjMNmUIMcIgPQggiqm26RFwuraaSKbsIYta7+
+	iLVP4g2fACKHArDKEWyoGcq/jaXjJ98=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NJi1XOp4;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785896174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8poeoDZkGdDv1roqY9qI4+IwjPDa5UcGb8SnGgss8Eo=;
-	b=NJi1XOp4s/Zqe1TxxE/+26J0CV4BkBzHPNeQAp9vL8qRNRi0R5VhnARjfSbD8bdROgDzhw
-	a1yhhH9xUzMC87xxPcAWpXImqZHoxGaAxYJs5RYURpoBLUKKw5vOmOR2sLaTkuJ8QLPQtX
-	SfG+ilSsD3EwiDw87ltvi5hsV7E44CU=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EiYHXD48;
+	spf=pass (imf18.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785896397;
+	b=3UA2YDXpVli4VyzgqcSi7JRJwH/LkeIefqqkTNenl4wDZTmgu0NONCRYunscv46rz+eQeu
+	zDEQq14bJbWoU3dosX5gmyCwLH9XE8rnVD8IUH0AmZNOWj+/nAZ0vcFI+zR/3pirZacwrF
+	4ghELkG9cixgtFqHXGv0ky04I0e27sg=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d02b4c3601so5793575ad.3
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 19:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785896396; x=1786501196; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JvpaW75bfRjFkTSUVq3ChkXPyDkLZg3HVOtO3k7VNc0=;
+        b=EiYHXD48d7axxHPn8xmwWeaKd0L2DRnM9/jhRpoipuQ9qYMJe0SVf4YkiZc9iNxkVR
+         zdjhPFGTfdJaGwpc6EpEGErWZsEgyw46xIvNUeKdhvb3Xdm/VWa1zAQuTON4Jwip8Q2n
+         GSKmw8ZRgnQWkuPCYx+f1RqmjWCLi+3eOZ0Brd6tgaD34jFAOYqaMmGNu6DeYzShvH4O
+         Qs4BBc2bQrD0B34BOg2gCl0m3mZ7OyVc8MK955YAuByBn8rh3PvcE9ICB/qbn+4m1cNL
+         KcZlRszEqTz6DemuZtnaEGVaNtZ9QgtcjdFnqHSocohWdw3Uao6ugj8y0eo3Bv09Ee9D
+         qM4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785896396; x=1786501196;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JvpaW75bfRjFkTSUVq3ChkXPyDkLZg3HVOtO3k7VNc0=;
+        b=E2+w4I4Ep7F1N/+NpHrFFHpy8NLQw9oGb/l/2COmLg0mdRmAGKsVxpHuu/KKvwV5TZ
+         4c31i3i4+wWBuvZZH8rcVO79wc/NOZ7mUnJgxUWUfFGBDki1HDWbHdLptXcFDcuq4i9S
+         ueMFf8W/mJMuiJQ6Klw2y1gLgDujH/aRq9m4L/CigxR/4W0Od/r+Y3M8B9/9+HsuDcDC
+         6noWU3FDiwrjQ5pycWyuxNUn64ShXyDWVV8JjjFQfETVQwgRICrszWcm4BlvOQm0NkHx
+         NS4WpKfiRrg0fI2Z0sECmIRb2DDawcbyIiDV2G2u2ih846/D/2pFT7YTvkZdv9UlrGII
+         W2Pw==
+X-Forwarded-Encrypted: i=1; AHgh+RqXsFIvH+LpZ9CXUC4N5QFrhtd8zBbTxJzGuAhE3h0rfcDzJGhqvQ1HD+voJgZBG/wmJ13bjL/kWg==@kvack.org
+X-Gm-Message-State: AOJu0Yy2cZ7v5GmeggU/rzXi43pKN2wuPXEYjCUU1K4Vp2gj8JKn1R/G
+	DkzosY/BYAHBv7L3BBbdHCT/C5yJLfcUmGHuUgHZaxsDr4O8OdMzMB8I
+X-Gm-Gg: AR+sD13QhUUg2DkLowFdIxipl5G9QUg5urQlQVGl17xe2jeXNU/9G8SCfiluOmX2mpq
+	mII1IX0HUnz212EZnbD07aYHqoYfZQ+TKVnn2rOhSCtbgincC043z4eHxjmBBCRGIkZgpAA2fI5
+	T0paxb5r+3Ok8wdFY+NDCG9eGgLtnLgWGTk+0Axq6i6wZskM8baZgY+vL643Tz52BEqqwzL6rac
+	uIYcOfyrUfAQhR6BUGAeyzKM8Ylpk2cJ/VG/czJxaDqD9fv0wLD54n0ujs6smhuji4uA8utCRbr
+	aUNmERLZWVeTB87v6rMBP4FVGdWTCV8LxbxGa6/Pz152xy8rd2iipBoS79fM48KpO1NHFCBPqla
+	7hz+NbCYrJaokTpA1O9p/5bKZPsYE8suI/LsFhXWsWKkcY92VpinylHKuPAX/mvmLO2E+ZQVyb5
+	ZQbXNifI1xp2PpotWpdwfjG0RyJbgszsWASxHBYAJDmwakrXsr8U1vtJgeh0+pDMcc5CJYnkVmp
+	3z5Lg==
+X-Received: by 2002:a17:903:2a86:b0:2c8:1f58:55dd with SMTP id d9443c01a7336-2d0ca7586cemr42871065ad.9.1785896395678;
+        Tue, 04 Aug 2026 19:19:55 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9f936e2sm14316465ad.2.2026.08.04.19.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 19:19:55 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: baohua@kernel.org
+Cc: senozhatsky@chromium.org,
+	akpm@linux-foundation.org,
+	minchan@kernel.org,
+	yosry.ahmed@linux.dev,
+	surenb@google.com,
+	zhangdongdong5@xiaomi.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/show_mem: fix format string inconsistencies and type mismatches
-Date: Wed,  5 Aug 2026 10:15:55 +0800
-Message-Id: <20260805021556.1908807-1-ye.liu@linux.dev>
+Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
+Date: Wed,  5 Aug 2026 10:19:44 +0800
+Message-Id: <20260805021944.1753869-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260805005545.66112-1-baohua@kernel.org>
+References: <20260805005545.66112-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6FD1B100007
-X-Rspamd-Server: rspam10
+X-Stat-Signature: tnbw7jxye7oae5wfg9ys4n41nmns4izy
+X-Rspamd-Queue-Id: 0380E1C0002
 X-Rspam-User: 
-X-Stat-Signature: ib41d3kaatz4eu8o6xaby65jbgp7r1rb
-X-HE-Tag: 1785896176-616518
-X-HE-Meta: U2FsdGVkX18fENnxNPe5PS8svYEGBH74axRTv/FvFkJ6W9pnKKCo9HncwUVluz+BOwgR37OEYaVexzWlF7xXEHxEzY8F66f2YzyEbcTfuNBTmz9vIECB+2mAPwx6WywGGtvZe3QBlfrGtE1Er9ruFTRUWedhooO4XNdYUy5kum0bS+gI826m1Inc1y7sQ5bZmXjH8suE8XZZX4JXG+c0lnXyT/hD0N6/TZ0c1jnT+d21s+nN7pudd7FE8iqxWn59XwFs67X+H7lhAX6F4TEL6uuYMKgMECtt9IXeQYRHlE1IjhfI7pPQsGXpb4AY8tEWP2vJPiBLWAwMpi27Zix3cSr9rCr5gkzDINb/xNh2W9gOJJU//DjIVf6/TepFQVpH0lAXpoMmdjUGRG8G22Lg8b7gXXPOmkKamulXnJrNtGpfb6ww6XRPVj0RzhVMWvzMRDRGQIJ0/XW6A8pAkzUn8/CVD0qCifUkL4fl42Gm1GLz1dNk8CtWPMCegYrAgxnLup/U3xSilUfD6JyVvxxDGbTasRRrETW/+0DGu/KoGMdZA1TeWIXgnCFWx6geGqk88wIE73CBSrBacg/MaIDLhrNkXh9O0WNFy9OAmLwR+FK65YxBZEeJqXBpvZV7B2T4ZPY9mA99L14b46BMM8pq3GOnF66A7BV1t0a9y+dNVDoqMXGIkCWDzl4dzRA6J3kgWG9AH6B2yr5+hKqqinCL1HbsAkqZInH6qRUrMkcVBi4rF9sUFuUBCaExHC9hawqVCQXBd+Hf0D62mWZNg6MsesFRKXMWIiSF77nyOsDllgFEiqYU/Ke01I7tzlLkEngltRRyxS+qq0cFF58CJYhtwrGTbdhjy/ZF5pIRGXnbZXxUz1tdFb461rdKnnvRPrwB0sicsA5ypy7a5lCzGomV9UihKSlFRm0NF48Ex0tWMvyAH0DgQ97xNhWrbKVlCnRE1ct9F9naMK07By+Uuq+
- LKzlMGOp
- WhAztKVbpVGCly4NsEBUMx1p7Y+zv+WZCW51PDwr34c7/U8GqAaXGnmZIBk4vZrxUAEUMgD974mLIyAqUNy2tDRdi4Z+h/9ev9ii/ESsm+q3vs1R4pefyFGI2mHY1Hvy53ZcOKHnAsJHfyhEamrBLXu/COZttljHsHcVmoNbyvVPojWXO2vZtYqf9Cm7dAxy1BqmaNR4jsFcQid6u/CXlx8evjGVX7At6e3t9Uj5OdM/uwquVPLhJ4Fdsaw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1785896396-517771
+X-HE-Meta: U2FsdGVkX18CwioribQuwIAJ8f41krtBNOzVRbRYbRpjP91dCqC2xBBZgO+9fWg1ZukHCXcF+kOpvKhWc0cRncLv9gJjw28MZW9/bjrNGVEIPfBR76q3AP66GG5C40rciP/ZI/iSIxbK4JtFGEGQrQDka1JUFGsFuqBdgq5P0oAnAKpc2E54IfteuZ9kFyMGH1ajuAvE4+xsOgCa25cliJPmK556FWcahDANAQbY19q+NhbdtifARXhwVHxRQfMgOKg+yXcOVSvTQZx+NdWidyjNVPxUSJkCttfUZD5n5e25XYgWEutX+jY9YfmRTybrPh692MHQ/IlQWm0pWcZv+PnaU317kYUHF/ThHT1jU2kCxf3lunXvq/mbKL+5ch6buNIV8w3kmu6ObIXlNwvQ42isE1rvAy2iOgOnS2llY8r7dri+CX+TUNRViyzuAVUBCIR9Q/DLZ83ah16GDAmzESmSYw0YUa6zx13fIcfVrTetNnWrtDYOFCvuz4yg5Lf7XqFq2sD/70hIFWfNNA0jz8PmcApbfsx4CWQ7D7VOjzcyff8wKrRPDRv/6JfYXDDT69qPTEQNXxiflbaEsxD4JLAME0CoSO1bq/nuga2bsyoTqNPJG023wQcei3Py0rG+AC2X0q7Rp7suw3z+sTmQN9X/mJw3xkuAHfKO7vXSg2sXOpDccgOgP6cZs/WXmsXGnSUnnMEphmDZBix6JS3hA/geq80OUPSJ6PY0YR8MPOaAWKkJkEN/wIkdsfOe2087XOL/RHd9jWxF8tECjAI6wNI1lGHquyM5Zf5TW7GvUQuHprCobZp3Z6Jl2hMAeuewTIhgjTTwp+3wJsQ1T3kd4WAoen4mevBP3GV8TUwl64FmQdlOE2QUdbclz/I3YIEdMrbu/0BDN99kgXqVOt3qvsQjr/PbBVuglenwF9KjPozsjNU1IHcSdPGfAVinNcDYw+KKVukNd2OczDWgqQK
+ 0K7Y4YQq
+ EmyGR0/I9Kq/q8CjaERy5nrhKF8dB78pUZpVlAvWSIINMu16TgEfAgNoTmWgyaWvEGwhhGSp6wC4TOa8puGr1cfNRhG4lxSOPH9Avz+0dD7cD8fRS3nGbVshbHgQvzPWa9lQjy5uGAF58Upy1rm30m2y+hrqeM5LcRq4IMvq7/WJMT63oPovf6bNMTyRUfKKT9ZouXuepofln/1uKE0XHqYpJLlFacZJNSw/opUDWei7tVz65CS3Pi1sfpLIemmEqEpQd6w94HKikJbgZ1hsiJiLqL7ZkAC02wI5i1NogXbkjvuJyJe2thH5agErI7jIWUyozTbqEeIRf4OozgoC/nwG5R7StxPlCUqVj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,86 +125,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Wed, Aug 05, 2026 at 08:55:45AM +0800, Barry Song (Xiaomi) wrote:
+> Since commit 2efa9e9eb4db ("zram: permit preemption with active
+> compression stream"), a major Android regression has been reported.
+>
+> We add an async flag (currently false for almost all backends) to
+> indicate whether a backend is asynchronous. For synchronous
+> backends, we use preempt_disable() in the !PREEMPT_RT case. A
+> zram_zs_malloc() wrapper is provided to support a two-stage
+> zs_malloc() path, allowing allocation to transition from a
+> non-sleepable context to a sleepable context.
 
-Fix five format string issues in show_free_areas() and __show_mem():
+Hi Barry,
 
-1-2. reserved_highatomic and free_highatomic: %luKB -> %lukB
-   The uppercase "KB" is inconsistent with all other fields in the
-   same output block and with /proc/meminfo convention.
+Thanks for working on this. The priority inversion issue on Android is
+real and we've hit it too.
 
-3. local_pcp: %ukB -> %lukB with explicit (unsigned long) cast
-   per_cpu_pages.count is int, so K(count) yields int. Using %u
-   was a signed/unsigned mismatch. Cast to unsigned long and use
-   %lu for consistency with all other K() usages in the file.
+However, I think there's a bug in the zcomp_stream_put() change.
 
-4. total pagecache pages: %ld -> %lu
-   global_node_page_state() returns unsigned long. Using %ld is a
-   signedness mismatch caught by gcc -Wformat-signedness.
+The new zcomp_stream_put() uses raw_cpu_ptr() to find the stream:
 
-5. hwpoisoned pages: %lu -> %ld
-   atomic_long_read() returns long (signed). Using %lu is a
-   signedness mismatch caught by gcc -Wformat-signedness.
+  void zcomp_stream_put(struct zcomp *comp)
+  {
+      struct zcomp_strm *zstrm = raw_cpu_ptr(comp->stream);
+      if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+          preempt_enable();
+      mutex_unlock(&zstrm->lock);
+  }
 
-Verified with: make KCFLAGS="-Wformat -Wformat-signedness" mm/show_mem.o
+It relies on the thread still being on the same CPU where
+zcomp_stream_get() locked the stream. In the normal path it works
+fine, because preempt is disabled the entire time.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/show_mem.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+But zram_zs_malloc() breaks this assumption in the fallback path:
 
-diff --git a/mm/show_mem.c b/mm/show_mem.c
-index d1288b4c2b64..b938cbcd774a 100644
---- a/mm/show_mem.c
-+++ b/mm/show_mem.c
-@@ -309,8 +309,8 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
- 			" min:%lukB"
- 			" low:%lukB"
- 			" high:%lukB"
--			" reserved_highatomic:%luKB"
--			" free_highatomic:%luKB"
-+			" reserved_highatomic:%lukB"
-+			" free_highatomic:%lukB"
- 			" active_anon:%lukB"
- 			" inactive_anon:%lukB"
- 			" active_file:%lukB"
-@@ -323,7 +323,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
- 			" mlocked:%lukB"
- 			" bounce:%lukB"
- 			" free_pcp:%lukB"
--			" local_pcp:%ukB"
-+			" local_pcp:%lukB"
- 			" free_cma:%lukB"
- 			"\n",
- 			zone->name,
-@@ -350,7 +350,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
- 			K(zone_page_state(zone, NR_MLOCK)),
- 			0UL,
- 			K(free_pcp),
--			K(this_cpu_read(zone->per_cpu_pageset->count)),
-+			K((unsigned long)this_cpu_read(zone->per_cpu_pageset->count)),
- 			K(zone_page_state(zone, NR_FREE_CMA_PAGES)));
- 		printk("lowmem_reserve[]:");
- 		for (i = 0; i < MAX_NR_ZONES; i++)
-@@ -400,7 +400,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
- 		hugetlb_show_meminfo_node(nid);
- 	}
- 
--	printk("%ld total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
-+	printk("%lu total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
- 
- 	show_swap_cache_info();
- }
-@@ -430,7 +430,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
- 	printk("%lu pages cma reserved\n", totalcma_pages);
- #endif
- #ifdef CONFIG_MEMORY_FAILURE
--	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
-+	printk("%ld pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
- #endif
- #ifdef CONFIG_MEM_ALLOC_PROFILING
- 	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
--- 
-2.25.1
+  static unsigned long zram_zs_malloc(...)
+  {
+      if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT)) {
+          handle = zs_malloc(..., __GFP_KSWAPD_RECLAIM | ...);
+          if (!IS_ERR_VALUE(handle))
+              return handle;
+          preempt_enable();        // preempt is now enabled
+      }
 
+      handle = zs_malloc(..., GFP_NOIO | ...);  // may sleep, may migrate
+      if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+          preempt_disable(); // Preempt disabled, but it may work on another CPU
+      return handle;
+  }
+
+If the first zs_malloc() fails, preempt is enabled and the second
+zs_malloc(GFP_NOIO) can sleep. During this window the task can migrate
+to another CPU. After preempt_disable(), we continue on the new CPU.
+
+When zcomp_stream_put() is later called, raw_cpu_ptr() returns the new
+CPU's stream, which is not the one that was originally locked. Which may
+cause a mutex_unlock() on the wrong CPU.
+
+The original code didn't have this problem because zcomp_stream_put()
+took the zstrm pointer directly:
+
+  void zcomp_stream_put(struct zcomp_strm *zstrm)
+  {
+      mutex_unlock(&zstrm->lock);
+  }
+
+The caller always passed the saved pointer from zcomp_stream_get(),
+so regardless of CPU migration, the correct mutex was always unlocked.
+
+I think the fix is to keep passing the zstrm pointer:
+
+  void zcomp_stream_put(struct zcomp *comp, struct zcomp_strm *zstrm)
+  {
+      if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+          preempt_enable();
+      mutex_unlock(&zstrm->lock);
+  }
+
+All callers already have zstrm available. Then It works as expected.
+
+Bo
 
