@@ -4,80 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E25B4C55182
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA15C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:07:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0644E6B00B3; Wed,  5 Aug 2026 04:05:45 -0400 (EDT)
+	id 22E306B009F; Wed,  5 Aug 2026 04:07:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03BE06B00B5; Wed,  5 Aug 2026 04:05:45 -0400 (EDT)
+	id 1EE006B00A1; Wed,  5 Aug 2026 04:07:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93746B00B7; Wed,  5 Aug 2026 04:05:44 -0400 (EDT)
+	id 12AA56B00B4; Wed,  5 Aug 2026 04:07:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C57266B00B3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:05:44 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 354791C0BCC
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:05:44 +0000 (UTC)
-X-FDA: 85066481808.19.A156B11
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 656D9C000C
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:05:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N+BPo4fJ;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EB3936B009F
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:07:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6C091C0BCB
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:01:22 +0000 (UTC)
+X-FDA: 85066470804.25.CF7813F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA5F6C0007
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:01:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mdkrKLaH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785917142;
+	s=arc-20220608; t=1785916880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WlWmclLxMbxgIKt8ZJlnFMYyToasIJDqcYbt0xVIxfc=;
-	b=xPXwcJ+bya+NFFKXavk6zxRGDTKRP9uTAOVK1S54EqbdS0WULihWwtqyj4Wu02klwdNrTU
-	LRukEjVoBGileu2ZP+4PMqpBfHbOSfmg8ssrEUkjfG8UaOvnJux0KCoAZQG287fiQ/XZS6
-	9TClpU9jUZGpDEHiY0KC20bMgK0QpQE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785917142;
-	b=eH/teDCpm4cFs0FurJV2DhpTVtTjb3QTrLTtKHJb5w3BKx9Z7Jz8RmCjCyQGacvH9hwIs6
-	2v4WaUWo9mDfW6ti9iSJyzoAHs4QYnzDtN05EF8RzbLtrvQMiYm76ALfkrV4J+Q/UQFnEy
-	LRc6c1Uvy4kqHXgfI7JzPqo1VNdPEps=
+	bh=IB5C0G7Cc8JHFwptbKMTVTwEEYaXtsxurUQnbxM/1Dw=;
+	b=bALIYjIsS2NL1Uk2AGzPcr5jRA/RNiV9PEkPvEIZOaFmD4uQXrXr503AwZjA1ufe5jfs9s
+	eguXNfMshpO4EdEU/vixiN2PP02xqBFhWEmgW8Xk8ftbD278Vcp4gf2EEJbt0ZQyt/KfTA
+	jsrPl/gyQBaQw3EQz1erzt7AJJ+I/04=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N+BPo4fJ;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mdkrKLaH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785916880;
+	b=R6lZTb63zIc2ALUjWBcm6R/DT3GiUeRMwcPUZkcBD+SfvBXzvJb4AlgXd/ad326ZtLroN8
+	Zllq0OELxfjdIql3ooqcMEbmQzm9Supm3Wp9P8v59i8+HJ17NLupKHJQpgCEbUjopDQ0Vr
+	dyeuwdLaYFD5awtEhGXyztd6z5y2wRQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD33540135;
-	Wed,  5 Aug 2026 08:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736A91F00A3A;
-	Wed,  5 Aug 2026 08:05:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8126660A6A;
+	Wed,  5 Aug 2026 08:01:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF5F1F00A3A;
+	Wed,  5 Aug 2026 08:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785917140;
-	bh=WlWmclLxMbxgIKt8ZJlnFMYyToasIJDqcYbt0xVIxfc=;
+	s=k20260515; t=1785916880;
+	bh=IB5C0G7Cc8JHFwptbKMTVTwEEYaXtsxurUQnbxM/1Dw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N+BPo4fJW0lH1WBNMYiJ0hH2jemyATsVOoVT0bVK3mgS+shzCNJOwl8DD1Z4N4j5h
-	 rowtvOyYMjqTyMUCYX4T7JqjQbJy3F9voh8tmlQeqKGa/apS+UDtNJmo7T5JdFyNoK
-	 /I/H4xwDV6ZtGADOkfoop9mpTNLRC5IQMfnhf78Uorjm4Yvt8hZNvyCokeCJ4BynRk
-	 azXWwrQXWdeOyo2tc8moU9RO7s+IMTo5O+NFT3y+l14T8XkothYCOBZCU5+2szXZ3E
-	 Y9yotlM5XnD3fhpvp+/53ibHDpUypnXAqvRdixhEJVo69ctN7ZYABZWFCRpxsDafU7
-	 eJ0OyKNEIlJJw==
-Message-ID: <15be272e-a42a-4141-bd57-a8abae435728@kernel.org>
-Date: Wed, 5 Aug 2026 10:05:36 +0200
+	b=mdkrKLaHV73pKPWdrMZAtd+WNOxofMCKwvOw9Xg+3CJkvFlQB1AXzc69l2ilhN99D
+	 ZxhGARFTnKP6m2Sd6tR5ODzeFvxtJDZD3l6RDWzoitBTOGskmbHrgOS1cYonwgYMoX
+	 vfMWvknXEQaFZ4CgEbT7XKf2U/zMRvhTsLpm8VVmMJDTL6ianioNJhBW4jzIp1rgXz
+	 ydKqNW99qQgpSLoanjMw12N/En2YxPXSc9wUtBTOyt+k8ZFMitr5rOLOyTPlCDLYAt
+	 X++a17tDXsluHFQuUsiuIzMC12oeIuyXOeE626u5RaKwVIqM7h0B6LUWgELbTmbY36
+	 SDDHZwAXYig2w==
+Message-ID: <5cf3542f-fca7-44d0-8a17-8aa316b1fb12@kernel.org>
+Date: Wed, 5 Aug 2026 10:01:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/show_mem: fix format string inconsistencies and type
- mismatches
-Content-Language: en-US
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260805021556.1908807-1-ye.liu@linux.dev>
+Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, jannh@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, pfalcato@suse.de,
+ syzkaller-bugs@googlegroups.com
+References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
+ <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
+ <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
+ <20260805004619.GA28508@ziepe.ca>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -117,17 +120,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260805021556.1908807-1-ye.liu@linux.dev>
+In-Reply-To: <20260805004619.GA28508@ziepe.ca>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 656D9C000C
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EA5F6C0007
+X-Stat-Signature: h7nos1e8esdh1y3hw6j3c8eufkehqgcz
 X-Rspam-User: 
-X-Stat-Signature: kthwmeq66bb86ch5rrsk4zs7w85x6i5x
-X-HE-Tag: 1785917142-135182
-X-HE-Meta: U2FsdGVkX19dwWsjYyuSuAYS9neCNLC0u8ywRAh0VsQGLvDotAV7+ThrnMd8Z/JpztqbBQBCl13bccldU7HLNtZbEaM8Dt1JzBnzE25bxqFYFW1Nx3frH46AWXNNuj37GCsne3FhAmcL37RemwLMUg8lREIJqYxAqtXYJNKpOl78+doVhgkwZ1N9ci9qCOuzBeXE1lAMsnak37HawcLkrS5vV7fx35pwUHenFkyDJplOjYCWXpzM+pCy+NwG3DPGIqrzmed8yJG+JpQmYuYCLuYyW0imve2Wz7Y2FS8e3/JMhgCmJvTUM2lJuuI1eF1w4nE2CgAECT9EMQvB5U80r01yC36+fzpDthDA/gpm+BLEvCY0+TdtDFU7aOHwKSNsDfd3Zurgse12+CSIl4hF88+W9sW5fa8m7O47Iq+GtGjdD4OCvqYYvDzj3t+Gd7digOLJa2xh4KEOajm+mEGkKZsli+5CMP0xeTF9DgluLk+fIFqO+opJ6J2ab9ewe2OcKNOitRGk5kgXfUa6VOL07BxW3bNS3n2jP0zE7PQ/614ir4medspVB5YKnLOtHL6XCzjjuqJdzvQH1uvAoBtrYEolP6AShAC01bwnw8c/yQdpVoBhSZhOOvSAZD4u9oP89a1ciQBzSftrwZh54rKW1VWn3oCg46QCLrGH6iSOaR9aT4COA1OrniJPErmQV8tWbHqYLz9Nxh2WmOp0ULx5sthY3LvuoxXSi389dZc/NH9qCaO412OuaT6maXOVEQuHWkycjPtb857vV0zYfTYUH4VqMfSieo+t5agMxuJlWZciQKg4e+6N25VajL3sdFIOuUY9c5nFtp9/FLnnG+Sw9H5JK9PZqm0U8CwZjN1zrUUpjnKFItCsv1fuAR8aJG0AdNN6hzS2iNrfBUtz6kGvXrdqjmFSn6Oi2Ss7WP8KNTFOWLcbpNtKebALVEd0Fnvl6V0X8y/UCJfGn0KTLB8
- 3rlAU44v
- QZvSWoKfxRn+/oaw0h/DUtJC+LezKD+XdEQWZSQ/wCMllegzSun3n8M8/PxMM6PRSp+/u+6ndI9Kkbogdvypr40MVq13UwwHo5rR9imp3RGw3UebNjd6dOGVrsR/K3Vt3sNxwRa+ZGsXqdyr0VKZTFdXh5lklPceZZyQOo5wQibDZruHFCrP8dlH9XjX/ipgAv3XHy98NafTc2sXRA3xiHJfLnKd3Du1JNHDr0CsX9+gd4/wfX5s545NBpeUZAHBjR9p7/wxxwnf8oaW057BSA4evu8XvXk/i259Zxu8cg4S+39kQBTVnq0iLaIz/PdRWRm4qkj1umiayyl0=
+X-HE-Tag: 1785916880-597289
+X-HE-Meta: U2FsdGVkX18MS/0dmKhF1L12/JwQeyk66pEzr2thl9S9y0tgSnVc98R8lknGnP19P54A6xpVS4kmiZ+y5ZYz35m5UBrqE6tIevZ3t+PGgdOEJLQq84WYHSDYtn1DobMtZ+JUfYCvzaSXsHJTdU47L45Gls+k194tPtgwhA2o/OSmcupw6d8iSt6ZSVg7bj5m67fKYHnHewl2DDMaHyrVFICudVgMMEXelwH1qLfvL8NynE2dJb56a3ZmR1HwHLrWscqMXbK9hbb76gH6BBKkNshrNKd+aWLZnCGa3VNGmqwEQh8vQEIGmLvvSHfh5AfevoK6bCJNaIo8KM1pEb8vQ4xfZNRczsL9csaAoYbeqMLb0397kpbhBmyRwV03fMqHH8fEhPoi/IljNKj10UlNYbd+ui5H9Y3AVtivfIAqykaHPRlTbMQ3Uz4dV4RHJhIpTsZoodMXgvCJZ2QXBtWk2bGPS3ahtakzhm0k/3isGCRUKkeKzL8tiDl7DRbBqBFBizyZnPWOVk1DspAjSOqL8+8Ol7xcbc9PGpvMviRtFxx3ZnyDqQgIoubRowbQyp1xfY39/PNxqKIe/roK9rACt7UwArNO430D6rkv62lqYuEQBOcAy2E/3fJpDroNr1EQz+WY8O2lOzaiODHqH/hb8RknGvNc/iRuTJvIv+Um0hfkJaMV11F7tbg/IN6rhw3N0+SLXoXbauf5uAzpsc7plUtgCwATvPhapj/IbPYdKh+MHjL8+SIbM69KFvUkNSyim1Ri2MbfJauZs+qDfjuFbZQCFEf1X2dEUOxyumOHgoCNyi8y1YOJRy+YP55Icyr4lB8p01Jun9XGurvWB5JT50i4JnKnn/f0PWTaSpyfa0vH73hH6ov9opop6QYEXclTUI9kQsG1gkMc1EeYMvpLZEEz3jhm2WHwc0hTAUJJGiJD30ybATrg07QM7DjiQ7BtmR1cZ5G+8CKlGNu2aBI
+ rED15WoZ
+ 3F0kxXYFqWzv/u0jrxsxeoph+Cvmn/HvIuLRaTvqUNUAhPoQit2BieyRljXUAUEWDA1IWGDP7Hb6yHeUN11mSLdhUcFAWfAfmMLJ2y0jDe5BxRLBC0eYoa96qKM4SECWPNNqNJp/EwLvej06CZJa99ww2YPq2y8yPgxq0M2Ou1oeLsyeBucTryxaqA52LXMrtoa4ToSfw4IVeJ+Bd+aMit3JEkuVCCAd01lKzAHAaTWdBqsaIAtTAJF798uvGgDpx89Da+WJT/d27UbjghJgSuntegKYnUSd1iJ4nltAJ7ffdtwyu7xaWkDz5jQybNhYz+cegoIwWhrnBf7aFNRbECWQnse56S7OknD0VU2GgYDSWGLwoPdzMCfH6qiHL5+g3tRNt7Z+8pD4AaDgh4eBnCYu64e9acXX0AV5OgCEmnSW0i+nEqLnWrUafFU5VRnmJRJGHgn0UPlOqLBYH9/9WkYuWg+hT2H8JTcn5Fh2W85dUSFTzy5m2T06eY2loBYBTrRUSx4ZiRXX0hhqYUwIMu+sOxuiWIH9t5ewlJ9dHeUg8DXiG5H5MHiEksA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,88 +138,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 04:15, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On 8/5/26 02:46, Jason Gunthorpe wrote:
+> On Fri, Jul 31, 2026 at 06:07:24PM +0200, Vlastimil Babka (SUSE) wrote:
 > 
-> Fix five format string issues in show_free_areas() and __show_mem():
+>> > Thanks to Vlastimil and Pedro for the help on the plan.
+>> > 
+>> > Summary of previous conversation is here:
+>> > https://lore.kernel.org/all/20260618152451.GE231643@ziepe.ca/
+>> 
+>> Yeah, unfortunately, "too small to fail" is a lie, because in some cases it
+>> can fail (such as the task itself becoming oom killer victim) or any of the
+>> other conditions that can cause __alloc_pages_may_oom() return with
+>> *did_some_progress == 0.
 > 
-> 1-2. reserved_highatomic and free_highatomic: %luKB -> %lukB
->    The uppercase "KB" is inconsistent with all other fields in the
->    same output block and with /proc/meminfo convention.
-> 
-> 3. local_pcp: %ukB -> %lukB with explicit (unsigned long) cast
->    per_cpu_pages.count is int, so K(count) yields int. Using %u
->    was a signed/unsigned mismatch. Cast to unsigned long and use
->    %lu for consistency with all other K() usages in the file.
-> 
-> 4. total pagecache pages: %ld -> %lu
->    global_node_page_state() returns unsigned long. Using %ld is a
->    signedness mismatch caught by gcc -Wformat-signedness.
-> 
-> 5. hwpoisoned pages: %lu -> %ld
->    atomic_long_read() returns long (signed). Using %lu is a
->    signedness mismatch caught by gcc -Wformat-signedness.
-> 
-> Verified with: make KCFLAGS="-Wformat -Wformat-signedness" mm/show_mem.o
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> But then we are back to the original problem, an erase API that can
+> fail is fundamentally broken.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+That's why the plan is to add __GFP_NOFAIL, which overrides the
+possibilities to fail listed above.
 
-> ---
->  mm/show_mem.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/show_mem.c b/mm/show_mem.c
-> index d1288b4c2b64..b938cbcd774a 100644
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -309,8 +309,8 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
->  			" min:%lukB"
->  			" low:%lukB"
->  			" high:%lukB"
-> -			" reserved_highatomic:%luKB"
-> -			" free_highatomic:%luKB"
-> +			" reserved_highatomic:%lukB"
-> +			" free_highatomic:%lukB"
->  			" active_anon:%lukB"
->  			" inactive_anon:%lukB"
->  			" active_file:%lukB"
-> @@ -323,7 +323,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
->  			" mlocked:%lukB"
->  			" bounce:%lukB"
->  			" free_pcp:%lukB"
-> -			" local_pcp:%ukB"
-> +			" local_pcp:%lukB"
->  			" free_cma:%lukB"
->  			"\n",
->  			zone->name,
-> @@ -350,7 +350,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
->  			K(zone_page_state(zone, NR_MLOCK)),
->  			0UL,
->  			K(free_pcp),
-> -			K(this_cpu_read(zone->per_cpu_pageset->count)),
-> +			K((unsigned long)this_cpu_read(zone->per_cpu_pageset->count)),
->  			K(zone_page_state(zone, NR_FREE_CMA_PAGES)));
->  		printk("lowmem_reserve[]:");
->  		for (i = 0; i < MAX_NR_ZONES; i++)
-> @@ -400,7 +400,7 @@ static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
->  		hugetlb_show_meminfo_node(nid);
->  	}
->  
-> -	printk("%ld total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
-> +	printk("%lu total pagecache pages\n", global_node_page_state(NR_FILE_PAGES));
->  
->  	show_swap_cache_info();
->  }
-> @@ -430,7 +430,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
->  	printk("%lu pages cma reserved\n", totalcma_pages);
->  #endif
->  #ifdef CONFIG_MEMORY_FAILURE
-> -	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
-> +	printk("%ld pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
->  #endif
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
->  	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
+> Jason
 
 
