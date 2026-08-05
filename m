@@ -4,104 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25F6C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 08:59:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F23C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:01:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCD346B00A3; Wed,  5 Aug 2026 04:59:42 -0400 (EDT)
+	id A01AB6B0092; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85796B00A7; Wed,  5 Aug 2026 04:59:42 -0400 (EDT)
+	id 9B1E06B00A7; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C986F6B00A9; Wed,  5 Aug 2026 04:59:42 -0400 (EDT)
+	id 8C79B6B00AA; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95AA36B00A3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 04:59:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09FF6403D7
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:59:42 +0000 (UTC)
-X-FDA: 85066617804.26.1A4E126
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 72DF220006
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 08:59:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K+1Rt2ao;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785920380;
-	b=DEjsv7yPXjnHfQkbklpHJNu1yEeuHer9W9JJFw71Ulf3iMCdFYGm7U+b8Hsd+sJtGzu1Ek
-	EjlgV/RDt5c1pyrBFWldVnLFImT/wI/9tdehC8rf1En291kjoh12JUTeJvWwCf3BToH3fY
-	q7piQ0rfJyTNzQpy6/nXd+lIYwMDjwU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K+1Rt2ao;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 67E466B0092
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:01:31 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB197140400
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:01:30 +0000 (UTC)
+X-FDA: 85066622340.12.37C7D51
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F05791A000B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:01:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=MnT5aHI0;
+	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785920380;
+	s=arc-20220608; t=1785920489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1yRpRg/YjcbX7C2paRrZom5mhwTrr0QvF5ECsYRO/+w=;
-	b=SdxGJ3fTpNi2jJvXnDBvPLSuPOa7TjATBwLERlwfoIfbGBBEppF0UkT6WF4PHF+01pzm+b
-	OITXiN2Z3MC5Qfkj6yY5HZi3w/DWLkSaRYQqdvsHFZ1XaAF/iE3CWJhIJ8onF5MwqHFh8i
-	fvAHFbxzH7+yZJ140OixbdGCKpWDgHI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A15D600B1;
-	Wed,  5 Aug 2026 08:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018091F000E9;
-	Wed,  5 Aug 2026 08:59:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785920379;
-	bh=1yRpRg/YjcbX7C2paRrZom5mhwTrr0QvF5ECsYRO/+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K+1Rt2aozvXZ6W3FHxtBV97CQTGhnvf409HxCGwFj1X7JitOXG86TUEDPv2k6/x1G
-	 9O21hqeZLoY80QDCALep3ZAzkMnjq2H4JgVfTCNCL3LSyWqgHDPxpQkvn6OEdCzSTP
-	 nFTo5dTvUmevSjaaFR31pHViXEAjraEDTdHwz8ddfwS+yWdKF9/yRqpRB/xSbt/oU/
-	 9gsWhKTBxLM2/PQ9fPfZu+Y5waWH5MhkyPQergkWmtzoLZgE1MUZ+ljzvSOkksvxg9
-	 P3PI82Af/rplRRKV01PYALUmNe+GNe41JF0++hzkt1334sQRaqV8XOvJxYe66oAdn7
-	 Fn3FDMZalFhGg==
-Date: Wed, 5 Aug 2026 09:59:17 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 06/15] mm: propagate VMA anonymous page offset on map,
- remap, split + merge
-Message-ID: <anLyhaI6kW-EWk13@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
- <4ad4b17b-bae6-4169-8649-bff4a29e7fde@kernel.org>
- <anB9MWSSITYpDibA@lucifer>
- <6ea7cdad-afb1-45af-a63c-30b760fe160d@kernel.org>
+	bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
+	b=ANoqeJCh9ZrMZLhrXbCkyMlj4FcV12znpUnv6MA2fKGHNk6wpjXZw7+fJTRmMShTbYUPuL
+	yx9mx96BZYVlVljl/aP1DEcGj41VuXIDnEBH+YzEDmbQRLcitVWijpXoW+hZeZqlX2MxHw
+	fgiOuT8mfFzPTEwOMwJL5rWkEIcae5Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785920489;
+	b=ej8HHbP+5x9I3KdCQRbATuq42xlzIfBB27m7bSekCGNcj5ohYYmoxQzMsKVmGiQMhlyZJt
+	AidNo+uSiJuCgv9xZWBhN6HbDRYCPK9kY2Hh+GKcRiv/16IHmeHldkhnUCizNulE9wIro3
+	2OOup5+mehz6UOTuObIaFs4wJzomoU4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=MnT5aHI0;
+	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38f0f132f56so1464925a91.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 02:01:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1785920488; x=1786525288; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
+        b=MnT5aHI0mRtdFa0z3HsmZ4urthbPilK+rL48s/KaI04q3gbs4yODFo8H8EE9CAf1Kf
+         1DhK7C7y9EjRNPubYNnSjV9cXld1SSh+2fBrFGXgySi/DAAQxJmX0pAICPnIXKfhOpsy
+         6N89+4WByd9J2kJcizKb5bJmMYoxUvC3DxApE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785920488; x=1786525288;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=006EpaNdFPLDBxr2UIddQMK/UW47PHMTajDC95OOpTM=;
+        b=XUGssfUwc7OwY+DTjLN/bOXUmWb0Zl5ocSdc9LA4tdf4oy/IRPlcQ+7ekOxBUfp4pN
+         PlyoMqlw/mQt6SJxexvd5zc68tIRj6/8mUs0dhmQMaj2+J6YLT0FoC4PkeuCWqrugbve
+         lVwBW0YSbTrTFyGyJTLHzBelBsFwNnO4Fz94Owdis/EWTXo3hIa90IZL80vZezeUXLHv
+         YqLBGuBx4/oXAfGe2GvmlVcecb+EJ2xWuvnEEV2vrmF6PWwgFJPF9HojZDuPvqxkuXE0
+         MkPNj6p4G157btfSJuZWs8APdT+wojgQjfRJBGbbdIp2B45ZJZFCWYG+RdTrLNWoVWTW
+         kEVg==
+X-Forwarded-Encrypted: i=1; AHgh+RqEEu6M58IwamKcQ3WGfA/xCp9p0cAUPIxIjyxNnSdPQaVMfSMEjNoXyPqfiD6iP1h5cwxw21nBeQ==@kvack.org
+X-Gm-Message-State: AOJu0YxclBOHD7zSrCDdH0DOwRRde3wWK6x6wTfLNSYUVkEcwNmv4tov
+	vn6RTQtbQxVDFcazRTD4HkH+KZ52F+FGaNXF8zHkgvxIniOZPIQZ1oPDEZeg6SpYyw==
+X-Gm-Gg: AR+sD13YdJf/XQXyvzMioW1b/cgNv2er3YQX5kmP3J77CizOCOtYZx7kzNIh3dc/XR2
+	Mc1PfXWhAMPlEQ+TeDfKT5qBiKXnVeoTo2nF1dGswQ3MlJPIyDkPp0XljBjrqXEd7rHm1nhk87F
+	owWM3LNcd4Ds3gsRqrqqedAZSLaMkb4XFVvwDDwCq8eSQaRd4A0T0bvcHfU9X5weyy0tl4fCt5r
+	KWj7kTNYDX4uxEvwwMaIU+JcBsl79i62xC6K52LoHStoN3QmP2a/daOIBlJ8UOs5HAYu7WvmJWc
+	BLqVBqZY/a3KpjfFIi/BJf+GiCuTUqD7xr89HLVBPuMWVF6LmrdqlGo9hpQlTNyz1rAMhYxYRq+
+	2lrry5jQN8yzmDAoKlUeVH/JKll0BpUMqEa0xb99ocT91wkfYwG0le17XbQubY/FIMcl4xFjAQE
+	Kp/nMSht5cKv9pqCeihPAw2oa7gz3p/OLrXn2Gm5Jm2W5HxFe5/MkKH75QggUk40fv2nIYhAae9
+	ViRfQLFi/d0Vbb6VbYKPauhzJ30
+X-Received: by 2002:a17:90a:d44f:b0:37f:9e21:91d6 with SMTP id 98e67ed59e1d1-3903c6287bbmr2193012a91.13.1785920479816;
+        Wed, 05 Aug 2026 02:01:19 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:8002:2a47:a704:5a58])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fedc650a0sm3967542a91.14.2026.08.05.02.01.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 02:01:19 -0700 (PDT)
+Date: Wed, 5 Aug 2026 18:01:14 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, 
+	bigeasy@linutronix.de, hdanton@sina.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, minchan@kernel.org, ryncsn@gmail.com, yosry.ahmed@linux.dev, 
+	surenb@google.com, Dongdong Zhang <zhangdongdong5@xiaomi.com>, 
+	Suleiman Souhlal <suleiman@google.com>
+Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression
+ backends
+Message-ID: <anL7bK6lbp5qTqQy@google.com>
+References: <20260805005545.66112-1-baohua@kernel.org>
+ <anKQ_qZ1-Q6FchZ9@google.com>
+ <CAGsJ_4wD+KNL0yMkuS4GijbHaiyPxgTmqKzkr0DErC0XH30w4A@mail.gmail.com>
+ <anKaU6VStrW8zaQo@google.com>
+ <CAGsJ_4wQ=mDXuxxTdAZkicN5pJK3SsNTOxHt5oNYrq7CgCVObw@mail.gmail.com>
+ <anLGxk3iShEfCB30@google.com>
+ <CAGsJ_4xU5VN3abCPzACZoS92MqaUrMHn9EQ1FCJD+wy=upbbMA@mail.gmail.com>
+ <anL0utxGYeGOGwjt@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6ea7cdad-afb1-45af-a63c-30b760fe160d@kernel.org>
-X-Rspamd-Queue-Id: 72DF220006
-X-Stat-Signature: fontrjwg7icn4cqwbb6aqg94e73cqxab
+In-Reply-To: <anL0utxGYeGOGwjt@google.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785920380-148729
-X-HE-Meta: U2FsdGVkX19JEPJyVnMUCLvX2pAOFGvgvkg0GxML5uU5ZupVZ56+car7ZSt+xowcBjRXy7WhBZgUc9oe0p7zCMVP/r5YXLkAIbtPFGbIHjbBzVB6UMVxMk5UhL9zSeFOCpfw9MiqGi/8orUPDY+CXmRPTA2dvlchtLLVt1A61mh2B/3n2Nxtm28a+R0/Y7pZ1juKU/4kDy2KrRgQP8my45PQmPyKOJsfiCz0N87p72ZnDsoxWJINbSfIFz/kifKPlrKuFxO+aKDalA5jgclvIipWBPf1AnZ/5/+S/w3bbtfh53uystLIBVRi1rCe8DS3fBlJLsWF6ioicmXmcwAdtvtGb+lSCs3s0/0DxI/5QHw/rJJOagdYrb2za1sjp+QCf8tcGUTNyVzcWpeO/pXxgj9bPnQ1vYxnGhxcGV2gSTMahs3FEY7fhF4JWKA7R5PJkiOPv8KzRCVapusHzE4nJrI8l7r6AsiNS9pq3dS4wQqhLFhmuzUp7yPO8oa9/Ixz2MOMAHerPiLIRuV5GgkP6yOlFE/S9ltkjKt3P4OTr4YXZtHmj0aIbfwHuSM7nNyMvzCnFOUvMP4sFAC+Qzzf3M7QTYJMtTyG4vG5PLm964ZHi0ldZ30ReAZ+/SrfIBKE8VscfHQanW/xIT1Mb3D0mIYgVQ8wzm7nP5jA5LDDpsS4C1iposZT8cndUR0bI15uXlo+Fwq5hnSb0+pCfkcwK8novwKQevG9UIIh0PhEDRIB4lsuC1GK/zrpINUIw5bGhYJr+vxkgggkxyTU21xueyuLirNIdhSKWXtqbQFF4w251ucuVimqmMLraf7OpiPsK4ZG8cticsgZhDXo3prkbDYl8SLR6H2156Q2xcJ3g0MadwghlEUfCrKOSpq4gCvt7Z1Db3NscvgO+YcFFL5E6iEK5qGsy/5Wnp6707ku9db4ChqUwI09XfnwWdU6X2/skfNsiwUZZxvx4S7b3Ru
- dGPLAXwD
- W2vI8ya6DzK1JaIN91TCJke7yArAPxqQsbpkSjBI3SLJ3N52040pzOXRzlvAMyO4Yw93o7R61OFH3WnphRvA03djoqV3/ajEtgCPwWmSwW9UNe80cI7g/1GhIrSY+iEnKHc8E/v2UYkwqfPYB3ndK1s9wJkgIj0Zh2uiK6mdJbuSwxdIyCq9BgYk0mCrAzFMgMdEEiQgqJy4Rx1f50gbpy6PQOOSsYMRbgTgEHea+uoCRwXBo416uHrmn2at0ANlkbBEHowsJIAOGUPYcj5Xyu1G5peawCPCXkDH5Mnb2Xk1U4QIKBMoMT39rzky2TdCRn0DJ0PpDsvP/lT24yTXteEDqrnOb1nFFJPKI
+X-Stat-Signature: a5eueus7rjko7cjbxsk1csk3xg7yekwf
+X-Rspamd-Queue-Id: F05791A000B
+X-HE-Tag: 1785920488-710239
+X-HE-Meta: U2FsdGVkX1+N/tcqB2MHqjUhZzR6FrQD0RENG73c8UPVXObQfsv6pdM+SqK60lRGPmUoN3xJSBr9CFpq1hCkQTmvXlm6uQQ7zxzpQ/fnifyaKnZsXyzK4QxqjGbaVEkP86zmFTPLutpAgIRmnFFHGJqwr2E4E7RTa0+v6Px2F2jRUdjlCn7F4FrpV6Ws17Jgj7nA8Xd/GtIXFDkh74p8v4uLgom5lKClW0vvBx65zhPL44r+NKcL7i5Ho76ELfBgG7SKoMM4hVCVMFpXrHSEBQsX8Ch80yFXUfo1bNSuaS91t6uLLyNjhTuFB2hoxgC6DBA/NCYbL8c/MlRX5Lm0MIIVZd2ZLWek2NI6rwcmj+0kNn0itW/sZzWXUGB0NLeYJDwp1F5pNNJBO3bGq13S4TJ/AsSOpiHFoCLbHy13mrwfLyLkSdkVNxTFbRlhv3gTRv9dP76fbv7VlbA2gPrVAvDUYEFsZ/U3NpY4DiEOuIuLAWhT9CuOuLXxjJWrTr4RvO2LkfpBezNaLt0lXCGX5KFt+NK7QR1tYrpyydchGlPwG1YKDHOv+k5ISZyeHnQKKQJ5ePaMuc12X6he5t9uvIi6Uz3OKTQLYKviG1rtucXt3yGN7X9dFFnodA5CNOojwMgM4mHWgbYqUgHKIJDro4QNSbZsatiAd2lybJ3Oc69sb2D9E3STgJLELvhBeinCCtfM7gDk1W+NVlrNQWHu4xi9R+jXGfojfpcYjXZBwDLrNmmGZ1Rgn0SWXZiJfZbhKzqDTSLuRSVgk8vxTaT5cfSeqPMdWrAT3Il0n8+T/A0LnXiS267X3vBRGeYC/MFpYeKnc0Ml9nkCdaWUfGMG7V2TFT8cEMGurSBi1CIyIFjZtwYVJ1dB9AWS/tIfG4mz7wDBlgoK9YdWUF4vYaPbjzm1pRE/cO+5wFHsEMnrM3y3iQIyMAs7rA0OaPlEdY/tm8DqPSgP9NHt01k9sqt
+ x5jePHqc
+ 11pgWOaoeTy51UVoaLEKYbvgilidXZd9tZjTFD/9w+4N0nX+iolOrt+ONPe65kYevW70qMt1Kk6S27SGmYbdGkkICLpNBEdr3Hc7P8PxfKHU4Cnw6Lwe81K/8WG4sp1PhEgXfbaUguxkJCzvSeae+ZMf82nvl7liqwYpY1CRfXlx78tVYkMVp/wenMTMGU5qTaKhN8iClPi9r4GCsiUTI8ptR7xwDXMaNBj1EzOfaHIFkhayTpTJwdwP5GPQyO1rcg++C0jgNKjPp9h6H/GVVy/gY1afgfbuShQr2QBXK4kvDpB8zX4Z7IMmxPJVyA+8+PstsGSNUhdxDgR6tlfH0Zt3s82XepbQLrmq2Iizc873/eTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,144 +127,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 09:35:56AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/3/26 15:46, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 12:52:42PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 7/29/26 18:48, Lorenzo Stoakes (ARM) wrote:
-> >>> We must correctly update VMA anonymous page offset state on all VMA
-> >>> operations that would result in it changing, with special attention given
-> >>> to remapping.
-> >>>
-> >>> We cover most cases by simply updating vma_set_range() to do so (with a new
-> >>> anonymous page offset parameter), but also notably must update the merging
-> >>> and mapping logic to propagate this parameter correctly.
-> >>>
-> >>> The remap logic remains the same - we may update the anonymous page offset
-> >>> if the VMA is unfaulted, but now this applies to MAP_PRIVATE file-backed
-> >>> mappings too, so we update the code to reflect this.
-> >>>
-> >>> Note that we use __linear_anon_page_index() upon remap as the VMA may be
-> >>> shared, in order that we update the field consistently regardless of VMA
-> >>> type.
-> >>>
-> >>> Similarly, pass through anon page offset to the merge logic, updating the
-> >>> vma_merge_struct struct to propagate it, and also use
-> >>> __linear_anon_page_index() to obtain the anonymous page index so it can be
-> >>> safely used for both shared and MAP_PRIVATE file-backed mappings.
-> >>>
-> >>> Finally, we update insert_vm_struct() to correctly set the anonymous page
-> >>> offset on insertion of a VMA.
-> >>>
-> >>> We simply ensure state is correctly propagated here, so no functional
-> >>> changes are intended.
-> >>>
-> >>> Also while we're here, replace a VM_BUG_ON_VMA() with a
-> >>> VM_WARN_ON_ONCE_VMA().
-> >>>
-> >>> Also update VMA userland tests to reflect this change.
-> >>>
-> >>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >>
-> >>
-> >> [...]
-> >>
-> >>>  	struct vm_area_struct *vma = *vmap;
-> >>>  	unsigned long vma_start = vma->vm_start;
-> >>> @@ -1919,11 +1929,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
-> >>>  	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
-> >>>
-> >>>  	/*
-> >>> -	 * If anonymous vma has not yet been faulted, update new pgoff
-> >>> -	 * to match new location, to increase its chance of merging.
-> >>> +	 * If a vma has not yet been faulted, update its anonymous pgoff to
-> >>> +	 * match the new location to increase its chance of merging.
-> >>>  	 */
-> >>> -	if (unlikely(vma_is_anonymous(vma) && !vma->anon_vma)) {
-> >>> -		pgoff = addr >> PAGE_SHIFT;
-> >>> +	if (!vma->anon_vma && !vma_test(vma, VMA_SHARED_BIT)) {
-> >>
-> >> Could we also use is_cow_mapping() ?
-> >
-> > No this would be incorrect.
-> >
-> > A read-only mapping would become unmergeable here. So this is something apart
-> > from the rmap aspect,
->
-> I'd assume that we should never even consider anon_pgoff when merging
-> !is_cow_mapping(), it doesn't make any sense.
->
-> No anon folios -> no anon_vma -> no anon_pgoff
+On (26/08/05 17:46), Sergey Senozhatsky wrote:
+> On (26/08/05 15:50), Barry Song wrote:
 
-You can merge unfaulted ranges is the thing here.
 
-But anyway I actually wonder whether this whole branch shouldn't be:
+> This sounds interesting. I think all of the S/W backends that we use
+> have stateless decompression
 
-	if (!vma->anon_vma) {
-		...
-	}
-
-Because that way we keep anon_pgoff updated even for MAP_SHARED mappings. This
-isn't necessary and doesn't impact anything _except_ print_bad_page_map which
-outputs both pgoffs.
-
-But it'd be consistent, avoid any confusion about gating on VMA_SHARED, and
-simplify the code :)
-
->
-> But I think I am missing one detail here:
->
-> > and it is a contract that upon move of an unfaulted
-> > mapping (which for read-only anon would always be unfaulted) that vma->vm_pgoff
-> > is updated.
->
-> "read-only anon": I assume you mean an anon mapping that does not have
-> VM_MAYWRITE set?
-
-A MAP_SHARED mapping of a read-only file becomes a MAP_PRIVATE !VMA_MAYWRITE_BIT
-mapping and must adhere to the same contract.
-
-Also mmap hooks can clear the VMA_MAYWRITE_BIT.
-
-However:
-
-- If you're a driver clearing VMA_MAYWRITE_BIT you should only be doing this for
-  'special' mappings anyway (I have a series I've not sent yet that establishes
-  this as an invariant also) - and these are not mergeable anyway.
-
-- If you're a !VMA_MAYWRITE_BIT MAP_PRIVATE-file backed mappings you never set
-  vma->anon_vma and always update anon pgoff so you always have alignment for
-  purposes of merge.
-
-So I think also we can then change needs_adjacent_anon_pgoff() to:
-
-static bool needs_adjacent_anon_pgoff(const struct vma_merge_struct *vmg)
-{
-	return vmg->file && is_cow_mapping(...);
-}
-
-[I have to create a vma_flags_t variant of is_cow_mapping()]
-
-With those two changes we gate on VMA_SHARED_BIT nowhere :)
-
->
-> I recall that that's a combination that cannot be created. While you can create
-> something that does not have VM_WRITE set, IIRC VM_MAYWRITE is always set for
-> anon vmas.
-
-For pure anon yeah, see above for the MAP_SHARED->MAP_PRIVATE-file backed weird
-case.
-
->
-> --
-> Cheers,
->
-> David
-
-(It's funny to me that if you want a truly read-only MAP_PRIVATE file-backed
-mapping (no idea why you would but anyway) you have to MAP_SHARED, but an
-actually MAP_PRIVATE file-backed mapping of a read-only file is writable [which
-makes sense obviously] :)
-
---
-Cheers, Lorenzo
+OK, that doesn't seem to be true, but just for initial testing
+on lzo/lz4 we can simply split the lock.  zstd/deflate need
+context for decompression, this doesn't look stateless.
 
