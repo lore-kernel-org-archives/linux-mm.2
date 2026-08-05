@@ -4,103 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64FDC55822
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CA8C55822
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 09:29:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E54D16B00A3; Wed,  5 Aug 2026 05:26:53 -0400 (EDT)
+	id 55D7C6B0088; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2C226B00A4; Wed,  5 Aug 2026 05:26:53 -0400 (EDT)
+	id 509EB6B0092; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D42AB6B00A7; Wed,  5 Aug 2026 05:26:53 -0400 (EDT)
+	id 420026B0093; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9836B00A3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:26:53 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C7F040412
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:26:53 +0000 (UTC)
-X-FDA: 85066686306.02.3A6D339
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9887940005
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:26:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQyTH42u;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 153396B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 05:29:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A987A1C2C
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:29:56 +0000 (UTC)
+X-FDA: 85066693992.24.9586B12
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4BDD8A0013
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 09:29:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ag2H6Enn;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785922011;
+	s=arc-20220608; t=1785922194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ubge1xIhaMVtNlK1W4+X5SNrqz3ntDqZDTmYPkn/nf0=;
-	b=4Gstspj7+8EuqdLBMCC8StY6NTukV66zWJzSVPge6q2/mlwvWgZFG0tUpaAWSaOGCflOw7
-	4GNpXJ4ZtIIEsoRpiHWsrioNZ+ChUn7ZWZshMCWATZ2RvaHHAkNB+fpxrto21ezb1E5Jbg
-	1dMfXmGYBH6otLqU752hR6NWbApl9zA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQyTH42u;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	bh=/gjtDrTd3eRi22+TbpqZHqyTIg00RD4cowSNfL//SUg=;
+	b=M+tyT6U/KgsQwt/ZMdS+a5sq2aXeJzh3BOW4fS2a9Dn4BGAK9jg77kosNRSu3bFiKIBElg
+	hlOtxbMZ3vdvRZXCCfeZ1Cr3nLIDu69HmzdBatuNnHTHdZbLZDfGbkBVHydpp7NZgAcFnF
+	2P8d3IYL4vuFnJGh69Ngisv2wDhLDRU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785922011;
-	b=rzFX49jo8VTQ7mAkWIj5+WBXsDNRo7BfTAcGpKbSMncM9FJiYJegi6/TCAbufGRuR8BDMO
-	TK1wK9ITRe2C35uWu5KTNLtPtxTLkSWFBKdwwS4RuByH7NC7hxO7/Qxi1vaG7svN/XoETu
-	Jw4p3eWtfdqS1dVPNTZknprDmLHn/MY=
+	t=1785922194;
+	b=XAp0IEJVo5IWnOjv4XVPdb7/2d+csW14+fdYZdIE/MbJUuPa1AKK4PREgPGsrW+X8BgWTW
+	xTFtK6DgudYyzAq4pYUq360UDcrf/6HKLzsgPhjLUw/ir+SwE3596A0YMl2Vlfdm6F99OO
+	DiKico+jKzD0c9JbAjevSJtp7/KIAUE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ag2H6Enn;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A7F3600B1;
-	Wed,  5 Aug 2026 09:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187241F00A3A;
-	Wed,  5 Aug 2026 09:26:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 73375407F7;
+	Wed,  5 Aug 2026 09:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CEF1F000E9;
+	Wed,  5 Aug 2026 09:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785922010;
-	bh=Ubge1xIhaMVtNlK1W4+X5SNrqz3ntDqZDTmYPkn/nf0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=JQyTH42uXQexz55JjOim55HIDMLIO8rx5JZA6mc0pfSqhqVsFV4t0AR1xby9i8PcZ
-	 u4bljuEIXHSw4A97VrATcDzUwdrzZR6zOZYHkvM3wFgCJMC5CwS6f02Phd0buLNvqA
-	 +D9nqehMXxxoccLfCQ05Fro9k0IWl4RwjxNy+cSHoS56plJjC5F/DUVgUyHZVbFMFc
-	 zrekZqd2pIIvBUCihrZJ6gr9fdxZVrhVK8oZNlI2t7oIXvMKeLw8FHsCz3OV9vBsjk
-	 tEeBiJq9cDNJdc3hlz+2xUCzIIAaw9Tm0baqz3Jl4gW23olatVRjxDwhgoUVEfFOzq
-	 pLYXqXeWlPKcQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Trevor Chan <trev@trevrosa.dev>, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, ojeda@kernel.org, paul@paul-moore.com,
- aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch,
- viro@zeniv.linux.org.uk, brauner@kernel.org, igor.korotin@linux.dev,
- vireshk@kernel.org, nm@ti.com, sboyd@kernel.org, m.wilczynski@samsung.com,
- boqun@kernel.org, gary@garyguo.net, axboe@kernel.dk,
- daniel.almeida@collabora.com, shankari.ak0208@gmail.com, lyude@redhat.com,
- j@jananu.net, lossin@kernel.org, acourbot@nvidia.com,
- markus.probst@posteo.de, driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-pwm@vger.kernel.org
-Cc: david.m.ertman@intel.com, iweiny@kernel.org, leon@kernel.org,
- bjorn3_gh@protonmail.com, tmgross@umich.edu, tamird@kernel.org,
- work@onurozkan.dev, sergeh@kernel.org, matthew.brost@intel.com,
- thomas.hellstrom@linux.intel.com, jack@suse.cz, ljs@kernel.org,
- liam@infradead.org, bhelgaas@google.com, kwilczynski@kernel.org,
- ptikhomirov@virtuozzo.com
-Subject: Re: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an
- associated function
-In-Reply-To: <20260628095132.47753-1-trev@trevrosa.dev>
-References: <0CoR7Z5B4-PH8GYYbWlZysVJpMnNLTFzTO0tBlOpJQNFiQ2CPrhdjyD4-4jQs4n0J_1QqovCd_EaYpclyigEKw==@protonmail.internalid>
- <20260628095132.47753-1-trev@trevrosa.dev>
-Date: Wed, 05 Aug 2026 11:26:34 +0200
-Message-ID: <87pkzw9aut.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1785922193;
+	bh=/gjtDrTd3eRi22+TbpqZHqyTIg00RD4cowSNfL//SUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ag2H6EnnFi4b+rjAY/vOuSJSppombJiw6yEHEy7W/bgMRsj6+S4B3EhWbErU4pYX7
+	 S/nUW4Om/ISFjyJ5TLWoQxid9jVaN4NTRu1/HmvCQQdrfFiIVpGCQ2PKjOcsZFKbWx
+	 dGsB6hzGq0UoOE95Cq1AwT+O95gAcTcmYnZcUBQ984wiE+110RP5FFe1DF1ry0Rd8h
+	 W57wr2rOnjHXUH06E8Pah5rdwcPf4a3re/C/qRj7I56Op/IKZJ0qri623UPEmi0Sq5
+	 2Ehn5nEPZJSyU1L6GNRn0jYgOpJMzCB4nl18Zr20xgDWMXBYkxWD8Ap43Hy0b9xNTK
+	 dClMMia43hoJg==
+Date: Wed, 5 Aug 2026 10:29:31 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 06/15] mm: propagate VMA anonymous page offset on map,
+ remap, split + merge
+Message-ID: <anMBoUbb2_lqiP4d@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-6-e8ecfefea812@kernel.org>
+ <4ad4b17b-bae6-4169-8649-bff4a29e7fde@kernel.org>
+ <anB9MWSSITYpDibA@lucifer>
+ <6ea7cdad-afb1-45af-a63c-30b760fe160d@kernel.org>
+ <anLyhaI6kW-EWk13@lucifer>
+ <aba0e91c-ab9c-4420-9ed4-9e42cf03ecfb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9887940005
-X-Stat-Signature: kj6fxeuwfxax3zshr48hugzjihu9effy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aba0e91c-ab9c-4420-9ed4-9e42cf03ecfb@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1785922011-298951
-X-HE-Meta: U2FsdGVkX1/OzBNFvIwn8L7lJKpOdqrOZQuTdEW5APdheNpMhaGVXBxbLZNTiHqs9L12VDmllffwOtuWgqJkNNbmRcyb3X/OTzQz9TJjOiT7N7Y4nsd95oVMD4a62hZRO88Q/vXoyXpXQZQegnjE1ulwKiyswKti1I1axDvXnKm6v9lC1HtffRsvXK1xggoDBVZqN7YQG2KdUizShqVgljs0W5E26I92SNYYdVli8fD9BYPIA4zWyfOeZx+IY3swPiHkR1qeIr1oZRJE6FnWmBbC4DXoihdfaWhmXqixg+B89US1EDfdj/qzdSPFoSNjuso/F9zbqWlhegr2itfosk0fjhc17t/K4kjIEbAwq6NGYdY0xHRjLu31U0qEJv1bGIu4LKcg8fY0B/W3UquK8MmxvD4X15JsWn6e2aVA+m5+9AjXUDDC/OYYHiWYBCeN7Omr5TjM+5N1KI/F+J5lepPlnaiC2AYThs24I92K4h+krdibYS4SkLNhrzw5IOdHc33qFRvk/RF/B+bW7PKviQkUQFfJmedSc43cgecbd7oSnCrWFoSUsyFS3Kw58ptxWfUNhGwxJGXF/L7js+uAZiqWYjdvE1BdFZldOLrasPW4Nys6++7kkGrkzPooFDT9+apyomlTx92/mNTPL1xK63+hexv58CQuijQX0tBh8CrrhSI8Xjh6p+7XLbS1CUqVjHOt+pjOy/nCjRxY6H8dNhJbnXDFUY2aTz9JdEcygR1nxFQPDIdil7CjUvY2BSnoP2YQvofwARfW8JWhx07ctEz5bD9XQvAENFW9s5nSsMaLnPPMUK9R+OiteQ3IA2bRUj5IND20yNVL9UIL21E4DIMG4aB2xp8Cu5IAkibexCKrMiITETgz/9KTBLuUDA8H1qm6RD+cWPYtYvbC+Utp0E4QGoT4vZJ7a1Rg+gdEFS9z5O/JyanfNTgWf60oXi83uNFJTdJpedn8P2he25d
- zekiZEK9
- jbLuGo9HwQQLC6FDIn6koZSdDGlrsnbhwWLaCm/k/scRzN+vccMypP+jRjWjLyo/bLhCyil9ZHFCgzekEv1ZsnN01dxN67ytTv4MI3bAJ4jAgN4K9FKftcfdZqPyfxEQ+MG+VLlwURhQr3BLvpvfZ7KxJpQBY3MnZCTYGJiZnM1Ru8R8OZQ8XaG1DrMRGZHXk2AHIuRCWZ0mjWx3wA9D8IL46CeSkIIDrFGQltJygl55FQRK6hqE4UPVLcxkj+YEUrcPxAxQTOqxvBo7QriNLk6H8JRcYQPZCUL1YR8zZ/h/0sXE/wQwoeFo+Qwc2QhArbBuNsBWBhaitKyxkRIvt/WaoDkG19TnXzCl8IHwQ29I7xIxm970uXhydsrRzaITPwKsHKJ50AjYA+0zt9mcqN4OVWfFrciO7VRFThV6TI1S/uDw=
+X-Stat-Signature: bog9r9akabqhrqxjif47sym5parmcqtg
+X-Rspamd-Queue-Id: 4BDD8A0013
+X-HE-Tag: 1785922194-777107
+X-HE-Meta: U2FsdGVkX18yC5yCXI0Du1FSPJ+C3QvTL6e8gOv1yTjr5RGrSEPtb8Ds+hu6qcr+p2JO1NX1NpToJCT/Y8XlGRlpRhC3u9GDB+mcfneKRiF3s1keKf2zbMWAC7EZK8IC2/pOGtD+Ql+V/fdrdxUxPyvsMlRdp+bjs6wIyICCX7fGsN8Bpsds+rgzXVQovi1x1A/+ligLheAvYgjRXVEGOeWutRandzfunevSzgs36ttaIIXh8cib31PGVX5j+kGWfYtXKNXwz43hAAcLjmD2M/j8B5lwWmK96K7EerYSSEeAlQvhr8MRfK1/eY9dynViWRYP+IHeDxBZbLe2sluEflv7jIZEbpYCSxIpNYlVKrqRUje1n0MT7BW4jAlzfmokQUzlaqSIrNzMzcsTzKETKpx55zxRarbWuiPBEHcKxwBUoX26ba4z5kQCNNVaw7oaYoY9fOOtLJZNU+NsTD5CeNtSFnvevMUOcsFQqdusZDcZzVjr0OoxuN8YvsRtBkwhWQoxcEFyikh8ZmZFxQkl/V5ypISfAoSnkIKk/TrVAY6YrRUT2M4wnuw+iIko04gUZYZFVXi8t/oi+hLxEakbPyTmey/LKUTQMiP/Wb2Sg3G1LfRitGauHLwHiUSNmpGbixZNjnTs+bAlZ/jtudjtcSYEdbt5GbF5r/9Lnkzon0Gc+uehbbiDp8jJJsdpFF9CxoJLzNJUcOCmwjOGis/sVxHrcxJ2Kf0K8ivNtKlDG1ax5LTjqZ8AvPE00ayKb0tfvbTyEhkUQn+VF+8vBw3jOe72vrOqPLAIumMEaer8kdP++tS8XXfXyOgmJ2IsOONRZjF5Op9KYLN++r9/uKyZASM247fK2RZ+TmYo+PuBBj4kXfUoFNMbWbXjfYdou5MzKLwgJDFdVlTsro3N+inZ0+9g6bpvATQpV/Tj5stp8NGoHOoGc/oa+HvBe8L66IdKE53/Q1K4ihOuAAX/wfO
+ j2wIUR7T
+ u6u536UxA15tOT21GPFCGE2LypGxeDAEwYHInyveaQkOkcISMC/GdGHu8wKL/xLDe3uBQ9lXgl/Xxp1lvgtgCYoD1VoE+E2sDzPhEgJ1aPTG/3/QScrMbaWbgCGMqSmaOcBRSSyJgdvm8aXaOe77Jxwf3kn1GvmUF5q2XGFPfhyEajdHDJZ0lBo1poTKUvcWt2OtdakL88Cu6zMvmmLS6XbdT/SnMxDp5yTGvC+X6eU/Z1MiVfV1ipjgbNh70dBxCpKY0+Ou2hgPBVXeGS4e2ebcPDWXOEuG2iD4lHcNFDqCKe/9eFJgxLyUcc2A9lxXxqigWxhPKNOG754U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,23 +111,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Trevor Chan" <trev@trevrosa.dev> writes:
-
-> `AlwaysRefCounted::inc_ref` is a function that shouldn't be called lightly.
+On Wed, Aug 05, 2026 at 11:19:20AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/5/26 10:59, Lorenzo Stoakes (ARM) wrote:
+> > On Wed, Aug 05, 2026 at 09:35:56AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 8/3/26 15:46, Lorenzo Stoakes (ARM) wrote:
+> >>>
+> >>> No this would be incorrect.
+> >>>
+> >>> A read-only mapping would become unmergeable here. So this is something apart
+> >>> from the rmap aspect,
+> >>
+> >> I'd assume that we should never even consider anon_pgoff when merging
+> >> !is_cow_mapping(), it doesn't make any sense.
+> >>
+> >> No anon folios -> no anon_vma -> no anon_pgoff
+> >
+> > You can merge unfaulted ranges is the thing here.
+> >
+> > But anyway I actually wonder whether this whole branch shouldn't be:
+> >
+> > 	if (!vma->anon_vma) {
+> > 		...
+> > 	}
+> >
+> > Because that way we keep anon_pgoff updated even for MAP_SHARED mappings. This
+> > isn't necessary and doesn't impact anything _except_ print_bad_page_map which
+> > outputs both pgoffs.
 >
-> To prevent accidentally calling it, change `inc_ref` to be an associated function.
+> Agreed.
 >
-> Modify all `AlwaysRefCounted` implementors to work with this change.
+> >
+> > But it'd be consistent, avoid any confusion about gating on VMA_SHARED, and
+> > simplify the code :)
+> >
+> >>
+> >> But I think I am missing one detail here:
+> >>
+> >>> and it is a contract that upon move of an unfaulted
+> >>> mapping (which for read-only anon would always be unfaulted) that vma->vm_pgoff
+> >>> is updated.
+> >>
+> >> "read-only anon": I assume you mean an anon mapping that does not have
+> >> VM_MAYWRITE set?
+> >
+> > A MAP_SHARED mapping of a read-only file becomes a MAP_PRIVATE !VMA_MAYWRITE_BIT
+> > mapping and must adhere to the same contract.
 >
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1177
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Trevor Chan <trev@trevrosa.dev>
+> Right, but that is not an anon mapping, it's a file mapping that similarly
+> cannot have anon folios, ever.
+>
+> >
+> > Also mmap hooks can clear the VMA_MAYWRITE_BIT.
+>
+> Right, but again, if we'd have that being done to anon mappings, other things in
+> MM would already be broken.
+>
+> We assume that anon folios can only ever end up in cow mappings.
+>
+> >
+> > However:
+> >
+> > - If you're a driver clearing VMA_MAYWRITE_BIT you should only be doing this for
+> >   'special' mappings anyway (I have a series I've not sent yet that establishes
+> >   this as an invariant also) - and these are not mergeable anyway.
+>
+> Jup.
+>
+> >
+> > - If you're a !VMA_MAYWRITE_BIT MAP_PRIVATE-file backed mappings you never set
+> >   vma->anon_vma and always update anon pgoff so you always have alignment for
+> >   purposes of merge.
+>
+> Jup.
+>
+> >
+> > So I think also we can then change needs_adjacent_anon_pgoff() to:
+> >
+> > static bool needs_adjacent_anon_pgoff(const struct vma_merge_struct *vmg)
+> > {
+> > 	return vmg->file && is_cow_mapping(...);
+> > }
+>
+> Agreed.
+>
+> >
+> > [I have to create a vma_flags_t variant of is_cow_mapping()]
+> >
+> > With those two changes we gate on VMA_SHARED_BIT nowhere :)
+>
+> That's much clearer.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Yes agreed :)
 
-Best regards,
-Andreas Hindborg
+>
+> I was thinking for a second whether to have a more expressive
+> "mapping_might_have_anon_folio" or sth like that. But it's a bit mouthful.
+>
+> Most instances of is_cow_mapping() in memory.c want to know exactly that.
 
+Yeah and obviously once scalable CoW is in even that name will be wrong :)
 
+I think the semantics are a non-obvious but I do like that we are explicit in
+saying 'is a CoW mapping'. We just maybe need to be more consistent with that.
+
+Maybe once scalable CoW is in can work to improve consistency of that...
+
+>
+> >
+> >>
+> >> I recall that that's a combination that cannot be created. While you can create
+> >> something that does not have VM_WRITE set, IIRC VM_MAYWRITE is always set for
+> >> anon vmas.
+> >
+> > For pure anon yeah, see above for the MAP_SHARED->MAP_PRIVATE-file backed weird
+> > case.
+> >
+>
+> Agreed.
+
+Cool will make the changes as above then! :)
+
+>
+> >>
+> >> --
+> >> Cheers,
+> >>
+> >> David
+> >
+> > (It's funny to me that if you want a truly read-only MAP_PRIVATE file-backed
+> > mapping (no idea why you would but anyway) you have to MAP_SHARED, but an
+> > actually MAP_PRIVATE file-backed mapping of a read-only file is writable [which
+> > makes sense obviously] :)
+> I guess this boils down to
+>
+> MAP_PRIVATE of a read-only file allows you to COW. Which is usually what you
+> want when placing breakpoints / letting the debugger go wild.
+>
+> MAP_SHARED of a read-only file doesn't allow you to COW, and can consequently
+> never become writable.
+>
+> It's confusing, yes.
+
+Yeah indeed, it's just amusing to think about, but in practice makes perfect
+sense.
+
+Though honestly I wish we didn't remove VMA_SHARED_BIT in this situation and
+then rely on the hugely-confusingly-named VMA_MAY_SHARE_BIT for stuff where we
+_really_ need to figure out whether it was mapped shared.
+
+But that's another thing :)
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
