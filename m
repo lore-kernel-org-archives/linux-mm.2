@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76AD3C55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FAAC55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 14:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CB416B007B; Wed,  5 Aug 2026 10:42:29 -0400 (EDT)
+	id 9A09F6B0088; Wed,  5 Aug 2026 10:42:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77CEE6B0088; Wed,  5 Aug 2026 10:42:29 -0400 (EDT)
+	id 978306B008A; Wed,  5 Aug 2026 10:42:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66BA06B008A; Wed,  5 Aug 2026 10:42:29 -0400 (EDT)
+	id 867866B0092; Wed,  5 Aug 2026 10:42:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39CB36B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B98FC404CE
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:28 +0000 (UTC)
-X-FDA: 85067481576.21.9871A9A
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0C14A180011
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HIzzLjtp;
-	spf=pass (imf06.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 56EE76B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 10:42:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3E9FA1F69
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:30 +0000 (UTC)
+X-FDA: 85067481660.01.1FCA321
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2AEE31C000A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 14:42:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YdPO0JiK;
+	spf=pass (imf20.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785940947;
+	s=arc-20220608; t=1785940949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mCrelJAti2S/Rp6s22ZLk20Nrw4yj8Y/bW/BPR3eDNM=;
-	b=XoQKuU4o+6OhN1XJKHF6e1OX/hM6Zlgibft4abQFkaRORjvv5HZZRdytsfq9/3a867uhhI
-	sYZUJ600SgsmVi/7HTUSj7nNyLZliJHnjDEr8NkfWRwGZUC75s5vS0iwPzDGEyyVGuMbRV
-	OLbTyVFpQeADRnjXslEGu6NV6eA9vpc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HIzzLjtp;
-	spf=pass (imf06.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fOyJt1GjebvcdavnL8pSeT2aveC2x2fYTTclxb3ByIE=;
+	b=42YXTdKTTbjlsmBzvK3PR/d2A4BZ++tOxQW6lhE145YpD+nYcJOkJn3IxpaTZmaO8uBfyI
+	8QdenFstLlkmnOzcj5hASOZekmTpbHfZpQNeqiFjz0Y07LSmgeABIGRPwO3aDL2m5YBCcp
+	ayzQGzSv5jgg80Ajeat3dMqj/PofqYQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785940947;
-	b=4tRS/dAakHtBmJntXqoqHP2AtPtctgrxpmlSjiLsqS/lCyzWoPsN+7gUHSIU+IbHHhn1Ak
-	DNI2OCEEyWLJh4sM/Er1QBQ8nj19YSSzL4NsW3Pc96Qux88qVnE7KkK79ZAyzP56Vlrkax
-	hQd33dGS8aaYnjtYT9p5uHf50akBiGg=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47de008b020so661853f8f.1
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 07:42:26 -0700 (PDT)
+	t=1785940949;
+	b=kWns+568UotCALObbA/QEc0+jxsQ9f0Pg+g7uVgfu3DIUcqUY5tyrK2Oxu8U133tpzOvZR
+	rJJy6G2VdcE8CwQI7mAiV8CbBqbcvVbyr2WfE38WI4QrR1LSBVJE2nUnEAF/ssifzD28K9
+	mq3UwlGhRNlcrcpsQtFBH3ZKlXMZlsk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YdPO0JiK;
+	spf=pass (imf20.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f7027ca11so729089f8f.3
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 07:42:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785940945; x=1786545745; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mCrelJAti2S/Rp6s22ZLk20Nrw4yj8Y/bW/BPR3eDNM=;
-        b=HIzzLjtpSdRLzjLsKR91I8d8XwISjS+S8HHXPosbA1WB18oBuLdfBBE725xUhjXKWA
-         G2epUVfO+hN3kkHhAIvNcVsUepkwpsGP98rtGW8A6yS+Zkzi9Qu8wMzJuOi2wXCVEI6X
-         cniZylDU0dL84Xh1M/nwa9IVf5xGzEqNQYqruXI5pxXyW+wgYL2WBx46hADQL8Yvudzu
-         LhwapMlqZO178ReINjvQnXXNr6JnB0Ze4Oy/Eghy/VSKmYl5mmSsQKaJqZsBmxqha7oi
-         rFgHtWRzaQro1JtWu3EJ22wAgvt/HTDTPFYIiNAz2LMlk3+VdRi5gNq9e2hUVpSTbVQr
-         789w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785940945; x=1786545745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785940948; x=1786545748; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mCrelJAti2S/Rp6s22ZLk20Nrw4yj8Y/bW/BPR3eDNM=;
-        b=fB0iBcUD9jwXQIgMZ5mGL6po+43KmRsPUz3x4szCg1jqMRpXtczDcUvTkmkK3Kdvlm
-         M1eD/XywLLB+rswD5Dot0w5g4s21PDARgA12PT7B1ATnh1qyaZULtlpEel36zbUDt1WW
-         QT/pCxHfsmpzbSoaMEohMxFXxGvcIc9y339rA9RIgF6zxV1gStvFDTJeq8FvQ4ekqXsX
-         IcTNJiUhmdCLYWmVWBpn2X6MV1ZCRT8ztjM4yXAb+O9t35p2221PoiMEJSPn5ir6oFmg
-         cGulurZyohCwpRpDI5Qe4cXMe+jQDkZcq3zkCedxV2YFAJWND376sAgrEcSi0EMwaxXE
-         l+Uw==
-X-Forwarded-Encrypted: i=1; AHgh+RoT7x33IVcabVwI8ueO4L8inZ8q011fbsJJFCmEE2WcYKybvCRZLTVN87krsSg+kKxjah6n2LXNlw==@kvack.org
-X-Gm-Message-State: AOJu0YwOlZqcFKwuXFHrrR6inAJCreuospPaeeG4tZMTQNwGfTpnBefT
-	ov0h0dUFS4KdPZ+hUH0EQ27vns5Qc+WwXlIVXICmgkX/paKkFyim02mo
-X-Gm-Gg: AR+sD10jfM/fJ0HgLD3rHVTlWVrgGj7O8d7FPNrJ8xoWPWnQ+p7Uyk7MQDdP13S5ky+
-	ZvJW1LJtGLzQ6lG4mgTaMG1xC1VimYBtcJQ2XIrtRQ8cfpiE4R3QkbGvvMTiJlIX0QsXVi8Dmtg
-	UgBSUXVElJwkHGQABP3s+Nv4g+N1bG1NbDIqEjOHAVYXg5f3dy/ojgngoaNepFKqdo0LX25nGhu
-	6B8r3raCLjq0AVWA1fqi3WSpJO9tfZQ21ukLtK8cE2dYru3DNTKCWMUeNVM44gNumn/d3JAc1Qh
-	o4hsBXbKxYCYk0wgiMjqw6HGP9s7DPg+s8RE3kb5IOaIiuIIy0IbTrtY28aj1zHgmpZsrtNNRFj
-	UONaymXtNuDlnZsPWeWq6ZU5ug2xaZ8d+/1ogCXkYinQlGtWHD0VrIlb+VZNCVs0NPBx8H+U6S8
-	CQbRir2TfrzqzDe5Zk8Zaq53f3ox4tm/PG8p9rvPaCrCwHpzgMX8MbIigEc4D9T6NLTvch6zxsJ
-	ITvHV2nl2nomeblSzlEMs4=
-X-Received: by 2002:a05:6000:4a06:b0:47f:8603:a879 with SMTP id ffacd0b85a97d-47fec51a8f5mr12905406f8f.11.1785940945311;
-        Wed, 05 Aug 2026 07:42:25 -0700 (PDT)
+        bh=fOyJt1GjebvcdavnL8pSeT2aveC2x2fYTTclxb3ByIE=;
+        b=YdPO0JiKuY7cIeuOLCIOF2I6Ou3N8LZRDsPdS0HuoKSF+ssmUSq0/XJE/39/UihecF
+         nFUY/lsqCuy1I98WnOlUsKPH3eGYTrqk5Ya102esQKdSwQO3tSJgueJaYCXwUuxnLa/C
+         /lEnq89sfVJK/iN1s1AfNIAf9Cw5G+owJQeN23wJc5KVNIsatM50wba5s6xL+9G/jHYr
+         CMBePzppnN/tRLlBZiH3rRP6ddVLyYl5A83SYqMbLurtpVb/GfnmJSd6IbGXdU/7Bzth
+         Tpx8PJ1G3M/k8ok+aUm7mHpsu5r8AhWpcnrjJyIBgPRj3c1kWfyd3YdaZfgpx2Fdrz8p
+         3AMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785940948; x=1786545748;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fOyJt1GjebvcdavnL8pSeT2aveC2x2fYTTclxb3ByIE=;
+        b=As6iiHD4b1i/VZgpDtinXf3zT6tpYBQKJOOUcz2pzLJVDPuBVNBEUInQaLTHLhyfjK
+         01+1WQRgsVZAXLhfxV1F584WbfmNBfDpWKCNGWmRdm2iXVrLLYkWu+SkvKhzNhXoOsTZ
+         Upy2L/LkV4+iX84Ub5s37GCDIoI/EttTiIarsunjDXvdSZcU/VVrKrZalns2PVATILAC
+         ZIyzKGgMjd5kVdwtS+S9nigVSNwzo+FtWsBIupS3xxGNZu9kdYFMT3aLyoZRoz9eO27s
+         QjvibHiV3PGABkFUqDCrmcJuiXNrNbJ4HkAKVYk2ypyMKHPtL7pwdCAKkn3TgqPRLrwF
+         8z4A==
+X-Forwarded-Encrypted: i=1; AHgh+RrpdWWaQVmCwHkrdXqUQRJHCySMW55Osz+jryQrTPnLIRk7SjePQHex4xZi+TWrbE3FpOm7tsNdkQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxit3mrkIM0GfJ0AyPEnZU2tq6KkJuft8B8SMiSOM9h4XK/FwMG
+	m9+WU8J/WsMr7Frf03jSGUyAM+cF7WBDjMpC/ZcFrjI2FooqzXh/rCKJ
+X-Gm-Gg: AR+sD12LfodBONsFqKg0lyhHc8PW2CILkqJ2IAiW0Nzuw/ZjRFM5mc9JZ59RT0Ohu5b
+	ntuV/3MoJ+IZVBd810VdUDYSjWpHiLaHmd7D20g/2XKfuvaaOmJwCt0QdjpNRaGPiHc+xwXk3rJ
+	gIgVqFCIR8vQGzbaR4hH2hpt1QQ4ZDQTKfGJELxzb6N/k/EiqsCvryRqxH2j1BBUNGJZCSTuVUo
+	aLdeKnmbU3Wj/YC0/YRNMtvnraeWrqxKxYbAzmqe8Vk2tAW71yO4HAwkY1lKgo/oU9eD0h0QwJz
+	XuflVrPN7A9xiw++EOEyjIB2gh+JHEZyOyVVEs/o3/LaGXQULOZnNtgPG1DjdICsJK1ZStZwtJp
+	uzbxuhJ8Mg0bArneePfmkYRVHRFgYn9GLQFPyHdcR6o77xfbiRrvml9EiA2g0nvfvX7qXfDOwrr
+	zmzNL3ei01QJF6rVfB9QwAFTxHLqo5KOJx23R56cQ5urSnN9BjCmq/N+sHaf13LuUzqD0mbtNqU
+	uCdEou3um+D+iSa3nudaOA=
+X-Received: by 2002:a05:6000:40da:b0:47f:93b6:8d06 with SMTP id ffacd0b85a97d-47fec482347mr12815889f8f.0.1785940947427;
+        Wed, 05 Aug 2026 07:42:27 -0700 (PDT)
 Received: from LAPTOP-AVI.taile24b5.ts.net ([2a00:a040:1b7:4f41:6df7:ffe8:d01:255d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232333sm10094289f8f.18.2026.08.05.07.42.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232333sm10094289f8f.18.2026.08.05.07.42.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 07:42:24 -0700 (PDT)
+        Wed, 05 Aug 2026 07:42:27 -0700 (PDT)
 From: Avi Weiss <thnkslprpt@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,20 +106,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH v2 0/3] mm: improve insert_pages() error handling
-Date: Wed,  5 Aug 2026 17:42:16 +0300
-Message-ID: <cover.1785847364.git.thnkslprpt@gmail.com>
+Subject: [PATCH v2 1/3] mm/memory.c: rename walk_to_pmd() to populate_to_pmd()
+Date: Wed,  5 Aug 2026 17:42:17 +0300
+Message-ID: <1d3d22df3b43080855d4728095f9ebaddfd7bf88.1785847364.git.thnkslprpt@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1785847364.git.thnkslprpt@gmail.com>
+References: <cover.1785847364.git.thnkslprpt@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2AEE31C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0C14A180011
-X-Stat-Signature: coxgfmice6xn9armxfbdi51pgit4qazy
-X-HE-Tag: 1785940946-662357
-X-HE-Meta: U2FsdGVkX1+ws2JXhyY57PXzIPD7LvqgUgOky6ZbFaimPJcsYL6Rm4E/XZqsHU1XL8J0fqVGS/4/SfCuAqcn7gEkPPhjbGSk8DBjZ/g0v5x5jqYcr+oV8Q+BidJlKkK8j8mMxhjGlN9dgu8kYWGOkaJo6LbHUZq/EoQuqFwc4wwKRqIWfpKCXdErUScXSBZLjA9hBRJwaRngbXt7Qh+IZV9F0G5ibVPCVJkEsm3MVFP35W7MbFuPOe93s8ZutPi5crphyIrzGFRolQY736nuEn2yfaQBaxUPhAyHD2/JxPdxqNWJet7GTVbEeh0TXTJkVg2Lok9mRqBxKPgfOqhUDdOzvWYg49P8u86EOIk7zyU+2rszzOFMRNtROUg6zHnAWHCgV9zbOn88voC5INvloY4Tb35tNPq4hZF5H3i5j1lv4/vcthoL61Dh/vwliLjH7FnZjrdTD/Mr7r/yEnpp1VyPCtpVBep3/83FODaZfyuTtDZbkkZWhuUz1DkrMVZXtem9ivngIebA4cb+pBhTBRmjd47bOFZQTwUGcGzTTpuzc7+1/AyuxgtbQZ8aWxLBO4y+6rcGdTiOII9Sft3pENf3rozc6Ahv9F2CXRfOTizoNpJvChCFAooWk3DB/80V4+zNTxP7X2fHgB7x9l8HgY12N7G0WYGrJQC438k7cZ+UpTEhX5JD0LZwVn+BN+n2Xm33RA/n28RzNLWFmHInIgzFCdYDfEEOV4zOV3ZObLiNCYO8lsSh4LRibRmzQqiz2Gn/bZldns8DVZqLLk4eJzVTq2h6wlcY72wIuS3Kj/PCSFTNtaU4NmQwZl8IbhbtFtnY7GLMbduhoxUUhk/auHFp44a6p0RyTCCadliC/Ff3HejBMAgh6lhZHtYvtzcxS0HVpUS5to9Vb8m75MweZAlBW15Ff7bopH01dPPN2Me7vvkg1o8Jh7httxKXtr4/V5bb5UTxLwE5BZQT0tQ
- m/VMhF4G
- z0KW8eYPE4+PnHJgqJXD2IDLSlc4AS5zDpHQT21Y/MGT1XT4ZwOUt2CgwvDnxWj1+Mauh2vm0sR+n/Szs0Q3rsiUsfokeVth0VEHw1RReZaavzA591sROTZVJLAiAt59jDdMOt4iLryTO905+N4HGx4bfXT9WhUQyrXgDQguF1LsUSxficA3OgX1UYAO2XfaBZnR9qykZ2Br9y1fQH7QWrslwvFPITPqiKrGysSNkxbunTZCRUgu3P0LNGJ0AtSzn9aVYISboHddwiV/RK4vRdLAYt72yutFKTPSr4nE+24yAfLnvvS9CQ+0d+A3Rx6AE6XcGthOeXXu++j0hdW7pqfV2lRqRBCciVbqKfNck0d0MppmihuKbSVI6UEfmKlxZCGXAxVtMIAHlnH7gIXSA87b0XkVULsO2yXcB7U4EWYrmwdnnoBsYjqsJxrzLRrHQKPOUXy/eIVrEsPG7m02a/gbtPgl5Byjf0O+EySdIw+e71V50wl42+WadvwLTs2ZFkxf3
+X-Stat-Signature: rwt1qe3nykghjtx878qq7myrz9jifjq7
+X-HE-Tag: 1785940949-997948
+X-HE-Meta: U2FsdGVkX1+rhmnkzOlgZMaiVy14lSMy6+wyUFn3QdNvkZ/Lnv2ELNA7t+HpIfIknsJyXyF04BYYx4H0vz2FUv66zKH6QsinVC+KoEqZx8ptR6yUe+7wTH7OmZfn5Al9pLOEXuWzu5iT9eR8AMbNXRvNPMQUmdrBJvh2hag7O23OI9jXEWUEEqFdvPO4VuTJBunNc7n3mw3U+USJvEbpBxtf0NUsfRXvG3xEc6KWuSj60vHDr0TK8x3JewS6l4/QeeW8iHsan25TdDkr2dUzMfITnRkBelp8kUjGm/uabCqArcTcVQLIYaLukwIp8fNgUDBRyQQZ6OdNQkeXKjA6nU/+M9SaCb0Iyf3dIlCthskfppDoY+uUri+X8dtM5oVGondZ5Az2K3fKoSeOrQfk9uoMBKUY+JiVeZ/947XRzuGhQA7dF2H52vsMy6BZtVZKlKuBJIWddVxIFAs4ys1SdovlqrJcAL5i2K6wOU+m8moVWTBzhGRRqbJa/Hgy336ooEJM1XCAKARXh54r9/sVjCIXmEZJOyKkgQTZm5G2CWqcnSlhbpigLqwq4CuAnP9EscLeUBUKpfVvt2S8+qj2AFnN6/lQ9ARxWVxsupuDmHwYwkfcq2TMH8L1VdxM6Tq0mN1tyCtRx3J81tySyN/TbR63Op+Q42xJpDYzFqI8AZ5AYE2u9b6jToAnnf4YY3GvEbFBU6iMBuFIDfCzHzIzEXEvv4stPX/bhxDExWFEP7rrCYiOpVTB4r7sry3VDmv7tJ6aJdTCYnPboPY5X1Oi/QKWDO4hlaqbdj9I3NBgTSQ4IhuIsJAGVnS9P38KZxGwY0dW/u+rqKwsHCo5YViHJNfzJfUK3kFhgn3urydzRNCdJYcDUeK9W41s4JpTYmhiUmeKQWoddkPmiwOhVwnOXlcG8nQLZphV9DE99VMQQXgvze/HEggCyM1oJI5cEZwtCYaQqkEEZPFk2riJ7O2
+ AeQF3PZS
+ DbDCjWv6fWV+2pUMVt+F/nYwXsSnRQVfLi3DGHJYz15QvSqNxcR/ACpNl6Cxxi2F3DofCswmXAKtSQvckBe4DyAXMmP2Uc3j2uSUoNYLRGwMQRXTA6n0eX+De1vw4Nt9LAZn3Jb6YsJ92fsG/wL4a22ncEkcXZPmjqUYMWSg+sr5gd3kwFza4sxs7jhPhdxDuAcvIGpZUYE44cRQqWF71QsF4dluH8iASqzc6oqbk+i5ebf93mhni3uUzwIYx54RCuk+SO+HKbGw5YtrFUkmU+yhss9ymZdrlV1mTesa4JOX3UX466hmsb2TMiLB40RoyVa++PUQO4goMN+8weOVd4AF4XNu1cteNla/fs71RB0hpazobJ4ygzwn1LGlEL8CJMEk8K7Rvf4r3Iks6FEV1W+miygBb28frZAnrPfth/dH3W4oEztJ7DjCksvgYSNdheqTDc6gR+8j0rVw7tQ/G35+bSrF/WmbbBEwMRqkjgfLMXPfPc/s4zDcM5cH5Pi9knfZttcHZZtxSNpZKpeKuUDz6PiZlP1A9FZAF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +129,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Improve insert_pages() error handling following review of the minor
-cleanup in v1.
+This helper allocates any missing page-table levels (it doesn't just
+'walk'. Rename for clarity.
 
-Rename the helper that populates the upper page-table levels, set error
-codes at their points of failure, and return -ENOMEM when that
-population fails.
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+---
+ mm/memory.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Thanks for the review. I'm new to Linux; most of my previous upstream
-work has been on NASA cFS and RTEMS.
-
-I agree that initializing the return value to zero and assigning each
-relevant error code at its failure site is clearer and more idiomatic.
-The second (middle) patch implements that cleanup.
-
-The pte_alloc() macro returns a boolean, so patch 2 tests it and assigns
--ENOMEM explicitly rather than using its return value as an error code.
-
-Changes in v2:
-
-* rename walk_to_pmd() to populate_to_pmd()
-* set error codes at their points of failure and rename ret to err
-* split the cleanup and return-code change into separate patches
-* drop the Fixes tag because this is a general cleanup
-
-Avi Weiss (3):
-  mm/memory.c: rename walk_to_pmd() to populate_to_pmd()
-  mm/memory.c: simplify error handling in insert_pages()
-  mm: return -ENOMEM for page-table allocation failure in insert_pages()
-
- mm/memory.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-
-base-commit: 848acc8ffe1b7cd5f1bf427b93069becfebc2c9d
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..8658feba8be9 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2268,7 +2268,7 @@ void zap_special_vma_range(struct vm_area_struct *vma, unsigned long address,
+ }
+ EXPORT_SYMBOL_GPL(zap_special_vma_range);
+ 
+-static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
++static pmd_t *populate_to_pmd(struct mm_struct *mm, unsigned long addr)
+ {
+ 	pgd_t *pgd;
+ 	p4d_t *p4d;
+@@ -2293,7 +2293,7 @@ static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
+ pte_t *get_locked_pte(struct mm_struct *mm, unsigned long addr,
+ 		      spinlock_t **ptl)
+ {
+-	pmd_t *pmd = walk_to_pmd(mm, addr);
++	pmd_t *pmd = populate_to_pmd(mm, addr);
+ 
+ 	if (!pmd)
+ 		return NULL;
+@@ -2437,7 +2437,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+ 	int ret;
+ more:
+ 	ret = -EFAULT;
+-	pmd = walk_to_pmd(mm, addr);
++	pmd = populate_to_pmd(mm, addr);
+ 	if (!pmd)
+ 		goto out;
+ 
 -- 
 2.43.0
 
