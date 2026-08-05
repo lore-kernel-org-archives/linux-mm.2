@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CE4EC2A09B
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6877CC55838
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D1796B0088; Tue,  4 Aug 2026 22:26:49 -0400 (EDT)
+	id 4C1266B007B; Tue,  4 Aug 2026 22:31:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 181F26B008A; Tue,  4 Aug 2026 22:26:49 -0400 (EDT)
+	id 4237F6B0092; Tue,  4 Aug 2026 22:31:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BEBC6B0092; Tue,  4 Aug 2026 22:26:49 -0400 (EDT)
+	id 2C8A06B0093; Tue,  4 Aug 2026 22:31:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC41D6B0088
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:26:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EE8EA1439
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:26:48 +0000 (UTC)
-X-FDA: 85065627696.20.C09F2CC
-Received: from out-163.mta1.migadu.com (out-163.mta1.migadu.com [95.215.58.163])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 92FBC1C0006
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:26:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dApTgvPb;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.163 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E53FA6B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:31:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72F2C16033B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:31:39 +0000 (UTC)
+X-FDA: 85065639918.06.AB0E699
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A7B6F180005
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:31:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H+tF+BTg;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785896806;
+	s=arc-20220608; t=1785897097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qxhPyeCLidu0a6r7PQAlsqHOIelpm7O7iJDL5zwrXtA=;
-	b=pPo5U64ZvnMf2loAZ+CYI+Kbfy/xbKYHMScSFyg4egfpK/LRYUczdKCg/ii73/yQv/H0ce
-	7+g2z7a9yCpgCeMBxsG8Wv6V9oqsvFE3Nyi+m11sRuaFuYe7pe10YSzKt7/mgB/ZAH6XGh
-	x2GnP6Updtzr5eDT3SPv1spFzbnDMKY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dApTgvPb;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.163 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=zokNAeo5/eK1uMZFofy4rpd8tQkyD2FhGbzXwMe/1Gw=;
+	b=graj10BQwpWy5Nx6O6RAOEDAJWdEWrH+jLZ7MBIztLjnXet7tyn7FXGDTjInJ75rdI7Muy
+	goLdKUq9pBs7n+qHXfxss/gPGIRPUhWmUeXF3YriANBrhglwKN+EZfwZC35agBqk/tPBhw
+	sM0niOqZKZyxLu0Kj+X866t1kACE1Cg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785896806;
-	b=cmB/rgGgmTaSlTj5FcVJ7GOYpTQKJ+fQ0qSY9q1zfHWv0Qj66+L86cyH5dpTSxgVJCy3Ay
-	xQtcKdj+nHj9ImA/XFeX0C2kM2kwiOA84hfspOapucraBTQ30Xq/lNpYyVsYixnlzeqot+
-	jyEV8k160vQaFzIwprECgjGkiX08oKY=
-Message-ID: <bd95f8c6-33e2-4fda-bd4b-ebc37ee7c0fb@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785896801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qxhPyeCLidu0a6r7PQAlsqHOIelpm7O7iJDL5zwrXtA=;
-	b=dApTgvPbD40Jr9rJ8xg6bqSqA7DUkvdQNhYWYk+bmQWF+T+z3t3L3vb9NdAYXNWg+jNXM9
-	QNGrayoiJN2wymZ6QXooX+GxxcZe9eXFQpLIL+9T5n39E4XFV14xlTXYsAUlw1G7JGJwxr
-	Sl9E4w1frMLhSsDezKkitaXhkzt6uWg=
-Date: Wed, 5 Aug 2026 10:26:02 +0800
+	t=1785897097;
+	b=Y9moJaSHOlvfCVDD/34tMvs7tkqzEOo9jjTRUzbJrDN2I0CIHSCOb+ZZG1yZi7iAkoxaY6
+	rV0M8Rq7hMou3dBKU42pzsqU+afdLeOBHQuVSgLhXXbwqVVR259RMWv5fprNoUCIpNnjgU
+	LYFbhMblvB8bEM3g1+euFNOmMKNE0V8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H+tF+BTg;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 25FF960A64
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E251F00ACF
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785897096;
+	bh=zokNAeo5/eK1uMZFofy4rpd8tQkyD2FhGbzXwMe/1Gw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=H+tF+BTgPhHqnMOl3b4yC/zMsYSdtwzUPrz/q6n1JeopCHZrAKoAXKvzK+gtuKrk6
+	 VVwAhQmLMINvKBIAKrMJd1cqfKeat0eyNyLXUW/S8kjCm3RqDsJ0tNBnrSQlsNsUvq
+	 mBTXZKnobxPStVhtUjF0gF7BMm+jPcV+VgJDcAlNQ0qqOs+dohtFR99YAsQu7EGQzd
+	 Iub/qtXw94duqCiMNFEYR1xEf02baOeTgS2heXyG0pN/3N+dTFBXIlrbwYjXvxx+VK
+	 HDFIqzEL0+Kehsx70Tf6aux3/9dT8lP9EwIsud5rkfbfKVShTgv8cX4TxJGuo+tpPq
+	 89cspnpRvLarQ==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92e85499ffbso35736585a.0
+        for <linux-mm@kvack.org>; Tue, 04 Aug 2026 19:31:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrBxDtmBtwydXO3EQ+JkPJPewzTTI2vdp8cL6PbYYcJWpTS55Jg2dbNoMtXu8BG6IObc+Fdp3ff4Q==@kvack.org
+X-Gm-Message-State: AOJu0Ywc9M7HT5+aeM/nId94/QecTUTeEgNWVtvg+FiKEeJWUukjVjGX
+	gxLyeYWdy8bJz5gaWoU9Dfba/vAl1mUYWNClExUDXnwEwJQfc1ebUpcOko+ctkFZXb5zXs19rwE
+	ZZjv+aKi0mWMptuJS5QfOETlGrw1wBkE=
+X-Received: by 2002:a05:620a:1d04:b0:92e:4799:a808 with SMTP id
+ af79cd13be357-936492ba7fdmr294697585a.40.1785897096189; Tue, 04 Aug 2026
+ 19:31:36 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>,
- stable@vger.kernel.org
-References: <20260804122038.190270-1-hao.ge@linux.dev>
- <CAJuCfpGit7zcNPGAB9D2A5+718NY-qdksxt7gUaN_eRcB_5+Ug@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpGit7zcNPGAB9D2A5+718NY-qdksxt7gUaN_eRcB_5+Ug@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: jd3gz7n7f7ro8b64355s8x6ppnsag6oy
-X-Rspamd-Queue-Id: 92FBC1C0006
+References: <20260805005545.66112-1-baohua@kernel.org> <20260805021944.1753869-1-zhangbo56@xiaomi.com>
+In-Reply-To: <20260805021944.1753869-1-zhangbo56@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 5 Aug 2026 10:31:24 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zsnZiVSrQ+bWbmDmjVCa-svsA_hXor2LP1uFFpyomrNg@mail.gmail.com>
+X-Gm-Features: AUfX_mzxWvfoWfH-NihfuJkt_g-NHvVcHtgorIhplnkeBGUbO4QmT_Ic69h-4dU
+Message-ID: <CAGsJ_4zsnZiVSrQ+bWbmDmjVCa-svsA_hXor2LP1uFFpyomrNg@mail.gmail.com>
+Subject: Re: [RFC PATCH] zram: avoid preemption with CPU-based compression backends
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, minchan@kernel.org, 
+	yosry.ahmed@linux.dev, surenb@google.com, zhangdongdong5@xiaomi.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A7B6F180005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1785896803-665264
-X-HE-Meta: U2FsdGVkX1+ahrzmDCXmHsMYkoNSpaTPSxfXd36q3rywFUMB/YQQGJk/LOCmrveVKxcYM2pziJkMVknWDK56zoVzvlONE87HxQVmBDqWGkBP0j0Ern4LgcCuoI2ALvCwD2lqYDxoyDz/BU4grLOCOyPUH6z8DbQc5VGI4hpyRq08AIaLBRLl7jOcvEu5PEHH0EhMTqXktykPBUo8IxtC+rvoYV/cHkCTXbpRcI1u0IYefNlbd+4/ThQ3QK3McaqmE812SHCRZXIKs5MoaTEulNOiGbGBpzh6UdMjroWILXzT65rlrXIMbrlJQoI2ckvtIEZ7q+T4RK/5H6dmTELQTUkSHovu0KpVC0qMUayWM9rYwkPJt0Oov/AS3JoUgsYbmDfdGngVSDIgtauAIKeAyE/TewcVdbdFnX2rUCszud9iNWSOGwqQSJ6EVP6jFDop37wpmaTuZbsLzKfCKS5ic29SwbT1E0ltlPGmqf0Lbwpwr+nbfCrThykyu28lRODzKj6Xd541Jl1Wspm4bEsTLvbkLFB3tx9QzgADT5GblBcAmH2exSffWwcA4yUefLNoV8YvJXr9isw7VWZofNtIEMh/sOTWKup/ljI1ti0UzGL5UrheIPlNxffweF2X4EsG5V0P7Bw8YQDd9mETHB5yT+9Mz+W37dWG9hSRg7x2wtjpIIhYxD/2Z7O4yR29UJ6DrLCZP9m7xduj+qlBMXYfX6cAkgOt+cW1uMsgZuVmrnyRnhxey65R1RMFNXZfsOLnImvNVCPyvltTz3GqwxYOdlhtsaum5MP+37T5b9HGZ39QgpjpAJ8t38hVVzg33kaxLMVcX9SwxzxVMnhh42fdW4k2RXlytdAApDY7MRvo0SIyUgqPFKBd1r5zlZwNqJimew195ghSmeZsYeVBzM69sCiLncIuJghgpC7RqhCpr0qHWBykKKiEGqvcnIiV+B9wlF9w+iq7othN0p86wfb
- UzT/4ASf
- +rsqQV3GuKTb0iIRpwemMq+BB4S8ejJorDCx2pTuZCd6/a88MtNjCTjMNFgpra4xvJC0vUC8V8E+cyXye+Pt520d9AAPwODlgmhugg0qLW9abscXPrQjMe9uvuuiCmYMLMFzMaXMT3kEVwiOv09FN7fbI2dnbqnXqECiTcwLZ0PvegMc4dTQL6Xh51BI6sag8BDp4R7H6ZaFw7B6wEk93SDIZzibsguLU1J81LybluvxijCOXPTcYmerwGtAjDxCMlbI9a9mSTIBC2QqfGuhD9d/ynSu30GWktWaYZnlYXTJs1FMLRZwSHnO+mE1l/ZBBhM2rdfgRU8UOAEm3+Bx/qcQBqj7J1/kzLDQeNlLA/V3ceTv34N4oCSjppsZGPWjQgGuD
+X-Stat-Signature: na5bkdkk8bs76mkzsimjhooicodwwps6
+X-HE-Tag: 1785897097-560923
+X-HE-Meta: U2FsdGVkX1/sPNJMVyP5R8AJT2tMy0Ps1gJfY/bvGgEIcjEF+j/W9JJ5hUfHBO5A6SPDK6T1QlhkI1IV/ijTjUkdfSJv6v0smevhFL7xwKPedVllSHEsTm91ZR3cucGEOTlzQ2Hkji9IjxIGJguV96zyAEFOx2zGPSCqJAZU3aHr/l8DN4oLjOgcxhD1nlaonD+mAUR51M66KraNZzu0xbClzk8IPjb2UftPNNduFVQy8XVy9SCF00oE/CuuHY0P6GR8TVb9PYlqUMcGJYuS7XO/rZDnS/DzVhANtCJvFFF/J5thLFeXmInUElR3Kx8JnJRbrSlS896LNQ9LBPORNIVv3DKwo3HGluwfjd5eNx3bankpJMauAW391zsYp3kC+rZ+7LNI+tIkNefo094E3iRUvPmHXUQuEdaXfpEwvAV2r5sHt3ya1he02/LPWGeNkB5SZ2ihEzdVTEjnU+KaZI5ZCtxVlpCXFFCxLNcTMrVnRiiI70TAsskmyiJLO3vfnjQ6GQhxGl+H06y4SbaXe/Sx+gR3rYngnVQ8eVurWoLgbTYhHtIlciFBkW+oZXTc/WO/ci1O890rEnk5JkqO59QfI8nyekcIN/T4Nh7/5z+UFBk+8O351ow3QMqGzYzncHJ0811MF6PF0oe1gmCmeZNgXdGKVZUripMKkAIcZ80T6BLaN/KNgD63Im79aa/yGeYzGmyQPG8szS5odchLPlCgfHm23Ko4u1Ram0783c+lJk2MqLjf1gPNSRiJYFVZD3qsi9LcFMxdgWUAqSU6A3ZcGN0AneZIYWpsssOIqAwGNKliO5ZictOCuu+GmZbMyUdPfoyBD+i0iJ35gpyDT3mhAXMUj+PyQJLRkGwkbso1LHphWsGdHDhJdK1B32BlUldgiM6g8s+fSHI7tZqpUXZ4dhDrV32bsn6TpjS0FMN1ZzXfe2rG2jVJvp4hNOuTGbVhU52Ob1Hcg/LiQod
+ ah+gU9Jk
+ /rpxXK5euWm/+b9LDUn2Z8Vgq25r7L6e3jihN1j+EDfIld2D4Y0dkicUGtYfLXXWUsvTa0aqSO66E7YI/0mAKZ8jKFUhHmzy3UChnMthfh/OJ1kMfGn6aQaHcY2dpRz0wVlNkoZa4JAgJHfAC2pm/pyYrBxjlJ0GHvMTaOlUz3RwvuD7UmthmYF7mXuhfsoVhya8u3RLawrhxIrblehmYEU76T/hoPokvD7yvuqfFGP0ZJ2NrSEhKVVpB3fqeLJwSPj+PHEo46Ic2nlV0wdBVcZaWz2PiaADO56wyamAuylZUeumJa7f63wuLlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,130 +103,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
-
-
-Thanks a lot for your review.
-
-
-On 2026/8/5 04:08, Suren Baghdasaryan wrote:
-> On Tue, Aug 4, 2026 at 5:21 AM Hao Ge <hao.ge@linux.dev> wrote:
->> In reserve_module_tags(), the tag overflow check is gated on
->> mem_alloc_profiling_enabled():
->>
->>      if (mem_alloc_profiling_enabled() && !tags_addressable())
->>
->> If profiling is toggled off at runtime and a module is loaded whose
->> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
->> skipped. vm_module_tags_populate() still maps memory for the tags and
->> the module loads successfully, but the total tag count now exceeds what
->> NR_UNUSED_PAGEFLAG_BITS can address.
->>
->> Once profiling is re-enabled, ref_to_idx() computes each tag's index
->> as its position in the alloc_tag array. update_page_tag_ref() masks
->> it to alloc_tag_ref_mask before storing in page->flags. Indices
->> beyond the mask are truncated and idx_to_ref() resolves them to wrong
->> tags.
->>
->> mem_alloc_profiling_enabled() and mem_profiling_compressed are
->> independent. Once compressed mode is established at boot, it stays
->> active regardless of runtime toggles of mem_profiling.
->>
->> Remove the mem_alloc_profiling_enabled() guard. Also return an error
->> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
->> the mapped pages would never be reused - shutdown_mem_profiling() sets
->> mem_profiling_support to false, so no future module load enters the
->> codetag path.
->>
->> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> Thanks for the fix, Hao!
+On Wed, Aug 5, 2026 at 10:19=E2=80=AFAM Bo Zhang <zhangbo0325@gmail.com> wr=
+ote:
 >
->> ---
->> Changes in v2:
->> - Return error after shutdown_mem_profiling() to skip unnecessary
->>    vm_module_tags_populate()
->>    v1 link: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
->> ---
->>   mm/alloc_tag.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->> index 52aece27b00e..d8c36430f1c0 100644
->> --- a/mm/alloc_tag.c
->> +++ b/mm/alloc_tag.c
->> @@ -904,10 +904,11 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
->>                  int grow_res;
->>
->>                  module_tags.size = offset + size;
->> -               if (mem_alloc_profiling_enabled() && !tags_addressable()) {
-> Makes sense but how about replacing mem_alloc_profiling_enabled() with
-> mem_profiling_support? Otherwise this warning will be issued multiple
-> times if we are loading multiple modules.
+> On Wed, Aug 05, 2026 at 08:55:45AM +0800, Barry Song (Xiaomi) wrote:
+> > Since commit 2efa9e9eb4db ("zram: permit preemption with active
+> > compression stream"), a major Android regression has been reported.
+> >
+> > We add an async flag (currently false for almost all backends) to
+> > indicate whether a backend is asynchronous. For synchronous
+> > backends, we use preempt_disable() in the !PREEMPT_RT case. A
+> > zram_zs_malloc() wrapper is provided to support a two-stage
+> > zs_malloc() path, allowing allocation to transition from a
+> > non-sleepable context to a sleepable context.
+>
+> Hi Barry,
+>
+> Thanks for working on this. The priority inversion issue on Android is
+> real and we've hit it too.
+>
+> However, I think there's a bug in the zcomp_stream_put() change.
+>
+> The new zcomp_stream_put() uses raw_cpu_ptr() to find the stream:
+>
+>   void zcomp_stream_put(struct zcomp *comp)
+>   {
+>       struct zcomp_strm *zstrm =3D raw_cpu_ptr(comp->stream);
+>       if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+>           preempt_enable();
+>       mutex_unlock(&zstrm->lock);
+>   }
+>
+> It relies on the thread still being on the same CPU where
+> zcomp_stream_get() locked the stream. In the normal path it works
+> fine, because preempt is disabled the entire time.
+>
+> But zram_zs_malloc() breaks this assumption in the fallback path:
+>
+>   static unsigned long zram_zs_malloc(...)
+>   {
+>       if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT)) {
+>           handle =3D zs_malloc(..., __GFP_KSWAPD_RECLAIM | ...);
+>           if (!IS_ERR_VALUE(handle))
+>               return handle;
+>           preempt_enable();        // preempt is now enabled
+>       }
+>
+>       handle =3D zs_malloc(..., GFP_NOIO | ...);  // may sleep, may migra=
+te
+>       if (!async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+>           preempt_disable(); // Preempt disabled, but it may work on anot=
+her CPU
+>       return handle;
+>   }
+>
+> If the first zs_malloc() fails, preempt is enabled and the second
+> zs_malloc(GFP_NOIO) can sleep. During this window the task can migrate
+> to another CPU. After preempt_disable(), we continue on the new CPU.
+>
+> When zcomp_stream_put() is later called, raw_cpu_ptr() returns the new
+> CPU's stream, which is not the one that was originally locked. Which may
+> cause a mutex_unlock() on the wrong CPU.
+>
+> The original code didn't have this problem because zcomp_stream_put()
+> took the zstrm pointer directly:
+>
+>   void zcomp_stream_put(struct zcomp_strm *zstrm)
+>   {
+>       mutex_unlock(&zstrm->lock);
+>   }
+>
+> The caller always passed the saved pointer from zcomp_stream_get(),
+> so regardless of CPU migration, the correct mutex was always unlocked.
+>
+> I think the fix is to keep passing the zstrm pointer:
+>
+>   void zcomp_stream_put(struct zcomp *comp, struct zcomp_strm *zstrm)
+>   {
+>       if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+>           preempt_enable();
+>       mutex_unlock(&zstrm->lock);
+>   }
+>
+> All callers already have zstrm available. Then It works as expected.
 
+Good catch. You're absolutely right. We need the following
+(will fix in v2):
 
-That's a really good point, this duplicate warning issue will indeed happen.
+diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
+index dd4db4a8af73..b7f5127c05c8 100644
+--- a/drivers/block/zram/zcomp.c
++++ b/drivers/block/zram/zcomp.c
+@@ -136,10 +136,8 @@ struct zcomp_strm *zcomp_stream_get(struct zcomp *comp=
+)
+        }
+ }
 
-When I thought over your point, I realized using mem_profiling_support 
-creates a small race window.
+-void zcomp_stream_put(struct zcomp *comp)
++void zcomp_stream_put(struct zcomp_strm *zstrm, struct zcomp *comp)
+ {
+-       struct zcomp_strm *zstrm =3D raw_cpu_ptr(comp->stream);
+-
+        if (!comp->ops->async && !IS_ENABLED(CONFIG_PREEMPT_RT))
+                preempt_enable();
+        mutex_unlock(&zstrm->lock);
+diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
+index 5293d638da8f..aa2fd3646018 100644
+--- a/drivers/block/zram/zcomp.h
++++ b/drivers/block/zram/zcomp.h
+@@ -87,7 +87,7 @@ struct zcomp *zcomp_create(const char *alg, struct
+zcomp_params *params);
+ void zcomp_destroy(struct zcomp *comp);
 
+ struct zcomp_strm *zcomp_stream_get(struct zcomp *comp);
+-void zcomp_stream_put(struct zcomp *comp);
++void zcomp_stream_put(struct zcomp_strm *zstrm, struct zcomp *comp);
 
-Thread A（insmod A）                      Thread B (insmod B)
+ int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
+                   const void *src, unsigned int *dst_len);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 52b9fbe3e0d1..8f36ca122e1c 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1364,7 +1364,7 @@ static int decompress_bdev_page(struct zram
+*zram, struct page *page, u32 index)
+        if (!ret)
+                copy_page(src, zstrm->local_copy);
+        kunmap_local(src);
+-       zcomp_stream_put(zram->comps[prio]);
++       zcomp_stream_put(zstrm, zram->comps[prio]);
+        slot_unlock(zram, index);
 
---------- ---------
+        return ret;
+@@ -2098,7 +2098,7 @@ static int read_compressed_page(struct zram
+*zram, struct page *page, u32 index)
+        ret =3D zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
+        kunmap_local(dst);
+        zs_obj_read_end(zram->mem_pool, handle, size, src);
+-       zcomp_stream_put(zram->comps[prio]);
++       zcomp_stream_put(zstrm, zram->comps[prio]);
 
-needs_section_mem() -> true
+        return ret;
+ }
+@@ -2124,7 +2124,7 @@ static int read_from_zspool_raw(struct zram
+*zram, struct page *page, u32 index)
+                                zstrm->local_copy);
+        memcpy_to_page(page, 0, src, size);
+        zs_obj_read_end(zram->mem_pool, handle, size, src);
+-       zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++       zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
 
-     needs_section_mem() -> true
+        memzero_page(page, size, PAGE_SIZE - size);
 
-     (profiling still supported)
+@@ -2304,30 +2304,30 @@ static int zram_write_page(struct zram *zram,
+struct page *page, u32 index)
+        kunmap_local(mem);
 
-reserve_module_tags()
+        if (unlikely(ret)) {
+-               zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++               zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
+                pr_err("Compression failed! err=3D%d\n", ret);
+                return ret;
+        }
 
-     overflow -> shutdown
+        if (comp_len >=3D huge_class_size) {
+-               zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++               zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
+                return write_incompressible_page(zram, page, index, async);
+        }
 
-     mem_profiling_support=false
+        handle =3D zram_zs_malloc(zram, comp_len, async, page_to_nid(page))=
+;
+        if (IS_ERR_VALUE(handle)) {
+-               zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++               zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
+                return PTR_ERR((void *)handle);
+        }
 
-     return -ENOSPC
+        if (!zram_can_store_page(zram)) {
+-               zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++               zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
+                zs_free(zram->mem_pool, handle);
+                return -ENOMEM;
+        }
 
-     reserve_module_tags()
+        zs_obj_write(zram->mem_pool, handle, zstrm->buffer, comp_len);
+-       zcomp_stream_put(zram->comps[ZRAM_PRIMARY_COMP]);
++       zcomp_stream_put(zstrm, zram->comps[ZRAM_PRIMARY_COMP]);
 
-         mem_profiling_support==false
+        slot_lock(zram, index);
+        slot_free(zram, index);
+@@ -2484,7 +2484,7 @@ static int recompress_slot(struct zram *zram,
+u32 index, struct page *page,
+                *num_recomp_pages -=3D 1;
 
-         -> overflow check skipped
+        if (ret) {
+-               zcomp_stream_put(zram->comps[prio]);
++               zcomp_stream_put(zstrm, zram->comps[prio]);
+                return ret;
+        }
 
-         -> vm_module_tags_populate()
+@@ -2493,7 +2493,7 @@ static int recompress_slot(struct zram *zram,
+u32 index, struct page *page,
 
-             maps unused tag pages
+        if (class_index_new >=3D class_index_old ||
+            (threshold && comp_len_new >=3D threshold)) {
+-               zcomp_stream_put(zram->comps[prio]);
++               zcomp_stream_put(zstrm, zram->comps[prio]);
 
-So I'd rather go with pr_warn_once here.
+                /*
+                 * Secondary algorithms failed to re-compress the page
+@@ -2509,12 +2509,12 @@ static int recompress_slot(struct zram *zram,
+u32 index, struct page *page,
 
+        handle_new =3D zram_zs_malloc(zram, comp_len_new, async,
+page_to_nid(page));
+        if (IS_ERR_VALUE(handle_new)) {
+-               zcomp_stream_put(zram->comps[prio]);
++               zcomp_stream_put(zstrm, zram->comps[prio]);
+                return PTR_ERR((void *)handle_new);
+        }
 
->> +               if (!tags_addressable()) {
->>                          shutdown_mem_profiling(true);
->>                          pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
->>                                  mod->name, NR_UNUSED_PAGEFLAG_BITS);
->> +                       return ERR_PTR(-ENOSPC);
-> This ENOSPC error will be propagated all the way up to the init_module
-> syscall and it's not among the error codes currently expected (see:
-> https://man7.org/linux/man-pages/man2/init_module.2.html). I suggest
-> returning ENOMEM instead.
+        zs_obj_write(zram->mem_pool, handle_new, zstrm->buffer, comp_len_ne=
+w);
+-       zcomp_stream_put(zram->comps[prio]);
++       zcomp_stream_put(zstrm, zram->comps[prio]);
 
-
-Agree, will change
-
-
-Thanks
-
-Best Regards
-
-Hao
-
->>                  }
->>
->>                  grow_res = vm_module_tags_populate();
->> --
->> 2.25.1
->>
+        slot_free(zram, index);
+        set_slot_handle(zram, index, handle_new);
 
