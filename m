@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BED5C55ABF
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 22:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5D6C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 23:05:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBFA06B0088; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
+	id A53076B007B; Wed,  5 Aug 2026 19:05:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96EF6B008A; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
+	id A03F76B0088; Wed,  5 Aug 2026 19:05:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5F06B0092; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
+	id 91FE26B008A; Wed,  5 Aug 2026 19:05:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF0AD6B0088
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 18:45:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 206951C0BEF
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:45:28 +0000 (UTC)
-X-FDA: 85068698736.12.E332708
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 778E540009
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:45:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785969926;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 55E326B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:05:45 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA2AF1A0586
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:05:44 +0000 (UTC)
+X-FDA: 85068749808.19.2F1B1C9
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BD7971C000E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:05:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mAdUht0y;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785971142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=DFpyOldZEHF9Yg/Zc3gaa8k23ww7akWYZmJqKRrl9dk=;
-	b=TX3XkprnEXlf1ORRDJqc8+W+QkoUvB9Rue8+H8qFJMKYG8jSGEIYm4sqeQnCa0kFemmLdp
-	FzPJa1X9Q52K/Vi/ViEk3vtU0STPxif7z5Klyz9iC9yJwLzXmI/lOiOmY+FodTJB/OTyHK
-	B4Qzl9xn+/1u1KmedeHuVPiPvOF1Q14=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3Bb1zagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785969926;
-	b=V2PXnCCAIzQpE9mpJwlzWn7wNgZFrNpVm9tLE3DgWOtKE940vpEW2O0e0tTGri95IJDm7m
-	35Vj8lnnotv0BB9OgWgs3MEIgpGWps9UOLU0WeAf8ADDMbx2aNWGmjY+bnl4FNGWskT9OM
-	pZWByBmAV8tHGA7b0+pCGg4RiJuJQlY=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6ae41d2af58so1197223eaf.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 15:45:26 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LlxzOHV9SXarGbQu2ALQb7kVLbIhmFH1zBVGVgFSBuE=;
+	b=HUneQI30NjMNkXuLq64/MVZRrwd6PrRbx4oSWDtmKs1Hdzw2ENxRPhgATWRVkST03KezcQ
+	ku81KzLZzkLUTEei5fpOVN9YDmSLy+0lBgteLkrYYAoys37mQiETR1NZH46rEbYFcqAhRL
+	33xlRfU/tHCU+QWr3KVqP0agoT9787I=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mAdUht0y;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785971142;
+	b=yBb9HU20iCLUKYGO+9sily4Qo20zccVKvLPEtRYIF6Mrjo1+FeepqguUgzLAJ3ffizoZt9
+	7ib7/ybEU6MdUOUAYvPBpLBWKmNm3UlL2K473YC1s4gX7SGE2I6XsHDZw5VBGoGw0G5PS0
+	XdyngxCk6W0zUNLuPZdkamDJs6TVBIQ=
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b0129cf6ffso3062e87.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 16:05:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785971141; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UV1r35fIo2Sjq5WW6zjfvezGPCRlGZNKMX1z5HuBP09WlO09ynaNj9gtaA9iXMy5OB
+         jCt+7naoCZVlYmCXUA2iVQSThp3fwTV2M6W0hsJ+I8CraDRXy6YLG30psq6cEKgluyzq
+         HKTOGmm2b7GoMtEiyobJbZ6FfXUJFQDGVtjN/z4bGmO3Ahmw7mctMByASB1+ydekZ+g4
+         +Gsk8U8yye8IzpY1iHpoBOGc3dpTKi/psbHf7HrpcfpisDKto7J3PG/mMt+5Rb8cYkqg
+         2yZZ66ZoQzVBXH1N8XL6cE/HHlaNRDdDiXiGXs+7l268kaDQXmFVrnEfcgmr9UD+syGg
+         AHIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LlxzOHV9SXarGbQu2ALQb7kVLbIhmFH1zBVGVgFSBuE=;
+        fh=kXOneJc2KiL2PKwufqbEeneT5GhIkEotQhNAoOBnC4w=;
+        b=BbEgLehAzzxXmbVuuftOdNxji9yq/sObGAZHwoHKNuwwyvAjcpq14y84s4Gc8HYgcQ
+         ffKuWt7o2sDG2Rqm8lSkLE+J4IGTwRj5m2HhqydU2GIda3JbiXbu0CvWjJZJZE4j8GNd
+         INpo6jZPSsUfAhcE/46OVu4XrMxXRKlWsEqISLs5RfsNPuMdtbqDG2uIiIlvTt0+2Elg
+         JjH/dAA0CaHfRw3DVj8BlqgaZYV81tZJikqZcBY7KwW1EalJOt1wAehyJ/JMFtIle2B6
+         Z0pmIqrotjvpGr+BOSXjKroMXVFdc2yJf/MZw9qAfguCiByk0/gyw7bIIMRKG92d0+fq
+         jutw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785971141; x=1786575941; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LlxzOHV9SXarGbQu2ALQb7kVLbIhmFH1zBVGVgFSBuE=;
+        b=mAdUht0ybXmIYi4xFvqAz/IIIa/lRCQReeoc4XsOfTw8fl8cDEd5bVVEUDAwn+17kL
+         ixGgaj/QEhEm29PcD1K8ip4i+NxaReokpt2JoOR/QL4gpDb73svKJau/goeLLp370qio
+         lt92rGBjrUGXU5rUKHGwrmhFZYxtC/XGYN3STmAErXogzuTHI8NZQY/KvRXvrqXHPwOh
+         tDIhBrcqbfX8WeIKeT56g1aO9MbpmjJ0Nz7fGDc7flKnsKLnzLRxqpaSxoJCIa+sBOf0
+         v/5L3eHXpE2UagM5eTcAjIoEGX05a5uc3lP5DKPJvoR1D0GpSWHdAl90Mb3EroqSNO2Q
+         cBxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785969925; x=1786574725;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1785971141; x=1786575941;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DFpyOldZEHF9Yg/Zc3gaa8k23ww7akWYZmJqKRrl9dk=;
-        b=gYTusLqDmlmOlXG8EXHpF88SGrkecd9OlUH0PwwPoAN7Ib4lhp/aitIG9zaEFZtEF5
-         1ckDJh9esdWDkIzZEM/sheEelqN6ojECCfkBbzTd9twdzHVhRHw1xQ7qnhqi21+iYgRo
-         ORzMHpUkxeeRg31rg7eq7zxbU+mANvhDRiKiTscN3VM/F0kJU85+fewCDChoVpeugQm/
-         +a1+PeJFY4c3BMVcz6a8bx4dJot5Zc/w38HlQyFBnZjbU3SqumRU7TIr+calIoSrEFbd
-         EO2zphPPZVEGd0NS/kbabM1Gjd1kWANSh8z+tiKaIHe3gv2kOxzFRnDOJNmL8G5ObLW0
-         zgag==
-X-Forwarded-Encrypted: i=1; AHgh+RrhYcKAsKemWsemnPp8KzGXD8Lre8lcFzvE6/qhGr8kM4gm9cwCIfbvPcsB+BK6k4nGIkE6cV3Vmw==@kvack.org
-X-Gm-Message-State: AOJu0YwwWTxb0cKRW4Yt9Aw+kQArdTsmZQ5oEY1yivJ+JbVJIhydBku1
-	AkoZB37a6atGuYsu/kfXWgVxZu6DYUe5TRk4YEBsRaG8KjukRM8wM72TYOjkbhWwpU5wpixKXpx
-	fWeoLdVRDO5KfHG5oygJRaNc6St+Oi/OzBVH/5rvoFLqYR5ehTdlUUEETVls=
+        bh=LlxzOHV9SXarGbQu2ALQb7kVLbIhmFH1zBVGVgFSBuE=;
+        b=BPOPv0kcszHixmCA49mPpaZxfJIxwAIS9O9a9yIY5ANUJ/Ig9BoFL1TVQw+lxnaVx4
+         /+ZqyVWMiWYBBNi1BsRwqnNeNJ52c5vYM2y2+paW97NPUFjFR8VitD9fwhEtbORdvEEb
+         9LFpaOpkzvL+RdJIVm2+VvesRbCLlW++5C/mb82I0mzX1h6ORnzjqAb2iMbb8Q6nFhVB
+         Z16P5GuBIPmenBR+/4N19GAsHuvQJS0Cp5embvd767BVyE7TAvPvx+hle2bqNuHbq0Ou
+         Iu6dsEWjfbJX0Ybua1jcclZC+iIr/b7sJbWAb/qga/eNnBTuCuDzS1diDZnB56dyLr9h
+         RrTw==
+X-Forwarded-Encrypted: i=1; AHgh+RrpoxTfuCTq+XZknvirxdFJtLAA53ojCukz5e/3Ph7ldnGErzoHFbrFudCmPMOA2inCDrLib4w8/w==@kvack.org
+X-Gm-Message-State: AOJu0YynG74zvIFSxnRYJWh9nBmSxEDjJoUKa3BCNwdLcPI/Bepnhpqf
+	/YSBeRB3DV+mUh9PioTAvEsBhe6m0XdR5zLI2Us2sYVP+PCIpeScnIKyZW6cCoAro5TwmG7F/MA
+	0YVfoYpeZ/mUadelmXdJ2XOUBh0+jWxefPN3q6B5G
+X-Gm-Gg: AR+sD11hDlduZ2aJeLVM046+prbF94j5Gel/2DnHD8ul+qtLVSc6kxjQ3H1QJ9wBBB6
+	Y3rI95X0jI4wFEUD3j84q0ypSPelrwA4opoGw5CqaEzSCkXuaMAtc4YOGUai9TXjtLOCNuDPuMW
+	2Un5LJO+a5mkGmszeigXgjxlP9PjWdAxBCmPwHsRm62Qx7dxTCSRWKs4viHD6D8zqgthjhfllmv
+	1/aB+nQzEY9gTqQkXcKkNsdbdg5R8WAkApE6N3tnhWu3AzEAcs+ay0CLc1iRqUwnT4dUZd1arJB
+	2hIkg4sdbXgAXPEejT9nDeSahT66x7D6sZY7AdK1nVBIa6/O9QTnm33iLUP1Mon79qibVAC1RL5
+	q8eHEoqYqsv4qqkeOSvh2g4zGjQCetHQ=
+X-Received: by 2002:a05:6512:3ca7:b0:5b1:4fd9:ac with SMTP id
+ 2adb3069b0e04-5b301691cf7mr35772e87.3.1785971140452; Wed, 05 Aug 2026
+ 16:05:40 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a4a:ee0a:0:b0:6aa:f810:f579 with SMTP id
- 006d021491bc7-6ae96c10190mr5678278eaf.4.1785969925419; Wed, 05 Aug 2026
- 15:45:25 -0700 (PDT)
-Date: Wed, 05 Aug 2026 15:45:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a73bd05.5aeeccc9.207e63.0004.GAE@google.com>
-Subject: [syzbot] [mmc?] [mm?] BUG: sleeping function called from invalid
- context in mmc_free_host
-From: syzbot <syzbot+0e06aa1bdc6495bac24b@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-mmc@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
-	ulf.hansson@linaro.org, ulfh@kernel.org
+References: <20260726072935.3513996-1-souravpanda@google.com> <20260805202444.1573218-1-usama.arif@linux.dev>
+In-Reply-To: <20260805202444.1573218-1-usama.arif@linux.dev>
+From: Sourav Panda <souravpanda@google.com>
+Date: Wed, 5 Aug 2026 16:05:28 -0700
+X-Gm-Features: AUfX_mwgnReueOVU0oGGjYStx2tB1pByRCuKlL1_LVxvKsjyMnjoP3jsgt05Byk
+Message-ID: <CANruzcTRV0POtqD=9uscB=HxE9ZisjSZ4t1mXksRyq6jTswKig@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+To: Usama Arif <usama.arif@linux.dev>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 778E540009
-X-Stat-Signature: mg5bayk7mzqp8dtnn8arg8kybwu7wmy4
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BD7971C000E
+X-Stat-Signature: ua5h5cxdspxnebaqpy3wicpwzihwz1nw
 X-Rspam-User: 
-X-HE-Tag: 1785969926-141269
-X-HE-Meta: U2FsdGVkX19kVbS/ds+DMwJ++GgQNoWtK5UVdqsZYRYxIO2l5JtP8zVZfgCMyg9ekQCJ+5VYew3aQWk4g7W3b3N8P4AXyNR1SIxqDGdtyUUzDqZwB4ncEQA2JgTaVJYQMYZYq8f+9FfCkV/1ZEl8QtVqY3cmFhHY9Uj46OeGIfneYZW9rZy49pUmwwoBcmaVr++E+o6sRm9ZR0iZaQ0LIh6xSfw9sgMPZeL2aXgA19waS/YbCsA62FNJEt5mVHUmdo46VzA4TaSi6japFBkyOgRsWfghHkqZXSFkVOEXW04iEV8UoaKoh7UvCq44BJsV5Qgk82c4q9MaD4K3hJ4xeCoKMgyYCumn/nfpPiG4qOOnZMUOMSvFSzmuEaRQwz/sEiDPj65alwLaelfcG6y13CZ3i7MZ0skAic1jprmtri4iDbx6rX48+BZj/9PNuBtuVCtFgw2e+Yf46+abMruNE9hsdsOBcwOocHrXNgA2FZmemALY8WZunA4ynktlf3zKcHtOWGZNIqiQJrJIuzGWwOSnyxFglb9GAiydsbX68y6MrPSyerdK6heBnarxLS1UFiHWmg47rCUx/oON0e8EJDrlmM/GuTWA7jy9WIBAUTrpjTFMqvyVuOa6QyIHfiq5diETPIWilOV5bpWjC6vqqN7mrsCjqkLjqJJiyS9JWnQ/64bEAOifY9E/dXYLtQnQZpAg+fJp9eKNBxRQrwacI6l7XG9+E4TUt9+8KLBYQL+slGyNw7EmQ2dgYCY8TxaLdN2vX5wfyj5ROq34gdtiOoXjoJN11e1k8ZHtAXyqqiIcERj7H0C9XUOR3KWXTDVHeYhSFhJmQh9ybL01U0xQqRM/3cTonuiIFQn7nud79yA79KZUbnlo19gtbElAGOkvdjd7aMfYhQ+qdMZ2Ey/kS7bNuRMAObtr4Cm0quAisZBFiu3gT2Jv7t4ITvJDkTgMrvQOxUS85xcPLJ+3qoK
- v8f6x60S
- ydgKemurqrREpR69AcyybN6CLGDuFaNR1WFsCAY/AeBGj1Q7+/5jvUxcuxtWGorlb0xCSEc7yzF0q80OOdj/6+OxDQngcBloRDJMQQjNKmuYxHOyhdqKNz7QNYXDuHn32So5yQkrhWGzGLp83ktRLBNJdcjuuxYBadNE31FEiOL091XO/u2okQEeFBU6vb3atL1i1QlGAHjLagoxJxfDN1NkW9fIEjNehK0iz4skBEs904mD5ng7AXi7yiAJJZ56lo6bNeQkd76Kav/gYI4PnzU5TXt+n4X9r6VqlwHLggThUQ9xPJ9rNg+fARpdJQP3MP+c31e/m9cTW1YNE4z5XFJVLhd9uIkFcqVmTWf+oAsOyzSz0WFydAf8AQNS+k/CqGCZKqSslM7D/knWbxgnAsWOSyrSsrnKqFWzkRQc1I/iWo9TXjL1Y9IB17hB/gITjDEgqReJxCP3EiYM8ZiP6hTuTzD8I0Engt/AOjg0AUDccS+SGGJnp25F2D/EvW3daw/RSRhlmaRIEUyX+Bdt/ssGt6t6U7zyeglYVEg6G1J1t2l4hxLJ2mQMPBPgStMP+ScZyvs6ujv3pD5CVcXXGom3v4bAOF34LEPN3tMRYJTvtQvqwDvwZiTP/Fqpv0pdc4y93njEBV0iv+gzc6hIjpsFtCKl9D+LeYIX9JqL6FwtMAptTD0kI20g5RqzYZeR61WgV60WIGjMJgp4DUMsMK5wzvPyN2YMmCkq+FkJxdqqFBZ5rjK/bo5yS8CziVa6YErt50Lxg6uf3c9SRqUo+9n/3l3o7jNS++z2f/HkvKCRcs6bce0FtkD7eWc/3TbSdwCmSXaqHfIv1nTUrgZ5oO9VROPyyiAorUsHUbOH2rd9mTXVr84hdocHkq6DV/AuUxK2T6xz/n9QPuJ04pK5387GADhbFjfzxkg+r/gJW+3K3bWIa/7XWL+PNLxWlumz8M0ZtDrxCh0CUQaKTMt4DNbK8DLue
- k2gO/B4b
- jrgoWGqw25M1pdqFHCEp9y/VGCsYzyt1KmXh9N5xHHgwVlJEox9dmX9YDBk18touWH6UrM79WRJuapkrFYthr9BG47RmrYhfypvc4pD8oFLsihpWYgJgfewEdo5FImn1ULpVBX+fR2+AFi1v6JpPaLpS5FY8DSDrGMQCEUCrA8N9FqvTdHmPcSqP12PjuFcA8XT7Ls7pRmwkTZ34k9PwYQ6t3Rk90kP5xD8FEtcImb4KKZVCP6PwEiWM/fYOgCFaWAr5WbmIpgZgnKEdRXc7LOkLKWf38YrS+YWwXz8b6udr8AS9Mu2/uqAzGrqOr4dnRIN2JYYmeeKDqefzDGkS7/C0YI4jrtnkrirMKyJ4P2wa4II2rZ/zUDlYCrpscBKf4Mw55uyN64i0Rx///8sS4o/9ob/1u8OQ2PT82i99d02ByzOTbtMEhGvZx1xA4UNSuVe1FU0dDrc=
+X-HE-Tag: 1785971142-362389
+X-HE-Meta: U2FsdGVkX19DOEYShQZOXvlE2pHBctz0bmC/a9loMGAmS9Jpx2od8hv5Q3NeSBVdCAuAICnEs3887AkCpygL2pnAW/IINNUyn+UblxCqw02o3uygriSPVPxZBU8D02CgNaRIbHl7dco8xAuDIM3X9AILclmJBIIiZqCdaEfKwH71JjohjGPp63McnZqQH3TErftbv51UG5snb/Aq+g3xtIEmz2ju+PDG1EszLQQzFO2Jm5VSpN4rSsFL3fkPcItOWyppxzq8jCV0WT43Q37TlaElbK8qfeqQxNyEh1zAdn4LsrEH/QM16nNrlf4ZSW1gV577xNw9k9PHvv1ED4r2lN5EanMh8fG9RDgf2PoTmOQqyhuhtYud5zGw3JNnrpQh5RxUm4uaWu1X7B+wZhIYWkBLkVAoefQk5NJTJVHsC8Z65kPsxj19BPdIHE6xCF7ZhhRkESoccG5OZz043MxgH2fr34W9NpsImN/gOd25S6dOLeD6SMe7Z6s94GGCOQXIxGGRghFoEt2z0CAv8aU6fpNx2JemxnEg8sPBVbufScDglvcwjCtiiq6HZqo55qMV+vQqymOxk3Hou0FzNFhmcYZXzK9px+3UGK/BRZUXoKJ0OpcNngGP3tdotoSiowznJ5CQN6F88izqHzPLpowYbPtFJcE6p4D6Ywt8T51W8ySSrBAMq6XRTH4GhXQbzDzaOAdv4bx5l/49zyrcPezioZ+nWN0kSOTLQF4pHdr3O634VJdoLTK2vQ06gs69pbxcxSi36UUBWKR7I1XWf0u9KLLMKsewu6UodKGNJLZPbjDCz76HIWAZanr93jBaOWm/Em3dEoS8IajznkwJm3cb6WAj/FEURo4ZQkMG9fzEdIgMcy06USBjhd8tlUm8jZLxONp/+sOnPdmpqJF8XUTDSbjpf7ovbQySHquttIYU2UTh7PqIGzLgR1k/IZU0ynz7Uc7fovCS45BIZoWu1Zm
+ /3YcIrC/
+ kAqE4RKx0tVTR46VoISwW/J4GMF40X/GSYiLkUQMFCEkmDBWb54pEww/70bHVAKfij8kb9aSVndJ2Zil+l/eGSytcNHT4TWByb5C7eO1lSJlVkD1viqoI4bvVAJ6uiXynsj0sg0a0lT5MlmI5+y7zQVghomlNu4+JoOUFGc3eP/0yEhmimAITfEDdyJTduBIHK8i69WIwoSmzFvWUA3tKb9GxILonO5AYz/fRCjzKat5z+voHN2YaiOcQifVPSgLGS4AJNTiISwQ4ZUChb+CTOnUTIK4VMEVWkL3FpYPt9iROdyUikVCbE5WA4fx5qSco7RX0975uS1bL/tM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,154 +141,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, Aug 5, 2026 at 1:24=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.com> =
+wrote:
+>
+> > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> > alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> > nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> > the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> > alloc_gigantic_frozen_folio().
+> >
+> > hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
+> > node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> > leading to a null pointer dereference kernel panic.
+> >
+> > Fix this by checking if nodemask is NULL in
+> > hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> > node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
+> > back to any node with memory, keeping behavior consistent with
+> > alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
+> >
+> > >From a userspace perspective, this bug allows an unprivileged user to
+> > crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> > allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> > configured on a subset of NUMA nodes.
+> >
+> > This can be reproduced by booting a VM with two NUMA nodes, restricting
+> > CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> > hugepagesz=3D1G hugepages=3D0), and running a program that allocates a
+> > 1GB hugepage area without reserving, restricts allocation to Node 0
+> > using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> >
+> >   void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> >                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> >                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> >   unsigned long nodemask =3D 1; /* Node 0 */
+> >   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> >         sizeof(nodemask) * 8, 0);
+> >   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> >
+> > This results in a NULL pointer dereference:
+> >
+> >   BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >   #PF: supervisor read access in kernel mode
+> >   #PF: error_code(0x0000) - not-present page
+> >   Oops: Oops: 0000 [#1] SMP NOPTI
+> >   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> >   Call Trace:
+> >    <TASK>
+> >    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> >    alloc_surplus_hugetlb_folio+0x6d/0x100
+> >    alloc_hugetlb_folio+0x3c5/0x660
+> >    hugetlb_no_page+0x3d9/0x650
+> >
+> > Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepag=
+es")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sourav Panda <souravpanda@google.com>
+> > ---
+> > Changes in v4:
+> > - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach fro=
+m v3.
+> >   As Muchun Song pointed out, snapshotting cpuset_current_mems_allowed =
+does
+> >   not prevent false-positive allocation failures without complex retry =
+loops,
+> >   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() already =
+handle
+> >   NULL nodemasks safely internally.
+> > - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_folio(=
+)
+> >   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keeping
+> >   HugeTLB allocators clean and consistent.
+> > - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpa=
+nda@google.com/
+> > - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravp=
+anda@google.com/
+> > - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpa=
+nda@google.com/
+> >
+> >  mm/hugetlb_cma.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> > index 39344d6c78d8..5744de0ceeb7 100644
+> > --- a/mm/hugetlb_cma.c
+> > +++ b/mm/hugetlb_cma.c
+> > @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int ord=
+er, gfp_t gfp_mask,
+> >       if (!hugetlb_cma_size)
+> >               return NULL;
+> >
+> > -     if (hugetlb_cma[nid])
+> > +     if (!nodemask)
+> > +             nodemask =3D &node_states[N_MEMORY];
+>
+> Hi Sourav,
+>
+> hmm what if cpuset.mems only allows allocation from node 0, and hugetlb C=
+MA
+> is only available on node 1. This will no now allow allocating a gigantic=
+ page
+> on node 1 when its explicitly not allowed?
+>
+> Would it not be better to check cpuset as well?
+>
+> Thanks,
+> Usama
+>
 
-syzbot found the following issue on:
+Hi Usama,
 
-HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git://git.k..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=152c6cc6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=0e06aa1bdc6495bac24b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=132c6cc6580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11137649580000
+In v2 and v3 of this patch series, we actually used
+&cpuset_current_mems_allowed (adding a seqcount retry loop in v3 to
+safely read it without torn reads). However, during the v3 review,
+concerns about using cpuset_current_mems_allowed, noting potential
+false-positive allocation issues.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4949138dcfef/disk-848acc8f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/31cc6fbe5b8a/vmlinux-848acc8f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/433919ca6520/bzImage-848acc8f.xz
+- v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@=
+google.com/
+- v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda=
+@google.com/
+- v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@=
+google.com/
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0e06aa1bdc6495bac24b@syzkaller.appspotmail.com
+Let me know if you prefer I add it back!
 
-BUG: sleeping function called from invalid context at kernel/workqueue.c:4487
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 0, name: swapper/1
-preempt_count: 101, expected: 0
-RCU nest depth: 0, expected: 0
-1 lock held by swapper/1/0:
- #0: ffffc90000a08cc0 ((&vub300->inactivity_timer)){+.-.}-{0:0}, at: call_timer_fn+0xd4/0x5e0 kernel/time/timer.c:1745
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x378/0x4d0 kernel/sched/core.c:9197
- __cancel_work_sync+0x6d/0x110 kernel/workqueue.c:4487
- mmc_free_host+0x19/0x30 drivers/mmc/core/host.c:700
- call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x225/0x840 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0xca/0x220 kernel/softirq.c:735
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:64
-Code: ac 7e 02 e9 93 06 03 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d d3 3e 18 00 fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
-RSP: 0018:ffffc90000197e40 EFLAGS: 00000246
-RAX: 000000000005e681 RBX: ffffffff819b5450 RCX: 0000000080000001
-RDX: 0000000000000001 RSI: ffffffff8e22f174 RDI: ffffffff8c4bdd80
-RBP: ffffc90000197f10 R08: ffff8880b87338db R09: 1ffff110170e671b
-R10: dffffc0000000000 R11: ffffed10170e671c R12: 0000000000000000
-R13: 1ffff11003c56000 R14: 1ffff92000032fd0 R15: dffffc0000000000
- arch_safe_halt arch/x86/kernel/process.c:767 [inline]
- default_idle+0x9/0x20 arch/x86/kernel/process.c:768
- default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
- cpuidle_idle_call kernel/sched/idle.c:199 [inline]
- do_idle+0x2e0/0x540 kernel/sched/idle.c:355
- cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:454
- start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:312
- common_startup_64+0x13e/0x157
- </TASK>
-ODEBUG: object ffffc90000a08a80 is NOT on stack ffffc90000190000, but annotated.
+Thanks!
+Sourav
 
-======================================================
-----------------
-Code disassembly (best guess):
-   0:	ac                   	lods   %ds:(%rsi),%al
-   1:	7e 02                	jle    0x5
-   3:	e9 93 06 03 00       	jmp    0x3069b
-   8:	cc                   	int3
-   9:	cc                   	int3
-   a:	cc                   	int3
-   b:	90                   	nop
-   c:	90                   	nop
-   d:	90                   	nop
-   e:	90                   	nop
-   f:	90                   	nop
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	f3 0f 1e fa          	endbr64
-  1f:	66 90                	xchg   %ax,%ax
-  21:	0f 00 2d d3 3e 18 00 	verw   0x183ed3(%rip)        # 0x183efb
-  28:	fb                   	sti
-  29:	f4                   	hlt
-* 2a:	c3                   	ret <-- trapping instruction
-  2b:	cc                   	int3
-  2c:	cc                   	int3
-  2d:	cc                   	int3
-  2e:	cc                   	int3
-  2f:	cc                   	int3
-  30:	cc                   	int3
-  31:	cc                   	int3
-  32:	cc                   	int3
-  33:	cc                   	int3
-  34:	cc                   	int3
-  35:	cc                   	int3
-  36:	cc                   	int3
-  37:	cc                   	int3
-  38:	cc                   	int3
-  39:	cc                   	int3
-  3a:	cc                   	int3
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-  3f:	90                   	nop
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> > +
+> > +     if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> >               page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], orde=
+r);
+> >
+> >       if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> > --
+> > 2.55.0
+> >
 
