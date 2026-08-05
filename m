@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB59C55174
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 23:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D84C56205
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 23:10:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0A496B007B; Wed,  5 Aug 2026 19:10:53 -0400 (EDT)
+	id AD1506B0088; Wed,  5 Aug 2026 19:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBB636B0088; Wed,  5 Aug 2026 19:10:53 -0400 (EDT)
+	id A828E6B008A; Wed,  5 Aug 2026 19:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD44C6B008A; Wed,  5 Aug 2026 19:10:53 -0400 (EDT)
+	id 99F276B0092; Wed,  5 Aug 2026 19:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CF716B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:10:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B05011A062A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:52 +0000 (UTC)
-X-FDA: 85068762744.11.2A15561
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FB2F6B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 19:10:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F9C1160626
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:53 +0000 (UTC)
+X-FDA: 85068762786.24.E48571F
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EC871100006
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gl8fzzll;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5A3CEC000D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:10:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mo0gf365;
+	spf=pass (imf22.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785971450;
+	s=arc-20220608; t=1785971451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bhtmymBQrzXyulvhfPtzyyylU7InbsXqLHdnK0u9ZUs=;
-	b=HOKmNbK3EkoQvaoDroKibDmQaWEjU4yDUtaEIABNw6LXF1cOnwd148Tg+Ct7ue3p7jbXbx
-	hP/+sCOh4WgqnYpuMUUFCADaQAFdE50DAyWfmSQr/83ZYt4r7JmvliA4qqfqK4IWF1uHgf
-	3GalXB2R0H85wox/3OPj51Phzw+yu3Q=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aLoEkh3QmfT1EeiuWdoxCq4mVzE21+yh6P/F8jSPyIY=;
+	b=As9fBmBg4UAgKcPKgZiqUvix4suZijK+w7UTlHBL0hEi6VjblUeZnAqG9b1hXP7xDqr4oY
+	EYTFeIWwkwEqWFnlag8CdqvFN+QGlefNqZK96b5wU6t9R5pOXDcOAM0zj7Q4RN4qy+jTFn
+	9oRDHyPqkJqf/qG0pGQaV85Kx/umc54=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785971450;
-	b=3ScmKdOEvtyz4rdflmLmOApzbRigmFeKkeYo8OvSBIe0GIIjj2PgGi5ie93aw4AgWVU9cf
-	GAWKzISOm2DHpBTe+xXKId3GzjEL9hRvr2sGZT2ocXh0oq08nfydHr8KgUZmnNFnYpgwrA
-	jayNF3J2cnBHcWFOugBtcNDRCE0T65Y=
+	t=1785971451;
+	b=xZT9kdW8x6j5O71dh+RR57gyiKrXD56uuQKaZZDhjcFNCC6yFBanypBTXn8fxKKguDeSI3
+	kmYeIlshI9vsNFV/p8v/AmbzgZxN9BNYfq5Hsv7Fndq0QZqTeeZ7VSAhVQx42DoTqBvgWZ
+	sKcuza8l1z6j2tCU16SqHHJENOb9SUg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gl8fzzll;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mo0gf365;
+	spf=pass (imf22.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785971450; x=1817507450;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wcrrRa+4I//FxNzlk8YFHVMlyypMuuBxwcQUh0A+gu8=;
-  b=Gl8fzzllhdqlyUwfOo8nyWVjrc6oKK4vIvC4vTx5TvtEZulozkjGvUR2
-   6iblTLii+VCwg1IjeXYLAzrtuQvgV0Sb+4UoXPkQwjPJ5M8URCrv7sSo+
-   8DOtTeRce7OJV9u0LhwOtSym2ZhoYl7ak538htNMPufKs+0stYIuQbP3T
-   cHHidEA3/ROSYD8WJP0WdXfpSR4jbZQdkH/EMgGrZhBcVQPquC8enED6L
-   frhVaeJUl1QR78CUuRGZpCt1UgMaQcWFpd+Kg5gH399B4nc2xjwiwvtqg
-   LsLonswgvPlAOLYmCKZ4BHcF0LRKpPvEy3itpd8vdmCbUrEH6kzMWQQWg
-   Q==;
-X-CSE-ConnectionGUID: rIiS+EvnThi/M3nOaJo1AQ==
-X-CSE-MsgGUID: azJ3yLFaShafFgDrwXVCIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="90376830"
+  t=1785971451; x=1817507451;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dNJ/oi0EebM2qITDTJ9UJ0BoOZBi/aCxva+AfF14at8=;
+  b=Mo0gf365n/KhVFQsPA0udEeuRib0ao4X4g8V/J/0uVaIHjRpLr+jP1tJ
+   mlNCqY9oBGv3m9ILkUIcbyoFA5qci1I2LrcMWzOtLs0jA1RdTskyijXVk
+   I7UjVNxRdezAufqyZum6AQ91NkjvyX+cSeQzobGGo4GAGvg9cqc7ddiex
+   zZhqD1jk7BXarm2QwlAnEc80jhiG6yvPlIxLgML1Xt1Kn30mM40C32JC5
+   6DSN5ygDfbBrqw/50ShtIL49qyuLRKfBDOKJyC2rgapNC1xJCvRitsCpv
+   aotU6AUEG1zSeUh6oTLHMDu+LeVOyxzg4i3FpMY8s4qeM1mVAOvGYnbgt
+   g==;
+X-CSE-ConnectionGUID: x9Uq9XBjQa23OvTpSWGAeg==
+X-CSE-MsgGUID: Olp7m8JTT/SvHLhmb65bnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="90376833"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="90376830"
+   d="scan'208";a="90376833"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:48 -0700
-X-CSE-ConnectionGUID: 3FGNTL4dTl+jHwbqofn0pA==
-X-CSE-MsgGUID: Wyo0mZ6BQbGq1+nnfgAAiw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:49 -0700
+X-CSE-ConnectionGUID: gdzBu8tUSsWVVT+WYsw11w==
+X-CSE-MsgGUID: Douz6uonSw2oqZmSx0TiGg==
 X-ExtLoop1: 1
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
   by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:48 -0700
@@ -78,21 +78,33 @@ To: intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/6] Fix device page migration in low memory fallback
-Date: Wed,  5 Aug 2026 16:10:35 -0700
-Message-Id: <20260805231041.3791771-1-matthew.brost@intel.com>
+Cc: Arvind Yadav <arvind.yadav@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>
+Subject: [PATCH v3 1/6] mm/migrate_device: Clear stale mapping after freeing swapcache
+Date: Wed,  5 Aug 2026 16:10:36 -0700
+Message-Id: <20260805231041.3791771-2-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260805231041.3791771-1-matthew.brost@intel.com>
+References: <20260805231041.3791771-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC871100006
-X-Stat-Signature: zpz1aktp4z943z8xb1a5xfr8a58k37r5
+X-Rspamd-Queue-Id: 5A3CEC000D
+X-Stat-Signature: gbny4i98kibq9dcwuf15a1foztmz97g6
 X-Rspam-User: 
-X-HE-Tag: 1785971449-748351
-X-HE-Meta: U2FsdGVkX19Y3rH90BPR8ZLAtH1PR5sdDUS0PjrFCoqqI+fPf/VqawjZUgR9lT5VFQF9wanQeSswJLPsdvE8ZB7cnIByesP10wdJUarCi358NMy6OZUYnZBE1YHUIgIg/9siWU9qtPrpGGWkcqwZqPsMEx651GgVf5AK0sF4WPiev8V00l0SndkUyn8MtnbckC69xMLHeVuTgf7dZu+XemSw3h0W+XpKG3xE3/cVFiQZ4Ah/pmkpzS/6tPtacoL67qZOINoXL3nnOZH7gWmMQ5u7dZTvJhorkcJ9el0HZT1y9Let1e3qgUjIuITUSU6Ev2NzATD37H9aBV9eIrh+gDOlYuQW0QSZlq6VS5+gEsLIUBHo0VpPbgiDVIZmmZ+C0pewmS8n48WDlVMGji/ZGYDHaAnTpVcwgx7+FCpoqhJ3luPpGdBXpXhig8acTkfztMRfl1nUJ5ctGk86Q6aQrWOUTJEEQSLVtPnQd5T/58ggNphVP/NFJ8Ty8KMw98KHwR2tM9x5f7PITXIMsO+12QRmWL6OeMyR7PAYqdyLz0jUbbGhQEh6DmWFHYzl4/i4qIbAtwtVP1cvQJm69dhUdYGFXxF5ah+hct2p9FC9I8fJRAECpRdBqLSsLJQ0EDrF7I7Ql+EUoI/i1ZG8d2L/a/r8L+OAncjov8HVc3uuwgMYEfCbZfGJSZe+XC6soVHs5ADyClEH7OBGGvCxGzWjapydWDrLnGFcCAPc/QBMPfYeLB7xmRPYvqh1Uyk2b5MenSscApEIMdR5y8Q5YrK+CLqf0ufSxIrFxM8FfDVRW66a3vsqceqkdGyQVCI5ZQym2pza1xKe7sJzJIgCN0GUK+LRGhGkbZqQR6sXpzt74dosU3xGoYDk001lW2aT2xHkeUZqzAmgvj0GLp3oB0qgx4nI96NDZqN/XNQ8263lVLTx74wZPRt+tZBNVuHr1Lwkv3h7Wy1KKsWU/3nnzpC
- pE1tKl8w
- zvQRmniiqxNlrUqrWPK/eBY1In52o4M5PCgGnBlh5Rt6lRhH1xmkGRyT/LJwkbPBB7EeJcVH1w/rl06p37O0fPENyDsNL93IBMAThFdooD0rg2cs8XlO+CigRh7vCK1kF8dmizYXRHr11PfyqK7WTcNidZETr37Gapa7P9L/iQfuJymmdPUZ6m1Oa8/8JXF5WSpTjIrCHk0chHPYtc9PCGdDDSFwiwWzHJtSDzaRD911IJRnjKx4MP/ziQ/y93+sDQDn6KR+TcdZOEgxdHFyGUsX/OZb/3z+arYm16FvXx+N3Ca+BIFH1Qte9Fw==
+X-HE-Tag: 1785971451-612809
+X-HE-Meta: U2FsdGVkX1/eudn75yfKsVPmEirO5wgmb8e5Spwfhz23oVF6cPDgKVxZUQgPyNxYx1yjTec0uhmfEUaZVr2kaAmMdWne9vuF9TKuBw54uO5GQK8QnOaXpAtMXB7+K+54wXRbaLzjtzr26BKbOn5a8/cYgyro4oyQB8v/CBmaKDbcwkCNdV1Cjqpt/x8kv5w4Ins6h0+mYnaqBzhYrVB1ae3OehAPA74uuiXYpdEwPvluIsuWl66s1WN6rvzFlysmnEEzoS1v3Nr8oblBgLzbeUSmxd0FiXGpaiPQtmRW+6Th9bLXK7A3CLxKM7HkHmhPdumzx2wpz7Ur+pRAmIwwWqazmUpXyoDkxCgFQOppOU6rbH9RktS17HyB7bqN1pLxJBfBcTELYlzsd3ToDRq5P8bw+bB/duB2koRGaivuhHj4QYQbtFjpqQIYSNyTuDLW1uOJobXIPCEBas5Qqc1syWAEjQFZGQ8pqnmNRtNIYg2c/ER3fEU6M7v4jAXBD9Qfaes7W6vcEazH/bn8M4u7SIJTA6sm1w7REhpsI6QVcbdkkrFNgBBDyVsYPuhOHD9rvpI6im0kxepDo7IR0iRVyalWGE6mqlFWDWRH6A+6fz8TvqkNOB5SjscgaGGqKfcOKm3D/L6TfPqNWo95AmvsNqMhGsuUGE9mn/l2Glolzb+RgKCpWVYGC/+x29Rlt2SjMXdrRRddaz9h/7NyGhNfkvD/swUOR1ns21VoHPRxP4FdF0HlwpmrxMqYx18O+d9EYfHoXnlmb01tG4cLu7/RHiMRrFf1admeYThl4pkwEqirxtk2mUJFLhGBZeOmvP3/ESLi8YP6NrjdMnnr416U6xwKLrvG54bCoQ9gSZGv8nDjmloNz1z1uKg+gJgR64iSovfyLeszjHPWruyVTxIqU8otyg/EpcM2rZbWRGKx2xeO9f5S44C2vu54498MqArtbLGwqaMQFoGH3pHmwXy
+ CCB6I1P/
+ RJR9X5wY+TVB8Leu7mQ+Ti/rdtSvPD1y0JHgfB2T7CiwDOxCBOogTN4pwCzltluGiqUtmRixtq/93LTykpJyVeaV6vQ1hdKtWMGsRuyW3NIUM6UMEjeR3XRC6bvZn1xXYYQ+t3+LwqPAR9vZPkoxyxurj+b9mIDeK11TEY1ZRXYj03sNqRe4/D4E/sXTJQiocE/I15Ta5Ij/sJiVvcvoG736DZ5YrQgHVGbtD1flQuiJ03Evk29F6/cfbY6d32RArzjRkPrfK1biuzxHBieP1IA1plYY5YA6bnyPdHvaRRfbOmdlNf7lRZiMyNbJX1SAXqBckQHKnAfursCUZ+vrq7I0CTpeFzfVfL2MPnJGJyzdQ2K7ImRmcMs2RyKPniR8BLcazevFtDwPVbCAZr9SerKLwkx/GkYhy5x825OZVo2MMgVMzZC0vrLqg8tpFcs5uYF/6YSCdv39spFskiCHr24ZhWrh27OqQr4qM9CJ2TtCj6QVZsL8mBPAN+LGleljalIYQrnEU/RBnPznlviR7apwsqhwe0SnJHWkcKnn2RVevHLBFKrZUWPKnnRSYMOB5MTh7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,72 +112,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-LLMs made my breakfast, lunch, and dinner. Not really. They served as an
-assistive tool while I performed the debugging, testing, and analysis
-needed to isolate the root cause in core MM while fixing a known DRM SVM
-issue involving THP allocation failures in the CPU fault-to-device page
-migration path.
+From: Arvind Yadav <arvind.yadav@intel.com>
 
-When a CPU faults on a device private PMD and the driver cannot allocate
-a compound destination folio, the source THP has to be split. That path
-is broken: the CPU fault reference makes the split always fail, and it
-demotes the PMD only in the faulting VMA, leaving any other VMA mapping
-the folio pointing a huge PMD at an order-0 page.
-The latter is memory corruption, previously masked by the former.
+__migrate_device_pages() reads the folio mapping before calling
+folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
+from the swap cache, but the saved mapping still points to swap_space.
 
-The DRM side had its own problems in the same fallback: there was no
-order-0 fallback at all despite a TODO saying one was needed, the error
-path computed folio_order() after put_page(), and once the destination
-is demoted to order-0 the source page array has to be populated per
-page rather than per folio head, or the copy stops after one page.
+Passing the stale mapping to folio_migrate_mapping() makes it use the
+mapped-folio path for a folio that is no longer in swapcache. It can
+then operate on swap_space.i_pages with invalid reference accounting,
+eventually triggering a folio reference count BUG.
 
-Validation was performed using xe_exec_system_allocator. The issue was
-initially discovered on systems configured with an artificially
-constrained memory footprint (mem=8G), where failures occurred
-intermittently. Error injection was then introduced to reliably
-reproduce the failure condition, enabling thorough validation of the
-fix. Results were confirmed through pass/fail A/B testing.
+After a successful split, nr still contains the number of pages in the
+original large folio, although each resulting page is now a separate
+order-0 folio. Reset nr to 1 so each split folio is processed separately,
+including its own swapcache removal and mapping lookup.
 
-Matt
+Refresh the saved mapping after folio_free_swap() so the current folio
+state is used during migration.
 
-v2::
- - Add assert in 'Fix folio allocation fallback and use-after-put' for
-   THP placement invariant which Sashiko hallucinated as a bug [1]
- - Add 'Clear MIGRATE_PFN_MIGRATE on all sub-folios of a split THP'
-   (Sashiko)
- - Fix checkpatch issues (CI)
- - Swap cache issue flagged by Sashiko [1] not fixed as this code doesn't
-   appear reachable (i.e., dead code). Can address in a follow up if
-   needed
+v2:
+- Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
+
 v3:
- - Noticed Arvind's patch [2] fixes some of core issues attempting to be
-   fixed to in v1, v2. Verified Arvind's patch works as expected and
-   including it in this rev for Intel's CI which is based on drm-tip and
-   does not have Arvind's patch. Dropping unnecessary fixes from v1, v2
-   as a result.
- - Include 'mm/migrate_device: Do not write past the end of the src_pfns
-   array' unrelated fix flagged by Sashiko in v2
- - Include 'dma-unmap pages before handling migration errors'
-   unreleated fix flagged by Sashiko in v2
+- Reset nr to 1 after a successful split so each resulting folio is
+  processed independently, as suggested by Zi Yan.
 
-[1] https://sashiko.dev/#/patchset/20260805113338.3742178-1-matthew.brost%40intel.com
-[2] https://patchew.org/linux/20260728062832.1107127-1-arvind.yadav@intel.com/
+v4:
+- Re-read each source folio's mapping immediately before
+  folio_migrate_mapping(), as suggested by Balbir Singh.
+- Add a warning to validate the post-split order-0 invariant,
+  as suggested by Balbir Singh.
 
-Arvind Yadav (1):
-  mm/migrate_device: Clear stale mapping after freeing swapcache
+Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+---
+ mm/migrate_device.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Matthew Brost (5):
-  mm/migrate_device: Do not write past the end of the src_pfns array
-  mm/migrate_device: Fix THP splitting of a CPU faulted device private
-    folio
-  drm/pagemap: dma-unmap pages before handling migration errors
-  drm/pagemap: Fix folio allocation fallback and use-after-put
-  drm/pagemap: Add fault injection for higher-order RAM folio allocation
-
- drivers/gpu/drm/drm_pagemap.c | 176 +++++++++++++++++++++++++++-------
- mm/migrate_device.c           | 115 +++++++++++++++++++---
- 2 files changed, 248 insertions(+), 43 deletions(-)
-
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 908d2d4ec43a..162d29b2807a 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1183,6 +1183,13 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 							 MIGRATE_PFN_COMPOUND);
+ 					goto next;
+ 				}
++
++				/*
++				 * reset nr so that only first after-split folio
++				 * is processed below
++				 */
++				VM_WARN_ON_ONCE(folio_test_large(folio));
++				nr = 1;
+ 			} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
+ 				(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
+ 				!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
+@@ -1222,6 +1229,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 			folio = page_folio(migrate_pfn_to_page(src_pfns[i+j]));
+ 			newfolio = page_folio(migrate_pfn_to_page(dst_pfns[i+j]));
+ 
++			/*
++			 * folio_free_swap() removed the folio from the swap
++			 * cache. Refresh the saved mapping before migration.
++			 */
++			mapping = folio_mapping(folio);
++
+ 			r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
+ 			if (r)
+ 				src_pfns[i+j] &= ~MIGRATE_PFN_MIGRATE;
 -- 
 2.34.1
 
