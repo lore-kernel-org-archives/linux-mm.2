@@ -4,100 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A5E7C55ABF
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0440CC2A09B
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 02:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCE886B007B; Tue,  4 Aug 2026 22:46:03 -0400 (EDT)
+	id C3C946B007B; Tue,  4 Aug 2026 22:51:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA5416B0092; Tue,  4 Aug 2026 22:46:03 -0400 (EDT)
+	id BED266B0088; Tue,  4 Aug 2026 22:51:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB0C6B0093; Tue,  4 Aug 2026 22:46:03 -0400 (EDT)
+	id B02C46B008A; Tue,  4 Aug 2026 22:51:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96CDA6B007B
-	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:46:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 302CC80213
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:46:03 +0000 (UTC)
-X-FDA: 85065676206.15.EF38962
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 974F640005
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:45:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ntaXuvkZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 8370F6B007B
+	for <linux-mm@kvack.org>; Tue,  4 Aug 2026 22:51:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01C3CA187E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:51:26 +0000 (UTC)
+X-FDA: 85065689814.26.92D5301
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 05DD2180008
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 02:51:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g7uaV1pk;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785898285;
+	b=PNW/uuiNxP26zowMNB81j//NNm96DDzE6KFG4ac2tCNS0iiPUgeUPAtITU9WZbcTYUNFqt
+	uK6qoCr3CswRB/t/gn8IfNFa9D49/UIkYe5dGRMb6eYh0zu+C2ZtW2S3NbWKOyvso42joi
+	kbqTFRRNH94rsrefQffZYua2YEIgArU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g7uaV1pk;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785897961;
+	s=arc-20220608; t=1785898285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vszTdmI/6U9C77/hLmYs62w3OXYnIeDOydJXj5JIneM=;
-	b=U1gEvxEUdVBy3DhJ3xAux6njO0i0eY6mB4q4LcCMRDjMq/IDp8ew5VaMorWqZovmRS3ROX
-	CspT51IMTytgbWtmU4SZnpEIuhsUrZLatskfsvVeNy5NElYCyCFWzRVI895ljdaTjlejHt
-	5ZODCqYQMNxQ2CU403LGzs/zjzywANs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ntaXuvkZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785897961;
-	b=rPhRZPDIVcaGiJ1HxgWp+zf0OCjL3TXZWzkDfgVh9FoUd6F5MqGprJsvf2MKELiXKj2Z1c
-	ywMiuE/JFfGZ1HBYUAdYG28Os/4Z26SjCPhC+U03IHUJ7mlI5jXGz8IIz9LrpHrBQ7bDNM
-	6jgp2Sanv4tvmmkjllQ8PbcmvqDul+E=
-Date: Wed, 5 Aug 2026 10:45:46 +0800
+	bh=Mw6b4Ud9QmLN26rSrpMEOzWnoOiUv/ZPRwVZ5pminvo=;
+	b=8SGdgGSxRqhkn09JPgFWZZUzOuY4xe5VCYaaGLnH5gYkPd1U92D/6YqjaM0QZWaIYGAOmB
+	L+eukQ3LAL1j5l5BaxQhJZ/zXWZlKsdNiy118n9zXOhEc5GJVGm4ljFEPfRXnlw8RkSAa/
+	d0rm2lF/TuTAucLbE8Ehkju9w3leXNw=
+Message-ID: <b2684958-5c39-4a9f-ab83-2e665406c0c0@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785897957;
+	t=1785898282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vszTdmI/6U9C77/hLmYs62w3OXYnIeDOydJXj5JIneM=;
-	b=ntaXuvkZoNlKM7NwMSgL7XGFJ8lc16GoJBjWuE+5FV0pq9PB5m5eCsuqk0r8uRmGWyIHuN
-	V24qb7qV6/L5ub7x8y5DILgU3JC6iejwVaIQCZbFarJTSTnSZAYfEnFumS7CdLWlsE7y69
-	gaoiU/swPiYPmhGjVicJ+w2nJJfJBIY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH] mm: add some missing includes to mm-local headers
-Message-ID: <anKj2u9jT0WwNO8N@MiWiFi-R3L-srv>
-References: <20260804-fix-some-local-headers-v1-1-a7beb173c116@kernel.org>
+	bh=Mw6b4Ud9QmLN26rSrpMEOzWnoOiUv/ZPRwVZ5pminvo=;
+	b=g7uaV1pkzDfMhgrhziX3dxUuLUXbulybuyscS1M2Ap4htsEufpY/v7TbT7oYrep113eUS8
+	DWBlHCqiZxBDe7TBxzyPYF8qz1U/u/LuNBkxxihC61zSwN9khhyn6QcM1GIKBlBpMDOf5c
+	BPT1VqXjzwybh2e8WMqHWNa+QTLa2sg=
+Date: Wed, 5 Aug 2026 10:51:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804-fix-some-local-headers-v1-1-a7beb173c116@kernel.org>
+Subject: Re: [PATCH v2] alloc_tag: fix undetected compressed tag overflow when
+ profiling is disabled
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>,
+ stable@vger.kernel.org
+References: <20260804122038.190270-1-hao.ge@linux.dev>
+ <CAJuCfpGit7zcNPGAB9D2A5+718NY-qdksxt7gUaN_eRcB_5+Ug@mail.gmail.com>
+ <bd95f8c6-33e2-4fda-bd4b-ebc37ee7c0fb@linux.dev>
+Content-Language: en-US
+In-Reply-To: <bd95f8c6-33e2-4fda-bd4b-ebc37ee7c0fb@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 974F640005
-X-Stat-Signature: pw4cqge7bjz1i5qy7mmoat7oyh5tewzr
+X-Rspamd-Queue-Id: 05DD2180008
+X-Stat-Signature: wa4wtccqgds3gxoohquzburu1stbnj1r
 X-Rspam-User: 
-X-HE-Tag: 1785897959-940781
-X-HE-Meta: U2FsdGVkX18sdb4knlj2pCKMPZ1JSb/BCkqMDfyZj3insiDlnDdz8nhBB6IwmReRJcjUX6wSPVIOQ+J4fIBBLrt3A+knYFsTWXN9iGDhoAvXZ/3qfbJtk8PT+hmX6nlP3Pf3KYyVMEyqNd4J6ecHaV5yeMIbeQR3BG+nGK4fJDAs6C8b1iUQRIqYHIfqq9d5AMkcryaUni7+k48bf5veqEBd74QlyjTNDX8suv2vJKmoFlIrFzClUYMWtp0xXHk+D8a7aHJw2ockGK+wUCJ7rSKg0r4FrTEk5DQMxCUoobcrg1EsbrwWa6iFrmYLnPdiiVLNcf7o+VJ04TnUC4e4ymrAZg/ka+uStrfZEh2mrqO4UXlXzcIhB6PqZ/SFV+MaOGbDhZobPdUehHIRNTk1co0AfZk/0c9dAGo++nr/m4AzWCp8m9O/z76O4DUMF1vHFE2KixP1CUa3wQfFPImm8Uh9GBAxJfamJG6PVSvQnUz6QyWJ09LONjbspswuhCf+V3DBMbqlkb5n0NkrtuBayrI7J31nwdgWQkOps1JxgyRDvEhYRnls9UNnAZR44LN9ddSQ5Zq7HfYtYOzU1uObZn5O35Kq7EJDUqeYVAKn+bxeLeOCsMiYz50rkIS2pFoVHYsswo8a++JNX90ipeSf9OHLuj0iq6oaaoKiVsrpS0LuDZWz6y+cOkP/41U8Dh4kp4ttYeGXq2yVsmYGz8Q0GfRpjF+qS0ONY7v8kUIfE4fG6BRBgqUn2R0+GWFzRpMnLn9aY3VThr+5Fr+i27M5K5ixrHmxwGP1CjNKPM3eDM7Cb6QztCYKWiS1IuifwNGFBI3jpCdgGIIoE4FlfzIIcu4nbZGrh0pdPtmA+uNb9ZpuRw90gCT/9NPjtXS+LIJbQ2SFn93/p0cUIEPqRel8e1HVTGvFEdTVucBEbMYQWV+gdDPJY2ANlhyI0YIrbIzvxaB32T0z4brTKkF6VD2
- hPPrqF41
- 81Jpy1KhtKV20zO8MGYNtX07fnnwxwAnR8wFD4DHg4yNtfBUpE2IBfdqWO9dIkCrduTZRJoxvVH2PTa6fRhxEhIttuk4oLu43FRVfo59j9cXTOxzWdE0MCrzr8QGdN+T0qa3WlxVFSCcn5+u8doPq98j7NYXaYB0fCgh4S0SXMR9W4oW8r8khEf4YT6WbyNvSKG6+GEX/CtjECTJC59TDolU82BpqGG0vTMW9tmB+AkEJF3Lad4tAinuVbDYP0rmJ620lb5pLGHmV+vEZHjVlYkbveiajCcTrdVI6ooe93bsKaOQ=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785898284-533970
+X-HE-Meta: U2FsdGVkX19RI/CgWb6dJ3O1AuGpA63C+h2wlXfKw9Jy/agz1pYxCwAvHnln9c7Bb2exwhFdtLXo91KNGcajyMFYAWRWh76GGoVVz03FF10YkGrlgeJy5u7PTLhiMpC1nprZUOT57LVtxRy+FrXKqLv0M7QFuBqWLdEj0Ho+4O3ApC+hpvHkr8Cyt+D9Pn1Ytp8DlTehpTNznHKQd84QZj+qBBYY4qSa5n2DGSk4zBH10FwDRqfulCTdBw97CKaYg83YSHtQ0O4SPwoI9DYbMoS8w5yhnAjoRMoHBeT/PSwex2JYF3TXoZBR35dppvLvj6xlvtZwzeekHHVuxRISxeoyy2LgjRZNYiAjLRj7m3uSIAgLOWY13EeBrigVDg+R9AGHK5jY8+w+mQsfNlDW74Sj0uqcQBTFBIY2W2RY/9MW7haCyGM94taW9ZiaJnk0PkTKc8l5+Wo/uR0q5hhuN7i61ClBpg4K5QcWNBIPkJwJwn3CJRPgSYjht1Z9fNs5b8EQ3Pa2+zp0KjqRnNOLbfRelKo1+q8zYt5bvN9E/xSsYpAF5zd5hqpmB9IUgcebagayYQx69CdfsJnM+yN62FO8ByS9ByBhdCFM6NoW5kIVDpQ573baqWD9HnK0o0rdIO25wq/jTxtdqWjPIBQA50kbluIMpsBnGJkVfRDOLICiCF5KMnh2t6Ny+VOckEnCUOWEv8CBzslVMJFH9toiXiXcjc+YLsbRHf0Uqzu2HYnOAzyyHxkStBIuZ/S87UDk0maweNe47YwhYCJw/vOIpzoDHBv+rtKzsMp4xY/LbxEdTgIxK3TRxJ7TSLNw/PWp5bj+BxRsjYhDdcBvtVvOjd+2XUQ2eWUv/YZF+8ZDyvO9Ok+dU42CUp/1gZaEjUvPjwjYWCi2LJ7DzUnu+FJq5ZJDHfHXDgUs4uaHoh4IJJ5C5h5Fu3s91rbkN+APQZKBXVNVGWoL3OuAfpDvQJX
+ 1tF+nhlg
+ sDhs47lVYioaeCfxeNYFfHetbQhKw7sC6+gnbgZUbuKvxMpBPQVO3vkJCfy7P0y+nwqiDS4ajLiwhWC4kwheFF8suqDw/3EDCy13TbJxbZzsjPawnc4YxS1J4Tt22E+M3CjaDPErarj9MIhHV04D4bt/qIQUC5UmBzh0EOTXDgF6SpJ9IS6HMQIge8m+134cw7CGwdu8JZinM6X7pez8euazA7JcILwqRx1Ao9V+d9I5MEitbrTSuDrGH7U1h0cnG+zC3BwCG7XfOgsytLWzFmD7Q1aFvkGf6PypZ6rXVZZcWIWud1ONxgFR7xqXN8RZUXjbkNPIRRvE4W6Ibq9O/bh3zmdQqTcUS4a5psvt6nieeBb/uegCTluyU4xQ01pvAbwCZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,131 +93,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/04/26 at 11:08am, Lorenzo Stoakes (ARM) wrote:
-> There are a number of internal headers local to mm/ which reference
-> functions and data types without including the relevant headers.
-> 
-> mm/vma.h is a special case that intentionally does not include additional
-> headers, but the others are not.
-> 
-> This breaks tooling like clangd (which is where I noticed this), though the
-> build is OK due to the C files including the headers happening to include
-> required dependencies.
-> 
-> It's better to be explicit about dependencies anyway, so add the missing
-> includes and fix clangd as a bonus.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/cma.h           | 1 +
->  mm/hugetlb_cma.h   | 2 ++
->  mm/memcontrol-v1.h | 1 +
->  mm/pgalloc-track.h | 3 +++
->  mm/shuffle.h       | 2 ++
->  mm/swap.h          | 1 +
->  mm/vmalloc.h       | 2 ++
->  7 files changed, 12 insertions(+)
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+On 2026/8/5 10:26, Hao Ge wrote:
+> Hi Suren
+>
+>
+> Thanks a lot for your review.
+>
+>
+> On 2026/8/5 04:08, Suren Baghdasaryan wrote:
+>> On Tue, Aug 4, 2026 at 5:21 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>> In reserve_module_tags(), the tag overflow check is gated on
+>>> mem_alloc_profiling_enabled():
+>>>
+>>>      if (mem_alloc_profiling_enabled() && !tags_addressable())
+>>>
+>>> If profiling is toggled off at runtime and a module is loaded whose
+>>> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+>>> skipped. vm_module_tags_populate() still maps memory for the tags and
+>>> the module loads successfully, but the total tag count now exceeds what
+>>> NR_UNUSED_PAGEFLAG_BITS can address.
+>>>
+>>> Once profiling is re-enabled, ref_to_idx() computes each tag's index
+>>> as its position in the alloc_tag array. update_page_tag_ref() masks
+>>> it to alloc_tag_ref_mask before storing in page->flags. Indices
+>>> beyond the mask are truncated and idx_to_ref() resolves them to wrong
+>>> tags.
+>>>
+>>> mem_alloc_profiling_enabled() and mem_profiling_compressed are
+>>> independent. Once compressed mode is established at boot, it stays
+>>> active regardless of runtime toggles of mem_profiling.
+>>>
+>>> Remove the mem_alloc_profiling_enabled() guard. Also return an error
+>>> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
+>>> the mapped pages would never be reused - shutdown_mem_profiling() sets
+>>> mem_profiling_support to false, so no future module load enters the
+>>> codetag path.
+>>>
+>>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag 
+>>> compression")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> Thanks for the fix, Hao!
+>>
+>>> ---
+>>> Changes in v2:
+>>> - Return error after shutdown_mem_profiling() to skip unnecessary
+>>>    vm_module_tags_populate()
+>>>    v1 link: 
+>>> https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
+>>> ---
+>>>   mm/alloc_tag.c | 3 ++-
+>>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+>>> index 52aece27b00e..d8c36430f1c0 100644
+>>> --- a/mm/alloc_tag.c
+>>> +++ b/mm/alloc_tag.c
+>>> @@ -904,10 +904,11 @@ static void *reserve_module_tags(struct module 
+>>> *mod, unsigned long size,
+>>>                  int grow_res;
+>>>
+>>>                  module_tags.size = offset + size;
+>>> -               if (mem_alloc_profiling_enabled() && 
+>>> !tags_addressable()) {
+>> Makes sense but how about replacing mem_alloc_profiling_enabled() with
+>> mem_profiling_support? Otherwise this warning will be issued multiple
+>> times if we are loading multiple modules.
+>
+>
+> That's a really good point, this duplicate warning issue will indeed 
+> happen.
+>
+> When I thought over your point, I realized using mem_profiling_support 
+> creates a small race window.
+>
+>
+> Thread A（insmod A）                      Thread B (insmod B)
+>
+> --------- ---------
+>
+> needs_section_mem() -> true
+>
+>     needs_section_mem() -> true
+>
+>     (profiling still supported)
+>
+> reserve_module_tags()
+>
+>     overflow -> shutdown
+>
+>     mem_profiling_support=false
+>
+>     return -ENOSPC
+>
+>     reserve_module_tags()
+>
+>         mem_profiling_support==false
+>
+>         -> overflow check skipped
+>
+>         -> vm_module_tags_populate()
+>
+>             maps unused tag pages
 
-> 
-> diff --git a/mm/cma.h b/mm/cma.h
-> index c70180c36559..ab6d39898ea5 100644
-> --- a/mm/cma.h
-> +++ b/mm/cma.h
-> @@ -2,6 +2,7 @@
->  #ifndef __MM_CMA_H__
->  #define __MM_CMA_H__
->  
-> +#include <linux/cma.h>
->  #include <linux/debugfs.h>
->  #include <linux/kobject.h>
->  
-> diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
-> index 3aa483573d17..730b2b4965b6 100644
-> --- a/mm/hugetlb_cma.h
-> +++ b/mm/hugetlb_cma.h
-> @@ -2,6 +2,8 @@
->  #ifndef _LINUX_HUGETLB_CMA_H
->  #define _LINUX_HUGETLB_CMA_H
->  
-> +#include <linux/hugetlb.h>
-> +
->  #ifdef CONFIG_CMA
->  void hugetlb_cma_free_frozen_folio(struct folio *folio);
->  struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 0f703f239c80..1e394269c613 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -4,6 +4,7 @@
->  #define __MM_MEMCONTROL_V1_H
->  
->  #include <linux/cgroup-defs.h>
-> +#include <linux/memcontrol.h>
->  
->  /* Cgroup v1 and v2 common declarations */
->  
-> diff --git a/mm/pgalloc-track.h b/mm/pgalloc-track.h
-> index e9e879de8649..1a6de1358a21 100644
-> --- a/mm/pgalloc-track.h
-> +++ b/mm/pgalloc-track.h
-> @@ -2,6 +2,9 @@
->  #ifndef _LINUX_PGALLOC_TRACK_H
->  #define _LINUX_PGALLOC_TRACK_H
->  
-> +#include <linux/mm.h>
-> +#include <linux/pgtable.h>
-> +
->  #if defined(CONFIG_MMU)
->  static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
->  				     unsigned long address,
-> diff --git a/mm/shuffle.h b/mm/shuffle.h
-> index 61bbcddeeee6..11bec7521ab8 100644
-> --- a/mm/shuffle.h
-> +++ b/mm/shuffle.h
-> @@ -2,7 +2,9 @@
->  // Copyright(c) 2018 Intel Corporation. All rights reserved.
->  #ifndef _MM_SHUFFLE_H
->  #define _MM_SHUFFLE_H
-> +
->  #include <linux/jump_label.h>
-> +#include <linux/mmzone.h>
->  
->  #define SHUFFLE_ORDER MAX_PAGE_ORDER
->  
-> diff --git a/mm/swap.h b/mm/swap.h
-> index d077e5893a42..ec580c713204 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -5,6 +5,7 @@
->  #include <linux/atomic.h> /* for atomic_long_t */
->  #include <linux/mm.h> /* for PAGE_SHIFT */
->  #include <linux/memcontrol.h> /* for mem_cgroup_swappiness() */
-> +#include <linux/swap.h> /* for MAX_SWAPFILES_SHIFT, struct swap_info_struct */
->  
->  struct mempolicy;
->  struct swap_iocb;
-> diff --git a/mm/vmalloc.h b/mm/vmalloc.h
-> index dcfe30eaa80c..8866ddcff668 100644
-> --- a/mm/vmalloc.h
-> +++ b/mm/vmalloc.h
-> @@ -5,6 +5,8 @@
->  #ifndef __MM_VMALLOC_H
->  #define __MM_VMALLOC_H
->  
-> +#include <linux/vmalloc.h>
-> +
->  #ifdef CONFIG_MMU
->  void __init vmalloc_init(void);
->  int __must_check vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> 
-> ---
-> base-commit: e47602c51d20a93fa1711ed896dc9480de4374d9
-> change-id: 20260804-fix-some-local-headers-0ebc15f34c72
-> 
-> Cheers,
-> -- 
-> Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
+
+Sorry, my mail client messed up the race diagram, resend it.
+
+Thread A (insmod A)                   Thread B (insmod B)
+---------------------                 ---------------------
+needs_section_mem() -> true
+                                       needs_section_mem() -> true
+                                       (profiling still supported)
+reserve_module_tags()
+   overflow -> shutdown_mem_profiling()
+   mem_profiling_support = false
+   return -ENOMEM
+                                       reserve_module_tags()
+                                         mem_profiling_support == false
+                                         -> overflow check skipped
+                                         -> vm_module_tags_populate()
+                                            maps unused tag pages
+
+>
+> So I'd rather go with pr_warn_once here.
+>
+>
+>>> +               if (!tags_addressable()) {
+>>>                          shutdown_mem_profiling(true);
+>>>                          pr_warn("With module %s there are too many 
+>>> tags to fit in %d page flag bits. Memory allocation profiling is 
+>>> disabled!\n",
+>>>                                  mod->name, NR_UNUSED_PAGEFLAG_BITS);
+>>> +                       return ERR_PTR(-ENOSPC);
+>> This ENOSPC error will be propagated all the way up to the init_module
+>> syscall and it's not among the error codes currently expected (see:
+>> https://man7.org/linux/man-pages/man2/init_module.2.html). I suggest
+>> returning ENOMEM instead.
+>
+>
+> Agree, will change
+>
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+>>>                  }
+>>>
+>>>                  grow_res = vm_module_tags_populate();
+>>> -- 
+>>> 2.25.1
+>>>
 
