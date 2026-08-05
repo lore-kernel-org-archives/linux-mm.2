@@ -4,173 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCF5AC55ABA
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE35C55174
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Aug 2026 16:21:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95D7E6B007B; Wed,  5 Aug 2026 12:21:42 -0400 (EDT)
+	id AE4506B008A; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9354E6B0088; Wed,  5 Aug 2026 12:21:42 -0400 (EDT)
+	id ABB876B0092; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8235D6B008A; Wed,  5 Aug 2026 12:21:42 -0400 (EDT)
+	id 9D1756B0093; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3C46B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:21:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1DA840525
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:41 +0000 (UTC)
-X-FDA: 85067731602.26.46B2A8E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5450C40004
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PApT/Fq4";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of clg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=clg@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 700596B008A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 12:21:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5183C1A0537
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:49 +0000 (UTC)
+X-FDA: 85067731938.11.5D2F9C3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E78364000A
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 16:21:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=kRQbcFGX;
+	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785946899;
+	s=arc-20220608; t=1785946907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tizkSZxM4VvXKVuN9JfoqQPAahmETDYIePK/2g8gg9U=;
-	b=LC1QL4L0J7bNqhoLGyXMzxfwIJcge4R1tMn1027CCnl8HmylkKsZOizBbVk8zEGhu7u+Co
-	d6y/A7dvPf7mkgiiGSUuxt9ESRfedwkYFT21PXVwrNqV0kTJ3VVa88ImBnHu6ALatCU9qd
-	9n98yakS7Sn7a9oj8nauE6+ozDjwU5s=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PApT/Fq4";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of clg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=clg@redhat.com
+	bh=PYMoNgzZlL39hMDdf5hIWUsu6zdYs8UUMRGfuY5VR7g=;
+	b=wJfquAUMC9jwoLhoXH+ZKYIJk3mPaUtIkCSeKAlJMIiOE2k541nhEp3pe0FksHBkIYz0gV
+	gKD/dPvR6PZW26JaBQwCWJtD5veLxoJhmfdsKtE3JouHja3CpXmSrdyBkWdo39PM8VBn73
+	JanIB4DGojXv6PAr9QJl7+nCOq2tlCw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785946899;
-	b=FWgdPmDzs46QoGLQwpghJP8cVxOStp8phdsu+z7AzoY26UAI8ZWUERm8eKuif6TA4GwfPA
-	lr/01f1HAMxBC4XkG6MfyWDxO6w5ScR52o7+jogOLM6TcuRXxVBmdx44PpDQA1SXkJcVT3
-	u3hXZzaR0xWGhvtGcHsrlxxOH6rGxpg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785946898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tizkSZxM4VvXKVuN9JfoqQPAahmETDYIePK/2g8gg9U=;
-	b=PApT/Fq4f8EPv/u2xW1eaWhimeLrdvNO5em6Vw3tlkIGGoSPWaApWtC56Aie4Y2suVN1qE
-	AVgqhcKD3iSoLsstduD7+bzvaU5GkgcRTI9jaM+MXWcwz34zo+gLyeX2oSaXMzzvSROM6D
-	aE1IAK9PA7Seh7F+czsG7H5ToDRqfek=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-4Z3g9XUUPI-3oiC2AwKhzw-1; Wed, 05 Aug 2026 12:21:34 -0400
-X-MC-Unique: 4Z3g9XUUPI-3oiC2AwKhzw-1
-X-Mimecast-MFC-AGG-ID: 4Z3g9XUUPI-3oiC2AwKhzw_1785946893
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47fe23b5acdso1062112f8f.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 09:21:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785946893; x=1786551693;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tizkSZxM4VvXKVuN9JfoqQPAahmETDYIePK/2g8gg9U=;
-        b=QXK8kDDqUfI0edgKDVPQppawG5PO6zbcfYfTw3dXyaDEFrQXP+K1oI+xN53e1yxGn2
-         k9RL4dp6SgoHXpcpaG1YDFJBKih46gsszI9uUqoo42X1QgzSOQDiR31hhJTP7ljNKcot
-         tWP6vOYYt/XhLRrvz1M2wSzOnbcQ7Og67l8E0lZYO82vTBgPG+8ktQPAo8CvuXtN78T/
-         23+G/Cf5DdgB+iBhND8rTok/1/f6idYAvwAfSSuHwc3m8Kr0qXLJjbbgbbQQdzEyDKi9
-         eUdPMT31+QFz57q/MlU6sqNAJgJ2JZ86UBKRy9I8/KpgpBkWlR70Mfjv//GjN5F9bQVv
-         9Nyw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr86Oj4Z1jpIQ+5B7ZCX6J+kzc6xfcoWZ9Rq/e+t1GXHZKQhJs9W0pxzKZNbtphrFhSFofm3LmgKQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzx4wGYcVMFSahhdtIVv+fXLOysrAQ5IyCyrdz8DOEFBQeI77hN
-	XGn39/kB87/9mVrsQPPobKrIOFlVGUWS/5od6dVBK9tMbCa7hM+j2TTf1E61muAoA6/agh0ZcVO
-	u6DxXeBTiPcJ2LrLgl71V1IhB7oFjbubM+cMPQG11taXFCJqqvlpJ
-X-Gm-Gg: AR+sD10vznFdNfqJMcymJ4Gscs33TtH1YLO0UDD4LxWIdzu+368Wtk6USKStoBTflV6
-	ANWbPN7cz3VdWzgRiXvebwXIQihNNUM/lazLOtK+3SyXrZ7QUHovjQ/yiXauXxUoot08Iab7VYU
-	q6k31nH7BGJwwiGHsXEzDIEW3goMrbeyZ886xsPNE/HlrgwIC3cLRamasthjsWux5TzzLFfvW+X
-	UujNTQajo0VgySlobRYTLLnQzJxpRwZDhqAin77CfVnP5XjmerNGxONyzYaeXxr11oBC51ER+13
-	nBv9jPhLEHiLqRsM3mDjifYb8hFhClxebghFkTdleunN0Ck4J6uGgO43ItzLsS2/Ny0akcavsBP
-	jqNBv6QttQMMA7N7xJ6NwEybxRBSC1QeDFpeYjy4=
-X-Received: by 2002:a05:6000:2486:b0:47f:80df:3ba4 with SMTP id ffacd0b85a97d-47fec62aec8mr13193508f8f.28.1785946892824;
-        Wed, 05 Aug 2026 09:21:32 -0700 (PDT)
-X-Received: by 2002:a05:6000:2486:b0:47f:80df:3ba4 with SMTP id ffacd0b85a97d-47fec62aec8mr13193399f8f.28.1785946892352;
-        Wed, 05 Aug 2026 09:21:32 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec231f5csm10142282f8f.23.2026.08.05.09.21.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 09:21:31 -0700 (PDT)
-Message-ID: <4ddc95f2-8868-4be3-9839-e2d14cf35fef@redhat.com>
-Date: Wed, 5 Aug 2026 18:21:30 +0200
+	t=1785946907;
+	b=Lg4Xzlynfw6debvlt54E/o7rk7vOEF576eD183WxQjmn4tmxMWN5/zkM1n5BmTvq8eGwTf
+	UcbtgLaUgxzOyB5b3iW/lZXPK2oWRt7hHpvjdyd1/ExonsvY//s8kvOd7VlzOUPkBG6Wer
+	99x9SVZrdbdJHlRkc9iE1AY7T69B4wk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=kRQbcFGX;
+	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=PYMoNgzZlL39hMDdf5hIWUsu6zdYs8UUMRGfuY5VR7g=;
+	b=kRQbcFGXjpjH5pjrNS8BUiPc4XI+UukSaeVQhvVkQk5W7gsK7Gk9QT6tXoOjaU
+	7kMl1c2mUTYUXvPruzVBLDQcPvaww9NyRl9Jpy8f3QMVQNTAFwsctbWSxKX4lr8A
+	6yFpAiEwpqUVE7TKB4eB+VowDtSbsk6OuiFK6OqE9C7hQ=
+Received: from [198.18.0.1] (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgBHFCgEY3NqfpN3Kw--.23303S2;
+	Thu, 06 Aug 2026 00:21:25 +0800 (CST)
+Message-ID: <a27c1872-c4bd-4f3f-b2b8-d34e2f055411@163.com>
+Date: Thu, 6 Aug 2026 00:21:24 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260805055544.1568534-1-clg@redhat.com>
- <anL-NZkNMSSxN0YN@lucifer>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <anL-NZkNMSSxN0YN@lucifer>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 416ayezfyBmDH59Wq_NQXdZBgptIClWvJhGJ3FXQeX0_1785946893
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
+Subject: Re: [PATCH 1/1] mm/ksm: validate KSM rmap items before hwpoison kill
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
+Cc: xu.xin16@zte.com.cn, chengming.zhou@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
+References: <20260803151151.3472893-1-xialonglong2025@163.com>
+ <72f017f2-89c5-4e4a-9ce3-ab79f70b04a0@kernel.org>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <72f017f2-89c5-4e4a-9ce3-ab79f70b04a0@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgBHFCgEY3NqfpN3Kw--.23303S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Wr13Ary3Gr13tF4rZF45Awb_yoW7XFWrpa
+	ykAa4DGrW8tw1a9ryxZw4q9ryYvwn8Ja10yF47Aa4avas0qwsFyF45Jwn8uayrt3W8G3sa
+	qr47CFsxCFyrtFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UsvttUUUUU=
+X-Originating-IP: [240e:46c:1000:421:34db:efe:597b:d439]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2wVRSmpzYwWVAAAA3v
+X-Rspamd-Queue-Id: E78364000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 88cmacxqaus4uyyddbu6xi5cnt985zd7
-X-Rspamd-Queue-Id: 5450C40004
-X-HE-Tag: 1785946899-321304
-X-HE-Meta: U2FsdGVkX18tO8N+mXkamkARLooOl/umOnFKbqiNbUZyKwneLqrl5v7VczYBIQAMyqqhDlRWFGh+bM90SpOYTTDQwtOMH/QKKdevbQ80VBk599OgoYvjv9ubV7XjJWTXtz3fSVOIwJAuHDuMS2gR57e+Vo1uEVXJhxrglGNQf55PFTfpgmQ830a4I3mVVBQKkntl1ZyVe5LFjm6km0z8Khld2/qisHG7l8C1vj5w7+m3y6pK3tvoP6MBY6bLi39i7017v3CdiAYShzT7SyQfkC34pZEE2uW1v45mDl+1A81zXq8lbL4iuAS9gyhYP9tLqWEwLJdWlDi2eZQaBHKNIBJ/eRPRQHsNO3x6fxc3JvEokZsqjwo8r/lIIMa5JUFHD1XdulHFLNCcWuhmQLYj5mwuYqu3sc2GNvvPewnCozIcyq7d15KfYUFiiZftbyzgEGHJ2Dap71NrLL8nvsWZAKaU+xATquS1fj5BbXw6YIRQIW3HcZWsqntWrp91CmITpkeuy7d8nlpzj1ZfXafIg27uwAeloPNCxb/D4IOgWwI1pWEomBMjzLSmueoNp8qRzSNI8BObxtITIYUgAHrPj/Eo7egDS3pdbZ6+oxzZhI9fIIkVoXos7qN9PyEgBw0A8ggXns7fTPpKr106l/ihXD8MovY6aJ8D4Ic0IBzKBZ1uiAWNEsGjA8v71Qn28bT96k841rHRUMsrc5easIaRjdQy9vRIxCHXuV3PAa7eGcIwuXJ6dc7h0JWm0+a3+nwsgIq+rJ6MtCWaiqDlwiARCrh5Cbt+Fl/oVLnXR6wl6zSgLr+hIEBReUO+fWvjDzxjZpAMwjpH9J0j89a34TzZf4iwvxjQqYeZd4tCgQWhWACykQJxr25NyD9/BLOvLlrcMaAOfdOrr6aMAebc2BXpLVXbt3my5yatOi7YtPif8glduHeqpRFY/hPuj6ARaka8v3z33ZTUBIMDanhsOfb
- KpeGgIIB
- 36/acieWp7bCLDU3+djwoHdzj7fVS4yaxe+knO+Vg3b7L2G9kyHmQq8iLn+FY56L2r5dP0Mqvks7L4Yr10BKkYOOI/tmiJ5ROsavNDt/qE646mD3lDsxs2wiy4TYv6zCKvL1lkP2ZYo51XgUifRfR4HNyfQVtIYauOSpBABV6bLG0DC7GUswJIw7o6o+fRAaSDblm/JPJWXrW7NX0jTgVpS3AprPk9MkRRnnsLXNmz9UJmKQqBSbDmtNbZOqDpAEQRkgVqkbsfTZEFPBdneEUSjITyQbjypOD8cE5a97SwA1u7ush1fJ65qOwrJqlLTzmk0Q86E1nuiXfg9coSHncku4+RBpxEwwnAFgn36QHx3t6GTBUu7r0pFBnl+NmK76PiUJeH+jhb/neIZjUcCSKxVdMxjqTjAv6hZnqz+pn1ILCBEF/84upO3NRnjNuDHU43GGiDdfJcbNxKc2+nh9i2buGHzMWcKhGZwES
+X-Stat-Signature: i9bo65ibapnitc9y4sq8r7zfjchedi5j
+X-HE-Tag: 1785946902-222679
+X-HE-Meta: U2FsdGVkX1/f9IQgWa/w08JyKVSApS8zJr4zbkBYxyXAtvUKTliGix51Od/V+SFzwTy1LAoN9rODeg592d3cMfYkW4QqIAWt5XQTGjqGINyGrxQnPYkvMoxni9/Lh6Q/QPFVxDdb2c2HrkKEKUfVpipZdbLdpCBVaBFDPfgKAJ8KsQWzm4xdzr/8Wrut6UryZ5wYP2UhGqh8b3z6BppTILbrKXHPTngJ5qAYIIsOZ6OM33DVkXNH+GT3Pg5DR5huCicI1lJYIfoqKV3YkWgus4OFiITP5/tJh2YwnA4EkGbIs115lxhZWQAD5KEh9moscuMxQRPrNrZ0pxZaeJJ5kYspraZztc5wQaosH6reU7yg/tFhGzDq0YdmblV+N5UF6weLYrPvtg58vD6OCV97O2/SP2fVz9n2YO23x2t/gxPsWz9z+G8n8aNXx++7lm3WqhEzEJe9eJQqwS3bR1weuNd4pQadfm+CHILs/DcLga4Fc5OIrKVnV3k/RGrNF1y998/D6RKzCSj7tjdmfJ4wCuSntvTjCooKZZmR7vhKWZI7aWqyKksMGle+lDlljhJpEiyVX9SYcnuL/l+bzFz+O5XCOGNK/lGdAGZ8500hSd4JSJYj/5mhtHJpFZB2QSQQw/YRD3nwGJa7HOBxix59Y86BIimZWq6IoQEiuikfIFa7yE9LcCba4hpbcM+RradqlvZcQZ1e6c0kbaPICCCKJsV9xccT8oUc8+JNiiFMXjGKcZtQmNyo0AYHtM5skpp+5BvBZEE/IfXjC3vKUCfkCLshF9bSO+WeIvqUK0HHPFmCWAlPKgLLL6Uh9IUFgE4nLd3Lh3k83A5cEjq2xGDsItIgfeCJluy+5iow0nFFs6+0dW9YYqPguOoeb+S0RpU4VIjQdiXmxAf/D9HgfYsClzY5ZWyyy1zG5v1leEV0dD+zdhG+7vtNHMvVQCtzuBNV6F75vINZ3TQ7sGWI2ap
+ 7v91QjPO
+ /SBGaxLdTN4eR9XwjCromhOaDhGUQXxT2J2TCt3KBLjMRuSgzYJ/u0/F08lAPslVcEamCnqZi9wm1V8eeFFPi6S44T7ubw1MbsajzhmyK/4OkKDH2Y2EeY86flzG6QXCDKhS4UtSKYla8F/w8eZMRyCsmoz1AFwnefzgSitMGwrciKg0mXbZ+tuccdac4si7L6xT8lsuZ1bPBsLh75zSip6h+UMNQY2SHGQRNxGcLgKkOnKO8M4cetweyZLs8uqM7uNbeHrkLUay20PtGFmAlgjiGmPeyK5pQ0EXSLFC/W9rRe8bK0DA4elCQdq7oEJHHpbpaAl0L+V+g2YeiSiF7HCOktpBsjIA6ax6lpjYCGhLyQ5oFrT2Hjwt6c+teENUHxtufJp+S0naht7k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,81 +95,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the quick feedback Lorenzo !
-> So I think it should be something more like the attached.
-> 
-> That way all the handling remains the same and the override is applied in
-> the right place plus smaps keeps working.
+   Hi David,
 
-LGTM, do you want me to respin a v2 with what's below ? or you'd rather
-send it yourself.
+   Thanks for the review and for suggesting this approach.
 
-C.
+   I will send v2 shortly with your Suggested-by tag.
 
+   Thanks,
+   Longlong
 
-
-> ----8<----
->  From d6537260722c8741586e6295c8eea68d06087efa Mon Sep 17 00:00:00 2001
-> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-> Date: Wed, 5 Aug 2026 11:35:13 +0100
-> Subject: [PATCH] ideas
-> 
-> ---
->   mm/huge_memory.c | 32 +++++++++++++++++++++++++++++---
->   1 file changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index abc65d608c23..5fa01364f089 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
->   	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
+在 2026/8/5 20:19, David Hildenbrand (Arm) 写道:
+> On 8/3/26 17:11, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> collect_procs_ksm() walks the stable-node rmap list and queues an
+>> early kill for every task whose mm appears on the anon_vma chain.
+>>
+>> That rmap item can be stale by the time memory failure handles the
+>> poisoned KSM page.  A VMA may have been split, unmapped or remapped
+>> after the rmap item was recorded, so matching only vma->vm_mm can send
+>> SIGBUS with an address that no longer maps the poisoned page.
+>>
+>> Check that the saved address still belongs to the VMA and that
+>> page_vma_mapped_walk() still finds the poisoned page there before
+>> adding the task to the kill list.
+>>
+>> Fixes: 4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+>> ---
+>>   mm/ksm.c | 27 +++++++++++++++++++++++++--
+>>   1 file changed, 25 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 7d5b76478f0b..bc4b2dd894d8 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -3222,6 +3222,27 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>>   }
+>>   
+>>   #ifdef CONFIG_MEMORY_FAILURE
+>> +static bool ksm_rmap_item_mapped(const struct page *page,
+>> +				 struct vm_area_struct *vma,
+>> +				 unsigned long addr)
+> Two tab indent on second parameter line
+>
+> 	struct vm_area_struct *vma, unsigned long addr)
+>
+>> +{
+>> +	struct page_vma_mapped_walk pvmw = {
+>> +		.pfn = page_to_pfn(page),
+>> +		.nr_pages = 1,
+>> +		.vma = vma,
+>> +		.address = addr,
+>> +		.flags = PVMW_SYNC,
+>> +	};
+>> +
+>> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+>> +		return false;
+>> +	if (!page_vma_mapped_walk(&pvmw))
+>> +		return false;
+>> +	page_vma_mapped_walk_done(&pvmw);
+>> +
+> We have page_mapped_in_vma(). So I wonder whether we can find a way to
+>
+> 1) Modify to just work with KSM (CCing Lorenzo)
+>
+> Maybe it already does. I'm confused as so often.
+>
+> Looking at the existing caller collect_procs_anon(), it's really only called
+> on anon folios. Could it already be called on KSM folios? What would happen
+> in that case? (does it just work because folio->index is still what we expect)
+>
+> 2) Do the following
+>
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index d7670ba4147bf..7eeb3c336cfe9 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -342,6 +342,27 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
 >   }
-> 
-> +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
-> +					  bool forced_collapse)
+>   
+>   #ifdef CONFIG_MEMORY_FAILURE
+> +static unsigned long page_mapped_in_vma_at_address(const struct page *page,
+> +               struct vm_area_struct *vma, unsigned long addr)
 > +{
-> +	if (forced_collapse)
-> +		return false;
-> +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
-> +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
-> +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
-> +		return false;
-> +	return true;
+> +       const struct folio *folio = page_folio(page);
+> +       struct page_vma_mapped_walk pvmw = {
+> +               .pfn = page_to_pfn(page),
+> +               .nr_pages = 1,
+> +               .vma = vma,
+> +               .address = addr,
+> +               .flags = PVMW_SYNC,
+> +       };
+> +
+> +       if (addr < vma->vm_start || addr >= vma->vm_end)
+> +               return -EFAULT;
+> +       if (!page_vma_mapped_walk(&pvmw))
+> +               return -EFAULT;
+> +       page_vma_mapped_walk_done(&pvmw);
+> +out:
+> +       return pvmw.address;
 > +}
 > +
-> +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
-> +		vm_flags_t vm_flags, bool forced_collapse)
-> +{
-> +	/* Override THP tunables? */
-> +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
-> +		return true;
-> +	/* THP=always? */
-> +	if (hugepage_global_always())
-> +		return true;
-> +	/* THP=madvise? */
-> +	if (!hugepage_global_enabled())
-> +		return false;
-> +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
-> +	return vm_flags & VM_HUGEPAGE;
-> +}
-> +
->   unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   					 vm_flags_t vm_flags,
->   					 enum tva_type type,
-> @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   		 * Enforce THP collapse requirements as necessary. Anonymous vmas
->   		 * were already handled in thp_vma_allowable_orders().
->   		 */
-> -		if (!forced_collapse &&
-> -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> -						    !hugepage_global_always())))
-> +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
->   			return 0;
-> 
->   		/*
-> --
-> 2.55.0
-> 
+>   /**
+>    * page_mapped_in_vma - check whether a page is really mapped in a VMA
+>    * @page: the page to test
+> @@ -355,21 +376,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>   unsigned long page_mapped_in_vma(const struct page *page,
+>                  struct vm_area_struct *vma)
+>   {
+> -       const struct folio *folio = page_folio(page);
+> -       struct page_vma_mapped_walk pvmw = {
+> -               .pfn = page_to_pfn(page),
+> -               .nr_pages = 1,
+> -               .vma = vma,
+> -               .flags = PVMW_SYNC,
+> -       };
+> +       const unsigned long addr = vma_address(vma, page_pgoff(folio, page), 1);
+>   
+> -       pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
+> -       if (pvmw.address == -EFAULT)
+> -               goto out;
+> -       if (!page_vma_mapped_walk(&pvmw))
+> +       if (addr == -EFAULT)
+>                  return -EFAULT;
+> -       page_vma_mapped_walk_done(&pvmw);
+> -out:
+> -       return pvmw.address;
+> +       return page_mapped_in_vma_at_address(page, vma, addr);
+>   }
+>   #endif
+>
+>
+>> +	return true;
+>> +}
+>> +
+>>   /*
+>>    * Collect processes when the error hit an ksm page.
+>>    */
+>> @@ -3237,13 +3258,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>>   	if (!stable_node)
+>>   		return;
+>>   	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+>> +		unsigned long addr = rmap_item->address & PAGE_MASK;
+> Can be const.
+>
+>>   		struct anon_vma *av = rmap_item->anon_vma;
+>>   
+>>   		anon_vma_lock_read(av);
+>>   		rcu_read_lock();
+>>   		for_each_process(tsk) {
+>>   			struct anon_vma_chain *vmac;
+>> -			unsigned long addr;
+>>   			struct task_struct *t =
+>>   				task_early_kill(tsk, force_early);
+>>   			if (!t)
+>> @@ -3253,7 +3274,9 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>>   			{
+>>   				vma = vmac->vma;
+>>   				if (vma->vm_mm == t->mm) {
+>> -					addr = rmap_item->address & PAGE_MASK;
+>> +					if (!ksm_rmap_item_mapped(page, vma,
+>> +								  addr))
+> jut put that onto a single line, please: easier to read.
+>
+>> +						continue;
+>>   					add_to_kill_ksm(t, page, vma, to_kill,
+>>   							addr);
+>>   				}
+>
 
 
