@@ -4,83 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66FF9C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 05:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D366C55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 05:37:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42D906B0092; Thu,  6 Aug 2026 01:35:37 -0400 (EDT)
+	id 915716B0093; Thu,  6 Aug 2026 01:37:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B6D36B0093; Thu,  6 Aug 2026 01:35:37 -0400 (EDT)
+	id 89F006B0095; Thu,  6 Aug 2026 01:37:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD9D6B0095; Thu,  6 Aug 2026 01:35:37 -0400 (EDT)
+	id 76A4A6B0096; Thu,  6 Aug 2026 01:37:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 052CD6B0092
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:35:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6854E1205D7
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:35:36 +0000 (UTC)
-X-FDA: 85069732272.02.0174F96
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B9FFD180008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:35:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DiqMnpnk;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FD7A6B0093
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:37:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D88A2A16DB
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:37:57 +0000 (UTC)
+X-FDA: 85069738194.15.CA28246
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3E0581C0007
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:37:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PR7aSNsl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785994534;
+	s=arc-20220608; t=1785994676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D9phiXDHjrSLovQ25oeaKf4LKyu1U2UfKUgGrIYgwmU=;
-	b=o5WKVOV0xQJ+uxxfespzK9a3tItkcoOu5n7l+OAd5OvOhEOH/bxvXvIvZ4cSOQW0TAcpDb
-	02dWsD++oBzPjkDivRdKJSk/W/1B9Taqwsk6BBwrvNz3vUgtb+aH8YL5+wuxTlK4koT3cA
-	toyuDj6DI53Et0cT39GINHlxrduU2Og=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785994534;
-	b=V0sO2kbSibQ3yNJvZa5nal4D5leQVIVrqtTCosrqvR2VVJ2E6kANI82dYyYWgKGtCweJIN
-	cVRgUo0sk+RLktZy0y7xri8CL8UP54fTJx/gmcf2+iP4Eo/LtqnhQvfaCc7bGErsxugNy+
-	IkFC56DvXA3Dn2fSdBnO/NMIVxujDkg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2MLbXsduJEAILuzhNfI62PQO7YBQ2k1YhAQHL9snXWs=;
+	b=YRpwoq5piKW9u/ZPNfaZ4BVmmJOvNJypobEtVxaQrEGk1NuhEg3ylPwsnVYHgDE40ZGvqB
+	Y0gjqyugzUGp9wcv1rhl3ti1AvmI8uT2fkxBmnFAguPDtmYFdPz2+/Xsy0cK4f5kZXQqJT
+	lzc4mLCKcsx7k8QPyS0xgmz5lc0EPis=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DiqMnpnk;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785994529; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=D9phiXDHjrSLovQ25oeaKf4LKyu1U2UfKUgGrIYgwmU=;
-	b=DiqMnpnk/LJlP09G8MYc33oIx1cvrB7kZ11p1lY3DgPr6AN7ahDRQGNIrd6vaIxyQ5uwVQofo8PD5Ugglk5ZPacjNLVLkk1ZdSoJZrT3nbv+qZG5PSVOemAJjfg+6azKt/LQskH+vM1xR1Abq5GtM/KAV5kGU2VsgaGHko8zFFM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X8T-XQa_1785994527;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8T-XQa_1785994527 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 06 Aug 2026 13:35:28 +0800
-Message-ID: <e638aa5f-a557-4990-82d7-e0fa1e246658@linux.alibaba.com>
-Date: Thu, 6 Aug 2026 13:35:26 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PR7aSNsl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785994676;
+	b=Td6nISA7Dbpk3jWOCek53H2P5K6TdTzAtwbbhWP1xTyg6fvg6WO9D2guDCefRifuf6bAP7
+	p8oN/BsKXT0RYlBH6W59ZMjVhyfadslxUO5W3DlfbrZ4ICu4zhrUHu/MB8Ojw3sAU/J235
+	TKlx+vRbWUyWdQ5pxIm8HakfLZQRKkU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 99F8042D6F;
+	Thu,  6 Aug 2026 05:37:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A521F000E9;
+	Thu,  6 Aug 2026 05:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785994674;
+	bh=2MLbXsduJEAILuzhNfI62PQO7YBQ2k1YhAQHL9snXWs=;
+	h=From:Subject:Date:To:Cc;
+	b=PR7aSNslmo6nqBUf9z+O67zC0AC0EWNlTATHtsZtWWKJ/kUPN/Ljv3gB6Gp1JIxsc
+	 3y3UMScND3Tv4jYKfE/SNAJ4zZrSJiFqssI6yTSjn2ifWLZ8Dz5SEWFOzffVkKwkzx
+	 TR1C7Eka/9EDOJfWP849T195eFiHKAWsNvwhQEU5x8Ay3MODZlXqSGLkyxTNiztwDX
+	 bJJvwaY1b26Ai17wStHrLzqFkeh6/U0HcCauskihSUQQcdnsPBGsCSp8HKv9ileNQ/
+	 Yg21ZdTHOMOCGCDkA+zOwt9BtAJ++MzC2Jq8RVpAUWVpzTjgEIdGkaYr42ucLlcfdf
+	 OTZihc1bk3Kjw==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: [PATCH 6.12.y 0/2] mm/slab: fix unbounded recursion in free path
+ with memalloc profiling
+Date: Thu, 06 Aug 2026 05:37:40 +0000
+Message-Id: <20260806-kmalloc-no-objext-for-6-12-y-v1-0-036dfc3273fc@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] mm: shmem: make unused huge shrinker memcg aware
-To: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, usama.arif@linux.dev,
- brauner@kernel.org, akpm@linux-foundation.org, david@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1785746588.git.zhengqi.arch@bytedance.com>
- <d23cc0d06527e8085bdef645bdce489d9aa15bfc.1785746588.git.zhengqi.arch@bytedance.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d23cc0d06527e8085bdef645bdce489d9aa15bfc.1785746588.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B9FFD180008
-X-Stat-Signature: rx4a67r9o43gb7cgqrw8c5bkg5h81ih6
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQrCMAwA0F8ZOZvRBleKvyIe2jXT6GykFdkY+
+ 3fLju/yNqhchCtcug0K/6SK5gZ76mB8hHxnlNQMZMgZb874eod51hGzosYnL1+ctKBDS7hi5JQ
+ 8+4ECR2jFp/Aky9FfwfWW+hVu+/4HRIqj+nYAAAA=
+X-Change-ID: 20260804-kmalloc-no-objext-for-6-12-y-bedd8e852aeb
+To: Suren Baghdasaryan <surenb@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>, 
+ Kees Cook <kees@kernel.org>, Danielle Costantino <dcostantino@meta.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Hao Ge <hao.ge@linux.dev>, 
+ Hao Li <hao.li@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ "Liam R . Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
 X-Rspam-User: 
-X-HE-Tag: 1785994532-887527
-X-HE-Meta: U2FsdGVkX1+3Vq593iiG5PhveafZMBfczBILizf+sc93qeqePF1FIAcy8K3vd0nqDn0RZHMrKawUs9cR627kib408Nb2lCOcOfIcUz1Fm3hOVAOVTYyP71bPfzfykcDiUF8s1vaMSlLjKFIS2sGSWbZ0D/74PchdD3rLiiOPe7ayL4dDdvUdlI0KlrzxtURXXYOtPQa7i9u/mJN8ItwpjnkSh3msIyn3x1itquIk4ZJFPQ+exBr62OH3IErekfheJl4H08LYIoPB4XssJ8Ph8E0wrxZsr1r5sLhc2mWBtH4VhF/eXTrVHVsfDxf63W6jasxFy1IrKvPAKnUzcbuanHGXqT7ZxtOmIN2rDvbyABhxjkxOQD18rzb7NjBRqlM8LFKsu3kaPtOd+w081Zhuw2ioe4IydaQ8QZvawyvKdlC+C5aEuSuhkBho7awA1jfjWyvw1ko2DBh0HvORr4//uNIaU7MWFAJoxqy1FNTVWPWpPRpJOZI3G8lYKGE96TTuLRM8FuVa5MjP5owK+NaXQxwSAxSqjoEeI+oaOSk9dB6gRynxXoOl0WuddthYT35QuGyygeiz2rE0pwBWXYCxIYWL0NwEIhCMRx5BDQ+dR1b48xsgODrpIPC878pgczVuf2pQLwl0XYTSqNfDuMTKLX0TKOTXTbw1UY9BtYaFPEi4m2qbM+leR2hKNrCJ3A/2fzhbqqvYsF1+6lt/v+rDaArd5RgCCvEBuIL9B7ETq1MnhaAlUXF3WR5z6I5p66sN1PhQafo0q4oOMgLnBHlZt8oiDbOFizy0QY1kYs7jDiLmwILHSF3AsIBmCFT1zvmRgT4VPQ9NlRfN5/jXtOqDmLlx6OmmSuDjTX8+UVeD6GztmFKsZiq5FnyCQ0PkpN2g9EZlfxjR490svWKgeCcQOiK3NKhdgKGxhh3dG1cUJ57sn04z5+VLwdOxL725SXpera0tprtzQ+wPTQ9T+rx
- PBSDTn8x
- xRvFFbzK3huCvGdwAilxvL0VJ90VT/6jCLqcaKHqefkq9uZVH4QPEpu9IfQUqmHbPQt6I4uOE/BMYPu9LR2rnzA+nlFn+XhR9/KXiL9poz2A5NgDFiS7veXGQV0xruCY2FCY+IVHfhdJ6PusJMACspsFrCv/r6iSZQPfdMa/uZfHUBBhOsewqL06XLQR8XrAp1bksxu2hHL326DmLkfSdrOpioUPcqxX4IfunUXDYhKeerDPludMFkuwqUfTfKSaHHhRWy9xNaux5JFIiKPzlTyzYF2/9C9E0Fuk9MomHG4MhfHxQDeCn11LCEhXByCF8R+aK07sEAH04c+hocA1lprrAMw==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: t5muj1e1abqh8iceh4gz78yjohg9oyro
+X-Rspamd-Queue-Id: 3E0581C0007
+X-HE-Tag: 1785994676-349749
+X-HE-Meta: U2FsdGVkX1+E2KwuWhWIMoHuDxY2DfVbTM1GinlWWY/cLDRYXibaBZg0mgmF3JpKxDsbtUMUFD+fRZp1vgepPc9oSumdJpgttRcLN0U19aE9oQ2qQd8/fPR5nr8tqvRFCFtHBjN4Scpj/emKV45lcRvu/T4pFrdP+4zMMk9+sWiB3Yv0STcIi9MkmGRvul/vvnVe3xOzS/RAOtsB0q1SBwmP37VPXwiTBg8BXKlZpyQ85xErORxADKMAj2g/dOj2hIKny79kpJKRxCvu4H24Ue44yjIakNFyacSvdiWZ+h8Q5OGJh2vow6pYJYerxOZqy3pmDeEjz63X9QYbatFoSpnbc+XqPpgDrdq5aUdFo1BAZlohqfDIQJ3cHyp8Z6tpzqsxX5PNdZW8ng1lSogPLpcNGFGcV/5X5/86vTjSl2PN8Nm9L1BbZpB84b08J55iklOfxZRMUyeNcV77cssan9CdT8n3zZ3MOGSPoqpA1AzGDs6ff9gyj3GRe7A3AQP7Xejqd+Eelw6pZ+9mXNUam2Qz3f8Mhe2U1zMOAfy770h9RiCnWm2gcl00YReXkAz0ZewwBsfWHWuHGPMGqXiodF/YNYv1UDdo0Sia7EESYJTcklbYMaqDkN45lURDP2SJWEFrLxC22CBPzAscSIjRHNxAST/GJOqnCA2lKyhuCeqz9eMkY/fokybxBT989Nt2mH2bHrTmM9923xCLY2sJ0SSPnW83v67eKniFGezpRLKwMllKx09hT1m7z9ykPhyoXxkLpVjfRD3Hvphyf5GQVwgHWqCi8HvjlLSbNFUoHMdaFibK33940oArlBMfHD04xZJHC52m/5tOaHIvQxjr9+n9H89LzQIVJOcp2XTk1cv0EOuzlLnzFsOWaMgwtyqGOJPe31wKUXnjKo597X6VlyefyVpkVG/2C8owNsdCyhDMGqZsFiKwJnb6UHItRpHLk0kO5uADUzpHYIMT8RX
+ La7nzgn5
+ J8hHgkvURHXqjJ+hzWPYOHgPlHpkOdCBnfQvGs5E8xiJI4VPS1hXB5vpAA8xzyB3vNDSR3TN43LPwfB685BZhAJcv6sSNAbnt9DeRwBVvm1CizslK4o7ZBrK2vnKpssa/eW/W/AN2dECvwefRfvEEzJVu79iuL8mjeWxKTTSC8wVRkLJ47P26tL1QNDq4tUVFGaJlb2qcp8ETuYRLLYERTEY6CssWHpcKbt2ARY9xLL9ydq3MsfWk/DUBc1yE59YnQUU4W42rtJvehDIWvsvPbV3PquKaY3vkak1tTnfrBf+Jy4+7jJr0gogBQx2GUDMiVDzLbE85aeRQ+gFENI1RBRelxoJeZc51Dm3TzCYSxUoAU/wJIdRi7eUANVDVuLP3MYykUV9cmuS9pkyBapGakoT7KMS0xrLJkCJ+wLOMLaUmLw1whaGeRVRoPYJxUwAJAmp+xCgAPnwYAHKqZCQDYOA3YrYDvORwiceBZaayeTkjv0bG+kZBgqqode2+073gthpnsE9NZ4wxGv0eC++yHk9kY0fD5CUnc4TILZygIcnkiFFj5qUxDQdN1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,39 +102,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is backport of "mm/slab: fix unbounded recursion in free path with
+memalloc profiling" series [1] for 6.12.y.
 
+The patch 1 was adjusted for 6.12 as mem_profiling_support is marked
+__init in 6.12. I simply resolved this by marking
+mem_alloc_profiling_permanently_disabled() __init since in 6.12 we need
+it only when creating kmalloc-no-objext-* caches during the boot
+process.
 
-On 8/3/26 4:46 PM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> The shmem unused huge shrinker keeps a per-superblock list of inodes whose
-> tail huge folio extends beyond i_size. Since that list is not memcg aware,
-> reclaim triggered by one memcg can scan inodes from the whole superblock
-> and split shmem huge folios charged to unrelated memcgs.
-> 
-> Convert the shrink list to a memcg-aware list_lru. Queue each inode on the
-> list_lru sublist matching the memcg and node of the current tail huge
-> folio, so non-root memcg reclaim only walks candidates charged to the
-> reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
-> reclaim keep global semantics.
-> 
-> The list_lru still tracks inodes while the actual split target is the
-> current tail huge folio, so validate the folio memcg/node during scan. If
-> the folio no longer matches the reclaim context or splitting cannot
-> proceed, requeue the inode according to the current tail folio; if the
-> inode is no longer shrinkable, drop the scan entry.
-> 
-> This can be tested with the shrinker debugfs interface by allocating 32
-> tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs shrinker
-> with memcg A's cgroup id:
-> 
->                 before A scan    after A scan
->    base         A=64M, B=64M     A=64M, B=64M (per-memcg count is skipped)
->    patched      A=64M, B=64M     A=0,   B=64M
-> 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
+Patch 2 has slight functional differences compared to mainline
+due to lack of SLAB_ALLOC_* flags, sheaves, and kmalloc_nolock().
+I described those subtlties in the backporting notes in detail.
 
-Apart from the two issues Sashiko pointed out (which you've already 
-replied to), nothing else jumped out at me. Thanks.
+The first two patches from the original patchset [1] are not backported
+to 6.12.y as they are no-op in 6.12.y:
+
+ - mm/slab: fix a memory leak due to bootstrapping sheaves twice
+ - mm/slab: decouple SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
+
+[1] https://lore.kernel.org/all/20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org
+
+To: Suren Baghdasaryan <surenb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Christoph Lameter <cl@gentwo.org>
+To: David Rientjes <rientjes@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+To: Danielle Costantino <dcostantino@meta.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hao Ge <hao.ge@linux.dev>
+To: Hao Li <hao.li@linux.dev>
+To: Pedro Falcato <pfalcato@suse.de>,
+To: "Liam R . Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Harry Yoo <harry@kernel.org>
+---
+Harry Yoo (Oracle) (2):
+      lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
+      mm/slab: prevent unbounded recursion in free path with new kmalloc type
+
+ include/linux/alloc_tag.h |  3 +++
+ include/linux/slab.h      |  8 +++++++-
+ lib/alloc_tag.c           |  9 +++++++++
+ mm/slab.h                 | 28 ++++++++++++++++++++++++++--
+ mm/slab_common.c          | 13 +++++++++++++
+ mm/slub.c                 | 34 +++++++++++++++++++++++-----------
+ 6 files changed, 81 insertions(+), 14 deletions(-)
+---
+base-commit: 833291ee77846538926c990bcb468f6f54e9af50
+change-id: 20260804-kmalloc-no-objext-for-6-12-y-bedd8e852aeb
+
+Best regards,
+-- 
+Cheers,
+Harry / Hyeonggon
+
 
