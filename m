@@ -4,90 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0C30C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 03:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AB93C55ABA
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 03:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DF206B007B; Wed,  5 Aug 2026 23:24:32 -0400 (EDT)
+	id 9647E6B009E; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B6816B0092; Wed,  5 Aug 2026 23:24:32 -0400 (EDT)
+	id 8EE3B6B00A2; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F5186B0093; Wed,  5 Aug 2026 23:24:32 -0400 (EDT)
+	id 7B7356B00A5; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 977296B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:24:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4DDB160655
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:24:30 +0000 (UTC)
-X-FDA: 85069401900.11.BFC2659
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4796F140004
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:24:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="O ARSO5I";
-	spf=pass (imf23.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1500F6B009E
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:30:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AA751A064F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:30:24 +0000 (UTC)
+X-FDA: 85069416768.04.67D55B2
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 615454000E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:30:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xvnedJmH;
+	spf=pass (imf17.hostedemail.com: domain of liqiqi23@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=liqiqi23@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785986668;
+	s=arc-20220608; t=1785987022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ubheXKmm/hRAQBYM06zgEnkjBkgTAVDnF7ilmxHIngU=;
-	b=VIw/3oBNYRJRZrJCXcFGs97cW4kwE6vIewfSdodFYmCmxfFiysGIievFCGlRHT2qt5loo2
-	kFC9lsJayQp8PZjMMJjF69j2NNYCnDKFFBgeVXGY7wReMA4/mgmjBybNRm2ZMjRS0MVaT+
-	KSflO2y5CG97jmNKedJ1h1I7uYDjvzg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="O ARSO5I";
-	spf=pass (imf23.hostedemail.com: domain of dayou5941@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
+	b=8izhx2Ih+OhGh+llED7hULp7FrhTQJM8sxWcpLxV1MS3a+3kolunSfyu98MPoK1gxhN9KG
+	cA2fYWqh/b+yv1Oi59YZaLeunA3h88DK1+bITORNb8NVjgLHxsx/v+9OlnVuNx2JeNxi3G
+	0knHQIY5wdPw/pYRazHxknd5PRUCTCU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785986668;
-	b=FNePuyZl+0+TnvpH+Ze/n0UpUwJvGxCJGbXJN4JFoyvRsdAZ940aPa+il4bOUl+ZLpTva/
-	aaGlHkeOUXdea1lnyuT5gWlLTKEy6W4ftqGiR315vumvpDcK36pbRNMXnact9M4303DRJA
-	II+2S2jL66b1/o1F12Sl+C7Zv/grD0w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=ubheXKmm/hRAQBYM06zgEnkjBkgTAVDnF7ilmxHIngU=; b=O
-	ARSO5IT6dVSNqrjvffp4VGHty0MRabhvs0RcNjJa1j5jUaXZVmYcVLt6+VA589N7
-	iZzzJHQa+aQ1MCMXEUDXGATQ2MWPsel8H1R03v3L37BTAd8bA1hQF91G8E4DEIkG
-	LZj6B9nu4U62IMM36AMQ8fhuJtjC7uazrvvl6880/A=
-Received: from dayou5941$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-112 (Coremail) ; Thu, 6 Aug 2026 11:24:23 +0800 (CST)
-X-Originating-IP: [116.128.244.169]
-Date: Thu, 6 Aug 2026 11:24:23 +0800 (CST)
-From: =?UTF-8?B?5p2O5L2R6bi/IA==?= <dayou5941@163.com>
-To: jane.chu@oracle.com
-Cc: linmiaohe@huawei.com, akpm@linux-foundation.org, nao.horiguchi@gmail.com,
-	linux-mm@kvack.org, liyouhong <liyouhong@kylinos.cn>
-Subject: Re:Re: [PATCH v2] mm/memory-failure: fix refcount leak on
- soft-offline LBS folio
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <1a2536fc-afd5-4831-b5b9-6d970d29f0b4@oracle.com>
-References: <20260804035356.2615408-1-dayou5941@163.com>
- <1a2536fc-afd5-4831-b5b9-6d970d29f0b4@oracle.com>
-X-NTES-SC: AL_Qu2TB/WTuU4t5SGbZ+kckk4Wjug8Wcexufwj34NTc/gEvRjV0REnV1NKGX7U//iTDTieiBmqbDRhxuV3ZZN3lZyGwSepYdN5WvVMEAud0w==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	t=1785987022;
+	b=n7x8oGQkaNWx8VavygIRoujM3Wfklbz1NVP4mcOJc1HZYgFJpwfvT/C4+Pd+Av1cIFHMJU
+	kLMFdWCaSpjizXPTdgVDX0mU6THhEz8iE7LJFB5LOd7bkHurYuH33xHJIGfaKfmsxSDaBK
+	j8qE7Pczb80fNOZgeAyAyWBALhXR3pQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xvnedJmH;
+	spf=pass (imf17.hostedemail.com: domain of liqiqi23@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=liqiqi23@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
+	b=xvnedJmHWhePXoOFObXkvLZJh87bx4MqXErY79eOEcbrJjXMeD32rgcW+e1+Mzp80DMGfqr0p
+	H5FXDNNf1FtCAkZtvN0zOyEW3ZqTIIFL63xHsatM7LYQOmJbAX0l/KDbPYMgxr2Fhy00WgHcfHo
+	1HBeTwRYcVunCQ6fWo8o/vc=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hFsx50g2bzmV8f;
+	Thu,  6 Aug 2026 11:20:41 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 14F5F4058A;
+	Thu,  6 Aug 2026 11:30:13 +0800 (CST)
+Received: from [10.174.176.101] (10.174.176.101) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 6 Aug 2026 11:30:09 +0800
+Message-ID: <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
+Date: Thu, 6 Aug 2026 11:30:08 +0800
 MIME-Version: 1.0
-Message-ID: <195bc5ad.2b62.19fd519c2e3.Coremail.dayou5941@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:cCgvCgD3f+hn_nNqYb0sAA--.6738W
-X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC+gdQ-mpz-melEwAA3l
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE node
+ hotplug
+To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
+CC: <Zhigang.Luo@amd.com>, <arun.george@samsung.com>, <balbirs@nvidia.com>,
+	<brendan.jackman@linux.dev>, <yuzenghui@huawei.com>, <apopple@nvidia.com>,
+	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
+	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
+	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-26-gourry@gourry.net>
+From: Qiqi Li <liqiqi23@huawei.com>
+In-Reply-To: <20260720193431.3841992-26-gourry@gourry.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.176.101]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4796F140004
-X-Stat-Signature: oipsk74upqpyzbpane64it9c33qu1kq7
-X-HE-Tag: 1785986666-566439
-X-HE-Meta: U2FsdGVkX19N2B714VNXOfnOY0xYLNLBtknmSBlJQ8PUUKS1Tr+rubxQ6yk8wBS6bz+5O1Sh69hbHwrbkYosK1L70/4WD2LiBcVw0IO8Vu9Bf08pTYktx7g65kLvo8EquQQ3rt1zzfRh09HL3PvUcT0oXrzQuB5TK3KJaJKTBgOnbRWg+6hdNVrXdXXokDOH94tRPp3Un7AXp8LMLRVUlzIbQAQfaFtMQqsqDjHytqLI+pbyfPRXsCY+wcZkNTHeuhRXiphOG0txsCvcb4f0Dsi20c/yYur0Lg+YC/DJ0YRET2PC6cYlO9voZFwIcSeFymePzJ3FZReLNJsn7+FN8Pe2g7LYJiLV/ztAqWXQDB8CqzDOfkyOH1pppx/3uajp9Qg6h2WJHfDs+pl+iPcR+qDaNzmElzhOW02hIRLyLerKeKRR04GVbeuXz2/hy6fsC0/Fi1/1WEtN2bVB71ulJdbwUVceKr+gdm39WQoFv72Nc7rQ093ZLn+HjDsjl3WkbhhXt0f7VwhMr5P6+ptwzfOOVpLpLbA6JV9SjrCMV77vviiJVjXfwMOzpPhghszo1El8E1hz6+uh4ZoDpyZBoIkka5eY/VBVr8+50bjPL/uKhxJEeOBnxnrNPcWjaizgYX+LKXhliIWo309mj3CQk9WpnBT5bFePFB88gQg/SEMCXai/J83AMbDjpCP8UQ7r3JkXlnNYNigzLgBdmZO4EA/i7AasXSaGTwY1iy0Iq+53tURsYdBHkhFo84TJctKZFwJF28yHyj+fa3JmhV3akHEiZQXU3QokoZ2SNv9qrRyX4E9y3P2vuMRpvZU/IJAugOS23TXyLdr+MyEI2XyggnmOqOayvobFflCA35s3uhBcvJdcqSrX17yX54jlt9C736PxM0JM/0M1IfLMfRrpZeLNoWbmSGnaSYbs7TKZ301ICxVjIeUw9rHSAlxhWIwq0KQkMCCbtStkZC48EcK
- jRH7iCuf
- 32FmaI/gS01ZxXGuCYykgtq+y3Q6NKcAtGuUXP6lyOzCtEwxBCvTNC8DIsD0VFCZQ55oHqQWfoK3gRLbEsfBVBidcK6u3yUqUgURecomrl2CmtiC2kY93RI2vWRqZCcIjXgeoC63R+WKOJ8zMwgZaKqaYCVhdr/L2oDyPa4LXiIR8vtpR/mdoAer7q5PHzXe+W7N6afFzfCPrDvdQiamfoDMm2r71qVBJRDyXl4+PnkYgUYFtZOMII6b8GswpBmIuMLIzwwrCj8pYF+Z9mcLhcX9qRNEl+FQkr/fVc8Z1aRkHlTVCRnUzCJphuHqJUpv2Op7WNmxcZ41fvllXAZPRxv2B2YsvssfGNeXtGVujcvO054Ds3x20BwdNWI1BiWGsd8MVBzF/cmPNJ5CozexMJXsHNeX7PM+hiXq1TRxKTvcGITEManEyTThUUmDESs7niBl03KfAgZa316zLvzTsX9NdtKmn/ayADeIBETeHnyloxqB1PAOApNk5K3TGUO/USyKG1rE6ZBWK/Qixo+W+m3jyLo9nTf4Asx861wWYmm0+M+cdyi3RX4RfMQhbcL81mKSnP4OvhtgTAri13bYW/Dr8RW9oVK0kF7XPGtSy4oMtaXKR8cAw3z4pKqRITth8uvPx+lDSPXzoETY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 615454000E
+X-Stat-Signature: a6x5c5nrwyjoeftm3mk4f5cqw7mef5p9
+X-HE-Tag: 1785987020-285595
+X-HE-Meta: U2FsdGVkX1/r8QwFw7ANV97Mjc4kXZE6WYYHzV66hF2NyVFUdnhk9gG/IKXxf++GbRbVITabbC1vtuFx0PFK+gLgyucKgKL7mrtNC8dckzy1ZgMJBkwvtYRYFGna/x9fY+sqdkiy+GtYeMC2dIp0eU+n15gwZpI9RvJzZsm72mSZML7VcOlOnCyg/cf/g7y7FNzkD/zQ427Q5zihlx0whLoBtPgJ8DfJtT3uCj0rhBqkRwPUj+lQ+LI8KTm3MS8y3dA/+jDcKUrjKNDlu9bUQfJoWqihkgsny8M0Yb2iw6eFOr6lHPnLbdqUfDnjFH472Wjv6zM7Sjkmhg9SVp+XoVJEHOK6Ok0UYnc3lfM351veSzUJYS2QaD7ERhG7ftuFEMSmNFmN3BujVtdE4sEwZLf/Vr52PmbLl02U1oovK0al5wjKi6j0EGKUV7UMxxzGiH/aYNJPw1eRZBdTuhENTTDu+L/Ab/UyFzarSFiNzZth7NlDewdoA+iJ/DKZ9P3lW5x0fsX5wbpxEh9YFWhdXrgJxiq3Yqb7sjsIsrHOoMqB9Qqmo9coblLZ8fpyVhpCULdhoDQo7d90LyOXjaKpomFCUEPfpeGQKy3h4s5gQKqjCb0bYNAjLyA9oX0DWp4+nF/jbrBqyHcRo66rpqpZ5VRzhHHAENsZ/TFv3aMJeg8GVLDedS8YFye2wbjF0SJXYQRZBDMYa3qSF8WSg/ID2n1rQ7Ugv7jquSIOqHsBc7qdF8oLea4HR1QCIKSBE9qOb2A8c1GzC8XQez9LuaPPaLqssHRfm3Dr2mknXCMNnJI4ZMvX5n1ykvmHTmfFqaBY1VwCseuUE+QJaqI63vkJXGRhnhfLlX4NtRsBntCK6/COApdxIJnwZBJ6qzGZnSXXGc2UL3lShnEzwDboEociCXPvATyCudmgO+m0GVsHyQ1lBtrUBhsVglVT2N2//3DrDYu0GU6vhg1WEcBcBZM
+ Cts6m4yF
+ 5KVmZ28SCqHUaTKqn7FOpGflPZCzqAdbM2cB2hMj+ufd5L+kr04qZPRoeHNlcSSCSP0FneEI8dVYyoQ5wWYZ7vkCeq4AOyGDaBKTb9rAOGuu1geDLXpOycP5SNBZ91L0ogCAkSd0nKy12L52T0WKmpcA5xju91x2cK9CvatCm3SEmTisT0x+Zq1Dj2YwvH4jDTBAnf6MQkOpFEeVB39Dfa6Qhkl0LBwuy8XyGLoVxki73LB6SNMSbUWZIrJoEgKL07od/ChmIfSusLnbXvv+KXyXbk3eu0WN240BiVjmGeb74d8i5sDF0k6Dfcl0/3LqQ+7VIMXj98nySnTJMI0OdwsB7iA6cwo+o7Cf/BFpUGZpkqK+oEuNYxHVSVilF/qpsUi1iCyykHKKEf9P9zmA6+rHOvgQKveGGjV+rMSaT55IKAZgAUk25zGv9Zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,76 +124,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CgoKCgoKCgoKCgoKCgoKCgpBdCAyMDI2LTA4LTA2IDA3OjMzOjA4LCBqYW5lLmNodUBvcmFjbGUu
-Y29tIHdyb3RlOgo+Cj4KPk9uIDgvMy8yMDI2IDg6NTMgUE0sIGRheW91NTk0MUAxNjMuY29tIHdy
-b3RlOgo+PiBGcm9tOiBsaXlvdWhvbmcgPGxpeW91aG9uZ0DigIpreWxpbm9zLuKAimNuPiBzb2Z0
-X29mZmxpbmVfaW5fdXNlX3BhZ2UoKSBydW5zIAo+PiB3aXRoIGEgZm9saW8gcmVmZXJlbmNlIHRh
-a2VuIGJ5IGdldF9od3BvaXNvbl9wYWdlKCkuIFNvZnQtb2ZmbGluZSBza2lwcyAKPj4gc3BsaXR0
-aW5nIHdoZW4gbWluX29yZGVyX2Zvcl9zcGxpdCgpIGlzIG5vbi16ZXJvLCBzbyBsYXJnZSBmb2xp
-b3Mgc3RheSAKPj4gaW50YWN0LiBUaGF0IGVhcmx5IHJldHVybgo+PiAKPj4gCj4+IEZyb206IGxp
-eW91aG9uZyA8bGl5b3Vob25nQGt5bGlub3MuY24+Cj4+IAo+PiBzb2Z0X29mZmxpbmVfaW5fdXNl
-X3BhZ2UoKSBydW5zIHdpdGggYSBmb2xpbyByZWZlcmVuY2UgdGFrZW4gYnkKPj4gZ2V0X2h3cG9p
-c29uX3BhZ2UoKS4KPj4gCj4+IFNvZnQtb2ZmbGluZSBza2lwcyBzcGxpdHRpbmcgd2hlbiBtaW5f
-b3JkZXJfZm9yX3NwbGl0KCkKPj4gaXMgbm9uLXplcm8sIHNvIGxhcmdlIGZvbGlvcyBzdGF5IGlu
-dGFjdC4gVGhhdCBlYXJseQo+PiByZXR1cm4gLUVCVVNZIHBhdGggbmV2ZXIgZHJvcHMgdGhlIHJl
-ZmVyZW5jZS4KPj4gCj4+IFRoZSBvdGhlciBmYWlsdXJlIHBhdGggaXMgZmluZTogdHJ5X3RvX3Nw
-bGl0X3RocF9wYWdlKC4uLiwgcmVsZWFzZT10cnVlKQo+PiBwdXRzIHRoZSBwYWdlIHdoZW4gdGhl
-IHNwbGl0IGl0c2VsZiBmYWlscy4gbWVtb3J5X2ZhaWx1cmUoKSBhbHNvIHB1dHMKPj4gZXhwbGlj
-aXRseSBvbiBpdHMgYW5hbG9nb3VzIHVuc3BsaXQgcGF0aC4KPj4gCj4+IEhhbmRsZSB0aGUgbmV3
-X29yZGVyICE9IDAgY2FzZSBzZXBhcmF0ZWx5IGFuZCBjYWxsIGZvbGlvX3B1dCgpCj4+IGJlZm9y
-ZSByZXR1cm5pbmcuCj4+IAo+PiBGaXhlczogNjg5Yjg5ODY3NzZjICgibW0vbWVtb3J5LWZhaWx1
-cmU6IGltcHJvdmUgbGFyZ2UgYmxvY2sgc2l6ZSBmb2xpbyBoYW5kbGluZyIpCj4+IFNpZ25lZC1v
-ZmYtYnk6IGxpeW91aG9uZyA8bGl5b3Vob25nQGt5bGlub3MuY24+Cj4+IC0tLQo+PiB2MjoKPj4g
-LSBBZGQgZG9jdW1lbnRhdGlvbiBmb3IgdGhlIGZvbGlvIHJlZmVyZW5jZSBjb3VudGluZyBjb252
-ZW50aW9uIG9mIHNvZnRfb2ZmbGluZV9pbl91c2VfcGFnZSgpLgo+PiAtIFJlbW92ZSBNRl9DT1VO
-VF9JTkNSRUFTRUQgcmVsYXRlZCBkZXNjcmlwdGlvbiBpbiBjb21taXQgbWVzc2FnZSB0byBhdm9p
-ZCBtaXNsZWFkaW5nLgo+PiB2MTogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjYwODAz
-MDYwMDAxLjgwMDYzOC0xLWRheW91NTk0MUAxNjMuY29tLwo+PiAKPj4gLS0tCj4+ICAgbW0vbWVt
-b3J5LWZhaWx1cmUuYyB8IDE3ICsrKysrKysrKysrKysrKy0tCj4+ICAgMSBmaWxlIGNoYW5nZWQs
-IDE1IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4+IAo+PiBkaWZmIC0tZ2l0IGEvbW0v
-bWVtb3J5LWZhaWx1cmUuYyBiL21tL21lbW9yeS1mYWlsdXJlLmMKPj4gaW5kZXggNTE1MDhhNTVj
-NDA1Li4zYjFlNjk0NjgyMWIgMTAwNjQ0Cj4+IC0tLSBhL21tL21lbW9yeS1mYWlsdXJlLmMKPj4g
-KysrIGIvbW0vbWVtb3J5LWZhaWx1cmUuYwo+PiBAQCAtMjc3Niw2ICsyNzc2LDkgQEAgRVhQT1JU
-X1NZTUJPTCh1bnBvaXNvbl9tZW1vcnkpOwo+PiAgICAqIHNvZnRfb2ZmbGluZV9pbl91c2VfcGFn
-ZSBoYW5kbGVzIGh1Z2V0bGItcGFnZXMgYW5kIG5vbi1odWdldGxiIHBhZ2VzLgo+PiAgICAqIElm
-IHRoZSBwYWdlIGlzIGEgbm9uLWRpcnR5IHVubWFwcGVkIHBhZ2UtY2FjaGUgcGFnZSwgaXQgc2lt
-cGx5IGludmFsaWRhdGVzLgo+PiAgICAqIElmIHRoZSBwYWdlIGlzIG1hcHBlZCwgaXQgbWlncmF0
-ZXMgdGhlIGNvbnRlbnRzIG92ZXIuCj4+ICsgKgo+PiArICogVGhlIGZvbGlvIHJlZmNvdW50IGhh
-cyBiZWVuIGluY3JlbWVudGVkIGJlZm9yZSBlbnRlcmluZyB0aGlzIGZ1bmN0aW9uLgo+PiArICog
-VGhpcyBmb2xpbyByZWZlcmVuY2UgbXVzdCBiZSByZWxlYXNlZCBiZWZvcmUgdGhlIGZ1bmN0aW9u
-IHJldHVybnMgb24gYWxsIHBhdGhzLgo+PiAgICAqLwo+PiAgIHN0YXRpYyBpbnQgc29mdF9vZmZs
-aW5lX2luX3VzZV9wYWdlKHN0cnVjdCBwYWdlICpwYWdlKQo+PiAgIHsKPj4gQEAgLTI4MDEsOSAr
-MjgwNCwxOSBAQCBzdGF0aWMgaW50IHNvZnRfb2ZmbGluZV9pbl91c2VfcGFnZShzdHJ1Y3QgcGFn
-ZSAqcGFnZSkKPj4gICAJCSAqIE5PVEU6IGlmIG1pbmltaXppbmcgdGhlIG51bWJlciBvZiBzb2Z0
-IG9mZmxpbmUgcGFnZXMgaXMKPj4gICAJCSAqIHByZWZlcnJlZCwgc3BsaXQgaXQgdG8gbm9uLXpl
-cm8gbmV3X29yZGVyIGxpa2UgaXQgaXMgZG9uZSBpbgo+PiAgIAkJICogbWVtb3J5X2ZhaWx1cmUo
-KS4KPj4gKwkJICoKPj4gKwkJICogRHJvcCB0aGUgcmVmZXJlbmNlIG9idGFpbmVkIHVwb24gZW50
-cnk7Cj4+ICsJCSAqIHRyeV90b19zcGxpdF90aHBfcGFnZSguLi4sIHJlbGVhc2U9dHJ1ZSkgaGFu
-ZGxlcyByZWZjb3VudGluZyBpdHNlbGYKPj4gKwkJICogd2hlbiB0aGUgc3BsaXQgZmFpbHMuCj4+
-ICAgCQkgKi8KPj4gLQkJaWYgKG5ld19vcmRlciB8fCB0cnlfdG9fc3BsaXRfdGhwX3BhZ2UocGFn
-ZSwgLyogbmV3X29yZGVyPSAqLyAwLAo+PiAtCQkJCQkJICAgICAgIC8qIHJlbGVhc2U9ICovIHRy
-dWUpKSB7Cj4+ICsJCWlmIChuZXdfb3JkZXIpIHsKPj4gKwkJCXByX2luZm8oIiUjbHg6IG9yZGVy
-LSVkIGZvbGlvIGNhbm5vdCBzb2Z0IG9mZmxpbmVcbiIsCj4+ICsJCQkJcGZuLCBuZXdfb3JkZXIp
-Owo+PiArCQkJZm9saW9fcHV0KGZvbGlvKTsKPj4gKwkJCXJldHVybiAtRUJVU1k7Cj4+ICsJCX0K
-Pj4gKwkJaWYgKHRyeV90b19zcGxpdF90aHBfcGFnZShwYWdlLCAvKiBuZXdfb3JkZXI9ICovIDAs
-Cj4+ICsJCQkJCSAvKiByZWxlYXNlPSAqLyB0cnVlKSkgewo+PiAgIAkJCXByX2luZm8oIiUjbHg6
-IHRocCBzcGxpdCBmYWlsZWRcbiIsIHBmbik7Cj4+ICAgCQkJcmV0dXJuIC1FQlVTWTsKPj4gICAJ
-CX0KPj4gLS0gCj4+IDIuMjUuMQo+PiAKPgo+SXQgc2VlbXMgbWUgdGhpcyB3aWxsIGRvIC0KPgo+
-LS0tIGEvbW0vbWVtb3J5LWZhaWx1cmUuYwo+KysrIGIvbW0vbWVtb3J5LWZhaWx1cmUuYwo+QEAg
-LTI4MDIsOCArMjgwMiw4IEBAIHN0YXRpYyBpbnQgc29mdF9vZmZsaW5lX2luX3VzZV9wYWdlKHN0
-cnVjdCBwYWdlICpwYWdlKQo+ICAgICAgICAgICAgICAgICAgKiBwcmVmZXJyZWQsIHNwbGl0IGl0
-IHRvIG5vbi16ZXJvIG5ld19vcmRlciBsaWtlIGl0IGlzIAo+ZG9uZSBpbgo+ICAgICAgICAgICAg
-ICAgICAgKiBtZW1vcnlfZmFpbHVyZSgpLgo+ICAgICAgICAgICAgICAgICAgKi8KPi0gICAgICAg
-ICAgICAgICBpZiAobmV3X29yZGVyIHx8IHRyeV90b19zcGxpdF90aHBfcGFnZShwYWdlLCAvKiAK
-Pm5ld19vcmRlcj0gKi8gMCwKPi0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAvKiByZWxlYXNlPSAqLyAKPnRydWUpKSB7Cj4rICAgICAgICAgICAg
-ICAgaWYgKG5ld19vcmRlciB8fCB0cnlfdG9fc3BsaXRfdGhwX3BhZ2UocGFnZSwgZmFsc2UpKSB7
-Cj4rICAgICAgICAgICAgICAgICAgICAgICBwdXRfcGFnZShwYWdlKTsKPiAgICAgICAgICAgICAg
-ICAgICAgICAgICBwcl9pbmZvKCIlI2x4OiB0aHAgc3BsaXQgZmFpbGVkXG4iLCBwZm4pOwo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAtRUJVU1k7Cj4gICAgICAgICAgICAgICAgIH0K
-PgoKPgoKCkhpIEphbmUsCgpUaGFua3MgZm9yIHRoZSBzdWdnZXN0aW9uISBJJ3ZlIGVuZGVkIHVw
-IGdvaW5nIHdpdGggRGF2aWQncyBtb3JlCmNvbXByZWhlbnNpdmUgcmVmYWN0b3JpbmcgcGF0Y2gs
-IHdoaWNoIGFsc28gZml4ZXMgdGhlIHJlZmNvdW50IGxlYWsuClRoZSB2NCBzZXJpZXMgaGFzIGJl
-ZW4gc2VudCBvdXQ6CmxpbmvvvJpodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA4MDYw
-MzE5NTguNjc3OTM1LTEtZGF5b3U1OTQxQDE2My5jb20vCgpUaGFua3MsCllvdWhvbmcKCg==
+Hi Gregory,
+
+On 7/21/2026 3:34 AM, Gregory Price wrote:
+
+> Add add_private_memory_driver_managed() to let modules hotplug
+> memory onto an N_MEMORY_PRIVATE node they control.
+
+I am trying to understand how the nid passed to
+add_private_memory_driver_managed() is expected to be provisioned.
+
+From what I can see, both node_private_register() and
+__add_memory_resource() require the nid to already be present in
+node_possible_map. My understanding is therefore that this patch
+supports hotplugging private memory onto an existing possible node,
+rather than creating a new possible node ID at runtime.
+
+For example, in the use case I am looking at, the device's private
+node is not described by firmware. Would its nid need to be reserved
+during early NUMA initialization, or is there another mechanism that
+I may have missed?
+
+Also, could you please Cc me on future revisions of this series?
+I would appreciate it and would be happy to follow the work:)
+
+Thanks,
+Qiqi
 
