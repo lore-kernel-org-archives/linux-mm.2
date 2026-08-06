@@ -4,169 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A2EC55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDC25C55174
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:08:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C95256B008A; Wed,  5 Aug 2026 21:08:29 -0400 (EDT)
+	id 198B86B0092; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6CA06B0092; Wed,  5 Aug 2026 21:08:29 -0400 (EDT)
+	id 16FF56B0093; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B35666B0093; Wed,  5 Aug 2026 21:08:29 -0400 (EDT)
+	id 0AD7E6B0095; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 59C7F6B008A
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:08:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CFCF4061A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:28 +0000 (UTC)
-X-FDA: 85069059096.22.9892E97
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012071.outbound.protection.outlook.com [52.101.48.71])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8C91340008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:25 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 8DD586B0092
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:08:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF291404DD
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:36 +0000 (UTC)
+X-FDA: 85069059432.13.2B8AE39
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 22FE540005
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:32 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jFhh1Eo1;
-	spf=pass (imf04.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.48.71 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785978505;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A6LgN6Nk;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785978515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6xy/ThrqRZYR6IRoFYVDK2Tb5oVjSNj2/rJzHkqhEB8=;
-	b=lNZ4MBeDTO+m579UYo4YLZ2Dez4me2Gcmp++pKw2oOP7BZH3s0spv1bJqvJS4bZswzObhw
-	xpNU0FSa15KQwlw1G28awHHd5tot8qabV3kTWbBM3GGBnS3Mie02KJVHCGwUIAU+Vhz2CB
-	7ww3DAWUcfMcr+jiZ9xv7dpkJf2PKDU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785978505;
-	b=O5zrfXMbeSc8cjRwAc2MNqpmsFkpoVWG01CqBOpI3avvN9Um62Qdhez0q7I0w+NZg7YonG
-	stEwiUpP9TVe4rJecN8fxqOdWaOBWpnjYOFczzkK1PAmu8G4iANzz/ieAyYxINpg3maIbP
-	DkwgBSMEXW/SpCsRti+7JarLGUJTR6g=
-ARC-Authentication-Results: i=2;
+	bh=af4kgtR65RjNTdAtxRPnSe6H2YT74ta8v6zpWeeJOXM=;
+	b=qR/KAS4SsJ+vyjfj5+NJOjvtVg/i2Q+6nZMB1PkE8Z0TYJdIBvlP8qKUznUPzgF0lcfraa
+	GNUfUDrkLHY0Dumi/V8R+O5FYU3oRsARaCgrUwuebZ7w6GbxnuW5nc4UIb8UQ5LHTODpkN
+	z7j8FG4IKtItRk6wPAqCrS9Cb6/f2Eo=
+ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jFhh1Eo1;
-	spf=pass (imf04.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.48.71 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jy7GSsnDKxOfMutwmhhtCWLqK39iFnSf4rg6Nu6jd9DAdogovOnUlXX9JBkVi+sfhPfpWsotYAkwH9PV50MacsZJQt1lQ+8Y5Z0Xn5pkS+1efUSF2dD4WBQgZC+OW9raAVzrwKU+4AExlanjitv0BP1EHfV0rWGDwgnRkmH+DxTKvybBYQzu0orGsWlucMSb+W0xmIeTySaKlqNpMUOM1pTe/96y9dtGNYSibaogVtj6RZF1ZRe7zHT9c9fXL3tgRo/T8sFaOzMrhfwbthl6ibJrCkSqRKBocSX8dUZtLlPQoMusTDLeQiYgudIkrx9b8FHYEmYFQMa/Vc0OPtev3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6xy/ThrqRZYR6IRoFYVDK2Tb5oVjSNj2/rJzHkqhEB8=;
- b=haKjLL24cac8u0nckEAetQHoI57Dh9uQTK0VNQsP+mrM84eC6TxyJVVz2zUue7X4o+x06BM7/ofslMBcixdfUE4kLMmg5xXygodCjyO4TX3bBaUWzkaOo/LxV8K+EIb1ffi1hvuefXwoli+7CWP6JSyMq6DbDlDBi1KJep/Wy01tLdAlvEngBYBGyGIADyIeU09fpjnzEL7oMeCmjzVKj+34wNfleN3f6Yhlcl/2jrLOEMyRyhGyFogG5rGqjzcFpCPK9aYZNaecxqu0/Jk0aius6B8FWzkWX93jQTOeip+/Igc+fD1yrBQc4hFq8YpYCsM2ju7bOCc92dFNiVIuXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6xy/ThrqRZYR6IRoFYVDK2Tb5oVjSNj2/rJzHkqhEB8=;
- b=jFhh1Eo17+LDcR5KseNAodrERduJLYFKRRCPWLYAGD24B5qeDhhm5nBXlRtcJxH5g3wYzPyXYLAIcXBh9YEoGoWN9BnHDBCewL3OSIksbMoENg+Q1KAE0Di/5uvKFadH5YEDp7wgUw4d75QGTSsP6ERXG4jbjvTYxEf6VWKAZB5EdYp0HR/eE0ppxoFxJWraAnaOr2xGetiKN1SvD8LZIDTq1I6Sh+lo8N5KGo/poTf9oz5cRJ8Y2qkiCIo/U8Hl850ZbZTHcvt2nZzsPZYad28ceTKG7v+ILumNjKLUfSnGU8pyWg58LTeZgWbsI2gz4PUg2+oKlNSmHAWAldn8rQ==
-Received: from LV3PR12MB9412.namprd12.prod.outlook.com (2603:10b6:408:211::18)
- by PH0PR12MB8821.namprd12.prod.outlook.com (2603:10b6:510:28d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Thu, 6 Aug
- 2026 01:08:15 +0000
-Received: from LV3PR12MB9412.namprd12.prod.outlook.com
- ([fe80::c319:33b5:293:6ec4]) by LV3PR12MB9412.namprd12.prod.outlook.com
- ([fe80::c319:33b5:293:6ec4%4]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
- 01:08:15 +0000
-Message-ID: <0159349a-41f2-467c-b91a-3775e56a660f@nvidia.com>
-Date: Wed, 5 Aug 2026 18:08:13 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: debug_page_alloc: fix NULL buf in
- debug_guardpage_minorder_setup
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260806004556.2633049-1-ye.liu@linux.dev>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260806004556.2633049-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR21CA0014.namprd21.prod.outlook.com
- (2603:10b6:a03:114::24) To LV3PR12MB9412.namprd12.prod.outlook.com
- (2603:10b6:408:211::18)
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A6LgN6Nk;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785978515;
+	b=c/3294e8EXgIo+hCn7LoSLqqN+7/gVBo9Mnuzul5J/r8L3BFdmFTCZDgSzWZ8N55ubaQUV
+	n6wv8GM7DTqfluJg4fuU+WtEynVKEMG3hl0lj91S7TP2unO4Gmz3ckISIlKm+VjYQWH1Yj
+	zTJv21rAIcFWZ+NLJhXletUfrUj/OUg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785978508; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=af4kgtR65RjNTdAtxRPnSe6H2YT74ta8v6zpWeeJOXM=;
+	b=A6LgN6NkvbjBxv3/3QCdO8wilkOr0RdTaZfhA4BhypcigJecq4dD/Gb439fD4ywY8GM34iYM/EKX3mEfqfunmN3VcuIyL6RW+Hpda460fBqzmiQUryiHdJbRivgexZa4Nnk/50OxzLB5f2q40vABRwBgNvo1R4FaT5NF8h77mYo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X8SKbUo_1785978504;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8SKbUo_1785978504 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 06 Aug 2026 09:08:25 +0800
+Message-ID: <6c778b79-5945-4832-bbf6-1a586c1c5647@linux.alibaba.com>
+Date: Thu, 6 Aug 2026 09:08:23 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9412:EE_|PH0PR12MB8821:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef1dcbd3-0f50-448a-3ba5-08def3573199
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	mrSWd1RbS/XDGX311m7xWir0FHflV7bP8XlYzplqd9jLO4Fd5UuM8ZILi38Wxmq9xtSrQu1ccpzm3+Uaqpi2FmE8+X1AUoCKwOjoveQdihuhrgC5FkGHiRw8X+GsfWvpwPVGiXYtKayJ4ILtrccym/jEHQ8TsuXs5Pd68ITIVOc2M7NrTZSVjMw90yvIy7V1bXodBQb59f+JpdkfGXXQdjGq99sKiyknIgHBrA3l2FguwQAhCy97fRByk8Nxr7Q1KYm59oFC/RryvK1YuUv5lvjuZQvELofb4gNEwDBUByeRuLDAsKZoZWGlaqaaDvex3Ry7zjVGzO7vndiPOHXgXLybrjwaZQDdnmtpR9vL0XyYe4hlDXsCuWVGHPFCHI2VhdA51zL6RBB1iAGd3Ms4roUtrpOfydrjn5MXc4NN9P2GVOfm/+lHFIAQgZIRo0wA6XiiLTzAY6z5S9nw6pJQAjgjfHVuTXpjRFJBDkcxekcgSD8xB6XaRCuWPbSCFH9S6xa7dAsREKnc9Ni10efSiy8RlEyalg/JPv3GqO1lb9R6RqzjlzkwB1jxpdyQwgFsMAunWmrr5FFo9ThKPvY8OjWNX/tdpGtFLISqpEtjayGJq2S8irskSF/kDZb2MYwOi36I8IB9ESdhb9zCEqVhlAhvHXbCEdotnzAwPcOPTbI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3lYaU5WalE0SDVPQ3A2TW0zbCtKRnl3Nlp6bFoxdS95b1ZkYVo2bm1GNjFV?=
- =?utf-8?B?ZjRDV0J1dFpLMHFJQjc0aENHMEpkeEhlTm1VTks3L2N5TmV4T3d2OXhYZTVO?=
- =?utf-8?B?NlI5NTZVUDJqZjdoYzVtR0tBSW5kR20rVHJ6VEtwcUFjRWUwbjZvc3pXS1h2?=
- =?utf-8?B?eFZpYTdVdGN0YXFWU29yUmRBejBLamNwNVpmdFF0M2dSUjVrZHVNM1lqdTg5?=
- =?utf-8?B?U015elZlZnl5VnBzUzV4eTlkR2drdTFGaGt0ajBCVnFHNE40WXRMYnRWMmIw?=
- =?utf-8?B?ZXEzdlBXNk01WStVbGlLbDZ4cEVRTDlUdVVuTXRTVmpndTdtQVpkUElaeWRK?=
- =?utf-8?B?OVg4UFQ3ZlI0MzNid28xYTFhM0lXN1hpVzN6YXlQbS9FQjc0YjBEam9BdmtJ?=
- =?utf-8?B?d25PQ1QwMHorNndYRUZjM3VTc016NXhQUlNLb0hyUTd1SVpqeDhoWWkzZE1Z?=
- =?utf-8?B?Vm55TlY3OHF3L2liTTJ5Vy8vR0Y5ZEVvb1RhYXVtc0l4bjZmQmRIVWRMdzJZ?=
- =?utf-8?B?MFBPWHhjWVhtaW8xSk5NVVpxaWtBbXJ5QTBsZHdDRUVHUGRDYm4vRW9jdUhM?=
- =?utf-8?B?VkZTQUhiZEdhK3FKOTFhUjJvM3hoR2xXTnJoYVlyQXo4dEtOSENWbTFmc2FR?=
- =?utf-8?B?MGZoc1BxVnlSZGhsWWZzUVo3blpZUlJLRjBPMU1KbC9WVC9ZdVpsT21LTkdJ?=
- =?utf-8?B?WXdOWGxmSU9SbmsvbWMvbVNYM0s3T1pRTm1pODFPTGFhSzlvYVc0Wkt6VzF5?=
- =?utf-8?B?RUlJUkdybGk1ZWZsWFFuRFNpbGJ1a3pqSy9yS0s0Tm5xRWw3V1NNK1NhY09k?=
- =?utf-8?B?REx4SVJ6WnV1bTVTT3Q4QlptWDNLV1VCK0dmY0dvWlpoVllwM0pTSnM1b2hp?=
- =?utf-8?B?YjV2NHJIQWRhR3pVaExBdkd4cUs5bzdhT29CTW5yRXkyTWY5YTVpTllodytl?=
- =?utf-8?B?Tkg2WlFHd0hzY2lZS3ZSekw3L09aZUptWHBzRmkxNkRMM1dSUHNuVVRJOG80?=
- =?utf-8?B?SWpvS042SFoyYkxMZm44MC9jUDFNaDF6Z095VU5YNlFMNFladVY3S1Bqa3Uw?=
- =?utf-8?B?Unc4UHdkN082VVdWb2RucWdERnhlZ0wwaS92TEhxVGRvMFgvVXZmVlR1dDFZ?=
- =?utf-8?B?aCtZVnlLUHpjbWo3ZHY3ZFFid3FJT2RJOXRhWDBFeHh2VDdwSDM2YkFlQUFC?=
- =?utf-8?B?Nlh2c2NTMk5ad2ZyY1N3MWwyWFBLMFNDb0RxV2tobzIyMEFncWMyaG9BQUh4?=
- =?utf-8?B?bzNtNlZmZG41UDZLRHNIYU1OS2ZqekZ6YXJCY1NneUdQWTh6RERRZWo3aG5J?=
- =?utf-8?B?M2ZjTmh0Szg5NFJlOWtpTzh3L01oZWhKd0g3MS83L25DWVBtelArTjdnNWYv?=
- =?utf-8?B?NHVwMmtacjhBTXovQXNjRDVXYzdwZDFDQXE2cjBtVC9DODJldE1MNDdDSTd4?=
- =?utf-8?B?dTV1NTNIa0RxMUVlTkpvYlpDL2NKUVY3K0VvVVVwcHY4WUZiQ1UxQ09xdU9a?=
- =?utf-8?B?V3BrMjAzVHd6YjNrdFpaYTRHY1FKU1pSd1AzaTNKaHQvRkU1RVJuQkZ3Mkt3?=
- =?utf-8?B?UjNJd2duTzRPaUZLcnZPUXF3KzFoVDFJTXEyTzVVaVh6OXNQekUrQlB1SStJ?=
- =?utf-8?B?dSs2SUxkMmtnbFBNSSt4N0NlNXJnRlhMVWVRWG8vZWIzVmhHa05YbmthaTBY?=
- =?utf-8?B?L3Q5ZGZzYUV4Z0lHaTByTW5pUW1BZUhkMHlCclF0Um55cTZVYmFrOGl1Z01F?=
- =?utf-8?B?eTFVUVBkZDMrNE5oUjVmQ2syOFBMQkdiR0JleC9HcldCTmhvazlrWTlrZm1t?=
- =?utf-8?B?SEtWQndxM3c5NG92Si8zK3BvTS9xKzhYWU5jSTB4V3ZvZGFZWjZwdG1lay81?=
- =?utf-8?B?aEVoUVRVZE5ZK09lL2hXTUlnSHZaOGxZb2dHSEUxckRTNUlJTXV5WTNWVExQ?=
- =?utf-8?B?MjdpMmlTWWJWQThlOXpLUEJhTktNWmM0QXc4UHpDbGpYS0w5dGs2VkpOS3BC?=
- =?utf-8?B?YXhNYytnbVRSVytLd29leDY1MWM2ZWw4YWN1YlZrUVI5NWxyMFpSczh3SU9M?=
- =?utf-8?B?MysrTTd3U0NybTFIbjFOL1RzRXF0ZFhHa3FhVWplS1lSUUZFRHZmdzM0MTR5?=
- =?utf-8?B?KzBnU2VsS0EzZ3NYV0RVSGlrMlAyQ1JId1JmQVBxcmVrTC9lS2dyUzFzR3BG?=
- =?utf-8?B?TjhSK3QwcXZLbU4rRjBhVkFDaHJ0cnBoNUl6YVgwNHZTRElubWg1UGNqQ1Zm?=
- =?utf-8?B?YzQxRUVIdGhzclZvc0RpeWhYaVNwVHVOandJelVXV0lnMXV3alQvMXRmU0Jk?=
- =?utf-8?B?MFY2ZVBuYmQ2Z095UHAxaWk5empCRzd6MVZHZ3BpNkU0elh0VkVLdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef1dcbd3-0f50-448a-3ba5-08def3573199
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 01:08:15.5506
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LgtVRQDXFqIPngY09VHYeJ14job7NCQyBJG7ld9AgrxLulSgFoLHhwX/rDmZBehQt4O2652Bpbwds/7Jn8fobA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8821
-X-Rspamd-Queue-Id: 8C91340008
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] selftests: mm: implement the mTHP-sized hugepage
+ check helpers
+To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org
+Cc: liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ usama.arif@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
+ <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
+ <DKH4VJXGIUNU.2ZENW7583Q6K5@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <DKH4VJXGIUNU.2ZENW7583Q6K5@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9u4trcybadue16ihq59jtxn4tw43nsbh
-X-HE-Tag: 1785978505-601448
-X-HE-Meta: U2FsdGVkX18Q7yYgqQZhb8tUk2/FHOVmSOcMlw12zU619f5uaBKl4yCYmFSCMZqQeFz1PZHsn5KW95ok3PcTL0tolOI7hPmw2+NF4QhVmffP6OeG6O+ys1BCGwO1FHaoEFqINSgES+lB3w1MJ/WMJcgew2eG3LoRMf8TvTFp8oxQ3pF+KmuA3gIlvrQ5A7TWpXFG/peDRJB+WJRJKbTWmU3dDvkQ9Lhm9RZw1BfAmHt5jzERnh34bq4h1DhIdCjb8KgUn2gIFQgLWAv6AM06/kdXOVDPTZu8VLBy3MLACk70gQqnO/rpWJVW76aR3pUpOR5bOgAYyvH8j0QbdxzYyvpaBPQHdi6TcRjngA9QFYznBSMvpy6x6A8iKtGxWnaFZ1ADsEXkaa7of49O7Q+yaOAkXwA652keSPSzBNdsdnMM4PmegAW6eTH1Jld7TeGhwaZojPFNlwflUGz67H8hAgwl6iC84gUfm/A7Z8LDsh8gdtKMmsh+zvGf2thV3IrI/oCZ+YKJXTipI0JNGnmiLrujgygfcPTqrGqSyAeSaBfx20UfWGQgGwbQWXKHlHqD9uQK4keRXIcV6wxj6o2M5zO5qVM/LQMyo/d8eEZLEmKG+mlk3lhLonFLRY64bk7Mz69guh/DV3Gn7AdsEJSp15R4E/3hHLIOEVi/kivj1RzC/h6cvJUK7aICMayBx00x0zJMXAMDSmy9hn7fQJvDmtFidsQKELlFFZFbdbUwVtkqQjsfE+ldrcZjZsY05Hzbq/Csq4fdV+Y310PzWiobqIy96VPPdCwFFJe0iPMIMlRBDiIYYls39P2zBEdneAxshq7nOySo6uj19AbVCYHUj5/010AKzMExvRz//XpFqAJztV1Jg6LlId+XZqDE+LEi66qdYoa2guEmtlzm+nXYoKbAFgtpa7M7sBQnRqBlW21XFwwV/enzWwlZUDI2zaTTmTsNUUdLcpwE9gx2MaF
- QRm6A0bx
- 0kXAXhkvfJ+YDHUVNaunhjzPInSnTDNYuIrLfiFp6DhmtNMgGV7NAwCgEzs35DUqgpKYiZcnoXb3fVue2FNsXUHxXgRn4vGZiPzfono8WSTsa+HNoKCWF1Ossbzrb1byVBIyF1JyjZb+oqpeqNQA3vRGTatEYaHrxLvJzPNoSZ7agnlsngDsQpKBrtYEvx6dg2PZXWgI9wHSd+TKjE8V8Q11zwJBDQU06gDuWO2v5dwuqd/rWzpYw2duDWOnZqUuJVbhgIWjvv2OreP1FJHpIcsc3/U3KSVxdHLOY+rZm1Oqp/mNJCtNHpx8piWtsQsQCz2uMyokGniXM2ZL2lBYYYSh5gI1G2DxEWBZuYpJiIOsDooAQM9gEkwbhhwhUS+B4D6WI7OlInO0d66rtDNeSG0ubMd9YCbSGO9OnIFTQ6gym96VqQ9NWvNjtv7gyVuAoEQCe+spn4ZJEv3E=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: aqz7yfqwaxggdz3mpko6jykbzq54id4c
+X-Rspamd-Queue-Id: 22FE540005
+X-HE-Tag: 1785978512-501704
+X-HE-Meta: U2FsdGVkX1/8q24Zsu7uBn1heW0SpYGWsqvV3ebohrBWz+AioDzjdQUycNwnSACH3cZo2IRKOOu8vljrVeSo9dDE7w/wH/10nHjxJjGrjjVeSRvy8ClnNWZkACTmjJTy6L4zBhujra6aJQSN1luRUu1K6lzAB1K4iPrBl+ydap9hlTAhpYCgj6a1LU5jit/tsqHdIDbrXcl/aoMfpAODvIS1TugSWxv1Q8vgedKbi9zuqE4zIBXvfz5euVRyCx7HoSeQS8mVNHdSDgLtgodMOf3kUq8lh2D1Ftl9MyJ3mdLYFTm8bqj9A+fzO2oaZrkb+3s2/0lTMKZyrMuic1xYWPY6sZjO7XJsqWg+44+i06jLeesR7MDO+IiU7b6dFSNdeq18Z1MgW1QAFlz23Ve0zYa7nCCMDF1MbkMQmMchMR7zDzN4wYepKgzODzm/HW96DiLI1lBIfLXKYd2CUp4Bxjf2XfZoRvJLVMvJ4IzWIKm/jSSQ/+2GCLZscyfIXQ7mUxMTw/mex6AIQJqYJ9swIyypnVf+G3AcPAiTk2mMA4shpcVWjrWKVkvxFfypKZ9YB7AjqAp1MOdE1g8RbI7ZulRkaM9gLzdHXuZi1rlcKiI8xY4wAZdyo6oyFpCwLTCgwz+mPqAWleUmzFk5BwpNXwGxALyOxTmxxs0x0iTpJG3k2UIh2mjc1t8kgeHaKnSwqLzyrSzJEMAzneRPsCUcZnoFGsNZNnZbqpW8QRbsr8UrnsDjdYzW+WkHeUOblZoKEdVGLtjajer4HWYo4HnwEVKqMfZbPX23KRtEcmOFeZqWfyv36frobPri5J5+Vr2koE4pqq+Dn8z/YwcHBLC7WPrRAucRAxgEzh/wBdN/epBrzYbEq8B3jT59roMyhn9Qrj6+uygIi8a3YdocgVh+tC/sXqcF8ygvlwptqFXj7uyappWlxzqutOZsSU4MptslqTp6oYZvV9dTHjc1vJI
+ hzay08uQ
+ YkdIof2KReZCSfHR01md+YAWVgKHqUR7nQVAxFvFm/B3Mc1kKTpHtOheCWuo4sdqwbjP/xf45gQSI3tEW3L5NaskwwV/p8xuiXnkzD0gMcTh3TsGArQpBe/hUygRWrWuTazk+ZQV5Jet2Vba6HAvBa2w3quMJJlftjM4fu9YZp5RLUQka5emUT4w4l1Ncg2q1clM3IUA6l0/oCl9nWH206M/m7dF0re+32hebJIBuY/mmFFpAbGxZADpbv2sO9TtMSbnKypdx9gh39cxb1aiiPwltVGdaoLS1cEbiHum+qvtxn0M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,47 +92,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 5:45 PM, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> If the kernel command line includes "debug_guardpage_minorder" without
-> an equals sign (i.e., no value is provided), the early parameter
-> parser passes a NULL buf pointer to the setup function.
-> 
-> kstrtouint() does not perform a NULL check on its input and calls
-> directly into kstrtoull() which dereferences s[0] unconditionally,
-> leading to a NULL pointer dereference and early boot crash.
-> 
-> Additionally, the error path's pr_err("%s", buf) would also crash with
-> a NULL format argument.
-> 
-
-Maybe a "Fixes:" tag is called for?
 
 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/debug_page_alloc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On 8/5/26 11:59 PM, Zi Yan wrote:
+> On Sat Aug 1, 2026 at 2:26 AM EDT, Baolin Wang wrote:
+>> Implement mTHP-sized hugepage checking helpers using gather_folio_orders().
+>> Also rename the existing PMD-sized huge page check function to
+>> __check_pmd_huge() for clarity.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   tools/testing/selftests/mm/vm_util.c | 60 ++++++++++++++++++++++++++--
+>>   1 file changed, 56 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+>> index 09e5d5cabe21..1240d783669c 100644
+>> --- a/tools/testing/selftests/mm/vm_util.c
+>> +++ b/tools/testing/selftests/mm/vm_util.c
+>> @@ -15,6 +15,10 @@
+>>   #define SMAP_FILE_PATH "/proc/self/smaps"
+>>   #define STATUS_FILE_PATH "/proc/self/status"
+>>   #define MAX_LINE_LENGTH 500
+>> +#define PAGEMAP_PATH "/proc/self/pagemap"
+>> +#define KPAGEFLAGS_PATH "/proc/kpageflags"
+>> +#define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
 > 
-> diff --git a/mm/debug_page_alloc.c b/mm/debug_page_alloc.c
-> index 41e3d1f1ad96..fd2664c3c86a 100644
-> --- a/mm/debug_page_alloc.c
-> +++ b/mm/debug_page_alloc.c
-> @@ -22,8 +22,8 @@ static int __init debug_guardpage_minorder_setup(char *buf)
->  {
->  	unsigned int res;
->  
-> -	if (kstrtouint(buf, 10, &res) < 0 ||  res > MAX_PAGE_ORDER / 2) {
-> -		pr_err("Bad debug_guardpage_minorder value: %s\n", buf);
-> +	if (!buf || kstrtouint(buf, 10, &res) < 0 || res > MAX_PAGE_ORDER / 2) {
-> +		pr_err("Bad debug_guardpage_minorder value: %s\n", buf ?: "(missing)");
->  		return 0;
->  	}
->  	_debug_guardpage_minorder = res;
+> This is a fast way of getting log2, but there is no check of the type of
+> nr_pages. What prevents one using it on a long variable?
+> 
+> At least you can convert nr_pages to unsigned int and add a comment.
 
-thanks,
--- 
-John Hubbard
+Good point. Ack.
 
+>> +#define NR_ORDERS 20
+> 
+> Why 20? mTHP orders can only be in [1, pmd_order - 1] and different arch
+> has different pmd_orders. check_large_folios() probably should just cap
+> NR_ORDERS at pmd_order.
+
+I followed the NR_ORDERS definition in selftests/mm/hugepage_settings.h, 
+and I think this function is not only for mTHP. Other test cases may 
+also call it to get the count of large folios beyond PMD order in the 
+future.
+
+>>   unsigned int __page_size;
+>>   unsigned int __page_shift;
+>> @@ -348,7 +352,7 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
+>>   	return entry;
+>>   }
+>>   
+>> -bool __check_huge(void *addr, char *pattern, int nr_hpages,
+>> +static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
+>>   		  uint64_t hpage_size)
+>>   {
+>>   	char buffer[MAX_LINE_LENGTH];
+>> @@ -366,19 +370,67 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
+>>   	return thp == (nr_hpages * (hpage_size >> 10));
+>>   }
+>>   
+>> +static bool check_large_folios(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
+>> +{
+>> +	int order = 0, pagesize = getpagesize();
+>> +	int nr_pages = hpage_size / pagesize;
+>> +	int pagemap_fd, kpageflags_fd;
+>> +	int orders[NR_ORDERS], status;
+> 
+> NR_ORDERS is a constant, so you can put orders on stack. I think you can
+> rename it to MAX_NR_ORDERS, use 20, 
+
+Sure.
+
+and check pmd_order is not bigger
+> than MAX_NR_ORDERS.
+
+I don't think we need this. As I mentioned above, I hope this function 
+can also be used in the future to get the number of large folios beyond 
+PMD order.
+
+>> +	bool ret = false;
+>> +
+>> +	if (nr_pages > 0)
+>> +		order = GET_ORDER(nr_pages);
+> 
+> This funciton can fail early if nr_pages is 0.
+
+Ack.
+
+>> +
+>> +	if (!order || order >= NR_ORDERS)
+>> +		ksft_exit_fail_msg("invalid order\n");
+> 
+> It should check against pmd_order.
+
+Ditto.
+
+> 
+>> +
+>> +	memset(orders, 0, sizeof(int) * NR_ORDERS);
+>> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+>> +	if (pagemap_fd == -1)
+>> +		ksft_exit_fail_msg("read pagemap fail\n");
+>> +
+>> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+>> +	if (kpageflags_fd == -1) {
+>> +		close(pagemap_fd);
+>> +		ksft_exit_fail_msg("read kpageflags fail\n");
+>> +	}
+>> +
+>> +	status = gather_folio_orders(addr, size, pagemap_fd,
+>> +			kpageflags_fd, orders, NR_ORDERS);
+>> +	if (status)
+>> +		goto out;
+>> +
+>> +	if (orders[order] == nr_hpages)
+>> +		ret = true;
+>> +
+>> +out:
+>> +	close(pagemap_fd);
+>> +	close(kpageflags_fd);
+>> +	return ret;
+>> +}
+>> +
+>>   bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
+>>   {
+>> -	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
+>> +	if (hpage_size == read_pmd_pagesize())
+> 
+> read_pmd_pagesize() can fail and return 0. Either you need a check here
+> or add a ksft_exit_fail_msg() in read_pmd_pagesize() to remove the
+> burden from all callers.
+
+Ack.
+
+> 
+>> +		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
+>> +
+>> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
+>>   }
+>>   
+>>   bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
+>>   {
+>> -	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
+>> +	if (hpage_size == read_pmd_pagesize())
+>> +		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
+>> +
+>> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
+>>   }
+>>   
+>>   bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
+>>   {
+>> -	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+>> +	if (hpage_size == read_pmd_pagesize())
+>> +		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+>> +
+>> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
+>>   }
+>>   
+>>   int64_t allocate_transhuge(void *ptr, int pagemap_fd)
+> 
+> All read_pmd_pagesize()s above need to be handled.
+
+Sure. Thanks for taking a look.
 
