@@ -4,138 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D986CC56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F24C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:31:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC8246B00A6; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
+	id 7E9E76B007B; Thu,  6 Aug 2026 12:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7BE06B00A7; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
+	id 79A116B0092; Thu,  6 Aug 2026 12:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B495C6B00A9; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
+	id 68A346B00A7; Thu,  6 Aug 2026 12:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 88AC96B00A6
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87D63C014F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:29:48 +0000 (UTC)
-X-FDA: 85071380856.12.08744FE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9E847C000A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:29:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1T6nSa7;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 476A06B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:31:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F9E31C009F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:31:07 +0000 (UTC)
+X-FDA: 85071384174.05.074E477
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A40B01C0016
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:31:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1kXRt+y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786033786;
+	s=arc-20220608; t=1786033865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OL5sBD5AHeLDVn25oNMEpQDloi1YNoxgi5Bau+T+ONY=;
-	b=cL3E22tNwUuMSl6hwe1PYbuqkysiYFe+XcGorRFuV6bqf2l5ljHEueNWqbflPVdVNG/YbH
-	F77+Nt0xQca+LaXVLeB3dzSHxGTyGMiqlRjQ8/kQIriVUdyznKEChLoC127aMn1GnCL7eo
-	7gFBS4ZGGPSu5zUWGgTcFh5kKgTeLZY=
+	bh=mVTwW0b2WURKlJNz5W6ur6Q9trw1irf346v/mtsQRWs=;
+	b=cKHk5ulmEDmhESZBu01ruMiMJRVTYHQE0v6TYTcq7XYhNuk1VB8Z5Svu9U6zuCR2aSRf9b
+	COP6Ho6Bj89LZGbDiefYMEAna9GMdQPNY1G0sjB8RBPejEw535UAIpQPxNkvPzUAY4mUKS
+	GJrMVnqayTMgl1SMjuWOscj5prwCB4M=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1T6nSa7;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1kXRt+y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786033786;
-	b=ZZkLK3vs8Z3iBcBk657xRw3d5mTmUq3KCi5jJRtTshRZw2vVgk5SIny3hhga4psjp0pUWS
-	b5wWfbic6Qi6mMcl54RNe0CGtR8h02quUGj5FaFg/0KHCTmcvl0F/Dxm7ogcMiWZl0g3Wx
-	E0+Nh5kU3W4j44v3MPmk/gmvu1xc7BU=
+	t=1786033865;
+	b=t7i0uq+MonifIgpHPORJ9gZUAD/hNmLKZV1euHkE8lr5oWpJcWxghq76yVKPD8lLka/S20
+	NYvPnQ5QCtM5ssYH159yaFfAC1gD4Ej9Lj+0HNzHRv5RfaUoff0svyZeEJRqnI7C28MPjP
+	rwvJzuNGAcQEhh316cQdKKJ8gQBpvHs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D0B843223;
-	Thu,  6 Aug 2026 16:29:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12C61F000E9;
-	Thu,  6 Aug 2026 16:29:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1092360AB0;
+	Thu,  6 Aug 2026 16:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135FF1F000E9;
+	Thu,  6 Aug 2026 16:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786033785;
-	bh=OL5sBD5AHeLDVn25oNMEpQDloi1YNoxgi5Bau+T+ONY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=P1T6nSa7/6J9hjdPqziiNCkSj9cxGRjrNBfL7hCxLGEVIVMpxfzyDSfj0jiQ8kFIY
-	 Jbkn5sNU9wEds87zC6/V+k1vgwytFpiN8es5VBo/B1Vd+jQKNkNnsdrLCxxN2KhOCZ
-	 0LEmLyBkfU0puG1BSGHl/nnFxvaBS9dyZwN2JAFtSVx7DuMx83b70wg7H7K96LDVUO
-	 1hn0AdoRt3U85VO9MUGxVrDyW7bSpGUqctGqY//Cp7pIwb0r1bMSM3e3sIf2QhoAI+
-	 yWDAPyttO/vpRVrcG2unviRW5SbAxpiTF1otf/t4wMI+AqUlby+JU4AJOOwNcEOiUP
-	 FGNeuatkmw3LA==
-Message-ID: <564e64b2-1b71-4d8e-a29e-dc98e8deb006@kernel.org>
-Date: Thu, 6 Aug 2026 18:29:39 +0200
+	s=k20260515; t=1786033864;
+	bh=mVTwW0b2WURKlJNz5W6ur6Q9trw1irf346v/mtsQRWs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P1kXRt+yoIsWD7ulhfbS3urOuVuE0SbPvMDxieMb81wACWsaIkq5JOoANzW7S8NWx
+	 J4fqscMVF4IvMA4A+ZyRcGi0cMYWRm03UyH3hRQu7dJiZRCTeFLT3MM1bCRaAr1/dQ
+	 Wzyv+1ZLBNqWJj5KtPgT6L6qt2ViX4mrbhABS0c2K59hQ/rk5vF3QtJfGoYwVTs7Pm
+	 8qo2h9eKBwfZAv5ivqMMODftIZf+/eIV2YydgQxJmFW66KSbq2aFP8It6DXFMsSP7E
+	 SJIUOL5KNIfVP1j2jZc4I9RAWvtZYm1iUOuYSejOF40J37fdh5bmrCbSSKxhHw9NgD
+	 YOSMfYvvnXfgg==
+Date: Thu, 6 Aug 2026 18:31:02 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+Message-ID: <anS0nxAwCXGWZRl9@orome>
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com>
+ <b1c1693d-02b4-4c5c-bb0a-1c2d87258d30@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: fix always draining LRU caches in
- collect_longterm_unpinnable_folios()
-To: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Ackerley Tng <ackerleytng@google.com>, Frank van der Linden
- <fvdl@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org>
- <f616e9fc-339d-4430-43ea-0ec8810c5f3b@google.com>
- <20260801122040.7230a8eb0dc846ce357fba67@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260801122040.7230a8eb0dc846ce357fba67@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rscp6jw7dv2pn33g"
+Content-Disposition: inline
+In-Reply-To: <b1c1693d-02b4-4c5c-bb0a-1c2d87258d30@kernel.org>
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E847C000A
-X-Stat-Signature: 4e4cqfu3byr7gsq67h1cr57jgojh4r9n
+X-Rspamd-Queue-Id: A40B01C0016
+X-Stat-Signature: atm13jfu7qirg77inff4g1ingsrbr35k
 X-Rspam-User: 
-X-HE-Tag: 1786033786-567945
-X-HE-Meta: U2FsdGVkX1/oJMkcZelr57kf6dVpbZoQIftAnjvecvuXugqTScJfDnWHmATafLWXEZfm2kOZkem7W4CsTZmpXIgGowizlugO+fyshd10rk/Q7yhFFcC9ZBqkxGTjrDTpcYs+S8MZzyKEA+Mh0NhiCYR4eTbjvtOqKuIPdQ+z5dMvbP/EE22RddPMCWd6dglybtLT2eR0RMPg6GXrEaMA96rq0tfv835oD3ictEbpLm2S8MU9kvIdAG1eOfa9PIikYYZgp9TRpuMin74LRjaB2mbbLb6cm1oqmgSI9xMKTNe8EQME6Wr7lJ9LG5VtNy4e3pT1h5L8O8wm8gYNEIGDoKGO+W99yAv9z69tkJXvzLMz0cIUUV43jN1uRbwarvyW0UuvrdXMLyjG3tUxpRAo7r75XOtMaavKILoKtg5gj7LIfiGHKyBfHxtwzlf/nZfPAJlRmKh1R4Q3basNbcZ/JT59roJjXmoj19UHehxGX4/O/YcwC7PP6XkvV7a2nukn9RTOPfgaV7jynp2lWyPUp13jsLWVprOIEgLIeFwvJLnG8phaEK0ESzMuDyO1CpOvQFxQwWDB5IMGk51kSlgrvKt0bJHiuT7WDR54h3rK0amjVI7yGi4r/ZNRA3NJsaeV2n6YzRU8ftKpUeXLeyGeCr8XhBdTU8BmODLpcSsbeilPxezAgrT6e2zs9nAkQzaXfKEsBgfA4to4RiRiNfYXyO0aDpHcl27pY6y7mk2R+XlEhtUdUn7h6R47jdhXzbinNa+ecnzRIfRIjlvj1fKVdUxJmq/Llq7vMYulbR4AxoLleZEVozPFGaflfvsycr2tEq7n1mlj6CpZKNPPTGil/tWVJ4sZ7joJe4gyDfjVR00IVS9mTPZP71iPOzFkQ5MZWpYFYvI/khj3fG8EHCbSJQDBNMGHvZWG4ZymNkm57vSIC8ZoIcnndi1CJLmvjgGeemHf+CWSQ7JUW2gyFmo
- SfTGdlJG
- 4QE9wQWqnoQ6YNnCXBaQo+2+n9/qkOM/NBLdZDpxqluJbkVjmsEiO/lgkyk/vEvchL6B3a77aZAJ9TpAM+VdnDZOVAbezcc1nZbrMN0QjLhS5fgRWuW6cJd7mQmAmuDLc4FZWWoT5q4P6ueGCWV7O22Q33EoRptowYrg+Dup8UlGSXsn/TpGb3K4rttMtJ6G8yB2tizJBt5y26S54SdB5Zce7AaldVa0bGsDr2NtNTEBN3ce7fKoEZjaHoAhHUS7BEAK1CAacha9p33U5QvKnk/vrNq6D63IrP5/PqaXn2TS/gPIq4hALy1M3f1rZYnsbrurVyjDnsV4sc7o=
+X-HE-Tag: 1786033865-311910
+X-HE-Meta: U2FsdGVkX19zK+cr3A+vmlaWZP7/ETA8QjxeU2dCUzxMGuPouPLtdlfRHVOZnrDffNKhb9NdMqF0FQACCNcF4dUyvDFRZAi3JhUBN55k2sLy4Y80tbY+redUM4ch2SZ9sRZ2sndwQXxohWxSLZ8e1bsOi12lc67V+fnDL4an8prChLyQpMYY5puFkGJdQjva4rlSoN/4fstHjO+tBrbOYuBvhki20G/2jSnbAoe4pLUJawU3Ete5pVT62QhVjHeH5U1+AvIsyhjq7Ggx8A610SbjSN44XPMhTvaRG3elt8F31zCQnWgVwFQaDKZBnsb7yIKDN4SVaU11BwkoUCtewo6qpc2AydR4LMWxLHTcP6vXmu+uzL4a8xmoLXyQ8B+qZ0YRh09JqYR1H6zBc95cWQiyOb3DU7E6kclG59YR9/HxRGbu/XkTRfnaxHFwlwTKBlds9yegAnQvzw8cDCYubxbe0QPdJrPgzF3ElSlnQcMjBjcaGoFmUhhQc5D0DKYGSv7kBBsny3gNnmbJFL5mXSby4DdRVg4y5Aoey9nZmsKSWaktEUAG+3SPTHweKPQpbt1PeMHG+K8IJ0oT41fMA/eu6HykHnrBUMPQhO7gcYOTBt1oahVe2JDJK/9Is8AsrN2kSHo1PqWPl0fPqVhixu4/dn791cHVCVvuCtqkMkbsQaFYSt1GFnMeqZENez7nt9ktzDY52yAqaGSSQ5xUbSkwm/zWXq/f2NoFB39Juiq2Bansu/8yBB+4FuhC4jhSHxcgfzzvM+6+m7GiHD4e7ln8RAfepjti9ROQbsKAQ1Gm86gfhK6875c/R7iLXCzPoQzQ+mz88MI0kcw9OIdbVJd6OyFgl3NiSCESqZ9SAvWBspwK8JW541BJg0Zd8zACkPyPf8JDzffGiUMB/SztgiZ0dwXOJjRlf5UG+O8qWId+pql9PSYlhCbX5KJIhF7csM+rfvasrJJYVVqg3lZ
+ gCh6cHsN
+ z78OlyNtWUDtXu81HudZ7kQ3eCMQRJKrGvUzm5POCdKlXOsPLE0fpJpYkyHUGyp+qUH9n0ZKBE0ZZ2gDjhj/iuv2/Jhp021ouMcFA08XaE2DwHRM8s78GQsmtf1Gz7ZADvG0BB+73TBRfD8bhoO8k0UcRVCmwg01j6yHMUpVryL9jC61XyasX69QG2Lfp5mhX1opGlyGUKuFCkmw8Nvw+hiu8n41hIyFtJw2I+A71K5MAxC0NqR5QxLhhPmi1NFDknroZE9YE5YrBrMIZ1dVn/oSQ2ZhbSVlhoImJH3mmfE5oQcE/KXFQuODZ9tuoSoY8nXaPWJ3kojz/emUVc9whoslqDcuvGcvtIjnu5yiywQ2/q5T5vxL4uNUVIaDDcrStFmjzHzREJTapQLhD0o8mZC4FNcqdG5Zd3ViAxKDBWeSV0JUgexrru9VnQkXDUa0KyAY8u7CtoonZAMUx1okSDOmahJjBiS39gyDfVcCA16+bTSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,31 +117,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/1/26 21:20, Andrew Morton wrote:
-> On Sat, 1 Aug 2026 11:49:39 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
-> 
->>> Found by code inspection. If someone has a testcase that can easily
->>> trigger this and result in migration problems, please test! But this
->>> change seems to be "obvious the right thing to do".
->>
->> Sorry, I don't (as perhaps is too obvious). And I'm a wee bit afraid
->> that some of the problems which those changes happened to succeed in
->> fixing, might now reappear once the drains are finely targeted.
->>
->> Am I arguing for a delay before advancing to stable?  Perhaps, but
->> I think not: it's probably best to get that working as intended,
->> then deal with any fallout if it arises: just be on guard.
-> 
-> This patch is in mm-new, so it's still some months away from -stable
-> eligibility.
 
-I hope you meant weeks :)
+--rscp6jw7dv2pn33g
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+MIME-Version: 1.0
 
-Can we get that into 7.3-rc1, though? There is quite the overlap with
-guest_memfd work, and I'll send another patch that depends on this.
+On Wed, Jul 08, 2026 at 10:59:46AM +0200, David Hildenbrand (Arm) wrote:
+> On 7/1/26 18:08, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > There is no technical reason why there should be a limited number of CMA
+> > regions, so extract some code into helpers and use them to create extra
+> > functions (cma_create() and cma_free()) that allow creating and freeing,
+> > respectively, CMA regions dynamically at runtime.
+>=20
+> I'm confused. We still allow cma_create() only during __init, right?
+>=20
+> Would we expect callers of cma_free() after __init? Or at which point?
 
--- 
-Cheers,
+The idea is to allow cma_create() at any point. I forgot to properly
+remove the various __init annotations to make that clear. I've done that
+for the next revision.
 
-David
+Technically cma_free() could happen any time a user no longer needs it.
+While we currently only do this on error-unwind, the Tegra VPR driver
+could technically be turned into a module and the entire region be torn
+down at that point, including calling cma_free() on all the chunks. I
+don't think we ever want to do that and it'd require a bit of tweaking
+to the OF reserved-memory code, but generally speaking I don't see why
+we wouldn't want to allow cma_create() and cma_free() at any time after
+__init.
+
+> > The static array of CMA areas cannot be replaced by dynamically created
+> > areas because for many of them, allocation must not fail and some cases
+> > may need to initialize them before the slab allocator is even available.
+>=20
+> We can start with a memblock array of an initial size (like we do today).
+>=20
+> Then, when you need more space, we can double the size (copying content a=
+nd
+> exchanging the pointer). Either allocate from memblock or from slab, if
+> available (slab_is_available).
+>=20
+> memblock does something similar, see memblock_double_array().
+
+After replying to T.J. I think this static array is actually a nice
+feature in a way. It allows us to more easily make a distinction between
+the regular CMA regions created from reserved-memory regions that
+represent classic carveouts, and the more versatile CMA areas that could
+be used for any purpose.
+
+Telling the two types apart could obviously also be solved using some
+kind of flag stored with the CMA area, but at this point I don't really
+see a reason why the two lists would need to be unified.
+
+Thierry
+
+--rscp6jw7dv2pn33g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmp0tsYACgkQ3SOs138+
+s6EDqQ//VPlX14ZCCWQFTzMM+CH1U7z90n2OI2r6sVAf3mIXAqF56hCOe1TSTHch
+SLJpzBAU/F15bA6jirr2jOS8SHr7N0C+ox5M2yoEGywgGsbTEOjWSvejWrHWkJ9m
+7fdcdEl/hB7yzbpBvDMxGiATg+0SwQrhy4Sp7105QzaPpE3/9dS5UXbQuhsbCcAy
+4fU7Xd3wOOLcxg5u7Fl0ggfWHiAX68o32alTzPijPaVubxFJ1RnLQLeNhTdwJv03
+nvh3RVR8dpDTY7hZbsTr/4r5+4L3ktGvufT5m3K0lImfKVb5hklsKVbNTnQMtJ+i
+nAC+BTofn33vMautsZwPhhAQeesfMSJkuNASPD9kqZ0U+b+W7XtmmkmwbigS2r9u
+1lajCmiV77/KeZazBydPFJzqt+0lEkLAwWtBAk+M/Fw0Lsx3/ycfApXqEtCv/Jfw
+G1oTIraXEv0tXgSbl0Q0zAY/TKTgTmtNqVNbLJh2VxhQiicJGiEYZ9w7i971TlUs
+obsrwFtpOrWdkBI8VFGUm59sNK7yjrl2XWpejZ+xmhY4GanpuNYf/Ki6nBhTn39r
+qUNyB63c492tlL7PYUHVx1tMFCMwDBPw9wg5Dn57++j5s3gmoAmgqaAykpl/tuhB
+lRoRWYWo4mgQ/C62svXRtyqVx5TMhQpRLrpQOAGdx4y6SF4GmGk=
+=TjKb
+-----END PGP SIGNATURE-----
+
+--rscp6jw7dv2pn33g--
 
