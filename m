@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03D32C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF59C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:06:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE3C56B00A5; Thu,  6 Aug 2026 16:06:03 -0400 (EDT)
+	id 8251A6B00A6; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A94EE6B00A6; Thu,  6 Aug 2026 16:06:03 -0400 (EDT)
+	id 7AF8C6B00A7; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 983806B00A7; Thu,  6 Aug 2026 16:06:03 -0400 (EDT)
+	id 6C50C6B00A9; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A8396B00A5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:06:03 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE88C1201FB
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:02 +0000 (UTC)
-X-FDA: 85071925764.04.58E8A4E
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 39CFC20010
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="VK1nJY/S";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3J-l0agYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3J-l0agYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4845B6B00A6
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B95AAC021F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:05 +0000 (UTC)
+X-FDA: 85071925890.06.E28D622
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E15CD80010
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XHIazbHv;
+	spf=pass (imf30.hostedemail.com: domain of 3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786046761;
+	s=arc-20220608; t=1786046763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qo+gPZDCnzT8MahhMkr4ixbPoS7BupzxB9Ai/ylfWm8=;
-	b=e9X3ls+heI0LJMSfAghjEdjn78WX6Mag7Qwwx1a6xmQS2AaB6ILfr8F6IOj5iDwkZjionh
-	Ye+guj36IxJd1r0HSKPNjmOhf2Lod3i5G0DRZ0mKD017mf7uZZO+FK4PAI47L5VYEDoBQZ
-	Vw1pTg9TfHiTkPTZ6xpIViMiy+bF9nc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="VK1nJY/S";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3J-l0agYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3J-l0agYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com
+	bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
+	b=JDe5J7ka/+T7UrGqgqZctX5SrXLdaVoeFSvphkbJwp3DSpAYTBiaqwkB3jFBQ42ixS3zE6
+	Rc5tD/7ww+g9aNbqMoKnmoR/lI6kY0vzGhqO89W80DvdEC9aMtQ2+bVj+8bwHi/BZmcpoE
+	uquTbee63U7ySHGGC9eNHyUAw+Rvf/I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786046761;
-	b=2anL9Ujkevb0epMSaJ5Dz5uFCDTB5KQisKS4DT03rFRSD2B5yW6UU+7w6nr3eGI+AKD+30
-	dr90+PMa0yqjO5I8wVczvszolpQPE9pP5T6wtrLYKscwPpq8bVfDyeHwtMr7xMMEKJzrFb
-	LaMTpIM1E0SpWPK5Pz5MJydbUkipdHg=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb5bdd8450dso1673165a12.0
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:06:00 -0700 (PDT)
+	t=1786046763;
+	b=0xifo0GV40spj1emEUnld7E36p/Kkzc04BBZKzsXb52w01hQ3Lx06eS+RTjt+OmPVoCoy6
+	8iEb/91U4V6oZ5ah49yHB+GmztqRLeeHlpdqzZylGhtMKCatnraAFS9dLtqIiyWWkgh0Zf
+	Dt9NHR4pKC2nyHFkFK8i8IwptrBxUXM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XHIazbHv;
+	spf=pass (imf30.hostedemail.com: domain of 3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb6ef846b33so1045524a12.1
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046760; x=1786651560; darn=kvack.org;
+        d=google.com; s=20251104; t=1786046763; x=1786651563; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=qo+gPZDCnzT8MahhMkr4ixbPoS7BupzxB9Ai/ylfWm8=;
-        b=VK1nJY/SjuTUrGF9efdigoDcC6qSM7C7nSuINfYG3qEv5omFAK54y4RyDez/W7SoNa
-         JfvtIm/eansaGAY4PXXF7lF9HEMawOgPL1d57anRBT0Z75xLNKVReh0xW302bLgUR5aw
-         ypb48Ncfk5M49mCFEuSdlFQh3yvny7PGwvWM8hqR7ckiY4LSSBhLs3TFV/BUIYSKnVhc
-         UwdzUsuMO47hdflxnEzE83Ewtr4roAdg08OpD+WGhWE2xE7dZnKZdgDRcKZgGZCl8oEU
-         p4Wjz9row829+9EpJu5Ci+VPRhORV+3jnNX8vb4TUatg2hleHwP8XaNS1QhHjF7DDkI/
-         MvXQ==
+        bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
+        b=XHIazbHvmqHas8xJRLwZOYA8KlWoz+K9yQCjkTarSFAkrBHOlmv7CoogyPaFcYmT8b
+         ruNV+kuDjnSoN4i9r/Ah3+90/seucXkMf4yxNf6DzTDaYzkbNrg5kWv/xtC29FHsKqQg
+         up7VADJpttz17uM5A2i9cZhB5L9FqyzP+nt+yNhzvAUERp+zbu51czKwDlgKLRVbSsDG
+         75kaOFG29m9UabuVmh3lKrjt0+Hj1CievCqXEZBcmPB7AjkLQO5tuiiJOXRcmrtXG/a6
+         i60MOJmaDd163DlCCtiNJyN8PdKyJvQeVqIWVzymgFGPcxEnTna/YRrhaAdGEEhvAryg
+         SbUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046760; x=1786651560;
+        d=1e100.net; s=20251104; t=1786046763; x=1786651563;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qo+gPZDCnzT8MahhMkr4ixbPoS7BupzxB9Ai/ylfWm8=;
-        b=loU7uQhOypA3MEMqNZe/PYIWF1YBy56YRTclILdlRvpPIfHy2foZ/ZPR2RlVc5Eu2V
-         9yplzZWYDCe/Pn3vGU32R/eL2mIkGHz78MQFAr67APr93t0SjuH9YO10Xh1TtBdy42BJ
-         56+LEjJFSmOPc88v63y9AUvQkVGvR+WHJ4YjBgtk/c8KJv59e1jpLwQ1Rhw8kLQRFfQ6
-         AUXbnGmNcGDHzx6rpB12MbQ8cMoygD87ZpZZP1fCpArZ4LB5NLIi+9GPo5BsqdS2VUx+
-         ljRbumD9lIVc8yAzNiDm25UuoBQyNAeAtfU2euxvUUGvCTrn+xtgkPjVYOpfDPs4/kZU
-         LDFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoFF1eYOD/OJNW+CmwkSO+HF28kzZtspNf/wQxOmOvCvNqYLiIzj6KkGJ42IJZReetFvHUCpavHwg==@kvack.org
-X-Gm-Message-State: AOJu0YzThA7bIu88odIDH4z0hsKigop1FgYRfra/n8ltp/NyZLUSkHP1
-	DSPhgloCz/G7+Pkx1P5LCa9I8jb57BvwGYwbbGk0zEEpLTnk4T6c4Tds08zBZ85PDvDYvDZe4uX
-	QJ9F37w==
-X-Received: from dybqh4.prod.google.com ([2002:a05:7301:6244:b0:30c:83f3:7370])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6daa:b0:3c4:3672:ba6
- with SMTP id adf61e73a8af0-3cbadc15329mr4732449637.22.1786046759808; Thu, 06
- Aug 2026 13:05:59 -0700 (PDT)
-Date: Thu,  6 Aug 2026 13:05:47 -0700
+        bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
+        b=NS93smt0EuI3vbjksm6CD/c/lvss52SmQ7LOsbaAHGvsmKzVrFEJv3vEXyPkPmNYa0
+         ENZ5WOF6Qu2dpzwcq0RC9VHOFwUYiJZ1ZsEgmFHjc+/fIUQ7Sm4aasredJITWyHmalRQ
+         txWzjWwTScbvt/VSzo28kLEY4fJWh29uDLJnEUyrbNJxN/lRmb02XV8GLozR9MzjPquc
+         4ODP4z3wAYazCf2Ux9B7Bip9hGu4f3eC2XNffLqblOHNma5SKKjg8BZ+Wv/x8IW3Saav
+         xOhVnKsWiOX4ElTdW6+XZYdQ/b3pu5QL+YVzCZaIEKwspcwlF1QJMB+r+bYam2D4xdUE
+         JdPg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpj5Ruef/wiG99STKukj3CgPWU61Q8+BO4HK1sLLEsGTXu9j07A6t+ae/hJQrOvKy/86TJERlpe2Q==@kvack.org
+X-Gm-Message-State: AOJu0YzzvmLW/ZZkJMDKBYTVyhty/MtuLHfnMllMf+u6138H6MwTraMX
+	EqYNtlxIrez7eje6PA3z2ux/2hgckjz9r4br+0fFXPM4mnxGzszH3AxnTfqDZvt9BFN0M07X4mi
+	ZAubI9A==
+X-Received: from dlea14-n1.prod.google.com ([2002:a05:701b:420e:10b0:13d:31db:8d94])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:914f:b0:3b3:a66e:3911
+ with SMTP id adf61e73a8af0-3cb9c2c4782mr8716046637.19.1786046762261; Thu, 06
+ Aug 2026 13:06:02 -0700 (PDT)
+Date: Thu,  6 Aug 2026 13:05:48 -0700
 In-Reply-To: <20260806200548.3124802-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260806200548.3124802-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260806200548.3124802-5-surenb@google.com>
-Subject: [PATCH v4 4/5] binder: Remove mmap_lock fallback
+Message-ID: <20260806200548.3124802-6-surenb@google.com>
+Subject: [PATCH v4 5/5] tcp: Remove mmap_lock fallback path
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
@@ -99,19 +99,19 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
 	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
 	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	surenb@google.com
+	surenb@google.com, syzbot@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 39CFC20010
-X-Stat-Signature: nq7cc8rsswybk57c9m6at7rqj9ubz4us
+X-Rspamd-Queue-Id: E15CD80010
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786046761-697107
-X-HE-Meta: U2FsdGVkX18Ta7w1J2ovJtJJwaSo9tuLHY3kHBeaHCFau1I+m8rFBjuYDAUxCD8tXJf2NfVd6VQPiyXxymQadU0Y1klYLu9hmziwVHKQdWDyTzmaokBVE1nkE0uiHzEWdyEFY5jWusKcJtk0qcZkhQ0MDMSos6ZlZ5xQvOihp45sLHOIdGs6CWAajeFX8ohZwVoJm2qQqmXEryIOLRc9X6JUNgHCpdkUZtDuiMd2k+HGcAP6maDXhdkSYPziwV/JnL3TNH7RbLqxnq/ifpq66FU0QIlLawt9koz1Yz5/DFNHzpszre+oLyfgd3IG7PXt7IQws6rURMShXJq/P/EDlwVqYMKnADQAZFT0JDSUKEi+VrkMbtqhK/Su4jcFSN7kyuPZHA2BAk7EVZcEHXJXIhnYgea46IrMBS4wHapjH41zq11PRW3v0yv+ByT5t3dsSaJc+YctgcgphWibn/WiqhoTahDjWZJfDgggE/Ecp+IEMWTgAzAIQedYaLrvoiPApk7XXMKqpqJM+uW2Off5VKQox4rtPGDs7tSZlrKIQyv2jb3EMb2Ue1SJPtOQARWGUyqlr002XZhMkX+++MKO4JsaP7b/RbwYzyTpE6U/E3PVlaB8gUpxN5yUp9NhsD0zrVWdNDSsj1bgQXnUxS4RnlEXNoTkj7cRMRdi79wHH1T9gQ8+wQzsvWluEPlzPEK73Gwbu2D0tuz7zQ0lJ97PdcHmB7Det3l9YklO4hn4otzk1HhCiJyGhDi9Cf0vB5WQfygVk/Hb1gpBIbWmnqUhkmTWSe1h+4h+bTo6N1tH1r6MbM3GRdS7d58Eyn9i6W/a68TBt6xZMDXIDWk0PKRFYdBFrCp2xUdv4Huxe595Z1BbWkp5YL2GSDl2P/yH8w28iI3GMHGBEiDfIOxZqhhKkcuFHs+k8dKVTAVzyNuRJbHbzSPWx/uRngWPpwJvV22NrmAQYVqbzRnA8A+zrWo
- XUVTy8UA
- sLHj8sLLEo/L6dNfpm2qW53YQSBnp9jjphnbSZkfYLD/WFROxejs3a0ujI5p4bBh8ZzjPNdUsiEaa7rgM0N6QyNbFsw/6iTMOV+RZwvqtE/oxgZLmTkP4I7YeK1WyesW4rr4bkykdw6Ojj2k9ghkYmPRyeoAAySSEpAe6ZmaJ3jJ81OYlxU9z9gUEEyoocA5IyuRBnJdjT+FGWNQVbRdZG0dQO76/TmK2ps8Y7qnrFr2Ge7c1FRBXo3Q07NjeuUg6KQSp8XK7RRpbglOcaWhImzzRcNc/mku5Xn+oTCReQhp2nYkKt7MO3+97pzFco/7spmj70sUZpjKfZS1d87iArLpfUrVVNdxkxyFPQrNHO4ZMSMNFwOMvrbZzctpK28htFkZ60ONGu5lbEuHNBi1G5aUOc7VUAGdcXF7YIjpqbFTCBeCzT0gpufwfibe1jeswYLbm61kYcHZm5hysufaD6gZ1LFaxHfxlHVMUZ/x3YRYpT0+UshzCCwn0i9axJRKNWg9RzBU/5dZe6pxWpK3ME/ft4ZEFQ5DGCSkziXer7bWcALzKkymRDjuPump+12rgOCjj8dDfbteIQ69fSIwPLaaOYo5D5jDMgxVFhj/Kd6JTfZTe2fLmvVBQXFr25cpsns60AmSCp6dMSyzT2UdfI6sO5wYOjvMIrtiwIAARNQz4sdgVG/xdgVS6dYdzNbe1xJaLzx0VKQHS8PSCsm75X0Wquf7n3MRWwdJzUg9hVgM2WNRNbKfJHlP9HKmncD4z8a6bz97jdw3K579f64fFm3w5PPQXrSRNAsKy6ndaMSZDFgVEvkX9HJN9YPei0IuS3vUDxFGGZyhBm2fUqd1W6iZV+1k/fYRdVZz5/MWTsYZjY4RE1Qi2RqV30YXEKMQd+ysH1Dt3/DnkjtYTa6Unu3SVt0H0E8/YbqSunEtHqhKdJe9+QNoVh8r0xvuCjG+uLyrnE9z5KZmzuXEvN4j+4WJiEo2X
- RLWQP99R
- LlB5CXmWAKM=
+X-Stat-Signature: 3mjumdeo3gizway8scnom5o44cqs6jn9
+X-HE-Tag: 1786046763-872876
+X-HE-Meta: U2FsdGVkX18s78wzs+jSRP4U1fFtHlyyiUkW1Y2EIjgV/L0KNxVHbwCUqLggedCfTtZqrvknuClZ1h4qREPBq5eBPAuveqcvHN3ec1H+DMTA7RGG9fjPBHhawB2s+YAsHMmXMVQPJCKRBsH7MNUjJ84Xr56BVCYvrXct9TOep2nUFbYXzrmDpeBYdKgbi+G6Xv7wMNEhAkzkc1fx3mYTzGYmcBX97vAKVmqyS/2ejILAewScXctrpfrp4hxQCeRiHaNA00DcMPQhlyuj+QRpmmtaUEsbb1cXC9LVv36tXqcwJNJ1ddtf/yvV/FfHoRNOsUOavbOodxyKWsVgnGpWVN8DT+YdiZF9ueMS+X3zaS0+KoEPWrKNwxO78OGEhkeWYM+NPFovc1nJcpOc232g5z971E6Mx2bEaRPdhNOAN+cqN8CEnL7SmboEQ1t1cERq7xs+OcPEnIWeB0nZjKvNHAjAYI4lGyKDNuzYC0lt19LhkiwVE71BZkev3bVWHbdYti2gKCa+1WfiKqe+cVkJ2NpfN/3K6+yHGs8PAw3sYQoTN2CvUCrCyz6N6wNrHBfEmhFLIOO1uI8qR7GDePuEXKjyEPNGpZPLw4NIFRsJ5sGzEM5fLv7QorveMtmdF+JGlLsQrf5uKMn+nALZmwuiFFE4kyTATA+DZXaGRKfo8xwcJh+MiDt72KZY4SZ5OUfsoq7ud//7ukvYnF5rN79iyPxOcpQ4gVokrVUIQszo4y+Z9MjGn0KhZveqw/X1/FCPh6RMdOa+jMQbHnMrczF+T5EkCDdfzAQA0bMhDyDLYAk+NYgSBxYZVKsUrIGHbMb1dSqTxUJD1aiHncbm16S0GK7wM4DGfcSM7jewtZxhzRPhoPNA+OXba1ABYxJB2UBbhTSL1rMuRRSdocg+zG+019vvJX+F+Bn/3HEnmzeSSloOgAjkOtUj+ACB1tYMyBkYSkPOnfIOuiJly6uC+pO
+ biOvE2Vo
+ 6lRULAvYmp3tY1SANKKG7rtDzF+wDhFiI4IqNaoK8zETWo605h15tGk6JwskHyQtE97IX/Virim699eU1tdiMuy1Lz9sa4WdDFK+NG0AaDvid841WLHZqT6BSRy+wAc8HgsOKtRgOLCyKaO7m4rRH8dwCES4zsYsroPeqBCARYWzc+TVgGSWzNw15Q1f1023J5UygTkay1KrxzBd/V6n9I1g5ydJzweVZkDgAXaTjA/6TRnSCJHhE5zYy/w0fMboJ2k57LDEhqOUegg5hvrvrNBeXbbRrtFS/jS+ypphe9tRwEyst0tlNSnpjhjgTVJ9WjJUyVuzaaNCef0P2NMS8QRf3JhKX73bqvLIQkZFMAGU8xcstntwmcasyBOIozubszTLnPvklU8UDWFYcZ2b7hhOlhf0K4bbiCH5jN3gROwOSA04JwdDlbNq1+2BPgSf4F2BBntbl1//bsB+QyHon9ehkbJQnihATJMGgXzdfihbmUfC7GHIf55zAhaQgtQc2A2rs7zq/WqpWskF5jyXw+b6I6vWmdxG7kzt1fzDlNWfB4Cmw/iollRp4qNpTEIOxjI4a8C3K6kiL+yB63WdmgcyHR8KJD8liCabCTYUhcKGUsEdes//e2n8BQDE0tHhlUXgiCbXeCDyEn5Oe3Py/8YI7DsYWrqt8k3lHDVx0PMacWdZz70iBzaBZlg4E7H+ClZjUyonIEyvYCNHCOOeM5NKgJt4u8WNxi1pQgHIvKuEoIH9X7kuLe8qJYNHeyzP6XegnOqpWkiPTqJBOrlXWziXlmZz5twVR5/6URxktpTq5yJcxzG01WP0KmIk+vISJVB0TH4chhfFk8eL7y5WUfHO45eguxAoYNCwuaDOZSgURNZfR7N15b0AtCCi/IO73EYYFjpFmv3SXDm3/YrG3XNIOa6lrlue2nHz/tp7q1WD0lzIPMAlVzmdvO2F+srn7X5uctYmOlCFW6ZCMqUK7x2vgaPNC
+ js3+EWOV
+ +ujw/WkO88zczk1zXFWrekuAQN44C2K0UYDsN6GR4CAEAgWjPRtTxDstIPf2mB6Y6qpEFPT0dPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,15 +122,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
 Previously, the per-VMA locking could fail in the face of writers
-which necessitate a fallback to mmap_lock. The new
-vma_start_read_unlocked() will wait for writers instead of failing.
+which necessitates a fallback to mmap_lock. The new
+lock_vma_under_rcu_wait() will wait for writers instead of failing.
 
 Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+The fallback removal does not affect NOMMU case because TCP_ZEROCOPY
+is gated on CONFIG_MMU.
+
+This really is a nice cleanup. It removes the need to pass the lock
+state back and forth to find_tcp_vma().
 
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Tested-by: syzbot@syzkaller.appspotmail.com
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
@@ -146,129 +152,78 @@ Cc: David S. Miller <davem@davemloft.net>
 Cc: David Ahern <dsahern@kernel.org>
 Cc: netdev@vger.kernel.org
 ---
- drivers/android/binder/page_range.rs | 19 +++----------------
- drivers/android/binder_alloc.c       | 17 +++++------------
- rust/kernel/mm.rs                    | 27 +++++++++++++++++++++++++++
- 3 files changed, 35 insertions(+), 28 deletions(-)
+ net/ipv4/tcp.c | 31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/=
-page_range.rs
-index e82a5523804f..f7ad88a0d806 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -439,22 +439,9 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()>=
- {
-         // workqueue.
-         let mm =3D MmWithUser::into_mmput_async(self.mm.mmget_not_zero().o=
-k_or(ESRCH)?);
-         {
--            let vma_read;
--            let mmap_read;
--            let vma =3D if let Some(ret) =3D mm.lock_vma_under_rcu(vma_add=
-r) {
--                vma_read =3D ret;
--                check_vma(&vma_read, self)
--            } else {
--                mmap_read =3D mm.mmap_read_lock();
--                mmap_read
--                    .vma_lookup(vma_addr)
--                    .and_then(|vma| check_vma(vma, self))
--            };
--
--            match vma {
--                Some(vma) =3D> vma.vm_insert_page(user_page_addr, &new_pag=
-e)?,
--                None =3D> return Err(ESRCH),
--            }
-+            let vma_read_guard =3D mm.vma_start_read_unlocked(vma_addr).ok=
-_or(ESRCH)?;
-+            let vma =3D check_vma(&vma_read_guard, self).ok_or(ESRCH)?;
-+            vma.vm_insert_page(user_page_addr, &new_page)?;
-         }
-=20
-         let inner =3D self.lock.lock();
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.=
-c
-index c13a588c37de..efa23f6b8360 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -259,21 +259,14 @@ static int binder_page_insert(struct binder_alloc *al=
-loc,
- 	struct vm_area_struct *vma;
- 	int ret =3D -ESRCH;
-=20
--	/* attempt per-vma lock first */
--	vma =3D lock_vma_under_rcu(mm, addr);
--	if (vma) {
--		if (binder_alloc_is_mapped(alloc))
--			ret =3D vm_insert_page(vma, addr, page);
--		vma_end_read(vma);
-+	vma =3D vma_start_read_unlocked(mm, addr);
-+	if (!vma)
- 		return ret;
--	}
-=20
--	/* fall back to mmap_lock */
--	mmap_read_lock(mm);
--	vma =3D vma_lookup(mm, addr);
--	if (vma && binder_alloc_is_mapped(alloc))
-+	if (binder_alloc_is_mapped(alloc))
- 		ret =3D vm_insert_page(vma, addr, page);
--	mmap_read_unlock(mm);
-+
-+	vma_end_read(vma);
-=20
- 	return ret;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b694..62defe70f3ce 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2167,27 +2167,18 @@ static void tcp_zc_finalize_rx_tstamp(struct sock *=
+sk,
  }
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index f4fa54616085..11466fb304df 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -186,6 +186,33 @@ pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> O=
-ption<VmaReadGuard<'_>> {
-         })
-     }
 =20
-+    /// Find the VMA covering 'address' and read-lock it.
-+    ///
-+    /// The fast path does not take mmap_lock. Waits for writers to finish=
- if the
-+    /// VMA is being modified by taking mmap_lock.
-+    /// Use when mmap_lock is not held, otherwise use vma_start_read_locke=
-d().
-+    /// Nothing prevents VMAs being unmapped/mapped before or after the VM=
-A is
-+    /// looked up, if a stronger guarantee is required, take an mmap_lock.
-+    ///
-+    /// Return: If a VMA exists which spans @address, return that VMA, rea=
-d-locked.
-+    /// If no VMA is mapped there or, very unlikely, a reference count ove=
-rflow
-+    /// occurred, return NULL.
-+    #[inline]
-+    pub fn vma_start_read_unlocked(&self, vma_addr: usize) -> Option<VmaRe=
-adGuard<'_>> {
-+        // SAFETY: We may invoke `vma_start_read_unlocked` because we know=
- this `mm` has non-zero
-+        // `mm_users`.
-+        let vma =3D unsafe { bindings::vma_start_read_unlocked(self.as_raw=
-(), vma_addr) };
-+        if vma.is_null() {
-+            return None;
-+        }
-+        Some(VmaReadGuard {
-+            // SAFETY: If `vma_start_read_unlocked` returns a non-null ptr=
-, then it points at a
-+            // valid vma. The vma is stable for as long as the vma read lo=
-ck is held.
-+            vma: unsafe { VmaRef::from_raw(vma) },
-+            _nts: NotThreadSafe,
-+        })
-+    }
+ static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
+-					   unsigned long address,
+-					   bool *mmap_locked)
++					   unsigned long address)
+ {
+-	struct vm_area_struct *vma =3D lock_vma_under_rcu(mm, address);
++	struct vm_area_struct *vma =3D vma_start_read_unlocked(mm, address);
+=20
+-	if (vma) {
+-		if (vma->vm_ops !=3D &tcp_vm_ops) {
+-			vma_end_read(vma);
+-			return NULL;
+-		}
+-		*mmap_locked =3D false;
+-		return vma;
+-	}
++	if (!vma)
++		return NULL;
+=20
+-	mmap_read_lock(mm);
+-	vma =3D vma_lookup(mm, address);
+-	if (!vma || vma->vm_ops !=3D &tcp_vm_ops) {
+-		mmap_read_unlock(mm);
++	if (vma->vm_ops !=3D &tcp_vm_ops) {
++		vma_end_read(vma);
+ 		return NULL;
+ 	}
+-	*mmap_locked =3D true;
 +
-     /// Lock the mmap read lock.
-     #[inline]
-     pub fn mmap_read_lock(&self) -> MmapReadGuard<'_> {
+ 	return vma;
+ }
+=20
+@@ -2208,7 +2199,6 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 	u32 seq =3D tp->copied_seq;
+ 	u32 total_bytes_to_map;
+ 	int inq =3D tcp_inq(sk);
+-	bool mmap_locked;
+ 	int ret;
+=20
+ 	zc->copybuf_len =3D 0;
+@@ -2233,7 +2223,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 		return 0;
+ 	}
+=20
+-	vma =3D find_tcp_vma(current->mm, address, &mmap_locked);
++	vma =3D find_tcp_vma(current->mm, address);
+ 	if (!vma)
+ 		return -EINVAL;
+=20
+@@ -2315,10 +2305,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 						   zc, total_bytes_to_map);
+ 	}
+ out:
+-	if (mmap_locked)
+-		mmap_read_unlock(current->mm);
+-	else
+-		vma_end_read(vma);
++	vma_end_read(vma);
+ 	/* Try to copy straggler data. */
+ 	if (!ret)
+ 		copylen =3D tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
 --=20
 2.55.0.654.g21b8a5bc05-goog
 
