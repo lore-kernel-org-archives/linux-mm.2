@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE8C4C56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:52:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C23C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFFA96B0088; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
+	id E46BB6B007B; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED6FD6B0092; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
+	id DF74C6B008A; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC8256B0093; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
+	id CE5DF6B0092; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA9ED6B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52BF01206B5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:52:02 +0000 (UTC)
-X-FDA: 85070983284.21.76E122A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8BE7112000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:52:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iuaa2ASF;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A31636B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C5744076C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:56:49 +0000 (UTC)
+X-FDA: 85070995380.23.9DBCC70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2525180013
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:56:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DkGAyZHD;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786024320;
+	s=arc-20220608; t=1786024608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mtOtoJPfPoNQ3lP/qAbd+1hDTx3C/med8KgZHUjbjqU=;
-	b=n7rg6nelRyQUoKJrn4713F0jOEyAvGf3s4rRaz6+64ZMjklIvPDA8UKKEjIwiyWKIY7yfh
-	DSOnxgzJUc+HpSJgRlqhoiXUEbu0Sgm5tb/EPOz3WXypztmdu7ag/skFXrKNWpFJamnvzj
-	/k2sDhYEctvkUfOKNlVO40xeOJX7lvY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iuaa2ASF;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=MC7T7ylhK/aLr9fs0E5SYbo5bCKm86oRgZDfYL13AS4=;
+	b=vkqlB8fnbQcmHe83PBte9RpRhRjpyxXh7a4coYZFHOAhTmh8pLLkUj+m/wEFQUWoMdwD8w
+	NtENyDry3g5LBZamplEUajAE9zKn5UXw930XWX0Ry2mI62+/xbPqVVAtAQBL1WCUYLlnl3
+	we5/SEVy+KWPLaS+UQpat/0HEKPOyrA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786024320;
-	b=WU+vaDeqVA+zrpBgC+w+3WcYT+29Ne52bqRmAooqaVTzdHoUu6gsR4QYU4PqX8yA8Upv5V
-	8L/NC70yp7vV5IAfn6I64bcVsydHNZmZrwEMihsFo9l+ryDo2D8PCSqRj5Tgez6oqU69/F
-	7Y0YrOPm5dDoje3ZyGG0WOOh3jXh1ko=
+	t=1786024608;
+	b=7qkiqhcuX3DOiBGKWncOzBhlK6C0Fbr/BtVJ15oxkHNZkZFrMg0MdO7MUwOP3G/aWU/wnd
+	5LnqgkD9d0UP4Fu3Bhd+uxTK/nuuDCyEhThNVFglDYY5NQ7CGaqrl//oCTul6mhkO4BpGL
+	9c894eFYtWP+SSwUg/gpkr8f7gsn1Nk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DkGAyZHD;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4C1460A69;
-	Thu,  6 Aug 2026 13:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36F51F000E9;
-	Thu,  6 Aug 2026 13:51:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C2EB43252;
+	Thu,  6 Aug 2026 13:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DC41F000E9;
+	Thu,  6 Aug 2026 13:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786024319;
-	bh=mtOtoJPfPoNQ3lP/qAbd+1hDTx3C/med8KgZHUjbjqU=;
+	s=k20260515; t=1786024607;
+	bh=MC7T7ylhK/aLr9fs0E5SYbo5bCKm86oRgZDfYL13AS4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Iuaa2ASFYi8g49KLLXEzA+HefzGQsNEMIPsfpsoiouhzmRqgPB/QEBTXx9j312Y2E
-	 WckvlwtBI8SsH47XbWgM/D8zHxJZkBSYaGfjM7A46Hs3r70KUv3YlUJveZXw/Y10Hv
-	 xbGjFz/1sm543DrckGD9DHLiFnfZK6ch67XWAwKN1CWZrQoZ6ke4RKT/66f9bzpQD5
-	 9d8xXsynjcE0ruWoytE+WdKpGJmFjFrnoT0jjTKAz7IJABW+hKL5bLL49HWkr2hk42
-	 +g2/rNL6m41kLbrV2tkNeklAINFjBn/ju/xLaQDdCM7yYFDFRycGvTwV5Uyo/jkmal
-	 Pz0io5oi4CfNw==
-Message-ID: <1150896f-de20-4672-b498-6c9dd17e4aca@kernel.org>
-Date: Thu, 6 Aug 2026 15:51:49 +0200
+	b=DkGAyZHDVpHpzU+8ZKASQVokbVrEOI2Cii14k622zjZ3cwd+Ne0Csvoj1YN6XENG2
+	 H6pM+hFjLX144QIABtWKyQNdmRNlQqAo9KOZsuVMgPVI2HU+aYeTA9WBkxKJNTvsxl
+	 7lZChMbTyMO+ZcnZwpoSJDoGdnUcZbnQkAzLD6/tOGHXr0yGNSzKAn6ZkDwDMKs0a8
+	 0AR97NvqqDYbqVSd9DbVAOHVoj5q22bDD3m9UmUPN2nRhjMnbqYVKcDVrVMGzfrL1D
+	 yQUySxekwYv0qd9PjbpnVJzwEnJ7+7UZ1Avixh4y/xFPoppigmWx1aOBhr/5xfa9vZ
+	 Fxwf+avkzMfBQ==
+Message-ID: <77a27056-555e-4395-b71e-e777548750e0@kernel.org>
+Date: Thu, 6 Aug 2026 15:56:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 1/4] mm: add page_counter_margin()
+Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation
+ failures
 To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
@@ -81,7 +82,7 @@ Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
  surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
  yuanchu@google.com, weixugc@google.com
 References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
- <20260730122304.2496440-2-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260730122304.2496440-2-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8BE7112000C
-X-Stat-Signature: k1qxgb9quwpjatjudmy3byozcy3mwtj7
-X-HE-Tag: 1786024320-24695
-X-HE-Meta: U2FsdGVkX18Z3oaoJWPPDQhvvfUs9gHuvbwSctI/BB4BpTInV8InXKMBr8n8G5Ccyh9KzqXa4rrrgdG21hbNQp8RnfVfYC77VdkDWBMtugTA9k6StMnLcULrYkiz4lnGCkfapgy68Y7WDdbSm1eamlhROkfXeUcSux3DjWHK8RSQNDK9O31Pshpl+7Z+EfUhJZwPOzS6wds0MpRrSRvWGwy9+TTdtVrJMjxWlFMA6sNJ8o6YUjShusrn1JpYp0Ionzoxgnorbf7WLUMgdXKY5XfyL+v0akUokBlY+8uw00cG8+4PQhcgAT3irgY2v3Rn9DVUX9bzin3xwXP6GUGHqid/Nc3i3q93dB7vaa/dFjc2HO/grU8BQRg/++Ub3csIWwx2VIaiMNppxI0+vqcCHPMzVlWbtgY4N+8/E90FxZ7tzFNla1Il30khBvXOgSLt6R5mV82drjHsnfuvRlw6eRGLK2XZOobp39VoC9YLMKBBcHTTJ3Lirm3j5D8yoUABotMVf4HiCyDeQvanCzz+DIs94rosnzdDReDwFKAG0whkYZTnFuMxBbeS/SO8+WgjjfyV9WdwOhJ5Qfe29w/KnSyiOmDy6IZnrb8cDpovMwXZ0Es3FdwqFfOi/04Xs7si3BYTvRw/DHt31Y9wKQaNTExWgwvqoEuNa+Lg7C+5W2l5lTtfo3NNJH08csiwGSapysd+GvpEh4q/Z3Bmq0uPUhDt9CCTZK53XzZzoUlzBnnK0hE+F4Ef6pb9Qdpcu5a53LTGNs2S5FWv/mjkxshdbU1fqMqXBTgaQaEH4UuF6nw7f+RX6mQkZgUh3rPtI5X9D7YK9lE9z+kkyBcDQLyJiVvovMmXoNCHzTKH8RzqAVsmgoO61QMlWV7nHoJeAJBEjV0IFnejxuvIhAZYzOafuK6WYWfuavGfEZaVYKb9CR3mnAAtGAqh71MrfiI1r/2zcl/aD6etDf+3+8TxZmv
- peNy1IZ7
- PlOVMfKXINACBe6upvN3Xdze+IpxG3DmcXLBO3GZU2tUu0r33ikxkUlbsJTYV2cmzlSbgDeeVkzmqdyLviDNvrtFlu8//ZbVBqXPWpqukZrlB6jUnDffKMd2nKpHfyqVsqJTeVb0MLrL1Cnx9Nby1UDbsBvpoPOfaN+S/JWeT32vFAxI/qRLzr6P8YVu+Spj0BbH0UQKr2r3jU9kYFAOtwsDrVhvwS03wgrjXEmme7YNuNlEAOoyzdV9YzuJRFDJ8qGy/smeJL1Jk6g4OyUR4fn0xbV1bE78wK8xXhgX2iAb63lw2pNM9TV4x/n3rO+xafncOomI0ioiwSsMq7BScAF/nuSXHbQKb3eipCjgChlwAaHJUgmuOdKddm4ZLGVwHb2uylQ572IvVNCuu7jjObwgXzHnWc22G7Kk5MHIbiscQkLcuv2lUuCBS6+3u7GHZfU7S8hE+Fxkur2rJcH3d0/KXQIHa8ccmRijHLp1RqpeN8nI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2525180013
+X-Stat-Signature: 47iujrkwz98tb6w9z18oc5q1pp7qhqha
+X-HE-Tag: 1786024608-455696
+X-HE-Meta: U2FsdGVkX19yJu5z8Ix6WarTdIiakFu+a2QnkDHXJgrEXUV0Chg6gPm+b4NMz5S00DMrSX62q80faIDrejW7C0swBLj8/6a2k1yl+yGsSLupYMgmbmNta8+/IKKJwyV+5fE5sQK9sjqX8p7YGXLr0VwsFqOckAOi0qU9RLmWaL+YnXkX2IntcIgzncQn8MxM4dFn2O6U0JN322NOmJFCb9m/CtsX4oLAIIhBamSe/k804IF9rFABo6FgvRONTYcr94/ZSTZmWp9f4ZCuw4gAdw+ys79tpMEwBy1dPnyzizS9ezdnPLU1caixpQcef19IXSbHU7hzX5t+Kk2pbRpD94fmooLw2LuNtPLrQH0l2ZflXhdJ1FwPIweMbCiDQ+7+XSyX2MSv4ZSRn11+OpNmSwlqR6TGFSi9RJCJGTmD3ql2bF6Fpsb9/Os2kGGrtzDzFl+pePWuJhYtdh3sCMKIRbQ6dkRD8jwlVHqgTEw+K/Nf+ko2SkF1afxCiIVLDfu48nPAZR7IU2pAAo2cqrTmjjaAluRBdvBge3f2Z6Lsd39LA8aGCifgCtFshBLfJ0hL2lYkWJieje6OrNi+85UkYhOiwdLo6z049FBb8mU0ISqxvKSD03xzWlDQf/0vu/qqTObCkJ7ZCxuyJkws3GxnniwcHVnjaVBkj+T6jGkj3jnrkGOKPfq/HVGb+yBkcH+zKV4HiD1X2UtX+k8NLxq4tzzUsrxhG0fZW89LLJDKLdIX+jvLd9encrjFlkjhHKMYliRxlCi8XeKHbp/gGyvat3Wl27qHLzM6RpThZkiMo+7YL8/f1uw8whjXM+o4CQ4bDSwW373nRdD39sSO4QlVXJV/560n7lqPoIFCqF9A740PxDFrLxQQIW+edWhzEjMI3ejlxyYh9LV4qwLQ2aaH/vOveqRDb1OqTZZc2+uLS5Kco1duEPE2okJ1VNFdPZW9XIp7Mt7wkpv06uID2hr
+ SWKKMjLa
+ tFMSQWCHm6JIo0Hp+/9qqoIcOf4dcJnu6swUVMY6ShSXdJtFJkAzmXr2rDxtoxADl+2D/Fmr2wxGRUonQBC8AZfaebhhDgtyVmCex7vuN8lCVAccru5B74CfoIQ3GLFcedFKD8ofkgLYaV2YKBKUFekFRaO4ZWK6bfPl3HhufcAohagEGqOMMQNXQqZWxwn6QirAnFNjA5aYNq6ITKU+GNkW/bE9TlDMLCluImhjPHwlCwns/lu4v04qHoK4GHpvTqLD3WPUoQOs96sMILoh2WAhdCy2fhK84dgacSgZnDqNEyS3o5tdbrNAoHOnwVXVIw7Sp11cGb43kcwtiu2tEG4EFKpD2kbDyfcIr5dIj4EZjV3A4qP/r0j5bp6nqrf1ULGrBI/4EwyovcbGNzHhmLuGYAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,20 +148,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/30/26 14:23, Xueyuan Chen wrote:
-> From: Johannes Weiner <hannes@cmpxchg.org>
+> folio_alloc_swap() reports most allocation failures with a generic
+> negative error code. Reclaim cannot tell whether splitting a large folio
+> could make progress or whether there is no backing space at all.
 > 
-> mem_cgroup_get_nr_swap_pages() open-codes the remaining capacity across
-> the memcg swap counter hierarchy.
+> Keep the global free swap count and the remaining hierarchical memcg swap
+> margin as separate inputs. The memcg charge path reports only its own
+> margin; folio_alloc_swap() combines the two layers when classifying an
+> allocation failure.
 > 
-> Add page_counter_margin() to return the minimum usable space from a page
-> counter to the root, and use it in mem_cgroup_get_nr_swap_pages(). This
-> is a pure refactoring with no intended behavior change.
+> Return -E2BIG for large folios when a smaller allocation might still fit,
+> -ENOSPC when no global swap space is available, and -ENOMEM when the
+> failure is not helped by splitting.
 > 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> For early large-folio rejections, check global and memcg swap availability
+> instead of returning -E2BIG unconditionally. On a memcg charge failure,
+> swap slot allocation has already succeeded, so use the remaining memcg
+> margin to decide whether a smaller charge might fit.
+> 
+> This only refines folio_alloc_swap() return codes. The reclaim callers are
+> updated separately.
+> 
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Suggested-by: Youngjun Park <youngjun.park@lge.com>
 > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
+>  include/linux/swap.h | 16 ++++++++++++----
+>  mm/memcontrol.c      | 32 +++++++++++++++++++++++++++++++-
+>  mm/swapfile.c        | 32 ++++++++++++++++++++++++--------
+>  3 files changed, 67 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 0544b2ec4c56..7d12058174ae 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -509,12 +509,13 @@ static inline void folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+>  #endif
+>  
+>  #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
+> -int __mem_cgroup_try_charge_swap(struct folio *folio);
+> -static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+> +int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin);
+> +static inline int mem_cgroup_try_charge_swap(struct folio *folio,
+> +					     long *swap_margin)
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Nit: two tab indent
+
+[...]
+
+> -static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+> +static inline int mem_cgroup_try_charge_swap(struct folio *folio,
+> +					     long *swap_margin)
+
+
+Nothing else jumped at me
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
