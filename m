@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8FEC55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 05:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66205C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 05:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20C136B007B; Thu,  6 Aug 2026 01:22:17 -0400 (EDT)
+	id 6A16C6B008A; Thu,  6 Aug 2026 01:22:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BCF56B0088; Thu,  6 Aug 2026 01:22:17 -0400 (EDT)
+	id 678DC6B0092; Thu,  6 Aug 2026 01:22:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D2C66B008A; Thu,  6 Aug 2026 01:22:17 -0400 (EDT)
+	id 5B6CA6B0093; Thu,  6 Aug 2026 01:22:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BE06B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:22:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4F92C0600
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:22:14 +0000 (UTC)
-X-FDA: 85069698588.28.76DF113
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 66AF4120002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:22:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 389B76B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:22:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB06F140661
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:22:46 +0000 (UTC)
+X-FDA: 85069699932.21.AE55478
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9221A40008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:22:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ELVTXSo2;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785993733;
+	s=arc-20220608; t=1785993765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IVgzbqteJadEHD7yJZhwVzvWPHpwdodLLUhJrxYxiQQ=;
-	b=oKf62qKYQcVoyOMPDdVNkOgAm/uwJ5V+8V8YSi5w8d5m4h9xg9XMjjv3Hp0iZ9S+7Vbn1x
-	KEFR8x0IFF/iWION8p/KxV73SsAY5Zx34of0j18gM7P89QSivN4//VqNMwa8GoRV7RijVf
-	iYhOfh3JDCfrKsFAd/pL4wiMKL1Jgro=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3dFMFOnT/CSCQ1DHkJmapIfczGhzuoh3MCdpoEXCJwY=;
+	b=f280g++q9OsuJOoac/eYA1aRrCqNH7rncrFjHwgmTMJB0SOvEqeGs1BoljaOTqSHto1FmQ
+	Laj8Xz5lfYxTlhhixcw89QNhJqVAjZspKHxEJ0Zs/EQ9vSW5mQavBKGMF1BtEhviq/j7jC
+	IjF3PTvleImsDbpP1+bmUtreLur9t04=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ELVTXSo2;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785993733;
-	b=fTtIX8DNX/mx/LowKC+fCAN6YlUataTeaUkhwrBIdZ5yONZ9CwYf9LSqJSZ7mbEodko+iA
-	eIuCnC9VlFzofFFI3eJTCgk59Kw9H+SUMTauKTukZcYIkg89GsEfn9TjgcgjJLYl/8UMDl
-	OlPY7hMR96eBcyIQVCA92MqC+3BopSg=
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.53 with ESMTP; 6 Aug 2026 14:22:07 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.121 with ESMTP; 6 Aug 2026 14:22:07 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 6 Aug 2026 14:22:06 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Barry Song <baohua@kernel.org>
-Cc: Youngjun Park <her0gyugyu@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm/swap: scan by cluster in find_next_to_unuse()
-Message-ID: <anQZ/kWnC13QL3Lu@yjaykim-PowerEdge-T330>
-References: <20260805141146.127776-1-youngjun.park@lge.com>
- <20260805141146.127776-3-youngjun.park@lge.com>
- <CAGsJ_4xghMxAcJ212WtBD13gYiSLHJc-NRvNTtW99ZOEmdUnDQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4xghMxAcJ212WtBD13gYiSLHJc-NRvNTtW99ZOEmdUnDQ@mail.gmail.com>
-X-Stat-Signature: f3h1bzwkynbw8rk71q6oign4zm1soew7
-X-Rspamd-Queue-Id: 66AF4120002
+	t=1785993765;
+	b=O24wbdcsvXa8BxGBloxsiCDKQNuOGHL85k8wbzlFUvJgdV/0rUw9mL6dW7OfYb+FFIjEf7
+	L0vBvQSdtp7JEJ/UuwKVd4cZEZNK/alzkoGF1oqXE+oZauG5oq5ZdRB+echQH1k4DFbvf1
+	HPI4b+LCBZvwSX8WmbzqST9ALXg+CV0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C6B634364E;
+	Thu,  6 Aug 2026 05:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B041F00A3A;
+	Thu,  6 Aug 2026 05:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785993763;
+	bh=3dFMFOnT/CSCQ1DHkJmapIfczGhzuoh3MCdpoEXCJwY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ELVTXSo2OjiYl/fr3qqB9hrBh9PrK+dW4oDHcPnfVGK6Z9oKelFvcNQWIOor8XwO6
+	 n7ZFbLEKfFosCG/7Hz8lfUB9lZnZm8orlm+2NI/uJ8MM4yuM8AvunX4dCTwRZe0wUd
+	 9tkiq1w4VvkB9EV0I1km/T6mvyAH2DS00oSDaSMg=
+Date: Wed, 5 Aug 2026 22:22:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Juan Yescas <jyescas@google.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, open list
+ <linux-kernel@vger.kernel.org>, "open list:MEMORY MANAGEMENT - CORE"
+ <linux-mm@kvack.org>, android-mm@google.com, ljs@kernel.org,
+ fvdl@google.com, tkjos@google.com, minchan@google.com, dskiba@google.com
+Subject: Re: [RFC PATCH v2 00/16] Page Alloc Hogger
+Message-Id: <20260805222242.13f1f24fe95cbf13292a01c3@linux-foundation.org>
+In-Reply-To: <20260806011048.517229-1-jyescas@google.com>
+References: <20260806011048.517229-1-jyescas@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ynmp5m5rhiu5iyqy9upnpz7qwhyrocbs
+X-Rspamd-Queue-Id: 9221A40008
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1785993732-569714
-X-HE-Meta: U2FsdGVkX1+JBOk0En/C5plN24FcEKVy8YH9TJpYF+C8jisI0/6mBqL2/qpU50YKjRNLHXlGLFyiAqCLU4SQ4pobhakQgx9ff7aX0i+OAWYplIhIs/CTRiVS4YKNc7cZrYNAw3ObBYBp3hoEWwPv9WNLF8V6+I2WOU2O7UDEU1CXAOztNbVaKDYfNVNUYcgBoI62qyYZwt/XDtOQw2kUopiWzW/uNBgcUERJSnxBiF9H2dJSealqrjWTqO7k5Uk+okuerz+5R1PKZV/bDmoQIrkh5vTt33KVE7NtXoQ9Govkmyi7Mddos4fSfnQBPLGklTJamQFR17Cr807KGjmwK3jCutdSL2VHlvwZrLYE0PlY/4lleuDx0f6t8R6xWGCxtr/6mnwTDSlXiBfEuDlApEHeZc2vy1MrhuyGupeZiBFgRt+DAinRgi5iHqpEmj+QjKiGpYTBIT1oeLD2NzQ0FNyDWFZhheZZPQA18VxUhk+ix7O+Y2fP618oCAWtRHKhtW3CgE/K5z9cR9B9XXSQc/U4RUqR0s/Q+nF0CjN7RjG49EPPWb8CUPchRCNlMYm8Rt3Iqny+n3B4wtuKHbije5Co1wAFvNxca2r/+X8zXJ17O6pxCZU1dWJQ6fhF90ac3xX03ApYGTGkliYM5389OGOv0M0hrHUArYaz4ncUeK0Tp2xgBq1pSejGcfMvq+kKx38H86tbbmgc5SVurjiJNQPvVKfj1rJSd8mRu3g8vCzlqN8jjBZ7++sButvFT0PHn2JaUVepNMLvWm7kAFx4pafqMBjNwK2Ep0QFb1KcWN7MpJjiq6odqYJLDv5UseluqZbFfN9dy+UpSW9j3ZMRD3NrevJpz3VwUe4Nl+ppjv63NTs3xD79QhjL2KvFIwFy0uWf034/90oHxDWBthIA2faLmaimdJ1Im8IwcetaAFdblf7yo9oLZB3O1pQJWt2GqN+eOyCDjUVeyVtwv59
- SCpuJGJg
- kvi1P5O7ybKlNuwwfrJ44VHE0MJso/3mtVLd6D+efBy2CmUuVeBzKpo+c0+So/FXZHx8k5K15wEZKhuI3/3H7J7riUeKL+D7SZvRsN/ws76rfuztASbY5B12rI2rUiIMhFxbrvkbKjZOlmwA60oljiyKoevuDOUcwnuwmN2U6/1putz8nWYwHwSvVJQyCiGsikw46NWD7j1Ew9vDa4oMhS2rer090b2OO8mzQ1qTWec048dBb2iBEr6dPPbYa/69sXtYa
+X-HE-Tag: 1785993764-542491
+X-HE-Meta: U2FsdGVkX18MAU7hW5UYZ7d+1C01oeLc5UIUX1xl4bcNPxvUWL6NBiYgSdl+97r0pfT0hnJlysP7xOftdGqr5XqbEAJ5jDawFuCctvJ9SF3uEUf7LF5Be8tC5T98Iav7S1vtYASCc0hmRoISONUKJZzg5a9tAhNspGP/jB71VUTLurynuSKqOy2fAuKx9dOg7UQw2QpxCj8avoQ2xNcJn1rVrJNs+oNqvUOkroAa7TAI3xBbubXBOTMYeEKzx8VK3TUwXMuFSTAQRt6J1nuisrqvRE+QY32w7ZSZf2hAmAs/JarNc2cwmJYr1uU/52GehkKl663T5SayJd91SGPS4tkWID0CDsaQks25PrT7WkVRYldVATXMTwZeMoSuBROdSt93QlWT3EX3LfQFImuNg8Dc57frOKniTuBokf9cvrEWJxFiIdJ0ub6B+mCJ9G+rkP9+SbmqzGODjgaWY28q/G9sIBw8gPLFpBkUNzEuAeTrMj1FNjxsdVKUieVYkKObbtkc1Pppku5XjswWfIRHdz+js0HbN+0CFLTxz0GoJtXpSa0EuxSrP446SbQeVYd2EsqY0kNRtMUgli5V/cyC6bpbNxdw4Am8bymwEWskjuN8vgct5Tt4tBaVvi832BQLgqFGLZBD4PNBTEHaebj13IimKtKn812vK2fVFwOzIxNW62CqgQrgONdOmSnTa0PD6vEqkdG/b3nkUDs+4AVGC5QKS1rsRMjX/ReiUUOV7gtPtBZKGoTDe6WU2p6kOHjRmtrco5qzJSnelQI034UIlRsVMGlfTrEEGpFDVlM6ttG2UWftNDhmMbeY9Oi3G+8UxVkdMS0ek57BAyKZQJ4P3czOS32RykwZCabT/zM4k+LshZwZr1k+IUsfLkTvCAXzaTz1/SGnreyHUu3V9cmCXpXP4eQQTiFKaEDRvKghWnINN+uznjcU1Q/B5pjPDXrD8GqqOCqodawAgHdtdxp
+ bHkNK0B7
+ FuNGFbYyopY8BgKCmouYBhrj/KIYA5bhA6UJ9vu6P72XHv8QH68dSGGuoV8nO4WCsfVWJ7fIUBuQINoCsML4Q7XlgE/xytt8QwGotVc0wvpB7NVqo08IlifhhcXqt+C91bNeGnPAPwSi5CdSTyJ3EOg7jfCRh7FFM3Q2NM1c4T87T8y14doCnNOb+ripfHzwD1NgWZUmzc1TqBMMwoqWE0JaXe9PL2K2KwhvzgASiWXVfRt3/rt/T2AfjPyW8KUwI9yXTgbnuzz7+IX2xcTOWAwjncSD9+7aJjhNFsJDVoL/Ezeutgn/nmtPJV3kIiMfobm/Nzbd1lYX7vosGzjTDe6sAixVoXu3TGiKDgRrrXn1InwbHRsLwyOIW37QVJFfCuLzl2MrfmQs3MVGpBO1SGbumpgn1d5T3iSNj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,102 +94,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 10:33:54AM +0800, Barry Song wrote:
-> Reviewed-by: Barry Song <baohua@kernel.org>
+On Wed,  5 Aug 2026 18:09:01 -0700 Juan Yescas <jyescas@google.com> wrote:
 
-Hi Barry,
+> This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
+> allows you to allocate memory pages from specific nodes, zones, migration
+> types, and orders directly via debugfs. This provides key benefits for
+> testing and debugging:
 
-Thanks for the review :)
+OK, so this is targeted at kernel developers.  And they may indeed find
+it useful.  I see value in us developing a common way for developers to
+apply well-targeted stress to MM.
 
-> [...]
->
-> > +       i = prev + 1;
-> > +       while (i < si->max) {
-> > +               ci = __swap_offset_to_cluster(si, i);
-> > +               ci_off = i % SWAPFILE_CLUSTER;
-> > +               end = i - ci_off + SWAPFILE_CLUSTER;
-> > +
-> > +               /*
-> > +                * An empty cluster has no slot in use, so skip it whole.
-> > +                * A slot is uncounted only after its folio left the swap
-> > +                * cache, so there is nothing here for try_to_unuse() to act on.
-> > +                * Count only drops here, so a READ_ONCE() without ci->lock is
-> > +                * enough, unlike in every other cluster_is_empty() caller.
-> > +                */
-> > +               if (!READ_ONCE(ci->count)) {
-> > +                       i = end;
-> >                         cond_resched();
-> > -       }
-> > +                       continue;
-> > +               }
-> >
-> > -       if (i == si->max)
-> > -               i = 0;
-> > +               for (; i < end; ci_off++, i++) {
-> > +                       swp_tb = swap_table_get(ci, ci_off);
-> > +                       if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
-> > +                               return i;
->
-> You have the following in the changelog:
->
-> " The inner loop runs to the end of the cluster rather than to si->max.
->  The swap table is always SWAPFILE_CLUSTER entries and swapon() masks
->  [si->max, round_up(si->max, SWAPFILE_CLUSTER)) as bad, so the tail of a
->  partial last cluster is rejected by swp_tb_is_bad() and never returned."
-> But I wonder whether this explanation should be part of the code
-> comment instead.
 
-Yeah right. If I remain the code as it is, I will move this changelog on to the
-code itself.
+Probably everyone has their own favorite memory stresstest suite.  Most
+of these will be in userspace[*] but I see there is merit in doing it
+in-kernel.  Any perspective you can add to this choice would be
+interesting?
 
-> Otherwise, people may wonder why this is safe and ask for the below:
-> end = min_t(unsigned long, i - ci_off + SWAPFILE_CLUSTER, si->max);
-> How expensive is the min() operation? If it is cheap enough, maybe
-> we should just do the min() unconditionally?
 
-Not expensive.
-Kairui suggested keeping the end calculation simple(As I assume his intention?), 
-so I dropped the min() in v1.
+Some usage scenarioizing would help.  Is this being used within google?
+If so, for what purpose and with what results?  Sell it to us - help
+your audience understand what benefit it offers to them.
 
-But after thinking about the retry case, keeping the min_t() seems clearer and
-can also avoid walking the masked tail of the last cluster before retrying.
 
-So I think I will keep the min_t() version (inclding move ci_off calculation only
-to where it is needed) like below
+If this proposal has legs then we should Document/ it separately - that
+big block comment in page_alloc_hogger.c will become unweildy.
 
-+		ci = __swap_offset_to_cluster(si, i);
-+		end = min_t(unsigned long, i - ci_off + SWAPFILE_CLUSTER, si->max);
-+		/*
-+		 * An empty cluster has no slot in use, so skip it whole.
-+		 * A slot is uncounted only after its folio left the swap
-+		 * cache, so there is nothing here for try_to_unuse() to act on.
-+		 * Count only drops here, so a READ_ONCE() without ci->lock is
-+		 * enough, unlike in every other cluster_is_empty() caller.
-+		 */
-+		if (!READ_ONCE(ci->count)) {
-+			i = end;
- 			cond_resched();
--	}
-+			continue;
-+		}
-+
-+		ci_off = i % SWAPFILE_CLUSTER;
-+		for (; i < end; ci_off++, i++) {
-+			swp_tb = swap_table_get(ci, ci_off);
-+			if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
-+				return i;
-+		}
-+		cond_resched();
-+	}
 
-I think both of good enough.
-But, IMHO, remaining min_t calculation is my preference at now.
+One could consider plumbing this into selftests/ in some fashion, but I
+wouldn't encourage that - longrunning torture tests aren't appropriate
+for selftests, which are nice and snappy.  Perhaps a new
+tools/testing/stresstests will one day appear.
 
-Kairui and Barry how do you think?
 
-- Follow Barry's suggestion. remain min_t calculation.
-- Add comment why we don't need min_t calculation.(also barry's suggestion)
 
-Thanks
-Youngjun
+> +obj-$(CONFIG_PAGEALLOC_HOGGER) += page_alloc_hogger.o
+
+page_alloc or pagealloc.  Choose only one, lest you drive people crazy
+for ever.
+
+
+
+Sashiko went totally nuts.  Have fun with that ;) But I wouldn't do a
+ton of work on this until you've heard positive noises from the MM team,
+Guys, poke.  wdyt, is there potential here?
+
+	https://sashiko.dev/#/patchset/20260806011048.517229-1-jyescas@google.com
+
+
+[*] Back in the days when I was trying to get redhat ext3 and 2.5.x
+    MM to do something other than lock up or crash, I wrote a userspace
+    thing called "usemem".  In recent times I've seen people quoting
+    usemem results and wondered "is that my thing".  So I looked it up.
+    It is!  And it's now quite unrecognizable.
+
+    Because, obviously, people found it useful and so they used it
+    and added to it and added to it and more.
+
+    And I expect the same will occur with "Page Alloc Hogger"
+    (terrible name, btw.  How about "pagehog"?  "memhog"), if it is
+    adopted.  People will use it and will add to it.
+
+
+
 
