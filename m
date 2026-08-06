@@ -4,154 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B13C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C86EC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAD1C6B0093; Thu,  6 Aug 2026 04:27:59 -0400 (EDT)
+	id 7F21E6B009F; Thu,  6 Aug 2026 04:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C38626B009F; Thu,  6 Aug 2026 04:27:59 -0400 (EDT)
+	id 755A66B00A0; Thu,  6 Aug 2026 04:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD87F6B00A0; Thu,  6 Aug 2026 04:27:59 -0400 (EDT)
+	id 669F76B00A1; Thu,  6 Aug 2026 04:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7484E6B0093
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:27:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 052FE80669
+	by kanga.kvack.org (Postfix) with ESMTP id 3F83C6B009F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:28:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1D0D80669
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:27:59 +0000 (UTC)
+X-FDA: 85070166678.25.5AA0C0B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C5BCC0006
 	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:27:58 +0000 (UTC)
-X-FDA: 85070166678.24.7CBA76F
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012053.outbound.protection.outlook.com [40.107.75.53])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 926A5140004
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:27:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=bQhyVfwL;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.75.53 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786004876;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7Edia6K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786004878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Gp9F5NGSy2+0ZFFFOGUUfBr98jB+MrtKGia/pjq5E0k=;
-	b=X15Q5gH7fZCzE4lXUbXtPtsyUePa/lqsQJ+D39upDC8lWWZTI0c+kDJwYXxFF8CbBmAZnz
-	nheeiMvN7/9PkFqWFm49wImgzcti6oR7yvSck0d4jemwoaBFvUhj/MiTjRA7XTSUkyire1
-	hGYFwIV2QqQyon++LazWshXqbRyjVUY=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=bQhyVfwL;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen@vivo.com designates 40.107.75.53 as permitted sender) smtp.mailfrom=xueyuan.chen@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786004876;
-	b=11qU4MP+PSEMI1qDJ1RkDVglihVM4e0bvmkYMvqCjh2hIE4qSlllxEAmYn/IDvpg0Q42Qa
-	PovkQEnl2WZeuyEeshdxXCnXIOC1uiuE7x80mwO2Ug27dchvY3a7Z0FLp4SEnDsvEe40fy
-	22UBeFESZffznn5MA5SjIxrhHjFbVnU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WPXPq7nPNRCkYQZ3ElEutY8u93t3ar+0FQDY6r0oDEyYbQ9R07GYmp9DqdfSEmfv8yhhSbfU6J9hM2vfv86yFMNMtmtgjnuGgXhwarPP2a9jShL8hmoVELtFjYQCF8zuC6S1AQt8UAQcCucKkPVPdVBwur9ulu10Cdekx0y1jGqNpNWntxGL6sm1BjHJmojODBTeGWoNqR/362ObJ71YisilN8xmO9qxuR8tjL8ZDT5OTNRmGznQHczIu45MsSAom6NufgjQfSEz2uzP93fpbEqS9W2lPuzH3qEgYYlGTqSd2v2HKPyf+Y0n7N7oHhi7TSC3PfY6Ft0yWmLxIkgiZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gp9F5NGSy2+0ZFFFOGUUfBr98jB+MrtKGia/pjq5E0k=;
- b=R8q6jMwOZjyo2Wxn3/Gx6jGxZQxzD4D24FbOQ0dRbpi2yZr1uysA/+r5024kMbMMv1CVkcwVUkvEpLy2eIS3dcy/xxFSG8JFckeU8ycq3jo60vDhZiWIArTr73WvuzHbp5duod4Csrz+IroyrD6sSA3R3syhIJilGFishC6Jr0Z2DwPzAkBieohVWq55Hxl2+bgYS4XhTc1AGF3lhWXR1o8FLUdNamQEdoyuSE8q4O+KrNo4FdwyBK4hKnO2H0Nw1LTz5i9B6DnJvamgDzH+2OkIyi55ar0DwKql2wrSfuia3yRbWas+UFEra37yBVF611vtiPy7RPeuBBajC1d8yw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gp9F5NGSy2+0ZFFFOGUUfBr98jB+MrtKGia/pjq5E0k=;
- b=bQhyVfwLKikscsLvOtQhT73+4CjO/x+4xArY0YXzSaWRbqzQCqAKO9CTTstDrfChx0v7P2YOzfyfG/BkvSdOOycURRfYELzI1L7OxnylZetscq8+1P0FNYvhHgZO7q9zwuw0WL2h6tHndPCFSTaSVDB9p5x/CT0wRKIVQKNz/G3/4BboKlBlEXuRweBcjjL0m51pgBNac8/0uEufNRgr4masYXAa4wCpDBQ8lSFCFy87Zi7/Yp4j+eY7KHeafrbHI/8MbRloRJenvZa85krPqabN5TxLvH2cBJWMtVPQN4DSyWjnR70lp+lDYbrhtyp73jYfIgSejuGtA78DQ2b9Rw==
-Received: from TYPPR06MB8235.apcprd06.prod.outlook.com (2603:1096:405:383::20)
- by SI3PR06MB9209.apcprd06.prod.outlook.com (2603:1096:4:2ab::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
- 2026 08:27:49 +0000
-Received: from TYPPR06MB8235.apcprd06.prod.outlook.com
- ([fe80::6ef9:8fa6:5ebd:96]) by TYPPR06MB8235.apcprd06.prod.outlook.com
- ([fe80::6ef9:8fa6:5ebd:96%5]) with mapi id 15.21.0292.013; Thu, 6 Aug 2026
- 08:27:49 +0000
-From: xueyuan.chen@vivo.com
-To: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xueyuan.chen21@gmail.com
-Subject: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
-Date: Thu,  6 Aug 2026 16:27:34 +0800
-Message-ID: <cover.1786003779.git.xueyuan.chen@vivo.com>
-X-Mailer: git-send-email 2.47.3
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0181.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::13) To TYPPR06MB8235.apcprd06.prod.outlook.com
- (2603:1096:405:383::20)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p0PcD3Rm8nR2pfq6gkDt2k7upDjgqE9u99d+TfjcPa0=;
+	b=8hX2904lVZwcjsOehwjD74JRLZheexMf6djXY3Nzc+reVueCGkoGGSTiAfPTfnfHtH/qiZ
+	JOKAye8E9mKyv95rHEj68bLAmHTTYdPMee80HXveHs3IseOGjmCwzynHglfJzXN8qvSHlH
+	KQKNn02J4z67W/d4bcLqVGldcWSEXXY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7Edia6K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786004878;
+	b=uDPqni45BXgq6PCr9b7TzLuG2gJLhxNZDrZ/H89aZNiDrBC1mk2woQE3/heamUGUTXuB0g
+	WjuGVxaz009zg+MkfJ//8pJOZfjwiK9OQBd4KO1Qrnmb8Sc1Ymr11nN1vTIxDKx03+GYM1
+	uQcFv7huqdy2gC0hUWCpV6iEU3YP2uE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A2DBD60A9F;
+	Thu,  6 Aug 2026 08:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71101F00A3A;
+	Thu,  6 Aug 2026 08:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786004877;
+	bh=p0PcD3Rm8nR2pfq6gkDt2k7upDjgqE9u99d+TfjcPa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i7Edia6KWeI4Lppi6fgOnz69TjiMo+cxba5PnduZ3z6q4lN8wcldDKJSpEHV9hhmC
+	 ezGShGmDhCbEXpgvk6frqEcP+70zmxLnxm73O2vfIgeMUmYke6kBXbhzijxVH/DH8U
+	 XYVWL+ZEnglPxs+7jxPiPnB6UE0KpbU6OheNUez+Tts0Gbta4xJb2RYq+9qgSyeRMy
+	 FubVAwsxKxoeA9Rer7h52DmyI2IvjqXScmbtMG2MnGFK6TgkO3sz8UIkxYr6oXkJoz
+	 BI5g1Kjn0bAi0ud+9C337akJI0px/NlsT6TbSLLZJoAmkj8uzFrC2XCJnZxD3T5CT/
+	 4Bw/CK3DwEcJg==
+Date: Thu, 6 Aug 2026 10:27:50 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jianlin Shi <shijianlin11@foxmail.com>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+	hannes@cmpxchg.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	ziy@nvidia.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+Message-ID: <zz5kb26cwem7spqanv6mqe6fwonzclyi3t2wjk5hb5tmj4pdl2@kjkut65bziui>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+ <tencent_1BB7A5C4D5EEA67346634417753190E92A09@qq.com>
+ <20260801114434.232c97a74d9616c43aac2456@linux-foundation.org>
+ <f983f6ca-7d45-4316-94bb-8b4d0fd58079@kernel.org>
+ <k53aljpl7v7naqs5fj4i4po6tu4grkzu5nui4h37orwt6v7bqo@sw4frf2ystmi>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYPPR06MB8235:EE_|SI3PR06MB9209:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20ac19e4-de20-45c0-1dfa-08def39499df
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|18002099003|11063799006|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	9DtFvUavnrIkVFL1xVRaSG9E5hbenQxRK14M4Vn7H+C38vYmcpYVASCTpR0cPepmycwrvYyOODVc6N36MYWwMlmL2+AXNCBDNkCJSidG+fpkM52jDSA2Wt83gxdOURW+ELry5XrTho95tHe7ytL1mQPnIO/jIq8vhxZSL1t2saGprLHA65oYtcqFNkpFLWZstqghzRXYL4U4VOpI6S+Y4pP/zPtFzuhyJwooaYmeb3Hm8E1w78Xhcd6GyAVOdoZRybKsPxotIFR1RpksItnSns/taBp7RsHhHl0dUSxigbS5hAkAZE80QU+nJPIHNaibWbmfAkVin7MA2graonPhIlwvwsdQjmWNKxUhloxplVNXJV8SUMlYH1Qd4woCqPLRLtV9/n5bjK6C4LT9LxcsvOpXFg2naQLfyFBpiwEdJb0y25KHRncgYqJ/rR9JJJUgMb39C+u9uEB1o5mwF+BFs1kCDTefLr+AUZ+3EIhWg0UKoW8pI1GQKQ143dxF9DZwYt6bsB3+9EtKOLrpelazu51j+moNZOMTEzhEWMSZbIOYUDpRlN0HvHMjGlst+igCAAQ239t6b4Ms06PHiikqEo0t2EpMoXiAf8PxL8g1+07isd5aW/H7hqS56/roU1C/3m0+ijhUKrO+fb4dL4Pg+/qC5DeXvAFssTBLJJMqSfM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYPPR06MB8235.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(18002099003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?foRC2U2yRSv8IqiuS5BuUF7SyDiQdul3txQtUfBt/ZsNe8JbDufNigtSUCTS?=
- =?us-ascii?Q?InH+QGMs2Pa90qgnnZr9OqSTnIu/AINUOc1OB0c8l7SbeUiaPq4p166UW1M0?=
- =?us-ascii?Q?WODzZ1NwNCvASA8mBsK3bE/8lijo7xS7El/edlqQ3S8py4BU53Ll4WbN7uy+?=
- =?us-ascii?Q?UYkOXPpn0Jg70hMs4rjHYJRiRtcRMQBuMDmnbwxXjcvL000J7a2UcyInlBq0?=
- =?us-ascii?Q?3SlF6JHFn4URAxFU+pYBhq3itaIgwZYZZ/QIyJt2yeXwzPjbzRr8CBsu17Dn?=
- =?us-ascii?Q?DNATVK+cLygYOPBQgA3FSFsHnFHDjumliqJsiL8CmSY7tAtT/poYgnYA2wdB?=
- =?us-ascii?Q?CeCx5P6ft1cnclYazAFhTTNUhs0ZyvOeyYb2wVKZ57QuXYVKjmEDMPoWkfbY?=
- =?us-ascii?Q?d4fRQ5tiSQjGMz/niUiTFW2XkomG/mhk96sGAq/qpo6qP5aKJ6JGqmnRgWqx?=
- =?us-ascii?Q?+mgj5GvjSFXBYN6i7/xNunMjh4QgbzXN/gLzcSjDxnn1rV3wSpzpSqlSqyeZ?=
- =?us-ascii?Q?X0JvSLaJPfdHrZ14He4H2e2Am+/hjZD1G5Hv3qM0w0qhocPtJyXXevPdY6CI?=
- =?us-ascii?Q?5XWh7+ZRNzH6ATjcqW6tkmShGWcfVx3dcNy7i7rlgghhOXeNQXsqu29jN6co?=
- =?us-ascii?Q?BY799+vF7fWkWE4Xe21vf1eb/aDC3BHdJR5N9dOFW8NtiIgwk9bGIZyQ8I+1?=
- =?us-ascii?Q?XJ6O6Oi4izBt7Dm1Gdt25jfByzUY2jtgUwedY664c0gjSYskEB1alGfZlvs2?=
- =?us-ascii?Q?NSgcHcissBNKXmhXmoupYT0JiGiswluHVQqgzvM7Qy1f0/CrcgHyO48xFecX?=
- =?us-ascii?Q?Oy/43UZIuZfWEA9BhrVBfN7Rz8/bI4vIXSoXIl/Q0xx/shtE4UUToTN1E3g+?=
- =?us-ascii?Q?UJM1wFiAHUu38hwnuRn/oR6pvh1kzU8fBs7LRe0ynlBjiLWST2gz6n70v1CE?=
- =?us-ascii?Q?hUqAm5+7vJVInBVbXtRw5xr3GdfvMn6SYYLzzs5SmiTTV9M66nYr5cS14j6l?=
- =?us-ascii?Q?JJA1KvxIoa3uWdJzNM5NvSA91E/CXO6Vg39D81f69KQTURb9IqQP0kIfaM2j?=
- =?us-ascii?Q?Ufu9qIhNzq78sQ87Vyq9elcYfBk+XbOwB5ivUGdRWcmSGivihR1BJOVviqyF?=
- =?us-ascii?Q?av0W8VabLjErqm8oK24+8cZKeUCVrLe1n/Ra3lrEtktzx0GfAmDC1W3Zvc5u?=
- =?us-ascii?Q?dltBfe7607Uk+zP1yIxugekzSKiop/pqVC0NA++aQgNV19xt7iNulgPQd0F6?=
- =?us-ascii?Q?Fxke7DcKNyX9Nvc8+40e/xxq9qGrajby1tJ9IrCkSsK7vEFNl2O3+XqcqWKv?=
- =?us-ascii?Q?rmxoc7BdMgzBDcI59EPlr1sgN1XR1GZZ3ds8URR2/Nr3OMYVSMyoJ4uXKzEc?=
- =?us-ascii?Q?gFaFEOr86jUfvQXIK2E1orDsps88G0Kl1tH5nD5P/776SYlHihm4HykMmQ7e?=
- =?us-ascii?Q?zG4vn0yzXDURththrU6pCqm879tpqccdwWsdcMoh+ECw1XZwt6H6qHLeg3/9?=
- =?us-ascii?Q?XuWiS92oZjPaKitsoc0ydFiVjs3D6TZhRAY42EdYKkRZy60L3CNBFrzGyJn1?=
- =?us-ascii?Q?Wff9vhFDtJq51EsaOool9xdHlX9yzQl0X4sadrBO4kBTrsUVANKJoDdzntw+?=
- =?us-ascii?Q?uiCS99Too5v2559X1HvUWir6OyvUtiuUZAB4d/OYxOQz7uPO8C0ijivhfrHo?=
- =?us-ascii?Q?0Tcqt58YMqXWhKyfmMNHztkTDt5J6EDUOgOJ+OPozM4QS+wLKSTdTb9xSg9w?=
- =?us-ascii?Q?pIBDu9yiBA=3D=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20ac19e4-de20-45c0-1dfa-08def39499df
-X-MS-Exchange-CrossTenant-AuthSource: TYPPR06MB8235.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 08:27:49.7148
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4AaHN278S+rjHkWBDaH2c3FHUJ4BolzgUuNHg30qDE2cLNBfCn0Iw3yf9v5TYgVIFNmUBBb7YIbZ0LsUaTg5Gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI3PR06MB9209
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 926A5140004
-X-Stat-Signature: dphwkfjnf9udkookjmt4getz4fekcs49
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rjnzri4ema22zf33"
+Content-Disposition: inline
+In-Reply-To: <k53aljpl7v7naqs5fj4i4po6tu4grkzu5nui4h37orwt6v7bqo@sw4frf2ystmi>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2C5BCC0006
+X-Stat-Signature: 61hxs91xzhs5ccfp78sot1i9ppjredu8
 X-Rspam-User: 
-X-HE-Tag: 1786004875-957351
-X-HE-Meta: U2FsdGVkX18B6DsVaybU54gowseikiTsoxvmst2KNkSymSqIYFpjg+NpYeZrOf3N8q0DuHFFy9Ip+icT8FUB09J40YnHv1RpVCtPFCzdS3bz94CJ7da5qsKzZlbuayRrjjewNwxLYGv/5O5VEjY4eXWiLGw9jWQ2WjhotLdz3g0vUUR275vKATnTkgfB71jkwYv6hWOJ25tLzr2GpSoOHTorWRmZDeZPXud1xyL8RPdYq6INenp1rmUBxrq/JuEzkJu4H0oSlxNgbn7BDu21k+D5FuIxsvBbGnMz+Qzr2JiA7feqzaRXHCnu+UCfN9JKpfSyzrp8iQvvSJmDyg/vgEDy1bqlu7XsBzjFkRDL1WkPKwWByuId4QgAY66oh2JjQ0WT9W4p1N9Lc030Zm2K17GH37nDjth9zLMvbzqWO0hCJwjCGL6mQGcJaEwfGIx6jTFJwxRpiH43/R4Lm8xpTS4rIxDa0HIA3sTyv4wLU4qWSbZagSq6xI8BwzPsWqiZDiAW91uPox5qV2+nYUFnfZLe+RDZztKttX23OeS/rlHhWE604dfjmu843eRpnKNcwtpPYg3TLk374I/pEb7h9ITtBbaI7Fph9ackVLZZqof5lgGG0QVpXBsW6ldTbc8AWev2G1td6babOnZp7bcmEu097mR9N8/Neftn/J0VT4rlI2UuNNCQyxximB3Fr5R9OX5CRL3zskEbHQUNXhfbmTiuFWM1njtl/ARWtRAFcVEbVdwFTICAjGBqvS10FKMovJ6+rkDwIdOxjB/W+QpYG6Pzbu2WQCabvbV0FTO+5z7fi4oT+ng8I1wpetzB29WsxzmGny8uBsCw9+8dYtn6wgf/riBFyTDoL9NttkgDothi/9JFuRkaTywXCKBMrn8P+LcBxmYAore2Fi/cGJ0FNHe8hvJiVCBcW2uqG1pRCQLT2hZW0/D1gQhg8/ERPlRWzshfxqYHOmPzzJfM1UY
- cgCbYtGg
- 9IMNVQmvHJXTfmf7vQKsZ3EMgjMbDUgOiDcxZ448skmjmn+dwYsSw3HOBQJVX3R3a0g0ZufadNE+2AmnHmGKw6+lQUP2bAcKLYV9kXl9b4CVX5HCnBcnoFMq5KpIG+u1MwlmM9quvEz/FeB1g5zmKRe+Os391RnCVPgUE7SjvLreCLZAcnSYJridW+aOBBkFySvyIk9vhRc9gj5SqMtK9XkyWvw0KBfqCpBT2hiCKWWpVDGduqaTyE7TUOfx6z6C6qb3pE2bc4TqhIiuJfJKp8GBVrMJyt25DgBjRxz+b18eH+JDEySOrEauT54WdyTRCvlUqxNEnx8rloQMiSnPfFCt8SfQna7j+R2aTmJO/si/M+EZ5pVUsG5VeQLAYfKYpLJMFzBfxcHOUfGQ8NonUG3z5DTaScaVmaTRWjV1ypWjKtJj7ogr/hqTsiTRu94kHplpqvFVQKHtq7lzbgBttFeRBjbmKAyI28fY5
+X-HE-Tag: 1786004878-140393
+X-HE-Meta: U2FsdGVkX1+X3mq/RzMuB27SppnJDspcH9lGs1a75ia2hncrT4w0PJuRYvAt+zCwEIa+SYluc3ckiklKOTPB5VOGtudWw7vRC5+wTCn5TMmpCYCUCrlYQLB1XKyRb7qkeNJZR7kiigrDQIwLHz6rbPSnT7Cs3CuVS0P1iNaMjXl68NMroh4Z02chSSzu5VzDLRdet/Qe0KArZc0u1A89b05k5GaH+BNFxY20FOLSHewRfFR5tJ9REG8pZjY8K2TbECQONaJpceKuxQODvH7uFJZF9GQBgRAosoq2SDFN8Sq3IOBbbzYtBPX5a8gpMoh5lktWgpienaM7PeZMqoLXJEX1ufDQMsdrYwc9zzJIyO5LCQQxZ3AbLlb4aJcirdll9fFskIlihnNuDYhDtjPCT8XJiMxskuXfgaekFU9EocfjWoy60RzkR3ixvhAvUNZEnf0AFL3mBL7mthAkQFbmgBp/IyaMMhrpaaXWvqWIqCvfzBCsoISPHfXeXcUmIALKVCHDQgCXM7qmv/wNMwI9lbaF6/hEbvcvFM9PcIAFv7c5eTYt0Ga/pi7qDhZ/0xIzqGwyNu6fDVQJQzbT5wQvZymAHZvpZsAl3jW+99MYzhfFq4V1EIGvR0UiwooHMxmGst+vgwisBaJx9zdCfraqU0s+PSQiau/P2nvbuk745OpU+bnUwoNrms5/dArGpG+8jwr3K+nN0jNRz/Cud2Y9X52yzkitX1mIcVjUtaIwHw1jQqj2436GVWaWNXsHP9PsJyTrHpGouaEbpdifA2lWJx6OKl50zbnvTq9WP1RU98XheB2AJwppNlWq89U2mxuAnxTW/hsiDCyiAYoepx6Emt01EEJ0Jl0w2gmFNp3PtaglQCnafKUOaWjjLpqXe8fHiWe1f2B2l//yEENYGZb8Ig/RwcWgU4M1+4zVeSP2fr5WLq3wBbpVb4N2AQENiyLUDOz0OG71lac8PR3uwzj
+ G4iihof1
+ n/jcjeNYmJNX6ai2KjiJoTj1D8U1psOhN7o/vz7xVMbgUzUdQNxdecFr+Zk1cvR1CG5p6Gc4tVV+RaT7Hd1QULuGkbNK3Ju4T4fA3wc6luKgKXxM2aJngWxeu4ixzibG7//6KVv1MaTkacR60DU6dmEzHRN1N1MVRb0y4RvulnYvJA9DKvIj0FPxXZ5pbYsbL/KPYBcCA0Ru6HPpwjbbI4khVMuEALfWxV6Nec+N4OYxfCacZsozpwlH1/RBg8CfqCwet9fQCZ7KcHW7IDaVhA1klxHrdTI25/RKvoxXFgygD488vyrtfEPv/dkGgQxDWD47ZDCFLZ/IUfskFjwMXbJSbs/a9s78DdBfD1z3L+IZHpsit5klLFKLk6VyVMATxqWo7t77TtQAkKyeoBJSEYs0e7x/FaJpcR+W6O2Y/r/63Fj69qTleVpqPEene1NimLWoUNsR+xlmYYPRVy7UhdnMzkOKx4EAPHu7wJQaZuRk6NVGdd0asQHLheZaXBvIb4fwRONWK0J//KZB1A5Egc9UUb3H6W+Q55b76
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,29 +98,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xueyuan Chen <xueyuan.chen@vivo.com>
 
-zs_shrinker_scan() currently calls zs_compact(), which compacts the whole
-pool regardless of sc->nr_to_scan. A single shrinker callback can therefore
-reclaim much more than requested and spend a long time in compaction.
+--rjnzri4ema22zf33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On an Android device with 12 GB of RAM, observed zsmalloc compaction
-durations had a p95 of 38.86 ms and a maximum of 269.68 ms, motivating a
-per-scan reclaim goal.
+On Tue, Aug 04, 2026 at 02:20:22PM +0200, Joel Granados wrote:
+> On Mon, Aug 03, 2026 at 10:27:46AM +0200, Vlastimil Babka (SUSE) wrote:
+> > +Cc: sysctl maintainers
+> >=20
+> > On 8/1/26 20:44, Andrew Morton wrote:
+> > > On Sat,  1 Aug 2026 23:11:25 +0800 Jianlin Shi <shijianlin11@foxmail.=
+com> wrote:
+> > >=20
+> > >> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
+> > >> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserv=
+e(),
+> > >> even for read operations.
+> > >>=20
+> > >> Fix two issues:
+> > >>=20
+> > >> 1. Propagate errors from proc_dointvec_minmax() instead of always
+> > >>    returning success.  For example, writing non-integer garbage to t=
+he
+> > >>    sysctl now returns an error instead of silently succeeding with
+> > >>    unchanged values.
+> > >=20
+> > > AI review suggest that this caused a new problem:
+> > >=20
+> > > 	https://sashiko.dev/#/patchset/tencent_1BB7A5C4D5EEA6734663441775319=
+0E92A09@qq.com
+> > >=20
+> > > Not sure what to do here.  Perhaps pass proc_dointvec_minmax() a
+> > > temporary then copy that into sysctl_lowmem_reserve_ratio if all
+> > > proc_dointvec_minmax() returns "OK".
+> >=20
+> > Seeing the v4 [1] it seems easier to keep the current fixup code until
+> > proc_dointvec_minmax() is fixed.
+>=20
+> 1. V3 -vs- V4:
+>   I would prefer V4 as it actually prevents the partial write of the
+>   vector in case of an error & returns that error back to user space.
+>   Whereas V3 returns the error back to user space but keeps the partial
+>   write.
+>=20
+> That patterns of using a temp ctltable entry is seldom used but not
+> unheard of.
+>=20
+> >=20
+> > > But really this is a flaw in proc_dointvec_minmax() isn't it?  It
+> > > shouldn't update the table data until all the data has been validated.
 
-This series uses sc->nr_to_scan as a reclaimed-page goal and keeps a
-per-pool size-class cursor so later scans resume where the previous scan
-stopped. The existing full-pool behavior of zs_compact() is unchanged.
+Additionally, this will address the case where there is a partial write
+to a vector where the input is erroneous. There is still a possibility
+of having a "valid" partial write if you pass a set of valid values that
+is less than the size of the vector.
 
-Xueyuan Chen (2):
-  mm: zsmalloc: add a page limit to pool compaction
-  mm: zsmalloc: use the shrinker reclaim budget
+> >=20
+> > I agree. What do the maintainers think?
+>=20
+> I agree. The arrays being changed are not too big so we can easily have
+> a staging variable that that gets written when all validations are done.
+> The only "con" that I see for this solution is for when these
+> proc_handlers get used with temp variables; in these cases we will be
+> staging an already staging variable.
+>=20
+> I have added this to my Todos
+>=20
+> Best
+>=20
+> --=20
+>=20
+> Joel
 
- mm/zsmalloc.c | 46 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 31 insertions(+), 15 deletions(-)
-
---
-2.47.3
 
 
+--rjnzri4ema22zf33
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmp0RYAACgkQupfNUreW
+QU+3xAv/Yx0a9im95SNkHMroF5dhMJPx3iGulMyTEt26QecBwhmOpFk7A/w8EIjr
+jPE3ChuriSjNxzp4Fw3IYvZMLbqjrw+dbt3ILuP7UD35wA7VIh7rVql2kelQ2Rpy
+BwP+1EyXMSK3xN5EwRdpdAL6oOSOVGiq96sYkO++neBp2zSvO0GTneCsd8KazRh4
+i+h9+PuGZXEtzsjzkGYAbUAYPlzqrZPLctnnxKaOXx0Uc+t8+mRwoJN1SyGxwWSj
+yTx7rmaU8X/dhooNeEl+eGZs3k5I+9xdjqZQThx47nTBq06dmqN7kTNkqJ78oFXH
+y86RXSKjgaXYgEtm0vkQW7t5uwnAhB/vXnFPrtXhVGDyc9hr5l348ESzpk4F8mIg
+q7cphPU+NGLnqIf4396cTUmbxz4xHcXtV9f6LUKVSGjn1t3QZmwDHn4IIMYdRdQk
+wd2DEL560T5zJPmtpYm9X0nkg9s9YIptLeEBq1Dc0SAj2oJ4F8yeIGtS1SSB3OSc
+9f8sH6Tb
+=5S3C
+-----END PGP SIGNATURE-----
+
+--rjnzri4ema22zf33--
 
