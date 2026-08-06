@@ -4,104 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46254C56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 17:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49AB2C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 17:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5667B6B0092; Thu,  6 Aug 2026 13:15:45 -0400 (EDT)
+	id 173A46B007B; Thu,  6 Aug 2026 13:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 516626B0095; Thu,  6 Aug 2026 13:15:45 -0400 (EDT)
+	id 14BEA6B0088; Thu,  6 Aug 2026 13:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 405CD6B009B; Thu,  6 Aug 2026 13:15:45 -0400 (EDT)
+	id 062ED6B008A; Thu,  6 Aug 2026 13:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5A06B0092
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:15:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F5B612018D
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:15:44 +0000 (UTC)
-X-FDA: 85071496608.25.DC8B8A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C2C941C0002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:15:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XKcmZebS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CD0A96B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:19:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 338BC16014D
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:19:05 +0000 (UTC)
+X-FDA: 85071505050.08.427899F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8CC0380013
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:19:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzMqYvoc;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786036542;
+	s=arc-20220608; t=1786036743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ohnM/QTJNZ+57FtwY6l9db7MEahwiXQwpnCOrToPkmg=;
-	b=htnuH551SzAw1qwPpRXSW55P8W6y7j5ioCtlrBsZcZ+zEO2AwPzLMS76bCgHFO1+gE6aLY
-	/XPBLWpgZkSaCgG9Ynulm3vctf28fl+9A4MoGXklTbN1wpHiRa1D2zFK2I8ljErpOXBmF0
-	09+yF5R1tPLAXM6MNdtqT3fXD4VrF7Q=
+	bh=9DtZb8DjUtisjREwEwWOkrSi6943Av38G03foEcQ5Cs=;
+	b=lNurZRR3/Ek8J3EJOYP2Ew5VdjZyprejwl99kybcjQhTsT7e0meJnbwdULumgWchoZsUGa
+	rfHCrwJrKSD7mzVAdd7NdjJ7X9O75VfUFuqkmmGezeAqdHl6faC0H0g0najp1uNUMunTLm
+	FAVt95bbSew0V7Eevrwnk9s2tost6As=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XKcmZebS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzMqYvoc;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786036542;
-	b=7seZOFvuMkEVy45WGybX411hEizLkkAGd11Wi6taJugDsbGDoAru0MQnUVOJ+xCMG/RrQ3
-	N1KSBixwb9Qr7O1zbkrrHpDDKRh7SVhA0JsI+ao/g5q6pcisemv/MlR4yqahF0PwyMFy6C
-	2Hq/3/oBg9c6PKglQhaxw1zjY3Y9oIY=
+	t=1786036743;
+	b=4WThnT7r4XAdGoJOBANU14PUa5LmHiMDlBoGuk4+BpUtbcOW9yhiGkq3Bxr234Or4J0xTi
+	pZeRy7se2ZS9cbFfw6zN7I999WReAes6tTMMA0kzqlGZ0hEHHpL+LFHK0wghELhzYQ0MbD
+	vb+IDCnR9cLYUY4yrWtwP5Lbp/E8LBQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2C90405C5;
-	Thu,  6 Aug 2026 17:15:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC1A1F00A3A;
-	Thu,  6 Aug 2026 17:15:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DD40B60AB0;
+	Thu,  6 Aug 2026 17:19:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EC81F000E9;
+	Thu,  6 Aug 2026 17:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786036541;
-	bh=ohnM/QTJNZ+57FtwY6l9db7MEahwiXQwpnCOrToPkmg=;
+	s=k20260515; t=1786036742;
+	bh=9DtZb8DjUtisjREwEwWOkrSi6943Av38G03foEcQ5Cs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XKcmZebSRKhOclLgWHO9NdRoYzuH0VLZl5rBKrCWL1gXuylkJCeiEchNqSFMmGSM6
-	 vH8boDW0vXrJFmVbuai85kPhGyl6ArrCrfWjlu9sMcn5Gt5kOLITQ1IvFv1OG4B3Y+
-	 1hqp1gXkTq558qykMk6eRd5lzO9SjG+yoavkuOWP0URRsjZ6Ajjh6QeNyl7evYP7MP
-	 YBGIcQfTFygshxRU8t5SlwyurdMjKlk91Nz4F/8VkXHOpLfdhwl2rKLK6h7iowEtu2
-	 viI37MTyeJtnNrqaTIKqxlK411bwjGjmdj+RLpA/dcNJnUr71M4oraSGHoTVek3ZR8
-	 oZB4vvu1jMVmQ==
-Date: Thu, 6 Aug 2026 18:15:35 +0100
-From: Will Deacon <will@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org,
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
-	agordeev@linux.ibm.com, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <anTBN7WzVZukl26p@willie-the-truck>
-References: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
- <amCPBrdltFSE_fEf@J2N7QTR9R3>
- <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
- <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
- <anHuLy52o5S9Nlwp@lucifer>
- <CAHk-=wgJ0wO=T+1G5zJwoeE-N4bAptCNo2TFirK364iPhnGG6A@mail.gmail.com>
- <dadd8268-3cef-3a3a-e277-b593bef3b788@gentwo.org>
- <CAHk-=wha5um2rB9u7EDeEhZJyaWOUFye-wTKzsykQqJH41RNdw@mail.gmail.com>
- <anIXr4Kbn59Ac31Y@lucifer>
+	b=OzMqYvocxdfGC7/3077EFSOTpCiRyY/S///tKrAxuNSNHDGT7dYqW/ifw8C53hn08
+	 bVPveNzCLYASrmi+XIBsRC5dHYyKhvnEgJ7RRYM5UaDV2ShMS3HdHOIYQxzooWczah
+	 uJw3asizLGfuGO0yG4jMJvfxju5LTC8IkCj46t6HOZDaVyvG5nQFIzKvISEBW15ZX/
+	 XVDkGY27+aumRkGCpa8T3TIyVNkiUEcqPO4IdulUjKtvDy+9OeQO2FwYjVdee+3WqU
+	 ZXTOdK03H0E2NO+41f1dG8ICvMjqi5euq978ibaYowC2NC86ibx4uWtEdZmVVaYLX7
+	 cxKyb9XkgRFWQ==
+Date: Thu, 6 Aug 2026 18:18:38 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Gregory Price <gourry@gourry.net>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
+ anonymous page index
+Message-ID: <anTAk9V9ceYq1jyt@lucifer>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
+ <amrvgjPNfKqWPUU0@gourry-fedora-PF4VCD3F>
+ <fec1be38-406d-4656-95eb-048729afec40@kernel.org>
+ <anBqV9z6hVLIqoIn@lucifer>
+ <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
+ <anL7eZcHnM5mPr_T@lucifer>
+ <anS8UbQF1aE70gus@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anIXr4Kbn59Ac31Y@lucifer>
+In-Reply-To: <anS8UbQF1aE70gus@casper.infradead.org>
+X-Stat-Signature: gzo6zkb61b35him7wbwibqqdad8gsfth
+X-Rspamd-Queue-Id: 8CC0380013
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: engizrsocahqyf18b641e8bzcc5cmbxt
-X-Rspamd-Queue-Id: C2C941C0002
-X-HE-Tag: 1786036542-172973
-X-HE-Meta: U2FsdGVkX18yFfP+CcLGLfq0uk1715rLIDrQjyp2V056c4DpBP1quoUizlZoObCbNZSNfTs9+sgQeRwZF0dXIkrMEHLAqSSutvrF23Nnzf+PZ2kwvFjDNM5V15adpQoewazBGQ3GGDBHuv9ei76/H0hpmS5C3wQK3dje6AP6VecNy5rm5PJDrEr+TtbqNbMAwGQbFzELRRlzJGa8kN0APAd5pmRkNN10oWL9v4FxaxR836/MhZb2bUy/jUrOAbZysBDZ7l8XtXs/KjqFSn1Zw+WMDV3k6u3fJA9mKHROj2DdUNbIzf6MvuQ1K0JbNCY1Aq/qCAZZuihkoztjajeqBIA6dyhbEo0hQsIGJqF9kDTV7R0yUP4J07AboRDfQ9eC3P4L6guqmS/IxIKdd72WXqX1vyLBRjLBTQkle7SyfpQOOKnTVW6oGPJ2ecCKLElXQ0yDoPDkxfU3+l1stzzVC7gel+XT2Jokof/esyJmBwKqvlyg/xZgToC2CHL/VqifXea+IQ2rA6iVlPNrHzFx6WX8eezi9swEJJCUFfuGtCRs3ZCg/oIEdxwhybnM9wO1TkewUdjI2NS2EYXDG+Qud5D9jl5VtM3Wq+QpoAbqhPVTMbVbUKw1ayArZbexqpMeoBgTkPx6yUxOaKDFNvoFoWQMi+llW2kc7EWN5fkomAYabUB4dcJcaCOG1CGOVfmRd8fTsgjR3mrvNrPIQ6lfbTLd1XXO8XiEoGxM6rhw2Uqw4tCpZS6F12/o35ygvWnT1feC6qEyEe5t25UssKr6O/JcfdyquIF//cotQ8mrvZKv6IlrBaxRKQ/+XnpV7JLPVcd83/rnoZsjdCKbwW/sbMhf5mAlyDuMniL9DSxns062TkgR42Lun6e2gxTeKeQlOjUHik93fdgZ8WmraxrtZgf0wM4J5HK3QKZOFXbp8YsR85qv4ez0uKxKkQlcSoQU2D7O9b465ZgHwMQRnVs
- O6M0YKYC
- W6IQqEuF/MO0eNVohn5H5q/TE2P8EU9paJCfOOPcJxSs5JBZocvCuYHsbrGRtvaX0E3kvUlpSChQpYBCYmpffct+DeLGZctj/gLtwTa7lvvCTQeU1guoNgi+v+RRmg0ll+85E2kvR2MsKVX4y+2LggQjvM4H3s/hns9oDcNGXta4xIBsDh4f2JWz6wAIO0tpJo658BmOyzqnxUsbHWXB0CaDs+qHL0PB7tLPowwRVMJ46E5Ez1S4Oj51Y43cSrjTC4neECb40ssO8463rU/e+V3yYPipy2KfPhrvWxDVMMhErgxc+g6gDfICouBM6o4K7XSU1PwYFYvzjSK7imJTkhXD0BlN/Sa59hutfO7ZnyOKISc8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786036743-240406
+X-HE-Meta: U2FsdGVkX1+S2MVgn5JOZnNdek37B5zMgrRLuxF9+UHWpCBAHbjuTu8DN9JzFMfp61NEIHzce3WGA46fb59CNpPlQ3I3H8fHkGB9ulBuUTFvQqow11mUfgjx8MSGI4/sNcHaP14tQ6FxPLI0u3wkF7PH/mo65SwjrAD74qYyaMXnw+i2jXuXSxJZDqLxMXD3iAGjlvZzj41gJuO65Salbdjv7CMea88Lb7bXxTWt2bb4JEgWIrJz3XcggJ4kO3MOE4bts9YHUy9vUnwu1dOFyv+kS2L569jPuebku9CaatuPZe1raQwJmDOdjnIu2vzaD0eGXoKNkq6sIdIHQKNbSGxO67fq+d2nqH1T1SMuRZc7O6qzLYqOCuvody61twDUoSJ/dZhTRvcB8obnvAuGiWtWj5RbqdMKC6MBaIFvg2r72ITN3zrLltqW0jeQkZ5MvhtXe5meeGw3RrY/WkgDl0Eh2j8Uzn74PLYKsDFWlHcvksLqetK34ZnXwbNqwdZdiW25Ww9+xAa8Ewn76K0gK1Vn9gvtwd8ahvbJlqsw8KXBB4lTucAI4Bp/DLca5W2l4RebnIT+JId3rW/l4yLEbA1Lz8v/UfYZ7jG/lAixE3jjzbgvapygQkgKWS9McI/ab1jcZ7ImOlTkcuSpY/tv1S1kkhSp8JRPs6V3sBwRuFMP8qIIYLPc6PgHhU9v5jOfRRS5GOrKqel4fhrmmqlwYAf9A8TXDS1BSWz9mp0puiIly38dos+QN3tD+swvIOlBy0mJX1McDiDVN2pa7ctyXD7yusYHKOetoEGegMnRbFbFDogpFykUS0wyKm/X6lv1yg1KGtPi1TH389D4pHvTIlXzCCIDa8vXL307KQTepNBwlVPnyk3qp6CQol/b9CLy5CX0zFqdEj8U+gO4bPmMZPTOBnkjmLPSO5gywWV8iMLmwwi5FjviQEhiBO0rq9aqIp19Jw9SR7RUcB5nbpN
+ ctnqexNn
+ DazMmbe9YNsVbSjIS7orCbfspqUwuuMDTvEbeDJ8CtQKvmozgHQxuL3msz38RSkC5d08N7ephVraDOJDJ6qB2E+++rIKALMwWSmjx00G/NEKda3v01Z+fYq4YCKj/CrVnxVLAz/X332LjUQyN9u9fubkwZUAvMdtEogYP9Q5kjK2ikgaSD1LI6tCUVto/KU58SMtJDeHPiDg+ubzgdYvLpD/1pqsiBQJKHymQGis6KtNv0CKkpz061vYV/QFnPOsZs1Oi3UHIvdA5siHM8OlOz5P1Mjy0QPxrobZWizHYSgKk63XVWeSuDFJWL9UL0qP0idBIzm1PszVV8P7MFGpMZ705voviKd9u8vUd2pNWKDoozHUtGJsvG8TVwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,61 +113,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 04, 2026 at 06:23:48PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Aug 04, 2026 at 09:30:08AM -0700, Linus Torvalds wrote:
-> > On Tue, 4 Aug 2026 at 09:27, Christoph Lameter (Ampere) <cl@gentwo.org> wrote:
+On Thu, Aug 06, 2026 at 05:54:41PM +0100, Matthew Wilcox wrote:
+> On Wed, Aug 05, 2026 at 10:01:43AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Wed, Aug 05, 2026 at 04:30:18AM -0400, Gregory Price wrote:
+> > > Yeah just an F/A in the print I suppose.  Sorry if that was unclear.
 > > >
-> > > We certainly do not want to replicate that approach. We are using the per
-> > > cpu page tables to avoid address calculations in the VM that other
-> > > platforms can do with a segment override.
+> > > If it saves someone the head-scratch of whether some bug is because it's
+> > > "file" or "true anon", given the ambiguity here, seems like maybe useful
+> > > debug information.
 > >
-> > Right, and I said that that's ok as long as it's a internal
-> > architecture thing. Not a "this is how the VM works".
+> > Yeah will do on respin I think actually!
 > >
-> > Because people really have wanted to make it a "this is how the VM
-> > works" thing. And that is very much what I object to.
-> 
-> Well :) it fundamentally changes how mm works - now we have a whole new set of
-> kernel page tables and PGD's that we have to think about.
-> 
-> And the series either tries to hack changes that fundamentally alter how
-> vmalloc works or will add its own duplicative kernel page table code to do the
-> same kind of thing.
-> 
-> So now core mm has to worry about TLB coherency and synchronisation, how this
-> might interact with things like page table isolation, and a lot of other
-> headaches (and I'm not really convinced they've been thought through here).
-> 
-> IOW - breaking fundamental assumptions about kernel page tables is inherently a
-> whole-VM change (See [0] for instance for an example of what can go wrong).
-> 
-> If Christoph + Yang can provide compelling data that advocates for this change
-> AND the core mm and arm64 communities agree to move forward with this, then
-> things are different.
-> 
-> However, I think the best approach here is to find the least invasive way of
-> limiting the change to the architecture itself.
-> 
-> Mark has put forward an approach that eliminates the exact overhead that this
-> series aims to address but does so without having to fundamentally alter core
-> mm assumptions (v2 posted at [1]).
-> 
-> So that seems very clearly to be a better alternative to me.
-> 
-> Ultimately we need mm and arm64 maintainer agreement on the way forwards (or in
-> the case of a truly isolated arm64 solution, arm64 maintainer agreement).
+> > I do think not providing that could result in some confusion like 'hm I
+> > thought this was file-backed'.
+>
+> not sure it would.  Look at the whole thing:
+>
+>         pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+>                  pgtable_level_to_str(level), entry);
+>         __print_bad_page_map_pgtable(vma->vm_mm, addr);
+>         if (page)
+>                 dump_page(page, "bad page map");
+>         pr_alert("addr:%px vm_flags:%08lx anon_vma:%px mapping:%px index:%lx\n",
+>                  (void *)addr, vma->vm_flags, vma->anon_vma, mapping, index);
+>         pr_alert("file:%pD fault:%ps mmap:%ps mmap_prepare: %ps read_folio:%ps\n",
+>                  vma->vm_file,
+>                  vma->vm_ops ? vma->vm_ops->fault : NULL,
+>                  vma->vm_file ? vma->vm_file->f_op->mmap : NULL,
+>                  vma->vm_file ? vma->vm_file->f_op->mmap_prepare : NULL,
+>                  mapping ? mapping->a_ops->read_folio : NULL);
+>
+> even if we don't have 'page' and thus dump_page() won't tell us
+> anything, we look at mapping (NULL means true-anon, non-NULL means
+> file, possibly COW).
 
-So the nice thing about having two implementations (i.e. the per-cpu
-page-tables *and* the preemption stuff from Mark) is that we can pitch
-them against each other to help us make a decision.
+Ohhhh ok. But you still can't tell whether what's actually mapped in a
+MAP_PRIVATE file-backed mapping.
 
-However, I don't see how anybody could argue that Mark's series isn't
-cleaner and easier to maintain. I've seen it described as "hacky" but I
-can't tell whether or not that's supposed to be a criticism. If we
-seriously want to consider the per-cpu page-table approach on arm64, the
-numbers need to be _really_ good and across a variety of hardware, not
-just the stuff with a memory system made of baling twine. That extends
-to the kernel text replication efforts too.
+So I still think giving separate anon and file indexes is useful for debugging
+purposes in that case because you might be debugging an rmap thing and the
+ranges of linear indexes might be handy.
 
-Will
+>
+> > (We've made our lives hard with varying definitions of 'anon'
+> > also... [shmem being 'anon in page cache' is especially lol] so it's
+> > already confusing but there we go :)
+>
+> Woah, woah, woah.  Do *not* think of shmem as being anon-in-page-cache.
+> shmem is a filesystem that happens to use swap to store its backing
+> file.  I dislike a number of things about how it's implemented, but
+> describing it as anon-in-page-cache is furthering the confusion.
+
+I am not sure 'file system that happens to use swap to back it' is that much
+clearer ;)
+
+But that _at least_ uses different terminology and swap-backed is pretty clear.
+
+But :)
+
+Functionally it's PG_swapbacked and !folio_test_anon() and nothing calls
+it anon, except... well reclaim! Which gates on folio_test_swapbacked() for the
+'anon' LRU and refers to it as anon throughout vmscan.c...
+
+My point here was we made our lives difficult with naming and yeah we do. We so
+so do.
+
+--
+Cheers, Lorenzo
 
