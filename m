@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD360C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:10:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F7DC55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:10:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C577B6B008A; Thu,  6 Aug 2026 03:10:00 -0400 (EDT)
+	id EF0C56B0095; Thu,  6 Aug 2026 03:10:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F106B0095; Thu,  6 Aug 2026 03:10:00 -0400 (EDT)
+	id EC7E76B0096; Thu,  6 Aug 2026 03:10:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B45176B0096; Thu,  6 Aug 2026 03:10:00 -0400 (EDT)
+	id DDE6D6B0098; Thu,  6 Aug 2026 03:10:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C5C66B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:10:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 214F680690
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:10:00 +0000 (UTC)
-X-FDA: 85069970160.03.583D276
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7003F20007
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:09:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=APQFTz7w;
-	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C07BF6B0095
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:10:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63E1940103
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:10:13 +0000 (UTC)
+X-FDA: 85069970706.17.6D1EF6A
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id ADA95C0003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:10:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UegLZfKy;
+	spf=pass (imf22.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786000198;
+	s=arc-20220608; t=1786000211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2rWnIhKLtx7RMjDuQwqgCN4If/Fil+88btYo9NiRc0M=;
-	b=0HoxSFqv1JaYxp9xLkrQopz8szfN6LPCt4Qs2tJdjdiMMx3RnfHA0Jz9ZHKJjLdn8aRKfV
-	2uUy+lfvwaHBLgPTAoeq+OTF+y2Xw9J3/zoYLfsewiaWNfmbY0IUi5RdE7oK9tYtU+/S86
-	zDzgsyDQcAT/h4bX3Qm0+/Q0OJe5JeE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786000198;
-	b=DTyIMmF3wTGLhxkdg+s+Tj8DK/IgctO8zQ6dB8QsRQzQyOM8ruHZfDMGnXuAaVZhNRaahf
-	uInl5294IC7dJCvfl7JusZcMkM0MTRnyANguqKk6BfuTvzSXgT5r/FkgHWgbidRYGV/3ss
-	T6IxkPYNFLu4LrDXkGheg1Uwt516Zq8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pxkf9l/6VRKPUFdY+I+2JUrRfOgcQ7nzG7Tljs67NVc=;
+	b=JP6OVapvuXT0dUm0Z6L1mpx2bpt8EUd/GjfEG8vS3U7794AYbqBI8lTSZkK2exTLhXrqf8
+	MnrZUTIA3ynozIoW9g/iw6Crg08aBeNX97U5F6F4A1RawGRLxw38LfAARhUZqieauScVe6
+	53EyD7M7FVfiK76zoktiiSz7UdGZsxY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=APQFTz7w;
-	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UegLZfKy;
+	spf=pass (imf22.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so1726011b3a.0
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 00:09:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786000211;
+	b=XWyKPUILBfvwsPjRdEMxlZehmIpH3//s5oCXUS9RM3UIPJqVcL4C5QGIZo1/Z4fKerYrUb
+	QSxAXvs1uaaS431vrUVZJk7tUBlY60koGZARXp4kQOX34zfcNh2lag8B/fQhfV+Gf0o5lF
+	dFh9rJmHq2NkvJo5o4EmyVq1iMChwEk=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8485ef63b68so2652785b3a.1
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 00:10:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786000197; x=1786604997; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2rWnIhKLtx7RMjDuQwqgCN4If/Fil+88btYo9NiRc0M=;
-        b=APQFTz7wSuwwKxN9rXTRdPRZDyqZMV7bf5JKnNLeuKdCsqBCO3xqfSTaIiWcdojfOQ
-         rm2EvJsW7v4KSyXD7oDgH5c68Rc0b0Ca130xyuILEuUFT3T4+4gVb9n0xYin5mpdoCyQ
-         UMw4CD/Mi1kF3nIXuHjhww/nSJlNJUPv7I4awby5weNexByzbJTj+ZK5/gPJIL8N+mcl
-         ixFAAu3TKZq1uNPUvbWu/BRWhUyHy5R4evfI48e4kDRcpDN5NOloeui+GyIjqFsnR9TE
-         UQ3HaDRuJ/VOzAc0qjJLg1DZIX6qAwjrbJuHC83Vh4Q7Ny7jp9HOLIUvrbS/hr08CLdO
-         0+sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786000197; x=1786604997;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786000210; x=1786605010; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2rWnIhKLtx7RMjDuQwqgCN4If/Fil+88btYo9NiRc0M=;
-        b=pxSymYcTUB5tb8au4PpU3QOF4WjQL5CzMvgt0n4aWTb7ZWtYcfZo2vZRQOYkI6feEe
-         p9OQ2zCHsld/yTg2JMSt0lfJR6lbT/aQzooVmvU0qus8ioHbIZyo0y6p21oHgZwjUyoW
-         U2x0CkpmX2BY7l1upKVUaELjfiG/7drUhLTYLMrc0bNp5gCa1dWy/OrsapGIxjg5WdNr
-         MSIk3dqGqxKz/S03GjM1XxY3JA39u52+QJEth/QwrHeUKxgmEwUCZUkegYHcGQ/1OyQM
-         OCEB3o2h6TcilxGXuJ69PtbTzQdrlHlb7rsOqkNCwUchFCkkrDKn1iRauTY57F28F0jp
-         IQzg==
-X-Gm-Message-State: AOJu0Yz9lIOx+WB1MaN8OEpNr3m6/1Nk/mJ029Tr1AyqrE0Mbhf1idDe
-	by31LjiMvTnN10nT2RomjDzSVQdI7qDPS6lltbYMXTB5EO7nzsCWNAxK
-X-Gm-Gg: AR+sD13Kgk25dD6vPkZXjA++D4G+TY9vpCio80tpedMEKkBMFreT6crzcrvBx+HAMi4
-	bAmBf1/rv74mYEI8dOJj4NeqVfgXlUVnbfpecmzoB+LDwtDLalFEICRsQddUmt4Vw3M/SzZ+tJC
-	9UXUGB3eFn7sIsctb7FXPQ8roTD0u13MnsI9gI/7EcF+0859Ah/RMe16bM+owoVZWNo0u/fIFJz
-	1FMvf4Op1MiacjNPd7d4fcZSGy1phTj+1+q1vLE5Cud+FuCuGjLptWN4gfGTpu3ZtDHvigyeWIj
-	Cy2rPT6B5E0f9ONhZVAmSGz5P4MZR1xtOGZQEU6NQg6BtniG4ZVusflXkxvC9fGanJP2zDy0OU5
-	TwATzHH5fyVwgiap3kHMXzrUXD4GGoKjzAw7gbvA5cLNkjgTeuksEQzr5bU2hIj7ZQcPTR9Cz2s
-	4aUMWS2yfpF5avr9+9lxfdj/xi+vTgKLUMnYvFpqK5X9KgMR15NW3PvmVrdQHoGqk1uLVctK9/A
-	F9cj/xWlLz+GUT4
-X-Received: by 2002:a05:6a00:3d54:b0:847:8b1d:230d with SMTP id d2e1a72fcca58-84f2e014151mr13785011b3a.3.1786000197171;
-        Thu, 06 Aug 2026 00:09:57 -0700 (PDT)
+        bh=pxkf9l/6VRKPUFdY+I+2JUrRfOgcQ7nzG7Tljs67NVc=;
+        b=UegLZfKyzIfchfY7FJlu/6lrae5dTysqe+TFBprHxbGRdJVDdYb9s3j6QzhgbIqoC7
+         s3k9vjCPFmgAD7P1DOCtStLFVRgmTwuMh5d2hNPwEMZg/rxbPVkCH3xd5guuJxYrxQfo
+         ucuWAKHC8qkPusycq/QSRhnN9E6ZjrCb4AlMiR+Eugx25Az5va871CPZowmRoG4E9eJP
+         uAFy/r9hb3k5ozkXm23mCC/AcT3bKfdecM8K5OsE60bVBDPAlwJHLkkI0CfnKSEtbG3G
+         oOxN4m3dhTp6kUhzKgWEurp7hKPGet0ZnLvXiHx941h9XuabYWQ16IuRc+62IRYMyvuS
+         N6jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786000210; x=1786605010;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pxkf9l/6VRKPUFdY+I+2JUrRfOgcQ7nzG7Tljs67NVc=;
+        b=TkUfOlQcIpe7WTIiNOuhg4bXPj8n3MdR8E37OJ5xJ79kp7pdNI1fV9JfSAihyPtZY4
+         5THjJCLBw54JsoLzXOGLQp/5PNYU/ffTve3RM93dBJ8TH9hTwVlzVnz/DJ4bRhjciIFE
+         jEOPdZDx0asAbUGSPVoP8fkuC3FBOeXzp4VhFISwCpAoekLYqIGvQ6FF+MD/z1dz8+Vs
+         s6FRTMxD5QcyN0jo7iy+ybgyfT9e96AH4/pT4T0cmroaS54K/DC/VKNtzTdNgv7vPyvU
+         A8zK4dG8wKKC1zZoKaJeRMD90KdtB9VmXA0Z+wQp/cna3XDRtr9DBVrMCaUpWXEX8caB
+         43TQ==
+X-Gm-Message-State: AOJu0YweLnpEe1A8x04tSNrA+a1eIfUYkAglPL7TKRK7uj7Of9+s0iSc
+	RtYl9SzaxUWDBI3cttN1/ZUCOiNrjg88eCMuYpUnCZNmOfH0UD4h6/zv
+X-Gm-Gg: AR+sD11olote3rC7nrEFzaWHAN6oNySap+OfRCBzZN/k7vWZ8Kj8IuaY2nrkoFj8kaX
+	1h/G7efUmoCnaNU/b14JaGOnrhLT8gDskdLilWJINHnIQRdmQcnfPWeF4lc7CEXVtiO8GCPgjTg
+	st5DSzac0JrmeWipL5aPqcbR152mteU3CEHbdyQiz0Pdcd+vy5Phq3sPvEJsgQUHa2LIlBBhGmE
+	7NA92bvCK0LtGpcppDKd4sPvuvUspjtS0WS9o7PfkwoxQgQeAUYP3blSo4sRmNABrPcEHtAbLjD
+	5Qd2d2U8aZeXteEJ3YD2ZLLYMdsnzuo3sojDjojdZRC4kDzOgWurIXv8DFXM3VTw+eivwNIZnFP
+	cfVeLl/ewFxzQykt7AIhofM9ihiyfQCGa2SbSIuWBRBqFjo+kYDSi0LxyEC6H+sXgqhV6sBhh4A
+	T111ePUlIdPHmia1lRppdtR+SBf9yj4QDo0qyVXbPTXJuotBxVE2l7KfY3qFOHkSFbNqzXTCKS/
+	BTLlaKqMIKH7Rvf
+X-Received: by 2002:a05:6a00:4218:b0:845:ce5f:c926 with SMTP id d2e1a72fcca58-84f2e210308mr14993193b3a.1.1786000210573;
+        Thu, 06 Aug 2026 00:10:10 -0700 (PDT)
 Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f45bc9cffsm760154b3a.59.2026.08.06.00.09.50
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f45bc9cffsm760154b3a.59.2026.08.06.00.10.02
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 06 Aug 2026 00:09:56 -0700 (PDT)
+        Thu, 06 Aug 2026 00:10:10 -0700 (PDT)
 From: Hao Jia <jiahao.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -104,21 +105,24 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v4 0/2] mm/zswap: Fixes and improves the zswap shrink
-Date: Thu,  6 Aug 2026 15:09:41 +0800
-Message-Id: <20260806070943.95542-1-jiahao.kernel@gmail.com>
+	Hao Jia <jiahao1@lixiang.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/2] mm/zswap: Fix global shrinker when memory cgroup is disabled
+Date: Thu,  6 Aug 2026 15:09:42 +0800
+Message-Id: <20260806070943.95542-2-jiahao.kernel@gmail.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20260806070943.95542-1-jiahao.kernel@gmail.com>
+References: <20260806070943.95542-1-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Stat-Signature: kw838u89r5gz438sndgbm4na4g6dujpr
+X-Rspamd-Queue-Id: ADA95C0003
 X-Rspam-User: 
-X-Stat-Signature: gzhwjmz6xirjtrdefcxdueaupp3pzhbn
-X-Rspamd-Queue-Id: 7003F20007
-X-HE-Tag: 1786000198-491611
-X-HE-Meta: U2FsdGVkX1/zuMaGPV44ii3eeQZXVNyMhTEmy9O9oNLsDUpjln+sES1G8a3LCTSzwB45XKiX2GDDRhWoDez7FVO5pGAQ+zhufNQ+ObX6ZYRsoEmZKYfNClQdkiKtTyINLzrPBniFz/7j3RRRQuGUSzIL0MA8mwY1g4fVgWzCkpbKxpphuTftH60hH3pI4kb6IPd6oB7RHWuD7NI2Y0Swic4Y2J08oUFHOHywjtK1JuPrTVwrMxG9ZPozK7ZcELTb0n1KHt7Yle+eCPvHIOc1Yh1a2fr6h3lYaMT4dddDwlPRD3xgk/cb5XJRhSOLag1Fg4wi7jak1J18wZqXO73+v7O/SsMA9zyuz6Byga0CC/mGkkKjhw3w6dwDrvrTuv/1BlzZqOgipLnhmibzSbyoKYAvnC4k2cpMChJ6d0ZxRZJ1UHipH8BM3Xio8XdMDCVvn2oanhwK5Z3eo/GvVg3CQrzNxRz+5Kw+ZYRgnIj3jCnfCnHIkRyivnibAxP1Sw85qEbnFgxSu2Q9HIndqh4WFGOJh2FmEEbY3AzjydvuuaT9v4Sh6sxaYMyqoRqZyUNW0UsewLazGIuptgMa9RV/K9rP6Z66Ejc6Ya0OLuTqDMtWmtw8YGYFZqB3kHeOTZQpaETUF6WRtffBr9B3KTy/ezfdl6AC8gZG849o4Iv1thWRqjOZu+MQu9Ikk2WbgfALFLhBDTWAAZkoQPg/hCguxLinodek2M4KMmtGvHDHllB1xix8Tk0IwY2iDFup0yq/dOsR0mboqJFPaAbf+F4F2oYW8cfBtxMgO3rByZoVNaLVKrrNgvQWkU5GJupVkufbYBZViYJXIM9Fpr4W4Y5V144hAcaTwoUdd8/Eo0Gt8aCof7gaPD4XEZj3pfq3FMcPNg1167uWrM7mp+ljbZgeZU4l7+/FY4mmW/vKFVHitr+FHLo89nb/bCZNmTL7vNxPwuNCp+oW43wuu1XOEkT
- ehWtlhYX
- eVn7llthSmhFmyH5xvHXQ+ZHbTG/r4vZo+0zDqh8B8s9RpAGZHwNLMjpctYZvEZLUqR7TUVfk8Jtzx0ZFEz8tDRk0m3pZxob7qjAQo+lndZ/nJCrHSJo1wdfej0g1b/75rbQ093ZhfG/FBFXTIyHxx4PAAyl/MEXFs+lbMf3PrMPZwEa9a6PGe+DjKX3I7q9hpy7soZBH/A6A/N90hp0NRT57PI95BHBJa9b4890hU9X1SM0uIpNs0VDtIbcwvsedEfCv6S+3047wlMoxiDtfZiQqYfBE+SioBb+7BDl1a+Rn+GrArDlPacHoLq//6KBYZ/4JpNLCBjDP65Fzg3Q63jOltrumW2FBrHqWKF1t0pDYVwU9XfvEqaeg36WdJAmY/8rPNqkH+lAcF1f2tVikIVr3XYDgXlc18i6lfUjovMM7tE9FXJ1nt4ZSepGV/o9QSyB5M8ZhgQYXH6gJh9jH4c+qTcu5BtMPbpgieailTApUVfNgQIpUQBUeX1eHHPtrYltIlfLmUReHRr1dn46hqsP/ZA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786000211-310310
+X-HE-Meta: U2FsdGVkX1+WPNUUm2XuiX+2GFubAy6rDvkRDRrDdYCRgZvV79ED4RGWxUFExCl812nwhYmt3kxPN2k/UepNFxnarlfZXESrRarVz18iEdReqERVfbmUy1RTRSx7/SUXOVR6qyCdW1UxPzDBYKYkUqNPiSHz8pHFDGoff0kAlHHAi3Dz+qcjwV/KPsQZbB2dmblYsedwjnomSARuifRXX4hDVjet8/M2jQ6Pc/tardXU+GX5VPVPA7cd+R8iuhAGLRxqtt6pOs70mGqnDmF6TreDPZ92HJUKE/7UqDcYCmyrryxOVi6MlprdjJbKpvQF1kvnRw5jGtrcfKYDR1xqA4/n/N56g2a7f4lIpkvkEbQpyM1hJip1XuZiWwl57QOr9w+AiQH74Q5+bewh1asl3yCghxv1n7ISUueOpjvW8G44aaP8o3Htn7fylt00LOlLVlRf8WTp8QB81oVj2/EAyBMd8ltX9M1jMfx+SbNIu/Yr5LkaKc/vy4QEK3b7F6j8oyGLNfg/XSMK+7w0Vsw5CDYIjdrm253ofLUN6nvhBi6ZBrWkzuloxlkjyYDXudDppOOsSVFQJUbgoF0422vIkbWmywpRX894SnRwFmMw2O/8bK1HybZYwDVKU4NNH9xomuLOEMbJJfso8z/1aeWSkrUVE3HRaWsYJ2HO65JJAUZlCjGBAi/Ar3Ud2EUydAgnCZ772EFeCbTgN2lTUxHa4SKK076AwVirE+AyMkoTNi/sC04Ex6tw5iBntcGU1iodffLKKOZkCSUXeYPys06jaCu1tOw8Pnsrp+DyIqWUTHp7E5NW2AmLXn+L835fT1eqV+2NQdLS479WcBFFyzEuEXCphH4v+g1aOB4b9Adg4qeKdp3Gtbp2o2zu4JSOaUx3oJziFC4BacQN5vPmhJTJj9VuTiP3/SashgM+yU9CnhOaMez4nzBe2BaHMcxCV4LtTpEPHxW9ycq0adA5y5L
+ A9dGb6qK
+ d22+/xaK4Cwd+2FWSBR2wrJnomOPGp6FVBNcTn+Dp89chmd9zUcW1q7VBzKhng6JV+thV03AGAzjX+vD+MMH4lItMAYs8WGoSfqeJrXZ5DeQSQjUfQWnI+dbQa/BpbTf1CnPMyJt3c0p93smXsYD3+qG5SfPZ2oRJseV2mjcgAEtngtY8/6thlV9odD6rlXq1RZbdZa04+vCFAIq5DQ35qwMOrS9hAXV4i3/NCzZnzLy2DyZv2OPDZjiki2VdpVXMi2/iwEijAMXrGLKnIJfTWLX6N7Xzoh6pWQbQtXXhS1QhsgEXmauIo097/o+FqXrXZzu14Xdk02evOQf7zbuwXG8EUiyhc/B18i/KS02kv3dJVp9ZHipED33phWfPobbYBHBN34e7AWKf/6RGRkZfXOcO/+9Fr4LL9nUXxAJE0o3Wg816urRHZRtLrh5quRmhkhBmSaYErcPjuc32KAGc8Oxfy/c7/ATr/UKvhCZqspYTnRvz/We+e99w6gYFSdh415JVvmZ3BMYXFduYKMV8RZ8Qrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,37 +132,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hao Jia <jiahao1@lixiang.com>
 
-This series fixes and improves the zswap global shrinker (shrink_worker()):
-Patch 1: Fix missing global shrinker when memory cgroup is disabled.
-Patch 2: Extend shrink_memcg() to support batch writeback and thereby improving
-         the writeback efficiency in the shrink_worker() and zswap_store() paths.
+Zswap writeback when the global pool limit is hit fails when memory
+cgroup is disabled. The pool remains full until it is organically
+drained by swapins or memory freeing, leading to zswap store failures
+and pages bypassing getting written directly to the backing swap device,
+causing LRU inversion (hotter pages with higher fault latency).
 
-v3->v4:
-    - Remove the nr_to_scan parameter from shrink_memcg() and cap the per-node
-      scan count at SWAP_CLUSTER_MAX to avoid writeback unfairness across NUMA
-      nodes caused by a shared global scan quota.
-v2->v3:
-    - Added user impact to the commit 1 message.
-    - Updated writeback batch size to SWAP_CLUSTER_MAX to avoid introducing new
-      magic macros. And enabled batched shrinking in the zswap_store() path as well.
-    - Re-benchmarked performance data with the updated patch.
-v1->v2:
-    - Add a reschedule check to the -ENOENT return path in shrink_memcg() to
-      handle the theoretical issue of prolonged heavy concurrent zswap stores.
-    - Remove the shrink_memcg() return value changes part, and include a more
-       detailed test report in the commit message.
+This happens because mem_cgroup_iter() always returns NULL when
+memory cgroups are disabled. As a result, the global shrinker
+shrink_worker() repeatedly takes empty walks. After MAX_RECLAIM_RETRIES
+failed attempts, the worker gives up without writing back any pages.
 
-[v3] https://lore.kernel.org/all/20260729084206.77793-1-jiahao.kernel@gmail.com
-[v2] https://lore.kernel.org/all/20260717085151.22822-1-jiahao.kernel@gmail.com
-[v1] https://lore.kernel.org/all/20260714081510.16895-1-jiahao.kernel@gmail.com
+Therefore, when memory cgroup is disabled, fall through with the !memcg
+branch and shrink the root memcg directly.
 
-Hao Jia (2):
-  mm/zswap: Fix global shrinker when memory cgroup is disabled
-  mm/zswap: Support batch writeback in shrink_memcg()
+With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+LRU is empty, which means the total pages are already below thr. In the
+absence of heavy concurrent zswap stores, the loop then safely bails out
+via the zswap_total_pages() <= thr check; otherwise, it will resume
+shrinking the memcg after processing the reschedule check. For any other
+return value from shrink_memcg(), the loop is guaranteed to terminate,
+either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
 
- mm/zswap.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+Cc: stable@vger.kernel.org
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reported-by: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+---
+ mm/zswap.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/mm/zswap.c b/mm/zswap.c
+index b5a17ea20237..48fc7b575e24 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1356,11 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+ 		} while (memcg && !mem_cgroup_tryget_online(memcg));
+ 		spin_unlock(&zswap_shrink_lock);
+ 
+-		if (!memcg) {
+-			/*
+-			 * Continue shrinking without incrementing failures if
+-			 * we found candidate memcgs in the last tree walk.
+-			 */
++		/*
++		 * A NULL memcg ends a full hierarchy pass (except when memcg is
++		 * disabled, where it is always NULL: fall through to the root LRU).
++		 * Count a failure only if the last pass found no candidates.
++		 */
++		if (!memcg && !mem_cgroup_disabled()) {
+ 			if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+ 				break;
+ 
+@@ -1379,7 +1380,7 @@ static void shrink_worker(struct work_struct *w)
+ 		 * and failures.
+ 		 */
+ 		if (ret == -ENOENT)
+-			continue;
++			goto resched;
+ 		++attempts;
+ 
+ 		if (ret && ++failures == MAX_RECLAIM_RETRIES)
 -- 
 2.34.1
 
