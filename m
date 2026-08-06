@@ -4,136 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB864C561E6
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90643C561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBF4A6B008A; Thu,  6 Aug 2026 04:19:42 -0400 (EDT)
+	id 635586B0092; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96826B0092; Thu,  6 Aug 2026 04:19:42 -0400 (EDT)
+	id 60CC76B0096; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAE596B00A2; Thu,  6 Aug 2026 04:19:42 -0400 (EDT)
+	id 522AE6B0098; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B02846B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:19:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48B56A06F6
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:19:42 +0000 (UTC)
-X-FDA: 85070145804.21.26EA9A3
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B0E4A1C0004
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:19:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iHI8hO+i;
-	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786004380;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A81D6B0092
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A384B14065F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:20:37 +0000 (UTC)
+X-FDA: 85070148114.08.8000BE9
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DC2BF8000A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:20:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAG+h92u;
+	spf=pass (imf02.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786004435;
+	b=SDpAtRXtZvlwyYan6Z9mNDLB7Lygg6xgFSn5jlPIqcBCW3rYLBTchezzj4v0bMru/MI3+z
+	NMehbFeqD3AsfGO8fAu2k5CD7gTbHOHBScptwpOhmx9VkOKMH3hEhuRJhoxhKb+ysMVI2o
+	vBXDUcKE0e6P4E7iVjyQjj7hUudOQSI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAG+h92u;
+	spf=pass (imf02.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786004435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hy39CtWoc0zoje5YFx3qF8VnAfrlLSpF/ux3KEcnob8=;
-	b=fdtXUNLPb96BpaA25eq04yq12kaoXypA7WZfrhi+NpsdNzGfnASN0rn6F1iPxx0jurWWPh
-	KCavN7BdB3ArmTygnKjROye3E1uPcm3hAGzvEAg2bKthvlmQPjbVg5Fvxw1dSw3HZYV9hj
-	cv2Zu8JTvA7BlJ24/zDl3klYsMKTc1U=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iHI8hO+i;
-	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786004380;
-	b=CFl/IICfAF4kIFOGxxC8kYzh28pJ/6z4qhX5rXtlqzCkP4IMAEepbQTynjeNkwA4eta9Y2
-	rw3BW2e+hDw4ZN0bNa6Mjl3g5Dws6Et+RrCPECxWWgoN/GVkPTT2M331w27eD2VtQjWMns
-	lB+jDAgqTg95eFEyvuTPN02uqDHaO2o=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-446f87b6de1so1346917fac.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:19:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786004378; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JbqEAkK52XNCxwfWwYKCa88th2N1MelUtRDi74IapVzF8+0z+BaGW8fmpXB62Pu+0k
-         RulXOw1fTmBm9JRp/wkoESn/nuukS+V0YaYertH+O3f1yUU9ohec7bZMuV2Bwk9QoRkQ
-         NqRxLYyIzH25oj6ASj0PRJYQdMa48Ph4nacp54eA7i9LlkjTKyqdsGm+K222DWV3Fc0/
-         kwf1dy/R96M/ja26Di3/2UwjPyU/JsqurfrpzIkJv81StGzNOdFaBMquwodsUXoHEJQo
-         HuDHZIfOze0A+16Wxw0w7u8RhjyO1kK8e7xm3RqkyZT+5H0G4e4lngWMfPfrXMWnhMVN
-         kUew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hy39CtWoc0zoje5YFx3qF8VnAfrlLSpF/ux3KEcnob8=;
-        fh=uStR9HeO3MBUIBt9sbFQCZ+xc9sfdWVRppVfP3lp9Xo=;
-        b=oH/tAUBgFtIJhAfGjJXgFr6usmab5wdWhmdG0VW29N8Th87SfnXJVAL2UhzTvQwIKi
-         BJszrYI9IM1+jAPih6f4smLFKhfL52TsjadDj1U/HM5b60IX/Sw5HkQtU/z33TPfNz0s
-         R3DEHzb1YTfltc43wcPdcMHVtt4FQH+tiu1INrAFsEdefrl6rZuOGoZc6y6DLmqTI//9
-         OyUTtG3ga1z4gocD9czt56ZHjaaiK5dqDm6CEJDG61Tl03n4lOH1x4oEneF8UsLFfOOT
-         oovqCQoyRGouSFG/GrUTO1npZ9lhRNbZ6VhuFiJga96WmfqE2mqFf4xM36WHTKn5ZWFR
-         tMug==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
+	b=tkyLG9ccDU0/I19hmiTTTiDEkzlPhUlBvrkjh4SSymiqvREOvcsoAM0uWB2Q6XalOLGQiU
+	Isfu36chT32OuaSEJGoF2/iVv1q0kz2No1RdOT+P5ubDRfYxQ2iU4zRbUMJbfUy+T1yKp2
+	aHetmIPgVWRVKWDFcqo3bY8AdXudbj8=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e58034d05so1739301a91.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1786004378; x=1786609178; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hy39CtWoc0zoje5YFx3qF8VnAfrlLSpF/ux3KEcnob8=;
-        b=iHI8hO+ioEODlfvrD1NXsabgeLkKAQ6p67hP1bL+F/5jvVkxiB+DIH6IIBZyiFybxL
-         GCOyOiQmHJOqvuo25LBZgQfByv3TUX3cI2pjRauRK0sgER+cEc4KdrsRia+8viNasBJS
-         /uKbkodPcYFcqOBjc/140ldbeQnPPSjI+1qeX+mlFdPFIyM0yhkSwII1J6XvwHagC8j8
-         WmVWcyYXurIzaKi4DNPf5dbc+csBPDpiqR4LoDD10KDVXgwnJVDeVYXEjwBh44x28wsY
-         4sauri5FB2R4uh1fXmaZgTQ3xcVrnMeTu5Atbhx3IlwA+LpEAgVLrEgwQIZyvve2vix/
-         XL2g==
+        d=gmail.com; s=20251104; t=1786004435; x=1786609235; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
+        b=FAG+h92uM4KvRg6gAvV6m+1JA8V7EyQnaRx/zoScjN7hD2hNzvmYgwaXkR2U0heVMX
+         aDi2GEEvfg90GavBThMtd4ZyB/DsdDXLQym0qyfROB/ChsAWC7MrEmtz4Jn45qvY5/ZA
+         wt3NoJ06sfpAQMdk6Ww8odNtDz8XZsLTqREK6Zr5eHFD1oFROcPLbGiYUQSDfSx3xSmn
+         ZvfcKRjgNnpIFFsqFcntlmATswoBT+3pTiBZyhMC+6nWzhPvniTZXa8bAmfewIEObbOY
+         gStR+m1Su51oY1Y+4g+96B0N0vNh89kKds184AnVark6XAK5GAy4QU/o4m0HzAUNAgRF
+         nzqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786004378; x=1786609178;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hy39CtWoc0zoje5YFx3qF8VnAfrlLSpF/ux3KEcnob8=;
-        b=l07qqKNl25NaZJA9xSHQk5xWZ/OAVYjfiFQuIF6wyU2xj3g81yFiljUQHk+ls8hbFO
-         x0pB9BRSxQWEvS2SuvP/DbruHezahdlsKC0KB2tv/JVtKRmS8q7pcFksFXBnuK2QQydd
-         oFn7F6clp27rGAoQbRZXf/hC6Fkr08GrUIps+LI3fvhxdj/qaBFY7gxLEZpW/ZN6KfHw
-         +jOSCQ2FV8GvFvq89+cbPqJx9FFIrW9OOAPwhIvphwsyAJljOL/uT1atA7KOCy+M69rV
-         c4zzRXA6CTICVAqE58SClTOzLxR/z08vHCGAT64wUk8WMecvhIiXUzz6xdqNNOohk8Bh
-         O0IA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpbb9j2JCs0jXeKIYz4b6dkxlNrBeMeWyl0X9ecLF5mm/PXZpkaIPNEVFea+eDkxjDBhxE3KNqrow==@kvack.org
-X-Gm-Message-State: AOJu0Yxfn2E4n01Rktb14NPW5JF0zruSVoLCPzF3I43aQMphry01sNAo
-	MXH9dU/o3zMYJM5PfOr8JSbAPdHyo4kXF75QyZDeoPjrARjSbebTW42wOeSQw8LIPC1WuPH8aN1
-	B2tymMs2q4tsRpo35MPKf4j8+JRA3trg84qnkJU7g0Q==
-X-Gm-Gg: AR+sD12JZ9ufPred0/cabMznFp0+kI3H8lGBz1oCTA6pS2UW09WmaIEHZlLEIBJXh7g
-	M6I7822d7X22I6Z/5Y0wO+6ZvnqUDPorba5z7nu8CJF8dfqnw9ThCEsi6+NIkNsCDUP4vEQh+99
-	vTEa8ei4KKQI0QLUqZpp7wIFJ84BirLoNkhjxiykFBw0n7igpg7xpfFavOtopCDNJ/nD0LrG+o2
-	rQHkicHaWPIJRWnjKYyjhwqBfl+8rqvhlMi28hWCLofv2JSQUmWErHb8njd+qUmsWSwlbFwip5U
-	89gTmaJcoWdc/BulxJ6i/GtIOwmXESdhgoiJNYNYPFtssfc=
-X-Received: by 2002:a05:6870:7196:b0:456:cdf2:ae66 with SMTP id
- 586e51a60fabf-4599f106966mr6769705fac.20.1786004378386; Thu, 06 Aug 2026
- 01:19:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786004435; x=1786609235;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
+        b=XFJ2+xwsztGNKHHe8BO9JMSuGSnYYbQnBI/RY/jCZsHSOdWmdBsgXBO76BVsNQMCjc
+         WNvopaFfU9AiZghg2Zk7PF+fjZvIrtkw1VAWwEcukFeocJivm9yg7kTa2hZ/fiSXoHe6
+         X5w8T2B0ymNIr8UPjoEV2KAD5oiip4TgYv3K1o+0aaVGPfe5IH3X8LhqmaFgItpmPiAB
+         +r6otIdvUr9yveqTsZoIEYes0o84VluMFN/fFe8/wdeoYxQTgAYXB/WI0ws0SL4/X9Ak
+         o+BqDwjq7xDpgRHZZaUB36M2XMpberA8s7xjzw4FIb3O1KhXWg9AaFzMnves/d/jqVsV
+         p4Iw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5ljwMUhBdQ+9UQafNJC7KSCFVo6rXXT+CqbWqlMe1SDSScvUJ4efqUtv8otQ9h7UFZCH4498w0A==@kvack.org
+X-Gm-Message-State: AOJu0Yyqjy75h0Cj0iUoCIc1r6sxPKL3gQ/+ref7L8J3QYvWng1YTqNN
+	osNo/MEaSj0E2Ck1m3j0V1Bz5IxYtrpHNRfALjBlb3fXoEv7dsnGhJtk
+X-Gm-Gg: AR+sD12XqqVfLaKfTycp8kdTLRQD2Rj/VGp7yTgS9nhj+1PVZkNthdSOB7sLB6QD3f4
+	hFbmtpmtTbBWfzfhgoB257mj/Xmk8Y+IOBvcGVfO/YtaG4scaCiwajV1AUzCDuBo2EZ2Mg/eDa1
+	2h+8tUKrZzvnGmw1MY7y5339jaF+xk+Szd4XWdzt5+snvL0ysSgNZjEbJCJDiS5JsYMG79GEpYu
+	cPn0vyd57vhjKt2CXuZKKLXQtdyevx1CyVnGw0TGme1TwHwx4YsZa6BC/CK9ttGJSDJez5ydvDz
+	FpeykkCa7EwHUcpOJYVUprLo5V5f0ZJI5gIvL1hh8e+tjLsdRigY3RD+JIePZwIUW91JHoWqTOR
+	EBwpm3vJvQhZ95Btw/447N0KN8xQto2rX+Xt/keDe4UkDR1rD3d7HGJKe0rbqlBHgFBo5Z9wskQ
+	vZXQjv6/Ft4kwcLUeH3AmNLCEYyme5oD5JhAG9uEPnjQi2aR7Doy7LIgyBM6QIDqVs4CpEtvXMN
+	7njC8yZ2R++SHM3gAc7hhMoU1nb
+X-Received: by 2002:a17:90b:5203:b0:37d:f206:a2ac with SMTP id 98e67ed59e1d1-3903c598ce5mr14366837a91.7.1786004434667;
+        Thu, 06 Aug 2026 01:20:34 -0700 (PDT)
+Received: from mi-HP-ProDesk-600-G5-PCI-MT.mioffice.cn ([43.224.245.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9ff6b34sm27660145ad.26.2026.08.06.01.20.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 01:20:34 -0700 (PDT)
+From: "Guanyou.Chen" <chenguanyou9338@gmail.com>
+X-Google-Original-From: "Guanyou.Chen" <chenguanyou@xiaomi.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	chenguanyou@xiaomi.com,
+	linqiaoting@xiaomi.com,
+	chunhui.li@mediatek.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] fork: fix default_timer_slack_ns inheritance from RT parent
+Date: Thu,  6 Aug 2026 16:20:09 +0800
+Message-Id: <20260806082009.144846-1-chenguanyou@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com> <20260805232941.e89e96269472ce5106967bda@linux-foundation.org>
-In-Reply-To: <20260805232941.e89e96269472ce5106967bda@linux-foundation.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Thu, 6 Aug 2026 16:19:26 +0800
-X-Gm-Features: AUfX_mwGgNJoKFTBh_OuUz7py1XbYGaSQo8O6U35_XIAe-5lSBoXE9Jh7Dvpc8Y
-Message-ID: <CAEEQ3wngAf7Wse8=zfByvzuuZvvy3kD7gD+HJZjvHTOf1UBiiw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2] mm/madvise: avoid skipping pages after
- splitting large folios
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, 00moses.alexander00@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: n36mgd5jechyykfi9q39tj3596kn4hf6
-X-Rspamd-Queue-Id: B0E4A1C0004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DC2BF8000A
+X-Stat-Signature: 1j8xahshmi5npo7tq3ta8osomn9oiq6p
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786004379-723028
-X-HE-Meta: U2FsdGVkX18usgTtOjPpJDiPk7Ns1A6V493zn68xAtUQrQ8F10Tm9JGqSInBYpUwVGSETqtyatY034HPheRqgoCUr0eBJQd5kI1Nou5zJq9OpogBzWxHHEJUELsJnmy0I4ofrxkdZf6lsufgEE7zG73tAiivTVzNsVKRo+Y84T12yS3RvWWigCqlkjm1frShydh0igHid7eGoOJQZjEtP66NQC8w7brXMS5xw22o+aFAjW6FaIIKpCh/KoBKD98S3Aw6GbLsOReZKczFLa+8KEXHRpcg0DXIEOu3ZfEfR3NZWe8G1+anWMvlJf5U0oUw5mANxKvks9wchNw9WyII75b+Unazob0TIQClklT5kWRwzbWT3Lva7lJuz4RcRvMOesycUPCl5mvSoHrRIHYyT5NbRP9dg7I4UMOLVzsoeT2eAr3yh8PqiZz57MZgUKSegEKXIWPIkm9xKRhhT8eD8OaLn4G5sy4C2+RT3MdIkUbITT1I+a++CcQYWQroBQIuyhy4ZYJ4bjXHrcoJC/lyl7OcniptPWY2YXHSlIItejzP8DdrY0/ewF0QOxWTIuiBovk75gg9mzXkG/A1IWixGLzzi0qUSRgdFgOMQED89UtvgebtClNj7hRDxw5ezVkiDvirgLDfmLBkr7FFjEVgRr9NOznyIdfqefTQw5IA2PCWBvYJl+1df5hOXqqh0N3xLatMQPXVFDAwMmZ8yGY4ywdEYopoPWE2c7QEjxtsAcrMciEIkjFelg5H4F8cTzPbNJSvXna6a0RGA0F1ZRaTFjsI1M0JZBrjZwkIL/1C8IRJ148M9sNMPA6+a976G/PJCg3jR5o+54ooP2Uekmm+Pvh38z2tlrSRccUCVSKn6gPOPnWaih6+3j9QnDVPcDQsUOxL9xZS4rSy0Dqu/I/T4Lx+/jsFQf/D3D72b3QKRn1aWw930T4KrXq3FDl6ci8JdfFikxHaf+TpAXoIax6
- P+7m2tJA
- ItkaauwxYvzOuJx0Wswgg5BhTywygD/bvPorvWlyqGSprZ9Tu23XUGDT4B9LkazhnpnmwrLYl5KEn6fQWuU9L3nkZc9LxyTH3rHZWxpMkTNqVmmgfDL2ZPE6SnVYns7P2tMdEhSWxzD3C6aEqPxqDcSaQy8I6+oqYJOBua//UYHncwlszn/Blf8UTfj6VWNgk77ulGym6l8RzXEGRovSh0/0gdFyahOkJY+iy+bXiR+1D7MN799ypipHUzISZ8zLLdj6smECxGUdAu0bOJ20CWagAPzb6lz6S1OOqIlKgrWtRURMGeiai/IRrGFMpcMY9L25lrraHZDtPgDRMDJKnnqVBf0QGNiOAn0b4bABTYk8as2T70vzRpnNSoMC9TYifYIR/Vj/bIWm47vxpi8yT80HfDry6UYJM25YC1SKYrHyGnjSclFl9n4T07A==
+X-HE-Tag: 1786004435-342866
+X-HE-Meta: U2FsdGVkX1/ugzcQjrBZB86nOq1K7F3AtAXMqSjInUFHGnLrs+K3SZPhNhya1zoaYEoVe1gq4ret8wJxEvVzGnzn7JbzdjcyqNU3aw3aoEuF0IJIG5G3RW3Ws2qTfPG/zSCGNu63idbAWaMGM6ZsWyiUuSmRDg+HCJxkv5dptKkeKU4r3uRAAVPdhXvJwPZhJFsvSLjZsU7dcq/mrtdOUqm1qpvxcS9vyOwhyJKUbdheVmikDeixsk25G0qew7ezDsW51AMoukW9A/S1fD2svzaib4SRjHLqH17qOC6+QxmAIjYmIj0VWxKzEBvd7NIYuUbpgANeGUy9pfxlKC97j9hZqp8sSSecJRj4yjf6c6st4K3ZF93fVEF56AKVgwd58J/Q/KXGeUEe+xHlo4FTMpJI71R1FveBb4KunGIgvjEWdZsqg7z+Yb8qoJOZBZaRLR6bd0cG8bqPS8PuPdZDDnqqHQz1XhF+t4+X+4o7Kvl449ctfXsbihKIxB69wi+yybOT43YreZLR6BJyZ4gbDHJudX/A+ancpXZsyHCjFjiWF8NKqtnPuytNSmJdo0dGTo4jPpppVfkZmiJZR9HAn+6Gr3PQY4eXDon0Sg7/kiioolV+XZeWY+POxrB7HoJOVU3b0BrQG7F+Cy8+ntoNOfkCIXl7gXd5VrJm4vqmI4IiiI5fsmcqq9zCRQYamryfi72c9a7hhbqFfuXab3MAWdTi2FKD2DTJQdrvDy4gI7h5hiYUJ6W+e4kgMIai3bTNrm930jcYqa2AGob9SjLZHPeqUA5ktoY+ws4hEJIZjb2f0YXYuhivSwBccvYk1ScCoVhW8vCHGIcCdiOcf+N15ZU+LKquX8aix8ONNDPHUBGaVkUEBbfuXyvb/gyz7tchYvMNlvZOxrE6RKx00ff8XRLInlZKncoCxxzmOSBU/+E+U4f63IxwVwLqXruyfvB+Zf6da/tSRqQRHYdwaQu
+ KsLDYFtz
+ Z+JQtVDhgeZrGJErcfDK2oxXlIwf8AQVSciWplRrxow+GfYBhex2hUEix1AArbEP7U4+XlTXPgSxPtml+W66aOpYkXTqEt45ThTMtLrsLLGwm1xbZe4WUgpDSFFvawr951hB/Ka0T3m3H0QMqQbfFFuaBTf1Ii71XwXwFSdYCBjsL5LwuNelSovymtVSvuGoGmA18+CGJV6MVoLi/ape3Y8Wb8jEQVbq/dY84QGYepsIs6zFpiFBKOruRNJPSYTeECpltgsgiPbHW7dhHBOuRf4Wd9CcNmnAAFwjeIqTLRB466Chgu3+lRk5/OQadrW+KgVSlqlpEGqneJyQuIeavnPF2H+HW+X49bbFAJ6JSLNNjlLbQpMHfX6jhncqiAGuDEt03GRDe4a8pxGdNZwtjxxfk+k2gn0pkYr5W2i6yLjBl+ZJIbaPvOX1r0VhSPJ8sfrV0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,61 +129,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+Per prctl(2), "Timer slack is not applied to threads that are scheduled
+under a real-time scheduling policy." RT tasks' timer_slack_ns is
+forcibly 0 - not a user-chosen value but a "not applicable" state.
 
-On Thu, Aug 6, 2026 at 2:29=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Thu,  6 Aug 2026 13:55:01 +0800 Yunhui Cui <cuiyunhui@bytedance.com> w=
-rote:
->
-> > madvise_inject_error() advances through the requested range using the
-> > size of the page returned by get_user_pages_fast(). Saving the size
-> > before error injection is required for hugetlb pages because successful
-> > soft offlining can dissolve the source huge page.
-> >
-> > That stride is incorrect for non-hugetlb large folios in system memory.
-> > The memory failure handlers split such a folio and handle only the base
-> > page for the supplied PFN. Advancing by the pre-split folio size then
-> > skips the remaining pages in the requested range while madvise() still
-> > reports success.
-> >
-> > Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
-> > folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
-> > folios are handled as a whole.
->
-> Thanks.
->
-> > Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page ord=
-er before page migration")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
->
-> Should there be an Assisted-by: here?
->
-> When fixing a bug, please always describe the userspace-visible runtime
-> effects of that bug.  Especially when proposing a -stable backport.
->
->
-> I asked Gemini this question and then pasted in your email.  It told me
-> stuff, but I don't know if it's correct.  In this case it would be good
-> to hear that description in your own words, please.
->
-> And perhaps a means of reproducing the bug - clearly our selftests/
-> coverage here is poor.
+When copy_process() sets the child's default_timer_slack_ns from the
+parent's timer_slack_ns, it inherits this forced 0 for RT parents. This
+corrupts the child's reset target, making prctl(PR_SET_TIMERSLACK, 0)
+and sched_setscheduler() back to NORMAL unable to restore a meaningful
+default.
 
-The issue can be reproduced with the softoffline helper from
-avocado-misc-tests. With 64K mTHP enabled:
-./softoffline -m private -n 50
-the test consistently failed with:
-pfn matches, softoffline failed at 10
+Fix this by using default_timer_slack_ns (which preserves the pre-RT
+value) when the parent is RT/DL. For non-RT parents, timer_slack_ns is
+a meaningful user value and the existing behavior is preserved.
 
-After temporarily disabling 64K mTHP:
-echo never > /sys/kernel/mm/transparent_hugepage/hugepages-64kB/enabled
-./softoffline -m private -n 50
-the test passed in five consecutive runs:
-Softoffline succeeded!
+Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
+Depends-on: 63c1a12bc0e0 ("sched: restore timer_slack_ns when resetting RT policy on fork")
+Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
+Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
+Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
+---
+ kernel/fork.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks,
-Yunhui
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 65113a304518..bc4df18bfd90 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -23,6 +23,7 @@
+ #include <linux/sched/task_stack.h>
+ #include <linux/sched/cputime.h>
+ #include <linux/sched/ext.h>
++#include <linux/sched/rt.h>
+ #include <linux/seq_file.h>
+ #include <linux/rtmutex.h>
+ #include <linux/init.h>
+@@ -2133,7 +2134,10 @@ __latent_entropy struct task_struct *copy_process(
+ 	retval = -EAGAIN;
+ #endif
+ 
+-	p->default_timer_slack_ns = current->timer_slack_ns;
++	if (rt_or_dl_task_policy(current))
++		p->default_timer_slack_ns = current->default_timer_slack_ns;
++	else
++		p->default_timer_slack_ns = current->timer_slack_ns;
+ 
+ #ifdef CONFIG_PSI
+ 	p->psi_flags = 0;
+-- 
+2.34.1
+
 
