@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3CEFC55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:03:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11BAAC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E6D06B009B; Thu,  6 Aug 2026 10:03:24 -0400 (EDT)
+	id 09B8D6B009E; Thu,  6 Aug 2026 10:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 097F36B009D; Thu,  6 Aug 2026 10:03:24 -0400 (EDT)
+	id 024F26B009F; Thu,  6 Aug 2026 10:05:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC81A6B009E; Thu,  6 Aug 2026 10:03:23 -0400 (EDT)
+	id E2F336B00A0; Thu,  6 Aug 2026 10:05:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B36936B009B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:03:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4558F1607BF
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:03:23 +0000 (UTC)
-X-FDA: 85071011886.26.79CCFBA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B69346B009E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:05:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6122EC0769
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:05:05 +0000 (UTC)
+X-FDA: 85071016170.02.0B3718A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 866E34001A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:03:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eLyCODtq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id BD55F100006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:05:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7uNVDin;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786025001;
+	s=arc-20220608; t=1786025103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AcbUps+PJOKEs9ZAZx9T9otuJttHDUts9Bt8Cges3S8=;
-	b=muoHpbvIT6XUcIKZlnFLj5tvKRZaEoVUu1bpamh508L9LjV+wBAmOh5sREBf1HFuG+E8v2
-	URTCEtM+Q3fuTAPhWWG/8Cb3Pjqo5M+JlRMJHvW7r4aa6W6eJMm4BjNh8Ihmg/yS7A4rP8
-	xuIIsq8WKzejklB/IMMoWs4VR1qbHlY=
+	bh=Y6APqpoAC3496oI8IPDgumvxehVxwgctdvlogEWJB54=;
+	b=aj0mzt25E8iMjP497fgzc1YZxqsfEcoCklgZplcIvhAR7/5Did0LIOtzxLcvjqt1SQCe8K
+	yTYYRcQKlaa3dB03roEoFb0YEWCsw1Gir7nPE8a3NqMGkMBVEDqAqv/fngeMlohLjXUr+H
+	flVjPpQHxOVLygpJMq+tuoYBes+n3aU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eLyCODtq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7uNVDin;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786025001;
-	b=jMCYeXWkTnX1+j+tGNd04PxhIGbuH+pltIv6AOpfI24F0KpgU4PpoBdjbjX/j+JVxUPGeM
-	janaP9frGXIQWDzK2GEEisSuLnKqbIqEuGW2QMmDIOEvwvjmo9SdIJSUw9U3L2uZV2h8kp
-	yUt2J4fS65bCjx4+yLaNeoO0vJPGuLI=
+	t=1786025103;
+	b=I25QbCW20TKlw1skQR/By7uxSeKofQNSyNP4XvUQtmF/NVGkVqrVlsXo0QEAzF/a8nbIzI
+	kv09XyoSkexnhgWgvdfHyYFTGS5Q5qn6c0qn690sPkC2VXokUDFKzYxYH5o5RPNgdbzs+t
+	/+3jIuPrl4xJ/qhM7DohlQKvwHPxJCg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1987960A69;
-	Thu,  6 Aug 2026 14:03:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD901F000E9;
-	Thu,  6 Aug 2026 14:03:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3558060A69;
+	Thu,  6 Aug 2026 14:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A35F1F000E9;
+	Thu,  6 Aug 2026 14:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786025000;
-	bh=AcbUps+PJOKEs9ZAZx9T9otuJttHDUts9Bt8Cges3S8=;
+	s=k20260515; t=1786025102;
+	bh=Y6APqpoAC3496oI8IPDgumvxehVxwgctdvlogEWJB54=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eLyCODtqlzXwrcAeO8d9T/YueAUfY2dFDeHy2nYTsKalnVBNyZlAI7UN3H8sf49E+
-	 AlMgYpq6Y0tUuTaS/lxnhW8ds0NU8wmIfEn/NNGcpGLtT4Uf/I1ebeQa2i0hijhMQC
-	 gilaCdqouNEsxYRVNRsU7of55JH6z2RFJm4XcCH7AzuIwmPDZQeSXJZGly7V2Db3WR
-	 PUGymMQsPMFwBvnklDGWQMitYiqW0aP98GFO14OCJ5yrDBzjqgltbdyj6JK3WYwEuK
-	 OIsVSKJkxjMo8OrGRa35s0+vdtdfNuZUgS0KH7BzJrwRewjw8ER1W3DTEQ+pIaZrcQ
-	 R+uAM4Ek/EGfg==
-Date: Thu, 6 Aug 2026 15:03:01 +0100
+	b=e7uNVDinolId4oTkkdWmLABrN7spjecvFSAiaGhptvu+n+kbdbWcmCcSmzLfmrtba
+	 Sipuirytwl0u7KG8zwUJ7JOH9qDbSKgVSB7yWU23pRUQGY1SjR4Ky2075A642KcR+d
+	 LC8t37EWOQ6t3y+k/TxyaZF6ZQLaguCMGda3y084/E+y6JS1oKXp1VyyzXRfzWDKzO
+	 8PdaFkqMFd6ja8+epLmFc+Or+hozyPpNPP0K6dLNyhSQrJDIx+f32ATANefVs954KO
+	 q8AMAsfmd5cyfTswesD4Em2OpTCEwqsLe65KOP7EAUoVA9H7FVUKkeq8bSlnV/1Pzt
+	 vwJwAmtToXmSA==
+Date: Thu, 6 Aug 2026 15:04:42 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
-	Li Youhong <liyouhong@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/memory-failure: fix folio refcount leak and
- min_order_for_split() locking
-Message-ID: <anRv8ngsyOjkgOHM@lucifer>
-References: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, damon@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org, akpm@linux-foundation.org, 
+	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com
+Subject: Re: [PATCH 3/4] mm/madvise: skip zone device folios in cold/pageout
+ PMD range
+Message-ID: <anSUb_KvuBEMnAMq@lucifer>
+References: <20260728194714.3713735-1-gourry@gourry.net>
+ <20260728194714.3713735-4-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 866E34001A
-X-Stat-Signature: fgq15qndqwmjmewx17dckqqjs4334gi9
+In-Reply-To: <20260728194714.3713735-4-gourry@gourry.net>
 X-Rspam-User: 
-X-HE-Tag: 1786025001-974576
-X-HE-Meta: U2FsdGVkX1/6jv7ZKkgi6n0T9EvM/ZcrB4v4B+i5dxn+02REUHKn4fMNMYtYVquNzhAcvZV0BXiD7ibSxhbWK+48v805QiYUX2h1//7dWtDGVkKTzhKvRqNxqJxQUiVAdHN9XcG+d6q5eZfJFhrmotgQmopinPxti+DJ5GpUPOc8RmQ9Yzj2w3f6vXocKoeSba3tQbMuSLxOu2372FWYfxmviHl8bNKirJiHPYA3hgEWpDJVqL76+JeqmLTYNzDNuchZQtrxcBtZ7/fYLHKbDwsxHSsQu/h2bA3xPScdUYRzVHsThHZNJnw4bGvEbiRwhl/DErqLS1Z7v3UDQBV8/sKvr+EezJKQzOPeSteCtxxJVsD2pbC47y5qlBl0LUJN5OBfvYF/7MwVC+wYmrulbWZVej34nKmL+4+0Ce7l89VrI9HZMNTbNWup0FuTOce3KFrNfcrpBfJn+6MZDxGJlj5NIB77HIHSOjEPclF9wbDUesTfooMLE8GhNi3lr2pdT7kroI/9FnmEdX6fCewd7W0WO+lE8is3lfo3lFTr0vJo2e3IpLJMzdEuzKBPHcldyf86ldC5RZjWal1oG8uTRpJ0W3+0ZuWnR9n5rO5KCvvFp8iXSOcOw6LSCnolQ6r4UpPjwWAi1q/jVz2i5ZlL7DLU9mNdnhBnMujBbaDW7coX3ize/7/BZTwd/KYDOOG5wWfhQIwWso2TU2wCzYKkwNFZy6PtYVOHLv65+r79et8XzhWw5fzRLnOWxBqGaJcVoJT2RtrMDOwBIYSre8DuiFPXdnXiQUpAvDzetxUdNR2WWVHSrkj/RnU84b9Qi7X8EFsHPd4gZIr/yGVQG8UamS/ZBQKFXxl32QWQVgjC+vRA+GdzGIXf4d4yg7JRL36Wr80wXeeVJWI3ru1EPdRZ4eYFEzJKwlo7Ezx8Bokqlht5tGAbMbre28aN31EEl2J9zf5sMUyKrkW+LD1tuS0
- 8Gt4rgRM
- fjsNr9TKmv8c3Xqc6OBrr/3LkfKl1+zYWeoZvSX+989A3klqE6zT2NhqIcaZuSAB/tEhdIuB7bUPNj1dm6XoBaYpMcnrwDzloWC+/eAcLTuH21WBZYbdxnvDlVXXIdL/sdGnIzlBzGMfO+vhvmgHOpCi5TnDoYUIM2v0wUHqhfqwfhKI9IXqBgYil+02EFsJ1epK2pOmqVMjNy0/Wy/ZEDHjtq8NlVNBxchjVZHfjZ0MFsSdzlmxxnE20vGVZD2jpuG7m4++f6wdx3Fzv/MPgFIX55KK2qN3YeJ+f/eNLJXBU9M+9TsEldkBHjS5sWas3DBBtpMY83RAZnm8ZphZWTTCvNPJtAR+qmNQSuHfbZwoqwyi8RddhzQ/O6rtuGebfSnmpOnTNVSfQMy5gsF/VQQ+VK6L+sxqe7mUo17TGMPGl5No=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BD55F100006
+X-Stat-Signature: q5kr5drnu55eqk9idtq4uhs7zyxggq6j
+X-HE-Tag: 1786025103-598600
+X-HE-Meta: U2FsdGVkX18UaEIfQ0yzgGwce+qdq5IG+HKlNENs1qRrC4vhPt29iPisgv5WHXKBsbh02QxLQ3TDvu5eEF53wDK82DkhmGQ92N36XJpyVqH1PVC8EdVCdVYFF6rgxxUSrGK/VmsvahiPpVFlFpDPXMH5l7aCj1qN/dQR6/h9eVmh3oGmoT81ln3LvFZ68DntfL6Yjf87zPFxxJ8ghORKuKsiCToyDg50v6O/sPBQCAiEqkG23Vg6P5XARseWdsfw9avo1PrRJaOsvery1xbXPKLr8lW/YYeL2QveU+T11KBxlxH42UcjYdraP7Ao9KTMJO2Byi2q9QltOQToWHILAxFMPVegvZy3DDcjMq+wRS97bA3PXtGfsXTU2Lrn/P1zPdXREu9olCo2pNqlSSPGShJ7pCcvsvu8G4x7HjDQNmuQy8O421HdIxViOZc3MpJxpQHL7xsjYqDLyPA9ojR3oAVyEZ/WdtsyBYEDdlqCZzdpks+zNvv+e3XBJvTTD6PpFLlQVgc3DWulDklWCGqvuHKaxRHggR/4ugh8zir3UgTP2grYPeEgpT3+eDBtdjICCUPHZzVd+vLBZ6ORExNh2AKMIMaYc8qSnSteDO99DL0fiU2SksfnG47/1rwfMhAfVb165zLStvbWzrt8aOUVesnRyY3qpgX6t0a7LnxbnJ5mUQhI7kqJ3ZlVUFchvuqMk+3HyPfz1wlB+c8Y8sLH0aUqOkbQLU32oH7XMfJ1RHeuU9JySCCwNkBPl/7th8IV6z5iR4FX6QQ0eyDJKHM/os+wWOZcD4IU091vbi51p1ljLkqGT5OSsA/pdFQn6TIdqiFzluhK3w1xQtmVj0pfu1S3pYd//o4GyfB/0cRq6Xbp0aZgzqkkvaeYYA0E+8WaiTzQsMpK14YXiCVVUF4Z1R1j8Xa5H+MI52xGDerIGQTaYIxqARhfrlfMKmi8gAZVWNon2GCd01aJyjHTAaw
+ VfmnGSuV
+ ZJmFy5++QnaRSj5chge16+6KLucKBHwR0teCbMBYeyIgQt1QAuzgvQiK7vI75/tr2REpheKA+UyPQXe4zQheDn2YRuvCj1lPdaEJpb8sLGfQsNPaR17Iag140HLdcczOJ/lq3ErLGgfq4V1ULEq9GoaRjuuF+I9opUXQNxUjFibQEBOjG170S1lhnfSeFvyEGJ1sRK9p860JObtxFtiN91HuMMoyAH7xtMYe9dHTKOZTlEJx2vGtCtnfoU9KwOE9dzDPIpLy0Efs5oAi1GTleMtId4gBkUDz8Mjq1gV+3xEPnp2iAzH0zO+G04OJrR7/lkd+cOJmoNAAw1EMCpw1PwpAs20FDgv7GbBoHbjdaBn3yBdoXywDdDfmmrmYDDk0DJ1pLHw5spEywj2U1MXA22EqstD9sHB0wFA4H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,221 +98,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 01:14:38PM +0200, David Hildenbrand (Arm) wrote:
-> hwpoison code can end up calling min_order_for_split() without holding
-> the folio lock. There isn't really something that would prevent
-> concurrent folio split. Consequently folio->mapping can get set to
-> NULL after checking for "!folio->mapping", and if the compiler
-> reloads folio->mapping, mapping_min_folio_order() would try to
-> dereference NULL.
+On Tue, Jul 28, 2026 at 03:47:13PM -0400, Gregory Price wrote:
+> madvise_cold_or_pageout_pte_range() resolves the folio backing a PMD
+> via pmd_folio() and ages or reclaims it without checking for zone
+> device memory.
 >
-> While very unlikely to happen in practice, let's just enforce that
-> min_order_for_split() is called with the folio lock held. We can
-> significantly cleanup the calling hwpoison code, and just get rid
-> of try_to_split_thp_page() to hold the folio lock for a bit longer.
+> The surrounding guards do not cover every zone device case:
 >
-> Just work on folios now, which further cleans up the code. We just
-> have to be careful about doing the page_folio() after splitting, which
-> we have to do already either way. Do not change the way we split for
-> now, this needs more thought and should be done separately.
+>   - can_madv_lru_vma() excludes VM_PFNMAP and VM_HUGETLB VMAs
+>     (so device DAX is filtered)
 >
-> Cleaning this up we fix another issue: in soft_offline_in_use_page(), we
-> would currently have leaked a folio reference.
+>   - !pmd_present() branch above rejects device-private and
+>     migration entries, which are non-present.
+>
+>   - A present zone device PMD - e.g. a device-coherent THP - is
+>     not filtered by any of these, nor by pmd_folio() (unlike
+>     vm_normal_page_pmd(), it performs no special/pfnmap check),
+>     and would be aged or paged out here.
+>
+> Skip ZONE_DEVICE folios explicitly during MADV_COLD/PAGEOUT.
+>
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Yikes...
-
->
-> In folio_split(), document and assert that we need the folio lock.
-
-You mean min_order_for_split()?
-
-> Drop the questionable VM_BUG_ON_PAGE(!page_count(p), p) check entirely.
->
-> The folio->mapping problem was identified by Sashiko, and Li Youhong
-> reported it by sending a proposal fix.
->
-> This likely does not really warrant CCing stable, but I expect little
-> conflicts when doing the backport, so let's just CC stable because of
-> the refcount leak.
->
-> Reported-by: Li Youhong <liyouhong@kylinos.cn>
-> Closes: https://lore.kernel.org/r/20260804035828.2684059-1-dayou5941@163.com
-> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-A typo above and a nit below about a comment but otherwise LGTM so:
+LGTM so:
 
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
-> v4 of the last fixing attempts:
+>  mm/madvise.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
-> https://lore.kernel.org/r/20260806031958.677935-1-dayou5941@163.com
-> ---
->  mm/huge_memory.c    |  4 ++++
->  mm/memory-failure.c | 56 ++++++++++++++++++-----------------------------------
->  2 files changed, 23 insertions(+), 37 deletions(-)
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 07a21ca31bad..ffd6a68320a8 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -395,6 +395,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
 >
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9b1f3b24f7e0d..a00df56a68b57 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4362,10 +4362,14 @@ int folio_split(struct folio *folio, unsigned int new_order,
->   * If a file-backed folio is truncated, 0 will be returned. Any subsequent
->   * split attempt should get -EBUSY from split checking code.
->   *
-> + * Context: @folio must be locked.
-> + *
->   * Return: @folio's minimum order for split
->   */
->  unsigned int min_order_for_split(struct folio *folio)
->  {
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+>  		folio = pmd_folio(orig_pmd);
+>
+> +		if (folio_is_zone_device(folio))
+> +			goto huge_unlock;
 > +
->  	if (folio_test_anon(folio))
->  		return 0;
->
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index aaf14608b30e2..f4f3f1fc9eaff 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1705,26 +1705,6 @@ static int identify_page_state(unsigned long pfn, struct page *p,
->  	return page_action(ps, p, pfn);
->  }
->
-> -/*
-> - * When 'release' is 'false', it means that if thp split has failed,
-> - * there is still more to do, hence the page refcount we took earlier
-> - * is still needed.
-> - */
-> -static int try_to_split_thp_page(struct page *page, unsigned int new_order,
-> -		bool release)
-> -{
-> -	int ret;
-> -
-> -	lock_page(page);
-> -	ret = split_huge_page_to_order(page, new_order);
-> -	unlock_page(page);
-> -
-> -	if (ret && release)
-> -		put_page(page);
-> -
-> -	return ret;
-> -}
-> -
->  static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
->  		struct address_space *mapping, pgoff_t index, int flags)
->  {
-> @@ -2509,9 +2489,6 @@ int memory_failure(unsigned long pfn, int flags)
->  	folio_unlock(folio);
->
->  	if (folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> -		int err;
-> -
->  		/*
->  		 * The flag must be set after the refcount is bumped
->  		 * otherwise it may race with THP split.
-> @@ -2526,24 +2503,25 @@ int memory_failure(unsigned long pfn, int flags)
->  		 * page is a valid handlable page.
->  		 */
->  		folio_set_has_hwpoisoned(folio);
-> -		err = try_to_split_thp_page(p, new_order, /* release= */ false);
-> +
-> +		folio_lock(folio);
-> +		split_huge_page_to_order(p, min_order_for_split(folio));
-> +		folio = page_folio(p);
-> +		folio_unlock(folio);
-> +
->  		/*
->  		 * If splitting a folio to order-0 fails, kill the process.
->  		 * Split the folio regardless to minimize unusable pages.
->  		 * Because the memory failure code cannot handle large
->  		 * folios, this split is always treated as if it failed.
->  		 */
-> -		if (err || new_order) {
-> -			/* get folio again in case the original one is split */
-> -			folio = page_folio(p);
-> +		if (folio_test_large(folio)) {
->  			res = -EHWPOISON;
->  			kill_procs_now(p, pfn, flags, folio);
-> -			put_page(p);
-> +			folio_put(folio);
->  			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
->  			goto unlock_mutex;
->  		}
-> -		VM_BUG_ON_PAGE(!page_count(p), p);
-> -		folio = page_folio(p);
->  	}
->
->  	/*
-> @@ -2861,9 +2839,8 @@ static int soft_offline_in_use_page(struct page *page)
->  		.reason = MR_MEMORY_FAILURE,
->  	};
->
-> +	folio_lock(folio);
->  	if (!huge && folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> -
->  		/*
->  		 * If new_order (target split order) is not 0, do not split the
->  		 * folio at all to retain the still accessible large folio.
-> @@ -2871,15 +2848,20 @@ static int soft_offline_in_use_page(struct page *page)
->  		 * preferred, split it to non-zero new_order like it is done in
->  		 * memory_failure().
->  		 */
-
-This comment is:
-
-		/*
-		 * If new_order (target split order) is not 0, do not split the
-		 * folio at all to retain the still accessible large folio.
-		 * NOTE: if minimizing the number of soft offline pages is
-		 * preferred, split it to non-zero new_order like it is done in
-		 * memory_failure().
-		 */
-
-Which references 'new_order' twice - probably need to update this.
-
-> -		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
-> -						       /* release= */ true)) {
-> +		if (!min_order_for_split(folio))
-> +			ret = split_huge_page_to_order(page, 0) ? -EBUSY : 0;
-> +		else
-> +			ret = -EBUSY;
-> +		folio = page_folio(page);
-> +
-> +		if (ret) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-
-Wow, incredible that we had a refcount leak here for ages and didn't know. Ugh
-what a mess this hw posion crap is!
-
->  			pr_info("%#lx: thp split failed\n", pfn);
-> -			return -EBUSY;
-> +			return ret;
->  		}
-> -		folio = page_folio(page);
->  	}
->
-> -	folio_lock(folio);
->  	if (!huge)
->  		folio_wait_writeback(folio);
->  	if (PageHWPoison(page)) {
->
-> ---
->
-> base-commit: e5492213654050379e78ec6f9acfd6c9fe00f334
->
-> change-id: 20260806-try_to_split_thp_page-a359f4d8c90f
->
+>  		/* Do not interfere with other mappings of this folio */
+>  		if (folio_maybe_mapped_shared(folio))
+>  			goto huge_unlock;
 > --
->
-> Cheers,
->
-> David
+> 2.55.0
 >
 
 --
