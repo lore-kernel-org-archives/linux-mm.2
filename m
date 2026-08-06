@@ -4,79 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA670C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:35:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6578C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1D3E6B007B; Thu,  6 Aug 2026 07:35:39 -0400 (EDT)
+	id 9978B6B007B; Thu,  6 Aug 2026 07:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A6FB6B0088; Thu,  6 Aug 2026 07:35:39 -0400 (EDT)
+	id 96FA16B0088; Thu,  6 Aug 2026 07:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 848286B008A; Thu,  6 Aug 2026 07:35:39 -0400 (EDT)
+	id 886BA6B008A; Thu,  6 Aug 2026 07:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 539C36B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:35:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6A81A0778
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:35:38 +0000 (UTC)
-X-FDA: 85070639556.08.DAEE18F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EF6D6B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:47:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6EFC1206EC
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:47:29 +0000 (UTC)
+X-FDA: 85070669418.03.CFC2FF2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EAEC21A0003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:35:36 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D+6XGZ/h";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 01CC2180006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:47:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6qHYLQb;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786016137;
+	s=arc-20220608; t=1786016848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+F0RzuVtNz+eojtGhM+HYo6D1XEZrIxjfPHKREvRLU=;
-	b=ycJQUV15bpt/wTa0y1oUNpt1fsM8iRBa9vYZQHpGPXheUhwkaVXRZyUiYIGebUtf2Xk9ZM
-	x+DfWeFbLuC14JrqjKcwAmTb1QVy39DtD+rbhhvs8X02PwpZ7CcL/tBSja9ibtqA8DlXFj
-	PaqDBPTcUfTgxJGR9rmcoKtQrCILYeA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D+6XGZ/h";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=RD6YcKJByfHDc/oLLe63rWqQqw9cay7OOY1dqFAnW+4=;
+	b=Lm7MNlYWBr27EEAbW36csEblccEjLFWBGAyITbzMeEB267pY4NMA/FVdAJNfSLvy0w4+XA
+	1Wsoz7Xavr08PfPOEQqMf5m1FysknLtBS00opPQr3l8aBjxnBKMtQkWwwJF0RSgX0T/gs5
+	rnj91ixtdoE5+tuZRjRI59pr/dLLvKc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786016137;
-	b=Hx0IW8FjWkNPlvcVVTArstPH12pI9Gw9gxjxeX+DdljwaaAwCV4ntvj0EhEb1X7ObtbjKg
-	cTR5Zl/Tl8wRRu+VyXagpiAP7qZ27x9SRfDZEC/RrkNmzfJBjBWtgwH0/XVGqRtmBf1VZc
-	dvJSyV+L82MiPX22EBUpFBgl9qbt/Jo=
+	t=1786016848;
+	b=MhDmqirbPPYe7ajQIWe//bvcmyprPBgptaMJV/vDgEYh9kJIvZ6y01vOzP//3shEEtqNPx
+	y2BE0rCtPx6kxBhe7hi8sJ6D2Wec5Vx2SOj4ZJ4/RUjPUL6OGE/g2YT+a0l1DoYY3gO3aV
+	PbO2KffTrJSJXuQczYIwfC9z8Y5/OLk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6qHYLQb;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2410F4120E;
-	Thu,  6 Aug 2026 11:35:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C2F1F000E9;
-	Thu,  6 Aug 2026 11:35:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36D9C4024F;
+	Thu,  6 Aug 2026 11:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF67C1F000E9;
+	Thu,  6 Aug 2026 11:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786016136;
-	bh=o+F0RzuVtNz+eojtGhM+HYo6D1XEZrIxjfPHKREvRLU=;
+	s=k20260515; t=1786016847;
+	bh=RD6YcKJByfHDc/oLLe63rWqQqw9cay7OOY1dqFAnW+4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D+6XGZ/hqaszvFrMxClhmjIejkkpunmP+HkRtEn60r2qHNOn4GxTSTJYAf8YvKHR1
-	 vK977umQqmd7c8GlZ0HK/6iH3wE3LmJTmMT6Uj/bwQBP2DiR13DZa1DbGbpUAqWnIg
-	 QQ6UG9rweFFW91srrvAHYUb50WMc3T+Nk37Xum6iSVtJgUzhsVphsgerdZLAJ2ny77
-	 P2iEmLyn9VfaMo5XS3Te6PZLeWZP2PGQ8idcqQNRVKPrbUFMuybFPzH+cpsWn5pdy+
-	 ALHhFRgeg4Hf1uO+g/hpk+vE+vNFx8h8kvGmxYGdAnNyLZJr/1FmC/cMAYZsg7D0C8
-	 /E6VIrHqwRr8Q==
-Message-ID: <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
-Date: Thu, 6 Aug 2026 13:35:30 +0200
+	b=Q6qHYLQbqmvs+gjo6IaFmEnViBrtk5aa4swW8Op6CjZQR4yF3y+0bGEGS+1ZQUrzN
+	 AvG559mt5Q7bCsonb/xBfL7TuNK18S/1NwAL2hoVL6Ypx44SV/la/XxT4lmd/QKlxw
+	 eqnWPF0hbbYeFqE/YOdq8gkseE6CGICFse9pejsH24x7ycZYkTlAzbSuipFYstLLzf
+	 gqG9OJ3ZN5oEvaJqcySkX2g93oOqVPD7b4i9c8mwtJwrXf6ePNa1Ku8OnA6mikOvZT
+	 O3fL96GBGLBt4iykoSgodILubgw3YZSoht25HcYTzk+eSxRee1vaxujaEj8xNDNGbj
+	 Repaf/6nOzaTw==
+Message-ID: <70cb93fc-22d3-49fd-9103-29a4759bc39b@kernel.org>
+Date: Thu, 6 Aug 2026 13:47:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting large
- folios
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Yunhui Cui <cuiyunhui@bytedance.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
- jannh@google.com, 00moses.alexander00@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
- <anQyoZgi5Urnvvjw@lucifer>
+Subject: Re: [RFC] mm: Drop pxd_ERROR()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260806080639.1916749-1-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anQyoZgi5Urnvvjw@lucifer>
+In-Reply-To: <20260806080639.1916749-1-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ejpmarrx11jntmcd7k3d4acsz9rrd6ho
-X-Rspamd-Queue-Id: EAEC21A0003
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 01CC2180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786016136-569772
-X-HE-Meta: U2FsdGVkX19CzLH69rEaN/CF5zPkn81U8NO6c/5FYa86LfYmVIgktZslXJQm6cKJysD04ohfmmXVT2D7KuNxlVYDOWXeNnqBIjcGO9X47upG8+soE0MymbRGD/dFADzB8y21B7pdvq5bdp5nzJaZHNT57I8zkJsNWrMaWtw9cAIFxO53r1YAz9U/vtLug1LxbFwRpQyw1lNjv7LRGk44IS3zcA1l6ghLO+SlOhxTiu8O5JqbBguNgbDWwfn44TsXD+G6ppGanhrqj/hTITXkXQHSUublnu72d/4G5vGUM8vL+e8iM6S/04sz6vbxQ56nRURzCcH+AllAh4abMtc8KCyP2tsXYvwP8zSvSS6Aa/JUHenWu2cEKNF1Sd3DooK2yq6xM4BvQhYeoxARvkicMxYb3slsPno8rzc4MWJyaDpX2RKq7Sf48EDzfQRKardtGoOGlTaNl5sHTjd93eBdanOJshDR0zKnaLI0patXiPaGZ9Y4mz0BvCq6pZ9BHthFc/cYBMCBDC+Ns0NKvPODZWi4uFuJ5Eeii4w2lpEAeHy/YDlnuxQLav6h7LnAq23tBiRs6J3nmCPB55Wz3Kc8pJ9HVmralP+xiQWKmRZr8vqUuB4bPI4k873Wgrf/mUOeY4/Fqtoi4kkpgcAFv8ybkyfi82xjnVgdwhr/ZTooKzSuN14QrZZeIPhXAfz71q0hnHSjV02tGPw9ePVqKfHZn9XyZj4bx52tlDmcwB+GY9xe9s4YwLBbh/v5dk9mNUK/OY2mfEQOoeR2z9jXEcilKIPpLnxqdo5XPX6y+wn+AYOeiGRzOcuXGXjiSyyvYQoqnBxGIzDkpun74bJa2ZBAGJIBQZciAAve3zK8JjyeaIn5FFkSQphKLD43bZafKKNlumyimV1wsQwRjRxPQiVOUw1lSmsNSllGi3YASg99t8y3xmziz70RVoUlyIJdB/GtmEWDWVrSzAFBRzDNrAM
- YUEbttxJ
- fFr5JKtj8EUCH7U5EwuCo7eGvTDoLGxYDFwrrs7Ds1pGNgt6Ek+Yu90vFCpPrwqZqLZXmhpisqBXdDyJyWP36vRB5z/bKK2UuhXWTshAwlUuYu8yQ8ZekXzn4dP0XDpVPq587dyg1HiAN62NOfQfHwTG62AFQOoaLbTNYhhKFuhYFrGWNtSJzlGRfRo/2BJKmOkv55bg+SWnRFRhu0ZsIP7mh0BrRXGLHy/ybzc1G4DdrNRzzUUmM5ouZ4pcCkWKdRuvYrQPHszYw0JDHdlm8GavRdmSGx2CGnpTwVb1BAxrY6bG9yAsZsxe7IbGGu6XqBVFcp/m0fzEhTxk=
+X-Stat-Signature: xjtmu4ubiwkgzifpshfc1w7kzo99jqru
+X-HE-Tag: 1786016847-599804
+X-HE-Meta: U2FsdGVkX18N39aWoOquECl7CwrX7GpP/n1Wv1Hx4jR4E/X02LUiL8vw2IE97Lon+7zPc88Cv569TAP0bj5R5hdCzW56LZ5aIzZkzjREkO3sTvu45hfVIk9L+0+0rRpkXL9zwyJM5VnB7s8ge6oBfnP4aoge5Fslc6202lHsRFquXxkU0tf/SPnq5KKZ6RywfNLMteKdOx0Uzo/SMaMC0/eBcOCJiug0ogopPjoXfrf+MXH4cuUgs3BvRR2hbEvV+lTqp8emlF7wWF9MYzjJBHnqfMqANY3GYBwMhPH98xEQ57Y7fJed8ST9HX+qg8dUIaD8ZDqwWYldwUw+DESirjdwUDgvAypEp7mCLQPpnEB5m7X0UY8j0RuJ/aNhBAp4CCV8AUn0XAy5CzcBkgdcsIyVE+4jvN0yTRf0dawtn5lHKh9zD/+0PgQvxSv+bizU7fMag2w6YCcQcYmN8yj5kxVujCgtbAmBjncO4/NFUg0bU2QtJaXlJOQEML1VWwURaosEf96SZLppK0sbCtt0NVCLYqwBStI5GtP01dpJCtfz4NMp0Q4PdoakyfOqnlP1+BYH9ROFqPH5oSwnNSmYuS5YTsY98sdZrXfZ6Eoz2AhWL/7Ou3orHakBaDZFfgNmBye7Hfp83P+EHUzPg7YPEzuyZ62/9AbgxCPzRltVxfwQ68XYpQa6FZ6i6d2tb8PmVMc34jVWLSdJeHUx/4lSaBwzMLIsdRJPGrlt2OeRkqpVH/BlDBojT3H+p/ybTBsJ5wJe+k8n89/orksflYpi1Q30tg07ZDK93HE3ErZ6LRWInpYHeDWNVkKqPwM1n/hsUboamYlT78AbMWgICy4ivYIQNP5ll9bdpPb2n2rokoLLnKde38CwiKGwd1jpU+JLRSr8GcGoDz4pyclsta5sny6lReiuHf6vqrxZ+t+8m46h5ar9dh2q3O8kYZQq5LbFopX5ZxQglY6MtvpeuQv
+ NwaJRlIb
+ VtXKPX2ZsFHJtXM4stj4bEjlXeL2EgVpDie03U+HkYeZF0UwLj3qJhuE2tdx5lu9dAOQj7laTh36BywFjH8OdtuaxMQGhItU2nqFnwiP0+UoNUbsaOQrVM4wZYT+7t/KZ+YHJuuLTg3VckDVM36YAD/SnxQTXDOT75/VlYC0MIIf/65DXqYqLJxyG12sMdIEe/NrFheWYt8Cj1JYkS8uLK0C1ybNK45ObnH9rBmhAKqi14HrBCvFz8H8kDhizbvLxqq9D2S4ldbj/FGH+mkkEAc5DJNrM405h4Ti7vtVsmMzpnqVzjWWsO/EEMlW6u5XENe30e7TPVM4Tt7bXd3FoBFx/RLSEII8BQQh87pVRgBs6N+XF914PYuximfCUeUsKWEiaSrJYH2lEXG8AAJXkq4WUb1Kv2p6nAuaz1/LEUcAHfJjRl+N/31UON5DCy3qeSG0IA2H1AaPWgOwuY7m86vB1YdsDc0/m/Zp/iJMeJIFEmYkRyhhZKozX5sJxE3Gbf5Il
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,33 +137,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/6/26 10:06, Anshuman Khandual wrote:
+> pxd_ERROR() has been used in generic mm just to print the page table entry
+> in pxd_clear_bad() before clearing those out with pxd_clear() later. These
+> pxd_ERROR() macros have been provided by all platforms which basically did
+> the same thing.
 > 
-> Let's at least split out the folio check into a helper to make things
-> clearer:
+> Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
+> page table entries thus completely dropping dependency on platform provided
+> pxd_ERROR() macros which can then be dropped off. First move all required
+> helpers in core MM into a header file which could then be used else where.
 > 
-> static bool poison_splits_folio(const struct folio *folio)
-> {
-> 	/* Hugetlb is, as always, a world unto itself. */
-> 	if (folio_test_hugetlb(folio))
-> 		return false;
-> 	/* Soft-offline errors out, hwpoison traverse DAX intact. */
-> 	if (folio_is_zone_device(folio))
-> 		return false;
-> 	return true;
-> }
-> 
-> Then for your patch:
-> 
-> -		size = PAGE_SIZE;
-> -		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
-> -			size = folio_size(folio);
-> +		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
-> 
-> I tried writing something that was neater and nicer but AI kept pointing
-> out how it was totally broken and I really really hate this code (not your
-> fault :).
+> Although some platforms still use those macros internally as well. In which
+> case just move these macros inside the platform for now.
 
-No, I don't think any such special casing on folios is the right way to handle it.
+No, just get rid of them first.
+
+The ones in arch/sh/mm/init.c are just supid:
+
+if (pgd_none(*pgd)) {
+	pgd_ERROR(*pgd);
+
+printing a none PGD? Stupid. :)
+
+Then there is arch/parisc/kernel/pci-dma.c, which just open-codes
+pmd_clear_bad() ?
+
+	pmd_ERROR(*pmd);
+	pmd_clear(pmd);
+
+
+Anything else?
+
+> 
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org> 
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This applies on v7.2-rc6 but after the following patch
+> 
+> https://lore.kernel.org/all/20260709044334.1741263-1-anshuman.khandual@arm.com/
+> 
+> Would it also make sense to just drop __FILE__ and __LINE__ from the output
+> in pxd_clear_bad() helpers as they always print the same details regardless
+> the error path and does not add much value.
+
+Yes, drop that, it's nonsensical given that all relevant calls are from
+mm/pgtable-generic.c
+
+Thanks for looking into this!
 
 -- 
 Cheers,
