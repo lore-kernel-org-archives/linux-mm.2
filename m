@@ -4,134 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C023DC56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B60C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B993D6B0098; Thu,  6 Aug 2026 09:45:34 -0400 (EDT)
+	id D9D716B007B; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E6C6B0099; Thu,  6 Aug 2026 09:45:34 -0400 (EDT)
+	id D4D6A6B0092; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39B56B009B; Thu,  6 Aug 2026 09:45:34 -0400 (EDT)
+	id C3C0B6B0093; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E7516B0098
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:45:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05FBEC0750
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:45:34 +0000 (UTC)
-X-FDA: 85070966988.24.5FE48DB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 397C0C0008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:45:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQpFARiz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B6686B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 284FF1206B5
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:50:21 +0000 (UTC)
+X-FDA: 85070979042.26.CC9D895
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 15B3640003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:50:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=PGFtxNYd;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786023932;
+	s=arc-20220608; t=1786024219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jAk1Hr6s5yQyhKhExTE18XybtKCeypABPp+ECDjJHbQ=;
-	b=7pAvCkyQiFU9cksJMoWwX293EDTsGeaDoRJZObwCg6yq9Y84gn/NJVvHpLOVNgyF52Vnet
-	24oXJkEvQhp+5xtvrlCqMDXTPAbTidBNo/Bq+yhoRtlC4ivKHzqQ/UUJSu4smAry87xs7W
-	1yVH1Kt52ViEncMtgQBdwn+b0oRD1os=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQpFARiz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
+	b=ws4rGUShxvF0EwVZ63fw/PyU7PDxHG3Wl4r+WPw373ums2Nae/lGKoOGl6UpnBM5teWPhL
+	HOolmBw1WDE6f8MdTwpv7utGG1PhXFu5lrbKdJJjqqYfoMVXjKU4RURLQqRkSBN97Np6QU
+	zd8jUtS4K6jLFqy+hAt4P1sFMropjmA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786023932;
-	b=eqihrdmV58v1PFQbvJtxWK0xDFifnpL7bJfFlOvR9aY4439z6aGPf0sDOonLHCM7olXZXs
-	QSKtUhTQV22sa/LWoMwHrST8j/35SvOac7N8+0kNZ8OSg7aZ/FwJQ6riJe9HjcPIrcGX22
-	hbaRUlMxDAUAkLEGUwOfdb1bOmVE/nk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81A7B414A9;
-	Thu,  6 Aug 2026 13:45:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4721F000E9;
-	Thu,  6 Aug 2026 13:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786023931;
-	bh=jAk1Hr6s5yQyhKhExTE18XybtKCeypABPp+ECDjJHbQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eQpFARizBXLOyawJDeTwY/7/bSx37TLPm4JfgEQNEFHdUJxHWtTJ9GeyZj5uaYXuS
-	 3VCCxLZMzaGJvI60f6tEPJy4UrBWR0uZP6vYoVa5aQzAYtDIpO6DRSRcQg6z8gGe9I
-	 5E8DELbmr4yEp2URNXIS11Hf8ZSJEOexSwHnFHGQrvr4TAaN6rEfHEvCP7Zhhiu1hF
-	 xIFddw+EOJwi18jUHIBfhOXdYQ+ERqgGRV/2+Fhn1UMVUprHAtF0Y8WlgP5qNFffTi
-	 D2uIcyE2qm/JT74T/RdnouOijb+TqokwIbDfbnCVxjfDDuCH4xM19W0ESbXilm+/PZ
-	 eMEJbVARO5SQw==
-Message-ID: <9d0d98ea-05bd-43c0-bb36-68aea62cbde8@kernel.org>
-Date: Thu, 6 Aug 2026 15:45:27 +0200
+	t=1786024219;
+	b=qQALVsCIMY1uqffvH9zhh24xYLrvOFZ7LK0vSNvmNWRcGcOkGCq+HpoP4rydsG/9R54chG
+	MlB+97jxbxBrxpzfTSZilg9kW3iIyr8fmtzUUlwmpi/UE4Vjl+YmzUcVhGtbC59tR6eIkN
+	ir/UqU8tl7JA+jHcXc0qMQc5ioubBmY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=PGFtxNYd;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-936623c6dd3so24795285a.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 06:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1786024218; x=1786629018; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
+        b=PGFtxNYdx0UgjIGkgI9mdLEs+f53D2lcnU2jIde1996G/WgJCDQucXE3jMOR1SB2IM
+         0mw7myxk9DXm6vHdXTlI0/l0NNeDy6buiqSFMjJm2jC218WXCC0pMj8+FeSY9SMgKrxW
+         ODe/eEne17CEwnPpuc0Q9cUBMxlNFk6mxOndkPBjIThfsp54N/IirqRVfxVQplT7Eu2A
+         S8ibeSe0RLCrJWhunwTdPSgKduI/91MfLCK58fKLD9t3Ip9iwGGQss3UQEV2vAzpHG+g
+         92dXLkuPpdDE7mwv7OHv+VhIHtN4THLSi+g8HTwtMLebMKRjIEck5xpPnez0oRYvfFv+
+         W0UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786024218; x=1786629018;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
+        b=cPGHLgPvi7sXTvQQcFZfXLgLhWbnpl84ew1u83AOYUFVgoMh17U8ne0DQrT0oCjFTW
+         U/MZV7MFGElnog5dXVo6w1hCFQVXHuPj5sniXu+C1JirxjHbtt9u/hX4aRza9/6rzz51
+         Mjl49lHp68rKw8Jn012qmUmHed5Od84He7knMNZOg0PUJ/ShIpr9XKJiLRTUJ/udIGc5
+         5cSjSDt3xxTQrvTjlEknIEcIhWXi558qCj/JNE+2RhXOgG51HEAut1Uk4MrGC0ySRGL8
+         BSf3Umd/cTrFTpi0DVUJ4/Vc7ejG6IoJXs7+pdJ6jzO5TnTUkzm7mkp68WQsKmKqeeDp
+         cPHw==
+X-Gm-Message-State: AOJu0Yyetyj+1i2Y1VvjsTQ6vhDsMGuHV2PxrPLugXkujThoaMJmbMx0
+	C7KG7LYFucX6QVZoD8qQDo7EzG2Dq1DaH0/8pLF3JK8P0HeejC3wGHHFVy65K3tTQ9E=
+X-Gm-Gg: AR+sD10rdcxYCDRDn3e63FnDgE5pCyRsHM+5ralhFKj48Wi9it66UOt/IB2NTKFq8Nc
+	2y3wYc4Cn6WHsRblavyVZ6C5RQKZmq9f6aQ2OxGXZecCjlt4CcBJSny9kSSdSMFixf3h9/VtjDR
+	denvZ+WfFITFWsXjzr6ZuRQR/379SgQjGqT6IMJ+uOWuS42q/4+j9IQdFjHMGIR/SkZ2hUwVXI/
+	R8jLLTJvvBtjRRSwqG7RReoDDQTb27feto8RBP+Z+0XwMN0/fIpRaiTGdgjS9uXLd0OVgAc65Kx
+	UWw72QzT8E5L+r8oaedQ+wkTJQIuA7uP12yFUhGmwUAOSAPEL3UO8cPV7337YkTKbY4/skN6MF8
+	9PBt60yXHNaG53QwFiQb2Je2mPK4BGDYsliPyCJInLsYosBiZS95bhIhPoknczt/rAXcAq+JeN+
+	GcolS5zKEhe1yB/pAH+lrug15MYwcyLOFiwN94zGTaDU19sGj2gjWS2O7D5Fc3hSy+kdUpEdk=
+X-Received: by 2002:a05:620a:450e:b0:934:ac0a:8bb1 with SMTP id af79cd13be357-9365de9c3b0mr432348085a.8.1786024217836;
+        Thu, 06 Aug 2026 06:50:17 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9364a4260c8sm409474285a.11.2026.08.06.06.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 06:50:17 -0700 (PDT)
+Date: Thu, 6 Aug 2026 09:50:16 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Jianlin Shi <shijianlin11@foxmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org,
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+	ziy@nvidia.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+Message-ID: <anSRGASe5FIrqwlg@cmpxchg.org>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+ <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: khugepaged: skip swap tests when no swap
- available
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260804125351.1715708-1-agordeev@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260804125351.1715708-1-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: arz48qkne8pui8r9no9po8jusdfasxdg
-X-Rspamd-Queue-Id: 397C0C0008
-X-HE-Tag: 1786023932-322563
-X-HE-Meta: U2FsdGVkX1/ml6GCXi4qAayu9bpcy+i7o/2tPRaeI/lDPrJe4cC1wuV7LmgFA1TA0O1J1LP0NqqB8jnjaOqPcoiSCJuk20RTF85Z1cYdfs9RArt/ufEmGKdcW8EjamCULUwm+f4SIlAri1z66fGYTpU72q89qVkAmznjz9Ukopan8jheY55saEIMYZmY1XbIBXxR4bBK3cZJmSkB1o4VcMZPGzIBTNSLTaBF99v3GaJACILOaSgHBsCVjMaJpKWIpIfSq3Vhi/edXidrFLkHe2cEPjOlYlj9cQL7oyoYjHX3VzCC0w0Y9gIexd6RO9RI/qRBvaAlRl1LZp8ycH1OMFLQUuURnWs2xRMJx748m5xqHxPukysBqOI+GUbc1tSKOWkNrvFRamPYnT9+NFuGBPhrj0wS2xlYBEJZZHNAMPzavShGgLWk7ZoUoYsJ60Zu1/EuXrlCe9OwcaCbIvODgkXNpmSWMSEmgkwuLNX+SkxKZydIr+kpr7xrMVowFMhco7oWUyjO6EzxmX8IV1yoMJ/BYJuVKRv4lFbBHUS6odLQJeUA5zNKUdIkeobErK0V9Gh2wxFRrbA3yQSLrHQi7tCxvI6d1V6SunFBCApjWki1tWXtF+QEPKwYd671o+DmP2uuoxMwB20qr5qIBHPv+nRq/uSI/e8MnnO1ntmtD+O04O7pdN4SJrAx0TyBH1uYPhdoakfU0y4R8p/xTVK6bi1CyKa9MimavvrK2B2creyNMLuQH4Ty1o0+oY7ujm32JM5W0s+dKnzuElcjeO36Vw68ARV9D4VLXr97wwKx55SZRGrHJSJrNTk+/2o0RdNjLRmeJzbOoxgxPfLTg8o30nUOqhITMH9ASXqsC3KCXNzMfncE4eu4VVLpeussjIS+oJlIs52sTw/g2tzZvn88M+X2bAM6jJ8tShQ8iC8ahrP2Rh8PWNVQr9PVKV5H9BugWEYqueCq807dEaGOLMB
- ncHPLZmM
- kyo0x+/IfTltsiYSkJuCeljx7fpNjkfuPoBbBQJVppYf2iOMpp5Xrsq9cfw4czvVD+LKnzDYfECfst9/giNN+STJVkNMDyKnhIXvROUJ7XWsl2lxii/5aMsoerxqsr7gLbU/DtrBxaPWRuE8qag3GNCRXVSr1k1XF/PsYrC/m4wdWAhQv9wRWkOYODIoksOIapans/UDBRumfCbPzwSHn6kSu/tquD8qEnFLcrU9hco75eSzgM0fYthU7xjs45avKsAzjWak8pw1BaWrboD38o3HJ8bdKOexIEIuRbeyVz9oLCotqE00yoeUikJ4nGmiEaZTLrUuyHjXI1mI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 15B3640003
+X-Stat-Signature: ge5arfazjqo5banx9rns1xdpwgeemy4p
+X-HE-Tag: 1786024218-105672
+X-HE-Meta: U2FsdGVkX1+It/FtZ6MnvwKKbxJCrI4Z+/ihnei+eNf1tU0u5rNc/czxIQ0Tn3jFDD2lDcuQqYFW4+cU9KpSEXfmkCj+QX8Tx6ZrvKs9APUY2RLz6YKAUUuePTST6nZ7oMq77aaHyCEAcyFmrHENH1lhfR8FrTKcDaolXjhNWVBWgNN3Nat/K0qv47NGmCbsJh+7Y1xVL5CHNiMbeWjJNprpdeRqrCMsKZXwnsaEU2BBrNClaROCLUINm/HF+QZ5XDI4heFBFx58WYdij4AEUhLegcfswOC0XR/rH/4/9RVnrEwAw21wKNvmbGys6R7thbxO9ihGSpiTuZPP4qEBobfinmj4yGnau0ODljcKAqQT4ZtNFZWPq0b4e89phVMcB5+7xSmwQaTlG/4LvYPCoTeph5Yx+cVv+t7poBm8nJQbhGfCN49VHolSxsgYmAahCaFuCKafkgH0Rhbj9eP1zlENymxjb3lvbEoPypvwBXMneGIA6AV6GKk/2bPKPRLedgyOiE0R9PPSVUmbIRQBcHuJ8tb9scXehIYGVD9shPKyukNsaSCJkrM1y2qTJZ5pnBkx5TeQEoM3HY6Qdms8x+eSzUsuUsefCVrfsz43e294QWI13mOwdMOpgTfK0RS43x2Y9S/w2tslR+5XwAbYiAPJ1ab8zooB7PS1VJWHUxV8RbLT+oF5gepyGLUQ0k0PWIgIxoOLiAzNr1W5TeWivBMpmS8U/0ku/mFOJKTRSwPaWzHJzpK4c0wsBS63wx43q2RHdVv4dF2W5c5J0cMfWQleWJGYBtWGI0w5OyU5d4ZHONMuAySW9s8CFCio7bVKwjfy7lL0Xl1ccJL6SGF5nDg4XmofpHGSEIkxKU3FJ9b/uoFNWj/K2IC2LNTuu/XpZV9Lu/2Jd4bvXWEz/m/rnZX2aL55EmzN8CYBlsXZSiHN2t9tauwgcTWIhVIb8H1muNXal8EZIPTDfq7Ikpy
+ DqZzjvuC
+ dRIWgR3zM5rhdifUotO9zOXp8dys5DfkNzCriChfPfdJCzl0GDcWHRrDaFHtSV6PtvcPGIkc0Qhx2ky5K+jmpHo6DWe+cJ0TuSaGmYCfRhh/0Wy/+C5yEWusXDIE8FCAarD8TRewi4ecdcdRA29JtluQDROLrKosXIJgxWLPFjeskio29SBsTa2XAZR+ncole9h4N8/6CceT6eW+NRgCt8Hr4yfhiQOV7vHw+qQt1ZMTy8xfpnzxErPxAsnGTNwiqfj/VThzlaZsg0WeOGyE69gZdaC3aumMVApIcgNWbfo5lohtusQofdQ03oyP3KWtPWTdHgPTh8gJoVgsddxz/JCFS8i56JIPNP7U6sTUQkt3nsaLfIbsuzANX4oaYnlTqjlpC8HRjRJjq8HrjgcNjYGATYKfHjjWcASG2bre/BiMDIh/M1X+KaudkQuOJzwdeiR8Xt//sLnYrvg5BtFgFEeMWDsrgTPC0ONSf4LkYZikyMdsFGRhUk3M2xoTZw2qi4rYT0Rroyn1ikY13I6nNnbZuKoBgcYZgjSQdEA8WRVbkqxHGyIruHm8xmhJm9uAj6CrAaeVgM/LHfxk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,87 +120,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 14:53, Alexander Gordeev wrote:
-> When no swap is configured, swap-related tests fail because
-> madvise(MADV_PAGEOUT) does not swap out pages. Add a helper
-> function to detect swap availability and skip these tests.
-
-You should mention what the effect of that is.
-
+On Thu, Aug 06, 2026 at 04:27:34PM +0800, Jianlin Shi wrote:
+> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
+> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
+> even for read operations.
 > 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Fix three issues:
+> 
+> 1. Propagate errors from proc_dointvec_minmax() instead of always
+>    returning success.  For example, writing non-integer garbage to the
+>    sysctl now returns an error instead of silently succeeding with
+>    unchanged values.
+> 
+> 2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
+>    actually written, matching the write-only refresh pattern of
+>    min_free_kbytes and watermark_scale_factor handlers.
+> 
+> 3. On write, parse into a temporary ratio[] array and only copy into
+>    sysctl_lowmem_reserve_ratio[] and refresh derived state after the
+>    full vector is validated.  This avoids leaving the ratio array
+>    partially updated while skipping setup when proc_dointvec_minmax()
+>    returns an error on a later element (suggested by Andrew Morton).
+> 
+> Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
+> SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
+> the minimum on write; negative values now return -EINVAL instead of
+> being silently coerced to 0 (suggested by Vlastimil Babka).
+> 
+> Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
+> 
+> Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
 > ---
->  tools/testing/selftests/mm/khugepaged.c | 33 +++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+> Changes in v5:
+> - Size temporary ratio[] with ARRAY_SIZE(sysctl_lowmem_reserve_ratio)
+>   (Andrew Morton)
 > 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 10e8dedcb087..b254baf9e0b7 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -216,6 +216,25 @@ static bool check_swap(void *addr, unsigned long size)
->  	return swap;
->  }
+> Changes in v4:
+> - Parse writes into a temporary ratio[] array; commit and setup only on
+>   full success (Andrew Morton)
+> - Update handler comment: proc_dointvec_minmax() and write-only setup
+> 
+> Changes in v3:
+> - Rewrite commit log to focus on the two tangible fixes as suggested by
+>   Johannes Weiner.
+> 
+> Changes in v2:
+> - Add .extra1 = SYSCTL_ZERO to ctl_table entry
+> - Remove manual sanitization loop; negative writes now return -EINVAL
+> 
+> v1: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
+> 
+> mm/page_alloc.c | 24 ++++++++++++++++--------
+>  1 file changed, 16 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 0387d2afd535..51f35e44132a 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -6673,8 +6673,8 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
 >  
-> +static bool is_swap_available(unsigned long size)
-> +{
-> +	unsigned long swap_total = 0;
-> +	char buffer[256];
-> +	FILE *fp;
-> +
-> +	fp = fopen("/proc/meminfo", "r");
-> +	if (!fp)
-> +		return false;
-> +
-> +	while (fgets(buffer, sizeof(buffer), fp)) {
-> +		if (sscanf(buffer, "SwapTotal: %lu kB", &swap_total) == 1)
-> +			break;
-> +	}
-> +	fclose(fp);
-> +
-> +	return swap_total >= (size / 1024);
-> +}
-> +
->  static void *alloc_mapping(int nr)
+>  /*
+>   * lowmem_reserve_ratio_sysctl_handler - just a wrapper around
+> - *	proc_dointvec() so that we can call setup_per_zone_lowmem_reserve()
+> - *	whenever sysctl_lowmem_reserve_ratio changes.
+> + *	proc_dointvec_minmax() so that we can call
+> + *	setup_per_zone_lowmem_reserve() when the sysctl is written.
+>   *
+>   * The reserve ratio obviously has absolutely no relation with the
+>   * minimum watermarks. The lowmem reserve ratio can only make sense
+> @@ -6683,16 +6683,23 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
+>  static int lowmem_reserve_ratio_sysctl_handler(const struct ctl_table *table,
+>  		int write, void *buffer, size_t *length, loff_t *ppos)
 >  {
->  	void *p;
-> @@ -734,6 +753,13 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
->  {
->  	void *p;
+> -	int i;
+> +	struct ctl_table tmp = *table;
+> +	int ratio[ARRAY_SIZE(sysctl_lowmem_reserve_ratio)];
+> +	int rc;
 >  
-> +	if (!is_swap_available(page_size)) {
-> +		ksft_print_msg("No swap available...");
-> +		skip("Skip");
-> +		ksft_test_result_skip("%s\n", __func__);
-> +		return;
-> +	}
+> -	proc_dointvec_minmax(table, write, buffer, length, ppos);
+> +	if (!write)
+> +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+>  
+> -	for (i = 0; i < MAX_NR_ZONES; i++) {
+> -		if (sysctl_lowmem_reserve_ratio[i] < 1)
+> -			sysctl_lowmem_reserve_ratio[i] = 0;
+> -	}
+
+This could use a comment. How about:
+
+	/*
+	 * proc_dointvec_max() works incrementally. Use a buffer
+	 * and only set the values if all of them parse cleanly.
+	 */
+
+> +	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
+> +	tmp.data = ratio;
+>  
+> +	rc = proc_dointvec_minmax(&tmp, write, buffer, length, ppos);
+> +	if (rc)
+> +		return rc;
 > +
->  	p = ops->setup_area(1);
->  	ops->fault(p, 0, hpage_pmd_size);
->  
-> @@ -760,6 +786,13 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
->  	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
->  	void *p;
->  
-> +	if (!is_swap_available((max_ptes_swap + 1) * page_size)) {
-> +		ksft_print_msg("No swap available...");
-> +		skip("Skip");
-> +		ksft_test_result_skip("%s\n", __func__);
-> +		return;
-> +	}
-> +
->  	p = ops->setup_area(1);
->  	ops->fault(p, 0, hpage_pmd_size);
->  
+> +	memcpy(sysctl_lowmem_reserve_ratio, ratio, sizeof(ratio));
+>  	setup_per_zone_lowmem_reserve();
 
-See
+But otherwise, looks good to me now.
 
-https://lore.kernel.org/all/20260715133418.170386-1-jaeyeon.lee.dev@gmail.com/
-
-where I raise that we should rather handle the actual MADV_PAGEOUT errors,
-because there can be other reasons why MADV_PAGEOUT just fails.
-
--- 
-Cheers,
-
-David
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
