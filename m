@@ -4,120 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54EC3C56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 17:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A80EC56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 17:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A9B66B007B; Thu,  6 Aug 2026 13:41:01 -0400 (EDT)
+	id 723056B0096; Thu,  6 Aug 2026 13:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6812F6B0088; Thu,  6 Aug 2026 13:41:01 -0400 (EDT)
+	id 6D1236B0098; Thu,  6 Aug 2026 13:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 597336B0096; Thu,  6 Aug 2026 13:41:01 -0400 (EDT)
+	id 6105F6B0099; Thu,  6 Aug 2026 13:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2696B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:41:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A4A3580181
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:41:00 +0000 (UTC)
-X-FDA: 85071560280.29.491C695
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 105141C0002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:40:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iQWCevy5;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A1326B0096
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:41:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAB0E1A0189
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:41:26 +0000 (UTC)
+X-FDA: 85071561372.16.EEEB505
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 130B31C0003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:41:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALXUXSTq;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786038058;
+	s=arc-20220608; t=1786038085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s50/Dncm/XVDEXbgfdvtyBDU0LCq5hI6Hqz4Yn4A3oc=;
-	b=BALFd2rZyubd7xR+1WsHcz0rKdhc1GM2xh7vPSdDaudQlLIFpou1RdiLX3qG79smQg8URb
-	NcvvzAcBYfYGgFT+xMn/JljvRPDvfNwwuv0RweEeJ5OLsbcz49wNwr8WfZKjmPVg5wR2NL
-	cDT0fYaLsKFY32RjS1Auq8UE3czYclA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iQWCevy5;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+	bh=Df/ydgamO5+7P4cD1ZVVFnF9dgPe7CBl3Ddd0mKVtG4=;
+	b=Lrpijv9CPHpC9X9R581uKr9LAy/zhnIID6kzndipxBFiZ46EfL/fiGlGzELuUhJo1dOIn3
+	dekZO30q6SDUPbDKG0uMSSDfdiPuvAYdgCYxLNvX6gYUCy6du9wCcHnAu6pZhEfGTyFCGj
+	OVupQ2bRrEawKVS09pD4YyiWANMsUFs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786038058;
-	b=7IFVFsDrdIFPR7eE36tc/E+td0IGGs+WfNFhfkdxCL41eiotqM42KK9D866DHq/sArz7yM
-	9N8pzn6pkl7qFrQeNwHh95jPlb3epbWzRUZ3VpV/RdaJWWHr4SCpdpS4LSOB+NaU81eEgF
-	CeFBrgH0f4ftPibLOXSTEeGpw5j+EZA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786038059; x=1817574059;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jR6UAf+W3pRyagiBnBIthX9L1RTvVK8tgmNzQD67mJU=;
-  b=iQWCevy5joUw+yLiFZt4Jlqn9IrKF3pHcD2g8WQlNUNsBFjbRZFnP3J+
-   pKSAt7SrrqMYYkB4kxIiEci0+A+D9XabVqHW942ViCdYToZm9pP1k6iYE
-   h0PtuDIpIeMbqEpywcALO+NH9Vt5LkjaKf8d9DpE2QNUGCK5OKKATbzUe
-   FO+76olhH4ucyc+wvw93DHbBnIb71iAcqXEqOp6sQ/IVhY2J3zAIAeo/M
-   nMAn63v4CfPFBVfEsBTQMw90jaCDP6CdZqIrAClwYoVPBIOuiwevRbNhX
-   /UwDXO+F9kzAmUl7QSjjznA8SwkYkjausVE0y4wsOrfjZqzvdKVqHYEZI
-   g==;
-X-CSE-ConnectionGUID: YvcZxQcqSZq9c8KV20J6+g==
-X-CSE-MsgGUID: sYEnVwCoTwCqqt9gd52SxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="98151988"
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="98151988"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 10:40:57 -0700
-X-CSE-ConnectionGUID: 7DB5m3cyQx2LtjOXhuPo6g==
-X-CSE-MsgGUID: 1SUtF5e8QmWqOPxccB+TSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
-   d="scan'208";a="300373251"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by orviesa001.jf.intel.com with ESMTP; 06 Aug 2026 10:40:51 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1ws25I-000000004f4-1D7z;
-	Thu, 06 Aug 2026 17:40:48 +0000
-Date: Thu, 6 Aug 2026 19:40:10 +0200
-From: kernel test robot <lkp@intel.com>
-To: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
-	bpf@vger.kernel.org, coresight@lists.linaro.org,
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	mptcp@lists.linux.dev, netdev@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, virtualization@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-Message-ID: <202608061909.wj199SHx-lkp@intel.com>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+	t=1786038085;
+	b=Y8ToHPEJAR09m5+9PdFSV8K06GHa7Atk3rojEW/uiLWKju4mCFgT+Dg6zfb19SWHD0DT1E
+	eyNlufG3U4ps1F6eWFm/FqX0MJhaRbMxRIaIiHqTbpGYNJ5EjIlRy9hJ9JXMMccjyRNXnz
+	maA/C2fHCQCad+WsdAXNcWSJrQ3D0x8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALXUXSTq;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 392FB40E26;
+	Thu,  6 Aug 2026 17:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469AE1F00A3F;
+	Thu,  6 Aug 2026 17:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786038084;
+	bh=Df/ydgamO5+7P4cD1ZVVFnF9dgPe7CBl3Ddd0mKVtG4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ALXUXSTq1G0i2RW06eSwepVItMA9+Lw1QZhi+qLKhuaoG6PtIXgx0Jbe1PmFh5E/L
+	 1QdGKBZXN0Ju7Kwu5cJeipKb7JxMFyzjseFl9sSiVxgf0nqhflQ3VaIWeDST0jOL0Z
+	 Q0l/kju8iFzKX/UlDJOKjXpWoOlJr/ow7CJO+CAjkm4kd+W3EAHhcgv8GmQhm07+Ew
+	 2JcJto/7DhfIBqH3OipEgl0WXT+8yIb4RQkVehDtL5OMRy32PEJF3zz/4Mmsk5wAky
+	 nswNJ5Ngg4kgvV+yrymjegjynoefETscVFKxkx5QTUqC9WyK7ielIkNdJdTmtkGast
+	 BX0yOCKAawZMQ==
+Date: Thu, 6 Aug 2026 18:41:07 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: AI slop (was Re: [PATCH] mm/huge_memory: let special huge VMAs
+ bypass the THP) policy check
+Message-ID: <anTFxPf5dP_jxVcD@lucifer>
+References: <20260805055544.1568534-1-clg@redhat.com>
+ <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org>
+ <anSZpAjt84Pn7O_b@lucifer>
+ <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
+ <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
+ <20260806164517.GA140051@nvidia.com>
+ <anS6hcgMkEJocbDJ@lucifer>
+ <10b07d00-57e5-499b-a136-f2148e870d9b@nvidia.com>
+ <A403B054-108E-49E8-BFF6-BE5EF8E61C02@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 105141C0002
-X-Stat-Signature: caexe1rahhcmgxrb4z1hci4tenx33cpp
+In-Reply-To: <A403B054-108E-49E8-BFF6-BE5EF8E61C02@nvidia.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 130B31C0003
+X-Stat-Signature: egud617956s33kbz76w1zu6sgk5uordp
 X-Rspam-User: 
-X-HE-Tag: 1786038057-113344
-X-HE-Meta: U2FsdGVkX199SzAtfTxfpNHbNP0f8DKqgf6OydNzdWYr7f3oNJep9AVy8noUes7XaKTWYHgvbzFBpVPFU6mPlGmF4Sa0TkNnaTuMff2laqQKnZAbsmhwl5dwFDdPqrn3mlBnFZcXEFiAy/RvXwfZ80Tgk00xzKObUA/xSUovj97n+soCgTzozfqJCtiNa4E2S1IGJrBO8gQA2/kTByIKNaSW3ycn6ViqFdiiZuwCt6UI8dSp5dJZ515Lmv6G6z4R2BU/bdRTgJrqzA6O9ciM2F4zMDcW9tRW8im7KELyDtvgbaZ27Plir2Q4UgzroElRgdm2mUpzzlzmzot4gQbWTZAbvwO7Hd+mNSyBD/dkXswNqblW3S66W7ujs+TvNI93JhbxaJMZkM+/jQ1QOMk2mEBC+tCOCrBXARDb0UrR1jKcdV8C8YtbwsCUNljfeIyMFI1v6a7uwHzn/9FodLRfyzh3gbgpgKUhJ3kibwRLUHFcngxUzQZfKK+aTcuFDPR9DidbmmdDz3MALslhUkeilCh07FRkDQgiw1hV9NgTsGD1q07GI/lazHz4XzAY+nYv56vUsC41aoJVAbqYPuvXG4Dovm5koJheGMGwxrAMLS61UTQlNA4IpQwntGFur7dxv4cMeiJvQOA8H87e5T7oL2tAJChZpr/yPeVqHkmMJDOtPDznZNA/eekdrfiydVzCllnNAvonal04+0igWKAy50wi31STEOgLEjrMPT0zpCZoFDCqUXveOnwusGT9nqwjKD/GGGlPN51u4edwiw8ALo/ItC9w6zuLCfu0poKbdmAhuga8vH5Z5ohCQP961t31CFpn2ZXHc7BI2tOdJY1XVCiof0hphxTRUSXIcrXNIJNxYjkZsWDo4U5PkIr4VC8Si2UUkV1/hkdHMVBocxh2IZqelUu58yHJ3AYTwQMU7hUJq2icufH8L24Tszg1va5H+9e40b+WckCy7KIKy65
- VSvoF8mq
- NHpGmhVC4E96geuYfED0gZvsGilAKrwxwLrYBiReEa/AVkuDO5muWE8ZVMZoaiX0lzIg1kZFBJ61hOGQREkrPUZGQMcIQm0jF4KwRbLtBwl8KJz6vLTR/2/RL80m8feYBQDZg8Kd1Vy+tpK1Vlj6RZsSZaGP9zVVALF4mmuk4DUjitKl9aIuEUpaIpz9jxLFCGKhF1Rusruhzm8aEvMJ9RlQ08Mhonz5gc+3ETJHZGhR2mQ/ycU2klJTdwZ6w3YMhW+131qJp4XyK5v+xQeHnOyP3ftz/xaeENFPuVV7E9NHSCSpQL92ry0uyDgS2xzV0kDoHt5uSbHtxe970K+BLYhJW3jnLcddiZCRl0ojXGHfMsIoaQYn+nq98CNAjLtm5GkMQiIZNPpxulWHjD+2QHYqcEAVnrZKBxCYZXp1bbWvq2c+33HPQJiJoOhMyteCqScTiUnQPS2Fa46WREMaa+HRpcEdr12wDnZpi3cuFoLOg/tsy4dLNA/cvmw==
+X-HE-Tag: 1786038084-3781
+X-HE-Meta: U2FsdGVkX18OhAdAeKg+2dYSRD73DLFUFgqIbtE82mF9JJMLqt4qedlfbA9y1CFyAqiap9w2s5yPQ2+jzNLe3S/4LD3dO+cARfGFnanp0EiBdx+UfojOj1nD0p3OW0lwr/tOtkX0AmWY+rRRcKvOxuJRZEcUV6wh10HXDXDUbVy9FVFCosg139htIYPd2CVZUTxwOpdkBKtgqR0sGSaFtcGy820xW+TveRctA4cSvLh+2g1ZxJfJLF+lGvHGo3X+Exc7UB+iTqmhvGv09L26zUCCl3x2MQhUyhBXMe3iiKakppGWSgfXvWAMS2BihIRbJOUfp5ggvQqxze18Szm9B4hzc+4hFkDnC5xgGChdpU7301FkKSurgqKZ9w+lqJ8wCD4A4nBZD0OmxWXwgbbUoCnO2GykrC0B1j8JZleZQND8trn5Dhm1nFz7Fwq1B9TZJcSC/7T2mgh6FoFGJgcDrBL17xuAs76awqmJXN0uTfXJLVv8X1kroVRs28J3UDZOBJDmGDcHfhlazscwdkXyS1U9N4NIpr60E56p26vxEZKriC5Z73NkD0G15pDdzuUg7qYe5+KsQKvBAdCEtxfNeDNWnndxvsr3H7IPg6o+424fYmH4V5QpkazPB+U+EhZlj77DCr9v/b38f/9fDVUbdB633UjUYMbD2VOmDuapC0d3B6IzNjgMo4mzWGgjU2m9YOOCIR5LYQvUtG05roSKjbw9coleh92h/wh7WGm3Jy8+HKcsc9IMOXmR0UNY3gwc+hBS9vqUSQ4J4mgNWf8imL5DN4yPUHG2bxanlo1XJ0Onx5VVRN3PkgxZbCGLR/2Hky54tJv9EwIJ0jFk0O+4t88GagJolMcrNtvZlD+yZRVr1IOvvSHEgzYgqz3wnlPDzZx+iUNAogE26B5aA7oAnDsq90jlv9D4bQiQH3JJ9CoK1msQUJlsR/XL2MEhxnncQXSVlsj4HeDYaEdFnp7
+ oWq3rZBj
+ h0EQJKlUAlEbMfB9PqqxuqBUpxDAO6dJHf1cZC6Tb1kKSyDcb8mYqOu2AMJFHwbwOQKWDXNayWuBx5YEliScnJEezflb/i8BZAb/k0LBx6/3K64o5fwsgDeX9YLo+DpoQG40K5ulLVd40HZvhqA1yu/7ZS1RoUPlpRvQk9856U+EkGNxu9AYiLU5pSpr3xNyOvGUQh0tT5yxeZie6+Y4COnlGK8TNB5gAPTs0UNIi8PCDAU1zgoJmniCPDzhjxFs/14FPhdKqnOj7iRJM12QRHy8kOZs4SWo8QFKVnlEyvUYWmfY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +100,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Markus,
+On Thu, Aug 06, 2026 at 01:08:15PM -0400, Zi Yan wrote:
+> On 6 Aug 2026, at 13:05, John Hubbard wrote:
+>
+> > On 8/6/26 9:50 AM, Lorenzo Stoakes (ARM) wrote:
+> >> On Thu, Aug 06, 2026 at 01:45:17PM -0300, Jason Gunthorpe wrote:
+> >>> On Thu, Aug 06, 2026 at 04:47:07PM +0200, David Hildenbrand (Arm) wrote:
+> >>>> Just to be clear: Unchecked AI slop in any form is making my life
+> >>>> worse every day.
+> >>>
+> >>> I think eveyone's life who contributes reguarly to the kernel.. The
+> >>> only ones who seem to benifit are people doing drive by patches!
+> >>
+> >> And they shouldn't - we should make sure that nobody doing this can
+> >> benefit.
+> > ...
+> >>> Yet responsible use of AI seems genuinely helpful and quality improving :\
+> >>
+> >> Yes and I use it daily. It's really helpful when kept on a short leash...
+> >
+> > haha so true. A *very* short leash! :)
 
-kernel test robot noticed the following build errors:
+Very very :)
 
-[auto build test ERROR on perf-tools-next/perf-tools-next]
-[also build test ERROR on tip/perf/core perf-tools/perf-tools linus/master v7.2-rc6 next-20260806]
-[cannot apply to acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> >>
+> >> We're going to have to move to a trust model eventually IMO where random
+> >> new people just don't get to apply anything until they build trust with
+> >> smaller changes (and with measures for established people who start
+> >> sloppping).
+> >
+> > That sounds like a good move! It really is all about who sends these patches,
+> > and what their stance is toward creating patches.
+> >
+> > And furthermore, that's not even a change in policy! Because traditionally,
+> > that's how people started anyway: with small patches and patience. It's
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Markus-Elfring/tools-Use-fputc-calls-in-some-functions/20260806-165154
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git perf-tools-next
-patch link:    https://lore.kernel.org/r/48f2d61f-d468-49b7-881e-f00777db073f%40web.de
-patch subject: [PATCH] tools: Use fputc() calls in some functions
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260806/202608061909.wj199SHx-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260806/202608061909.wj199SHx-lkp@intel.com/reproduce)
+I should know, I did the Eudyptula challenge then stuff in the staging drivers
+then I wrote a book etc. you know the usual stuff :P
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608061909.wj199SHx-lkp@intel.com/
+It took years because it's you know a lot. And I still don't really understand
+anything (therein lies the zen state of knowing enough to know ones own
+incredible ignorance... :)
 
-All errors (new ones prefixed by >>):
+>
+> Patience is the key. Seeing patches refreshed within a day is killing me.
 
->> builtin-check.c:300:8: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
-     300 |         fputc(stderr, '\n');
-         |               ^~~~~~
-   /usr/include/stdio.h:155:16: note: expanded from macro 'stderr'
-     155 | #define stderr stderr
-         |                ^~~~~~
-   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                       ^
->> builtin-check.c:300:16: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
-     300 |         fputc(stderr, '\n');
-         |                       ^~~~
-   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                                  ^
-   2 errors generated.
-   make[5]: *** [tools/build/Makefile.build:95: tools/objtool/builtin-check.o] Error 1
->> disas.c:540:9: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
-     540 |                 fputc(stream, '\n');
-         |                       ^~~~~~
-   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                       ^
->> disas.c:540:17: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
-     540 |                 fputc(stream, '\n');
-         |                               ^~~~
-   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
-     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
-         |                                  ^
-   2 errors generated.
-   make[5]: *** [tools/build/Makefile.build:95: tools/objtool/disas.o] Error 1
-   make[5]: Target '__build' not remade because of errors.
-   make[4]: *** [Makefile:123: tools/objtool/objtool-in.o] Error 2
-   make[4]: Target 'all' not remade because of errors.
-   make[3]: *** [Makefile:74: objtool] Error 2
-   make[2]: *** [Makefile:1587: tools/objtool] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+Tell me about it :) the workslopload since the slopularity (circa
+late 2025) is slopcrazy.
+
+We so need some kind of a support group... maybe at LPC? :) I nominate the
+pub as the venue for this...
+
+>
+> > only with AI that they've been able to skip that step, to everyone's
+> > detriment.
+
+Yeah. And also there are a number of people who, bless them, simply could
+never get to the point of being able to contribute.
+
+I really do think talent is a factor (I know for some this is a
+controversial position) as well as bloody-mindedness, a certain way of
+thinking about perhaps some masochism thrown in there somewhere ;)
+
+I think only a small % of a small % have what it takes.
+
+In the past those who could not, would not, even if they tried a little
+first.
+
+Now those who can not, do, but do so with absolutely no understanding or
+sane guardrails (Dunning Kruger comes into play here also).
+
+> >
+> > There are some patchsets in my inbox that I instinctively just skipped,
+> > because they were huge new patchsets from new AIs (not people, really),
+> > only to watch in dismay as they burned up other people's time in
+> > review attempts.
+
+I fear doing so in case things end up getting merged mistakenly.
+
+But I am certainly a lot more quickly dismissive of this crap than I used
+to be, simply because I only have finite time and an infinite amount of
+work to do :)
+
+> >
+> > thanks,
+> > --
+> > John Hubbard
+>
+>
+> Best Regards,
+> Yan, Zi
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers, Lorenzo
 
