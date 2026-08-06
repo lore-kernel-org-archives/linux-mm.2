@@ -4,86 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A46C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34746C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:26:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACE0C6B0088; Thu,  6 Aug 2026 10:21:04 -0400 (EDT)
+	id 115EC6B007B; Thu,  6 Aug 2026 10:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7FD66B008A; Thu,  6 Aug 2026 10:21:04 -0400 (EDT)
+	id 0A09A6B0092; Thu,  6 Aug 2026 10:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96E516B0095; Thu,  6 Aug 2026 10:21:04 -0400 (EDT)
+	id ED1A76B0093; Thu,  6 Aug 2026 10:26:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 797176B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:21:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D3344072C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:21:02 +0000 (UTC)
-X-FDA: 85071056364.23.74FF243
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DD2E0A000A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:20:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2qalWSES;
-	spf=pass (imf15.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786026060;
-	b=SbfDBHd/wuL5FEG6wV1ou2nTHNRNAfkIvVBjSbFdZ7+rz7ac1GG4T3DbRA76SqaJFQkYDO
-	3m4XFQN0hSOFsxnHKrhOQYP4wCkff5AfUc9aw9IuJF7BDuFhNkg88RjjjxetANKynkhtYY
-	LyvuSoz5qf9VEy3UlHLfgHhJzPN+KMc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2qalWSES;
-	spf=pass (imf15.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F3BD6B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:26:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 198788077E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:26:28 +0000 (UTC)
+X-FDA: 85071070056.07.E41AB4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 443DD40008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:26:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SnJsh9bV;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786026060;
+	s=arc-20220608; t=1786026386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fca0tIgG3oEdos4L1qd3KNaXkbIGJZeAdl00nCfOtDk=;
-	b=HK7Ej3ToO5m1VUOCPzy/H2oQzhGnL3sh3hPydn00bsWOzm4OMOnqgMUghvoifUMPsNE6j2
-	mn8CLIgmsQdplfH3ViVGNdL2uji/dqJyf8aYtJaEMvyqjh0R7l0BRiqj/WBZuoiiJA/fim
-	jXQwdwYKc0U0rB9qv3kZZ7uMKAByTvg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Fca0tIgG3oEdos4L1qd3KNaXkbIGJZeAdl00nCfOtDk=; b=2qalWSESP6SRJiLjdPv3IonXnZ
-	SxdL/qoEeAJMN3ceNUpCMqY7kCU0ktGfsh1KB3cT+dxox25nGGxPl25LNz5OZ+5ntI+lN4kBCbLzl
-	RVpc/uiFvMDRU11RpEj6jTQu7fK8D2nJpGs+VByWd81Mnq85UkGZdbd5rS9wMOM8C+1FlKt2mOvlA
-	KmtMC1a2XqsEzkez+6GokBXE5ItkwgVb2e4XikvR7zff2lxHy8DHWR4t0TA8iieh+SiBJNIv/zZ0i
-	9vabymasg4HSFV+3W1HuTWEzQyYub5lpOriT0ft7XSCPcJALDN7D4WJfwFAr7OVa2N90sNKZMOPFP
-	XjBqlmbg==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wryxr-00000005yUi-2QtR;
-	Thu, 06 Aug 2026 14:20:55 +0000
-Date: Thu, 6 Aug 2026 10:20:52 -0400
-From: "Liam R . Howlett" <liam@infradead.org>
-To: Zhan Xusheng <zhanxusheng1024@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	zhanxusheng@xiaomi.com
-Subject: Re: [PATCH] maple_tree: Remove unused mas_is_root_limits()
-Message-ID: <khwyvdhbmc5fbkzwli2tpv3ujr7tnfdfh327bbebpnlmhc5loe@ygwbnqptpqdt>
-References: <20260805070529.4118794-1-zhanxusheng@xiaomi.com>
+	bh=pm44+rjMaMmNzpedN1v7slJ59DpJ7j6EBTW26pHYJik=;
+	b=BAjP0hSRUIfL5hdtV0FxvYajeqxNrcFCAC4tZXjLHJ/N7GKC4as8Z3kx8vJil51MwB4ZpF
+	QI4uG89+D98gHrseGjrR6fxAd8WFn22sYCJX5rL2G7lCNaTkLlat9xQWAoKn15J8CmPcbC
+	tEIHXDG1JQxXlBkbPqNDclwj+DvU5tw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786026386;
+	b=OlZtJYwHxz/rNSSlzwtwXE9Zl9Ef5mosLZn5E8qhAKSAyowuU+j/NbTKjF0wSBxMsRf8X7
+	PGm2IETlbiHfB+yobTEQV8wBuKWW0nQKn/a2lpyn95MMiDlHYPNj4u6X1oXlaAD4q46Tpw
+	OaFtTGPqGAvprEViIZPX8bS/ZPQgis4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SnJsh9bV;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 26B7D43BAE;
+	Thu,  6 Aug 2026 14:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F73A1F00A3A;
+	Thu,  6 Aug 2026 14:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786026385;
+	bh=pm44+rjMaMmNzpedN1v7slJ59DpJ7j6EBTW26pHYJik=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SnJsh9bVghFGUQLo4q7FXusg8tdyw+GFmZER/SFNErq+VKGkpCkBXtO4LmjNxfrwp
+	 KGaYM8zUJrkf/xjHudJpOhdLWh3Hqlun6SpUenj2lTuHNcuK96NMP0sFE9iBP3VVZf
+	 s/HR7Ojx4kpqnuHcYoLx7kjOfy5H4HUAG1/qCBlXwcmVjBTYo4GdDRIDYS4PrsXca0
+	 FPtqnEuiLdwnnJy6GQ42kn8wTd7nJYSqYGHsydTcuBTwFqB5M1wB5veqG3bS1tWGN+
+	 2HKMlDAowRAggRJLYKE/Sdj/Ux7BBjXYc4n8rRZXkNOaHKxueZ/qUD2r5pT0aAVzdV
+	 dyGnrv1hn3a/Q==
+Message-ID: <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org>
+Date: Thu, 6 Aug 2026 16:26:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805070529.4118794-1-zhanxusheng@xiaomi.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DD2E0A000A
-X-Stat-Signature: xpkj8jk4g3uht58dbxr7jce6zcyaqboi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
+ policy check
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260805055544.1568534-1-clg@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260805055544.1568534-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 443DD40008
 X-Rspam-User: 
-X-HE-Tag: 1786026057-281419
-X-HE-Meta: U2FsdGVkX19zaXijXGj4aDAyV8MNPKqBvd35Rf17lT7iAqdOZl8LAalmD37Kjbd8XUBQT976Q5Gfo2m8PFlD5lXEH16qQCKK7rqACAW64+xCNRkBXgnbW2giCMwrMHTM/6h3QnaF3igzMhp4n7gioEeaJfkWQoHlfrmLHVSbR2aN63zdavpRo7LHPk8PpKXfx8bkEHPVzdTfuOnnDSEZ3XckTXhSk7+dOxgsJawSj4Zi92H89ZA1A2n3BoI6Vb5OruzECkURERnuDak30CJW7poiKUFe7XrsKzgxoXNesxV4CABNaS90IGn1B/DcYYepatPypBQbJul4y0j3hXwK3liB3dAfBp4WWnOBGEzTkGc+vl/E+o7sKrv40W3XxUoPw1QF1qLN5suAdEyLIMFFr2/Fy9GUZYU7TIxBNwWzi9U8mj5i2t/ji3QOsWCd64zEBh8lOD8a3TdPX2kNv83pGi1Bh6c/jcdu7pK9JNYQeBlojjsnuBlVhsdoRrhuP7PKAzJw9XmwJwHHbQt7I1z6UF59gZvKakcjrDrnc5L2Oa2mGYkYRGl411bf233AouZVoNYGnGdB7YGmIH77+myMgHWwsehZ2qggNpuK7L8S4IOdrk/itm8xm+mCNmFMFlDL/HUL9tEx+ZV17Yo2V7jUeSn3GnbOadZ864NtULMv7aTB7DAFZoAVXW716t7KrLfNSZaigNDyrgMFW/qK/3yUcrNcgjblKwh+2dn5lCaU2GzunmKo6RoVumAdwLpIFr3LvpNeUjytg/sg7yUvUXh+ZlMN9GnZ1udYeTJlZJrnvh8CysLy+0PDX+4i8To5grWeNxViXH+SiMaIUblNxQJce6VFPV/8DIBRXCZQdtWJ7ce5dGC9nLB7YFI5HaaXkzRsdZHCvcq3GUK88kowjblwM1OPckJXvB6o7j7a0rGfvm26t6YW6v+LIPswu1FFTpkppeTJU+fWQcAlQjqBeKr
- T33+tuU9
- uzFWnEy5opTkQX5ahq15NLaS0R877dtZsxgnu+5tRHUfTvFC7OWtBP7Od0C4hUEyTVuptUcCn6gJciLkluFSz/Yi8AXGXIuEnDyeYU4i50idVzLFdc5/wuZQM+wwwXcf0jTgfv5g9aPKr7dCOlMuuxi3WmBzWZZaE/Te4vUziU6911UNX5/j/3qG5umT6kId7/e1iRz9nhmC98n46u4cBw33BEd97nUiEOvanFLxhb9F/QAiHolJTKDz2JHB2LUrSOnazwbpGYfBrkADNYViwq3PvzyXJXA2cgBbo0C8moNIaKcRFvGCmmy/q5Q7nrsRvepFxdXyhL1CkhBw2TRVcSCXVwy4LBEWwIbY4hmua7TIjMcEC40nUDJldG8ABVrtsE1r4+EoPEE5HICKT8slvvl//aPiRZgxo+Von
+X-Stat-Signature: pmcdf3y4jciottdp9xzj37344tidy1gt
+X-HE-Tag: 1786026386-854243
+X-HE-Meta: U2FsdGVkX1+ILxaWUdIcXUcq7JZE0yYUKyB+KUMQ74SYV0vWXLd/f/IRKdYU/bg+cGh5Fl3gxSElqoM03EACD2+E5JBA4PNqje4mSUlqI5FaAV8HL7D8ZKC72ol55CMELLSwrEfYoA3y6Liu6ATHM4VzFgEeOUg8+p/B/+viI83csWtiuZxxspEGtRRXUmjueYPp7ECiclnX/Mlb1QeS8SjEGIAERfcMjiuJlW2aUg9T9kGOlAH1PB6Pfzng1oOHCOL+Yp3E3arNB69tulelXaRtX3LVhbcyueFXXWtZuTPfD3xDKmeYOQhQGbgit3Y9r6MU08T+hISPda3lKlNuks6IYv/Zzp987nPQe9u3x0Sq6UbBT2ixW3m/2tkTnRMs6folUjrHAOiTYoblcHGuCUF9+3z/WlA66pI0QMLlp8o5V9o9yRThcyxCKVQi7l5FDHDol5YuhhturjaKVze4gWunWOO+/C6vZy5UxnAI51tWrW8itLm1M4BhkdKIf46t27v5pUB+++1zwzDT2onZtktmt4mzUx127uv9vhYGbXHsz7HEt76PJLjFv9vdJLuUI2JOgYC4hIKNEm84ZMx5E8iX6Jw6Cmn6tPY/GGWORA4C9oRhlO80prekEpcPp50QdorfpWyt61bBW7+AbRy7KBH+mH1ldN3tXpyy1NKiIWQK+nvkCUPGNIrxlB2FgqxG5XVjjsPIBGaP4HnpUPGe2fXGvBF1UBG5xSK6pj6DToaz/HnQ7jmbD5VVNy7BuEM9lcfo5xBFCJuFa22OZcpdrNOJ3KVdk6qdIQmCBSEIh+RpbKwil7TPl9OhTFOwbHNzs3x32l3M/YqLrI5H6lgFwglSwgVLb2SOyzcqT0IdpNjvs5th8YmZso3oQxjYyVsFuRFpnoGzqqEHUXbuWt4W35GErqcNi4NHg79zpT94p+7ckthGf1wfeq7WveoMbCmE0qlEr2USJKEZYEYMHu+
+ tW2gb3zy
+ kvlKIvo8+UVhmY0NyBkK1fXfaXDADO7YWhtodixY1txAHZ/m4uIEKd0t3bz3I0VWzM99Wh/sZl8LcCarFxJQ2B10KztaOsZwb4SlBKJ7kdsb4w6yEkWgnimMaaJ0r4uNto/wW133W21cRjIop3T4XT+eHXZltO237MFSXkc2Px6plMtd1qA/zD4T+5vPiAGSfxlqCGTJvJaHk9ggBmfSJkNolSVGmgb0oaVUNJ6gp6jbWA/88lxfT/Bf7iL9rVswFye1wWtjUsX/h5PEHV3kApTNCJY7z4EMb9i94uRxOa+tiI5aAmPk2GTid1GRf+KniumzS7qRIhPacigtwveqgUKdfiVf0zJulvhn/pfDyNDZL79GGwsysfRUYxoaEWAfPkMtd+++6P94hTV9pC3bNJVl+g9GWHcxhskwDwIZbpwxMgZ2MOoSQiHFA0e+GoFsFgqXDnNgrXWiK/ws=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,47 +141,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/08/05 03:05PM, Zhan Xusheng wrote:
-> The last callers of mas_is_root_limits() were removed by commit
-> b8852ef30c67 ("maple_tree: remove maple big node and subtree structs"),
-> together with the maple subtree state (mast_*) code that used it. As a
-> static inline it does not trigger -Wunused-function, so it went
-> unnoticed.
+On 8/5/26 07:55, Cédric Le Goater wrote:
+> From: Cedric Le Goater <clg@redhat.com>
 > 
-> Remove it. No functional change.
+> The global THP sysfs policy (transparent_hugepage=never/madvise/always)
+> gates the huge fault dispatch path in __thp_vma_allowable_orders() for
+> all non-anonymous VMAs, including PFN-mapped device BARs (VM_PFNMAP).
 > 
-> Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-
-Thanks.
-
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
-
+> DAX VMAs already bypass this check via an early return:
+> 
+> 	if (vma_is_dax(vma))
+> 		return in_pf ? orders : 0;
+> 
+> But "special huge" VMAs -- identified by vma_is_special_huge() -- do not
+> get this early return, even though they share the same fundamental
+> property: they map physical addresses directly into page tables and
+> involve no memory allocation, no compaction, no splitting, and no
+> reclaim. The THP policy has no meaningful effect on them.
+> 
+> This matters for VFIO PCI passthrough of large-BAR devices such as
+> NVIDIA H200 NVL GPUs (256 GB BAR each). The VFIO driver registers a
+> .huge_fault handler (vfio_pci_mmap_huge_fault) that dispatches to
+> vmf_insert_pfn_pmd/pud, and QEMU's vfio_region_mmap() aligns the BAR
+> mappings for huge page table entries. Both prerequisites are met, but
+> with THP=never or THP=madvise, __thp_vma_allowable_orders() returns 0
+> before reaching the "trust huge_fault handlers" code.
+> 
+> The result: each 256 GB BAR is mapped at 4 KiB granularity -- 67 million
+> page faults per GPU instead of a few thousand PMD/PUD faults. On hosts
+> with 8 GPUs (2 TB of BAR space), this causes VM boot times to degrade
+> severely, with 99.98% of CPU time spent in the VFIO BAR mapping path.
+> 
+> Configurations that trigger this:
+>   - transparent_hugepage=never on the kernel command line
+>   - The tuned cpu-partitioning profile (inherits network-latency, which
+>     sets transparent_hugepages=never via sysfs)
+>   - transparent_hugepage=madvise (the RHEL default), since VFIO VMAs
+>     lack VM_HUGEPAGE and QEMU does not call madvise(MADV_HUGEPAGE) on
+>     BAR mmap regions
+> 
+> Extend the existing DAX early return to also cover vma_is_special_huge()
+> VMAs. This is consistent with how vma_is_special_huge() is already
+> treated for supported_orders (grouped with DAX). The mm/Kconfig TODO
+> comment "Allow to be enabled without THP" also acknowledges this
+> coupling is wrong.
+> 
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4
+> Signed-off-by: Cedric Le Goater <clg@redhat.com>
 > ---
->  lib/maple_tree.c | 5 -----
->  1 file changed, 5 deletions(-)
+>  mm/huge_memory.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index e52876435b77..1bed455bdb9b 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -356,11 +356,6 @@ static __always_inline bool mte_is_root(const struct maple_enode *node)
->  	return ma_is_root(mte_to_node(node));
->  }
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 58cabe6af33d031e48250e21db51506bc46c97b2..6dfef5500a054f09f9ece6df8bf7a0194624350f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -139,8 +139,12 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+>  		return 0;
 >  
-> -static inline bool mas_is_root_limits(const struct ma_state *mas)
-> -{
-> -	return !mas->min && mas->max == ULONG_MAX;
-> -}
-> -
->  static __always_inline bool mt_is_alloc(struct maple_tree *mt)
->  {
->  	return (mt->ma_flags & MT_FLAGS_ALLOC_RANGE);
-> -- 
-> 2.43.0
-> 
-> 
-> -- 
-> maple-tree mailing list
-> maple-tree@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/maple-tree
+> -	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+> -	if (vma_is_dax(vma))
+> +	/*
+> +	 * khugepaged doesn't collapse DAX or special huge VMAs, but page
+> +	 * fault is fine. These map physical addresses directly — the THP
+> +	 * policy is irrelevant for them.
+
+emdash in a code comment?
+
+Then I spot
+
+	Assisted-by: Claude:claude-opus-4
+
+and really have to shake my head.
+
+-- 
+Cheers,
+
+David
 
