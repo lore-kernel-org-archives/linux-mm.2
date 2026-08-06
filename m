@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E8EC55174
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2042C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:57:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A1776B00B3; Wed,  5 Aug 2026 21:44:16 -0400 (EDT)
+	id 70D216B00B1; Wed,  5 Aug 2026 21:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 104646B00B4; Wed,  5 Aug 2026 21:44:16 -0400 (EDT)
+	id 6BD116B00B2; Wed,  5 Aug 2026 21:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F377B6B00B9; Wed,  5 Aug 2026 21:44:15 -0400 (EDT)
+	id 5D69A6B00B4; Wed,  5 Aug 2026 21:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 89C5A6B00B3
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:44:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 71A731C1128
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:44:14 +0000 (UTC)
-X-FDA: 85069149228.21.55FDFE4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5A49C40007
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:44:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EFB336B00B1
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:57:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDB5F1405ED
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:57:09 +0000 (UTC)
+X-FDA: 85069181778.09.0417FBF
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3278A40003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:57:07 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tPmaKzje;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CAbadW;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785980653;
+	s=arc-20220608; t=1785981428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=700hBB8fgPfgmlwOv52ySx8FJ3F1nBRAqSnKAZkhhtk=;
-	b=MOUAm0Sr5tfMmriT5IE7NNE6pG1WtzSrCziUQH5/l9p+k8R2rr2OFY6Zs9p6dvlwgYJzoT
-	bGg3VZnwVrePe3TECkJQDtY2ko596P6tsBebj4o5X0M/VXoH37K7kg0qVuDrrucM/gnFu5
-	trPyR8QqJOddcw98YeRLupPmHWa5lJI=
+	bh=/uTk3ewe/q6kLl+PWZH8/PgG1RIzcV92a/qRN4m/y+4=;
+	b=r2Iiy/uD0LoyTx2sziZb2mwnXVBEPuSFDL7/biE2NHnbGfhNAVf6/cqGUHJRUPToAOGHWi
+	jKnBhPwo+v+cFlnfYiFCJB5XybgpgjzV8XLLmJqh8aGMhEPt2omJTX89nDNZqZcxx9k9a/
+	1BG2cxiyqtxQrvT9LZYUtQIIGDzpKps=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785980653;
-	b=RoiEoHp1o3oE/Xv51KY/m1GBNPGLsdDtUHLBej1loL0YZ3aGeT14QDrX0wNO2Vpf7DkLQg
-	hi9L5Yp6wqXXMf+uhEO6ADcUDsF+LYB4dcE7Mj+Lx7pgIU1VlFKH5Uuj0rnwt0s/Ffh+uN
-	QJN175noEwpgIbHiojiB2svI0TRTbtw=
+	t=1785981428;
+	b=YpFC96UbI/whwZ6/WDl3A1KMMEauw7+7AejctqE19w6op4OZC10odtgsm5pGLrjizdw7G/
+	dZb8n24j1TtjnPATernYqF7W/pWyGYiQC0us80Z30b9VE0wb51Ot57Q3o9ah3IPnWL0m28
+	Am9YX5lBf6AlZRFCQkBGpX6/10uomYE=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tPmaKzje;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=700hBB8fgPfgmlwOv52ySx8FJ3F1nBRAqSnKAZkhhtk=; b=tPmaKzjejjgGfLmDw0JXVoRZLC
-	X4/CpTOO73xqWvvd/Z7wPGg9nbL5kJtMnIDn0+GhzjJ1oofnsTrL8rfjfB7nEYU5o9OpNVdWvlZO0
-	YUyfV7ZgaG3D3Go2bGY49Ru9dHS8LSkvdfZa2pvFKYVjA9eVFC+u/UN2yGaILj3to7a1KA8Ry2AHX
-	plUEsKu+G9Y9QcotAWLEAg4mm2I0Nc4v2aRUsYXkVqQeLKk4CAD6T+vkd5yxGDeYgivkHno6I5vcb
-	08hoKa2obb1XPzwY8WvC+54mYJEMces1eYFaA/cCVuJ3wIYvAfy3/GEtj7PAbs1LTmlFhrpI49kus
-	a823YRTA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrn9W-00000005str-3Ftr;
-	Thu, 06 Aug 2026 01:44:10 +0000
-Date: Thu, 6 Aug 2026 02:44:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-Message-ID: <anPm6vGNeDxLFIkJ@casper.infradead.org>
-References: <20260805055544.1568534-1-clg@redhat.com>
- <anL-NZkNMSSxN0YN@lucifer>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CAbadW;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <6ae9914b-7254-4a1e-8345-597d3c2d7ea2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785981423;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/uTk3ewe/q6kLl+PWZH8/PgG1RIzcV92a/qRN4m/y+4=;
+	b=w8CAbadWhcJtP+yNTReH6cOmkJMpjx8nUv9oVdDiYmkKg8C8fqcKCzjxpUtT4ZwTvxSO72
+	gVSl3htpqPI82+PWrYwQceMg97OpIgcrL5B6rUlnBrbgObBgzB3ZYQ56uD+Kt2cl184ZUu
+	LoY/jnLCbbeFgBwhXrGeovi7IWrPmKo=
+Date: Thu, 6 Aug 2026 09:56:22 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anL-NZkNMSSxN0YN@lucifer>
-X-Rspamd-Queue-Id: 5A49C40007
-X-Rspamd-Server: rspam10
+Subject: Re: [PATCH] mm: debug_page_alloc: fix NULL buf in
+ debug_guardpage_minorder_setup
+To: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260806004556.2633049-1-ye.liu@linux.dev>
+ <0159349a-41f2-467c-b91a-3775e56a660f@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <0159349a-41f2-467c-b91a-3775e56a660f@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: srsr4yjcj7xxo57eck6rtubrxt1f877s
-X-HE-Tag: 1785980652-200856
-X-HE-Meta: U2FsdGVkX19sLnOS6v1T3fLv07XIja2AOj99ExVcChDwcAnbAiZ6ph8tyizg15Ou9aOCqEnbxS6DecGiilGImWWOXCiDUFQgdvHPEDAN8nQBfkr3erjoAru0KHZEImePJdzx4fvDka/+JEav+1PBlA4XTMGp8jvJbecpdjOhshc+AdlNBvPxiUYE3cPrjDf7ZcbxtmEP0+gM0rYbdmq/fcXGVgghfMCPsGpDGsVgTbfPrRFcpVEwDWuCBrgKFFLyCNcml/zFmBW5btkTySn/At+qDyV9T/ls2+O2Rq8Ggqz8HlkCcO05toFCmO16zDfAQvNOO0bQQ8JKrPxjvtCy8gn3b+K21IaM8NsRfvO/T2o2+7zWHVDBArBv0ZbtXymN560IjLWkogCRRqbjrLHqHkwdy/TsjioqQrH9EXXsDGfmvCoU9YWqq2zGg46xHdn4PS9RsXUX/10njeK7zf+AxW5jZ7dK5yTIPRM2IcDj91NKmuBLAkidhXnQvL8Yxs5LtiO07YHxrmQ1rJkwzxX3zi8h32YVoZx/roGG14OUGU+shCW2mtWkJLRh6SQ8/g2vZUsWWNjHIrkQD5Bm2swG6GegcYe+YglgX0Azn3mmmN+MoivnZqozMRtfTG4qaq5tp4OhVc/BlnunI5hr/aloC1D+2CJ8buxdrEnXtkTQlKfiTRyJVq3jmUko645HtTLapRhg40KucCPspPprM/vdxD7mggoV5T+4LPMSq7OQWDLZYHh9fUzeEDtP6kLI060nmk0ffKoLoyjzQKPXZOw3HpbLVY0KnIgY78ac68x6X3fOQ0nmDty98dOUupgQTnw6rwPqy0W1e4GIJ72DevmjsNnlto2sJtGhubb+MLSNDj97hYjScO00PMbcmCjMmKdgdv/Bm0tS5p9ztv73pfWAiYZzm53IhEgcCu77t8RJTSK9Wt7wkuS5tB5xVWz4oW76uREuVtxFzIJ+EIN+4lb
- J0IRxtmY
- himUodBct7v9nxBh15shnZupPJ84OLm6WD8s5qZFbv3rbNgXoPLu4BIO8TivxmVlPQ2UteIUSHYCPCltkIKV06nhy0XWrDpBqDJnfneWwNgGhBi64KITbWQdX8a/Dix+RWw+1ix3gFWCP+f9LA2zly/1D10R5Li/tqS24Dt4tmynr+4dxKbkZbAzY39Aquf/QGlhxB8VoE4kAuSRtiH1voqo/TiPG+W519jIIePhiJsYoEx6YhbVTfDwpo6w/JqUeSl3L2R4FqdTjGfv2V0bFVnD/z5JL0G9Y3wUcK/OyFgPI4wzzXiG9PVAUD3Ds6zTqeWGG
+X-Stat-Signature: qb871ix3mrfr5sehoh6kwuezb15mmhbc
+X-Rspamd-Queue-Id: 3278A40003
+X-HE-Tag: 1785981427-90762
+X-HE-Meta: U2FsdGVkX1+ndhPywu55RvEFRnCszdfOr8oEmqPQ0ONnMu+l/8+LxUgc91dMnQP3zuSpOeRWW31fDpaZHB0NwmgFylfND1dD4nqXYZ90E7tYnXF+5UNtsci9zdRh9NNqyD4MuHHfUx5w2ov8dF6xp1cokNIZzoguQHJFa2MvTA0IX+2F40h8C3gC86U9NgyZm5ZpLQQLKecBOkY1EOoJAcyFuD9MuDwbx3EkSwb4ZHLTzYd+tzXZXRGkXO6N88son86hlO03mIPKtb7ilvvlrFqQ22Bs8F0dt1M5gfOmAQJlCdvQXTPvLo3g6YR48NJXxMbTxjCbh+EN0gT4ISdeVJ6DX5toF069ihbTkMd4p4z4FPqp0yLIvbM6ww6uRFpr9SzUvWY8A2zxot5DcZ2UUMvctzYC+gCBs9yTvRCXxYD+w7glSf4kusiG76rNhkdn6VpAfDzj/wTCxKb2KvSZz8908aoFGQ2lADBnEdYPPsOkUefnLANHjfk7Sd1mJm6FmZ0JOCucMO63ZQROp6hw+tiBTUvTFmproTmTFHydQDPTF2FX6h7HcvGRwhAjOMbVveH872pPhQXoBYIvvk//ODY9GIQiTyfDs2zNjC5xtVx7PWsKQVZSc50+rTsYty1/3DF0yuclXVqq01fAJX1Yk79syFyyLrOlBQsqs8NX/jd9uocVGIdmBVBLD2ehntk6kH8iS+jbcD05oMlfXHv7Ch568jUYxGDl/eIsJ/eMKxwYdF3nNX3mFtCw66McZe9erfRNlLCQYa8ScLoKfZ7LSlXI3CFiSROvYXuBZzVJKNJ1li+C9zQRKCxoPckYd7Poup60qkwOshy0iXOt7VKL4DFf2yz7WRN0rsaSeoW+qJUZTIvU5CQmwIkbflsNUMLmlLc3PTAO5L50fN+hAWLYY8jtOdTyf1s9MlQOp/e68Bki5FlBjFANEyoYK8RUe3IUs4XgG9x3+yvwuqRA0x8
+ mzCCoB73
+ iu+KkU9Po/mW7DazZ/hveDw3ytf7SjzzXSF0hAgFbICzPPUl5+a12Fc0goFGi3g4mhrR/2IN1mxUiefyKOTUfbuDZNBk0U0AhvaWAUcENweT4SLGASBCNAZQgRfw7dtIPZGGXCHfUW2aMGCX+zXtpXRjN0hqwi5IpoOyb2TUx39Jle8i/92r1Jf9VN9Bq53dN816YCbxjr0UICLyZ7c1dRDGStqDFhsJriwF1pYQfATA9qHS0ZlGnSZro/fDAhh294Vub5lDoOT3hK1OnY0Ohpme4kA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,60 +95,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 11:41:46AM +0100, Lorenzo Stoakes (ARM) wrote:
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index abc65d608c23..5fa01364f089 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
->  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
->  }
-> 
-> +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
-> +					  bool forced_collapse)
-> +{
-> +	if (forced_collapse)
-> +		return false;
-> +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
-> +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
-> +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
-> +		return false;
-> +	return true;
-> +}
-> +
-> +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
-> +		vm_flags_t vm_flags, bool forced_collapse)
-> +{
-> +	/* Override THP tunables? */
-> +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
-> +		return true;
-> +	/* THP=always? */
-> +	if (hugepage_global_always())
-> +		return true;
-> +	/* THP=madvise? */
-> +	if (!hugepage_global_enabled())
-> +		return false;
-> +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
-> +	return vm_flags & VM_HUGEPAGE;
-> +}
-> +
->  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  					 vm_flags_t vm_flags,
->  					 enum tva_type type,
-> @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  		 * Enforce THP collapse requirements as necessary. Anonymous vmas
->  		 * were already handled in thp_vma_allowable_orders().
->  		 */
-> -		if (!forced_collapse &&
-> -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> -						    !hugepage_global_always())))
-> +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
->  			return 0;
-> 
->  		/*
 
-I think 'thp_' in all of this is confusing.  DAX isn't THPs.  PFNMAPs
-aren't THPa.  There's other reasons to implement huge_fault that aren't
-THPs.  Can we rename all of this to drop the 'thp_' string, starting
-with thp_vma_allowable_order()?
+
+在 2026/8/6 09:08, John Hubbard 写道:
+> On 8/5/26 5:45 PM, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> If the kernel command line includes "debug_guardpage_minorder" without
+>> an equals sign (i.e., no value is provided), the early parameter
+>> parser passes a NULL buf pointer to the setup function.
+>>
+>> kstrtouint() does not perform a NULL check on its input and calls
+>> directly into kstrtoull() which dereferences s[0] unconditionally,
+>> leading to a NULL pointer dereference and early boot crash.
+>>
+>> Additionally, the error path's pr_err("%s", buf) would also crash with
+>> a NULL format argument.
+>>
+> 
+> Maybe a "Fixes:" tag is called for?
+> 
+
+Add the following Fixes. Thanks.
+
+Fixes: c0a32fc5a2e4 ("mm: more intensive memory corruption debugging")
+
+> 
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/debug_page_alloc.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/debug_page_alloc.c b/mm/debug_page_alloc.c
+>> index 41e3d1f1ad96..fd2664c3c86a 100644
+>> --- a/mm/debug_page_alloc.c
+>> +++ b/mm/debug_page_alloc.c
+>> @@ -22,8 +22,8 @@ static int __init debug_guardpage_minorder_setup(char *buf)
+>>  {
+>>  	unsigned int res;
+>>  
+>> -	if (kstrtouint(buf, 10, &res) < 0 ||  res > MAX_PAGE_ORDER / 2) {
+>> -		pr_err("Bad debug_guardpage_minorder value: %s\n", buf);
+>> +	if (!buf || kstrtouint(buf, 10, &res) < 0 || res > MAX_PAGE_ORDER / 2) {
+>> +		pr_err("Bad debug_guardpage_minorder value: %s\n", buf ?: "(missing)");
+>>  		return 0;
+>>  	}
+>>  	_debug_guardpage_minorder = res;
+> 
+> thanks,
+
+-- 
+Thanks,
+Ye Liu
+
 
