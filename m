@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43F08C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E78FC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:40:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43B076B00AE; Thu,  6 Aug 2026 04:40:13 -0400 (EDT)
+	id 7E57E6B00B0; Thu,  6 Aug 2026 04:40:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EBE26B00AF; Thu,  6 Aug 2026 04:40:13 -0400 (EDT)
+	id 7BC1B6B00B1; Thu,  6 Aug 2026 04:40:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3020F6B00B0; Thu,  6 Aug 2026 04:40:13 -0400 (EDT)
+	id 6ABE26B00B2; Thu,  6 Aug 2026 04:40:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 044FE6B00AE
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:40:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7CA2814066F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:40:12 +0000 (UTC)
-X-FDA: 85070197464.07.FBA8E55
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 374E86B00B0
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:40:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A859340141
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:40:20 +0000 (UTC)
+X-FDA: 85070197800.05.30072CC
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7915E100009
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:40:10 +0000 (UTC)
+	by imf05.hostedemail.com (Postfix) with ESMTP id D5C17100011
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:40:18 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SCDN3dhS;
+	dkim=pass header.d=arm.com header.s=foss header.b=iRLwcLlH;
 	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786005610;
+	s=arc-20220608; t=1786005619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GCsTohHBGdTI7OdSyzJzRMkcSEd6NU9RaG9o3LbcxHE=;
-	b=BEJTmMdGCd70y3U7U3tJwCCIhrFzJSVKoxX3O6YpNZ+XnuwfzJscf9mRzec50Pe9+xCoCc
-	iPCi9NGlSL2/G0oNuzJbsPPkHVqIzO6aG/fLN7Jbju7SfmCrurBJo/SznPYodp+YZrNejT
-	3Y2S7LgGyuYQ+91ExauFcdP8hxOJgl8=
+	bh=ngeUB2KCjAQXxsxBx3g07fSkAsLkDkHnzZbTKWnZ+6Y=;
+	b=VRD/qW+Q41MSMkVZI54xp9Rt9OJ4MW+qK4mIA9YYkW166vv52P47E6z0oGh+6dzERqHoyK
+	u5RIvMGn3FFay02lU1I+G6qt6Yh+sbTZwlY8Fp9xeU/gR+q5qzs8z90m8MA41YI/rVS99k
+	FLzmPGpUH4ojjG2tp2knANYlNniSXlM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786005610;
-	b=xVYzlXIB/q0p/1yUFIRI6MfOXwjjheHcypLl9dSOGXuSAbs97PfetJ8X3XJjNkC0KNm7P5
-	OC02Z0k4NdV3Ylfsp3wpqF3wSBde6NZKLnjqeiSOUagpeUH9HcLsWAcAt/RTRCa0NPeWuH
-	buh3qnkSEJ2G4WSc51rCyygpaRj2Uk4=
+	t=1786005619;
+	b=HkbLcuokblizXCbdaf8lSKI1sVCR2VKVgseIFKziPTm927DlRe7xmYnGqIl3MtFb3aq7Nw
+	4xYETA19UOIOyD4VUGVp4i/t90LpxKrZrAhoeTmeGxZj5Fh9HOOVowLhdhw9SsbwJzPuSl
+	pVdHu+2dtWA97T9fksjsbeneomp2PA0=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SCDN3dhS;
+	dkim=pass header.d=arm.com header.s=foss header.b=iRLwcLlH;
 	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E7E7153B;
-	Thu,  6 Aug 2026 01:40:05 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A8879176C;
+	Thu,  6 Aug 2026 01:40:13 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E349C3F632;
-	Thu,  6 Aug 2026 01:40:01 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EF03D3F632;
+	Thu,  6 Aug 2026 01:40:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1786005609; bh=iJ1Ndc5V3Xfq1tWscZTZQDNLVYCcoKPyTZqTCUohTZA=;
+	t=1786005617; bh=kDSHwmzLBaSmEkZSi49/oE6mr/pQwSNTv0JlBRbim1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCDN3dhSTWUZvm7NxWd7kT2BoSqz+CVAJ52EjmPO3XFFI5DgzdxTKarmA8W7w8CCM
-	 vAytJ56KvsfJiBpTM3sWcsX5b4vufVL2p6PVM/2YavA5VjzU41jcEC/tN2j35rLOND
-	 s5OV5gCpv0HvNaWN+KVLCNsfqo1phtuKS4Aoj7Iw=
+	b=iRLwcLlHzWWbx5Qhr2Q5N2yfBSglhNBHPcd7h0s5kOdYERPY7KTBCkBr+hcYbbhK4
+	 U8v8vfKwbyB14RWAIzfzO9dXyKyK4cPchCL93DUg0JYZDnVP/bmKmDJDFD/ZKVGJnS
+	 ia0P1AlmZO2FcO7EoUGQ6dM9k9gIa9RXeahhrylM=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Jani Nikula <jani.nikula@linux.intel.com>,
 	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
@@ -128,22 +128,22 @@ Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
 	bpf@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	damon@lists.linux.dev
-Subject: [PATCH 2/9] mm: make hw_pte_t visible to generic PTE interfaces
-Date: Thu,  6 Aug 2026 09:38:40 +0100
-Message-ID: <20260806083926.1807279-3-usama.anjum@arm.com>
+Subject: [PATCH 3/9] mm: name pointers to copied PTE values ptentp
+Date: Thu,  6 Aug 2026 09:38:41 +0100
+Message-ID: <20260806083926.1807279-4-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260806083926.1807279-1-usama.anjum@arm.com>
 References: <20260806083926.1807279-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7915E100009
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: cq8bxan6rawkdwfo5okypazhrff7j4n8
-X-HE-Tag: 1786005610-94613
-X-HE-Meta: U2FsdGVkX1/OdYT9KmixLaAMa7kQ2U6Y1tx7pRNfyE/isPFgG7CGh1Z3CPk2zlyjbW1nYzeHiYZPGRP/AL5fFhaMGotcDaV9m/pna88+VFC8RMZH5Xk10Q8bk3x4O8HLNRjXV/TcW0wLlxSkbyCdPUmahZVccH69YAbS6FlUohUDGZk0VKHnXRiwlJ899fkXdw1WgxblfpkxdfCkxjU1p7Q9gKlir1MsxP6T2hXp8one/DFVCmHdi+8WvpMRozb3EdqM61zttPPNx3aWdaGCO7TcwaAHGyITq/s1jCkLxNNZXh7l87g9YOKKBgfACnYCsOW3sPAuPXmWl77T6NnpvKa/oEscbS0QQtlbdqWOc1xzEArIBRe0yayNcNrdxFwSBeezh4K3khPJd91THc9aZqLS7SuvuNYyMK3QywdqEy2prwQQ+F24CP5sB++j+mRtiG2P8sESEu54vvOcf7QfwUCKIBlaxqNo1mNr/lETm5Uax8QsQGuew4Pa7jx8E1pzYPdr/UGf5caub2rCJpVQovdbeiwGDNu+uEeyf/fUAHff5iQuZ+8tlWHt+3Ivq0JEkgQdduOx4F48ppiw9GKV0/yaf4STgjTSbmL92hQePd+3C8NV3Mhh/zK687ytb+UVdoWXHvavpl9D6i3E7AvYmf/TCVnrZ7oYUZZNNng5Q7hc/Zs4WIgWJuLNjtzn+VrzCBAcMHxOGIlRIqxzg+pJIXmJfWXt+5I4j59yTozxnGmuT8KyTfA4wR97J39b5v2M7vwsYNZeXNz9W4KvkD7PMFgrTblQ+sb/vlgwlAXWqmw50j05wP/CrAIzn6OGNHL12y+Lyvj2jx4lJB04fjqaFbdyC3xcmvgYwemdAgi+fZKOnIteb+YY2wUgS8Wc6G1tjk4DAbD3wv466B3og9+80Zrm773oNoU+m9LwpnoR0pbJg/GR0HynDLeFp6nx2CrdIsHQZHTCYXkHrrv08Yq
- Avywpb9e
- t/AKRAqyiBr8Np4LwrDqeNJkFfKIM7oNg0+TDuNdVkLBDUVYySTDIeBgcz1xAEJdo7L97KSS+FDLQonN1HoW+RuiTRVVhVPOAsuoO+/UczOlx0ZAI48V6shUJlgDk6obmUysmHYsu5ZjdtXldPM+7fPP0cs8Ag6lmX+vMy897+Ko8L2xSPu0hluUfxa1gy/8iI8xJj0iKH1oiU2o0Thj2RoEtD2hH9CqTh1BLuclewIMx+2sD25z2tiDJ553guEkbTw3yMxBhb3MgKby+pzrSVwSEokY+NZko9ExJwiLZeCQcqc4ZRLvQeAcqkS2cLsvQsf7OjNY4x2VQkUW55DdfkxRgZELhlqyRAoB6sRSvRTwKblE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D5C17100011
+X-Stat-Signature: ftmfokn5nsubmddt63wckrpg9w13ufkr
+X-HE-Tag: 1786005618-373917
+X-HE-Meta: U2FsdGVkX18qR8XuslpKUfDy898alf0Wjmx0yz8rojNo+wu2+ns9f6iUQbU0HNz7PJKr86NBcDZT6x6Uk/w1YprJ+qV8uUOa3T2Vd1q10ryyfwmArGbqYpI9F0ZYAevY5XRtJwlHbTJetJRnuMyEJNptH2QQKGgN1I3IrwdA4t7s3NM8ALF/XaknS6nzit085nXylHllMiWaWSL4MKnL7W6CtyEnOPATRmLPjbbf599tr1UpSpUxf64KMLAyFSJUG7Y52Exw7Ncb1AAHIfW1FG5giVtXyJKHXVCyrO/HQkNz79Jl3lKkbs9PieLYK3iWNpezeF9rbrl9uj/qvokWmiQNJFlipavSLdl/7VNSqPhwBMdVfq0ShxCAq+5oA0puRs/8giBG8erJOSgX7HMO0EVFA3ZLBH2suwQGLa4kS5JIsMmF6HbcyEqdt1La/6jJUz3gD3Ft75QtAEixxOboCo30ReTtsWLPCgdvgr0FPUQolGQQeQQPHhdQgGQmj7Tv6TMGvwoAdD3yPXVpwPmEVDO46PKwSqBcP5X9VCnXNHYIv2qu2olvvQipIz2Zv5XgeNpf5U1WLhvo25NDeX0fklEblb6R5AxSqPCGz1rN5fdIPXy+QQfuxSyxd161xb8X6WPCBzx1qNPo4e9cK3zrMCc2sCyLlX82MoETFA0OIR+IcVzb84fb+flZ13c6T/jpCRTug8hm5dW/oUJQc0Ksyn3T4N19vuIIwrUw51x+glQPv7mbl+eOPhXIVJ6bO5uaVhsIX3EjPsR2Lolbrjc0TWUuVhlDvUkiaDDpkYXWCiye4fletI87sZ9QW4N5nGGHoh3pUEDFHOvwVH3P1+/nOVaGxwRHEmmvwupKwl7S/no2zMjpHSvAa1NoEFs4OyJ1mBUwBYqUlOqlgTseXanW6emmW1s4RoElD02y/0ck9kSRQDAFNbzI4kB0L5zHLgra6wltl+aDcf/wm4zFbJV
+ zviv/9lP
+ dSj38T5IQmAre/o/aCzfL0pWPYCBSWyQVdpmp/YHNXnyyIsOHeHa9VRpqxMBOdRS2P71ceOSbU8Th8XjO4CjJ37+ZSub0u1o9mwDQy1k3hEN0VYvDz88pwcBQAJ877WCv/YshYzVYpdP5ojdeBhRtRb+aNToE3SNe2xDRjuC91YnOVNyp7qnonijTOwRe9XcK1OXM/TwKf7eYsFN3neZxEVRlchmKVcXkJ7uzF81s3/Joe7zsm4Qy/QBd2GaHcDRfvdX6ay2G/vB4uV70GlX7NG0Hxj4BK4+MEiwF3z/BWqXlkE50m7hSgc6+SRD7quvcNBRu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,63 +151,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Later conversions use hw_pte_t in page-table checking, generic page-table
-helpers, and vmalloc interfaces. Include linux/pgtable_types.h from the
-headers that declare those interfaces before changing their types.
+The hw_pte_t conversion must retain pte_t * for pointers to standalone PTE
+values. Name the value parameters ptentp in the install_pte callback,
+write_protect_page(), and guard_install_set_pte() so the later mechanical
+conversion can distinguish them from pointers to PTE table storage.
 
-For vmalloc.h, replace the direct asm/page.h include with
-linux/pgtable_types.h. The latter includes asm/page.h, so pgprot_t remains
-available. It also provides either the default alias or the opted-in
-hw_pte_t wrapper.
+Some functions already use the ptentp name, including:
+- madvise_folio_pte_batch()
+- folio_pte_batch_flags()
+No need to convert them.
+
+This is a naming-only change.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
 Changes since RFC v1:
-- Clarify that the header provides both generic hw_pte_t definitions.
+- Update the description for the architecture opt-in conversion.
 ---
- include/linux/page_table_check.h | 2 ++
- include/linux/pgtable.h          | 1 +
- include/linux/vmalloc.h          | 2 +-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ include/linux/pagewalk.h | 2 +-
+ mm/ksm.c                 | 4 ++--
+ mm/madvise.c             | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/page_table_check.h b/include/linux/page_table_check.h
-index 12268a32e8be1..12ee6d16ad339 100644
---- a/include/linux/page_table_check.h
-+++ b/include/linux/page_table_check.h
-@@ -7,6 +7,8 @@
- #ifndef __LINUX_PAGE_TABLE_CHECK_H
- #define __LINUX_PAGE_TABLE_CHECK_H
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b41d7265c01bc..c34d826c5e4a2 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -89,7 +89,7 @@ struct mm_walk_ops {
+ 		       struct mm_walk *walk);
+ 	void (*post_vma)(struct mm_walk *walk);
+ 	int (*install_pte)(unsigned long addr, unsigned long next,
+-			   pte_t *ptep, struct mm_walk *walk);
++			   pte_t *ptentp, struct mm_walk *walk);
+ 	enum page_walk_lock walk_lock;
+ };
  
-+#include <linux/pgtable_types.h>
-+
- #ifdef CONFIG_PAGE_TABLE_CHECK
- #include <linux/jump_label.h>
+diff --git a/mm/ksm.c b/mm/ksm.c
+index ad05d7791307e..11d50518d02e9 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1292,7 +1292,7 @@ static u32 calc_checksum(struct page *page)
+ }
  
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c093c119e5a8..cf595608cc4c4 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -4,6 +4,7 @@
+ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+-			      pte_t *orig_pte)
++			      pte_t *ptentp)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
+@@ -1371,7 +1371,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
  
- #include <linux/pfn.h>
- #include <asm/pgtable.h>
-+#include <linux/pgtable_types.h>
+ 		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
+ 	}
+-	*orig_pte = entry;
++	*ptentp = entry;
+ 	err = 0;
  
- #define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
- #define PUD_ORDER	(PUD_SHIFT - PAGE_SHIFT)
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index aed121d729b01..b068e6ade4207 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -8,7 +8,7 @@
- #include <linux/init.h>
- #include <linux/list.h>
- #include <linux/llist.h>
--#include <asm/page.h>		/* pgprot_t */
-+#include <linux/pgtable_types.h>	/* pgprot_t, hw_pte_t */
- #include <linux/rbtree.h>
- #include <linux/overflow.h>
+ out_unlock:
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 07a21ca31bad4..c324cc991f841 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1101,12 +1101,12 @@ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+ }
  
+ static int guard_install_set_pte(unsigned long addr, unsigned long next,
+-				 pte_t *ptep, struct mm_walk *walk)
++				 pte_t *ptentp, struct mm_walk *walk)
+ {
+ 	unsigned long *nr_pages = (unsigned long *)walk->private;
+ 
+ 	/* Simply install a PTE marker, this causes segfault on access. */
+-	*ptep = make_pte_marker(PTE_MARKER_GUARD);
++	*ptentp = make_pte_marker(PTE_MARKER_GUARD);
+ 	(*nr_pages)++;
+ 
+ 	return 0;
 -- 
 2.47.3
 
