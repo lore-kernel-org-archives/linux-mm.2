@@ -4,173 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 911F3C56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9246FC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:38:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7065B6B00A0; Thu,  6 Aug 2026 12:34:14 -0400 (EDT)
+	id 896226B009B; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DE326B00A1; Thu,  6 Aug 2026 12:34:14 -0400 (EDT)
+	id 8470D6B009E; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6586B00A2; Thu,  6 Aug 2026 12:34:14 -0400 (EDT)
+	id 7612A6B009F; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FCCA6B00A0
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:34:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0159160127
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:34:13 +0000 (UTC)
-X-FDA: 85071391986.20.53DC02E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EBF5E1C0013
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:34:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Riwuq8hT;
-	spf=pass (imf18.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 44BBB6B009B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C964120160
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:38:26 +0000 (UTC)
+X-FDA: 85071402612.29.F3799D0
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A53DF40008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:38:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hkvBpT7D;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786034304;
+	b=5ieB3gwbxPXeRokvL9dsZ1/nOnMwuObCnaSdCIXgRu6IKfJXaXq+uIOJ6TIIeaZ/Cai+3J
+	U+RIGifBgSov8UC2kkJNJkh73qF1p7gzTGV4mtUC7L8k0Kblnvui+eD42i+ChMzyy8d65E
+	3SmP7FAoyKow9I8ow2g7Nr2UCmttFXs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hkvBpT7D;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786034051;
+	s=arc-20220608; t=1786034304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQp5RwExOV2Y6Ewnz0reZlcW0GsOQG1VQZgGAw/gAgM=;
-	b=W7WRLDhAu0FGwKL34cCMnrKgkd5Ghx9Zzokry7ls8QSThyIDhLzTR2c3VjqsGSmfoGzBHy
-	CBaQVbeoOA2Mdr+awBDOCe0oOllEb9LJS7OHLqKTRBJVjRwpWLwiFRSpd8NFdNeQs1MSFo
-	9ZgPkxELjA7kRA7lPIi75sl3CgJ/bIA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786034051;
-	b=G9slZf+YvdlsiNC0xYSJQ+SHsB/NtsK4TAWVpDTcoZ2LCftBBCJf41FCVUm8+WRxP0437z
-	VM+47GRXCqzcOX26I2UrwZacLhvtbkqish1sxd+4hiHRGV37UX9aTeyuF+lRmTyHX44lsD
-	SKCtxwCuT99U4gB6vd0bMHWfhcUPkd4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Riwuq8hT;
-	spf=pass (imf18.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786034050;
+	bh=ER4hDuyk/AXCOt6BhnNPQBwbY3PdYFFZY89XoDcPBsE=;
+	b=vFpvakPb31vza97JM13zpgRv1+3CLtDoVTc7vyvw9jjCc1/g3++PgyY9TBIiI1zRC9JxEL
+	y+oqY6CGOZcxOa6Os/zRa4U+/FwxHmizsZyBFa2OcdC8w3VzTSxGqq674vLA2cuMlABo3u
+	bOfxBRGkKEzC/lIHnJOZBdr7yfG5Z78=
+Date: Thu, 6 Aug 2026 09:37:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786034299;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JQp5RwExOV2Y6Ewnz0reZlcW0GsOQG1VQZgGAw/gAgM=;
-	b=Riwuq8hTTT2SiS0TdVlyWpFiPHu25rcRoAOWm6mtBI2PEI3w6Nq393FTMN4YKRqvVtwJYr
-	kS621wcEn39CLN1QBWDAKZtaLd5SAXU67LPGmCsIWdW0D79hEhMRnxDIAL+69Izpq4OYd3
-	9sXaJaO4wbZKlF75aHa49aWCET2rMqA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-CcTHb3mHPn-OHT6azD4jNA-1; Thu, 06 Aug 2026 12:34:04 -0400
-X-MC-Unique: CcTHb3mHPn-OHT6azD4jNA-1
-X-Mimecast-MFC-AGG-ID: CcTHb3mHPn-OHT6azD4jNA_1786034043
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f83999cceso1926488f8f.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 09:34:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786034043; x=1786638843;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=JQp5RwExOV2Y6Ewnz0reZlcW0GsOQG1VQZgGAw/gAgM=;
-        b=ozpskqCxVcB5Lb4uQPKsJ5RE8rbnn5zehyd9+dU1jdDyDlN3YSTpf5futhzFvuQc+p
-         bl6UGjnqtv0DhYc9VHV3dMXjAqmKF174irjfbcSAJf2AL6unYWac5ESutjGrIjPBkXJT
-         +vhfVN/pN7mcfnlS5qX28Jez+OkQJhhBY9JnL5A8hr7feEOwLAZyiwmTJZsDI3UxcNBe
-         tAAhsiqn3JTvV0kp0jkWMcZ++btb7R7S6L8UjiwVhb2Cv3g8MRgEuTpU93lvmklGdArH
-         HA3k3uHcOS/fNVXSiEdKhD/dssyKn3odu3ZRI4yCJMWATJMkrg3E/+yfyrh6CKI97mno
-         usFA==
-X-Forwarded-Encrypted: i=1; AHgh+RrPD7lyBHwt21uZNrXokmelfcjksdT7D+oZkne30/ky2VfeoWtfNqV0Nai2Af798zUIC+YVnsRagw==@kvack.org
-X-Gm-Message-State: AOJu0Yy1F//WJrsM1VboiiDzsCeROC14M/JTMnRQMmjOHBhJANMIjqLu
-	HZg27uyy7bvCycVUtty0ECM2VItU2JMIVb/CGr+0UkWW7gfWYHF/kKeP7Rqkvsv5aaFozSzrxgk
-	ncYi9/DcSM27gR8CA84+eNEnJgr+Tn7XSoL8MMhbadwe2jxXUPl9l
-X-Gm-Gg: AR+sD10KdxLBDlSkMBqOlhiv6XBxYKmiOkYL3bK62bPeaJD1qA9u0QrCW2/xJ+3kxQp
-	D9tn/XEIu+lzUo8XA1HXOfRchsWSuaD6ZWqQErmurQPn+wqn2nTe6PKw7D15MlgzeGNss5oekxr
-	KZN1C4RKVh4AEqWiH9jwvqSBAGr5LAhd0exJrieP9376mBot889jkIJl3f+rjOcOinVAagbi7pt
-	pcx9/E+ECU2cxil6SqfdQG6Kzv4YRpMIILQ/8nGpcSw/pxMAXqMfy2ejDvENvwETowXs2X0MCQ8
-	3VTTSLX4wusHJg1CpZswmcEt8fHmZtQoQaiIUSycXicVn/eGzh23m4nuUusupS6EwLsMTyV44WF
-	AlVmYLjWjTa+dFqRTv9lvOvEYedTYrIO95izaKRw=
-X-Received: by 2002:a05:6000:29cc:b0:47f:e748:3ae3 with SMTP id ffacd0b85a97d-47fec4e7431mr21184626f8f.3.1786034042808;
-        Thu, 06 Aug 2026 09:34:02 -0700 (PDT)
-X-Received: by 2002:a05:6000:29cc:b0:47f:e748:3ae3 with SMTP id ffacd0b85a97d-47fec4e7431mr21184557f8f.3.1786034042349;
-        Thu, 06 Aug 2026 09:34:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b31975sm6656072f8f.33.2026.08.06.09.34.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Aug 2026 09:34:01 -0700 (PDT)
-Message-ID: <2a7686ee-56ab-439a-90fd-ad3c10e4c336@redhat.com>
-Date: Thu, 6 Aug 2026 18:34:00 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=ER4hDuyk/AXCOt6BhnNPQBwbY3PdYFFZY89XoDcPBsE=;
+	b=hkvBpT7DRwR5rOmIF5NXXOYMXQWhVRFIw2Ix1e9jw2tCcuiotXDs6/JljnVjb5Sy8TuYBn
+	v1DzI2/aLXzx91MTnb65qkoO3DuWYys3VLx9AGtNe72/4q51a/s9SnGGgWPdn3Le8ilDUt
+	ck8dR4+GXlYxdaJKD6P0ifR9Ex7Pfjg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Karl Erik Hofseth <karl.e.hofseth@opoint.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: keep folio's objcg same as its node
+Message-ID: <anS1HHyoIAPfyk7z@linux.dev>
+References: <20260806061830.3294679-1-shakeel.butt@linux.dev>
+ <anSsqaD3QAlvQ8cd@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Peter Xu <peterx@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260805055544.1568534-1-clg@redhat.com>
- <anL-NZkNMSSxN0YN@lucifer> <0bd6d355-e6d9-4f5a-b101-9a041c2a2436@kernel.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <0bd6d355-e6d9-4f5a-b101-9a041c2a2436@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: BEVQnnIO3H0Cv-c4_uTHlY6DOUHCxJBd6iblXmE-P6E_1786034043
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anSsqaD3QAlvQ8cd@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A53DF40008
+X-Stat-Signature: 8x6nngemw1ipi6nahy56jjgqg3k8ssbw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EBF5E1C0013
-X-Stat-Signature: 6rxmrdbdxacnpnotaxkz81xqjxa4985n
-X-HE-Tag: 1786034050-808920
-X-HE-Meta: U2FsdGVkX1/K7QZDrDWJLdmWmGkcmgBbkFn7eR2wmHMLd4uiJMrZfhCpwXm7F3/tUw7tEnPWxC1k/rPedEK+0NJqYmcl7bz1x73wM/PM0siZ0gOQh8nsAwk6E843l/+q7+1T6+lipLmCLXwi3PCq2uLQOzNPbgKmykLMnW2gRsvH7C7QjNqlxgYJx/GPShFUgZEHGLm1Ig7Fsg7M0FwsMtBM6IRVB8dexC9ZZFij6IKb29xQA8F3VGFsTloJWtfH2tW0mU4uIoIYhis3jG+KtOwDZvH5y3FKViDpNnZ1Nz39IFdctHL5PTju099VSeS4HD6Psh3kNHSeoQjA8NNsLTSAqxOH4V/6Em8Jpq0y6+FKvSWjMRyYFQcZxf6pepmpkShnAdEwbeW2FTC1Nq45OoAc86EeQZLxNKku6E6Q4aDA6EKfIwbgYKsRDf62gzh2thEU/RUesfxiLbZIp5jcefMRp3WGMpUH4Fvif/2Rx6xiMauoRYs10ESk+MyV/fzUQ040eQks7npYT/jlYCmoxBVcACiqj/fqHHdh/WkLktOHHMrkn8QXho0O2RmZQDn6oZk36heiu/+YRhBR00E//jJimGeGYD6/ndO8+kNJTeKs31syl7yfzfZXC4NNDA45WGt+9QIRLw7QBjI0vIeYuxvC+v1P0wEAeuKE7BU6Tc6+tMHZXtrD375cd5Ip5XU8ZGibkRBkvGHvmHCe6XE0x8f8yhaWPTLMVzD51nk+sDwVLeay/GKWlGg3fj6XnuL1+xQ6uLiYV9V7RO+wVDlbFowhQg3qSCvAgJzQmW7bWeCpsdlO9jGwLP4bxU9FG/+Re/+RoEMEZNOCHIrOK802KrJ6E8Q5nWfTG7xqbn9hjjczEBh1k7RSq4IB/p60LKGtbzaUPO1aoKy8a9nJ6T0/FsTAJUth3VVgK0iLSUkhjGo/i2BzzqzvWg2tOksJJ7QDNDr2C8vZ1qJHj8+Z3s8
- JeIlrrr8
- 4R+jtmMmHfYRicOiqOJtwwsGRR0UtSzOTcktcUONxi9txmJZiqAsAZnHkI3kF0AMk3qTUK8y+o6w583LEeC48rNh4o/lKzrCu4tUPJF9JLfZAt8W8imfKsEGpeiMFHFHPvRV9Hw2iRnsouqxw7T8KR4EapkIq7wdm3r7PRNkKEQQ9gf/W/LzbAiEhfM4pE/u2oVOrNZ6izqy9Ocp3lWamN/wCmnsYhzoW6mvGi+HuBD9HYVlQ/Sa8F5rO9yqKC/pIGiT7eY/FKYlF5XScHsa+vTiKtHYLmVlY57R49KKLXbPwjizlZ0zhRPoO1Kxrrk4ND28w+13XgVMPetSqLrfYLNgdO8WYAxHQdKpWCd5JFVmnJs2mUrDj3/W/W2AwX2BXD8DBXdBtxki9xyLd8Wbq1FTPAPq9xYpx07WVRIFq1dqALe48C499gYslA5H5gh212Bpm6kRWgTc6Dn7gxcJW/kr6k6viq7iD57pZ
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786034301-544816
+X-HE-Meta: U2FsdGVkX19fefYEy143rBoB2CzhVfqZFWwAbfR8dZRBY8C3nABQQwDibSw+ClvqNLpMihnIq8gYRqWbtUocvbTbgCjxII+ZaxJGhREctMn/qP4R1t8B22oz0ATPyXIdMsAWwNTXRNiBBluH5LppG3nMkFOWvhAA+iq2lxFFKV/hc+1U/sWaA/DjWUyPQO+Og93wAoq+vdWMJi+qJABSy+nC1wTVFPY5BSvlBtGIizUgcgn7CAt4nP13cAJbJpPk16MvuM4CWbRCU3Ltz24aoj2dIPU/hP9ABbJsgukw3MKZb34zpwyPA4hNApmD+y6KYh2rQXy2qUnI4s8s1LwMxO1t3jU741RTzKgAjV2ZiTzrkU6CZPxNvjXyk2bZYonUTTV8WeDEQrfdbAbYvwIKD/VER0WSs3nW2pMAa4LdjHIV6Q9gg600c0prVskq5EjA7DXpQarEKJmXiG6oPYaIRAWmQfeyWp7lNc0FOnXgQ3zkBNd3QBQIXUaZFpjZCW7UAk7AsmtH2m27YFof88CG8a7jh2xXuYpNs/PLWBN8/RaC6fngeZrx1uXqGVwfKyiaYT+oaNxSd82mpZqkT9EIJKjNIFlwxc12ObWtv50jHCGDmuwQbmeS2w7PtylalgKFkyh2ogryKLmlooNiBDklg9AjkZKSSu9V9DNVeXidEhD0j+P3khIDMbf89JJBgM42idAZLclVp8cNEO35gEdxoowZktbsNrizmm8n0b3kWGNdAMCDeCKolEcuZBgKBOCY+6xEcHrqIChEO249elq6WrtHuUzFgzMOEHHVvIPrEcxhc+TAikpYtwmUZOrdDirrYGuQwAdAn06Uk4isBRlW2+7FGw1+hLKoLG5pi4Qli/9o7MtxD7Lo3CQggunhNhZ+Hd+5VT1bSNQ344E5wdJdc14JkOjPFzsIUKa2XuAeEdgAtHZMGDFt2/2OC1C5aJDp3fIh9JcpHAqXunW9LAi
+ 148APylZ
+ f+s1U+PsKCLxF6HNlvNnPQ6ezWvitPVQXtxyKY+50oRtpf5wzoMqg6P5mhMouKC96JMwmbQhd/Q5fg50tPV7h9y4VzSADWKCewto0inwEmxRQF/FC3/Y7NZu4PdCvNVnEK0iRONCi8EVQDKMEbZfv+1tj8QGfiBVgJM2LlRJ9X9fHqQ23qnxgIw6ck5CP2BS9XdWwT4UUHjfA7I38hZ36NvhAEupjGR9hmMVNGGltQQ13LEYgyrw/seC+h9qMcorf3DILm69Pn8STkg+0Jm5R7A6t+uUfEkwDpIfcnKiVM/gcM9c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,178 +91,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 18:19, David Hildenbrand (Arm) wrote:
->>  From d6537260722c8741586e6295c8eea68d06087efa Mon Sep 17 00:00:00 2001
->> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
->> Date: Wed, 5 Aug 2026 11:35:13 +0100
->> Subject: [PATCH] ideas
->>
->> ---
->>   mm/huge_memory.c | 32 +++++++++++++++++++++++++++++---
->>   1 file changed, 29 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index abc65d608c23..5fa01364f089 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
->>   	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
->>   }
->>
->> +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
->> +					  bool forced_collapse)
->> +{> +	if (forced_collapse)
->> +		return false;
->> +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
->> +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
->> +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
->> +		return false;
->> +	return true;
->> +}
+On Thu, Aug 06, 2026 at 11:47:53AM -0400, Johannes Weiner wrote:
+> On Wed, Aug 05, 2026 at 11:18:30PM -0700, Shakeel Butt wrote:
+> > memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
+> > is the objcg of the folio's node.  Folio migration across nodes breaks
+> > that assumption: the new folio simply inherits the old folio's objcg
+> > while living on a different node.
+> > 
+> > Once the assumption is broken, the reparenting of the folio's objcg and
+> > the reparenting of the folio's LRU list are no longer atomic.
+> > memcg_reparent_objcgs() handles one node per iteration and drops all the
+> > locks in between, so the objcg gets reparented in the iteration for the
+> > objcg's node while the LRU list gets spliced in the iteration for the
+> > folio's node.  Any LRU operation on that folio in between resolves its
+> > lruvec through the objcg, and thus takes the lru_lock of the wrong
+> > memcg, not the lru_lock of the list the folio is actually on.
+> > 
+> > Fix this by selecting the objcg by folio_nid() at charge time, and by
+> > re-deriving it for the destination node in mem_cgroup_migrate() and
+> > mem_cgroup_replace_folio().
 > 
-> If that's sufficient, then this is is the better direction.
+> Nice sleuthing.
+
+Thanks and it was actually due to very good reproducer provided by Karl.
+
 > 
->> +> +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
->> +		vm_flags_t vm_flags, bool forced_collapse)
->> +{
->> +	/* Override THP tunables? */
->> +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
->> +		return true;
->> +	/* THP=always? */
->> +	if (hugepage_global_always())
->> +		return true;
->> +	/* THP=madvise? */
->> +	if (!hugepage_global_enabled())
->> +		return false;
->> +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
->> +	return vm_flags & VM_HUGEPAGE;
->> +}
->> +
->>   unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>   					 vm_flags_t vm_flags,
->>   					 enum tva_type type,
->> @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>   		 * Enforce THP collapse requirements as necessary. Anonymous vmas
->>   		 * were already handled in thp_vma_allowable_orders().
->>   		 */
->> -		if (!forced_collapse &&
->> -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
->> -						    !hugepage_global_always())))
->> +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
->>   			return 0;
+> > Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
+> > Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
+> > Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
+> >  mm/memcontrol.c | 33 +++++++++++++++++++++++++--------
+> >  1 file changed, 25 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 3057396dda53..2e98788dc8bd 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
+> >  	return folio_memcg_check(virt_to_folio(p));
+> >  }
+> >  
+> > -static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+> > +static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
+> > +						      int nid)
+> >  {
+> > -	int nid = numa_node_id();
+> > -
+> >  	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+> >  		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
+> >  
+> > @@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+> >  	return NULL;
+> >  }
+> >  
+> > -static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+> > +static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
+> > +							   int nid)
+> >  {
+> >  	struct obj_cgroup *objcg;
+> >  
+> >  	rcu_read_lock();
+> > -	objcg = __get_obj_cgroup_from_memcg(memcg);
+> > +	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
+> >  	rcu_read_unlock();
+> >  
+> >  	return objcg;
+> > @@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
+> >  
+> >  		rcu_read_lock();
+> >  		memcg = mem_cgroup_from_task(current);
+> > -		objcg = __get_obj_cgroup_from_memcg(memcg);
+> > +		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
+> >  		rcu_read_unlock();
+> >  
+> >  		/*
+> > @@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+> >  	int ret = 0;
+> >  	struct obj_cgroup *objcg;
+> >  
+> > -	objcg = get_obj_cgroup_from_memcg(memcg);
+> > +	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
+> >  	/* Do not account at the root objcg level. */
+> >  	if (!obj_cgroup_is_root(objcg))
+> >  		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
+> > @@ -5431,6 +5431,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+> >  
+> >  	rcu_read_lock();
+> >  	memcg = obj_cgroup_memcg(objcg);
+> > +
+> >  	/* Force-charge the new page. The old one will be freed soon */
+> >  	if (!obj_cgroup_is_root(objcg)) {
+> >  		page_counter_charge(&memcg->memory, nr_pages);
+> > @@ -5438,7 +5439,12 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+> >  			page_counter_charge(&memcg->memsw, nr_pages);
+> >  	}
+> >  
+> > -	obj_cgroup_get(objcg);
+> > +	/* If replacing folio of different node, get objcg of that node. */
+> > +	if (folio_nid(old) != folio_nid(new))
+> > +		objcg = __get_obj_cgroup_from_memcg(memcg, folio_nid(new));
+> > +	else
+> > +		obj_cgroup_get(objcg);
+> > +
+> >  	commit_charge(new, objcg);
+> >  	memcg1_commit_charge(new, memcg);
+> >  	rcu_read_unlock();
+> > @@ -5478,6 +5484,17 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+> >  	if (!objcg)
+> >  		return;
+> >  
+> > +	/* If migrating to different node, get objcg of that node. */
+> > +	if (folio_nid(old) != folio_nid(new)) {
+> > +		struct obj_cgroup *old_objcg = objcg;
+> > +
+> > +		rcu_read_lock();
+> > +		objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(old_objcg),
+> > +						    folio_nid(new));
+> > +		rcu_read_unlock();
+> > +		obj_cgroup_put(old_objcg);
+> > +	}
+> > +
+> >  	/* Transfer the charge and the objcg ref */
+> >  	commit_charge(new, objcg);
 > 
-> I played a bit with that and came up with the following. Not quite happy about
-> it, just for your inspiration on naming and what to split out.
+> Just noticed Sashiko pointed this out too, but you put old_objcg while
+> old->memcg_data still references it. I don't see how that could lead
+> to a UAF but it's fragile.
+
+Yeah it is complaining about folio_unqueue_deferred_split(old) accessing
+old->memcg_data internally. I will do the put at the end.
+
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index a00df56a68b57..8ba77608959d4 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -111,6 +111,54 @@ static bool vma_is_special_huge(const struct vm_area_struct
-> *vma)
->   	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
->   }
+> Man, this is hairy. I missed the implications when I suggested to make
+> the objcg per node for simplifcation elsewhere. Now locality actually
+> matters -_-
+
+Yeah it has become complicated. The other concern Sashiko raised is the case
+where the destination node's objcg has reached/reparented to root and the source
+node's objcg is still not root. Since we skip root page counters for LRU pages,
+this can unbalance them. It's one more check to add.
+
 > 
-> +static bool file_vma_honors_thp_toggles(struct vm_area_struct *vma,> +		enum tva_type type)
-> +{
-> +	const bool forced_collapse = type == TVA_FORCED_COLLAPSE;
-> +
-> +	if (forced_collapse)
-> +		return false;
-> +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
+> A comment describing the race with reparenting would be very helpful.
 
-So, may be rename the routine to file_vma_thp_policy_applies() ?
-
-> +	return !(vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault);
-> +}
-> +
-> +static bool vma_thp_toggles_enabled(struct vm_area_struct *vma,
-
-This routine could use the same 'file_vma_' prefix.
-
-> +		vm_flags_t vm_flags)
-> +{
-> +	/* THP=always? */
-> +	if (hugepage_global_always())
-> +		return true;
-> +	/* THP=madvise and actually advised? */
-> +	return hugepage_global_enabled() && vm_flags & VM_HUGEPAGE;
-
-I would add extra parentheses around 'vm_flags & VM_HUGEPAGE'
-
-> +}
-> +
-> +static bool file_vma_forces_order_0(struct vm_area_struct *vma,
-> +		vm_flags_t vm_flags, enum tva_type type)
-> +{
-> +	const bool in_pf = type == TVA_PAGEFAULT;
-> +	const bool smaps = type == TVA_SMAPS;
-> +
-> +	/*
-> +	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> +	 * were already handled in thp_vma_allowable_orders().
-> +	 */
-> +
-> +	if (file_vma_honors_thp_toggles(vma, type) &&
-> +	    !vma_thp_toggles_enabled(vma, vm_flags))
-> +		return true;
-> +
-> +	/*
-> +	 * Trust that ->huge_fault() handlers know what they are doing
-> +	 * in fault path.
-> +	 */
-> +	if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-
-and there remove the extra parentheses.
-
-> +		return false;
-> +	/* Only regular file is valid in collapse path */
-> +	if (((!in_pf || smaps)) && file_thp_enabled(vma))
-
-there too.
-
-Thanks,
-
-C.
-
-> +		return false;
-> +	return true;
-> +}
-> +
->   unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   					 vm_flags_t vm_flags,
->   					 enum tva_type type,
-> @@ -183,27 +231,8 @@ unsigned long __thp_vma_allowable_orders(struct
-> vm_area_struct *vma,
->   						   vma, vma_start_pgoff(vma), 0,
->   						   forced_collapse);
-> 
-> -	if (!vma_is_anonymous(vma)) {
-> -		/*
-> -		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> -		 * were already handled in thp_vma_allowable_orders().
-> -		 */
-> -		if (!forced_collapse &&
-> -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> -						    !hugepage_global_always())))
-> -			return 0;
-> -
-> -		/*
-> -		 * Trust that ->huge_fault() handlers know what they are doing
-> -		 * in fault path.
-> -		 */
-> -		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-> -			return orders;
-> -		/* Only regular file is valid in collapse path */
-> -		if (((!in_pf || smaps)) && file_thp_enabled(vma))
-> -			return orders;
-> -		return 0;
-> -	}
-> +	if (!vma_is_anonymous(vma))
-> +		return __file_vma_forces_order_0(vma, vm_flags, type) ? 0 : orders;
-> 
->   	if (vma_is_temporary_stack(vma))
->   		return 0;
-> 
-
+Will do.
 
