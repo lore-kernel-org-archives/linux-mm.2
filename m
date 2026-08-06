@@ -4,229 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08CFCC56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37645C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57FD6B0095; Thu,  6 Aug 2026 15:48:32 -0400 (EDT)
+	id 567F96B009B; Thu,  6 Aug 2026 15:48:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2FA56B009B; Thu,  6 Aug 2026 15:48:32 -0400 (EDT)
+	id 5401B6B00A0; Thu,  6 Aug 2026 15:48:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD87F6B009D; Thu,  6 Aug 2026 15:48:32 -0400 (EDT)
+	id 456B66B00A2; Thu,  6 Aug 2026 15:48:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91F2C6B0095
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19BD3C01FB
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:48:32 +0000 (UTC)
-X-FDA: 85071881664.02.D8A0B99
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 79F2340004
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:48:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=L8QWTdPt;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="MPg0/gwW";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786045708;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 203146B009B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1D071401C7
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:48:43 +0000 (UTC)
+X-FDA: 85071882126.09.B8FEB47
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E8AAE1C000B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:48:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="W/vPVG/M";
+	spf=pass (imf20.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786045721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jeaBuhZDTej6ltJJ29Que+EMDm5jpmBSJBZE872aYw8=;
-	b=QvgstOgE5V+akEm6EsIIDvG0XFGspTmXfliOIiF0jUOk1+5GSCLrFCoJH+YtZ0Hv3nU/dn
-	ufUf5Tn9Ahm6CGBK7ByyQVLGkFRc+pcfy2PPSJLrkunuV7Xbjy1jolYMLvzkS+wL5KZtLD
-	wNi8td0yl1f4Z0Ueu6JSbuFtq7H1WfY=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=L8QWTdPt;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="MPg0/gwW";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786045708;
-	b=oLhdRvQeYOSDte6SfbYB5NxhBEWBlpFh9E1P3Ilrz0aK8CyJyoEcYNVQHXvi6JViqHEeLx
-	0BSHZv3rRqSF3wZASG2hgcI3D42sF1J5RwwuDl8ei7oEw6ilmkKmQ/HFlQh4Pb4rNmoyTf
-	Q0bLT2fym5mmS2oqrKbM1HNFuF8jD08=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676FtjpE3283031;
-	Thu, 6 Aug 2026 19:48:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=jeaBuhZDTej6ltJJ29Que+EMDm5jpmBSJBZE872aYw8=; b=
-	L8QWTdPt1j5rwJOR66tbChfkAqFAkXgNlEJ8sk6GAB8EQBw7+V2HALY305ahKARY
-	p0ERAA66rL5T9zqH5XAfn+9GIxJ5a85ZutsZvjYY8HKp1k1956yd4szvhUtZVT2M
-	TkFr9EBOH4+Fp7XD9rafOcnxy3jSOuJ2bTXqQkJ4SbDaQ4soWDGW9Rh+vOUUZcrp
-	C4a5IO6IeuNddCzdhTtaPGYhua79EsMLXPg49Mx/GsYtCjwZHuYrriFOCqs6J7SG
-	40xTUHqVgQjaXGocVUpKGDH2JJF3gPhMr7DsfsxUbw0JQ2Y1d9fLchPaJI6mh+ky
-	yiuOmyrsioXs2dvpRPAZdQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fs8p9ecbk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 06 Aug 2026 19:48:07 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 676Jj9LD019743;
-	Thu, 6 Aug 2026 19:48:06 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011012.outbound.protection.outlook.com [52.101.52.12])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ftq44qt5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 06 Aug 2026 19:48:06 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jUMbQKWlp4rFqHPTUUdEoWgOaOdoKzn6gJ5xza77gjhZq2pnPMSBFJsHAgupT7ccXGK5qXNVsJT4aAICe9bh6wvEJN2QY6qfFXQp8AtByymHcXVManO2YwvP4d4y0ZlrBDa/A0p5Ua/d9DeO67ckg/ZlFqbSna5tWdK7pZYmtPJh67yFfaGqFKyIiiO+TwT2fapIyJhtFRD9LXisqG/z4S5cwnFW8etK5M5im0TF3a08DqiHgwzom/LUw9IxY47l31nHwVGXW0ekcU3YOCICY/Ytt57ipZBiHgHq7j1c0aY6DNIWbGuTLwa/XSkRaxNlKpNUK5gyBYH2Lahn55pTHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jeaBuhZDTej6ltJJ29Que+EMDm5jpmBSJBZE872aYw8=;
- b=BGOOZgYPi9kIgSokpbBfMapwnXsEcXCS7NvqASpqG5wBG8IFGIt51w7bMqWTOICIDVPvYzidyZdcjP43jXQkt5wpvgwT7+OPxaJZ9G5GgZhxMP+LuLBKpuTWWZDucXh3rqyGHnEispUnjLSaWk8Ehaf4Fn1P3ua++hbxbSJccN7FDBMT0Qe1n3RfH0e38md8CiB34TO+7M3YMCQFHoePeEKQW7doeS+DAMDSvuAWpeTLciAlyCBgPZMjhZQTpHK/y1RrnTLIrrk3EiDCcE64x/6e1WIiW+mMcEgSv2ZjItUkjn7EKS60hbshFiQnIQeNCloaG08WP9xwQM/jYfo6fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=sol2WO6spiJABjGJXVw88JoISuJHWDSM4SUE68dh/Oo=;
+	b=UQQcLafKVynJj729UMF6l2HiyYHPwhiCzNksb4ZDRsCBAHd8Bl0YLOw5CPjwT+DT58JFp7
+	VKyYtdfMK5Ds1uR6x0+xtjnyoJgdLjx4Jf3ezJZGB8dhBP26jwnX2BSCx5VacEIk1y32mB
+	YnqHY6D+NroriA4w6+WqemtXH7qOrno=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786045721;
+	b=FB93XumCV0T6khDtErT+3q6dByHRxFKxAsxM4ykX983j6ha0vt0KXWB3tO55pO/G2UEE8t
+	QaVh2yYuuimuRJcZ1OlPeH+rvSbNrkjgU63DID3V/8kDeKkpBjc2qIcjTwKbdj3ZtiHiLx
+	I2VguFsgN0E8z69A4cHKv8mokBD0M4k=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="W/vPVG/M";
+	spf=pass (imf20.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ceaf8a1265so38869935ad.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 12:48:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jeaBuhZDTej6ltJJ29Que+EMDm5jpmBSJBZE872aYw8=;
- b=MPg0/gwWmFal5JaTPCmOHbJN6Vv81OwbA4dOSR6/XDLTxVS0aKWb1aa4I2kqxaAPW27wPStVl/WBXl0ROojM+B3XRIVolMW3gSwa/VORMQjkbs9IAYI9g2e5hAqUXNX3mklWtTX9gciCecNTxsAxZzWOSNQwVHaNcS3oq0Xvyr8=
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
- MN6PR10MB8070.namprd10.prod.outlook.com (2603:10b6:208:4fd::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.20; Thu, 6 Aug
- 2026 19:48:03 +0000
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::a4df:c903:e1aa:322f]) by DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::a4df:c903:e1aa:322f%5]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
- 19:48:03 +0000
-Message-ID: <cceec094-ab67-48ab-8dfb-2a800021ffb8@oracle.com>
-Date: Thu, 6 Aug 2026 12:47:59 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 00/15] Use generic_file_read_iter() in hugetlbfs
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-        linux-fsdevel@vger.kernel.org,
-        Christian Brauner <christian@brauner.io>,
-        Jiaqi Yan <jiaqiyan@google.com>
-References: <20260805210557.1118966-1-willy@infradead.org>
-Content-Language: en-US
-From: jane.chu@oracle.com
-In-Reply-To: <20260805210557.1118966-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PH0PR07CA0061.namprd07.prod.outlook.com
- (2603:10b6:510:f::6) To DS0PR10MB7364.namprd10.prod.outlook.com
- (2603:10b6:8:fe::6)
+        d=gmail.com; s=20251104; t=1786045721; x=1786650521; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sol2WO6spiJABjGJXVw88JoISuJHWDSM4SUE68dh/Oo=;
+        b=W/vPVG/Mgo4096i1ydenz+jGliWuIkRUE+bu2WxTAg69d6LVeGPQitHa6E2SOthwvz
+         Ax7pWeXjBVVJbIXfmpwDYP0KqHANqKNUgbZJrju3L/iCpR7gk4nTbgIWX4IiZeUfnUo0
+         P8vRgOr8gECf6TvCIU9J3Sfv5XrkW7DOQqqNVz0CWVkAd1M0MAdvNlQ67FzkPLJ+mnQ2
+         aOhfUhjgqRmkmsvAWn57Te5d0iXjoXEL1iRELBPIaxr9WCekAR/rVOmwV8woVTQmOe0H
+         wr5aGl4shMVEs1RCxmxfTXiRKXYYndSDFobbDK6/woVDw9sKnmH2PeyH6CZDl3gXgIzr
+         6k9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786045721; x=1786650521;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sol2WO6spiJABjGJXVw88JoISuJHWDSM4SUE68dh/Oo=;
+        b=cA6ae86IN5fIijRRfT8EgsLuFgUnJH13oEQ9JrxTiJUSI/oniWHtAYvqFcdpVrgMUv
+         rrR8XNg3eGITW/Iu9SGVG4KLuCULyEuUVK2T3u66ty4oVzhTBdGLxYm7HgrEdij3Hizz
+         BZAPoc1gTK/P7ICLGAU369sm6LQZ3eIS0dDuSmiqbpDrqXwVMEar/yF+tsNKjBTKQZa5
+         T6rrc9hIU5wb4a1QiDMP8ZfuoB8YqhuhLAMnDSr1vAVqml0Wl+v+/NEFWbXKkshqBNc0
+         IyFFzu7s1Th0oU7Kz7R1tl4nNgeSd7DigWT8XZbLchs3dayvsCgYGWlB6TjZvhUodKXl
+         Tw6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqpzhzDYWUCwHaHP/5Af7oy7aTmZEBRAB9fv9+B1UaXFU8xAFureIw3zJw9jPv2WoQUnBcohlpaMw==@kvack.org
+X-Gm-Message-State: AOJu0Yx0TMZzGnF9wgaE59aMbqJwh8e8h6Ay/bAcZyUmDvN0TzCunlMF
+	EARmbQ9EHQDk6v3DY3U87e3SDFs47qFqHjOPTMjs+1wmFDB+l7HUEQmr
+X-Gm-Gg: AR+sD1229Wp0Q0kuxJQL+8KgIwLD213DAqROfXtzRF4ron6ehxM5W/LPuwpe6r/oH8q
+	ebt4XSNg0ncC84u7hVeGdLzUOgnQLKpG3wSBBi3mXdCe2d/2/2nE8Hrc11YxHRp/8K+lDyWcnaR
+	wwUPZVXo3xFwDv6s3mQ/4zBUBVyQEZBFWyck4ci/zx/JKBA0f2rFfP9kB0oAB7VNgY6tjoJvK2s
+	d7ZChCmDMSSh9nTmVa9Dt50R9dThhWmjuSvdlTuMX+6+4emdeA7hmhc1qesns6K8oX3b46Pi0iY
+	16sriT0H7T43O0KOMc5dfOhH9SUI4aAFSk0v3/WQ8qu1JD1hfW1ANwx1AAzAH/hogZNOsB/4wN1
+	L1ajfSeGWGsN25HnGgbjxU80G+6rnWN9HMePfTSWDTZHNVVg3HhNVIUfG0Dll2IWXXdr9Pqtwdd
+	+y3+EmBi5J90CN8u8vUNis+6Ph/VyX4nWhNXGms6plI2tYym2qwRyomasXUoP3zydqW3dL+RAro
+	SWCDjuq
+X-Received: by 2002:a05:6a21:139a:b0:3bf:82c5:ed13 with SMTP id adf61e73a8af0-3cb860269a0mr22194217637.38.1786045720625;
+        Thu, 06 Aug 2026 12:48:40 -0700 (PDT)
+Received: from devvm16600.scu0.facebook.com ([2a03:2880:9ff:42::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14100a73dbdsm736497c88.15.2026.08.06.12.48.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 12:48:40 -0700 (PDT)
+Date: Thu, 6 Aug 2026 12:48:37 -0700
+From: Ziyang Men <ziyang.meme@gmail.com>
+To: Viktor Malik <vmalik@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	David Vernet <void@manifault.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Mykola Lysenko <mykolal@meta.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-input@vger.kernel.org, sched-ext@lists.linux.dev,
+	linux-mm@kvack.org, kernel-team@meta.com, bpf@vger.kernel.org,
+	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] selftests: add shared lib.bpf.mk to build BPF
+ progs and skeletons
+Message-ID: <anTlFSsr5FqQt+o8@devvm16600.scu0.facebook.com>
+References: <20260721174833.1232771-1-ziyang.meme@gmail.com>
+ <20260721174833.1232771-2-ziyang.meme@gmail.com>
+ <f2a0db3b-ac66-4b29-9dff-a691d9464123@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|MN6PR10MB8070:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7ba777d-9995-40fe-3eff-08def3f3a06a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	YoWyPqo8ob52buUrGwfK0K2/jflgecnVxpn3U0/DHaXTgxfSVXIqJ4x7k/Ikp4X8U1Rb4jbyssaGz7b8Sm82GwzGicN4t97yMrjdEFk5MZgnbEISK+iFT++fp15k93w5iLulpPigXEajo415sGXxtVQeTA4b7qbVF8SKmPci0mYdNBoNUEty2DJPhZlZRvhOsSE1/5j/hx+lfkQJUBXlsiiYZVvLv8Rn72sU9xSt6xBTRSTgpwdeX9HVpdjNHz7j+92KiPCXtoe+amldL2+srgNnc0JSDbOF7TXSaCUd6yi43hiaqZja8Bw2YMDZvBkCLW+6ckH6O7sFsmVuYKoHTYrjqJtnRMESwCZLymdv1n1jWzh+8oXn9iouqGp8HYr7hYhiTIpvawmV5A2WWOQRjPTTCO/WKVXaDqhkRq09zIni3Qkr7abxjjc+fmZDeONN0lz9i8vXLmjTHkj/o1HfDJFi+R93UDW5tgBNC8ZK4BI3SlY4WjBcY7dhsxIw4yzyTv5Ynbezwy1Qv07SKkyBJAQ7PFy4zI3hLnxHWT/2c+NI5ClKnRKH21syLgtihcXHdZH8GqCLq67ZC6Agdc5iN9ynICkIj0t7XIxlb3Qih1AE70KF+Gy9pavokKbMj4cu049abrNah7F8v/AnEpvSN6RZryiAZ+yTTjPIVkZ24RM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YnpzZU9rckZNcHptY3pURFhuL21oR2EyQk1wN3lDRTlWby9kQklFRlVUVktS?=
- =?utf-8?B?S2c5elhQaEVoazQ1NGZsMWFwSXpVZ0hVVERQTDQ2MFpjZExCdStUUzhPTUpw?=
- =?utf-8?B?T2VuMUR4V3daUnNpb3FyRnZMWldQM3Y3ZzFNNWxnVEMybkZldkdZd2Q2bjBO?=
- =?utf-8?B?U0RaNHFkbk9ZWHBXeGtmajJ1Z0xKd3ptblJ2SkZ1VGxpM1pGdks1a2dqU212?=
- =?utf-8?B?SjRkMk5zcmJpZEE5R1Urdk9aVWZBdHdjWlh0eUtxK3FLTW5Yc1RXY3prNTR3?=
- =?utf-8?B?azk1LzFxZ2RobHlTVE5rdGpNNDVoVk5rRVQwbFZqcnEySjNRb3RGSGZYbTV6?=
- =?utf-8?B?M1I3ZlNwV0tUTExrSGwzWjJrT0JsaGlrVzZ2cHFLTmFtdzEvZVN3SUlIWkNE?=
- =?utf-8?B?VGMwVzFHSVJINDV5ZThTZzZOeUlEQnhxMFcyNHV3TGJzazh2b0x1UUp6bStM?=
- =?utf-8?B?OFd5K2dHUlRQLzFDTXF1VStRN0ltK1R5dlpWTEpmbmNxOGpHbGRMMTg1ZVBa?=
- =?utf-8?B?S2hCbU1LZXdGcjR3bHd6V0lyYlkwNTlIK0MwTFVJekdwRGQ0eUFEcHJ2aVhP?=
- =?utf-8?B?T3pUcXVST1l2NnFyV3E5RWwzc2tnd01PWjlKdjJtaytSTUVWdDVzbzBLWjU2?=
- =?utf-8?B?VVpRdnZQUGJzRy90bmxibGxMU0NJVVFGaTVIMEd2S1VIekFEUDVPajVVbFQv?=
- =?utf-8?B?R3cyQ1F0d0Q0YVNhSFp6cXhTQ3JQUjNwajd5ZHE5T25WVmovWUUycDVKYytT?=
- =?utf-8?B?Wk9RYUxEMWUxL1hBWXJ4UWJpS1dqM0w5STJhWUxyTk9HZXNTLzNlbHVCZ3lm?=
- =?utf-8?B?T3ZxY3A5TUJjN2FDWnE2THBQWmRTdVlrVlV2b3IrckZRUTFiVmJpM1FzM2lU?=
- =?utf-8?B?czdtRy94V2kwUFJoOStiNGt4RThzR0ROY0ZkL2RYMWFTZXhDQkpFR2F6eXRN?=
- =?utf-8?B?SXBQMmNqWkNqQWQ4UnFRcjluUHhOWUpoKzJjTERrRCt4VWlPU01rcFEyeTk4?=
- =?utf-8?B?VHJhcmdieTBFWnNiczlKcmNRN09NYW9iYnR6MFlXdXdHNFVicHdCUjh1L3lj?=
- =?utf-8?B?djQ1aE5CQTlNa0xGSWJTOXErT2g3OTd0dkROVGt2bU9YWFFORFZ6d3Y1R0Uy?=
- =?utf-8?B?c3hOT0JhRThPZVhlRTVpMkc2SlZzUzVrVGEra2wzWTFIaTFNWHZZaDNQU0NB?=
- =?utf-8?B?c09JaHgydFJ1bzU1NUdxMVJOcG1TT2tPbUFpSTZoeG43NmRKSnF0TEJ1N2dP?=
- =?utf-8?B?cGdZQW83b0p0bHU2cHVSMGl5cjlaNy9ZcHoyejkyZjMyeVR4S2x0SnZzaHhn?=
- =?utf-8?B?ZU1oYnd5QW52TjIwL1g5LzFFV1h0d25Vd3R4NDdCZXQ1emJYUFgrRXhrT2J0?=
- =?utf-8?B?Y3gvR1RUbjNhMlg3cnpMam1Ka0grK0FkaUNVZ2lkMzR6NVJKWkRzbW5xWFJD?=
- =?utf-8?B?Y2xaVUxsMHNRNTNKOC8rK1gvcmFJK0ttdDBHVFZFQW54V0dSUnMrRmdsakFS?=
- =?utf-8?B?VGpHNEJKQzNhajBsRWRBRzdjd21XVzR2Z2tTR3FIbElmRUhmNVVsUk9vVUVx?=
- =?utf-8?B?NXR3eDhPeWxBSURxL04vRjdzNXNNcW9qL1lsT3haWkpJMXd0elJ3aVdIdDdF?=
- =?utf-8?B?SnpjNU9HQ0hpeE1acGx5Q1BiNW9UakhWQ3pKalpjMGRqLzdUSE5CdFI4OUtS?=
- =?utf-8?B?Zm9aSCtpUmJmRDRTcEhFTm94S05sckFTVWduYzh2S0hZWnJsMjJOOUx0UjRS?=
- =?utf-8?B?QWVWcDZBQWdWZkljdTlrVGJUUVpuMGY1djBqRFhZUm9hZFgzYVVINUs5UVlS?=
- =?utf-8?B?UUZoMGQxdWNpaGJ0UzZubng2eE5tcWwvVC83Vi9NbmFWOEVvVHd0WXViZmNW?=
- =?utf-8?B?cCtRUWpPYktURnorazlMblFnR0grU016YkhnZm1FMHhqQ055akVzWHR6TGFj?=
- =?utf-8?B?ZzVMV0o5eHQzUmxzVThkeWRTUFBKdnJsV0NQTHBxQUovNnV2MjNVNHp6NUpI?=
- =?utf-8?B?OUdtS0w1dXQ4U2JYbmxTdU1YVGpOc0JmWlUyY2lZMXV0cHJMcjRmTGNrRXFr?=
- =?utf-8?B?bVZwSkhDazFjQ1lUMHpsRXA1ZjNKOE03U0VtSHhtYzdHNkZ1QzB0bmVnRUYx?=
- =?utf-8?B?cGlLbFBZLzdUN2w2T2VnSnVwQS80WGcyd2VjY2ZTbVlXU0d1S2x4ejBxOWpC?=
- =?utf-8?B?YkNUM2VLN2JiUVFRNHZTTnFxVGxZS1NuM3JraEhSeFcvL1gzV25VK3F6VkRo?=
- =?utf-8?B?aWlWajZ5WG9YQnE3cnowNTZ5SERCWFRkY0ltTUU2SW0zbEpoQ1BGclllc1h0?=
- =?utf-8?B?Sk9nOVBBYzFWdTBRaG1SVUxYV2VyMU5GeHJtZFRBRTVUbm5kTXMydz09?=
-X-Exchange-RoutingPolicyChecked:
-	kAD017E8qi/NkxpreebWpYpWpWyUEhzQKNZ+vIMOhmsATXLAxcVMhQS4nU9UpMdZRUGX9PLF054DsycO54dyBJEMCrhWN6AJITQEBpUfQZragmtjQ6tCENRwBj+1uz79ikoXixonNKbUhyhvA3eDvA9egg+F2ZQF2bUkdP2JfICDYakzBxKJFB0P2AAaz90f/O1c6eJeIk+c5GKQXGcI3/yXiKaYkPTujjngCjfLWCwPKP0BVoA3E1eBhNmzCVUKb322oPkjQCF57lrjT6VWcdzNV8++UQLs7bYAInPR58VWTVQ9k/DN4RXvcr0lAbER5cG9mjRBD+p3SFf7CL74lQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	YCzN3lNaTGI9OJEGPulC6KHguRqYNQt0/fXu7f28lcOPON5nZcRjVkctTrkERl/Puc3OPbD3UUu4i+RmFxOAO4S7q5WGd6ii9s0mRLLa9yoFhu5YLe5mbY/zfBFBj3X23y+r1oC9Asj9eSr9eoDxMhnR8YHMsb1PVXapEsiv6aUufHXd2C4t17aYSdWPpfX0ZyrelFei/1t5szJOvIqp285oB02H1n6JgyT7d6tlCMaPbL9/pNky2pWgoAdDwaFu6pkZQqgRGRA4LTJCPp4F8ED8LqWaA/1Oa4ElTCmryLiDV0KQFT0+Gy+RtYRRRJagix5AGz7xXYWjsqECI/YslMxLRGc5gfXlbjGVLZcnSWi451gSLjb5/qZjdK/ufyS8VaLhVQKacDDiHqPMIumHu1UkOqb7q6xp1whyrVYbmOwJL5AKw8VBPy0zcr13PmMtdr9t8beMEaahYDVbaFGYT2/hWA3ClOYnCi67WIka4FsFTlo8taAjqcLmO+YI9VZKQSsIV28uI8bnQsVTIsj+ciqWiryxMl36JkRdojTccR/Fai1d9yuHSagrGIRQyV0gOaSYOhMBFV9Oq7mYzd0cvxc3vNUZalAzvw9VKsobe5c=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7ba777d-9995-40fe-3eff-08def3f3a06a
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 19:48:02.9690
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g181mYE5JY3GRU6O6ZETMlSHvZ8VM/IjxxtwOkYRVby99C5gaOGIvdN6JoXx5QvZf6/ua6V1zHqDNd+nwXtvpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB8070
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-06_02,2026-08-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0
- bulkscore=0 mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2608060154
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDE1NCBTYWx0ZWRfX+NTpavyQRYJU
- tYpwJN45PrIRuxbuNvuky6R3sqntFS8+jkjuUaNZIBCzIFVEudSJ4Z0TzvgENbDlVdlrOYM0YwD
- Zp2ETuJcPZWPIuJXyvFWJkaxH/j89xZp4KseZzdbIf3UBOcUi0Lh
-X-Authority-Analysis: v=2.4 cv=EPU2FVZC c=1 sm=1 tr=0 ts=6a74e4f7 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Sv0fKeRqtYgA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=g9Uqu3yHaEC6rcbQtn8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: svL1OOYooxyvG-hmw6tX5yItne8Mevkv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDE1NCBTYWx0ZWRfXyeru2CEDVHlT
- K2NWzHxMt9NbjfE/1/ZzwJa33dZ1FUEmWbBxqGL0Atj4HlkncdKw7dt66+ZWT+w/B2L50t3QrTL
- B0tJ9kpbARNz6kdHU8+kYqB2gmLdscHhK54eaNHUyIekCtsbnZ7z+hgl0aZu9I4DYBRFTIQE3iR
- IxiAg5r1YEXGrZD2upKjPwzZ8fxOHoo3FL4eZIJ9SQmAc6JijB2aTueA3jhALg+as0BTIBwvhX/
- wv/EhVVAvnv2vqBK9A8cOAlKet/+WkNAZjmjzyikO+gTMIetEEq85hlNOYmg31eCDP78HYjWA+X
- axWU6vG6Td0a/fDhDeLZaT8HRdqr46NYTcZ3Ux/ZVx8EWxunVMOq42ALAtennrBWfowYOjSSrOn
- qdrBcHPgJa6pex/f3VFmILLI6XWIiY7kG6/pjmVI7qdOKJ/D5ZweVlw3RvY2/k4p3vCmZVRRicO
- xOUZ0bCfdwegbRvZApA==
-X-Proofpoint-ORIG-GUID: svL1OOYooxyvG-hmw6tX5yItne8Mevkv
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f2a0db3b-ac66-4b29-9dff-a691d9464123@redhat.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 79F2340004
-X-Stat-Signature: 8bczswsdqtru74rx98hdb3ks7t47wf7w
-X-HE-Tag: 1786045708-21127
-X-HE-Meta: U2FsdGVkX1+vNiTH7nY3pQvVZSNen90x3/9NUNwgepNkkaH3Zy2ZzY05YGKhYlVMMANFKKga/ByQaYwYRNewQvOzPCUY87Alg002dxLiUw42rRTjeCaxfV+c1GMhsiBncXBLw5OosxzJ+i4wo/2g/RzYK1BouKpLAQW+S9LYd8KUselOjeTSC8onwSQfqfN3GGljtjP0oPA0NrV5JlseUkujMkBxxCFLdQEf8XS2H3e6qi/U/S63OCoacQCG5p6lWH0TUhg/2oAJRxX/8aK6VB5XmFL7qAeIcY5Pl/csUzo32lLIgqYNgEvDIeJISz8wWUyMv1Q33M6sE5sxW6oz1NmtDV5wBaz+Top8Xck7LiuP2NAsU03Qh/+JL2AGVEFupnclNJo7YcDttFx2Hc8Sqgo3qRtw4xfsVMkodXu7EbRRbyOIp/37TCpTv7THYQpjBbZCJKkpNV3rrZNv6UwhYw0YTMaaZlfppRsi4+IZ7bYSL4pvUoT16bYYYy1E3OpzdKS6YRQUpeSn+lvAoTE2boKxy7aHLZTHdSF0Fc+Dc1IlfVzD7b3VWq/pdqmCkmkxitCMD2hZCX0CPq2D2/rBPGwRh+BZx1fLapmSfVzovoja3CH+8wjzgShFdcl1tHYeX0R11GMMnte9OY3olsrL49hAa+GvamqBoR55rfuBWTk4vBkJf3PCAT+LOOP4qs4xalwlpKJTMc4zwmuKy6MfQ3tkvOy33BDbq86eagW0ToLtCCVJrtcfOBWsIveSQT4zX0qINemVvjqOe3x3rvKly8Y9mEsvfCWpS3lRhfnTgeEqax33LWfPjM1bfT4nwSBn5R/5nn1iLqW47cIdckmIHKDnewCcLPPOxHXx0gLqJGsS6Tj0hTGUQXs+uLKzD8dXD13GIvUV41lCugnJWEU3f3k1zEmS20dTYr2hIghwP9AAKDnFpXrXqUFnCpnfQytkPC31qyWWKZzjZnxY2tC
- 8yitKpdw
- kjoxYgwCCL/YtnnVk/j+CWIp4RIysRzhGFAdSON0DUdpXOlOb/srpy7WGagyVCQ+KUGCkoBoDz2ZH5V9AKHXkiOKk2FJiFFsBKKOKiHFf8dUQLtcWTYcp7dWbxiLXed92KCCy23uI2LxpYE7uCuP+OpX4GTbQp/89ab0nyv3OxqSFUQzskGiBVjyf2LnF2/zYn1ElUDJcISf2R3nSlNn/T16UtwVBmZIn/MtSkH+TuxAM5li7bR9/oXZ/5/uMoAn+6QN+FDcxXmD0sgp/PBQuuS7Rm4rRNU1mK6je66AcVIv39ql3bmd7IuV59B9VKTi4vfNRrFLH0komtJLFc34MUkXjDdnKxx5J398oL576NnAGG1/6mIJTOaFfxliVqrpgigC5TR0F0zq1OCdMpoOceH8D35XvS0Q3E1LINR4gVDHeI8vliaX+Klxxdyt8BKZ6qZWNAKMzTdJtY4tJFkcoA03alUTNd4dLZQz+8H80joMLmA4jci67fGCqlctqy+K6nViXbyJwGPQJSu5DiZ+/ylwYRyqdmlDi2JK38ksUPTMZyhqkQcDmc7uibwncVwkaI2EV1YYjZkUNMo9DAk25d1q6C8pX902zr++xUYQ7aok9XLNRdRsfsKHZpO1eY4/9zq56YT09b/XJYLEcC52BXlbXIYLlGaAqC8+2ULQdce+8dIpdNw4jfhEO75S0GijOCqp/Zu1XKDqi//Hgck7Nqgqk8ldhreOQRlZ3cV9qDVom1E45lKnlyB4SfMAl555jQX5A14V6iRVGLcjmFLFBD2Jqt2dq5tpdL10yJEIwcdyoWlU=
+X-Stat-Signature: oqjwxcxm1hhnny8xbggtirp4zpgxgz67
+X-Rspamd-Queue-Id: E8AAE1C000B
+X-HE-Tag: 1786045721-315355
+X-HE-Meta: U2FsdGVkX1/F4mgiOtaI6fZPjW3NdzGeYY/yLv45lFqEynVAS/6OsxKhLU1fj8wLMgEMnXv5wIOtPs6uio/vQCIDYwyqw3zbe51CknKbyfL3cFSbNxmAjRH4oJnuFYGSdgeXYylB7VQH1lZsDH8CoQe4xtWLYzajL7BTXyM+j0y/hJpGqYyo4yWNUttVjwzDApwek7KuIX3AIjBl+tfBY7BBim7Z80PdmK9m358enX0xaj07ChNoEzaS+WWi4+dNsRW+mors0o9tfIMTFZNn91P7CYOLgawgsRJ7FSG32drb9M+5yPTbnC6Wc9I2HrnO6+jXuASZJ9L3vc1ZY3Pmph9XxgobQpIsoWBCLeg1vIS8HpYGg+IYZvN6/RSWC78/pGVNP0WuA5o8cj8D3b2cV9M7jgaO+H2DYvM9o8NhytlK9RYzyYWaRUlmuelhf2NIBTP+jiIE2FwzB2AOuiryh4TNd7OftBtsOnVihV6bxMuaakqKEf1eTFF9UnvYp1yaLwiO2eEZ8WQe4HUj9LHAKuFYdy/Ds3dOij5a6MFwnJH8RcpdNKUBh4k+pX946J8zIn+Bkx8TfWaDjdPhYvQPmRULi0k0QPDs9uFUHVgw3BwDF5IR+HZ6mpo9dDjb+BbGHePNyZRFlW20Xl4pbcQKA1aHnElared8IjjeVqqm/0U1Q/gtjN41f4fQxQY8wtCbFITYgV0tCZCrs9JFEc4f+jt7/EdmKJMGw2NTN03PQehwL/26okKaeVVXfeeFmJoH1ZpXTxpCzJWWSB6G/ZBIW1s1IKN6+f0CKFTjTt4j+rKLO8K4Um1TUD1yu1doJ1zz3tfgKKwO88esEeXZm4zKiZ2HwwF3rbnaBs3nA571SzN+TGEG3XY/BrGN5W3Mv4ofqRYjvlYN3z1yO+LvRgJlp14DUDsKdFXgag9iUhIji7HC+0nsN3E8NDRD/f6HjKLRjF9wJvt5fzSPwTCxeGI
+ mY0m98wv
+ 2uPXYr50TbVTSDo9ZRvfNeR7z8GqR9PDOINdVBCF2XnoSYLyYJkZ9P1Gmbm1xM+dDbVkY8EMdR8hyGIYgPD4/hCYd4CCRunIlrsI3+pn3MRn0l0etu/m7UWxqNb6cecWUVMBkmX5fEC9ATjsljHaTc07LLp6aJ+U2G75E/BDRLteF2fLdVlODFra4eJCOt9oBsarIGagFg034IfAJoTrmowPqaBXmmsAnvb4d33lnnoZpxz+OwMdGakVp2JQjXouag/elfTDt+7FdyAF5W3ba9zUKhcoKgo94E6eAzuRi69DZ4w/W3JuuJG8vpTkUEkKf7yWQZtQnj43Z+HCurtwRI/4Gq3Z3J49K9U+Qrcs0RX812PZrhcoWfSiHobUpkfkApQxbMRyoYFpAp47ZD1H9SehoJpPEe/cAAC0fa8kbqDZWp8Ofouek1rUFpNJEeh5SXZHztbEThpB3teFZrB2gQyNI6DDR/YiZNqDrxkQil3uFej81vZiwIbTK7Nfv4qgu+w/pUzMfcuoicX5d3uojJBpgvpixe1YBWjaCC7V4GPG7xhwcQA+mcpoUtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -234,28 +141,341 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Matthew,
+On Wed, Jul 22, 2026 at 08:50:06AM +0200, Viktor Malik wrote:
+>On 7/21/26 19:48, Ziyang Men wrote:
+>> The libbpf + bpftool + vmlinux.h + BPF-object + skeleton build tool-chain
+>> is currently duplicated across tools/testing/selftests/{bpf,sched_ext,
+>> hid}/, each carrying ~100-140 lines of near-identical Makefile.  As more
+>> subsystems grow BPF-based selftests, the duplication scales poorly.
+>>
+>> Add tools/testing/selftests/lib.bpf.mk, a single includable fragment that
+>> provides the whole chain end-to-end. It builds the in-tree libbpf.a and a
+>> host bpftool, generates vmlinux.h from the kernel's BTF, compiles *.bpf.c
+>> into BPF objects (clang --target=bpf) and generates their skeletons. It
+>> also provides what the user-space test binary needs to build: the header
+>> search paths (so #includes resolve), a bpf_link macro that wraps the link
+>> command, and BPF_LDLIBS, so the test can be statically linked against
+>> libbpf.a.
+>>
+>> To use: set BPF_SRCS and OVERRIDE_TARGETS := 1 before including ../lib.mk
+>> (so lib.mk's default link rule is suppressed), then include ../lib.bpf.mk
+>> and list $(BPF_SKELS) as prerequisites of the test binary, e.g.,:
+>>
+>>     BPF_SRCS         := progs/foo.bpf.c
+>>     OVERRIDE_TARGETS := 1
+>>     include ../lib.mk
+>>     include ../lib.bpf.mk
+>>     $(OUTPUT)/foo_test: foo_test.c $(BPF_SKELS)
+>>             $(call bpf_link,$@,$<)
+>>
+>> This saves much work for configuring selftests in other folder, such the cgroup.
+>>
+>> net/bpf.mk (which only builds *.bpf.o, without skeleton or vmlinux.h
+>> generation) is left unchanged; replacing the existing duplication
+>> mentioned above is the next step.
+>>
+>> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+>> Suggested-by: Mykola Lysenko <mykolal@meta.com>
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Ziyang Men <ziyang.meme@gmail.com>
+>> ---
+>>  tools/testing/selftests/lib.bpf.mk | 247 +++++++++++++++++++++++++++++
+>>  1 file changed, 247 insertions(+)
+>>  create mode 100644 tools/testing/selftests/lib.bpf.mk
+>>
+>> diff --git a/tools/testing/selftests/lib.bpf.mk b/tools/testing/selftests/lib.bpf.mk
+>> new file mode 100644
+>> index 000000000000..6f175c6568e9
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/lib.bpf.mk
+>> @@ -0,0 +1,247 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +#
+>> +# Shared fragment for selftests that compile *.bpf.c into BPF objects +
+>> +# skeletons and link them into userspace test binaries, without each
+>> +# subsystem's Makefile re-implementing the libbpf/bpftool/vmlinux.h machinery.
+>> +#
+>> +# Caller contract (per-test Makefile):
+>> +#
+>> +#     BPF_SRCS         := foo.bpf.c bar.bpf.c
+>> +#     TEST_GEN_PROGS   := foo_test
+>> +#     OVERRIDE_TARGETS := 1              # MUST be set before lib.mk
+>> +#     include ../lib.mk                  # defines OUTPUT, CC, Q, msg,
+>> +#     include ../lib.bpf.mk              #   selfdir, top_srcdir; honours OVERRIDE
+>> +#
+>> +#     $(OUTPUT)/foo_test: foo_test.c $(BPF_SKELS)
+>> +#         $(call bpf_link,$@,$<)
+>> +#
+>> +# Optional knobs (set before including lib.bpf.mk):
+>> +#   BPF_PROG_EXT     - source suffix, default .bpf.c; set to .c for the legacy
+>> +#                      "progs/foo.c -> foo.bpf.o" layout.
+>> +#   BPF_EXTRA_HDRS   - extra prerequisites (headers) for the BPF objects.
+>> +#   BPF_EXTRA_CFLAGS - appended to BPF_CFLAGS for the BPF compile.
+>> +#   BPF_SKEL_EXT     - skeleton suffix, default .skel.h (e.g. .bpf.skel.h).
+>> +#   BPF_GEN_SUBSKEL  - if set, also emit a subskeleton next to each skeleton.
+>> +#   BPF_OBJ_DIR      - dir for generated *.bpf.o (default $(OUTPUT)).
+>> +#   BPF_SKEL_DIR     - dir for generated skeletons (default $(OUTPUT)).
+>> +# A caller with unusual compile needs may override BPF_CFLAGS wholesale after
+>> +# the include (the object recipe expands it lazily).
+>> +# BPF_SRCS entries may live in a subdirectory (e.g. progs/foo.bpf.c); the
+>> +# objects and skeletons are always emitted flat under $(OUTPUT), keyed by the
+>> +# source basename (foo.bpf.o / foo.skel.h).
+>> +#
+>> +# lib.mk MUST be included first: this fragment consumes the vars it defines
+>> +# (OUTPUT, top_srcdir, CC, CLANG, Q, msg) and needs OVERRIDE_TARGETS to have
+>> +# already suppressed lib.mk's default link rule.
+>> +
+>> +include $(top_srcdir)/tools/scripts/Makefile.arch	# ARCH / SRCARCH
+>> +# Pull in the shared toolchain definitions (HOSTCC/HOSTLD/CLANG) so this
+>> +# fragment picks the *same* host compiler the libbpf and bpftool sub-makes
+>> +# will: in particular HOSTCC becomes clang under LLVM=1 (gcc otherwise).
+>> +# Without this the host bpftool and its bootstrap libbpf can end up built with
+>> +# a mix of gcc and clang, which trips clang on gcc-only flags (-Wstrict-aliasing=3).
+>> +#
+>> +# Makefile.include's allow-override resets CC to a bare "clang", which would
+>> +# drop the --target=<arch> flag lib.mk set for LLVM=1 cross builds (make LLVM=1
+>> +# ARCH=arm64).  lib.mk ran first and configured CC for the target, so save it
+>> +# across the include and restore it afterwards.
+>> +lib_bpf_mk_saved_cc := $(CC)
+>> +include $(top_srcdir)/tools/scripts/Makefile.include
+>> +CC := $(lib_bpf_mk_saved_cc)
+>> +
+>> +CLANG  ?= clang
+>> +HOSTCC ?= gcc
+>> +HOSTLD ?= ld
+>> +ifneq ($(V),1)
+>> +submake_extras := feature_display=0
+>> +endif
+>> +
+>> +# ---- paths & tools --------------------------------------------------------
+>> +TOOLSDIR    := $(top_srcdir)/tools
+>> +LIBDIR      := $(TOOLSDIR)/lib
+>> +BPFDIR      := $(LIBDIR)/bpf
+>> +TOOLSINCDIR := $(TOOLSDIR)/include
+>> +BPFTOOLDIR  := $(TOOLSDIR)/bpf/bpftool
+>> +APIDIR      := $(TOOLSINCDIR)/uapi
+>> +
+>> +# Everything generated lives under $(OUTPUT) so O= and in-tree both work and
+>> +# per-test builds (distinct $(OUTPUT)) never collide.
+>> +SCRATCH_DIR := $(OUTPUT)/tools
+>> +BUILD_DIR   := $(SCRATCH_DIR)/build
+>> +INCLUDE_DIR := $(SCRATCH_DIR)/include
+>> +BPFOBJ      := $(BUILD_DIR)/libbpf/libbpf.a
+>> +
+>> +# bpftool must run on the *host*; split the host toolchain out when cross-building.
+>> +ifneq ($(CROSS_COMPILE),)
+>> +HOST_BUILD_DIR   := $(BUILD_DIR)/host
+>> +HOST_SCRATCH_DIR := $(OUTPUT)/host-tools
+>> +else
+>> +HOST_BUILD_DIR   := $(BUILD_DIR)
+>> +HOST_SCRATCH_DIR := $(SCRATCH_DIR)
+>> +endif
+>> +HOST_BPFOBJ     := $(HOST_BUILD_DIR)/libbpf/libbpf.a
+>> +DEFAULT_BPFTOOL := $(HOST_SCRATCH_DIR)/sbin/bpftool
+>> +BPFTOOL         ?= $(DEFAULT_BPFTOOL)
+>> +
+>> +# ---- vmlinux BTF discovery -----------------------------------------------
+>> +VMLINUX_BTF_PATHS ?= $(if $(O),$(O)/vmlinux)				\
+>> +		     $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux)	\
+>> +		     $(top_srcdir)/vmlinux				\
+>> +		     /sys/kernel/btf/vmlinux				\
+>> +		     /boot/vmlinux-$(shell uname -r)
+>> +VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
+>> +ifeq ($(VMLINUX_BTF),)
+>> +$(error Cannot find a vmlinux for VMLINUX_BTF at any of "$(VMLINUX_BTF_PATHS)")
+>> +endif
+>> +
+>> +# ---- clang flags ----------------------------------------------------------
+>> +# Clang's default system includes (not the ones seen under --target=bpf); fixes
+>> +# "missing" asm/byteorder.h etc. '-idirafter' so we never shadow real includes.
+>> +define get_sys_includes
+>> +$(shell $(1) $(2) -v -E - </dev/null 2>&1 \
+>> +	| sed -n '/<...> search starts here:/,/End of search list./{ s| \(/.*\)|-idirafter \1|p }') \
+>> +$(shell $(1) $(2) -dM -E - </dev/null | grep '__riscv_xlen ' | awk '{printf("-D__riscv_xlen=%d -D__BITS_PER_LONG=%d", $$3, $$3)}')
+>> +endef
+>> +ifneq ($(CROSS_COMPILE),)
+>> +CLANG_TARGET_ARCH = --target=$(notdir $(CROSS_COMPILE:%-=%))
+>> +endif
+>> +CLANG_SYS_INCLUDES = $(call get_sys_includes,$(CLANG),$(CLANG_TARGET_ARCH))
+>> +
+>> +IS_LITTLE_ENDIAN = $(shell $(CC) -dM -E - </dev/null | \
+>> +			grep 'define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__')
+>> +MENDIAN = $(if $(IS_LITTLE_ENDIAN),-mlittle-endian,-mbig-endian)
+>> +
+>> +# Prefer -mcpu=v3; fall back to v2 on clang too old to know it (probed once).
+>> +CLANG_BPF_CPU := $(shell $(CLANG) --target=bpf -mcpu=help 2>&1 | grep -q 'v3' \
+>> +			 && echo v3 || echo v2)
+>> +
+>> +# -fms-extensions + -Wno-microsoft-anon-tag: required so clang accepts the
+>> +# anonymous nested struct/union members bpftool emits into vmlinux.h.
+>> +BPF_CFLAGS = -g -Wall -Werror -D__TARGET_ARCH_$(SRCARCH) $(MENDIAN)	\
+>> +	     -I$(INCLUDE_DIR) -I$(APIDIR) -I$(TOOLSINCDIR)		\
+>> +	     -std=gnu11							\
+>> +	     -fno-strict-aliasing					\
+>> +	     -fms-extensions -Wno-microsoft-anon-tag			\
+>> +	     -Wno-compare-distinct-pointer-types			\
+>> +	     $(CLANG_SYS_INCLUDES) $(BPF_EXTRA_CFLAGS)
+>> +
+>> +# $1 = src .bpf.c, $2 = dst .bpf.o
+>> +define BPF_BUILD_RULE
+>> +	$(call msg,CLNG-BPF,,$2)
+>> +	$(Q)$(CLANG) $(BPF_CFLAGS) -O2 --target=bpf -mcpu=$(CLANG_BPF_CPU) -c $1 -o $2
+>> +endef
+>> +
+>> +# ---- output dirs for generated objects/skeletons --------------------------
+>> +# Default: flat under $(OUTPUT) (what bpf/, hid/, cgroup/ do).  A caller may
+>> +# segregate the generated files into subdirs, e.g. BPF_SKEL_DIR := $(OUTPUT)/...
+>> +BPF_OBJ_DIR  ?= $(OUTPUT)
+>> +BPF_SKEL_DIR ?= $(OUTPUT)
+>> +
+>> +# ---- scratch dirs ---------------------------------------------------------
+>> +MAKE_DIRS := $(sort $(BUILD_DIR)/libbpf $(HOST_BUILD_DIR)/libbpf		\
+>> +		    $(HOST_BUILD_DIR)/bpftool $(INCLUDE_DIR)		\
+>> +		    $(filter-out $(OUTPUT),$(BPF_OBJ_DIR) $(BPF_SKEL_DIR)))
+>> +$(MAKE_DIRS):
+>> +	$(call msg,MKDIR,,$@)
+>> +	$(Q)mkdir -p $@
+>> +
+>> +# ---- libbpf (target) ------------------------------------------------------
+>> +# Pass ARCH/CROSS_COMPILE/CC through: lib.mk's CC is file-origin and is not
+>> +# exported, so without this the libbpf sub-make would rebuild for the host under
+>> +# a pure-LLVM cross build (make LLVM=1 ARCH=<arch>).  -fPIC keeps the static
+>> +# libbpf linkable into position-independent (PIE) test binaries.
+>> +$(BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
+>> +	   $(APIDIR)/linux/bpf.h | $(BUILD_DIR)/libbpf
+>> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) OUTPUT=$(BUILD_DIR)/libbpf/ \
+>> +		    ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) CC="$(CC)"     \
+>> +		    EXTRA_CFLAGS='-g -O0 -fPIC'				      \
+Hi Viktor, 
 
-On 8/5/2026 2:05 PM, Matthew Wilcox (Oracle) wrote:
-> This set of patches are separated out from Jane's earlier series.
-> https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
-> 
-> We need three things to use filemap_read_iter() instead of a hugetlbfs
-> specific read_iter: hwpoison handling, treating gaps in the pagecache as
-> holes, and having hugetlb set the folio size in the mapping.  hwopison
-> handling turned out to need a lot of prep work; the other two things
-> are fairly straightforward.
-> 
-> Sashiko complains that the implementation of AS_AUTHORITATIVE is
-> incomplete, but hugetlbfs doesn't use any of that functionality.
-> We'll add it when we need it, either when hugetlbfs uses it, or when we
-> convert shmem to use filemap.
+Thanks for your suggestions!
+>
+>Looking at the same line in tools/testing/selftests/bpf/Makefile:
+>
+>            EXTRA_CFLAGS='-g $(OPT_FLAGS) $(SAN_CFLAGS) $(EXTRA_CFLAGS)' \
+>
+>is there a reason why this is not respected and -O0 and -fPIC are
+>hard-coded?
+Yes it is true that there is no good reason. I will fix it in the next version.
 
-I've run some tests (read over hole, hwpoison etc) for the series,
-the results look good.
+>What if someone wants to build selftests (including libbpf)
+>with -O2 and some additional flags?
+I will add a flag such as OPT_FLAGS ?= $(if $(RELEASE),-O2,O0), which follows
+the pattern in the bpf/Makefile:37. So if we run 
+$ make -> -g -O0 -fPIC (taget libbpf) and -g -O0 (host bpftool)
+$ make RELEASE=1 -> -g -O2 -fPIC (taget libbpf) and -g -O2 (host bpftool)
 
--thanks,
--jane
+>Is that possible with the new
+>lib.bpf.mk? It would be nice if it used at least EXTRA_CFLAGS or
+>USERCFLAGS defined in lib.mk.
+Good idea. I will add the EXTRA_CFLAGS for target libbpf, host libbpf and host
+bpgtool. Such that: 
+$ make OPT_FLAGS=-O2 EXTRA_CFLAGS=-DFOO -> -g -O2 -fPIC -DFOO (for target
+libbpf) and -g -O2 -DFOO (for host bpftool)
 
+>
+>Same questions would apply to other rules for libbpf and bpftool below.
+I would check it them as as well in next version.
 
+>Thanks!
+>Viktor
+>
+>
+Thanks for your time and reviewing. Please let me know your concerns. Thanks!
+
+Best,
+Ziyang
+
+>> +		    DESTDIR=$(SCRATCH_DIR) prefix= all install_headers
+>> +
+>> +# ---- libbpf (host) -- a distinct rule only when cross-compiling -----------
+>> +ifneq ($(BPFOBJ),$(HOST_BPFOBJ))
+>> +$(HOST_BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
+>> +		| $(HOST_BUILD_DIR)/libbpf
+>> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) ARCH= CROSS_COMPILE=	      \
+>> +		    OUTPUT=$(HOST_BUILD_DIR)/libbpf/ CC=$(HOSTCC) LD=$(HOSTLD) \
+>> +		    EXTRA_CFLAGS='-g -O0'				      \
+>> +		    DESTDIR=$(HOST_SCRATCH_DIR) prefix= all install_headers
+>> +endif
+>> +
+>> +# ---- bpftool (host) -------------------------------------------------------
+>> +$(DEFAULT_BPFTOOL): $(wildcard $(BPFTOOLDIR)/*.[ch] $(BPFTOOLDIR)/Makefile) \
+>> +		    $(HOST_BPFOBJ) | $(HOST_BUILD_DIR)/bpftool
+>> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFTOOLDIR)		  \
+>> +		    ARCH= CROSS_COMPILE= CC=$(HOSTCC) LD=$(HOSTLD) \
+>> +		    EXTRA_CFLAGS='-g -O0'			  \
+>> +		    OUTPUT=$(HOST_BUILD_DIR)/bpftool/		  \
+>> +		    LIBBPF_OUTPUT=$(HOST_BUILD_DIR)/libbpf/	  \
+>> +		    LIBBPF_DESTDIR=$(HOST_SCRATCH_DIR)/		  \
+>> +		    prefix= DESTDIR=$(HOST_SCRATCH_DIR)/ install-bin
+>> +
+>> +# ---- vmlinux.h ------------------------------------------------------------
+>> +$(INCLUDE_DIR)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL) | $(INCLUDE_DIR)
+>> +ifeq ($(VMLINUX_H),)
+>> +	$(call msg,GEN,,$@)
+>> +	$(Q)$(BPFTOOL) btf dump file $(VMLINUX_BTF) format c > $@
+>> +else
+>> +	$(call msg,CP,,$@)
+>> +	$(Q)cp "$(VMLINUX_H)" $@
+>> +endif
+>> +
+>> +# ---- BPF objects + skeletons ---------------------------------------------
+>> +# Sources may sit in a subdir and use the modern *.bpf.c or the legacy *.c
+>> +# suffix (BPF_PROG_EXT); objects go in $(BPF_OBJ_DIR) and skeletons in
+>> +# $(BPF_SKEL_DIR) (both default to $(OUTPUT)), keyed by the source basename.
+>> +BPF_PROG_EXT ?= .bpf.c
+>> +bpf_stems := $(patsubst %$(BPF_PROG_EXT),%,$(notdir $(BPF_SRCS)))
+>> +# The output namespace is flat, so two sources with the same basename would
+>> +# collapse into one object/skeleton; fail loudly instead of silently dropping.
+>> +ifneq ($(words $(bpf_stems)),$(words $(sort $(bpf_stems))))
+>> +$(error lib.bpf.mk: BPF_SRCS has colliding basenames: $(BPF_SRCS))
+>> +endif
+>> +# BPF_SKEL_EXT lets a caller pick the skeleton suffix (default .skel.h; e.g.
+>> +# .bpf.skel.h).  With BPF_GEN_SUBSKEL set, a matching subskeleton is emitted
+>> +# alongside (foo.subskel.h / foo.bpf.subskel.h).
+>> +BPF_SKEL_EXT    ?= .skel.h
+>> +BPF_SUBSKEL_EXT := $(patsubst %skel.h,%subskel.h,$(BPF_SKEL_EXT))
+>> +BPF_OBJS  := $(addprefix $(BPF_OBJ_DIR)/,$(addsuffix .bpf.o,$(bpf_stems)))
+>> +BPF_SKELS := $(addprefix $(BPF_SKEL_DIR)/,$(addsuffix $(BPF_SKEL_EXT),$(bpf_stems)))
+>> +
+>> +# Locate the sources wherever the caller keeps them (e.g. progs/).
+>> +vpath %$(BPF_PROG_EXT) $(sort $(dir $(BPF_SRCS)))
+>> +
+>> +$(BPF_OBJS): $(BPF_OBJ_DIR)/%.bpf.o: %$(BPF_PROG_EXT) $(BPF_EXTRA_HDRS) \
+>> +	     $(wildcard *.bpf.h) $(INCLUDE_DIR)/vmlinux.h | $(BPF_OBJ_DIR) $(BPFOBJ)
+>> +	$(call BPF_BUILD_RULE,$<,$@)
+>> +
+>> +$(BPF_SKELS): $(BPF_SKEL_DIR)/%$(BPF_SKEL_EXT): $(BPF_OBJ_DIR)/%.bpf.o $(BPFTOOL) | $(BPF_SKEL_DIR)
+>> +	$(call msg,GEN-SKEL,,$@)
+>> +	$(Q)$(BPFTOOL) gen object $(<:.o=.linked.o) $<
+>> +	$(Q)$(BPFTOOL) gen skeleton $(<:.o=.linked.o) name $(notdir $(<:.bpf.o=)) > $@
+>> +ifneq ($(BPF_GEN_SUBSKEL),)
+>> +	$(Q)$(BPFTOOL) gen subskeleton $(<:.o=.linked.o) name $(notdir $(<:.bpf.o=)) > $(@:$(BPF_SKEL_EXT)=$(BPF_SUBSKEL_EXT))
+>> +endif
+>> +
+>> +# ---- exports consumed by the caller --------------------------------------
+>> +# -I$(OUTPUT)/-I$(BPF_SKEL_DIR): so the test .c can #include "foo.skel.h".
+>> +# -I$(INCLUDE_DIR): so userspace can pull in the generated vmlinux.h if needed.
+>> +CFLAGS += -I$(OUTPUT) -I$(BPF_SKEL_DIR) -I$(INCLUDE_DIR)
+>> +
+>> +# Static libbpf.a first, then its deps. libbpf may pull in zstd (BTF decompress)
+>> +# only when built against it; link -lzstd only if libzstd is present.
+>> +BPF_LDLIBS := $(BPFOBJ) -lelf -lz
+>> +ifneq ($(shell pkg-config --exists libzstd 2>/dev/null && echo y),)
+>> +BPF_LDLIBS += -lzstd
+>> +endif
+>> +
+>> +TEST_GEN_FILES += $(BPF_OBJS)
+>> +
+>> +# Link helper: $1 = output binary, $2 = test .c (skels are the target's deps).
+>> +define bpf_link
+>> +	$(call msg,BINARY,,$1)
+>> +	$(Q)$(CC) $(CFLAGS) $2 $(BPF_LDLIBS) $(LDLIBS) -o $1
+>> +endef
+>> +
+>> +EXTRA_CLEAN += $(SCRATCH_DIR) $(HOST_SCRATCH_DIR)			\
+>> +	       $(addprefix $(BPF_OBJ_DIR)/,*.bpf.o *.linked.o)		\
+>> +	       $(addprefix $(BPF_SKEL_DIR)/,*$(BPF_SKEL_EXT) *$(BPF_SUBSKEL_EXT))
+>
 
