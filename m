@@ -4,98 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE70C56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EE98C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:04:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 232726B00AB; Thu,  6 Aug 2026 17:01:58 -0400 (EDT)
+	id 0D8AB6B00AA; Thu,  6 Aug 2026 17:04:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E29A6B00AC; Thu,  6 Aug 2026 17:01:58 -0400 (EDT)
+	id 088B96B00AC; Thu,  6 Aug 2026 17:04:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F90F6B00AD; Thu,  6 Aug 2026 17:01:58 -0400 (EDT)
+	id E93326B00AD; Thu,  6 Aug 2026 17:04:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAB646B00AB
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:01:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61DCE160205
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:01:57 +0000 (UTC)
-X-FDA: 85072066674.08.952EFEA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B71BE14000A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:01:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Mf2vSbW4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786050115;
+	by kanga.kvack.org (Postfix) with ESMTP id BB1756B00AA
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:04:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 548671601EB
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:04:23 +0000 (UTC)
+X-FDA: 85072072806.22.7566EB0
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 662DD4000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:04:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HVtBlVLd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786050261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=gmX44P5+RP71AkFBiGVrks8QrqRAPBpUiK6dO9jkLu0=;
-	b=1ZooxmHYJkBlpYggueuS1bRgdB2ADrXkQQdbpB4dhz3uRP5H+DT62rNJNopDL3z9tRjhzV
-	YAxSiMCuG0139QqILvYvDDejKTf82snNYAU1kY5gUyrGkdVEQiRpEHmP7FmEWd6LRdlgu7
-	OgNRHSkNuF7Dek5DL8uxdVVRn5VAvQY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Mf2vSbW4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786050115;
-	b=X1Z7Q/BhxMVQNKYKOi4EZ1Q2pNv8AkVgUNnqUs6b/xS5EYfw7tRvabkV77OZdTuFCbgn9y
-	Y83QPBkNukCZTWzNp52BxgI7BNRWCyxbU7VhUjaqNiMJ4wVYk/EwvS7WG1yiYy3X1E8epN
-	M3BBF7+8wzDl1ACQ+zc+WKtA34wXxLE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786050115; x=1817586115;
-  h=date:from:to:cc:subject:message-id;
-  bh=yryCtzWs+HndbVGznUBI8u8i9GCMRbr6z55Vw4+4TOk=;
-  b=Mf2vSbW4yv8jeYJZwvlSi4hxqZp6iBejdB+TF6/szjdLLXvl5+Ry2Pv7
-   TZxZmNWIMl4kVaSbIzSLCuMRRaHcaC5kJdmBp55+fAyByuBBWOuSaTzjO
-   wy+5BhrVuLyGnAhdxjvjxfZ2VjjyZC/uKUg3RUsf1jidmZEpydAo45CKq
-   f+eCnGGd6UvwkhQJaLGKWGGAKXtT2rIm4RBg9B0nEtahK9J3nlg1lre19
-   Kb8k7NAa07WJbovPBbDwCVMpJbfgr6Q7a5AJVJNyvCimHvzc7EHSGI/ZR
-   GhqVbMPpgoRcAXPzTmuS9te+kFh23ovlfkHM1JJ8jE9KmWhmM3GLjG2O4
-   Q==;
-X-CSE-ConnectionGUID: mbOC81FgSeSc4ptWCRC2Uw==
-X-CSE-MsgGUID: 34BpZQHqQlyaP/lHHp6exg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="98020105"
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="98020105"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 14:01:53 -0700
-X-CSE-ConnectionGUID: /iRqHV/lRF27EIYwLuZWLw==
-X-CSE-MsgGUID: Dhr5WiOcRnu5bMkqqHxEpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="266055668"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 06 Aug 2026 14:01:52 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1ws5Dp-00000000GEj-3IUa;
-	Thu, 06 Aug 2026 21:01:49 +0000
-Date: Fri, 07 Aug 2026 05:01:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 8777/13479] mm/hugetlb.c:3095:39:
- warning: array subscript 4294967295 is above array bounds of 'struct
- list_head[1]'
-Message-ID: <202608070433.x3vNSfjt-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B71BE14000A
-X-Stat-Signature: ef79gp8ihg3wixm858qmz64fd7wxp7nb
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8ilisN6b9rsvSV7tujnE8pXGbGA5qhlw1JHj7X5z5Dg=;
+	b=ef1+llqvyMPXT2D6agmmilhgVUpDc/0muxWeGOigGQ+NN7yvrzkgie88iwsFHTbXyJq7Kl
+	eVRV5gtrWkgRTInP/SvTFvWxR+F/ardU+NPh5EvZr3cXo1NP/K4PAsb8PhP0zFIAQcBXSq
+	BRMPWTwQuqo49jtiYZfQD+Mk3sf0hXk=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HVtBlVLd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786050261;
+	b=Q8D0bUPWpNznqQ4nazgyCD2rwO6qoKtW5Llwzc+scUDJ72I6C4aFmk84KZzJd2kvXVz1j6
+	CVnILw9FKCLnlaYHTIh6d/lNIU/IJpByDlfkI56d2rLUH5Nq98mjxiYUenbYwArcGWPorv
+	ehvcsWHAvE6d5Hx4YVE1uJb6ndPqKG4=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso19886925e9.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 14:04:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786050260; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QTGFdSu19Ez+iTa0PNZr9wr1CVRv0fIHwR/E4QtuNUWd0xBzkRQyIZTCDITlu7K3QO
+         fFVpgGMMA2I1il+Gs5NBjpCvrri9msvvJIBwL9Sc9m6v7GdgaaR93BgvC9VjZKG+u9l/
+         VsbHB/trwfB/0XAvBop/aKsbsmTseS9aMp5cwyflUxVtM3/mIwcUXFzZ9Vr7YBk1A8kX
+         X768nFNaWzpBFUMuxcXbdc/TcogPl0gcuoTUTjeJqKjV4GbhfrtTDdZ8j8OqNai2QS+r
+         jKbFz0wsr5wceBid+94w7QKZCmUEq6xKWWobA8zq9Z8ft/a+1Kiz9Dc12jrr76MYRn35
+         Cagg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=8ilisN6b9rsvSV7tujnE8pXGbGA5qhlw1JHj7X5z5Dg=;
+        fh=kJgJE/L2eBzZh8YJEBM0rYMLtTNdJAj0XB4PkCeyb7w=;
+        b=DNvohrmHjD5fQCnqDwM2aLn73JmU2+Mr8wYrpnRwbIEfvoUPr6QddJpkv5A+ueVo6v
+         unm2QtbxiC7TNtojRDKCDTJVxAAyOAJWv1jO+VQCjO28ehLIN0bZqpQ0c8qt9I/BbZjp
+         2F7cB0fcBW/c547dfIjtL/yYKyT0AaQWTYCEzZLfhCqOcjYjRHv3qRfRK0n+Ikg6gc2J
+         tYp43FZRIJXQs4yocld4hBUb/bE/bzzifTdxkeEmUzg58sSTkL20rNtJykNj1r1oAtF4
+         j+yjfi//eL8sy6FPk/hEiP1DoRLshXtQ0jwFo+LNSxqw4R7CzDkBYyirqO1UcJqTL1cX
+         RlAQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786050260; x=1786655060; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8ilisN6b9rsvSV7tujnE8pXGbGA5qhlw1JHj7X5z5Dg=;
+        b=HVtBlVLdf/w57dVfbCTgVO8K4XFTxcpJGZUgZ456uDL/qUJOJL+nqlMwc/1kLhdXKu
+         jnmoQPfKl13I0fd2G3hKPpr8Pnos2DPWW4/JcUJBh2ubmzCZw1gWLgjUlVucEtfZmVvi
+         ym601LOYF5ChG27+aijcW2mZQEi/zwxB18QIlW1PyrFMBUAfAOo9PpoWW9yvlLAgv7KX
+         mmxON8UOnskt70QgEM6HKCwzvDPsv4vt5XZanDbzLj62TtT1xFvlSmx46uXjWhJ/5qzS
+         N9lIxiljhMLGQ2FXxCZ7obJkgt0Zi0JBIGQkmxQsCcWQlkPEpSTPUhIh+YO+qdjDD/HM
+         ki4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786050260; x=1786655060;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8ilisN6b9rsvSV7tujnE8pXGbGA5qhlw1JHj7X5z5Dg=;
+        b=S4kxHCggfiwXHMr2cmH6qXFLVXyju1p6/2HWELSxNiA1FlyXdiQuTvJNoUggNHIusN
+         7vYtqywXfEV/wRFFYG+SSFgeBP8LgzCdWjX3Vq9qPBXnSRkwEBFaoik8LJhEPFbhmIZe
+         Cbwu4nBcA+kbhjnY3qVGcX2WrRD6FH4l69dfHeAA9vypsTQ5/8C6hZ2UUoPIqcG6kBEC
+         /ETToptbWpMi2/OhlbPnw4/9W+x4QTvrFBvi9XEdElrXcYgBIH0jp0W2MfD/x1NwhGqi
+         bq+7bzKI3F4iQqic3jH3NBP2dQQaMZfwNH9vzZoZi6u75WWQ711guirhW3XAGaIC+7HS
+         qLyA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3NXt3YWZCHojGLfIcZEa3A0l4HiflHaq44znE1fJh3EKt0FMdSEggFycBaiEhAWfAHb3UaaBEBQ==@kvack.org
+X-Gm-Message-State: AOJu0YzW8LY0Od0X3sxRA5CC1ORwmMNey4TaxSD0XXAK4o9HtDsDXibu
+	N0ICVZAiTAIoEja+KQzIcU/a8KEpFFVc4w5U8SeVSV8xLjhaCT//YhxN8KuJit2z2x53tobGlRq
+	E0o3eoUGCkkzTbJC+GfFFLkPAEbH87fA=
+X-Gm-Gg: AR+sD11HAtPY60X0Pckf3oFDzjQmJn+JsjryMRS31YGc168lo7gFohxYkuCxc/1bKXd
+	uet9tMvBmUw+irBRpRCE3HnT0taHAtLbQHtYZDNTI93hsbzXcOL+YVSuZxViGM8i739e/l9tNTj
+	pyIqT/S/ZY9nzmdAlNxnHpgJdXPcid647C84hE60c6f2LXSuCpOqqD0QcfOedjLu97TV6XdrCwF
+	CRQgXbdH3EIQBfnNqYcLiQoIl88VxZgbjFhyaWTMuZGwcnnwG1b6TTrLMMbF31mD5LF58hGXUi6
+	EJ/TIksy6WP2gx9F0Ffd2HJk6idAkRPumA5YqPxj6MXFgSHTd8lP5MveGvXhq2VrUwQxHnumPFq
+	7Vw2i04wXNyOWW48nppA7ztuFa9gYkAIm9plykPlXM7DlRCE=
+X-Received: by 2002:a05:600c:8b55:b0:495:3de8:33a6 with SMTP id
+ 5b1f17b1804b1-4994e7cdd39mr269199205e9.16.1786050259636; Thu, 06 Aug 2026
+ 14:04:19 -0700 (PDT)
+MIME-Version: 1.0
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 6 Aug 2026 14:04:06 -0700
+X-Gm-Features: AUfX_mxaCgp8oYES6RNp3g9or9e5V5Tk3wVFme00shwxNtlto6HFGbmfyuWHQps
+Message-ID: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+Subject: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1786050114-347743
-X-HE-Meta: U2FsdGVkX1/iwgGPIcxSfe1Ri9HcuIENC6oa0yNSHTLRC6PEauRPJYrKShzD6436eavRSX8jGrMx8U+65RM+af6ejM1sNmyeZYsbPGzFHAh80GeiYRAAPgtIHXuH1EdnA7lSfb4gIVMAgeg2xk4nJGxlpCDEe8vyFBqB3lkuSJ7tuBVxZS+ya2CCBWdZ31mRKLrryLq8OjVc2acZwbVCdzRK+CadhYdZ3IwYnvuZSgMEZopkeeACHuXaX+SsJyTSY6S6wGt75NRqbS9q2M2WYCuU9mMQQjrmbBujzphgiYx2yajIt9qIapHUiEZJJtloFlc0moVPiNxveFMY6lLFEsnCv99XuZ3E4OhZps/pfPNHYv64fIBhWyhHtyovyInYqgij+yTaVUSfuNjJwzvJLAUE7N8u1rfWvJdK1H5Bu7Txshn4rtLKXaSYgwWptAO5Pd8MkPJJkuXJisP8iOvBvRWhw67ygbaqwcU8jY5gG9FHHNJTqSZeyovzSBjzfbKySKDegf2JYjn/ranNW2JTQZ3kK4t4hWIVa39SOZx4xNmchw5VgTh4TLWPxCSHjylgkghmnpnwh1zoIw/gwmIVP+sQY9bn76ML5YejEzYTrND10Wf9pXtwrTfcfloFof6+YpWnAz5+k2HUp2ANJInVUJqXFxCIUiJQlppy5cRu/b+QLWRaEMAyW1FD99r62+h7A/cD2rSLWCoDkKRpkprf6E2zawTXRLLvKSDj53qGEYgX9Fyp95688L2GvX69B4gX0PhzoHUnTkQFwb4Q0j0WMizoESDDNesFhyWsgK+MlBYqkZTFGl1vAlZL0hBS2baF2twptk5c5nIKZT0tLhD/l+KH0W33ADSZ6R6LZqk5nEBVEbAVrAT9JHWo4YgB7XZev8k9Yl26yidn+BWPx+pvEvj/+Yg0d9QKrw2QkI92xqDNM6STeN0Ql4xA3lFNE/3WGlkmtHue9wUV0fj1ze0
- 5Q2E5rpD
- DYh9tQdbUJCUHOKAbLLLdU1xIqJa0u4/PpFZgMO/fLxTZ3WS1xM40Jwkjsp3wrJZdM5Kje01u2XO+VYzyFedHHiyXzu8RrAFgWLkPCP9If0b+ZiSUNQakkO10zJKE9/n5gMkj2g9y7RbVwpKbWjvyGFhU/45hapVzNxY7T8/i6K0ZQvnwAB9mVRTwdidkjRTjFgOdAwD8WOq/VVxnYssgxLHX7xVvw+c61rIOZN3i621kdThaTmBChLrB6ytvWBZ4E2d0S9s12rhRycV3Tux3MmZFGWMOppE/z6jAkNHbNSkJCSvGsefhhfQbxhZIfST92yOb3gkLsNkXt4w=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: p4rzcqby1ceoxdnmr4rpqqogetcirhxp
+X-Rspamd-Queue-Id: 662DD4000C
+X-HE-Tag: 1786050261-802824
+X-HE-Meta: U2FsdGVkX1/UyGxdFGoQMfh+0Ry/t9STV7xVANMO6ljBqTAAuJ7r3L0RKNQkIxQEvJck8olC57AS0ddMHvZ2T16FPHvm0i+JEPX+b9YrCnSI4SPQ24SafqUP4H8ooOKlvFZVv2MoAlB1sk1uVfeGHmYefN/Y7LqzugJ7xrDJQWqctfjyUyGWGXUMOqb//mVk5hKUyCvzmvxaAGsJNSvFx/t5iDTxppTBuzXzHBhgTlS6oxRJrJzqfK+hWgtM4ETeeyzu2wv64PC/Etzp1bvTX8IGfKk6+XLbGaSO5+5I5quIb0l1OEebzx25Gw5o6juhEEw1pLEiU/akxyQNUCD1DL+zw/hR6e/Jw3k2869TiRo7d/66+iSvSvDdYscbNP2OcqFPuZEKe+dKpWxTy4+07UrXiL3imzgUpHtvonlbjDjqOf6aE1dIbonYLB/EKG8O/focuWCACK1LUNR47vIZPVtF9cUCab2wHkoJ+vcgKLV/3LriAkZgdOMPwGgxoco5E/IHG6B1D7eXc4XY88LUvlADN5uJcwmGSE1FXi86an26ERjOM7hwOEukijVR+dgrwXV8PX3C+NWkJbQ3T9LJOPXanljlxxKfPKpK89aBmlfHM9sDeCjfhBKkrmDDXge1nKWhEk7Gv3jQqFYX0yMGTUK9MQDGHsirZdnMr8AoxsjzlI2HTxD1viRbmdqHMkzAY91SSF+zeFTTab7tjI6wjPIQ0yq9LAelh/4WeRQMBuzGe9ekHVeNPkLsSyJfz3h88+ysPVL9dt77fMta2LDolquR8HtFHQlSfS7SWByBCrbqvKkQcWWWAp9/ta/3xeems9ku9Sw2T1M33nyPOPuWK1UtsNZzJBsKiCZh+Mmcf6tlFYiYl4oT1mzrVCijmG/0Iis8CCsbcgFStdoNPU0Ye+IrAdDlAlyu+NFMD75aGpuZ41Lk/gMJV7hxf3Xf8MD3voBQ+DUifumugrWW/JI
+ cLKyuGfr
+ JZbyFDsBBu9ANqOrhdlvEuksxvYdWgOsHz6O49SuFCJ/ngQ9+qiwt3YQkWTljW7XzB/LIObhIYi8aOpWWuuNcPRt5H2Bjr95rGaIqgmmIegFELd4SOh1pMhM+SLR27UyDGAl7sdOuZinqluOswaW99gHopsR6L6OEQrXmFN5uPf27aVXXTZBQWlJkvefqaHgFDjU/W/4WCVXUWnzNbd0dJM/pC6WQLZmFhdxPDsChkdw5+RSaDv8xEvdf5xUP6Ivshc1MjgksHv5R9KsWsVWLa+2FmtyLzu80UvpI95N/WTYJiWBrV7BmotddY9Qj2o5X4t/tL+kaAj0Pqg83jRdzX7UorN1skpu6b1LLp2xX7N/A6vB2jQzh/X3RT0PPorw0vqnY2HuF7Xb20KEtszw3F9MYH0BX4YZqpnJG/LHXjwnWW+HTeYvFTb2gC/7NXiZ3+NVy/iENwE3ikVw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,89 +141,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   ea2bff00da89d7767d677bb68470130ba96f4928
-commit: 20549ccf4da49ff6dcb35ffc741f92aa92e07aeb [8777/13479] mm/hugetlb: free cross-zone bootmem gigantic pages after allocation
-config: parisc-randconfig-002-20260807 (https://download.01.org/0day-ci/archive/20260807/202608070433.x3vNSfjt-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260807/202608070433.x3vNSfjt-lkp@intel.com/reproduce)
+Hi Yosry,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608070433.x3vNSfjt-lkp@intel.com/
+On Wed, Jul 22, 2026 at 1:38=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> > > > First let's see if the general solution is doable and simple otherw=
+ise we can
+> > > > explore use-case specific solutions. In extreme case revert is an o=
+ptions as
+> > > > well but I would prefer a more sophisticated ratelimiting (that Jan=
+ suggested)
+> > > > than a revert.
+> > > >
+> > >
+> > > Sounds good. I'll keep an eye out for the work Yosry's doing on this
+> > > and look into hooking it up to writeback if/when his general solution
+> > > becomes available.
+> >
+> > I am not sure if I had in mind would generalize well. For zswap, I was
+> > just going to replace rstat with per-memcg atomic counters, and simply
+> > walk the cgroup parents in the update path, as the zswap load/store pat=
+h
+> > shouldn't be too hot.
+> >
+> > However, looking at other in-kernel flushers (including
+> > mem_cgroup_wb_stats()), I see they consume other stats like
+> > NR_INACTIVE_FILE/NR_ACTIVE_FILE, which are updated in the page
+> > allocation path. I am not sure if a cgroup parent walk with atomic
+> > updates would fly there.
+> >
+> > A more problematic one is count_shadow_nodes(), which consumes slab
+> > object stats. I think we definitely cannot do atomic updates in the sla=
+b
+> > allocation path. Although it seems like count_shadow_nodes() is a rough
+> > estimate and perhaps we can forgoe using the stats there.
+> >
+> > If we want a generic solution for in-kernel flushers to improve stats
+> > accuracy without killing performance, I think we need a heavier lift to
+> > rework rstat or move away from it completely.
+>
+> (Adding a few more people and mailing lists)
+>
+> So I experimented with a per-memcg atomics in zswap (see [1] for
+> context), and it appears to be too expensive even for updating the
+> zswap stats during reclaim / swap faults. So I think zswap will need a
+> similar approach to writeback and other in-kernel users.
 
-All warnings (new ones prefixed by >>):
+Thanks for running the experiment.
 
-   mm/hugetlb.c: In function 'alloc_bootmem_huge_page':
->> mm/hugetlb.c:3095:39: warning: array subscript 4294967295 is above array bounds of 'struct list_head[1]' [-Warray-bounds]
-       list_add(&m->list, &huge_boot_pages[nid_request]);
-                           ~~~~~~~~~~~~~~~^~~~~~~~~~~~~
-   In file included from mm/hugetlb.c:6:
->> include/linux/list.h:163:12: warning: array subscript -1 is below array bounds of 'struct list_head[1]' [-Warray-bounds]
-     new->prev = prev;
-     ~~~~~~~~~~^~~~~~
+In a previous thread [1], you mentioned your team was investigating
+some premature OOM kills that might be attributed to this same stale
+stats issue in the vmscan path. Did that turn out to be the case?
+Asking because if so, that might be something we'd hit at Meta too.
 
+>
+> One idea is to keep per-CPU per-cgroup counters, but on the update
+> side we update all the parents' counters, instead of just updating the
+> current cgroup's counters. Flushing the stats then only needs to
+> iterate the per-CPU counters and doesn't need to walk the cgroup tree
+> at all. There is added work on the update side, but hopefully it's
+> cheap enough to update per-CPU counters, and cgroup hierarchies aren't
+> usually too deep.
 
-vim +3095 mm/hugetlb.c
+I'm not sure about the zswap case, but for the writeback case there
+are significantly more updates than reads. There are four stat updates
+for every folio that gets dirtied / written back, so four per page
+with 4k folios, while the read happens around every few hundred pages
+dirtied. In the scenario I was testing with memory.max set to 8 GB and
+using the default 20% dirty ratio, during freerun the stat gets read
+once every 256 to 512 pages (with flushes happening less frequently
+than reads).
 
-  3060	
-  3061	static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
-  3062	{
-  3063		unsigned long pfn;
-  3064		unsigned int nid_request = nid;
-  3065		struct huge_bootmem_page *m = arch_alloc_bootmem_huge_page(h, nid);
-  3066	
-  3067		if (!m)
-  3068			return false;
-  3069	
-  3070		pfn = PHYS_PFN(__pa(m));
-  3071		nid = early_pfn_to_nid(pfn);
-  3072		/*
-  3073		 * Use the beginning of the huge page to store the huge_bootmem_page
-  3074		 * struct (until gather_bootmem puts them into the mem_map).
-  3075		 *
-  3076		 * Put them into a private list first because mem_map is not up yet.
-  3077		 */
-  3078		INIT_LIST_HEAD(&m->list);
-  3079		m->hstate = h;
-  3080		if (!hugetlb_early_cma(h)) {
-  3081			m->cma = NULL;
-  3082			m->flags = 0;
-  3083		}
-  3084	
-  3085		/* CMA pages: zone-crossing is validated in hugetlb_cma_reserve(). */
-  3086		if (!hugetlb_early_cma(h) &&
-  3087		    pfn_range_intersects_zones(nid, pfn, pages_per_huge_page(h))) {
-  3088			/*
-  3089			 * If the allocated page is on a different node than requested
-  3090			 * (e.g., on PowerPC LPARs), put it on the requested node's list,
-  3091			 * because hugetlb_free_cross_zone_pages() only frees cross-zone
-  3092			 * pages belonging to the requested node.
-  3093			 */
-  3094			if (WARN_ON_ONCE(nid_request != NUMA_NO_NODE && nid != nid_request))
-> 3095				list_add(&m->list, &huge_boot_pages[nid_request]);
-  3096			else
-  3097				list_add(&m->list, &huge_boot_pages[nid]);
-  3098		} else {
-  3099			list_add_tail(&m->list, &huge_boot_pages[nid]);
-  3100			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
-  3101			/*
-  3102			 * Only initialize the head struct page in memmap_init_reserved_pages,
-  3103			 * rest of the struct pages will be initialized by the HugeTLB
-  3104			 * subsystem itself.
-  3105			 * The head struct page is used to get folio information by the HugeTLB
-  3106			 * subsystem like zone id and node id.
-  3107			 */
-  3108			memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
-  3109					huge_page_size(h) - PAGE_SIZE);
-  3110		}
-  3111	
-  3112		return true;
-  3113	}
-  3114	
+I'm not too familiar with memcg or vmstat so apologies if this is a
+naive question, but does it make sense for memcg to just do a similar
+approach to what vmstat does? As I understand it, mod_lruvec_state()
+updates the node counter and the memcg counter (if memcg applies),
+where for updating the node counter, mod_node_state() does some
+batching where it updates the global counter for that stat only once
+it crosses some threshold (pcp->stat_threshold). Could memcg keep its
+per-CPU counter as the accumulator but once it reaches some threshold,
+it then propagates it up the parent/ancestors into a per-memcg atomic
+global counter? The atomic would then only have to be touched once per
+batch than on every update, which might eliminate the overhead of the
+per-memcg atomic you saw previously? It seems like this would get rid
+of needing to do any flushing altogether, as we could just read that
+global counter directly.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> A more radical approach is to completely drop the per-CPU rstat trees.
+> So instead of walking the parents to add them to the per-CPU tree, we
+> just walk the parents and directly update the stat. The flush side
+> will then always iterate the per-CPU counters to accumulate them. With
+> this approach, the update cost roughly remains the same, but the flush
+> cost changes. Instead of walking the trees and flushing all cgroups,
+> but only doing it on CPUs/cgroups that actually have updates, we
+> always iterate and sum the per-CPU counters. The average flush cost
+> may become more expensive, but it should be more consistent and won't
+> scale with the cgroup tree size. I am not sure if this would be a net
+> win or not.
+
+I wonder if this scales for machines that have a significant number of
+cores? Onsomething like the 96-core / 192-thread machine Yunzhao
+mentioned in the zswap case, it seems like the flush now would have to
+touch multiple additional cachelines per CPU when it seems like for
+the majority of the stats, only a small fraction of those hardware
+threads would have any updates on them?
+
+>
+> We can also choose to do the above for all the stats or only the ones
+> used by in-kernel flushers, the latter would probably perform better
+> but at the cost of more complexity.
+
+I agree. For the writeback case, afaict I think we really only need to
+do this for NR_FILE_DIRTY and NR_WRITEBACK, neither of which are
+updated from the page allocation path.
+
+>
+> I honestly don't have any time to pursue any of these approaches, so
+> this is mostly just a brain dump. But I do think we should try to more
+> systematically solve the stats flushing problem as it has given us a
+> lot of pain over the years.
+>
+
+Thanks for writing up your thoughts on this - I found it helpful!
+
+Thanks,
+Joanne
+
+[1] https://lore.kernel.org/linux-mm/CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxc=
+B7xXNm_f3XfbA@mail.gmail.com/
 
