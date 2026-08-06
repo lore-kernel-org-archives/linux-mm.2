@@ -4,115 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4854DC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 18:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54BB6C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 18:24:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4128C6B0095; Thu,  6 Aug 2026 14:19:05 -0400 (EDT)
+	id 335CC6B007B; Thu,  6 Aug 2026 14:24:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C736B0096; Thu,  6 Aug 2026 14:19:05 -0400 (EDT)
+	id 30D0B6B0088; Thu,  6 Aug 2026 14:24:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17A9B6B0098; Thu,  6 Aug 2026 14:19:05 -0400 (EDT)
+	id 225A06B008A; Thu,  6 Aug 2026 14:24:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D2E6E6B0095
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:19:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63D5CC018F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:19:04 +0000 (UTC)
-X-FDA: 85071656208.06.330ADD3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7AC2318000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:19:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gCiGC53v;
-	spf=pass (imf16.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EDB206B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:24:44 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72BAF120187
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:24:44 +0000 (UTC)
+X-FDA: 85071670488.27.B914136
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 94A5440009
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:24:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aiCyMRbl;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786040342;
+	s=arc-20220608; t=1786040682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Od46/DzmUAyLPulZmr0Tuh5N+v6QlQ8E5evsDJ+JEQ=;
-	b=d2I/PgM4ZPl/bKdx299DPaM8OC4mYK1YB1Ip2nXMTV5WJH+j/98Xisfg+xCN7fThS6nmKr
-	NoGJzdBI+58l4uW9vIcroTSdedHffStfDgjhRkZQe+MSoROkIPxjWrBm04oYqLQIB8/FKp
-	UIgKaNWkPa7q2ttvPwju36KePN/B1cs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786040342;
-	b=KRZfGXSAYZghyUFg/91m4cY2STJARfsJELolDBsm+SvDMzzblPEnyqn1E/3lI1/RgBLwYy
-	OkJhNH5dvWhwxVljpY0YtIu2DUDhxHjIJ2Bk5a0b/cW1FcLHnKJq3wvCsD8FUk4QW1Go8l
-	FV1MDaxeJLoClq/gbEmFI827z68nm6U=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eDz9E568MotxR3+S9hrXjCNiUKmMbJuSpoRSuTy9vwI=;
+	b=MfLgdOihKBuf7iWhXsYPc82FumAdXJyrAonnYEdZCThUQ2BE/iTWLTY5zTqXSnrNVQAMpf
+	21i8TEPVsYDbwPnXQym+hTFOiC3x1jGf7NMrlOQJGMzRx8GfoIqw6J0VNSMUWmQCZxjEK8
+	uwf/tPXc9RbLrW9yABjK/3tSMNfSfSE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gCiGC53v;
-	spf=pass (imf16.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aiCyMRbl;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786040682;
+	b=7R3jZBgOhp9mWGdgZh1aycU1Om/tUyLkAvJro2JgK5/W/YV8RUFC+m1OZNhJul+/40catS
+	5D/JMczado7tiCAAVA4is/++tXjrtTXOno3ozbil3hyAi9UsQOaG0yPk9GzbKUZ79/NuZY
+	8q6EGNe+T6RuZeSwUYveZSqs5C/QkZE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786040341;
+	s=mimecast20190719; t=1786040682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Od46/DzmUAyLPulZmr0Tuh5N+v6QlQ8E5evsDJ+JEQ=;
-	b=gCiGC53vUn3rCzFWerv9zO3aczR3OXy3QGr214ByNMS+FXp1TBIMs1EStgqI9qZJHbNMa7
-	eiiG/Uh3ICOmjJ3tr/T7K66wfTppIj3oAdx2k/RXPnBP1EOu8PJetzpV2O9qvp5v3xT4L3
-	NN43gHOI5t/WxTLrgr7pJKgFNGOZGm4=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eDz9E568MotxR3+S9hrXjCNiUKmMbJuSpoRSuTy9vwI=;
+	b=aiCyMRbl5BcPelfpaETssetLufFmI6zqn73/rw/CYyaF5rhyfIZMnNK5RfbGR07YRL9etA
+	vUSfToyNsVbkxeyIYQdHbUSBboaqT2po0mndYLuHoTT644/4tgR5Yj5C2v9iiF9xrpm0HR
+	HWTRWcjM/zPnPL3FtTHreSKXMyg1BWU=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-njgfHLFnOPukWvRfLr7D5Q-1; Thu,
- 06 Aug 2026 14:18:58 -0400
-X-MC-Unique: njgfHLFnOPukWvRfLr7D5Q-1
-X-Mimecast-MFC-AGG-ID: njgfHLFnOPukWvRfLr7D5Q_1786040336
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-cRadgUPLNM-vesmcECZ9Lg-1; Thu,
+ 06 Aug 2026 14:24:36 -0400
+X-MC-Unique: cRadgUPLNM-vesmcECZ9Lg-1
+X-Mimecast-MFC-AGG-ID: cRadgUPLNM-vesmcECZ9Lg_1786040675
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DDFAD18002C8;
-	Thu,  6 Aug 2026 18:18:55 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 449A71800650;
+	Thu,  6 Aug 2026 18:24:34 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.22.64.255])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F249E180034C;
-	Thu,  6 Aug 2026 18:18:52 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D1104180034C;
+	Thu,  6 Aug 2026 18:24:31 +0000 (UTC)
 From: Audra Mitchell <audra@redhat.com>
 To: david@kernel.org
 Cc: jocolema@redhat.com,
 	raquini@redhat.com,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Andrei Vagin <avagin@google.com>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] selftests/mm: Fix soft-dirty kselftest supported check
-Date: Thu,  6 Aug 2026 14:17:04 -0400
-Message-ID: <20260806181843.1839943-3-audra@redhat.com>
-In-Reply-To: <20260806181843.1839943-1-audra@redhat.com>
-References: <7d6b4401-e230-4ca7-b64f-c1277fa643b8@kernel.org>
- <20260806181843.1839943-1-audra@redhat.com>
+Subject: [PATCH] Fix unbounded loop within try_charge_memcg
+Date: Thu,  6 Aug 2026 14:24:28 -0400
+Message-ID: <20260806182429.1841095-1-audra@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: EYsD6EkiAhjL6ltBSwTBAPa_LdhF5uVgSzcdp7mt5y4_1786040336
+X-Mimecast-MFC-PROC-ID: 7FwTmgHiu11eHQ0Rq88q1D4gVhLHCAY9PSwLj_GkxO4_1786040675
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7AC2318000C
-X-Stat-Signature: smm7r77kyswzyt4g3crj68qfooxztoha
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 94A5440009
+X-Stat-Signature: usrp1bcekkfxzggwrutbdz4doe7k7xoe
 X-Rspam-User: 
-X-HE-Tag: 1786040342-356873
-X-HE-Meta: U2FsdGVkX1/eByt4sOD2A4Cv2AKi4914vFz5czI3tAfHb3EMPjdGcF2txidDAqdrlsyQOLUt5TmHI9Ou55GnfgzBMvNq/kQPq9Pn7OJ1seh8x4reAzLv1cNkk+7kP3ev64BAml8eb80Cuo8CpL183UmCjh+ZA8aBGAF88CpAC2MI5yk+t9z3SHXmMRYL8WN9MlJ3d6g4yh2qV3fHs/r+9Ivy1gukfdY67+MvPlYDz4v/8FsRkfTw7HfRa82wfSO/nFCaqTtQvTiMhXp8N26f2ZF8+v+yBFg1nm+uZl8G/pxXZhFsLITCAdQwzf1jUZ460bwnzj5zAVAroh4L4QnkYdTBgNhvWl9PgWk+r2oW2riXmQ8QCEOd1GwrYMwWUGfMpewDM5u5PlM5yRFsvrsB1zz8//Z6A/xWpAlCP8v3dcjW72wEF4aOXiXjQsCfdFl6Y2UvGMAYryJKfPCF9NfB+f7d6NIqwFy41vq7ALlI6GylUGJNv1m6QBe80flNA60m56Rgzh66P8YD1GSDuo8H7/lVRJFKsipgh+QTVxKkG/Na0LAlnB8vK3nyi0J8ZetLHYTWT36y8HigwhsKE+fhXcQvjzADyKSlAAZ+36fYrtRrXhrdtA1uptozH1KWGzM4wmR0OncnFErm1eqk5ryrBLDy1LcRkCWjb3dkTHqlx+NBCrCdilbo7Nv7tfhV83Y1CPfWHbLlg4URl24W6Qpi2UDzpn+YOD/nkci8r9Cox1NvDKxGVCzimFQocSWZCuX+6QLoLjDJ2LdRa7g0Scrfl13IqsIotikheGj+BMdS0497byiNA7N4nuN553PQMsvonJgufbrxWEQK/uvpzUq2MNt5LyvTMo4X8ahb5amXVg33Q5ukFqd5ZcTgEqebrJ+lIq+JWMAuXmgCl1JakxgcYjxR73Ie2TnCU5sdMGkVj8qQOgw35iBuxT8/Cb+Ic4b2oOyvXGnbeuaWUPIebAm
- p8RmSuzq
- Bh71YoZDBTpJ11DKNLdUAPwJrBczUu6kd3D6yO4FtjT/wiYMiDMYaetk+UqRnrDdCxQ4ywrNsno2Bj8PCKD2vojjE76gMj4n0ensvh9MjL8+ZHPPqbEPWcIlbicwDLrY3X/O0ureFhff2l+Dg6erCaG5hWSHBgVAAEt6cmOwU472yfh/rxGdDn7nRg8l23G3HncdKnFucuUJfQrOQ970yk933JjH2/jt78PLzK7yP5VOZOF22u54n3omS6RHOs4tBQzWJT+BSoQYuUPnRQWH0L7foUGxShEMCqpHv69uqM0umfH+tPZs5Xm4R+UUjcmQH2FmfWAJI7CTPueYSxSUmIiqthATfpdHX4XMDEuA9IaDNf+mNQN1QviZ3mofavKmw2YT5od9KbGvAsPipHJ9kaP9JCGLi7AfWRTzs
+X-HE-Tag: 1786040682-878054
+X-HE-Meta: U2FsdGVkX18PivdOKFkrJoyO6I1OJQd1xLGWGqfK8f4O8CMKYS/OmKmdf5kgxoQw031lLtLbOGUmbg7fVO4FFysLoRoEstsEhdvj9zRSwA47tHRGb5rMdArvE8PoahvRl7g32a6E2nycS///OvVd5TowyN+fTUWgq8+aNOB3g6c1QnGfqGfHVNlEwfy0d3EGwWs7xiImPT0GU0eRBa0c5srHZElPnhQns9IIHe4TSKyCX7x5VrJEvr6c2dP53gx4syR9o7fgWYpJdXR0LqDy3gnqR/izZGHWAAGt3Vm1UORBoDZTMA+HUO+M6YISvVhmWyYZrAEvwKxhucpOUWvaTzWiHiPDxoVIvQXjgRz5K0CPj0rmNdJYjKoAWD+1w+QD3J1ZlxAUlzGarr1y79c6hHVqIKhVAhVwUj7Vu0y5JANvPc6boujJUXE6jUROjFaYUl+bmms/6u7/bLSMDrNNn8sqw7Ur4iEtLoQ3n7/2gaRmALY4GohzDNXLEK3d00LPqm3wxNVHJN4ww5bZgPl2KnSU1H7yGiWQNG+nQFGqZ/BIhj8hVPJS70SM5UdguUOB1YMpNjwiMTtbGeB+xIiDQDT1bBuCcg68GFWsKObfA3+2DhsZkbXKfkoRwgFMAWv1NbRYMbJ9SpkHUV4cYcr953Kf498TaulbVmD57w2AUHCFQ34+SD8dl/0rNZcix/uFFR/+JDFnxDUbO2W93LFiBBa8zwPNiRB5M4vLO/dKHpPfoVNmZQlQvWEvHYPd0i/EJ2ZXQhnCrsVrfI9g7/WZoOUbLgsLV0bVXdIDfRGJcdSaj980D7w2x7IxsMukYYW4Da7+fHp6stkOqt730uMVl8m6z1nTYG6s7dm40seF8Lg2fh/zXbRuZInpZwJF0T4eRNime3c155fhU+kf6zXRJ7YA4Mc02vuctv1o+2R2/TRgxlGQh6SIMvD9Pv2xoHgNvV/8rsBYg8ZwXHLDTMG
+ vEMX+Bby
+ ZabGZkQFuCD5j9wt+oD0i0Rod+LNxSZVxnHXncz0T664wQxbXKr+MVIfgpdhVn+mg3E5U0R/o0jVhwh77nHbOa3UQvKXkUJePVFXs6tVdcAQ5/PZj1Dn8+KTxV390WqFouNurGe1DXoOoif63j9dy3zFEwpNut3jRzWUOnPVy+dSf9hbs7mcLvygJ7L6nJde0LK1b77LCNFOhuyqqt1xYNzt7e51/GoBAX2+9GsvL2ZVFx0AhIFVq7HhR7HnQFiCjahKHUQHyY7SgLVpM3LurGScvw4Q8pKejfOgeCV8+MChXhDNW+YrDcgtPFpawWyJnI22mOWcw7ZlxIMPRFOHaVFqnM17Vi+75PAhHLnIImCHM3QPO58caUc4OhNu/BCymmNCzsRnROHKnX58=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,92 +110,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On architectures with separate user address space, such as s390 or
-those without an MMU, the soft-dirty kselftest may fail when checking
-to see if the feature is supported.
+Originally nr_retries was actually nr_oom_retries and we used it to track (and
+limit) the number of times we entered the mem_cgroup_oom path and then attempted
+a retry. The purpose of nr_retries counter changed with the introduction of
+9b1306192d33 ("mm: memcontrol: retry reclaim for oom-disabled and __GFP_NOFAIL
+charges") so that the oom-disabled and __GFP_NOFAIL charges would also continue
+to retry within the desired nr_retries threshold. Later d977aa939fca
+("mm, memcg: unify reclaim retry limits with page allocator") changed the
+nr_retries counter from 5 to 16.
 
-  # --------------------
-  # running ./soft-dirty
-  # --------------------
-  # TAP version 13
-  # 1..15
-  # Bail out! PAGEMAP_SCAN succeeded unexpectedly
-  # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-  # [FAIL]
-  not ok 1 soft-dirty # exit=1
-  # SUMMARY: PASS=0 SKIP=0 FAIL=1
+As the function has evolved we now have multiple paths that have a goto retry
+path and we have lost the original purpose of the nr_retries counter, allowing
+us to take a goto retry path an unbounded number of times.
 
-The soft-dirty test will initate an ioctl with the PAGEMAP_SCAN flag with
-an invalid address for the page_region. This is done intentionally to
-have the ioctl return with an expected EFAULT and with the correct
-categories returned.
-
-However, on architectures with separate user address space, such as s390 or
-those without an MMU, the call to __access_ok (used to validate the
-variables provided with the ioctl) will always return true and we will not
-fail as expected.
-
-        if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
-            !IS_ENABLED(CONFIG_MMU))
-                return true;
-
-Let's simplify the check for PAGEMAP_SCAN and provide a valid page_region
-address so that we get a non-errno return if it is supported.
-
-Fixes: 600bca580579 ("selftests/mm: check that PAGEMAP_SCAN returns correct categories")
+Fix the unbounded retries by nesting the code in a loop and decrementing the
+nr_retries counter correctly.
 
 Signed-off-by: Audra Mitchell <audra@redhat.com>
 ---
- tools/testing/selftests/mm/vm_util.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ mm/memcontrol.c | 153 ++++++++++++++++++++++++------------------------
+ 1 file changed, 76 insertions(+), 77 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 6b65bd0a1e0b..4a8e339a7403 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -66,20 +66,25 @@ static uint64_t pagemap_scan_get_categories(int fd, char *start)
- }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 6dc4888a90f3..781bcced5848 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2607,98 +2607,97 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	unsigned long pflags;
+ 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
  
- /* `start` is any valid address. */
--static bool pagemap_scan_supported(int fd, char *start)
-+static bool pagemap_scan_supported(int fd)
- {
-+	const size_t pagesize = getpagesize();
- 	static int supported = -1;
--	int ret;
-+	struct page_region r;
-+	void *test_area;
+-retry:
+-	if (consume_stock(memcg, nr_pages))
+-		return 0;
++	for (; nr_retries >= 0; nr_retries--) {
  
- 	if (supported != -1)
- 		return supported;
+-	if (!allow_spinning)
+-		/* Avoid the refill and flush of the older stock */
+-		batch = nr_pages;
++		if (consume_stock(memcg, nr_pages))
++			return 0;
  
--	/* Provide an invalid address in order to trigger EFAULT. */
--	ret = __pagemap_scan_get_categories(fd, start, (struct page_region *) ~0UL);
--	if (ret == 0)
--		ksft_exit_fail_msg("PAGEMAP_SCAN succeeded unexpectedly\n");
--
--	supported = errno == EFAULT;
-+	test_area = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (test_area == MAP_FAILED) {
-+		ksft_print_msg("WARN: mmap() failed: %s\n", strerror(errno));
-+		supported = 0;
-+	} else {
-+		supported = __pagemap_scan_get_categories(fd, test_area, &r) >= 0;
-+		munmap(test_area, pagesize);
-+	}
+-	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+-	if (!do_memsw_account() ||
+-	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+-		if (page_counter_try_charge(&memcg->memory, batch, &counter))
+-			goto done_restock;
+-		if (do_memsw_account())
+-			page_counter_uncharge(&memcg->memsw, batch);
+-		mem_over_limit = mem_cgroup_from_counter(counter, memory);
+-	} else {
+-		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+-		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+-	}
++		if (!allow_spinning)
++			/* Avoid the refill and flush of the older stock */
++			batch = nr_pages;
  
- 	return supported;
- }
-@@ -89,7 +94,7 @@ static bool page_entry_is(int fd, char *start, char *desc,
- {
- 	bool m = pagemap_get_entry(fd, start) & pagemap_flags;
+-	if (batch > nr_pages) {
+-		batch = nr_pages;
+-		goto retry;
+-	}
++		reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
++		if (!do_memsw_account() ||
++		    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
++			if (page_counter_try_charge(&memcg->memory, batch, &counter))
++				goto done_restock;
++			if (do_memsw_account())
++				page_counter_uncharge(&memcg->memsw, batch);
++			mem_over_limit = mem_cgroup_from_counter(counter, memory);
++		} else {
++			mem_over_limit = mem_cgroup_from_counter(counter, memsw);
++			reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
++		}
  
--	if (pagemap_scan_supported(fd, start)) {
-+	if (pagemap_scan_supported(fd)) {
- 		bool s = pagemap_scan_get_categories(fd, start) & pagescan_flags;
+-	/*
+-	 * Prevent unbounded recursion when reclaim operations need to
+-	 * allocate memory. This might exceed the limits temporarily,
+-	 * but we prefer facilitating memory reclaim and getting back
+-	 * under the limit over triggering OOM kills in these cases.
+-	 */
+-	if (unlikely(current->flags & PF_MEMALLOC))
+-		goto force;
++		if (batch > nr_pages) {
++			batch = nr_pages;
++			continue;
++		}
  
- 		if (m == s)
+-	if (unlikely(task_in_memcg_oom(current)))
+-		goto nomem;
++		/*
++		 * Prevent unbounded recursion when reclaim operations need to
++		 * allocate memory. This might exceed the limits temporarily,
++		 * but we prefer facilitating memory reclaim and getting back
++		 * under the limit over triggering OOM kills in these cases.
++		 */
++		if (unlikely(current->flags & PF_MEMALLOC))
++			goto force;
+ 
+-	if (!gfpflags_allow_blocking(gfp_mask))
+-		goto nomem;
++		if (unlikely(task_in_memcg_oom(current)))
++			goto nomem;
+ 
+-	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+-	raised_max_event = true;
++		if (!gfpflags_allow_blocking(gfp_mask))
++			goto nomem;
+ 
+-	psi_memstall_enter(&pflags);
+-	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+-						    gfp_mask, reclaim_options, NULL);
+-	psi_memstall_leave(&pflags);
++		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
++		raised_max_event = true;
+ 
+-	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+-		goto retry;
++		psi_memstall_enter(&pflags);
++		nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
++						    gfp_mask, reclaim_options, NULL);
++		psi_memstall_leave(&pflags);
+ 
+-	if (!drained) {
+-		drain_all_stock(mem_over_limit);
+-		drained = true;
+-		goto retry;
+-	}
++		if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
++			continue;
+ 
+-	if (gfp_mask & __GFP_NORETRY)
+-		goto nomem;
+-	/*
+-	 * Even though the limit is exceeded at this point, reclaim
+-	 * may have been able to free some pages.  Retry the charge
+-	 * before killing the task.
+-	 *
+-	 * Only for regular pages, though: huge pages are rather
+-	 * unlikely to succeed so close to the limit, and we fall back
+-	 * to regular pages anyway in case of failure.
+-	 */
+-	if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
+-		goto retry;
++		if (!drained) {
++			drain_all_stock(mem_over_limit);
++			drained = true;
++			continue;
++		}
+ 
+-	if (nr_retries--)
+-		goto retry;
++		if (gfp_mask & __GFP_NORETRY)
++			goto nomem;
++		/*
++		 * Even though the limit is exceeded at this point, reclaim
++		 * may have been able to free some pages.  Retry the charge
++		 * before killing the task.
++		 *
++		 * Only for regular pages, though: huge pages are rather
++		 * unlikely to succeed so close to the limit, and we fall back
++		 * to regular pages anyway in case of failure.
++		 */
++		if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
++			continue;
+ 
+-	if (gfp_mask & __GFP_RETRY_MAYFAIL)
+-		goto nomem;
++		if (gfp_mask & __GFP_RETRY_MAYFAIL)
++			goto nomem;
+ 
+-	/* Avoid endless loop for tasks bypassed by the oom killer */
+-	if (passed_oom && task_is_dying())
+-		goto nomem;
++		/* Avoid endless loop for tasks bypassed by the oom killer */
++		if (passed_oom && task_is_dying())
++			goto nomem;
+ 
+-	/*
+-	 * keep retrying as long as the memcg oom killer is able to make
+-	 * a forward progress or bypass the charge if the oom killer
+-	 * couldn't make any progress.
+-	 */
+-	if (mem_cgroup_oom(mem_over_limit, gfp_mask,
+-			   get_order(nr_pages * PAGE_SIZE))) {
+-		passed_oom = true;
+-		nr_retries = MAX_RECLAIM_RETRIES;
+-		goto retry;
++		/*
++		 * keep retrying as long as the memcg oom killer is able to make
++		 * a forward progress or bypass the charge if the oom killer
++		 * couldn't make any progress.
++		 */
++		if (mem_cgroup_oom(mem_over_limit, gfp_mask,
++				   get_order(nr_pages * PAGE_SIZE))) {
++			passed_oom = true;
++			nr_retries = MAX_RECLAIM_RETRIES;
++			continue;
++		}
+ 	}
+ nomem:
+ 	/*
 -- 
 2.52.0
 
