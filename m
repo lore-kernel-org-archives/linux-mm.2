@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B22C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23175C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:36:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7C696B00AC; Thu,  6 Aug 2026 05:36:27 -0400 (EDT)
+	id 43F1F6B00AF; Thu,  6 Aug 2026 05:36:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2C1F6B00AF; Thu,  6 Aug 2026 05:36:27 -0400 (EDT)
+	id 3EFB66B00B1; Thu,  6 Aug 2026 05:36:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1C3E6B00B0; Thu,  6 Aug 2026 05:36:27 -0400 (EDT)
+	id 305D06B00B2; Thu,  6 Aug 2026 05:36:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D3B56B00AC
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:36:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E9C51A06D5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:36:27 +0000 (UTC)
-X-FDA: 85070339214.09.A2888C5
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4236016000B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:36:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3LO9zcO;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D4F96B00AF
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:36:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95CA0A070A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:36:38 +0000 (UTC)
+X-FDA: 85070339676.27.022946E
+Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CA1931C0007
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:36:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pih8DKTj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.0 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786008985;
+	s=arc-20220608; t=1786008996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JoRhdZOCeEiS1VMpBUeU4kVAqK2jVYvx0TEggrSzApM=;
-	b=lHdqk81degWapfJbYYCj/p5j9BB48O4K2raXpeho/pT69dP0YtPbDXUzlp2uLHMbnYL5N0
-	Hl7kAlycUTvavG8p52rIoq+6k6n1lXBY5lQDKQQW5Qj4I9VNJqNXpyF6N4fuf2semLoxMl
-	5vy7VK02aj/sDE3+E6eHjYhGMfb+biA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786008985;
-	b=n4PcK85OtX0XblWaUYXb3BmylEUUvXlcunSkPv8tLuZiSyEihlUkpbAdP00L6MOZnyxlBi
-	YofvCqHjvGGav+qmibagE6eDh4HI2o04EVp1WhTRueHX5gSQCPCKfaqSZzKcMQQkk+HRk9
-	BKabj2b16ijPW/7rA51sRU1Aq3sRcbI=
+	bh=LuSw8PyHR5EplcrqG8+HZ+85Dl0Ckz8ecCi5UKpH+2g=;
+	b=FcMYSOpdx6UYP8zstvsaVE+yql2L3ig4iqMMmGXWEXnOKp0y5XR19MT54KLz1yrbS+Eogc
+	uLePFQf2fwCu+QOCPpB0r/JBtZuAfRvQ0X6IS9C3ZmognIFNJFEgXIKlmozme+H4zGCLXp
+	nAXXXWzTijw+aXNbGlUCe5kkGzD/bsk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3LO9zcO;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso851618b3a.1
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 02:36:25 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pih8DKTj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.0 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786008996;
+	b=uCBDOJKP9BOYM8VsrtVJKRyzIiMSwrxAuN20sd0NK7ecxhyYf2A+YmIg4g09xiNczR6FHj
+	mwt9Ldcqf2IOO7lRJFBhD63kFmzX8Dl3X38bVHEjlSeV2dbz9I0995rBojT2e2LQQzrO9R
+	tnA7ym3PTU03wk046FsanAmXFH1H/2Y=
+Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-c888c001628so1207865a12.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 02:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786008984; x=1786613784; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786008996; x=1786613796; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JoRhdZOCeEiS1VMpBUeU4kVAqK2jVYvx0TEggrSzApM=;
-        b=e3LO9zcOdyjZ534jxBJZ232M1uD/tp6h1ufbVWvW3cyRT89J+YOixo+/p98yEcz0Jc
-         kxplvnmQKFsYTbyWOxLERwQiQHcCfjwEIkLQL5xUqU9PwQS02uQ/m6GdXkX3WLzhIS6N
-         4p4OkFr2g59kDEBDman/aAqE701gbat/NhWoGd/Rjkr7RoEND95gc+F3atndv9cKwJwS
-         IXxBrO6w21xmSMFhK9nqAPWDrTvYgV3owvxhznUSSrsYcJ1xrS0TiInl2s8ju/6KHR5C
-         KW9l5ZH6GfqhiEM37FtMvjIO/cpiTZYDqkMOPzPKrPourhvstKppIS1fWc/I68qfy1It
-         7gwg==
+        bh=LuSw8PyHR5EplcrqG8+HZ+85Dl0Ckz8ecCi5UKpH+2g=;
+        b=Pih8DKTjnr6Hg+sEIgPwwGf1Stu8hhCKONWzIsJCDZWScyAnH//y8/1zt9Stg9yf/+
+         1RW7EljLrjPM0wgqurrnR80VF7JxnHye0wijHkMRIhBHDRyrAEnMesjvewVadOn4YCdq
+         OOOfFF6TdXxWW+Nh9qTznn/2PTaO8j1/lBITNqjRWvgNZvGrQ78gOFe5W0m4qOKU6OUD
+         PwUE8thVoHBn+pZk6kZ42D1K8A6/p4E7YZb15SaRcptgwNwNVn9IkwxewMBv3oChQtqs
+         NC5ceAUuPOArX8v8nHZ36W+Lj5IvGo7oVzxGRSmoLPBU73tBzz4QbYCKhDQH5+NhegZC
+         YdIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786008984; x=1786613784;
+        d=1e100.net; s=20251104; t=1786008996; x=1786613796;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JoRhdZOCeEiS1VMpBUeU4kVAqK2jVYvx0TEggrSzApM=;
-        b=iDmj24OvKGVEMHTlp2B9EmxIM7eh/jOEO99BIBaplkJZdhYxdlyexRNgxC7mxIpqw4
-         ZESLpD29N2sMamElGV+GZESj1HVrcpsD+S0R4jNwkDGZRF/DmPDe7r+zC8kOrF+/ehyE
-         TpnsAs8dlDAmFFewx6W6ucDsg36bnYP6jITT2SKRfT45kuz+VCPzIXnhIUjdO23hjnr6
-         /LTCHSh7vNkE5EB4SUlDpE6x/uZXEdt6Ajw1pb/reWnW3gjIubKoJn7h6NPqd+MBvCPP
-         TXhe3KQdMVMxEk0vgpKod9sTcQQpMfWS/Ktv/n2PvCwNhRL74vC/pHv+joGVUWX8CyjC
-         G0HA==
-X-Forwarded-Encrypted: i=1; AHgh+RqFlMmBuKSvYCxq/d9TP3MkhYv5A29OdSE4xKq2FlXDC/hl2YViZxtFIJvObWmNKzdEqA9kpyAqiw==@kvack.org
-X-Gm-Message-State: AOJu0YxuBqq/zk5cGaun022JQ5frvWpDNOM+yRtyjqCRNyjc82XUBAfm
-	vLAEWEXt/wkyugsRqgK/UcDr2/tq3w1S/lr9boAjr5KbOGNswmmF9+5V
-X-Gm-Gg: AR+sD12rLLIHdUI5cGV+GeVdxRTZCDBgo9WQDIlMPpAwyRdV3DYNthV3YkfrLejVxcu
-	aLmmAIl7nFrtTPrKClBQ64XuxXHS7zS+D8iODcaiBy6YSR3CK1NcAgi1u22X1dzBMiP9sOTNrRi
-	VPsQOtEeWBeW2trc80k4EwGzMlHQISenM/1d7tY6M4Ci4Tmqj6iPCqCl2DpyLZxpCPl19dR1Nbp
-	WAn2MQ8OalkSqYWkf3M5cnkfxUgDVY9CO5wVx5psP7c7oYmzDzSx85wkhE/b+o81hCkCZHzVGvj
-	lPu1vtgepCR4t+SwamNGQFndHd/1oTfdRp1BuRA+C0HN3fAQU6KV1vImz1fR5ntTn5VeOO+fOUf
-	5+DGhtN8V1V9gxAEOBIOhtNSe5165dIisqZYXALlszHIs9pyqgPrGohsVMIr/vH4Ulxb5cH9kcS
-	sbz6EX9/wX/SK02ST5kZH4jNCnTUMN5+4U8hnqBKYuQXgI3H/28RNEn2R2LKOZxCLvbrTsgeYPh
-	A==
-X-Received: by 2002:a05:6a00:f8a:b0:847:9dd7:2683 with SMTP id d2e1a72fcca58-84f41df42ccmr6551184b3a.9.1786008984000;
-        Thu, 06 Aug 2026 02:36:24 -0700 (PDT)
+        bh=LuSw8PyHR5EplcrqG8+HZ+85Dl0Ckz8ecCi5UKpH+2g=;
+        b=NZZBgoaoEqoMZO8G6OWRfj+mWbnvEtsDv4qGJX2EAJEirjv5+DLZgguG3nxjBfiGKo
+         8TovlqlTbRP2AN7zZ60Iw6Ug3y+jo5ZLVHqjQd/Xe5T4dW0114AjeIyk6Rv6HdBztlXt
+         6+yxGdckX2r7HYGfz/xElAEdJgEk4CIesrcnWj82e1JCaPGbgSWe0+BqFpKJtMk3MD2m
+         KSAz04QzGq1Mssu8rdsgRl94r8Gpp7QiFRGxYbFQ8b+BEBplNMobSLqNk+n3eTgEpXPo
+         0yihfyNpCbHiQMKyBUBkxi1bEv9m/3nkTmXTAoBCJBL1YlhbGpG5mQf/NxFyDoXauldv
+         99ww==
+X-Forwarded-Encrypted: i=1; AHgh+Rqez+wn7NAI7K1xoZKDb3K1sjvucJEPX0YuLU62WmqHjclkbQU48nYh1EWxRvnWZ6xtK4bA0yRPpQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCbcVu4qaKSfjV9poHfK2nBa+PTDpWpYcCs98JwzIO3+VomV+t
+	Atn9/nwdCoV0kXKIIHaUrYfjZs5nN9Pt6YgbH7cYgkHS5Wzq4s3feej7
+X-Gm-Gg: AR+sD11eQWFccNnRMUC3YZavPNzHMTkNDfp14ERulLQ00l67njDcq3OoYxtfue1bN3A
+	kfpewYUGni9sPrZEcCyn71Vrc+FfW6iiQojsocR8VAiZlkQgigDERPsDqJI5Cfsh9+Z7LIw/i5j
+	ZTcUhwGylNGwFIAvGSYdcM+vTTf5YatMxzbs2Am6EJU6BEHLJ/W5905ppvJOZLDdcBlVi3jSkcB
+	rExOE66Oc6IjBHjCVE+cRXgiSkJnYixvARi8L/oEN+P10lAXS4ZRGfGneU4MSSYnzu3cUs9IqIv
+	zNAwTV2dX4vTcJulQtDfWWcLHEMkq8kefNGEO0p3Jo99e0TKvX2Qp/MnBCHc7pkt9a3SI77hTJV
+	qN7G2+XUF9jXAIxLYBCWG9ICJasdNX42KBF1QhSz3jMfNPWH4BB/z2c8Iz1XQCVEC2OqSxxFpxk
+	FA5YC57OO8EKDFgsGZ8OxGQ5gbfN6DxjafQAWCGkVcpo4qRSFgEAdxBPI/pXNILACjpFZmn0pS3
+	Q==
+X-Received: by 2002:a05:6a00:298e:b0:845:dffa:3740 with SMTP id d2e1a72fcca58-84f2e0151aemr16066036b3a.4.1786008995542;
+        Thu, 06 Aug 2026 02:36:35 -0700 (PDT)
 Received: from intel.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b0aeasm1043878b3a.13.2026.08.06.02.36.13
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b0aeasm1043878b3a.13.2026.08.06.02.36.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 02:36:23 -0700 (PDT)
+        Thu, 06 Aug 2026 02:36:34 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -118,22 +118,22 @@ Cc: kernel@xen0n.name,
 	akpm@linux-foundation.org,
 	ruirui.yang@linux.dev,
 	robin.murphy@arm.com
-Subject: [PATCH v5 4/8] of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
-Date: Thu,  6 Aug 2026 17:35:15 +0800
-Message-ID: <20260806093519.2907771-5-chenwandun1@gmail.com>
+Subject: [PATCH v5 5/8] riscv: build crash_mem ranges from memblock instead of resource tree
+Date: Thu,  6 Aug 2026 17:35:16 +0800
+Message-ID: <20260806093519.2907771-6-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260806093519.2907771-1-chenwandun1@gmail.com>
 References: <20260806093519.2907771-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4236016000B
-X-Stat-Signature: ksfuut7of5bkwgjytbrmycg5ae87thkd
-X-HE-Tag: 1786008985-800838
-X-HE-Meta: U2FsdGVkX19MvpkRVI8Y8j2kCHIy8LyM1Xt0VnE+ya/ACN8DkhlTDIRURlXAC78Ovvi6iqx5xaqClDs8LLFIZVwjHDm2HiScE0aWyT5YecU5cQJwwP82Yx6psrfk6mf/edbmK1PUsV56GpqzKHs1E02Rqb4y4mdALE3e29FnUsVWiQ2tOtOp+g6I7HMXN6GFzJJG+UbZ3PrlTiRwdx1QgIp+OOATuj0VnANy8GYzG4yza8fZhHTNq50wSp2gMEfIPP5lEo080Is1UIAhNsZMo5hoDLViUJrKhc+KprDpOaQ+R+cMshNKu+HQZV2QVxMU3zZT/WPVASUDFDPsQm2Xj9H3LrU73hqZzOQYFBMC1duMXpmdXz7vXX+Juaw6SAG8Ygwy5acMcecLRIZqQReqdBGtePEAN/vbhjJFV9tnk483V4EJ5DK6SQSAmWsikXOpGi3PT/wYLod6eep6PWQsU5zRZi5/+KtFKX8MdqT3mCZjMkIREBlAERM5aEBrSEWtwSJDVkt585r+jA+Va1/gItjEegeW/kE0nDGaZmqxO2zrm1fFceI0QaKDb+mdH+fq5qRXfyznIcYTHPM+cR7kYOteY0evVqXYLsMnJYlEmyyVLK2Upt+E/6TfHRvY6Z4LcDpWT5dMaVjsW3ySfENy8QJ2xBEJ9Bi0YqyEx6M79/eqP7PHIZybt9ZINaym8tFqtw00A3HLn+ezwY/6BRJ257EEblQPY3PYJBAbzGpZ2/rNC3nKD3j/t5RkqPkjFtxPXG/cNlCtS6gVwl+1SSBWqV1bHr+PVlHxLet+e+Iwv3F5eO7yOBXfT8pvCiFnyRN/qBeJAx451TTfF3/fTqFWJna4QKU+q/VUu6Rx93b2HJwH9SHaVbbpqW4kQSROzzhyMJzYHL0iZJZwNMiBXCh/BlRmMJGqNo0+hGim0CrYM+UawzEQtQMS0k3SYqKa8xzECi46OVWpFgr9dRzgp37
- EzqFQT06
- ztyLW4UX+YEaE8eFzmrOrRCDJKSyC0RuDPV4Jt3BixP8o1H2YMa+aH9MnwbMjSkT5hHBh2+rNqAwQOVbzZl40Dx8KnnLhwhrwibz/xb9IKRbH+oWYRmX4GzjtqL144kC8WRZamFIEqY5jKtmtStthLYmeHWrPMvNcq6pMzkLfzMcXlNB8fTNqAtQxCE2Bt4xuA50P9Q/7w7h7E1UB0SQhuYmDkXLTUG7VwP0L1DlEgogaz9hkgFXMMqW/+zuWpK7bLPsrpD9M65R6tsqk4bAN2KkFHdgkizq8VgzFAfySU7rrPXZXRc1LnVteZCclh9OaiZ0DiWr2PSHglrpee5i1Y94EfAKdUAji8g2yXvX34TDe1r4FXAqmo2+xO8bKGVUpfMuohh84mx//9PR4uevRF/H1pyKHvds7D71AbNuvdl33Y7HDal4kww9P2VB9RxUYGaXnmSIcBOY7Atm0cULrJCPcjpt9ulXT0vcrRx3Jl3d+TRwGI1odijaLLg==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: amdg6zyjauieiuyr4rhzng4nfgad8cwo
+X-Rspamd-Queue-Id: CA1931C0007
+X-HE-Tag: 1786008996-488507
+X-HE-Meta: U2FsdGVkX18neInbcETtf84uXig9SR+dYaQv2HhtWjNxxsGXJVTBD/Ef8QbNoXu2vxOdv/jIcM1gMqk4Uv0UaWvdYDZC+bKxDYQC2CoSesDY6dw7BvKXruxx5nS5Jl1t/yekxwoZnuhdwbC0IySnKw+W2EnTeOx7/a0YVeOo1JaalETxnFYwHbNFPStcip60sZZC82oX0mGHX5G78TFTat06Nir+qoFg4Yyn0Gl04IewDkAd72ch/njVCOgIfn9Ux1JhobmP8qRXQDoqimsVWEh4iTTqhqtdAZaf9q/4K8qeWULXpda2LbRdqnvis3XUjmA2OQl0H4XFCHTtvT++1EtxbklevAjNXU/zyKcvjFSvdwSrWEqzKLvR7ZToV6yG1xldKEChbPhr6M956CqXhYQUWUtCFMtx31mUmCibGPrcxgTHqx7Dphw1OuYMHKXVQWGp9sfGXlfYce2Opw1bzX4yivJhRHAVLu+co3FgQo2Q3bIYqZlYk848+R7yoDz1ObpkJbETTwyPaSiSJmMWQ3jdhAsu8cNgz+QMqhioLgNOMJu65jr2RCXyFp2W+JTNTq1FQ33KMfLdylsWqp3UpWsotLyGTYUnWEsyUzmU4n13XLEYp/ZCLJ6nYbA5eUHmWaR62XIg5Lhz5e3Nic5325GI/DM6G+tW9vwu4l0FaKfBMqFTeDmYOW4TsYJQ6D/G50jQymx5os/CsOzFNqafk5NoUtTauYB3IEa7Tnjrop4XDQM4V0YGhOImCqIB9f3VJk21jGO45pRZ6xQN0rAq+S+XtaFZLYYXTdaWMwMamztibikOtJ8nGbNuAFRVWaFZPr9wd+ZfjSEgnQUNGF2vm6Xmnnxkr6bjb6qCRai2amBSFl0L1c0cB2q5FQ73kpcMY5gJOP4BKyPtSc3H34oMa2gj+79R/ySz6ICrwX/a3efhaL+La7E3O44QyFo/tFugA8RrnDuGdiqXQ6dzjI6
+ qfDTih5L
+ LarrbVxS1CLNrnbOMucVP0qq78ZXU/TShDqljrh5rT1b1M9hv2ZM0vaCde7mJZt92cLm22GlRNxjr+T4YsYvfjK4WpJg2VeSogYXMs6tNt8h9sRgAQIES/2HX3c9L01i7X5STG7jeACDD+LBi+zCfS6YPO8cqW5+SjoqeiyT3TVbqhleiUIcf+q1XRvEyy3idQ1buvR/jeLBhiTIIF7WVfgxYXCTBpYmkP0EqFOuFbY+J6ksVM8ToZAcHXYKp2VXzkY6Kkg8EHfognFX5aKNxjygjKgETthEvWpvWRaKCDQc5zzqv5QpP0xhgO6Rv+ESIYgubOyxe77DpCTKyyzpwxxq+DNED2Bs90S0i8y9XXP+epgBcGVxPeIUS69r7iE3trNLZxXVdvxSgutfb9QdUd+Ad0pdZvhdJUvmqjx34RRQ4j6c3XqNZO4i3TLCMyqlQVWXQY4/Te8oGe5IlCa5wniSx9gg+xu0OHhLBV9ZDreSalWvvF6UPPZyqsHNAqQ2Pp9vvLjJbG8tyr4bm3FHl/Cqlxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,89 +143,94 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-The /memreserve/ entries are memory reservations made by the bootloader
-or firmware, their contents are not needed for kernel crash analysis,
-so mark them MEMBLOCK_NODUMP to have kdump omit them from the vmcore.
+Replace walk_system_ram_res() with for_each_mem_range(). The
+MEMBLOCK_NODUMP flag lives in memblock, so only by walking memblock
+can the reserved-memory regions marked MEMBLOCK_NODUMP be excluded
+from the vmcore.
 
-Entries that overlap a dumpable region (such as CMA) are left unmarked,
-because the pages of a dumpable region may carry crash-relevant data.
+for_each_mem_range() iterates memblock.memory, which is freed after
+init unless ARCH_KEEP_MEMBLOCK is selected. riscv needs
+ARCH_KEEP_MEMBLOCK to filter reserved memory from the vmcore, so
+extend its condition (ACPI || KEXEC) with (KEXEC_FILE &&
+CRASH_DUMP). arm64 and loongarch already select ARCH_KEEP_MEMBLOCK
+unconditionally.
 
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
 ---
- drivers/of/fdt.c             |  2 ++
- drivers/of/of_private.h      |  1 +
- drivers/of/of_reserved_mem.c | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 35 insertions(+)
+ arch/riscv/Kconfig                     |  2 +-
+ arch/riscv/kernel/machine_kexec_file.c | 31 ++++++++++----------------
+ 2 files changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index a64afc3ded3d..2aa888997e9b 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1286,6 +1286,8 @@ void __init unflatten_device_tree(void)
- 	/* Save the statically-placed regions in the reserved_mem array */
- 	fdt_scan_reserved_mem_late();
- 
-+	fdt_mark_memreserve_nodump();
-+
- 	/* Populate an empty root node when bootloader doesn't provide one */
- 	if (!fdt) {
- 		fdt = (void *) __dtb_empty_root_begin;
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index 0ae16da066e2..667ce9e46aab 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -187,6 +187,7 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
- 
- int fdt_scan_reserved_mem(void);
- void __init fdt_scan_reserved_mem_late(void);
-+void __init fdt_mark_memreserve_nodump(void);
- 
- bool of_fdt_device_is_available(const void *blob, unsigned long node);
- 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index f38d11df6f15..f0683b5d77b3 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -251,6 +251,38 @@ static void __init __rmem_check_for_overlap(void)
- 	}
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index ef1101bec76c..bd8726b4dfbe 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -57,7 +57,7 @@ config RISCV
+ 	select ARCH_HAS_UBSAN
+ 	select ARCH_HAS_VDSO_ARCH_DATA
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+-	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC
++	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC || (KEXEC_FILE && CRASH_DUMP)
+ 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT && MMU
+ 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
+diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
+index 26cd2a8bd0cd..808e872f4063 100644
+--- a/arch/riscv/kernel/machine_kexec_file.c
++++ b/arch/riscv/kernel/machine_kexec_file.c
+@@ -37,39 +37,32 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
  }
  
-+void __init fdt_mark_memreserve_nodump(void)
-+{
-+	u64 base, size;
-+	int n;
-+	const void *fdt = initial_boot_params;
-+
-+	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
-+		return;
-+
-+	if (!fdt)
-+		return;
-+
-+	for (n = 0; ; n++) {
-+		int i;
-+
-+		if (fdt_get_mem_rsv(fdt, n, &base, &size))
-+			break;
-+		if (!size)
-+			break;
-+
-+		for (i = 0; i < reserved_mem_count; i++) {
-+			struct reserved_mem *rmem = &reserved_mem[i];
-+
-+			if (rmem->dumpable && base < rmem->base + rmem->size &&
-+			    rmem->base < base + size)
-+				break;
-+		}
-+		if (i == reserved_mem_count)
-+			memblock_mark_nodump(base, size);
+ #ifdef CONFIG_CRASH_DUMP
+-static int get_nr_ram_ranges_callback(struct resource *res, void *arg)
+-{
+-	unsigned int *nr_ranges = arg;
+-
+-	(*nr_ranges)++;
+-	return 0;
+-}
+-
+ unsigned int arch_get_system_nr_ranges(void)
+ {
+ 	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* For exclusion of crashkernel region */
++	u64 i;
++	phys_addr_t start, end;
+ 
+-	walk_system_ram_res(0, -1, &nr_ranges, get_nr_ram_ranges_callback);
++	for_each_mem_range(i, &start, &end)
++		nr_ranges++;
+ 
+ 	return nr_ranges;
+ }
+ 
+-static int prepare_elf64_ram_headers_callback(struct resource *res, void *arg)
++int arch_crash_populate_cmem(struct crash_mem *cmem)
+ {
+-	struct crash_mem *cmem = arg;
++	u64 i;
++	phys_addr_t start, end;
+ 
+-	cmem->ranges[cmem->nr_ranges].start = res->start;
+-	cmem->ranges[cmem->nr_ranges].end = res->end;
+-	cmem->nr_ranges++;
++	for_each_mem_range(i, &start, &end) {
++		cmem->ranges[cmem->nr_ranges].start = start;
++		cmem->ranges[cmem->nr_ranges].end = end - 1;
++		cmem->nr_ranges++;
 +	}
-+}
-+
- /**
-  * fdt_scan_reserved_mem_late() - Scan FDT and initialize remaining reserved
-  * memory regions.
+ 
+ 	return 0;
+ }
+ 
+-int arch_crash_populate_cmem(struct crash_mem *cmem)
+-{
+-	return walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
+-}
+-
+ static char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+ 				 unsigned long cmdline_len)
+ {
 -- 
 2.43.0
 
