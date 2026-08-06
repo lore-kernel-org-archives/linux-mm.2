@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C36F6C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C20C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:13:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14E6C6B00BC; Wed,  5 Aug 2026 21:12:46 -0400 (EDT)
+	id 434F36B00BF; Wed,  5 Aug 2026 21:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1237E6B00BF; Wed,  5 Aug 2026 21:12:46 -0400 (EDT)
+	id 3BDA86B00C2; Wed,  5 Aug 2026 21:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 014676B00C0; Wed,  5 Aug 2026 21:12:45 -0400 (EDT)
+	id 210D06B00C4; Wed,  5 Aug 2026 21:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 930B86B00BC
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:12:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A349A40623
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:44 +0000 (UTC)
-X-FDA: 85069069848.07.B936765
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8029140007
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZF0XqgaC;
-	spf=pass (imf26.hostedemail.com: domain of 3id9zagcKCHIZoUiSQiWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jyescas.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3id9zagcKCHIZoUiSQiWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jyescas.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C02DF6B00BF
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:12:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2E09C0617
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:51 +0000 (UTC)
+X-FDA: 85069070142.25.E5D314E
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 29B018000E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Km8Vx20Z;
+	spf=pass (imf30.hostedemail.com: domain of 3kN9zagcKCHkgvbpZXpdlldib.Zljifkru-jjhsXZh.lod@flex--jyescas.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3kN9zagcKCHkgvbpZXpdlldib.Zljifkru-jjhsXZh.lod@flex--jyescas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785978770;
+	b=EqMu8/O4RuiXoRspj8zK/rnK3s524Oc4rS34SRP+5jyCdnM15mI7B+1fo+j4NKyTI1D/Rb
+	xveU0U3WeBmRTgzuC1yWXRYCccgyqK+e+U22ZiI5AlrV5yOgYjvs0ohdw7w/ve8Fv+tyAd
+	7A8MqGKUOgZ0O7abXoBTJIqCr7ZAmgQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Km8Vx20Z;
+	spf=pass (imf30.hostedemail.com: domain of 3kN9zagcKCHkgvbpZXpdlldib.Zljifkru-jjhsXZh.lod@flex--jyescas.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3kN9zagcKCHkgvbpZXpdlldib.Zljifkru-jjhsXZh.lod@flex--jyescas.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785978762;
+	s=arc-20220608; t=1785978770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vmtnxr/CFlJueuSd4faqGngHGq0KEMm5ZYo1LjMLsQA=;
-	b=VEb26y5PQogryQKK3Q5dtQPvUdyT6RD3n0ptArD26KqpSJfmDf04z2YutfosGnMldALZT7
-	lNF2gvd0ktgEtUhnfIVbzYDgM7CfUYARAumszSB3QXgqIO8xPlMEnZfX9ppDuKtEXD0dZx
-	RpUGVeTd01V3O2phPlH+D1LRr1PmU0M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785978762;
-	b=uWqpZc10R9NhkAWB/bSFgE9kRvh23IbWWcbgXYaIoBSpPCYvJfu3Js9COy0fbX4HCPagAL
-	U+3PPrGoR54SsnALUKNLtVaMQyMnZyMha9ZWQxcEm9iE0VQGcThibPbyob6I5WaoYZ4rUf
-	nu7jP0674QAbKbdhMrHgakfM4I7SCv8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZF0XqgaC;
-	spf=pass (imf26.hostedemail.com: domain of 3id9zagcKCHIZoUiSQiWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jyescas.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3id9zagcKCHIZoUiSQiWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jyescas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38ecc48b3c2so2257946a91.1
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 18:12:42 -0700 (PDT)
+	bh=sN8q6fisIIgd75G0Jqfk36UVrl5SrSLb7qi04o0MNbA=;
+	b=DdZtGFyqyDFOwmu8Nnyd3IsV50cS/xp6Tmg2lWyJ2gZ8LlW49R9cA0ikrYHIzUnYJ/igLW
+	SaaL/SuiqPmrFcYMjXHpr+DNIA8Vp6DeZmAnWRteilapb0BTRHam3/Ktr8q78iXAfg7La7
+	0FaHTcwpubvAUoGZ73FgvGsH4+RnIwk=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb733fc5024so2186942a12.2
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 18:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785978762; x=1786583562; darn=kvack.org;
+        d=google.com; s=20251104; t=1785978769; x=1786583569; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vmtnxr/CFlJueuSd4faqGngHGq0KEMm5ZYo1LjMLsQA=;
-        b=ZF0XqgaCTFkxgsHjnNbiJrsLvSMNlVYFn6dypaKysS6Xms6sOpsQC+KHAgUI5P1mRS
-         ADpM2W/PYCOYtz0yR1IoyQM7tE7vJ0UOTC03ZE1RVPAGgVpRoEenhVXKmqV62hfpOqp+
-         BhcMXHdyHCZ47BOX/Q5wnkvjGpoLMjvJ62nw2HbjVmLTowIYjQ6paX+vQG5Lz+3dAiZp
-         6AoBtVTCW6f5ENW66hJoQjdAnUPdyfWbHUakN868S7G9+0kR/iDmtD35chs0MPhVhVKn
-         RDnO+9wLG60jayevv6YjQky8sw9Mjrg4fnQpyCe9singDdIOpgZ+w8fQBdXnZFytpdB4
-         R/Aw==
+        bh=sN8q6fisIIgd75G0Jqfk36UVrl5SrSLb7qi04o0MNbA=;
+        b=Km8Vx20Znx6Vj1C6IRpcHvtwN0XT2ULcg3oAmC86/gEJqCylKsjekwC7hFH0MvS+GD
+         LBD52sIuyuTLjwIAsBMoWaktXTR5sAr2xeDLb1bIWtE6TkKLzgW6wGs7dlBCwl6RB4AA
+         VCp0NDr0et4J3AEk6lNbg6zC9whPop4aP00QdSSwwpkJAncm7kqKqixZSlb5ml6p89we
+         JfC1Ti6V4h/7qQHaadBFsBRQsfzsXyWoRUKCChXD2e0l3z5DVlYLvr55/TRm5tShVF6r
+         QL+uoMES762bOMX2vI/ud7231zeyao5XxG0fsdn5x+PmWwgPGf3K4lDCzZrlkz9SJEub
+         DnGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785978762; x=1786583562;
+        d=1e100.net; s=20251104; t=1785978769; x=1786583569;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Vmtnxr/CFlJueuSd4faqGngHGq0KEMm5ZYo1LjMLsQA=;
-        b=IO0HMKi7kZypXF+iJQeZO2xQMebpLodS6Qr65D1EfuHHP/GMAIRAQGgqEYXZzxd9At
-         weAEww1DzKjyylpjd6OwpihT98iuOw97/EO2e3L/hCm5NerVvMYfc9qBuhOIXMMAx26R
-         k4xZqCEQBszhmmp40Na3maqRaWmgnjUgQrGPNeY3E2/1Ih62tN2hjz9jP1t9X0CTk/v0
-         JrPppiqsFX9YX678nDezisV32WW+XlC6KhvLiEzUV4/t7dSk5LDxCfo0GxflhPKubzNu
-         jqXrQPpjBTUT3uCi/TTNb1cvXM3t1Flpi/W/dW9SK91CrSlelRRVfrZqHUdr5bmDIleM
-         uFXw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqx1vLDR8wIOPzcq6fRU1sZAwjzlHYsD00iclwgf366XLvaAczgMbNRQeH/wMUm3gfeli5IHwMpfA==@kvack.org
-X-Gm-Message-State: AOJu0Yzyb/QFbOgWzfE0y2FDAflh7+V0QiplGUpkJ9gK3IdL2zxhYhQy
-	NN1ANG++0BRxgg76On1DQkrUbtHYw0GY7Nh2ucJBZrOYkLDcQlLNH43ecIx52W+Yq7enjLFGtsm
-	KbVqn+gRoTg==
-X-Received: from dybde36.prod.google.com ([2002:a05:7300:ae24:b0:311:4e0a:d4e1])
- (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3847:b0:38e:b400:a860
- with SMTP id 98e67ed59e1d1-3903c5a7285mr9799538a91.13.1785978761582; Wed, 05
- Aug 2026 18:12:41 -0700 (PDT)
-Date: Wed,  5 Aug 2026 18:09:11 -0700
+        bh=sN8q6fisIIgd75G0Jqfk36UVrl5SrSLb7qi04o0MNbA=;
+        b=l3U2vZbJoZr88+QtTxDYGh53qOQ+STJzUcGIicXxh7sZ+jBGKMAhpQY6RRdS6kexuf
+         Zs3vaLa/2HGL2477NpnXYj/YL1lu+n9Q8UR7c6K3buwiZ2S+QtbzI49Z1jmgQ+AhXz22
+         NZhLFhzLmvgsB+/T7hhgC2scogrCOu6XITWIDO7Ja6DKncMLXZAEGTdulG7tHl1ku903
+         3CiXmnTEp84eGCRU1BEaChFHdNfZv7WEwS3lhXCEqcYUTdnH+PJxFFcbfsnJLlYmoyrv
+         3vgqHL+YoihFRAHqDsFIKz515dYzKjUsiSPdzxmpir4Vnio17ZfoL4r4/kEWXpZp8wZT
+         YDmA==
+X-Forwarded-Encrypted: i=1; AHgh+RptruHgnRUeLyRlb0xLYFu4I+FHePF07MnUv/HTothFC1Q2WYdxKv6dF0Vom1wH+RytFWKmRi7cgg==@kvack.org
+X-Gm-Message-State: AOJu0YzQV9pKKXJtTW90RCcjRSefOstK61VbiB3V4f7wpgloXS7DiID4
+	2xR2zbxBxq+ZtZSqUcE9K+WfhZnYvAVYB/zHYSlFFbX1N5BeH+p0GQUsGjqSINfOqU6kfmWOB8v
+	35vqXr9IObg==
+X-Received: from dlbep6.prod.google.com ([2002:a05:7022:1086:b0:13d:2ef5:67be])
+ (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a107:b0:3c3:8d86:9856
+ with SMTP id adf61e73a8af0-3cb85ded96dmr12416899637.14.1785978768797; Wed, 05
+ Aug 2026 18:12:48 -0700 (PDT)
+Date: Wed,  5 Aug 2026 18:09:12 -0700
 In-Reply-To: <20260806011048.517229-1-jyescas@google.com>
 Mime-Version: 1.0
 References: <20260806011048.517229-1-jyescas@google.com>
 X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260806011048.517229-11-jyescas@google.com>
-Subject: [RFC PATCH v2 10/16] mm: Set the selected zone in gfp_t flags
+Message-ID: <20260806011048.517229-12-jyescas@google.com>
+Subject: [RFC PATCH v2 11/16] mm: Sets the migrate type in gfp_t flags
 From: Juan Yescas <jyescas@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -100,14 +100,14 @@ Cc: jyescas@google.com, android-mm@google.com, ljs@kernel.org, fvdl@google.com,
 	open list <linux-kernel@vger.kernel.org>, 
 	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E8029140007
-X-Stat-Signature: df4r7g86gq7mjopu5k67szq3gfq4fusb
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 29B018000E
+X-Stat-Signature: u3qjq5f9gh756s53ted7bqfr9se5x6c8
 X-Rspam-User: 
-X-HE-Tag: 1785978762-12543
-X-HE-Meta: U2FsdGVkX18Z4uRTcg0QsCQJndSEvEAORX15GsQpq9N5YFqRqc/KFHAgK8e+pQWj9sE1G3T8MhkLU3TKYk/ZN73r+ck+vTtsEXUXlOxcNS/Ayn86V6VQDxFWekj1IjkwtdeDURed4in+lNJ0V3StkeyY4m0ztlAA0YaWwQJ//hR+mAVa3wAfWxSU07VnB4OIe57uHhWquuCyEdV3UKh77mJWuzO0JhqyWURvVlWJioE//sujtO9fKciPr17EoUvcMQtQeB0ssJufKTt7xJpk4/CejkUASPmao4DJ1clvfapWTrHKg0YJFhfI5eeiYGimzJ+u1Gd2KJqYNEDGuo8AV+PnClmWN/H3vMdNe4yN01Vqa4NSPOzL6/KryedKR386XgBGp0dt8nSWKBTA76/IRhZGzE6xiYsrPrwSzG9e320vatW9MwOPmJcIFGakn6Z6bUgvq58iyGsm/x9/ESFfKXx1D37FZCtnGra4VPy8zi4rx4y6Xm/KXc/maNPjtRMDdd2dWqbE4ta4lMpwtEo/MRUy/SjSgSU6QC9RnkQvBy/xUn3g5U50IqnaE0foy5qvIGqmnbsxnvaKjRyP0wPxIdkemU9QkkqzaOFILkhu8mO18jmTiRSLqd/nfW8Bwd3GfzAUKpD+a50tI7P8GzAY1AKUpMkQOdLqu1s6XlkbuHWgpG3+N4MEGM9TEq0IAx4F1arTxx+f7LydGi1x9J0XCMQ4X/KFdpkBiWa5RXPBiW2C5PqhtdxoJDIMoBDaNISxLM1XdeMiimakRb66RfJMlgODJ/opdNJ++FjKvjhBILNpnb2TKQIE1Zq+JshmJhoou+Kj3A02L+TRz7MIfVwc/8YaTV9Fu1KITzsCtHnFvbdGjzyD4uo7Ik0EarOM53UmAcG6r8OLAtF+JaMM8s3FYhuRidSCoJustYGhDEKq/T7falfO+xtI5BLW4TZ1zQ5sLtDMboezWc06FwndfwB
- JOL/wg/h
- 9qAPupCYqeCQRGfgIz/aDw3BVYIXWrnvjVMEXvCquOcsVmUsh7lFcbMI93d6/YAniQoVaBDpzL0DxHXqYsvnWri/WELa0MThkx98XVN8ygdtCI76EE+csmRGTnDuqPT7pPvu/R7izxXh0Qc43LTJfXwcl7dU7BMsL4zswpz9E32ip/usQFU6WQ8t5ONYTVS/H/vAUUOFaleI5agh8YEMa9sueFs/7uGqWWtqeTFtl+Yi5nTAWANJhWAAYv0aXXYTPDpwz8HqCHI+15ZBkzmdmpDjmMMT4+Qe3RzZ1iLGN/Yd8HIA7Yx6NQ4rULWfyvpercnCk34gL5RzdcaBqj8AvdvLUvxX1CX42fbyRy7dkqMdUBGXsZyKh/bPweTHFjmogQ49lJCfjLx2lv5iIFXJJ1FJF7gHXxYfMp4dSjHCLvYTdkLozL0zaZpSQH/L5E8Z5WGdqIaZWKClNt3Et0ebEIwix9hlIRaR1q1AQnSz23f2Oo/dl7h53BIEXAQEqwLww3tYKg3cDr9JRuxN+RgTSUyu64GmbOdnY4gyM2F+NKV6xx+VqwkTsv6P+Dxc8HaxJtBCNf5A72t5aN5+Ceby8h0WT9DxbjAJvXiAW61B5WfHVi6Srowo/tTF9yMGsalNMKovkYHyJzTNAzSDUrhhJi4iWfJI5MBqjHQyBL0jBRn2TCNM=
+X-HE-Tag: 1785978770-739759
+X-HE-Meta: U2FsdGVkX18Uz7zOWmKD0kmMo3jp557QANwBKBkX8qtDUEMM1MGY43HtkqbYR2a92gljjlaeX33VeJLnV8uRsEQrcqQ3sQj0qO4XbRT1gr8nHrL3v8P/gdD+BMcHNPy1V1qTwBp5N4pgISdE3OK6jUXehcipN3TyrXINHgrJxP8Hmjl/z8ShAS+lNT5Kbtak5LAY4j3u87zgFyB49W2WIbn8By3gMvWxbwTRxAWJT6E3Cz5ZLVSwCl1nuLNOkgrslrmhSAsFdggBZeFR0vO12FlG+Bu2yGYI/+7WKykGA0/mqYXbylNmBMLbc0k/yVOFXnFppIjFjPiSUwMS9SGNcQXkZWE+uVPpD2DmHS3X2w092yNzlYz+G/E5RCD31gQ6Dc3b3Y3bz8NE/kKUzK36aqICA+5yxJkXVGr5mHXfGUKVDro+BbMRMJBe4ujtn+JcWDSDgz+q7kseiTfGzUpNCvf1OvW+4hKN4HcnO3bVIt0uVtnHpMk+5pqRkZuyAoaTheJknBRCGOo85yAwBiUbjYcTaFV2MCVH7s1yztckeMLHHgXVWEVY7RK6mxea+TSXF/xEE3rtF+y3TNUBprAW/+tZbbI8h/bJsTdwW/HyGFt7Q/l93+DdeE3lSyUSu0CQvxkoU9LuhaSkC2VW+Cg+dYF/nOAHkwYs8Gx27fcVAm9kw+WjakGBmr2AcX0taxye3m1AqIcFLGUeEt/pfGYscunkMLDqv3YJSIxdPFaTNkOJG6DkRC6wYSMabiMz1XIurCIF0gUkWPmG9XRmmzbMV46KdbWYPJmRM5jSe/8O2FvWWROddaxHA3NXwLOZuAq7TAjkgr0qnvqf4qfzb5DamzlayaQyo4GVrkPCV33IJ+ol5SGp1UE+lbplPzhu1su9VTUVE+UrOPewVT33gEd2VFgJHeEAX8wV+qFn6ZZQpebVq18y332HpW2+ZkuPJaCyU3jWZdRgGeYG1E4jpob
+ b3u5m9eu
+ pk2y3wADAC4cZ8Is9x10f+vzmCRYGpuSdUa1DxAyF02a2bTv/Pctk0TBp59/q2Fj8skknLjPDqIz/JiD0vKRAdljej3z/1FDxk9OrFAMsfUGK98UvZDwl7u0pmiANibH5TtaxYXAEU+FJ5Gu5YBC7XWtCB4JLG6vtVR9ZE/yuVB2lZvDlu4uvJTtzi5QxcDxm056tEw7glnK8WVm7FMAMjM7t9VLSMTAs6HUuUU7E0Y9FRMARyjGhy5aV425vRZ/5m+xAkbC1eo2THjfTJLTsF6EDSyPoDeYaTCCfeYTsvlKcjFhOUcuCFD7RxYzNowPwhsM8now5bPVh5l936At6ciOdetzxltc/+9BbYapIiYoD0I7hnio7vMB71wVm3De8pU8Z3ASB/2X85CuQ3PE7ApGvNZn5nDkKFgL2yZGcrjwEIEasYuKWss7Pbs67iPdGa3jMLUtNNDkx5ew1SbmYoYVL8IWJPa/wPoeyuZ+ZaLtdiFE7FypfNOlYqYeVgNzNPMGxycubn9nbwIHl5jXJziDyManv5pCr/mqmeuOivHPke0c2lGRY84sDNmEcNcYnOVCh037yr6/AvJd+IdAjgcGD+3ozOL3jqIcZ0qd1PkdueoPokceWI0QVeNjU6zXZVapME+FEu/IAW5MOwVDwyLnnc0DqkOCqnB16dQKC6wwe5d4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,49 +115,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This change sets the selected zone in gfp_t flags.
+This change sets the selected migrate type in gfp_t flags.
 
 Signed-off-by: Juan Yescas <jyescas@google.com>
 ---
 
 Changes in v2:
-	- Use static for the set_zone_to_alloc_from function.
+	- Make sure that ZONE_MOVABLE is only used by MIGRATE_MOVABLE requests.
 
- mm/page_alloc_hogger.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ mm/page_alloc_hogger.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/mm/page_alloc_hogger.c b/mm/page_alloc_hogger.c
-index 9b1eaf3814e1..0e9ac43e9868 100644
+index 0e9ac43e9868..4b72acfbc087 100644
 --- a/mm/page_alloc_hogger.c
 +++ b/mm/page_alloc_hogger.c
-@@ -127,6 +127,34 @@ struct page_alloc {
- static struct kmem_cache *req_alloc_cache;
- static struct kmem_cache *page_alloc_cache;
+@@ -155,6 +155,24 @@ static inline void set_zone_to_alloc_from(int zone_idx, gfp_t *flags_ptr)
+ 	}
+ }
  
-+static inline void set_zone_to_alloc_from(int zone_idx, gfp_t *flags_ptr)
++static inline void set_migrate_type_to_alloc_from(int migrate_type, gfp_t *flags_ptr)
 +{
-+	switch (zone_idx) {
-+#ifdef CONFIG_ZONE_DMA
-+	case ZONE_DMA:
-+		*flags_ptr |= __GFP_DMA;
++	switch (migrate_type) {
++	case MIGRATE_UNMOVABLE:
++		*flags_ptr &= ~(__GFP_RECLAIMABLE | __GFP_MOVABLE);
 +		break;
-+#endif
-+#ifdef CONFIG_ZONE_DMA32
-+	case ZONE_DMA32:
-+		*flags_ptr |= __GFP_DMA32;
++	case MIGRATE_RECLAIMABLE:
++		*flags_ptr |= __GFP_RECLAIMABLE;
 +		break;
-+#endif
-+#ifdef CONFIG_HIGHMEM
-+	case ZONE_HIGHMEM:
-+		*flags_ptr |= __GFP_HIGHMEM;
++	case MIGRATE_HIGHATOMIC:
++		*flags_ptr |= __GFP_HIGH;
 +		break;
-+#endif
-+	case ZONE_MOVABLE:
++	case MIGRATE_MOVABLE: default:
 +		*flags_ptr |= __GFP_MOVABLE;
-+		break;
-+	case ZONE_NORMAL:
-+	default:
-+		*flags_ptr |= 0;
 +		break;
 +	}
 +}
@@ -165,26 +155,24 @@ index 9b1eaf3814e1..0e9ac43e9868 100644
  /**
   * req_page_alloc_write() - Allocates the pages on the requested node, zone,
   * order and migrate type. Once the allocation is performed, a file is created
-@@ -135,8 +163,10 @@ static struct kmem_cache *page_alloc_cache;
- static ssize_t req_page_alloc_write(struct file *file, const char __user *ubuf,
- 				     size_t cnt, loff_t *ppos)
- {
-+	struct req_alloc *req = file->private_data;
- 	unsigned long nr_pages_allocs;
- 	unsigned long *allocs_ids;
-+	gfp_t flags = 0;
- 	int ret;
- 
- 	ret = kstrtoul_from_user(ubuf, cnt, 10, &nr_pages_allocs);
-@@ -148,6 +178,8 @@ static ssize_t req_page_alloc_write(struct file *file, const char __user *ubuf,
- 	if (!allocs_ids)
+@@ -179,6 +197,7 @@ static ssize_t req_page_alloc_write(struct file *file, const char __user *ubuf,
  		return -ENOMEM;
  
-+	set_zone_to_alloc_from(req->zone_idx, &flags);
-+
+ 	set_zone_to_alloc_from(req->zone_idx, &flags);
++	set_migrate_type_to_alloc_from(req->migrate_type, &flags);
+ 
  	kfree(allocs_ids);
  
- 	return cnt;
+@@ -248,6 +267,9 @@ static inline int create_migrate_type_subdirs(struct dentry *orderdir, int nid,
+ 		if (mtype == MIGRATE_ISOLATE) /* can't allocate from here */
+ 			continue;
+ #endif
++		if (zone_idx == ZONE_MOVABLE && mtype != MIGRATE_MOVABLE)
++			continue;
++
+ 		snprintf(dirname, sizeof(dirname), "migrate-%s",
+ 			 migratetype_names[mtype]);
+ 		migratedir = debugfs_create_dir(dirname, orderdir);
 -- 
 2.55.0.629.g250fe7f194-goog
 
