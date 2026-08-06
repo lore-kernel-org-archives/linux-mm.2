@@ -4,115 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B60C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:50:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE8C4C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9D716B007B; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
+	id EFFA96B0088; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4D6A6B0092; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
+	id ED6FD6B0092; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3C0B6B0093; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
+	id DC8256B0093; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B6686B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:50:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 284FF1206B5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:50:21 +0000 (UTC)
-X-FDA: 85070979042.26.CC9D895
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 15B3640003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:50:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=PGFtxNYd;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id BA9ED6B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:52:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52BF01206B5
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:52:02 +0000 (UTC)
+X-FDA: 85070983284.21.76E122A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8BE7112000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:52:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iuaa2ASF;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786024219;
+	s=arc-20220608; t=1786024320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
-	b=ws4rGUShxvF0EwVZ63fw/PyU7PDxHG3Wl4r+WPw373ums2Nae/lGKoOGl6UpnBM5teWPhL
-	HOolmBw1WDE6f8MdTwpv7utGG1PhXFu5lrbKdJJjqqYfoMVXjKU4RURLQqRkSBN97Np6QU
-	zd8jUtS4K6jLFqy+hAt4P1sFMropjmA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786024219;
-	b=qQALVsCIMY1uqffvH9zhh24xYLrvOFZ7LK0vSNvmNWRcGcOkGCq+HpoP4rydsG/9R54chG
-	MlB+97jxbxBrxpzfTSZilg9kW3iIyr8fmtzUUlwmpi/UE4Vjl+YmzUcVhGtbC59tR6eIkN
-	ir/UqU8tl7JA+jHcXc0qMQc5ioubBmY=
+	bh=mtOtoJPfPoNQ3lP/qAbd+1hDTx3C/med8KgZHUjbjqU=;
+	b=n7rg6nelRyQUoKJrn4713F0jOEyAvGf3s4rRaz6+64ZMjklIvPDA8UKKEjIwiyWKIY7yfh
+	DSOnxgzJUc+HpSJgRlqhoiXUEbu0Sgm5tb/EPOz3WXypztmdu7ag/skFXrKNWpFJamnvzj
+	/k2sDhYEctvkUfOKNlVO40xeOJX7lvY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=PGFtxNYd;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-936623c6dd3so24795285a.0
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 06:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1786024218; x=1786629018; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
-        b=PGFtxNYdx0UgjIGkgI9mdLEs+f53D2lcnU2jIde1996G/WgJCDQucXE3jMOR1SB2IM
-         0mw7myxk9DXm6vHdXTlI0/l0NNeDy6buiqSFMjJm2jC218WXCC0pMj8+FeSY9SMgKrxW
-         ODe/eEne17CEwnPpuc0Q9cUBMxlNFk6mxOndkPBjIThfsp54N/IirqRVfxVQplT7Eu2A
-         S8ibeSe0RLCrJWhunwTdPSgKduI/91MfLCK58fKLD9t3Ip9iwGGQss3UQEV2vAzpHG+g
-         92dXLkuPpdDE7mwv7OHv+VhIHtN4THLSi+g8HTwtMLebMKRjIEck5xpPnez0oRYvfFv+
-         W0UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786024218; x=1786629018;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ejTfR18inMal9BF+WY2i6i5Eh6izHN7yhpp6phMOSsU=;
-        b=cPGHLgPvi7sXTvQQcFZfXLgLhWbnpl84ew1u83AOYUFVgoMh17U8ne0DQrT0oCjFTW
-         U/MZV7MFGElnog5dXVo6w1hCFQVXHuPj5sniXu+C1JirxjHbtt9u/hX4aRza9/6rzz51
-         Mjl49lHp68rKw8Jn012qmUmHed5Od84He7knMNZOg0PUJ/ShIpr9XKJiLRTUJ/udIGc5
-         5cSjSDt3xxTQrvTjlEknIEcIhWXi558qCj/JNE+2RhXOgG51HEAut1Uk4MrGC0ySRGL8
-         BSf3Umd/cTrFTpi0DVUJ4/Vc7ejG6IoJXs7+pdJ6jzO5TnTUkzm7mkp68WQsKmKqeeDp
-         cPHw==
-X-Gm-Message-State: AOJu0Yyetyj+1i2Y1VvjsTQ6vhDsMGuHV2PxrPLugXkujThoaMJmbMx0
-	C7KG7LYFucX6QVZoD8qQDo7EzG2Dq1DaH0/8pLF3JK8P0HeejC3wGHHFVy65K3tTQ9E=
-X-Gm-Gg: AR+sD10rdcxYCDRDn3e63FnDgE5pCyRsHM+5ralhFKj48Wi9it66UOt/IB2NTKFq8Nc
-	2y3wYc4Cn6WHsRblavyVZ6C5RQKZmq9f6aQ2OxGXZecCjlt4CcBJSny9kSSdSMFixf3h9/VtjDR
-	denvZ+WfFITFWsXjzr6ZuRQR/379SgQjGqT6IMJ+uOWuS42q/4+j9IQdFjHMGIR/SkZ2hUwVXI/
-	R8jLLTJvvBtjRRSwqG7RReoDDQTb27feto8RBP+Z+0XwMN0/fIpRaiTGdgjS9uXLd0OVgAc65Kx
-	UWw72QzT8E5L+r8oaedQ+wkTJQIuA7uP12yFUhGmwUAOSAPEL3UO8cPV7337YkTKbY4/skN6MF8
-	9PBt60yXHNaG53QwFiQb2Je2mPK4BGDYsliPyCJInLsYosBiZS95bhIhPoknczt/rAXcAq+JeN+
-	GcolS5zKEhe1yB/pAH+lrug15MYwcyLOFiwN94zGTaDU19sGj2gjWS2O7D5Fc3hSy+kdUpEdk=
-X-Received: by 2002:a05:620a:450e:b0:934:ac0a:8bb1 with SMTP id af79cd13be357-9365de9c3b0mr432348085a.8.1786024217836;
-        Thu, 06 Aug 2026 06:50:17 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9364a4260c8sm409474285a.11.2026.08.06.06.50.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 06:50:17 -0700 (PDT)
-Date: Thu, 6 Aug 2026 09:50:16 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Jianlin Shi <shijianlin11@foxmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	ziy@nvidia.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
- sysctl write
-Message-ID: <anSRGASe5FIrqwlg@cmpxchg.org>
-References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
- <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iuaa2ASF;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786024320;
+	b=WU+vaDeqVA+zrpBgC+w+3WcYT+29Ne52bqRmAooqaVTzdHoUu6gsR4QYU4PqX8yA8Upv5V
+	8L/NC70yp7vV5IAfn6I64bcVsydHNZmZrwEMihsFo9l+ryDo2D8PCSqRj5Tgez6oqU69/F
+	7Y0YrOPm5dDoje3ZyGG0WOOh3jXh1ko=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B4C1460A69;
+	Thu,  6 Aug 2026 13:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36F51F000E9;
+	Thu,  6 Aug 2026 13:51:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786024319;
+	bh=mtOtoJPfPoNQ3lP/qAbd+1hDTx3C/med8KgZHUjbjqU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Iuaa2ASFYi8g49KLLXEzA+HefzGQsNEMIPsfpsoiouhzmRqgPB/QEBTXx9j312Y2E
+	 WckvlwtBI8SsH47XbWgM/D8zHxJZkBSYaGfjM7A46Hs3r70KUv3YlUJveZXw/Y10Hv
+	 xbGjFz/1sm543DrckGD9DHLiFnfZK6ch67XWAwKN1CWZrQoZ6ke4RKT/66f9bzpQD5
+	 9d8xXsynjcE0ruWoytE+WdKpGJmFjFrnoT0jjTKAz7IJABW+hKL5bLL49HWkr2hk42
+	 +g2/rNL6m41kLbrV2tkNeklAINFjBn/ju/xLaQDdCM7yYFDFRycGvTwV5Uyo/jkmal
+	 Pz0io5oi4CfNw==
+Message-ID: <1150896f-de20-4672-b498-6c9dd17e4aca@kernel.org>
+Date: Thu, 6 Aug 2026 15:51:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 1/4] mm: add page_counter_margin()
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ zhaonanzhe@xiaomi.com, baohua@kernel.org, hannes@cmpxchg.org,
+ youngjun.park@lge.com, baolin.wang@linux.alibaba.com, hughd@google.com,
+ chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, baoquan.he@linux.dev, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-2-xueyuan.chen21@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260730122304.2496440-2-xueyuan.chen21@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 15B3640003
-X-Stat-Signature: ge5arfazjqo5banx9rns1xdpwgeemy4p
-X-HE-Tag: 1786024218-105672
-X-HE-Meta: U2FsdGVkX1+It/FtZ6MnvwKKbxJCrI4Z+/ihnei+eNf1tU0u5rNc/czxIQ0Tn3jFDD2lDcuQqYFW4+cU9KpSEXfmkCj+QX8Tx6ZrvKs9APUY2RLz6YKAUUuePTST6nZ7oMq77aaHyCEAcyFmrHENH1lhfR8FrTKcDaolXjhNWVBWgNN3Nat/K0qv47NGmCbsJh+7Y1xVL5CHNiMbeWjJNprpdeRqrCMsKZXwnsaEU2BBrNClaROCLUINm/HF+QZ5XDI4heFBFx58WYdij4AEUhLegcfswOC0XR/rH/4/9RVnrEwAw21wKNvmbGys6R7thbxO9ihGSpiTuZPP4qEBobfinmj4yGnau0ODljcKAqQT4ZtNFZWPq0b4e89phVMcB5+7xSmwQaTlG/4LvYPCoTeph5Yx+cVv+t7poBm8nJQbhGfCN49VHolSxsgYmAahCaFuCKafkgH0Rhbj9eP1zlENymxjb3lvbEoPypvwBXMneGIA6AV6GKk/2bPKPRLedgyOiE0R9PPSVUmbIRQBcHuJ8tb9scXehIYGVD9shPKyukNsaSCJkrM1y2qTJZ5pnBkx5TeQEoM3HY6Qdms8x+eSzUsuUsefCVrfsz43e294QWI13mOwdMOpgTfK0RS43x2Y9S/w2tslR+5XwAbYiAPJ1ab8zooB7PS1VJWHUxV8RbLT+oF5gepyGLUQ0k0PWIgIxoOLiAzNr1W5TeWivBMpmS8U/0ku/mFOJKTRSwPaWzHJzpK4c0wsBS63wx43q2RHdVv4dF2W5c5J0cMfWQleWJGYBtWGI0w5OyU5d4ZHONMuAySW9s8CFCio7bVKwjfy7lL0Xl1ccJL6SGF5nDg4XmofpHGSEIkxKU3FJ9b/uoFNWj/K2IC2LNTuu/XpZV9Lu/2Jd4bvXWEz/m/rnZX2aL55EmzN8CYBlsXZSiHN2t9tauwgcTWIhVIb8H1muNXal8EZIPTDfq7Ikpy
- DqZzjvuC
- dRIWgR3zM5rhdifUotO9zOXp8dys5DfkNzCriChfPfdJCzl0GDcWHRrDaFHtSV6PtvcPGIkc0Qhx2ky5K+jmpHo6DWe+cJ0TuSaGmYCfRhh/0Wy/+C5yEWusXDIE8FCAarD8TRewi4ecdcdRA29JtluQDROLrKosXIJgxWLPFjeskio29SBsTa2XAZR+ncole9h4N8/6CceT6eW+NRgCt8Hr4yfhiQOV7vHw+qQt1ZMTy8xfpnzxErPxAsnGTNwiqfj/VThzlaZsg0WeOGyE69gZdaC3aumMVApIcgNWbfo5lohtusQofdQ03oyP3KWtPWTdHgPTh8gJoVgsddxz/JCFS8i56JIPNP7U6sTUQkt3nsaLfIbsuzANX4oaYnlTqjlpC8HRjRJjq8HrjgcNjYGATYKfHjjWcASG2bre/BiMDIh/M1X+KaudkQuOJzwdeiR8Xt//sLnYrvg5BtFgFEeMWDsrgTPC0ONSf4LkYZikyMdsFGRhUk3M2xoTZw2qi4rYT0Rroyn1ikY13I6nNnbZuKoBgcYZgjSQdEA8WRVbkqxHGyIruHm8xmhJm9uAj6CrAaeVgM/LHfxk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8BE7112000C
+X-Stat-Signature: k1qxgb9quwpjatjudmy3byozcy3mwtj7
+X-HE-Tag: 1786024320-24695
+X-HE-Meta: U2FsdGVkX18Z3oaoJWPPDQhvvfUs9gHuvbwSctI/BB4BpTInV8InXKMBr8n8G5Ccyh9KzqXa4rrrgdG21hbNQp8RnfVfYC77VdkDWBMtugTA9k6StMnLcULrYkiz4lnGCkfapgy68Y7WDdbSm1eamlhROkfXeUcSux3DjWHK8RSQNDK9O31Pshpl+7Z+EfUhJZwPOzS6wds0MpRrSRvWGwy9+TTdtVrJMjxWlFMA6sNJ8o6YUjShusrn1JpYp0Ionzoxgnorbf7WLUMgdXKY5XfyL+v0akUokBlY+8uw00cG8+4PQhcgAT3irgY2v3Rn9DVUX9bzin3xwXP6GUGHqid/Nc3i3q93dB7vaa/dFjc2HO/grU8BQRg/++Ub3csIWwx2VIaiMNppxI0+vqcCHPMzVlWbtgY4N+8/E90FxZ7tzFNla1Il30khBvXOgSLt6R5mV82drjHsnfuvRlw6eRGLK2XZOobp39VoC9YLMKBBcHTTJ3Lirm3j5D8yoUABotMVf4HiCyDeQvanCzz+DIs94rosnzdDReDwFKAG0whkYZTnFuMxBbeS/SO8+WgjjfyV9WdwOhJ5Qfe29w/KnSyiOmDy6IZnrb8cDpovMwXZ0Es3FdwqFfOi/04Xs7si3BYTvRw/DHt31Y9wKQaNTExWgwvqoEuNa+Lg7C+5W2l5lTtfo3NNJH08csiwGSapysd+GvpEh4q/Z3Bmq0uPUhDt9CCTZK53XzZzoUlzBnnK0hE+F4Ef6pb9Qdpcu5a53LTGNs2S5FWv/mjkxshdbU1fqMqXBTgaQaEH4UuF6nw7f+RX6mQkZgUh3rPtI5X9D7YK9lE9z+kkyBcDQLyJiVvovMmXoNCHzTKH8RzqAVsmgoO61QMlWV7nHoJeAJBEjV0IFnejxuvIhAZYzOafuK6WYWfuavGfEZaVYKb9CR3mnAAtGAqh71MrfiI1r/2zcl/aD6etDf+3+8TxZmv
+ peNy1IZ7
+ PlOVMfKXINACBe6upvN3Xdze+IpxG3DmcXLBO3GZU2tUu0r33ikxkUlbsJTYV2cmzlSbgDeeVkzmqdyLviDNvrtFlu8//ZbVBqXPWpqukZrlB6jUnDffKMd2nKpHfyqVsqJTeVb0MLrL1Cnx9Nby1UDbsBvpoPOfaN+S/JWeT32vFAxI/qRLzr6P8YVu+Spj0BbH0UQKr2r3jU9kYFAOtwsDrVhvwS03wgrjXEmme7YNuNlEAOoyzdV9YzuJRFDJ8qGy/smeJL1Jk6g4OyUR4fn0xbV1bE78wK8xXhgX2iAb63lw2pNM9TV4x/n3rO+xafncOomI0ioiwSsMq7BScAF/nuSXHbQKb3eipCjgChlwAaHJUgmuOdKddm4ZLGVwHb2uylQ572IvVNCuu7jjObwgXzHnWc22G7Kk5MHIbiscQkLcuv2lUuCBS6+3u7GHZfU7S8hE+Fxkur2rJcH3d0/KXQIHa8ccmRijHLp1RqpeN8nI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,110 +146,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 04:27:34PM +0800, Jianlin Shi wrote:
-> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
-> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
-> even for read operations.
+On 7/30/26 14:23, Xueyuan Chen wrote:
+> From: Johannes Weiner <hannes@cmpxchg.org>
 > 
-> Fix three issues:
+> mem_cgroup_get_nr_swap_pages() open-codes the remaining capacity across
+> the memcg swap counter hierarchy.
 > 
-> 1. Propagate errors from proc_dointvec_minmax() instead of always
->    returning success.  For example, writing non-integer garbage to the
->    sysctl now returns an error instead of silently succeeding with
->    unchanged values.
+> Add page_counter_margin() to return the minimum usable space from a page
+> counter to the root, and use it in mem_cgroup_get_nr_swap_pages(). This
+> is a pure refactoring with no intended behavior change.
 > 
-> 2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
->    actually written, matching the write-only refresh pattern of
->    min_free_kbytes and watermark_scale_factor handlers.
-> 
-> 3. On write, parse into a temporary ratio[] array and only copy into
->    sysctl_lowmem_reserve_ratio[] and refresh derived state after the
->    full vector is validated.  This avoids leaving the ratio array
->    partially updated while skipping setup when proc_dointvec_minmax()
->    returns an error on a later element (suggested by Andrew Morton).
-> 
-> Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
-> SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
-> the minimum on write; negative values now return -EINVAL instead of
-> being silently coerced to 0 (suggested by Vlastimil Babka).
-> 
-> Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
-> 
-> Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
-> Changes in v5:
-> - Size temporary ratio[] with ARRAY_SIZE(sysctl_lowmem_reserve_ratio)
->   (Andrew Morton)
-> 
-> Changes in v4:
-> - Parse writes into a temporary ratio[] array; commit and setup only on
->   full success (Andrew Morton)
-> - Update handler comment: proc_dointvec_minmax() and write-only setup
-> 
-> Changes in v3:
-> - Rewrite commit log to focus on the two tangible fixes as suggested by
->   Johannes Weiner.
-> 
-> Changes in v2:
-> - Add .extra1 = SYSCTL_ZERO to ctl_table entry
-> - Remove manual sanitization loop; negative writes now return -EINVAL
-> 
-> v1: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
-> 
-> mm/page_alloc.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 0387d2afd535..51f35e44132a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6673,8 +6673,8 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
->  
->  /*
->   * lowmem_reserve_ratio_sysctl_handler - just a wrapper around
-> - *	proc_dointvec() so that we can call setup_per_zone_lowmem_reserve()
-> - *	whenever sysctl_lowmem_reserve_ratio changes.
-> + *	proc_dointvec_minmax() so that we can call
-> + *	setup_per_zone_lowmem_reserve() when the sysctl is written.
->   *
->   * The reserve ratio obviously has absolutely no relation with the
->   * minimum watermarks. The lowmem reserve ratio can only make sense
-> @@ -6683,16 +6683,23 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
->  static int lowmem_reserve_ratio_sysctl_handler(const struct ctl_table *table,
->  		int write, void *buffer, size_t *length, loff_t *ppos)
->  {
-> -	int i;
-> +	struct ctl_table tmp = *table;
-> +	int ratio[ARRAY_SIZE(sysctl_lowmem_reserve_ratio)];
-> +	int rc;
->  
-> -	proc_dointvec_minmax(table, write, buffer, length, ppos);
-> +	if (!write)
-> +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
->  
-> -	for (i = 0; i < MAX_NR_ZONES; i++) {
-> -		if (sysctl_lowmem_reserve_ratio[i] < 1)
-> -			sysctl_lowmem_reserve_ratio[i] = 0;
-> -	}
 
-This could use a comment. How about:
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-	/*
-	 * proc_dointvec_max() works incrementally. Use a buffer
-	 * and only set the values if all of them parse cleanly.
-	 */
+-- 
+Cheers,
 
-> +	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
-> +	tmp.data = ratio;
->  
-> +	rc = proc_dointvec_minmax(&tmp, write, buffer, length, ppos);
-> +	if (rc)
-> +		return rc;
-> +
-> +	memcpy(sysctl_lowmem_reserve_ratio, ratio, sizeof(ratio));
->  	setup_per_zone_lowmem_reserve();
-
-But otherwise, looks good to me now.
-
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+David
 
