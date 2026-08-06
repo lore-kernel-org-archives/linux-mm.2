@@ -4,118 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E70CAC55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 05:55:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A8BC55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE9846B007B; Thu,  6 Aug 2026 01:55:24 -0400 (EDT)
+	id 77E796B0088; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0EF6B0095; Thu,  6 Aug 2026 01:55:24 -0400 (EDT)
+	id 7555A6B008A; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFEB46B0096; Thu,  6 Aug 2026 01:55:24 -0400 (EDT)
+	id 692E66B0092; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A247A6B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:55:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92CC4C0650
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:55:23 +0000 (UTC)
-X-FDA: 85069782126.30.EC64725
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1F29118000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:55:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Dy6GOQcG;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A6C6B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8335120635
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:03:15 +0000 (UTC)
+X-FDA: 85069801950.26.9601B8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9033540008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:03:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D16vJWBW;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785995721;
+	s=arc-20220608; t=1785996193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dGhdRgIgIMHfR7vy1rI13brOXOjVKrzvUJgGFI1i9XI=;
-	b=Dr2RCGtdo9j3xY/Ljz5vl9rIoUBuJfsEcxfZBVHocREJvZlrjQYpGE2+o4CWHQChAOEkeF
-	39DWlF4zdZ4xCh8xhwph0ltmQ3rQw2HRf1vc0hp0AJLbjnU9h99bBL/zUlYCZmBQPKCkH6
-	7zXcOIyNaIusbxDSEr5PaDTf+tmPtLA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oGCrkq796kYfU9i8z2D5ssSg733nYYHqftVQ+MtqR2Y=;
+	b=lETG4FW+o7Nh9m17cImUBfCVgjswCVToqiiINNveMxjof8nDJRXpMX37HRSXhvjaGQ1djT
+	9oxWW5R0BERx/1bEd9Ea0p2NVHXARH+w4HTP4GpU2RL4CrnSYMEyciAFviLFdPRtnHSmG/
+	yJ7WgLL5aF5mkzScMFveYQoGJWp87ys=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Dy6GOQcG;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D16vJWBW;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785995721;
-	b=S09SnEvSF35SkMI2RpopQMrYsH7k6wnwu4whGhywfndIy5Y2oTqCoZzoNcFLVxmrAt9PKC
-	wHf/n5R2T85HDt1/CXJIy90hKtSutxJWPhG6bea/Xtb3LDflaFBfu/yR89raBLMcIu9Gtr
-	qSvaIOtPDTFYvEUW9mYExMWF8AjVjEQ=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso1420628a12.0
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 22:55:20 -0700 (PDT)
+	t=1785996193;
+	b=Dy2AfTQrVgB4efNVwfxEV8vgP6en2n7tC4u1scNHsx0hslRNnroZuAUt3tH2UI1xZ4kGD2
+	Y4Qk6DyHoHdNCRmCnq583y986KsRyTr2gqbCPzAKKl/SD2iXBrEVIjzLg/unyPpgNIl5AM
+	ZXt18ISqOqgVdiTw7kRM8VzkvoOrX/c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A311418FF;
+	Thu,  6 Aug 2026 06:03:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5161F000E9;
+	Thu,  6 Aug 2026 06:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1785995720; x=1786600520; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dGhdRgIgIMHfR7vy1rI13brOXOjVKrzvUJgGFI1i9XI=;
-        b=Dy6GOQcGOEyXfpC11HCMgN9N/vPu/CMUL+1UmbP5PCS1JIzDQsEk6f7/0KYR0zk3Jh
-         isA1Zgu9KH7n3L2vkvrMgYthgGWR6eZzJR01VWW33CPyGPDxuegWPXPQIfp2FW51j0Ug
-         7VxUm42kCQyFh3IPKjH6JZBUnUhFYDIP+nM6yHJYssY4Bu9g/izLsl62YsyT+WHIQAOo
-         Lwh3ZtnQu2CqRW1eFX8uZ0KhYOt7YL6oRSZBO1Yw+0Rsd6/fMvhWpjH9v7ap2CRMK++x
-         9T1NSXYw0Ep31V1Dt30n2PGfdUPm43dxW4B8wz3/Qp4sCeOYaSGUYslar9fxorjVoSSS
-         m0qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785995720; x=1786600520;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dGhdRgIgIMHfR7vy1rI13brOXOjVKrzvUJgGFI1i9XI=;
-        b=AHqoJ1+BE9nTT26f54EhRBELsyNXXXux+MtAsVdwKCHUI40bm5HzIA+8qsTV4atcWi
-         FH4VznswQw1wm5jiESbd72L6byE7FKRYdBImUL9dJ+PY66XEVJsNXjuiEh3viMLFnRIT
-         2hneAtX3QkJiInZtT5uA65gsqQtL3rIfQHnwo98kTzlDXw7aKtrQSHnlLA+6tCaTK9tU
-         sC0nrqSW2DOEtpGGh505tekZakpZcwypekzDKXJj9QSUcvrVa1s8D49GRvLuzc8CQJ6O
-         TfD6Wi6G7NII7/TphUCwGAVa+LSLRmNBAzUuetlz3HGfxIhE3EZ/aM8kEOwwpPuReu6g
-         s0tQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrbNu7wF7DxEKORVlN8I4cqgEk0um6WBl0kbjBCxgTnG25aDokbl8ylb91Fy/okdAdMZa6GMeJpKA==@kvack.org
-X-Gm-Message-State: AOJu0Yyi+PcFwbkqMGLNGlRED8wmlE3v5ZEv3RirjnWfYqYkPpv2VEX+
-	QDwi+MSwwZ4qU0HByXwwKWXnQ+4FWoopN+KqcoiZYTJwIEiua/uOhK8MK9p2BsBsJ1o=
-X-Gm-Gg: AR+sD129TxzqAPisxm5OVR88UO+9f8SMxYvBA0qIQoPVTXu3DaoVX8/ioFJzr1lL66j
-	lI0se50J0rbw2tyYdKs5gWmnroemwcWPwK5QGh4OvACkck9uzQU+YF+L8vyyAjXltmNnH0E3vF5
-	KyD5wc1iVg8eMfTnYiHTHjTtHYTqp8SeVBpGoMM4/R0Z7eMf0YjgGQRp03CPrs9EMZUPzFuo1XD
-	0NXidKhARn5BONO86CAFon6/RQpavcNrerYysbELC9ohT6q08N0ntk2wIj/4Id7VuUPFoIdR640
-	FuOrG7CNY0sjt7odQmTbvjkiKCG3mM9WnGO3lb3895dVJG8CKzU/V1U1rtS7O3hZSfqtQgWbO6E
-	zaRZBM8NVnlQHfmGlH67hv5XgOTkS+img4K8knEy15CAVoyU/GJUu03vUjL+oAU7bNLZbVX3WIN
-	uJg8cx9drykc/v/C2KPCnxf5VMqIRlrtmI78mRzS/GnS0rn+S0gUygve5d2Lydkw9THgo+MluWE
-	Fr8DWNFZdYl0KBv7Wa0ChrllEvWjnQkAI1YJg==
-X-Received: by 2002:a05:6a20:43a9:b0:3c3:8651:b302 with SMTP id adf61e73a8af0-3cb85f60443mr15100884637.28.1785995719569;
-        Wed, 05 Aug 2026 22:55:19 -0700 (PDT)
-Received: from FR9WL0RHKY.bytedance.net ([139.177.225.225])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3158644a195sm21906471eec.13.2026.08.05.22.55.15
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 05 Aug 2026 22:55:19 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	00moses.alexander00@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/madvise: avoid skipping pages after splitting large folios
-Date: Thu,  6 Aug 2026 13:55:01 +0800
-Message-Id: <20260806055501.56761-1-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	d=linux-foundation.org; s=korg; t=1785996192;
+	bh=oGCrkq796kYfU9i8z2D5ssSg733nYYHqftVQ+MtqR2Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=D16vJWBWVW8aThnqxyo6Vfu1OZyze0N321KKS/eAQqFmPtwnDBb8sAHqnEyfIU/LF
+	 Wsc06LydsN93+UIvr2rOLyEb8G4HyLt72u4rz4d5hXlngxJmOoX2OS7he6cCil07pt
+	 AtREIgNapeYi0C0YynO2Og4FykbHYox2x+PYAw7U=
+Date: Wed, 5 Aug 2026 23:03:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: paulmck@kernel.org
+Cc: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>,
+ hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
+ syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
+Message-Id: <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
+In-Reply-To: <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
+References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
+	<20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
+	<d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ozkgxcua7qyrddbe8fc6je4bpowzk8pt
-X-Rspamd-Queue-Id: 1F29118000C
-X-HE-Tag: 1785995720-968462
-X-HE-Meta: U2FsdGVkX1+w6oXVJbIiOqGvVZ3skf0J/t/W0iKfvniQRrXI10W/D91T6VPUtD0hhWrHxMHbzrfRoTiKxq/Qq/AJAmqXL+fw2k58nAI3lpdv+/ZhZJ4na03pNunOCSr739ygOwY8dWYn32CTeO5MlBGPVNE+U6jR1pJcIcHOr2/ctCTEMwFvJaHrP7pXTqnY6mZNwNKjwKnZCw48MvKUnDYpHLeq+Z79FPaBkS+CJVQmjMUe+vL0/5X0EHkpdraC2UgqDoOGqUt0Pj+oDDDy1dyFLaSSa4tfDTZx+D54veJs0nSHfQKLirFAf3FsoCTzqL9HLTMRGS/41rDnIXdE1XFQRmwgScPyZbe5ee8TVWg2ChTQ4qM45YlV0DB0mzAq+ChF5PNtTPdeZASp+HslsP1kQIaPNtEGyBhe+n7hzJVc4ejGCu/tilDuCROvcmrysx/iI/sCjB4QWZcqk0GuybFCVMJ2dcmR54zavV0VnIicMmHb2lffAhSytNtw9j34mIkEyc1gP7lhRuor/eSQHIb2gfKwuS6uyp9aMABMDb1FD3X7go7xHm/OeNFN5N9xJXbLCTXDfTqcGxtZ/rKSvD5qTs2YWeG4dN0FyCN4MyKg0CFZVk1Yn0ARkEmMtGkWShoALSv/o/ZwtN8hw4CtNrEaMRiO1NfuXvKx5J93M6l6T/0gLcECWq67DP2uNJdQupj85pQsQRkHSaEFREUlhM8KMbTOYlJV/e4A/VWi9MrezuIvY5xD9QR6Q8UepXhVY3XBn1AkJUpUr4ypa9f33t38IgsXRTj5P9mJ1C/V5ZBQT6cGZ1QjDdaUd6hni1ks5Gs9EV8m5+baxQwTGejmNk9NNZTs8GWAPOEHUVWO2nurmQ4uNLuZ/ZBkHlcxFRRKm6ZWayt3FYTyYFs/9cc4QUXImO0+do8iFs8GRzt+Yq0bayT+GFUDj07qxBQkWchqMjV6TbWrn2U4MxTzJ9R
- g6iUOoTd
- uF5pNy+jy+vm51yfXDoGRbEPjO7PWCXaRK6pT/sJaS/Vws1wNgP28i9FvpKQymlLvyZ4DgPvtLzIMYJfzdlyjbOwMg/LfeudsAPL0lDNl19kTOyoYk+QMktArmspiZASREKel5HmdCQONBZepZKgjWRVIJxosxuSXkn42BMN4wHhOjagruDOZb4bGjzfhlZlKd0NgGpdZA8dCErVC5yiMxlMSYX7ilU1NZAL45I+GkYCeQMmJmzhwLNTksZzvImlnlWEbseuRVz3LcegU/fktFbqdB8LEwNL7ljUxo2ztIxsL+PyfQTXYAfnBtB32FqzXsrxVQ9/JjYRNih5A3+v2MPsdVHKDO110+9KcMK6AvuCTXmqsVvdpepQzlS/ZAHV7oY2qXHmUyrc/qBrEqokaj5oxgD1upSafk1km
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9033540008
+X-Stat-Signature: xw19n5hcaorjzcw5xcdd6ey6whmyuohm
+X-HE-Tag: 1785996193-399721
+X-HE-Meta: U2FsdGVkX18JQQwNdK04/bcvTOtQiiBhrj63V3wZd1aGt0+Mus5TMNxHmwjc1M3IKEgryMt1OvBqgqwdjJWkKwEYq2yMlARc/9On5Nsap/QtVN+vlJVIiddUzjtEOnhn91fs6TMtjFtfIJPUoQn2cwPYVcj4Ex5nUOxdM+gvp5g57KgNKX3P5kXYxaRa4nOMJ4FsoCKBAbAa/QlDbjYgGhssJlxpfc4dM0IVEZ1F3HFEBLuJNwpKehUcB1sHMC5yxt6F5XWOKZ9V6GFDGfvPbS6LLq+//KnQVpnNrR0QD4a8JflsI/aKZGU/MFdqwTfC2jGoOoERJozpwwcoL8k5jUdKraLWhY+PV0e1+U1k4PEoEd7sOLkIm7oAwtiqbNgNB1+cMw3GdRsIH9egdPEyP8G4ApOZtua440ZyZb9lIWHLUQLJcPtEXlrHvXYhsVnNwhvJTdZVnIV4RmyhJnh3CDeKIz9qfDGUAcPC/8cMuhPh0ZGIiVf7XuwEdt3p8PWe6rb8bDcAGyVeDHF2ldAvTJTxpftSbBW9FKSJ9W3TsF8QSKGVrpFQIZwN3EiyXkp5LeTUSebHZsFRjXDyaddAv+zXvRfFiXa4ollciv9Fwu1QWAkEwmC7k7yAPekMWcWaCcvrzKcPUoMYVOzobxm9a/mZrqC8duZdZYC0kgFTwvlkUNTUxo2K8uQWXvq4h0rlb4Pi5IDunM1Trad5+wSZ/rKobbH7dLqB0JctG9EfmBq3QeQEjyeop2in3JiEHKnTjyygHs2dyXh9ggBcfh53rNKI86O9GOguZstr9xl+WU2e/1/OW4Uw7pUOP3g2IYCUftcY8gx6q0tjn9MwKd3dYk4jO+fkGuyV//484q8mxD/x7Tp0olSfIt+JICsheTJwTvPJAKp3qJrOG1l8DzyUtRbSdMdPkTOcwzWDFJbwszAIuNzESkwdd+tbTHGav3Hg5Dlk/2Uwonjgv1v1CH/
+ nCQ3To47
+ A5NYaCFgaoH77oJFJgxDF53BL3FS5DTWcFOHBZa7GsgOxQAe2UbXOt/AAvGY5B0fkYAPkHyPDBAkPHx2Bz0LxKOIBx6CpjnKFpRO9kvS6ca1aSuSetRro++9Up/jbyLtMmIMFqBj1yp25zQt+bPr57ZHK9VVKMf3iJZboz+F3NE6e5CZ5Nwi3ZQRtyTm9TQcKwXEQJdC0wLnnvxZtuGx5izCzVlisirvMBKY9jtzo8UKYu0HJTKkSt5+T6FwgAp27QpZY0wLXIinxF4+cZTjC1+Euqq0qNdDgA2F7CmG0b2aiGNRsovF3678WK3aD6EIqRpQzRJ8fG5tNAnfsVoSrI9TcMwibKjxMggFHnkDn5Ol6/t3nuJmLTdmRyyFGfQnVLE7qWGgqECO/ecCHQHFDOF31+ZHBaykKVBrXm2ogEjXW3ksZZakf2IRPbUXrdWMB9Ww8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,63 +93,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-madvise_inject_error() advances through the requested range using the
-size of the page returned by get_user_pages_fast(). Saving the size
-before error injection is required for hugetlb pages because successful
-soft offlining can dissolve the source huge page.
+On Wed, 5 Aug 2026 13:28:16 -0700 "Paul E. McKenney" <paulmck@kernel.org> wrote:
 
-That stride is incorrect for non-hugetlb large folios in system memory.
-The memory failure handlers split such a folio and handle only the base
-page for the supplied PFN. Advancing by the pre-split folio size then
-skips the remaining pages in the requested range while madvise() still
-reports success.
+> > collapse_scan_file()'s main loop has
+> > 
+> > 		if (need_resched()) {
+> > 			xas_pause(&xas);
+> > 			cond_resched_rcu();
+> > 		}
+> > 
+> > but that won't help with the RCU stall detector(?).
+> > 
+> > I suggest that a suitable fix here would be to add the analogous
+> > 
+> > 	if (rcu_i_need_to_take_a_break()) {
+> > 		rcu_read_unlock();
+> > 		rcu_take_a_break())	
+> > 		rcu_read_lock();
+> > 	}
+> > 
+> > (iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
+> > needed here)
+> > 
+> > Paul, wdyt?
+> 
+> Let's see...
+> 
+> The console log says "rcu_preempt detected stalls on CPUs/tasks",
+> which means that cond_resched() is a no-op, but it also means that
+> the rcu_read_unlock() in cond_resched_rcu() will directly take care of
+> informing RCU of the pause.
+> 
+> But that is clearly not happening.  Why?
+> 
+> Well, we have this:
+> 
+> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P37/1:b..l
+> 
+> This means that the task whose RCU read-side critical section is blocking
+> the current RCU grace period isn't even running, and thus cannot invoke
+> cond_resched_rcu(), let alone the rcu_read_unlock() within that function.
+> So an RCU CPU stall warning is expected behavior.  Or at least it is not
+> in any way ruled out.
+> 
+> What we need is RCU priority boosting.
 
-Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
-folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
-folios are handled as a whole.
+Do we?  I'm suggesting we need need_resched_rcu()!
 
-Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page order before page migration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- mm/madvise.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+> Except that the .config file
+> does not enable this.  Not only is there no CONFIG_RCU_BOOST=y, there
+> is also no CONFIG_RCU_EXPERT=y and no CONFIG_PREEMPT_RT=y.  But there
+> is CONFIG_RT_MUTEX=y and CONFIG_RCU_EXPERT=y.
+> 
+> Because we don't have RCU priority boosting, if the load on the system
+> is heavy enough to prevent our poor preempted RCU reader (PID 37) from
+> running, the grace period cannot end.
+> 
+> I am not sure why this task is saving its stack, but maybe that is normal
+> for this code path?
+> 
+> My bemusement aside, I recommend running this test either with
+> non-preemptible RCU (CONFIG_PREEMPT_LAZY=y these days) or enabling RCU
+> priority boosting (CONFIG_RCU_EXPERT=y and CONFIG_RCU_BOOST=y).
+> 
+> Maybe RCU_BOOST should no longer depend on RCU_EXPERT?  I would of
+> course need ot remove the prompt ("Enable RCU priority boosting") to
+> avoid annoying Linus.  Maybe as shown below.
+> 
+> Thoughts?
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 5a09cc24f04a0..e9d4c3bbc5290 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1455,20 +1455,25 @@ static int madvise_inject_error(struct madvise_behavior *madv_behavior)
- 
- 	for (; start < end; start += size) {
- 		unsigned long pfn;
-+		struct folio *folio;
- 		struct page *page;
- 		int ret;
- 
- 		ret = get_user_pages_fast(start, 1, 0, &page);
- 		if (ret != 1)
- 			return ret;
-+		folio = page_folio(page);
- 		pfn = page_to_pfn(page);
- 
- 		/*
--		 * When soft offlining hugepages, after migrating the page
--		 * we dissolve it, therefore in the second loop "page" will
--		 * no longer be a compound page.
-+		 * Non-hugetlb large folios in system memory are split and only
-+		 * the addressed base page is handled. Hugetlb folios may be
-+		 * dissolved and ZONE_DEVICE folios may be handled as a whole,
-+		 * so save their size before error injection.
- 		 */
--		size = page_size(compound_head(page));
-+		size = PAGE_SIZE;
-+		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
-+			size = folio_size(folio);
- 
- 		if (madv_behavior->behavior == MADV_SOFT_OFFLINE) {
- 			pr_info("Soft offlining pfn %#lx at process virtual address %#lx\n",
--- 
-2.39.5
+If I'm understanding correctly, this workload is busted with this
+config and the proposed fix is to alter the config?  Well, why are we
+permitting that config at all?
 
+Seems to me that a solution to permit this config to work is very
+simple.  Something like:
+
+	time_t start;
+
+	rcu_read_lock();
+	start = current_time();
+
+	for (lots of work) {
+		...
+		if (need_resched_rcu(start)) {
+			cond_resched_rcu();
+			start = current_time();
+	}
+
+Where need_resched_rcu() tests to see if we're getting close to hitting
+the watchdog timeout.
+
+No?
 
