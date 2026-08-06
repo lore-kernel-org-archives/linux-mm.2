@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 824E7C5AC7A
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 22:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6186C5AC7C
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 22:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5C806B007B; Thu,  6 Aug 2026 18:47:25 -0400 (EDT)
+	id BAD656B0093; Thu,  6 Aug 2026 18:48:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0D816B0092; Thu,  6 Aug 2026 18:47:25 -0400 (EDT)
+	id B84ED6B0095; Thu,  6 Aug 2026 18:48:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A23AF6B0093; Thu,  6 Aug 2026 18:47:25 -0400 (EDT)
+	id A4DB86B0096; Thu,  6 Aug 2026 18:48:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 740236B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:47:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB75F1A05AD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:47:24 +0000 (UTC)
-X-FDA: 85072332408.14.D48D72C
+	by kanga.kvack.org (Postfix) with ESMTP id 7584B6B0093
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:48:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAE6F1A0292
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:48:46 +0000 (UTC)
+X-FDA: 85072335852.07.481E24E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 133818000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:47:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FINkf+SH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id D6D951A0004
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:48:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Y/hkOxsi";
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786056443;
+	s=arc-20220608; t=1786056525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0JJ2dsclzdRsuC9t44MmmtZCwGmLaJNhhASDkwou8w=;
-	b=uyLI6jA5iU5KP7XVQ1HY3uzaxV9lEtajxCdLq+w90K7v9k/Sd3Egnl7wQ+QXcPK3ri3LUs
-	u+TNwIjT7hv8Cp5clH2qixynM/9kxkpCAbVzVroWxWOQEVuwnprEEGiZw1ekq7eFg+fYop
-	NacdRnDzNdXHxw53l3jjsEkRU7FO87A=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FINkf+SH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=aKWps21C2vpIWj/xL3lTP3KBe8XdUi+jDN1FX8vkfyI=;
+	b=lnVtKImhVoeL+n8bRhoBtgNZZuFmyxZ1BubSWUgLqhQQbQEBxVrwPH3vnJAetinZAiwn+O
+	Cahu+z9QBgZovqCw59sSONM0QOjTGlPJmL87P9hXe0OYqlPuO0p8qofQ8VY2Q4Zlez5Y0d
+	6E3NAINhaIYTG/96H9tq5crinurs/j4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786056443;
-	b=nPaQa/NmrcgDWcD8vd3LaCZsmDK11celMCGXQfmSFz1RW8U1GoW8ERonbpfYGET2uRGR/A
-	rZogHEL4mQ0QI+AL9qZ0bDX7oyFVqNY+gFpJ//zYYNh0uvkI+X07KYvZ4lmNXnIOOpFnOh
-	k858zZfg1FZ0LZEyZENiCaqWwdotUV4=
+	t=1786056525;
+	b=7BGy5KkfM+aS+qAMVDx9YeSRjS/PvSNJeuZ+q9Pl/kCmPDqBnR5ctNqBgAy3E50gcDsyRA
+	bQa8ycdoXemG5ugkb+HVLVN4fYujDRfQVmziZ7f2yquY777WHhXwdbFFjxllP0DKwdIZcK
+	H6aWMiK3sAisnccJ813mP2Ur/O9s94I=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Y/hkOxsi";
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 803E06004E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:47:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C201F00A3A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786056442;
-	bh=f0JJ2dsclzdRsuC9t44MmmtZCwGmLaJNhhASDkwou8w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FINkf+SHOMJoxm0DTYc7A6uZ+sLnGO6XT42riUP3n/beEyUj0W1g1vpDHW5QxHTr1
-	 U/Pi0loQ0q+hu9p/JEXi2NwiBekKq9p1MujfVSL7iN/vZL0EckXDrzCuZIVGPDyRHB
-	 JYLBuoXfIqxTatXrj2eEDdfrbWx2EikaO5vCPhHaXtoao7OYygAWZ+fY+paurLh3Yo
-	 y8I1IZRMWfzu3+MsUJNlWkc0JKHnuJR9PiAMarE2qcQJNM8VCHrD5xnWaxrfQWfbr/
-	 yo037kLJf6aA3B7JcsMyUCsZg8LqD5DiaTFIGLcnJtS7TuIGhrKB9SP8ysErcwW/7j
-	 HZhEC2Qy0MtGA==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2055f5a993so178190766b.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 15:47:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq43A/3VfzGAdiLFKZ3apm0spP93nV260CQavXedFT4P+HyjjkReJgN42I7NxcnsGjQL3fe8krVvg==@kvack.org
-X-Gm-Message-State: AOJu0YzuQghFb5Pfq0tLeqbCLq6LVd1SQAOu7Ng9kAwr4K+iklt/7wqd
-	9A0dgg/0yv0OQkAFmHRjN/jgzyFWLSMKhiBOYJS6XUOHV+ULmRtoxG21uyT4ynmNP5jjmXCmTxh
-	A/CvgLqv4Njer3fqNG9gx+evROTY+0Pg=
-X-Received: by 2002:a17:907:9807:b0:c1c:2fd3:bbd7 with SMTP id
- a640c23a62f3a-c2039d15c0fmr873226266b.26.1786056441200; Thu, 06 Aug 2026
- 15:47:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260806070943.95542-1-jiahao.kernel@gmail.com> <20260806154113.fd52c4c6207c6945dc77cf79@linux-foundation.org>
-In-Reply-To: <20260806154113.fd52c4c6207c6945dc77cf79@linux-foundation.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 6 Aug 2026 15:47:09 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN4p_AWFU=ckb7QaEMnm0QUep6mgdai2ad20Zfu=VQ=kA@mail.gmail.com>
-X-Gm-Features: AUfX_mwIfYMougPH_EihoPHrXv58QsraN27bZSAQ7q9-N_iv3q8NwbNfos0cO4k
-Message-ID: <CAO9r8zN4p_AWFU=ckb7QaEMnm0QUep6mgdai2ad20Zfu=VQ=kA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] mm/zswap: Fixes and improves the zswap shrink
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 133818000C
-X-Stat-Signature: dhst35m8yxper1om8q7g13yen4ok5hn3
+	by tor.source.kernel.org (Postfix) with ESMTP id 5325A600B0;
+	Thu,  6 Aug 2026 22:48:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CFC1F000E9;
+	Thu,  6 Aug 2026 22:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1786056524;
+	bh=aKWps21C2vpIWj/xL3lTP3KBe8XdUi+jDN1FX8vkfyI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Y/hkOxsiIyXqvny+I6euy/SH9J9Y7PfvaVvzz4ktCdEuX4pKj6zPoGgBWZ5XftV5k
+	 TJfDirsMpGdI8gmczhDD0jw9OYPO5/iIRZkpzwjANRXqfSxsf443+QOpy/gnslQp/t
+	 soLmaACg6qvULyVpdT1asWMzpnJCBRCNU+SfzJlM=
+Date: Thu, 6 Aug 2026 15:48:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon
+ <will@kernel.org>, driver-core@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] drivers/base, mm: move arch_numa.c to mm/
+Message-Id: <20260806154842.9faab19cdfb7cf09799d8f79@linux-foundation.org>
+In-Reply-To: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
+References: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1786056442-548540
-X-HE-Meta: U2FsdGVkX1+3Ci1tnXRJz4S8bTnq3zJoGbUlLLK2uJwdSAjanDMaawZLeWEsRgWAu2uilq/13SpjX6yHPPxOcajv/pmAzbjsf80yQZ5I7/7hi4Z2wsBiyn8lxGOzYoMdO8+UgmGhLxQks2/bNSroJLF+6VYJnxFKXN/71lGwPJ7rhvXA4xqg7tSOpa50lxfrLZNTDjvxrKJi/gYm7UDzxgcHVCKee7Hc/eatKf2lE6ncqVPfdSwbIoKZ/XKuAiPpmZ4VK1I5UbnimsvFjQZsybIt2pNJ8GA38XjofxIYH/8O8xAL/eMMUiK4NtyMW/MmDJq0pFTwBGG1NeyefgzT0+oGt72pKHzblcwiZYFf4rkUFre8s+0VTUO2WthaUR6l7GT39TTwL5SjTKZaAO6k6ZlOTY3IvofizoYfmBLLugYXJxLn/BuwtI3R6iYnCyd+JqFwRXNGCwGYpH35cbfWUutP8ZZyaF6GcBb6GcF/oVCXS+x+j8Avc0hy1Ydaieon7a+JoMHpslk0WxqwtxhP2Gri++ckYrntU2HW4jdLsXxwbJPlKjGFOk8qHEWl0kKM0qMGhPwWY/rLYH1RdNzLWM2bVqu9YwibbrhKoRXo2PH8HB7KO0XMqeGrYiZpj+Tkfnyiikn3bYihNPm40wYdPLOawJE1lB6A7Qme1h80v6koYXuM2OiAPpylZE/2kcaLuSAg8yXTCdznrGD+GtqGW4IqhsW6FxFSXwIngttMQ2AxQKo2eawV/mcGKKMLwztYYDrAfr4oHx2qHRjMc+GQMdtLpKUb/gdlKlxHTd4fhb8Iv/eOgg8TL6PkPdY005SxGTTkRQong6w5zVWr08ZnkScV/pQZ3CQ6GWCCQsvI7gOpDcQq+ok/MSSxIjRycqoDIkS0XiNwco3uPQn2PxWRe62KPjZnRKfCwNavd8jLyuYFNZkPoFeoCUBfUSkpnksvyrqe7+OrnRjGVKYF5mp
- EfY9Mn2f
- pwM9N4XFe9hQv8A2lOAfXtOtXDgO++n0wXHrJNISlXMgFVMGrviToQF5JNe0vLXpWygeA48gpgfs4FkSDOE/a9sBYLRiSzqfbbuarDX6gdcFQJ0bn+jJxDSLOSOkjhXuRrmMfBC0ZnHnV0NIX5zEJc753e/FbF9OgFm23lG/+ABnTv0Glb5L1myN6PknI2imcZTFFRuBj56/mXHSleHhIu6UvbmMLdZUlq6QdKowxvF/5/oI/s0OoX2wv4l+CSUHq9tx65F0rQZAfBh7btdVhByGZMEqZ7gcPHqocjuvtaxTdewko33iIisZEThdqATigMa5g/qVPw2NVusHj7+zafdbzVntzAdSpmrzWOc5Z9R2oIH9rV2w40XeCey/c5fdkxYUt2L4+4WTxZcTWcUyumbZNG1wwY5we7RoLMJgUfUntwUBJ97TSDO4x1wFfbIzsmPuJz11tzO3hmbl9MDFMjC2yBg5UHzcJV4UMNXLFsthTDYGIlXczIeQ6Elq3jupabzHa/3YsgsGYjv2hJ+fTi3eyy4XoxRKnQQABPXDDEx5c6TLwDVqtaHLqxg==
+X-Stat-Signature: xmenzak58f79oksj8jt3hhhi3ioy5hyt
+X-Rspamd-Queue-Id: D6D951A0004
+X-HE-Tag: 1786056524-919797
+X-HE-Meta: U2FsdGVkX1+BSA9QOOsSH3Hw/UzQBjl6Sd6P3bHpMj+3JI/CxWwACtJoGH8h4WLUCN0iSBu88CLYf+WLw6wmYlR2Xv9vdfOW70RwfZ6DeSuXSqT1+4HZ4+5ITUE5JOoSKe3o/hA4iwxhGTyTqj8ycJMDbLGtUNZESQTThUYyS854I7xWqtPHgLQXmiaiS8M/vryFSo0+kf7bKPiVOhuUmwv4YT2f0aJJAvNqdSWwLPuDhKwkwbxtqqBH8dBgPsB+XyQc4QrD6Z21zuXuiUrvxObX6XFYI+2A/nmTKjRL75PHH0Q9xywJBH6la03Y1Jn1CFd//qwOho2p6RnJlCYD5Jxj2QdYK8/lUrtZUkPvUH9n9zB8s7ZZNrLrmLZtY2uCch5IjYkgKBSp1QEdIm3vuHaaNWoP7d8yGpdEuoUh6BeEfLon05FKEV5h7T730WO67bB76IvsX+oRb0fdYdtGsTTYZOFyBB7+ieBf5SjtAFN/xC7mh5knEqvebL87GgEWJRcuQDMv3zTv/dBOatgZUyU2td9/bfWX21CXghIEygeA9monzIw1dLoEfQ2LJ++WnxpCaPk6U9kvlUFc1Y0dkKl6T6Em2uPKitC0PJ8nbLf4L5gvZ7i+tAbR47GK8+OxW1mgoSfpflNFcC/jeVsqTfIVjJZwrQ2z8vB1Cqp2u8dxKvr545SYmePFzmXyBBh+eSy5OhxB5EG1nLjs5ePz5DNt9ubdA9HwpJcBOaR+ainzGBFCBPLLPoTTasepZ/MijtKujZKn3qYCejh0jD19CHeJDUekqayXWty8gd4rJZ4RUBQ1hkFIerlgjL3i4YFCkEPvtgd5kz3HybgXR5t2DHS4ip0Wu9k3cIE8mdt5I1PTDWFR6AnY0emHT3wAd1ZWNekOsZLm/G+LhzbkZgbz11aEZfAJ0BCQM+9ebnIvQyDFTZfvniGhPOxwRHe/bqBvQ1nNBJHksXRZcapoohq
+ Q+nUBIrt
+ 8pEtCgv5PJDsmfv2SCi03DIL3eZ1t8Qaw0f4xkPPmEOdR2Y4bIFh77diHqwAyS1MEmcjEB2b0J6gEtNQkt/lmRYZZYyow8HAvJhD9ifoukPh/mh4Ya+7eiCeJhMZF3Lt27N+pzsxjNsvacFKh4zLHi0kaD8U8wodI7Y1LSpd9rP3gZCOWlL1/Yw1ob1+EH6Qr3YzRiurJ1dKVT23ocsQKRLivftUh8QEYu5PebaHbPQP8kEYr469VvWSGMyrZNWb2gCQF3XlmrQkGAVqKH9Y+dQOWyg3/KLbPR0Gj/muCRXJK28du0woEoSwEC3Zn3wcN5UG9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 6, 2026 at 3:41=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Thu,  6 Aug 2026 15:09:41 +0800 Hao Jia <jiahao.kernel@gmail.com> wrot=
-e:
->
-> > From: Hao Jia <jiahao1@lixiang.com>
-> >
-> > This series fixes and improves the zswap global shrinker (shrink_worker=
-()):
-> > Patch 1: Fix missing global shrinker when memory cgroup is disabled.
-> > Patch 2: Extend shrink_memcg() to support batch writeback and thereby i=
-mproving
-> >          the writeback efficiency in the shrink_worker() and zswap_stor=
-e() paths.
->
-> Thanks.
->
-> Why is a -stable backport proposed for [1/2]?  Its changelog should
-> describe the effect of the bug upon our users so that others can
-> understand why this was requested.
+On Thu, 06 Aug 2026 09:58:38 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-It's a potential performance regression for people using zswap without
-memcg that was introduced by the commit in "Fixes".
+> arch_numa.c implements boot time discovery and initialization of NUMA
+> topology on architectures that select GENERIC_ARCH_NUMA (currently arm64
+> and riscv).
+> 
+> Since this is step in the initialization of the memory management
+> subsystem, it's logical to have arch_numa.c in mm/ alongside numa.c,
+> numa_memblks.c and numa_emulation.c.
+> 
+> Move arch_numa.c to mm/ and add its F: entry to "MEMBLOCK AND MEMORY
+> MANAGEMENT INITIALIZATION" in MAINTAINERS.
 
->
-> AI review suggests there may be an issue in [1/2].  Please check?
->         https://sashiko.dev/#/patchset/20260806070943.95542-1-jiahao.kern=
-el@gmail.com
+Unclear what tree this is targeted at.  I grabbed it.
 
-Same thing from previous versions, shouldn't be a problem in practice.
+
+mm-stable does have this change:
+
+--- linux-7.2-rc5/drivers/base/arch_numa.c	2026-07-27 04:44:55.000000000 -0700
++++ 25/drivers/base/arch_numa.c	2026-08-06 15:47:59.019918702 -0700
+@@ -231,10 +231,6 @@ static int __init numa_init(int (*init_f
+ {
+ 	int ret;
+ 
+-	nodes_clear(numa_nodes_parsed);
+-	nodes_clear(node_possible_map);
+-	nodes_clear(node_online_map);
+-
+ 	ret = numa_memblks_init(init_func, /* memblock_force_top_down */ false);
+ 	if (ret < 0)
+ 		goto out_free_distance;
+
+
+which is easily handled either way.
 
