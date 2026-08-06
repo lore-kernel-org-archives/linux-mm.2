@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296C7C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E45AC55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:14:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 157716B0088; Thu,  6 Aug 2026 07:07:43 -0400 (EDT)
+	id 892706B0095; Thu,  6 Aug 2026 07:14:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 108696B008A; Thu,  6 Aug 2026 07:07:43 -0400 (EDT)
+	id 8424A6B0096; Thu,  6 Aug 2026 07:14:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01D9C6B0092; Thu,  6 Aug 2026 07:07:42 -0400 (EDT)
+	id 735926B0098; Thu,  6 Aug 2026 07:14:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4B26B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:07:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3559DC06F5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:07:42 +0000 (UTC)
-X-FDA: 85070569164.13.186255F
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 78EA340011
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:07:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hcW/YmTW";
-	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DFA696B0095
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:14:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76B7F1206CA
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:14:56 +0000 (UTC)
+X-FDA: 85070587392.09.596E131
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D988D1C000A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:14:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jQyMWSPd;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786014894;
+	b=8fTHM5XCLkjuVNNLsKMDNZSeuUf1wJbzvBJNyU2NN6/ysjIzD+GecQAj7g/NZsymJGiDGu
+	w2hgrnB79zIEBAdbpqMNWdEhvfLUfoEaTOuBbQCSATNkiGcF6ingf5kYqqGzjmQnylh+p8
+	ubmTjpbVxdYuod9Tss6vZyYY0rvYyX0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jQyMWSPd;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786014460;
+	s=arc-20220608; t=1786014894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=umeg7T32naGcJC9MzeautcojuTNjpQjQcwcgWxX/wig=;
-	b=BgZceol/6AXk8r0+J0FEdeeCqUQBQfJGwkABJ3gJJRye89P0Fm4aZvA4ACbYcfL2Y7YGLD
-	XQI5CFZvBWwHvhuIhzoTPHjZRaGu45X7R0bcR+QbUud3x6c8SteLGDMUKcGDQGsQqoV+45
-	/WRjQ2iECcxVz54mV/J/iGq+1DP+Ppg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786014460;
-	b=uq2XWoyOOqbNRYmRmPuXRyQio/L6l6oWEsNZl+jF0pbnyLUUKegak8bRJuurxPeD3mUGUb
-	FFs7jM873BPNJpoV9C8uPx6rW7i5RLur8DbEj29iB149ix4nm++lrNy5WZGGLSu68FSes4
-	Qubd3YKww/AKTsaPdMpfLbiKv5x9kcE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hcW/YmTW";
-	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <007cdb8b-01e3-4d73-9ac9-1a52ab5798dd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786014459;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=umeg7T32naGcJC9MzeautcojuTNjpQjQcwcgWxX/wig=;
-	b=hcW/YmTWu8rMYvyiIgd5FnpBnnsvyKdtYB13BU82KR0gatM1/3wXRw1pCBQ9MyKsf8DUPC
-	kiAoFeH5CBh018Gv1n0EQF01ytl1jmY7fOS2XskqCUwiDFl0NPqQcaOtQL1pQYf3ZS7NZB
-	hujwJYjhy6eveLPkHXkJV/3IohB8Boc=
-Date: Thu, 6 Aug 2026 12:07:36 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/ReBsEWVSG7DT1p1R8bGGZpfItCvJ0rC/y80hPOREMk=;
+	b=SQGUORJ9YbfeVZeV6KUJPoaCwApOmSOtc+RXWbKp/3u6cozq8fkuljBMx46AZbBjxl8ExJ
+	Ih10j/5YzJQd5gK1VL+8+DyCVDchO1UdrHDy59sdPed46L8/6SfURxnxIVNGmR+dYhg9Ta
+	egs1l/xhBUFJmeLlLsFBiyJx+tgfNA8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F86060A64;
+	Thu,  6 Aug 2026 11:14:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B461F000E9;
+	Thu,  6 Aug 2026 11:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786014893;
+	bh=/ReBsEWVSG7DT1p1R8bGGZpfItCvJ0rC/y80hPOREMk=;
+	h=From:Date:Subject:To:Cc;
+	b=jQyMWSPdN8zYU//8DYxtWuBisX9smWBUzKzW2ArdiF57JwZmkgdajyinpngwNbGCN
+	 kBzl/1rNf5fL0HuBdB/E+gpSHpomi2VtuR8Srncm3SRN6O0XA10Uk5SjU2bCHVget6
+	 zv3qL9F0Wd50bATdZzeyXmWgIq9or8l0z09utQmu9iybj9wtrqP6vOD0t+h5nQy2O5
+	 cPAhy20joWxhJZaCnkUNB0CT60qc6a3r5ALz3PJ6PbWjzU2jIwPy0yWdJrc47sueX1
+	 os0Ns96+7TmhI61rSctiEaeGOHwZ+ePOoKuIwYV4CT0A1N50i9Tt8VZvVulTe68OYM
+	 ytnyxEnZKbcAw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 06 Aug 2026 13:14:38 +0200
+Subject: [PATCH] mm/memory-failure: fix folio refcount leak and
+ min_order_for_split() locking
 MIME-Version: 1.0
-Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in
- hugetlb_cma_alloc_frozen_folio
-To: Sourav Panda <souravpanda@google.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260726072935.3513996-1-souravpanda@google.com>
- <20260805202444.1573218-1-usama.arif@linux.dev>
- <2qq6r5zvegrk5bbx7qbkscwqmccda7mxtzuvd3wln24yjm2qhx@663fzadsgmg3>
- <CANruzcT9PEXYRu1t_ge9ZNE8hLBpt6rWP4CwsBUkoZQTtpPKdA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CANruzcT9PEXYRu1t_ge9ZNE8hLBpt6rWP4CwsBUkoZQTtpPKdA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78EA340011
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJ5sdGoC/yXMUQqDMBBF0a3IfFdIrYq6lSIhxolOEQ2ZsSji3
+ pvq54H37gGMgZChSQ4I+CWmZY54PhKwo5kHTKmPhkxlpapUmUrYtSya/USiZfTamzgyr6J2eV/
+ ZWjmIXx/Q0XZ13+1tXrsPWvnH4Dx/wlbVQnkAAAA=
+X-Change-ID: 20260806-try_to_split_thp_page-a359f4d8c90f
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Luis Chamberlain <mcgrof@kernel.org>, Li Youhong <liyouhong@kylinos.cn>, 
+ stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D988D1C000A
+X-Stat-Signature: so4xxgqfcwpsj7rfk66ue4ts5hbrp8sq
 X-Rspam-User: 
-X-Stat-Signature: 9qiep3ejzhbg5f5d4tgrsc7b6fq1ekmd
-X-HE-Tag: 1786014460-244575
-X-HE-Meta: U2FsdGVkX19S4KJZpIEOi12AhcgmBJ37v9vlBTbV1BNrcTQnepIctjJp6UB7hXkcgPwLuU1nhG4Y8PQL3/yOtHCF/EGwHYG65vl/WeeH32JPm9bZAWQmBb/B/sgm+63YDxh+bL1dbTRiEYUxeiPfGhCWv13aZsPtUk04uyiVjOj7PFoY03IEx51o8dhHJb8kXILFO6kiKnlWjslbzSOrNLguafIno0bRTzdwH57N9QMLAZqHqhVZcis37asgi9lOZEyLQiyls6bFVO45lqMkmr2eUJPvhIgATiIdmvoTQKtn8WY7x0TMxBF27l6mwjBMqRUZn970DC2qaX52K0oO1wfjl1K42TL1inxliWVOTmmA98sTKK/+0KO3PKi07X+NBZ01iV0T1TXbSFuhKlV0A0+9qlFtevHVqaEcWFO/zNCPO+BnoPf3S6rrZ/MmPi+3Qq12NePUcmdE+O9UFhhPG0JN3SUk5ly6RMhsNwI4ptN01nKr0UuoMcQ82thpo9aeLXLD9V/kAHfKWIkI8sUWf4YQSNde7jiNwZRyECpZPPuMbJOBLODndUCmeFPx64Kb6bPUjf44m2BNwDehlnwnIL2pU6UswKWZFCUiIqixjOfo7xEFH3YEkkssf57wfx2QywpEzzdEu33BcbITQ/j/T8sNQT27pMFqwODt2TLJ5uUcWtD1t59mU7ZHUCDRhGzli0LRiJ/Ns/2qz6wHRD8VeSkUbJwQ+VcuIUNZIKA58e0xvVFld7aMUXtzKEbRqK57qGE+qgn/1hlpiXOkcaVs0XMzg0CiMIrlUh+gwuZOoSEmjT0aK0WEViNOKcJBDCf5Whf6YwezU0RB1dzXXay0sI0svkTIJBLEQx7pTmO1OI5+gJaEpbBayR8aSvgYffRM+xjRbT+qFEllcM2IyiKlIH+pQGvQjImtATnZGbSMyNWvHjkqAcU05SjIHkF+SqH4wtDzfw/CLd242T8bd6l
- KPR0wfOw
- njvgvqvVUXzDAr9cwYyqYuEj8bONGSeNrISVuqK0cFzQTaPYyNpmU6U7Txz2jQueCF1J6C+IG6CCtqsDAJMg146t6LHvhOb00AS0nqF0RH8mqfs5IsP59UsHCYRQ/FNvCxsjh0739OHlMwCGBdy7Sl6kGjejsR5Kw1IQcDvi67wlxvoUHRcdc2VHS8bnWVCL53qOfx4sPLRC155fxwbYFutb64FEP5x6JNxleDeWLvB5BGTqoiZDHMJ8JpZASU5QXtgC6SXENer4FcfqhcSmGtLhEHCipcFdCJQHQTpus+7TB2MYhaTjM2yhZIFcyKgU9UyTTRdU83dAUQaKYEr0OtWfQ0Y3jJke2FUe8QjNsuW8gQWapurj9yMjz8wUy3o25Z8LQX35dOzShvSk=
+X-HE-Tag: 1786014894-512249
+X-HE-Meta: U2FsdGVkX18DssBTIkqjTvba9WLYlymuoZMLwY4RAsYZXn6XUcigZ4Iu+MlwM32CMD8kiYpLeGpG60Akilbb1ad3onN+W+cA1K/KovxakUgjbGp9K+Vzx7fRu91sisNtZMziWjV39JVpFIP6Ioa7TizydBaXQEbiXF7LbO10+GX11XV6eLAQ4cGt9qY/64Le+rFyyIT3WyfZsbD0Zl3s5c195jYVz+df9N72FnXo7az+v7phuZ+VbHGEty71iVdrCH267PIvUgn5hOQrLqTjtjnU27GhEMjvF40ex2EtfiwNSzwmWkc5BuC4Kmv4g79fcEHBBtEpqD03T3e3L1/ySF0eMWQQnhSKnSeJIveys+8uDbB2Rb4YJboiHmMndCqJolsEHKh52aPQqob/7U1LgjeXXJeK1NFKu8uIR0PFNBAai1zjHmZnfobPjQI3itZ3gtrPsUSpgAUHgJJUHX4R/peSes1MKD23a2/cZ7NSEWy7df3nbDd/aHE31KgtGylZvq5CMiyaxukeN2Mwm+EC+p8ENZMpaW1Hq3OyJX7dZ8eANZJtNkbpE6A95ehEJp5xOZK8Ww9TWiejBi88v+Jv6JpKm/AuUTI7j16xA+JsZBDHNgCVBS7f2az4OeKdiiLu9YACMYavFpO3S/oFGp06zdu1dHOEwIh+6fFaEZGWXHD8QaTtd2kLuVCAwzUIMkfa/XHJ/NaeW6sydN2G9iyi6YBdJqtUdW/FbqFtucLkY7zn9VC1zcm8rmbvFTonRqpNSruINxOQLMYpFi9ovJCC1iv/fgiQb/95OYXI6Tj/BVJO/m3kH6SB1vLgkhbqxzoBJtNNbK5GNsmQHozBgQHZH2jNFhtcbJ44cb7nM91rMWTdexNbbXRkEiqG3FMbM7YqvMlzmto6ZZMhJx9CYC93MEcCrj7egUJquhda0XBhfAKi1bYq0M6SCooUkOM5UwZ3mE935rVeY80g0E5Vh2U
+ 1PGHZ/nO
+ tZsFi3P5KI1gr5KYGshBMOY1xWnDmAP10/gPf1tBCNETTWmh2cnrcyHBe2DB60pDDqEE0ffs4f8OIapRWLSQVZEPeyjGTQvzCj7UtFTIRTRDfRs/oNBXv087xA6HhXcFUJ7HHhzwnNYKaPQJh6Ma4B4r8RFKQbBMQ3u3AqRT5quDOXZgQ4SgYXcZ1cHH31RU/LWx475YQotDpDZpcLaqJ6awtjyDHo6oENz1J4atkYANWHauwcRrM97cHqjJde6KYQlfPvHuXzak2zlwa4XO8s+c8rtGnn9nz/FQR5c9cCslzMXnXFJJ1hMy/a86ZCWZeewM5fc+evpkK62g/eDjbDUsmyYknK7dyE3OWhKM1k6pPR9w4ufp7Oc9nYtlyvhDSRScmh9Y23O9QUHc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,144 +103,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+hwpoison code can end up calling min_order_for_split() without holding
+the folio lock. There isn't really something that would prevent
+concurrent folio split. Consequently folio->mapping can get set to
+NULL after checking for "!folio->mapping", and if the compiler
+reloads folio->mapping, mapping_min_folio_order() would try to
+dereference NULL.
 
+While very unlikely to happen in practice, let's just enforce that
+min_order_for_split() is called with the folio lock held. We can
+significantly cleanup the calling hwpoison code, and just get rid
+of try_to_split_thp_page() to hold the folio lock for a bit longer.
 
-On 06/08/2026 06:33, Sourav Panda wrote:
-> On Wed, Aug 5, 2026 at 7:47 PM Anshuman Khandual
-> <anshuman.khandual@arm.com> wrote:
->>
->> On Wed, Aug 05, 2026 at 01:24:42PM -0700, Usama Arif wrote:
->>> On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.com> wrote:
->>>
->>>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
->>>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
->>>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
->>>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
->>>> alloc_gigantic_frozen_folio().
->>>>
->>>> hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
->>>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
->>>> leading to a null pointer dereference kernel panic.
->>>>
->>>> Fix this by checking if nodemask is NULL in
->>>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
->>>> node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
->>>> back to any node with memory, keeping behavior consistent with
->>>> alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
->>>>
->>>> >From a userspace perspective, this bug allows an unprivileged user to
->>>> crash the kernel (trigger a panic) by requesting a gigantic hugepage
->>>> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
->>>> configured on a subset of NUMA nodes.
->>>>
->>>> This can be reproduced by booting a VM with two NUMA nodes, restricting
->>>> CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
->>>> hugepagesz=1G hugepages=0), and running a program that allocates a
->>>> 1GB hugepage area without reserving, restricts allocation to Node 0
->>>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
->>>>
->>>>   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
->>>>                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
->>>>                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
->>>>   unsigned long nodemask = 1; /* Node 0 */
->>>>   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
->>>>         sizeof(nodemask) * 8, 0);
->>>>   memset(ptr, 0, 1UL << 30); /* Trigger fault */
->>>>
->>>> This results in a NULL pointer dereference:
->>>>
->>>>   BUG: kernel NULL pointer dereference, address: 0000000000000000
->>>>   #PF: supervisor read access in kernel mode
->>>>   #PF: error_code(0x0000) - not-present page
->>>>   Oops: Oops: 0000 [#1] SMP NOPTI
->>>>   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
->>>>   Call Trace:
->>>>    <TASK>
->>>>    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
->>>>    alloc_surplus_hugetlb_folio+0x6d/0x100
->>>>    alloc_hugetlb_folio+0x3c5/0x660
->>>>    hugetlb_no_page+0x3d9/0x650
->>>>
->>>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Sourav Panda <souravpanda@google.com>
->>>> ---
->>>> Changes in v4:
->>>> - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach from v3.
->>>>   As Muchun Song pointed out, snapshotting cpuset_current_mems_allowed does
->>>>   not prevent false-positive allocation failures without complex retry loops,
->>>>   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() already handle
->>>>   NULL nodemasks safely internally.
->>>> - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_folio()
->>>>   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keeping
->>>>   HugeTLB allocators clean and consistent.
->>>> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@google.com/
->>>> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@google.com/
->>>> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
->>>>
->>>>  mm/hugetlb_cma.c | 5 ++++-
->>>>  1 file changed, 4 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
->>>> index 39344d6c78d8..5744de0ceeb7 100644
->>>> --- a/mm/hugetlb_cma.c
->>>> +++ b/mm/hugetlb_cma.c
->>>> @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
->>>>     if (!hugetlb_cma_size)
->>>>             return NULL;
->>>>
->>>> -   if (hugetlb_cma[nid])
->>>> +   if (!nodemask)
->>>> +           nodemask = &node_states[N_MEMORY];
->>>
->>> Hi Sourav,
->>>
->>> hmm what if cpuset.mems only allows allocation from node 0, and hugetlb CMA
->>> is only available on node 1. This will no now allow allocating a gigantic page
->>> on node 1 when its explicitly not allowed?
->>
->> That's fair point but should not the user be also responsible in provding a right
->> nodemask containing CMA memory if it prefers avoiding node_states[N_MEMORY] based
->> fallback mechanism in kernel ?
->>
+Just work on folios now, which further cleans up the code. We just
+have to be careful about doing the page_folio() after splitting, which
+we have to do already either way. Do not change the way we split for
+now, this needs more thought and should be done separately.
 
-I don't think the task can be made responsible for providing a CMA-aware fallback mask
-here.  Userspace supplies the MPOL_PREFERRED_MANY preference, but the kernel itself
-changes the second attempt to a NULL nodemask.  That permits fallback outside the
-preferred policy nodes; it does not permit fallback outside the task's hardwall cpuset.
+Cleaning this up we fix another issue: in soft_offline_in_use_page(), we
+would currently have leaked a folio reference.
 
-> 
-> We have precedence for three options, which makes selecting one difficult :)
-> 
-> 1) nodemask = &cpuset_current_mems_allowed is currently being used in:
->        only_alloc_fresh_hugetlb_folio --> alloc_buddy_frozen_folio -->
-> __alloc_frozen_pages_noprof --> prepare_alloc_pages.
+In folio_split(), document and assert that we need the folio lock.
+Drop the questionable VM_BUG_ON_PAGE(!page_count(p), p) check entirely.
 
-Here I think using &cpuset_current_mems_allowed is part of the page allocator's wider cpuset handling.
+The folio->mapping problem was identified by Sashiko, and Li Youhong
+reported it by sending a proposal fix.
 
-> 2) Some places use cookies with cpuset_current_mems_allowed to prevent
-> torn writes. But this adds complexity.
->        An example would be dequeue_hugetlb_folio_nodemask()
-> 3) node_states[N_MEMORY] is sprinkled all over the kernel (simplest).
-> 
+This likely does not really warrant CCing stable, but I expect little
+conflicts when doing the backport, so let's just CC stable because of
+the refcount leak.
 
-I would prefer option 2.  A NULL mempolicy mask should fall back to
-cpuset_current_mems_allowed, not all N_MEMORY nodes. 
+Reported-by: Li Youhong <liyouhong@kylinos.cn>
+Closes: https://lore.kernel.org/r/20260804035828.2684059-1-dayou5941@163.com
+Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+v4 of the last fixing attempts:
 
+https://lore.kernel.org/r/20260806031958.677935-1-dayou5941@163.com
+---
+ mm/huge_memory.c    |  4 ++++
+ mm/memory-failure.c | 56 ++++++++++++++++++-----------------------------------
+ 2 files changed, 23 insertions(+), 37 deletions(-)
 
->>>
->>> Would it not be better to check cpuset as well?
->>>
->>> Thanks,
->>> Usama
->>>
->>>> +
->>>> +   if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
->>>>             page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
->>>>
->>>>     if (!page && !(gfp_mask & __GFP_THISNODE)) {
->>>> --
->>>> 2.55.0
->>>>
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 9b1f3b24f7e0d..a00df56a68b57 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4362,10 +4362,14 @@ int folio_split(struct folio *folio, unsigned int new_order,
+  * If a file-backed folio is truncated, 0 will be returned. Any subsequent
+  * split attempt should get -EBUSY from split checking code.
+  *
++ * Context: @folio must be locked.
++ *
+  * Return: @folio's minimum order for split
+  */
+ unsigned int min_order_for_split(struct folio *folio)
+ {
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
++
+ 	if (folio_test_anon(folio))
+ 		return 0;
+ 
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index aaf14608b30e2..f4f3f1fc9eaff 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1705,26 +1705,6 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+ 	return page_action(ps, p, pfn);
+ }
+ 
+-/*
+- * When 'release' is 'false', it means that if thp split has failed,
+- * there is still more to do, hence the page refcount we took earlier
+- * is still needed.
+- */
+-static int try_to_split_thp_page(struct page *page, unsigned int new_order,
+-		bool release)
+-{
+-	int ret;
+-
+-	lock_page(page);
+-	ret = split_huge_page_to_order(page, new_order);
+-	unlock_page(page);
+-
+-	if (ret && release)
+-		put_page(page);
+-
+-	return ret;
+-}
+-
+ static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
+ 		struct address_space *mapping, pgoff_t index, int flags)
+ {
+@@ -2509,9 +2489,6 @@ int memory_failure(unsigned long pfn, int flags)
+ 	folio_unlock(folio);
+ 
+ 	if (folio_test_large(folio)) {
+-		const int new_order = min_order_for_split(folio);
+-		int err;
+-
+ 		/*
+ 		 * The flag must be set after the refcount is bumped
+ 		 * otherwise it may race with THP split.
+@@ -2526,24 +2503,25 @@ int memory_failure(unsigned long pfn, int flags)
+ 		 * page is a valid handlable page.
+ 		 */
+ 		folio_set_has_hwpoisoned(folio);
+-		err = try_to_split_thp_page(p, new_order, /* release= */ false);
++
++		folio_lock(folio);
++		split_huge_page_to_order(p, min_order_for_split(folio));
++		folio = page_folio(p);
++		folio_unlock(folio);
++
+ 		/*
+ 		 * If splitting a folio to order-0 fails, kill the process.
+ 		 * Split the folio regardless to minimize unusable pages.
+ 		 * Because the memory failure code cannot handle large
+ 		 * folios, this split is always treated as if it failed.
+ 		 */
+-		if (err || new_order) {
+-			/* get folio again in case the original one is split */
+-			folio = page_folio(p);
++		if (folio_test_large(folio)) {
+ 			res = -EHWPOISON;
+ 			kill_procs_now(p, pfn, flags, folio);
+-			put_page(p);
++			folio_put(folio);
+ 			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+ 			goto unlock_mutex;
+ 		}
+-		VM_BUG_ON_PAGE(!page_count(p), p);
+-		folio = page_folio(p);
+ 	}
+ 
+ 	/*
+@@ -2861,9 +2839,8 @@ static int soft_offline_in_use_page(struct page *page)
+ 		.reason = MR_MEMORY_FAILURE,
+ 	};
+ 
++	folio_lock(folio);
+ 	if (!huge && folio_test_large(folio)) {
+-		const int new_order = min_order_for_split(folio);
+-
+ 		/*
+ 		 * If new_order (target split order) is not 0, do not split the
+ 		 * folio at all to retain the still accessible large folio.
+@@ -2871,15 +2848,20 @@ static int soft_offline_in_use_page(struct page *page)
+ 		 * preferred, split it to non-zero new_order like it is done in
+ 		 * memory_failure().
+ 		 */
+-		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
+-						       /* release= */ true)) {
++		if (!min_order_for_split(folio))
++			ret = split_huge_page_to_order(page, 0) ? -EBUSY : 0;
++		else
++			ret = -EBUSY;
++		folio = page_folio(page);
++
++		if (ret) {
++			folio_unlock(folio);
++			folio_put(folio);
+ 			pr_info("%#lx: thp split failed\n", pfn);
+-			return -EBUSY;
++			return ret;
+ 		}
+-		folio = page_folio(page);
+ 	}
+ 
+-	folio_lock(folio);
+ 	if (!huge)
+ 		folio_wait_writeback(folio);
+ 	if (PageHWPoison(page)) {
+
+---
+
+base-commit: e5492213654050379e78ec6f9acfd6c9fe00f334
+
+change-id: 20260806-try_to_split_thp_page-a359f4d8c90f
+
+--
+
+Cheers,
+
+David
 
 
