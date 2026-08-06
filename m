@@ -4,163 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD9CCC56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:25:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645DEC56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:27:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEA3F6B0088; Thu,  6 Aug 2026 12:25:11 -0400 (EDT)
+	id 5BF746B00A3; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9A676B00A3; Thu,  6 Aug 2026 12:25:11 -0400 (EDT)
+	id 56FDB6B00A5; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988D06B00A5; Thu,  6 Aug 2026 12:25:11 -0400 (EDT)
+	id 477D46B00A6; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 651C66B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:25:11 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E356FA0967
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:25:10 +0000 (UTC)
-X-FDA: 85071369180.28.78F85BA
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011022.outbound.protection.outlook.com [52.101.62.22])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 22691180008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:25:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Y7dhmrFW;
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786033508;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19C8A6B00A3
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7580E1C0077
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:27:47 +0000 (UTC)
+X-FDA: 85071375774.17.70F4F97
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CBB3C10000E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:27:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnMQqzx5;
+	spf=pass (imf14.hostedemail.com: domain of "SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786033665;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wG9L4l8bbapcld5HGLn7sMqF75MvxIOk1oH+BHHVv9E=;
-	b=ILt+/FB8iskcjt4sO3LJM6LNB4LCtenYOscBXYDl3w+ZcjTES1JjoMsPNU4LgFI683L1FC
-	yAZOzTuQQUjdjBf12Agngsf6h0FSrUM0hTk8Gx0JJlxA7qUzw6uS5tFDUtx0inAwxs8/N7
-	WEai4r5CYBex1GpyhnYrFUnK5Hf2ns8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786033508;
-	b=IGlBCy66Cg8zCnGmrIeyn2lCVGFawV/S+O66KyCRM30RlfsMERlTl60eIjyYO+LU/JEpzi
-	Bhoo/SJRfC66LOi+A06XP4hcmB/iLUTf4TekVhwdMr1wyEdIXRzqh4jeevJvoACawtTe/F
-	QWfDuuAEZ3QK+5CJJ0DkinsrCWA4nHY=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Y7dhmrFW;
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dO5CfL+2agcn0xUeVLlkaSVlhNOLy/I1QrfVdkoAI7+JFarnBKYpMPy5O+nWU0RBAFhWoDbfgBlA4B1AY5zBeKdB7/ApKtue0YLXObrxA5TX7Pp98aWzRhF6vVCM8fx32BF/fyo+NlAmn3k/Q7FR374zp2aY47wZMJYlYlvA0cYS7xu1KErZ0M72YmwxRSQXKl1Uej2DUkH5Y7h0MRp4xAVkuBKXVc4XWH0umuy6jsZnbBRpFEiwaMoZdTErYV4ZbVgdyEwhJWakn5yl/1QkzmdSVFCdnom45FGaKc4lznIiuscz9Z0i2Q8WBXAAmgnSocGfHPAMUsdbswJk+cbGAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wG9L4l8bbapcld5HGLn7sMqF75MvxIOk1oH+BHHVv9E=;
- b=naRr5VKIut2pfbXhs6PZKGrnb5wUe+GwJpNGjgCFtakLrTWsVqTZ/c5uHRHx0yCM5LHDHa9T9DYrnCDvlBv3Q7KKQlsrVVKv/vHfq49Wt09jXX3SjMrNZqZup7im4Y1ho12DR15lvpSsSrkZYzJ3RFoJwY1sRM7tGphffPCog6JnHBW41c6eofto1ri1ziN4OCZ26WRCajv7jcstys3dKMeJA0OdWpjuzI+a8phP++CbLXvZid9egLG2u8OCC8Tus5/mSukwdZrbbShzdI83aqljZIShmBcUL21n4UMtgNPkC0w4Z9UkDHOyM0EL8hkywWrkIgUSZk3jsjd481Z4Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wG9L4l8bbapcld5HGLn7sMqF75MvxIOk1oH+BHHVv9E=;
- b=Y7dhmrFWOPUQ7lA2soKSpGNaAbPIGMc2hsLYYxgKZumpmZQvB+R0XwWb+eXXm45eFf3zD8Uk47ODjyEunDrhB6q46X0AFkJ7r3YkJSEuwSCHLnCJ0/vUNf863y5uAhTv6u6Vh5e2bkJA6BwkzmIcHsqMB+s2bgg298Tjex0IOIP4oomJO13TlDJVU5Dfvayjpm7fXdwRVlTzYTlqvwCZ2u4JLttx5zogtVtHJjDDg9b6fn52wxhwGQZHzgUUikPQ99+YEjSoLvx3CxkA0jzKzOiQNnBKCMP6cePeaPmzsyvj5RcnhH8v2LnNgJRCUMkXGkGk+llk90WxKjei+AV9NA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SA1PR12MB6799.namprd12.prod.outlook.com (2603:10b6:806:25b::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
- 2026 16:25:00 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
- 16:25:00 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v3 1/7] mm/khugepaged: refactor per-scan state clearing
- into collapse_control_init_scan()
-Date: Thu, 06 Aug 2026 12:24:58 -0400
-X-Mailer: MailMate (3.0r7024)
-Message-ID: <CC9577BE-2797-4E51-ADFA-12EB3CF4F9C5@nvidia.com>
-In-Reply-To: <20260804-khugepaged_pte_refactor-v3-1-0364cad642a0@linux.dev>
-References: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
- <20260804-khugepaged_pte_refactor-v3-1-0364cad642a0@linux.dev>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9PR03CA0047.namprd03.prod.outlook.com
- (2603:10b6:408:fb::22) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=TOGeScaSuHuM7HfCCnzcathOZlLZGsTyN9pqp0ZRFi0=;
+	b=xfu//YuvDgu0TF6fkOdducSl2WXNz2SFZtB3FGwr34Q2AlqomCJkP3tWGSUKlT4q62f1A1
+	opn+MDOGrTTPxgH17dr8jmmouCPzsfH18IWgOjj8CK+xihM0OusF7jrwNgFIPiNlLDRtEb
+	JPJqPrTK77H/8uupSKDlnUMk7N14poI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786033665;
+	b=8B24JdwVEq+IiDkuTwYxNOVMwRWQr0BceIaNs4YeF0aXWnZyqSM8ITED/qcMV/DIAf99WW
+	Dag4tQRJi3rDqIbdXLZ1xdO8z4dAV2UsxtZhNuf6ulmYUfvE1VT0siXJ9V1Bt54CG87qVf
+	fWaIV2hx2Tf1RO1fEjYHQ/pMkMJ3+To=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnMQqzx5;
+	spf=pass (imf14.hostedemail.com: domain of "SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BCF960AB1;
+	Thu,  6 Aug 2026 16:27:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D272A1F00A3D;
+	Thu,  6 Aug 2026 16:27:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786033664;
+	bh=TOGeScaSuHuM7HfCCnzcathOZlLZGsTyN9pqp0ZRFi0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=PnMQqzx5rsg7Ra7zFrqozPwGU8Did/cXOmsuwLwdhIB7m9yjhSYt+LAuF8eqJl/Ua
+	 Bkeq+0eV61PXx7RCcHa7KpweT3yh/fckRCqMBf4cj4reHaMPJmPt1ofcQu9GQIyAJ3
+	 3Q7arpxDWVhexwxryVjkPXTGN8TmvUu7g1+Wkdz9UgqZJJ8cclDtVVBH6e10QPYI+J
+	 0zThl8+/N82Y2QfFwDk92k3TvxMnf2k9u33SpY80yOwQZk1iZk9amoljpg1Cu5O2M9
+	 CugVlERvMAuCrqfEG9LvviMu2o7sUlrVL9G9aN049OiN8iribLMzdBeVAD6uj/LsUg
+	 vfcllhNsnKu+Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 64615CE19F3; Thu,  6 Aug 2026 09:27:44 -0700 (PDT)
+Date: Thu, 6 Aug 2026 09:27:44 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>,
+	hannes@cmpxchg.org, jackmanb@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
+	surenb@google.com, syzkaller-bugs@googlegroups.com,
+	vbabka@kernel.org, ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
+Message-ID: <3fca260a-4544-4e65-916e-d2ef7fa1440f@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
+ <20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
+ <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
+ <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SA1PR12MB6799:EE_
-X-MS-Office365-Filtering-Correlation-Id: caa403a5-3d86-4320-c30d-08def3d74310
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|11063799006|4143699003|22082099003|18002099003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	RMWymnKOwaBLotSqUzdfP7Xapjj6j3AoHoJnvFT7tLt3rJecM4Gdr4fs2IsT8z07Q/qMgxNe+C5uKXDC/++FCsXQrBuPYt7887uCGh9TENaUTmMYGtCciyG2TrSrVFxQ4HWJ7XuIfNOeXCCTLY3fb4fWHF5MRu/7Kf8woS7iWn3hVSV223MTsVvezXZ1zAiQUTNkBGWb2xGCVyB+rlKNPZ1s2O3z2N370qeK5knxzdMHrUtl65jjdCEAThSkefilWjBY2YwNSBUdHYOEzS/JaX0n9r23Ici1ysSovfN2ybNvqeX8cPOW0N1dtPtvkjIbxK+lEKmZgS8xyWdpyfhZvVuc9wpIdFT9mCSM23lrBA25FJbaAYZdbzX05/ZhLtlxOMwJjHmlqAiC/ppQt9Lwb2rgnARlA/j7x/QOgyIo6q7xnjXyO1i/tJ01P/Rr7p1wFRWzsTTrOC9KDmVVDE2gCf7QJNYszO5vdNDchWAAE0oxmPJjmAmCEo8QUO+sGqJIwjD0ZwZwhSd6+AcH/FR103BlejNLz3igE2zkKJC5wr3h/QM/CiG9uZRW1OXB1bgS9kEFTrp9nSY2AnIbz/taA9iWCMaZE/y9TEFVAqMtuquGGIC6j4jWbQBXtRh2uSKCcHbWR/fmhJMgOdGaNtH8fQkFFV31A2V/Y08bo4i0Qi4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(11063799006)(4143699003)(22082099003)(18002099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wVKQ6Ynx91oSXO/vZX4Qcgq/CHWz2v68G+kRrBlf5xKLeeBCr3SDEi6s+UR0?=
- =?us-ascii?Q?2zXwH28VCJ7iS6T4gAc7eyZ0GHtPWI6AMhfsMIeCvXmAyQFDiCOawF+SN4Hj?=
- =?us-ascii?Q?1k7762MP5zjz/joE+sorSEXDU69fxpiFP9y0X0xTRs3/UvtEmI8R0hooXDY9?=
- =?us-ascii?Q?R5HFtzRb3rIAMX0enfgOSEAAlvRIDCzK+Q0DjEEM88cNxvi7fqgwcK5tSi/i?=
- =?us-ascii?Q?jeNGCAd2OJtQMDTe3Q6m/Hvv0LJQ8Ai8A2oIrHsRkY29abc3jCVKdvCTKeC4?=
- =?us-ascii?Q?3T2IU9Jh2HCwFO2BxqlwlMKf0IL/OttSJQwiPvX2l+9aR5Yg650tnRNyxTbe?=
- =?us-ascii?Q?7+D32pG6Z+dERGHTutK3oJ7PpLjZsBiGlEvCfUXh3YdwYCB1k7IgDxDl7dYQ?=
- =?us-ascii?Q?2PV3KsQlco+0QTZ+HcRXxfYrFeUvZW9Ize9xCnwJEAql3Jr2qHYysaNilkPg?=
- =?us-ascii?Q?j5ri9ZO2GtjRC2byuFeY0EGQ7u84A5/dS8bw0tcLupveqWBcKZ0yPZD8RHCc?=
- =?us-ascii?Q?89ycuyrN73RxgEhchICp1D/HmNsyQOYKfUZCk0we23U0uFjgyms7CLMG+dEQ?=
- =?us-ascii?Q?4NvOBMcU9HE3SN+mVc4R1fSzknHq0zdVER4C03glWlGQGrpd3HFVvumNeh0D?=
- =?us-ascii?Q?jtiayM/TU6Pt2/Ct5QbA6tJp7rf6JkybIUfxjVK1U3ludgpelaR5dCQ3elxZ?=
- =?us-ascii?Q?sewDv7h2ZuleDnH4UhaIFNWCW5s4aFcjgtr/JDO5SijVpxBrpsX/iftp8WxA?=
- =?us-ascii?Q?CWrjZC+8c7S5rjTSxN3CDyYcjA7C+0wWBmkAjSwoGpmd8cYG7T9jlu0Ilbsh?=
- =?us-ascii?Q?hLiYicFkSQVXRMfUGHDGgSqos/JYXfqKLgze3loTRVWfqTlOhIvbcqjQQnXw?=
- =?us-ascii?Q?cxZfUvulJ6lSmT/OdCB4hgAmR8X30eVyApx+V3IJCPj4SqlL4V3ClKZV4+XN?=
- =?us-ascii?Q?veXaFijZK3ffQze/ITUxACR6P50gumIRjkirZw0ZDhhGzH0LJ/dG1wYDMfEj?=
- =?us-ascii?Q?o+77re43g2aCm1CXBdIRW6nkYVm4AY73s3Gygu9Ro5JQ6+ks1iwMMsQ91XAC?=
- =?us-ascii?Q?gikeDi3mujxe0j6cPC9BRCZ5QwfI7SZiV+FkbuDiBRHd8U8O2Vz1g4BqQzon?=
- =?us-ascii?Q?Z/Z1uezN2gYBsDWDjzwmQKxt/7KJv7QAPsCV9tVfh7GB10isEAoEjpxAk1rM?=
- =?us-ascii?Q?i/VOtNygE7YvgD9zLK26BKl/nsHfuRvfHEF8AEGE6ij1seYnY8t4jwTI/hmB?=
- =?us-ascii?Q?YHEhDsw6JtNBpYups1db6rNpsonU9SqUyL6cgJ97c621TWQXXuE/JpVVrHC4?=
- =?us-ascii?Q?nlRO5ZZNgBOJXCA0D4QzYaBt/CV9y8ujpw7irkZEzW8vC7nLji3PD5RTaHz9?=
- =?us-ascii?Q?nt7khPbhDxFd2oE/smedSwVz+f4wv1IXkFVWsM/l+ibpud0HJG9geLIT0Or4?=
- =?us-ascii?Q?lCtZ/4Yb3GKTx5sF1p27+caX0t94xwOQOGp8LifqIqLGtEXz9w8lKRyCdQ8D?=
- =?us-ascii?Q?oXcxsZbRsh7j2HmZxJQv+WMMwbNkUHpwejZkbE5pxiCN6hRVZC8kfktuSja7?=
- =?us-ascii?Q?pTFOTmZJUHNb88hqPqupRmeejYbpPSGvVUQYfUMrRtv68F3iRyRFMUYejBPw?=
- =?us-ascii?Q?qM6xjFdbqaAKS/tKOYud9IZBDKYLT2XtCcbKzhiRKItnO6BXl9N1Bx9yaAob?=
- =?us-ascii?Q?iXB7jrTVnb6nqLE6wMahIAATtksSZkaUcyaJYSS5Yh0JWDvM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: caa403a5-3d86-4320-c30d-08def3d74310
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 16:25:00.3304
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Liq7/IQD0F0wmRZ2Z6SAty9WuZx0zD6xJ/8bGssDvqEqSrzFcdAfLu1Yuturk+Kq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6799
-X-Rspamd-Queue-Id: 22691180008
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: sujdqs9oq38ob4nij3mm3occcacet1pj
-X-HE-Tag: 1786033507-242858
-X-HE-Meta: U2FsdGVkX19O49XuntJD33TN8t6b4WxwTwuEKzazmCc4xxn+MRChEHDdV9H9il+mWmnglVYDQXcYiJDBlRMqpQokfiZJUA9wqJF0DOn64u110dKhtBt6fnSP/rP+5OPahV7z+rmPQLEXp6OMXnf4OD5jtuW1Ri+DzWqKRdJZg884nQSqOqxQHl7bp64PzmUxssYhatFYMun7KQGLFyo6jWF7Mw1AxVA73jQ8Z88jpAIAC2auHOY7UgjfCtTTIhXQNNaWcbYYfZ+iB2oZxQ44sM6+IIx/X0NPGqKZP+tfDX0YtzzbOpYD4jaHZhy6Fbglc6QZfOHAZgKMm5pJlXXPB3TmGcXs4x/G3v2BeCSiWgUuzYv6emiix9sRmWkfGbmGHNK7Og8APAg016uLA4xhSVmlbtvXW118B519T8RXa8q/YEtCE4I+ii9XX7tScsaZ0h2Kq82ogUjOoflTJoJ3FPijYekxEFFBPMVmVvyy7Ml+bRRQT3lh4jOWtcWmleX6nBWgLzKXutpRIV9NVLptExGHhZGNQC+qgAkH2zGGIg0vWlRZBbRIFNjfqRl69D8zsWCCWZ2ahmClkDQolWf4qTkik1VOFFhol6DpFs4RyQhyndozYSvCVXlh4GhV0MdPC2JOh0hTfSNCM+HNYYwnGUqg87qxfZz1pXvQxaZiAW7lGKVYNYGQbTSaHnPHD6JxqDyqIe7p53lfSaFfs4dn4XtKCxRJMd43McNNpdxLP6E9sTrnFpFPXPLKYDlzvKeXhPuIigBSHDvqUiLjKdzZ+QskawiAvpfThLvjX+2WSBX6x+GJO+lMupul+cBAoshTDRssyRs8QPZ+R2nHjq/ahIIBnEN7r3a3RseaxtUJToJznRZoA/VG7tkT/mZ7Vqte8FwHbLALzoBFTCyWggE8LQ/9YQasrTn4B5FLC7JdIo3DEDnMxspnSW8Ev6cNgZPv3ymjX90lnfJYEz4QIxJ
- 2cTZsnEe
- ZIsXkQigYPYmxQPHUSl686rUSwrxoPw9MFA8m0dY+hCg8oXd1L0g2ti2td2jOu67BgPMwCrKpHSMm5zU2e/ImlfwHHyYUXKix5YCmEHDF4c/Qqn7ytleq2KLKx/yNj16RxdMtS4skfmUV0bX7DNi74ywyNjk0bVMMTKqaNQMmvFip79G2on/nyZby237ESDil2VlglgIMAusyB70+boXW5woWIQ54fQIon5W5mIY01X0M6PTD9P5Sxk+ME841MB+810Cj7zmfE8EY321wtJMK/864BF2ZgRuocIO25K3iLXbQ0Fsr4aGaw75qnyi6t6UsMTMF0geaFp455sCKZsCNbn2wnHW/joAcFMPMhYs2nT0mCaWhQWXFx4TZ7PrjXOGhOpl5WRe5KrbqD5fFfS2NEWg9in2Itwyc+RoTx5SkR4IZP8tZH8/n+IeZQUrTjpkJjyD0da6flCM2EZQ0E2Rfk3PcJnAC7IUBa/mq
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CBB3C10000E
+X-Stat-Signature: egqjed34u7p1zidwn11zo15wswycsuir
+X-HE-Tag: 1786033665-752885
+X-HE-Meta: U2FsdGVkX186VfZGe9YTaaIt/h3PKcp7/4DmFJL+lCfACqwQjUspxx1MgVT3y6E315wWySNGkY3GqTQO/6ukIZ9wUo+fUdICen1mFIRI+AFDrr001Yofu1j2DKjGxRU2h3WvD66c2W3KNat4Z5VSHKRMtg0B9zBpJvWgSHfeTrh9w4KrzEjZCqvLHU21t5/1sR+jIiKikQDsY8expI9/33R33Ch3FQ8BNLwovMTjYsgAT4mz2Wgij0QHSi+jH31zIotJsWumgYlwe7vsP+hd+wwo2tYLMoCmYiAdMUA2/N6HkY535Ltts0YmRQXyqUYiLfW7rO9PMo4MAzWQnf7pucU5ae/rJX3Es3TzaUZAKIufpEr+aD7YQCC1H24j80Z/UXjGwRYsvwLkMOMTgJfxE8D6zqrTyvYkYbMQZIWAXXYAoIWJawrt4MxxPb4HOUsxISiH0uISvhjjmSIc1LlMiirwC833TcPWSSr0n/jFuo+rqw4eo5A9v1ReFOX0rmB7bXKRACk5ZR1CXKcnGmoCcbSitUuqk3X3ve6jue43Kz2I8a//jmSaRP3hbIxIr61bk2eBTpJo7KttdGjOP1qTzosXmlu932qUzis/1KkQc+daV6LxCnDEhGtMckZSacsVWgfourfpsIJsmMgk06JDE/K6ewpGrgEkQR4ibO3mnaG3UO+vh7hx9qTc+FjZw/8tsGL7UNOyOSB1w3ycIG4HR2oVJdXq+XFvSUD8QtgNRGvLpafVHI3ue2lPyr2MS6wI39y7kisgiCUYq/3nG6wYZ8R+p4ztYn8xIKkbZnHhZulhVS3CJ+pgEX2L0tAg9ACFlEHPfTdDbjycGscUTDqD8a/GSP+B8uClAwvEmkn8kYajtONMwj8G7dTCFRiIC3kJjD3iWiZPggzTP3YR94Xr0IXBvhpB5N4zi7SccViAFqqG8uzzcKv2r2+nYOCUyemAUuHipUBjXhCNTE3/am3
+ RPhCNdHJ
+ MGeey85bQCpvQ0/kgRCa0VFF5gtHaBC+OV867IaofFOx+vXDpKFaRozvjWy0N6bD6gVJHqcGMf4aURontmnhlPxqZY0Ynw4ob+lSfKhDGDkdAqFTZNxlGlksqVLgzDKUrPPC+IkNAB1Ol+0uW1ejhF/05kwlJe1mC7s73s3hKiwfUPAaStXrAfH7wYT8rrwXKZvqnZUnREI+bzbVIPL/74OOtezfofr56A+qrm7iLsSem04m2gW6WkbziVEdafA6Oo8w+4d/nzsA/sJ1LTEio2jjrZ9+7JmZGagO43+4A6bqWNmLkVdJ+orzdWP4X5Aehbrn2O+A3Fd5FtkY9FORgagnpmdT8LRyZm3E9uCbd0knOV02tvomEVH7b7Dhdc6Kbf46pPEAJ6eiuDDvVHqPQ31ba0ILXaxwgAxE+yv2Uyzrac4E18/Zq9CTn3ivgPEK1+9sAUoTz7PrXu/HPCKCByMhWb5Zc31pXAaDCDqhVX/KEg4RudwKRNVmlrmnGK9e2KRw5+vDAq3mLJJj0XGo8KX+Cauvl/Oo9WYx6uRgpUlksMXP8J6u8UD2pMf5NN04Oiotsv5KNuD0ZBhV5dlfZ+M3ilrP7jUkmTFich20iFrZhkXV9PxX0z8Hqn6puQTZPytnv2lgeLdDcGHwkKHlWItEdlGfVeN76YcuoJLNlByN2sVGBRKxMzMh0PH40gqZkmLZiQJ550dQ7J5xUVwGUH7KoZDtCJf2R6Zq+DHLOQW2MwWfmp/2XotRW39rFWoKMlI2NK/4XdjG4ODp4IsFgYZ2fL78UyKLonuhSqX3HXdrFXp7iozJI86uPOngEk6K5PI+aJGUMp0ZS9AGcPWe/osUVeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,27 +99,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4 Aug 2026, at 15:24, Nico Pache (Red Hat) wrote:
+On Wed, Aug 05, 2026 at 11:03:11PM -0700, Andrew Morton wrote:
+> On Wed, 5 Aug 2026 13:28:16 -0700 "Paul E. McKenney" <paulmck@kernel.org> wrote:
+> 
+> > > collapse_scan_file()'s main loop has
+> > > 
+> > > 		if (need_resched()) {
+> > > 			xas_pause(&xas);
+> > > 			cond_resched_rcu();
+> > > 		}
+> > > 
+> > > but that won't help with the RCU stall detector(?).
+> > > 
+> > > I suggest that a suitable fix here would be to add the analogous
+> > > 
+> > > 	if (rcu_i_need_to_take_a_break()) {
+> > > 		rcu_read_unlock();
+> > > 		rcu_take_a_break())	
+> > > 		rcu_read_lock();
+> > > 	}
+> > > 
+> > > (iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
+> > > needed here)
+> > > 
+> > > Paul, wdyt?
+> > 
+> > Let's see...
+> > 
+> > The console log says "rcu_preempt detected stalls on CPUs/tasks",
+> > which means that cond_resched() is a no-op, but it also means that
+> > the rcu_read_unlock() in cond_resched_rcu() will directly take care of
+> > informing RCU of the pause.
+> > 
+> > But that is clearly not happening.  Why?
+> > 
+> > Well, we have this:
+> > 
+> > rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P37/1:b..l
+> > 
+> > This means that the task whose RCU read-side critical section is blocking
+> > the current RCU grace period isn't even running, and thus cannot invoke
+> > cond_resched_rcu(), let alone the rcu_read_unlock() within that function.
+> > So an RCU CPU stall warning is expected behavior.  Or at least it is not
+> > in any way ruled out.
+> > 
+> > What we need is RCU priority boosting.
+> 
+> Do we?  I'm suggesting we need need_resched_rcu()!
 
-> Extract the repeated clearing of node_load, alloc_nmask, and
-> mthp_present_ptes into a helper to reduce duplication in
-> collapse_scan_pmd() and collapse_scan_file(). Althought file scans do not
-> current use the bitmap, they will in the future, and clearing it now is
-> harmless.
->
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
-> ---
->  mm/khugepaged.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
->
-LGTM.
+Understood, and I initially agreed with you.  Except that I then
+found that the poor preempted task isn't executing anything at all.
+Which means that an added need_resched_rcu() cannot possibly help.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Except that the .config file
+> > does not enable this.  Not only is there no CONFIG_RCU_BOOST=y, there
+> > is also no CONFIG_RCU_EXPERT=y and no CONFIG_PREEMPT_RT=y.  But there
+> > is CONFIG_RT_MUTEX=y and CONFIG_RCU_EXPERT=y.
+> > 
+> > Because we don't have RCU priority boosting, if the load on the system
+> > is heavy enough to prevent our poor preempted RCU reader (PID 37) from
+> > running, the grace period cannot end.
+> > 
+> > I am not sure why this task is saving its stack, but maybe that is normal
+> > for this code path?
+> > 
+> > My bemusement aside, I recommend running this test either with
+> > non-preemptible RCU (CONFIG_PREEMPT_LAZY=y these days) or enabling RCU
+> > priority boosting (CONFIG_RCU_EXPERT=y and CONFIG_RCU_BOOST=y).
+> > 
+> > Maybe RCU_BOOST should no longer depend on RCU_EXPERT?  I would of
+> > course need ot remove the prompt ("Enable RCU priority boosting") to
+> > avoid annoying Linus.  Maybe as shown below.
+> > 
+> > Thoughts?
+> 
+> If I'm understanding correctly, this workload is busted with this
+> config and the proposed fix is to alter the config?  Well, why are we
+> permitting that config at all?
 
-Best Regards,
-Yan, Zi
+Agreed, and my proposal is in fact to remove that config.  This assumes
+that CONFIG_RCU_BOOST is ready for prime time, and given that I have
+been testing it for years and that CONFIG_PREEMPT_RT has been using it
+for years, I am cautiously optimistic.
+
+> Seems to me that a solution to permit this config to work is very
+> simple.  Something like:
+> 
+> 	time_t start;
+> 
+> 	rcu_read_lock();
+> 	start = current_time();
+> 
+> 	for (lots of work) {
+> 		...
+> 		if (need_resched_rcu(start)) {
+> 			cond_resched_rcu();
+> 			start = current_time();
+> 	}
+> 
+> Where need_resched_rcu() tests to see if we're getting close to hitting
+> the watchdog timeout.
+> 
+> No?
+
+No.
+
+Added code doesn't help a task that has been preempted for some seconds
+and thus isn't executing any code at all.
+
+The task has been preempted while within an RCU read-side critical
+section.  The sequence of events is as follows:
+
+	rcu_read_lock();
+	// preempted for many tens of seconds.
+	cond_resched_rcu(); // doesn't help because it is never executed.
+	rcu_read_unlock();
+
+Or am I missing your point?
+
+							Thanx, Paul
 
