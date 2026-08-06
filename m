@@ -4,90 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9525AC56207
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70DDCC56207
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:42:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1C26B0099; Thu,  6 Aug 2026 10:34:50 -0400 (EDT)
+	id 5556C6B007B; Thu,  6 Aug 2026 10:42:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 878D36B009B; Thu,  6 Aug 2026 10:34:50 -0400 (EDT)
+	id 506726B0088; Thu,  6 Aug 2026 10:42:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B6D06B009D; Thu,  6 Aug 2026 10:34:50 -0400 (EDT)
+	id 41BD26B008A; Thu,  6 Aug 2026 10:42:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C6986B0099
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:34:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0082AA07D8
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:34:49 +0000 (UTC)
-X-FDA: 85071091140.14.5DF41CF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 683D8140003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:34:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f031x4F+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786026888;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 104296B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:42:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CF031A079B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:42:13 +0000 (UTC)
+X-FDA: 85071109746.27.522AFA9
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AA602A0012
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:42:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n+M27qnJ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786027331;
+	b=FSfMEw/+Ar+XYA3qNYojnU/rKIP5jAJa03uDbXZm5vb9vmrv8OeT00xKUrnmZAWfnkwNPT
+	Z7zFKcMOqmxSo0VAdSJGZIdbu8p1PvaZbAqEWD+z2G4xM55NMyW+T8BT/6JvLiKiqGYgMO
+	FnxtQYnx/A4GYA5L1kZghb+E3Y0qC8Q=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n+M27qnJ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786027331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/s88DIFVEBP2T/uZKq+3U5KPJDCNDQTM2bhogMbtZ1Q=;
-	b=EiBv/nVZIz9DRK50+X8zutX4LwrkWwFhnawEFwfpEJw0EoG1PfKV4iBKHNCh1m62pQ2cTJ
-	0oLarZ8yCNyOsaZgKiRofm712L/2Pf/qOYiuXJ3V8v/3+LGRk4AKA0H8GWCFqq7UDVa+Xr
-	ECXULpzVhC0C2kkgFCdhohL92vBVyx0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f031x4F+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786026888;
-	b=7i8dcn3TJnf6hE8e220/Ua7S8YH580XOwGTkGnQ8Vp4hL8H45br7BH418IXvLJr4G4EpyM
-	W5ojS+kZtgQTcKbeSxMyyEeevxEM/3fuyVp6rUcbkZv1D6sNhWHzeGjfd4lUZVkdlYd4nU
-	ElaCHP5Fjq087mL3MGVChiNgey/j3AA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D34C060A9D;
-	Thu,  6 Aug 2026 14:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3371E1F000E9;
-	Thu,  6 Aug 2026 14:34:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786026887;
-	bh=/s88DIFVEBP2T/uZKq+3U5KPJDCNDQTM2bhogMbtZ1Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f031x4F+s0KFN5tShrCm3AxXtnTVWfzYoRM3Yo0GEu7luofuotWTcMDKSZFigWelR
-	 dq9VyOjfPvxZeyx2B9UuHNyfEsHIhOcxFpGa3CiTQvSjc7k7/LymF+hIBAGCWyZ9ex
-	 tEyHnklSzH/ZovMF3wN4p+C7HntVKx/n1gscXtlZUvieb7KjXFXrY9u1YdNiNDAMZH
-	 tNx8lloJueRo3K9czmBoR+Yoa30H51g51gKSr8P+DWBf9Ptfj9qSc84sZot4nganO0
-	 z14VUcL2SOyVi9Ry+g0qLQIEeAGPyAPeR00lSI1bqJ+j5SbFediA4U8yrgUa+qnPYt
-	 fYeFuqJQQpF9A==
-Date: Thu, 6 Aug 2026 15:34:30 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
-	00moses.alexander00@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting
- large folios
-Message-ID: <anSar_i8UjniSbML@lucifer>
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
- <anQyoZgi5Urnvvjw@lucifer>
- <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
+	bh=rk175A1VzOhYd+ZvXWeOt/44h2PSKZpjHj/8UOjVH1E=;
+	b=f3iwqcXMFurrEEZ3TB1SX7TeWhIyzOLmkmuDDfOc5xKElLr9UAl+NgRXtLNzn42M3D2O4L
+	2/pAoH9rlcFNJZibN/0MiQEu1QedLY77hUwX+3nwXxOM9oDaqkWB847kx6YoC5lJbYx+ld
+	TG0Zv1Cz9GfqjkBvJlIUSKl5z18BkXs=
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-80dc4a68e4aso26120767b3.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 07:42:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786027331; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LfGMSuGF+Me/LD1QdeVQ5bIgJXAp9GMT1Mr1U8NCkwAQDtVugoVrRCJLerLXF3/Ri1
+         yIXklPH6pY7dYYQl0RfTeAUF6NPaFwhAI1PBEzEolu8b0KjcwvEX2ndJUP/TrhOE8tja
+         rgvrjaiNe90qMh3WVyQVMNGKAAmKDvYkQydQYI3idEQWE3ncN3F/U2C3gI4CfER1NEqY
+         ttutHppcENrqFPjoPjbXJKsJ6C4gibj+bfx93ThqUVvQdl9wtlroJyyKKOAzYmTDtKMy
+         iTj+HnrJ5lACvI5I2+ue9a8zgQnD0Opq370uDpSt0nKYlGfGzVIkBPcDt3kz1jSihcOd
+         PaXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rk175A1VzOhYd+ZvXWeOt/44h2PSKZpjHj/8UOjVH1E=;
+        fh=OqhKqTav+PlW9YvVCYvbyqcUsmLdjJhtAUw7RGpfLlE=;
+        b=MX3fe/+4Ja0ORqo0Y3iTnuhZBS/P76UeUnPHxa+vKM6NOrhnGFu8ju1U9Y4qIeUAYe
+         tVtmUsr8h9sLsGNlHbEA/mIaxfQz1yLoEqJY9S0+evRgBQXJcxJ0yiWXmm8JVQsQxOow
+         lBFbxdP1NyLS7UeLHJtyVzi3/7T/p5meQQa8ir6pApteGwcTuk864YKhp5sHjYxfgySG
+         69bw1rZqTArqdrSuvMc7ED3N0GBbmRZItpt+v0J86WDn70g3m0KpeZiRCuUI4jnWr12S
+         OXlJnKUbTO/A6KXiQgIfu15l0oUZnZUrMUYtAevwuiYuW3Ma1jCKCOZJf456EXi7VHAQ
+         9qDA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786027331; x=1786632131; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rk175A1VzOhYd+ZvXWeOt/44h2PSKZpjHj/8UOjVH1E=;
+        b=n+M27qnJ2d+tjbed77aJIOXW4Pj0BplnSQEQucxwkv0DYVJ/+RgnljbY25dmNftPY/
+         qcPzQIjxcgcCeveRSGgrRnelW9xMNRbSDUD0SLFnQe0Z5N/xQsFWHVwymB7huxyUuxxA
+         b4UwM24W8KRz/bHJippVmcRmOFCWWrOp2vD4PTKd0Xz7G+77c5dq8nC0AzxfjuFTNOlb
+         +ueeiXQmu9esoFAi9AFXioQV2Z/AF4ck+h40kQepmDhIKSwqXec+sd2hoGJ8Lx7JIPsa
+         QQZriAUie4kCRoJmNRhH0jWzfZFibV0H/eyvxWnFcVX12q0VY21McqYxKPwAbm8QJOQR
+         a6qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786027331; x=1786632131;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rk175A1VzOhYd+ZvXWeOt/44h2PSKZpjHj/8UOjVH1E=;
+        b=O+43WgcxpeDPeZ8naD8Q3cO3Dwuk5huElqi/IWSr3UV5SecmnJwZAsaljkbC+kUvoS
+         EfOzt3YHweWAWq7Jxzf2pL4C8R1xKodx6cernV+rc22tP76CtyFc8b8Uqavrg96GPDo5
+         xmiMfWRIX5MXywFmyNl61Hjw24UY8XVH+mj80xU+ifvmzhgQhIEHiD6bFZhCniDZHPhW
+         4grHXsOetE+v1jqEtSEvVkcVtjBUr8wKOsSK9/WEQwSov6QtZk/ZpHyLlJ0lhWj/gSZj
+         FqTKABE9ACoR8Vhi9vGDsNj2BGFXYv/cEOG+cMvM5GDbsYH3D89gFG+82lWCh04iVM7h
+         ctOA==
+X-Forwarded-Encrypted: i=1; AHgh+RpVcisKA+QK1eISGOoAV29wGYvYxnyb3Jw3znBQMfHbWWoN0bHdeyEshQKSc0vmqyf3d8F3jlWjog==@kvack.org
+X-Gm-Message-State: AOJu0Yxm1nGdmfvMjJw7Dd5hCTV26wNBJGlBBOekv5fNIRZSMm8xG/tN
+	Pss8TTeDcdkDI5LGiCxCIcgMoKUKVH3mljO3MhMG3bVKMBYjcaxIR7IvKtdMKQ1q9RzW8gw4bST
+	u2QCzWu4Onx20rP0SEFQ1gCSgOyFT/Pc=
+X-Gm-Gg: AR+sD105xP1ppcWKo7Lgrj38x4v261gMQLeiqkyiT9OB9uUdMOQlH4Kh2u8eQcwOm9G
+	kgisOuaWvKxFMdxbYlXvt7y0o/X5kFigFbZGqVmsS54RiNGcGkgPwCfQVcA0nfbdszpDgoE8RuF
+	CL/d0lj4+SFyCMD7Eh1H7qe5raeO1oLXeoAfqcIsdE0XoSgb6wlYIxIEEb6srtMpzskt+Bcvd4c
+	VPnW0docm4BDEd81CMsFwvZLzUfA6brfzBSR5YX1Z6Jw2o96K6rpCC5XnVCJgwYr5ooA4lsM4OY
+	iHfrwhdimzQBKK5PRr/I6vXtK5pB+OdNDbLtbx3X2A==
+X-Received: by 2002:a05:690c:3:b0:7ff:1a06:472 with SMTP id
+ 00721157ae682-8201f0c14camr93301377b3.4.1786027330666; Thu, 06 Aug 2026
+ 07:42:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 683D8140003
-X-Stat-Signature: dyam64dozhq3us8fhza814m8rfiwxsms
+References: <20260804144803.3290255-1-ekffu200098@gmail.com>
+In-Reply-To: <20260804144803.3290255-1-ekffu200098@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Thu, 6 Aug 2026 23:41:59 +0900
+X-Gm-Features: AUfX_mwkW6Yar02BfLMwTDwkxooPEuR25S_dmVd-PAuIgqBnNQ7B0lAuRmiubXI
+Message-ID: <CABFDxMEdqBHRNXyHvT60tcqLhCeq_cRCgvpdVOwGTH0_SvVadg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] mm/mm_init: simplify zone_spanned_pages_in_node()
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AA602A0012
+X-Stat-Signature: 4geu3r6fxe4r4rtwqixm3yrwcjzfba5s
 X-Rspam-User: 
-X-HE-Tag: 1786026888-12683
-X-HE-Meta: U2FsdGVkX1+S0psKa7XVdXye86oniiEEweTrFcQMVTCpi5xnojeIcH9xfDHhMB+1FrMkgmUyK0quzMTlF1KxEXQSy1fgh/GWrzQGqYEd8pIEVfuM3wuY7PMh7el+57koE+AQdAA2QJUCDG+SNExKAdf3VqdwavVeodjdizPbZKnYBdJQUSPdZHP+vXbXUnZufH7kSBzB8Eu47AZbTRijKKZCjbCs7UkLpNSE+l2kq31btJWXi7doo1MsiK1bfTEIdGyV06gOXlArkWsBLJeQpIxwpUZZDh/bIxt/lcjFH2KeOUpOfib8mLIoifI6vMTh9WV+X+zNg4eayx9RSAd1cRFKq9KHrTkvIB1KTGz5CFsYh3k3lvvOYwO9VKDYraXeFRiaTIoMy5SVudnzOOGS9y0JA84AskkmfJE50YOtRjGHybZJwEjW4FM2zL5Yzhi03iJe4ACltX6xrAk4BELl9DjGCj9NoJdz+HcX9Vt/ZSaDeB+GYjwWw/5XWy4NI3A9+epwmskXStVZQ/FjIN8857sTlTG+u0qZoVNQGAg+oXL1xF3bAg+D138OZn78p/W70ZBOSuyFCqoHU3Y+20gbkb2OAnObCUdb2ScTmhJ8z/DxYFjLTe/UV60zjuA8WneUsMyR1txU+PpTAgWy9dVzDoBJrdb0dyzGhElf5c2WnOfgv3PSDkrUzy5OIcNJgRNplHGQq0M4/ex5vJ0FEDrIBeMLdIzVRiIuQ4rMYo6GkgW5vRMAYqstGQRICwTSg0a98EOPZzWoKLz5eswmW7PtUnCXX4SyWKDeKYD4CNcZzjZLqaaCwhdfFcwezluNiXIVzISGngN52fLK6moNIyT18tf8bazUfW6F/cTmDzu/g9tpwxCv0s0mmLlNaxCpZq/EeVBIWr8Xe6yn29T2LSKqRON9kIPGCT1zhtFARyCH9y64xw6facc2w7qq1dT034teDZoJqXoGtmaY5dGjTVl
- LRSspbwU
- Xtwf8zLDkHRibNv06NzGO+v19UGwC9fy93P1iaztH+rD3e6DsfCxC8vztoik66B3SCSDPiSjeh3rRy/QUYaOcL3C7p3tSfsByVOG3KhtwMgIsfqJdrdUlzZkGOAm8c3SCiU504EaOlycgcdepH6bncZjYk04GEacNB33Fr0wIVPoq8Ir8Ee11OWND4wXsOeJz7WMP39kIjxyaqAD7pL5Lai8U4XxnGHiAQ5iAAY6QAObDoYyEk8t1ked6khYg1yP1G5jOtjXhybduODXSqMH7rv0nW4LrrL5cdyuCK2hgVfWedSGgcJmMXhJZbTMWtD0jaLWc5bI9KkQJoJU=
+X-HE-Tag: 1786027331-835875
+X-HE-Meta: U2FsdGVkX1+ir2konxlhj90ljIlfhUC0+8pP8ubNll84xXiRtwa6D+M8UtfUjmz9f0Q+zOwQ3ydpxgG9UbfEsYbXfL4g81iqyBcujBPsFaDuAB7MM6zB1wHB7KVnt5+WACHqD6X6D2AKV8hjEwKidFhaiD0DLARWPvistT6Y5O8z1Vly56XMg5UlQHBVktoROF4WahRCVdEulSF/dzJdTd9b19vFAz3cu89Mf0rfh79k8UcmAHTt1b91BuJbBqbKHU5wgN1jRPAdkRXN/rpZpVJFagHvROtK8w5x3ybgUpm02EgC5usHxlfmQxrqgah/9wDRcJdcieSQRaKGklGSNnrNTrdCmKFMTkdz+z+BHsB2WxUDCq5P6r0smVA3EPoq40W62zWuuQf7LMEMwfWqf8S69SONmbTHUzbgO73kEpZ+VlfvfUKONFmBzvkO5BkuYJKcDAgdzChPPzyCjpYIwEtK+mcPgALfy+c6CHuRkR/4WvqDL5CCRral8Tw4ghO0xAb1bWdCwhaLgNs69w0YC0fppug6VD9/Q0CswU7B/EZ2iP/hLDhu9ASCKA46U7Fb9ES3prfQ0crD0RyGf3P/8OxnOypLw/em+7VT2CnMcl1Px+nyPCP02xg16yJOwcsQ9ecWFktySTwW7g6zC9NWwOqbUHLk24DVxatn1F988OGe0CyOj6JfZG4LWR3EUIMIMb6QyjsxGFQONl8/lMBPeIJwHnj1Mnkw+WPMF0D2bwuphdgzFft6R6ujOM28mIioEuscLzUXhoW3X1t0+wGVmt7xEJyNcMKN2TMmonCgd7Wi2dXiN4EzZmMMXJFyFsGQJUFQY9ULzvO/Adp1m8uNjycjT9MUAq77g6zqawnS9J9Y9p4sMgHOhBdoeIyazXxGA+0ENAzRVeJnjVJSGSKblUAiBspn5ScZzMkUzP8ARi6eJ6p3c9LjyVD3gYlQO0J+9qDibj8vj8lJRYHoYCf
+ pn0qFlWv
+ LkPihUuIvu9CA2iYXnNST6Y5XP/ZtfSmmF8hHObBiEjayHAmMtF5yo8twQmsYH78yniYBNCzqQXYNeXiVg49DfOUjff+B2JAdn3rkUISjFXScbrq9lxeSUqXKFkMwwHOh9xmjmOqRP87SJepNWoEeh5nFQDRw76mdaa2FGzfpkyFQ+ia1RVUK+mnglBvAgW5ptNz/tWe6dsAzFa0x8MDFr+B0wCB+5eG8oHRQJdHpUtpYhj/3DiGaFhoUrFSpjJyyfCWqFbvmEwdKx03sJXLIVEzfXoMkxvYempZiCf8gMq6WHqu+8LUExVPb74n5yDSDVAUKDT8hobe2rl1w+EOuk1IwCmZnm/mDial+CbK2aSPw2ZjMrgYGg4SKUXiASk2pxIUShHNuzLVJD7CFmH4EF8PJBwn44g06MphD/tMlGtTLlEQDqJx5jAlPao8UEZ/x9x88HbxqKp+cy41WvYrH/DESfXqcJYukmLi7vYfyY1UJUGmwk9vwomLXpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,60 +138,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 01:35:30PM +0200, David Hildenbrand (Arm) wrote:
-> >
-> > Let's at least split out the folio check into a helper to make things
-> > clearer:
-> >
-> > static bool poison_splits_folio(const struct folio *folio)
-> > {
-> > 	/* Hugetlb is, as always, a world unto itself. */
-> > 	if (folio_test_hugetlb(folio))
-> > 		return false;
-> > 	/* Soft-offline errors out, hwpoison traverse DAX intact. */
-> > 	if (folio_is_zone_device(folio))
-> > 		return false;
-> > 	return true;
-> > }
-> >
-> > Then for your patch:
-> >
-> > -		size = PAGE_SIZE;
-> > -		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
-> > -			size = folio_size(folio);
-> > +		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
-> >
-> > I tried writing something that was neater and nicer but AI kept pointing
-> > out how it was totally broken and I really really hate this code (not your
-> > fault :).
+On Tue, Aug 4, 2026 at 11:48=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gmail.c=
+om> wrote:
 >
-> No, I don't think any such special casing on folios is the right way to handle it.
+> Hello,
+>
+> This series simplifies zone_spanned_pages_in_node(), which adjusts
+> *zone_start_pfn and *zone_end_pfn before and after calling
+> adjust_zone_range_for_zone_movable(). The helper adjusts the same two
+> values, which makes the code harder to follow.
+>
+> Split into four patches for easier review. Squashing them into one
+> patch when applying is also fine.
+>
+> Patch 1 folds adjust_zone_range_for_zone_movable() into the caller.
+>
+> Patch 2 removes the clamping to node_end_pfn, which has no effect.
+>
+> Patch 3 moves the check and the clamping to node_start_pfn into the
+> ZONE_MOVABLE branch, which is the only place they have an effect.
+>
+> Patch 4 extracts a local variable and reduces the indentation level.
+>
+> No functional change.
+>
+> Sang-Heon Jeon (4):
+>   mm/mm_init: fold adjust_zone_range_for_zone_movable() into its sole
+>     caller
+>   mm/mm_init: remove redundant clamping in zone_spanned_pages_in_node()
+>   mm/mm_init: move the range check and clamping inside ZONE_MOVABLE
+>     branch
+>   mm/mm_init: clean up zone_spanned_pages_in_node()
 
-I mean the issue here is the stride varies depending on whether the thing is
-hugetlb or not (and some weird DAX thing), and the poisoning causes a split
-otherwise so if you want to poison a range you have to account for that.
+A series changing the kernelcore=3Dmirror behavior [1] has already been
+merged into memblock/for-next. I'll rebase and send v2.
 
-But I agree there's something wrong here.
+[1] https://lore.kernel.org/all/20260630072212.624305-1-rppt@kernel.org/
 
-At first I thought 'handle at a folio granularity and assume folio slide' but
-stupidly this code allows you to poison partial large folio ranges (I don't
-think it should and given it's debug/testing crap I think it's fine to change
-that).
-
-But then maybe the answer is to change the interface in general? But at the same
-time poisoning happens at a pfn level...
-
-It's kinda weird to allow such an open-ended debug thing. I'd prefer we just
-disallowed hugetlb, or did a split right away if THP or something.
-
-Anyway hwpoison is a swamp of neglect and hackery regardless.
-
+>  mm/mm_init.c | 81 ++++++++++++++++++++++++----------------------------
+>  1 file changed, 37 insertions(+), 44 deletions(-)
 >
 > --
-> Cheers,
+> 2.43.0
 >
-> David
-
---
-Cheers, Lorenzo
 
