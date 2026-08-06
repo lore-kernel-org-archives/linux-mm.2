@@ -4,86 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA29C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4328EC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C864F6B007B; Thu,  6 Aug 2026 08:30:48 -0400 (EDT)
+	id 1B9DC6B007B; Thu,  6 Aug 2026 08:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C371C6B0088; Thu,  6 Aug 2026 08:30:48 -0400 (EDT)
+	id 16AED6B0088; Thu,  6 Aug 2026 08:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4C896B008A; Thu,  6 Aug 2026 08:30:48 -0400 (EDT)
+	id 0593B6B008A; Thu,  6 Aug 2026 08:54:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD676B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:30:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02F0DC0721
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:30:47 +0000 (UTC)
-X-FDA: 85070778576.28.66985F6
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4ACD3140011
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:30:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of huangshaobo3@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=huangshaobo3@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CDA246B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:54:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3546280738
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:54:13 +0000 (UTC)
+X-FDA: 85070837586.18.D04A275
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1BD61C0002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:54:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="M tkxXCF";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fJVA/Ocw";
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786020851;
+	b=iQgt4rxm7gsTCQCIN3hHKaQpiPI0MlDhCIdRMLeiLxZ2ne614FP+zC91ZYtXSPf3T7Tu7z
+	U9OUfYE0OdM2UTc7CFJdnyL6gxkaR3iZ888+wHaiKpVEyuCQeXeEXbQ5byyjYhVbijzVAs
+	2oRLGkDdpkxdWD7zvsfMydwvYt+l0Jc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="M tkxXCF";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fJVA/Ocw";
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786019446;
+	s=arc-20220608; t=1786020851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=Ouj9J9heuX03a/2HCyH8k2x/1kpO3Y0t07CcrIte77s=;
-	b=UIfy+J6FELdcAEJbre5DNQ+CrKXyMI4+HO1w5crTPxACCpDAfGi/qVlfmeQ9QW6914xi89
-	oWPY+kk439q3cO3Lb/5UY79Nm4vlAImjPmCluG/UElDiVpvqY4RX1jpi3KuhB0qtoqIfz9
-	xrY1VafHWmVQ7zYMopS/tn4+ybPaqus=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786019446;
-	b=Ko6HZreydw8R0Jy2jqVtdZXOAa0oOgRDX0LTLc4tKKxbKDuB1i7UZtg85ic5rOXjLrxesf
-	nY6MpwR82f0bAiAYddoa+calbuilf5humyT1Qbcwae/tN33ONm1S5q8Xrwcv6o5RXjmFX5
-	2sBydiRHd1ngDf9ntNVV9IZ2X8KUhFI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of huangshaobo3@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=huangshaobo3@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-X-CSE-ConnectionGUID: 0qp+6OErTomAYQ1cdvuP2g==
-X-CSE-MsgGUID: UDbl5xJOSaSwGJUIb8TeLw==
-X-IronPort-AV: E=Sophos;i="6.25,208,1779120000"; 
-   d="scan'208";a="184784700"
-From: sparkhuang <huangshaobo3@xiaomi.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>
-CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R .
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, sparkhuang
-	<huangshaobo3@xiaomi.com>, <stable@vger.kernel.org>
-Subject: [PATCH] fork: reset pointer tag of vmapped thread stack before vfree
-Date: Thu, 6 Aug 2026 20:30:20 +0800
-Message-ID: <20260806123020.90869-1-huangshaobo3@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk8QJqHyFI=;
+	b=CYB57ZTIz6IVUGK+McvMhLwapsrtN829Q/GLQi2pIbBJS8vlkea2cAcHz0wYxzWCHRCx3b
+	Cu1xV4QJEN6YzExfxhZUEITPgFhapc5FA5mDKyFtjTA5H0pl1lYTkust1ynBqC6H4Lb+uK
+	Dni1hvX+P+QKi6KXPhndTa5qMP8uTY0=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 1836C1300171;
+	Thu,  6 Aug 2026 08:54:09 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 06 Aug 2026 08:54:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1786020848; x=
+	1786028048; bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk8QJqHyFI=; b=M
+	tkxXCF51yBq/Scm0WSZtqD0Yi0ZL+ejGgyLAl2g4xwwu1SWQqNEnXbCjUYqvgrLe
+	UG3TEry23ZU2puMb9M768HFFpGSKMvYMSZYSP/RiriT8PCMHiR/RmYUpdHQMNs9w
+	gNmT/Pk6+cnRZNoAFMf0/DvlvQHiq93BsXn+F5Aduo+EingsDnO4CX756KMWQRqh
+	j94CMBBxlBxH9hONmNZKnG24rlqQZ3hUlAuIOB2RrvWy1l95pUdm7cT0byRJxMeu
+	yOwk36v2DONDsjHt07xhlresoIx7ugCRQ4GK30aoSySoufh42yR2ntS8MEY0Gph8
+	eNY/6dKucLwMRRGGzB1eA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786020848; x=1786028048; bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk
+	8QJqHyFI=; b=fJVA/Ocw0kwI++6qyU3lVJ8XXRZXjjo8OsuhBXopVBL5Gi0SDFF
+	SY3sCVzExoBY4TDm63vfRLoP0oHecLFFwCcL5OM1/ek7gcOcGyHe2ImSSvgP5wth
+	+qZ3bUBoo/yCwgSkDAXEpd+POD68u/+sDzGhYy7Wtka1f9reOQDIJSRDYoDwgiMN
+	RoeY0hdiog6Uo/pBR7JGMblsNCtCbBlRT1z7GF7tdCvUMXZMM+kKPTYqOz1NAbCQ
+	R50t7/uE9mMlyfpH6ES6y7Z9IMn+bFGsRkXz586AwunrhOPthAu80rQeptJ0Zbxc
+	hnSEmVUxGF9sSWXcmoyOHoxOHQID5mL+nqg==
+X-ME-Sender: <xms:74N0asWn0q3v_15_9EDX8klo3SmwQoxQzs5G0RrCbc4m3N_qDsqFQw>
+    <xme:74N0asS6C1peaLikjP9aCAzr0Liji4CBpjx-PGQeVk_ZI_nsNzllqhjp4nkh4hOLx
+    9mVnO-uZ16N1yzrgdsT8npKEky5ySgeI4injMzRwgjIpFfXBXtyE8Mj>
+X-ME-Received: <xmr:74N0akA7tr-IyAyNEeNGEKwMs1sK9lDgMB9hyWiYnva30lyctbUzjKD3OPo>
+X-ME-Proxy-Cause: dmFkZTEWPsOtcs8rlbyu+haLTgD87qxVOKeHxO2koB2E72cB+copeN+dnWel8hzi5LJSYt
+    C3RYPbMgI3aChVp3MM27BqYAIvooqSQOwfHVTPpCS4SyhZhJNP63H7BJscxaGDWECUYhq7
+    Xh5lsxxCL1LweJdqz19k2Khgm5RIYqRjAgaoxBIpGgZXYFLu/fqoL/NIX4IiYqK0UMN2v3
+    cuSdIMrx1T3qFnXvpzGz9lMGSEvJVAcogfvPt7CYNGB0UYojKDsvJqyJRNgqSCtyOivHD6
+    3Er8znEcn5ixqi7kI8W2bGtsUcz0aUbV9DVi6+mfHaO+PAuE/RbAazV79zXw0Tg31VHfbE
+    6ORPkT+j/gU1RSWG30fwJ1akU3di8sPQs8/U2s7JlWeVPJGaU85z/iv04sxDEG70ciT/s8
+    ysF/YDwaU10k3d3d3YIftsAHkbd8jzbrAa9qNdh5q+e2GXUA1Pb09p5dCvuVJx4fx/57Td
+    SZbMrlu4+2/hHAoPJhuKWkUdeQbIpT7EBe+VtDYg6HTV0I85uaJItvxlo1WglK0CxynGg5
+    hm9TZFMSo4NP5hbIGcIy4gVKtNAjm0w5iVvQaxMMQVsAPBAEg4Gb/i1cWB2Ssbupv7PmFL
+    y/Vr8XeHRXDKLSXJVNuJhLax88OCAYeD0oR6tR9utRhZd5bBo2moBUQRJ/bQ
+X-ME-Proxy: <xmx:74N0armI1GVqgQnbgHL0r2X44Fo7aqVvBCAeIDkyQqOex_bSCtVmcw>
+    <xmx:74N0akmyBrIxe-RKsor6sxTZsoyIBpEFptPGPMgsi6g2d79_8ACCBg>
+    <xmx:74N0aocggu8UGrLiUGdlRP0DPeOT8rBuRj-1tVrBaqoTvyNAqsatgg>
+    <xmx:74N0aqy6pa0hoSWV3cQltZSQ4d9YXGzrbr39k116RLiOe0HA9MFlVQ>
+    <xmx:8IN0aspOlZEYh7XxZ0YV7kjew5Q-2YKIm7zR58rwXBROndLgXvFlCFSF>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Aug 2026 08:54:06 -0400 (EDT)
+Date: Thu, 6 Aug 2026 13:54:05 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Nico Pache <nico.pache@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 16/16] selftests/mm: skip khugepaged shmem cases without
+ a PMD page cache folio
+Message-ID: <anSClqrkH2y3pxpm@thinkstation>
+References: <20260802195254.1937477-1-kirill@shutemov.name>
+ <20260802195254.1937477-17-kirill@shutemov.name>
+ <DKETQDCO9OYH.2FDBR4ZXGHLM@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.237.8.165]
-X-ClientProxiedBy: bj-mbx09.mioffice.cn (10.237.8.129) To BJ-MBX01.mioffice.cn
- (10.237.8.121)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKETQDCO9OYH.2FDBR4ZXGHLM@nvidia.com>
+X-Rspamd-Queue-Id: 1BD61C0002
+X-Stat-Signature: fu1hxipemcej9814fdia8wzu9ucttmhi
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4ACD3140011
-X-Stat-Signature: yaxz7ni75pzzafdmahmwjdygzsdd4q4k
-X-HE-Tag: 1786019444-129004
-X-HE-Meta: U2FsdGVkX199l6zbHBuFzk3zp7AiPUYDxYf4lA8/mgIO9epNZSGhKCUbwxAS1GFJTA2QFLhpN9Mf21m3eag+ctCISCPWGXyQqYM1+h7HK9MDdQN5fJ4ifmgElgW+MddUJe3rJDBTs0InBXm5burZfYe3Qk3ZygV+Lllhqk0hHzf8CghUjmoFa5BI3HW8v5ify2K4BFrs5b3oOkyTHkIqqcGqRYxJqsz6D4en2MpiOSAlkYw6/5iOYtmpTaWLofa+7+em2xEBIWkZeNBB30PtDpZIVBvpe8TBp78eTf2ZRJe3Rs6bn0nYuST+T7aa0oIEo3pRengLn22AMNR5perV0V66iJwye3n5/1YsT9A494P9sudV81QjaMVPaVIEsWGZ0E/XILQwYgz0TnxSu1PzKNcsD56mab8AAA2vMmVgsgmvf7Da8w/Pl6nm4XqsKS6q1SQJD8kgTXdAhHKHZ6ZMqsEXGzfOG58dNzal275th/9bPeP4viYc3S80AGWlLK2jvZVIXIvil9cGYBZODv4ewzeknvQxaDkDT+4hacv2XFo40H3/ZGo2kpQR5eoJ4WshZcXJF81lhL9sJRavF/F+HXNhloasrRq5zKWA2JUFy6D3tcBk6aiCRacJQoG7jqJjglcjiKxwoZ2s7oULaRHdysn4U6ikK+8v2s+waUGL7GePrUrT4qsnqvzW8tpvhCFsiBlSHYdcyvsMsnpFCdnwXVE7yqsfw/hH/Fhnrh3dEvIUkkOd/d8HJfJVLiPrYvkC7f6RUpyIfIFluuq4IVWe9C0V+tfl3cId/tNYG3wwb5VICI0GTRV/G4B637GVvEznJU9GZkC8eJAnrrEdGpzf6bUsTrO/ADNvf4nQosLrpt0MKTx+1fQN/t4svXM9uMLh5ErqnTGyV3haWfnelTtX7HGJmTcJcSYCwiQP5LKTGIxI8rToJQthqLxnLP3/7ce3lsjfeIE0Kpk4HzP7udu
- 0JRSnRC9
- 13yNymQeoNlxbCw878U30yDl90NlUCjV+AKySPFK6rd3/27D7gGPrPc/w/ljfVCrDhppVXMebdt+Kft3wHXoi52ZCKugAYvzx0GrpL+/fX6SDGJ6JlHomzW2rhvv0I7PneNyNuZ7Zcbo9vvo5a7DflFHhQGNpiCpaMGXt+G1+ESgTJr16q5nMqrus0PE6DrkhfRPGYzHbRMfVzCSKMaQj65rIAebZVYOdWB+GrzhleK9rEECDlgCVAYA13bwH3mzZYMpd2ic38RBoKfA=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786020850-173456
+X-HE-Meta: U2FsdGVkX18C3vZGorh1LXEGINaoQsoHnx5oSCeVvh/oVSv+3hoX7Sc2yGirfWef/iQMSx4yUCDDPlygShrWoNT4oPjGoeGMS25JQCeBo/zPv6CQDT76QHKYzPr53nItPdSDHn50OYIISOZflWuh+fyMpE+3UUCwxhOkO/kkZxX78gGjeTRYNtS1/sQC9KT/NUn5xtM8u+KSmbqux0L69ixuYGvl9ngjt3OEsUkO/za7B7iMlddC620fwB9jMHZoZ9sdoM4Xbuyf0FXhhgwBsqcEKxTzFrGyOWYsPQ2eqKOCL2puze5WbKgfnLKtLxOdJUKMDWkHvDP7mcBNbUghjFatz1pOsAIhbYw+PbwedfOjNcMh9dRrsWZ0yVVND4BWZyOEObHqesecGJridXauaxapOiLNVmzCuIXzi/nt2Wmhp6PLiS1biuckak9GMEnOE9x3QSJJlN21utUtp+X6UVUNmdIuuadTgGXUeHTuCD0vunZm/qxyv4MK86yrvl43j4QLFisBDoWkbDp/yWUfwSheO1sLcjtoawofjNZsmurUBonE5VMZ/7kBmaaZFXKdPraulXz0j2ba4pMGR3xry4KXzEl2OB/vXPYW8RW1Pp3XU6tzcc1qbO1oifIbGIYkwZ0B66onzm5qJsIgVIQszcsJWXqmAI4fChm8lpMoG4Dxkg+3Vw2+P0auXjin182lmkbgPchki+/IY5QABh6JrQQcwraBMPtLDpz1Dc/1eE3Iqq2hNPxbs5lofpZ9zG7cdcYhG9m9LYi3oem6OyJhQ2Vy+aohrOZZXhfr8ivq4TJKenejcMaPCUj+vwc/m4IIMvY2hK/KtkPejsee7QCt2C18bIisxvR/ZC3ApkzOwA2rqrzfbhsErKSJ5XZvDq3xZtr669VxQdsuYj0zEaY0ELhb4U9Ydd/Ak7+Ks8cDBxpniPcgw0z687G3IRqHuzlio/TsAOQfTH794mfZdkD
+ CvG/9NbL
+ Uj8q7v9y81TCrRdi+dTSY9p5sJmWlVFxhv/xZAtALtf3Fv7kamdV41m83HY6YCgd4BLZGiXxp6MIGZIgBA1jxEYNYmFZwhzzi1iSFM5p4RE/wymblg1YcVx8uEe7iRoqAyp6mlM/1vLyY+x4Ohtk9FeEelME5RZ4wkENfUTMun1O5wJz0dvQjtHt/2KEZyNT7xRLQcsKpniGAiEKDywOGumG+qNPM1W0TGkUE2Ntd6JjAbeUM913FcvSRp+dPahcqy4ax0DAh4x4NEaWF2hGn+63UfJLH1BbQ21ZFxIT8ova2zqvaU0To/hxkQKjMJRA5WjTRbJ+eugGI31CzybSVzvk/TQ/Bb7XCBwdWP6L20uO9pmQwRMUE3qyodrhd9demdwwulEJRYXhjfBHtYMyUDmwgPVk+bCxBC2rKU/GY7eI8F7wIVNHGAZt04V5gJIahjiiiZcvA5O+CBJsEQ2l2CsJcAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,107 +138,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a thread stack is freed via RCU callback,
-thread_stack_free_rcu() calls vfree(vm_area->addr).  In RCU callback
-context (e.g. from rcu_nocb_cb_kthread with BH disabled, or from
-RCU_SOFTIRQ), in_interrupt() returns true, so vfree() routes to
-vfree_atomic().
+On Sun, Aug 02, 2026 at 06:50:36PM -0400, Zi Yan wrote:
+> On Sun Aug 2, 2026 at 3:52 PM EDT, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> >
+> > The page cache caps folio order at MAX_PAGECACHE_ORDER, and
+> > xas_split_alloc() puts that cap below the PMD order where a PMD is 512M --
+> > arm64 with 64K base pages, as include/linux/pagemap.h says outright.
+> > shmem_huge_global_enabled() then offers no PMD order at all, so
+> > MADV_COLLAPSE of a shmem range answers -EINVAL and khugepaged passes over
+> > it.
+> 
+> IIRC, after READ_ONLY_THP_FOR_FS is removed, all pagecache folios are
+> split using non uniform split, xas_try_split(), so does shmem (except
+> shmem in swapcache not splittable). In theory, we can get rid of the
+> cap, since xas_try_split() does not split more than one level like
+> one can try to make xas_split_alloc() split more than two level (e.g.,
+> 512MB to 64KB on arm64 with 64KB base page).
 
-vfree_atomic() uses the freed memory as llist storage by calling
-llist_add((struct llist_node *)addr, &p->list), which writes 8 bytes
-to the address being freed.  With KASAN SW_TAGS enabled,
-vm_area->addr carries a random tag assigned during allocation by
-kasan_unpoison_vmalloc().  If the shadow memory covering this region
-has been set to KASAN_TAG_KERNEL (0xFF) — e.g. by
-kasan_unpoison_task_stack() using task->stack, which was already
-reset to 0xFF by kasan_reset_tag() at allocation time — the shadow
-byte (0xFF) no longer matches the pointer tag on vm_area->addr,
-and the write in llist_add triggers a KASAN invalid-access report:
+Not really: xas_try_split() is the non-uniform path only.  A uniform split
+of a pagecache folio still goes through xas_split_alloc(), in
+__folio_split():
 
-  ==================================================================
-  BUG: KASAN: invalid-access in vfree_atomic+0x90/0x150
-  Write of size 8 at addr c2ffffc0a8f70000 by task rcuop/7/75
-  Pointer tag: [c2], memory tag: [ff]
+	if (split_type == SPLIT_TYPE_UNIFORM) {
+		xas_set_order(&xas, folio->index, new_order);
+		xas_split_alloc(&xas, folio, old_order, gfp);
 
-  CPU: 5 UID: 0 PID: 75 Comm: rcuop/7 Tainted: G S      W  OE
-  Hardware name: XiaoMi Xring_o1 UDP PHONE (DT)
-  Call trace:
-   show_stack+0x18/0x28
-   __dump_stack+0x28/0x3c
-   dump_stack_lvl+0xac/0xf0
-   print_address_description+0x7c/0x25c
-   print_report+0x70/0x8c
-   kasan_report+0xdc/0x13c
-   __hwasan_store8_noabort+0xe8/0xf8
-   vfree_atomic+0x90/0x150
-   vfree+0x220/0x298
-   thread_stack_free_rcu+0x3c/0x4c
-   rcu_do_batch+0x308/0xaf0
-   rcu_nocb_cb_kthread+0x33c/0x708
-   kthread+0x364/0x3cc
-   ret_from_fork+0x10/0x20
+and __split_unmapped_folio() keeps the two apart for a reason it states
+itself:
 
-  The buggy address belongs to a 8-page vmalloc region starting at
-  0xc2ffffc0a8f70000 allocated at copy_process+0x1ac/0x12e4
+	 * uniform split has xas_split_alloc() called before
+	 * irq is disabled to allocate enough memory, whereas
+	 * non-uniform split can handle ENOMEM.
 
-  Memory state around the buggy address:
-   ffffffc0a8f6ff00: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-  >ffffffc0a8f70000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                      ^
-   ffffffc0a8f70100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
+So MAX_PAGECACHE_ORDER is still the limit.
 
-The tag on tsk->stack was already reset to KASAN_TAG_KERNEL (0xFF) by
-commit c08e6a1206e6 ("kasan, fork: reset pointer tags of vmapped
-stacks"), but vm_area->addr still carries the original random tag.
-This is the same class of bug that was fixed for shadow call stacks
-in scs_free() by commit 528a4ab45300 ("scs: Release kasan vmalloc
-poison in scs_free process").
+I do not think non-uniform split can simply take over everywhere either.
+There are going to be cases when a folio has to be fully dissolved to
+order-0.
 
-Fix it by resetting the pointer tag before calling vfree(), so that
-vfree_atomic()'s llist_add write uses KASAN_TAG_KERNEL (0xFF), which
-makes KASAN bypass tag checks for that write in all modes (SW_TAGS,
-HW_TAGS, and Generic).
-
-kasan_unpoison_vmalloc() is not needed alongside kasan_reset_tag():
-in HW_TAGS, __kasan_unpoison_vmalloc() is a no-op without
-KASAN_VMALLOC_VM_ALLOC (only KASAN_VMALLOC_PROT_NORMAL is passed);
-in SW_TAGS and Generic, the 0xFF-tagged pointer already bypasses
-shadow checks, so the shadow state is irrelevant.
-
-Fixes: 0f110a9b956c ("kernel/fork: use vfree_atomic() to free thread stack")
-Cc: stable@vger.kernel.org
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
----
- kernel/fork.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f0e2e131a..2fd6fd25c 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -280,7 +280,19 @@ static void thread_stack_free_rcu(struct rcu_head *rh)
- 	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
- 		return;
- 
--	vfree(vm_area->addr);
-+	/*
-+	 * Reset the pointer tag before vfree(): in RCU callback context
-+	 * vfree() routes to vfree_atomic(), which writes to the freed
-+	 * memory as llist storage.  Resetting the tag to KASAN_TAG_KERNEL
-+	 * (0xFF) makes KASAN bypass tag checks for that write in all modes
-+	 * (HW_TAGS, SW_TAGS, Generic), avoiding a false tag-mismatch report.
-+	 *
-+	 * kasan_unpoison_vmalloc() is not needed here: in HW_TAGS it is a
-+	 * no-op without KASAN_VMALLOC_VM_ALLOC, and in SW_TAGS/Generic the
-+	 * 0xFF pointer already bypasses shadow checks.  This mirrors the
-+	 * intent of the fix in scs_free() (commit 528a4ab45300).
-+	 */
-+	vfree(kasan_reset_tag(vm_area->addr));
- }
- 
- static void thread_stack_delayed_free(struct task_struct *tsk)
 -- 
-2.34.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
