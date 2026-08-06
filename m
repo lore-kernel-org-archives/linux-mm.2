@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 774F7C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:26:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA4AEC55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:29:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51C056B007B; Thu,  6 Aug 2026 02:26:25 -0400 (EDT)
+	id C765E6B008A; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CD596B0088; Thu,  6 Aug 2026 02:26:25 -0400 (EDT)
+	id C26116B0092; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BB406B008A; Thu,  6 Aug 2026 02:26:25 -0400 (EDT)
+	id B3E446B0093; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1505C6B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:26:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0302D80680
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:26:22 +0000 (UTC)
-X-FDA: 85069860246.29.CDA7586
+	by kanga.kvack.org (Postfix) with ESMTP id 93D1D6B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 275B6A1BF2
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:35 +0000 (UTC)
+X-FDA: 85069868310.08.FA53457
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 68DE640008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:26:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FE7aXVZP;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785997581;
-	b=0W3W8uL/YR3+GTwpYbM3rc4vZQZVcemo4r2g/FHPFGvSDvi+lCr+h9+CYF2BY9jQD8VjVu
-	zdm+kfZFPuuJulgVob4oV0mwzmzUhCHyOJq3pYXR5eyEH1cZ4ugLLzOTLnz11jHfwjGNRu
-	Hwv2wzeTJv82OQeoERdlWCeInR/CV4w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FE7aXVZP;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9161340002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0TdJHLp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785997581;
+	s=arc-20220608; t=1785997773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AMdisCQV5YYFAzlzsAkCnp6p2kMaT/VUoOBS5G94/LQ=;
-	b=tl1U9F2Fq3Qtbc2NNKv2orrZNZUkT+7eiPej4OPhF/oPr+1ARXUsHq125Hrvf4DIuUoWN0
-	lOPiUM9jk0Ypsnj/n70TegRZe6NRDNVd+eUwU5JwVHRJqm2GFU/bmaEZ+wV+jhLKYiMS0F
-	RWdmVrtYktVM/qDz4wlPKp2c59s1FiQ=
+	bh=uTUsBX7WtmPH4wCrVl7CPUs1HMuRqiZHQH/yykCv0ts=;
+	b=uWJPEadp8b4w3dcKzJx+UXTHoBoOEAOwfAZ1YviKBLCBLYUv8mVp0YyHH3712ZvO6MlIlf
+	50MT0EAeNUlwGl7cZ084msE0cI1sSzyXj2cpdeIpNYrR4iGfJgIQHOHc7U4jwMvsMcp3c3
+	5W+F5OmPZrbU37OOw8RxrHIKLQ2z9aQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0TdJHLp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785997773;
+	b=xOBe+gZ6tP/nwfjtmUbbLQ7SVSxWUgPfbR+3u6pluw+E86xEGcV2XxI+qf4OjB+6jCG08R
+	KtxCGFFpWSbLvj2G+Drlka5izSyCqOQIKQzTze4kQhEEKHfZKIk6wdGm2652p92LxvtEqR
+	/NmONW2iQffk/i61jF/PpdoDlqjYiKE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D2CD60A80;
-	Thu,  6 Aug 2026 06:26:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8611F000E9;
-	Thu,  6 Aug 2026 06:26:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0F51060A8C;
+	Thu,  6 Aug 2026 06:29:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B571F000E9;
+	Thu,  6 Aug 2026 06:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785997580;
-	bh=AMdisCQV5YYFAzlzsAkCnp6p2kMaT/VUoOBS5G94/LQ=;
+	s=k20260515; t=1785997772;
+	bh=uTUsBX7WtmPH4wCrVl7CPUs1HMuRqiZHQH/yykCv0ts=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FE7aXVZPB4G6U2Y7JkMeL/mN8FH3Ijh6cd+5ABNFV+BP4TG9TufITG1o+qAi95lDk
-	 +R/pgFriNK1dXJPiiKeuroehJ9XyigZkAPI+xdkHrN6+c237fuC8AdWTLa11vf6jCE
-	 hmgiVy82x2T+eyWuYT4i9FH3GuLa1HUKEnzVZjcFkgYZ5bwMRHegjfzKlnhZMkphPR
-	 QVFQ5e8WAmOZLsyk99bN6VhBE/fpGZrILyI0cfjyvDpQa34F0MnIoPHknQ5zafp24R
-	 htqvGNIjOIMvnDqrpAgucDCpZlo6DMz8JLWjx+W8RbG4Po8ycFoHzAh95sef0qZiyc
-	 rJ12229o+LrWw==
-Date: Thu, 6 Aug 2026 07:25:57 +0100
+	b=i0TdJHLpfRIyVrazRatHbTvOQTLs2FrDrmZdevwhXrlB70kdbMutIMO4Q5tF3VWRj
+	 mveH6kM7aX//q/uH/xGjp4JakUszPnnIo/x9yqTOXr4nLFyAZTr2QIrdbp8PPrAaS7
+	 FSt0pfJJn6Gua8r5CHpaoeK9bVAmFVgjs//34NwJp02r1rt3DpHVAxhT7QL3BQMiP6
+	 Alzo7gSekvASdiGktAbF2Ryg9I10oCS8N5oOjFYE2H1tMM1bNXE7yxXNRLDDRcaPuB
+	 PTO9jX9BPQgavUJl98HIXkYtvOfOI00bMn5RvpJsvVqqa4mg6LLo+fzBxhW6cYrL65
+	 dls2OcjdeF3tQ==
+Date: Thu, 6 Aug 2026 07:29:15 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>, christian.koenig@amd.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, 
-	"Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Christian Brauner <brauner@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	David Hildenbrand <david@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, David Carlier <devnexen@gmail.com>, 
-	Josh Law <objecting@objecting.org>, linux-mm <linux-mm@kvack.org>
-Subject: Re: [PATCH v20 0/6] Hierarchical Percpu Counters for RSS
-Message-ID: <anQoW3dG-97i9lUc@lucifer>
-References: <20260707131544.75906-1-mathieu.desnoyers@efficios.com>
- <0d454717-be7c-47c3-bd5e-2ad304c3423e@efficios.com>
- <10ca9ff9-428f-49c0-92af-698fd5bea3a3@efficios.com>
- <20260805115738.5d74e7f41c6f02cc5fd4791e@linux-foundation.org>
- <0393072a-3950-461b-929e-154001ea4595@efficios.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
+ policy check
+Message-ID: <anQpWs6fapNVZSdt@lucifer>
+References: <20260805055544.1568534-1-clg@redhat.com>
+ <anL-NZkNMSSxN0YN@lucifer>
+ <anPm6vGNeDxLFIkJ@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0393072a-3950-461b-929e-154001ea4595@efficios.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 68DE640008
-X-Stat-Signature: 66yr4o865yoyyg6nty4u78456xp8efac
+In-Reply-To: <anPm6vGNeDxLFIkJ@casper.infradead.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9161340002
+X-Stat-Signature: r7b77wcushhzyx6ktjfihqj6penh1wo9
 X-Rspam-User: 
-X-HE-Tag: 1785997581-395987
-X-HE-Meta: U2FsdGVkX19q4VUikVHmtpor6AiiGDV2Qz2n4tUEWyAAlzCRpEfZS1tzP/Fdare5MA6bMq9twFO9ewARVhvfgV+OS4pIPY2gGPctU1v0IB6ZGsJwsIXsbYluy1QXHO2f6bxIx3WVNnGiQl9B+LLZ7FOtjeMeUe3HFVdFmh6Csqx9CBwb/811SFwm+HskJxyPM6oS8QZgEJNj4g+7SEGDHueld/XPnq4xqVPbLHdqqpsbYvw8eVqC/fz+gqoeRmW0eRFIDtI/0Da0IV4anKA0Mw2mqI8+dtn8syvgD7b4voQtm9rMMPez5HfYxSMauuABNWC7pA8z7IN4IRGd5F3uUvEwv8Q40ZKgZIK5EZFIZpbElI+I6+uSU/NW5VaM9m2JVQqYutaEnLsjsWfjqt0VYguNfH8ytnjTamoo7uA/tcS2CmQo/gRMfIM9o4OfbQEYEUcn7V7y6X6o7Zv2kNDIO++OdI6g6EtdvL/9seNswI3hAJ4/P0IGcjd72aEuYH9sjYqLecSFgvqugtRQ0tQUFpic3m6uryw0iRVuP9H3XiiV6R1uZPf+ylX0uOAkOgAcl+F1snWQsOuenM1egzn6YuroLyg6KqGXDsqKytULNpcQSAQbs6nFaKWhOMU3kBNbnmRbbwn6qZatKOuCyhIlpNMjUI9W3Mf1f5luTyyn7OHBvPSLrLGhpZUF8RnXyLQdxXjUd3dsVhQHKrEqlC2qqYGlvcAWpVqAmIVw5HiWJfThqwsftSM5XYW57ylsejSMkRbiyvYzw8Ue5iBgEwJlv6SXuf9KAKa7is7URngc3YWonD4tLQ2JGaSq3cSS/zTDuDa0czRhuVwhHiwDthikQdqThWcm6m9xY1gWwRXZn3AE1gSQIKj/PkyEaVTjD+gqsQzzvPSkmF0e6fFm3HScDMTnejw3vdGSnG/ISAqgMwoQjk3+ygs6b3HUzLLmGL7akeAu8kaOjjuxG5edtVg
- FI/5Gid4
- nexu7wzh6fDQIb30wek8mwRNc3KXlaT7J4JREaSI5mRs+0fEmc9gDQ1EgW2Bk0/H6cxG69gTjUerKlGggdYqffFgur9fc/lTdfZnU+gPKEp2xraaYkVe0Nmdp8fyYoguv5LhJ6RCq+prwTxqwx79B+4sJZXz6+4HYX3PKb0Txu2LuhedH/7f+2C+kAQJSQodAD7BninWao997v9T1oI2By/wbrYEIDHGg7Me1lQ/o7hNHyH7RZwFAmUTJBi7jUBIEnxtbsgaIeWvm4A+bs9jJUY6HYlNrm4V97NUZLG/7/xOdYz4o1YLTCncCTx6JSnO3NQi8cISnbiOiYK7zStKNa0SuNhrAyPpO9/ezzf7H638TcfOwDOZlfNxb3wvZY7xMP2mI
+X-HE-Tag: 1785997773-551202
+X-HE-Meta: U2FsdGVkX1+oopOJ12Gr2xqjpg415Qbidqys1mM6rFJ2vBVoX/KSj6nrET80qQl7NLeaCrsKg2vFHZPv+XMx6zmA3TeiqwXQmJw3rU9lp4Q+r+gP9zxf9rxAqgeiT67JhNzleMzlAHeZXS8/lZiJXqf1tn7vD0mSLpH103k2IyinWbyz/2hBaCG7dtPymHkaGfyqGykm6Zwii+CgSK0yJiEX5A8UaFiE5emGhdT2+0rR00CEbBHMoyTQ9Z2e1MGRgOZw/by2fj55l9S4Sw5bvinTsnGzYt945dFBkxohXliMk5xeo4Cvreq61FM/vWhERd68sieTv8IhdYlI9oBAsAqSjlKmitvimmemZCEkoRyZtsscgBnIpfrWkwNnweXK7Opm/2sYpkkgFg0ej2/vKs2mOaT+9xjc4yCXQPrZXaMq7+nwjaIWCrSy3Vtwhpk8kEkx5T3dbfQcEJGdzkk7nII0jwIu718vMHnEZnX6H098+mmkVWM3Ar8bPUO2ERSFPB/vvpiiomRO7+LtUAKTKQKqlp5hFNEvvZmzfGhGLuvZaf4bMFETdN1cQMGF+B5I0O78iKmQ2aQbrkmoGvpc19WhC2ARAggV2WoAKFU1T0fgELHazDhyrqiAR8aJLdb2oEmHize8AIpmcUYrQcL2kXFYwan9Z+hOxKnCAVBbtSpnHWeXV/xifilnmnX2jCE4lsjcvTjykp1N+GiHIAkp5gXfcynz4WyT3nwC6WfOKeeWvMOlbagzhrGq2b7nYECg1d7s7b9Dlm+/Bfb5mw2BXCxChQBqVc3ZVMRCO5UsGtWW1ffQZ4dk21UUDGFlqFnF5uK0JsRD6NH2+PU7P86o1yuuMtVf8UyMxqsGJrB4mqjbJAWEMh0fJVLY3m1ebq9D2YOaqXzC+xv0191Y02FLEifzDDkgmcCDPS09rwHwft1vFO5CgNcF8yfmydT4NBd7+l+eHg4vkoijz3skKGz
+ gA0Se+mD
+ VilyIhxRZS46fHSce66nnhE78J1+Yw+Hr07vlkp/3orwgSBKGuz4CNl/uL+uYRVuc00bccHlLbf9fihUj+3p8KiR4JYJRRIfnIItkK+QH6YkIE9jnPwPWdnC+K3Jl70q7KgzmctJbdAzGJ96qJ0Pl/Xft+dj78fhkG+ql9ANfl2+gvIhTcu6i2d2f7FUlupydmO6GN+0+REu+cLaNucwYUdkiqYTNv0GY01M50T//MM+pclgYIc8yGPgL1ZX3BMQggDO1uyobLxceD3t4oZ4NTe6puSIMPYuaH54jz6cSV+EdoUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,74 +96,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 03:03:39PM -0400, Mathieu Desnoyers wrote:
-> On 2026-08-05 14:57, Andrew Morton wrote:
-> > On Wed, 5 Aug 2026 14:37:08 -0400 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+On Thu, Aug 06, 2026 at 02:44:10AM +0100, Matthew Wilcox wrote:
+> On Wed, Aug 05, 2026 at 11:41:46AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index abc65d608c23..5fa01364f089 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
+> >  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
+> >  }
 > >
-> > > On 2026-07-23 13:53, Mathieu Desnoyers wrote:
-> > > > On 2026-07-07 09:15, Mathieu Desnoyers wrote:
-> > > > > Hi Andrew,
-> > > > >
-> > > > > Here is the hierarchical percpu counters series rebased on top of
-> > > > > v7.2-rc2. It includes small bootup fixes which were needed to fix
-> > > > > bootup sequence on specific architectures, and a rename of the
-> > > > > test config option to include "KUNIT_".
-> > > > >
-> > > > > This aims at replacing the prior version of the series you had
-> > > > > in mm.
-> > > > >
-> > > > > As a reminder, the goal here is to provide more precise RSS counters
-> > > > > through /proc.
-> > > >
-> > > > Hello,
-> > > >
-> > > > Just a gentle ping for feedback whenever it's convenient.
-> > >
-> > > Hi Andrew,
-> > >
-> > > Can you pick this up after the upcoming merge window ?
+> > +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
+> > +					  bool forced_collapse)
+> > +{
+> > +	if (forced_collapse)
+> > +		return false;
+> > +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
+> > +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
+> > +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
+> > +		return false;
+> > +	return true;
+> > +}
+> > +
+> > +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
+> > +		vm_flags_t vm_flags, bool forced_collapse)
+> > +{
+> > +	/* Override THP tunables? */
+> > +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
+> > +		return true;
+> > +	/* THP=always? */
+> > +	if (hugepage_global_always())
+> > +		return true;
+> > +	/* THP=madvise? */
+> > +	if (!hugepage_global_enabled())
+> > +		return false;
+> > +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
+> > +	return vm_flags & VM_HUGEPAGE;
+> > +}
+> > +
+> >  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >  					 vm_flags_t vm_flags,
+> >  					 enum tva_type type,
+> > @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >  		 * Enforce THP collapse requirements as necessary. Anonymous vmas
+> >  		 * were already handled in thp_vma_allowable_orders().
+> >  		 */
+> > -		if (!forced_collapse &&
+> > -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
+> > -						    !hugepage_global_always())))
+> > +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
+> >  			return 0;
 > >
-> > Resending after -rc1 would be appropriate.
+> >  		/*
 >
-> Will do, thanks!
->
-> >
-> > > That's of course assuming this is solving an issue which is
-> > > still relevant.
-> > >
-> > > If there is no interest in solving this issue anymore, kindly
-> > > let me know and I'll drop this series.
-> >
-> > This was 1000-2000 patches ago so I've forgotten what the issue was!
-> > Please ensure that changelogging describes the issue in glorious
-> > detail and I'm sure it'll all come back.
->
-> Certainly. For the immediate records, the issue addressed by this series
-> is RSS stats inaccuracy when reading /proc files on large SMP boxes. It
-> gets increasingly worse for long-lifetime processes which jump around
-> various cores while allocating/freeing memory over their lifetime.
->
-> And once we get this in, it would be relevant to use this infrastructure
-> to address the tail latency of memcg oom killer, which AFAIU is now a
-> scan in the order of num_possible_cpus * nb processes. Although not so
-> bad when the OOM killer fires due to a machine memory use ballooning out
-> of proportions, it's rather inconvenient to cause large latencies when
-> it's used to apply the mem cgroup limits, which is a rather more common
-> routine scenario nowadays.
+> I think 'thp_' in all of this is confusing.  DAX isn't THPs.  PFNMAPs
+> aren't THPa.  There's other reasons to implement huge_fault that aren't
+> THPs.  Can we rename all of this to drop the 'thp_' string, starting
+> with thp_vma_allowable_order()?
 
-Perhaps Shakeel might have an interest from the memcg side here? :)
+Matthew, are you baiting the churnmeister 3000 into a refactor here? :)
 
-Also similarly Johannes and Michal/Roman too perhaps?
+I despise this function and agree with you entirely.
 
->
-> Thanks,
->
-> Mathieu
->
-> --
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> https://www.efficios.com
+So maybe I could add a few other patches first before the change to improve
+the horror show that is this function and its auxiliaries also :)
 
 --
 Cheers, Lorenzo
