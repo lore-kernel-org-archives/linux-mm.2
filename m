@@ -4,91 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA480C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D27C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 979256B00A3; Thu,  6 Aug 2026 15:03:41 -0400 (EDT)
+	id DC4676B00A1; Thu,  6 Aug 2026 15:06:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92A2A6B00A4; Thu,  6 Aug 2026 15:03:41 -0400 (EDT)
+	id D755A6B00A2; Thu,  6 Aug 2026 15:06:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83FF06B00A6; Thu,  6 Aug 2026 15:03:41 -0400 (EDT)
+	id C3C356B00A6; Thu,  6 Aug 2026 15:06:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60F4C6B00A3
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:03:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9C44C01E8
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:03:40 +0000 (UTC)
-X-FDA: 85071768600.20.9868B8B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 33F5C40014
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:03:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S6HabWo4;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A3706B00A1
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:06:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20809801BB
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:06:37 +0000 (UTC)
+X-FDA: 85071776034.26.5621A78
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EDEC3140015
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:06:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nA1aUYEN;
+	spf=pass (imf23.hostedemail.com: domain of martin.petersen@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=martin.petersen@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786043195;
+	b=LP+oCRhAbDF1SnjR7DeiJ4VShaKqwCpU0/hpYWcE9lxsax90Wo1UsC0BuHhSl64+VGFsMm
+	GlOcgsB+SvrVRayesF9s1wkgdwzDH99k46b+VoNs6FqFyi/7HO1GqG19QXk1cz06gaq2xJ
+	4P7HwVcUF9GWUpjS45yfieYDBd2/3lM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nA1aUYEN;
+	spf=pass (imf23.hostedemail.com: domain of martin.petersen@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=martin.petersen@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786043019;
+	s=arc-20220608; t=1786043195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dRt0s7vfM2bnz3NqZRZ9IExdeacv27vJYYUrCTtxIiI=;
-	b=eL0Pux3xKg4xcG/gxqQWiao/3d4hAGCLKBNvamTeQEnO9Wm7GhzQAlA6Lz//yIGIKu1WwE
-	tQQfbkso9zC8/fFKut0dzu+1UdRvqjrVW0MNZkjBLD6pjcOMRCEW5GRlieVF/5QWGgAapA
-	HchEIzcvt0JQC7DsaGP0prxeMdF3clQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S6HabWo4;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786043019;
-	b=fkFojKxqjb1kF1lKazQaRepqU3vJPEMWDr/usZHaAMk/0VYHrVpFg06RxyXzD8v+FdXCvZ
-	oima5kEOU4WFpefl5GJMvftilhhdrC3JNnj0nzFNSIpQZ09Fi7X2pIBj1gzZCSiqJCLosL
-	DwAdMfix69wuUj62xoz3ch+MLRogR+A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0B8C417C8;
-	Thu,  6 Aug 2026 19:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D21F000E9;
-	Thu,  6 Aug 2026 19:03:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786043017;
-	bh=dRt0s7vfM2bnz3NqZRZ9IExdeacv27vJYYUrCTtxIiI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S6HabWo4OztTo/PiObEDh6luKFIDnwMqPcGG/RkJg9S5pUwEXj8utnavmqMb/S1+t
-	 YdwJzCVygJOtG352PEat3qf+0bzmGKHiWhmRT1DC19OPC6j8ZyjN9m3mXkBKdw0Cxn
-	 Kwru4dhgGBMyzpD3DN/wJTzu2U6z1fu54kScQfIA=
-Date: Thu, 6 Aug 2026 12:03:37 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, John
- Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Kiryl
- Shutsemau <kas@kernel.org>, Ackerley Tng <ackerleytng@google.com>, Frank
- van der Linden <fvdl@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/gup: fix always draining LRU caches in
- collect_longterm_unpinnable_folios()
-Message-Id: <20260806120337.2c7d65fd7f9d534bf4ffed1b@linux-foundation.org>
-In-Reply-To: <564e64b2-1b71-4d8e-a29e-dc98e8deb006@kernel.org>
-References: <20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org>
-	<f616e9fc-339d-4430-43ea-0ec8810c5f3b@google.com>
-	<20260801122040.7230a8eb0dc846ce357fba67@linux-foundation.org>
-	<564e64b2-1b71-4d8e-a29e-dc98e8deb006@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 33F5C40014
-X-Stat-Signature: h6gchjjcoq3iajx76ex49tqbewjudnny
+	bh=85JNUC8SyfLYyGobZYpdZmxyQGF0qjVqbjDUd/Wkets=;
+	b=Ny/XBZRFqLRZT9aO7jML9JF87Bccr5OK33zSiPW7cO9Xkc9ceorT/jSL+Le+7iPkl8h+ly
+	bwY+8fjMHy87dijdmHd6LqA8N/1WYHPJLE9xRVQzne2P9xM0bTqgum7Am5vQeWwuq8E+s2
+	P/Rj9pAVOuheJmdnKyDkDfhvgZmUCj8=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676Ftr4v4168306;
+	Thu, 6 Aug 2026 19:06:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=85JNUC8SyfLYyGobZYpdZmxyQGF0qjVqbjDUd/Wkets=; b=
+	nA1aUYENomsR9p7hfDkQr6KalTZrWQW8NET0IkudX6kxW006ofYrtz87Qku7QfJU
+	1lbtfpVmJ42Q3AQE1tcbOw0dHj5dJSylYxq+m2+YcyLW9melEp/Zo40HFGHB54iG
+	OcTwtR+niQLcarL+4OWP5kUShgYJOMrLwxEqqSkY7Lj2zjgD/sgtw+C5rg7PDGAH
+	Gv3g1ppfRFvZh8DYeUX2gV+upEZO5qZ40tc03kMw1uUKshv2LOqjagJ3HbvFdCxa
+	5hBpF9vOLZ/60dXew31tSvX4uLcqli6uolj+khGTMmHGGzK/4pK/rJL+YY5xBUHb
+	pPRuZrwRVaPtUZ7W/V2+uA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fs8ugpqtf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Aug 2026 19:06:26 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 676J0b6k024663;
+	Thu, 6 Aug 2026 19:06:25 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fs78w56e3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Aug 2026 19:06:25 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 676J6LgY011247;
+	Thu, 6 Aug 2026 19:06:24 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fs78w56b9-3;
+	Thu, 06 Aug 2026 19:06:24 +0000 (GMT)
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        David Airlie <airlied@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Jiri Pirko <jiri@resnulli.us>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+        Johan Hovold <johan@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>, Matthew Sakai <msakai@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Paolo Abeni <pabeni@redhat.com>, Ping-Ke Shih <pkshih@realtek.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Sebastian Reichel <sre@kernel.org>, Shuah Khan <shuah@kernel.org>,
+        Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@verge.net.au>,
+        Stephen Boyd <sboyd@kernel.org>, Steve French <sfrench@samba.org>,
+        Takashi Iwai <tiwai@suse.com>, Thomas Renninger <trenn@suse.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Tony Luck <tony.luck@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
+        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Vinod Koul <vkoul@kernel.org>, Will Deacon <will@kernel.org>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, cocci@inria.fr,
+        amd-gfx@lists.freedesktop.org, dmaengine@vger.kernel.org,
+        dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        iommu@lists.linux.dev, linux-cifs@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-sound@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        nouveau@lists.freedesktop.org, platform-driver-x86@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/36] treewide: remove conditional returns with no effect
+Date: Thu,  6 Aug 2026 15:06:08 -0400
+Message-ID: <178589207129.336697.9870225893827541543.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-06_02,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 mlxlogscore=672 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608060149
+X-Proofpoint-ORIG-GUID: XGMDaQGIFMb57T6Q2yvPQTQQt2debxfq
+X-Authority-Analysis: v=2.4 cv=XqnK/1F9 c=1 sm=1 tr=0 ts=6a74db32 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=VwQbUJbxAAAA:8
+ a=Br-j9HdbvUlrMjNZj6IA:9 a=QEXdDO2ut3YA:10 a=5yU3S35YU4bGjq-dph-N:22
+ a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13510
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDE0OSBTYWx0ZWRfX6uIK9jT+2Jev
+ rYS5Xc6Wjv9hMYRtyD0NY9wioUhY1o9ts8S44XrOIykROIC2fMM+q3H5rjkub44bNgkLDQ3tnSe
+ fkx9LiuU0Ioed9eVzRB8PP2qYuZIVaHGDH9Vr333gSb2ZgsHD92v
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDE0OSBTYWx0ZWRfX43FUiflrVixJ
+ FNgAKsr+fsfl0ktZltC3fvW6MVFcRQRy/oySHj8nQQDMOHwfS94QLWHrXArK3j62D1c6aNzQrnl
+ 2DtOuGbPQocnjuSCI1ny1WWYx/7jkkjlcfyl+lp7TEesEfkx307+KuCZo0OgIxbIwfa72MWD4em
+ tn6/hMd/QXx6zH3wP5OlhrMzlp2qKgIxJlelAMfUWIkruyj4hnvKzGUkqPoF4QRZ71As9I8pV2j
+ DMm/cMIaHufC6lXcsuKfUk0yiqWTx1Zr8LtQAR498eW34hEj3pAMHucta0+1CKmEnv9EN7lkU/M
+ FG7jgW8yHOjl2TgueMJFzovO4heKYSqjW47oC3CHVujyZPMUqifsWdUKFoxdhd+EKhXdCEJL9b0
+ LGCES5HP/CdGIqj2UaaWymZGJVFVJ4RBD/aEk7/710HO5x59Z+gVx3LZGgty2YUYCbgJE7oGTWH
+ QPXliDM2eYx5QgvaSSBlrfWn/1V9lBD33lbCDCaI=
+X-Proofpoint-GUID: XGMDaQGIFMb57T6Q2yvPQTQQt2debxfq
+X-Rspamd-Queue-Id: EDEC3140015
+X-Stat-Signature: 1yinu68jh9x4o8756uqqfub6451y3h8x
 X-Rspam-User: 
-X-HE-Tag: 1786043019-662352
-X-HE-Meta: U2FsdGVkX18MvK2IWm9elAs63uClnqRKP67NUxpKUjbcpk4hknOeIXYw5ebM7z3ENq9ptbuCWcW41LbeVqDi9vJSfQaZo31PzOsjqNKwTFGWOR2QHEczZL4vxUev8uoiF6TpboJQCufV/ExrNqEn8eOihU2GH521RPxCtyWDuXcTLEh+48g2uK+3vhhRIPBlz9xTPauJ2IGEBysPDFjkknkNF8KECP66W9NyuekSKvCHyyjKw8PEdNDaWR6S6X9GBG2JdKYM8UaJd2Z4o7WzIF3d7kSWn1vV3eJKmHpq0B7+G569bhaQcqVnvKbTQ3Wcb8r7sg2QacvkBrWcrRDjESBv/1oEPtKfXDMax+tKS25thLHHJHtVBrgV7xWlB6xd5as0aJJ4K/a4bPK9P9U1HCjtmvgRrlQcKM4R4hQA18+fHsAqNLuvESzBxYHkljLx2AcRoMb79xGrsoTkfwfTGxpnlUJzaTStS/DuET+14/laKTx1WRL9S2nmD6lqBqidC7VAxXWnFcyBddr9lYIfa6aarYCeCQ9rF8i+erN2o/a1sV5ONlA6uuwvqSpcWvpX4z3WBd/UIjn0I3Kt9MSpzwFa22mzD6xdjKGC2UlrwrMeayFXcZbVR8PMt7X2i9XA0RlI3dejeNCyBwlLqAIZkzhvx2h0iWERuhLzhfJe8raRwSs6lpvh+eqCegyIzJHqLbggBrCkXSJioyEh55frOaV3G+pAUvpyzDhXRGwuMf6RLqRSs2/Uissk4E3kypqwcQVfAC/AwkPt7t42iVTi87Ewh1v8HxAaqn+UKtOl35YfAhOCFUSLtqVnrkzou6Vwkz9ln+s4i+O980IPCPQtytZ8xUpMe9xueF0Jwc19b/YGU5wW/azFFwMPMYrZja4HPLYeVcC5wSswnv9TFYczjxnvF0vD8Wq8aJH0EKQJIDkLtXIt+uK0VwEPPjc/3Dw59hmSNBlefgYfMb681cy
- 4hEl1sHf
- 0qzTc7RQxiED8HNDuV6AIz7k0gH0XzEzKuKhCJmJWIOY5gsr43gL1udK1qBJcwbBrGL1VqaGacFB1/Ajlk9gLOPiZ85Gz0+ge3SaKNKp2VzoDojnfqFZg+nmqQ5fHWbkOmEgeGJtKZumzAHnMm2CUEjHNZ/gWhe/wyb/Odj6ORmz00MRS+RUlGnGgeqxmQfIPxA1aEyU2bwNaUDfCkcZEMCjmZeaokx+18gWZeAJwvTRXeDxmkfryggnEu0H/Qrmze4QSPUJZQrEYor0h54WIG9wpfK/8FcT67r+lF5X4BXfEBGMYcrI/e4c8jGs74taaCYgi3LE51siWvst4DmIiCopIcw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786043194-696812
+X-HE-Meta: U2FsdGVkX18IMccE1vbr5B3z07F5/Z6fx+FsAJokB2Kmj1YQBbedKm7AqpeQKWuL89Xl/zT0CZBRjICDdJmaKuhlR/p7etiUmEJ/632ksmeRiVcW+1s6tRiQ0pfRbK8uZp7KIRCNnTKpEbfA9tFiSCpocOTyEHtJPcRzciDrQ7vcYHWSd0CyJFDfNT5NKQdYno3pnEvxTWL5sLH81FVnNZpgQR/vsK1rLxTQXPWGtZ7gW6M+C5CNp4ExKhL4bJBuY7bW2cFPArU168zcYfrokTKAJ/FxHuoF4SUs4+Y1gjG0BK3MckcQSppAgYSrpXTWtF+DWTsgTGdUuXS4VRXEzxhos51Mb7PqoHE/8HIrlfv5LhF+Xjox7F8JBtgChjUtyEMjGa+7SCuPmtkcGsVSDL7fULXPdN4fVtXA/2jiFzV35ggne6Zsm/Jd4iiXo3keCdc2nKlaruvzNjxOFjQyP+eAPAutitcjt7zqtoX6fTEBuauodwoUveJX/6HUWJP81IyAD8s7QSA3Fqlusw18gKniStzvnxZpkwSoLa3D60uCRfh6KrfQoNCKqQitEJYVE6slhME2E3iXFMBK+CtaPuJMzAK11NHHyoemDMLpRRFThSmwenyaPSkz3V8OOSvuMeX1TJ0IpfBUiaL/WUyy8RWMpt+Pp/THU681XXypSKRJPUjLhEPyONmhfVfWG9b8IaegZxo64DaUhsd+2oFH33JNtz0MVO/vtdfVFAjWjFIvVRdb2QU1OCls4WDHMnNw9IBCY9GoilPWLVAZD4dgHiov5wWqpvK5JbpGvGDh45BKHDCzZ/uvl1L8ZR0WdkMx/Tyda55KKz/Q0sO/Nlp0InwbHRvmIBW7Ok9fOL6MHWA6hw//B4mV/se3aXWdneZMq+PvyPbUdEHNRTbzsRD7Fujv5Dn9bsq1ZhmI8m235Dv6seH9HRjkYTCmCRjzyz+7CsFzlh97oa/RsnmBZZB
+ lwN0iLZy
+ NPfk7tPYsDcDOtiCu7nfu43Qzn0ZXJXH0hMKVxKDFJ8R9aPHUjm4stBblHC+IFPPgT5zkmNvl6uGMhz49V1pFIhCM40ZYnFOyb9RpPdo2fkuy3bNZImqCowO85sehjTEWSxttk6d8dc1Sw/nZEMSXpplUYp3uk7jN7BjjJ2SxGhTev2EYvkRPYAY3LbKq/1N0Kq6SVRWlhwfRPIJkcjld5yW3sftCOsc4Mygxy0NrMOr7lHfFu8LTD4vbnhoUmvQH2Vm/FcyYMmsHENmNlj67frbEGwHky/cS2uWIOtV1287v8GfluCr7DtD5LU5yqjM0c7KTqJm+taZL5gK/MPybKk8Bw4UKoEW0ugr5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,39 +195,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 6 Aug 2026 18:29:39 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Fri, 24 Jul 2026 03:45:02 +0900, Sang-Heon Jeon wrote:
 
-> On 8/1/26 21:20, Andrew Morton wrote:
-> > On Sat, 1 Aug 2026 11:49:39 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
-> > 
-> >>> Found by code inspection. If someone has a testcase that can easily
-> >>> trigger this and result in migration problems, please test! But this
-> >>> change seems to be "obvious the right thing to do".
-> >>
-> >> Sorry, I don't (as perhaps is too obvious). And I'm a wee bit afraid
-> >> that some of the problems which those changes happened to succeed in
-> >> fixing, might now reappear once the drains are finely targeted.
-> >>
-> >> Am I arguing for a delay before advancing to stable?  Perhaps, but
-> >> I think not: it's probably best to get that working as intended,
-> >> then deal with any fallout if it arises: just be on guard.
-> > 
-> > This patch is in mm-new, so it's still some months away from -stable
-> > eligibility.
+> While reading mm/memblock, I found a conditional return where both
+> branches return the same value:
 > 
-> I hope you meant weeks :)
+> 	err = do_something();
+> 	if (err)
+> 		return err;
+> 	return err;
+> 
+> [...]
 
-I was unclear.  The patch is (now) in mm-unstable, aimed at 7.3-rc1. 
-But I don't expect it to be released in -stable kernels for some time
-after we've added it to 7.3-rc1.
+Applied to 7.3/scsi-queue, thanks!
 
-I don't know what the latency is, really.  Seems to take a week or
-three for Greg to grab these things, but how much longer it takes for
-it to get into the 7.2.x and earlier kernels is probably quite
-variable.
+[30/36] scsi: mpt3sas: remove conditional return with no effect
+        https://git.kernel.org/mkp/scsi/c/c79f9bf2d87f
 
-> Can we get that into 7.3-rc1, though? There is quite the overlap with
-> guest_memfd work, and I'll send another patch that depends on this.
-
-Yep.  In the second-week-of-merge-window batch.
+-- 
+Martin K. Petersen
 
