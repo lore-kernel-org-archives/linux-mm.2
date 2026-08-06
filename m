@@ -4,184 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9DF4C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5EFBC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F25C6B00A1; Thu,  6 Aug 2026 04:10:45 -0400 (EDT)
+	id F328B6B007B; Thu,  6 Aug 2026 04:19:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9646B00A2; Thu,  6 Aug 2026 04:10:45 -0400 (EDT)
+	id EE39F6B0088; Thu,  6 Aug 2026 04:19:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8900D6B00A3; Thu,  6 Aug 2026 04:10:45 -0400 (EDT)
+	id DD22A6B008A; Thu,  6 Aug 2026 04:19:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E0E46B00A1
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:10:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3FB2120668
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:10:44 +0000 (UTC)
-X-FDA: 85070123208.18.596EE39
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010054.outbound.protection.outlook.com [40.93.198.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CDD5514000D
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:10:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cFMmf0Bu;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.198.54 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786003842;
-	b=4Ut/n6IPHg4z6rhyxeW4dJSr6gadlJypYo68R/jmleRhrWgBS0s26Xe7wBhchwu7GSajii
-	uKNIlwK9IUtVHiZo6joxrCR4oHdTO46Y/pCY+UJjQ55YJncSTnd1WSOg15A0HO2ndzTXKs
-	XNdrF9QXtuA1VCw8f0e2iy4MQhKWZAU=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cFMmf0Bu;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.198.54 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786003842;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B2E886B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:19:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C2E0806B0
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:19:04 +0000 (UTC)
+X-FDA: 85070144208.15.425932A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8758EA000B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:19:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxj+XeuI;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786004342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HII6nt33jDnvsKrQpGuBfjFMTjQ3TGtKkw/P+mD4sLU=;
-	b=ZwNjqQctNoCyH1Nkeff66tVsUnkmjbRA6wX/lIOf2sMr2WZYuT72LjX5OiOd0ds8SvSHW7
-	W+g3IFYwOluTSEorQw5YI8twJZluoYI9Dkg49j8mzhUvrlm9LVmXEMIdX0U54X3B+Qbekb
-	AgX/dC2KahIpewEOKR3fvS+wQ0pqnmM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z4Isjy7qdWVkiQZQIBCwNJgNspizPWWo07VTy66+gSJm6XNhtgIYFJpBB4IcYxlJGKUZWpyHtnKiCNN4O62zN53EAXKNUGt/YOIqumHSnMFQr78c2ho+tk4AbOZmxZwW+wcuh/XTZLiOcSpyi3NI8sFrwGjgZIPVZKLo769i6zZ07Kliv4gO3Atp+3xtns3WlN2qOT+NmTfdXVDfBwv5xFyub+DRQytF9f1KmzsvUXrggneOeravYj5Pb24RqeHYeqcVYwDq5+NvFSqRZrMbwM4+XSZyXmbg/T3Rc4mYxZTA+id/7JROnVOuNBfEMvFiU4dfgpKMzl1wE8dgAfcmOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HII6nt33jDnvsKrQpGuBfjFMTjQ3TGtKkw/P+mD4sLU=;
- b=EhboiXwLiRZt+ahVfob+2BoTXj30JJFS3wdHuvyZsPUAe4EssULVNPadAhFxWTA65Y54zuplckVkGuNoZr++HyRtmOos11rIJd4axffSaoA6omtKwCPNjFOFwEjcHX2UZoZIffQx74iyj0Vm6arZD4+Zwk1xVi5SP5c4eg8liB0AXHMf2i8Vn3brAyaGHK5EiG+tWi8NC3/Ryiq/qqMHRyWurguR7RVpGcLJVxgNbU90Sk90KsBL+/xrN7JlJz6gnEYaZTRln0/ySohopHVWOJFpphMHl3UVHcHvSBj3BIydhjVgmEZQau4wn+0qA0HtHCCcnB+NEDgL8FJLD57CJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HII6nt33jDnvsKrQpGuBfjFMTjQ3TGtKkw/P+mD4sLU=;
- b=cFMmf0Bu+mn8GS8EtQSlxH7MsYMP2tHh3Ch6/Mmgcps/3qWUjR4iMYGpBmhGt5xp0lYTjQXj3eEWz5at7apMEYGZg4BpoWyc0OsYdXg35co0R8BG70/MLz/cJss5XsUYpZ1P3f2w4IPaDDOBGJKdBbgedBn8YpSy+Bq0rXPzPbXwVlbLsidSoKQX8UCIoXLBweX9epI2RS4msO+I9ftOue4RIeEWIsnRy+2k9/UqWiXwWqkYO8tm9y7rVKs8Xhcwv4r1fJXxbzFnizYVMCY2MDloTZp8cskTKwTdtkfwE4S7BejED/w9feMuZA6AhPFEG3eUcHJhl2tT5XTjWb55aw==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by CH3PR12MB9023.namprd12.prod.outlook.com (2603:10b6:610:17b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.20; Thu, 6 Aug
- 2026 08:10:33 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
- 08:10:33 +0000
-Message-ID: <0719f8fa-4f71-40ee-8679-5b103c894923@nvidia.com>
-Date: Thu, 6 Aug 2026 18:10:20 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] mm/migrate_device: Fix THP splitting of a CPU
- faulted device private folio
-To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>, stable@vger.kernel.org
-References: <20260805231041.3791771-1-matthew.brost@intel.com>
- <20260805231041.3791771-4-matthew.brost@intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260805231041.3791771-4-matthew.brost@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ME3PR01CA0048.ausprd01.prod.outlook.com
- (2603:10c6:220:f7::23) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	bh=xeNkE8rvXnTrOW6dAnBoOw92sVzbfW8+wp078YwEXLU=;
+	b=DNoDIkgra5cnGrS53CpLywcF68AKErwAo7menKeAJb7QJaZhSAaNfdQwk9QPM/F+aaYwWv
+	OKdn3KgTrQqhngswVPfQ+ds/xF/wfVT7/7/rAvgr0wlfxibOiAKcvjuG5qB7UYfMyb1Imo
+	HO2MjcGxm8bbjlQtCofC3+VajgbfHKQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786004342;
+	b=7sVx6Xvfq09P21SrMleTLJJhFiGAulT04sUzWgTwG//OUSaK+U2CMKc7+7C36J0ne44u6a
+	LV/+NbC6drq+T4TKXUV/TnUwW08rgqFEiQUl4He5SqbFAXV10iSf7+bKLbxX7Q4in3XdGl
+	LTjBKsRkG4wzCEQyeNDzeRznn7DCZkc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxj+XeuI;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D067260A64;
+	Thu,  6 Aug 2026 08:19:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404E81F000E9;
+	Thu,  6 Aug 2026 08:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786004341;
+	bh=xeNkE8rvXnTrOW6dAnBoOw92sVzbfW8+wp078YwEXLU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jxj+XeuID3gJ4D5SOPmz78UkxoOvbSBnifolHDf74H66tZlcT+7ePeDsOCaovs0qY
+	 xWMU4VPU5bgOeBcbLgJIWuN8d4pfkDh1F320313bbA2/yiNpruvzobqX3oGYN7B/MX
+	 e9G5mAEi2J5u3yq92GhK7KOs06W0Lmv4GMxJ0OcwWGkDxOzgvIHXlUvB3GS3ofjwbV
+	 W3+roBpV9T0GPfDHSPMkLuTEPG78s0rqPf2js1l1GIBsX2+PDwM3zt/6JsQeI9pnR/
+	 Kc/cbWRv5ySOTxgntd4+Fg1HMcf+7udAb8KcZ3L83warOQi+o3PMPyEnv+6HWdsixP
+	 whYKT9DTyviAA==
+Message-ID: <f8fc47c2-02a5-44b0-8860-ff8369144b78@kernel.org>
+Date: Thu, 6 Aug 2026 10:18:57 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|CH3PR12MB9023:EE_
-X-MS-Office365-Filtering-Correlation-Id: 421e81fc-d4ea-4c5f-bc0b-08def3922fd3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|22082099003|6133799003|56012099006|11063799006|10067099003|4143699003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ddpM1d/Ozp5NM0QUt0a3C6Uj7uoqWkn/iNTcReg51mdLS4v+0QY+sp7EF5CH77L2t7Gw01ZoaiDL29glptVskyYe6Vk85zk4FPxFsv7KFNt3ufnuTdpd4sT7knGlpjFbVCmLd8uWeZjDfWHfipcIerlv87/qlTfZMMXb/YUkebm4rLm9CKc7h8iIXR73W6uQpZJIaERCr7eKeF0iwry4ljP1k8/QXy4qWG669b1tgTQqR/9lD86GjONG2IJI6VKkx4bpSf4A00AtfMo9pyHo3WRam5bUqmA3BSViesKPyycEgC8NeaYhsd9w8Z79/4fYP96UEscbIwyBsrfOic/BD0RK/c7psQg1ixDdwDjrU+L3vKQ6w/RH52BbKCOvUGQuEoRQQG6Cv9FkqUqYbvKdBQyYT6Hs70VG//YuqYcwb9I18swYwpi/4oBqEtqutpr7CA9qzR0u/f50Q7b4UnAJBWfIPMaqkpoOM+O0ALHZve+g0ansSQyifLUxzfBixPIDcVaiOw4K53GT65RcSR0E7FBHh+rcCnAnmRWo/emxP/MfXks/EQXSLuZWiV/uZ4AesibKXK0mkoggwF4DupwOOfNVULvtzprdk7d82zAMRIVhCImQ3ISTeWDlSxT8VJM/JMfRSB9fV0cV073P4yeyfPlMBmkIDtwTXFy6brjJQ2g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(22082099003)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGFOR3kzWWRXZGJ6c3ROSDRsdXhLdHJPT3FuZ3d4UEVhVXQ5VVdJd04yUm82?=
- =?utf-8?B?VDhtcVNoVWMvNlJKT241cHZBNWNHTzB3dFVyUTZkeHJoQU1Kb0NXWEpEdGIr?=
- =?utf-8?B?c2ljS1BHOTVIOFB2RmczV1lGcC96VlJGM2lTVXRoRjgxOHQwbkZrNVpKMjFD?=
- =?utf-8?B?NVpMaWdrdjR5RXFwUEc1NTBocVB3VEFoNkRsc0RCVDhtaXkyd253Ym52SlZy?=
- =?utf-8?B?cFVyMzVlVHlKYndRZlJETVFtR0lMWG1WQjkrVm80WFB6aE1JeW1CMzFrYXhJ?=
- =?utf-8?B?RzdocGU3SWppNGRqVGYwT0NJbzgwSDVWcGhOMTdwN0JDYS80a2FGQTdGOC8w?=
- =?utf-8?B?N0pMM0hDUXhXbVcwSFkxUUlQcTZoNkxIaUIxYXZrcGZDZ3BNdHl3VlNDend6?=
- =?utf-8?B?T3lkWTRiRDlCOFFLaE95TjdyZi9abE95aWhyQ3Vpc2pmZVk4Y1hwZDUyZDVk?=
- =?utf-8?B?UzIwS09YWFJuV0RkbmhCQ09JT251TWlzYm5OdjIvYXRpRUZsOU9FL3lVL3E5?=
- =?utf-8?B?N0l4TTJqZVlCdmczbXVJcktkOUNNRGlnU0ppdzVjOW5yVG1WazJOc0RqWXV4?=
- =?utf-8?B?dUJqRWNEQ240MndERmUwTmkvT2IrYU9scDlVZFQwZ3U0dllrK2JtekZGZmdY?=
- =?utf-8?B?UHpSSUY4L2hxcHdpTTE5eGVoVWpoRFNQanJOOEdoajUvSUc1T1BYN04zaUpq?=
- =?utf-8?B?eWQ5bFUxQmxaOXRaTCtGVzUxK0UvRjlVKzdya21ISlZOeG1BNFNJcjl6cGc5?=
- =?utf-8?B?WEtNV29RQkVSUEhhTGhJMDhFOFZxK0ttL3BZcnB3OFJ1enZheXpCUFZZMlli?=
- =?utf-8?B?YTNZOUNIaWlmalpuaEk1REgxRTVwVDhJaHgrbGFRUzVxbldudjNUTHpiSUdz?=
- =?utf-8?B?SFlrMHd3a3dMSzBnVFhCODNCaWwrd1JRb1BoK0hoY2dpaWQ3YnpDM1NBcUt4?=
- =?utf-8?B?bGI3dUpibFI1Vk45NGhiYWtKQzd2L0xzSGJrcDB0bTdTUmlVSmpHL21QQW5Q?=
- =?utf-8?B?cGdkTWQyelJsSTg4ell3WjlKV0ZacDZiUVl3NDFpTUZ6WUNBSDN5YzVjS3FR?=
- =?utf-8?B?dEtwa1BoaVpuQXhMVFNsM2RnM2NTUGt3ZkdpNW1RbHdubTNPMndOTHREV0lD?=
- =?utf-8?B?MmJhMEpkTDRmNWs4OSsraDVtQjhxM1l6U1Z2a0VwNzdvVnNqRGQ0SXd5ejZ4?=
- =?utf-8?B?WE1aMVpGR01jOXJ5Q0dYOWJQN3R6VUFLRkN5YkxUVEJhUDJnTlNLUG9jamxw?=
- =?utf-8?B?VGVTbytMVXUxWHNuVjJLS3hFOWNSRjg3TmxGaXpqYmJsbC8wZUJTZUtEM1FE?=
- =?utf-8?B?dGF2WVdjTDlmOFZIRE4yUVVUVzNWVXFIbGt3aEtzUU9vMEZRV1NneDJNSGRi?=
- =?utf-8?B?WDZvTDdmUDV2ZTkvWXIvL1B4QWwyWXJ3dzhiU05WU0VLeGFVWTQzNm9jVVJN?=
- =?utf-8?B?V2FrRlVGUVl2NlhEajVHbUdLcm82WmpZZkJZVGFGTWVBUW41a0I0VE9VK1Jw?=
- =?utf-8?B?ZHNTWkJvMTM5YnllOUtYc3ovYnEwclZISnk5Q3hoY2Z5RlNkRi9lY1NJQ0M3?=
- =?utf-8?B?cGptQ0FVb2pjdDJDdDQ4M3k2Mi8raXZjajE1NW9DMStRUVRrVXFFSENBd09V?=
- =?utf-8?B?L3o1aitzVmpUYklGQXo4Sk5YRUFoT2JGbDE1SnkrT3JVOUM2SnRVbmhsVmVv?=
- =?utf-8?B?N0QrMXphVWZrVVVtdEloRmI2azFCdnBFNEZsME1Xc0QwQ1RaZGZDOHdmSDVB?=
- =?utf-8?B?Q1BiaXV3M1ZBZWY4ZjN1SEM0S01QUHNYVWJNMW1mUTFMbURwMm1kOE5FaGFm?=
- =?utf-8?B?WXZGZlZZaWtWK3B4SHNRWXFVMFp4TnRiTVc4QjJLeExTVXNZTVlzNUNVK0hr?=
- =?utf-8?B?UzhmQzg4VThiemE5MmVseWlpN1RLVWFteVlPZjBJN3ZoS3BGZmhIeE9HRnZk?=
- =?utf-8?B?VnUweXdEU1pnUWJuZk11NU9DQ2RHQzBHNnV2QTc5R3Vzb3d1OWdieWYrcFY1?=
- =?utf-8?B?Q2xVRm5wRTBWYkc5THNDNXEzM2N5RGZWSDM3NjVaWUdrSG1LSEhML1Q3c3Ni?=
- =?utf-8?B?S3NZUDNoNDZCNTBsMzhiY0FQSVkwWlI1VEpkRUtMMXBiZ0RQTUViU2hCU0tS?=
- =?utf-8?B?QUNScEgvRGUyS1pmZnZmY3Q3THBMNzZvNnB5bk45cC9laVhBTU1xbm1PcSs4?=
- =?utf-8?B?QzNKTnM4cXR4Zlg5VTBKQWRiOG1nQTNGVUNHWU1jdVQrR3dOb1VRSVRtMkdL?=
- =?utf-8?B?VVJrRk5HWmFxWGEvOXUzZEM0dHhIbHVEWmFYaG5BK3FpOU9QaE9WU1FSVzFJ?=
- =?utf-8?B?OHIzRjBiWE9CTFRCbStwcGpjN1VVMlU0NlBzeGo0aVRoQWh2NUZtZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 421e81fc-d4ea-4c5f-bc0b-08def3922fd3
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 08:10:32.9381
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aHq61zoH+HLyvfJx5bsTvY7TBbJ65bW9Y+GYSaEycY2G4YGwGa2K9ebaecpOuWC3jN0OYK6nH702Q1c/upGfOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9023
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CDD5514000D
-X-Stat-Signature: n3qof9ktpa5s7o8w8nrrztanemr14qxt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
+Content-Language: en-US
+To: paulmck@kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>,
+ hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
+ syzkaller-bugs@googlegroups.com, ziy@nvidia.com
+References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
+ <20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
+ <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8758EA000B
+X-Stat-Signature: fsh7mdkd6xo8e6mu1yrq9xwbqntzn9c6
 X-Rspam-User: 
-X-HE-Tag: 1786003841-13710
-X-HE-Meta: U2FsdGVkX18Ox/LwOb0AAu96d/JfUw27iq3WTMZnjEB+WZw82je+gd+IiHDka7tTf6u8f8dP+S35j2c1VtZrfNWxC/41+tCrq1EdY1L4TePukqbyga3T1W3KpQDiZaF10h6QGTtE/vyvtQ2zJv290rJWTrz+eMgBnqfZRUAi4KnZMa7mqP8zyS2yneIfb3vXVj/vTjTV+UVmvQduqR1WvndhEeZfXwnGk8gXJEkBWsjhxAdvta/aC83yCVb+TCN4zwYwyjzOUiqH/E7gMDKU+cqpcn3rvd9XLzh2PX1rBKWrk356K63gergAnJJ2ZaCaIn5r5wvTXuSM2+ch97RbFonb7vt8pidfiXj6jm3IddaVfsEVeoVYJoQ2CXf7prAXvaRPZ3RmxRyz7K9QRtGqN4eBsKa9YNy8enVExysRsX4kTCZfN75jvZAKVOl833fSZrOg9/wype3QlA8qlaS6m+xkMGOMpVEAYiJ2MyC3+HP4ogwsscnhBOoyeqA+etljgvbVr9Y5jKluZ02nTAsvsxd+efZ+ydLYO7vDFhgAzvRBFuj2qocRZvaOngGCncsECqn194HQUmXVWgYomZpgvFfrQWEWoNSkQsHwKWDn33EICfHQnVtzlr75aMD3qbQLWv7b1JH/5L04smHYCJbU6SnjFFFq1tUvNXwBRnYzOzCvlGEWdO8BzzF3wWFTm26VUaJy1IXuKEddCwfOMdpkSao8HLhw5Jdfz3Q57VdcxWF5ldSULw40yauRbEA3PHU7REVHjksBOhwWOdhq3afOaEfI46IZvpdsCIJg4jo/xawe6KZAmpwt8bShwWulual3zta/8W+LkhXFG48+iTsSrX9RRSk7XBSPrfBzFWEgOmPPBqVwtaALwVTjVzUa7Iak/JI/l+WXsnT9dBID+fxC+GKbnsFwCBnxhXADaTMgwSeejtUcmhl8bDcBPA8ha1LtowoRFD9F5Jz0nXGm/pw
- o9uhkWWk
- O9iudNddfjiIirtEpdmVQOcP7FqKjU3E74roK/JjzRvGDt5ojBgliq+DFqWOLIMsmnl+fWA4u0TQIykG2bBwL/9z5RoV4eUglzMh2r9PVlWJzZ1qR4k/U9CGra1DuePNSIx4QNXmnEx4C03iFI43pMANqqSjLkHMBkZDEKWySpsYgmqE7bT/8JdsQ/xzu+Qy0Qe9qOCuSFVrom9fKZ+4F01ffJFepAEs9j/SjwCvIUx8muuEPrgIVcmACvtMoTfc/26d5Zd6nmQQ9lwhTiY+1QaLBBBenzZGY05fhJWreuOm8PjzbvGn0ZvW2NjY7zkFnsAj9TbeMWtkwoEuTZZdnFm9fAjWpBbPxfbZDKhVfh/TPj+5QG4QxgLJBUrn2yM2nBl7enRUV/sT0aa653eHNaG42i35gkviO6ZSmY5mBL84omxoYro6Ckr24gWmjFOB5vWUlB0x4FqOh5mfaPXnrJpDs/fQKFdVYrOOGssNPM5MlkvfmuYxUFC+MEzl6Mw+XaQLvZcquLC2DZW0G6IwsL4Gm2dGkgW57huOQZJrYXcGnrgoxaFzZhuIytqIi0yPYFl9hH6LSFwmxIzD2csxHchCYS/8i7JQdkgubGe7WWdMTzHesbUfvZ1Z8ynp935auZKcE2SUCqMvW+lLPlHSCL4C/p+IwVziwb7F1VyspL+QeDKDeRGJAnlVD5MQ+Q4BEH4IvGnvSgUUaJiNhXBgL3sKG0W6gg26kjr6IN+qGALl9HHGmhkzGBUDLfHQx2rvuT2H76v0xV7LCTxQoIEIMJtD0kljEVwEM9AwkEK4qk9FjJBRgmyuh+wfsw/kv9qqu887l+Dj3MxrmReQ2iQlVv4Q1LNXiZn6GpGNg3f+jIeMo5LFuU2ProF9dBJbZKbo0SZAKuOglotDUac6rwKdcZCmZdQmAKdQDdxf+755igQiv+xxhs5/NKlGh5quWrXHD7mCrk8NNHzqkqnayvP/sxh5QpI2v
- 9SI06bpJ
- GuFl73YFfu+cc1TIr8G9WF2lDbVta5lRTUoGnC1HrkFhP+DnDB2UbIhMvQlbpkYEAM9nY45Cm+Rkr4q9lIXVisZNqqGuqUIHCONcRnA2c8zrV7HEAli0MA==
+X-HE-Tag: 1786004342-700697
+X-HE-Meta: U2FsdGVkX1/6htii63TPBFmFn0LMNAr+f/fyqZOmDcMce6PWt+WV4c1yCOSbGOyQ2YLD5C1Gf9noMySS3Q6fAAO7CTnKSQcizhyMWpEB8hGYa1tPYBiqfSF5z3ommvS0WpRvJk+3/AWGve4fcmAtFfIlJGgVSbyJGYw9xfkr7rXDfLnHX7zxztQ1ylE6kh/Q2dXWjXwqi6F5trJwjb0KEJdeAMinnMq50TB3XuIW/OX/TlfAb5MbuUibNebkFokxlBlCuOCkOU/+isHrWs8YPhWmd3/noS1q9sbkiPuG0LVU64DW5efvuuVczbMd9BzeUGJH6YFiGgmOt0ZPYLK7qI2SspXxKqSLQkrRGMwCcrMJtSYugUlOaNvKD9+rR5HoDpSu/DyBizgad8hfKgLO5FbUDB6SEYSTNzH78F1rIQ9zRZ4lpeoGJjWqy3Zy5VHHAAtKQZCK5pr8IlyOng1Ln3ngD2SarO4iuLLq8ItAmfBhtBaaYaXdYZc54CoymttOQErpnw24tUQgQSlAID/rhN1TikXxgIgq+4riF1nXNDIxtSKwuR4r9ZRAochaWhVw5xqehPj8xkkr13z76pxyjeaSRPO5HkPVgkM4FWGmXj0PyR2ANfl+WQ6Ml7C9l1tj9FbfwOUZu8L9qzCZ9TGbgFJA+Q79ko5qIDm3U8Bnc6xq956Y0OkvxJsgxzqqaOCUAb9OFoywh4iHh6fbU5Rzq6a8CyLKhMuoOESRqKbHLIIIAZ361yPMco8zDQiOzkXBB61TiRSftDRw72zV8AJAEkjuEcjBR0zmKxIiLIjl3Pz72GlteAflTLdiDnCga0mgFQ5jxeN+7A3aVJFmwDpCD7lI4T805L173Q4lnrckVkbm/IKPs8mwqCcxQPSm8BtpiJa8bTDNHbS2EQlJnB2t5nA/IkVZ29CZXjJN1zGdZKg10JO8hmOS25qvsM8SpNhM1gIz3NMgQwIYutNoU5R
+ Z7C0IzgL
+ ZJJlBPlwavZlsSbvKXJsZluGyIX7yZISTFlixWHXZtC0e2N0IfHHr6R8jpDNGsduaWDO0SXqms3EOjXHgYoOffNFSY8e0sFrxmLDn4dodrZ5yJEuj1TaJYqvLw8Dgt1Xy8j6MXgWP0NEHQ34XVlKQvObPqm4QLf4eYlkjhDQ2zhMUiQLtgyt+bh5A41O/PEMiYfc0QpW1admajkBvAlSiTVxRwnIuwdHGHmg8vcQ7a9LFCnEIsr7vGUl2l2/n3Re/Geo6Yp0dJwV5jvb3lfuyAYLii7qXB906ocE5+7UaFpVnRDtah1eTP2wRbBM3xYFdo7x9eKF7Pp05zjAF1by/2PP81WydtIvTz2akv2JYjCvVBd2E7wFdkZWCZtPJsEFlF+a9j32dPn3OnF7dOXiolCWRhm7iSGhrB5lILPKyMbKLbK11VMiglg5oW+WQY39/e9Kdj2/9ZWHU4QbgEpTPxnwT4/vns1MJ6Hc3aa6Cd9qKNYYtZU30P6s3Qr1+S37N5ny4KI2VzCYHK/fi/Yw2bqrN44YMiiQ/PSFQje40ReHLOz+TUHKOSfapRl3Mtj45CrzaK8B7ZpgDjVDBzcAE5+V8W513MgIoMOZA7B7SEmSxKg4h7LnHwavuwAEJXkApwQDurT4MTEhPdhqRnMkpTCWt8WnVB6c1Sk9Gsv9yYIkmBG0lCkJuFjJbkPLgcy0R20b4gslvUo7wTB9Vh/t6LZbu6HVbpOo/76+7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,288 +136,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 9:10 AM, Matthew Brost wrote:
-> When a CPU faults on a device private PMD and the device driver can only
-> allocate order-0 destination folios, __migrate_device_pages() has to
-> split the source THP via migrate_vma_split_unmapped_folio(). That path
-> is broken in two independent ways when the fault is what triggered the
-> migration.
+On 8/5/26 22:28, Paul E. McKenney wrote:
+> On Wed, Aug 05, 2026 at 12:29:52PM -0700, Andrew Morton wrote:
+>> On Tue, 04 Aug 2026 17:01:48 -0700 syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com> wrote:
+>> 
+>> > Hello,
+>> > 
+>> > syzbot found the following issue on:
+>> > 
+>> > HEAD commit:    3708dd948844 Merge tag 'pm-7.2-rc6' of git://git.kernel.or..
+>> > git tree:       upstream
+>> > console output: https://syzkaller.appspot.com/x/log.txt?x=11ac703e580000
+>> > kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
+>> > dashboard link: https://syzkaller.appspot.com/bug?extid=d2401aeb74cc84adba04
+>> > compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+>> > 
+>> > Unfortunately, I don't have any reproducer for this issue yet.
+>> 
+>> Thanks.
+>> 
+>> Lazy optimists (ahem) paste this gunk into Gemini and ask "what the
+>> heck just happened".  The results are often useful, but should be
+>> treated with skepticism.  In this case I think it came usably close.
+>> 
+>> 	https://share.gemini.google/vq4TLhTiLBih
+>> 
+>> 
+>> tl;dr: khugepaged's collapse_scan_file() is taking too long and RCU got
+>> starved.  I don't think khugepaged is doing anything wrong here,
+>> per-se.  There's a lot of work to do and we're doing it.
+>> 
+>> An appropriate fix would be to take a break, let RCU do its thing then
+>> get back to work.  But I don't think RCU offers interfaces for that?
+>> 
+>> collapse_scan_file()'s main loop has
+>> 
+>> 		if (need_resched()) {
+>> 			xas_pause(&xas);
+>> 			cond_resched_rcu();
+>> 		}
+>> 
+>> but that won't help with the RCU stall detector(?).
+>> 
+>> I suggest that a suitable fix here would be to add the analogous
+>> 
+>> 	if (rcu_i_need_to_take_a_break()) {
+>> 		rcu_read_unlock();
+>> 		rcu_take_a_break())	
+>> 		rcu_read_lock();
+>> 	}
+>> 
+>> (iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
+>> needed here)
+>> 
+>> Paul, wdyt?
 > 
-> First, the split never succeeds. At the point folio_split_unmapped() is
-> called the folio carries two references beyond the ones it is
-> entitled to:
+> Let's see...
 > 
->   1 - taken by do_huge_pmd_device_private() for the duration of the
->       ->migrate_to_ram() callback
->   2 - taken by migrate_vma_collect_huge_pmd() when the folio was
->       collected
+> The console log says "rcu_preempt detected stalls on CPUs/tasks",
+> which means that cond_resched() is a no-op, but it also means that
+> the rcu_read_unlock() in cond_resched_rcu() will directly take care of
+> informing RCU of the pause.
 > 
-> (the mapping reference having been dropped by set_pmd_migration_entry()).
+> But that is clearly not happening.  Why?
 > 
-> folio_split_unmapped() requires folio_expected_ref_count(folio) ==
-> folio_ref_count(folio) - 1, i.e. it tolerates exactly one caller
-> reference. With both of the above held the check sees 2 against an
-> expected 0 and returns -EAGAIN, so the migration is abandoned and the
-> CPU fault makes no progress.
+> Well, we have this:
 > 
-> The PTE-based split path does not have this problem:
-> migrate_vma_split_folio() is called before any collect reference is
-> taken and explicitly skips folio_get() for the fault folio, so the fault
-> reference is the single caller reference the split expects.
+> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P37/1:b..l
 > 
-> Fix it by dropping the fault reference across the split and re-taking it
-> afterwards. do_huge_pmd_device_private() derives the fault page from the
-> PMD entry, so it is always the head page of the folio and always ends up
-> in the head folio of an uniform split to order 0; re-taking the
-> reference on the folio therefore puts it back exactly where
-> do_huge_pmd_device_private() will release it. The folio cannot be freed
-> while the reference is dropped because the collect reference is still
-> held.
+> This means that the task whose RCU read-side critical section is blocking
+> the current RCU grace period isn't even running, and thus cannot invoke
+> cond_resched_rcu(), let alone the rcu_read_unlock() within that function.
+> So an RCU CPU stall warning is expected behavior.  Or at least it is not
+> in any way ruled out.
 > 
-> Second, the folio is split globally but the page tables were demoted
-> only locally:
-> 
-> 	split_huge_pmd_address(migrate->vma, addr, true);
-> 	ret = folio_split_unmapped(folio, 0);
-> 
-> migrate_device_unmap() unmaps via try_to_migrate(folio, 0), deliberately
-> without TTU_SPLIT_HUGE_PMD, so every VMA that PMD maps the folio is left
-> holding a PMD sized migration entry. A folio that was PMD mapped in more
-> than one VMA -- after fork(), for example -- therefore keeps huge
-> migration entries in all the other VMAs while only migrate->vma is
-> demoted.
-> 
-> folio_split_unmapped() does not notice: the folio is fully unmapped, so
-> it only looks at the refcount and happily splits to order 0. The other
-> VMAs are then left pointing a huge PMD at an order-0 folio, and
-> migrate_vma_finalize() -> remove_migration_ptes() walks into it:
-> 
->   page dumped because: VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
->                                        !folio_test_pmd_mappable(folio))
->   kernel BUG at mm/migrate.c:368!
->   RIP: 0010:remove_migration_pte+0x56a/0x9b0
->   Call Trace:
->    rmap_walk_anon+0xfc/0x260
->    remove_migration_ptes+0x79/0xb0
->    __migrate_device_finalize+0x113/0x290
->    __drm_pagemap_migrate_to_ram+0x278/0x360 [drm_gpusvm_helper]
->    drm_pagemap_migrate_to_ram+0x5c/0x80 [drm_gpusvm_helper]
->    do_huge_pmd_device_private+0x160/0x280
-> 
-> Without CONFIG_DEBUG_VM the VM_BUG_ON_FOLIO() is compiled out and
-> remove_migration_pmd() installs a huge PMD pointing at an order-0 page
-> instead, along with add_mm_counter(mm, MM_ANONPAGES, HPAGE_PMD_NR). The
-> victim mm then maps 2MB of address space onto a single 4K page, which
-> shows up later as bad rss-counter state, leaked page tables and page
-> allocator freelist corruption in unrelated processes.
-> 
-> Note this second problem was latent before the refcount fix above: the
-> split always failed, and the failed attempt left migrate->vma demoted,
-> so the retried fault took the PTE path, where __folio_split() unmaps
-> with TTU_SPLIT_HUGE_PMD and demotes every VMA.
->
+> What we need is RCU priority boosting.  Except that the .config file
+> does not enable this.  Not only is there no CONFIG_RCU_BOOST=y, there
+> is also no CONFIG_RCU_EXPERT=y and no CONFIG_PREEMPT_RT=y.  But there
+> is CONFIG_RT_MUTEX=y and CONFIG_RCU_EXPERT=y.
 
-The refcount fix to enable migration of PMD's in fault context. IOW, if we need
-PMD migration in the context of a CPU fault, then the proposed patch is the
-right fix, otherwise we split and migrate and that has no crashes/impact?
+It comes from syzbot so might be likely a randconfig and there's no point in
+trying to find any sense in that combination :)
 
+> Because we don't have RCU priority boosting, if the load on the system
+> is heavy enough to prevent our poor preempted RCU reader (PID 37) from
+> running, the grace period cannot end.
+> 
+> I am not sure why this task is saving its stack, but maybe that is normal
+> for this code path?
 
-> Fix it by walking the rmap and demoting every PMD sized migration entry
-> mapping the folio before splitting it. Demote with freeze = false: entry
-> creation in __split_huge_pmd_locked() is dispatched on
-> pmd_is_migration_entry(), not on freeze, so a migration PMD becomes PTE
-> sized migration entries either way, and freeze only controls a trailing
-> put_page(). With freeze = false there is no refcount change at all,
-> which makes the demotion idempotent across N VMAs.
+That's because page_owner is also enabled so it's saving the freeing stack
+for the page it's freeing. That's not a normal production config, only when
+debugging.
+
+> My bemusement aside, I recommend running this test either with
+> non-preemptible RCU (CONFIG_PREEMPT_LAZY=y these days) or enabling RCU
+> priority boosting (CONFIG_RCU_EXPERT=y and CONFIG_RCU_BOOST=y).
 > 
-> rmap_walk_control.anon_lock is deliberately left unset:
-> folio_lock_anon_vma_read() depends on folio_mapped(), and the folio is
-> already fully unmapped here. This mirrors remove_migration_ptes().
+> Maybe RCU_BOOST should no longer depend on RCU_EXPERT?  I would of
+> course need ot remove the prompt ("Enable RCU priority boosting") to
+> avoid annoying Linus.  Maybe as shown below.
+
+The "no longer depend" part alone would make no difference with randconfigs.
+Removing the prompt too should help indeed.
+
+Maybe a possible strategy in general would be indeed to unconditionally
+select what's the expected config, like you did below, and only make it
+possible to override that with RCU_EXPERT. So here with RCU_EXPERT you could
+disable RCU_BOOST even if it was automatically enabled - assuming this is
+useful for development or internal rcu testing by people who know what they
+are doing (not syzbot randconfig) or whatnot.
+
+But then RCU_EXPERT should be excluded from (impossible to be enabled by)
+randconfig to indicate it's not valid for this kind of testing.
+I don't know if there's any precedent for such a strategy.
+
+Specifically for the proposal below, could the problem still happen with
+PREEMPT_RCU without RT_MUTEXES? If yes, it wouldn't be enough?
+
+> Thoughts?
 > 
-> Finally, refuse the split for a folio that is not anonymous. The rmap
-> walk would otherwise reach a file backed VMA, where
-> split_huge_pmd_address() zaps the PMD instead of demoting it.
+> 							Thanx, Paul
 > 
-> Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Liam R. Howlett <liam@infradead.org>
-> Cc: Nico Pache <nico.pache@linux.dev>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Usama Arif <usama.arif@linux.dev>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Assisted-by: GitHub_Copilot:claude-opus-5
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->  mm/migrate_device.c | 98 ++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 89 insertions(+), 9 deletions(-)
+> ------------------------------------------------------------------------
 > 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index ae9027421b80..ae17bd516d24 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -899,22 +899,104 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  	return 0;
->  }
+> diff --git a/kernel/rcu/Kconfig b/kernel/rcu/Kconfig
+> index 1a5fb3156c062a..5141ad8d1cd029 100644
+> --- a/kernel/rcu/Kconfig
+> +++ b/kernel/rcu/Kconfig
+> @@ -237,17 +237,16 @@ config RCU_FANOUT_LEAF
+>  	  Take the default if unsure.
 >  
-> +static bool migrate_vma_split_pmd_one(struct folio *folio,
-> +				      struct vm_area_struct *vma,
-> +				      unsigned long addr, void *arg)
-> +{
-> +	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
-> +
-> +	while (page_vma_mapped_walk(&pvmw)) {
-> +		if (pvmw.pte)
-> +			continue;
-> +
-> +		addr = pvmw.address;
-> +		page_vma_mapped_walk_done(&pvmw);
-> +
-> +		/*
-> +		 * Demote with freeze = false: the PMD already holds a
-> +		 * migration entry, so __split_huge_pmd_locked() creates PTE
-> +		 * sized migration entries from it and leaves the refcount
-> +		 * alone. There is at most one PMD mapping @folio per VMA, so
-> +		 * stop the walk here.
-> +		 */
-> +		split_huge_pmd_address(vma, addr, false);
-> +		break;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +/*
-> + * Demote every PMD sized migration entry that maps @folio to PTE sized ones.
-> + *
-> + * migrate_device_unmap() unmaps with try_to_migrate(folio, 0), i.e. without
-> + * TTU_SPLIT_HUGE_PMD, so a folio that was PMD mapped in several VMAs -- after
-> + * fork(), for instance -- ends up with a PMD sized migration entry in every one
-> + * of them. folio_split_unmapped() below does not care, it only looks at the
-> + * refcount, so splitting the folio without demoting all of those first would
-> + * leave the other VMAs pointing a huge PMD at what is now an order-0 folio.
-> + * remove_migration_ptes() trips over that in migrate_vma_finalize().
-> + */
-> +static void migrate_vma_split_pmd_mappings(struct folio *folio)
-> +{
-> +	struct rmap_walk_control rwc = {
-> +		.rmap_one = migrate_vma_split_pmd_one,
-> +	};
-> +
-> +	/*
-> +	 * Do not pass .anon_lock: folio_lock_anon_vma_read() requires
-> +	 * folio_mapped(), and @folio is already fully unmapped here.
-> +	 */
-> +	rmap_walk(folio, &rwc);
-> +}
-> +
->  static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> -					    unsigned long idx, unsigned long addr,
-> +					    unsigned long idx,
->  					    struct folio *folio)
->  {
->  	unsigned long i;
->  	unsigned long pfn;
->  	unsigned long flags;
-> +	bool fault_folio;
->  	int ret = 0;
+>  config RCU_BOOST
+> -	bool "Enable RCU priority boosting"
+> -	depends on (RT_MUTEXES && PREEMPT_RCU && RCU_EXPERT) || PREEMPT_RT
+> +	bool
+> +	depends on (RT_MUTEXES && PREEMPT_RCU) || PREEMPT_RT
+>  	default y if PREEMPT_RT
+>  	help
+>  	  This option boosts the priority of preempted RCU readers that
+>  	  block the current preemptible RCU grace period for too long.
+>  	  This option also prevents heavy loads from blocking RCU
+> -	  callback invocation.
+> +	  callback invocation.  It is now automatically enabled in
+> +	  any kernel that can benefit from it and that can support it.
 >  
->  	/*
-> -	 * take a reference, since split_huge_pmd_address() with freeze = true
-> -	 * drops a reference at the end.
-> +	 * migrate_vma_split_pmd_mappings() walks the rmap, and
-> +	 * split_huge_pmd_address() zaps rather than demotes a PMD in a VMA that
-> +	 * is not anonymous. migrate_vma_collect_huge_pmd() does not check the
-> +	 * VMA type, so a file THP can reach here; the rest of the migrate_vma()
-> +	 * machinery only supports anonymous memory anyway.
->  	 */
-> -	folio_get(folio);
-> -	split_huge_pmd_address(migrate->vma, addr, true);
-> +	if (!folio_test_anon(folio))
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * A CPU fault on a device private PMD holds an extra reference on the
-> +	 * folio, taken by do_huge_pmd_device_private(). folio_split_unmapped()
-> +	 * only tolerates a single caller reference, so the split would always
-> +	 * fail with -EAGAIN while this fault reference is held.
-> +	 *
-> +	 * do_huge_pmd_device_private() derives the fault page from the PMD
-> +	 * entry, so it is always the head page of @folio, and therefore always
-> +	 * ends up in the head folio after an uniform split to order 0. Drop
-> +	 * the reference across the split and re-take it on the head folio
-> +	 * afterwards, leaving the reference exactly where it is expected to be
-> +	 * released.
-> +	 *
-> +	 * The folio cannot go away while the reference is dropped: the
-> +	 * reference taken by migrate_vma_collect_huge_pmd() is still held.
-> +	 */
-> +	fault_folio = migrate->fault_page &&
-> +		page_folio(migrate->fault_page) == folio;
-> +
-> +	migrate_vma_split_pmd_mappings(folio);
-> +
-> +	if (fault_folio)
-> +		folio_put(folio);
->  	ret = folio_split_unmapped(folio, 0);
-> +	if (fault_folio)
-> +		folio_get(folio);
-> +
->  	if (ret)
->  		return ret;
->  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
-> @@ -935,7 +1017,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  }
+> -	  Say Y here if you are working with real-time apps or heavy loads
+> -	  Say N here if you are unsure.
 >  
->  static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> -					    unsigned long idx, unsigned long addr,
-> +					    unsigned long idx,
->  					    struct folio *folio)
->  {
->  	return 0;
-> @@ -1103,7 +1185,6 @@ static void __migrate_device_pages(unsigned long *src_pfns,
->  	struct mmu_notifier_range range;
->  	unsigned long i, j;
->  	bool notified = false;
-> -	unsigned long addr;
->  
->  	for (i = 0; i < npages; ) {
->  		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
-> @@ -1177,8 +1258,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
->  					goto next;
->  				}
->  				nr = 1 << folio_order(folio);
-> -				addr = migrate->start + i * PAGE_SIZE;
-> -				if (migrate_vma_split_unmapped_folio(migrate, i, addr, folio)) {
-> +				if (migrate_vma_split_unmapped_folio(migrate, i, folio)) {
->  					src_pfns[i] &= ~(MIGRATE_PFN_MIGRATE |
->  							 MIGRATE_PFN_COMPOUND);
->  					goto next;
-
-
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+>  config RCU_BOOST_DELAY
+>  	int "Milliseconds to delay boosting after RCU grace-period start"
 
 
