@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C461C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11021C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 207AE6B0096; Thu,  6 Aug 2026 17:38:45 -0400 (EDT)
+	id 9C1C36B0095; Thu,  6 Aug 2026 17:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B8FA6B009B; Thu,  6 Aug 2026 17:38:45 -0400 (EDT)
+	id 9734A6B0098; Thu,  6 Aug 2026 17:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D14B6B009D; Thu,  6 Aug 2026 17:38:45 -0400 (EDT)
+	id 861576B009B; Thu,  6 Aug 2026 17:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7FB26B0096
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:38:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57B48A024B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:38:44 +0000 (UTC)
-X-FDA: 85072159368.12.2152CCC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 94E64120004
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:38:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zjxy54s0;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4030C6B0095
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:51:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C7B8140197
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:51:36 +0000 (UTC)
+X-FDA: 85072191792.22.C8493A1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 95A1314000F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:51:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g1aIdj30;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786052322;
+	s=arc-20220608; t=1786053094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OdSJMrJlxA1asmksffSS7egTxrO++CqOSNiKS3XRtU4=;
-	b=1WtILiDDBRPcAF6xTrQq5IjFPyL8q2I1PPO2VeUhvKLRdBXdMH/1euK4CQVQJzhbQkZB+Q
-	VbisI0lFP+EhfBjtRoVcQdopQQbLyASqbga3evMa6MnoJj5vUG+cwzFG3Ynls7Y3Em8DkZ
-	AP8dC86mRQxPpkayVCohsGcCj49ZBNw=
+	bh=fdNYUN2NKYN/Z1c6wkVpv11hDVgUadb9eUS5kEIFV7Q=;
+	b=qJmUR2P4V57WNS5NdWDXMfBY1gFbGcQy7bAfTxzp4q7XVy/Cu5cxIAQP0RVtoN/nt+tdmM
+	XclUvbs0JsENf9bh6bRvmlPgHmQatUQFYT2rSX5/I7TNvC0NW/LqjU78SZkUfof1hFkUgZ
+	7YT1NUB8DLWMysIaZDv+tWl6CRwHmTk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786052322;
-	b=EdZauE91fC9a52/eL1CfH4NOAPpid0Z4NOtee+siK/z3Pxp5c1e1V4oEQPYtDnynuIY82m
-	g3qKwDwxpmOX5s6rW6alA1VAsnDIXCNd5WOwG2VQxXMtUScFNwq3sGzkpi95c38oetDLJV
-	R6KnkQJ4/M/SngRam1JWDNOw7skfl5o=
+	t=1786053094;
+	b=FTgkHAU94nBDite/KijjJmg5KfFmaSre8b1VsCKtiUv/OAtATwyBnPWsvTX883iX/oxds0
+	8JSU/kdjtBmwq9ZgAJ2lUO7O5EGqXTN+eO8PFI6olBsXsjD/dBTb/lq6BFWwJ5cu+dN4X6
+	d6HvbG0VQU9NBGZEkTMOgGeRzyMbPcA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zjxy54s0;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10FF741A66;
-	Thu,  6 Aug 2026 21:38:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CE11F000E9;
-	Thu,  6 Aug 2026 21:38:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786052320;
-	bh=OdSJMrJlxA1asmksffSS7egTxrO++CqOSNiKS3XRtU4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=zjxy54s0gXPPsGHZIbAvAKttEKxy2PzcRJmEIuRHuJ97thXY4DxgfdKV5f2fK4/0A
-	 AttBLyPvNdIZR/74p8R2Ye3DhHCLys2g+CmbnhbeR/JdYRlV/nMjV8SDBR6m8I6rHn
-	 pSeQv6rAxWR0oHt0WqIfcFQyb+GQBe8ri9AiY5ug=
-Date: Thu, 6 Aug 2026 14:38:39 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Rakie Kim <rakie.kim@sk.com>
-Cc: gourry@gourry.net, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, dave@stgolabs.net, jic23@kernel.org,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, harry@kernel.org, kernel_team@skhynix.com,
- honggyu.kim@sk.com, yunjeong.mun@sk.com
-Subject: Re: [PATCH 0/4] mm/mempolicy: introduce package-aware weighted
- interleave
-Message-Id: <20260806143839.cf5226e6d5c8254098bf3d74@linux-foundation.org>
-In-Reply-To: <20260806080936.421-1-rakie.kim@sk.com>
-References: <20260806080936.421-1-rakie.kim@sk.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 94E64120004
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g1aIdj30;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786053094; x=1817589094;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7YXZzO7rHKj6qKOZ2jDkYVaRVikc1Wt8k9LrXwdPOkI=;
+  b=g1aIdj30QfYjTeP5063uMzkZ6DhCRZaheT+da0raPzec5fc631rGypZc
+   77KR8ahJkWPoByqQYD/SgzXL+CypJr2UUqAdb9LM+92mg5X/8GR6ZhigQ
+   MVOaS19QqE065KX/a+V6pouKinp5KUTidHt3A/PU7xrvxhm+C1ar/yEuc
+   0bZpe9adZeyTlmGWl3xLEmKqXcT3drUuRQNNRqe26U7UtLs97A9eWuV8y
+   b3DVZDcBkST8aXHqpUuoR8pVuUtQfDU+9P/51FLdTUYFOKkuIRby7rtRE
+   MBbXoFkIoLoV5SVS7kZDEAkIGAg6jsEGZS32uJ9sZftDo3mZYrt+R8XfI
+   w==;
+X-CSE-ConnectionGUID: Kpla0hvMS6usoUvCYB8xGw==
+X-CSE-MsgGUID: ZLFEplIHSRySFncYs2ceAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="85630874"
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="85630874"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 14:51:32 -0700
+X-CSE-ConnectionGUID: AB8YyTXOSCSKko1pPJhpvA==
+X-CSE-MsgGUID: gfPYtjsYTwuf1P+pMEQQWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
+   d="scan'208";a="285586569"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 06 Aug 2026 14:51:25 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1ws5zl-00000000GKf-1GLg;
+	Thu, 06 Aug 2026 21:51:21 +0000
+Date: Fri, 7 Aug 2026 05:50:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
+	bpf@vger.kernel.org, coresight@lists.linaro.org,
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	mptcp@lists.linux.dev, netdev@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org, virtualization@lists.linux.dev,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH] tools: Use fputc() calls in some functions
+Message-ID: <202608070547.MRKfa3bH-lkp@intel.com>
+References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: mrsyoqk5s7y1i5g95ip5f5qi9unnpyjz
-X-HE-Tag: 1786052322-423528
-X-HE-Meta: U2FsdGVkX1+KNJEuAcruCgVSU2xs9Crn1pMZcH53+ysYYNAONH994rfA0mp3Cc5D1CmA4yqNcs0Fp/MXpYvrb3w0QAqAfGihD/DA0+oDhja/HvxV9jzxtieW3jYafGuIdXDno7l+k5m6vy6q4ooTKN/VkRvoiewQU4p+zLnk6rHqXj4x/95lbOJy2uLb4IVPnEgLXL2ZsKgxUMmjSTKtH0OccK57RcDrA+e5XPW5gwU1gC5IfQ7dIbIS4fDe1GBs4UFlM9ViFb5bNpVjUj76GHHIqP5lnMF2PrvJM0TFlCoW+7/feHb0XvxfQxhrknOVn38iNCKpK9G5Rbf62yyUnB0fZE+o8MS+DYASVxeY9FHvKP4T8Q8FBbrYyNjDqx57nVJ/A/T+ksE1hIT3iycMwvanlaJEPjaMdxeKSupXW45ky7QtpZBXFG4w6e++s84RSvwEdsUs7uc7aeYM/+TC9A+ULlQmpDfV2cjpwvd3fOn8dflWir8FywVyeVGdnN6VIVRlPADXYDv10kBZtlsYquJ6E2rXPfl7BKGQDxeqNkgtzEgepND123kL2LQg/TBVfXlbkA+fIQGFQ+Y0BX63jtuhDZwdkBhmZtonfSsxXHgHVrqfjVFF6pCUMCWTWXWV9VpnqHgSRNKAp3NYH5KvRq3A4gI5CLDRreoVrZYZfHgtMg/7A3quu8EHP0wWyTjugoKyc1xbU46T2+1lNXMb+lzSE5cdxixQ+1fQikOVhsQSqXddF5biIt3pprhm2pxevbLdS7dI6csuyYN1k/dvgZb8I7z/6iCtvWyZOkH6YOodnxRmLa/rHYbBo0XMSuz5V+lJs4ntlokMHK3bMn+IE30zDBuHau9b9501u9/ll1Q013h0tp0yTJfvG553VgRGZ//GLAO3VEbY153kGpiGmgBXdvzLfVFyS+rdZCHs4YOhL++sonOybb3SX5QYJenjKja2S0WWthx0papDld3
- xVo/If54
- P7YCLiU0OtxiKSiYblXVXejY9xYxXspQHpatgeK1twawSG21Ty6sQEKS3kyB9Gbz/riu6DGZX5nogigEXMUQww5NskWwcSJfXKGx6FxAVjFgCP7NJjxcQh7HtdpPAMtj5xwVZ5Jk9kv9tZteeO7WydowhD0oUAhRTsfJrBrXf3ZQnGqp4UQwDj02fDHC5bEZJ1u9fNzXvgWbdFYk9BeAZH9F42QhxOCBHT/bF+8Bh3+1TZlADzpxvlkMwCrfvctOvKHlEqgog3XZUt37bATerqyJyhu98+jM9IwvWxm44jMpJRC3aHHbuZZ9yDZt86fnUHLSII2SMtqa1dTWWvALkHPXImzGqs0io0KSc3H+eJ7DtqKn8ROEL6y30ZFrdk3cHS344VVHD+/55Jn7DXih845/oBG+BxTgwMswdEs6upyyCtlPGMkXFkYQEdrKoQN5YyQxj
+X-Stat-Signature: 1qwaxg1mrtknhf7x4x4p6ecjxrbrcy6w
+X-Rspamd-Queue-Id: 95A1314000F
+X-HE-Tag: 1786053093-573544
+X-HE-Meta: U2FsdGVkX1/qg7sUMqr7gVJsFawXKoPCQ4cc3D1bSzSTIPxoA7G+fV2md/GhHb76v+2Wlt1Nw3fC/zEUzMbMzVBCUl+C061tLKb5xmv8T7B7jns582YaUHacokGYlEsC2wDRNgc9gdV8eNblO+ar2Y2rv/bnW0xGn260xgZQ78cHEYS8u76os4SljSbUhB1jYolx1e67Q215zFy6MVQ1+X4s6oS9NLAFTHJZQ3U3R1DbTrvQGV+g5mi/m/Wpo3YdeiM7+VKOmmLwh1jibVFT1NWLyYKlQE0kKuyS4uH40KVViJIfDZ/GsQSZteKhmMbzcVZXd9LU98Mq1MuID7NI5ducN2fC3lyJbd7Jn7YCljLVooQMOyo+4AZQB3BGkcm9e7KN2Z/6OAVYSHlih1z0dG5UXr9foeB+mUiOVZQ7/33oJWMLxoZG3+SFUZ1UYDwJ2DAA5z7WbEutAUfvUigsMePPaHQXYigKSDnVLjxQetwyynEv7mtS9x79mRWPGUSqT5/OjPSqPhZAUilBAQAdOZiN4rPFCc78/yIkUcGHXw4wlmWAa9IptxqFpvZGGyot6MDPWPkGSfTFTXHWujew9VRlhICfkXGwwE7nsLxUu6N9JTs5MJLxKJxd5JrnPhZuQA7dtMJ9l8V2KWwGug1yjDWrXNiww0UIEKff7gwSF56OSQ0jOg4NG2ichoaKwqj9E8ltBYF7zlUCFcU9Z26wApmzrFVkSX/fvT3iTTDTAHdy3ghrY5HPDyjOw8JX0MSxTu/OCzjNPBBFffJPf6KrTYT0JIHyOJglmAhB0I7R171p8af2BMnmQ44m0hO6r5XIRs8eVvHhc5lSp5H7+RibzQhQ1ujJec7H1YUDXJjORHlWfCVTQZ7GNn9/ydyexsPYlZcPPU2swKVti5I7LuY2eVKipW9EX17qu3JI3MsoSUnsv4n8OLjB2Xw6/emcqbltNng4/blGNJ971hcllpD
+ XUGOpy6X
+ ZHkdfzQ/9iXlOMms02BhRS4Tow9RIguOZSuQniJ5/SNWkjR7nmEdqTgCfkMntyw0oRYdgtv+iiv62EQfai4bi5jD6Qj1mbOuZklQPks8zegNB+Rc7QpdmRnogdBcjZdNnwGwTGJdqnWc508CGgb30y6Vr+xS1dYd9q5wEU7ousbT1dUv8SBmlVUpCE5AM/jD89mm3haa9bw/sCrGuLWvSF6MySVGtwxC6C5eCVR0SLuuUTYjRZxoX3P31uKZ3P6Ko1m01a52iG29DignMraoFxuJOEYR36L8q/s0EnwXIXArYsdfalJ4y3SjhTFkqO0aGKtts0CB7MAskPyEedEOa7zCafOzflPObO14nT43FLWbCcPPvmXcdnzrlsdHKKjCPCaOaxju0KD1lFAwwoJvj4cam99PivFgeujsSmdTdBon76FucaUHLliYdI83wQZa2NkIzGSWXZGFpO7z8nZQHLms/qtPgrsolcgir34DLSNa0QI8OJnexoEToaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,66 +125,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  6 Aug 2026 17:09:31 +0900 Rakie Kim <rakie.kim@sk.com> wrote:
+Hi Markus,
 
-> Package-aware weighted interleave places a task's weighted-interleave
-> pages on the NUMA nodes of its local package, so that interleave traffic
-> does not have to cross the interconnect to another package. This keeps
-> each node's weight aligned with the bandwidth the task actually gets
-> from it, so effective bandwidth holds up on a system that has more than
-> one package. (A package is a CPU socket together with the memory
-> attached to it.)
+kernel test robot noticed the following build errors:
 
-"package" is not a familiar term in MM.  It would be helpful if the
-[0/N] were to carefully and fully define/describe the new term before
-using it 40 times!
+[auto build test ERROR on perf-tools-next/perf-tools-next]
+[also build test ERROR on tip/perf/core perf-tools/perf-tools linus/master v7.2-rc6 next-20260806]
+[cannot apply to acme/perf/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Measured results:
-> 
-> System Configuration:
-> - Processor: Dual-Socket Intel Xeon 6980P (Granite Rapids)
-> 
-> 1) Throughput (System Bandwidth)
->    - DRAM Only: 966 GB/s
->    - Weighted Interleave: 903 GB/s (7% decrease compared to DRAM Only)
->    - Package-Aware Weighted Interleave: 1329 GB/s (1.33 TB/s)
->      (38% increase compared to DRAM Only,
->       47% increase compared to Weighted Interleave)
-> 
-> 2) Loaded Latency (Under High Bandwidth)
->    - DRAM Only: 544 ns
->    - Weighted Interleave: 545 ns
->    - Package-Aware Weighted Interleave: 436 ns
->      (20% reduction compared to both)
+url:    https://github.com/intel-lab-lkp/linux/commits/Markus-Elfring/tools-Use-fputc-calls-in-some-functions/20260806-165154
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git perf-tools-next
+patch link:    https://lore.kernel.org/r/48f2d61f-d468-49b7-881e-f00777db073f%40web.de
+patch subject: [PATCH] tools: Use fputc() calls in some functions
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260807/202608070547.MRKfa3bH-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260807/202608070547.MRKfa3bH-lkp@intel.com/reproduce)
 
-Well that sounds nice.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608070547.MRKfa3bH-lkp@intel.com/
 
->  .../ABI/testing/sysfs-devices-system-package  |   35 +
->  ...fs-kernel-mm-mempolicy-weighted-interleave |   17 +
->  drivers/cxl/core/region.c                     |   54 +
->  drivers/cxl/cxl.h                             |    1 +
->  drivers/dax/kmem.c                            |    3 +
->  include/linux/memory-tiers.h                  |  113 ++
->  include/linux/numa.h                          |   11 +
->  mm/memory-tiers.c                             | 1009 +++++++++++++++++
->  mm/mempolicy.c                                |  200 +++-
+All errors (new ones prefixed by >>):
 
-Are some user-facing Documentation/ updates appropriate?
+>> builtin-check.c:300:8: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
+     300 |         fputc(stderr, '\n');
+         |               ^~~~~~
+   /usr/include/stdio.h:155:16: note: expanded from macro 'stderr'
+     155 | #define stderr stderr
+         |                ^~~~~~
+   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
+     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
+         |                       ^
+>> builtin-check.c:300:16: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
+     300 |         fputc(stderr, '\n');
+         |                       ^~~~
+   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
+     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
+         |                                  ^
+   2 errors generated.
+>> disas.c:540:9: error: incompatible pointer to integer conversion passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [-Wint-conversion]
+     540 |                 fputc(stream, '\n');
+         |                       ^~~~~~
+   /usr/include/stdio.h:611:23: note: passing argument to parameter '__c' here
+     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
+         |                       ^
+>> disas.c:540:17: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'FILE *' (aka 'struct _IO_FILE *') [-Wint-conversion]
+     540 |                 fputc(stream, '\n');
+         |                               ^~~~
+   /usr/include/stdio.h:611:34: note: passing argument to parameter '__stream' here
+     611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
+         |                                  ^
+   make[5]: *** [tools/build/Makefile.build:96: tools/objtool/builtin-check.o] Error 1
+   2 errors generated.
+   make[5]: *** [tools/build/Makefile.build:95: tools/objtool/disas.o] Error 1
+   make[5]: Target '__build' not remade because of errors.
+   make[4]: *** [Makefile:123: tools/objtool/objtool-in.o] Error 2
+   make[4]: Target 'all' not remade because of errors.
+   make[3]: *** [Makefile:74: objtool] Error 2
+   make[2]: *** [Makefile:1587: tools/objtool] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
-The Documentation/ABI things are rather dry and information-free.  How
-about some documentation for the operator who is wondering "should I
-use this and if so why and how"?
-
-
-The runtime sysfs on/off tunable is interesting.  I hear from google
-operations people that every new feature should have such an "off"
-switch so that if development send them a new thing and they think it's
-problematic, they can disable it in order to quickly get back to the
-old regime.  Perhaps that was your motivation, perhaps not.  Can you
-please describe?
-
-
-I see you've been emailed the Sashiko report, which appears substantial.
-	https://sashiko.dev/#/patchset/20260806080936.421-1-rakie.kim@sk.com
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
