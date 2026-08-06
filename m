@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41680C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:21:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9F2DC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:23:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3015C6B008A; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
+	id AF5576B0093; Thu,  6 Aug 2026 09:23:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28AF66B0092; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
+	id AA5FF6B0095; Thu,  6 Aug 2026 09:23:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152916B0093; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
+	id 96E6E6B0096; Thu,  6 Aug 2026 09:23:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7B66B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:21:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82CDA160787
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:21:01 +0000 (UTC)
-X-FDA: 85070905122.05.3D7CC47
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D9F56B0093
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:23:39 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 714D0140754
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:23:37 +0000 (UTC)
+X-FDA: 85070911674.26.F46BB9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B12DD14000D
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hAv/gKVT";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 95A658000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:23:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2eEx2ma;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786022459;
+	s=arc-20220608; t=1786022615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9M22hpR37Fywe1zZz1y9yAYVc4M0MHck+1iq8vIWd3Y=;
-	b=NodkqL8Z2vWl8TB//13GO/PJEGXPZ9EZ/vqYaOdg17RH1RAKgtE253FbombMX5t49QswjA
-	kDxeluFU88wIcgLhld25ZHamWtuiVKZAZd05LfcvEq3cFvx73QFU/AWdyuE3KgiGFlH07s
-	I0fFgfCMSBj5mKo02H9q3/qDlox3AEg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786022459;
-	b=cICltCnip+ZCvRLg+FAsWQvS6iUqHC/mQUkKm7xBojDIHhKquHQ+SDuqt6uPtmsV/FTKMV
-	kGja4PEQYU1WdLwixy9KOB1g7GJSY3yv4zGeAB4miML6NDfigaqjY1zSIxdIM3RAbv2rMQ
-	7kmrWRrmzZ98Q6OKeZfeINVohG4j1ds=
+	bh=L4LcJVaFqlDOl7/6fb8sSfmGw82F1oBvobaOAS4s1uk=;
+	b=4/3rKkk95Nb3oT30ECccJlngN58TQ/sXW52iEU0V79fjluSVYyCx/al8vA/CTRHL31oi9j
+	d612y96NG9Bo1bMfFB3GoXoQH/ArtQktVI3ctf64Hdj+lQQPvJzfeohto+wk8kzRE7sNwj
+	ASt3BRG0FY+e+7sB0IWIx+VLTVS+Syo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hAv/gKVT";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2eEx2ma;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786022615;
+	b=IksNlP5NzcPArEIYNF5/hn0iPITauGa/B7ni5abURDHzCgD0NGaJJquBpdADq/whulyIpX
+	4cvl6JxHCWz1bB3L5ylhSLms7gyOKqZlKgL9TosiMd+tqNTpOX5CDyfn7d4AMaOPyUE95b
+	Tb0GGsuwbkO7WrSyCM/k0keO19/Kqdc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9053941468;
-	Thu,  6 Aug 2026 13:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3E01F00A3A;
-	Thu,  6 Aug 2026 13:20:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B8F09407C3;
+	Thu,  6 Aug 2026 13:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E9A1F000E9;
+	Thu,  6 Aug 2026 13:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786022458;
-	bh=9M22hpR37Fywe1zZz1y9yAYVc4M0MHck+1iq8vIWd3Y=;
+	s=k20260515; t=1786022614;
+	bh=L4LcJVaFqlDOl7/6fb8sSfmGw82F1oBvobaOAS4s1uk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hAv/gKVTNnWOwNy0eCGclNrpJrUejSmX/wq5ebyMntr2wjyTpm5EUABDroL8KrD41
-	 p6/V1ny8qs3CeeMRlvgOFd5/btgg2ICqTVgg8NvHRe6cQwnMw/74Ww6uG1AxOa68XW
-	 mfw/FK5BTxZCdpeMvXONqZ3mT6ELG/HbiVhMVh5JfgLSF740EtEs0eEKdMsc90UKd+
-	 HcM5kYWuGmYeEqWBDPik6P76THWeMTlfV1MLZFaGhUTVorjPkH0fOiFdIcm9DawxVH
-	 XZlCZyRYyCZzpjwrAi6QX47WdGy5fZRaXw/P2psZK2LXBsjaIN+ww1zP3lXMFrZssq
-	 NjA4IxsryEcrw==
-Message-ID: <cb1c0af3-e0ba-45bd-b51b-b0b224e9a6eb@kernel.org>
-Date: Thu, 6 Aug 2026 15:20:48 +0200
+	b=E2eEx2maGcGkEKpDYhiHIrHt+9ZL+nhKRdvN9H0sql/6/6o6gPH5wg6p0VdCkn9QD
+	 WgD5SOSqCpdSvM9pGGTN3rm2sAUJxPF6Zra8tOKzAsnkR+a9FC/6gYrqfsIJqbepd2
+	 DcStQUuFZJopgkMta8O63YWvEbylzOyj3qZGjPsMzCc42AXrYNlrh1SozlgRfZm03G
+	 aFMlYzGKLhcRFi0a6rvVaOh6eQ/u3aD7ntZBDqzi6qjBotDJVH688MuYsczaGyn5Rc
+	 xTgkYcXnWtAjrRp9re1J1YOf62sZcZJQ0BcN2rwdEhddDH4I5kM5Ns0RiCBgB4+G7q
+	 Cn3pyXJF6Juuw==
+Message-ID: <0b22acb2-5684-4ed7-a916-d531bd5dc410@kernel.org>
+Date: Thu, 6 Aug 2026 15:23:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm/huge_memory: skip zone device folios in
- madvise_free_huge_pmd()
+Subject: Re: [PATCH 3/4] mm/madvise: skip zone device folios in cold/pageout
+ PMD range
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
 Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org,
  kernel-team@meta.com, sj@kernel.org, akpm@linux-foundation.org,
@@ -78,10 +78,9 @@ Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
  usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com,
  matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- stable@vger.kernel.org
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com
 References: <20260728194714.3713735-1-gourry@gourry.net>
- <20260728194714.3713735-3-gourry@gourry.net>
+ <20260728194714.3713735-4-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728194714.3713735-3-gourry@gourry.net>
+In-Reply-To: <20260728194714.3713735-4-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: mykr7fb35ix3nejo9g7kjfo3h7u8hjko
-X-Rspamd-Queue-Id: B12DD14000D
-X-HE-Tag: 1786022459-90685
-X-HE-Meta: U2FsdGVkX18erIkSThwI3QL/SEP71s4Pc3FxYeZX+iTQCTVFcNvM1EZVFSsIuXV/LykQlX3NWNozdw1OSrgRS7MYaE8cqXysE7jTHCgdGIxtYC0n2BZyhP1WRfPxz+JjVu+aqcOiCd9A1AH7XbY0K9M4/yoL7so0tc7+j0XRXup/Va5Un7tzDckRqgbSerSSty17w05AxgcjkKKCtskwygg5fCtdpbOzclOsbtbjw/ZYdtTC4/9Efge/OIF09dGpInW8VqfRDBoalgas6eCrlxUKHx7ML59wsj5qYRNIKb2N3dYnyIFPHbKdYLMU2eUeurutIJnNLKDU8e3qpOSVrn0dKve46BJDXszvQfChw9/QSHWY2poCZI4tEEKREfBHKuHYYuxtNytkvaM4j4LNijHgOeJLxpO/P3QU0KOAoBGuyHSokTipd1HohAuZbe5hZYHNvp/ob67bfIlaEDxxzyIKWZ9dsgZBbgTT/YstYCSvXIVCO6bZ47S8fsBY8akXC+bS1jbxxT4In30UdaOVsf7kMO3O/QwCKjZHWkIHktM8Ijj9bmREcG6aUg+d7VytSymoY6zsxe6c/xWBv8D5gng9L3yK8sSxrBfKEUfzcrZUvPWBgHVvgXyS8pnBqaC2ZybuW/b4mmoPk6ejzG+DV5FO51yP4ucN0p9OIi2wEnJDnMzvPbXsMJDvDEUyLboZV5WkIFxDRi52NIdFm04EHg2pUgrFv0yc4lMGAbefGno8ZekyMaIJ8On7o8k40H6lx6swgZs5wl03QONYxKRM5U1sVgqJzrf+ZHuEJx4jgtZ/loezwHW4P862iYKPMyrjz45acPcSs7ZntEkIbWVGVohDfeInMMnfDilYSU7eJlsvmjsdKGJ2Ymli4MMpA5ezk3Mx0ti5q/RMdnZvt2HWGNFaEmeF/IqmA7/XCL38LiYgZt0LJGAMbYvK2auCc5PesJLDJ9n4HagF72M03Pg
- xUOs14Xg
- YeJGTSKEID1hVyGOoYEpZaMjtw9Xlxw2Jl+9WxV3FhZPW8uapDtMI2sSTcxom9/1QBleT2h25bxCEGtDpawF6oxkJpPokRgUvPmgV+3msMMH1iXn+0itHDrCuy4HBg5edScs3WHf4GuldpDrFSWYkT9P/vtRJzTkE4Ir+B0GGSex7HYduALbz+qaFFNMZo4OVJP6pxFMQT2FWKIAvP/UKggcFpJ19JAmpZjip9z5+LajC+krvRNGNwZ+AvpnyzTJQcFhoOimDOvLqQ0fKI7PXoEaueqaWBZ1O1vF5ev3hozTgbjvw1K7JdwOFn9Rg7F7U/s/mQ5UZvUqwDYexXj96ObUMh5z+hqJ29hfI/QXxGaJw7blUkfETfc8USz2N9BhLsr7LOrGDNHVCgkgDAEi5n+gLjiUlVlAJdnWvAooSoz5bod4q64PLAFRvrGbf75O4bdXexL1iq58gYlWSoEx4vg5E0BFZEBKr4qIYI2XWCWkCMAY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 95A658000C
+X-Stat-Signature: wtdeypc136fr55jo3rmok3c66ch8m1wt
+X-HE-Tag: 1786022615-700009
+X-HE-Meta: U2FsdGVkX1/DxplkFo29VHCEFq742qKVs6+Z0Cvs0UjbHCH+iTCksuzRIdN5F4p9no5RuQymRwTs11STgJbXDwtnVoxs45VBanYZYE21LYgGuFyeeB9iobCDIcDzV3OnewswG0ozEVDb5iEBWz/u+zBsTonD9ArI6O/y03WOSoUQ7Ylo4UW12w46mOcM7TcKf6mtDLBeumuUl0MZQ9voxsNnqLgCamnsRmiD/LQaEn4Oniw6pvAjfwrfSaQNtt/28C522uAN7xE165HRSQRSqbXrilSS3LMCgBBQ8WDrtxTU6pX48bP/7U8ZcGwpJI3F/lnhL2kBFGWlU8JodFt7M0MyH4WtNyp/T1XKqb+XuKb5FKpL5dLAL7lkiOHwlRBNpXqBtC47hFzjdAigFVqSWzp3ScjWr+JvLoZYDqV3oopB/wwPhtfTc8MezKzeSoxfknn4dv5m/IEdhXsqV3CZ8AxjoQ6Cch7uzv8x0Uq2baqcgGnEwgVNC1SsSFGpCAAEo53dd8tTrdPiQoaMZ2wffa+upTBeYueD0ys6unx+5Km8bAelgQ945SnCPp5XeT6nJSc2mHmqkSRDGav37neWL0K0cuLiVIDIcVJGX1FU2RTpLavfHSHCrBdyYbBMsLI/Uz0ygTMpxyc89G2Aml47lY04ABXrtxyL7yXJdtwhTg+8kkSBZiLpsQrQ6pDePXMO0+kcR24s4jbhPCbUi+WbD+jYhgQC/b3ucFC4YHPnM4iQy6i7oAyvRukcNhxz4w1diNU2kqdjrVQwPLbORfnEf4HGk+QVanleL+ZoT6YmNXygWUV/kzR8XI6iRjvwI339FxpQXoAWJBc1eninDndNqMuMIz+Uzy0pIgDfQP/k4nT5Bx6WyQsqkkVqEfLJLUJMOvb3Lw3vcUfaejOZhFQmjDe4KvNxR82LnJKS9b7SvL2pOO3yYdrmHqcpvZFijZ5SWg7jjNSlbv/vv0pEdAp
+ fSC58Zk0
+ qpcwnGQFwQ+55MBdlm94WysMwK/vH/1lSN/BnhHraleCY+297xnOflSX5ARTIh/jD6OBNL4KZ4xgiBP6EfaLZlg16CS8ulPn0rt0u3Hr+VIXzW3josIWxmPggQkV8nJKOgvG96KeqQ7i9MbZsPGslwYy7bcEAgGnPlZLsSOSty0EeAsDz11nvPzGMR0+4df4Z645rk0cZ3PUeNs1+hv2PcCtOZ9fmGLwGI1DV79dVQMlVz/T3t7wZTAbOOa6xgklpwM1N5kcZonTYBc2fsfwFXtwoH18kbNJQvoriDDoq/C1Ywgob8n2xeczpoEk1ufYMGM3CZ7XxnSbFhhWL0DunkC/Pbf1NfVplzCTie3WafgUDWRqH9Mq8I6N+j8dY47TNYYC9ueoZjWewUfMz5sM6XgIk7MT7GqMSXkHn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,24 +146,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/28/26 21:47, Gregory Price wrote:
-> madvise_free_huge_pmd() resolves the folio backing a PMD via pmd_folio()
-> and marks it lazyfree without checking for zone device memory.
+> madvise_cold_or_pageout_pte_range() resolves the folio backing a PMD
+> via pmd_folio() and ages or reclaims it without checking for zone
+> device memory.
 > 
 > The surrounding guards do not cover every zone device case:
->  - MADV_FREE only operates on anonymous VMAs (DAX mappings are excluded)
 > 
->  - !pmd_present() branch rejects device-private and migration entries
+>   - can_madv_lru_vma() excludes VM_PFNMAP and VM_HUGETLB VMAs
+>     (so device DAX is filtered)
 > 
->  - present zone device PMD (device coherent THP) is not filtered.
->    Unlike vm_normal_page_pmd(), it performs no special/pfnmap check,
->    and would be marked lazyfree here.
+>   - !pmd_present() branch above rejects device-private and
+>     migration entries, which are non-present.
 > 
-> Bail out when the folio is a zone device folio.
+>   - A present zone device PMD - e.g. a device-coherent THP - is
+>     not filtered by any of these, nor by pmd_folio() (unlike
+>     vm_normal_page_pmd(), it performs no special/pfnmap check),
+>     and would be aged or paged out here.
 > 
-> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-> Cc: <stable@vger.kernel.org>
+> Skip ZONE_DEVICE folios explicitly during MADV_COLD/PAGEOUT.
+> 
+
+No fixes tag for this one required?
+
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
+>  mm/madvise.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 07a21ca31bad..ffd6a68320a8 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -395,6 +395,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  
+>  		folio = pmd_folio(orig_pmd);
+>  
+> +		if (folio_is_zone_device(folio))
+> +			goto huge_unlock;
+> +
+>  		/* Do not interfere with other mappings of this folio */
+>  		if (folio_maybe_mapped_shared(folio))
+>  			goto huge_unlock;
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
