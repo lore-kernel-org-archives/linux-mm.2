@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FEA7C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CF1FC55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:48:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FE676B008A; Thu,  6 Aug 2026 03:46:43 -0400 (EDT)
+	id 2977F6B007B; Thu,  6 Aug 2026 03:48:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AFBD6B0092; Thu,  6 Aug 2026 03:46:43 -0400 (EDT)
+	id 270746B0088; Thu,  6 Aug 2026 03:48:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A1386B0093; Thu,  6 Aug 2026 03:46:43 -0400 (EDT)
+	id 1881F6B0092; Thu,  6 Aug 2026 03:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 347326B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:46:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B09871406A3
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:46:42 +0000 (UTC)
-X-FDA: 85070062644.06.ACE0FEA
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CE0D32000E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:46:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=IxxpBJPu;
-	spf=pass (imf13.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9F726B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:48:56 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BFF41A06A4
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:48:56 +0000 (UTC)
+X-FDA: 85070068272.27.7D99FBE
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 84C61160007
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:48:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=VWMdc8Rd;
+	spf=pass (imf08.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786002401;
-	b=pzh3w8e9lxTdbZT5MCviypw9ba1SOK+UM9sr8mO+XhhY/+pVGMF17P5xCkwaiIG18FV61g
-	ZbpU6K60qmvOkDw16DVfQJUUem+tspx8nYEU9VutXGTDVQIdpkvCoNwLp8s82ZLVDfvU+o
-	LWNejDCfyCAOi78Nb5EayivgLPbAj28=
+	t=1786002534;
+	b=EfSQKdAz3K9hA9gGh98y5Ky8NOHKLJ1M06fugLjdm1wtwjMaif/W2GAb/ieiv6L3npCLdb
+	Qzm6UVip9LIPuGTlJUfUINMyNZxT9oCdpevt+t38xn59JntseII8VC1vxj/fnRVTxn4K4I
+	2ODo9VLTLYW+Dv+z8nrWHZIkCicroIM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=IxxpBJPu;
-	spf=pass (imf13.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=VWMdc8Rd;
+	spf=pass (imf08.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786002401;
+	s=arc-20220608; t=1786002534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4YFehFFkFxwLBTcAJ+sqSgpMf/vavV69ZIXNno+stE=;
-	b=HbWCnqsI6QKYFS12EIWj2NZA/hwaqTTDv9145FEgk9IM3t4AZ0Aubse624ZGJS0aFrsWK1
-	ZTinhBNoIiRI+Slfb6FftkI7jynPB9fHhgsmbA3YYdRyu9JkN8jTrVt1vMU3/WPKZpJQjf
-	qrSH1lJtMK8QqOysm+e7SdC1ZvqjdK4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1786002398;
-	bh=P0ooqE0uPWiEJhHB6YvjmOEp8WmR+FP9n8dFeBmZRSc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IxxpBJPunytUY82qqvtIABr9WtBkmhRQYkbrHm9QSFllizDfC9I4PVd9UrGDUt8Um
-	 Nrq0+mPvpJFiADDahdo8clZCZzbqIGLIESsE68RUbqc9WNMNJqSqX5Z4EK0AqWmOgk
-	 cDYMZzq5MgG059N0qMePBIqvhjU/q6t+LStHw7qzwWstvVI4HLxLUCbJCR6NXRSM1x
-	 /AWqZa/RmoF7a1xFxwp4Gk49jW4H5KZEWkemREr7vAT40FYZ3zOV1Wje7gb5wV40mC
-	 7K57/JDNDd/xbq0YvNMRNE6X7TmR/GSxrZT6tWPoJzR2OilBfdVx4WB0v6XmC0pX3q
-	 753zyugKQAR5A==
-Received: from fedora-21.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8C8D617E0235;
-	Thu, 06 Aug 2026 09:46:37 +0200 (CEST)
-Date: Thu, 6 Aug 2026 09:46:31 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Christian A. Ehrhardt" <lk@c--e.de>
-Cc: dri-devel@lists.freedesktop.org, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Andrew Morton
- <akpm@linux-foundation.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Check VMA boundaries for PMD mappings
-Message-ID: <20260806094631.5796ef32@fedora-21.home>
-In-Reply-To: <20260623181942.1536598-1-lk@c--e.de>
-References: <20260623181942.1536598-1-lk@c--e.de>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	bh=awi5f3XjRTk7KwCF/uSqRsetJq/tyZPjOmjYhX47qpA=;
+	b=evpO7VTLwdosVLWGuxKSs5E7OKAn2FS7EoOeDh9uWh2I0bkh29BXZGocACoM+F2g/LFcvb
+	dzmOUOeZlx/nLp/QKqsg6+mbuSjK8EqVViQhwUAsH5pkqD/vIeSN+54jloQCi9c+w4y1c7
+	aQvbtC84WLmnWyQvJVzdc3/wHFlxpvk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=awi5f3XjRTk7KwCF/uSqRsetJq/tyZPjOmjYhX47qpA=;
+	b=VWMdc8RdTdvFR1f8adxHxcRqGN8MA77Kxc3Y5t66g+6QbHSfiFvz9pFA9AnQih
+	D+KCaappImVb5qbpcxXHvu5XyHX8/0REEHZPNuu6BOmuHU33m+FO2XZDZuq5vK02
+	3acycWDj9cVc+inq6MFeIneI+m2CCWbigwz2xCsWcVvxY=
+Received: from [198.18.0.1] (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wCHTZNSPHRqudjdNg--.16566S2;
+	Thu, 06 Aug 2026 15:48:35 +0800 (CST)
+Message-ID: <e3700884-ee6c-4671-977e-2694535b8443@163.com>
+Date: Thu, 6 Aug 2026 15:48:35 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CE0D32000E
-X-Stat-Signature: bb9zw6qjizfe1uqzgbh8oq8qtzkdbrb4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/ksm: validate KSM rmap items before hwpoison kill
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ xialonglong@kylinos.cn
+References: <20260803151151.3472893-1-xialonglong2025@163.com>
+ <20260805162937.1795310-1-xialonglong2025@163.com> <anNl1SSA3fidOrTy@lucifer>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <anNl1SSA3fidOrTy@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHTZNSPHRqudjdNg--.16566S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GFyrCr48Xr4xtr4UAFW5KFg_yoWxCr1xpa
+	s3G3WDArW8tw1a9r97Xw4q9FyFvwn8Ja1jyF47Ja4av3Z0qa1fCF18Jrnxua9YkryxGas2
+	qr4UZFn8uFWYqrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UsqXLUUUUU=
+X-Originating-IP: [240e:46c:1000:421:34db:efe:597b:d439]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xPa02p0PFPXEAAA3b
+X-Rspamd-Queue-Id: 84C61160007
+X-Stat-Signature: bhp6kdzzegoccbcrr945s6jhqgbd6hrw
 X-Rspam-User: 
-X-HE-Tag: 1786002400-486101
-X-HE-Meta: U2FsdGVkX1/2lnuAO8fWuQyKF1j0P125qSz9/hMOJQo0qHs7iNirLO+H1nGRiDDNfQT4S8r4Ed7q3SIb1enSCOhzBy37H6CDAkwPsYoEbvjetqH5K1FPHKB8jvDf4Hy5OJMhgfpOHk9JCuhsp5VgcHyZRCNXAmT+rPl0rV7Uyr9PQAkK9p4oXL9ITz/p37eq2ACz1nDfBRQammiC6FYrr5l10R3hUoe6hx+wtXg+18lfh+BY0hzAfkh+iSKNULRyRYp8w2wn/AopXoYIBM11uveKLNZzU466X+HwLKD1xrAIJvbVWsJ0vsSgUJX+Sff+tw5Dl98DmnFpNzPjoClblS4PO1ClYyPOQ4zpPum5gXa17WaEJstKZ6UtNfIVvNZIPd4/p3PjE0IJEmvTWNaTnX/bM2NUVZexcPPWWySA5WBvlxCg96g74enZjrITlN4229+MNiLnJOdkfTHZxX1APz7l+hbry5mAdKCCF3wBCBJc+Eon9rSBuujoqmh7s8RU+72FnHoF2xxoWHLCNkthO6sNHx/jli2UBcmGH23LDVNrHFpVImTvJMirwWjW+YsrH4wcuqtaBTh6mL/+qDwN4z55r4cxBHe0mm3VDZObiaOjLDX4uKV0ulhv0Kx/DqQ6Z3qiij1IeLFxTdJzQvIxSs1IhEva5Mow2PaeEAUpA7XeRObIK0o5X819Vg+WetxSMboXzoY09bOJMS2p4/PbdSvzo5oinQhjMuZfoRTOUh0xJ4g/McD+/hQsiDhcIZPpZK5qxSVStwzwjmON8mJysEdi75YQ+XTXLmPjyX+WPd8VIZK1W/XXkngsA9+tiULGeRUJRmvWSheFeFdnzxx1LMlrKhwTuIbjBGxgu7kNz1pOQnr71UpOhlKMv7QPtRZy4Y5lV/HffZ7Sn4FwmkVk7CUJ8bXhZdFsugh9f+sipDF8lWDqkaLkwnzbHiEbzSx2fYEkXzrQwnyYySQbUJO
- nfLzOFY9
- P4RU7Fwdw4VAK/+VzzUNLS2pFpC24Q9KQePoKe3iQ/ad2tcSmzikOlRuAUNj4qL+Gnlg1GVLR68CTKEttO8krYyCe7riVDctu8wElpTe2KbA5+/lykTJob+NmV+tkr4FzfEn6uZ6DT5gQNi4l5pBvs3XK0XVeaLH3viwQ4qKlpKhoyZeW2hBMRNcD/XLbujos/vXxuyXoum+IRwn0Tlt7rEy2G/i0LUiTWoALAICNqvCMWNi4YjMRDVMCTce5Um1siRY7x4HMtltQhXyoIVeXpIKq8Gr8KDY+cKJT4KRHkadATorjuU19y4RDc99hLA9bE262UDy8xKHJXwzabdUdYkYECR32S9CPEmKy3haE8On53uLWncd+ORXcsOwVPdqsmpTjlfwNXRIfamP6L4/21XwTvkiVz1CwXHmkEq1DttfWFdo02K3/1Ej9YRC9S6qB97b5G8VrUQsk7xU=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786002532-177158
+X-HE-Meta: U2FsdGVkX19nCcai+76W0G7wCZ9P2etGFPObjIHlqiuqH+QPd9Fgat45hxBAP71sVVNEwtvhWl5ovKSTz7gORw62U/CSu5IrgJyJU/XZ3585Q80X6JQwqn6oGQGmCzST0DQt8epLjWief+qh6QZUAeoC3ACTDqS5mpw7D+DPuxENdlmEKJKHRkaepO388OD1STgdYnIAUpAq9IT1yxtGVF6IllB3R/G8q7fBfbBC2DJoqKy88ZqKde/U9mAEjVL2JaqCffyohAlbwnV2pc+NjNgN6agV8B4W+kcG838O7/7rGuo6GJI28S+65UQPywh5v0SARFlgNTQ6i+kP6uYNKMEbl2yjksozJ5GI6CkDB6B9seW6Kyqa5UURjrkx3TciTdZFtTJREp/Ohq7T+2HsvcDyCIyOUSEq9aaQddG5gFN+3ygcPopnlllne/N4jgiJedOuvRqIPZqxPaaxWsBY7Z3t922K+vkwwKBKtRSIi5L+SM9hn8naKIzWZVTgtIzMEarCItpODP0mGNNqhdhPEEJiKhOkQ5PRKgkmO+m5+zcyYvYCqrEzvDDCBVv+EGlfHVHN1QogPyy+1KeZcubTecvBQGW4hSKUWuAiu6CGByCWEtw7Z8xMU+3Za8MXrGg18ib9Lg5RCXcKgNh2xCRsqqOMy0sqIbbv1t6VZPtBghF4JjK6KbUYGrQZkJLJm9XYH++17YXSgOeaSdY6e8kdLRx4fOGU6lELnNW+ZmUoRlAetFGkkjpyJREqbXpC34a4kdDZHU/BTpDEz/M8YhRNdXJ88Z9BHYjPn3pFEyL06MuKS+kCIb6bfe+T/RhrWk0W4QTJ1btQxIaLcFr18pW7wMbunahWjOhY43qDu0Kdv1MwLiyA1tw/j9PvZLxjuYh994sktdj9xzTWu6MYgRiQd1Fm8QsIJtI2GQMZ7nNMhjWCWB/j6leeQRj6x3GwfJ5GZxzQs04tEsSU/2nKmxq
+ O/Hkevi0
+ 4ydXcHfzQMuTbuMJGhwKqKghYgmdJtR2N/+oAAC/u4MUFE4hl1iDxL9SisoTqkMhAmtm1RzKm1zwN8oMjzHPt7qNomgHxBveRgOWTGiaYY5rJg945xi1WLGjraqzl73odGd2okCoxVR7wK9nMRPyNQLVDR2T2CGOP8vzj2W6eL+G4L/pXrP2a2X8VgwJvw3lrfm1Fk5CaR8OE6twTRvdROs0LVLAcz9hmzMk+evFIgEh9LEZKJrXMby7ASDpnUG5eP/UM7oBN2rIzh1rqFxF9XFndVBCBNfJ3CNVyOvLfbYlfqdVBwzNg1dhwHbPNfgMdpJ8dRRu96U0tDqJjFpOdskaqGN/OA/aNLotcwuHLdLnIZIGqzBfrMzSB6B4CvidtTA3PjTcOX3sRRK91rAjjMiGJg02978GqMCLxuNLgrxw8+w717N3seCsuC9HnSjNPfhwB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,55 +95,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 20:19:42 +0200
-"Christian A. Ehrhardt" <lk@c--e.de> wrote:
+Hi Lorenzo,
 
-> When checking a different patch[1] sashiko AI pointed out that
-> panthor needs the same fix[2]:
-> 
-> In the ->huge_fault handler do not install a PMD huge page
-> mapping if the huge page exceeds the boundaries of the VMA.
-> 
-> [1] https://lore.kernel.org/lkml/20260622215718.1532689-1-lk@c--e.de/
-> [2] https://sashiko.dev/#/patchset/20260622215718.1532689-1-lk%40c--e.de
-> 
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Fixes: 68cbf96b1e9b ("drm/panthor: Part ways with drm_gem_shmem_object")
-> Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Sorry, you are right. I messed up the process here -- I should not have
+resent it so quickly, or sent v2 as a reply to v1.
 
-Queued to drm-misc-fixes. Sorry for the delay.
+I did use AI tooling while working on this, but the patch is my
+responsibility. I did just follow the anonymous-page handling here, without
+thinking it carefully enough.
 
-> ---
->  drivers/gpu/drm/panthor/panthor_gem.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> NOTE:
-> The panthor version is only compile tested because I don't
-> have the hardware. However, the code is identical to that
-> fixed in [1] and I have a reproducer for that.
-> 
-> No need for for stable backports. The code is new in 7.1.
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-> index a1e2eb1ca7bb..54535bae2b0c 100644
-> --- a/drivers/gpu/drm/panthor/panthor_gem.c
-> +++ b/drivers/gpu/drm/panthor/panthor_gem.c
-> @@ -802,9 +802,13 @@ static vm_fault_t insert_page(struct vm_fault *vmf, unsigned int order, struct p
->  	} else if (order == PMD_ORDER) {
->  		unsigned long pfn = page_to_pfn(page);
->  		unsigned long paddr = pfn << PAGE_SHIFT;
-> +		struct vm_area_struct *vma = vmf->vma;
-> +		unsigned long start = ALIGN_DOWN(vmf->address, PMD_SIZE);
-> +		unsigned long end = start + PMD_SIZE;
-> +		bool in_range = vma->vm_start <= start && end <= vma->vm_end;
->  		bool aligned = (vmf->address & ~PMD_MASK) == (paddr & ~PMD_MASK);
->  
-> -		if (aligned &&
-> +		if (aligned && in_range &&
->  		    folio_test_pmd_mappable(page_folio(page))) {
->  			pfn &= PMD_MASK >> PAGE_SHIFT;
->  			return vmf_insert_pfn_pmd(vmf, pfn, vmf->flags & FAULT_FLAG_WRITE);
+Thanks,
+Longlong
+
+
+在 2026/8/6 0:47, Lorenzo Stoakes (ARM) 写道:
+> :))) I did just say don't send a v2 but I guess you didn't see it.
+>
+> Basics:
+>
+> - Please don't respin when somebody's literally asked for feedback from somebody
+>    else.
+>
+> - Please don't send v2 of a patch in-reply-to a v1 send it separately.
+>
+> - Please don't send a v2 on the same day as a v1.
+>
+> - Attach a changelog under the --- with a link to prior versions (using b4 makes
+>    this easy).
+>
+> Anyway I guess I am forced to reply here... *grumble*.
+>
+> Thanks, Lorenzo
+>
+> On Thu, Aug 06, 2026 at 12:29:37AM +0800, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> collect_procs_ksm() walks the stable-node rmap list and queues an
+>> early kill for every task whose mm appears on the anon_vma chain.
+>>
+>> That rmap item can be stale by the time memory failure handles the
+>> poisoned KSM page. A VMA may have been split, unmapped or remapped
+>> after the rmap item was recorded, so matching only vma->vm_mm can send
+>> SIGBUS with an address that no longer maps the poisoned page.
+> I'm very confused as to where memory poisoning comes into it? What exactly
+> made you aware of this? Do you have a bug report you've observed?
+>
+>> Factor page_mapped_in_vma_at_address() out of page_mapped_in_vma() so
+>> callers that already know the virtual address can validate it directly.
+>> This avoids deriving the address from page_pgoff(), which is invalid
+>> for KSM pages. Use the address saved in the KSM rmap item to check that
+>> it still belongs to the VMA and that page_vma_mapped_walk() still finds
+>> the poisoned page before adding the task to the kill list.
+>>
+>> Fixes: 4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
+>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> Honestly I have to ask - is this your own work or AI-generated? As I'm not
+> confident you really understand this and it's tricky stuff so if a
+> backportable patch is in the works I'd prefer somebody who understands it
+> contributes it.
+>
+>> ---
+>>   mm/internal.h        |  2 ++
+>>   mm/ksm.c             | 10 +++++++---
+>>   mm/page_vma_mapped.c | 36 +++++++++++++++++++++++-------------
+>>   3 files changed, 32 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/mm/internal.h b/mm/internal.h
+>> index 181e79f1d6a2..4c9e601b2d95 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -1424,6 +1424,8 @@ void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
+>>   		     unsigned long ksm_addr);
+>>   unsigned long page_mapped_in_vma(const struct page *page,
+>>   		struct vm_area_struct *vma);
+>> +unsigned long page_mapped_in_vma_at_address(const struct page *page,
+>> +		struct vm_area_struct *vma, unsigned long addr);
+>>
+>>   #else
+>>   static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 7d5b76478f0b..5104e442fcb2 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -3237,13 +3237,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>>   	if (!stable_node)
+>>   		return;
+>>   	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+>> +		const unsigned long addr = rmap_item->address & PAGE_MASK;
+>>   		struct anon_vma *av = rmap_item->anon_vma;
+>>
+>>   		anon_vma_lock_read(av);
+>>   		rcu_read_lock();
+>>   		for_each_process(tsk) {
+>>   			struct anon_vma_chain *vmac;
+>> -			unsigned long addr;
+>>   			struct task_struct *t =
+>>   				task_early_kill(tsk, force_early);
+>>   			if (!t)
+>> @@ -3253,9 +3253,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>>   			{
+> OK so you're literally doing an anon rmap walk here, with the anon lock held.
+>
+>>   				vma = vmac->vma;
+>>   				if (vma->vm_mm == t->mm) {
+>> -					addr = rmap_item->address & PAGE_MASK;
+>> +					const unsigned long mapped_addr =
+>> +						page_mapped_in_vma_at_address(page, vma, addr);
+> Now you're doing another anon rmap walk? Why on earth are you doing that? And
+> won't this deadlock?
+>
+> Why aren't you just checking the whether addr is contained in the range here?
+>
+> Like:
+>
+> 	/* Make sure VMA wasn't split/remapped */
+> 	if (!in_range(addr, vma->vm_start, vma_pages(vma)))
+> 		continue;
+>
+> Or something?
+>
+>> +
+>> +					if (mapped_addr == -EFAULT)
+>> +						continue;
+>>   					add_to_kill_ksm(t, page, vma, to_kill,
+>> -							addr);
+>> +							mapped_addr);
+>>   				}
+>>   			}
+>>   		}
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index bac2eb5de63d..f7c5dc9248bc 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -336,6 +336,26 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>   }
+>>
+>>   #ifdef CONFIG_MEMORY_FAILURE
+>> +unsigned long page_mapped_in_vma_at_address(const struct page *page,
+>> +		struct vm_area_struct *vma, unsigned long addr)
+>> +{
+>> +	struct page_vma_mapped_walk pvmw = {
+>> +		.pfn = page_to_pfn(page),
+>> +		.nr_pages = 1,
+>> +		.vma = vma,
+>> +		.address = addr,
+>> +		.flags = PVMW_SYNC,
+>> +	};
+>> +
+>> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+>> +		return -EFAULT;
+>> +	if (!page_vma_mapped_walk(&pvmw))
+>> +		return -EFAULT;
+>> +	page_vma_mapped_walk_done(&pvmw);
+>> +
+>> +	return pvmw.address;
+>> +}
+> I hate this name I hate that it's CONFIG_MEMORY_FAILURE only.
+>
+> Also it sounds like a predicate but returns an address? I have no idea what this
+> is supposed to do? And no kdoc?...
+>
+>> +
+>>   /**
+>>    * page_mapped_in_vma - check whether a page is really mapped in a VMA
+>>    * @page: the page to test
+>> @@ -350,20 +370,10 @@ unsigned long page_mapped_in_vma(const struct page *page,
+>>   		struct vm_area_struct *vma)
+>>   {
+>>   	const struct folio *folio = page_folio(page);
+>> -	struct page_vma_mapped_walk pvmw = {
+>> -		.pfn = page_to_pfn(page),
+>> -		.nr_pages = 1,
+>> -		.vma = vma,
+>> -		.flags = PVMW_SYNC,
+>> -	};
+>> +	const unsigned long addr = vma_address(vma, page_pgoff(folio, page), 1);
+>>
+>> -	pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
+>> -	if (pvmw.address == -EFAULT)
+>> -		goto out;
+>> -	if (!page_vma_mapped_walk(&pvmw))
+>> +	if (addr == -EFAULT)
+>>   		return -EFAULT;
+>> -	page_vma_mapped_walk_done(&pvmw);
+>> -out:
+>> -	return pvmw.address;
+>> +	return page_mapped_in_vma_at_address(page, vma, addr);
+> Oh yes, make the !CONFIG_MEMORY_FAILURE build break *eye roll*
+>
+>>   }
+>>   #endif
+>> --
+>> 2.43.0
+>>
+> --
+> Cheers, Lorenzo
 
 
