@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 028BEC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A47C5AC81
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5796B0099; Thu,  6 Aug 2026 16:05:55 -0400 (EDT)
+	id F297A6B00A0; Thu,  6 Aug 2026 16:05:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA6F36B00A0; Thu,  6 Aug 2026 16:05:55 -0400 (EDT)
+	id ED9F96B00A1; Thu,  6 Aug 2026 16:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71026B00A1; Thu,  6 Aug 2026 16:05:55 -0400 (EDT)
+	id CBEC06B00A2; Thu,  6 Aug 2026 16:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 757466B0099
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:05:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3E9A1401E9
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:54 +0000 (UTC)
-X-FDA: 85071925428.12.D9869D8
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 573A2C000E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ffx40NeW;
-	spf=pass (imf10.hostedemail.com: domain of 3H-l0agYKCCAOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3H-l0agYKCCAOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A11066B00A0
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:05:57 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 141221201FD
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:57 +0000 (UTC)
+X-FDA: 85071925554.06.B24054C
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 483E24000F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DloGOQgJ;
+	spf=pass (imf11.hostedemail.com: domain of 3Iel0agYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3Iel0agYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786046753;
+	s=arc-20220608; t=1786046755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mYilKGc1Ozm+Wqc6rMtn6RGepKDO0nOO45ZaajNWpPU=;
-	b=oWNnHW+i2LB2QSYdVnFGdWVbNYR9RSXPsPXtk6nJrRVdBlWa9bLld3h2r8exS4sOkSc3Y/
-	sTc+UThTemsXr+Ty97gjHIVdvsXSuX6E6ARQew2SPrA2K+I0NMNN2b7PCnbQV7ZmEX+YMY
-	E7/Ymky9yh/OWFgBL5A5/qCYvC1rUh8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ffx40NeW;
-	spf=pass (imf10.hostedemail.com: domain of 3H-l0agYKCCAOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3H-l0agYKCCAOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/Y5QFRn8flJrzgCLSCve4S6nH1Sggk7xxzVmeuM+qw8=;
+	b=R+wX/lTGnIXzYMjL/ty1M/cT51QQWkogw+/vPDR4lVD2N8eXGmjCKZYbqcvbmZkvYUaUQi
+	Jkzu0uGtx/WcFkJ6cEVTaAgvmQ+rwPGmMZbPOWNtceCoWraLLHsFJhwdG+c8Y6GM7fLQ4F
+	4uRdIxF1whTKkGlb20E8JKjIYAObFnM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786046753;
-	b=ubR8Aa6U8vImdHI4OeWwrEb8RZIbe4VL5SL2N+pZ2WYu/pp+yxvV9/WtSQYyPyoC8iR8Sr
-	Vz2VDd1a/L5zRj2I05QgsU8KDaKl+om7uAQyBDOdX8zT0ofR2dbyNdTqwVNQt5TQBQxzOK
-	pxDJC3tAtf2nyQmUkGJgfvuOKkqzzFE=
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so3762204a12.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:05:53 -0700 (PDT)
+	t=1786046755;
+	b=f8M2QFVULz+psescmvQgV49rMTvKXhwtSqe58YOV+Fy9NG4YrJKlSAeVDWUelMO0ncj9PJ
+	JMMOOdUnaOdZyf9JMPn0u+PYSJBBrQMzp3iEfoQr5YEfRo1gvjJgkD//FKfVFWoStXpL/z
+	JLCy4pMYv/NvrtS6vbDqNldItLQMsk0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DloGOQgJ;
+	spf=pass (imf11.hostedemail.com: domain of 3Iel0agYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3Iel0agYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso2883844a91.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046752; x=1786651552; darn=kvack.org;
+        d=google.com; s=20251104; t=1786046754; x=1786651554; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=mYilKGc1Ozm+Wqc6rMtn6RGepKDO0nOO45ZaajNWpPU=;
-        b=ffx40NeW2YtYX2AjvLl/FrlKQ4xlTkwa+qUdAki/NI61Tv+Yobjbn4Nj8xJjX1WA1W
-         dnv0zeJJVv++ZEWjrKk0J7WSeX4TqfDpx81/ylfXHOQXfT0Kmc5armnvYjZFLBJeRzTY
-         FiXi+NsqVpv6Jk0X4Eh552fOWvfUjTy4ELCUlGE5/HLHHfBlOeaEm6cWTTgInexuVVc9
-         34/YplIUdniJD8XNzvg0lOU3Er2e2TcBhMfeuEBvii531NGKZOZlzWam391vKVlUjgVx
-         KhtdNs/Ne3kYiodaPz4v7WWr0PKpvLQGzk7zijEhZ8X1yLdJSBSZuK5uMQzNgAkNB9zY
-         WLug==
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/Y5QFRn8flJrzgCLSCve4S6nH1Sggk7xxzVmeuM+qw8=;
+        b=DloGOQgJ7EmmN3zEyVD+Pq8lXSkcBnI4uWU43ZDAyY0DDBQkmuf9sh+rFXAVlrieXn
+         mS3+jFc2z3hiFyuH6PBUE2Z9Y3z0ARH1SbiemthxRySIAE465ndsLyhqOeUR7z1fF14V
+         F4e41pXzpu7rt0u//dfU0NCGJ89JanMqSq7l+rHu8VwB27E55Zm7L7/aLvTzwprZxkc3
+         V0GXBTwMgMntulNQXfRb8vxiM+P8XnB+7+YqcnXFK2kXnbo7ovK6nvAGEE6jgRDuOp2h
+         a7Y/BnYcWeSa27I4Il1O9AadxWDeItVR8TMXeTvZEnulZE/0BQ6ri85b6ecgTUmgs0kK
+         uqLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046752; x=1786651552;
+        d=1e100.net; s=20251104; t=1786046754; x=1786651554;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mYilKGc1Ozm+Wqc6rMtn6RGepKDO0nOO45ZaajNWpPU=;
-        b=WQmFmc095leONpV0+8rnq9xC8H/KB2//6lt/XLznmfBOiMGYmFvVmLD271y7W+5PEt
-         x5gD/+FKJ+U7WJILXHS+XM++9xkULTbQX/i95Rx4jHA1sXpfs0fnYP1t/7xcq4eds/pP
-         0nGzg+iKxfrCFR/WxGDBKhwa/wlliDaUTclH+Z+rD8UCU9H0pxRH6RwK+0zv+HTqFMSS
-         7tnUDT0JM2DbutyENOtGWotYGPPlO2bKy+ebskupVbvWqYHAch+zob8wbCJFyG8kXTtv
-         5lbD6xamwH7Kx6GgnWZOZK03goWrSlRL1yW46KvmemmGyHl4OzeSWEJIv5Zv1pn+DMge
-         ot9A==
-X-Forwarded-Encrypted: i=1; AHgh+RpuW6FwisCwvEoufxu5NIzxHd6swsRc3BqqmBzHYZTywntKn1M2VNphqOSZUc/PH+xED9swfk2QyA==@kvack.org
-X-Gm-Message-State: AOJu0YzK60j4u5wxnthYU6XluMMzUarrgITdhUataBs5LzM1W62e1QhB
-	xDI8LTzE05/AE1Zr6ssfpZDqAMHMB9HjTswhYi7JK7eWfxz+KScqzcXkQHGng3WinzCbV0HW0t1
-	5fjqf8Q==
-X-Received: from dlzz39.prod.google.com ([2002:a05:7022:4a7:b0:13c:fa0e:4693])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:918e:b0:3c4:1c9f:d81
- with SMTP id adf61e73a8af0-3cb85e2b5ffmr16224877637.7.1786046751801; Thu, 06
- Aug 2026 13:05:51 -0700 (PDT)
-Date: Thu,  6 Aug 2026 13:05:43 -0700
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/Y5QFRn8flJrzgCLSCve4S6nH1Sggk7xxzVmeuM+qw8=;
+        b=lMpttFv1LyTcrqS0Cu93mOvdqPsItD7XQOuiHVyxvlcFq4FzjhtRjFebEDTMGP/zCW
+         /nX4+nbUTa64hyvcM2HVgpc2KJdHSUtXPJG7buYj8ry90XvnA2U3P/19fXkv8vhux4Wp
+         jWeejHEArlp5YLS4Lt3GOCqrokfH03gD7aKaMqLvCuQudGWrg05WncLzGw6UDPGtY+W3
+         11KnwN01xgUQGn90E8pFY7t20ezsBjfau2W2RRE/W5G1wGTUlZmx5zN0bydW8xqc8J9p
+         oD5rHvE2CBw8O8rqbdMM6pUKB+/WBWAVqOnKv0ovBLDHXf4fWnCqmaNy1fY0dHjLa0Nw
+         W3pA==
+X-Forwarded-Encrypted: i=1; AHgh+RqgaUwxtnPGc6DJFR8akjKD/dH82siAA6mIbqGu3GhRT2p6svskSMHXaFZeCYkPR29h3BDduEuoJg==@kvack.org
+X-Gm-Message-State: AOJu0YwVELqrZsYHM2xpSz8q34Z9tWGLBCtezSsq5Y7pnsu9sjh3O262
+	Dz4uqotzV7qLjsgBV4IHkxwjT9XAhMhp7QfjSZtgTkH9j8gDGK89m68XBxeZEGDFpzGm5zXRyN3
+	AcNEjNA==
+X-Received: from dli20-n1.prod.google.com ([2002:a05:7022:294:10b0:13b:97f1:acba])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5683:b0:381:26f:8f05
+ with SMTP id 98e67ed59e1d1-3903c5380f7mr17303261a91.3.1786046753666; Thu, 06
+ Aug 2026 13:05:53 -0700 (PDT)
+Date: Thu,  6 Aug 2026 13:05:44 -0700
+In-Reply-To: <20260806200548.3124802-1-surenb@google.com>
 Mime-Version: 1.0
+References: <20260806200548.3124802-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260806200548.3124802-1-surenb@google.com>
-Subject: [PATCH v4 0/5] mm: Unconditional per-VMA locks and cleanups
+Message-ID: <20260806200548.3124802-2-surenb@google.com>
+Subject: [PATCH v4 1/5] mm: Make per-VMA locks available universally
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
@@ -98,14 +102,15 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
 	surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: r8ehw41uja9imokbfabdcb4ddzihfxii
-X-Rspamd-Queue-Id: 573A2C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786046753-693473
-X-HE-Meta: U2FsdGVkX1+y+u0zEpk5pgYGmJSzqW4/TCxV1rnBK30ULtf4A0+ZgcPSR/8jkeEh8B5ewjK0gRUOWKTPrODeR15Yb3uM3+mYyrsINngyiKyurpQzL8Pz+aP6dzCSCw3gnPQYEXdjhjZ6XSIzsKOIk2o4yNI0+0G1Z48RzqsL7Rx9ZPmkiIfctEASmdw64+x8dgffDU0JXAFQWMywEAyDCfzSbRlSRYfP8ygxfxzcaO5pAibzIeNCwLrit8Cgyn7U9E6A+OOuNp8Gf7pB/y2u7DEE8qQYziNREOUPxGKxnlqx/z7pt+s7xl7ZUbKCGpD7//gP8R/aKSGsPkuGervEaLY1kQ1BC2+vyfMJQnK9poZW7rLeVL24KrXQmrMgyTKU31HadDoDrVJSPSx394K4QqiYDy08uZ8uRaoKvSk0iBQixCx/GG3gPv0A3PhKGY2EruZtEbe9Lo2I0XQS4dn886VMo9nwIwf/S6BDpIRIOeM3KgUzUWaqur7XbvtcHdBKFjko7fgbgBUekAA6qA+O2VenbRh7ytKfCwk6vtvhIIFa3aXD3a73Wc9+4Rbm56rpSoKOY0pl8CkCEGJwYgZrJAtAm2awZOF1UK9iXuX1+2fRHrIwvGDgA6AeHCryBQsJeoTk5pDlmQvJpLG3VW7Avmlkuus56YHfgIdfg3NsFdkg/AHBmaAGweFQGKaJgASD1N4L461y0hxypZwCSrI1GqIo+Fpj1aJMg7hdexfeCiwvs2WWpIQvbr9l6AXcgwvBV5CDltEr5l1g6xjXZpF7d0aVwPaEaLAiuTArrKb2mh6LqxiJIyRvd1xXgjD2q4QCs6oWyZSxmoFeyiWLKT0l0j1CI6iR6siqSvgFGnpUDZLgZMsci1v42yjb8NjVsJFL/TKev/M592V4rYzxX1AU/oS7OHGqQakwF2X1VusdOrGiaZGLdfY3VZ56rFYnFC5eBZWjPLU4/1dqflbf7je
- G0NwPRmx
- t+J8hJAlL5Y4WQt6uRw9ou5svXNWS+/0DZ0O0u1TTs3kYmZGerjVWggxWui7NgrHQsMfKHLj1Llx8Ti4sZbMx4VLJBb6/20YWwztJ04/AMgEkwrZ6NbGLDGnOANJAI3RZSScrKSRRHEsIasNa8qi/MO9Zd6t3Bq27VaClbe1eb0JIkX/IIO0ShtYl9BHx84r/6Q/IQCdSHBVei1cFDn2HpQmmMMe83iBxszIyG3I0oWZQhlndFbiLzW2bLo6g8QqR/D1bZ/EOvzqJ98TWIWsq2IARRMC3izGSkJqgihBZ5flAttt75pkhSQZ+cyg98GxBBbKduPLZ12gkREvOT3jDGvqpNMH/8FAwGm62kUJt42PP6v1ZuW1YwrjHBmjNeAq26BcbvIdZD6xoxwpnWLL3lOKc1lL89yv/mbBnL3HC3+QHjVpo5yqW0mnaibzRior0sMn3n7mj1nrGNKxLjMmGdKtFoY+0u3PL6RbpyOZ+LASkC7Di6vYxMDXewN1Ihev7Lq8T6hRAP+3JNjXUIj2geRiJTYschaXrf/KrWLNt45OfRCcYe9fZUYleYCSDOB8O4YIvUCt2PFgVhclchfG47rjWep5lnZkpDtD2c8u8nOcntHtMGidZSsU0PR0jw3aS/5Wdf/6GBwtiGz+ATqzysHcah5u0nsn4Z3SFkFjjM0z76amJynfzwvsFHHNZMyMEQKCmYKVe3h9nQDtaO5QGy32ChJ0IT/bnSZzNoHUXvaa/1NhMPp7VCCm4ppkmmHVsYemXWJqL46u/tho5dFsPNi2U67aSu+Hcm1AIysBoxYGsT1ZQtrwiD+AaursYdgBAi1VaaMEJEQLhzpgHouQyNzri3pzzvcjS40DH5J9kgUrBJgbG6d/xh6GnFRiFyF2m/tqb5MQoCQEqycHAdpFzaTojC3fOOQeDIqKo/ZyGu7EavC0Y7JIfoowpUyKkDrMNhjGQ
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 483E24000F
+X-Stat-Signature: hx4nmcmoxiujbciigkkczxkxzpjfuqh9
+X-HE-Tag: 1786046755-383150
+X-HE-Meta: U2FsdGVkX1/OyfXCNM3tsFCdWG/fBn6TT9GzI2fOVsscaKN7xVdLQH5iN2SL+pGEGNmFoI55RuneVx2mcBKUwuUFjXnGl6/tChepTCsOiChi6nSDhRgX0GmSFT3gsm1THwb765P+Mq3T6aVh+WgyZ5lRlXini+OBogflmzvgpwPC6tll6TgVhAzlJtYY2xkWCtJ13tkbIOpL6xAtqM4ZCcjsjt15qgKO4yqPBJq1IYPhIjUUlviHpFb7HCtCyiDA36HdJQltP7RaOafvX1BgDGDWfC5mWyZQ3el21cN71xZGaE5Qbxg/BGBdA5sB2ia/dHmiKH+rfw53Vww6v0UYkebBRYqZDm1wrr/sUCQhAur8+32BNYBzteyO9urtGYsJMJRjnZw06gbfrtaSA7mp0kQrRGgU+UYQXPid69aiyVvGuBVkyi/nJJOPoNqnknDXFaYd/krrDLCYFIUBrPHjGQvOLJJA3TY6/+S0KgZliI57sHK13QSf88FXYNWx0Mp4KacOFyEb4pnHTr5SikMKaSB4F0zdlRX498CHuBfbE3frk0sEzk2ifPM2P7uJvwFWsGal0R72Xe5gQSi4fz8YozguGqMZYhFFtf760xcP9loLWNq88Dg1XHYUuWW3IbcdCN7ymNPRng6fH7Ccg0BCz8xTotD0513IDIs2KTZO3ddZC7zuaJTLCuUUuBRzjF0k4/f/0Qgu2t4QFaNfZGPu68TmeYxwcD+EXTDLSsU4/utofj3feNLUs+hvttX12fz7sr/35LiWknINBG6pl/Ge7dbrKgmdGbww0aGa3LKrbD6o1gwJVn+rLgLVrJ2Rfv2FIZf0eQ8O2eUNp8tKfEilbHONqdZWeX6IXE8TAGzTy/nznP/ztWDZSvI3kN4Zd7AtHsdSlTViWcjoZkyEDk1xQj4J0Q4MWd14qohGsA90MqUe3wFapTtCVejjkYhuQDNhDjbxVxSGhYLijrRjOaZ
+ HTmYK8zB
+ t4S5EGFe/UZr+LBbmJy9qorYYt8yJSgZj+8wv9sZ63P7RimMZstWfaJjW0kz1q1b0Uq/JbP6sJllGCEiltFxYkpuRMoOnQDbvTaQ4A9WL4OjkTAimaRG9h6xceXdLYSoS3+AX1BGCKcG50twv8HFIWroETxsS0GgmZwB5sFQL4/aS5PSbj9KEL39T82iXNllMTtnZ4u/p5I7biIP+Kw8pdY8bQzWNtigMmaKLQuiuWcyItyrHUlgErNxFFLc8f4ajVPpt+sUhTIRsKFs9SwUPcU+Y4c91JJXednMu/HyZSWEZyr+RrbVj5xhb3eXcqDtO7+WagmNb53rWTh8KsnHa3gJJsX725OtqXKdEKJ8MJ9ysscXQflhtdjubsQePxNNLsBnK5uFUvbVNMOubpcGlo4SxqGrPbtMiIFRmoloupTdXUGEyeVmj/V1VInkO85JLH8qSSPb+hcWVF9KbeIBe6JEKOJR1jeJYhsZKy3DGtRqYG2wjHKDSOckzeNvq03IgO7AuqupMuOOsi7KVKE4B0UEGPKFt1ZUYv5Le4yl5cKkvHcNpKTF44MJM/T/rpndl7Wgpe21hTTHJu+4bkto7FVzjJl46hwXVbm7jP+uR+P31fn++/AMHsFVIj8DkAiP1ymiitjnE+qVgcoGLY+97HOtOjAlJlkQGepG1p49L6i/Z3G++2NPXe64QPlX2e84xQ0KwJKArthlL5sinKdwFrXCTHdwo0E6T99hoXtU5mFlg3sPmh3qHsC8FyUhpvQwqPfhLK+bpDEEJkVL0LgvDeAExU4Ru7lkXbU4Wa1fQDwkaWH7GiSzHrTywMvF9mZWkHnLtl2fLzBfd83Xkw7Mgsalqw7wQzkhOpFtby+nIirQuK5if00P5EeJIq/DLLUm6xOySLMpH8IpLt3/IaUUTpXbloQA7QSDb1iS+B45aOnj5YWlg1vhehevhq+zJqYltI3x3bMc8cYSxOA7BUnj85qrn5wN2
+ Cd50GdF+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,67 +118,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v2 version of this patchset [1] was written by Dave Hansen and per his
-request, I'm taking over this series.
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-tl;dr: Make per-VMA locks available in all configs. Simplify some
-of the per-VMA lock users now that they can rely on them being
-always available.
+The per-VMA locks have been around for several years. They've had some
+bugs worked out of them and have seen quite wide use. However, they
+are still only available when architectures explicitly enable them.
+Remove the conditional compilation around the per-VMA locks, making
+them available on all architectures and configs.
 
-Binder and networking folks: Your code is the target of the cleanups.
-I'm cc'ing you now on v2 because there's emerging consensus on the mm
-side that the approach here is sane. I'm not quite sure how this pile
-would get merged, but ack/review tags would be appreciated if this
-looks good to you.
+The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+when the architecture started using per-VMA locks in the fault
+handler. But, contrary to the naming, the Kconfig option does not
+really indicate whether the architecture supports per-VMA locks or
+not. It is more of a marker for whether the architecture is likely to
+benefit from per-VMA locks.
 
-Longer version:
+To me, the most important thing side-effect of universal availability
+is letting per-VMA locks be used in SMP=3Dn configs. This lets us use
+per-VMA locking in all x86 code without fallbacks.
 
-When working on some x86 shadow stack code, it was a real pain to
-avoid causing recursive locking problems with mmap_lock. One way
-to avoid those was to avoid mmap_lock and use per-VMA locks instead.
-They are great, but they are not available in all configs which
-makes them unusable in generic code, or if you want to completely
-avoid mmap_lock.
+Overall, this just generally makes the kernel simpler. Just look at
+the diffstat. It also opens the door to users that want to use the
+per-VMA locks in common code. Doing *that* brings additional
+simplifications.
 
-Make per-VMA locks available in all configs. Right now, they are
-only available on select architectures when SMP and MMU are enabled.
-But all of the primitives that per-VMA locks are built on (RCU, maple
-trees, refcounts) work just fine without SMP or MMU.
+The downside of this is adding some fields to vm_area_struct and
+mm_struct. There are likely ways to optimize this, especially for
+things like SMP=3Dn configs. For now, do the simplest thing: use the
+same implementation everywhere.
 
-The only real downside is that making VMAs a wee bit bigger on !MMU
-and !SMP builds.
+=3D=3D Considerations for NOMMU config =3D=3D
 
-The upside is much cleaner code, lower complexity and less #ifdeffery.
+NOMMU systems do not write-lock VMAs, therefore read-locking a VMA
+would always succeed unless VMA is detached. Therefore for NOMMU
+config we make vma_mark_attached() a NOOP, which keeps VMAs always in
+detached state. This causes VMA read-locking to always fail and the
+caller falls back to locking mmap_lock.
 
-Clean up a binder VMA locking site now that it can rely on per-VMA
-locks.
+The following functions will have a different implementation in NOMMU
+config:
 
-Building on top of universally-available per-VMA locks, introduce a
-new helper. Since the new API does not require callers to have a
-fallback to mmap_lock, it's much easier to use. Callers can
-potentially replace this very common kernel idiom:
+- vma_mark_attached(), vma_mark_detached() are made NOOPs, keeping VMAs
+always in a detached state and preventing assertions and refcount
+underflows;
 
-	mmap_read_lock(mm);
-	vma =3D vma_lookup()
-	// fiddle with vma
-	mmap_read_unlock(mm);
+- vma_start_write(), vma_start_write_killable() are made NOOPs to avoid
+warnings in __vma_start_write() due to VMAs being detached.
+These functions are not used in NOMMU code but __vma_start_write()
+is an exported function, therefore might be used by drivers.
 
-with:
+- vma_assert_attached() is made NOOP because it's reachable from NOMMU
+code via split_vma()->vma_iter_store_new()->vma_iter_store_overwrite();
 
-	vma =3D vma_start_read_unlocked(mm, address);
-	// fiddle with vma
-	vma_end_read(vma);
+- vma_assert_write_locked() is asserting vma->vm_mm is write-locked;
 
-Which avoids mmap_lock entirely in the fast path.
+The following functions work for both MMU and NOMMU configs:
 
-Use that new API for another binder site and one in the TCP code.
+- vma_lock_init() performs the same initialization as for MMU config;
 
+- mm_lock_seqcount_init(), mm_lock_seqcount_begin(), mm_lock_seqcount_end()
+are called from mmap_write_{lock|unlock} and update mm_lock_seq correctly.
+
+- mmap_lock_speculate_try_begin(), mmap_lock_speculate_retry() work as is
+because mm_lock_seq is updated correctly;
+
+- vma_start_read(), vma_start_read_locked() will always fail because VMAs
+are always detached;
+
+- vma_end_read() will never be called because vma_start_read() never
+succeeds;
+
+- vma_is_attached() always return false because VMAs are always detached;
+
+- vma_assert_detached() will never trigger because VMAs are never attached;
+
+Changes in the following files are not affecting NOMMU config:
+
+task_mmu.c - not compiled when CONFIG_MMU=3Dn;
+pagewalk.c - not compiled when CONFIG_MMU=3Dn;
+userfaultfd.c - not compiled when CONFIG_MMU=3Dn (CONFIG_USERFAULTFD depend=
+s
+on CONFIG_MMU);
+
+The following changes are made to keep NOMMU config working like before:
+
+stack_map_lock_vma() - keeps mmap_lock in NOMMU config;
+bpf_iter_task_vma_new() - bails out in NOMMU config;
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Jann Horn <jannh@google.com>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: linux-mm@kvack.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -185,47 +223,7 @@ Cc: Alice Ryhl <aliceryhl@google.com>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: David Ahern <dsahern@kernel.org>
 Cc: netdev@vger.kernel.org
-
-Changes from v3 [2]:
-Patch 1:
-- Restored a comment in Kconfig, per Vlastimil Babka
-- Removed extra braces in mm.rs, per Vlastimil Babka
-- Removed obsolete comment in mm.rs, per Sashiko
-- Updated patch description to explain considerations for !CONFIG_MMU
-- Changed stack_map_lock_vma() to keep mmap_lock if !CONFIG_MMU
-- Changed bpf_iter_task_vma_new() to bail out if !CONFIG_MMU
-- Added !CONFIG_MMU versions of vma_mark_attached(), vma_mark_detached(),
-  vma_start_write(), vma_start_write_killable(), vma_assert_attached() and
-  vma_assert_write_locked()
-Patch 2:
-- Move binder_alloc_is_mapped() check to only protect zap_vma_range() and
-  make error handling consistent, per Alice Ryhl and Lorenzo Stoakes
-Patch 3:
-- Added Suggested-by, per Lorenzo Stoakes
-- Updated the comments for vma_start_read_unlocked(), per Lorenzo Stoakes
-  and Vlastimil Babka
-- Updated the patch description, per Vlastimil Babka and Lorenzo Stoakes
-Patch 4:
-- Updated comments for vma_start_read_unlocked() Rust version to be
-  consistent with C, per Lorenzo Stoakes
-- Added Reviewed-by and Acked-by, per Alice Ryhl and Lorenzo Stoakes
-Patch 5:
-- Added a note in the changelog why the mmap_lock fallback removal does
-  not affect NOMMU case
-
-Applies cleanly over mm-unstable
-
-[1] https://lore.kernel.org/all/20260610230409.A44D29FA@davehans-spike.ostc=
-.intel.com/
-[2] https://lore.kernel.org/all/20260802215459.2769283-1-surenb@google.com/
-
-Dave Hansen (5):
-  mm: Make per-VMA locks available universally
-  binder: Make shrinker rely solely on per-VMA lock
-  mm: Add RCU-based VMA lookup helper that waits for writers
-  binder: Remove mmap_lock fallback
-  tcp: Remove mmap_lock fallback path
-
+---
  arch/arm/Kconfig                       |  1 -
  arch/arm64/Kconfig                     |  1 -
  arch/loongarch/Kconfig                 |  1 -
@@ -234,13 +232,11 @@ Dave Hansen (5):
  arch/riscv/Kconfig                     |  1 -
  arch/s390/Kconfig                      |  1 -
  arch/x86/Kconfig                       |  2 -
- drivers/android/binder/page_range.rs   | 19 +-----
- drivers/android/binder_alloc.c         | 62 +++++++----------
  fs/proc/internal.h                     |  2 -
  fs/proc/task_mmu.c                     | 93 --------------------------
  include/linux/mm.h                     | 12 ----
  include/linux/mm_types.h               |  8 +--
- include/linux/mmap_lock.h              | 89 ++++++++++--------------
+ include/linux/mmap_lock.h              | 70 ++++++-------------
  kernel/bpf/stackmap.c                  | 15 ++---
  kernel/bpf/task_iter.c                 |  2 +-
  kernel/fork.c                          |  2 -
@@ -249,18 +245,989 @@ Dave Hansen (5):
  mm/debug.c                             |  4 --
  mm/init-mm.c                           |  2 -
  mm/memory.c                            |  2 -
- mm/mmap_lock.c                         | 59 +++++++++-------
+ mm/mmap_lock.c                         | 24 -------
  mm/pagewalk.c                          |  2 -
  mm/rmap.c                              |  2 -
- mm/userfaultfd.c                       | 61 ++---------------
- net/ipv4/tcp.c                         | 31 +++------
- rust/kernel/mm.rs                      | 57 ++++++++++------
+ mm/userfaultfd.c                       | 55 ---------------
+ rust/kernel/mm.rs                      | 32 +++------
  tools/testing/vma/include/dup.h        |  5 +-
  tools/testing/vma/vma_internal.h       |  1 -
- 31 files changed, 157 insertions(+), 395 deletions(-)
+ 28 files changed, 39 insertions(+), 316 deletions(-)
 
-
-base-commit: bacc32cc7de65ffff70080a48eb294f89e434d5e
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 9187240a02db..f815209167cd 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -41,7 +41,6 @@ config ARM
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_CFI
+ 	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_SUPPORTS_RT
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 11a9c534b7b4..21eb64b24a2c 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -81,7 +81,6 @@ config ARM64
+ 	select ARCH_HAS_PTE_PROTNONE
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
+ 	select ARCH_SUPPORTS_RT
+ 	select ARCH_SUPPORTS_SCHED_SMT
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index e20acbe5fe7b..7741e39eca2b 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -69,7 +69,6 @@ config LOONGARCH
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	select ARCH_HAS_PTE_PROTNONE if 64BIT
+ 	select ARCH_SUPPORTS_NUMA_BALANCING if NUMA
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_SUPPORTS_RT
+ 	select ARCH_SUPPORTS_SCHED_SMT if SMP
+ 	select ARCH_SUPPORTS_SCHED_MC  if SMP
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platform=
+s/powernv/Kconfig
+index b5ad7c173ef0..dd8f6060fb7a 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -17,7 +17,6 @@ config PPC_POWERNV
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+ 	select FORCE_SMP
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
+ 	default y
+=20
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platform=
+s/pseries/Kconfig
+index 74910ce3a541..7d125e288f6e 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -23,7 +23,6 @@ config PPC_PSERIES
+ 	select HOTPLUG_CPU
+ 	select FORCE_SMP
+ 	select SWIOTLB
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
+ 	default y
+=20
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 7b9c373d82fa..faa85a031fe5 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -70,7 +70,6 @@ config RISCV
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS if 64BIT && MMU
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
+-	select ARCH_SUPPORTS_PER_VMA_LOCK if MMU
+ 	select ARCH_HAS_PTE_PROTNONE if MMU
+ 	select ARCH_SUPPORTS_RT
+ 	select ARCH_SUPPORTS_SHADOW_CALL_STACK if HAVE_SHADOW_CALL_STACK
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index ab8fccc2cc4e..d1274bca8c39 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -151,7 +151,6 @@ config S390
+ 	select ARCH_HAS_PTE_PROTNONE
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select ARCH_USE_SYM_ANNOTATIONS
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index fb298e219179..79479d29576f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -27,7 +27,6 @@ config X86_64
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+-	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
+ 	select HAVE_ARCH_SOFT_DIRTY
+ 	select MODULES_USE_ELF_RELA
+@@ -1846,7 +1845,6 @@ config X86_USER_SHADOW_STACK
+ 	bool "X86 userspace shadow stack"
+ 	depends on AS_WRUSS
+ 	depends on X86_64
+-	depends on PER_VMA_LOCK
+ 	select ARCH_USES_HIGH_VMA_FLAGS
+ 	select ARCH_HAS_USER_SHADOW_STACK
+ 	select X86_CET
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index b232e1098117..6713757da099 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -385,10 +385,8 @@ struct mem_size_stats;
+=20
+ struct proc_maps_locking_ctx {
+ 	struct mm_struct *mm;
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	bool mmap_locked;
+ 	struct vm_area_struct *locked_vma;
+-#endif
+ };
+=20
+ struct proc_maps_private {
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 817e3e0f9194..096bf0b0b9e0 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -130,8 +130,6 @@ static void release_task_mempolicy(struct proc_maps_pri=
+vate *priv)
+ }
+ #endif
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+-
+ static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+ {
+ 	int ret =3D mmap_read_lock_killable(lock_ctx->mm);
+@@ -233,46 +231,6 @@ static inline void reacquire_rcu(struct proc_maps_priv=
+ate *priv)
+ 	vma_iter_set(&priv->iter, priv->lock_ctx.locked_vma->vm_end);
+ }
+=20
+-#else /* CONFIG_PER_VMA_LOCK */
+-
+-static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	return mmap_read_lock_killable(lock_ctx->mm);
+-}
+-
+-static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	mmap_read_unlock(lock_ctx->mm);
+-}
+-
+-static inline bool lock_vma_range(struct seq_file *m,
+-				  struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	return lock_ctx_mm(lock_ctx) =3D=3D 0;
+-}
+-
+-static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx=
+)
+-{
+-	unlock_ctx_mm(lock_ctx);
+-}
+-
+-static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
+-					   loff_t last_pos)
+-{
+-	return vma_next(&priv->iter);
+-}
+-
+-static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
+-					 loff_t pos)
+-{
+-	return false;
+-}
+-
+-static inline void drop_rcu(struct proc_maps_private *priv) {}
+-static inline void reacquire_rcu(struct proc_maps_private *priv) {}
+-
+-#endif /* CONFIG_PER_VMA_LOCK */
+-
+ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppo=
+s)
+ {
+ 	struct proc_maps_private *priv =3D m->private;
+@@ -560,8 +518,6 @@ static int pid_maps_open(struct inode *inode, struct fi=
+le *file)
+ 		PROCMAP_QUERY_VMA_FLAGS				\
+ )
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+-
+ static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+ {
+ 	reset_lock_ctx(lock_ctx);
+@@ -612,26 +568,6 @@ static struct vm_area_struct *query_vma_find_by_addr(s=
+truct proc_maps_locking_ct
+ 	return vma;
+ }
+=20
+-#else /* CONFIG_PER_VMA_LOCK */
+-
+-static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	return mmap_read_lock_killable(lock_ctx->mm);
+-}
+-
+-static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	mmap_read_unlock(lock_ctx->mm);
+-}
+-
+-static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_lock=
+ing_ctx *lock_ctx,
+-						     unsigned long addr)
+-{
+-	return find_vma(lock_ctx->mm, addr);
+-}
+-
+-#endif  /* CONFIG_PER_VMA_LOCK */
+-
+ static struct vm_area_struct *query_matching_vma(struct proc_maps_locking_=
+ctx *lock_ctx,
+ 						 unsigned long addr, u32 flags)
+ {
+@@ -1314,8 +1250,6 @@ static const struct mm_walk_ops smaps_shmem_walk_ops =
+=3D {
+ 	.walk_lock		=3D PGWALK_RDLOCK,
+ };
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+-
+ static const struct mm_walk_ops smaps_walk_vma_lock_ops =3D {
+ 	.pmd_entry		=3D smaps_pte_range,
+ 	.hugetlb_entry		=3D smaps_hugetlb_range,
+@@ -1345,22 +1279,6 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *p=
+riv)
+ 	return &smaps_shmem_walk_vma_lock_ops;
+ }
+=20
+-#else /* CONFIG_PER_VMA_LOCK */
+-
+-static inline const struct mm_walk_ops *
+-get_smaps_walk_ops(struct proc_maps_private *priv)
+-{
+-	return &smaps_walk_ops;
+-}
+-
+-static inline const struct mm_walk_ops *
+-get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
+-{
+-	return &smaps_shmem_walk_ops;
+-}
+-
+-#endif /* CONFIG_PER_VMA_LOCK */
+-
+ /*
+  * Gather mem stats from @vma with the indicated beginning
+  * address @start, and keep them in @mss.
+@@ -3497,7 +3415,6 @@ static const struct mm_walk_ops show_numa_ops =3D {
+ 	.walk_lock =3D PGWALK_RDLOCK,
+ };
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+ static const struct mm_walk_ops show_numa_vma_lock_ops =3D {
+ 	.hugetlb_entry =3D gather_hugetlb_stats,
+ 	.pmd_entry =3D gather_pte_stats,
+@@ -3512,16 +3429,6 @@ get_show_numa_ops(struct proc_maps_private *priv)
+ 	return &show_numa_vma_lock_ops;
+ }
+=20
+-#else /* CONFIG_PER_VMA_LOCK */
+-
+-static inline const struct mm_walk_ops *
+-get_show_numa_ops(struct proc_maps_private *priv)
+-{
+-	return &show_numa_ops;
+-}
+-
+-#endif /* CONFIG_PER_VMA_LOCK */
+-
+ /*
+  * Display pages allocated per node and memory policy via /proc.
+  */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7fabe6c66b4b..d9850f846242 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -931,7 +931,6 @@ static inline void vma_numab_state_free(struct vm_area_=
+struct *vma) {}
+  * These must be here rather than mmap_lock.h as dependent on vm_fault typ=
+e,
+  * declared in this header.
+  */
+-#ifdef CONFIG_PER_VMA_LOCK
+ static inline void release_fault_lock(struct vm_fault *vmf)
+ {
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
+@@ -947,17 +946,6 @@ static inline void assert_fault_locked(const struct vm=
+_fault *vmf)
+ 	else
+ 		mmap_assert_locked(vmf->vma->vm_mm);
+ }
+-#else
+-static inline void release_fault_lock(struct vm_fault *vmf)
+-{
+-	mmap_read_unlock(vmf->vma->vm_mm);
+-}
+-
+-static inline void assert_fault_locked(const struct vm_fault *vmf)
+-{
+-	mmap_assert_locked(vmf->vma->vm_mm);
+-}
+-#endif /* CONFIG_PER_VMA_LOCK */
+=20
+ static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
+ {
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b5d4cd3b067b..d8e246fd09d3 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -950,7 +950,6 @@ struct vm_area_struct {
+ 		vma_flags_t flags;
+ 	};
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/*
+ 	 * Can only be written (using WRITE_ONCE()) while holding both:
+ 	 *  - mmap_lock (in write mode)
+@@ -966,7 +965,7 @@ struct vm_area_struct {
+ 	 * slowpath.
+ 	 */
+ 	unsigned int vm_lock_seq;
+-#endif
++
+ 	/*
+ 	 * Low 32-bits of virtual page offset.
+ 	 * See vma_start_virt_pgoff() comment for details.
+@@ -1003,7 +1002,6 @@ struct vm_area_struct {
+ #ifdef CONFIG_NUMA_BALANCING
+ 	struct vma_numab_state *numab_state;	/* NUMA Balancing state */
+ #endif
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/*
+ 	 * Used to keep track of firstly, whether the VMA is attached, secondly,
+ 	 * if attached, how many read locks are taken, and thirdly, if the
+@@ -1046,7 +1044,6 @@ struct vm_area_struct {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map vmlock_dep_map;
+ #endif
+-#endif
+ #ifdef CONFIG_64BIT
+ 	/*
+ 	 * High 32-bits of virtual page offset.
+@@ -1254,7 +1251,6 @@ struct mm_struct {
+ 					  * init_mm.mmlist, and are protected
+ 					  * by mmlist_lock
+ 					  */
+-#ifdef CONFIG_PER_VMA_LOCK
+ 		struct rcuwait vma_writer_wait;
+ 		/*
+ 		 * This field has lock-like semantics, meaning it is sometimes
+@@ -1274,7 +1270,7 @@ struct mm_struct {
+ 		 * mmap_lock.
+ 		 */
+ 		seqcount_t mm_lock_seq;
+-#endif
++
+ 		struct futex_mm_data	futex;
+=20
+ 		unsigned long hiwater_rss; /* High-watermark of RSS usage */
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 87f77e3da77f..7b2bbb09a952 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -76,8 +76,6 @@ static inline void mmap_assert_write_locked(const struct =
+mm_struct *mm)
+ 	rwsem_assert_held_write(&mm->mmap_lock);
+ }
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+-
+ #ifdef CONFIG_LOCKDEP
+ #define __vma_lockdep_map(vma) (&vma->vmlock_dep_map)
+ #else
+@@ -297,6 +295,9 @@ int __vma_start_write(struct vm_area_struct *vma, int s=
+tate);
+  */
+ static inline void vma_start_write(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU))
++		return;
++
+ 	if (__is_vma_write_locked(vma))
+ 		return;
+=20
+@@ -319,6 +320,9 @@ static inline void vma_start_write(struct vm_area_struc=
+t *vma)
+ static inline __must_check
+ int vma_start_write_killable(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU))
++		return 0;
++
+ 	if (__is_vma_write_locked(vma))
+ 		return 0;
+=20
+@@ -331,6 +335,11 @@ int vma_start_write_killable(struct vm_area_struct *vm=
+a)
+  */
+ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU)) {
++		mmap_assert_write_locked(vma->vm_mm);
++		return;
++	}
++
+ 	VM_WARN_ON_ONCE_VMA(!__is_vma_write_locked(vma), vma);
+ }
+=20
+@@ -432,6 +441,9 @@ static inline bool vma_is_attached(struct vm_area_struc=
+t *vma)
+  */
+ static inline void vma_assert_attached(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU))
++		return;
++
+ 	WARN_ON_ONCE(!vma_is_attached(vma));
+ }
+=20
+@@ -442,6 +454,9 @@ static inline void vma_assert_detached(struct vm_area_s=
+truct *vma)
+=20
+ static inline void vma_mark_attached(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU))
++		return;
++
+ 	vma_assert_write_locked(vma);
+ 	vma_assert_detached(vma);
+ 	refcount_set_release(&vma->vm_refcnt, 1);
+@@ -451,6 +466,9 @@ void __vma_exclude_readers_for_detach(struct vm_area_st=
+ruct *vma);
+=20
+ static inline void vma_mark_detached(struct vm_area_struct *vma)
+ {
++	if (!IS_ENABLED(CONFIG_MMU))
++		return;
++
+ 	vma_assert_write_locked(vma);
+ 	vma_assert_attached(vma);
+=20
+@@ -484,54 +502,6 @@ struct vm_area_struct *lock_next_vma(struct mm_struct =
+*mm,
+ 				     struct vma_iterator *iter,
+ 				     unsigned long address);
+=20
+-#else /* CONFIG_PER_VMA_LOCK */
+-
+-static inline void mm_lock_seqcount_init(struct mm_struct *mm) {}
+-static inline void mm_lock_seqcount_begin(struct mm_struct *mm) {}
+-static inline void mm_lock_seqcount_end(struct mm_struct *mm) {}
+-
+-static inline bool mmap_lock_speculate_try_begin(struct mm_struct *mm, uns=
+igned int *seq)
+-{
+-	return false;
+-}
+-
+-static inline bool mmap_lock_speculate_retry(struct mm_struct *mm, unsigne=
+d int seq)
+-{
+-	return true;
+-}
+-static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_re=
+fcnt) {}
+-static inline void vma_end_read(struct vm_area_struct *vma) {}
+-static inline void vma_start_write(struct vm_area_struct *vma) {}
+-static inline __must_check
+-int vma_start_write_killable(struct vm_area_struct *vma) { return 0; }
+-static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+-		{ mmap_assert_write_locked(vma->vm_mm); }
+-static inline bool vma_is_attached(struct vm_area_struct *vma)
+-		{ return true; }
+-static inline void vma_assert_attached(struct vm_area_struct *vma) {}
+-static inline void vma_assert_detached(struct vm_area_struct *vma) {}
+-static inline void vma_mark_attached(struct vm_area_struct *vma) {}
+-static inline void vma_mark_detached(struct vm_area_struct *vma) {}
+-
+-static inline struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *=
+mm,
+-		unsigned long address)
+-{
+-	return NULL;
+-}
+-
+-static inline void vma_assert_locked(struct vm_area_struct *vma)
+-{
+-	mmap_assert_locked(vma->vm_mm);
+-}
+-
+-static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+-{
+-	/* If no VMA locks, then either mmap lock suffices to stabilise. */
+-	mmap_assert_locked(vma->vm_mm);
+-}
+-
+-#endif /* CONFIG_PER_VMA_LOCK */
+-
+ static inline void vma_assert_can_modify(struct vm_area_struct *vma)
+ {
+ 	if (vma_is_attached(vma))
+diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+index 41fe87d7302f..b15ee4b9ac4e 100644
+--- a/kernel/bpf/stackmap.c
++++ b/kernel/bpf/stackmap.c
+@@ -272,13 +272,8 @@ struct stack_map_vma_lock {
+ /*
+  * Acquire a stable read-side reference on the VMA covering @ip.
+  *
+- * With CONFIG_PER_VMA_LOCK=3Dy this returns a VMA with its per-VMA read
+- * lock held and mmap_lock dropped, so the caller may sleep.
+- *
+- * With CONFIG_PER_VMA_LOCK=3Dn it returns a VMA with mmap_lock still
+- * held; the caller must snapshot any fields it needs and pin vm_file
+- * with get_file() before stack_map_unlock_vma() drops mmap_lock, as
+- * the VMA may be split, merged, or freed after that.
++ * This returns a VMA with its per-VMA read lock held and mmap_lock
++ * dropped, so the caller may sleep.
+  *
+  * Returns NULL on failure, in which case no lock is held.
+  */
+@@ -288,7 +283,6 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, uns=
+igned long ip)
+ 	struct mm_struct *mm =3D lock->mm;
+ 	struct vm_area_struct *vma;
+=20
+-	/* noop under !CONFIG_PER_VMA_LOCK */
+ 	vma =3D lock_vma_under_rcu(mm, ip);
+ 	if (vma) {
+ 		lock->vma =3D vma;
+@@ -308,21 +302,20 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, u=
+nsigned long ip)
+ 		return NULL;
+ 	}
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
++#ifdef CONFIG_MMU
+ 	if (!vma_start_read_locked(vma)) {
+ 		mmap_read_unlock(mm);
+ 		return NULL;
+ 	}
+ 	mmap_read_unlock(mm);
+ #endif
+-
+ 	lock->vma =3D vma;
+ 	return vma;
+ }
+=20
+ static void stack_map_unlock_vma(struct stack_map_vma_lock *lock)
+ {
+-#ifdef CONFIG_PER_VMA_LOCK
++#ifdef CONFIG_MMU
+ 	vma_end_read(lock->vma);
+ #else
+ 	mmap_read_unlock(lock->mm);
+diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
+index e791ae065c39..245f74ec491d 100644
+--- a/kernel/bpf/task_iter.c
++++ b/kernel/bpf/task_iter.c
+@@ -835,7 +835,7 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_t=
+ask_vma *it,
+ 	BUILD_BUG_ON(sizeof(struct bpf_iter_task_vma_kern) !=3D sizeof(struct bpf=
+_iter_task_vma));
+ 	BUILD_BUG_ON(__alignof__(struct bpf_iter_task_vma_kern) !=3D __alignof__(=
+struct bpf_iter_task_vma));
+=20
+-	if (!IS_ENABLED(CONFIG_PER_VMA_LOCK)) {
++	if (!IS_ENABLED(CONFIG_MMU)) {
+ 		kit->data =3D NULL;
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/kernel/fork.c b/kernel/fork.c
+index f0e2e131a9a5..ff91f5f66c80 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1077,9 +1077,7 @@ static void mmap_init_lock(struct mm_struct *mm)
+ {
+ 	init_rwsem(&mm->mmap_lock);
+ 	mm_lock_seqcount_init(mm);
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	rcuwait_init(&mm->vma_writer_wait);
+-#endif
+ }
+=20
+ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct =
+*p)
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 331daf7fcfab..1503e2131b49 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1429,18 +1429,6 @@ config LRU_GEN_WALKS_MMU
+ 	depends on LRU_GEN && ARCH_HAS_HW_PTE_YOUNG
+ # }
+=20
+-config ARCH_SUPPORTS_PER_VMA_LOCK
+-       def_bool n
+-
+-config PER_VMA_LOCK
+-	def_bool y
+-	depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+-	help
+-	  Allow per-vma locking during page fault handling.
+-
+-	  This feature allows locking each virtual memory area separately when
+-	  handling page faults instead of taking mmap_lock.
+-
+ config LOCK_MM_AND_FIND_VMA
+ 	bool
+ 	depends on !STACK_GROWSUP
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 5737a504efbb..1dd150edfe71 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -310,7 +310,6 @@ config DEBUG_KMEMLEAK_VERBOSE
+=20
+ config PER_VMA_LOCK_STATS
+ 	bool "Statistics for per-vma locks"
+-	depends on PER_VMA_LOCK
+ 	help
+ 	  Say Y here to enable success, retry and failure counters of page
+ 	  faults handled under protection of per-vma locks. When enabled, the
+diff --git a/mm/debug.c b/mm/debug.c
+index 9a0297b3988d..655e6bcc0e8d 100644
+--- a/mm/debug.c
++++ b/mm/debug.c
+@@ -157,17 +157,13 @@ void dump_vma(const struct vm_area_struct *vma)
+ 	pr_emerg("vma %px start %px end %px mm %px\n"
+ 		"prot %lx anon_vma %px vm_ops %px\n"
+ 		"pgoff %lx file %px private_data %px\n"
+-#ifdef CONFIG_PER_VMA_LOCK
+ 		"refcnt %x\n"
+-#endif
+ 		"flags: %#lx(%pGv)\n",
+ 		vma, (void *)vma->vm_start, (void *)vma->vm_end, vma->vm_mm,
+ 		(unsigned long)pgprot_val(vma->vm_page_prot),
+ 		vma->anon_vma, vma->vm_ops, vma_start_pgoff(vma),
+ 		vma->vm_file, vma->vm_private_data,
+-#ifdef CONFIG_PER_VMA_LOCK
+ 		refcount_read(&vma->vm_refcnt),
+-#endif
+ 		vma->vm_flags, &vma->vm_flags);
+ }
+ EXPORT_SYMBOL(dump_vma);
+diff --git a/mm/init-mm.c b/mm/init-mm.c
+index 3e792aad7626..a1bb2c2d0284 100644
+--- a/mm/init-mm.c
++++ b/mm/init-mm.c
+@@ -39,10 +39,8 @@ struct mm_struct init_mm =3D {
+ 	.page_table_lock =3D  __SPIN_LOCK_UNLOCKED(init_mm.page_table_lock),
+ 	.arg_lock	=3D  __SPIN_LOCK_UNLOCKED(init_mm.arg_lock),
+ 	.mmlist		=3D LIST_HEAD_INIT(init_mm.mmlist),
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	.vma_writer_wait =3D __RCUWAIT_INITIALIZER(init_mm.vma_writer_wait),
+ 	.mm_lock_seq	=3D SEQCNT_ZERO(init_mm.mm_lock_seq),
+-#endif
+ #ifdef CONFIG_SCHED_MM_CID
+ 	.mm_cid.lock =3D __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
+ #endif
+diff --git a/mm/memory.c b/mm/memory.c
+index 6ae52e3869b1..65e5fdf4f824 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6814,7 +6814,6 @@ static vm_fault_t sanitize_fault_flags(struct vm_area=
+_struct *vma,
+ 				 !is_cow_mapping(vma->vm_flags)))
+ 			return VM_FAULT_SIGSEGV;
+ 	}
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/*
+ 	 * Per-VMA locks can't be used with FAULT_FLAG_RETRY_NOWAIT because of
+ 	 * the assumption that lock is dropped on VM_FAULT_RETRY.
+@@ -6823,7 +6822,6 @@ static vm_fault_t sanitize_fault_flags(struct vm_area=
+_struct *vma,
+ 			(FAULT_FLAG_VMA_LOCK | FAULT_FLAG_RETRY_NOWAIT)) =3D=3D
+ 			(FAULT_FLAG_VMA_LOCK | FAULT_FLAG_RETRY_NOWAIT)))
+ 		return VM_FAULT_SIGSEGV;
+-#endif
+=20
+ 	return 0;
+ }
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 898c2ef1e958..e20d01e8d38f 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -43,9 +43,6 @@ void __mmap_lock_do_trace_released(struct mm_struct *mm, =
+bool write)
+ EXPORT_SYMBOL(__mmap_lock_do_trace_released);
+ #endif /* CONFIG_TRACING */
+=20
+-#ifdef CONFIG_MMU
+-#ifdef CONFIG_PER_VMA_LOCK
+-
+ /* State shared across __vma_[start, end]_exclude_readers. */
+ struct vma_exclude_readers_state {
+ 	/* Input parameters. */
+@@ -431,7 +428,6 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *=
+mm,
+=20
+ 	return vma;
+ }
+-#endif /* CONFIG_PER_VMA_LOCK */
+=20
+ #ifdef CONFIG_LOCK_MM_AND_FIND_VMA
+ #include <linux/extable.h>
+@@ -548,23 +544,3 @@ struct vm_area_struct *lock_mm_and_find_vma(struct mm_=
+struct *mm,
+ 	return NULL;
+ }
+ #endif /* CONFIG_LOCK_MM_AND_FIND_VMA */
+-
+-#else /* CONFIG_MMU */
+-
+-/*
+- * At least xtensa ends up having protection faults even with no
+- * MMU.. No stack expansion, at least.
+- */
+-struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
+-			unsigned long addr, struct pt_regs *regs)
+-{
+-	struct vm_area_struct *vma;
+-
+-	mmap_read_lock(mm);
+-	vma =3D vma_lookup(mm, addr);
+-	if (!vma)
+-		mmap_read_unlock(mm);
+-	return vma;
+-}
+-
+-#endif /* CONFIG_MMU */
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index ed4860c01936..fbcf64c59a97 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -446,7 +446,6 @@ static inline void process_mm_walk_lock(struct mm_struc=
+t *mm,
+ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+ 					 enum page_walk_lock walk_lock)
+ {
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	switch (walk_lock) {
+ 	case PGWALK_WRLOCK:
+ 		vma_start_write(vma);
+@@ -461,7 +460,6 @@ static inline void process_vma_walk_lock(struct vm_area=
+_struct *vma,
+ 		/* PGWALK_RDLOCK is handled by process_mm_walk_lock */
+ 		break;
+ 	}
+-#endif
+ }
+=20
+ /*
+diff --git a/mm/rmap.c b/mm/rmap.c
+index b917431759ee..4e4a4b747977 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -260,11 +260,9 @@ static void check_anon_vma_clone(struct vm_area_struct=
+ *dst,
+ 	/* For the anon_vma to be compatible, it can only be singular. */
+ 	VM_WARN_ON_ONCE(operation =3D=3D VMA_OP_MERGE_UNFAULTED &&
+ 			!list_is_singular(&src->anon_vma_chain));
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/* Only merging an unfaulted VMA leaves the destination attached. */
+ 	VM_WARN_ON_ONCE(operation !=3D VMA_OP_MERGE_UNFAULTED &&
+ 			vma_is_attached(dst));
+-#endif
+ }
+=20
+ static void maybe_reuse_anon_vma(struct vm_area_struct *dst,
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 258b03182a78..edd90892f8cc 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -122,7 +122,6 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct=
+ mm_struct *mm,
+ 	return vma;
+ }
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+ /*
+  * uffd_lock_vma() - Lookup and lock vma corresponding to @address.
+  * @mm: mm to search vma in.
+@@ -182,34 +181,6 @@ static void uffd_mfill_unlock(struct vm_area_struct *v=
+ma)
+ 	vma_end_read(vma);
+ }
+=20
+-#else
+-
+-static struct vm_area_struct *uffd_mfill_lock(struct mm_struct *dst_mm,
+-					      unsigned long dst_start,
+-					      unsigned long len)
+-{
+-	struct vm_area_struct *dst_vma;
+-
+-	mmap_read_lock(dst_mm);
+-	dst_vma =3D find_vma_and_prepare_anon(dst_mm, dst_start);
+-	if (IS_ERR(dst_vma))
+-		goto out_unlock;
+-
+-	if (validate_dst_vma(dst_vma, dst_start + len))
+-		return dst_vma;
+-
+-	dst_vma =3D ERR_PTR(-ENOENT);
+-out_unlock:
+-	mmap_read_unlock(dst_mm);
+-	return dst_vma;
+-}
+-
+-static void uffd_mfill_unlock(struct vm_area_struct *vma)
+-{
+-	mmap_read_unlock(vma->vm_mm);
+-}
+-#endif
+-
+ static void mfill_put_vma(struct mfill_state *state)
+ {
+ 	if (!state->vma)
+@@ -1852,7 +1823,6 @@ int find_vmas_mm_locked(struct mm_struct *mm,
+ 	return 0;
+ }
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+ static int uffd_move_lock(struct mm_struct *mm,
+ 			  unsigned long dst_start,
+ 			  unsigned long src_start,
+@@ -1927,31 +1897,6 @@ static void uffd_move_unlock(struct vm_area_struct *=
+dst_vma,
+ 		vma_end_read(dst_vma);
+ }
+=20
+-#else
+-
+-static int uffd_move_lock(struct mm_struct *mm,
+-			  unsigned long dst_start,
+-			  unsigned long src_start,
+-			  struct vm_area_struct **dst_vmap,
+-			  struct vm_area_struct **src_vmap)
+-{
+-	int err;
+-
+-	mmap_read_lock(mm);
+-	err =3D find_vmas_mm_locked(mm, dst_start, src_start, dst_vmap, src_vmap)=
+;
+-	if (err)
+-		mmap_read_unlock(mm);
+-	return err;
+-}
+-
+-static void uffd_move_unlock(struct vm_area_struct *dst_vma,
+-			     struct vm_area_struct *src_vma)
+-{
+-	mmap_assert_locked(src_vma->vm_mm);
+-	mmap_read_unlock(dst_vma->vm_mm);
+-}
+-#endif
+-
+ /**
+  * move_pages - move arbitrary anonymous pages of an existing vma
+  * @ctx: pointer to the userfaultfd context
+diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+index 4764d7b68f2a..f4fa54616085 100644
+--- a/rust/kernel/mm.rs
++++ b/rust/kernel/mm.rs
+@@ -170,30 +170,20 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_s=
+truct) -> &'a MmWithUser {
+     ///
+     /// This is an optimistic trylock operation, so it may fail if there i=
+s contention. In that
+     /// case, you should fall back to taking the mmap read lock.
+-    ///
+-    /// When per-vma locks are disabled, this always returns `None`.
+     #[inline]
+     pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaReadGua=
+rd<'_>> {
+-        #[cfg(CONFIG_PER_VMA_LOCK)]
+-        {
+-            // SAFETY: Calling `bindings::lock_vma_under_rcu` is always ok=
+ay given an mm where
+-            // `mm_users` is non-zero.
+-            let vma =3D unsafe { bindings::lock_vma_under_rcu(self.as_raw(=
+), vma_addr) };
+-            if !vma.is_null() {
+-                return Some(VmaReadGuard {
+-                    // SAFETY: If `lock_vma_under_rcu` returns a non-null =
+ptr, then it points at a
+-                    // valid vma. The vma is stable for as long as the vma=
+ read lock is held.
+-                    vma: unsafe { VmaRef::from_raw(vma) },
+-                    _nts: NotThreadSafe,
+-                });
+-            }
++        // SAFETY: Calling `bindings::lock_vma_under_rcu` is always okay g=
+iven an mm where
++        // `mm_users` is non-zero.
++        let vma =3D unsafe { bindings::lock_vma_under_rcu(self.as_raw(), v=
+ma_addr) };
++        if vma.is_null() {
++            return None;
+         }
+-
+-        // Silence warnings about unused variables.
+-        #[cfg(not(CONFIG_PER_VMA_LOCK))]
+-        let _ =3D vma_addr;
+-
+-        None
++        Some(VmaReadGuard {
++            // SAFETY: If `lock_vma_under_rcu` returns a non-null ptr, the=
+n it points at a
++            // valid vma. The vma is stable for as long as the vma read lo=
+ck is held.
++            vma: unsafe { VmaRef::from_raw(vma) },
++            _nts: NotThreadSafe,
++        })
+     }
+=20
+     /// Lock the mmap read lock.
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/du=
+p.h
+index 800e5fa02d78..362feda28526 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -582,7 +582,6 @@ struct vm_area_struct {
+ 		vma_flags_t flags;
+ 	};
+=20
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/*
+ 	 * Can only be written (using WRITE_ONCE()) while holding both:
+ 	 *  - mmap_lock (in write mode)
+@@ -598,7 +597,7 @@ struct vm_area_struct {
+ 	 * slowpath.
+ 	 */
+ 	unsigned int vm_lock_seq;
+-#endif
++
+ 	unsigned int __vm_virt_pgoff_lo;
+=20
+ 	/*
+@@ -632,10 +631,8 @@ struct vm_area_struct {
+ #ifdef CONFIG_NUMA_BALANCING
+ 	struct vma_numab_state *numab_state;	/* NUMA Balancing state */
+ #endif
+-#ifdef CONFIG_PER_VMA_LOCK
+ 	/* Unstable RCU readers are allowed to read this. */
+ 	refcount_t vm_refcnt;
+-#endif
+ #ifdef CONFIG_64BIT
+ 	unsigned int __vm_virt_pgoff_hi;
+ #endif
+diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_inter=
+nal.h
+index 8a48b231aa7a..54d5c3360aa2 100644
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -15,7 +15,6 @@
+ #include <stdlib.h>
+=20
+ #define CONFIG_MMU		1
+-#define CONFIG_PER_VMA_LOCK	1
+=20
+ #ifdef __CONCAT
+ #undef __CONCAT
 --=20
 2.55.0.654.g21b8a5bc05-goog
 
