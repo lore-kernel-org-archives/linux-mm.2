@@ -4,88 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7439C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91989C56203
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA9816B0099; Thu,  6 Aug 2026 04:36:26 -0400 (EDT)
+	id B18C86B007B; Thu,  6 Aug 2026 04:39:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D81CC6B009D; Thu,  6 Aug 2026 04:36:26 -0400 (EDT)
+	id AF01C6B008A; Thu,  6 Aug 2026 04:39:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBDBA6B00A1; Thu,  6 Aug 2026 04:36:26 -0400 (EDT)
+	id A05B66B00AD; Thu,  6 Aug 2026 04:39:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACCE06B0099
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:36:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4CC4B1C12CD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:36:26 +0000 (UTC)
-X-FDA: 85070187972.02.D7B9D90
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A12DF18000A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:36:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VW9Y4Eh3;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 710426B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:39:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E45741606DA
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:39:56 +0000 (UTC)
+X-FDA: 85070196792.26.2BEFF38
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2D58C140002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:39:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XAD0GC3B;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786005384;
+	s=arc-20220608; t=1786005595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MqP6xIom5z/JgiZxChLOxSoV7HfcbtYKbXpcpVaVwyc=;
-	b=hVvd/WoF1OOWZLDCy8SSrdfRZ3i10teyq9R2o/29E0yA0KoMpS/FxMM/iXamVuwmj8jefk
-	ku1ZaN6EUu9Qz+0dCa3hvyAcjL4dfJZkIDuYD9fxuN2AL9GyAbbomj7u0ZAMe0gSA5kmeT
-	sFjQrH3gziXlwEN4/R2LSBBSrPhKivY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786005384;
-	b=kcfCns9KD+Y5KN8PWVfrPKKFh3UuZ+4mExMf6JJE9+qbJ6J8tlad2BkreSyfXWFtuSP9HF
-	qz45ft8vaBNxm06f155Q8SrPOznhoEvQx2eRh9Hm3GJmjBrHAW3Z5qclVw8wWvVEUsINsC
-	gT5wlCT0RBuW1ejN+1NwLnL9v0vy4FM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Gqz5UQ/u6n2s4zX9DANEMnPoL4oWY3qnGjaNJsdpscQ=;
+	b=BrJ/LbyLJN61OG+6iYnM/XWZ4QwqYrq211jerZqzcoD/RmUfW0lyzLvQQqqmt3OYOPp6Zy
+	zCF7TYXeZb91Cpv9UD/V9U2+vxYDBm1JWTqb7YUHp1g4pTrn66GHLN4FHbS7DRWq/N7mTS
+	KZjo1Sg0pC06Whq5IrGPplzf3UPWXes=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VW9Y4Eh3;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <e96d8a13-8f9a-49f4-ae4c-a14c6de5ae66@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786005378;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MqP6xIom5z/JgiZxChLOxSoV7HfcbtYKbXpcpVaVwyc=;
-	b=VW9Y4Eh30Usq0AUvRj8F7W5tWArsdtGcXuE4NlQ/gwarc4Ss1n/U9lWUWMW/mV6adBM/mA
-	xZId21sQz4oBvADexAu6EenYmDG1syopmi+C737znb0+epHUVAaAbW9ffH9HqnUn8sReju
-	WOFWQ9kNfPunFLYqXgIh7C2Ea60N6OM=
-Date: Thu, 6 Aug 2026 16:35:49 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XAD0GC3B;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786005595;
+	b=0DKj75y1wBmZ2ZDiUTCTMJJ26vYG4UWw1M5ohz51HKscPf48TIEofs+EXcg58WrCB+ErHu
+	78f/Csz2TZMZxs9SVkjoQqVe60Xs6QJPLJWSwY1FDvFXuEpNoYjvtZwgHX1RsReppP6nRc
+	8GNJhB8IblxDBwL3DAX+y0e/VVnx5e4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 836C4153B;
+	Thu,  6 Aug 2026 01:39:49 -0700 (PDT)
+Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C4F063F632;
+	Thu,  6 Aug 2026 01:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786005593; bh=1/GXhzlocZP3RO99ssHRo2N31fXX+evtIf1AglwmeYk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XAD0GC3BFV+aOtURbErU8rEzfMbSmdJMzfNwzK/FHv0gx1gos8TDz/dRjKI0JzDR0
+	 AQ4BuCvKLoJi+XVzKw+vUT1ULkUCtkTdaFTQUlv601HAIs75njL9FmO8WmoPB+Psrr
+	 TDc5b83VZ6vnRuzuzlPGu/pmjS3BAMBtce5CKFQo=
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	SJ Park <sj@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	ziy@nvidia.com,
+	pfalcato@suse.de,
+	agordeev@linux.ibm.com,
+	ryan.roberts@arm.com
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
+	linux-kernel@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-parisc@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	damon@lists.linux.dev
+Subject: [PATCH 0/9] mm: distinguish PTE table storage from PTE values
+Date: Thu,  6 Aug 2026 09:38:38 +0100
+Message-ID: <20260806083926.1807279-1-usama.anjum@arm.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Abhishek Bapat <abhishekbapat@google.com>, stable@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260805090633.141001-1-hao.ge@linux.dev>
- <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
- <CAJuCfpG_XX-Hwy=TCrJ+g6yiMxGXLB=LvnPN_WLP3WQktNZMbA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpG_XX-Hwy=TCrJ+g6yiMxGXLB=LvnPN_WLP3WQktNZMbA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A12DF18000A
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D58C140002
+X-Stat-Signature: xstyg8ypau3wang6kxojnzbpsncr8zpo
 X-Rspam-User: 
-X-Stat-Signature: f5zqqimucrj7gqj61k5n3dbfz4udp4if
-X-HE-Tag: 1786005382-569435
-X-HE-Meta: U2FsdGVkX18srMS4cvADBQwPoWrMea5KFIEunYBHDe8EhfsNeH2q4asE7cKViiwYvbTMg6n2iVus47+5SiwdWtkwzATSYZAiWdRjgz2Rofqvg4h4k7+zHS0/qW//qfl7aVDUvpoPY3UveHztnPCxkZF2hkFk7pAqgpONix/XRYwf6x9XxxRW9+OvET9NrQZvbOzFH/A/CvBzuzhMpxPzghgCiR/mRvKE7Om9vS0d1bUH6xS97pbyOk+MaD5k1Uqn0LHHZwqVFghlzdUFfPIu1kPtc3ZItNOsopvGNO/0CYhkwp7FlpPK5k08K7ZdaCTPcSTXs5P/nStQT6gWigZCXtlp6xXDEyzkx47XwytnOMA+SavaNjqqPQrIqp3FCHchf6tRELWB4oKT7YekFLD7AoLrfk9bCT7FIhovCh/L07FtZK3fSvyIU25OvkGFLEi97B94FSquxWvWyekcXsCOwEWmaIOy0R64D+M/HNxGGvFuTzXxEAjRgJ+GxJeU3qFHq03QuNe3Z2sRI5/jT+t4O865zcx2DAXxDAwW3SVAOKS/mj7L4Jg7iRbs9mvZ4ZG/vSw/Mvd2urr3EZSWeXz2dmXr6yTe2jA76tyrw7HxP3LdBtCiZd3NPqKx9SDv9RbztWxKKdWCFNrZDYSUU27k9D/j+Q/kOQ1v8uh04WsTp+y31iksrGCmFahQPGgKfxy6R1S6OtliO4Ypu6dnlJfmEWjhyzBxWo/RNf9Jx9Oz5xhMI2aXHX8T/fjez2tF2iN+riUeDHUCugvdD0dMXh0cAxLXBb/TflwNCXbFQDzIMmWYxtig1AUXlbjdC2jmrUIsVYJAICYo6TnsLGpL3Avg3RlB4QjAylAvknehDmFPjE19rZu19usfLtwwr5uNXNuQ2CITvPC05bY4TOzlvSrbbDMB1wS4Pk38fbBl2krBSZtoBdVHOwIKJ8T6ziMvf9jPuMgrswMF67RrySMcv9D
- hsy/D2ZI
- eWFti9vw2d/2T/fpwkVKMypMNcpjWTMMkQtPQJ6LbZWzwCOLqCQ8LnAJgmGDojX2lv6SI0cAAejR/JRYSWR0glEvq1uR/GIA/6twkNwcUOCjNNKZcLDF4Vf2lFL+rQ190G+5M+F9MEJDOeU6dpPf+zMQGOoxhxYHLXiZ0Fhioh+S4lt8pVp1X+c9M/DYUQrta6H/iSnqPOdFN//oYqVxjnJrTuSU7/HoW9TVFS5ZhpAKiFq6mepT9haNp2m6xFc9pUaDlO0xkixXjj1ezWktFQ2P1VqQtbhjWKQI5V3GVEbmJrXF6h/zPZg5NvzRA1MC24+73hILdibcwEQaZsXJ1pqKKMLg6I6xpBd/OBfaSqhSKhByOMRd/R+Nt/FPj3O8zhZbR3T3IW2qmjSCwOsY1SpKxgdkxM2nmuXXTOii0eExLUlyyHgj9hyXdeuuXNoP5v4Ff8sTl2iY/e8A=
+X-HE-Tag: 1786005595-570746
+X-HE-Meta: U2FsdGVkX19dWrMCo47VNTp6vj/ZoRFDH49fLUuUSPYZOhm6l6HC/eTpLNKNejNmCHhDhv/3MaHg33fPV7kjYyBsN3QTCqOtzwpJ+5wGzaR4KclJaYX1EjZir61US5R+1cZwCmxhNus8v0yb3Ps8eS+mTTo+QVY3xfzD/Aiqzv7BFBuu1/dDou1U02bFyTQMmD4KhqzgG3w8gDNeelKHoEt/kFowG2940WagqC+LrOY7c3lj45VCGGUqNKEGUpakiBbZ1r286QdS1ess2VEUpW5g6xe++rRK9UTNgfq48x38VTYithUnLRucZxWdS2NhLkgJcQCZ+tlsbsSiI9ZFFMhCBIZbJnJhPltvruiqTVbrcZolBO9rLB02Odh0WcDfUpc3E5jMevl0/qY0Qnc9KiaYcT3fHyMNh0LUdNzPSDa2ZDiGDGkIX2XHe/zYt4wIR0GUwjO6BA/3jVcokvCbdzB6yVTLolxL864Lzsr6Y6p/cSh897mIq5ES5mNcF/fZang057dXca0DPMR9AkjMQ020O2P6kuZA79+LCYaRQZX3IhnCzctPf6qDYEhRR+C9dtkMFCua3ZjffOCawEHE9Yyei3vwH3s82c86tUkgVYM99zcSrfTgNUXZlwZBFcScT4S/9qQPBpRIwqWamqYXakwWtZxalKq/VsBd2SsGGDzlicmVOmKDAh1OQtPe0ZWXuzfWMCVt3Iqcpzsdj5QtnnSRyupMHTZMTJKdOo/5Lv9UjrdJ57t8Aoz5AuqGvyevHV31ZNyNaenxSXjyJX1sde8gc9uYG7rjIIr0wJ8ksPVJXmZSsKPsoSvnEGxAe4MwUO5z1Ds6HbdBc5lZ2xgF/PqgH043ZSLcVaFAc4W4VAS6dCKs3NGRr2hwwI1joJg4qMM/Symyqm9eCjnW4HF5RNwQm9eUkfEbS8u7LPA8SIj2hVQ8lE277pfYdwMVTnBUICh6KAtm8xE5wzRUVVS
+ OjQEPT2/
+ bPmrMsSQtOY2mwGyvD3WZQryWPcrNbp632gBZXTDT1cbeg+Rnr88H0jFGxijz9ccILcnjBm8psqakmHMaJpDqziDOdTwjcxEk059drcbhT3wLZ26euWlpAOC+wux8IPxnouhPiONC20OYHVD4GKwvTkqtmxehLqZJg2kG4e7jwl9rR/0DWGyqaLqb6XF2/VKsgKxzztacjwFlqAyh4n5gdw3BqdqN1CSTJVR7NiL8HMwOut9W6kJ8L+OawUCOFmRhTbqEvyYAH8F653e3ZOm7C7/d78s1NjldGDUQgsKa9YdhtUxIcJ1/oXi9wNputh+Xz/dHAcizCXYCwQ5t6bfpNfqpIQYFmNIa2TxjGbm5Tz+T19XJOMAC5/xJOLE3NKUHBK4qjag+PfvGoDQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,135 +149,421 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+Hi,
 
+pte_t currently describes both a logical PTE value and an element stored
+in a PTE table. Consequently, pte_t * can point either to a standalone
+value, often a stack copy, or to a PTE-table slot. The compiler cannot
+distinguish these cases. A value pointer can therefore be passed to an
+interface that expects table storage, while table storage can be read by
+direct dereference instead of the architecture accessor.
 
-On 2026/8/6 01:47, Suren Baghdasaryan wrote:
-> On Wed, Aug 5, 2026 at 9:55 AM Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Wed,  5 Aug 2026 17:06:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>
->>> In reserve_module_tags(), the tag overflow check is gated on
->>> mem_alloc_profiling_enabled():
->>>
->>>      if (mem_alloc_profiling_enabled() && !tags_addressable())
->>>
->>> If profiling is toggled off at runtime and a module is loaded whose
->>> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
->>> skipped. vm_module_tags_populate() still maps memory for the tags and
->>> the module loads successfully, but the total tag count now exceeds what
->>> NR_UNUSED_PAGEFLAG_BITS can address.
->>>
->>> Once profiling is re-enabled, ref_to_idx() computes each tag's index
->>> as its position in the alloc_tag array. update_page_tag_ref() masks
->>> it to alloc_tag_ref_mask before storing in page->flags. Indices
->>> beyond the mask are truncated and idx_to_ref() resolves them to wrong
->>> tags.
->>>
->>> This silently corrupts /proc/allocinfo: allocated pages get attributed
->>> to the wrong call sites, so the statistics it reports are wrong.
->>>
->>> mem_alloc_profiling_enabled() and mem_profiling_compressed are
->>> independent. Once compressed mode is established at boot, it stays
->>> active regardless of runtime toggles of mem_profiling.
->>>
->>> Remove the mem_alloc_profiling_enabled() guard. Also return an error
->>> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
->>> the mapped pages would never be reused - shutdown_mem_profiling() sets
->>> mem_profiling_support to false, so no future module load enters the
->>> codetag path.
->>
->> Thanks.
->>
->> AI review points at a cpuple of possible things, one pre-existing:
->>          https://sashiko.dev/#/patchset/20260805090633.141001-1-hao.ge@linux.dev
-> 
-> Yes, pre-existing issue can be handled separately, it's not directly
-> related to this change.
-> 
->>
->> "Does this unintentionally result in a denial of service for module
->> loading, preventing critical drivers from loading when they otherwise
->> could have just disabled profiling and gracefully continued?" sounds
->> pretty obscure and I doubt if we care?
-> 
-> Hmm, I think Hao considered that in his previous version
+This series begins a staged conversion at the PTE level. It introduces
+hw_pte_t as the element type for PTE-table storage and converts generic
+MM to use hw_pte_t *. Logical PTE values remain pte_t. Interfaces that
+intentionally return a value through pte_t *, such as install_pte,
+remain value interfaces; the relevant parameters are named ptentp to
+make that distinction explicit.
 
-Yes, I did look into this.
+The generic definition aliases hw_pte_t to pte_t unless an architecture
+selects ARCH_HAS_HW_PTE_T, which enables a distinct generic wrapper. No
+architecture selects it in this series, so the representation and
+behaviour of every architecture are preserved. ptep_get() keeps its
+existing READ_ONCE() semantics and converts the stored element through
+__pte_from_hw(). An architecture can later select the option and convert
+its PTE interfaces to make the distinction compiler-enforced.
+Architecture PTE implementations and most architecture code are
+deliberately left for those later opt-in conversions.
 
-but now I'm
-> thinking we might be able to handle this more gracefully and not fail
-> the module loading. When profiling is disabled
-> codetag_needs_module_section() returns false here:
-> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822,
-> so if we had to disable profiling, we could return NULL instead of
-> ENOMEM and change the condition here:
-> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2825
-> to act as if codetag_needs_module_section() was false from the
-> beginning. IOW code at
-> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822
-> becomes:
-> 
-> if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
->      (dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
->        arch_mod_section_prepend(mod, i), shdr->sh_addralign)) != NULL) {
-> ...
+Here, hw_pte_t identifies PTE-table storage rather than table lifetime:
+complete PTE tables use hw_pte_t whether or not they are currently
+linked into a page-table hierarchy, while standalone copied values use
+pte_t. The distinction between complete but unlinked tables and
+hardware-reachable tables was raised during discussion and remains an
+important point for review.
 
-The primary blocker is __layout_sections.
+PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
+converted in later series after the PTE boundary is agreed, avoiding the
+PMD-specific cases that made an all-level conversion difficult to
+review.
 
-https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L1730
+Most mechanical pointer conversions were generated with the Coccinelle
+script included below, then audited and fixed by hand.
 
-This is because __layout_sections controls whether we reserve space for 
-the codetag section inside EXECMEM_MODULE_DATA, the same way we handle 
-regular sections.
+This series does not add a second ptep_get_once() accessor and does not
+remove or replace STRICT_MM_TYPECHECKS.
 
-When codetag_needs_module_section() returns true during layout, 
-module_get_offset_and_type() is skipped, so sh_entsize only gets the 
-type bits with offset = 0 - no space is reserved.
+The design discussion is available at [1]; while the original idea came
+from [2].
 
-If we bail out with NULL when compressed tags overflow and add a dest != 
-NULL check here, we'll end up hitting the later else block.
+I've the patches here [3] for arm64 conversion which I used to find
+usages in generic code which I missed during development. These would be
+sent separately.
 
-if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
-     (dest = codetag_alloc_module_section(mod, sname, shdr->sh_size, 
-arch_mod_section_prepend(mod, i), shdr->sh_addralign)) != NULL) {
-	......
-} else {
-	enum mod_mem_type type = shdr->sh_entsize  >> SH_ENTSIZE_TYPE_SHIFT;
-	unsigned long offset = shdr->sh_entsize  & SH_ENTSIZE_OFFSET_MASK;
-	dest = mod->mem[type].base + offset;
-}
+[1] https://lore.kernel.org/all/6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com/
+[2] https://lore.kernel.org/all/a063f6c5-2785-4a9f-8079-25edb3e54cef@arm.com
+[3] https://github.com/musamaanjum/linux/commits/pte0_arm/
 
-That'll cause the following memcpy to clobber the leading data.
+Thanks,
+Usama
+---
+Changes since RFC v1:
+- Add ARCH_HAS_HW_PTE_T so architectures can opt in to a distinct
+  PTE-table storage type.
+- Define the distinct hw_pte_t wrapper and its conversion helpers in
+  generic code instead of requiring each architecture to define them.
+- Read hw_pte_t through READ_ONCE() before converting it to pte_t.
+- Drop the previous mremap patch in favour of [a]. Apply [a] first if
+  it is not already present.
+- Drop the previous two dead-code conversion patches; the affected
+  code was cleaned up separately in [b] and [c].
 
-If we really need to fix this, we can use dest's return value, with a 
-check like:
-if (codetag_needs_module_section(mod, sname, shdr->sh_size)) {
-	dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
-		arch_mod_section_prepend(mod, i), shdr->sh_addralign);
-	if ( dest == sentinel_val )
-		continue;
+[a] https://lore.kernel.org/linux-mm/20260720141633.501799-1-agordeev@linux.ibm.com/
+[b] https://lore.kernel.org/all/20260730111316.3672672-1-usama.anjum@arm.com
+[c] https://lore.kernel.org/all/20260730094501.3002718-1-usama.anjum@arm.com
 
-But that would also mean extra work on our end - for instance, we’d need 
-to stop the per-cpu allocations inside codetag_load_module.
+---
+// SPDX-License-Identifier: GPL-2.0-only
+///
+/// Rename raw PTE pointer types to hardware PTE pointer types.
+///
+/// This is a mechanical type rename. It converts common declarations,
+/// function parameters, prototypes, return types and casts from "pte_t *"
+/// to "hw_pte_t *". Plain "pte_t" objects are intentionally left unchanged.
+/// Pointers named "ptentp" refer to temporary logical PTE values and are
+/// intentionally ignored in all modes.
+/// Re-run in context mode afterwards to audit remaining raw pte_t pointers
+/// and cases that need hand conversion, such as trace macros and mixed
+/// declarations.
+///
+/// Confidence: Moderate
+// Options: --no-includes --include-headers
 
-https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L3571
+virtual patch
+virtual report
+virtual context
 
-Could there be a simpler solution for this?
+@local_decl depends on patch@
+identifier x != ptentp;
+@@
+- pte_t *x;
++ hw_pte_t *x;
 
-Thanks
-Best Regards
+@local_decl_init depends on patch@
+identifier x != ptentp;
+expression e;
+@@
+- pte_t *x = e;
++ hw_pte_t *x = e;
 
-Hao
+@param_proto depends on patch@
+identifier f;
+identifier x != ptentp;
+type R;
+@@
+R f(...,
+- pte_t *x
++ hw_pte_t *x
+,...);
 
-> 
-> I think this would result in a better handling of this situation: if
-> we can't fit the tags anymore, we issue a warning, disable profiling
-> but continue loading the module. Hao, WDYT?
+@param_proto_unnamed depends on patch@
+identifier f;
+type R;
+@@
+R f(...,
+- pte_t *
++ hw_pte_t *
+,...);
 
+@param_def depends on patch@
+identifier f;
+identifier x != ptentp;
+type R;
+@@
+R f(...,
+- pte_t *x
++ hw_pte_t *x
+,...)
+{ ... }
 
+@ret_proto depends on patch@
+identifier f;
+parameter list ps;
+@@
+- pte_t *
++ hw_pte_t *
+  f(ps);
 
+@ret_def depends on patch@
+identifier f;
+parameter list ps;
+@@
+- pte_t *
++ hw_pte_t *
+  f(ps)
+{ ... }
 
+@struct_member depends on patch@
+identifier S;
+identifier x != ptentp;
+@@
+struct S {
+...
+- pte_t *x;
++ hw_pte_t *x;
+...
+};
 
+@union_member depends on patch@
+identifier x != ptentp;
+@@
+union {
+...
+- pte_t *x;
++ hw_pte_t *x;
+...
+};
+
+@union_member_in_struct depends on patch@
+identifier S;
+identifier x != ptentp;
+@@
+struct S {
+...
+union {
+...
+- pte_t *x;
++ hw_pte_t *x;
+...
+};
+...
+};
+
+@fnptr_struct_member depends on patch@
+identifier S,f;
+identifier x != ptentp;
+type R;
+@@
+struct S {
+...
+R (*f)(...,
+- pte_t *x
++ hw_pte_t *x
+,...);
+...
+};
+
+@fnptr_typedef_pte_fn_t depends on patch@
+identifier x != ptentp;
+@@
+typedef int (*pte_fn_t)(...,
+- pte_t *x
++ hw_pte_t *x
+,...);
+
+@cast depends on patch@
+expression e;
+@@
+- (pte_t *)e
++ (hw_pte_t *)e
+
+@remaining_decl depends on context || report@
+identifier x != ptentp;
+position p;
+@@
+* pte_t *x@p;
+
+@remaining_decl_init depends on context || report@
+identifier x != ptentp;
+expression e;
+position p;
+@@
+* pte_t *x@p = e;
+
+@remaining_param_proto depends on context || report@
+identifier f;
+identifier x != ptentp;
+type R;
+position p;
+@@
+R f(...,
+* pte_t *x@p
+,...);
+
+@remaining_param_proto_unnamed depends on context || report@
+identifier f;
+type R;
+position p;
+@@
+R f(...,
+* pte_t *@p
+,...);
+
+@remaining_param_def depends on context || report@
+identifier f;
+identifier x != ptentp;
+type R;
+position p;
+@@
+R f(...,
+* pte_t *x@p
+,...)
+{ ... }
+
+@remaining_ret_proto depends on context || report@
+identifier f;
+parameter list ps;
+position p;
+@@
+* pte_t *f@p(ps);
+
+@remaining_ret_def depends on context || report@
+identifier f;
+parameter list ps;
+position p;
+@@
+* pte_t *f@p(ps)
+{ ... }
+
+@remaining_struct_member depends on context || report@
+identifier S;
+identifier x != ptentp;
+position p;
+@@
+struct S {
+...
+* pte_t *x@p;
+...
+};
+
+@remaining_union_member depends on context || report@
+identifier x != ptentp;
+position p;
+@@
+union {
+...
+* pte_t *x@p;
+...
+};
+
+@remaining_union_member_in_struct depends on context || report@
+identifier S;
+identifier x != ptentp;
+position p;
+@@
+struct S {
+...
+union {
+...
+* pte_t *x@p;
+...
+};
+...
+};
+
+@remaining_fnptr_struct_member depends on context || report@
+identifier S,f;
+identifier x != ptentp;
+type R;
+position p;
+@@
+struct S {
+...
+R (*f)(...,
+* pte_t *x@p
+,...);
+...
+};
+
+@remaining_fnptr_typedef_pte_fn_t depends on context || report@
+identifier x != ptentp;
+position p;
+@@
+typedef int (*pte_fn_t)(...,
+* pte_t *x@p
+,...);
+
+Muhammad Usama Anjum (9):
+  mm: introduce hw_pte_t for PTE table storage
+  mm: make hw_pte_t visible to generic PTE interfaces
+  mm: name pointers to copied PTE values ptentp
+  mm: use hw_pte_t for generic PTE table storage
+  mm: convert PTE table entries in ptep_get()
+  mm: convert PTE table entry to pte
+  mm/kasan: use hw_pte_t for the early shadow PTE table
+  drm/i915: use hw_pte_t for PTE range callbacks
+  xen: use hw_pte_t for PTE range callbacks
+
+ MAINTAINERS                                   |  1 +
+ .../drm/i915/gem/selftests/i915_gem_mman.c    |  4 +-
+ drivers/gpu/drm/i915/i915_mm.c                |  4 +-
+ drivers/xen/gntdev.c                          |  2 +-
+ drivers/xen/privcmd.c                         |  2 +-
+ drivers/xen/xenbus/xenbus_client.c            |  2 +-
+ drivers/xen/xlate_mmu.c                       |  4 +-
+ fs/hugetlbfs/inode.c                          |  3 +-
+ fs/proc/task_mmu.c                            | 33 ++++----
+ include/asm-generic/hugetlb.h                 | 15 ++--
+ include/asm-generic/pgalloc.h                 |  6 +-
+ include/asm-generic/tlb.h                     |  5 +-
+ include/linux/hugetlb.h                       | 52 ++++++------
+ include/linux/kasan.h                         |  2 +-
+ include/linux/mm.h                            | 26 +++---
+ include/linux/page_table_check.h              | 10 ++-
+ include/linux/pagewalk.h                      | 10 +--
+ include/linux/pgtable.h                       | 81 ++++++++++---------
+ include/linux/pgtable_types.h                 | 19 +++++
+ include/linux/rmap.h                          |  2 +-
+ include/linux/swapops.h                       |  6 +-
+ include/linux/vmalloc.h                       |  4 +-
+ include/trace/events/xen.h                    | 10 +--
+ kernel/bpf/arena.c                            |  9 ++-
+ kernel/events/core.c                          |  3 +-
+ mm/Kconfig                                    |  3 +
+ mm/damon/ops-common.c                         |  2 +-
+ mm/damon/ops-common.h                         |  2 +-
+ mm/damon/vaddr.c                              | 20 ++---
+ mm/debug_vm_pgtable.c                         |  2 +-
+ mm/filemap.c                                  |  4 +-
+ mm/gup.c                                      |  9 ++-
+ mm/highmem.c                                  | 15 ++--
+ mm/hmm.c                                      |  6 +-
+ mm/huge_memory.c                              |  4 +-
+ mm/hugetlb.c                                  | 60 +++++++-------
+ mm/hugetlb_vmemmap.c                          | 13 +--
+ mm/internal.h                                 | 16 ++--
+ mm/kasan/init.c                               | 14 ++--
+ mm/kasan/shadow.c                             |  6 +-
+ mm/khugepaged.c                               | 24 +++---
+ mm/ksm.c                                      | 11 +--
+ mm/madvise.c                                  | 18 +++--
+ mm/mapping_dirty_helpers.c                    |  4 +-
+ mm/memory-failure.c                           |  6 +-
+ mm/memory.c                                   | 78 +++++++++---------
+ mm/mempolicy.c                                |  4 +-
+ mm/migrate.c                                  |  4 +-
+ mm/migrate_device.c                           |  4 +-
+ mm/mincore.c                                  |  4 +-
+ mm/mlock.c                                    |  4 +-
+ mm/mprotect.c                                 | 19 ++---
+ mm/mremap.c                                   |  4 +-
+ mm/page_table_check.c                         |  4 +-
+ mm/pagewalk.c                                 |  9 ++-
+ mm/percpu.c                                   |  2 +-
+ mm/pgtable-generic.c                          | 20 ++---
+ mm/ptdump.c                                   |  4 +-
+ mm/rmap.c                                     |  6 +-
+ mm/sparse-vmemmap.c                           | 24 +++---
+ mm/swap_state.c                               |  3 +-
+ mm/swapfile.c                                 |  5 +-
+ mm/userfaultfd.c                              | 32 ++++----
+ mm/util.c                                     |  2 +-
+ mm/vmalloc.c                                  | 13 +--
+ mm/vmscan.c                                   |  6 +-
+ 66 files changed, 437 insertions(+), 368 deletions(-)
+ create mode 100644 include/linux/pgtable_types.h
+
+-- 
+2.47.3
 
 
