@@ -4,87 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDC25C55174
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:08:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97DADC55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 198B86B0092; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
+	id C22BA6B0098; Wed,  5 Aug 2026 21:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16FF56B0093; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
+	id BACEE6B0095; Wed,  5 Aug 2026 21:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AD7E6B0095; Wed,  5 Aug 2026 21:08:40 -0400 (EDT)
+	id A732E6B0096; Wed,  5 Aug 2026 21:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD586B0092
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:08:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF291404DD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:36 +0000 (UTC)
-X-FDA: 85069059432.13.2B8AE39
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 22FE540005
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:08:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A6LgN6Nk;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4266B0088
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:10:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 264E7160565
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:10:53 +0000 (UTC)
+X-FDA: 85069065186.27.8902CDF
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 80EE11C0006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:10:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=URqd28TU;
+	spf=pass (imf18.hostedemail.com: domain of 3Gt9zagcKCAMm1hvfdvjrrjoh.frpolqx0-ppnydfn.ruj@flex--jyescas.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3Gt9zagcKCAMm1hvfdvjrrjoh.frpolqx0-ppnydfn.ruj@flex--jyescas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785978515;
+	s=arc-20220608; t=1785978651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=af4kgtR65RjNTdAtxRPnSe6H2YT74ta8v6zpWeeJOXM=;
-	b=qR/KAS4SsJ+vyjfj5+NJOjvtVg/i2Q+6nZMB1PkE8Z0TYJdIBvlP8qKUznUPzgF0lcfraa
-	GNUfUDrkLHY0Dumi/V8R+O5FYU3oRsARaCgrUwuebZ7w6GbxnuW5nc4UIb8UQ5LHTODpkN
-	z7j8FG4IKtItRk6wPAqCrS9Cb6/f2Eo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A6LgN6Nk;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=aS8xXOT3cwfqq2+uivefl5lw088kY5Aqo4LU/nVZhwc=;
+	b=vfeng3sC6R0r+Fx0m9s0eR9q4OHLLsQ6eq4vL8VQJB7SDJN9tY+57yE3POu016C067YJ3n
+	+x7N0IArgNqJqE45A0M2VRT1aRBTiraa6LRXfy/gqlb/E5DJDQq+3DIRZtkSwc1psLXhVD
+	posg9sk1uOy1RPcGlDGATMW1fchxt24=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785978515;
-	b=c/3294e8EXgIo+hCn7LoSLqqN+7/gVBo9Mnuzul5J/r8L3BFdmFTCZDgSzWZ8N55ubaQUV
-	n6wv8GM7DTqfluJg4fuU+WtEynVKEMG3hl0lj91S7TP2unO4Gmz3ckISIlKm+VjYQWH1Yj
-	zTJv21rAIcFWZ+NLJhXletUfrUj/OUg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785978508; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=af4kgtR65RjNTdAtxRPnSe6H2YT74ta8v6zpWeeJOXM=;
-	b=A6LgN6NkvbjBxv3/3QCdO8wilkOr0RdTaZfhA4BhypcigJecq4dD/Gb439fD4ywY8GM34iYM/EKX3mEfqfunmN3VcuIyL6RW+Hpda460fBqzmiQUryiHdJbRivgexZa4Nnk/50OxzLB5f2q40vABRwBgNvo1R4FaT5NF8h77mYo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X8SKbUo_1785978504;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8SKbUo_1785978504 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 06 Aug 2026 09:08:25 +0800
-Message-ID: <6c778b79-5945-4832-bbf6-1a586c1c5647@linux.alibaba.com>
-Date: Thu, 6 Aug 2026 09:08:23 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] selftests: mm: implement the mTHP-sized hugepage
- check helpers
-To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org
-Cc: liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1785564857.git.baolin.wang@linux.alibaba.com>
- <eb75f6d510fb48f14e25fde85e5a5e2b67cef394.1785564857.git.baolin.wang@linux.alibaba.com>
- <DKH4VJXGIUNU.2ZENW7583Q6K5@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <DKH4VJXGIUNU.2ZENW7583Q6K5@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	t=1785978651;
+	b=z0HunLVv6EIfxFnOjDFkA/X2wYTb0Y6WCcqM85j1/BXiImcurhHJ/OFoFSK3+XjBzKs6fY
+	I/OX0Bc9NmmB1hSWgxZ4kMnJRfiTPV5NrrFx8PA9/cF04uL5ZRny9qlq80Az7GM637Ki4i
+	+zGwB6e56yu5dfGUQHBkPAlK77jHulM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=URqd28TU;
+	spf=pass (imf18.hostedemail.com: domain of 3Gt9zagcKCAMm1hvfdvjrrjoh.frpolqx0-ppnydfn.ruj@flex--jyescas.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3Gt9zagcKCAMm1hvfdvjrrjoh.frpolqx0-ppnydfn.ruj@flex--jyescas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-caf5fa127d4so2671277a12.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 18:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785978650; x=1786583450; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aS8xXOT3cwfqq2+uivefl5lw088kY5Aqo4LU/nVZhwc=;
+        b=URqd28TU/S3yPVQnhH9JRj4xpzZFYZebhgn+voRrAkhAij8h37lghpv4k1kLT8nts3
+         GZBNcUvWUhIOjCYDSmEnx5cqg9FTZp3JXjcPBnQV4hQCKCCPQpxCG7Ip6BZ1tAcptn6g
+         BO4kUvtoZibvCVRGVXt3tle0gxeGq2nfu1tbK6hB9gI3gztGV8jfkQFdnkMlTPZ+UAbS
+         nA0pH0dJV/3D4F49v/hzOvrCrZmMbjqfVveRPE3CiF/uFWLKylTHuQMkYFmZ24QeKI60
+         6YYUVVOJbdngXsXI2d4K8BCMefW3JRCqeLkYeDSbPKCMHQfJY8UXZitrEsnk3zBbH5Jj
+         LeoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785978650; x=1786583450;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aS8xXOT3cwfqq2+uivefl5lw088kY5Aqo4LU/nVZhwc=;
+        b=gzTNvf64Or0cEFOvet3sYH+VuII94v2QQ6rwQzNitKj+zlIkMwFPWxTGw91rkoqT1w
+         WbR+kO2wjrsZOZHqFuWzHp2w+fLqmAtfMYlJPFFlodpiX9AkWF+Ri++VIxDbOtTUc+uS
+         QukNK3JnZ8TFw+yEZ+HHaaZgjcUp2Ij9DT2ENlOUa/bZurIXCtz/knH7Bp8tdexr2j+z
+         VoPYpnVMw3n2HuTtTCWNRyfb4cZ531eNzME/cYFU4zMCW8AEGGrm5hQvhifW8PMs5g2f
+         bopzu2+v2FvBKWiFi96cBC/8kMoF9xD2aEMqVMC4LI5BrKwjB3szXx++IEoWVAAILiRn
+         F+8w==
+X-Forwarded-Encrypted: i=1; AHgh+RrV78b/VYIrOlf28D0Yo7F3CkWULmgXHv0vdmt1dGDuPsRKn+BIWFIKOV0RosLvpOF0x6Jygg4MNQ==@kvack.org
+X-Gm-Message-State: AOJu0YyDGpg01BJgCk8DNwDa5L9oLQHuenypar6DLw4Lo2MtqRm0XU5X
+	qdhGxal/0DHakEwYvv11TgJj85NsF1hPQkO3fNt77R8sQdnOUd6Q+DHEaIFK54Gl/k1KyNIQ9SN
+	bNnXAqbErTg==
+X-Received: from pgjx11.prod.google.com ([2002:a63:fe4b:0:b0:c9e:d5b:af1])
+ (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7483:b0:3c3:b57b:6285
+ with SMTP id adf61e73a8af0-3cb85dcc9b8mr13877577637.13.1785978650083; Wed, 05
+ Aug 2026 18:10:50 -0700 (PDT)
+Date: Wed,  5 Aug 2026 18:09:01 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
+Message-ID: <20260806011048.517229-1-jyescas@google.com>
+Subject: [RFC PATCH v2 00/16] Page Alloc Hogger
+From: Juan Yescas <jyescas@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Cc: jyescas@google.com, android-mm@google.com, ljs@kernel.org, fvdl@google.com, 
+	tkjos@google.com, minchan@google.com, dskiba@google.com, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: aqz7yfqwaxggdz3mpko6jykbzq54id4c
-X-Rspamd-Queue-Id: 22FE540005
-X-HE-Tag: 1785978512-501704
-X-HE-Meta: U2FsdGVkX1/8q24Zsu7uBn1heW0SpYGWsqvV3ebohrBWz+AioDzjdQUycNwnSACH3cZo2IRKOOu8vljrVeSo9dDE7w/wH/10nHjxJjGrjjVeSRvy8ClnNWZkACTmjJTy6L4zBhujra6aJQSN1luRUu1K6lzAB1K4iPrBl+ydap9hlTAhpYCgj6a1LU5jit/tsqHdIDbrXcl/aoMfpAODvIS1TugSWxv1Q8vgedKbi9zuqE4zIBXvfz5euVRyCx7HoSeQS8mVNHdSDgLtgodMOf3kUq8lh2D1Ftl9MyJ3mdLYFTm8bqj9A+fzO2oaZrkb+3s2/0lTMKZyrMuic1xYWPY6sZjO7XJsqWg+44+i06jLeesR7MDO+IiU7b6dFSNdeq18Z1MgW1QAFlz23Ve0zYa7nCCMDF1MbkMQmMchMR7zDzN4wYepKgzODzm/HW96DiLI1lBIfLXKYd2CUp4Bxjf2XfZoRvJLVMvJ4IzWIKm/jSSQ/+2GCLZscyfIXQ7mUxMTw/mex6AIQJqYJ9swIyypnVf+G3AcPAiTk2mMA4shpcVWjrWKVkvxFfypKZ9YB7AjqAp1MOdE1g8RbI7ZulRkaM9gLzdHXuZi1rlcKiI8xY4wAZdyo6oyFpCwLTCgwz+mPqAWleUmzFk5BwpNXwGxALyOxTmxxs0x0iTpJG3k2UIh2mjc1t8kgeHaKnSwqLzyrSzJEMAzneRPsCUcZnoFGsNZNnZbqpW8QRbsr8UrnsDjdYzW+WkHeUOblZoKEdVGLtjajer4HWYo4HnwEVKqMfZbPX23KRtEcmOFeZqWfyv36frobPri5J5+Vr2koE4pqq+Dn8z/YwcHBLC7WPrRAucRAxgEzh/wBdN/epBrzYbEq8B3jT59roMyhn9Qrj6+uygIi8a3YdocgVh+tC/sXqcF8ygvlwptqFXj7uyappWlxzqutOZsSU4MptslqTp6oYZvV9dTHjc1vJI
- hzay08uQ
- YkdIof2KReZCSfHR01md+YAWVgKHqUR7nQVAxFvFm/B3Mc1kKTpHtOheCWuo4sdqwbjP/xf45gQSI3tEW3L5NaskwwV/p8xuiXnkzD0gMcTh3TsGArQpBe/hUygRWrWuTazk+ZQV5Jet2Vba6HAvBa2w3quMJJlftjM4fu9YZp5RLUQka5emUT4w4l1Ncg2q1clM3IUA6l0/oCl9nWH206M/m7dF0re+32hebJIBuY/mmFFpAbGxZADpbv2sO9TtMSbnKypdx9gh39cxb1aiiPwltVGdaoLS1cEbiHum+qvtxn0M=
+X-Stat-Signature: rsdgjdej44fqxerxggxxx6opqegw1j9j
+X-Rspamd-Queue-Id: 80EE11C0006
+X-HE-Tag: 1785978651-419004
+X-HE-Meta: U2FsdGVkX1/tk2Y7rcOcWU3uArh2V4fsNMXiijYNfaqRAhc/b+ZOV1bXfeBoqNN01LyUTvjFEbicNBbOt/VkBhAIQJQwmUXaH5pWXDG0TWcwFXqr3XEU+S4pBmUJ26877qzvhltknkaGUy2UUyplsj2/78F1uZ6Vye7sGayZ/gf9jfwdDSxqZbgay6vHL7w5YPhwTzL+9quJEi4Oyi/YTdREVGwDjw6QEBtNT42oqUrAqkzELIhbpt4OzuSVC/yOO+nT9mQe6nIRT99EqH7g0+jsx+xC26OF+qxYqBcUTJC2thPpGKoMth35x5kj3pBL/09rw85r5dm9ZBPnSldsnrpY9Z/sicPJF6BslZFtKZASxhZ1wc5/Qzao/+A1PhXPAq+NIaQKPyjT8y2Lb64PZ4hC4cmxduGEuAhRSQJIsKHgnCcnt4wd31ejE1JaYbHRiJsmDpwo5hMvIsD+2sAQzrJmxcylHlK7Y5/cIYFjCu+mgny9taeMMSvixzn5cZagqcAahrHB4VFfazPYJRqo1fcvUa2WaqkUhqjYQwwIllgBuCtjyGxiAgJlkfVVekqrSsGmB4viqsmwnFn8ldMCO9qQpWFrRBExXs5F1HVq2U6SwtDGrFDA1pB6/gdnEaPcBJP7zWifrTSX7vhG+KZ9IrRGukkwLJY66r81kXWfVw07pPrvdW2CUY0+M0qFqPdBNKp4iayfCzCYoVZ0uHlCk+oUZ9WN6YE6+HxaQmQvPzOg/Q49Hxg6TojdOuA5GvxwVkFJkSLk7mfc5gQxpJ9ytmZtbLny7HMPUFkM1DROk0jFePrBLuS9+UOhEdI/znH6/+dW0XYjd382i8u3mFXXbz/hg6gPPOjFqwwC5GSn7JmmSn9T+6BcUX63r2gKR8snLaziiV9rVV6PSjYIU4BkgH4bdBfmyvH1PZWEyxvgXs7u6hikz/xQOcVUGddutkJY7Ah+mdQ17q4YZNioOYn
+ CoJawuhq
+ 1j77fcUvpzm7KJCrBUyUn7cLYCN9LpoXsM4e5M3bvoZtAO/hMseufeOOyEqeRIdcVS7/RLIyZOyzBCmv2KjQk4mcYlDcm5XogvB8TA6JL1SuyDN3Me6jY8yd7RCaxruWC4U0Pa8V1FOj4L8kvA4Q78e9xDib4vZFSjFY7aFv8FoaSBNWjt3LsgK5gs0fwbVwUYOTmw3TP7sCxl5pKt//h78ee2opEO4vrBH73D4HyHGeVbLeZq6aMUiXCpEzbdN04XihbCGo6Rpvmmf6VXlQeTEz0AD2rBTnQ3wOrtoPxco91zUXtmKNLh2eeTZFZlpqoZCH46iFgYQ09TzMUVXPdKzuiZ5CFyZ522b87K/M0rYFx+9s5Q8FaWq3qJJQQ0TCfQrbVazbTRcmukvRri3+LU7Y/5TugYpMmlmy5/P2IMunoDv9es+IPA/kM9CfcIgzYmqeU4Oel4ezgehIslPFfulVYhHaqdtYRQADyauLYCXNIldY60h8JiCz9v66zAEfRuImG8nHCmohgMCGaI56YGrXBxTjEUw43k1CYnlD7JbruuAgonEddLvjagx02yk86nqVoIOZ2sGKmn3rS5IFxrfLNYlcqTvd9pDIu7QFfJqNNOT1CgiVgBv58fbjwKU7xAHWObXPkjk0/Z5c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,165 +111,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
+allows you to allocate memory pages from specific nodes, zones, migration
+types, and orders directly via debugfs. This provides key benefits for
+testing and debugging:
 
+- Reproduce low-memory conditions: Easily trigger and inspect kernel
+mechanisms like direct reclaim, kswapd, the OOM killer, and allocation
+fallbacks.
 
-On 8/5/26 11:59 PM, Zi Yan wrote:
-> On Sat Aug 1, 2026 at 2:26 AM EDT, Baolin Wang wrote:
->> Implement mTHP-sized hugepage checking helpers using gather_folio_orders().
->> Also rename the existing PMD-sized huge page check function to
->> __check_pmd_huge() for clarity.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   tools/testing/selftests/mm/vm_util.c | 60 ++++++++++++++++++++++++++--
->>   1 file changed, 56 insertions(+), 4 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
->> index 09e5d5cabe21..1240d783669c 100644
->> --- a/tools/testing/selftests/mm/vm_util.c
->> +++ b/tools/testing/selftests/mm/vm_util.c
->> @@ -15,6 +15,10 @@
->>   #define SMAP_FILE_PATH "/proc/self/smaps"
->>   #define STATUS_FILE_PATH "/proc/self/status"
->>   #define MAX_LINE_LENGTH 500
->> +#define PAGEMAP_PATH "/proc/self/pagemap"
->> +#define KPAGEFLAGS_PATH "/proc/kpageflags"
->> +#define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
-> 
-> This is a fast way of getting log2, but there is no check of the type of
-> nr_pages. What prevents one using it on a long variable?
-> 
-> At least you can convert nr_pages to unsigned int and add a comment.
+- Simplify memory pressure debugging: Debug issues that only manifest under
+memory stress without needing custom kernel drivers or userspace programs
+to allocate memory.
 
-Good point. Ack.
+- Simplify unit testing: Verify that memory management subsystems
+(direct reclaim, OOM killer, kswapd) trigger as expected in test suites.
 
->> +#define NR_ORDERS 20
-> 
-> Why 20? mTHP orders can only be in [1, pmd_order - 1] and different arch
-> has different pmd_orders. check_large_folios() probably should just cap
-> NR_ORDERS at pmd_order.
+- Measure performance under stress: Evaluate how applications behave and
+perform during severe memory pressure.
 
-I followed the NR_ORDERS definition in selftests/mm/hugepage_settings.h, 
-and I think this function is not only for mTHP. Other test cases may 
-also call it to get the count of large folios beyond PMD order in the 
-future.
+Usage:
 
->>   unsigned int __page_size;
->>   unsigned int __page_shift;
->> @@ -348,7 +352,7 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
->>   	return entry;
->>   }
->>   
->> -bool __check_huge(void *addr, char *pattern, int nr_hpages,
->> +static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
->>   		  uint64_t hpage_size)
->>   {
->>   	char buffer[MAX_LINE_LENGTH];
->> @@ -366,19 +370,67 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
->>   	return thp == (nr_hpages * (hpage_size >> 10));
->>   }
->>   
->> +static bool check_large_folios(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->> +{
->> +	int order = 0, pagesize = getpagesize();
->> +	int nr_pages = hpage_size / pagesize;
->> +	int pagemap_fd, kpageflags_fd;
->> +	int orders[NR_ORDERS], status;
-> 
-> NR_ORDERS is a constant, so you can put orders on stack. I think you can
-> rename it to MAX_NR_ORDERS, use 20, 
+1. To trigger the allocation, navigate to the debugfs path corresponding
+   to your target node, memory zone, allocation order, and migration type,
+   then write the requested allocation count to nr_pages_allocs.
 
-Sure.
+   For example, to make 3 allocs of order 9, Migrate Type Movable,
+   Zone Normal and Node 0, run:
 
-and check pmd_order is not bigger
-> than MAX_NR_ORDERS.
+   $ echo 3 > /sys/kernel/debug/mm/node-0/zone-Normal/order-9/migrate-Movable/nr_pages_allocs
 
-I don't think we need this. As I mentioned above, I hope this function 
-can also be used in the future to get the number of large folios beyond 
-PMD order.
+2. For each allocation created, a corresponding file named sequentially
+   (1, 2, n) will appear in that directory.
 
->> +	bool ret = false;
->> +
->> +	if (nr_pages > 0)
->> +		order = GET_ORDER(nr_pages);
-> 
-> This funciton can fail early if nr_pages is 0.
+   $ ls /sys/kernel/debug/mm/node-0/zone-Normal/order-9/migrate-Movable/
+   1   2   3  nr_pages_allocs
 
-Ack.
+3. To free the allocation, write the allocation file name in
+   /sys/kernel/debug/mm/free. For example, to release the 2nd allocation run:
 
->> +
->> +	if (!order || order >= NR_ORDERS)
->> +		ksft_exit_fail_msg("invalid order\n");
-> 
-> It should check against pmd_order.
+   $ echo 2 > /sys/kernel/debug/mm/free
 
-Ditto.
+Example:
 
-> 
->> +
->> +	memset(orders, 0, sizeof(int) * NR_ORDERS);
->> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
->> +	if (pagemap_fd == -1)
->> +		ksft_exit_fail_msg("read pagemap fail\n");
->> +
->> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
->> +	if (kpageflags_fd == -1) {
->> +		close(pagemap_fd);
->> +		ksft_exit_fail_msg("read kpageflags fail\n");
->> +	}
->> +
->> +	status = gather_folio_orders(addr, size, pagemap_fd,
->> +			kpageflags_fd, orders, NR_ORDERS);
->> +	if (status)
->> +		goto out;
->> +
->> +	if (orders[order] == nr_hpages)
->> +		ret = true;
->> +
->> +out:
->> +	close(pagemap_fd);
->> +	close(kpageflags_fd);
->> +	return ret;
->> +}
->> +
->>   bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->>   {
->> -	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
->> +	if (hpage_size == read_pmd_pagesize())
-> 
-> read_pmd_pagesize() can fail and return 0. Either you need a check here
-> or add a ksft_exit_fail_msg() in read_pmd_pagesize() to remove the
-> burden from all callers.
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
 
-Ack.
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  0  1  0  0  1  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 1221
+Node 0, zone Normal, type Reclaimable      1  0  0  0  0  0  1  0  0  1    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
 
-> 
->> +		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
->> +
->> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->>   }
->>   
->>   bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->>   {
->> -	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
->> +	if (hpage_size == read_pmd_pagesize())
->> +		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
->> +
->> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->>   }
->>   
->>   bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->>   {
->> -	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
->> +	if (hpage_size == read_pmd_pagesize())
->> +		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
->> +
->> +	return check_large_folios(addr, size, nr_hpages, hpage_size);
->>   }
->>   
->>   int64_t allocate_transhuge(void *ptr, int pagemap_fd)
-> 
-> All read_pmd_pagesize()s above need to be handled.
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
 
-Sure. Thanks for taking a look.
+$ echo 1200 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Movable/nr_pages_allocs
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  1  1  0  0  0  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1   21
+Node 0, zone Normal, type Reclaimable      0  1  0  0  1  0  0  0  1  0    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
+
+$ for i in `seq 1 1200`; do echo $i > /sys/kernel/debug/mm/free; done
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  1  1  0  0  0  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 1221
+Node 0, zone Normal, type Reclaimable      0  1  0  0  1  0  0  0  1  0    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
+
+Notes:
+
+- The only zone that is not supported is ZONE_DEVICE.
+- MIGRATE_CMA will be supported soon
+
+Juan Yescas (16):
+  mm: Page Alloc Hogger module
+  mm: Define structs for allocation requests and store allocations
+  mm: Define the caches for the structs req_alloc and page_alloc
+  mm: Define function to create a dir for each online node
+  mm: Define function to create a dir for populated zone
+  mm: Define function to create a dir for each page order
+  mm: Define function to create a dir for each migrate type
+  mm: Define function that creates the "nr_pages_allocs" file
+  mm: Read the nr_pages_allocs value given by user
+  mm: Set the selected zone in gfp_t flags
+  mm: Sets the migrate type in gfp_t flags
+  mm: Define the make_alloc() function
+  mm: Create the file associated with an allocation
+  mm: Free pages, remove files and clean cache when one alloc fails
+  mm: Create the "free" file to release the previously allocated pages
+  mm: Release resources when the page alloc hogger module exits
+
+ mm/Kconfig.debug       |  12 +
+ mm/Makefile            |   1 +
+ mm/page_alloc_hogger.c | 610 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 623 insertions(+)
+ create mode 100644 mm/page_alloc_hogger.c
+
+-- 
+2.55.0.629.g250fe7f194-goog
+
 
