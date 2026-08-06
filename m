@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F81AC561E6
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106DBC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:11:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19FE96B00AD; Thu,  6 Aug 2026 04:56:57 -0400 (EDT)
+	id C952E6B00A7; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150876B00AF; Thu,  6 Aug 2026 04:56:57 -0400 (EDT)
+	id C46576B00A9; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F496B00B1; Thu,  6 Aug 2026 04:56:56 -0400 (EDT)
+	id B5C0A6B00AA; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A0B6B00AD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:56:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2236F1A06C4
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:56:56 +0000 (UTC)
-X-FDA: 85070239632.26.5E30FA1
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6CA70180003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:56:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="VmkX/1OI";
-	spf=pass (imf06.hostedemail.com: domain of 3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DAC66B00A7
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27027A0737
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:11:38 +0000 (UTC)
+X-FDA: 85070276676.15.B264E75
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7D29140003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:11:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DyLZ3Zh3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786006614;
+	s=arc-20220608; t=1786007496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
-	b=dykCGyuB1YrrbIUUVm6HLw3wK+zKrPMlTJDqzTzEeU6lIm1Vh6IpF1nPve1JMqVCNzap/D
-	lF6prt2OkUz7D6jWZVvYmsNs5dEuccUdxIqxFowR/NdILYK/FZ4AUQRp66PhUm7equABXZ
-	lAcRATUThneHGCuZZ6p08cVvTU0iuUA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786006614;
-	b=3j7sS+i5mPXuGAH0lzQRDeEcz9Grj+sEdKZ4G22+DA/Kh9SZ7bod8Z3exDuyhEih4H2IPv
-	YIwGfEf+GBrc534yx1UFH9mWoQ8zXdE20g7VTRKP4mQUzGoB5s/QNj6PtoNOqZOsR/2r/r
-	wBzl81H93FJVTLmrBWzJ1HY7r/92GMM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=in93mgYbw0F04Zxk1y2Zn0DH94LyJQ4nBw9npqUTqbE=;
+	b=7M+psL8B9pqsgmogKVf+loZ/+FqP39zoNf5ofau6BqSaA85hPdBSvAYqO6q2BwFh/dqElY
+	v6imqVxjOUGTrkXsDoePpeSTNiHF+VViV1IQ8ZBoYPc03r7+jjt/4nTmarNzJbz9DdFW2b
+	Whw5XtdujKeUx7VnDsKNxVWK6j+uY3Q=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="VmkX/1OI";
-	spf=pass (imf06.hostedemail.com: domain of 3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e7621655eso3011122a91.0
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786006613; x=1786611413; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
-        b=VmkX/1OIID3GnOXr8VdXlX3IfGFQcrJvk/pz1CviBk/PY+0cY5XlSSeAqQdMrqwkKR
-         vxEMXhsbzevdqg8fRFX+xobHKmen44vTOgTdHfod2jXq1qEBY7XS50IvdJZoFfZ+sJLm
-         WCGRB6ThfSupZ6CIpAsrnXiVI85fkowmpE4haC4WGbPryYt0GRqzuQO2552XXZ7MazdY
-         0g4Pcyculzt8uW7KbQgKb7FZQhKT96SyfyrVWrd/qlGNdy/skP8OxaBPeYg/pHAKk/gI
-         Z7l1l/ltYETLPHqra+9v+kTao3OzGXG5CpeJgJvp/ln8Q7L2Rhih6zaz0hC26NBG3t44
-         D4gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786006613; x=1786611413;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
-        b=mvEUoWZlxQIv6mlqVXxm2LUnG+qKxvP7CS2kTG83LZ2L/iQh+EphsqZ31yTToDIsIk
-         h9sBuUQQU4JeezXGmhcWbcfM41GwrIQ4khL0YIPKk4LXOg8lce95UoVdkn10hdzPRc5Z
-         OCFftXHfg3KdjDX1By0AllwDWMR/MGS3+Y/rfGXqzifiQhecg01GUoin0cdK1jzgd/1O
-         wTx9zCfoW65imuZk/eSwkxhSs2ufd9xnnDr5CR1KoEpjFi/71cf4H8pGmHz2nHBrD8Ha
-         JZL+fanGx4k1qDHHJsaHpwDiNx9Tb1PoFIYTHzhmX+FKFzbeirRd2tRvm7h1ylaqJHmb
-         1u6w==
-X-Forwarded-Encrypted: i=1; AHgh+RqoC+LxoaoF3IAJMiLDY0LbDsmMAEx2pRgd+R0ONnMC2gRDptiEPRygQtpxDqjE+a6ey3ZfvfkviQ==@kvack.org
-X-Gm-Message-State: AOJu0YwQIaqKiwaz/i/EvRQkM9aZoKP+1jlz9cWiuPmIEzL/Bb1yfk4/
-	6VAp474viR0AEsZBe8zu+1TC2prTsavqhO92F/s7VyZfheQHO2l5ejXI1SQLBI5uSwMfaKhg/oV
-	hcCyqp+KHwEtJ1cpbN9lRKqyApg==
-X-Received: from pjyj17.prod.google.com ([2002:a17:90a:e611:b0:38e:3cd6:1866])
- (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:53c5:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-3903c61098cmr14798023a91.18.1786006612810;
- Thu, 06 Aug 2026 01:56:52 -0700 (PDT)
-Date: Thu,  6 Aug 2026 08:56:51 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260806085651.4068433-1-souravpanda@google.com>
-Subject: [PATCH v4] mm/hugetlb_cma: support percentage-based hugetlb_cma reservation
-From: Sourav Panda <souravpanda@google.com>
-To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
-Cc: david@kernel.org, usama.arif@linux.dev, surenb@google.com, fvdl@google.com, 
-	gthelen@google.com, rientjes@google.com, souravpanda@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6CA70180003
-X-Stat-Signature: jzjgm9ncfiwwspb7pjczdhym7xttq59p
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DyLZ3Zh3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786007496;
+	b=ic2etMjBhB/5KKclQ6LSmuCvSuz4ky3LejWjYlcvCxo2FcF96n4dSYH2MSPuERPY7MXO66
+	01ztzf5OH1RQX5zfsO+4pgEGrAPDoPM167nafFaIk9GDeH46lxa62TXDBEqCIJD3tNYUGE
+	FhBtCMTq+x+4DWqe7+vS7F5h6rNV8c0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D565C400CE;
+	Thu,  6 Aug 2026 09:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB891F000E9;
+	Thu,  6 Aug 2026 09:11:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786007494;
+	bh=in93mgYbw0F04Zxk1y2Zn0DH94LyJQ4nBw9npqUTqbE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DyLZ3Zh31dW5z00axg0BKCzVlVa7D7QuO9L9lSSWy/WGXglK73KJqRoOBLZFyFxZi
+	 zmRJwFsNtTbD+WCrIz2DACQ5RloEdH0v6wKvmoGdHmFcBVEK3x1agC+PfXfRYVDDGg
+	 6Bwmehy15falLfdD4IzxdAmEbOTOC6LdnDZyNYNyPTq2Iob4nt4rUwO6IJwn3CxYBy
+	 eQ7iVcNziIRujMXenBGqPiO+QwBPColW6sNa67PoYU/WtE+OX6XJNSNiOAicQeq2Ca
+	 Xn9o1cehGIA+Kb4v7gzBMzQa9jS3CZcCB14KG7y/GP3zTPgjmCwipqVgURhOUU8FGg
+	 hSfJLoFIDBntg==
+Date: Thu, 6 Aug 2026 10:11:17 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, 
+	vbabka@kernel.org, jannh@google.com, 00moses.alexander00@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting
+ large folios
+Message-ID: <anQyoZgi5Urnvvjw@lucifer>
+References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7D29140003
+X-Stat-Signature: r9pbrue3sabbqoud5wqdyent1d6aqmb4
 X-Rspam-User: 
-X-HE-Tag: 1786006614-695350
-X-HE-Meta: U2FsdGVkX1/Gh7ONXfBMKonVmye+gYdCxAqsqAB0BU6EbwMaEIHU7u3wdGVa6WFIvijS8tK9iWz62oW5Mfn4Btkfa4X/dcjJpnuEunZGIZWrm0Cy8jOoBsdvHhddBxqtTB38okhVkJlNDyVhyJfIShnzT5Sy24XnFyA66oGToQqwOTgYVW5RqDzWtrfFzXKgG16Eykvk+5alGFLQku6SozpcIdojdwLC3jWkKGD/lxjsE8/UtsZesL+tJb1wdXQRGCekM4nsXhaBjsr57x/T4rv0SWNzaEysDUzqrbm1zy4F1drt0n1JFFc7GDoev4J57EZ2Sqyk5olCbGy7C3BR4SpS93EXnT2K+Vitl66qjaJnURVh8aFZDtxyJstJCBRlCOa/geELQ4nSQZ3ZNydeGpYwNLmRUxh+TY2hbOQi/UI5nHhqhvoCMvpQwoAubLVQLrKuRT5E5fCL87Vjki5/nYaG9xndEDd/0zZqWkJZDtwOwKgADRhpR79u6EjlUth+S27lXhzv2ae6Sh3AnpixYOfPreLizneMnXC2c2MiIS5q7JCY71eO5kLBOpHRqNQp2IBcEcQuTZDkx6Zl7L+2fu/3mUuOX+UDVOHTq21l9nZKO7y7KhKsJH86KHQ0lS41W2K9Y2E057LeB7+owEsWgOGoocqCG2QcFH9597m6udUTJff0jSQRPIzuXrmPSKKRl6V4WVC+1sGnwSbxtqolmVqpMNokhAISanEhYiZBMjeV9lMVPxVgStfaZCNMbdt9F5AOQNThB5Aztxx5d3/YBIMnRWh+K+o5WpXKcvQqjEnoI7tBqHlAhwrm4NatlSX1jZLXl4p0Yjv+yYgyHvnsxZoCFVh15vPgaQR6sdODnwTWp4fEbtHDMONo0lcsVjtbxr1Mem31xWJuf0pTmAuONDkd1Uo8R8aAw1QJRa6bLhyoIdRBD1TDGfGwTmn2rPWYswUbEWzQnf+7RXFXcAg
- PLLyY42T
- 3M/GJ4Ty2VvBzzU7sxjBjxlkiLsgXFRQKEsyv+sGll0KjuzzoQLBJPLwGqTzEqi3LuyccrXcVsDuKiIjhe4oiyPh1irBaaDaNu6VUAYE3j/dsebj0/yFI7jlQN0pIkbec2AWN7Q5FBWkYdnsBiYMv9ZN+fSCvnVRCPVWTGyssXgaNGpCiXCxSDEcutwPhxm3bzhIS6Hq4VglTnnQztU5CzaaM9eEFpIA8BjK3sEs3Q2lhC7UsvfCHLGcbOJnx4HTTMRx/ef3LIzb3qhu0bIDu6rZV0yg1FsmO08zEsx97N/f50+Au4jrW5dBHYjfYQl+qANz914w/gnZC0R+xNd2LpBQnd81b+MK6vQ6Q92VDjYpVhL7qmEY0j6hoPj7dN99G8wl6qp9i7mE1NW8H0OpZP43+/jpiQC14mZshNJXzcvIU7d1D4MG+tw3wYvgU4fx1UC6pQwp+hkV4qX16pz+jkKWVMSbybV8UvQCG4YdDowo9ea/J97AUmrhTrXD8X5xi39gZ4JDj6L1Fzz01RspBdfRHIdQEZGTq3nU051oIwztaBz8oZ/2R1VnbVly+Stx3I4mGS0TLpo4o8oEbMhYK8Zq8rfOaJisM6aX8057jHhU0nq0D6fCnR/KSaIqkZ2DRmbmIugAKGsstEvNKw9OIBr1bx7EZQzrSfD+p8kGUWYgwpKJvmadbMjtoMQ==
+X-HE-Tag: 1786007496-581956
+X-HE-Meta: U2FsdGVkX1829ESmDHYJYu3lvvZubwZCbdUP9I+no9naYLFoTb3jOlalKIRxIg1Ah39IOfF1EPJJ0YpBMPth7cIM3yhCa8YAg8QBnoWkh3ghdWcQhva+CSsf9qvFqPgx0CoNCWb2MsUtPcJQPvJ8/C5clF07el8UhTiri1VQJHG1OYt61/oXcVx7kvjNXFQA6R9hYNMOzhGluOBMx0SJcf+h73vcUyhpXE1gex54D+YAZXqjr2hhNytOOmvMmAtlVDL281QrU60CdTdlt3JQPKwvJakvb24RL3uKT6cdHGzJEkX4VYvLDhXdLxHTZL+RtCcA7BESzlnAGf8ydnidv1CJCV3ZYerVbNvkBjARcR9TTWqvlWHGcVtXMKhuoYgPaqWyO8IaY1dXzRbtKZ21bygiLCHU7DsKuwqHW9KG34wfU/5Gv74nuh27loDM1LC/fDrWgAFz1iUaxf+0otY7RPYqACJqxXVEd3Y6EARw0a5lU51PEiyRoJJ3vkNxYWGkmemzmENGa4kJzgUVE75gUvtsr8rbQmppo5FrduXBcyRE/Saow5LkVmaKv9OMxYV43Sx9s+8GpiRzBlJUKJGNNvymEE9hGDHnm/si9l+ni4/cVLcyaNlSBSObzEQH4Yfgwtt3gcuby33BunnY4fueOutgjxqcK1fi7dJST3nXPgqWkVyMYUNhxmH+MC5YSawvcjST1XuYjQu/YteQrasAxqYRHOEHNQFC7Rqyx/53DJpMeHL18Qbv/OODyExZ/2Fb56WjLI+pWfT9j54mvxN9PiBiBe5qbL5T9iB0zzNKDCvhgPMdIrstWP9oPIJQJEooCNPnqN777tkHq62QYBFor44CkSU1x/xOikRWFxbRwCl8nNoDCvLtO7ZbmbnQSwgl9v7QkbhLvjsZ1bYK2iaqKk06wH3/ZfB8OD7hp8ZO1sYsXgPKK7Q7BsXWUmySDOgKJKYwhIxjR1aNOPUt5Wl
+ aDAAK8pl
+ SObIzgfpuHZcTGyWnBaAJb2NfHLyoApYLv9ipoF9KtTov3GyIVKcn+fJ5EV6UGhMiEl4r9UUb/vlIaLGcNdnXHdItatyf1Qo//PbRNjkv5e8G9OkO+kTIVP1aKRCB9xv9B91bmJUQsrt1ODiPeIGEyQnkkDtmPb+nUHnaCZarzBk6cu6gojskIdqAKfSopT3rPES8/Fn7FvpAb7KXAzrFaztzor5kcUPDKRCeX1SboDIRT/jnTgRZTeBVUmBshow6G2V6pM6mNEb4F4MQvdMmtsOtsSM9ITzRH6eny4arxwyVYm0ZXUvUGutl8HIK6S4v8MVzhEV0HD8S4RTs/JHU6r4+Q8zwE/5OZY+U/3xtwhHVVVj4PGK1EI6sHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,263 +92,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, hugetlb_cma reservation only supports absolute sizes (e.g.,
-hugetlb_cma=2G or hugetlb_cma=0:1G,1:1G). This can be restrictive in
-heterogeneous environments or when deploying common kernel command lines
-across machines with different memory capacities.
+As a newer contributor to mm please wait for feedback on a v1 from reviewers
+before respinning, thanks :)
 
-Add support for percentage-based hugetlb_cma reservation (e.g.,
-hugetlb_cma=20% or hugetlb_cma=0:20%,1:10%).
+On Thu, Aug 06, 2026 at 01:55:01PM +0800, Yunhui Cui wrote:
+> madvise_inject_error() advances through the requested range using the
+> size of the page returned by get_user_pages_fast(). Saving the size
+> before error injection is required for hugetlb pages because successful
+> soft offlining can dissolve the source huge page.
 
-The percentage is calculated against the total memory (for global
-settings) or against the node-specific memory (for node-specific
-settings) using memblock APIs during early boot.
+But you're also changing the behaviour for MADV_HWPOISON not only
+MADV_SOFT_OFFLINE? Explain?
 
-Signed-off-by: Sourav Panda <souravpanda@google.com>
----
-Link: https://lore.kernel.org/linux-mm/20260729163148.3271755-1-souravpanda@google.com/ [v3]
-Link: https://lore.kernel.org/linux-mm/20260628190155.3655895-1-souravpanda@google.com/ [v2]
-Link: https://lore.kernel.org/linux-mm/20260625215900.2151690-1-souravpanda@google.com/ [v1]
+Also mention the specific madvise flags...
 
-v4:
-- Clear global hugetlb_cma_percent and hugetlb_cma_size when node-specific parameters are parsed so the last command line configuration wins (Usama Arif).
-- Warn when ALIGN_DOWN rounds down a non-zero percentage-derived reservation size to 0 MiB (Usama Arif).
+>
+> That stride is incorrect for non-hugetlb large folios in system memory.
+> The memory failure handlers split such a folio and handle only the base
+> page for the supplied PFN. Advancing by the pre-split folio size then
+> skips the remaining pages in the requested range while madvise() still
+> reports success.
 
-v3:
-- Enhance pr_info logs to explicitly show percentage-derived sizes per Andrew Morton"s suggestions.
-- Explicitly align percentage-derived sizes down to the gigantic page size to prevent allocation failures (Usama Arif).
+As Andrew also asks:
 
- .../admin-guide/kernel-parameters.txt         |   7 +-
- mm/hugetlb_cma.c                              | 141 +++++++++++++++++-
- 2 files changed, 138 insertions(+), 10 deletions(-)
+How did you find out about this? Is this a theoretical issue?
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 5a05b48d1684..846940ce2858 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2064,8 +2064,11 @@ Kernel parameters
- 	hugetlb_cma=	[HW,CMA,EARLY] The size of a CMA area used for allocation
- 			of gigantic hugepages. Or using node format, the size
- 			of a CMA area per node can be specified.
--			Format: nn[KMGTPE] or (node format)
--				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]]
-+			The size can be an absolute value (e.g., 2G) or a
-+			percentage of the total memory or node memory (e.g., 20%).
-+			Format: nn[KMGTPE] or nn% or (node format)
-+				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]] or
-+				<node>:nn%[,<node>:nn%]
- 
- 			Reserve a CMA area of given size and allocate gigantic
- 			hugepages using the CMA allocator. If enabled, the
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 7693ccefd0c6..2ca014a0a3b8 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -9,6 +9,9 @@
- #include <asm/setup.h>
- 
- #include <linux/hugetlb.h>
-+#include <linux/memblock.h>
-+#include <linux/math.h>
-+#include <linux/math64.h>
- #include "internal.h"
- #include "hugetlb_cma.h"
- 
-@@ -18,6 +21,28 @@ static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
- static bool hugetlb_cma_only __ro_after_init;
- static unsigned long hugetlb_cma_size __ro_after_init;
- 
-+static unsigned int hugetlb_cma_percent __initdata;
-+static unsigned int hugetlb_cma_percent_in_node[MAX_NUMNODES] __initdata;
-+
-+#ifdef CONFIG_NUMA
-+static phys_addr_t __init memblock_node_memory_size(int nid)
-+{
-+	struct memblock_region *reg;
-+	phys_addr_t size = 0;
-+
-+	for_each_mem_region(reg) {
-+		if (reg->nid == nid)
-+			size += reg->size;
-+	}
-+	return size;
-+}
-+#else
-+static phys_addr_t __init memblock_node_memory_size(int nid)
-+{
-+	return memblock_phys_mem_size();
-+}
-+#endif
-+
- void hugetlb_cma_free_frozen_folio(struct folio *folio)
- {
- 	WARN_ON_ONCE(!cma_release_frozen(hugetlb_cma[folio_nid(folio)],
-@@ -100,14 +125,31 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
- 			break;
- 
- 		if (s[count] == ':') {
-+			char *next;
-+
- 			if (tmp >= MAX_NUMNODES)
- 				break;
- 			nid = array_index_nospec(tmp, MAX_NUMNODES);
- 
-+			hugetlb_cma_size = 0;
-+			hugetlb_cma_percent = 0;
-+
- 			s += count + 1;
--			tmp = memparse(s, &s);
--			hugetlb_cma_size_in_node[nid] = tmp;
--			hugetlb_cma_size += tmp;
-+			tmp = memparse(s, &next);
-+			if (*next == '%') {
-+				if (tmp > 100) {
-+					pr_warn("hugetlb_cma: invalid percentage %lu for node %d\n",
-+						tmp, nid);
-+					break;
-+				}
-+				hugetlb_cma_percent_in_node[nid] = tmp;
-+				hugetlb_cma_size_in_node[nid] = 0;
-+				s = next + 1;
-+			} else {
-+				hugetlb_cma_size_in_node[nid] = tmp;
-+				hugetlb_cma_percent_in_node[nid] = 0;
-+				s = next;
-+			}
- 
- 			/*
- 			 * Skip the separator if have one, otherwise
-@@ -118,7 +160,28 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
- 			else
- 				break;
- 		} else {
--			hugetlb_cma_size = memparse(p, &p);
-+			char *next;
-+
-+			tmp = memparse(p, &next);
-+			if (*next == '%') {
-+				if (tmp > 100) {
-+					pr_warn("hugetlb_cma: invalid percentage %lu\n", tmp);
-+				} else {
-+					hugetlb_cma_percent = tmp;
-+					hugetlb_cma_size = 0;
-+					for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+						hugetlb_cma_size_in_node[nid] = 0;
-+						hugetlb_cma_percent_in_node[nid] = 0;
-+					}
-+				}
-+			} else {
-+				hugetlb_cma_size = tmp;
-+				hugetlb_cma_percent = 0;
-+				for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+					hugetlb_cma_size_in_node[nid] = 0;
-+					hugetlb_cma_percent_in_node[nid] = 0;
-+				}
-+			}
- 			break;
- 		}
- 	}
-@@ -144,8 +207,36 @@ void __init hugetlb_cma_reserve(void)
- {
- 	unsigned long size, reserved, per_node, order;
- 	bool node_specific_cma_alloc = false;
-+	bool has_node_specific_param = false;
- 	int nid;
- 
-+	for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+		if (hugetlb_cma_size_in_node[nid] || hugetlb_cma_percent_in_node[nid]) {
-+			has_node_specific_param = true;
-+			break;
-+		}
-+	}
-+
-+	if (has_node_specific_param) {
-+		hugetlb_cma_size = 0;
-+		for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+			if (hugetlb_cma_percent_in_node[nid]) {
-+				phys_addr_t node_gfp_mem = memblock_node_memory_size(nid);
-+				u64 s;
-+
-+				s = mul_u64_u32_div((u64)node_gfp_mem,
-+						    hugetlb_cma_percent_in_node[nid],
-+						    100);
-+
-+				hugetlb_cma_size_in_node[nid] = s;
-+			}
-+			hugetlb_cma_size += hugetlb_cma_size_in_node[nid];
-+		}
-+	} else if (hugetlb_cma_percent) {
-+		hugetlb_cma_size = mul_u64_u32_div((u64)memblock_phys_mem_size(),
-+						   hugetlb_cma_percent, 100);
-+	}
-+
- 	if (!hugetlb_cma_size)
- 		return;
- 
-@@ -163,6 +254,32 @@ void __init hugetlb_cma_reserve(void)
- 	 */
- 	VM_WARN_ON(order <= MAX_PAGE_ORDER);
- 
-+	if (hugetlb_cma_percent) {
-+		unsigned long orig_size = hugetlb_cma_size;
-+
-+		hugetlb_cma_size = ALIGN_DOWN(hugetlb_cma_size, PAGE_SIZE << order);
-+		if (orig_size && !hugetlb_cma_size)
-+			pr_warn("hugetlb_cma: reservation size rounded down to 0 from %lu MiB (%u%%)\n",
-+				orig_size / SZ_1M, hugetlb_cma_percent);
-+	} else if (has_node_specific_param) {
-+		hugetlb_cma_size = 0;
-+		for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+			if (hugetlb_cma_percent_in_node[nid]) {
-+				unsigned long orig_size = hugetlb_cma_size_in_node[nid];
-+
-+				hugetlb_cma_size_in_node[nid] =
-+					ALIGN_DOWN(hugetlb_cma_size_in_node[nid],
-+						   PAGE_SIZE << order);
-+				if (orig_size && !hugetlb_cma_size_in_node[nid])
-+					pr_warn("hugetlb_cma: reservation size rounded down to 0 from %lu MiB (%u%%) on node %d\n",
-+						orig_size / SZ_1M,
-+						hugetlb_cma_percent_in_node[nid],
-+						nid);
-+			}
-+			hugetlb_cma_size += hugetlb_cma_size_in_node[nid];
-+		}
-+	}
-+
- 	hugetlb_bootmem_set_nodes();
- 
- 	for (nid = 0; nid < MAX_NUMNODES; nid++) {
-@@ -205,8 +322,12 @@ void __init hugetlb_cma_reserve(void)
- 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
- 					nodes_weight(hugetlb_bootmem_nodes));
- 		per_node = round_up(per_node, PAGE_SIZE << order);
--		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
--			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
-+		if (hugetlb_cma_percent)
-+			pr_info("hugetlb_cma: reserve %lu MiB (%u%%), up to %lu MiB per node\n",
-+				hugetlb_cma_size / SZ_1M, hugetlb_cma_percent, per_node / SZ_1M);
-+		else
-+			pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
-+				hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
- 	}
- 
- 	reserved = 0;
-@@ -241,8 +362,12 @@ void __init hugetlb_cma_reserve(void)
- 		}
- 
- 		reserved += size;
--		pr_info("hugetlb_cma: reserved %lu MiB on node %d\n",
--			size / SZ_1M, nid);
-+		if (hugetlb_cma_percent_in_node[nid])
-+			pr_info("hugetlb_cma: reserved %lu MiB (%u%%) on node %d\n",
-+				size / SZ_1M, hugetlb_cma_percent_in_node[nid], nid);
-+		else
-+			pr_info("hugetlb_cma: reserved %lu MiB on node %d\n",
-+				size / SZ_1M, nid);
- 
- 		if (reserved >= hugetlb_cma_size)
- 			break;
--- 
-2.55.0.571.g244d577d93-goog
+Why? What? Who?...
 
+>
+> Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
+> folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
+> folios are handled as a whole.
+
+You get a folio to check to see if it's DAX when you have the VMA that you can
+check for DAX?...
+
+>
+> Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page order before page migration")
+
+4.14...!
+
+> Cc: stable@vger.kernel.org
+
+Stuff that touches folio and soft offline-adjacent THP is going to be tricky to
+backport correctly.
+
+And in madvise(2):
+
+              This feature is intended for testing of memory error-
+              handling code; it is available only if the kernel was
+              configured with CONFIG_MEMORY_FAILURE.
+
+For both MADV_SOFT_OFFLINE and MADV_HWPOISON.
+
+So I don't see why this should be backported. You might accidentally not quite
+offline/poison everything you intended in a test but that isn't a bug?
+
+Given nobody's complained in nearly a decade I don't think this matters.
+
+Also you're suggesting backporting to pre-folio ancient times which is going to
+make this horrid and tricky there too.
+
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+
+This could really do with a test to reproduce the issue. Mm selftests already
+has memory failure stuff.
+
+Please provide one to demonstrate the issue.
+
+> ---
+>  mm/madvise.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 5a09cc24f04a0..e9d4c3bbc5290 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1455,20 +1455,25 @@ static int madvise_inject_error(struct madvise_behavior *madv_behavior)
+>
+>  	for (; start < end; start += size) {
+>  		unsigned long pfn;
+> +		struct folio *folio;
+>  		struct page *page;
+>  		int ret;
+>
+>  		ret = get_user_pages_fast(start, 1, 0, &page);
+>  		if (ret != 1)
+>  			return ret;
+> +		folio = page_folio(page);
+>  		pfn = page_to_pfn(page);
+>
+>  		/*
+> -		 * When soft offlining hugepages, after migrating the page
+> -		 * we dissolve it, therefore in the second loop "page" will
+> -		 * no longer be a compound page.
+> +		 * Non-hugetlb large folios in system memory are split and only
+
+'non-hugetlb large folios' is horrid. Large folios. And 'system memory' is
+redundant.
+
+> +		 * the addressed base page is handled. Hugetlb folios may be
+> +		 * dissolved and ZONE_DEVICE folios may be handled as a whole,
+> +		 * so save their size before error injection.
+>  		 */
+
+You're discarding the whole thing of the page no longer being the head. But I
+guess with folios we don't need to mention that.
+
+This whole thing can made more succinct like:
+
+		/* DAX and hugetlb are consumed in folio chunks, everything else is split. */
+
+> -		size = page_size(compound_head(page));
+
+Yuck at this existing code.
+
+> +		size = PAGE_SIZE;
+> +		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
+> +			size = folio_size(folio);
+
+It's really disgusting that hugetlb is treated differently with everything else
+treated page-at-a-time.
+
+Honestly I'd prefer to see a folio helper so the main loop can just assume
+folio size stride.
+
+But you can enter midway through a bloody folio. Ugh. So maybe that doesn't
+work.
+
+Let's at least split out the folio check into a helper to make things
+clearer:
+
+static bool poison_splits_folio(const struct folio *folio)
+{
+	/* Hugetlb is, as always, a world unto itself. */
+	if (folio_test_hugetlb(folio))
+		return false;
+	/* Soft-offline errors out, hwpoison traverse DAX intact. */
+	if (folio_is_zone_device(folio))
+		return false;
+	return true;
+}
+
+Then for your patch:
+
+-		size = PAGE_SIZE;
+-		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
+-			size = folio_size(folio);
++		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
+
+I tried writing something that was neater and nicer but AI kept pointing
+out how it was totally broken and I really really hate this code (not your
+fault :).
+
+--
+Cheers, Lorenzo
 
