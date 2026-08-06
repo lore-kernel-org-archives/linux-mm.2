@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A8BC55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:03:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA5CC55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:10:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77E796B0088; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
+	id D34AD6B007B; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7555A6B008A; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
+	id CE72A6B0088; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692E66B0092; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
+	id BFCBD6B008A; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 48A6C6B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:03:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8335120635
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:03:15 +0000 (UTC)
-X-FDA: 85069801950.26.9601B8C
+	by kanga.kvack.org (Postfix) with ESMTP id 9F8B66B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 339EF120630
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:10:57 +0000 (UTC)
+X-FDA: 85069821354.05.36E5670
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9033540008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:03:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D16vJWBW;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9073940008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:10:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgCpozn7;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785996193;
+	s=arc-20220608; t=1785996655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oGCrkq796kYfU9i8z2D5ssSg733nYYHqftVQ+MtqR2Y=;
-	b=lETG4FW+o7Nh9m17cImUBfCVgjswCVToqiiINNveMxjof8nDJRXpMX37HRSXhvjaGQ1djT
-	9oxWW5R0BERx/1bEd9Ea0p2NVHXARH+w4HTP4GpU2RL4CrnSYMEyciAFviLFdPRtnHSmG/
-	yJ7WgLL5aF5mkzScMFveYQoGJWp87ys=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D16vJWBW;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=vEDBbbtg3/PcP4ClINYTeW7ags6q/rO1HbdT1jquPMs=;
+	b=tQH9Wd4ClFzB8D3B2yWt0kGF1G1FWJMTQt0A1gfDWf2/dgB5B6eNd3aSJ7LQk79NeZG1B/
+	tWqnAmFfUduN5hfimm598gyc/ZG2cyoFsu7Mw9pNaeTktuIa6WjWv/YIvVoT/xlunZAMnG
+	VJyHspuQ931q4XzwObFnrtmsbsni66A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785996193;
-	b=Dy2AfTQrVgB4efNVwfxEV8vgP6en2n7tC4u1scNHsx0hslRNnroZuAUt3tH2UI1xZ4kGD2
-	Y4Qk6DyHoHdNCRmCnq583y986KsRyTr2gqbCPzAKKl/SD2iXBrEVIjzLg/unyPpgNIl5AM
-	ZXt18ISqOqgVdiTw7kRM8VzkvoOrX/c=
+	t=1785996655;
+	b=Dw6HGmjEJRENLy2YniT8q+WMhbkVBJPKMIq6QxGHF//KAbokr7C1qsW68VBKYV6L0m08Mv
+	wAqginTnueU0+GldLPZFoAbC/tEnlivjSvllkwMQuoYODawncZxyOmktM/XYOPik2zU7QN
+	sa5ooXyFNLux/r70oi+tKsYlnZKZ194=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgCpozn7;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A311418FF;
-	Thu,  6 Aug 2026 06:03:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5161F000E9;
-	Thu,  6 Aug 2026 06:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785996192;
-	bh=oGCrkq796kYfU9i8z2D5ssSg733nYYHqftVQ+MtqR2Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=D16vJWBWVW8aThnqxyo6Vfu1OZyze0N321KKS/eAQqFmPtwnDBb8sAHqnEyfIU/LF
-	 Wsc06LydsN93+UIvr2rOLyEb8G4HyLt72u4rz4d5hXlngxJmOoX2OS7he6cCil07pt
-	 AtREIgNapeYi0C0YynO2Og4FykbHYox2x+PYAw7U=
-Date: Wed, 5 Aug 2026 23:03:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: paulmck@kernel.org
-Cc: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>,
- hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
-Message-Id: <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
-In-Reply-To: <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
-References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
-	<20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
-	<d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id C222641341;
+	Thu,  6 Aug 2026 06:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1A41F000E9;
+	Thu,  6 Aug 2026 06:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785996654;
+	bh=vEDBbbtg3/PcP4ClINYTeW7ags6q/rO1HbdT1jquPMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GgCpozn7dvhYOm+8WwQR+sGgrktCMAfyCcIBOreRY+ogIx8rOVgT/mtbEC21fsjll
+	 1DBLOAGLdlFIJkkcE9m+cWPV/jkjcBs4TmPVa8zKaPvHYZ6fMTTSS7PFW7778Sz/Iv
+	 7fpyx1VFKS9TZ2DmAqn0hc2TKhmIbugpOtkQktBtx5YoCDHDvOhGR2B2MdlKhx0/o5
+	 aBH9FsssjbFkIgnklYm3IF3H9YJU3O6Jdw5EmLovqCi9h8E8iJGJaWl3gOncgdBtNT
+	 W91bzD+SjL0GzDdmi8a+ZpiGiPDRswjZh6Xdzd+H4fnBKpd4faloeOEWFFrWSIupqJ
+	 mkdpVqud/Jojg==
+Date: Thu, 6 Aug 2026 06:10:52 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH] slub: print just the function name in
+ /sys/kernel/slab/*/ctor
+Message-ID: <anQk0wg15jxzSEp7@dev>
+References: <456c0a37-9074-45b5-9be2-a5f2fe345400@p183>
+ <ee600151-85d5-4cd2-922c-d2d8df21878c@kernel.org>
+ <73d28cff-77f5-4cd6-888e-5dce5ebae459@kernel.org>
+ <am7NCCxeg3BsoYSa@dev>
+ <c89d1843-e06e-4b8b-bf86-5b0debf489c9@kernel.org>
+ <68e28ff5-8cfd-496a-a895-30de110b0214@p183>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68e28ff5-8cfd-496a-a895-30de110b0214@p183>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9033540008
-X-Stat-Signature: xw19n5hcaorjzcw5xcdd6ey6whmyuohm
-X-HE-Tag: 1785996193-399721
-X-HE-Meta: U2FsdGVkX18JQQwNdK04/bcvTOtQiiBhrj63V3wZd1aGt0+Mus5TMNxHmwjc1M3IKEgryMt1OvBqgqwdjJWkKwEYq2yMlARc/9On5Nsap/QtVN+vlJVIiddUzjtEOnhn91fs6TMtjFtfIJPUoQn2cwPYVcj4Ex5nUOxdM+gvp5g57KgNKX3P5kXYxaRa4nOMJ4FsoCKBAbAa/QlDbjYgGhssJlxpfc4dM0IVEZ1F3HFEBLuJNwpKehUcB1sHMC5yxt6F5XWOKZ9V6GFDGfvPbS6LLq+//KnQVpnNrR0QD4a8JflsI/aKZGU/MFdqwTfC2jGoOoERJozpwwcoL8k5jUdKraLWhY+PV0e1+U1k4PEoEd7sOLkIm7oAwtiqbNgNB1+cMw3GdRsIH9egdPEyP8G4ApOZtua440ZyZb9lIWHLUQLJcPtEXlrHvXYhsVnNwhvJTdZVnIV4RmyhJnh3CDeKIz9qfDGUAcPC/8cMuhPh0ZGIiVf7XuwEdt3p8PWe6rb8bDcAGyVeDHF2ldAvTJTxpftSbBW9FKSJ9W3TsF8QSKGVrpFQIZwN3EiyXkp5LeTUSebHZsFRjXDyaddAv+zXvRfFiXa4ollciv9Fwu1QWAkEwmC7k7yAPekMWcWaCcvrzKcPUoMYVOzobxm9a/mZrqC8duZdZYC0kgFTwvlkUNTUxo2K8uQWXvq4h0rlb4Pi5IDunM1Trad5+wSZ/rKobbH7dLqB0JctG9EfmBq3QeQEjyeop2in3JiEHKnTjyygHs2dyXh9ggBcfh53rNKI86O9GOguZstr9xl+WU2e/1/OW4Uw7pUOP3g2IYCUftcY8gx6q0tjn9MwKd3dYk4jO+fkGuyV//484q8mxD/x7Tp0olSfIt+JICsheTJwTvPJAKp3qJrOG1l8DzyUtRbSdMdPkTOcwzWDFJbwszAIuNzESkwdd+tbTHGav3Hg5Dlk/2Uwonjgv1v1CH/
- nCQ3To47
- A5NYaCFgaoH77oJFJgxDF53BL3FS5DTWcFOHBZa7GsgOxQAe2UbXOt/AAvGY5B0fkYAPkHyPDBAkPHx2Bz0LxKOIBx6CpjnKFpRO9kvS6ca1aSuSetRro++9Up/jbyLtMmIMFqBj1yp25zQt+bPr57ZHK9VVKMf3iJZboz+F3NE6e5CZ5Nwi3ZQRtyTm9TQcKwXEQJdC0wLnnvxZtuGx5izCzVlisirvMBKY9jtzo8UKYu0HJTKkSt5+T6FwgAp27QpZY0wLXIinxF4+cZTjC1+Euqq0qNdDgA2F7CmG0b2aiGNRsovF3678WK3aD6EIqRpQzRJ8fG5tNAnfsVoSrI9TcMwibKjxMggFHnkDn5Ol6/t3nuJmLTdmRyyFGfQnVLE7qWGgqECO/ecCHQHFDOF31+ZHBaykKVBrXm2ogEjXW3ksZZakf2IRPbUXrdWMB9Ww8
+X-Stat-Signature: hfs74fejx4ujcpsebbtgfakxh98eoc9i
+X-Rspamd-Queue-Id: 9073940008
+X-HE-Tag: 1785996655-19299
+X-HE-Meta: U2FsdGVkX18ZsMYCtmjlffz3ur5mZETpB05kiKt0HmEOzbuRd8wFvSfmtoLaxnspmgF25hnDdDewkbkT0fi/Ldl4Wwt+j3c3NhRYgCTLEEHIGD7PnjKBO1OEeYOGgi8GJ02YFNY/a5+cp4QeXTNYaFm94/zsZgnFxbcEVMSbXHtwIDQOXOalrBhNpoES14uvs+fu62+qkJmY/+N6My0Ip6LD81jdjCBk6vkdUBSubaKQhiJho72eg4+SbFRkfVymIQUBjKcYKaBdiZnPr5zqur8wEUrKc15SFhY2Gsoxrlny+jRKFck7l0/XJYICzSFpGZFe9hKzUMRKBJivEIKTtdCQxsqGn57LwFGzyrDm6QgWpaU9Mxr8RRt49OfGCPlVkwWI41KVAQw0xfIyXfmN2YZQNfWEL7o3DJ1yqIUPXXXLzneWMofsKCnq2MpyI5wrBUuGmrnK4CBwiUBlnoYL5xp9B+zlAgQry6hIqDLAruplsUBG8Kl32y9hkBax+CpGoEZKyLxsDF/p5GCrR9ZaElOmz6M5g2RpKfVSJTlgo9UvKNma8kGRo1cUDn11Lk8dl1a9Nm5oVFSzs79C+8v2OOXRqmeezFGiCZPvsX32gRBV8TU/8TZv0t6bLPJCNFF1v0Ebb92rD6CzhOs1Av9EQQ+sYTUdcrO4ar5AjDnRK9ZcYjpL9mH/aiwY+QTD2hM52W6wp+jhda5QUVX4KKkMMczXX09SBepDeXpDyqGCvDsFdmqpsD7TxoshfDfIgZohTL76ObRZmt/SuQVWI1B4tbhPulcs8nTY3PInX+sIiSvLSI+EqtxGugdQIWJS3EDAvH5W8DyeFr9nNkRBPpif1LXeE4r9T6bbOdUfcBN21MjV4az7wdCGh3x/stoSbzdJSCd0B316saFFVYO5psDHFR8ni9PIbKM8iBl2sLutrMVl1P7znNMzH9PTE+XcehOTpOBMk56FGZsPjoN4JEE
+ EbAWvgMG
+ WZgxC/PNXw1LfzOHlmLGSed6gHbHBhYDynX3JxqLp0REW/4CZK8U6eIUcwynwvkMbH6mb3Xe0YIsbHgwRtk/Qwg7xbi+psx6gcH39u2FtX28p03v24Igkj7KbxBCzLv60MEBkY3yoG+6FB57Nq+xmaC6brv9u/kkwTZBq5+HfYMXQu4TUzmUjRY0kGpnf+dyCbCSVsdHOthqP/A9boYkC4v3goMDq2sflIeOGZdtlrmVZ6eo3mFCwkMZgLOGwG09d/UHRU0yTN5AVTiKWZjw+PFaZZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,96 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 5 Aug 2026 13:28:16 -0700 "Paul E. McKenney" <paulmck@kernel.org> wrote:
-
-> > collapse_scan_file()'s main loop has
+On Wed, Aug 05, 2026 at 12:22:42PM +0300, Alexey Dobriyan wrote:
+> On Tue, Aug 04, 2026 at 07:25:15PM +0200, Vlastimil Babka (SUSE) wrote:
+> > On 8/2/26 07:13, Harry Yoo wrote:
+> > > On Thu, Jul 30, 2026 at 04:15:26PM +0200, Vlastimil Babka (SUSE) wrote:
+> > >> On 7/27/26 07:27, Harry Yoo wrote:
+> > >> > 
+> > >> > 
+> > >> > On 7/25/26 10:28 PM, Alexey Dobriyan wrote:
+> > >> >> Sysfs "ctor" file prints offset/length of the cache's ctor function
+> > >> >> 
+> > >> >> 	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
+> > >> >> 	init_once+0x0/0x10
+> > >> >> 
+> > >> >> This is not useful:
+> > >> >> 
+> > >> >> Offset will always be 0 because ctor is a function.
+> > >> >> 
+> > >> >> I'm not sure what ctor function size is doing here, it should be in
+> > >> >> /proc/kallsyms
+> > >> >> 
+> > >> >> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+> > >> >> ---
+> > >> > 
+> > >> > I'm not convinced that changing this (without strong justification)
+> > >> > after exposing it to sysfs for 10+ years is worth the trouble.
+> > >> 
+> > >> Agreed. It's a pity this was exported in the first place. I can't see a
+> > >> benefit for anyone knowing what the function is called. Should have been at
+> > >> most a flag whether there's ctor or not.
+> > > 
+> > > Agreed.
+> > > 
+> > >> But possibly a justification is not to leak the function size, which might
+> > >> be theoretically (although unlikely) a hint to some attack.
+> > > 
+> > > ...but you need to be the owner (root) to read this :P 
+> > > 
+> > >> Well at least if somebody complains about getting broken, it's trivial to
+> > >> revert and we can hear about their usecase.
+> > > 
+> > > If we were to experiment with this, we'll change it to print a flag
+> > > rather than the ctor's name, right?
 > > 
-> > 		if (need_resched()) {
-> > 			xas_pause(&xas);
-> > 			cond_resched_rcu();
-> > 		}
-> > 
-> > but that won't help with the RCU stall detector(?).
-> > 
-> > I suggest that a suitable fix here would be to add the analogous
-> > 
-> > 	if (rcu_i_need_to_take_a_break()) {
-> > 		rcu_read_unlock();
-> > 		rcu_take_a_break())	
-> > 		rcu_read_lock();
-> > 	}
-> > 
-> > (iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
-> > needed here)
-> > 
-> > Paul, wdyt?
+> > Yep, let's try that. Alexey?
 > 
-> Let's see...
-> 
-> The console log says "rcu_preempt detected stalls on CPUs/tasks",
-> which means that cond_resched() is a no-op, but it also means that
-> the rcu_read_unlock() in cond_resched_rcu() will directly take care of
-> informing RCU of the pause.
-> 
-> But that is clearly not happening.  Why?
-> 
-> Well, we have this:
-> 
-> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P37/1:b..l
-> 
-> This means that the task whose RCU read-side critical section is blocking
-> the current RCU grace period isn't even running, and thus cannot invoke
-> cond_resched_rcu(), let alone the rcu_read_unlock() within that function.
-> So an RCU CPU stall warning is expected behavior.  Or at least it is not
-> in any way ruled out.
-> 
-> What we need is RCU priority boosting.
+> I don't mind ctor name, it is internal implementation detail,
+> but offset/size are kind of useless.
 
-Do we?  I'm suggesting we need need_resched_rcu()!
+I thought Vlastimil meant ctor name is also useless and suggested
+it making it a flag (0/1) to represent whether the cache has a ctor or
+not.
 
-> Except that the .config file
-> does not enable this.  Not only is there no CONFIG_RCU_BOOST=y, there
-> is also no CONFIG_RCU_EXPERT=y and no CONFIG_PREEMPT_RT=y.  But there
-> is CONFIG_RT_MUTEX=y and CONFIG_RCU_EXPERT=y.
-> 
-> Because we don't have RCU priority boosting, if the load on the system
-> is heavy enough to prevent our poor preempted RCU reader (PID 37) from
-> running, the grace period cannot end.
-> 
-> I am not sure why this task is saving its stack, but maybe that is normal
-> for this code path?
-> 
-> My bemusement aside, I recommend running this test either with
-> non-preemptible RCU (CONFIG_PREEMPT_LAZY=y these days) or enabling RCU
-> priority boosting (CONFIG_RCU_EXPERT=y and CONFIG_RCU_BOOST=y).
-> 
-> Maybe RCU_BOOST should no longer depend on RCU_EXPERT?  I would of
-> course need ot remove the prompt ("Enable RCU priority boosting") to
-> avoid annoying Linus.  Maybe as shown below.
-> 
-> Thoughts?
+Or do you think there's a scenario where ctor name is useful to know? 
 
-If I'm understanding correctly, this workload is busted with this
-config and the proposed fix is to alter the config?  Well, why are we
-permitting that config at all?
-
-Seems to me that a solution to permit this config to work is very
-simple.  Something like:
-
-	time_t start;
-
-	rcu_read_lock();
-	start = current_time();
-
-	for (lots of work) {
-		...
-		if (need_resched_rcu(start)) {
-			cond_resched_rcu();
-			start = current_time();
-	}
-
-Where need_resched_rcu() tests to see if we're getting close to hitting
-the watchdog timeout.
-
-No?
+-- 
+Cheers,
+Harry / Hyeonggon
 
