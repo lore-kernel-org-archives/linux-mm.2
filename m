@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA5FC55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B88C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 01:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A0A46B00B1; Wed,  5 Aug 2026 21:12:24 -0400 (EDT)
+	id D0DF46B00B7; Wed,  5 Aug 2026 21:12:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 850B16B00B2; Wed,  5 Aug 2026 21:12:24 -0400 (EDT)
+	id CBDE56B00B9; Wed,  5 Aug 2026 21:12:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718C36B00B4; Wed,  5 Aug 2026 21:12:24 -0400 (EDT)
+	id BAF0B6B00B8; Wed,  5 Aug 2026 21:12:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0678D6B00B1
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:12:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16B531C11BA
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:23 +0000 (UTC)
-X-FDA: 85069068966.23.11925EF
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 62ABFC0008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:21 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XmnI9aQ1;
-	spf=pass (imf28.hostedemail.com: domain of 3dN9zagcKCF0ET9N75NBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--jyescas.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3dN9zagcKCF0ET9N75NBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--jyescas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 426676B00B4
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 21:12:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5264640624
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:30 +0000 (UTC)
+X-FDA: 85069069260.06.A853C6D
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9A55E180008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 01:12:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Dsm9fDOD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3e99zagcKCGQLaGUECUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jyescas.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3e99zagcKCGQLaGUECUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jyescas.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785978741;
+	s=arc-20220608; t=1785978748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eqEP+amGkpnagux7ncXk0arDHCDCPoq+yfQcXf7Ol/Y=;
-	b=wOWO3fMSU2WESXlQ3jwFgEW0CWd20c62W8haMJZ7/K3r9IKxjxLvKSHWzvsarqfsTv6vh1
-	gbNsP0AIYoba0nkFPF91sOrMQDoG4n5cEtBBMZfWzKr0kgvkvoYpG1u5gNPdUIOiPO3LIV
-	A6EE3KD9iATcVkSs77mLR//JZzyVFEA=
+	bh=8abuksqZM3TFFDeoiYatQV1rWPvHTMlTEjpMkYl7Nf8=;
+	b=KQzkvjcb7gk8ZKTMU7xEXDTj5RpRTIor9VnYbIzSXvQZmVZ2BbggKLu0UOHkJvkPsqZQL1
+	e5EYwgcEdL50HoEQQp1N0LCLWvzCYaQiyjhyTXF/0KOPfwLkRokZ8Ri/vRrL5tAc+31SJ6
+	QvUDo1vXTeL4+3v0/mbq84x6xnUcbVU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XmnI9aQ1;
-	spf=pass (imf28.hostedemail.com: domain of 3dN9zagcKCF0ET9N75NBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--jyescas.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3dN9zagcKCF0ET9N75NBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--jyescas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Dsm9fDOD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3e99zagcKCGQLaGUECUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jyescas.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3e99zagcKCGQLaGUECUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jyescas.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785978741;
-	b=bLVxBqzPXeWCugGAnfZrflqJLewpPMQxUlfCctCPAxBYD0kIqCIXTC91RH+u1KrbbpbjKv
-	UtC9I1Sa9LJXiX5vc6XTRGi45bDh9Er5cIGv/nGNj2wvNV1dFoWR50X3eAbq/o5HOUUSRC
-	btgmqFs87EPaURASRsMg9zgJyTeDXmw=
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38dde0df80bso2268882a91.3
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 18:12:21 -0700 (PDT)
+	t=1785978748;
+	b=xcz+5PuAb3hJrjcgelnCt/YX2vv4U/j6GHJhLLTwfCA4Q788NEOFVQ43lDjpcDSl1+dnnF
+	KlAJvXL5Mj5PYefTQVTaGGxmA0lMT8i8qQGwWTva4i2bznNDwK7jiCPjD2dPB/QsEahFx1
+	Q1Uh+RQieHp9trhja6dD70esPfzjLhU=
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e7b87ce77so846150a91.0
+        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 18:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785978740; x=1786583540; darn=kvack.org;
+        d=google.com; s=20251104; t=1785978747; x=1786583547; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eqEP+amGkpnagux7ncXk0arDHCDCPoq+yfQcXf7Ol/Y=;
-        b=XmnI9aQ1IiK1xAgSUppLq3UTw5Gkguw1tQ1sUbyUc8KlF9q+P47GEgSdL6M26ld8eJ
-         91cXkxadIxwxs0n7q7I0nWcqrlS4de6vPFM6MeDjhbM2m6goludifLX0uBp5VhU5TRct
-         8wZCj3MDNQ8E5BLXMRj6xHt+Yf53kN9pao9THoah5wOn65r8Aca/YRWWzyuQ2nLAGcOv
-         VLYMu8Qp/Ngk7NvrNLLedR1sQ2Uw5elWSfHFa/UWIkRxupgBS0K9Il0kMDUJeZRpfnhW
-         3YgWxH2mdEog1f70SSHPUUdQb+qvyICVyuVaHYFDeniHAH9aE7Rhnne25HSxPKErOk/v
-         AO7g==
+        bh=8abuksqZM3TFFDeoiYatQV1rWPvHTMlTEjpMkYl7Nf8=;
+        b=Dsm9fDODMaEzRdzPVOkS3hzCv4H10zpxWSkMva50nFuClW675TryzxUkGQbXqbz1V1
+         nDt9bCTPCn0N9biv068d6lHH3BaOcFUm6PDdNw2LVQgUuCBtfRuObnrmp55c++bIYFoQ
+         IVzk+nr0Q8uHSt0INC2oyCr9wgn0iXxAqsb4WOGaHgpR0V9OG8Vj/f8dPXrtm/DWFBXh
+         xWoAwDbGtV7TVH5im1OCW99tpf8zqsFuVLU2L7KkpvsiB7MilOy57y5IqByurvdixv2t
+         IAuc/sMLzCOSuh4688j893P9sgjz41XPU/shI20ocbhdURIUc5LVBkJzYlLcGSiwpa23
+         +Q0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785978740; x=1786583540;
+        d=1e100.net; s=20251104; t=1785978747; x=1786583547;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eqEP+amGkpnagux7ncXk0arDHCDCPoq+yfQcXf7Ol/Y=;
-        b=lJeb2V6bVVQ5FgirzJVxzD7y/pPoANc3xJtewykcDXUkgzZm805yTavval6yqkCH0g
-         s3vCy9lxwZU4R8MRrGG1QlvZvV+5ExwA1Hs1KmyqIbX8JoeYEibhhpsBK1lsE/i1KeUG
-         5pWIxtjZ8D/RUx5Q/lU9TZBuypQDOFHtlmtEmda0ipsOkGPjt0o5NoGW9BYxUb1GjEbm
-         ukBHb06mzW5RnLSGJKJye+lmoJQGxPrK7sDWTl38Iow4AWVez2Tm5FCVxjNT+HYtmfW+
-         ws0V9ncumvU32aShpXHa8kMeHbVHu8nH7BjPiO6GcwFemnrUTThyZcOxecx8C/kzJ1H4
-         J+WA==
-X-Forwarded-Encrypted: i=1; AHgh+RoC968uDtV/PG8/bzii8BE0hUBDu80IjxRYEyafwca6sU2fNQ/E1p3agdN0/PTdE8qmnnVyiZwnbg==@kvack.org
-X-Gm-Message-State: AOJu0YyR+C+CetyiQlglGy2PFlkd9cWcASCWQKZv04CnQMy65DVFf4tC
-	Yq1sC0SdOh4fsTNrc37w6di90w5gRKitqapT8ha48a4UxwPEDsw1y8/9eLf14A93cfqxc1dVcVg
-	5u0/eVcFb0A==
-X-Received: from dldoa1.prod.google.com ([2002:a05:701a:ca81:b0:13c:dc9f:51f2])
- (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5244:b0:38e:9eb2:9d43
- with SMTP id 98e67ed59e1d1-3903c5b685bmr10977529a91.16.1785978740061; Wed, 05
- Aug 2026 18:12:20 -0700 (PDT)
-Date: Wed,  5 Aug 2026 18:09:08 -0700
+        bh=8abuksqZM3TFFDeoiYatQV1rWPvHTMlTEjpMkYl7Nf8=;
+        b=OlzF64YbBKEBffh3g1jfUi3MTKqPKl0xg+8/S1v8qI/vpAcE/GbKULZ6RAn6Xtg5vE
+         Rivr9GvIXWM9GCil9bqX39BQPdoG2RCy6UFsJcrTYmzjXX9MWsD1Nz3++5Cl2uuAEtL/
+         X6fTOeMoMIInCMqMerCYT9sxA3VIkW5tewIiu441Wzkz2Jd8Lo4Ir10hPQlPls5GiwKF
+         KqLRwdgrjygBC+7cb3weX87UYry3ci/ubJxpDii8zEI+cDCe4iNC6lv0j23SArH5NIhF
+         heE59tcAKiWZn0nQlBIS5AQA7c47DRsSJDNI6QVPP1+gYPM4MyULhqNQ1jnBQDW6YYWp
+         zm0w==
+X-Forwarded-Encrypted: i=1; AHgh+RrK0RvqzA4J9UUS6ruw0vBy38Mbceu91xd+UymRqtex+5crnmty3pD+ldK1WC+JGh0Pd3u+uEcObg==@kvack.org
+X-Gm-Message-State: AOJu0Yww2XTr5z+gZO36c04Y6lsSFceNeXR7dffczMUkSsb9YcQk7NnD
+	eaAAdRmVijXnyqjjG3WBJUuDQV1+9nrwYYoKs4gOV8FUeHLi8ahmCGlLoXtcCs80ciX+XpBv58v
+	vX23ypAMh4w==
+X-Received: from dyz1.prod.google.com ([2002:a05:693c:4081:b0:314:2a38:b2a1])
+ (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:ec86:b0:38e:bbf1:de34
+ with SMTP id 98e67ed59e1d1-3903c537a12mr12089869a91.7.1785978747238; Wed, 05
+ Aug 2026 18:12:27 -0700 (PDT)
+Date: Wed,  5 Aug 2026 18:09:09 -0700
 In-Reply-To: <20260806011048.517229-1-jyescas@google.com>
 Mime-Version: 1.0
 References: <20260806011048.517229-1-jyescas@google.com>
 X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260806011048.517229-8-jyescas@google.com>
-Subject: [RFC PATCH v2 07/16] mm: Define function to create a dir for each
- migrate type
+Message-ID: <20260806011048.517229-9-jyescas@google.com>
+Subject: [RFC PATCH v2 08/16] mm: Define function that creates the
+ "nr_pages_allocs" file
 From: Juan Yescas <jyescas@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -101,14 +101,14 @@ Cc: jyescas@google.com, android-mm@google.com, ljs@kernel.org, fvdl@google.com,
 	open list <linux-kernel@vger.kernel.org>, 
 	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9A55E180008
+X-Stat-Signature: dasxpzytm55qaztpxgs57u5mgubessmn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 62ABFC0008
-X-Stat-Signature: 7nbywrhgdwffeci1pmthcqi6tnc7sapg
-X-HE-Tag: 1785978741-22052
-X-HE-Meta: U2FsdGVkX1+kw+4ou0FY3cFiXxHbt0s01MQKDjf5wzrzM5t5LBg7110Wxkjv966Hw+X2Du5qjv6q4zdqOzdo/7wTLVVKZd6dqOYA/m7RmJo718A/63TmETvU1vEJr1Wj66KmSlQgfYJ5mSHqIE5gmPFeN+is6/+t6+Zlxt+br+sqArzppdmYYdj0efhp85Ezcfe5oI/Gc/wQ1+Ug8/MbppjixUJ5Icgl4YEqncfe271ztqUySxb4vDP7UwgrsQkki91dRzpSGaIjV4oMLpIWGtNuFCDx26mrU/YuAMUr95Q2tqwjb8z9qSOf7P7gx6gTth4/4IWV6vso7YDTrIxv0jgVd2JsGvkjX4wZBGJ/qcuiGX+UvYFsrpi9o1n2J1QqrkKc88a45C5Z0esF4k1nTxoOzdDkY56S0k5s2tZdGW0cBgWEC3CCnzhP2+n5qfuRgJj6LYzPHII/E5K1WZWxokJcAmzyn88zv4i0STYpGx1shScnfXQpGR3170QbC12loNCCmUUEkacsY3uPAnrurxfYTb4+SWGU/ZmiAQy31jiYvFOMzAM6StCVhWrPvpMIRVJiwe88sCGwOD7tJQGSEyxMivvumKtpfEb7aONuPcK4t5O9/0tuvrg1pDGQaSeLhptsONgBaQUs3XbyQEOMqaw9Hr9cYN2zg7h/5RSMfQbhgV1w99weZjNuIBqwlIap8VcE7VGVY77pqP/hBwuCwvwCpNKudy2JIRbifRDd9TfcuminnsWcY9si9HHuYEdWXKhNkUp16OMX2pDZHUYsZ2wpFNX71ya4eBFHpKULP/28yN0G7w7wx5BsY8soP+m8VqgL8492dHCcnbqbY1/rgdFm68D8DQXdvSE5XFVGgb8zddcBTWZ0eeW2mGmTluPNYgOmNnxD3+/RJjqxxqp0cVFunr5BkRmCuG5HdjbzfzMZ/DHx/+CX6+KQnoNqB7YuBY7GYHrbarWy4Sb2LrT
- yK3jFLEj
- QLydapEAQx02osGj9FMfq8o0AU6LSRlg9xONy71Xu8nwYMdaxFjoFxdu49Dv4VlPzMNmUyu+UfXTumomVLo+9VQTIAnjLsFdMKjXig0m4hRyu4/P/wFT1bQXLHZLzxw/rDlNBiQMiKJiLxmd79xU0NpBb2bt1IklCq2al8mV0ldLG1wS59sSWNz2etDsKCa9phtJKpYbmRrUBzsJqb6jdtQaN42IqnQFJ51DQYtJRad+LFme6yUvflCtJtLfsRXdA9y0dOIOzwr2V/FLuvaQUzDiztWZhRqIiJ7ZL3lQ7Jm8nNv3237DSrblrfyRoNQNkc1wYcIx2Kp3JRFqR/nt45GMs0e4sm33WgVh5wiYIDUWp2wVA7HAMY9eMV6gQx6EX2K8FKDETCKlddZ8HUCoM3iYQOZAvjlr3PUYgNb3w7b37b+UqGPkQkr9IaoL8sxMNgpMQXPH3b8vx6O8WlyKTVyTvFm+ITega81bfKsgO+tF3Bg4eGakxsvJhW5pn+tEPwa573ofCF7nboh5uRe9WvfF4iEKt1wZSVTnrlOyyQyNhl52aOttsX2b7OP+RxHK5JgTRpzsuS8vZ/2w/3yZkeY1bHzXTUGNmJt9LlFOf2W0afkZAkf0tOqNLzw==
+X-HE-Tag: 1785978748-452243
+X-HE-Meta: U2FsdGVkX18M00rYUsvN7aYSsIc9mimXhbNJHXJ9zt2cf+6RgFEUQ1YFjQy/ZQACl6Rr7Qmj5B0fsxTH8m17Y3N8ARLsHrB/v7ZLm+iOj5rWMrdRQ2kmZVOgsUDhUJfaZguLz4otoGkBMrmpDaMeLOVMqUEg5Hzvx5/fn0OwSClk/mCL6He0w6pNPdfn25T08Y7vT0kqMmpzqEMb59/jw7JPAGsbDaef2z/5nTjdJKLLq+b7S85yjZeHFOYarZO6OtGstTpbYCTvgmCtylgBvP8NnezLKUCfeKAFeziu73RRbwS+wvjvA/Sa5L9A2uWXkKPGLamtjwzRN2z2z55KUhMCiElmRx7TVX7KATRECa9cMlwp7n2rLfFuGkqEtMY0g2u1yi5E4v8iE9QX9kJFVae8jUGq2f+SGOlJ+dfkn+Ed2uXF3KjWCWuYPBrKrW6RHW6WadZgFy+RJPDNY2aGTHq3XVToqbUb4NeczPS2qLKHp1X9NBANp4AUhx3uP0cU7QH/yP77lMYMy4V2TbvBgr3GPmfQt4G33Gk7ZGS6DF9PMTVHyIEONMALrlumFZekUCjTUj0j2OyOgHHnVVLpqoe/2Qt3dIcfly8kQW8iV0Jl5VuMhEHYju05cj18nYO+Cy4rlUopK84R5FZ+BxkkWUzi4SLZzLNyqggtGseQ/sWwYoJfm6d1GF1kVvGBcgFZ3yc2tBVuFh5x4UewsCqFROOXXyc+nrAvw4sPlKRCtZKhv4UlKX8ctYqFZpIa8cJVGc2I/18kIadpdvnO81ABuyuQbYbivRVBFk5xf34UJPesivlBlAI9udeAQRZG3wLdi2600QSSbtii6uCh4er0LLfbgNIs/X/PO00bAwIzUgoxH3Kyox3GFij9DVs7ODc25t2jEBzme5+oP97JrlriEDbu3SA6OtsiV908jAHJCYSkYs7vvMw0jMeabjZhtM890PYkDE1MkVhDjfhIUBp
+ nyzq5u3M
+ NOWz79WmlBqVMOCEnyrM6s4dWsUFnKBBEIYKjObwysvLp8jqKProIsw52vcY8VSfwI7J81Em3LXGaCEXSR2vxoV7nBlyqWuca9PH6tclEE7sbq9GEJxDGUBcP1zeZR/YmA4233SxnwU3QU2rW/1SZAG4++46KH8VQ2ETBMVaV4/W+BFMggkjj3dUdxFJrEPn7bo8uQCkK9X626vl3eLK//Rm4preeBNd3+d8m3GBe9vxj9MPDMh2lNr9N1tYgB4ekLH/yVhD6lhkA3ngrdDeqtBDqVzv/rYIPNOlYd96YcDkVE4jo6vV2K6qh0L1JuRmOU/YTLQz990wZ1MTaqUMQ2s5hwPyItGbRpS6DTHrUc03sVRrmcaVI21n3eQeUHdpTBTwQrz1OCwFZoyHUZ++42GAL908bHIbrXxAMtp0mRPTlTL1w2EPTiR/foOPACEbDqChQhp2rijEDH3s6F/J1XsZYIbvEyBEvImKNsrR79B+KI9Y7YYHV56Vvs4G3W7qlv5MflatqovgnZIQQyNDIA7aReVjCU4DJqpbySIqJmQtePhzF1m0VU3gSC05oOyoz8q9AliaV0cQVc7Z5Dy17Yt805fK84Z9r4bExYPsz/3WvjDjIE/4O2qqBaIV7QrUJLtK9Uw5MgvDF3muTh0q44/EpbYkVKFB7X6VWF+oIBPO8T1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,85 +116,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This change creates a directory for each migrate type inside
-the order directory.
+This change implements the function that creates the
+"nr_pages_allocs". This file will be used to make the allocations.
 
-This function won't create a directory for MIGRATE_ISOLATE due
-they can't be allocated using the Buddy Allocator.
+When the user wants to make an allocation, it will write
+the number of allocations to this file. For example, if want
+to make 56 allocations of order 9 in the Node 0, Normal Zone and Migrate
+type Movable, we execute this command:
 
-Note: The MIGRATE_CMA directory won't be created yet. It will
-be supported in the future.
+echo 56 > <sysfs>/mm/node-0/zone-Normal/order-9/migrate-Movable/nr_pages_allocs
 
 Signed-off-by: Juan Yescas <jyescas@google.com>
 ---
 
 Changes in v2:
-	- Update comments.
-	- Remove unused parameters.
+	- Update file permissions to 0200.
+	- Free req_alloc.
 
- mm/page_alloc_hogger.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ mm/page_alloc_hogger.c | 81 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 73 insertions(+), 8 deletions(-)
 
 diff --git a/mm/page_alloc_hogger.c b/mm/page_alloc_hogger.c
-index 24856f7ea5d7..ab39ea300704 100644
+index ab39ea300704..ded3f0fc6641 100644
 --- a/mm/page_alloc_hogger.c
 +++ b/mm/page_alloc_hogger.c
-@@ -127,20 +127,54 @@ struct page_alloc {
+@@ -127,14 +127,70 @@ struct page_alloc {
  static struct kmem_cache *req_alloc_cache;
  static struct kmem_cache *page_alloc_cache;
  
 +/**
-+ * create_migrate_type_subdirs() - Creates a directory for each migrate type
-+ * inside the order directory.
++ * req_page_alloc_write() - Allocates the pages on the requested node, zone,
++ * order and migrate type. Once the allocation is performed, a file is created
++ * to free the allocation later.
 + */
-+static inline int create_migrate_type_subdirs(struct dentry *orderdir)
++static ssize_t req_page_alloc_write(struct file *file, const char __user *ubuf,
++				     size_t cnt, loff_t *ppos)
 +{
-+	struct dentry *migratedir;
-+	char dirname[24];
++	return cnt;
++}
 +
-+	for (int mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
-+#ifdef CONFIG_CMA
-+		if (mtype == MIGRATE_CMA) /* CMA allocs are not supported yet*/
-+			continue;
-+#endif
-+#ifdef CONFIG_MEMORY_ISOLATION
-+		if (mtype == MIGRATE_ISOLATE) /* can't allocate from here */
-+			continue;
-+#endif
-+		snprintf(dirname, sizeof(dirname), "migrate-%s",
-+			 migratetype_names[mtype]);
-+		migratedir = debugfs_create_dir(dirname, orderdir);
-+		if (IS_ERR(migratedir))
-+			return PTR_ERR(migratedir);
++static const struct file_operations req_page_alloc_fops = {
++	.owner = THIS_MODULE,
++	.open = simple_open,
++	.write = req_page_alloc_write,
++};
++
++/**
++ * create_nr_pages_allocs_file() - Creates the file "nr_pages_allocs".
++ *
++ * The "nr_pages_allocs" file will be used to write the number of allocations
++ * that will be performed. When the allocations are performed, a new file for
++ * each allocation will be created in @migratedir.
++ */
++static inline int create_nr_pages_allocs_file(struct dentry *migratedir,
++					      int nid, int zone_idx,
++					      int order, int mtype)
++{
++	struct req_alloc *req;
++	struct dentry *nr_pages;
++
++	req = kmem_cache_alloc(req_alloc_cache, GFP_KERNEL);
++	if (!req) {
++		pr_err("Failed to create nr_pages_allocs_info");
++		return -ENOMEM;
++	}
++
++	req->node_idx = nid;
++	req->zone_idx = zone_idx;
++	req->order = order;
++	req->migrate_type = mtype;
++	req->parentdir = migratedir;
++
++	nr_pages = debugfs_create_file("nr_pages_allocs", 0200, migratedir, req,
++				       &req_page_alloc_fops);
++	if (IS_ERR(nr_pages)) {
++		kmem_cache_free(req_alloc_cache, req);
++		return PTR_ERR(nr_pages);
 +	}
 +
 +	return 0;
 +}
 +
  /**
-  * create_page_orders_subdirs() - Creates a directory for each page order inside
-- * the zone directory.
-+ * the zone directory. Once that the page order directory is created, it creates
-+ * a directory for each migrate type.
+  * create_migrate_type_subdirs() - Creates a directory for each migrate type
+- * inside the order directory.
++ * inside the order directory. Once the migrate type directory is created, it
++ * creates the "nr_pages_allocs" file.
   */
- static inline int create_page_orders_subdirs(struct dentry *zonedir)
+-static inline int create_migrate_type_subdirs(struct dentry *orderdir)
++static inline int create_migrate_type_subdirs(struct dentry *orderdir, int nid,
++					int zone_idx, int order)
  {
- 	struct dentry *orderdir;
- 	char dirname[12];
+ 	struct dentry *migratedir;
+ 	char dirname[24];
 +	int ret;
  
- 	for (int order = 0; order < NR_PAGE_ORDERS; order++) {
- 		snprintf(dirname, sizeof(dirname), "order-%d", order);
- 		orderdir = debugfs_create_dir(dirname, zonedir);
- 		if (IS_ERR(orderdir))
- 			return PTR_ERR(orderdir);
+ 	for (int mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
+ #ifdef CONFIG_CMA
+@@ -150,6 +206,11 @@ static inline int create_migrate_type_subdirs(struct dentry *orderdir)
+ 		migratedir = debugfs_create_dir(dirname, orderdir);
+ 		if (IS_ERR(migratedir))
+ 			return PTR_ERR(migratedir);
 +
-+		ret = create_migrate_type_subdirs(orderdir);
++		ret = create_nr_pages_allocs_file(migratedir, nid, zone_idx,
++						order, mtype);
 +		if (ret)
 +			return ret;
  	}
  
  	return 0;
+@@ -160,7 +221,8 @@ static inline int create_migrate_type_subdirs(struct dentry *orderdir)
+  * the zone directory. Once that the page order directory is created, it creates
+  * a directory for each migrate type.
+  */
+-static inline int create_page_orders_subdirs(struct dentry *zonedir)
++static inline int create_page_orders_subdirs(struct dentry *zonedir, int nid,
++					int zone_idx)
+ {
+ 	struct dentry *orderdir;
+ 	char dirname[12];
+@@ -172,7 +234,8 @@ static inline int create_page_orders_subdirs(struct dentry *zonedir)
+ 		if (IS_ERR(orderdir))
+ 			return PTR_ERR(orderdir);
+ 
+-		ret = create_migrate_type_subdirs(orderdir);
++		ret = create_migrate_type_subdirs(orderdir, nid, zone_idx,
++						order);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -189,15 +252,17 @@ static inline int create_page_orders_subdirs(struct dentry *zonedir)
+  * is because they are not managed by the Buddy Allocator or CMA allocator.
+  */
+ static inline int create_zones_subdirs(struct dentry *nodedir,
+-					struct pglist_data *pgdata)
++					struct pglist_data *pgdata, int nid)
+ {
+ 	struct dentry *zonedir;
+ 	struct zone *zone;
+ 	struct zone *node_zones = pgdata->node_zones;
++	int zone_idx;
+ 	char dirname[24];
+ 	int ret;
+ 
+-	for (zone = node_zones; zone - node_zones < MAX_NR_ZONES; ++zone) {
++	for (zone = node_zones, zone_idx = 0; zone - node_zones < MAX_NR_ZONES;
++			++zone, ++zone_idx) {
+ 		if (!populated_zone(zone))
+ 			continue;
+ 
+@@ -210,7 +275,7 @@ static inline int create_zones_subdirs(struct dentry *nodedir,
+ 		if (IS_ERR(zonedir))
+ 			return PTR_ERR(zonedir);
+ 
+-		ret = create_page_orders_subdirs(zonedir);
++		ret = create_page_orders_subdirs(zonedir, nid, zone_idx);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -238,7 +303,7 @@ static inline int create_nodes_subdirs(struct dentry *mmdir)
+ 		if (IS_ERR(nodedir))
+ 			return PTR_ERR(nodedir);
+ 
+-		ret = create_zones_subdirs(nodedir, pgdata);
++		ret = create_zones_subdirs(nodedir, pgdata, nid);
+ 		if (ret)
+ 			return ret;
+ 	}
 -- 
 2.55.0.629.g250fe7f194-goog
 
