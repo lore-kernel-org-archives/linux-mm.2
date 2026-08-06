@@ -4,133 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C16C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41680C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:21:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C2E36B007B; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
+	id 3015C6B008A; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 373B66B0088; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
+	id 28AF66B0092; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23EFC6B008A; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
+	id 152916B0093; Thu,  6 Aug 2026 09:21:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E63A76B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:20:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 668C1140671
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:20 +0000 (UTC)
-X-FDA: 85070903400.07.8D2A441
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A1A2714000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rvte7yVo;
-	spf=pass (imf26.hostedemail.com: domain of 3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC7B66B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:21:01 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82CDA160787
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:21:01 +0000 (UTC)
+X-FDA: 85070905122.05.3D7CC47
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B12DD14000D
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hAv/gKVT";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786022418;
+	s=arc-20220608; t=1786022459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
-	b=6AnOk1Bny3rDR/IYteLlJo2b9HxYKIQm838wnrc8mFGv8HqiOyKdvf9X1jER8kolCLBD3Y
-	yavSfRxh3Nio1WJazukglekkbHBhG5OrafPN+fvJxvuP6kPyAxTTBFleOQhE5be/mnC2I4
-	x9hrdawUIvb7f7JovoQdJiI+ZMC+++A=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rvte7yVo;
-	spf=pass (imf26.hostedemail.com: domain of 3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=9M22hpR37Fywe1zZz1y9yAYVc4M0MHck+1iq8vIWd3Y=;
+	b=NodkqL8Z2vWl8TB//13GO/PJEGXPZ9EZ/vqYaOdg17RH1RAKgtE253FbombMX5t49QswjA
+	kDxeluFU88wIcgLhld25ZHamWtuiVKZAZd05LfcvEq3cFvx73QFU/AWdyuE3KgiGFlH07s
+	I0fFgfCMSBj5mKo02H9q3/qDlox3AEg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786022418;
-	b=ytlLumqspVlPxPW4sREjvzfI4MUmQxkDAPTFiQz/pwzyaf5fURX80LGZqkfzitE2bxuGdN
-	FVxRu0wIqS9AMLE1DdIP1uRg2sdEEV98TOl6woZkDreP1LD5BgOyHunI4U1uHwSzeNiibk
-	KsIcpx4VnGj84rpjdNeVcd6lrMCCB88=
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8487eb67173so3592568b3a.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 06:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786022417; x=1786627217; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
-        b=Rvte7yVo99QmzB4OXvXXlyrm+sowoudcRoihDkQS2EYqwnB47Zf91Xe9KyeUQJ0DJu
-         9z7Lmo+HYcYXm4DRNZdZAJyWS9frr/sFct9kbM2KLG9MAHn7fVhlqbbAeKcsVabUGkgb
-         /1UszdGNYgAiUEHycaBzXXOkF7747H1OF2w8QBK6T/vunNU1aHPc3cgNtEp/Ze9L7GAq
-         JcIAHXwnSvzJ/wCY7V23t7+a5lpt103HZ8tv0+ZUJx+Dkutf1XieOpXzgN7P9tOrgwcv
-         UtgzQ+SY+c/VgGNW2ojN3gPeKjCuCT0sKSeR3QgkqfERSnckoiptShhj4heiS4V9e2nC
-         RfJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786022417; x=1786627217;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
-        b=lo6v0qOuN+hxueDV24gvFpxYA67aigcC29b0rfaBvUqymV2pdqadmQ6brAjFAwmDGa
-         vWa3aJqkx3lqrNxCDzkaIRV6VwcXuuvGE1PzHHZT7NMtwS6zG76dCgNXPlpU8LHp2Cf4
-         ecvfcSIt8CcC+OgO2q/i7UFhv4ASb+uUy7Wd6zemzsmE50ek+XnZAQGP/ryrWraSw2GZ
-         4fSCE5XXBOKS9t0X+Gkf9XgAG9wKI715nRTR6yTXkG7me3K5cKpCyL29DyBOdLad6v7g
-         te84sQ62P2Bu7E/KaNEnw3PzlfeC6ZdRAniA4CcBHrYtwvdBNsY4HiM1XKotIG11W7Xr
-         KuMg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpu7go9lUhOgREe3dlmFN38PzEUxXSlx23cGJNRpsKh/Ja5gX/94IXTNCVb3YNBSNM3ZNX8OPnfsA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/3eHFT8CIKTP87ACDWd1CYHenrH9MHoNWGvkPieH4/g/ie5Ih
-	op93jMBNRT+waXo2Mt9tVj/MUXgcvI0gi4WkEVyGhUWU/9q/V+T6QAgLqf6J9i6Ly9FHWJrlia2
-	E2C35uw==
-X-Received: from pfbcj19.prod.google.com ([2002:a05:6a00:2993:b0:84c:3651:a4b1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3ccd:b0:845:c7f1:29fa
- with SMTP id d2e1a72fcca58-84f2e04a63bmr16001363b3a.30.1786022416699; Thu, 06
- Aug 2026 06:20:16 -0700 (PDT)
-Date: Thu, 6 Aug 2026 06:19:45 -0700
-In-Reply-To: <fda26964-721d-4a8c-9225-46ca3a5b2785@intel.com>
-Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
- <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com> <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
- <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com> <anPYxp-LMWaLDbMk@google.com>
- <fda26964-721d-4a8c-9225-46ca3a5b2785@intel.com>
-Message-ID: <anSJ1lLS0HZnfjCt@google.com>
-Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Stat-Signature: kw7c3364nwefn5ms416aguxnsqryjys5
-X-Rspamd-Queue-Id: A1A2714000C
+	t=1786022459;
+	b=cICltCnip+ZCvRLg+FAsWQvS6iUqHC/mQUkKm7xBojDIHhKquHQ+SDuqt6uPtmsV/FTKMV
+	kGja4PEQYU1WdLwixy9KOB1g7GJSY3yv4zGeAB4miML6NDfigaqjY1zSIxdIM3RAbv2rMQ
+	7kmrWRrmzZ98Q6OKeZfeINVohG4j1ds=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hAv/gKVT";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9053941468;
+	Thu,  6 Aug 2026 13:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3E01F00A3A;
+	Thu,  6 Aug 2026 13:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786022458;
+	bh=9M22hpR37Fywe1zZz1y9yAYVc4M0MHck+1iq8vIWd3Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hAv/gKVTNnWOwNy0eCGclNrpJrUejSmX/wq5ebyMntr2wjyTpm5EUABDroL8KrD41
+	 p6/V1ny8qs3CeeMRlvgOFd5/btgg2ICqTVgg8NvHRe6cQwnMw/74Ww6uG1AxOa68XW
+	 mfw/FK5BTxZCdpeMvXONqZ3mT6ELG/HbiVhMVh5JfgLSF740EtEs0eEKdMsc90UKd+
+	 HcM5kYWuGmYeEqWBDPik6P76THWeMTlfV1MLZFaGhUTVorjPkH0fOiFdIcm9DawxVH
+	 XZlCZyRYyCZzpjwrAi6QX47WdGy5fZRaXw/P2psZK2LXBsjaIN+ww1zP3lXMFrZssq
+	 NjA4IxsryEcrw==
+Message-ID: <cb1c0af3-e0ba-45bd-b51b-b0b224e9a6eb@kernel.org>
+Date: Thu, 6 Aug 2026 15:20:48 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] mm/huge_memory: skip zone device folios in
+ madvise_free_huge_pmd()
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, sj@kernel.org, akpm@linux-foundation.org,
+ ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ stable@vger.kernel.org
+References: <20260728194714.3713735-1-gourry@gourry.net>
+ <20260728194714.3713735-3-gourry@gourry.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260728194714.3713735-3-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786022418-219406
-X-HE-Meta: U2FsdGVkX1+X4W7E4biSLKNi3FkWZ08/UMjfk5Yd4hQbPEOJne+aKIC3GQVQLxzrO3E2y4LhoNRB4a2NwJj22c9NrpwlwaX46zKt7P6o07wYqzkadH5k/O7sb4H+J3cXy41rm/fYV4QyqXYmTY/4EqznWfeE5XdCb1YvbNZezpLab1VCIpggUcsvVjkMHGTmZ2/V/hHTXUzUSQsq2tkXETTZ3IlQlr9A8e8Li79ldZr/g9G7EbfgOdfUWrem6LzSCD6el31CPtiqa86fZ9JdAlIqNkMbpMDuLbqgeDiFhTLwlpPlAUJZtyhD7a2+MnzCZMlvVIuFWOM74znS1FzeSYJ8TcGKRiUKm7roZ5A3kpJ6CBKMc0ooOiR///KUl13gOtY5kq12mTYgFQG4xMRc9HsxuTYJry/0JBWGHXPJmi6FmGewErIm5sL9gH5s50UmOTdqPmfa3grdQUq6VxaTUmrjxSWWeYPcahlAZN0laz4PWegkq6K7PzdP6gynaAfhJ16Zubui323ij4wtOHCFPp4zR8i6+6wVmj7sWhob5b9SYmpWingJaMRJAfeNceFy6HBxQz/pys/MdURGPuGZoMQQ8cS2996843tYQ4hlC6JuSrLdMWGFrLOhp7G8aENepVAcAj8bctEiSP/t7OPvbRpo+VolNnVYzgKcO0vbrk/A6QuFHPJRMm7qXTpnaV9uw9ibOFi1iSghCoIO7tqgJuv+z2v5crMoBIIysRDoSRh8XGZB8gYoVx7Dhoe2jSbu5AB+G2FEUkve6oDe1IsyYnG1BNXnqGn5wUP3w+REV3nVejw/EDp5CAFpJgU9du3elitKmOpZIVkgvaqaDPOhRgTO4nYJZK+2xzfb7Hz0xHkfR4fQPABYB3kXykqnvUmJ6HHW363lymPUr96ayF0Ace/fJcJwiBhPzoLGtwjDXs08621jA+e7ziCDPRJwi8nZfvr3EtMvZOkKBM+sY7+
- OFU/9hjN
- fYXBwfRWBjb4o4aQqHWcD3VDi3xEkfPA6kVhGoiQdW0U5hWb1zTYfZ8tWNRzaAmfXciG7p3q5UBFt6WnM/3hwi20RCbV5ZWaxnB6EviyI98D0ASMRr8cjhQFwFaMf4+JII3US1O4N/c4xNuxs/KJ6/3ZerO2K9oepFyPVTiwQghdhX+PiPT3iFxdgPSdW9Qyb+mEul80Ka91o8Tv7ZimIYBvqSehNdySFQ62IUViQjZYuyaBvdM+2c0ETCH5yHMcsLv+LiIzceDQkqURNKpn/7tiNF5KoChJWdrSPjfh0JdW6+B//tJMtGhI0jBd/FRKNbA3b6V/AvZR/sV857iD5R3b/2j/il7Q/iykKm6VX3tKREdoWct4i3GIbRBQOnw1FHBM6kXTaSCQnw6vacaIhef8xPLM9cehy9io9lGyCbJnfw1bHSTqot5/CXSsIjUM5oR+mCH6Qy4hHfbl02KSomeqrDkhnxt43mdR9zXy0xLgjzuD5Rn2EtTZrjfU4+AdiVPpo9GKgNw5G0ONVFf4e1ToFTCZZJL9ols+jHvpj30mAqDPtX1omFJyd16ktiCPUTDpdE5y7yNoP9/uV/Gdj6mNftv8n/97ds/ESXBwdQts2/iVuKOLLX81ay6sY+/ahBwPLG3wzd0IxBeTU48UedgFugGgVHPp7WcZc0DadmFtp5Vw=
+X-Stat-Signature: mykr7fb35ix3nejo9g7kjfo3h7u8hjko
+X-Rspamd-Queue-Id: B12DD14000D
+X-HE-Tag: 1786022459-90685
+X-HE-Meta: U2FsdGVkX18erIkSThwI3QL/SEP71s4Pc3FxYeZX+iTQCTVFcNvM1EZVFSsIuXV/LykQlX3NWNozdw1OSrgRS7MYaE8cqXysE7jTHCgdGIxtYC0n2BZyhP1WRfPxz+JjVu+aqcOiCd9A1AH7XbY0K9M4/yoL7so0tc7+j0XRXup/Va5Un7tzDckRqgbSerSSty17w05AxgcjkKKCtskwygg5fCtdpbOzclOsbtbjw/ZYdtTC4/9Efge/OIF09dGpInW8VqfRDBoalgas6eCrlxUKHx7ML59wsj5qYRNIKb2N3dYnyIFPHbKdYLMU2eUeurutIJnNLKDU8e3qpOSVrn0dKve46BJDXszvQfChw9/QSHWY2poCZI4tEEKREfBHKuHYYuxtNytkvaM4j4LNijHgOeJLxpO/P3QU0KOAoBGuyHSokTipd1HohAuZbe5hZYHNvp/ob67bfIlaEDxxzyIKWZ9dsgZBbgTT/YstYCSvXIVCO6bZ47S8fsBY8akXC+bS1jbxxT4In30UdaOVsf7kMO3O/QwCKjZHWkIHktM8Ijj9bmREcG6aUg+d7VytSymoY6zsxe6c/xWBv8D5gng9L3yK8sSxrBfKEUfzcrZUvPWBgHVvgXyS8pnBqaC2ZybuW/b4mmoPk6ejzG+DV5FO51yP4ucN0p9OIi2wEnJDnMzvPbXsMJDvDEUyLboZV5WkIFxDRi52NIdFm04EHg2pUgrFv0yc4lMGAbefGno8ZekyMaIJ8On7o8k40H6lx6swgZs5wl03QONYxKRM5U1sVgqJzrf+ZHuEJx4jgtZ/loezwHW4P862iYKPMyrjz45acPcSs7ZntEkIbWVGVohDfeInMMnfDilYSU7eJlsvmjsdKGJ2Ymli4MMpA5ezk3Mx0ti5q/RMdnZvt2HWGNFaEmeF/IqmA7/XCL38LiYgZt0LJGAMbYvK2auCc5PesJLDJ9n4HagF72M03Pg
+ xUOs14Xg
+ YeJGTSKEID1hVyGOoYEpZaMjtw9Xlxw2Jl+9WxV3FhZPW8uapDtMI2sSTcxom9/1QBleT2h25bxCEGtDpawF6oxkJpPokRgUvPmgV+3msMMH1iXn+0itHDrCuy4HBg5edScs3WHf4GuldpDrFSWYkT9P/vtRJzTkE4Ir+B0GGSex7HYduALbz+qaFFNMZo4OVJP6pxFMQT2FWKIAvP/UKggcFpJ19JAmpZjip9z5+LajC+krvRNGNwZ+AvpnyzTJQcFhoOimDOvLqQ0fKI7PXoEaueqaWBZ1O1vF5ev3hozTgbjvw1K7JdwOFn9Rg7F7U/s/mQ5UZvUqwDYexXj96ObUMh5z+hqJ29hfI/QXxGaJw7blUkfETfc8USz2N9BhLsr7LOrGDNHVCgkgDAEi5n+gLjiUlVlAJdnWvAooSoz5bod4q64PLAFRvrGbf75O4bdXexL1iq58gYlWSoEx4vg5E0BFZEBKr4qIYI2XWCWkCMAY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,105 +146,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026, Xiaoyao Li wrote:
-> On 8/6/2026 8:43 AM, Sean Christopherson wrote:
-> > On Wed, Aug 05, 2026, Xiaoyao Li wrote:
-> > > On 7/31/2026 4:34 AM, Ackerley Tng wrote:
-> > > > I think another way to phrase this is that if we don't make this change,
-> > > > say, on the foo architecture where there's no CoCo and no private mem
-> > > > support, kvm_supported_mem_attributes() would return true for the !kvm
-> > > > case, which is over-reporting.
-> > > 
-> > > Under the condition that the foo architecture enables
-> > > CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> > > 
-> > > > How about this, replacing the entire changelog paragraph above:
-> > > > 
-> > > >     Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
-> > > >     based on kvm_arch_has_private_mem being #defined. This improves
-> > > >     reporting accuracy by not reporting support for
-> > > >     KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
-> > > >     called with kvm == NULL.
-> > > 
-> > > It doesn't help for the case where kvm == NULL, but help for the case where
-> > > CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but kvm_arch_has_private_mem not.
-> > > 
-> > > sorry for being picky. I think we can say
-> > > 
-> > > This improves the reporting accuracy by avoiding the case where
-> > > KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without
-> > > kvm_arch_has_private_mem being #defined.
-> > 
-> > How about this?
-> > 
-> > Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> > on kvm_arch_has_private_mem being #defined in anticipation of tracking
-> > PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
-> > conversion).
+On 7/28/26 21:47, Gregory Price wrote:
+> madvise_free_huge_pmd() resolves the folio backing a PMD via pmd_folio()
+> and marks it lazyfree without checking for zone device memory.
 > 
-> Sorry, maybe I'm stupid. I still don't understand how to connect it to
-> tracking PRIVATE vs. SHARED state per-guest_memfd.
+> The surrounding guards do not cover every zone device case:
+>  - MADV_FREE only operates on anonymous VMAs (DAX mappings are excluded)
 > 
-> There are two diffs in this patch, and we are talking about the second diff,
-> right?
-
-Yes, the second diff is what provides the desired change in behavior.
-
-> If the kvm_supported_mem_attributes() will be used by gmem, I can buy the
-> justification. But it won't. At least, it won't after this series.
-
-It's not about gmem using that API, it's about non-gmem using the API when
-reporting KVM_CAP_MEMORY_ATTRIBUTES.  Without the change, if KVM supports any
-memory attributes, i.e. if KVM_GENERIC_MEMORY_ATTRIBUTES=y, then the below will
-*incorrctly* include PRIVATE in the set of memory attributes, because
-KVM_CAP_MEMORY_ATTRIBUTES reports what memory attributes are supported via the
-VM-scoped KVM_SET_MEMORY_ATTRIBUTES.
-
-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-	case KVM_CAP_MEMORY_ATTRIBUTES:
-		return kvm_supported_mem_attributes(kvm);
-#endif
-
-
+>  - !pmd_present() branch rejects device-private and migration entries
 > 
-> > guest_memfd support for memory attributes is expected to be unconditional
-> > to avoid yet more macros (all architectures that support guest_memfd are
-> > expected to use per-gmem attributes at some point), at which point
-> > enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
-> > attributes being supported by KVM at-large would result in a system-scope
+>  - present zone device PMD (device coherent THP) is not filtered.
+>    Unlike vm_normal_page_pmd(), it performs no special/pfnmap check,
+>    and would be marked lazyfree here.
 > 
-> s/memory attributes/CONFIG_KVM_VM_MEMORY_ATTRIBUTES/ ?
-
-No.  I mean "memory attributes" as in KVM as a whole entity, i.e. everything
-linked into kvm.ko (and kvm-{amd,intel}.ko, supports memory attributes.
-
-> > check (NULL @kvm) over-reporting support on arm64.
+> Bail out when the folio is a zone device folio.
 > 
-> I think arm64 won't define CONFIG_KVM_VM_MEMORY_ATTRIBUTES?
+> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
 
-Precisely *because* of this patch.  More at the bottom.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> So it seems to have nothing to do with arm64.
-> 
-> It matters for x86. After patch 20, CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
-> user-configurable. At that time, people can disable
-> CONFIG_KVM_SW_PROTECTED_VM, CONFIG_KVM_INTEL_TDX and CONFIG_KVM_AMD_SEV, but
-> enable CONFIG_KVM_VM_MEMORY_ATTRIBUTES on x86. 
+-- 
+Cheers,
 
-No, they can't.  KVM_VM_MEMORY_ATTRIBUTES depends on one of those three being
-enabled.  What am I missing?
-
-config KVM_VM_MEMORY_ATTRIBUTES
-	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV  <======
-
-> In this case, kvm_supported_mem_attributes() reports
-> KVM_MEMORY_ATTRIBUTE_PRIVATE for system-scope query which is totally wrong. I
-> think this is the case we want to prevent not something won't happen for
-> arm64?
-
-Well, yeah, because of patches like this one.  That's the whole point.  Without
-this change, kvm_supports_private_mem() would be reachable if and only if
-KVM_VM_MEMORY_ATTRIBUTES=y, which would prevent burying that Kconfig in x86 and
-would prevent arm64 from enabling the PRIVATE memory attribute in guest_memfd.
+David
 
