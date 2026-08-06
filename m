@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA5CC55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:10:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB48CC55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D34AD6B007B; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
+	id CAB9D6B008A; Thu,  6 Aug 2026 02:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE72A6B0088; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
+	id C35606B0092; Thu,  6 Aug 2026 02:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFCBD6B008A; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
+	id AD62B6B0093; Thu,  6 Aug 2026 02:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F8B66B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:10:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 339EF120630
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:10:57 +0000 (UTC)
-X-FDA: 85069821354.05.36E5670
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9073940008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:10:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgCpozn7;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B4E66B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:18:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E81D31A0687
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:18:47 +0000 (UTC)
+X-FDA: 85069841094.09.02496E6
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9095F20002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:18:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AQRwtam9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785996655;
+	s=arc-20220608; t=1785997126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vEDBbbtg3/PcP4ClINYTeW7ags6q/rO1HbdT1jquPMs=;
-	b=tQH9Wd4ClFzB8D3B2yWt0kGF1G1FWJMTQt0A1gfDWf2/dgB5B6eNd3aSJ7LQk79NeZG1B/
-	tWqnAmFfUduN5hfimm598gyc/ZG2cyoFsu7Mw9pNaeTktuIa6WjWv/YIvVoT/xlunZAMnG
-	VJyHspuQ931q4XzwObFnrtmsbsni66A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785996655;
-	b=Dw6HGmjEJRENLy2YniT8q+WMhbkVBJPKMIq6QxGHF//KAbokr7C1qsW68VBKYV6L0m08Mv
-	wAqginTnueU0+GldLPZFoAbC/tEnlivjSvllkwMQuoYODawncZxyOmktM/XYOPik2zU7QN
-	sa5ooXyFNLux/r70oi+tKsYlnZKZ194=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=P+ldPohuWQENIni4PGzfc5Oh7ThBEFWNMfFXg+P+C+o=;
+	b=wceY70T86EH7zo0xj9zF9cwizMbMgKVVr7HsmN2D+BHxmPct9i+M8mkRDjoNa2kK664PtF
+	2N4nI6sBY7odQcns+7Jn5cSpfz059R/qsSjGFr3TNKsqkmGV9n07NgYDXhVoiBIu4LefDq
+	aFelDSZ7s7CCIVNkj0qtxY3+cwGU1K4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgCpozn7;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C222641341;
-	Thu,  6 Aug 2026 06:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1A41F000E9;
-	Thu,  6 Aug 2026 06:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785996654;
-	bh=vEDBbbtg3/PcP4ClINYTeW7ags6q/rO1HbdT1jquPMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GgCpozn7dvhYOm+8WwQR+sGgrktCMAfyCcIBOreRY+ogIx8rOVgT/mtbEC21fsjll
-	 1DBLOAGLdlFIJkkcE9m+cWPV/jkjcBs4TmPVa8zKaPvHYZ6fMTTSS7PFW7778Sz/Iv
-	 7fpyx1VFKS9TZ2DmAqn0hc2TKhmIbugpOtkQktBtx5YoCDHDvOhGR2B2MdlKhx0/o5
-	 aBH9FsssjbFkIgnklYm3IF3H9YJU3O6Jdw5EmLovqCi9h8E8iJGJaWl3gOncgdBtNT
-	 W91bzD+SjL0GzDdmi8a+ZpiGiPDRswjZh6Xdzd+H4fnBKpd4faloeOEWFFrWSIupqJ
-	 mkdpVqud/Jojg==
-Date: Thu, 6 Aug 2026 06:10:52 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH] slub: print just the function name in
- /sys/kernel/slab/*/ctor
-Message-ID: <anQk0wg15jxzSEp7@dev>
-References: <456c0a37-9074-45b5-9be2-a5f2fe345400@p183>
- <ee600151-85d5-4cd2-922c-d2d8df21878c@kernel.org>
- <73d28cff-77f5-4cd6-888e-5dce5ebae459@kernel.org>
- <am7NCCxeg3BsoYSa@dev>
- <c89d1843-e06e-4b8b-bf86-5b0debf489c9@kernel.org>
- <68e28ff5-8cfd-496a-a895-30de110b0214@p183>
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AQRwtam9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785997126;
+	b=7CTqleXsQbpJgpQPAFIyG997XFjdkOsMbxbcoYvkVWeDWLh0QxrMPR8iyxiD6ryG3pkx4m
+	Du8nn7QnxzoCxt3fzQa45EwWzBnMH6CylCjiNF/hns0iMoHoVTgtDpKOfhNL8nFTZ4RX2Q
+	SVir07VZe/WRd+6BeUhxzP+a7kuvyik=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785997122;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=P+ldPohuWQENIni4PGzfc5Oh7ThBEFWNMfFXg+P+C+o=;
+	b=AQRwtam90kkDWgMb2odt6wcpqyfUKxMWoX9Vf7r6aS+bJeteNNI1oUoD9fT5pM8scVRXzb
+	dldgiO58uE7+sjGs0S8NeJ+dkK+wCJRVMFGqqCg3FI0qWMk1UdGBitt+IvvJo9d4FQ5QHr
+	m35uRuWc1EDZT1/STIfrFRsP5pBmYqk=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] memcg: keep folio's objcg same as its node
+Date: Wed,  5 Aug 2026 23:18:30 -0700
+Message-ID: <20260806061830.3294679-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68e28ff5-8cfd-496a-a895-30de110b0214@p183>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: hfs74fejx4ujcpsebbtgfakxh98eoc9i
-X-Rspamd-Queue-Id: 9073940008
-X-HE-Tag: 1785996655-19299
-X-HE-Meta: U2FsdGVkX18ZsMYCtmjlffz3ur5mZETpB05kiKt0HmEOzbuRd8wFvSfmtoLaxnspmgF25hnDdDewkbkT0fi/Ldl4Wwt+j3c3NhRYgCTLEEHIGD7PnjKBO1OEeYOGgi8GJ02YFNY/a5+cp4QeXTNYaFm94/zsZgnFxbcEVMSbXHtwIDQOXOalrBhNpoES14uvs+fu62+qkJmY/+N6My0Ip6LD81jdjCBk6vkdUBSubaKQhiJho72eg4+SbFRkfVymIQUBjKcYKaBdiZnPr5zqur8wEUrKc15SFhY2Gsoxrlny+jRKFck7l0/XJYICzSFpGZFe9hKzUMRKBJivEIKTtdCQxsqGn57LwFGzyrDm6QgWpaU9Mxr8RRt49OfGCPlVkwWI41KVAQw0xfIyXfmN2YZQNfWEL7o3DJ1yqIUPXXXLzneWMofsKCnq2MpyI5wrBUuGmrnK4CBwiUBlnoYL5xp9B+zlAgQry6hIqDLAruplsUBG8Kl32y9hkBax+CpGoEZKyLxsDF/p5GCrR9ZaElOmz6M5g2RpKfVSJTlgo9UvKNma8kGRo1cUDn11Lk8dl1a9Nm5oVFSzs79C+8v2OOXRqmeezFGiCZPvsX32gRBV8TU/8TZv0t6bLPJCNFF1v0Ebb92rD6CzhOs1Av9EQQ+sYTUdcrO4ar5AjDnRK9ZcYjpL9mH/aiwY+QTD2hM52W6wp+jhda5QUVX4KKkMMczXX09SBepDeXpDyqGCvDsFdmqpsD7TxoshfDfIgZohTL76ObRZmt/SuQVWI1B4tbhPulcs8nTY3PInX+sIiSvLSI+EqtxGugdQIWJS3EDAvH5W8DyeFr9nNkRBPpif1LXeE4r9T6bbOdUfcBN21MjV4az7wdCGh3x/stoSbzdJSCd0B316saFFVYO5psDHFR8ni9PIbKM8iBl2sLutrMVl1P7znNMzH9PTE+XcehOTpOBMk56FGZsPjoN4JEE
- EbAWvgMG
- WZgxC/PNXw1LfzOHlmLGSed6gHbHBhYDynX3JxqLp0REW/4CZK8U6eIUcwynwvkMbH6mb3Xe0YIsbHgwRtk/Qwg7xbi+psx6gcH39u2FtX28p03v24Igkj7KbxBCzLv60MEBkY3yoG+6FB57Nq+xmaC6brv9u/kkwTZBq5+HfYMXQu4TUzmUjRY0kGpnf+dyCbCSVsdHOthqP/A9boYkC4v3goMDq2sflIeOGZdtlrmVZ6eo3mFCwkMZgLOGwG09d/UHRU0yTN5AVTiKWZjw+PFaZZg==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: n9a1pozdqbq57zsbz14k4u7o3p6kgbim
+X-Rspamd-Queue-Id: 9095F20002
+X-HE-Tag: 1785997124-980995
+X-HE-Meta: U2FsdGVkX19/gzP+eGnLZ3ntlsotJ1I2X2Jcy7euJP0iaezJLHNL0bMKhTYQ0WDWEdmjPPDSk93O4uaAsF3RL3Mh6EDKc0ayiuxslyzsCpDx6uGPWOglngieKvt3JNleJGqpPr3lj3AherTVUc6v+f3OqfmJwkia7mPxzOBt5OdI6Jst2ih8dvd6eVGQrfL53YdYjbk1gRGX4MidtT97toJQAGwJO1rVdrXYX8x2mZhc2I0fftL7QPfmlr254o+5Qhp5XDxe+S+NRzarXDdKeQsdi59IFHu2ssppQYmJF+E5QcEqPyZpS3zusSRm7WIZqv4JtwcEDzuAmsxjHF5sXF01h4gV+7hcfA/530OLk4wMAnK6PNjoSfyFKlHrrf/doEDeSA6LGtjYFKlMnyTRBnJnF21y/TiUZxjiPR0bc9wksYS8G90wQSRt5ovqQUHXPO8CRW5Ei10gQgVSMvlj5ysFF4g0lYD0bR/N4Y7noNmaN85XwMf9rUBtXxJ4spYEzwDPiWI33reovBBiX9y2xIClL1nN6iPXP0WLcwwPZMBbTIrvWozA82SveDQsE4IWukgbGEbREIawWrjCgARsfwyp0PbOhhQK0X9XfRunXOL5cgc1fHdHY09jV4jSZF8cg3yJZoIAqjJIUL8awHYal9poTixF69LaP5lFZKN9E85Lyz2QrRZ0Cx3l/xaRnjC71Xy6WORjjSrsFtuUHAgy+mWzyIMI4wSxa9dPtCDAZwRBI0NAkwmD6YBWh8ZEjrVLOwu2b9kNHVAB9ofY7+NykjO+eT7ugPWKR+WCUvZ4vFJAl5QwXslLj2cIUDYq9oQS/5jIimPQ5vm1BsywLt4nLwds+g8pMmfHrf/AfApLGLNNehHW/DuZcixylUPFwMcNn6OczB2UOxBfgIeTi41HgA+bToW4uRlmgifmX1EdHed8YEidUDDe5NO05luPDt1gR6GV7hQfapaNbQxgXqm
+ HphFKyLT
+ MQURsc+777TXBXs66JrtA6aGrgQdrtxojoBuh2PexLk8ODeBlGJ8SFCFOc8TndEZWrvVHWLvWKMMSHpAS4+lJqLa6cAMhyOAompvNeSWdrrsF9UJ2SFflz718CdEJ8bl2LiPyWhEYDGBiaDTKRj72YACvKvdmodQXhMH3o+bZh1McRFA+/MfOr3WGUpA5YQxvq9j0DBjuuavlvPBjdVfiHS1ilaQw+wxL2O3Y9VKSwQHtqPiaN35RouDyHNiX6BrKXTVpoT6YvPkzZr7tkSqlebnsyNstVF80bXa2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,61 +92,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 12:22:42PM +0300, Alexey Dobriyan wrote:
-> On Tue, Aug 04, 2026 at 07:25:15PM +0200, Vlastimil Babka (SUSE) wrote:
-> > On 8/2/26 07:13, Harry Yoo wrote:
-> > > On Thu, Jul 30, 2026 at 04:15:26PM +0200, Vlastimil Babka (SUSE) wrote:
-> > >> On 7/27/26 07:27, Harry Yoo wrote:
-> > >> > 
-> > >> > 
-> > >> > On 7/25/26 10:28 PM, Alexey Dobriyan wrote:
-> > >> >> Sysfs "ctor" file prints offset/length of the cache's ctor function
-> > >> >> 
-> > >> >> 	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
-> > >> >> 	init_once+0x0/0x10
-> > >> >> 
-> > >> >> This is not useful:
-> > >> >> 
-> > >> >> Offset will always be 0 because ctor is a function.
-> > >> >> 
-> > >> >> I'm not sure what ctor function size is doing here, it should be in
-> > >> >> /proc/kallsyms
-> > >> >> 
-> > >> >> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-> > >> >> ---
-> > >> > 
-> > >> > I'm not convinced that changing this (without strong justification)
-> > >> > after exposing it to sysfs for 10+ years is worth the trouble.
-> > >> 
-> > >> Agreed. It's a pity this was exported in the first place. I can't see a
-> > >> benefit for anyone knowing what the function is called. Should have been at
-> > >> most a flag whether there's ctor or not.
-> > > 
-> > > Agreed.
-> > > 
-> > >> But possibly a justification is not to leak the function size, which might
-> > >> be theoretically (although unlikely) a hint to some attack.
-> > > 
-> > > ...but you need to be the owner (root) to read this :P 
-> > > 
-> > >> Well at least if somebody complains about getting broken, it's trivial to
-> > >> revert and we can hear about their usecase.
-> > > 
-> > > If we were to experiment with this, we'll change it to print a flag
-> > > rather than the ctor's name, right?
-> > 
-> > Yep, let's try that. Alexey?
-> 
-> I don't mind ctor name, it is internal implementation detail,
-> but offset/size are kind of useless.
+memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
+is the objcg of the folio's node.  Folio migration across nodes breaks
+that assumption: the new folio simply inherits the old folio's objcg
+while living on a different node.
 
-I thought Vlastimil meant ctor name is also useless and suggested
-it making it a flag (0/1) to represent whether the cache has a ctor or
-not.
+Once the assumption is broken, the reparenting of the folio's objcg and
+the reparenting of the folio's LRU list are no longer atomic.
+memcg_reparent_objcgs() handles one node per iteration and drops all the
+locks in between, so the objcg gets reparented in the iteration for the
+objcg's node while the LRU list gets spliced in the iteration for the
+folio's node.  Any LRU operation on that folio in between resolves its
+lruvec through the objcg, and thus takes the lru_lock of the wrong
+memcg, not the lru_lock of the list the folio is actually on.
 
-Or do you think there's a scenario where ctor name is useful to know? 
+Fix this by selecting the objcg by folio_nid() at charge time, and by
+re-deriving it for the destination node in mem_cgroup_migrate() and
+mem_cgroup_replace_folio().
 
+Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
+Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
+Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/memcontrol.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3057396dda53..2e98788dc8bd 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ 	return folio_memcg_check(virt_to_folio(p));
+ }
+ 
+-static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
++static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
++						      int nid)
+ {
+-	int nid = numa_node_id();
+-
+ 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+ 		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
+ 
+@@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+ 	return NULL;
+ }
+ 
+-static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
++static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
++							   int nid)
+ {
+ 	struct obj_cgroup *objcg;
+ 
+ 	rcu_read_lock();
+-	objcg = __get_obj_cgroup_from_memcg(memcg);
++	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
+ 	rcu_read_unlock();
+ 
+ 	return objcg;
+@@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
+ 
+ 		rcu_read_lock();
+ 		memcg = mem_cgroup_from_task(current);
+-		objcg = __get_obj_cgroup_from_memcg(memcg);
++		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
+ 		rcu_read_unlock();
+ 
+ 		/*
+@@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+ 	int ret = 0;
+ 	struct obj_cgroup *objcg;
+ 
+-	objcg = get_obj_cgroup_from_memcg(memcg);
++	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
+ 	/* Do not account at the root objcg level. */
+ 	if (!obj_cgroup_is_root(objcg))
+ 		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
+@@ -5431,6 +5431,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 
+ 	rcu_read_lock();
+ 	memcg = obj_cgroup_memcg(objcg);
++
+ 	/* Force-charge the new page. The old one will be freed soon */
+ 	if (!obj_cgroup_is_root(objcg)) {
+ 		page_counter_charge(&memcg->memory, nr_pages);
+@@ -5438,7 +5439,12 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 			page_counter_charge(&memcg->memsw, nr_pages);
+ 	}
+ 
+-	obj_cgroup_get(objcg);
++	/* If replacing folio of different node, get objcg of that node. */
++	if (folio_nid(old) != folio_nid(new))
++		objcg = __get_obj_cgroup_from_memcg(memcg, folio_nid(new));
++	else
++		obj_cgroup_get(objcg);
++
+ 	commit_charge(new, objcg);
+ 	memcg1_commit_charge(new, memcg);
+ 	rcu_read_unlock();
+@@ -5478,6 +5484,17 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+ 	if (!objcg)
+ 		return;
+ 
++	/* If migrating to different node, get objcg of that node. */
++	if (folio_nid(old) != folio_nid(new)) {
++		struct obj_cgroup *old_objcg = objcg;
++
++		rcu_read_lock();
++		objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(old_objcg),
++						    folio_nid(new));
++		rcu_read_unlock();
++		obj_cgroup_put(old_objcg);
++	}
++
+ 	/* Transfer the charge and the objcg ref */
+ 	commit_charge(new, objcg);
+ 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.53.0-Meta
+
 
