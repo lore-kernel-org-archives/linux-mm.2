@@ -4,124 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90643C561E6
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A645C561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:27:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 635586B0092; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
+	id 7A4216B008A; Thu,  6 Aug 2026 04:27:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60CC76B0096; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
+	id 72DA56B0093; Thu,  6 Aug 2026 04:27:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 522AE6B0098; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
+	id 5A88D6B009F; Thu,  6 Aug 2026 04:27:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A81D6B0092
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:20:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A384B14065F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:20:37 +0000 (UTC)
-X-FDA: 85070148114.08.8000BE9
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DC2BF8000A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:20:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAG+h92u;
-	spf=pass (imf02.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786004435;
-	b=SDpAtRXtZvlwyYan6Z9mNDLB7Lygg6xgFSn5jlPIqcBCW3rYLBTchezzj4v0bMru/MI3+z
-	NMehbFeqD3AsfGO8fAu2k5CD7gTbHOHBScptwpOhmx9VkOKMH3hEhuRJhoxhKb+ysMVI2o
-	vBXDUcKE0e6P4E7iVjyQjj7hUudOQSI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAG+h92u;
-	spf=pass (imf02.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9706B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:27:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79B79120623
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:27:46 +0000 (UTC)
+X-FDA: 85070166132.19.8A5F258
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BE564A0007
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:27:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=nKiD0sVT;
+	spf=pass (imf25.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786004435;
+	s=arc-20220608; t=1786004864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
-	b=tkyLG9ccDU0/I19hmiTTTiDEkzlPhUlBvrkjh4SSymiqvREOvcsoAM0uWB2Q6XalOLGQiU
-	Isfu36chT32OuaSEJGoF2/iVv1q0kz2No1RdOT+P5ubDRfYxQ2iU4zRbUMJbfUy+T1yKp2
-	aHetmIPgVWRVKWDFcqo3bY8AdXudbj8=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e58034d05so1739301a91.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786004435; x=1786609235; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
-        b=FAG+h92uM4KvRg6gAvV6m+1JA8V7EyQnaRx/zoScjN7hD2hNzvmYgwaXkR2U0heVMX
-         aDi2GEEvfg90GavBThMtd4ZyB/DsdDXLQym0qyfROB/ChsAWC7MrEmtz4Jn45qvY5/ZA
-         wt3NoJ06sfpAQMdk6Ww8odNtDz8XZsLTqREK6Zr5eHFD1oFROcPLbGiYUQSDfSx3xSmn
-         ZvfcKRjgNnpIFFsqFcntlmATswoBT+3pTiBZyhMC+6nWzhPvniTZXa8bAmfewIEObbOY
-         gStR+m1Su51oY1Y+4g+96B0N0vNh89kKds184AnVark6XAK5GAy4QU/o4m0HzAUNAgRF
-         nzqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786004435; x=1786609235;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6O14WmRpvf4dR45EQdvDWTWI2XmnvuZPqONMvf0lhh0=;
-        b=XFJ2+xwsztGNKHHe8BO9JMSuGSnYYbQnBI/RY/jCZsHSOdWmdBsgXBO76BVsNQMCjc
-         WNvopaFfU9AiZghg2Zk7PF+fjZvIrtkw1VAWwEcukFeocJivm9yg7kTa2hZ/fiSXoHe6
-         X5w8T2B0ymNIr8UPjoEV2KAD5oiip4TgYv3K1o+0aaVGPfe5IH3X8LhqmaFgItpmPiAB
-         +r6otIdvUr9yveqTsZoIEYes0o84VluMFN/fFe8/wdeoYxQTgAYXB/WI0ws0SL4/X9Ak
-         o+BqDwjq7xDpgRHZZaUB36M2XMpberA8s7xjzw4FIb3O1KhXWg9AaFzMnves/d/jqVsV
-         p4Iw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5ljwMUhBdQ+9UQafNJC7KSCFVo6rXXT+CqbWqlMe1SDSScvUJ4efqUtv8otQ9h7UFZCH4498w0A==@kvack.org
-X-Gm-Message-State: AOJu0Yyqjy75h0Cj0iUoCIc1r6sxPKL3gQ/+ref7L8J3QYvWng1YTqNN
-	osNo/MEaSj0E2Ck1m3j0V1Bz5IxYtrpHNRfALjBlb3fXoEv7dsnGhJtk
-X-Gm-Gg: AR+sD12XqqVfLaKfTycp8kdTLRQD2Rj/VGp7yTgS9nhj+1PVZkNthdSOB7sLB6QD3f4
-	hFbmtpmtTbBWfzfhgoB257mj/Xmk8Y+IOBvcGVfO/YtaG4scaCiwajV1AUzCDuBo2EZ2Mg/eDa1
-	2h+8tUKrZzvnGmw1MY7y5339jaF+xk+Szd4XWdzt5+snvL0ysSgNZjEbJCJDiS5JsYMG79GEpYu
-	cPn0vyd57vhjKt2CXuZKKLXQtdyevx1CyVnGw0TGme1TwHwx4YsZa6BC/CK9ttGJSDJez5ydvDz
-	FpeykkCa7EwHUcpOJYVUprLo5V5f0ZJI5gIvL1hh8e+tjLsdRigY3RD+JIePZwIUW91JHoWqTOR
-	EBwpm3vJvQhZ95Btw/447N0KN8xQto2rX+Xt/keDe4UkDR1rD3d7HGJKe0rbqlBHgFBo5Z9wskQ
-	vZXQjv6/Ft4kwcLUeH3AmNLCEYyme5oD5JhAG9uEPnjQi2aR7Doy7LIgyBM6QIDqVs4CpEtvXMN
-	7njC8yZ2R++SHM3gAc7hhMoU1nb
-X-Received: by 2002:a17:90b:5203:b0:37d:f206:a2ac with SMTP id 98e67ed59e1d1-3903c598ce5mr14366837a91.7.1786004434667;
-        Thu, 06 Aug 2026 01:20:34 -0700 (PDT)
-Received: from mi-HP-ProDesk-600-G5-PCI-MT.mioffice.cn ([43.224.245.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9ff6b34sm27660145ad.26.2026.08.06.01.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 01:20:34 -0700 (PDT)
-From: "Guanyou.Chen" <chenguanyou9338@gmail.com>
-X-Google-Original-From: "Guanyou.Chen" <chenguanyou@xiaomi.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	chenguanyou@xiaomi.com,
-	linqiaoting@xiaomi.com,
-	chunhui.li@mediatek.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] fork: fix default_timer_slack_ns inheritance from RT parent
-Date: Thu,  6 Aug 2026 16:20:09 +0800
-Message-Id: <20260806082009.144846-1-chenguanyou@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E+OtdBdwv6/MFc4NjNIl3j6uDNWCdxI8dJnJUIXFKfA=;
+	b=8I6nhX7NeBCjDwYR5BJ1aZvzlczp1d2WjV01LR5qDDZGhgx14QXSlVpiOPxMLUF04/BNL/
+	0q0OuG4HbCkNoG2Qk+15QVLvZTy5HiXyZLnIcn0TYGGVVs3cMPUAEU+zsayrWEGbzb3Pa9
+	4cX9Kvq0LZ+r/Br8vwegzjtlBXwN0m0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786004864;
+	b=3Vx6ZLbUGDVG2RyZjEPNVSu+Kprh+3OxD17XOLGgTl6dAkAJD9mFyFPqkbj7V6FthuXK8u
+	BSo22Lt58QBEQKo8WAk/3rCy4MLqmltCWg1LYr66g0OchY4yXre+dqPLE2fQxfq7Gu2gkr
+	LIMs5aZ22wcjFCm+2MXUggyJPIkcthM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=nKiD0sVT;
+	spf=pass (imf25.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1786004860;
+	bh=E+OtdBdwv6/MFc4NjNIl3j6uDNWCdxI8dJnJUIXFKfA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nKiD0sVTT+CECEZtTEkeIpZ/DhGjc0Tft++o/B7F0k1vajhoKVnAvceYbKwrxukNY
+	 +RA7rPVNcZPugKxMenospauMOz5GtuFHWfoZ/k5jP57ykpTrg4OGn9CJzbzyPTt1hx
+	 3TZyOqQoXxJbSg6mAc4214CUERuIY13Xt5OAaSz0=
+Received: from localhost.localdomain ([180.153.160.8])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 6E52AE75; Thu, 06 Aug 2026 16:27:37 +0800
+X-QQ-mid: xmsmtpt1786004857ton0dzvq5
+Message-ID: <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+X-QQ-XMAILINFO: OFArnyxfXusvqWmUHm7xnqL8RhD5NT+vOE+qOy9jAdtH9TEY+dGOrEvZLJHXQm
+	 Ko+m9ZDmJ6zK9g0F2c/TZ4/hdm+wUBH2/tFi41bbEoY36eu0U1fwFDFEH1RKGCsOMuZEX6/ETnm9
+	 vLXl8l6QAJc0iuz0b2ZBiMsfp6vmDhHMH+O7yjt0dKoVaFwPnFFyrhVhUHkANcMOmFAAlIeE12/K
+	 sxkePuCWyjxMXjqiiR0Hx1PJai37QB9I7tLSVLt/rds+rywS9WP+Uxk971ptmvyrE5dbUI8B/enh
+	 2Bd3eM/VUJ8RDgoJTReBIRgvr4EjmVzIfwqrSVWNeLa+5bfYjpDnGhbltHtoVM7Zg2XV4vdRDpBS
+	 LEZEfc80pCHSXAN6FpNvnd+Rv7D5RmKGflNVBpIhi3ORAR/8epDTvmU1128zQXlyDTBBxpPwIlMv
+	 q4t+PEJHyxXEjXF6+t1cjTg9M4CFdYE8eS2NxszcRjL/KXaLZbKT1V1svzH1GjLZBP17LHzc38Ns
+	 1lquQJS8EwH+S6p5AY8s0FXgusdP8BsqFINSEw1LR9DdEHV6sd4o++K4E3co+f9NAehG8DoPITI+
+	 HoODs3JqG8qOcPIfule1Av8iiXZldLGiesZGxrYqQ/pw/L2yxK75tQPDCHL5L47XVRUMjMgmutiU
+	 RSTtasM+1WbQpfDLsio4sjOCXgpMOBTi3SU7o0+y7ZojHpPdXORPOjvyRlhwZCs01RHHR0SHu152
+	 f9uoFkSaDz+rohCbhxhBplnvkHEO5bysdZ+dxUU8++rTnUk1fCaeC9oRs9brJgqdTVR2U2aiNc5p
+	 PWjTAnW2bZhx2w+2lgLwP3HlO8LJnHArX3GHsix1JReY5pHiOb1duCyXDYSY8Kk40OhNhWYV/0I5
+	 11y64AUOnp2kQsDczyeR/WcrYCT/0xtGquaWcu1GlMIGllCsyZl2CHpP0TbSYLJdEkLN+YBmIEGo
+	 gy8kwTMZvpHZ8dyg1ffgU5l7R2mgQQkr1HNSBeQ7SSzTfooWDZamRbxXtU+FPCsr8/vKAqSz8zSS
+	 p/SHKRtN+EsB4yFHSHz3fQdKBCjDyvlnbNXMQZxU8aPBDr32uB
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Jianlin Shi <shijianlin11@foxmail.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	hannes@cmpxchg.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	ziy@nvidia.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
+Date: Thu,  6 Aug 2026 16:27:34 +0800
+X-OQ-MSGID: <20260806082734.595622-1-shijianlin11@foxmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DC2BF8000A
-X-Stat-Signature: 1j8xahshmi5npo7tq3ta8osomn9oiq6p
 X-Rspam-User: 
-X-HE-Tag: 1786004435-342866
-X-HE-Meta: U2FsdGVkX1/ugzcQjrBZB86nOq1K7F3AtAXMqSjInUFHGnLrs+K3SZPhNhya1zoaYEoVe1gq4ret8wJxEvVzGnzn7JbzdjcyqNU3aw3aoEuF0IJIG5G3RW3Ws2qTfPG/zSCGNu63idbAWaMGM6ZsWyiUuSmRDg+HCJxkv5dptKkeKU4r3uRAAVPdhXvJwPZhJFsvSLjZsU7dcq/mrtdOUqm1qpvxcS9vyOwhyJKUbdheVmikDeixsk25G0qew7ezDsW51AMoukW9A/S1fD2svzaib4SRjHLqH17qOC6+QxmAIjYmIj0VWxKzEBvd7NIYuUbpgANeGUy9pfxlKC97j9hZqp8sSSecJRj4yjf6c6st4K3ZF93fVEF56AKVgwd58J/Q/KXGeUEe+xHlo4FTMpJI71R1FveBb4KunGIgvjEWdZsqg7z+Yb8qoJOZBZaRLR6bd0cG8bqPS8PuPdZDDnqqHQz1XhF+t4+X+4o7Kvl449ctfXsbihKIxB69wi+yybOT43YreZLR6BJyZ4gbDHJudX/A+ancpXZsyHCjFjiWF8NKqtnPuytNSmJdo0dGTo4jPpppVfkZmiJZR9HAn+6Gr3PQY4eXDon0Sg7/kiioolV+XZeWY+POxrB7HoJOVU3b0BrQG7F+Cy8+ntoNOfkCIXl7gXd5VrJm4vqmI4IiiI5fsmcqq9zCRQYamryfi72c9a7hhbqFfuXab3MAWdTi2FKD2DTJQdrvDy4gI7h5hiYUJ6W+e4kgMIai3bTNrm930jcYqa2AGob9SjLZHPeqUA5ktoY+ws4hEJIZjb2f0YXYuhivSwBccvYk1ScCoVhW8vCHGIcCdiOcf+N15ZU+LKquX8aix8ONNDPHUBGaVkUEBbfuXyvb/gyz7tchYvMNlvZOxrE6RKx00ff8XRLInlZKncoCxxzmOSBU/+E+U4f63IxwVwLqXruyfvB+Zf6da/tSRqQRHYdwaQu
- KsLDYFtz
- Z+JQtVDhgeZrGJErcfDK2oxXlIwf8AQVSciWplRrxow+GfYBhex2hUEix1AArbEP7U4+XlTXPgSxPtml+W66aOpYkXTqEt45ThTMtLrsLLGwm1xbZe4WUgpDSFFvawr951hB/Ka0T3m3H0QMqQbfFFuaBTf1Ii71XwXwFSdYCBjsL5LwuNelSovymtVSvuGoGmA18+CGJV6MVoLi/ape3Y8Wb8jEQVbq/dY84QGYepsIs6zFpiFBKOruRNJPSYTeECpltgsgiPbHW7dhHBOuRf4Wd9CcNmnAAFwjeIqTLRB466Chgu3+lRk5/OQadrW+KgVSlqlpEGqneJyQuIeavnPF2H+HW+X49bbFAJ6JSLNNjlLbQpMHfX6jhncqiAGuDEt03GRDe4a8pxGdNZwtjxxfk+k2gn0pkYr5W2i6yLjBl+ZJIbaPvOX1r0VhSPJ8sfrV0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BE564A0007
+X-Stat-Signature: wse8x1fjouysjyoawykgt1yhinzkzfic
+X-HE-Tag: 1786004863-840796
+X-HE-Meta: U2FsdGVkX1+4bn6PNicZF5+eZ0njHwtUaA7DHK8ZHh0WlDA8+TtJfn/BcPWO2a/GT5G5ax5+VqFPnqDq+OqlmZUJJBPZCcYsCmmUI/YG/Z9VrxN7I4uulo5GlO6sSqWmw/EYOfICYl1m+LDVcGFKn2h9LZ9KDCS1XvkOKLxgReGhlAZZOcU4MfHRbRsZK/9PmaYC3Mvs1nJQLwDGGwSuM11F/dHRWY7dtXugTzS/m5Uzr5wh40usibsZ0KQdi4EsqTxLV471EjJZWmzaqdbPiIwBd+RAkXifJ0NCYZAureqQjcecr1I8WUdx93LfZ5Akt8iNMj9ClFtqEpcXb44v/IPf8ROqRKNm0ge3ja0JIi8mYno4oQkXg34IW2JOBcf2E+k19zgvJyO49Pf1JpOy4Jhy0ebZwRbsalshBk75085hmWZHzEsEc64QH5fVeCTJHOGjH3xGCsc/BenPbcs3URqQPgG2UuZsXYgpFsSmReO3kaxzmrkC0bGLIs9NtbClSfOot1g+Si33WXnC+hjFgT/9LXaQzf3uM7j+c8AhEst9S2Rv05rW242bQOz9akRLUlzXS6K+QRu+MSCo+SDBtwpCsAvAMbVGmSneG60qrvRPTW7BZwOO9lwp6o5ykQry/T0StaWTN/h+rBBsgeIHbr49ySgUcl/2Q3LO3GSqCEgT+HVoS6pL8aVufMrJJyJyfq8JkyRpCm5JDBljEfF+9PVPl4KC9ZHNZdd+x5Ccdq2QT1rleW2cozCES07m8NEBDF1/0D50iZUfFx1/Me7WqDWzFbPlZIfbbWVLi3foxELE374KJSfBZFsABGvJWe5h5f5urHYk5horRcaMQaKJ/wN5XO2oCFFIKgxupPS/v//eQYjKLHEeMzLvkTaHykfzpOO1647zaW8NCAp6LiIaBFehQ3tU34L6URWvo4Vr0LelbuJjKs7u42I6fbQl72aSdpQ1l+Ap1sCGTyoMGUY
+ 7QseaPuc
+ t8EnR0DIr8z0xXH3E8ioR8raAWIEq2MQk3+CFBcA2xh3/drevn8AKMOBLn7QSBnUqQik+FxtorBQ3KALyY2ePmYO8fxPLiD+pBMQOPw/XOmejQ+0AIhEFM3OntV+l0Oago2u4EStza6FugE0X6qHnWpby6VFZ0pW+v/uLR+F4GVNfXzT4hFv697m1ILCxUZDwxBQ2jn0kkThcWZN1UtwXge/mJuyKy5tLsavh9zfa8aca+b2kFlhQfhveQ6z16uSGZBAE8GjxqGDU4jZ8waPzKTLL9JvAmBeHCzsPiLwgnU1Bs7oYCwiF8gYIvBBnmLzvZ2mbqPhBfmCjk3j7vwLazi+PAfw80M5zhQTpOI5vNHGF3Hg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,54 +109,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Per prctl(2), "Timer slack is not applied to threads that are scheduled
-under a real-time scheduling policy." RT tasks' timer_slack_ns is
-forcibly 0 - not a user-chosen value but a "not applicable" state.
+lowmem_reserve_ratio_sysctl_handler() ignores the return value of
+proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
+even for read operations.
 
-When copy_process() sets the child's default_timer_slack_ns from the
-parent's timer_slack_ns, it inherits this forced 0 for RT parents. This
-corrupts the child's reset target, making prctl(PR_SET_TIMERSLACK, 0)
-and sched_setscheduler() back to NORMAL unable to restore a meaningful
-default.
+Fix three issues:
 
-Fix this by using default_timer_slack_ns (which preserves the pre-RT
-value) when the parent is RT/DL. For non-RT parents, timer_slack_ns is
-a meaningful user value and the existing behavior is preserved.
+1. Propagate errors from proc_dointvec_minmax() instead of always
+   returning success.  For example, writing non-integer garbage to the
+   sysctl now returns an error instead of silently succeeding with
+   unchanged values.
 
-Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
-Depends-on: 63c1a12bc0e0 ("sched: restore timer_slack_ns when resetting RT policy on fork")
-Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
-Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
-Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
+2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
+   actually written, matching the write-only refresh pattern of
+   min_free_kbytes and watermark_scale_factor handlers.
+
+3. On write, parse into a temporary ratio[] array and only copy into
+   sysctl_lowmem_reserve_ratio[] and refresh derived state after the
+   full vector is validated.  This avoids leaving the ratio array
+   partially updated while skipping setup when proc_dointvec_minmax()
+   returns an error on a later element (suggested by Andrew Morton).
+
+Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
+SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
+the minimum on write; negative values now return -EINVAL instead of
+being silently coerced to 0 (suggested by Vlastimil Babka).
+
+Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
+
+Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
 ---
- kernel/fork.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Changes in v5:
+- Size temporary ratio[] with ARRAY_SIZE(sysctl_lowmem_reserve_ratio)
+  (Andrew Morton)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 65113a304518..bc4df18bfd90 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -23,6 +23,7 @@
- #include <linux/sched/task_stack.h>
- #include <linux/sched/cputime.h>
- #include <linux/sched/ext.h>
-+#include <linux/sched/rt.h>
- #include <linux/seq_file.h>
- #include <linux/rtmutex.h>
- #include <linux/init.h>
-@@ -2133,7 +2134,10 @@ __latent_entropy struct task_struct *copy_process(
- 	retval = -EAGAIN;
- #endif
+Changes in v4:
+- Parse writes into a temporary ratio[] array; commit and setup only on
+  full success (Andrew Morton)
+- Update handler comment: proc_dointvec_minmax() and write-only setup
+
+Changes in v3:
+- Rewrite commit log to focus on the two tangible fixes as suggested by
+  Johannes Weiner.
+
+Changes in v2:
+- Add .extra1 = SYSCTL_ZERO to ctl_table entry
+- Remove manual sanitization loop; negative writes now return -EINVAL
+
+v1: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
+
+mm/page_alloc.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 0387d2afd535..51f35e44132a 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6673,8 +6673,8 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
  
--	p->default_timer_slack_ns = current->timer_slack_ns;
-+	if (rt_or_dl_task_policy(current))
-+		p->default_timer_slack_ns = current->default_timer_slack_ns;
-+	else
-+		p->default_timer_slack_ns = current->timer_slack_ns;
+ /*
+  * lowmem_reserve_ratio_sysctl_handler - just a wrapper around
+- *	proc_dointvec() so that we can call setup_per_zone_lowmem_reserve()
+- *	whenever sysctl_lowmem_reserve_ratio changes.
++ *	proc_dointvec_minmax() so that we can call
++ *	setup_per_zone_lowmem_reserve() when the sysctl is written.
+  *
+  * The reserve ratio obviously has absolutely no relation with the
+  * minimum watermarks. The lowmem reserve ratio can only make sense
+@@ -6683,16 +6683,23 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
+ static int lowmem_reserve_ratio_sysctl_handler(const struct ctl_table *table,
+ 		int write, void *buffer, size_t *length, loff_t *ppos)
+ {
+-	int i;
++	struct ctl_table tmp = *table;
++	int ratio[ARRAY_SIZE(sysctl_lowmem_reserve_ratio)];
++	int rc;
  
- #ifdef CONFIG_PSI
- 	p->psi_flags = 0;
+-	proc_dointvec_minmax(table, write, buffer, length, ppos);
++	if (!write)
++		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+ 
+-	for (i = 0; i < MAX_NR_ZONES; i++) {
+-		if (sysctl_lowmem_reserve_ratio[i] < 1)
+-			sysctl_lowmem_reserve_ratio[i] = 0;
+-	}
++	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
++	tmp.data = ratio;
+ 
++	rc = proc_dointvec_minmax(&tmp, write, buffer, length, ppos);
++	if (rc)
++		return rc;
++
++	memcpy(sysctl_lowmem_reserve_ratio, ratio, sizeof(ratio));
+ 	setup_per_zone_lowmem_reserve();
++
+ 	return 0;
+ }
+ 
+@@ -6791,6 +6798,7 @@ static const struct ctl_table page_alloc_sysctl_table[] = {
+ 		.maxlen		= sizeof(sysctl_lowmem_reserve_ratio),
+ 		.mode		= 0644,
+ 		.proc_handler	= lowmem_reserve_ratio_sysctl_handler,
++		.extra1		= SYSCTL_ZERO,
+ 	},
+ #ifdef CONFIG_NUMA
+ 	{
 -- 
-2.34.1
+2.43.0
 
 
