@@ -4,82 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBDD0C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C88C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:05:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DED436B007B; Thu,  6 Aug 2026 07:55:26 -0400 (EDT)
+	id BDEC26B007B; Thu,  6 Aug 2026 08:05:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E2B6B0088; Thu,  6 Aug 2026 07:55:26 -0400 (EDT)
+	id B8FC76B0088; Thu,  6 Aug 2026 08:05:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB36E6B008A; Thu,  6 Aug 2026 07:55:26 -0400 (EDT)
+	id A7F0F6B008A; Thu,  6 Aug 2026 08:05:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4E546B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:55:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2171F40711
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:55:26 +0000 (UTC)
-X-FDA: 85070689452.30.FC97BE6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78E3A6B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:05:55 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05A911C0FCB
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:05:55 +0000 (UTC)
+X-FDA: 85070715870.01.A6D7A20
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6E795C000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:55:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kx8Pi+W1;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786017324;
-	b=HMr7vlnHvKBjg3NrPHIbekxt5pc3mLPcrgMqz/k2NrMwk8sw/mWdTe75n97qIS1vDG+ZeF
-	SAqz8fmlEcDVwKd37fsEVrZ4otezvPVE90fyoBh6Or6pDQaFsgj8jViC3FYj+i5LYGvvAc
-	UvU2YBT+gkgsgYRhfbqXVnzDuqMEUAA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kx8Pi+W1;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5172340011
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:05:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mIqEvcqE;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786017324;
+	s=arc-20220608; t=1786017953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oo9BTSYqJDeq5l19ssVHG1Gcs1j/PEWDhAh6AoMV/II=;
-	b=YbR9luw2mQQ/T7x2OEbbcoym/310WavA/x3h0BpEJytHW5+vsh1BC5oWuLGFSxwA88jUh/
-	3PFGX2fkYETT+d2Mj8TseyI5pGJA/fv8vNQAB2VN735uT6DsNY+CO4oRgCsLeZXe4pEn6x
-	9B3+IHetycMf8njLEz081TvaJ770ZRk=
+	bh=h0zNNGX4qFrNMno4lrSMDfcW5CtDQL9/IxlFVAyJbyM=;
+	b=CxldbElBqQZOJA60eVhaXWOe6dvtapGta+Vb9j//XFr92tYENzsbLCZEjNewPJgcJqD5gq
+	Yym0tM2x92l6LYXvPNi+JkLV2JmJL0XLbveD8Dro0SwFNZ4TqVBUKit3d7SVlmnZuBl0a/
+	DR4/SbZwHyrKTii1RrQlfos2APZOjnk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786017953;
+	b=BCeqFbKJ4gRsahRB6S6zPHeYfTD8BnNOvqiDviV92ed7n8YGklE5gxB+8ujueE6jOvhlDJ
+	VibsZPVD8PoFJo9BchR5nIIfoUsm5EPBcgLXoeve2ppBPdWLuILf2RjVOzGHkIgQo6b5hg
+	xf1pyUb/IAk9ewiG4i6q0W/pMhYLWjE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mIqEvcqE;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3DE860A5C;
-	Thu,  6 Aug 2026 11:55:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E70F1F000E9;
-	Thu,  6 Aug 2026 11:55:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D22A360A69;
+	Thu,  6 Aug 2026 12:05:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC8F1F000E9;
+	Thu,  6 Aug 2026 12:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786017323;
-	bh=oo9BTSYqJDeq5l19ssVHG1Gcs1j/PEWDhAh6AoMV/II=;
+	s=k20260515; t=1786017952;
+	bh=h0zNNGX4qFrNMno4lrSMDfcW5CtDQL9/IxlFVAyJbyM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kx8Pi+W1OVMnQJ4PwA6kLwONThjmMbxBkfx/8HvmuW7Xn5FVfP3dj3SrHPLkXtoUB
-	 jcoHJS8lbchGP/jfysv61zgk1uLt6h5ymZj43SZEGsEC/h+7VicsmBW2dsMoVFC5z6
-	 MyHUKhREs5JoxTUxeQvEXBkfxZc36jFrQHFdQ46ir29J7gfgFvgnTdV5XCC1lnzoFF
-	 gGReqhXBaqIrnPpbHW/67XOtCRKDpV5Lw0V9vJNR0Vl08eEtbIPmHqFxj7ta32uk40
-	 FzAr1481PyN9qfrbwS8BtlTS3RBCuiVBR20Dsrrp2PRhey+tUWXuOClI9QmNz9CIaf
-	 LstIicxRhczYQ==
-Message-ID: <279e924f-87cb-4e52-bffc-cc5fa48638c4@kernel.org>
-Date: Thu, 6 Aug 2026 13:55:16 +0200
+	b=mIqEvcqE2VKlk3on/q4NBpSGnc/1rfUvHrz51Q+HYSRCBxP+L5qRKNs3ypvzcoMdT
+	 jLk9VloSqMWEi3a1+1tLm7ccVDag8Ym5qkAsjdQnxANCBS7WyT6IglQyXbYVXLplOy
+	 ElO5zAsJ0fIG2xhSyDRfbH0Hk6MzCUN/Iy7/c0EodNWiudDqae5+ypr9MLUIiV3+Y6
+	 iC7st80B2JxUjVz6VKbRV3enkoi5B4cYOFzVnyoW4+m4Zc0HGtxRt9pNtzvKRXIfQP
+	 ps0lr1zxL9UuqXDICxY7eHyJSL7yCqVAmzAhuCSFyVjsB+zzhbZXdSl1OVa53GMQY1
+	 RN9U7Qh/Aqu1Q==
+Message-ID: <d8412d0f-feaa-406f-81f7-8e95efc9bcf0@kernel.org>
+Date: Thu, 6 Aug 2026 14:05:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/10] mm: remove thp_size() and thp_order()
-To: Tal Zussman <tz2294@columbia.edu>, Ilya Dryomov <idryomov@gmail.com>,
- Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284@columbia.edu>
- <20260804-remove-wait-on-page-writeback-v2-6-81f0ab065284@columbia.edu>
+Subject: Re: [PATCH v3 2/7] mm/khugepaged: extract young page check into
+ pte_is_referenced() helper
+To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260804-khugepaged_pte_refactor-v3-0-0364cad642a0@linux.dev>
+ <20260804-khugepaged_pte_refactor-v3-2-0364cad642a0@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260804-remove-wait-on-page-writeback-v2-6-81f0ab065284@columbia.edu>
+In-Reply-To: <20260804-khugepaged_pte_refactor-v3-2-0364cad642a0@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6E795C000C
-X-Stat-Signature: dwpe6hxwywxrxmgh8axw9pfjqw65353g
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5172340011
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786017324-511363
-X-HE-Meta: U2FsdGVkX19MbaDfucWu1ov+PG3oEDfRczRKdjCw+rl3Hs6+sw3QWORteOu3+kgfML/m/9yCKf+mfPPYzzAnz0521ojToP21kqB7BWJTT97Vcp6/zpF2ZsGFwT5ufFUDSqeSQjnz4s2y0loXd3G9WgrkOgmmU2ubPaYPvOh8T+RGuEgDkN8jfQSVuV57BaZg694lTF9FHLL4agYzl8PH5q19X46bif/uZcikAiJmF0CvK6u89viRJ4Bk8uBBFdIxcmaiR9BD2FGjFh3r8Av3VLnrCT02in2RnrQ7ZN4tblFirtfYKUYmDaD868zI9l/mgy+gJf8hbzwYsGePrW0GOmvj1ySSoItpetJbGCSuTuzkDgnXVDYLWsIsQAugEphvs71vt9oKSC80u7OQJni8DTe+kD+3yU5WyBbM1Oi7FM6jHPfyWKAlLLKxVYh8NLXyLPZIrYTOKIgkXefgrHQ8L73hdUNmjXYPv206PuBTOuiK7L8tpXS9vqdeAX0iKXzL5TnSZCaGQ2WRFy7OYe7Moqqgo4qBXgFouvLMKLkRDtCblufmOjFsBigDY31d3dvw0t0UkFBrXZG1l/7mFGbCJHzG6yxMpPCJWYZEm2AlLye+K7kUmyNqaRAgfnLXQDqS5aWjoC8r0802or7LHwxJTPmyzIZNebe2FR4HHoKJ9EF/TZ1fuvqZISNWTvfq/1Mbaaz8yCt8YGMe4BY01R4aN5Irhb1Kbswd4I89XD3ANBAw7Zmb0Q/7FmluVLkF2eMxnFd0/0BV+VakvkBvSGAp+0gRKHC3W+e14JyRQrc5vFqpCLKf2Of+AFMsWs0hGSIz8IPM7fVvA3778s7zjG6un2zsVdZkoNn2gx56+vCZmfx1nuxI4XwJ3++AP9gZXG84soAaS+55i+GTi1WMQC5I7JBkZUbDaWxigKej6iVV0iYkjcNx2Vq/XGYgv1IV77z5Go5v4MH/bH4aa3MMDza
- TibHrkAM
- P6+N8GGAYH1IDG5zBceE762HF4XFBUGfxY/BUzYg8JQNV/rJVjggI6+a0fT++g7LbrWcTJOa+6cHRJg1l/+LYxrs0c+bWnSc8DRNOAIxSvOKSCtWZIQEpMFrkB5W2rRXrjUL61qMn8hQ5ZS/R4lHO+qVGUhwSutT6MSHbUSLu0MbMQIBr78tYJZso+D4wuAYdnTM8S0zEIY4PJxY5ZtuOJNPcMAXeROaPoAxEsa53tdR+gkVRmeTYsO4uoqxzH3fLbdILI4wZjpFJPJXhnc7Zh4pESzGhPT3Qx3LzIkqa2d1tEEZy4AX57tfAyLsFXYF2Bgwqbx3kAmu8bEY=
+X-Stat-Signature: 68x1a5nhtxu4ccmdrqck693f4yj8yiax
+X-HE-Tag: 1786017953-980549
+X-HE-Meta: U2FsdGVkX19mqWDSWoj5kcyA4OqyO2Eu+PtsBGbLCyktOQw8oxXubbB7sYgaCujmrsgb/Y5peMRQjQMYJPIeRWJn45D6SGWWh/LiC+jkgNSlgDJ4yH/jMEByvoL92oLbOfSo/EKCGGQ3hOQ6/YUtxgnIpxZcRu09E9xG6oDF8EVjqVajP80VugLXYIZo0V7FG0ar2yUz4miA0mZ0VffrdffDOZlSBdVKRxo1BlXxbKotSdZN7c+j4um4yA3BwmYdRM3pzhkxOiB1UUztHFX1b/DI7ig0caMgwYxioSN6oWmd3hpckh2iOQng625ZPd3YqxrfJJxHi6jjp+8RtQ5vqiuZzpHM1KiAItWbBdEqBmznvV4/neRfRalV92RgC2lRvOxhGDyl9rrYd9q720B3ji75jyxlpI7v3gnZna8cbeUoBTrBo2LoIK2TAMiwknrkPsZnCL8Vz9no/k5fcxxbUfiQ00jjH/hneKuTegJUDyLlQy8ioxksp9kSzjRsoYZokNOZANF/b9qejtguRkt7kv1wjdwEq73a6p05Wn1kl3FCu3VszgwJ36p865+/wkMpD7AeHxMBr0K661UJw//SEQQNi01OOqDw/I+wI1qLf+l8TXzN+PWdAQAUzmaRMumH0kc298yY+I55UbM4YlBTA0FMhA3WKVXx0CyiRNAoy8PgOlMf3jt8dk7NJV0tvAvWA6hx+RNMMPKaP5JjJaS5YEy3lnuMyzfO+oQiEtQC0weMlsov5vUsQJEmBvPF3p7442y9l3TzEI6NVgREq58Rl8UJ8+8ZhkD48SMvdZRar08DOxIvcYYk5BI7z84Y8bCHmc4Vso7F1teTgP0LYEHI1roqFWkZ59/v7o8YZKcvnImn7jkR4ROFQ0jXE7Z3nOlPZit9GvuJTHhYzAJUQMaijSVDMxPJwLFAxYI+53ebCG4Iu/3IC9smRs451gkhyDmtZRfiWBDU4mnVY0wckvI
+ Js0vZN5A
+ 94YiBG7qSOGRrSIhWwYs9bqACJ2YlN27qzcRxStpuGvRbrs0+P5kmRJ3hL+8RLyHE/WP/4O9/So63h6JDIdOfzWjD4/JQLwGq3JY67sYveMfqHjX4CrH8pdX+kAzRAWYBAMDn5PHA+gTK8CLBZIUDvRoGnGimmR9Z4rcFj+6dUVfhuzAJNH7uFyCyX3RjcJ9PY8gGuE0JjqHZObUh1pXIVBn3Wm5pGLq67ol6R2JXCyrVHJhkqpAqSe9U1Dwu58kJI1ys2XAUYpLdDftXz0/WTAzD2KT1RBEYKwFI0EHzo1AgmhfJ5HRLy9GZuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,17 +147,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/26 20:52, Tal Zussman wrote:
-> The last callers of thp_size() have been converted to folio_size(), and
-> thp_order()'s only remaining user was thp_size() itself, so remove
-> both.
+On 8/4/26 21:25, Nico Pache (Red Hat) wrote:
+> This change deduplicates the "is this PTE/folio referenced enough to be
+> considered for a collapse" condition that was repeated in both
+> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
+> a single inline helper function.
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Also move the comment and use it as the function header. While we are at
+> it, updated the comment to clarify that a young pte is a recently accessed
+> one.
+> 
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 > ---
+>  mm/khugepaged.c | 35 +++++++++++++++++++----------------
+>  1 file changed, 19 insertions(+), 16 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1e26ea97381a..9b15c1740943 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -672,6 +672,23 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+>  	}
+>  }
+>  
+> +/*
+> + * pte_is_referenced() - Check for enough referenced PTEs to justify collapsing
+> + *
+> + * If collapse was initiated by khugepaged, check that the page has been
+> + * recently accessed (young pte) to justify collapsing the page.
 
-Beautiful
+That's rather imprecise.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> + *
+> + * Return: true if the page has been recently accessed.
+> + */
+
+Ideally we'd find a helper that doesn't need any of this documentation :
+
+(1) Just keep the cc->is_khugepaged out of this helper. It over-complicates the
+    semantic.
+
+(2) Find name that incorporates that we are dealing with a PTE mapping of a
+    folio
+
+> +static inline bool pte_is_referenced(struct collapse_control *cc, pte_t pteval,
+> +	struct folio *folio, struct vm_area_struct *vma, unsigned long addr)
+> +{
+> +	return cc->is_khugepaged &&
+> +	       (pte_young(pteval) || folio_test_young(folio) ||
+> +		folio_test_referenced(folio) ||
+> +		mmu_notifier_test_young(vma->vm_mm, addr));
+> +}
+
+static inline bool folio_pte_referenced(struct folio *folio,
+		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
+{
+	/* The folio was referenced previously ... */
+	if (folio_test_young(folio) ||  folio_test_referenced(folio))
+		return true;
+	/* ... or just now through the (given) PTE. */
+	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr)
+}
+
+?
 
 -- 
 Cheers,
