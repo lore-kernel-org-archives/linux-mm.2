@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AB93C55ABA
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 03:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2352EC55838
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 03:34:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9647E6B009E; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
+	id 351666B009D; Wed,  5 Aug 2026 23:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EE3B6B00A2; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
+	id 328E76B00A2; Wed,  5 Aug 2026 23:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B7356B00A5; Wed,  5 Aug 2026 23:30:25 -0400 (EDT)
+	id 1F8E46B00A6; Wed,  5 Aug 2026 23:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1500F6B009E
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:30:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AA751A064F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:30:24 +0000 (UTC)
-X-FDA: 85069416768.04.67D55B2
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 615454000E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:30:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xvnedJmH;
-	spf=pass (imf17.hostedemail.com: domain of liqiqi23@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=liqiqi23@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78B176B009D
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:34:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8AEE01C11E4
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:34:39 +0000 (UTC)
+X-FDA: 85069427478.03.5A0BA2B
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B139F140002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:34:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=l9jw1QVP;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785987022;
+	s=arc-20220608; t=1785987277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
-	b=8izhx2Ih+OhGh+llED7hULp7FrhTQJM8sxWcpLxV1MS3a+3kolunSfyu98MPoK1gxhN9KG
-	cA2fYWqh/b+yv1Oi59YZaLeunA3h88DK1+bITORNb8NVjgLHxsx/v+9OlnVuNx2JeNxi3G
-	0knHQIY5wdPw/pYRazHxknd5PRUCTCU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785987022;
-	b=n7x8oGQkaNWx8VavygIRoujM3Wfklbz1NVP4mcOJc1HZYgFJpwfvT/C4+Pd+Av1cIFHMJU
-	kLMFdWCaSpjizXPTdgVDX0mU6THhEz8iE7LJFB5LOd7bkHurYuH33xHJIGfaKfmsxSDaBK
-	j8qE7Pczb80fNOZgeAyAyWBALhXR3pQ=
+	bh=7p49SsvTjMkNgq0O/pDoL+M5w59yqSD06zzqeiJLbgM=;
+	b=n4ZU6ml54yAddZiKbogbfvKgJqvwWKrq5FSmLcxHJHimeiBSHk6G9pe0jr1NjRaqYJOmTj
+	AVIfeLJstUvEfpHDfYGcO3zKSowLzD3VDSe0LN/JT5jqBYw2HQ3p8kL7JDmC9U4vOsn00k
+	plCqfDb17T0whK5YI+A6pO/QEeXyVQo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xvnedJmH;
-	spf=pass (imf17.hostedemail.com: domain of liqiqi23@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=liqiqi23@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5wus9n0+Mpv7rQWIuIFpoGHkgxM6w2e5wGqel/1cJaU=;
-	b=xvnedJmHWhePXoOFObXkvLZJh87bx4MqXErY79eOEcbrJjXMeD32rgcW+e1+Mzp80DMGfqr0p
-	H5FXDNNf1FtCAkZtvN0zOyEW3ZqTIIFL63xHsatM7LYQOmJbAX0l/KDbPYMgxr2Fhy00WgHcfHo
-	1HBeTwRYcVunCQ6fWo8o/vc=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hFsx50g2bzmV8f;
-	Thu,  6 Aug 2026 11:20:41 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 14F5F4058A;
-	Thu,  6 Aug 2026 11:30:13 +0800 (CST)
-Received: from [10.174.176.101] (10.174.176.101) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 6 Aug 2026 11:30:09 +0800
-Message-ID: <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
-Date: Thu, 6 Aug 2026 11:30:08 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=l9jw1QVP;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785987277;
+	b=P5XNfp05LcHVlqzVfW8bjWH6mT4XuQuPn/MiPjRror1UCeJlc/SERCUj1hqh/u3iKysKac
+	GhoWIARbv2zbSTVlgcuVMyO2PH/vvOYPLOHTOmjdRzQdROeMrZ45Egpy+DWUMYDZeaPX+c
+	Y66DkwYOIHY8KdLN6C25B/6+35EEPHw=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785987273; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=7p49SsvTjMkNgq0O/pDoL+M5w59yqSD06zzqeiJLbgM=;
+	b=l9jw1QVP7+JE/V6KFQoGD4vFAeSrpfYuqDofa+kgksMDKIJAILpXiD9si8/xqXK7Wj44hChD9MUQDwS5pny77JmqRAdAjTbbj3NeZnSiE32L4zdltrUFfACtPEDsR57j8+0XzIGAw3XF7YeIR1Q5hwUGK80r9o5Pe5R1Hy3Flgg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X8SfgD7_1785987271;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8SfgD7_1785987271 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 06 Aug 2026 11:34:32 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: ziy@nvidia.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	dev.jain@arm.com,
+	ryan.roberts@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/4] selftests: mm: extend the check_huge() to support mTHP check
+Date: Thu,  6 Aug 2026 11:34:12 +0800
+Message-ID: <e5039cbc70f8de853e6c21048d65803a5fe41042.1785985999.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1785985999.git.baolin.wang@linux.alibaba.com>
+References: <cover.1785985999.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE node
- hotplug
-To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
-CC: <Zhigang.Luo@amd.com>, <arun.george@samsung.com>, <balbirs@nvidia.com>,
-	<brendan.jackman@linux.dev>, <yuzenghui@huawei.com>, <apopple@nvidia.com>,
-	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
-	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
-	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
-	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
-	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
-	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
-	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
-	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
-	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
-	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
-	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
-	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
-	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
-	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
-	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <20260720193431.3841992-26-gourry@gourry.net>
-From: Qiqi Li <liqiqi23@huawei.com>
-In-Reply-To: <20260720193431.3841992-26-gourry@gourry.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.176.101]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 615454000E
-X-Stat-Signature: a6x5c5nrwyjoeftm3mk4f5cqw7mef5p9
-X-HE-Tag: 1785987020-285595
-X-HE-Meta: U2FsdGVkX1/r8QwFw7ANV97Mjc4kXZE6WYYHzV66hF2NyVFUdnhk9gG/IKXxf++GbRbVITabbC1vtuFx0PFK+gLgyucKgKL7mrtNC8dckzy1ZgMJBkwvtYRYFGna/x9fY+sqdkiy+GtYeMC2dIp0eU+n15gwZpI9RvJzZsm72mSZML7VcOlOnCyg/cf/g7y7FNzkD/zQ427Q5zihlx0whLoBtPgJ8DfJtT3uCj0rhBqkRwPUj+lQ+LI8KTm3MS8y3dA/+jDcKUrjKNDlu9bUQfJoWqihkgsny8M0Yb2iw6eFOr6lHPnLbdqUfDnjFH472Wjv6zM7Sjkmhg9SVp+XoVJEHOK6Ok0UYnc3lfM351veSzUJYS2QaD7ERhG7ftuFEMSmNFmN3BujVtdE4sEwZLf/Vr52PmbLl02U1oovK0al5wjKi6j0EGKUV7UMxxzGiH/aYNJPw1eRZBdTuhENTTDu+L/Ab/UyFzarSFiNzZth7NlDewdoA+iJ/DKZ9P3lW5x0fsX5wbpxEh9YFWhdXrgJxiq3Yqb7sjsIsrHOoMqB9Qqmo9coblLZ8fpyVhpCULdhoDQo7d90LyOXjaKpomFCUEPfpeGQKy3h4s5gQKqjCb0bYNAjLyA9oX0DWp4+nF/jbrBqyHcRo66rpqpZ5VRzhHHAENsZ/TFv3aMJeg8GVLDedS8YFye2wbjF0SJXYQRZBDMYa3qSF8WSg/ID2n1rQ7Ugv7jquSIOqHsBc7qdF8oLea4HR1QCIKSBE9qOb2A8c1GzC8XQez9LuaPPaLqssHRfm3Dr2mknXCMNnJI4ZMvX5n1ykvmHTmfFqaBY1VwCseuUE+QJaqI63vkJXGRhnhfLlX4NtRsBntCK6/COApdxIJnwZBJ6qzGZnSXXGc2UL3lShnEzwDboEociCXPvATyCudmgO+m0GVsHyQ1lBtrUBhsVglVT2N2//3DrDYu0GU6vhg1WEcBcBZM
- Cts6m4yF
- 5KVmZ28SCqHUaTKqn7FOpGflPZCzqAdbM2cB2hMj+ufd5L+kr04qZPRoeHNlcSSCSP0FneEI8dVYyoQ5wWYZ7vkCeq4AOyGDaBKTb9rAOGuu1geDLXpOycP5SNBZ91L0ogCAkSd0nKy12L52T0WKmpcA5xju91x2cK9CvatCm3SEmTisT0x+Zq1Dj2YwvH4jDTBAnf6MQkOpFEeVB39Dfa6Qhkl0LBwuy8XyGLoVxki73LB6SNMSbUWZIrJoEgKL07od/ChmIfSusLnbXvv+KXyXbk3eu0WN240BiVjmGeb74d8i5sDF0k6Dfcl0/3LqQ+7VIMXj98nySnTJMI0OdwsB7iA6cwo+o7Cf/BFpUGZpkqK+oEuNYxHVSVilF/qpsUi1iCyykHKKEf9P9zmA6+rHOvgQKveGGjV+rMSaT55IKAZgAUk25zGv9Zw==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yikeoxgjmcbarcfwern6bxf8fk98soex
+X-Rspamd-Queue-Id: B139F140002
+X-HE-Tag: 1785987275-54284
+X-HE-Meta: U2FsdGVkX18cLvP8bg/KJwD8uCh1yIzwrcFjfaU7sITraPJ1LbpxmmkgQhgYdFxJWEGMOfLxRZkZN36SSw8EHsFhdioC8ygiAxmWE6BZN8/4EkmVSdj3FyBSWZzxQ7rGeZ4an4BtpSws93uytNBZQU8qtk0EfQiV6bSvsCw2q1xvnW/h1y6BjG+9hNiHhVSY+9JfS27sp6jwUQHODzW4W1oZk2V29B+DR+BH/OxjpIqdJQz07bjA985VLX36L3YHeFnbHa/vcOhOeL0vXXo4BE3OJKeumsoeOwqig/n4h7rJZ99gbGldcSBclYd+HXG2M0QZ2A8kiq2p26VQ0zNZjZzvlZ3PwJGGB3plTdr5+/lNlQw+dz7jWgYCssLtW7Mj3ehWM/irU1cDxoJBkTpxt9V1oIPKGoX9yN1hI/efZcPpBfVCDUsjW1zRz1TosSQr/QOQ+wAtT7OKoocPBQB9hcGbxca9djEFqv2sCu2O19uTLZd/1QMkDpUVLboKOjmey2hwvEtJpyXqX5Qt+RZtQ2z4r3mcZj+Ucblg8hb5CTtdD3GaRp4yUhehJDMmg4ZeQfMbVNBbTActnEECJQWNhjvM3B2nIaZZ1nn1VCRmOY5hyRAtYpaY+PPh3/yiqDwl3eynqNy5Gkk8mxXXp2RdEcFupZfz9wEw6x/6JpSK4x/7k2yjE9VASt08bIcsZ+du+/mMhHb6h000SsoBahCu+nqhEuFRHW2uKyKtcN7Q5PxlnRGMkS91Uso8M4iZAfzd+MyLP/8x0/lQig85+jVl9OklrbDVVSWGTYLBgdYcDgaOFXlh6wqb2jP7A52CBpyzz2KRfIqmm5dJIH2zvrrlsDeymkX/nkp/LKXLWARbX+zfZXq18YXE4T4gVYBa4KWkFugPE58zHnwJQkOfHmJLPdgm19mEAOiXGgwnGSc1KDhOvHCPll7u1FXPuQXE/h9/gOGqObFaDsApCNs/pmB
+ UvGb9TSN
+ uZ7L7Xrx8k3eR7rQ4vMmhG8xs+UPdNolt/Zxcoq/799mknrMlXWE73o1BnzAzZiKC4Jn9ccIJp1Ujv1V53pxiqsZm468/sEmIVAyrI6lHtYkV0r20TcY7hmnHTYzfPks4KBcYGDlf+8E9YYpz5TPJqOwQXoc4h/mQFmP3bQtEBWlSqjNHS6fiMWEegJA8u6aZz6xQDRpLgHEoTj7fmgl8iE58r1QHqGRYjRIKUGf2F4gM2WfOJGBascsGHNQKYeKLuTbmIxxRyLM1kza5iuhSUWhbMOjI24xi8FckeDdhNJIEMBD0IFCMbKTiQIqi+/C5FTmM3cMwH6gzQXZvvqU9I5NdCqQ6JxUyENHV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,30 +97,475 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Gregory,
+To support checking for various sized mTHPs during mTHP collapse, extend the
+check_huge() function prototype to accept two new parameters specifying the
+address range and mTHP size, in preparation for the following patches.
 
-On 7/21/2026 3:34 AM, Gregory Price wrote:
+No functional changes.
 
-> Add add_private_memory_driver_managed() to let modules hotplug
-> memory onto an N_MEMORY_PRIVATE node they control.
+Reviewed-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+Tested-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ .../selftests/mm/folio_split_race_test.c      |  2 +-
+ tools/testing/selftests/mm/khugepaged.c       | 66 ++++++++++---------
+ tools/testing/selftests/mm/pagemap_ioctl.c    |  2 +-
+ .../testing/selftests/mm/prctl_thp_disable.c  |  2 +-
+ tools/testing/selftests/mm/soft-dirty.c       |  2 +-
+ .../selftests/mm/split_huge_page_test.c       | 14 ++--
+ tools/testing/selftests/mm/uffd-common.c      |  4 +-
+ tools/testing/selftests/mm/vm_util.c          |  6 +-
+ tools/testing/selftests/mm/vm_util.h          |  6 +-
+ 9 files changed, 56 insertions(+), 48 deletions(-)
 
-I am trying to understand how the nid passed to
-add_private_memory_driver_managed() is expected to be provisioned.
+diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
+index 6329e37fff4c..45b84f7b364e 100644
+--- a/tools/testing/selftests/mm/folio_split_race_test.c
++++ b/tools/testing/selftests/mm/folio_split_race_test.c
+@@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
+ 	for (i = 0; i < TOTAL_PAGES; i++)
+ 		fill_page(mmap_base, i);
+ 
+-	if (!check_huge_shmem(mmap_base, NR_PMD_PAGE, pmd_pagesize))
++	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
+ 		ksft_exit_fail_msg("No shmem THP is allocated\n");
+ 
+ 	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index b254baf9e0b7..fd724be9b665 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -51,7 +51,7 @@ struct mem_ops {
+ 	void *(*setup_area)(int nr_hpages);
+ 	void (*cleanup_area)(void *p, unsigned long size);
+ 	void (*fault)(void *p, unsigned long start, unsigned long end);
+-	bool (*check_huge)(void *addr, int nr_hpages);
++	bool (*check_huge)(void *addr, size_t len, int nr_hpages, unsigned long hpage_size);
+ 	const char *name;
+ };
+ 
+@@ -295,7 +295,7 @@ static void *alloc_hpage(struct mem_ops *ops)
+ 	ksft_print_msg("Allocate huge page...");
+ 	if (madvise_collapse_retry(p, hpage_pmd_size))
+ 		ksft_exit_fail_perror("madvise(MADV_COLLAPSE)");
+-	if (!ops->check_huge(p, 1))
++	if (!ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 		ksft_exit_fail_perror("madvise(MADV_COLLAPSE)");
+ 	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
+ 		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
+@@ -329,9 +329,10 @@ static void anon_fault(void *p, unsigned long start, unsigned long end)
+ 	fill_memory(p, start, end);
+ }
+ 
+-static bool anon_check_huge(void *addr, int nr_hpages)
++static bool anon_check_huge(void *addr, size_t len, int nr_hpages,
++		unsigned long hpage_size)
+ {
+-	return check_huge_anon(addr, nr_hpages, hpage_pmd_size);
++	return check_huge_anon(addr, len, nr_hpages, hpage_size);
+ }
+ 
+ static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
+@@ -431,13 +432,14 @@ static void file_fault_write(void *p, unsigned long start, unsigned long end)
+ 		ksft_exit_fail_perror("madvise(MADV_POPULATE_WRITE)");
+ }
+ 
+-static bool file_check_huge(void *addr, int nr_hpages)
++static bool file_check_huge(void *addr, size_t len, int nr_hpages,
++		unsigned long hpage_size)
+ {
+ 	switch (finfo.type) {
+ 	case VMA_FILE:
+-		return check_huge_file(addr, nr_hpages, hpage_pmd_size);
++		return check_huge_file(addr, len, nr_hpages, hpage_size);
+ 	case VMA_SHMEM:
+-		return check_huge_shmem(addr, nr_hpages, hpage_pmd_size);
++		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+ 	default:
+ 		exit(EXIT_FAILURE);
+ 		return false;
+@@ -467,9 +469,10 @@ static void shmem_cleanup_area(void *p, unsigned long size)
+ 	close(finfo.fd);
+ }
+ 
+-static bool shmem_check_huge(void *addr, int nr_hpages)
++static bool shmem_check_huge(void *addr, size_t len, int nr_hpages,
++		unsigned long hpage_size)
+ {
+-	return check_huge_shmem(addr, nr_hpages, hpage_pmd_size);
++	return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+ }
+ 
+ static struct mem_ops __anon_ops = {
+@@ -552,7 +555,7 @@ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 	ret = madvise_collapse_retry(p, nr_hpages * hpage_pmd_size);
+ 	if (((bool)ret) == expect)
+ 		fail("Fail: Bad return value");
+-	else if (!ops->check_huge(p, expect ? nr_hpages : 0))
++	else if (!ops->check_huge(p, nr_hpages * hpage_pmd_size, expect ? nr_hpages : 0, hpage_pmd_size))
+ 		fail("Fail: check_huge()");
+ 	else
+ 		success("OK");
+@@ -564,7 +567,7 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 			     struct mem_ops *ops, bool expect)
+ {
+ 	/* Sanity check */
+-	if (!ops->check_huge(p, 0))
++	if (!ops->check_huge(p, nr_hpages * hpage_pmd_size, 0, hpage_pmd_size))
+ 		ksft_exit_fail_msg("Unexpected huge page\n");
+ 	__madvise_collapse(msg, p, nr_hpages, ops, expect);
+ }
+@@ -573,11 +576,12 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
+ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+ 			  struct mem_ops *ops)
+ {
++	size_t len = nr_hpages * hpage_pmd_size;
+ 	int full_scans;
+ 	int timeout = 6; /* 3 seconds */
+ 
+ 	/* Sanity check */
+-	if (!ops->check_huge(p, 0))
++	if (!ops->check_huge(p, len, 0, hpage_pmd_size))
+ 		ksft_exit_fail_msg("Unexpected huge page\n");
+ 
+ 	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
+@@ -587,7 +591,7 @@ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+ 
+ 	ksft_print_msg("%s...", msg);
+ 	while (timeout--) {
+-		if (ops->check_huge(p, nr_hpages))
++		if (ops->check_huge(p, len, nr_hpages, hpage_pmd_size))
+ 			break;
+ 		if (thp_read_num("khugepaged/full_scans") >= full_scans)
+ 			break;
+@@ -601,6 +605,8 @@ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+ 				struct mem_ops *ops, bool expect)
+ {
++	size_t len = nr_hpages * hpage_pmd_size;
++
+ 	/*
+ 	 * read&write file collapse fails since khugepaged does not flush
+ 	 * the target dirty folios
+@@ -624,7 +630,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+ 	if (ops != &__anon_ops)
+ 		ops->fault(p, 0, nr_hpages * hpage_pmd_size);
+ 
+-	if (ops->check_huge(p, expect ? nr_hpages : 0))
++	if (ops->check_huge(p, len, expect ? nr_hpages : 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -653,7 +659,7 @@ static void alloc_at_fault(void)
+ 	p = alloc_mapping(1);
+ 	*p = 1;
+ 	ksft_print_msg("Allocate huge page on fault...");
+-	if (check_huge_anon(p, 1, hpage_pmd_size))
++	if (check_huge_anon(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -662,7 +668,7 @@ static void alloc_at_fault(void)
+ 
+ 	madvise(p, page_size, MADV_DONTNEED);
+ 	ksft_print_msg("Split huge PMD on MADV_DONTNEED...");
+-	if (check_huge_anon(p, 0, hpage_pmd_size))
++	if (check_huge_anon(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -848,7 +854,7 @@ static void collapse_single_pte_entry_compound(struct collapse_context *c, struc
+ 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
+ 	ksft_print_msg("Split huge page leaving single PTE mapping compound page...");
+ 	madvise(p + page_size, hpage_pmd_size - page_size, MADV_DONTNEED);
+-	if (ops->check_huge(p, 0))
++	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -869,7 +875,7 @@ static void collapse_full_of_compound(struct collapse_context *c, struct mem_ops
+ 	ksft_print_msg("Split huge page leaving single PTE page table full of compound pages...");
+ 	madvise(p, page_size, MADV_NOHUGEPAGE);
+ 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
+-	if (ops->check_huge(p, 0))
++	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -891,7 +897,7 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
+ 	for (i = 0; i < hpage_pmd_nr; i++) {
+ 		madvise(BASE_ADDR, hpage_pmd_size, MADV_HUGEPAGE);
+ 		ops->fault(BASE_ADDR, 0, hpage_pmd_size);
+-		if (!ops->check_huge(BASE_ADDR, 1))
++		if (!ops->check_huge(BASE_ADDR, hpage_pmd_size, 1, hpage_pmd_size))
+ 			ksft_exit_fail_msg("Failed to allocate huge page\n");
+ 		madvise(BASE_ADDR, hpage_pmd_size, MADV_NOHUGEPAGE);
+ 
+@@ -914,7 +920,7 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
+ 
+ 	ops->cleanup_area(BASE_ADDR, hpage_pmd_size);
+ 	ops->fault(p, 0, hpage_pmd_size);
+-	if (!ops->check_huge(p, 1))
++	if (!ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -936,7 +942,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 
+ 	ksft_print_msg("Allocate small page...");
+ 	ops->fault(p, 0, page_size);
+-	if (ops->check_huge(p, 0))
++	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -944,7 +950,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 	ksft_print_msg("Share small page over fork()...");
+ 	if (!fork()) {
+ 		/* Do not touch settings on child exit */
+-		if (ops->check_huge(p, 0))
++		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 			success("OK");
+ 		else
+ 			fail("Fail");
+@@ -962,7 +968,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 	exit_status = WEXITSTATUS(wstatus);
+ 
+ 	ksft_print_msg("Check if parent still has small page...");
+-	if (ops->check_huge(p, 0))
++	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -980,7 +986,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ 	ksft_print_msg("Share huge page over fork()...");
+ 	if (!fork()) {
+ 		/* Do not touch settings on child exit */
+-		if (ops->check_huge(p, 1))
++		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 			success("OK");
+ 		else
+ 			fail("Fail");
+@@ -988,7 +994,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ 		ksft_print_msg("Split huge page PMD in child process...");
+ 		madvise(p, page_size, MADV_NOHUGEPAGE);
+ 		madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
+-		if (ops->check_huge(p, 0))
++		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 			success("OK");
+ 		else
+ 			fail("Fail");
+@@ -1009,7 +1015,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ 	exit_status = WEXITSTATUS(wstatus);
+ 
+ 	ksft_print_msg("Check if parent still has huge page...");
+-	if (ops->check_huge(p, 1))
++	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+@@ -1028,7 +1034,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 	ksft_print_msg("Share huge page over fork()...");
+ 	if (!fork()) {
+ 		/* Do not touch settings on child exit */
+-		if (ops->check_huge(p, 1))
++		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 			success("OK");
+ 		else
+ 			fail("Fail");
+@@ -1036,7 +1042,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 		ksft_print_msg("Trigger CoW on page %d of %d...",
+ 				hpage_pmd_nr - max_ptes_shared - 1, hpage_pmd_nr);
+ 		ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared - 1) * page_size);
+-		if (ops->check_huge(p, 0))
++		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 			success("OK");
+ 		else
+ 			fail("Fail");
+@@ -1049,7 +1055,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 			       hpage_pmd_nr - max_ptes_shared, hpage_pmd_nr);
+ 			ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared) *
+ 				    page_size);
+-			if (ops->check_huge(p, 0))
++			if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 				success("OK");
+ 			else
+ 				fail("Fail");
+@@ -1067,7 +1073,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 	exit_status = WEXITSTATUS(wstatus);
+ 
+ 	ksft_print_msg("Check if parent still has huge page...");
+-	if (ops->check_huge(p, 1))
++	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 		success("OK");
+ 	else
+ 		fail("Fail");
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index 1b2dffcc999b..cfd1987339c1 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -1085,7 +1085,7 @@ static void unpopulated_written_test(const char *name, char *mem, long size,
+ 	memset(mem, 1, size);
+ 	if (use_thp &&
+ 	    (madvise(mem, size, MADV_COLLAPSE) ||
+-	     !check_huge_anon(mem, size / hpage_size, hpage_size))) {
++	     !check_huge_anon(mem, size, size / hpage_size, hpage_size))) {
+ 		ksft_test_result_skip("%s could not form a THP\n", name);
+ 		goto out;
+ 	}
+diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+index d8d9d1de57b8..82c6e96ea6eb 100644
+--- a/tools/testing/selftests/mm/prctl_thp_disable.c
++++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+@@ -67,7 +67,7 @@ static int test_mmap_thp(enum thp_collapse_type madvise_buf, size_t pmdsize)
+ 	/* HACK: make sure we have a separate VMA that we can check reliably. */
+ 	mprotect(mem, pmdsize, PROT_READ);
+ 
+-	ret = check_huge_anon(mem, 1, pmdsize);
++	ret = check_huge_anon(mem, pmdsize, 1, pmdsize);
+ 	munmap(mmap_mem, mmap_size);
+ 	return ret;
+ }
+diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+index fb1864a68e1c..e198facf78bb 100644
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -103,7 +103,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+ 	for (i = 0; i < hpage_len; i++)
+ 		map[i] = (char)i;
+ 
+-	if (check_huge_anon(map, 1, hpage_len)) {
++	if (check_huge_anon(map, hpage_len, 1, hpage_len)) {
+ 		ksft_test_result_pass("Test %s huge page allocation\n", __func__);
+ 
+ 		clear_softdirty();
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 32b991472f74..4cc70873a674 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -296,7 +296,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+ 	unsigned long rss_anon_before, rss_anon_after;
+ 	size_t i;
+ 
+-	if (!check_huge_anon(one_page, nr_hpages, pmd_pagesize))
++	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, nr_hpages, pmd_pagesize))
+ 		ksft_exit_fail_msg("No THP is allocated\n");
+ 
+ 	rss_anon_before = rss_anon();
+@@ -311,7 +311,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+ 		if (one_page[i] != (char)0)
+ 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+ 
+-	if (!check_huge_anon(one_page, 0, pmd_pagesize))
++	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, 0, pmd_pagesize))
+ 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
+ 
+ 	rss_anon_after = rss_anon();
+@@ -347,7 +347,7 @@ static void split_pmd_thp_to_order(int order)
+ 	for (i = 0; i < len; i++)
+ 		one_page[i] = (char)i;
+ 
+-	if (!check_huge_anon(one_page, 4, pmd_pagesize))
++	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
+ 		ksft_exit_fail_msg("No THP is allocated\n");
+ 
+ 	/* split all THPs */
+@@ -366,7 +366,7 @@ static void split_pmd_thp_to_order(int order)
+ 					   (pmd_order + 1)))
+ 		ksft_exit_fail_msg("Unexpected THP split\n");
+ 
+-	if (!check_huge_anon(one_page, 0, pmd_pagesize))
++	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 0, pmd_pagesize))
+ 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
+ 
+ 	ksft_test_result_pass("Split huge pages to order %d successful\n", order);
+@@ -393,7 +393,7 @@ static void split_pte_mapped_thp(void)
+ 	for (i = 0; i < thp_area_size; i++)
+ 		thp_area[i] = (char)i;
+ 
+-	if (!check_huge_anon(thp_area, nr_thps, pmd_pagesize)) {
++	if (!check_huge_anon(thp_area, nr_thps * pmd_pagesize, nr_thps, pmd_pagesize)) {
+ 		ksft_test_result_skip("Not all THPs allocated\n");
+ 		goto out;
+ 	}
+@@ -657,7 +657,7 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+ 
+ 	force_read_pages(*addr, fd_size / pmd_pagesize, pmd_pagesize);
+ 
+-	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
++	if (!check_huge_file(*addr, fd_size, fd_size / pmd_pagesize, pmd_pagesize)) {
+ 		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
+ 		munmap(*addr, fd_size);
+ 		close(*fd);
+@@ -735,7 +735,7 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+ 		goto out;
+ 	}
+ 
+-	if (!check_huge_file(addr, 0, pmd_pagesize)) {
++	if (!check_huge_file(addr, fd_size, 0, pmd_pagesize)) {
+ 		ksft_print_msg("Still FilePmdMapped not split\n");
+ 		err = EXIT_FAILURE;
+ 		goto out;
+diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+index f48f5d4594ab..1fb967ef4985 100644
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -194,7 +194,9 @@ static void shmem_alias_mapping(uffd_global_test_opts_t *gopts, __u64 *start,
+ 
+ static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int expect_nr_hpages)
+ {
+-	if (!check_huge_shmem(gopts->area_dst_alias, expect_nr_hpages,
++	size_t len = expect_nr_hpages * read_pmd_pagesize();
++
++	if (!check_huge_shmem(gopts->area_dst_alias, len, expect_nr_hpages,
+ 			      read_pmd_pagesize()))
+ 		err("Did not find expected %d number of hugepages",
+ 		    expect_nr_hpages);
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index ef1ea11981a7..ed7b4eae3f3c 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -247,17 +247,17 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
+ 	return thp == (nr_hpages * (hpage_size >> 10));
+ }
+ 
+-bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size)
++bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+ 	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
+ }
+ 
+-bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size)
++bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+ 	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
+ }
+ 
+-bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
++bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ {
+ 	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+ }
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index 7799154b67ee..565570b2cf8b 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -90,9 +90,9 @@ void clear_softdirty(void);
+ bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
+ uint64_t read_pmd_pagesize(void);
+ unsigned long rss_anon(void);
+-bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
+-bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
+-bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
++bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
++bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
++bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+ int64_t allocate_transhuge(void *ptr, int pagemap_fd);
+ int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
+ 
+-- 
+2.47.3
 
-From what I can see, both node_private_register() and
-__add_memory_resource() require the nid to already be present in
-node_possible_map. My understanding is therefore that this patch
-supports hotplugging private memory onto an existing possible node,
-rather than creating a new possible node ID at runtime.
-
-For example, in the use case I am looking at, the device's private
-node is not described by firmware. Would its nid need to be reserved
-during early NUMA initialization, or is there another mechanism that
-I may have missed?
-
-Also, could you please Cc me on future revisions of this series?
-I would appreciate it and would be happy to follow the work:)
-
-Thanks,
-Qiqi
 
