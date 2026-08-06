@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC17C55174
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 02:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A271C55174
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 03:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 171516B00AC; Wed,  5 Aug 2026 22:47:20 -0400 (EDT)
+	id 934316B007B; Wed,  5 Aug 2026 23:04:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FD416B00AD; Wed,  5 Aug 2026 22:47:20 -0400 (EDT)
+	id 8E54B6B008A; Wed,  5 Aug 2026 23:04:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE01C6B00AE; Wed,  5 Aug 2026 22:47:19 -0400 (EDT)
+	id 7FC806B0093; Wed,  5 Aug 2026 23:04:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 765DE6B00AC
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:47:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BFA11C11C0
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:47:18 +0000 (UTC)
-X-FDA: 85069308156.14.12B6D1F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 933B840003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:47:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Q+QMJLDP;
-	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EFD6B6B007B
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 23:04:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E94FCA054C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:04:47 +0000 (UTC)
+X-FDA: 85069352214.11.F39DC5A
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9BFB3A0013
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:04:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ImvMNWEs;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785984437;
+	s=arc-20220608; t=1785985486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wJmAD5vo/TZZdhcLtOhkRyWiHtuje8SVffjXTMJ4MR4=;
-	b=bDR4pZnnb4ngkENXoOhLK96MgsBIZWiMh4sDZeb/NMeRtxkocs+4J12NQnV1P53J2YOw5S
-	qg1Y4A1vl/rCweRskTo4Cnaloi8XrTARcRFF2wRS6ivSfdQdWhGevXZhH+/wb85rvqu2Cf
-	xO9HWuaQ5ISQU7S56OfktXs9nV7Raus=
+	bh=PeFhF0M/SpcuVTAHQU+II4MEXYOvkh6h/IJxQ8sqVSw=;
+	b=mprEj6J/loeeZtcarkUD3gw12nepblh8ENejHtIYrI6S61FORJk/dOMS5W3oVrTLDh+33K
+	e3+xgQK9mk9yjCeCmtHeAAClDxWwesUv1kKJFDL7aElXT94Le612oBXcqbcVH7XvZu3dxz
+	KhsMghLvbH0yd8M28QacvW1Yz8weOyA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785984437;
-	b=VOL/+Lu2HYIu+Lt1e0tanWMaaYhy7HQHBzjzv09uYJRdk1QCB01Jm7kV3QzPIMQdicjrZt
-	XrxBkvbqg6GjIOfCLSl+n8YnUu9Jvf6FeIMvxQ8XPW1xxhFPH5simzjA/IzzKwvTt9J8VZ
-	Pr0KPhbBVYLuiiyvozX8BkDnCR03B/0=
+	t=1785985486;
+	b=VEM3kRE8bHeCfDLilQUioN7YoCca7n0fhF3Lch4SXG6N+BmZGIGkCTe95Osnl9snPzVr5B
+	bLyhhe3Hw++lPUG7RDU9j4E6SnxHWSDVAgSfhUvpFmXxurIoO1NX9YAB7Guk63oX+hV+vM
+	mg3kxim1qGWsClMIDSNOeO2tyrZxNXc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Q+QMJLDP;
-	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39C34153B;
-	Wed,  5 Aug 2026 19:47:11 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FAEA3F632;
-	Wed,  5 Aug 2026 19:47:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785984435; bh=ZEaoldKX9mi8FK3rkENRpN7gFBP2wioCSrLSNkQ3eRs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q+QMJLDPO7veXKJG3FgcOo+H4D9O4k7kPGw8LxM2lHKui1fnbAJPFYzcHQiBjJ/1Q
-	 J6d23b/HGEZuSN0DUQFSMfI/DPQVkpqZeNMjIZCLuTBYGFRtjAHcwmAe9T18YRBO2D
-	 b/UKNIJFPnWYgETpMTATg7T20K6k/pb0fZ+6P8UM=
-Date: Thu, 6 Aug 2026 08:17:11 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev, 
-	osalvador@suse.de, akpm@linux-foundation.org, david@kernel.org, surenb@google.com, 
-	fvdl@google.com, gthelen@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in
- hugetlb_cma_alloc_frozen_folio
-Message-ID: <2qq6r5zvegrk5bbx7qbkscwqmccda7mxtzuvd3wln24yjm2qhx@663fzadsgmg3>
-References: <20260726072935.3513996-1-souravpanda@google.com>
- <20260805202444.1573218-1-usama.arif@linux.dev>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ImvMNWEs;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <978060e0-a202-43b2-b84d-b1950b2d28c1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785985483;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PeFhF0M/SpcuVTAHQU+II4MEXYOvkh6h/IJxQ8sqVSw=;
+	b=ImvMNWEstqKdQmDiFyQsqTUlMnWbcUta+OkPhlvxqCD+SYalu73/Onx13vnKMC8bh4lRLN
+	XTnBHwGoWSFTRhTdiLxOjgynzrMfVXuciNDCyVl4OQbDjmnaii4lRyYodZex+Oa/wojb2j
+	eD+eU36NpVL08kXcswYlYOHBxe+cv84=
+Date: Thu, 6 Aug 2026 11:04:35 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805202444.1573218-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 933B840003
+Subject: Re: [PATCH v3 08/17] mm/sparse-vmemmap: support section-based vmemmap
+ optimization
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+References: <20260804035535.2846016-1-songmuchun@bytedance.com>
+ <20260804035535.2846016-9-songmuchun@bytedance.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260804035535.2846016-9-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: t37zwqc1oaeiqtjnkj9i1owtj4m4rk4x
-X-HE-Tag: 1785984436-678940
-X-HE-Meta: U2FsdGVkX1/8W61aN9L2l1XmvFQcz1UJqSbxoaaV7BP4BrKp3cCLXjnqsRqUkeutgRhI6viak1CDDk/wT5fWTTN39ANcux/EihczUbozW4WrhRuytArsde4YPYgOOv1323+i0FAa35pFGNrSQhDI8P8mc6lHvjNz+kso7roSfIZdnQxXJFrKgu2lBOMejyC2z0B0nGoBBwbZVT62TtWOic2LG0WDWy1hmIYf++Sf51fFcLRuNwOLEUgdobKtfx8G8nV/3V4hgacBC+lWEr7VDbLCpP3ghbJoQuKDUOxLBfni1eYPTmuCy4nKLKGU/VaRr960TUH75dx7dEHTjpX2oscMqUrCgm90sonNVAjMu+x/A7Ua0kbpAuWEJYYuPXEktyZSkFdzXbSbGD2zY1kWpAnqIrBx3zSQvFvbw3Z/19KUXJ8OPnwLCDWtLdryTuIXK3dDVk6KoU2YX0GcSr3ERITnG5Zb6Af1NYnotX4hHwGImaDhOCaToaE2rfbfrRbZXXc+pwHah74C2QeelZqG4YjMWN65XIaCX2JxsLv7MCxs0Be6x1q5EiqlILCXH1pj7ULOtQVUkv7hNrjmctk5PDD0zRk1L5Tdy9DyiFpNyBjZtnEcFvSA3Hwf51fKjETlyOP1lU4OUvLjgtymRtbOLyI+ov5BlPi8BJFo0021wfL6twMTzE0P9CUjByVeVZ7R+D1QU3HEouzEvTMbSh2mRX35GEI438yJ0EN4MNK/KYs0Y0wz5e1t86aa5mWmkVlFrfysCR1mr0cP9jTmrydheuMnxS+7OD4C4gRvib4e7LL6JdHjICK/77DI6zhYmU9BYJs5H/gQqXlRC/P+aLuK2jEytKHYYVcydZBXiz8bXVqwtM9I8b3N/gK0Ih5pmid+J+vMfwveBAJMRlhsBrVV2O89bqg54y+latbCfd2+E6lewu0uQqDfisAW0wvlMT5b+iGVPB/yKaydqgGKF/o
- FAxOkcoQ
- dWFeNKbjjJpc/P7V9EX+G913p9u5frIfavEHLuHdMe7onUMCYrZegNQ1ZnZG1aL+CakpL1Z237FxHWsb14Ho6XbKByrxp9agT8S1WT6QmEUodcvAXIUM/dYEbzBHMEbn3CSOJ0wSATBG7rZf1PR17tlDIHAAJGgtHt/kdctvaoqQ6ghNezwXTunRDKOp1QlWzMNn2m3z4QOA5yK/ghFZfjLMEdRccfzn9L+DS4VB6lhQUO9mRJnrdwb+WU3Zt8F6HZYhgGMwjLlNLTDC2nYpWdZMbN/pvmAx8XXyVeVKvzl3eqDLS+NbwiKkVjf11hNhILafHCrD2uRIyIYiLhcFQcSl1FQVVQxpYotxe0Kegy8d7sQrnzIiAK8R0MA==
+X-Stat-Signature: roqom5ewgnk8oyd6au4gjca7kc4caggn
+X-Rspamd-Queue-Id: 9BFB3A0013
+X-HE-Tag: 1785985485-841131
+X-HE-Meta: U2FsdGVkX1/zg4St+6GLWzz8aVhL2f3seZjDaV12acoF4IYw+OcIQ1tSxOrkm840hUeNr+z7HYISVSUn2bgTrZMW4ISIHp3Ys+VnZyUTmffPP7c/pUdojmkzCWX+hDcPA+63pHp6pZ79I0mjF/wZnH3BYM6PiD5PHQFzk8t0NVtyKuRBw4k4Q4xA+lf5Bt8eqkirmt/M+Q/tDYOPg+t4wU1W9m8tPTZETgQh07vJgGHoqFuEKvD5aGFa1DNwgvQGopSQyQ2R/z+2wxZAuq2Gm/pLraTScmjrCE+oEjbD0vmqPGh9Tj6p1rmtXXCOvKRf1bbRXDUJxkXlQz3Y8FYEYZSPOz5L4+zEtwSS6BiPqRlcPVTkikRPyVIdGgpbOXszECLWDcK2bPuerB4pj47DN/n5ITPlPo4o4rEF/cfGednfMaZj2BttprdqVQokD42iZ7x6jL0aLzvHjWr+bGmrxAmSk2id/4wBDNMg4gZiEu+2EwOEv4W9TC020ksOoreHMBK3fAPYGEAxCD6M26VHKLNCC7UwhT3qhS63PeVijISw7D0OwiUX0uf9iuO2whYWQ60CmYo7t1LA7C/agcX2PZoM3CwzxR3C5d3jVTIiolvjEDFhFLUNLrApNixVyA6mM5VTh4An12aV54vy02BHbSKfJUnq1MyLhff1qJdfuoXN3Hj0GMKzt6jcXYvGun9lpTy8PBshRwu4cATRAztwRSlRTr3H6inrEaRIpNhM9dXhX3WhwXUDhFmgInY2zCYUcO9QYiV+5wzQxRDwyA4ZA2PjzFkJSweRa7Vj0odxe51pOoTzgioNcSOYuP+xLrFA5XD9mCsr/XfchZ2BSC9PFnehzyw6c/HRi/pd25sE9ykShpdgbC+trdmCh7gfDGOgzL0jvrstZvBiolS6rH0F32b7ukTHXZlaj4IXw18HvKi5qgn1XKHo7nZC3fqcIUK+ftISZ+GPCyI51kjtHnI
+ OSDNZ7tZ
+ /uItn0jXVWoShdTlaqoTJbiYKNEYBr3rwGvL+KGrGEbwXxAb5Kf8u8yh2jjlfN7J/k35P6mTp3hbMmGADmo9WeKtvffSmvDzYmcWkrjxllzUQpr/k4VK8epCuoBDqtmD7JQNh+nQpPLQ6NreOlRGnPVB0gXe02uOB/aMOwiEqc6u10w8M3jTx66iJUZD+dQu0Cw+k/N0rAdFRUYiTVm1vWt/jontIyYBRAxjdimkkEKimUdQMQpuRnXVUYCZWXoz7wFZ5urdQ/s2nx4DelDYGC+OBQLrbMyIdi4//CiO29Vy29/feZGevRfvp5s/jN9WvJm+e14TpnHD8cuF3gnBVyoBJczb92ayff5Sp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,112 +94,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 01:24:42PM -0700, Usama Arif wrote:
-> On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.com> wrote:
-> 
-> > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-> > alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-> > nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-> > the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
-> > alloc_gigantic_frozen_folio().
-> > 
-> > hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
-> > node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
-> > leading to a null pointer dereference kernel panic.
-> > 
-> > Fix this by checking if nodemask is NULL in
-> > hugetlb_cma_alloc_frozen_folio() and defaulting it to
-> > node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
-> > back to any node with memory, keeping behavior consistent with
-> > alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
-> > 
-> > >From a userspace perspective, this bug allows an unprivileged user to
-> > crash the kernel (trigger a panic) by requesting a gigantic hugepage
-> > allocation with MPOL_PREFERRED_MANY on a system where CMA is only
-> > configured on a subset of NUMA nodes.
-> > 
-> > This can be reproduced by booting a VM with two NUMA nodes, restricting
-> > CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
-> > hugepagesz=1G hugepages=0), and running a program that allocates a
-> > 1GB hugepage area without reserving, restricts allocation to Node 0
-> > using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
-> > 
-> >   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
-> >                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
-> >                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
-> >   unsigned long nodemask = 1; /* Node 0 */
-> >   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
-> >         sizeof(nodemask) * 8, 0);
-> >   memset(ptr, 0, 1UL << 30); /* Trigger fault */
-> > 
-> > This results in a NULL pointer dereference:
-> > 
-> >   BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >   #PF: supervisor read access in kernel mode
-> >   #PF: error_code(0x0000) - not-present page
-> >   Oops: Oops: 0000 [#1] SMP NOPTI
-> >   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
-> >   Call Trace:
-> >    <TASK>
-> >    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
-> >    alloc_surplus_hugetlb_folio+0x6d/0x100
-> >    alloc_hugetlb_folio+0x3c5/0x660
-> >    hugetlb_no_page+0x3d9/0x650
-> > 
-> > Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sourav Panda <souravpanda@google.com>
-> > ---
-> > Changes in v4:
-> > - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach from v3.
-> >   As Muchun Song pointed out, snapshotting cpuset_current_mems_allowed does
-> >   not prevent false-positive allocation failures without complex retry loops,
-> >   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() already handle
-> >   NULL nodemasks safely internally.
-> > - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_folio()
-> >   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keeping
-> >   HugeTLB allocators clean and consistent.
-> > - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@google.com/
-> > - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@google.com/
-> > - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
-> > 
-> >  mm/hugetlb_cma.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> > index 39344d6c78d8..5744de0ceeb7 100644
-> > --- a/mm/hugetlb_cma.c
-> > +++ b/mm/hugetlb_cma.c
-> > @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
-> >  	if (!hugetlb_cma_size)
-> >  		return NULL;
-> >  
-> > -	if (hugetlb_cma[nid])
-> > +	if (!nodemask)
-> > +		nodemask = &node_states[N_MEMORY];
-> 
-> Hi Sourav,
-> 
-> hmm what if cpuset.mems only allows allocation from node 0, and hugetlb CMA
-> is only available on node 1. This will no now allow allocating a gigantic page
-> on node 1 when its explicitly not allowed?
 
-That's fair point but should not the user be also responsible in provding a right
-nodemask containing CMA memory if it prefers avoiding node_states[N_MEMORY] based
-fallback mechanism in kernel ?
 
-> 
-> Would it not be better to check cpuset as well?
-> 
-> Thanks,
-> Usama
-> 
-> > +
-> > +	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
-> >  		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
-> >  
-> >  	if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> > -- 
-> > 2.55.0
-> > 
+On 2026/8/4 11:55, Muchun Song wrote:
+> Teach sparse-vmemmap population code to use the compound page order
+> when deciding whether a vmemmap page can be optimized.
+>
+> With this information, the common sparse-vmemmap population path can
+> allocate or reuse shared tail vmemmap pages directly instead of relying
+> on HugeTLB-specific handling.
+>
+> This centralizes vmemmap optimization logic in the sparse-vmemmap code,
+> based on section metadata, and prepares for sharing the same mechanism
+> across different users of vmemmap optimization, including HugeTLB and
+> DAX.
+>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> v2:
+> - Keep vmemmap accounting and population logic in sparse-vmemmap.c
+>    (suggested by Mike Rapoport)
+> - Move vmemmap_get_tail() before its first use instead of adding only a
+>    forward declaration in the previous patch (suggested by Mike Rapoport)
+> - Simplify the PMD path handling for HVO-covered sections
+> ---
+>   mm/sparse-vmemmap.c | 36 ++++++++++++++++++++++++++++++------
+>   mm/sparse.c         |  4 ++--
+>   mm/sparse.h         |  7 +++++++
+>   3 files changed, 39 insertions(+), 8 deletions(-)
+>
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index b770fe2428fd..b69a7af76858 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -186,6 +186,11 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
+>   
+>   	return tail;
+>   }
+> +#else
+> +static inline struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
+> +{
+> +	return NULL;
+> +}
+>   #endif
+>   
+>   static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+> @@ -193,12 +198,24 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>   				       unsigned long ptpfn, unsigned long flags)
+>   {
+>   	pte_t *pte = pte_offset_kernel(pmd, addr);
+> +	unsigned long pfn = page_to_pfn((struct page *)addr);
+> +
+>   	if (pte_none(ptep_get(pte))) {
+>   		pte_t entry;
+> -		void *p;
+> +
+> +		if (pfn_vmemmap_optimizable(pfn) && ptpfn == (unsigned long)-1) {
+> +			unsigned int order = pfn_to_section_order(pfn);
+> +			struct zone *zone = pfn_to_zone(pfn, node);
+> +			struct page *page = vmemmap_get_tail(order, zone);
+> +
+> +			if (!page)
+> +				return NULL;
+> +			ptpfn = page_to_pfn(page);
+> +		}
+>   
+>   		if (ptpfn == (unsigned long)-1) {
+> -			p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+> +			void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+> +
+>   			if (!p)
+>   				return NULL;
+>   			ptpfn = PHYS_PFN(__pa(p));
+> @@ -217,7 +234,8 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>   		}
+>   		entry = pfn_pte(ptpfn, PAGE_KERNEL);
+>   		set_pte_at(&init_mm, addr, pte, entry);
+> -	}
+> +	} else if (WARN_ON_ONCE(pfn_vmemmap_optimizable(pfn)))
+> +		return NULL;
+>   	return pte;
+>   }
+>   
+> @@ -406,6 +424,9 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>   	pmd_t *pmd;
+>   
+>   	for (addr = start; addr < end; addr = next) {
+> +		unsigned long pfn = page_to_pfn((struct page *)addr);
+> +		const struct mem_section *ms = __pfn_to_section(pfn);
+> +
+>   		next = pmd_addr_end(addr, end);
+>   
+>   		pgd = vmemmap_pgd_populate(addr, node);
+> @@ -421,7 +442,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>   			return -ENOMEM;
+>   
+>   		pmd = pmd_offset(pud, addr);
+> -		if (pmd_none(pmdp_get(pmd))) {
+> +		if (pmd_none(pmdp_get(pmd)) && !section_vmemmap_optimizable(ms)) {
+>   			void *p;
+>   
+>   			p = vmemmap_alloc_block_buf(PMD_SIZE, node, altmap);
+> @@ -439,8 +460,11 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>   				 */
+>   				return -ENOMEM;
+>   			}
+> -		} else if (vmemmap_check_pmd(pmd, node, addr, next))
+> +		} else if (vmemmap_check_pmd(pmd, node, addr, next)) {
+> +			if (WARN_ON_ONCE(section_vmemmap_optimizable(ms)))
+> +				return -ENOTSUPP;
+>   			continue;
+> +		}
+>   		if (vmemmap_populate_basepages(addr, next, node, altmap))
+>   			return -ENOMEM;
+>   	}
+> @@ -648,7 +672,7 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
+>   	}
+>   }
+>   
+> -static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+> +int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+
+The kernel test robot reported a compilation issue: when
+CONFIG_MEMORY_HOTPLUG = n && CONFIG_SPARSEMEM_VMEMMAP=y,
+section_nr_vmemmap_pages is undefined. This problem is easy to fix, and
+I will move the entire function outside the CONFIG_MEMORY_HOTPLUG guard
+in the next version.
+
+Thanks.
+
+>   		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>   {
+>   	const struct mem_section *ms = __pfn_to_section(pfn);
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index ca9875f568d3..24555a32a5d9 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -315,8 +315,8 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+>   							nid, NULL, NULL);
+>   			if (!map)
+>   				panic("Failed to allocate memmap for section %lu\n", pnum);
+> -			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
+> -							   PAGE_SIZE));
+> +			memmap_boot_pages_add(section_nr_vmemmap_pages(pfn, PAGES_PER_SECTION,
+> +								       NULL, NULL));
+>   			sparse_init_early_section(nid, map, pnum, 0);
+>   		}
+>   	}
+> diff --git a/mm/sparse.h b/mm/sparse.h
+> index 6ad190ec48cf..f8f852f9f8a2 100644
+> --- a/mm/sparse.h
+> +++ b/mm/sparse.h
+> @@ -105,8 +105,15 @@ static inline void sparse_init(void) {}
+>    */
+>   #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>   void sparse_init_subsection_map(void);
+> +int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap);
+>   #else
+>   static inline void sparse_init_subsection_map(void) {}
+> +static inline int section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+> +{
+> +	return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
+> +}
+>   #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>   
+>   #endif /* __MM_SPARSE_H */
+
 
