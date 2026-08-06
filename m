@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106DBC561E6
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E0CDC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C952E6B00A7; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
+	id 016D26B00A4; Thu,  6 Aug 2026 05:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C46576B00A9; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
+	id F30FD6B00A5; Thu,  6 Aug 2026 05:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5C0A6B00AA; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
+	id E470A6B00AA; Thu,  6 Aug 2026 05:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DAC66B00A7
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:11:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27027A0737
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:11:38 +0000 (UTC)
-X-FDA: 85070276676.15.B264E75
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B61A46B00A4
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:14:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31538A1CC6
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:14:05 +0000 (UTC)
+X-FDA: 85070282850.13.94B9EA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7D29140003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:11:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DyLZ3Zh3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 89A3D140005
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:14:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahR/JYAq";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786007496;
+	s=arc-20220608; t=1786007643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=in93mgYbw0F04Zxk1y2Zn0DH94LyJQ4nBw9npqUTqbE=;
-	b=7M+psL8B9pqsgmogKVf+loZ/+FqP39zoNf5ofau6BqSaA85hPdBSvAYqO6q2BwFh/dqElY
-	v6imqVxjOUGTrkXsDoePpeSTNiHF+VViV1IQ8ZBoYPc03r7+jjt/4nTmarNzJbz9DdFW2b
-	Whw5XtdujKeUx7VnDsKNxVWK6j+uY3Q=
+	bh=gbQN0P9juxp84awMvUOVeJt+czRmTpTGzHczqTVhmjI=;
+	b=vcqFn5vmbGZ7L0Z7cwFBnhd4oatGM1dV+oGH76fmqptvVJkAvBTto32hON0lfLDA0yc26W
+	ZMJU4xAb+erJ+1yAqd4qPoTDm0s61aOI3CsXRVQOu4qOVuCLaWIHybCOqnpND7VaPlyCHH
+	0rdK9/gki6/9rNbYixkg0zOc9qPnuV4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DyLZ3Zh3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahR/JYAq";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786007496;
-	b=ic2etMjBhB/5KKclQ6LSmuCvSuz4ky3LejWjYlcvCxo2FcF96n4dSYH2MSPuERPY7MXO66
-	01ztzf5OH1RQX5zfsO+4pgEGrAPDoPM167nafFaIk9GDeH46lxa62TXDBEqCIJD3tNYUGE
-	FhBtCMTq+x+4DWqe7+vS7F5h6rNV8c0=
+	t=1786007643;
+	b=4AS+0aKoC9ElcZcX0G+5SmNyWRJvjizeUSu88q2mC34eOjxuQWO8Pdz6CXShjoyFcyeyNU
+	nWp6BFHc4C3ZNz7WmjG6Q7qLin/QCRDuSseNbmApXUbjvnRrV7s+ZQPRXNAFBmW/rAJryG
+	RwubL8t7FiYOMD/04knici4E/2aC0mo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D565C400CE;
-	Thu,  6 Aug 2026 09:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB891F000E9;
-	Thu,  6 Aug 2026 09:11:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AC5B04120B;
+	Thu,  6 Aug 2026 09:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536751F000E9;
+	Thu,  6 Aug 2026 09:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786007494;
-	bh=in93mgYbw0F04Zxk1y2Zn0DH94LyJQ4nBw9npqUTqbE=;
+	s=k20260515; t=1786007642;
+	bh=gbQN0P9juxp84awMvUOVeJt+czRmTpTGzHczqTVhmjI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DyLZ3Zh31dW5z00axg0BKCzVlVa7D7QuO9L9lSSWy/WGXglK73KJqRoOBLZFyFxZi
-	 zmRJwFsNtTbD+WCrIz2DACQ5RloEdH0v6wKvmoGdHmFcBVEK3x1agC+PfXfRYVDDGg
-	 6Bwmehy15falLfdD4IzxdAmEbOTOC6LdnDZyNYNyPTq2Iob4nt4rUwO6IJwn3CxYBy
-	 eQ7iVcNziIRujMXenBGqPiO+QwBPColW6sNa67PoYU/WtE+OX6XJNSNiOAicQeq2Ca
-	 Xn9o1cehGIA+Kb4v7gzBMzQa9jS3CZcCB14KG7y/GP3zTPgjmCwipqVgURhOUU8FGg
-	 hSfJLoFIDBntg==
-Date: Thu, 6 Aug 2026 10:11:17 +0100
+	b=ahR/JYAqTsxKULko6tkqNQ2E6tQsxzilFd5mbjlkZ9bCe9jMcvJQBbCax+ukFjdiS
+	 FHVNUg/BJYrZ1+athIOIJmRHfasgwhnA08NCjXSHnmeaDeHNfD5KqGgxTQTgcUVpUm
+	 AcTVDSwbd7caomvwKfFNoLVCX9bodE0PhtB7ntzEKKsmxShK56Tj0ztIW8HyK5Jvsc
+	 b0K/4HSRiW4Z90lQ72x4tVgP3IYh3+OhYmNhjkMMLqyyX8dTw1Wev1zlP6LbLnk0vS
+	 t323NiEnfZaa6k0UyLGirhUSeGkRHSNderfEJ0Ye/k3hdThIUIt6FFaV7MvG4P6c4f
+	 Vsb7fwccSjcdg==
+Date: Thu, 6 Aug 2026 10:13:45 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yunhui Cui <cuiyunhui@bytedance.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, 
-	vbabka@kernel.org, jannh@google.com, 00moses.alexander00@gmail.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
+	00moses.alexander00@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting
  large folios
-Message-ID: <anQyoZgi5Urnvvjw@lucifer>
+Message-ID: <anRPzJiraQUnsHa5@lucifer>
 References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+ <699fc1b0-7af8-42ac-9882-c01225379586@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260806055501.56761-1-cuiyunhui@bytedance.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7D29140003
-X-Stat-Signature: r9pbrue3sabbqoud5wqdyent1d6aqmb4
+In-Reply-To: <699fc1b0-7af8-42ac-9882-c01225379586@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1786007496-581956
-X-HE-Meta: U2FsdGVkX1829ESmDHYJYu3lvvZubwZCbdUP9I+no9naYLFoTb3jOlalKIRxIg1Ah39IOfF1EPJJ0YpBMPth7cIM3yhCa8YAg8QBnoWkh3ghdWcQhva+CSsf9qvFqPgx0CoNCWb2MsUtPcJQPvJ8/C5clF07el8UhTiri1VQJHG1OYt61/oXcVx7kvjNXFQA6R9hYNMOzhGluOBMx0SJcf+h73vcUyhpXE1gex54D+YAZXqjr2hhNytOOmvMmAtlVDL281QrU60CdTdlt3JQPKwvJakvb24RL3uKT6cdHGzJEkX4VYvLDhXdLxHTZL+RtCcA7BESzlnAGf8ydnidv1CJCV3ZYerVbNvkBjARcR9TTWqvlWHGcVtXMKhuoYgPaqWyO8IaY1dXzRbtKZ21bygiLCHU7DsKuwqHW9KG34wfU/5Gv74nuh27loDM1LC/fDrWgAFz1iUaxf+0otY7RPYqACJqxXVEd3Y6EARw0a5lU51PEiyRoJJ3vkNxYWGkmemzmENGa4kJzgUVE75gUvtsr8rbQmppo5FrduXBcyRE/Saow5LkVmaKv9OMxYV43Sx9s+8GpiRzBlJUKJGNNvymEE9hGDHnm/si9l+ni4/cVLcyaNlSBSObzEQH4Yfgwtt3gcuby33BunnY4fueOutgjxqcK1fi7dJST3nXPgqWkVyMYUNhxmH+MC5YSawvcjST1XuYjQu/YteQrasAxqYRHOEHNQFC7Rqyx/53DJpMeHL18Qbv/OODyExZ/2Fb56WjLI+pWfT9j54mvxN9PiBiBe5qbL5T9iB0zzNKDCvhgPMdIrstWP9oPIJQJEooCNPnqN777tkHq62QYBFor44CkSU1x/xOikRWFxbRwCl8nNoDCvLtO7ZbmbnQSwgl9v7QkbhLvjsZ1bYK2iaqKk06wH3/ZfB8OD7hp8ZO1sYsXgPKK7Q7BsXWUmySDOgKJKYwhIxjR1aNOPUt5Wl
- aDAAK8pl
- SObIzgfpuHZcTGyWnBaAJb2NfHLyoApYLv9ipoF9KtTov3GyIVKcn+fJ5EV6UGhMiEl4r9UUb/vlIaLGcNdnXHdItatyf1Qo//PbRNjkv5e8G9OkO+kTIVP1aKRCB9xv9B91bmJUQsrt1ODiPeIGEyQnkkDtmPb+nUHnaCZarzBk6cu6gojskIdqAKfSopT3rPES8/Fn7FvpAb7KXAzrFaztzor5kcUPDKRCeX1SboDIRT/jnTgRZTeBVUmBshow6G2V6pM6mNEb4F4MQvdMmtsOtsSM9ITzRH6eny4arxwyVYm0ZXUvUGutl8HIK6S4v8MVzhEV0HD8S4RTs/JHU6r4+Q8zwE/5OZY+U/3xtwhHVVVj4PGK1EI6sHg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 89A3D140005
+X-Stat-Signature: cs8cpu9ackxrj39ue6mpdmazf365fdh6
+X-HE-Tag: 1786007643-475363
+X-HE-Meta: U2FsdGVkX1/wrUxwjuYNXq8qFRRRsSIEKkhqrrzeCJ3IgGm754J0MDMF8OaTogAlfeDWoCdd9TMgLM5SuqFcIf7yfeU6ES3KO+B3GEKNtATn23srb07YIiHyl535mhZq5nwVaM74wX8VMhOdDQGYEWsyCAye7OOPOZvIJu87buIOMlpKzWpyMXQ6fFMgk8YNXfseur9gzCpMNdTiIRRSISjBEbmhb4PNIkeT11uBu8tOl+24YgwwrivN94Kc2+KSu8IX35ydyfGoAqplTQTyRYi5AQcbosl1rWmZ8TbSSYpEQeT6UDPgJbZFmPYV/fn37ulUL5RfQ+QxXMoHC0MzH1x+HEr0AHH8q6BOD45nlmooLy05vtF1RsBXu9WkeTXiV+tCBkjbZI7ZFqETW85xiYvyYcL3kJxFxak8f168Nb5cKom2seY5o9STub1KPokyhfxCE9Sukmt9Ocb00gKaGRnOqxhdFWkTuH32kRo2Vi8opV+2K+N3vVkgaBucI437x2/KfSY5vMjAfRKIqffEGHzzrHSa4Ky/8OL8IZ1IzW8aH6T1Pif8npV0CAbEgsGNlYL9qeuxzq4I7FGGSfHz62iXyeewAJDHIhS1lLfh6Vm4UlsFt1mb5rv/0jepfkAhpvm4lVpJ+4XX96s56DyzZZayrMcDzsS4BS4kF63zna1MF54CS03VzkbB00JhhhXquXqxOjbsKXR8OoA9LTqzFqmV83dR7rgpwY+Y2jRSVLPK5h+MBzIwdPoSGRfyBtb7urHuiI693AU3q1FuyAaVWu+Mv9ADZs36AgYdnOnmcJLInM3AlBFKySNnTkZ2/k1EGBEZcoz2M373ssF22nJLdLng+APgyFO2mVwrNt3Kp0aaiMigdnC383uP5AHoB5Vup4qOIxryPRXFc+2BxphYDqgMrgkXuIGqPaic83tV0pLPPRMc1v/eePHq+qGuX2+tegHGvlAuFcwCome1llT
+ 82OZ4Hh+
+ hsqTt1x2Db+xxdLJsNOxLhXKa9H5ecR0D/9OyV6CTjTWIZWhCw7A/3vaft3lpqiIAvmnMcNtb3TUhKFcYOhV3S6Yi8H1Kkq1OM0iEBfEDtTUmHIYMOQYZkk0W8LlaSp973AdsZeq9XeDkfpzljft8TCjigqJuEN9SIOfL6XCABkI3DkXN4QWqCFfESf1PRJSYWeGZQ5CgEHg3WwrDBMM1rpnR/DDxsu8VnFz6iTzjPy7+YTx1mnZmxZRaHeyN9PKlvfOjU7nNewGjf78gaycMUwmhyI9bENY9Ig5g/z5qDjqPNy71Aq8WhiueBOzXEwstGaq3gDLnLagg/TPpI4jZImrMIeWfGrNNhWcL+Pu6NbcClnimE6aDjQab3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,158 +94,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As a newer contributor to mm please wait for feedback on a v1 from reviewers
-before respinning, thanks :)
+On Thu, Aug 06, 2026 at 10:41:06AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 07:55, Yunhui Cui wrote:
+> > madvise_inject_error() advances through the requested range using the
+> > size of the page returned by get_user_pages_fast(). Saving the size
+> > before error injection is required for hugetlb pages because successful
+> > soft offlining can dissolve the source huge page.
+> >
+> > That stride is incorrect for non-hugetlb large folios in system memory.
+> > The memory failure handlers split such a folio and handle only the base
+> > page for the supplied PFN. Advancing by the pre-split folio size then
+> > skips the remaining pages in the requested range while madvise() still
+> > reports success.
+> >
+> > Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
+> > folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
+> > folios are handled as a whole.
+> >
+> > Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page order before page migration")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  mm/madvise.c | 13 +++++++++----
+> >  1 file changed, 9 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > index 5a09cc24f04a0..e9d4c3bbc5290 100644
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -1455,20 +1455,25 @@ static int madvise_inject_error(struct madvise_behavior *madv_behavior)
+> >
+> >  	for (; start < end; start += size) {
+> >  		unsigned long pfn;
+> > +		struct folio *folio;
+> >  		struct page *page;
+> >  		int ret;
+> >
+> >  		ret = get_user_pages_fast(start, 1, 0, &page);
+> >  		if (ret != 1)
+> >  			return ret;
+> > +		folio = page_folio(page);
+> >  		pfn = page_to_pfn(page);
+> >
+> >  		/*
+> > -		 * When soft offlining hugepages, after migrating the page
+> > -		 * we dissolve it, therefore in the second loop "page" will
+> > -		 * no longer be a compound page.
+> > +		 * Non-hugetlb large folios in system memory are split and only
+> > +		 * the addressed base page is handled. Hugetlb folios may be
+> > +		 * dissolved and ZONE_DEVICE folios may be handled as a whole,
+> > +		 * so save their size before error injection.
+> >  		 */
+> > -		size = page_size(compound_head(page));
+> > +		size = PAGE_SIZE;
+> > +		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
+> > +			size = folio_size(folio);
+>
+>
+> We should never ever try deferring "how much has been mapped" from a single PTE.
 
-On Thu, Aug 06, 2026 at 01:55:01PM +0800, Yunhui Cui wrote:
-> madvise_inject_error() advances through the requested range using the
-> size of the page returned by get_user_pages_fast(). Saving the size
-> before error injection is required for hugetlb pages because successful
-> soft offlining can dissolve the source huge page.
-
-But you're also changing the behaviour for MADV_HWPOISON not only
-MADV_SOFT_OFFLINE? Explain?
-
-Also mention the specific madvise flags...
+Inferring? :)
 
 >
-> That stride is incorrect for non-hugetlb large folios in system memory.
-> The memory failure handlers split such a folio and handle only the base
-> page for the supplied PFN. Advancing by the pre-split folio size then
-> skips the remaining pages in the requested range while madvise() still
-> reports success.
+> While this currently works for hugetlb, it's just an anti-pattern to throw
+> hugetlb checks and similar around.
+>
+> So this is not the way to fix it.
 
-As Andrew also asks:
+All of this code is disgusting. Also what about an address range that is
+partially inside a folio...? Then presumably the whole folio is discarded? Or
+does it figure it out somehow and does the split for the rest of the range?
 
-How did you find out about this? Is this a theoretical issue?
+And what if end < the end of the hugetlb size?
 
-Why? What? Who?...
+Ugh god I hate all of this, it's so so bad. And hugetlb being the special
+snowflake is the cherry on the s*** cake...
 
 >
-> Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
-> folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
-> folios are handled as a whole.
-
-You get a folio to check to see if it's DAX when you have the VMA that you can
-check for DAX?...
-
+> --
+> Cheers,
 >
-> Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page order before page migration")
-
-4.14...!
-
-> Cc: stable@vger.kernel.org
-
-Stuff that touches folio and soft offline-adjacent THP is going to be tricky to
-backport correctly.
-
-And in madvise(2):
-
-              This feature is intended for testing of memory error-
-              handling code; it is available only if the kernel was
-              configured with CONFIG_MEMORY_FAILURE.
-
-For both MADV_SOFT_OFFLINE and MADV_HWPOISON.
-
-So I don't see why this should be backported. You might accidentally not quite
-offline/poison everything you intended in a test but that isn't a bug?
-
-Given nobody's complained in nearly a decade I don't think this matters.
-
-Also you're suggesting backporting to pre-folio ancient times which is going to
-make this horrid and tricky there too.
-
-> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-
-This could really do with a test to reproduce the issue. Mm selftests already
-has memory failure stuff.
-
-Please provide one to demonstrate the issue.
-
-> ---
->  mm/madvise.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 5a09cc24f04a0..e9d4c3bbc5290 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -1455,20 +1455,25 @@ static int madvise_inject_error(struct madvise_behavior *madv_behavior)
->
->  	for (; start < end; start += size) {
->  		unsigned long pfn;
-> +		struct folio *folio;
->  		struct page *page;
->  		int ret;
->
->  		ret = get_user_pages_fast(start, 1, 0, &page);
->  		if (ret != 1)
->  			return ret;
-> +		folio = page_folio(page);
->  		pfn = page_to_pfn(page);
->
->  		/*
-> -		 * When soft offlining hugepages, after migrating the page
-> -		 * we dissolve it, therefore in the second loop "page" will
-> -		 * no longer be a compound page.
-> +		 * Non-hugetlb large folios in system memory are split and only
-
-'non-hugetlb large folios' is horrid. Large folios. And 'system memory' is
-redundant.
-
-> +		 * the addressed base page is handled. Hugetlb folios may be
-> +		 * dissolved and ZONE_DEVICE folios may be handled as a whole,
-> +		 * so save their size before error injection.
->  		 */
-
-You're discarding the whole thing of the page no longer being the head. But I
-guess with folios we don't need to mention that.
-
-This whole thing can made more succinct like:
-
-		/* DAX and hugetlb are consumed in folio chunks, everything else is split. */
-
-> -		size = page_size(compound_head(page));
-
-Yuck at this existing code.
-
-> +		size = PAGE_SIZE;
-> +		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
-> +			size = folio_size(folio);
-
-It's really disgusting that hugetlb is treated differently with everything else
-treated page-at-a-time.
-
-Honestly I'd prefer to see a folio helper so the main loop can just assume
-folio size stride.
-
-But you can enter midway through a bloody folio. Ugh. So maybe that doesn't
-work.
-
-Let's at least split out the folio check into a helper to make things
-clearer:
-
-static bool poison_splits_folio(const struct folio *folio)
-{
-	/* Hugetlb is, as always, a world unto itself. */
-	if (folio_test_hugetlb(folio))
-		return false;
-	/* Soft-offline errors out, hwpoison traverse DAX intact. */
-	if (folio_is_zone_device(folio))
-		return false;
-	return true;
-}
-
-Then for your patch:
-
--		size = PAGE_SIZE;
--		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
--			size = folio_size(folio);
-+		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
-
-I tried writing something that was neater and nicer but AI kept pointing
-out how it was totally broken and I really really hate this code (not your
-fault :).
+> David
 
 --
 Cheers, Lorenzo
