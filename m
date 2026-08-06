@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6410C56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AEADC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:02:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB12F6B0095; Thu,  6 Aug 2026 09:59:58 -0400 (EDT)
+	id 7248C6B0098; Thu,  6 Aug 2026 10:02:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D87DE6B0096; Thu,  6 Aug 2026 09:59:58 -0400 (EDT)
+	id 6FC276B0099; Thu,  6 Aug 2026 10:02:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E146B0098; Thu,  6 Aug 2026 09:59:58 -0400 (EDT)
+	id 5EB4B6B009B; Thu,  6 Aug 2026 10:02:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A61526B0095
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:59:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44DFFA250C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:59:58 +0000 (UTC)
-X-FDA: 85071003276.08.CC1C088
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 80FE2180005
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:59:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4xWYZCq;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 391EE6B0098
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:02:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15253A07DC
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:02:10 +0000 (UTC)
+X-FDA: 85071008820.14.6BDD55C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3C9F91C0003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:02:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G3mH/ZAJ";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786024928;
+	b=Lo6GWqMz3XVDZv2qpyiVzwb79e9Ol2MES55+M/gEjZ5e8s1CzQqbbYh6ALlOY+Cc0xLzhP
+	4QDI7w2pHjW4NmxjD85g6wT0xZxu69YDVypgBsWW81zYJDqnd41O3sf3G00qqPenY68bLN
+	bkcDnqLOMXSWqpjP97HkenbYOSaT2OU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G3mH/ZAJ";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786024796;
+	s=arc-20220608; t=1786024928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4sw8U9YfDFLEcwjMIF2sCsT+Tw/SwYWWnQdQB9Vxn/M=;
-	b=N66B2PEiDFTv/mn58aEmM4dxSM/3L/oQ6QznHJGLW+g+g4bSk/zFT1d6t9Hd/XzFJrh+V/
-	mtymoI+n0U+Yp/zV2rR6ayTWnf+qBTE3KHjBrE5vG6XQC6SgWmWK+ep7rU8VTNuqkI3LN0
-	YVavGD+vC7N2Yw2ScSkI9JuTNFiGxoY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786024796;
-	b=HGXbKs6oE9K0ELlSvECmGzyPHCGwo3zF7F5cIo0CzxMEYq7zq71jNA2Py+8Qb9umECQpGp
-	NQtfbNdAIvhjz0BZP9y/9AcKZkwG0es6hZK5Gzq8PIj8eNlWh6CyYFP1qxidtKhuPb9DeY
-	Xt0tyvRxubUnPIwaE6BQBOfyuUJMq2c=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4xWYZCq;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=sj8CY+ONiryU5APtwGc/YgR+xr5XRUh8Uhoc/B/yfJM=;
+	b=CKLh/6+RWRK5Mv9gSUwppHhUICzHV1vfj0KFBF2Ud1nfLSUiIKz1FzRstKqh8fXo263z0B
+	csmEmknPbMd0gsNsehOV1uRTe20KE97irhoU9814Hy2w8HzVthWs19XOlEe110inuNYz8j
+	KYm7OGiQj3EVgv0CLxOBAyfdUwJWggo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10B9D60A9D;
-	Thu,  6 Aug 2026 13:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B30A1F00A3E;
-	Thu,  6 Aug 2026 13:59:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D76B40C2C;
+	Thu,  6 Aug 2026 14:02:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5371F000E9;
+	Thu,  6 Aug 2026 14:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786024795;
-	bh=4sw8U9YfDFLEcwjMIF2sCsT+Tw/SwYWWnQdQB9Vxn/M=;
+	s=k20260515; t=1786024927;
+	bh=sj8CY+ONiryU5APtwGc/YgR+xr5XRUh8Uhoc/B/yfJM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O4xWYZCqQddxHiiTdAB6D2+Uhe5VooRnXLEXY8fQNGq+IWlmg1SXKapBr8RFWNjbq
-	 CGmk3rZ0zZ9IqhNz6lWu/8QqOhuDaL3gRIfmMJQGhQvedily2IXBPHPvTAUrCoeYg9
-	 9yrRoRpLraeXgyxlMAC+V0nWEA9qMQv2EwbzBcXuOilD3kdNaRbuNXgV6yLO7k/uaR
-	 R/d2Oy//qDgGpvyvvk3zaj/+K/tK3SQ7oe46fs4jgFYW9M7Gp4qJHXdbnabIHV2V8Q
-	 Lnf7PksBGss5j9wgPHCSkx05G9shkhoDPmsddc+2tlByQAs+TbZkLgMH3S2WTBTYWm
-	 KOdVFQugojJaQ==
-Message-ID: <2f1a505a-3568-47c7-8b6e-1fc8f02fb112@kernel.org>
-Date: Thu, 6 Aug 2026 15:59:46 +0200
+	b=G3mH/ZAJKCJgwvR/WrgftIJm0005B7WQFMvcWeCYDpwdVnLh7nNFwwWciAmB/E4Fc
+	 cvegeZcVis1f2q0QFmnlkIOgrIdHYQTUs3lBuIaFyetIg23BXmPc5dFGbcAssiZGOn
+	 9uaI9TV/EPRa9wHchr/EtZYg+s5birOeVhMfpVny0x7NFRC6TP9NbPV9rFFu3WZ86e
+	 SRArRbZedRs8ijk1OKnZQTg5Boe7IQVsAlpcgmM6tEZr8wmQipGDbpBuXvTEcuVard
+	 57/TDa5Wnq/eqrkTTHDUCrOMNmdtgmWwvrkaoY+stU6YUTGAAM9mLz0B7/1hYlhwFk
+	 wcKf4BErxoW+w==
+Message-ID: <8c763f1b-85ad-44b9-b36c-becd7598fe77@kernel.org>
+Date: Thu, 6 Aug 2026 16:01:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 4/4] mm/shmem: split large folios only on -E2BIG
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- zhaonanzhe@xiaomi.com, baohua@kernel.org, hannes@cmpxchg.org,
- youngjun.park@lge.com, baolin.wang@linux.alibaba.com, hughd@google.com,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, baoquan.he@linux.dev, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com
-References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
- <20260730122304.2496440-5-xueyuan.chen21@gmail.com>
+Subject: Re: [PATCH v6] coredump: Add bit 9 of coredump_filter for pre-exit
+ files before dumping
+To: Xin Zhao <jackzxcui1989@163.com>, brauner@kernel.org, ljs@kernel.org,
+ rppt@kernel.org, pfalcato@suse.de, viro@zeniv.linux.org.uk, corbet@lwn.net,
+ skhan@linuxfoundation.org, akpm@linux-foundation.org, liam@infradead.org,
+ vbabka@kernel.org, surenb@google.com, mhocko@suse.com, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ mjguzik@gmail.com, ebiederm@xmission.com, jack@suse.cz, jlayton@kernel.org,
+ chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de,
+ keescook@chromium.org, mcgrof@kernel.org, j.granados@samsung.com,
+ allen.lkml@gmail.com
+Cc: kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20260804001703.1340667-1-jackzxcui1989@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260730122304.2496440-5-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260804001703.1340667-1-jackzxcui1989@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 80FE2180005
-X-Stat-Signature: w65mus4yjna89hdy9ijn3mwja4gjg7dx
+X-Rspamd-Queue-Id: 3C9F91C0003
+X-Stat-Signature: 14ioin1h8o6n7u6e4tsjaxanrry4a7ns
 X-Rspam-User: 
-X-HE-Tag: 1786024796-912355
-X-HE-Meta: U2FsdGVkX18tB4DcQjXyLS8HVerLc1ZHHzvXzI6IFjNVcPY40zZfiidGNLEsw4adfJEI19WCF+Ckj/H+J2oFcLhVSJkAhKEJ4Inq5bRv8iEMtKUOiUZ5opZ4vucrpL1eyaWqr1IcckxBd8xEa+2LRUlECGm0n/1y+1lrEcNPi972BK4eb61nmksefRE3Is0syuD5sexkGOmc4/7fWI44eMJU1psCAzMeGh7UP5Nhajjq0QjJOBUS+XbSR72ass4kKHJh3azbDMdMOG3ToqF7wKoyLr5+lfY8vDvWf6baKkdpbrFJaSOmFh1CciaFh8HMDxUVeN4QipUXp2H31n/8mAi23I8tmGOEb/bQD/QMXQWJwrgZW72H4n9sGsGVJ2RjqqpgZ4rSWj95kgRxPyblIfbJgZzb97hLKT5fweTkiSoUoWMB0aBR+IwLcqaxMPbBRB8maq9FIIB0oydiwi5CqnpvwM+/sENFeRx2vVPbvF9aHEsWvx/8BfErzFLbZaea8TFKpCnGh5OxNfDxdCS85lyu+yIEL8M2Zhu/mneeNCU+u0kZv4moqIO+2xSLw11ilTVl+KNQT+kGzMZAhjV+Zwbk2Tsc2UNRnFd9rRnmfLPzbXralP9aq1ZNFOjUfzq1UbLJ+eHGSzx6miTWYrHYHWIAm9zGHYrzmXnY9a/Ndnt/pkua/YxaM6Ml5Oka+BP4EyY0AwxIxaSbovsR2a0AIWmyqffDaTpqicWVwk2A3I6nN1gpzt0kxbJBvJyBhbW7UInIP1cuH0o8YX0EgVdbONZFEpFZBdlUsh/HCrBLBju/sTCUZWTQA9kz95r1A4dcunpJpwp6tPP4LAXW5qJ+d2Yuw+T9bjbTmLtiocKW/RzksVBeXUip6PnpQ7A985z3o0CW6JIGGBsk3ojoK3zsi0hHyWSGJCBYFaszQiuVIxVkSqMPp6tvW3C+5YLfhdhNqGe42mECLr6xJ/O5LFV
- SfVxMJVH
- 11KOU7DaavLsNd2dvpWSS/Jz8BLUNaZ3AkEYGxecVJrmsd54vGg3v8E8CQNDdJj8/r9vxqYDchdtkjYk6c/Bxb9ztK5rA5toV53moBkjhX5oRsqWDQJEZAoFRwALeFELAI65y4SsOU48lkBpLbV+RttaJ8vBc22IeGg/5d4OxbgSw2eNNuanH4q3XZ+Xcrhmg2i61mQmyU3OuJzF5OZAoJmnKyQuYB+yBe/Eu2SlANoAd61PSBqLKNo0o5Bu+XMi6N1EApS2OJyLKp7yg2p3PQsECHK4u783a6NfJLW4v7bvpv6fkkEkhHFvXfPnAWeR/GdKTRYAIuoMvXcF5SIyIOCzDmTkjWoGECvhAF2mduDvbLsEIlXu50SWVUoPsS7Y41WQstOTf9sHjsD+3V/ecaX47pg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786024928-237693
+X-HE-Meta: U2FsdGVkX18thul9qlSYUbvZSjwzkniFyqh+wEQtL181IxwhjYldccyUPSJge5bNfJzN2XO98gO8ARRZSEBbXdVXF3PLXmrHNBJg4NXVEcadX/xX4Q+kSlb3Hu2kbOXk28GqOcKj5gpHFeEdkb/FfWjdzDyVfht+aCLcV6ltkxUAkfx9Wi/uTw1UznGCZE4QJy53U+Vy61PbDIoeWRszawS+zLmC0mJVGVeu8fw7an52r+BXCgbpDbKFCBkeHg4BWdfcZgGLde7m0wKiO5bUQDzaf76OMoNzEhA/qb7vXuKoBhBY0mdUWApuEzqFGQoz3He4USzNkALjQtVjOhnP4rW+y61ilar0PfrsvZll+/HMd4TEx2qsfUqCvrO2iKE43WGS6KqNABrK0BJ1/P45VuA/9pSsZ8GpK3Nw9b0ZOjSQXI89j/kP7JwghFm7qqPvXEn1VYb0/YkORGrqL8xeOR3RUCpn/0kcBnAwy1qrNgPXpa61mcwVxo9m8otbHGB2bNhXcFcViqZCQZ7BE3aOy0JCKfdV2utDEakELwTNGyk7W5UTsweZC3B165zL5znF/pjO6jbewEmWNG4K2rPn0bEBK5qftmUMpAEzpYVerZhowJLLllE+xOKbsf9yldLo6amdgefDx+y46GwoL793DYf50ntcF/WmE46ccfBz8CQX9mbEevNIib1OAau7kgN29rFv6t25GhZtUQPDpn9Uy5AeyyBkCJ8jNP6+kpcrJPLwQO9qY3rUBTnplyVKCeAVpkOP19Ez8V2CQoVXW9Fr1pmeigiW/Ic9tVvmscCOcUYnkKA4ZKLbbNlD5ICoS+5lAUGaTZbQIcD+khbY0Azt32iPrgRAgNKmYal60xje2ME1KMQKfYHMTbhyt2p1/28f6HjGma6W1qatvPuj2+OGGojvu1NU1RvjWeI4zn3fSolW5OqhWJ+EnWa2YmR1jQLQTYR5eyetR8/agPBa9IO
+ VGSGQsAT
+ P2Akok1BW5kOUQN1Y0VAdAhAUVESlqT8rr0hQD8EPlqrDSN1uAjkZp805KIRTiRvhn4NwE7CWJWS8e7nA16NXQw4fP/8U9gwUkXQI9XAknK8cxJ5KNpFZPTmoDEMb9+j4hTQ0mkB67lT1ijCvtYtvwxYyuI3gFIUT2+MtbuVzv28aZ1R7j5KDwHZ8dD40ABnrPyTnYbLKXv0fE1wozBnD51DEg3uw430B5h4JqFbIAAI2X8Y1+McaqVRqTeuteWu/UJ6k27NZgFTwMDegpWq2tP+EMmo9XlJ+UEHCwCzmv6RCebAOCWsZKVM2z1MHidwPJzihbOaepqQHcQH/bFm3wrI+L9rGUQYiGaiYLR0XxUy+86XEGIJyuc4LIa1MIxRP9sJoxKW4VXKd7FDpJOBXKDpSnjWwlaypQq5/ykqPARnqgQA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +147,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/26 14:23, Xueyuan Chen wrote:
-> shmem_writeout() currently splits a large folio on every
-> folio_alloc_swap() failure. With the refined return-value contract, only
-> -E2BIG indicates that splitting might allow smaller folios to be swapped
-> out.
+On 8/4/26 02:17, Xin Zhao wrote:
+> A coredump typically takes seconds or even longer to complete. If we
+> happen to hold a write lock with flock just before triggering the
+> coredump, that write lock will not be released during the entire coredump
+> process. As a result, other processes attempting to acquire the same write
+> lock may experience significant delays. Another typical scenario is that
+> some custom management modules for shared memory also need to release the
+> reference counts of the related buffers as soon as possible, rather than
+> waiting until the coredump is complete.
 > 
-> Enter the split fallback only for -E2BIG. For -ENOSPC and -ENOMEM,
-> redirty and reactivate the folio as before.
+> Add a new bit(9) of coredump_filter to tag whether need to dump fd list.
+> We set it by default because tools like systemd-coredump go through the
+> fds. Some other coredump pipe programs like minicoredump do not use fds by
+> default. If you are sure that your coredump backend does not use the fds,
+> you can clear bit 9, which will allow some file resources without VMA
+> references to be released earlier.
 > 
-> Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> In fput(), check FP_DUMPCORE task flags to NOT release file by task work,
+> otherwise file put operation will NOT execute util coredump finish.
+> 
+> Test Case One - flock
+> Test program send signal SIGABRT to the program which owns the flock,
+> output the wait time(unit ms) to successfully attach the flock.
+> Test program malloc 500MB heap and memset it.
+> If NOT set bit9 of coredump_filter, waitms is 11280.
+> If set bit9 of coredump_filter, waitms is 0.
+> 
+> Test Case Two - ion buffer
+> Test programs include ion buffer publisher and ion buffer subscriber.
+> Ion buffer publisher output the ion buffer hold_time if the subscriber
+> NOT send ack to publisher and NOT release it. The subscriber will trig
+> coredump by itself in some time.
+> If NOT set bit9 of subscriber coredump_filter, max hold_time is 19591ms.
+> If set bit9 of subscriber coredump_filter, max hold_time is 320ms.
+> 
+> Signed-off-by: Xin Zhao <jackzxcui1989@163.com>
 > ---
+> 
+> Change in v6:
+> - Fix operator precedence in PF_KTHREAD/PF_DUMPCORE check.
+> 
+> Change in v5:
+> - Not add another bootargs for the feature,
+>   as suggested by Christian Brauner and Lorenzo Stoakes.
+>   Add bit9 of coredump_filter to tag whether need to dump fd list.
+>   Set bit9 to 1 as default.
+> - Al Viro, Christian Brauner and Lorenzo Stoakes point out so many
+>   problems of the code related to umap that was added in v4, delete all of
+>   it which is unnecessary. The management of reference counting for shared
+>   memory generally does not need to be released through the release
+>   operation of files that have VMA references. Traversing all the threads
+>   within the process and executing exit_files() is sufficient.
+> - Fulfill comments and commit log,
+>   as suggested by Pedro Falcato and Lorenzo Stoakes.
+> - Link to v5: https://lore.kernel.org/all/20260630075604.52533-1-jackzxcui1989@163.com/
+> 
+> Change in v4:
+> - Christian pointed out that the coredump process will traverse file
+>   descriptors (fd), so certain fds should not be closed by default.
+>   Rework the whole feature, add /proc/<pid>/coredump_pre_exit for user
+>   pre-exit resources selection, default is NOT pre-exit anything.
+> - Mateusz suggested that walking the fd table and release the file-lock is
+>   reasonable. No longer release all the fd(s). Based on user config, only
+>   the flock fd(s) and the fd(s) correspondent to file-backed shared memory
+>   will be released at most.
+> - Link to v4: https://lore.kernel.org/all/20260624145552.70143-1-jackzxcui1989@163.com/
+> 
+> Change in v3:
+> - Add comment and commit-log to explain why do the MMF_DUMP_MAPPED_SHARED
+>   mm_flags_test() check, note that memory mapped files keep their own
+>   separate references to the files. The case to work around is that early
+>   unlocking a flock on a file allows other processes to lock and modify
+>   the mapped data protected by the flock,
+>   as suggested by Pedro Falcato.
+> - Link to v3: https://lore.kernel.org/all/20260619122419.3954581-1-jackzxcui1989@163.com/
+> 
+> Change in v2:
+> - Get rid of the implement of adding new fcntl API, the issue does not
+>   worth inflicting the cost on everyone,
+>   as suggested by Al Viro.
+> - Call exit_files() in coredump_wait(),
+>   as suggested by Eric W. Biederman.
+>   Add MMF_DUMP_MAPPED_SHARED mm_flags_test() check to filter cases that
+>   need to dump file-backed shared memory.
+> - Link to v2: https://lore.kernel.org/lkml/20260618150301.3226517-1-jackzxcui1989@163.com/
+> 
+> v1:
+> - Link to v1: https://lore.kernel.org/all/20260618030700.2511668-1-jackzxcui1989@163.com/
+> ---
+>  Documentation/filesystems/proc.rst | 14 ++++++++++++--
+>  fs/coredump.c                      | 21 +++++++++++++++++++++
+>  fs/file_table.c                    |  7 ++++++-
+>  include/linux/mm_types.h           |  6 ++++--
+>  4 files changed, 43 insertions(+), 5 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> index db6167bef..d590a1dda 100644
+> --- a/Documentation/filesystems/proc.rst
+> +++ b/Documentation/filesystems/proc.rst
+> @@ -1939,6 +1939,7 @@ The following 9 memory types are supported:
+>    - (bit 6) hugetlb shared memory
+>    - (bit 7) DAX private memory
+>    - (bit 8) DAX shared memory
+> +  - (bit 9) fd list
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+"The following 9 memory types are supported: ... fd list"
+
+What?
 
 -- 
 Cheers,
