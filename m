@@ -4,119 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79343C56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 15:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E210C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 15:48:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 348106B007B; Thu,  6 Aug 2026 11:48:02 -0400 (EDT)
+	id 9DAB76B0088; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D15A6B0088; Thu,  6 Aug 2026 11:48:02 -0400 (EDT)
+	id 989B86B008A; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1998B6B008A; Thu,  6 Aug 2026 11:48:02 -0400 (EDT)
+	id 8536E6B0092; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC3506B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:48:01 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6ABB3400FD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:01 +0000 (UTC)
-X-FDA: 85071275562.11.B402D37
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2AFC1160009
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:47:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fNJjGNd9;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9DA6B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA50B120121
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:49 +0000 (UTC)
+X-FDA: 85071277578.21.3091734
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DCDFA10000D
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=fLQPEPwq;
+	spf=pass (imf14.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786031328;
+	b=uOrPZTzIAAktDeUkFl9wwtGqoI1O7czdjE8phdZSGaijSSZDRrRChVE6R88KxoGVhbu3CY
+	lcGXKGaj7b2ehWvUyjbd2jSfcSs6wxb0+X62r/rwnZlEtVC3pMQ+c3o1sMDm9322/EPzg8
+	I+wuDZYM4KP+NxgaDGTRtFD7O/ODa+0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=fLQPEPwq;
+	spf=pass (imf14.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786031279;
+	s=arc-20220608; t=1786031328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myJJrsaRCu8qhOQiELgkCPpgvl9NHKGEjAfdC/X/7GA=;
-	b=kr8amoqs/xnW/WseNOZbwRwRBJFeXPsk6rba8RBK0jR9YYCfCmqsvi5CdpTBoOzhS1G3Ht
-	YkmljdcFPIVA54+ezt1dbh6JfV0LLz6jQBaYli0Bf5MTrREKTkv0NBE3OKWjyucwlwe5Ib
-	Q19WjFiuP0k7xmsHUnhJLP9pr+tvrvw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786031279;
-	b=DvNC269hHl1/dvRIfBKY7gwntEnSov5bJ8ZC+uIWXabuzeuBeYr3rv48FXy4mf/9feqBAj
-	SC6lfdJTRP7Do9FZI7fGpLXNdGkhsy/aS+Ra6EejDS9Fw0g+lVJNwxzwfprrPbObuusiZ0
-	UEoFdK5MW7ioqaixykyHc8zTODkMwlo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fNJjGNd9;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-902fc790cd5so14085746d6.1
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 08:47:58 -0700 (PDT)
+	bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
+	b=NJn+ULW0eIY6l2fRIjgJ5owPisVS3IdzktyFoVVNWBHP34/iIb7LQHpBOSClq3gKh08mTi
+	PVDYMI6BuuWcni1Xhu9Kh9KV4G367FWQNFl8vgixr4U2UuOh09/edQmQFZlZnN4nj3zRjT
+	KpOdzftNWkt84jcJEzstQ9WRJclsRj0=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-934944f2d22so156994385a.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 08:48:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1786031278; x=1786636078; darn=kvack.org;
+        d=ziepe.ca; s=google; t=1786031327; x=1786636127; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=myJJrsaRCu8qhOQiELgkCPpgvl9NHKGEjAfdC/X/7GA=;
-        b=fNJjGNd9WeS9e5phYmEv9SnWQKE3kKzyGER1ap2amhEvbJqJslhGFkIyiYwybb6HFX
-         RPLR9WHUdoHehkJ5Tbfj/usCk2rVJT4SiwlXXE3mj95ZutIpMxo+bU6vMZed/Rrrl7L4
-         qD7M3F/d4R8JZH7q6Sqqb3yhb0OqqA+WRX2X0uNtS9NzTqtjnmfpL8OUnXQovdeIj3Dg
-         dJkHqxYQkF+EGN6UUxLFqPKLc+4j5JQVHTb7rkENSpXgganjpe46tAUs9ZGsnvpudDVU
-         9TXY939uKBJBIHkAF1A2ELG0hdNovw737VhhWV5xUZ8C1dWl3F4L+9sJufHJ1GELtehH
-         wlQQ==
+        bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
+        b=fLQPEPwqdJ15WRt8Mh8oK1BbpNFgGiWP6eDqGCG05l7zCAbkF4Ypk+qzyBjAe9sa9f
+         43OWLSi6jGqAxj3AaXlxwEOtJTYeJ6vrhHI1u6ln5sesvMoMX1QRhM2eiMtnKsJK5S/D
+         QgQlDhSgUyldevCDq3vZcl+HH9tbqyBXFqzC0qK1DRV1pcgIaxccT/CAdUOWrrnIut+K
+         NPyL0hRtFPgjZjgD4k77AKue0H6dT6HSf3PxCMT4aPp6cNKNMmxNjdUrJEi+5RnDcEu2
+         QwRmaHpyvNCk1raLTZhgPpB7iw6c3O2ggSHF4DQxNOj02dy6UEsR4chFEWD7IFpUaMne
+         Is1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786031278; x=1786636078;
+        d=1e100.net; s=20251104; t=1786031327; x=1786636127;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=myJJrsaRCu8qhOQiELgkCPpgvl9NHKGEjAfdC/X/7GA=;
-        b=oadGF/F16bTqZdbOvdn1sGjA+VxzzhvNbNaGankgtnbXxtyzhf38RSVH3wSr0hqYet
-         4ch80FWEEa0yfdTyGIy128+Q9I2PwxrB8aCVuF3ldTWkvcQLWJVxEAEqRGQ1+M2tqpys
-         zgbarGa9ZLVg6OyZVtY6g00/lk5mgwC4mv+3v64wJebMf8nkoLHqfWn7BUCe3wpmGNHn
-         Us2zt3ZZ0zW868Dc+nkFutyvYQQROEVhU/2tJJx0M0zijnWLqQ+MDcHOwtyIiY5eqxYb
-         X0iL9XV3kkVElqIy/jlZpuKjah8noI1D76bPm7LvXiO7qlE84vFQtDoIsACEA6QGM5JT
-         ibvw==
-X-Forwarded-Encrypted: i=1; AHgh+RqMsjnpcz1/HCg9x6at8+1pfGD9a0pJQ9asls4nAXJi7Si92OozW+gzAKXWPFO1ibRI4DXyDH5wLg==@kvack.org
-X-Gm-Message-State: AOJu0YwSNZC7x2Zc9ncH4B4FlAJU0eqVfCV29pyEitQmThIoqoeOcYVj
-	trsf/zWXeAA/NLo7JBD70WuVeKJt8IC8w7t4SRmrrnaLKAlOK56kXj2QeyRwen5iFsA=
-X-Gm-Gg: AR+sD11Z7pwlGjFj/DkLy4wHcUFeB/Pk1oCk/1eHQEL05CBLE4ayDFV3KWsEvzx9ocF
-	aODVMYXDwW1WP9IX9udZOD1L2xG7hpu1HD2CJA5VkRksseIaWvqC1fhsGzET6i90ZGOSrZkBIWm
-	PBqhHsW+CevTScu6VPBsrWz56L3UEzAwKpcin0QDwkT/CwLKSFobJRUrpRomBQI3X8D2CgnwaG6
-	jF3EKuHRDY2PeWYae/XZo4uqllkULcLjzG51kS+oi4n0oU8D+k7dJot8vYlXYVde+xZL+geaHrM
-	tRmCYthba1hdsbz+2VI3OrVdASDocbl1vFsx/oJUlCqD28TPDZEroSgQv8hmzgq9u02mZ85i++s
-	enHVemak6c34/jmpyqguAyTkNUvAbxZhpzReSO8M1vERCTfSVN7zyqTHVYBMN+moTCFMjAomLtg
-	UN234RUyGc7SS/jcBAH8uWC2YF/srg0KcX84+RuJq9YqBbi7SvX7Pk74O85ro=
-X-Received: by 2002:a05:6214:1245:b0:8ca:1e0f:f20c with SMTP id 6a1803df08f44-90881081a90mr160100486d6.4.1786031278026;
-        Thu, 06 Aug 2026 08:47:58 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d720sm54902046d6.4.2026.08.06.08.47.56
+        bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
+        b=kM7VzvWKGh9jwhkUAsO6M/n8dk3hEOqNkBsP1l1pfJ1IpuO9aj+05LXD33kWU8+onc
+         CTxj912I+I1SnHvRVy4ysJGkPY86Ab6SbpW79k6aFDKdEou08As+HhsAGsQXx7lZWBf0
+         1biI3n0A0IqlZsFl5l3cFcPwSJAZi/w8XWdFdnHW7zEvrETgxu4HJafGlkxyowu2RhMQ
+         Oxp7D+zsCzy/8JElIvogrA0qLGd5JWvStnfRr98X10SJuvLZOZRk17DoRdH63vLevqr6
+         ZnntNh1M2Ofh7Fnu8doKfNLWiO1FDAQMR4ZKo02y2k1rPTj2QgLmUmfouiiZB27NzEZN
+         2fbg==
+X-Forwarded-Encrypted: i=1; AHgh+RpqXHToVSdIUtPicTRyG3yAEX00wf6CBiym5FWACwKbFgQeUbgrjQVUh5vLK42GFwWLUyuxncAFvw==@kvack.org
+X-Gm-Message-State: AOJu0YxIHDw7/2npCO3ZSQjIzZjYo0hZaDUG1V3MtzLs0pX/w3Rx6zbX
+	KDkvcikEHKncMYRtgEJzpKFLUCU14e/kMrtE0Y611WqC60yTZTiUBxGA1TlSzUU4b2M=
+X-Gm-Gg: AR+sD12656EVgTe9Z+KnmHXCYcq641NR8SkVNoQ32F4ftRrvjKndu+jSp6BQ+5UrWhj
+	MACdFYkl9ho1QB8pS6V6eJJqbC7Xh5NdoU2yuxcQYXOF8CQ2oI4KNuLCaFp175zrki6uXYorV7a
+	Y+oz0QdlPu+mEKH+fKKoVApxV5keyckmHW11r/IvtxPFhdA1QQFn1uzRVjS6XmfWYXaiOiJllhe
+	JObLWZ75Km/ifGERrwUu33HJHDzoQ2fxJHWLkWhRbQvnYX4VARTYR4RIaTTKloWPl+sp9fiAhpb
+	HiWR99zWmyGjC4nVT2/b0p8zx+zqiDgAIsnamZ8iloptCLi45oq8VbJ4tLHd/VJbIEpLCPahysH
+	HVF7A/g+MhopW25JDA91xmjCOgHRvGyI21Lw2pWvxUfCbZWn5Dq78v+Hdx45B5w9DQdi/46P0Oi
+	T+zdHylv5jmxR8P00l6R71Jv9o7x0wTzcMCiRp4w==
+X-Received: by 2002:a05:620a:4387:b0:92e:e299:dfdc with SMTP id af79cd13be357-93649181774mr1627443785a.21.1786031326741;
+        Thu, 06 Aug 2026 08:48:46 -0700 (PDT)
+Received: from ziepe.ca ([142.166.156.215])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9364a5654d4sm424036985a.36.2026.08.06.08.48.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 08:47:56 -0700 (PDT)
-Date: Thu, 6 Aug 2026 11:47:53 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: keep folio's objcg same as its node
-Message-ID: <anSsqaD3QAlvQ8cd@cmpxchg.org>
-References: <20260806061830.3294679-1-shakeel.butt@linux.dev>
+        Thu, 06 Aug 2026 08:48:45 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1ws0Kr-00000000ZDn-0FIt;
+	Thu, 06 Aug 2026 12:48:45 -0300
+Date: Thu, 6 Aug 2026 12:48:45 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>,
+	akpm@linux-foundation.org, jannh@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
+Message-ID: <20260806154845.GF28508@ziepe.ca>
+References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
+ <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
+ <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
+ <20260805004619.GA28508@ziepe.ca>
+ <5cf3542f-fca7-44d0-8a17-8aa316b1fb12@kernel.org>
+ <hg73nwj6fdkqect6xzf34i7e4ki5izjyzb3lz6ery62sq3566k@i7tsboqhsdxd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260806061830.3294679-1-shakeel.butt@linux.dev>
+In-Reply-To: <hg73nwj6fdkqect6xzf34i7e4ki5izjyzb3lz6ery62sq3566k@i7tsboqhsdxd>
+X-Rspamd-Queue-Id: DCDFA10000D
+X-Stat-Signature: zquwnabx1hib3h1f6dfqote3rzrtbtbk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2AFC1160009
-X-Stat-Signature: osgzcegqywm37goru9izwjpf5f8dp9bd
-X-HE-Tag: 1786031278-957663
-X-HE-Meta: U2FsdGVkX19aIyWREqAtO0JBR5ftiBF3DP+D97Qb1IBQWiSnEB8JqoJD4ZWkoI3jJ8CtzDG/dWc4IfN/dD5oG0Dxnl+nj+oJgtx5ihVOXSEI2Jf3elyyN9VIlD9Ni4CWJqRRpbMriplp4ld5CvQiYwwtT8XbINh6MCQAOamsIT6bey67QBczFt3ewfP240CFmOhYZMHCokY/CO341dr7YjVt7HoGebTi6bt7/dNImgoMRj+nZQUzl4ilih8IRx+DERZDZiLQuJWWrVSknvCA9OolEQlEDMImaumVane+g4NNASEpLJKyE4pD2lUccLa628aw4ZinoxXrs3hDzuWKSe6eKB4eb+2R+OpbgEMKJ5YBia/tkizorFjMPLQr8Rl9Ies4a/1NUZaR4GaAaL5mzbDndvkaWDEDLYmLruyohrLHuEU38PHKJVOMhN8dchkRUO3ez1Hh2dd5D91IZt9erxh2hoV77U0w1TI4V97s2ygoFBBKBBcIZyBrrzkbOEvBO6AO5p56rqiiRWl4VU9MtSkcZYplR50EewVTb0YqTZix3p/J9Mhky5K3lAURqwyWcO8caf6OOz9zOiFg4ZE0cOIEG+kf/gY7YX0S/LGZkHMzfSC3ZAiQlSfWp6C6SIpJJARFZXIu8FKrJzdzUFnxZ0+A++PNmrtl4Tn6VTidmi66nhDMuWwHhot5Jp8AgGomIdciL7R8wlKb1DBnMcr5ly3WybD6KIU4tIybEclMm/FUwiniVAi5F2j8sjx+neUhjLhSKp0/rwflFdn+arYZt0035N5WA+/7lgfDEkaX/QElfDe/oa8scOu7zPS5jvAnDJU5MA5fMZoM9DrQopBHccpo59MQuv4mm39p8uCydT0o9SsOGARK3/gKhzisB/XfvYM9PJWZ83kAfX3YZ8vuJgNmvI8tWET6byevbp1Q425eP6VxsPnOnhHZocMMIrgtuYmpnYyhcHpH019NDgd
- 1fIQyLp0
- gY1n27FrKHHxeDmvgWATBOnjNou6mqCmqru4Y9Lhkzt1dHSlqSr4aTJ9e0jAGVzvJdnjuOKqVncOgepryW0DVVF/PwUn9vNsKveqxGV/GtVWdL4BIw2wnT74ZP1Po5daVSffHyohrcP8mZpF1m5Wh0KBTLxJgjTvtX1TBYjd4JHLqw1bDPu2kmv2XpQqg7+CoM+spgr1rNU3Nu1dhtZGOFFcU58lHskKIRl9ZmRPe83PMBiS8YaJGd8rLlIMcu+UbQElUtDNnoDp37npSphRFoz65xQC8jwyjuyQsmdLMAH8dcd7alEFwFuK7oSKW6Tzgx8rY0gLOhV8m6wPy7yN2Ld2ZBb1NKnC5FbWNVKA8Xqg2vo2y6O4D3K8GEQs3RN7v5kQfRj3K5rYDWU29mN7r7w4Y8drLzRytjpJs5qt8bSRJKP1ApfR92VsudZFGcj/MVEmDuLi7qOtFyMSCFxbIu2hvuwY5RiVs18K7hiFI3Qyt87w=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786031327-802142
+X-HE-Meta: U2FsdGVkX18NFq6R7qfyim+fbtDJjXkRAejqDPTCAME6UOdeVLT5Bobpgxy+4YBRKyVsobQA+pJf12Nyojhv4ljLWWhdgXeVDhicOWvjO9y7CUy4UTDkQ+JoxgOZ3KzpzfweFLGG8mR2KaDKwGQeWmZtfkGfvgfzcHECiqlyaT35VyBQE1/JX0ViR/DA38eA6Vthbxkjy8YrcVg0qEPWbAbi2KBJQsudA80qvrSSXVj/jaVk/cPpRJ6DxNY1CN7Ohp0wP0CI6kJ2rYHu1JgsA6jOx9wpVUypxQZGmqeS27xQom2HeeOLEZkfcATWGg3xpZnzEDOQgHrsayNCAcdIIe85NoHjHPA8u7vzDf8Zidoa+8wV73wwqmEO5HIeaZeLSKnqbpSjUYiSX6FGEk3y8w8LFezGSPu/0XkkYjs3HYhfzzzW1Xa9Ig42nA2e/k/iR4X9pbItZewfRFZBWz0pNYASS92u/4QTbMM8Wsy5NcZ5Rjok/hJPhfXz5m9ok+nHCaXhD2w6866jcm47sdp7932ibBdh+IEfUghyUsj2DF5WDR2+cF4oqm/aFbp5EgO2XaskyuDMhJcX1SfxZ4DRbtGolg8cG2SFCYxYnfkF+i82hrJVXrbVnKyyLMDUCx8TMV+le22Y9TPMaQx4l3ZKW2zOih56wZYOH3RBP2xxx/MJFFcUh+ei85n97nlS4se9iE4N0zLdWe2e1q92A5kI2Una8/7lEhuZ3ouSmJNrIvNM1N1s2EnayYeGyHL4d7YkHX6OefP13OE4t7GO1aoPMj0baKV9Etd+3iNzUt3SnuH9dR2o8ZBOtTS/CvlkkaTE5ifiFXGmS1EHGYr/03AYedtXhEMfZ1yZTfZBUbpEHmwQvJJpHuZplEhewYg2IRaTcnr8o/rIjTOAV9sY3wcBiIIyHKlZmj4brHIeLFToyhEvF9b80sWywRw+gIZNWm/x5C3joaQPbG/XpHoh7hj
+ Lm6EuAYc
+ n86SIveiCbqu6eyEdAmpc6hoqKfuLmDu0CLJZxQYBnC2crT2gr36zsqDkBn16L32bpJ8uNrIMw0pbSjoRtgDMjAWmDacsDalHos3hM7useKSk/uPYFpt/4Cc2fPf/HraHjxAc6WtgYeHkYkXjhDFyc88/dthZFDScna4sxv+R6OzrMAFhDtKfcDGmJAK0GWbEkpfcPcPw3+wLFCKw+2bZ/yncP5s/ONnaYt0kGg7fnWzlm7O+x8I+jjD94UJFiRS1wJkC5dl+3+SpoNImET/cfLIluHbshva4jzhJZj4BPz5Ekhru0EOvyGshbJ+oDm8/Wlb6xpAtoxVjMHN2cqe97FGhR5peOCWRbEvqY1mEmis4sM09KO53aN0pdFi7w8JM7lmAb+e30ZqlvqqTv0FGlk9ubkvLJnAJe9eq/+Pdg8mJOjIY+nRh48VEgUJaeZUCmoS6qyiDmB71Dlj2CFAXke3Aau5FbSViw31e9F8/quGY1JN8NBw8EM6Nuj9V9Un/j+njPpz4Ni4bfb5qrhRl2wU2Mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,134 +130,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 11:18:30PM -0700, Shakeel Butt wrote:
-> memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
-> is the objcg of the folio's node.  Folio migration across nodes breaks
-> that assumption: the new folio simply inherits the old folio's objcg
-> while living on a different node.
-> 
-> Once the assumption is broken, the reparenting of the folio's objcg and
-> the reparenting of the folio's LRU list are no longer atomic.
-> memcg_reparent_objcgs() handles one node per iteration and drops all the
-> locks in between, so the objcg gets reparented in the iteration for the
-> objcg's node while the LRU list gets spliced in the iteration for the
-> folio's node.  Any LRU operation on that folio in between resolves its
-> lruvec through the objcg, and thus takes the lru_lock of the wrong
-> memcg, not the lru_lock of the list the folio is actually on.
-> 
-> Fix this by selecting the objcg by folio_nid() at charge time, and by
-> re-deriving it for the destination node in mem_cgroup_migrate() and
-> mem_cgroup_replace_folio().
+On Thu, Aug 06, 2026 at 10:29:27AM -0400, Liam R. Howlett wrote:
 
-Nice sleuthing.
+> @@ -5609,8 +5612,7 @@ void *mas_store(struct ma_state *mas, void *entry)
+>  		goto store;
+>  
+>  	mas_alloc_nodes(mas, GFP_NOWAIT);
+> -	if (mas_is_err(mas))
+> -		return NULL;
+> +	mas_nomem(mas, GFP_KERNEL | __GFP_NOFAIL);
 
-> Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
-> Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
-> Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
->  mm/memcontrol.c | 33 +++++++++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 3057396dda53..2e98788dc8bd 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
->  	return folio_memcg_check(virt_to_folio(p));
->  }
->  
-> -static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-> +static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-> +						      int nid)
->  {
-> -	int nid = numa_node_id();
-> -
->  	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
->  		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
->  
-> @@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
->  	return NULL;
->  }
->  
-> -static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-> +static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-> +							   int nid)
->  {
->  	struct obj_cgroup *objcg;
->  
->  	rcu_read_lock();
-> -	objcg = __get_obj_cgroup_from_memcg(memcg);
-> +	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
->  	rcu_read_unlock();
->  
->  	return objcg;
-> @@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
->  
->  		rcu_read_lock();
->  		memcg = mem_cgroup_from_task(current);
-> -		objcg = __get_obj_cgroup_from_memcg(memcg);
-> +		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
->  		rcu_read_unlock();
->  
->  		/*
-> @@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
->  	int ret = 0;
->  	struct obj_cgroup *objcg;
->  
-> -	objcg = get_obj_cgroup_from_memcg(memcg);
-> +	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
->  	/* Do not account at the root objcg level. */
->  	if (!obj_cgroup_is_root(objcg))
->  		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
-> @@ -5431,6 +5431,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
->  
->  	rcu_read_lock();
->  	memcg = obj_cgroup_memcg(objcg);
-> +
->  	/* Force-charge the new page. The old one will be freed soon */
->  	if (!obj_cgroup_is_root(objcg)) {
->  		page_counter_charge(&memcg->memory, nr_pages);
-> @@ -5438,7 +5439,12 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
->  			page_counter_charge(&memcg->memsw, nr_pages);
->  	}
->  
-> -	obj_cgroup_get(objcg);
-> +	/* If replacing folio of different node, get objcg of that node. */
-> +	if (folio_nid(old) != folio_nid(new))
-> +		objcg = __get_obj_cgroup_from_memcg(memcg, folio_nid(new));
-> +	else
-> +		obj_cgroup_get(objcg);
-> +
->  	commit_charge(new, objcg);
->  	memcg1_commit_charge(new, memcg);
->  	rcu_read_unlock();
-> @@ -5478,6 +5484,17 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
->  	if (!objcg)
->  		return;
->  
-> +	/* If migrating to different node, get objcg of that node. */
-> +	if (folio_nid(old) != folio_nid(new)) {
-> +		struct obj_cgroup *old_objcg = objcg;
-> +
-> +		rcu_read_lock();
-> +		objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(old_objcg),
-> +						    folio_nid(new));
-> +		rcu_read_unlock();
-> +		obj_cgroup_put(old_objcg);
-> +	}
-> +
->  	/* Transfer the charge and the objcg ref */
->  	commit_charge(new, objcg);
+It still feels really weird to ignore the return code from mas_nomem..
 
-Just noticed Sashiko pointed this out too, but you put old_objcg while
-old->memcg_data still references it. I don't see how that could lead
-to a UAF but it's fragile.
+ void mas_nomem_nofail() 
 
-Man, this is hairy. I missed the implications when I suggested to make
-the objcg per node for simplifcation elsewhere. Now locality actually
-matters -_-
+? and maybe it can have a WARN_ON
 
-A comment describing the race with reparenting would be very helpful.
+Jason
 
