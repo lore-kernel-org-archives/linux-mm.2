@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA4AEC55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F5C2C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 06:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C765E6B008A; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
+	id 6839B6B0093; Thu,  6 Aug 2026 02:29:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C26116B0092; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
+	id 65B816B0095; Thu,  6 Aug 2026 02:29:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3E446B0093; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
+	id 597E26B0096; Thu,  6 Aug 2026 02:29:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93D1D6B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 275B6A1BF2
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:35 +0000 (UTC)
-X-FDA: 85069868310.08.FA53457
+	by kanga.kvack.org (Postfix) with ESMTP id 3641B6B0093
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5BAD140689
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:44 +0000 (UTC)
+X-FDA: 85069868688.17.61381E5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9161340002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:33 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id CF95F40002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:29:42 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0TdJHLp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GRWypgQm;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785997773;
+	s=arc-20220608; t=1785997783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uTUsBX7WtmPH4wCrVl7CPUs1HMuRqiZHQH/yykCv0ts=;
-	b=uWJPEadp8b4w3dcKzJx+UXTHoBoOEAOwfAZ1YviKBLCBLYUv8mVp0YyHH3712ZvO6MlIlf
-	50MT0EAeNUlwGl7cZ084msE0cI1sSzyXj2cpdeIpNYrR4iGfJgIQHOHc7U4jwMvsMcp3c3
-	5W+F5OmPZrbU37OOw8RxrHIKLQ2z9aQ=
+	bh=1oY8lbXTomFFABlq28RvaAPiO8AnqoSfHSvFMVUFi9o=;
+	b=cDmGvfsPomStv/nH+cFg5nauKk2WzlbanljnjxH5S981t09JPJacNK/hBQ5DtQ16WHe30u
+	+ejV1zAkU1/gq6UK3LDpT0NVBKNrFl7Ofr1XyGRUtiGlcd+n2UMCejpdLfmo2Fv2tUUtiD
+	4JVjYIvoRH8pC/xId58BJ9R3ShE4xWw=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0TdJHLp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GRWypgQm;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785997773;
-	b=xOBe+gZ6tP/nwfjtmUbbLQ7SVSxWUgPfbR+3u6pluw+E86xEGcV2XxI+qf4OjB+6jCG08R
-	KtxCGFFpWSbLvj2G+Drlka5izSyCqOQIKQzTze4kQhEEKHfZKIk6wdGm2652p92LxvtEqR
-	/NmONW2iQffk/i61jF/PpdoDlqjYiKE=
+	t=1785997783;
+	b=y59uyngvdGzFSf7vCA1m0wIFKRwVvijmJpEZsLrWSZu6ReqKb/aEbF3ygU+yFojKlhFPrs
+	r5wwu3hxZX1QRSKpcal2ekXk9xIzCHyZ9wyAGFzVBWc01+g1xFJ4lm61fuQcwb5/hNpe+u
+	I+nos5E9DOFi54dPTB+U5zmCbf5DVzU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F51060A8C;
-	Thu,  6 Aug 2026 06:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B571F000E9;
-	Thu,  6 Aug 2026 06:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785997772;
-	bh=uTUsBX7WtmPH4wCrVl7CPUs1HMuRqiZHQH/yykCv0ts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i0TdJHLpfRIyVrazRatHbTvOQTLs2FrDrmZdevwhXrlB70kdbMutIMO4Q5tF3VWRj
-	 mveH6kM7aX//q/uH/xGjp4JakUszPnnIo/x9yqTOXr4nLFyAZTr2QIrdbp8PPrAaS7
-	 FSt0pfJJn6Gua8r5CHpaoeK9bVAmFVgjs//34NwJp02r1rt3DpHVAxhT7QL3BQMiP6
-	 Alzo7gSekvASdiGktAbF2Ryg9I10oCS8N5oOjFYE2H1tMM1bNXE7yxXNRLDDRcaPuB
-	 PTO9jX9BPQgavUJl98HIXkYtvOfOI00bMn5RvpJsvVqqa4mg6LLo+fzBxhW6cYrL65
-	 dls2OcjdeF3tQ==
-Date: Thu, 6 Aug 2026 07:29:15 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
- policy check
-Message-ID: <anQpWs6fapNVZSdt@lucifer>
-References: <20260805055544.1568534-1-clg@redhat.com>
- <anL-NZkNMSSxN0YN@lucifer>
- <anPm6vGNeDxLFIkJ@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anPm6vGNeDxLFIkJ@casper.infradead.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9161340002
-X-Stat-Signature: r7b77wcushhzyx6ktjfihqj6penh1wo9
+	by tor.source.kernel.org (Postfix) with ESMTP id 696CC60A8C;
+	Thu,  6 Aug 2026 06:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3EB1F000E9;
+	Thu,  6 Aug 2026 06:29:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785997782;
+	bh=1oY8lbXTomFFABlq28RvaAPiO8AnqoSfHSvFMVUFi9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GRWypgQmsQpH+Mr5K0BFXBFwozD5Xie44p36cirnIl/qe72fnBCZqqUi3XnTAuvsW
+	 k9fEWGIjXwyguJ+5OSp+EhtwwZ0qrXbsVwKJwtq9YWjWnf5Zc4hDaP+wj96ig25pDi
+	 bUdceVvm/e4XvKCrCl79UjiyHFU0mf6m+9Im2Mow=
+Date: Wed, 5 Aug 2026 23:29:41 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+Cc: liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org,
+ jannh@google.com, 00moses.alexander00@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting
+ large folios
+Message-Id: <20260805232941.e89e96269472ce5106967bda@linux-foundation.org>
+In-Reply-To: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1785997773-551202
-X-HE-Meta: U2FsdGVkX1+oopOJ12Gr2xqjpg415Qbidqys1mM6rFJ2vBVoX/KSj6nrET80qQl7NLeaCrsKg2vFHZPv+XMx6zmA3TeiqwXQmJw3rU9lp4Q+r+gP9zxf9rxAqgeiT67JhNzleMzlAHeZXS8/lZiJXqf1tn7vD0mSLpH103k2IyinWbyz/2hBaCG7dtPymHkaGfyqGykm6Zwii+CgSK0yJiEX5A8UaFiE5emGhdT2+0rR00CEbBHMoyTQ9Z2e1MGRgOZw/by2fj55l9S4Sw5bvinTsnGzYt945dFBkxohXliMk5xeo4Cvreq61FM/vWhERd68sieTv8IhdYlI9oBAsAqSjlKmitvimmemZCEkoRyZtsscgBnIpfrWkwNnweXK7Opm/2sYpkkgFg0ej2/vKs2mOaT+9xjc4yCXQPrZXaMq7+nwjaIWCrSy3Vtwhpk8kEkx5T3dbfQcEJGdzkk7nII0jwIu718vMHnEZnX6H098+mmkVWM3Ar8bPUO2ERSFPB/vvpiiomRO7+LtUAKTKQKqlp5hFNEvvZmzfGhGLuvZaf4bMFETdN1cQMGF+B5I0O78iKmQ2aQbrkmoGvpc19WhC2ARAggV2WoAKFU1T0fgELHazDhyrqiAR8aJLdb2oEmHize8AIpmcUYrQcL2kXFYwan9Z+hOxKnCAVBbtSpnHWeXV/xifilnmnX2jCE4lsjcvTjykp1N+GiHIAkp5gXfcynz4WyT3nwC6WfOKeeWvMOlbagzhrGq2b7nYECg1d7s7b9Dlm+/Bfb5mw2BXCxChQBqVc3ZVMRCO5UsGtWW1ffQZ4dk21UUDGFlqFnF5uK0JsRD6NH2+PU7P86o1yuuMtVf8UyMxqsGJrB4mqjbJAWEMh0fJVLY3m1ebq9D2YOaqXzC+xv0191Y02FLEifzDDkgmcCDPS09rwHwft1vFO5CgNcF8yfmydT4NBd7+l+eHg4vkoijz3skKGz
- gA0Se+mD
- VilyIhxRZS46fHSce66nnhE78J1+Yw+Hr07vlkp/3orwgSBKGuz4CNl/uL+uYRVuc00bccHlLbf9fihUj+3p8KiR4JYJRRIfnIItkK+QH6YkIE9jnPwPWdnC+K3Jl70q7KgzmctJbdAzGJ96qJ0Pl/Xft+dj78fhkG+ql9ANfl2+gvIhTcu6i2d2f7FUlupydmO6GN+0+REu+cLaNucwYUdkiqYTNv0GY01M50T//MM+pclgYIc8yGPgL1ZX3BMQggDO1uyobLxceD3t4oZ4NTe6puSIMPYuaH54jz6cSV+EdoUM=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6q8o673kmq7ejonax15uj8hm4op6kau7
+X-Rspamd-Queue-Id: CF95F40002
+X-HE-Tag: 1785997782-327924
+X-HE-Meta: U2FsdGVkX188u4q1rtH95ki1+uuIWFLFPVy3FVywV9mxs147iuCRrlZRJyY1mHz6n+vg/JLtXXdgewdMWE1egIeN8DUDghuHUWZ0WBIKPCJlE5lX0trEi5BrgaxqVUyVYCLYLwbOOu9Lj8FsK2AcC5mApaiTCdMpYl0I8ErKnRDNwH52dyR74J8sjJLZkBxCk+JUxuAn6q5JENwM/mbONcEMhbgPK6M+2C0HTGUzFYsySG5bRX60u7UPYdO/eXTFDbzdkcrxmij2JGK8GsyF0oYu7aKv1P8KMZxieJHGDjrmg1LfIGFPquO4brUtJ+j1F+nBcXvqSXLviBn/JenKAOUvvXv9+quGTXo3PSBk+X1AvRw7wwzExkxD0R04nwO3sVX0bLJVtjTFt7INjUhNWAJLuF6t7JLe5sq9qOoLxh+tTx/MZZ/Gb/oxR2LHRROPKah9VE2YJRgyyj2+iqhy+Z7x1imOAX+FMbjL/Da78d+/wzUs9J3H7Dsksx2NSjqwaTAiTpodaygmsWxstJsl4ZeJ7Obpn840vSmFp62x6yXYq/wCrvU1meOpGasEcf6nymFSsBieO33mmlO6TrC+qrREsOSPkE5QJfGpN7LfloPYrlubn3ohbrAoFBsmf31qI1nZLK/32TDTovdyj+2bGB6NHLkFdBfPj00h+P9BZHLG0KEeoF6DwyEOPeKWy5cI6V2LThJw9KgoXrcWAFzSgs01+8LnQHh3vELyv8qe3Sj6/KITC2yM5f2oEQNxg0LHqMfPaI8F7b6lrXZ3gG+wR2BmUQr9PiPN6GN3xe/Q0U5Paf0RZgRnAG/IuUvxcvT7zVBvu39A5WLMAG3rDafvqe+D2EYL2xIvrtFxDlqQVDoi8QziOVKnTkNCzmLfxkU+w9GAAW1mI2+VydDZWdIRqR6dU29GbV51/g1WSQmlTcyPACC4tjT3YQW7MXOzcU5w766whnRN4m4yzIBbzF3
+ H+l+gi4t
+ E4cP5cDwdHdpVaO0QNMWybgy/j35/52IzVThHdAlIHxo1Foh96y6ZNG+aW+pj0H3bsTnr7JaG2nDKIQSwv9LYQZ7bXcc8oKu9Hd+zrQ6ZiyTTou05puj01MF9U3d96zPyrGk0qqRDCqN08NPR4QhJLIPuybJL26EDiH5TDA9AD219P4Hbz/IwOjnSy98CCnv5ASoGokIWtZTY9uiAcDix5DMqSRIrcMMi9IaNtVaJ77SqLleb0uXY16A/9pV8oyVU80KX4gEoYDAsfSVbsYO6ytmPzK3zkeiKraEUG8hQHfSz1dCyTMZVHCJe0xuuhuyd9FUqdoGhN/jLgXuwzm1x8j5sNYvjflm1++ltUsQ24SeCjF2eUy5n7n+DZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 02:44:10AM +0100, Matthew Wilcox wrote:
-> On Wed, Aug 05, 2026 at 11:41:46AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index abc65d608c23..5fa01364f089 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -111,6 +111,34 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
-> >  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-> >  }
-> >
-> > +static bool should_obey_thp_file_tunables(const struct vm_area_struct *vma,
-> > +					  bool forced_collapse)
-> > +{
-> > +	if (forced_collapse)
-> > +		return false;
-> > +	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
-> > +	/* Huge PFN mappings allocate no folios so the policy doesn't apply. */
-> > +	if (vma_test(vma, VMA_PFNMAP_BIT) && vma->vm_ops->huge_fault)
-> > +		return false;
-> > +	return true;
-> > +}
-> > +
-> > +static bool can_thp_collapse_file(const struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, bool forced_collapse)
-> > +{
-> > +	/* Override THP tunables? */
-> > +	if (!should_obey_thp_file_tunables(vma, forced_collapse))
-> > +		return true;
-> > +	/* THP=always? */
-> > +	if (hugepage_global_always())
-> > +		return true;
-> > +	/* THP=madvise? */
-> > +	if (!hugepage_global_enabled())
-> > +		return false;
-> > +	/* Has VMA had madvise(..., MADV_HUGEPAGE) applied to it? */
-> > +	return vm_flags & VM_HUGEPAGE;
-> > +}
-> > +
-> >  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  					 vm_flags_t vm_flags,
-> >  					 enum tva_type type,
-> > @@ -188,9 +216,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> >  		 * were already handled in thp_vma_allowable_orders().
-> >  		 */
-> > -		if (!forced_collapse &&
-> > -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> > -						    !hugepage_global_always())))
-> > +		if (!can_thp_collapse_file(vma, vm_flags, forced_collapse))
-> >  			return 0;
-> >
-> >  		/*
->
-> I think 'thp_' in all of this is confusing.  DAX isn't THPs.  PFNMAPs
-> aren't THPa.  There's other reasons to implement huge_fault that aren't
-> THPs.  Can we rename all of this to drop the 'thp_' string, starting
-> with thp_vma_allowable_order()?
+On Thu,  6 Aug 2026 13:55:01 +0800 Yunhui Cui <cuiyunhui@bytedance.com> wrote:
 
-Matthew, are you baiting the churnmeister 3000 into a refactor here? :)
+> madvise_inject_error() advances through the requested range using the
+> size of the page returned by get_user_pages_fast(). Saving the size
+> before error injection is required for hugetlb pages because successful
+> soft offlining can dissolve the source huge page.
+> 
+> That stride is incorrect for non-hugetlb large folios in system memory.
+> The memory failure handlers split such a folio and handle only the base
+> page for the supplied PFN. Advancing by the pre-split folio size then
+> skips the remaining pages in the requested range while madvise() still
+> reports success.
+> 
+> Advance by PAGE_SIZE for non-hugetlb folios in system memory. Retain
+> folio_size() for hugetlb and ZONE_DEVICE folios, as compound Device DAX
+> folios are handled as a whole.
 
-I despise this function and agree with you entirely.
+Thanks.
 
-So maybe I could add a few other patches first before the change to improve
-the horror show that is this function and its auxiliaries also :)
+> Fixes: 19bfbe22f59a ("mm, hugetlb, soft_offline: save compound page order before page migration")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 
---
-Cheers, Lorenzo
+Should there be an Assisted-by: here?
+
+When fixing a bug, please always describe the userspace-visible runtime
+effects of that bug.  Especially when proposing a -stable backport.
+
+
+I asked Gemini this question and then pasted in your email.  It told me
+stuff, but I don't know if it's correct.  In this case it would be good
+to hear that description in your own words, please.
+
+And perhaps a means of reproducing the bug - clearly our selftests/
+coverage here is poor.
 
