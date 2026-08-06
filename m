@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39429C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2106C56207
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 14:47:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 278246B0092; Thu,  6 Aug 2026 10:46:19 -0400 (EDT)
+	id 894F06B0096; Thu,  6 Aug 2026 10:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2025E6B0095; Thu,  6 Aug 2026 10:46:19 -0400 (EDT)
+	id 81E106B0098; Thu,  6 Aug 2026 10:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C9DC6B0096; Thu,  6 Aug 2026 10:46:19 -0400 (EDT)
+	id 70C9A6B0099; Thu,  6 Aug 2026 10:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBF0A6B0092
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:46:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6AACA1C14C4
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:46:18 +0000 (UTC)
-X-FDA: 85071120036.18.586EBB5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AE0D8A0017
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:46:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fG40pG16;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44B8B6B0096
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:47:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE9C4A250D
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:47:15 +0000 (UTC)
+X-FDA: 85071122430.28.BF7C3C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E4ED5C000E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 14:47:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jUn7gNa2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786027576;
+	s=arc-20220608; t=1786027634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zVVXlaTnBYF/ekwzgsDSJAn7TZ61QOuIyfdPBNwKdCI=;
-	b=CzCAHWSTxSXY0CuZIAoAuZXimg1QJ0pOo//Cf4DRLn1Ofh/O6jFONbIFZbXX/KAYfWtRbQ
-	pnQiCX11aNEKiPN01DYNiZAI80iRsAOD8EFdYXEPz77QIp8OaVYBLIJkKBXIVv4TCXLqJP
-	FdZNVDsjvbeP3py8YQESjo5qhAYSLj8=
+	bh=kOipabmyvNTMqPBvfoX1N52hzAoVLAtO+PKIsE1s51w=;
+	b=Dqae7mO4wepE/n+jFd1RyDEDbL2+M7u0BCvccmgjvgPtgwrYRAfJA3XrjE/8A4/f/+XH+S
+	8LfV/RlmwZhXyCNpFUAPIG6OCkCipWinaJDLlYvZMuMXrehanyRZVVCeFyqWvdtlxZBaUA
+	2XpRXZkKKhAoCET4oYrxp9QSTOG27cA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fG40pG16;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jUn7gNa2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786027576;
-	b=I2AJZU0yWXszQ7ai0hXYHuoWyQPkQJPQfoYKB7U6A+jifvdBk7LBBGSbQX1S1JVPicGRzo
-	G8zLDtyyvuXhR5jissdbAulVA58cLzg5CcjIDDAdvAS6S0XA19t2pBafXzHluC5mHMCJUy
-	0dgbGmr6BMJmCP+UkQcDUiLzg1o1w68=
+	t=1786027634;
+	b=dPotmum/OfdWryb3tPjotjCRwqBuC1/tmcL+pKsEz1K92pcww5ZLjOB0Jv/+sr2DIJXWBO
+	ECuwiqFxlmGsdNd9Yc2UCFTQfoIr4an3cXhxF7a5GGmZp0Vqn2YP/y/ngKL+w2IKlhxms+
+	svFiQNuuXMjhqa+KNmNImVEdgnS4vOw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E87860AB0;
-	Thu,  6 Aug 2026 14:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CFB1F000E9;
-	Thu,  6 Aug 2026 14:46:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 492CF416D1;
+	Thu,  6 Aug 2026 14:47:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561321F000E9;
+	Thu,  6 Aug 2026 14:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786027575;
-	bh=zVVXlaTnBYF/ekwzgsDSJAn7TZ61QOuIyfdPBNwKdCI=;
+	s=k20260515; t=1786027632;
+	bh=kOipabmyvNTMqPBvfoX1N52hzAoVLAtO+PKIsE1s51w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fG40pG166OM8jzPPkb2ZK/w/cpvQptOPzm2T8h1CtxrBlwfy5njAlCU5Dvi8roCzc
-	 a0sdv2cow5GvaZUpGBmg65PMv7QobLhKyo1wlkZj1HYVKdmhVKDSwPfa3TcDjBbMD3
-	 62Ao1eNcbpP2K3Obd/1NQ6ZpskaeIeY1nl17fDpVBFJyMCdKjaBHQmJuQ8jpHgKCIk
-	 j7jM4v5FAmpZ3Uu+b1SggTu/VIK0YmN4g9+4xYeOQE8Q2nZjXmpJtwbgcG2Bz8sVOr
-	 zhKh72Gniu3K+OVNLbiGbOyRhy7zwB1tAhq9pifFtHR6DskP9c3lDY1UYvtuLyt7rT
-	 X5lo+9FxqBNOw==
-Message-ID: <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org>
-Date: Thu, 6 Aug 2026 16:46:10 +0200
+	b=jUn7gNa23CMy6PY38ldzkLlP3tn0aSu5sVwdGZWL1dAGCNZ9Lu9IQS84xltRc9vHS
+	 K2KSIQlxQej60mP1wcWx5g8+k/ATu/v72J8toE/SC3TuPm3Zs9ayZ/fQgxwORIf3le
+	 bVdgz0jTZh7rGseoCGeVidk/5kgkV5153XnMuWOdGQLqA31k1z7cMzJnslS6EyqPds
+	 xRnFU8/xzKdy/7BYH8uT43BAFYGwqHqRt9GK9FnL2CZB5DKdJWJhYqsYMc4bWKHRsW
+	 4ibOSz2Qj/F50G3//ORWnlEIhVfTVMsXVp9NKM93h/8RkadmCLnokr30WJtGk+/7zn
+	 WRiEVv+Q5DNxw==
+Message-ID: <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
+Date: Thu, 6 Aug 2026 16:47:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting large
- folios
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org,
- liam@infradead.org, vbabka@kernel.org, jannh@google.com,
- 00moses.alexander00@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
- <anQyoZgi5Urnvvjw@lucifer> <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
- <anSar_i8UjniSbML@lucifer>
+Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
+ policy check
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Peter Xu <peterx@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260805055544.1568534-1-clg@redhat.com>
+ <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org> <anSZpAjt84Pn7O_b@lucifer>
+ <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anSar_i8UjniSbML@lucifer>
+In-Reply-To: <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3snwa7tfa8f6rnsf7t8mu91pyd7myqe7
-X-Rspamd-Queue-Id: AE0D8A0017
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E4ED5C000E
+X-Stat-Signature: nkxdrhz6ux81moea5b973s1573sgji8c
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786027576-535234
-X-HE-Meta: U2FsdGVkX19uc7kDQOPP8oi1DOfHrgsjaxaqY9Qu3Rm4J96pc+pfJwxTGM+wplulus1SPmRpTztuvUmfXMMGYQXz3bkBuXgCMFN+jNG4QtVNs2TqHAbkztwqKdebhS6uAazw3YgLYIx8WIiaq0N5ZTnsXqBRGieFJS7LKrvztCknDA/j2d4hS/vL40lTaHctkbvUBhwlVzTyYnf+g10aEdbrnyT5FLWFN3fr1zN4rzcTYpQAeCXwKrQvP+WIBoEIihmuq0q4T/MLbpQfERP8TuAXp/H9npIdu9LbJqm2xsOY31M+iRxaiccN9tjTsmSHrMrH+xkSz+kfBloNuynQuvOFl8Vgxc2YjCv85llU7Qb8rJTxEr/MsdLarqeE5Mqi2FJEXmIBvzJ6LcdzOZL2YjY0ug23JurFwGQ/slO+kxYkYijOdwX7zZqj4Amy4W1TaRI7FrQUqufAJN/5OXYg9J4xPGQ/Oe4V0iYKc5B5OWkFJqXMJq8vQw7LM2lHlFAeqQz15RofNusGaStSzdfqr2Uv64kd9luGpjbpGabyTLgq/R1CEqC7tHxIl+S1IEouTL9ga/VKzKNylXAnQIPFPpH8zcRs5JVa5tTydQ84glFTBSG4QbuOfYi8BSpQl38GVXjy0VP9lTFl4P2x8Z+/vCnghMXWCrFMdBKhik2RhXtecSeZWAYby6a5cJuJ9fLj/jrXP0AJYe/WDuBtLfVf31iMEQjRiX9cJH2hRlIUjiYozhqRp5Jl41XSMwYtI+f54lZ3cGmRHBCBraX0+2k0mdONGcQFm/z0YgWa5itxh/auwvBavR4aFJGHKxddmAdsm2LW9dC7eljs/C90hLAKnc3DiIxSmTOdM/uiGywBdbp2Pp68AgqOp8DqTHjJCn/HyeCCM/TMs9kHr0ByUAWv25zq8qdb8xO15WTTFljis/AEh+X9e7LXyhSJh+1m4oxYIzRjjCKgd0PS66pOuBN
- 1S/X4Of7
- DXzAE3m49jauf5CSMGZt6qLKFnTt+6qyiwohENbirS0BsVOY3WIH96ujYrZfZjfXZd7JAeYpbnr+WT4SEgJGuxFw6bg51JIpRqpxOrH7jG9nAWglwE1VqZUXvMClZOLBy5X3wR3RpcUJTg3pRiu6v0uiZKzBW9g/wkiPncFgRpwzhmLoUoPK0UH+eqKXDHbuyxEeeh7OFpeLVsBTUjU1UsiDOTZmdx70sHjuZutCRTcP9XPD/AScBjcKZ5Xfo9wm6bzTdTk2XHc8ysgQOdVQALpzVkd3JCDR+R2y1XHJ7DQAu0s8qU6FX2BO6V0zanJlUa6cihnpsLk8EXXA=
+X-HE-Tag: 1786027633-766571
+X-HE-Meta: U2FsdGVkX18vxx8/PmTMPTXMVoB/ut/LQWy1+HfBXsNRmFwmZGmIF5UdbCXML9MFHH31+1NYfdpEX+cLr6jMagRfdIBy9jIFXJvcDAXxmqIGbxgo5yPjqYgeTbgXthXs3Bofkr0XMP4UE86mVn3yXKJYcnI4lGiWchmeXxtbAZqSSykw8YHs1J9ebZ8y/pPWua484ja8O05CDvoIK6FbPFHJRyhmaTebicbFxWTcGw91EwOo2QyM3YkGwkcg7fRg+smlC9wS9uwAVPokFqdSoPjZkspz19eySEabPKx6kgIXPkU7dOLJnP0lhTliVpuhcTZMj8RqNpFUsj/5Wi45sAvfXvMR+qtU4r+obdFFJsYwjKUgGDyvIeYRS4fwqLtX/XQf6pSrEimpgoROjrRt5cpsKNB7b2vbZL8uBBupPOJdfAzDjyjB+Xjpj3nibelzlLNEHl/Wca2oSLcm+fT5hoI0Df3+YCAjSHimd4NrkCu5XeG1k5YexziaUY5/OzURIYMmmvccMPc8g6CmNfz+UG9qtXaFjsKJ4cWtuv42EdnKP778MGyw3p4X+UTRgpvwCb57uHhpWMUrDopEgbxrrtjFhvx3WTPNktQGw6nrMzBzzezMxtSeTvcnLsCe4dtTapn7g1PlVpcexJyK+Fy9cV2/EPHbeCjDOKA6/rsOTk7B1Dg5OMSvAWfIyftaKwqnF9J1fkJRKq4Lvr7wtUGLq0ju5Iw8ujsi++9tDf2KtHWP4/slwrEtwiDGzUr7L0wQQBxknWn1PhWnkEqDmPr7YraDXEXmwG8pBQiZeaErPBaLhxE0ogmvX/NOWcbyTJwHpTpLr18XeZX5/sIdUbagUV6b28ura7dp06r0q2HaundXxpkJF/xO1eVsOJ6kX2Ls03U4d51iGRoypGTNk3RHcx9MXJBbcR0F5+Sk9DCkUzdu2GRhyjx8uKcM3C3CoZdNMYL/uSgH8/TO/6sFTV7
+ NSt1OzO6
+ dE+cJ89ez5Xh56AilOjbwtG/Mg3ic9E2cRm6kmnZ8wCJAnnOPa8x7FNqrZTyZuLGSCAUwNBOMxzkcscdJDqcyxgoVdxomdYmx4NZ854N1orYzqdBQz638B2Na9+tE1/inZL5QN/hZJus4IF3kXby7mMm+1Pe4J9c+AZ943auMeGDO8ZtvTGXlm9YvEypoTEJOMY0BbdJ5ZnN7kSE4f0psD5qkIycBKy9lhcgKkQNCYRDui3Uu8Mqz553N0QWc90HSuqjYhYU6XkfYYgTpUKWqfWeXMYtdF/lYLL4aHfdhDNwP0vNisoOayyUUSgm6sxe/jNecShFrBTjzzSc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,52 +143,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 16:34, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Aug 06, 2026 at 01:35:30PM +0200, David Hildenbrand (Arm) wrote:
+On 8/6/26 16:42, Cédric Le Goater wrote:
+> On 8/6/26 16:28, Lorenzo Stoakes (ARM) wrote:
+>> On Thu, Aug 06, 2026 at 04:26:20PM +0200, David Hildenbrand (Arm) wrote:
 >>>
->>> Let's at least split out the folio check into a helper to make things
->>> clearer:
->>>
->>> static bool poison_splits_folio(const struct folio *folio)
->>> {
->>> 	/* Hugetlb is, as always, a world unto itself. */
->>> 	if (folio_test_hugetlb(folio))
->>> 		return false;
->>> 	/* Soft-offline errors out, hwpoison traverse DAX intact. */
->>> 	if (folio_is_zone_device(folio))
->>> 		return false;
->>> 	return true;
->>> }
->>>
->>> Then for your patch:
->>>
->>> -		size = PAGE_SIZE;
->>> -		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
->>> -			size = folio_size(folio);
->>> +		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
->>>
->>> I tried writing something that was neater and nicer but AI kept pointing
->>> out how it was totally broken and I really really hate this code (not your
->>> fault :).
->>
->> No, I don't think any such special casing on folios is the right way to handle it.
+>>> emdash in a code comment?
 > 
-> I mean the issue here is the stride varies depending on whether the thing is
-> hugetlb or not (and some weird DAX thing), and the poisoning causes a split
-> otherwise so if you want to poison a range you have to account for that.
+> There are quite a few of these in the code in fact.
+> 
+>>> Then I spot
+>>>
+>>>     Assisted-by: Claude:claude-opus-4
+>>>
+>>> and really have to shake my head.
+> 
+> It's a one liner. Good enough to raise the discussion no ?
 
-We GUP'ed a single page and now try to be smart about which other pages we'd GUP
-next.
-
-That's just wrong, and hugetlb special-casing is just ugly.
-
-The problem here is that, if we GUP'ed a page and poisoned it, the GUP'ing the
-next page might fail and we'd return an error.
-
-But maybe that error can simply be handled? We have FOLL_HWPOISON.
-
-So maybe we can just use FOLL_HWPOISON and skip over the entries that already
-return -EHWPOISON?
+Just to be clear: Unchecked AI slop in any form is making my life worse every day.
 
 -- 
 Cheers,
