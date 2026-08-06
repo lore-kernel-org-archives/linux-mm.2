@@ -4,94 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645DEC56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D986CC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:29:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BF746B00A3; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
+	id CC8246B00A6; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56FDB6B00A5; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
+	id C7BE06B00A7; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 477D46B00A6; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
+	id B495C6B00A9; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19C8A6B00A3
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:27:48 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7580E1C0077
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:27:47 +0000 (UTC)
-X-FDA: 85071375774.17.70F4F97
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CBB3C10000E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:27:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnMQqzx5;
-	spf=pass (imf14.hostedemail.com: domain of "SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88AC96B00A6
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:29:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87D63C014F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:29:48 +0000 (UTC)
+X-FDA: 85071380856.12.08744FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9E847C000A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:29:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1T6nSa7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786033665;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786033786;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TOGeScaSuHuM7HfCCnzcathOZlLZGsTyN9pqp0ZRFi0=;
-	b=xfu//YuvDgu0TF6fkOdducSl2WXNz2SFZtB3FGwr34Q2AlqomCJkP3tWGSUKlT4q62f1A1
-	opn+MDOGrTTPxgH17dr8jmmouCPzsfH18IWgOjj8CK+xihM0OusF7jrwNgFIPiNlLDRtEb
-	JPJqPrTK77H/8uupSKDlnUMk7N14poI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786033665;
-	b=8B24JdwVEq+IiDkuTwYxNOVMwRWQr0BceIaNs4YeF0aXWnZyqSM8ITED/qcMV/DIAf99WW
-	Dag4tQRJi3rDqIbdXLZ1xdO8z4dAV2UsxtZhNuf6ulmYUfvE1VT0siXJ9V1Bt54CG87qVf
-	fWaIV2hx2Tf1RO1fEjYHQ/pMkMJ3+To=
+	bh=OL5sBD5AHeLDVn25oNMEpQDloi1YNoxgi5Bau+T+ONY=;
+	b=cL3E22tNwUuMSl6hwe1PYbuqkysiYFe+XcGorRFuV6bqf2l5ljHEueNWqbflPVdVNG/YbH
+	F77+Nt0xQca+LaXVLeB3dzSHxGTyGMiqlRjQ8/kQIriVUdyznKEChLoC127aMn1GnCL7eo
+	7gFBS4ZGGPSu5zUWGgTcFh5kKgTeLZY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnMQqzx5;
-	spf=pass (imf14.hostedemail.com: domain of "SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=Ks7D=F7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P1T6nSa7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786033786;
+	b=ZZkLK3vs8Z3iBcBk657xRw3d5mTmUq3KCi5jJRtTshRZw2vVgk5SIny3hhga4psjp0pUWS
+	b5wWfbic6Qi6mMcl54RNe0CGtR8h02quUGj5FaFg/0KHCTmcvl0F/Dxm7ogcMiWZl0g3Wx
+	E0+Nh5kU3W4j44v3MPmk/gmvu1xc7BU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2BCF960AB1;
-	Thu,  6 Aug 2026 16:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D272A1F00A3D;
-	Thu,  6 Aug 2026 16:27:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D0B843223;
+	Thu,  6 Aug 2026 16:29:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12C61F000E9;
+	Thu,  6 Aug 2026 16:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786033664;
-	bh=TOGeScaSuHuM7HfCCnzcathOZlLZGsTyN9pqp0ZRFi0=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=PnMQqzx5rsg7Ra7zFrqozPwGU8Did/cXOmsuwLwdhIB7m9yjhSYt+LAuF8eqJl/Ua
-	 Bkeq+0eV61PXx7RCcHa7KpweT3yh/fckRCqMBf4cj4reHaMPJmPt1ofcQu9GQIyAJ3
-	 3Q7arpxDWVhexwxryVjkPXTGN8TmvUu7g1+Wkdz9UgqZJJ8cclDtVVBH6e10QPYI+J
-	 0zThl8+/N82Y2QfFwDk92k3TvxMnf2k9u33SpY80yOwQZk1iZk9amoljpg1Cu5O2M9
-	 CugVlERvMAuCrqfEG9LvviMu2o7sUlrVL9G9aN049OiN8iribLMzdBeVAD6uj/LsUg
-	 vfcllhNsnKu+Q==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 64615CE19F3; Thu,  6 Aug 2026 09:27:44 -0700 (PDT)
-Date: Thu, 6 Aug 2026 09:27:44 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: syzbot <syzbot+d2401aeb74cc84adba04@syzkaller.appspotmail.com>,
-	hannes@cmpxchg.org, jackmanb@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
-	surenb@google.com, syzkaller-bugs@googlegroups.com,
-	vbabka@kernel.org, ziy@nvidia.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in khugepaged (3)
-Message-ID: <3fca260a-4544-4e65-916e-d2ef7fa1440f@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <6a727d6c.9511d2ce.1fc5b9.035e.GAE@google.com>
- <20260805122952.6ae38af69a0457779cb44359@linux-foundation.org>
- <d5771d33-d8f8-4fcf-911b-089e862042e5@paulmck-laptop>
- <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
+	s=k20260515; t=1786033785;
+	bh=OL5sBD5AHeLDVn25oNMEpQDloi1YNoxgi5Bau+T+ONY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=P1T6nSa7/6J9hjdPqziiNCkSj9cxGRjrNBfL7hCxLGEVIVMpxfzyDSfj0jiQ8kFIY
+	 Jbkn5sNU9wEds87zC6/V+k1vgwytFpiN8es5VBo/B1Vd+jQKNkNnsdrLCxxN2KhOCZ
+	 0LEmLyBkfU0puG1BSGHl/nnFxvaBS9dyZwN2JAFtSVx7DuMx83b70wg7H7K96LDVUO
+	 1hn0AdoRt3U85VO9MUGxVrDyW7bSpGUqctGqY//Cp7pIwb0r1bMSM3e3sIf2QhoAI+
+	 yWDAPyttO/vpRVrcG2unviRW5SbAxpiTF1otf/t4wMI+AqUlby+JU4AJOOwNcEOiUP
+	 FGNeuatkmw3LA==
+Message-ID: <564e64b2-1b71-4d8e-a29e-dc98e8deb006@kernel.org>
+Date: Thu, 6 Aug 2026 18:29:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805230311.2bbda85fb92abcf12d85194e@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup: fix always draining LRU caches in
+ collect_longterm_unpinnable_folios()
+To: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>, Frank van der Linden
+ <fvdl@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org>
+ <f616e9fc-339d-4430-43ea-0ec8810c5f3b@google.com>
+ <20260801122040.7230a8eb0dc846ce357fba67@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260801122040.7230a8eb0dc846ce357fba67@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9E847C000A
+X-Stat-Signature: 4e4cqfu3byr7gsq67h1cr57jgojh4r9n
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CBB3C10000E
-X-Stat-Signature: egqjed34u7p1zidwn11zo15wswycsuir
-X-HE-Tag: 1786033665-752885
-X-HE-Meta: U2FsdGVkX186VfZGe9YTaaIt/h3PKcp7/4DmFJL+lCfACqwQjUspxx1MgVT3y6E315wWySNGkY3GqTQO/6ukIZ9wUo+fUdICen1mFIRI+AFDrr001Yofu1j2DKjGxRU2h3WvD66c2W3KNat4Z5VSHKRMtg0B9zBpJvWgSHfeTrh9w4KrzEjZCqvLHU21t5/1sR+jIiKikQDsY8expI9/33R33Ch3FQ8BNLwovMTjYsgAT4mz2Wgij0QHSi+jH31zIotJsWumgYlwe7vsP+hd+wwo2tYLMoCmYiAdMUA2/N6HkY535Ltts0YmRQXyqUYiLfW7rO9PMo4MAzWQnf7pucU5ae/rJX3Es3TzaUZAKIufpEr+aD7YQCC1H24j80Z/UXjGwRYsvwLkMOMTgJfxE8D6zqrTyvYkYbMQZIWAXXYAoIWJawrt4MxxPb4HOUsxISiH0uISvhjjmSIc1LlMiirwC833TcPWSSr0n/jFuo+rqw4eo5A9v1ReFOX0rmB7bXKRACk5ZR1CXKcnGmoCcbSitUuqk3X3ve6jue43Kz2I8a//jmSaRP3hbIxIr61bk2eBTpJo7KttdGjOP1qTzosXmlu932qUzis/1KkQc+daV6LxCnDEhGtMckZSacsVWgfourfpsIJsmMgk06JDE/K6ewpGrgEkQR4ibO3mnaG3UO+vh7hx9qTc+FjZw/8tsGL7UNOyOSB1w3ycIG4HR2oVJdXq+XFvSUD8QtgNRGvLpafVHI3ue2lPyr2MS6wI39y7kisgiCUYq/3nG6wYZ8R+p4ztYn8xIKkbZnHhZulhVS3CJ+pgEX2L0tAg9ACFlEHPfTdDbjycGscUTDqD8a/GSP+B8uClAwvEmkn8kYajtONMwj8G7dTCFRiIC3kJjD3iWiZPggzTP3YR94Xr0IXBvhpB5N4zi7SccViAFqqG8uzzcKv2r2+nYOCUyemAUuHipUBjXhCNTE3/am3
- RPhCNdHJ
- MGeey85bQCpvQ0/kgRCa0VFF5gtHaBC+OV867IaofFOx+vXDpKFaRozvjWy0N6bD6gVJHqcGMf4aURontmnhlPxqZY0Ynw4ob+lSfKhDGDkdAqFTZNxlGlksqVLgzDKUrPPC+IkNAB1Ol+0uW1ejhF/05kwlJe1mC7s73s3hKiwfUPAaStXrAfH7wYT8rrwXKZvqnZUnREI+bzbVIPL/74OOtezfofr56A+qrm7iLsSem04m2gW6WkbziVEdafA6Oo8w+4d/nzsA/sJ1LTEio2jjrZ9+7JmZGagO43+4A6bqWNmLkVdJ+orzdWP4X5Aehbrn2O+A3Fd5FtkY9FORgagnpmdT8LRyZm3E9uCbd0knOV02tvomEVH7b7Dhdc6Kbf46pPEAJ6eiuDDvVHqPQ31ba0ILXaxwgAxE+yv2Uyzrac4E18/Zq9CTn3ivgPEK1+9sAUoTz7PrXu/HPCKCByMhWb5Zc31pXAaDCDqhVX/KEg4RudwKRNVmlrmnGK9e2KRw5+vDAq3mLJJj0XGo8KX+Cauvl/Oo9WYx6uRgpUlksMXP8J6u8UD2pMf5NN04Oiotsv5KNuD0ZBhV5dlfZ+M3ilrP7jUkmTFich20iFrZhkXV9PxX0z8Hqn6puQTZPytnv2lgeLdDcGHwkKHlWItEdlGfVeN76YcuoJLNlByN2sVGBRKxMzMh0PH40gqZkmLZiQJ550dQ7J5xUVwGUH7KoZDtCJf2R6Zq+DHLOQW2MwWfmp/2XotRW39rFWoKMlI2NK/4XdjG4ODp4IsFgYZ2fL78UyKLonuhSqX3HXdrFXp7iozJI86uPOngEk6K5PI+aJGUMp0ZS9AGcPWe/osUVeA==
+X-HE-Tag: 1786033786-567945
+X-HE-Meta: U2FsdGVkX1/oJMkcZelr57kf6dVpbZoQIftAnjvecvuXugqTScJfDnWHmATafLWXEZfm2kOZkem7W4CsTZmpXIgGowizlugO+fyshd10rk/Q7yhFFcC9ZBqkxGTjrDTpcYs+S8MZzyKEA+Mh0NhiCYR4eTbjvtOqKuIPdQ+z5dMvbP/EE22RddPMCWd6dglybtLT2eR0RMPg6GXrEaMA96rq0tfv835oD3ictEbpLm2S8MU9kvIdAG1eOfa9PIikYYZgp9TRpuMin74LRjaB2mbbLb6cm1oqmgSI9xMKTNe8EQME6Wr7lJ9LG5VtNy4e3pT1h5L8O8wm8gYNEIGDoKGO+W99yAv9z69tkJXvzLMz0cIUUV43jN1uRbwarvyW0UuvrdXMLyjG3tUxpRAo7r75XOtMaavKILoKtg5gj7LIfiGHKyBfHxtwzlf/nZfPAJlRmKh1R4Q3basNbcZ/JT59roJjXmoj19UHehxGX4/O/YcwC7PP6XkvV7a2nukn9RTOPfgaV7jynp2lWyPUp13jsLWVprOIEgLIeFwvJLnG8phaEK0ESzMuDyO1CpOvQFxQwWDB5IMGk51kSlgrvKt0bJHiuT7WDR54h3rK0amjVI7yGi4r/ZNRA3NJsaeV2n6YzRU8ftKpUeXLeyGeCr8XhBdTU8BmODLpcSsbeilPxezAgrT6e2zs9nAkQzaXfKEsBgfA4to4RiRiNfYXyO0aDpHcl27pY6y7mk2R+XlEhtUdUn7h6R47jdhXzbinNa+ecnzRIfRIjlvj1fKVdUxJmq/Llq7vMYulbR4AxoLleZEVozPFGaflfvsycr2tEq7n1mlj6CpZKNPPTGil/tWVJ4sZ7joJe4gyDfjVR00IVS9mTPZP71iPOzFkQ5MZWpYFYvI/khj3fG8EHCbSJQDBNMGHvZWG4ZymNkm57vSIC8ZoIcnndi1CJLmvjgGeemHf+CWSQ7JUW2gyFmo
+ SfTGdlJG
+ 4QE9wQWqnoQ6YNnCXBaQo+2+n9/qkOM/NBLdZDpxqluJbkVjmsEiO/lgkyk/vEvchL6B3a77aZAJ9TpAM+VdnDZOVAbezcc1nZbrMN0QjLhS5fgRWuW6cJd7mQmAmuDLc4FZWWoT5q4P6ueGCWV7O22Q33EoRptowYrg+Dup8UlGSXsn/TpGb3K4rttMtJ6G8yB2tizJBt5y26S54SdB5Zce7AaldVa0bGsDr2NtNTEBN3ce7fKoEZjaHoAhHUS7BEAK1CAacha9p33U5QvKnk/vrNq6D63IrP5/PqaXn2TS/gPIq4hALy1M3f1rZYnsbrurVyjDnsV4sc7o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,123 +143,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 11:03:11PM -0700, Andrew Morton wrote:
-> On Wed, 5 Aug 2026 13:28:16 -0700 "Paul E. McKenney" <paulmck@kernel.org> wrote:
+On 8/1/26 21:20, Andrew Morton wrote:
+> On Sat, 1 Aug 2026 11:49:39 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
 > 
-> > > collapse_scan_file()'s main loop has
-> > > 
-> > > 		if (need_resched()) {
-> > > 			xas_pause(&xas);
-> > > 			cond_resched_rcu();
-> > > 		}
-> > > 
-> > > but that won't help with the RCU stall detector(?).
-> > > 
-> > > I suggest that a suitable fix here would be to add the analogous
-> > > 
-> > > 	if (rcu_i_need_to_take_a_break()) {
-> > > 		rcu_read_unlock();
-> > > 		rcu_take_a_break())	
-> > > 		rcu_read_lock();
-> > > 	}
-> > > 
-> > > (iirc rcu_read_unlock() does an rcu run, so rcu_take_a_break() isn't
-> > > needed here)
-> > > 
-> > > Paul, wdyt?
-> > 
-> > Let's see...
-> > 
-> > The console log says "rcu_preempt detected stalls on CPUs/tasks",
-> > which means that cond_resched() is a no-op, but it also means that
-> > the rcu_read_unlock() in cond_resched_rcu() will directly take care of
-> > informing RCU of the pause.
-> > 
-> > But that is clearly not happening.  Why?
-> > 
-> > Well, we have this:
-> > 
-> > rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P37/1:b..l
-> > 
-> > This means that the task whose RCU read-side critical section is blocking
-> > the current RCU grace period isn't even running, and thus cannot invoke
-> > cond_resched_rcu(), let alone the rcu_read_unlock() within that function.
-> > So an RCU CPU stall warning is expected behavior.  Or at least it is not
-> > in any way ruled out.
-> > 
-> > What we need is RCU priority boosting.
+>>> Found by code inspection. If someone has a testcase that can easily
+>>> trigger this and result in migration problems, please test! But this
+>>> change seems to be "obvious the right thing to do".
+>>
+>> Sorry, I don't (as perhaps is too obvious). And I'm a wee bit afraid
+>> that some of the problems which those changes happened to succeed in
+>> fixing, might now reappear once the drains are finely targeted.
+>>
+>> Am I arguing for a delay before advancing to stable?  Perhaps, but
+>> I think not: it's probably best to get that working as intended,
+>> then deal with any fallout if it arises: just be on guard.
 > 
-> Do we?  I'm suggesting we need need_resched_rcu()!
+> This patch is in mm-new, so it's still some months away from -stable
+> eligibility.
 
-Understood, and I initially agreed with you.  Except that I then
-found that the poor preempted task isn't executing anything at all.
-Which means that an added need_resched_rcu() cannot possibly help.
+I hope you meant weeks :)
 
-> > Except that the .config file
-> > does not enable this.  Not only is there no CONFIG_RCU_BOOST=y, there
-> > is also no CONFIG_RCU_EXPERT=y and no CONFIG_PREEMPT_RT=y.  But there
-> > is CONFIG_RT_MUTEX=y and CONFIG_RCU_EXPERT=y.
-> > 
-> > Because we don't have RCU priority boosting, if the load on the system
-> > is heavy enough to prevent our poor preempted RCU reader (PID 37) from
-> > running, the grace period cannot end.
-> > 
-> > I am not sure why this task is saving its stack, but maybe that is normal
-> > for this code path?
-> > 
-> > My bemusement aside, I recommend running this test either with
-> > non-preemptible RCU (CONFIG_PREEMPT_LAZY=y these days) or enabling RCU
-> > priority boosting (CONFIG_RCU_EXPERT=y and CONFIG_RCU_BOOST=y).
-> > 
-> > Maybe RCU_BOOST should no longer depend on RCU_EXPERT?  I would of
-> > course need ot remove the prompt ("Enable RCU priority boosting") to
-> > avoid annoying Linus.  Maybe as shown below.
-> > 
-> > Thoughts?
-> 
-> If I'm understanding correctly, this workload is busted with this
-> config and the proposed fix is to alter the config?  Well, why are we
-> permitting that config at all?
+Can we get that into 7.3-rc1, though? There is quite the overlap with
+guest_memfd work, and I'll send another patch that depends on this.
 
-Agreed, and my proposal is in fact to remove that config.  This assumes
-that CONFIG_RCU_BOOST is ready for prime time, and given that I have
-been testing it for years and that CONFIG_PREEMPT_RT has been using it
-for years, I am cautiously optimistic.
+-- 
+Cheers,
 
-> Seems to me that a solution to permit this config to work is very
-> simple.  Something like:
-> 
-> 	time_t start;
-> 
-> 	rcu_read_lock();
-> 	start = current_time();
-> 
-> 	for (lots of work) {
-> 		...
-> 		if (need_resched_rcu(start)) {
-> 			cond_resched_rcu();
-> 			start = current_time();
-> 	}
-> 
-> Where need_resched_rcu() tests to see if we're getting close to hitting
-> the watchdog timeout.
-> 
-> No?
-
-No.
-
-Added code doesn't help a task that has been preempted for some seconds
-and thus isn't executing any code at all.
-
-The task has been preempted while within an RCU read-side critical
-section.  The sequence of events is as follows:
-
-	rcu_read_lock();
-	// preempted for many tens of seconds.
-	cond_resched_rcu(); // doesn't help because it is never executed.
-	rcu_read_unlock();
-
-Or am I missing your point?
-
-							Thanx, Paul
+David
 
