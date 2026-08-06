@@ -4,166 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FC6AC5AC7A
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 22:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9184BC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 23:00:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4910C6B009E; Thu,  6 Aug 2026 18:57:59 -0400 (EDT)
+	id 77BF96B00A3; Thu,  6 Aug 2026 19:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F3236B00A0; Thu,  6 Aug 2026 18:57:59 -0400 (EDT)
+	id 7536B6B00A4; Thu,  6 Aug 2026 19:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26CCC6B00A1; Thu,  6 Aug 2026 18:57:59 -0400 (EDT)
+	id 6692A6B00A5; Thu,  6 Aug 2026 19:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D592C6B009E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 18:57:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A556805C3
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:57:58 +0000 (UTC)
-X-FDA: 85072359036.29.A85E845
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B32C2160009
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:57:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=kJuBUJua;
-	spf=pass (imf08.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786057075;
-	b=SSguQRjUNXgKy/izWGosrhGu2l/v+teNgZ9g88yl9eu/vjlllKlAv83PF57KykzbwVGlYP
-	jIvGAKjP6ce4GHbpco5ssT6mizjux5jkFw+mK7tm92twwA+PG+m3SFhhcolA3thuZPsMT5
-	dSJF3kLfzY/3viynLeRyi4NKPTy1uxQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=kJuBUJua;
-	spf=pass (imf08.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BA2C6B00A3
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:00:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BE1B405E9
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 23:00:20 +0000 (UTC)
+X-FDA: 85072365000.24.549F7D0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F2585120007
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 23:00:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RZ7TElDH;
+	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786057075;
+	s=arc-20220608; t=1786057218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ub1KUb7if+gs21AzBt8YVgkd+mkgYy/e+EEwrtHe3aY=;
-	b=UBPyhLBgdMkj8jlPMqmce2LWblZhlhG9FprZV5rs5HQClzc1z/RgITsT93/gdNmxHhIKGr
-	CaG26AmOgLG/l6xmoqyDr2x0hFRcHk5cxF1Ui3WSuLG4XnEmt7IzonaKaLQYR5dz47YZYV
-	vN17ZajCFJTBdC16Jg6KNgfgq2VTlvs=
-Received: from pps.filterd (m0167068.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676MbQEm916960
-	for <linux-mm@kvack.org>; Thu, 6 Aug 2026 18:57:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=ub1K
-	Ub7if+gs21AzBt8YVgkd+mkgYy/e+EEwrtHe3aY=; b=kJuBUJuaanVVM3eOoLsN
-	7CXYROSaT7KdmrBrDS4ssUDSc01Gxl8TYbFbAEmyr1CMuTZX/71rSOewTMKkUUlz
-	rOFrZyzk0d+mKzvY/DC7c3KOVdnnCcNn9lncZl+KDVoFKmqVyC2khFLw7ktVPj5F
-	zZbu/GpUmSeEFVPDTRUelESRechdQLisuvQp+1YRluhXfXw2AO/M8B+YNNw8KFVk
-	fv+OLgqDLfswT9fJnPy9g2aEHY0H3aviduheVmoSbNJHP4ocGi1GAZ4i0UFgwVCJ
-	fBJTl9Q3x641x/4Gr7kE8oU3eGQMFBNCM72sz1apvWlaDymhl2Yt8n/YibrG/aE6
-	Hg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fvvqruk1a-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 06 Aug 2026 18:57:54 -0400 (EDT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52ce64c41efso46467031cf.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 15:57:54 -0700 (PDT)
+	bh=V/XyIJ0P1Ncw2ZC5RUbuOjY9InJ1Bze3sfj+kDZLJRI=;
+	b=gW0EwN47B8t17N5jBbByFlKIFL7mSwRH1cpn5XoJTQ8zvVx72AvpNSneo+u66z+BPu6crP
+	ndohdQ9J6I55gowyEXUhd+yH+asfTmyIrWpoo5qW7SSHItEVtKXsbQyQimJHIYaeml/qYq
+	ztIbrqor/cxM61G30Vs7MBNe7OXU48M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786057218;
+	b=tPoCTku6EphcNkAuCkjWvBi4MJdhoUmsrG0CVkxbWrsw3JF/sxWQC9gy8Fb7Z44d2IcuS+
+	O97aB0+nm8bTJ4v+4QFgOir8U+fmzcPY5WSwsqHOMaFDSON/to01KHT6NZYc04Z/NaUxhm
+	U7dtFEdnPS0m14qY/8ZuTqkfjx7+uEo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RZ7TElDH;
+	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786057217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V/XyIJ0P1Ncw2ZC5RUbuOjY9InJ1Bze3sfj+kDZLJRI=;
+	b=RZ7TElDHrAVdbTVMqfqbx81FukVXkECk6M4Q/leM3geBs53qnsmbcTK03hXOHLfKSyrNsa
+	TmSCelkXW5j351wfIFtQ/px8Vfyh4knZLB7Li7ZzK04FEERCADf42wVEZ1BL3+YGPnVPA6
+	95BZjzdDVDyTy/c+UJtk/SD20vDsz5s=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-602-vesV0ewbMzW_X0K32szJuw-1; Thu, 06 Aug 2026 19:00:09 -0400
+X-MC-Unique: vesV0ewbMzW_X0K32szJuw-1
+X-Mimecast-MFC-AGG-ID: vesV0ewbMzW_X0K32szJuw_1786057208
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48000d75326so80316f8f.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 16:00:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786057073; x=1786661873;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1786057208; x=1786662008;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ub1KUb7if+gs21AzBt8YVgkd+mkgYy/e+EEwrtHe3aY=;
-        b=fZI2NWU4LE2KKGGWiEa7k/xpVWhFHt6ulKIxmvHbyj5Yrpqkft5vO6ybwIv9ortlXe
-         P51yTkJoblz2u7XL+jA0xuXGdOSroft7J3VDOaJpl9883vzJWB8v2/Dlyf/2oTD+zQfs
-         IQl0HFvhNmUgY9uDLKXo2p/AvRObZV1ypO8DegzIZNQirY3ZWBpEDgnTrdbMXTiYkpXK
-         kMMoGCS8mtVINqMgsq4ih9pQUqLpKXYCiUKpizJFovTlWtUPAjGF4dwhXlxao9FXQhWH
-         jI/C1q6VL9w1Z38OLQXBFWz853tQQerWTuRnFF1XhqjalOf6BQ8kPv8JqP1v6VB+8Cv9
-         /2XA==
-X-Gm-Message-State: AOJu0Yw2uHnh1SOl2JMVZYUSSkAWBXU3PflVkMoDgdEF1hLOXCWoccVL
-	aW0RJJe3gN22RpUfbVDqwbXJcE5A2JjNtEii4fPhX386jUJ1mN/DJE6+Rv9gYHdQa86pDcOcMT6
-	7+vnhgttfyf0z7szWLw9wiqwsmgHv8Mcg2/ewGkTPhOIA0VxH
-X-Gm-Gg: AR+sD12Az04ViaN4TsntEaAcJHAlTtlLJ2ghX4/jl4isKoGCtlirifuA9qxKdFd63al
-	5GPckcQ1Lxcdvyu6jlqwop0NvrWqZoRD4fQfGF8HG0aOqsCHkjzgFeAE9cnoEan2P5iDpZla4UK
-	O3U4N0Df7sdS5yZq2pdyNqcU3WtoWlXQQ06T6Z7lwR3H1WylrqnLhZKsSjx7viUnGJliA0hwHLr
-	O2HDXMWcB+KK/7VYZxDiqAM8V83jWg1ulUz0/sI9E0TP/uHB2MZyKD/gY4qMKSPu+pgM6zkMSQR
-	yNUW2j5Wnejk4m0Yt9V/XTdBW5oC4Nuu21L+ecMJZQyKhvUsrGQYilIPasJrsB8zDz4zu/jqWKP
-	VquVYIWbpi7ue
-X-Received: by 2002:a05:622a:986:b0:517:9f43:4732 with SMTP id d75a77b69052e-52ce5fbd06fmr209298871cf.11.1786057073249;
-        Thu, 06 Aug 2026 15:57:53 -0700 (PDT)
-X-Received: by 2002:a05:622a:986:b0:517:9f43:4732 with SMTP id d75a77b69052e-52ce5fbd06fmr209298381cf.11.1786057072817;
-        Thu, 06 Aug 2026 15:57:52 -0700 (PDT)
-Received: from [127.0.1.1] ([77.137.78.43])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b31975sm8751344f8f.33.2026.08.06.15.57.49
+        bh=V/XyIJ0P1Ncw2ZC5RUbuOjY9InJ1Bze3sfj+kDZLJRI=;
+        b=s5U+nCzrkLUQvB60PkDquwB3g9xoHZBcfJmrw1mwxEkmGAmMjJ2ylPZ6xbGitT6QY0
+         hch7E9gyJzma9jrLRYJmg1LmA4lcYFr2kKCDrAK8/IEAIiW2SEB6FLQneq73KRMyfchq
+         nrI06uBB4KetV9vIbpPwLHLpBi9c312x6LEp9ORCCokyUDULyQ8oKv2Yjxd/sMDmSI/A
+         Y61DC5aV87xVIVqQm7KX7ALpUencVSe1yunJ1M6H8/CJkwzzJ5un26EEx7/N7i0zvW1c
+         9QwDSm/zs2Dqn0W7hiYJvFsY7evMzjs7rz2NwLxA3XCXh3blZyOQUxaGtMcxkceOYeZH
+         THUA==
+X-Forwarded-Encrypted: i=1; AHgh+Rru8h8oV2S5etEkBrEIywEJPIbLrMZBiYaguR6S38HZmO0VgvZD68HVxW3KE2JMKcnO/8XG4GKcKA==@kvack.org
+X-Gm-Message-State: AOJu0YxGFUPzcbKBklxgvcvt+xubkHXTJGFon1z/ZvRcOgS9kc39EJ/H
+	9nGoY7z6rC6HJNTiTNVzmOEZ192yFNg/kDGqht3STheRkQLN2si9XNEnuwkGALtqwSw8Te24/hb
+	QN9XG+nPO7uBgeHiXLjxC9wHyKW/WoUCUfVpok17lD1oSyxe62hEe
+X-Gm-Gg: AR+sD11/59xHecjHrmmId/x7t8ApErR+gWEc0D34KxEuW8s8QSMgYLCMZ+6CCo2xT8f
+	Kie68v3KvEIvTN1tGvxJU3n905lZxuPX4b7WQk9MQ+828dePego1+a0xcdVQyj6tAaDc49ykhAJ
+	SPs1VxuI6sr9sDbeuuO7A2NyOpT4cpyXZckT1jo2uii9xeJgIS1s4jugxEMkCfN0A1Tz9eWnxPH
+	+e75RyA0GVi+Vnfkz5LaG9kLXTxMprgAETNXHKFw2AtUZmKNF/S3sSehEdHbqSy610Y+ihvY0lW
+	nRQE64ort/1mGaFRktTruBGdZnUx8OxM8cNVppPT3tHVHk6m4oOaeg92tRng2OuEBxlmhj0I9Sx
+	txhsET0EFUbFqZ2B2vJ7vIw==
+X-Received: by 2002:a05:600c:3b04:b0:495:5e86:4e11 with SMTP id 5b1f17b1804b1-4994e7baa85mr237163815e9.12.1786057207743;
+        Thu, 06 Aug 2026 16:00:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b04:b0:495:5e86:4e11 with SMTP id 5b1f17b1804b1-4994e7baa85mr237162725e9.12.1786057207114;
+        Thu, 06 Aug 2026 16:00:07 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995d85254asm1707125e9.1.2026.08.06.16.00.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 15:57:51 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Thu, 06 Aug 2026 18:55:38 -0400
-Subject: [PATCH 6/6] mm/swap: rename __swap_writepage() to
- __swap_writeout()
+        Thu, 06 Aug 2026 16:00:06 -0700 (PDT)
+Date: Thu, 6 Aug 2026 19:00:01 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Link Lin <linkl@google.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, virtualization@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, prasin@google.com,
+	rientjes@google.com, duenwen@google.com, jiaqiyan@google.com,
+	ahwilkins@google.com, Greg Thelen <gthelen@google.com>,
+	Alexander Duyck <alexander.duyck@gmail.com>, jthoughton@google.com,
+	stable@vger.kernel.org, Cory Maccarrone <maccarro@google.com>,
+	Taylor Scanlon <tayy@google.com>
+Subject: Re: [RFC PATCH] virtio_balloon: add
+ VIRTIO_BALLOON_F_REPORTING_PM_SAFE feature bit
+Message-ID: <20260806185414-mutt-send-email-mst@kernel.org>
+References: <20260724014605.3377283-1-linkl@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-b4-page_io-folios-v1-6-0899bac3b826@columbia.edu>
-References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
-In-Reply-To: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
-To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-        Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>,
-        Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
-        Chengming Zhou <chengming.zhou@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786057045; l=2748;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=1PKHkxhG8FirRaVg6eUhQjfX/h67l5IV5n+FiE4fMq0=;
- b=LaYIsHVWpwYb/E4liQkXl3uoxIqT77+VYU165HQMf12mm+fVAmPoL3b8oeU5kB/oIpD1BCKBX
- YNoKJAENtWGD9KC3ZXIJB+fPHZ+aWZrSczLZIN3orHoap6KhJHbtJun
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Authority-Analysis: v=2.4 cv=Mv9iLWae c=1 sm=1 tr=0 ts=6a751172 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=z9N5oyD7lR4RENIpbqURcg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=usPcmh10W0ubT8QP8_c3:22
- a=v-ZhwRCNMDFCt6n8jOEA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-GUID: q6lPhavApn67blNbOBDDu47UhIpnppau
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDE4MCBTYWx0ZWRfX9PGAPgLmDU+M
- jhcCW/fK66xrFkcPyiDJLzug95M/ktfDk1WvklVBJCbCIN9BGivWWXVuRlBpVfH0FzX9c6qMqn+
- sljEEgi7VJzBxTPJEtxBWB5VbdPOPKQMAXUFLFVpCNvCASJtPEcB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDE4MCBTYWx0ZWRfX2HnzfjI6ecmO
- wJwSCS5kHgBNufT8NoLEzVPCqvX4LBY+eAHs31iVJvqAsJ6HWY2CnK6IZradGg5ftMzaGLsSkqZ
- RXwjIlvoHfIhG0WEM8t9efTQIIzrNyHMAGoiPMsEAu58hZOUdNsyGydrTtDwwCpYD9mM5HyGb9M
- T25B2QR4cHE07a45w2O9u2DOR6n7dnWQ6ogD2rOLz4evOHbOm7mqk9Scm+oohVld/8GfbLV0PnA
- 0lkYL0l1T1JWV7RkJMq8k/v1lrwNmf5gaoFWHwJpNepVuhGMTpHA6Jf/W513urEjAIqIihVOPno
- RI9T2A1Zmpah67jJn97w745925L7YgURwAsk8MovczXFbHFSXdMV1+UTHCjpIZJ98Z9SVWRWrb5
- rKD6GCqHsOcTgnSrm9gppX5TMSu1YMFdhgRbjIoSxYbPLlE4ee+wH1bIVGA1QiWuCRnGdj+puSQ
- YG3lmTXOCQpFrYWYYvA==
-X-Proofpoint-ORIG-GUID: q6lPhavApn67blNbOBDDu47UhIpnppau
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11867
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 priorityscore=1501 bulkscore=10
- lowpriorityscore=10 malwarescore=0 phishscore=0 spamscore=0 impostorscore=10
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060180
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B32C2160009
-X-Stat-Signature: dwehofa84rwb369jxpwsdazp8zxutwre
+In-Reply-To: <20260724014605.3377283-1-linkl@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nBg7vnyiLfvtIiAHzO4T3dhlz0Aba6LJ11bhw2bpROc_1786057208
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: F2585120007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786057075-10778
-X-HE-Meta: U2FsdGVkX1+yC+cHCKPe6vjs0laWbfqbPuhKY31bG2gKhXjzPoMqSk9lgLK/yzh1WtWk7q+UMTKMg+HsBIU5LkC3XTdF7lkHLRItw7mLGIJLNmj9VByak4wlDoPfDheQ3JDLvYwQlXo9iiNh9QA6dqXSdkm/nWjJl/B8alyOJA9G32azS7vFjceQleD7baKqWh266X/EBmk671bBfOGh6Bi3OT8dGWOiGSq19yCYfUq8tklRoXZewPJ4EkLmGjkRkDGF8Sm/7OjcPUOASWrZ3IRddCqstfcSmwX5wI9csE+GdwfXUeyCUjSJHYiYutuwwyID/Sb/lpt8jTerr8kX2ZK/+jRntDZ+Lyk5dg2Mdp1pgsITL+cgLgp6igCk7PeuQLlWOmQz6iLJCYUyzEzfKQ0woobzBtJ4XYSIQxdEBmX4jEDpZUwmzK5Fap/fhlAZ+gU6yhR5xmYIRrVkNFmRApb5rq1xLR4ouXIbIgf15PXhpooaIfrMSTglKMO+uu8Ppvswv8n28R6i/FME37NCPEr2+DbumGL2T2LgIyo/5/gb1TMB3Y5CLgGZO3o3DVQx7K1noX5aC05dFzhsUJjlSM4LyawWnafdgKOv4/8EySCDWv91AgA3a3OD9HlXkyYOyvnvMXm4SB1P9UQ9PSwIfOO7/bjaX4JftyqjiJWHR7tG2+jOvfr8qW0kL6G1Xyb3qwGLzah/ldQUR5ZMYa0q2No2EKuuPyn8gxIDaPB41mUQA1E1HLHr00eFhhTcYdwkai6pA/13eqqaYLsY1bSGALsGMxNd4g1Dfv+wQUw1EPlzf6sBRXpjx8UCEaXwP991SrT9hwR6ArvR5S2sCj8NBvx7gTIVQyQdxCjG5dGsC5cFnZ9U8FEfrYNoKS2j+mkJE43qiQ6ZA+WhDl/G4wNy1AWo76EYj8kBZ2VMPlW2BZSuIzGY+lwvaRc6p6T17h5fFZfop3Y+yMcmA8BnMJu
- 9/1Tfs2J
- 1pEOuvgttduD5vf4X0ooNSBFp/Z3dFpXokol4GRXOE+AtHm6zR0Jx9cVJbUWsSsxSBeWc7/1YnMUv1XzH9cDKMm+r7+QnQYalg5YEfFeL5FrEIoEICGV7Ao+pAU3A9rOJ6HYcDo9jFCJzmMPnOEFt1xk3ryunRqSblx9/cZuXLjxkkPNcQFy+rec+zwEheY1u2l44QU/yPgQm4HmGL9wXOWvXC2Mokf4fNGo0vqur6nvxqEowSXdRWTe0cl0Zk136Ze2GIK6ivWUr2SflpqOteB6ARC6Kax5FCA/GLGGTtbcxn0rl5KY+mMDc7RzjRvjSXKk7aD2Esn1gzFfISqK3H4NL2sAgf497La+Z+2EB/2kaIWv4978O4abXTEj2P/1gLzp6nRBApeWo1Rw=
+X-Stat-Signature: 4keyungu6bttwfuspdpiy9rybd9u6jsj
+X-HE-Tag: 1786057217-909051
+X-HE-Meta: U2FsdGVkX1+STQTSzeLb49WgPuRlMXAc0HnrP/CGSDXJPQM9DmzgWkGE8PVt6lIS3oLYaw65PB9F/rpzsTv8hs+PhwGiXk1cq69gKdhypvziEqUN3c3FtcdgCtjFCV+YojFKnoCfm1EONk6N8OONbt/m9EbGjxNnOWWIQhtvcKOM0bha7tO9oAY6A6pdBpwFeSQNFFI1eCivpN54+xfgg6bqI0HVwIEP6VM+ETi78M43lscnHzpZtixAko5wO0jKjHcuTbFdwag0LomkX8y+d516p5Xfr3s8d6j+XD+SmVyYXD+X+Q140N/SUQ+qVWxbtoiGTFaIlsA8yJMjqHneF+YMbs/9Bz20HhjqqLhqvYr4qHWrodC5g9pY3RFtrWysz6hiXjU0sf1FPoP88vOeWjUQMdNCV7xUDRVM6lsgi3mOJR3ZcgWj8YwljWdPe0v6FyAzfgVC8g4IsW1Z9snb5dhNJmSD8YNCH7aE1Tsu6Nwrn8Hiw0RXAiFOTzhmKeiaizV8j66PS22n8MBkLB6jVgvwSqLJk7pJnZ5gpRN/Wk7SjVqe536StdaEI/Cx26mHI0a6haY7hcyclX36n2gi5kxqFQ19phitPLSfbrdjUCIqcRlk6T69okwIilqs2/ZZvW76jJWlaNjSU5KwtOfUiSYp/ybfhgIJelI/Oo4c82O6rqB0o/DLe4JSxEprDUSqmc7GSzZIVejztuCtKbJNlcTaaIYqQiwpYCZyYY8c4j1Y3mbuClqL1JUphWFo9HvyNI1C4q2wuQtMJr0b3JZdfTQRsRcPiBLMPnnLSUn4OwApVqU5Br23+wU2W12ZNzKljbI8BI657NlcEHpNKuKEeoBvwsb4Xtjg7cudYCi0hG/lBvJolAZQxHTy1EbBYSeL0jytBMH43XpZd2IaVZD6RX02aUfdoDcjSvDpz0RLqo3XWy31J8OHvZlT5nMeak//KIAs4XSfqBaDvk8V215
+ wq1/zyuw
+ 57YdV9VPskaiM9sjXL2AFkoNUN0IwRuL3bmXukm1Fur5sZnWgREkNVFeINvg6A8w3xU+3PdMTwg25MDX9xT8MmnhsuB3zsBCmchq3sW2bg+9JUe/DaMhliSvp+S8MDLOadaXNIw0g+IIGq2khOlGCS+4kYkxX1mci0rvwT3SMRZ5X8QKfBNw9zgoV5WwNg/ymx9ScUuz9L5CORNvXgoeNmxmZefCz8Wx5eXcRAkvrrtX9JleHAppp7Cw+HjBvJRC7e1lLho9RavX077ZYkTeLRDOROnH+qNnENZsr92k9ohC1ZB5Mp23r3Es8Mya0qJUgPgVP44vaughBJmDQJ03VsKfksp8YSkrwcEQNeAFfNmqvi3HWEOzC2mqWRILfXI+RBJvV1x6kj/M49lE4zG4bqZtcipGKhSrTNctuMK/WX39m0nA/jPzxbCw9UCZJRynLmYKNbuLuzSPeIxu/PphwsfgSyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,82 +136,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 84798514db50 ("mm: Remove swap_writepage() and
-shmem_writepage()") renamed swap_writepage() to swap_writeout().  Rename
-__swap_writepage(), which operates on a folio, to match its caller.
-Update a stale reference to swap_writepage() in swapfile.c as well.
+On Fri, Jul 24, 2026 at 01:46:05AM +0000, Link Lin wrote:
+> Following up on the fix for the PM suspend Use-After-Free race condition in
+> mm/page_reporting (merged in mm-hotfixes-unstable: 
+> https://lore.kernel.org/all/20260723003650.CAAF01F000E9@smtp.kernel.org/), 
+> we face a hypervisor-side deployment dilemma.
+> 
+> Cloud hypervisors want to safely enable the Free Page Reporting (FPR) 
+> virtqueue across their fleets, but enabling it indiscriminately on guests 
+> without the recent suspend fix exposes them to UAF crashes. Relying on 
+> out-of-band metadata (e.g., OS image tags) to selectively enable the 
+> feature is fragile for custom user images or live-patched kernels.
+> 
+> To address this at the protocol level, we propose adding a new feature bit 
+> to the Virtio Specification: 
+> VIRTIO_BALLOON_F_REPORTING_PM_SAFE (Bit 6)
+> 
+> This establishes a formal device lifecycle contract for power management:
+> If negotiated, the driver MUST guarantee that all page reporting operations
+> are halted and pending requests are flushed before the device/system
+> transitions into a suspended state (e.g., ACPI S3/S4).
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- mm/page_io.c  | 4 ++--
- mm/swap.h     | 2 +-
- mm/swapfile.c | 2 +-
- mm/zswap.c    | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index b18d3b7d853c..e2a269425ac5 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -247,7 +247,7 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 	}
- 	rcu_read_unlock();
- 
--	__swap_writepage(ctx, folio);
-+	__swap_writeout(ctx, folio);
- 	return 0;
- out_unlock:
- 	folio_unlock(folio);
-@@ -368,7 +368,7 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 	}
- }
- 
--void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio)
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
- 
-diff --git a/mm/swap.h b/mm/swap.h
-index ec580c713204..c3ff9132de5e 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -279,7 +279,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio);
- void swap_read_submit(struct swap_io_ctx *ctx);
- void swap_write_submit(struct swap_io_ctx *ctx);
- int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
--void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio);
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
- 
- /* linux/mm/swap_state.c */
- extern struct address_space swap_space __read_mostly;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index dea2d3b36e06..2ff6de0a8c36 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2982,7 +2982,7 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
- /*
-  * A `swap extent' is a simple thing which maps a contiguous range of pages
-  * onto a contiguous range of disk blocks.  A rbtree of swap extents is
-- * built at swapon time and is then used at swap_writepage/swap_read_folio
-+ * built at swapon time and is then used at swap_writeout/swap_read_folio
-  * time for locating where on disk a page belongs.
-  *
-  * If the swapfile is an S_ISBLK block device, a single extent is installed.
-diff --git a/mm/zswap.c b/mm/zswap.c
-index f7c9c89f6449..38cb6a8318a5 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1050,7 +1050,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_set_reclaim(folio);
- 
- 	/* start writeback */
--	__swap_writepage(&ctx, folio);
-+	__swap_writeout(&ctx, folio);
- 	swap_write_submit(&ctx);
- 
- out:
+> Deployment semantics:
+> - Hypervisors operating in a strict "safe mode" can offer Bit 6 exclusively 
+>   (suppressing Bit 5 / VIRTIO_BALLOON_F_REPORTING).
+> - Older, unpatched Linux guests will see Bit 5 is absent, ignore Bit 6, and 
+>   safely skip FPR initialization, preventing the suspend crash. Standard
+>   ballooning remains 100% functional.
+> - Patched Linux guests will recognize Bit 6 and safely initialize FPR.
+> - Note for fleet deployments: Non-Linux guests (e.g., Windows, FreeBSD) 
+>   that rely on Bit 5 will temporarily lose FPR if the hypervisor exclusively 
+>   offers Bit 6. This is considered an acceptable trade-off to globally 
+>   protect unpatched guests without relying on OS image tags, until those 
+>   respective virtio drivers adopt Bit 6.
 
--- 
-2.39.5
+This makes no sense to me. So there's a bug in the guest and it crashes.
+Patch the guest.
+
+There's just no chance we'll add flags every time some guest drivers
+on some OSes have a UAF.
+
+What makes this specific bug special?
+
+Trust me when I say UAF issues e.g. around hotplug are a dime a dozen.
+Now what, let's add another one around hotplug? And so on.
+
+> 
+> Implementation Note on Upstream/Downstream Dependencies:
+> --------------------------------------------------------
+> Because it is critical that downstream Linux distros do not accidentally 
+> backport Bit 6 without the core MM UAF fix, the final upstream 
+> implementation of this patch will enforce a strict compile-time dependency. 
+> We plan to export a macro (e.g., PAGE_REPORTING_HAS_FREEZABLE_WQ) from the 
+> core MM fix, and wrap Bit 6 behind an #ifdef of that macro in 
+> virtio_balloon.c. This guarantees that compiler backports must consume the 
+> entire dependency chain to advertise the feature.
+> 
+> Below is the proposed Linux proof-of-concept based on upstream master. We 
+> introduce a helper virtio_balloon_has_reporting() to ensure virtqueues are 
+> properly allocated, torn down, and validated if either bit is negotiated.
+> 
+> If this architectural approach is acceptable for cloud deployments, we will 
+> formally submit this patch and open a corresponding issue for the OASIS 
+> Virtio specification.
+> 
+> Depends-on: <Message-ID: 20260723003650.CAAF01F000E9@smtp.kernel.org>
+> Signed-off-by: Link Lin <linkl@google.com>
+> ---
+>  drivers/virtio/virtio_balloon.c     | 15 +++++++++++----
+>  include/uapi/linux/virtio_balloon.h |  1 +
+>  2 files changed, 12 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index 581ac799d9..00e8273dc3 100644
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -39,6 +39,12 @@
+>  	(1 << (VIRTIO_BALLOON_HINT_BLOCK_ORDER + PAGE_SHIFT))
+>  #define VIRTIO_BALLOON_HINT_BLOCK_PAGES (1 << VIRTIO_BALLOON_HINT_BLOCK_ORDER)
+>  
+> +static inline bool virtio_balloon_has_reporting(struct virtio_device *vdev)
+> +{
+> +	return virtio_has_feature(vdev, VIRTIO_BALLOON_F_REPORTING) ||
+> +	       virtio_has_feature(vdev, VIRTIO_BALLOON_F_REPORTING_PM_SAFE);
+> +}
+> +
+>  enum virtio_balloon_vq {
+>  	VIRTIO_BALLOON_VQ_INFLATE,
+>  	VIRTIO_BALLOON_VQ_DEFLATE,
+> @@ -598,7 +604,7 @@ static int init_vqs(struct virtio_balloon *vb)
+>  	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT))
+>  		vqs_info[VIRTIO_BALLOON_VQ_FREE_PAGE].name = "free_page_vq";
+>  
+> -	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+> +	if (virtio_balloon_has_reporting(vb->vdev)) {
+>  		vqs_info[VIRTIO_BALLOON_VQ_REPORTING].name = "reporting_vq";
+>  		vqs_info[VIRTIO_BALLOON_VQ_REPORTING].callback = balloon_ack;
+>  	}
+> @@ -635,7 +641,7 @@ static int init_vqs(struct virtio_balloon *vb)
+>  	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT))
+>  		vb->free_page_vq = vqs[VIRTIO_BALLOON_VQ_FREE_PAGE];
+>  
+> -	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
+> +	if (virtio_balloon_has_reporting(vb->vdev))
+>  		vb->reporting_vq = vqs[VIRTIO_BALLOON_VQ_REPORTING];
+>  
+>  	return 0;
+> @@ -1013,7 +1019,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
+>  	}
+>  
+>  	vb->pr_dev_info.report = virtballoon_free_page_report;
+> -	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+> +	if (virtio_balloon_has_reporting(vb->vdev)) {
+>  		unsigned int capacity;
+>  
+>  		capacity = virtqueue_get_vring_size(vb->reporting_vq);
+> @@ -1099,7 +1105,7 @@ static void virtballoon_remove(struct virtio_device *vdev)
+>  {
+>  	struct virtio_balloon *vb = vdev->priv;
+>  
+> -	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
+> +	if (virtio_balloon_has_reporting(vb->vdev))
+>  		page_reporting_unregister(&vb->pr_dev_info);
+>  	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
+>  		unregister_oom_notifier(&vb->oom_nb);
+> @@ -1162,8 +1168,10 @@ static int virtballoon_validate(struct virtio_device *vdev)
+>  	 */
+>  	if (!want_init_on_free() && !page_poisoning_enabled_static())
+>  		__virtio_clear_bit(vdev, VIRTIO_BALLOON_F_PAGE_POISON);
+> -	else if (!virtio_has_feature(vdev, VIRTIO_BALLOON_F_PAGE_POISON))
+> +	else if (!virtio_has_feature(vdev, VIRTIO_BALLOON_F_PAGE_POISON)) {
+>  		__virtio_clear_bit(vdev, VIRTIO_BALLOON_F_REPORTING);
+> +		__virtio_clear_bit(vdev, VIRTIO_BALLOON_F_REPORTING_PM_SAFE);
+> +	}
+>  
+>  	__virtio_clear_bit(vdev, VIRTIO_F_ACCESS_PLATFORM);
+>  	return 0;
+> @@ -1176,6 +1184,7 @@ static unsigned int features[] = {
+>  	VIRTIO_BALLOON_F_FREE_PAGE_HINT,
+>  	VIRTIO_BALLOON_F_PAGE_POISON,
+>  	VIRTIO_BALLOON_F_REPORTING,
+> +	VIRTIO_BALLOON_F_REPORTING_PM_SAFE,
+>  };
+>  
+>  static struct virtio_driver virtio_balloon_driver = {
+> diff --git a/include/uapi/linux/virtio_balloon.h b/include/uapi/linux/virtio_balloon.h
+> index ee35a37280..d206f156d6 100644
+> --- a/include/uapi/linux/virtio_balloon.h
+> +++ b/include/uapi/linux/virtio_balloon.h
+> @@ -37,6 +37,7 @@
+>  #define VIRTIO_BALLOON_F_FREE_PAGE_HINT	3 /* VQ to report free pages */
+>  #define VIRTIO_BALLOON_F_PAGE_POISON	4 /* Guest is using page poisoning */
+>  #define VIRTIO_BALLOON_F_REPORTING	5 /* Page reporting virtqueue */
+> +#define VIRTIO_BALLOON_F_REPORTING_PM_SAFE	6 /* PM-safe page reporting */
+>  
+>  /* Size of a PFN in the balloon interface. */
+>  #define VIRTIO_BALLOON_PFN_SHIFT 12
+> --
 
 
