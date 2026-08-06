@@ -4,86 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9246FC56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F57CC56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:45:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 896226B009B; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
+	id 6F7AC6B007B; Thu,  6 Aug 2026 12:45:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8470D6B009E; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
+	id 6A8E06B0088; Thu,  6 Aug 2026 12:45:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7612A6B009F; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
+	id 54B946B0092; Thu,  6 Aug 2026 12:45:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44BBB6B009B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:38:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C964120160
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:38:26 +0000 (UTC)
-X-FDA: 85071402612.29.F3799D0
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A53DF40008
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:38:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hkvBpT7D;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786034304;
-	b=5ieB3gwbxPXeRokvL9dsZ1/nOnMwuObCnaSdCIXgRu6IKfJXaXq+uIOJ6TIIeaZ/Cai+3J
-	U+RIGifBgSov8UC2kkJNJkh73qF1p7gzTGV4mtUC7L8k0Kblnvui+eD42i+ChMzyy8d65E
-	3SmP7FAoyKow9I8ow2g7Nr2UCmttFXs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hkvBpT7D;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786034304;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CB476B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:45:25 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B23751A014C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:45:24 +0000 (UTC)
+X-FDA: 85071420168.05.6E8D810
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010041.outbound.protection.outlook.com [52.101.61.41])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E894D100017
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:45:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SXT9HMxU;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 52.101.61.41 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786034722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ER4hDuyk/AXCOt6BhnNPQBwbY3PdYFFZY89XoDcPBsE=;
-	b=vFpvakPb31vza97JM13zpgRv1+3CLtDoVTc7vyvw9jjCc1/g3++PgyY9TBIiI1zRC9JxEL
-	y+oqY6CGOZcxOa6Os/zRa4U+/FwxHmizsZyBFa2OcdC8w3VzTSxGqq674vLA2cuMlABo3u
-	bOfxBRGkKEzC/lIHnJOZBdr7yfG5Z78=
-Date: Thu, 6 Aug 2026 09:37:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786034299;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ER4hDuyk/AXCOt6BhnNPQBwbY3PdYFFZY89XoDcPBsE=;
-	b=hkvBpT7DRwR5rOmIF5NXXOYMXQWhVRFIw2Ix1e9jw2tCcuiotXDs6/JljnVjb5Sy8TuYBn
-	v1DzI2/aLXzx91MTnb65qkoO3DuWYys3VLx9AGtNe72/4q51a/s9SnGGgWPdn3Le8ilDUt
-	ck8dR4+GXlYxdaJKD6P0ifR9Ex7Pfjg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Karl Erik Hofseth <karl.e.hofseth@opoint.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: keep folio's objcg same as its node
-Message-ID: <anS1HHyoIAPfyk7z@linux.dev>
-References: <20260806061830.3294679-1-shakeel.butt@linux.dev>
- <anSsqaD3QAlvQ8cd@cmpxchg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=n0vWU7UBO+eT5npgKD7hQRs7EEQeBGFJVVjzRj9VUvo=;
+	b=fLToIMAcwY9Vt10CTnsJCuPvZZfKUqr6idXRs39c/rlzhTVXiErHSfOrHSOPgUsRKkkCDK
+	QgAbjZM+i74Vhl0Iwo/+cqGerV8ShcJ9ohkhq2TLDbKNa8cC4H4tobVy6OaGc6JSrJUea1
+	MGZ133GZnF5DAJbZuHpJAGQzzL/x2K0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786034722;
+	b=Uud36wer+EQhsK7V4t5rMELM2VbS9CiaBVTUIOCwQRh37iA0aD8+xkNiySOvScS7Kbms7f
+	TQbx0ZQ4Ue2oxNPL2cw7z8AbrGRmHMG+kbt5Oiak9xM7gsVf7z7XRvmJdZkDhIyILG5SRn
+	E2YhYkMyZbvVe1eQlv3NTk4/kAmvDZ4=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SXT9HMxU;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 52.101.61.41 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eF7BFI7ry3XSvw4eotyFupxSjAsMCpuSLYbvotTgNZh/QnXD4TfPIb0P5o0WkRhrape62StDHAjrFh0lc8fe0qkJKuevyYp7BfmN06r2mArgYZgJBLCBdAnd8cs/sMaY4fsj3BKha/TQeScgjkPgwKh52NOQ9J78nD+KLiKNvIdOLWwWvc3ofeYP855l5yhFmX5fLUx6byrx+FgRDP/a0RJK3EAR9CppNnAeoNQ6BSiii2dEIGWrefdvqNw4i6tQFMvt90ch+No1rgwatOrSgCqoWit81hwuJeTvMhxI00G3hpP3StxNbsNIte/1708Vgg/FcOtEScyGpVrhsx6wKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n0vWU7UBO+eT5npgKD7hQRs7EEQeBGFJVVjzRj9VUvo=;
+ b=sD1YEsBr27h0zpu52eaA3vEZ7vNHqERxky32NpHJKj/KpLNupTpkQsCQMWkm2C7aJwZAUCiVQjBHfcZ8LmdFOhlVpTGo9kFinXDgCtS3GUUJLs5Zz+iHeRLeWVfymsp110ZzqqIZemJ9R0p7UJ4y+Sxv2sAtVz8fKoziin3vW97SnnM+FsWS6OvuEA1K3GL7I5XpU+SXOKOzfAMK0Kr0MBTxVjJCnwKsFD32k4KAwRcdiZKSBXybS7zhLyxjbe9Xg/cDcQtFcgRzTJLCfdsX+RmOrNHovwPtvhMYccxJ/BFsw5FSF3wWFdmMoooBq2YDyIOUtTfn6OcvFe3QL6iHcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n0vWU7UBO+eT5npgKD7hQRs7EEQeBGFJVVjzRj9VUvo=;
+ b=SXT9HMxUztC6wruvz6XssEOWDHHj43u502oSGoxlBZMQjeZJL0rD6YCo4gThxWrLmUeDFK0vh/063wZ3dqJsltJW3q01qby6cBPlB6CVgXJM52aOGwXz9eV6l0ft9ZxFGhjoY8ib/vq15Z3JW2UfDNQcE2dkgl8QskD6WLVpBlJkPBjFlMM00AEDmtjY3XPNNkDWZrtY3X4S4offusWEeYNzweDWDjX7CTQt3JjIQSTD8vqfA8TKuGUbprimUys6PLleO8Og/JBiQtew1wESgFWvUh8r2jbb+bRn5yvD3pmYSUtu+uA6WLe/CbZZbkpoFP/jMXOxvU2TIoJqCzLJ/A==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CY1PR12MB9676.namprd12.prod.outlook.com (2603:10b6:930:104::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Thu, 6 Aug
+ 2026 16:45:18 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
+ 16:45:18 +0000
+Date: Thu, 6 Aug 2026 13:45:17 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Peter Xu <peterx@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: let special huge VMAs bypass the THP
+ policy check
+Message-ID: <20260806164517.GA140051@nvidia.com>
+References: <20260805055544.1568534-1-clg@redhat.com>
+ <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org>
+ <anSZpAjt84Pn7O_b@lucifer>
+ <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
+ <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <anSsqaD3QAlvQ8cd@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A53DF40008
-X-Stat-Signature: 8x6nngemw1ipi6nahy56jjgqg3k8ssbw
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
+X-ClientProxiedBy: BN9PR03CA0436.namprd03.prod.outlook.com
+ (2603:10b6:408:113::21) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CY1PR12MB9676:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cba0e09-0358-4670-1e03-08def3da18ef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	UBvSfpSbC3Y8exf80YR+rNfMFXeXOjRhMFFoQL+oECSic/RX81dA/5x3RFQTne4Y+ttvxnwGZF/bhkd/DD1+cTPQKM46I53UfxewCWV2xy4YJTA7qYwF3Zds/kzO86qv8rpO9f2JEU572l5Yx3tkg3guhwX+srXxSdyL4YsIJg5g9psfZaV9Si4U4Y46hJIbhIwtezZMfynTbe7rB6ot1xl4GwX9bc1FFtQyIhwlE/UvZvqsVjnE2zngc//J5FXo/8r6zGFvKCw6TGQnldbONO4EkrlBHnK6Z4MWCLe2ZRHBgV//d3ZowhtyxpLrtGF0XO4jJ+X5Kp6cW3YBcGlXuehTvGKTxYPKN9Ku+AdtsVeFsfZvbURJQJaE0ZV/hn7nL6abilfndMkF0n+gwc6wcIpZwY9jfLFOKzemuVPkYxx5D37v7QZsbrLJumq0ikMMKhVSmCVe7aH6OogQXRYhJ+XtwcqabNezzcIfJnq015IzxWfMTM5LofSfBNLxqKQ9gguSytRr8BIhv/RzuWUv+C8G2X/M5wGCjyVJaGBqZXTMPBNcO/gJOPb5/X0pZqoEiRXGAIHpyB8TBce04kN7MG/R7NPdAYrKOuXBwnegOynd1OeWb1gQV61lL5rXQJOMVCGx0JeB4F3SLVMJ+9QG15RDXYV5UTZc3bSuaK5T7qw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ajVyTENaUkJydGFaT0VXTUtRNlB2V1NrMWJPK3FnN2d5enlkWW1uSkJsLzhh?=
+ =?utf-8?B?Y3lBUitLNmRjeENPSFcvTkVzOEd5S3pvSlUrOTBsazJyVXh6Zk9PYy9oQnVD?=
+ =?utf-8?B?dklBR09hcG4rMmlBM1BTemx0MXUxaTNFaUpiMGd5RjBiN0xKbEpWcmdRRHor?=
+ =?utf-8?B?cWt5cmI0L1llWFUwN0c4YWRPL3JsZDVBSzhEYzlKaFc3TUNSUlFoNlFLT0dQ?=
+ =?utf-8?B?YVZYTTNDcVpPTTJHMSswemVGbnIrTlRRemlpcHMxSTV1aFNBbmMyZXdobG5x?=
+ =?utf-8?B?Q0lTMm9vemN4VGRJMXNORkM2OUFXMDVjNk1HR2g4SVpDbUFaejczMkhMR3Q5?=
+ =?utf-8?B?Q1B0ZXpJajRhWWpNVnArQWFvZ1prem9FejlRbjAvOU9aaHNLZ2kxTWpXVXVQ?=
+ =?utf-8?B?NjlESjdscEFwck9DVW81OWYvcXhZck9wRFdLNmE5RFVQZ0RXMmN0R1Z0b1U2?=
+ =?utf-8?B?aE5nSnkvY1lwV3cxU2ZKUHFFYnZGaVQwK1d3S3Y4aU5raE5uMitKSlBsbERz?=
+ =?utf-8?B?NGtlWmlOVER3VDZtSnlyZjRGSmxaUktSQjZnTXlUVjVibUlhV1ZFRi8zME5k?=
+ =?utf-8?B?VHREeWtJZmM1dXc1MzhvVEZkTTQ0NVhiOGl1UFNPbWRyOXVPczg2SWJVcTE4?=
+ =?utf-8?B?d2NpM3J4QXFGZzJCcFNrVzZFNlkzY0tjZi9kbzBNM3l4OWVWaTBWemgyb3A2?=
+ =?utf-8?B?d2JjWFNqeEFacmJiVE5hZnB4VmFabWFpSVYwcENtVXhlQms3S2tLQmhCOEVM?=
+ =?utf-8?B?d3JleUJSUU5NUnp1TXQyUEk0dzIySDNBY3dENytnOHk0MzJDM3RSWXhSZ1Rv?=
+ =?utf-8?B?S2FYeDRMMERQUWl5aytZdFVzR04ycGJvdHB0N0ZSWFlKaThuSTUvTXphMjRv?=
+ =?utf-8?B?ZlY1ZWpEcFBmdmExaDFHRTMrZTJvd0ROUjUwcllyS2dMYzRMRHgwSGd1SmxN?=
+ =?utf-8?B?NG42QmVWWXlkRFlvMno3anRJbWlXSTZOWEtIZDlpSndaaEdvWVVKUmc2cjBX?=
+ =?utf-8?B?U0FzV1RjQ0xPaUQrRGs5YVlWdmdiUzhXaWdJSXBvNjNMOGtSaE93QWlMSnpQ?=
+ =?utf-8?B?NGo0U096MEZQMDE1RWhYMlpMQ0JxVTc3VWt6TnRFRGNtY1hvZmFvd3VRSkh3?=
+ =?utf-8?B?ZElSS1V6cDQreDVYT0pSMEFobnA4MmpLN25NaDRRRHZ0R00wMnRwSUtvR3N1?=
+ =?utf-8?B?UTNmYnpveFhLcHZDZDZKTFh1ZE9QRnN5YXYzRWhGeEhjNzZsSzN2bzYzbTV2?=
+ =?utf-8?B?OUFubVRkTFZlNXdzSXJLTDVFSTA3L2VJdEJHZXdoSmY3clljRFN4UEVpK3dS?=
+ =?utf-8?B?d1UrcnBTdi82MFJZbWw3eE4vaHVzT051aEVUR3FGL3p0MWYxQUJ0VFFYQ1N6?=
+ =?utf-8?B?SVpLN2ZFbWJNdHVmT1hMbG9PTnhWNzd2TDl2SmVEbjdTN214eTRlUlg1SVBw?=
+ =?utf-8?B?Q0JLMmdWbjc1UFpYM2lGN1hQeFFjWS9XNTF4UmNFOFRtTjJpcDY2bmxpTUNs?=
+ =?utf-8?B?T2l5ZFc1VHFTaTNuanV3bGtxdmZzalFjSUs4SEdaRkVMa0lLVkNieTNXMzl0?=
+ =?utf-8?B?V0dZMTRYQ3RiUzVPYW9FamQyUVVINWh3QzJsbHkwV2ZTcUdpR1F3Tlk2WmlG?=
+ =?utf-8?B?bGp4ak1sOTJwY20wZlZwTjNZMGF3RUlpQnFMWVB0aURhMThVd2JVcHMyeDdS?=
+ =?utf-8?B?Y3AxYzA0U3BmeXZueXh5eFFlWTJoZVdXOGRRWlhlbzJ2M1cxR3BzMnhzQnBW?=
+ =?utf-8?B?R2hMOEhMMXlidzh0cTVSMHN1ZTVnMmlrcmU4SGg0Uzh6QlVVSC9vN1BRdGI3?=
+ =?utf-8?B?eFBEK1JmLzd5MkRJOXhzeTlTNXRJN2tjTkU0MVRXMEVTdFQ4bzd1a3ZoWGtW?=
+ =?utf-8?B?TmF4OVJuL3ZjYlNYbzRKTmlYWmpkak9KNGpTWGE0SU00QldqMlZ1aFdSeTUz?=
+ =?utf-8?B?OHoyVERURDdBU0FiZ3FlRUduNENsY3pzQWJhRU52bUlaR3ZWSTljZnhZeEFX?=
+ =?utf-8?B?cDlYbUdNNGNuZlNpWlR6TUYrczBHRjBmR1FFMm9OWVNIT1RTcDhtY25FUTRJ?=
+ =?utf-8?B?N3l2aGkrYlZxeWg1WVJnMlhNZHpyNnh6OE5ZZVVKMUZ2MmFUZWJyY2IzQUNT?=
+ =?utf-8?B?VVNYLzN0Q283aDhTcEp5ZFA0eFdqQllzL2lHZjN3K3Ztc0J3cHlBbHV4T3hx?=
+ =?utf-8?B?ajhWUzBZZlRiT0Q5c2lSQXo4RzlqOU5Vc1p2VThuZlQwZWVRUGVyUzlTL0dZ?=
+ =?utf-8?B?SFIxekxVMmlnQUhjM1pIOFdEOHM4SDJ2eFd6VHkySERZeVQvVTZlM3YwdjdZ?=
+ =?utf-8?B?U1RsSTE0Uk1ncU42Qmk5Z3lSSW9BQlFnSUFtL0xXMFp5K1pWWFNiZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cba0e09-0358-4670-1e03-08def3da18ef
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 16:45:18.1568
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yl6iQSEud+8dRzkGBRg9GxRekQ6VUG2smzaLoBjCZWUkRfia63FwylqhFPfVFsSM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9676
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E894D100017
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786034301-544816
-X-HE-Meta: U2FsdGVkX19fefYEy143rBoB2CzhVfqZFWwAbfR8dZRBY8C3nABQQwDibSw+ClvqNLpMihnIq8gYRqWbtUocvbTbgCjxII+ZaxJGhREctMn/qP4R1t8B22oz0ATPyXIdMsAWwNTXRNiBBluH5LppG3nMkFOWvhAA+iq2lxFFKV/hc+1U/sWaA/DjWUyPQO+Og93wAoq+vdWMJi+qJABSy+nC1wTVFPY5BSvlBtGIizUgcgn7CAt4nP13cAJbJpPk16MvuM4CWbRCU3Ltz24aoj2dIPU/hP9ABbJsgukw3MKZb34zpwyPA4hNApmD+y6KYh2rQXy2qUnI4s8s1LwMxO1t3jU741RTzKgAjV2ZiTzrkU6CZPxNvjXyk2bZYonUTTV8WeDEQrfdbAbYvwIKD/VER0WSs3nW2pMAa4LdjHIV6Q9gg600c0prVskq5EjA7DXpQarEKJmXiG6oPYaIRAWmQfeyWp7lNc0FOnXgQ3zkBNd3QBQIXUaZFpjZCW7UAk7AsmtH2m27YFof88CG8a7jh2xXuYpNs/PLWBN8/RaC6fngeZrx1uXqGVwfKyiaYT+oaNxSd82mpZqkT9EIJKjNIFlwxc12ObWtv50jHCGDmuwQbmeS2w7PtylalgKFkyh2ogryKLmlooNiBDklg9AjkZKSSu9V9DNVeXidEhD0j+P3khIDMbf89JJBgM42idAZLclVp8cNEO35gEdxoowZktbsNrizmm8n0b3kWGNdAMCDeCKolEcuZBgKBOCY+6xEcHrqIChEO249elq6WrtHuUzFgzMOEHHVvIPrEcxhc+TAikpYtwmUZOrdDirrYGuQwAdAn06Uk4isBRlW2+7FGw1+hLKoLG5pi4Qli/9o7MtxD7Lo3CQggunhNhZ+Hd+5VT1bSNQ344E5wdJdc14JkOjPFzsIUKa2XuAeEdgAtHZMGDFt2/2OC1C5aJDp3fIh9JcpHAqXunW9LAi
- 148APylZ
- f+s1U+PsKCLxF6HNlvNnPQ6ezWvitPVQXtxyKY+50oRtpf5wzoMqg6P5mhMouKC96JMwmbQhd/Q5fg50tPV7h9y4VzSADWKCewto0inwEmxRQF/FC3/Y7NZu4PdCvNVnEK0iRONCi8EVQDKMEbZfv+1tj8QGfiBVgJM2LlRJ9X9fHqQ23qnxgIw6ck5CP2BS9XdWwT4UUHjfA7I38hZ36NvhAEupjGR9hmMVNGGltQQ13LEYgyrw/seC+h9qMcorf3DILm69Pn8STkg+0Jm5R7A6t+uUfEkwDpIfcnKiVM/gcM9c=
+X-Stat-Signature: sxfxqnskzw3sma4ea1se6f4k46uxjnzh
+X-HE-Tag: 1786034721-673702
+X-HE-Meta: U2FsdGVkX1+GhwyUVe1gRapeLORef0PMLFl7IhvNSOkug3a05y6qIUeFm7IMTCVE6nWofVMWXB+FkFQ9gNGwryUBhN6aXpUSoiGGVUGWjs6+D4z++AJ8F4D6Qd0B09zUCHECwB/ZQt3jmNC233r6mvdjYm1hGbrudC7CnkV47eTvIOpKxLIGFYoGxF/ZKEuY7ldDfYl8GM8ZJDoDLsVjcH6pZVzj0s4Qh1X/cluCX33QdKb6P0CpMLqP1ZmdL8zBFw1iQWyXJxU3ZZ7f8clsZ9gIJb5pMPuql6vVzXTH4o+13K8qvf9Sw5UGbEmK7h4CAZYyW5zE/3h/K7I+fNoyWvG/dIZftGA9nXK/B9CsnQXnCCeM+DObncScfeyu2KYGKTPa4c+aJyjoI4KMp/sF0ynay7Kybv3YfNFjEvyHOTywkfbd++MZ1t61DVSw5CqVAKr0rvgD1as4a//JplAopmJ3NcqVcxEItuwt89r+jU1GfLMtzGgiSWxVBAZaQad5ksIbbI5ZaS9oI9pLJ4DBbGvDV6iCDk/3OgTh1eGio7ogOk++oUjEgenMKBqM7g8TugIaKw18uugk8PP747TLVyXcYbU/3AOkL0endMy1s7/00EKWr5nMmxjw0uZJ4hAwEBuH+Epf5ikFmwyQjj4HZPkmYpai4yo5+fwQgzySjQQG998724sqhx0FF9nDDzc1v5avQc7tOTsl57bPhUiuKB3F6KU/DDObgULrwVsvqwALJg/Zm3IXufMwt73dZJWYt3JqKs550M+ICP9wZL+MdUp5wSzeSKe+ljswDGqGyXmX2LaqsD5Or3+erBk3NO7cM2yL/kmjRngcZME5dq+P/OwRNr2+DU8IKy7BIrV+pKWydUYu1WZYYQwcRWOyMK8FjUucinNW1fzG2TT1gJb78025ZGYcOuYSJvAXmYq5n6q/CkkS7lGBhmtYMfq7VOeBXvLRYFLQxHd5EbMdNI7
+ rVeHWG1+
+ R9Q5isjEahDBJW0yfzPiL6i5KhjLKjWgCvc5Q5b6anRaYOgOCWszS55ObRv3XHd7X+ZForgt3+AG4FKPFHLMviinafiCOllujtppTufvc94hbLjfywgOz6W4eY9nRIPzAWt7Bswu414JwyzWMuDl1xvYDq/3A1fCOAEGpi0Ze0cuPt0+0gKuxrsyylgJP/WCUiMFjU2GJmzrgmyQM8UaJEEJ3y+oliDHtqB9seCoP9E0/CBgLECvwjIUhNT+zwk8E75Vq+7s5XKMW66yD1FZx6lYhsSYMClRZMjlKWtjfEitcdgSfB4p48ZBGyyIWVtEETKMxztZKwO/EEyFzZqn1Tro1Esb0iIoqtW+/rPn6o98Tt3P+iTHC5WVannz3h+BAaPq7WBBJVKhXYows3WN2wYphZRZFWG57E0T+wkjBckesD1DRqN75q1/vFph+mr52uUZ9F5i0l5v6U4Icm9DQxtCm1Kh1YzskbFOE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,150 +179,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 11:47:53AM -0400, Johannes Weiner wrote:
-> On Wed, Aug 05, 2026 at 11:18:30PM -0700, Shakeel Butt wrote:
-> > memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
-> > is the objcg of the folio's node.  Folio migration across nodes breaks
-> > that assumption: the new folio simply inherits the old folio's objcg
-> > while living on a different node.
+On Thu, Aug 06, 2026 at 04:47:07PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 16:42, Cédric Le Goater wrote:
+> > On 8/6/26 16:28, Lorenzo Stoakes (ARM) wrote:
+> >> On Thu, Aug 06, 2026 at 04:26:20PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> emdash in a code comment?
 > > 
-> > Once the assumption is broken, the reparenting of the folio's objcg and
-> > the reparenting of the folio's LRU list are no longer atomic.
-> > memcg_reparent_objcgs() handles one node per iteration and drops all the
-> > locks in between, so the objcg gets reparented in the iteration for the
-> > objcg's node while the LRU list gets spliced in the iteration for the
-> > folio's node.  Any LRU operation on that folio in between resolves its
-> > lruvec through the objcg, and thus takes the lru_lock of the wrong
-> > memcg, not the lru_lock of the list the folio is actually on.
+> > There are quite a few of these in the code in fact.
 > > 
-> > Fix this by selecting the objcg by folio_nid() at charge time, and by
-> > re-deriving it for the destination node in mem_cgroup_migrate() and
-> > mem_cgroup_replace_folio().
-> 
-> Nice sleuthing.
-
-Thanks and it was actually due to very good reproducer provided by Karl.
-
-> 
-> > Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
-> > Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
-> > Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > ---
-> >  mm/memcontrol.c | 33 +++++++++++++++++++++++++--------
-> >  1 file changed, 25 insertions(+), 8 deletions(-)
+> >>> Then I spot
+> >>>
+> >>>     Assisted-by: Claude:claude-opus-4
+> >>>
+> >>> and really have to shake my head.
 > > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 3057396dda53..2e98788dc8bd 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
-> >  	return folio_memcg_check(virt_to_folio(p));
-> >  }
-> >  
-> > -static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-> > +static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-> > +						      int nid)
-> >  {
-> > -	int nid = numa_node_id();
-> > -
-> >  	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
-> >  		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
-> >  
-> > @@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-> >  	return NULL;
-> >  }
-> >  
-> > -static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-> > +static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-> > +							   int nid)
-> >  {
-> >  	struct obj_cgroup *objcg;
-> >  
-> >  	rcu_read_lock();
-> > -	objcg = __get_obj_cgroup_from_memcg(memcg);
-> > +	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
-> >  	rcu_read_unlock();
-> >  
-> >  	return objcg;
-> > @@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
-> >  
-> >  		rcu_read_lock();
-> >  		memcg = mem_cgroup_from_task(current);
-> > -		objcg = __get_obj_cgroup_from_memcg(memcg);
-> > +		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
-> >  		rcu_read_unlock();
-> >  
-> >  		/*
-> > @@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
-> >  	int ret = 0;
-> >  	struct obj_cgroup *objcg;
-> >  
-> > -	objcg = get_obj_cgroup_from_memcg(memcg);
-> > +	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
-> >  	/* Do not account at the root objcg level. */
-> >  	if (!obj_cgroup_is_root(objcg))
-> >  		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
-> > @@ -5431,6 +5431,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
-> >  
-> >  	rcu_read_lock();
-> >  	memcg = obj_cgroup_memcg(objcg);
-> > +
-> >  	/* Force-charge the new page. The old one will be freed soon */
-> >  	if (!obj_cgroup_is_root(objcg)) {
-> >  		page_counter_charge(&memcg->memory, nr_pages);
-> > @@ -5438,7 +5439,12 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
-> >  			page_counter_charge(&memcg->memsw, nr_pages);
-> >  	}
-> >  
-> > -	obj_cgroup_get(objcg);
-> > +	/* If replacing folio of different node, get objcg of that node. */
-> > +	if (folio_nid(old) != folio_nid(new))
-> > +		objcg = __get_obj_cgroup_from_memcg(memcg, folio_nid(new));
-> > +	else
-> > +		obj_cgroup_get(objcg);
-> > +
-> >  	commit_charge(new, objcg);
-> >  	memcg1_commit_charge(new, memcg);
-> >  	rcu_read_unlock();
-> > @@ -5478,6 +5484,17 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
-> >  	if (!objcg)
-> >  		return;
-> >  
-> > +	/* If migrating to different node, get objcg of that node. */
-> > +	if (folio_nid(old) != folio_nid(new)) {
-> > +		struct obj_cgroup *old_objcg = objcg;
-> > +
-> > +		rcu_read_lock();
-> > +		objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(old_objcg),
-> > +						    folio_nid(new));
-> > +		rcu_read_unlock();
-> > +		obj_cgroup_put(old_objcg);
-> > +	}
-> > +
-> >  	/* Transfer the charge and the objcg ref */
-> >  	commit_charge(new, objcg);
+> > It's a one liner. Good enough to raise the discussion no ?
 > 
-> Just noticed Sashiko pointed this out too, but you put old_objcg while
-> old->memcg_data still references it. I don't see how that could lead
-> to a UAF but it's fragile.
+> Just to be clear: Unchecked AI slop in any form is making my life
+> worse every day.
 
-Yeah it is complaining about folio_unqueue_deferred_split(old) accessing
-old->memcg_data internally. I will do the put at the end.
+I think eveyone's life who contributes reguarly to the kernel.. The
+only ones who seem to benifit are people doing drive by patches!
 
-> 
-> Man, this is hairy. I missed the implications when I suggested to make
-> the objcg per node for simplifcation elsewhere. Now locality actually
-> matters -_-
+There is so much more harder work on the maintainer side, and it is
+now even harder to get patches picked up on the submitter side.
 
-Yeah it has become complicated. The other concern Sashiko raised is the case
-where the destination node's objcg has reached/reparented to root and the source
-node's objcg is still not root. Since we skip root page counters for LRU pages,
-this can unbalance them. It's one more check to add.
+Yet responsible use of AI seems genuinely helpful and quality improving :\
 
-> 
-> A comment describing the race with reparenting would be very helpful.
-
-Will do.
+Jason
 
