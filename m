@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C23C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD1EC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E46BB6B007B; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
+	id 45E626B0088; Thu,  6 Aug 2026 09:58:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF74C6B008A; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
+	id 40F746B0092; Thu,  6 Aug 2026 09:58:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5DF6B0092; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
+	id 2D70F6B0093; Thu,  6 Aug 2026 09:58:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A31636B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:56:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C5744076C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:56:49 +0000 (UTC)
-X-FDA: 85070995380.23.9DBCC70
+	by kanga.kvack.org (Postfix) with ESMTP id EF27C6B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:58:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86A994077E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:58:41 +0000 (UTC)
+X-FDA: 85071000042.09.0F65825
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2525180013
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:56:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DkGAyZHD;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B576810000F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:58:39 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cfWtjqYf;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786024719;
+	b=a6orvzNGJ9OlvBmypqCbzuUm13id8j3VB1vqw+giU1wHQh194+k7ywJQ9XWuhmSnaYkVqE
+	t8Rvv/UIjCQ561Xbup+IjNSZwyy17mnt9dEG4TvpAFvtHGlKjIa7z7+mIK/QFqDUQZXzWb
+	RD78H9Qb6WwOpUpuqH8LZ2UJkuitr8M=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cfWtjqYf;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786024608;
+	s=arc-20220608; t=1786024719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MC7T7ylhK/aLr9fs0E5SYbo5bCKm86oRgZDfYL13AS4=;
-	b=vkqlB8fnbQcmHe83PBte9RpRhRjpyxXh7a4coYZFHOAhTmh8pLLkUj+m/wEFQUWoMdwD8w
-	NtENyDry3g5LBZamplEUajAE9zKn5UXw930XWX0Ry2mI62+/xbPqVVAtAQBL1WCUYLlnl3
-	we5/SEVy+KWPLaS+UQpat/0HEKPOyrA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786024608;
-	b=7qkiqhcuX3DOiBGKWncOzBhlK6C0Fbr/BtVJ15oxkHNZkZFrMg0MdO7MUwOP3G/aWU/wnd
-	5LnqgkD9d0UP4Fu3Bhd+uxTK/nuuDCyEhThNVFglDYY5NQ7CGaqrl//oCTul6mhkO4BpGL
-	9c894eFYtWP+SSwUg/gpkr8f7gsn1Nk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DkGAyZHD;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=9wRO74CcRIalo/k8pD9p1nvIQvOuxyVB7Ax6J3p+LFk=;
+	b=Ae1zyxVWVdzKd6xiozaUIN/QHXc6Uy436vXi4RWpHp5ZXDcQ2xKOn8GK1qLqVNLrVgCuae
+	QWMLwqiVZpyYr0IrGJKZstuiWafC2VRiI37m9ucldixaNgIKMljrpNnQ+ZnXI0oZFdJDcj
+	lqKA0TWKrxdK/ZGvx9yIf79zJidkM0o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C2EB43252;
-	Thu,  6 Aug 2026 13:56:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DC41F000E9;
-	Thu,  6 Aug 2026 13:56:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F39A540F0A;
+	Thu,  6 Aug 2026 13:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44221F000E9;
+	Thu,  6 Aug 2026 13:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786024607;
-	bh=MC7T7ylhK/aLr9fs0E5SYbo5bCKm86oRgZDfYL13AS4=;
+	s=k20260515; t=1786024718;
+	bh=9wRO74CcRIalo/k8pD9p1nvIQvOuxyVB7Ax6J3p+LFk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DkGAyZHDVpHpzU+8ZKASQVokbVrEOI2Cii14k622zjZ3cwd+Ne0Csvoj1YN6XENG2
-	 H6pM+hFjLX144QIABtWKyQNdmRNlQqAo9KOZsuVMgPVI2HU+aYeTA9WBkxKJNTvsxl
-	 7lZChMbTyMO+ZcnZwpoSJDoGdnUcZbnQkAzLD6/tOGHXr0yGNSzKAn6ZkDwDMKs0a8
-	 0AR97NvqqDYbqVSd9DbVAOHVoj5q22bDD3m9UmUPN2nRhjMnbqYVKcDVrVMGzfrL1D
-	 yQUySxekwYv0qd9PjbpnVJzwEnJ7+7UZ1Avixh4y/xFPoppigmWx1aOBhr/5xfa9vZ
-	 Fxwf+avkzMfBQ==
-Message-ID: <77a27056-555e-4395-b71e-e777548750e0@kernel.org>
-Date: Thu, 6 Aug 2026 15:56:35 +0200
+	b=cfWtjqYfxsKZVa95uwGYkFOkF4656sllygFEOdMkS+9F6TRD9d2AZvKUYCyl8qOfV
+	 RPHyAblmhkJUXr6M22cEm35E1ew9IQJKJWGaVEcVai7iuZM6+FYmS8/jo59S2Q85mD
+	 /qMNFhb0QSFM32zF6zBR1Q1N7i8LtbX3YTq2iDRXAXfMy8BNUP9iRgMYDK2aJaTKwR
+	 nRAPTyvvG/8lhjbL7SgkSF1+DdKiI8CZUdizWC0vfWBXIDmUQ9JCwtROMOBC36lAQw
+	 N6gn/DCSR/u2P5N11sKhZS9nInHhUhymPJVEXPWV7WPUdxYc/dZebKkGn6BtCtRi7N
+	 VTgpKbGJJm/hg==
+Message-ID: <ee89226e-64b3-48e6-9be2-4934c23b729f@kernel.org>
+Date: Thu, 6 Aug 2026 15:58:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation
- failures
+Subject: Re: [RFC PATCH v5 3/4] mm/vmscan: avoid pointless large folio splits
+ without swap
 To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
@@ -82,7 +82,7 @@ Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
  surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
  yuanchu@google.com, weixugc@google.com
 References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
- <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-4-xueyuan.chen21@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260730122304.2496440-4-xueyuan.chen21@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B576810000F
+X-Stat-Signature: xbjrg7bgj47ynsqfqp54ufu77eaesou6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2525180013
-X-Stat-Signature: 47iujrkwz98tb6w9z18oc5q1pp7qhqha
-X-HE-Tag: 1786024608-455696
-X-HE-Meta: U2FsdGVkX19yJu5z8Ix6WarTdIiakFu+a2QnkDHXJgrEXUV0Chg6gPm+b4NMz5S00DMrSX62q80faIDrejW7C0swBLj8/6a2k1yl+yGsSLupYMgmbmNta8+/IKKJwyV+5fE5sQK9sjqX8p7YGXLr0VwsFqOckAOi0qU9RLmWaL+YnXkX2IntcIgzncQn8MxM4dFn2O6U0JN322NOmJFCb9m/CtsX4oLAIIhBamSe/k804IF9rFABo6FgvRONTYcr94/ZSTZmWp9f4ZCuw4gAdw+ys79tpMEwBy1dPnyzizS9ezdnPLU1caixpQcef19IXSbHU7hzX5t+Kk2pbRpD94fmooLw2LuNtPLrQH0l2ZflXhdJ1FwPIweMbCiDQ+7+XSyX2MSv4ZSRn11+OpNmSwlqR6TGFSi9RJCJGTmD3ql2bF6Fpsb9/Os2kGGrtzDzFl+pePWuJhYtdh3sCMKIRbQ6dkRD8jwlVHqgTEw+K/Nf+ko2SkF1afxCiIVLDfu48nPAZR7IU2pAAo2cqrTmjjaAluRBdvBge3f2Z6Lsd39LA8aGCifgCtFshBLfJ0hL2lYkWJieje6OrNi+85UkYhOiwdLo6z049FBb8mU0ISqxvKSD03xzWlDQf/0vu/qqTObCkJ7ZCxuyJkws3GxnniwcHVnjaVBkj+T6jGkj3jnrkGOKPfq/HVGb+yBkcH+zKV4HiD1X2UtX+k8NLxq4tzzUsrxhG0fZW89LLJDKLdIX+jvLd9encrjFlkjhHKMYliRxlCi8XeKHbp/gGyvat3Wl27qHLzM6RpThZkiMo+7YL8/f1uw8whjXM+o4CQ4bDSwW373nRdD39sSO4QlVXJV/560n7lqPoIFCqF9A740PxDFrLxQQIW+edWhzEjMI3ejlxyYh9LV4qwLQ2aaH/vOveqRDb1OqTZZc2+uLS5Kco1duEPE2okJ1VNFdPZW9XIp7Mt7wkpv06uID2hr
- SWKKMjLa
- tFMSQWCHm6JIo0Hp+/9qqoIcOf4dcJnu6swUVMY6ShSXdJtFJkAzmXr2rDxtoxADl+2D/Fmr2wxGRUonQBC8AZfaebhhDgtyVmCex7vuN8lCVAccru5B74CfoIQ3GLFcedFKD8ofkgLYaV2YKBKUFekFRaO4ZWK6bfPl3HhufcAohagEGqOMMQNXQqZWxwn6QirAnFNjA5aYNq6ITKU+GNkW/bE9TlDMLCluImhjPHwlCwns/lu4v04qHoK4GHpvTqLD3WPUoQOs96sMILoh2WAhdCy2fhK84dgacSgZnDqNEyS3o5tdbrNAoHOnwVXVIw7Sp11cGb43kcwtiu2tEG4EFKpD2kbDyfcIr5dIj4EZjV3A4qP/r0j5bp6nqrf1ULGrBI/4EwyovcbGNzHhmLuGYAQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786024719-770769
+X-HE-Meta: U2FsdGVkX1/7ZkzqP2K065mfQdefUojRG2TGJLeTV7H1lPXakxtCywehdzKQyjuJu4zrqsVAZVIITwqVe44gPyYalDKP+e4zo0Rzoh95xP3FK+UxJpa4Rj6e00TAhMzTH0s9CJbKfAGdXD59AJfagNrFl7+pwdZ8Q2o77ILAsjR35LS5LEVrD2sVdLDh+sN2UZP5FqW93v2AFapDpxGWIeJwE4M0Hfkbwwx0wUxPH7ZSrKwgAauKJbANOTR1SGPhWq119YdZR4cP5aQdhW64ImN3hlQjO31pwPekVh9TD+xuI5rDrxEUs63ZJyATmn/cgyhR8j891aj4g2FOqM9AVtUCihRrwf/ep9x2X3vWlcrSLlW7NnwiHkBhNLnDSb2mQ7laUaKx42Zj6GPoW5DMzAtG+T3WKwMkG3Hw+7e6I5HpF8jmMTvuVaczGafcQ7qgoo7kTVEW87xlIgD97mT8eYit28x2WifUlRYsAUXy3x73is5W1NA2E0lmuQbHahvDdEHtcW6fsQCUwbiGZMD9klJOjzIceni6hh/mF+xuC/Bwn05QEv4l54Pj9N1U7094VvUI6SkmdgPcKkjsuAh1vJkY1IKe8icjUYRqOm7qiwi/JvE0tnkVjEo5lxzJX99Z/La/fM6wY+zkOeO00W1AK1hphnDUfQifc6wfa/WRpXO8Buj/n9S4QhTjcmShMpmqI+ZjT8wIiiwB+tooyaK6MC9cJE/tCJJYj4mqLdbBkQhTRUkuApY7pK6quAB5eyksbkrLksJG/4sAI0rjSzE71xKyfpaLIi6vUqqLh6FxqR7U3Ws++6bvV8ZpEdQXVBNgSYIXh8eQtETK4KbnV1TQQ7iE44df7X/yEBJIuvaHyi10uEwHzKlECmBCXoEEq11T7HHYBPULy7DZ90Z2TiJNQ/S6vOK4L3cw02GXS6S1dXaZ9vu470JKhixKwIbM85ENHqIFxfrvkjOb3AmNobu
+ 6EMJHWGw
+ WrYGQMZ260VhQ20dcyJOh8zCtsvQ9gmfZIslYid2pKqVWFv3EKMoGozmT2bM36G0uNz1NyevUBUEzTiSGBIDObdKuDtmO+6dnQFGJ+71bMnQE2NaJ+X2LnpgGHBG6RK/uopH4GXIeAVHg68qwff3ceJygqiBXc2s2wn+bTY7krqhcS28D7cFCZlvlEB0tmdZtN8iDLRDhyiJ5u5SKaWMxQDEfldM4Sla2ah3C9MH4kFjwaZDMe2ya0OoLjW1e/nWiJZCH6w4ITP1o1Vss2qLqccGbm/+NS5XKs8HzBgwLICq5xUX9iKEfh4D5cppQfFc2G7Znq69I7Ir5wX+gmWccsbqYGucmCvGnENg7QqBgnmvt8zqYE+m5qEvO01gZW3lWxXWrSZlKUeY0uC3+ok2S+nbS5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,60 +148,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/30/26 14:23, Xueyuan Chen wrote:
-> folio_alloc_swap() reports most allocation failures with a generic
-> negative error code. Reclaim cannot tell whether splitting a large folio
-> could make progress or whether there is no backing space at all.
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> Keep the global free swap count and the remaining hierarchical memcg swap
-> margin as separate inputs. The memcg charge path reports only its own
-> margin; folio_alloc_swap() combines the two layers when classifying an
-> allocation failure.
+> When swap is disabled, exhausted, or unavailable due to memcg swap
+> limits, splitting a large anonymous folio cannot make swapout progress.
+> The fallback only destroys the large folio and inflates split statistics.
 > 
-> Return -E2BIG for large folios when a smaller allocation might still fit,
-> -ENOSPC when no global swap space is available, and -ENOMEM when the
-> failure is not helped by splitting.
+> Use -E2BIG from folio_alloc_swap() as the explicit signal that splitting
+> the folio might allow swapout of smaller pieces. For other allocation
+> failures, keep the existing activation path and avoid the split.
 > 
-> For early large-folio rejections, check global and memcg swap availability
-> instead of returning -E2BIG unconditionally. On a memcg charge failure,
-> swap slot allocation has already succeeded, so use the remaining memcg
-> margin to decide whether a smaller charge might fit.
+> This preserves the split fallback for fragmented or partially available
+> swap, while avoiding it when there is no backing space for any part of the
+> folio.
 > 
-> This only refines folio_alloc_swap() return codes. The reclaim callers are
-> updated separately.
-> 
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Suggested-by: Youngjun Park <youngjun.park@lge.com>
+> Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+
+Do you have a link to the report?
+
+I assume this is not Fixes-worthy.
+
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
->  include/linux/swap.h | 16 ++++++++++++----
->  mm/memcontrol.c      | 32 +++++++++++++++++++++++++++++++-
->  mm/swapfile.c        | 32 ++++++++++++++++++++++++--------
->  3 files changed, 67 insertions(+), 13 deletions(-)
+>  mm/vmscan.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 0544b2ec4c56..7d12058174ae 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -509,12 +509,13 @@ static inline void folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
->  #endif
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 26df81e773ff..457049e130df 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1263,6 +1263,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  		 */
+>  		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+>  				!folio_test_swapcache(folio)) {
+> +			int ret;
+> +
+>  			if (!(sc->gfp_mask & __GFP_IO))
+>  				goto keep_locked;
+>  			if (folio_maybe_dma_pinned(folio))
+> @@ -1281,11 +1283,14 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  				    split_folio_to_list(folio, folio_list))
+>  					goto activate_locked;
+>  			}
+> -			if (folio_alloc_swap(folio)) {
+> +			ret = folio_alloc_swap(folio);
+> +			if (ret) {
+>  				int __maybe_unused order = folio_order(folio);
 >  
->  #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
-> -int __mem_cgroup_try_charge_swap(struct folio *folio);
-> -static inline int mem_cgroup_try_charge_swap(struct folio *folio)
-> +int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin);
-> +static inline int mem_cgroup_try_charge_swap(struct folio *folio,
-> +					     long *swap_margin)
-
-Nit: two tab indent
-
-[...]
-
-> -static inline int mem_cgroup_try_charge_swap(struct folio *folio)
-> +static inline int mem_cgroup_try_charge_swap(struct folio *folio,
-> +					     long *swap_margin)
-
-
-Nothing else jumped at me
+>  				if (!folio_test_large(folio))
+>  					goto activate_locked_split;
+> +				if (ret != -E2BIG)
+> +					goto activate_locked;
+>  				/* Fallback to swap normal pages */
+>  				if (split_folio_to_list(folio, folio_list))
+>  					goto activate_locked;
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
