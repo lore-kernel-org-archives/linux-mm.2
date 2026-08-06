@@ -4,140 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB81C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:12:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4FECC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 21:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58176B00A5; Thu,  6 Aug 2026 17:12:43 -0400 (EDT)
+	id 2CEAD6B00A0; Thu,  6 Aug 2026 17:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09476B00A7; Thu,  6 Aug 2026 17:12:43 -0400 (EDT)
+	id 27FA96B00A2; Thu,  6 Aug 2026 17:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF8046B00AB; Thu,  6 Aug 2026 17:12:43 -0400 (EDT)
+	id 195446B00A4; Thu,  6 Aug 2026 17:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DF316B00A5
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:12:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E27301C04E0
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:12:42 +0000 (UTC)
-X-FDA: 85072093764.10.F2A79E8
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EF6DBA0015
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:12:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C7RHqZxM;
-	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786050760;
-	b=JkOXRabhyEHNhpVAKf5M7kqFj3Nf549yCY0qqrRB5OZfxFzuAhbYP7bSH0h7Uv+QT65Nb6
-	NnxzD74ai53PpZ7jq6FjBypP67yRz0U9Ry8b2NScBDqm+EqmYElzLKsmC8cejJgU98OTYa
-	d2AFjNi79Zpv4FFToXoOQQs/eYEJA4Y=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C7RHqZxM;
-	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786050760;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E5F2C6B00A0
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 17:20:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5901AC01E3
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:20:06 +0000 (UTC)
+X-FDA: 85072112412.22.00CABB9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9559C140010
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:20:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hrEk5wHD;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786051204;
+	b=QMOcYmj6hjAOXN4PrTFgqbfgWBkxx57yuWwN6sikvhdtuWAbD6WzXmhMbC/4TaUM+2vLIe
+	MZv1mLIhMpr/haiAeBtR8BZFZ5/9r7L+3emh5Xl77OO8cfWESBR52JkoIfr2eznwvw9bJh
+	KPUkdes27r3joq4ip8sILe917e9/RQs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hrEk5wHD;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786051204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O2nXCqD4o4f5F4Q2WJbaQxzYFvLIe2CbH7K3L5QM6zE=;
-	b=g7T0Btbkdkdm37gsvJjsdxHo1XCtR9NG/40W8vruXgt7nSn5vAW3yLdJy0+Px1W5p30EN2
-	/aQbqEFecpuivvPdFe2DZ4jPVtc6O7IhKDFmhZ6XMCz84Xd5RqpICeRjzebxEFOWiXQic7
-	tMmqELp7LKq2+EL9nTRUqXEJCBhTUkE=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f7872abb6so1306492f8f.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 14:12:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786050759; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L51ogDtpUnru7a+rk+m/JBONhKyW/NS/GaXVdlNm3cCalFBoZafmXdEru4FOQDFzL9
-         PTzRxJfsA2uPbmNCf0YmfTi2MijwdvmOYtvA8ogL7zetd5gin8wpmhlPA6GDSxiWB+Wr
-         u5ydJXClasuonm/89d8OOstzy+St1a2Ymjq9UNWKzIV4u+824MhwKOiu9d3Mpzm4qNie
-         CmSD6DeK4ezhdXjaoJAOewK2QAHydDHdOXG8XxF8GRfQe2vk/YrOKrZlNWdhjMfNm1cS
-         xa/IMg0jijF0xp4KD6kMVmrDy48jxupe2RWGijf+lT6NaSIW+xTWrFtZ/DNz+eDHhPMo
-         1xmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O2nXCqD4o4f5F4Q2WJbaQxzYFvLIe2CbH7K3L5QM6zE=;
-        fh=xm1LNoCMkZPEYlLaBN8YQzf6qpfeONSKQ87fzfPMuXg=;
-        b=AUYdnsTg/4tYcDgtsKCN7aD7Q8TK9HqrWCNtZPFeErEG9ddjWS7hg59CFiqA0IdueO
-         DzynFAjjOc4iNDpauFKaJiDM37JEni/dt1tPDqVeLsNCwpzsNxZgZ95sProddWQU4Fce
-         7pDRPrGi7VC4inL64Q316TwiYQhNBHbE8i4FHbc6fReU71TgFLS5pzlSwPcvDy2aimHz
-         bet5uKDFzxL4rn+TPhPIRrFJ+jY4RpQ98cDgK7n8G/bUIqXkNNDx4uAMHjhCmhygbpPP
-         H8hKuh8llvEYq2ynpnfx5Ce1Ydg0L97iV8SzHsF4nZkDLMD95VO1IX6/DUVFiPbhguml
-         mNGA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=OH/jGTweKLDj5ljGoHRyVAtI3RPLntAr3emVuir6R8g=;
+	b=twHWFFqKPEGeLrqGBj1TxLM/vLmSagqtWyvvbSRDzXpUCCjkz8+a8YU+6CbUnW1iiZxaQ8
+	sWWiCYcNm1wllPIsPt7wZKH7+5blnQ39H2VFCx7GA0TRUz164dEHbydkr81gr+Yt2zmSSt
+	57ajHgDRsH0fx7qHEN4NPUeWlpNuUW0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C29026004E;
+	Thu,  6 Aug 2026 21:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A131F000E9;
+	Thu,  6 Aug 2026 21:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786050759; x=1786655559; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=O2nXCqD4o4f5F4Q2WJbaQxzYFvLIe2CbH7K3L5QM6zE=;
-        b=C7RHqZxMpZDtuHIQcqXk+w5BACSPr3C+ivJxb1NaQ1EiuylMaXAVZJkd3Y6QwqM/Du
-         RtyNVGW7m/3NzYP5+icHOoJS+pYAvBmRdIX7O/SNZgkeYtVeCQUYXLXbX/v2CjocZdnR
-         gj0m/4jIZXUSGKOiRouhV3aCZ4E6rk4SbTo2X++drUgD7ZVoP7sLfc7KK1AFscq4YPc6
-         K4r0KLmogwfuITksDWLiOhunnunBxxceJkogB3q1bcefFdjqH/dTNLhNiWC6bBbOcwSN
-         1itWv2T7Lw3O+h8NiZQfkYLeH3dkKrIYTwmad2xVwQDc405n5rJwLzxIeptYsI8aNQT3
-         EjCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786050759; x=1786655559;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=O2nXCqD4o4f5F4Q2WJbaQxzYFvLIe2CbH7K3L5QM6zE=;
-        b=jFH8gRhHmzzJ3EE1DXxUpfHOEWSiIidtybmm4FosMwhUisU0Le27NL/zlFIZn0YCzn
-         LiRcLhuP1r/7ZnCfTVEU0UMoOwl5RcBo87nAyWq5UBZwcT3Vwp1ROTmqR8CZ1Ai4Hbu6
-         fZ1711hyMqH50Ewl4R0FD7frVY0Ux5sZWFZeW2TfoTOraGGylXUWGlwexYwGPrh5WIoD
-         xqZ8CSQVOs9hI6otk1K3C8U8OBe+BXnMA6ihpC6luJwzBIClraYKsENHA3UJvbliBOTj
-         5ebIclkDX3xg5xa33S4aS+PM70ARd6vrBWP0Y0FumFl23WUPuHVRjqQTQv66ZuMmzZXQ
-         HZmA==
-X-Forwarded-Encrypted: i=1; AHgh+RoO8MymuzsjmDx9lU9NlDfS4tsBLlFK8sJ/JjLVg2XL0ncIP/bWI1VGnGkBgJsJnSstkdHP3atf8Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw2HlAg9b+wTfYGVJUa5LMRjUW369Vsx/kBhLrnO6gherqPF6uC
-	ej1poz8DTczbkBobETN7MNRVLveoBkqADu7u92Hw5IYBkn8vjihrAXGBgLS44my/42uH6yFCH9h
-	J7fhoyCJiqjhjzfab/tHUFfLa993/LZQ=
-X-Gm-Gg: AR+sD13mkftYG5MsgkLP8wNG/Q0hCTq5tPmrr8Tpms2x3tnpgpEJNQ1zama3ejl+ura
-	gN/EltkD1vZXgFto4iyCW0J7uCBSx9oRYjkWKMbh7jmlxO6YchPC9aPMqWscV/ffFfDqnBQjDJK
-	0w62byJ4Z5SM+M9J3rK5T2+aXSgPtkMHXPMSTTBkxcx9hGOOc+dB3liS2cDwzfm91KBMvnJzYU5
-	9HS66C/Nk0qRmwdnQytpDAXabb3mvZ+ACbAiL05Skn6NqNewEn600RaqOp2FpDB+KbOUxNfkk9I
-	SB2yhINE5QsS3JYh+ajBNIRyFeFyFrXHkz8z3NMip+ofR3kJ9ufLQwrl6c2cdaQ3zMwuVrDoQs8
-	st1dnmpe3BNU8TyNoopY148w0
-X-Received: by 2002:adf:e012:0:10b0:47f:762f:32a9 with SMTP id
- ffacd0b85a97d-47ffd2322d0mr5562298f8f.12.1786050759421; Thu, 06 Aug 2026
- 14:12:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
-In-Reply-To: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 6 Aug 2026 14:12:26 -0700
-X-Gm-Features: AUfX_myi8qSsw8YaJ3oXvGriDbREJKOHPf6InLwZIwXLf_s2phZcmAT4WgkHKVs
-Message-ID: <CAJnrk1YNZ-mW7VDXtbNYDUbim7g20gSsec1Gxpy8kWKrDEN5_Q@mail.gmail.com>
-Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EF6DBA0015
-X-Stat-Signature: tfanf761jreqeo1y11zhrsr4smynssgm
+	d=linux-foundation.org; s=korg; t=1786051203;
+	bh=OH/jGTweKLDj5ljGoHRyVAtI3RPLntAr3emVuir6R8g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hrEk5wHDENIjlMUpYglMp8AUOxthBoNHko2cDBo4ILhPkeNeGv2vbzVajd5Cl9KfZ
+	 r8kXXsvuRJo4k6nCzL+cAmjIX2Fcqm3OH37dKA4zq5jQ7cn9cTcWxFOrJfszmY8k1h
+	 cDxyhIGIMzo11FQs4+okpNRoF+TcEYUhcJFsCUWI=
+Date: Thu, 6 Aug 2026 14:20:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Jianlin Shi <shijianlin11@foxmail.com>, linux-mm@kvack.org,
+ vbabka@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ ziy@nvidia.com, linux-kernel@vger.kernel.org, Joel Granados
+ <joel.granados@kernel.org>
+Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+Message-Id: <20260806142002.ac4a349730f3ce15154a71a5@linux-foundation.org>
+In-Reply-To: <anSRGASe5FIrqwlg@cmpxchg.org>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+	<tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+	<anSRGASe5FIrqwlg@cmpxchg.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9559C140010
+X-Stat-Signature: wzocggaypstiapaws3tomnt7gtitsksk
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1786050760-309165
-X-HE-Meta: U2FsdGVkX1/jvNU5lu2uH4ZXlheLnY60DiRnR9pEAA4RjzHkaNdxeZenskSzC0g8PibPSkkr0A4oNJ1RSAjYAdPEE6KGb5yziOej3HdDYcqerIfBNzz0b2WHK8w2s2YCjmPY289eSeFFeBXk6sovBKNMFRYwkIpOvTJMShcj/B3mjdwJNSn9Ju8SZA1BPqcTToSVsY2KgCsOZRed3Q2eFV6bsvULDuuxSlYhoi/r6OFfvw39XyWU1ueJ/wDVpgtAklTMGjdUYc4MCckOb3CTveTZRruLZf1gmwXEHxT5Xd99OQXX1DnnhKRmfcOBbk/SWyMSr1doSooXRabUWdN16ZFZaPxR7xtZOn4SLtJZq0NzSCeOL8pSrgtTHBBsQm1/28WJcLOsW5D0W4vYbTNC4rn6iC29EF9eENPnWW2IvRFU6yFHBDLgvMjYD7MceCj/KE7R2VKTh9cu+mwfvrcZn53bUsualnZU0NK/w6vmF959AYElFXR65y9oomHfaxbG8Q2rVKXquUiOpCZf1tpJmfiJtnZxIkAJ/Xubm0cFMStJXdMyHpXM5VvkqRLzp+0X68qoaxslqRRhJT1U/lS25oq/NYyL24yhaq9cla/lAWQgtYtb9GEbfrLiHwXortTRiOLCOMuJPrOPFxgvE4X7HiiMZfFzf9v0BIak7Cm+SjmjnW7mtRXiXCnjIvxUoroXiejoVBSPLn7kqBOfrKRy0l0fLENKOUfxTfSLoYYqpk4HUEztoaJHfLzJBQCzDiyGgcD2uTii+Jy7dpSlVdldCgivh06lq15yiUA02QGzmcp0GgCsTS0/AQUDWSqQNq7EwIHQL+2iYIaGSJddL8vT5xynnqICI4cX/6MzIHKsUkOmw1VL+6Sj0WP+b5tLrRqjiOn3u+PSRkONgfabj2fdtSBNn2d/zn4HhcXxT4aJwbpN5RGIWGK5XTWhloueTxf6GiWg7twyk8GS3742yAB
- dZ5bZR60
- S7W8LiHtYlvXCvdJlPtb0EDOrFHJO6/PIzW05RAFkjv7XLid8z/IWzOKGwtXSi7UjnSqgEPBxJ+yxzPn2SBM7iNHcttZyX2Hu71F2EVF1I00/vExr7APSWQFCAiVk9yVRQLEteGo67ztzLUOkQJDS0+4jeDSIt5cI9SIjU6VOLwBirsUEDPy2/rIl6IigWgoRXfuKXDpir5gHu7liVuPoWyUxhpVV/de3QU/5dWY3kjy+i9aqlNvACGd65Eietj5DcF+KU6f0a3nNOYSAYLqn/zdxsu3vZ2G5pIKx0SU+7kG9I9h3poKI12H2ta6/pxE2ml8PrUGURYXWCyLt86/wKtadfHUTAS+k0pDrLnEbMfMR2vupNnTZr1llnJmout2zsbXcwduAJA/dxDwPURbbwLWOsXkAvPEXiaAtU33BIKFXveNTLHQGnRMrVjH77du5Q6KNnY2PekteONGI0a4ojsTpv0cSgLFjCUQ2
+X-HE-Tag: 1786051204-244253
+X-HE-Meta: U2FsdGVkX1+w0yBG0KgdptbneBFa25F0PoIZWR6doDVkHP6bpZXM6+Mm0ZMPZny/FHqYl/4y2s99yP9cAP3Q/xpA1gqGFVKnaqS3kXYOEQkoNNJr3uY5dEbmTIrbhHeDumZwzUpm5FNfu4ADS35qJRYUxdLyr0YhPiAlEWEZoFfreRZJlxnbFqt2bOB6nLtasUND4l+zBj3BOrf71hG3Q70waZ2FFo+pX9wsHq/JZp/uahcmE7dm1gi12LXowcgrHqlX6HFlZjP67r31i5sSBwIn1ZVpELek4G63+xmdCIwcfqmsoiKpK3trLubQF6oV7FWs4pUtiqDrA6zO33NisYXn9m2j3L4vMM7RPiZVPWudQT5udTch0AnaVrCJDvJ/UeVjO9IZfuVLPzxQnuV5n1SzIRl9tWFf6dgNKlRi189zPIkzkcLJXdKP0EKwr/oT6jsb3PZNC0tfCDQqrwOa8vmcIOFRKjZY/KcTE4BykpCinE6JIG27acTyLPziSCyThyV/jREvjmuRSPibzPPJJNS01j9a0cE6iBO8Zp9MOTdel4Ilxbcyh0iJQYK0lhpy9MPJ1lrOgD2H6ox0m+9z9mpYblMah8kBxWbH/Qc4ll3dxWcrmnaGSwx6iKW4z/bHWLg3KahjnGfHjmocQjNbVqKznVq6gIMwtVGLVJw7I5Lky/jOY6q4DNCyxcXP7JmlztHNfEmkh/yFO6dlfsCpHYlhtvsDAPXif+ioy6G7+ltn1k7gxLnh4DYKJfQ16ZtJOGBjqEVHfAz+uFjUcmXbCyIkzV6v0akk2WZ0egc/mfwaBd+zQWJJG+pGHspARXQMSHin/frvhQWbNdYnZrpTAl5z2mHLBbFkzSLDiGSKVnb2o539ahluhhCcPwz3cWSSmjD4xrlK0dlNeA7ZvNiV1N2m9JTAivL/jYyJIiejEkKdtgvsVdQ5cvsKzDxXry/nuv+Ddve6M9pytn+eGxI
+ rCtVs4lK
+ Xw/7+p9Dgg6hi5PEpWyDCuOsOgSjsr+3WaqNscQSLlAKrlFm9LsTQy1w2J3DmalFc7HfV/p4I13u1Vh+AUMTWfsAZcIRpjb4hACqgZD8UJ5d9t6foIGY7ieT3OXYcM8/e4wkTCUu8U6+0kOGFZe8qPwxB/PysJ9ibNTbNaVgKLgjdhggE2JfZPbhjAtJgnjFbkyMbsfj6BadMH2yHdhLh/tt0rVybLrAtooA0VfaYKvuui9LxM1cypknzGB+iIVnwGF3KKtwgQKeqaZlYG4aAyDoO1mdbsJowfwKrX/1OZPx5VG294hBuUMUXptDhugwgR37N0f/U5w7fXWJUZoALvArIJIJdKwEWYY0GA25G1T7NQ0VbQlXBzjOEBfIFr9MePh5exexAYvIPG+sgr8wBMEX6J3gLe0AkDQgZJcKi6/LjBFaEmFBVYl02XQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,17 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 6, 2026 at 2:04=E2=80=AFPM Joanne Koong <joannelkoong@gmail.com=
-> wrote:
->
->
+On Thu, 6 Aug 2026 09:50:16 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
 
-Sorry, I think I messed up how things got linked when trying to update
-the thread title in gmail. This is a continuation of the previous
-discussion thread ("PATCH] fuse: disable default bdi strictlimiting")
-which is at https://lore.kernel.org/linux-fsdevel/s4kv7qep3jlncs67q72xfhser=
-pd66hpbwzkoppiddc5raufyjd@ksuvlfqcrbk2/T/#t.
+> > -	proc_dointvec_minmax(table, write, buffer, length, ppos);
+> > +	if (!write)
+> > +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+> >  
+> > -	for (i = 0; i < MAX_NR_ZONES; i++) {
+> > -		if (sysctl_lowmem_reserve_ratio[i] < 1)
+> > -			sysctl_lowmem_reserve_ratio[i] = 0;
+> > -	}
+> 
+> This could use a comment. How about:
+> 
+> 	/*
+> 	 * proc_dointvec_max() works incrementally. Use a buffer
+> 	 * and only set the values if all of them parse cleanly.
+> 	 */
+> 
 
-Thanks,
-Joanne
+I added a fixlet:
+
+--- a/mm/page_alloc.c~mm-page_alloc-only-update-lowmem_reserve_ratio-on-sysctl-write-fix
++++ a/mm/page_alloc.c
+@@ -6932,6 +6932,10 @@ static int lowmem_reserve_ratio_sysctl_h
+ 	if (!write)
+ 		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+ 
++	/*
++	 * proc_dointvec_max() works incrementally. Use a buffer and only set
++	 * the values if all of them parse cleanly.
++	 */
+ 	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
+ 	tmp.data = ratio;
+ 
+_
+
+Sashiko got all upset about concurrency issues:
+
+	https://sashiko.dev/#/patchset/tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com
+
+But I think I'm hearing from Joel is that the longer-term plan is to fix
+all this up within proc_dointvec_minmax()?
 
