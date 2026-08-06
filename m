@@ -4,120 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C23C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F81AC561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:56:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B62F6B009E; Thu,  6 Aug 2026 04:51:14 -0400 (EDT)
+	id 19FE96B00AD; Thu,  6 Aug 2026 04:56:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366AB6B009F; Thu,  6 Aug 2026 04:51:14 -0400 (EDT)
+	id 150876B00AF; Thu,  6 Aug 2026 04:56:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27EC56B00A1; Thu,  6 Aug 2026 04:51:14 -0400 (EDT)
+	id 03F496B00B1; Thu,  6 Aug 2026 04:56:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F25FB6B009E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:51:13 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 869F280668
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:51:13 +0000 (UTC)
-X-FDA: 85070225226.09.B08216A
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B2E4916000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:51:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OUFqczCE;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786006271;
-	b=vZs7e0tXFNhQQfmTLH6tGa1Nw6xuQp0TMZlvjVkEcgQDUV0uZPv1gsNGU9jmhfP1fPglMp
-	Zp3ZPRWQOod/e+GKpit+IicSKkSkmGMb1A6Hz/DHVt4835whGWwXe7Wkza7YiT/1xL6/5/
-	KgLm4XQ5B43c6rWwBtDypsnVCUvll8w=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OUFqczCE;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C8A0B6B00AD
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:56:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2236F1A06C4
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:56:56 +0000 (UTC)
+X-FDA: 85070239632.26.5E30FA1
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6CA70180003
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:56:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="VmkX/1OI";
+	spf=pass (imf06.hostedemail.com: domain of 3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786006271;
+	s=arc-20220608; t=1786006614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Avz2UJlhCHkynyE4R7iSfC5vbrndaS9xUbSktAymKgM=;
-	b=frd4xF/BrpfatqZ3YsSZjJyZcsfYkZTs4h+yUbyeJjJMqk2hNoYAOOle7L+3t29BfUtbL3
-	gjMZNZEH35j9We4UTHZrVgtWNfXeamf+NyclEZCZtgrxE5yMbX2mw6FA1zOeCHtgGe7L8Z
-	ANYbQO2Y4sjgaQcIyiKKig1PeMDI20s=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c197e7e4e94so346524866b.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:51:11 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
+	b=dykCGyuB1YrrbIUUVm6HLw3wK+zKrPMlTJDqzTzEeU6lIm1Vh6IpF1nPve1JMqVCNzap/D
+	lF6prt2OkUz7D6jWZVvYmsNs5dEuccUdxIqxFowR/NdILYK/FZ4AUQRp66PhUm7equABXZ
+	lAcRATUThneHGCuZZ6p08cVvTU0iuUA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786006614;
+	b=3j7sS+i5mPXuGAH0lzQRDeEcz9Grj+sEdKZ4G22+DA/Kh9SZ7bod8Z3exDuyhEih4H2IPv
+	YIwGfEf+GBrc534yx1UFH9mWoQ8zXdE20g7VTRKP4mQUzGoB5s/QNj6PtoNOqZOsR/2r/r
+	wBzl81H93FJVTLmrBWzJ1HY7r/92GMM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="VmkX/1OI";
+	spf=pass (imf06.hostedemail.com: domain of 3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3VEx0agsKCBkHDJGzKEzC2z5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e7621655eso3011122a91.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786006270; x=1786611070; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Avz2UJlhCHkynyE4R7iSfC5vbrndaS9xUbSktAymKgM=;
-        b=OUFqczCE9HyxxEb4LmJJLUcOvBzryQCxfnft9kqxDKo57VXmAVWlBefMvTELyzpSwC
-         8o+5ePzYum8DVNDzb1WbtlNx5sl97JWR375GAn8eVwFXc3r6iVM0IEAkjxB0ZOvR9KgG
-         Aiex9ZSrWK5aRObMmxlS9oDxJOf89y4VaPJIJ5Kypxl0+tnW1D3rft3NJQfvUsHlGE37
-         FfHN3e9TQpxbqWFXPAdbE0AYZinGpSM4OUXwMByxqacL1iQ3FeUlIAmkHLMYWAtCtisH
-         XkF4/FLPDHKNGe6Y7rC3dLFaTaiXWKx7lu1kUUW4ch3kH2uX39GPA5GACvoy/GDsA1SG
-         QAbA==
+        d=google.com; s=20251104; t=1786006613; x=1786611413; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
+        b=VmkX/1OIID3GnOXr8VdXlX3IfGFQcrJvk/pz1CviBk/PY+0cY5XlSSeAqQdMrqwkKR
+         vxEMXhsbzevdqg8fRFX+xobHKmen44vTOgTdHfod2jXq1qEBY7XS50IvdJZoFfZ+sJLm
+         WCGRB6ThfSupZ6CIpAsrnXiVI85fkowmpE4haC4WGbPryYt0GRqzuQO2552XXZ7MazdY
+         0g4Pcyculzt8uW7KbQgKb7FZQhKT96SyfyrVWrd/qlGNdy/skP8OxaBPeYg/pHAKk/gI
+         Z7l1l/ltYETLPHqra+9v+kTao3OzGXG5CpeJgJvp/ln8Q7L2Rhih6zaz0hC26NBG3t44
+         D4gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786006270; x=1786611070;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1786006613; x=1786611413;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Avz2UJlhCHkynyE4R7iSfC5vbrndaS9xUbSktAymKgM=;
-        b=DJ8ZbAhurlW2Jjk7ir6OD+0PShO1S/mY19/Q++qVW+ZzmksWuJEVtLTSNSkx7pCfNj
-         PrZuSfiAavZFzfyfPbLCNPRHulePIUXuAwukh0D3xX7DPLB6FKR0Mwr7YKlbdqqeEMTU
-         PL54MRm90ecJVy4PHHiVeo7GOT//YTTAfJwBeFPghVanzmlGYwLrfzBmj5PXk0t261tV
-         72LpOoWJYzX3XS8mIXq5t51WjwVJLnJfCji3dw5diKwMXRQKJ3T5fiuzBSYDfgxnhikT
-         dWEsgwEDnMrLzK2H0F39TeqqAD9bfLHbjSNHCdMsYPcqzp0uJbGDBLNfa4E7ndbUi38i
-         5M8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoE9zgfsAK12u/fmabkeXsTPY8PXpdaiOWf9tGTaEaEPA+UAEzLgfSPWmIL/wQ7CtyI5kqMLwmE/w==@kvack.org
-X-Gm-Message-State: AOJu0YxiVKJrixTw5iMIIW0g2Yw5qVMxVHUGiRHZyoG8gMveFrPffXBm
-	bLqn3z+mldLBNIn9DcwvMfpJvob1FXqK20QSP6oKnB+IDcYDXh7/V00v
-X-Gm-Gg: AR+sD13G641yJAagrFJ5Z+VGeP+cc3KyMULnocBBFrVkPs10Rew4OytJzCD7Dy5zp2J
-	kgjBeg2o5Fa3a6f+KSU31KUUX08BJWOfnoQGKwd6TxjMAudIz0+yOnTzHbDWovA//3Amoev/nbG
-	kuhsd5x2jtyzUPDm1SgF4t0S5haIFBXkwOhCvfTvQsa0VcmPhRb9j5xcu3pXTX0eT/AcTdItBHt
-	LxEedADFHJ5/Ch3WEzwakFm9HyaZaLCPf+IUETO0JEQHbYbXvEyquVrfbnQUY23INz/GA0N82FG
-	i5Waj4/m10yKyW1k4IPJlQl0HTbCcoml40kJcYfr5Jf7W+UgXwJVO9rMkUWU7t7gr1X1kmwzAyf
-	BDOxXwviOqfb0R9VW/OXiGxWtG6Z6ZYfFK/s36XNuq48j+ifsS7DEAFRw3lWfOtzh8DGIsAGqwf
-	WtTl43hNSHbyN5ERACcUJcG7qX/Gs=
-X-Received: by 2002:a17:906:fe05:b0:c16:9edc:612e with SMTP id a640c23a62f3a-c2039ce6007mr719138066b.3.1786006269984;
-        Thu, 06 Aug 2026 01:51:09 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2036254060sm234607666b.24.2026.08.06.01.51.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 01:51:09 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 6 Aug 2026 10:51:07 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
-	willy@infradead.org, shivamkalra98@zohomail.in,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/vmalloc: make vm_struct.nr_pages an unsigned long
-Message-ID: <anRK-y0nBUnbli_u@milan>
-References: <20260730130923.9e71be5f477ee3db333cf0f8@linux-foundation.org>
- <20260801114915.115224-1-iprintercanon@gmail.com>
- <20260801115202.ccba41ddac9f7a4f6fb1ca9f@linux-foundation.org>
- <am9numIMZZ4s7UMl@milan>
- <20260803173935.132156ba2b86293ffecb0e8f@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803173935.132156ba2b86293ffecb0e8f@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B2E4916000C
-X-Stat-Signature: 5fsq3nz364n5jr58t4gcgheimfq51361
+        bh=f2Kd5S4Tu7Fwb1K9owR83WOTCIf8JouRZAzl2QC9oZc=;
+        b=mvEUoWZlxQIv6mlqVXxm2LUnG+qKxvP7CS2kTG83LZ2L/iQh+EphsqZ31yTToDIsIk
+         h9sBuUQQU4JeezXGmhcWbcfM41GwrIQ4khL0YIPKk4LXOg8lce95UoVdkn10hdzPRc5Z
+         OCFftXHfg3KdjDX1By0AllwDWMR/MGS3+Y/rfGXqzifiQhecg01GUoin0cdK1jzgd/1O
+         wTx9zCfoW65imuZk/eSwkxhSs2ufd9xnnDr5CR1KoEpjFi/71cf4H8pGmHz2nHBrD8Ha
+         JZL+fanGx4k1qDHHJsaHpwDiNx9Tb1PoFIYTHzhmX+FKFzbeirRd2tRvm7h1ylaqJHmb
+         1u6w==
+X-Forwarded-Encrypted: i=1; AHgh+RqoC+LxoaoF3IAJMiLDY0LbDsmMAEx2pRgd+R0ONnMC2gRDptiEPRygQtpxDqjE+a6ey3ZfvfkviQ==@kvack.org
+X-Gm-Message-State: AOJu0YwQIaqKiwaz/i/EvRQkM9aZoKP+1jlz9cWiuPmIEzL/Bb1yfk4/
+	6VAp474viR0AEsZBe8zu+1TC2prTsavqhO92F/s7VyZfheQHO2l5ejXI1SQLBI5uSwMfaKhg/oV
+	hcCyqp+KHwEtJ1cpbN9lRKqyApg==
+X-Received: from pjyj17.prod.google.com ([2002:a17:90a:e611:b0:38e:3cd6:1866])
+ (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:53c5:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-3903c61098cmr14798023a91.18.1786006612810;
+ Thu, 06 Aug 2026 01:56:52 -0700 (PDT)
+Date: Thu,  6 Aug 2026 08:56:51 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
+Message-ID: <20260806085651.4068433-1-souravpanda@google.com>
+Subject: [PATCH v4] mm/hugetlb_cma: support percentage-based hugetlb_cma reservation
+From: Sourav Panda <souravpanda@google.com>
+To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
+Cc: david@kernel.org, usama.arif@linux.dev, surenb@google.com, fvdl@google.com, 
+	gthelen@google.com, rientjes@google.com, souravpanda@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6CA70180003
+X-Stat-Signature: jzjgm9ncfiwwspb7pjczdhym7xttq59p
 X-Rspam-User: 
-X-HE-Tag: 1786006271-919773
-X-HE-Meta: U2FsdGVkX1+rHrnOSzkuNzt4p0/5TIjb5lPcXwDBc4pooeziLoXrsgoAkkj4OBH2BoLDz4Ciztt2GOakr6V8tCBuhMVxxnQ09xgl0tQkbpdR5z0OaY2I/QrTLria7mjPnEH9lt0GTpOzvK80F6iBr60a4Pn1/qbaxr8btZuEQp8wphsmQ0YxH71hWMqFI1rc3wUq+tepL4lI9tkK92AGQO6SmnLUK2QENE2p3BoxJluhYBfR5Ta/DZhCqjDpuVTtruGrnX3k3EZMGDtP3dZxtQnF2mbebLs3xopuplL1xD/8uzCY17y/bYUctqcyZTTiZHRSvNpkb+d7HZHMnKazV3n6wW3Ne5MHkRo266aj1zTUpL4bQdeAXY5+5wF9JxNL81zdo1Fy8JXY7UG1CfcqltJUs3ANtcwibWEoG0sn3MpiOGJKnsk8VQnwmW94Lb/IdeSELyNfelRtEGcfg8oqxEZa9cLpkGbkY+xilkP6FLIjroNzqKcHwrrGgaMgSfZny7+IfuBF+7UtUzP8v91AtXephynafRAcUG40cF1SkXp1OQlAxghzM39RQq3KFiNmnInHtqs/dqIZf9KD0ZR9w36LOiWEDWoaIBRG5xtkkCpx5U1b4kO/jOAhPYSvlNpGpVQXVXPB5cu5ZU+5h8d3OyI2gH5z2W9n3/gkfDr9f68uSJnXczj/hvLhRHo1nxcr5vYgz9apbyZ7OCXFcRRDl1/u2rnx08A5yx+mRrrCH8Ez/VfW0dcKPV+c9cmHGaZiaMh1FPSm0Q2sdZbrjANcYmDVVMo7fgpIkmN3uWP6sY3+uQIYdoHeiYtwF/nYBVCU2M9SuLoQHX2ITJBtXwXB3SSbR6HaAHyAYeju5YOqaCJqWW5HESx8PMIq7QYdwUCjIL/N5PAGZ0bktlgTl4qdOVzAN248/uiG6k4SW1Nx2qS+GvAQpoH7S8ScDDLYdnMrY73zQu7aWipDebEJMRO
- pn49PEqn
- s854s7DlTqZNOJnMIUhJ4JmgMpS40a22OrZgOTQGTcnJbWVocYPf+VS2+jKb/sAmTU2cjsha5lkP7+8h/wCvV6NTAhTxAFovoYBL7ltXJ4J3zC0D6TkEt72HQsH0qtCLhIOPm4/hCy/SeTnvX/EivLaG2ImoDyg4wPs7KU9GNSHyoZm4heCNhTWwU27Jk2yCf6wdnWsO2LdOp6vY+RhDqyvi0ikLdKo4CjudotxBQBakSUBnt5ckdxe0/ME2+fn2a5anFhfAm5TQ3KR+x5H8a8tWHJrXL9Bh1XNGm8crj5I5vnIOc1K4f8oH8Bldl0b/r9Qb0RHnvfeO03ql+uKNH8Zzm82xzJARCEfXuE6s96yaNToL3ix8r/1C6m7QTO65/x3U6okmtQ3DpL5ktBvHQnLivGTB510ooWRcjcgicePDPvPSGdX/l3JvtWSPl83Y6Ge3tEyVI005+gEym7GuTIPLSIG02yZZPmbByCzRRCouGOhoG1/MIz+1J6edl0MHf32jm4YHI+y3F8UT2+1X9xGkLY7lBQ/07lwJG25HVN8EBX34405y3a34vFmdPLIKKTNKN
+X-HE-Tag: 1786006614-695350
+X-HE-Meta: U2FsdGVkX1/Gh7ONXfBMKonVmye+gYdCxAqsqAB0BU6EbwMaEIHU7u3wdGVa6WFIvijS8tK9iWz62oW5Mfn4Btkfa4X/dcjJpnuEunZGIZWrm0Cy8jOoBsdvHhddBxqtTB38okhVkJlNDyVhyJfIShnzT5Sy24XnFyA66oGToQqwOTgYVW5RqDzWtrfFzXKgG16Eykvk+5alGFLQku6SozpcIdojdwLC3jWkKGD/lxjsE8/UtsZesL+tJb1wdXQRGCekM4nsXhaBjsr57x/T4rv0SWNzaEysDUzqrbm1zy4F1drt0n1JFFc7GDoev4J57EZ2Sqyk5olCbGy7C3BR4SpS93EXnT2K+Vitl66qjaJnURVh8aFZDtxyJstJCBRlCOa/geELQ4nSQZ3ZNydeGpYwNLmRUxh+TY2hbOQi/UI5nHhqhvoCMvpQwoAubLVQLrKuRT5E5fCL87Vjki5/nYaG9xndEDd/0zZqWkJZDtwOwKgADRhpR79u6EjlUth+S27lXhzv2ae6Sh3AnpixYOfPreLizneMnXC2c2MiIS5q7JCY71eO5kLBOpHRqNQp2IBcEcQuTZDkx6Zl7L+2fu/3mUuOX+UDVOHTq21l9nZKO7y7KhKsJH86KHQ0lS41W2K9Y2E057LeB7+owEsWgOGoocqCG2QcFH9597m6udUTJff0jSQRPIzuXrmPSKKRl6V4WVC+1sGnwSbxtqolmVqpMNokhAISanEhYiZBMjeV9lMVPxVgStfaZCNMbdt9F5AOQNThB5Aztxx5d3/YBIMnRWh+K+o5WpXKcvQqjEnoI7tBqHlAhwrm4NatlSX1jZLXl4p0Yjv+yYgyHvnsxZoCFVh15vPgaQR6sdODnwTWp4fEbtHDMONo0lcsVjtbxr1Mem31xWJuf0pTmAuONDkd1Uo8R8aAw1QJRa6bLhyoIdRBD1TDGfGwTmn2rPWYswUbEWzQnf+7RXFXcAg
+ PLLyY42T
+ 3M/GJ4Ty2VvBzzU7sxjBjxlkiLsgXFRQKEsyv+sGll0KjuzzoQLBJPLwGqTzEqi3LuyccrXcVsDuKiIjhe4oiyPh1irBaaDaNu6VUAYE3j/dsebj0/yFI7jlQN0pIkbec2AWN7Q5FBWkYdnsBiYMv9ZN+fSCvnVRCPVWTGyssXgaNGpCiXCxSDEcutwPhxm3bzhIS6Hq4VglTnnQztU5CzaaM9eEFpIA8BjK3sEs3Q2lhC7UsvfCHLGcbOJnx4HTTMRx/ef3LIzb3qhu0bIDu6rZV0yg1FsmO08zEsx97N/f50+Au4jrW5dBHYjfYQl+qANz914w/gnZC0R+xNd2LpBQnd81b+MK6vQ6Q92VDjYpVhL7qmEY0j6hoPj7dN99G8wl6qp9i7mE1NW8H0OpZP43+/jpiQC14mZshNJXzcvIU7d1D4MG+tw3wYvgU4fx1UC6pQwp+hkV4qX16pz+jkKWVMSbybV8UvQCG4YdDowo9ea/J97AUmrhTrXD8X5xi39gZ4JDj6L1Fzz01RspBdfRHIdQEZGTq3nU051oIwztaBz8oZ/2R1VnbVly+Stx3I4mGS0TLpo4o8oEbMhYK8Zq8rfOaJisM6aX8057jHhU0nq0D6fCnR/KSaIqkZ2DRmbmIugAKGsstEvNKw9OIBr1bx7EZQzrSfD+p8kGUWYgwpKJvmadbMjtoMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,158 +106,263 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 03, 2026 at 05:39:35PM -0700, Andrew Morton wrote:
-> On Sun, 2 Aug 2026 17:52:26 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
-> 
-> > On Sat, Aug 01, 2026 at 11:52:02AM -0700, Andrew Morton wrote:
-> > > On Sat,  1 Aug 2026 14:49:15 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
-> > > 
-> >
-> > ...
-> >
-> > > Ulad, AI review suggests that vrealloc() has an issue handling
-> > > __GFP_ZERO.  Can you please check?
-> > > 
-> > > 	https://sashiko.dev/#/patchset/20260801114915.115224-1-iprintercanon@gmail.com
-> > > 
-> > I have checked. I think the AI is missing at least one point.
-> > AI argument which is:
-> > 
-> > <snip>
-> > If a driver initially allocates memory using vmalloc() without __GFP_ZERO 
-> > (leaving spare page capacity uninitialized), and then grows the allocation 
-> > using vrealloc() with __GFP_ZERO, the caller expects the newly exposed bytes 
-> > to be zeroed.
-> > <snip>
-> > 
-> > In the vrealloc_node_align_noprof() header documentation there is a statement:
-> > 
-> > <snip>
-> >  * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
-> >  * initial memory allocation, every subsequent call to this API for the same
-> >  * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
-> >  * __GFP_ZERO is not fully honored by this API.
-> > <snip>
-> > 
-> > AI argument violates the documentation, i.e. mixing __GFP_ZERO is not allowed.
-> 
-> Sashiko is talking about the initial allocation not using __GFP_ZERO
-> but vrealloc() *does* use __GFP_ZERO.  The documentation you quoted
-> doesn't address that case?
-> 
-But this is not allowed according to doc :)
+Currently, hugetlb_cma reservation only supports absolute sizes (e.g.,
+hugetlb_cma=2G or hugetlb_cma=0:1G,1:1G). This can be restrictive in
+heterogeneous environments or when deploying common kernel command lines
+across machines with different memory capacities.
 
-<snip>
-...
-callers must ensure that, starting with the initial memory allocation
-...
-<snip>
+Add support for percentage-based hugetlb_cma reservation (e.g.,
+hugetlb_cma=20% or hugetlb_cma=0:20%,1:10%).
 
-Also, AI describes the situation like:
+The percentage is calculated against the total memory (for global
+settings) or against the node-specific memory (for node-specific
+settings) using memblock APIs during early boot.
 
-vmalloc()
-vrealloc(grow, since need more) 
+Signed-off-by: Sourav Panda <souravpanda@google.com>
+---
+Link: https://lore.kernel.org/linux-mm/20260729163148.3271755-1-souravpanda@google.com/ [v3]
+Link: https://lore.kernel.org/linux-mm/20260628190155.3655895-1-souravpanda@google.com/ [v2]
+Link: https://lore.kernel.org/linux-mm/20260625215900.2151690-1-souravpanda@google.com/ [v1]
 
-i.e. from the description:
-<snip>
-and then grows the allocation using vrealloc() with __GFP_ZERO, the caller
-expects the newly exposed bytes to be zeroed.
-<snip>
+v4:
+- Clear global hugetlb_cma_percent and hugetlb_cma_size when node-specific parameters are parsed so the last command line configuration wins (Usama Arif).
+- Warn when ALIGN_DOWN rounds down a non-zero percentage-derived reservation size to 0 MiB (Usama Arif).
 
-and it will be zeroed in fact, because the path would be:
+v3:
+- Enhance pr_info logs to explicitly show percentage-derived sizes per Andrew Morton"s suggestions.
+- Explicitly align percentage-derived sizes down to the gigantic page size to prevent allocation failures (Usama Arif).
 
-<snip>
-need_realloc:
-	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
+ .../admin-guide/kernel-parameters.txt         |   7 +-
+ mm/hugetlb_cma.c                              | 141 +++++++++++++++++-
+ 2 files changed, 138 insertions(+), 10 deletions(-)
 
-	if (!n)
-		return NULL;
-<snip>
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 5a05b48d1684..846940ce2858 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2064,8 +2064,11 @@ Kernel parameters
+ 	hugetlb_cma=	[HW,CMA,EARLY] The size of a CMA area used for allocation
+ 			of gigantic hugepages. Or using node format, the size
+ 			of a CMA area per node can be specified.
+-			Format: nn[KMGTPE] or (node format)
+-				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]]
++			The size can be an absolute value (e.g., 2G) or a
++			percentage of the total memory or node memory (e.g., 20%).
++			Format: nn[KMGTPE] or nn% or (node format)
++				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]] or
++				<node>:nn%[,<node>:nn%]
+ 
+ 			Reserve a CMA area of given size and allocate gigantic
+ 			hugepages using the CMA allocator. If enabled, the
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 7693ccefd0c6..2ca014a0a3b8 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -9,6 +9,9 @@
+ #include <asm/setup.h>
+ 
+ #include <linux/hugetlb.h>
++#include <linux/memblock.h>
++#include <linux/math.h>
++#include <linux/math64.h>
+ #include "internal.h"
+ #include "hugetlb_cma.h"
+ 
+@@ -18,6 +21,28 @@ static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
+ static bool hugetlb_cma_only __ro_after_init;
+ static unsigned long hugetlb_cma_size __ro_after_init;
+ 
++static unsigned int hugetlb_cma_percent __initdata;
++static unsigned int hugetlb_cma_percent_in_node[MAX_NUMNODES] __initdata;
++
++#ifdef CONFIG_NUMA
++static phys_addr_t __init memblock_node_memory_size(int nid)
++{
++	struct memblock_region *reg;
++	phys_addr_t size = 0;
++
++	for_each_mem_region(reg) {
++		if (reg->nid == nid)
++			size += reg->size;
++	}
++	return size;
++}
++#else
++static phys_addr_t __init memblock_node_memory_size(int nid)
++{
++	return memblock_phys_mem_size();
++}
++#endif
++
+ void hugetlb_cma_free_frozen_folio(struct folio *folio)
+ {
+ 	WARN_ON_ONCE(!cma_release_frozen(hugetlb_cma[folio_nid(folio)],
+@@ -100,14 +125,31 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
+ 			break;
+ 
+ 		if (s[count] == ':') {
++			char *next;
++
+ 			if (tmp >= MAX_NUMNODES)
+ 				break;
+ 			nid = array_index_nospec(tmp, MAX_NUMNODES);
+ 
++			hugetlb_cma_size = 0;
++			hugetlb_cma_percent = 0;
++
+ 			s += count + 1;
+-			tmp = memparse(s, &s);
+-			hugetlb_cma_size_in_node[nid] = tmp;
+-			hugetlb_cma_size += tmp;
++			tmp = memparse(s, &next);
++			if (*next == '%') {
++				if (tmp > 100) {
++					pr_warn("hugetlb_cma: invalid percentage %lu for node %d\n",
++						tmp, nid);
++					break;
++				}
++				hugetlb_cma_percent_in_node[nid] = tmp;
++				hugetlb_cma_size_in_node[nid] = 0;
++				s = next + 1;
++			} else {
++				hugetlb_cma_size_in_node[nid] = tmp;
++				hugetlb_cma_percent_in_node[nid] = 0;
++				s = next;
++			}
+ 
+ 			/*
+ 			 * Skip the separator if have one, otherwise
+@@ -118,7 +160,28 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
+ 			else
+ 				break;
+ 		} else {
+-			hugetlb_cma_size = memparse(p, &p);
++			char *next;
++
++			tmp = memparse(p, &next);
++			if (*next == '%') {
++				if (tmp > 100) {
++					pr_warn("hugetlb_cma: invalid percentage %lu\n", tmp);
++				} else {
++					hugetlb_cma_percent = tmp;
++					hugetlb_cma_size = 0;
++					for (nid = 0; nid < MAX_NUMNODES; nid++) {
++						hugetlb_cma_size_in_node[nid] = 0;
++						hugetlb_cma_percent_in_node[nid] = 0;
++					}
++				}
++			} else {
++				hugetlb_cma_size = tmp;
++				hugetlb_cma_percent = 0;
++				for (nid = 0; nid < MAX_NUMNODES; nid++) {
++					hugetlb_cma_size_in_node[nid] = 0;
++					hugetlb_cma_percent_in_node[nid] = 0;
++				}
++			}
+ 			break;
+ 		}
+ 	}
+@@ -144,8 +207,36 @@ void __init hugetlb_cma_reserve(void)
+ {
+ 	unsigned long size, reserved, per_node, order;
+ 	bool node_specific_cma_alloc = false;
++	bool has_node_specific_param = false;
+ 	int nid;
+ 
++	for (nid = 0; nid < MAX_NUMNODES; nid++) {
++		if (hugetlb_cma_size_in_node[nid] || hugetlb_cma_percent_in_node[nid]) {
++			has_node_specific_param = true;
++			break;
++		}
++	}
++
++	if (has_node_specific_param) {
++		hugetlb_cma_size = 0;
++		for (nid = 0; nid < MAX_NUMNODES; nid++) {
++			if (hugetlb_cma_percent_in_node[nid]) {
++				phys_addr_t node_gfp_mem = memblock_node_memory_size(nid);
++				u64 s;
++
++				s = mul_u64_u32_div((u64)node_gfp_mem,
++						    hugetlb_cma_percent_in_node[nid],
++						    100);
++
++				hugetlb_cma_size_in_node[nid] = s;
++			}
++			hugetlb_cma_size += hugetlb_cma_size_in_node[nid];
++		}
++	} else if (hugetlb_cma_percent) {
++		hugetlb_cma_size = mul_u64_u32_div((u64)memblock_phys_mem_size(),
++						   hugetlb_cma_percent, 100);
++	}
++
+ 	if (!hugetlb_cma_size)
+ 		return;
+ 
+@@ -163,6 +254,32 @@ void __init hugetlb_cma_reserve(void)
+ 	 */
+ 	VM_WARN_ON(order <= MAX_PAGE_ORDER);
+ 
++	if (hugetlb_cma_percent) {
++		unsigned long orig_size = hugetlb_cma_size;
++
++		hugetlb_cma_size = ALIGN_DOWN(hugetlb_cma_size, PAGE_SIZE << order);
++		if (orig_size && !hugetlb_cma_size)
++			pr_warn("hugetlb_cma: reservation size rounded down to 0 from %lu MiB (%u%%)\n",
++				orig_size / SZ_1M, hugetlb_cma_percent);
++	} else if (has_node_specific_param) {
++		hugetlb_cma_size = 0;
++		for (nid = 0; nid < MAX_NUMNODES; nid++) {
++			if (hugetlb_cma_percent_in_node[nid]) {
++				unsigned long orig_size = hugetlb_cma_size_in_node[nid];
++
++				hugetlb_cma_size_in_node[nid] =
++					ALIGN_DOWN(hugetlb_cma_size_in_node[nid],
++						   PAGE_SIZE << order);
++				if (orig_size && !hugetlb_cma_size_in_node[nid])
++					pr_warn("hugetlb_cma: reservation size rounded down to 0 from %lu MiB (%u%%) on node %d\n",
++						orig_size / SZ_1M,
++						hugetlb_cma_percent_in_node[nid],
++						nid);
++			}
++			hugetlb_cma_size += hugetlb_cma_size_in_node[nid];
++		}
++	}
++
+ 	hugetlb_bootmem_set_nodes();
+ 
+ 	for (nid = 0; nid < MAX_NUMNODES; nid++) {
+@@ -205,8 +322,12 @@ void __init hugetlb_cma_reserve(void)
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
+ 		per_node = round_up(per_node, PAGE_SIZE << order);
+-		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+-			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
++		if (hugetlb_cma_percent)
++			pr_info("hugetlb_cma: reserve %lu MiB (%u%%), up to %lu MiB per node\n",
++				hugetlb_cma_size / SZ_1M, hugetlb_cma_percent, per_node / SZ_1M);
++		else
++			pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
++				hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
+ 
+ 	reserved = 0;
+@@ -241,8 +362,12 @@ void __init hugetlb_cma_reserve(void)
+ 		}
+ 
+ 		reserved += size;
+-		pr_info("hugetlb_cma: reserved %lu MiB on node %d\n",
+-			size / SZ_1M, nid);
++		if (hugetlb_cma_percent_in_node[nid])
++			pr_info("hugetlb_cma: reserved %lu MiB (%u%%) on node %d\n",
++				size / SZ_1M, hugetlb_cma_percent_in_node[nid], nid);
++		else
++			pr_info("hugetlb_cma: reserved %lu MiB on node %d\n",
++				size / SZ_1M, nid);
+ 
+ 		if (reserved >= hugetlb_cma_size)
+ 			break;
+-- 
+2.55.0.571.g244d577d93-goog
 
-and not the one which AI pointed to.
-
-The real scenario is:
-
-1. vmalloc(!GFP_ZERO) - alloc size 10
-2. vrealloc(!GFP_ZERO) - realloc to size 5
-3. vrealloc(GFP_ZERO) - realloc back to 10.
-
-3 - will not zeroed. As noted in doc ZERO should be used starting
-from the beginning [1]. But in __most__ cases it will be zeroed
-anyway because we free/unmap tail pages and if:
-
-<snip>
-		/*
-		 * Free tail pages when shrink crosses a page boundary.
-		 *
-		 * Skip huge page allocations (page_order > 0) as partial
-		 * freeing would require splitting.
-		 *
-		 * Skip VM_FLUSH_RESET_PERMS, as direct-map permissions must
-		 * be reset before pages are returned to the allocator.
-		 *
-		 * Skip VM_USERMAP, as remap_vmalloc_range_partial() validates
-		 * mapping requests against the unchanged vm->size; freeing
-		 * tail pages would cause vmalloc_to_page() to return NULL for
-		 * the unmapped range.
-		 *
-		 * Skip if either GFP_NOFS or GFP_NOIO are used.
-		 * kmemleak_free_part() internally allocates with
-		 * GFP_KERNEL, which could trigger a recursive deadlock
-		 * if we are under filesystem or I/O reclaim.
-		 */
-		if (new_nr_pages < vm->nr_pages && !vm_area_page_order(vm) &&
-		    !(vm->flags & (VM_FLUSH_RESET_PERMS | VM_USERMAP)) &&
-		    gfp_has_io_fs(flags)) {
-<snip>
-
-is true the next grow with GFP_ZERO will be zeroed.
-
-For huge alloc it will not be zeroed and for other conditions.
-
-> Also, developers don't read documentation ;) What happens if some
-> caller *does* use vmalloc(!__GFP_ZERO) then vrealloc(__GFP_ZERO)? 
-> Silent misbehavior would be bad - it would be good if vrealloc() were
-> to drop a WARN() then ignore the __GFP_ZERO.
-> 
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -4294,11 +4294,6 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
-> >   * __GFP_THISNODE flag should be set, otherwise the function will try to avoid
-> >   * reallocation and possibly disregard the specified @nid.
-> >   *
-> > - * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
-> > - * initial memory allocation, every subsequent call to this API for the same
-> > - * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
-> > - * __GFP_ZERO is not fully honored by this API.
-> > - *
-> >   * Requesting an alignment that is bigger than the alignment of the existing
-> >   * allocation will fail.
-> >   *
-> > @@ -4415,13 +4410,12 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
-> >  	 * We already have the bytes available in the allocation; use them.
-> >  	 */
-> >  	if (size <= vm->nr_pages << PAGE_SHIFT) {
-> > -		/*
-> > -		 * No need to zero memory here, as unused memory will have
-> > -		 * already been zeroed at initial allocation time or during
-> > -		 * realloc shrink time.
-> > -		 */
-> > -		vm->requested_size = size;
-> >  		kasan_vrealloc(p, old_size, size);
-> > +
-> > +		if (want_init_on_alloc(flags))
-> > +			memset((void *)p + old_size, 0, size - old_size);
-> > +
-> > +		vm->requested_size = size;
-> >  		return (void *)p;
-> >  	}
-> 
-> OK, thanks, I'll assume you'll prepare this for real when convenient.
->
-OK. I will prepare something and send out the patch after testing.
-
---
-Uladzislau Rezki
 
