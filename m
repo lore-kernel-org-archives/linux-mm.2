@@ -4,110 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96BDBC56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A28C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 982156B007B; Thu,  6 Aug 2026 12:21:22 -0400 (EDT)
+	id 514A96B008A; Thu,  6 Aug 2026 12:21:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 932296B008A; Thu,  6 Aug 2026 12:21:22 -0400 (EDT)
+	id 4C5966B0092; Thu,  6 Aug 2026 12:21:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86F846B0092; Thu,  6 Aug 2026 12:21:22 -0400 (EDT)
+	id 3DD4E6B0093; Thu,  6 Aug 2026 12:21:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 641356B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:21:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F06261A0128
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:21:21 +0000 (UTC)
-X-FDA: 85071359562.02.A83C25E
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4508710000D
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:21:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPSIMhRH;
-	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 00F7F6B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:21:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8DA5A1C00D6
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:21:24 +0000 (UTC)
+X-FDA: 85071359688.11.3B512F3
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id ABF1D100009
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:21:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fjrHJSZC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786033280;
+	s=arc-20220608; t=1786033282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=R/vnVTBqI59ziS72NJT0nrN3sdhJJaluZI1JLK6yKxM=;
-	b=RyCcVVUQ82ClErYyjeoSFjRPmsqQWmgJHfsCFxx9CURUXK2vCtwtwkutg1rPxvnMcDXJIR
-	MIYzivCCzfIW1IcAWjxpICOqpBZlp7BH7zFZYF7oTI45W1kGnGShjpKA1orhNw4HmBGdgg
-	4JadxoemiHCEdeRF+cRtTPzDUXHKrKE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786033280;
-	b=4MVYXQplxwuXIVz0uXu854Eyfo1NnO9PczZjx+liNsUe6efn8MHrUiHN2NYAiIYb3vC7LZ
-	BFAH0cigROdyaRpbdjhwd40LRb96jCmTq5TOrJujkt3+0FUDSHAMJwAkR9YHzSC8RK02ki
-	gGCh0DE9roHnjVriVw0Lfn3h/8+e3zk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OV2ia1JQIR9t4BY0Y1KbMPnG4hxTayzchKqwFyoORUg=;
+	b=YFAmyrYV4UrytFhsRt5ouyTAoYd/DiYzJMzRqXPPMxlDdWZeaZi1y0aPNLE9abOO8k8d4C
+	OdfAUpFkOfcZSiXrHuSzZZ9/FMS5mfJn8U9r99hOSaPqubLzxNyulDasi8xzuY8N8+x/qo
+	e811g7zdt4PUKNYDeYVPqBM051G4uoA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPSIMhRH;
-	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-848643382fcso2722966b3a.1
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 09:21:20 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fjrHJSZC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786033282;
+	b=hTCH+bQogK16qI86nk1kwFN1KVXj5ej/3wx8fObOBWYHyTyGPzqyXu+2csdJUnQRGHNKli
+	I30ZFqYSit8sAeFU89R11EuDqajLnzaX2gAGirjULsboclqZJ8Hhp86jEluphHO8Kuxjfk
+	nCZLCBHf2HHJrfieb6gSDICjjJFn3jk=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso2848604b3a.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 09:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786033279; x=1786638079; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R/vnVTBqI59ziS72NJT0nrN3sdhJJaluZI1JLK6yKxM=;
-        b=WPSIMhRH0UeaeGucxeAFa6iaiVXLqEndcVd+13bOIuV0DUcKzBhuklZvNJIdOc/sd4
-         ybm7iAjVXwKsshYHhpIs6mS2KxJ8FSBTq51GqlofZEOkupEdqomJUyPjoRPnys4BnbO7
-         /DPOcX1riLkgyZLUD+XDUIGjClGGM0sYz6a+HZ3EFSOdTlqoRPR4wa6nLpNF6lWcLexn
-         UOtluQxx9kn33HRjBZ4eLaa62SNutsF692DazWs6GkAgxvQ/O6qJj9QHOUPY9NHeDfmu
-         h2/kHPQFatr1FD8wQQTatI2lXtq3HwWJ2ULg502oLilRrjd3OWZDXbwnQpkkDm2N3DTU
-         U+6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786033279; x=1786638079;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786033282; x=1786638082; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=R/vnVTBqI59ziS72NJT0nrN3sdhJJaluZI1JLK6yKxM=;
-        b=lTE1qO19rKvorIIEQZl8aTdh0aHWbNprH9h4SwxXEYnA4V8nzpdpOKblwqvcdwgTAJ
-         jmr1qNS1V11m28jHjgxVgaEWnKwqmb6x2Y4pZV9kgk80GJ+QjCwzqdSnggOjh8ynIx32
-         t4lnjHyAPP2OVnWQOcDHkiJYexhcFBMi4YrhByd+s5sp07bW4G5LYjTywo7y3U2bYFcO
-         qp625W/ISxziKCXMVuUQx0vKSV+RZGZi0FhfSzKsXGoY6k7DasW/pWt7DTSYjHuZUHbz
-         hbPKITI/TSsgonKVShw8Cm7alOM5OBCRGONwStOxqBejzLGSnRZN+U7SN4G2xvytyo1C
-         fDgQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpyr5u1F+Ko/K/pP1cvuNdfd+0XswiktfiXxbojvzIJICr253Vs+avn8fFuY9Du3IJVKRdiXo41qw==@kvack.org
-X-Gm-Message-State: AOJu0YzTPniGs862Wj3o5vVzIrLwAovgtxdZOoDy/wodNGh9JS9iC4+y
-	n0S2pO5VF6V0NJdWlcxH8b44SO3mUMbng66CkYp2mJ+u+QB9mWgnqeZG
-X-Gm-Gg: AR+sD12urx3CkQyydcBJJXUzx3vPiuRunowkXUEP38MS7AsYWXPvX+qK4OQHfg2q5ie
-	hFHpXPJPNUpwKeFxUwBuoZwJ5SwhRa1A8Lt1l1w9I1f/FCUKAo0nuPWlBXEO6/BMwzECr8oc+dV
-	uS72BHPbOKtJ5QWJGDVoDnjPZsrwYkiq8wRH5zsT59wrXjDTgSPL1lUs3Z6azFLeZJkRg8dOdx5
-	Du25I5u2HsXC8krTj+qBZTOQ3tKTEwAZpXlZgooxGPOgDIr+JRSgsGvTFn5rVvhdnCIghfDnu8t
-	VN8WdhRa3wMFfo3AbNs+1MyD+Zxrd3NtAPeT9bJvmrdTHtIsShlshZud1mVS2RUwiocs/yFRShP
-	4eF0ldF4PDX8K2uD2KjGldoamPtz6zt+iYcCYydpaRsHlItgID2eyy9WzRxp2pWONmDFwNAtfvA
-	OJssIN+9EPQmWevhuXGqRdVux8DfPwREW2i7+Zx+xRsveWiRrjAosjN6g8DiNBjbI7rA==
-X-Received: by 2002:a05:6a00:302a:b0:848:7443:f2de with SMTP id d2e1a72fcca58-84f2dff77cbmr19361890b3a.13.1786033278860;
-        Thu, 06 Aug 2026 09:21:18 -0700 (PDT)
+        bh=OV2ia1JQIR9t4BY0Y1KbMPnG4hxTayzchKqwFyoORUg=;
+        b=fjrHJSZCsqv4y7W6h2deJDU+qX0EjwZmT1MIBIpJHlUdhlnME1PyroZkrwh0cDxFVR
+         +ARensLndCSCvaiq0ynd2kbuDxiiA9M5AyTq26jMieE8mcWYiTYudzqbUO2VZXnPdPJ9
+         qC44QS6n37z7yS6Im9dShMmft4mbQQkbijJKo0fYXB9RUavM8iYLzjjJApeNC+9qyoay
+         7kUo6cqkGZVCyq6Lr1W9yw7jctELn8KPMb3ucImNuUBTrn03w7vw8+vVd3lVGr/Wm6FF
+         VM595zy4tq0Ph/dPyP+b/ZGG0wznI9FlNTeoA5lxDEhRLbvV8h74gnu/Clv8CNilGIsM
+         W8vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786033282; x=1786638082;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OV2ia1JQIR9t4BY0Y1KbMPnG4hxTayzchKqwFyoORUg=;
+        b=hScqDezd3hsWyAbKpLeSEdxumF1aFfbAgrItKzLc4nWB3T8EyZsH2uH+uQV4VIDnEU
+         E/+N42TTsdTwGtFWHDSmE1QppT0h4Wfb5q0a5pX65428gGfFrqBb5TxscEqhNF76y+ql
+         KRueKZvmLYdETP+tuzm/gGvHESSQF6IpDl2+Ws1K2VFd5vFtq/ZjTSLh4HinN3L+tHLN
+         WuhOlXWibCVZUEM5ryqVK/uoSiwNIU2hZi6MjUC0Z3TQI/tUqtatjEqzfVcvA+uPFpIj
+         Cl1M4VuIWBYNxb0Flvv5jrf3JDY24kPUb21DiPZsanXBuLFEPONTrZtnpCNucBEm2n7l
+         w4Iw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2rpIF/kYHq9/Orn/+Kn/0W/zDhVsp43sreXchxNChi2xVC0FbZeoOy28cRwj/txWAkmW0Q1ns8A==@kvack.org
+X-Gm-Message-State: AOJu0YzUXJ+BUBL42FNS4gb+cIqpOiIQ5dVDxMHLWZwVGrCDnYQxcbKy
+	rSLX9Uio0yYfEF88DGE9rSGhHx+B0j6XM9m/7Q14ozwZwbozWlSLZcue
+X-Gm-Gg: AR+sD118CUVAmmV+60gDc7i9BzwQPfT9GVuHIgkOZWcPhxIGzNLY1qRRU8DLX0C1lvP
+	ZiJ+pNHJgTT5L9bGYo9+WsqZTPgYzWnLcL2P0505q0z3e2cDDhTGvyJNPt5RC6elTMifgE9rLGU
+	s/EjsTGwZANudc7Q7bA3BZ6BZf8yPHpA1Hdbp4N86BXSKDxMX+K6Zndfuap8zmyYIT++WZ6gPd/
+	zOPXGmY98GTxShN8Cozyru420szPlF1r39UQbpCGJ/qIGaoejvLXVOzXx6n30IyADmhVI19xCUM
+	AvGUF+0dlsR005TM3B/MG/W+sctRbqLm67Fe+1aF9moaY/5XzZJeenz/yV5BEvhd5dh1OIO1V9Z
+	JHnkWX4NxNzwf8+MjxSIp5Jr8SHOLUAVcJPnB1ZzGhc5ZAxdgFBePKQHktDliqKtbTjPr1WUGoc
+	OefhBYfY3kSYMWlbaywg9dU+rQthcGLPGl4QHXKFnCwAga8ee06REzwao=
+X-Received: by 2002:a05:6a00:2d0b:b0:848:4d1a:9554 with SMTP id d2e1a72fcca58-84f2e0ed972mr17580183b3a.38.1786033281571;
+        Thu, 06 Aug 2026 09:21:21 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f459b66e6sm1662739b3a.40.2026.08.06.09.21.16
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f459b66e6sm1662739b3a.40.2026.08.06.09.21.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 09:21:17 -0700 (PDT)
+        Thu, 06 Aug 2026 09:21:20 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 0/5] mm/mm_init: simplify zone_spanned_pages_in_node()
-Date: Fri,  7 Aug 2026 01:20:51 +0900
-Message-ID: <20260806162100.313965-1-ekffu200098@gmail.com>
+Subject: [PATCH v2 1/5] mm/mm_init: fold adjust_zone_range_for_zone_movable() into its only caller
+Date: Fri,  7 Aug 2026 01:20:52 +0900
+Message-ID: <20260806162100.313965-2-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260806162100.313965-1-ekffu200098@gmail.com>
+References: <20260806162100.313965-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ABF1D100009
+X-Stat-Signature: 1uph68edyahtabikm7xgkhxnucgmhjug
 X-Rspam-User: 
-X-Stat-Signature: b9tw4mpcdxitob7jww9oujtkpedaqwez
-X-Rspamd-Queue-Id: 4508710000D
-X-HE-Tag: 1786033280-956072
-X-HE-Meta: U2FsdGVkX1+YgyjeNcHtPqOW1OGEyBM7bEWbf+5DEU66WliQ82oVgcmLwFtCyMqPz3iSd2MM4NCxhmy3WgltdOWouCts8WTBLomVg56FkBROCkfM63j3vAtu17yurKOVWdMtsW1lkTSbfAJQYg8+13KLJYpZ3Y1avorNMZ+Q9x//+N6DS5CVfRBE6kycAJM4RyyJ5A4pjLuk8SaxCdhJ9GWCyTu+/1dQ+Mi5D1ejpmp74/+rTmNHF7wwogCCx7cDkGZsfsgg9Bz2OmKzPkUaUMkuBARSGuLk8XDng1sLltJN0xqeKbRQWWVD1utV85TcONCoM5GHPtmuzm/xGQk+rxXSGgNWnbdctEfxJ6jtdnbPq/MWL00qxl0B+j8psReb3H/yqOjf9TiTzgD6OSX+R8U8+tKXKoR3AeBRPoi5F6SYpr2ont8VIxWmRRv1h0kzy8s3J/R8OOdiwXXjRhkQxHd/owysIIPVHg7g2RjsB0+C/XWyztjSiAxLQC9NPNJRgsh6W0XDdZyXrAD382oXZCL3zMH4lFCwa14ip1QjhN9gNjYbGN1s4DFeHNZMup4wEzg4bQ3wgfAXjEoIHA8ZF6UwANMwTd1+X6fvwAQ/ELGUWUtoVTNbkvb6JbTE+Yul6OlKx2APKXQJu1IF0XtMHT3TW166v10Djt3GMuztzvM/G3Mz9OZntIVEtX+2kG9pjq2/170IbjVNhdGiITJxq4CSvI5Ec/pwppAim1KUZw+Kr0S8KjF+C/OJm2lT//xOsdzeLqvlaiC5mdgjLXQHHWGVHGeF4RzozCivxBsrMpmw9aApNMay1ggeRPd+YS2tpHV2v1t4kEdZwhXZim/i/p2nbQmkQ3TNNDSLixQ/Rjarp3vbfWRahQPGOBK+WozRoGp7t9hGI2Cp+TMmhRnoiOzlpS53T9ChRcFshQlCL1liSwtuX4QDGa4O9FkXLe55RN9FC+Y/1olnu+HSge3
- K6Z9ixgy
- SbvbUKy5JZQLpfr8EU+5sGm8e7j7eXxDva1euusN6hIVuTm3NDQJMdayd1qnZ6YSnO4RTPpY68e4qQrLCb75ZgCp0oeiC3sGQPAEcDjU2DlL3reZ7gzgjCsKosLy4ATH/cXrBGbJECkmz/sd7K0yed7jjI5vSs5N5yhCoVR3aDYvroLaX16xSg2YheJN7SpBoaUkemhc9XpR29op5yhHmwDtw1RVwyMTnU/bS31+bahlmLgQtncf+KLIq3spK+fv5Y5iDuT9C6XyZeBT7ZK7XwoPvYUWZE8QIW6X4XP5mA9oalM0z5kLPUrqevVigscB8pksbZm9fzwrfEiuWB/mdawk2sQbbxLi/7VpL4lrzxvY0vXssr5E7bfXLX6oFJmGil+EzcnsffQQs4RuuTvYwM6NkNixVFF8kGklzBkhS2tGeWKSxJR8Pvhil2syhKM/oEKVDy4pEwEvEy2bFteRGNdITN5JO7zqNeLhcIr6Fca3lI/U=
+X-HE-Tag: 1786033282-784178
+X-HE-Meta: U2FsdGVkX18KzjR5aEAXbZ1UzvDwt0KYG7rJD3VvGzw7ssAkR2GujANvJEo2qYJLLIOtXvjwHA1737epbiiLdizM5VEu0nQPhKQkpBw5poH9x7inqxRRjqoKPNaa6FgtwzRNvqAckM0maikpUn4bATWqHdLS0lMJMqlJ6Sb9cD0mictLzJo1UHMXM6MGXhAwZimnY5d/19TxVBo1yXhQmHdrYH59a0xUcaGcKrsuXLAzYZgvX/+ZiXDStMe2ESN2cBuuERmwZHDtuUEt/PCgNUaA9k1RwADulNkaWfF7zPYBH/MBPhXVmkRvf7F1+7NmiDwvl8gMqkHr/55nWsKoJFX+sLLtqV8+KIM8FiQnEriihPFxuUxSk73FFTM8LrI6PkKMYoo7pa8LpHZ/B06fTyOi477Lp1f6/zi1uLFuFourQMH76Rb2pX8w7XNWACruOIkEjwFRu1CYl5ild3VrJzkrX84PTbLWCcCVNJ02yPJTzigypiuznWL5Os/70j9YEw6G7gPQXrxd04/67f+bqzKsB1HCplGMtI4Czq1JkR5O4xHJogCTff70zkA4yCVUXDEmGBj51A0OvcN1PsttI+ydfi+JUrxVYQLJLqb9STuLDJggUUAwNdPgex8J9GQ2P1ZKdOP7vOPAjRSaV4FD15V/0PBY4Krna6pWxNyYSEKykHhX4qVI+8Y39srQUu2deE0dKy+SQVBXEU5/dYSTOIMu9h/apBizRAxlto6/rGSqSuu3IiR4eZbVm84Kp6F6NPaUjZhLDLMlJ/LO5MykVXHVD1gk5zVBQTWaahVGfztDDC+6H3MpLl+6safxvwgMVD6c8WylTKMEDK9TpDAV82nUoZa/k8cwHQeC5QLh4EqP49F73hZ/T3yF6++H8elbqugCV0uKCpmWB50MTa+9hYHh1m2F1IeEKWEgebMXmnh1kc1JT4keJZ5lmNCEJfenCxA9nrwp/Ef3LeR2ZX7
+ gqQ7hnVV
+ 0wxGqPt5XvthDs24TdON20aI/CazzazFNmBzn65bgah6ZhtVP3hHwFkU/AtVqI2abxOJ4s1fPYuk/+qq8WgQGoyxEz6E9SvB7mW9VMhiFGhQMXhFYJtDEnRi7oyATZziie0OXZn+ritTiCLa/PWaJcfp7GY/3+NSEPfjqMRHst3QbGEO3u6RqRDbs8fVZsWRSKj7mzHu3Yqy2utuKH2ddb+9N2iB+KljX5XAAUz5/Aq7Sb4JSaQKjIxFEfxFxwVATyR9ZB3o+SHUGZtJcsNjor9ETEb7U5nDqkiDIF2qXwvT28RYAZZc7oLGRZDhxE2sanFbjmIo4a8lJHw1GCX2hnACl5MUZ2bur+ix3PvijJAffyq5L/FaN5aIWwEH0VoMU7K/cBABODMD6lZXv67f3gCSx49n2t913eOPvNnCkX/kEVrfV3MyTsdbf7pZRwGeKheOsWAll5iXEkeW40J6S/vroCX49vg1Eak6vRUi1+lowS1C0A3HtApsEag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,50 +118,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+adjust_zone_range_for_zone_movable() adjusts zone_start_pfn and
+zone_end_pfn. It is only called from zone_spanned_pages_in_node(), which
+adjusts the same two values before and after the call. This makes the
+code harder to follow.
 
-This series simplifies zone_spanned_pages_in_node(), which adjusts
-*zone_start_pfn and *zone_end_pfn before and after calling
-adjust_zone_range_for_zone_movable(). The helper adjusts the same two
-values, which makes the code harder to follow.
-
-Split into five patches for easier review. Squashing them into one
-patch when applying is also fine.
-
-Patch 1 folds adjust_zone_range_for_zone_movable() into the caller.
-
-Patch 2 removes the clamping to node_end_pfn, which has no effect.
-
-Patch 3 moves the check and the clamping to node_start_pfn into the
-ZONE_MOVABLE branch, which is the only place they have an effect.
-
-Patch 4 merges the two branches that adjust for zone_movable_pfn[nid].
-
-Patch 5 extracts a local variable and reduces the indentation level.
+Fold the helper into the caller to make the code clearer.
 
 No functional change.
 
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
-Changes from v1 [1]
-- Change base to memblock/for-next
-- Add patch 4 to merge the two branches
-- Update comment
+ mm/mm_init.c | 64 ++++++++++++++++++++++------------------------------
+ 1 file changed, 27 insertions(+), 37 deletions(-)
 
-[1] https://lore.kernel.org/all/20260804144803.3290255-1-ekffu200098@gmail.com/
----
-
-Sang-Heon Jeon (5):
-  mm/mm_init: fold adjust_zone_range_for_zone_movable() into its only
-    caller
-  mm/mm_init: remove redundant clamping in zone_spanned_pages_in_node()
-  mm/mm_init: move the range check and clamping inside ZONE_MOVABLE
-    branch
-  mm/mm_init: use min() when adjusting for ZONE_MOVABLE
-  mm/mm_init: clean up zone_spanned_pages_in_node()
-
- mm/mm_init.c | 79 ++++++++++++++++++++++++----------------------------
- 1 file changed, 36 insertions(+), 43 deletions(-)
-
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index eb53c327210b..30d3125951f0 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1124,41 +1124,6 @@ void __ref memmap_init_zone_device(struct zone *zone,
+ }
+ #endif
+ 
+-/*
+- * The zone ranges provided by the architecture do not include ZONE_MOVABLE
+- * because it is sized independent of architecture. Unlike the other zones,
+- * the starting point for ZONE_MOVABLE is not fixed. It may be different
+- * in each node depending on the size of each node and how evenly kernelcore
+- * is distributed. This helper function adjusts the zone ranges
+- * provided by the architecture for a given node by using the end of the
+- * highest usable zone for ZONE_MOVABLE. This preserves the assumption that
+- * zones within a node are in order of monotonic increases memory addresses
+- */
+-static void __init adjust_zone_range_for_zone_movable(int nid,
+-					unsigned long zone_type,
+-					unsigned long node_end_pfn,
+-					unsigned long *zone_start_pfn,
+-					unsigned long *zone_end_pfn)
+-{
+-	/* Only adjust if ZONE_MOVABLE is on this node */
+-	if (zone_movable_pfn[nid]) {
+-		/* Size ZONE_MOVABLE */
+-		if (zone_type == ZONE_MOVABLE) {
+-			*zone_start_pfn = zone_movable_pfn[nid];
+-			*zone_end_pfn = min(node_end_pfn,
+-				arch_zone_highest_possible_pfn[movable_zone]);
+-
+-		/* Adjust for ZONE_MOVABLE starting within this range */
+-		} else if (*zone_start_pfn < zone_movable_pfn[nid] &&
+-			   *zone_end_pfn > zone_movable_pfn[nid]) {
+-			*zone_end_pfn = zone_movable_pfn[nid];
+-
+-		/* Check if this whole range is within ZONE_MOVABLE */
+-		} else if (*zone_start_pfn >= zone_movable_pfn[nid])
+-			*zone_start_pfn = *zone_end_pfn;
+-	}
+-}
+-
+ /*
+  * Return the number of holes in a range on a node. If nid is MAX_NUMNODES,
+  * then all holes in the requested range will be accounted for.
+@@ -1208,6 +1173,15 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
+ /*
+  * Return the number of pages a zone spans in a node, including holes
+  * present_pages = zone_spanned_pages_in_node() - zone_absent_pages_in_node()
++ *
++ * The zone ranges provided by the architecture do not include ZONE_MOVABLE
++ * because it is sized independent of architecture. Unlike the other zones,
++ * the starting point for ZONE_MOVABLE is not fixed. It may be different
++ * in each node depending on the size of each node and how evenly kernelcore
++ * is distributed. The zone ranges provided by the architecture are adjusted
++ * for a given node by using the end of the highest usable zone for
++ * ZONE_MOVABLE. This preserves the assumption that zones within a node are
++ * in order of monotonic increases memory addresses
+  */
+ static unsigned long __init zone_spanned_pages_in_node(int nid,
+ 					unsigned long zone_type,
+@@ -1222,8 +1196,24 @@ static unsigned long __init zone_spanned_pages_in_node(int nid,
+ 	/* Get the start and end of the zone */
+ 	*zone_start_pfn = clamp(node_start_pfn, zone_low, zone_high);
+ 	*zone_end_pfn = clamp(node_end_pfn, zone_low, zone_high);
+-	adjust_zone_range_for_zone_movable(nid, zone_type, node_end_pfn,
+-					   zone_start_pfn, zone_end_pfn);
++
++	/* Only adjust if ZONE_MOVABLE is on this node */
++	if (zone_movable_pfn[nid]) {
++		/* Size ZONE_MOVABLE */
++		if (zone_type == ZONE_MOVABLE) {
++			*zone_start_pfn = zone_movable_pfn[nid];
++			*zone_end_pfn = min(node_end_pfn,
++				arch_zone_highest_possible_pfn[movable_zone]);
++
++		/* Adjust for ZONE_MOVABLE starting within this range */
++		} else if (*zone_start_pfn < zone_movable_pfn[nid] &&
++			   *zone_end_pfn > zone_movable_pfn[nid]) {
++			*zone_end_pfn = zone_movable_pfn[nid];
++
++		/* Check if this whole range is within ZONE_MOVABLE */
++		} else if (*zone_start_pfn >= zone_movable_pfn[nid])
++			*zone_start_pfn = *zone_end_pfn;
++	}
+ 
+ 	/* Check that this node has pages within the zone's required range */
+ 	if (*zone_end_pfn < node_start_pfn || *zone_start_pfn > node_end_pfn)
 -- 
 2.43.0
 
