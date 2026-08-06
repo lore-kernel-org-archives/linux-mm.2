@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F2D8C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976A0C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA6096B0088; Thu,  6 Aug 2026 08:07:32 -0400 (EDT)
+	id 77CCC6B007B; Thu,  6 Aug 2026 08:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7DE46B008A; Thu,  6 Aug 2026 08:07:32 -0400 (EDT)
+	id 72E056B0092; Thu,  6 Aug 2026 08:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB9E66B0092; Thu,  6 Aug 2026 08:07:32 -0400 (EDT)
+	id 643FB6B0093; Thu,  6 Aug 2026 08:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 813E76B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:07:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA6CA1C0019
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:07:31 +0000 (UTC)
-X-FDA: 85070719902.08.9FDC5C3
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CA770140011
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:07:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q887c7pa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 374586B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:11:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7BEA1A0726
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:11:09 +0000 (UTC)
+X-FDA: 85070729058.10.B1026B5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DB825140004
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:11:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FbIcEyC+;
+	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786018050;
+	s=arc-20220608; t=1786018268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=49BApBT44VNf2oHdmYMv0Gennxw3e9jZQmU5d15l048=;
-	b=btxzoeNC+xeLE04z6bj/gnv6vnaLBDUyqDhWR0/20h5jR9Bbimfwe9j5kdr8nsq/ohPYae
-	hDqh0lNDQ24pPVz4pz/l0SehsBPDp+u2baIicKDIqrod6kKa8Gy24hqDbYuuubpIsAIY7P
-	Ae5nRkMFEp7LzTkuMMvoewFE4/fiyAA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q887c7pa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YulkwmZf7EblPg7Hft79CTPkVdGunT1fPQenhuXXzJc=;
+	b=PPq1E1pLggv/lAH99BXkYNYPBw4zpZjFKsSE9l5vHCiuya9F1vORFMbrClNp/bkld52afQ
+	EmWp30HoBbNuYebooT3a7CD7py4D2hTKBYDSwrQ9g/7zTY15+csFIhhGOqNfgUWDHLHwyR
+	tDH6Vp58pwN8fY2cMP65MdxH1pKbXZE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786018050;
-	b=Ux328EupEwM6GjUnXRt5Ex2IyqTttecsp8J8mPV7suFGdj1Jckl3XFDONIaEtcwQe9Q2n+
-	99h24gfXQpacFGlYEDld5Eo6Iaa0Pk2gL1aXBv3faMr7dtAxHDbRqcu433Pzcwg2hcjarf
-	sR/PcBT4yBNJp8PTIFEHAWzVWKDo/MA=
-Message-ID: <563848c7-f9eb-45c6-af25-facf0fdc9b4b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786018046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=49BApBT44VNf2oHdmYMv0Gennxw3e9jZQmU5d15l048=;
-	b=Q887c7paPBj+KusvSUNvM7sGK5rvi0S9in+Bbs+WZ12U2p/zKpimsZ81hiKXjkDAjwTslV
-	QAfWevIcAwaPfUzSNVYbI1blcEFfWZh8Pju0hVKHeTwONRUbYaJp2UxEPF6mufz+YRYh7e
-	64xhxmayFMud07+IDss37p9a17avry8=
-Date: Thu, 6 Aug 2026 13:06:00 +0100
+	t=1786018268;
+	b=QeKpmmw3+9CAyfCqwmxDN5LJkOaEzAABm2f8yFOF7BzWHJbDVeKW8ENKO0zOGswth3YBp8
+	0SVt1e2pyu6mTOZ2uri8jLDfTCmwRkpBUIxwUuqRtjHAJbLKpfYntM7n81CkzTvWvqJO0l
+	pRY/2GzeEjQiRYEVUDcLg95rBl1Yv6o=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FbIcEyC+;
+	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Yu
+	lkwmZf7EblPg7Hft79CTPkVdGunT1fPQenhuXXzJc=; b=FbIcEyC+O8ejRiNe4b
+	E4Sjml9pa/2OS4W3ZuitNK0mdII8KP9DS7QoCnfN+EU52bSMnoDByBq+gULyQD16
+	JhvsferQOfIjTB4Rq0SO3PhMi3JLWOWgA8DiBu7nWUG9nBfskzrsKRD7M4UqMWLj
+	0PY35HxwhgZtpJCKXbIjUDn40=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDntYa2eXRqDR_9MA--.2495S2;
+	Thu, 06 Aug 2026 20:10:32 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Zqiang <qiang1.zhang@intel.com>,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hui Su <sh_def@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] kasan: fix cache shrink race with CPU hotplug
+Date: Thu,  6 Aug 2026 20:10:06 +0800
+Message-ID: <20260806121006.1642946-1-sh_def@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/memory-failure: fix folio refcount leak and
- min_order_for_split() locking
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Li Youhong <liyouhong@kylinos.cn>,
- stable@vger.kernel.org
-References: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CA770140011
-X-Stat-Signature: bwj6exyip7mn9o4f6ni58u5ppnf3rdtx
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDntYa2eXRqDR_9MA--.2495S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uryDCF15WF1DWw47ZrWkWFg_yoW8try7pF
+	y3Ga43Gw4vvr1kXw17Ja15WryrAFZ0ya43Aw4agrsYyF1ruw1kWry3trZYvFWYgryrXanF
+	vr95AFy5uF4UAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piHa0PUUUUU=
+X-Originating-IP: [183.192.100.171]
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbCwRhEo2p0ebizZwAA31
+X-Rspamd-Queue-Id: DB825140004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1786018049-771192
-X-HE-Meta: U2FsdGVkX1/tCGItuRaiSCL2lvJEeOUzrb2HMtgoVGXCEsJpncwtgAb05L3/ehuIygquXxUmFFjJlh2td4skR2s9f06PMJCmFtgyHZztc9coHeKL/K6iSYQEmsyPw+hC68O4vbwdHxzAp2HAdCX9V/3we2ag4e8re0qE50hPpHENfsNa5G5GN6JgexfuoaG+hz6p0YWaHsBVpbjcAmt83BXpFxDn3kAwPGREtP+l2PtGE0vh8oIGmwKX8t4a4tTtkW61xR5ULXXHuxZVxHTtEiwJVdgdN9PZ9L1qqP8QS389cyY7dscWXzmlJ4Cq7M7C36QC4a90ucFESnUhrxkblx0xs2CRpBO0454lgdNsk8ZNEYAzJZZxOGTxSHs9+qE7L82viFY8R7LhZIZ96WZrLgCx12piMO3UbhH16lQ6wOKr9FQAWges1sf86lNHWiu2xt50dsTF/bUZiUiteS/+9F2iA7lfXy9OPfzSANKISWGLUVfubym3otWT60iJ970t3dWGlIF0YfLCvUBR7jCsO+pDDeijQ29RcHyj7TqXSbESmgdcizYLj2PkjqWysp6nHenveaqn4dDfwgSXIFyCkuJ/corhvUEmTXKtAH+n2aJajf711hnHcJdWlxM/HgX+Ic18dJ+N+9O97gbjaHMxhHiRYXVZlbUST9clZf5lJ3cetQ7CaUL6qz/psp8wYqy2meL2nbYD4yx5y/7UYm1WcBSBD9W/u3xDuOBXgdcr02TftfA+suTYTf6XbTPtUI1J3lXjleloT/ZISLCje/lKu5yFacbC+kjoxwl57sXPp/39SBCO+ihFMdJ7+wnfQDzhWxBQlK/Pw4snqxnMWO++cPJ6jVSCg4vz/qZZgn4Kg/1JbllHJgagZ5SN0827lKBF4R9JBUUweiNcQtUECVnHmp5VLGqI4x9J93UYkgmHEWQbk7cNzijv+9s1/XfyOLRoFDTRpHtFCt9132ujjN1
- i+yq8jVI
- u5Lg+dWcKJMYDThxtnPWPE0cTARk/ws/gycrFZHSamgqtidKhl62xsAqWPocnI6jTZfUwQIsULsVUnsXiNQJzRUSdNK+yIrA+GJybfj1rRbruOPh96gwW41PTOspeUCOpkr2lPf3SsUV6a2zdzieODMzwDfKkqXpJwzOWRVcZX+HDNClvnPZrcNVyEq2THUQJVq6PyvrugC2ii0KBUQduiqQxO+KnQ0Ghlp1qNEgQd5NGIoJfYjGoYkYWKKf2rLlLO+Ubz6pVR22ElXfq7EuWUrvk34yNcyf3tIE9WpbGoGOouNExwyCzo4NP2KB9QCHnWBobtRxYVYLuVdBVkO1AjHwFK1wtU8ALEs8oA55r/mEXd3Ai/1k9x9C1bSIQFioks80a
+X-Stat-Signature: aouny8hdcx7nd8c1dsir5ae7qjn7ypwn
+X-HE-Tag: 1786018266-836184
+X-HE-Meta: U2FsdGVkX1+WcfOa1noQqaDly1i6zvrvf2TophezNv0JKOs+8yOB5QkHpbZ+CtxefQaqqBKw8zAXIlV3mRC1vezW6C4QkokzCFLbKvqdpsW8bbAJqELxjoQvoKRNqN3OiwyBBv9GQ77Rlhl7jyWzpZIloHjASXpoxWqAii1AwRapZ8EVWQg1wnQBF2GYvBrAYzu4atSbRlFD9pmA5WRrv8C7kP60Ux6MhU4EltYCxEVAF+tBvNTXGlkxgeN/Rut9Trmmp2y8ECP65J1IEl2riLYnY6vjhNY8yfc+jnrftpEiGsG8PjG8JAGsf8h9+spJRU3M6PcTGhW0ZU0dpLknSB+HMmEks6yA7Oc6PB+K7GrkRUrYDqwIUl3CozvwZO5T+qjhKNyD0w+mLKxQdAZcxZBARP+NC7LWLgXEzB7G6dBAGlWnPnpGWH2kfv5CQNJ/FVOxF3og+k2GgZbMxY7bi0g8SQcW3XvGTcS1kWcg17n4wpWv5Xz4rlOV7zV7NU/IKSy/2/WSb279kS6299wN+vxCamF6M4pkWgTC/L3+EDgW653/JvsGB4Cz+iaA6ElKxYLDJRHzJLV/X/JtNKuiVM8LwR3qbxHBxlRASrSV5CDS70gcSOe72+l5aY4WJoYGsHpwpexnSiVdGDkR5MhyOt+I6C0XRqn6OvcQ+p4/46VNh9g7k3e6pnTDtBGtqpe1vwgsh2eAa1VeMkkr57855fM7YT54ZVZImWCFoq74cDcU5EuXYGDJd7W9vNFPv3BgrVI/uXUyd4pSYSWf0J8WkhQdW/gZGtUpgvyC9tARM/HjSwp6WmH2O9DDwCmYz0y61aAoxvD4YRgqBg4g0o4fpPccVg1P36EgooRSeuFG2JjAJPMpA1CtlLpqad+SyQ1LXAjNG43p/pdgarkyedUeOqSM9yMXrp0mUuxiKVi47Sj67v4KbRoExDm0iCzuMdvSBncHzO43WgR4h64hmx1
+ XrzVLj83
+ AgDTpDhVg3j85zeSC6r5t17ULhl9MIJPM7vtJCGWjjaEmBHT5UAkhHmwsL7JlvM7OWDKLevhm0FQNAVzuRhiMkneu3mfinhty7F6B+CaMXwEk6SxG3REVzf+hgT835YJx0JU+QhcPJ6MZ0MaKVNqHDu8k00UJghhlMLt/RU0C+FAink+U58IApkyq9rd5/Ou6g5NAESKQZ5JrTwdYxs1ORcKCbveCTv8gDJy9nOfUDws+38shw461cgN+18Th0h+BR/JFZEESbGKucy7GaGE8astLtBFO+KvMyfrc4OUnEYWGzQBNGDAM7/Xqx0iDs0hqTq1Yp+uS2hY/3jlko+YbgCDQBepgihYQVXQs8fBp4i9RoJNEuanty0YjfyhgDQSXphUNSyczYvme8kXmqUfwlKOJD3tvDxX6xFeunl2BNyR1ttuQjjyMb44GiHn3m8RDXxL/OU87Jio/3vGKaL2TRvKTKljCcYmL4dcfsBGSdWfeuuVnK/mXSnu+Km1tSeKavSEH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,212 +98,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+kasan_quarantine_remove_cache() first invokes per_cpu_remove_cache() on
+all online CPUs. Each callback moves objects belonging to the cache from
+cpu_quarantine to the CPU's shrink_qlist, where they can later be freed
+from task context.
 
+kmem_cache_destroy() invokes the quarantine removal path while holding
+cpus_read_lock(), but kmem_cache_shrink() does not. The latter can
+therefore race with CPU offlining as follows:
 
-On 06/08/2026 12:14, David Hildenbrand (Arm) wrote:
-> hwpoison code can end up calling min_order_for_split() without holding
-> the folio lock. There isn't really something that would prevent
-> concurrent folio split. Consequently folio->mapping can get set to
-> NULL after checking for "!folio->mapping", and if the compiler
-> reloads folio->mapping, mapping_min_folio_order() would try to
-> dereference NULL.
-> 
-> While very unlikely to happen in practice, let's just enforce that
-> min_order_for_split() is called with the folio lock held. We can
-> significantly cleanup the calling hwpoison code, and just get rid
-> of try_to_split_thp_page() to hold the folio lock for a bit longer.
-> 
-> Just work on folios now, which further cleans up the code. We just
-> have to be careful about doing the page_folio() after splitting, which
-> we have to do already either way. Do not change the way we split for
-> now, this needs more thought and should be done separately.
-> 
-> Cleaning this up we fix another issue: in soft_offline_in_use_page(), we
-> would currently have leaked a folio reference.
-> 
-> In folio_split(), document and assert that we need the folio lock.
-> Drop the questionable VM_BUG_ON_PAGE(!page_count(p), p) check entirely.
-> 
-> The folio->mapping problem was identified by Sashiko, and Li Youhong
-> reported it by sending a proposal fix.
-> 
-> This likely does not really warrant CCing stable, but I expect little
-> conflicts when doing the backport, so let's just CC stable because of
-> the refcount leak.
-> 
-> Reported-by: Li Youhong <liyouhong@kylinos.cn>
-> Closes: https://lore.kernel.org/r/20260804035828.2684059-1-dayou5941@163.com
-> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> v4 of the last fixing attempts:
-> 
-> https://lore.kernel.org/r/20260806031958.677935-1-dayou5941@163.com
-> ---
->  mm/huge_memory.c    |  4 ++++
->  mm/memory-failure.c | 56 ++++++++++++++++++-----------------------------------
->  2 files changed, 23 insertions(+), 37 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9b1f3b24f7e0d..a00df56a68b57 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4362,10 +4362,14 @@ int folio_split(struct folio *folio, unsigned int new_order,
->   * If a file-backed folio is truncated, 0 will be returned. Any subsequent
->   * split attempt should get -EBUSY from split checking code.
->   *
-> + * Context: @folio must be locked.
-> + *
->   * Return: @folio's minimum order for split
->   */
->  unsigned int min_order_for_split(struct folio *folio)
->  {
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +
+  kmem_cache_shrink()             CPU hotplug
+  -------------------             -----------
+  on_each_cpu()
+    CPU1 moves objects to
+    CPU1's shrink_qlist
+  on_each_cpu() returns
+                                  CPU1 goes offline
+                                  kasan_cpu_offline()
+                                    drains cpu_quarantine
+                                    leaves shrink_qlist untouched
+  for_each_online_cpu()
+    skips CPU1
 
-Makes sense here, folio->mapping can become NULL after the `if (!folio->mapping)`
-check if folio_lock() is not held.
+The objects left on CPU1's shrink_qlist are not returned to the slab
+allocator. This may prevent kmem_cache_shrink() from releasing slabs
+that would otherwise become empty. If CPU1 remains offline, a later
+kmem_cache_destroy() also skips the list and can report that the cache
+still contains objects.
 
+Per-CPU shrink_qlist storage exists for every possible CPU, and each
+list is protected by its own raw spinlock. Iterate over possible CPUs
+so that a list populated before its CPU went offline is drained as well.
 
->  	if (folio_test_anon(folio))
->  		return 0;
->  
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index aaf14608b30e2..f4f3f1fc9eaff 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1705,26 +1705,6 @@ static int identify_page_state(unsigned long pfn, struct page *p,
->  	return page_action(ps, p, pfn);
->  }
->  
-> -/*
-> - * When 'release' is 'false', it means that if thp split has failed,
-> - * there is still more to do, hence the page refcount we took earlier
-> - * is still needed.
-> - */
-> -static int try_to_split_thp_page(struct page *page, unsigned int new_order,
-> -		bool release)
-> -{
-> -	int ret;
-> -
-> -	lock_page(page);
-> -	ret = split_huge_page_to_order(page, new_order);
-> -	unlock_page(page);
-> -
-> -	if (ret && release)
-> -		put_page(page);
-> -
-> -	return ret;
-> -}
-> -
->  static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
->  		struct address_space *mapping, pgoff_t index, int flags)
->  {
-> @@ -2509,9 +2489,6 @@ int memory_failure(unsigned long pfn, int flags)
->  	folio_unlock(folio);
->  
->  	if (folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> -		int err;
-> -
->  		/*
->  		 * The flag must be set after the refcount is bumped
->  		 * otherwise it may race with THP split.
-> @@ -2526,24 +2503,25 @@ int memory_failure(unsigned long pfn, int flags)
->  		 * page is a valid handlable page.
->  		 */
->  		folio_set_has_hwpoisoned(folio);
-> -		err = try_to_split_thp_page(p, new_order, /* release= */ false);
-> +
-> +		folio_lock(folio);
-> +		split_huge_page_to_order(p, min_order_for_split(folio));
-> +		folio = page_folio(p);
-> +		folio_unlock(folio);
-> +
->  		/*
->  		 * If splitting a folio to order-0 fails, kill the process.
->  		 * Split the folio regardless to minimize unusable pages.
->  		 * Because the memory failure code cannot handle large
->  		 * folios, this split is always treated as if it failed.
->  		 */
-> -		if (err || new_order) {
-> -			/* get folio again in case the original one is split */
-> -			folio = page_folio(p);
-> +		if (folio_test_large(folio)) {
->  			res = -EHWPOISON;
->  			kill_procs_now(p, pfn, flags, folio);
-> -			put_page(p);
-> +			folio_put(folio);
->  			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
->  			goto unlock_mutex;
->  		}
-> -		VM_BUG_ON_PAGE(!page_count(p), p);
-> -		folio = page_folio(p);
->  	}
->
+Fixes: 07d067e4f2ce ("kasan: fix sleeping function called from invalid context on RT kernel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hui Su <sh_def@163.com>
+---
+ mm/kasan/quarantine.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Looks cleaner and preserves existing policy where with successful split to order 0,
-you continue handling the individual page, but onl split failure, folio remains large and
-you report the failure.
-
-  
->  	/*
-> @@ -2861,9 +2839,8 @@ static int soft_offline_in_use_page(struct page *page)
->  		.reason = MR_MEMORY_FAILURE,
->  	};
->  
-> +	folio_lock(folio);
->  	if (!huge && folio_test_large(folio)) {
-> -		const int new_order = min_order_for_split(folio);
-> -
->  		/*
->  		 * If new_order (target split order) is not 0, do not split the
->  		 * folio at all to retain the still accessible large folio.
-> @@ -2871,15 +2848,20 @@ static int soft_offline_in_use_page(struct page *page)
->  		 * preferred, split it to non-zero new_order like it is done in
->  		 * memory_failure().
->  		 */
-> -		if (new_order || try_to_split_thp_page(page, /* new_order= */ 0,
-> -						       /* release= */ true)) {
-> +		if (!min_order_for_split(folio))
-> +			ret = split_huge_page_to_order(page, 0) ? -EBUSY : 0;
-> +		else
-> +			ret = -EBUSY;
-> +		folio = page_folio(page);
-> +
-> +		if (ret) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
->  			pr_info("%#lx: thp split failed\n", pfn);
-> -			return -EBUSY;
-> +			return ret;
->  		}
-> -		folio = page_folio(page);
->  	}
->  
-> -	folio_lock(folio);
->  	if (!huge)
->  		folio_wait_writeback(folio);
->  	if (PageHWPoison(page)) {
-
-
-LGTM
-
-Acked-by: Usama Arif <usama.arif@linux.dev>
-
-> 
-> ---
-> 
-> base-commit: e5492213654050379e78ec6f9acfd6c9fe00f334
-> 
-> change-id: 20260806-try_to_split_thp_page-a359f4d8c90f
-> 
-> --
-> 
-> Cheers,
-> 
-> David
-> 
+diff --git a/mm/kasan/quarantine.c b/mm/kasan/quarantine.c
+index 6958aa713c67..16f4e67beee8 100644
+--- a/mm/kasan/quarantine.c
++++ b/mm/kasan/quarantine.c
+@@ -355,7 +355,12 @@ void kasan_quarantine_remove_cache(struct kmem_cache *cache)
+ 	 */
+ 	on_each_cpu(per_cpu_remove_cache, cache, 1);
+ 
+-	for_each_online_cpu(cpu) {
++	/*
++	 * A CPU can go offline after on_each_cpu() returns, leaving cache
++	 * objects on that CPU's shrink list. Scan all possible CPUs to
++	 * drain those lists.
++	 */
++	for_each_possible_cpu(cpu) {
+ 		sq = per_cpu_ptr(&shrink_qlist, cpu);
+ 		raw_spin_lock_irqsave(&sq->lock, flags);
+ 		qlist_move_cache(&sq->qlist, &to_free, cache);
+-- 
+2.43.0
 
 
