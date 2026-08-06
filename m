@@ -4,135 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E33C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 10:50:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121E2C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 11:03:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A3036B009E; Thu,  6 Aug 2026 06:50:32 -0400 (EDT)
+	id E6ED06B007B; Thu,  6 Aug 2026 07:03:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 353C76B009F; Thu,  6 Aug 2026 06:50:32 -0400 (EDT)
+	id E46FB6B0088; Thu,  6 Aug 2026 07:03:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 243266B00A0; Thu,  6 Aug 2026 06:50:32 -0400 (EDT)
+	id D5DA06B008A; Thu,  6 Aug 2026 07:03:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EFCCB6B009E
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 06:50:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60900160711
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:50:31 +0000 (UTC)
-X-FDA: 85070525862.20.DE4DCFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9175320006
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 10:50:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A83766B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:03:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29C80A076F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:03:51 +0000 (UTC)
+X-FDA: 85070559462.01.769ACA3
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 965C420006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:03:48 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VPZtuL5j;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786013429;
+	dkim=pass header.d=bytedance.com header.s=google header.b=XuSMHdQV;
+	spf=pass (imf13.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786014229;
+	b=a9XOP5wSSDLkbKWXaxlnKU5grI2QUu7ENKX67DPx+ek/ETmWgAb6N2eIfoNP3cS19+s8dV
+	sS2c8KO//qaFcnsvndhEK4pQog7copDMEQJhKFSqNHzL6G2gtrWb8c19m5NtaOJiYY2R/i
+	E6WQaG0zTJQF5Jr4QPSViojjO3jy9s8=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=XuSMHdQV;
+	spf=pass (imf13.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786014229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N6aH3IWhBuvYtU3jyYyQ38Aa7k9zKxtJGVyR123XyKk=;
-	b=inQY1NshzKwSxEz+iu1YcxvDnjQbaWAhzxolqTMoswf1Wvj9nKqK6EjYOMMTwbSMq3mz2q
-	zi7hlnBFhbczM/HlmV1uEAOR/9J+6NIvj5QhlD4UN72SgcSwUV/xeFQg9gpYMCcJdPvAxX
-	+HvoQeYDIN9lUzrRlbqg+Eq6dhmXIMA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VPZtuL5j;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786013429;
-	b=egB7RxcysPy/m6KlbKSicnoCdAC1KvStrRZdz5Gp8Zs/cmzRYsgGH7hOalrroXO3vSS6wY
-	DEsNjwodYYM4sxkzVpD7S4etWx1dVO7AYvTJs5lyOV94VW3WCuhKlVT6BhD3KaLoB2G5tv
-	B98AcJEUvhFY5Q65AyYG771Q8t0HokI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88D0740491;
-	Thu,  6 Aug 2026 10:50:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29C61F000E9;
-	Thu,  6 Aug 2026 10:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786013428;
-	bh=N6aH3IWhBuvYtU3jyYyQ38Aa7k9zKxtJGVyR123XyKk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VPZtuL5j3tQOtekLQ7kOVDseIfHGH5e5b4IjDJWQWyfGuDyEHmFasxyAg4Znie6lF
-	 Cs5dkDB0jrbs5MFYwQbm3F0UpK684wLeGJ7s5CBFVSq1wSeXFnA6k+Gl+G7xtVmHun
-	 2nxsLiVNyOsVv6jTwOohQOSd93cii87KioJLnuYwBjdKmHrHNj2AxORBcj0LwPbJsm
-	 cVmcA+2urdOJJjPIRDLgo5mMvdKgnkUy9gsWSXaNXDRIzBytPEeDhllvcYEjBy611V
-	 4q+gzfRRr48ZCgjM3YHpKL8eEX43RKoz0P7AIhh5YOvIiXN531OhTGkvlkcG2aABiv
-	 QVLJhIVXZdzow==
-Message-ID: <0726ba54-a500-46a4-b42f-3e581da0f070@kernel.org>
-Date: Thu, 6 Aug 2026 12:50:23 +0200
+	bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+	b=x2whsgHVCgwMm/NMAXnogJv1BecQ5wihhKGBKBZTVizvI07xRyO8IiysaK0cR+jSd4OG/Y
+	EAXT5a3D6VEAEys8Zk5t0ohTZ33dcKhBfOWLk7iTP0uAyjCc/QDRJPTtzRVg+bVYHJ6jrK
+	nfXbtCyfRP56bDrwlrwQY4uTEoeCP2Y=
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-448b89f700fso1931505fac.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 04:03:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786014227; cv=none;
+        d=google.com; s=arc-20260327;
+        b=akH507SSyvIxnzVwjAPes92Kpc1MCIbBJUNQbAeBBrXsrQiwdX1zPXECn/CCbl+YKS
+         YpBt/mfFA2XEXg8geUScWfE6e3qhgAyyxltviDvPBJ2xTVZgkl76zSpLd+NyA8qhvRjC
+         3/EI1ZZ9+0+MgwOudGVADsmQlZyRPkkDockwWGmCg2cA7ClNM11TV3REE8TJ7PEUeYFR
+         Gp+z5lnfUWLkxSm7aR+J91hebkKC0jBXsPPhjZkpchlIrx2HdpbHTO5DmCqOPH18NOGZ
+         9pwlp3zWjDEzpC0D9+zFiS4/Lf4Ubv8u8RBC1QlcYCg5n0/Bvic/gokE3CHkTenzPvHi
+         ILtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        fh=gOKpPvR2jBcm7jlx/T/Afr59w9amylWPSuXFx2rUABQ=;
+        b=dE55Ct4OPOTMn+yb3nLmpC6/pi46aIllCOeZC8z9cCWxDFXvWH0r804twTL/gEe/+X
+         uI6o33lraL1Ey63NAsFjqWhYSm+oG2zyGKc9TDqCQaHVyC8MYt+E3BZhTpgPcAs2FIVJ
+         P5OCF5NGtchJ74sSAZONrlvgsPSFN8Ic9KMUo6vVbaAyH/yG22LNOG26O0FRHHY4OUPb
+         95VskPbTaY4K6cK0lVjy61Q/PJAS4g3wcw7CcJ0ZJQUhrrvYAnYI4KF0mBrGgEQLllPE
+         oEZqFxfL2RiutR3tR+5uThFc4prFEvM/2V2sgDnXSxXXmJ3GUCyF+g9Tw6UQAzmD4yMT
+         k5lQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1786014227; x=1786619027; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        b=XuSMHdQVhdHyE8B9gOUVCOlrg3IcfQRo4qUhhNZkCxEV+gk90IKQzLfguK+dMYoefZ
+         Q1INp6GVjdxUbpauO5KLMQgEvGwmrUgwhvFlGSB+BHwEzg2/O5v8v0T6SIyK1q0v1dk/
+         nO++mtaFR8/UbyHvz0ICLKQRU8KQQUww1Md3IV2Nv/iSFvCuxUqfgDxcA2gX6bYvYStm
+         IKNhkXBAToD8lCwIIlJl7uDhgw4WXtGpBuxYwbs7OQWrKCwSJUu2F88KLsX8PcL0qYYR
+         CuUotww5Yc3fkvZLbpsvJdlDpqvLE2jyFc+bwa/w/LFd3+7z/G1bjZymDtDGz7lwRDKW
+         sw/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786014227; x=1786619027;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kMaEeVh+/U+NbRzoGC8Idgo7QP/ahOzSH8HwXGJHBcU=;
+        b=fw9rgAeskX05Y6l1qzt7zkVW/2CfzdR2e98WXx2Ng3HWTnZi9cHIk82paJg9YtCWbW
+         keplHspGfHkHFi4GdGv/sY/shE79Wbr+I0jABWTgkTawK9UxukShMIG1nRxL5Hm3CY9W
+         CJas7TjkFxd+03U2PP1zMlzKSZv+QheyGVUOs3oNUYSAGOkycENe3NBf63KyRP8jgf5a
+         EinUyLhtkVsx9LgEQcnBiAISGE+7WoxuzkSqzhmXfAtgw2PCJYDc8MOHbVnkxGDPYCwK
+         PAYC0CrYriVroMDXw7NSnYWQmPldMcPpjEBHRC7rvrXLeproV1gigbR09mBZYfwP7qic
+         oYbg==
+X-Forwarded-Encrypted: i=1; AHgh+RobMj1nAIxOT/yGSvpqIu132BADJHHmsvM9P4Q6CVZ35mYqsfYXh2OOe3oA20jpI3/RQhDCyEKEjw==@kvack.org
+X-Gm-Message-State: AOJu0Yw1rV7LT8HlHSnEfMNI4fKnNeiRPY4kj1HCo0RD2lUOSkx7/p01
+	W/W+kInLQTF2RfwV573PXmlhwZpSYgutVf4IeYo4CEe96JT+SBOn341yaT4lZUT9td/1UkHoJl7
+	TY4HJgZkIqUx5qR/KmSU6S1ouctJf/1if3NNcCG7FhA==
+X-Gm-Gg: AR+sD13T68LGuZKfB9g2HYZUE1sAgZMe2uGmlg3v0a3P46YxxQuveu3/oPcxOx4rkCm
+	nb+epzLsv3H9QKAQmdoqdfxkiyh9/h3vX/BtrQXBRPi1K7YZ0VsDkpVgVRztooRX5QWjcdS0RA3
+	S95cbsNvDBNbg6tKoilSmagcIUSPZmy1wQ3KPPd8ktHFWr+IoOSdf6M7afH7BwahMXcHKzM5bYO
+	NH+vWGuGZuAgJw6IhwM7c9AcnUOD2TZGkGzgP88n7u01ZPC9Ck79fbMzcUwuOPly0QzrSGAvnzJ
+	eMtojPcPScKfnt3D8lrXm/lmQUvrLm4wAPU0Crld4MWd/7g=
+X-Received: by 2002:a4a:e910:0:b0:6ac:ac32:b5ff with SMTP id
+ 006d021491bc7-6ae96c1b306mr7392747eaf.2.1786014225348; Thu, 06 Aug 2026
+ 04:03:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/memory-failure: fix folio refcount leak and locking
- in soft/hard offline
-To: Andrew Morton <akpm@linux-foundation.org>, dayou5941@163.com
-Cc: linmiaohe@huawei.com, ljs@kernel.org, nao.horiguchi@gmail.com,
- linux-mm@kvack.org, ziy@nvidia.com, Li Youhong <liyouhong@kylinos.cn>,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260806031958.677935-1-dayou5941@163.com>
- <20260805213415.002dc67766271d21c232910b@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260805213415.002dc67766271d21c232910b@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y7q3u85yx5oatwaxwtga6xo3xs9fpgfk
-X-Rspamd-Queue-Id: 9175320006
+References: <cover.1784201104.git.cuiyunhui@bytedance.com> <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
+ <anQ2bW3JxraT6PFY@lucifer>
+In-Reply-To: <anQ2bW3JxraT6PFY@lucifer>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Thu, 6 Aug 2026 19:03:33 +0800
+X-Gm-Features: AUfX_myo8uemIR_J8tcaFPQk5bQ_19S-a0xl3xjkzuEjy5SWJNGo65WwssSv6nw
+Message-ID: <CAEEQ3wk62WBSJb5JcnPJoVSb+JQq3ZcE4CRmqqTvkAO20XFjbg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 10/15] mm/gup: add fast-GUP specific
+ lockless PTE helpers
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 965C420006
+X-Stat-Signature: fqxk4aekmx93zft1zjncno4yrq9pgxcz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786013429-822468
-X-HE-Meta: U2FsdGVkX19exK4GVvGaNA5FwmEu0UMX6VBGPt5IA6Z+Jk6glIMYHmdB5sFh+ldE5HOWFMHYwiY8KHEnI1dOzoacho+TZVMAMC+74D+FI5drBX7OlOH2ScE4z5r/CS6dx+zM32hHu3H0lR2sk/sdoDTBpD0BOXmNJ6F6NfSXxlxhf6oJhCUZUPX7SD7QOJVmwID2v50rvorOgtMI2UTiU2nQRV0IX6uW8+4kfeoAYsFAJWDpZY+4o4qU22wqfiDVVLqTap1Qk7vzM+REHOVWt+f0xm8g7dVn76Eyn447rlZ5pBtPlLm34H2CM9+nojpC5kX4iBq/K+rnhiZtV/VGUphMWQOeCwllQJ5NzQZYR760M+VliiUVDooXB/I5FuUR6KWJSh1bWzRyEjC32d4IhktCqhBulGfvk3yaaTUHvEvPoL7AxpbbQQBjnADtfh9Uva+zCU74h06byKQXa/gv8FSjDBpOmIxaFiL/zbah9dgXs89c99//BInW4lDkgE4pEGemlL/oi5LhS6gouKIVw93pOeinlbfCLwUB76SbUPD6sFVahgWBAXgNyhFYU9+IrVFaXIzaLTqyS9Jw49bSm6p7q1n2srpphPQT84B6Gl/7Dsh991bSRM7bHGx8TSc0fy3Ay8fNngSzK9ZLD/pQAFivDAmc8+GrgSsCWU1i2+ysyrK5vvTAqy21JQjSXNw9m9SBCj4MabDSCRsjG9ba29avHUgYWPkpxyT07MR71E2Roxv6ZaLFz8JsiYFeCfYrZOJII/n9YYqmoJJeY4E0TWzeibkbD1f0eZf9OMAZ1tiS3fs5rpArmD7Vqiw9b64862QiyvNlIVIbw0bl4GK/T2dQVev8xy2XGSaefnykw5omoehBB8b0Aq714nnMw1uMueZJIl5uRaJ6tiXzbl8zwqwelmjW2VfuCS5AiNfV6bei78OO4GWrsFFDOBVxD6aKobWcitkFy0EZ9Bk7agK
- aJsm/QHW
- JLDnADNhX0ymr51jAfljeqNo3pgvcm9g6thWzkQHCaISIU4TVoPcriHFM30OQ2mpXd5MCnCPFK9LQ5MRFih6c0Y8Jp/peRRt7q4CKaUSQD9AhGfbaE38TveDi0sASnE4Q2PnjfEbDWcUyQx/+ck+3KAW7+KRcYMhPATNpztfiU5Z0UcI0xRtWzn0eal7nMDiM401tBpjWy+MPCF4UpWRWacGre7GCQu1C27pHiq6Df/7IOHODicePcxZXhpWhK++Zkf6Xz+IplztYi+Z/QoV497VEQrrz/n5m87aan7xEFgViTPje6LKMAv0kE1Ekvq+u2ScGy2c4DNBeKdhIbq8z8IrXhwcgksEeLmxfWyrYKGLRbLUSK5uLNV406+emN0mAzJJrytU6lCDjECamTbrAo7lwbRFH0kybHD1DednN6yWI/5po1jCHiRilqaCo3+Q92T8A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786014228-785030
+X-HE-Meta: U2FsdGVkX19mBVsnoKFX8LJnIMWCbxY+jEE9Dpc5dv0LO9qK9PBDzP8H0cDh8wVW/XshffqYSZPAN5vtEh20DlOJFG4jPeC1ZqG3qDq5IYMpFmRIm0NxiagbLLUmJVAGAUM2HMzAmAbFEHG5bnOzPbCx7Kd7TqFwwefwd8OsWUNJlKrnIP5H0vc3CMRMNudPqpVg9P3MaL7OXza7v5sTkWL7+ZRjfRRqhiF/KNryUDeF9F1PSmEihTF7i6wzywwaEz2Bhl9FoNHdcePHZpcSGTyVic983rJHU5ltzjna+LkzDm3Qwf9TiwPT+gEOK9wxv/Sz3le3P/NHxhDGWMCgSR/PSZ92kIM16UUXyMgS+aNPhq4DeC4+6gJFCA1PhDGENR81ZA6gYMI7KUsq51eYyKzX16E2/e9iVdCvthwjCYrtKyxS35pXLr1C/0zro/3v01ZhDYVMx2bvB6PTaaG4vRKW7Ud9Y0xZiEbQuuhyxCeWjUUvFcpshh7mk93FANdbhGGWNyfvWNCU81duHDKZO1MFQx4iv/jeZ3gUGEf7MAZNyY2YmnxVD6vGGy9ZtgZeAPfua5Q8VsuEIC+QbiyiZFPFhGPrmcTtUgsqPjxq+e8cB4Hqi/yn9nFWIGhAChrJInhmuHYw31GEd7Za+xaG/7w3Pg4PjfsCSys5gr3tCxBOxU0a1D870fqSre987UaB4QDlsNlS1NcL1kXxFvPYWLXoDwThqeuyvVEX29ADZjbbVZUY9Ul0MVQ0qay7VRr2Z9LnJu+aTK/qL1oef2y1+5flm8l7OGRAOapdU4plpMzL+BJ9mKGqh/XZfL4Usxw+JILHVlTffJDCA3paUR3DQTaPB3MvI+8kWw3VQ+zURyTUd93s1uEPAINb8IrCI3ey31V88L0IM1cNyLieC9axG5fDJ3Lxb/OC7DuGgfem2VEww8R/la22hwP6rkOTJDUYltWvXJIe78KFTXXADet
+ dMaEX3MQ
+ QCzKon+eCCYR7d9Ey9Y4vN4FBJ3Vwr5agvaln9BbdpycmtWad7JCpk5hbX3xCxuxe9jAzEqJxDINYk5GXuc/U9xrPUVIBBSW7EL/qfy0TEO3AkdWScCnjPDK5TYdia6zwrG80g5wdI7vN1lU8KuZM0KO+7N0RIb1GKP2TmQMJ7nY2R2WNW3OktE4Zx1NNPnLmLSCfoagMsG8yp20ft4jZrvFivTbXXM8LzxQPIMPCJ8Rxlt0d0tkcaZ8zFM1lHqVfoISY86lufHbPG+6qF7lwZpzPBHRomK0cxOj90R0ug6q/XqdBiLwLZAfJt/0mXsNWBekwunUJ2j27mrqP2u/1tU/6kvo1vpYFTGjdshHnoXgB32E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,74 +148,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 06:34, Andrew Morton wrote:
-> On Thu,  6 Aug 2026 11:19:58 +0800 dayou5941@163.com wrote:
-> 
->> From: Li Youhong <liyouhong@kylinos.cn>
->>
->> The min_order_for_split() function accesses folio->mapping without proper
->> synchronization. In memory_failure(), the folio lock is dropped before the
->> call, and in soft_offline_in_use_page(), the lock is not held at all. This
->> means that while min_order_for_split() is executing, the value of
->> folio->mapping may be modified by a truncate or invalidate operation,
->> leading to a torn read or use of a stale mapping value.
->>
->> Additionally, the soft_offline_in_use_page() path fails to release the
->> folio reference taken by get_hwpoison_page() when new_order != 0, causing a
->> reference leak.
->>
->> Fix these issues by:
->> - Moving the split operation logic into the callers and holding the folio
->>   lock around min_order_for_split() and split_huge_page_to_order().
->> - Removing the try_to_split_thp_page() helper to simplify refcount
->>   handling.
->> - Ensuring the folio reference is always dropped before returning on the
->>   soft-offline error path.
->>
->> This refactors the code to be more maintainable, fixes the locking issue
->> reported by Sashiko, and also addresses the folio reference leak on the
->> soft-offline error path.
->>
->> ...
->>
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->>  static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
->>  		struct address_space *mapping, pgoff_t index, int flags)
->>  {
->> @@ -2440,7 +2420,6 @@ int memory_failure(unsigned long pfn, int flags)
->>  	folio_unlock(folio);
->>  
->>  	if (folio_test_large(folio)) {
->> -		const int new_order = min_order_for_split(folio);
->>  		int err;
->>  
->>  		/*
->> @@ -2457,24 +2436,24 @@ int memory_failure(unsigned long pfn, int flags)
->>  		 * page is a valid handlable page.
->>  		 */
->>  		folio_set_has_hwpoisoned(folio);
->> -		err = try_to_split_thp_page(p, new_order, /* release= */ false);
-> 
-> AI review asks (effectively) why the try_to_split_thp_page() return value
-> never gets used
-> 
-> 	https://sashiko.dev/#/patchset/20260806031958.677935-1-dayou5941@163.com
-> 
+Hi Lorenzo,
 
-No need for AI. Just from compiling:
+On Thu, Aug 6, 2026 at 3:35=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> +cc literally everybody you failed to contact...!
+>
+> Why on earth are you doing sending a series like this which changes core =
+mm,
+> non-RFC and at v2 to boot, without bothering to Cc relevant people?
+>
+> I am also very confused as to why you are sending an ostensible RISC-V se=
+ries
+> then changing how core mm works to fit it, that's not how that works.
+>
+> And if you're seeking to change core mm send it as an RFC!
+>
+> On Thu, Jul 16, 2026 at 08:41:45PM +0800, Yunhui Cui wrote:
+> > fast-GUP snapshots a PTE without holding the PTL, pins the page, and
+> > then revalidates that the PTE did not change. Keep both reads under the
+> > same lockless PTE semantics by defaulting the fast-GUP revalidation to
+> > ptep_get_lockless().
+>
+> Why?...
 
-  └ mm/memory-failure.c: In function ‘memory_failure’:
-    mm/memory-failure.c:2492:21: warning: variable ‘err’ set but not used
-[-Wunused-but-set-variable]
-     2492 |                 int err;
+Thanks for the review. Let me first explain the motivation behind patch
+10/15, and then address the RFC/Cc and naming issues.
+
+The goal of this patchset is to let RISC-V Svnapot provide contiguous PTE
+semantics similar to arm64 contpte: generic MM should still see a normal
+per-page PTE view, while RISC-V can fold eligible PTE ranges into the
+Svnapot/NAPOT encoding underneath. Because of that, the RISC-V public
+ptep_get_lockless() may, for a Svnapot PTE, return the sub-PTE for the
+current address expected by generic MM, after checking the whole NAPOT rang=
+e
+for consistency and aggregating block-wide A/D bits.
+
+fast-GUP has a narrower requirement. It needs the PTE for the current addre=
+ss
+for permission/PFN/page lookup, then pins the page, and finally checks that
+the page table entry it relied on did not change during the pin. fast-GUP d=
+oes
+not consume the block-wide A/D aggregation. If fast-GUP uses the public
+ptep_get_lockless() for both the initial read and the revalidation, it pays
+the cost of the NAPOT range scan and A/D aggregation in the fast path, even
+though that information is not used.
+
+So patch 10/15 is not trying to wrap a simple equality check. The intent is=
+ to
+separate two semantics: the current-address PTE consumed by fast-GUP, and t=
+he
+original PTE snapshot used for post-pin revalidation. On normal architectur=
+es
+these are the same value, and the default implementation preserves the
+existing ptep_get_lockless() behavior. On RISC-V Svnapot, the value consume=
+d
+by fast-GUP is the sub-PTE, while revalidation compares whether the raw
+snapshot has changed.
+
+Patch 11/15 is the RISC-V use of this hook. It avoids the public
+ptep_get_lockless() block-wide A/D aggregation path in fast-GUP, while stil=
+l
+keeping correctness through raw snapshot revalidation. In the 64K THP alway=
+s
+mode, fio 4K random direct read improved from 2.615M IOPS / 9.97GiB/s to
+2.874M IOPS / 11.0GiB/s, and the average clat dropped from 95.54 usec to
+86.97 usec.
+
+Regarding the RFC/Cc issue, you are right, I handled that poorly. Although
+this series is mainly about RISC-V Svnapot, patch 10/15 adds a generic MM/G=
+UP
+helper and patch 12/15 also changes the arm64 contpte fast-GUP path, so the=
+y
+are no longer RISC-V-local changes. I was worried that the large list of
+individual recipients from get_maintainer.pl would create too much noise, s=
+o
+I mostly kept the mailing lists and dropped some individual Cc's. That was =
+a
+bad call; the relevant maintainers/reviewers should have been Cc'ed
+explicitly. Sorry about that.
+
+For the next version, I will split the generic fast-GUP helper out as a
+separate RFC, add the relevant MM/GUP/arm64/RISC-V maintainers and reviewer=
+s
+to Cc, and explain the semantic difference between the PTE consumed by
+fast-GUP and the post-pin revalidation snapshot. If I keep the arm64
+optimization, I will include the arm64 maintainers/reviewers in that RFC;
+otherwise I will drop it from the RISC-V series for now. I will also improv=
+e
+the naming, such as `rawp`/`raw_pte`, and add comments to make the snapshot
+semantics clearer.
+
+>
+> >
+> > Introduce fast-GUP specific PTE snapshot and revalidation helpers. The
+> > default implementation preserves the existing ptep_get_lockless()
+> > semantics, while allowing architectures to override the helpers when th=
+e
+> > public lockless getter provides extra semantics that fast-GUP does not
+> > consume.
+> >
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  include/linux/pgtable.h | 18 ++++++++++++++++++
+> >  mm/gup.c                |  6 ++++--
+> >  2 files changed, 22 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index da14328093a86..62943fcbf7046 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -813,6 +813,24 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+> >  }
+> >  #endif
+> >
+>
+> Of course, no comments, helpful!
+>
+> > +#ifndef gup_ptep_get_lockless
+> > +static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
+>
+> rawp? This is terrible naming.
+>
+> And 'gup_ptep_get_lockless()' is worse. What on earth is this function me=
+ant to
+> do? And why is 'gup lockless' considered different from lockless?
+>
+> And you return the value twice, because of course you do. Why? Who knows.
+>
+> > +{
+> > +     pte_t pte =3D ptep_get_lockless(ptep);
+> > +
+> > +     *rawp =3D pte;
+> > +
+> > +     return pte;
+> > +}
+> > +#endif
+> > +
+> > +#ifndef gup_ptep_revalidate
+> > +static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
+> > +{
+> > +     return pte_val(raw_pte) =3D=3D pte_val(ptep_get_lockless(ptep));
+> > +}
+>
+> Again this naming is utterly terrible and I'm at a loss as to why on eart=
+h
+> you're doing this?
+>
+> We don't need to abstract equality checks?
+>
+> > +#endif
+> > +
+> >  #ifndef pmdp_get_lockless
+> >  static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+> >  {
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index 99902c15703b0..72fb147193e55 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -2842,10 +2842,12 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t =
+*pmdp, unsigned long addr,
+> >       if (!ptep)
+> >               return 0;
+> >       do {
+> > -             pte_t pte =3D ptep_get_lockless(ptep);
+> > +             pte_t raw_pte, pte;
+>
+> What on earth is a 'raw' PTE?
+>
+> >               struct page *page;
+> >               struct folio *folio;
+> >
+> > +             pte =3D gup_ptep_get_lockless(ptep, &raw_pte);
+> > +
+> >               /*
+> >                * Always fallback to ordinary GUP on PROT_NONE-mapped pa=
+ges:
+> >                * pte_access_permitted() better should reject these page=
+s
+> > @@ -2871,7 +2873,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *p=
+mdp, unsigned long addr,
+> >                       goto pte_unmap;
+> >
+> >               if (unlikely(pmd_val(pmd) !=3D pmd_val(pmdp_get_lockless(=
+pmdp))) ||
+> > -                 unlikely(pte_val(pte) !=3D pte_val(ptep_get_lockless(=
+ptep)))) {
+> > +                 unlikely(!gup_ptep_revalidate(ptep, raw_pte))) {
+>
+> Why do we need to refadctor a comparison between a local variable and a l=
+ockless
+> get?
+>
+> I'm just so confused by what on earth this patch is meant to be or why it=
+'s here...
+>
+> >                       gup_put_folio(folio, 1, flags);
+> >                       goto pte_unmap;
+> >               }
+> > --
+> > 2.39.5
+> >
+> >
+> > _______________________________________________
+> > linux-riscv mailing list
+> > linux-riscv@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+> --
+> Cheers, Lorenzo
 
 
-I'll send out a patch myself that already addresses everything raised in here
-without even me reading any of it.
-
--- 
-Cheers,
-
-David
+Thanks,
+Yunhui
 
