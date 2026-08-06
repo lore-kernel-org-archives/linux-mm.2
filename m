@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF59C5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB31C5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8251A6B00A6; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
+	id B0DEE6B00AC; Thu,  6 Aug 2026 16:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AF8C6B00A7; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
+	id ABE9A6B00AD; Thu,  6 Aug 2026 16:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C50C6B00A9; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
+	id 9D3C46B00AE; Thu,  6 Aug 2026 16:07:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4845B6B00A6
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:06:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B95AAC021F
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:05 +0000 (UTC)
-X-FDA: 85071925890.06.E28D622
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E15CD80010
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XHIazbHv;
-	spf=pass (imf30.hostedemail.com: domain of 3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786046763;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 796C66B00AC
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:07:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1449D1C0049
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:07:02 +0000 (UTC)
+X-FDA: 85071928284.09.C878DC0
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0E464A0006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786046820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
-	b=JDe5J7ka/+T7UrGqgqZctX5SrXLdaVoeFSvphkbJwp3DSpAYTBiaqwkB3jFBQ42ixS3zE6
-	Rc5tD/7ww+g9aNbqMoKnmoR/lI6kY0vzGhqO89W80DvdEC9aMtQ2+bVj+8bwHi/BZmcpoE
-	uquTbee63U7ySHGGC9eNHyUAw+Rvf/I=
+	bh=kRcywGcXCD6d1cvCitg8GbORMo2qB7zJDpojkxSuIH8=;
+	b=PammLC4R3zIG4SVKjIPSbJmNRC17xxI5RtwY52ZNKDDZacoESNBgE3IVstkKuGcM5CADjQ
+	4F67JXlRikbqlFbhK3V8LAatt6yQN2ZJxXW9l2ZVhYS9QAND3t7IfWQPNut21OqwwgkQXd
+	uq3Wia45RIGeY7vCAKA65gSfVO7czHg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786046820;
+	b=X9MRLDvq73DLtEF0qGeoANcl+cvEK47T0DuHjGshq63DOy0wp39OH/ogkLWoG32pY8kMCO
+	pgWqYgCKLlS5tcohw13ccl+HOroNvDR7ipubtBHEl4pvtRajyjOVTruuwVBP9TkhBsMe0K
+	CohiCnjFxz78pFsroGyWHIjSeQiXBP0=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F70FC0177
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:59 +0000 (UTC)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C1EE1C020A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:59 +0000 (UTC)
+X-FDA: 85071928158.14.60944B8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 26D1F40012
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:56 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786046817;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kRcywGcXCD6d1cvCitg8GbORMo2qB7zJDpojkxSuIH8=;
+	b=0bTj9It35Ozk583vid0ALDUlwV7s3qDW02jMRXcCqvDY9xHBCuoMK0kJDBZS6trP8bNOLA
+	5wwsluz74Ms+cJ/arQswhE/MsVZaoIrwH7eIJCroIsEcbhD+ZTrgCHzHeDIbw2/yg32faE
+	acaXSyDqsVA64syGRLbIkT9QT2+7hl4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786046763;
-	b=0xifo0GV40spj1emEUnld7E36p/Kkzc04BBZKzsXb52w01hQ3Lx06eS+RTjt+OmPVoCoy6
-	8iEb/91U4V6oZ5ah49yHB+GmztqRLeeHlpdqzZylGhtMKCatnraAFS9dLtqIiyWWkgh0Zf
-	Dt9NHR4pKC2nyHFkFK8i8IwptrBxUXM=
+	t=1786046817;
+	b=ylF3RAYRimVyTi8iIkCXUrz7RUNLeaHTOpr4UaD/spaX/GNU5dAUI0Lawg7deEuaTYJxO+
+	el2VgHmfSJgp97Xcx+LvjqPEMANHG38dvFbe+Ea97zyXVE/XEllCxclNhwVE65HTO/SWmX
+	VoAbDnP4eTWPhcCeW9yGUdmz2m8dHjE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XHIazbHv;
-	spf=pass (imf30.hostedemail.com: domain of 3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3Kul0agYKCCsZbYLUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb6ef846b33so1045524a12.1
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:06:03 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hIjfUTpL;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2426043D3A;
+	Thu,  6 Aug 2026 20:06:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96AE1F000E9;
+	Thu,  6 Aug 2026 20:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046763; x=1786651563; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
-        b=XHIazbHvmqHas8xJRLwZOYA8KlWoz+K9yQCjkTarSFAkrBHOlmv7CoogyPaFcYmT8b
-         ruNV+kuDjnSoN4i9r/Ah3+90/seucXkMf4yxNf6DzTDaYzkbNrg5kWv/xtC29FHsKqQg
-         up7VADJpttz17uM5A2i9cZhB5L9FqyzP+nt+yNhzvAUERp+zbu51czKwDlgKLRVbSsDG
-         75kaOFG29m9UabuVmh3lKrjt0+Hj1CievCqXEZBcmPB7AjkLQO5tuiiJOXRcmrtXG/a6
-         i60MOJmaDd163DlCCtiNJyN8PdKyJvQeVqIWVzymgFGPcxEnTna/YRrhaAdGEEhvAryg
-         SbUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046763; x=1786651563;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FBBPYUiw+wGnA3pW6euCqNL/2cPXXNetrkceEEdDJ4M=;
-        b=NS93smt0EuI3vbjksm6CD/c/lvss52SmQ7LOsbaAHGvsmKzVrFEJv3vEXyPkPmNYa0
-         ENZ5WOF6Qu2dpzwcq0RC9VHOFwUYiJZ1ZsEgmFHjc+/fIUQ7Sm4aasredJITWyHmalRQ
-         txWzjWwTScbvt/VSzo28kLEY4fJWh29uDLJnEUyrbNJxN/lRmb02XV8GLozR9MzjPquc
-         4ODP4z3wAYazCf2Ux9B7Bip9hGu4f3eC2XNffLqblOHNma5SKKjg8BZ+Wv/x8IW3Saav
-         xOhVnKsWiOX4ElTdW6+XZYdQ/b3pu5QL+YVzCZaIEKwspcwlF1QJMB+r+bYam2D4xdUE
-         JdPg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpj5Ruef/wiG99STKukj3CgPWU61Q8+BO4HK1sLLEsGTXu9j07A6t+ae/hJQrOvKy/86TJERlpe2Q==@kvack.org
-X-Gm-Message-State: AOJu0YzzvmLW/ZZkJMDKBYTVyhty/MtuLHfnMllMf+u6138H6MwTraMX
-	EqYNtlxIrez7eje6PA3z2ux/2hgckjz9r4br+0fFXPM4mnxGzszH3AxnTfqDZvt9BFN0M07X4mi
-	ZAubI9A==
-X-Received: from dlea14-n1.prod.google.com ([2002:a05:701b:420e:10b0:13d:31db:8d94])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:914f:b0:3b3:a66e:3911
- with SMTP id adf61e73a8af0-3cb9c2c4782mr8716046637.19.1786046762261; Thu, 06
- Aug 2026 13:06:02 -0700 (PDT)
-Date: Thu,  6 Aug 2026 13:05:48 -0700
-In-Reply-To: <20260806200548.3124802-1-surenb@google.com>
+	d=linux-foundation.org; s=korg; t=1786046816;
+	bh=kRcywGcXCD6d1cvCitg8GbORMo2qB7zJDpojkxSuIH8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hIjfUTpLf+KoJs7FTHc0BYi7/zXI3bqkA7ZyYDhzk0cglc5ZdNoz0YTQqpiALa564
+	 wei1Unvcy9ce11r/URXCKizBor2+Y82Vzq2wBsexTal0uOZxdDrCigZycF+wYSfC12
+	 so8MsskKhMemZUX6A0i+hRKe2h+BuG7B2ec1NiBQ=
+Date: Thu, 6 Aug 2026 13:06:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
+ Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ her0gyugyu@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
+Message-Id: <20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
+In-Reply-To: <20260806193228.458685-1-youngjun.park@lge.com>
+References: <20260806193228.458685-1-youngjun.park@lge.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com>
-X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260806200548.3124802-6-surenb@google.com>
-Subject: [PATCH v4 5/5] tcp: Remove mmap_lock fallback path
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
-	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	surenb@google.com, syzbot@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E15CD80010
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-HE-Meta: U2FsdGVkX18pweycnFuSy+wRRweqsUbQU2q/v9ZOWR8FXku2MuwMGb17b6J0NeZakh+GrXMR+hfoOBU+Ran1yA9otjqV4U63hmS9AQYPkXCl+tEXA5LAHUbUytBkqM70t0N2JeZ5/TGFuQUlY2lMkmDVuaQOq6XM8YoIz74znQHpPoWE6KtRD3GBSMJjF955KgAZbjV9+iR0h6H7sAp3c3L1T2z5dH4mR8t150/bnnMl7IExQiCAIic9Ek+as+Ku0fxRzmByl18AX+nBDENtF6GNpsQXGNyBgG1+6Zh5wt3bKHDXAyOt8X7cqm0OZ6VX3mRt46OwlUIJFkhSoFmMgxbqk58gTb2Vn/BaGG76Ng2TXuhBnUEAi6yPARO3z0ds3jx02HK6skV/yqZoMOddOaXngxSTXMNKrN6bdAJvJdVlYandmq6Iz8l7qSu8mhVBI5R83GOKQ89oD0mYvPnSZRrAIy/CwEbSahOKC82XSHb0EVwm7ySO2Z3ahxzWhfdGH5XrrtTGJtKHcDT0VgSCCq9aajYjsf+HDdWydyhOHp0tFysA8hbYHdaS/XMv64SA3DE1X/VzRnuzfYFlOUjNJil5NVHNtlSw/FWjuesUMia9hAEEG6JIirRNbnpAzyZaj6GY4Yy3E9EKggCV5JvvMmkTOFBiot33PG4rqMSMI12yXs7OuVgyDkEBwlnXWo816Y9I+elGbmMjdF4JLsPTLbFrA1+67yI/q/7uaCjtFZ1CUE/ZRVYXEFAT9o1oUyF7jV8TLTcH3e1Trj0xnjHvH9HiLWEUXbsT7Pqzn5z/OA37ynxLRZEbxDTy24Sx2H/TZwh8619OMRuGxVHvfaORlPOlaT2/W2+jqAoxNYvUKgKFTiCEzuHYwfDxGXgNp4Q+2Hf/o8OLHrLskbJrQM+ElUR3hXStUrdVnxFL/JJVPaT66RRGKCzdyOEsp/gGQmIpuy+76KKSNw7cRTMmVwc
+ s9gbDyA9
+ B83cHIcV+jHtbLVMKsqhfnz0C/WASFhkUk90m3nutcaK/Qy1jN813XS32OuAA5VIcwOtZsll5SEeISGM61ttNd3Tuz3iltlZbyZDm2VxZkrtTN7W5XMKxgUc4wbZB/ITLwJBfeaR5J8Rmm5rnSkWCh8NXT+dZ8NS9idAQ//hKmfBl6XZylpIBxMWH2q2g+76zzmSfIHGCrAEAdYufpHQ2U0IZcGUX7Dcf/ca53Dbrc7nYXKOe7J/FVSHxY6s8Lqj80Puyw87cGN2KJRHcJL0AjW5bog==
+X-HE-Tag-Orig: 1786046816-290129
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 9g4znz93d54ugz1p8zaamsnuz5chn7up
 X-Rspam-User: 
-X-Stat-Signature: 3mjumdeo3gizway8scnom5o44cqs6jn9
-X-HE-Tag: 1786046763-872876
-X-HE-Meta: U2FsdGVkX18s78wzs+jSRP4U1fFtHlyyiUkW1Y2EIjgV/L0KNxVHbwCUqLggedCfTtZqrvknuClZ1h4qREPBq5eBPAuveqcvHN3ec1H+DMTA7RGG9fjPBHhawB2s+YAsHMmXMVQPJCKRBsH7MNUjJ84Xr56BVCYvrXct9TOep2nUFbYXzrmDpeBYdKgbi+G6Xv7wMNEhAkzkc1fx3mYTzGYmcBX97vAKVmqyS/2ejILAewScXctrpfrp4hxQCeRiHaNA00DcMPQhlyuj+QRpmmtaUEsbb1cXC9LVv36tXqcwJNJ1ddtf/yvV/FfHoRNOsUOavbOodxyKWsVgnGpWVN8DT+YdiZF9ueMS+X3zaS0+KoEPWrKNwxO78OGEhkeWYM+NPFovc1nJcpOc232g5z971E6Mx2bEaRPdhNOAN+cqN8CEnL7SmboEQ1t1cERq7xs+OcPEnIWeB0nZjKvNHAjAYI4lGyKDNuzYC0lt19LhkiwVE71BZkev3bVWHbdYti2gKCa+1WfiKqe+cVkJ2NpfN/3K6+yHGs8PAw3sYQoTN2CvUCrCyz6N6wNrHBfEmhFLIOO1uI8qR7GDePuEXKjyEPNGpZPLw4NIFRsJ5sGzEM5fLv7QorveMtmdF+JGlLsQrf5uKMn+nALZmwuiFFE4kyTATA+DZXaGRKfo8xwcJh+MiDt72KZY4SZ5OUfsoq7ud//7ukvYnF5rN79iyPxOcpQ4gVokrVUIQszo4y+Z9MjGn0KhZveqw/X1/FCPh6RMdOa+jMQbHnMrczF+T5EkCDdfzAQA0bMhDyDLYAk+NYgSBxYZVKsUrIGHbMb1dSqTxUJD1aiHncbm16S0GK7wM4DGfcSM7jewtZxhzRPhoPNA+OXba1ABYxJB2UBbhTSL1rMuRRSdocg+zG+019vvJX+F+Bn/3HEnmzeSSloOgAjkOtUj+ACB1tYMyBkYSkPOnfIOuiJly6uC+pO
- biOvE2Vo
- 6lRULAvYmp3tY1SANKKG7rtDzF+wDhFiI4IqNaoK8zETWo605h15tGk6JwskHyQtE97IX/Virim699eU1tdiMuy1Lz9sa4WdDFK+NG0AaDvid841WLHZqT6BSRy+wAc8HgsOKtRgOLCyKaO7m4rRH8dwCES4zsYsroPeqBCARYWzc+TVgGSWzNw15Q1f1023J5UygTkay1KrxzBd/V6n9I1g5ydJzweVZkDgAXaTjA/6TRnSCJHhE5zYy/w0fMboJ2k57LDEhqOUegg5hvrvrNBeXbbRrtFS/jS+ypphe9tRwEyst0tlNSnpjhjgTVJ9WjJUyVuzaaNCef0P2NMS8QRf3JhKX73bqvLIQkZFMAGU8xcstntwmcasyBOIozubszTLnPvklU8UDWFYcZ2b7hhOlhf0K4bbiCH5jN3gROwOSA04JwdDlbNq1+2BPgSf4F2BBntbl1//bsB+QyHon9ehkbJQnihATJMGgXzdfihbmUfC7GHIf55zAhaQgtQc2A2rs7zq/WqpWskF5jyXw+b6I6vWmdxG7kzt1fzDlNWfB4Cmw/iollRp4qNpTEIOxjI4a8C3K6kiL+yB63WdmgcyHR8KJD8liCabCTYUhcKGUsEdes//e2n8BQDE0tHhlUXgiCbXeCDyEn5Oe3Py/8YI7DsYWrqt8k3lHDVx0PMacWdZz70iBzaBZlg4E7H+ClZjUyonIEyvYCNHCOOeM5NKgJt4u8WNxi1pQgHIvKuEoIH9X7kuLe8qJYNHeyzP6XegnOqpWkiPTqJBOrlXWziXlmZz5twVR5/6URxktpTq5yJcxzG01WP0KmIk+vISJVB0TH4chhfFk8eL7y5WUfHO45eguxAoYNCwuaDOZSgURNZfR7N15b0AtCCi/IO73EYYFjpFmv3SXDm3/YrG3XNIOa6lrlue2nHz/tp7q1WD0lzIPMAlVzmdvO2F+srn7X5uctYmOlCFW6ZCMqUK7x2vgaPNC
- js3+EWOV
- +ujw/WkO88zczk1zXFWrekuAQN44C2K0UYDsN6GR4CAEAgWjPRtTxDstIPf2mB6Y6qpEFPT0dPU=
+X-Rspamd-Queue-Id: 0E464A0006
+X-HE-Tag: 1786046819-539645
+X-HE-Meta: U2FsdGVkX18qnTOdhIABsiWR2BPzk0Der8kXj1IDZDpzfeG0n9HMg30ndu34CxAvIiSrFWyglsrYwrs68oPGQLfwSt1g6pVix8gu4uW+LqYyDLPUjJrkj5/FytWPyWbpVifgqWK/ycan0MasTC5TocbkLGh2M2QFbzOBjWVio3L8i+QAltCUqaYRu+2cR3ANcLXh0fEJaGT+pViuyDmftp0jvKFHvj7YJ4sD5EWInL78oFKTHVNN7oo2++0XH7WdaXg8W2rZz2W2zxz46EpEdNLW6S1wLbuQrWQXRhblY5Vt5dinIQJYaB94q3gKUCCqA0oibLm/OkTMaGenK9cai0G6nruGJ2MKO0RIbWzOqgwI2JOZQsQxQJXYY/l6iNPyiNLI7DtGc5Nsk7yKAR+XFjJlqvv459IOa6CWCgiwtvUg6H6QnAHFo0hcMXJtSZC+5g8TOHiKYcdMJokdv/8P8guG39g1obCcnUJvpCIwiuB55FSAhhW2AEvN2uCtg2f+880E2OyTDrTrK9h+lArxhU4USPaop8VXvxPWCB5b0be7Av1rnYwU7BvbGxKLHcvyFl6gyEfKjFTZlBX+a3TRRTjoBOEMCnQTCABShpz73yN2zQhZwrkF+YATGmtrdjqxczrAs79iGv+l6aOumbUVzCow0HNBiUz7iFu5ZbDY0C1k70vTNkuuy5ySMqoTfG66UFq+XimQ10A46wH5rffI+GTIeluc6Rat7gHZDpKEwebPo2iiKEjCy+rL2Wwe21D20wm3zT8h+yOb24HSRWr1aciapYlw2DitXAnrJIjD9y/0cgTHozikvqU7IZ9KpnARhIi6dZTlR00KTJnVxDxSLlGVhTRZM8zbNIOBbY8nlIWPgGe8WYLRkXMMUgf50R2QChIovzhXrs937wr2NemMXuL0hniizai0uFIC8B2VCGATLfytLcNUGg/ybeL79Q1AT93tGsp8h5WZxKhuPUT
+ Cd+JaPOH
+ Q0NBMBZO1hTFpiuxJhwb+FRsDUdbBdmw6obEJvO/tJtuwDoImR/YhGj/zTXbU4Tk7TjsLT510NUWNiMmTXrJLtplxTgwkAUdNNSu7kr4zLB4i5loCDFMFGQu5wyexSx8mljX/uVQyDNs9dSqafg9Nnyg+2phpC9BNr0pwwY+HXAFgWqo3UXQW5QnJf63iB0mU00JX1tWuCvbEYc8EU8y5qc8L5ATipnXK+AOVR4cF35Af+J8qUfIiGNZH+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,112 +122,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+On Fri,  7 Aug 2026 04:32:26 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
 
-Previously, the per-VMA locking could fail in the face of writers
-which necessitates a fallback to mmap_lock. The new
-lock_vma_under_rcu_wait() will wait for writers instead of failing.
+> find_next_to_unuse() walks a swap device one offset at a time.  Slot
+> state now lives in a per cluster swap table, so patch 2 dismisses an
+> empty cluster with one counter read instead of SWAPFILE_CLUSTER table
+> reads.
 
-Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
-The fallback removal does not affect NOMMU case because TCP_ZEROCOPY
-is gated on CONFIG_MMU.
+Thanks.
 
-This really is a nice cleanup. It removes the need to pass the lock
-state back and forth to find_tcp_vma().
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Cc: Todd Kjos <tkjos@android.com>
-Cc: Christian Brauner <christian@brauner.io>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org
----
- net/ipv4/tcp.c | 31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
-
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 455441f1b694..62defe70f3ce 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2167,27 +2167,18 @@ static void tcp_zc_finalize_rx_tstamp(struct sock *=
-sk,
- }
-=20
- static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
--					   unsigned long address,
--					   bool *mmap_locked)
-+					   unsigned long address)
- {
--	struct vm_area_struct *vma =3D lock_vma_under_rcu(mm, address);
-+	struct vm_area_struct *vma =3D vma_start_read_unlocked(mm, address);
-=20
--	if (vma) {
--		if (vma->vm_ops !=3D &tcp_vm_ops) {
--			vma_end_read(vma);
--			return NULL;
--		}
--		*mmap_locked =3D false;
--		return vma;
--	}
-+	if (!vma)
-+		return NULL;
-=20
--	mmap_read_lock(mm);
--	vma =3D vma_lookup(mm, address);
--	if (!vma || vma->vm_ops !=3D &tcp_vm_ops) {
--		mmap_read_unlock(mm);
-+	if (vma->vm_ops !=3D &tcp_vm_ops) {
-+		vma_end_read(vma);
- 		return NULL;
- 	}
--	*mmap_locked =3D true;
-+
- 	return vma;
- }
-=20
-@@ -2208,7 +2199,6 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 	u32 seq =3D tp->copied_seq;
- 	u32 total_bytes_to_map;
- 	int inq =3D tcp_inq(sk);
--	bool mmap_locked;
- 	int ret;
-=20
- 	zc->copybuf_len =3D 0;
-@@ -2233,7 +2223,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 		return 0;
- 	}
-=20
--	vma =3D find_tcp_vma(current->mm, address, &mmap_locked);
-+	vma =3D find_tcp_vma(current->mm, address);
- 	if (!vma)
- 		return -EINVAL;
-=20
-@@ -2315,10 +2305,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 						   zc, total_bytes_to_map);
- 	}
- out:
--	if (mmap_locked)
--		mmap_read_unlock(current->mm);
--	else
--		vma_end_read(vma);
-+	vma_end_read(vma);
- 	/* Try to copy straggler data. */
- 	if (!ret)
- 		copylen =3D tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
---=20
-2.55.0.654.g21b8a5bc05-goog
+Can you help us understand how significant this change is for users? 
+If "not very" then I'd prefer to defer consideraton of the series until
+after 7.3-rc1.
 
 
