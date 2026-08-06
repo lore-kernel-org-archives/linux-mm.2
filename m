@@ -4,107 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C6E0C5AC7C
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 15:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDDBFC56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 15:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A2346B008A; Thu,  6 Aug 2026 11:15:02 -0400 (EDT)
+	id 8B6806B007B; Thu,  6 Aug 2026 11:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1539D6B0092; Thu,  6 Aug 2026 11:15:02 -0400 (EDT)
+	id 88DB66B0088; Thu,  6 Aug 2026 11:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 069756B0093; Thu,  6 Aug 2026 11:15:02 -0400 (EDT)
+	id 7A3E56B008A; Thu,  6 Aug 2026 11:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C5E6B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:15:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A42ADC07C8
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:14:59 +0000 (UTC)
-X-FDA: 85071192318.30.9BE6B11
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 586D46B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:40:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59F1780119
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:40:28 +0000 (UTC)
+X-FDA: 85071256536.25.506DB2A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 180351C0009
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:14:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XC2JGg+7;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id BA49C8000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:40:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QDQG44jv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786029298;
+	s=arc-20220608; t=1786030826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LNojBxIz0vThpBVl3Qav3XEH341Ryu1t4zQtn8G/oTo=;
-	b=W29C8GpD3ZnTvHcBIg+vecUsio1j8TbUzhvzkhamNuHhJ4oIuO79DvJx0HaLeOi26MWcGE
-	s6E0gItuws8qN6NQ9ZAK5+NlklpLdNkfkLgTAImcSjPP02fdqFUDH9uii3vArkm3q2ByXY
-	elV2PX2DFp3hECLZoECHiR/GVPKV6gk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786029298;
-	b=kampU6OOY4b/Wmruv4aTM/i1XudoYBmzx5ct/FKbA/NNseo42lvHjmxL91/PpVt1Ie2Uv0
-	lQxHRu+lkWhm3Yzp8KYBLZcPr3QeuO/md+WtHSLRLIkFcNp1zr0yKFc9HKwiKupkqNKE7h
-	0+ue2gsLCtnD0BaS2dRJn/Fu4O+n4dw=
+	bh=X4y0kRDos7SUupJbhbbGh+ICURL3cdgyP3aRACH2kFE=;
+	b=8mBxmHzH8ZkAfd5hJYPXRmd2IKTeBUa0I29jEK9KM3Py+C0Sr9Zpw8CJl2vQYEMYvIGZTd
+	b0X8YLH0EQCr+gGpgndMjTDZFA0UXbiepn9zu/GtFCODG3wkNURVNwre+0qzAO4Tp8OlIq
+	FEKBjUSCNu9yM7VRFrjz1rsy7yr+pv8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XC2JGg+7;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QDQG44jv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786030826;
+	b=ai7RC8J3i/s+wKwMXiPN9TsBwWy9UlIh3F2Kr/YOdvxQjYLxqAPrBuQ7MFAaik7ahfKTG5
+	ToAyiVsprgbJLMV8XZczvSkM59s8+fre6Tzd3vsNvDbJ2ccr8u7PUM2FcTLe1dXH7120fi
+	De2Hu/V2UkXTfKwYa+FJQQ6lxu2fbLQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 595A360AB1;
-	Thu,  6 Aug 2026 15:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30B01F000E9;
-	Thu,  6 Aug 2026 15:14:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 347D360AB0;
+	Thu,  6 Aug 2026 15:40:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5641F000E9;
+	Thu,  6 Aug 2026 15:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786029297;
-	bh=LNojBxIz0vThpBVl3Qav3XEH341Ryu1t4zQtn8G/oTo=;
+	s=k20260515; t=1786030825;
+	bh=X4y0kRDos7SUupJbhbbGh+ICURL3cdgyP3aRACH2kFE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XC2JGg+7zYOmBa0UGt6iVeCJkX9jXPWxjSpNJo8xy1H2kumCT7sMgZ4NYGQHvlen4
-	 catPcK4eznZOZgXnFIDGn59kb3/FeVSCRoNKJNNN1dKG9oplNy9BL0C51WuY8yPTvH
-	 yU0OZw0Mi7x8D5Uk90VzypDrlP5ysqLDjKgleGOQkM+axue/IaMdKOXQpcsVK2uC2R
-	 XDOsEJWT03bTwMZu53ZlHmnQg5iHkXHsiIVwzDohQhP4Hm18+NIkVLd04owHGPN+fR
-	 t9cYsEfsWP8M5Qok+cfbT1XCzI/fNgS06PlSe28vw/D0G//MBXgEQnyPfmz0Px1ikf
-	 0qYA/DwSRuVgg==
-Date: Thu, 6 Aug 2026 16:14:33 +0100
+	b=QDQG44jv+J00sxZv6RdnsCugx8JDFPTDhXTeuI64TQoF/ZieSGG4mUm3vzsSHRYh7
+	 VDF4qitSAmwAmXy1nMqSXjy64PTc3iipClx03crZnHSHDEioRY7XZkaaMeM4P+Kdsh
+	 E9J5l7BqgspPvIpcsEH25RYx0dEx3cZ22+/uAPT1qZBiHcO4fql5Rtyha2uEj+EdJ1
+	 5JyNvEL/Fwfp4QRa3bwQEyivfGE8nyz+ScWIikKRjpY92ZFw7mIn/ZWtCMq6n39UI9
+	 aztkkLopa+X3dqoQ0V8hXqy5RtpDMtxtiiCYk6H+naUlMyQjG7IsaIOLpwDSGhv6nH
+	 zz8c6oqqzk4WQ==
+Date: Thu, 6 Aug 2026 16:40:08 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 04/15] mm: update print_bad_page_map() to show
- anonymous page index
-Message-ID: <anSkIn1fMMN5Zibl@lucifer>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-4-e8ecfefea812@kernel.org>
- <amrvgjPNfKqWPUU0@gourry-fedora-PF4VCD3F>
- <fec1be38-406d-4656-95eb-048729afec40@kernel.org>
- <anBqV9z6hVLIqoIn@lucifer>
- <anL0LEhb_bp_uQ1J@gourry-fedora-PF4VCD3F>
- <anL7eZcHnM5mPr_T@lucifer>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, jannh@google.com, 
+	00moses.alexander00@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/madvise: avoid skipping pages after splitting
+ large folios
+Message-ID: <anSqbW1w2bDDHpAx@lucifer>
+References: <20260806055501.56761-1-cuiyunhui@bytedance.com>
+ <anQyoZgi5Urnvvjw@lucifer>
+ <919b804b-6f1d-417e-9c0c-d06f50d765d8@kernel.org>
+ <anSar_i8UjniSbML@lucifer>
+ <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anL7eZcHnM5mPr_T@lucifer>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 180351C0009
-X-Stat-Signature: pm835i1r8nmf8pdre6mim9cpfx5ztf7x
+In-Reply-To: <a6a9e0cc-e6cf-4f83-b6be-7d64058b8fa6@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BA49C8000C
+X-Stat-Signature: uw97piu1fxqyybq4adxuax48eogskic4
 X-Rspam-User: 
-X-HE-Tag: 1786029297-401919
-X-HE-Meta: U2FsdGVkX19xdzm4HYX9RqcdVYuOGseVPBHIy6BW4pTJyq6QjP4Si1j8We5FwWkVGYzEFCWSOTErnfNg6Un8tIG2k5+eN3faXTRFOoXFENIfzUAjwu9uanRq4sdA9rtJkdgHod6wxFmThlLMDcqTUU9d6KNP4t3Z28g4ym7tZDk3cq/kesaciC83oqnRKbAj3UBUorQzm1OVf09+QFxG5gUVwxEcd1h+G3yFvu5TEsNymozihrHZfHuvGAAvok/XloU8f62MqZZpu3phNiLge7bI1eS2LN4l9UwbZwt97F6kdjntyi5l5R5q9l2PutQz/hWWtKESVZ6GT+NbLfHwZfLeTT/FYypQaVCEG0v1oYXQ6Nsnfuo+B2qpIPbkfaeRc3dbbNnrkYSGhNq4Ab963b4UHjrcXYId1TVBU+jELONY7wINAzHbHjEPysTz4Nd8TlsOT9PVXGON3RDfCmIpExkrQwZyp4I3XGyPjMy4r1SxwK68T7MMDLC6BplRgHbA3d3jyNgCrpwHnJng5cXJ+mXA8OIlDqkX3tZI27cPnaneUIUblvuxfmshKNoyFMbd0yj77u1Q8d5Fusm9nSRs9KQ1P8ng8YZbyqqn71nlMoRD2g0mSHB2SmZ3U4OqqxeAddVEsa1qTdQPI7Fg480podrLuxg2C/ciSuiEdA2ybxNrUzi9KRFzo20H4EiddWWbm0CnueWEyr6BLgHTnow3JtgQ4qUsrL2pwxSdM2Xdx5zhMNF6kgfPbo07Bn3n59SxxWSVLNrqq4XaX1vALnjq8VzlcXXbq48xbnG3wyYhQMBUSjS1v9PD6rMGwfAI9XPNFn/lrplGtjDj1NwL/0SxDc85SJtT8odlsJbmnHufqnw6mA0PnPsxAw6aqtkP6AyUdXA5lCxbvEqLgqakHYlUaY4encdGvPXhhKqyzMCq8Ng7NYTg6YElGirtv2Sb651NWaxmSjxchAYDRKOxel/
- 0zh1+gWm
- Ulmo6mLAmbjKKrEVOi8GGS3olZ2nLsgBKuQ9PM2mGcq2XJT79qh+M4Kvi9k8H+lPu5r6eA5aL7SqRNi2Or68iYV7umXqoOsFHyyah/x/0SAB48G4EIHOg7TP1Ob5mezI6I3e2At9ouh86eV/IBNYisP76XrHwPfvQUkcBkWolVzNS0mZQOoIHIzdbYQm9/Po2PfFEw4rGAFdEYSkEGdHFM8IvtTbtoZi/E+n+Ttvq7E2O8MK3PbC0bwu6/GJatYQc2/HZYaOyjBnfjpczotb/Ri+KiO0yuRYdej9SZXgo7c36Rzf1q5/Tm7v4PIuykb7oluznV6xPGuCI7Yb/LuYvnjmsxWgjLa4BFCpcn5C169K8MTdGgI4+PDPrWQ==
+X-HE-Tag: 1786030826-520568
+X-HE-Meta: U2FsdGVkX1/ZKv4RteqfUwygd8Qf13BUq5CHckd2JZCWk6KIfUmF2R/sdG6JxLdo4EJrPV3MtWNO4l//C5KRGi/9wAKx5cgl9CQ5IK4y6p4XEbBmU+8vlYKG6gfW6hSNygpNDR6O2RZ4uYs1PE4qv/k+t/S2yRBI1sKzwYWYQYdDVEXsKnwzy38ALBCH0N4Y9atgwVNtVXTG20wPVx7AwtVqBeQ9J+vn3WUvBQcv0NxrbDESTdy2w815ok6NKI9izuPsYmX0xqBGtGFVdCGDwLlVTWo0MVu7aYpO5cjA8DgS15vcIw8CX6lmUsOhCZ7hrcO7jFOJeW/SbqI0GSFOboUCbsXORMwGUD/e4eGAhgQ6tnBC4pBVEyeb1JDq44pkIXsbK/xLSVDPO937U96zQFb76trcgBykB7mzVAy3CM4f3Mf0Dq4VZV6baBQg/9wcdpA6+elH7x4Nm9pcZ7+4kgZS4w7PlajQUq/4OLmUfFX+HFNrbo1D3JMV0J152DeoicEjaHT9I3qXm1O00BGdgRjGNYLovBg+E5+uy6d/vbcY/oEoY7NuKrXqSp1b5Xqf82VP3ABc9V61asrqTyzbqsKjc8hF/9g6LIddDE618/bcEMRoZdtjpeRiEfdgjNVTwznfOuIcTWOIIdJ3Pu6IrSe+GnhFEgzBw1oq+/m0sZTtXQ7hYHjF5TMjbeLDZmz/rHvuLimMso5IJYx74Ijfrtf18K/42XhoHafrNIevm2UEdVkfry8+SqETRF/8eEQNKEpzVER0baSNgMq45Ct/+zqmbCkNsdek+44yWCDoxu691w9HyLUcDfNQUOB0dXfVDHR1dHcxY1Leau0wlqF9ELQWaoM1wOCCRuT18ABBFozWdNXQ+zJo/VU11dpM9FWT1YRZ3el56lFru/bA/C0FJBT0+Y5DA2C9sFuz/5nmJKDeg60BH3Hn7bdkmKHzuO6IWfPD0E/3Qj3d1Z1jWPM
+ X+7xzz5t
+ svTgWXeucJIr/dOOglHMElcLUK8/NMUD+qcti5nq5MSWo0dRpdfOg6ufzdVM7MrPgdpkEOlJ741ZzZKWuHV/n3/zqEOlBwiQgBUwci+F0k3GiTtxK/hReSIl4fThFNq5+CcFB2cdaXS85dsldd1E/fErFuWBugqIiPbYj6pPvU9duGleE9Pf3/HjB1JUEB/oE8eqt37H9cANiek0+MZ1a1hLiEvMxi4gNAqCXK4kI1BI5hKKq0JYn4RAa0LWrDXm0MPe+yaYJ+D+jNU1rryxzNne8M/0w/cu8HnmYAHxmlKSwkxqIBr7rZ85i05slRQmfu0YhwNg1Pjvz4jk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,64 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 05, 2026 at 10:01:52AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Aug 05, 2026 at 04:30:18AM -0400, Gregory Price wrote:
-> > On Mon, Aug 03, 2026 at 11:19:17AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Mon, Aug 03, 2026 at 11:39:11AM +0200, David Hildenbrand (Arm) wrote:
-> > > > On 7/30/26 08:32, Gregory Price wrote:
-> > > > > On Wed, Jul 29, 2026 at 05:48:39PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > > >> This is potentially useful debugging information and matches the existing
-> > > > >> page offset provided.
-> > > > >>
-> > > > >> Use the raw __linear_anon_page_index() function so as to always output this
-> > > > >> value regardless of whether the mapping is file-backed or not.
-> > > > >>
-> > > > >
-> > > > > Begs the question whether we should mark the value based on whether
-> > > > > it is file backed or not, but i suppose you can gleen that from the
-> > > > > other printed values (anon_mem, mapping, vm_ops, etc).
-> > > >
-> > > > You mean something anon_pgoff_t or what did you have in mind?
-> > >
-> > > I suspect he means e.g. adding a (A) suffix or something? Like page offset xxx
-> > > (F) or yyy (A) I guess?
-> > >
+On Thu, Aug 06, 2026 at 04:46:10PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/6/26 16:34, Lorenzo Stoakes (ARM) wrote:
+> > On Thu, Aug 06, 2026 at 01:35:30PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Let's at least split out the folio check into a helper to make things
+> >>> clearer:
+> >>>
+> >>> static bool poison_splits_folio(const struct folio *folio)
+> >>> {
+> >>> 	/* Hugetlb is, as always, a world unto itself. */
+> >>> 	if (folio_test_hugetlb(folio))
+> >>> 		return false;
+> >>> 	/* Soft-offline errors out, hwpoison traverse DAX intact. */
+> >>> 	if (folio_is_zone_device(folio))
+> >>> 		return false;
+> >>> 	return true;
+> >>> }
+> >>>
+> >>> Then for your patch:
+> >>>
+> >>> -		size = PAGE_SIZE;
+> >>> -		if (folio_test_hugetlb(folio) || folio_is_zone_device(folio))
+> >>> -			size = folio_size(folio);
+> >>> +		size = poison_splits_folio(folio) ? PAGE_SIZE : folio_size(folio);
+> >>>
+> >>> I tried writing something that was neater and nicer but AI kept pointing
+> >>> out how it was totally broken and I really really hate this code (not your
+> >>> fault :).
+> >>
+> >> No, I don't think any such special casing on folios is the right way to handle it.
 > >
-> > Yeah just an F/A in the print I suppose.  Sorry if that was unclear.
-> >
-> > If it saves someone the head-scratch of whether some bug is because it's
-> > "file" or "true anon", given the ambiguity here, seems like maybe useful
-> > debug information.
+> > I mean the issue here is the stride varies depending on whether the thing is
+> > hugetlb or not (and some weird DAX thing), and the poisoning causes a split
+> > otherwise so if you want to poison a range you have to account for that.
 >
-> Yeah will do on respin I think actually!
+> We GUP'ed a single page and now try to be smart about which other pages we'd GUP
+> next.
 >
-> I do think not providing that could result in some confusion like 'hm I
-> thought this was file-backed'.
+> That's just wrong, and hugetlb special-casing is just ugly.
 >
-> (We've made our lives hard with varying definitions of 'anon'
-> also... [shmem being 'anon in page cache' is especially lol] so it's
-> already confusing but there we go :)
+> The problem here is that, if we GUP'ed a page and poisoned it, the GUP'ing the
+> next page might fail and we'd return an error.
 >
-> I will add a comment explaining things so if anybody still wonders what's
-> going on they can see what's up in the code.
-
-Hmm actually at this point we'r printing a bad page mapping so don't have a
-folio to know whether anon or file-backed.
-
-So probably sensible:
-
-	!vma_is_cow_mapping(vma) 			-> index: 0xf00
-	vma_is_cow_mapping(vma) anon idx == file idx 	-> index: 0xf00
-	otherwise 					-> index: 0xf00 (file) 0xba7 (anon)
-
-Will do that in respin.
-
+> But maybe that error can simply be handled? We have FOLL_HWPOISON.
 >
-> >
-> > ~Gregory
+> So maybe we can just use FOLL_HWPOISON and skip over the entries that already
+> return -EHWPOISON?
+
+Yup this is ugly debug code so that works for me.
+
 >
 > --
-> Cheers, Lorenzo
+> Cheers,
+>
+> David
 
 --
 Cheers, Lorenzo
