@@ -4,125 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E210C56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 15:48:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84340C56208
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:09:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DAB76B0088; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
+	id EBF446B007B; Thu,  6 Aug 2026 12:09:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 989B86B008A; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
+	id E48F16B0088; Thu,  6 Aug 2026 12:09:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8536E6B0092; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
+	id D10D96B008A; Thu,  6 Aug 2026 12:09:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9DA6B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 11:48:50 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA50B120121
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:49 +0000 (UTC)
-X-FDA: 85071277578.21.3091734
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DCDFA10000D
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:48:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=fLQPEPwq;
-	spf=pass (imf14.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786031328;
-	b=uOrPZTzIAAktDeUkFl9wwtGqoI1O7czdjE8phdZSGaijSSZDRrRChVE6R88KxoGVhbu3CY
-	lcGXKGaj7b2ehWvUyjbd2jSfcSs6wxb0+X62r/rwnZlEtVC3pMQ+c3o1sMDm9322/EPzg8
-	I+wuDZYM4KP+NxgaDGTRtFD7O/ODa+0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=fLQPEPwq;
-	spf=pass (imf14.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9805C6B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:09:14 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 206FC8014F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:09:14 +0000 (UTC)
+X-FDA: 85071329028.12.85B7170
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 671B7A000F
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:09:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKNEIVai;
+	spf=pass (imf25.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786031328;
+	s=arc-20220608; t=1786032552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
-	b=NJn+ULW0eIY6l2fRIjgJ5owPisVS3IdzktyFoVVNWBHP34/iIb7LQHpBOSClq3gKh08mTi
-	PVDYMI6BuuWcni1Xhu9Kh9KV4G367FWQNFl8vgixr4U2UuOh09/edQmQFZlZnN4nj3zRjT
-	KpOdzftNWkt84jcJEzstQ9WRJclsRj0=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-934944f2d22so156994385a.0
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 08:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786031327; x=1786636127; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
-        b=fLQPEPwqdJ15WRt8Mh8oK1BbpNFgGiWP6eDqGCG05l7zCAbkF4Ypk+qzyBjAe9sa9f
-         43OWLSi6jGqAxj3AaXlxwEOtJTYeJ6vrhHI1u6ln5sesvMoMX1QRhM2eiMtnKsJK5S/D
-         QgQlDhSgUyldevCDq3vZcl+HH9tbqyBXFqzC0qK1DRV1pcgIaxccT/CAdUOWrrnIut+K
-         NPyL0hRtFPgjZjgD4k77AKue0H6dT6HSf3PxCMT4aPp6cNKNMmxNjdUrJEi+5RnDcEu2
-         QwRmaHpyvNCk1raLTZhgPpB7iw6c3O2ggSHF4DQxNOj02dy6UEsR4chFEWD7IFpUaMne
-         Is1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786031327; x=1786636127;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QwVSV5EsLBZnwEGlh4H7pVKLw7Dudnf8oqtelaeaz3g=;
-        b=kM7VzvWKGh9jwhkUAsO6M/n8dk3hEOqNkBsP1l1pfJ1IpuO9aj+05LXD33kWU8+onc
-         CTxj912I+I1SnHvRVy4ysJGkPY86Ab6SbpW79k6aFDKdEou08As+HhsAGsQXx7lZWBf0
-         1biI3n0A0IqlZsFl5l3cFcPwSJAZi/w8XWdFdnHW7zEvrETgxu4HJafGlkxyowu2RhMQ
-         Oxp7D+zsCzy/8JElIvogrA0qLGd5JWvStnfRr98X10SJuvLZOZRk17DoRdH63vLevqr6
-         ZnntNh1M2Ofh7Fnu8doKfNLWiO1FDAQMR4ZKo02y2k1rPTj2QgLmUmfouiiZB27NzEZN
-         2fbg==
-X-Forwarded-Encrypted: i=1; AHgh+RpqXHToVSdIUtPicTRyG3yAEX00wf6CBiym5FWACwKbFgQeUbgrjQVUh5vLK42GFwWLUyuxncAFvw==@kvack.org
-X-Gm-Message-State: AOJu0YxIHDw7/2npCO3ZSQjIzZjYo0hZaDUG1V3MtzLs0pX/w3Rx6zbX
-	KDkvcikEHKncMYRtgEJzpKFLUCU14e/kMrtE0Y611WqC60yTZTiUBxGA1TlSzUU4b2M=
-X-Gm-Gg: AR+sD12656EVgTe9Z+KnmHXCYcq641NR8SkVNoQ32F4ftRrvjKndu+jSp6BQ+5UrWhj
-	MACdFYkl9ho1QB8pS6V6eJJqbC7Xh5NdoU2yuxcQYXOF8CQ2oI4KNuLCaFp175zrki6uXYorV7a
-	Y+oz0QdlPu+mEKH+fKKoVApxV5keyckmHW11r/IvtxPFhdA1QQFn1uzRVjS6XmfWYXaiOiJllhe
-	JObLWZ75Km/ifGERrwUu33HJHDzoQ2fxJHWLkWhRbQvnYX4VARTYR4RIaTTKloWPl+sp9fiAhpb
-	HiWR99zWmyGjC4nVT2/b0p8zx+zqiDgAIsnamZ8iloptCLi45oq8VbJ4tLHd/VJbIEpLCPahysH
-	HVF7A/g+MhopW25JDA91xmjCOgHRvGyI21Lw2pWvxUfCbZWn5Dq78v+Hdx45B5w9DQdi/46P0Oi
-	T+zdHylv5jmxR8P00l6R71Jv9o7x0wTzcMCiRp4w==
-X-Received: by 2002:a05:620a:4387:b0:92e:e299:dfdc with SMTP id af79cd13be357-93649181774mr1627443785a.21.1786031326741;
-        Thu, 06 Aug 2026 08:48:46 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9364a5654d4sm424036985a.36.2026.08.06.08.48.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 08:48:45 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ws0Kr-00000000ZDn-0FIt;
-	Thu, 06 Aug 2026 12:48:45 -0300
-Date: Thu, 6 Aug 2026 12:48:45 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>,
-	akpm@linux-foundation.org, jannh@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
-Message-ID: <20260806154845.GF28508@ziepe.ca>
-References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
- <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
- <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
- <20260805004619.GA28508@ziepe.ca>
- <5cf3542f-fca7-44d0-8a17-8aa316b1fb12@kernel.org>
- <hg73nwj6fdkqect6xzf34i7e4ki5izjyzb3lz6ery62sq3566k@i7tsboqhsdxd>
+	bh=J1mmhRLKDxaELj7616F3jLYF/axUtWF1l/JEzzjmppo=;
+	b=IyKyI1rCXIW6vMkUeGn3m6N2Kdf+2px/juirCPAXhE+96IXLAmpGGSQRe2Z04/aYpKwqh/
+	kwsfJo2kakfQ+ErFpdtliN18U7xN6YHAOW7OiQJ8rSaRIateZFAamT2ARObc+DMpg3IKAH
+	ql/WSKrikBrkFFsBTf32ANNJQhES2BQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786032552;
+	b=v9QaUMyRDGxZ6Dc66BMJmq2ep36+fjvD/Qn3W1lP11pR/8PzmvN58OceK0NSOia+8lrZj2
+	wL99ovFjXZauHLxbJJ3ib8ffFmZDUDRiAhL9OGOREifuYXWDh1TMX3OEkhv7HS9UgAo+a6
+	dc8L+AgViOOo8AcBkP0hhX21kgT97V8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKNEIVai;
+	spf=pass (imf25.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 40C4C43911;
+	Thu,  6 Aug 2026 16:09:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4651F00A3E;
+	Thu,  6 Aug 2026 16:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786032551;
+	bh=J1mmhRLKDxaELj7616F3jLYF/axUtWF1l/JEzzjmppo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kKNEIVaiVH4wrn5oHK5ajPxUnFHB9+4/A/1LvM/uKTkDc0Tv9t57ZG0ITr9wXU8Xp
+	 dM7Cy6hGgHbZ/yeYTfWQ71Y57HgqRdmv1eKN2HCcuSEE4ilC3CtyGNaMO6veI78U67
+	 YcMqItiqFW5t/eUfTLQayfOrEOELuT08s9jUqHMsWIlKuGRS7h4T2GXPWrf4X6w2Zv
+	 tNNgofe3iP7rxX22Z7nlivDoSEEfrD+/jWedR6As/aEKkVkXWpqV8mSDDYNCbarkZ1
+	 SVWiBIPcCxOreaWD7DyyAbxr2eCgQZMraKPZN7mkuyWcqW1KUCi9T1+4s4zx6S89Zo
+	 2vOjrgZWIe6og==
+Date: Thu, 6 Aug 2026 18:09:08 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+Message-ID: <anSuYvj1JU5K8xUO@orome>
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <CGME20260701160902eucas1p1214af933ba0f54b85630a3a4e5a4689c@eucas1p1.samsung.com>
+ <20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com>
+ <3f47aeab-33b1-4966-a5ce-5d6d5261e0e2@samsung.com>
+ <e212caac-6c30-448a-9e10-32fff8b842f6@kernel.org>
+ <83e5e74d-7106-4e14-9d10-56438372f6a3@samsung.com>
+ <ak_E4UxfnFJywJa7@orome>
+ <1eec88e6-1ea8-4525-bb17-e41444d715dc@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="awe2ln3pvo2iqnm5"
 Content-Disposition: inline
-In-Reply-To: <hg73nwj6fdkqect6xzf34i7e4ki5izjyzb3lz6ery62sq3566k@i7tsboqhsdxd>
-X-Rspamd-Queue-Id: DCDFA10000D
-X-Stat-Signature: zquwnabx1hib3h1f6dfqote3rzrtbtbk
+In-Reply-To: <1eec88e6-1ea8-4525-bb17-e41444d715dc@samsung.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786031327-802142
-X-HE-Meta: U2FsdGVkX18NFq6R7qfyim+fbtDJjXkRAejqDPTCAME6UOdeVLT5Bobpgxy+4YBRKyVsobQA+pJf12Nyojhv4ljLWWhdgXeVDhicOWvjO9y7CUy4UTDkQ+JoxgOZ3KzpzfweFLGG8mR2KaDKwGQeWmZtfkGfvgfzcHECiqlyaT35VyBQE1/JX0ViR/DA38eA6Vthbxkjy8YrcVg0qEPWbAbi2KBJQsudA80qvrSSXVj/jaVk/cPpRJ6DxNY1CN7Ohp0wP0CI6kJ2rYHu1JgsA6jOx9wpVUypxQZGmqeS27xQom2HeeOLEZkfcATWGg3xpZnzEDOQgHrsayNCAcdIIe85NoHjHPA8u7vzDf8Zidoa+8wV73wwqmEO5HIeaZeLSKnqbpSjUYiSX6FGEk3y8w8LFezGSPu/0XkkYjs3HYhfzzzW1Xa9Ig42nA2e/k/iR4X9pbItZewfRFZBWz0pNYASS92u/4QTbMM8Wsy5NcZ5Rjok/hJPhfXz5m9ok+nHCaXhD2w6866jcm47sdp7932ibBdh+IEfUghyUsj2DF5WDR2+cF4oqm/aFbp5EgO2XaskyuDMhJcX1SfxZ4DRbtGolg8cG2SFCYxYnfkF+i82hrJVXrbVnKyyLMDUCx8TMV+le22Y9TPMaQx4l3ZKW2zOih56wZYOH3RBP2xxx/MJFFcUh+ei85n97nlS4se9iE4N0zLdWe2e1q92A5kI2Una8/7lEhuZ3ouSmJNrIvNM1N1s2EnayYeGyHL4d7YkHX6OefP13OE4t7GO1aoPMj0baKV9Etd+3iNzUt3SnuH9dR2o8ZBOtTS/CvlkkaTE5ifiFXGmS1EHGYr/03AYedtXhEMfZ1yZTfZBUbpEHmwQvJJpHuZplEhewYg2IRaTcnr8o/rIjTOAV9sY3wcBiIIyHKlZmj4brHIeLFToyhEvF9b80sWywRw+gIZNWm/x5C3joaQPbG/XpHoh7hj
- Lm6EuAYc
- n86SIveiCbqu6eyEdAmpc6hoqKfuLmDu0CLJZxQYBnC2crT2gr36zsqDkBn16L32bpJ8uNrIMw0pbSjoRtgDMjAWmDacsDalHos3hM7useKSk/uPYFpt/4Cc2fPf/HraHjxAc6WtgYeHkYkXjhDFyc88/dthZFDScna4sxv+R6OzrMAFhDtKfcDGmJAK0GWbEkpfcPcPw3+wLFCKw+2bZ/yncP5s/ONnaYt0kGg7fnWzlm7O+x8I+jjD94UJFiRS1wJkC5dl+3+SpoNImET/cfLIluHbshva4jzhJZj4BPz5Ekhru0EOvyGshbJ+oDm8/Wlb6xpAtoxVjMHN2cqe97FGhR5peOCWRbEvqY1mEmis4sM09KO53aN0pdFi7w8JM7lmAb+e30ZqlvqqTv0FGlk9ubkvLJnAJe9eq/+Pdg8mJOjIY+nRh48VEgUJaeZUCmoS6qyiDmB71Dlj2CFAXke3Aau5FbSViw31e9F8/quGY1JN8NBw8EM6Nuj9V9Un/j+njPpz4Ni4bfb5qrhRl2wU2Mw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 671B7A000F
+X-Stat-Signature: naqw94cc73nou85qn8h1hs7fsxqaicnx
+X-HE-Tag: 1786032552-783952
+X-HE-Meta: U2FsdGVkX19LCzB7JlJG5QCLpHwRsXCd8x8fjCUm+hXhaQR5rj0eMfuIXcSuBPzPY39sq+ASMg/I+rWkXfrqvLoxz7H3bzQneiFW3hhZAziwkCRdhfqg2h+x0aw+EvdZ0oL0gVipyRcnyxM8B0f4GRyCW76JSoatfi7nif66lOagfzdmiG0QvbzQulasx8Z+mgTIoTAJ3G8mvN7DRbP/m7IxPE6lu+/KB66t1HJ4netZeWty5QKWH9lsKklO8HR5J4SVd5IpnmPo2rVjVDTwu6fc8CbXNhp3LM4fUv3cmUUv3BiH9GnDjrVUdNuGc+Bi3fidlC8oA0UU2I27f+KWrHa9ggpCxf6sRxSE6namdDd4MKTn6AjHDLShOoCgKtJ5NDuLhLwitJYSaO9BAyF+8CisrXiaQp4q3G/H2f7yVVflAGiWGOqJFXYGDMb1ZIfRAE5J6d54beI56HBgUBLG13ztaWVp3VDSn5CzkAZnUVnmzXvSYh7mxCUoTPDMM0DLkJD7S+v9bYNe8lgm4COfMY7cDW4RUDLMfjDpQt3TRM+uo4cINu3D8q/4cXuCzM4e9ZYUwgHOcgrHBrr+jWo2ytf/5ZmgfK4f24TK5YIXS8TdV0nlwZYnCtDwoOaWq9I8+XMQijinD4hh+6ylJG4zHfxiVwW7k/C/ZXBZmyPcdNKcVxv3j3gg8d+n3ehCGg0P1t7ILrGQWa8CVEIeLag4cAxwGdIiLtpNDp2e8ZokU5fgvggP69aKFnSlMAjg05fpAwNs/hoEpXrGCQJKdXG8hb7oU/gczhcDJ/6EQ3DQe6qUTvHQI42o8uP66qBjFKu3nQZy3blS/qS8zxTL/NPRxD/fohdesXOTlw32PMxXG8XfVRYhW+ZDEtgzLX7QCa3ojApQDg6p0xmYrxcnGJJhFSPEbTP81hZ3SdnMBQk4/d6vv8gvFMhQMvlRwvqfep23I+lI64BoKDsqteWRXzA
+ nglTgasd
+ ucpjB9E6MXdPa3n+xRd+lRXtKMPNbLJxnuL9FvliCoABuBEAW6x2KYLXu94ypQXwpNBtlLiHfoczUGSyZ2TiSODOBuI+mEQ2tJW9g5/jmWILMn52tEEKt6v50q1tRmUhyL+yYeoTZhWJYbP1HM61vr3lo4axFdn7x9Hx39zzWRpvQaDSIfjFPiE4AUR3ISbCzn9CcQc69bsUfZqUUpDPrsqA/Juo1XgR7zBVJQkuMAs9EmFFFa14E5PQbujdm/fSC3qoRP0fvQwKLfmdfsne8QWFI+VpB7zkLqHNalGZ/Ndgx0ZTEbRrTn4GjyH4OCAW+bXQ7hrWbvbv+3U6thvkyWxx8CCkSS1HWCMBTcoZsAUgPzdE1oiv+tyGd7gN8TR8M05LJf+xlDljESz0166y49HNncZpF4aTPfg47UCEuMEs0xMBU9TVV40YtttV4laUJBHImUVxBS93tZ7Ppl/eChThmf+zabsvhCBPOnd9Gm79Qdoc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,21 +118,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 10:29:27AM -0400, Liam R. Howlett wrote:
 
-> @@ -5609,8 +5612,7 @@ void *mas_store(struct ma_state *mas, void *entry)
->  		goto store;
->  
->  	mas_alloc_nodes(mas, GFP_NOWAIT);
-> -	if (mas_is_err(mas))
-> -		return NULL;
-> +	mas_nomem(mas, GFP_KERNEL | __GFP_NOFAIL);
+--awe2ln3pvo2iqnm5
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+MIME-Version: 1.0
 
-It still feels really weird to ignore the return code from mas_nomem..
+On Thu, Jul 16, 2026 at 12:43:56PM +0200, Marek Szyprowski wrote:
+> On 09.07.2026 17:59, Thierry Reding wrote:
+> > On Thu, Jul 09, 2026 at 07:56:45AM +0200, Marek Szyprowski wrote:
+> >> On 08.07.2026 10:35, David Hildenbrand (Arm) wrote:
+> >>> On 7/7/26 12:02, Marek Szyprowski wrote:
+> >>>> On 01.07.2026 18:08, Thierry Reding wrote:
+> >>>>> From: Thierry Reding <treding@nvidia.com>
+> >>>>>
+> >>>>> There is no technical reason why there should be a limited number o=
+f CMA
+> >>>>> regions, so extract some code into helpers and use them to create e=
+xtra
+> >>>>> functions (cma_create() and cma_free()) that allow creating and fre=
+eing,
+> >>>>> respectively, CMA regions dynamically at runtime.
+> >>>> Well, the technical reason for not creating cma regions dynamically =
+at
+> >>>> runtime is that on some architectures (like 32bit ARM) the early fix=
+up
+> >>>> for the region is needed to make it functional for DMA.
+> >>> Can you point me at the code that does that? Thanks!
+> >> Check dma_contiguous_early_fixup() and dma_contiguous_remap() in=C2=A0
+> >> arch/arm/mm/dma-mapping.c. Those functions ensures that the CPU mappin=
+gs for
+> >> the CMA reserved region in linear map are remapped with 4k pages inste=
+ad
+> >> of the 1M sections, so later, it will be=C2=A0possible to alter the ma=
+ppings and
+> >> change them to coherent when needed (altering 1M sections is not possi=
+ble,
+> >> because each process has it's own level-1 array even for the kernel li=
+near
+> >> mapping).
+> >>
+> >>
+> >>
+> >> However, in the use case in this patchset the reserved region is only =
+shared
+> >> with buddy allocator by using the CMA infrastructure, not registered t=
+o the
+> >> regular DMA-mapping API, so it would work fine. I'm not convinced that=
+ this
+> >> is the right API to use for this though.
+> > Are you saying you're not convinced that CMA is the right API to use for
+> > this? Or something else?
+> I read this again and indeed CMA seems to be right solution. I only wonder
+> why do You want to create the CMA areas dynamically? Imho it would work=
+=C2=A0if
+> You just create large enough CMA area on boot, what would automatically
+> share the memory with buddy allocator and then allocate dynamic VPR regio=
+ns
+> with cma_alloc(), potentially unmapping or marking the allocated region as
+> reserved in linear kernel mapping to avoid any potential speculative acce=
+ss
+> to the protected memory.
 
- void mas_nomem_nofail() 
+Hi Marek,
 
-? and maybe it can have a WARN_ON
+sorry for missing your reply earlier.
 
-Jason
+The reason why we want to create the CMA areas dynamically is because we
+want to split the secure memory into multiple areas. And the size and
+number of these areas may need to vary, so I didn't want to have to rely
+on rebuilding kernels with different numbers of maximum CMA areas
+depending on the chunk size that we choose.
+
+The reason why we need to split up the protected memory into multiple
+CMA areas is that allocation patterns can create holes within a CMA
+area. For the VPR memory, however, we must ensure that there aren't any
+holes within the protected region because it is specified using a single
+base address and a size. So there is one contiguous region that can be
+marked protected.
+
+If we were to use a single CMA area, we could get holes within an area
+that is marked protected and once the pages are returned to the buddy
+allocator with cma_release(), something else could be attempting to
+access it and cause an error because it is still protected.
+
+The only way to make sure we get a single, resizable and contiguous
+region is by using multiple CMA areas and allocating the entire area
+once our allocations need to expand into that new area. So we're not in
+fact using much of the CMA infrastructure and actually need to duplicate
+some of it. We primarily need it for the page migration and reclaim
+functionality.
+
+> In both cases You will probably won't need the DMA-mapping API on top of
+> it, although it might be even possible to partially use with by
+> registering custom dma_ops for the devices using the protected region
+> (assuming that it would support only DMA_ATTR_NO_KERNEL_MAPPING
+> allocations).
+
+Yeah, I don't think we want the DMA API on top at all. The allocator has
+special needs, like clustered allocations to minimize fragmentation and
+keeping as few chunks activated as possible. We also want to avoid
+resize operations because they can be quite heavy depending on system
+load.
+
+Thierry
+
+--awe2ln3pvo2iqnm5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmp0saEACgkQ3SOs138+
+s6HmUQ//RyPTgx2QiCZkziDzWhQ8YjQ9J8KlwiQnyLspOz+Na5x6bslbOl/AuuBd
+DCTC8+y/ax94aG30aB0SctUZLtHriGHwevA3J9hm/CfR1K72DsjLSDnkqujE5h7B
+QxLJyl9wyqStgOfJEl6PwA8H9VbDkdJNHJlmpFzeki7a5QHQR28b+FyoWOZGGutC
+YKiDlqpqQk1rs9d8WQ4M5w6JiRmImAI9YcoFP36b36oPf6/DziGOYjqCO6k9o1GI
+pKj8EV6as2MTKoCdsuwHiQo/f2gQfyquJF+yK6m62NZy6wyr1ceed6jmCoIcuuh6
+NKDs1AUWYdLhOVod22LHwn8GCjaDRkYHuUNgRtVrz5BgUuVUW/EmVieF/7BeRpna
+HZ+uWPa09LwQq0ma8cRTNEQykq4zhVKxshPlVGeFuRJqIQ7C3ba/4UCWEDtT4Dlj
+udGkgC059nR72DiCjPnQ40LV5naHw+dIkTt7uS2rh/xRih0ZW5bTc1ex3KvVq2H+
+wtjVSehARwHbIzU3ijuk3iNDaGRYZS99YYB5NjULlXGFeldz0M4qj8L/Gu684Kt0
+c0DFGObvF6isiTZgfuIwCNEEURIKdOut/DpqvFXcAmaAYvwvko7EPo4xwigfSapd
+63yY0m3zfV1lefYdShI86wkQ8t4KSbU6Vhoh/A0AUNc1mcNqir8=
+=PD/g
+-----END PGP SIGNATURE-----
+
+--awe2ln3pvo2iqnm5--
 
