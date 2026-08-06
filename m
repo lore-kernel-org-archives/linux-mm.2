@@ -4,128 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB328C561E6
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888FCC55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 09:35:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6E126B00AD; Thu,  6 Aug 2026 05:22:23 -0400 (EDT)
+	id 269466B00A2; Thu,  6 Aug 2026 05:35:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1F936B00AF; Thu,  6 Aug 2026 05:22:23 -0400 (EDT)
+	id 23FC36B00A3; Thu,  6 Aug 2026 05:35:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0E306B00B0; Thu,  6 Aug 2026 05:22:23 -0400 (EDT)
+	id 156606B00A5; Thu,  6 Aug 2026 05:35:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E5E56B00AD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:22:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 004B112067B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:22:22 +0000 (UTC)
-X-FDA: 85070303766.21.8C9230C
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1B39D8000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:22:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Fa1iucpS;
-	spf=pass (imf02.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CF85E6B00A2
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 05:35:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63D3D40684
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:35:39 +0000 (UTC)
+X-FDA: 85070337198.29.45280FE
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A72B9180008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:35:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mYFI4cZN;
+	spf=pass (imf24.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786008141;
+	s=arc-20220608; t=1786008937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pcnhqt0EtUylxXGbjqsf+1Pc4DS5YZiCgI0VutNek2Q=;
-	b=n5j2xd7+NGMWXyhPAp5wFH0TZcrUK8ImUmC/tNdCnRB2oRBcjIDDVrPWZA51qhfxiBPSoI
-	FBxiFH9jKI63YUT92tv5Mc9aVq/VGBmHMcX6wCJP97n9pPMzc8AO+GvwgfS5/ItxYVQFt5
-	C1Xsv5wXnBZeO2WVjFI82El3Ck2M8EY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786008141;
-	b=YKfyuvpqR/Snq9YN8qRJsuK7wPrLRSGve7fTQTTEuADcyy3+ccM8vcyydy1Y/G5RlGkcCb
-	oRvmYHxDcf/GkhEiE7GP93wIef2r4D2Gk8bZv3uTFVjLGMGoK64BhQHMexh5qzPBb21oCy
-	1SoE6VdSf3sYNMBa3598iooSu244588=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iAi2qaVA1OaGq4fUWHi+grRNkf4AM4PgvPmY0Rr+XE4=;
+	b=gRy6JHrjaJTGCSi6zuzkm0hEKl9Q9wIQ63NmNHvUiKETrYh9YTTZlus3EWbPWLNS21WPR0
+	VKF7o7QH7hhaxhtrOUIE9k4vrNYnH0nCOFEg6hKrc4hHX7WaczA+w+t8oQFZTdGcZbo8GO
+	/pgc2guKyD5ByPAtOoEvb3Kt7ncDFm0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Fa1iucpS;
-	spf=pass (imf02.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-472326ca506so1329682f8f.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 02:22:20 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mYFI4cZN;
+	spf=pass (imf24.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786008937;
+	b=I39vIvNgTVMw8iEoV1GDl3mOHDW2lB8F385liihpjdkOq5GRjpk+pUyp+XBz0mg1Mvqwb8
+	8if99R2AdqwWeoI69cwBmUU1vZGid13xwED3BmzJD4qkhrI9QT9ANb/pXVbOse1/mwGw+1
+	zW0rme+5Pxu0HMY6doBTlb6CX6yn1IY=
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-caf5fee4196so744127a12.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 02:35:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786008140; x=1786612940; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Pcnhqt0EtUylxXGbjqsf+1Pc4DS5YZiCgI0VutNek2Q=;
-        b=Fa1iucpSpitEbW0Dqkmumb2dtaNjMQl4AQFCFyvQqcLA9A1zgYYZc+NYy6vc5Hv7Ih
-         khG0n9BV4O3nKrNU4MJ3uTEqWzQmjayEP4GdDo33dkvBTB4h4cxlaEj2J2sy0B7NS6Uz
-         EGUSiCQzKdcpb+uvHev7rB3vhG3SJC73Mqka0he8Mpc+5zl1QEraw5wOMJzsEXPcrKUx
-         zC12jy1htVgTbdl9q6HQ+7bRXCo05MXuAhsCFUkUrM0amwXv0ZgPm9/D4a/Zwcoti3Lz
-         Mk/JmZTL9Lb2EAnp27Mkn7ncyrugw4zng7OE0+bBQbEYoRgvO/lKIde/3s2DgaG5KWVY
-         Q0dA==
+        d=gmail.com; s=20251104; t=1786008936; x=1786613736; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iAi2qaVA1OaGq4fUWHi+grRNkf4AM4PgvPmY0Rr+XE4=;
+        b=mYFI4cZN6J8VmSAjR3JRM4rPRPhnGtDiomvBSX674EDxD14CDmsPKyfDOfcpTgd1Lc
+         Evn7UKncHD04ssFHK0qUd3MUvltw4xJOdAuWTlVXP6EdDvturxp1Rzbi5mHrG11uVMqk
+         FfCGGyV1kNmgTPZsYLxYL7ITMIcBQ38RB2oiLvHxUFGGBSuUdHo5MyeH0i1cpt5cmBv+
+         M2ESJ7u1EWRpF9R2rnGdCaaJdg56J5SklPHd+VsKSLXSp1Dld+UtS2AmHDd6Q1ohcq5I
+         HdkxMqWOnH/svEnEaW9e/Zhsw8bW9Dp2FYTy7mIu5KbAHY9LBbbup972vmeOPjOSRvMi
+         8YaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786008140; x=1786612940;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pcnhqt0EtUylxXGbjqsf+1Pc4DS5YZiCgI0VutNek2Q=;
-        b=qk5x0p4seNlSnwQRcTg2vc4IvLSvzRyBytgB7hwlsVgO5O3SLFdU8fADt8gon8A1xW
-         zh6blppNoP185dfs6xwzZgfkYEHIgw2BaajjRy4HuU3pbA/FLmd7SjSHvvQePDpCxCbE
-         n97NvDKYix5WkcYazO47FWxdMUm3GJZ41hEy0Ox4pXO8h31RpgdjOUAM0Uxvx8FZiTGn
-         so7pRR7sphV0Wtf4Bg2Xnrk7Ul2IO2xmc7egbj5K7mGWuBamIBWiHlrWyUa8ShPP95s4
-         g/lyvZgXlPsWPqd33q5f7kt7czpf5AzLxG0OBNYiHNqsYLpib+dzhPwYhfsTAeXY2nQj
-         nuDw==
-X-Forwarded-Encrypted: i=1; AHgh+RpHtGrM+tyK818pQlqFDa+TMA8qjmJvfsLiuPsBIzAr9qNxwVRY3X+noSZsUovdM7i51czipJc8Rg==@kvack.org
-X-Gm-Message-State: AOJu0Yz5BV3XR9dubVousoRqTmZHQSHRC/gHqbrWAUhdLE5HJ88Tpkj3
-	FrN2oeKB55cMKFNpsNdrUX+rz9cjrMQhpnJH+5A2T9vFuhmYXvw+d57H34oOdSUpWPA=
-X-Gm-Gg: AR+sD13jhUPFBj6oCHFxxPxCflDaUU01N8kkd2c6ePlCt3pc5VBi7/XFsKaj9KpRlXH
-	eS4ByFhOB7aFeVrbbfUE2T1EoEVd8JybWmQGq2MeGDQnKWZgepxrWReeRr/IDco5aHQBS15yqJO
-	QVTvaui07KSt7uV1VLjcZsFpaOhsXicWSqPflyr8ZkrMAS1ALhCoWj3sRUb737i63znjLD5oyiC
-	Ti+7g/S1OqY6WI6xLsoRymbwBcr/0txx1As5azyl2XjTbMCbh//NW08vMbmpwyrPYJtYCG0AAwH
-	eDou+IrJJSmlnc4v5QEtacEg/d+QLfe1mmmjIzEkgeXP8aV3LWPl0qdfhSQuj2uZVLPv7cTZNkg
-	RHK6bQNwH+/lnRD81FdDFLcSO3fT0Vj7aeZoSDGgo8MNsHg6j4fe2UZ953rHkmhC+9+cdi2qgy5
-	3EfV1o2gEn68QdydcAV56GoYzD6AO2EI61GQNuScZzWM1AlEO3r4Mva7vFM4n1yTC/
-X-Received: by 2002:a5d:624a:0:b0:47f:9750:26cc with SMTP id ffacd0b85a97d-47fec630b5cmr16574414f8f.23.1786008139632;
-        Thu, 06 Aug 2026 02:22:19 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b31975sm4112794f8f.33.2026.08.06.02.22.17
+        d=1e100.net; s=20251104; t=1786008936; x=1786613736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iAi2qaVA1OaGq4fUWHi+grRNkf4AM4PgvPmY0Rr+XE4=;
+        b=dH69DeJ2VxKBgy8FlOs1/AoL4lEXebvgi5tkVTO/8jO0Oz2H/zAxVZfoLCAJ091ir4
+         5s8iAiNc8PmOPPmICMp8/gTSnj82+xDUoKjj0hyFbEqFzpAp1p6+xI+5xJjKXPNWlP0j
+         kX/T2rtIZ/zWQym0xOqSGumG3WA0psfh+QNT0wORo4fMN3QfVhzU9571Ql9NGA3YD67g
+         gDg6VUalnov/HezsTMK2RpzvtmDZ8nwWnYQsGp0IBcCfAd9A+2sIRnaL/jEAwlEU3h4K
+         kmCd0cF9HyhNXfNl7C3DYt8B/fejoBwG1JHwG3QfJbA3+oRktq9Jop+F7acQxB6h/5HI
+         ytrw==
+X-Forwarded-Encrypted: i=1; AHgh+Ron2DXcHUzvP6rTNWnfElJwU4W0u/HpOo78yh7ov2KBIYAZGmA8/+LOaFGk88LE9mtfnrFKH7f0eg==@kvack.org
+X-Gm-Message-State: AOJu0YwZroQJgPyobBtu3M5o83bg6ZywxF3JFZBIg+N/dNFjp1wveQLd
+	j355X2gKXmteEKx3WkkyRUo9YCBBQiR7OkL5dtng30H3ZrKQgzlGE9AS
+X-Gm-Gg: AR+sD11VmRJhEtBoFV8vWanOTMbOzVXWBKzIi1KVAi23JkvifFfcCvQgfQBod/alMTy
+	Vf3ILKwrqcKxJ6yMQ/h/xT/2jHnJEqgHQU9UJv6u0UGYQsDyetgZapIUQXJJjwv+peb5DiKkS7k
+	o6BRD7A0Bu4/JFJ9g8TVkcvnedaha7ICFrBlABeaeBbK3ViDugqYkqJ0kainhLEHvP+6B6M9Fql
+	jWHUTp69C+yFwP7v4HDme0nD34/rYHk52Pf7BDBl7UELY9VZVlzBpNiB6XuJmh1hdDLaEfrLv0d
+	FV+YWphLTsZpmp1XpG2JgfhlZRviIqeS0xS+PRhIY+nizczKNspgELzLYpn4iD8nYmk9DtoQuJA
+	1oLHFnU9LpGp1Q9k5Cg9cJAwtpX6G6J7zNEh3ZoiZG9SGZI/5jTHH9t0PvhpKWHQT4ziN3YtD9a
+	u7xli0b844dbOv/+K9KQf/CzNQ3/PrzE5aLClPjUxd+m9Zh/dT8mpRrAe+C7oUq75csUK1zw1/B
+	Q==
+X-Received: by 2002:a05:6a00:9515:b0:84c:1cd2:142e with SMTP id d2e1a72fcca58-84f4fe9e75cmr58122b3a.23.1786008936445;
+        Thu, 06 Aug 2026 02:35:36 -0700 (PDT)
+Received: from intel.company.local ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b0aeasm1043878b3a.13.2026.08.06.02.35.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 02:22:18 -0700 (PDT)
-Date: Thu, 6 Aug 2026 11:22:16 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Yu Kuai <yukuai@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, Yu Kuai <yukuai@fygo.io>, 
-	Josef Bacik <josef@toxicpanda.com>, Coly Li <colyli@fygo.io>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Alasdair Kergon <agk@redhat.com>, 
-	Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, 
-	Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>, Tao Cui <cui.tao@linux.dev>, 
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
-	linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, virtualization@lists.linux.dev, 
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Message-ID: <anRPSKHWo59GPIA0@localhost.localdomain>
-References: <20260804065313.2092022-1-yukuai@kernel.org>
- <20260804065313.2092022-3-yukuai@kernel.org>
+        Thu, 06 Aug 2026 02:35:35 -0700 (PDT)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	chenhuacai@kernel.org,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	robh@kernel.org,
+	saravanak@kernel.org,
+	rppt@kernel.org,
+	baoquan.he@linux.dev,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	m.szyprowski@samsung.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-mm@kvack.org,
+	kexec@lists.infradead.org,
+	iommu@lists.linux.dev
+Cc: kernel@xen0n.name,
+	alex@ghiti.fr,
+	akpm@linux-foundation.org,
+	ruirui.yang@linux.dev,
+	robin.murphy@arm.com
+Subject: [PATCH v5 0/8] kdump: reduce vmcore size and capture time
+Date: Thu,  6 Aug 2026 17:35:11 +0800
+Message-ID: <20260806093519.2907771-1-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ltojthlavrpt3nkl"
-Content-Disposition: inline
-In-Reply-To: <20260804065313.2092022-3-yukuai@kernel.org>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 13fyscknqbpb1758tkh77xzfhcagyiti
-X-Rspamd-Queue-Id: 1B39D8000C
-X-HE-Tag: 1786008141-29217
-X-HE-Meta: U2FsdGVkX19mWFObLGKD2blWOQKLupVKb5J27PZfB6+20iXK9AsMb21ZBGo7ckWQEztcmh3EqtqleurxHW/090OXqLtG7r+8fAOER8s49wxvvsEObOD1MZbXW6zsePqnpk0eWuxFidvAlvG8yfJUQ6xaaLtnSiJRnzgejBGKlXWZrmrBp3biOFJ1JrqzpI0OkppfGsftlIVASEdXvS3LjY57eoX6Yfe75vOjnD4bwYNllUxs1tw3eZh16gwuBy4Ooi6shgrpqcuy6RGXITGimNKCW0QXcjBlvCStCg6hqfBrTqrhgW5cgxr8b3mjUSFjDy1zu+/bH3vgvUMsxUZCK/JMeyf0w+FyDklzWm9MxVw8BNMnz3Kw4olJOqUK8FMJk/0YNpAeKBQwEsJ2PzMv8u93SvLTY1m0daFbuaGIkVEtJtlfX+otKv57NXtNG3osAIglVWo9BJ4MPAC+wRuumJWNpEOP+DWP1l0517HBFBH2WaYuxzuocOSyrX3Qg35ESavyfO+4VipHTZMmoN1JRvnBWZxnmMF3rxnSDI314r/f8RTtagiR9xdxyS10ezJFat/UgFnKtIA/ZCmY72kGV/zihJLAzaxMcl9eU/eFGb+eXXpwqy35+RJVNA+W4MpXU9HRlg+J0muIsY/TNpGw1d6H/4I+eelMbVJdoayNVzOInlrnW6SsVPXWH0pFdTsmyJRY2fXnv/wdh+Dts4TQDK//XldRB9vcwqBfzhpLyIRdVcLqWCECKij4giSfcGTPqhTHc9z6Y74sk2sw/0mo3krVuHN4mL1EUZ+QfNepXYiM3Xua4ewQ9bbPj5JNalwxNopG0T5R0RnIqn6nj8IVfVJrEW0NrQfWsZ2/i4mKhUxis2UTD4DdGHsBgLaqxCMXolABkvyqVxxeiVyfaBiIIzmrdD4nnymnioUlfTPhbxk/eQiPh0+fCobbhyL6pni674TNtemVGtyuqWYvDWO
- 5tmr408W
- Jkyc4JvrNiLtTooFkwAYZYzTW7a4a7lLXv4CUr4mWwWCfQ8rdTKulm/wu1PXReqsKmsMSNU9NIMJrJyGwvRB4MEZ6iRxJIYiJ49W9R67R16m1gMjVIio3GrfpWD/42pmjuJykCt8byOlXg+0sC+31E4m+Sr1AEna0J5336YE+FeJHrM1GbjJDiLnABI/96u4dFULlMTJvZqjwFoVRPdq34RBGRtPDX+iWJF8+khM+QMTKEmLxeHV1e71r40KDZtUn3CkYrZNGJloU5sMVV6kmGbi+O9KCQmUWvncosHC9FjVVF1LCI01iVkIlKTJ9VuCtrt+Wtz8nmdvAFjfJH1DeMnh2z7DMEg4rVqOr5nVVuujTo8+sGyT7bECFMfnRsDlLD07v/0/ei+gR/ymKuPlCLLlRVO86pugRdPSYPRudq4lKxHkQP5piA14AtwxUnf82eW5mV1CxNAxxHrQB7iLPnx6grWdhHGqZyQrqem9Ba4KrILvcGbDmjJdKmeaAfQtVuM0ZD2bsRJ2A+lO1llyXA01gjrUgM6Vfhpm+
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A72B9180008
+X-Stat-Signature: 8ifa7mj4br9mjzgfqsr997em57gsrgoq
+X-HE-Tag: 1786008937-391523
+X-HE-Meta: U2FsdGVkX1+dEVvgr+qilfgclf4jpajanfrbCoA+sLtoImAwOKA7odQpX7O8fVmJs3ZksWwp7ga7/KtwCyKwUsaaZTl2r8PLHcCN7tfC8rtL9CjxbJPlCAk1B72oiriUKeWoG1CTJ8eHfogalu767dfj/IbSW5m56ZZZIyq50MSCdYX+qe63fqPuT4PVVr7pp4iSuGjCNwj8YvryXneEPUIqfM1IlCvKiEG0xJu3Xb9s23gxGpcQX19s8zfwCjIbfSPxwPAHF+84EoRyCD73ERKaW8psjMRg2Jotu3DlZLwpyhpgFyG87L/sApe2VSqIbcFUTwxp+5qjBvllzCPpocvl6v2xzVwdUbkGfpeTE7yyWpZZY7n75SoEgAH0BcdFCjRmBK+U2CtYYVqwHiJ2HLe8ydRVcoghuztrtsCyH+CmqbBeSe1ZkFlC6ONSqdFPDBZJpRhMXqr60Fk/OXYMsUQJ5DvlSXzoHvnKKr8q9kN2ewZg423BKeGD90do2VYi25jZ/2UwhF0oiyCL9dT4pxejuRr3Zp3wm2yF3moHOBiwDZEnwpkYeDVeF7zzpCHKzaySzFoY6bOXE9k5l2tCXcbs23jj6OheVpnm1I79moYV9FPq1FqGY36NTQS8ElsSpsLqBRNijTe9quFuBQJs0IW6gArG+gT8l28Y0+Mgq5WRMv5v2twCKfTpKDM3E9EYb1rKC3uy1bqcj7fZpUlQf9Bs6A/DRjbEki2TBQM27UeOxmjaehoHMaWz0oRcV7EpYWg4xJRo8m1rKMY2AjoN8PKjp9dGO7gDWI9RlLYGZz06rc8xWaXdx60YAc4+cJ21D0+Frfk8lKXdC4DLOm47rIs4g0VHfI6SWK5ZOmUOF0OVtmmt3pO0VemsfLHA/zHrJVgrOUeahM0cN0M8vuAVe7VHyEBUAjyLOazfCdvCntKJnZqcGA2ITTl3djJpHslZ53l6v3feDnfG2oAibya
+ mKk8TUeB
+ Q/zm8+9U/InRHRY4VWU2+W4B7qauP+K7//U+ddIFfVHa2oyV0P6XIunZ5W/O0DbHbZOykpLyksHihBKLOkgvcNo9/mF94wSzCQeojWtFuEK9fXoz0wu136wGo57AwS97kw1o5XrV6RZhNYxoLzKW015bxBVMrTaPonVVG9vu1E5Ay8z9XNPS0pncv98iMD/f6+c5v4hg+4LMsLXO4OCy3yoHap7cD07kkXXl8ivJ3ofpXkYa7zrcX3zD1R8jhOpmfxcSX2Xt3oRvJ3eIV283XY3CQvwsUD6wCf23g4bb4imxL89nIxZIstriGds7fllXc6BuxrGCne8fVT12OPrJ9lAK/k/DWf+lDBD7Nas+n9u3U6aqjvAagJBuayABCzA779cbYqtnJ+XVRQUcylsBEI5eSAnx9yrI6m2EDZmdVNO/9z0BS8tKala5ncjnnMQmtqA+cu3XTV+EukVwy3wYWBEJRi5biP83l9TgmBf5MZCDLhFb3l1eVpJvk3Fxc0Ex7/k7ACpnMaUmNT2TI0+mD763f5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,154 +138,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Wandun Chen <chenwandun@lixiang.com>
 
---ltojthlavrpt3nkl
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
-MIME-Version: 1.0
+On SoCs that carve out large firmware-owned reserved memory (GPU,
+camera ISP, ...), kdump currently dumps those carveouts as part of
+system RAM even though their contents are firmware state that is not
+useful for kernel crash analysis.
 
-Hi Kuai.
+This series introduces a 'dumpable' flag on struct reserved_mem and a
+MEMBLOCK_NODUMP flag in memblock to filter vmcore ELF header on DT-based
+architectures (arm64, riscv, loongarch). Reserved regions default to
+non-dumpable and are marked MEMBLOCK_NODUMP so kdump omits them;
+reusable CMA regions are explicitly marked dumpable in rmem_cma_setup()
+because their pages are handed back to the buddy allocator and may carry
+crash-relevant data.
 
-On Tue, Aug 04, 2026 at 02:53:12PM +0800, Yu Kuai <yukuai@kernel.org> wrote:
-> From: Yu Kuai <yukuai@fygo.io>
->=20
-> A bio currently stores a queue-local blkg reference.  This forces bio
-> association and remap paths to look up or create a blkg even when the bio
-> will never enter a blkcg policy.
->=20
-> Store the blkcg css association in the bio instead, and derive the blkg
-> from the bio's blkcg and current bdev when a policy needs it.  The first
-> successful policy lookup pins the blkg, records the pin with BIO_BLKG_REF,
-> and drops it from bio_clear_blkcg() or when bio_set_dev() changes the
-> lookup key.
->=20
-> Keep lookup-only users from creating missing blkgs by using
-> bio_blkg_lookup(), and rename the bio cgroup association helpers to match
-> the stored blkcg state.
+Since the reserved memory regions are filtered out, the vmcore is
+smaller in size and faster to produce. ACPI systems already filter
+reserved memory out of the vmcore through their existing path; only
+DT-based systems currently fail to filter these regions, which is what
+this series addresses. The flag lives in memblock itself rather than
+in a DT-only structure, so the mechanism is generic and both ACPI and
+DT systems can benefit from it (suggested by Rob, thanks).
 
-I assume this should be OK due to limited lifetime of bios -- this would
-not lead no possibly indefinite accumulation of offlined blkcgs,
-correct?
+The series is based on linux-next and is organized as follows:
+  Patches 1-2: Introduce MEMBLOCK_NODUMP in memblock and the dumpable
+               flag on struct reserved_mem.
+  Patches 3-4: Mark non-dumpable /reserved-memory and /memreserve/
+               entries with MEMBLOCK_NODUMP.
+  Patch 5:     Switch riscv to memblock so the NODUMP flag is visible
+               to the vmcore ELF header builder; add (KEXEC_FILE &&
+               CRASH_DUMP) to riscv's ARCH_KEEP_MEMBLOCK condition.
+  Patches 6-8: Fold the duplicated per-arch memblock walks into the
+               weak defaults in crash_core, switch to
+               for_each_mem_region(), and exclude MEMBLOCK_NODUMP
+               regions from the vmcore ELF header.
 
-> -void bio_associate_blkg_from_css(struct bio *bio,
-> +void bio_associate_blkcg_from_css(struct bio *bio,
->  				 struct cgroup_subsys_state *css)
->  {
-> -	if (bio_blkg(bio))
-> -		blkg_put(bio_blkg(bio));
-> +	struct blkcg *blkcg;
-> =20
-> -	if (css && css->parent) {
-> -		bio->bi_blkg =3D blkg_tryget_closest(bio, css);
-> -	} else {
-> -		blkg_get(bdev_get_queue(bio->bi_bdev)->root_blkg);
-> -		bio->bi_blkg =3D bdev_get_queue(bio->bi_bdev)->root_blkg;
-> -	}
-> +	if (!css || !css->parent)
-> +		css =3D &blkcg_root.css;
-> +
-> +	blkcg =3D css_to_blkcg(css);
-> +	if (bio_blkcg(bio) =3D=3D blkcg)
-> +		return;
-> +
-> +	css_get(css);	<---
-> +	bio_clear_blkcg(bio);
-> +	bio->bi_blkcg =3D blkcg;
->  }
-> -EXPORT_SYMBOL_GPL(bio_associate_blkg_from_css);
-> +EXPORT_SYMBOL_GPL(bio_associate_blkcg_from_css);
+v4 --> v5:
+1. Rework the mechanism around a memblock-level MEMBLOCK_NODUMP flag
+   (suggested by Rob) instead of the v4 opt-in 'dumpable' flag on
+   DT-only struct reserved_mem.
 
-[skip to next comment below now]
+2. Switch the riscv vmcore elf header preparation to use memblock
+   instead of the resource tree, aligning it with arm64 and loongarch,
+   so riscv also can exclude reserved memory from vmcore.
 
-And here yet another (any) reference to same css is taken 2nd time.
+3. Deduplicate the vmcore elf header preparation: arm64, riscv and
+   loongarch open-coded the same logic, so fold it into shared
+    __weak defaults in crash_core.
 
-[skip after next comment below :)]
+4.  Drop the v4 patch that saved /memreserve/ entries into the
+    reserved_mem array; /memreserve/ is now marked MEMBLOCK_NODUMP
+    directly.
 
+v3 --> v4:
+1. Rebase this series on v7.2-rc1.
+2. Add two cleanup patches (patch 02/03).
+3. Simplify patch 03 to avoid checking whether initial_boot_params is
+   NULL multiple times, suggested by Rob.
 
-> =20
->  /**
-> - * bio_associate_blkg - associate a bio with a blkg
-> + * bio_associate_blkcg - associate a bio with a blkcg
->   * @bio: target bio
->   *
-> - * Associate @bio with the blkg found from the bio's css and request_que=
-ue.
-> - * If one is not found, bio_lookup_blkg() creates the blkg.  If a blkg is
-> - * already associated, the css is reused and association redone as the
-> - * request_queue may have changed.
-> + * Associate @bio with the blkcg found from the bio's css.  If a blkcg is
-> + * already associated, keep it as blkcg association is not queue-local.
->   */
-> -void bio_associate_blkg(struct bio *bio)
+v2 --> v3:
+1. Fix out-of-bounds issue if device tree lacks /reserved-memory node.[2]
+2. Fix UAF issue when alloc_reserved_mem_array() fails.
+3. Add some prepare patches.
 
+v1 --> v2:
+1. v1 added an opt-out DT property ('linux,no-dump'). Per Rob's
+   feedback [1], v2 drop that property and exclude reserve memory
+   by default.
+2. Split some prepared patches from the original patches.
+3. Address coding-style comments on patch 5 from Rob.
 
-> +void bio_associate_blkcg(struct bio *bio)
->  {
->  	struct cgroup_subsys_state *css;
-> =20
->  	if (blk_op_is_passthrough(bio->bi_opf))
->  		return;
-> =20
-> -	if (bio_blkg(bio)) {
-> -		css =3D bio_blkcg_css(bio);
-> -		bio_associate_blkg_from_css(bio, css);
-> -	} else {
-> -		rcu_read_lock();
-> -		css =3D blkcg_css();
-> -		if (!css_tryget_online(css))
-> -			css =3D NULL;
-> -		rcu_read_unlock();
-> +	if (bio_blkcg(bio))
-> +		return;
-> =20
-> -		bio_associate_blkg_from_css(bio, css);
-> -		if (css)
-> -			css_put(css);
-> -	}
-> +	rcu_read_lock();
-> +	css =3D blkcg_css();
-> +	if (!css_tryget_online(css))	<---
-> +		css =3D NULL;
-> +	rcu_read_unlock();
-> +
-> +	bio_associate_blkcg_from_css(bio, css);
-> +	if (css)
-> +		css_put(css);
->  }
-> -EXPORT_SYMBOL_GPL(bio_associate_blkg);
-> +EXPORT_SYMBOL_GPL(bio_associate_blkcg);
+[1] https://lore.kernel.org/lkml/20260506144542.GA2072596-robh@kernel.org/
+[2] https://sashiko.dev/#/patchset/20260520091844.592753-1-chenwandun%40lixiang.com?part=4
 
-next:
-Here you take (online) reference to the blkcg->css.
+Wandun Chen (8):
+  memblock: introduce MEMBLOCK_NODUMP flag
+  of: reserved_mem: add dumpable flag to opt-in vmcore
+  of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
+  of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
+  riscv: build crash_mem ranges from memblock instead of resource tree
+  crash_core: fold duplicated memblock arch hooks into the weak default
+  crash_core: replace for_each_mem_range() with for_each_mem_region()
+  crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
+    header
 
-[return back to previous comment]
+ arch/arm64/kernel/machine_kexec_file.c     | 29 ------------------
+ arch/loongarch/kernel/machine_kexec_file.c | 27 -----------------
+ arch/riscv/Kconfig                         |  2 +-
+ arch/riscv/kernel/machine_kexec_file.c     | 33 --------------------
+ drivers/of/fdt.c                           |  2 ++
+ drivers/of/of_private.h                    |  1 +
+ drivers/of/of_reserved_mem.c               | 35 ++++++++++++++++++++++
+ include/linux/memblock.h                   |  9 ++++++
+ include/linux/of_reserved_mem.h            |  1 +
+ kernel/crash_core.c                        | 34 +++++++++++++++++++--
+ kernel/dma/contiguous.c                    |  1 +
+ mm/memblock.c                              | 16 ++++++++++
+ 12 files changed, 98 insertions(+), 92 deletions(-)
 
+-- 
+2.43.0
 
-after:
-Ideally, no tasks should be in offlined (blk)cgs, so the `current` would
-not resolve to blkcg_css() returning an offlined blkcgs. OTOH, it's
-generally good not to do _new_ associations to an offlined blkcg.
-Which is why I think this logic would better fit to
-bio_associate_blkcg_from_css()
-
-
-0.02=E2=82=AC,
-Michal
-
-
---ltojthlavrpt3nkl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCanRSRBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ahf+gEA5FtU8iXyQA9tlhJdWJEf
-nyf1IBDUt4tisH7UDE8KiSEBAP5BK6FXkSftml/wn918ol1iwizfBzFhephd2gZc
-e3UL
-=GgwG
------END PGP SIGNATURE-----
-
---ltojthlavrpt3nkl--
 
