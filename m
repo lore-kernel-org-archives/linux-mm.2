@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 066F0C55174
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 02:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B97C55174
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 02:30:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD566B007B; Wed,  5 Aug 2026 22:29:52 -0400 (EDT)
+	id 5BD216B0092; Wed,  5 Aug 2026 22:30:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AE6B6B008A; Wed,  5 Aug 2026 22:29:52 -0400 (EDT)
+	id 546A06B0093; Wed,  5 Aug 2026 22:30:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 179E86B0092; Wed,  5 Aug 2026 22:29:52 -0400 (EDT)
+	id 484546B0095; Wed,  5 Aug 2026 22:30:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 910086B007B
-	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:29:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9339C40623
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:50 +0000 (UTC)
-X-FDA: 85069264140.01.28F1ACF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ED9D8180007
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTKut1P7;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C874A6B0092
+	for <linux-mm@kvack.org>; Wed,  5 Aug 2026 22:30:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 58880805A7
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:30:01 +0000 (UTC)
+X-FDA: 85069264602.15.2144C33
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 40530100002
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 02:29:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fClwuejs;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785983388;
+	s=arc-20220608; t=1785983399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jY7+oBUrKHkFO4iBtP2E++Vts1iHCUswnJVsbsvky4=;
-	b=QhByZlYz3wIJBCddUaXDtK26CSCWhEqrykDcWEvnVsiViZA2eW8owgmohHwAHoqsAYG6fO
-	XlSYQRla51n+eK474rNAYSa9KS8risTS2TNPNIw18/irZu5oo+KNz4uzFOCtE+9ITnYx3E
-	Wn/FQrG8+adsj8oDuURDO+fkt6f1zxw=
+	bh=NVa0zWiLPUeRH28YcFdjAUUK4ATyuteDo/w4PnjWstA=;
+	b=UIPxItofGUArL/cJ9cq2xvCw0o6Qd4eS8J9cQaH3zkoRLaN0UmKn6Gm7Z+hKJ91xs11WpC
+	myTSsVe3elgRXU7fKqfwYKm7sa8NlykjLQoMGSH+amW9kO239ZzfX6WRRz0e2hRquZbjfi
+	UlhOwNydFGKOIpmgLXq9xw0r2f6L560=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTKut1P7;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fClwuejs;
+	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785983388;
-	b=r+PSsskJhxzdYSUjNpdrw/E40QQGm+1CPlaKBBCYO72HJYlD5WS4+F5kL5YmpErc8KdwvE
-	dL9D90+8uB08QA96qdcLYm3eIHMnkN3zrVmAPZYfwhzv47Ot7vWl134dz4k+QaALmFR74H
-	RMT/GN9aishA+9avQolZYWTsEKaM8IM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785983387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9jY7+oBUrKHkFO4iBtP2E++Vts1iHCUswnJVsbsvky4=;
-	b=fTKut1P7QK6DCrS7ZG6DNc+7y4OCLy+sx07nJslDevYXnwI7Xne5WVx8fD0IfvJ19hsNRd
-	QpYUyXprzVkTS6lLQMQ8qlBxhRokdNh3pdnIFL9eaakJ9MVtR4+3QoK6/k1avgMutNsm0G
-	9xiUyAdVxCYrhQDJJ6EHpWF4trYH3hI=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-dv40AkUEOQ-16mcOvB2DIg-1; Wed, 05 Aug 2026 22:29:45 -0400
-X-MC-Unique: dv40AkUEOQ-16mcOvB2DIg-1
-X-Mimecast-MFC-AGG-ID: dv40AkUEOQ-16mcOvB2DIg_1785983385
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51bec738909so15172041cf.1
-        for <linux-mm@kvack.org>; Wed, 05 Aug 2026 19:29:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785983385; x=1786588185;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9jY7+oBUrKHkFO4iBtP2E++Vts1iHCUswnJVsbsvky4=;
-        b=rWMHBoUenQ3SmuPPflxyGro5wvBI8xzpqM7A7PD/5OUg5J83dTOr0AzFT9/cxzcX89
-         nwZ7pA3BldgpbcutPx6jfhg+CjQdDfeXwJfVj8wHuW4D5fGpEP/cAqhR2ILGlMvnXYI5
-         q3i3eb5xhpyGVsQOeocQj+1h2rpk2qYdH3DtmY3E3avhxZ5wbPDyi4sJsRvZNhRwI0FX
-         kMYQT/giR9eseoaDrfdOTPGvAKKv8w1oZMCUaeUKqdzTzROdTc4vPgAyBk1EQ48BEQOV
-         ni/PQs2IFSZ1Xf224MpI7WJexg2n6+yXvVhwShIrlnr0vMiHwI0RrdOotp448pyTc5LI
-         kCtg==
-X-Forwarded-Encrypted: i=1; AHgh+RrbZV+W6dPZr72QqIOjmMES8wNO4755Z4R08n51wvjSTe0dH0viUfibvBrLa0coXVnQJk2D9On0lQ==@kvack.org
-X-Gm-Message-State: AOJu0YyDf4DuTMNfKrx/+s2ywZZXQwjDyjb09ecw4/CKWz+WagZ7BYY8
-	L+FGVXhd8AiMyrJ+wA6iD1eWqW9LJbptp5dbob4jAZSebyl9vw+Xo8mxj9Xku1yXp1lC42bbJ9g
-	gKDPOdBKuJij0UYcxgJpiHYSXnaRoIQCRHaNFk4d9NchlCWhKZFvE
-X-Gm-Gg: AR+sD11we7ssI1ey7jkA92xnIYT6NBrHvpzX0nqwL8Uejiva0LgBY4nDWmMJoz1dWON
-	BRl3c43VBgPLWbnxqE/7vyJlNg3jbWEwQX+GLVmOKrp7wMfY0Hn9y5e+FAoMlwv1gXktsqwXdFL
-	Qdt+ZxHbB6o83JmvN3DWUhYq4cvcobYf0EdnQgxUkmAzRrPzRJCymRo8Hv7ax5SXeSQYFEb59Rw
-	POWtQbS3AR+sYsYXhP6RNRG1p7PKHQfWoQHlzAP18XM8WUD4UADnVcWbuEwNd4A2ysPdSxpQ6RF
-	Sb2R4ozZZ2g5jQA1fFPc9QQ0nwmSVLy4DajYs+im4ldJfkmd6ucM8jnNGqU4joA60wrohiF6xd5
-	JiVnMQJYge5w4EN1psZbJ8zRCJpiQcalotxbCH2nGfXRdgJ5A5lm/57zAnI4DxQ==
-X-Received: by 2002:a05:622a:4ccf:b0:50d:e471:2d1e with SMTP id d75a77b69052e-52ce61b4ef7mr119776701cf.35.1785983384813;
-        Wed, 05 Aug 2026 19:29:44 -0700 (PDT)
-X-Received: by 2002:a05:622a:4ccf:b0:50d:e471:2d1e with SMTP id d75a77b69052e-52ce61b4ef7mr119776491cf.35.1785983384251;
-        Wed, 05 Aug 2026 19:29:44 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-61-70-49-81-60.dsl.bell.ca. [70.49.81.60])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52ce892a067sm31848491cf.17.2026.08.05.19.29.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 19:29:43 -0700 (PDT)
-Message-ID: <3374e351-f6ad-44b2-9ee1-dd3b9c33fbc3@redhat.com>
-Date: Wed, 5 Aug 2026 22:29:42 -0400
+	t=1785983399;
+	b=ZXW5D/tmQP7253xFCpbXiBvoF0g3vu050yCYRMoFX1kd79vl00zMO9SEFzw3RprBF3qodI
+	clc/G+RioSG19Wr64R9NirTKOrxw3xUIZOOVBVBErIKXe3XI/qrE4WbirvGdeSjqxf9xSK
+	LdZtbyiwJG/HW+9mEWGEHb0UyjiSf6o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF25E153B;
+	Wed,  5 Aug 2026 19:29:53 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 201C13F632;
+	Wed,  5 Aug 2026 19:29:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785983397; bh=UdgR++WFVsyM7cNSr+SG64jFGpIq1iZ6UzNdkJcaotY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fClwuejsb4IM9cONZvcOYSJXk6oG1BNPBQSo6wZVUFYayeffQOZ0bWtikYGvsbW0g
+	 JpjH2f04SgfPLtwpj8HrH66p/9MSR13M5hsWw2MtZgFWzQW+g/BltuAIdRJoNA9cli
+	 Bz/adoORCz0NpZE5kQPX8Xq+DWpblC2vFBsEJOw0=
+Date: Thu, 6 Aug 2026 07:59:54 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Sourav Panda <souravpanda@google.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in
+ hugetlb_cma_alloc_frozen_folio
+Message-ID: <f7twcacmpwknkfmlmajadcj3yrgfzbzisdmlwr7wjtumtny72l@odkp6wfuvlru>
+References: <20260726072935.3513996-1-souravpanda@google.com>
+ <nuoxvxqgb453fuj5ezhjn374chawnrao53tev3wdqigpc6pfnm@q5oamexnzqdz>
+ <CANruzcTm5_Znta8ySQpAXJO10EXM8Nqov+SY-ZWG_6b03BTQLg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/11] mm: install PMD swap entries on swap-out
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-11-usama.arif@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260722152043.2273289-11-usama.arif@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Cg9ZTcg1fwhfEqPjwW-Y46ufFF_RS8nBoB9tkvrnCQo_1785983385
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANruzcTm5_Znta8ySQpAXJO10EXM8Nqov+SY-ZWG_6b03BTQLg@mail.gmail.com>
+X-Stat-Signature: acf7kdtz6gmeqkx11itpkm3s34qwok4c
+X-Rspamd-Queue-Id: 40530100002
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ED9D8180007
-X-Stat-Signature: 4i5wicbkebdxspdco39yss6eahqorh4c
-X-HE-Tag: 1785983387-572400
-X-HE-Meta: U2FsdGVkX1/N5+ZUDJccUID2hd7Y4U7LwDBpDNQLY+A/wEr68UdwXHdqsIgLqZMIh8at4TutueFhvD4/m5sN/5Y5P59yF8rEg/VoqvTYEtrevZUHWMg1o8yhhYwo9fPAftg2vFi0bD5jJCHEyKCvq8x8Vo2svOEsYIjJVKouXjckltlW4/b39fCz3RKnPuDSa7lc4zGPWYUkC91HuWAjUbh21+Wab9/H6Wu/p8salFFqMhaWwy2K/IpF+lv2EtvSPOGd3qzu3ap8Mg6EHhxPdFj5TI6emE07VMB00TzNIfynXLWj6AFsCYQOsBxqKCMtwWRpy7Z0xIHZ+vzMnFe2lEvql4dzsGvQNXXebZPFvEBNOWRG6Ml3necgsDStz4I4FWit+t9zNQ/P3qpyMr6Pyju5US/xxmd/6MDNiJMYMxLz3fa/K9qz64sGBgPSY/BC5ynhBIQxm9mBclV0iYqu4+GRfZ1VNWD+q+XNUgwSma4OyOQJd6ZoUiN5b3bD964oI2amHzW0KxqIrtgEYWVzNwG7bdajCGe/wiWIHWLtmuea0iT8mrL9QCXDbzC1SCqqstK5dZSkg0P/NgKXw4TVDMDFF/07zvPwEPZr6eSIMp9lMo7pHl2+Dt2g63MCf1Am8dAGEdIHN3SCrFVVAUaVXw7d4Qakh2t9dSJOj2km66Bl98tovmhoS45wQMPzj8cftHnXL4LWrr0OUBRWCBCuDWBrh3AOVy1n06m+2F0hY43C+uWgkZmkBQgbmznRnjg8au3h+xb0Pk5s6IrRJ04O9RRnrl+CKk/ca0PQgaonDA46MeSdApAQDWilRiozaeOKNsNKevKcSTEQD88AjAOMZprl5UBSPhg0Mt2a1NZuMBhChMfGJtWBzqkZushx2MErf/pj8mt8vvxyMWKuxUgJJrT7IPNNqR4dLb0fXHXZQkag0zf5EXK5LuLxpA36BGVlWTKj+4MeCdLRDr6eziP
- pWh8XYDF
- J0XP7KMz13vCYkN/YJSEu7JS9krwPckbvQsMIbEOGiFvHiei6l2NwH/ylDuciDkRFAKfLoPwJRyGvv8a9frhaqD9zMDz061yDHZFJ3NQOym/s3/U9IVMrxSpSER5ciCyk6Be9E3G9OtTv7DObf4hFXuWsiAYqEwODsInlJeLWQhGdR/O4y4axRpBq6ggP8HnGHN+zv/My2Nbyrc87WaonpM5PDS9Y606Xpe+wNmRC1pzcbHBtBErys/R6fE5ZbnsUAx68SywGBRHR07lyiEF8lqjl3ZVx7LV+RaqToFqCTncB0eMKBtm8CTG02Q7gleuRFFeBJKWe9C6wNZ41lqESN2pI8A==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1785983399-481037
+X-HE-Meta: U2FsdGVkX19msPDSRVgPXvH02wlbq8zdGBoDL1XZQAi+k5he0TFBIB+7f8HSFsIgtYzFdPBf7aISvRfqb3C4tB9PO78QqtxubtXfk3btfq8jUIqaciLiZ6iEV30HmBKUo6//Y89aJHNdG6Mw6dD3FcEj+jcGBRbojl2q4v9zqKsoXrTSk+CgKt83Zfs6ItxmDSUrV+SLUhmDwCr1ntziVWRvFwh4rm4CRBXljGQbERYwnfsR+G0xSRlCKvvNwbzi/YnJZ5xOKI/a/IpN4Oo9w/D6nxHsouJU9vJ9o18Gddlwroaw+rzYy04ZEb8L2wlPOlmnspA0Mf0/8PRiuL1F8CNfEcBpXE/bfBK3J7/tkLseG3T0tG3vVQTAePA4JFhPZ75pasjbWdogKDFbvPxVTy/xzTEDT2rttR3Fye1JdN3zBwMtLVSbJOl/wpxa5H7VArC4sJ8rFEkoETgSprLcudU4CRx3LTgDBy2nXUnnomPjQ+1Nt8HqVGLsMRjgYGEBKRBB2qaq7mzNXdSNZxBqZrGjOL2kLd1LWGjySQgC5uGCJ/ZW7Favs7kjCmw+H0/gtKVr31wmlDSQzyWQ4nznkZrFdPidO3ryazEEJU7XdJZ/g1PsgDl3OfDx+9RCES70HAhfmz0NAb0u2CHBwrm7jvarHs3cVaKrpwz5Bnl0XQ2CffnonWHT4CUTnya8ww7sT2ytosv9VyPNmNK6aSSzuS76bQwz/q27y07/BIxuX4Pp5fnVnUXtCl5PERj4QbquhliOBnIt9hXuxqYrXplhjh1HLN9MC9PI5Ur2umJg27mCp+ZCADwwAmUfDkClJmOxJlwTKyW1EH1xEkw1yiYEKsQHqDr7CHdmxpW8M65QD+Iy5qY/AkLxdRoXr6GEfqUOjtiK4rX4PDdWTmeNn/mJDUfk0MsfkMhjAwj9W10XnUjlUxOyoAEpeH/q+CdWZmYa7X4Z73tKO7tfE4NxhSj
+ htx58qRk
+ u0myRSSgSoS0csj+1ncCJ5eXejBYRmEdPsDW8oqsbiqzdnXNReoFC35SibTCR6AHOjEZ0Ihn3zVxHuRK9+lUNlqg2AVzUzN8jnqGVuHRBnlxBs4vVdTYD6wCjuzfES0VyUlVf+4wyzcEb+ouO4HwEnNAtoQnUJafHkYn7ALvmwZ/OlqTHF80L+K5bfniikYWqvIpHw4us+MjXj46upVv+x1ZYVALAg2Nks2WX92GUcr9quy+/1Z7bxJlPdL3TMW7XtfqGWDSJOM433pRPQW7ajMgpDk+4v1qJ6M63KZlCl9u+Ypan0NNXofReHV9uu4u8snHtsEZymOF+dd22XyGX2Ot7OWjcJMdqW9xOWAJ7tU7bpq0A50BjeZSTANhB2228a4QqTkqoo3j+8C2BhT6jXPK9HRQluzgRi504VHOD0/8dbiwiBikV8DMdfRwBDgka0sCh9QNT+/N27gh6n+G3V6u8r5ZGDh42abjSQ8LOGRCLOhrkLxm/Zkmd+vwJoxsXyjwH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,248 +93,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-22 11:19, Usama Arif wrote:
-> Reclaim today splits a PMD-mapped anonymous THP into 512 PTE swap
-> entries before unmap, losing the huge mapping across the swap
-> round-trip and forcing khugepaged to rebuild it later. The contiguous
-> swap range was already secured when the folio was added to the swap
-> cache (a non-contiguous allocation would have split the folio earlier),
-> so the PMD can be replaced by a single PMD-level swap entry instead.
+On Tue, Aug 04, 2026 at 09:42:45PM -0700, Sourav Panda wrote:
+> On Mon, Aug 3, 2026 at 2:48 AM Anshuman Khandual
+> <anshuman.khandual@arm.com> wrote:
+> >
+> > On Sun, Jul 26, 2026 at 07:29:34AM +0000, Sourav Panda wrote:
+> > > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> > > alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> > > nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> > > the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> > > alloc_gigantic_frozen_folio().
+> > >
+> > > hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
+> > > node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> > > leading to a null pointer dereference kernel panic.
+> >
+> > node_isset() is being addded here in this change right ? OR was there
+> > another path via node_isset() which could have been called on a NULL
+> > valued nodemask ? Although subsequent for_each_node_mask() could do
+> > the required dereference as mentioned earlier.
+> >
 > 
-> This patch mirrors the existing PTE swap-out path at PMD granularity:
-> - shrink_folio_list() drops TTU_SPLIT_HUGE_PMD for PMD-mappable
->    swapcache folios. zswap is handled by the PMD swap-in users: if any
->    covered slot currently has a zswap entry, they split the PMD swap
->    entry and fall back to the per-PTE path.
-> - try_to_unmap_one() now has a PMD branch that calls
->    set_pmd_swap_entry() and adjusts MM_ANONPAGES / MM_SWAPENTS by
->    HPAGE_PMD_NR before walk_done. TTU_SPLIT_HUGE_PMD remains the
->    fallback.
-> - set_pmd_swap_entry() is the installer. Mirroring the PTE swap-out
->    sequence at PMD granularity, it clears the present mapping (keeping
->    the original for rollback), bumps the swap_map refcount for the
->    folio's 512 slots, transfers the exclusive state in the swap entry,
->    propagates the dirty bit to the folio so writeback is not lost,
->    and installs a swap PMD that preserves the original
->    soft-dirty / uffd-wp / exclusive bits. Any failing step rolls back
->    the present mapping.
+> Thanks for the review, Anshuman!
 > 
-> The swap entry value matches what 512 PTE swap entries would encode, so
-> swap_map refcounting is unchanged: each of the 512 slots carries a
-> count of 1, released individually on later split or together on swap-in.
-> 
-> Add thp_swpout_pmd to count each PMD mapping replaced by a PMD-level
-> swap entry. Unlike the folio-level thp_swpout counter, a fork-shared THP
-> can increment this counter once for each mapping; document that
-> distinction.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->   Documentation/admin-guide/mm/transhuge.rst |  5 ++
->   include/linux/huge_mm.h                    |  2 +
->   include/linux/vm_event_item.h              |  1 +
->   mm/huge_memory.c                           | 80 ++++++++++++++++++++++
->   mm/rmap.c                                  | 19 +++++
->   mm/vmscan.c                                |  9 ++-
->   mm/vmstat.c                                |  1 +
->   7 files changed, 116 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-> index 16f37135ed80..b421d7982db6 100644
-> --- a/Documentation/admin-guide/mm/transhuge.rst
-> +++ b/Documentation/admin-guide/mm/transhuge.rst
-> @@ -630,6 +630,11 @@ thp_swpout
->   	is incremented every time a huge page is swapout in one
->   	piece without splitting.
->   
-> +thp_swpout_pmd
-> +	is incremented every time a PMD mapping is replaced by a PMD-level
-> +	swap entry. A fork-shared THP can increment this counter once for each
-> +	PMD mapping that is swapped out.
-> +
->   thp_swpout_fallback
->   	is incremented if a huge page has to be split before swapout.
->   	Usually because failed to allocate some continuous swap space
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index e7107e0991ad..41cf643a3f55 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -554,6 +554,8 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
->   
->   #ifdef CONFIG_THP_SWAP
->   vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
-> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
-> +		       struct folio *folio);
->   #else
->   static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
->   {
-> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-> index 2628ccda076a..f8fd4e13698c 100644
-> --- a/include/linux/vm_event_item.h
-> +++ b/include/linux/vm_event_item.h
-> @@ -108,6 +108,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
->   		THP_ZERO_PAGE_ALLOC_FAILED,
->   		THP_SWPOUT,
->   		THP_SWPOUT_FALLBACK,
-> +		THP_SWPOUT_PMD,
->   #endif
->   #ifdef CONFIG_BALLOON
->   		BALLOON_INFLATE,
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 6ef56936ced4..c014631e5a26 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -5561,3 +5561,83 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
->   	trace_remove_migration_pmd(address, pmd_val(pmde));
->   }
->   #endif
-> +
-> +#ifdef CONFIG_THP_SWAP
-> +/**
-> + * set_pmd_swap_entry() - Replace a PMD mapping with a PMD-level swap entry.
-> + * @pvmw: Page vma mapped walk context, must have pvmw->pmd set and
-> + *        pvmw->pte NULL (i.e. PMD-mapped).
-> + * @folio: The folio being swapped out. Must be in the swap cache.
-> + *
-> + * This installs a PMD-level swap entry in place of a present PMD mapping,
-> + * avoiding the need to split the PMD into PTE-level swap entries.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
-> +		       struct folio *folio)
-> +{
-> +	struct vm_area_struct *vma = pvmw->vma;
-> +	struct mm_struct *mm = vma->vm_mm;
-> +	unsigned long address = pvmw->address;
-> +	unsigned long haddr = address & HPAGE_PMD_MASK;
-> +	struct page *page = folio_page(folio, 0);
-> +	bool anon_exclusive;
-> +	pmd_t pmdval;
-> +	swp_entry_t entry;
-> +	pmd_t pmdswp;
-> +
-> +	if (!(pvmw->pmd && !pvmw->pte))
-> +		return 0;
+> Sashiko [1] suggested adding node_isset(nid, *nodemask) in v1 because
+> without it, hugetlb_cma_alloc_frozen_folio() could allocate from a node
+> without checking whether it is actually allowed by the caller's memory
+> policy / nodemask.
 
-Should we call VM_WARN_ON_ONCE() and return an error instead? This
-function is only called by try_to_unmap_one() under this condition. In
-addition, returning zero would cause try_to_unmap_one() to assume that
-the PMD swap entry was installed, which is not the case.
+Fair enough.
 
-> +
-> +	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> +	VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
-> +
-> +	if (unlikely(folio_test_swapbacked(folio) !=
-> +			folio_test_swapcache(folio))) {
-> +		WARN_ON_ONCE(1);
-> +		return -EBUSY;
-> +	}
-> +
-> +	flush_cache_range(vma, haddr, haddr + HPAGE_PMD_SIZE);
-> +
-> +	pmdval = pmdp_invalidate(vma, haddr, pvmw->pmd);
-> +
-> +	/* Update high watermark before we lower rss */
-> +	update_hiwater_rss(mm);
-> +
-> +	if (folio_dup_swap(folio, NULL) < 0) {
-> +		set_pmd_at(mm, haddr, pvmw->pmd, pmdval);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
-> +	anon_exclusive = PageAnonExclusive(page);
-> +	if (anon_exclusive && folio_try_share_anon_rmap_pmd(folio, page)) {
-> +		folio_put_swap(folio, NULL);
-> +		set_pmd_at(mm, haddr, pvmw->pmd, pmdval);
-> +		return -EBUSY;
-> +	}
-> +
-> +	mm_prepare_for_swap_entries(mm);
-> +
-> +	if (pmd_dirty(pmdval))
-> +		folio_mark_dirty(folio);
-> +
-> +	entry = folio->swap;
-> +	pmdswp = softleaf_to_pmd(entry);
-> +	if (pmd_soft_dirty(pmdval))
-> +		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
-> +	if (pmd_uffd(pmdval))
-> +		pmdswp = pmd_swp_mkuffd(pmdswp);
-> +	if (anon_exclusive)
-> +		pmdswp = pmd_swp_mkexclusive(pmdswp);
-> +	set_pmd_at(mm, haddr, pvmw->pmd, pmdswp);
-> +
-> +	folio_remove_rmap_pmd(folio, page, vma);
-> +	folio_put(folio);
-> +
-> +	count_vm_event(THP_SWPOUT_PMD);
-> +	return 0;
-> +}
-> +#endif /* CONFIG_THP_SWAP */
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index b7ead3e9f064..4574f7b969b6 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2282,6 +2282,25 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->   				goto walk_abort;
->   			}
->   
-> +#ifdef CONFIG_THP_SWAP
-> +			/*
-> +			 * If the folio is in the swap cache and we're not
-> +			 * asked to split, install a PMD-level swap entry.
-> +			 */
-> +			if (!(flags & TTU_SPLIT_HUGE_PMD) &&
-> +			    folio_test_anon(folio) &&
-> +			    folio_test_swapcache(folio)) {
-> +				if (set_pmd_swap_entry(&pvmw, folio))
-> +					goto walk_abort;
-> +
-> +				add_mm_counter(mm, MM_ANONPAGES,
-> +					       -HPAGE_PMD_NR);
-> +				add_mm_counter(mm, MM_SWAPENTS,
-> +					       HPAGE_PMD_NR);
-> +				goto walk_done;
-> +			}
-> +#endif
-> +
->   			if (flags & TTU_SPLIT_HUGE_PMD) {
->   				/*
->   				 * We temporarily have to drop the PTL and
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 9b8ee902f972..83bb34403e42 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1333,7 +1333,14 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->   			enum ttu_flags flags = TTU_BATCH_FLUSH;
->   			bool was_swapbacked = folio_test_swapbacked(folio);
->   
-> -			if (folio_test_pmd_mappable(folio))
-> +			/*
-> +			 * With THP_SWAP, PMD-mappable folios already in the
-> +			 * swap cache can be unmapped with a PMD-level swap
-> +			 * entry, avoiding the cost of splitting the PMD.
-> +			 */
-> +			if (folio_test_pmd_mappable(folio) &&
-> +			    !(IS_ENABLED(CONFIG_THP_SWAP) &&
-> +			      folio_test_swapcache(folio)))
->   				flags |= TTU_SPLIT_HUGE_PMD;
->   			/*
->   			 * Without TTU_SYNC, try_to_unmap will only begin to
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 4e26e5fd6666..68e6efc0dabd 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1422,6 +1422,7 @@ const char * const vmstat_text[] = {
->   	[I(THP_ZERO_PAGE_ALLOC_FAILED)]		= "thp_zero_page_alloc_failed",
->   	[I(THP_SWPOUT)]				= "thp_swpout",
->   	[I(THP_SWPOUT_FALLBACK)]		= "thp_swpout_fallback",
-> +	[I(THP_SWPOUT_PMD)]			= "thp_swpout_pmd",
->   #endif
->   #ifdef CONFIG_BALLOON
->   	[I(BALLOON_INFLATE)]			= "balloon_inflate",
+> 
+> Once we added that check, both node_isset(nid, *nodemask) and
+> for_each_node_mask(node, *nodemask) became potential NULL pointer
+> dereferences when nodemask is NULL.
 
+Got it, thanks !
+
+> 
+> [1] https://sashiko.dev/#/patchset/20260702215713.627941-1-souravpanda@google.com
+> 
+> Thanks!
+> Sourav
+> 
+> 
+> > >
+> > > Fix this by checking if nodemask is NULL in
+> > > hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> > > node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
+> > > back to any node with memory, keeping behavior consistent with
+> > > alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
+> > >
+> > > From a userspace perspective, this bug allows an unprivileged user to
+> > > crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> > > allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> > > configured on a subset of NUMA nodes.
+> > >
+> > > This can be reproduced by booting a VM with two NUMA nodes, restricting
+> > > CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
+> > > hugepagesz=1G hugepages=0), and running a program that allocates a
+> > > 1GB hugepage area without reserving, restricts allocation to Node 0
+> > > using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> > >
+> > >   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> > >                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> > >                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> > >   unsigned long nodemask = 1; /* Node 0 */
+> > >   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> > >         sizeof(nodemask) * 8, 0);
+> > >   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> > >
+> > > This results in a NULL pointer dereference:
+> > >
+> > >   BUG: kernel NULL pointer dereference, address: 0000000000000000
+> > >   #PF: supervisor read access in kernel mode
+> > >   #PF: error_code(0x0000) - not-present page
+> > >   Oops: Oops: 0000 [#1] SMP NOPTI
+> > >   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> > >   Call Trace:
+> > >    <TASK>
+> > >    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> > >    alloc_surplus_hugetlb_folio+0x6d/0x100
+> > >    alloc_hugetlb_folio+0x3c5/0x660
+> > >    hugetlb_no_page+0x3d9/0x650
+> > >
+> > > Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Sourav Panda <souravpanda@google.com>
+> > > ---
+> > > Changes in v4:
+> > > - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach from v3.
+> > >   As Muchun Song pointed out, snapshotting cpuset_current_mems_allowed does
+> > >   not prevent false-positive allocation failures without complex retry loops,
+> > >   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() already handle
+> > >   NULL nodemasks safely internally.
+> > > - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_folio()
+> > >   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keeping
+> > >   HugeTLB allocators clean and consistent.
+> > > - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@google.com/
+> > > - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@google.com/
+> > > - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
+> > >
+> > >  mm/hugetlb_cma.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> > > index 39344d6c78d8..5744de0ceeb7 100644
+> > > --- a/mm/hugetlb_cma.c
+> > > +++ b/mm/hugetlb_cma.c
+> > > @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+> > >       if (!hugetlb_cma_size)
+> > >               return NULL;
+> > >
+> > > -     if (hugetlb_cma[nid])
+> > > +     if (!nodemask)
+> > > +             nodemask = &node_states[N_MEMORY];
+> > > +
+> > > +     if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> > >               page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+> > >
+> > >       if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> > > --
+> > > 2.55.0
 
