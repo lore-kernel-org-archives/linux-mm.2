@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8357FC56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 859C9C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 16:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA466B0096; Thu,  6 Aug 2026 12:50:43 -0400 (EDT)
+	id 123566B0088; Thu,  6 Aug 2026 12:59:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94C8C6B009E; Thu,  6 Aug 2026 12:50:43 -0400 (EDT)
+	id 0D5916B008A; Thu,  6 Aug 2026 12:59:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BE16B00A2; Thu,  6 Aug 2026 12:50:43 -0400 (EDT)
+	id F2F8A6B0092; Thu,  6 Aug 2026 12:59:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 604BB6B0096
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:50:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E881F120172
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:50:42 +0000 (UTC)
-X-FDA: 85071433524.19.4AE1CCE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 45B05C000C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:50:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HG06fDnf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBEFB6B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:59:10 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 497F3160123
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:59:10 +0000 (UTC)
+X-FDA: 85071454860.11.AF8E0F9
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 240BE40014
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:59:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=br+Np0f+;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786035041;
+	s=arc-20220608; t=1786035548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lUl6lNqnz54sltgDCL6el7ouDLirFAV6NA5eHu+t6hM=;
-	b=mCFVi4S2UIdy2IdCUCvjNVUippnVis6DRR082WippPIkaOFLKkNCzeo+7aD6AZ9Y5TV6ME
-	TUx5gr9+hfBc97d7UkRkzIrByY69YCDDWmvROdVV2NncpIw1N069zIxVghhm0d8yu18W2z
-	G5YsP72LT5DYpu95eo8lMhgI5BB4SB4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HG06fDnf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZtOGW7nC7mx1grvKmtWDM3R0MQff7Um4ZczGlYey6rE=;
+	b=FiIXEphqd6L6ZPdlyOQEsFeRsjjF5o1icgc+Ot9h+lsATPNVJyJRShMIxsoIrUR+PkYozz
+	TTOLKuTKlMHV/tDXQ6+NVnBUn0/yEGP6C8SIDh8SkAbRk6ORoiKLM7CQyNBTAPhez8hC3d
+	RZv/TjIBDjAWd4MpyfMphsc6mVmC27s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786035041;
-	b=zXk9BVbsElrD94KWjciWyORVC2d7xCIg9g1o3c9Gkp+eEUalHmtTAqNRqR/CUQDBaF7oZy
-	9MG9F6towjGFIC3cQYh4q3NgB0Mb7dXHHqu2I/gRrWh1iEEcOjbmaXMrG+moe9qkiAzFYF
-	LXbDL363LwIksb6dB5RrHqhNvOoBLCY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7AA1E413AF;
-	Thu,  6 Aug 2026 16:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F4F1F000E9;
-	Thu,  6 Aug 2026 16:50:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035040;
-	bh=lUl6lNqnz54sltgDCL6el7ouDLirFAV6NA5eHu+t6hM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HG06fDnfmZeAApxcQA4GWV6CFauD2aXPrUDntD3cSbZDHV6QrN0SrBghox6vLUbDq
-	 NpuiOzzwCnAW2nGkYvZZ3awyA8kgdqqtmqsP2cARb04/ywignq2wsfc0Mo3ptmIj4w
-	 l4GnKoHQw6KS0ZC4pXgHMgVxUg4aHdRz/prq0YxQhtw4zHrebYKINpgYtgqYKetgIs
-	 afit71uGXv04BMQkj+qpQNi7alAWdgA2pL4Sc6DCOSDBsuKfUv9wF9b9H1cf7D6eW+
-	 X4ff3VkOb7i/AHrLeQJiaqEc/pw/H5hbQfvc8JNQkKaSMdr225YEgH9iOPpuZZrcqK
-	 0y0PRW2ROTN1w==
-Date: Thu, 6 Aug 2026 17:50:23 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Subject: AI slop (was Re: [PATCH] mm/huge_memory: let special huge VMAs
- bypass the THP) policy check
-Message-ID: <anS6hcgMkEJocbDJ@lucifer>
-References: <20260805055544.1568534-1-clg@redhat.com>
- <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org>
- <anSZpAjt84Pn7O_b@lucifer>
- <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
- <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
- <20260806164517.GA140051@nvidia.com>
+	t=1786035548;
+	b=x4WVYDuQmGPO3N8RbBXJfTPXKVUqIY8XTUQyJIPPyhUJvdLKD8M8wgmxadIWrJyyngB/8I
+	+73NOGXImoUTUAOl7yXZXRQbdI3fcOn4wA0CRcsvVhoEDAXBqOrkBdzD1YkagZaEsAP0Um
+	dLKEbaacAJKSY7Ctnb7CthScTOi0IUM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=br+Np0f+;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786035542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZtOGW7nC7mx1grvKmtWDM3R0MQff7Um4ZczGlYey6rE=;
+	b=br+Np0f+FL/MC8TKGp6CdTkZaPKFSEz2++ttU26O0ZmvkwbA1QvrRG/1/V2CL7NuCELe3l
+	eviC41E71Z22E4O5jfGnvJ+amz1airMhKRYnhVmofdGWaEweVVRK/DI5VKCbU8jx2eIUVl
+	EdC2vapu0DTc0Z6oBpBhbTgnIylKkA8=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] memcg: keep folio's objcg same as its node
+Date: Thu,  6 Aug 2026 09:58:13 -0700
+Message-ID: <20260806165813.2526415-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806164517.GA140051@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 240BE40014
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ojrkidheqb8errpgpa3dg34jow7ohisc
-X-Rspamd-Queue-Id: 45B05C000C
-X-HE-Tag: 1786035041-696955
-X-HE-Meta: U2FsdGVkX1/3OIgUVlMSGoh6LBZfD3KZTNVkGiUHEV0VJQpHPQ/J893N0M2Dwiv2NxbJADv8UbIV4IHtOlvfG5nSXJF2uRXC62FAQz36ttARcdCDHBeRhc35CWsF5qjyz8mbmuTaad9hNxjbrJfXqSXdIYimkmEKhHltkLSghP46IMneHr6OjbgeoNCwxruu5reEpEGtZw7mnVS/3hepYBNoKuWTD82RwOklE1qf0ZibmjMA4ywdVx+mqc3NstekjQ2Z6QZuKzpttn2+wE/WhhheDKNyVvSVhEP6VHH+MZi3Hcm/ro28NbcA++urQmPjVrJOqlixck4Wd31SM7RqIpkTlRMOUdYneGcaQ5g4L1uWJe/7ola0wDPbshRFatwBWb0fPFutxpQq3kkoA0AatZY68fDWk+kSH77iFR2a8p+HyVR6dxsX9l3Rxwfh3Bj8vmTeLe9b4VoGsTdE8FpFq7CFGbJAJEWANOy+XHhcZ60y5j4hRml8VPQ7mT9C0egEbc8ugXa3HinONplwmJTq6LdoLZANBMnJc7gNVUtK87mLmtEqtfuV1WWziouGrL8qS7WrW5DsL0PWfhFAidpAMCifH2hrKZrjm3yFUyXdj0QJjE2EmGFKNgv9xmkZDppN2iwlWGxkzpRtDPhS+J8cXzp9oTWCfOUOeYgWsbeDF7rjBlQ+FVzzNSVjMrAjP4Ox66UZvndD43R4coykYcgXyQ4itHo+zsCND/iJlJ96jWLFOJTDsnDTVghEv0QCEhFiPQa4f3DZLsXSASgV7pH7JKI1xEAw4Nv/ZUjlY5Sb5pL1EOkY3c6yiGvNzDQkIp5+fnS7Nu7n5Ix8YeQOq2Cy8K+hSv8DdETSBgmCBeRytsiz+yr8T2kf3Fb+93D0o1Ar2dxnX0wLeIBvf7hM1GP88M1rsbGCAWeiPVRJkoJhnt3hNPiSfvVUOsd0zGnC1ss7yGL+SZhAI//JNBAWyI5
- 8WokET1y
- k+2eBHjIYPx8rFe7IKym6lMv4u7orgiGDBo2yBhXKjeokSsCi9ggJHDQZCf4hO9fZFWF44Y1BMt0NIFGvps3G936VYWNd8scMScBC3h8aSP0AuRmZapSFkQuCITQi3aGEvHijfvMh0DNN+6Cxz2l3An7+OjD7wkhIhP9XEeU5ZHGoSywyvDURhK9RKhkTO90Qo4gtKGxuXAIA6/BHrw0fImWgZbHPWCefHAaOBlThLWXETxSWCk2qhhnK0KdJ5F6wKzh8JO4LXHpHMYPIVwHWDcBpitignNoWA/7fHTdH1fTyk9M=
+X-Stat-Signature: ffbzirqiun4g966rbw6gtshx6dwnqwjs
+X-HE-Tag: 1786035546-111493
+X-HE-Meta: U2FsdGVkX19snmuGK/HP7m6RfgP7DgHte8ZgI6zlp62KYeCCCtMrDxdWhY+Oc40G5uTk1yAMwax2z34pirgHBamhsLtALDOfABtEyn0nhCKRfqiHTgz4bZJvyhd8rdOIgxxzV7ga9wOqPhN1SuvvUl2o/epZDvh56TYyYSR7+FV7PYgaCPo7qleiLcW8BzlzKgf8LBw3uDpVTejjPsETXw+Kts8GCYO1XoSBbi2EQ+v/aJ2YHB8xp8oLGavr5d/C9dqjbbKyDbRJItWX+ff6zuwUKlJ/bOyB64t+t5onccw1iCrglNh0gqXElutRWpLJB34pttmMIZBE++yEWlzlbU1pOkPLkFeBoZ4rcS55rCRb3Z34a9UIN2enTFlR4h7JOoaY3/ZkdAbkYIY85bw6T31oiFVUegZUvuooGePr/mAbKgv9gwo6MK/RKDxmSvDlTI1rDYaDgoR2tKGok/QnXKm4Gc+aEPRy5BI4O8zQXe2B8ekQF4fifFOy9pXBpQN5rgRkFiG89GaTcdBulQ+8l6fSwaE8baKagEVUvVH9uuC9hTgId7Kdn446++Y0r8emStIscurWW/7J7C12pWoqmGLhwvukgCp4QMbfARx0gXDUhf6Aa+9aOSJh+4spibSGQjGleEJRq6udJSJLHxvTe8+v7mjP/cjwNkj2qYDvsoSFkObsstUv87I5iakm5PhTFn9po3Dm7rEXcziv8kLbhOl0nhSU5fpbYyjQcjym9zz7L20d+lPmNjTGnnPO37CzxRmI/XBKjz4wh0tBqSmT4j6m5RgJTrAprjq4dtinTWe8BbJo7NlKY0TxrIb75X58pWAtKCwpqZpNNN/wX9vC3nMOHApQMgenoe7bW/UprRaKpANrlewAz2rT02yy3qWnD2KAqYkY8v9u0yH+Gk7zGgXNh4UARWzYy4exa4MRs7bMEeYyBCyE6q8y51dgXp3UgYYf4xcAVuJhTcN8X5g
+ KpjGU3Vk
+ 8qlWbXAoc1xZBYqhd/Oak0bZlPmpuUK+E4DwkLgep2I6YVHCreDSbSuT+DRA+HzBfHZuuoLOniM6TTwb/hMIZVlOTd1aUOl1IZ+rfKKztrf7TGCHqJ4n2VlkfsRIYOFeZColI78wl/D1P9gCCkVIPMyFwbHSXbKt3Ob1hz33dD9Xtq73jU8x/IhRQho/aE6IkkuKF0N8gD/KcX9qXXAnWrS9q1brSBUUKR1HXlRC7fyzP8/swNcBHvhHwCWml1jLUXyrdSunkdxgU3zaoLVRnj5AKG48a/rdN2pbW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,48 +92,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc some people to make it clear this is a general point not aimed at
-anybody in particular.
+memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
+is the objcg of the folio's node.  Folio migration across nodes breaks
+that assumption: the new folio simply inherits the old folio's objcg
+while living on a different node.
 
-On Thu, Aug 06, 2026 at 01:45:17PM -0300, Jason Gunthorpe wrote:
-> On Thu, Aug 06, 2026 at 04:47:07PM +0200, David Hildenbrand (Arm) wrote:
-> > Just to be clear: Unchecked AI slop in any form is making my life
-> > worse every day.
->
-> I think eveyone's life who contributes reguarly to the kernel.. The
-> only ones who seem to benifit are people doing drive by patches!
+Once the assumption is broken, the reparenting of the folio's objcg and
+the reparenting of the folio's LRU list are no longer atomic.
+memcg_reparent_objcgs() handles one node per iteration and drops all the
+locks in between, so the objcg gets reparented in the iteration for the
+objcg's node while the LRU list gets spliced in the iteration for the
+folio's node.  Any LRU operation on that folio in between resolves its
+lruvec through the objcg, and thus takes the lru_lock of the wrong
+memcg, not the lru_lock of the list the folio is actually on.
 
-And they shouldn't - we should make sure that nobody doing this can
-benefit.
+Fix this by selecting the objcg by folio_nid() at charge time, and by
+re-deriving it for the destination node in mem_cgroup_migrate() and
+mem_cgroup_replace_folio().
 
-This is why I've revised my 'I will never take somebody's patch from them
-and do it myself' policy.
+Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
+Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
+Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
 
-If you do AI slop I will ALWAYS do this (if your AI has found a real issue
-and if I am able to without burning out) or just say no and push it to a
-TODO.
+Changes since v1: http://lore.kernel.org/20260806061830.3294679-1-shakeel.butt@linux.dev
 
->
-> There is so much more harder work on the maintainer side, and it is
-> now even harder to get patches picked up on the submitter side.
+- In mem_cgroup_migrate, do obj_cgroup_put at the end (Sashiko)
+- Handle scenario where destination node has been reparented to the root but the
+  source node's objcg has not yet (Sashiko)
+- Add comment explaining the race between migration and reparenting (Johannes)
 
-Yup it's all awful.
+ mm/memcontrol.c | 66 ++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 54 insertions(+), 12 deletions(-)
 
->
-> Yet responsible use of AI seems genuinely helpful and quality improving :\
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3057396dda53..02c108cdd0f5 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ 	return folio_memcg_check(virt_to_folio(p));
+ }
+ 
+-static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
++static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
++						      int nid)
+ {
+-	int nid = numa_node_id();
+-
+ 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+ 		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
+ 
+@@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+ 	return NULL;
+ }
+ 
+-static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
++static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
++							   int nid)
+ {
+ 	struct obj_cgroup *objcg;
+ 
+ 	rcu_read_lock();
+-	objcg = __get_obj_cgroup_from_memcg(memcg);
++	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
+ 	rcu_read_unlock();
+ 
+ 	return objcg;
+@@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
+ 
+ 		rcu_read_lock();
+ 		memcg = mem_cgroup_from_task(current);
+-		objcg = __get_obj_cgroup_from_memcg(memcg);
++		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
+ 		rcu_read_unlock();
+ 
+ 		/*
+@@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+ 	int ret = 0;
+ 	struct obj_cgroup *objcg;
+ 
+-	objcg = get_obj_cgroup_from_memcg(memcg);
++	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
+ 	/* Do not account at the root objcg level. */
+ 	if (!obj_cgroup_is_root(objcg))
+ 		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
+@@ -5408,8 +5408,8 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
+  */
+ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ {
++	struct obj_cgroup *objcg, *new_objcg = NULL;
+ 	struct mem_cgroup *memcg;
+-	struct obj_cgroup *objcg;
+ 	long nr_pages = folio_nr_pages(new);
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
+@@ -5431,6 +5431,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 
+ 	rcu_read_lock();
+ 	memcg = obj_cgroup_memcg(objcg);
++
+ 	/* Force-charge the new page. The old one will be freed soon */
+ 	if (!obj_cgroup_is_root(objcg)) {
+ 		page_counter_charge(&memcg->memory, nr_pages);
+@@ -5438,7 +5439,31 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 			page_counter_charge(&memcg->memsw, nr_pages);
+ 	}
+ 
+-	obj_cgroup_get(objcg);
++	/*
++	 * memcg_reparent_objcgs() reparents a node's objcgs and its LRU lists
++	 * together, under that node's lru_locks. If a folio's objcg is on a
++	 * different node, the two happen in separate iterations with the locks
++	 * dropped in between, and an LRU operation in that window takes the
++	 * lru_lock of the wrong memcg. Keep the objcg on the folio's node.
++	 */
++	if (folio_nid(old) != folio_nid(new))
++		new_objcg = __get_obj_cgroup_from_memcg(memcg, folio_nid(new));
++
++	/*
++	 * LRU folios are not accounted at the root level: swapping a non-root
++	 * objcg for the root one would skip the uncharge and leak the charge.
++	 * Keep the old one, the root memcg never reparents. No put needed,
++	 * tryget takes no reference on the root objcg.
++	 */
++	if (new_objcg && obj_cgroup_is_root(new_objcg) &&
++	    !obj_cgroup_is_root(objcg))
++		new_objcg = NULL;
++
++	if (new_objcg)
++		objcg = new_objcg;
++	else
++		obj_cgroup_get(objcg);
++
+ 	commit_charge(new, objcg);
+ 	memcg1_commit_charge(new, memcg);
+ 	rcu_read_unlock();
+@@ -5457,7 +5482,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+  */
+ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+ {
+-	struct obj_cgroup *objcg;
++	struct obj_cgroup *objcg, *new_objcg = NULL;
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(new), new);
+@@ -5478,12 +5503,29 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+ 	if (!objcg)
+ 		return;
+ 
+-	/* Transfer the charge and the objcg ref */
+-	commit_charge(new, objcg);
++	/* Keep the objcg on the folio's node, see mem_cgroup_replace_folio() */
++	if (folio_nid(old) != folio_nid(new)) {
++		rcu_read_lock();
++		new_objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(objcg),
++							folio_nid(new));
++		rcu_read_unlock();
++
++		/* No root swap, see mem_cgroup_replace_folio(). */
++		if (new_objcg && obj_cgroup_is_root(new_objcg) &&
++		    !obj_cgroup_is_root(objcg))
++			new_objcg = NULL;
++	}
++
++	/* Transfer the charge and, unless it was swapped, the objcg ref */
++	commit_charge(new, new_objcg ? : objcg);
+ 
+ 	/* Warning should never happen, so don't worry about refcount non-0 */
+ 	WARN_ON_ONCE(folio_unqueue_deferred_split(old));
+ 	old->memcg_data = 0;
++
++	/* @new took its own reference, drop @old's. */
++	if (new_objcg)
++		obj_cgroup_put(objcg);
+ }
+ 
+ DEFINE_STATIC_KEY_FALSE(memcg_sockets_enabled_key);
+-- 
+2.53.0-Meta
 
-Yes and I use it daily. It's really helpful when kept on a short leash...
-
-We're going to have to move to a trust model eventually IMO where random
-new people just don't get to apply anything until they build trust with
-smaller changes (and with measures for established people who start
-sloppping).
-
-It sucks but it's the only workable solution IMO.
-
->
-> Jason
-
---
-Cheers, Lorenzo
 
