@@ -4,82 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AB3C56205
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B95A6C56205
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D84096B00A4; Thu,  6 Aug 2026 15:32:35 -0400 (EDT)
+	id AC9776B00AC; Thu,  6 Aug 2026 15:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D34A86B00AA; Thu,  6 Aug 2026 15:32:35 -0400 (EDT)
+	id AA1596B00AD; Thu,  6 Aug 2026 15:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C0A6B00AB; Thu,  6 Aug 2026 15:32:35 -0400 (EDT)
+	id 9B7446B00AF; Thu,  6 Aug 2026 15:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E47B6B00A4
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:32:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AC3B1601A6
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:32:34 +0000 (UTC)
-X-FDA: 85071841428.13.4B039D1
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A365C40011
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:32:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id 77A646B00AC
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:34:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69AD516019E
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:34:13 +0000 (UTC)
+X-FDA: 85071845586.19.C2ACB46
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D113A20008
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:34:11 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mL6pNyHr;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786044752;
+	s=arc-20220608; t=1786044851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cUae9K8/TDKrct45ODkRigWt8Q0mlSf6nWv+M0De0b4=;
-	b=U7mO8VVBXwN8Xg6PfSOYy4TJXMAXG355ehDrUI89v7jZp/d+obVHfJcaGhdwdS8TLsQhij
-	4wAE0Hr20jg9T5J44Cf6TiPxm8gHpf0MnZWC9NSi5lB3epHqa9V8VzfMiMHjaZ67nkPciC
-	SB7SrXJRufL7sXs9ROXASqjKXxzMMDo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786044752;
-	b=AmxhXAw6gq92e+S85vQZsIrlp8143hXgNSasvoWdxVUNa9Y3sCwOASBMhtMw5lcJdpoH9p
-	ZdJN0hRSLYyGkpnt1hmSJ11SQVN3jdJwvMPzW0mk0OpdLFSe1ohJmvARP6CDmGJAsXcrWH
-	2RbDUDGzS7AR2sGCHb8UG2uozQp7ljE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qYG4uYlSwucrFSr89w+VCACONAMfUo5j46PTWngTyLk=;
+	b=ogLLMIC++IK1SkPyYbBMniYj/cnbx2KyyRDf63yLnlmjHM5yqU4sP8xVbW/+kuqLeGqj4/
+	LHN9ByKJX+EqggbO+4gtVpGtWPahUgaWDCETGB2ebyfYxnJxis+5e/ln1cje5nKyRb4cMg
+	gDLZ92XFnnNnSk1ajTFvtnIvz9xeZfo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 7 Aug 2026 04:32:28 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	her0gyugyu@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] mm/swap: scan by cluster in find_next_to_unuse()
-Date: Fri,  7 Aug 2026 04:32:28 +0900
-Message-Id: <20260806193228.458685-3-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260806193228.458685-1-youngjun.park@lge.com>
-References: <20260806193228.458685-1-youngjun.park@lge.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mL6pNyHr;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786044851;
+	b=tFuSsd1EPsaSuZHv67uRUKeTLncktxVdxD+YLTDVbu834QRAJj5o/wHETDAwv6pilL0/08
+	i4M76PTh+SSThoPT90CCSowyYchPZM4K/ZPL7O93KdbcOZOC87sULm+xPlvMNKtgmhBP7E
+	oL2/TcjQpl+o/r2CQBfDGIBdfAc8VyI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 663776004E;
+	Thu,  6 Aug 2026 19:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A1C1F000E9;
+	Thu,  6 Aug 2026 19:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786044851;
+	bh=qYG4uYlSwucrFSr89w+VCACONAMfUo5j46PTWngTyLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mL6pNyHrLww6c0XxczPgoBKZaZvJDU5y4ZZ79xVCURng3I1Hw/3xMzOQYSBP/0I+o
+	 opuispy05cZ4llIgDSHIRn0ZDU0EsHjo93BbSpglhDP2j2AqL+E/ctpBCelO6ONFQz
+	 1F/nPM9WuQ63FhIbjJ+rmAzXKA84VKwdwm3YQ6J/RvhQKFS3GNHgHmW7/oFhIZbwCt
+	 88jMIhx8LkSFN+PakMBvvfOCWNXfHOKV6/R98F1zlANTdz6TCe5rJPYL+KRaKRLhG+
+	 D8mx6JOjD7dgudXjoUO7SMg32uv0a87Pwxe83fjNhZDmqupZYmpQCLWcUWYJ67jljz
+	 3QFsqeteEEdgA==
+Date: Thu, 6 Aug 2026 20:33:54 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Zi Yan <ziy@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: AI slop (was Re: [PATCH] mm/huge_memory: let special huge VMAs
+ bypass the THP) policy check
+Message-ID: <anTgj7uK2TLc9a4i@lucifer>
+References: <anSZpAjt84Pn7O_b@lucifer>
+ <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
+ <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
+ <20260806164517.GA140051@nvidia.com>
+ <anS6hcgMkEJocbDJ@lucifer>
+ <10b07d00-57e5-499b-a136-f2148e870d9b@nvidia.com>
+ <A403B054-108E-49E8-BFF6-BE5EF8E61C02@nvidia.com>
+ <anTHABoAYVUn2XiH@fedora>
+ <anTHSfP9Eq-2-Cng@lucifer>
+ <anTgXv9loeo4U6YI@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A365C40011
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anTgXv9loeo4U6YI@fedora>
+X-Stat-Signature: igpf9ggppxec6ebumnru6t8hks8trywg
+X-Rspamd-Queue-Id: D113A20008
 X-Rspam-User: 
-X-Stat-Signature: rncafq56t5b65d9yyh39s95si1eoo6qh
-X-HE-Tag: 1786044751-723604
-X-HE-Meta: U2FsdGVkX1+daTtU51w5aPEaTlWAQPJPp2jmHYYzKZ0ZYMqlKwKWPkKWUoCrFdjHHoZEwaE+9acV/HOVyI8GVW5rczKtyUVHAg6Np2iZr/5OQb8Q1IA14Hp0k6l/+WELzS0jkz8xbVpe6EZvfIHbkzeSFmIUBJtA9os9oAPsUZL2TMZNEHxCMMn2afNaBvFgmhL2PkPOnuiCGYpFLhFBNWy/3V/2QUH0lPIyQqFYdfWBkxGb5dUTAQG3469YfFH8JpLuXnlZsAEYUZknICjU7bKr71GvSLc+GAArlfIvoue29T7niwv6Flj37w24kuu7WLLwcm+jMTyM50KMKa18ysUg551+QRPU6zgZ6QYzn8nQ0SAtOvukvoZa27NuOhXzB77dY9mw6rzqkkD9qlZt55U6rxCwlVNSJeGi13Fdff+EcvBddlF7QrwFCQsDOnH1/Lmm6tCj5qwTBjQKVaFEuyZv0oFUJ0p2RuklTbFYGaWSBamTmnpe4eA4dv1bfbufPVlcc96uVS5MqWe8LuMO749vwCr+U1k6cb+am9KKT5SRo3W5k0kMFN7A8QOPtOTpUxz2L6jadaerqumm2bRHuOBmvsAx2fNYuZUieI9+Ia5jNG7qM0rKRIlrpi/LHTEXPjUz7Q7OxgMeIc/woNQQkJ/Qwm78VELr/JZQNawEBsvrjkHOB7I1fOa2pVv+FIXBvyo1BIzZcZIxWASXxJowAv8OprAdt+nCWoSpzR5pX4IhMxLXH+G3CWN8fl4aUpPpGFdNhXEMPIDBL5tefdx0XXu3R6yT/ZzB4JSF/DNLuPUE2jJMC7d6kcndpv8F4k01S+hMwzvtiH/Sftw9oBEJHX6ccZu/G6sst1XWtr03eeUXwbUE03KFHBh+EUdrM6t0jhENvczCpeWigpWG3EM9GOJYz19CtJvNiY/q4ZF1JZXcQt/Hcujot7CuwRmym49KJsQWf+0YDmNuvxFdC2O
- OiCL1kAy
- SsN1hP5TlWWu5Hi/mHUyoQOfaWOyc/q1ZQJw44g23YF/Gosor8X4lH52D3kQLnFN6JjkAQyn4mZXH9MNZ4lGXwTXdXx2S/y1qwgSQwcBfnlBdsbiaRuMq4YCmWiwdGQvyEfA+Wpi2FG+EO0kiIvHlSIp4QU3eNMEoI1CA0rD8J3Vj3aiL4M5ZKvKwJHZYup+jcwPW752L3fb5O0ueOKDzelrQX6D3x//+x7k9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786044851-713257
+X-HE-Meta: U2FsdGVkX1/X1wkY+ccI2mp4wav2YKMtPHp78Qg8bgzARgW9sQnXCb1wtI4Zhuf3Nyj4YTs0N5XnnBf9cU9ZcIyYJ8YRljJ5oULdOXRGbrpjIoTGaQGVY+n/XIeCbFSN0CRbIONSHKkSfctEOpaRJJ4RqQIVnu6uKn/KllQlYGUk8VeU/kFRsLRp3b8P7iqRdRUeVqPPKagZf2p1dp0zyfwKJ4yKso4LiiqEQ9yFACypOYxy2pgvzJDggkBeQVCA2VzZ986CM3xYOhcUEJC1PZfDIh2bV1GjqdsHSUxZ42IhTkVkAIGzbbEIsyZCzoW/3kNBzFLn+mGkJ2faEmnN1Mkz3wMXSdC9dBgjLcYWK3JebFfnRdg7PTYdImKbhJn3iEI/sWZJuKc7dUqdx/faqc2/GfhA5ipRysnQxrJZ7vMIKFalUYDo8uJSprH+vZrBxrTB+disfpa/JWWYHeyCV7fZ6+dfVpp0EYzxDX8O8U47zYEzFWHocgfggryruGYqoTxUcek4ZrJU8Wd1j7MgQyhuSOE+2KYB5dQsWwajo+RLXUClqpqgGkh2s2GLG5PK4whYf8CP5wOuiEzmeXYt7CzvymHOizH3jdC/Y3KV2E5z04/vN9u88uGNQSLcqlDpl1HxJLksVESsa+kv+Uq7hhgdkjx64PXFyssn2EWH4+NP57AUQ++TNbU+MPQN8i3JV0eEzNSyisg2Thwqb58LpX2cK3mNag4UPz+QA7YGhHvwqK79F8/kRng3H8AEbmJIg11E/wsMQ0DWk4r8fhQKDVXztd93rEarodJKff4b6J9v04FgWUnEkYWRLArRnXFlEAvyBdGpxtwctMtMnzwThqMCz2ib3CXccyrgtA/5qLZCLricIC9V1TarSBxmkwHuA2oqAlhvZCrp6MrHYVL44+8K2Zj3wjQkq6+DcyLYujaSL291dNrzqz8y/XCyTLic28yjQegU+MHZcWvFeYA
+ Qkzwmmnt
+ r1lpX72SvrbWec2334xmu0Wc8OeF0PxOHkQ4ZG/HL9k9yd9o6bhXzBNfFqfuGuq+1+WFrJwyN0L3ehyBG5Z4W2ArdhTmHDyGOXiuMo5Rjo0MVuTEsT4BsZ0eIstnI7XA9Eyq4sd6U56eAChwpv4yYNYPHiJIPjq8IoiN9kLPWXlqBeSHIEa2XvFRmvRpyLWeqMOPpbOmEjXtiSqzy0MpKqmlnJWCN3R3qz3Vf6YlL+Fcx6IWVf7T5dxB2gOzmzaoP6s+nQM3f0AfsmOsd0aPfm8IqlLCBFOz+w0XdUzGJ0c+H1H4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,109 +101,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-find_next_to_unuse() walks every offset from 0 to si->max, and swapoff
-restarts that walk on each retry, so the cost scales with the size of
-the device rather than with the few slots the shmem and mmlist passes
-could not free.  It has caused stalls before.
+On Thu, Aug 06, 2026 at 02:28:30PM -0500, Gregory Price wrote:
+> On Thu, Aug 06, 2026 at 06:42:49PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Thu, Aug 06, 2026 at 12:40:16PM -0500, Gregory Price wrote:
+> > >
+> > > mm gets everything
+> > > mm-review is curated from mm to reduce noise
+> > >
+> > > Maybe would have to leverage a model though to surface critical things.
+> > >
+> > > Just an idea.
+> >
+> > No I don't want slop going anywhere, at all. Nothing.
+> >
+> > If you slop the reward should be silence ideally. And certainly not anything you
+> > slopped going to any kind of branch... :)
+> >
+> > The slopularity is upon is Gregory. Behold the desert of the real etc.
+> >
+>
+> I understand the sentiment, but then we have to reduce this to practice.
+>
+> And unfortunately, I'm about 99% sure that identifying slop is rapidly
+> going to approach undecidability.  We're lucky it still emits em-dashes.
 
-The flat walk predates the swap table.  Slot state now lives in a per
-cluster table, and wait_for_allocation() stops all allocation before
-try_to_unuse() runs, so a cluster that holds no slot in use stays that
-way.  Skip such a cluster instead of reading all of its entries.
+Well this is exactly why I think the trust model is literally the only
+feasible one.
 
-Commit dc644a073769 ("mm: add three more cond_resched() in swapoff")
-answered those stalls with a cond_resched() every 256 offsets.  A walk
-bounded by one cluster no longer needs that counter.  The loop now runs
-at most SWAPFILE_CLUSTER times before it returns or reschedules, the
-same bound swap_reclaim_full_clusters() already scans between
-cond_resched() calls.
+If you're unknown/known but -> slop then >/dev/null.
 
-The scan end is clamped to si->max, so the walk stops there rather than
-running into the masked tail of the last cluster.
+It's the only thing that's going to work.
 
-ci->count is read without ci->lock, so READ_ONCE() marks the read for
-KCSAN.  Allocation is already stopped, so the count can only drop, and a
-slot stops being counted only after its folio has left the swap cache.
-An empty cluster therefore holds nothing for try_to_unuse() to act on.
+And you build trust by doing small patches and review. Yes that can be
+slopped but until AI becomes indistinguishable from a human (which would
+eliminate the problem anyway) there's a human and there's a not-human way
+of doing that.
 
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
----
- mm/swapfile.c | 43 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+Important that the trust can go the other way if bad behaviour is observed.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index dea2d3b36e06..0d24efd32eb0 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -370,8 +370,6 @@ static void discard_swap_cluster(struct swap_info_struct *si,
- 	}
- }
- 
--#define LATENCY_LIMIT		256
--
- static inline bool cluster_is_empty(struct swap_cluster_info *info)
- {
- 	return info->count == 0;
-@@ -2763,7 +2761,9 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
- static unsigned int find_next_to_unuse(struct swap_info_struct *si,
- 					unsigned int prev)
- {
--	unsigned int i;
-+	struct swap_cluster_info *ci;
-+	unsigned long i, end;
-+	unsigned int ci_off;
- 	unsigned long swp_tb;
- 
- 	/*
-@@ -2772,19 +2772,36 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
- 	 * hits are okay, and sys_swapoff() has already prevented new
- 	 * allocations from this area (while holding swap_lock).
- 	 */
--	for (i = prev + 1; i < si->max; i++) {
--		swp_tb = swap_table_get(__swap_offset_to_cluster(si, i),
--					i % SWAPFILE_CLUSTER);
--		if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
--			break;
--		if ((i % LATENCY_LIMIT) == 0)
-+	i = prev + 1;
-+	while (i < si->max) {
-+		ci = __swap_offset_to_cluster(si, i);
-+		end = min_t(unsigned long,
-+			    ALIGN_DOWN(i, SWAPFILE_CLUSTER) + SWAPFILE_CLUSTER,
-+			    si->max);
-+
-+		/*
-+		 * An empty cluster has no slot in use, so skip it whole.
-+		 * A slot is uncounted only after its folio left the swap
-+		 * cache, so there is nothing here for try_to_unuse() to act on.
-+		 * Count only drops here, so a READ_ONCE() without ci->lock is
-+		 * enough, unlike in every other cluster_is_empty() caller.
-+		 */
-+		if (!READ_ONCE(ci->count)) {
-+			i = end;
- 			cond_resched();
--	}
-+			continue;
-+		}
- 
--	if (i == si->max)
--		i = 0;
-+		ci_off = i % SWAPFILE_CLUSTER;
-+		for (; i < end; ci_off++, i++) {
-+			swp_tb = swap_table_get(ci, ci_off);
-+			if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
-+				return i;
-+		}
-+		cond_resched();
-+	}
- 
--	return i;
-+	return 0;
- }
- 
- static int try_to_unuse(unsigned int type)
--- 
-2.48.1
+>
+> Unless we plan on converting the list to semi-public (which feels the
+> anti-thesis of Linux), i'm not sure how you get there from here.
+>
+> So the risk is - do you over-bury and make it invisible, knowing we'll
+> miss legitimate bugs and fixes - or do you do something (anything) that
+> helps you ignore it while still being inspectable and curated.
 
+Trust model should solve that too. If a good faith established individual
+or company submits valid bug reports then fine.
+
+And hopefully we'll have some sensible means of handling passive bug
+reporting (which emphatically is NOT the hateful sashiko 'this isn't
+related to the patch but' stuff) and motivated parties to make the AI stuff
+work but under maintainer control.
+
+Because burnout was a thing and now it's what's going to happen to EVERY
+kernel maintainer unless pretty drastic steps are taken IMO.
+
+>
+> And burning tokens to fight tokens is just blatantly a losing battle.
+
+Yep, not going to work long-term.
+
+>
+> ~Gregory
+
+--
+Cheers, Lorenzo
 
