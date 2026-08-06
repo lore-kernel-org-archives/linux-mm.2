@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C687BC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A085DC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 20:06:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804636B00A1; Thu,  6 Aug 2026 16:05:59 -0400 (EDT)
+	id 872DF6B00A3; Thu,  6 Aug 2026 16:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AF376B00A2; Thu,  6 Aug 2026 16:05:59 -0400 (EDT)
+	id 823126B00A4; Thu,  6 Aug 2026 16:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677086B00A3; Thu,  6 Aug 2026 16:05:59 -0400 (EDT)
+	id 6EABC6B00A5; Thu,  6 Aug 2026 16:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 398FB6B00A1
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:05:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F8F4C0224
+	by kanga.kvack.org (Postfix) with ESMTP id 454866B00A3
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 16:06:01 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7412C0226
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:06:00 +0000 (UTC)
+X-FDA: 85071925680.08.9CB6CA2
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 062A31A0003
 	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:58 +0000 (UTC)
-X-FDA: 85071925596.11.8E6D4AF
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C04B2140014
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:05:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DDRoONMa;
-	spf=pass (imf09.hostedemail.com: domain of 3I-l0agYKCCQSURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3I-l0agYKCCQSURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786046756;
-	b=EonuhyK0ILhNzqkxWiCHhsthuXA/fSbZrbxkJ31HFVFH+hQRUQFKUmRStrnEzjKbv/LyEj
-	kTvlxELtm+FPWypOTFby4FV4bt/PtLYoAaBuT2sHrVxRELijDn/okek69eqBDDWtZdLVju
-	gOm17AkRa4S+avOKB9vPJugOFG3dRRQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DDRoONMa;
-	spf=pass (imf09.hostedemail.com: domain of 3I-l0agYKCCQSURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3I-l0agYKCCQSURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=msBpLfGX;
+	spf=pass (imf19.hostedemail.com: domain of 3Jel0agYKCCYUWTGPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--surenb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Jel0agYKCCYUWTGPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786046756;
+	s=arc-20220608; t=1786046759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myw2oDUjCx3VpKcfHammnirgTkZxfVTM2uRSXVRFIyw=;
-	b=wv/i0ZT4yAF6odkzSQmUDYFeqVg9ZB9kAo4bmdyA3P7Wjb7hSztm9yIYTrx6Mji8D0iMmN
-	wPUivwbbhFAC7ezNU/zla4IeLUvxr+56i6PsPYD4B9br9JaWJuJWZK7pO+ASIqMlNH9sm2
-	KYsBN54DoUJQ4kDsbv7gjumLISF0f1s=
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38dd87656d3so3045503a91.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:05:56 -0700 (PDT)
+	bh=WxdxEYaVQTOzSX1A2H67ZbXWMmNc4RyRDurH1LCMnVo=;
+	b=XcjB+PQraIQBhzJ6kUwt7HHQ4iO4058YF+JxL9kGdOOmlWWWVXJZhK4prcxVaZ9fmOPvaS
+	B0D8tNPahX/tPw9Gbj9feReJYfIyQWzo9him4MC3MAlKNuMcz8zmamVQL795qqn2+MIQkA
+	aR3XuFQQK6QSCnyrNFuVlCQzCuUsb7A=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786046759;
+	b=R244ntbHMYQu2TRaw4/IR87Q+f8XZJTV/ZJ4gnRB4q6A+watWPlo/c3nhC5lo/p/Dpl2PZ
+	9Xxq6EOnBb3KXiYgMzy45st8Vl22prJNXtmbLw4808s2dyaZltsJASMXlGK2gTH1w+4qSV
+	sQwPpr/a1aPqa6emZNtWWywACWtdCOQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=msBpLfGX;
+	spf=pass (imf19.hostedemail.com: domain of 3Jel0agYKCCYUWTGPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--surenb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Jel0agYKCCYUWTGPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb6433e9d4so3209553a12.3
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 13:05:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046756; x=1786651556; darn=kvack.org;
+        d=google.com; s=20251104; t=1786046758; x=1786651558; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=myw2oDUjCx3VpKcfHammnirgTkZxfVTM2uRSXVRFIyw=;
-        b=DDRoONMaQZyKPDEW+koUzpTOl8cGbpSpXB6Ejpm0lcNknokPBSnsAcxetKAwPrYMYs
-         6zhbay5w+C2wcbejR0IWJvimnd5qjiHBcefhb4Y0lJ4mHV31332gAPsTGiNblfo9BFLu
-         wrpi1S7r3BjEYRiRiYa+dQox99ePK84OkuTSJRn0bEm4hWkgrAwe+F3df2Qh7dV9IGYV
-         eIilgCkiXssktdHPj/M1/zqmVy5MRnH7qQ+Wlz4GpMeuv6qoLh3B8mnP6tgkhewkNxyp
-         p1WHJSRzl8SCaIbzsqWvTmvCTvPb2BL+oIhsaiERwgFQBOfidFF+mvHBBy/nxFQzgpc/
-         9OCA==
+        bh=WxdxEYaVQTOzSX1A2H67ZbXWMmNc4RyRDurH1LCMnVo=;
+        b=msBpLfGXWQz2+DcTtBSeMeiuwXTyZB/wQfHpRqQtuKBxCccFnHu0VtgKeJI3Du7EWy
+         Qo699h9Z8CFdddTu84Z/jKI7SUxiXws0buVPxAIJQHJxYfM3dY8kgrlUgisiZdvhsYhy
+         MpDkGY3nZ9Hk+TUpzwRmrzd3DLYDDohI/iqhwF8Z39ySFEWSd98EkpSugWGe1PiK5reK
+         uFrSRtqQfw4WMyw9+o6vuYeOxESwUV7KFDaVayl5MdW7x6XyMLqniCiS0fsi8BmSvgT9
+         OovT6zX9ldUt33WFaHpma1Se2rVgntWdK9hV6ncECiYHLUE/dRqpXqWrpBRDPj6iMu91
+         Tcmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046756; x=1786651556;
+        d=1e100.net; s=20251104; t=1786046758; x=1786651558;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=myw2oDUjCx3VpKcfHammnirgTkZxfVTM2uRSXVRFIyw=;
-        b=T7vo3j58Z/17YHFFHlebccHxFOq1AvMXamsyrVaBCAcqirdsNq+3Oh/RDR02C/S+23
-         lCQhbyB01Y98mV3a7mYHKXCILvWDujhrLR9ZIy21WekclKXVui07PRmsHyTnNHl5qd8Y
-         KfqVgP4BqFHH3sCxFt9BGfQRH6O/MYvdDDeYcX66hMLyhroVibBSH3nPIa37aXZjTsmP
-         23/I+ZmUz0DBFILvCaH5YHvBLBvhod1tfUfXLgKydcE30wFZMe7/XzpYU+IPXqxSPISf
-         0FMmPTUoom9U0KRQB7J/K2XSs89BV6IvoxywQeR7g9uG9i3Ugyj+u2zriFR9u4q+r0kt
-         7Txw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1X3GPjSU2gmVNh9GVrl5mlgo1ufk12LF7KZCY8rwzv3bzT0GSrZQ+kf6H02asUzgZtyyDAX3WIA==@kvack.org
-X-Gm-Message-State: AOJu0YyTI5yjOkF79FSWDYpwNYa6kR5+dYyTbOJw7OiBHGGMsF0DGRIi
-	7RElO0Nc/lOllWBe26BDrkOFznzLadfxOlkB10JLlSoUT0GbYfHrTGvBCsi5bzp6owVjIcxDqrr
-	YPrx8+Q==
-X-Received: from dlam21-n2.prod.google.com ([2002:a05:701b:2095:20b0:13c:f3ec:de27])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d50:b0:380:f34a:6ff1
- with SMTP id 98e67ed59e1d1-3903c5e0213mr17427991a91.17.1786046755489; Thu, 06
- Aug 2026 13:05:55 -0700 (PDT)
-Date: Thu,  6 Aug 2026 13:05:45 -0700
+        bh=WxdxEYaVQTOzSX1A2H67ZbXWMmNc4RyRDurH1LCMnVo=;
+        b=e1nB9isXhlePjVwlc6q1B6hiL/dyAUf2JfzPizbmA9rjlpxgQDAFeAWucrVJvzcUGZ
+         XzMo5VtPhywbumZEi0FGow6byEMjITeuKDqc9fhSCzv0WITP+VFECR75cI1YVlA40I0+
+         g3YBvwVjbAOuMNc41PSALl2P9JbR6C8A16fvvsJ8PbpNHTFwjl8toYuo5aeJ83Cb9y5E
+         rPlOIyQkgcOH5qpBldS1zG+k2S6pipUqBTMNv9bCrWSyp5z0RbUTacwNQIJcZHRCqCPk
+         2uvwHthSb/PYnIuqmwsZXydEK2Mowoer/dIYxvUab5S0m0CuR8l2JUS4Q7qJwce8JU9h
+         Z3lA==
+X-Forwarded-Encrypted: i=1; AHgh+RqwAP4g5p3hZLrTbDRhMy70qyyqvzLKLBhfaX2JCmp/tt6wX1JbSo5GYpGco76MMZdg5jlr8QThlA==@kvack.org
+X-Gm-Message-State: AOJu0YyPDsEDbCXlmHvkAQS0wsEnx3wHU7WI5wWfK33zqhtXdPVf0KeQ
+	HlNoN8+rW4UmjW8K0LGlNpdf6uP9dP9Zr497ZxOOas0uDevMKiOnZnERRXTGt1aW4M3FLXXqDYQ
+	Z49L/VQ==
+X-Received: from dybgk24.prod.google.com ([2002:a05:7301:198:b0:313:cf3c:796])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a03:b0:398:8870:b58f
+ with SMTP id adf61e73a8af0-3cb85de7ddbmr20267974637.14.1786046757653; Thu, 06
+ Aug 2026 13:05:57 -0700 (PDT)
+Date: Thu,  6 Aug 2026 13:05:46 -0700
 In-Reply-To: <20260806200548.3124802-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260806200548.3124802-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260806200548.3124802-3-surenb@google.com>
-Subject: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <20260806200548.3124802-4-surenb@google.com>
+Subject: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
@@ -102,14 +102,14 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
 	surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C04B2140014
-X-Stat-Signature: kb78k5zfnsc7a1h3o6jct6d9gw1ts37y
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786046756-978458
-X-HE-Meta: U2FsdGVkX187Jp6RIoLtgprOY4EhSxKwnD0ZsceiCY4Vv2PEgccjFhTkswmxkKZh0orrZU82+7aXzRzte1nXO65EB3dSpg5HJECVk0ZBpQqYfr+Y/S8it6QjfaSDrErC4xMFHTjC05QGPAmQ8wlbxSxQfu0+CDf8UloCRT/A5VYWJtYcy6gBbPZUKMQcB5xhOMZpOrwjScvp1i4allP8VqjBRvvKyOf8tELTsLeJEYIkQHEu869hSM6e98DYTP5lOQ5H+7M+WbAMKQyrI3ow7Sd/2DH/1eyxFLYUqofxnBUodZDomsys1N3UIUOAJG6x6o6LSw9O2HTO1TrRPS/NIKx0dYk4iBu8/JQe2XfTmxBkbSY+futLt/j+zsEe2qlmuhEKA0+iZ9tI8rrKvFVUSZjpfnjxSEay1T9rUgagrobuRNl7/97FMclv2KYmRvscuZUK4qbzjR7PNbm4FArNHj50KcZwf4CgR1Je5ySjzK9B4at0ODpqJuuF90evDXWi4UqSk4SU7W+0fWOctMwFtYrGTeWj5zOHR8000GGsmEDxY+mTDViMG9cUGcZjWa7D5qzcZ8t+UKk4CaZs/4pwEbp+2oNAky81PYUS+T/56WwvXbRbLrpm7ZbUpCy01KjzvIdPOEAUc0oGfhXB6ulqfbf5dFKrmzAa6APwlI0i2eIKSGoOMNm+vODHd+HoA0ePGZqcchqoicdEnnkjk289C7SQt2rsNFaLnSsv/RhZgS0DXmBVn2GTguB4ZNbOAKJJN9UEpiHa6o/UDq8fRBuBZH8TCW5FHh8NJw0kduknp+MyE0yblJAYHz1oBueOcwAI9E1W/GUcdaXCn8yZkxDNvs6E0jnRFymKebMok8SUY8fZBXb6pYzFSm//t6GA6KwmbBrXtpFUWd+fIEagAXGgpYMeMDO+/8BNnKXHdNukXuv2b9Rs/Al94mIF+MkXV5txG1kjLI8SO60s0OIRRzH
- PPG1RsXO
- n+f8P4pXKSnTYQ2+v9NmTu78LQTbZDAVH84H92puTOb/k7KYr4ixbjANURDvwA9Mdo02Tq66KgxkIhoaMXe0nJyNodkfr+g1slqwlW2yFl1mAalrPhGfRnwcJ5zaCi0OutkQ1n9r3zmff5guQtj+AaHTukoBtG9pTeG+Jne+rnpi4iPDs0VT19mfJfpaKhC/Zqcx14e+DcUkhVzp5LUbyGcK2sjfCPl2YisolRm+0JwKr0ZD1wMNgiED783IM1kaYom5bX1Atq/KI0eEu6XquQ5V9CMIU4Yq3atnEWjbIQND/08cp6d+m4Bp2snaeAsvPP7u9CYy6GUSVC2/F7adngV/CAdgT/lkq1C+QJJiitILIpT68A+J+zGlFxgRLioTcjiVr4lpFnVLYdbQ+Mmx4fqWYbGt29j2vS7pYB9l97sEklQFNhVN8DqzGsC6IGbhnnZqBkTr9BkdMp4UwXmrTCJdIcHFGa8HYqzagkCyhWiBmJ+mysO0bbi3wNl1x1hhdogHceVs17N1gfjyuY99o3XD3iJaWZAkUNBNutwOhp6arSGrsb4S1W8IZtmUKRh2j6b/xl5tOjQamPPz8lGig2/3raADAOCiv3HnvhlM5+6bymNtnvvHNyMNCPxfx1dh2EL2A7tm9MD1oV9YgmUUjeksQAIDt88RcS3bPPIXfMn/Uc5OClkRQyf+7QAUE8qg5W3L8hB77QC5/YVOrBmyMZvhAitxDZhEz+RqplyaXzYALPDcnfrTScjKTzkwGmJhyeR8zc3NwIPD4IWul3X9UFpG+IgIZ4X35OnDx+TJygqraDm/XmkYWVWurf/T4K/mI4VeCKJCVq47bWmi2tXlvzUA8nyjo7W061imaTkELThyuSpzpEqbDMCoZ03ied6Inh4+N7dWBrF6QfOEWVOzLpsKJKy28Czu7ClmYuZrKHQ08yW128n2MO4gySQAcnbp1KnR3
+X-Stat-Signature: cc3h81qmy7dugjuyaf7jqtie78ejp8o8
+X-Rspamd-Queue-Id: 062A31A0003
+X-HE-Tag: 1786046758-550663
+X-HE-Meta: U2FsdGVkX1+NF6+a52zdy5f14Y94ANOQ+zWW8hWEMg2CNDNvJf9cTvt5xwYGMYjkRPql48VRaKRKTOXtQsmLoPcgpfVLZXwmmlr+H9kn+JcwQsgaM6x6iKJFW2pfc9ItOHnKolyIp0tBZ71+A4p3nfRjaK8aMag2er1GGydB16eogfdiIpbdq4nJcaqeu2ZmCuVL4t9tTs0ttiuJmt4SErgF7vCIDlJ8NskDC55KYaDBpCAIPYz+dVWM9lXMABKMmy/f8WEUx2GoqUomJ9hkdItZ+frcm3Dd+fcUi6HAXzqUdXs12G2CzuqYjfwmC8xOzkFiff04zxkou2TlzIRg2L8Y1GwH2cQB3IrfFbjaCtjbq/6P661cbxfzEwMaJMe4/logXbyr1H5B8B+8cBY8HpdfIqwejYsf+wq3PklUB5INYKBTntB4lBMRIFCrooKYPzjA0uREVTFQE1bvdUwIxEigBw3ggE8UTSUE9M2+kjyLiYdA1UsWsvQEyBHBF37YGwwuFKzh2Gj+BiaxBjFU0BjImkG9wsCPyJrPIwASRo7j9DDp5IwoQ750ow712IJuTwSphfUcnAWxF3uygFLoaOxsgT+ZpgQuWz1EdAthDywHD91tpKSD9Ve/el9QYtHSbZXZp42RuA15K47ERtLVJBf2LrQyOPE/28/b7FsRHWfiMKG9B7LlGSY313TuAlkXJkPKvmyIjicVK4Tbsnpxq1nlEHBFhHjQrQt/2jxqv+vZ1T2yxn7BcOD5Ek0vCiYnlHSAtsPI9ruf4B2TkX5jQ87+5mL5WKBDZdmHPdOuQ0ALAiyPf2M3flm4lk0qhpFW2xuPFS8yJMZGdvxCI+bFDb5gd55zzGwhYkVraU8Tvv/HpXLTjKl53E7lTuDZCz8I0b4YPBmQJXBz+83OBV9bhiWpNGqlSlBIFJOwWDg30hTtsL5J8kceI111BweHPCon3ULLWC9lUqGCI7mZpgB
+ Y6kNpSSt
+ e9RN5jmBD26AYYueTeszrPy7L/ATcBdNd2YHap6d9ASAMlUwJBgzA6KWmv+3OJBVg/aHmu2SgijA+uwCMlcXOdbyB0BVoCwIZ51k/I6aPOhb7rLP7KJwkE99JuogUj4sQwSPOPuh1eoZ6PlaTdMR5LgTyba9/2NMpUFTxYF2Dk58vESfnYXgNuLxIf9xxrufYGGhjJwDaGMbXHBYsWLnhsEhQOhpjMHZ7Yca8T1wiw5ASrvEWnA2KEnmH/MngyPdGuuctUCvnqwbYCc9moCF9LlTo/7AxoHAuX1Hut2PaaXlRshhnq6ehtA5PYlIDsxKQTQNYI5pvHrL+Amxd8HSvfEuWXEJlnWnAk0xZAtpsVYHpXcEuuTyzTebMxLl2eDfz9v/FGMFx+sPRb7vG9kQLeFVu9C5i9jBtvjiB9rYjflYiMJYa8eeEUcJRlX6IVIyAn7AA60JDWtONMIk48m6ZSEzAwG8htQkqYHVso0heXOtUig2xc1Wptrj6SXKFINCWWtL7cECjWrazTalNfVvJrS5/NYLnEeKmHZKNAeux4apiOUAciGCM03Cz9FGahxvp9OiLCJdFboX6tjTQyf4pvsilW65BuMfZBy7yFiV1nI18AlDwoAkVx/ks4GZP5QeOdvb3TxU3A8hVJMkVqeFYrf0fWzNRfov2/66MhwQdLs4RSIEZ2kgibwu997xxJZjwmRwSaDn429ehJUTqS7NeMKj3d74mnLyskXoQvHfdCznqMS90Dqh8f1pp1A8fIJNcOSBCh1ZTUIXqjPrHWrGs9kaLVwQnMWigyh/Nd01IvZIs4oZSV9x846+Pfr5tCXX2beKJOhk92g4T5wHPyOUThYPzCJqV+2eT4b2+XKPQ/zBoswocoF6xj87vsgTbNQMRcADWDgm9qLqk525TanSga8J2U6znEjMBjuPbk6MNjSnk/8BTEn3i1ly3tUcNnVeUs178
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,53 +119,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
-tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-it and mmap_read_trylock().
-
-Long Version:
-
 =3D=3D Background =3D=3D
 
-Historically, binder used an mmap_read_trylock() in its shrinker code.
-This ensures that reclaim is not blocked on an mmap_lock. Commit
-95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-support for the per-VMA lock, but left mmap_read_trylock() as a
-fallback.
-
-This was presumably because the per-VMA locking can fail for several
-reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-to mmap_read_trylock().
+There are basically two parallel ways to look up a VMA: the
+traditional way, which is protected by mmap_read_lock, and the RCU-based
+per-VMA lock way which is based on RCU and refcounts.
 
 =3D=3D Problem =3D=3D
 
-The fallback is not worth the complexity here. lock_vma_under_rcu() is
-essentially already a non-blocking trylock. The main reason it fails
-is also the reason mmap_read_trylock() fails: something is holding
-mmap_write_lock().
+The mmap_lock one is more straightforward to use but it has a big
+disadvantage in that it can not be mixed with page faults since those
+can take mmap_lock for read, which can deadlock when mixed with nested
+page faults and parallel writers.
+For example:
 
-The only remedy for a collision with mmap_write_lock() is to wait,
-which this code can not do. So the "fallback" after
-lock_vma_under_rcu() failure is not really a fallback: it is really
-likely to just be retrying in vain. That retry in an of itself isn't
-horrible. But it adds complexity.
+	mmap_read_lock(mm);
+	// Another thread does mmap_write_lock().
+	// New mmap_lock readers are blocked.
+	vma =3D vma_lookup(mm, address);
+	// This deadlocks on mmap_read_lock() if it faults:
+	copy_from_user(address);
+	mmap_read_unlock(mm);
+
+The per-VMA lock can be mixed with faults, but they can fail and need to
+be able to fall back to the traditional way.
 
 =3D=3D Solution =3D=3D
 
-Now that per-VMA locks are universally available, lock_vma_under_rcu()
-will not persistently fail. Rely on it alone and simplify the code.
-The removal of the fallback does not affect NOMMU case because binder
-driver depends on CONFIG_MMU.
+Add vma_start_read_unlocked() - a variant of the RCU-based lookup that
+waits for writers. This is basically the same as the existing RCU-based
+lookup, but on a failure to lock it temporarily takes mmap_lock for read
+and waits for writers to finish before locking the VMA, dropping the
+mmap_lock and returning the locked VMA. This has some advantages:
 
-Full disclosure: I originally tried to do this with
-lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-trylock semantics. Claude caught this in a review and suggested the
-approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-I guess.
+ 1. Callers do not need to have a fallback path for when they
+    collide with writers.
+ 2. It can be used in contexts where page faults can happen because
+    it can take the mmap_lock for read but never *holds* it.
+ 3. Its fast path does not require taking mmap_lock for read.
 
+Basically, when applied correctly, this approach results in faster
+*and* simpler code.
+
+While at it, fix the comments for vma_start_read_locked(),
+vma_start_read_locked_nested(), and uffd_lock_vma().
+
+Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: linux-mm@kvack.org
@@ -179,107 +184,150 @@ Cc: "David S. Miller" <davem@davemloft.net>
 Cc: David Ahern <dsahern@kernel.org>
 Cc: netdev@vger.kernel.org
 ---
- drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 24 deletions(-)
+ include/linux/mmap_lock.h | 19 +++++++++++++++----
+ mm/mmap_lock.c            | 35 +++++++++++++++++++++++++++++++++++
+ mm/userfaultfd.c          |  6 ++++--
+ 3 files changed, 54 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.=
-c
-index e4488ad86a65..c13a588c37de 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_he=
-ad *item,
- 	struct vm_area_struct *vma;
- 	struct page *page_to_free;
- 	unsigned long page_addr;
--	int mm_locked =3D 0;
- 	size_t index;
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 7b2bbb09a952..a23fe6cbe301 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -228,10 +228,14 @@ static inline void vma_refcount_put(struct vm_area_st=
+ruct *vma)
+ }
 =20
- 	if (!mmget_not_zero(mm))
-@@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	index =3D mdata->page_index;
- 	page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+ /*
+- * Use only while holding mmap read lock which guarantees that locking wil=
+l not
+- * fail (nobody can concurrently write-lock the vma). vma_start_read() sho=
+uld
++ * Use only while holding mmap read lock which guarantees that vma lock is=
+ not
++ * contended (nobody can concurrently write-lock the vma). vma_start_read(=
+) should
+  * not be used in such cases because it might fail due to mm_lock_seq over=
+flow.
+  * This functionality is used to obtain vma read lock and drop the mmap re=
+ad lock.
++ *
++ * VMA can't be detached while we are holding mmap lock, therefore in prac=
+tice this
++ * function can fail only when there are so many readers that vm_refcnt ov=
+erflows.
++ * The failure case is very unlikely and is already annotated as such inte=
+rnally.
+  */
+ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma=
+, int subclass)
+ {
+@@ -247,16 +251,23 @@ static inline bool vma_start_read_locked_nested(struc=
+t vm_area_struct *vma, int
+ }
 =20
--	/* attempt per-vma lock first */
-+	/*
-+	 * Attempt per-vma lock. This is essentially a
-+	 * "trylock". It can fail even if the VMA exists
-+	 * for 'page_addr'.
-+	 */
- 	vma =3D lock_vma_under_rcu(mm, page_addr);
- 	if (!vma) {
--		/* fall back to mmap_lock */
--		if (!mmap_read_trylock(mm))
--			goto err_mmap_read_lock_failed;
--		mm_locked =3D 1;
--		vma =3D vma_lookup(mm, page_addr);
-+		/*
-+		 * If the vma exists, we can't continue because we cannot
-+		 * remove the page from the vma. However, if the vma was
-+		 * unmapped, it's okay to continue.
-+		 */
-+		if (binder_alloc_is_mapped(alloc))
-+			goto err_vma_lock_failed;
- 	}
+ /*
+- * Use only while holding mmap read lock which guarantees that locking wil=
+l not
+- * fail (nobody can concurrently write-lock the vma). vma_start_read() sho=
+uld
++ * Use only while holding mmap read lock which guarantees that vma lock is=
+ not
++ * contended (nobody can concurrently write-lock the vma). vma_start_read(=
+) should
+  * not be used in such cases because it might fail due to mm_lock_seq over=
+flow.
+  * This functionality is used to obtain vma read lock and drop the mmap re=
+ad lock.
++ *
++ * VMA can't be detached while we are holding mmap lock, therefore in prac=
+tice this
++ * function can fail only when there are so many readers that vm_refcnt ov=
+erflows.
++ * The failure case is very unlikely and is already annotated as such inte=
+rnally.
+  */
+ static inline bool vma_start_read_locked(struct vm_area_struct *vma)
+ {
+ 	return vma_start_read_locked_nested(vma, 0);
+ }
 =20
- 	if (!mutex_trylock(&alloc->mutex))
- 		goto err_get_alloc_mutex_failed;
++struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
++					       unsigned long address);
++
+ static inline void vma_end_read(struct vm_area_struct *vma)
+ {
+ 	vma_refcount_put(vma);
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index e20d01e8d38f..1c4902131e98 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -338,6 +338,41 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_st=
+ruct *mm,
+ 	return NULL;
+ }
 =20
--	/*
--	 * Since a binder_alloc can only be mapped once, we ensure
--	 * the vma corresponds to this mapping by checking whether
--	 * the binder_alloc is still mapped.
--	 */
--	if (vma && !binder_alloc_is_mapped(alloc))
--		goto err_invalid_vma;
--
- 	trace_binder_unmap_kernel_start(alloc, index);
-=20
- 	page_to_free =3D alloc->pages[index];
-@@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct list_h=
-ead *item,
- 	list_lru_isolate(lru, item);
- 	spin_unlock(&lru->lock);
-=20
--	if (vma) {
-+	/*
-+	 * Since a binder_alloc can only be mapped once, we ensure
-+	 * the vma corresponds to this mapping by checking whether
-+	 * the binder_alloc is still mapped.
-+	 */
-+	if (vma && binder_alloc_is_mapped(alloc)) {
- 		trace_binder_unmap_user_start(alloc, index);
-=20
- 		zap_vma_range(vma, page_addr, PAGE_SIZE);
-@@ -1191,23 +1193,18 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	}
-=20
- 	mutex_unlock(&alloc->mutex);
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
++/**
++ * vma_start_read_unlocked() - Find the VMA covering 'address' and read-lo=
+ck it.
++ * @mm: the mm_struct of the address space to search
++ * @address: address that the vma should contain
++ *
++ * The fast path does not take mmap_lock. Waits for writers to finish if t=
+he
++ * VMA is being modified by taking mmap_lock.
++ * Use when mmap_lock is not held, otherwise use vma_start_read_locked().
++ * Nothing prevents VMAs being unmapped/mapped before or after the VMA is
++ * looked up, if a stronger guarantee is required, take an mmap_lock.
++ *
++ * Return: If a VMA exists which spans @address, return that VMA, read-loc=
+ked.
++ * If no VMA is mapped there or, very unlikely, a reference count overflow
++ * occurred, return NULL.
++ */
++struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
++					       unsigned long address)
++{
++	struct vm_area_struct *vma;
++
++	/* Fast path: return stable VMA covering 'address': */
++	vma =3D lock_vma_under_rcu(mm, address);
 +	if (vma)
- 		vma_end_read(vma);
- 	mmput_async(mm);
- 	binder_free_page(page_to_free);
-=20
- 	return LRU_REMOVED_RETRY;
-=20
--err_invalid_vma:
- 	mutex_unlock(&alloc->mutex);
- err_get_alloc_mutex_failed:
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
-+	if (vma)
- 		vma_end_read(vma);
--err_mmap_read_lock_failed:
-+err_vma_lock_failed:
- 	mmput_async(mm);
- err_mmget:
- 	return LRU_SKIP;
++		return vma;
++
++	/* Slow path: preclude VMA writers by temporarily getting mmap read lock.=
+ */
++	mmap_read_lock(mm);
++	vma =3D vma_lookup(mm, address);
++	if (vma && !vma_start_read_locked(vma))
++		vma =3D NULL;
++	mmap_read_unlock(mm);
++
++	return vma;
++}
++
+ static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_stru=
+ct *mm,
+ 							    struct vma_iterator *vmi,
+ 							    unsigned long from_addr)
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index edd90892f8cc..c3a0c38a3dc3 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struc=
+t mm_struct *mm,
+  *
+  * Should be called without holding mmap_lock.
+  *
+- * Return: A locked vma containing @address, -ENOENT if no vma is found, o=
+r
+- * -ENOMEM if anon_vma couldn't be allocated.
++ * Return: A locked vma containing @address, -ENOENT if no vma is found,
++ * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
++ * overflow happened due to high number of readers and the caller should
++ * retry later.
+  */
+ static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+ 				       unsigned long address)
 --=20
 2.55.0.654.g21b8a5bc05-goog
 
