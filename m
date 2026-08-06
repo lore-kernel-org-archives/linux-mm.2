@@ -4,121 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E704C55ABF
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E12C561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:36:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 209B16B00A9; Thu,  6 Aug 2026 04:33:18 -0400 (EDT)
+	id D5A476B0088; Thu,  6 Aug 2026 04:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E2096B00AB; Thu,  6 Aug 2026 04:33:18 -0400 (EDT)
+	id D0AA26B0096; Thu,  6 Aug 2026 04:36:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F78C6B00AC; Thu,  6 Aug 2026 04:33:18 -0400 (EDT)
+	id C209C6B0099; Thu,  6 Aug 2026 04:36:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6DD6B00A9
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:33:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 629391A06AD
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:33:17 +0000 (UTC)
-X-FDA: 85070180034.17.53A619B
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 993BA1C0002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:33:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=X2cL1jgV;
-	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786005195;
-	b=pDCfdwxKSovdL65s+4XGpbDTuZj/08ENY6RyQr3XSBtH7ZycofXfZdgqf1ZHeTf0XN+eCP
-	LInpwS7EiB8qp9/+97Kg2ArXADlXk1vfX7RKywFI09Ln75nberSo7sg2r6WSBD0fPLuk8U
-	cDpYj2kks8WImssrkyO1rdyLK2B70/Y=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=X2cL1jgV;
-	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F6B26B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:36:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A1FEBA235B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:36:03 +0000 (UTC)
+X-FDA: 85070187006.30.0B41C9F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DDD3E140004
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:36:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt+UntKS;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786005195;
+	s=arc-20220608; t=1786005361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kbwwwq24L3XnIIcYVbUsKDAVnxBveSW3by8s7kuBsxU=;
-	b=MHigyXuZtuTfYs8sFKEhrx19JEv5lT2bgnhWhAs2WAREZKHQ75G0fwICGimZPu74FY3YkB
-	6RlvNrFntoPvhDZOSsXKoWgCMwhmCMITpfI5Yg8xTEkLLB26oJL0WlVfTTPHg7G8IRfmmN
-	gy+CBQxP2GvEs6dm8IK/BSQhVSKrGAc=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4954aff6088so19087735e9.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:33:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786005194; x=1786609994; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kbwwwq24L3XnIIcYVbUsKDAVnxBveSW3by8s7kuBsxU=;
-        b=X2cL1jgVneHXOKvZps7IzLPs34+RFu0SMtZo28+G241+oPj2QmvoXikLIrCvMaYJM5
-         1hYZyDcu22D8KNP9LP6VVOeRjzbIG2Tf5hf/BoZer5Ixtl1Jj5mB7sEDobsAC/53wBmI
-         ckm9V92dXygsISoAEJV4TXH9t1+Eus9omCU6Dv6unRTUgdtKjGeBSRrEbjOB2vKsgZXk
-         +Ox4DSaoqYtPicZ5k8H33zlXsc2byXPl5C82crXPB1Oi7lzBBeZqkYw1zQ1zHW+6HmS9
-         TtNNqauKuFIcmqaA6GFlQii/v2jkTUsSWUZJgWCT+VgX/EvRmdsCRrz1SUq6IxgCF4ez
-         lkmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786005194; x=1786609994;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kbwwwq24L3XnIIcYVbUsKDAVnxBveSW3by8s7kuBsxU=;
-        b=lABJ1XOTn4FSHZsX4kdDx3+xEkyYCniOjNx4p5aqqyVeLQnhOtskPNDe4gHfjBaAPo
-         UDQi1cMeU01vWBvwny1ESHcMxsuruRTS8cQvMzHX4M9BcM5tmfzkpmFeZRcwDbNq25ws
-         eHRBIKooq+0yO6KGLKHmqFtaSqTrgVdTvB1Q2zUz7sOuXHwjarwlJuED5bcbjDFIt4Nq
-         WzCgQu5rvIw1FKnOKcv/50NTlpgdfcadE7GH/S+BB99gT6eCJAfYUlAAbERO98kkQCHh
-         7vK2VNNKo+I/QCepuF8gNal9Cam/6A0XKYCa7tq2gC3FuTZYuldNEvowEtKPZE9C9VGW
-         w3sg==
-X-Forwarded-Encrypted: i=1; AHgh+RpYkJ6vMcjrEoIthMNAl95yZbmCqhQ+jO6vATNYabuYjrej0E5+4te2jZClJ5LzpzO2B8dxkUEzQg==@kvack.org
-X-Gm-Message-State: AOJu0YzU60UilZcoioU8rZv8v1lhSpD0IlXXy61N1GOsGYLaBHn7puSy
-	5rwG3N+x4tGaLT/gp/WwHRECryvkRPFLUD0qn0EucljC1niyH5VN4nzDa5MUMT7OtgeJO+0WcdL
-	NLzwastx9lQ==
-X-Gm-Gg: AR+sD11vzhPWwqNnS9kijFHfyj/8tD1U4jteyrUPBupocoIYVjfZoHmQ668OAPAemFG
-	2ELTpPKFRAYvR+YV6qj0uKDnbqWDF51+PcSKI9wSMlH8tFN33SfxyCfYMEW4H6h1urpTdHDnhFL
-	03X+yKgpoARYe5EMG0WxqDST4TWptJ9QscQgVhalvgpHoZsIvLOLdbQIGOEWc4/3wW9HpJ9RERq
-	uMe/9KrqK3Fp7zvihntkvHeTq2GfF6oSwrL6plH6Ktgy6ArglwyWUJYlh2M031HUqg+ZBjHRgdX
-	go6SGD5tmMYFD5I2shyxeMtFUwyvGmgbvmby5Mk1zKQoG1M8O/g8uiznsahN/lY+nbmEV1L0e7s
-	QPGBZH+ukJd7Sias62jrSfqy6F/1C1ctYoem7ZGSsWVxEE1zrW5Dgw684Z044CexKrRv86MhxFk
-	9FfBSyjrYslJs5vun5qO9vSDybudzlBuigsuu5IeYoYiG17P0S52SM5CVXZsdhsgBOWF+dz+5Dj
-	0w=
-X-Received: by 2002:a05:600c:4688:b0:495:6bc9:62b0 with SMTP id 5b1f17b1804b1-4994e7d1487mr163017845e9.17.1786005194371;
-        Thu, 06 Aug 2026 01:33:14 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499542858b2sm48595955e9.14.2026.08.06.01.33.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 01:33:13 -0700 (PDT)
-Date: Thu, 6 Aug 2026 10:33:12 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Wilson Felipe Pereira <wfelipe@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 1/2] selftests/cgroup: test_zswap: retry subtree_control
- write on EBUSY in test_zswap_writeback
-Message-ID: <anRBETN6znndbjyr@localhost.localdomain>
-References: <20260804042053.56940-1-wfelipe@google.com>
- <20260804042053.56940-2-wfelipe@google.com>
- <CAO9r8zM9H8iMOE2FE-H47CMUAExf3VcCf04anT=_Ja=m=sbr4g@mail.gmail.com>
+	bh=+Zf7vT1dgbmGchPNuaWZ7/mC3SH4bQR1pOsfD0HMIQ4=;
+	b=3i7CYAYO8+Td4W6mkuaLJWuR4PR2P/ns9Oswa9Hk78OxX/gI+ycbYfCIf/8NVHVlPu0XE7
+	3Gg0wjU89kirn3ZxhNZVEN85GmNqQvrY6uzwCQQH34nAknOXNp1+TgPkzviA+xFmWSwRo2
+	9clK9UqGFoFVNmzgfhvQZ8ivgGRps0Q=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt+UntKS;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786005361;
+	b=e2jQk5gA3WMWsfCazFYfZYPmUDHgtvWN/o+blIvtj8jLpmfiyfKcq3Alwqa/E1MIGQ2oTw
+	SjHXl4D32nDqpL4lwJymbu7YZfPjqPg0ly/tDUbSKbWfl+23KICsO7tXMtTrp11YPc81Mp
+	fql56ThNVAxF9OBcJyVstEYpds6Nm0I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6090060A8C;
+	Thu,  6 Aug 2026 08:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B051F00A3A;
+	Thu,  6 Aug 2026 08:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786005361;
+	bh=+Zf7vT1dgbmGchPNuaWZ7/mC3SH4bQR1pOsfD0HMIQ4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kt+UntKS1mKD3CdD5YyzbRET6/9d98rdD+1USoOle7taqWerZrysYUDzu5d9ihTNN
+	 A8IFeBs0LRmWngc0ozxr7t5btrhKh6b+qOJ1/k8xqc6Ku9Amo2uIn1HSwO34DjyvmS
+	 slnnMdREQasqw9kzSZym8MGP5GIirQvXtAfl2RCy8inUMqzBgmy7SDdeBAqCT7o0a4
+	 ioPuo8wIZ2anVzJUNvoT8pjRKSWdFV6DNzERhOBoFxD+qObcpuB8T4QQNnNsAjCDbx
+	 uXI6BDgooGV6+KKFzD0Xe8KtMLrWVg3uyvhvqJgryQVjMyMIIJzFBBLSS4LY7cDAku
+	 W87MDlXNktVzA==
+Message-ID: <1dd77152-bafa-4c4c-a85f-aba054065601@kernel.org>
+Date: Thu, 6 Aug 2026 10:35:56 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nas2iww3rivojx2z"
-Content-Disposition: inline
-In-Reply-To: <CAO9r8zM9H8iMOE2FE-H47CMUAExf3VcCf04anT=_Ja=m=sbr4g@mail.gmail.com>
-X-Rspamd-Queue-Id: 993BA1C0002
-X-Stat-Signature: t3nurntwdr4zao4pq3b9a5wn9cey3iss
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/ksm: validate KSM rmap items before hwpoison kill
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Longlong Xia <xialonglong2025@163.com>
+Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, xialonglong@kylinos.cn
+References: <20260803151151.3472893-1-xialonglong2025@163.com>
+ <20260805162937.1795310-1-xialonglong2025@163.com> <anNl1SSA3fidOrTy@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <anNl1SSA3fidOrTy@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786005195-488070
-X-HE-Meta: U2FsdGVkX1+optSnZS/63K1T3/kAzZBuYpLahXLGk21vRJIUa7zIYxoKDQ06tNrOjCmHM5bGIWRMk3GewZW5NkyxBKsqdzYLOoiLwTYx/ap9qs6dte7mKfQ3BGJqfEcLJNLq3esG2xteXky4eQnwa7uJt5W51q/0en4rwZMNYUYyJniIiVMPRMfP11e3ThZC4sVbXkQfSHUwb1z8++TtujRvxR48dwQqxYo1eV68lDuxmswMIcdDUVzRlENV/cHSXAjVmgGRWjMQhOrTeHxrt9++oaaom62hSfAn/+UvUrpfzebDnK4bZc//VqF9V+0th+M0O+Qe9gNNAtynmm6Z5bUtDOSH3oY4IUAdKmc0pLCpTfEA9ilOHgNdl4qMke6bvkGvm7ru2ClMKZMXQkKcdA0SfRxh53VuknDJwxNR6m9YosltE8fl/c1iDisd7JJp7kAHrGk1bSgD4s/l33Y6iEbewxcGOngGUaQN/ONTPMxzF29hN6xGlAv5buCk/0YOgoeE0rT+OuInjUIyejLX3LJCyRtk36V8RpGZmNSV2Q7mx//f/w491DaJWwtoAJol3aYXNiL1btFnbdo7dtfBZoaDuwltsAYxr/nGycOI08VOL9hf3EOKNmxjr7jme0+eljFdYR8CPQvV9gIM4r5PY2O3mXsRfM/5vsVP9v4eRdpgHCOmJ7/UtGhcnm8c5Z/1BzBiQ7deHAJ68VFRAiwFX5OZ60IAKelGQUIfU8C8GrzzTT9FQhhtK8OllpuXOBE/pp4xQAyBv6ATkFlR30RZFg3lpBSEDL7kWl/ECxtwB8+mZ8K9owuY20yOIjl6tU9a4ojspoHUFeqaZztK5eQB9MW187UBsiXx5UtWPj2F9AC5Mx8E/55NlVrAVqe3t0oKkhfN291EVfTyyPBcunQzcqz/Yv+xHmVX/NFEL0ZPUoENmUTghXLXiX7q4NmQ/hzHQneJE5w4Tcyhvhb7mUX
- J5T8vzJJ
- H+6epXkQQJxxe7F1LUOw0oiwxH/G/BA3dM/N893EKU/G3aExzMs6ebE6u7fvoAuEAAxP0X/1PM9AXeEVOVUbJgJU+g0kHOKmrniaci596y/xDD+gVMmLXLwwVeHDihoJRgXy6iGnKIxMDCah719nPBs7DrEb20ry6oEc8O8QdQdjcT2DmAxFpquDboKFRSK39DMwQKotrv8eEnwpHIrfIkK2UEkQ4Xr1Y2fDzeLzUZO0VjHLXJ3+8wfTJek6UFIBUreBmu8eEb43knJfuC8xbNiH0yv1hSHZTFR0H8x0Z7DsPQrTS6ZD/eSjb5YKapDxNfgQlXMYUXg2IKmzcaQgWdWZwiIoKbaQ20FV2u6LiGjIBbMvVnq4I6syDw9WUwdh+XH9EzCnmh2kv/rMwIZv1Tdmoyi7SHHHi4TQfG4DmGlOpK7PV094vhcsdwWMMvRQlRK0251HY0n30XLrlT8NTKhmjHCA2hXIPAM7TjpABxXggwCgdp5/tdXbwNykQIiXu8Q8X
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DDD3E140004
+X-Stat-Signature: 7z71537893xmeiyma466j6rpfb3gyfkt
+X-HE-Tag: 1786005361-778855
+X-HE-Meta: U2FsdGVkX1/Pr2RPNZ386O7hRutUqZc4W/BM6Lfx2zyKNxEOmc6A568HEBj3N2omLeM97t4F+tv4uaWFiOpULM0xreIv1wtJdhBp2BkJrjp5/5uiCJ8u1MwzRnCWHzwncyFjIqhA6vkWG2ecX43nPWVvnvHHMm3bGzcH/EjFjFGfmVPGVikuCpFQGgHR7o2SKFauQpdJIu9hZCH80fKdOIMCs/ra9JQHW2/are9p1aBwdKP65vX3W10vgtreLzRT1j2vV/jnSvKcGnMVm7WN7rBqIJ98J49D0qZFdG5A6z9lwthyui8CuKh8aojL/xGbdh3Nr2ekctMP9ukrwWekvGqm18po5eju5c23jjEJjofkU0sXcni0gv51TqeGseC6ZFg9iDRLi78/S6OcS0E8gc46oJ8NruiE9UyfSPKvATqXoOZBtY8nxZSd2SF5j697RAbV0XUoTMwF89/FBQRgL2zHNfi/5tg8oEjncjwhrd2kM2/WJf/DvuKnTW0eZzjDPzkP2IcxVKPLmGmWCeVjtlJP28QGbWRv50rEp4VSwfoHJh6WBo/GpAEV0fY3Kp3EFBv1sUzoLWelCVi7XWAG+nOEwfeY7DYhDZGMAaHaqa09iSQSvNPJss7yDDw/U2l+fqXmkNVg+woFj9xRbMI/WdFgbWEAXyhbk74KKJiQgIYaEB2V+gb3xmk46/1U2rlsMlzGCMrZm3F71YB9bVD2CzkgmWQtHDypoDIbZ06f3aVPrjx7rpEoYzDyOemI/omHJ+Qf8SMCP4HVx5kQ/ZiyeXXi9l89S/6BzkVsB2SPDngrkf2Re4iZNhEAVnodqjKyqfeIdJFsd5iNGeJRMOBEKBVs+OKDnzXLpsIH3Tp/CBd6Y512UxbEd5DVzOP1fsXUlYPHMfK+qCYctmPgdkrE9HnP1ZrFpKks0gt+klg9R3DUt2wtGSqGg7VaZ4uq9vt4HFBndXee6h0Ke3Ln01E
+ BTNNrnX/
+ vnhmseH7CorxzWyq1x33fU1T5LLp25DL6zdvRkrP5oQSYetk30dKDR8YgQG711hiTsBk0nOtVtFMvnZbRhk4rJBXv1DWjs8UiE1BILzD25QGjInsoKJnmO4D4ZDvn+eg6rx47i1S//WT28xW1Fu3s+4Pjx1UjeKxmkA8VUYA4P51aup+2frZfs48cePzkafhaPPsfijHssTutgGozPptujmxX5Q39SIfXn99ZoqTkhtwjy0G+6FUP39GvI+OLv6mZj0Ya
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,63 +139,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>> @@ -3253,9 +3253,13 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>>  			{
+> 
+> OK so you're literally doing an anon rmap walk here, with the anon lock held.
+> 
+>>  				vma = vmac->vma;
+>>  				if (vma->vm_mm == t->mm) {
+>> -					addr = rmap_item->address & PAGE_MASK;
+>> +					const unsigned long mapped_addr =
+>> +						page_mapped_in_vma_at_address(page, vma, addr);
+> 
+> Now you're doing another anon rmap walk? Why on earth are you doing that? And
+> won't this deadlock?
 
---nas2iww3rivojx2z
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/2] selftests/cgroup: test_zswap: retry subtree_control
- write on EBUSY in test_zswap_writeback
-MIME-Version: 1.0
+I think it's the same as with page_mapped_in_vma(): it expects the anon vma lock
+to already haven been taken.
 
-On Mon, Aug 03, 2026 at 11:39:14PM -0700, Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> > diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testin=
-g/selftests/cgroup/test_zswap.c
-> > index 49b36ee791606..312d51887a1d8 100644
-> > --- a/tools/testing/selftests/cgroup/test_zswap.c
-> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> > @@ -407,8 +407,11 @@ static int test_zswap_writeback(const char *root, =
-bool wb)
-> >          * Thus, the parent's setting shall be what's in effect. */
-> >         if (cg_write(test_group, "memory.zswap.max", "max"))
-> >                 goto out;
-> > -       if (cg_write(test_group, "cgroup.subtree_control", "+memory"))
-> > -               goto out;
-> > +       while (cg_write(test_group, "cgroup.subtree_control", "+memory"=
-)) {
-> > +               if (errno !=3D EBUSY)
-> > +                       goto out;
-> > +               usleep(1000);
-> > +       }
->=20
-> I would honestly rather create a new cgroup here instead of reusing
-> the leaf cgroup as a parent, to avoid any subtleties like this in the
-> future, or even split test_zswap_writeback() into two test cases. I
-> don't feel strongly though if others think the simple wait here is
-> enough.
+At least that's what I understand when looking at collect_procs_anon. :)
 
-I somewhat agree, I'm not sure whether the recycling brings any signal
-to the test.
+> 
+> Why aren't you just checking the whether addr is contained in the range here?
 
-In the case, the recycling and (re-)enablement is needed, I'd suggest an
-explicit check for emptiness, the best of utils arsenal seems:
-	cg_read_strcmp_wait(test_cgroup, "cgroup.events", "populated 0\n")
+Yeah, that should be much easier.
 
-Thanks,
-Michal
+> 
+> Like:
+> 
+> 	/* Make sure VMA wasn't split/remapped */
+> 	if (!in_range(addr, vma->vm_start, vma_pages(vma)))
+> 		continue;
+> 
+> Or something?
+> 
+>> +
+>> +					if (mapped_addr == -EFAULT)
+>> +						continue;
+>>  					add_to_kill_ksm(t, page, vma, to_kill,
+>> -							addr);
+>> +							mapped_addr);
+>>  				}
+>>  			}
+>>  		}
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index bac2eb5de63d..f7c5dc9248bc 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -336,6 +336,26 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>  }
+>>
+>>  #ifdef CONFIG_MEMORY_FAILURE
+>> +unsigned long page_mapped_in_vma_at_address(const struct page *page,
+>> +		struct vm_area_struct *vma, unsigned long addr)
+>> +{
+>> +	struct page_vma_mapped_walk pvmw = {
+>> +		.pfn = page_to_pfn(page),
+>> +		.nr_pages = 1,
+>> +		.vma = vma,
+>> +		.address = addr,
+>> +		.flags = PVMW_SYNC,
+>> +	};
+>> +
+>> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+>> +		return -EFAULT;
+>> +	if (!page_vma_mapped_walk(&pvmw))
+>> +		return -EFAULT;
+>> +	page_vma_mapped_walk_done(&pvmw);
+>> +
+>> +	return pvmw.address;
+>> +}
+> 
+> I hate this name I hate that it's CONFIG_MEMORY_FAILURE only.
 
---nas2iww3rivojx2z
-Content-Type: application/pgp-signature; name="signature.asc"
+Note that page_mapped_in_vma() is also KSM only.
 
------BEGIN PGP SIGNATURE-----
+But I am curious why the function differs from what I quickly hacked together.
 
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCanRGxBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AgPAAEAnkONm5a6/QU81n89rmaO
-gX8APeieENGJZExlGWvR9vIBAIX33lBPb1rWjVE6b1pdC7aLDpHTt2AoQfLJFbmA
-yzkN
-=sJQx
------END PGP SIGNATURE-----
 
---nas2iww3rivojx2z--
+-- 
+Cheers,
+
+David
 
