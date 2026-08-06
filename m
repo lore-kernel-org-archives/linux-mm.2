@@ -4,126 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBF6DC5AC67
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:28:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376CBC5AC67
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 19:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13B96B0099; Thu,  6 Aug 2026 15:28:37 -0400 (EDT)
+	id 373306B0098; Thu,  6 Aug 2026 15:32:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABBFE6B00A2; Thu,  6 Aug 2026 15:28:37 -0400 (EDT)
+	id 3238F6B009F; Thu,  6 Aug 2026 15:32:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB396B00A6; Thu,  6 Aug 2026 15:28:37 -0400 (EDT)
+	id 261C26B00A3; Thu,  6 Aug 2026 15:32:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78E3B6B0099
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:28:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A360C01FA
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:28:37 +0000 (UTC)
-X-FDA: 85071831474.22.D027D81
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 333D8100018
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:28:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=u1yVr8LC;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.216.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 094416B0098
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 15:32:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93D37A0F20
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:32:33 +0000 (UTC)
+X-FDA: 85071841386.13.D930CB1
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4F7CC8000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 19:32:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786044515;
+	s=arc-20220608; t=1786044752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XAupyRSlhOTRn+BAvQFJD4SahBYOrBgIWCm1aWD3tZQ=;
-	b=2vn9j6pnMY71fjgIr+OdEaRoktS9y3gSLDcbnCtfbA5Z6jrvYhEgWa5ZQXQ8poz/HNpM5Z
-	PMumjXluoj/8yv43AIV7T9PHL2Q9O4lBvMX2nz9usL4Rs5swP7iRK5iB27HXgLGoXkaMDE
-	m8QsJe6fcwioqVn03/UYLoD7878RKHA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=u1yVr8LC;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.216.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=XLlN1ovzTjhAxFTGUf8Dk3R8hkqV+QyGLVCYzczqdq8=;
+	b=SzTExUjQ3gOHZoQQUqkL2ylGePh74o8qttK4wnylVJSQrg/qM3AvZCPIgq3yPTO6L2+V9B
+	XtXm9jhm4Hyp97YegVstSaW24hj0nwtskukdvfJqO5+6W01I0/2c0S+s2e6Vs2zlfS6ZIt
+	q8chN0D02t8vWJeEKs9LJUdWXWqo14s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786044515;
-	b=xkY1gbNzfgAvj2AEiEC76tpHdYUkd/Vud67xeq1egU+yv6coooeG6hrRyZSD1fdIksPslo
-	SVMmWqoCEutioz+gW9wmns5LLz4bX65Twwqp8a6eKN/lNfqLQV2/JZ6U85+zBlADkTxTTc
-	WEIAT/BplOFGl4Qx3ddCfRY0BIOtm6A=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e08baf860so2446350a91.2
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 12:28:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786044514; x=1786649314; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XAupyRSlhOTRn+BAvQFJD4SahBYOrBgIWCm1aWD3tZQ=;
-        b=u1yVr8LC4KimfTS437mjhj6eDGIVcxZwCqwT063rtO789YV6tcJdhYL4mbb0Uya3Xr
-         ClRi/MV8eisHaelR4MGhsAe1Wt91BltDyTlwwEG43prRTA6GUZ+4yfGFZLjmth9VIu55
-         xcTsR7tQm077PDll3Yg91/DQvjgHZZnIa4fhtAH4NrqLwerTnFHyc9NvXF0H3kGF1yK8
-         IcR18dplb/adBHaXtxhb3YjG5v3DASnfq8aWutmYj1NQM0qxWeOtNs7NAkKGpAYpb77E
-         ZaUeeshwn70p1QmlVitoe15/U8EtIpblZenfRnvTDHB7W8T7/zRLFJMkkYy9vqZB+Lhj
-         3wmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786044514; x=1786649314;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XAupyRSlhOTRn+BAvQFJD4SahBYOrBgIWCm1aWD3tZQ=;
-        b=YMzf72ln3QrVAbvPnhDCVpqR5sojFsv/nvn+xiZHaovaQYiN8GsEbRmOxCcp3RzhjN
-         3226kaRI5kLEYcTTiIuUqnTM4DCxspYUw5GHdeINQsH9mqE83ExTWcV6CHbJ2bqoPq80
-         brCRbE1KBQsvjCoP9gB+mivknOuDJXyXMjV1eNACsGPYUhPjS4IuNvEzr0uG+HQUxDcm
-         D+JJDLMmnz6XXWP6OEfhmuQ6Rb83VQG+iCWL67JCOdqrFPRJLrd8uFqcZxoWU+nVRjKt
-         LpATIzzW28wc2OoRCtJ1F8i1eV2lFwpU8molSvy/HdtP3KzjxxtbpZWHFOGH4TLlTrCj
-         7m8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoXne+LN5utbc5XbDDXTRWCQz+MQifJKUt/RY1rbb1XQl1/Mw1o/ZBfP64/dWYsW5Vyq7/OLdSOWw==@kvack.org
-X-Gm-Message-State: AOJu0YxzuAwqVTxb5XxI995vSpO/snJZzU5YJTc8iDB8HJVUdjn19oqS
-	1zBNJ1xL9cMzpFa6cNsG3WdcW38YF+JWSb/986CI0jFEIzggzhjSiMD9fNnJpuHpVb8=
-X-Gm-Gg: AR+sD13DMuB6rgVSghjnnKDt/hjJ4wK8QQcC3eRIHB+Pw+KtXG/vITB8yI7PXvtQn1P
-	2kmtpKBkBu3Q19pcZ6Syziyhyi4bp4tcQkB17653OAAX4P+bnwiHGnpw4pjQE3eeRnuD7ih8sW8
-	OwOSmNBJx0Yjs7QyUARtx6kWdWq+q8nDVRfaFiAR3QJRu4PHvGQRowGeMvS1jSd4Z8COna0eBFz
-	hTnlGFTdDWwlluirmxU6G9Jq1sBwe9wIjAnYuQGYObcMmBtIyRaPdrJxwndwIXB2n9MAVowWRyS
-	QZnb5Qwf/cfCH4mzSU+jacLpoH6/IBun1SELF1Oba4LX3m3fC7f+vy46gOC348QFArFy6wT6aKc
-	+tfLnV7J23TH+Za2wNOnRCKinsYUghb3EdqIIDE+7V6tQUnMSzqZGVZk/ovsLecUXt7B9Xuk0yx
-	ZugeSdgWdHsR8Px7GextkC4UJoAKy0d5dB82a63Yg/AfNRm6dqQbzR5w==
-X-Received: by 2002:a17:90b:4d84:b0:381:5bd6:eb19 with SMTP id 98e67ed59e1d1-3903c5dfd9amr16227009a91.18.1786044513998;
-        Thu, 06 Aug 2026 12:28:33 -0700 (PDT)
-Received: from fedora ([2607:fb91:201f:cebc:3a68:390a:144e:1b87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315867bc261sm30046801eec.28.2026.08.06.12.28.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 12:28:33 -0700 (PDT)
-Date: Thu, 6 Aug 2026 14:28:30 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	t=1786044752;
+	b=OzBGYrN4X66zCT/U3VhMrhudFMr3Q4qCk11N4QJuRHwY8d9acDmnLxyKp7d2X57r0jErL6
+	v8QgSzn6G6odskDfTSmA8UDzKD6InhVjsWROM580MnN/x6N4Wcv2xaT2p/gz/s0h+/mrWB
+	jIN0P73mrdq7aC0979IdMZ/2J/lOirM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 7 Aug 2026 04:32:28 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	her0gyugyu@gmail.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: AI slop (was Re: [PATCH] mm/huge_memory: let special huge VMAs
- bypass the THP) policy check
-Message-ID: <anTgXv9loeo4U6YI@fedora>
-References: <0e52d0b4-064d-4602-8e7b-5744b05f24ea@kernel.org>
- <anSZpAjt84Pn7O_b@lucifer>
- <5b7e84f5-2007-458c-910f-7a6e1e3d3eab@redhat.com>
- <cf533fc1-db58-4c6b-a206-a8dac3fff391@kernel.org>
- <20260806164517.GA140051@nvidia.com>
- <anS6hcgMkEJocbDJ@lucifer>
- <10b07d00-57e5-499b-a136-f2148e870d9b@nvidia.com>
- <A403B054-108E-49E8-BFF6-BE5EF8E61C02@nvidia.com>
- <anTHABoAYVUn2XiH@fedora>
- <anTHSfP9Eq-2-Cng@lucifer>
+Subject: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
+Date: Fri,  7 Aug 2026 04:32:26 +0900
+Message-Id: <20260806193228.458685-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anTHSfP9Eq-2-Cng@lucifer>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F7CC8000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kqjhnububizi5y7uj6zrris9hwmuzaez
-X-Rspamd-Queue-Id: 333D8100018
-X-HE-Tag: 1786044515-110891
-X-HE-Meta: U2FsdGVkX194pbVFWdp9aiv6TgMxlnnJECLql5vxrir+1ydlgZDmvP5ZPvrnl06ul6Hj2klHaksqZg8azBg0076I7aBH5zkMU4UcEgrEoXpZY1RQWP3ZFF929NtLHlKy0030Gm5X4u+52cym0PN/qg/R17J4fl9HQQAaihccmJZl2+tHtHiJoj4glFtWzTaCWAlfnVRulrM64zdMpMEXxHr9QBPTULbqtdgLcuzRTLuRjNxptdBStd08cKNn7jM2Zj5X9mV7qRBRluja+rFT6uSchkDVHhRLRSaZe3o8fNEuP5pICiFORbkurf83JsIrgWTZklwgiVxmrR1CNabs5PcYdDRBK59QAAzk7uJDJI9NKBpkeuG3Kl/XBoAS/67gov479SDHluH+tl2uP9kGZP3kGpKDWpWdpqY34tCPBfKvTw/mjz8xbRN2YpgB9kDtF5qsscdRMq3RjRzK70TBtJ92QtOn6clldnSHaosKx7o0/PKKTZ1+GHvJU1E8tDVdK4/bahAmAIW/GvlrNqb6Apkkm5ra66Lh/l7Vkz9rMr74KDgiWDyIGYU7/bw1cwRzPeX8qUoJS/zERGQOwramXEbU7lT+L8/95GiFAr8p9kk/Qj5PppMkR8FBTSVQcV7NaqaztQ/v4la/DoOpxDnhhcHBvjbFNZ6WACplPYnfmyc9x9X87LGZnHBeNI1MIQ63alXneGSDt9JXEs49IndHYrtGhJ9ou8vFKtqxdlfUExlE3GTk0g6wWuCClSZsmkcvziPF7hlgU19buSiiRMjlynfi9tjKcLrDAYTWZdU5oH+SmlHKdKRpYCaDMyQS/mO2mGzeQi7IA9UOex4XizPPeWe8EF3dkxmHS3orTo6sbl1lhJ1yiRPqu+ynnGmavXO/+vyLbna33gnj/nUiqUc12VIwIOPvI7sJmMriBWfv4fyMuz5JFd90/5ZvDZf7vitH0zk4WFOBjZN+MrV5ulP
- jKECMMxG
- 08uByA/DBaC3UECkxFuuDdyI81Iayoavmj6/Z6fPByCWZjZ6O2YiuWbSBwbBpoW7Ra2gh5nl5OkPGar2vijOAlTYhQGrBI8n4wXYPjtUEknnqeu32l1V/kiwJIobiO2G6VcLsSYAHLXLrGmrW2M/Qguz0tGdkf0ehamnj8ddLjhUFdb3KfZNUBBdDtTNsLTJQIcTs6Yja9V0g9nm53AOHFW1AVtCgkFKLtSVNfvLiddWKfTtnvZhVpVZkjzgQmlM+UPCs3FqwvUR9wixN7M3dY6cKJ789tIuiL92VI8OrWNKsDdVCLp+VtexuWVoHwC4cYh+Yuhu+xYjwdSwEAjEKmw12OmRPPKe4iwkSJTGqYsUWUptMP9eqjgAucg==
+X-Stat-Signature: ohtyu6oig8yojin76ruf3hnamoap3naj
+X-HE-Tag: 1786044751-363793
+X-HE-Meta: U2FsdGVkX19mer7MjFte56EROTfU1LvkHT1xhAUdV5VhWdSwgi9Uwcr3A+yF2h1BYgoYPvUUx6wpKJqodY7/RjY+/RG2rP9KBB81xmlLm1N238hh2pwqfMxr+hbcYsFCZu8ltLx612O53uJoGhZyZJHl0Zgg5cfHpkRdP21BybHeThSw1SYpu0z8IzPfcDlqC6Zl7w5ykrdcGBvtz57xhQix8OBsZe6OGE8uHNPvCZIdJ6B1/mRjTpfqSfXOqevccnmaCSoDrZWmmBTxOnal/yLV2r1rfhCMdUtOlKwSzbLpA8lxSAzPD+xuiQbGR7GCeap1MizUJrCtTxDlEpOasPdEklwJFffRJfrboz9mY7/n6HVVduFqlXN6Bmtog0sA6NudHrBH3yStCvSPjepA2jzsX1cK3k0ftGEd0j/Csg1gX9R2hilfceKSxe1lEq15efpTrYzf7M4DZRb3Ilj7YFqn3GgXlxKHAlJ8WjqZIzsAOYolDTS8d6scQA/wZfcmUgGHKo9itJrm+c8kYisFNKxuJie2fu7jfaYGQ7RYnQhEIsYOGwntHj6Pd7NyD1Dfu6waQvnmzv6hKeXIqLf57RDlDYUVa2n3J1BgV6VM9zTMKUgkuRerwFNmKfVCQSJ0jX5jQetR0zpXtzAsvVg2l/ivUiypSwux9h3GLl1j+e314okJR3ZHCOjTVPFNAn7zQ2AqtigduGBQx8QyjMAkTpmH4/f+gkPpYu+CviuwdIzsKu9PfMTJpZAU4BLF6z0gL1SKs2MfiID6ULT/VZsfEVN8OptWpQpWN7vM4n/medho2p8ARwm8v7ouo6uSr+MUM5b+Lxj3NwWJSCecEydw56ns8TrjIYxTRKfQ6UuMJgYu4JD2gMN5/ZKJbd7e4hf00Vnfhl8mekaVACYhGW40aoXJaVIK0y41bw3+jfgAoWGI3gJl4F34PMd4OABwj2cKV4/9BJke6MnYmBggv7h
+ v6+/SPgm
+ 1ntwig0L5hg5E9uTw1VGWAoOm0CtBZCuLGLHhYsio3rcF+dkj4aKYHF9pK0iTE3uK0smblVqX32VQym/AZccg7obLCbEA3RtDrllbB3BpVEbHeNdgOOQty6SYx7y1ILCzwEQSbHR/2kWDgRtIy+t+ztYK+nCidqND1WRQRruMpGE1x/e7qWVi4wgqbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,37 +84,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 06, 2026 at 06:42:49PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Aug 06, 2026 at 12:40:16PM -0500, Gregory Price wrote:
-> >
-> > mm gets everything
-> > mm-review is curated from mm to reduce noise
-> >
-> > Maybe would have to leverage a model though to surface critical things.
-> >
-> > Just an idea.
-> 
-> No I don't want slop going anywhere, at all. Nothing.
-> 
-> If you slop the reward should be silence ideally. And certainly not anything you
-> slopped going to any kind of branch... :)
-> 
-> The slopularity is upon is Gregory. Behold the desert of the real etc.
->
+find_next_to_unuse() walks a swap device one offset at a time.  Slot
+state now lives in a per cluster swap table, so patch 2 dismisses an
+empty cluster with one counter read instead of SWAPFILE_CLUSTER table
+reads.
 
-I understand the sentiment, but then we have to reduce this to practice.
+Patch 1 is an unrelated one line comment fix noticed on the way.
 
-And unfortunately, I'm about 99% sure that identifying slop is rapidly
-going to approach undecidability.  We're lucky it still emits em-dashes.
+A debug test confirmed the skip path runs, and swapoff completed
+under load with no DEBUG_VM or lockdep splats.
 
-Unless we plan on converting the list to semi-public (which feels the
-anti-thesis of Linux), i'm not sure how you get there from here.
+Changes in v3:
+- 2/2: clamp the scan end with min_t() so it stops at si->max, rather
+  than running into the masked tail of the last cluster, which drops the
+  need to explain why walking that tail was safe (Barry)
+- 2/2: compute ci_off only where it is used
+- 1/2, 2/2: pick up Barry's Reviewed-by
+- Rebased on mm-new
+- Link to v2: https://lore.kernel.org/r/20260805141146.127776-1-youngjun.park@lge.com
 
-So the risk is - do you over-bury and make it invisible, knowing we'll
-miss legitimate bugs and fixes - or do you do something (anything) that
-helps you ignore it while still being inspectable and curated.
+Changes in v2:
+- 1/2: reword the comment to "array, one entry per cluster", dropping
+  the redundant "on every device" (Barry)
+- 1/2: pick up Kairui's Acked-by
+- 2/2: drop the min(), the swap table is always SWAPFILE_CLUSTER entries
+  and swapon() masks the tail past si->max as bad (Kairui)
+- 2/2: mark the unlocked ci->count read with READ_ONCE() for KCSAN
+  instead of cluster_is_empty(), whose other callers hold ci->lock
+  (Kairui)
+- 2/2: expand the commit message to cover both of the above
+- Rebased on mm-new
+- Link to v1: https://lore.kernel.org/r/20260728155907.391820-1-youngjun.park@lge.com
 
-And burning tokens to fight tokens is just blatantly a losing battle.
+Youngjun Park (2):
+  mm/swap: fix stale comment on swap_info_struct::cluster_info
+  mm/swap: scan by cluster in find_next_to_unuse()
 
-~Gregory
+ include/linux/swap.h |  2 +-
+ mm/swapfile.c        | 43 ++++++++++++++++++++++++++++++-------------
+ 2 files changed, 31 insertions(+), 14 deletions(-)
+
+
+base-commit: 1fb556c523f6c18b43b1f52fb366f61c9963ce06
+-- 
+2.48.1
+
 
