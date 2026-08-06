@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41890C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0115C561E6
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:34:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534B86B007B; Thu,  6 Aug 2026 03:32:44 -0400 (EDT)
+	id D76726B0088; Thu,  6 Aug 2026 03:34:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50BF16B0088; Thu,  6 Aug 2026 03:32:44 -0400 (EDT)
+	id D00396B0092; Thu,  6 Aug 2026 03:34:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 448A96B0092; Thu,  6 Aug 2026 03:32:44 -0400 (EDT)
+	id BF1CE6B0093; Thu,  6 Aug 2026 03:34:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 257126B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:32:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07F1E8067C
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:32:42 +0000 (UTC)
-X-FDA: 85070027364.02.7D9E97A
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 15E8E1C0007
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:32:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b="z6OiX/70";
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf21.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 997A26B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:34:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24F231606AD
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:34:45 +0000 (UTC)
+X-FDA: 85070032530.28.EBED13E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8715714000B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:34:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gRtWObil;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786001683;
+	b=6A8RqBGZNo6502AD8joFpUsJq09p2bp34JESn9noQ3zRVoWUYT1zSSBZclsRGc/Gk8iPdU
+	IxqP2URb8rROarn6fM3nXwzBlkOZCuYsOXQ4dIaQr+W81ZuOF0uc5IfpDW1xm83YHz7bSf
+	Pq4+OL/u2WvE+Vk1doTyoLJTRUuCVm0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gRtWObil;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786001560;
+	s=arc-20220608; t=1786001683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2khMiJO3zHYteSsGwdKy57D9iUTZKywv66qzuT92lpw=;
-	b=b1CZWypmJIOic8CxCbx12YSSDHoPDRc9DenGZY+JS+OKeOYh8YycknB4/z0nduiCzyLlxC
-	r4yEJahGRu3ndZiuWxiFyQpdTK2anKKiX41R/80Wx5RUva20MOQhVFTXpuN08SO+MXomdC
-	QriT4RpLjIRPRZs4tkTMnKV1eqiduXY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b="z6OiX/70";
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf21.hostedemail.com: domain of shijianlin11@foxmail.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786001560;
-	b=BiDWQwIFr2mUXCcFm/zwA+Bd80mzuL7jpjgD10qEMJ+SaoMubCC8drJTk+GWrCZiATVsDV
-	H68QZAXarSqA53jnpOhLeIvn9Dyx5G31o+9dqUJYPTBRdAkPGgBACCh9x//r0LjbSx1mCk
-	poB31Xhr2Hszkd5B363qAumWdxLi9v8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1786001554;
-	bh=2khMiJO3zHYteSsGwdKy57D9iUTZKywv66qzuT92lpw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z6OiX/70b7FIstpALrkdGIoczZlUsusF3bjHnTJ9xN7x9ZUX4mjBovsy6pRboXxa6
-	 0+MLG+CaXt6CW4Km7xQ0L7ITM8I2qbdWSebE3o50Zjv3mjINFMndZTa4bBjzPFSjR7
-	 tK0m31n+o6roaD795gKQakS2tbnU9r7DclwF6viI=
-Received: from localhost.localdomain ([180.153.160.8])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 81F81CF6; Thu, 06 Aug 2026 15:32:31 +0800
-X-QQ-mid: xmsmtpt1786001551t13d4u295
-Message-ID: <tencent_4DAA4F0D677A7C544D9448170639A4524905@qq.com>
-X-QQ-XMAILINFO: NwU6Bou9okj/XektyZBe79R/S3EaKXnh95MSfFXour1bWJ+cPySnBK+GL9ygNi
-	 jJGJgCD6J2dxfmnCjeJ65A7AxT8RvlGNTtoQHcxfHwd7ZeP91yjpHNOpyox2WypVu+pf6GSLShP2
-	 S62p21iQ+gHHXFioMlaXNJrgbfwo44KTqMrvTI4O08I7bq7miFtXnVumd5cxDiKO3Ix6PHWQHkX0
-	 3jIYF3u+lIkI9ofmtcyIWH/UMKs4chPWZYyk1Ou7Y0Z8JQwqaTyCxU2ttbsrTIWkfk+J1EVAbDpk
-	 rarvFCE/7YMbXzZxTZMgyU5Os/leE5WnKAwC+GuHgWhYU5+oKs9Hpjho/7NjT6xiVLIDoNEL2wTw
-	 gZ1KOEdGDEtgT1ZX20gIsHkPiS9W2pPXnpbHcDf+4ymX1U7Lkq6li5uyiXt7F66uryJ6O3Tl5+wX
-	 1M94KpldXF9klGy5oJMM2H/OJHCC1yFMDtjpUZDb4oEO/jKbrygyy18l0bxhuskuVrw5PiHAtf01
-	 k3WwCKuneFnkFCpWxJPJCnwltEzj0+e5HlGJ0VG/XoOQsx+TBSnOb7BrffqnivTowP2DGnlGM8Zz
-	 KEb9wdcu2ehfuriCrpRKDl2gfhDSRK7jEY0XNjM++JeeMT9PfhYpI0uk9KXG5m+dkhC77m1XeYua
-	 Axr+idvDeH9sNxstH6drGwcH0qUVMyCA2x9tWd/5QJ/jfjsO6Abt9hMBLub6LzyhrGCyxjbT5MLj
-	 5pNF2bHah5uetb0Jsb4Yau76DEuLbh50slzN0ER9nKuKcUZzFf3/bximrtrT3B7tzghTSRQcOrZ4
-	 w5SBWhQmJMGx15hPzBclLqNQQRRNdjo8bFOmVw01uBMBKqsvCzJCr3oziEVL+yVpFeAE9Rq31Vz3
-	 fT/gP9WVuFSzQCYLgBdiC2bSkmhi5NQitw1UE7eC2ediN1k8X1096nxUVQfHo0Pd/9l6dynAqKsY
-	 LcKcdBsQ8ETylV9f1OGcyX5kqHpFlHwqv0ljITERjBwBQdYScAvVPSychlPdbgi1rbldecH6uUo5
-	 hyNMctrV1X0IulpcK1
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Jianlin Shi <shijianlin11@foxmail.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	vbabka@kernel.org,
-	hannes@cmpxchg.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	ziy@nvidia.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
-Date: Thu,  6 Aug 2026 15:32:19 +0800
-X-OQ-MSGID: <20260806073219.440594-1-shijianlin11@foxmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260803174817.faeebcc4fc67a053a47548b4@linux-foundation.org>
-References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com> <tencent_B9556590D4B65ACF74C06897689A6E39F206@qq.com> <20260803174817.faeebcc4fc67a053a47548b4@linux-foundation.org>
+	bh=y3wUW9A5onn8mXoBrGXcecd/b5GN4A+lRTgjr2p0JTI=;
+	b=BtTwmkVPfxJ+AQWnuygIzh1Xwr7+gRuWMOpXeVvH/fBeNkBXb5jY07hlqMyCGZ0u5RS5FZ
+	qh41X7ndAB6MswnwyuxCe5GoB1/FLQVDsQbTaVjKf0tQ5P8aoCPJTiEoPK/pGzAAplmbxq
+	lt5t5i+Pe9YcU4ZKSmWjzvAlBsVzehw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A43C60A9D;
+	Thu,  6 Aug 2026 07:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA9D1F000E9;
+	Thu,  6 Aug 2026 07:34:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786001682;
+	bh=y3wUW9A5onn8mXoBrGXcecd/b5GN4A+lRTgjr2p0JTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gRtWObilZ/zqY2xNJFCFGkSOxfW+x1vY1mLHvaVfFn3nCz/YO+ctLWfNTTs4szgnu
+	 yTVCVopxmFl5NcnYpG991e8Bt2Ezz8pE1lZATTWxE8x5kpf0Cga4wRPeWCS7E5HqWv
+	 XYFKlbUMhZXVnLOpWi/i+ZQVJSvS2hDlXe0DDN6dURjWleKZWV49tMZzt2Af3x0wCx
+	 girzSHfnN2fGQM3POEWVr+brhoQK6GI2hxA4PAd23gY3P1IVF+HqesJZch2/8pByI2
+	 /EHEMqZTbBwqX/8U8p+wI2vggLbJGqS41xPiSDTkTcAYl1PUWUd+oug/OamioWoiLi
+	 FVdw8NszJIKKQ==
+Date: Thu, 6 Aug 2026 08:34:22 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+Cc: linux-riscv@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2 10/15] mm/gup: add fast-GUP specific lockless PTE
+ helpers
+Message-ID: <anQ2bW3JxraT6PFY@lucifer>
+References: <cover.1784201104.git.cuiyunhui@bytedance.com>
+ <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
+X-Rspamd-Queue-Id: 8715714000B
+X-Stat-Signature: bgmk36r1ek941ttc44xtirfsjdzmqddt
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: wi45ct5o7iuwazse3absdrcsw6ojx96s
-X-Rspamd-Queue-Id: 15E8E1C0007
-X-HE-Tag: 1786001558-431891
-X-HE-Meta: U2FsdGVkX18NQT2SLCca+zDEIW8MoID/59aUamh+oCjyo9IxEYht1J+Qzli/gCWOC1pl9viFv69XYN+z9sfTMDn4LLSkg/+nZrKQaEvocjzmNM5hVlSj2yuat1oqR6aBPRnGmxc+YCghamoi4s4pywWfSnmNCCNqNm8xpq2Tt18szO7zab/ErsxgfsWuFpvUEUbjd4MK56udnOvyYrdLU5aB17Qdg5MfOxKVWRzeQLR9AzHElGy4qqzYCr+QEGOKepCVoVQv5+U9AdbFlEvptMXJviU0eCbHfSd/OGSsvES8GwHQHFdU3gPkeU6BiYcC+W9Xq2MQqOgYE7ziUAvw4J+BgN63n0u4mZ5mkOb8MQVhpc+NDbVkc0Mrx6DaG5bCkc4B8Tiv96kLFRqpgRPzhmmMT7Uzd5zSBLxFdJUk8DC7N48cSBsYxK5i9ANSk+75qsGHLMu2/Vv8BP0RiO79iYc828O4zuUrxd634cedOMRc+0qmITpvGyBx5SJiUyzX8of8vdHNQncP9aRzAPyxCvQvGnbcKcrg0ekBVdY7PNS7OJiKsffJavbQmKdXDw2NUAbkqObrUz9DBtuizFGgNfNjVY5a13F0dPKnUXPv+HoczTOH9L4qna8zrzQscw9EKsQRL/TVqFeslY/QM8hyrvVffksNccAIZM2jNwKl9qwrQS74Tnbyunc4OtyvVrTuOuaG3dY28hCkWUGmM2PCrqVappxUc3VI4yl1wuLFzE7SroIJ3YjYrYWYKv/d3MgtyhJijr1kV8eKTUCtt4X4mhz/Q9UEqNuMDPQ+2BIH0HIkDXAZxdoZ+1FdUHAhyur6jBdp5wwCbnJ3QwADL2DdQ9S/HnhWBrxu0Lr2eJV1uCklaCS8py53B3BNhZo/5t4ZXoon1lEWXMp4FeLv1cjLHHrLIK0wUBU5qj/+pqz2ESseYj/Pllxmxie7TbeA7KN6rIUjSlBfWAIUfHR4Ozh
- yNUfFOoq
- GylBmMYzxBpTgwpFQ+NJ0LntFobfVUEbmIsoIdIi8iGy0owHsw7qySmqBy8zyIo4T8p42cUxxsk+JGXVGNjd9FLaP4P10C6FmmBU1TbRrg5rpO8vwRUguyQlk3KBbkXqaz8aa+r9UniPnNWccOVf+NpdofEo+FN8Y9wpmHZlrQ+LlCyH0UYtwUxjDyEqpm90lLzFBIGLI+qbfrmaXin750oOPGePJ5HM1kZeQlst19EOfkIOVHBo9Tvrz5nunDtzQequTvywr/8rVcp4=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786001683-305935
+X-HE-Meta: U2FsdGVkX1+Z9zNANs/DJyvWEHPhCh2PH/LCbfE5QPMbIkU8uF4DZx8K/xHx9YYRlnbERmL0uYyORtFovticQKgJ902EE1pgzdmUohqQpJj91OMSHUV0O2po2pSvsj6mB6T7/5q8UZkYxs7VPCFTh9TlBPCcNngNu1B2B84r4nAXaISD81xobxNuPhaw9GTHAxYi6kVzK1s8NpOJ6qxVtVXzqTB2RAdbI8PNI0ytW3qz8pZ+gqUYmuNDO6teZj+LKa1nemR6msM+MVG+UA1ES+BPIcqyo1Iewwpni2ITFZt8fHOO3RSszqBXrNPOxzGeWdIsZpAmo/GpP1dUehe/TEO5WLe9KWuLNC5rySwmiVCpb6XgULvibBksshY5dCrBEh4lPr/KaBiO4eRiUQDwFlCu8TJDRYSB+ZuNY8+p5zkYNUQwb85Y9k4ZL1u0pOgRfCyKopZqSYVBENXfRYRofpAIpLJNsyG/vAwea0zuxfjz9Y1t+LhG5f9LBk7FVJ7iE3UuHGx1mJvA5vIGekjCX+Uz58CR//zLKi7KI9yzu1F50/bFgJ+a9hD+q1/YKU6F/H5kCh9kIVs1uaQFzZTsT6661lLvaitACEliH6mHx90/6KwKrLdEHYha1ksH4bmTNj/oYoMBnXllVHKAApSNoAZPWb5VpBlLkK2Hz5y643o3TgUjJV2zJ9Q8YUdpfcyxMnUvhLFYkCeD603xkFlZiElTKLcjw+eCEsHtCdxXnTcWnrpbAXnXqSwy0OY0/cfsb5Krmvo47ap0PXRhKAqg3JtAE/g0ZG878TkMn1DgCqZuI+2qJi+k4fEHO2NV9V+SBLeeQq+GQ/sRxz/vqEEu7c8kQAKMAIAqkIkwBVHKA8sIA1RlehRKwCYMpLyU9LM3JDW1d7Ty9U45nfz9ej7Z6rWPWVxCeHE/LDl1bndLCNAgjdmNqMgJJApvVMeM6j4f6YuPnladItQ5aaGqIHX
+ a3cdE5fi
+ nY8T+nOXIRQJ2cGdH0Z+RZJy/JZNjcN6kkQYaURuz6DnoeuCxB5XSK43kNkP9yWw2f8CmmUf0uiPy8d8f4UYghbpGJNAe/LwO3yT3kM3N2HJJbQZN5vyduM6cw7SMTKHoA1agNdz5pj4WI2jSe0JjBM0vOLiUwIbKViUFev5erI5rlpcnR4UK/HRtEkq6qlx3H7cBvDY3Pr6n8FdpMzKPZATjXdBe7h1DdGdzXRDzCA1s91vpwSDZyYlicGU+Dnb//tkrdd6alzCAlIvGWwJqGqg/0PMOV3UO0lSKQcNwvxmgbCnM3J1/eb92BqwCfMotcS+eKscThSIpHSJ5LUk5RtpTlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,30 +99,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 3 Aug 2026 17:48:17 -0700 Andrew Morton wrote:
-> I find this a little tidier:
++cc literally everybody you failed to contact...!
+
+Why on earth are you doing sending a series like this which changes core mm,
+non-RFC and at v2 to boot, without bothering to Cc relevant people?
+
+I am also very confused as to why you are sending an ostensible RISC-V series
+then changing how core mm works to fit it, that's not how that works.
+
+And if you're seeking to change core mm send it as an RFC!
+
+On Thu, Jul 16, 2026 at 08:41:45PM +0800, Yunhui Cui wrote:
+> fast-GUP snapshots a PTE without holding the PTL, pins the page, and
+> then revalidates that the PTE did not change. Keep both reads under the
+> same lockless PTE semantics by defaulting the fast-GUP revalidation to
+> ptep_get_lockless().
+
+Why?...
+
 >
-> --- a/mm/page_alloc.c~mm-page_alloc-only-update-lowmem_reserve_ratio-on-sysctl-write-fix
-> +++ a/mm/page_alloc.c
-> @@ -6926,7 +6926,7 @@ static int lowmem_reserve_ratio_sysctl_h
->  		int write, void *buffer, size_t *length, loff_t *ppos)
+> Introduce fast-GUP specific PTE snapshot and revalidation helpers. The
+> default implementation preserves the existing ptep_get_lockless()
+> semantics, while allowing architectures to override the helpers when the
+> public lockless getter provides extra semantics that fast-GUP does not
+> consume.
+>
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> ---
+>  include/linux/pgtable.h | 18 ++++++++++++++++++
+>  mm/gup.c                |  6 ++++--
+>  2 files changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index da14328093a86..62943fcbf7046 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -813,6 +813,24 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+>  }
+>  #endif
+>
+
+Of course, no comments, helpful!
+
+> +#ifndef gup_ptep_get_lockless
+> +static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
+
+rawp? This is terrible naming.
+
+And 'gup_ptep_get_lockless()' is worse. What on earth is this function meant to
+do? And why is 'gup lockless' considered different from lockless?
+
+And you return the value twice, because of course you do. Why? Who knows.
+
+> +{
+> +	pte_t pte = ptep_get_lockless(ptep);
+> +
+> +	*rawp = pte;
+> +
+> +	return pte;
+> +}
+> +#endif
+> +
+> +#ifndef gup_ptep_revalidate
+> +static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
+> +{
+> +	return pte_val(raw_pte) == pte_val(ptep_get_lockless(ptep));
+> +}
+
+Again this naming is utterly terrible and I'm at a loss as to why on earth
+you're doing this?
+
+We don't need to abstract equality checks?
+
+> +#endif
+> +
+>  #ifndef pmdp_get_lockless
+>  static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
 >  {
->  	struct ctl_table tmp = *table;
-> -	int ratio[MAX_NR_ZONES];
-> +	int ratio[ARRAY_SIZE(sysctl_lowmem_reserve_ratio)];
->  	int rc;
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 99902c15703b0..72fb147193e55 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2842,10 +2842,12 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+>  	if (!ptep)
+>  		return 0;
+>  	do {
+> -		pte_t pte = ptep_get_lockless(ptep);
+> +		pte_t raw_pte, pte;
+
+What on earth is a 'raw' PTE?
+
+>  		struct page *page;
+>  		struct folio *folio;
 >
->  	if (!write)
+> +		pte = gup_ptep_get_lockless(ptep, &raw_pte);
+> +
+>  		/*
+>  		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
+>  		 * pte_access_permitted() better should reject these pages
+> @@ -2871,7 +2873,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+>  			goto pte_unmap;
 >
-> A bit more self-documenting and future-proof.  What do you think?
+>  		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
+> -		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
+> +		    unlikely(!gup_ptep_revalidate(ptep, raw_pte))) {
 
-Agreed, that is nicer.  The temporary buffer is meant to mirror
-sysctl_lowmem_reserve_ratio[], so sizing it with ARRAY_SIZE() makes
-that relationship clearer than MAX_NR_ZONES.
+Why do we need to refadctor a comparison between a local variable and a lockless
+get?
 
-I'll fold it into v5 and send shortly.
+I'm just so confused by what on earth this patch is meant to be or why it's here...
 
-Thanks,
-Jianlin
+>  			gup_put_folio(folio, 1, flags);
+>  			goto pte_unmap;
+>  		}
+> --
+> 2.39.5
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
+--
+Cheers, Lorenzo
 
