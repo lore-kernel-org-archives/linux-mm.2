@@ -4,133 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4328EC56208
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 12:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C16C55ABF
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 13:20:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B9DC6B007B; Thu,  6 Aug 2026 08:54:14 -0400 (EDT)
+	id 3C2E36B007B; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16AED6B0088; Thu,  6 Aug 2026 08:54:14 -0400 (EDT)
+	id 373B66B0088; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0593B6B008A; Thu,  6 Aug 2026 08:54:13 -0400 (EDT)
+	id 23EFC6B008A; Thu,  6 Aug 2026 09:20:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDA246B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:54:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3546280738
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:54:13 +0000 (UTC)
-X-FDA: 85070837586.18.D04A275
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1BD61C0002
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 12:54:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="M tkxXCF";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fJVA/Ocw";
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786020851;
-	b=iQgt4rxm7gsTCQCIN3hHKaQpiPI0MlDhCIdRMLeiLxZ2ne614FP+zC91ZYtXSPf3T7Tu7z
-	U9OUfYE0OdM2UTc7CFJdnyL6gxkaR3iZ888+wHaiKpVEyuCQeXeEXbQ5byyjYhVbijzVAs
-	2oRLGkDdpkxdWD7zvsfMydwvYt+l0Jc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="M tkxXCF";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fJVA/Ocw";
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id E63A76B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 09:20:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 668C1140671
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:20 +0000 (UTC)
+X-FDA: 85070903400.07.8D2A441
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A1A2714000C
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 13:20:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Rvte7yVo;
+	spf=pass (imf26.hostedemail.com: domain of 3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786020851;
+	s=arc-20220608; t=1786022418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk8QJqHyFI=;
-	b=CYB57ZTIz6IVUGK+McvMhLwapsrtN829Q/GLQi2pIbBJS8vlkea2cAcHz0wYxzWCHRCx3b
-	Cu1xV4QJEN6YzExfxhZUEITPgFhapc5FA5mDKyFtjTA5H0pl1lYTkust1ynBqC6H4Lb+uK
-	Dni1hvX+P+QKi6KXPhndTa5qMP8uTY0=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 1836C1300171;
-	Thu,  6 Aug 2026 08:54:09 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 06 Aug 2026 08:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786020848; x=
-	1786028048; bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk8QJqHyFI=; b=M
-	tkxXCF51yBq/Scm0WSZtqD0Yi0ZL+ejGgyLAl2g4xwwu1SWQqNEnXbCjUYqvgrLe
-	UG3TEry23ZU2puMb9M768HFFpGSKMvYMSZYSP/RiriT8PCMHiR/RmYUpdHQMNs9w
-	gNmT/Pk6+cnRZNoAFMf0/DvlvQHiq93BsXn+F5Aduo+EingsDnO4CX756KMWQRqh
-	j94CMBBxlBxH9hONmNZKnG24rlqQZ3hUlAuIOB2RrvWy1l95pUdm7cT0byRJxMeu
-	yOwk36v2DONDsjHt07xhlresoIx7ugCRQ4GK30aoSySoufh42yR2ntS8MEY0Gph8
-	eNY/6dKucLwMRRGGzB1eA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786020848; x=1786028048; bh=boSk8DCrDRo+nTQeMwIqD9dIYw64wqKC3Hk
-	8QJqHyFI=; b=fJVA/Ocw0kwI++6qyU3lVJ8XXRZXjjo8OsuhBXopVBL5Gi0SDFF
-	SY3sCVzExoBY4TDm63vfRLoP0oHecLFFwCcL5OM1/ek7gcOcGyHe2ImSSvgP5wth
-	+qZ3bUBoo/yCwgSkDAXEpd+POD68u/+sDzGhYy7Wtka1f9reOQDIJSRDYoDwgiMN
-	RoeY0hdiog6Uo/pBR7JGMblsNCtCbBlRT1z7GF7tdCvUMXZMM+kKPTYqOz1NAbCQ
-	R50t7/uE9mMlyfpH6ES6y7Z9IMn+bFGsRkXz586AwunrhOPthAu80rQeptJ0Zbxc
-	hnSEmVUxGF9sSWXcmoyOHoxOHQID5mL+nqg==
-X-ME-Sender: <xms:74N0asWn0q3v_15_9EDX8klo3SmwQoxQzs5G0RrCbc4m3N_qDsqFQw>
-    <xme:74N0asS6C1peaLikjP9aCAzr0Liji4CBpjx-PGQeVk_ZI_nsNzllqhjp4nkh4hOLx
-    9mVnO-uZ16N1yzrgdsT8npKEky5ySgeI4injMzRwgjIpFfXBXtyE8Mj>
-X-ME-Received: <xmr:74N0akA7tr-IyAyNEeNGEKwMs1sK9lDgMB9hyWiYnva30lyctbUzjKD3OPo>
-X-ME-Proxy-Cause: dmFkZTEWPsOtcs8rlbyu+haLTgD87qxVOKeHxO2koB2E72cB+copeN+dnWel8hzi5LJSYt
-    C3RYPbMgI3aChVp3MM27BqYAIvooqSQOwfHVTPpCS4SyhZhJNP63H7BJscxaGDWECUYhq7
-    Xh5lsxxCL1LweJdqz19k2Khgm5RIYqRjAgaoxBIpGgZXYFLu/fqoL/NIX4IiYqK0UMN2v3
-    cuSdIMrx1T3qFnXvpzGz9lMGSEvJVAcogfvPt7CYNGB0UYojKDsvJqyJRNgqSCtyOivHD6
-    3Er8znEcn5ixqi7kI8W2bGtsUcz0aUbV9DVi6+mfHaO+PAuE/RbAazV79zXw0Tg31VHfbE
-    6ORPkT+j/gU1RSWG30fwJ1akU3di8sPQs8/U2s7JlWeVPJGaU85z/iv04sxDEG70ciT/s8
-    ysF/YDwaU10k3d3d3YIftsAHkbd8jzbrAa9qNdh5q+e2GXUA1Pb09p5dCvuVJx4fx/57Td
-    SZbMrlu4+2/hHAoPJhuKWkUdeQbIpT7EBe+VtDYg6HTV0I85uaJItvxlo1WglK0CxynGg5
-    hm9TZFMSo4NP5hbIGcIy4gVKtNAjm0w5iVvQaxMMQVsAPBAEg4Gb/i1cWB2Ssbupv7PmFL
-    y/Vr8XeHRXDKLSXJVNuJhLax88OCAYeD0oR6tR9utRhZd5bBo2moBUQRJ/bQ
-X-ME-Proxy: <xmx:74N0armI1GVqgQnbgHL0r2X44Fo7aqVvBCAeIDkyQqOex_bSCtVmcw>
-    <xmx:74N0akmyBrIxe-RKsor6sxTZsoyIBpEFptPGPMgsi6g2d79_8ACCBg>
-    <xmx:74N0aocggu8UGrLiUGdlRP0DPeOT8rBuRj-1tVrBaqoTvyNAqsatgg>
-    <xmx:74N0aqy6pa0hoSWV3cQltZSQ4d9YXGzrbr39k116RLiOe0HA9MFlVQ>
-    <xmx:8IN0aspOlZEYh7XxZ0YV7kjew5Q-2YKIm7zR58rwXBROndLgXvFlCFSF>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Aug 2026 08:54:06 -0400 (EDT)
-Date: Thu, 6 Aug 2026 13:54:05 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Nico Pache <nico.pache@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 16/16] selftests/mm: skip khugepaged shmem cases without
- a PMD page cache folio
-Message-ID: <anSClqrkH2y3pxpm@thinkstation>
-References: <20260802195254.1937477-1-kirill@shutemov.name>
- <20260802195254.1937477-17-kirill@shutemov.name>
- <DKETQDCO9OYH.2FDBR4ZXGHLM@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKETQDCO9OYH.2FDBR4ZXGHLM@nvidia.com>
-X-Rspamd-Queue-Id: 1BD61C0002
-X-Stat-Signature: fu1hxipemcej9814fdia8wzu9ucttmhi
+	bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
+	b=6AnOk1Bny3rDR/IYteLlJo2b9HxYKIQm838wnrc8mFGv8HqiOyKdvf9X1jER8kolCLBD3Y
+	yavSfRxh3Nio1WJazukglekkbHBhG5OrafPN+fvJxvuP6kPyAxTTBFleOQhE5be/mnC2I4
+	x9hrdawUIvb7f7JovoQdJiI+ZMC+++A=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Rvte7yVo;
+	spf=pass (imf26.hostedemail.com: domain of 3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3EIp0agYKCFEBxt62vz77z4x.v75416DG-553Etv3.7Az@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786022418;
+	b=ytlLumqspVlPxPW4sREjvzfI4MUmQxkDAPTFiQz/pwzyaf5fURX80LGZqkfzitE2bxuGdN
+	FVxRu0wIqS9AMLE1DdIP1uRg2sdEEV98TOl6woZkDreP1LD5BgOyHunI4U1uHwSzeNiibk
+	KsIcpx4VnGj84rpjdNeVcd6lrMCCB88=
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8487eb67173so3592568b3a.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 06:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786022417; x=1786627217; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
+        b=Rvte7yVo99QmzB4OXvXXlyrm+sowoudcRoihDkQS2EYqwnB47Zf91Xe9KyeUQJ0DJu
+         9z7Lmo+HYcYXm4DRNZdZAJyWS9frr/sFct9kbM2KLG9MAHn7fVhlqbbAeKcsVabUGkgb
+         /1UszdGNYgAiUEHycaBzXXOkF7747H1OF2w8QBK6T/vunNU1aHPc3cgNtEp/Ze9L7GAq
+         JcIAHXwnSvzJ/wCY7V23t7+a5lpt103HZ8tv0+ZUJx+Dkutf1XieOpXzgN7P9tOrgwcv
+         UtgzQ+SY+c/VgGNW2ojN3gPeKjCuCT0sKSeR3QgkqfERSnckoiptShhj4heiS4V9e2nC
+         RfJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786022417; x=1786627217;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=quMxwgvzS8F8CxQzPIpHc+hBSqfVyEO+f6ARjKTQRm8=;
+        b=lo6v0qOuN+hxueDV24gvFpxYA67aigcC29b0rfaBvUqymV2pdqadmQ6brAjFAwmDGa
+         vWa3aJqkx3lqrNxCDzkaIRV6VwcXuuvGE1PzHHZT7NMtwS6zG76dCgNXPlpU8LHp2Cf4
+         ecvfcSIt8CcC+OgO2q/i7UFhv4ASb+uUy7Wd6zemzsmE50ek+XnZAQGP/ryrWraSw2GZ
+         4fSCE5XXBOKS9t0X+Gkf9XgAG9wKI715nRTR6yTXkG7me3K5cKpCyL29DyBOdLad6v7g
+         te84sQ62P2Bu7E/KaNEnw3PzlfeC6ZdRAniA4CcBHrYtwvdBNsY4HiM1XKotIG11W7Xr
+         KuMg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpu7go9lUhOgREe3dlmFN38PzEUxXSlx23cGJNRpsKh/Ja5gX/94IXTNCVb3YNBSNM3ZNX8OPnfsA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/3eHFT8CIKTP87ACDWd1CYHenrH9MHoNWGvkPieH4/g/ie5Ih
+	op93jMBNRT+waXo2Mt9tVj/MUXgcvI0gi4WkEVyGhUWU/9q/V+T6QAgLqf6J9i6Ly9FHWJrlia2
+	E2C35uw==
+X-Received: from pfbcj19.prod.google.com ([2002:a05:6a00:2993:b0:84c:3651:a4b1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3ccd:b0:845:c7f1:29fa
+ with SMTP id d2e1a72fcca58-84f2e04a63bmr16001363b3a.30.1786022416699; Thu, 06
+ Aug 2026 06:20:16 -0700 (PDT)
+Date: Thu, 6 Aug 2026 06:19:45 -0700
+In-Reply-To: <fda26964-721d-4a8c-9225-46ca3a5b2785@intel.com>
+Mime-Version: 1.0
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
+ <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com> <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
+ <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com> <anPYxp-LMWaLDbMk@google.com>
+ <fda26964-721d-4a8c-9225-46ca3a5b2785@intel.com>
+Message-ID: <anSJ1lLS0HZnfjCt@google.com>
+Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
+ kvm_arch_has_private_mem is defined
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: kw7c3364nwefn5ms416aguxnsqryjys5
+X-Rspamd-Queue-Id: A1A2714000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786020850-173456
-X-HE-Meta: U2FsdGVkX18C3vZGorh1LXEGINaoQsoHnx5oSCeVvh/oVSv+3hoX7Sc2yGirfWef/iQMSx4yUCDDPlygShrWoNT4oPjGoeGMS25JQCeBo/zPv6CQDT76QHKYzPr53nItPdSDHn50OYIISOZflWuh+fyMpE+3UUCwxhOkO/kkZxX78gGjeTRYNtS1/sQC9KT/NUn5xtM8u+KSmbqux0L69ixuYGvl9ngjt3OEsUkO/za7B7iMlddC620fwB9jMHZoZ9sdoM4Xbuyf0FXhhgwBsqcEKxTzFrGyOWYsPQ2eqKOCL2puze5WbKgfnLKtLxOdJUKMDWkHvDP7mcBNbUghjFatz1pOsAIhbYw+PbwedfOjNcMh9dRrsWZ0yVVND4BWZyOEObHqesecGJridXauaxapOiLNVmzCuIXzi/nt2Wmhp6PLiS1biuckak9GMEnOE9x3QSJJlN21utUtp+X6UVUNmdIuuadTgGXUeHTuCD0vunZm/qxyv4MK86yrvl43j4QLFisBDoWkbDp/yWUfwSheO1sLcjtoawofjNZsmurUBonE5VMZ/7kBmaaZFXKdPraulXz0j2ba4pMGR3xry4KXzEl2OB/vXPYW8RW1Pp3XU6tzcc1qbO1oifIbGIYkwZ0B66onzm5qJsIgVIQszcsJWXqmAI4fChm8lpMoG4Dxkg+3Vw2+P0auXjin182lmkbgPchki+/IY5QABh6JrQQcwraBMPtLDpz1Dc/1eE3Iqq2hNPxbs5lofpZ9zG7cdcYhG9m9LYi3oem6OyJhQ2Vy+aohrOZZXhfr8ivq4TJKenejcMaPCUj+vwc/m4IIMvY2hK/KtkPejsee7QCt2C18bIisxvR/ZC3ApkzOwA2rqrzfbhsErKSJ5XZvDq3xZtr669VxQdsuYj0zEaY0ELhb4U9Ydd/Ak7+Ks8cDBxpniPcgw0z687G3IRqHuzlio/TsAOQfTH794mfZdkD
- CvG/9NbL
- Uj8q7v9y81TCrRdi+dTSY9p5sJmWlVFxhv/xZAtALtf3Fv7kamdV41m83HY6YCgd4BLZGiXxp6MIGZIgBA1jxEYNYmFZwhzzi1iSFM5p4RE/wymblg1YcVx8uEe7iRoqAyp6mlM/1vLyY+x4Ohtk9FeEelME5RZ4wkENfUTMun1O5wJz0dvQjtHt/2KEZyNT7xRLQcsKpniGAiEKDywOGumG+qNPM1W0TGkUE2Ntd6JjAbeUM913FcvSRp+dPahcqy4ax0DAh4x4NEaWF2hGn+63UfJLH1BbQ21ZFxIT8ova2zqvaU0To/hxkQKjMJRA5WjTRbJ+eugGI31CzybSVzvk/TQ/Bb7XCBwdWP6L20uO9pmQwRMUE3qyodrhd9demdwwulEJRYXhjfBHtYMyUDmwgPVk+bCxBC2rKU/GY7eI8F7wIVNHGAZt04V5gJIahjiiiZcvA5O+CBJsEQ2l2CsJcAw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786022418-219406
+X-HE-Meta: U2FsdGVkX1+X4W7E4biSLKNi3FkWZ08/UMjfk5Yd4hQbPEOJne+aKIC3GQVQLxzrO3E2y4LhoNRB4a2NwJj22c9NrpwlwaX46zKt7P6o07wYqzkadH5k/O7sb4H+J3cXy41rm/fYV4QyqXYmTY/4EqznWfeE5XdCb1YvbNZezpLab1VCIpggUcsvVjkMHGTmZ2/V/hHTXUzUSQsq2tkXETTZ3IlQlr9A8e8Li79ldZr/g9G7EbfgOdfUWrem6LzSCD6el31CPtiqa86fZ9JdAlIqNkMbpMDuLbqgeDiFhTLwlpPlAUJZtyhD7a2+MnzCZMlvVIuFWOM74znS1FzeSYJ8TcGKRiUKm7roZ5A3kpJ6CBKMc0ooOiR///KUl13gOtY5kq12mTYgFQG4xMRc9HsxuTYJry/0JBWGHXPJmi6FmGewErIm5sL9gH5s50UmOTdqPmfa3grdQUq6VxaTUmrjxSWWeYPcahlAZN0laz4PWegkq6K7PzdP6gynaAfhJ16Zubui323ij4wtOHCFPp4zR8i6+6wVmj7sWhob5b9SYmpWingJaMRJAfeNceFy6HBxQz/pys/MdURGPuGZoMQQ8cS2996843tYQ4hlC6JuSrLdMWGFrLOhp7G8aENepVAcAj8bctEiSP/t7OPvbRpo+VolNnVYzgKcO0vbrk/A6QuFHPJRMm7qXTpnaV9uw9ibOFi1iSghCoIO7tqgJuv+z2v5crMoBIIysRDoSRh8XGZB8gYoVx7Dhoe2jSbu5AB+G2FEUkve6oDe1IsyYnG1BNXnqGn5wUP3w+REV3nVejw/EDp5CAFpJgU9du3elitKmOpZIVkgvaqaDPOhRgTO4nYJZK+2xzfb7Hz0xHkfR4fQPABYB3kXykqnvUmJ6HHW363lymPUr96ayF0Ace/fJcJwiBhPzoLGtwjDXs08621jA+e7ziCDPRJwi8nZfvr3EtMvZOkKBM+sY7+
+ OFU/9hjN
+ fYXBwfRWBjb4o4aQqHWcD3VDi3xEkfPA6kVhGoiQdW0U5hWb1zTYfZ8tWNRzaAmfXciG7p3q5UBFt6WnM/3hwi20RCbV5ZWaxnB6EviyI98D0ASMRr8cjhQFwFaMf4+JII3US1O4N/c4xNuxs/KJ6/3ZerO2K9oepFyPVTiwQghdhX+PiPT3iFxdgPSdW9Qyb+mEul80Ka91o8Tv7ZimIYBvqSehNdySFQ62IUViQjZYuyaBvdM+2c0ETCH5yHMcsLv+LiIzceDQkqURNKpn/7tiNF5KoChJWdrSPjfh0JdW6+B//tJMtGhI0jBd/FRKNbA3b6V/AvZR/sV857iD5R3b/2j/il7Q/iykKm6VX3tKREdoWct4i3GIbRBQOnw1FHBM6kXTaSCQnw6vacaIhef8xPLM9cehy9io9lGyCbJnfw1bHSTqot5/CXSsIjUM5oR+mCH6Qy4hHfbl02KSomeqrDkhnxt43mdR9zXy0xLgjzuD5Rn2EtTZrjfU4+AdiVPpo9GKgNw5G0ONVFf4e1ToFTCZZJL9ols+jHvpj30mAqDPtX1omFJyd16ktiCPUTDpdE5y7yNoP9/uV/Gdj6mNftv8n/97ds/ESXBwdQts2/iVuKOLLX81ay6sY+/ahBwPLG3wzd0IxBeTU48UedgFugGgVHPp7WcZc0DadmFtp5Vw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,45 +138,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 02, 2026 at 06:50:36PM -0400, Zi Yan wrote:
-> On Sun Aug 2, 2026 at 3:52 PM EDT, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> >
-> > The page cache caps folio order at MAX_PAGECACHE_ORDER, and
-> > xas_split_alloc() puts that cap below the PMD order where a PMD is 512M --
-> > arm64 with 64K base pages, as include/linux/pagemap.h says outright.
-> > shmem_huge_global_enabled() then offers no PMD order at all, so
-> > MADV_COLLAPSE of a shmem range answers -EINVAL and khugepaged passes over
-> > it.
+On Thu, Aug 06, 2026, Xiaoyao Li wrote:
+> On 8/6/2026 8:43 AM, Sean Christopherson wrote:
+> > On Wed, Aug 05, 2026, Xiaoyao Li wrote:
+> > > On 7/31/2026 4:34 AM, Ackerley Tng wrote:
+> > > > I think another way to phrase this is that if we don't make this change,
+> > > > say, on the foo architecture where there's no CoCo and no private mem
+> > > > support, kvm_supported_mem_attributes() would return true for the !kvm
+> > > > case, which is over-reporting.
+> > > 
+> > > Under the condition that the foo architecture enables
+> > > CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> > > 
+> > > > How about this, replacing the entire changelog paragraph above:
+> > > > 
+> > > >     Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
+> > > >     based on kvm_arch_has_private_mem being #defined. This improves
+> > > >     reporting accuracy by not reporting support for
+> > > >     KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
+> > > >     called with kvm == NULL.
+> > > 
+> > > It doesn't help for the case where kvm == NULL, but help for the case where
+> > > CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but kvm_arch_has_private_mem not.
+> > > 
+> > > sorry for being picky. I think we can say
+> > > 
+> > > This improves the reporting accuracy by avoiding the case where
+> > > KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without
+> > > kvm_arch_has_private_mem being #defined.
+> > 
+> > How about this?
+> > 
+> > Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
+> > on kvm_arch_has_private_mem being #defined in anticipation of tracking
+> > PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
+> > conversion).
 > 
-> IIRC, after READ_ONLY_THP_FOR_FS is removed, all pagecache folios are
-> split using non uniform split, xas_try_split(), so does shmem (except
-> shmem in swapcache not splittable). In theory, we can get rid of the
-> cap, since xas_try_split() does not split more than one level like
-> one can try to make xas_split_alloc() split more than two level (e.g.,
-> 512MB to 64KB on arm64 with 64KB base page).
+> Sorry, maybe I'm stupid. I still don't understand how to connect it to
+> tracking PRIVATE vs. SHARED state per-guest_memfd.
+> 
+> There are two diffs in this patch, and we are talking about the second diff,
+> right?
 
-Not really: xas_try_split() is the non-uniform path only.  A uniform split
-of a pagecache folio still goes through xas_split_alloc(), in
-__folio_split():
+Yes, the second diff is what provides the desired change in behavior.
 
-	if (split_type == SPLIT_TYPE_UNIFORM) {
-		xas_set_order(&xas, folio->index, new_order);
-		xas_split_alloc(&xas, folio, old_order, gfp);
+> If the kvm_supported_mem_attributes() will be used by gmem, I can buy the
+> justification. But it won't. At least, it won't after this series.
 
-and __split_unmapped_folio() keeps the two apart for a reason it states
-itself:
+It's not about gmem using that API, it's about non-gmem using the API when
+reporting KVM_CAP_MEMORY_ATTRIBUTES.  Without the change, if KVM supports any
+memory attributes, i.e. if KVM_GENERIC_MEMORY_ATTRIBUTES=y, then the below will
+*incorrctly* include PRIVATE in the set of memory attributes, because
+KVM_CAP_MEMORY_ATTRIBUTES reports what memory attributes are supported via the
+VM-scoped KVM_SET_MEMORY_ATTRIBUTES.
 
-	 * uniform split has xas_split_alloc() called before
-	 * irq is disabled to allocate enough memory, whereas
-	 * non-uniform split can handle ENOMEM.
+#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+	case KVM_CAP_MEMORY_ATTRIBUTES:
+		return kvm_supported_mem_attributes(kvm);
+#endif
 
-So MAX_PAGECACHE_ORDER is still the limit.
 
-I do not think non-uniform split can simply take over everywhere either.
-There are going to be cases when a folio has to be fully dissolved to
-order-0.
+> 
+> > guest_memfd support for memory attributes is expected to be unconditional
+> > to avoid yet more macros (all architectures that support guest_memfd are
+> > expected to use per-gmem attributes at some point), at which point
+> > enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
+> > attributes being supported by KVM at-large would result in a system-scope
+> 
+> s/memory attributes/CONFIG_KVM_VM_MEMORY_ATTRIBUTES/ ?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+No.  I mean "memory attributes" as in KVM as a whole entity, i.e. everything
+linked into kvm.ko (and kvm-{amd,intel}.ko, supports memory attributes.
+
+> > check (NULL @kvm) over-reporting support on arm64.
+> 
+> I think arm64 won't define CONFIG_KVM_VM_MEMORY_ATTRIBUTES?
+
+Precisely *because* of this patch.  More at the bottom.
+
+> So it seems to have nothing to do with arm64.
+> 
+> It matters for x86. After patch 20, CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
+> user-configurable. At that time, people can disable
+> CONFIG_KVM_SW_PROTECTED_VM, CONFIG_KVM_INTEL_TDX and CONFIG_KVM_AMD_SEV, but
+> enable CONFIG_KVM_VM_MEMORY_ATTRIBUTES on x86. 
+
+No, they can't.  KVM_VM_MEMORY_ATTRIBUTES depends on one of those three being
+enabled.  What am I missing?
+
+config KVM_VM_MEMORY_ATTRIBUTES
+	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV  <======
+
+> In this case, kvm_supported_mem_attributes() reports
+> KVM_MEMORY_ATTRIBUTE_PRIVATE for system-scope query which is totally wrong. I
+> think this is the case we want to prevent not something won't happen for
+> arm64?
+
+Well, yeah, because of patches like this one.  That's the whole point.  Without
+this change, kvm_supports_private_mem() would be reachable if and only if
+KVM_VM_MEMORY_ATTRIBUTES=y, which would prevent burying that Kconfig in x86 and
+would prevent arm64 from enabling the PRIVATE memory attribute in guest_memfd.
 
