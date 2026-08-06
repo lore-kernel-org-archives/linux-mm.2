@@ -4,87 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BAE9C55838
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 07:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E0D4C56207
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Aug 2026 08:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FF226B007B; Thu,  6 Aug 2026 03:58:53 -0400 (EDT)
+	id 0E8306B0088; Thu,  6 Aug 2026 04:06:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AF606B0088; Thu,  6 Aug 2026 03:58:53 -0400 (EDT)
+	id 09B446B008A; Thu,  6 Aug 2026 04:06:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89EB06B0093; Thu,  6 Aug 2026 03:58:53 -0400 (EDT)
+	id E2D596B0092; Thu,  6 Aug 2026 04:06:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 688EC6B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 03:58:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6BE41C12E0
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:58:52 +0000 (UTC)
-X-FDA: 85070093304.19.CE0A192
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3825A1A0003
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 07:58:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8YD+Krb;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786003131;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Qdw3rPKOE/bqfzieoBLsN+JJCKDj8Yo0JXPMaKeuak=;
-	b=ZJtP0b5EClOp8/leUdzRaeqk1HOFVz619ne28XGnjobZG5UA0ZJLqe7uzi6boxPONbE5dv
-	oJ+1JlDNidiJ83Pqoyt14Rp+yWpqwMNXhZTbYdfOadXPPOx/I6A4wDrbKzCQQDAU9LudQ4
-	TecmXhrhvIirla9J0XvFg5qHoPTtXyE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8YD+Krb;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA3736B0088
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 04:06:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 147181406B5
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:06:52 +0000 (UTC)
+X-FDA: 85070113464.26.955DE16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2596D20006
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:06:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5oh0JRv;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786003131;
-	b=fCMk8fqMR3K/N0dVRm/gIoyUiqXZseRAv4ozHuf9Q/lHh9DBBvAvGCFvDCEl0SVlLK4C7Y
-	mDC/nC4PpaMnRKFrsdiRfXwHWt3l8gQMDWfaDoLOCJLjFlxNRSDMOcmyYKPM1J0470Xf5F
-	V+RffRM/6KtgIDskVBISfAnVqYNOMZs=
+	t=1786003610;
+	b=TuU0DY9LjYNOZsPEVR5MUPm+78rTpAAPOFd9c8jVv1thFFvpHDfcYrPn8jlezwDEz66nBG
+	PIFfymTDi5jJKldfF5CdIrz4u+jvYCptullRbP5WKQRrI9ZWBSi5wwPg5JZ2h5MIvtVjW+
+	RaHx498eUJKXk28B5aWSdWgTCuwhbqE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5oh0JRv;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786003610;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MhRROZeTseFSQZTvqmwStdas1TAPmr3yiukE0XnS1F4=;
+	b=HM2/NrT4utanbGMLQ5uAUA0ADxVfPmRzgVZFSkp22bPn3ezoLkPRBgKN9fMrtWQ9W/C3T+
+	035yhdFIFmCthOiciPeu7RWb3TxWaQumCiCYsyKSC2ALBsVvMcNHw7wgfqJdXer3e4i9u+
+	spTIrd9tV2bzQKmGgK2Wao1z5+Us+FA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7C0A60A8C;
-	Thu,  6 Aug 2026 07:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0881F000E9;
-	Thu,  6 Aug 2026 07:58:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D10943E96
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:06:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D371F00A3D
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 08:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786003130;
-	bh=6Qdw3rPKOE/bqfzieoBLsN+JJCKDj8Yo0JXPMaKeuak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J8YD+KrbFok+1fwrI0iVh4vH26ewld4lv4yE4DFBk81pY0lZdIVyTtOduja1KQ1L3
-	 BV958JiLuPY/ayW+tVLF8iavvaLcHpcaNd+5HKEnzG/wxP5fw0xcGz5ZrCF96Ga3rQ
-	 ckARtxPyCWzm/OG4zer/hsYuw61JO3TxKyA3pb1bv+sVmLiolZQc9VE6T8be16/0Lj
-	 pxPY2tkmJr0KqCi8N0/leBGXsiRewNbRPX/Jt8LHaJlHqqSX8Ocp0sZRGKAA/snYwu
-	 kWb5phclr88l1FQHh0l1AcAt9lBb+HtlHoWI3czYHgwuZFMhavmOxmga44ZQ7ZyAHq
-	 m/0hJeUVeZY+Q==
-Date: Thu, 6 Aug 2026 08:58:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yunhui Cui <cuiyunhui@bytedance.com>
-Cc: linux-riscv@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH v2 00/15] riscv: add Svnapot PTE folding support
-Message-ID: <anQ-GfzFl-thu3q8@lucifer>
-References: <cover.1784201104.git.cuiyunhui@bytedance.com>
+	s=k20260515; t=1786003608;
+	bh=MhRROZeTseFSQZTvqmwStdas1TAPmr3yiukE0XnS1F4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=B5oh0JRvjlYrMmETupO9HK0mhmh5Z5Ab23j5xoUCApm/80Ikz1jCHWh07vi7xNw88
+	 1zPgg3eHWySh+X6C1FYALRRP17v6LO0JMJrckwkQwH7At4rDp/K2X4TBqp75wdcCZM
+	 EzpzZrxUej0glz+x1lBFgUKAHeioKXDTowBz8JPnj7NDvaYlu3w81zphYX2k3CMhT+
+	 trLScIMwWxhZys/JcqUHB/0d3XI0mJyn0ZJ2gVDTcmtt+k9YmjKmdIR61oCrocanKx
+	 Ef2kES9AZ5pqTKaA7b9tty78WlnlO42Sk09E1+ceCNr1x+5je4VqGCfpZaCN0Y4alP
+	 NtxAT34jiSyww==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-934a3d14924so190295685a.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 01:06:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoMxat27zyz+Z7751KqwhLZpwjXw46iiq28BJKzJEV1vEYljW4ZhKG7/WHB66vbszq0C+wVY3ni/A==@kvack.org
+X-Gm-Message-State: AOJu0Yw0iq5MvmZNMoBEcjdMxdVpGSd+x+Do0WDiXHHSZxsNEHzmlkVc
+	IaOQXqeluLnCwKxEyWNUt2VtULlVBe3FNa05PsCL6PoKPimxIvvoQdrCOY/hQce5IvG3chANABl
+	81Yzsm5cwUYlMruSyEC1okmBpCTdchoc=
+X-Received: by 2002:a05:620a:43a9:b0:92e:5444:9274 with SMTP id
+ af79cd13be357-93649240caamr1203163785a.30.1786003607588; Thu, 06 Aug 2026
+ 01:06:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
-X-Stat-Signature: 4wtqa4gtfiuxk1gtuxfe3yxgmyfohb3f
-X-Rspamd-Queue-Id: 3825A1A0003
+References: <CAGsJ_4x_ed4m57-8rZ53PBoGy-aa-z1thOvGOp7RAb2qP28dKw@mail.gmail.com>
+ <20260806072934.77976-1-zhanghongru@xiaomi.com>
+In-Reply-To: <20260806072934.77976-1-zhanghongru@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 6 Aug 2026 16:06:35 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zi=MWULn80yDXmifaoBeQ__xwMVcObmYUj_YGG0_D6Yw@mail.gmail.com>
+X-Gm-Features: AUfX_mynEAxGEiLsUFIinP0g49IX-UKc9H8hq5v_8fCgOawW5ukP8V75OF80UBQ
+Message-ID: <CAGsJ_4zi=MWULn80yDXmifaoBeQ__xwMVcObmYUj_YGG0_D6Yw@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: ljs@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	vbabka@kernel.org, willy@infradead.org, zhanghongru@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2596D20006
+X-Stat-Signature: 8h1g3wwrscbpb6zuai5e61bxhr5tfabw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786003131-883182
-X-HE-Meta: U2FsdGVkX18iv0ves9AQfZRn9TAXnn6/YzHaGJIMr+uQi92NJRfisWggooagAsMImCdhdr2/8Yx/QyjyNNFo74C4PRZdpOpaz9ShM8tkzf36LZxpJObxuXuJujH/LzHDsjXoDUDnLQSojRMNu5foJZ+QTn+nqr+TmC2PM7gbNCxHxP7I5tLnvk4zyNBeiG/e43Ufv9OaaJJhTs96C2UgWe2HWHSmnCX0n9h7PZVGocz2f9C7C05UVUcL8SxKOpmoQoyHSDLEClMFMFWMWt+IBJoD7OzUa2SchmxR9ld8PIU3K7wdy3/6ThEBMx4e5Xv/o69pdzHu6TcSZhbbhzr8QxyWalm0lNHYWLS+Z8V6QeI3sAa4O/QgVXZ3peXTLThYxUeANWd5nRFmpW7C7lCGIOJOjwZ99AOOr1RO9+F7144K8ZwVEjbSjbKTziXps7XEVBwLFixV5Ih5FIprEgOfRlusl/lIsQW+Cr1M7hqr2NMBY3UQ2+rmfPkD7+sAFCC7UtkXrIEQWjfzMLY61RbuzhB3EKfFbIi/OXIn3EH5CZ6XIbHLuF++ngZIDuj2Yup0K555OlKfzH+H7Xj0APYQDdR7ni38oq9/RCHb4sKeO9RLGUu/sTVrANR9DfYgGkVaQ7YlFLoi+RZLw/UHj6iY/YEfhpBXr3DcWTxpKfT8EjbRf+TJ+WtlKnYJx1tLazvO3mvTre0Oz7FfRaWJgx/7kg4vaAp/TpY1xxqRZfrWs3vKnNFv0SvGmSau5YgnJpPHERlAeofkWfsZSYwSa7XXBkDkJIMtKihJ2N7M1Wa7vqFshu2I9PGUnBMaGJFV+ez+0VctUVGwMgVOSxqdy/yA1hTP9j+QD54ZWr8qzSVv/FDrWbysjgHmkXtCfHDrfT6CYOVdz9ilhkGrSqfuqk+znuzq8OORMyRd3UEMFHWWUYyA54QU2Y6XeAn5z05Eyt2zAGmCb0T2pMV9kFyGtmU
- BFnw2CTh
- gGJHBSKWE5pAISKeeY2mrDZfqvGO51xx7mwjyoQ7HpeZcdsNs9hBzEOtsgiNQzkTO63dFco8uXGPjN5oUmhqkeMNbUN+EQGMv3yta4Ijn+jhqkwRVqsSEpk7PN+DYcC2lsgFE8ucftuu2mezZjAOhlprWQweXyDkR0X/lOKTFpJ784UOFzaXDbf+TQ6c6Q6/2xoCiDSuSOXHue81sv1iMVsZ4FoRGwnRyvkls/t0B+pC9NcVGFTKM+1/85tiI8MIVom1w2gforL1A/yLHJzAU/RyqMQ==
+X-HE-Tag: 1786003609-632619
+X-HE-Meta: U2FsdGVkX18GhK2hSvwK663OIXvRXa3X0o5Hmjoj4qkgfTnscedA1j/dvLj0rOJSu2+dPwiehIKx0A75wbO5JBTKi0HZOHMi1xUo5EKuIth0JRTakIHH+S9dhN9oMSnIdjOWiSgY9kTURkp8Bo+bJ1k4Uw+6PkjpcDyE9F3D1p0pKj0WCz+JgJ1VbaSNzGOGfBeI+a6DZrkd7OEHpPN2bFf92ro/+dmLoYtfM7xpoilaatcJyHxJjZJg5mkmRLktxMU1gFdyFYLK3QWZ1dlnD3bWBRQsja4SuxLo3KC8KTQSrHrQdYKuw01sBXz9BQOpC54my1b6xETu69qX8l4W0BPKtYpTN+welrR0JP8wZ7mV5BD4mmHhtld5UXy1eckPNhIPoAa/5z2v03bs300+HHPCXVH8U3xw6a1+IzNlVv5FzZop+mIm2NApqs7jKR7qwV3095VPJB0QJEdCCGpBi8rGo4r1EojMxhXw7VlQmSnFF0ypXMr5XpXrVqfP/BhV/dFLJCsCsFSXv2+hix3qz+FEGdqyHjbW/iM+kfgfNzoOqUS5u0vXfAPcUcEwZMyKsIhbOStgfJoRpxxid3mpLgZIkCuzS4jqUswChaGC4sH/svWHN8Vf84WG3W/FWF6lnsO+K6Mv0xvk2jfojc6mrpXkFtycx0/g8cR326dNbWI5t/In3SC9QzGuHW8G/Ci+2lZNJuwVNsomKx1sSJqubhk34fV9997lFj4imeNIh6X7s6fx0Byl3uV5oW7/1J5ZVMHQX8oMCU0xO8d/EmgrX5zSKn7OQen4WUj1a0qQfC4II/WsOa7LzdaqbREg6o4SxNyMIrSrOdb5KQyNTdDpPL8A3xRAuP6lhPy72bD2wsIje7wpthgbwjXbGC0CLzyu8F72pOyqf5licYRXDAMrLv/5c9JU+79L4eL7uXP5/h1JZY2v/sNrncAvlohdGmKAbxDCEneTOk83fwDE8gy
+ s7RKe12p
+ gv9NzybNTgh/aOG+Hz4obbcWdvaSNA3tnrl2C+3I2jTnDhAS3Akgit9iMx3tANSQ9MTsrF1d/Fv/dDPbsrHcabeo7lt1zEPcI0cD9aM0/qatrx7X8kOAEUzUQCpH7L+lqThqESh1kzS/yjRO84zhQH5ut6Zb61kNHzfjyAx6tndPGKyL0KZbW9AcZf5d/FpMiGjOshKGwM9EfeEvz8waNXDxNz1hNQROx0/PUIBTlc/5NHIiPwlUR5g/9ciDv7IqPkQxEgls0YvmHFMP4QcAqNZWEJCCoYSDfursUTjxoRM8nYWG7CLgQPSdzr7nWRUeM5QyMRyTEQcM0/pY/Xtg/0b0tkxfTu9eD+YRfttVtN0Hjoio=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,14 +105,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I already commented on you failing to cc- anybody here (!)
+On Thu, Aug 6, 2026 at 3:30=E2=80=AFPM Hongru Zhang <zhanghongru06@gmail.co=
+m> wrote:
+>
+> > On Tue, Aug 4, 2026 at 8:32 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> w=
+rote:
+> > >
+> > > On Tue, Aug 04, 2026 at 05:52:19PM +0800, Hongru Zhang wrote:
+> > > > From: Hongru Zhang <zhanghongru@xiaomi.com>
+> > > >
+> > > > Page faults handled under the per-VMA lock currently fall back to t=
+he
+> > > > mmap_lock path whenever handle_mm_fault() returns VM_FAULT_RETRY. T=
+his
+> > > > means that lower-level fault handlers have no way to tell the
+> > > > architecture fault handler that the retry can safely continue under=
+ the
+> > > > per-VMA lock.
+> > > >
+> > > > Add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit that can be return=
+ed
+> > >
+> > > I don't love that name or that faulting retry behaviour is _modified_=
+ by a
+> > > value that indicates fault resolution state... ugh.
+> > >
+> > > It's kinda confusing things 'VM_FAULT_RETRY' is 'you have to retry th=
+is
+> > > fault'.
+> > >
+> > > 'VM_FAULT_MAY_...' is starting to bring in effectively configuration
+> > > options into it and that's kinda horrible.
+> > >
+> > > I mean is there any reason we shouldn't ALWAYS do this if a VMA lock =
+was
+> > > used?
+> > >
+> > > It's not too expensive to do a single retry with the VMA lock before
+> > > falling back to the mmap lock.
+> > >
+> > > So maybe simplify like that?
+> > >
+> > > And like that this series becomes a single patch right?
+> >
+> > This is a brilliant idea. That's a genius insight, Lorenzo.
+> >
+> > I guess the conceptual model could simply be:
+> >
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 45b99c3b1442..3592bcc9bbd7 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       struct mm_struct *mm;
+> >       vm_fault_t fault;
+> >       unsigned int flags =3D FAULT_FLAG_DEFAULT;
+> > +     bool vma_lock_retried =3D false;
+> >
+> >       tsk =3D current;
+> >       mm =3D tsk->mm;
+> > @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
+> >
+> > +vma_lock:
+> >       vma =3D lock_vma_under_rcu(mm, address);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -1352,6 +1354,11 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       if (fault & VM_FAULT_MAJOR)
+> >               flags |=3D FAULT_FLAG_TRIED;
+> >
+> > +     if (!vma_lock_retried) {
+> > +             vma_lock_retried =3D true;
+> > +             goto vma_lock;
+> > +     }
+> > +
+> >       /* Quick path to respond to signals */
+> >       if (fault_signal_pending(fault, regs)) {
+> >               if (!user_mode(regs))
+> >
+> > Nothing else needs to change then. I wonder if there is a cleaner
+> > way to implement the idea, but it is really stunning.
+> >
+> > Best Regards
+> > Barry
+>
+> Filemap Throughput (higher is better):
+> +---------+------------+---------------------+---------------------+-----=
+----------------+
+> | Threads |  Vanilla   |       RFC v4        |          P1         |     =
+     P2         |
+> +---------+------------+---------------------+---------------------+-----=
+----------------+
+> |   40    | 1069.34 /s | 1404.47 /s (+31.3%) | 1400.13 /s (+30.9%) | 1412=
+.38 /s (+32.1%) |
+> +---------+------------+---------------------+---------------------+-----=
+----------------+
+> |   60    | 1038.12 /s | 1682.88 /s (+62.1%) | 1683.37 /s (+62.2%) | 1685=
+.23 /s (+62.3%) |
+> +---------+------------+---------------------+---------------------+-----=
+----------------+
+> |   80    | 1042.62 /s | 1766.72 /s (+69.5%) | 1767.83 /s (+69.6%) | 1771=
+.73 /s (+69.9%) |
+> +---------+------------+---------------------+---------------------+-----=
+----------------+
+>
+> Swap Throughput (higher is better):
+> +--------------+-------------+----------------------+--------------------=
+--+----------------------+
+> | mmap writers |   Vanilla   |        RFC v4        |          P1        =
+  |          P2          |
+> +--------------+-------------+----------------------+--------------------=
+--+----------------------+
+> |      0       | 17303.09 /s | 18394.51 /s  (+6.3%) | 17899.48 /s  (+3.4%=
+) | 18337.30 /s  (+6.0%) |
+> +--------------+-------------+----------------------+--------------------=
+--+----------------------+
+> |      2       | 16728.04 /s | 18591.68 /s (+11.1%) | 18346.72 /s  (+9.7%=
+) | 18848.17 /s (+12.7%) |
+> +--------------+-------------+----------------------+--------------------=
+--+----------------------+
+> |      4       | 12596.23 /s | 18534.00 /s (+47.1%) | 16095.20 /s (+27.8%=
+) | 18507.62 /s (+46.9%) |
+> +--------------+-------------+----------------------+--------------------=
+--+----------------------+
+>
+> The key difference between P1 and P2 is how FAULT_FLAG_TRIED is handled: =
+P1
+> keeps the existing major-fault-only setting before the retry, while P2 se=
+ts it
+> before the VMA-lock retry for all retrying faults.
+>
+> In filemap throughput test, each reader thread operates on its own file.
+> In swap throughput test, all reader threads fault the same memory area.
+>
+>
+> P1:
+>
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index 45b99c3b1442..c3ab30d32a15 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>         struct mm_struct *mm;
+>         vm_fault_t fault;
+>         unsigned int flags =3D FAULT_FLAG_DEFAULT;
+> +       bool vma_lock_retried =3D false;
+>
+>         tsk =3D current;
+>         mm =3D tsk->mm;
+> @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>         if (!(flags & FAULT_FLAG_USER))
+>                 goto lock_mmap;
+>
+> +lock_vma:
+>         vma =3D lock_vma_under_rcu(mm, address);
+>         if (!vma)
+>                 goto lock_mmap;
+> @@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+>                                                  ARCH_DEFAULT_PKEY);
+>                 return;
+>         }
+> +
+> +       if (!vma_lock_retried) {
+> +               vma_lock_retried =3D true;
+> +               goto lock_vma;
+> +       }
+> +
+>  lock_mmap:
+>
+>
+> P2:
+>
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index 45b99c3b1442..9507b8a0fe18 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>         struct mm_struct *mm;
+>         vm_fault_t fault;
+>         unsigned int flags =3D FAULT_FLAG_DEFAULT;
+> +       bool vma_lock_retried =3D false;
+>
+>         tsk =3D current;
+>         mm =3D tsk->mm;
+> @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>         if (!(flags & FAULT_FLAG_USER))
+>                 goto lock_mmap;
+>
+> +lock_vma:
+>         vma =3D lock_vma_under_rcu(mm, address);
+>         if (!vma)
+>                 goto lock_mmap;
+> @@ -1349,8 +1351,6 @@ void do_user_addr_fault(struct pt_regs *regs,
+>                 goto done;
+>         }
+>         count_vm_vma_lock_event(VMA_LOCK_RETRY);
+> -       if (fault & VM_FAULT_MAJOR)
+> -               flags |=3D FAULT_FLAG_TRIED;
+>
+>         /* Quick path to respond to signals */
+>         if (fault_signal_pending(fault, regs)) {
+> @@ -1360,6 +1360,13 @@ void do_user_addr_fault(struct pt_regs *regs,
+>                                                  ARCH_DEFAULT_PKEY);
+>                 return;
+>         }
+> +
+> +       if (!vma_lock_retried) {
+> +               flags |=3D FAULT_FLAG_TRIED;
+> +               vma_lock_retried =3D true;
+> +               goto lock_vma;
+> +       }
+> +
+>  lock_mmap:
 
-I am guessing you did the core bits in response to David's request ([0]), but in
-general - if you're changing core mm to suit an arch change, you really need to
-send it as an RFC and then it'd make sense to send the core mm changes
-separately as an RFC with an explanation as to why you need them.
+Thanks!
 
-[0]:https://lore.kernel.org/all/62c418bc-082b-4ae2-a889-f63dd2b7f503@kernel.org/
+As Lorenzo pointed out, this would break major fault accounting, so I
+think it is better suited as P1.
 
-Thanks, Lorenzo
+The performance difference you are seeing is probably because another
+thread is concurrently swapping in the same address, taking the
+folio_lock and installing the PTE. That is a separate issue and could
+be addressed by a separate patch, likely an updated version of this:
+
+mm: Don't retry page fault if folio is uptodate during swap-in
+
+https://lore.kernel.org/all/20260430040427.4672-5-baohua@kernel.org/
 
