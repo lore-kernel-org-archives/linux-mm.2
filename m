@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47CF5C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 13:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AA3C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 13:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6CF76B007B; Fri,  7 Aug 2026 09:50:41 -0400 (EDT)
+	id EBACC6B0088; Fri,  7 Aug 2026 09:50:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1E686B0088; Fri,  7 Aug 2026 09:50:41 -0400 (EDT)
+	id E92956B008A; Fri,  7 Aug 2026 09:50:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D335D6B008A; Fri,  7 Aug 2026 09:50:41 -0400 (EDT)
+	id DA8336B0092; Fri,  7 Aug 2026 09:50:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD2506B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:50:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 950C51602BC
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:50:39 +0000 (UTC)
-X-FDA: 85074608598.06.4C81137
+	by kanga.kvack.org (Postfix) with ESMTP id B8C126B0088
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:50:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A5551C0DDD
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:50:46 +0000 (UTC)
+X-FDA: 85074608892.22.6BBBB9D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E21A740009
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:50:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cp0jaKCR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A214180012
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:50:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MRqvRaU0;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786110638;
+	s=arc-20220608; t=1786110644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4DjfwV4ACAZUpRZw8MHQBqFBcbFpqFXHuRpYH05Uydg=;
-	b=xh4BMP7TKAgDNz85z3r+BWw9RWqHmi8m8Dj8WYl+wstaOrCZqM7sSF1rfHNbndmhHUcAA5
-	2XCRqHrkZgPDC2wArSsVYnEd7hv2SZ46Bhn/WJGgIDhRxEN8AfkMtY3yWGnjdrU8Nl7rI/
-	6n2/Z0/XIvzAUXSpX5/YxAEacAVP+jE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cp0jaKCR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EwPefllU6d1ZOhpuz2HmPQx5BKCFxUJHa6Nznn6LyRE=;
+	b=FWv7ZCuPhfvVJ4rlmZIDn4dPwd94roTy13SD3OQ/gQ8iiMBpvoQZCNsWWr+5P22TXfjtfb
+	rqUiUs425xxoKzCg0zoEg08HfDwOO2W9281p6rZLeZr7Ez7vempFzhELvmjVHsNbv5KrO1
+	PProNNNO8U1+AfpefSpwLf6ZNDrDUwA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786110638;
-	b=KAPLyWw//yGWAsye2IkdmWMJjLjnG6c7GcwKicOZ6bWE7sj7fpxtEzSoH1t+hQ7Lr0jLta
-	j89LV68wJSalHNh8RzyOesrdXFw7h8v8Ruru/26HuG+xW1XBltEYGxGJHK5f5OZdWqJs5E
-	COsgxuovWWhNxW3QAKN+rmJHaKqsvvI=
+	t=1786110644;
+	b=E2OmRDD+Xu6HS84Yq0wnKFZyhqJl4U2qsx3mHYMaFHqEOKwTLcfcyD+a4wN/9obQroS+59
+	QMf8log3YWv4wdPsAxeH+qnoB4TtIMYRnFvHkNCv3r9KHYYbtV1ZftKoIA3DQmLuvOQKKZ
+	D70KqDc/8vb6LEeDzK/nHhorVZ1HxKg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MRqvRaU0;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE66143A4B;
+	by sea.source.kernel.org (Postfix) with ESMTP id C89DA41435;
+	Fri,  7 Aug 2026 13:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9781F00A3E;
 	Fri,  7 Aug 2026 13:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132021F00A3A;
-	Fri,  7 Aug 2026 13:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786110636;
-	bh=4DjfwV4ACAZUpRZw8MHQBqFBcbFpqFXHuRpYH05Uydg=;
-	h=From:Subject:Date:To:Cc;
-	b=Cp0jaKCRDnHCNEKuRgGcimB5c/OcwG/zvo7mP0N4Fa133BwLaa7BHfpAZRKIILPo6
-	 7CjfGJ4tXc5ZG3JmqiAtktsJw0/1fbPBsODeqyAtXiuJqDiwy+0eT5ODBTu8Tvto1J
-	 Sbly6dpwQQkkx2IjEzzozvYHi9u+WDb/DN37BauhuqKeEnFPO9QYrWPkzwsUw2xf6b
-	 HmBujHQs0QlKI+EBXVHKerqIcDOGLAQ2/zICGf6VSpGoMMBboxC1LXehxtM6c/thcr
-	 OHFX3+PojipRuK5JkNDRNuB7hsPb7TdGzpFKFcjYwMIAEj34A+3zHg8LCJ+q7tdjLg
-	 HT0JC6CyGz4uw==
+	s=k20260515; t=1786110643;
+	bh=EwPefllU6d1ZOhpuz2HmPQx5BKCFxUJHa6Nznn6LyRE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=MRqvRaU0RAWLPqYnu2hVF4J5A/YLaMcCc9zGyL2HSxIqa/Mj0SL0oKlKbwt3k85om
+	 /K+mY2Imhr15J0MQpohqmZx3hyI5PEo905yB/Iz/8GW23+RGf0MgL09nPRi/ZX4aCQ
+	 Trxl3o2SIdim/srZsS61ZsLQcc67m5Oe8hHOAwiSkt02Ou6uM8FsSASn+yez70ZATR
+	 N6FQ3VtTRJea/r6sSGDDFMCUJz76Mt6lR4H0cJeQq3OMQkbhrzJLLKULVBoysbLf+c
+	 9kP9g90IN29MxfINOrWOUfpOVoqKYxH2oqKURDtpC+GxAE3HGVlr6SDAen7o2JOfdv
+	 8v2yKob6okQxw==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH RFC 0/5] allow kfree_nolock() handle kmalloc() objects
-Date: Fri, 07 Aug 2026 15:50:26 +0200
-Message-Id: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
+Date: Fri, 07 Aug 2026 15:50:27 +0200
+Subject: [PATCH RFC 1/5] mm/slab: cleanup deferred free handling
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKLidWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDc2MD3ey0otTU+Lz8nPzk7Pjs3MQcIEPXzMDM3NDcIC3FNDFFCai1oCg
- 1LbMCbGy0UpCbs1IsRLC4NCkrNbkEZKBSbS0APFcePH0AAAA=
-X-Change-ID: 20260730-kfree_nolock_kmalloc-6067170fd5ad
+Message-Id: <20260807-kfree_nolock_kmalloc-v1-1-ba993cbf7a60@kernel.org>
+References: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
+In-Reply-To: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
  Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
  Sumit Semwal <sumit.semwal@linaro.org>, 
@@ -95,14 +94,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
  K Prateek Nayak <kprateek.nayak@amd.com>, linux-rt-devel@lists.linux.dev, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E21A740009
-X-Stat-Signature: wcrzcyngq9pnzztdcn5eaoz39t963de5
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8A214180012
 X-Rspam-User: 
-X-HE-Tag: 1786110637-879909
-X-HE-Meta: U2FsdGVkX1+xS8W3vV4S4dccIKLwIk6xDLeesPXnY4QIKLXBXrHC9/A3tHGNePcgkab0R+PeImmFjdLwrDUlIIzR0mzCOCFzNnjjbSSoRXzKIyJKOOxj3hn2u27W6cNb9i6QUD8DA2apxwGqJ+LY7DiqmfP58Kgr93Rkpi10Kmwvs01eucDkeNYaihKBBe0BfTdYtFsJqA5gDIy/X75rLNYe4zIRLjVlElWErRg4iM1iW7/MzE8AWweYc1fP0hAaFmf//Jl2Pt42P/q4ZpKBBevurcziZtQnTlwakJCY9eIUi8Ex4YDZ/DP+SJhvzGrB6N3iy6u0pcZaHPgUphMrOGP5SnywbMbrqK8tZ1lwQAtR2qrEgG1vY4Yawu3VLtPKG9LPIYAVio1oYUNaA1aMrSQ8w2dOUI6seUVPwC38fCJYkM6Yk3hPzr0WrKyIl9hVfhiyZ8iP0sqjd+5rHf0q10mUfQOWwXLhwSYycSRPZxYO5MQhzmw1Lanwu4W2gk/TGfm7/Zb2m1tZ9jH1J3fkfpY4UZs4gQA/0w7aEJZuH2cQ6fqhcSqpCAjJAGNRad4hF807o/7bBKvI9q+zAX1qPDkDzKsrckMwjNzv81fNm1Fqti/bMgVb/BfO0g8wLa7Og8ruNnm7qS8waXSKtqtqUwMgEWevrqGcOr4zYKBPo28c/mSN2Y4lTQqjB0npjvYnYI9g9RVaGxnJYHUSKSmgmNeOzI0To4JjGuJA2P9AvtukvxO035z6l/FOrT+593UGkfk9B43G4UsXG4XAAabKafmx9g8s2cahAXN7gFzKKtLQmaqKSU8V02KD6DBR6e8YFaeYP5CSGxZo8BWm8C9AuQC6Q6FnHWfBcemKQKEgWIG75QLLl0Lo1bTh3ZsKOY2HLEzrZKAcjvSqa//j6fAmE8++t0ifklNjjlyKH3JefBEXNqt4u4T4SxAxX2AQiocTXq/AJ9KsWNsyyDFfAOm
- 5Dm68wtf
- clIUFT182kiMWKwclurl6HD5vdOMUGGZ/IQcET+M+r8UAs94OsVB0nQOMtQ9YISwgEdcmDG7S0PGn0OPIHkLQXnKL24R+si6jLcjeLN//DajNmzQnZm4uSoFTuPyWwBHTbIyw3cS6LaXaA2Kv1huqqF97NezgWx+Wv0T1ENZKoABSpVOgzjg0QjJqpEUPbvoh5LPr079+YIocfqd6X2XSqO/7ns6kjgfwGMKLGnQxP1CZDDaDQiF5I2ufg8I5lrIRvP1gobwN+4lDjWHttIMRy7hU8mv5cweOwOCT
+X-Stat-Signature: xso3sif8pjiecgqzc96fta6taqfo1jfn
+X-HE-Tag: 1786110644-818877
+X-HE-Meta: U2FsdGVkX19Tio1o6a+Ppxq2+MuncYhBTkeriuSuEMY+THatBgY/WjqfePYFEvYYdm8IdcCY6IZNYmacVLh4lWas5iyAH2De8fbvN2OcV6i4xkf4yL9nmkZzEqcooDqfKknOlz09+ZJSE3f/v/oRv3L/yFhr6t98yjZClIgkXCAbDsTKIKTI+uiGoMtxvOzU+ibi95UtS3AYuRbpJureyNZnFLWkJ5b9Hvr+dAU1mUsO6e9IMJCYKk3YaicWAhkJfF2aerpzuAXhSE8IZsaicrJeveuacNroyrhMMUyOXnyX6YizDLWj7k8YqiiwYRRJweCCNyTvH8JqQ4im9eMDOtctpmFYjHZlmbe5tOdg4Qb+DGQBPnUufcfD7b12zanMzEmn2y1b4QT8zyuzdeKvctHH+nfgWoFaLJt6QiSIEMDz1ZdJXstyA0fDWWlWqbOakUf1WVa97ZyRYo7wCZc/4gHNfWi/t6LerS+Nn2A45ziYgojLHn3DtTnX2mS48PQ4VUgl0q5y96naEPFsKQH8gkn31RsnCGL33khZ5euO/UZTso5Hh1JMwHk/EXJVvTgsye7sxdHXIxu82f1cUWt0AtzdYNp9F2ksGEKalEyqhnGyjeBhmNMl6FCgryGbDZOroBJnbNI7rBuVPmjz4L8WIO5r/fHtGgRi2/zgHiefTfRz81UbOmYmdqxZvEqd1NoViJZVMi8Nf8IFAejQztDlQpq3NFijse5zf0eQ6DD/r8iADErTqOB+VhmVsIxYDc8bs00vks5jE9La4nXAbXNyDvjsJbI/rB+/YD5o4KbVHJUnz1m4IKtKTzie/XdTaQTFSq7UyV9hCi2QX24woI6SS8LVY0sv7rTQ2QsJtPBkgh1yIHSdnD9jst/9uidGjxwulChnyUxjzg9OLJlE221T7tV/tuN/NYCtn+d7PiFG2AD+ea3tAb5WYqHLpqHY4QuJdztgP0CVM0VyfSj8Gpu
+ W3plpnOi
+ nS5eDbi8E46OJulH8XLTPau9FTzBOnPmGISgUfXrp3Qck+bma0VeljnP9gPEB5dj5Ygmxn3aOn7P016qN4/XzkwWgQRqXJ1TpJ3aw7UsWCbR1J9Va/SESlnFBOuX//Xev0w65z0md4jMyFCCdB2l3dh9g1XkUJxTQlomt/VcXHvNeLLZOT7d5Ll/JcKu0mfDZhpwtcjQjl2+RQmLCtWTHWKFPvjN0+0KE1Q7cdaR3hXgJzchFZUY2K9Suig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,40 +109,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an initial RFC for something that could target 7.4 and
-definitely not earlier merge window. Based on
-slab/for-7.3/kfree_rcu_nolock
+In deferred_percpu_work_fn() we have a bunch of single-use local
+variables for the various llists. Remove them and access the lists
+directly.
 
-Currently kfree_nolock() can only handle objects from kmalloc_nolock().
-Removing this restriction means an easier to use API and might be useful
-in some situations. It means dealing properly with kfence, kmemleak and
-large kmalloc allocations. Some of the cases may end up being deferred
-to the irq_wor() but that's not a big issue.
-
-As a example of usefullness, convert a kfree_rcu() to kfree_nolock() in
-the scheduler code, where kfree_rcu() has been used as a workaround for
-kfree() being unsafe to call under pi_lock.
+In defer_free() make it more obvious and documented what we are doing.
+Also restrict guard(preempt) to only the necessary part.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
-Vlastimil Babka (SUSE) (5):
-      mm/slab: cleanup deferred free handling
-      mm/slab, kfence: support kfence objects in kfree_nolock()
-      mm/slab, kmemleak: handle kmemleak freeing in kfree_nolock()
-      mm/slab: handle large_kmalloc objects in kfree_nolock()
-      sched: use kfree_nolock() instead of kfree_rcu()
+ mm/slub.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
- include/linux/kfence.h   |   5 ++
- include/linux/kmemleak.h |  17 +++++
- kernel/sched/core.c      |   9 +--
- kernel/sched/sched.h     |   7 +--
- mm/kfence/core.c         |  14 +++++
- mm/kfence/kfence.h       |   5 +-
- mm/kmemleak.c            |  42 +++++++++++++
- mm/slub.c                | 157 +++++++++++++++++++++++++++++++++++++++--------
- 8 files changed, 215 insertions(+), 41 deletions(-)
----
-base-commit: 648294a02bfcd0eddae51877e3b30f8bbb2d4bb6
-change-id: 20260730-kfree_nolock_kmalloc-6067170fd5ad
+diff --git a/mm/slub.c b/mm/slub.c
+index b9aeb02a880f..044db93d64a0 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6371,16 +6371,12 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ static void deferred_percpu_work_fn(struct irq_work *work)
+ {
+ 	struct deferred_percpu_work *dpw;
+-	struct llist_head *objs, *objs_by_rcu, *rcu_sheaves;
+ 	struct llist_node *llnode, *pos, *t;
+ 	struct slab_sheaf *sheaf, *next;
+ 
+ 	dpw = container_of(work, struct deferred_percpu_work, work);
+-	rcu_sheaves = &dpw->rcu_sheaves;
+-	objs = &dpw->objects;
+-	objs_by_rcu = &dpw->objects_by_rcu;
+ 
+-	llnode = llist_del_all(objs);
++	llnode = llist_del_all(&dpw->objects);
+ 	llist_for_each_safe(pos, t, llnode) {
+ 		struct kmem_cache *s;
+ 		struct slab *slab;
+@@ -6403,7 +6399,7 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+ 		stat(s, FREE_SLOWPATH);
+ 	}
+ 
+-	llnode = llist_del_all(objs_by_rcu);
++	llnode = llist_del_all(&dpw->objects_by_rcu);
+ 	llist_for_each_safe(pos, t, llnode) {
+ 		void *head = pos;
+ 		void *objp = kvmalloc_obj_start_addr(head);
+@@ -6411,21 +6407,27 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+ 		kvfree_call_rcu(head, objp);
+ 	}
+ 
+-	llnode = llist_del_all(rcu_sheaves);
++	llnode = llist_del_all(&dpw->rcu_sheaves);
+ 	llist_for_each_entry_safe(sheaf, next, llnode, llnode)
+ 		call_rcu(&sheaf->rcu_head, rcu_free_sheaf);
+ }
+ 
+-static void defer_free(struct kmem_cache *s, void *head)
++static void defer_free(struct kmem_cache *s, void *obj)
+ {
+ 	struct deferred_percpu_work *dpw;
++	struct llist_node *llnode;
+ 
+-	guard(preempt)();
++	/*
++	 * Place the llist node where the freepointer would be if we freed the
++	 * object immediately. That means we can write there safely, only need
++	 * to remove kasan tag first.
++	 */
++	llnode = kasan_reset_tag(obj) + s->offset;
+ 
+-	head = kasan_reset_tag(head);
++	guard(preempt)();
+ 
+ 	dpw = this_cpu_ptr(&deferred_percpu_work);
+-	if (llist_add(head + s->offset, &dpw->objects))
++	if (llist_add(llnode, &dpw->objects))
+ 		irq_work_queue(&dpw->work);
+ }
+ 
+
+-- 
+2.55.0
 
 
