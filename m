@@ -4,94 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4769DC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 17:13:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CACAC2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 17:21:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108D46B008C; Fri,  7 Aug 2026 13:13:30 -0400 (EDT)
+	id 7D1E66B007B; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BAF76B0092; Fri,  7 Aug 2026 13:13:30 -0400 (EDT)
+	id 7837E6B0088; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEDCC6B0093; Fri,  7 Aug 2026 13:13:29 -0400 (EDT)
+	id 671C56B008C; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5CF6B008C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:13:29 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 367EB140123
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:13:29 +0000 (UTC)
-X-FDA: 85075119738.30.4F6D1DC
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6CFF940003
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:13:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AY1myDW6;
-	spf=pass (imf04.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4735E6B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 393A912013A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:21:30 +0000 (UTC)
+X-FDA: 85075139940.20.4A3ECCE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 83B4740005
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:21:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIyozzzf;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786122807;
+	s=arc-20220608; t=1786123288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=K3BbygswI9SirNkrlFNlq8ARPgb7zU6ZFZ/03Baxhe8=;
-	b=6Heizt/uz0DoCZUFbDVKWNCIX/xtvUWpj0Y+RZ+VQGkv6fetmbaeX+kiljjhLMGX4fZmeI
-	RPxIIXL/ur1DtXkZgzM7qswR+zoUjd7t5d4tNJpQe5toaKXw+VVAh7YMoI81tW67Lc048v
-	Gy+m8kuviedaYRHELXIcAzolRluzFXI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AY1myDW6;
-	spf=pass (imf04.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8Tr+OngTsfD5qeav2e6UkiPEYssc25+AtnzcNKlmI2I=;
+	b=XVbjVgh9hfMGOGg3+9AyddocYwxDJCbe2XPBVD3vPXNYppALAFlmnGaSplPDPIslVHtlFG
+	I0b0EnpYrWzfBKBA+H5rFGD1VK8wbCIpZGxj41MIGejSePk3dAMVwEHxie9nVTZMlKLm2f
+	DwNXJ3A8kfq6ggHUwWHFMOWmqb+mrwQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786122807;
-	b=Exrt9dVfgAUK8aTFwDm6/yoD3CTLAvvzF57KLnQ6nnDYrN8UOvz6BtdXuXudh2qiRIfBNc
-	xGhMCUmdlYkEW3/6HSpSdKt+r2nhONZB1itlOzXpRZOVnuRKsLq1amMhvhyhqM+Rlkl85t
-	wG83J8oIC/qc6vgHLbV9I2YnFAxtAjg=
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4hGrMV4Xsbz1XM6JX;
-	Fri,  7 Aug 2026 17:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1786122802; x=1788714803; bh=K3BbygswI9SirNkrlFNlq8ARPgb7zU6ZFZ/
-	03Baxhe8=; b=AY1myDW6thkncT/D9fi4qkmsPndStwdeea1fNG4go9OQo0yjxnc
-	fBrfh4xOJKySzmXO4+RJfq15QJ+SBy7zo8h8hiL/NCe2VP+KX0Fzgc8YE2v836bc
-	QXuXz4LB8NcG9hHrluXUB9uBhbmPMxqBye/0B2Buil994USY340kITjZJ3z+CKiW
-	z0287loek02MFIYsMk8bAJNBv7fENNMEDAZ8jk8stPegojz0ivOQXmsr2J945Gq0
-	WWdkIWFpIDQ2dED8s7HwUwEJ8PkN3clJBFSUVDo8fpdBKzawp6nW4fhH7+9hAZdl
-	jix43IgZAMIQciEyiDXFFMSEujWW8brkq1w==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id op4pkjehLSp0; Fri,  7 Aug 2026 17:13:22 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4hGrMP47Bhz1XM30g;
-	Fri,  7 Aug 2026 17:13:21 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	t=1786123288;
+	b=sswBUUXdDDjLFyCJWEnkF7v5YN+BoGMJiBhuBO81V+7Rb7lLwuo6NQsJm2pz/HAqqFj174
+	7YbWnhqr32alYYH7tZOhQdxOpjKxcMTaucdeORY/iO08X70XY9oymI7XaYeb0xDHY/vrHP
+	eIZgMwAyQ23nmKKHvZRPD93VTZbb+vc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIyozzzf;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FF0840050;
+	Fri,  7 Aug 2026 17:21:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EEE1F000E9;
+	Fri,  7 Aug 2026 17:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786123287;
+	bh=8Tr+OngTsfD5qeav2e6UkiPEYssc25+AtnzcNKlmI2I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AIyozzzfr+dQp2H8Mss1vFkruLckMYEvnGMbRVHglJzy5VD/RU9ZDhgtqIjlONLSR
+	 UZpH3eqdl620lb0P0EquTotgm3yd+yvX7k4ublIX19kaPHwQgaC4t4yfKovRK+PNv3
+	 8Nh6GKt9OxflFKRAyamwGHe0LPi1/nM19HjjwC8h1i4ZiqPcMV+alLurohiW70h7UE
+	 DfyxjUbc4U+Cvf902vkF7SJEvAwIxpIeAnGIrwdwslKZmet8o+V9eT+vq40W2ncHln
+	 ezysQ7WD0Dk2j/HDgFaqXfxxKfnWygMlNnk5+e7zvJHy23Av4gKrVIKaYHI2/wsycj
+	 bMH9z0ZRBbL7w==
+Date: Fri, 7 Aug 2026 18:21:10 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	David Hildenbrand <david@kernel.org>
-Subject: [PATCH] mm: Make VM_FAULT_RESULT_TRACE compatible with sparse
-Date: Fri,  7 Aug 2026 10:13:10 -0700
-Message-ID: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Subject: Re: [PATCH] mm: Make VM_FAULT_RESULT_TRACE compatible with sparse
+Message-ID: <anYSxm7GHV-bymDQ@lucifer>
+References: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6CFF940003
-X-Stat-Signature: n6mkxm7x5jcakj71dwu1pa96a8gtuhx8
-X-HE-Tag: 1786122807-370679
-X-HE-Meta: U2FsdGVkX19Vxz3IA0yikfAzL8HBaM/6T+u3NTTmA/t6YFH5LEDFXFukl7xWnyz131MDw+q5zJdYASHP7fuSu9GRjvCb4kQExnzsYkicCIhRoGwaa2RMdKfoR1lXpKVO3rNdBEY0cxCPFywCYyOjygw1Y/0v5ZJODY/MYXPAyfV/vxgcxxmtWqs2JKP1eLy2I6+qKH8jLSrk/ttDrCyXEMuGYe8NVPNSISvPkOxY0ITguR6GlBAQ019vVvsVBLBsQLTFGhLuHs7UOMYIvpx9kVMI+enTuJriWrSAsrsBwfjDGCsMam1DLiRgrnQsAjQ4GdX2RcYRY/YmJnRbidnrPkEDxPWMmMNZjnWz9aXFW0cJqciBf+AnnpAe86a1Xl2HOTrhdOD6pYV3cpQF36VAdXyzh+Usfs49VQiYu7/ToZGOepen+sIMcN/cTcWwB/l+TOC7W+Co1AVswcbfNuk8CI19s1xMqoDF3N9unPFJMIWK0/4r7HZh+UjpFrLQuXI6f4bEEa3ytsF1fvIxLmXbOdKyHOBmr31JUSZCNFh4TdS06dEY+alNLEywI+DcNmz9+HDCt0xrCWWnJ6zALuvyjHkKTfPWk2ckwj7aU/iPwAQnST4tdq+ZMzsODDHraO6YmAZJp0VS9pxQ/q84GjrXTGgd6UP8qfMsKJPTlWbreplZZgB08OSDKtbqVwl+UYhPr9qhNUuDIIxNnV/JOKFiu9MrXENwTsfFEiY5KLhi1+odybk4kpMs5U22ew0boiHJ1G8DXlvlu3QqBZCsUpXcVEj5OfB5PDTVXH3F8w7h5B6dOjDWOg1S0QrDqGEmeI5+9/u9ym33A7r1E/Je1kEo2VBwhDYp4/ihCMVPgpJEz/80doPWpDXmiBSndKQm9AURiEGq0+/R4nMzSiVAxsPGx6c/FtL5i60P9bVtvHZIWdGks2YYOSuTc+vbzZdAQoXRWYZJMsR69oe75T8IxXl
- bWBrC9Ws
- EvfHRq8ZC8R4zG3jJ2Gt/km9JDed8CFSRTVEopL1J6XerztbmuTtWZZxvTJ+HwLZEpSJY3zBNXSC+AVCRuKGasVSx3haJgvxsOzK2hei2lR006NV/2oA3+wckHPgJfUU3fvVp3mT4lMZ8EnxR6vDTBAxmryjO0J8uhJaQU+hEYZq2ejdUNq+GrwvBItwv31s+PfXilXuH+JZI/fkuoTZxsubkhD+LmDaywP31lcYxfjbFrjc9yE8jjLPECEsazgZBZFlI8sxJxSJTyL5B4v3iLVPOF7NeTpvUEuua4sbi6463f9fFOFezNTCua3MAr3nimL46suMuCA+d9mJl2wjWEb4/Y1+5B1VNBG75khrm2lg7H8oXGQjOOma3x4VF/yaHHEJg
+X-Stat-Signature: k71jqa3s8x411bbpwx76opohrxz56a3k
+X-Rspamd-Queue-Id: 83B4740005
+X-HE-Tag: 1786123288-252531
+X-HE-Meta: U2FsdGVkX19Go6qIhtw1/Wm0ON/s9Kt5gx2qIV5DSqU378R1Y92Rc7hGyHqDhC8bzP0+aOGuVMHQMtq+f/TAGQ7A4QB55/M56mq1yHlvH20mL9P901WzKmh0E3dzQigkus6swBAZZY/lZOD0v9dSlfT+6fi6/QauQ14LBbLSiGNkho9j7nF3te4UZM+7YsQEO3VPZrk7OQfd6JNIr/3hSH2bliRBLenwljgS2g4DVfTw6w5m77RrvDWR0+M6tT9y8KAUO+RDR3kRVVUOdg3fFeqSP+5mQzvlQkIqFFQMIG8r15+f6jLXEczlC0R6smKxwS0kLWeb+WKy8hLp9v/BZHaRZkh0PMX/CgOe06rHKU0l7nIYReqtyyYwWmyVstl6cPmwStDTAZNQlxpDgl/6kfRGw/Z7kL+8VqyxDGk1ospAsvxdsFVSt10zkLOtI81VZ89A4V0Tu8tvIr2A0crEbfmiCD1u5U26ldbOZw71BbVhl8c7RsfCYgCcTcvqeFlcBUCO5P3EphTaSc1bFoGAMRRkz7MHLDrrXcusU7k/5AT2joogdp3Ts/z+qTArFsUDMTMYGlwmpfzDublwZrDyi/68CTBCCmf6wsjznf5CcPfczzZUe+G9Up798H/kRX+2+n3XWjirM8I+BPfH+dgkruYi8uKHsmnBCXgy+KVVMGxMvByoYykSfJsEQNipdaupkMHxTi9SfShLRwCcsahSuk7DHMwz76Vu/fmiNhSQCwlGrEQY9ca4roTe48dWd2VVppr48keHEv4ap5JNEcRmrRX0HScdbdb2PdEBPjyW3WvNbauUaigyA51Zslydea8Y13LuiVeVtuXb0OrfimuTvyvhSoB0lo6neqY86NVCAK4mr6wiuXEIZRlEUwys2TTZ9O7i8G/ClRgJa+rstGUq5eQygiDA/thxcyR506SGmJFkMwjDhDa4xbR8UcQmCksi5SiqWfLuhvux/PlKEuz
+ kC/tnOt8
+ TOiilhDuwo15LwcPx+Cq7nbiXoPL8GRdKTyf5fFqvoGzb/IwLwOAHSKom/5dei6Yfk0HjhMqyB6/F46Ma/raLF/Xcu27/zA71RXCY90t+O4zn4H9k3Lj9F2D4pfxgBcKKznD1fkjmM0EKzFy6L6mVk3jubkb/ERABYxtXSspiITbyZOYXskLRIcNjKIYA8Au1n8+ZCNsttCbsd0LJ9iMPQ7k3Q3Y78zpVkBHT+T8RsXRvsb7DcyL1AlXa2CyYrtuyFbiaAP8lIEUJ/C1rauQbOPWbsQMXRVi9A/soGZpKiyZ5hvwty3XjrgDuDSt6j8K/Kyhsm27XkGgrFuduHjFy5l4tIMet4DvuBvkIYR21g81TSvIrvYFSXj3qOKm21cBcS+yTXVNjw079LBf569UGclLUjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,57 +90,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix the following sparse warnings that appear while building f2fs:
+On Fri, Aug 07, 2026 at 10:13:10AM -0700, Bart Van Assche wrote:
+> Fix the following sparse warnings that appear while building f2fs:
+>
+> ./include/trace/events/f2fs.h:1469:1: warning: incorrect type in initializer (different base types)
+> ./include/trace/events/f2fs.h:1469:1:    expected unsigned long mask
+> ./include/trace/events/f2fs.h:1469:1:    got restricted vm_fault_t
+>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-./include/trace/events/f2fs.h:1469:1: warning: incorrect type in initiali=
-zer (different base types)
-./include/trace/events/f2fs.h:1469:1:    expected unsigned long mask
-./include/trace/events/f2fs.h:1469:1:    got restricted vm_fault_t
+I no longer work at Oracle ;)
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- include/linux/mm_types.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index b18c2b2e7d2c..fcd7d6cfce0f 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1703,20 +1703,20 @@ enum vm_fault_reason {
- 			VM_FAULT_SIGSEGV | VM_FAULT_HWPOISON |	\
- 			VM_FAULT_HWPOISON_LARGE | VM_FAULT_FALLBACK)
-=20
--#define VM_FAULT_RESULT_TRACE \
--	{ VM_FAULT_OOM,                 "OOM" },	\
--	{ VM_FAULT_SIGBUS,              "SIGBUS" },	\
--	{ VM_FAULT_MAJOR,               "MAJOR" },	\
--	{ VM_FAULT_HWPOISON,            "HWPOISON" },	\
--	{ VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" },	\
--	{ VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
--	{ VM_FAULT_NOPAGE,              "NOPAGE" },	\
--	{ VM_FAULT_LOCKED,              "LOCKED" },	\
--	{ VM_FAULT_RETRY,               "RETRY" },	\
--	{ VM_FAULT_FALLBACK,            "FALLBACK" },	\
--	{ VM_FAULT_DONE_COW,            "DONE_COW" },	\
--	{ VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
--	{ VM_FAULT_COMPLETED,           "COMPLETED" }
-+#define VM_FAULT_RESULT_TRACE						\
-+	{ (__force u32)VM_FAULT_OOM,                 "OOM" },		\
-+	{ (__force u32)VM_FAULT_SIGBUS,              "SIGBUS" },	\
-+	{ (__force u32)VM_FAULT_MAJOR,               "MAJOR" },		\
-+	{ (__force u32)VM_FAULT_HWPOISON,            "HWPOISON" },	\
-+	{ (__force u32)VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" }, \
-+	{ (__force u32)VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
-+	{ (__force u32)VM_FAULT_NOPAGE,              "NOPAGE" },	\
-+	{ (__force u32)VM_FAULT_LOCKED,              "LOCKED" },	\
-+	{ (__force u32)VM_FAULT_RETRY,               "RETRY" },		\
-+	{ (__force u32)VM_FAULT_FALLBACK,            "FALLBACK" },	\
-+	{ (__force u32)VM_FAULT_DONE_COW,            "DONE_COW" },	\
-+	{ (__force u32)VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
-+	{ (__force u32)VM_FAULT_COMPLETED,           "COMPLETED" }
-=20
- struct vm_special_mapping {
- 	const char *name;	/* The name, e.g. "[vdso]". */
+This seems reasonable to me, AFAICT.
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  include/linux/mm_types.h | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index b18c2b2e7d2c..fcd7d6cfce0f 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1703,20 +1703,20 @@ enum vm_fault_reason {
+>  			VM_FAULT_SIGSEGV | VM_FAULT_HWPOISON |	\
+>  			VM_FAULT_HWPOISON_LARGE | VM_FAULT_FALLBACK)
+>
+> -#define VM_FAULT_RESULT_TRACE \
+> -	{ VM_FAULT_OOM,                 "OOM" },	\
+> -	{ VM_FAULT_SIGBUS,              "SIGBUS" },	\
+> -	{ VM_FAULT_MAJOR,               "MAJOR" },	\
+> -	{ VM_FAULT_HWPOISON,            "HWPOISON" },	\
+> -	{ VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" },	\
+> -	{ VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
+> -	{ VM_FAULT_NOPAGE,              "NOPAGE" },	\
+> -	{ VM_FAULT_LOCKED,              "LOCKED" },	\
+> -	{ VM_FAULT_RETRY,               "RETRY" },	\
+> -	{ VM_FAULT_FALLBACK,            "FALLBACK" },	\
+> -	{ VM_FAULT_DONE_COW,            "DONE_COW" },	\
+> -	{ VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
+> -	{ VM_FAULT_COMPLETED,           "COMPLETED" }
+> +#define VM_FAULT_RESULT_TRACE						\
+> +	{ (__force u32)VM_FAULT_OOM,                 "OOM" },		\
+> +	{ (__force u32)VM_FAULT_SIGBUS,              "SIGBUS" },	\
+> +	{ (__force u32)VM_FAULT_MAJOR,               "MAJOR" },		\
+> +	{ (__force u32)VM_FAULT_HWPOISON,            "HWPOISON" },	\
+> +	{ (__force u32)VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" }, \
+> +	{ (__force u32)VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
+> +	{ (__force u32)VM_FAULT_NOPAGE,              "NOPAGE" },	\
+> +	{ (__force u32)VM_FAULT_LOCKED,              "LOCKED" },	\
+> +	{ (__force u32)VM_FAULT_RETRY,               "RETRY" },		\
+> +	{ (__force u32)VM_FAULT_FALLBACK,            "FALLBACK" },	\
+> +	{ (__force u32)VM_FAULT_DONE_COW,            "DONE_COW" },	\
+> +	{ (__force u32)VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
+> +	{ (__force u32)VM_FAULT_COMPLETED,           "COMPLETED" }
+>
+>  struct vm_special_mapping {
+>  	const char *name;	/* The name, e.g. "[vdso]". */
+
+--
+Cheers, Lorenzo
 
