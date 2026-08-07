@@ -4,92 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B40B8C5AC80
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:01:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33AC7C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EEF6B007B; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
+	id 2588C6B008A; Fri,  7 Aug 2026 05:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFC26B0088; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
+	id 209126B0092; Fri,  7 Aug 2026 05:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E0066B008A; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
+	id 0F84A6B0093; Fri,  7 Aug 2026 05:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D5D56B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0674A0360
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:01:29 +0000 (UTC)
-X-FDA: 85073879898.17.5232008
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C45F11C0018
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:01:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W4paKvFA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D2EA56B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:07:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57EE41A0396
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:07:21 +0000 (UTC)
+X-FDA: 85073894682.30.E6DE981
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4AFFE18000D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:07:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWPmXhXF;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786093287;
+	s=arc-20220608; t=1786093639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iG7BQOUNjluMUKJPYfIHD5r/Uah0YPlbWHQVgLWehtU=;
-	b=kv6jKPCfc9fj0jhCCc3BD7PewH/S1SZL/IuLuT2wh89nOsEg/uwxdQE6ALeNOIfQ3ZbkaO
-	uAJjOQLOBa0nhW/Tqs5wMn8PK/ftoUhvzzhg/IBBNyuyOWcHRb22aiWSdCh+5AA4BWol2p
-	cCH77VZcZDPCVPbN+LQ1cXMDCPE4eo0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W4paKvFA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786093287;
-	b=BZRmHCm0NfvJqxbGoe0I67eesQ0DoJV0V36BA6CAp/srkaNxp6k1yyszvrnxrcZudor3rh
-	A4eUKBQrg2JsA6dDur+IgL94Jp+d0q8jOr0a2rG46Y8DpXZnIvBWtZUb9t28F+xKWWYKMN
-	cgDweNz+VyyX04J/gvCXHAJJZcZ/sSk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786093285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iG7BQOUNjluMUKJPYfIHD5r/Uah0YPlbWHQVgLWehtU=;
-	b=W4paKvFA++v1+lPM1ytHVfF0PZgUR7OB0TF6XKLapSuMujihGcrfh1cnW4DDbj0JgZF4hM
-	uzcLPRGnqw+YY1zkx6ns8pfJsv7N2hXW4gK6iqyVohSLE+pv95PdLIOdAdnstM5ayQxb/b
-	I+VmA6gxITBSkq9zeH/4MNwnK4FYdSw=
-From: Ridong <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	cui.tao@linux.dev,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v2 1/2] memcg: acquire peaks_lock when reading memory.peak
-Date: Fri,  7 Aug 2026 16:59:59 +0800
-Message-Id: <20260807090000.1532495-2-ridong.chen@linux.dev>
-In-Reply-To: <20260807090000.1532495-1-ridong.chen@linux.dev>
-References: <20260807090000.1532495-1-ridong.chen@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=a1EWiRm8rGvBaX2BeGAVlCIriDzLuZieyXEjm7j2gz4=;
+	b=ZEwMx8FJjXI9bK2ing/V4s2z5KidYJBYnfPDj8X4/7IoMLh1LacUP1bfdQe4xEeEpaE2vX
+	Wj0GW0VXcX/h4nsikHUYAQNJn6BBnDFkyftvAiDyp+dj8tVX5KKtJcDSXFI+z8SfK167RL
+	oSBDAMgbniTULCNlDejuA6G3u1t1DaQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786093639;
+	b=UqltHj78n1gHlPPp9bnNc46Hbet5wiDuW2TaZk8k8gvjB1XdcIeI6OXW4PY5a2YR7LxpYc
+	EuuJYyVIWlGQviSoSJJqDLl85wrm/PIv1f1O0Ct+UzlIJV/PLxWynEeicMDcNGUeFDvDbx
+	RQM7UCmS3aD5Oz5E+pFKtBfd8k/m7GQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWPmXhXF;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 53A4E43E18
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E43D1F00ADF
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786093638;
+	bh=a1EWiRm8rGvBaX2BeGAVlCIriDzLuZieyXEjm7j2gz4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GWPmXhXFQM9B+0LygdH3F4qjU4rkRFr1kHphnAkq6yXk9RadM49miP/KKwyZQaSE/
+	 De9PClZ/SZOqK/izYHSsKh3C+xQQJqGC3d2/fgFLaVQ8dx/CRKoh7I4JpSFQGhwcLM
+	 Mg08+PocMvp9jBN9LjaIVocy0vIWUOXQtnOS6jFZ1WosXWnvMn+mQzwot0BNrTiB0t
+	 KFtLsjd+CGIqurU8buXChcvPBZILF2tU0cDDZiGeDQyvTphsIyoQTSCXYd/x+ZVPBO
+	 oi7qzYc+ngS4VIFaUK9z6cMxkdgcL9uInuPVgr2ny+PcNSm0JxDjyQ/kc5rFnoaPxr
+	 ijfVDdJGLxMTA==
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-80bb41f7f3cso34778047b3.2
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 02:07:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqEPBNY2QsAQTzn5mroBnvFyuGkHqgs5HKzGYGXVpLIrdN1gzj0CqX1t6ggPWTsBMs6BKvHAOAetA==@kvack.org
+X-Gm-Message-State: AOJu0YzTjUihTxPTabHd/FSp4wCCVJzhuMBGK0L18cF9MSsvpp40w9++
+	nPbAYdOM0rfLUwJ37PcZRLpg7sM2C4kZeH3F+8Kigr6zzQYydLirDADLkE7iqtVjRs5g7Hp+1ar
+	NGJUMcLHEECHDiUwVoAAVgs7Y8FoHvkGaXbPxzXpxjw==
+X-Received: by 2002:a05:690c:6d8c:b0:80b:a6a3:937c with SMTP id
+ 00721157ae682-8225ba2bad2mr44320407b3.20.1786093637197; Fri, 07 Aug 2026
+ 02:07:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C45F11C0018
-X-Stat-Signature: grjypp3ndzxjptjie668uz73d8ok5hqk
+References: <20260806184254.3790858-1-nphamcs@gmail.com>
+In-Reply-To: <20260806184254.3790858-1-nphamcs@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 7 Aug 2026 02:07:04 -0700
+X-Gmail-Original-Message-ID: <CACePvbX+3tO91BmRwaLqf3Xia32GCemt3W8tayErG81BYLgrzA@mail.gmail.com>
+X-Gm-Features: AUfX_mxPrM2en4hyjOF6IVnj1qpcR-vwyigyA_-EV71vhTPhotW10G_NYfxDjDI
+Message-ID: <CACePvbX+3tO91BmRwaLqf3Xia32GCemt3W8tayErG81BYLgrzA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/11] Virtual Swap Space (Swap Table Edition)
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, corbet@lwn.net, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1786093286-574622
-X-HE-Meta: U2FsdGVkX18WgqriTDnzJDX6bEbdU3ReVIntU35FRw7VLAYFXrGMjHoPtaRdQaugEZbESWtJjuiGYNn2+Z3jiqoz5+NF1cHA4D8asEsCdhxFQmjVNV/QC0VewepzlYhGTMCRqrurItd9E4jd3sffr978uDPuMb+EdmQoULpq42SqftX1GGHnxzkHVOlfeC1fePqSeG2nidboatASC9m8jJmDXi+ZJ4ook7Y6RvxatP0SIfO8fCyC1YCPhfDtiJR34UGUstBxq2LW1vPYhSiOYhphuWIxgM0242g2dKOVb5YRZw9u5gue3HR45109IgZrvr7WkPC2ySffwpFHYtK+PmoNohjc8t5hW2rIiWGd+EMzqznfR7S1eZIdX5zzKbhgRcFf6ZvMO+JlvILO3Qs7orwxd6Rc72ErkI91vHz7iQzJkfv0XLN3NkzpoDBZJplHRLWtFH0i0x1ZQh4YfaPXwxZLnri93SJ9K00eb31yO3pvme07O5po1lHXAXmEANmE6gRhbdbpKuGxxLyhNrfyPUFoQbHyij429AXTwuvrmrBsuypxTPqqX06768UkolvnWkCCJ47Z8VZn/ZramP3d9iUCOuH41/tT5MWY7s6o4ivWRlXjHvOIX9dy4ZNIvXsUuBsfE1RUPqAEtVhp8+CMN514m8UkYxl32D0HntBTgQK51IL09O5uB8I3EWxaVBXQo+JGRqMd28dMVog/r197LgJjVIydtiJ6lXPLX5aVEXSIUw/56YE+BxPTmQQVi4XwLCqaI+MD/DU4S84irI1LnFt9TJcnwBXcloNdNxwHL2B8DKsiGgJAI8A1PX+AOfsqx5wGiWwBBTGD02Ws39NephYS0b1K4Qx6S73rYyg7TRRRzpUZtwr11S+a0Zw+ALRQBdCUTgdzrDeXESrEy8+8ydunhlVD/We77xaQbPSUuvpIGEwXT08neGfag7DIaOH1F+MmfF4/Qb87Ewlwqft
- tsdq8I3l
- LrVyy9B0B9NRdCgjxeIxGeMORwrFX+Glxwb4if4IZxS7dRFcBlCQfXE64nzP7+GPdy4u/05wUvWWRgVtFuhCKPdtfjspXcb9oOloehPkgzgbn/nRbp1WWq2CfzC2AvA9SI9rQm8hsUYTgmhlxAMEEcUCihHeiL1sIIe/rGkHdBjITo7SrAMynxVK1eohsADKIioYIRl5bMAOg0sbcPcGlLr2kgE9Ik5seOCTfGmTd9dcZ69itS5xUi4MBVXRiXi5BHz8Y5S6eyN4LqKEEr9FiP6Al83VlvMtR329CZmP+3Ue9WExbUK+VqBlJTAvSkjGt0EsYCQEWumkKB7zerG8N3Jvmgk4VLgAHSZcx
+X-Stat-Signature: 93qt8uc15bu6mqb6gmkztsnr5tqo3hc8
+X-Rspamd-Queue-Id: 4AFFE18000D
+X-HE-Tag: 1786093639-193116
+X-HE-Meta: U2FsdGVkX181C6Xc5E5lXuJ8h/UIDJr7PyODwClCa6lppvLwlP2+RiqpHr3DCXenaHBg97alFPP95Xl++VOX7cmPgeLgeBRH2raID5bYW+bOMH+rBFtrdx9Sp7Q4ql3OVSodSyLIFoERpOe8U1UjqWzK40mpw33YjpgyE2YLiSCKpWBKTrWgT05R5UPoE0eDlVPgeC81vyW36Mzf7YLYZUF9QxfrEB8GO8w9R6EKFvFZ3n/tjldIOCnRJS5V+F0u4DDKyor7oirla826LNzQ7tdcW7FopoOBdIQx9aACRIIaNpZcx9E75UWIhJ0935fd7n+P1eE+geEhrKQ8Vva1nLmMBw3mRDDuOgVP1agVvHxAWrJEcl+K91VnyBsb8Mvht4eXwOUkuKzusEdJY1qSTPd5vimKp9abVM+EWcDP3ktPOWF0OfOxMI7eC0SllP2sQA2RZZ1UiYl43u8waJDFFSZHAwBT9nBwUXPZn3HCE6J23Iha3CtIjdE8sXNYj2DiNPfdp4JJj1MRRveOiOwdOVMQ4WSmbLYQQ7Z7+Ke30iZjRaYppaKfjqlSw5y7jrRR6roHAYGDv2aJiDw73buV+tDkFQ/EGZd1/jeUkrW3oBg6HKEbcphzj4jXwVQmPGDEkuPRBJ+DqCrEsWZ9gn6DmI2DPsgaOOI+edMKQlxDRECnQkfN24fw8lGabrhSqWVlVsUmIZGwLgwya/LTHAe+ssPiYG7I7vroB0nulKzgSV8qvdLyicgH1zr7brGN6NVSZpIo5ckLrQQBuiaYbIfANilwLSAOQGvLgI04enmt3JPs09EIuV0uxUgzookXJygcncNloRsHxg8Cnm2Go/Yum0sDGwEuAEcijIXVXBzGCo5LYPc+YroELIAF682D1HCnycV4ZqlyLlqTrI2XnNj+aMKdwQz1Z1hu2zu3oELxWtCQ5HSG5tvbegM2u6a+F1DXabjz0NiqYgAwAKG9dwk
+ n38PV4LD
+ BP/lmo8T/IF3D6YHMe/5TlHM45e0SEtvKmkKlP2A8i4+I3PdVFv4UU54N7twZAwsn9rPaJV/4VS9ZqvDShMmkZrC9UeE1wO+q+W9B+D7Cxz54YlPzK2U0Xaj+IkeDivw+uezNhfG7TfXE9aIo9Q3LQPfPDuPAORnFOW5vfnYTYmn2CLQhADyfm0RW4+2z1Ca2QCZH2A3xXJePWaLl2WYVm1b5mZS8um9jgIPSt7Q3bOWSrhaU/sqcoThOupjQW4JzOM3H+q0kB1SoWdHiz7KdhY3qYWsIBN2Zn0z15Dy22joZWfeghG1iKnEeovYiJSAR0ZAuA8KxQkRosKWykvGnlJW6uHkYaMX1RJbOmxUM36msTxT0IeKtKzwEizw8CVFZGYzXxpN+4LsEqw/zfEMw5l4qvtNmF3Hgf6Uv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,75 +111,572 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+Hi Nhat,
 
-Sashiko reported that a reader can transiently observe a lower peak
-within a race window [1]. peak_show() returns
-max(local_watermark, ofp->value), but peak_write() updates those two
-under peaks_lock while the reader takes no lock. The interleaving is:
+First of all, thank you very much for addressing the feedback
+regarding the swap metadata size concern and for stopping the
+punishment of zram usage. I'm unsure how to proceed with your earlier
+VS series (before swap table version V2), given the previous concerns.
 
-  writer (reset on fd A)                 reader (fd B)
-  ----------------------                 -------------
-  usage = page_counter_read(pc)
-  WRITE_ONCE(local_watermark, usage)
-  // watermark lowered to usage
-                                         lw  = READ_ONCE(local_watermark)
-                                         // sees the lowered usage
-                                         val = READ_ONCE(ofp->value)
-                                         // B's value not updated yet
-                                         return max(lw, val)
-                                         // both low -> low peak
-  WRITE_ONCE(peer_ctx->value, usage)
-  // B updated, but too late
+I was a bit nervous when you reverted the swap table and replaced it
+with something that performed worse in earlier series. I'm not
+attached to the swap table. The performance regression for existing
+use cases simply doesn't make sense to me. Thanks again that is no
+longer the case.
 
-Fix it by acquiring peaks_lock when reading the peak, so the reader sees
-a consistent snapshot of local_watermark and the per-fd values. The same
-race applies to memory.swap.peak, which shares peaks_lock and the
-peak_write() path, so take the lock there as well.
+On Thu, Aug 6, 2026 at 11:43=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> Changelog:
+> * v2 [v2] -> v3:
+>     * Rebased onto current mm-unstable.
+>     * Add a runtime vm.vswap_enabled sysctl and CONFIG_VSWAP_DEFAULT_ON
+>       to gate vswap allocation.
+>     * More cleanups and small bug fixes.
+>     * Split THP swapin enablement into its own patch (patch 5).
+>     * Add production workload benchmark results, and drop RFC tag.
+> * v1 [v1] -> v2:
+>     * Rebased to a newer mm-unstable tip.
+>     * Fix a bunch of assorted issues (incorrect zswap store failure
+>       rollback, vswap_init() failure handling, rmap-encoding collision,
+>       etc.) and clean up the code (rename a bunch of functions to
+>       more closely follow existing patterns, etc.).
+>     * Some more code clean up and simplification: some renamings to more
+>       closely follow existing patterns, move vswap backing check to
+>       __swap_cache_add_check, store zero state in the swap_table for
+>       vswap entries, etc.. Many of these are proposed by Kairui Song
+>       in [1].
+>     * Defer memcg_table allocation on physical clusters until the first
+>       vswap-backing slot installs. Saves ~512 bytes per physical cluster
+>       that only serves vswap-backing slots (this is the new patch 8).
+>     * Widen swap_info_struct->max and ->pages (and the swapoff unuse-path
+>       index) so vswap supports ~8 PB of swap space (this is the new
+>       patch 9).
+>     * Split the physical-swap-backend patch into three for reviewability:
+>       the core backend (patch 3), zswap writeback to physical swap
+>       (patch 4), and reclaim of cache-only physical slots (patch 5). No
+>       functional change.
+>     * Add kerneldoc for the vswap API.
+>     * Add some benchmark numbers for zswap case.
+>
+>
+> I. Context and Motivation
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> Currently, when an anon page is swapped out, a slot in a backing swap
+> device is allocated and stored in the page table entries that refer to
+> the original page. This slot is also used as the "key" to find the
+> swapped out content, as well as the index to swap data structures, such
+> as the swap cache, or the swap cgroup mapping. Tying a swap entry to its
+> backing slot in this way is performant and efficient when swap is purely
+> just disk space, and swapoff is rare.
+>
+> However, the advent of many swap optimizations has exposed major
+> drawbacks of this design. The first problem is that we occupy a physical
+> slot in the swap space, even for pages that are NEVER expected to hit
+> the disk: pages compressed and stored in the zswap pool, zero-filled
+> pages, or pages rejected by both of these optimizations when zswap
+> writeback is disabled. This is arguably the central shortcoming of
+> zswap:
+> * Resource-wise, it is hugely wasteful in terms of disk usage. At Meta,
+>   we size swapfile in the order of 25-50% of host RAM, depending on flash
+>   availaiblity. This is a lot of flash for a fleet of our size, and
+>   with universal zswap enablement, most of this is wasted for zswap
+>   entries.
+>
+> * In deployments when no disk space can be afforded for swap (such as
+>   mobile and embedded devices), users cannot adopt zswap, and are forced
+>   to use zram. This is confusing for users, and creates extra burdens
+>   for developers, having to develop and maintain similar features for
+>   two separate swap backends (writeback, cgroup charging, THP support,
+>   etc.). For instance, see the discussion in [2].
+>
+> * Tying zswap (and more generally, other in-memory swap backends) to
+>   the current physical swapfile infrastructure makes zswap implicitly
+>   statically sized. This does not make sense, as unlike disk swap, in
+>   which we consume a limited resource (disk space or swapfile space) to
+>   save another resource (memory), zswap consumes the same resource it is
+>   saving (memory). The more we zswap, the more memory we have available,
+>   not less. We are not rationing a limited resource when we limit
+>   the size of the zswap pool, but rather we are capping the resource
+>   (memory) saving potential of zswap. Under memory pressure, using
+>   more zswap is almost always better than the alternative (disk IOs, or
+>   even worse, OOMs), and dynamically sizing the zswap pool on demand
+>   allows the system to flexibly respond to these precarious scenarios.
+>
+> * Operationally, static provisioning the swapfile for zswap poses
+>   significant challenges, because the sysadmin has to prescribe how
+>   much swap is needed a priori, for each combination of
+>   (memory size x disk space x workload usage). It is even more
+>   complicated when we take into account the variance of memory
+>   compression, which changes the reclaim dynamics (and as a result,
+>   swap space size requirement). The problem is further exacerbated for
+>   users who rely on swap utilization (and exhaustion) as an OOM signal.
+>
+>   All of these factors make it very difficult to configure the swapfile
+>   for zswap: too small of a swapfile and we risk preventable OOMs and
+>   limit the memory saving potentials of zswap; too big of a swapfile
+>   and we waste disk space and memory due to swap metadata overhead.
+>   This dilemma becomes more drastic in high memory systems, which can
+>   have up to TBs worth of memory.
+>
+> Swap virtualization is the answer to these issues, with three properties:
+>
+> 1. Decoupled backends. For zswap in particular, this means we eliminate
+>    the unused storage space, and allows zswap to be used in systems that
+>    do not have enough storage capacity for physical swap (without having
+>    to resort to silly hacks). Zero-filled swap pages and swap-cache-only
+>    folios also benefit here.
+>
+> 2. Dynamic swap space. Since virtual swap is not tied to any physical
+>    resource, we can make it infinite and dynamically grow it on demand.
+>    This massively simplifies operational provisioning, and increases the
+>    utilization of compressed swap backends (zswap). Dynamicity also
+>    reduces overhead on unused swap capacity.
+>
+> 3. Efficient backend transfer. The virtualization scheme should not
+>    introduce PTE/rmap walking overhead for backend transfer. This
+>    is crucial for systems that want to support multiple swap backends
+>    in a tiering fashion (for e.g zswap -> disk swap).
+>
+> For more historical contexts and references, please take a look at
+> the cover letter of the older vswap submissions ([3] and [v2]).
+>
+> II. Design
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> When we compile kernel with CONFIG_VSWAP, a special vswap device is
 
-[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
-Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/memcontrol.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Does the CONFIG_VSWAP only make sense for zswap right now? No other
+swap usage can benifit from CONFIG_VSWAP.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index dd6b1c298345..2da55b778ae3 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4711,8 +4711,13 @@ static int peak_show(struct seq_file *sf, void *v, struct page_counter *pc)
- static int memory_peak_show(struct seq_file *sf, void *v)
- {
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
-+	int ret;
- 
--	return peak_show(sf, v, &memcg->memory);
-+	spin_lock(&memcg->peaks_lock);
-+	ret = peak_show(sf, v, &memcg->memory);
-+	spin_unlock(&memcg->peaks_lock);
-+
-+	return ret;
- }
- 
- static int peak_open(struct kernfs_open_file *of)
-@@ -5790,8 +5795,13 @@ static u64 swap_current_read(struct cgroup_subsys_state *css,
- static int swap_peak_show(struct seq_file *sf, void *v)
- {
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
-+	int ret;
- 
--	return peak_show(sf, v, &memcg->swap);
-+	spin_lock(&memcg->peaks_lock);
-+	ret = peak_show(sf, v, &memcg->swap);
-+	spin_unlock(&memcg->peaks_lock);
-+
-+	return ret;
- }
- 
- static ssize_t swap_peak_write(struct kernfs_open_file *of, char *buf,
--- 
-2.34.1
+> allocated at boot time, and all swapped out pages try to allocate from
+> this device first, falling back to a physical swap device on failure.
 
+Does it create a new user visible behavior change where users don't
+need to swapon and can start using VSWAP for zswap?
+That is a user-visible behavior change and we need to be more cautious abou=
+t it.
+
+I think a system should not use zswap or any type of swap if no device
+is swapped on.
+
+Have vm.vswap_enabled is no the answer to address the new API change
+because existing distro that use fstab to control swap will need to
+jump through hooks.
+Previously, using fstab to control was at least consistent for all swap typ=
+es.
+
+> Routing can also be turned off at runtime with the vm.vswap_enabled
+> sysctl, which defaults to 0 unless CONFIG_VSWAP_DEFAULT_ON=3Dy. It is
+> allocation-only: new swapouts go straight to physical swap, while
+> entries already backed by vswap keep being served and drain as they
+> are faulted back in or freed.
+>
+> These swap entries can subsequently acquire backend on-demand, such as
+
+What do "These" refer to? Are they entries already backed by vswap?
+
+> a zswap entry, or a slot on a physical swap device.
+>
+> We repurpose much of the existing swap_table infrastructure and
+> swapfile allocator for this new vswap device, with two notable
+> differences:
+> * Clusters are dynamically allocated on demand and managed through
+>   an xarray. This in turn allows us to avoid static provisioning and
+>   let swap space grow dynamically.
+>
+> * Each cluster of this new vswap device has a virtual_table that stores
+>   the backend information of the entries in the cluster (see below).
+>
+> Diagrams:
+>
+>   Case 1: vswap entry (virtualized)
+>
+>   PTE                  swap_cluster_info_dynamic
+>   vswap_entry          +---------------------------------+
+>   (swp_entry_t) ------>| swap_cluster_info (ci)          |
+>                        | +----------------------------+  |
+>                        | | swap_table                 |  |
+>                        | |   PFN / Shadow             |  |
+>                        | | memcg_table                |  |
+>                        | | count,flags,order          |  |
+>                        | | lock, list                 |  |
+>                        | +----------------------------+  |
+>                        |                                 |
+>                        | virtual_table                   |
+>                        | +----------------------------+  |
+>                        | | NONE                       |  |
+>                        | | SWAPFILE(swp_entry_t)      |  |
+>                        | | ZSWAP(struct zswap_entry*) |  |
+>                        | +----------------------------+  |
+>                        +---------------------------------+
+>                               |
+>                               | SWAPFILE resolves to
+>                               v
+>                        PHYSICAL CLUSTER (swap_cluster_info)
+>                        +--------------------------+
+>                        | swap_table per-slot:     |
+>                        |   NULL   - free          |
+>                        |   PFN    - cached folio  |
+>                        |   Shadow - swapped out   |
+>                        |   Pointer- vswap rmap    |
+>                        |   Bad    - unusable      |
+>                        |                          |
+>                        | Vswap-backing slot:      |
+>                        |   Pointer(C|swp_entry_t) |
+>                        |     rmap back to vswap   |
+>                        +--------------------------+
+>
+>   Case 2: direct-mapped physical entry (no vswap)
+>
+>   PTE                  PHYSICAL CLUSTER (swap_cluster_info)
+>   phys_entry           +--------------------------+
+>   (swp_entry_t) ------>| swap_table per-slot:     |
+>                        |   NULL   - free          |
+>                        |   PFN    - cached folio  |
+>                        |   Shadow - swapped out   |
+>                        |   Bad    - unusable      |
+>                        +--------------------------+
+>
+> struct swap_cluster_info_dynamic {
+>     struct swap_cluster_info ci;       /* swap_table, lock, etc. */
+>     unsigned int index;                /* position in xarray */
+>     struct rcu_head rcu;               /* kfree_rcu deferred free */
+>     atomic_long_t *virtual_table;      /* backend info, 8 B/slot */
+> };
+
+No a big fan of this two personality data structure thing depending on
+whether it is VS or not.
+If ci is the common part, I prefer to keep it separate and leave it alone.
+
+Also the extension is too vswap specific, it does not apply to other
+swap device types that might need their own private extension.
+You can take the VFS layer as an example. There is a VFS layer generic
+inode, which is common and shared by all file systems. And then you
+have filesystem-specific inodes as extensions, e.g. ext4_inode. The
+ext4_inode does not contain VFS inode. You don't see VFS having a code
+path like: if it is ext4, get the inode this way, else if f2fs, get
+the inode that way.
+
+In the first swap abstraction LPC talk, where I co-hosted with Yosry,
+I talked about the alternative approach: "VFS-like swap layers". That
+is exactly what I have in mind. We are getting very close to
+fulfilling that promise via swap ops and xswap extension interfaces.
+
+I think implementing the generic interface first is simpler than
+implementing the non-generic vswap interface, ripping it out to
+replace it with a generic interface, and then putting back the generic
+modified version of vswap.
+If the two personality vswap xarray lookup gets in first, it will
+ultimately take more work to achieve the desired VFS-like extendable
+swap operations.
+
+I am happy to spend some time working with you to discuss the generic
+adopted version of vswap, if you are open to it. Or if you don't want
+to waste time on it. I can have someone else or myself come up with
+the generic adopted version of vswap for you to review, which I prefer
+less.
+
+Another piece of feedback is to please come up with a plan to submit
+your vswap changes piecemeal rather than as one long series. There is
+a lot of change like swap charging, that deserves a separate
+discussion before it gets merged. Look, the swap table changes took
+four phases. Each phase achieved a smaller milestone, with four of
+them ultimately reaching the finish line. I wish vswap had a similar
+piecemeal plan.
+
+Sorry I have to crash now, to be continued...
+
+> Each vswap cluster (swap_cluster_info_dynamic) extends the classic
+> swap_cluster_info struct with a virtual_table array that stores the
+> backend information for each virtual swap entry in the cluster. Each
+> entry is tag-encoded in the low 3 bits to indicate the backend type:
+>
+>   NONE:     |----- 0000 ------|000|  free / unbacked
+>   SWAPFILE: |- type:5,off:56 -|001|  on a physical swapfile
+>   ZSWAP:    |--- zswap_entry* |010|  compressed in zswap
+>
+> Other design highlights:
+>
+> * Note that for the vswap device, we have merged the zswap xarray tree
+>   with the swapfile-level clusters. This means that for zswap only users,
+>   we have negligible extra space overhead.
+>
+> * Both vswap entries (Case 1) and directly-mapped physical entries
+>   (Case 2) coexist as first-class citizens. When CONFIG_VSWAP=3Dn the
+>   vswap paths compile out.
+>
+> * Backend transitions in the virtual_table are synchronized through the
+>   swap cache and the folio lock - the same mechanism that already
+>   serializes ordinary swap operations (swapin, swapout, zswap
+>   writeback, swap cache reclaim). IOW, we can only assume that the
+>   backend of a vswap entry is stable through swap cache/folio lock.
+>   Looking at the backend without this should be done at best for
+>   optimization purposes, as there is no guarantee that the backend
+>   will not change under the observer.
+>
+> * Pointer-tagged swap_table entries on physical clusters provide the
+>   rmap (physical -> virtual) lookup.
+>
+> * Virtual swap slots not backed by physical swap are not charged to
+>   memcg swap counters - only physical backing is charged (I made the
+>   case for this in [4]).
+>
+>
+> III. Benchmarks
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Note that the goal is not to match vswap performance with baseline on
+> every single case yet - we still maintain !CONFIG_VSWAP setup. We can
+> optimize further once we have landed this new feature.
+>
+> A. Production Workload: Instagram
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> To test vswap's stability and performance, I ran an A/B experiment on
+> Instagram (django) workload, with zswap as the swap backend. On these
+> hosts, the swapfiles' size is 50% of RAM.
+>
+> Compared to baseline, vswap gives:
+>
+> * On par request throughput.
+> * Lower request serving latency (by about 1-3%).
+> * Lower memory pressure in the system service cgroups running alongside
+>   the workload. PSI-based proactive reclaimer can therefore recover more
+>   from them, lowering their overall memory footprint, allowing the main
+>   workload to expand.
+> * Elimination of swapfile footprint for all zswap users in the host.
+>
+> B. Semi-synthetic Workloads (memhog, usemem, kernel build)
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> All values are mean +/- standard deviation across rounds.
+>
+> Test system: x86_64, 52 cores, 64 GB swapfile for all 3 benchmarks.
+> Swap backend: zswap (zstd) with the traditional active/inactive LRU. We
+> focus on zswap here because it is the motivating use case for vswap.
+>
+> For each benchmark, we test 3 kernels:
+> * Baseline: mm-unstable, no vswap patches.
+> * VSS off: vswap series applied, CONFIG_VSWAP not set, to verify that
+>   there is no regression to existing swap paths when we disable vswap.
+> * VSS on: vswap series applied, CONFIG_VSWAP=3Dy.
+>
+> 1. Memhog: single-threaded, 48GB allocation on a host with 16GB RAM,
+>    20 rounds.
+>
+>                     Baseline           VSS off            VSS on
+>    real (s)        131.71 +/- 13.54   132.47 +/- 10.10   120.56 +/- 15.37
+>    sys (s)         114.05 +/- 13.03   115.11 +/- 9.76    103.73 +/- 15.06
+>    user (s)        10.86 +/- 0.13     10.97 +/- 0.10     10.87 +/- 0.11
+>    delta real              -              +0.6%              -8.5%
+>    delta sys               -              +0.9%              -9.1%
+>
+> Dropping the best and the worst round to reduce variance:
+>
+>    memhog              Baseline           VSS off            VSS on
+>    real (s)        130.24 +/- 8.56    131.51 +/- 5.82    119.39 +/- 12.06
+>    sys (s)         112.58 +/- 7.88    114.26 +/- 5.74    102.63 +/- 11.83
+>    user (s)        10.86 +/- 0.14     10.97 +/- 0.10     10.86 +/- 0.10
+>    delta real              -              +1.0%              -8.3%
+>    delta sys               -              +1.5%              -8.8%
+>
+>
+> 2. Usemem single-threaded: 56GB allocation on a host with 32GB RAM,
+>    16 rounds.
+>
+>                     Baseline           VSS off            VSS on
+>    real (s)        177.14 +/- 7.34    178.20 +/- 5.12    175.83 +/- 6.96
+>    sys (s)         125.30 +/- 7.47    125.19 +/- 5.18    124.09 +/- 7.07
+>    tput (KB/s)     390668 +/- 16840   387878 +/- 11769   390921 +/- 15798
+>    free (ms)       7739 +/- 125       7734 +/- 120       6572 +/- 121
+>    delta real              -              +0.6%              -0.7%
+>    delta sys               -              -0.1%              -1.0%
+>    delta tput              -              -0.7%              +0.1%
+>    delta free              -              -0.1%             -15.1%
+>
+> 3. Kernel build: 52 workers (one per processor), memory.max=3D3GB, 10 rou=
+nds.
+>
+>                     Baseline           VSS off            VSS on
+>    real (s)        168.13 +/- 0.77    168.46 +/- 0.45    167.75 +/- 0.65
+>    sys (s)         772.49 +/- 19.77   781.82 +/- 26.32   763.60 +/- 33.02
+>    user (s)       5128.41 +/- 1.31   5130.64 +/- 1.67   5130.74 +/- 1.66
+>    delta real              -              +0.2%              -0.2%
+>    delta sys               -              +1.2%              -1.1%
+>    delta user              -              +0.0%              +0.0%
+>
+>
+> For zswap backend, vswap outperforms baseline on usemem freeing, and
+> memhog benchmark, and is on par with baseline on the rest.
+>
+> In the RFC v2 ([v2]), I put out several theories for this. I have
+> done some prototyping to isolate effects, and it turns out the
+> performance wins come primarily from the elimination of zswap's
+> xarray and the merging of zswap's metadata to swap device's cluster.
+> Several code paths are optimized thanks to this - for instance,
+> in swap_range_free(), we call zswap_invalidate() once for each entry the
+> range, resulting in multiple xarray tree walks. With vswap, we perform
+> one single xarray walk to grab a 512-slot cluster, then performs a
+> flat array scan to free zswap metadata. Similar wins can be observed
+> in Baoquan's optimization ([8]), which also optimizes away the zswap tree=
+.
+>
+> IV. References
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> [v1]: https://lore.kernel.org/all/20260528212955.1912856-1-nphamcs@gmail.=
+com/
+> [v2]: https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail.=
+com/
+> [1]: https://lore.kernel.org/all/CAMgjq7BhOn48xEyC=3D2j837R7qddfjeBVHMiRq=
+dx8no4ZEBpBLg@mail.gmail.com/
+> [2]: https://lore.kernel.org/all/Zqe_Nab-Df1CN7iW@infradead.org/
+> [3]: https://lore.kernel.org/all/20260505153854.1612033-1-nphamcs@gmail.c=
+om/
+> [4]: https://lore.kernel.org/linux-mm/CAKEwX=3DP4syV38jAVCWq198r2OHXXc=3D=
+xA-fx1dk6+qYef6yzxWQ@mail.gmail.com/
+> [5]: https://lore.kernel.org/all/CAKEwX=3DP50av2rfocpsqZoDQowZ=3DEEhQ-5vj=
+5tBykbNz8vtKTzA@mail.gmail.com/
+> [6]: https://lore.kernel.org/all/20260727135029.1059441-1-baoquan.he@linu=
+x.dev/
+> [7]: https://lore.kernel.org/all/20260220-swap-table-p4-v1-15-104795d1981=
+5@tencent.com/
+> [8]: https://lore.kernel.org/all/20260707073215.72183-1-baoquan.he@linux.=
+dev/
+>
+>
+> Appendix: Alternative Designs and Improvements
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> A. Vmalloc Data Structure:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+>
+> This is a promising alternative to the xarray data structure, reducing
+> the indirection overhead. The initial version relies on userspace knob to
+> trigger swap address space growth - I have commented on why this is shaky
+> in [5].
+>
+> Baoquan has followed-up with a new version (see [6]) that should give us
+> kernel-driven dynamic growth and (tail-only) shrink. This seems sufficien=
+t
+> for vswap use case, AFAICT - but seems like it would need a couple more
+> versions to finalize the design.
+>
+> I think it is better to proceed with the xarray data structure first,
+> especially since we already see some positive signals on performance
+> by storing zswap metadata in a per-cluster flat table. With vswap landed,
+> we will have a concrete setup to show vmalloc data structure's wins.
+>
+> B. Moving the backend table to struct swap_cluster_info
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+>
+> Another approach Baoquan and I discussed on is to structure vswap patch
+> series as follows:
+>
+> 1. Moving vtable (renamed to something more generic) to swap cluster,
+>    which removes the xarray.
+>
+> 2. Once vswap is introduced, we simply use this field to store the
+>    backend.
+>
+> I have a prototype for this, but I ended up scrapping the whole thing, fo=
+r
+> the following reasons:
+>
+> 1. It ended up being even more code than what I sent out here - most of
+>    which touches the non-vswap code paths, which we either want to leave
+>    alone (generic swap logic) or want to rip out wholesale down the line
+>    (zswap).
+>
+> 2. There are several fields that are ONLY needed for the vswap clusters
+>    (for instance, rcu_head and index). Shoving them into the shared struc=
+t
+>    swap_cluster_info imposes memory and mental overhead for non-vswap
+>    clusters and users.
+>
+>    We can avoid this by simply moving it to the wrapper struct
+>    (swap_cluster_info_dynamic). This is actually Kairui's design
+>    (see [7]), but after trying to deviate from it, I have to conclude
+>    it is the right choice too.
+
+Kairui took a shortcut to deliver a simpler demo RFC, it is not ready
+for merge as is. Please take a look at the VFS inode vs
+ext4_inode_info for the effect I am trying to get to.
+
+I am really crashing now.
+
+Chris
+
+>
+> 3. Replacing zswap tree with the per-cluster backend table results in
+>    performance wins even when vswap is turned off (this is how I
+>    verified that vswap's performance wins comes from here).
+>
+>    However, it requires more code to make sure this table is not allocate=
+d
+>    when not needed. Note that the eventual goal is to make vswap the ONLY
+>    way to use zswap, so we are literally adding complexity and overhead
+>    (even for non-vswap users) to optimize for a code path that is rarely
+>    exercised after vswap lands, and will be ripped out soon after.
+>    That seems very off to me.
+>
+> To close out, this design brings together the ideas from the earlier
+> discussions:
+>
+> 1. All of the requirements I set out to solve (dynamicity, backend
+>    decoupling, efficient backend transfer) are implemented.
+>
+> 2. Vswap device now repurpose the swap table design and most of the
+>    generic swap operations.
+>
+> 3. Minimal overhead for non-vswap users, and zswap-no-writeback users.
+>    If you disable writeback, vswap *is* a ghost swapfile.
+>
+> Nhat Pham (11):
+>   mm, swap: add virtual swap device infrastructure
+>   mm, swap: support zswap and zeroswap as vswap backends
+>   mm, swap: prepare the swap IO path for vswap
+>   mm, swap: support physical swap as a vswap backend
+>   mm, swap: enable THP swapin for vswap entries
+>   mm, swap: write back vswap zswap entries to physical swap
+>   mm, swap: reclaim physical slots backing cache-only vswap entries
+>   mm, swap: only charge physical swap entries
+>   mm, swap: add debugfs counters for vswap
+>   mm, swap: defer memcg_table allocation for physical swap clusters
+>   mm, swap: widen swap_info_struct max/pages to unsigned long
+>
+>  Documentation/admin-guide/sysctl/vm.rst |   16 +
+>  MAINTAINERS                             |    1 +
+>  include/linux/memcontrol.h              |    5 +
+>  include/linux/swap.h                    |   88 +-
+>  include/linux/zswap.h                   |    3 +
+>  mm/Kconfig                              |   21 +
+>  mm/memcontrol.c                         |  166 +++-
+>  mm/memory.c                             |   28 +-
+>  mm/page_io.c                            |  103 +-
+>  mm/shmem.c                              |    4 +-
+>  mm/swap.h                               |   55 +-
+>  mm/swap_state.c                         |   64 +-
+>  mm/swap_table.h                         |   62 ++
+>  mm/swapfile.c                           | 1194 +++++++++++++++++++++--
+>  mm/vmscan.c                             |   14 +-
+>  mm/vswap.h                              |  454 +++++++++
+>  mm/zswap.c                              |  140 ++-
+>  17 files changed, 2207 insertions(+), 211 deletions(-)
+>  create mode 100644 mm/vswap.h
+>
+>
+> base-commit: bacc32cc7de65ffff70080a48eb294f89e434d5e
+> --
+> 2.53.0-Meta
 
