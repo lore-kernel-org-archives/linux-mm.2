@@ -4,106 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F728C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D4FC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:33:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5934D6B007B; Fri,  7 Aug 2026 03:21:49 -0400 (EDT)
+	id 584E56B007B; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543A86B0088; Fri,  7 Aug 2026 03:21:49 -0400 (EDT)
+	id 534D86B0088; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40C5E6B008A; Fri,  7 Aug 2026 03:21:49 -0400 (EDT)
+	id 424316B008A; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B8C06B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:21:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9026C1A0377
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:21:48 +0000 (UTC)
-X-FDA: 85073628696.11.C8CFFCC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A1C19160009
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:21:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNRCUnbF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786087306;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 16F896B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 85BF5160350
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:33:54 +0000 (UTC)
+X-FDA: 85073659188.20.0DB24A6
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9DF24A000B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:33:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W8yTvrGV;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786088032;
+	b=EMeiQKu1uNBX6o5KBLZDIamwrNT+cejbxEMFHKU2O7QEAXoFplMZLw20muX7LTkeoSiIAV
+	SbqUBWIubp9aOLSNSfHQiV1kqdmT5yqGDnWHCc0hA6dVnnctKM4EXJmz1Ie3iHU+7z65PQ
+	K4nNRbO8kBeCe62QG5vln8YvyoyYnFA=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W8yTvrGV;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786088032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6knPXuawpByGmHYtyjqi3P0YpFZD/HtTUFoZPvYRqx8=;
-	b=vBlESSpck95CNB/bNrh0xcC7kpEf0AdXBdw5o8orpS8w4RYqXkVApUMn1xoHbW5SwpCZGW
-	t4VFejgtZyyhZ95rciNdU/MFLN+058MIQbkj0nPQhDk+LPJe5VW3vlOsTOD64jPwBIxULH
-	CIcvc/n91wLPjsNp23LqBGIDaQF4/Og=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HNRCUnbF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786087306;
-	b=S3L/WKYdHTagQY6rLMW5Wj7SOOEHHfGiQNVECF6+yOhv/eS+JrI8LPStypEZRKw66hyswi
-	gbdNuOp5k/zaHwnY/KzgeWJBlZST07AritIL86jkvm4T26hTwR24ID2SELF+QUxRtzB14O
-	0H5/umkYtFEuMej/9PJgn6QK9Ch9Vvw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1999940322
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FB51F000E9
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:21:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786087305;
-	bh=6knPXuawpByGmHYtyjqi3P0YpFZD/HtTUFoZPvYRqx8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=HNRCUnbFaam/k5LgBTYP/e6dtJ7kDEWtYzOhDewwe8Er1hfweJSQYSRyo6dzVkgJQ
-	 eRnrcNOVLNuuVWsQ1aqV5NJ0uAIEDfHGGh+d3ylc39ThDzBeTR0teEYM8wCIJp+SV6
-	 zQ1xH5NBr/Pcs6NuIT1ZoteqSlS8sATsjlD5a+zsl7d/W6wsJjx9AR5C8YfpXVixTq
-	 IYg/kMlenwslbTydnxz5YRtD1jbi6IgpmhtBeYK8h+1oG+UKtsZYeO8kDpPCmJ1w4n
-	 HEXdAMYl6Yio7PLL4ivbbqGxn1hCEXhwMQm8OjUD620gFi38aNjmn+FMP0NRD9VCHm
-	 OSJOF8KAVMxjQ==
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8143daf89c7so31437677b3.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 00:21:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ror2wuLUSMlk22ftENw/nPjfC1J3MOezQMR4dLid1e4y3wcfG9xsaS2FwA+8cYSrLqurkcvzh3oUg==@kvack.org
-X-Gm-Message-State: AOJu0YxLIDWiNj7Jvt2by/9VPyDpgb/StUDQ+N7i++pbDNUoMan5vEGY
-	yy+SoNKWztpxNETi4cwvp4TYPud3QVBNTwjTXOf10QMwgbWxXYC5Tb4itz+jzyXmXAH86Z7RuxK
-	5qQMwslA3XVHAOuZLQTKOsaYiyuraE5TwtmMUrcXZGw==
-X-Received: by 2002:a05:690c:b98:b0:820:b24:27c7 with SMTP id
- 00721157ae682-82258a8f2e6mr43057887b3.14.1786087304379; Fri, 07 Aug 2026
- 00:21:44 -0700 (PDT)
+	bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
+	b=TUd0U3q6CN8RIUwybs5xGJ6/w87vAXP0JyKZRQTM1l2PGX1UPM4nJP7mAu1/kJ9EnyHzGs
+	/h63JztL/Zy/d5BZ+Fbu51HaC5avBYyM6Bic/ufdKwrcxEoJYHzBbIbk08IzysbDPhzHIX
+	iXuIWWew1i8GmdpOp79CgY9QB2wAd1Q=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1600d040e4so257973466b.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 00:33:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786088031; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PY2R5VepyfgDHdY0Kl8f8YxObOK1jZLAf/9YkxGGVIlTrIV4TfStYk+d7OzX9xIacj
+         4ODYm80kUvhkPGKFm6pxPHFzpZ8/stLAxYtPHZSQe2IXoBStd+vwFQZ2CqOhwtGGwPP+
+         KeHYgaNLiZBEekzDN0/WQlmaN/IbJ7a3gq983HAv3bLeC1brw8oMPYQBCX3TLyhz11hq
+         OPurx8V/v2Nttdc4tY0KFE77U1c3hVBcHPF1H757Fz1tQu4B/MA4HcbVP9pC2eT80THY
+         GW1vKIDs1wkueXQIpTuHoA8l317Xsopbrzqsu6bzSI+wu7BXTPzMAezO6mrIYleKPhqu
+         WYog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
+        fh=I4HCy/FvPMt29BYM+O0ZxTFyVKEa8gojh9PfMOKTMo0=;
+        b=AOTDJs5C9Zg/V6sky5/+0yayMnW8hyStmqzh0AGhegC6OxzKDittg3jhOgb4e+7l+x
+         Y0Gpip3EJcT4DZ5jocqY40doUZk8BxYuDapYXaAzXomwG13qFajXNF/HiYrx2xoCOUou
+         koknV+H7wt8bTPdj+f9/1lkXwSI5d9+VMnTZPnX0S2wIBwRo9ed73f8mnaDCPi+Y54j8
+         /wG0Pv3pzxf9+oT2cU/SGW/sSIi+l+REOgNG2eL+3l0hd6Z2EPnAPgXgvHOmuWrGqasD
+         02UlVdSH/fjtKBtTpz/toLH4F0jCPrM3mmwWeNAHeQfwJBedhfUU47LTqDWBEBvXE1cr
+         8BjQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786088031; x=1786692831; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
+        b=W8yTvrGVDMXQVbGdWhboUacPYmpVvQULPXwxWFO1IPs9+w62Pg2A+u1AiXMA278fLX
+         rU7eEjcwzeR5f5aAlaiAMaUK+laRboYU5m0wyydYhDmcojgQyT+m0ExiFeUeGfCMVTbx
+         vYlEffuWadR1Zu1mWFrmMAG741svUGJrsRL1kP92UViVuBkP2rJ2/Ke781IKcf3rudZe
+         VL0s8WqOmx0I3rw+KxuyVounbT1+QGOBaP0sRTgujEtralleVicWQv4YBpxxiQYeJMPf
+         owxPbf8ipb9sYe0+eN439s9YZQ3uSa5T1SAivsraDg/dBhKy/jAzgDMip18kaBJs+O1H
+         w8Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786088031; x=1786692831;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
+        b=KPvj9UCQAFb84rSZETwPKz7DSAlOP6ufHCkwndL4v+z02th3bzN3oW73IpQhkvOezD
+         2Pr9R9esLT9oqzBOHPjwqvj0QoxbhQLvQwvewNxCKIuSqlMEjtRnoHYORQ0XFtEM2I8d
+         Rw76t1X/GHJoNtqLI9/xg13Wx+B8DfppHrLuRuUJS/AZVMjbvfzNl2a0hMgzifaLYHXB
+         IdbszX0tcTHfj5mi+Ks0JlcgorqAz6gtbmRtkf2CP4skv4cgZ32/E7lDKBmA4ybXbIvE
+         T79LuFFARmpzFqO8uA39xYo4W8Qlzsnkm3T2Wzt8vLa7CHXPGgJNMxFFjjZ4xRwkgOJd
+         sarw==
+X-Forwarded-Encrypted: i=1; AHgh+RorRzIQiKHQoFbnIjNps9WrjNSOT50PJXY9fuKP9dot6gtQAaNAg2UjF6cjcbu2LCcpDpMLWC1CVQ==@kvack.org
+X-Gm-Message-State: AOJu0YxrOMdupN67NZQM8rzO/k9IgF8UJsfxoJm8pVxzURgmiWJdHBJc
+	MOHJaQsA6AhSNqOvdWbpnIqkwNnIeirzNyxiKm83Peym1rWPEdogBa84eRSwYtjq6ZLe10Q+Mck
+	c5jTgRdNHJGLm35X4xNCQm7Kmydtu/ms=
+X-Gm-Gg: AR+sD11RcH5X166RNsqHEvaptjKOs7M7VQYddLrc7v2IO6Fx8SAkwv7dpHbIzGNhHpt
+	3JVoFsP/lg36Hd93zI+0UIo3SKfKJIRmD/l0hPFqANlgzxiQpLSeL0FisPfrAwj8aFx7tidLooO
+	cB+VsU/mh/gkFYD2haI7Ebl0hhVIeq5lvKlsEdyoYF7g5r+qX+GD4uiTNUKUa/owzeXAV+9qxZ2
+	Y8Pa4IC7JJ1ZoIA4JRX6MkcR7tmGec01fJwuXgFfY6N1iW3YYomzvhUesZ6en3UkhO7ObDdCC2s
+	PeP4cBBDRgkticEvvVp4KrSaxN+K1Y2/YcIncb2CokssumYmngRjm+WU/YUlkhCzqln1Xez/zga
+	Qjw==
+X-Received: by 2002:a17:907:7b88:b0:c12:677c:795f with SMTP id
+ a640c23a62f3a-c206355c0cemr526756766b.7.1786088030668; Fri, 07 Aug 2026
+ 00:33:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260806184254.3790858-1-nphamcs@gmail.com> <6a756c71.01d0871a.3a0d52.003a.GAE@google.com>
-In-Reply-To: <6a756c71.01d0871a.3a0d52.003a.GAE@google.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 7 Aug 2026 00:21:33 -0700
-X-Gmail-Original-Message-ID: <CACePvbVKpkyV7KpUoiYPTUN0MgEcRUzZL71qTL5ePyjHTA3Kbg@mail.gmail.com>
-X-Gm-Features: AUfX_mztVbvHM-WKo6lxh0LLm1G5XKwrWW650OzZbqB3e06Q5YutiaN72WNICvM
-Message-ID: <CACePvbVKpkyV7KpUoiYPTUN0MgEcRUzZL71qTL5ePyjHTA3Kbg@mail.gmail.com>
-Subject: Re: [syzbot ci] Re: Virtual Swap Space (Swap Table Edition)
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
-	baoquan.he@linux.dev, cgroups@vger.kernel.org, chengming.zhou@linux.dev, 
-	corbet@lwn.net, david@kernel.org, gourry@gourry.net, hannes@cmpxchg.org, 
-	haowenchao22@gmail.com, kasong@tencent.com, kernel-team@meta.com, 
-	liam@infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	qi.zheng@linux.dev, riel@surriel.com, roman.gushchin@linux.dev, 
-	rppt@kernel.org, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
-	surenb@google.com, vbabka@kernel.org, weixugc@google.com, yosry@kernel.org, 
-	youngjun.park@lge.com, yuanchu@google.com, syzbot@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
+References: <20260806193228.458685-1-youngjun.park@lge.com> <20260806193228.458685-3-youngjun.park@lge.com>
+In-Reply-To: <20260806193228.458685-3-youngjun.park@lge.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 7 Aug 2026 15:33:13 +0800
+X-Gm-Features: AUfX_mxmI0O9m5f4iiwrDj8E6jP-_P6en6OaHqBxThiD5cPeogYLqSEVcwiYcRI
+Message-ID: <CAMgjq7DuLQ93ieakdh6P_rxjeDZS2nq0uaJWPJmw=28LujMOxg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm/swap: scan by cluster in find_next_to_unuse()
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, her0gyugyu@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9DF24A000B
+X-Stat-Signature: ncbt9gh5rfibt7qiae6bwqxjiyq551wz
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: i6gi5e4w43auiinwoydjq7d631jf839q
-X-Rspamd-Queue-Id: A1C19160009
-X-HE-Tag: 1786087306-697506
-X-HE-Meta: U2FsdGVkX18y7ioouA2UwM9XslshW3E9UpA6jwzbkGEy7tLo7au8mEbXOLLjIaOQ0nID46qylR70xWGQeIaofjZTbRk5JJEvKBIGxxUxkadayeTk0iFHCsy0qpHd0TCZeIVvUNLPZFblG3UhxgTX99cZbXpsLrZdpLJMWvpNgrKf8ImLoejNjaDMrc155D5bROtdaawk+HGQJEA8TZomZJQz8HYIJ+7XlTgnOXG0tzf8m8S4PIiyJS/B0IRQI25FDUWviC4mVJedakFRRsxhKKcXzo0yfF3sL1mFlY1vq45oi8goCu0EKcX3+HxR6kLuJKrigNaHS291/FouVZ5ujCA/zEqPiO4GeJ/iFebnbmQxx9GuhBANHKvl3W16YxKZUMfY4w4GJkK9xNOSvHOcYXIJ8LljqHcfs8gjT+ZcifniR49iW7kqRPR3Ilw7VDXKT7H90iKFWqaljBSUmkgAILKOeltUrcWURswG9W8vSA/JXD0pkKkZZDZvQgkdwM88rR6qfcJOF/cWjKZswjKBV4xjbgsyobrW0ebTtn7iFRWn4SNQ0mp81ULIMPWPsUgnm/YArSA/owQ/pkjASUmBX085tg1LRt7KvXBKZEvLGR2a4co4P1QlEy9lyTBFvzZzY9EIcNGIu6800Ax0yHFW8NbWk9UjohYc8nOULDgV4lu3CyvHnbjIcKyK2WCa9fBg0FiD8uHb1Y4FkLEaB+bvRkfSqqJDQ+3h/Gc9epPp7tAcwwxi+rOrF4V1AaQlEwkHV69OGjencIcWz6p/15H268Itmcnt++zFcX/gNm8Dc5f3URKDTsESFqswJ49qM78+sq8QbrJDzBycaJT4CPHJbJGsNL5J4f0u9PZZ2UxzwoLIvpgeSaHMD/JLbJO/qJ5vSgqxzVRTsyiQzwSJNzxaSmgboauzwGlw/hkIhZDvMi41FHM7w8yXHu9hA/1GumAF4vi9Ch8bkb5B/MYSmSR
- MVcBEQjF
- wMDZtvUJN7XikkzwRhDMynK/0KIHusaAa4JsduOsg+7ZuF2K1XJAoC5LxOVkBvM6JrsBGw+iozX8f99N0UgDXvZvKJpMFYjlFCNlmotTiUEeRznQsFBbmmW9A9TA7NFJsmC+SwxNNCcU2f6DKMjqFwjruiZrmY3nguBR3a7zxmMZRn3WmUzUCf5jDnetMU/idVt4/0ii0iqyO1uWsOKpsb2myokBud9FCyZoQSeNRTRYFbuFE5dMwIYiiUdICdFCWrKcJk34HhCUEl4G5VTdUIBGWYkKeqdr7ERv/No257i/oXxWmJIGVVltXUfiUCP2qO2FLrJqtFJbrLJqUVLYfoXnJtzRO51V43vpx9RBe19FJQ7mEFg6n/PEs27NOpQseUlwj7BdpkWa9INeOvg1fKoP3XG7LhDvzO8IW2STnZleO88Daf9sLFmDQmZCE82xz87oyFQmj7f0JNsdlVRqyJIvGlBRT2E/2D2DvQD3aMMY2XiUPJGhERuHdQSjzxKVze/Kirx1xnpJrLw+H/psAkCChZ/bVQEKnvFZznf9GfL6glb22Fa9WFaiTxSBeeRXYqvea
+X-HE-Tag: 1786088032-247136
+X-HE-Meta: U2FsdGVkX1+/TUbbuYmNAKjrzm57UVGTiP2Mgejm4eFMUZg1ku8ntpCGYsq/kI8SEdSIuVg3L2K7QiQt2dugBmqPfcF0l8P8sWUq1yIJjFn+18HcZYHNAu0JAI9UPVJSxPpWPkvKGc7gB2zIPIEWtt9NyjE1CF+DPTc1+lUmrLJvO6a7Oe6pfUpd0ANC8RaLP16oi53sXocDUzfq5P+mpL7EkMcV5CdqF8t651kszwtD0lTF8TcpRYbQOxPakOaDkWuprdtwbQzWt3/FvWFJ7hCHJDAgPxFJu3H/q9HUMcWV/pdMDJrS2dhdCoLguge1KOEORAd0nsieFHPYxB0wi26DVSPfhWTpNfaXVxBF3ExRJFAMYam2ag8BUI/ye7gXIPQbc+OPHPNJKuYbuNAot09RIYSjdJI80HS1pFq2TEA1Mhle56Fkq6PL9RphtpiPjg7ZSo4HA3XW4lm+lYIi9scX37uR1GU8lvaaBMEj8H8XIPfRhcYiDBdFJLRZmuq4R7gBjQP0QiVdizH/xNDZfUOl0jziJnrqk89WJiUGrphCakMpks6r0kMy5XgjeOQwCjuHUcORhOK25FWr5M6PAoHx9EGKdJcI9v3vkukFqUjoWxhN6abAiSZRshtyboMxYRXD4aJkrQuelmUH7uhjC2aUWkFpLaLKBXcrWB3rp8JWDCc+dx7Wns5obtP1PMStYS3jf/CCvjwRsgSvNOQLVCG1h6UkJ276RidvEpSulix30dnMWiWR35qGVM+Y+wzCA/pkK+YiqhhMXgfuhFGQ3GwycDHmxCKP/kpXbU8Ut3pzQGPYL7CYSLhuGaIYoxww5LyrpX7NxWknUX/NK9eDcd53V5kSCcLY8rUj1VX5WyJy2rjdx5lqYnYx73orjcjiYn2BU+lgSG1CqN/SUraqNrmPNUeXWxBF3YeVznN4+FXS8TO1ff/jUXYNB8FjrEUchyeGz+4l3KExeMNFlGq
+ Jsr8TglQ
+ 0f6vA6E5DPm7Dpwt43uNWD1miT4lQFK8oe07ODkpZzX3bZQFPa3Ykj8qC+ivzueB3gYmvqhgfei+DLBK2zytRAexyDn2jj0uS5HKOB29cbiXaX/QF7M8W2b9LLokQBZPhJayjRCWUVkGwt6Z6Lm5vUDku0ymd7OVsuCpimH0vWOAt0DICnpmhUyiJwBymC7K0vTp0DcLevqGF9WJ8l2wFNAcqQ7hbJr+Mhi1Lm8imAy8v092Mabvi3mhybQ8nYR1m6Vzi2eoKawth0AQEex7EdXbQfI4jThfLrAv1pWe+eGQ/QpcWeKl5L6eir4PQGi7tAoaN/gEwaV3wr/5XNcXHrjEvMSHLyCL1Vjs1NSXlvDseomLGkusKhxUPHZn6/LEzobROMlkQ2xvs/UymB4+49JdrFX48dmat/YTVQhc17EmlpbTSuJhxXlxQJYDgT7/jqyXvB8lyVRJ9c4p+iG272+RZ2Ymwys8Sf9URlWJCGG6fiUNHb8blZwJWInELXPNGlm0t8i3xaWbS2C0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,133 +142,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
-
-On Thu, Aug 6, 2026 at 10:26=E2=80=AFPM syzbot ci
-<syzbot+cif942a042aaa8793c@syzkaller.appspotmail.com> wrote:
+On Fri, Aug 7, 2026 at 3:47=E2=80=AFAM Youngjun Park <youngjun.park@lge.com=
+> wrote:
 >
-> syzbot ci has tested the following series
+> find_next_to_unuse() walks every offset from 0 to si->max, and swapoff
+> restarts that walk on each retry, so the cost scales with the size of
+> the device rather than with the few slots the shmem and mmlist passes
+> could not free.  It has caused stalls before.
 >
-> [v3] Virtual Swap Space (Swap Table Edition)
-> https://lore.kernel.org/all/20260806184254.3790858-1-nphamcs@gmail.com
-> * [PATCH v3 01/11] mm, swap: add virtual swap device infrastructure
-> * [PATCH v3 02/11] mm, swap: support zswap and zeroswap as vswap backends
-> * [PATCH v3 03/11] mm, swap: prepare the swap IO path for vswap
-> * [PATCH v3 04/11] mm, swap: support physical swap as a vswap backend
-> * [PATCH v3 05/11] mm, swap: enable THP swapin for vswap entries
-> * [PATCH v3 06/11] mm, swap: write back vswap zswap entries to physical s=
-wap
-> * [PATCH v3 07/11] mm, swap: reclaim physical slots backing cache-only vs=
-wap entries
-> * [PATCH v3 08/11] mm, swap: only charge physical swap entries
-> * [PATCH v3 09/11] mm, swap: add debugfs counters for vswap
-> * [PATCH v3 10/11] mm, swap: defer memcg_table allocation for physical sw=
-ap clusters
-> * [PATCH v3 11/11] mm, swap: widen swap_info_struct max/pages to unsigned=
- long
+> The flat walk predates the swap table.  Slot state now lives in a per
+> cluster table, and wait_for_allocation() stops all allocation before
+> try_to_unuse() runs, so a cluster that holds no slot in use stays that
+> way.  Skip such a cluster instead of reading all of its entries.
 >
-> and found the following issue:
-> KASAN: null-ptr-deref Read in swap_entry_backend_has_flag
+> Commit dc644a073769 ("mm: add three more cond_resched() in swapoff")
+> answered those stalls with a cond_resched() every 256 offsets.  A walk
+> bounded by one cluster no longer needs that counter.  The loop now runs
+> at most SWAPFILE_CLUSTER times before it returns or reschedules, the
+> same bound swap_reclaim_full_clusters() already scans between
+> cond_resched() calls.
 >
-> Full report is available here:
-> https://ci.syzbot.org/series/e7da1097-3230-4e50-80cb-1dfafeebea40
-
-Please take a look at the syzbot report and let us know what you think.
-
-Chris
-
+> The scan end is clamped to si->max, so the walk stops there rather than
+> running into the masked tail of the last cluster.
 >
-> ***
+> ci->count is read without ci->lock, so READ_ONCE() marks the read for
+> KCSAN.  Allocation is already stopped, so the count can only drop, and a
+> slot stops being counted only after its folio has left the swap cache.
+> An empty cluster therefore holds nothing for try_to_unuse() to act on.
 >
-> KASAN: null-ptr-deref Read in swap_entry_backend_has_flag
->
-> tree:      linux-next
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/=
-linux-next
-> base:      bacc32cc7de65ffff70080a48eb294f89e434d5e
-> arch:      amd64
-> compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~e=
-xp1~20260613092250.77), Debian LLD 22.1.8
-> config:    https://ci.syzbot.org/builds/4f943657-9481-4637-9b1f-9be1bff18=
-f92/config
-> syz repro: https://ci.syzbot.org/findings/f6c4f1ab-951c-4759-b397-e22c23c=
-3bf32/syz_repro
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instru=
-mented.h:82 [inline]
-> BUG: KASAN: null-ptr-deref in atomic_long_read include/linux/atomic/atomi=
-c-instrumented.h:3188 [inline]
-> BUG: KASAN: null-ptr-deref in __vtable_get mm/vswap.h:147 [inline]
-> BUG: KASAN: null-ptr-deref in vswap_to_phys mm/vswap.h:197 [inline]
-> BUG: KASAN: null-ptr-deref in swap_entry_backend_has_flag+0xfe/0x220 mm/v=
-swap.h:441
-> Read of size 8 at addr 0000000000000000 by task syz.2.20/5818
->
-> CPU: 1 UID: 0 PID: 5818 Comm: syz.2.20 Not tainted syzkaller #0 PREEMPT(f=
-ull)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.=
-16.2-1 04/01/2014
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  kasan_report+0x117/0x150 mm/kasan/report.c:595
->  check_region_inline mm/kasan/generic.c:-1 [inline]
->  kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
->  instrument_atomic_read include/linux/instrumented.h:82 [inline]
->  atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline=
-]
->  __vtable_get mm/vswap.h:147 [inline]
->  vswap_to_phys mm/vswap.h:197 [inline]
->  swap_entry_backend_has_flag+0xfe/0x220 mm/vswap.h:441
->  do_swap_page+0x3c0/0x5620 mm/memory.c:4975
->  __collapse_huge_page_swapin mm/khugepaged.c:1202 [inline]
->  collapse_huge_page mm/khugepaged.c:1325 [inline]
->  mthp_collapse mm/khugepaged.c:1524 [inline]
->  collapse_scan_pmd mm/khugepaged.c:1786 [inline]
->  collapse_single_pmd+0x24c6/0x3da0 mm/khugepaged.c:2803
->  madvise_collapse+0x2cf/0x790 mm/khugepaged.c:3237
->  madvise_vma_behavior+0x115f/0x4170 mm/madvise.c:1363
->  madvise_walk_vmas+0x576/0xb00 mm/madvise.c:1712
->  madvise_do_behavior+0x385/0x540 mm/madvise.c:1907
->  do_madvise+0x327/0x3a0 mm/madvise.c:2005
->  __do_sys_madvise mm/madvise.c:2014 [inline]
->  __se_sys_madvise mm/madvise.c:2012 [inline]
->  __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2012
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fbcad79e019
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f=
-7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff=
- ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fbcae5c4028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-> RAX: ffffffffffffffda RBX: 00007fbcada25fa0 RCX: 00007fbcad79e019
-> RDX: 0000000000000019 RSI: 0000000000c00000 RDI: 0000200000000000
-> RBP: 00007fbcad83500c R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fbcada26038 R14: 00007fbcada25fa0 R15: 00007fff095fa0b8
->  </TASK>
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->
-> ***
->
-> If these findings have caused you to resend the series or submit a
-> separate fix, please add the following tag to your commit message:
->   Tested-by: syzbot@syzkaller.appspotmail.com
->
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 > ---
-> This report is generated by a bot. It may contain errors.
-> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+>  mm/swapfile.c | 43 ++++++++++++++++++++++++++++++-------------
+>  1 file changed, 30 insertions(+), 13 deletions(-)
 >
-> To test a patch for this bug, please reply with `#syz test`
-> (should be on a separate line).
->
-> The patch should be attached to the email.
-> Note: arguments like custom git repos and branches are not supported.
+
+Looks good.
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
