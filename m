@@ -4,130 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D5DC5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:06:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 367F3C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:30:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 485FD6B008A; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
+	id B96976B007B; Fri,  7 Aug 2026 06:30:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4101A6B0092; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
+	id B48996B0088; Fri,  7 Aug 2026 06:30:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D77F6B0093; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
+	id A0F566B008A; Fri,  7 Aug 2026 06:30:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2BC36B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:06:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CACB4036A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:06:00 +0000 (UTC)
-X-FDA: 85074042480.19.0E60725
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D408640009
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:05:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7RODPVc;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 667A66B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:30:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D356F40355
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:30:51 +0000 (UTC)
+X-FDA: 85074105102.29.FFDDCBD
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0EDFF40014
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:30:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="UsId/xx2";
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=gYFZXen8;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf17.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786097158;
+	s=arc-20220608; t=1786098649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O3Y82uuF/XQW5iDFHNIUgMEdIc1HrOdEgL8h46LMPJ8=;
-	b=kHtrOwiFfpERx2Gn6rPryE/1XZ25YkLBBoRNRlwTYMjWxrx65/Z+ZkJqL4giW0hAhD/sEL
-	AOZX2lm18Ysg1peb+hJWtRAWi04aCspaKvgv0GKzzzo2vehn5hh1rPi0I8qHXgjggk4LjI
-	D73ERYMxXeL2sZx3nedA3/6dDfM9LGE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786097158;
-	b=kPp1pKZV76fEAk2TB9sf+FX6nDu7gP9uHZxWtgImNV0qNSRMgmH+IgOQj6HpogBwkdw7y9
-	uqlOolCqZWVKJWTn0RnX0zk15UpKlNXUvQXN8slg++1+0EvXaN0g0rM0ySfrkHf99I1MsK
-	Gz6NucVbgXDjqxRM8erKj8wl0Zkrq4g=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jNNGud5Y1SDXcJg6DqyzuNF6B1I5VLZh+0vr3B83jZ4=;
+	b=T/rWnEKVOv/VSYDk3RCB87Iba3Eenvj24up3SEPOaM3c9rczrTmt0Yb64pIssx4s6DKPg9
+	gFI49kTd9AUnpUL1wxdgkkjAkFmg0lfnWLvDiMAjusF8MOHQgZaDLziXGYp+7CO1X+WPFh
+	ORYe6307OOkrl20iy7R8lrYs+jSHpO0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7RODPVc;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 24E7360AB4;
-	Fri,  7 Aug 2026 10:05:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DD61F000E9;
-	Fri,  7 Aug 2026 10:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786097157;
-	bh=O3Y82uuF/XQW5iDFHNIUgMEdIc1HrOdEgL8h46LMPJ8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=I7RODPVcJBRsd6s9UWRbtl8lpLOuBZpmxFX36HCqgpaIVZNVcAujidNCKp4lU2FFe
-	 BAm1Sq94dhTqpSAovKm8Qh0kXVTk4OAQ/EgO69kB7YrXIJOSCR3U1XsIEdq5+PQj10
-	 dgsj562UwM3s3jCZHLRr76XK0JLD0TgCBH/4qVwMueLXjV59DBZ080kXS6S8sd9xO9
-	 dakp9bUiDf+bNOEaUGRXfrC+ZEcoMu7JNmMhqMRnS+jsDDRTLzjdmrIIJlVcLWVmQ9
-	 u5ExWj5KFg4XfPKlyW3XiWRNCETRpSCzh7i3n/3YhxppLjDvmfAIQ6+yPKfkV6Mpni
-	 yea7I4chqnnyA==
-Message-ID: <2fcfa480-e4dd-477f-9c02-42756f3aa373@kernel.org>
-Date: Fri, 7 Aug 2026 12:05:53 +0200
+	imf17.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="UsId/xx2";
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=gYFZXen8;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf17.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786098649;
+	b=j1DSGByhF+p9wNaX6b56JYu9nwLo5LGgzRAtoHXZ8W8iJDszX4EXsVyhWP/28EzJBdUiNu
+	O6lc8Dh7AMrhaAI38BE4Y8F7VdjB3rTsFJ0K6Sw1H4UzvS0ql3ySFe47lw3MV9MHh38/gt
+	7Qaq9t73mPyZWwNndKuWrt7nZgo8ctw=
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6779Y5qh262298
+	for <linux-mm@kvack.org>; Fri, 7 Aug 2026 10:30:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=jNNGud5Y1SDXcJg6DqyzuN
+	F6B1I5VLZh+0vr3B83jZ4=; b=UsId/xx2AOkyItWNmiEn8DwzbRyPzBAjDH1btM
+	6Rw2lQYUjDeSUataQ/oyG2MHvaOnDThlTUv84GEtPwIwSrPapCXz5CF37cVEQm08
+	pHoBXyCUhgcfPAEcJvU7Z1JzeoxTC+re6lyWj8iUz2/jJGFgrHbqAYlSfMoCs0j6
+	qWeppnzkc0z6IAx+VmSdR63+cky28CKoMWntrmgqwyLYwLGstuJpYJ8qSHYFr+EZ
+	Ty38U9/5nNYoxMWC/6oqlxkO/6hM1KgZUPw2W5RN5kT3xFWaG7U4RuLYT5PjrMdt
+	R61t7QmZS1shUV2W25RIlS5P+Fbradpy+yIfabpsg/ZtqBLw==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fwcujg6m8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 07 Aug 2026 10:30:46 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84a251c2e3eso2465711b3a.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 03:30:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786098646; x=1786703446; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jNNGud5Y1SDXcJg6DqyzuNF6B1I5VLZh+0vr3B83jZ4=;
+        b=gYFZXen8pRKmacsTEsYjV/mHB6Ow8Zw2dJMATY/PARZvxZoOvW8fftvwwfibWP/5O+
+         1dH0lCbXDek6PAYHWBV79BEYKrHHh14hT9PXMhT377kOLGentcTe06qXdZ1qR89VZDda
+         t7An4o17XavhaGf7pFFL3XxZZ0JtOn5HTGY9pJTBXhv69lk3forfXPH/1dx9OYShBJD/
+         nKkmc+vA6nYlspg723dV+TiW6YhMT7svDqnap6Z+1vLSRaLBCzeN+4v4QXYS1ujdiKA+
+         bUsV4Z9VCPCL8sWJBIrtk61D5jLECWB7vuP52NCBsnHZR9ABwWJoTaORqjM+UchQ4HKl
+         u+XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786098646; x=1786703446;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=jNNGud5Y1SDXcJg6DqyzuNF6B1I5VLZh+0vr3B83jZ4=;
+        b=s8/seEkgKRHzhSGq54eO1YfoziOuqc7XS2JA8RaDK4y0O2rTHb48u7MqwrOwOu551l
+         4RxJxPWx1uz+xrb9EmOslm9bTYVWGOjMi9LCTCZ2WAZDHy0bYYxN1cexeaYmXBFTsYEw
+         meStgiHNZ1V/018DoXh6hzCnu5gCei5EhpCI0up31L6gz5urN4E1i5rncKvWunSUxLbM
+         TGm/kevZiktMzjoYyn0EfxqmPJXfVJi/IAxg6F39fkYqqdkhUy8QkiBGLpFfXDG65qP7
+         AJtvRbjj+eMys+v0W0j6JYqRhuboMjfDT8GuoNipm5RtxJ8zDpvVFZXFlwBczSofho2P
+         /new==
+X-Forwarded-Encrypted: i=1; AHgh+RoJ9RpPVhx5/U8KeBBlI9zRDAfVFhmtAQDzojovQBwGRqstJcjWIXkvdoKPsXtgQXMyF5Ahx6RY2g==@kvack.org
+X-Gm-Message-State: AOJu0YyvPPK4HY6wmCDpgi1uktFd1K7+dI0fb3Qvz36k4qNQrDZinm3m
+	nhcqyPXGz3yitWHu/ZKoQZFWEPIgrKxtChnWMqA0WIrMJcglUHtR6hyRFAMVergcxVcKkRFcdq6
+	mo38DKvYk+L5yWtqbpTXFHd8qx5EHZnVmk/HQDxxpc/Hfrk+PWXuYc1kuouzGIA==
+X-Gm-Gg: AR+sD12B1k4MNSsbQbmpJxochCFa39lFB91j8qtGmiqO7ynPctzguqLC9qZuHgMjs2s
+	uIyO/sGCkwGceTE9LDAVfjIJP7kNMpI7rWhSnJiaLDabdUIggEcB9/OfUPQ8rf8jyHF0HkbTm7e
+	KiMMmEDiaEmUAGd9inG/ZoWdQTtijqIYfMHMwOU2gQZpkYE5p9wc8VEgPQ4B3gc4JIx9OG1IICO
+	GGzBaGm7JKwyzbN9CPuxrM+uoCQI+JX7tvD36GKHScUJezPnroUhS9vAF52RGhfnUws3G1cjCu6
+	Ca9vylNk0hwXL3sLhzbErcbgdrFiBarAN0z5uY46VhqX3d/aOpLVzvrrA49w+HaOKiOUnyDjAEk
+	c/0+d6csQd6h63D3O/P0Y8Ipd1W+n0zjBkw==
+X-Received: by 2002:a05:6a00:8d2:b0:84a:2b96:5986 with SMTP id d2e1a72fcca58-84f41ce55d1mr15227373b3a.8.1786098646201;
+        Fri, 07 Aug 2026 03:30:46 -0700 (PDT)
+X-Received: by 2002:a05:6a00:8d2:b0:84a:2b96:5986 with SMTP id d2e1a72fcca58-84f41ce55d1mr15227302b3a.8.1786098645623;
+        Fri, 07 Aug 2026 03:30:45 -0700 (PDT)
+Received: from hu-ketakish-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a797697sm808039b3a.61.2026.08.07.03.30.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 03:30:45 -0700 (PDT)
+From: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+Date: Fri, 07 Aug 2026 16:00:30 +0530
+Subject: [PATCH] mm/mglru: fix lockless folio_putback_lru() race in
+ evict_folios()
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
- sysctl write
-To: Jianlin Shi <shijianlin11@foxmail.com>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
- linux-kernel@vger.kernel.org
-References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
- <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D408640009
+Message-Id: <20260807-evict_folios_race-v1-1-b167c6b4cfde@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAMWzdWoC/yXMUQqDMBBF0a2E+TaQKGjtVooEHSftiJiSiSKIe
+ ze1nwfeuwcIRSaBpzog0sbCYcmwhQL89MubNI/ZUJqyNg/T6LzB5HyYOYiLPZL21WBtSwZ920D
+ +fSN53u/mq/tb1mEiTL8QnOcFWfy1pnUAAAA=
+X-Change-ID: 20260807-evict_folios_race-f3b119e0cf97
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+        Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Barry Song <baohua@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Yu Zhao <yuzhao@google.com>
+Cc: kernel@oss.qualcomm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
+        Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786098640; l=2499;
+ i=ketan.kishore@oss.qualcomm.com; s=20260617; h=from:subject:message-id;
+ bh=03icba5gD3M8Iez6fP1ztq8ZA8gmGbH/j8kr9FuxWoQ=;
+ b=G1HUb9nGoo87p9ONwH4GkEEDK+reId7ArB8zljs5knheZCjPGL51D6TVhz8wkQ9CUK3Vu4qgL
+ MMwO0qQ2eNSCtwftKga5O9ABBvWLBz1UZ+8TFmewiQoIsTcl/yF6N7A
+X-Developer-Key: i=ketan.kishore@oss.qualcomm.com; a=ed25519;
+ pk=4sb5Ima5x03wc0KSnl57v8kR/7FxMt01+xlZJ53rSJU=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA3OSBTYWx0ZWRfX7WUnbBuQRNkY
+ yEYzHKJbu5H82tItSwcDrQCd+D1s9cKa6xUCjAYMOUZ+F48F33K5fxgLjnZf/yXKeeF6IlUsGIs
+ FdHtOFuCMagynHHUf3PyMgn74i/ylK0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA3OSBTYWx0ZWRfX5CIO5sn19Etz
+ rJqSqnrUJmeFFkUOBiFauQNYNIWsriKLqXup4U5bvDQuP3lj+knhQlhBlU9YsnLgA6GggzZufCd
+ 4jHEb9zpABBb9NLkDO0LviN+B9/w29LFvESZomRvyi5C5SrWfD4xnMcocCnrVV6Qy7EpVfbx9Eh
+ uh2WA2q0FPWkmiOrbcmDc3ggNomsjzA0YHWRSREFro2aLStPoKI9SIFqaUVogsu26uL6rH3U7wW
+ mWfz/RpfYXCL4vgEfncsJtrnln4tVNb7CdIVTXkfl5lerts2f/y52/CdL90nwF0Tbt82gYXux7y
+ AqM0E+/r210AJkDHwIE0qigBeqADXZlOqG5dX53XwUPak9w+MBHaSRIpYNmq1EarA01mPwzlhNF
+ uby8vntywzZ5jnrVfBs9Q436W2rYpVPj/tOZMox+ASL4mx4YlD2dMAe0gwsV0X072w1cd0YuIPA
+ nqybLG/jR/mqDY3l0dA==
+X-Proofpoint-ORIG-GUID: cfWzqD38BXTXuahzXdHgvHF67hH1o_Im
+X-Proofpoint-GUID: cfWzqD38BXTXuahzXdHgvHF67hH1o_Im
+X-Authority-Analysis: v=2.4 cv=Wssb99fv c=1 sm=1 tr=0 ts=6a75b3d6 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=FFEyItaQ3BNzhykpSc8A:9 a=QEXdDO2ut3YA:10
+ a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608070079
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0EDFF40014
+X-Stat-Signature: z5sif8iz6ocewsdhok8gqu9im8gcaoh5
 X-Rspam-User: 
-X-Stat-Signature: coxswyw6mddgncmrhg8ta188up7696p5
-X-HE-Tag: 1786097158-965463
-X-HE-Meta: U2FsdGVkX18z8nj/rJEaEuHhkGtEffK0pL2p66Td/xc3HOguaxnKeOceM0aG/JaT10qWafgQQo6HxPJB4cZ7TSBYXM3gEjjB8NVrlEvNxRFyMfkDH/kQSE0lEGxtWJHsM0/rSd78V7sBaJ+ZsYdEImtCIUioq6vvgLIPEHjS3DevGtxrNkUSKo4Q/XB6KqCCu2IQ4jqEEnj9hGUuQ162rRUxKr+8PEMweGbh+jXidVwCNZv0HeEmaj80ag7vNXmmJKmMxHGvj6DNME63SI4qxSGsW6pUln9Z3kA/R/Z5Jig9hzDKapCcq3Zwn9yxRzy6P8rDv9XoFX98DTtgR3OJ047B+i5UrZXDlGomKNh98KD2vYYJCsUZWGByYbqki5EtKKt6NkkDVbv5QQ7zX3IzwGU7WkUvcAu8CAyPOAXlj/+XVphfaVkF5Rzpq4c4BVKWmT+qZoqP1N/m+JBlmMuJzRmtLhLxgTZCVEFOTsR14mlOXNLFWz6eDFzpON5hY8jST1pqZqVDQ+aMDQlSTf3BwoSAQ1Kawe1hpLDORsiXYE2uUGO4+Veb0DyOEWx6GwL675THVTsUij34GvpJJ7cHb6OIeVOq2wP4x4p0512oKwFuNGazhTYRICtznIdSJDDske+wQKTzd7Z4zSaBrTiV//XIsUYQ5CJR51+LvZhJyEhigTuamX8fNbsCh4HNRCZ4ccGBweAQjblEjZMIh1nt70CkAO+NK34DyKdSwafND8saJ0/J/0KdKCXfjOSX+6uyRZdJtOv+iDfw+DEVi9FnAPyc+7RKAv4yZkXnVD37B1S8LFHo0cSL/97LyG8OXyldsHpjUPFb2nlJA2iNtEun863X1sqM38qtgFDcy2ORO2ZuyVhh4mOAyaZ0jqdVASpHaEBT4s19SaNfgmqSvFW0L1h4n+6tjY+fncGAToqDU+sJ+iPDG+u691faQYFnhg71d9m8t1sBjE6AiOgrgOk
- EW8DlmGV
- eMoJ9kXRgCv6pcs7mJSZeBkV1jm7F0KcEVM0jAUEgDaWh2HKphRQLpUEfgrQ5Lb/yAqVQZ1/Dx5MtGu436QSZdS04UwWOa8Sm5/uutng9YxeLEE7xg1RG36c+1nkRwMmHhTFTRHRBUnBcrGoeIubVkGk9tnlSSKLxI30ACRNcHMuPNtVjpZSCYGclBV5zT5BOLflnNUaEGiG4EEOF7nIXDc/P90NuYHfhDtYB0wVBZzbmA4QPakQET4UV6E5LvPhvWwJNDa1Xo9Z1aVmsjaNuNCE+JVmMRcv79BClhljwWupbbKOysTOFx2vmFb/UG5Av8/xyoJ1/R6H/a+35ThgMOFZlq1R6tfCMEyznJ9Ow7OQzkjH664wS/x3zQuA112hpQS/ipD5+iGhGLttJKu2dDknlGUvp2tZ+pdmU
+X-HE-Tag: 1786098648-75742
+X-HE-Meta: U2FsdGVkX1/sPhecL7ag7CHqKQDLSvFRnn30x3uxwTIGCzRyV+37GAEBX4nK8Cofdzo745eCFPFfsK+SfmYud3Y/88nf55IpoWVLMsy04UtQ4Eqy44xGtM+xDtASoPupvc9VYze3IK6xsZNqf/F881bcT9KKCdtOX7pXbkaTHTnWB/hka33Pz/JdMTpWVMWgCg2nlA+R/tqUEYj094Pr/MsXhGYK4LsRFjwxBsArl8jmsbLV4hrFITYryjUPrIkxuh5qLEzYR3krE82Jx6Y1vdZ8mi6tcRJq9RTRrLS0NZRm91u9UopTTQKlbWiqm+b5MnhqCXNruGP3OrqeLbGOMaK11X2L28dCSC2kGyKj16kDedLoH9dgPZAKELK9SK6p9aDSHWxVjOg+gOldKDoWXicCUJouXlgn/HVVMryMg4F/+mlySN3Kb0YPXxcZrnHElLWJw33UDxJ63swLQytjtzM9bTfAsqfVZcLMLVArRrlRGRw28Ka74bN+EWn1BYNxAUC9hYJdnDmQ1UOGqUK/V2e9lq2PAZ+KhBtluHKb1y1bnMkEb+m3NdAVhWSG8W65I9WSzp180p2nYNvp8lA71PznChc4SQfp1qs2L03PO0iXWZPLvDptO4Y7gj2E+zbwUz/HrOod2/EQO4fZy/2X0iYdANgyfKsqEDkwKYb8lk+YMGOpgoEyKW/DXaWapgh42NvZNDebOdWBKGFToJA3C9iMm0qs6/1+kRGLDyutLztXPQX/sWLnYNlT+XD1W2PtxlMkUVoMRrJ5NGE9+dniIGdmP2NC1drXS+3RQ45NOs69Os0bqonD5O5LFYI8QvYnQEoi/x+boDf1E1R1y7pO0j7xrSJLm/f6VnP/I8+F+kYoyaFVF5wKfAyIUHug01+mytnaClHvculNNtxbGoDElISXSCIdseaf3WEE1hhi4RFrrBnSQbNjJF07QFdhSy9d9AXcdMJxqnVdz11CpfN
+ 5ie/8VDl
+ f8jIOWbssidkoiA4be6BG1c9JIVcO7KU3vXC1Tg9RomeLQFKuJFRtJFzOaO/2fgdTK6TBKLsGpsPQDhnTKYKCh+NJNFWjNMqMsPpqtlWbUfBEcngv13zUtcBk+va4KchaXK6F1zKLZDp1D91QmYsfpXmLEnJLsRCc7tbQqsVM/L30ueCo4+D7djnkAIoy03YyDerNr17mVbN9UHXOQ7DAovgsPNE86gBrqbDA7pAJnqF6H4Dy3MClDSoqmpt4u6UUJ85zaTAHc++hMH2Rf2cHnO8Rk9er16Sf+h3H3PW7N1okkJbjX36nC8uxlGnAsfcZvH+lqoxi+0737vAc1AyT+YYOLx+LL7V+jw81IkFi9fcTa/lFh54trHhiyHwZZh5vxr5SYdLQD5xby93N2XPG92mNq+opS9mIMcfQWzmiz2JcANeDoXY2tuwzfYn7Bggx8j9t/UA+G0XkQJd5zsG+Vmg+AhMG+mXJ8nlh7PeOxpWnKcHupDB8Jwy2hddIbLYvSc2cCMuLWRPm7nQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,38 +185,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/26 10:27, Jianlin Shi wrote:
-> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
-> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
-> even for read operations.
-> 
-> Fix three issues:
-> 
-> 1. Propagate errors from proc_dointvec_minmax() instead of always
->    returning success.  For example, writing non-integer garbage to the
->    sysctl now returns an error instead of silently succeeding with
->    unchanged values.
-> 
-> 2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
->    actually written, matching the write-only refresh pattern of
->    min_free_kbytes and watermark_scale_factor handlers.
-> 
-> 3. On write, parse into a temporary ratio[] array and only copy into
->    sysctl_lowmem_reserve_ratio[] and refresh derived state after the
->    full vector is validated.  This avoids leaving the ratio array
->    partially updated while skipping setup when proc_dointvec_minmax()
->    returns an error on a later element (suggested by Andrew Morton).
-> 
-> Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
-> SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
-> the minimum on write; negative values now return -EINVAL instead of
-> being silently coerced to 0 (suggested by Vlastimil Babka).
-> 
-> Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
-> 
-> Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
+folio_putback_lru() requires lru_lock to not be held by the caller,
+but it internally calls folio_add_lru() -> lruvec_add_folio() ->
+lru_gen_add_folio() -> list_add(), which modifies lrugen->folios[]
+without acquiring lruvec->lru_lock.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+In evict_folios(), lru_lock is dropped before shrink_folio_list() and
+the subsequent list_for_each_entry_safe_reverse() loop. When an
+unevictable folio is encountered in this lockless section,
+folio_putback_lru() is called to return it to lrugen->folios[]. This
+races with any concurrent CPU that holds lru_lock and operates on the
+same list (e.g. via list_del or list_move), corrupting prev->next.
 
+The corruption is detected later when move_folios_to_lru() re-acquires
+lru_lock and calls list_del() on a folio whose list linkage was
+corrupted, triggering BUG at lib/list_debug.c:64:
+
+  list_del corruption. prev->next should be fffffffeead4fbc8,
+  but was ffffeafeead44188. (prev=fffffffee4fc4c08)
+  kernel BUG at lib/list_debug.c:64!
+  Call trace:
+   __list_del_entry_valid_or_report+0x100/0x14c
+   evict_folios+0x145c/0x16dc
+   try_to_shrink_lruvec+0x228/0x35c
+   shrink_one+0x94/0x158
+   shrink_many+0x1c8/0x1f4
+   lru_gen_shrink_node+0x94/0x110
+   shrink_node+0x468/0x8b4
+   balance_pgdat+0x4f0/0x9a0
+   kswapd+0x268/0x470
+
+The race window is amplified when unevictable memory is high, causing
+folio_putback_lru() to be called many times in the lockless section.
+
+move_folios_to_lru() already handles this correctly: it drops and
+re-acquires lru_lock around folio_putback_lru() for unevictable folios.
+Apply the same pattern to evict_folios().
+
+Fixes: 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while isolated")
+Signed-off-by: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
+Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+---
+ mm/vmscan.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 26436059ea39..7c4adba13e4f 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4923,7 +4923,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 
+ 		if (!folio_evictable(folio)) {
+ 			list_del(&folio->lru);
++			spin_lock_irq(&lruvec->lru_lock);
+ 			folio_putback_lru(folio);
++			spin_unlock_irq(&lruvec->lru_lock);
+ 			continue;
+ 		}
+ 
+
+---
+base-commit: ea2bff00da89d7767d677bb68470130ba96f4928
+change-id: 20260807-evict_folios_race-f3b119e0cf97
+
+Best regards,
+--  
+Ketan Kishore <ketan.kishore@oss.qualcomm.com>
 
 
