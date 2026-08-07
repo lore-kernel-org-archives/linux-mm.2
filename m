@@ -4,97 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E81C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 04:09:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88748C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 04:11:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 601BD6B0088; Fri,  7 Aug 2026 00:09:21 -0400 (EDT)
+	id 8ED246B0096; Fri,  7 Aug 2026 00:11:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B1646B008A; Fri,  7 Aug 2026 00:09:21 -0400 (EDT)
+	id 89E5E6B0098; Fri,  7 Aug 2026 00:11:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3376B0096; Fri,  7 Aug 2026 00:09:21 -0400 (EDT)
+	id 78D876B0099; Fri,  7 Aug 2026 00:11:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 148B36B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:09:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7DFB1C0305
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:09:20 +0000 (UTC)
-X-FDA: 85073143680.22.467FF55
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CC6EA40003
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:09:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=zKVIlxYG;
-	spf=pass (imf07.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786075758;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42A306B0096
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:11:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 99F67A1D80
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:11:45 +0000 (UTC)
+X-FDA: 85073149770.17.BDA1FE0
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AFEC4C0007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:11:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SmUlh0DD;
+	spf=pass (imf22.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786075903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oF4tDkaGlAAglccIfmxxSdWjYIRv+c24sdYcGVwXKQY=;
-	b=MOLFjE4zSBASNRbnTP+MiuMFD2wzIJUB9OFgmLWq7LuGOgJ6LpA6YK28G6Zby5IN1GWQC+
-	cEtp4GKKJ3x/Xr9sALJI6nkGNlFxy0c7eUeghLh8BjiNXMErxm7nIbQN4xxYOcWwEgODBT
-	thv+wpAPZ9J9sF2x8VAPt+tZdp4mR0g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786075758;
-	b=8R48rFLLBrjN3Tl4fNCqXw3X1ciND/Bqof2hrP6NRJ3TFnn8Ns8BSGRH96mHjw2W4RUsQI
-	+ObKSlOuW6DoYqb5iPY7dXkS6DPIPJeI4gWe65/C4NsncOZiWhKE6Q1g8cBIzno9nDHdR/
-	Yb2usYTdRDnwI1v84m6fWel0xEiW9Es=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=zKVIlxYG;
-	spf=pass (imf07.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=oF4tDkaGlAAglccIfmxxSdWjYIRv+c24sdYcGVwXKQY=; b=zKVIlxYGlntYCCXy0VfJNUdVxV
-	3mefvEiHMJPQH04LrcYgeWaBcT9aYSqffplXGYVggTTBDMADVbab08J16tXxMqyzBuP+mN85+iFbm
-	QBdUWcT0UgVYmhavqRJjAtnbt8nuR3DOrn3jECj9L05KqlrE0VhU76pcohA0AcLE+sJeZzglfmHBw
-	onV+2cw+gZKfk1O1Wuv9+wQvvdcyPSnixq1etbOdTXs+eY2cpKyVTJI+uFE6cOLlPOsfw+o4K2Kb0
-	p65Ov8u67qxUvJ8C9/5XUUuO34MeYuMhukvdMpmdNO0769hgWtuvpFeNHpGYyTbcLwum0cCtnXchr
-	JyMvxkHg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wsBt1-000000074Fp-1HEX;
-	Fri, 07 Aug 2026 04:08:47 +0000
-Message-ID: <a2293778-bce7-4f88-a049-6370707694ef@infradead.org>
-Date: Thu, 6 Aug 2026 21:08:46 -0700
+	bh=i78iyadDU2WNNYbh4XsR+1TGkpkqG3HsIJBD5GjPBmU=;
+	b=1vYXs6QFOpyoacwG+Qk0WPKZaOSZH5gfQfU1xxdyv3LypBuRNSX7evDbCIevgGA1fIbvV5
+	lHPGwVwE1Z1eF4vyIS6h9hQxqu+jypuHNsANNOPsHaD40GIRCGhZJQU6TNBF+juNEZsspK
+	19XdV/At8GMFdK955CDO8Unc+USAppA=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SmUlh0DD;
+	spf=pass (imf22.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786075903;
+	b=kLGjpMwhPuXu3TPqMo+sQ79VKUH5MmGBDjQlZGBQ2opJ5G7Ce+zjC9SlCFrltcItY1FntI
+	v5h68ScFnExN+mFkSOTquZv13GK2IqJKHAAkklO1tpVs0EuTGE2iVajKpkKm956iVEeW4l
+	l/sgRlFfUQkIwHbmWzNV1Z1JMhgxcCg=
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b2a8173142so2840e87.1
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 21:11:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786075902; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hOVoLKEd4PSaAxQ8373lKTC0Cl+DXgwom+TmWMxc++k2sllDFyMkh+nGPGQX0jtiXF
+         7P0KGMpj+r1DHI/cvG82gYLVcL80RSA2EStTenk8w8ESvo61QRYrFueOjz3cVs6ooNBP
+         +8yxGYStPJ8KAacBSlaAzW4BH0Q1iVyMjoPqWTzHlO/y0B3KBgVatXzuOxslOz/GUqAN
+         sdbeiGZQIPj0uuOn/zRdISqTY+GAwoQ2ZqmQCo8KhqfuOov3sxnNJ0sPd1Mn0OQgQYMn
+         NgT2pfutSl+j1VYkUkQdWieraqCBKeaJ6wTDPsfHyC7RqBfycNxboXmcG/sOXe5QrTfA
+         C5ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i78iyadDU2WNNYbh4XsR+1TGkpkqG3HsIJBD5GjPBmU=;
+        fh=Fj+d0m1nI/bjxe0c37+WkZkzYxXw+g4SbfEBrJs15hk=;
+        b=WFd3MkWnVDOLkfKA6kXLNGGzLbYEixtdlDHGLzUQHKmN8VumosTO7M+BnfR2lv2UDR
+         NCRKkKeA5h09R689PIlYJ8oDnX9/ry1+C0jauY3dsYVtgxyiRES/1uCYR7eSctEgdqWV
+         CL41iyOV9x+SEH0eFXPSlMNmqEdbxEokN8L37dVYv0PVeOrc5BwggJBBGVKgf+4JTykl
+         c8x6J+Br4UiMw5BD7usq7S24Eq/Vo3GpHQTxePpImCMDh4qF3cMzqu/+HUS7ScfOxpfS
+         5p7CKkITTVY3BwrGuwA9owvzywgQZFZ52EhEwdreJ5YyD04HbiMzd5TLmPqN+i2VZVzT
+         f0pw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786075902; x=1786680702; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i78iyadDU2WNNYbh4XsR+1TGkpkqG3HsIJBD5GjPBmU=;
+        b=SmUlh0DDz7oHLiwE/UsM8ZjA9DXK+ILevZRQCymXzaLAiUe/7GRPX5CdeITq4ER1xQ
+         PYonSkboyh0FFHV9QmZ4HAQM9Kiokjc9HYA4zu+RNwV9iGOXTQnUu8XX9ZjEKEhn4Unq
+         l4SUiTy7bGAU7oOnlPaes3LZmwXtdgHFfFiAEcjhcBFAv84njCqbtIj+2VK6a5tZh8Bb
+         5A/32huDpWJwjGRd08r4NYJMs1TEmvFr9EhXqfehNC6vS60GIkBjfnIdLtAJzZShK4iu
+         oJQboQffl4wmg4JWC5bFE40mD2BRuRVnDrPkyJAF9sNyeK/INtlTKWb/4E5+1AhOHt0b
+         YOZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786075902; x=1786680702;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i78iyadDU2WNNYbh4XsR+1TGkpkqG3HsIJBD5GjPBmU=;
+        b=fsJ3uR3cMIa/JY8Gs3Om4Bc2WfRazKrBu0/7Y3sJ3mdFQBL6Pk67N2vmKbPu8RC1AV
+         vfQeVRIGW3h+pbuv132Bn0Fr9RYzC7mP66Dbq9OZkkMPAP0WYjTMIKRwKnp0qmPUC0+Z
+         gGUKoejPtOm0RONYTfJh6FX4tvEIxirE9dEmSmkY4l8wac0++PNASdTUE56JsxK4wcOB
+         9NslRzO6JSL0/ibx5yiaD7LfqLatHtb9V0njL6NfLYulaTFZ6J2BpLV2v8+GQZ2L7HZK
+         oG7ChP+e2TvANdIv1590IiqBc0gFikgrTXxyhXhVD8FZ33642/HMZtl/nT6+c/+asBbd
+         NszA==
+X-Forwarded-Encrypted: i=1; AHgh+RouwPLUWTzQSMGx48A7geZaVAQbKn6BMlUPWTbpI/TG3L2MoTADCoLbAr3kl0WwaOe86tYprhEU8g==@kvack.org
+X-Gm-Message-State: AOJu0YyABlI2ueJbcdl32fiEMbJ+aDBEGuB8S1si+ExIavznaVCcJpuo
+	qwABNP3e6V14wjwCzEGDyPKUA1tMIBpLOPXUnV5LVq1d8zpR0xKk352vRRb2PsQ70MvzDGB30n9
+	mwKRA8GtNryfus9c/3mZmvqw0JXq7mlsVI3nFFQe+
+X-Gm-Gg: AR+sD13t0iv63dPEm5MF/nqYI8vvhtgtlRiOf38n6pMkuD6NZhQN3gZJo/SDCOnZBsF
+	3S92F9canPRarHla8Y8tmFdAN8FWSiXcMULMP4buY1ncPmgyC858rVAwCskAbEeG1jKQkDpCBXK
+	OCJ467pny0LVTya2en2WrZHFW+AN4IB8y5k9zo3gYYspptxWJUFT1wan7403v6W8vRy9ZWzvzOg
+	nYDNN6qeADhDRVNOPUiR96fUS57Oeu8EnYipkuP/a/DY3c8v+04lWFkyrZxRFDBbbJA7VBbijH6
+	bVGnlPdZPtcCIa/WfrFGTWwzl81EX7GE+UPgLFuP7D4WXGy9xmuwn9n7aoXFnPFT0SZr3qC3ZkU
+	5hUlZ4f1tpswLRMOvDqYJ9aZbOeVoAgdCyA==
+X-Received: by 2002:a05:6512:12ce:b0:5ae:b9c5:f29f with SMTP id
+ 2adb3069b0e04-5b304c0a61fmr127719e87.2.1786075901406; Thu, 06 Aug 2026
+ 21:11:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7] coredump: Add bit 9 of coredump_filter for pre-exit
- files before dumping
-To: Xin Zhao <jackzxcui1989@163.com>, david@kernel.org, brauner@kernel.org,
- ljs@kernel.org, rppt@kernel.org, pfalcato@suse.de, viro@zeniv.linux.org.uk,
- corbet@lwn.net, skhan@linuxfoundation.org, akpm@linux-foundation.org,
- liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, mjguzik@gmail.com, ebiederm@xmission.com,
- jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com,
- alex.aring@gmail.com, arnd@arndb.de, keescook@chromium.org,
- mcgrof@kernel.org, j.granados@samsung.com, allen.lkml@gmail.com
-Cc: kuba@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org
-References: <20260807040124.1706927-1-jackzxcui1989@163.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260807040124.1706927-1-jackzxcui1989@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CC6EA40003
-X-Rspamd-Server: rspam10
+References: <20260726072935.3513996-1-souravpanda@google.com>
+ <20260805202444.1573218-1-usama.arif@linux.dev> <2qq6r5zvegrk5bbx7qbkscwqmccda7mxtzuvd3wln24yjm2qhx@663fzadsgmg3>
+ <CANruzcT9PEXYRu1t_ge9ZNE8hLBpt6rWP4CwsBUkoZQTtpPKdA@mail.gmail.com> <007cdb8b-01e3-4d73-9ac9-1a52ab5798dd@linux.dev>
+In-Reply-To: <007cdb8b-01e3-4d73-9ac9-1a52ab5798dd@linux.dev>
+From: Sourav Panda <souravpanda@google.com>
+Date: Thu, 6 Aug 2026 21:11:29 -0700
+X-Gm-Features: AUfX_mxWH60gK9UlA2T2tU0d42j7_xSa11P7VXAxl2IkH57VUwPLlfIVI6cyBc4
+Message-ID: <CANruzcR5AZHEg1TdAGG3Qm292vHXMB3BXvssm_rkv+xj+TBnNQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, muchun.song@linux.dev, osalvador@suse.de, 
+	akpm@linux-foundation.org, david@kernel.org, surenb@google.com, 
+	fvdl@google.com, gthelen@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: msj37nyw19qf8bikkkkb6rjofjuu5is9
+X-Rspamd-Queue-Id: AFEC4C0007
 X-Rspam-User: 
-X-Stat-Signature: ztbrb8pq385m4pu9idawngc8ewazgwba
-X-HE-Tag: 1786075755-897997
-X-HE-Meta: U2FsdGVkX1/bpMzq0HU056OqItM2UOc+Da9zeRI0BWGEh2UxaaOBAbuAT7Qs21sgkqCO6aV6Zh27ksi9N6Ayg880KGte8ErdkUjVPP4kACIZPHuP6pX603yn0x62jEpZIcHoFDLDuk8KxbzOdw+Gavn1Fh+2V5Ar6A1By2wRUR7i2s4O4bMo/coAyqzgEeeCtaGZP2gLXKlNYLc6Iv883+6BdFdkJxrLCYo0PCWD/oE7fI70l3+Dcf9D/KxEFo186q0+xb7JbjLJTbfjxeYqgq53dcpbG209Q7nacZnfWe3oBYK7tsGcWm/ucEk3BOqkIpNgiwKEhXkSx3WkAXD6rPZuGqOu5Olxf7vHIoyunr0wUoIbdFfMEyTMYWLrvthi1eevitvwQQq5FygSZQEkUbfNUYohRGX5nblstebRHyDF5o3xI2O0J4FEfL88q8xQjJia7DR6mw1Gv1jfYm9vPzzaKvog3b0Y7Tjym5KIaoDmpxkHevQYq0UCBgy20wM+L/sZ2oxxGzEObkdn5VroVqW5/OXDbvTJHIMiCbOwmkzwJPrDUTPIe+p5C0HYyc6bmJtnP4roM/GL/UEc0w+/MP91qHwFjvsMSctVN1Im1BGek/22vvK/qD0wLnyWvCcorVHlWYhSkKQESFdYMnz59F0W7jlLiNIMLf50gQaZ4amFhTeWyDHEtynSs31iuUvi6GdXSYfXU3rVSytPdopeR2jI3ZoSavFGjCwqDqC8Y3qMYdKBUqi0Q3Hjo6wubn2oHCTncR57Ivm7lShs1bdJimPOGMYzoefHYDy1OcE26Nvan4PM0Z6izMI9EZITM6tFSmGS3CcS66e0u5VlZwyFBE/xMqLoRhBd8v/nMu/rdz9SWvdee7siMKm1qd9/8f1rGO6PjpKPBraAHVSIeMsHXTGjbjdra63LwC/kNIO+0jvjEh/QwyYIQZLea8ZNWmd7NXXyAXoQpVT1IrJptIH
- 8Ogmr5bP
- wgX3TsgI7RUeNfGRzs2t6wdA1IJeiZOeikTUDbfmkMyIesilhguHYscuEQXz/R8r66Tt8bqvA7J99jXHRFYJtjYfh0ULHI5EqfC8rVSJbUi9Isfa0lSuZlpEedvSe8hIdMRAiDXajsgk2kege6asUfnRN2FDp5CPJCP7b1oE0nUCGpg1fuIUwCD7h4TnXhJTJzLmekgGGh+j+OKsQbnV0r0lD6bEKW+p5V8NLXj7X/SMOMi7k0hAxm+QKBPUUx8sh7RdjiLl8Dj3b4/rRiWKpF2Y2X8dhqJ1iKK2T38bmVjYqV/SS5+4a5kf9BtVZpmNCEw+gDIXAQ1JOvY/OODRzUpbXsHvkoho4m8N0ipYcT4hZbK6LJyMBTLMkFUfAJYvktDDROlwClOHxdPuR/NTgultxRimptt+ANKJUEBtaEeWcXRpHDBXQuDzeSvcxNiAYHERmAjpfVaABj3M=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786075903-905211
+X-HE-Meta: U2FsdGVkX1/WUFTrfbtzB3FHxrFP250XNJe6LvsJeRol1LlIc7abW4biitPE4HuYd68jYkDtwQtFX9BmIr8f88bq45f39P3Gr6UgfaCqADsLC3EOdx1qrOTH9bK6axnYCm6EtUaw95+3hKl+U/1dqBZHhbFUbJhRzlrk4ja2uqOjBGNr3YbaR0FjRVTKv8nOiH+gJETJAN9B3YCYzOFjiLhgJsi94pLkwGt5cSijd3R7Y62FDnNl2yOubADNoRE29FC4mFKaklTGFuZNwZuquZF3dRA5PPzHNpZmFSZDdQWwjAXockJHtJT+vtCuiljSDfZphxx7n+5bFYnaNVP+XlgnSMuRO8ARDTst/+IbCBDjEIsuzbtpeCGxglPKsqXwTKIvdM81qQ1U3hki38f3U0a5sab+D/jyM3J8DHSQOH/LDySIty3o/6yxgXvW+UAsXiixD0/VAQYvCQQp/FS0xYCDfUgFoH+BjXxS1v4xMlO/sySdQ8kZ6P6Vlbrgwh6tGXmS2ihPOMVegPC8EKkkyK28g9a1vINpqj2971RhIYpsodMYHOkgNNTXiZZbGTPwPPRMGhBXFyBOsSv5ulQEEWr5eGDG2wvfvBAsxLkpylwfFSVap5wb+Ce3jMoydc4VPbu8tIXJQ6y0EFfraiwJfww9xqgKqDCGeaHiwsmnVJz6MaAq9SSM3Ef93zdETF4K5vZMxfOTO7hLVvmL8oxmGVfuyxJfZi4TPaZWSG42RYAJtoovUiF0YL+5HYgpNkUpjFIoE4L87a2xBLtfdbvmPg5Bv2MDGoJ7Fuu1Wtgil5IVxKKP5DRcwy/xh5wvjC80SxeNPjRoVWqMOgGprpPM0PyUxgbDpzlopLFIEwagbVPdJQRUXQ0SNfBorGw1NN5T+Y+ozbVt+3Hl+dv8WYD+aopeWmqyzaq5rhU8JXDtPEFECGYZi4yFlPP7V3koPND4bTnSf3sxazw6eOag3w1
+ 8XnALeiR
+ 6T+l8V0BEJQwRSxDhppQOofZB4YT+gbMU0MWVsJdHLrKxqKsExODsZbOZgGImXbSIRpbo6e/sXBGubM5FZuo9sXygY3pCr19hF7CzV3BXKMdCrbftjug7kTsaX4IK3X/N2gC9sflwtr9I2O0r3aRvKeuWCud7rmS9rtZ+UfuukQwf4ImO2MUrx22mgcOoo3rbp4G7EctTzOtjKt0Fmm0a2UCPI80dj6JTMtxUOxJtxDpj/lk4fiPDdtiPQBQFIZ+9gnaKqvdHgv7nP+W8vzhzGg9Ug8/I/2WsjfTPyN2dbOu6gKKxNSAlFjQJga7LKceYo5PcaU++t4AAl2kHUxe9B04Qp4PFkoZ+XAU9BvZ0DFCQtPZmCxv0NA32+mT4X5ItZYFgcvCsY63zvVw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,242 +144,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi--
+On Thu, Aug 6, 2026 at 4:07=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+>
+>
+> On 06/08/2026 06:33, Sourav Panda wrote:
+> > On Wed, Aug 5, 2026 at 7:47=E2=80=AFPM Anshuman Khandual
+> > <anshuman.khandual@arm.com> wrote:
+> >>
+> >> On Wed, Aug 05, 2026 at 01:24:42PM -0700, Usama Arif wrote:
+> >>> On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.c=
+om> wrote:
+> >>>
+> >>>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> >>>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> >>>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> >>>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> >>>> alloc_gigantic_frozen_folio().
+> >>>>
+> >>>> hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask i=
+n
+> >>>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> >>>> leading to a null pointer dereference kernel panic.
+> >>>>
+> >>>> Fix this by checking if nodemask is NULL in
+> >>>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> >>>> node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
+> >>>> back to any node with memory, keeping behavior consistent with
+> >>>> alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
+> >>>>
+> >>>> >From a userspace perspective, this bug allows an unprivileged user =
+to
+> >>>> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> >>>> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> >>>> configured on a subset of NUMA nodes.
+> >>>>
+> >>>> This can be reproduced by booting a VM with two NUMA nodes, restrict=
+ing
+> >>>> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> >>>> hugepagesz=3D1G hugepages=3D0), and running a program that allocates=
+ a
+> >>>> 1GB hugepage area without reserving, restricts allocation to Node 0
+> >>>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> >>>>
+> >>>>   void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> >>>>                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> >>>>                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> >>>>   unsigned long nodemask =3D 1; /* Node 0 */
+> >>>>   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> >>>>         sizeof(nodemask) * 8, 0);
+> >>>>   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> >>>>
+> >>>> This results in a NULL pointer dereference:
+> >>>>
+> >>>>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >>>>   #PF: supervisor read access in kernel mode
+> >>>>   #PF: error_code(0x0000) - not-present page
+> >>>>   Oops: Oops: 0000 [#1] SMP NOPTI
+> >>>>   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> >>>>   Call Trace:
+> >>>>    <TASK>
+> >>>>    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> >>>>    alloc_surplus_hugetlb_folio+0x6d/0x100
+> >>>>    alloc_hugetlb_folio+0x3c5/0x660
+> >>>>    hugetlb_no_page+0x3d9/0x650
+> >>>>
+> >>>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic huge=
+pages")
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Signed-off-by: Sourav Panda <souravpanda@google.com>
+> >>>> ---
+> >>>> Changes in v4:
+> >>>> - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot approach =
+from v3.
+> >>>>   As Muchun Song pointed out, snapshotting cpuset_current_mems_allow=
+ed does
+> >>>>   not prevent false-positive allocation failures without complex ret=
+ry loops,
+> >>>>   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() alrea=
+dy handle
+> >>>>   NULL nodemasks safely internally.
+> >>>> - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen_fol=
+io()
+> >>>>   by defaulting nodemask to node_states[N_MEMORY] (Option 2), keepin=
+g
+> >>>>   HugeTLB allocators clean and consistent.
+> >>>> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-soura=
+vpanda@google.com/
+> >>>> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-sour=
+avpanda@google.com/
+> >>>> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-soura=
+vpanda@google.com/
+> >>>>
+> >>>>  mm/hugetlb_cma.c | 5 ++++-
+> >>>>  1 file changed, 4 insertions(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> >>>> index 39344d6c78d8..5744de0ceeb7 100644
+> >>>> --- a/mm/hugetlb_cma.c
+> >>>> +++ b/mm/hugetlb_cma.c
+> >>>> @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> >>>>     if (!hugetlb_cma_size)
+> >>>>             return NULL;
+> >>>>
+> >>>> -   if (hugetlb_cma[nid])
+> >>>> +   if (!nodemask)
+> >>>> +           nodemask =3D &node_states[N_MEMORY];
+> >>>
+> >>> Hi Sourav,
+> >>>
+> >>> hmm what if cpuset.mems only allows allocation from node 0, and huget=
+lb CMA
+> >>> is only available on node 1. This will no now allow allocating a giga=
+ntic page
+> >>> on node 1 when its explicitly not allowed?
+> >>
+> >> That's fair point but should not the user be also responsible in provd=
+ing a right
+> >> nodemask containing CMA memory if it prefers avoiding node_states[N_ME=
+MORY] based
+> >> fallback mechanism in kernel ?
+> >>
+>
+> I don't think the task can be made responsible for providing a CMA-aware =
+fallback mask
+> here.  Userspace supplies the MPOL_PREFERRED_MANY preference, but the ker=
+nel itself
+> changes the second attempt to a NULL nodemask.  That permits fallback out=
+side the
+> preferred policy nodes; it does not permit fallback outside the task's ha=
+rdwall cpuset.
+>
+> >
+> > We have precedence for three options, which makes selecting one difficu=
+lt :)
+> >
+> > 1) nodemask =3D &cpuset_current_mems_allowed is currently being used in=
+:
+> >        only_alloc_fresh_hugetlb_folio --> alloc_buddy_frozen_folio -->
+> > __alloc_frozen_pages_noprof --> prepare_alloc_pages.
+>
+> Here I think using &cpuset_current_mems_allowed is part of the page alloc=
+ator's wider cpuset handling.
+>
+> > 2) Some places use cookies with cpuset_current_mems_allowed to prevent
+> > torn writes. But this adds complexity.
+> >        An example would be dequeue_hugetlb_folio_nodemask()
+> > 3) node_states[N_MEMORY] is sprinkled all over the kernel (simplest).
+> >
+>
+> I would prefer option 2.  A NULL mempolicy mask should fall back to
+> cpuset_current_mems_allowed, not all N_MEMORY nodes.
+>
 
-On 8/6/26 9:01 PM, Xin Zhao wrote:
-> A coredump typically takes seconds or even longer to complete. If we
-> happen to hold a write lock with flock just before triggering the
-> coredump, that write lock will not be released during the entire coredump
-> process. As a result, other processes attempting to acquire the same write
-> lock may experience significant delays. Another typical scenario is that
-> some custom management modules for shared memory also need to release the
-> reference counts of the related buffers as soon as possible, rather than
-> waiting until the coredump is complete.
-> 
-> Add a new bit(9) of coredump_filter to tag whether need to dump fd list.
-> We set it by default because tools like systemd-coredump go through the
-> fds. Some other coredump pipe programs like minicoredump do not use fds by
-> default. If you are sure that your coredump backend does not use the fds,
-> you can clear bit 9, which will allow some file resources without VMA
-> references to be released earlier.
-> 
-> In fput(), check FP_DUMPCORE task flags to NOT release file by task work,
-> otherwise file put operation will NOT execute util coredump finish.
-> 
-> Test Case One - flock
-> Test program send signal SIGABRT to the program which owns the flock,
-> output the wait time(unit ms) to successfully attach the flock.
-> Test program malloc 500MB heap and memset it.
-> If NOT set bit9 of coredump_filter, waitms is 11280.
-> If set bit9 of coredump_filter, waitms is 0.
-> 
-> Test Case Two - ion buffer
-> Test programs include ion buffer publisher and ion buffer subscriber.
-> Ion buffer publisher output the ion buffer hold_time if the subscriber
-> NOT send ack to publisher and NOT release it. The subscriber will trig
-> coredump by itself in some time.
-> If NOT set bit9 of subscriber coredump_filter, max hold_time is 19591ms.
-> If set bit9 of subscriber coredump_filter, max hold_time is 320ms.
-> 
-> Signed-off-by: Xin Zhao <jackzxcui1989@163.com>
-> ---
-> 
-> Change in v7:
-> - Fix description error in proc.rst. Since bit9 has been added, the
->   supported memory types should now be 10,
->   as suggested by David Hildenbrand (Arm).
-> 
-> Change in v6:
-> - Fix operator precedence in PF_KTHREAD/PF_DUMPCORE check.
-> - Link to v6: https://lore.kernel.org/all/20260804001703.1340667-1-jackzxcui1989@163.com/
-> 
-> Change in v5:
-> - Not add another bootargs for the feature,
->   as suggested by Christian Brauner and Lorenzo Stoakes.
->   Add bit9 of coredump_filter to tag whether need to dump fd list.
->   Set bit9 to 1 as default.
-> - Al Viro, Christian Brauner and Lorenzo Stoakes point out so many
->   problems of the code related to umap that was added in v4, delete all of
->   it which is unnecessary. The management of reference counting for shared
->   memory generally does not need to be released through the release
->   operation of files that have VMA references. Traversing all the threads
->   within the process and executing exit_files() is sufficient.
-> - Fulfill comments and commit log,
->   as suggested by Pedro Falcato and Lorenzo Stoakes.
-> - Link to v5: https://lore.kernel.org/all/20260630075604.52533-1-jackzxcui1989@163.com/
-> 
-> Change in v4:
-> - Christian pointed out that the coredump process will traverse file
->   descriptors (fd), so certain fds should not be closed by default.
->   Rework the whole feature, add /proc/<pid>/coredump_pre_exit for user
->   pre-exit resources selection, default is NOT pre-exit anything.
-> - Mateusz suggested that walking the fd table and release the file-lock is
->   reasonable. No longer release all the fd(s). Based on user config, only
->   the flock fd(s) and the fd(s) correspondent to file-backed shared memory
->   will be released at most.
-> - Link to v4: https://lore.kernel.org/all/20260624145552.70143-1-jackzxcui1989@163.com/
-> 
-> Change in v3:
-> - Add comment and commit-log to explain why do the MMF_DUMP_MAPPED_SHARED
->   mm_flags_test() check, note that memory mapped files keep their own
->   separate references to the files. The case to work around is that early
->   unlocking a flock on a file allows other processes to lock and modify
->   the mapped data protected by the flock,
->   as suggested by Pedro Falcato.
-> - Link to v3: https://lore.kernel.org/all/20260619122419.3954581-1-jackzxcui1989@163.com/
-> 
-> Change in v2:
-> - Get rid of the implement of adding new fcntl API, the issue does not
->   worth inflicting the cost on everyone,
->   as suggested by Al Viro.
-> - Call exit_files() in coredump_wait(),
->   as suggested by Eric W. Biederman.
->   Add MMF_DUMP_MAPPED_SHARED mm_flags_test() check to filter cases that
->   need to dump file-backed shared memory.
-> - Link to v2: https://lore.kernel.org/lkml/20260618150301.3226517-1-jackzxcui1989@163.com/
-> 
-> v1:
-> - Link to v1: https://lore.kernel.org/all/20260618030700.2511668-1-jackzxcui1989@163.com/
-> ---
->  Documentation/filesystems/proc.rst | 16 +++++++++++++---
->  fs/coredump.c                      | 21 +++++++++++++++++++++
->  fs/file_table.c                    |  7 ++++++-
->  include/linux/mm_types.h           |  6 ++++--
->  4 files changed, 44 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-> index db6167bef..0728ebd73 100644
-> --- a/Documentation/filesystems/proc.rst
-> +++ b/Documentation/filesystems/proc.rst
-> @@ -1927,7 +1927,7 @@ will be dumped when the <pid> process is dumped. coredump_filter is a bitmask
->  of memory types. If a bit of the bitmask is set, memory segments of the
->  corresponding memory type are dumped, otherwise they are not dumped.
->  
-> -The following 9 memory types are supported:
-> +The following 10 memory types are supported:
->  
->    - (bit 0) anonymous private memory
->    - (bit 1) anonymous shared memory
-> @@ -1939,6 +1939,7 @@ The following 9 memory types are supported:
->    - (bit 6) hugetlb shared memory
->    - (bit 7) DAX private memory
->    - (bit 8) DAX shared memory
-> +  - (bit 9) fd list
->  
->    Note that MMIO pages such as frame buffer are never dumped and vDSO pages
->    are always dumped regardless of the bitmask status.
-> @@ -1946,13 +1947,22 @@ The following 9 memory types are supported:
->    Note that bits 0-4 don't affect hugetlb or DAX memory. hugetlb memory is
->    only affected by bit 5-6, and DAX is only affected by bits 7-8.
->  
-> +  Note that bit 9 is set by default because tools like systemd-coredump go
-> +  through the fds. If you do not set bit 9, files that are not referenced by
-> +  any VMA are released before dumping core. Some file release logic, such as
-> +  exiting flock or releasing references to shared buffers is executed much
-> +  earlier.
-> +
-> +The default value of coredump_filter is 0x233; this means all anonymous memory
-> +segments, ELF header pages, hugetlb private memory and fd list are dumped.
-> +
->  The default value of coredump_filter is 0x33; this means all anonymous memory
->  segments, ELF header pages and hugetlb private memory are dumped.
+Sounds good Usama :)
 
-I could easily be missing something here, but to me it appears that the
-paragraph immediately above here should have been deleted (i.e., replaced
-by the one above it).
-Can you explain, please?
+I will send a patch that replaces nodemask =3D &node_states[N_MEMORY];
+with the below:
 
->  If you don't want to dump all shared memory segments attached to pid 1234,
-> -write 0x31 to the process's proc file::
-> +write 0x231 to the process's proc file::
->  
-> -  $ echo 0x31 > /proc/1234/coredump_filter
-> +  $ echo 0x231 > /proc/1234/coredump_filter
->  
->  When a new process is created, the process inherits the bitmask status from its
->  parent. It is useful to set up coredump_filter before the program runs.
-> diff --git a/fs/coredump.c b/fs/coredump.c
-> index bb6fdb1f4..ed4d30916 100644
-> --- a/fs/coredump.c
-> +++ b/fs/coredump.c
-> @@ -521,6 +521,25 @@ static int zap_threads(struct task_struct *tsk,
->  	return nr;
->  }
->  
-> +/*
-> + * If do not dump fd list, files that are not referenced by any VMA
-> + * can be released before dumping core. Therefore, some file release
-> + * logic, such as exiting flock or releasing references to shared
-> + * buffers is executed much earlier. Note that do_coredump() often
-> + * takes several seconds or even longer to execute.
-> + */
-> +static void coredump_pre_exit(void)
-> +{
-> +	struct task_struct *tsk = current, *t;
-> +
-> +	if (mm_flags_test(MMF_DUMP_FD_LIST, tsk->mm))
-> +		return;
-> +
-> +	for_each_thread(tsk, t) {
-> +		exit_files(t);
-> +	}
-> +}
-> +
->  static int coredump_wait(int exit_code, struct core_state *core_state)
->  {
->  	struct task_struct *tsk = current;
-> @@ -1124,6 +1143,8 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
->  	if (cn->mask & COREDUMP_REJECT)
->  		return;
->  
-> +	coredump_pre_exit();
-> +
->  	/* get us an unshared descriptor table; almost always a no-op */
->  	/* The cell spufs coredump code reads the file descriptor tables */
->  	if (unshare_files())
-> diff --git a/fs/file_table.c b/fs/file_table.c
-> index 16e52e7fc..6ed8ace8c 100644
-> --- a/fs/file_table.c
-> +++ b/fs/file_table.c
-> @@ -566,7 +566,12 @@ static void __fput_deferred(struct file *file)
->  		return;
->  	}
->  
-> -	if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD))) {
-> +	/*
-> +	 * coredump_pre_exit() may release files before dumping core.
-> +	 * Cannot use task_work in the case, needs to release files
-> +	 * earlier.
-> +	 */
-> +	if (likely(!in_interrupt() && !(task->flags & (PF_KTHREAD | PF_DUMPCORE)))) {
->  		init_task_work(&file->f_task_work, ____fput);
->  		if (!task_work_add(task, &file->f_task_work, TWA_RESUME))
->  			return;
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index c7db35be6..e865edb04 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1954,14 +1954,16 @@ enum {
->  #define MMF_DUMP_HUGETLB_SHARED  8
->  #define MMF_DUMP_DAX_PRIVATE	9
->  #define MMF_DUMP_DAX_SHARED	10
-> +#define MMF_DUMP_FD_LIST	11
->  
->  #define MMF_DUMP_FILTER_SHIFT	MMF_DUMPABLE_BITS
-> -#define MMF_DUMP_FILTER_BITS	9
-> +#define MMF_DUMP_FILTER_BITS	10
->  #define MMF_DUMP_FILTER_MASK \
->  	((BIT(MMF_DUMP_FILTER_BITS) - 1) << MMF_DUMP_FILTER_SHIFT)
->  #define MMF_DUMP_FILTER_DEFAULT \
->  	(BIT(MMF_DUMP_ANON_PRIVATE) | BIT(MMF_DUMP_ANON_SHARED) | \
-> -	 BIT(MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
-> +	 (1 << MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF |\
-> +	 (1 << MMF_DUMP_FD_LIST))
->  
->  #ifdef CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS
->  # define MMF_DUMP_MASK_DEFAULT_ELF	BIT(MMF_DUMP_ELF_HEADERS)
++ unsigned int cpuset_mems_cookie;
++
++ do {
++ cpuset_mems_cookie =3D read_mems_allowed_begin();
++ local_node_mask =3D cpuset_current_mems_allowed;
++ } while (read_mems_allowed_retry(cpuset_mems_cookie));
++
++ nodemask =3D &local_node_mask;
 
--- 
-~Randy
+Will send it out tomorrow! Let me know if anyone has any objections.
 
+>
+> >>>
+> >>> Would it not be better to check cpuset as well?
+> >>>
+> >>> Thanks,
+> >>> Usama
+> >>>
+> >>>> +
+> >>>> +   if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> >>>>             page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], ord=
+er);
+> >>>>
+> >>>>     if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> >>>> --
+> >>>> 2.55.0
+> >>>>
+>
 
