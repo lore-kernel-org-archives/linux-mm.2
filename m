@@ -4,87 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C57C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C47D1C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:26:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D0F16B007B; Fri,  7 Aug 2026 10:24:41 -0400 (EDT)
+	id DA72C6B0088; Fri,  7 Aug 2026 10:26:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 082706B0088; Fri,  7 Aug 2026 10:24:41 -0400 (EDT)
+	id D581F6B0092; Fri,  7 Aug 2026 10:26:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDA896B0092; Fri,  7 Aug 2026 10:24:40 -0400 (EDT)
+	id C46106B0095; Fri,  7 Aug 2026 10:26:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B261A6B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:24:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 393F3C0294
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:24:40 +0000 (UTC)
-X-FDA: 85074694320.17.33C8C2B
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3245580008
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:24:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r+npiZUa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D7A86B0088
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:26:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32324803A5
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:26:43 +0000 (UTC)
+X-FDA: 85074699486.28.53362D6
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 640C7C000C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:26:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EulSD6E6;
+	spf=pass (imf22.hostedemail.com: domain of 3H-t1agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3H-t1agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786112678;
+	s=arc-20220608; t=1786112801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=S04di+PU+lv41Su7yR6P9olfkoO2azm7hS2v5N1fSOs=;
-	b=WRJ7ToLFhS/1IAkpC9zmXveYGRW45pOT5s+eUXkPkqCMnZCYiadVJ+xFShTVloOqIA6QW4
-	1HDGiiHlfXtcEoqVKlPeULw3NtVEBrn4AIPVKE8CURnyS0bf8BS1rRIJ+AMsSz5cwmFUxD
-	A6kvN0t+GvWBTIFNo2yD/J1TY1psz+8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r+npiZUa;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JwYnx5pOXpjwFV+QWoWnf2v54gIRTTlRhb9BTNCVN4Y=;
+	b=alnV3oGkGs7q9XVS6s8olVedWAVzYtoY+XjziFb4TwkZGcTSxi7N6zeT2ST4/SsSYNsrbd
+	ktnPaxpUkuo15HoWpk30dukuH2vWx16PY81vQclifcwosGOnthwRqfFyZnvCNffpf6t536
+	v428T4de5UVUX06FzkAdrRtZiudtweg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786112678;
-	b=ghqnv8LvjYKDUKgXGTj8ShzP/59X3NNY7+aD66mYgCClWhpNAPZgXIZoICy8B51h12YizD
-	wXPJRk2NdoSZKKdgsCwV16Z+yLMBKeiduedRra0Z2JQ+QL1o5pc6okXqm2h7iiMUnh00x/
-	0IdABSyI5bnn4+0Ivxsp3BP2Uj8kpCI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786112674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=S04di+PU+lv41Su7yR6P9olfkoO2azm7hS2v5N1fSOs=;
-	b=r+npiZUaeM6FZHODkg/p10zCEgVTxdiHOpcEv//SMiYw6+98pojPyGy0NSWiaZDZxjW4sz
-	A/4jJf3I+QCQGVks/R1KycB4MquoAO1yAFAjErMJdFU52yEwOVnPP8YDdRef5kUGHCapfc
-	0O/1nCbZLFqV5rSt5cX0ofHGtMS37aE=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] memcg: keep folio's objcg same as its node
-Date: Fri,  7 Aug 2026 07:24:05 -0700
-Message-ID: <20260807142406.443516-1-shakeel.butt@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	t=1786112801;
+	b=v5yKE5vsoJ2xM68+5vDDCu/4I/WfciZRHay7FuTTysijKraP5/FHjCZfy6xzrzXG1dXmbE
+	dVW1Cb6jRvKwOLdkogA5piLWsUlAWqmF7rUdMp/i0Dv/6JAc7+6M20WzjsaQYgYcFTWLB/
+	Xkb7cxcdnBGFVYZBYZbRDiCcIPGnhnc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EulSD6E6;
+	spf=pass (imf22.hostedemail.com: domain of 3H-t1agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3H-t1agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848568a6f62so5725383b3a.0
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 07:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786112800; x=1786717600; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JwYnx5pOXpjwFV+QWoWnf2v54gIRTTlRhb9BTNCVN4Y=;
+        b=EulSD6E6jeZG7KWDO9V28WA5u2CSsdQoDGZ2ZYAw6KOtKhF/rJlKPTrFjyJJIbzM8s
+         MwYyqi/udo9/1i5DAq5DkURGn/dVRk9KMVYPCeIoxTsO63CbqB7EOsh2YkKYkUsFNr+0
+         bkC+mE+ZY4g3y2hWU5+MpQ3arPluUqHt7FjUIW4LBfxo8SiyFs8nq1uw25jx76dnidbv
+         ZPmbDE64G4eCQk99gN3GlxWSnB3VeMzbxYWSVgZXUwbhvIJA27w6kEuEV9K7UTniRjmX
+         qm2O2cVzb+omDK+5ZgYfR2B2TZXJHgyID8Uwp5IVj9xN2Rv0HgAyVHeymNqsmqJRdFzA
+         DTTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786112800; x=1786717600;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JwYnx5pOXpjwFV+QWoWnf2v54gIRTTlRhb9BTNCVN4Y=;
+        b=qQpYQADdDQCoYcDme0vncLqttfhrcniaI6xN0Aiu2EM8+8FakPIG7wOwExDBOaBVNV
+         CmGE9nyCLXk11mjpf+n0reNZsjCnZPLZ3+xnDAyEzie+OfWX1ZqPxs+Z9s+niDi5kZAK
+         kLncIAa6aKURufcyUCu7IXg2cyEiu/4LMQonU9kaCEPbcoiEEeeoMxnW0Z4TJEYLQsY5
+         nq5pRhv1RLUtSnWbUyM8I3U7JkqpEuofj7v7e/QkuUThDjUMaE8t9gssJB100grT6cGH
+         vhZT5VM2NLTtG2qU07Do3OK10YlrLLZspqFVIm8P5U6VAalHewEK5v8BZaCd6vHx2Ovz
+         ocDw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7cSNcjL9a0oBBH0I1W94MzPMUhJOqs995OZ0MGfevcCLRm/QhoS3UjtRwufftG3/Sa1DGccELnQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx1+66vctSdVOJrh8IVcpn1sPFBB6Abit9Ps5fq2iA33GquZOjt
+	Eq6PczzRnpP5JaQIN53tlFKYxDI7YIVpp1/uYM9/AcUYJIwAcQy8E6VPkJfjptfiuyNT4EGJxN9
+	UM0fj+A==
+X-Received: from pfam7.prod.google.com ([2002:aa7:8a07:0:b0:847:926b:dc15])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b09:b0:842:3a98:b34d
+ with SMTP id d2e1a72fcca58-84f2e032626mr25108022b3a.31.1786112799701; Fri, 07
+ Aug 2026 07:26:39 -0700 (PDT)
+Date: Fri, 7 Aug 2026 07:26:39 -0700
+In-Reply-To: <CAO9r8zPBdjxPTMCeaLdeFeH=9Ybb8wn6KJZ6x9t=o5DyXdEHwA@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
+ <amu5v-e39GKpgFG4@google.com> <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
+ <amz0jzVPZo_eBeRV@google.com> <anUgqnHKShicIK7C@google.com>
+ <CAO9r8zPk-X5+NmtKm5pvPD=zhrDDAqF_2h-a9-0=5-+CVEnUNw@mail.gmail.com>
+ <anUkfHGqI07cgSHG@google.com> <CAO9r8zPBdjxPTMCeaLdeFeH=9Ybb8wn6KJZ6x9t=o5DyXdEHwA@mail.gmail.com>
+Message-ID: <anXrH_6oQTtDxzX9@google.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
+	rientjes@google.com, patrick.roy@linux.dev, 
+	Takahiro Itazuri <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 640C7C000C
+X-Stat-Signature: 9rsbaqyu4ej9m8moaiggnwbix1hqqujx
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8cs77uuzibxuk4xujacmjqougkg8dinq
-X-Rspamd-Queue-Id: 3245580008
-X-HE-Tag: 1786112678-735901
-X-HE-Meta: U2FsdGVkX19r7tFozARwdtkCyePgx1TzX0i4Gs5Thod3XWlpuU+Kmfgq0rzZZ/I2JI0znnw4LCTCQ3rD4/bbyXMophed7cAe5H1kIdL3AevEFh/bc+oStkoQNS9lphwBEpuGYMQpNTrw/EICCdU5X271+0GPtgBOad/VIeF5sw9g8bMRWVwAn898QWPmih8vdN0UtNP7LexiPGIiYlwHboDeDLk2Pw54UnZIDXKRPB/fL7JjExn5DW/nd+4SX1Wj1kQG+xTRFofMDDEWOEDsdSCaNIr4Veh3D7mFOoeC5Biy8TxYAfftMCELeVorDvSARmckrB5niREXv82nFJ5MHJjUllTW7TvhLnKP4q6vZ9rlq/2ejTehFPMcfah5r3adbIlhE8fNNtPm37qyLGOAxGeVFiRncZI6Wx1FRBbgo0LQpcDwU4nkJaxCVziE1cfkYppGVI/MhCZvLjrMkhQMIQu/a+4rs38eL0Lo7UkxaZj/ljSD1cpoR6bUy4H96TY/VujgKpu4PmfVFY+ADoHXfob5evHKyqNHAnYiMV7QW3sWj2b1rvMLcD3i3e0BYenVPWCvkBNwDLyy/b4QzhVqvtsRb8Nf4aHW7kDl2LRrVPLlCsQpst9kHvF0FIuSiA4owj0+gUOmVUknRUU+2pTMA6qnyL8CEIRCfp48D5YQ+o8gf1BGUqMYwyK3PwMnI2exx2CGG74RiLY6MT/12HfHzV6jQCMOLk1sGAP3iSwlFoqbhRMYi6qaSZP5YZ/o6HAvzX/a/ia24x6jWfMnMl2CVh9G7xZNSmvvZJSiOf2L7ZzPDLj+pEhNYb2uXftkqEKroE35Yxd3a0FiX8DmC+GgHCtH0YoOlBwm9YRDXfOBq5Jh4Vtb5N8ARVlC6fUtH4cBwvvgH6we+QPeherciBcI28XttZ7X832I6w0Tu49FY+NnkX4dDI/5tx29dyk4Tbkp+PW3keoHHMHWslAfwF0
- iyYmLA60
- KT5qyzBLWOk24SX56ry70w8EQGtbUMxig3BWOEX6OsJSChTwzBdM5FsWqmmWpNuoD4AnHu6kfbfSkVqtEiZez8dyeVCEg8f/i8F2C86RDFHzu4NOJ/xlTvG3BbAB0JDHp1ybPHw7VOk+aikqoja6vPcydHWKZQfheSkz+Gb5YYW58o4L25TROrRQVzXJ0DkXIBzJJYbR2ZcAsulWTlEhwuvxFLhrXxfBgdaN9Ay5bT1vyTkbmRtPPfiYTpFWulXNrXaxlo7M0KxGY4wtT57CJghMy3B7y3PRiiIYZ/b9uGdGbtObGjymmQny5ER0aheY7PBkLa8FDLxXK35YLu6CDeqdB1A==
+X-HE-Tag: 1786112801-863164
+X-HE-Meta: U2FsdGVkX1+n36i4DG15hs1nrOB9LZiq9dTxew2baviTnHuuqN0TV9phWz5vg2mYlx8qMjVGFpL6s0Y/Rf8yabZw21M+mdux5Q16GmXzQaMPbnXJCu3/j21Y8ywOiCxFNG93hZiyZlZhBq9eem7ELtOLXDMnpBcnLmLSaHPSVrah9vjarljvV6WNeQj23mdgKJq5lP9MxejxxcMA54mlVtG/vOtDsasNr8dGhaxYOjwAogPYu77aRYADIRi/CW4VTegOdqlhPAdRIwPeeql64rWqQQUup6T7qsvBRxRn4zJCLHp3Q0IsyYSJAJ32GQwSeGmijxn5zA0iIC+2uG1kf5XzPq5rkqS3Xk5Lq3/A1j0lQTh0GSX6RYda8YGuKkcLlo4QnMrMB5ATI/vQJ4qID0Cq/PhSyfuaE7+kZO4o9wMPa4slHtr1LyIU/noGNaJlDOB6KTbg/A66AxlmHkS21MJCvkmEt0QdpIy5+dvLbCkIrHEiiSLpf2lOZr4sodj3jngOMQl5Tx+yRKb3P8FlPhYERkykHMo5UlTZlRQHGj2oGyKQ6dhSzWTyySGQG7Bz5msW3fnBrMorBZyWA2JhxxECVsA+xMq5fIEC2ZBF/nK9n8WQNKBsyJe7TQ0n9w50bslgPre01L6Y6LRHmbdiDMp1wdLvIMgj7qxjDfDJZ3LGYSLUBUVPD1+4z0u//5+hZeqS+4SWJnlYtkjzmHkxFyf1klaYqKy0FPlUa+EIY4Bt3EnJbNmHvlmLWObnRaFFnHFkiDBoKnZWSnhHn3pdC9Xp0dEHtQD6jSere2QK6sGvJaqc/st9m1EaLdjAMMZexgPgD4a4ataCTRP0rdd+zTiXtxS1SXcTC0/ZBJEvFTPIBeZN4Zu9o9H4YVy1nv3lMXwTn6YxQQGsGluX5E5PtJdM3Mk5ikSuGTLLLAlLzyem8wDIcbEjYKZ+iRbARUjTAYx3sKC9IL5b7OahpbK
+ YRoJmJuc
+ 0z+1APIODzmvSzgOqUAMm3p/8eR8ByZme0l36K/AoNuhBzULBPmV4Y8sJCBU2GWXWTn/8tKTFwmX4TV/dzVgPmBN+SwUstJudKnLsbA129K4Wx9Ka6Zl1Otz6hGJJ87ul+ZcpLKzEpNnGNzx1mjx4lpdJXCOhMQ9IaLJyWqF9HCFHmjxnRudIAUQflrZw2aycSnP1EGaEHA51t+7VfFD0hD51NSKUJpwfnjkYm6k7PAz06w5jFBoaHPupcpGctsfxnA49rjhmJmVwpWaJaWnlRlbWjac2Ye8kjnQC8ym2f8AJRj89PD1siOcKzKE4jh6dikaToxbd7Jv2wfc/oXHHdMe/CyI29EqBte2oAHPxonDEvD/o3XhMAoIE9H5rST9Xkc3KWowwsC4iuvn1CE7MrLnNIbMWQBXHfR3z4DydnFGkAk7CnuUkg/unG2QTzB5USBaypLD+fG/BaazH5vrC9ytJjzcw+qBepF9h/jokfINgnhUMp3rEWB9ozBIzF9Q+Nm7hSIz9iBxDY64fpdP7+UBbc9yseFufDXAPt5tTCdKW2/Wj9QAV7ma3efLWsYgamZYpYZsPvoZEYxUu6VQbTrsMUyc/I+XEdwU2aszsPQ7+cCpGLJ3dsrGDDflDKiKm6r+o7mUYJquLzNIPzentCHz9hxvJTXlG9xcZkaWzJ0AUoc2T7dy+R0hP2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,240 +126,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memcg_reparent_objcgs() has an inherent assumption that a folio's objcg
-is the objcg of the folio's node.  Folio migration across nodes breaks
-that assumption: the new folio simply inherits the old folio's objcg
-while living on a different node.
+On Thu, Aug 06, 2026, Yosry Ahmed wrote:
+> On Thu, Aug 6, 2026 at 5:19=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> > > >  2. Always access guest memory through userspace mappings, i.e. thr=
+ough uaccess.
+> > > >
+> > > > #2 sounds nice, but the problem is that it effectively requires han=
+d-coded assembly
+> > > > sequences for anything more complex than basic load/store operation=
+s.  Which isn't
+> > > > a complete non-starter, but it's a pretty big blocker.  E.g. see th=
+e mess that is
+> > > > record_steal_time(), and then imagine trying to convert something l=
+ike
+> > > > nested_vmx_prepare_msr_bitmap() to use uaccess.
+> > > >
+> > > > So, unless someone comes up with a clever idea, KVM will need somet=
+hing GUP-like.
+> > > > Strictly speaking, it doesn't necessarily need to be exactly GUP, b=
+ecause KVM could
+> > > > poke into guest_memfd directly; KVM would "just" need to manually t=
+rack its own
+> > > > mappings.
+> > >
+> > > Ideally we can have shared infrastructure for this (i.e. the mermap).
+> > >
+> > > > But on x86 at least, that's not really a viable option because it o=
+nly
+> > > > works for map-rarely, read/write-many use cases.  For one-off acces=
+ses, creating
+> > > > and destroying (very) shortlived mappings would be too costly, and =
+so we'd want
+> > > > those to go through uaccess.
+> > >
+> > > Not necessarily (I hope). I think the mermap pre-allocates page table=
+s
+> > > (or some of them) and defers some TLB flushes, it's aimed at
+> > > short-lived mappings (e.g. for read() syscalls to map a file page,
+> > > copy to buffer, then unmap).
+> >
+> > I highly recommend testing shadow paging if you have aspirations of rep=
+lacing
+> > the get_user() in FNAME(walk_addr_generic) with an on-demand mapping.  =
+I would
+> > be (pleasantly) shocked if dynamic mappings can provide acceptable perf=
+ormance.
+>=20
+> Oh I was thinking of existing cases where KVM uses kernel mappings (e.g.
+> kvm_vcpu_map()), as these are the ones where KVM uses GUP now, and need t=
+o
+> work for AS_NO_DIRECT_MAP to be usable. I assume the get_user() calls are
+> already a problem for guest_memfd. =20
 
-Once the assumption is broken, the reparenting of the folio's objcg and
-the reparenting of the folio's LRU list are no longer atomic.
-memcg_reparent_objcgs() handles one node per iteration and drops all the
-locks in between, so the objcg gets reparented in the iteration for the
-objcg's node while the LRU list gets spliced in the iteration for the
-folio's node.  Any LRU operation on that folio in between resolves its
-lruvec through the objcg, and thus takes the lru_lock of the wrong
-memcg, not the lru_lock of the list the folio is actually on.
+They aren't.  KVM doesn't yet support in-place conversion, so when guest_me=
+mfd is
+used for private memory, the backing for shared memory must come from somet=
+hing
+other than guest_memfd.  If the guest does something to prompt a host/KVM a=
+ccess
+to memory that is private or doesn't have a valid backing, then it's either=
+ a
+guest bug or a host userspace VMM bug.
 
-Fix this by selecting the objcg by folio_nid() at charge time, and by
-re-deriving it for the destination node in mem_cgroup_migrate() and
-mem_cgroup_replace_folio().
+When guest_memfd is being used for shared memory, i.e. was created with
+GUEST_MEMFD_FLAG_INIT_SHARED, then get_user() Just Works, because again it'=
+s
+userspace's responsibility to establish mappings for memory that KVM may ne=
+ed to
+access.
 
-Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
-Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
-Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
-Cc: stable@vger.kernel.org
-Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
+All of that holds true for when in-place conversion comes along: if get_use=
+r()
+hits a fault, either the guest or userspace screwed up.
 
-Changes since v2:
-http://lore.kernel.org/20260806165813.2526415-1-shakeel.butt@linux.dev
+> AS_NO_DIRECT_MAP will surely make it a bigger problem, but not a new one =
+:P
 
-- Refactor common code between mem_cgroup_replace_folio and mem_cgroup_migrate
-  (Johannes)
-- Always commit the destination node's objcg. (Johannes)
-- In mem_cgroup_replace_folio, force charge based on committed objcg (Johannes)
-- In mem_cgroup_migrate, if destination node's objcg is root, uncharge the
-  source node's objcg. (Johannes)
+Well, if it disallows GUP, that will be a new problem.
 
+> > > > At that point, userspace is basically required to
+> > > > maintain mappings for all host-accessible guest memory, and if ther=
+e are userspace
+> > > > mappings, then not using GUP doesn't make much sense.
+> > > >
+> > > > Note, I called out x86 because x86 has the most extensive emulator =
+and shadow
+> > > > paging support, which is where the isolated, one-off accesses happe=
+n in spades.
+> > > > Other architectures might be able to squeak by without userspace ma=
+ppings, at
+> > > > least for now.
+> > > >
+> > > > So, in all likelihood, KVM will want GUP.
+> > >
+> > > Yeah I am thinking that the check here to disallow GUP completely for
+> > > unmapped pages is aggressive. Maybe it works for now if KVM does not
+> > > currently have any use cases for accessing guest_memfd memory. But if=
+ it does
+> > > (or will very soon), we need to think more about it, otherwise
+> > > AS_NO_DIRECT_MAP is not really usable for guest_memfd. Since you said=
+ KVM
+> > > "will want" GUP, I assume it currently doesn't?
+> >
+> > Doesn't what?  Have GUP?  KVM heavily uses GUP, including for guest_mem=
+fd that
+> > can be mapped into userspace.
+>=20
+> Your wording made me think that KVM doesn't currently use GUP for
+> guest_memfd, but I was obviously wrong. So IIUC GUP needs to succeed for
+> guest_memfd pages with AS_NO_DIRECT_MAP.=20
 
-Changes since v1:
-http://lore.kernel.org/20260806061830.3294679-1-shakeel.butt@linux.dev
+Yes, though as I said early, it doesn't *have* to be exactly GUP, just some=
+thing
+GUP-like.  E.g. it could be a new API, if that's easier/cleaner.  What I do=
+n't
+think is a good idea though is handling this entirely in KVM/guest_memfd.
 
-- In mem_cgroup_migrate, do obj_cgroup_put at the end (Sashiko)
-- Handle scenario where destination node has been reparented to the root but the
-  source node's objcg has not yet (Sashiko)
-- Add comment explaining the race between migration and reparenting (Johannes)
+> To actually access the memory, I assume the guest_memfd side will need to
+> handle this by either using ephemeral mappings (e.g. mermap), restoring a=
+nd
+> zapping direct mappings, or using a userspace mapping. I suppose for the
+> purposes of AS_NO_DIRECT_MAP core support we just need GUP to succeed?
 
- mm/memcontrol.c | 100 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 83 insertions(+), 17 deletions(-)
+And establish a (ephemeral?) kernel mapping, because general users of GUP w=
+ill
+expect that they can access the physical memory through the direct map.  Th=
+at's
+why I didn't want to handle any of this in KVM[*], the rules and handling n=
+eed
+to be kernel-wide.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 3057396dda53..7248e7aa4069 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2966,10 +2966,9 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
- 	return folio_memcg_check(virt_to_folio(p));
- }
- 
--static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-+static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-+						      int nid)
- {
--	int nid = numa_node_id();
--
- 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
- 		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
- 
-@@ -2980,12 +2979,13 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
- 	return NULL;
- }
- 
--static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-+static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg,
-+							   int nid)
- {
- 	struct obj_cgroup *objcg;
- 
- 	rcu_read_lock();
--	objcg = __get_obj_cgroup_from_memcg(memcg);
-+	objcg = __get_obj_cgroup_from_memcg(memcg, nid);
- 	rcu_read_unlock();
- 
- 	return objcg;
-@@ -3029,7 +3029,7 @@ static struct obj_cgroup *current_objcg_update(void)
- 
- 		rcu_read_lock();
- 		memcg = mem_cgroup_from_task(current);
--		objcg = __get_obj_cgroup_from_memcg(memcg);
-+		objcg = __get_obj_cgroup_from_memcg(memcg, numa_node_id());
- 		rcu_read_unlock();
- 
- 		/*
-@@ -5197,7 +5197,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
- 	int ret = 0;
- 	struct obj_cgroup *objcg;
- 
--	objcg = get_obj_cgroup_from_memcg(memcg);
-+	objcg = get_obj_cgroup_from_memcg(memcg, folio_nid(folio));
- 	/* Do not account at the root objcg level. */
- 	if (!obj_cgroup_is_root(objcg))
- 		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
-@@ -5396,6 +5396,46 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
- 		uncharge_batch(&ug);
- }
- 
-+/*
-+ * An LRU folio must hold the objcg belonging to its own node.
-+ *
-+ * memcg_reparent_objcgs() reparents a dying cgroup one node at a time: the
-+ * folios on that node's LRU lists move to the parent and that node's objcg is
-+ * redirected to the parent, atomically under the node's lru_lock.
-+ * folio_lruvec_lock() relies on this to provide a stable folio<->lruvec
-+ * binding. If a folio holds another node's objcg, its list membership and its
-+ * lruvec resolution change in separate lock sections, and an LRU operation in
-+ * between can re-add the folio to, and strand it on, the LRU list of a dead
-+ * memcg.
-+ *
-+ * So when migration transfers the memcg state to a folio on another node,
-+ * re-derive the objcg for the destination node. If the memcg is dying and the
-+ * destination node has already been reparented, the lookup walks up to the
-+ * nearest live ancestor - which is also where that node's LRU lists went.
-+ *
-+ * Returns the objcg to commit to @new, with a reference for the caller.
-+ */
-+static struct obj_cgroup *get_migration_objcg(struct folio *old,
-+					      struct folio *new)
-+{
-+	struct obj_cgroup *old_objcg, *new_objcg;
-+	int new_nid = folio_nid(new);
-+
-+	old_objcg = get_obj_cgroup_from_folio(old);
-+
-+	if (folio_nid(old) == new_nid)
-+		return old_objcg;
-+
-+	rcu_read_lock();
-+	new_objcg = __get_obj_cgroup_from_memcg(obj_cgroup_memcg(old_objcg),
-+						new_nid);
-+	rcu_read_unlock();
-+
-+	obj_cgroup_put(old_objcg);
-+
-+	return new_objcg;
-+}
-+
- /**
-  * mem_cgroup_replace_folio - Charge a folio's replacement.
-  * @old: Currently circulating folio.
-@@ -5424,21 +5464,28 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
- 	if (folio_memcg_charged(new))
- 		return;
- 
--	objcg = folio_objcg(old);
--	VM_WARN_ON_ONCE_FOLIO(!objcg, old);
--	if (!objcg)
-+	VM_WARN_ON_ONCE_FOLIO(!folio_objcg(old), old);
-+	if (!folio_objcg(old))
- 		return;
- 
-+	objcg = get_migration_objcg(old, new);
-+
- 	rcu_read_lock();
- 	memcg = obj_cgroup_memcg(objcg);
--	/* Force-charge the new page. The old one will be freed soon */
-+
-+	/*
-+	 * Force-charge the new page. The old one will be freed soon.
-+	 *
-+	 * The rootness of the committed objcg decides whether the final
-+	 * uncharge of @new goes through the page counters (see
-+	 * uncharge_folio()); charge them only if the uncharge will.
-+	 */
- 	if (!obj_cgroup_is_root(objcg)) {
- 		page_counter_charge(&memcg->memory, nr_pages);
- 		if (do_memsw_account())
- 			page_counter_charge(&memcg->memsw, nr_pages);
- 	}
- 
--	obj_cgroup_get(objcg);
- 	commit_charge(new, objcg);
- 	memcg1_commit_charge(new, memcg);
- 	rcu_read_unlock();
-@@ -5450,14 +5497,15 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
-  * @new: Replacement folio.
-  *
-  * Transfer the memcg data from the old folio to the new folio for migration.
-- * The old folio's data info will be cleared. Note that the memory counters
-- * will remain unchanged throughout the process.
-+ * The old folio's data info will be cleared. The memory counters remain
-+ * unchanged, unless the charge moves out of a fully reparented ancestry
-+ * and has to be settled (see below).
-  *
-  * Both folios must be locked, @new->mapping must be set up.
-  */
- void mem_cgroup_migrate(struct folio *old, struct folio *new)
- {
--	struct obj_cgroup *objcg;
-+	struct obj_cgroup *objcg, *new_objcg;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(new), new);
-@@ -5478,12 +5526,30 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
- 	if (!objcg)
- 		return;
- 
--	/* Transfer the charge and the objcg ref */
--	commit_charge(new, objcg);
-+	new_objcg = get_migration_objcg(old, new);
-+
-+	/*
-+	 * @old was charged through a non-root objcg, so its charge is in the
-+	 * page counters. If the re-derivation walked up to the root objcg -
-+	 * @old's entire ancestry is dying and already reparented - the final
-+	 * uncharge of @new will skip the page counters (see uncharge_folio()).
-+	 * Settle them now: this is @old's eventual uncharge, moved up to the
-+	 * point where its charge record ends.
-+	 */
-+	if (obj_cgroup_is_root(new_objcg) && !obj_cgroup_is_root(objcg)) {
-+		rcu_read_lock();
-+		memcg_uncharge(obj_cgroup_memcg(objcg), folio_nr_pages(old));
-+		rcu_read_unlock();
-+	}
-+
-+	commit_charge(new, new_objcg);
- 
- 	/* Warning should never happen, so don't worry about refcount non-0 */
- 	WARN_ON_ONCE(folio_unqueue_deferred_split(old));
- 	old->memcg_data = 0;
-+
-+	/* @new holds its own reference now, drop @old's */
-+	obj_cgroup_put(objcg);
- }
- 
- DEFINE_STATIC_KEY_FALSE(memcg_sockets_enabled_key);
--- 
-2.53.0-Meta
-
+[*] https://lore.kernel.org/all/aeemS2wm38Cm4qAf@google.com
 
