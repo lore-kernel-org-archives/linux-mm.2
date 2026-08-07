@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF063C5ACD1
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B16FEC5ACAB
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:43:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A26646B00A0; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
+	id A76DD6B009B; Fri,  7 Aug 2026 17:43:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CFFB6B00A2; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
+	id A00866B009E; Fri,  7 Aug 2026 17:43:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E5C06B00A4; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
+	id 8EEF26B00A4; Fri,  7 Aug 2026 17:43:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 718F76B00A0
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EECD51A0190
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:38:08 +0000 (UTC)
-X-FDA: 85075786656.05.5593339
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DD7C840007
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:38:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fhtnW4u/";
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6424A6B009B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:43:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E64F8A12F9
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:43:00 +0000 (UTC)
+X-FDA: 85075798920.06.42C8C85
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0818D40004
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:42:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="wP//6lGK";
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786138687;
+	s=arc-20220608; t=1786138979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=elZQKeikZzxWpyEMzJPkFz75IkgIrejtRCC8CUUdJfM=;
-	b=J0aMWzWvVzeNbfh1oI+FkYJego7FJYeQsVhTde/WLaQbj+qXOfmJlL7zCTS5CIcs1DnAZS
-	dzkfbuo0ZPl/szvomZdP/NmY3QCTynI+HXn8vmG1vbCfcQmYSx1pLVkpimxFKOjpqJ9mLc
-	WDMVPhcJmmcL01UpEBHIE7Fs+QQ0ZhY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786138687;
-	b=a+3Ot9QNKA+OOatBBLtXv9tg+0jEZ1Vmi37P86EcZ8d/5H2kf1ItcErFuIX2HTPbh3W9Ju
-	fVnPC3EysQYoc74mIPSF/FEK0s0DUh+QAeAmvLTTAp9fNxuP9ddo8eX4ICW2P+UnxkLTx9
-	0FYpPAz7d/b8qXVYYNLKRX489ZUJrUQ=
+	bh=V5Weo6gzWFeGsLCsHrlTVQmPSXk+S4ozjr38z5Dj6Us=;
+	b=BbZY0rIWBTzS4AKnhb20s1dmzUrqGECDfAxofcw7AA3k0xVJTu5y9PPIZWV85K2PzRBLVz
+	K/Wn33DHpO7Fx9TuzFaaqm5xr95PhM6rsceDup6meFKDD60RnjgGQe8oZ0/lu5NSGaMqu7
+	FXUBYhLsi5PK5kbQC25GaErdUsHTM4I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fhtnW4u/";
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="wP//6lGK";
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786138979;
+	b=DbYKWfcdniLprIweKXirzpEbDX8i5ATIur/ZqSexBj43hgIVEW1Nx5ima8UQ4feSCPOJK6
+	Fytc0F/IswHFddfPXW4gAWmc3rmZMm9nbTe9QBlP4VdDNR41Z6syudr3bzsFDgyNAMyYYY
+	wkFbuwjZAgJE1M5Xv4ciF/ruhrZtyG0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D646142A82;
-	Fri,  7 Aug 2026 21:38:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E641F000E9;
-	Fri,  7 Aug 2026 21:38:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DD6A26001A;
+	Fri,  7 Aug 2026 21:42:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1CA1F000E9;
+	Fri,  7 Aug 2026 21:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786138685;
-	bh=elZQKeikZzxWpyEMzJPkFz75IkgIrejtRCC8CUUdJfM=;
+	d=linux-foundation.org; s=korg; t=1786138977;
+	bh=V5Weo6gzWFeGsLCsHrlTVQmPSXk+S4ozjr38z5Dj6Us=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fhtnW4u/UudPVV1QEdxmYzO3L3c6AyO1BChlBF42VEEm2BX114jT6VD/r/sYmJZWU
-	 Oz2r/nIYV+HHHfV6HEUSTkM2+APMxr11seWvxJo3p+LPiEK1Z1YTE4KEaSWIW4zACG
-	 CnuUaUh97dZrli8bxsybAZslGsEhZh1ws4vVC7Ng=
-Date: Fri, 7 Aug 2026 14:38:04 -0700
+	b=wP//6lGKsVrokbJLjPmhaKcE7zZRoPqmDXQXP1gb6YhD5KjbQHNQOPEXJWY9zYucb
+	 Tg5GDWocjRIPdCaFvIh2uiE8WnSYPq2xQhsVXjl543kl2dwdeoSaba1xeAN9Dd0ABp
+	 RQjqdM6wgd5EsHD5fvHWB7j7yA3mpGqYq/jTznyw=
+Date: Fri, 7 Aug 2026 14:42:56 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Su <sh_def@163.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
- dvyukov@google.com, vincenzo.frascino@arm.com, qiang1.zhang@intel.com,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] kasan: fix cache shrink race with CPU hotplug
-Message-Id: <20260807143804.24cfd5710208d9a421b0e0e1@linux-foundation.org>
-In-Reply-To: <20260807065038.2600949-1-sh_def@163.com>
-References: <20260806121006.1642946-1-sh_def@163.com>
-	<20260806135125.a444f867993cb3cd3122551e@linux-foundation.org>
-	<20260807065038.2600949-1-sh_def@163.com>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Youngjun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ her0gyugyu@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
+Message-Id: <20260807144256.6fbdfd15f7ed4f518af7929f@linux-foundation.org>
+In-Reply-To: <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
+References: <20260806193228.458685-1-youngjun.park@lge.com>
+	<20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
+	<anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
+	<anWabobwPyAXvRe5@MiWiFi-R3L-srv>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0818D40004
+X-Stat-Signature: k9ms7in4yipaitk7z5hnwdf7x6nou5kg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DD7C840007
-X-Stat-Signature: 1wgit1gj8f7wwk9e5qke4pp5y3ruo7fs
-X-HE-Tag: 1786138686-184601
-X-HE-Meta: U2FsdGVkX1+qDvTkNJJeU0phh3/ECWI/O9mHjL2g4P3t5BTabMbUGR7g6VWHtPH4/ILlAINjgtFS/HmXZrTZ1+zUzwXK1QwmZ1zPvaw3bMA/sy7lzS7V5yh7omTgl17A4YIh4ZnM5URfGeifD5PQZRQS7m4Zr1cvT8rdZ1CIRzqt3LbYAiWJyh0t+BV/7poP6nJOyi0EV3uP7do29vkVEMcm2T1T/HXpFdRmAV5dxoqyWnmu24hj0nlU9GnxzTqXn/GniLbW0BUPSplGYbcfHG1EgiLVoMbYlhAQCRjWAHd4NLFLV3IzzHt63ICMG6Noc8Y6DYAY/NWwBemDqeWY6dFU3i9uEL82m/97jBrhM7qSK+XZLpsJ8qrpMT3v5XHF4QLHF8/KMTAabuqtjF9kGmC0k+KSJmJdJ23oZ5KHbfQ9VgUtQhqq04ldJd07qMvPORy1mcviV2Q1SqbEWVUNd4U1k9twz+ytU28FCN0dx3Md8xWaYgn2fS/bY5SdLvz77Uz4XTRez8VTKFlr1F+uW1GTn/l2SRn5G3eIwGzGGDZZoY722WA7DP7LfZkuDVfh7YlU6XTpbnMnlHkh6wPiVgzOG+x/4PidHGqBAUIVWHLsNfh7m6rTH122uFopTQrA1tUkQznCqJccqbUrE3SlbHLL1nNjZUQn9FPEbDZS0rMqAGodPcqWJ5DY9jIAl7Ds+pQLUNCf1DEqdvKjB43qwFnHckJHuXIBif+nOXdoqAAKWatnA2WqvqQjqVBfnAyd9A1fGsvMcYISJvBIyigXkt+9v73qxZOCeMe/F8EXVJaKVkwN4Kzwskr8g6+D7C4GJ6rZJvszWYlcx9Y2Cbw4MvXU0vTlcaLMPavpuJ0QWsRewMqIDJms9Uro/ft5cwNB/UbZEtRSNxPSBB+Ho8+X3STtvKC0zggd7Iznvt2rnkwiOYbDop7OnqNHXHN/ZQuBGWA3M4pTLLOI8i0L9Um
- RDN7Sb77
- 2rva7VNcec5gVX0TcLPgLsorFPiptxJveLJkP7vfVZ5FKYRjai1ZQ8zgOxoOGm3e92Y8mdy3nY8DGMQqhff1LkS4PcP4Am6qQeGKkDO3vJaXqY83q1vpdgFPuZc2b8kWRBqGuCP6c7Hshdl7Ts7c4eqmtEmokauXc7Yns7Jp8i3f50HyMDnKENvu5uATjHE/yFP2dvm+9y/6eJl4EU8XGhFcyG9EbX3dnoKS/Btepw/JgyHA7ih10CuFixzGYcuK5qn9N3Gvqk4oz5HZNlInW6MeWMoE1Zm6rhUFf5p8L9sfp/79+et0mtTTs4E+k1cQcCwA9EHNHcGVYHdhUEw3NVvbQKh9XM6X0rDbE
+X-HE-Tag: 1786138978-149363
+X-HE-Meta: U2FsdGVkX1+CMNc55xmOIk3kLv9Ms4BisKLRlZxWAoPWLcPqoHFyRiqIEcPgwAzliF7ETUxKSlvbP67hToO9jYQ7vuvw4B0n7DAnXx4nbhTUo9tseQU+gou6n8spIyuXuw39s5SANaaUHjYvOIZ9QsSM7vptlpVe0CyM9AtVfz2Vc1iRpxtFhkLTYv+CefYIc9rc1c/FRDjYb6ptf47w3vjKfn0Dy2hJ2UkBLoARrcViG9ldHu1cnuZXaXafzLFSXYexqGdz+atW+0ibb19Fq7Xuu3zM99H8t8HMstLxBKp3isJF5Itpnfkjh9xEEzpZy2j1ltEsZLLzTqeunJwYnGNyztEIMC46ouYWg2rt2oZPsW0rPjadGKS588OB9siss6O3dVvsrca+QujbXAVgl5WmCAdncd1/T/hiIntrgF1i0Pss0iHVA77spZkpsXMJjTRP32FUcUGEllndcZnBKVAMpYjw4WHDu6vd4ZNs5b9OlR65C5STdDfnc2c5xlbW8Po2k/LAbjNnOLJnOh3h3RUPt3NaQ71X6kepJIw9iIcgW6LjXtbKaWnygO0I6DN8R4/ZY6MwpcBty8AuMsKFhP42Gl9pV2jUoydtLzgwPvY4ka2Ov45F8z9Aqc1vliLv4IZt3OTDX0jXfqN35uSwfZKlHJBFclbgHwjPOw5uKadiEK+OSkiudvsS4EiJipEJunPCXfKiwCQp3kWYoMVP2wWlUMWeh/eagdOn8mSIYkEf8xxlWNa0trR2V2WzZoUjtiPHacuFCHeueu0Gje5EjtiD2GGKufQmYRdtBhiPzdbX5b3Gn+xJVOm/oSndkYCerOPRrzBHIsd3X10pt2esIQZHZXx18rjhz6nFtBpHM6fQJK+ETd+hcMnI6NVw09Q5X94wDJdsg7hXG8AIphoc+p3S3IIpkySYUgG7epAoO5O5vrSsSkFkqGsgUZFNSOFwLq4Z5VDP/XWNbdzJbo3
+ 6BBpw3Tk
+ eJzEe3FL+fTmAKx5QtyVMEHicp/N8O5YclUOYv2kprswn2UYqXFL/htgPIO04Cdd7h9Nnd2f9o9dmo3V6pAEr6SntJG49KJspdFJEyPiL5vE1oKQGVveO9/QXVirTiTeAkI+CUORAZ6T6sqBhyd8wKK96iXKW457AU0aGxJDoZy4+jb8Fm5zWSuA+uxRMmkgnzk+OIP1ukkVOHlPA8EBq2mO+LVhlR6hxh7HpmSIKhBsao1gFVhCvHGnEjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,26 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  7 Aug 2026 14:50:31 +0800 Hui Su <sh_def@163.com> wrote:
+On Fri, 7 Aug 2026 16:42:22 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
 
-> > Especially when proposing a backport.  At present we've provided our
-> > -stable recipients no reason to accept the patch.
+> > I have no measured times yet, since that case has to be set up on purpose.
+> > What I did is the arithmetic for the case that skips best,
+> > For example 1T of swap with 256M slots with SWAPFILE_CLUSTER = 512
+> > and everything free but the far end:
 > > 
-> > Documentation/process/stable-kernel-rules.rst says "it must fix a real
-> > bug that bothers people".
-> > 
+> >   - today:          256M table reads
+> >   - with the skip:  512K counter reads
 > 
-> Yes, I agree. I did not include the real bug dmesg in the original
-> changelog, which made the stable rationale unclear.
 > 
-> The 9p case above shows that this is a real bug: a userspace-triggered
-> teardown path can leave objects in the 9p fcall cache and report the slab
-> shutdown warning after umount.
+> Maybe just use time to measure swapoff time consuming, just like below
+> as I did on a kvm guest, I guess a bare metal machine with larger system
+> ram could be more obvious?
+> 
+> root@fedora:~# free -h
+>                total        used        free      shared  buff/cache   available
+> Mem:           3.8Gi       181Mi       3.6Gi       924Ki        72Mi       3.7Gi
+> Swap:          2.0Gi        18Mi       2.0Gi
+> root@fedora:~# time swapoff /dev/vdb
+> 
+> real	0m0.101s
+> user	0m0.001s
+> sys	0m0.017s
+> root@fedora:~# swapon /dev/vdb
+> root@fedora:~# time swapoff /dev/vdb
+> 
+> real	0m0.014s
+> user	0m0.003s
+> sys	0m0.001s
+> 
+> Not sure if Andrew is asking for this.
 
-OK, thanks.
-
-> Should I keep Cc: stable in PATCH v2 with this dmesg and
-> userspace-visible effect added to the changelog?
-
-Yes please!
+I think it's helpful to include such info.  The audience for changelogs
+is more than swap developers!  It's also an MM maintainer and -stable
+maintainers and other people who are all wondering "should I backport
+this for my users".  Let's give them the means to determine that.
 
