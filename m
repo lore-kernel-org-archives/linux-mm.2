@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDBABC5AD05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 23:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D83AC5AD05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 23:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DF8C6B008A; Fri,  7 Aug 2026 19:12:43 -0400 (EDT)
+	id F08D26B00B8; Fri,  7 Aug 2026 19:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B6C96B008C; Fri,  7 Aug 2026 19:12:43 -0400 (EDT)
+	id EB9B76B00B9; Fri,  7 Aug 2026 19:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F4626B0092; Fri,  7 Aug 2026 19:12:43 -0400 (EDT)
+	id DCFD66B00BA; Fri,  7 Aug 2026 19:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C05E6B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:12:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 633E51C013C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:12:41 +0000 (UTC)
-X-FDA: 85076024922.04.8D67B0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5116FA000F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:12:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sx1xihhf;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A94686B00B8
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:24:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D483980258
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:24:18 +0000 (UTC)
+X-FDA: 85076054196.10.D700E19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EF993C0009
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:24:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bW1nRoUZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786144359;
+	s=arc-20220608; t=1786145057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dowb5rrx8aW14inrtue8QbnzaOrLHhcAjLJTHw9fDKE=;
-	b=LTIhtif1KDRIVWvHfktt0Ctp/KkEXkY08Wfb08g7NZj5teHl4Sf7Q4AprKWtqpJbV/qqCI
-	iNpywmWBxAM6vhFUFBt2Yt/ddnz3bbiXrxbVBqUKINYc6KdAsWZ3SX++d7PykmwaQAKMf9
-	NA4I6pQP4r6i3I7UvahCwieWmJ9k/w0=
+	bh=olMPjnRP79g9pK0k/LaANk0plHKsEj43HVsO0fZpKy8=;
+	b=jdwkNEEtXmj54VTZ3O8yvSuLSTwsxxY00A3rOumzkhhj2RRuyMdw5DIjABbpmYbAx7p9//
+	zbFRi4g7zJRcSKpiV9rSq92nU5ohQ7wU6KX076WwyRfb9k03QShKLhor65FlNjhjTgz36b
+	vNgKWkLQP5Ev5fw5DIz5pLs3/BKKJ9Q=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sx1xihhf;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bW1nRoUZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786144359;
-	b=r25+N8WCIG2TLTHaXZTDCSFOKGy/CpbFAjxJKsX4ZbpInwILThxxYWriSRO9Chz8k+3p4a
-	u47w54Ovh4xkkJR6dNtwL8Fxc6WiWmJGCWLjgiDUjugqltkxBlsdto54/C31iNcfY7H0AV
-	Obf9NCTI7ghyAzBmsPbxzFobHsrIbmg=
+	t=1786145057;
+	b=5/XQopt3U3//mhFv7liQyqj9hrgHJ6bZttbEaFCBwQ7FboLXu37U3ZVbZrGkDaWJB9rf50
+	Tu97uT2T+D2Zj9/BU5kNhggO949YBOOxI9sLRVdygxOjdtBwAyoirNEDYWIBqVdaQZrRdm
+	ph7+uvda74pQgLxHD0eDUOKSNcloUHg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84E9044018
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:12:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D861F00AC4
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:12:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8DC1160054
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:24:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478321F00A3A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786144358;
-	bh=dowb5rrx8aW14inrtue8QbnzaOrLHhcAjLJTHw9fDKE=;
+	s=k20260515; t=1786145055;
+	bh=olMPjnRP79g9pK0k/LaANk0plHKsEj43HVsO0fZpKy8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Sx1xihhf0wT2f5wuIdqdslNoo79JeZYANMuu3iHBr1z2F4U3R2eBFJme2r69fJtAK
-	 i38MoVFaLOLJIR4CUiNdpMEjKPbyF6gpYFOsJ6AIRpuvDyaZ/qVRiJHAcxTfxpRpdi
-	 yEn/iqhorSfrYD6lUFnzooKFm/o6NPXkb0HohaEJxML+wlSbep/11gL6Cbuteb0XY6
-	 YxPUj3IfNBDbvStDd6yrYwx0VpnCB60hWz1//KL3gk4Kehl9FyuykZUb1+pL8pkVuE
-	 s0LLKqRqiYfe/oihngFhKGP9DFOqHXq6VGrjqP1miEty0KDA3v1rMBYsXeIIMPuzGV
-	 YzcZr35plXfLw==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-902fc790cd5so25466d6.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 16:12:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RodrcfMlEYjDkL5bAEjZHr1uNyIPVaCYX/nPIGFbv3hpCuPcAugfM0G8W9M1rbcco9r5DkX4XflwQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy6QM+7zJc7It0PR+8mQGWjSLwymIYl+UiMcYcGj/2HwOtifnzp
-	wfs68lsMADqLM5SS1XukzFYgc6q4bkuw1MtltsGjEv3DCMFUz4i4KcKZwx9QxDxCeVF+mNh4O4z
-	zfF8vB8G7IhHjzuZnZLtRv3rRAoJrR+g=
-X-Received: by 2002:a05:6214:260a:b0:8de:9230:7c77 with SMTP id
- 6a1803df08f44-908a2d25988mr105511476d6.25.1786144357815; Fri, 07 Aug 2026
- 16:12:37 -0700 (PDT)
+	b=bW1nRoUZ4Nqa0gaaExwXNNLFMszt80t48rv/8pjtLhVy4VZjTxoIVUPQi9U33TRWk
+	 yYVMwo0nd6iByF/TdWFv0lqC2ZMW10TQLvMa4cEq3KnBPLUKaSqz6Xt2yOMV7IXfkX
+	 4XKrbh7lLgnCGhN9HxkyDgkSD2DkTm2okvf37Wlr3lHAGK2yt83aqyXvaBDnVGjPmL
+	 8lenNkr5kBl3mCk7BE3+mNthg8zFLZjB+pChU6Nfcwy15vBov+0LZAOo9mWvyAillf
+	 xStzYlcq6rfJoRqrHX4G/xWUHBUjvmc9WtppdLj4AD7TvJoL8xlDbS6rxmsvkSRTnt
+	 +Qcyf+ZHWZMQg==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-934974844ffso5817785a.0
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 16:24:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqD7YlUhPD4ImjECEHftOmoIjogCY1/TMdV+lfChqvYfn9Ia/dL5h9ZCPLh3WS75rLtBW6JszZg2Q==@kvack.org
+X-Gm-Message-State: AOJu0YwuLVLGk9gkIHEaYcMohhT0ICR6U6gM4P5kSIBsE2AISfVhvgiw
+	AtMhrElHb1Ao+nTtUqdlggveNMzzEG8ioxEOHdugcNi8gRbeFF5zPar7Sxek4N83kDVIxb9cO3C
+	zN5XUDPQFq/xhlim49/ufGPPXpdKBe0M=
+X-Received: by 2002:a05:620a:2620:b0:915:b852:4361 with SMTP id
+ af79cd13be357-9367979c776mr449492985a.20.1786145054699; Fri, 07 Aug 2026
+ 16:24:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com> <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
-In-Reply-To: <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-4-xueyuan.chen21@gmail.com> <ee89226e-64b3-48e6-9be2-4934c23b729f@kernel.org>
+In-Reply-To: <ee89226e-64b3-48e6-9be2-4934c23b729f@kernel.org>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 8 Aug 2026 07:12:26 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxCOwjxKm1_zD7yUozU-Su7wX8R2bYYon98LGNe4AfrBRCrYZ1VBdnkqWo
-Message-ID: <CAGsJ_4zo_uya7-iFS85W78+mpvjhmfxp7HfxTPKDD=Aiw2c1vQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation failures
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+Date: Sat, 8 Aug 2026 07:24:03 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ykCQWuYyAxOWk5thUOZpCAcGb+W_uCq4KVAFffo2Cn4Q@mail.gmail.com>
+X-Gm-Features: AUfX_mzqI4seBIKJEvk6MKVPwksdfmT-CUfAVDeDPy-xD6vYQyx7NLbgiH7dTzU
+Message-ID: <CAGsJ_4ykCQWuYyAxOWk5thUOZpCAcGb+W_uCq4KVAFffo2Cn4Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 3/4] mm/vmscan: avoid pointless large folio splits
+ without swap
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
 	hannes@cmpxchg.org, youngjun.park@lge.com, baolin.wang@linux.alibaba.com, 
 	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, 
 	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
 	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
+	muchun.song@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
 	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EF993C0009
+X-Stat-Signature: spiwkbytfuo99o9zrzn67t8omjgugeiw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5116FA000F
-X-Stat-Signature: ns5i6xkeaw43qrnrx1a57zczhtcck6m3
-X-HE-Tag: 1786144359-148368
-X-HE-Meta: U2FsdGVkX19rBLa8sEXqUjO1sqiivO+K6bBy7I865vagioNKBkhQs2rA7zDvTsAwDB1+HOplbQ4agUUjy+a+SrrhyTl0wK3aJ7z/UJ9IDlNViqr6+CYheAN1M+VdZZNHuAYn656wXi36V2SNxK5axlV+8jsT8PakWQe0hzfioeo2Qit248/8tVim9a1ounhhBwUhFlyJX+/XNX74E1L5Hd66XzJKnUHbkuQAVQORiPdWooP3oYrLvpO9lc8JbTgJ80m+tAsIQhSYdgx+3JRsEEhHfagqhxPCbZq6yZ2P4JGQ2vZdqfR4P/3VPbs2H4QWUnkQa7+3ecUEVdVXqKffGeMHLdufJ45EZjOrHAkcBum3b/LgkZ4Zvau7233/YJ2DFeGEFpYwrG99BxQWWzScBI1kAeZ28M2PwKZmo2VMeOqFrnflCSj2R3TrFuIfyTVdpa8q38gIcTG01OUKB5YCB5nq0TW1SepJOipA4eq1ke6OOdgDx2zbabOLISGSoMD0L32VZdM9NQ2Zz/fm4x9YfRaUJJ7YRwrEHC9JV5MB+YwRTGIZrX5rDBvJuMm6lRfscm2Fh3N7wBGSz6qRP+TfNhX3wUv8+4gH58QjG+7e88Ja5INQuU9BP5QJcj4kvxvm6eJ0tuJ75uO6dtoh60GBO0lmsE1c5cS6oc43W5jNpkGUdB8Ec+OQHk7rAx1drP3tY5/OYpUDJjkBxyTC3TisT8fKID/9Nbo/g2jpkglfaxR5ZsCze32jcAXIf1GKbATGchWo1gDA4T8HDPON6xzWf3YM9+b8kwDvODQQ3iacYQV3NqP990spgrRIEvzzEgo4YmxElZGA53tXYZ02+KvTRf4Xp4iNPXbEXqFmxctlB00rtZQmz6lAQFSqmJv+81I6KBgCqJKuzm6Hesu9mMN9npNnNdFJ+wEnNsDqTPKU0LicNauFdwoKQ3DA2wNlz+qhPNm+TL4oFIsayeFAxqZ
- ebX1F+7d
- f4dnowkDhLYJ/2gb63bMogxayyXIjfkGziXtNt5fXBc54R1pi03CM4fZ3NA2IBp/5Z9jhmlZ9RVXdsrkAefWVuADiLNMKvZNU3e2rRYCbLQE0kZ9o9kz1vHJP/EpTFXwARUYYpeQIWYIfO/7TWm2Zl5Dq65yEHpOGXAy4YvD0bygwLw/xQyPdUIUzKzWMDVJBa06YLpqF2hGfwRtVh9S7ca+zoPgft0ZATHqQYlXWCM3uoRExFHsy4tikGcOTjFKAAeO5biIYklXmOYTiGfezvIBS+fcvOPtDhEcIYpERk5+2Mm/Zf0tl5gidHB3+Dp2q6Ljwhoqa+UYzMYoR3AIkvomTXI1++iL91QmcJikroj5TI6M4p6PQLnYTXwQ9pcentXkQ
+X-HE-Tag: 1786145056-729247
+X-HE-Meta: U2FsdGVkX19VCL1TimIRfIOKA3x+PRFr4acBGIGJOXhXK9eV+GmSYQI/rX/bO89PxUtyhlTTqaSrVDdjwN5vhzWsfMmnRoq7KyWEmROtjDqB2TvE+54OTrhT2DkrOIV9DDS12E2ts+H+3DeDJXm4BEz98cbAotJ3Gt+XtcbiPWrB51RDM8TuA40jj+rmU0l1hkIAq6tn2TECEs0z6WiLXx+35fmkBNhDNNDvADAMpw2F2zNLVr+JSY+6moAoSTh0bhSCx4b+gpWJh/TKG9U0NFTFSBXrIWIuCNxQtDRxZ/sdLrsJGE5YQmxzjKgiLIbIAf+Gz0KnyV1KiaJ7sWnFN1IFSMtj9dUCimye2M5tWoXe5vt7VpjbNjRYP4cQj7C23MyJFVSpi2Iim87U8nZ1s1QXjRIkIFPMGV7+OVgJcs54CrFO9U4X099l30WWMIUfN//TrfTuMQW+HAGBA+HWuDGAw3XGCBqq+Zo3O/OKRcOC37EkoeuW/MgqTthUAJ5W8k2/aEBLSysI3Uuadv8U89wV6xmHqDUDkcpq/6FyftaWacmStyo7oENPP0NNR+MwrKX3nzq8eukfCTPIuLZ/mwj1E5XbwnfdgrJvjX0XGWSWrPMKDjTRK3U/nYAjjZmaMxoOHeMARv+cMJD5XrwS9yJMsmcS3s5cSl9vOTYAFjxAgRuBf77+s7DbR/AxuNa7ornE5MRk27Tt4G6ZR8/Z52Lcjchrr11Zx4lxnOrVBvyojkPhVrGGZ193LqrGycg6/9Kn2tKmXlm6fU3CEAKp36t+ZOkYKfHLVfhIxeISv3PHFIEfO4/l/E6pEreDK1n5Yqy8WlVbdEwA9YO7DBz/XbQblf4HKdvV2Xtp3Rx44cj6kcz3JAuuHH3Gap5j5oSi9Nz0VqOhmfDE4bQ8ELT2KLB9gxpKv4W/5ri9Wbp9+Wzfdp5cKQiWeEiitiwqS7rggkTyixGGmYzRw42+YHj
+ r82ouTtM
+ 4hon5sha6ql8LavGY/DCGpb1z6c4qTZmaw5kCnnsdh1kiTRDzluezGbFNLNm5KBHm7oPa0l06uvyyKeHvnt5NkL1eGm0OqrazUZVG5NRxaLRefOclXG+jraYpN5auMvZ35hrXQ6NiMNd2x64vqQYfrNvF0trXtmfTnx0bOkEHN/203RL8fm9wCahruZPpVxUq0/XALHUWABi47nwn6U21YVoyjZTnqUkOlPGHxOajJLxEphgL/hc5/W8GbjApysIVhLaPpwwqzwMWyWlytsZi7pAqP3VKnhM5QdFz456A1phFZM7XHiloHXNDslZ2+xUNC9SjDDkPDf/nYjwY4JjTmhCx2H/5lmP9NiADtl7/OmYFNAnDZaDUAMHFSVvklkiv+rWbxFPSTd94B7J1Iek4YhSrqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,47 +111,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 8:23=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
-com> wrote:
+On Thu, Aug 6, 2026 at 9:58=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
 >
-> folio_alloc_swap() reports most allocation failures with a generic
-> negative error code. Reclaim cannot tell whether splitting a large folio
-> could make progress or whether there is no backing space at all.
+> On 7/30/26 14:23, Xueyuan Chen wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > When swap is disabled, exhausted, or unavailable due to memcg swap
+> > limits, splitting a large anonymous folio cannot make swapout progress.
+> > The fallback only destroys the large folio and inflates split statistic=
+s.
+> >
+> > Use -E2BIG from folio_alloc_swap() as the explicit signal that splittin=
+g
+> > the folio might allow swapout of smaller pieces. For other allocation
+> > failures, keep the existing activation path and avoid the split.
+> >
+> > This preserves the split fallback for fragmented or partially available
+> > swap, while avoiding it when there is no backing space for any part of =
+the
+> > folio.
+> >
+> > Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
 >
-> Keep the global free swap count and the remaining hierarchical memcg swap
-> margin as separate inputs. The memcg charge path reports only its own
-> margin; folio_alloc_swap() combines the two layers when classifying an
-> allocation failure.
+> Do you have a link to the report?
+
+No. Nanzhe mentioned that to me verbally.
+
 >
-> Return -E2BIG for large folios when a smaller allocation might still fit,
-> -ENOSPC when no global swap space is available, and -ENOMEM when the
-> failure is not helped by splitting.
->
-> For early large-folio rejections, check global and memcg swap availabilit=
-y
-> instead of returning -E2BIG unconditionally. On a memcg charge failure,
-> swap slot allocation has already succeeded, so use the remaining memcg
-> margin to decide whether a smaller charge might fit.
->
-> This only refines folio_alloc_swap() return codes. The reclaim callers ar=
-e
-> updated separately.
+> I assume this is not Fixes-worthy.
 >
 [...]
-> +
-> +failed:
-> +       if (get_nr_swap_pages() <=3D 0)
-> +               return -ENOSPC;
-
-I wonder if we can do this earlier when swap is full or disabled.
-We could exit immediately and avoid trying many redundant paths.
-Have you tried this?
-
-> +       if (swap_margin <=3D 0)
-> +               return -ENOMEM;
-> +
-> +       return order ? -E2BIG : -ENOMEM;
-
-Best Regards
-Barry
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
+> --
+> Cheers,
+>
+> David
 
