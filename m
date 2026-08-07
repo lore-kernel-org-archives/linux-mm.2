@@ -4,85 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43458C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311C2C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C52C6B008A; Fri,  7 Aug 2026 05:59:13 -0400 (EDT)
+	id 592376B007B; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 475B86B0092; Fri,  7 Aug 2026 05:59:13 -0400 (EDT)
+	id 569AF6B0088; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38B566B0093; Fri,  7 Aug 2026 05:59:13 -0400 (EDT)
+	id 47F8B6B0093; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 178086B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:59:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 950EE120226
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:59:12 +0000 (UTC)
-X-FDA: 85074025344.01.9599EC7
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 900B8100002
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:59:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 196E86B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15F47A0276
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:03:18 +0000 (UTC)
+X-FDA: 85074035676.17.0592D19
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 808B9140014
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:03:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kkD22/wY";
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786096750;
+	s=arc-20220608; t=1786096996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ypiGKhZPoPjoUNX2kkBjkM4zCmq9M2RjDCcKYYSDbwg=;
-	b=5ldINJiVvIQ1Khx6NL3+fZU9+a1A3OllJQ20OgGxSG1N57tAXcJPW6JVoEHLYtGEwoSy28
-	9C33acnTEEQ0FPadv9hm3manhuHBKkMsVHWit1NXtjFWu9WPa1Po6PTWu5FM5mxdKbMKFP
-	rYAtdlJ7hxXzAK0j7iv7fTnHxEYHgk4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wK+Hb76csLXizlS8WvPBODDy0M/Xsr3U60SIvZ3KC68=;
+	b=C5CMT8SczeNnc1VXtmWDF5VlXKGvXbVcr2uG6vwLtdWJNrhFLVjIqk/UK4sJR8fsde3BgW
+	7SSdi+TLtYnsa2WvmvE/ePqaQ4ET8TU/rlrTVkU3DpJI48cpd3fnUyDPzpUdLy+tEEe5Nr
+	zS09m7B2yJh4EEcYnpBDF/S45uyw8Ec=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786096750;
-	b=taxeOVdldKbG7uajPAXelp2ppJXjbiwQvQ36COJZNAjTRrXfSzr+55pVZjEm/KXGo3De66
-	4L0fIbpJmGVBGHehzOg/sXPzNnz0G4xN5vkHPYH12btzj7px4Y+oAkQmJnNnNpaaSGehpb
-	sw9uOZf7y+KBesHcnkEkPj9qRusV21Q=
+	t=1786096996;
+	b=UYBPfWHLJ2MHDNo4nyW07VPmPlLGtdvkPqMfi8ysrQUWqH1jVJBlmgqvDWiIGsfI1YDGDY
+	rkiRV1wB1gzA9jV1o7z2becWgy/D6W58VcBrGWFDsDIasklnQ6IlkxUZRRkeh+tlLBHrvw
+	YHbsoDJ5BWLHG9DkIaFE+kOjt6BgwDI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
-	by 156.147.23.52 with ESMTP; 7 Aug 2026 18:59:04 +0900
-X-Original-SENDERIP: 156.147.1.125
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.125 with ESMTP; 7 Aug 2026 18:59:04 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 7 Aug 2026 18:59:04 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
-Message-ID: <anWsaJcTjVah8ySk@yjaykim-PowerEdge-T330>
-References: <20260806193228.458685-1-youngjun.park@lge.com>
- <20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
- <anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
- <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kkD22/wY";
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <46fc75b4-7697-45e2-bbd1-84f09626c686@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786096989;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wK+Hb76csLXizlS8WvPBODDy0M/Xsr3U60SIvZ3KC68=;
+	b=kkD22/wYJGS4D3H4l0765ZwL17oxiPIvfiVUwnkrqtVbtJ5dCLpHwcvWee4ho/yRPbseWk
+	FCbKS3lGI4d2fKD+vcSlqtTe+DtAGlGRUChy3YZtt0rhAsOZR6ZZc2hLs+WSROwHHk2ZLO
+	Poz2PTYVqXVY3ORdb71wXFH5D/PFgSE=
+Date: Fri, 7 Aug 2026 11:03:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
+Subject: Re: [PATCH v5 10/11] mm: install PMD swap entries on swap-out
+To: Luiz Capitulino <luizcap@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-11-usama.arif@linux.dev>
+ <3374e351-f6ad-44b2-9ee1-dd3b9c33fbc3@redhat.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <3374e351-f6ad-44b2-9ee1-dd3b9c33fbc3@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 900B8100002
-X-Stat-Signature: q6z5cdtmpqqnmyzmddnng9p77ytkziid
-X-HE-Tag: 1786096749-851335
-X-HE-Meta: U2FsdGVkX1+SKKCUqb06/sQyRvRCf2rzkvgluoSWpsvhiMV1KbolZ7kFLHkTRrunvQvZTjAUIscKluAXQ8GvVosUjcqwCkIMCAh+cT63FTFx37I9triYCFgC8XK9iu3jMz1XEVk5kYllrirwP0Bfj2nsnDR29VOc/Lp4CqxBiF32z5ybw0GTdnu2KfeIkM0kLAMrIJMX4+Xqxcji0Pzl/709sL+m3VWLzq/M/pe88xcv9L8ZHCDjn1Lg88ifPjC9XFMsCVIwm/eik3vgWJwJqy6iy3yaAlFDBE3a/nYIlAk0cmE3w0kzXNb1TBbVVS0FhSpP83lg6abbQMmpoF4zAG9AvXNFF/ysZvnzV/3JHnngCFiQnyMdcWbo9Pd42G38U3jM1wk0Ym6HoYlgfKJg/dDvFg0C5B3Sf7yVB5NqfzyqT7ExHZTelt2bA4/J+lRMJjTVw4mn6uWXqbJZsOHbShdcYGXwfiZCyBk9zcGbqPF4kt1Z8IzPdyBmGdymhXL192o/Xyvk5iy7X2LBj5S8o+wlgbtRuXX3pyTuFWgfMOAWgk6D4Z/jLziq43YVb8w2dlph36d2AmszONX9j5woxgyCPlagyG2zGn71mNEclj5Ish1G+BAP7H64uQXk3WLsQtvUTyeiBexKSXRDITz43Z5IkdWP8CVXDeDuPX/9tDxn/e5PjAADHo07/fNEZWqaCKV5tyH5bJQAr670EnCaE4gQbqj2vQvfUsYZKPLT+t8kpypaDk5yFL7DeEw7zRF/ehsGhK20FxJMVIQtKG4cWDakZ8SDaikHA/uXFPni5NJcZQ5+HEC4CWlhqpckX2xmNmTSXkhyn+9uz+nv7kWjwvdC7w4oh/6Nd1ZVsV02ZFND/p6ZNmJwAuF0lt+sn4cfJYQh4oVJ411NYkguSf7KUqdC1DglHpHoO+4jqmHaG4BA8kz+rlS/T1R0VQzxHkHvb7q1UzcyeS4mjPPGNnA
- DOqpbZ3N
- gyJ0vsX0Ou1l3Et4/5ZOHNHwSwDMnoeaLa+Imx39x6odrTgTmwZeWyx5gknOyrECgqUJiUGdA7Uo36NS9uhdKTrRxT5ciK/gxuKuIArqKfWldj2EFOiCuNqLhKpIZc0Jz9NTMjITNqAgz7mNR0rkxybhSszd0NTO8v9RgDlLrX1SCo2plfCT8pFPCnkUEK7zeKwjDpeC5I/Y7/Qmh7SFOAZceftdzSf2wSAnLU9hKlbbdWTFbIS9AXhK++w==
+X-Stat-Signature: qmuodpozj138ar73otqccqixkq1ffyfr
+X-Rspamd-Queue-Id: 808B9140014
+X-HE-Tag: 1786096994-264831
+X-HE-Meta: U2FsdGVkX1+dYtu3QfFwW7WQ5l50yE0efegLQlW4DTSL9hfxDRBatUaqb85YXEbNCoxEahD4eh3PLJKH5YKWJE16Lux4B0FqIkCk99Uqmg7Hgxu7LeeC8F83hpgI4DmvdsYvz28DgQ1iXuBqg7apCw4Z9VlVUE9wONE8hxLmtsVuxjUV5uuaWA/5JqDW8PMNsuaALBXXn4ZF8j+IZA5mTrmHS3duUvjE/xv7un2QbeRDb+/8A19Kmiu5PuDXUxM4WjErPi9UFWcIO6ZtoliPrlmWUy7fUcb53P22grkt3BJcBmmnNjfNaoWiaXmvtjAsGt0gdVFThwfkn9eBS8AIkTvpFvluYwpBlEHwZ6fFO3d7NPpjpGPY4ZDt6pTb8ye2NfXlNtGC63HAwjc0mIsRdEv1y7eqMnJzngLMuxswvn1NKNP3zJorzdKMaFiWSBSf8lsUb9kgxcbmRMG50hj6p51lS38/8EnC8UAHeohffQIHJ6UV3HMhHgkzkl46AJ3Kr+T3PA/6AzCTooY35A+P4wnTV1V8x0RCElfY++NE2Elgp8tRTpsjVNs3mbfD7ur0nzMmcd6Srqtd+ybp3BFhjZDThS990wEHrbaKkhMzikmo7aWj2geJcAEMazC3qH7InKL85mglHJgehoevnyAuCQdiTjqpZryZvLpGIyXbN5flq5BfKdHeU39jXCWMz07+/CNvlpJTbgheymEBRbZo9QuG4mUoEURS8ZnmD0+Pj9vySAwFR9Ngf/dJ57wYdgT7VQW3UdFBnqvh/+ro9Pq8m2M48ys5+hBktkeqtVtYWE1obJANkhw+LAu/z/jwh7SvukYg/JT4eaI+m/neRZ9Ja88QIXT9kv3odLdKquw7EGH5BUN/NUKOxnXrmZRYFG6GBYNTpm6LMeWONHZ2ekq0H3N+b3u/PQ2hjESXK3IGU61vOaR9g7uYTPPVLZUAPd9WHbW4447X7NDPbdo40Uv
+ eXtpqFIj
+ GnlrWt8STVEOUu8Rgrgjf5k6dPsB9mhSiFtRiYSbwhF00G1zTIcySh2vpgvnXo2OsxkLNKEWpmRPtVGSkCn4ghT8b3iLRYOLN3X/9Nrgg0vweVvGXTD5dwOFkaD/RZASSv/K9Y5wVVhiQVYIHaW1Xe+GgCTTcTcd93l/apfUrUDm1mLf/UgpThW24a9BS1fadmB1bDzIj+Pabo4dACumjShOwL3UO8QW5sgsV9nWFB46dfvI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,90 +100,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 04:42:22PM +0800, Baoquan He wrote:
-> On 08/07/26 at 03:41pm, Youngjun Park wrote:
-> > On Thu, Aug 06, 2026 at 01:06:55PM -0700, Andrew Morton wrote:
-> > > On Fri,  7 Aug 2026 04:32:26 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> > > 
-> > > > find_next_to_unuse() walks a swap device one offset at a time.  Slot
-> > > > state now lives in a per cluster swap table, so patch 2 dismisses an
-> > > > empty cluster with one counter read instead of SWAPFILE_CLUSTER table
-> > > > reads.
-> > > 
-> > > Thanks.
-> > > 
-> > > Can you help us understand how significant this change is for users? 
-> > > If "not very" then I'd prefer to defer consideraton of the series until
-> > > after 7.3-rc1.
-> > 
-> > Hello Andrew
-> > 
-> > "Not very" in the common case, though there is a case where the win is clear.
-> > No bug and no user report.
-> > 
-> > For now I would rather defer to after 7.3-rc1.
-> > 
-> > And for your reference, here is the details.
-> > 
-> > Every swapoff does a little less work now, because the scan steps over an
-> > unused area one cluster at a time.
-> > But IMHO most of the swapoff time goes to unuse_mm() and to reading the pages back in.
-> > 
-> > The gain shows on a large swap device that is almost empty, when the last
-> > pages still in use are near the end of it.  The scan has to walk up to
-> > them, and today it looks at every slot on the way.  Now the empty clusters
-> > in between are skipped in one step.
-> > 
-> > I have no measured times yet, since that case has to be set up on purpose.
-> > What I did is the arithmetic for the case that skips best,
-> > For example 1T of swap with 256M slots with SWAPFILE_CLUSTER = 512
-> > and everything free but the far end:
-> > 
-> >   - today:          256M table reads
-> >   - with the skip:  512K counter reads
-> 
-> 
-> Maybe just use time to measure swapoff time consuming, just like below
-> as I did on a kvm guest, I guess a bare metal machine with larger system
-> ram could be more obvious?
-> 
-> root@fedora:~# free -h
->                total        used        free      shared  buff/cache   available
-> Mem:           3.8Gi       181Mi       3.6Gi       924Ki        72Mi       3.7Gi
-> Swap:          2.0Gi        18Mi       2.0Gi
-> root@fedora:~# time swapoff /dev/vdb
-> 
-> real	0m0.101s
-> user	0m0.001s
-> sys	0m0.017s
-> root@fedora:~# swapon /dev/vdb
-> root@fedora:~# time swapoff /dev/vdb
-> 
-> real	0m0.014s
-> user	0m0.003s
-> sys	0m0.001s
-> 
-> Not sure if Andrew is asking for this.
 
-Thank you for looking into it.
 
-Yes, it is possible to show this. However, it cannot provide the saturation
-time, as that depends on the swap device size and swap slot distribution.
-
-Since a naive swapoff test cannot provide stable evidence, I addressed the
-approximate skip time (and also checked whether a skip occurred) using a logical time
-calculation as shown below.
-
-I try to take some time to measure the swapoff time under experiment conditions.
-I will follow up this in the next patch iteration or sooner in this thread
-(depending on Andrew's decision).
-
-> > 
-> > That should be around half a second of scan saved.
+On 06/08/2026 03:29, Luiz Capitulino wrote:
+> On 2026-07-22 11:19, Usama Arif wrote:
+>> Reclaim today splits a PMD-mapped anonymous THP into 512 PTE swap
+>> entries before unmap, losing the huge mapping across the swap
+>> round-trip and forcing khugepaged to rebuild it later. The contiguous
+>> swap range was already secured when the folio was added to the swap
+>> cache (a non-contiguous allocation would have split the folio earlier),
+>> so the PMD can be replaced by a single PMD-level swap entry instead.
+>>
+>> This patch mirrors the existing PTE swap-out path at PMD granularity:
+>> - shrink_folio_list() drops TTU_SPLIT_HUGE_PMD for PMD-mappable
+>>    swapcache folios. zswap is handled by the PMD swap-in users: if any
+>>    covered slot currently has a zswap entry, they split the PMD swap
+>>    entry and fall back to the per-PTE path.
+>> - try_to_unmap_one() now has a PMD branch that calls
+>>    set_pmd_swap_entry() and adjusts MM_ANONPAGES / MM_SWAPENTS by
+>>    HPAGE_PMD_NR before walk_done. TTU_SPLIT_HUGE_PMD remains the
+>>    fallback.
+>> - set_pmd_swap_entry() is the installer. Mirroring the PTE swap-out
+>>    sequence at PMD granularity, it clears the present mapping (keeping
+>>    the original for rollback), bumps the swap_map refcount for the
+>>    folio's 512 slots, transfers the exclusive state in the swap entry,
+>>    propagates the dirty bit to the folio so writeback is not lost,
+>>    and installs a swap PMD that preserves the original
+>>    soft-dirty / uffd-wp / exclusive bits. Any failing step rolls back
+>>    the present mapping.
+>>
+>> The swap entry value matches what 512 PTE swap entries would encode, so
+>> swap_map refcounting is unchanged: each of the 512 slots carries a
+>> count of 1, released individually on later split or together on swap-in.
+>>
+>> Add thp_swpout_pmd to count each PMD mapping replaced by a PMD-level
+>> swap entry. Unlike the folio-level thp_swpout counter, a fork-shared THP
+>> can increment this counter once for each mapping; document that
+>> distinction.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>   Documentation/admin-guide/mm/transhuge.rst |  5 ++
+>>   include/linux/huge_mm.h                    |  2 +
+>>   include/linux/vm_event_item.h              |  1 +
+>>   mm/huge_memory.c                           | 80 ++++++++++++++++++++++
+>>   mm/rmap.c                                  | 19 +++++
+>>   mm/vmscan.c                                |  9 ++-
+>>   mm/vmstat.c                                |  1 +
+>>   7 files changed, 116 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+>> index 16f37135ed80..b421d7982db6 100644
+>> --- a/Documentation/admin-guide/mm/transhuge.rst
+>> +++ b/Documentation/admin-guide/mm/transhuge.rst
+>> @@ -630,6 +630,11 @@ thp_swpout
+>>       is incremented every time a huge page is swapout in one
+>>       piece without splitting.
+>>   +thp_swpout_pmd
+>> +    is incremented every time a PMD mapping is replaced by a PMD-level
+>> +    swap entry. A fork-shared THP can increment this counter once for each
+>> +    PMD mapping that is swapped out.
+>> +
+>>   thp_swpout_fallback
+>>       is incremented if a huge page has to be split before swapout.
+>>       Usually because failed to allocate some continuous swap space
+>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>> index e7107e0991ad..41cf643a3f55 100644
+>> --- a/include/linux/huge_mm.h
+>> +++ b/include/linux/huge_mm.h
+>> @@ -554,6 +554,8 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
+>>     #ifdef CONFIG_THP_SWAP
+>>   vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
+>> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
+>> +               struct folio *folio);
+>>   #else
+>>   static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+>>   {
+>> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+>> index 2628ccda076a..f8fd4e13698c 100644
+>> --- a/include/linux/vm_event_item.h
+>> +++ b/include/linux/vm_event_item.h
+>> @@ -108,6 +108,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+>>           THP_ZERO_PAGE_ALLOC_FAILED,
+>>           THP_SWPOUT,
+>>           THP_SWPOUT_FALLBACK,
+>> +        THP_SWPOUT_PMD,
+>>   #endif
+>>   #ifdef CONFIG_BALLOON
+>>           BALLOON_INFLATE,
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 6ef56936ced4..c014631e5a26 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -5561,3 +5561,83 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+>>       trace_remove_migration_pmd(address, pmd_val(pmde));
+>>   }
+>>   #endif
+>> +
+>> +#ifdef CONFIG_THP_SWAP
+>> +/**
+>> + * set_pmd_swap_entry() - Replace a PMD mapping with a PMD-level swap entry.
+>> + * @pvmw: Page vma mapped walk context, must have pvmw->pmd set and
+>> + *        pvmw->pte NULL (i.e. PMD-mapped).
+>> + * @folio: The folio being swapped out. Must be in the swap cache.
+>> + *
+>> + * This installs a PMD-level swap entry in place of a present PMD mapping,
+>> + * avoiding the need to split the PMD into PTE-level swap entries.
+>> + *
+>> + * Return: 0 on success, negative error code on failure.
+>> + */
+>> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
+>> +               struct folio *folio)
+>> +{
+>> +    struct vm_area_struct *vma = pvmw->vma;
+>> +    struct mm_struct *mm = vma->vm_mm;
+>> +    unsigned long address = pvmw->address;
+>> +    unsigned long haddr = address & HPAGE_PMD_MASK;
+>> +    struct page *page = folio_page(folio, 0);
+>> +    bool anon_exclusive;
+>> +    pmd_t pmdval;
+>> +    swp_entry_t entry;
+>> +    pmd_t pmdswp;
+>> +
+>> +    if (!(pvmw->pmd && !pvmw->pte))
+>> +        return 0;
 > 
-> Yeah, a concrete number is shown.
+> Should we call VM_WARN_ON_ONCE() and return an error instead? This
+> function is only called by try_to_unmap_one() under this condition. In
+> addition, returning zero would cause try_to_unmap_one() to assume that
+> the PMD swap entry was installed, which is not the case.
+> 
+Thanks for review!
 
-Right, based on time complexity arithmetic.
-
-Youngjun
+It makes sense, I will add a warning and return -EINVAL.
 
