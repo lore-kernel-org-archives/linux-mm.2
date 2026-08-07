@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 893ACC5AC9E
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55261C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844C66B008A; Fri,  7 Aug 2026 03:51:50 -0400 (EDT)
+	id 81E4A6B0092; Fri,  7 Aug 2026 03:51:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81C846B0092; Fri,  7 Aug 2026 03:51:50 -0400 (EDT)
+	id 7CDD56B0093; Fri,  7 Aug 2026 03:51:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7327D6B0093; Fri,  7 Aug 2026 03:51:50 -0400 (EDT)
+	id 70BA86B0095; Fri,  7 Aug 2026 03:51:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 48FF06B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:51:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3800A037D
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:51:49 +0000 (UTC)
-X-FDA: 85073704338.29.A8D44A9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4464C6B0092
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:51:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B179BC014F
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:51:50 +0000 (UTC)
+X-FDA: 85073704380.12.F0B5AE8
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9044B40003
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:51:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+	by imf14.hostedemail.com (Postfix) with ESMTP id CDDDE100002
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:51:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1786089107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G0G/evJ0w4+LOuHx74aiIPm6NjdOXtVc8iogYZE86Do=;
-	b=UYDFQ938u1S/GFxgOTYyVnO9ESKPZjVz4CY8zrW5ABGqeKLboyiYcvyUQrjrZnBu3v0YmW
-	ptph9MzDfDdWcLnLTSuxOl84RvT1Ru2p05lSwletQcl+5lfIghlptIW4QXfV95E1EbHY2r
-	QUsHtT6+jja/zulCuAOg9ffmSj0+YTk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+	bh=Ju9jVDtUROVT4vprabE7GarFhrUjpoWcikAa8ZbwGRo=;
+	b=0MHEZt5naHUNXysrQxYQ+XCTPdJcuG928TBUZgYPvwktvYw/j/LRz2cXN9XKmId2qiFym7
+	rQKW2vJHlZ8d+9s7oGYk0WbKxFgFm2Rk5/dl0agOPTc/IqKSGYBwYGrmp7VQ+LGPAc9gJg
+	9bnJtGscBI70WVmlPQeWV4KBA3cEDWo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1786089107;
-	b=wB4NBVSUYv6DPFFa0X9ssHw66GdKqedZVXBpyYVxqZV1jjxsvaqbd9MQWugHr8k+M/Kkp8
-	UFdqqKZ8pNgCCUcP9tO5nVFGOd6ipvrZzQz4TUeQ0eUmTJrQKRCII0oNFSnCBouctTQ0pG
-	P9DvSqI2Rigk2jFRyC8ccPMIt4TE3g8=
-X-UUID: d0243634923411f1aa26b74ffac11d73-20260807
+	b=qzMxSOEKz1AvE4Ee+nx5JogoTtVvSQ6Lyti2JNHF1o9ad/4ZTeHEfIzCgqDAU4F89mdSMy
+	g1xBcsjcjVTsaEeye1VRz27RZMEk9m0Cbx1vJDiajvFi/dbVrhxul6iBQ8hIHoDVqQ7igV
+	bzdpgc6C2rGM+qqFL4k85f6fGDRtZpA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn;
+	dmarc=none
+X-UUID: d0fce1aa923411f1aa26b74ffac11d73-20260807
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
 	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
@@ -57,27 +57,27 @@ X-CTIC-Tags:
 	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
 	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:9248a66f-0245-4dce-a9c1-9cc137809a2c,IP:10,
+X-CID-O-INFO: VERSION:1.3.12,REQID:9cbef195-252b-4aa5-8b05-af006c4c3798,IP:10,
 	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
 	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:9248a66f-0245-4dce-a9c1-9cc137809a2c,IP:10,UR
+X-CID-INFO: VERSION:1.3.12,REQID:9cbef195-252b-4aa5-8b05-af006c4c3798,IP:10,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:796fb985dc2c6de23780a711ccd274f9,BulkI
-	D:2608071551394GP681FK,BulkQuantity:0,Recheck:0,SF:10|38|66|78|81|82|102|1
-	27|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
-	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
-	:0,BRE:0,ARC:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:c8296ac799a20adaa64dd19fac0165fc,BulkI
+	D:260807155139A72UEW7B,BulkQuantity:0,Recheck:0,SF:10|38|66|78|81|82|102|1
+	27|136|850|865|898,TC:nil,Content:0|15|50,EDM:-3|-100,IP:-2,URL:0,File:nil
+	,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,
+	DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d0243634923411f1aa26b74ffac11d73-20260807
+X-UUID: d0fce1aa923411f1aa26b74ffac11d73-20260807
 X-User: duanchenghao@kylinos.cn
 Received: from localhost.localdomain [(223.104.44.99)] by mailgw.kylinos.cn
 	(envelope-from <duanchenghao@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1127736449; Fri, 07 Aug 2026 15:51:35 +0800
+	with ESMTP id 303652395; Fri, 07 Aug 2026 15:51:36 +0800
 From: Chenghao Duan <duanchenghao@kylinos.cn>
 To: pasha.tatashin@soleen.com,
 	rppt@kernel.org,
@@ -88,22 +88,22 @@ To: pasha.tatashin@soleen.com,
 	kexec@lists.infradead.org
 Cc: jianghaoran@kylinos.cn,
 	duanchenghao@kylinos.cn
-Subject: [PATCH v1 1/2] kho: remove useless phys increment in inner loop
-Date: Fri,  7 Aug 2026 15:51:27 +0800
-Message-Id: <20260807075128.542806-2-duanchenghao@kylinos.cn>
+Subject: [PATCH v1 2/2] kho: unwind restored pages on kho_restore_vmalloc error
+Date: Fri,  7 Aug 2026 15:51:28 +0800
+Message-Id: <20260807075128.542806-3-duanchenghao@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260807075128.542806-1-duanchenghao@kylinos.cn>
 References: <20260807075128.542806-1-duanchenghao@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9044B40003
-X-Stat-Signature: uc1hr7w4ip3gon7dejgxpig5i1138j88
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CDDDE100002
 X-Rspam-User: 
-X-HE-Tag: 1786089105-638117
-X-HE-Meta: U2FsdGVkX18qmRZYSBlW9051D9t/DK49stg8f6eRdq9069GNJrvSCBdK16c9gPF4XU8av/NPJ2MfwVT+FBnjJEoHygxjlrdU99f4mkerHXb+q6TDx3MTC8Ja1p0ceKdnMlDBy8V0iUWieJUv3bPLx5/M18sBGWuHqOQq3atGU3FgFwEvPwwsIC/JmyDu0g9zcU/+K71RrsWnYe7G5Eaj+CVM1gZPr/njGH3dnsZ9bQPGxsKbuK2Ef2W0FPR0W/ECmqwuOXIMM2Mew5hp+BZcJphxVW3Mkck5MPbbIFemGMQUgRC0dPoT7+UCzwiS/TCShBpoVEKee8G4PPwR5NqxVbo/RJkwdeTU9tba0d4Z21IHkcVZsbNcHCoRm+aKNEKyr+9BpDh3PD7oK9QdIoMLz37FSJHapaG4NtML/ac1Mcv6nFGX1gFrayZ83IyaONMScIPJ1lgfNrw+Vgd55md5p/Qd6u0W/aX1TCZ1QHPgm14vP8PGrNqg4/HOttEaXWlyWGCD8HFttcMYN1wfEiHIGIeYLMFpWP4WRUnZGCanou5ypiKf36f33R2rjEizbiERHOgwNLcIN1JeP4lDCKfidDuBr/w59sudZdLdf9KBRtalJT2jArB1WQJ/fdYQfyx+sqJJ5Jw+MEhFjF/ezeb0rnGx/DlF2Sxn0kJwL7IjYnujvmnOCHtOk7ISOBA/yCupF2odwcWjdN7h1T8E9SitrGqr46z40BNkHpJkgNjfOUc7E/9c4shdSLbdbpYd8k0BbWjOZdYuNVo51yIrFYoHfb0gxR040UcQL/e/uwT9UbMAT72IvfALrUbOKDPVP5y97w3LGieqQLjtT7zyxdP+fNDrEzF0vFqQlnsyzQtDeXVUvGsgiDGT4KUclxPm0Nw4cknaVsP0MO1hkceJeTVyGU7aIE3mo0l2rzMcT5aP4lYW4ACjvFR6FZwhtQP+wad133obitIt3RqNjIKgE3y
- p1oavtzT
- IVtuEZ6m/K3BaoCUeXsknUR0yVw==
+X-Stat-Signature: 9rsz931qxu58woxq4yjfd3aucrhaorur
+X-HE-Tag: 1786089106-219849
+X-HE-Meta: U2FsdGVkX1/cwfXdlCXSuVRVPMdkXbWlFUye+6Bg4Z8gbfZeUPDSFwebNea83dPwOdF6R8cguDyoSIjqZxwdJDv6dJprJ2sxA3t5h5ZGg34IL2WZCAoU/7tD397JLV8isGxv6Y6H0UehkL76es7hikx7i3Hrh1Z+WmvICOew18QC0abyWMeTQna4C6HFOfKi5mIndPojN4dKxSZ6QzrGwMazPs64k7SAPJRmYXO1+m4Jw9fSiXcwl6fDBOnx8g4FDjB++2nEvlVwvKGk6OZiwbPQpgRZNUHs3WBUEF1lHUrGjfyqCjr0ZrU+43zgBwWdT9odc2zxShpoCu8ccj32Ic2UbAIxkEMmKuAPFkWlG2CnI0SMO1vgF1PGd7+Zbwm5dRFdsyz1DOWjbbjzkyGa1/su2j0yzeBOhbx7XcUL8WfJVcm5KxketSBOihVSTCuCDquQnEKGZvb1C9AAye2/vLah8AphbN/X++ZrggzsSmxpmI4rvNSDSDIyN1AZBRWeCor0pjecfpCU28o5wr/GjzvzyXzwSrteHPh6Q6YYby7hKaOo7qXlNgrq0X38Zhkw9Pq+vUgeWbdEwnCDh1JKvNqD13C+6IyXT6ticN+jGjFcjN24EQ3GZ9ePxZ3DcVmJvylQuQqS7s47077McVWSnCc/GCsutY4p9c7F6xw9g3lUopft25du+8i2NzV+QnTTsfGrXHgyzXFTwRRnW4IHAmjBkrqUU4ZK+9ZHCLcltQi3FojDTgdBsB7eBQ1q1Ja9QmsC50JDbPocxGKH6bk2mAUiO/aJcjwL6EgkfoYo4MYsJr6exVjBVYErrAIbkb2McnJZppMV2njYFEU87py2U/v786VZ9UBWyyCA6iQl+E/87cAtsxSZi7Jb1dCiBHqXdbYmIegivxWK0f8Yh61lfBG1nEflxZDSWDWfy1eJkjRJo6mbyyjKE+PiOaVYz/JChOUgHfMVH6OB0utZR4K
+ UCxYtBKa
+ qVuA97L/mHYWdkCp5MGXUzncxMz60kDzCNRaCorCW6XVjjQI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,30 +111,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The statement phys += contig_pages * PAGE_SIZE at the end of the inner
-for-loop in kho_restore_vmalloc() is redundant code. The variable 'phys'
-is local to each loop iteration (re-assigned from chunk->phys[i] on every
-iteration) and is never referenced after this increment, so the statement
-has no functional impact. Remove it to avoid confusion during code review.
+In kho_restore_vmalloc(), when kho_restore_pages() succeeds, the
+recovered pages are handed to the buddy allocator (via
+adjust_managed_page_count()). If any later step (e.g.
+__get_vm_area_node() or vmap_pages_range()) fails, the original error
+path only called kvfree(pages), leaking those folio pages.
+
+Fix by tracking how many folio groups have been restored with
+restored_idx. On any failure, use err_unwind_restored to walk
+restored_idx backwards and return each folio group to the buddy via
+__free_pages() before freeing the pages array.
 
 Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 ---
- kernel/liveupdate/kexec_handover.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 175c08a6e41e..ba03ff5baa9e 100644
+index ba03ff5baa9e..ed35405f59ab 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -1191,8 +1191,6 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+@@ -1161,6 +1161,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 	struct vm_struct *area;
+ 	struct page **pages;
+ 	unsigned int idx = 0;
++	unsigned int restored_idx = 0;
+ 	int err;
+ 
+ 	vm_flags = kho_flags_to_vmalloc(preservation->flags);
+@@ -1183,11 +1184,11 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 			phys_addr_t phys = chunk->phys[i];
+ 
+ 			if (idx + contig_pages > total_pages)
+-				goto err_free_pages_array;
++				goto err_unwind_restored;
+ 
+ 			page = kho_restore_pages(phys, contig_pages);
+ 			if (!page)
+-				goto err_free_pages_array;
++				goto err_unwind_restored;
  
  			for (int j = 0; j < contig_pages; j++)
  				pages[idx++] = page + j;
--
--			phys += contig_pages * PAGE_SIZE;
- 		}
+@@ -1195,13 +1196,14 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
  
  		page = kho_restore_pages(virt_to_phys(chunk), 1);
+ 		if (!page)
+-			goto err_free_pages_array;
++			goto err_unwind_restored;
++		restored_idx = idx;
+ 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+ 		__free_page(page);
+ 	}
+ 
+ 	if (idx != total_pages)
+-		goto err_free_pages_array;
++		goto err_unwind_restored;
+ 
+ 	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+ 				  vm_flags | VM_UNINITIALIZED,
+@@ -1209,7 +1211,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 				  NUMA_NO_NODE, GFP_KERNEL,
+ 				  __builtin_return_address(0));
+ 	if (!area)
+-		goto err_free_pages_array;
++		goto err_unwind_restored;
+ 
+ 	addr = (unsigned long)area->addr;
+ 	size = get_vm_area_size(area);
+@@ -1231,7 +1233,16 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 
+ err_free_vm_area:
+ 	free_vm_area(area);
+-err_free_pages_array:
++err_unwind_restored:
++	/*
++	 * Pages already restored via kho_restore_pages() have been given to
++	 * the buddy allocator (via adjust_managed_page_count()). Return them
++	 * to the buddy so that failure leaves the system in a clean state.
++	 */
++	while (restored_idx > 0) {
++		restored_idx -= contig_pages;
++		__free_pages(pages[restored_idx], order);
++	}
+ 	kvfree(pages);
+ 	return NULL;
+ }
 -- 
 2.25.1
 
