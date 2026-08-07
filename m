@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6273EC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CBA2C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 589D46B009E; Fri,  7 Aug 2026 16:21:19 -0400 (EDT)
+	id 16E3C6B00A0; Fri,  7 Aug 2026 16:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 513C86B009F; Fri,  7 Aug 2026 16:21:19 -0400 (EDT)
+	id 0F54F6B00A1; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319EE6B00A0; Fri,  7 Aug 2026 16:21:19 -0400 (EDT)
+	id E16196B00A2; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8CE26B009E
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D4C6A14E7
+	by kanga.kvack.org (Postfix) with ESMTP id A668A6B00A0
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 332CF801B6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:20 +0000 (UTC)
+X-FDA: 85075593120.09.79F31D7
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 525D740012
 	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:18 +0000 (UTC)
-X-FDA: 85075593036.22.6010D34
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ACB0912000E
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WuC2WdYj;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2kB79On;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786134076;
+	s=arc-20220608; t=1786134078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UreOU1bs1UnYmmJ7pTF9AE47T3l1T/OGD/BO7qMZ90c=;
-	b=g+4jkElQY4ksPnaxrdBvjQmOZBiwQy0VThrHFxfGqRbLuAzKZ72g1i/2zOBqJDig5xjBOk
-	XSkHjX/BS91aASed2Re9DZPB4n1Q0mpMPT1SYtm6JI6KGKwqKd3xnX1RqmeDBk1jQ+hMry
-	CThbJVyHpPTVeG8yLuIRv2PJESyEHRM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WuC2WdYj;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
+	b=VqWvKm50Voyr/5F4s7tfsfcPxSRjiAsE4+wiHauX4cHT8Euk9yDf+e2k/2MEBJnm0SIsVN
+	Z//olpg4w8OBdJ1O5vsOIR0xTWUFzkf/VDWqMfCZOyBJfa0yPHikuximPKpn+RTrXts9Io
+	Nh/EoslyAgujP0Xd6MwHM7IU3+yjkBc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786134076;
-	b=G2BVmxx3E+7VCLRfMlfc9Q2YNNA5PQmgR+/25aQQQjjce9wGd+iWK4r858luiFwFraqtb2
-	pHL0YM1Vfel6XhPhjR1IubwnLR98rXDSA3JNxV2uMsMRKbfB5Q6ivwIowtebdV4UAKVQ4H
-	Kt1DLrOKWHXILPYyLNI4xycIQ8ZTE2Q=
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7e6b5737bb2so3319080a34.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:16 -0700 (PDT)
+	t=1786134078;
+	b=WDbGljhOLm9/k25Fog84qm5AP+XEATQ0lSqpziDkspUwc2Y7ochWKtpYfH9+CnmdM/Mweg
+	9PqxD5h8HnHBHu3FAggOHSjju5l0PztBYzOi3RkN0gBeG/JPNS3xUa/Pe7thgYjxe1/GyQ
+	ZlUTQpiXqD2gTmxF9Gw+9M7QnZBVYrY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2kB79On;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4563ac048f4so2211676fac.0
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786134076; x=1786738876; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786134077; x=1786738877; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UreOU1bs1UnYmmJ7pTF9AE47T3l1T/OGD/BO7qMZ90c=;
-        b=WuC2WdYjLHNKXkXk3dOEOHJ824GNxq4RsRcfpBcANImkmdm3AA7i7cO8teY9avSbA5
-         z0QP/fM3pOrJGKOCc3F8xMbomkA3zoAEG3i2Zy7sT/x2lgIZzpyaXLWb5D03GLZr4k5p
-         wM05v7k8GNOIQa4WEy3ri4UNMMcnDPpZP913ncAkb79q3ILuAF+UuJfYodPg9ePWOn3U
-         Nkh9SWum4COtkfMnIyV8fQGF71koDZSGYzT21NAFMVNrDdpyhSNViODgv6IS5acmPG5w
-         0xc8jDM02jhiJQrkZdmsArIqdYa0jS4D0eHNYwSSTCLKh7MppbmC2VYDX5RAlrCs4m0b
-         uBXg==
+        bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
+        b=C2kB79OnZMoCol7gQECslLcJZv/Z2iMR8kPRZS4hgBDmNXqxbBuLXGcd+716Jacl15
+         zSnhAq3AmIr96NvtdtbXAd5F30PBA9Jj+hOL5iu28Xwyvi3BBsIiZ6S4vERE7rbbd+b5
+         u3iOgvHQgw5gBFJSEwi7cjVzP3Ko1sFkcmJZ44L94zGI/c3t3rqxicY5nGoVzQVVBzD6
+         I29Rw6Yb3iGNp1HnJbnic3221DHdLuOPne0p0EQIPHt7cCqOLBvQK0WK3yOdAhARkfKv
+         0qDj9gs+OWVFevqpVV8qqA+WlaUtXlDEyb2Gezalwke7KMsucDfeZ/WzuHjMNUxckb+U
+         ySCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786134076; x=1786738876;
+        d=1e100.net; s=20251104; t=1786134077; x=1786738877;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UreOU1bs1UnYmmJ7pTF9AE47T3l1T/OGD/BO7qMZ90c=;
-        b=FMjx1Yl8Qc00zgkZNRVR+fVA2VJv56ODlS6dRO6/X0Bp5Vay12v6PS+9dOJ5Bnn5Os
-         WwDIA1lw3Yi7kJc5jxbtSpBdzFHWPz5s3pCxrB6cFOh3zGnHMjgnZ0T+ErQzPzjtDAAs
-         cZenj8MvEY+oDhED8mnWYD5lphZ6UswBLHgfhqsYxecZDlzw/EOhIJKwWZgxpVwgJ31d
-         8AVQTzKfWvSILEI8MVUE0QrJqDmDkCxzp25eHybfNH6AmpSmoIP2f1kn+gdDXpOvtSWw
-         7nSpF4Yt2NPxg1ica9gYFus6Se9gWLfdFJWS1fbs5dUP/Wkd947pc6n+FrvlxMMGBmGy
-         gzkA==
-X-Forwarded-Encrypted: i=1; AHgh+RqwTCBv2FksitA4mkD03uCaIr0yyIAvXl8sevB1igFpHTshn2506sXluYDhsjroVz73JsfX8GphnQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzb5HNnOvNuW5c8zXFC+cKqsj/MSmnvDFW2JNfmuQZ6xw8piaq5
-	Av7T3Gc25Kaxrd3mZ0nzJotljQAbgNe+M5E/vRf25ivWLaGsbYMpqogb
-X-Gm-Gg: AR+sD12zQejzOKv6aU3iHjyYVpM7pbh8RiStf/obrV8e+twBp0RR5i463slg/4VAghA
-	mrbuk8InxHOKc41Z+1gTb6GZ5KIUWUg6ioBBpgdbQpvCgwroyysemE200IM/hTJiswNsx5jznyu
-	K21YR+tPALbo3BR/5jkvcFC5T99rTobCpXWsdkHq1blQBb9q5cmcHk0Nu48/ODph7tKFWObAE2h
-	t+OmyILkpnGrSKCLxSiqwCVuwyefpZNcYMaklDwXixJT1yccDcD6e6ivp1udt4IfkFjJ2E5LiBz
-	HVixNpWdIVdBo3e0yE3bYoyRE1YrFCiob7hxY/Yz4Na7EBa7PH+BURtWyYaOkaQ+SkL1ThA7P09
-	wqdoAg03nEKBlSZ4/Dhsjddl2sfUR+P7eE8MOseH9feEIxawYWeh+/m5S993sPb5Smkkt0B0xMW
-	MnrutFlDdlgClZmZYoHqJiWS+fMdzLJrVVyMuW6YF1YxbgY3LdlPDlzGbirE+QVAo950ZbBnEHF
-	lML5vjKgR4wopB8Os0=
-X-Received: by 2002:a05:6820:4dfc:b0:6a1:7790:258e with SMTP id 006d021491bc7-6ae96ec782bmr14629606eaf.18.1786134075612;
-        Fri, 07 Aug 2026 13:21:15 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:58::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02be8ede0sm3225544eaf.12.2026.08.07.13.21.14
+        bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
+        b=k5r4SBaVgKvNLAoBkxsQD5aLyPvcvWwGvxAMpnbTDAPgBLlpAoHX/phpNq35YEJxhk
+         a6lu0HLP9othdShM/dH2sKvYfd6m4/UId9X9XixclSv3camXkz6j3K8b9Tq+oXRtkaMf
+         9YpmdxTFOg+w7jJgLNrUlfrHVxkPGwPvZJE6XacZ/nPWBhyDW0NlwAh26eA1D7ByU2sk
+         jw/w45SpMBH9PSv1ffW8MhlBLQ5tSTrI/9bjOxzf3SV01C4M3tVuPGMR4K5GbbyS8mDb
+         34SNQA4HWQVrPp45IOmvhKj21EVrv03X2V+OuFWFfExGxi6QCDsgnCJGcG79tKabzAwb
+         Ps7g==
+X-Forwarded-Encrypted: i=1; AHgh+RqV5uMSoCjBUfdvR6pNydgnEVSNFVFwbr3G98eeA4ZumFqYQbif1jLGbjCaVfs64I+oi5AqsfAEHA==@kvack.org
+X-Gm-Message-State: AOJu0YwIwRAN17SpjjWM3YUgZkugq8XvqtmT/dizfv7gV+PKnavgfxr1
+	uGPVUJzNp3VBCmdPZNrz8i/UFio0AmjOoW4c7UOZbBe0Y2QrUnlybpMs
+X-Gm-Gg: AR+sD13poBE0Elb9UKUGzzIZ8IT7CQNaNgxO6a6VcF9d6P5UloZW/ZqR7J96HhQ2OP7
+	TLgfu8mzVDJ4sBOCH9bR0l0XZg9CyU6eHB+ueLGYLyadgnR7buNvyrFIdZNESYBn4reED5Iom6x
+	+52OX2UrcEFMudQQ/vn3vuGn5x8kAlSICm4qXORRxNK45dSlFQGpqUiknx5U1e/PdePIpT5e/mR
+	UQVcMqXuSck2uPKKO1l1imO3nsiZcyU1N/bsXQjV6/G0AQFf3mCUoSKtc5oq1Xvyf2KzH0J0hmM
+	2DR1mDFZipMdMfXLqym2x1apsLHdt7jVYsQosQu+v2AiAn0jTJfoDkN/Pr3sRg/OzPlufrObE4s
+	2D954OFQ7vr8Z1fFyuEjn29KCDs/NGlMDWUDKDoJQBP0cQXhfeVsQnt151TtzPXoRM4IfXrZdrc
+	/mhc9wZF8cave7a2cqvK9TAgE8i9lXKgwEXIb4IEDaTEOixvBgBxpTXUxLKaR6yMlUu3wcSeTaB
+	Eou7kVtC0GSBVlrj1bxsCbaQ88r6R/DsmF5SAGe5A==
+X-Received: by 2002:a05:6870:c250:b0:453:9b2b:f3f1 with SMTP id 586e51a60fabf-459ff6b0630mr3346442fac.5.1786134077083;
+        Fri, 07 Aug 2026 13:21:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:55::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f1e28910sm2664792fac.15.2026.08.07.13.21.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 13:21:14 -0700 (PDT)
+        Fri, 07 Aug 2026 13:21:16 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Gregory Price <gourry@gourry.net>
@@ -137,22 +137,22 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH v3 10/14] mm/memcontrol: Make memory.max tier-aware
-Date: Fri,  7 Aug 2026 13:20:53 -0700
-Message-ID: <20260807202059.2620949-11-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH v3 11/14] mm/memcontrol, migrate: Transfer tier charge on migration
+Date: Fri,  7 Aug 2026 13:20:54 -0700
+Message-ID: <20260807202059.2620949-12-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 References: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 525D740012
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ACB0912000E
-X-Stat-Signature: k1fht4kc7idfxaf5efcqidstbbphmzi1
-X-HE-Tag: 1786134076-736154
-X-HE-Meta: U2FsdGVkX1+pw8HRbcjqJ1uS0cv9d5Od2Z5NHFrelkCesFY0zXYctgl4gLLBO1O8wdCj0BYr2fVxAcEmAB1xWXU9vRqhXuo/8da1+DOTalNFEOPp18xFHH0Yvkqt1dhyriEJzRISPnwr1L22wZqhi3PsF0b1PRS1xSO4WfwlX0VL4gaUWdS33mx/DfGZ5hRMXzm8bbOSmpABdG+GjAjUyXXNTBn+hFgQXRgApU7RUno+LMMxXlyhY20BIYXEmJPNrJ8y01e5ghpxpjSMf1ZgNq9i2vRraRCpWXdSpb588xzljApUHKRCxOQPc9vtJe3ul7F3Bt/NowmyidumxA8iYoqLblqC4IgOhksR2EvE5gTOY0ku635qbibuvuokr9Yn9fVUQGoSoMsZt4ENu7LOVyvw5u1mGe/XN5QfD+hmmewTGbf3eAFUy+6oWWDqz13CTDK4Rq9Do+TPmjwLpDWMyvOY+cKjRyA9NjmX4k7RzBXJtU+ESw4o1kWawFsT6rGIWgK9e0gLeJR9ffHbZ8+8HQmS+2JhRbSb8G0FzRbd6dWlK8N7eJa4iQLvKNgN3OQwOYQYV2uCuEXNBCDmg8z8URaLdrHL8uU2xzZsaj1WRrxnFxPAmyiHUYrbBoIHV6pfMj9ZPBqf6k07mFmnAl1nfBCNZz8gBC6Tb+QzR3N5Uq0mF4giFuw+X1uCvPfrSAIo7ote803BIPaFesJ550PtpGAw7auObhnfaUMRQgTRQ/5bkffUvuVhhNOnanuivfxDD5jgcueFkqXhqDLy8OsAu35I2slyKornGVUs+lXWmqzRrZ8Vy8VR7dx0+IM5CX4avmFfcAJjCI4ipiCRlgwnCj/HTwoFGgOyep7RPQnyGOpjuvqKDJoYvgP5F2nHU4eOeDFwfYcKg5jLtl6KbcXJcr0FSlsETPeeE02sXqCZ4luT4rXhUNM6r7zjswyPFFYLOtmmdWHqHZRqBP5qGpb
- ek0Y6LCD
- xc/X7OqV3icLJ86WBpl/2wMbnjUth1tXX5pkxruemEfoH9daSk1uw2HqdXRIKBOuc9WquIPEIrZPcc3tQyGlXn5XcezyJzFPHWhyW+vFo+BrTr4HO/0N+7b3mmBxq9kt1edKcopiMDmHrTjZug3bKV5o8p+vi2bkTdH7Fw4pdW2NuKY6LVKZSTTuf0uDbcTI+8UXaJykve6K2G+vtcKhA3Nm6k/QBZJNG/wmxWr+F9yNBtDFQwBQJWdipkqp//lPFuRMIx0Cbxp1KpZMSDAyzRS6mssA+7OxgGUr0RWV28mBl0c28prMyBg87L6JjpPbsFaGPjjxrh48J/pZBxQy0bR+mkcucSw9+v7lQ8GVeG4eo1C70Xl2EkIYkSyyZNsZvG2PEHPOoMxNT6kG7IOFT8219RdrvIU082qDGnotOultMQ2v0hEPtAmQeV8c/vo1chhZiVMB6b26I8GwU3hkYh7x5iVfdY41i18JwQmgO8QenXeBjbqukVp9Ua0EanJSbGi9R
+X-Stat-Signature: kmj6nmqfxzebzmrp6kcakfu8duwx3bqc
+X-HE-Tag: 1786134078-233012
+X-HE-Meta: U2FsdGVkX18NeeMeZYvp0sqVnQWdtMFI+fcJuCra+iQkgtEUy+OAHxCR9rL1PegixXWKDkdpaXArz9Rnm4fj42xrQQ7zxGTf//h1d8qS5XLk1Tsh0AkpXvaWN2Ou6vum53j5hT+t3Nw1ah2hpcJR75A0JwiAL3wVW6vk6DL5RxEgmb96oFQO7KmGmkkScYds2DlZuoutxAXJ0aA/gi1zTMoVrhjiKpHl/sbgPVhkvlhPvbU354WmuPIF5IhaaOJ/f/lZmly0WlzYkh4bFCS0GUt8MvMue99fYrcrCrpWjTmo+kKNIs8WeEQiy7XZcbBEiGanRd/UPLWJktmvnpfJR7JtoI/SHthQGxcVfZNWbJCv69Zq30rZPLg5JKetQ9lfiYbxp5/7VSvmDooyIgHckvYiNY4eQ0CFRJ2IakCk02yaq/YMDiu/LV/9nMxWhqiebl3/OpLPDy0+mnLk8lhZi6PX71aTaeCHwJNdt0tKz9XDrhk5VADqVfdnvPbVtw9xtX4xb8gGVJiPyswkAI8qi+5Cl2I5IJpADl9jxg+oEbja64w6DF5Q8o8/F7Kyz6mP3gO1lpRBFS7SZEeyytWutH395D2QH+XgehjbuvffohswYaIwVDDsJM1EgLJnVRhmClGF6vmPpemP/vmb3gu1gZ0+N/hzbZJ8WHmjV2Cp4tuh0i1K9k+3EMXFuHftYGweGXmY7Pfx8VChEUnBET07qYrqWEoQuW7dx1nhA5AWf6ShTMvs4KNWe8oredzTdmcHtv22siyTFxThUuMmkIXr28YXBReQP+nz1+klJR5f/nt1WVDapXEAdlJhEpb1ZJYp530ZJ0pmMqXx6KvQgkjjwIj/IQrZLRwwb+ecJAiw0hUXTCAnw5YnSDCYKBPHR36nU7hGaVJJD+ZXvti381xo2jjTqOUaTPH4b1Mx/5uRIoLaankiucRnxd1U6yoB318xy4vnddx46wlNUIoUBCj
+ /CBaII6i
+ s8kL9bAeJesyTKQArgXtX1YdW2bP+jil0yuvAAEvwOkZynJsr66xhTuSun6TluzMzk5q2t9TGzRkyfyzOMSFXBh8bWbsBhzUYO0Vd3PXR31KE/V3KXD+/DGTDBIUJ0+WeUWkQDGNY7aIxQ+EYd8PBW+ZfXRnZEF+mLLfPCek0G5rYFoqwJfX3veNnjGCwj+9tM4kd6Yz087R2s/UN6nftszC3TXL9M6lJKk9Rx1GVEB/7cvENGiRVab5nRt893WK3iN8n4FIfqkg4rp5Bc5YQfrZsKZgbWQ43uPa1gHq1fytnfdqHEfQfwlgQ5aco8iFsR1FJ4mgDKdxiXIQR921DZGhVAljnKLnnH5IjTcK3IXDJmgff8l+iUFZ+DpT7kOOriShbnh2ILOYZ4faj1P0HoYYGU0UbC5zQrbcl5QdFf3flUsOaTbBfSrqam8egbNGkGt9d0fhhbDNjn0AA88tNVKQfMPsEi7J1dAsT33PrJ5hMrE1CKxSDWGEJTMRzVmj6ly37RoLnLs9QvYHJ40J2/yEzcx4rayCq+5yf41XAlZ0Bzf0Kbz75hvbNLk7UKv2S1pfd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,309 +160,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On machines serving multiple workloads whose memory is isolated via
-the memory cgroup controller, it is currently impossible to enforce a
-fair distribution of tiered memory among the workloads, as the only
-enforceable limits have to do with total memory footprint, but not
-where that memory resides.
+Folio migration is charge-neutral, and existing migration paths take
+advantage of this fact to simply force destination folio charges or
+just transfer memcg data across folios.
 
-Extend the existing memory.max limit to be tier-aware. A folio charge
-is now attempted against the page_counter of the tier the folio was
-allocated on, in addition to memory and memsw. When the tier counter
-is over its limit, reclaim is targeted at that tier's nodes only.
+Per-tier memcg limits break this assumption. A migration across tiers
+(i.e. promotion or demotion) keeps the memcg-level charge neutral,
+but the per-memcg tier charges change. As a result, the destination tier
+may go over the limit.
 
-Tier counters are parent-linked index-for-index with the memcg
-hierarchy, so the counter reported by page_counter_try_charge() belongs
-to an ancestor of the charging memcg.  memcg->tier is a separate
-allocation, so container_of() cannot recover the owner;
-tier_counter_mem_cgroup() walks the chain instead. This is only done
-on the charge failure path.
+Charge the destination separately instead, from migrate_folio_unmap
+where the destination folio has just been allocated but can still be
+rolled back. This charge attempts a single pass at reclaim if it goes
+over the hard limit, and fails the migration if not enough headroom is
+created on the destination memcg tier.
 
-mem_cgroup_margin() takes the tier slot so that the retry check and the
-OOM re-check under oom_lock consider the tier that actually failed.
-Taking the minimum across all tiers would report no headroom whenever
-any tier is full, which would disable the pile-on guard in
-mem_cgroup_out_of_memory() for plain memory.max breaches as well.
+Note that this source of migration failure returns -EBUSY and not
+-ENOMEM since -ENOMEM will attempt the migration again by splitting the
+folio and aborting the batch, which both do nothing to reduce the
+memory usage of the memcg tier. We also don't try too hard to reclaim
+here (__GFP_NORETRY) since failing migrations is cheap, and we don't
+want to OOM kill because of a promotion attempt.
 
-Note that stock is currently a per-memcg resource and does not
-distinguish between tiers. There is ongoing work to change this,
-however. Until then, tiered usage may transiently breach the max limit.
+One side effect is that cross-tier migrations now hold both folios'
+charges until the source is freed, the same way mem_cgroup_replace_folio
+temporarily holds a duplicate charge.
 
 No-op unless the system has tiered memcg limits enabled.
 
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- mm/memcontrol.c | 112 ++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 84 insertions(+), 28 deletions(-)
+ include/linux/memcontrol.h |  8 ++++++++
+ mm/memcontrol.c            | 35 +++++++++++++++++++++++++++++++++++
+ mm/migrate.c               | 30 +++++++++++++++++++++++++++---
+ 3 files changed, 70 insertions(+), 3 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 44ea465b2005d..de6762520f475 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1570,14 +1570,32 @@ static struct page_counter *mem_cgroup_tier_counter(struct mem_cgroup *memcg,
- 	return &memcg->tier[slot];
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index ceba0fd6de184..9c2f11191a499 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -708,6 +708,8 @@ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ 
+ void mem_cgroup_replace_folio(struct folio *old, struct folio *new);
+ void mem_cgroup_migrate(struct folio *old, struct folio *new);
++int mem_cgroup_migrate_charge(struct folio *src, struct folio *dst,
++			      bool force);
+ 
+ /**
+  * mem_cgroup_lruvec - get the lru list vector for a memcg & node
+@@ -1204,6 +1206,12 @@ static inline void mem_cgroup_migrate(struct folio *old, struct folio *new)
+ {
  }
  
-+static struct mem_cgroup *tier_counter_mem_cgroup(struct mem_cgroup *memcg,
-+						  struct page_counter *counter,
-+						  int slot)
++static inline int mem_cgroup_migrate_charge(struct folio *src,
++					    struct folio *dst, bool force)
 +{
-+	struct mem_cgroup *iter;
++	return 0;
++}
 +
-+	for (iter = memcg; iter; iter = parent_mem_cgroup(iter)) {
-+		if (&iter->tier[slot] == counter)
-+			return iter;
-+	}
+ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
+ 					       struct pglist_data *pgdat)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index de6762520f475..1161934e81380 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5716,6 +5716,41 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 	rcu_read_unlock();
+ }
+ 
++/**
++ * mem_cgroup_migrate_charge - Charge a migration destination up front.
++ * @src: Folio being migrated away from.
++ * @dst: Folio being migrated to.
++ * @force: Charge even if the destination tier is at its limit.
++ *
++ * Folio migrations result in a net 0 memcg charge, but the node location of the
++ * charge may change during promotions or demotions. When this happens, charge
++ * @dst in its own right instead of inheriting @src's charge.
++ *
++ * Return: 0, or -ENOMEM if @dst could not be charged.
++ */
++int mem_cgroup_migrate_charge(struct folio *src, struct folio *dst, bool force)
++{
++	struct mem_cgroup *memcg;
++	gfp_t gfp = GFP_KERNEL;
++	int ret;
 +
-+	/* the failing counter is always an ancestor of the given memcg */
-+	VM_WARN_ON_ONCE(1);
-+	return memcg;
++	if (mem_cgroup_disabled() || !folio_memcg_charged(src))
++		return 0;
++
++	if (!mem_cgroup_tiered_limits() ||
++	    nid_tier_slot(folio_nid(src)) == nid_tier_slot(folio_nid(dst)))
++		return 0;
++
++	/* Refuse the migration if the first reclaim round fails */
++	gfp |= force ? __GFP_NOFAIL : __GFP_NORETRY;
++
++	memcg = get_mem_cgroup_from_folio(src);
++	ret = charge_memcg(dst, memcg, gfp);
++	mem_cgroup_put(memcg);
++
++	return ret;
 +}
 +
  /**
-  * mem_cgroup_margin - calculate chargeable space of a memory cgroup
-  * @memcg: the memory cgroup
-+ * @slot: the memory tier slot
-  *
-- * Returns the maximum amount of memory @mem can be charged with, in
-- * pages.
-+ * Returns the maximum amount of memory @mem can be charged with, in pages.
-+ * If the system has tiered memcg limits, then it returns the minimum of the
-+ * tiered margin and the memcg margin.
-  */
--static unsigned long mem_cgroup_margin(struct mem_cgroup *memcg)
-+static unsigned long mem_cgroup_margin(struct mem_cgroup *memcg, int slot)
- {
- 	unsigned long margin = 0;
- 	unsigned long count;
-@@ -1597,6 +1615,21 @@ static unsigned long mem_cgroup_margin(struct mem_cgroup *memcg)
- 			margin = 0;
- 	}
+  * mem_cgroup_migrate - Transfer the memcg data from the old to the new folio.
+  * @old: Currently circulating folio.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index ab15a4dddd047..45d6d23d53859 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -862,7 +862,13 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+ 	folio_copy_owner(newfolio, folio);
+ 	pgalloc_tag_swap(newfolio, folio);
  
-+	if (mem_cgroup_tiered_limits()) {
-+		struct page_counter *tier_counter;
+-	mem_cgroup_migrate(folio, newfolio);
++	/*
++	 * For failable memcg charge transfers (demotion / promotion) the charge
++	 * has already been transferred at this point. For everyone else simply
++	 * transfer the charge here, where it can no longer fail.
++	 */
++	if (!folio_memcg_charged(newfolio))
++		mem_cgroup_migrate(folio, newfolio);
+ }
+ EXPORT_SYMBOL(folio_migrate_flags);
+ 
+@@ -1216,7 +1222,7 @@ static void migrate_folio_done(struct folio *src,
+ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		free_folio_t put_new_folio, unsigned long private,
+ 		struct folio *src, struct folio **dstp, enum migrate_mode mode,
+-		struct list_head *ret)
++		bool force_charge, struct list_head *ret)
+ {
+ 	struct folio *dst;
+ 	int rc = -EAGAIN;
+@@ -1228,6 +1234,17 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	dst = get_new_folio(src, private);
+ 	if (!dst)
+ 		return -ENOMEM;
 +
-+		tier_counter = mem_cgroup_tier_counter(memcg, slot);
-+		if (!tier_counter)
-+			return margin;
-+
-+		count = page_counter_read(tier_counter);
-+		limit = READ_ONCE(tier_counter->max);
-+		if (count < limit)
-+			margin = min(margin, limit - count);
++	if (mem_cgroup_migrate_charge(src, dst, force_charge)) {
++		if (put_new_folio)
++			put_new_folio(dst, private);
 +		else
-+			margin = 0;
++			folio_put(dst);
++		if (ret)
++			list_move_tail(&src->lru, ret);
++		return -EBUSY;
 +	}
 +
- 	return margin;
- }
+ 	*dstp = dst;
  
-@@ -1945,7 +1978,7 @@ void __memcg_memory_event(struct mem_cgroup *memcg,
- EXPORT_SYMBOL_GPL(__memcg_memory_event);
- 
- static bool mem_cgroup_out_of_memory(struct mem_cgroup *memcg, gfp_t gfp_mask,
--				     int order)
-+				     int order, int slot)
- {
- 	struct oom_control oc = {
- 		.zonelist = NULL,
-@@ -1959,7 +1992,7 @@ static bool mem_cgroup_out_of_memory(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (mutex_lock_killable(&oom_lock))
- 		return true;
- 
--	if (mem_cgroup_margin(memcg) >= (1 << order))
-+	if (mem_cgroup_margin(memcg, slot) >= (1 << order))
- 		goto unlock;
- 
- 	/*
-@@ -1977,7 +2010,8 @@ static bool mem_cgroup_out_of_memory(struct mem_cgroup *memcg, gfp_t gfp_mask,
-  * Returns true if successfully killed one or more processes. Though in some
-  * corner cases it can return true even without killing any process.
-  */
--static bool mem_cgroup_oom(struct mem_cgroup *memcg, gfp_t mask, int order)
-+static bool mem_cgroup_oom(struct mem_cgroup *memcg, gfp_t mask, int order,
-+			   int slot)
- {
- 	bool locked, ret;
- 
-@@ -1989,7 +2023,7 @@ static bool mem_cgroup_oom(struct mem_cgroup *memcg, gfp_t mask, int order)
- 	if (!memcg1_oom_prepare(memcg, &locked))
- 		return false;
- 
--	ret = mem_cgroup_out_of_memory(memcg, mask, order);
-+	ret = mem_cgroup_out_of_memory(memcg, mask, order, slot);
- 
- 	memcg1_oom_finish(memcg, locked);
- 
-@@ -2388,13 +2422,15 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
- }
- 
- static bool memcg_tier_over_limit(struct mem_cgroup *memcg,
--				  unsigned long *overage, int *breached_slot)
-+				  unsigned long *overage, int *breached_slot,
-+				  bool high)
- {
- 	int nr_tier_slots = mt_nr_tier_slots();
- 
- 	for (int slot = 0; slot < nr_tier_slots; slot++) {
- 		unsigned long usage = page_counter_read(&memcg->tier[slot]);
--		unsigned long limit = READ_ONCE(memcg->tier[slot].high);
-+		unsigned long limit = high ? READ_ONCE(memcg->tier[slot].high) :
-+					     READ_ONCE(memcg->tier[slot].max);
- 
- 		if (usage <= limit)
- 			continue;
-@@ -2425,7 +2461,7 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
- 
- 			if (!mem_cgroup_tiered_limits())
+ 	dst->migrate_info = 0;
+@@ -1918,8 +1935,15 @@ static int migrate_pages_batch(struct list_head *from,
  				continue;
--			if (!memcg_tier_over_limit(memcg, NULL, &slot))
-+			if (!memcg_tier_over_limit(memcg, NULL, &slot, true))
- 				continue;
+ 			}
  
- 			reclaim_nodes = mt_tier_nodes(slot);
-@@ -2719,6 +2755,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	unsigned long pflags;
- 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
- 	int slot = -1;
-+	const nodemask_t *reclaim_nodes;
- 
- 	if (mem_cgroup_tiered_limits()) {
- 		slot = nid_tier_slot(nid);
-@@ -2737,6 +2774,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		batch = nr_pages;
- 
- 	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
-+	reclaim_nodes = NULL;
- 
- 	if (do_memsw_account() &&
- 	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-@@ -2745,15 +2783,23 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		goto reclaim;
- 	}
- 
--	if (page_counter_try_charge(&memcg->memory, batch, &counter)) {
-+	if (tier_counter &&
-+	    !page_counter_try_charge(tier_counter, nr_pages, &counter)) {
-+		mem_over_limit = tier_counter_mem_cgroup(memcg, counter, slot);
-+		reclaim_nodes = mt_tier_nodes(slot);
-+		goto reclaim;
-+	}
-+
-+	if (!page_counter_try_charge(&memcg->memory, batch, &counter)) {
-+		mem_over_limit = mem_cgroup_from_counter(counter, memory);
-+		if (do_memsw_account())
-+			page_counter_uncharge(&memcg->memsw, batch);
- 		if (tier_counter)
--			page_counter_charge(tier_counter, nr_pages);
--		goto done_restock;
-+			page_counter_uncharge(tier_counter, nr_pages);
-+		goto reclaim;
- 	}
- 
--	if (do_memsw_account())
--		page_counter_uncharge(&memcg->memsw, batch);
--	mem_over_limit = mem_cgroup_from_counter(counter, memory);
-+	goto done_restock;
- 
- reclaim:
- 	if (batch > nr_pages) {
-@@ -2782,13 +2828,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	psi_memstall_enter(&pflags);
- 	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
- 						    gfp_mask, reclaim_options,
--						    NULL, NULL);
-+						    NULL, reclaim_nodes);
- 	psi_memstall_leave(&pflags);
- 
--	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
-+	if (mem_cgroup_margin(mem_over_limit, slot) >= nr_pages)
- 		goto retry;
- 
--	if (!drained) {
-+	if (!drained && !reclaim_nodes) {
- 		drain_all_stock(mem_over_limit);
- 		drained = true;
- 		goto retry;
-@@ -2824,7 +2870,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	 * couldn't make any progress.
- 	 */
- 	if (mem_cgroup_oom(mem_over_limit, gfp_mask,
--			   get_order(nr_pages * PAGE_SIZE))) {
-+			   get_order(nr_pages * PAGE_SIZE), slot)) {
- 		passed_oom = true;
- 		nr_retries = MAX_RECLAIM_RETRIES;
- 		goto retry;
-@@ -2880,7 +2926,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		swap_high = page_counter_read(&memcg->swap) >
- 			READ_ONCE(memcg->swap.high);
- 		tier_high = mem_cgroup_tiered_limits() &&
--			memcg_tier_over_limit(memcg, NULL, NULL);
-+			memcg_tier_over_limit(memcg, NULL, NULL, true);
- 
- 		/* Don't bother a random interrupted task */
- 		if (!in_task()) {
-@@ -5011,7 +5057,7 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
- 
- 			if (!mem_cgroup_tiered_limits())
- 				break;
--			if (!memcg_tier_over_limit(memcg, &charge, &slot))
-+			if (!memcg_tier_over_limit(memcg, &charge, &slot, true))
- 				break;
- 
- 			reclaim_nodes = mt_tier_nodes(slot);
-@@ -5073,12 +5119,22 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
- 
- 	for (;;) {
- 		unsigned long nr_pages = page_counter_read(&memcg->memory);
-+		unsigned long charge;
-+		const nodemask_t *reclaim_nodes = NULL;
-+		int slot = -1;
- 
- 		if (max != READ_ONCE(memcg->memory.max))
- 			break;
- 
--		if (nr_pages <= max)
--			break;
-+		if (nr_pages <= max) {
-+			if (!mem_cgroup_tiered_limits())
-+				break;
-+			if (!memcg_tier_over_limit(memcg, &charge, &slot, false))
-+				break;
-+			reclaim_nodes = mt_tier_nodes(slot);
-+		} else {
-+			charge = nr_pages - max;
-+		}
- 
- 		if (signal_pending(current))
- 			break;
-@@ -5087,22 +5143,22 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
- 		if (memcg_is_dying(memcg))
- 			break;
- 
--		if (!drained) {
-+		if (!drained && !reclaim_nodes) {
- 			drain_all_stock(memcg);
- 			drained = true;
- 			continue;
- 		}
- 
- 		if (nr_reclaims) {
--			if (!try_to_free_mem_cgroup_pages(memcg, nr_pages - max,
-+			if (!try_to_free_mem_cgroup_pages(memcg, charge,
- 					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP,
--					NULL, NULL))
-+					NULL, reclaim_nodes))
- 				nr_reclaims--;
- 			continue;
- 		}
- 
- 		memcg_memory_event(memcg, MEMCG_OOM);
--		if (!mem_cgroup_out_of_memory(memcg, GFP_KERNEL, 0))
-+		if (!mem_cgroup_out_of_memory(memcg, GFP_KERNEL, 0, slot))
- 			break;
- 		cond_resched();
- 	}
++			/*
++			 * Hotplug must not be refused: offline_pages() retries
++			 * indefinitely and ignores migration failures, so a
++			 * refusal would hang it rather than fail it.
++			 */
+ 			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
+-					private, folio, &dst, mode, ret_folios);
++					private, folio, &dst, mode,
++					reason == MR_MEMORY_HOTPLUG,
++					ret_folios);
+ 			/*
+ 			 * The rules are:
+ 			 *	0: folio will be put on unmap_folios list,
 -- 
 2.53.0-Meta
 
