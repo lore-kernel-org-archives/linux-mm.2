@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8319C5AD2B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A275CC5AD2B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:54:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44BBC6B00C0; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
+	id 0A1976B00C5; Fri,  7 Aug 2026 17:52:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 422586B00C5; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
+	id 0528D6B00C8; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C3B46B00C6; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
+	id E14246B00C5; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E145D6B00C0
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:52:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80F5E1601ED
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:56 +0000 (UTC)
-X-FDA: 85075823952.19.0628E29
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CABA6B00C5
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:52:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D2701C0169
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:57 +0000 (UTC)
+X-FDA: 85075823994.27.F425E60
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9A5871C000A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gUAugGbu;
-	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3B9ABA000A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLjD6LF7;
+	spf=pass (imf15.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786139574;
+	s=arc-20220608; t=1786139575;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SAHWmXQWScA4KoW9k2rj8GhwFi5eX4hW9749TTJfaq8=;
-	b=swWwUsqv/pUxVlrwZWIG5mmQdz6mtB97whiod9Rn6njyQ0XzH4lgPmCS6pS9TeUvHXjDmc
-	2tPCdjney2bxsRIyQqLGTVOMkwnHpKkj+EFs/H3gwOgVFDTytbeuQ3SvYdS8lSVdBlt7rh
-	96tpQNy0urwzFHHlHO/5PrUEe3gV7oo=
+	bh=Nv8Gn0Dbbvp5YSY1snQEMuaj8Xoj78bGAh3lFaC4z+8=;
+	b=dfiJG1vkw/U1U6AsvBDbKD6avH/OAKJhEVf42SoEqvfspGZ54+Z53vABVD/wmhCYyn3ETE
+	/WLMBFGLZm+3KY2XLs69kYYZO+kJAVNpv9hf5Z5D/fpPgpAhCioheBpVlf4QBUA28eKndM
+	Od0Xv0uRNKd7CCwLbkEkxR0gUvzE7wM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gUAugGbu;
-	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLjD6LF7;
+	spf=pass (imf15.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786139574;
-	b=APTQ8+86O0deu5QVB5mjmLD+Xt3/miuYbq1F7PGkYJ64y3g4aRy1Of6l2Wd9pKLNNTfUdh
-	SOO6gQjEFhMCIc9gngBs0pb9TYS9LsVOMuO6GjTjrNs8bCEAnf/ORLUki049PLdXdPxcQb
-	I4fzMQ8nwpRUTBHG8gmJDqHduUhok74=
+	t=1786139575;
+	b=oFGs8y4cQXPy37u3/aI9qLvtKefOahj6NmgJNP+StS84Bqy23Ks99WLS5EtzyEiItZ9I3f
+	L3WEsPUbvefvwlgzJkMeRE36bw5cdaF0GFMoZN4zHbMfUSyXAel1XghBAlIYLgyYIX7kh5
+	AfTtKXUzBczSLEJzk047joRiYq/1HzA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E1EA4513F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7EDF045160;
 	Fri,  7 Aug 2026 21:52:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F1B1CC4AF1D;
-	Fri,  7 Aug 2026 21:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 27989C4AF4D;
+	Fri,  7 Aug 2026 21:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786139569;
-	bh=vVlB90TkMEPlFOEarnxtlCTdvt+8JBrxx/lS7exZXfg=;
+	bh=TkzoIndNGWAz7eMJZIeS00Akw8QP2H+V8GKbGu+OhPY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gUAugGbuPkp8W/LWiGAXRpzlNXQ33WRr6bDE5WalAitW0UDZ+6ib39LpnxspJWvme
-	 CuxS92eb7WjwNcJY0NPjuCsATUGRpbfoZxMaAZLH2r+5MUvbDcB06bhbR+Jurz/QNU
-	 +A7DGERCMSbbZ8L3ctwR9fZn6cPhxfEAHh1r98CW0F8xwkQKxcLsyItw6aGOv1nKHo
-	 4BvKooLoNBNNze8CcIH4cryj1CDLlSw0jgy4c0re/6twB88C7j74lW6RzGsBPUnlUw
-	 UYQdDuK2vX9QoV2pOnmcRyHZmyJpcr8Bwmr1gyFbbXfTA+ngy/oRMYu2lh/81EbduT
-	 oV/mwyr2fIGng==
+	b=FLjD6LF7CmdK9sSRhsqRFy72cX5AQdbHg9Gl/7NkFIrl/CCSM9yBJgZHB/WqJXmIg
+	 9zVspnWnCfoGkk9XU4xt4dv0ojCKW2JaHsKzaptjrgUQ9te1ucdBwxfyTRVYHotQXb
+	 hsXbkbKpM6OdbeVbTroe2kT7zk6zfRXrF9rgf8dlqgldxhr8amZ+U46LWAS6PfxdYp
+	 TgT8EX+wurZzkD+hy53R22CVQk+i4N+abVS/WFAOU+Zigh8aVrhjwLPJj/32h1fHnD
+	 ETYPcSyurHVqU0vD8202HRqss3gQDOpppFFdrAs7pDyH1iAfpPJat33TU40+k7O2lz
+	 qqxcdLg8RcZag==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDB54C5ACD8;
-	Fri,  7 Aug 2026 21:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 065F0C5ACD4;
+	Fri,  7 Aug 2026 21:52:49 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 07 Aug 2026 14:52:52 -0700
-Subject: [PATCH v10 13/41] KVM: guest_memfd: Return early if range already
- has requested attributes
+Date: Fri, 07 Aug 2026 14:52:54 -0700
+Subject: [PATCH v10 15/41] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-gmem-inplace-conversion-v10-13-2fc18ee6d3ba@google.com>
+Message-Id: <20260807-gmem-inplace-conversion-v10-15-2fc18ee6d3ba@google.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 In-Reply-To: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,13 +108,14 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=1860;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=3762;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=klJ2px6Wqls0hGacJ6oWy+P1esd5PU6yM+WgWOJIUsI=;
- b=0vcu/MCQmdtGPWXOU8t4S5wJStaSMSvivJsV/Xl5Og7DLO+sy8ItmzZsKMw2S/tvGBDd0R6fn
- kv9xs7ln6iLBrXgNjDz8oyAG22n3GxyCUR0wMu/iTJCQy9zQht3v4sP
+ bh=vRHAPnsy/a831M2QO9lXaFqyTG6Mc0Skqo/1hc4/61s=;
+ b=9TIb+ZXbdQMmrXLDC7072TqBL/mub/d5Ks6MUbovt3WcKeDpnixAU2yGfF0KPtDV9N+i5+ZFg
+ hfk34FX6oJiCGmv+DpvAaRMkwVZbxV9kE6Xqd6nBrhbp7s0dXmGD85o
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -123,12 +124,12 @@ X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9A5871C000A
-X-Stat-Signature: djhjqbherryt8rui6rkgicx4u7shk6ye
-X-HE-Tag: 1786139574-569214
-X-HE-Meta: U2FsdGVkX18b7O//axWM+BddledqbL5RhStdGt4WHCnjQUR4Ls7dr+zPFAAQLloeskBriBhYAJo05/obpmhUv73xwe+JIuHk4gwtLwLCURMG7Srh75/qH7NPsogoiVwSeHV+hzL1IwnaWQYInIU0w4vMFkNF/TgS6szzWNOaIqu6dxSKJhwcqfM/eQMEH3fmuhX3Rk/guzuC1pk4etDBm174g/O5+20klSWOonn9Hl/72/ucusigHArAXa3r6fVHQBaLJGh1E/ahQ6phb5FqOMXx5SxYtb36lcQzUvWKVLUsMmBPF2kOzHaUtAfLhyESudYi3GIl+a0+/o49G/1VGYySQHrErHijMaTvn83g+KJqMIPbwV5OTh5o2Acs5nIEmQME0b4t8AYoXfhdwb/reJJ1Y3yRO7VxJ3/iy6NAkg0E/PO9FYrIpg4lGY3NSc4ayqBVzx+26bjB3oDXQsOBf1vh8UN49bQ2T3TfxWJ1Czui1bwNr3TV68TfOrZk+KC2s18N3z74pp4t4DS/5JrOKf7lqAy11JvSk4sahkSAPfyaBuA6U8HRFM5m/vpij5pHWpoqXzmFhciunl98m1d21DS23htq01cdUlWvNjJ5llm+swB29r/RnpoYcgTEeQyfggrHf3z0u8rr70frDmPtNdN8r+YBscYsEh9GkefUsnS+bdr5TWApeuHS5RyeF5QOg4l7OBm6GAFFrX2IWIrDkaSBdw2QtpFuMWRx3D6L2sWRtid/IsqY5JIPB/uRzjJDUqltCFfzedkM9ZHQhGHtwCbTdAwk4R1IpJI/Pv1xfuAEfU8TKp5LxkkbUcf0yWBDdCV9191/rKZnSdx4GkNAV1IuWp2pcpxmcoirM98yOR8i/v5deBqj8CXYqRVjhPAMRK6/TMKBL9P/y2S1q0cd1jwElBS7oSE8TZ/0kWEruEU5J/+VrsgMddr9wDTWJtIluzuziyH7KwJdGK2MdhN
- 8a0f3d/h
- XYDg2hfNr9CCkCw27tCukWGYVk+Da7aMTtYEELBQTMyO7rueqZWE9nYMKEeoZmPH/6ZOjvuZf0L7pRksTA+IYWxi/rZiUcBSmKIJk9pbyWGL0333T+NOuVu7gVIdAeLh9Rd/yw3X+OdXkuTaSSIUmPv/yzg95xXIqG7EEkCgtLfwDHC0qlTU4ifOrU7Z1NmuBXAB+y9yo20TBFHi76CaJ3MqqPHeJB0JMmnkD8ERyi8xQA5uoZYV7gVVBggX5ogPyrKUf+Eskvmm/0LIU0RCEaQRIFjq47fqBlPkgPQ/7GHYMpAIf8+wVxQZkqdYgiNAclegAczmpyZ6Xcr0Tshi5WkbKU5Lg6k7VH7s5bu1d6nlUxSOf9buenxuQBh7FxPMHLgCBW6KnRrYjnpWk1bmHAbgZRaGo5eZri8sa9/yS3svFm/T6dwItrBNwex8fNV8o/4yS0PDE4aFSqR/EY/ct857xE37IbGUgcz6+97/KO8xUrdDvflqPia0iAzu9EYKv9OhdF7asPXzNTh0uhH3EjxLgrWqvlYIEFchYDiZDgmrqJ5/X0mZhAE+pPg==
+X-Rspamd-Queue-Id: 3B9ABA000A
+X-Stat-Signature: 7ugh14i6aiykt9an94eqqox46ypsegs6
+X-HE-Tag: 1786139575-87714
+X-HE-Meta: U2FsdGVkX1/1SA4nRAmR/6UQJvMbHHE2MDAERUcyfZcsW/jq3bpjbjIlvhRq/4LwYI7expiJGrxTnDI+gGRzS8XjWPt+JPlTjVbDk+YiU5O5VFIGrWTrkJauvDL+fufcr5KbIr/MS8XDMMCjaSQUv3cp/VeW/S4P7Zz/mpeD21KXUSp4NvNVbW3cq6Zm9j00/n1eHet2XtWKQf04Lqp+kyti1y0cpPTJSQTtcVNnDuFyj7E1C34IEmu6by5OB7dXuAXOoxL0HrUNkG084W/Vj+3sIu1O3VHU83pWCwpinT9xXrUpzNdNl3ZnmgnWbYq48T2ICQoOWuT9lIUU48v4ysymfPpwOCGZ8BaCgN5iSy921KcVWgCpz4BJPQfW3BLkTwE22OPrJCu44RxDiVIm0xa1z2IYQi3FlH6U+zi4/Yw/Bcq7+C6Z4kklhLmwTEM0w5rsF1hORZZj1QJX3M31a+Rdp/GN3AnbADOX9Vyi2vdytScYK0xL2UbopuLbv4gAdmr95qXaRoij8Gf6RBQosTT8/DAAA9vXo15X/jGFtwM8aGzxe37fKsY8+NguYL2VzFxAyLrP0p0i7LdLu0/bX5VX5I3ek3VZfnupbZ8jbaf2dZjnpTKeiAf7Av8/Of5ar04BPFOWkZjgqZV0Rm11U0QoqOlt2jMc8U8+k2M4f2xbzd5RwGRI0m0mHoFW/fcxR/lEq0x4jAgnUCEVBfMvRk2CqrmTiU4IWRXAL8xivc+3FzbMYJxXTigUHsK8fODqRmcniqn3EHoC7J+bBJytrtG4pJAysDVQjq6TmCNi9O6yeGyW8G4ZrHdxg5vxfDJP2h1Ggi4l78JBZt1dfH1AeIHc+i0H4emWSPx/AeyaI8IAQPb5kVpH3F7nCv88xHo7gh6eBrttb1k23i6IXKFYATVHHx5E/3be3R60rlRU8fkM4Jbr8JmL0yCYn3/Py5bUoMhC5aKLNA9D2MKjXRJ
+ LyLhDOzi
+ NgUnsn6adPz9vG9xxoWwtznmIA3vI0shWZqSynH/Zt+atGJNeaKTBsZfTLMkRnT/GK1m2xZ0149wIp9HBLS92cXOPZwre52qN06K4LvhppXWnzDmscV2sXOHrISn7+9fRpzuSHTxZZNInAlIwgIHP0Ol1Grn2wGGTtoyvfCP25nFiNX6N+rKpCfViGVU1cvORzwU/K2QB48/EMKxmT+fnuJD0pwylV0WG0aQEhDcGUg71AElF/SYI0nFA60ifdAXC18dinakqvXmY6PxJaXFnFiD9PrIrmNZ/J0/Q4AZwGVlS35D1HtPNnQXzCOmPPy3a0SaTl1zfQ79ez4VwaGD/oBS105STomGpYL7/Xjly1I5un5ePuP7Zdh92TJOnLB5CyIwlyRvS4iFz9gl6d1z9Q1BMoNKVZBt1aRi8hn8y9zVjO1WTIKsKZ3NJLcB9qH1yMF/99o41jPo6O/SRMR8XZvU0FL9CkmJdE62mTyc09Aix+0UjfLPahgBF56KLT6HRhENIqduRCu7x7tWuVCEabkIB/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,64 +139,109 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Provide function to check that a range has given attributes.
+A guest_memfd folio is safe for conversion if guest_memfd holds the last
+references on it. Any other references on the folio may indicate another
+user, and guest_memfd cannot convert it to private if there may be an
+existing host user.
 
-Optimize setting memory attributes by returning early if all pages in the
-requested range already has the requested attributes.
+A folio will have extra refcounts if it is present in a per-CPU lru_add
+fbatch. guest_memfd does not actually participate in LRU, but
+freshly-allocated folios are still added to the lru_add fbatch for batch
+LRU statistics processing.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+This one known "usage" of the folio is handled by draining the lru_add
+fbatch. After draining, if the refcount is still elevated, then there's
+truly some other user of this page, and the page is not safe for
+conversion.
+
+If the page may be dma pinned, DMA is obviously using it and hence not safe
+for conversions. If the page is still mapped after guest_memfd tried to
+unmap it earlier in the conversion process, it is also obviously not safe
+for conversion. Exit early to avoid unnecessary draining in these 2 cases.
+
+Provide a drain status to only drain once ever while processing a batch of
+folios.
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 23 +++++++++++++++++++----
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
+diff --git a/mm/swap.c b/mm/swap.c
+index 8e965c8ce9aa9..9f511b97ab110 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
+ 
+ #include "internal.h"
+ 
+@@ -995,6 +996,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+ 			*drained = LRU_CACHE_DRAINED_ALL;
+ 	}
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index c9874bd85c5d8..896699afcad9d 100644
+index 896699afcad9d..030af0855f8b0 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -95,6 +95,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ #include "guest_memfd.h"
+@@ -542,11 +543,26 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+ 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
  }
  
-+static bool kvm_gmem_range_has_attributes(struct inode *inode,
-+					  pgoff_t index, size_t nr_pages,
-+					  u64 attributes)
++static bool __folio_safe_for_conversion(struct folio *folio,
++					enum lru_cache_drained *drained)
 +{
-+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
++	const int filemap_get_folios_refcount = 1;
 +
-+	lockdep_assert(mt_lock_is_held(mt));
++	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
++		return false;
 +
-+	mt_for_each(mt, entry, index, end) {
-+		if (kvm_gmem_get_attributes(inode, entry) != attributes)
-+			return false;
-+	}
++	lru_cache_drain_for_folio(folio, filemap_get_folios_refcount,
++				  drained);
 +
-+	return true;
++	return folio_ref_count(folio) ==
++	       folio_nr_pages(folio) + filemap_get_folios_refcount;
 +}
 +
- /*
-  * Returns a locked folio on success.  The caller is responsible for
-  * setting the up-to-date flag before the memory is mapped into the guest.
-@@ -605,12 +623,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	pgoff_t end = start + nr_pages;
- 	struct maple_tree *mt;
- 	struct ma_state mas;
--	int r;
-+	int r = 0;
+ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 					    size_t nr_pages, pgoff_t *err_index)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	struct address_space *mapping = inode->i_mapping;
+-	const int filemap_get_folios_refcount = 1;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	struct folio_batch fbatch;
+ 	bool safe = true;
+@@ -560,9 +576,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+ 			struct folio *folio = fbatch.folios[i];
  
- 	mt = &gi->attributes;
- 
- 	filemap_invalidate_lock(mapping);
- 
-+	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
-+		goto out;
-+
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
+-			if (folio_ref_count(folio) !=
+-			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+-				safe = false;
++			safe = __folio_safe_for_conversion(folio, &drained);
++			if (!safe) {
+ 				*err_index = max(start, folio->index);
+ 				break;
+ 			}
 
 -- 
 2.55.0.654.g21b8a5bc05-goog
