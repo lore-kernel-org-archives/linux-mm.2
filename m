@@ -4,137 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D4FC5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60C10C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:50:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584E56B007B; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
+	id 50C9B6B007B; Fri,  7 Aug 2026 03:50:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534D86B0088; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
+	id 4BD286B0088; Fri,  7 Aug 2026 03:50:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424316B008A; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
+	id 3AC696B008A; Fri,  7 Aug 2026 03:50:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 16F896B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:33:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 85BF5160350
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:33:54 +0000 (UTC)
-X-FDA: 85073659188.20.0DB24A6
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9DF24A000B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:33:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W8yTvrGV;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EF75B6B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:50:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59D0C12022A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:50:11 +0000 (UTC)
+X-FDA: 85073700222.04.D6AAE48
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 70F2C140008
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:50:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GW3kAuXR;
+	spf=pass (imf09.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786088032;
-	b=EMeiQKu1uNBX6o5KBLZDIamwrNT+cejbxEMFHKU2O7QEAXoFplMZLw20muX7LTkeoSiIAV
-	SbqUBWIubp9aOLSNSfHQiV1kqdmT5yqGDnWHCc0hA6dVnnctKM4EXJmz1Ie3iHU+7z65PQ
-	K4nNRbO8kBeCe62QG5vln8YvyoyYnFA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W8yTvrGV;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786088032;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786089009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
-	b=TUd0U3q6CN8RIUwybs5xGJ6/w87vAXP0JyKZRQTM1l2PGX1UPM4nJP7mAu1/kJ9EnyHzGs
-	/h63JztL/Zy/d5BZ+Fbu51HaC5avBYyM6Bic/ufdKwrcxEoJYHzBbIbk08IzysbDPhzHIX
-	iXuIWWew1i8GmdpOp79CgY9QB2wAd1Q=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1600d040e4so257973466b.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 00:33:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786088031; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PY2R5VepyfgDHdY0Kl8f8YxObOK1jZLAf/9YkxGGVIlTrIV4TfStYk+d7OzX9xIacj
-         4ODYm80kUvhkPGKFm6pxPHFzpZ8/stLAxYtPHZSQe2IXoBStd+vwFQZ2CqOhwtGGwPP+
-         KeHYgaNLiZBEekzDN0/WQlmaN/IbJ7a3gq983HAv3bLeC1brw8oMPYQBCX3TLyhz11hq
-         OPurx8V/v2Nttdc4tY0KFE77U1c3hVBcHPF1H757Fz1tQu4B/MA4HcbVP9pC2eT80THY
-         GW1vKIDs1wkueXQIpTuHoA8l317Xsopbrzqsu6bzSI+wu7BXTPzMAezO6mrIYleKPhqu
-         WYog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
-        fh=I4HCy/FvPMt29BYM+O0ZxTFyVKEa8gojh9PfMOKTMo0=;
-        b=AOTDJs5C9Zg/V6sky5/+0yayMnW8hyStmqzh0AGhegC6OxzKDittg3jhOgb4e+7l+x
-         Y0Gpip3EJcT4DZ5jocqY40doUZk8BxYuDapYXaAzXomwG13qFajXNF/HiYrx2xoCOUou
-         koknV+H7wt8bTPdj+f9/1lkXwSI5d9+VMnTZPnX0S2wIBwRo9ed73f8mnaDCPi+Y54j8
-         /wG0Pv3pzxf9+oT2cU/SGW/sSIi+l+REOgNG2eL+3l0hd6Z2EPnAPgXgvHOmuWrGqasD
-         02UlVdSH/fjtKBtTpz/toLH4F0jCPrM3mmwWeNAHeQfwJBedhfUU47LTqDWBEBvXE1cr
-         8BjQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=gy9L9/LoV9ZFrTZKgyHXZWp3XQGkD3Y92WNpBSmA0ec=;
+	b=fu4yVKMyzfMfLvdPQKP7hBi+m0uwW/IVxn/sfMk1FG1IjZzhowruXORRIRZrcp+Z0T6rgx
+	7RU6un5c+8umnjqpTJ4FK+cFam0xwR0VdeHN4WhusNnVJdZO4mjmsbDrjIMBw5Ini8i4N5
+	3nysC58oRGC8HXXgxffOGxJOfSRXGcc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786089009;
+	b=BKqvu1Bajmcz2/EmJ/LyNt/zu0ciQDXdvPtt5Z0xog+VRqkFV5gLL9aC982qmNCdCt4+sp
+	ATeGdSGJyyefhMm6XEERLMXVMpGfytsg4RsY7v0T9RXHzvKKK5MiGcEiNnPJn/SJJ6GHRI
+	fyrj0NqRg7TeyzHfKuDcOmCUf4bSnrw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GW3kAuXR;
+	spf=pass (imf09.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3810f0aba07so1550139a91.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 00:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786088031; x=1786692831; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1786089008; x=1786693808; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
-        b=W8yTvrGVDMXQVbGdWhboUacPYmpVvQULPXwxWFO1IPs9+w62Pg2A+u1AiXMA278fLX
-         rU7eEjcwzeR5f5aAlaiAMaUK+laRboYU5m0wyydYhDmcojgQyT+m0ExiFeUeGfCMVTbx
-         vYlEffuWadR1Zu1mWFrmMAG741svUGJrsRL1kP92UViVuBkP2rJ2/Ke781IKcf3rudZe
-         VL0s8WqOmx0I3rw+KxuyVounbT1+QGOBaP0sRTgujEtralleVicWQv4YBpxxiQYeJMPf
-         owxPbf8ipb9sYe0+eN439s9YZQ3uSa5T1SAivsraDg/dBhKy/jAzgDMip18kaBJs+O1H
-         w8Uw==
+        bh=gy9L9/LoV9ZFrTZKgyHXZWp3XQGkD3Y92WNpBSmA0ec=;
+        b=GW3kAuXRYdgNcMHMtj1ABTovzntK94yJeczSES3ouQr9lAU0Ok7QsHiLe3V+Jhn7Vb
+         m25h4t4oaT0xcGM+7+InyBSlQuKd0IOOu1iNwmog8bu20jAGU1cZLKxH7YVStC0PBa4g
+         0B7jO6evz0F2NiSRLnRheIKFloVWqGcyOx9oEfS8Ao7wEvgfOv+25joH3qMJVhHLlPgq
+         QximZ6CstBew5Vf+062W/W9azBml3+VA3UBv0OVkAlE7wQ7dzq10BdFXPgiRWlYm6TrT
+         D7HmYXQ8/590awE2ebk3swpJq9zo1kmrfvcb2PfSFC4bZXokdJJ9a8YRGD2aB/1YU7wn
+         l6/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786088031; x=1786692831;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786089008; x=1786693808;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8zbS5qgQb6dtOPQJn038F7bIW35hHx/dHAh4uqp+OW0=;
-        b=KPvj9UCQAFb84rSZETwPKz7DSAlOP6ufHCkwndL4v+z02th3bzN3oW73IpQhkvOezD
-         2Pr9R9esLT9oqzBOHPjwqvj0QoxbhQLvQwvewNxCKIuSqlMEjtRnoHYORQ0XFtEM2I8d
-         Rw76t1X/GHJoNtqLI9/xg13Wx+B8DfppHrLuRuUJS/AZVMjbvfzNl2a0hMgzifaLYHXB
-         IdbszX0tcTHfj5mi+Ks0JlcgorqAz6gtbmRtkf2CP4skv4cgZ32/E7lDKBmA4ybXbIvE
-         T79LuFFARmpzFqO8uA39xYo4W8Qlzsnkm3T2Wzt8vLa7CHXPGgJNMxFFjjZ4xRwkgOJd
-         sarw==
-X-Forwarded-Encrypted: i=1; AHgh+RorRzIQiKHQoFbnIjNps9WrjNSOT50PJXY9fuKP9dot6gtQAaNAg2UjF6cjcbu2LCcpDpMLWC1CVQ==@kvack.org
-X-Gm-Message-State: AOJu0YxrOMdupN67NZQM8rzO/k9IgF8UJsfxoJm8pVxzURgmiWJdHBJc
-	MOHJaQsA6AhSNqOvdWbpnIqkwNnIeirzNyxiKm83Peym1rWPEdogBa84eRSwYtjq6ZLe10Q+Mck
-	c5jTgRdNHJGLm35X4xNCQm7Kmydtu/ms=
-X-Gm-Gg: AR+sD11RcH5X166RNsqHEvaptjKOs7M7VQYddLrc7v2IO6Fx8SAkwv7dpHbIzGNhHpt
-	3JVoFsP/lg36Hd93zI+0UIo3SKfKJIRmD/l0hPFqANlgzxiQpLSeL0FisPfrAwj8aFx7tidLooO
-	cB+VsU/mh/gkFYD2haI7Ebl0hhVIeq5lvKlsEdyoYF7g5r+qX+GD4uiTNUKUa/owzeXAV+9qxZ2
-	Y8Pa4IC7JJ1ZoIA4JRX6MkcR7tmGec01fJwuXgFfY6N1iW3YYomzvhUesZ6en3UkhO7ObDdCC2s
-	PeP4cBBDRgkticEvvVp4KrSaxN+K1Y2/YcIncb2CokssumYmngRjm+WU/YUlkhCzqln1Xez/zga
-	Qjw==
-X-Received: by 2002:a17:907:7b88:b0:c12:677c:795f with SMTP id
- a640c23a62f3a-c206355c0cemr526756766b.7.1786088030668; Fri, 07 Aug 2026
- 00:33:50 -0700 (PDT)
+        bh=gy9L9/LoV9ZFrTZKgyHXZWp3XQGkD3Y92WNpBSmA0ec=;
+        b=VoWKRMRSURNb/mFaRr9Cu4XolDtwekQBUkjvSbOYkXMGIn8cB/hq6w2Ls0fPNvhuHO
+         7GZaBkFBmMe5YDMzZa99W7ktZDt9KdNvPXHoGei+AB75Iib45iylsDchfMJwb7Hbk/Hq
+         VTOoN3UZO0CS4VICmuhvqozmuho4x6ZAjn7FubxvIykdXUVkx23yuBv2+e7nNQBosv0i
+         hBM4spuO81sIRicpHv1/24f+DN1FaCFyiteqzE/CHflWZ7CK/nk8IcePWS6uNiAhoHC/
+         PNY/hGBvz39vWEXXFUbSXF/oIdicQXGCV0dPVEqNe3bitNQjPCIHrT0T++HiRDSZr7Sf
+         G4Kw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0Li6lA5ixXfWf5ntAz+fuR8ypAq7OUHhYbXfZqBL3Ha4SrnnhWVBxkHoDOuuhuzqhzSXGGz/82Q==@kvack.org
+X-Gm-Message-State: AOJu0YzYl67zsiPp4+qQ42im2ihYR7t7SwOmuKu60nH54d+DSmwc60c8
+	QzWDtQ7TIU+ff8lnpBtmnMCUfGVTFlp6RtEwBHn/j1iNry/u5ak3WLwR
+X-Gm-Gg: AR+sD12cAEDmrhn+f4BW6DsCt84lLEY7R9wlq44NfHUUddb9+GsvqIHxpwXy9UUe4uW
+	YQEkBWdd1JYhGVk+Jbv+uVgic7kSHUsXeWMPy9yV8aXSFC3/5P3M9dE1cbK+zE4W8KJRk9eQxTG
+	RYFWQeTsg/X5euhBXHFOIF0DaxJDzQ+2Vv/AGV58oIqyTR7+zNkTqmbbEFBqXZFWfkVtZ8OQomk
+	HtlXiTy8iuz5Xi6g2rkdVriN5GW5/UyLB8wHSjCTeK3f59qSCy5Hicoiw65hSLPn0FqLGpfL942
+	K1kJJBazRTa2Y55Hs4WT1kIcN6Kmfnvbxf+1ny2aEeXLMYG0prGqed9jXF9x7WXnroXrwed75v2
+	F3eLjcIytbyg3WQjCB5uXAYx2hTibagTcc7YeGq0AidJL40318msn6w2K+fS8kr9VQLxUHcpL9X
+	rhuxCLuewRjHZv5y03A2kPJW4c6znohMlRy6j1WMr9otv2CPG+xn4CldlcBTKDcbgE5/LmLlrKA
+	0QZq+wwmEPyzOvHpItCXuQPrA==
+X-Received: by 2002:a17:90b:1843:b0:37f:bfa2:1887 with SMTP id 98e67ed59e1d1-3903c53639amr22774995a91.8.1786089008044;
+        Fri, 07 Aug 2026 00:50:08 -0700 (PDT)
+Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:3629:bdc:8549:6d81])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fa4fc7fsm1453369a91.0.2026.08.07.00.49.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 00:50:07 -0700 (PDT)
+From: Hongru Zhang <zhanghongru06@gmail.com>
+X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
+To: baohua@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	vbabka@kernel.org,
+	willy@infradead.org,
+	zhanghongru06@gmail.com,
+	zhanghongru@xiaomi.com
+Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
+Date: Fri,  7 Aug 2026 15:49:47 +0800
+Message-ID: <20260807074948.28953-1-zhanghongru@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAGsJ_4zi=MWULn80yDXmifaoBeQ__xwMVcObmYUj_YGG0_D6Yw@mail.gmail.com>
+References: <CAGsJ_4zi=MWULn80yDXmifaoBeQ__xwMVcObmYUj_YGG0_D6Yw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260806193228.458685-1-youngjun.park@lge.com> <20260806193228.458685-3-youngjun.park@lge.com>
-In-Reply-To: <20260806193228.458685-3-youngjun.park@lge.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 7 Aug 2026 15:33:13 +0800
-X-Gm-Features: AUfX_mxmI0O9m5f4iiwrDj8E6jP-_P6en6OaHqBxThiD5cPeogYLqSEVcwiYcRI
-Message-ID: <CAMgjq7DuLQ93ieakdh6P_rxjeDZS2nq0uaJWPJmw=28LujMOxg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm/swap: scan by cluster in find_next_to_unuse()
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, her0gyugyu@gmail.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9DF24A000B
-X-Stat-Signature: ncbt9gh5rfibt7qiae6bwqxjiyq551wz
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1786088032-247136
-X-HE-Meta: U2FsdGVkX1+/TUbbuYmNAKjrzm57UVGTiP2Mgejm4eFMUZg1ku8ntpCGYsq/kI8SEdSIuVg3L2K7QiQt2dugBmqPfcF0l8P8sWUq1yIJjFn+18HcZYHNAu0JAI9UPVJSxPpWPkvKGc7gB2zIPIEWtt9NyjE1CF+DPTc1+lUmrLJvO6a7Oe6pfUpd0ANC8RaLP16oi53sXocDUzfq5P+mpL7EkMcV5CdqF8t651kszwtD0lTF8TcpRYbQOxPakOaDkWuprdtwbQzWt3/FvWFJ7hCHJDAgPxFJu3H/q9HUMcWV/pdMDJrS2dhdCoLguge1KOEORAd0nsieFHPYxB0wi26DVSPfhWTpNfaXVxBF3ExRJFAMYam2ag8BUI/ye7gXIPQbc+OPHPNJKuYbuNAot09RIYSjdJI80HS1pFq2TEA1Mhle56Fkq6PL9RphtpiPjg7ZSo4HA3XW4lm+lYIi9scX37uR1GU8lvaaBMEj8H8XIPfRhcYiDBdFJLRZmuq4R7gBjQP0QiVdizH/xNDZfUOl0jziJnrqk89WJiUGrphCakMpks6r0kMy5XgjeOQwCjuHUcORhOK25FWr5M6PAoHx9EGKdJcI9v3vkukFqUjoWxhN6abAiSZRshtyboMxYRXD4aJkrQuelmUH7uhjC2aUWkFpLaLKBXcrWB3rp8JWDCc+dx7Wns5obtP1PMStYS3jf/CCvjwRsgSvNOQLVCG1h6UkJ276RidvEpSulix30dnMWiWR35qGVM+Y+wzCA/pkK+YiqhhMXgfuhFGQ3GwycDHmxCKP/kpXbU8Ut3pzQGPYL7CYSLhuGaIYoxww5LyrpX7NxWknUX/NK9eDcd53V5kSCcLY8rUj1VX5WyJy2rjdx5lqYnYx73orjcjiYn2BU+lgSG1CqN/SUraqNrmPNUeXWxBF3YeVznN4+FXS8TO1ff/jUXYNB8FjrEUchyeGz+4l3KExeMNFlGq
- Jsr8TglQ
- 0f6vA6E5DPm7Dpwt43uNWD1miT4lQFK8oe07ODkpZzX3bZQFPa3Ykj8qC+ivzueB3gYmvqhgfei+DLBK2zytRAexyDn2jj0uS5HKOB29cbiXaX/QF7M8W2b9LLokQBZPhJayjRCWUVkGwt6Z6Lm5vUDku0ymd7OVsuCpimH0vWOAt0DICnpmhUyiJwBymC7K0vTp0DcLevqGF9WJ8l2wFNAcqQ7hbJr+Mhi1Lm8imAy8v092Mabvi3mhybQ8nYR1m6Vzi2eoKawth0AQEex7EdXbQfI4jThfLrAv1pWe+eGQ/QpcWeKl5L6eir4PQGi7tAoaN/gEwaV3wr/5XNcXHrjEvMSHLyCL1Vjs1NSXlvDseomLGkusKhxUPHZn6/LEzobROMlkQ2xvs/UymB4+49JdrFX48dmat/YTVQhc17EmlpbTSuJhxXlxQJYDgT7/jqyXvB8lyVRJ9c4p+iG272+RZ2Ymwys8Sf9URlWJCGG6fiUNHb8blZwJWInELXPNGlm0t8i3xaWbS2C0=
+X-Stat-Signature: z3a1mwxbtrqnqoqh6hk1txhk6mem8zth
+X-Rspamd-Queue-Id: 70F2C140008
+X-HE-Tag: 1786089009-655633
+X-HE-Meta: U2FsdGVkX19gPLf+2IZZLobEbUo36pkR3J+xZNo25wBQUZrNy8vNMVhjB8osX8lOknMQVrTANcGX2wnnuJIuLZr6ADoe14HuiU/nl7pyQ1GxOruz5FqseLN2rf3ZQnfmeNmXUQKOJJvLx0a5EoYnAbQz0alHx1U1DrU8gPiTWaOy7hN0At0T98cfmMoTNG6M/VEvnGknKoivWeY+BKQU48yhvSKTxThSden3JdIwgaw1i13cqXLJjwrs4nkkx+uarqHdQOjfuUmizszPiiTGYuBQJoTB7PjtxSe+8HosDgHe0NKl4O4EHfFxvBNLnCB0HFKXgMk3vb7/zrqWuQ7yxjFAwfEwaZ0mT4e0N7ks4CfJ0I2iRr7WuFol3mKZiTtsvBvG8/6RuEeD55WbrSClwAnUOFXk/HVyL6/IQo6R54Gu1cGr9mb57e/r9P/pxJZ8El3tbaDil4hfTMp3pL0DnwOXP8XLb4fKoSyYyA7R52HXBSZUKAunfRuk1cVscgBbMfWOUwM1qVHOP198Biq4c4t1lZMBk9W30HzCQ3sNXe58cbrRmaroyPttgO6W0Oq5Nz1KkJXT3nQQn93BC7Zxz1ur8vHBK9A2o0MAXWlt0yMZjLiTvDwSrW1P0Fn/m8purWfmjtL0e2FPO2EGx5+4PkVQdfbtH8WVIqOi8R3QTGOP7o/qf4Z8U7XHAXs2rejE8vrGBDaw7A4wzoLd/46OS3GgbLS2zbgXPY40QMQUpjEf6p7RTfWQ0PvAvsEtChqLKKhyb6hKMWI1JZCIr+d7G9GSSM/VGnVZ2I5p2KvOfHYG9ImSRuDsqxojbVZ7bD945PisDXipI71p2BW2PkzsTCPFZMdAAFLgR/hXtbr/waSGxQU+CJwWQ3sP0vlTI5vh46QNF3n0uBev207eJ6iWfxPdX9brvBkvXJN2NF6V6cwuerOcoUp8zwCCDvuLYBWIthB0Hd5Q+ZHSJ00gKWq
+ GogKxnDB
+ Ci8PCJRpaKoCzzWyLc81uCo1QJXEL6lFY8m4wtBuHer+GQcFC9JC2rfbeBjPktEAVAvG8i2AvfhzjecS2Nt8jyLOH4or+KgAb20NL6b3wRhyhVYd8MzmWGj4xDc5UNnjqoa1C/0LqEBtKy1zCVfu9zxmXmBVKZyyQeDjcHUMjKT0sr3UoXacb5FKgCWwJSBbwUx1z5tP22s1gdSQeohQg21R9kIlKMzed1L1zOa1WFI2Mvff1/rhr9uTYOLHRqD3/1F8Xq79K+saxiwSl46gDMhIKVUvrYfslbBUa3xrv+pAcyr+dY+tUXdpWW+fdJOWSJZOTmRxZkxzGLdEMIblV87AsvXRQX3s2ScGJufNbfRMa2wlIzy6KA4Y7wNCQVkajFjZlN2ANkvFPkGU6bT+6Bzuu0uVzRJpXnooXonDEJoLDon0OJS2uXrkLoO27asZyVcUpnDLOdboCIckkoVkyV8zS9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,42 +134,271 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 7, 2026 at 3:47=E2=80=AFAM Youngjun Park <youngjun.park@lge.com=
-> wrote:
+> On Thu, Aug 6, 2026 at 3:30 PM Hongru Zhang <zhanghongru06@gmail.com> wrote:
+> >
+> > > On Tue, Aug 4, 2026 at 8:32 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> > > >
+> > > > On Tue, Aug 04, 2026 at 05:52:19PM +0800, Hongru Zhang wrote:
+> > > > > From: Hongru Zhang <zhanghongru@xiaomi.com>
+> > > > >
+> > > > > Page faults handled under the per-VMA lock currently fall back to the
+> > > > > mmap_lock path whenever handle_mm_fault() returns VM_FAULT_RETRY. This
+> > > > > means that lower-level fault handlers have no way to tell the
+> > > > > architecture fault handler that the retry can safely continue under the
+> > > > > per-VMA lock.
+> > > > >
+> > > > > Add VM_FAULT_MAY_USE_VMA_LOCK as an advisory bit that can be returned
+> > > >
+> > > > I don't love that name or that faulting retry behaviour is _modified_ by a
+> > > > value that indicates fault resolution state... ugh.
+> > > >
+> > > > It's kinda confusing things 'VM_FAULT_RETRY' is 'you have to retry this
+> > > > fault'.
+> > > >
+> > > > 'VM_FAULT_MAY_...' is starting to bring in effectively configuration
+> > > > options into it and that's kinda horrible.
+> > > >
+> > > > I mean is there any reason we shouldn't ALWAYS do this if a VMA lock was
+> > > > used?
+> > > >
+> > > > It's not too expensive to do a single retry with the VMA lock before
+> > > > falling back to the mmap lock.
+> > > >
+> > > > So maybe simplify like that?
+> > > >
+> > > > And like that this series becomes a single patch right?
+> > >
+> > > This is a brilliant idea. That's a genius insight, Lorenzo.
+> > >
+> > > I guess the conceptual model could simply be:
+> > >
+> > > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > > index 45b99c3b1442..3592bcc9bbd7 100644
+> > > --- a/arch/x86/mm/fault.c
+> > > +++ b/arch/x86/mm/fault.c
+> > > @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> > >       struct mm_struct *mm;
+> > >       vm_fault_t fault;
+> > >       unsigned int flags = FAULT_FLAG_DEFAULT;
+> > > +     bool vma_lock_retried = false;
+> > >
+> > >       tsk = current;
+> > >       mm = tsk->mm;
+> > > @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> > >       if (!(flags & FAULT_FLAG_USER))
+> > >               goto lock_mmap;
+> > >
+> > > +vma_lock:
+> > >       vma = lock_vma_under_rcu(mm, address);
+> > >       if (!vma)
+> > >               goto lock_mmap;
+> > > @@ -1352,6 +1354,11 @@ void do_user_addr_fault(struct pt_regs *regs,
+> > >       if (fault & VM_FAULT_MAJOR)
+> > >               flags |= FAULT_FLAG_TRIED;
+> > >
+> > > +     if (!vma_lock_retried) {
+> > > +             vma_lock_retried = true;
+> > > +             goto vma_lock;
+> > > +     }
+> > > +
+> > >       /* Quick path to respond to signals */
+> > >       if (fault_signal_pending(fault, regs)) {
+> > >               if (!user_mode(regs))
+> > >
+> > > Nothing else needs to change then. I wonder if there is a cleaner
+> > > way to implement the idea, but it is really stunning.
+> > >
+> > > Best Regards
+> > > Barry
+> >
+> > Filemap Throughput (higher is better):
+> > +---------+------------+---------------------+---------------------+---------------------+
+> > | Threads |  Vanilla   |       RFC v4        |          P1         |          P2         |
+> > +---------+------------+---------------------+---------------------+---------------------+
+> > |   40    | 1069.34 /s | 1404.47 /s (+31.3%) | 1400.13 /s (+30.9%) | 1412.38 /s (+32.1%) |
+> > +---------+------------+---------------------+---------------------+---------------------+
+> > |   60    | 1038.12 /s | 1682.88 /s (+62.1%) | 1683.37 /s (+62.2%) | 1685.23 /s (+62.3%) |
+> > +---------+------------+---------------------+---------------------+---------------------+
+> > |   80    | 1042.62 /s | 1766.72 /s (+69.5%) | 1767.83 /s (+69.6%) | 1771.73 /s (+69.9%) |
+> > +---------+------------+---------------------+---------------------+---------------------+
+> >
+> > Swap Throughput (higher is better):
+> > +--------------+-------------+----------------------+----------------------+----------------------+
+> > | mmap writers |   Vanilla   |        RFC v4        |          P1          |          P2          |
+> > +--------------+-------------+----------------------+----------------------+----------------------+
+> > |      0       | 17303.09 /s | 18394.51 /s  (+6.3%) | 17899.48 /s  (+3.4%) | 18337.30 /s  (+6.0%) |
+> > +--------------+-------------+----------------------+----------------------+----------------------+
+> > |      2       | 16728.04 /s | 18591.68 /s (+11.1%) | 18346.72 /s  (+9.7%) | 18848.17 /s (+12.7%) |
+> > +--------------+-------------+----------------------+----------------------+----------------------+
+> > |      4       | 12596.23 /s | 18534.00 /s (+47.1%) | 16095.20 /s (+27.8%) | 18507.62 /s (+46.9%) |
+> > +--------------+-------------+----------------------+----------------------+----------------------+
+> >
+> > The key difference between P1 and P2 is how FAULT_FLAG_TRIED is handled: P1
+> > keeps the existing major-fault-only setting before the retry, while P2 sets it
+> > before the VMA-lock retry for all retrying faults.
+> >
+> > In filemap throughput test, each reader thread operates on its own file.
+> > In swap throughput test, all reader threads fault the same memory area.
+> >
+> >
+> > P1:
+> >
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 45b99c3b1442..c3ab30d32a15 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >         struct mm_struct *mm;
+> >         vm_fault_t fault;
+> >         unsigned int flags = FAULT_FLAG_DEFAULT;
+> > +       bool vma_lock_retried = false;
+> >
+> >         tsk = current;
+> >         mm = tsk->mm;
+> > @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >         if (!(flags & FAULT_FLAG_USER))
+> >                 goto lock_mmap;
+> >
+> > +lock_vma:
+> >         vma = lock_vma_under_rcu(mm, address);
+> >         if (!vma)
+> >                 goto lock_mmap;
+> > @@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >                                                  ARCH_DEFAULT_PKEY);
+> >                 return;
+> >         }
+> > +
+> > +       if (!vma_lock_retried) {
+> > +               vma_lock_retried = true;
+> > +               goto lock_vma;
+> > +       }
+> > +
+> >  lock_mmap:
+> >
+> >
+> > P2:
+> >
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 45b99c3b1442..9507b8a0fe18 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >         struct mm_struct *mm;
+> >         vm_fault_t fault;
+> >         unsigned int flags = FAULT_FLAG_DEFAULT;
+> > +       bool vma_lock_retried = false;
+> >
+> >         tsk = current;
+> >         mm = tsk->mm;
+> > @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >         if (!(flags & FAULT_FLAG_USER))
+> >                 goto lock_mmap;
+> >
+> > +lock_vma:
+> >         vma = lock_vma_under_rcu(mm, address);
+> >         if (!vma)
+> >                 goto lock_mmap;
+> > @@ -1349,8 +1351,6 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >                 goto done;
+> >         }
+> >         count_vm_vma_lock_event(VMA_LOCK_RETRY);
+> > -       if (fault & VM_FAULT_MAJOR)
+> > -               flags |= FAULT_FLAG_TRIED;
+> >
+> >         /* Quick path to respond to signals */
+> >         if (fault_signal_pending(fault, regs)) {
+> > @@ -1360,6 +1360,13 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >                                                  ARCH_DEFAULT_PKEY);
+> >                 return;
+> >         }
+> > +
+> > +       if (!vma_lock_retried) {
+> > +               flags |= FAULT_FLAG_TRIED;
+> > +               vma_lock_retried = true;
+> > +               goto lock_vma;
+> > +       }
+> > +
+> >  lock_mmap:
 >
-> find_next_to_unuse() walks every offset from 0 to si->max, and swapoff
-> restarts that walk on each retry, so the cost scales with the size of
-> the device rather than with the few slots the shmem and mmlist passes
-> could not free.  It has caused stalls before.
+> Thanks!
 >
-> The flat walk predates the swap table.  Slot state now lives in a per
-> cluster table, and wait_for_allocation() stops all allocation before
-> try_to_unuse() runs, so a cluster that holds no slot in use stays that
-> way.  Skip such a cluster instead of reading all of its entries.
+> As Lorenzo pointed out, this would break major fault accounting, so I
+> think it is better suited as P1.
 >
-> Commit dc644a073769 ("mm: add three more cond_resched() in swapoff")
-> answered those stalls with a cond_resched() every 256 offsets.  A walk
-> bounded by one cluster no longer needs that counter.  The loop now runs
-> at most SWAPFILE_CLUSTER times before it returns or reschedules, the
-> same bound swap_reclaim_full_clusters() already scans between
-> cond_resched() calls.
+> The performance difference you are seeing is probably because another
+> thread is concurrently swapping in the same address, taking the
+> folio_lock and installing the PTE. That is a separate issue and could
+> be addressed by a separate patch, likely an updated version of this:
 >
-> The scan end is clamped to si->max, so the walk stops there rather than
-> running into the masked tail of the last cluster.
+> mm: Don't retry page fault if folio is uptodate during swap-in
 >
-> ci->count is read without ci->lock, so READ_ONCE() marks the read for
-> KCSAN.  Allocation is already stopped, so the count can only drop, and a
-> slot stops being counted only after its folio has left the swap cache.
-> An empty cluster therefore holds nothing for try_to_unuse() to act on.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> ---
->  mm/swapfile.c | 43 ++++++++++++++++++++++++++++++-------------
->  1 file changed, 30 insertions(+), 13 deletions(-)
->
+> https://lore.kernel.org/all/20260430040427.4672-5-baohua@kernel.org/
 
-Looks good.
+Swap Throughput (higher is better):
++--------------+-------------+----------------------+----------------------+
+| mmap writers |   Vanilla   |          P1          |          P3          |
++--------------+-------------+----------------------+----------------------+
+|      0       | 17303.09 /s | 17899.48 /s  (+3.4%) | 18190.62 /s  (+5.1%) |
++--------------+-------------+----------------------+----------------------+
+|      2       | 16728.04 /s | 18346.72 /s  (+9.7%) | 18162.03 /s  (+8.6%) |
++--------------+-------------+----------------------+----------------------+
+|      4       | 12596.23 /s | 16095.20 /s (+27.8%) | 17991.45 /s (+42.8%) |
++--------------+-------------+----------------------+----------------------+
 
-Acked-by: Kairui Song <kasong@tencent.com>
+P3:
+
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..c3ab30d32a15 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	struct mm_struct *mm;
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
++	bool vma_lock_retried = false;
+ 
+ 	tsk = current;
+ 	mm = tsk->mm;
+@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 						 ARCH_DEFAULT_PKEY);
+ 		return;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/mm/memory.c b/mm/memory.c
+index 428eb555ecb7..8c34a857548b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4987,6 +4987,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	}
+ 
+ 	swapcache = folio;
++	/*
++	 * If the folio is uptodate, we are likely only waiting for
++	 * another concurrent PTE mapping to complete, which should
++	 * be brief. No need to drop the lock and retry the fault.
++	 */
++	if (folio_test_uptodate(folio))
++		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
+ 	ret |= folio_lock_or_retry(folio, vmf);
+ 	if (ret & VM_FAULT_RETRY)
+ 		goto out_release;
+
+Thanks,
+Hongru
 
