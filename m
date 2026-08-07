@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B30DC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26376C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 453ED6B008A; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
+	id EDFA76B0092; Fri,  7 Aug 2026 11:39:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405406B0093; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
+	id E902B6B0095; Fri,  7 Aug 2026 11:39:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31B546B0095; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
+	id D57AD6B0096; Fri,  7 Aug 2026 11:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 03D1E6B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:37:13 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D864A044A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:37:13 +0000 (UTC)
-X-FDA: 85074877146.27.7C7A5F5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A15A06B0092
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:39:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20CEF12040D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:39:08 +0000 (UTC)
+X-FDA: 85074881976.08.DB01834
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C8478C000A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:37:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTVrrKZM;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786117031;
-	b=absk6jSCAhaJkuP8DrMRjDI5EVwAmtK07Pc5i+9B8htOzxMmixe0UJ0PAD5S0me6f5Yrdn
-	sym59fESs9t9DzH6Jv5BthTXsnR+WyexgLB9fNpBlk3IVwDBx0huIgRgPTxWwFOuwCuTtt
-	1RDi2rPx/bInpwMB4G0ede4MqZLKstM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTVrrKZM;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 640C940010
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:39:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyVWYnmZ;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786117031;
+	s=arc-20220608; t=1786117146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5RitbQenhrDoWq7k1wu9B70oWwVmOgYnYYYp4h7OS1E=;
-	b=mJHicggG0K0vOH461wS14+YdCyXqxHyYE3fPSbkblJPlLk54/BT2/WZeIBM5BKicPPLh1e
-	NbkS1fU5b4KFrF4qoSQ++wMaqecvN/aUovkd/FbJQRa0btXR3GxDYKDOzKSD6g9PxXaWZx
-	jKxcg6GYY4tTpu3TriUxAhAUl9RpOpM=
+	bh=NAheNQzZrUL8VkT48h9rxz80c6O8mgo9DdVWeFvBsyc=;
+	b=8jgWQ05RlOm8cTiXoBZirnckxI8OzqpHW7pul1dY9uanC1ti/11PMjxbgHnA1rG1NoY+ED
+	82DweUlG+fO6kvIk70G599wSLLTcGNl5sY3SNREW1D5z47fb4HmTxYqFFHZxG3/DObxG58
+	G6CpoANDxLzPTOYfCnCEh1LuK0vxXVA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyVWYnmZ;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786117146;
+	b=uRvpSVrZXyTVh4Io+rC3mf4KjNyPPrRqSKnAKPpdMioSiOikqUcf+5W16oianoUFBLfdX0
+	iX/P6QRg1dHNkcSb9rcne/K7YK0G5TUCElLA6g3mEH4Tu6GIHGwxTMwJjRJYGaGK81B2/e
+	6jXFUrnj4fzuOxTHmNQc4qttrh9I0Sw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9F81160A91;
-	Fri,  7 Aug 2026 15:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F0C1F00A3D;
-	Fri,  7 Aug 2026 15:37:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E145F600B0;
+	Fri,  7 Aug 2026 15:39:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36AB1F000E9;
+	Fri,  7 Aug 2026 15:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786117030;
-	bh=5RitbQenhrDoWq7k1wu9B70oWwVmOgYnYYYp4h7OS1E=;
+	s=k20260515; t=1786117145;
+	bh=NAheNQzZrUL8VkT48h9rxz80c6O8mgo9DdVWeFvBsyc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NTVrrKZM1bG6Vvw5wY9rgG2SM3BG/ydY+6BoETIkSqLuw7GRzibg3KM8RNq7W8eO8
-	 +IMp55X5+6WVBfj6gXSVowQZwjzKQ12cGdzf6QYRm7RyimoK4o2nm2neMs7fktzqrf
-	 Uf8Hg4wwnK3OHp2PznFVCGw3jn+RbMDSd+EJjT6yLmiwsuei9M0c6DJd02BCh2DfX1
-	 QHiQhhBI/Sue9e3Ea8OJW+qDGDXsv8swxwsl+u90PpfoMlRC8LtqNqLYqaSa3JKZM1
-	 oyoxWf1EEmZsrfzSjw9DdEHMHkvh4TyfS+TQi3SSUCSCi8lHyR8k0RalEGRMrdOkSU
-	 BTTfD6CUrr12w==
-Message-ID: <6df7ba6d-0479-4b37-8e93-bb0b7d1288f7@kernel.org>
-Date: Fri, 7 Aug 2026 17:37:03 +0200
+	b=eyVWYnmZHpLCJKZPvOBM6jCVsS4y+LNltnyxjOuPsCFwzFoD3nuyLapTIz7+L9xXv
+	 +OO6+9pa6W/m2cXcIFi5O0tKeNXdPr5xZzL6hxYqldJJUNU1Pmjw5Aa3hO7WMFg8aw
+	 +/pOcQI8jgDpGTPX/H1MmebbqtpmHDcfIRTEpn9GB6Fc+msemNn7ZE6qHrBQt7PqOK
+	 pVA1kfntwF0hMRHyCHUsZnLvjQukofINMLYWhlYxhDfXr1FOz9Y5NX6ZWiXZ9JQcEB
+	 bnLLUJv9lJHMghYTbw+ZD9a4khlY7sCMG4cZ1jTOwlly6ktEKz8L60Meg7koDpKXTi
+	 U2DwLovoY7j4Q==
+Message-ID: <de2bacba-c3d6-496b-86cb-0c0a98163a8d@kernel.org>
+Date: Fri, 7 Aug 2026 17:39:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits for
+ writers
 Content-Language: en-US
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
@@ -78,7 +79,7 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
  dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
 References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-2-surenb@google.com>
+ <20260806200548.3124802-4-surenb@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -119,17 +120,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260806200548.3124802-2-surenb@google.com>
+In-Reply-To: <20260806200548.3124802-4-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C8478C000A
-X-Stat-Signature: nkqpriaqrhk83dec4z1j9mah3gf3ko61
 X-Rspam-User: 
-X-HE-Tag: 1786117031-459981
-X-HE-Meta: U2FsdGVkX19c8/Iwqigmjx72ZSDRNOpm4fUrF1nLYmvlFv1hAJ9TtivOB6irUpVs4ItbiguMB4974KMFBv+b9aFEcdwMFM0zO0z2+GZn44/8dpKJcn1bzcm4QVMBZkqLQvPH042/X9hz2XUgWh75dKbUQXdpnedaXzJiB7jtTb7PNOIDoGTjcnO7dT1kJM4ubKxpPvqKfSkDLGcTtNyRY9CfTpP29+/aqmC8eM6BI+Cccn9pZtjQU0z3uAswixr46zajnX7C3ZI38TrS0Z12XE+eEux6MVsadzbn5oF5uqG7vz0T1SrNDrGNsh6tWGq5LDaZsVgf98/aJkX5uad4u4h0i0CdD58qWMDX1J7yg3wRUVC8whbUlRes7rqQUqg0rIZvdbeo/Cuqh/VgDDqwPBkob208JVsOx7q8TQSM6MtbLqVqoWaGlB9QI8b05zJ2517hD8xS390wqn0LOgyvsvN8EoPDfGLVg/rQGMZ05MMdtB7ohBG22DxjMZvetx2qUFqrqEfHartAn9vu4AVWkyJAKWYWAAxFbBkzzp9Gv3gns+15LtjixdHUpqpckRPvRy0Q55AwNslBA7EBJFAuXDJByweDwPH1gCmG46kPz+0bSrSmoDnDBkscVpyJpl2ms6vkXaiCxY6j/BGdtnFHEoFpqSbAeTFrZtageyQ7RdkohxIMJu1qY423IMwzFIFqQwDJIpcvH4/fit+j5KdUkkqyhBwI7pgmHom/2VQ+y704sLXGQ5vvs60pabWfX+thVGFfnqskgCkl6yQ/p0zoi4HXhqbn8K49Qh4a1fDs8h8hSSf9HKOJSR4RnGScTl8Kqc7drOpJ26AMOPkoKvDZfElLTi6uRZnyDVX739j4lCP+3bH7arOWmTdkm2t+gpEDDqV5eEsz7+4+yFbkNw7Hb0OLFQ+GxuGUart9REI3iVYGyPQAYSoLof+f+vYSF0pt9r14Jr7/Mogq/onIm4E
- Cd/J+UaF
- fczDwGzpAmApd7Th/SrIrh1OTs3ThrnSOWIev8EUQDApxpbjkfpwUO0zYl2PfnpW/OQgUrWSxSdSunQzearjzHSIAcMTymA6MIWOsiL8HdcGUsSKWaU6HdiIdqOrOAC9GRpoMQXSc8Ih80uICFrpF0EsEHsYukoKe31oVv7Z2+RRPiRUkBmLyyDz5zS+C4PZqhFzYfsyOH4fjG/jSGPefr80KZbzLGsoUYy89R2BchsK/u+v7poAHh2WLoPT5+bV7U8FVGg8cy9BORq+/jVuE0aV4v1nqS/M3027jLjbqHjPikDfDc/LMUp1trW+spwUe69TRw4lSXiKbWcps4KmoLTOnQHhtv1T86rjx336Jzk7+bNQAjfbUcDbyOiZ6yjqxL3ByGPbk4UxFfWk4jej1PwRUeRruHmoT88W+fta6+u0u6ZUxEM7YO8NGpbLgmr7wch/vLhF2qh86/wlqjUx1onKBVtN9Rc9CxC5gBJN+rL5gRzM4zPQWX47d4rE6dNAIb6vMmBpm1BWiAsCmXYob1ZikkeoqDpOp7VvQD0SG9zcva9dOXP8nLXjSrwRw9lQ8dfdmLpOsN2aeKtXgAhzph81Jps4U+5zHHzDbKjvA+rtRf7KQTrxE7tj8oBoO80SCoKUROp/qobDzluE76KNMK6qbpoJzbP3mSkGotQXXgB9g70ApNEGqdnnCLsuTFjwISAGES5PsQ4zcpNY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 640C940010
+X-Stat-Signature: 3qqxzzytys98hipypde6o54ac3xnnrq3
+X-HE-Tag: 1786117146-248442
+X-HE-Meta: U2FsdGVkX1/h4noMYlj2XLfnas42SpGt6QDOxrQs28jDAhW2B46cqBCsJXu5MpHCvp5C54x9wG0s5UrL/zGNawGP3uhZlbwzjA/bplapNRM4TN4QfypnwQ4SuQ7lX7tCr+prHRFCSX40j1SSjHLSkw/6GqCN74/Uvl//zcGn2EtVqd4dcnuzhpOztFiTazoB4ZhXp8HIyrtH2eNOA+3A0+igBnJHiZDYo6H0a0ZWwZdAcAqnN9Xn+mEch7hTcwenjZJGXuUXUSQgtccFWcSqmQtIAYHAVjVQtDp8CYoyuus2NiHhuEC4GveINP5bUQmQx4QaHrknnbkHs0O5ucCxRCtZQHYgVvK4TcWRrpHR3lfjlbpDqa5w9BD7C75sGWNhV/B7SkBQkEQCZNdrkAxq/KBmsgMaFufOVXoghOijS+kothQsN4eTs9p3IA2AzuK37ngBuItxIdfJHQ3lzhtomgM71QbckEBgCsGb0uO5C1aDjYJP8hdI1VxSuFswvpxus9giF6iECdSrxvG4a9EryqGcWaMnVdlzxAHxjaV+YU9MZELnW99Aq9kaZyY49dDuZJNaQ/MxontDWURiZM0a1zklgd3DDOWlOJLfU8OLIm16fEk7jW4ezSsOLZIJsCOkMyOkb8XYUIGoqDJj8GJkk8aqCCpNJ4XSwTKdvo7wweRKDNrPB1BQGgxuJpomnPDWjk66Z4XTlphoAL8BPue9h9ooOIyoaTvOl9NZLkpNey4Inq92eY7ja0eqh7s05D2Zv4KMc1agQLNcuJaBdt2jedczue4GDRwbAcAcE35mpWANxM8f+P21YKZEqOsnzLI49tc6bAGfu34x+cIB0g+nw5yYn0Z1dsuy+JA8soGgJiEtpmpsX7bq2guGcQbIJiva0VOsmKz6eTudRRK3Ja6jOgTQ371w8WuRKQV2fGQYaO0GNax+bH3kImE7TkljTTFavhVLC0oRo3c2arWFUob
+ sGJvosTi
+ vXpQG5R4JHERWlpZzOgKAacTPKqATS7Gd0utlyIK2lxgzJi1gV6IfyFF0SrRjEJ9nSmEkgNPvxgpHLrUXvuzQZXQTXsFL4lPc3Kgk1/lNYW0v2ODPU1P7lR7YoE/lu1aD25uDOqXyt4iZ8TKvjbZ+xOQ6/GlkpcYib/XcVAN/MsZITDVh5jiipGpHVMvZszxjPbjiDeurOONwXpFyufwmt0SrJe6Q6VHUYfNA9mSsS8EAE1mTw7RI4e4yYnHg1vNr2sYwhvEB4cH5iGBrBubJeK91ScDeI9Z1ibxRHYtUUORLFKgXuolW2x/GB0MB0Cn0S90x1nVYuBJxh6iOjGwKbmch+vP1zz4RfWqvWZ+bxVcBGZPCG1krxAAo+P1ePd/5OmaWMB1GQLRLHx9NsiaG13HjSxowkXZ/HfHHnJWdplZpEXA4d3WpL0QpOCz9CbTZJJVQMTGsdE8NbkPCxOV2IZgRXFQyiMtxuVgTekPipAGUhBHypCqvyGadlQqjo8xqbvip7ulVVc1wchmBnTqfRx4dpK5+wfRcNIoyNnAEumrRY50AjKmpb/HyUrf+HhBZB+yUkB3zCCy92WigOiSAqAzsbUyKYp8Nse4Dz3ZszU6gLu6vBfTqgLsWwhZFrZT6bsHov69FTkK934k+MgHXz+g5gAebyQeli3rhO6/xV26YLOOTBxI/GYKzfRNCF1KIOIiKSh0Yql/mo4c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,90 +141,52 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/6/26 22:05, Suren Baghdasaryan wrote:
 > From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> The per-VMA locks have been around for several years. They've had some
-> bugs worked out of them and have seen quite wide use. However, they
-> are still only available when architectures explicitly enable them.
-> Remove the conditional compilation around the per-VMA locks, making
-> them available on all architectures and configs.
+> == Background ==
 > 
-> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
-> when the architecture started using per-VMA locks in the fault
-> handler. But, contrary to the naming, the Kconfig option does not
-> really indicate whether the architecture supports per-VMA locks or
-> not. It is more of a marker for whether the architecture is likely to
-> benefit from per-VMA locks.
+> There are basically two parallel ways to look up a VMA: the
+> traditional way, which is protected by mmap_read_lock, and the RCU-based
+> per-VMA lock way which is based on RCU and refcounts.
 > 
-> To me, the most important thing side-effect of universal availability
-> is letting per-VMA locks be used in SMP=n configs. This lets us use
-> per-VMA locking in all x86 code without fallbacks.
+> == Problem ==
 > 
-> Overall, this just generally makes the kernel simpler. Just look at
-> the diffstat. It also opens the door to users that want to use the
-> per-VMA locks in common code. Doing *that* brings additional
-> simplifications.
+> The mmap_lock one is more straightforward to use but it has a big
+> disadvantage in that it can not be mixed with page faults since those
+> can take mmap_lock for read, which can deadlock when mixed with nested
+> page faults and parallel writers.
+> For example:
 > 
-> The downside of this is adding some fields to vm_area_struct and
-> mm_struct. There are likely ways to optimize this, especially for
-> things like SMP=n configs. For now, do the simplest thing: use the
-> same implementation everywhere.
+> 	mmap_read_lock(mm);
+> 	// Another thread does mmap_write_lock().
+> 	// New mmap_lock readers are blocked.
+> 	vma = vma_lookup(mm, address);
+> 	// This deadlocks on mmap_read_lock() if it faults:
+> 	copy_from_user(address);
+> 	mmap_read_unlock(mm);
 > 
-> == Considerations for NOMMU config ==
+> The per-VMA lock can be mixed with faults, but they can fail and need to
+> be able to fall back to the traditional way.
 > 
-> NOMMU systems do not write-lock VMAs, therefore read-locking a VMA
-> would always succeed unless VMA is detached. Therefore for NOMMU
-> config we make vma_mark_attached() a NOOP, which keeps VMAs always in
-> detached state. This causes VMA read-locking to always fail and the
-> caller falls back to locking mmap_lock.
+> == Solution ==
 > 
-> The following functions will have a different implementation in NOMMU
-> config:
+> Add vma_start_read_unlocked() - a variant of the RCU-based lookup that
+> waits for writers. This is basically the same as the existing RCU-based
+> lookup, but on a failure to lock it temporarily takes mmap_lock for read
+> and waits for writers to finish before locking the VMA, dropping the
+> mmap_lock and returning the locked VMA. This has some advantages:
 > 
-> - vma_mark_attached(), vma_mark_detached() are made NOOPs, keeping VMAs
-> always in a detached state and preventing assertions and refcount
-> underflows;
+>  1. Callers do not need to have a fallback path for when they
+>     collide with writers.
+>  2. It can be used in contexts where page faults can happen because
+>     it can take the mmap_lock for read but never *holds* it.
+>  3. Its fast path does not require taking mmap_lock for read.
 > 
-> - vma_start_write(), vma_start_write_killable() are made NOOPs to avoid
-> warnings in __vma_start_write() due to VMAs being detached.
-> These functions are not used in NOMMU code but __vma_start_write()
-> is an exported function, therefore might be used by drivers.
+> Basically, when applied correctly, this approach results in faster
+> *and* simpler code.
 > 
-> - vma_assert_attached() is made NOOP because it's reachable from NOMMU
-> code via split_vma()->vma_iter_store_new()->vma_iter_store_overwrite();
+> While at it, fix the comments for vma_start_read_locked(),
+> vma_start_read_locked_nested(), and uffd_lock_vma().
 > 
-> - vma_assert_write_locked() is asserting vma->vm_mm is write-locked;
-> 
-> The following functions work for both MMU and NOMMU configs:
-> 
-> - vma_lock_init() performs the same initialization as for MMU config;
-> 
-> - mm_lock_seqcount_init(), mm_lock_seqcount_begin(), mm_lock_seqcount_end()
-> are called from mmap_write_{lock|unlock} and update mm_lock_seq correctly.
-> 
-> - mmap_lock_speculate_try_begin(), mmap_lock_speculate_retry() work as is
-> because mm_lock_seq is updated correctly;
-> 
-> - vma_start_read(), vma_start_read_locked() will always fail because VMAs
-> are always detached;
-> 
-> - vma_end_read() will never be called because vma_start_read() never
-> succeeds;
-> 
-> - vma_is_attached() always return false because VMAs are always detached;
-> 
-> - vma_assert_detached() will never trigger because VMAs are never attached;
-> 
-> Changes in the following files are not affecting NOMMU config:
-> 
-> task_mmu.c - not compiled when CONFIG_MMU=n;
-> pagewalk.c - not compiled when CONFIG_MMU=n;
-> userfaultfd.c - not compiled when CONFIG_MMU=n (CONFIG_USERFAULTFD depends
-> on CONFIG_MMU);
-> 
-> The following changes are made to keep NOMMU config working like before:
-> 
-> stack_map_lock_vma() - keeps mmap_lock in NOMMU config;
-> bpf_iter_task_vma_new() - bails out in NOMMU config;
-> 
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > Cc: Suren Baghdasaryan <surenb@google.com>
@@ -244,6 +207,5 @@ On 8/6/26 22:05, Suren Baghdasaryan wrote:
 > Cc: netdev@vger.kernel.org
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
 
 
