@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F486C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:55:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD1EDC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90206B009B; Fri,  7 Aug 2026 11:55:07 -0400 (EDT)
+	id BA62F6B009D; Fri,  7 Aug 2026 11:55:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67B86B009D; Fri,  7 Aug 2026 11:55:07 -0400 (EDT)
+	id B7DB96B009E; Fri,  7 Aug 2026 11:55:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B301D6B009E; Fri,  7 Aug 2026 11:55:07 -0400 (EDT)
+	id A6C936B009F; Fri,  7 Aug 2026 11:55:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C9406B009B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:55:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 035F61A0440
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:06 +0000 (UTC)
-X-FDA: 85074922254.30.C14B82E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 39967C0007
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQ5hULQh;
-	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 75C556B009D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:55:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 017AA1A03C0
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:09 +0000 (UTC)
+X-FDA: 85074922380.06.BB08F27
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 245D040010
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1f61WUJ;
+	spf=pass (imf12.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786118105;
+	s=arc-20220608; t=1786118108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6xfQMNbgBWP35UYA8SHpjPKFbMcGxI2450wvcek2qss=;
-	b=D0sDcEldjLTkhRSXIc3av0NhjA6QbdXT/6iP0Td+r9Cz88hBvw2mNMIR/4vwf87tJUzBVq
-	wsum7EYwmpoWWp2pkWdQeceIncCEi7bxPzlaRtaNW54UMEe3z6YfzvtiXGz8LYelVvb8Fb
-	LVhLNwQTG5wXwFrZZPrRiROLHGW6bfI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQ5hULQh;
-	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=hBY0mNZW/REn5iOQM3Li4waxIa6sH7N3fTfxvJa+TnQ=;
+	b=L+zJ2LY6f8wapmMH8h43Lo5Y3japQmm1jgimdtmwNBNOqn6ISP14ikr2c5WNm+l/9eZWfX
+	Kkjz6rdycwXDiL8dUGYOLjH0r/fcDoidlqcaXOQ/MPDeh5KcIOM3IUarjUvfZ3/IoOYXBi
+	7AI9h2deI/qQs5qY1EXwNVcHemRZFMI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786118105;
-	b=E5WGQn0ImWAaG6rnUuCwBAT+cW2CcXY6MntJ3Wy5ED5hRS1qOpA1wcnEjF5VILEiWJkUkd
-	OMGnVEx+29aETUlIBo4qP07ab0EZcbbjwoPmYj0VIVTGJ4c3XkHiPnyVjAEPpAMRqSuv6c
-	YKIMz3CHbYvl0YV47Asuz6XEkhj5qU0=
+	t=1786118108;
+	b=cczHJ63BxpGvGKHi0UCc4l4O6734VLXUsJtF366JbrVbw0rz/rBR6zCXPGTRC9bFqMJ6x1
+	9NV0BtaMZxH0uwLzkCxywNciszmJobLMkWSQdak02Df/TkHJY200haxlM4/vO3JPEprSB6
+	1v4uPOzFVVYlZ1H8a6QLZE2DIbgXRI8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1f61WUJ;
+	spf=pass (imf12.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A54D461836;
-	Fri,  7 Aug 2026 15:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F351F000E9;
-	Fri,  7 Aug 2026 15:55:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5268443DA0;
+	Fri,  7 Aug 2026 15:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A151F000E9;
+	Fri,  7 Aug 2026 15:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786118104;
-	bh=6xfQMNbgBWP35UYA8SHpjPKFbMcGxI2450wvcek2qss=;
+	s=k20260515; t=1786118107;
+	bh=hBY0mNZW/REn5iOQM3Li4waxIa6sH7N3fTfxvJa+TnQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=FQ5hULQh3JK3ZVhaPzOwSF6zU2jaopkeOpzWLE5XnZAbewoy7dNENEPeksE+EYOnP
-	 F2j0A/mUOfPfsF5YRwdI1IYwYbs27h0DNoG7sv9opbUpMQ2yeJq8xbr3MDce2PSUqp
-	 QbdagfNv3fNclkCiDI1TEBinzMhsbA27YFS5uSIdezbfSWfI0Q/seASm4VihsHBhA8
-	 qqBx0uSC2yNkQ5zGGRFVCnzKmwjQIG88TAxm0LP5qZTSfeTnJ9PSh89pBAkOC3OuNY
-	 o8wCwqpUntdtGKa9QXGYTJlknLCtHb0hl0B2ASPDIcG3cFds1T7Esu92N0tbC307a3
-	 W8BqFlE/xts4g==
+	b=D1f61WUJJ6YAPxkItLUb7i+3Zh9xlMKIQTsURajVXtrq8GWpkNL+OHZkRdFYDT+6a
+	 NsEAD1fEcaqGhtgBNtgPdcgXcRz6s8iOlIdQ9aLj1b9M3KVNOr9n5Vker0SNTgsvp1
+	 FS6eQXGObdVoZCILHiDKY/sp6BmKKJPXBLvhuHhM1G2FNth92dHfXBhi2alU8ZmHjk
+	 ClFT2TxV2Bmk3iP3zJ/hRxz4CCLS3Fz0I7q4EprOyux8hzx9prbeVJNnduGEKqrI16
+	 yDUSOUXtk2UcbAtMhzdkLTUXPAZ4l4huOwAoSTKh+SAKG136mcOCAdFso+k2Dfc4B3
+	 dHlwVskQDhTAQ==
 From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 07 Aug 2026 17:54:25 +0200
-Subject: [PATCH v4 05/10] mm/cma: Allow dynamically creating CMA areas
+Date: Fri, 07 Aug 2026 17:54:26 +0200
+Subject: [PATCH v4 06/10] dma-buf: heaps: Add debugfs support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-tegra-vpr-v4-5-5510d16af89e@nvidia.com>
+Message-Id: <20260807-tegra-vpr-v4-6-5510d16af89e@nvidia.com>
 References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
 In-Reply-To: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -112,30 +112,30 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
  linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
  linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15769; i=treding@nvidia.com;
- h=from:subject:message-id; bh=uYtcp1/0ht5p3sdnKJ1sz5c47iLEuBUpb3uqmQu3tyU=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqdf/GxOuhbKWOQqU1cuizYOP4sOlYM+b81Hdb7
- h8D+NuRMi+JAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCanX/xgAKCRDdI6zXfz6z
- oSGkEACYX8S9Os/+kdZSwf+RJ9Y771EcK/SPLT/+oIKE9lSICSK8SGJXkqlOZVcuXG31rnLODM7
- 4+gGBCWj/CSlXRFaeofBquHyyMvcev6LYFWiJK556WJnKsGzG3aOnLNI3a1aQQGzhegEFPPA1GF
- 6Zkil9dPAsGJN//botff9wTANmYDFV75rAjQeHA122jLyZ/PThsBkr9rre5ZMEcFVzQpfP8H/OD
- a5I3kusny3I2AdIW9ZfzK5QcedjXn8mvw9+OWsKJBds4T+6622mW/VVqAyQ50UpqFbjmaONKtxQ
- kIEJq9GCexBaZdrAiuzU2ee3p4KM3T28+yAGYUPmzmKv3ulQRLQWgOpI/CupTYnRLO4hAsO2+uR
- 6puhznlab5PSc+FEYIxETxJD98yYAEfDbpT8DZrRkpRj5HB5uhWcOIwA94POBTF1puI6V30aZdo
- cZOHE/VywChw8lKO1S9apeeOtOFnqIEBqvWhFi5k/oDORRD+OOu3Y2m1YOt8Jd2pLvDKjt5+DbI
- HS4wGMfxNgQiIslcJLYW+lqKIZwBmSgxSAxWaXJ5g+7ntAojQ+aUrsxPzDuywXIB2ENCPkwdeAr
- qHG0Y1iDWEPx+1HjbH6iQk7YyT550JYvEJhy7PyKX23rSKns9V6MAeept71Ypjk5xxxfYvxlW6a
- oHcvPg/JXC56elQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3104; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=q55jzM9GjUFXxiIP17zlQgzxN/ErPjq/lyQMEmgYzWc=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqdf/GOOgS1uAI4009/HTkT/0d3YyLidCbxD6T+
+ Fr4Z+GDZZSJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCanX/xgAKCRDdI6zXfz6z
+ oYYXEACHZrjzvYw7N3iwfVHCNGu0OX/MxCGBHlo0DZkABWuDYbwnY1fYIciulavfoX7hcfGEI2g
+ SWczrNTtXk6sWPMmvJ0Dr7WDoO9BNPu6+FJfENIgcPmkyd2x0mL/+ZAWv56hP1N5ZoZ541QXWKi
+ HYLkJ2wRqcInnP34Sum79Uz3xwTjubyC0ql64iaU0Wk4FgdzgjchEjEtwYP5tpfMeVQeAc4Yk+9
+ lay5HV5APKPzZeKg/QPmfbKcJ/NA+3UKA+4I8dVhjNP7c3ZCOzDL4swYuESkDnAbZD8lwCFyER7
+ ynYlmRDnGHnFp3/p5uJ5C9XK99LOswGBCS3IVdb+aB5g54aWv4Vs9/VvuQjMExenrKy6xCikLEX
+ P/rKifVp//+fTL+948JAWRjR3xsxnHWltaqLgjhmmE1Xmu4Jrv6A14Sg8iP5WXGkDtU1KQUpAUX
+ e/VYUY+gWenaIuP+sf3o6xfsNzVjOFyA9ptBZZ7IsiDKY23+FbYotRdt/ado8Dd4DFACA02ueLd
+ J2LlbpGqQew0GXMeJbEDxnwpMU8BDF1v2F0s8UaK8mT50//0GjaoVTfq6dvi2ZnNea552TJg9Se
+ u1OI3+L4cf6VqFJ49h6Cmcs/rL3F2lqXwGq7EPKCLhptVV44LFHEkCHNJ/k/FNvc+LvcKssEFo1
+ 56gXgKq3p2yWm4w==
 X-Developer-Key: i=treding@nvidia.com; a=openpgp;
  fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 39967C0007
-X-Stat-Signature: f1e9q9xuqpu3e7txnwi35pwj3soajof5
-X-HE-Tag: 1786118105-327479
-X-HE-Meta: U2FsdGVkX19q6knbDoBkPMPtS4rJAouAnVlCCO7vmErmZznDmxUh/oV9/d3S4Qxqvm/FOF811OYmXOyy3LsVZTN1BQDy709zmq3lwrFS5+3nmi0gbAfXtyuphqsOfKEFMLzXU9litQxmiqZ1MbuQjs8A1Kz8OuiWFBsAiqDxH2dD/Cbh6vKG2/XWvMW9PoCvSvNCqu08T6U4Q7ytVVwYq97LHxdUxKtIGh2ZUuYLEtRfOwD2typjnKxizfOThQejpzKhuEh6KRyIjvnwBRV3ys8CBBu6OuoG6A67u55Jgt0KiB7f4vJSL5qZwFFEJztj5tYxB1mm1ex78RllHXjYvHZW+VCLIqGJiihapNHXj4uD8MTaHAe+wZuAjln/ZadPR+uhugSefMP/wTAuwdzpkP3Vtbjnzomcd1+zNSXgkvJ5EtKDxJ9Fuo57ojeQb9NhvodGuh+ff40CjQBf/rV5DXNUUF14L1cBeetAs8oJ049LLviqeH4E4jUGwSm/sBvO32y4Bx+T1iFmMIcUKYFol9Xf6lv0uIRpxJe5bS+XhuK5102ZJ5xUutKVDnd6bTXplQ6y4/aHyqDz8naO/y7/AZaxFViPoYvo0fF4qrofpusSjyAlRmqfrMkRLFbCHZEzMOWW0IcBOR5HmT4dP2ePZqcVFuW5hWi2Wdi6wY1V5RyACTxPkTTaBoEHbD3dlmdyvBUP6n8f2/7BE4MBODmyG6wbOGf35mPfIUDob1ZIbFoipuU12ewoiAEi/ROvMvPjdzZ6pTEFcn3MIE7uwIII2fWqiHD4UUu96h8agBHzdFlxltznErTbm1HJmFdaLvjapqRjbjyTXYz71xz74ueS9t7muAGp6OEXcv7eVQOz/ZjG0/G6nlr4EzzVCk2bFFT+jSD1HmpWPGQPGUIRKa19m2CkEGeKQMn1TR5e3f3xlb0kkicY6A6UzkliiGcIcsTff8vUYZKDYuBOygmZRuE
- y8O/nDk3
- 1tJx3cbr3TtviuSYqQG1wUBv3kQH9SwZ0FQPDql4/FSfj0hUWVFARyAN84IKSeNNZI2e//9RPrOhxtDLjdUU18U9kfxtZqj04iIjZs+Ypzx9Amxi0d91J7xke3T9ODcgLYWwTmmUcJPqyRnECuAwY/jq1eE1x5d3HXp3Oru4qgxNd7mqIP/+DsJmBnjBLLv4yaP6qVAmXWuTBI85kyDbA6+4Kd9DQOGWq/JMY/QcyCQ9nyTJ95gaQhSbpQrs2injOZBreedfN6ZEMPGno8RsJvdioiM652skjjmY/mXdWREF3Vh8YBFPGyNnHVg==
+X-Stat-Signature: rn6q94t7u5xwabwibenucn4i4fetw3kf
+X-Rspamd-Queue-Id: 245D040010
+X-HE-Tag: 1786118107-915633
+X-HE-Meta: U2FsdGVkX18EyN+LxJ810mw33vTbQJ2uBT4wk+k/fBt+rlvbjQGUvoren3sjvqFca17SkkeOpvk+irCJ0WNXPm6OdmXCxjrtx8joRUi0hSJu97KX+MYUUEWgC+POmaSutRinQi8kuetz8/osr/Slq7/5oB4mpzX5vKqX21RcaVhVRRFTBC7SdUlIsvHekTDcIM5LUW0cYf+qJ8kG72FlQBMIyc+/MFfz4P3lFw+1Hgt8GClVnoBbHN2uxNVMPcngh6Kx+JThqVnXtTu9OxvjWqjv54z0gd+usTK6aGWSZk7M904Tn6cnk99oJlQjxWI3C3EA61Rh/CcsVc/wLCB8kEWYFZKBvbJV01JaeBBzyiy4y+E24Pzcx4VHMDw7Balp/vcjvHRccNiJbRl+JCbnYTVHQBGXdXxWPB+aeNfkgGrKi8qtXMcDywPbwDQ5Z6hat2f3UZ7e4ZTdH/Dxr0gutTSC2EapMlNyLhDeZvSgHBP1Gx+iTVWDlaftQQZKU+ah6gcb6Yg+fNtw2bsbshXkvUYshjQaP/fBNAVGdUcgubSRrLmBjHn8LyhTZghKDOlRRgc64U8QMhD6KJ5KQ4G1vLIViYL/hERZnQt57Epg1BxQJs0B/9N7Z/ttbn2V8zfajFZHwaGV9BTPNbeEX9bnS/sHmPjGHHGw4vyZMrJoFzQ9l4zwiqaeALxL5r7P+cwVqrZUSxgodbsNjLgPCfvqSZP36u+TpYaenP4dSkyEl7J9kOHQQ4+2zO3oXkK1nlqdgAb1XgDEXwuWxQuJGvvidhAWbVmLsLocHYVAp1BBhyS1TrN3HUQuFVQxo5q4A8bKEgNHEpoFrFfymDo8iCXvBwimZfW1T7VQnOOVZ+YRoxY6KBgUJvK+PKuAj+MF4BmWW4EQRoeNBxrVgq2G6gG8vURckPv7HbQ5hHo/3huuquGBJqeBnntmb6TkYjED3Fx9Xtze/zvKgj+xhtpGPj2
+ 8Cljy0OZ
+ lbwcSwt0Dlk9vV2wcqY8g8AMVwkR90zMVr2b+lrb/4E8RcCfSslp4nONd5uDalJQD8NvHcXFl3mX2bZI6QQdHP5olOTLlH4HS9LpCC8XvNCu/1XX1BsJkvVSfVVdJLyeHmQfWorm5d8d6oAk/cpSPPX+S7mAcW+Rz4QH77/Sobb7edqpUGb6+EZKfADvhj6zFLyQfCJKMXhpokx5vkDjLhxtDMH0JptRNCkmI4nLngC/HyFdIkosDc3CIinjjxMJsT0vY2D/e5srEm1tsrs1XU6+02roi7Im0LRv6mJUdR6UdFa13eoqTAj8gMyowM2GHFGJbvzO3CbfYioA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,536 +145,126 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-There is no technical reason why there should be a limited number of CMA
-regions, so extract some code into helpers and use them to create extra
-functions (cma_create() and cma_free()) that allow creating and freeing,
-respectively, CMA regions dynamically at runtime.
+Add a callback to struct dma_heap_ops that heap providers can implement
+to show information about the state of the heap in debugfs. A top-level
+directory named "dma_heap" is created in debugfs and individual files
+will be named after the heaps.
 
-The static array of CMA areas cannot be replaced by dynamically created
-areas because for many of them, allocation must not fail and some cases
-may need to initialize them before the slab allocator is even available.
-To account for this, keep these "early" areas in a separate list and
-track the dynamic areas in a separate list.
-
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
-Changes in v4:
-- remove __init annotations to allow cma_create() after early boot
-- make sure CMA area names are unique
+ drivers/dma-buf/dma-heap.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/dma-heap.h   |  2 ++
+ 2 files changed, 58 insertions(+)
 
-Changes in v3:
-- rebase on top of recent linux-next, update kernel/dma/contiguous.c
-- use kzalloc_obj() instead of kzalloc() with sizeof()
-
-Changes in v2:
-- rename fixed number of CMA areas to reflect their main use
-- account for pages in dynamically allocated regions
----
- arch/arm/mm/dma-mapping.c |   2 +-
- arch/s390/mm/init.c       |   2 +-
- include/linux/cma.h       |   8 +-
- kernel/dma/contiguous.c   |   2 +-
- mm/cma.c                  | 221 +++++++++++++++++++++++++++++++++++++---------
- mm/cma.h                  |   5 +-
- mm/cma_debug.c            |   6 +-
- mm/cma_sysfs.c            |   6 +-
- mm/mm_init.c              |   4 +-
- 9 files changed, 201 insertions(+), 55 deletions(-)
-
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index 7761099dde9e..99bd7655e673 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -254,7 +254,7 @@ struct dma_contig_early_reserve {
- 	unsigned long size;
- };
+diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
+index 3937dd41bb0f..389cddd07c8d 100644
+--- a/drivers/dma-buf/dma-heap.c
++++ b/drivers/dma-buf/dma-heap.c
+@@ -7,6 +7,7 @@
+  */
  
--static struct dma_contig_early_reserve dma_mmu_remap[MAX_CMA_AREAS] __initdata;
-+static struct dma_contig_early_reserve dma_mmu_remap[MAX_EARLY_CMA_AREAS] __initdata;
- 
- static int dma_mmu_remap_num __initdata;
- 
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index be7e009e7b59..ccd48d611129 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -256,7 +256,7 @@ static int s390_cma_mem_notifier(struct notifier_block *nb,
- 	mem_data.start = arg->start_pfn << PAGE_SHIFT;
- 	mem_data.end = mem_data.start + (arg->nr_pages << PAGE_SHIFT);
- 	if (action == MEM_GOING_OFFLINE)
--		rc = cma_for_each_area(s390_cma_check_range, &mem_data);
-+		rc = cma_for_each_early_area(s390_cma_check_range, &mem_data);
- 	return notifier_from_errno(rc);
+ #include <linux/cdev.h>
++#include <linux/debugfs.h>
+ #include <linux/device.h>
+ #include <linux/dma-buf.h>
+ #include <linux/dma-heap.h>
+@@ -225,6 +226,46 @@ const char *dma_heap_get_name(struct dma_heap *heap)
  }
+ EXPORT_SYMBOL_NS_GPL(dma_heap_get_name, "DMA_BUF_HEAP");
  
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 8555d38a97b1..fb7a4923c3ba 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -7,7 +7,7 @@
- #include <linux/numa.h>
- 
- #ifdef CONFIG_CMA_AREAS
--#define MAX_CMA_AREAS	CONFIG_CMA_AREAS
-+#define MAX_EARLY_CMA_AREAS	CONFIG_CMA_AREAS
- #endif
- 
- #define CMA_MAX_NAME 64
-@@ -57,8 +57,14 @@ struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
- bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 		unsigned long count);
- 
-+extern int cma_for_each_early_area(int (*it)(struct cma *cma, void *data), void *data);
- extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
- extern bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end);
- 
- extern void cma_reserve_pages_on_error(struct cma *cma);
++#ifdef CONFIG_DEBUG_FS
++static int dma_heap_debug_show(struct seq_file *s, void *unused)
++{
++	struct dma_heap *heap = s->private;
++	int err = 0;
 +
-+extern struct cma *cma_create(phys_addr_t base, phys_addr_t size,
-+			      unsigned int order_per_bit, const char *name);
-+extern void cma_free(struct cma *cma);
-+
- #endif
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index f754079a287d..7975551f69b3 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -52,7 +52,7 @@
- #define CMA_SIZE_MBYTES 0
- #endif
- 
--static struct cma *dma_contiguous_areas[MAX_CMA_AREAS];
-+static struct cma *dma_contiguous_areas[MAX_EARLY_CMA_AREAS];
- static unsigned int dma_contiguous_areas_num;
- 
- static int dma_contiguous_insert_area(struct cma *cma)
-diff --git a/mm/cma.c b/mm/cma.c
-index a7929c758df1..8d8fe7c82ae5 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -35,7 +35,12 @@
- #include "cma.h"
- #include "mm_init.h"
- 
--struct cma cma_areas[MAX_CMA_AREAS];
-+static DEFINE_MUTEX(cma_lock);
-+
-+struct cma cma_early_areas[MAX_EARLY_CMA_AREAS];
-+unsigned int cma_early_area_count;
-+
-+static LIST_HEAD(cma_areas);
- unsigned int cma_area_count;
- 
- phys_addr_t cma_get_base(const struct cma *cma)
-@@ -138,10 +143,10 @@ bool cma_validate_zones(struct cma *cma)
- 	return true;
- }
- 
--static void __init cma_activate_area(struct cma *cma)
-+static int cma_activate_area(struct cma *cma)
- {
- 	unsigned long pfn, end_pfn, early_pfn[CMA_MAX_RANGES];
--	int allocrange, r;
-+	int allocrange, r, err;
- 	struct cma_memrange *cmr;
- 	unsigned long bitmap_count, count;
- 
-@@ -150,12 +155,16 @@ static void __init cma_activate_area(struct cma *cma)
- 		early_pfn[allocrange] = cmr->early_pfn;
- 		cmr->bitmap = bitmap_zalloc(cma_bitmap_maxno(cma, cmr),
- 					    GFP_KERNEL);
--		if (!cmr->bitmap)
-+		if (!cmr->bitmap) {
-+			err = -ENOMEM;
- 			goto cleanup;
-+		}
- 	}
- 
--	if (!cma_validate_zones(cma))
-+	if (!cma_validate_zones(cma)) {
-+		err = -EINVAL;
- 		goto cleanup;
-+	}
- 
- 	for (r = 0; r < cma->nranges; r++) {
- 		cmr = &cma->ranges[r];
-@@ -182,7 +191,7 @@ static void __init cma_activate_area(struct cma *cma)
- #endif
- 	set_bit(CMA_ACTIVATED, &cma->flags);
- 
--	return;
-+	return 0;
- 
- cleanup:
- 	for (r = 0; r < allocrange; r++)
-@@ -198,19 +207,24 @@ static void __init cma_activate_area(struct cma *cma)
- 			end_pfn = cmr->base_pfn + cmr->count;
- 			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
-+
-+			/* reset these so we don't later confuse cma_free() */
-+			cmr->bitmap = NULL;
-+			cmr->count = 0;
- 		}
- 	}
--	totalcma_pages -= cma->count;
- 	cma->available_count = cma->count = 0;
- 	pr_err("CMA area %s could not be activated\n", cma->name);
++	if (heap->ops && heap->ops->show)
++		err = heap->ops->show(s, heap);
 +
 +	return err;
- }
- 
- static int __init cma_init_reserved_areas(void)
- {
- 	int i;
- 
--	for (i = 0; i < cma_area_count; i++)
--		cma_activate_area(&cma_areas[i]);
-+	for (i = 0; i < cma_early_area_count; i++)
-+		cma_activate_area(&cma_early_areas[i]);
- 
- 	return 0;
- }
-@@ -221,41 +235,85 @@ void __init cma_reserve_pages_on_error(struct cma *cma)
- 	set_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags);
- }
- 
-+static void cma_init_area(struct cma *cma, const char *name,
-+			  phys_addr_t size, unsigned int order_per_bit,
-+			  bool dynamic)
++}
++DEFINE_SHOW_ATTRIBUTE(dma_heap_debug);
++
++static struct dentry *dma_heap_debugfs_dir;
++
++static void dma_heap_init_debugfs(void)
 +{
-+	unsigned int index;
++	struct dentry *dir;
 +
-+	if (dynamic)
-+		index = MAX_EARLY_CMA_AREAS + cma_area_count;
-+	else
-+		index = cma_early_area_count;
++	dir = debugfs_create_dir("dma_heap", NULL);
++	if (IS_ERR(dir))
++		return;
 +
-+	if (name)
-+		strscpy(cma->name, name);
-+	else
-+		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", index);
-+
-+	cma->count = size >> PAGE_SHIFT;
-+	cma->available_count = cma->count;
-+	cma->order_per_bit = order_per_bit;
-+
-+	INIT_LIST_HEAD(&cma->node);
++	dma_heap_debugfs_dir = dir;
 +}
 +
- static int __init cma_new_area(const char *name, phys_addr_t size,
- 			       unsigned int order_per_bit,
- 			       struct cma **res_cma)
- {
- 	struct cma *cma;
++static void dma_heap_exit_debugfs(void)
++{
++	debugfs_remove_recursive(dma_heap_debugfs_dir);
++}
++#else
++static void dma_heap_init_debugfs(void)
++{
++}
++
++static void dma_heap_exit_debugfs(void)
++{
++}
++#endif
++
+ /**
+  * dma_heap_add - adds a heap to dmabuf heaps
+  * @exp_info: information needed to register this heap
+@@ -299,6 +340,13 @@ struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
  
--	if (cma_area_count == ARRAY_SIZE(cma_areas)) {
-+	if (cma_early_area_count == ARRAY_SIZE(cma_early_areas)) {
- 		pr_err("Not enough slots for CMA reserved regions!\n");
- 		return -ENOSPC;
+ 	/* Add heap to the list */
+ 	list_add(&heap->list, &heap_list);
++
++#ifdef CONFIG_DEBUG_FS
++	if (heap->ops && heap->ops->show)
++		debugfs_create_file(heap->name, 0444, dma_heap_debugfs_dir,
++				    heap, &dma_heap_debug_fops);
++#endif
++
+ 	mutex_unlock(&heap_list_lock);
+ 
+ 	return heap;
+@@ -335,6 +383,14 @@ static int dma_heap_init(void)
  	}
+ 	dma_heap_class->devnode = dma_heap_devnode;
  
-+	mutex_lock(&cma_lock);
++	dma_heap_init_debugfs();
 +
- 	/*
- 	 * Each reserved area must be initialised later, when more kernel
- 	 * subsystems (like slab allocator) are available.
- 	 */
--	cma = &cma_areas[cma_area_count];
--	cma_area_count++;
-+	cma = &cma_early_areas[cma_early_area_count];
-+	cma_init_area(cma, name, size, order_per_bit, false);
- 
--	if (name)
--		strscpy(cma->name, name);
--	else
--		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_count);
--
--	cma->available_count = cma->count = size >> PAGE_SHIFT;
--	cma->order_per_bit = order_per_bit;
--	*res_cma = cma;
- 	totalcma_pages += cma->count;
-+	cma_early_area_count++;
-+	*res_cma = cma;
-+
-+	mutex_unlock(&cma_lock);
- 
  	return 0;
  }
- 
- static void __init cma_drop_area(struct cma *cma)
- {
-+	mutex_lock(&cma_lock);
- 	totalcma_pages -= cma->count;
--	cma_area_count--;
-+	cma_early_area_count--;
-+	mutex_unlock(&cma_lock);
-+}
+ subsys_initcall(dma_heap_init);
 +
-+static int cma_check_memory(phys_addr_t base, phys_addr_t size)
++static void __exit dma_heap_exit(void)
 +{
-+	if (!size || !memblock_is_region_reserved(base, size))
-+		return -EINVAL;
-+
-+	/*
-+	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
-+	 * needs pageblock_order to be initialized. Let's enforce it.
-+	 */
-+	if (!pageblock_order) {
-+		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
-+		return -EINVAL;
-+	}
-+
-+	/* ensure minimal alignment required by mm core */
-+	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
-+		return -EINVAL;
-+
-+	return 0;
- }
++	dma_heap_exit_debugfs();
++}
++__exitcall(dma_heap_exit);
+diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
+index 648328a64b27..1c9bed1f4dde 100644
+--- a/include/linux/dma-heap.h
++++ b/include/linux/dma-heap.h
+@@ -12,6 +12,7 @@
+ #include <linux/types.h>
+ 
+ struct dma_heap;
++struct seq_file;
  
  /**
-@@ -278,22 +336,9 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 	struct cma *cma;
- 	int ret;
- 
--	/* Sanity checks */
--	if (!size || !memblock_is_region_reserved(base, size))
--		return -EINVAL;
--
--	/*
--	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
--	 * needs pageblock_order to be initialized. Let's enforce it.
--	 */
--	if (!pageblock_order) {
--		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
--		return -EINVAL;
--	}
--
--	/* ensure minimal alignment required by mm core */
--	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
--		return -EINVAL;
-+	ret = cma_check_memory(base, size);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = cma_new_area(name, size, order_per_bit, &cma);
- 	if (ret != 0)
-@@ -446,7 +491,7 @@ static int __init __cma_declare_contiguous_nid(phys_addr_t *basep,
- 	pr_debug("%s(size %pa, base %pa, limit %pa alignment %pa)\n",
- 		__func__, &size, &base, &limit, &alignment);
- 
--	if (cma_area_count == ARRAY_SIZE(cma_areas)) {
-+	if (cma_early_area_count == ARRAY_SIZE(cma_early_areas)) {
- 		pr_err("Not enough slots for CMA reserved regions!\n");
- 		return -ENOSPC;
- 	}
-@@ -1053,12 +1098,12 @@ bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 	return true;
- }
- 
--int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
-+int cma_for_each_early_area(int (*it)(struct cma *cma, void *data), void *data)
- {
- 	int i;
- 
--	for (i = 0; i < cma_area_count; i++) {
--		int ret = it(&cma_areas[i], data);
-+	for (i = 0; i < cma_early_area_count; i++) {
-+		int ret = it(&cma_early_areas[i], data);
- 
- 		if (ret)
- 			return ret;
-@@ -1067,6 +1112,25 @@ int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
- 	return 0;
- }
- 
-+int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
-+{
-+	struct cma *cma;
-+
-+	mutex_lock(&cma_lock);
-+
-+	list_for_each_entry(cma, &cma_areas, node) {
-+		int ret = it(cma, data);
-+
-+		if (ret) {
-+			mutex_unlock(&cma_lock);
-+			return ret;
-+		}
-+	}
-+
-+	mutex_unlock(&cma_lock);
-+	return 0;
-+}
-+
- bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end)
- {
- 	int r;
-@@ -1149,3 +1213,78 @@ void __init *cma_reserve_early(struct cma *cma, unsigned long size)
- 
- 	return ret;
- }
-+
-+struct cma *cma_create(phys_addr_t base, phys_addr_t size,
-+		       unsigned int order_per_bit, const char *name)
-+{
-+	struct cma *cma;
-+	int ret;
-+
-+	ret = cma_check_memory(base, size);
-+	if (ret < 0)
-+		return ERR_PTR(ret);
-+
-+	cma = kzalloc_obj(*cma, GFP_KERNEL);
-+	if (!cma)
-+		return ERR_PTR(-ENOMEM);
-+
-+	mutex_lock(&cma_lock);
-+
-+	cma_init_area(cma, name, size, order_per_bit, true);
-+	cma->ranges[0].base_pfn = PFN_DOWN(base);
-+	cma->ranges[0].early_pfn = PFN_DOWN(base);
-+	cma->ranges[0].count = cma->count;
-+	cma->nranges = 1;
-+
-+	cma_activate_area(cma);
-+
-+	list_add_tail(&cma->node, &cma_areas);
-+	totalcma_pages += cma->count;
-+	cma_area_count++;
-+
-+	mutex_unlock(&cma_lock);
-+
-+	return cma;
-+}
-+
-+void cma_free(struct cma *cma)
-+{
-+	unsigned int i;
-+
-+	/*
-+	 * Safety check to prevent a CMA with active allocations from being
-+	 * released.
-+	 */
-+	for (i = 0; i < cma->nranges; i++) {
-+		unsigned long nbits = cma_bitmap_maxno(cma, &cma->ranges[i]);
-+
-+		if (nbits && !bitmap_empty(cma->ranges[i].bitmap, nbits)) {
-+			WARN(1, "%s: range %u not empty\n", cma->name, i);
-+			return;
-+		}
-+	}
-+
-+	mutex_lock(&cma_lock);
-+
-+	/* free reserved pages and the bitmap */
-+	for (i = 0; i < cma->nranges; i++) {
-+		struct cma_memrange *cmr = &cma->ranges[i];
-+		unsigned long end_pfn, pfn;
-+
-+		end_pfn = cmr->base_pfn + cmr->count;
-+		for (pfn = cmr->base_pfn; pfn < end_pfn; pfn++)
-+			free_reserved_page(pfn_to_page(pfn));
-+
-+		bitmap_free(cmr->bitmap);
-+	}
-+
-+	mutex_destroy(&cma->alloc_mutex);
-+
-+	totalcma_pages -= cma->count;
-+	list_del(&cma->node);
-+	cma_area_count--;
-+
-+	mutex_unlock(&cma_lock);
-+
-+	kfree(cma);
-+}
-diff --git a/mm/cma.h b/mm/cma.h
-index c70180c36559..ae4db9819e38 100644
---- a/mm/cma.h
-+++ b/mm/cma.h
-@@ -41,6 +41,7 @@ struct cma {
- 	unsigned long	available_count;
- 	unsigned int order_per_bit; /* Order of pages represented by one bit */
- 	spinlock_t	lock;
-+	struct list_head node;
- 	struct mutex alloc_mutex;
- #ifdef CONFIG_CMA_DEBUGFS
- 	struct hlist_head mem_head;
-@@ -71,8 +72,8 @@ enum cma_flags {
- 	CMA_ACTIVATED,
+  * struct dma_heap_ops - ops to operate on a given heap
+@@ -24,6 +25,7 @@ struct dma_heap_ops {
+ 				    unsigned long len,
+ 				    u32 fd_flags,
+ 				    u64 heap_flags);
++	int (*show)(struct seq_file *s, struct dma_heap *heap);
  };
  
--extern struct cma cma_areas[MAX_CMA_AREAS];
--extern unsigned int cma_area_count;
-+extern struct cma cma_early_areas[MAX_EARLY_CMA_AREAS];
-+extern unsigned int cma_early_area_count;
- 
- static inline unsigned long cma_bitmap_maxno(struct cma *cma,
- 		struct cma_memrange *cmr)
-diff --git a/mm/cma_debug.c b/mm/cma_debug.c
-index 523ba4a0f9f7..548b0157e7b5 100644
---- a/mm/cma_debug.c
-+++ b/mm/cma_debug.c
-@@ -204,9 +204,9 @@ static int __init cma_debugfs_init(void)
- 
- 	cma_debugfs_root = debugfs_create_dir("cma", NULL);
- 
--	for (i = 0; i < cma_area_count; i++)
--		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
--			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
-+	for (i = 0; i < cma_early_area_count; i++)
-+		if (test_bit(CMA_ACTIVATED, &cma_early_areas[i].flags))
-+			cma_debugfs_add_one(&cma_early_areas[i], cma_debugfs_root);
- 
- 	return 0;
- }
-diff --git a/mm/cma_sysfs.c b/mm/cma_sysfs.c
-index d5bf792c6245..15319c7b8227 100644
---- a/mm/cma_sysfs.c
-+++ b/mm/cma_sysfs.c
-@@ -116,8 +116,8 @@ static int __init cma_sysfs_init(void)
- 	if (!cma_kobj_root)
- 		return -ENOMEM;
- 
--	for (i = 0; i < cma_area_count; i++) {
--		cma = &cma_areas[i];
-+	for (i = 0; i < cma_early_area_count; i++) {
-+		cma = &cma_early_areas[i];
- 		if (!test_bit(CMA_ACTIVATED, &cma->flags))
- 			continue;
- 
-@@ -140,7 +140,7 @@ static int __init cma_sysfs_init(void)
- 	return 0;
- out:
- 	while (--i >= 0) {
--		cma = &cma_areas[i];
-+		cma = &cma_early_areas[i];
- 		if (cma->cma_kobj)
- 			kobject_put(&cma->cma_kobj->kobj);
- 	}
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index e5aa20a9b898..796eafb57752 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2156,7 +2156,7 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
- #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
- 
- #ifdef CONFIG_CMA
--void __init init_cma_reserved_pageblock(struct page *page)
-+void init_cma_reserved_pageblock(struct page *page)
- {
- 	unsigned i = pageblock_nr_pages;
- 	struct page *p = page;
-@@ -2178,7 +2178,7 @@ void __init init_cma_reserved_pageblock(struct page *page)
- /*
-  * Similar to above, but only set the migrate type and stats.
-  */
--void __init init_cma_pageblock(struct page *page)
-+void init_cma_pageblock(struct page *page)
- {
- 	init_pageblock_migratetype(page, MIGRATE_CMA, false);
- 	adjust_managed_page_count(page, pageblock_nr_pages);
+ /**
 
 -- 
 2.54.0
