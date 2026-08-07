@@ -4,138 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32C8FC5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE868C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 174D26B0099; Fri,  7 Aug 2026 03:04:56 -0400 (EDT)
+	id C06C96B0088; Fri,  7 Aug 2026 03:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14D306B009B; Fri,  7 Aug 2026 03:04:56 -0400 (EDT)
+	id BBE6C6B009D; Fri,  7 Aug 2026 03:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03C316B009D; Fri,  7 Aug 2026 03:04:55 -0400 (EDT)
+	id A7ED46B009E; Fri,  7 Aug 2026 03:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C51CA6B0099
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:04:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DC53A1820
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:04:55 +0000 (UTC)
-X-FDA: 85073586150.29.2B2E57C
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 61C4220006
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:04:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dj96D+Tl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 805786B0088
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:09:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA34440296
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:09:44 +0000 (UTC)
+X-FDA: 85073598288.05.77546F4
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A07B940007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:09:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Qh6BCzQc;
+	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786086293;
+	s=arc-20220608; t=1786086582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lVFGsj6wF8TniSm635aV4RrzfQPS2L0YIewv428Po2A=;
-	b=vPNlXuxCl6g/mlR84jdxNncPTnKA6nBVSSH7bpJAi9JzRVg9tz6qMWskoCvt+PKQc0RPCX
-	R6VY65tp3OcNZfQUzzuaYhvVspLYHvQ5h7a/njc1BkGVm8XrXW+mgtL8qTELeFPuTFOQ+M
-	ks88OCe6jJEvWLJJS9Dw/HuaEp993uA=
+	bh=jpeOcxycXBTAlw8xEd8qyVhgpwcjWFNB4soWtck85Pw=;
+	b=AfGi8+WSgUl5jNPtMBjyoIXyYP7ssG8Qw4+xtZVMlu2hKbZ9hCk1PTIKU1eb4fyGYMgII2
+	8mva63jwM3yTSCHyEYZuoJyEPMJh8XVMcgTGs3wpEGr27t4UgZinz7hFNb13r/ZbJhG9C8
+	82xKWJGWXbDjCj+IN4/q05HfvshFFLg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dj96D+Tl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Qh6BCzQc;
+	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786086293;
-	b=b4aSBuL+sI/eZN2dzKxMug+ESAAhHkLAyHtXqtXb/I3drvYJy/b+5dpgOI5OfXF4ZMJ/Pv
-	oq6MPnSrBYGZm8brhMwPPl+X5NwYWXVFCVfIHBi8ccvtokXSURz8hCG5MMSN9IJazGD2or
-	SajIQ9Neg8X6DVBmakH6f9Nugek8v2E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786086290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lVFGsj6wF8TniSm635aV4RrzfQPS2L0YIewv428Po2A=;
-	b=dj96D+Tlrgu8b1nz1jlaA0I5jwuCOMazRznMbo5mBfUQgUZm2BVoRNoHt3B1Bb9+RVAQ1v
-	IiVJ0tIXW/29eoF1vHHPlnhitG2vPqYOyQmZpavVB0uT9EuiHRNpYbJu1jfqGMk8Ub3cMa
-	LIZ9Ze9jGOx72/aU+HWLE6Voqv+bZIQ=
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	KP Singh <kpsingh@kernel.org>,
-	Tao Chen <chen.dylane@linux.dev>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Tobias Klauser <tklauser@distanz.ch>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Rong Tao <rongtao@cestc.cn>,
-	Hao Luo <haoluo@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next 4/4] selftests/bpf: add memcg async reclaim test for bpf_wq/bpf_thread_wq
-Date: Fri,  7 Aug 2026 15:04:12 +0800
-Message-ID: <8c34a7f2ad826054c7e3ae88276614415755e3bc.1786086076.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1786086076.git.zhuhui@kylinos.cn>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
+	t=1786086582;
+	b=IY6W0m+IyxJAUkko2bVLXBkNVra94cUsgQDbte2aEzZHs9mnhLSIFcX/lkhfeI5UOt7uD2
+	y1Pv4fg+E4NGDRJHjIGYtUwFeKNzTmzxVwmBUjfTRVg1q/R6dSy4j6K8v4EcSzRU2d+zuR
+	EQuOZFtgPSUoKFrHnJeq1PcunCSoVeQ=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770JZQv4064146;
+	Fri, 7 Aug 2026 07:09:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=jpeOcxycXBTAlw8xEd8qyVhgpwcjWF
+	NB4soWtck85Pw=; b=Qh6BCzQcqD/AGOqi1hTQHgQVz6HuWuBJB87Gbu8R2QRIrL
+	ftEfzBmybSkNntrd41XE524cbuEjupU7byCqaB7YxW9kBgydkUCxBhrhTSiwT6H+
+	U4OKIllzATyLLGfNArjEOqj0akgLZ0asqOkSM0XKJyYYoIst8JvDseeB2sH706u4
+	hhs9ueI6JSC+Ld/f6qPFOuLXDpab+v18Jf4LeEQIr4j5+MFCFi1kjnwg8/MvRqx/
+	KhT+u3vzeF7qrRG7dH6ram2Pu9RQGcAByOzaawNWn2aii58OGSRM1hM7xmzHRjNe
+	Si5vdvDt7lOVvC8K31hkxayAWljo7JjlQf3ZTeQg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy02anmy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 07:09:18 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6776uIAD024920;
+	Fri, 7 Aug 2026 07:09:17 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhpmkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 07:09:17 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67779F7T51315084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 07:09:15 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 668A020040;
+	Fri,  7 Aug 2026 07:09:15 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EA50320043;
+	Fri,  7 Aug 2026 07:09:12 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.55.180])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  7 Aug 2026 07:09:12 +0000 (GMT)
+Date: Fri, 7 Aug 2026 09:09:11 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH 1/9] mm: introduce hw_pte_t for PTE table storage
+Message-ID: <3db8233c-3785-444e-b2eb-3e5fc5cb2f17-agordeev@linux.ibm.com>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-2-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 61C4220006
-X-Stat-Signature: xhzz9k9xi1itecn8axka5rs3bk5cqthy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806083926.1807279-2-usama.anjum@arm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=G6ws1dk5 c=1 sm=1 tr=0 ts=6a75849e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=7CQSdrXTAAAA:8
+ a=knT6YJskkHJV9nTHl7IA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA0OSBTYWx0ZWRfX0nP+lx57+9VF
+ 1gmEHMdPT9FDdcpiQyi8SmdcwszvdSJS7mABzCaLeNrHd5Sn8+sTGSPk7wgKar3hoAN1E4B/pVx
+ bnXvboS9h3/hfmNoqiGrVCRZoMjtdCQHGGcTi/BUQBFwhU3T8reyBMtbDszvLlwmh+wtmaSZLqp
+ yvHKwixzlq6G3K0WuaMTKb0rV/vx4p/+UD+c1HQ1XyaQGUDlAtP+qGdAxuohRKj+obB6JSz4pJf
+ zR2/7yIz+BcCrmWWxRtyEAkQu5yJbla8dkOuZTNT+Te2QfvIou3iP7qEQNN4GRIU2Q5uHMR6b+I
+ Dj47k0jZ1vEd4+qsmknTL/rQ5DO0GSFvsjQsVYtZ2xV19zVeKyvXq+fRINOYMQUEmIHFL/MkEMn
+ a61cmrTNbkwX+us4u3c+MP3DMEixACEHjWeKrnFUAYotTcrys6EiCMj8gXkAJjhYM+ZfvANLuAs
+ LDq51urlTaBYjwemYPw==
+X-Proofpoint-ORIG-GUID: 24rCQEgxgE9QBP75I4HmK7CgK28n9dSJ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA0OSBTYWx0ZWRfX1i5aYO825ZYa
+ TwQN6H3jwP2QZ+OLP/IGdT3C7Slc5GOjV5747KQtgAdatwi/16p60JYaM2efb4DysHgyipihWtH
+ 8fPlfABrpBSxaw7p4kLOdK2+bYjkzog=
+X-Proofpoint-GUID: 24rCQEgxgE9QBP75I4HmK7CgK28n9dSJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070049
+X-Stat-Signature: qe5h4xgijcng7xgyk1ncw3qmtnstm6bd
+X-Rspamd-Queue-Id: A07B940007
 X-Rspam-User: 
-X-HE-Tag: 1786086293-274751
-X-HE-Meta: U2FsdGVkX1+rzzsAcghTXFQVGtHN8CBVOH03LRGMHeND1VgnSH1TVd2hirHHhLr1e+iKn9IM5dGk1CRSpnVCSGhBW4Aeu42HwgkjbGDDrgJjF8mnMOU3YxYTilhgZyPw25jRHpLX5JHLP6q8lfT1+YqZhmOBM6bk/1ZEnNtYblBAZdAvkCL0PYA51MOSJ3lV89S9GRRnNxodAUOFegTH+lvMYe8Owimaoyfolu4BOBHLBOzbBTWCQuN9tERde/Xu0cnDojVy2W7dhNr4E/E2JEFwHH512TclYYQX3XYL1gvGeJ9xKq6Srl1QlFyjXT1xFKAW4dP4xUrgLAtzCplG/tT57HIbKhsBid9v8MaF8FwbtKi59CxnntJpXL6BzOTpYDtwnmXbeD3sw2uc91K8MxYM052YC3tLtwNVP9pohH9aqbgGN+V3eU1ksEnR+VXLwzjtHq3cf67astZh6J5ipXa+txA96T8PfvlYmzxF3XwSQsq9EhVC9fGKH59xth64ley3g65OxjgLDneLO9ABgimFxVBwE+RnFuUrJk/EXHAI2U5HkD3cWFiR3GHBlbMBBv16jSyEfGSbiBOZWqAlZ6HmRg4tskIcVzvBmM6NOFIi+qo0XxDLPDK85t1y80IMFtUvg9TELnx2Eh4CKoMGV4xB6MegC3vesb+SnWq7oS+TuFmg4GAI+x3lHFA3Eqq1OHXDRS/9Jp6k7GJYF8Wt1k5mj9pHXCxdFaZrQXQBjMPvn45HjnKAlO1HylBboKc6SVQOFQXgfrEDr/NWHxo9G27iNLVrUmNRdi1DGW+sbn/AmSlnrtRbMOiBLaA6riIF2rJOPrNHzDeryPfUzcin/19d3Xmei33lV1FWXXRfjSq98yr5ck86aETtISXu+FXDYEk78uqUP47dq279VPeFpP4h++0d/YkIH9dgviff+PCRCQLVMplLdtAsmNwiZMybzhMoSyl8bjCGWBjPV67
- nYk7+drk
- v9CbfIXZ8q/acvhF1L+qpr4JkEZXGGmF/aNLDtaKh2OjFW2pVsAeVHDgdRaPkbXYODgKofLdYgq1KiACdwiXFbm92gbP1/DUQ438OqFJpGImp1egObvfJAIW4yaI7whqy/kc4MoMQCOMmlPGyXECE+aOWOoHCtm6DeB5f9XYur7c8FCWhldJnmIoz63GEfxxKrRfRqkZYOqnygopnvlSZnqTatg2NjPa6JNHxE3SRiw1QHCvVydASafifJLTlPq8JBw7tvi5xs0ff1ag2GlMJBa95QQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786086582-163509
+X-HE-Meta: U2FsdGVkX1+7vWEnRgIKh+gmA9UJgGd7Eg4twVIQiGJtFButepN3RX7W19szi3awxzdIje3UT+RYb0GROAgw1f0TUfjueAiBTQxuOaKikMqT2E27B9Z5uEISg6Q4+P83Rebnf8ZVDNB0+leCXzGGFwA01NzabhQ9FJ8Ra+Y4bRFhnZyU7d51Xrv49Yez4404pim1VzuSBDpsm4sO+IgfVVssJbJtPRXCqjUCrMNZCa/l42j3M9QKkgUCVsGwlDBn3v/5rjPkfZTr4eETTBssRNXifYDjBaO+EETjUd3VlATVvpArD3g988mWQYI94ja+h9F016XL9s1sbJS4d0Vgy2xQ1NJ7CGn810Ewqz8d27S+IPCLfi7otzDxtrqBuTM1T08F9yM8JRHfVkdvxVJ7Hrn4jmsKRX2DrR7khZMk2qfUzw7Ccca823zXgvalZ35BS+qWhDc4+WNtxI053Pk6+2wdlNGDAi+APhnbIWEsZl7ea8IScsH5q8w4y4OY62gIgANQvpa/xzJRfGWel6LfYuBS4C2NGrr0aKKHxj5Rog56ud+9Od/Z4rmeKl32dZ2THZAWQjCDTNksn6TjEoOegdKDsFV3+F69oA7vFM7atoF+jEMtn894feFhcp5HPXEK7/tjYgMnJYBiwsyA1OzfZn9sUPT5i4s8ITYU+TfFI4v3dXBjKMWFurvVkiAmGWPiNwotQ2Kcq5cTTcufFA24v/9Kkj8OOQKkVqG10xDYOlXnBtUZ4i62k7k9kWZ8gUrsWMmc2zErTxYcA/hSe5Jij9jE39oJ6cCI5wXRzAOXYwEQcaoDV8Hb9RwaaueHCYGkvwd4bqCy/5lzEdlrH00mu34efSYhQ6+LIeEvbxfJi7nuen8XUrvBuzJ742jFv1FrVkwBUR7DJTsFLxKzbhiGXWAcyUOPEMHnIMa4GfibMD4dMOWqCsxOPEEfOuTytO9Q4yU7WpOekCa5qtr5Atl
+ qKpK8dKx
+ 8Rii1nxg8grydzQ+nAs9FzKoFdYTx9SwiKOo766dxfeLOdt64YnVjjYf06vgm9ejnypgPg5Sv/AYK03h/+S/nTnghGCD7r/M5x8/LoEs7985LG0BqL3ezdd5Z21MfBvHfv2ivpt1u4geSXGoTks34yaUBZ+R7lU+4NbSUC0JkQ0jIp65ewm1xQGqc62+DyskMEfE2vPCKK1Et4bOvew+vB9v2qMOnsxpNvM14Wmm2Jy7H2tPURuEmqjl01Zb6LGkfZV6NjjCFbJZQG0kidyqxciBG6yndboVyrDcixSmIF3ehul8Z1hEwz2GAH0k7ZalmNMpjFzjPyOaNSMlEHjI29IgXY6rlDAR5XtDrJ4Ecuu21a7Wg33GMxhsNGbnxWTmVqkdLJCSQctVCeyjtu1bHv6TTeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,782 +183,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Thu, Aug 06, 2026 at 09:38:39AM +0100, Muhammad Usama Anjum wrote:
+> pte_t is used both for logical PTE values and for entries stored in a PTE
+> table, so pte_t * does not distinguish a pointer to a copied value from a
+> pointer to table storage.
+> 
+> Introduce hw_pte_t as the generic name for a PTE table element. Define it
+> as a macro alias of pte_t by default. When an architecture selects
+> ARCH_HAS_HW_PTE_T, define it as a structure containing a pte_t instead.
+> This preserves the representation while allowing converted architectures
+> to enforce the distinction at compile time.
+> 
+> Keep the C type definitions behind an __ASSEMBLY__ check because
+> architecture assembly sources can include this header indirectly. Include
+> asm/page.h so consumers such as linux/vmalloc.h retain the page definitions
+> they previously obtained from that header.
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since RFC v1:
+> - Add the ARCH_HAS_HW_PTE_T opt-in and generic wrapper definition.
+> - Exclude the C type definitions from assembly sources.
+> - Update the description for the new opt-in model.
+> ---
+>  MAINTAINERS                   |  1 +
+>  include/linux/pgtable_types.h | 17 +++++++++++++++++
+>  mm/Kconfig                    |  3 +++
+>  3 files changed, 21 insertions(+)
+>  create mode 100644 include/linux/pgtable_types.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e9c8567308a75..7169bea968cf5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16982,6 +16982,7 @@ F:	include/linux/mmu_notifier.h
+>  F:	include/linux/pagewalk.h
+>  F:	include/linux/pgalloc.h
+>  F:	include/linux/pgtable.h
+> +F:	include/linux/pgtable_types.h
+>  F:	include/linux/ptdump.h
+>  F:	include/linux/vmpressure.h
+>  F:	include/linux/vmstat.h
+> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+> new file mode 100644
+> index 0000000000000..70c3edd00a01b
+> --- /dev/null
+> +++ b/include/linux/pgtable_types.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_PGTABLE_TYPES_H
+> +#define _LINUX_PGTABLE_TYPES_H
+> +
+> +#include <asm/page.h>
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +#ifdef CONFIG_ARCH_HAS_HW_PTE_T
+> +typedef struct { pte_t __pte; } hw_pte_t;
 
-Add memcg_async_reclaim selftest that verifies BPF-driven async
-proactive reclaim can mitigate refault-induced slowdown under memory
-pressure.
+On s390 it fails to compile once we do typedef hw_pte_t *pgtable_t
+in asm/page.h. m68k, powerpc and sparc may also have such problem.
 
-The test creates a parent cgroup with a fixed memory.max, and two
-child cgroups (high/low) under it. Both children concurrently write
-and repeatedly read-fault a file larger than the shared limit. A BPF
-program monitors the "high" cgroup's WORKINGSET_REFAULT_FILE stat via
-a periodic timer, and when it detects refault growth beyond a
-threshold, triggers async reclaim on the "low" cgroup using
-bpf_try_to_free_mem_cgroup_pages(), expecting the "high" cgroup's
-workload to finish faster than without such reclaim.
+The below declaration helps to resolve it using forward declaration
+and without meddling with headers, though I do not like it much:
 
-Two variants are covered:
-- test_memcg_wq_async_reclaim: async work driven by bpf_wq.
-- test_memcg_thread_wq_async_reclaim: async work driven by the new
-  bpf_thread_wq, which pins the reclaim work to the "low" cgroup's
-  resource context via bpf_thread_wq_init()'s cgroup_id argument.
+typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
 
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- .../bpf/prog_tests/memcg_async_reclaim.c      | 479 ++++++++++++++++++
- .../selftests/bpf/progs/memcg_async_reclaim.c | 255 ++++++++++
- 2 files changed, 734 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-new file mode 100644
-index 000000000000..40a5fe62cb38
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-@@ -0,0 +1,479 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Memory controller eBPF async reclaim test
-+ */
-+
-+#include <test_progs.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <sys/vfs.h>
-+#include <sys/wait.h>
-+#include <fcntl.h>
-+#include <linux/magic.h>
-+#include <unistd.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+#include "cgroup_helpers.h"
-+
-+struct bpf_args_s {
-+	u64 high_cgroup_id;
-+	u64 low_cgroup_id;
-+	u64 event_delta_threshold;
-+	u64 check_ns;
-+};
-+
-+#include "memcg_async_reclaim.skel.h"
-+
-+#define FILE_SIZE (32 * 1024 * 1024ul)
-+#define BUFFER_SIZE (4096)
-+#define CG_LIMIT (32 * 1024 * 1024ul)
-+#define READ_TIMES 16
-+
-+#define CG_DIR "/memcg_async_reclaim"
-+#define CG_HIGH_DIR CG_DIR "/high"
-+#define CG_LOW_DIR CG_DIR "/low"
-+
-+#define CHECK_PERIOD_NS (2 * 1000 * 1000ull)
-+#define EVENT_DELTA_THRESHOLD 1
-+
-+/*
-+ * Test files must reside on a filesystem that supports page reclaim without
-+ * swap (e.g. ext4). If /tmp is on tmpfs, the file pages are shmem-backed
-+ * and can only be reclaimed through swap. But the test disables swap
-+ * (memory.swap.max=0), making reclaim impossible and causing OOM.
-+ *
-+ * Pick a directory on a non-tmpfs filesystem: try $TMPDIR first, then /tmp,
-+ * and fall back to the current directory if the chosen path is on tmpfs.
-+ */
-+static int get_test_dir(char *buf, size_t size)
-+{
-+	static const char * const candidates[] = { "/tmp", "." };
-+	const char *tmpdir = getenv("TMPDIR");
-+	struct statfs sfs;
-+	size_t i;
-+
-+	if (tmpdir && tmpdir[0] && statfs(tmpdir, &sfs) == 0 &&
-+	    sfs.f_type != TMPFS_MAGIC) {
-+		snprintf(buf, size, "%s", tmpdir);
-+		return 0;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(candidates); i++) {
-+		if (statfs(candidates[i], &sfs) == 0 &&
-+		    sfs.f_type != TMPFS_MAGIC) {
-+			snprintf(buf, size, "%s", candidates[i]);
-+			return 0;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+static int setup_high_low_cgroups(u64 *high_cgroup_id, u64 *low_cgroup_id)
-+{
-+	int ret;
-+	char limit_buf[20];
-+
-+	ret = setup_cgroup_environment();
-+	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DIR))
-+		goto cleanup;
-+	close(ret);
-+
-+	ret = enable_controllers(CG_DIR, "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
-+
-+	snprintf(limit_buf, sizeof(limit_buf), "%lu", CG_LIMIT);
-+	ret = write_cgroup_file(CG_DIR, "memory.max", limit_buf);
-+	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
-+		goto cleanup;
-+
-+	ret = write_cgroup_file(CG_DIR, "memory.swap.max", "0");
-+	if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_HIGH_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_HIGH_DIR))
-+		goto cleanup;
-+	close(ret);
-+
-+	*high_cgroup_id = get_cgroup_id(CG_HIGH_DIR);
-+	if (!ASSERT_GT(*high_cgroup_id, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_LOW_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_LOW_DIR))
-+		goto cleanup;
-+	close(ret);
-+
-+	*low_cgroup_id = get_cgroup_id(CG_LOW_DIR);
-+	if (!ASSERT_GT(*high_cgroup_id, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	return 0;
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	return -1;
-+}
-+
-+static int write_file(const char *filename)
-+{
-+	int ret = -1;
-+	size_t written = 0;
-+	char *buffer;
-+	FILE *fp;
-+
-+	fp = fopen(filename, "wb");
-+	if (!fp)
-+		goto out;
-+
-+	buffer = malloc(BUFFER_SIZE);
-+	if (!buffer)
-+		goto cleanup_fp;
-+
-+	memset(buffer, 'A', BUFFER_SIZE);
-+
-+	while (written < FILE_SIZE) {
-+		size_t to_write = FILE_SIZE - written < BUFFER_SIZE ?
-+				  FILE_SIZE - written : BUFFER_SIZE;
-+
-+		if (fwrite(buffer, 1, to_write, fp) != to_write)
-+			goto cleanup;
-+		written += to_write;
-+	}
-+
-+	ret = 0;
-+cleanup:
-+	free(buffer);
-+cleanup_fp:
-+	fclose(fp);
-+out:
-+	return ret;
-+}
-+
-+static int read_file(const char *filename, int iterations)
-+{
-+	int ret = -1;
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	char *map;
-+	size_t i;
-+	int fd;
-+	struct stat sb;
-+
-+	fd = open(filename, O_RDONLY);
-+	if (fd == -1)
-+		goto out;
-+
-+	if (fstat(fd, &sb) == -1)
-+		goto cleanup_fd;
-+
-+	if (sb.st_size != FILE_SIZE) {
-+		fprintf(stderr, "File size mismatch: expected %lu, got %lu\n",
-+			(unsigned long)FILE_SIZE, (unsigned long)sb.st_size);
-+		goto cleanup_fd;
-+	}
-+
-+	map = mmap(NULL, FILE_SIZE, PROT_READ, MAP_PRIVATE, fd, 0);
-+	if (map == MAP_FAILED)
-+		goto cleanup_fd;
-+
-+	for (int iter = 0; iter < iterations; iter++) {
-+		for (i = 0; i < FILE_SIZE; i += page_size) {
-+			/* access a byte to trigger page fault */
-+			asm volatile("" :: "r"(map[i]) : "memory");
-+		}
-+	}
-+
-+	if (munmap(map, FILE_SIZE) == -1)
-+		goto cleanup_fd;
-+
-+	ret = 0;
-+
-+cleanup_fd:
-+	close(fd);
-+out:
-+	return ret;
-+}
-+
-+static int real_test_child_work(const char *cgroup_path, char *data_filename,
-+				char *time_filename, int read_times)
-+{
-+	struct timeval start, end;
-+	double elapsed;
-+	FILE *fp;
-+
-+	if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgroup"))
-+		return -1;
-+
-+	gettimeofday(&start, NULL);
-+
-+	if (!ASSERT_OK(write_file(data_filename), "write_file"))
-+		return -1;
-+
-+	if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
-+		return -1;
-+
-+	gettimeofday(&end, NULL);
-+
-+	if (!time_filename)
-+		return 0;
-+
-+	elapsed = (end.tv_sec - start.tv_sec) +
-+		  (end.tv_usec - start.tv_usec) / 1000000.0;
-+	printf("%.6f\n", elapsed);
-+
-+	fp = fopen(time_filename, "w");
-+	if (!ASSERT_OK_PTR(fp, "fopen"))
-+		return -1;
-+	fprintf(fp, "%.6f", elapsed);
-+	fclose(fp);
-+
-+	return 0;
-+}
-+
-+static int get_time(char *time_filename, double *time)
-+{
-+	int ret = -1;
-+	FILE *fp;
-+	char buf[64];
-+
-+	fp = fopen(time_filename, "r");
-+	if (!ASSERT_OK_PTR(fp, "fopen"))
-+		goto out;
-+
-+	if (!ASSERT_OK_PTR(fgets(buf, sizeof(buf), fp), "fgets"))
-+		goto cleanup;
-+
-+	if (sscanf(buf, "%lf", time) != 1) {
-+		PRINT_FAIL("sscanf %s", buf);
-+		goto cleanup;
-+	}
-+
-+	ret = 0;
-+cleanup:
-+	fclose(fp);
-+out:
-+	return ret;
-+}
-+
-+static int
-+run_high_low_workload(double *high_elapsed, double *low_elapsed, int read_times)
-+{
-+	char test_dir[PATH_MAX], high_data_file[PATH_MAX], low_data_file[PATH_MAX];
-+	char high_time_file[PATH_MAX], low_time_file[PATH_MAX];
-+	int ret, fd;
-+	pid_t high_pid, low_pid;
-+	int status;
-+
-+	ret = get_test_dir(test_dir, sizeof(test_dir));
-+	if (!ASSERT_OK(ret, "get_test_dir: no non-tmpfs directory found"))
-+		return -1;
-+
-+	fd = snprintf(high_data_file, sizeof(high_data_file),
-+		      "%s/memcg_async_high_data_XXXXXX", test_dir);
-+	if (!ASSERT_LT(fd, sizeof(high_data_file), "high_data_file path"))
-+		return -1;
-+
-+	fd = snprintf(low_data_file, sizeof(low_data_file),
-+		      "%s/memcg_async_low_data_XXXXXX", test_dir);
-+	if (!ASSERT_LT(fd, sizeof(low_data_file), "low_data_file path"))
-+		return -1;
-+
-+	fd = snprintf(high_time_file, sizeof(high_time_file),
-+		      "%s/memcg_async_high_time_XXXXXX", test_dir);
-+	if (!ASSERT_LT(fd, sizeof(high_time_file), "high_time_file path"))
-+		return -1;
-+
-+	fd = snprintf(low_time_file, sizeof(low_time_file),
-+		      "%s/memcg_async_low_time_XXXXXX", test_dir);
-+	if (!ASSERT_LT(fd, sizeof(low_time_file), "low_time_file path"))
-+		return -1;
-+
-+	fd = mkstemp(high_data_file);
-+	if (!ASSERT_GE(fd, 0, "mkstemp"))
-+		return -1;
-+	close(fd);
-+
-+	fd = mkstemp(low_data_file);
-+	if (!ASSERT_GE(fd, 0, "mkstemp"))
-+		goto cleanup_high_data;
-+	close(fd);
-+
-+	fd = mkstemp(high_time_file);
-+	if (!ASSERT_GE(fd, 0, "mkstemp"))
-+		goto cleanup_low_data;
-+	close(fd);
-+
-+	fd = mkstemp(low_time_file);
-+	if (!ASSERT_GE(fd, 0, "mkstemp"))
-+		goto cleanup_high_time;
-+	close(fd);
-+
-+	low_pid = fork();
-+	if (!ASSERT_GE(low_pid, 0, "fork low"))
-+		goto cleanup_low_time;
-+	if (low_pid == 0)
-+		exit(real_test_child_work(CG_LOW_DIR, low_data_file,
-+					  low_time_file, read_times));
-+
-+	high_pid = fork();
-+	if (!ASSERT_GE(high_pid, 0, "fork high")) {
-+		(void)waitpid(low_pid, NULL, 0);
-+		goto cleanup_low_time;
-+	}
-+	if (high_pid == 0)
-+		exit(real_test_child_work(CG_HIGH_DIR, high_data_file,
-+					  high_time_file, read_times));
-+
-+	ret = waitpid(low_pid, &status, 0);
-+	if (!ASSERT_GT(ret, 0, "low waitpid"))
-+		goto cleanup_low_time;
-+	if (!ASSERT_TRUE(WIFEXITED(status), "low exited"))
-+		goto cleanup_low_time;
-+	if (!ASSERT_EQ(WEXITSTATUS(status), 0, "low exit status"))
-+		goto cleanup_low_time;
-+
-+	ret = waitpid(high_pid, &status, 0);
-+	if (!ASSERT_GT(ret, 0, "high waitpid"))
-+		goto cleanup_low_time;
-+	if (!ASSERT_TRUE(WIFEXITED(status), "high exited"))
-+		goto cleanup_low_time;
-+	if (!ASSERT_EQ(WEXITSTATUS(status), 0, "high exit status"))
-+		goto cleanup_low_time;
-+
-+	if (get_time(high_time_file, high_elapsed))
-+		goto cleanup_low_time;
-+	if (get_time(low_time_file, low_elapsed))
-+		goto cleanup_low_time;
-+
-+	ret = 0;
-+
-+cleanup_low_time:
-+	unlink(low_time_file);
-+cleanup_high_time:
-+	unlink(high_time_file);
-+cleanup_low_data:
-+	unlink(low_data_file);
-+cleanup_high_data:
-+	unlink(high_data_file);
-+	return ret;
-+}
-+
-+static int
-+setup_bpf(u64 high_cgroup_id, u64 low_cgroup_id,
-+	  struct memcg_async_reclaim **skel_ptr, bool use_thread_wq)
-+{
-+	struct memcg_async_reclaim *skel;
-+	struct bpf_args_s bpf_args = {
-+		.high_cgroup_id = high_cgroup_id,
-+		.low_cgroup_id = low_cgroup_id,
-+		.event_delta_threshold = EVENT_DELTA_THRESHOLD,
-+		.check_ns = CHECK_PERIOD_NS,
-+	};
-+	LIBBPF_OPTS(bpf_test_run_opts, run_opts,
-+		.ctx_in = &bpf_args,
-+		.ctx_size_in = sizeof(bpf_args));
-+	int prog_init_fd, err;
-+
-+	skel = memcg_async_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_async_reclaim__open_and_load"))
-+		return -1;
-+
-+	if (use_thread_wq)
-+		prog_init_fd = bpf_program__fd(skel->progs.thread_wq_prog_init);
-+	else
-+		prog_init_fd = bpf_program__fd(skel->progs.wq_prog_init);
-+	if (!ASSERT_GE(prog_init_fd, 0, "bpf_program__fd"))
-+		goto error_out;
-+
-+	err = bpf_prog_test_run_opts(prog_init_fd, &run_opts);
-+	if (!ASSERT_OK(err, "bpf_prog_test_run_opts"))
-+		goto error_out;
-+	if (!ASSERT_EQ(run_opts.retval, 0, "prog_init retval"))
-+		goto error_out;
-+
-+	*skel_ptr = skel;
-+	return 0;
-+
-+error_out:
-+	memcg_async_reclaim__destroy(skel);
-+	return -1;
-+}
-+
-+void test_memcg_wq_async_reclaim(void)
-+{
-+	u64 high_cgroup_id, low_cgroup_id;
-+	int err;
-+	double high_time = 0.0, low_time = 0.0;
-+	struct memcg_async_reclaim *skel = NULL;
-+
-+	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
-+	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
-+		return;
-+
-+	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel, false);
-+	if (!ASSERT_OK(err, "setup_bpf"))
-+		goto out;
-+
-+	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
-+	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
-+		goto out;
-+
-+	if (high_time >= low_time) {
-+		PRINT_FAIL("high cgroup not improved with async reclaim: high_time=%f low_time=%f",
-+			   high_time, low_time);
-+	}
-+
-+out:
-+	if (skel)
-+		memcg_async_reclaim__destroy(skel);
-+	/*
-+	 * Wait for bpf_wq to release the reference to cgroup
-+	 * to ensure the successful deletion of cgroup.
-+	 */
-+	sleep(1);
-+	cleanup_cgroup_environment();
-+}
-+
-+void test_memcg_thread_wq_async_reclaim(void)
-+{
-+	u64 high_cgroup_id, low_cgroup_id;
-+	int err;
-+	double high_time = 0.0, low_time = 0.0;
-+	struct memcg_async_reclaim *skel = NULL;
-+
-+	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
-+	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
-+		return;
-+
-+	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel, true);
-+	if (!ASSERT_OK(err, "setup_bpf"))
-+		goto out;
-+
-+	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
-+	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
-+		goto out;
-+
-+	if (high_time >= low_time) {
-+		PRINT_FAIL("high cgroup not improved with async reclaim: high_time=%f low_time=%f",
-+			   high_time, low_time);
-+	}
-+
-+out:
-+	if (skel)
-+		memcg_async_reclaim__destroy(skel);
-+	/*
-+	 * Wait for bpf_thread_wq to release the reference to cgroup
-+	 * to ensure the successful deletion of cgroup.
-+	 */
-+	sleep(1);
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
-new file mode 100644
-index 000000000000..eaccc8a37388
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
-@@ -0,0 +1,255 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include "bpf_experimental.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#define BIT(nr)			(1UL << (nr))
-+
-+#define ___GFP_IO		BIT(___GFP_IO_BIT)
-+#define ___GFP_FS		BIT(___GFP_FS_BIT)
-+#define ___GFP_DIRECT_RECLAIM	BIT(___GFP_DIRECT_RECLAIM_BIT)
-+#define ___GFP_KSWAPD_RECLAIM	BIT(___GFP_KSWAPD_RECLAIM_BIT)
-+
-+#define __GFP_IO		((gfp_t)___GFP_IO)
-+#define __GFP_FS		((gfp_t)___GFP_FS)
-+#define __GFP_DIRECT_RECLAIM	((gfp_t)___GFP_DIRECT_RECLAIM)
-+#define __GFP_KSWAPD_RECLAIM	((gfp_t)___GFP_KSWAPD_RECLAIM)
-+#define __GFP_RECLAIM	((gfp_t)(___GFP_DIRECT_RECLAIM | ___GFP_KSWAPD_RECLAIM))
-+
-+#define GFP_KERNEL	(__GFP_RECLAIM | __GFP_IO | __GFP_FS)
-+#define CLOCK_MONOTONIC_ID	1
-+#define RECLAIM_PAGES		32
-+#define RECLAIM_MAX_ITER	32
-+
-+struct bpf_args_s {
-+	u64 high_cgroup_id;
-+	u64 low_cgroup_id;
-+	u64 event_delta_threshold;
-+	u64 check_ns;
-+};
-+
-+struct cgroup_memcg {
-+	struct cgroup *cgrp;
-+	struct mem_cgroup *memcg;
-+};
-+
-+static u64 wq_high_cgroup_id;
-+static u64 wq_low_cgroup_id;
-+
-+static int get_cgroup_memcg_from_id(u64 cgroup_id, struct cgroup_memcg *cm)
-+{
-+	cm->cgrp = bpf_cgroup_from_id(cgroup_id);
-+	if (!cm->cgrp)
-+		return -1;
-+
-+	cm->memcg = bpf_get_mem_cgroup(&cm->cgrp->self);
-+	if (!cm->memcg) {
-+		bpf_cgroup_release(cm->cgrp);
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
-+static void put_cgroup_memcg(struct cgroup_memcg *cm)
-+{
-+	bpf_put_mem_cgroup(cm->memcg);
-+	bpf_cgroup_release(cm->cgrp);
-+}
-+
-+static int get_cgroup_event(u64 cgroup_id, u64 *val)
-+{
-+	struct cgroup_memcg cm;
-+
-+	if (get_cgroup_memcg_from_id(cgroup_id, &cm))
-+		return -1;
-+	bpf_mem_cgroup_flush_stats(cm.memcg);
-+	*val = bpf_mem_cgroup_page_state(cm.memcg, WORKINGSET_REFAULT_FILE);
-+	put_cgroup_memcg(&cm);
-+
-+	return 0;
-+}
-+
-+static bool
-+should_reclaim_cgroup(u64 cgroup_id, u64 *prev_event, u64 event_delta_threshold)
-+{
-+	u64 cur, delta;
-+
-+	if (get_cgroup_event(cgroup_id, &cur))
-+		return false;
-+
-+	delta = cur - *prev_event;
-+	*prev_event = cur;
-+
-+	return delta >= event_delta_threshold;
-+}
-+
-+static int reclaim_cgroup(u64 cgroup_id)
-+{
-+	struct cgroup_memcg cm;
-+	int i;
-+
-+	if (get_cgroup_memcg_from_id(cgroup_id, &cm))
-+		return 0;
-+
-+	for (i = 0; i < RECLAIM_MAX_ITER; i++) {
-+		if (!bpf_try_to_free_mem_cgroup_pages(cm.memcg, RECLAIM_PAGES,
-+						      GFP_KERNEL, 0, -1))
-+			break;
-+	}
-+
-+	put_cgroup_memcg(&cm);
-+
-+	return 0;
-+}
-+
-+struct wq_elem {
-+	struct bpf_timer timer;
-+	struct bpf_wq work;
-+	u64 prev_event;
-+	u64 event_delta_threshold;
-+	u64 check_ns;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, __u32);
-+	__type(value, struct wq_elem);
-+} wq_map SEC(".maps");
-+
-+static int async_free(void *map, int *key, void *value)
-+{
-+	struct wq_elem *elem = value;
-+
-+	if (should_reclaim_cgroup(wq_high_cgroup_id, &elem->prev_event,
-+		elem->event_delta_threshold)) {
-+		reclaim_cgroup(wq_low_cgroup_id);
-+		bpf_wq_start(&elem->work, 0);
-+	}
-+
-+	return 0;
-+}
-+
-+static int wq_timer_cb(void *map, int *key, struct wq_elem *elem)
-+{
-+	bpf_wq_start(&elem->work, 0);
-+	bpf_timer_start(&elem->timer, elem->check_ns, 0);
-+
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int wq_prog_init(struct bpf_args_s *ctx)
-+{
-+	struct wq_elem *elem;
-+	__u32 key = 0;
-+	int ret;
-+
-+	elem = bpf_map_lookup_elem(&wq_map, &key);
-+	if (!elem)
-+		return -1;
-+
-+	ret = bpf_wq_init(&elem->work, &wq_map, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_wq_set_callback(&elem->work, async_free, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_timer_init(&elem->timer, &wq_map, CLOCK_MONOTONIC_ID);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_timer_set_callback(&elem->timer, wq_timer_cb);
-+	if (ret)
-+		return ret;
-+
-+	elem->prev_event = 0;
-+	elem->event_delta_threshold = ctx->event_delta_threshold;
-+	elem->check_ns = ctx->check_ns;
-+
-+	wq_high_cgroup_id = ctx->high_cgroup_id;
-+	wq_low_cgroup_id = ctx->low_cgroup_id;
-+
-+	return bpf_timer_start(&elem->timer, elem->check_ns, 0);
-+}
-+
-+struct thread_wq_elem {
-+	struct bpf_timer timer;
-+	struct bpf_thread_wq work;
-+	u64 prev_event;
-+	u64 event_delta_threshold;
-+	u64 check_ns;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, __u32);
-+	__type(value, struct thread_wq_elem);
-+} thread_wq_map SEC(".maps");
-+
-+static int thread_async_free(void *map, int *key, void *value)
-+{
-+	struct thread_wq_elem *elem = value;
-+
-+	if (should_reclaim_cgroup(wq_high_cgroup_id, &elem->prev_event,
-+		elem->event_delta_threshold)) {
-+		reclaim_cgroup(wq_low_cgroup_id);
-+		bpf_thread_wq_start(&elem->work, 0);
-+	}
-+
-+	return 0;
-+}
-+
-+static int thread_wq_timer_cb(void *map, int *key, struct thread_wq_elem *elem)
-+{
-+	bpf_thread_wq_start(&elem->work, 0);
-+	bpf_timer_start(&elem->timer, elem->check_ns, 0);
-+
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int thread_wq_prog_init(struct bpf_args_s *ctx)
-+{
-+	struct thread_wq_elem *elem;
-+	__u32 key = 0;
-+	int ret;
-+
-+	elem = bpf_map_lookup_elem(&thread_wq_map, &key);
-+	if (!elem)
-+		return -1;
-+
-+	ret = bpf_thread_wq_init(&elem->work, &thread_wq_map,
-+				 ctx->low_cgroup_id, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_thread_wq_set_callback(&elem->work, thread_async_free, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_timer_init(&elem->timer, &thread_wq_map, CLOCK_MONOTONIC_ID);
-+	if (ret)
-+		return ret;
-+
-+	ret = bpf_timer_set_callback(&elem->timer, thread_wq_timer_cb);
-+	if (ret)
-+		return ret;
-+
-+	elem->prev_event = 0;
-+	elem->event_delta_threshold = ctx->event_delta_threshold;
-+	elem->check_ns = ctx->check_ns;
-+
-+	wq_high_cgroup_id = ctx->high_cgroup_id;
-+	wq_low_cgroup_id = ctx->low_cgroup_id;
-+
-+	return bpf_timer_start(&elem->timer, elem->check_ns, 0);
-+}
-+
-+char LICENSE[] SEC("license") = "GPL";
--- 
-2.53.0
-
+> +#else
+> +#define hw_pte_t pte_t
+> +#endif
+> +
+> +#endif /* !__ASSEMBLY__ */
+> +
+> +#endif /* _LINUX_PGTABLE_TYPES_H */
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 331daf7fcfab5..31ba9ebf4aafd 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1316,6 +1316,9 @@ comment "GUP_TEST needs to have DEBUG_FS enabled"
+>  config GUP_GET_PXX_LOW_HIGH
+>  	bool
+>  
+> +config ARCH_HAS_HW_PTE_T
+> +	bool
+> +
+>  config DMAPOOL_TEST
+>  	tristate "Enable a module to run time tests on dma_pool"
+>  	depends on HAS_DMA
+> -- 
+> 2.47.3
+> 
 
