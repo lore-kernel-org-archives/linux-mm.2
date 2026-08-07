@@ -4,100 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AF25C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B30DC2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 516906B007B; Fri,  7 Aug 2026 11:36:34 -0400 (EDT)
+	id 453ED6B008A; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EDCB6B0088; Fri,  7 Aug 2026 11:36:34 -0400 (EDT)
+	id 405406B0093; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4038E6B008A; Fri,  7 Aug 2026 11:36:34 -0400 (EDT)
+	id 31B546B0095; Fri,  7 Aug 2026 11:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 140CF6B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:36:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BD661C0E95
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:36:33 +0000 (UTC)
-X-FDA: 85074875466.09.57AC8B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C700F14000D
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:36:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cu0OJSJm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 03D1E6B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:37:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D864A044A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:37:13 +0000 (UTC)
+X-FDA: 85074877146.27.7C7A5F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C8478C000A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:37:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTVrrKZM;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786117031;
+	b=absk6jSCAhaJkuP8DrMRjDI5EVwAmtK07Pc5i+9B8htOzxMmixe0UJ0PAD5S0me6f5Yrdn
+	sym59fESs9t9DzH6Jv5BthTXsnR+WyexgLB9fNpBlk3IVwDBx0huIgRgPTxWwFOuwCuTtt
+	1RDi2rPx/bInpwMB4G0ede4MqZLKstM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTVrrKZM;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786116991;
+	s=arc-20220608; t=1786117031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fgzQSwnyKveUSkH039WF8E5aSqolmxNlWupXPUvrDd8=;
-	b=cggHqDk6ab3GdapgGZ5T3rTbTDwooTP19wxMJTI6i6WnbbjpahZmY80j8fovcIEEfNg+Sg
-	dtQEBLRNII6JL0YIoIZOY9jxlB2ZARI19pXatalVBn+7HsUzR/95g+woXkeT6F0TkGcyFv
-	pstBUS5UFkySjixt7JBpwVe6v2T7MSc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cu0OJSJm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786116991;
-	b=nzUanfO2oy6qQd1AaTdcH3Q6vtlWj3cb4SJgj6H9jE2YMM5AWfBildpRah2vMfjReD3Qpq
-	ZO0ty7kXyWhW4Kk1D4OlWF4PaCGnLEz8wSLS88IhQzgRsiNCA6Binjuvyd8T8sS1BpmxrD
-	SAv4cMzfuJJ3WiKbXMOPHIk7kK/kYIs=
+	bh=5RitbQenhrDoWq7k1wu9B70oWwVmOgYnYYYp4h7OS1E=;
+	b=mJHicggG0K0vOH461wS14+YdCyXqxHyYE3fPSbkblJPlLk54/BT2/WZeIBM5BKicPPLh1e
+	NbkS1fU5b4KFrF4qoSQ++wMaqecvN/aUovkd/FbJQRa0btXR3GxDYKDOzKSD6g9PxXaWZx
+	jKxcg6GYY4tTpu3TriUxAhAUl9RpOpM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E225240962;
-	Fri,  7 Aug 2026 15:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07201F00A3A;
-	Fri,  7 Aug 2026 15:36:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F81160A91;
+	Fri,  7 Aug 2026 15:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F0C1F00A3D;
+	Fri,  7 Aug 2026 15:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786116990;
-	bh=fgzQSwnyKveUSkH039WF8E5aSqolmxNlWupXPUvrDd8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Cu0OJSJms7umCFfFD2TtQ2CVEwJIYzLaK4efGymX6txr4M1O6uFf+IuYgDIwBi3ui
-	 gwCUlwkcOoufwkMA35iaPsf6jltwQAT7qw6JUyBLxGVQn/PWSHCbByvffs2FIZs8RO
-	 +tD8pKSSRcGYcftcBdjN9r0T8Hp/JzXN/PHv2XZ435Wqv07ydSyAwPM08bPFz1gP0W
-	 9BRjVR4kDL2zRI8f6MTNrANTLdbpP3VouSpfiQkZtP7yxJQ5vYWIpHfIpnIUtgIu2z
-	 J+Z7lmyR0VcRj4XZgkmENrs/yRHb2AKZ99B+wZUQwajfusnEZ/XJlPI4IoZceA2tPY
-	 jVmFsFzc/1W/A==
-Date: Fri, 7 Aug 2026 16:36:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Steffen Dirkwinkel <lists@steffen.cc>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"Denis V. Lunev" <den@openvz.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Juergen Gross <jgross@suse.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>, 
-	Vishal Moola <vishal.moola@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org, 
-	syzbot@syzkaller.appspotmail.com, Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
-Message-ID: <anXvODEvV4f_Taj7@lucifer>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc>
- <anCK3eWFMwZqq5ka@pedro-suse>
+	s=k20260515; t=1786117030;
+	bh=5RitbQenhrDoWq7k1wu9B70oWwVmOgYnYYYp4h7OS1E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NTVrrKZM1bG6Vvw5wY9rgG2SM3BG/ydY+6BoETIkSqLuw7GRzibg3KM8RNq7W8eO8
+	 +IMp55X5+6WVBfj6gXSVowQZwjzKQ12cGdzf6QYRm7RyimoK4o2nm2neMs7fktzqrf
+	 Uf8Hg4wwnK3OHp2PznFVCGw3jn+RbMDSd+EJjT6yLmiwsuei9M0c6DJd02BCh2DfX1
+	 QHiQhhBI/Sue9e3Ea8OJW+qDGDXsv8swxwsl+u90PpfoMlRC8LtqNqLYqaSa3JKZM1
+	 oyoxWf1EEmZsrfzSjw9DdEHMHkvh4TyfS+TQi3SSUCSCi8lHyR8k0RalEGRMrdOkSU
+	 BTTfD6CUrr12w==
+Message-ID: <6df7ba6d-0479-4b37-8e93-bb0b7d1288f7@kernel.org>
+Date: Fri, 7 Aug 2026 17:37:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anCK3eWFMwZqq5ka@pedro-suse>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
+ david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev,
+ jannh@google.com, aliceryhl@google.com, arve@android.com,
+ cmllamas@google.com, christian@brauner.io, tkjos@android.com,
+ dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-2-surenb@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260806200548.3124802-2-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C8478C000A
+X-Stat-Signature: nkqpriaqrhk83dec4z1j9mah3gf3ko61
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ar8b3rn9f483rou7kayo8pgmefiij3b9
-X-Rspamd-Queue-Id: C700F14000D
-X-HE-Tag: 1786116991-554526
-X-HE-Meta: U2FsdGVkX1/XCOSu+AVyfr/BBSHHjVLueP+Qwo7+IwKtJk6Rvr2YCDd4Sya0Q8n2BDpkhVxDnT7S4frlKCh61li5c94HyhuWeIPVyvc8TiNyGNR1zxyBhCY88gJOKGAYCYmonU61hqyVNbSDbEuqtuwNg4TTpFlt8NNBirChSja5qJ0JSD8uzrgcvg5bU/ORN+GaPjDzVCkWlgDzyYeoSwpSADGVpgkSGOftwSUVVFByTfEGAB0+UuEHVYjPE8BtfzXI7+USlFJjbInmrmd1IbuwYfO94S/QwvaXDjRaMBaYdBEKPADqUMxT+XmUSSIerbdwXntV7EKSODIB0gWEh51fhfmLK0bevnUh57PeVEKnKzni/U5MHL0yPy5xl6HFHxO4rAUzRW15oORzLFcXo9RS+kym+CW8SvsmXOHuetsmB7/8CTxbnCzmqMm1+beXen0HAw/ymvFOzFQpBpipVjTugMzKDDAizG7jEDnKhKwA17WeY72A5XbqbKsZEJLIMv2DiGfzUo+zF+VDzLpr3aKKcu4DgHoKwXTK7YQWvW6N8smQlZNUvkGUaOzeUVssbDjMGmtJbP3MUBQAD1RZ0vH1899bUaQnhUfx/lxU27IHjzDwX+bvMre3d2OsbNFfv3uS097vNsoyHHm+sou6q4r2+uxdoOZKKYNjLvdSSa1LsjdshwTYdtjLsEOBvK7w2jVJMr6Rm/O0gZVvK//s2EyWHLbsujh8zKHvPxVJ2SnYuW0YMOEeE1VO70UYoF8soTyO6ILvLLfyqos3JoQweJR1x1jO+aE8xotf67I+fXY7ef/GgMz6P34qnhAYOpXIu30wSWXyBIEjbC1/gSbDZxTRvksvb5LaBIqu41kEGiNBi1PiTpqdEM6myAVm4sugKVnBtCc9W7SBfCwJzGv/ZETgWMsSm5B9c7dfUFhdV+exbggJ60xHPY3tPUR56pjCT2DwMYvpB3h6sKEYEb0
- Xqb1QOAD
- M5xkCPSUqAKg9Yb5YXZLpuEII/Oc7zgSuFbTiyFk5Gxhi5CDWRWoC8sd8QNnpQaIJLXEyV9auEJnpe0M3izJgxzDUHoRXmQxxh80+cfvQcTHkykC9Gn7Tso3PZHkiBnVzJ8GD5w2DPsuGcB/e77lb4P+BcTh2BdSmbHjhOiBdFGWpHXCGzdKqT6q1HtA8SBVEZhT334c1xaweOKQQGL0WtS7lPLL9lt/7Vdwj/8kvXKXkzJF88zk1YySHpgJw+IunKiDXN9191H+lGmTBIetV5EKKiz+jJkgOj9gwJxmWYp/fbytuuFudsnvgg/tsogRdLtpmhiS+i6+huAqgO9H2GHn5Jy914pFq1o7Xto2L8FXuQoPokA/M5w0xJH8YFwaKRjfk+zMenMp2TWa6nS4Xt8sR2zUMVzH+v0cg
+X-HE-Tag: 1786117031-459981
+X-HE-Meta: U2FsdGVkX19c8/Iwqigmjx72ZSDRNOpm4fUrF1nLYmvlFv1hAJ9TtivOB6irUpVs4ItbiguMB4974KMFBv+b9aFEcdwMFM0zO0z2+GZn44/8dpKJcn1bzcm4QVMBZkqLQvPH042/X9hz2XUgWh75dKbUQXdpnedaXzJiB7jtTb7PNOIDoGTjcnO7dT1kJM4ubKxpPvqKfSkDLGcTtNyRY9CfTpP29+/aqmC8eM6BI+Cccn9pZtjQU0z3uAswixr46zajnX7C3ZI38TrS0Z12XE+eEux6MVsadzbn5oF5uqG7vz0T1SrNDrGNsh6tWGq5LDaZsVgf98/aJkX5uad4u4h0i0CdD58qWMDX1J7yg3wRUVC8whbUlRes7rqQUqg0rIZvdbeo/Cuqh/VgDDqwPBkob208JVsOx7q8TQSM6MtbLqVqoWaGlB9QI8b05zJ2517hD8xS390wqn0LOgyvsvN8EoPDfGLVg/rQGMZ05MMdtB7ohBG22DxjMZvetx2qUFqrqEfHartAn9vu4AVWkyJAKWYWAAxFbBkzzp9Gv3gns+15LtjixdHUpqpckRPvRy0Q55AwNslBA7EBJFAuXDJByweDwPH1gCmG46kPz+0bSrSmoDnDBkscVpyJpl2ms6vkXaiCxY6j/BGdtnFHEoFpqSbAeTFrZtageyQ7RdkohxIMJu1qY423IMwzFIFqQwDJIpcvH4/fit+j5KdUkkqyhBwI7pgmHom/2VQ+y704sLXGQ5vvs60pabWfX+thVGFfnqskgCkl6yQ/p0zoi4HXhqbn8K49Qh4a1fDs8h8hSSf9HKOJSR4RnGScTl8Kqc7drOpJ26AMOPkoKvDZfElLTi6uRZnyDVX739j4lCP+3bH7arOWmTdkm2t+gpEDDqV5eEsz7+4+yFbkNw7Hb0OLFQ+GxuGUart9REI3iVYGyPQAYSoLof+f+vYSF0pt9r14Jr7/Mogq/onIm4E
+ Cd/J+UaF
+ fczDwGzpAmApd7Th/SrIrh1OTs3ThrnSOWIev8EUQDApxpbjkfpwUO0zYl2PfnpW/OQgUrWSxSdSunQzearjzHSIAcMTymA6MIWOsiL8HdcGUsSKWaU6HdiIdqOrOAC9GRpoMQXSc8Ih80uICFrpF0EsEHsYukoKe31oVv7Z2+RRPiRUkBmLyyDz5zS+C4PZqhFzYfsyOH4fjG/jSGPefr80KZbzLGsoUYy89R2BchsK/u+v7poAHh2WLoPT5+bV7U8FVGg8cy9BORq+/jVuE0aV4v1nqS/M3027jLjbqHjPikDfDc/LMUp1trW+spwUe69TRw4lSXiKbWcps4KmoLTOnQHhtv1T86rjx336Jzk7+bNQAjfbUcDbyOiZ6yjqxL3ByGPbk4UxFfWk4jej1PwRUeRruHmoT88W+fta6+u0u6ZUxEM7YO8NGpbLgmr7wch/vLhF2qh86/wlqjUx1onKBVtN9Rc9CxC5gBJN+rL5gRzM4zPQWX47d4rE6dNAIb6vMmBpm1BWiAsCmXYob1ZikkeoqDpOp7VvQD0SG9zcva9dOXP8nLXjSrwRw9lQ8dfdmLpOsN2aeKtXgAhzph81Jps4U+5zHHzDbKjvA+rtRf7KQTrxE7tj8oBoO80SCoKUROp/qobDzluE76KNMK6qbpoJzbP3mSkGotQXXgB9g70ApNEGqdnnCLsuTFjwISAGES5PsQ4zcpNY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,193 +137,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks,
+On 8/6/26 22:05, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> The per-VMA locks have been around for several years. They've had some
+> bugs worked out of them and have seen quite wide use. However, they
+> are still only available when architectures explicitly enable them.
+> Remove the conditional compilation around the per-VMA locks, making
+> them available on all architectures and configs.
+> 
+> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> when the architecture started using per-VMA locks in the fault
+> handler. But, contrary to the naming, the Kconfig option does not
+> really indicate whether the architecture supports per-VMA locks or
+> not. It is more of a marker for whether the architecture is likely to
+> benefit from per-VMA locks.
+> 
+> To me, the most important thing side-effect of universal availability
+> is letting per-VMA locks be used in SMP=n configs. This lets us use
+> per-VMA locking in all x86 code without fallbacks.
+> 
+> Overall, this just generally makes the kernel simpler. Just look at
+> the diffstat. It also opens the door to users that want to use the
+> per-VMA locks in common code. Doing *that* brings additional
+> simplifications.
+> 
+> The downside of this is adding some fields to vm_area_struct and
+> mm_struct. There are likely ways to optimize this, especially for
+> things like SMP=n configs. For now, do the simplest thing: use the
+> same implementation everywhere.
+> 
+> == Considerations for NOMMU config ==
+> 
+> NOMMU systems do not write-lock VMAs, therefore read-locking a VMA
+> would always succeed unless VMA is detached. Therefore for NOMMU
+> config we make vma_mark_attached() a NOOP, which keeps VMAs always in
+> detached state. This causes VMA read-locking to always fail and the
+> caller falls back to locking mmap_lock.
+> 
+> The following functions will have a different implementation in NOMMU
+> config:
+> 
+> - vma_mark_attached(), vma_mark_detached() are made NOOPs, keeping VMAs
+> always in a detached state and preventing assertions and refcount
+> underflows;
+> 
+> - vma_start_write(), vma_start_write_killable() are made NOOPs to avoid
+> warnings in __vma_start_write() due to VMAs being detached.
+> These functions are not used in NOMMU code but __vma_start_write()
+> is an exported function, therefore might be used by drivers.
+> 
+> - vma_assert_attached() is made NOOP because it's reachable from NOMMU
+> code via split_vma()->vma_iter_store_new()->vma_iter_store_overwrite();
+> 
+> - vma_assert_write_locked() is asserting vma->vm_mm is write-locked;
+> 
+> The following functions work for both MMU and NOMMU configs:
+> 
+> - vma_lock_init() performs the same initialization as for MMU config;
+> 
+> - mm_lock_seqcount_init(), mm_lock_seqcount_begin(), mm_lock_seqcount_end()
+> are called from mmap_write_{lock|unlock} and update mm_lock_seq correctly.
+> 
+> - mmap_lock_speculate_try_begin(), mmap_lock_speculate_retry() work as is
+> because mm_lock_seq is updated correctly;
+> 
+> - vma_start_read(), vma_start_read_locked() will always fail because VMAs
+> are always detached;
+> 
+> - vma_end_read() will never be called because vma_start_read() never
+> succeeds;
+> 
+> - vma_is_attached() always return false because VMAs are always detached;
+> 
+> - vma_assert_detached() will never trigger because VMAs are never attached;
+> 
+> Changes in the following files are not affecting NOMMU config:
+> 
+> task_mmu.c - not compiled when CONFIG_MMU=n;
+> pagewalk.c - not compiled when CONFIG_MMU=n;
+> userfaultfd.c - not compiled when CONFIG_MMU=n (CONFIG_USERFAULTFD depends
+> on CONFIG_MMU);
+> 
+> The following changes are made to keep NOMMU config working like before:
+> 
+> stack_map_lock_vma() - keeps mmap_lock in NOMMU config;
+> bpf_iter_task_vma_new() - bails out in NOMMU config;
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
 
-If Mike's going to respin worth examining this.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Let me paste in the attached patch to make life easier:
 
->From time to time, the following BUG can be observed[0]:
->
->> kernel BUG at arch/x86/kernel/alternative.c:2576!
->> Oops: invalid opcode: 0000 [#1] SMP NOPTI
->> CPU: 0 UID: 0 PID: 355 Comm: (udev-worker) Not tainted 7.1.3-1-default #1 PREEMPT(full) openSUSE Tumbleweed  8c1795b03ec64f997e57a8ad38b1161e3b98da64
->> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS unknown 02/02/2022
->> RIP: 0010:__text_poke+0x2aa/0x450
->> Call Trace:
->>  <TASK>
->>  smp_text_poke_batch_finish+0x2a7/0x320
->>  __static_call_transform+0xb7/0x220
->>  arch_static_call_transform+0x5b/0xb0
->>  __static_call_init+0xe9/0x270
->>  static_call_module_notify+0x11f/0x150
->>  notifier_call_chain+0x61/0xe0
->>  blocking_notifier_call_chain_robust+0x63/0xc0
->>  load_module+0x1c92/0x20c0
->>  init_module_from_file+0xd8/0x140
->>  idempotent_init_module+0x100/0x2f0
->>  __x64_sys_finit_module+0x71/0xe0
->>  do_syscall_64+0xe1/0x610
->>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
->which matches the following BUG_ON in alternative.c:
->	/*
->	 * If something went wrong, crash and burn since recovery paths are not
->	 * implemented.
->	 */
->	BUG_ON(!pages[0] || (cross_page_boundary && !pages[1]));
-
-Ugh yeah, it seems the CPA code is just teeming with this kind of thing.
-
->
->This can happen if vmalloc_to_page() fails, for any reason. Such can happen
->if text poking races with CPA, which can possibly result in the collapsing
->of page tables (or breaking of PMD hugepages). It is not a problem for most
->users of vmalloc_to_page() (they solely own the vmalloc'd range) but, when
->CONFIG_ARCH_HAS_EXECMEM_ROX=y, various modules own a single execmem vmalloc
->range, and can call set_memory_*() in parallel on it. This can happen to
->race against __text_poke and cause havoc in vmalloc_to_page().
->
->Fix it by excluding against CPA using the init_mm mmap read lock.
->
->Fixes: 64f6a4e10c05 ("x86: re-enable EXECMEM_ROX support")
-
-You'd need to somehow state the dependency on commit "x86/mm/pat: acquire
-init_mm write lock on collapse to avoid UAF" from this series because this
-depends on that.
-
-That only goes back to commit 41d88484c71c ("x86/mm/pat: restore large ROX pages
-after fragmentation") so you'd need to somehow indicate the backport would need
-to port my change even further back...
-
->Reported-by: Jiri Slaby <jirislaby@kernel.org>
->Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1271202 [0]
->Reported-by: Steffen Dirkwinkel <lists@steffen.cc>
->Link: https://lore.kernel.org/linux-mm/555ea1d43a12c30a8f1eaf10c899b3790d728f33.camel@dirkwinkel.cc/
->Cc: stable@vger.kernel.org
->Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->---
-> arch/x86/kernel/alternative.c | 8 ++++++++
-> 1 file changed, 8 insertions(+)
->
->diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
->index 62936a3bde19..9071eb870eab 100644
->--- a/arch/x86/kernel/alternative.c
->+++ b/arch/x86/kernel/alternative.c
-
-Should include cleanup.h.
-
->@@ -2559,6 +2559,14 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
-> 	 */
-> 	BUG_ON(!after_bootmem);
->
->+	/*
->+	 * Exclude against change_page_attr() collapse in execmem ROX regions.
->+	 * These are PMD sized and this module may not own the whole PMD,
->+	 * thus breakdown/collapse may happen at any moment by concurrent module
->+	 * loading, which races with vmalloc_to_page().
->+	 */
-
-Worth saying what this pairs with. Right now the comment doesn't really explain
-why you're taking this lock.
-
->+	guard(mmap_read_lock)(&init_mm);
-
-This is problematic.
-
-text_poke_kgdb() -> __text_poke() can be called from pretty much any
-context it seems. It's another debug_pagealloc type situation :)
-
-Claude tells me there's a in_dbg_master() variable you can check to avoid this
-and all other CPUs are stopped when it does this so it's safe anyway.
-
->+
-> 	if (!core_kernel_text((unsigned long)addr)) {
-> 		pages[0] = vmalloc_to_page(addr);
-> 		if (cross_page_boundary)
->--
->2.55.0
->
-
-I attach a patch (hand-written :) that addresses all this. Feel free to use it
-as you like.
-
-Cheers, Lorenzo
-
-----8<----
-From 2759f0ea4457e572c2972c7e5a0bbb39f2a9a2e5 Mon Sep 17 00:00:00 2001
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 7 Aug 2026 16:23:40 +0100
-Subject: [PATCH] fix
-
----
- arch/x86/kernel/alternative.c | 39 ++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 62936a3bde19..cafcac95e90e 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -6,6 +6,9 @@
- #include <linux/vmalloc.h>
- #include <linux/memory.h>
- #include <linux/execmem.h>
-+#include <linux/cleanup.h>
-+#include <linux/kgdb.h>
-+#include <linux/mmap_lock.h>
-
- #include <asm/text-patching.h>
- #include <asm/insn.h>
-@@ -2543,6 +2546,30 @@ static void text_poke_memset(void *dst, const void *src, size_t len)
-
- typedef void text_poke_f(void *dst, const void *src, size_t len);
-
-+static void poke_vmalloc_pages(struct page **pages, void *addr,
-+			       bool cross_page_boundary)
-+{
-+	pages[0] = vmalloc_to_page(addr);
-+	if (cross_page_boundary)
-+		pages[1] = vmalloc_to_page(addr + PAGE_SIZE);
-+}
-+
-+static void poke_vmalloc_pages_safe(struct page **pages, void *addr,
-+				    bool cross_page_boundary)
-+{
-+	/*
-+	 * execmem ROX ranges are shared between modules and can be collapsed to
-+	 * huge PMD entries, and this collapse can happen concurrently with a
-+	 * racing set_memory_rox().
-+	 *
-+	 * Prevent vmalloc_to_page() from racing by acquiring an init_mm read
-+	 * lock which pairs with the init_mm write lock in
-+	 * cpa_collapse_large_pages().
-+	 */
-+	guard(mmap_read_lock)(&init_mm);
-+	poke_vmalloc_pages(pages, addr, cross_page_boundary);
-+}
-+
- static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t len)
- {
- 	bool cross_page_boundary = offset_in_page(addr) + len > PAGE_SIZE;
-@@ -2560,9 +2587,15 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
- 	BUG_ON(!after_bootmem);
-
- 	if (!core_kernel_text((unsigned long)addr)) {
--		pages[0] = vmalloc_to_page(addr);
--		if (cross_page_boundary)
--			pages[1] = vmalloc_to_page(addr + PAGE_SIZE);
-+		/*
-+		 * If called from kgdb cannot sleep, but all other CPUs stopped
-+		 * anyway so safe.
-+		 */
-+		if (in_dbg_master())
-+			poke_vmalloc_pages(pages, addr, cross_page_boundary);
-+		else
-+			poke_vmalloc_pages_safe(pages, addr,
-+						cross_page_boundary);
- 	} else {
- 		pages[0] = virt_to_page(addr);
- 		WARN_ON(!PageReserved(pages[0]));
---
-2.55.0
 
