@@ -4,95 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311C2C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D5DC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:06:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 592376B007B; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
+	id 485FD6B008A; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 569AF6B0088; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
+	id 4101A6B0092; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47F8B6B0093; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
+	id 2D77F6B0093; Fri,  7 Aug 2026 06:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 196E86B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:03:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15F47A0276
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:03:18 +0000 (UTC)
-X-FDA: 85074035676.17.0592D19
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 808B9140014
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:03:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="kkD22/wY";
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2BC36B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:06:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CACB4036A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:06:00 +0000 (UTC)
+X-FDA: 85074042480.19.0E60725
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D408640009
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:05:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7RODPVc;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786096996;
+	s=arc-20220608; t=1786097158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wK+Hb76csLXizlS8WvPBODDy0M/Xsr3U60SIvZ3KC68=;
-	b=C5CMT8SczeNnc1VXtmWDF5VlXKGvXbVcr2uG6vwLtdWJNrhFLVjIqk/UK4sJR8fsde3BgW
-	7SSdi+TLtYnsa2WvmvE/ePqaQ4ET8TU/rlrTVkU3DpJI48cpd3fnUyDPzpUdLy+tEEe5Nr
-	zS09m7B2yJh4EEcYnpBDF/S45uyw8Ec=
+	bh=O3Y82uuF/XQW5iDFHNIUgMEdIc1HrOdEgL8h46LMPJ8=;
+	b=kHtrOwiFfpERx2Gn6rPryE/1XZ25YkLBBoRNRlwTYMjWxrx65/Z+ZkJqL4giW0hAhD/sEL
+	AOZX2lm18Ysg1peb+hJWtRAWi04aCspaKvgv0GKzzzo2vehn5hh1rPi0I8qHXgjggk4LjI
+	D73ERYMxXeL2sZx3nedA3/6dDfM9LGE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786096996;
-	b=UYBPfWHLJ2MHDNo4nyW07VPmPlLGtdvkPqMfi8ysrQUWqH1jVJBlmgqvDWiIGsfI1YDGDY
-	rkiRV1wB1gzA9jV1o7z2becWgy/D6W58VcBrGWFDsDIasklnQ6IlkxUZRRkeh+tlLBHrvw
-	YHbsoDJ5BWLHG9DkIaFE+kOjt6BgwDI=
+	t=1786097158;
+	b=kPp1pKZV76fEAk2TB9sf+FX6nDu7gP9uHZxWtgImNV0qNSRMgmH+IgOQj6HpogBwkdw7y9
+	uqlOolCqZWVKJWTn0RnX0zk15UpKlNXUvQXN8slg++1+0EvXaN0g0rM0ySfrkHf99I1MsK
+	Gz6NucVbgXDjqxRM8erKj8wl0Zkrq4g=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="kkD22/wY";
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <46fc75b4-7697-45e2-bbd1-84f09626c686@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786096989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wK+Hb76csLXizlS8WvPBODDy0M/Xsr3U60SIvZ3KC68=;
-	b=kkD22/wYJGS4D3H4l0765ZwL17oxiPIvfiVUwnkrqtVbtJ5dCLpHwcvWee4ho/yRPbseWk
-	FCbKS3lGI4d2fKD+vcSlqtTe+DtAGlGRUChy3YZtt0rhAsOZR6ZZc2hLs+WSROwHHk2ZLO
-	Poz2PTYVqXVY3ORdb71wXFH5D/PFgSE=
-Date: Fri, 7 Aug 2026 11:03:05 +0100
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7RODPVc;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 24E7360AB4;
+	Fri,  7 Aug 2026 10:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DD61F000E9;
+	Fri,  7 Aug 2026 10:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786097157;
+	bh=O3Y82uuF/XQW5iDFHNIUgMEdIc1HrOdEgL8h46LMPJ8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I7RODPVcJBRsd6s9UWRbtl8lpLOuBZpmxFX36HCqgpaIVZNVcAujidNCKp4lU2FFe
+	 BAm1Sq94dhTqpSAovKm8Qh0kXVTk4OAQ/EgO69kB7YrXIJOSCR3U1XsIEdq5+PQj10
+	 dgsj562UwM3s3jCZHLRr76XK0JLD0TgCBH/4qVwMueLXjV59DBZ080kXS6S8sd9xO9
+	 dakp9bUiDf+bNOEaUGRXfrC+ZEcoMu7JNmMhqMRnS+jsDDRTLzjdmrIIJlVcLWVmQ9
+	 u5ExWj5KFg4XfPKlyW3XiWRNCETRpSCzh7i3n/3YhxppLjDvmfAIQ6+yPKfkV6Mpni
+	 yea7I4chqnnyA==
+Message-ID: <2fcfa480-e4dd-477f-9c02-42756f3aa373@kernel.org>
+Date: Fri, 7 Aug 2026 12:05:53 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 10/11] mm: install PMD swap entries on swap-out
-To: Luiz Capitulino <luizcap@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-11-usama.arif@linux.dev>
- <3374e351-f6ad-44b2-9ee1-dd3b9c33fbc3@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+To: Jianlin Shi <shijianlin11@foxmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
+ linux-kernel@vger.kernel.org
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+ <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <3374e351-f6ad-44b2-9ee1-dd3b9c33fbc3@redhat.com>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D408640009
 X-Rspam-User: 
-X-Stat-Signature: qmuodpozj138ar73otqccqixkq1ffyfr
-X-Rspamd-Queue-Id: 808B9140014
-X-HE-Tag: 1786096994-264831
-X-HE-Meta: U2FsdGVkX1+dYtu3QfFwW7WQ5l50yE0efegLQlW4DTSL9hfxDRBatUaqb85YXEbNCoxEahD4eh3PLJKH5YKWJE16Lux4B0FqIkCk99Uqmg7Hgxu7LeeC8F83hpgI4DmvdsYvz28DgQ1iXuBqg7apCw4Z9VlVUE9wONE8hxLmtsVuxjUV5uuaWA/5JqDW8PMNsuaALBXXn4ZF8j+IZA5mTrmHS3duUvjE/xv7un2QbeRDb+/8A19Kmiu5PuDXUxM4WjErPi9UFWcIO6ZtoliPrlmWUy7fUcb53P22grkt3BJcBmmnNjfNaoWiaXmvtjAsGt0gdVFThwfkn9eBS8AIkTvpFvluYwpBlEHwZ6fFO3d7NPpjpGPY4ZDt6pTb8ye2NfXlNtGC63HAwjc0mIsRdEv1y7eqMnJzngLMuxswvn1NKNP3zJorzdKMaFiWSBSf8lsUb9kgxcbmRMG50hj6p51lS38/8EnC8UAHeohffQIHJ6UV3HMhHgkzkl46AJ3Kr+T3PA/6AzCTooY35A+P4wnTV1V8x0RCElfY++NE2Elgp8tRTpsjVNs3mbfD7ur0nzMmcd6Srqtd+ybp3BFhjZDThS990wEHrbaKkhMzikmo7aWj2geJcAEMazC3qH7InKL85mglHJgehoevnyAuCQdiTjqpZryZvLpGIyXbN5flq5BfKdHeU39jXCWMz07+/CNvlpJTbgheymEBRbZo9QuG4mUoEURS8ZnmD0+Pj9vySAwFR9Ngf/dJ57wYdgT7VQW3UdFBnqvh/+ro9Pq8m2M48ys5+hBktkeqtVtYWE1obJANkhw+LAu/z/jwh7SvukYg/JT4eaI+m/neRZ9Ja88QIXT9kv3odLdKquw7EGH5BUN/NUKOxnXrmZRYFG6GBYNTpm6LMeWONHZ2ekq0H3N+b3u/PQ2hjESXK3IGU61vOaR9g7uYTPPVLZUAPd9WHbW4447X7NDPbdo40Uv
- eXtpqFIj
- GnlrWt8STVEOUu8Rgrgjf5k6dPsB9mhSiFtRiYSbwhF00G1zTIcySh2vpgvnXo2OsxkLNKEWpmRPtVGSkCn4ghT8b3iLRYOLN3X/9Nrgg0vweVvGXTD5dwOFkaD/RZASSv/K9Y5wVVhiQVYIHaW1Xe+GgCTTcTcd93l/apfUrUDm1mLf/UgpThW24a9BS1fadmB1bDzIj+Pabo4dACumjShOwL3UO8QW5sgsV9nWFB46dfvI=
+X-Stat-Signature: coxswyw6mddgncmrhg8ta188up7696p5
+X-HE-Tag: 1786097158-965463
+X-HE-Meta: U2FsdGVkX18z8nj/rJEaEuHhkGtEffK0pL2p66Td/xc3HOguaxnKeOceM0aG/JaT10qWafgQQo6HxPJB4cZ7TSBYXM3gEjjB8NVrlEvNxRFyMfkDH/kQSE0lEGxtWJHsM0/rSd78V7sBaJ+ZsYdEImtCIUioq6vvgLIPEHjS3DevGtxrNkUSKo4Q/XB6KqCCu2IQ4jqEEnj9hGUuQ162rRUxKr+8PEMweGbh+jXidVwCNZv0HeEmaj80ag7vNXmmJKmMxHGvj6DNME63SI4qxSGsW6pUln9Z3kA/R/Z5Jig9hzDKapCcq3Zwn9yxRzy6P8rDv9XoFX98DTtgR3OJ047B+i5UrZXDlGomKNh98KD2vYYJCsUZWGByYbqki5EtKKt6NkkDVbv5QQ7zX3IzwGU7WkUvcAu8CAyPOAXlj/+XVphfaVkF5Rzpq4c4BVKWmT+qZoqP1N/m+JBlmMuJzRmtLhLxgTZCVEFOTsR14mlOXNLFWz6eDFzpON5hY8jST1pqZqVDQ+aMDQlSTf3BwoSAQ1Kawe1hpLDORsiXYE2uUGO4+Veb0DyOEWx6GwL675THVTsUij34GvpJJ7cHb6OIeVOq2wP4x4p0512oKwFuNGazhTYRICtznIdSJDDske+wQKTzd7Z4zSaBrTiV//XIsUYQ5CJR51+LvZhJyEhigTuamX8fNbsCh4HNRCZ4ccGBweAQjblEjZMIh1nt70CkAO+NK34DyKdSwafND8saJ0/J/0KdKCXfjOSX+6uyRZdJtOv+iDfw+DEVi9FnAPyc+7RKAv4yZkXnVD37B1S8LFHo0cSL/97LyG8OXyldsHpjUPFb2nlJA2iNtEun863X1sqM38qtgFDcy2ORO2ZuyVhh4mOAyaZ0jqdVASpHaEBT4s19SaNfgmqSvFW0L1h4n+6tjY+fncGAToqDU+sJ+iPDG+u691faQYFnhg71d9m8t1sBjE6AiOgrgOk
+ EW8DlmGV
+ eMoJ9kXRgCv6pcs7mJSZeBkV1jm7F0KcEVM0jAUEgDaWh2HKphRQLpUEfgrQ5Lb/yAqVQZ1/Dx5MtGu436QSZdS04UwWOa8Sm5/uutng9YxeLEE7xg1RG36c+1nkRwMmHhTFTRHRBUnBcrGoeIubVkGk9tnlSSKLxI30ACRNcHMuPNtVjpZSCYGclBV5zT5BOLflnNUaEGiG4EEOF7nIXDc/P90NuYHfhDtYB0wVBZzbmA4QPakQET4UV6E5LvPhvWwJNDa1Xo9Z1aVmsjaNuNCE+JVmMRcv79BClhljwWupbbKOysTOFx2vmFb/UG5Av8/xyoJ1/R6H/a+35ThgMOFZlq1R6tfCMEyznJ9Ow7OQzkjH664wS/x3zQuA112hpQS/ipD5+iGhGLttJKu2dDknlGUvp2tZ+pdmU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,137 +135,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 06/08/2026 03:29, Luiz Capitulino wrote:
-> On 2026-07-22 11:19, Usama Arif wrote:
->> Reclaim today splits a PMD-mapped anonymous THP into 512 PTE swap
->> entries before unmap, losing the huge mapping across the swap
->> round-trip and forcing khugepaged to rebuild it later. The contiguous
->> swap range was already secured when the folio was added to the swap
->> cache (a non-contiguous allocation would have split the folio earlier),
->> so the PMD can be replaced by a single PMD-level swap entry instead.
->>
->> This patch mirrors the existing PTE swap-out path at PMD granularity:
->> - shrink_folio_list() drops TTU_SPLIT_HUGE_PMD for PMD-mappable
->>    swapcache folios. zswap is handled by the PMD swap-in users: if any
->>    covered slot currently has a zswap entry, they split the PMD swap
->>    entry and fall back to the per-PTE path.
->> - try_to_unmap_one() now has a PMD branch that calls
->>    set_pmd_swap_entry() and adjusts MM_ANONPAGES / MM_SWAPENTS by
->>    HPAGE_PMD_NR before walk_done. TTU_SPLIT_HUGE_PMD remains the
->>    fallback.
->> - set_pmd_swap_entry() is the installer. Mirroring the PTE swap-out
->>    sequence at PMD granularity, it clears the present mapping (keeping
->>    the original for rollback), bumps the swap_map refcount for the
->>    folio's 512 slots, transfers the exclusive state in the swap entry,
->>    propagates the dirty bit to the folio so writeback is not lost,
->>    and installs a swap PMD that preserves the original
->>    soft-dirty / uffd-wp / exclusive bits. Any failing step rolls back
->>    the present mapping.
->>
->> The swap entry value matches what 512 PTE swap entries would encode, so
->> swap_map refcounting is unchanged: each of the 512 slots carries a
->> count of 1, released individually on later split or together on swap-in.
->>
->> Add thp_swpout_pmd to count each PMD mapping replaced by a PMD-level
->> swap entry. Unlike the folio-level thp_swpout counter, a fork-shared THP
->> can increment this counter once for each mapping; document that
->> distinction.
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>   Documentation/admin-guide/mm/transhuge.rst |  5 ++
->>   include/linux/huge_mm.h                    |  2 +
->>   include/linux/vm_event_item.h              |  1 +
->>   mm/huge_memory.c                           | 80 ++++++++++++++++++++++
->>   mm/rmap.c                                  | 19 +++++
->>   mm/vmscan.c                                |  9 ++-
->>   mm/vmstat.c                                |  1 +
->>   7 files changed, 116 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
->> index 16f37135ed80..b421d7982db6 100644
->> --- a/Documentation/admin-guide/mm/transhuge.rst
->> +++ b/Documentation/admin-guide/mm/transhuge.rst
->> @@ -630,6 +630,11 @@ thp_swpout
->>       is incremented every time a huge page is swapout in one
->>       piece without splitting.
->>   +thp_swpout_pmd
->> +    is incremented every time a PMD mapping is replaced by a PMD-level
->> +    swap entry. A fork-shared THP can increment this counter once for each
->> +    PMD mapping that is swapped out.
->> +
->>   thp_swpout_fallback
->>       is incremented if a huge page has to be split before swapout.
->>       Usually because failed to allocate some continuous swap space
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index e7107e0991ad..41cf643a3f55 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -554,6 +554,8 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
->>     #ifdef CONFIG_THP_SWAP
->>   vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
->> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
->> +               struct folio *folio);
->>   #else
->>   static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
->>   {
->> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
->> index 2628ccda076a..f8fd4e13698c 100644
->> --- a/include/linux/vm_event_item.h
->> +++ b/include/linux/vm_event_item.h
->> @@ -108,6 +108,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
->>           THP_ZERO_PAGE_ALLOC_FAILED,
->>           THP_SWPOUT,
->>           THP_SWPOUT_FALLBACK,
->> +        THP_SWPOUT_PMD,
->>   #endif
->>   #ifdef CONFIG_BALLOON
->>           BALLOON_INFLATE,
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 6ef56936ced4..c014631e5a26 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -5561,3 +5561,83 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
->>       trace_remove_migration_pmd(address, pmd_val(pmde));
->>   }
->>   #endif
->> +
->> +#ifdef CONFIG_THP_SWAP
->> +/**
->> + * set_pmd_swap_entry() - Replace a PMD mapping with a PMD-level swap entry.
->> + * @pvmw: Page vma mapped walk context, must have pvmw->pmd set and
->> + *        pvmw->pte NULL (i.e. PMD-mapped).
->> + * @folio: The folio being swapped out. Must be in the swap cache.
->> + *
->> + * This installs a PMD-level swap entry in place of a present PMD mapping,
->> + * avoiding the need to split the PMD into PTE-level swap entries.
->> + *
->> + * Return: 0 on success, negative error code on failure.
->> + */
->> +int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
->> +               struct folio *folio)
->> +{
->> +    struct vm_area_struct *vma = pvmw->vma;
->> +    struct mm_struct *mm = vma->vm_mm;
->> +    unsigned long address = pvmw->address;
->> +    unsigned long haddr = address & HPAGE_PMD_MASK;
->> +    struct page *page = folio_page(folio, 0);
->> +    bool anon_exclusive;
->> +    pmd_t pmdval;
->> +    swp_entry_t entry;
->> +    pmd_t pmdswp;
->> +
->> +    if (!(pvmw->pmd && !pvmw->pte))
->> +        return 0;
+On 8/6/26 10:27, Jianlin Shi wrote:
+> lowmem_reserve_ratio_sysctl_handler() ignores the return value of
+> proc_dointvec_minmax() and always calls setup_per_zone_lowmem_reserve(),
+> even for read operations.
 > 
-> Should we call VM_WARN_ON_ONCE() and return an error instead? This
-> function is only called by try_to_unmap_one() under this condition. In
-> addition, returning zero would cause try_to_unmap_one() to assume that
-> the PMD swap entry was installed, which is not the case.
+> Fix three issues:
 > 
-Thanks for review!
+> 1. Propagate errors from proc_dointvec_minmax() instead of always
+>    returning success.  For example, writing non-integer garbage to the
+>    sysctl now returns an error instead of silently succeeding with
+>    unchanged values.
+> 
+> 2. Only call setup_per_zone_lowmem_reserve() when the sysctl is
+>    actually written, matching the write-only refresh pattern of
+>    min_free_kbytes and watermark_scale_factor handlers.
+> 
+> 3. On write, parse into a temporary ratio[] array and only copy into
+>    sysctl_lowmem_reserve_ratio[] and refresh derived state after the
+>    full vector is validated.  This avoids leaving the ratio array
+>    partially updated while skipping setup when proc_dointvec_minmax()
+>    returns an error on a later element (suggested by Andrew Morton).
+> 
+> Drop the manual "< 1 -> 0" sanitization loop and set .extra1 =
+> SYSCTL_ZERO on the ctl_table entry so proc_dointvec_minmax() enforces
+> the minimum on write; negative values now return -EINVAL instead of
+> being silently coerced to 0 (suggested by Vlastimil Babka).
+> 
+> Link: https://lore.kernel.org/linux-mm/tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com/
+> 
+> Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
 
-It makes sense, I will add a warning and return -EINVAL.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+
 
