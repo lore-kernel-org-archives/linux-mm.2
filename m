@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 815D0C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0470C5AC82
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:55:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EF6E6B0098; Fri,  7 Aug 2026 11:55:02 -0400 (EDT)
+	id 3197E6B0099; Fri,  7 Aug 2026 11:55:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49F2B6B0099; Fri,  7 Aug 2026 11:55:02 -0400 (EDT)
+	id 2F1776B009B; Fri,  7 Aug 2026 11:55:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3674E6B009B; Fri,  7 Aug 2026 11:55:02 -0400 (EDT)
+	id 144E26B009D; Fri,  7 Aug 2026 11:55:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 057E56B0098
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:55:01 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70D241603A2
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:01 +0000 (UTC)
-X-FDA: 85074922002.11.8243879
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E826B0099
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:55:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5324BA0457
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:04 +0000 (UTC)
+X-FDA: 85074922128.18.FCE5231
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A577980002
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:54:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PlQ/rN8e";
-	spf=pass (imf02.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 69C9F140011
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:55:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MuIHmetm;
+	spf=pass (imf23.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786118099;
+	s=arc-20220608; t=1786118102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5UylNYDTspcuu9MwQe+nNCZE8i0u6cLYLoMeIJYIfc=;
-	b=TzB+7HUkWDHbwOwaKJxkeR5he4unQit214gd/5h0kY7DokmR37yddFQJsuj1GQUdQXXsOK
-	5QvmiKatFUCnlcTERFyrOZZlCt8PH1XU3wJ90CZKSmclB5Z47WnxHSJwHryP+KwZYfE1cU
-	ciazx9ndVCh0uNy7THWttt9oVz1RaoE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PlQ/rN8e";
-	spf=pass (imf02.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=c6zA2T4YXfwsdHoNQLbL/JyAvXh3qkO2k+ehgfnDE/A=;
+	b=4tnwP4tZBWLQnyOtqZdlJlwHn6xOZ9nKZm8oKWzPtY9Cws2MGSoTfXW6DgeQNgVWRFVIP/
+	E4NgHdOSv76UJdUB3mRRtZ14sGL48gIGu9jEXowiPCDn88TWo8si8WMoHuUrE0jEBf44uF
+	iBf2zFeg5jpcfnVxB7nq1p3lbuSbBx8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786118099;
-	b=kb+RaJpHz+RT5ydaxDudCzHbF7xHlPWIXsQF1S0pi+kexdzj4xxg9H6hwPShwDPBZo6gM0
-	MNLVmSWacNbyLcaqKYYO0esknGLULBGFQKUbNzOGLWbNq+pBCurrxmLGQOCDpgEXl/6zI7
-	RugJf2ddFvbjdTNmcF1F8jaVPGN//M8=
+	t=1786118102;
+	b=o2ymOucuWEld1IR4s2mDKuGOa4IknvC30Foe2Qda+8VI1BRMvOZT26nEC7J5XaH4o8a7Ak
+	A3OTpCmtZ1UQcpKYYkrAiXwV2wEfvgXgpeWc07iRcOVkmgb/gR4+T7slCXGv3LchNXEY36
+	bJ8b/msC340rgP/TW1vOMOtufYPGV8w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MuIHmetm;
+	spf=pass (imf23.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE2CE43D45;
-	Fri,  7 Aug 2026 15:54:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DCE1F00A3A;
-	Fri,  7 Aug 2026 15:54:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D0DD42000;
+	Fri,  7 Aug 2026 15:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F1C1F00A3A;
+	Fri,  7 Aug 2026 15:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786118098;
-	bh=s5UylNYDTspcuu9MwQe+nNCZE8i0u6cLYLoMeIJYIfc=;
+	s=k20260515; t=1786118101;
+	bh=c6zA2T4YXfwsdHoNQLbL/JyAvXh3qkO2k+ehgfnDE/A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PlQ/rN8eifYQ8QVCPMrG4ANWTYv8vhyu1GIGyz4VGfEy8FUqVhPCgJphWSPd/6xMf
-	 SooHgkkSnrIkXwMCG2Cm6Nm14nXXNCS8efjorqIpn3gRKSytiWk1PyT/vgpnTnmOkf
-	 4kIVTZJ1oyYTLsMMTrb7rp55T28DKmIwX1RNQBd7Cz0HlUUPmsNPRxGcjxAa5h6Bwv
-	 aFYcKOrtza4aDpGIdCICWJJFI0RxMaEy8rZbfasBeNq0tdGoubUKE70+OPP/o9RpKa
-	 N2haZ2J7Q97xRwDDfzQKufCVrb2wMuE4tttRw7ilmLO8lpIw8wJzf3IOnTfxY4i3ED
-	 7DryO57FWTh8g==
+	b=MuIHmetmub+VK1FGo+A9UmBhQfepI95uUeW4UfOYW/ptyAyUy/t96xh6HH1vAE/73
+	 8e4/FhHnhytFYUlZG27iUUtGL+MtYro36oYbZ1KzernGOmHBYvm5DvpCOTtwZjsGRc
+	 JaXVw9Xh6ODJ4vVnjVJUAOcKb1fUNM044TYgxQTLkvcOMzu1DTtuP4jLUVlvxQPrBz
+	 LTRcbLUoAu+DBqE18XoVWIV8185djbKhs1j7xN3M62sCezj2/GQnkcwY+2GU0TXAOA
+	 vpiut17alZeD7ktUOkiA7gYZo2Bgh0g3Ae3F8N17ngW/egLvb/lIpif0kQSTsxTs9T
+	 FrnFKF0/po+Hg==
 From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 07 Aug 2026 17:54:23 +0200
-Subject: [PATCH v4 03/10] dt-bindings: gpu: host1x: Document memory-regions
- for NVDEC
+Date: Fri, 07 Aug 2026 17:54:24 +0200
+Subject: [PATCH v4 04/10] bitmap: Add bitmap_allocate() function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-tegra-vpr-v4-3-5510d16af89e@nvidia.com>
+Message-Id: <20260807-tegra-vpr-v4-4-5510d16af89e@nvidia.com>
 References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
 In-Reply-To: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -113,30 +112,30 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
  linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
  linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1073; i=treding@nvidia.com;
- h=from:subject:message-id; bh=YiLAGkzcznmBG0BMFt9ttJjGeSWnN/89E2oKOOw+7sE=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqdf/GR37sAZjqZHl9vjJq9BhScKylddewXFQ68
- Zlr4w9zmyqJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCanX/xgAKCRDdI6zXfz6z
- oW8xD/9C++PytcJnk3HXIfiT/huNGT/Ml4Mq3xayTRIIuViQuWMsLPhfCgi/ucIJdzk6RTskLSa
- x3yaOEVaKZ+Bd7KcishV/Bpnt6AR4PtAuibHchQvuMFd+eTrgao2hVopJ3G7a4pZsloaPzcNEDB
- +V7A6HFw01zNF56Qi1fiQmyz2jCeyCJ134mCwv72gnhTLUauwn7RgmH28JmTKV8TWWp4oGSa6OB
- cKIHBNJeyTbloYJ9v0TsFW70gvesfwdNVmiOTdyvmXQIaWiQNHQJ33PFnOw3Nr0Dr9l5fftIqjx
- EFnH42dJM6/ozMfQDTPo6ZWTw1DjsrS3vmQPA8IoJSINJJ9/BLzERlNMlS8YwP/4OQg4W2NYG8D
- D+1EBXcdNFLdNK2/PdXfpSMAU1G9uWVrLE1kWsTvXxsAljD34OrfvYJtiHBPLsBiL2UrPUoGMan
- ncHpe1rl5LMCQqHi+nfbZ6W4/H3qL7itpAuiunjnsHqW0lP0nSO4SeS3i1enyVT0cP2rNvU1cm/
- 1lAvHLJICevyWHAmAKiNA6ZiepaOaKVL3y0u2MHkF1g5yj2q5yQWK/+BHI6dIN6ZG/FGrHyqe9Q
- 3fY0OViQXFucoWk4ffPbbUD+lgrkADuXPKcbaIrFifd7mhD272tQnTPAECE5hqJv7qdks4lH6Yv
- ku8EZDSZYiNXi/Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2300; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=6mWNitHDPhlAiwoCi35Z6UVDAPmizX4WXMqdhhFXGJE=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqdf/GqjkfBqa0m/uQVblFJkD45pC7oLSmL+n/h
+ //sqaTyXrqJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCanX/xgAKCRDdI6zXfz6z
+ obx8D/9jABBh3HqjC5A6IGDuCJwknLCrh/q4jDo7TiLDD/Cl77p3iET5sXHP39p2y8q/yO1cGnf
+ sA0+BjzaTEDGF9euWc824Z0QEEvFI59P3rmGkiJSn70i/967s12OjQjR06JX3F5owiERgHBqyNQ
+ o1d01OKlP8es7OImVIEfbKmx0n6/VCJXlFfy+QUhlCFvS+eIiFEKo8k0pb2+M954Wd38gWLRKtE
+ OCVGAIWwJxZfVfp069wfgIwnHLsfTHlLGFTkmS9meXELnRbzArGITAuARfy2GgDtBhaksqfyZqM
+ +7tjQ1ak6nFybAMGdwkPIGIALpwCQwxfVDHV6aLJATEFHxX0VRP3q5UTp8ERVjHGkK0MtBF9oJn
+ SgEwj9C9qg39Fjp6E9Zqww+2BVKEK8wsFEr1c8l4Q4Bv4OQJR7rRMktO/B49+0/x/jMiYDvgMWR
+ 89X7aLiP8sf4HGfpz5rNwzL6P00X+fuo/sqKx1EgNTzX+XRRT7GMTHxgFqbB7iI9loGTUcVdOBL
+ n7SxcR2lI7Mw7OVwabw0GKPqcJlwogaODQHzF78PJYOTY8fiyV/NE2XYyh+Ic+gr5vf6DEZeHZf
+ soNO+hucYzTMTMQXYeuB5qyhtri1RASEjVuqAq/kNWLVLIxNx4WVtK4o1RPz4flFKftK7CxWCbJ
+ IJjBjxmTONLk6BA==
 X-Developer-Key: i=treding@nvidia.com; a=openpgp;
  fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
-X-Stat-Signature: ta7ak6nt7qhmjmnrqg3n7gtexjps5x8o
-X-Rspamd-Queue-Id: A577980002
+X-Rspamd-Queue-Id: 69C9F140011
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786118099-323507
-X-HE-Meta: U2FsdGVkX19LS7P7HY4QJpfSlhNDCJgmCs3LUHjdfUc1zXLyv6tgUrjhULwuB1yW7ll+jMD1IUJHUl06XyOnE67AgBrEeyOFi6RSHQyOjF/iHR0vnxRu/oSBhHKCoEO/+LHBEGr6agzzC5gRA69hFYalALJ5LIK+9IWoszuJX0suH1PNhsuhGeY1MdwsBXy/BidJ7PYhTko3vnoWk3WHMVutr+s8w50Tj92zHlWMaeM68mR1jNVKftbftCFgqiMgBywm8ARVVjcZq5UobyL8gJCcgQ2FiavlQvtgabBuR8z18xSZpJE7AKeZEcrryv03xZz7/AN0t7fN3rVGQSEwi7hkkXC9g7tYd9KFXS8lq6mofgN/Hxm7iYPCeXeM/UWJQ8uFJX+Nb/Xkof/H79Wvw8UtkJWVIkUzC3xJ9EJU7K7JmDkPQIDNAIPdhObWpb9NiCZgyT2Mopn8h/fz8n7++UnGIi/ZW6EIapTzHUgkJ6PkaxJDv289+6Goi8keMs7V/hWNHmZqaEikl8MraSHET8lR0BOLqDE3y0rWjHSRPjQHhsZhysyYaMxGNB4vLUVYzAxMK7HWWIWm7tYCiyNpsKWaOLP0c9pXk5SjZCJdI1YqXA/QDYjVn45WySxoSc9qE6td1B35UhBvFq9JmIDn4O8BX6q7wV6GHyBbHPsDneq+KSNLs4JJd1cy9wywRbt3Ma/loIuYTG9YDgw3O7XOcsealVsgSfm9Djb1jR+dQkoCMG1hMsGBFEW4Kehyp9o8vcYf+8fH6gcSe1njCHurQaysXIsuvWYNy+bzl7GImz0lu8z+ESnlB7RxbtZZZJlxgVJx2M4V9RxCitrmsaWT8d56wJx0f0t80PRCsDGWqEtZhsOnAtRy7IS8mheERoC6Oltp4gAl0I4ntyGLvIi324uXBAEN8l9Key0ZyHm0n8767eMpnohhrtof7U8yVmB6Y24BBKlRfKvsPYyDc3Q
- eN56eMyt
- 7kIKMatqo2y2l/xE8R1IcRZZKauZKwAVpSbxk7GIbWIXnmsD3mknEQkOGjHo8+2/Mae6VbM9yZ9ywaB5dTVNRKaNagKjHetE8XwbR2El6JND1LLi3sXSc9iDIzPa/sxnY7vzuPD0xRCY0yusYT/sYA96xHYvkramgQaqt+XrQP8Tv5omdfv4By73Ej79bL69g+gHfomKsh3/KH+Mc1W9vdI5rlXR5F0t9Hl85ZVdd9fsJ26h3vF2V5GfCQPEVwlTUTQQSIzE6iXYMSyxwEdr/TYkhvoaSGgcJhFJb2Bzg3cnrChzAKlZh8qKSeQ==
+X-Stat-Signature: 9i6tt1it1udp9u3fyccjgudnr8hywc5n
+X-HE-Tag: 1786118102-463101
+X-HE-Meta: U2FsdGVkX19/g98hmE8/sgykKQaNxuNJRrhvaJlUBZJ9UKzBYgbvGFuT7ahU5JRIODP/ZgbTksbl+BohHiAzFPlydGCLEnPRGXTAIM2sjVdtS0cI+GklkNahavMWeVlS9Dc20zW4zn/SNwNPPDCnSrEqwXjhA1P3oIVKahqf1SbiJsIJXY9Zt7RT3V7t3xXhKnz2vji+UqEX5GdYwurShOTHeI7gYgt43dpdIVXWYdJZZMLASl6NqHoQsDm13xN5UYMybocoJdj9Yz6J4q0dL1ecEfQiL1xYgzejh6gZ5XI6abItNj9YyUZB1rznLoXah7W2XmGVBiWlyAeFW1Ecg5jDRbbvNwqt0Rz90r9JB3m7bkQKaZsT7lSuP1jjjRfKKnogpT0VnGqkv/HjQd0vQaL6rk9TxqOyGX5nl12EIlSrwJJ91ZYdjdsXabursqPA0Nn4QoDuJdJTP6/qYHVVU8eQKT639zENHhlTTfCPmSYSwuYrek4iJt4Wt6dqEyIowZec4HHa6ZVoeNgJNtzqGNR3HsCZ0a0aV79vB+AGCdqdY1SJjHtwMeZDwVkd/u17nPAQtkykTIcs9AUlmhfvGQCP/NqlVxl0niKz33mP/W2eamXHzqTzKMuYoAbadVzEVZXbOCHkqnCRwaKmfiL+3KDRz4qyqfGePw2/y97USdmM57tjE+/76DhBeT6JGVrl0zP1NeE8OHw9/QKwelR6dAqq6ei5bmQo/vWsqshjBTDmtopZGLnCmRljbL86Kxd+RYaWDFWsWTY+HJcXXCo2Bofnp8RJ8BcG/uPOJaE43uoPnXl9lSBUVJTGNn0Z2/K9qK3R0TKdURtBoxGM3RfwHFpJeNl9Ix0muz40F0lf3Egt4oWlsV9BxnNy3/6UMVQFIHpOVrs4YpxAKH5yBkuHfi5eLYtNKKcOCc+N4hqw3/io2/yhpzbFA9f2BpJtYXtGwzglQOw1kfJzVkUhq5P
+ 9eERmVIA
+ EL0nCO09IvRO5+YO2Om8mQGk4DVxruzEALQgUDVfxeeQgkpfCGlBvp40MLfylnsILVceO3S4jljzahrneTJe5tl5fyxkAoufyZ+12HXDl6g9r7//6F4Y9BtF2FZ20Deox+Srpz2K1Vgi6XRyAQxJkDvatuJR7B1Fl4j4qPNpn9WmOGKsLvLEc93R0ubYeNW8RHcjmDNdDoRFee2+4pBIPXMae8o/xOT3+TZQk7xnvdUVFBOGrjcr8asaCVY9qmYKAcoBfzaS19lQP7L4yskXsbCW2K0+vGil9F6KQlciIKjKSRpaVhMCru5LdFtwJrLs4PYTv5bRmilLA0nX6+RWTs4tPs/s73RWgjAf57O2HGAIxRKc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,34 +145,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-The video protection region is a reserved memory region that can be used
-for secure video playback. NVDEC can access this region to decode images
-into securely.
+This is similar to bitmap_allocate_region() but allows allocation of
+non-power of two pages/bits.
+
+While at it, reimplement bitmap_allocate_region() in terms of this new
+helper to remove a sliver of code duplication.
 
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- .../devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml     | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/bitmap.h | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml b/Documentation/devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml
-index 4eb325cfd296..bcaaabca945d 100644
---- a/Documentation/devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml
-+++ b/Documentation/devicetree/bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml
-@@ -60,6 +60,14 @@ properties:
-       - const: dma-mem
-       - const: write
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index 7df1573a409c..c2ab02985b5f 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -716,10 +716,10 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
+ }
  
-+  memory-region:
-+    items:
-+      - description: reference to the video protection memory region
+ /**
+- * bitmap_allocate_region - allocate bitmap region
++ * bitmap_allocate - allocate bitmap region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
+  *	@pos: beginning of bit region to allocate
+- *	@order: region size (log base 2 of number of bits) to allocate
++ *	@len: number of bits to allocate
+  *
+  * Allocate (set bits in) a specified region of a bitmap.
+  *
+@@ -727,16 +727,31 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
+  * free (not all bits were zero).
+  */
+ static __always_inline
+-int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++int bitmap_allocate(unsigned long *bitmap, unsigned int pos, unsigned int len)
+ {
+-	unsigned int len = BIT(order);
+-
+ 	if (find_next_bit(bitmap, pos + len, pos) < pos + len)
+ 		return -EBUSY;
+ 	bitmap_set(bitmap, pos, len);
+ 	return 0;
+ }
+ 
++/**
++ * bitmap_allocate_region - allocate bitmap region
++ *	@bitmap: array of unsigned longs corresponding to the bitmap
++ *	@pos: beginning of bit region to allocate
++ *	@order: region size (log base 2 of number of bits) to allocate
++ *
++ * Allocate (set bits in) a specified region of a bitmap.
++ *
++ * Returns: 0 on success, or %-EBUSY if specified region wasn't
++ * free (not all bits were zero).
++ */
++static __always_inline
++int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++{
++	return bitmap_allocate(bitmap, pos, BIT(order));
++}
 +
-+  memory-region-names:
-+    items:
-+      - const: protected
-+
-   nvidia,memory-controller:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description:
+ /**
+  * bitmap_find_free_region - find a contiguous aligned mem region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
 
 -- 
 2.54.0
