@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0C9C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BC5C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 340E46B008A; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
+	id 737F86B0088; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0C36B0092; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
+	id 6E8A16B008C; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 192516B008C; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
+	id 5B4326B0092; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E384C6B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 648B9160162
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:04 +0000 (UTC)
-X-FDA: 85075592448.17.8AE8B7C
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9C9B28000A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tCYAV9WT;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 257DE6B0088
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2849A1C0137
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:03 +0000 (UTC)
+X-FDA: 85075592406.29.01D8376
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6F9F5100006
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kIgVk5RM;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786134062;
+	s=arc-20220608; t=1786134061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HwNwt7qn0Dj2QjnweBxCilOvMKex3+n+ntJRoPVYrE4=;
-	b=MyttuuByzYgflsqCkSxVu+n6OslQ0twZfVqEAUHQYJQhVE7S275N8D/VQk0cdC4juF5Jq5
-	tfCUxaCz+HUBv1GjVmAHJ45x8dKkle/prb7ydF8C4aDCciPPCjBBGybSC2/iEEFmxmcTmu
-	l1pb958BLiQV8Qki5+kyxfzm3ABpgDk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786134062;
-	b=8JoUbFKfti1CYQYrVClUXoXGjTUH8qZH5ULKthKpq07Ufsk/YaI58sM83G1pDW5siq5FaY
-	mhNkxgGfY5K0JnwjdF4FfH3h1goYKVgf/DVdHFti+8OwXSRjflrCq3JmPLg+G+dCGxjL6B
-	jl65OynSPdLI37ZKnYZTQSCmAtSnDvM=
+	 in-reply-to:references:dkim-signature;
+	bh=OG7Zox/EULKY3yZgjkLir0Fh0uNyC4YIaQWO7jxGtO8=;
+	b=D43QDRA+Y9cyJF0uaEOflWAK1U3EvcLpFPsFASGrVwfkaUbMJSpC0frOWcX6NoPUhnz5GV
+	LzS/mbjB9fy7R2szUv2A0p+ES66DrEQpxsvqct+eSKnlXCCtDEsfgju6HEokETe0o7HwqN
+	ov53yuA+n+lx8VaNwhA3N4VKe1axNC4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tCYAV9WT;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kIgVk5RM;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6ae6e407bfdso1490072eaf.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786134061;
+	b=jM832M1gXY1lDXnqCIKUqRwu8OOsLf49lNtT2KI2E5N0Os4ZGkZLLdGQBlS+ccmcz5hfKL
+	ivbYtV2isLjeqsRV/FjbL7v5lNeNm5tshRq+BqQVHtDEWZFF1WFurvf70o5J16e3HKdySV
+	4EiDNZfGgPeXHrk/lud1rVyurS5MUNs=
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6b0496f4bbcso4395eaf.0
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786134061; x=1786738861; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HwNwt7qn0Dj2QjnweBxCilOvMKex3+n+ntJRoPVYrE4=;
-        b=tCYAV9WTNeJDqekJYYTuPxreoWeh1m6xLbsYek/tNgTQnwH3IQlGBSg4U06hvsSdrf
-         H6UE+Xrc544zZs6vEYWfsKHf31KxlAFyMJAJjPQg7sNS4cCMPYAu55qagrkSBXwSZ9ft
-         iMtqI55Jp8ujmRsBKuqSnlSx7sLt/2bskSSICCDerY3dr0AShI9QjJY2evHZFKry58Ie
-         jqBuooSxTv5GawBRkNpP6GSJ1oc5M03+oFEsMXm8TNbCMwbdQEmNz7SB34e+ggmDwNic
-         PPVj3xP3WEiz9yNcIUmioacWar3c6ZVesz+CHSQTw+Dft53aWJ+dvkoULLukOE0NIShY
-         SbbQ==
+        d=gmail.com; s=20251104; t=1786134060; x=1786738860; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OG7Zox/EULKY3yZgjkLir0Fh0uNyC4YIaQWO7jxGtO8=;
+        b=kIgVk5RM5Cb52wtiQi7DLXqICkxRGLAGpsdKVoP0maMZclTpTnL9FIp77xec3LhAwd
+         GDUlvjLl6bVrrPwv5p5zLyVm7r0qU7x2EbesZu95JuBIHj+/eWVdwIh0/UXSzchUQvu7
+         rbfmL6OkffKdnNDXXs0V9ncpPhhzDgaOFqXKolQUADgm8GEq7quiZvWNk89bOC4Oib3L
+         1U+aNldnO1L4X4jVZ+B+S4VKlKQ6yKSu8VqNmAOMbVtuHa27EHGWJAghZY3OWKlJSxYc
+         Zs86GkfyfM2Ex9lhF93LYSyct0bNRr/YzhM0Y+6oZ3URadI00nxVgfP4W9Lgbj2BSO0C
+         19pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786134061; x=1786738861;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HwNwt7qn0Dj2QjnweBxCilOvMKex3+n+ntJRoPVYrE4=;
-        b=J0x42UCcc7W0KN/t1FBBRekO4FpgScJ+jbnimjV/qQCjG9wA7jVSSvijS4UJMAGhh/
-         RZaUd9X86gYGSywiWt+/Cv7fs42niYcjycQUU+ag1H1fSyponHoJmyN0LWRuMicEROPi
-         CHvhDBF7z5MAdn70Qm7jrjmk1NQbK7sAjGP+JiKbicPAdXkuLM9DkT7opmZRkRaUWTNu
-         Bltnr4Th09CuzmNWOc7PkByMA00GnP5tfjc8ELSUDADH8yG+TfozOZULPyqdHujeKLmu
-         jponG2wL+OGHwSSN/F3pxaUNamfsCznGZPoVBloC7iaMQa0/+gaIcLkxKUu422ryg/YC
-         d4Lw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpk4IzP7ug5fZGWIPQPC9MCoW+Rokuodm1Oym849DsOyE+MYq85UabPV2Jwf/mragtoyQnfkT0PkQ==@kvack.org
-X-Gm-Message-State: AOJu0YxCoUpE7fibT0nFwoOSDMWN56HTspPbL2imzzG5z10I2aqup4yb
-	xFJTGPVR/QtMxK3QngG/nUSMq2yypyIDPZ26bJGBiqUqFI2nhgH/n+gk
-X-Gm-Gg: AR+sD11UA7NtowWFz62Y9VYzVKkl6aBmZZLD/n6ZJB6VcxH5ZiH9cwP9mVADX2GV7Kk
-	PZ5ddKRXUFRef82S+EKPgDciKV9sh+kzkkWmgig/IN/NOrJrZctUw2qEhRPuaUBah0crC6fIx+U
-	jNw9/RDyRVo3dzsslEplguN8OIWoJP8d3SJ6/Vgcp4faKOQ1JroQKakTZ/tFqii1KEWFoOo8gsL
-	rMUXM/6uqrQ7OxTEqCQygyhtuw/ZTNCifvtmnBAaZ/8tQyXbeuszascLB3GsfGl4swuoUkOiQ4z
-	Dl6pL9iuTultgS4S811CEUeY19nkZ4I4z8Bu1aLgwQVq8JT7WYgS+ZBimTuMNg2HZ4KXcXQFUW9
-	lB0E1bKQUvVDeiX5hScHzU6qLyYv/ZtqDZ57JPhztrF3PLCu/ZrzwPvk81gNZG9nY/nnQ41RJxy
-	O8nc09Pg9UFNPS6I7GkELUYXiMqNgYu/eUBerXLL7o8sABWFk7q2tJ5lV+m5qTWPOPPwEj9eSAw
-	yGGZxUtCVukg2D53khov1/Ob6rULA==
-X-Received: by 2002:a05:6820:1791:b0:6ae:ab01:9199 with SMTP id 006d021491bc7-6b042266f4fmr1570536eaf.34.1786134061552;
-        Fri, 07 Aug 2026 13:21:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:25::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bc2631esm3229086eaf.4.2026.08.07.13.21.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        d=1e100.net; s=20251104; t=1786134060; x=1786738860;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OG7Zox/EULKY3yZgjkLir0Fh0uNyC4YIaQWO7jxGtO8=;
+        b=gwUsH3RKzse7vvJCtsKretDQ24fHakWACTpxBXJm/DeQYJvCZNa/bAH70OJsM8mhMY
+         19S6YDyGVwdhtvXuHwzjT3jcF3mpkdNjJgWux1NBixD43oM4lLqSUz5YaJOEeBiH/BXq
+         z0Xd77yIWiHfQa5i7gjzxSr7D2ftZjF/xWajyPM7QQQxoAsw1CjUiANBk/G1NO7X6zBJ
+         Sz18bTK8Ndz6YQEnNYQrztG7+vxRNo/4f6nxoB4ynjhLzjtqMe/8PUocDTWv29my5dsF
+         q9x9CXmQkqaHuvcMf73cz/Q+CAhxfYg2vgMkkyBT8dzEjA78JOnB3dDi3e4trbQjtJZu
+         m5sQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqBui6Py8fVV/GlavcGZdtH8SoyuCUum8NV+qF+ZbbBkJGLPvEMrhdv0oD7wUY0WOJboTr/jvdBWA==@kvack.org
+X-Gm-Message-State: AOJu0YxVpZi/nT2RJtHAGI4NWOhp149+rKbt7AFo8S7XoYj7Yhm2ItFv
+	uxmDxiXYx1gVWdBdNXE+PAYrKQet+3faiklfzcyvF8rXBZb0aaGxNpQT
+X-Gm-Gg: AR+sD11a+HXLCy/TgG7DQKBOsMIf0j+8kYqWWoZp+lAJhuArJqd6+9rjzxLNj0Bmd2b
+	2LLyFoKlaubDMpm9CEJRobb5q1eNu7YOAti2P7IB6xvOOuCTf2rOMBTHhKg2aZbbladDCQjaTDm
+	gHrAHmcl4hXTyUm16FHmSUu7HukG3DCj7gDQmTlsmJ/pz9PSupgXucbC6F2SaRp0UNq/FTQklQR
+	XgmBmlq7yIcce/ecLGVnwWGHiHvGE8qEGhMh0eNeoCLke8RIl41QH3kv9LBZx3vHmDbjOinFi0F
+	mLxKP71o6EpopP4xujWFLveUS5XgCbFMzYobOisPNoUFLjyybzi0cmpJ+r9TJDgPgzfejeD3BG7
+	xTuhecZ07Cr3xqjLlM5GyLnoTuql3Vy+ICgTEZfLicdJ49axZvJCNDn3KIbpaUR0imQr29g7A2q
+	133TUb5z2zBP8+G5Xd+/BkzoeNIvrNjO1c2gkyicr6HuBBAWkkpxSiRMc9d52N5yW/OJ8DIIexy
+	dMpxH3dhP2CrC8lUQ==
+X-Received: by 2002:a05:6820:8cc:b0:6aa:d97f:4564 with SMTP id 006d021491bc7-6b042151708mr1639179eaf.28.1786134060230;
         Fri, 07 Aug 2026 13:21:00 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:d::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f1d793c9sm2788490fac.9.2026.08.07.13.20.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 13:20:59 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Gregory Price <gourry@gourry.net>
@@ -137,22 +136,20 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH v3 01/14] mm/memcontrol: Introduce cgroup.memory=tiered_limits boot parameter
-Date: Fri,  7 Aug 2026 13:20:44 -0700
-Message-ID: <20260807202059.2620949-2-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH v3 00/14] Introduce tiered memcg limits
+Date: Fri,  7 Aug 2026 13:20:43 -0700
+Message-ID: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
-References: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9C9B28000A
-X-Stat-Signature: uo45ghorzyg6kuycijisqrapgs9td63w
+X-Stat-Signature: refqc9qqcpsgkgb7dz7pp6xh9s64skck
+X-Rspamd-Queue-Id: 6F9F5100006
 X-Rspam-User: 
-X-HE-Tag: 1786134062-234122
-X-HE-Meta: U2FsdGVkX19gICqhSk2yKMGV/O6lO2F5OkeS6RWx9tcGyTJ6KNvlZ9nNa08R495sCt684/cm7Apv7SyZ8FeNUPrhX1ehGepgQx4J+bIHP1m33oUu0jRNfVzuaMmTkEKqr807blE2+53nGvubwnR1HZN1vov0y0C0FZauTee5Uz+g6TSr+VaW4E1nUZU8LhkTHAkoiUTI2I6JYBKHrVaznIpoHYW64msEbknqOKfhFWdabbRGtzlpR4fYS8VXx2y3urMCnMw4jkbZzt6iGE7ScjAtGbsngZIt3oTLlrP+HPaE82xfVorX4HKvuHQZdS1mwqSy5UXuxzVGD3n16Hbqb42+6NSDTrSvtk9HfuMi4MR+VyQ/VWhXqj7E21L0OhFFzOEn0uDCO1AdlgInBpqtEIWhLVnT24z4TEoAOW//bI+vIM3aTy0fotA/MI9d1H4IOejJ6AH5Wc8IcVRC6qkQa2zCIwcCp7Apr7tK7duBu1kwW/MkHk/bCVm7ltjKD71MNsd3xsab82R0gOo6RlW9Y8eynAQRGN6ouj8ewB1rh97kQDtHcXaGI77+qVj9a5SnT/tHkLQPrYKMw6M2DBtkIlL0Ruhpje65VLX9RNLxRbhZiPdeVANGkGhjMKKe5StU/fZ1KTSF4/OMGiCLmAgruvpJGgYGXgyyQj3bd6P2HQrIL0lRQbX6F91eYyGK2t3+gi2EiWTTx1iWxeA61ZNQeF9GUP9+/WrX5oPtNXagI7NywSRSQlqNj2ShYKzs9MDhKLo8L20pv8nYBWnXN44Y6IlGaKaM4SbQGkj8eXf3FzYTyQhiJGxN4GkJU+jHSnYVId6IiAAYMGPIgEWkLq4YovEwNpVK5Plw1gXGVl7l9/qawbVu2ENQrtVrS5vm4yLapuqVAjVzM5LfAykrctmJlHZwoqSYwnkttryI46u4SBEzzLQW1rZIz1VQKXyAJJMSZzUlGat6zj5Iq42pfFQ
- bE6ENHCu
- Hmd8Hg3Ux42Rjfba9Vr065kozI8nsvdb3C0egNpICGaSGxNtUU+21TRIncYJ3O4tuam/tZvlpx/Cz8wIPPpg8oL/jYDIXBLHXco0l6Xbl8MSDcvTG9GlnMACpLhQq9hkATGt6iTqxTpmBuLmzcdnhxY9tDDaHT/LjKG5gxh1UjD4y54hu67ShhCpuU4QQL6mSnGX++aOfZRYZCTn38tYGkTY0tT+hW1Qr9ykxthibC6MOe5NLCKWChcyLZG5hVRmZdLgOJn0yq/VNDxJL3TGUipDAQ8glfCGp02pQBp0nImu5KG2vPXwafU6zHtmnEmYxNV6gMQ+cb/dEOSDHsKJWoA71UGU+2cLn5kiT1usDPDXis4H6sVtLrjq6lBLsNAncUei+B9U4VriahPN+5uw8esfwc5X4RPfNtavp1AQJXTAruKIhE6MkxLKKE8UMU6zCiGVKVD9WjBs5cz9Pgtufin2wNSPkUaI7NAAxlh+DZF35H5EJQdj+mjZSGFpSUcrFswXZjqdavTnT1oLAnOnesdJ68XLZy380vqc14+z8YMNLyMs=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786134061-995947
+X-HE-Meta: U2FsdGVkX19jCfo6m8fu0TlZWUwB3jHgkWy7Sygt00MlMY0Og/TI3O93dFOmBqGWAx8Qd8bdSesw0/jMVs7MPu/TTI1NBdyfOPD6KXq/k4xvxDaNvQsiy7DaD8vDWUXD7iwt7AcngPmBVTWhYDehWxif/we+Ew0uuq1oTPsCTPm+3zjC1a4NmqPE1DA6RQ7e+BCzzjWt4rcdUHM3VOa1DjEkNGtzzLq+lrlYOT0bXDVZRQ6av5lSp6IGg6d6mpW6XmSFleol6/GkW2fSkzqXy/y5LwIxeEMBzEe2gNhfRr7kJ2II3NNnxmibVhXXzEW0HYroCkZhtvgpx99pWhMfwfJTb57/Hn5JAfILHGwfcr3zdikUqWNrr9edjTAJuxPhVhlJEIlOmEFH44CagUMfI/CPSsmiiO9EdtA/om0M0mEpeRfI8cxoHf/IebTfGkdnERfE2Vs0gbNSaseAXaKDxv/mf3WT62d//K7IZy+hvGUVcFKXmGb8Z6mBhwtYHBjYzlH0dIjoE8/cs+0xx/auzm/sMz93vL2Isgz4euppxsjBtmie8WUIdAC5Obd0HL6BHIFvL5dMNwccd4v7fu5o9OslNa6UALFAVa2MvrEzq9NBaAd6jn6WFYis4QHNMdTpk/Krd9wTlSxBzbk5fOte1H8nt+RXqoZCOjDLWYSBMfuOsXukWUxX6UoQG+XhW6FlkSTlFk84LQ/MoAJ6175H6E6rcSZV8AbdydwGEaicLsK+s9u+5qmb0qAK1vNuVJLzdA3dn5BqR6n+dD77FE7LQJcJc8SN/Xv1Gq0/IZCpXV/trpuhKWa4zd/tkZti3HvyknwT/fILKroogweyzzKR47Mg3nQ8y/C0CHfJFNGeZOhOdA23zHKrVgGIT/bpD1XPh3pGpU4j8K4gVDhdq3Yh0h2NeP72cThJI4BRaVhXvsOP5irxOFbYAY259OyyVKCq10AVgBbL9t2CEasD3YF
+ M/Ve1w4q
+ cSalvu7D019htB5Yf25trgzrJeXYFelTOssFiCcI880lw1IkRKGH4fd8XpejCu/34P0sILXCbEKflcsRPyHe/S/8PzuI6v1VRPb5Bm3NYsMBwY160lDJwAmjlNuRdY/zv0qJtzVLAGo+2s+KdQ25E/k8ZnV8okF0N+jFGgg7iFEhEVdjVAMzGp1mOpYmW+Wc70Q6y1SPT5zeP5f6+SQPjwaH2jvRNjtW+QypJMKL0fIhL73QPzZm/wg1WQDym0cjCvve9zNIK4IB66PJWdcQADoATH55PcFeOADBS10ff83Xklyf7iBiHXVT4nVxBWeuueIGjQq7WDVPwQZppuGL5ukTrZXBQY1N53qXgo29r5WbrS1rXB/QaImJMkIPy/hXDrFb1pTQYM9HZTfwkWBbf6EYhFSFKkxY8HIU5ekFBZOSFHsz22cfukW9Mww6cl4judc1nkEZoMFcU+kQzvGOTxTOVuJSUpxK1urXx8+xtbf5WQZ68HQaz7URW0MR3ZZL/oepVfEtLoLcYb68o9i1nix4tgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,120 +157,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a "tiered_limits" option for the cgroup.memory= kernel
-commandline parameter to enable tier-proportional scaling and
-enforcing of the memory cgroup controller limits
-memory.{min, low, high}. Since mem_cgroup_tiered_limits() will
-become a hotpath in the later commits to gate charging, demotion,
-and promotion decisions, use a static key so that cgroups not using
-tier-aware-memcg limits has minimal overhead.
+INTRODUCTION
+============
+On machines serving multiple workloads whose memory is isolated with the
+memory cgroup controller, it is currently impossible to enforce a fair
+distribution of memory placement. memory.{max, high} bounds a cgroup's
+total footprint but says nothing about where that memory resides, so a
+cgroup that starts first can occupy all of a fast tier, while latecomers
+are pushed out to slower tiers.
 
-Enable it by adding to the kernel command line:
-	cgroup.memory=tiered_limits
+On systems with tiered memory (e.g. HBM, DRAM, CXL, PMEM, etc.),
+memory placement directly maps to performance, meaning memory and
+performance isolation breaks down on tiered systems; well-behaved
+workloads using less memory than their memcg limits may still hurt other
+workloads' performance by hogging more than their "fair share" of memory
+on fast tiers. Performance then depends on workload-external factors,
+like which other workloads are present on the system and what order they
+were launched in.
 
-The option is boot-time only, since flipping the bit at runtime could
-leave charges uncharged in the future, or uncharges for folios that
-were never charged.
+However, ensuring fairness in memory placement is not free; ensuring
+fair memory placement can mean underutilizing fast tiers, entering
+reclaim earlier to proactively prevent overconsuming on fast tiers,
+and host-level hotness inversion. On lightly-loaded systems, it means
+that reclaim happens on fast tiers, even if no other workloads compete
+for that memory. For some workloads, this tradeoff can be worth taking
+to ensure higher run-to-run consistency and isolation from
+noisy neighbors (see USECASES).
 
-This feature is incompatible with cgroup v1, and wil raise a single
-warning statement if a system booted with tiered limits mounts a
-legacy cgroup:
+Introduce tiered memcg limits, which establish memory limits per-tier
+that scale with memcg limits and the system's per-tier capacity.
 
-[XXX] cgroup.memory=tiered_limits should not be enabled with cgroupv1
+MECHANISM
+=========
+memory.{min, low, high, max} are partitioned across the system's memory
+tiers in proportion to the tiers' share of the total memory.
+For instance, on a two-tier system with 75% of its memory in tier 0:
+  - a cgroup with memory.max = 100G has a 75G tier 0 max limit
+  - a cgroup with memory.low = 40G has 30G of tier 0 protection
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- include/linux/memcontrol.h | 18 ++++++++++++++++++
- mm/memcontrol.c            | 19 +++++++++++++++++++
- 2 files changed, 37 insertions(+)
+Enforcement limits (high / max) are enforced in five ways:
+  - At allocation time, a cgroup's allocation will try to serve a page
+    from a tier where it still has headroom.
+  - At try_charge_memcg time, a folio that lands on an exhausted tier
+    anyways (because of __GFP_THISNODE, mempolicy, or memory pressure)
+    triggers targeted reclaim restricted to that tier's nodes.
+  - In the background, a tier pushed over its tiered memcg limit by page
+    migration or folio replacement gets reclaimed by the memory.high
+    worker.
+  - Migration (promotion / demotion) now performs a try_charge on
+    cross-tier migrations, and will attempt to reclaim the destination
+    tier if it breaches the limits.
+  - In addition, promotions are ratelimited when they are attempted on
+    exhausted memcg tiers.
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 2118d5b33d051..dce03df7eae05 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -530,6 +530,19 @@ static inline bool mem_cgroup_disabled(void)
- 	return !cgroup_subsys_enabled(memory_cgrp_subsys);
- }
- 
-+#ifdef CONFIG_NUMA
-+DECLARE_STATIC_KEY_FALSE(memcg_tiered_limits_key);
-+static inline bool mem_cgroup_tiered_limits(void)
-+{
-+	return static_branch_unlikely(&memcg_tiered_limits_key);
-+}
-+#else
-+static inline bool mem_cgroup_tiered_limits(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 					 struct mem_cgroup *memcg,
- 					 unsigned long *min,
-@@ -1083,6 +1096,11 @@ static inline bool mem_cgroup_disabled(void)
- 	return true;
- }
- 
-+static inline bool mem_cgroup_tiered_limits(void)
-+{
-+	return false;
-+}
-+
- static inline void memcg_memory_event(struct mem_cgroup *memcg,
- 				      enum memcg_memory_event event)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 29330f5f9d4eb..cefe33b5fd285 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -320,6 +320,13 @@ EXPORT_SYMBOL(memcg_kmem_online_key);
- DEFINE_STATIC_KEY_FALSE(memcg_bpf_enabled_key);
- EXPORT_SYMBOL(memcg_bpf_enabled_key);
- 
-+#ifdef CONFIG_NUMA
-+DEFINE_STATIC_KEY_FALSE(memcg_tiered_limits_key);
-+
-+/* Tier-proportional scaling of memory controller limits enabled? */
-+static bool cgroup_memory_tiered_limits __ro_after_init;
-+#endif
-+
- /**
-  * get_mem_cgroup_css_from_folio - acquire a css of the memcg associated with a folio
-  * @folio: folio of interest
-@@ -4202,6 +4209,9 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 	struct mem_cgroup *memcg, *old_memcg;
- 	bool memcg_on_dfl = cgroup_subsys_on_dfl(memory_cgrp_subsys);
- 
-+	if (mem_cgroup_tiered_limits() && !memcg_on_dfl)
-+		pr_warn_once("cgroup.memory=tiered_limits should not be enabled with cgroupv1\n");
-+
- 	old_memcg = set_active_memcg(parent);
- 	memcg = mem_cgroup_alloc(parent);
- 	set_active_memcg(old_memcg);
-@@ -5584,6 +5594,10 @@ static int __init cgroup_memory(char *s)
- 			cgroup_memory_nokmem = true;
- 		if (!strcmp(token, "nobpf"))
- 			cgroup_memory_nobpf = true;
-+#ifdef CONFIG_NUMA
-+		if (!strcmp(token, "tiered_limits"))
-+			cgroup_memory_tiered_limits = true;
-+#endif
- 	}
- 	return 1;
- }
-@@ -5630,6 +5644,11 @@ int __init mem_cgroup_init(void)
- 	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
- 				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
- 
-+#ifdef CONFIG_NUMA
-+	if (cgroup_memory_tiered_limits)
-+		static_branch_enable(&memcg_tiered_limits_key);
-+#endif
-+
- 	return 0;
- }
- 
+A few details about the enforcement:
+  - Allocation time steering is best-effort and yields to explicit
+    allocation requests, like mempolicy, cpusets, and allocations that
+    request a specific node (promotion / demotion). If that allocation
+    were to push the memcg tier over its limit, enforcement happens at
+    charge time.
+  - Tier max can be exceeded by demotions, which may force charge
+    since they can't (and should not) trigger recursive reclaim.
+  - As of this time, the mechanism is completely transparent to the
+    user. Booting the system with the "cgroup.memory=tiered_limits"
+    boot parameter will enable the feature, with no other interfaces.
+  - There are no behavioral or performance effects on systems without
+    the boot parameter, since all of the hooks are gated behind a static
+    branch that compiles to a no-op. However, there are allocations and
+    static variables that we must define unconditionally
+    (even though they are not used).
+  - Tiered memcg limits are a v2-only feature. A warning is emitted if a
+    cgroup v1 user attempts to use tiered memcg limits.
+
+USECASES
+========
+As mentioned in the introduction, some users may prefer to trade off
+total throughput for reduced run-to-run variance:
+  - VM hosting services that must provide the maximal performance
+    guarantee for any workload present on a host.
+  - Database workloads that want to minimize the maximum latency for
+    queries hosted on the host.
+  - Hosts running memory-isolated sharded workloads that block progress
+    until the last shard terminates.
+  - Any workload that wants to minimize variance, as a means to gather
+    measurable gains in performance over time.
+
+RFC QUESTIONS
+=============
+  - Should we OOM when we fail to allocate on a given tier?
+  - What kinds of observability (if any) do we want?
+  - What kinds of user interfaces (if any) do we want?
+
+TESTING
+=======
+All the tests were run on a 1TB 2-tier 316 CPU machine, with
+750G DRAM and 250G CXL. The first benchmark runs 12 containers on the
+host, where each container runs an identical pointer-chasing task in a
+loop. Each container is 80GB, so DRAM is overcommitted:
+    (80GB * 12 = 960GB > 750GB)
+I ran 8 trials and aggregated the data. When 50% of the pointers
+are kept hot, these are the results:
+
+Mean DRAM usage across the 12 workloads:
++---------+----------+--------+
+|         | Untiered | Tiered |
++---------+----------+--------+
+| min     | 43.09    | 51.25  |
+| max     | 68.54    | 53.03  |
+| max/min | 1.59x    | 1.03x  |
++---------+----------+--------+
+
+Mean CXL usage across the 12 workloads:
++---------+----------+--------+
+|         | Untiered | Tiered |
++---------+----------+--------+
+| min     | 3.05     | 13.98  |
+| max     | 21.65    | 14.87  |
+| max/min | 7.10x    | 1.06x  |
++---------+----------+--------+
+
+For the tiered system, the deviance from max to min DRAM and CXL usage
+is quite low across workloads. What is interesting is that for untiered
+systems, there is up to a 7x difference between the cgroup using the
+most CXL and the least CXL; there's a clear inequality in how the
+resource gets allocated.
+
+This gets reflected in the distribution of the job completion times of
+the 12 workloads as well.
+
+Job completion time (s)
++-----------+----------+--------+-------+
+|           | Untiered | Tiered | Delta |
++-----------+----------+--------+-------+
+| min       |    260.1 |  276.5 | +6.3% |
+| mean      |    274.4 |  290.0 | +5.7% |
+| max       |    315.0 |  302.6 | -3.9% |
+| max - min |     54.9 |   26.1 | -52%  |
++-----------+----------+--------+-------+
+
+SERIES OVERVIEW
+===============
+Commits 1-3 are preparatory patches. We introduce the new boot
+parameter, refactor try_charge_memcg() to make the following charges
+easier to follow, and cache frequently-used values like the
+node <-> tier mapping.
+
+Commits 4-5 allocate the new per-memcg-tier page_counters for tracking
+and set their limits according to the standard memcg limits.
+
+Commits 6-10 track per-tier charges, and introduce the protection and
+enforcement mechanisms for min/low/high/max. 
+
+Commits 11-13 further enforce the migration (promotion / demotion) paths
+and ensure that we do not introduce unnecessary churn by reclaiming
+earlier. 
+
+Commit 14 steers allocations so that we do not accidentally introduce
+zone_reclaim_mode-like behavior and immediately reclaim after allocating
+on exhausted memcg tiers.
+
+FUTURE WORK
+===========
+I am currently working on another series [1], which pushes the memcg
+cached charges (stock) to the page_counter level, meaning each tier can
+manage its own independent stock. This should increase the performance
+and simplicity of the code much more.
+
+CHANGELOG
+=========
+v2 --> v3
+- N tier support, instead of toptier vs. rest enforcement
+- Max enforcement
+- Migration enforcement
+- Page allocator steering for exhausted tiers
+- Promotion fastpath restriction & throttling
+
+[1] https://lore.kernel.org/all/20260623180124.868655-1-joshua.hahnjy@gmail.com/
+
+Joshua Hahn (14):
+  mm/memcontrol: Introduce cgroup.memory=tiered_limits boot parameter
+  mm/memcontrol: Refactor page_counter charging in try_charge_memcg
+  mm/memory-tiers: Introduce a mapping from nid to tier_slot
+  mm/memcontrol: Allocate per-tier page_counters
+  mm/memcontrol: Set tier limits proportional to memory limits
+  mm/vmscan, memcontrol: Add nodemask to try_to_free_mem_cgroup_pages
+  mm/memcontrol: Charge/uncharge tiered memory to mem_cgroup
+  mm/memcontrol: Make memory.low and memory.min tier-aware
+  mm/memcontrol: Make memory.high tier-aware
+  mm/memcontrol: Make memory.max tier-aware
+  mm/memcontrol, migrate: Transfer tier charge on migration
+  mm/memcontrol: Kick async reclaim on migration and folio replacement
+  mm/memcontrol, sched/numa: Gate NUMA promotions into memcg tiers
+  mm/page_alloc: steer allocations away from exhausted memory tiers
+
+ include/linux/memcontrol.h   |  75 ++++-
+ include/linux/memory-tiers.h |  24 ++
+ kernel/sched/fair.c          |   3 +-
+ mm/internal.h                |   3 +-
+ mm/memcontrol-v1.c           |   5 +-
+ mm/memcontrol.c              | 528 ++++++++++++++++++++++++++++++++---
+ mm/memory-tiers.c            | 110 +++++++-
+ mm/migrate.c                 |  30 +-
+ mm/page_alloc.c              |  19 +-
+ mm/vmscan.c                  |  25 +-
+ 10 files changed, 753 insertions(+), 69 deletions(-)
+
+
+base-commit: 7b25c83e4711038989b5b08a8977fb68468c854e
 -- 
 2.53.0-Meta
 
