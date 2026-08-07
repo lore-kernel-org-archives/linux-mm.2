@@ -4,124 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94947C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33268C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 15:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B7EF6B007B; Fri,  7 Aug 2026 11:49:30 -0400 (EDT)
+	id 1E2026B008A; Fri,  7 Aug 2026 11:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 669506B0088; Fri,  7 Aug 2026 11:49:30 -0400 (EDT)
+	id 192D76B0092; Fri,  7 Aug 2026 11:54:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5590E6B008A; Fri,  7 Aug 2026 11:49:30 -0400 (EDT)
+	id 05AE56B0093; Fri,  7 Aug 2026 11:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E256B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:49:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 97D2F120407
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:49:29 +0000 (UTC)
-X-FDA: 85074908058.10.E76B6D9
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 81D4540007
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:49:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="HRECn/Id";
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C02426B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:54:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 365ADA2007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:54:53 +0000 (UTC)
+X-FDA: 85074921666.01.455DE79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6CF5580008
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:54:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RFetetgo;
+	spf=pass (imf30.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786118091;
+	b=7W0wFTOnBqLZz/WYI/CqPCyLBO5J/H7+5OpaeKhRBe3g52lWIaLWKVSAnxMwkzogyjyJ85
+	a1m1mpxbqxYBdqlSGekZY71eDHJvNktMLYtg3/cyAtzxbv/BcprTfCGoutdK0w1K1pRHBb
+	fzTQJWGtPv+qcyvfqh+yH0SpThQ9s4k=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RFetetgo;
+	spf=pass (imf30.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786117767;
+	s=arc-20220608; t=1786118091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CEn2KGn5WZDKTdyZCzrkPMcKy/ABJR6AC0QsaSC3OWk=;
-	b=lxqHnOq8J1qFmcGh8AEKQlhTe91BpD1wS7eGEjJUaV1IbPKUvelPgU4naW8fVgD4Mu5sPS
-	/3wURWSNkqdhx3BIROeZ513ur82ONtPIfrDepIkyJ6l6EF2v7ket9IE1TAKFEGvW9duodb
-	XTrC1KNA++J1gKKoJv3vU5oMykDNIuQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786117767;
-	b=aT18oifEb10G6vHR6sKof8bwVUEgphlMCL5H3bde/2LYJeL42m3V0JniWGvFXUGfXT/nbJ
-	oBKHeC4wU4PlC3D6+kxYa1r40X9kfRqC8nrMBmJW1QiwiS8BkdgQFhn4CQN2nbfvvBViSy
-	bXgBLOGhzd+BmXuqNpm2iU0Jhh0Sjp4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="HRECn/Id";
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8ef7b7651ecso15526686d6.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 08:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1786117766; x=1786722566; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CEn2KGn5WZDKTdyZCzrkPMcKy/ABJR6AC0QsaSC3OWk=;
-        b=HRECn/IdR9Z2x6o3FSuMIliS2GpJU3M+bAan7sSg+AjR7maNJRaTNCeVBohlcAz2QV
-         yvLzE1CDJCaGDeQGij8b/abhaUIOOARmrHjCv0PIY+APklCL3H8Tmiu9kSBLJTRMeMJh
-         Zb4JBiCP2miH76ibA2+2pgQ+wBY15XlkkmsLYyY5W+TParPC+NZAkN9qbFhBeHZWVK3S
-         mPj4awUPQKb/37oTHJ/osd6BWQ/dcNkmz6xqY8n/SfK3l/V8EJ5YaI5CkWKgGBHFXZ5o
-         u465cj56Pe1BzZCm0ehZluyR6y614AKwwEfvpnXGo9iya/F+bHpk5k2Gsae+jSzq3g7m
-         L/8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786117766; x=1786722566;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CEn2KGn5WZDKTdyZCzrkPMcKy/ABJR6AC0QsaSC3OWk=;
-        b=M7+gHcnIpTdcJerlJGpnecKxsRhxDe4+qMfKkdQaF9VV8YyGBO1y4v2tnyoOrVvm0N
-         gzK6HtDbD6ys3U7vCGxBG1dRShtWhjj5DBjOSwIT4oezy2oTIrgki0WH6MNRJFqwfJMd
-         DTmeBnpg4/+M4wPgbJjp/0kdk75raYUVeQMXoRf65Cz/6ICFb9Luoz02F/YDiIXXeyHJ
-         hENjWAGXUIox5Fs9oIc4REIUkxKaVC64IgHpuVc4qaukLydmFt48bbWwJxjqh9aRmoAK
-         H+r/JVIHZ3wy2mD7pD+0KYaQaqx/8yWyMiGAKKp6rb6a6csD6DDWLdWyBSq5MfyZS9OO
-         mRgg==
-X-Forwarded-Encrypted: i=1; AHgh+RrG7g2ep4eXIMdgRj3lwbJytT5uRtjjRkimBhaKVbmh/Gf1TLcMByxi1Oz972v3hk7RRH6gSpqVNw==@kvack.org
-X-Gm-Message-State: AOJu0YzLpTan9dWh/WBBs7y8WMoT6esvl59TUx2I36nWcIi3UjPFO1gO
-	UXd+/SpvqEs1ZxGrCdqL493gJ5jUO8moSd0N3nrvXN8zQbZPvy8gdN3G+VHFChdvEbo=
-X-Gm-Gg: AR+sD12SZqqJE1wgWs04HUITw64gPdGpkw1DZDTyGp6Pt+NGI6ghsCbyCyEY+wTjT31
-	hP0nwZdl1wFvpjczuvcRt3VkBtj+UPV4i+3pCoGD7UOaHl2jqkEUJFIgL1qcE8lZ5AD0FpZDzPL
-	+qpFaV7D7siHh4gxZ3ECVszOivCsPPMATHEC0RNna/T9LiIHC2YDGTOyJZ3sC/++yNCwmB2cBX+
-	FFemCRzZQ0r7vHc8nUuiAKY2BdRa+3nbqXD0rrflmvVsgAyWWqPiUR+X+Dhj0ubLRCWgKzecuE6
-	VVR6ctLIIWAMNJTAY7+VscCyw2bzmaY+IF9GToGwGV6itslXHOR72ak9uDNYzTmmz3R85VzNa4G
-	nd1rDIyDPcYMS7Of2N5SZaxYKyRN/zc9HiNCOp8Il4k116qqGq59aQpGLlRgiTr294Oh7uZLcGP
-	TXSMTi4Wmy2N72OjUZ4u9JkHu3vJJ6C/otgLBXOKzrOiEquCR17plrpZwVpAA=
-X-Received: by 2002:a05:6214:450e:b0:907:bf1e:f888 with SMTP id 6a1803df08f44-9088f9ec72amr206847166d6.17.1786117766300;
-        Fri, 07 Aug 2026 08:49:26 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908a92ff8c6sm11404806d6.28.2026.08.07.08.49.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 08:49:24 -0700 (PDT)
-Date: Fri, 7 Aug 2026 11:49:21 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
-	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, riel@surriel.com,
-	gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net,
-	kernel-team@meta.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 01/11] mm, swap: add virtual swap device infrastructure
-Message-ID: <anX-ga41DMNWF6-2@cmpxchg.org>
-References: <20260806184254.3790858-1-nphamcs@gmail.com>
- <20260806184254.3790858-2-nphamcs@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xDlurFDxUaKm0+DeKwG11I5Asqll1HaQOs3bWTM7T2A=;
+	b=UygMuR/b05CBOn1Hr+d8b7m2ZlmDWN1Fhl89Vw55WIjRPhmYBcupZuYpukcKsndWOVFEWb
+	JFJQX/cDWd1uwXgMNMh2V3qIGjeMDXymI5fBRhq2XcbZ/zSVdkoTPZ9+JY8N6XpFOfz83V
+	tlGCgqOGQiSyrjQaCgXOwPLVOftQiAE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BA4742000;
+	Fri,  7 Aug 2026 15:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E8D1F000E9;
+	Fri,  7 Aug 2026 15:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786118090;
+	bh=xDlurFDxUaKm0+DeKwG11I5Asqll1HaQOs3bWTM7T2A=;
+	h=From:Subject:Date:To:Cc;
+	b=RFetetgo7jgxk2hRoVBNP2thvqE1EPEabTG4g4lH092YzQbD/Odq965rNejDzleVE
+	 J3ckOBjT8nkXZ3wNy9Nx4RPTK6m+askAC7z4QSWoQpfG4MxebffJpKPmv69UDX+6OL
+	 iEVDLsrFQqAMjC3zb8GatM7NAYAeBLlhnRtZ8Mcce5gdM7SrXJqHkgyYk7Or7MAkVf
+	 1v73+4+H/NMIykEPIocARawL6LBt2xLJEDW2wFY+w7Ljr85NJJJx0OjEEz4tm8uqs7
+	 VRYlNv+S0gcff4TM8qKclQrd/ETGd8YPtZJh6hMl1H2rsh9+vs6QAXsneltbsqhXC2
+	 1o0k2EvBe+C8g==
+From: Thierry Reding <thierry.reding@kernel.org>
+Subject: [PATCH v4 00/10] dma-buf: heaps: Add support for Tegra VPR
+Date: Fri, 07 Aug 2026 17:54:20 +0200
+Message-Id: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806184254.3790858-2-nphamcs@gmail.com>
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WPwWrDMBBEfyXoXImVLNtyTvmP0oMtb+RtEzmsX
+ NEQ/O+1YkoLPQ7Me8M8REImTOJ4eAjGTInmuAX7chB+6mNASeOWhQHTQA2tXDBwL/ONpR/t4E0
+ NnbdebP0b45m+nq7Xtz2nz+Ed/VIEpTFRWma+P8eyLr3i3QxgdG2bCpSFynTOSi2XiZD5rhhHi
+ uEUrj1dlJ+voqiz+YEb0MboRgN0qnJN7Zz7D38gR7yomcNOV790C/rPpVxJkKODczu4Vg+DPcV
+ MI/X78Lqu36G64F8wAQAA
+X-Change-ID: 20260507-tegra-vpr-cd4bc2509c4c
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Sowjanya Komatineni <skomatineni@nvidia.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+ "T.J. Mercier" <tjmercier@google.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Chun Ng <chunn@nvidia.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, 
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+ linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4495; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=cNpFkM+ZcxbrYyXoZiVbDg/M+vrbqp/SW9+T2kNjvg8=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqdf/COeJXZyRFVSTKd7+3r7oFtNF7xrGETRn4j
+ DEXKT18h/KJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCanX/wgAKCRDdI6zXfz6z
+ oX86EACf3u52ZHWbNE0gzPHk1VCKvHipIKLbzawEbY/eyFL+F3hj0f1oRk5u22tUVgR+XqqdgdU
+ gwYJjdIxng+xk3RWveQ2oBaMIzwMJwiykwHMNXFjTMWO7RYuWiz8hLNjGRNX/h6RZRGUa7rSqpc
+ ODAcuSqcvfgjqo//n+HcYlrTTme0RgMivbMPVwq/G7KLmDX/7m9mryCILkoR90jXSg0Ha1q8HLM
+ DxVa1dmvxpWECDYJU/uizu1XpnO9zKnxwMgHpyNwRTaajqkRB0AOGV1CbZ9mYSFbu1bp5IKwk7e
+ SwqEJxq9caikk5y6VUtj3udpbhhJkLqmgyQ1iRROgJ4Jdb0YGfmaMfcI7gpMADo9riMISSZ7BPb
+ KBLw3THjD8cjbJl9FeEgiiSWvZce1TCAZEfduXqjJNI9lLl1gpIz2Zz7JyN9gcDPYyjetrj3bFP
+ gOOJKTnB7mY4la1dVjl1x5RLq36hdfJhFvabG6qYclCsmQFgU17Oh/nbgiQtV/5S1wQgX5h4KJa
+ TiAbSxXHoiN+eL+PJL+Rx5bz5TEcblTUMPK+ub7afb3I9XHkM65Yaj/dE8ZVfmeviLNuhQktuAf
+ WXcrW3LRRxZH1TZWTSGjJwaUEcgrGaBx3zUoiECwB7n/9GpOfYfGp4P0FwZ4bqQ9EiWbyjmX1dC
+ fksdo8Ciavc0KLw==
+X-Developer-Key: i=treding@nvidia.com; a=openpgp;
+ fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
+X-Rspamd-Queue-Id: 6CF5580008
+X-Stat-Signature: bnxqzqepfju3kpz4q9heg8x4ayf98j3q
 X-Rspam-User: 
-X-Stat-Signature: 6zquk8gonnkwb8ehcpdhbwyhq3ftp54o
-X-Rspamd-Queue-Id: 81D4540007
-X-HE-Tag: 1786117767-422792
-X-HE-Meta: U2FsdGVkX1+yQqzRdHG1CTMoiBTS46UpeLkfMwHvmfjDTiiFrWexYzh7d0uF215+SP+moh9klSb3gXfAPLdM4UB5Hro5RyhXVaEzATEJDnJKT8wloOIq0FlrrS0o668JZEaaWrvWMqNzdxiY440PlAJdA5x55ZnhgQJuNnD98trEVQg8PgR0xc0kdyJGFXoOVZS0c5hAmhz6oS4vCQgMKFiqAcKxdRpuJ/oiz9iohxu3ftteLMBGQ0npzpzf0JIsHLz+DJGT+BVbm9ncu9ORSDsAKC2i+ELefvHPiVgP7EC3uSJkqmy20wey7jQD4vAMqrPsUAb+M8nWyP5fvzkszWRebSpAXegn2H39p4cR/NzK819LId4Zb2MYfrYKX7eDkDWEvgYuKTA6uTPit/36xuzTF8tVwzMHuy9XiS2R9vpAVbD4MdOGDi45OfIqKsSYY6ohbbPUek+w3aedcJNPCpR/f0qrKbXxcvwcn8tx39yk6dkK3cXJbg/Qr27s6AXVgRGmkmVw03/kkmyo4gP5mHTStvXDAbb2scMLCukM+LQ3VyeX8T5hbadb4eW+xK6Pzmk3UFanrbzRa9fQ+KMz5d4+Kkf3Sj5PyBKVkHIW7hbbCEy3P/CuMwybDuCCQ3JN3m1S2HaeSEzCk7TmGWJ6ehE+Q4UdSNR74doyyWU3tSx/FxavwJ+qgRvJ8QZwQefabz0UZIZWY9xE7/uFLPbI0ucb0TWuA1sE9gRMOmYaMmKH29jANi7RaYiq/H51atxQM0m5EqBKoWm/T5/58KcyJxRiNZSruZmjzvb1H19GqdVIHlzGOQl6dE+sJpB6QR5teS279yBYoYonHyRwq0vWAfvyYLIcWONR90DSB/qjSAqfIM5Za7/+WfKyQn5R8Ipys/qXu88QBpvqm2PfWpw28OlcsJeVS2i/4uKwrxiiCbEryPr7cn5v5NIgWB6rmQM+1tWgXFqlSlqmCyV+RDG
- dSeJHIrw
- /Gd0mn8wvsFdE5fRsMce5X42N6LxQhAOPS+d/36gZd5GzV37w6oHVfColMczGoyD2fLRDMDLROxd8XwfIatiEn68AtJJ9X9n5FObUUpRKlsk1ZYnZ7qeowcHjcNrIS3jvtmBezpxlJ55beQ/v+YA/ZUOm4PtABDfw0ZOssgGVPcjtaj3YFGtvkLK0OmcdO1BdD2qIUCm6CuBe/SxuFabsp0TZp+tx8+tO8NEGQP4+7mLdKh+wH5QR56Y1oGTH1c9dvbuKMwIkygbzSNElKb1ED/g4brNlv0t0w4JAob60WCkx1/X6Vvd0hKUUz/YEf2Du/iMHfazIZoNtwx4Le9gZeK4H54V17Xl+cuDBXAMnjbYvla88jYpBaV1kGEr3ziT7KxYL2PEyXhwCbKA094F5tjbl4Q==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786118091-55637
+X-HE-Meta: U2FsdGVkX195XlWi97n5vso+rez43ACQRvKYrxqDC7OXZHDW0fk5MDH/weGm2trJj6dWmCxLiR0NM3+lbnHaIDupEtEiJPyM7GaViLE3fDplK8kCuC4KQZIaskOpJW06bT5SmxQ2JeQZYzeoXNVi5lCAKEHJWK6YmHixc5dt//RV6/3xdDGQFIAhBZfO1J5fsKFQ5rqeO2gQ6vqJDCGB3lihCS5wuhIHg51fGOiIf1ku8q4ooVZgOgGzSBjsElptsJRFvnlxsoYpIMDAXFMEHUm33igGLkdxl7GCa62PioI4G1Bc0XfHg4Ee4/Nj1j3iIHT9oR7MsFzdCg3HlaqqX9+Ic985ASPuZBinaGsSBkVLTDv8yBpYMn/Fewsv44Fdqw/WdSq6qne/8D0jekcrfuC/lN+BZHnwLpyfmJUyOUckQPTskhfWpvjHShXgSa8rsJYq/bL56T7z0kavRloJPb0GDdgf28smVrFs9JJgz6F+vH7mx6k3p/sybrQ+Ok5rV5+eg5gf0or6QNJnbLAwCJz+seSE1eWUEwMXl7qimJr/tn/g8bcpbjdfUPzvuDR3pbmiwbhOAia5hzKprexK8ubdA4RIKR83UcqqMCow2NezoPKLApciF/TwI0zvxwqMoQQtT/8+Trx/gTi4mE3C/j1uIG7740ed5WdEVJupFr3x7Exbx9ZSaM1tQGWYIIgWb3TpYX3EMzCcd+FceXVpTn8e4lWU66OdQk1AiwYg3e6sea7c3RPzyZYgNPTGMpIu70BxiubkvfhU+RRsttWsQISn19cJIVmRPFuSu5IAR1Wr3CAqWsikLD9Ob7It/r4vjTVztHuBcvAZhkn/zsayTtTQPLJ5XYF5gb+fwsIWEEyjONHLb6CT81bzaa4mZWjym8vjac14/taEdaZPPzLa+zYMQ95DQUBGfOzsDNk2kTN3AZK/T022E6n6xr4960h4gyft/LobSClAIAshdyM
+ 7llpe7Zu
+ /xKm8MCteOBSU9huqkp38f6SN7mJRsQOlA0Pp3s3xhpPdSh2q0a28cx0XLHhAsKQhpUZ9gSFFpCh3Xqio11rpasnaRh2JW/8BK99QTnZjrBPANXHhr8aqRmdAK7sZkx1WC9Bvr0lUCKOrZCTCTKFGtS5uX6ZJrd2JM/XOFGXBDfWNAPRE4hM9LWc4zheemm2xDH8Y/6DHnLz9+3wc2nMVU2EXC8KdtUgPdEZ3Oy0PCsxKFf3+1HtBkzPCfqVJpsO7d3qTNe2UBIeA4qgDm5aYe51Rqgz3/9FMscbQpAhDPfm0/tzhUmCGATscr9/TD3Bqi9+YiVd6vrPzWEDVUS6feMIYhIJQ7U9mLsdrqYCmKJezXSyVpkHv6CXgOz8oGRSzpgriMmzk7ZQDnVo7lY+OCXQ0EBJU2R4ZKvdJcVSyF3UqB+ZqBxpQqeaexYQcabyjrWJz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,323 +146,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Nhat,
+This series adds support for the video protection region (VPR) used on
+Tegra SoC devices. It's a special region of memory that is protected
+from accesses by the CPU and used to store DRM protected content (both
+decrypted stream data as well as decoded video frames).
 
-This looks pretty clean to me overall. Nice. A few comments inline:
+Patches 1 through 3 add DT binding documentation for the VPR and add the
+VPR to the list of memory-region items for display, host1x and NVDEC.
 
-On Thu, Aug 06, 2026 at 11:42:44AM -0700, Nhat Pham wrote:
-> @@ -276,8 +277,21 @@ struct swap_info_struct {
->  	struct list_head discard_clusters; /* discard clusters list */
->  	struct plist_node avail_list;   /* entry in swap_avail_head */
->  	const struct swap_ops *ops;
-> +	struct xarray cluster_info_pool; /* Xarray for vswap dynamic cluster info */
->  };
->  
-> +#ifdef CONFIG_VSWAP
-> +static inline bool swap_is_vswap(struct swap_info_struct *si)
-> +{
-> +	return si->flags & SWP_VSWAP;
-> +}
-> +#else
+Patch 4 adds bitmap_allocate(), which is like bitmap_allocate_region()
+but works on sizes that are not a power of two.
 
-I think what could make sense is have
+Patch 5 introduces new APIs needed by the Tegra VPR implementation that
+allow CMA areas to be dynamically created at runtime rather than using
+the fixed, system-wide list. This is used in this driver specifically
+because it can use an arbitrary number of these areas (though they are
+currently limited to 4).
 
-- CONFIG_VSWAP
-- CONFIG_VSWAP_DEFAULT_ENABLED
-- a boot flag that's = CONFIG_VSWAP_DEFAULT_ENABLED
+Patch 6 adds some infrastructure for DMA heap implementations to provide
+information through debugfs.
 
-Then you can use jump labels to cut runtime overhead to 0 if it isn't
-enabled at boot.
+The Tegra VPR implementation is added in patch 7. See its commit message
+for more details about the specifics of this implementation.
 
-This way distributions can ship it with no overhead out of the box,
-while allowing users to opt in for early testing.
+Finally, patches 8-10 add the VPR placeholder node on Tegra234 and
+Tegra264 and hook it up to the host1x node so that it can make use of
+this region.
 
-IMO this is more valuable than a runtime toggle.
+Changes in v4:
+- Link to v3: https://patch.msgid.link/20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com
+- fully remove from linear map while chunks are active
+- address checkpatch.pl and Sashiko comments
+- improve error handling
+- remove freezer support
 
-It should be part of this patch if you add it.
+Changes in v3:
+- Link to v2: https://patch.msgid.link/20260122161009.3865888-1-thierry.reding@kernel.org
+- introduce set_memory_device() and set_memory_normal()
+- rename VPR nodes to "protected"
+- add Tegra264 placeholder nodes
 
-> +static inline bool swap_is_vswap(struct swap_info_struct *si)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  static inline swp_entry_t page_swap_entry(struct page *page)
->  {
->  	struct folio *folio = page_folio(page);
-> @@ -402,6 +416,8 @@ void swap_free_hibernation_slot(swp_entry_t entry);
->  
->  static inline void put_swap_device(struct swap_info_struct *si)
->  {
-> +	if (swap_is_vswap(si))
-> +		return;
->  	percpu_ref_put(&si->users);
->  }
->  
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 331daf7fcfab..32d38b552845 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -19,6 +19,16 @@ menuconfig SWAP
->  	  used to provide more virtual memory than the actual RAM present
->  	  in your computer.  If unsure say Y.
->  
-> +config VSWAP
-> +	bool "Virtual swap device"
-> +	depends on SWAP && 64BIT
-> +	help
-> +	  Adds a virtual swap layer that decouples swap entries in page
-> +	  tables from physical backing storage. Swap entries are allocated
-> +	  from a virtual swap device and can be backed by zswap, a physical
-> +	  swapfile, or kept in memory - with the backing changeable at
-> +	  runtime without invalidating page table entries.
+Changes in v2:
+- Link to v1: https://patch.msgid.link/20250902154630.4032984-1-thierry.reding@gmail.com
+- Tegra VPR implementation is now more optimized to reduce the number of
+  (very slow) resize operations, and allows cross-chunk allocations
+- dynamic CMA areas are now trackd separately from static ones, but the
+  global number of CMA pages accounts for all areas
 
-IMO this is difficult for a user to decide.
+Thierry
 
-If we want to make this as a config, then IMO the help text should be
-about not requiring a swapfile to use zswap, zerofill pages etc.
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+---
+Thierry Reding (10):
+      dt-bindings: reserved-memory: Document Tegra VPR
+      dt-bindings: display: tegra: Document memory regions
+      dt-bindings: gpu: host1x: Document memory-regions for NVDEC
+      bitmap: Add bitmap_allocate() function
+      mm/cma: Allow dynamically creating CMA areas
+      dma-buf: heaps: Add debugfs support
+      dma-buf: heaps: Add support for Tegra VPR
+      arm64: tegra: Add VPR placeholder node on Tegra234
+      arm64: tegra: Hook up VPR to host1x
+      arm64: tegra: Add VPR placeholder node on Tegra264
 
-From where I'm standing, though, this code is no longer a separate
-vswap.c feature like it used to be. It's pretty integrated into the
-swapcode, and it looks like a good chunk of the core datastructures
-aren't conditional either.
+ .../display/tegra/nvidia,tegra124-vic.yaml         |    8 +
+ .../bindings/display/tegra/nvidia,tegra186-dc.yaml |   10 +
+ .../bindings/display/tegra/nvidia,tegra20-dc.yaml  |   10 +-
+ .../display/tegra/nvidia,tegra20-host1x.yaml       |    7 +
+ .../bindings/gpu/host1x/nvidia,tegra234-nvdec.yaml |    8 +
+ .../nvidia,tegra-video-protection-region.yaml      |   75 ++
+ arch/arm/mm/dma-mapping.c                          |    2 +-
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi           |   45 +
+ arch/arm64/boot/dts/nvidia/tegra264.dtsi           |   33 +
+ arch/s390/mm/init.c                                |    2 +-
+ drivers/dma-buf/dma-heap.c                         |   56 +
+ drivers/dma-buf/heaps/Kconfig                      |   12 +
+ drivers/dma-buf/heaps/Makefile                     |    1 +
+ drivers/dma-buf/heaps/tegra-vpr.c                  | 1368 ++++++++++++++++++++
+ include/linux/bitmap.h                             |   25 +-
+ include/linux/cma.h                                |    8 +-
+ include/linux/dma-heap.h                           |    2 +
+ include/trace/events/tegra_vpr.h                   |   57 +
+ kernel/dma/contiguous.c                            |    2 +-
+ mm/cma.c                                           |  221 +++-
+ mm/cma.h                                           |    5 +-
+ mm/cma_debug.c                                     |    6 +-
+ mm/cma_sysfs.c                                     |    6 +-
+ mm/mm_init.c                                       |    4 +-
+ 24 files changed, 1912 insertions(+), 61 deletions(-)
+---
+base-commit: a6cebf4799ccfd3ea08e45abe5360414fd3822e1
+change-id: 20260507-tegra-vpr-cd4bc2509c4c
 
-At that point, the usefulness of the config option is limited. If you
-go with the jump label and there is no runtime overhead, it might make
-sense to just keep the option on what the JL should default to.
+Best regards,
+--  
+Thierry Reding <treding@nvidia.com>
 
-> @@ -143,9 +150,19 @@ static inline struct swap_info_struct *__swap_entry_to_info(swp_entry_t entry)
->  static inline struct swap_cluster_info *__swap_offset_to_cluster(
->  		struct swap_info_struct *si, pgoff_t offset)
->  {
-> +	unsigned int cluster_idx = offset / SWAPFILE_CLUSTER;
-> +
->  	VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
->  	VM_WARN_ON_ONCE(offset >= roundup(si->max, SWAPFILE_CLUSTER));
-> -	return &si->cluster_info[offset / SWAPFILE_CLUSTER];
-> +
-> +	if (swap_is_vswap(si)) {
-> +		struct swap_cluster_info_dynamic *ci_dyn;
-> +
-> +		ci_dyn = xa_load(&si->cluster_info_pool, cluster_idx);
-> +		return ci_dyn ? &ci_dyn->ci : NULL;
-> +	}
-> +
-> +	return &si->cluster_info[cluster_idx];
->  }
-
-This now requires rcu. IMO a kdoc explaining that would be good.
-
-> @@ -733,6 +765,11 @@ static void free_cluster(struct swap_info_struct *si, struct swap_cluster_info *
->  		return;
->  	}
->  
-> +	if (swap_is_vswap(si)) {
-> +		vswap_free_cluster(si, ci);
-> +		return;
-> +	}
-> +
->  	__free_cluster(si, ci);
-
-Should this be part of __free_cluster() instead?
-
-- swap_cluster_assert_empty() seems useful.
-- move_cluster() handles the list linkage and could do the list_del().
-- swap_cluster_free_table() is the same.
-
-The other caller is the discard path. That one isn't relevant, but it
-shouldn't hurt. The layering would still be a bit cleaner this way.
-
-> @@ -835,14 +872,21 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
->   * stolen by a lower order). @usable will be set to false if that happens.
->   */
->  static bool cluster_reclaim_range(struct swap_info_struct *si,
-> -				  struct swap_cluster_info *ci,
-> +				  struct swap_cluster_info **pcip,
->  				  unsigned long start, unsigned int order,
->  				  bool *usable)
->  {
-> +	struct swap_cluster_info *ci = *pcip;
->  	unsigned int nr_pages = 1 << order;
->  	unsigned long offset = start, end = start + nr_pages;
->  	unsigned long swp_tb;
->  
-> +	/*
-> +	 * Take RCU read lock before releasing the cluster lock to keep ci
-> +	 * alive - for vswap dynamic clusters, ci is freed via kfree_rcu
-> +	 * and the grace period could otherwise elapse in the window.
-> +	 */
-> +	rcu_read_lock();
->  	spin_unlock(&ci->lock);
-
-Since you replace the naked spin_lock() below with
-swap_cluster_lock(), change this to swap_cluster_unlock() as well?
-
->  	do {
->  		swp_tb = swap_table_get(ci, offset % SWAPFILE_CLUSTER);
-> @@ -852,7 +896,15 @@ static bool cluster_reclaim_range(struct swap_info_struct *si,
->  			if (__try_to_reclaim_swap(si, offset, TTRS_ANYWAY) < 0)
->  				break;
->  	} while (++offset < end);
-> -	spin_lock(&ci->lock);
-> +	rcu_read_unlock();
-> +
-> +	/* Re-lookup: dynamic cluster may have been freed while lock was dropped */
-> +	ci = swap_cluster_lock(si, start);
-> +	*pcip = ci;
-> +	if (!ci) {
-> +		*usable = false;
-> +		return false;
-> +	}
->  
->  	/*
->  	 * We just dropped ci->lock so cluster could be used by another
-
-> @@ -1146,6 +1239,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
->  			goto done;
->  	}
->  
-> +	if (swap_is_vswap(si)) {
-> +		found = alloc_swap_scan_dynamic(si, folio);
-> +		if (found)
-> +			goto done;
-> +	}
-
-The name and the composability look off to me.
-
-Can you make this a pure allocation function - vswap_alloc_cluster()
-or something - that links it to &si->free_clusters, then jump back and
-use the existing alloc_swap_scan_list() sites?
-
-There is a new_cluster: label upstream you could use for the retry.
-
-> +
->  	if (!(si->flags & SWP_PAGE_DISCARD)) {
->  		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
->  		if (found)
-> @@ -1264,6 +1363,13 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
->  			goto skip;
->  	}
->  
-> +	/*
-> +	 * Keep vswap off the avail list - it is not allocated from by
-> +	 * the physical swap allocator (swap_alloc_fast/slow).
-> +	 */
-> +	if (swap_is_vswap(si))
-> +		goto skip;
-
-This is describing what the code does, followed by a why not.
-
-Describe the why: Vswap space is only allocated through [...], not [...]
-
-> @@ -3528,10 +3668,43 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  				    unsigned long maxpages)
->  {
->  	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
-> -	struct swap_cluster_info *cluster_info;
-> +	struct swap_cluster_info *cluster_info = NULL;
-> +	struct swap_cluster_info_dynamic *ci_dyn;
->  	int err = -ENOMEM;
->  	unsigned long i;
->  
-> +	/* For SWP_VSWAP files, initialize Xarray pool instead of static array */
-> +	if (swap_is_vswap(si)) {
-> +		/*
-> +		 * Pre-allocate cluster 0 and mark slot 0 (header page)
-> +		 * as bad so the allocator never hands out page offset 0.
-> +		 */
-> +		ci_dyn = kzalloc_obj(*ci_dyn, GFP_KERNEL);
-> +		if (!ci_dyn)
-> +			goto err;
-> +		spin_lock_init(&ci_dyn->ci.lock);
-> +		INIT_LIST_HEAD(&ci_dyn->ci.list);
-> +
-> +		nr_clusters = 0;
-
-But it's one, not zero. And only the first slot is bad. Why is the
-rest not usable and the cluster on the nonfull_clusters list?
-
-I think you can make the integration a bit more organic in general:
-
-Don't do the DIV_ROUND_UP per default only to overwrite it here again
-e.g.
-
-If you come out of this branch with cluster_info == &ci_dyn->ci, you
-should be able to reuse the existing swap_cluster_setup_bad_slot(0).
-
-swap_header && i < swap_header->info.nr_badpages should skip that loop
-as well.
-
-Your maxpages is SWAPFILE_CLUSTER aligned, so that
-
-	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++) {
-
-loop is skipped as well.
-
-> +		xa_init_flags(&si->cluster_info_pool, XA_FLAGS_ALLOC);
-> +		err = xa_insert(&si->cluster_info_pool, 0, ci_dyn, GFP_KERNEL);
-> +		if (err) {
-> +			kfree(ci_dyn);
-> +			goto err;
-> +		}
-> +
-> +		err = swap_cluster_setup_bad_slot(si, &ci_dyn->ci, 0, false);
-> +		if (err) {
-> +			xa_erase(&si->cluster_info_pool, 0);
-> +			swap_cluster_free_table(&ci_dyn->ci);
-> +			kfree(ci_dyn);
-
-IMO it would be nicer to make this part of free_swap_cluster_info()
-instead of duplicating it.
-
-> +			xa_destroy(&si->cluster_info_pool);
-
-That one probably doesn't matter. If these allocations fail at boot,
-the system is in trouble.
-
-> +			goto err;
-> +		}
-> +
-> +		goto setup_cluster_info;
-> +	}
-> +
->  	cluster_info = kvzalloc_objs(*cluster_info, nr_clusters);
->  	if (!cluster_info)
->  		goto err;
-> @@ -3556,6 +3729,10 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  	err = swap_cluster_setup_bad_slot(si, cluster_info, 0, false);
->  	if (err)
->  		goto err;
-> +
-> +	if (!swap_header)
-> +		goto setup_cluster_info;
-
-Is this reachable?
-
-> @@ -3949,3 +4127,51 @@ static int __init swapfile_init(void)
->  	return 0;
->  }
->  subsys_initcall(swapfile_init);
-> +
-> +#ifdef CONFIG_VSWAP
-> +struct swap_info_struct *vswap_si;
-> +
-> +/* vswap does no IO on its own. */
-> +static const struct swap_ops vswap_ops = { };
-> +
-> +static int __init vswap_init(void)
-> +{
-> +	struct swap_info_struct *si;
-> +	unsigned long maxpages;
-> +	int err;
-> +
-> +	si = alloc_swap_info();
-> +	if (IS_ERR(si))
-> +		return PTR_ERR(si);
-> +
-> +	maxpages = min(swapfile_maximum_size,
-> +		       ALIGN_DOWN((unsigned long)UINT_MAX, SWAPFILE_CLUSTER));
-> +	si->flags |= SWP_VSWAP | SWP_SOLIDSTATE | SWP_WRITEOK;
-
-Please add a comment on the flag choices besides SWP_VSWAP.
 
