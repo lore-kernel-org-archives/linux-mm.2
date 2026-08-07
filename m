@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D27D3C5AC67
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 01:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4D1EC5AC67
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 02:04:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91FA26B0088; Thu,  6 Aug 2026 21:49:30 -0400 (EDT)
+	id 48AB76B007B; Thu,  6 Aug 2026 22:04:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D1576B008A; Thu,  6 Aug 2026 21:49:30 -0400 (EDT)
+	id 40CB76B0088; Thu,  6 Aug 2026 22:04:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C1C56B0092; Thu,  6 Aug 2026 21:49:30 -0400 (EDT)
+	id 2FB466B008A; Thu,  6 Aug 2026 22:04:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5396E6B0088
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:49:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC180140205
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:49:29 +0000 (UTC)
-X-FDA: 85072791258.04.B98C5E5
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 93E4340006
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:49:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AfRRybfi;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id EDEE16B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 22:04:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5962E802E6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:04:01 +0000 (UTC)
+X-FDA: 85072827882.14.5AE2838
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EB07520002
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:03:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GJ6cQ2Q7;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786067368;
+	s=arc-20220608; t=1786068239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKmLlK6uJ3edkxIIYSB/SjE+4uEsk26hCxc4VlHPNFE=;
-	b=Ci/MSQ1GAXbBQYiSKgb4dSnThFeKoj8xApDNg0w1xLtJQk13w5HbTp+dX8MYsPMesTWI6x
-	Sad4t0LuVymAiFgVZZ9xpd3OYkcuiFHegYg5tjVx3SQQT/+7PZJGF9sNBdG7jUpF7Xm+Rd
-	HEr/fFcbv5LBhNwcfzQ0DBmTmHF8uUc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786067368;
-	b=nns2o4qzsslG22s7Dby3AMW+2jsPaOHfl+Oumk00F03/ixlGfYxIwGdi/Sj7FhAhfJfGfg
-	a88li5/ctgwRgqURyIGfzFPvw1q1pBEIWkTrDupfPSBJj96nIpr2Rk8UQuBHiQskuPN/+S
-	YWWKv7SbP99vcBor1iMbpBi4G5uP9q0=
+	bh=mRc+g7yreJ6m5qhGtIHjPhu/IwmVP+LPFazu5TXEzJ0=;
+	b=ukklGHAK6gLbpZt6FWNDxvQjxrmf7VyyPvisSdlBNFOq45eXkm/yt4waZIMnBYBb1uM+Yx
+	rFiIBEAuIJ0YyHcmUbxxcPi4neKgnrsANhvZDopLybb80K9JTJtfGPORiycFWr2XLvJWtR
+	uh+hs3ppRCQDln8QzWzPDaGC+MGsoaA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AfRRybfi;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GJ6cQ2Q7;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786068239;
+	b=FanpO7YcJUqjx2XK82Zx8l/5bmW8UxsTIBHmrxYoalDvSZzO/c9BEZQbM+EzQvgkT5gtkh
+	qLrkRPcYEAuRwRdvzfJdmsg3Ph5wGUlDCNVfKXDlab6tAaQlNVE4kSGKbnugP/Hdgjv6Il
+	pWUoARV8j1SxDOX82+oLwlyUioboP98=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1786067363; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=tKmLlK6uJ3edkxIIYSB/SjE+4uEsk26hCxc4VlHPNFE=;
-	b=AfRRybfi7p0p+3zHHOiYuolTQgNbOVX6j+0RR01YZjpTZoEDCvRQ0BgTF1m/iqqlpIcxfboxr4ShNuw86WHCVbAPzUv5go81+cPNkLPKBR++qCvE/Fo6b4YhSvZQMb7hyvwk83od9u9E5bD2u36aQTuv+ELzP34/rNBQiXiKkoE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X8V9VcH_1786067361;
-Received: from 30.246.177.19(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8V9VcH_1786067361 cluster:ay36)
+	t=1786068235; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mRc+g7yreJ6m5qhGtIHjPhu/IwmVP+LPFazu5TXEzJ0=;
+	b=GJ6cQ2Q7+GuUh+vBTs47q3E6De70ovgPiDi3efn9CWCr9u7bOG+/Amk6nPK0UmJzD+Tjb3eFATT+QBd6cehUc+DklHKnLIpdqEDvntBTkfMcHFMqzvd/LuW2oOE1ggI8QlnA9kBpmzQ+ctgdKjlviFX1bu9pm4lSaHjSxhW7zGM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=29;SR=0;TI=SMTPD_---0X8VCyTA_1786068232;
+Received: from 30.246.177.19(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X8VCyTA_1786068232 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 07 Aug 2026 09:49:22 +0800
-Message-ID: <f008965b-bb6f-49b4-9eed-96ef0be30c30@linux.alibaba.com>
-Date: Fri, 7 Aug 2026 09:49:20 +0800
+          Fri, 07 Aug 2026 10:03:53 +0800
+Message-ID: <06cd88f2-8e2a-490f-804c-93c200bd294a@linux.alibaba.com>
+Date: Fri, 7 Aug 2026 10:03:51 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: fix folio refcount leak and
- min_order_for_split() locking
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Li Youhong <liyouhong@kylinos.cn>,
- stable@vger.kernel.org
-References: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
+Subject: Re: [RFC PATCH v5 3/4] mm/vmscan: avoid pointless large folio splits
+ without swap
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ zhaonanzhe@xiaomi.com, baohua@kernel.org, hannes@cmpxchg.org,
+ youngjun.park@lge.com, hughd@google.com, chrisl@kernel.org,
+ kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-4-xueyuan.chen21@gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
+In-Reply-To: <20260730122304.2496440-4-xueyuan.chen21@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EB07520002
+X-Stat-Signature: 6orcef5wsrtrayyf1pfn9oqrpnrznhd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 93E4340006
-X-Stat-Signature: ya9i6et5ndwtkxdtx6gribeaaqsya1cj
-X-HE-Tag: 1786067366-30060
-X-HE-Meta: U2FsdGVkX1/QoefVioHj/eTxBSoYMnlsvur67RiiWAJ7FU/TxdAnkEZLIBItJvVIbNYa2oR6kAL6MSm+hixMccy+3wxSCd0WgBieKQ14e6zpgrsnTClSrWruIzpg4Xst4eFkPMZOSzfwyiRGwMxnrx/UGr5S2gLCN6skTuG5RW7fp2GLwrePAMkYzAWadz4uwmywK76cT4+ukB8loUORL9y+7a/RI81O3TXxME2c+baeMkCv2VMuhU+fqiwwNuagTRQHu0JUNq+Qx+yazym5wrHna2+03TR+G/UTTP5N8XETxxbpUPcB/cndDdnWvI4j87Ifx3oqI0ki/G6riqvAxqX1mA3GKUXqcL9yMSvmwVRowVvNkiOtwCm+qrfrsLeSjfiKKJ4e1tbC3Ntv+fJpAl37MtsghLNy5NgGgSIoxskD3TmAl69PLlVUsuww803d5UGaHn/rFzdSbcm1yZIE8Ur8q+CY9AUtM9H4Q3hsyL3ow006zXrPobiVXSOOxHVwGx6M7DagLNbsY/8lbCLuF3V6Q7U5PuS3qRh2KIfDVP6jBIcJbGKQ55pVDREZp1L8qtgiTT+AUlUaWIHsjw6dfOEP/FqH727DKVFKAx4pcLIn/VU9YbD7VLARLPSH3FJKSpXmRIccjO+/tW/i7kV1Edn0BW8j0lsffY8ZYL95QTMoJXMQz1bQVeLHiN5R51i9aiGKBmItP3CpuiKqZlhsynvpqAQ7s/IRagXzwCeCom5y049G4v9a63UyuN53rx5xN/Zj3qBSJ1UhoMLPQU7/ROFcu1WJFRF575cBg2UgRpkIgbe7kDyEazP4kQKHoSQk3iTzgpHg1HNUYIo6oWG32w/Nmm2FkZ8VLb+ViDLS2ipUC+TG7RLbsoxjoPzhBOm719ttKhMhmAe5ioRTrm1FycWO/p8qtS+6HVgeZN9gqmYJg9BhErX37gvplhl575VK+fVnQSHLMTZtosrrI01
- hxIF8V/i
- EmTXk1xCVX9Mw7QlJt73RhBuR4IiNyCGqwvlehx052aaLIw7aZGHK15TigwNEnAZWJjvSfYbFgX5RFBHBS+8j9U6iq2gxgCftdhwcu2z+jSRqLkZ96oh8pH5Iao/Gx4ku605h9aSTdzbaQNqZEPQBh/6G+1vFB/jkF8cQmspVhtug93LqMUAVywf2Mx8AUFXo1eUhvZt+5o84XW3m7xHbCvtIeUoN9QlhNtY3kJqGnvKOcPtuIAIuzdTK+CWzitI0iYhPu7S2rFrgXHhke0E+Uo2W3gbEfLPw4wdrN8LRUFd14aQwl/wGwvVquRqZjefxJfWSY9ka9aKByVb+uKzHcuew2nx71wcMDZ4XYs4fGKCBP3a5P+H/2Z+xhSl0u9y1egiAi+Y+/wK9188+I5mIWk7TRkW+dPGiV//TvzRWaefaiWjZ4Oxff2lIfjJG7WJ8tIn43gsHECR39WiErTLwD0gZHA==
+X-HE-Tag: 1786068237-377480
+X-HE-Meta: U2FsdGVkX19ty8C+si+IBvMJ5l/7ERoB5dtF9Il06MO+U0oC/tQGeXklIEoVWw2x9OBrEk5DstBRU0j4rZd1IKXzRf8ZH7NgeXeEpnk3FoYir9qCiClhm6nGr258//hdSkACWnEusAr381SbSR0/umt+XeJyKvqvYUtkUm3LTfg3jGI5XSCf5oZEr7pi0MB7X+G/q1erRx594Ho2wLt5DfD1uKfJdgU9VSvUNsxYYCigFZeKMc8k+KGjFt4dBt/DEYxwtjxXDHL/OiQ1PZDAyc1lt3q2Q1oG5Y+hX4xm0vQ+qB8GmrNNeGq7a/l92V7rvEiAsGwlcas/83hikMKswVnPC2Js3wCMGU7PGwsTg9S5m43uYbTc3zlYgu8Mu+C9EHu5G7lHzr/iiPFWUKmuCRGMBJIp7Vr4eGJM8FQHM07HfNjaXjQyCHCJPgzLg8/zYZfTTRo8lo0t6Pqk8PMUoM6pY4fo53/SizOK/WT9wQ0ldaC62ZxV+NEvW9btD4q/0Wyibj+IL+VXLEzIEXW/T4XnTprM8JLu32oOjjiBmuU6yoUyDsZ0p+YJY9Zm34aoy8ZYa0IHkJYL0L6RYc/Mf4r7BZoYvxggHrDBwXB4/FkFA89hxe7uJOYLY87EaMEbVWwcodBqsdZ4BDCWLTfnDya6NQgIKXIiwePGgC6FD+caJm9XChfnORygkla0VfvHTnrVxxDnCswFMpYZHT90tgfNVHYpKnNKFB5ayyvMTHslySvR2Womb9n/RMRjYZ3gJUsPGqud9Zx5JHeZ1hpPYNrJuRmrjDQhxVgrW4Bumwm5Dv8htmFUMgdMgYlHUpN61UaKFMG6IYkxvZ7JOZcN5dt/uOjy0gm73uMvPn06GVVMEhp9SLjY6OBAS/gvwCgWRhkjgiWYNfqPZ/bgRLePe55T1hSfsh9Sr+7g9DZFcgTvk8+t4ujbewmSYSY2gJBbqdQbKr2v8RTHgGIH8YO
+ 6+I87XHi
+ faUgS3afwMlH9GydWZA99Oc85sGe/82Vky3N/TAIncHyRDM9gX62RpGfhCui109Ca1E9EUWIEIJ4k2CUC2jUVB/Jlv/kJnO5RnOnLxkA8GKQbEyOHGKUkL59ZjkOjPbvMQSGnEu8nCSNVUsvZVpF9Tp1LcV05GV1h1QV/q4ItQozjaZJVUeHNMtdyLIoy5wGPVstQZi4G5NUih6dPcVvyL4FMgnfz8zjEaoCTIHdd54EXAPTowFQW4OzwT7dLLz5x2FSt3WmiwUorzu6IVfXvY65wukgzrN6ePdU2yFyhROxAaYtmNuCdVAc/mjQcxmIdwBOJ5b2VhybVOm+TrPOINZQqcMdq3WkPk3E/69P3nxVKmEHWrjtBCeEFZNKo0jXtTNNqvl9GU7ZlVRFVYcNIYTadiP1TQzQ0Tl/8SbF/QXex+D7yuaUcc0V4Jh0XGbyoOtOfyGIOa168PvJxgNXU3kerNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,44 +98,26 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 8/6/26 7:14 PM, David Hildenbrand (Arm) wrote:
-> hwpoison code can end up calling min_order_for_split() without holding
-> the folio lock. There isn't really something that would prevent
-> concurrent folio split. Consequently folio->mapping can get set to
-> NULL after checking for "!folio->mapping", and if the compiler
-> reloads folio->mapping, mapping_min_folio_order() would try to
-> dereference NULL.
+On 7/30/26 8:23 PM, Xueyuan Chen wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> While very unlikely to happen in practice, let's just enforce that
-> min_order_for_split() is called with the folio lock held. We can
-> significantly cleanup the calling hwpoison code, and just get rid
-> of try_to_split_thp_page() to hold the folio lock for a bit longer.
+> When swap is disabled, exhausted, or unavailable due to memcg swap
+> limits, splitting a large anonymous folio cannot make swapout progress.
+> The fallback only destroys the large folio and inflates split statistics.
 > 
-> Just work on folios now, which further cleans up the code. We just
-> have to be careful about doing the page_folio() after splitting, which
-> we have to do already either way. Do not change the way we split for
-> now, this needs more thought and should be done separately.
+> Use -E2BIG from folio_alloc_swap() as the explicit signal that splitting
+> the folio might allow swapout of smaller pieces. For other allocation
+> failures, keep the existing activation path and avoid the split.
 > 
-> Cleaning this up we fix another issue: in soft_offline_in_use_page(), we
-> would currently have leaked a folio reference.
+> This preserves the split fallback for fragmented or partially available
+> swap, while avoiding it when there is no backing space for any part of the
+> folio.
 > 
-> In folio_split(), document and assert that we need the folio lock.
-> Drop the questionable VM_BUG_ON_PAGE(!page_count(p), p) check entirely.
-> 
-> The folio->mapping problem was identified by Sashiko, and Li Youhong
-> reported it by sending a proposal fix.
-> 
-> This likely does not really warrant CCing stable, but I expect little
-> conflicts when doing the backport, so let's just CC stable because of
-> the refcount leak.
-> 
-> Reported-by: Li Youhong <liyouhong@kylinos.cn>
-> Closes: https://lore.kernel.org/r/20260804035828.2684059-1-dayou5941@163.com
-> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
 
-LGTM. Thanks.
+LGTM. Feel free to add:
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
