@@ -4,110 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D17C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 06:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB26C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 06:10:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 428826B008A; Fri,  7 Aug 2026 02:00:52 -0400 (EDT)
+	id 1C45D6B0093; Fri,  7 Aug 2026 02:10:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F7E76B0092; Fri,  7 Aug 2026 02:00:52 -0400 (EDT)
+	id 19D1A6B0095; Fri,  7 Aug 2026 02:10:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E72C6B0093; Fri,  7 Aug 2026 02:00:52 -0400 (EDT)
+	id 0E06A6B0096; Fri,  7 Aug 2026 02:10:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C0E56B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:00:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90189A1B78
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:00:51 +0000 (UTC)
-X-FDA: 85073424702.07.BC48B4F
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2F0FC18000C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:00:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=dx1PqtKq;
-	spf=pass (imf24.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E12116B0093
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:10:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E74DA02E4
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:10:19 +0000 (UTC)
+X-FDA: 85073448558.15.833ABAE
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F18A440009
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:10:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Px1dKUSg;
+	spf=pass (imf27.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786082449;
+	s=arc-20220608; t=1786083017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qYhI0fwC8PZZssZoGwGoCXzMpJcSZ4YzBIlml3eONO4=;
-	b=ZNu2/9vXz+HASqBGEGgG+6t1dh3kn9a1JpRvVJVrR37BP5/x+flOKeVEz+mDhIfUSwar9U
-	LqG1Zn+z1mOVwKOcL10TumtPhK+QCs0TFDU6H4+o8g9jlwsF5Qv/02VQIYlQaBZ7bwGkX6
-	jO7C7W75cUqDLJHeyL2pd8pEKfl60Xw=
+	bh=YGRz6WB9lU3wlD2STC8uk6Jl3YtCrm4akVDEQj4iVJI=;
+	b=BYXVYNY0hcWBNiqeBgwmeE9CwQceAWZRUumVaFT+IDNrFi5VtN/AzzWgwg+ATrxUibl5pw
+	f9h++qzb9uo6FobkPo7klNPCLU6yW4VME52QyXtAm8hD+L/VBToOzXA0voFv4T1WXsBuQR
+	oTLlR1R52+Jr/L77ESrdbLqgEOziZSI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786082449;
-	b=7w1DfIhmHLzAxxqdj7zwgCHoKJc2lY2iQ4kYqW3f4Jn7imGYIWr5p1TMOhzStsmVfJQ/sh
-	yngzY5HnxTgP96u7DW+XWrqOUMmY/kT2Lkn1hQfcOZE3FXbE19xhh2mX4wkiuRJdcgYdPV
-	jV6qxKzIU19EdU8YTT9/DPCLSDtTS1Y=
+	t=1786083017;
+	b=3rDtnAKYY0AOi90s/6QVeVyPji/XsGNF1CP02B4EdRyazK6N0sPZfxMYtXEWbRB9WQ3u4a
+	WMp5yUPCInU791T4jXLA2AiOm0VsTenFCTulWZaP5+7+Pw5wf0+rXAgARo7lrzkC/Okt1/
+	+iOn1NeJmwn3mZzXCO3EJun66RZf47c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=dx1PqtKq;
-	spf=pass (imf24.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4FB2F40E00B8;
-	Fri,  7 Aug 2026 06:00:44 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id pPJzRbAhWiuE; Fri,  7 Aug 2026 06:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1786082432; bh=qYhI0fwC8PZZssZoGwGoCXzMpJcSZ4YzBIlml3eONO4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dx1PqtKqAVe76ho+lYRP90RfoiVidM4o5srU//3AoWiYRtlQ2bacoCRB3ybVKgKd3
-	 ZObnyWdGjhbOfZxFSa77uP31O5aLgYnGUrh3dkyJytSMm7kCIcgXTTFKCdIwvQAyGF
-	 GnBV9MtMKV1Re9YKUin/9FuAZZNhUyaWlH7hCYtMKAS/d+3ymoxOi5F/J8e0ykWU87
-	 NVkBv6z5BJK2A7Q/Ct0AUFco/DzYjs//z+iD3mqlTF3i3I0H4XgHwtrPQbjtnyCFFu
-	 VX1SCJyvTufXUFtZNV9ssNxnYQAsrJvF9iUW8xche/+onBIV/wo0FcmjIZET8E4JEr
-	 8M2cNaHwisw8EuHOzD9PCCuzJSGT35cCn9BYtkVxJKbjwyt19wyWMn9YTitHcSx541
-	 /iJzG/CMeZB2zhqCsqziiBtdzH9LeD3dzaPq1LN/jAR2ifsM/HCFy7Spf3YNPWlVLn
-	 M5lvWzqfz5+EOzr8gveQL944/fVM7KpUwPZxS5j+rOWnR9cq4e1U5SUKP9uktsFHrc
-	 6Guq4+5VVwbLXMKalbQPpZCUMBsshIWsrfiqwuzMdG4PrDceLo0YzXrdNCCNO5MGEF
-	 4YB9BoIxJJTSXi7HdKhl63M2dpCALaswTSOLcEMOB5jr54GJ4qZ/L97o3STjTgM3s3
-	 NhJKL4bQJi3gIA9AMWx6gUeg=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F3F8140E0140;
-	Fri,  7 Aug 2026 05:59:55 +0000 (UTC)
-Date: Thu, 6 Aug 2026 22:59:52 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: shijujose2008@gmail.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	ashok.raj@oss.qualcomm.com, jic23@kernel.org, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v23 0/2] ACPI: Add support for ACPI RAS2 feature table
-Message-ID: <20260807055952.GIanV0WDlB9-eP9VdV@fat_crate.local>
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Px1dKUSg;
+	spf=pass (imf27.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=YG
+	Rz6WB9lU3wlD2STC8uk6Jl3YtCrm4akVDEQj4iVJI=; b=Px1dKUSgN0ds0QRJxl
+	zFG7j0Hbb06euelKNoN1Bds7SkB446HEeQAtU2xTWhOw/e7kWkFJKTnU/pGzDoLM
+	YdrciyVOwJ0KVq8jdFO/i0HuQy+Y0CEC+giBSSKhyP5XhllL1NfyeR5QnKEW379t
+	J9bss1T/sTJatoLqqa2hssNEE=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgAX62t2dnVqBJMmJg--.29689S2;
+	Fri, 07 Aug 2026 14:08:56 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: rdunlap@infradead.org
+Cc: akpm@linux-foundation.org,
+	alex.aring@gmail.com,
+	allen.lkml@gmail.com,
+	arnd@arndb.de,
+	brauner@kernel.org,
+	chuck.lever@oracle.com,
+	corbet@lwn.net,
+	david@kernel.org,
+	ebiederm@xmission.com,
+	j.granados@samsung.com,
+	jack@suse.cz,
+	jackzxcui1989@163.com,
+	jlayton@kernel.org,
+	juri.lelli@redhat.com,
+	keescook@chromium.org,
+	kuba@kernel.org,
+	liam@infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mcgrof@kernel.org,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	mjguzik@gmail.com,
+	peterz@infradead.org,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	skhan@linuxfoundation.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	vincent.guittot@linaro.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH v7] coredump: Add bit 9 of coredump_filter for pre-exit files before dumping
+Date: Fri,  7 Aug 2026 14:08:54 +0800
+Message-Id: <20260807060854.1785634-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <a2293778-bce7-4f88-a049-6370707694ef@infradead.org>
+References: <a2293778-bce7-4f88-a049-6370707694ef@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260726212812.89266-1-shijujose2008@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgAX62t2dnVqBJMmJg--.29689S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZF1fWryrZr4fZF1kCw1kuFg_yoWxKFb_Xa
+	yvqr9rJr1ru3W2vF43GF1FyaykK390yF1fJ3y7Zw1jqayktF1agFWDKFWSv3WxKFWDKrZ7
+	CF1UXw4Sy3yavjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUU7DJtUUUUU==
+X-Originating-IP: [124.77.128.89]
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC5xizvWp1dniqEAAA3a
+X-Rspamd-Queue-Id: F18A440009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F0FC18000C
-X-Stat-Signature: zkgbdfchx6qwdsnfg4s4kbwtxkdo8iks
-X-HE-Tag: 1786082449-966775
-X-HE-Meta: U2FsdGVkX1+qIXNtAbQUW4o/5Lp8N7Ch5xTR3SwQhBwtbZ7oT21ZxrcblPERkzTiJQKnNRS5KiYRLC5ld8z+SNFm8/IFebmHkXmvt/GzjNqktUMSe/qzyH2ED08gVLzKcaQ1McBVsJpHdnA/gLPg1tQ0dxWKtMtVsZHp3zEjNCtznc+o8eFEBtm4HWTR+OIbrnJ+Mns2WotHFq0yKl2ygqA6lBF4bJPk1P9cqLvNMahIOndN+G2Z6S33zaGsXNrmebvfKWMp6PXq7LiDR1t0QdNs2wNZLGkANdMrFr8DXezQeqFWNk6syVt4zvvZSB1tBqDR0So0pZJlMtTn0l+LMDDelIBReEfMbbHAWUde3jYfvkGhAlXVTGKSPq3eAOsjI6x4ymCVF2RplZt5BaXhW1bCCvElXV3ZXkBu1wRFLrqHtoVFSwN2j1WItfmEL/U0frpa0TzrQEyh5aQoyyeqBJ1kni1BN/bOgZlpQiXKvdRB783aAODneRbkv2tLRg1kOKmI241cZZLgIGeDEux3IjlVv9w7nXGdjlff5Bhw4cgJ9yQtvWsfyVsuN3b1HmWH0Zck3kDnChA9/Ef8H2ZPuhElK4PCrMksYz6u0/tGAYCNPc5XudptVbJb+qRfiW4dOelVqJaztL2GqkeMtuqUNFsdmdClz3AylJeJ3Y+qAjmMGOpE7tQcYzHK66/cjpHQmC7wacmu9AV0dyk1Mii3Ow1Ha5nhke0TYMhyIZi+uT9O6zr+919sX7SMffV6qfTL48EQyTWlyRsJvqlBM3HNQh121gKw3A1X3ypi/GTD+AIwnzzu1Am+eC4n5mIR1lLbhFIRDcu4Gh/wpgwMHaMPXpdRC/1zLieIzCUq4Glqoc34evPB9of3+YtVW8MWRjgTaXrP6+s1obk/lJpirN+B+uIF5WxzKBuWpd+MQE88VmCmK7yxbcqutN+LyNDsRe/Oh/ZXRsITHH1TyUQhZnz
- +NzrsLI9
- 6AwjyoVKSfMP9bR36DPlZMmqcGrXgRjnMM2G4dvwkoejHP28hFm8CzdscZIqxgmzorCXkyE1g5vprsrce9RNEYxIoaoME2Y2sFGxUzG945WhA5UJ1Q6k7NF98Wuapa2wXCP5rQavRxAFRhgDdsWmZH8cD29FtunjC/V1nGg33NBhZfQVd6Plphwnc+bW+ygJ6qKkcFajCBF0EujJthdIIy5GH5YCTc6NGUpowzClq7OzE+SIMj1hk3R9knxcTXQDQdv/kg7B0PLU7UxBvb6vJpOqvbRE4I28KqQabWFXts1qfa0WVs2t6WK6p2/z6YHUaHroQ8yR/wqZxHtg7Dt4m7Rw6Y5h7z3M3Fu2cm9/u0e+vvDk1qIRtMo7M12LuO3ahqmsBBB6YEa+2BzCSDbFy0HySwgsrMl1U1sWZ92Z++JOpIK0pGBdFrKLLn4E+u5BnLWeis6wcj1sCvmM=
+X-Stat-Signature: od5ks44e71ntxxtrjdr4sdu4eiykert4
+X-HE-Tag: 1786083015-706269
+X-HE-Meta: U2FsdGVkX1/8Ilv4JdfUvOcRO96yzWgl6idHnmb2zRoSSkTEwiPXEAhiE+xQDlR9QEQRdgJx6S9V7b/TZEDQltu8WNT1YYPKDU9bVeHK9ktI5FlryMKG5yZX6kHl9nbOGnRUh5SSTP4Fpw7nclASNUsvm9wRYLQFQCwa5qc5WYh5HaDNNf8jEHVMLiDreLJOJpjyxZhquUSREa5xl/QZX9g3yUvGdgrPuRznM3xIk8LFaOGVstDJn6e8KuU7spzdoBF04osQL9YJ3sw+TjanNYkyUdQDHMq1iRcGuXZt2a6+KfQ3IRD/j+CmQxtYtyjzKDixX6yrN15v/w7vZGD7VSxoFsL72snezQFv0IXjKJyhvyj9Lgqth6ucOtwyK4wX1IY3Meisxd1E4vclM5hEP1pwuyz67mcfH37pD3CddKRmvAcFc2VJRvxYFh0pJ5nXqPmTKs3VnNSf3ZvufAtF+9futEqnJwC0VUGxSiBz5BtE+oemFvjmkrKXRiDwh8Zi4hJ8l3qQhklpLr44VxsIBhMXPahiH/PZaGrCsb05yzdxmXcDRHYaVDzjvo31+B3l/E1Tpm6UEARvejbyKJeTOEUoqmgLP2ZVnAiy0G7Rui307+nX08AAO/TKUFH+e/3RwL8AZdtnJZnVEI4VVBfob3VaTfQ4qpcn/Zq0Vy/VWWuED3ubiqCGU65tWrI5/ObKzqv7uVnsZhZ/2LGt2LpODdwi8DfXQKGkhFBlbGup+9HPO8F9iDT0wzc9bnkuh5ukAx1uOmjzCUlUQ5WehpgpNBkEJd276oT6h2cES1NzXXzqHVZO72BTY0Y5I5OAmiRaOOGeoQ2qhooPfwf9DZXmWa/HEbv211UFqRVNatye/8hQqSm1Sh3MT+1x+WfRD5AlwXsmF4FBWiiUCccLAJU6efCerlbZBkflqCGfz6IYOyqMU8lmmvT4GDBy1PwCCPIoVYD3Y8mZYLLfxO91FB+
+ e2CSLvR1
+ UCKYVUE4lLpf5Gjt5T5tLYxWUcWjzX2GIeFh8HxyXfR9BYJj7SvIg5WXRkZiMuU21/twoQmQwR8srO+/t3q9SViSt8INm/FSVddLIPsWcyHMQc3rrDYdXrlPQuww5QWeTaiLihLL/ouP+RroFiPCI5eQm2txcNMOm15F24eCPA2qQAyInr+7ocVGiJJcV0t3Zg063ATWm2dQpnUtrL5/jbL/eWcUBhpG53Tc4yTR6SElXlKDb6dn+GMpvvSGFVB091duvfTCb24lAGbwaXOgC5JfGxikhsL0Du8V2kfp6NGzDH1p2vaGWJA9G7feKlM6UG4cC4LU29SVwlJZUjYzyzGj17gGq2SC+X30TVV25smYuiBmHqFwcu+lwi6oiqwPSI34NSCS0nmuo/Z7PWYDl54iMbHo3igWrjym1z8MIZFqe2CSNNYu08TDg2zkUmhs+hcK0+qUNy9aoDL3dRRPAk+28KG/LJT4h7O4q5adNHryP/TQienuDqF/oB6LFsigtqiF83QHFbhqfTyn3XQXlNUJRqOs9KOdknQKiV47I3BW6uKc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +124,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 10:28:10PM +0100, shijujose2008@gmail.com wrote:
-> From: Shiju Jose <shijujose2008@gmail.com>
+On Thu, 6 Aug 2026 21:08:46 -0700 Randy Dunlap <rdunlap@infradead.org> wrote:
+
+> > +The default value of coredump_filter is 0x233; this means all anonymous memory
+> > +segments, ELF header pages, hugetlb private memory and fd list are dumped.
+> > +
+> >  The default value of coredump_filter is 0x33; this means all anonymous memory
+> >  segments, ELF header pages and hugetlb private memory are dumped.
 > 
-> Add support for ACPI RAS2 feature table (RAS2) defined in the
-> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-> scrubbing feature.
-> 
-> ACPI RAS2 patches were part of the EDAC series [1].
-> 
-> The code is based on linux.git v7.2-rc2 [2].
+> I could easily be missing something here, but to me it appears that the
+> paragraph immediately above here should have been deleted (i.e., replaced
+> by the one above it).
+> Can you explain, please?
 
-You're probably going to hate Sashiko by now but there's more issues against
-patch 2:
+Thank you. This is another silly mistake. I'll fix it.
+I think I should see a doctor to check my eyes. :(
 
-https://sashiko.dev/#/patchset/20260726212812.89266-1-shijujose2008%40gmail.com
+Thanks
+Xin Zhao
 
-Please sanity-check them if they even make sense. If they don't, you can say
-why and we can ignore.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
