@@ -4,144 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFD5C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 11:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B41C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 11:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 962DB6B00B6; Fri,  7 Aug 2026 07:37:37 -0400 (EDT)
+	id AAF406B007B; Fri,  7 Aug 2026 07:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93C926B00B7; Fri,  7 Aug 2026 07:37:37 -0400 (EDT)
+	id A60346B0088; Fri,  7 Aug 2026 07:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DB746B00B8; Fri,  7 Aug 2026 07:37:37 -0400 (EDT)
+	id 94E866B008A; Fri,  7 Aug 2026 07:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A62F6B00B6
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:37:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1784A039E
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:37:36 +0000 (UTC)
-X-FDA: 85074273312.11.12CF04D
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 112BD40003
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:37:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="x bftsFI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=mNnlgo5w;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786102655;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61BDC6B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:47:12 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CBE61A036F
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:47:11 +0000 (UTC)
+X-FDA: 85074297462.15.0FCE585
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AC449180009
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 11:47:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Cv+DeKgG;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786103229;
+	b=l1YqrGlo72jJ0ATJccu+lIfG7wzO6wRszkIajyQJItEy0iL9dQQQCRt5bhXvk/kQi9tFYY
+	i4anSllxRU5r1LiUUgnJjjgNQRIREd6HQMBSyX1sm+FC/obbcC8Vbu47uR1NTg/Nw7juwR
+	6HHW+5xC4caqI+VpjEhJCzudAL1nSsA=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Cv+DeKgG;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786103229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j0pTWFpZyp+VvcRD0WxQqHE3ctvFSewhwoAIj25qxck=;
-	b=eXlGfP3cP+PtnQ8EFpdzHxN4+2Suxb71S+TXmfPMfoczUzgNTJVhdIcTO/1AplTBTzIIgb
-	KCyh/kb6tOBnSJopqWT3RGXa7i5dAQQkybjec9/GMfJG+wIZFOxPIyOchn1/YRGKobr9wL
-	xIW+Xc2YiDKIeGs7Hcz2UxK1xbtOloQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786102655;
-	b=mPkQ4FhoE/49slRRTw2kQV9hEeG+ysyvrD9+nzNmwvqCwzkbEQLvbJmqVzubf1eZdtHckX
-	tNieJhBHL8+5rYXj3t0Dy/zFJtFFR7wO6og0vfOC79rBLNVk68YNtntX235+J7UiUwcVfD
-	dGuTtzlKtwsVBiOyEhdLJ/pNwEcswvI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="x bftsFI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=mNnlgo5w;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D90FE7A0120;
-	Fri,  7 Aug 2026 07:37:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 07 Aug 2026 07:37:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786102653; x=
-	1786189053; bh=j0pTWFpZyp+VvcRD0WxQqHE3ctvFSewhwoAIj25qxck=; b=x
-	bftsFIgYkMSok8nICxfbAq1vmfsz4Z0KdfsegX/1uf08o1cQaXApfJ5J8j0OTmd5
-	C3PiD41M+AzixMpV8qI9YmCiXzNyGUd0NdwDVL7izDqRe2IjfthjC+myekxxpZE6
-	xZkLw3stIVqqyrw66g1jQ6DTxLsmsTQTN/relElWyUQaW6MG+570UBEiaIC/hSc8
-	rUBIKuXZy3zBQkTNbhXwteZi+tD7y+ewMMG0PZK4knc6JQ1K8vMPqe0a+Cioh61s
-	+zJyBW2lcVo2ZrJ/eaWhAZpOGVYQyB9u6Z95p7x8syxqVzm5V+cfoFWjqorKQWPo
-	OwctHlJA+VDcceIGu6DvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786102653; x=1786189053; bh=j
-	0pTWFpZyp+VvcRD0WxQqHE3ctvFSewhwoAIj25qxck=; b=mNnlgo5wXwMK2z/P+
-	oeXSTUdjLJAgU/EBotX2PNmPJa0tc/1GpX1VDT6yzsXNIaddJn8xpQD+p/a9Apmy
-	bwP/pyrqEVLDM9feG7wzBEyWazq0Qd8tozZOg6kDy7IG+LdD6k3Wv6HRYabHpmIm
-	sF6eZBZ8mGE4Ch7U7/LaPZQO9qoqIS9uWN3Ea5A4a5NL0hjc1cym9Kulz2oq9xeN
-	u4Fqe/FTcpOLleg+ds/3/c29oj3/ml/Vqfb1ka5nUSmFAAVzJOaJ+ouTwTdFb8v8
-	L9/gDxGWDNnfQ9KD0PUSniknK3Is0dqAcxhqqdOenvof00yi/f0jXXquEvznI5Zq
-	iA1Fw==
-X-ME-Sender: <xms:fcN1ah0DD3AeiE6UvfCAF5QYfa6NkxzBXSClc8Fwutr-ln8PcCxAMQ>
-    <xme:fcN1asCoFgbKkfBL7NmUuK0AonRB_Y-GoWY2nto0lczDEm4Fj11qLK8gwRypKmJlu
-    wua5HNxR3m4T4Nv9ez3holE3ko4BdU3ce9guikiofGGgg02Fu5zgEqc>
-X-ME-Received: <xmr:fcN1aqaZ_0xl3kOVF_fdRC9nvGDF5aJLkKuY6lHO-Cd5CNLmJWRZuR1bNF8>
-X-ME-Proxy-Cause: dmFkZTFHgVqOo5hmjJljb3IAZGkXyyxzQaD6i5RNmNk424gVmZkPzr1NfNWN42YMHBLBJ7
-    ouwgSkV7uP+O116AnyQ77X3VN5vAdqq1zvzV33EYJRHUa/cQ0OT9UF9tJbf4RJE1rh86et
-    dgK/XsSmEjRvIZ4/DwnHkulf5IWkeizHGDAErUJF9mnMadsJqDG0SAHuOjgfipI02yAqvF
-    a9Gp7D1P4aM7ojieUjy73reTq6pHjAlslJzhWF2Bayc7rzuN1loFnb3tH1A/9l8/u/BKz2
-    kEn4hJCLyjrltgNf/ADveISAZdc/G8K4aY+0IiJqAeENTN6qSce54NhN3knOmRl67eS+Qh
-    /GDhBAG3wst46ljWIEG6h6ptOpuEu5vMqJ7CiNfirp26y5hXcRosGEtwZNX9q+/Mx5m/Wm
-    18OvmXPsEUykWNTvUXxAMk9ehrL5JG3kQbKJE6IMEikl2yq2a8p7fPSXxLgRyc+IBLe4eB
-    sHARQUv0hKUKXc+Rk3Cw9iDyfk+gvnaNxGQ9Gr62oeu4PJGH5NWqcHovNLmY9RM7CkdLgE
-    kG3sT4dCq8bDdk36o+UvVus9mH46NhTOVedbykvpE+hKqvsrqn8J3aRu6ncnXEqXGp8lcJ
-    ktWemNxd0IqVDSIhQADkbPFZlfudXSNAeqIjWmB5lgnaRnE6RQ2TpJsIS97Q
-X-ME-Proxy: <xmx:fcN1aoagw3eTixxg0QBAiiYqAY27j31s5J6RhHnYcDCHb0k6qvcamQ>
-    <xmx:fcN1arkP1L5P7dumv8MtRLVYB3E3mfVG5bJj8GsshpqEZ2FyDjqzug>
-    <xmx:fcN1aqT5P7LINDB4oPAggZF1ce63aCfsSkd400oN-CZChzn_0fgzEQ>
-    <xmx:fcN1agXJpwqCB2tmpjpoCADfGvZxYU_yH-TLBLs0Ascy5Ykno2ZqqQ>
-    <xmx:fcN1agJG3LL4hGGWwlQmIADcLl3it-c9hh7Z5TpPFE76Hq16j4O7rp3o>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Aug 2026 07:37:33 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	nico.pache@linux.dev
-Cc: baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	hughd@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com,
-	usama.anjum@arm.com,
-	agordeev@linux.ibm.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kas@kernel.org
-Subject: [PATCH v2 17/17] selftests/mm: zap whole PTE tables in the khugepaged race harness
-Date: Fri,  7 Aug 2026 12:36:47 +0100
-Message-ID: <20260807113647.3744609-18-kirill@shutemov.name>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807113647.3744609-1-kirill@shutemov.name>
-References: <20260807113647.3744609-1-kirill@shutemov.name>
+	bh=uoRS6lteyHuaa5Tp6C6fzOIn2zZDD6ahq8EkedV4ffQ=;
+	b=xPbLexjn0mkSwj20LszPCbEV0ahwUJTEWTAMdLX5/NdRQSDZr6ekZiY5SG3wO2xz82kkdW
+	k9dcPE/uJEuss0/iLrChBtAnn0IWCsMn19jiZUKQgg4HVH3puT3wP7bNhSmuG0zWsl95VT
+	v5I3yl6qXNe92eq0dCDXDLQm9d2lhfU=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8143daf89c7so33166167b3.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 04:47:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786103227; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lm/ApGP8xw4m7wy0A0FZ8yQXNaMZWaRv83FvXz4ppwrCOL7dGTpKb0mhqjKkciqc6E
+         JbJO1qdL0j0cpdTZk3TT6o44SaH8zaiiyFOWXNEqEkLYCJLmLsAXhW/43L5kIjRJKcg6
+         dBzmcwdWLdAcdTVavISIWO89ufp/9pR+PHyF6D40ANFZM1/YLmIQ7Hj29zk/89KcZBFG
+         lWkP3jd7+H8Wlvs06uyevVBM7UTDVqcm7BeLiGui9kZUBP7o4qMIIDF+KgaakAoPFeSk
+         VnceBTlU8Hd/rIscq82whYI3LaQYKS59yc92vNBn67rXDsDWtqpvNBF2Mla+QNRy3F1C
+         d/Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uoRS6lteyHuaa5Tp6C6fzOIn2zZDD6ahq8EkedV4ffQ=;
+        fh=50Fqg4Fo9dG98Sgq/9tHjFVjcVUQdkm5zMc4AB5jUJ8=;
+        b=XEa76N/mgGdvY0DHAFw8b8l+6lwo0YswZzFlFLVH5JARucAoCdkw18MSWqrzH66Hrl
+         p/NfH4cLyXZjpYdTGoPBX+K3OJFIM5tf3jzkM4lCG/neTfY8SmIqnH9M4DxUeJiBNK9x
+         vXOGfo2BpWdHeYXbcbgqgANiZ57q6kTO6sWJmKBeJkrpoiJMCdoSvVy/KUCGiGyhLzw+
+         et0552aldN46PqHDh7kHCzuTu/0XLafFzi2/I/ninFs7o4M4hH6kmiCQ0cr68CZGSyoH
+         UsvV5sSCmjpUHa+stjf05OR1STIx9HQWNjKxnk2gHu2xOnXN2fHalhR3GJndTNdvPLI+
+         n+Xw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1786103227; x=1786708027; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uoRS6lteyHuaa5Tp6C6fzOIn2zZDD6ahq8EkedV4ffQ=;
+        b=Cv+DeKgGthTIJHmmTB/fkdImx54FNZB/VHJsrGi0hddRtVW+QU7qZpDhtjyvaowb5B
+         OUq5RhRpBz7NIRpfwHr+fB2UufOEM17vvaCy4ZMb+Azz7AxLul5Rk9UOo7WEEWIgUz8I
+         CTRtOP21l8ziY4KiK0NU+894tpy2JLiq1+YomqVmWRKkHmCeHaAxma/BZLZVOIk3qCRC
+         rZ7X4AsqxW4o7Lj/fVhJoeYLBfDEH1ByMtXFdoiMuO8/V6qq0XODfGnYtnLC6aYhEFNs
+         Gg7p/6+GHAeALmFXFSKVbCFmRq/x9DtJn6YfHD/AI3bBaoGrb/u4Wy5sKKgNbNnSJG74
+         pJDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786103227; x=1786708027;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uoRS6lteyHuaa5Tp6C6fzOIn2zZDD6ahq8EkedV4ffQ=;
+        b=WqXnpdRRfiUj9a8z5jUCoPC4o88C8zObOpNH6cjhSPTai7Oehfr2kE/ujMgNOiluH4
+         J/evhEBZ7y63asVTITkd9Ru0Lhrosj9UYES7wQEXDe58Pg1evgQc8oGf2k9DIO1Q7D3L
+         3bpyaCxyOZkqubk75yqaq8EH7m0vHTspYK3rk7yX7F4bU5mDbAZiveJPU+9pDP5g/jmq
+         1yTWcFc/lkDWONZsaMghGAarpZb46Q2ZhE58/mwHOMBwUOK68lDO7QuFjGvN1YlyekIN
+         Z5gHuwAr1z+NnKc8xyY3jzOqSJX2BeTqfmKKcvP3l36H0pwzllPY8FD2QzrJWEpkuiYj
+         i3PA==
+X-Forwarded-Encrypted: i=1; AHgh+RpuNkGPYx1Oz/5Dlq99xRDRjQhG8+D4cIp2SbCNt6c+LqikiMgMFg2AO68MNgy8AkFuiysvg1MNRA==@kvack.org
+X-Gm-Message-State: AOJu0YwZcBcO70Z0jkPx3XfFwkEVLCBtJErutg+0lk/sR69epZtulHgi
+	xdZL0cpWiekbzKkT39rEIQhP40L1e3SAGCyQxvLDfixwS0jxkTwT48dUrtZ8BcBi/TDbsTJDqJe
+	1eKpDx5DpW38J/P9ZNmK7v8+cseR1GK8u277npQFPgg==
+X-Gm-Gg: AR+sD1266fj6IKoheCoQvXt3nEtlvO9CFU7ri9kULsKyYcY6WgcyDPHZ2Q2vxLYTup0
+	iw8OR2Pw0Nu1IwKdgodhZiilv+lew/5b63eJKuvnK8FS/qS7L3sUWphxhcJ//2TAfB4m8sv9tL5
+	D2yLhotIBxIWsIgsCGL5745hVE1XG+dIChb86vIsMz8qVQyIUFC/paoGKarCwh/+NVWXBbFZ/BB
+	isZcM+x/Gm1TYEoorQKJiih0HucNQFSR0VzQI19uHvf8MhC8zRUEBQAxGsb9kDZ7j11+pVu+DKh
+	Yhe4Shy5UWQcXeNAUWTFAoMi5o1JkX2OXffobsH1Oz0=
+X-Received: by 2002:a05:690c:c0f:b0:81d:e7d2:a46d with SMTP id
+ 00721157ae682-8225762b659mr50005557b3.5.1786103227417; Fri, 07 Aug 2026
+ 04:47:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+References: <202608070433.x3vNSfjt-lkp@intel.com> <20260806163644.20229f5ab7cbf176edbf2613@linux-foundation.org>
+In-Reply-To: <20260806163644.20229f5ab7cbf176edbf2613@linux-foundation.org>
+From: Muchun Song <songmuchun@bytedance.com>
+Date: Fri, 7 Aug 2026 19:46:30 +0800
+X-Gm-Features: AUfX_myppgswCKizRll7wa06WzEcopq9AaGL6Phs6d-kIlQXFDfCLVlPjtCaBeQ
+Message-ID: <CAMZfGtUdQqMVJGZP9MkqTcxaOQX=jmBi=BgESLVQy4ek_9pMjw@mail.gmail.com>
+Subject: Re: Re: [linux-next:master 8777/13479] mm/hugetlb.c:3095:39: warning:
+ array subscript 4294967295 is above array bounds of 'struct list_head[1]'
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AC449180009
+X-Stat-Signature: 1kyh38y13cjj85mm9cu9o436p8tmxnjo
 X-Rspam-User: 
-X-Stat-Signature: 6qaumwtktiht5fnxqjdkt6cfk7ymbixg
-X-Rspamd-Queue-Id: 112BD40003
-X-HE-Tag: 1786102654-754501
-X-HE-Meta: U2FsdGVkX190vP4oAt+Qq8RwoiMI7bYhjjNG2J61wo4M9BRNlxQmuc7VAZF45E6WRB+6yBnApWf2uFXG6XseMPYnoqkznwLHnjz/dOBt8MO9Mi0DNtXLZ8Z44w+cAsuSHJ+f55t4LLcQ43qwDsarMg45XsvG/JqztVYU1EP+fxDRu5cgmA5Tfov097F607MM7aNovD0hvvZz3tiDyhZTPZMpgzmoljapDOTLlBuUFKTrHCYM7ib2Gm95TuQBbbtki0WUIYzaZUzajGNxVQdD+ASv9v49vmcfHoiLsE+DOkzOpVSXog7g3CK3g1I0n4eVMLdDaCgEZHikCYS58+HEdeRo0CTXt8B16Ggn18kLHcxfBLzLH94h/AWSv3sbPGaOpJiWh0jAdmDyBCeWfk4e2+2GwPwaybXjqXHErZBJrHqH4oS4BlzSk9NyRMN4rZUA5iQOEfCrNfkUbPQmIdiSPD5m+fqSnRbRWblSjEfinh378N0gpWF4LBmqOjZufc2y2iKy9rNBkp4VcVEGIn15d/8+Pzq3XtQi6xLaLmb9OY231Jf7KqcwRgs42yDHJx5DHR5CbnfN/hdN7tRwzVzPsVl62tHuUsux7PyeBkH15IxVGWGZpUwPwzerAQSGD+1zKjhA0fhc4V968qh0LUMrMS/1WfEq/uceFFXYZHNMfFtQKK1hBt0A2/WZzp3Ui96vdSv0jLaoCIcvgzcQaiKJszLKd3UV7hjuAqJKypQAQtK7ZPz7h1wftEXxOCFBeq5/R5KCwVZPWwyPa0l0Ycpw726xnT+YQnvj+OmPTsKcBvqL17vNxmPb5CuH2DE7sMsSdmfHuKky6p1hivQ2tpssQOPTyv9+K0sozDRbp+x3l8nBlxr+HPyZpH60qstKapjNPv0/b+jXZxVFTegzqolmefJqdCsLSJxeF/slwZJn54six/AWXNl1m60ufjsiPGlJZzHnxJrGhU2LIoSXLvB
- I8NGm1DE
- t6aA9vOaFrbrBn7Mm2sthX7jh4dPGCXbsKvk24O5+XV1SFaEN7Ie/7O02RqOVDzAhpjsTVGm4uwvpMKQYDULbzazwzGgWVuN8ser4HkZ0Uz4n7NCt1i82ZzwWqjJcGe9xZeLmmCZ+B4J7qKofj4FsYCaujrxc76JnaDckAMV0LO+PbgEa733XViZmOliend6U0PC5lHMNoa0yLwBecNA4NgMVGC4Kjh/0QWMRoNt4toeveDCtZknxPVXtOkAPQTaeisSzKU1J4y47YKPg1plDdDTLjLfQ85r13Z+9N3XpKos8Jdy+OJ3Tn86494LGp/1DAHHhCYvQybF3DExmQUZu02nSHjEsBKK4mCADIWIXOCpW6jjr1cHp7Ysy2pR0FwPU/b7Ck8GHzPWDaRjqVub2FNYHQv6Djxxe4UqqnlJc3cFzExdA7hSWeWb47cPu40JtGs3P1PF/uu58IEk=
+X-HE-Tag: 1786103228-287804
+X-HE-Meta: U2FsdGVkX1/Ks5/D4UzOW9jahlliuxR1EM9s8UlwLhken0Lr21uU1M3tvKgryRKvmHasBFJ2vw5kvio/v66SUAgVqccnn8bCnqdUACevkWXmyjI8ItbwozHgTOIMCHZsGFBQ7EefDFn0x3dJupgZQfDtA+2gk2Cf+G0b/55elJvFK4nHTfQYYgEVm6CC9Kd0DqSu+rewS9jdymnUDKswBsu/He8IM19e7moXHH395ACP1jfR0Vm7BX+oofp9mW+yPfHNLxRFtw/WSZjV7pJNVDIsp5W0JtQOejRm9rgy5flW1mjvM5BCSTbs68Oak9nhGBq9HAQwz3M9YDzsz7zl295TviuThugDM8FZtIndLrqvVas+h2UegO23sTG7S8xnLy2n7ak/96pUxViB2heGWaEv2EjqLAmimqQhK1C9LsqfNwEzecQszB3mabfVVdwKehLL5s7GwCaeru9QESFXSNyuxL5iPRwdmM+7LX6ZUnIEyogIE5njty9JzMmcuyottmLcxAD2izVZwEtfIjGuOcyzw26MK+g0O8fntoqN6dzz9Rq9zQD4pk/fevQ3lf+E01g0O4e3zpSH0wqw2PBKQkOWsGNwqk9wSDZjBvER3TKIe+YFqP8f0QZ1rRJhzwKL2yqkZ8fsXj0FsSEsJeA17NvYeqxfoXGazhHEvrnewwG+upoJH3n2mpOHEOJpIp4ywFd7RzUScpTZTSkkzpbSappyECEPpmrs2KtQeeoQhuywIr9EpmHxu+EPjUY3jlkhcDPkP3Ox6tDsIE0uLya5mMP16yECPNdMHhGmjgPuJcWLna41CZ506ybGBWcPY3PrWCOmXh0N/GA150FCNNOOjJK/jGMp6c2pWkqqwBQ+HO26d5SNC8h2TrN5CjbhTYmbviS42uE9a3GxWGGQzjjVvCKO+YjlvHFXbiAV/Ik+OXZMkW7ytZtwffZf6miYDq9i9M0PahPoQoq3HUPdX2c
+ F5e1BzEF
+ 1RtWy16/rG8NG8BVUkzAoi//4W8RLu7rmmRoo4ecfUE2lFgawkavsXkQOdiZq3+m/Quoh4a4wHJ45LWd4zkWygcSQx65J9fGgn/xT98dnLS/z9rq3VTrD9EGto6HCnR5e1wdlKODYIzgclPap2GK0fATl36W2He8kqXcqE+8F93M2HP4Pw5kqcF3zKbkyBV4XyXJ5kw+y8pVKPQuwsB2ohM60tytlIOVn+zYGJYamjq9MtragDiuwnzBNuWy8r16yS6rUy+oy5Jvb/XFCqD0RyJVi6UfekIHOfL13rE2nQqt+HaKbSoXxABMRMUs38KjofJjZXYpDBxOhX1waXcz3q7hQFB5APpukRh83vwjKJiCcMSLm9j0KyseGPtVnN7C8YTjuR/7a7yMiGeENp9dkNwTvV+5eG+x58Rblh5YOh9Wzkdku/WRZ3McPDmFLSneZSVNfaYMxzvV+nj6T0NaaSk+Xwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,54 +140,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Fri, Aug 7, 2026 at 7:37=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Fri, 07 Aug 2026 05:01:04 +0800 kernel test robot <lkp@intel.com> wrot=
+e:
+>
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
+.git master
+> > head:   ea2bff00da89d7767d677bb68470130ba96f4928
+> > commit: 20549ccf4da49ff6dcb35ffc741f92aa92e07aeb [8777/13479] mm/hugetl=
+b: free cross-zone bootmem gigantic pages after allocation
+> > config: parisc-randconfig-002-20260807 (https://download.01.org/0day-ci=
+/archive/20260807/202608070433.x3vNSfjt-lkp@intel.com/config)
+> > compiler: hppa-linux-gcc (GCC) 8.5.0
+>
+> Such an old compiler.
+>
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
+hive/20260807/202608070433.x3vNSfjt-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202608070433.x3vNSfjt-l=
+kp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>):
+> >
+> >    mm/hugetlb.c: In function 'alloc_bootmem_huge_page':
+> > >> mm/hugetlb.c:3095:39: warning: array subscript 4294967295 is above a=
+rray bounds of 'struct list_head[1]' [-Warray-bounds]
+> >        list_add(&m->list, &huge_boot_pages[nid_request]);
+> >                            ~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+> >    In file included from mm/hugetlb.c:6:
+> > >> include/linux/list.h:163:12: warning: array subscript -1 is below ar=
+ray bounds of 'struct list_head[1]' [-Warray-bounds]
+> >      new->prev =3D prev;
+> >      ~~~~~~~~~~^~~~~~
+>
+> Well crap, that patch has been in there since June 12.
 
-The harness's MADV_DONTNEED thread zaps 1 to 32 pages at a time, never a
-whole PMD-aligned area.  Empty-table reclaim (CONFIG_PT_RECLAIM) only
-engages when a zap spans a full table, so no soak ever ran it against a
-collapse -- fuzzing had to find that class instead: the page table
-vanishing between the engine's park and install passes.
+This isn't the first report. This is the second time we've had the
+exact same report,
+see [1]. Interestingly, the GCC versions are all the same (8.5.0), so
+I think this must
+be a GCC issue.
 
-Make the thread zap a whole PMD-aligned area once every 64 iterations, and
-keep the fine-grained zaps as the common case.
+https://lore.kernel.org/all/202607010945.6lDjBFTU-lkp@intel.com/
 
-Assisted-by: Claude-Code:claude-opus-5
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- tools/testing/selftests/mm/khugepaged_race.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+Muchun,
+Thanks.
 
-diff --git a/tools/testing/selftests/mm/khugepaged_race.c b/tools/testing/selftests/mm/khugepaged_race.c
-index abd142db7cbe..1fbd20771a5a 100644
---- a/tools/testing/selftests/mm/khugepaged_race.c
-+++ b/tools/testing/selftests/mm/khugepaged_race.c
-@@ -121,8 +121,23 @@ static void *dontneed_fn(void *arg)
- 		unsigned long page_idx = rand_page(&seed);
- 		unsigned long nr = 1UL << (rand_r(&seed) % 6);	/* 1..32 pages */
- 
--		madvise(region + page_idx * page_size, nr * page_size,
--			MADV_DONTNEED);
-+		/*
-+		 * Once in a while zap a whole PMD-aligned area: only a zap
-+		 * spanning the full table triggers the empty-table reclaim
-+		 * (CONFIG_PT_RECLAIM), which can free the table under a
-+		 * collapse that is midway through it.  Sub-table zaps never
-+		 * reach that path.
-+		 */
-+		if (!(rand_r(&seed) % 64)) {
-+			unsigned long area = page_idx /
-+					(hpage_pmd_size / page_size);
-+
-+			madvise(region + area * hpage_pmd_size,
-+				hpage_pmd_size, MADV_DONTNEED);
-+		} else {
-+			madvise(region + page_idx * page_size,
-+				nr * page_size, MADV_DONTNEED);
-+		}
- 		usleep(rand_r(&seed) % 500);
- 	}
- 	return NULL;
--- 
-2.54.0
-
+>
+> I can't reproduce it with the provided config and hppa-linux gcc-16.1.0.
+>
+> Muchun, I'd be inclined to pretend we never saw this.  But if you want
+> to address it, please do a patch against mm-stable with
+>
+> Fixes: 20549ccf4da4 ("mm/hugetlb: free cross-zone bootmem gigantic pages =
+after allocation")
+>
 
