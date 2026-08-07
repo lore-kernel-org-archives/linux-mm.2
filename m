@@ -4,94 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE46C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99844C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 10:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 629646B0092; Fri,  7 Aug 2026 06:39:12 -0400 (EDT)
+	id A248F6B007B; Fri,  7 Aug 2026 06:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6012F6B0093; Fri,  7 Aug 2026 06:39:12 -0400 (EDT)
+	id 9D52D6B0088; Fri,  7 Aug 2026 06:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5184C6B0095; Fri,  7 Aug 2026 06:39:12 -0400 (EDT)
+	id 8EB856B0095; Fri,  7 Aug 2026 06:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F7D96B0092
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:39:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E1FF140380
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:39:11 +0000 (UTC)
-X-FDA: 85074126102.22.8D519BA
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8EADC0006
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:39:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=leFCf1q7;
-	spf=pass (imf10.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786099150;
-	b=yeRnlu/dzs7sxtyhsXptoAsgHebApP3bLcsA0MShtXCyLl4YIoQo8c9pkneWE5OYT5l7jJ
-	50+r/uoFE5DqkUuhh9d+2EyAm6pGGyTB2SEFnJGwWyUmLLFDAzX6LwyT0yREUkVlg7k6o6
-	rtLVltWRI9UUEjbXiTp8pJLYQwJsV60=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=leFCf1q7;
-	spf=pass (imf10.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786099150;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 662CB6B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:40:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F15C01202CE
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:40:55 +0000 (UTC)
+X-FDA: 85074130470.04.7E3FB79
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0706F18000F
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:40:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D6P1xUt9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of vladimirelitokarev@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=vladimirelitokarev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786099254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+cRL3uotexgsAYtLUosWyuQdevxVlf8Hhe38VeOp48k=;
-	b=Zdqk1CHt5CvqVDLFKMJAXIyHbb/TbaAYTyQlMCRhFBUCg03LgvPURIEtICQzieuSNHDBx0
-	N5TUiTCd0qxUWVjv1sY/VuWvPG+Y4qb3udN2LpV6vkA83wzmbxfDJhZiNcfjc4EaRaw1T5
-	7n8NTDUgjAZSaFP2vypA0soBcjIvm48=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786099147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+cRL3uotexgsAYtLUosWyuQdevxVlf8Hhe38VeOp48k=;
-	b=leFCf1q7bWexhIlRym5mgLf1EOisTxXGgyEu7WyO9nLs6AFFzBa5eAN4zwjxXwdcx9Zca0
-	omPlm5ULbkJc4DAoXhz5sJcehdTr4IdR3WIHmsRnRF4G7Y5VNtpBLF9EzxE+TcLqPLTWwa
-	oHj3Bgs1ou/YKoTNmTnBdncag6GUT54=
-From: George Guo <dongtai.guo@linux.dev>
-To: chenhuacai@kernel.org,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	shuah@kernel.org,
-	ardb@kernel.org
-Cc: guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	Kexin Liu <liukexin@kylinos.cn>
-Subject: [PATCH v4 4/4] selftests/kho: add LoongArch vmtest support
-Date: Fri,  7 Aug 2026 18:37:14 +0800
-Message-ID: <20260807103714.33074-5-dongtai.guo@linux.dev>
-In-Reply-To: <20260807103714.33074-1-dongtai.guo@linux.dev>
-References: <20260807103714.33074-1-dongtai.guo@linux.dev>
+	bh=Wc12/Ao6shflemkswZxNzDBhCRuexOAUcBu8f6qMz7M=;
+	b=axgY5avyDSL/CrP0r1S0h1pmWNZh4uTylmvjQSEWD88jiE0IidTtvr9pSLb1vJbTx7W3Lu
+	+d+oyTHmXsjPaa402k76mdlgbrA6tJlHlX0dx78ylw58RZ7f4joKmUUk+582Mgvs9y0ZI/
+	UBNter55Wxuvcd65XhZlDx63EH/ICLo=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D6P1xUt9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of vladimirelitokarev@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=vladimirelitokarev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786099254;
+	b=r71p1cPZA3frGDi8XA2Q90ZXnKcvYesqYzDmLZsafKn1frx6J37VrqPsUNcsOsuqKxPYeF
+	Jt5t+pRU7TpBImDVTS+7JCWBGgtPhRFkUHoXCM6CFjw8pPORYVofbzYX4pfL1mCVEb211m
+	WlJPIZCC+ZVhFsf/N0gwm62DFGqvw20=
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6689402c7bfso3679762d50.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 03:40:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786099253; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Fqb8VgdYW7NMigHuG/Z48BgnA1rRwUVIQfMPx7E1r5Zq8N/Y8jURMPGkdnHCD/YxoN
+         eRQpitSr21wz8dpNBr6t5QlfFdQdVxTo8n/6L8qS5CvnvKVcuoBuzhiOO9VZQH+D8erI
+         8tF36GRaTM0GXauIHbdWuXm64FO73qE9YJA2q4MHI0XBYDE3IMHPrux9Lddh8yNT4LYZ
+         UG+Wq+qZQkls1bp878UtMJ0tNBfTl0UV0GHsYjCNP8hY61+3M8os1Fnl1xGSSE+FVhuV
+         SfE9ZDdV6pSfuXrFtHjpw+lAE4DucAeaAsPMCnqcyBN1vFQYqUOoYhl+T3hJKxjv3IoR
+         LoVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Wc12/Ao6shflemkswZxNzDBhCRuexOAUcBu8f6qMz7M=;
+        fh=PG/odzDsi0N7WufblHXQTC6s5oKkRQH8+b8PB8vESbc=;
+        b=pCGIDxlj80+3c6K8rkHN7PTbMrG+v0mKtv4xcWM/HmGbwaYTw5BV88ncEnmvy6WSKy
+         u4+CQCjmo7OpVXVTsF1+BIWvzQfjEJ3Qt2x5FLc+HXT6A6nMHiDNN94masBSdTrY/JVB
+         DsyxKWLKYV+13YBAj2ef2Ln0+6KpfbFSYlk0Tn2QfNdXIWiesFZ+TFBxPW8ZqWesFS6q
+         oaocjeC0if6kcd9C4heW6rHIYvl+Wn613NerK8XJSxunD9vTA5SAha7uSBzMI4AdegSc
+         TZui/pbr/yRp5pXoCk3TBFWKhsD5PAI1hrk+w29IXTWooA2AXNkGMVziQ0MxeN/T2bMu
+         +rZQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786099253; x=1786704053; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Wc12/Ao6shflemkswZxNzDBhCRuexOAUcBu8f6qMz7M=;
+        b=D6P1xUt9As1EtEWYXzpXRxDvDjgkbM1OA02FIj8bO5ZRQzy2aICYVvNSrtAO06lZXS
+         BCxCYBBiCugAi3wDZdnvO9VYPswNPyO2G6XThHh43iX8hEN0j9QiFNsmmt0zwT5ivlR1
+         Lbj6YSm3BmFBjdvlMlIJ9wVvNFUxm/Y36o/YPymPySruAUkUxLIp2C2dWKZ5z8SM678o
+         WQesadk2BnBNVdVNLAtnvebgEAsY8ovy5a7ugleyyQwAuWE9SaceSvkULcUhmEE/wV/E
+         vB2M1G8f0zmPJbP0inBQAsiH2secDGk7FfgDfZ20OdwPrzcbDj87gILel3DuER2iDh33
+         sSWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786099253; x=1786704053;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Wc12/Ao6shflemkswZxNzDBhCRuexOAUcBu8f6qMz7M=;
+        b=E1borM0ADkJSQ4yxyIfY162NrpDMGkUXhWtzsY/1AIZgNY8900ovRJvXCn8xQjx3pr
+         PrpjoDTvGaVOhJi5n9OGpfTa1zaU5Qj1MaWOV4WfNBXgwl0ByOW4loo1jdwyM7uELUbY
+         Uc5c/EpDXZhyGEjCB2sOB0A9TvLRmMJC5GODa8EjG4Dmc44S+OLMcagsGtJpOCUO+TTd
+         Mc5zApFza8fyTDfThMN6GMT334b3VYRijXmKp7H0kj3GYehky636kw3eqRLSP6M1FaOZ
+         nrRkH13Hsy8TKdy00WvVqXa5fbHNYztbHbTHkPTkVuGjfOn68a4wELXZ22lvtCbT5jRe
+         xt7w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7hC9ymi8jRUz9tnbs2gcEk+oX1knYzptdVmecBD34670HvgWjXbZ81rE2+J3qkSBcrBumWfAoZg==@kvack.org
+X-Gm-Message-State: AOJu0YzgI5QqGhuJ53KXIlGpTPzuOUSjAiyCgVBnyMpdjIYm7bJG5s+f
+	4OOEGA8W+n4creo7q1F2cvzWUh1fVst9VZ5+kMI1s++OGQJn9fE9lt7XrP6wRcqBzhLD5R38wJk
+	+mEJCWF3HPO9jL1BR++RyoesP841UwRF//m16GtI=
+X-Gm-Gg: AR+sD10ExCdRrLXI4RrAMFVGDjZysuEU5k0aq7m088vYA5mk4SgHoNF9PiygE0q18zf
+	pVl+KSRkhPGtbkV7JxqDgtPjysv8Fn+Tc1JDWhbKtxIEjC4wLs4XuVG2Ridgc7ir9zOihEMReFj
+	8hskZ19kU0aUf3BlUYHEdqVB7koWzbnKr3JkeNNiqRFNVmjJ7Qpu+Bv72oJMyDM/j9khIxlo5Jr
+	fKzrAXCC6Rmc8w2Wad81tBJMgEwETG57dawhGeIhQB3KLs/Pu7HpXyMB16jnoF8tsOfVzbGtCvH
+	8FPjUZm29ZFAPsTJcsyLJddMCjAyndR8La6XogXlYu/e3SHv1NpR1xr0/pBYYCiIzgOfePr6vy0
+	ZqOZYhG40fvLUbkP2rTQ=
+X-Received: by 2002:a53:cb8c:0:b0:667:d3e3:1713 with SMTP id
+ 956f58d0204a3-6699a84b61fmr10679110d50.4.1786099253042; Fri, 07 Aug 2026
+ 03:40:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B8EADC0006
-X-Stat-Signature: 3u5jkd9n14pbrgyzeokfcdy6xorpgboo
+References: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
+In-Reply-To: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
+From: vova tokarev <vladimirelitokarev@gmail.com>
+Date: Fri, 7 Aug 2026 13:40:41 +0300
+X-Gm-Features: AUfX_mycbxuhAHRaIJFgBgN__sLQ8AbjjwhOWHtuQ84dh9S6BXB7zx3i-vnTqGk
+Message-ID: <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
+Subject: Fwd: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to local
+ privilege escalation
+To: akpm@linux-foundation.org
+Cc: security@kernel.org, linux-mm@kvack.org
+Content-Type: multipart/alternative; boundary="00000000000082e41d065872a32b"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786099149-43435
-X-HE-Meta: U2FsdGVkX184srynx6m3oM039Cd70Qe0IEjigzkyTFHcrWWWv7Zk9lF6wDy++kmow9O4oXyRG9Q7/mO4P99sZgu2OO79rqbjo38wERBJAySwaAaY/Z2Uj2IiV8nheBxj0vOIQHQ+D5TfoHGqbyFuguyC2FsEHlTZg7XGutpm46e3SQlukMoPAoochvE9/MHRZxeTm3iXIcP4a723QDXkIxZNGEn6V90K11RFR2kb3nniWilc/s9xFMXfLczeUXyt8QNLTasRyb/z4fHMG8N1EPYY3DhtGnbsaOGBhX7XJfD8wYZ4W2sjNKnxnZrJHsQGA1CxgG2ShCWxdzJ5c4tlTUGPyZoXdt7Qt7WAH3ALA2Uu4Hi15S9yNYLTWKPn12ghCjZOkUIC4tx8ScS9c71xmgy45qS3LvmyLTWdhLcW7k2Ewuq6cr1KX+o0HYUcaRwdO5wIbf02fGkCKWxSOGB3kkjGGSgUArb/qiZKFV7CVT2PDOgLZCDzTubl8W1pjXb4E4UagosfHzkGPA3Mk4P9BMqQYj6csPfHdOH7Mkt9gqM4ar/Xk/3F1tT5fTg+nNdfF6PcV3jC9nVP0ZJZ3xD2pqUfXWBx4w2sNN2qpAMHy9vp+r35ZU5ji6X9xXwFcq1oFDJHGPXrAMXMIpUVPHv338oAsxchuMkYwYKMuKJOglcYdaMlnwGv8G4thOM7DZJSO20GqLA+gT/Aht4707AfuK6lwwE2W/oZDsSiYhYuWpz8MVrFyy5LXaRBVZEly6k89qmxoFGibMgDg37YhIRDwdH90n1rDewAHMISW0uhUY1TWs2ApWQpl/2YjFDe974kXGxh3SqB1GKi1cn0quhdG1SGbzqvKfLATLA9FxX+ZxZHoKCCKecDBemCQx4EXTlhJJ5nTkO0WCrLzeDJynpssmOHKDpGIRn4TzlTofKcX2Q8qxuL2F/s9XANTlo17pac9M8rgYUxh++N9Gp1zKZ
- ylymBOFP
- j/sy9ifzboA0PlaDWwIzX4du2Ny/jpiBp+Gc0UIc7/nW+N2d8AS7kSXBBHwG/X0q/AjZ40o56r/kQaio+V/YMneP8dTrfWzLo+GJmfcKE/hcpcFB/um8Hz7Ks3Q/MrrBMOsRLdSWUvmuGfEPqOel6076hzhSVQ7QZrFVLsuSz1Es2lx1F77atsJFHgUi+OMVwTs/8lUPjAvVbgug=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: m5qpgqibbfwyw6ad4ckswryn9nzb8g7m
+X-Rspamd-Queue-Id: 0706F18000F
+X-HE-Tag: 1786099253-168806
+X-HE-Meta: U2FsdGVkX19oRnz3UqXaDYK58GzqA5ffdtT9Kp9AuIH/StFpriY9HfKzQcfC3ifvBo/G6jNhP5qhLq8YWf3wygwlhQhlWZd7ckDLHSqYkV2Rl/OO279US4bt/4JVZuz9GZkhtuCitYdjlC0KMMUsq8iLpvywtGsdBSGpDLqccw/lqdqycdjxr/+oLGoQ47bMeBPzchWVkpOWDBf6m8sftU0eNf9hysRe3XlHldqFndMAqa0ftXFHPix+kuJSkXFVnk5fAc+ngCbzqR/Tj+tiKrEDoIBiDozLBycxIkBdlQcX/KPE8XUkabDceS7mfUKKkk/Nv2L7de9/QlKkicyfBgLkiLAqOEZ7R9fhIoSI3oFGqKxverTLbJBsU0dRnyNk6Y8eOyuSEjG2I4qSLtYIMhvlMEjJ4Vt2/KDVty8aiu6CPPps2zfqUnmt9NrpfV/1l3WlwojGdixhwyn2HErKkxT5GcphsTvGsY983gnDrN1Ujflx6MQi3hvzH5C4CA2RAYd8PW0b6iZookE/mqPFnpZds9hYfkOaPu0Oi8TWx2f1k+ga81uxhGb6I++DjfEXOrAmUgWyTjIHSg0tImDaPOi1CdqiDY7pe267KGtZTWK6TBKiyssk6/sAH/YpCntq/3wTnEJ+X2cXn08yuhNoBdBhBqordE/91w5Jr8y0JB4fWiF7hfsunfdyfMtpE8CJpV6+KPtUyrFZ00NQcNYWRUIAQT0MbIJKWD1mmXyoXfFjGhudm6q5eoaWqmUfgplFf34pZ1f2I5wN4olGbrOmQ2UV2juXOTiu/alox6HjSWoqcOzXPT3/Gk+qESG0Ib7N81o1+/wilkDh8awZA34WhUWTz5NaHz2VTtA/mbLnlBdjK2CRjEB6YAhcVX0AIJftHTUD02fW1OHSCnvWjf0o6Gw8oqFXp1e/thI1rjftFuFylljldZ5j0khFY4OG9a3QsdEdn2VC4YzGOQddgyj
+ I5jgC7qw
+ 179vhL1jqHDAcziycfD7Ws8YpjEQTD7ETJBKakWtRDgccVr+H9dAr3a/kTJUIjvpxIobBlZ/Lu5MaL1dylMYMiS3SB5E3Rs3aCTS3ZhdZXPSWtyeckLDg+nfS1VvdrSoh3vusQFkJsBVUIgDLf6N4Q3Le9GyGy/sqqNmJyVGkpZxQbiuQuTrUoFmYlV4dz4nF0MtE7bRwmebomfvixsRQkEE5Oa5H0HEoHVB3L3Bv/p3oc+TKU67rnSFHJUbxnHPnA8QBZw/hrFKZXaiZ2eTr5wIeo+Hg8rSmoGYq/HGItoaYoEeySbFburoGCjSYx07qNDXebswG1DzcWKclsOugrR9vkK7RdZ3cKMTBjj+dZGdk8SImGy/eqC1zdGcaKa4xxqaZotnhQBEMM7ZIjAbtmpANHXAT5sB1I9OR0P+WUr3LrQz3Svyi2iDFKbGorPl6xmZd/qg827EhHX1d6Iy0KFZ9dwWKXPo5CeZ9g9q5d/9r40M3e5m1sd+EBppw6gDrkKB8zeMpKJ13fnzEeZh36SJXTd8yzL3KJutwB8q2cTjMfketss7cpT55yf2XJcyQPeV0VjgZuguSRSeQwq2XtdDpqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,118 +137,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: George Guo <guodongtai@kylinos.cn>
+--00000000000082e41d065872a32b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add loongarch.conf to configure QEMU's LoongArch virtual machine (VM)
-with a la464 CPU, enable the 8250 serial console, and set the kernel
-image to vmlinux.efi.  Extend vmtest.sh to recognise loongarch64 as a
-supported target and map it to the 'loongarch' kernel arch name.
+Hi,
 
-QEMU's LoongArch VM provides no ACPI tables and relies on FDT to
-describe hardware.  Without 'earlycon' on the kernel command line, the
-FDT is not scanned for a console UART, no output reaches the console,
-and vmtest.sh's console log stays empty causing the test to always
-fail.  Add 'earlycon' to KERNEL_CMDLINE in loongarch.conf.
+It's been almost two months since I sent this report, and I haven't
+heard back. I'd really appreciate any feedback when you get a chance.
 
-QEMU's LoongArch VM has no i8042 PS/2 controller.  When PNP detection
-finds nothing, i8042_init() falls back to probing the ports directly.
-On LoongArch the I/O ports are memory-mapped, and the i8042 port
-addresses are not backed by any device on the VM, so i8042_flush() takes
-a page fault and the kernel panics:
+I've rechecked both mainline master and stable 6.12.95 -- the
+vulnerability remains unfixed in both trees:
 
-  i8042: PNP: No PS/2 controller found.
-  i8042: Probing ports directly.
-  CPU 0 Unable to handle kernel paging request at virtual address ffff800000008064
-  ERA: i8042_flush+0x50/0x198
-   RA: i8042_init+0x2a8/0x35c
-  Kernel panic - not syncing: Attempted to kill init!
+1. mm/shmem.c: shmem_mfill_atomic_pte() (6.12) / shmem_mfill_filemap_add()
+   (7.x) still adds pages to the page cache without calling file_modified()
+   or __remove_privs(). Writing to a SUID binary on tmpfs via UFFDIO_COPY
+   preserves the setuid bit.
 
-Disable SERIO_I8042 and its dependents (KEYBOARD_ATKBD, MOUSE_PS2) in
-the QEMU_KCONFIG fragment to prevent the driver from being built.
-All three options are scoped to loongarch.conf; no other architecture
-is affected.
+2. mm/userfaultfd.c: I noticed commit 85668fda932a added retry state
+   tracking on master, but MFILL_RETRY_STATE_VMA_FLAGS still does not
+   include VMA_WRITE_BIT -- the mprotect TOCTOU remains exploitable.
 
-Wrap the QEMU invocation in run_qemu() with timeout(1) using a local
-time limit so the test always terminates, even when QEMU does not exit
-on its own.  This is useful for every architecture; on LoongArch, for
-example, QEMU provides no EFI runtime services and machine_restart()
-falls through to an idle loop after kexec, so QEMU would never exit
-otherwise.
+This is a deterministic local privilege escalation (no race timing
+needed for the killpriv bypass), affects every kernel since 4.11
+(8+ years), and works on any system with userfaultfd + tmpfs (the
+default on virtually all distributions).
 
-Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- tools/testing/selftests/kho/loongarch.conf | 11 +++++++++++
- tools/testing/selftests/kho/vmtest.sh      | 22 +++++++++++++++-------
- 2 files changed, 26 insertions(+), 7 deletions(-)
- create mode 100644 tools/testing/selftests/kho/loongarch.conf
+I have a full working PoC that gets uid=3D0 from uid=3D1000 reliably.
+Happy to provide any additional information if needed.
 
-diff --git a/tools/testing/selftests/kho/loongarch.conf b/tools/testing/selftests/kho/loongarch.conf
-new file mode 100644
-index 000000000000..e45fe1014cf3
---- /dev/null
-+++ b/tools/testing/selftests/kho/loongarch.conf
-@@ -0,0 +1,11 @@
-+QEMU_CMD="qemu-system-loongarch64 -M virt -cpu la464"
-+QEMU_KCONFIG="
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SPARSEMEM_MANUAL=y
-+# CONFIG_KEYBOARD_ATKBD is not set
-+# CONFIG_MOUSE_PS2 is not set
-+# CONFIG_SERIO_I8042 is not set
-+"
-+KERNEL_IMAGE="vmlinux.efi"
-+KERNEL_CMDLINE="console=ttyS0 earlycon kho_scratch=16M,16M,16M"
-diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
-index 0014bd76e88d..de6aa59cf5a0 100755
---- a/tools/testing/selftests/kho/vmtest.sh
-+++ b/tools/testing/selftests/kho/vmtest.sh
-@@ -21,7 +21,7 @@ Options:
- 	-d)	path to the kernel build directory
- 	-j)	number of jobs for compilation, similar to -j in make
- 	-t)	run test for target_arch, requires CROSS_COMPILE set
--		supported targets: aarch64, x86_64
-+		supported targets: aarch64, x86_64, loongarch64
- 	-h)	display this help
- EOF
- }
-@@ -111,12 +111,19 @@ function run_qemu() {
- 
- 	cmdline="$cmdline kho=on panic=-1"
- 
--	$qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults \
--		  -accel kvm -accel hvf -accel tcg  \
--		  -serial file:"$serial" \
--		  -append "$cmdline" \
--		  -kernel "$kernel" \
--		  -initrd "$initrd"
-+	local qemu_args=(
-+		-m 1G -smp 2 -no-reboot -nographic -nodefaults
-+		-accel kvm -accel hvf -accel tcg
-+		-serial file:"$serial"
-+		-append "$cmdline"
-+		-kernel "$kernel"
-+		-initrd "$initrd"
-+	)
-+
-+	# Bound the QEMU run so the test always terminates, even when QEMU
-+	# does not exit on its own (e.g. no EFI runtime services after kexec).
-+	local qemu_timeout=60
-+	timeout "$qemu_timeout" $qemu_cmd "${qemu_args[@]}" || true
- 
- 	grep "KHO restore succeeded" "$serial" &> /dev/null || fail "KHO failed"
- }
-@@ -127,6 +134,7 @@ function target_to_arch() {
- 	case $target in
- 	     aarch64) echo "arm64" ;;
- 	     x86_64) echo "x86" ;;
-+	     loongarch64) echo "loongarch" ;;
- 	     *) skip "architecture $target is not supported"
- 	esac
- }
--- 
-2.53.0
+Thanks,
+Vladimir
 
+
+---------- Forwarded message ---------
+From: vova tokarev <vladimirelitokarev@gmail.com>
+Date: Tue, Jun 16, 2026 at 12:37=E2=80=AFPM
+Subject: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to local
+privilege escalation
+To: <security@kernel.org>
+
+
+Hi,
+
+I found a local privilege escalation (BadBunny) in the userfaultfd +
+shmem subsystems that affects all Linux kernels from 4.11 to 7.1
+(every major distribution: Ubuntu, Debian, Fedora, RHEL, SUSE, Arch,
+Android, ChromeOS, and any system with CONFIG_USERFAULTFD=3Dy and a
+tmpfs/shmem mount).
+
+Two bugs are chained:
+
+1. TOCTOU in UFFDIO_COPY retry path (mm/userfaultfd.c):
+   mfill_retry_state_changed() does not re-validate VM_WRITE after
+   dropping and re-acquiring the mmap lock in mfill_copy_folio_retry().
+   A concurrent mprotect(PROT_READ) installs a writable PTE into a
+   now-read-only VMA.
+
+2. Missing killpriv in shmem UFFDIO_COPY (mm/shmem.c):
+   shmem_mfill_filemap_add() adds pages to the shmem page cache
+   without calling file_modified()/killpriv. This preserves SUID/SGID
+   bits when file content is replaced via UFFDIO_COPY, unlike normal
+   write() which strips them.
+
+NOTE: The killpriv bypass (Bug 2) does not require
+unprivileged userfaultfd and works even with vm.unprivileged_userfaultfd=3D=
+0,
+since UFFDIO_COPY on shmem is available to any process that can open
+a tmpfs file O_RDWR and call userfaultfd with UFFD_USER_MODE_ONLY.
+
+An unprivileged user can replace the content of a SUID-root binary on
+tmpfs via UFFDIO_COPY while preserving its setuid permission, then
+execute it to obtain root.
+
+The attack is deterministic (no timing dependency for the killpriv
+bypass), requires no heap spraying, and bypasses all modern kernel
+mitigations (KASLR, SMEP, SMAP, CFI, PAC, heap hardening).
+
+Affected versions: Linux 4.11+ (since shmem UFFDIO_COPY support,
+    commit 4c27fe4c4c84 "userfaultfd: shmem: add shmem_mcopy_atomic_pte")
+Confirmed on: 7.1.0 (aarch64)
+Affected distros: All major distributions (Ubuntu, Debian, Fedora,
+    RHEL, SUSE, Arch, Android, ChromeOS) that have CONFIG_USERFAULTFD=3Dy
+    and tmpfs mounted (virtually all Linux systems)
+
+Attached files:
+  - bad_bunny.c                           Full LPE exploit (uid=3D1000 to
+uid=3D0) Build: gcc -static -O2 -pthread
+  - suidhelper.c                            Standalone SUID payload binary
+Build: gcc -static -O2
+  - uffdio_copy_lpe_report.md     Detailed writeup with root cause,
+reproduction steps, and suggested fix
+  - badbunny_demo.mp4             PoC demo clip
+
+The PoC (bad_bunny.c) sets up a SUID target on tmpfs, drops to
+uid=3D1000, uses UFFDIO_COPY to replace the binary content with
+suidhelper (which does setuid(0) + execve("/bin/sh")), and executes
+it to get uid=3D0 euid=3D0 gid=3D0 egid=3D0. No physical hardware needed.
+
+Suggested fix: Add file_modified() call in shmem_mfill_filemap_add()
+to strip SUID/SGID on content modification, matching the normal write
+path behavior.
+
+Thank you,
+Vladimir Tokarev
+
+--00000000000082e41d065872a32b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail-ii gmail-gt gmail-adO" id=3D"gmail-:3r=
+s" style=3D"direction:ltr;margin:8px 0px 0px;padding:0px;font-size:0.875rem=
+;overflow-x:hidden;font-family:&quot;Google Sans&quot;,Roboto,RobotoDraft,H=
+elvetica,Arial,sans-serif"><div class=3D"gmail-a3s gmail-aiL" id=3D"gmail-:=
+3rr" style=3D"direction:ltr;font-style:normal;font-variant:normal;font-size=
+-adjust:none;font-kerning:auto;font-feature-settings:normal;font-stretch:no=
+rmal;font-size:small;line-height:1.5;font-family:Arial,Helvetica,sans-serif=
+;overflow:auto hidden"><div id=3D"gmail-avWBGd-3720"><div dir=3D"ltr">Hi,<b=
+r><span class=3D"gmail-im" style=3D"color:inherit"><br>It&#39;s been almost=
+ two months since I sent this report, and I haven&#39;t<br>heard back. I&#3=
+9;d really appreciate any feedback when you get a chance.<br><br>I&#39;ve r=
+echecked both mainline master and stable 6.12.95 -- the<br>vulnerability re=
+mains unfixed in both trees:<br><br>1. mm/shmem.c: shmem_mfill_atomic_pte()=
+ (6.12) / shmem_mfill_filemap_add()<br>=C2=A0 =C2=A0(7.x) still adds pages =
+to the page cache without calling file_modified()<br>=C2=A0 =C2=A0or __remo=
+ve_privs(). Writing to a SUID binary on tmpfs via UFFDIO_COPY<br>=C2=A0 =C2=
+=A0preserves the setuid bit.<br><br>2. mm/userfaultfd.c: I noticed commit 8=
+5668fda932a added retry state<br>=C2=A0 =C2=A0tracking on master, but MFILL=
+_RETRY_STATE_VMA_FLAGS still does not<br>=C2=A0 =C2=A0include VMA_WRITE_BIT=
+ -- the mprotect TOCTOU remains exploitable.<br><br>This is a deterministic=
+ local privilege escalation (no race timing<br>needed for the killpriv bypa=
+ss), affects every kernel since 4.11<br>(8+ years), and works on any system=
+ with userfaultfd + tmpfs (the<br>default on virtually all distributions).<=
+br><br></span>I have a full working PoC that gets uid=3D0 from uid=3D1000 r=
+eliably.<br>Happy to provide any additional information if needed.<br><br>T=
+hanks,<br>Vladimir</div></div></div></div><div class=3D"gmail-hq gmail-gt" =
+id=3D"gmail-:1tr" style=3D"font-size:0.875rem;margin:15px 0px;clear:both;fo=
+nt-family:&quot;Google Sans&quot;,Roboto,RobotoDraft,Helvetica,Arial,sans-s=
+erif"></div><br class=3D"gmail-Apple-interchange-newline"><br><div class=3D=
+"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">-=
+--------- Forwarded message ---------<br>From: <strong class=3D"gmail_sende=
+rname" dir=3D"auto">vova tokarev</strong> <span dir=3D"auto">&lt;<a href=3D=
+"mailto:vladimirelitokarev@gmail.com">vladimirelitokarev@gmail.com</a>&gt;<=
+/span><br>Date: Tue, Jun 16, 2026 at 12:37=E2=80=AFPM<br>Subject: BadBunny:=
+ UFFDIO_COPY shmem killpriv bypass leading to local privilege escalation<br=
+>To:  &lt;<a href=3D"mailto:security@kernel.org">security@kernel.org</a>&gt=
+;<br></div><br><br><div dir=3D"ltr">Hi,<br><br>I found a local privilege es=
+calation (BadBunny) in the userfaultfd +<br>shmem subsystems that affects a=
+ll Linux kernels from 4.11 to 7.1<br>(every major distribution: Ubuntu, Deb=
+ian, Fedora, RHEL, SUSE, Arch,<br>Android, ChromeOS, and any system with CO=
+NFIG_USERFAULTFD=3Dy and a<br>tmpfs/shmem mount). <br><br>Two bugs are chai=
+ned:<br><br>1. TOCTOU in UFFDIO_COPY retry path (mm/userfaultfd.c):<br>=C2=
+=A0 =C2=A0mfill_retry_state_changed() does not re-validate VM_WRITE after<b=
+r>=C2=A0 =C2=A0dropping and re-acquiring the mmap lock in mfill_copy_folio_=
+retry().<br>=C2=A0 =C2=A0A concurrent mprotect(PROT_READ) installs a writab=
+le PTE into a<br>=C2=A0 =C2=A0now-read-only VMA.<br><br>2. Missing killpriv=
+ in shmem UFFDIO_COPY (mm/shmem.c):<br>=C2=A0 =C2=A0shmem_mfill_filemap_add=
+() adds pages to the shmem page cache<br>=C2=A0 =C2=A0without calling file_=
+modified()/killpriv. This preserves SUID/SGID<br>=C2=A0 =C2=A0bits when fil=
+e content is replaced via UFFDIO_COPY, unlike normal<br>=C2=A0 =C2=A0write(=
+) which strips them.<br><br>NOTE: The killpriv bypass (Bug 2) does not requ=
+ire<br>unprivileged userfaultfd and works even with vm.unprivileged_userfau=
+ltfd=3D0,<br>since UFFDIO_COPY on shmem is available to any process that ca=
+n open<br>a tmpfs file O_RDWR and call userfaultfd with UFFD_USER_MODE_ONLY=
+.<br><br>An unprivileged user can replace the content of a SUID-root binary=
+ on<br>tmpfs via UFFDIO_COPY while preserving its setuid permission, then<b=
+r>execute it to obtain root.<br><br>The attack is deterministic (no timing =
+dependency for the killpriv<br>bypass), requires no heap spraying, and bypa=
+sses all modern kernel<br>mitigations (KASLR, SMEP, SMAP, CFI, PAC, heap ha=
+rdening).<br><br>Affected versions: Linux 4.11+ (since shmem UFFDIO_COPY su=
+pport,<br>=C2=A0 =C2=A0 commit 4c27fe4c4c84 &quot;userfaultfd: shmem: add s=
+hmem_mcopy_atomic_pte&quot;)<br>Confirmed on: 7.1.0 (aarch64)<br>Affected d=
+istros: All major distributions (Ubuntu, Debian, Fedora,<br>=C2=A0 =C2=A0 R=
+HEL, SUSE, Arch, Android, ChromeOS) that have CONFIG_USERFAULTFD=3Dy<br>=C2=
+=A0 =C2=A0 and tmpfs mounted (virtually all Linux systems)<br><br>Attached =
+files:<br>=C2=A0 - bad_bunny.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Full LPE exploit (uid=
+=3D1000 to uid=3D0) Build: gcc -static -O2 -pthread<br>=C2=A0 - suidhelper.=
+c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 Standalone SUID payload binary Build: gcc -static =
+-O2<div>=C2=A0 - uffdio_copy_lpe_report.md =C2=A0 =C2=A0 Detailed writeup w=
+ith root cause, reproduction steps, and suggested fix<br>=C2=A0 - badbunny_=
+demo.mp4=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PoC demo clip<br><b=
+r>The PoC (bad_bunny.c) sets up a SUID target on tmpfs, drops to<br>uid=3D1=
+000, uses UFFDIO_COPY to replace the binary content with<br>suidhelper (whi=
+ch does setuid(0) + execve(&quot;/bin/sh&quot;)), and executes<br>it to get=
+ uid=3D0 euid=3D0 gid=3D0 egid=3D0. No physical hardware needed.<br><br>Sug=
+gested fix: Add file_modified() call in shmem_mfill_filemap_add()<br>to str=
+ip SUID/SGID on content modification, matching the normal write<br>path beh=
+avior.<br><br>Thank you,<br>Vladimir Tokarev<br></div></div>
+</div></div>
+
+--00000000000082e41d065872a32b--
 
