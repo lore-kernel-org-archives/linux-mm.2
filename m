@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47C3C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 08:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE3BC5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 08:52:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99BA56B008A; Fri,  7 Aug 2026 04:42:35 -0400 (EDT)
+	id 878A76B008A; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926496B0092; Fri,  7 Aug 2026 04:42:35 -0400 (EDT)
+	id 8027C6B0092; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8142F6B0093; Fri,  7 Aug 2026 04:42:35 -0400 (EDT)
+	id 7181C6B0093; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DAE36B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:42:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C407AA030A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:42:34 +0000 (UTC)
-X-FDA: 85073832228.24.65B919A
-Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AB08540004
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:42:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vjCnZPNk;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E2506B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7D1D1A0116
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:52:18 +0000 (UTC)
+X-FDA: 85073856756.25.0BCEB9E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 09740140002
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:52:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTcT8qQ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786092153;
+	s=arc-20220608; t=1786092737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w+S9uhnLei8sckIfJwmMomkCOBcS3Ge0tU7iysiifkA=;
-	b=jjRt3TmuSBnOxWT/+t8lT+wRep0+Jyn93Xd/cUkEv34vz7BlFiQxR3hvzEi0O/z9QkgZPo
-	4jml+rrdN9ftCg4CAlbV5u4Na3v+C1ocb7MMW34yejl9Yw3D+ALk9xzat8/zKtPlCppRWV
-	j7eke7Zfa8QAAmZMyDGPOieyoMVFsXY=
+	bh=5dcfVoJ6AbTamxtwDiIevecxcWgLUpSF8Abt8+46V18=;
+	b=u9xt+JE9TRSlA7dTVnOtUM0u6misMDcKxEe5+9LpItKL4KlBd1oRRDs/GshEnjtl8g+7J2
+	5HJnPrNdUob8EnmX1lljknmBar5W84QK5zdfL7HbrBU3pQl93QYVgo8TuQGXUkJjprQJPW
+	ecu/6C4dPFzAYdzPxK4otc+Hfek1a3k=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vjCnZPNk;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTcT8qQ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786092153;
-	b=5FOeb6FWukH+Q7tzPkXb8cffdIzbdJiVlPHS/u39TllTQZVZOFQKpLM0icraUbj9D2CiqW
-	F+/bNNpHeU+5QgZOhEF9RyEYLya9TZiuOBRFpHM/CqLPt8Wk4tGRCnlqSZur9INmrxyBQM
-	8BuuDEmp44HQEvnuZqyL2+GJhOpnWzk=
-Date: Fri, 7 Aug 2026 16:42:22 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786092149;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w+S9uhnLei8sckIfJwmMomkCOBcS3Ge0tU7iysiifkA=;
-	b=vjCnZPNk25axIWyhNnN8qu4Ejr0GgXjiheyWhBE47o5583DSw0Yoy7J+Tganu8JSwSjT+7
-	FKKISIb5OX8A3PWNd/+sx/67GFt7Iva9vYO831lZls+OY9bGsXYU62gmLPmUTGGTfA+SP/
-	R9MejnUY1HM70qjBHsI69mzD2XKLk10=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
-Message-ID: <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
-References: <20260806193228.458685-1-youngjun.park@lge.com>
- <20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
- <anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
+	t=1786092737;
+	b=Wgess3MmVluuEq1WP+m60gEWROIyn2rbSAAJEDjkshpnRzHf4N3ZW9dNUDb3qhY3XI0PqW
+	iFkoVeuH0YEVx3L1SAi0hLWQ3bjDRql4mUP3vDxeaIUzAWwM0ttQWWGhyzDIg9mpQvsVZE
+	3py6MSVQ6KyMnUSZv+G/5RUgz+1Yl64=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 344324172D;
+	Fri,  7 Aug 2026 08:52:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD961F00A3A;
+	Fri,  7 Aug 2026 08:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786092736;
+	bh=5dcfVoJ6AbTamxtwDiIevecxcWgLUpSF8Abt8+46V18=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nTcT8qQ51DH5ivaM/QlGSUOmHVRTjTlaGZWUFmg7j5tGviiEE7SKdugJMY4FCLM0b
+	 bHPUbO9slRGyttKW5PcGlGFgT+zn1K0M7Mi+BC/LnadNL4IhuOQI1p4oBfeVsEVWd4
+	 MY3wnYZve+r6QEI/Ue6Tb8OgO6pcif8+fTzSPSCAhmWis07T+fW4Tycszd8mhRyGG2
+	 IxDDzD3eCjWy2Nib9EvdAgr5addJt1zZG1gGH+kgPQk1EjtxPmC3LqEC6GPBPqHDfp
+	 XXDgvo+Lzz2SeVs3Cp0wsWiD1QRnE7omcZ46bUsGL/MrxC4b0C1jvz6eX9iWo9HbmS
+	 oULyXfwS+jcrA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH v2] mm/mm_init: fix out-of-range first_deferred_pfn
+Date: Fri,  7 Aug 2026 11:52:02 +0300
+Message-ID: <178609265194.1678924.36219766049856904.b4-ty@b4>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260807031243.87904-1-graf@amazon.com>
+References: <20260807031243.87904-1-graf@amazon.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dc9upt8r6rsunq576c73d7hbtfwwxrr9
-X-Rspamd-Queue-Id: AB08540004
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 09740140002
+X-Stat-Signature: qeb7n1nh3wtqddfjcw6biix93f5gttus
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786092152-857457
-X-HE-Meta: U2FsdGVkX1/KKSAmmMeiovhFgi+6Na00uOzTCdsEjjhjOZsAwmVk+q7+1Zh5+dI0uSA/tg9EQ+Bvh0Pi/CH4OCiIoHEZadpXlvcKGKmD6IQtKwF4ZFD7vYL20vSZAXqzMln6a7lMd8HfPuaNWotw95sk22HstdhNPBYn4lO3vlQ+6E6Kpuu7ytA2d384z/8OhW21JdD6BXR+LHsWOqdrjnxAbr4gJVbJgmGOpV2UQNev0umDIpOXNCg2ySs21ppzsvWBEEuFxYadq3mkz++Q5fMhThz72q96eO/WwAA5llSth5mYoT5QK5LE46vHBpYE4VuMJ3NAHiBci2/JqebqOMQjKnATlcAR2clicg8eunN/ZljpkVuBQvjFspumxVOra4KlC5dL45ei21Jo9t3LEWCnXVM2ind27uHBZ31PgNOS140MAMjDbgsZLceX70n2Qk2Ti9GppXemxqFx3zvpii7WCp2vdXe+IvE0sppiWDM5Uf1AxOH9k+MCSqcL6VeQCKadGbHSJ9ZIitedsscElILBReOWyw87Rt0s7fPhz+pw2m18oxh03O98zIdtxXVtsVTwXjgZApXE1CHoPguBz60qh5ZZHLukhvru+GG2X1zwg5WGmyARLe9mXR+P9uk8asTCTt3dP/SH+8rBD1cdmVNA8lf/b6FGD38sDnpg3FEIGmf4momNWAN8r7TsJQSBKEW5Wg6oGiXhyFTpbJp1tL9UaugGvVm674wqdallFNYohQGjkKOuslF1/2ULvpZuu5Gg/lhNzO+LRfgeuMz7ln7fiCSEP8fFAg6935NLBrY5PMpWg0IMJwHX+fq4yu/UGnVZKc+xLlGUyccbEsrRmbCuNr0Two9wxubj0U8DEEvObK1E2P6SHWgu8tmD0f0U3bOU//fafnstmei/Pi3gYzAdLaCocACfCa8QJyeMdzl7n41RblhF7EIoMy4rwU4gydaSZ18b/4NHDb75Rzo
- hemOzBrA
- IYAMF8/gNn9JNxgGcGYrHCLBHonrP6kbMrwxGgTPrffORdOobi5eT8Av3r/enNlBOODIFWGkCjnZ0ucbS5eoZCLeSSZZ56r5ok91bVIKWTku4XkfX0hYjhMnzEjvSaCTfFpG/X0UHHNm/aqIBH5700XQTb4QoW5xorCzBDZbxp8RahLwD7WB0p0n1nt+yefiBZoWYFkxveVrIWU24WF/6ajTXodS9ZQL3HgG9hFZf7aCgyDuQoybdNw6t1rj6LgQl87ullixLTDShr34=
+X-HE-Tag: 1786092736-313245
+X-HE-Meta: U2FsdGVkX19Aq2lecQod/pKWHDmx8yFJn7Mg1s97cfcempM7C3UlJooyk45temlWc4OOYGoD4ftP8oNBFRMKsZKIlv9PtUuNBgkt1FuLt6ZyC5rPqSpWkn5JJ+ABUvFroSKpPdH5uf7zyUhbjl+tv/lmM7NzdLTyHc1E+ZOKZFwh7SKsS8a8rQ6pbMN0N2lxpBjGNz2fGmM69R5rDrGpsQUNRT221T1/cbk0uMnzkgCMqrUhlTJkGEzIQKWHnnByF+U2/8KSZDWyhmc3NUADiCe8i4UuPNlj757pIqASWqkGDzSyLEJF0NX0y9EAw3lt8a4hFW3JqZ0oXtrswp3i5wGkBnOTUc83pGUgBMIfWuXVlecKDh8Wg8jpZiw+tqcQFHhLtGg8Hen7jFQcEerLf+heX/MG1/NCGs36wMru57g4FTzMnQ5vVoGcAfNANx5q1qKU4A3MUgkQ1itTbvFtr6PC2SipsXRz8G63uhPtZyBWazo3H6LC7rC6iLZBa7NpFiMHOJfMlklOzqz8vNSZCy7Vd5SjGgWiiLvb7xyufbEabNMsji8Mboph5ULNdkXXsHTncDQa5mgamw3h2scNDGxh245hYsK2ejpiskP5F+Q4qbqo3XrP9CP2HcApXiT+MFGVmYU0QCUD+4Oq9b6xvyISaImR6PKR6QtxRPaPq8pseUePTdFfrkWrMAGAj1C4oarpoXktjwKFa5nj1GJ+0L3nlwdW4YOYZ7Q+90OOrCE7maRWSXjCVIO5mscjaHUDAQhW3gFnfSJHlJp5K2R1nouN0o4f9tZP3MZ3O11S0MiasUWLveQ2L+LldT/WIhg7eVHZ6QfA/qk8KEJ3KvS04TRsauiJmU8L+BsB9PI2zzJ49wAuGsU9d9AdCWwytsI/C+FSTVTDcm0WbuAyr0CGzvT7AL16/4gvn1Qs0o7vhYxzoS01idW2ArBBvz9qVujS+t6h16JKRR8teZqjKGa
+ WKixy17E
+ f8gc61XwgiED5f30+8nT2dzeo/ocqlrSRo6xJpkPMcxnKBmiIVQi8krm/fCcXl2aTolpqo6EgsAZRtwFiKjfprMLAe+pTYZmkT/7fG7Qp8OawEfqI5qoRF2v3bxjbnzeynyFRwFVefyMs1FPNmzCn/hm4MR89lp8VLiYCNXH/Wqb/vJm5/zYC1ESfs1o0kkI+4lz7OvH7i89SmqPHb1R/QPOUld6f1JYDj23hln0zWYgdxTfJDcjGHrGV2hUI7rhubYWl+NPtZFaYHLOxwlILbzcWigB+9+2RYsHWm6GDQFcinhC7ZjtYczlQPwyvOEirAN21GGGZD+OVyx9bjSl8QbA+eDe6nsY13cik/HyMDVSPuJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,73 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/07/26 at 03:41pm, Youngjun Park wrote:
-> On Thu, Aug 06, 2026 at 01:06:55PM -0700, Andrew Morton wrote:
-> > On Fri,  7 Aug 2026 04:32:26 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> > 
-> > > find_next_to_unuse() walks a swap device one offset at a time.  Slot
-> > > state now lives in a per cluster swap table, so patch 2 dismisses an
-> > > empty cluster with one counter read instead of SWAPFILE_CLUSTER table
-> > > reads.
-> > 
-> > Thanks.
-> > 
-> > Can you help us understand how significant this change is for users? 
-> > If "not very" then I'd prefer to defer consideraton of the series until
-> > after 7.3-rc1.
+On Fri, 07 Aug 2026 03:12:43 +0000, Alexander Graf wrote:
+> With CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled, deferred_grow_zone()
+> undefers struct page ranges early in boot to satisfy an allocation.  With
+> a large CMA reservation in place, the ranges it finds may not add up to
+> the allocation it was asked for, and we end up undeferring all available
+> RAM and still fall short.  That is fine in itself: the function accounts
+> for it and leaves the caller to decide whether it now has enough memory.
 > 
-> Hello Andrew
-> 
-> "Not very" in the common case, though there is a case where the win is clear.
-> No bug and no user report.
-> 
-> For now I would rather defer to after 7.3-rc1.
-> 
-> And for your reference, here is the details.
-> 
-> Every swapoff does a little less work now, because the scan steps over an
-> unused area one cluster at a time.
-> But IMHO most of the swapoff time goes to unuse_mm() and to reading the pages back in.
-> 
-> The gain shows on a large swap device that is almost empty, when the last
-> pages still in use are near the end of it.  The scan has to walk up to
-> them, and today it looks at every slot on the way.  Now the empty clusters
-> in between are skipped in one step.
-> 
-> I have no measured times yet, since that case has to be set up on purpose.
-> What I did is the arithmetic for the case that skips best,
-> For example 1T of swap with 256M slots with SWAPFILE_CLUSTER = 512
-> and everything free but the far end:
-> 
->   - today:          256M table reads
->   - with the skip:  512K counter reads
+> [...]
 
+I reworded the code comment and the changelog even more and
+applied to for-next branch of memblock.git tree, thanks!
 
-Maybe just use time to measure swapoff time consuming, just like below
-as I did on a kvm guest, I guess a bare metal machine with larger system
-ram could be more obvious?
+[1/1] mm/mm_init: fix out-of-range first_deferred_pfn
+      commit: 97090500d776c3f6d08e857e3a0a7cf092999094
 
-root@fedora:~# free -h
-               total        used        free      shared  buff/cache   available
-Mem:           3.8Gi       181Mi       3.6Gi       924Ki        72Mi       3.7Gi
-Swap:          2.0Gi        18Mi       2.0Gi
-root@fedora:~# time swapoff /dev/vdb
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+branch: for-next
 
-real	0m0.101s
-user	0m0.001s
-sys	0m0.017s
-root@fedora:~# swapon /dev/vdb
-root@fedora:~# time swapoff /dev/vdb
+--
+Sincerely yours,
+Mike.
 
-real	0m0.014s
-user	0m0.003s
-sys	0m0.001s
-
-Not sure if Andrew is asking for this.
-
-
-> 
-> That should be around half a second of scan saved.
-
-Yeah, a concrete number is shown.
 
