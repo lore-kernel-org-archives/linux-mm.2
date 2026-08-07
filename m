@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD189C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68A7DC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 07:03:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F0D6B0088; Fri,  7 Aug 2026 03:02:54 -0400 (EDT)
+	id 20D216B0092; Fri,  7 Aug 2026 03:03:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD0126B0092; Fri,  7 Aug 2026 03:02:54 -0400 (EDT)
+	id 1BE2D6B0093; Fri,  7 Aug 2026 03:03:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABF4F6B0093; Fri,  7 Aug 2026 03:02:54 -0400 (EDT)
+	id 0D4636B0095; Fri,  7 Aug 2026 03:03:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 783C16B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:02:54 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0FB3A02E6
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:02:53 +0000 (UTC)
-X-FDA: 85073581026.18.0CEB5C1
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EFFE38000F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:02:51 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cNegDMuz;
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786086172;
-	b=Wvp9v+PgGZ+JhL/SBw4oquqGZ3C6xOjHd8OGWlqD0niIqddgO5uAZ9a5/0BucxR/kXWbho
-	99W2EjUUCnlRzNG7GKI/iK7gmoZRQbvP/az9k3v2hgPhUiW0b8tBUr4JClWxEN6JVPV1+8
-	bpcrevcP/qkXBgu+hIMGuhsu9P6A1oA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cNegDMuz;
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C22A86B0092
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 03:03:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04BB01A02B1
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:02:59 +0000 (UTC)
+X-FDA: 85073581320.06.A4A46CD
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C54D140015
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 07:02:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=prda60MS;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786086172;
+	s=arc-20220608; t=1786086178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=smuGmk21K57soIDpX9xRt9BbzTPX01FIBsuhki3qxVU=;
-	b=j9y1GGzMfIWePDq4jbgMsgbwmE+DTl09Uzo1E/g/nXSZSNkgnQTKqtAvbXiYkk7Ao4cI4t
-	PUTiwXgKw1tPYRqEbiPm/YOIfG9eRPE+vIQ1V/yPSFfk0/UzQGWpG2Nz+o0/FfxaSXPLA9
-	Mye4qebY9m22UDJgiRs/U54cfLgKKA8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nmnNnkKZaC6z/s8sNb+drFXBEauMY/l5sTUHuEf6x40=;
+	b=lqx2Hp8iT1sNjQfMqUoCwl4OHDpxCot3abcGEu769/OM6S1Wez5i7JIyQMHn/D6XXjdt2A
+	cqU+ZDmcmf/8Aw4krpw9X+vocAA/Dvw9DhmJIePkxFfjCgWtFSZssRnxlNoiTf68kOEjZ3
+	0sGWYHpe+A/TNZ9kExxmDJX/KyzVIAI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786086178;
+	b=4Rhk+CG0+kdgWzwDcYDn9UtCq5SS1bXjmuJAStQizYnd++E2eMuqDUEEpR5SXcw146KkhB
+	wN5CRf9Nw1gjrJUfsPZZXYJ/JBlp+aJifEau1hxzxiqvN9Gvc7vBRa4Q/Ng8gBGzy1bGVV
+	N9BW4MR3gqODOxIrNpZDfXeAKFQF8JY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=prda60MS;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786086166;
+	t=1786086175;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=smuGmk21K57soIDpX9xRt9BbzTPX01FIBsuhki3qxVU=;
-	b=cNegDMuzfa9tQvyToC72m0ArSkyHVD+RaagQzGD/nqOzWZp9fdoQEvmCuAPDDaArgiUcrS
-	tBri5clUOgq5GZKRHqx5P8jsuV8XS5iJRyciRc5F1Ld9ynhPL11ucRX4HHZFIx/f1kK8CL
-	vMtTZyhZ1z07gaXJo5/qsxGChKcFDM4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmnNnkKZaC6z/s8sNb+drFXBEauMY/l5sTUHuEf6x40=;
+	b=prda60MSdMi03FYQX8L+/loT6b5foyZ0pO1qiijpR9hAHQH6/pPFJMqcWbh5ya7u6Y045A
+	H7jbnme9dtuLXAx9uGrtRM5C4ARU8ASnohlen1hhYCajk0I7wbX+74sr3PUVS/USXxyuz8
+	6kl667qHNptBEFa/dZ7GJcAn8DOCR7g=
 From: "Hui Zhu" <hui.zhu@linux.dev>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -119,20 +120,22 @@ To: Alexei Starovoitov <ast@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next 0/4] bpf: BPF-driven proactive memcg reclaim
-Date: Fri,  7 Aug 2026 15:01:48 +0800
-Message-ID: <cover.1786086076.git.zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next 1/4] mm/bpf: Add bpf_try_to_free_mem_cgroup_pages kfunc
+Date: Fri,  7 Aug 2026 15:01:49 +0800
+Message-ID: <5cd3efa9a4c614ba0b03cf4a3bd459dea67a9f61.1786086076.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1786086076.git.zhuhui@kylinos.cn>
+References: <cover.1786086076.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EFFE38000F
-X-Stat-Signature: mtgfbs65fc3nr4s6ktjnzonycdoighhy
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C54D140015
+X-Stat-Signature: 7918uinifgkap8ozrbc4j4ctx5pcmbdk
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786086171-615191
-X-HE-Meta: U2FsdGVkX19DgnO0JFlK/ppEV+bxFQ3+9LaGD/AIzDfRig1G0he1PNeT28af2QJDKudSBeoBhNtGFwMJjxyoSreN1raZLNCyCOGjX8+zqajiAp4elP0blX+IffG4B0VOGaMXZ8OacLWurQfQICxR2nCoNc0pnY2yKZvgSk/BJ3ZZJzXVZ9NE2MdzXUt/5kwi5bK2Os8tVMd1r4SX4GovvZaawCXZiUiKL7YgFFkPkWKk/j9wRcUl7UNVVwiKII0BKaLhwVkLiR8bx9fGu82pFUqztfu3SurX9Llfn2LKfxs0LBEHPRP7by87fapfjEHibV0GwnQLUShr6lpfl9cGrTR8Lde3l7WsGGzZHK434o53Psqo6MXdJmhjisdROTxt6gx9DrADfiewABk1FqbevaLCNsH+uOgaE/4g3YNjEEig0Gj8z7NNcuBUOY8Qna6T+gzDmB3rskqzUIf2+fwNADW2weei/1qbAqkZY3LN4HHjdITp5f6zGhkBMWtvwD8c58Shja9yw+20ycn12Jl6CmYTDvmjW/ozCqciRfRMajK3JFlYHBSYE9Ixs1WEl8ixTi1J1ExZSPJkj81mSXtzvbgPaoaY/gD3yt6YM55io6HVKO5ZCAfmh1GDrEnzVRtd26XFU6nNfv2LxEnFhXUheJwVJrZ+Wv8CH0wJ+AOVbfU3Jm/ArnYUQr8QL4dfZpkg5e7tU8kZflWsCr+Cw0h14WslPKi7BPCMiLtLaM/1Fmecf/0JzqCDIrKZl/d+GpPZ0hydz2nTMoF4E9NE5m8xAUVbPhz5XnQss4McqAP3jOSfzjKGNfxQatZqjgKeBmjb6EfqWVkkDVneQEllknB0D8fuKLmqtxqLJwIk+uv/ji/niWtnKdcJL6Z2QqF/NaJP9CBiKbTwAbfrQ3cVozHMuwOFtB2ARlGZqtENzLnVIjgLOraTVeK7ZuWxoOEzA8Lz32D2udDb1RpmqmF9zJs
- Smv2o1sG
- mVTw/xsz8aQqAykDONnW0Vx+XgGSAELG5THaitOPSK3MASCujdp3nxDt8lpwZbdHRYY/WUP1tqDyECxnco9Zh8n2E5hsjU5sN4eIoAMENdYjxzXxi+2p6+yZqBuSZCC/PYky049zasWFZhB+xQLMHPqZhhG4LWT/qBXKnvEYTcFvVYQnRgyWo4/qpilRybVMrRPhkBdQU7vdxQTTgHa4gZAPOrqVRy6HAmYF+G2oLiQXr9EmrilNRlc4S9BUBX9QyMxlMGqIMmdVgdC7qWi31LOb2f+OspjCGATvggSoMkPqVtlA=
+X-HE-Tag: 1786086177-563713
+X-HE-Meta: U2FsdGVkX1/zs3KXgHi5RnSOq5TNdQ++BXCXlmmiuxoPpZJ5pOE3CX9MCYO/g/oInXgI0kqEFEG8f88zWJdL5P9NYstegYltKVOC8ZN9UbaB7fQxwOWoZ2YNGBgtPxJjd20rQVCHXnODB+OqYZYY+AZNtZJW26yaslOL7eCmsIrqRYtX6rygfXjI+5uH/Hmjb/wHQujHMCQjrgTvJnCXU9ZZgdnrBdjBTbfi4O2Ci4d+RtfsbpBYI9rxhN2WNJr0nDj3/xAvREYcdiMqcDf3Fr5SAykvLMa3f+wLaPlgCJLHQt4u+5uPXtG9Nh0KTC8iN6hKAlx2S1igQKXNoRix277icc2gLfkx6HdnABBItD55TABev1eEnQDC8ssk3Na8974mhwsfhmwUDjrCk4bBenNLSk4HetOsvEHL2xWscG5OasZZY1SX5ID4w8irHuuyioaHdznwVq1Mb/psXAU8W9j0ssBNj0p+B7Nlx5BaO21DD8HsAd7D28jFG1xDJEw4ntQGCpnU1JMH+iUpqFFzdfbwOa9e0kKaIUHCbVfN2si7b/nrxnWKYTRh7gJlY3QWOdaxIfoneQElRMUS6v0daCzaWFIuQpfE1vsAil8TxOLLXD0wZjM9GkpotnWwfGPPOoinYP/+eJdYRZlSeJPj59dQoZtxb6xExNhzf15QiNzXeVfXu8h5QGP3OfuVL7B0UxZpgCW27ZWillfmfaYn1peQUigqev3WgF5LeVzQC0ne1Ir0LPsv09LFpqcEAS9KiIShC/YZputHf8O/KZ95IeRhh5ymFBxFpj6BOyDx/t/9YaOwjAbJECCZnwJHQtBrKKVsIkiSWrH/hZHWaECpHpqk4mWnPivNJyKfEcWaaom4+AIV4GwSW7/YGgyEwV489eZEY4QcrYZ/r6d+GCim+5WiFJ3fX+JkavW321pDIH8DtOQ+yK5szfS35mHdbh07ulfPQahstJpsnLxDUjH
+ 1xwB7xcn
+ MWVg8fnbU68daMgsMCRawzBZ4bi7WujX3jrhekymroAI9X1TqNw3q0Vfs12Z2AYqRQZ7zketMYKhomxCtRvE/tDP7/TEMwJf5XrhJ84brS4DcCGy47VQ55daCE9/McRIOuI6Sw/YLg2jJgKElwlVwK7s5LvbfWG6GxuCxI1S8lsp6BW1DF1bbCuF1CDH/vgucTcNEpmseMlFKHqQpJRHOM7TVT2oqDw9l9ochX5gUgd0F6n5ulpkP6R3vAya75nAGhVJb4Qxw88/Ht3ERYdXEPAZ39Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,87 +145,118 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-This series lets a BPF program decide when to trigger memcg reclaim
-and how aggressively to do it, based on whatever runtime signal it
-chooses to observe -- rather than reclaim only being triggered once a
-cgroup's usage crosses a fixed threshold. The core idea is a new kfunc,
-bpf_try_to_free_mem_cgroup_pages(), which gives BPF direct access to
-the reclaim path so this decision can be made in BPF policy rather than
-hard-coded threshold logic.
+Expose the memory cgroup reclaim interface to BPF programs by adding
+the bpf_try_to_free_mem_cgroup_pages kfunc. This allows BPF to
+trigger memory reclamation for a specific cgroup.
 
-This was originally part of a larger series posted here [1].
-That series also adds a memcg BPF struct_ops (memcg_charged,
-memcg_uncharged, below_low, below_min) for synchronous, in-line memory
-protection decisions. That mechanism and this one solve different
-problems -- struct_ops hooks run inline on the charge/reclaim path,
-while the kfunc here is for asynchronous, out-of-band reclaim decided
-independently by a BPF program -- so I think they're better reviewed
-as separate series rather than bundled together. This series carries
-only the async reclaim piece: the bpf_try_to_free_mem_cgroup_pages
-kfunc (patch 1), plus a new bpf_thread_wq mechanism (patch 2) that
-grew out of discussion here [2].
+The kfunc wraps try_to_free_mem_cgroup_pages and introduces a
+swappiness parameter with the following semantics:
+Values in [MIN_SWAPPINESS, SWAPPINESS_ANON_ONLY] are passed through
+as an explicit swappiness override.
+Values below MIN_SWAPPINESS indicate the use of the system default
+(passed as NULL to the core reclaim path).
+Values above SWAPPINESS_ANON_ONLY result in 0.
 
-Patch 1 adds bpf_try_to_free_mem_cgroup_pages(), a sleepable kfunc
-wrapping try_to_free_mem_cgroup_pages(). With it, a BPF program can
-reclaim from a given cgroup on its own terms -- any condition it can
-observe at runtime -- instead of being limited to "usage hit
-threshold X".
+Note that the swappiness override is only respected by the core
+reclaim path if the MEMCG_RECLAIM_PROACTIVE flag is set in
+reclaim_options.
 
-Patch 2 adds bpf_thread_wq, a bpf_wq-like map field backed by a
-dedicated kthread_worker rather than the system workqueue, which can
-be attached to a specific cgroup at init time. The motivation is
-accounting: reclaim work triggered from BPF still costs CPU (and can
-itself touch memory), and running it via a plain irq_work/system
-workqueue callback would charge that cost to whatever context happens
-to run it, not to the cgroup the policy cares about. bpf_thread_wq
-lets that cost be attributed to a chosen cgroup instead -- e.g. the
-low-priority cgroup being reclaimed from.
+Swap usage during reclaim is gated on reclaim_options: swap is
+considered only when MEMCG_RECLAIM_MAY_SWAP is set. Without this
+flag, reclaim is restricted to file-backed pages regardless of the
+swappiness value or the cgroup's swappiness setting.
 
-Patch 3 is a selftest that exercises bpf_thread_wq's cgroup attachment
-in isolation: verifying the callback observes the target cgroup when
-one is given, and does not when it isn't.
+Also include <linux/swap.h> for the swappiness macro definitions and
+register the function with the KF_SLEEPABLE flag.
 
-Patch 4 (selftests/bpf: add memcg async reclaim test for
-bpf_wq/bpf_thread_wq) ties patches 1 and 2 together as a worked
-example: it watches the WORKINGSET_REFAULT_FILE counter of a
-high-priority cgroup as a proxy for memory-pressure impact, and once
-it starts climbing, proactively reclaims pages from a low-priority
-cgroup via bpf_try_to_free_mem_cgroup_pages, running that reclaim
-inside a bpf_thread_wq attached to the low-priority cgroup so the
-reclaim cost lands on it rather than leaking into an unrelated
-context. This demonstrates the end-to-end use case: BPF observes
-pressure on the cgroup it wants to protect, and reclaims from the
-cgroup it wants to charge, in one self-contained mechanism.
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/bpf_memcontrol.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-[1] https://sashiko.dev/#/message/cover.1779760876.git.zhuhui%40kylinos.cn
-[2] https://sashiko.dev/#/message/1b58d56976202f26818d31dbd0da2ecb2e2460f5%40linux.dev
-
-Hui Zhu (4):
-  mm/bpf: Add bpf_try_to_free_mem_cgroup_pages kfunc
-  bpf: add bpf_thread_wq kthread-backed workqueue with cgroup placement
-  selftests/bpf: add thread_wq cgroup test
-  selftests/bpf: add memcg async reclaim test for bpf_wq/bpf_thread_wq
-
- include/linux/bpf.h                           |  15 +-
- include/linux/cgroup.h                        |   2 +
- include/uapi/linux/bpf.h                      |   4 +
- kernel/bpf/btf.c                              |   7 +
- kernel/bpf/helpers.c                          | 418 +++++++++++++++
- kernel/bpf/syscall.c                          |  15 +-
- kernel/bpf/verifier.c                         |  44 +-
- kernel/cgroup/cgroup.c                        |  13 +
- mm/bpf_memcontrol.c                           |  58 +++
- .../testing/selftests/bpf/bpf_experimental.h  |   7 +
- .../bpf/prog_tests/memcg_async_reclaim.c      | 479 ++++++++++++++++++
- .../bpf/prog_tests/thread_wq_cgroup.c         |  87 ++++
- .../selftests/bpf/progs/memcg_async_reclaim.c | 255 ++++++++++
- .../selftests/bpf/progs/thread_wq_cgroup.c    |  56 ++
- 14 files changed, 1455 insertions(+), 5 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/prog_tests/thread_wq_cgroup.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/thread_wq_cgroup.c
-
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+index 716df49d7647..3f7a5c97e135 100644
+--- a/mm/bpf_memcontrol.c
++++ b/mm/bpf_memcontrol.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/memcontrol.h>
++#include <linux/swap.h>
+ #include <linux/bpf.h>
+ 
+ __bpf_kfunc_start_defs();
+@@ -159,6 +160,61 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+ 	mem_cgroup_flush_stats(memcg);
+ }
+ 
++/**
++ * bpf_try_to_free_mem_cgroup_pages - attempt to reclaim pages from
++ *                                    a memory cgroup
++ * @memcg:           the target memory cgroup to reclaim from
++ * @nr_pages:        the number of pages to reclaim
++ * @gfp_mask:        GFP flags controlling the reclaim behavior
++ * @reclaim_options: bitmask of MEMCG_RECLAIM_* flags to tune
++ *                   reclaim strategy
++ * @swappiness:      swappiness override value, or a sentinel to use
++ *                   the default
++ *
++ * BPF-facing wrapper around try_to_free_mem_cgroup_pages() that
++ * validates and translates the @swappiness argument before
++ * delegating to the core reclaim path.
++ *
++ * The @swappiness parameter follows these semantics:
++ *   - Values in [MIN_SWAPPINESS, SWAPPINESS_ANON_ONLY] are passed
++ *     through as an explicit swappiness override.
++ *   - Values below MIN_SWAPPINESS are treated as "use the system
++ *     default"; the override pointer is set to NULL and the cgroup's
++ *     own swappiness setting takes effect.
++ *   - Values above SWAPPINESS_ANON_ONLY are rejected as invalid.
++ *   - If @reclaim_options does not include MEMCG_RECLAIM_PROACTIVE,
++ *     the @swappiness override is ignored entirely by the core
++ *     reclaim path and the system default is used regardless.
++ *
++ * Swap usage during reclaim is gated on @reclaim_options: swap is
++ * considered only when MEMCG_RECLAIM_MAY_SWAP is set.  Without this
++ * flag, reclaim is restricted to file-backed pages regardless of the
++ * @swappiness value or the cgroup's swappiness setting.
++ *
++ * Return:
++ *   The number of pages actually reclaimed on success, or 0
++ *   if @swappiness exceeds SWAPPINESS_ANON_ONLY.
++ */
++__bpf_kfunc unsigned long
++bpf_try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
++				 unsigned long nr_pages,
++				 gfp_t gfp_mask,
++				 unsigned int reclaim_options,
++				 int swappiness)
++{
++	int *swapiness_ptr;
++
++	if (swappiness > SWAPPINESS_ANON_ONLY)
++		return 0;
++	else if (swappiness < MIN_SWAPPINESS)
++		swapiness_ptr = NULL;
++	else
++		swapiness_ptr = &swappiness;
++
++	return try_to_free_mem_cgroup_pages(memcg, nr_pages, gfp_mask,
++					    reclaim_options, swapiness_ptr);
++}
++
+ __bpf_kfunc_end_defs();
+ 
+ BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+@@ -172,6 +228,8 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
+ BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
+ BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
+ 
++BTF_ID_FLAGS(func, bpf_try_to_free_mem_cgroup_pages, KF_SLEEPABLE)
++
+ BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
+ 
+ static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
 -- 
 2.53.0
 
