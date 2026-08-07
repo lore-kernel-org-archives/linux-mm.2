@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90F11C5AD05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E80EBC5AD2B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:53:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B06336B00AB; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
+	id 0CA346B00BA; Fri,  7 Aug 2026 17:52:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A649F6B00B7; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
+	id F1F4F6B00B3; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77EAD6B00AB; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
+	id D72686B00B9; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3586D6B00B2
+	by kanga.kvack.org (Postfix) with ESMTP id 9EED96B00B5
 	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:52:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BEB6F801E3
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:53 +0000 (UTC)
-X-FDA: 85075823826.27.C935F6B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EBDD92000F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYk4XNP6;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37D611401DB
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:54 +0000 (UTC)
+X-FDA: 85075823868.14.259B2EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 317014000B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:52:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJxf7rF4;
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786139572;
+	b=bWI4U3WieUjKki+vQX+QWz8gn5aZUGaiAv9sd90SKm38vZuFq+GOXoKMDpQFotO+3akfHr
+	fK4bLyq+1DCZLVEypTwOHLIViXpgB0vpd0tlfn/naMjVPODJT1mUAxBEwzb7mRQO0bbXmU
+	8UvNsx8lcWwbsikGYhK0+d0UKfIhuSY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJxf7rF4;
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786139571;
+	s=arc-20220608; t=1786139572;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eDjsa7hY0VJfEC2j+fBuN7dN7ME9E5m5dUEGzwbSDLw=;
-	b=5wCAed/4n+oapnQzWU25JVW5EEL+i3zuiosivIhseNo3DVRHYGtotaoAxmOjFO/f77IBJO
-	24gIUzWac/4rWHaPxT4F8WBTc5SYNx6AZ8iXX3XSVsgxQwjgRVxDdfWXSKGWMr7L5Ky7Be
-	twC1M7ft8BWbzvXHowj1K7vAT3AXwmo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786139571;
-	b=bT1r3xbabUqyZS2c0FuhjsdSn2KPbZJfOvJ/41bmxdKpchcobJXts28qX7dafGzJneof9d
-	y3ieN7ghnS2NaiK1thE87IvTK42q7wVPoyu6gxV/xTjDl/rg19HNHk1T26ioLBrK1VKQkG
-	JxoGqs8lDDY1UdIMa+CB3B6ZEKUzgNE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYk4XNP6;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8hLAdMBokqQ221hQIaf0GQKNpcEiA5GPQxu71lqR7Bk=;
+	b=Y6Gp8JMQ7U9jQCauOU+urPe0cQyPNC/174Isw5ByKh978+cbwD/lyuk/dG8HBnG/Dr01aG
+	dsqpg2UREDN2wdP/Sij7MEqZpDRjlcqYEnrEAPpK4FuiXKmPrplleXv7/eCX7Dfs3Lyb6c
+	D3+L6LsJq+IEhvGhWNdAwjJtGO18noY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D655601DE;
-	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0AC8DC4AF50;
-	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E429044FF2;
+	Fri,  7 Aug 2026 21:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E351C2BCC7;
+	Fri,  7 Aug 2026 21:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786139571;
-	bh=9/m2jxorN/mpEKB+0ZPDHMOy8YGWYwwh289K8iE9S8Q=;
+	s=k20201202; t=1786139568;
+	bh=R28ZEIBAzL55bIZ0Jfb2Dv5F59rVFGvixvPDAxwkpYE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HYk4XNP6WcB3voorCYEt9HWu65TvP5LOmDMD8qRaZLEzx2ayWooIfmg2YOYZfc+ur
-	 5jLW9Uzmr2kJeiFee7GFmIqPBjd24vSGZlqkP1/CbrMz1OIOFA3UzcxFBCk4ddGHaw
-	 0dSWKmqfHm6ni63LH56/9oQ+hlRbA4jSHQ/XEKrl09KxUzuI3Pzs68yloF3EJtjgPG
-	 P07fiM0ZPtx4YT0arK932gKsf9uOIm6C2pvFmFt06Eoiivrs8UvIxyQYkMhhLTpUiR
-	 O+wSMGvTPE5Z9UQr06D1lIE4bv3SVCMV/k3db9OMfQnPe71/1EqGp0Nu90vsByxk8z
-	 o9JpNQh5mGdOw==
+	b=gJxf7rF4QQgoi2wUBUXO07as85mWqVIidSadVmC0eHXDaMcgDktxcVMi8Qfe7KrlO
+	 5kr2s12ePf4GDC2Y2sssMuWmWyRkX9x8Eq8vBFLQPt0YRRGz6XlsLWgfcKNgQ1t5/4
+	 RkYZ865In/RYwQFA4uHXM8fdzGNIgef6JCY1HNks6w080B7YxiaTNi3etByORrEXd2
+	 Sm6Z+fSkUHNPVFoG4uyGQqAcS4GfSJv1ulEvLsai2Nmrf4LFdX2a58gL2RFvC9qHTp
+	 2GChyeIOtEd0MbnmJmbQBvwwRrEvZhpaxlgF5V37l2bZVOkJgbPCcY3yiIChnz/nhe
+	 KtXUU8oVbpriA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E063EC5AD2B;
-	Fri,  7 Aug 2026 21:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44301C5ACD1;
+	Fri,  7 Aug 2026 21:52:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 07 Aug 2026 14:53:12 -0700
-Subject: [PATCH v10 33/41] KVM: selftests: Test that shared/private status
- is consistent across processes
+Date: Fri, 07 Aug 2026 14:52:46 -0700
+Subject: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-gmem-inplace-conversion-v10-33-2fc18ee6d3ba@google.com>
+Message-Id: <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
 References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 In-Reply-To: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,27 +108,28 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+ Xiaoyao Li <xiaoyao.li@intel.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=5042;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=4469;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Ms+Uf3765Ivoa4b0Xh9VZFehp7g2sgcWofOdWHtIXiQ=;
- b=c6u1WfppRWCKD7i14xOqzWZctHUQCeSAD2vB1tMd8H8ffRAIjeADz4RVPXWO4m1EiMTPF5Xw4
- gixah2IQwpCCXkFvbLunj/SQn9fKtGcTGMJZJ0Vkbf5QRsv9aJCBlU0
+ bh=WLHFPoezUAm21n5cIFWjuAvOHkt2CQoZ0rZKzRZuazc=;
+ b=ZDOH0/Oj5SJ3cr7plA8V5KsJ2F57SIEEItjUXWHMqaX8nEorDWE/Syxgz2w0EEtbnfoa9n15i
+ Z4Jw6LnCohfCvMN0mc4oVdHsVk2dT8aCyEXPTbtZygtHYC2VjIp2QOD
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EBDD92000F
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 317014000B
+X-Stat-Signature: py8b868g8cehihzd7xeq1qzg93y8h4ng
 X-Rspam-User: 
-X-Stat-Signature: 39fi31ew9m3gchurpecmx55kwzw3wmni
-X-HE-Tag: 1786139571-307202
-X-HE-Meta: U2FsdGVkX18581bAGQnGAAA7HUPfM611+nu35KC+47n1eh6HRoEXydfRxo0fjHmqi3gzGRDmekNhJfwSS9QdjUx4cnUCRPHR7HvI4oTJ8LDVTDiP/mgcAG6suCkFfs+PO5Qp+VUvOPpVg/LB3uANd3E4OijCY8cLHVxuozyDXdVonOwnTpya/ZE/EqKpEQe6cSeWPsAfXtgegRJNn6hTAwXa9y39Uw64hTh5XWnlScoQQAUJUqRis90FZBWgbHYm/dXyfF4o3HEjnV9RVTsQUMTznH//j0dZx9iX1JNcHBW60AGnCoszi6Vh/vzad/ctZnYbkQWb2BwWEX99Qjz1slc0Gg/mVIpWjnlhcXOuePaaOELUMk79Dp9rs+XYH7E9znTwnmtRkaVQnmW9PnMTb6iGJobAsRNxko38JsghYo6zeIxnk5mndk1Hl6AbFGsgArdDGl5hqo356R7NoYx/WCBrKZEpGvegRiQ9I50bLLfN+E1fs1ZymLvoAeuLqMBqZQKkGZRa2rKIPfEV21zqMgmN5w38GIXP8IPisz7xY73OoTruDm6pThW7OCsh8EMTBa968g4vRDlHJyycHBwklJfgUaB7Tf57ex3bJJM1H6+PudwmlctRWrX1oQtGhq8DmTrmUp9VLfVHb/UDk0NoT4WxMruxKAIFvnNrAzofTJSeHI9M2QR8gl6YFSuItIWbRmFvepo8mkCoeEEV8J/GHj97sf4fJWOCGAIN0QppUWleD2Dm9uIY09o51Ra9HsTADmurZa72Il5cHG846TkJ6uRvgcDnYGdW7vjFjdlyjzfx/oqj7mDB2VPlpHPTrjl51qBv8Bmhu9wcbjfiHeXtgtJLLDRFGNlrhYT3FYtA9ShF83vhFQhxAtQnI4E2t9OjAuJuu9SH7d3wI0jm15A7tJfFcNztN/vWHI0G0t7hyCv09CdJoR6t0AVswMXJ+0K3HFzelnCN5HixzEl5pOG
- G2xT3y/J
- vzVx4lASQZ3IYnghIuj3CozcOZ+lfZcdedFPO6/wA7n+2RB0v/D6WHWStbpgoym88U0xCkKIXjHqKoYIxVJWhhC5t3wppzg2ye8F0GzeaSpLbej7FyJgS3ohsPrOCjEtlvaEx6dX+HvzZ2q6MD9VEc5Ac3Q3Khgb9BS8xBE9xibHN3WdRRn+mxf5K/rh8OkxgT8TGt9BCBjwkzw3SQQXfSZ/QNAO3D2V1NAch5ri/jkPx+J0O1llWge0mMZenyCl0gWS9BlLGMJxtIXH8AGuSjNQxGP+RNjcvQEl7m2sPKawqS9t390A2x0senVVeBDUfh886xY7Cxq8nM8xo/eIypmuGEri3II3n8MKxxJl3cyRmkKfiuVLrLjNhVBNyfQXoDfnWdrAbWtl98xlbUEmwUlKAozLaFF7tI+5D+IJynBxwMeKSoCp4x7ULeBWwczPrjrhRUED2khgKPKuF6CRqkxYByry55oq+R1IxoLsf9dUCIfs5kX4gOQrTVTldyaDvQg9gkCoymj5UXMY=
+X-HE-Tag: 1786139572-139706
+X-HE-Meta: U2FsdGVkX18AvZqs35eOjM7C1W5sP6UpApeAotbb2h9uoKJd7GrVoV5+/rzaFJozCqHM4qAbb1rfCbz60Fc5Ix/rWoQTX8cXViU2CwLnYPmw0yuUp6hbstjwf2k+bpDsXE4EmUSE7H5qf7tgqn+lgL1vXkVZOikroopEV9uRlTEXXYHZvSHxtmUEiqLDbEA78AOOjICmaBGV1TC7dCZU0P4Zv9mQxOtweYIDp5xFSVSAVjiboh7bruxY1xdwTOBt1VzXHXhyLbQkP4Xym/lGhbt2LR9/v4AtJdI9s6SP+qI8peiY3fcI93DcB1iZU5rwRXOdkDlU5Uh8oaHLBcTUaNKvEmHobpzuQvMGi6kjLOSvbYVysgzU/jCGRKOsaPqdV/ZBhsF5dNbp0oN1mzsCMt1H5ghUD0yUpv4LjgdxpnsCcvwKsQSy5Mogfb9txVr75FQnSmFtu49ruCh5Hn6d6YsMp+UleQAC9gPtZBibcBW1WF5lafBMIIpeTteV1VG3YaCYvmU3bgHgbYLG7Xa2yrAMriOe0ESNjJntAvpokfjo0Ca4VHM6rY1dlpb5zlViAbLXUuyMz7uTwt8dtBMJyiOtKSDX41uTqWgsoD+3TJa1OBI2v7yRX3kObJphJj/WQN7vK7Tg7DCtiYbFmg2kCLBNMiibVnSEppAIosDvU7wtOcplGZkNIwCRLMMH0l290NrKQaV8K80yhZCyAYfVGtnND1Qy8Aalcs41kIUkD0sSNsCssIgkPhNgfalAhGN+3WptnpQWAs/GshLefIlDQaorbGecMdYpJwoswifvlOOTBz471olijphRhXmK+X4BshqDNvTiASqJn8xwv+DUwDB9y4/9m/cRjx2EK0hUaL7/t02O6Dnb1K1ZrOYU0tQPOrWJ/8cgjsy4Y/aBgjb5Txt8m6y/Wj+Fvy4/3vdUr7LMzFWetGx+dxPmCmnRsCMmE3mmrWjbyZ3dZ/+g8/u
+ kpPhjD1u
+ h66G1HC8KHYSj1W42SsxM6fWAhKls7K7P38vqsF7XQFxBo2H2Hrv9Z2BdoWB2ikWuc4sDNt4bKUE761d9ZQ8yWYOlfMNsY1paEEpo361IzPyh/FIWPC1sZtEctzmf53tUDRXiAXVcYvO6qhph2mGRh0kBTegbmS7WlE8KwZjZUc7okPsBoYMwaW0PhKBUwaBfhJURT3f9uQ1WIYmjF3DfoPdkTesVso5LLHKYDpMTTgsL5rbD+3GkBWV48Jhpwvbv372Xz6P+vUNtLgkQVkZhHuN//KpQOx6WppwhaWvZGOnUK/vemxEsqRl0HttPBPJz1FU3nEZMYglr5rkHRJSE04d9TpJImZHX9N8pi6WopEKXh2uROpZdm4muHmYr0RrZT2gBt7JhlWzOcqYjyP6OnpLqNbfi2teEPsmb+wHe3KzTUWTK9Pe136efnH0tayniSPlV2+s8Q14ZxE6pAne/6SK6TnlXVnvFFw9zX4vGuedn7evgIgvilJJidXedHNAVuuImUohrn9tqzV6P0q0FEAyFQVbc3DUSrujEhUshT+LBPcauuiuf1ZrToA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,163 +139,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Add a test to verify that a guest_memfd's shared/private status is
-consistent across processes, and that any shared pages previously mapped in
-any process are unmapped from all processes.
+Stub in global variable to enable in-place guest_memfd private<=>shared
+memory conversion, which will eventually be exposed to userspace via a
+module param, and wire up the __kvm_mem_is_private() static call to the
+guest_memfd version when in-place conversion is enabled, i.e. when gmem is
+the sole authority on private vs. shared memory.
 
-The test forks a child process after creating the shared guest_memfd
-region so that the second process exists alongside the main process for the
-entire test.
-
-The processes then take turns to access memory to check that the
-shared/private status is consistent across processes.
-
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
 Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 118 +++++++++++++++++++++
- 1 file changed, 118 insertions(+)
+ include/linux/kvm_host.h |  6 ++++++
+ virt/kvm/guest_memfd.c   | 26 ++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c      | 12 +++++++++++-
+ 3 files changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index b7a54d2a90928..a972a09c5c6e5 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -2,7 +2,9 @@
- /*
-  * Copyright (c) 2024, Google LLC.
-  */
-+#include <pthread.h>
- #include <sys/mman.h>
-+#include <time.h>
- #include <unistd.h>
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 65fbce46b63f4..9477ecebbbced 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2580,6 +2580,8 @@ static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
  
- #include <linux/align.h>
-@@ -326,6 +328,122 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
- 	test_private(t, 0, 0, 'A');
+ #ifdef kvm_arch_has_private_mem
++extern bool gmem_in_place_conversion;
++
+ typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+ DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+ 
+@@ -2588,6 +2590,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ 	return static_call(__kvm_mem_is_private)(kvm, gfn);
+ }
+ #else
++#define gmem_in_place_conversion false
++
+ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return false;
+@@ -2595,6 +2599,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ #endif /* kvm_arch_has_private_mem */
+ 
+ #ifdef CONFIG_KVM_GUEST_MEMFD
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
++
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+ 		     int *max_order);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 1f1ae61b4878b..75979c885e030 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -475,6 +475,32 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return 0;
  }
  
-+/* Test that shared/private memory protections work and are seen from any process. */
-+GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
 +{
-+	enum test_state {
-+		STATE_INIT,
-+		STATE_CHECK_SHARED,
-+		STATE_DONE_CHECKING_SHARED,
-+		STATE_CHECK_PRIVATE,
-+		STATE_DONE_CHECKING_PRIVATE,
-+	};
++	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
++	struct inode *inode;
 +
-+	struct sync_state {
-+		pthread_mutex_t mutex;
-+		pthread_cond_t cond;
-+		enum test_state step;
-+	} *sync;
++	if (!slot)
++		return 0;
 +
-+	pthread_mutexattr_t mattr;
-+	pthread_condattr_t cattr;
-+	pid_t child_pid, parent_pid;
-+	int status;
++	CLASS(gmem_get_file, file)(slot);
++	if (!file)
++		return 0;
 +
-+	sync = kvm_mmap(sizeof(*sync), PROT_READ | PROT_WRITE,
-+			MAP_SHARED | MAP_ANONYMOUS, -1);
++	inode = file_inode(file);
 +
-+	pthread_mutexattr_init(&mattr);
-+	pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
-+	pthread_mutex_init(&sync->mutex, &mattr);
-+	pthread_mutexattr_destroy(&mattr);
-+
-+	pthread_condattr_init(&cattr);
-+	pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
-+	pthread_cond_init(&sync->cond, &cattr);
-+	pthread_condattr_destroy(&cattr);
-+
-+	sync->step = STATE_INIT;
-+
-+#define TEST_STATE_AWAIT(__state)						\
-+	do {									\
-+		pthread_mutex_lock(&sync->mutex);				\
-+		while (sync->step != (__state)) {				\
-+			struct timespec ts, stop;				\
-+			int ret;						\
-+										\
-+			clock_gettime(CLOCK_REALTIME, &ts);			\
-+			stop = timespec_add_ns(ts, 100 * 1000000UL);		\
-+										\
-+			ret = pthread_cond_timedwait(&sync->cond, &sync->mutex, &stop); \
-+			if (ret == ETIMEDOUT) {					\
-+				bool alive = (child_pid == 0) ?			\
-+					     (getppid() == parent_pid) :		\
-+					     (waitpid(child_pid, NULL, WNOHANG) == 0); \
-+				TEST_ASSERT(alive, "Other process exited prematurely"); \
-+			} else {						\
-+				TEST_ASSERT(!ret, "pthread_cond_timedwait failed"); \
-+			}							\
-+		}								\
-+		pthread_mutex_unlock(&sync->mutex);				\
-+	} while (0)
-+
-+#define TEST_STATE_SET(__state)							\
-+	do {									\
-+		pthread_mutex_lock(&sync->mutex);				\
-+		sync->step = (__state);						\
-+		pthread_cond_broadcast(&sync->cond);				\
-+		pthread_mutex_unlock(&sync->mutex);				\
-+	} while (0)
-+
-+	parent_pid = getpid();
-+	child_pid = fork();
-+	TEST_ASSERT(child_pid != -1, "fork failed");
-+
-+	if (child_pid == 0) {
-+		const char inconsequential = 0xdd;
-+
-+		TEST_STATE_AWAIT(STATE_CHECK_SHARED);
-+
-+		/*
-+		 * This maps the pages into the child process as well, and tests
-+		 * that the conversion process will unmap the guest_memfd memory
-+		 * from all processes.
-+		 */
-+		host_do_rmw(t->mem, 0, 0xB, 0xC);
-+
-+		TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
-+		TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
-+
-+		TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
-+		TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
-+
-+		TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
-+		exit(0);
-+	}
-+
-+	test_shared(t, 0, 0, 0xA, 0xB);
-+
-+	TEST_STATE_SET(STATE_CHECK_SHARED);
-+	TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
-+
-+	test_convert_to_private(t, 0, 0xC, 0xD);
-+
-+	TEST_STATE_SET(STATE_CHECK_PRIVATE);
-+	TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
-+
-+	TEST_ASSERT_EQ(waitpid(child_pid, &status, 0), child_pid);
-+	TEST_ASSERT(WIFEXITED(status) && WEXITSTATUS(status) == 0,
-+		    "Child exited with unexpected status");
-+
-+	pthread_mutex_destroy(&sync->mutex);
-+	pthread_cond_destroy(&sync->cond);
-+	kvm_munmap(sync, sizeof(*sync));
-+
-+#undef TEST_STATE_SET
-+#undef TEST_STATE_AWAIT
++	/*
++	 * Rely on the maple tree's internal RCU lock to ensure a stable result.
++	 * This result can become stale as soon as the lock is dropped, so the
++	 * caller _must_ protect consumption of private vs. shared either by
++	 * holding guest_memfd's invalidate lock for the entire duration, or by
++	 * checking mmu_invalidate_retry_gfn() under mmu_lock to serialize
++	 * against concurrent attribute updates.
++	 */
++	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
 +}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
 +
- int main(int argc, char *argv[])
+ static struct file_operations kvm_gmem_fops = {
+ 	.mmap		= kvm_gmem_mmap,
+ 	.open		= generic_file_open,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index a01d336eab18b..0a5a1bee8de0f 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -102,6 +102,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+ static bool __ro_after_init allow_unsafe_mappings;
+ module_param(allow_unsafe_mappings, bool, 0444);
+ 
++#ifdef kvm_arch_has_private_mem
++bool __ro_after_init gmem_in_place_conversion = false;
++#endif
++
+ /*
+  * Ordering of locks:
+  *
+@@ -2423,6 +2427,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
  {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ #ifdef kvm_arch_has_private_mem
++	if (gmem_in_place_conversion)
++		return 0;
++
+ 	if (!kvm || kvm_arch_has_private_mem(kvm))
+ 		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+ #endif
+@@ -2634,8 +2641,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
+ 
+ static void kvm_init_memory_attributes(void)
+ {
++	if (gmem_in_place_conversion)
++		static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+-	static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
++	else
++		static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+ #endif
+ }
+ #else
 
 -- 
 2.55.0.654.g21b8a5bc05-goog
