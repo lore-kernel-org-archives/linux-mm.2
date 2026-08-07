@@ -4,88 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A821C5AC80
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:45:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24EDC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:06:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 126486B00AA; Fri,  7 Aug 2026 16:44:59 -0400 (EDT)
+	id AF16E6B0099; Fri,  7 Aug 2026 17:06:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8B56B00AB; Fri,  7 Aug 2026 16:44:59 -0400 (EDT)
+	id AA1A46B009B; Fri,  7 Aug 2026 17:06:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10DA6B00AC; Fri,  7 Aug 2026 16:44:58 -0400 (EDT)
+	id 96BA06B009D; Fri,  7 Aug 2026 17:06:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B00F36B00AA
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:44:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AEF01C0229
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:44:58 +0000 (UTC)
-X-FDA: 85075652676.15.68A4910
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7547DA000F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:44:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CC26B0099
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:06:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 048DCA01DF
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:06:50 +0000 (UTC)
+X-FDA: 85075707822.19.8C3FDFA
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C858EA0007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:06:48 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fbhUoOHV;
-	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ZsVozANf;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786135496;
+	s=arc-20220608; t=1786136809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zxeALLBKEFzG8grdo2KBziKP2bhd2rDL/QAmIFoybDg=;
-	b=wGX7DvnKvXYiQbjHtGr5FG67h+z9ZlysWgqcz6oQ3Ju5ibCWTevhAadXRYK8bVA5tfolUa
-	DvWN1wqECP689/EE+zQPky2WUrtHDjhLt/vRtlgdjO3fvPuwSy0B8domSIijNjcL8XGVZG
-	bzfVJfqwcJbUrgre9xlb7KGUWj+viaA=
+	bh=4HDxV8AOnVYHdrgs0ibOVVOJXW1dukzUfV+AYeW4k1U=;
+	b=NQMYtm/rSdCLlgtcyv2BmPz6E63APAgl+uqXefMIDvNKWvI5qGeVU50J6AJ0324+DZLvbk
+	d0Fq/FH8fEP855SMwURsBhO8zG8gnDm3O4cAaDAzNUSGpFPuRBgq1IiDeGP77VMA/J4fVH
+	0JDNYBMa93iEIazhw8ZCcqoVt1NELGY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786135496;
-	b=iu1pVTfJyYGLvWVk2qWRn939S4km4lJN6c+REsyPQ8aPZSGFNjPmEq8NLwPCU7TK4GXd9V
-	bBarAsisNLbM73pOrVYhgBqS0qCOvhPrYnGWfL2n1GstIpPQKXrioZ0KyZLagbaIlcM3er
-	T+NoNBs0Un9NM0JRg7ux1PbyeLYv0S0=
+	t=1786136809;
+	b=e4sGiOkkVRZBOwjLlARBNzM+GklK5O8ffFGwu9R2LELx5BPhHNEcnJcBuKwM1RWctpOlfI
+	wdadC3iejdCWP+sDEOqN0GkypdRkOXynZtrF4QRzIyNSNX9bIt/EiNmkCiodzaqF4Wn50w
+	uM/2nXcdlpFyjPT6HTvQ6SwQZ5AqlgU=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fbhUoOHV;
-	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zxeALLBKEFzG8grdo2KBziKP2bhd2rDL/QAmIFoybDg=; b=fbhUoOHVwnsnuOQs3MV9BlWZuy
-	UwyGtwxNfET5K2AaSb/jGzgqWdf9sXiu+LJH5ckVWWGObD/MEdI0TPlO7FwZxhqS2XLJTvvA2rO8J
-	hrZCl2J7uORp2MH9fjBhD0bY0T33eFJIrY0QUu17QMvejx7b2HPDBfsVlAl0MhGFWX0vSm/BqrldN
-	htjyazvLM3/4MEy5FxEWPhvfF3IS7WEcP91vkd2McCuDo/t8SZuAqJVowUC8CJYyK7ALe4pNbgryc
-	aXolsdximWUjQ0GpkrzfJ4a547OkAMms1JYrQeo+epoG/YvftXr0ZFNNZ9Nl9rPGLogefjXB4iLOs
-	ft9tXDKA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wsRR0-00000008jbZ-2rU0;
-	Fri, 07 Aug 2026 20:44:54 +0000
-Date: Fri, 7 Aug 2026 16:44:53 -0400
-From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, Rik van Riel <riel@surriel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, pfalcato@suse.de
-Subject: Re: [PATCH v2 14/19] maple_tree: WARN_ON_ONCE when allocations fail
-Message-ID: <tryturkc7cl6wckhogh37wj2z5irldp43t735mqocdfc2mfgzg@jehcfg5eiesh>
-References: <20260630190843.3563858-1-liam@infradead.org>
- <20260630190843.3563858-15-liam@infradead.org>
- <20260630160208.b6d1e09d60c50c8fbb80e830@linux-foundation.org>
- <laaqmevk454smc2uotd37rwjz7ijekfhv4hyv3wgbp7bql2bas@tqkyygz4wm6t>
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ZsVozANf;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c2149571dso34833951cf.3
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 14:06:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1786136808; x=1786741608; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4HDxV8AOnVYHdrgs0ibOVVOJXW1dukzUfV+AYeW4k1U=;
+        b=ZsVozANfx70rR8YmPjJpPZZbfdY3C1JH4KTGNja6sGhErlMNXzhgfO2J5NlZ9DnwXN
+         emgGdJMJtqVttqCPdG6fx5mAb+v2/bTzohCB0u35ctDgt6HgbjOnE7mKzRRzzWJwH3Sj
+         ArOTFbsalfUN1ewHJMvE08lgqy3Yv4li2Uhn/86E/qahNA6nKIDvfK8CSnxn6avJ1p3E
+         E+HgoM1/xf++1cNvXHQDJoDdYBTTUHFFeB4uRCjY3r2tuJdJhsAjG9jwqX3txgc+b/X3
+         gw1AshQ/5p0d4W7rEyPwk3/WAFeEGrOkDE2NtZEb6jqclP52KkWPQ7hBuWHVp4+Ywsme
+         1Rjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786136808; x=1786741608;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4HDxV8AOnVYHdrgs0ibOVVOJXW1dukzUfV+AYeW4k1U=;
+        b=Ig7KaemAqtAoq4mHJDHct3XPcxLHjuRs0S7MSsnQTBBbSmqfFvFPiNPh+TiCi2WhB+
+         lmkl6Z5RpYy6P/m9S3ofEEgn5L7Tp41Go/mFfYcJUy7nk3ko/9JASWaavMSJ97la+s1y
+         i8xrMlqBwhusbMAcBjAXpMoBPtawiZrO/wDNi33Vk2l4V5E5N8e62lEYIgaKW6KpuPKv
+         OvP327ZxDnSclH87Sv43WIE/BpOyF2NXdAET5YZq8kVNxQW0Z1KYg+LUsudqezqSu99t
+         T4f2s4P9z1/Fchu3U/u0ZmIkDkyjY8RV/Vi/7zc/uFJaOC32T4Nf2XHX9vU8R0a9Tk5g
+         3+dg==
+X-Forwarded-Encrypted: i=1; AHgh+RoS5y9z9HCstY8nWeo4uEyEGGcBttSXQrRN6+aYQTDSN84v5k23aSgi07qTQsB8qlxNvoq0NxuMCw==@kvack.org
+X-Gm-Message-State: AOJu0YxS31ImuKHfccNn2/kphfplVwJBHPAHe0ZDcjlJnStR4duU+Ch4
+	/yA9kVDfOfNqYRS0jj6GMtwQq6ajCbw5T+oOoVa8VkQTgyXRr7pDhdzGEa6SQONU+j0=
+X-Gm-Gg: AR+sD132aVVU9FvwrLgodkYwJC673PfISCwPalFcJiUNy/Eawl8AaVXVcAUANolDxx2
+	k+TU1blxMbGXqiugWzEZxk5ZC5yaRdLyAep7XLjkjV+il/BJO/ixCvSubM2ERCeVKlk+nt5WSpV
+	u2Poh+gelz6anyB1oN71DGz3RdzaX/s6QRL1AOWsnFnFiEOuA9Wvgy0SJ+nsL2KlUv+1lPbYB8O
+	qnQxw9w1e+6zLtiPg10vzddLrOmi4Nw27JVlMYO1PYMS4C8tBph8CGs16KfkXU8DkaSgNxzPDUY
+	bxv5VJJ/cj7xmAu7mOXG1PbCiNvOe91uiHFAZGCHKI4JLUyYnJp8tkr6+o494ELjmbJkhITsJNP
+	ruy+D4v4BieJyHdKsZdsLTMpHXtAd+1UDNRuzbVANbCmOOcnjwC4o89Czd36jCeaA7VOzsjdj7Y
+	bAc+Yk++bGKZ5Oljy7Lou0vgxEJvydvGDkQgiQm+PrNUFonR6t2NfdjU6q8vE=
+X-Received: by 2002:a05:622a:2448:b0:51c:1117:c79 with SMTP id d75a77b69052e-52d0b193284mr158320901cf.24.1786136807783;
+        Fri, 07 Aug 2026 14:06:47 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d165fc55fsm19974341cf.25.2026.08.07.14.06.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 14:06:46 -0700 (PDT)
+Date: Fri, 7 Aug 2026 17:06:45 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, baohua@kernel.org,
+	youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com
+Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation
+ failures
+Message-ID: <anZI5dXe2YhLoR1a@cmpxchg.org>
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
+ <anWAZ3T6Sz8bsKSo@KASONG-MC4>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="2zydfjwo6sc3k2am"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <laaqmevk454smc2uotd37rwjz7ijekfhv4hyv3wgbp7bql2bas@tqkyygz4wm6t>
-X-Rspamd-Queue-Id: 7547DA000F
-X-Rspamd-Server: rspam10
+In-Reply-To: <anWAZ3T6Sz8bsKSo@KASONG-MC4>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C858EA0007
+X-Stat-Signature: q18u7exransdtzqezc4nqsw4n1tnjnug
 X-Rspam-User: 
-X-Stat-Signature: itdgd8bhfoicqqfmf5dmdkibwoao5o5t
-X-HE-Tag: 1786135496-560000
-X-HE-Meta: U2FsdGVkX1/3bQbP2OlYDpxLF/6CBin6hia9wHsV5k3sjGFhYh2eMt/IJf4lr/VKLQgUua3RkZx8Pz672TAhd0vld47VVRHLfkhbV8CxrduhhWbmI+75GmHmvOxLMh5ohxyMMAQF7D9VEdBOd5pb/SQ7nJICzBH/On7SggGh0AGy+BRyEUgGqzQzWWVw5CW9E0jk2aIickiemPtI57Ty/II+mxYenbEDmnkcbT5qnOrJxpku7yuoEe+RPE+wKtvHY9P2++vc6O1E372j82/7uvNoTrYB6X5mBwZnFt+u5iw7hsaiku0AsI4M/vMK9vWkxKCJCjQZvdBPIvu2wM6SEaBjG/yeqlA5B23LGsmXzO1TMjNExT0PvlUYTE+GQj9XyRmhnQOaONp55meIDaLFD7HLSdepl3EA9yBR0xsquePC+TGN0tYIgih2GsvAlUZ2AQFITOGI2f0mo2BFm2gf3j1+2yvN50vUS3hjjBHCeJVGXGDjP0I5rudBmn1hsawTsSoSH+Mznaa3K/mg6mWUv5AmeMbmPfIfL+pVPjejRIWWZsrctmla8l73H9AvPK+JIE8qVO+qPSqD6WzBARzjnLdOGy9oJdaeQHFwVbCYVNW6F8m2+dV4zqlxdhZnzlmvRy9XE/Dy8r0gz8kmzT8VjIqG0Xy4OuDSC0lhMzwUQdUXtfwsqr/V9a0AwBDFo3G0eJt6ZzNFdKrztHnLFWhKWlTR513I1TOlN1++jfGzEus7ZKwysfBU1J46OzS6ThRM8dR+Gu3HDk6dgzpzVrqAbHU5TY0Xl55TAz5YeIb4d33T8n0kz5ilEHmHKAfFydlQG7SA5vGduxqjWwGLjNckDvY5l79OyDhWlAazbfnDmAycPN/9im12AWD21eIHZfoO+XkPOAe92AbpcP+uvw0/uRUFMQ7SzWGg7ygKCXzJabeHE3UuCmGJ187iXyl58WABIebfCaUEDsP4+g+iwid
- hSk16CtK
- bEHuPDfxx0/6u+EXF3Nwss/KrZ6iuIujox8xOAwgAQoqnlzt5zn9je1rn449nBWgQg96F9Iz0/EuYCbya3lgV1mQrT5KGA4etx7+lhZCzBajGQOMBkblSKcQ5yZ35rpx3Wz7VlVGhBNBUHciKv26gpAb7bLTDC+LclCUmuVSpyEL7/MONmx3reeMCBKT+DCZeP6OSvs9UJKP0UbxNASnq8tqf+f12nK3411QmNXF7K//g9H8LXXtYSvtJp9vlazz59LTLwg3uWW+KAThIb0QW68UImELL1tucvD5jFCUwSM/EsiR07pjwA/2ZY3F8S08tBbve0CbCHWFy98XZnKZU9E/TzQE00RNA0gI2fpTY65JS5kzIcXvHEUSVAkDpIBRmF9NTCRfJX2ViyP6lVeIjJECIGnGoluxiHi7FgGkmhVI83qp0ULVVnRa75Lm3gX1kakHDyvVHhtq+lEN1IM6QxbqMZhVnxTPDZ1ThkSlspu67KAM=
+X-HE-Tag: 1786136808-141982
+X-HE-Meta: U2FsdGVkX1/lemdQFSq0tL4Z92pectskPw7934t5sMiITVuvINR1/FHOik5MCOgf5C+y/Ag9CrzebBlJ2nQKR0qf7OionEm5WL8j5aICp1Cnr2OisF37dllV5Yu+u4ytR+lNvIkiwddvqrlXUwDrpBItVoWT5p8O1NBSabmavJOcKQKlj2dhPxYu6kCNqP2cHLfdHfFMHQV2nTBjpgUvfgMdbcvdx0zPPQBeROaejFoCUDGKng4hskDWZCXi3vGzQvJlCDj4tW353Oq6FEmjz+e3IL84Kxg+qWAtaM6FanlAF67Q0MZg9AFfy8MDKQiiY+fSbMRO0qme3hYPfs9e6KciMiqZWLVqh5eLC+JuRLBSJ+4HLOs3pJYAE9546Y/3dhXhf9vPsNa6DrB3JgZciPJb8Q0xQy8bDoJKYCMqO8HHrYcx8Ku0TabbjJiG7jfGJUcVgvrks/KWafDRwW2P+DXhyE81USeStOEBYsL2ECYB5LxykpzlBObtj/PSIcrj9mjn9BlwseWldRZqFdG8qiUoVxBy8N9SaZDBMpgcpCmOryiLRsq3sfIdxWoiiODzAcQWmfhm5kRJ8NtOWWCReaipJ+nbx8l4tXTeVwgjv/3jI1txxEpv7G0/RdnYUdAU+qfdL1eFeM+zvIoRDE6RxseJ5a1VgW7VV9fPR6zGi1LFfg+YcgwO3J0eDYKQgxTZGRDT+QXuWBsljlCt2khh4qupwXsZ+zx0DpuMPPGREyAxfTmqmJWSULIDHYBm/jP1I3N92yTakLZx4lBh0FTBM+oAOXWqndwfGpQOIFXqFPVxzFRgFql7IIRoU0njftgsmj+kXuLUZpA6uZIatHQ39XGB7hw2h5kCTAPETZzWQGBxNjgMRrTUXHZBS7MK0QYIDfowA/djY8d+WRSNY/oRPZaSFIrUKCB3VFDSCBq+Q45uFb+JYYYTTE8aDdhNYlQ0W8aXQ/OnLBQ4AOTbXLY
+ pnx7HCJO
+ DWbmA8qDvTeHI6D1PObdrKV9abtVSf0sYpWR3j78a34nPZzzN1hkg1vmtb/lDRj02RVWiwbJ9K33ppbVGu7fnYgaPdyll17BbAaz6aCNgv75P64p9Eg91nm2YWRE0juJ6B6PX35hc2//vg1ilVzi6p4N8UHWGeimyGv7rWYCp3izr7pfkfXzxOTYwp9+WWDNKmspLUD8OXE6d9qHrT66+btHRptTSy9xawAZ545GJlF70dT8LqJAwMakoeCkKYi7yx36sQ6MUPa0r4vW3ULiqEFpZqUd88Ibnxk70Z4UIdmqtyoUWwEr5iIiqIgFnrUbAd/UZ1+d606g8R4J/35XQdT2M23UueuEM7hhN0lJ7vk4CHRo/l+jixGzYqggovXGmemtmj6/29EPAcBVoPkUtuaKKDlbyX9wLDrl8uGaLkGxnvffTiVGg+jyHn2HYP24ZepwwhQDl7ZMFxGc1oRbLouOxM83ZmObzTfo3ahOA4fHrf4SqBQ/4L6jejHv+nttvj1xj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,150 +130,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 07, 2026 at 04:29:17PM +0800, Kairui Song wrote:
+> Am I the only one that feel this returning argument is a bit ugly? See below..
 
---2zydfjwo6sc3k2am
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Will is be good if we just always check the margin use this helper
+> on alloc failure? Alloc failure should be a rather cold path I think?
 
-On 26/07/22 12:38PM, Liam R. Howlett (Oracle) wrote:
-> On 26/06/30 04:02PM, Andrew Morton wrote:
-> > On Tue, 30 Jun 2026 15:08:38 -0400 "Liam R. Howlett (Oracle)" <liam@infradead.org> wrote:
-> > 
-> > > Allocations should never fail in the circumstances that are expected to
-> > > occur.  Add checks in the code to ensure the circumstances are correctly
-> > > set up by the user and warn if they are not.
-> > > 
-> > > Also add a warning on failure to allocate, which should never happen.
-> > > 
-> > > ...
-> > >
-> > > --- a/lib/maple_tree.c
-> > > +++ b/lib/maple_tree.c
-> > > @@ -5720,6 +5720,10 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
-> > >  	if (likely(mas->node != MA_ERROR(-ENOMEM)))
-> > >  		return false;
-> > >  
-> > > +	/* Allocations can fail, don't do this. */
-> > > +	WARN_ON_ONCE(!gfpflags_allow_blocking(gfp) &&
-> > > +		     mt_external_lock(mas->tree));
-> > > +
-> > >  	if (gfpflags_allow_blocking(gfp) && !mt_external_lock(mas->tree)) {
-> > >  		mtree_unlock(mas->tree);
-> > >  		mas_alloc_nodes(mas, gfp);
-> > > @@ -5730,9 +5734,12 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
-> > >  
-> > >  	/*
-> > >  	 * Return false on zero forward progress.  Partial allocations are kept
-> > > -	 * so the retry path will attempt to get the rest.
-> > > +	 * so the retry path will attempt to get the rest.  The failure should
-> > > +	 * not happen as we try our best to reclaim.  The user would need an
-> > > +	 * external lock with a non-blocking gfp in a low memory situation -
-> > > +	 * which would have triggered the first warning in this function.
-> > >  	 */
-> > > -	if (!mas->sheaf && !mas->alloc)
-> > > +	if (WARN_ON_ONCE(!mas->sheaf && !mas->alloc))
-> > >  		return false;
-> > >  
-> > 
-> > Can either of these warnings duplicate the effect of !__GFP_NOWARN?
-> 
-> From what I understand, __GFP_NOWARN is about suppressing warnings on
-> failures because you handle them at a higher level, but in this case I
-> am trying to detect incorrect use of the interface.
-> 
-> That is, if you want to handle the failures yourself then you should use
-> mas_preallocate() that is designed to give status on the allocations.
-> The following call to mas_store_prealloc() will not need to allocate or
-> check for nomem.
+Works for me!
 
-There is another issue that was discovered by syzbot on this particular
-point.
-
-After discussion [1] on the syzbot thread and off-list with Vlastimil
-and Pedro, I have opted to avoid failures by using __GFP_NOFAIL for the
-retry in the erase and mas_store() functions, which don't report the
-failures well enough (or at all).
-
-I'm sending the code out here to apply on top of this commit to add the
-extra gfp flag on retry.
-
-Jason has requested a restructuring that I'd like to handle later due to
-the late cycle we are in at this point.
-
-Thanks,
-Liam
-
---2zydfjwo6sc3k2am
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-maple_tree-Remove-warning-from-mas_nomem.patch"
-
-From 7943966dfd4eb8470d79da1fef2d81cf4cf59983 Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
-Date: Thu, 6 Aug 2026 10:23:00 -0400
-Subject: [PATCH] maple_tree: Remove warning from mas_nomem()
-
-It is possible to trigger the warning in mas_nomem in certain call paths
-using valid gfp flags.  Drop the warning and handle the failures
-differently.
-
-Instead, have mtree_erase() and mas_erase() use __GFP_NOFAIL.
-
-During the discussion, mas_store() was also flagged as a potential path
-that may fail due to implied gfp flags.  Changing those flags to retry
-with __GFP_NOFAIL is a viable solution there.  At the same time, adding
-a might_sleep() check to catch incorrect uses is prudent.
-
-Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
----
- lib/maple_tree.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 0954d431bf981..4fb7a209dcb2d 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5577,6 +5577,9 @@ void *mas_store(struct ma_state *mas, void *entry)
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
- 	mas_may_init_lock_check(mas);
-+	if (mt_external_lock(mas->tree))
-+		might_alloc(GFP_KERNEL);
-+
- 	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (MAS_WARN_ON(mas, mas->index > mas->last))
-@@ -5609,8 +5612,7 @@ void *mas_store(struct ma_state *mas, void *entry)
- 		goto store;
- 
- 	mas_alloc_nodes(mas, GFP_NOWAIT);
--	if (mas_is_err(mas))
--		return NULL;
-+	mas_nomem(mas, GFP_KERNEL | __GFP_NOFAIL);
- 
- store:
- 	mas_wr_store_entry(&wr_mas);
-@@ -6351,7 +6353,7 @@ void *mas_erase(struct ma_state *mas)
- 	/* Must reset to ensure spanning writes of last slot are detected */
- 	mas_reset(mas);
- 	mas_wr_preallocate(&wr_mas, NULL);
--	if (mas_nomem(mas, GFP_KERNEL)) {
-+	if (mas_nomem(mas, GFP_KERNEL | __GFP_NOFAIL)) {
- 		/* in case the range of entry changed when unlocked */
- 		mas->index = mas->last = index;
- 		goto write_retry;
-@@ -6402,7 +6404,7 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
- 	 * external lock with a non-blocking gfp in a low memory situation -
- 	 * which would have triggered the first warning in this function.
- 	 */
--	if (WARN_ON_ONCE(!mas->sheaf && !mas->alloc))
-+	if (!mas->sheaf && !mas->alloc)
- 		return false;
- 
- 	mas_reset(mas);
--- 
-2.47.3
-
-
---2zydfjwo6sc3k2am--
+Sorry, I may have been the main instigator of that complication.
 
