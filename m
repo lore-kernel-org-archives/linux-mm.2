@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CBA2C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A941C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:22:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16E3C6B00A0; Fri,  7 Aug 2026 16:21:21 -0400 (EDT)
+	id 675186B00A1; Fri,  7 Aug 2026 16:21:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F54F6B00A1; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
+	id 6000E6B00A2; Fri,  7 Aug 2026 16:21:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E16196B00A2; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
+	id 42AA86B00A3; Fri,  7 Aug 2026 16:21:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A668A6B00A0
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:20 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 17BFB6B00A1
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:22 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 332CF801B6
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:20 +0000 (UTC)
-X-FDA: 85075593120.09.79F31D7
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 525D740012
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2kB79On;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A33FA0EF0
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:21 +0000 (UTC)
+X-FDA: 85075593162.09.3A40DEC
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CDDD3140004
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:19 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/m+aTXr";
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786134078;
+	s=arc-20220608; t=1786134079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
-	b=VqWvKm50Voyr/5F4s7tfsfcPxSRjiAsE4+wiHauX4cHT8Euk9yDf+e2k/2MEBJnm0SIsVN
-	Z//olpg4w8OBdJ1O5vsOIR0xTWUFzkf/VDWqMfCZOyBJfa0yPHikuximPKpn+RTrXts9Io
-	Nh/EoslyAgujP0Xd6MwHM7IU3+yjkBc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786134078;
-	b=WDbGljhOLm9/k25Fog84qm5AP+XEATQ0lSqpziDkspUwc2Y7ochWKtpYfH9+CnmdM/Mweg
-	9PqxD5h8HnHBHu3FAggOHSjju5l0PztBYzOi3RkN0gBeG/JPNS3xUa/Pe7thgYjxe1/GyQ
-	ZlUTQpiXqD2gTmxF9Gw+9M7QnZBVYrY=
+	bh=8XkMxJlHKp/V+Gx87DIQUe3nc4ANw9n5bBTpUGWIjt4=;
+	b=TUFRRSqU2QTgPFXohZTvhNPaDSAKZrOA5pOEvHuctOo/ra9R27mKng6dnF30DymaLm2Ag2
+	877Wl7tUHCNn2WCEs5TYwxTFOqfP169jfruZ7ADIGrQXLTELBwYu64AT/cYTYdxoAkVrNR
+	+wOUSRmyvzAQ4HRZWHgPMrHzbwDxd4k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2kB79On;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/m+aTXr";
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4563ac048f4so2211676fac.0
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786134079;
+	b=xG5I/vLpAgDZuUnHrJ6/bvTRHDBHSy88lfB7IiZTu3D7QoqbHw4YpHstnbpX4lYGPsBWZk
+	Yzuo1v6C6GfKivvR9iT0lpRi0p+yrKcx9g1cPkpVjsb7sesedTbbFFIeo9BwPstqurNKnV
+	HdXTtZu2k1OZ/FLdEg+5JmrmyQFO+i4=
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4472500e25fso1467219fac.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786134077; x=1786738877; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786134079; x=1786738879; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
-        b=C2kB79OnZMoCol7gQECslLcJZv/Z2iMR8kPRZS4hgBDmNXqxbBuLXGcd+716Jacl15
-         zSnhAq3AmIr96NvtdtbXAd5F30PBA9Jj+hOL5iu28Xwyvi3BBsIiZ6S4vERE7rbbd+b5
-         u3iOgvHQgw5gBFJSEwi7cjVzP3Ko1sFkcmJZ44L94zGI/c3t3rqxicY5nGoVzQVVBzD6
-         I29Rw6Yb3iGNp1HnJbnic3221DHdLuOPne0p0EQIPHt7cCqOLBvQK0WK3yOdAhARkfKv
-         0qDj9gs+OWVFevqpVV8qqA+WlaUtXlDEyb2Gezalwke7KMsucDfeZ/WzuHjMNUxckb+U
-         ySCg==
+        bh=8XkMxJlHKp/V+Gx87DIQUe3nc4ANw9n5bBTpUGWIjt4=;
+        b=b/m+aTXrWQVPlm17yVT2hP6z0v3atEq3hIzwXxntt0geO9O6te7qsuGkeTGD2pSOQ/
+         t2r+JM/1Bo7EqNyLBsYncWdHuDAscO8WX6v7i2YFyI8rzd+eS1Thq+PT4h4gzfcBgLRi
+         obkPI+ifyv6CuaiYYFQzNUCUYP21LkHXO4trPpPPGFpny7+BlOQ/EsVucPHWO86hRAOz
+         +S+erj74AoIAHeSoQmXtfPSPqN4GTsQBtA2PwSSK1tqlH+cR+TfdJSvhc90pjN8aJgzP
+         9N/5f2tuHqKQ4yn5ewsp1kJClsbVKQjId6d/yALgFHDm6j4ERioZJqUuvROQa0ef3Zrw
+         DAhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786134077; x=1786738877;
+        d=1e100.net; s=20251104; t=1786134079; x=1786738879;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wktIFByfmvNWwU5aKwDRUJNG+vu9pXnbr6sGB9f+FbU=;
-        b=k5r4SBaVgKvNLAoBkxsQD5aLyPvcvWwGvxAMpnbTDAPgBLlpAoHX/phpNq35YEJxhk
-         a6lu0HLP9othdShM/dH2sKvYfd6m4/UId9X9XixclSv3camXkz6j3K8b9Tq+oXRtkaMf
-         9YpmdxTFOg+w7jJgLNrUlfrHVxkPGwPvZJE6XacZ/nPWBhyDW0NlwAh26eA1D7ByU2sk
-         jw/w45SpMBH9PSv1ffW8MhlBLQ5tSTrI/9bjOxzf3SV01C4M3tVuPGMR4K5GbbyS8mDb
-         34SNQA4HWQVrPp45IOmvhKj21EVrv03X2V+OuFWFfExGxi6QCDsgnCJGcG79tKabzAwb
-         Ps7g==
-X-Forwarded-Encrypted: i=1; AHgh+RqV5uMSoCjBUfdvR6pNydgnEVSNFVFwbr3G98eeA4ZumFqYQbif1jLGbjCaVfs64I+oi5AqsfAEHA==@kvack.org
-X-Gm-Message-State: AOJu0YwIwRAN17SpjjWM3YUgZkugq8XvqtmT/dizfv7gV+PKnavgfxr1
-	uGPVUJzNp3VBCmdPZNrz8i/UFio0AmjOoW4c7UOZbBe0Y2QrUnlybpMs
-X-Gm-Gg: AR+sD13poBE0Elb9UKUGzzIZ8IT7CQNaNgxO6a6VcF9d6P5UloZW/ZqR7J96HhQ2OP7
-	TLgfu8mzVDJ4sBOCH9bR0l0XZg9CyU6eHB+ueLGYLyadgnR7buNvyrFIdZNESYBn4reED5Iom6x
-	+52OX2UrcEFMudQQ/vn3vuGn5x8kAlSICm4qXORRxNK45dSlFQGpqUiknx5U1e/PdePIpT5e/mR
-	UQVcMqXuSck2uPKKO1l1imO3nsiZcyU1N/bsXQjV6/G0AQFf3mCUoSKtc5oq1Xvyf2KzH0J0hmM
-	2DR1mDFZipMdMfXLqym2x1apsLHdt7jVYsQosQu+v2AiAn0jTJfoDkN/Pr3sRg/OzPlufrObE4s
-	2D954OFQ7vr8Z1fFyuEjn29KCDs/NGlMDWUDKDoJQBP0cQXhfeVsQnt151TtzPXoRM4IfXrZdrc
-	/mhc9wZF8cave7a2cqvK9TAgE8i9lXKgwEXIb4IEDaTEOixvBgBxpTXUxLKaR6yMlUu3wcSeTaB
-	Eou7kVtC0GSBVlrj1bxsCbaQ88r6R/DsmF5SAGe5A==
-X-Received: by 2002:a05:6870:c250:b0:453:9b2b:f3f1 with SMTP id 586e51a60fabf-459ff6b0630mr3346442fac.5.1786134077083;
-        Fri, 07 Aug 2026 13:21:17 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:55::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f1e28910sm2664792fac.15.2026.08.07.13.21.16
+        bh=8XkMxJlHKp/V+Gx87DIQUe3nc4ANw9n5bBTpUGWIjt4=;
+        b=YoBCi9WEZQybK78S7aaI6A1qN81YFZ6P4CrD6X4+UvYgkW72jxPNNrLF1hGEgVUsmY
+         9Ea1hZQjMvTdywkp1v4wQb+S27AWAruGYxG/HQKXcwSqUNYcxEys5t+tYYnf55kafprO
+         9b06+wYBqCTirJrFFYYlYnBzJbhRo9sB9E8sOXY3xSa6DN6lLq3r8VQtucXL6LLu/m1D
+         fzTel5P2fBwVbeGpy+RM+26EQ6fslsz4jdCttGIksgXVGAzpdrz/PTeFjsvJRMSZyVAZ
+         rizZr6YBeRsz57PiJfaIp6tuwCzrFhCnZq7YGkNAufPKXp8fxfOpgFUVuuN/Pt1n8+rZ
+         fmBw==
+X-Forwarded-Encrypted: i=1; AHgh+RopBxdMxigzcDINOvLGGir9XJvfJpXQHyxL/aV6SGf1vlQjk459pnEQROm9ospjhB6sYELJL47q5w==@kvack.org
+X-Gm-Message-State: AOJu0Yx4Pe4tzhhs94XTbCsr8YmcKrw1MDuVBFiLJfUBy5R4TfFv/Dd6
+	ks2wSkpAWzjC6biVtI7SbleM/d44l+0xqlxML+D1Xh3fJ2tLgQ2/uGmQ
+X-Gm-Gg: AR+sD131Ciq29G8IEjvTu3VRc+gf7JZIDew/WC2NG9GJUJCPLiggvUDotFrJmEzwNE4
+	3pO2IzpXUmuu8HOsxHRWg0N+VkwumnZmnKzWQVrE+pl3hGid/rTYgDuDArmVJpPyaQn3ouS+a/g
+	z7hKwQeAPEtnhbmCZDXT1YEnp+UTwsFN+Yd0EBmXB5arQFGazq3yjUKy1S2Y1WVX+ZVeJZRjEnn
+	06UstMh3klsERLhFHQ1WvyKD/uQXzxRIskVOZa3hU+WbbwZKtqSVQ8eNHcd/zaWojJ2E6BYwlbL
+	X2xFb/cGj/XTllbvdSj5VPnyXBZfvn3rwQBMHSA1YEJ26fmFpXDX+xop/I/DBlq5uvjrZ1qOYQO
+	wRgSNEdC/NRUIlb7tyzqQ4Th4AnDJkHQdMtaZ16ZYzFAp+H9E4faGm4Zg2xe5GFnmWTMd1RbeB5
+	sJ3tkSYkhftSAlb9Z0uil5uaR4gi0DZOWIQZE5ol8OppGu8uzs73H1mh9sWjrOUjdGRNsEJQPiI
+	fyR4iWgyQahT6Yh2A==
+X-Received: by 2002:a05:6871:b0f:b0:456:9b53:c6b5 with SMTP id 586e51a60fabf-4599ef8fbcfmr13854626fac.13.1786134078812;
+        Fri, 07 Aug 2026 13:21:18 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:4::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f1ece1fbsm2770188fac.17.2026.08.07.13.21.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 13:21:16 -0700 (PDT)
+        Fri, 07 Aug 2026 13:21:17 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Gregory Price <gourry@gourry.net>
@@ -137,22 +137,22 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH v3 11/14] mm/memcontrol, migrate: Transfer tier charge on migration
-Date: Fri,  7 Aug 2026 13:20:54 -0700
-Message-ID: <20260807202059.2620949-12-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH v3 12/14] mm/memcontrol: Kick async reclaim on migration and folio replacement
+Date: Fri,  7 Aug 2026 13:20:55 -0700
+Message-ID: <20260807202059.2620949-13-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 References: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 525D740012
+X-Stat-Signature: ncq4em8apsd8t98xg6bdt5brxbfbzypa
+X-Rspamd-Queue-Id: CDDD3140004
 X-Rspam-User: 
-X-Stat-Signature: kmj6nmqfxzebzmrp6kcakfu8duwx3bqc
-X-HE-Tag: 1786134078-233012
-X-HE-Meta: U2FsdGVkX18NeeMeZYvp0sqVnQWdtMFI+fcJuCra+iQkgtEUy+OAHxCR9rL1PegixXWKDkdpaXArz9Rnm4fj42xrQQ7zxGTf//h1d8qS5XLk1Tsh0AkpXvaWN2Ou6vum53j5hT+t3Nw1ah2hpcJR75A0JwiAL3wVW6vk6DL5RxEgmb96oFQO7KmGmkkScYds2DlZuoutxAXJ0aA/gi1zTMoVrhjiKpHl/sbgPVhkvlhPvbU354WmuPIF5IhaaOJ/f/lZmly0WlzYkh4bFCS0GUt8MvMue99fYrcrCrpWjTmo+kKNIs8WeEQiy7XZcbBEiGanRd/UPLWJktmvnpfJR7JtoI/SHthQGxcVfZNWbJCv69Zq30rZPLg5JKetQ9lfiYbxp5/7VSvmDooyIgHckvYiNY4eQ0CFRJ2IakCk02yaq/YMDiu/LV/9nMxWhqiebl3/OpLPDy0+mnLk8lhZi6PX71aTaeCHwJNdt0tKz9XDrhk5VADqVfdnvPbVtw9xtX4xb8gGVJiPyswkAI8qi+5Cl2I5IJpADl9jxg+oEbja64w6DF5Q8o8/F7Kyz6mP3gO1lpRBFS7SZEeyytWutH395D2QH+XgehjbuvffohswYaIwVDDsJM1EgLJnVRhmClGF6vmPpemP/vmb3gu1gZ0+N/hzbZJ8WHmjV2Cp4tuh0i1K9k+3EMXFuHftYGweGXmY7Pfx8VChEUnBET07qYrqWEoQuW7dx1nhA5AWf6ShTMvs4KNWe8oredzTdmcHtv22siyTFxThUuMmkIXr28YXBReQP+nz1+klJR5f/nt1WVDapXEAdlJhEpb1ZJYp530ZJ0pmMqXx6KvQgkjjwIj/IQrZLRwwb+ecJAiw0hUXTCAnw5YnSDCYKBPHR36nU7hGaVJJD+ZXvti381xo2jjTqOUaTPH4b1Mx/5uRIoLaankiucRnxd1U6yoB318xy4vnddx46wlNUIoUBCj
- /CBaII6i
- s8kL9bAeJesyTKQArgXtX1YdW2bP+jil0yuvAAEvwOkZynJsr66xhTuSun6TluzMzk5q2t9TGzRkyfyzOMSFXBh8bWbsBhzUYO0Vd3PXR31KE/V3KXD+/DGTDBIUJ0+WeUWkQDGNY7aIxQ+EYd8PBW+ZfXRnZEF+mLLfPCek0G5rYFoqwJfX3veNnjGCwj+9tM4kd6Yz087R2s/UN6nftszC3TXL9M6lJKk9Rx1GVEB/7cvENGiRVab5nRt893WK3iN8n4FIfqkg4rp5Bc5YQfrZsKZgbWQ43uPa1gHq1fytnfdqHEfQfwlgQ5aco8iFsR1FJ4mgDKdxiXIQR921DZGhVAljnKLnnH5IjTcK3IXDJmgff8l+iUFZ+DpT7kOOriShbnh2ILOYZ4faj1P0HoYYGU0UbC5zQrbcl5QdFf3flUsOaTbBfSrqam8egbNGkGt9d0fhhbDNjn0AA88tNVKQfMPsEi7J1dAsT33PrJ5hMrE1CKxSDWGEJTMRzVmj6ly37RoLnLs9QvYHJ40J2/yEzcx4rayCq+5yf41XAlZ0Bzf0Kbz75hvbNLk7UKv2S1pfd
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786134079-812012
+X-HE-Meta: U2FsdGVkX1/nT2DsiX/50wKHE1Pnsrk8XONk1DJLDogKp2QRqjIrh+UyjS4MA3ae4Cg9rYYOi4H7tSjK1uhL+aBKsg5Obr+W3stKBgAH5hcMhx5cFwsKCOV08WjzTormK1F2gp9wFDcks/Tv/aZzD8mlNEnfwgrDMmq4CUhu672sVIThV35Fgt8K+nhEKJACIRBUKBSkmJcCKDX+M3Z3EdSSITzKWtEfpSk+uzKssmTJgeRbIX4WwnHKPr61lMm63OyTFNE7Sa0JnSbU7HBi++pJGvEW4VGo3qqPMCCkJMM4NJQhE/6dat2VSbY0u9N3SBX2AuPk90HERS0pOSUSw5f6oOgAfP9qGzFmOWr1L5+q/Of+c565eX+Q+r6Y7jLZhCP9Cf+wD+5jQYaQiK1se0trW3THAxZuXCveKusKy/o00SkCaS8dgR+JWlS9OpkmQpKdzxK7eC0q1opzTpp0N88KNZR+GgXEugEOGHwikAlc9LzK0+CJPpZIYSxtUSyFplCIIP4/Sp7lKvqv5kuNV8JoqinF8fOSVikOckkOGu1SD/YTTZd/Z+UB8LOY0E7QyS3EfqmpPE2g2VtZKnuTBpjFHatjbQ9X2CxnwGTenE0iWAjor6qWUnfcPPYrvT1foMUpq80GcItvRxf9EXs/1WrqtYtEEINO/dW4bgUyS3QkSaQqN/BPCFZbvM4Z0i9AOID5gALcAuJC/lp7nLffEIFSKPXZCn/lQm2ipW7IA6bCbXgN12MTLxpIYPq4vX6dY6ZrvBQuCw9sEXvVcGNYXMgDhUaX4T0wQl7Im/TrENtuAo1fQ1+88sa1CQYAojPSktHOx/v3RxlAwuIPYPhkfBbIJlz1KVjRO/+zduL2KQrKujz6jwKxdWMariJoIZoOU7HDYWrldXh6W4eSAQDBesIv/+HRLrCn3H88TF27973Ec21q/HsNIuHMA7Kn8UylIJszP9skSiqglPM3qH+
+ O9x7SVnm
+ quA7hIVW6cm+E0K22pCEOUty22+ZPTycDlwgJtW8evW7krpKcdwxPqSzkxvMuAeizpRHD+KiyLaUDYuiO7BOrbslDR7Ox4Gsm7HzxVTshJ7tTRlW4YKfZ6oILhn1AJsGzCkS5gFH86kTbm9J+DoBO9khwJriwMW4hyAsRwjOM48nNW/dW5GmHpW8ZTJAAc/atxL915BGBUhA9cDy74Q0NOlOf29UZr2bWI7nvwr5vqIAogUyhRk3rz4JQ+bJUuaJwbHEtRniavkY1u3oAVr5je+0g7LHCQSB6Za0MyoqcZuRL7xOUAUebyxQTr8ucUKGGjGj9/AL1n/CYmyFsGIv7xTe8IB9oNpBoQS9J9TasmttKxqtSRjLAkz2qFQwuQy+fIgkLHxbp1Zyf6mZuZ4GfiN6yrnAJLvyl6Mb+3ztf/3z3pLYEpFx1KzBhz/M9hk3EK743pju6adhnsFjRIvLQZrL9B9qUfQ/qEqUPBZllZtSJ2moGhyXeXtK4CgUf7frlJ0SN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,177 +160,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Folio migration is charge-neutral, and existing migration paths take
-advantage of this fact to simply force destination folio charges or
-just transfer memcg data across folios.
+Memcg tier charges are now transferred during folio migrations, but
+this still leaves forced charges and unenforced paths like folio
+replacement, hugetlb migration, and memory hotplug.
 
-Per-tier memcg limits break this assumption. A migration across tiers
-(i.e. promotion or demotion) keeps the memcg-level charge neutral,
-but the per-memcg tier charges change. As a result, the destination tier
-may go over the limit.
-
-Charge the destination separately instead, from migrate_folio_unmap
-where the destination folio has just been allocated but can still be
-rolled back. This charge attempts a single pass at reclaim if it goes
-over the hard limit, and fails the migration if not enough headroom is
-created on the destination memcg tier.
-
-Note that this source of migration failure returns -EBUSY and not
--ENOMEM since -ENOMEM will attempt the migration again by splitting the
-folio and aborting the batch, which both do nothing to reduce the
-memory usage of the memcg tier. We also don't try too hard to reclaim
-here (__GFP_NORETRY) since failing migrations is cheap, and we don't
-want to OOM kill because of a promotion attempt.
-
-One side effect is that cross-tier migrations now hold both folios'
-charges until the source is freed, the same way mem_cgroup_replace_folio
-temporarily holds a duplicate charge.
+Forced charges can and should not be enforced by synchronous reclaim,
+but if soft limits are set, we can kick async reclaimers to try and
+bring the usage below the high memcg tier limit.
 
 No-op unless the system has tiered memcg limits enabled.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/memcontrol.h |  8 ++++++++
- mm/memcontrol.c            | 35 +++++++++++++++++++++++++++++++++++
- mm/migrate.c               | 30 +++++++++++++++++++++++++++---
- 3 files changed, 70 insertions(+), 3 deletions(-)
+ mm/memcontrol.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index ceba0fd6de184..9c2f11191a499 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -708,6 +708,8 @@ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
- 
- void mem_cgroup_replace_folio(struct folio *old, struct folio *new);
- void mem_cgroup_migrate(struct folio *old, struct folio *new);
-+int mem_cgroup_migrate_charge(struct folio *src, struct folio *dst,
-+			      bool force);
- 
- /**
-  * mem_cgroup_lruvec - get the lru list vector for a memcg & node
-@@ -1204,6 +1206,12 @@ static inline void mem_cgroup_migrate(struct folio *old, struct folio *new)
- {
- }
- 
-+static inline int mem_cgroup_migrate_charge(struct folio *src,
-+					    struct folio *dst, bool force)
-+{
-+	return 0;
-+}
-+
- static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
- 					       struct pglist_data *pgdat)
- {
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index de6762520f475..1161934e81380 100644
+index 1161934e81380..4dce7c6fefd98 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -5716,6 +5716,41 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
- 	rcu_read_unlock();
+@@ -5663,6 +5663,16 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ 		uncharge_batch(&ug);
  }
  
-+/**
-+ * mem_cgroup_migrate_charge - Charge a migration destination up front.
-+ * @src: Folio being migrated away from.
-+ * @dst: Folio being migrated to.
-+ * @force: Charge even if the destination tier is at its limit.
-+ *
-+ * Folio migrations result in a net 0 memcg charge, but the node location of the
-+ * charge may change during promotions or demotions. When this happens, charge
-+ * @dst in its own right instead of inheriting @src's charge.
-+ *
-+ * Return: 0, or -ENOMEM if @dst could not be charged.
-+ */
-+int mem_cgroup_migrate_charge(struct folio *src, struct folio *dst, bool force)
++static void tier_kick_high(struct mem_cgroup *memcg, int slot)
 +{
-+	struct mem_cgroup *memcg;
-+	gfp_t gfp = GFP_KERNEL;
-+	int ret;
++	struct page_counter *tier_counter;
 +
-+	if (mem_cgroup_disabled() || !folio_memcg_charged(src))
-+		return 0;
-+
-+	if (!mem_cgroup_tiered_limits() ||
-+	    nid_tier_slot(folio_nid(src)) == nid_tier_slot(folio_nid(dst)))
-+		return 0;
-+
-+	/* Refuse the migration if the first reclaim round fails */
-+	gfp |= force ? __GFP_NOFAIL : __GFP_NORETRY;
-+
-+	memcg = get_mem_cgroup_from_folio(src);
-+	ret = charge_memcg(dst, memcg, gfp);
-+	mem_cgroup_put(memcg);
-+
-+	return ret;
++	tier_counter = mem_cgroup_tier_counter(memcg, slot);
++	if (tier_counter && page_counter_read(tier_counter) >
++			    READ_ONCE(tier_counter->high))
++		schedule_work(&memcg->high_work);
 +}
 +
  /**
-  * mem_cgroup_migrate - Transfer the memcg data from the old to the new folio.
+  * mem_cgroup_replace_folio - Charge a folio's replacement.
   * @old: Currently circulating folio.
-diff --git a/mm/migrate.c b/mm/migrate.c
-index ab15a4dddd047..45d6d23d53859 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -862,7 +862,13 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
- 	folio_copy_owner(newfolio, folio);
- 	pgalloc_tag_swap(newfolio, folio);
+@@ -5705,6 +5715,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+ 			int slot = nid_tier_slot(folio_nid(new));
  
--	mem_cgroup_migrate(folio, newfolio);
-+	/*
-+	 * For failable memcg charge transfers (demotion / promotion) the charge
-+	 * has already been transferred at this point. For everyone else simply
-+	 * transfer the charge here, where it can no longer fail.
-+	 */
-+	if (!folio_memcg_charged(newfolio))
-+		mem_cgroup_migrate(folio, newfolio);
- }
- EXPORT_SYMBOL(folio_migrate_flags);
- 
-@@ -1216,7 +1222,7 @@ static void migrate_folio_done(struct folio *src,
- static int migrate_folio_unmap(new_folio_t get_new_folio,
- 		free_folio_t put_new_folio, unsigned long private,
- 		struct folio *src, struct folio **dstp, enum migrate_mode mode,
--		struct list_head *ret)
-+		bool force_charge, struct list_head *ret)
- {
- 	struct folio *dst;
- 	int rc = -EAGAIN;
-@@ -1228,6 +1234,17 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	dst = get_new_folio(src, private);
- 	if (!dst)
- 		return -ENOMEM;
-+
-+	if (mem_cgroup_migrate_charge(src, dst, force_charge)) {
-+		if (put_new_folio)
-+			put_new_folio(dst, private);
-+		else
-+			folio_put(dst);
-+		if (ret)
-+			list_move_tail(&src->lru, ret);
-+		return -EBUSY;
-+	}
-+
- 	*dstp = dst;
- 
- 	dst->migrate_info = 0;
-@@ -1918,8 +1935,15 @@ static int migrate_pages_batch(struct list_head *from,
- 				continue;
- 			}
- 
-+			/*
-+			 * Hotplug must not be refused: offline_pages() retries
-+			 * indefinitely and ignores migration failures, so a
-+			 * refusal would hang it rather than fail it.
-+			 */
- 			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
--					private, folio, &dst, mode, ret_folios);
-+					private, folio, &dst, mode,
-+					reason == MR_MEMORY_HOTPLUG,
-+					ret_folios);
- 			/*
- 			 * The rules are:
- 			 *	0: folio will be put on unmap_folios list,
+ 			mem_cgroup_charge_tier(memcg, slot, nr_pages);
++			tier_kick_high(memcg, slot);
+ 		}
+ 		if (do_memsw_account())
+ 			page_counter_charge(&memcg->memsw, nr_pages);
+@@ -5798,6 +5809,7 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+ 		if (old_slot != new_slot) {
+ 			mem_cgroup_uncharge_tier(memcg, old_slot, nr_pages);
+ 			mem_cgroup_charge_tier(memcg, new_slot, nr_pages);
++			tier_kick_high(memcg, new_slot);
+ 		}
+ 		rcu_read_unlock();
+ 	}
 -- 
 2.53.0-Meta
 
