@@ -4,131 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0423CC5AD2B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B8A3C5AD2B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 22:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F00836B00F4; Fri,  7 Aug 2026 17:53:11 -0400 (EDT)
+	id F14756B00C6; Fri,  7 Aug 2026 18:44:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAAA56B00F5; Fri,  7 Aug 2026 17:53:11 -0400 (EDT)
+	id ECBF96B00C7; Fri,  7 Aug 2026 18:44:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBFB96B00F6; Fri,  7 Aug 2026 17:53:11 -0400 (EDT)
+	id D67286B00CA; Fri,  7 Aug 2026 18:44:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CB186B00F4
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:53:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 258274005F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:53:11 +0000 (UTC)
-X-FDA: 85075824582.10.0D9893D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 30AD340008
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:53:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6k+aRHy;
-	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786139589;
-	b=dCSNa9B+oUrgpgRXCR+gR7kGx+1tJZHMUdpzbxBZQgz1d45kmlBqbhsdXL/AR8FGQ81Qzq
-	/VjVKJDklg6ujAeUJKdngEqypbbXN+oEtmcqtzE4ZHjVPB378j7IqDRfN+DuUevRAJkrJ/
-	UYkrT6ugMLEQrjWBoSiiVTpZADe9GQU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6k+aRHy;
-	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 880C76B00C6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 18:44:20 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D27E5A0153
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 22:44:19 +0000 (UTC)
+X-FDA: 85075953438.29.66ABAC4
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2DB8640004
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 22:44:18 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vlq3BRZw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3wF92agYKCLMlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3wF92agYKCLMlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786139589;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1786142658;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=79olWelO+aGew03FKRtwY5cBNDISmSjCDX7W64108/A=;
-	b=ZqA9Vnr+SG/bXz2uNvQ4xkFKTg9pB5rDvj0sYs0qnLjo4VOyDqAFEaZ0dku6A/ZbZzo1iR
-	eWkhNc9eM68wnDGb32fUc49r+kqKiQ2nadPem4DZEQmfLoP9Q8w5sFicU51oMvEjllEjW+
-	TOaI1cyAvSVuDE4l+3qKEXLt/9EMC4U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A65045301;
-	Fri,  7 Aug 2026 21:52:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D6D3FC4AF11;
-	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786139571;
-	bh=vTCEVKZlUYGO1D+z51D5hocvKIebLL912PEubVOUuJY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Q6k+aRHy/8bmQ4Ezu6BObDrvY1H53BJJ932ktoEJCl5oedyReWQGnyPs2KEYHLgFT
-	 WUH+v96gxMjmcsUcrs0vuFYx/KGgKTiJLq2pTJtA1ut42GpTjG9uGqt1/vqL87Wu2p
-	 idOM5kcbg6r+rjFxfHsUZnwrJM6iOWlrxWvyjE8HQtwLTMgCzHeNC5elR1e73WnSjP
-	 Q0XtYxNwDimp50R53tvWS5AvEbzpwYT/h2Wqc55+KVD+0IJhhmsUwryl8tilQ9ULTO
-	 bRsqtlROQ4R0ALCGNyLX4rPcxu5T81v9p2QADwH4HsuxQJID76bqbwXHqvUMy25omK
-	 3/SJc+O28xa7A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0A3EC5AD48;
-	Fri,  7 Aug 2026 21:52:51 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 07 Aug 2026 14:53:20 -0700
-Subject: [PATCH v10 41/41] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-gmem-inplace-conversion-v10-41-2fc18ee6d3ba@google.com>
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, tabba@google.com, willy@infradead.org, 
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
- Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786139565; l=3875;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=lUvT16Y2a9GQsXboRcAXXwS4SVcVvLUE9PQbscannXc=;
- b=RHgI6k3Qdcn2KcFNrAue0i6g/CNiZUlSD125Ql3KxD4G4Y+EqRZTNa9NXQvYC6mjhDdbURQ1i
- hreDiZbMWy9BQrYjVxBBA36GyD9KdbNAuCR/uoQvC6duAUACoi+C4L+
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 30AD340008
-X-Stat-Signature: mnhbto4imaf8i9h3c6n5wu3gfn4y6j56
+	bh=FCIAdlKPQC8LVh2CNqE5/NqRnErFXsfFV6IWU+8zDG0=;
+	b=Ay6S45PycdP2z1AR+0K7eUiuSHZMS4LT5+tLIIzzO7lsax10s/pB2vBzFXNZyYraQDGvHM
+	L83h8Sp+FjEzvd42xdYeGswAPIMl/FyZfeOvlwEH5NjPci8sqF3snxFBo2XZZFHjIWVmHL
+	KU1hp05QGx+Fm4hXRtV8QrpSSOaGGOM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vlq3BRZw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3wF92agYKCLMlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3wF92agYKCLMlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786142658;
+	b=kaSAKtwDKfksn+QDidXCpirwpG2k7ZgpTYxaU5okAfkkxHrFILnGfdsUSAALrrG0glSeRj
+	+q9xW37k6OcrPoSAb+vP3Y6iIc64K+9D8yKYmZxscjILUPHbyv4xegKmzMLDRpF3UKQ7Aj
+	D2j+QTnO/3+x+ThN2D+SI5sIkgmj4q0=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38f57e31b6eso47073a91.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 15:44:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786142657; x=1786747457; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FCIAdlKPQC8LVh2CNqE5/NqRnErFXsfFV6IWU+8zDG0=;
+        b=vlq3BRZwKPt5NhFp9/xHIbjeVchpPL/I0xJThMjh0JJnc5yoJrkzPDu1291ACtFGmx
+         kj3GghY3iaATw7suCbEA69UIWecm3cai93Zvp/lRA4eNcd6qR8wAYJ0B3Y6AdZAIqf37
+         lNv1HuJRIzu4SutpJlUSvuZW+Jjte+3JFQq7VUx6RLEA6yr9SCW/x9LsxJwqfDb7/hx3
+         gUmsK+VzNi2ervgWwvRZ5ni4iCoCieIGFPJGr0sO94eddIaAN3fW8vPv1j5g2HSuGsMX
+         FIL7oOKSVGAuemP2fGx+Rum9mPVbQvHklre0n8/kiHOtVI33OE2zfBlGZRSyQvMjD/jB
+         xLvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786142657; x=1786747457;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FCIAdlKPQC8LVh2CNqE5/NqRnErFXsfFV6IWU+8zDG0=;
+        b=a8hfnEHxe2JBnFekjlIxSOq7V/Cj59XvgdEYqMYy+3X+WA73FH/m9o6OqtPlymaFc1
+         a0EYiA1rtquQ59CLaRVn3399KKKfFBBXFKtrGfKvcghj8qLWSWU8TU/NdiapQYYyh6Ty
+         DVOAnJiqjJvjW5h534+tqVzlVB9lrwhKZ0NJtC4UTX1Z/k80sKBf0e4DPZnICW0236Ti
+         LivkU0vfI2Cc/N5sjoQncG0sWJa3+WrdL1tl7F2H7Z6eQdfYzuoYv3vUVVNLgk0axk9A
+         X/VzNtgzbuWac7R1THttEHAf7Y9iAL4kmZqto2KM/f3qRHm/+EQqp2bzSLMX0mA0C0ZQ
+         iDgA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2KKZB9pYbJnyWIehwV0ORplh/TJTTWuFLlAV+ApmD7o//btoo/qPqsWvskTp0pC8CTA/0kYmYVw==@kvack.org
+X-Gm-Message-State: AOJu0YxMxozMrxOn4zfTWJW5w2fFuVsId1U6RaL/zu5Bi5+72vZifLf/
+	sdWf+mBSzLbOes8A3KwmkPaIeZdh/UJpyH8n2rhAmohoVHiZLRuuMCNfwGzKT9C0CmqOV240dmo
+	pAdbQpg==
+X-Received: from pjrq16.prod.google.com ([2002:a17:90a:b990:b0:38e:6cdf:217a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5683:b0:381:26f:8f05
+ with SMTP id 98e67ed59e1d1-3903c5380f7mr25970788a91.3.1786142656515; Fri, 07
+ Aug 2026 15:44:16 -0700 (PDT)
+Date: Fri, 7 Aug 2026 15:44:15 -0700
+In-Reply-To: <CAO9r8zPTCjJdUKydhej6h0fV9rbpT5WFjfyVSXTbvaGs9XbX4g@mail.gmail.com>
+Mime-Version: 1.0
+References: <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev> <amz0jzVPZo_eBeRV@google.com>
+ <anUgqnHKShicIK7C@google.com> <CAO9r8zPk-X5+NmtKm5pvPD=zhrDDAqF_2h-a9-0=5-+CVEnUNw@mail.gmail.com>
+ <anUkfHGqI07cgSHG@google.com> <CAO9r8zPBdjxPTMCeaLdeFeH=9Ybb8wn6KJZ6x9t=o5DyXdEHwA@mail.gmail.com>
+ <anXrH_6oQTtDxzX9@google.com> <CAO9r8zMr+bi95MzG93cPkVmDUzmHYt0obM_niNOyhFLqgcA_Dw@mail.gmail.com>
+ <anYospX_XhVDHNGl@google.com> <CAO9r8zPTCjJdUKydhej6h0fV9rbpT5WFjfyVSXTbvaGs9XbX4g@mail.gmail.com>
+Message-ID: <anZfv81jLSU2qY9G@google.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
+	rientjes@google.com, patrick.roy@linux.dev, 
+	Takahiro Itazuri <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1786139589-905221
-X-HE-Meta: U2FsdGVkX1+F1XTpkG3YMV2CshUad5gTH6PlC1y7CNJvvn08M0NKAdmf2wMkvptiCaUstNk/F7SIVqcjeiZFMujd0OJtVVRJ8B8PzOhRVZ4fgOsazoQpc5kWRi//2ySCIm2ALha4A5adKsOFInhQ/slQ0FBS3hu8T2oFrecG/jHti5nt3c54FDpOh8XCl/jB8uiaIoqskXM7GIrjTepgEeotszUjYSuCx0rqTuEtIc1f29O+Z/6f0ZzsEzTjrKlYZTfZYInz4lkRTz1FmWcP7mpCZXWwS2L9luUhtsYPOSHoaZOX4aTKoS1SmZl2Ic40zMB/cSfm6s81w+GElUcBZJ3fnBYZ5C/jbPckp7NMgitJRtHfW3eGDduGsKI5n2JRA9XzGtgIa23ildLbcgcMM91pY407mO7+k+jvIOy6gWUdbfm6TyCUaIT3u6K0xulvrstmHL8zVkvDQNuH9Xq3JWoSDmRVe/gXOenDAkrFxlj711PQcoNzROk80uWlO7aWKCMd6ouhxnVaYI3iIJEmpQZZS1P2RUs0o/u1HEHijx1yFV6JAvTU530FXgGBv944SuQIBidaQ5fiHxy7mnJ13ZGNefm0aKioTmAM8ZExylP/nTuz3uV1GpQha9l6cKwdboZrq34PD6GwmSldfD2zi4Jj3sGar48scIZpU4MZ0hA5gvKA56hOgKIep2h0bUTs3KkdY84pDpvnZEUKPhXxkKE6DrwDAqFriIZqu1Dmqpgg4BW6ygo/9CB3/NECTVxwYLECEv+cQZU87mip1WYknvntHjy5PsG8+oAPZdbAlqkJdMn8wHvC97nXdL9IUJAz//265eQSyhw3198+sl2A4sPj6aqFdYYz2kO5hMy8TUoHeV9OqYCJxPvE7gngoT+SzGIT0dpMOR+JN4HcHWkf4mVH7Oz/4MKfSadLrGNS7ylx8SsSoZ0pUgBqyqJqSTT+tgMloGIPzXG731MeV8K
- LzRoWdwv
- ii8AHHdBdexhaUH0C3TGSkSqKOi7qyCnGZF2+PM9620roZG2Wfb0xR2sKGm4Kg/iR8lk1TGxJUGcO6Qi4KCXN6v0eV3iWQSFZJ5vanX2wUC1G3+TBMCuCbCNYyx1jt/dlQ0Y1YSglZil0IWejalvadHxxwgUX/2X6O+So/j99riZc7AbW8E1tJg3IxcxkDsUMkAAXb4rr9aO1eh4nfvOMs5DhHPm4Xrj6h1N4NXM49qhnqEFoE95oQJLAb9Xj7CA6mpPWGM/aBS0TeH5VtvJ8dEf+9ec6w+H2VQAayAts4PN4G0rMB2UuY4MAcOxmG/GHFDcX2XpStlz9D5oZUhFxq2H7Ng4fApQ3uCSJlCGSs0pWLgmqawU/sR+AbYzjKScijzjms99oRXyOn173JIg6GlfKktycSMLMV4MaEx3+JxAVtlyKUcG/+6DiD/qt3b7jmnToWEwhV8H1WVMJIN3naC9iIx70KRFyl/Cwa+YQBs0TwAfmEvmhXrXK/EkEyF2ILefcm65u93/0AP4=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: abcssjb7hxb8rfoztexw1uh9ohp8dxdf
+X-Rspamd-Queue-Id: 2DB8640004
+X-HE-Tag: 1786142658-186225
+X-HE-Meta: U2FsdGVkX194rQYVTqIbOOhbBPVQxhwQ0qvdg7aZBkiPM3bIoSJuO+42ezWGAgcjO5Lfcw1t74pkK80GdZ+tqYFKMf7OcrCBP/dawt//lnF0Si5lOmedflni9rRO3RwrvwvQr1uJwl6DllUjIXPAgPEJPnL2gvXLimRpcogrMErxLDLCNnobcjt3UK9FoaiLQH+gep3E07hV/jjb0VdSnQT1HrgqBbGpmFR+wCzazstj+DOrTr4p/eAsg6d9ZzdYdnTrL97FSbV64aSMQdGp9b9e8OpNDzWu1jEk3rtnpZlNZdp+jcNCjzIkYNHMLa/xFhLIFNQh7BqytQe+PnewcsuMGP0lliCQgDEmFQ+kPoeJu4J5z1L+HFvevKL9BfhZ0yjTq7q5IEkbPebqSejfJNRS9aLYU99ad4BwycgAUDMB38yFeWf2sfU7ckaNmI1vf+L0agKzBmWTdjWS8a05HcHTvzRQjXFBCCHg5bo8rISmOysaKoJAejWmok5YYMxU+28T+dOZ9iYrqxpf+Dl6OfW4Q/9BlVKigIOqAz0lIz3YXNfemn41tFPcfcgwEL0tpjQjqGWc11Fd4PiT+ac9OHTvxoKTEJP0YOVXSFck2CAoEa3p4ISbUAlFlqrEF2C9/QMKkx7ybl6w/qLU/6Q5lubaI+aDRSp8mXtTBbPLAAP0qYx7RBVQbl6iCM9TDLyb1r1ivUNEmKKYBtUCEkUFhAEeF4WRgl4W8ugtntbRi9H9H7MVthqxBZKPfuDfRVH3vYR1dDQY3NDHhbscHGj1V0UKUJASM/I8DipcTHiDMVZqAnm89MPMJ+JxmUgpQ1x774w1BkqMbM/6Afrz1jO8kNIap5GHIERab6NGr8hiIF4/ec3O0Q1+Jb/xhc/AOnmi8fR4YHsyceQNU1LZMAVnJDSbT8MenvtWa8fvXfQMFPqY10VDq5NK06BK+7qHus+MSdM/0g+Oufq8YC2Wmud
+ a32GEX4d
+ mKrP1nZDAzFE7J+mcZF+J+AE0J3c5eS4rSp1QnexZBYX+e4grk4sl8+nRVFyVHAzhFgK3047JPojqtYdwVDBpRp7kWF0kstCi1E+aoHxj9jP3jk6VwgN0zG4g8w9wXE2uSh3RROTRASkQJFQvaG3ENwHzozUa5mjXFGSIVpFlMyYdEdtyGWVAsDtM9jqerMQ3ISwJrdN92m03ewNr85O6bHyHnGUD0DEwZiiAq0KJWk8y+14GMo0m3IvVWmtOQKqQcEjT65j5HgLsfOOZjZu/d47i+dLuebKiy6hJ5h1Xb0Iplr+AohBHEj8Ntq4Nlkf0QAujaD+sImuS3QDcsnURjuq1utBvvyeU34p4Qtyxo2O2ApBZj5z1X2lP6gwLbSEbtrXkOVwrHWwS+t2EtDJdrSN95FuEPkcnu16vrJ/sUcN0tqJrmPf+QGHunOA0p59DOmY9rbKvMVgV4WIdMaaz/6Kthtp/ZXquDxKQQBS7OvgloGG5ARq45ZvGCuFhQrppWet8aJ8mwSi+izaXfdR6uj/ECujQ12C+WTJe24nOYUXhHUElVMDFmPbi/FveBwXLAub6Q3LS8D825OgxeU6knj1fWexDaq0qWg1yfG9wjiKcE1vJJs09ZtUogkDysRZYL8ER+hn3/BP1ldq6FDL+qPnhMSmcKlUetKZj1a1T9LtgysM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,95 +122,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
+On Fri, Aug 07, 2026, Yosry Ahmed wrote:
+> > > > > > > > At that point, userspace is basically required to
+> > > > > > > > maintain mappings for all host-accessible guest memory, and if there are userspace
+> > > > > > > > mappings, then not using GUP doesn't make much sense.
+> > > > > > > >
+> > > > > > > > Note, I called out x86 because x86 has the most extensive emulator and shadow
+> > > > > > > > paging support, which is where the isolated, one-off accesses happen in spades.
+> > > > > > > > Other architectures might be able to squeak by without userspace mappings, at
+> > > > > > > > least for now.
+> > > > > > > >
+> > > > > > > > So, in all likelihood, KVM will want GUP.
+> > > > > > >
+> > > > > > > Yeah I am thinking that the check here to disallow GUP completely for
+> > > > > > > unmapped pages is aggressive. Maybe it works for now if KVM does not
+> > > > > > > currently have any use cases for accessing guest_memfd memory. But if it does
+> > > > > > > (or will very soon), we need to think more about it, otherwise
+> > > > > > > AS_NO_DIRECT_MAP is not really usable for guest_memfd. Since you said KVM
+> > > > > > > "will want" GUP, I assume it currently doesn't?
+> > > > > >
+> > > > > > Doesn't what?  Have GUP?  KVM heavily uses GUP, including for guest_memfd that
+> > > > > > can be mapped into userspace.
+> > > > >
+> > > > > Your wording made me think that KVM doesn't currently use GUP for
+> > > > > guest_memfd, but I was obviously wrong. So IIUC GUP needs to succeed for
+> > > > > guest_memfd pages with AS_NO_DIRECT_MAP.
+> > > >
+> > > > Yes, though as I said early, it doesn't *have* to be exactly GUP, just something
+> > > > GUP-like.  E.g. it could be a new API, if that's easier/cleaner.  What I don't
+> > > > think is a good idea though is handling this entirely in KVM/guest_memfd.
+> > >
+> > > Just to clarify, you mean that GUP (or GUP-like) should work in terms of
+> > > pinning the page and handing KVM/guest_memfd the pfn/address, but not
+> > > actually making the page accessible or establishing mappings, right?
+> >
+> > No, I'm saying that whatever API the kernel provides needs to ensure there's a
+> > valid kernel mapping (or provide one as a return value).
+> >
+> > > Looking at [2], seems like the consensus was that AS_NO_DIRECT_MAP
+> > > means folios are not in the direct map, and callers are responsible
+> > > for establishing the mappings (e.g. using the mermap).
+> >
+> > I'm fine with that direction, but in that case GUP _does_ need to be disallowed.
+> > I.e. _if_ we allow GUP, then GUP itself needs to somehow ensure the direct map
+> > is populated.  If GUP is not allowed, then IMO the core kernel needs to provide
+> > an API to get at "inaccessible" mappings.  Or I suppose GUP could take a flag
+> > that says "I pinky-swear not to try and access the memory via the direct map".
+> 
+> Okay in this case I think the simplest thing to do here is to disallow GUP
+> for unmapped pages like this patch does. Once we have a use case (e.g.
+> guest_memfd with unmapped memory using GUP), we can figure out if we want a
+> separate API or a GUP flag. I assume the GUP flag could either be: "I know
+> the page is unmapped, I will map it" or "create an ephemeral mapping for the
+> page".
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
-
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
-
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index e6d16e9d61200..f7228e0f1ac61 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	kvm_pthread_create(&vm_thread, NULL,
- 			   (pthread_fn_t)run_vcpu_get_exit_reason, (void *)vcpu);
-@@ -73,10 +74,26 @@ static void test_private_access_memslot_deleted(void)
- 	kvm_pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -87,6 +104,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
-
--- 
-2.55.0.654.g21b8a5bc05-goog
-
-
+I'm not ok punting on that, i.e. whatever we come up with needs to land alongside
+AS_NO_DIRECT_MAP, or at least before guest_memfd tries to use AS_NO_DIRECT_MAP.
+The only way KVM can use AS_NO_DIRECT_MAP without GUP is with a massive list of
+caveats and addendums on things the VMM and guest can't do.  I'm not ok merging
+guest_memfd support for AS_NO_DIRECT_MAP with such a list.
 
