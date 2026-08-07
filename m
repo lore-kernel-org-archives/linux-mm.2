@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07820C5ACAB
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 13:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEF9C5ACAB
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 13:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C3826B0096; Fri,  7 Aug 2026 09:51:08 -0400 (EDT)
+	id 399526B0099; Fri,  7 Aug 2026 09:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19ACF6B0098; Fri,  7 Aug 2026 09:51:08 -0400 (EDT)
+	id 36FE66B009B; Fri,  7 Aug 2026 09:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D7E56B0099; Fri,  7 Aug 2026 09:51:08 -0400 (EDT)
+	id 2ADA16B009D; Fri,  7 Aug 2026 09:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D5EBD6B0096
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:51:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 670F81203AC
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:51:07 +0000 (UTC)
-X-FDA: 85074609774.15.E90E7A7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F33846B0099
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:51:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C54914038D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:51:14 +0000 (UTC)
+X-FDA: 85074610068.03.5E424B4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A1CC618000D
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:51:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4VSmJSt;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id BD25E40015
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:51:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXYh6M2K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786110665;
+	s=arc-20220608; t=1786110672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UGBELfa0PNJRa3PvbOBLlp8SGyFGd7t+kM65vGIAZwc=;
-	b=Hb0jw1jbpWw+RqF+g9SriUFiA4A5Gxpy2xtYo7IQecaz8m7GmfPaJD9lSZzO7Yx4YOW4be
-	WScecnkiLeVskPz3d+2aZfc6e0CEON7VdLnQ+h3U2vg/LCbNyYgfB5ccOGuB7yhtTUTnxL
-	0p8qDzarHF4ZbJmiVyoWdSnQLzbmrBw=
+	bh=JsBlNoLXapzvhaOZfFVgJmB3wffwQ8ZUd0cI3plKWLk=;
+	b=WQzaqu7yTtOtKlWzBgzPzltjzH0ICeVm7++DeLRUrAMHsNDDkrt7n+I/m8IUgRDwcENUHF
+	AD2NTkS6KEi/P22msvvcw+t6YNpuprmNHKohNcnmMLwlE7x9IkY54dEqaPDDWhfwOUKJFn
+	nrWxEImYVlVUdc75h6E7AmsaqPLp5Ck=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4VSmJSt;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXYh6M2K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786110665;
-	b=2hy/R/u9KMWSPwYxb84lDo0Um9tcT4B34YFAO15/YviR+bUX8+wEQEoQHzrUXQ4A+Ib8KH
-	kiSPhWOA0R1NxmUzmT5ZGHSRTnQYDpPQJMHyWzwCbwZwOt69Vg5LzFsZfqKSZmU2AKwEUL
-	tabxdG2ge/KceCGBYk2DvZOEpz2tQjI=
+	t=1786110672;
+	b=t0m1KmbuNASQNYk7dT6zuEbIKGKMJx4LZswsPKf9aJhC1AqzFXTE/E28FbsXOc9kUN2TgE
+	6bVQqTHMy2VMj5iiKi2/JptKsbJZqr6Scw9deqAH5zkQ4Jy/Klie1CtRX1bVKYOtqtqO3K
+	CZAkQk1a1RZM+3gLO9akN1w3b23FI8A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB57C43DFA;
-	Fri,  7 Aug 2026 13:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7291F00ACF;
-	Fri,  7 Aug 2026 13:50:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F20A043E71;
+	Fri,  7 Aug 2026 13:51:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D01C1F00A3D;
+	Fri,  7 Aug 2026 13:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786110664;
-	bh=UGBELfa0PNJRa3PvbOBLlp8SGyFGd7t+kM65vGIAZwc=;
+	s=k20260515; t=1786110671;
+	bh=JsBlNoLXapzvhaOZfFVgJmB3wffwQ8ZUd0cI3plKWLk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=e4VSmJSt73tA02FcE2cwM/eyfhDNj1IybKNAoQq4cuYxrXygc2XXmaK6ICGsSOOuU
-	 XmsxUDzNigL3kFl+StJRA1b/0LqYThJmhrHZJYv0q+HgjLVDqkaqaOnqt2eEV3kHAH
-	 eS53QQHpPBkK2d5djTzlbNJOR6puKjMDn3qplP1y5aX0E7LA5p/yt3AsewlXAoE+gi
-	 0NAmhX9xVb6MpvGI8dK5dxg4I/Vnyr9RRkEgxqW8IOHCUgQL72FE88sJU+4wEbiZDp
-	 VMBnUWwtd+bbroav/X3QGzfJXLxMuZKj05+itt98UINUISZpJ6fHQZO4VXRWTIX8zv
-	 N0Ng6BuX6uueQ==
+	b=PXYh6M2KkgQHGOcPs4VHfkvwxJyfSKuED6zAeHwMz8mmUUgtOHTbSiQM5BJieAoLO
+	 H/WV7XvvSbkldcw2ezKoX6DKUZtAcjDvgjCWVLh1TbnJnQlGY+u4pRC+AIJ1cr/4s+
+	 JByHYpe+ebHxFnreqVNPxaZ5n/PFOCKp9FCVEt1gVdNWAjj4teAKaCf/xFOIYta2uQ
+	 234zl/9rw3uirz1ArxlCvIIddHjOso0Sf2s3/7xSRv4/CUeZyw0WEXcN1ojHc4WL4H
+	 w3jDfaKIq5AcnXo1qggs2ROLMdMYAzKmTRqpoIncaxXUWYTKO89frDEQNSedcwHZs4
+	 lxnBzFqghs4Ig==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Fri, 07 Aug 2026 15:50:30 +0200
-Subject: [PATCH RFC 4/5] mm/slab: handle large_kmalloc objects in
- kfree_nolock()
+Date: Fri, 07 Aug 2026 15:50:31 +0200
+Subject: [PATCH RFC 5/5] sched: use kfree_nolock() instead of kfree_rcu()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-kfree_nolock_kmalloc-v1-4-ba993cbf7a60@kernel.org>
+Message-Id: <20260807-kfree_nolock_kmalloc-v1-5-ba993cbf7a60@kernel.org>
 References: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
 In-Reply-To: <20260807-kfree_nolock_kmalloc-v1-0-ba993cbf7a60@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
@@ -95,14 +94,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
  K Prateek Nayak <kprateek.nayak@amd.com>, linux-rt-devel@lists.linux.dev, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: 8zk565h8xjcfwxqafu7dqefmt8dzpcrn
-X-Rspamd-Queue-Id: A1CC618000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786110665-450488
-X-HE-Meta: U2FsdGVkX1/dlZ9r4lqJjJM+wf2F56Zh9M4fT3wVypsLcbFYubs2nHA6twTw5xVeweogEkCAF4DnyV0tGA4DSVnoc4T4dyxnQd0m5bsjf24CzqCfafo1U6oByAmxI1MIKoOPr7q10T6WRJlfrHHj595Q0t/pt1aE3T7ysFcJORLEz8oA89GyNCek9bBTJ8yLOwZa6RowORh0naaDP8LgR9QNWyy4/4AM33TM4k8QLI9joaAItWsuQpckK8CK/5wzdRHGWKdt4a+VMCQcfSvsRNIzqBLcrF2NOlqjFp21Eh+sWzCkjUpBly/ZXtarO0N4jrQExl731K5dlCETAX4TdiS3vFxGjLOm6Ybg1o6uTNsd1Lz5KLlK0A3Iwmm4JBpYjf6TGwAdloHsVVApwJLYxeTNIhL3BAK1rs+sw9FLFqNbX/R4izb/lhukPx5D1egWWDVwm2hIGofQN1QNWESonv/vA+wJo0ftBetzZ2wZlm/1qysOa2XvsirTl0w2zotu6TQS2J8X/elix7oYsNQ5SuKXqSo9WBCMYTg9pElzEBJvz5LhsqJm5qvrXftXrYYwkI+xFA34gDAnQKgxp1Bfy1CtSszFEAfqX13MYNtJRFM4JB/pvb7d1c5zGlHMOkGJPdaVBQ//YwIu3irHq1J6juUe6zN3l68M4A9QUPTIvfnPkoGwNuWI6nrJkg1xW1YSzgV6/EHvtiN2JCtM83cPZNEJqfMz5APd2wEwN2bboGJTBYcX6RBHFLN5xul1KpZ5N5Jz3es4TLmq89pzhk3W5gtdgLlqizQnXt5p6ebt/BPZ/6u55VaSMQTO4sxfwuwQWIpfiYm+6p7mf/RCwitpYbpa1fKuzOL5DfujcwTkUbSFImfM0XHb3oBM+AQeVnynTr8JDelU/K732PVEzSkyOgjfILznV2nqXOT15SwUuI+FfxljdVTpi8DaWzLIAv/3Dolv2yK7nKFnsClGNOz
- 1OuXAaWm
- e48anrJJ94bx6sBSDhlRGQcRqUGO1aBy2IvXKRXI4304kWL02HJgFyev1Ari5+AHKLjtiy6EuLwAT/LiOB2JqE6SNbo1dBc7Qk+uWN/9rHFQMBbaKnu6Ppv3RVyGLqLJKDwYWs/LFp2rug80jdKVf2yBpX08TZIpCVgRfWerBimUM+mtLFK7S6u/+R7KiybA+FlzSA0cYYFwh2yWq16KhsvU85Zq/bB71jfoe9lu9+/IHqTWd72D9yd6wuLRIihfKOJSdxx8fd1B0P6liwfyQUBoNpb1N0n7cUzuFdGyE2ddATuY=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: m3rsup1n154nc57hx6wohiewaephaj7u
+X-Rspamd-Queue-Id: BD25E40015
+X-HE-Tag: 1786110672-483662
+X-HE-Meta: U2FsdGVkX18b8/RR1lXoompe1YeAxOokaG8LK0Q2jpz5Ht9PWKhcxIh/u7QmVonb4/55e9uFAJDB+62aS9rNE4guwpN2MNTsel4tENU2WptT0MpsADxey6n3nC/z9cqTpZk5C6lizPIRGaWkYIHfs163ovKcSsKAvBoFLPZrleh/2EEeT+4CG2bRYi8wlP/N2YofiPtmUUkffzoT43/DxexJeHidRkWsZStP4uDajZIOVxzld0wiwUkP0pVusV8dWDL2l8t3+q2mqMBVZqNt877Ar7Y0MwQH1LTyDlo2UQ64cu3nZAfLdU1SLARdQzgrS8eRrGx/T/b7q9qeHTZQug+bZOXddB5grQ0qhbrjw16ChFTvF/L/fhu19zSg3Tg61VtgcDVPZe7PA5Nj1Hu2yg/yvS4kynmrrPJFV6+WJCTETDMxE6Rkc38BCCnA/jjnlclUYtjtyBYNNgFqmAZRZ3ZsYjkEtnhz45yAGtiy7TKFx7eeU+30o7CaINvShKhXf0vPszjTBJaOocyS0581xzNiyI66l+syJv67gWEn05Y15eL6DvMUV5hHQULxcPiM/MrwcdmXyVY7FryP9yddyHZGrV9fEKInmq6RVxKdjykGtZxj/8fu/D1FVTM95UQSrveyFZvM8P3gS+b7i26WoxSekjLi6eksAh6bcEbwt//xvzCexkjxtPdgFKNs1ouTfrxfAK+gQOljYyjaDM/nN8GcEUKoLS2F2dMNaFW/DcFU+CIVt8vKj+DSLrxkFpkiHL7Y21T7+cANWEtLjoK543CNp8V72qdp8/WRFDFjTcVNjiKU/9Xk018g63x8IweLVoiMM+Punpw8ZvRjDOenhP7zs2Xm/1vk0gC2b3iez4MOpZ0uWJSDxC8vBsiJJn5a0Pgve7mtZ8XZv+/VAXXC3sV5OvOmfZSImI1AJ6NPh7hYZiOFEFrFx5fJ6LmcrTsShSytZQojUpdkiywnELO
+ AOVWbZAp
+ Hw0Gq+lbHvrYUFeB2FJvn8B3M+dWjG4fmLPCCcCwRiRW/h2JbwAJP1oqbRSUtOMwW83l7W4x2Ujr9aMQtMcOLr4KfcHExHCWYvbC2v7S8OU8miezQOqA55oMcMJ8ZQFoxtbl1ESyh1+zNLlFry2Wd1JBrTVTRjCiGve/pL5Okp1CYj+m70F1rE2goMJHnxTcRtJAWlAOix0ZahvTol4n3pkv1Eo5eCfCDe8Xp7OjKeMBMvCco3RqM049xIa1QEUqOLSmfdlgDc0X0oyeLhx+cEKr7ZIyMlvoxJBfr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,194 +109,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Large kmalloc objects is the only remaining case that kfree_nolock()
-cannot handle from kmalloc() allocations. Note kmalloc_nolock() does not
-return large kmalloc objects.
+In set_cpus_allowed_force() we use kfree_rcu() because kfree() is unsafe
+under p->pi_lock.
 
-Supporting them is however mostly straigtforward. free_large_kmalloc()
-calls kmsan and kasan hooks that should be safe and similar to those
-called in kfree_nolock(). Freeing the pages can be handled by
-free_frozen_pages_nolock().
-
-The only obstacle is kmemleak_free(), which we can solve by deferring
-when necessary, the same way as done for small kmalloc objects.
+With kfree_nolock() now being able to free arbitrary kmalloc() objects,
+we can switch to kfree_nolock() and avoid the unnecessary rcu grace
+period delay. Only in some cases the freeing might be deferred to
+irq_work().
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 62 insertions(+), 12 deletions(-)
+ kernel/sched/core.c  | 9 ++-------
+ kernel/sched/sched.h | 7 +------
+ 2 files changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 423b5bdb910b..3be98faa9f0d 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4051,6 +4051,7 @@ static void flush_all(struct kmem_cache *s)
- struct deferred_percpu_work {
- 	struct llist_head objects;
- 	struct llist_head objects_kfence;
-+	struct llist_head objects_large_kmalloc;
- 	struct llist_head objects_by_rcu;
- 	struct llist_head rcu_sheaves;
- 	struct irq_work work;
-@@ -4061,6 +4062,7 @@ static void deferred_percpu_work_fn(struct irq_work *work);
- static DEFINE_PER_CPU(struct deferred_percpu_work, deferred_percpu_work) = {
- 	.objects = LLIST_HEAD_INIT(objects),
- 	.objects_kfence = LLIST_HEAD_INIT(objects_kfence),
-+	.objects_large_kmalloc = LLIST_HEAD_INIT(objects_large_kmalloc),
- 	.objects_by_rcu = LLIST_HEAD_INIT(objects_by_rcu),
- 	.rcu_sheaves = LLIST_HEAD_INIT(rcu_sheaves),
- 	.work = IRQ_WORK_INIT(deferred_percpu_work_fn),
-@@ -6365,6 +6367,21 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 96226707c2f6..d2929e4e23f1 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2807,20 +2807,15 @@ void set_cpus_allowed_force(struct task_struct *p, const struct cpumask *new_mas
+ 		.user_mask = NULL,
+ 		.flags     = SCA_USER,	/* clear the user requested mask */
+ 	};
+-	union cpumask_rcuhead {
+-		cpumask_t cpumask;
+-		struct rcu_head rcu;
+-	};
+ 
+ 	scoped_guard (__task_rq_lock, p)
+ 		do_set_cpus_allowed(p, &ac);
+ 
+ 	/*
+ 	 * Because this is called with p->pi_lock held, it is not possible
+-	 * to use kfree() here (when PREEMPT_RT=y), therefore punt to using
+-	 * kfree_rcu().
++	 * to use kfree() here (when PREEMPT_RT=y), thus use kfree_nolock()
+ 	 */
+-	kfree_rcu((union cpumask_rcuhead *)ac.user_mask, rcu);
++	kfree_nolock(ac.user_mask);
  }
  
-+static inline void
-+__free_large_kmalloc_page(struct page *page, unsigned int free_flags)
-+{
-+	unsigned int order = compound_order(page);
-+
-+	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
-+			      -(PAGE_SIZE << order));
-+	__ClearPageLargeKmalloc(page);
-+
-+	if (free_flags & SLAB_FREE_NOLOCK)
-+		free_frozen_pages_nolock(page, order);
-+	else
-+		free_frozen_pages(page, order);
-+}
-+
- /*
-  * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
-  * to take sleeping spin_locks from __slab_free().
-@@ -6417,6 +6434,15 @@ static void deferred_percpu_work_fn(struct irq_work *work)
- 		__kfence_free(obj);
- 	}
+ int dup_user_cpus_ptr(struct task_struct *dst, struct task_struct *src,
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 56acf502ba26..6a8d0578e963 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2886,12 +2886,7 @@ static inline bool task_allowed_on_cpu(struct task_struct *p, int cpu)
  
-+	llnode = llist_del_all(&dpw->objects_large_kmalloc);
-+	llist_for_each_safe(pos, t, llnode) {
-+		struct page *page = virt_to_page(pos);
-+
-+		kmemleak_free(pos);
-+
-+		__free_large_kmalloc_page(page, SLAB_FREE_DEFAULT);
-+	}
-+
- 	llnode = llist_del_all(&dpw->objects_by_rcu);
- 	llist_for_each_safe(pos, t, llnode) {
- 		void *head = pos;
-@@ -6464,6 +6490,24 @@ static void defer_free_kfence(void *obj)
- 		irq_work_queue(&dpw->work);
- }
- 
-+static void defer_free_large_kmalloc(void *obj)
-+{
-+	struct deferred_percpu_work *dpw;
-+	struct llist_node *llnode;
-+
-+	/*
-+	 * we can simply use the first word of the large kmalloc object
-+	 * for the llnode, as there's no ctor or TYPESAFE_BY_RCU
-+	 */
-+	llnode = kasan_reset_tag(obj);
-+
-+	guard(preempt)();
-+
-+	dpw = this_cpu_ptr(&deferred_percpu_work);
-+	if (llist_add(llnode, &dpw->objects_large_kmalloc))
-+		irq_work_queue(&dpw->work);
-+}
-+
- void defer_kfree_rcu(struct kvfree_rcu_head *head)
+ static inline cpumask_t *alloc_user_cpus_ptr(int node)
  {
- 	struct deferred_percpu_work *dpw;
-@@ -6712,9 +6756,11 @@ size_t ksize(const void *objp)
- }
- EXPORT_SYMBOL(ksize);
- 
--static void free_large_kmalloc(struct page *page, void *object)
-+static void free_large_kmalloc(struct page *page, void *object,
-+			       unsigned int free_flags)
- {
- 	unsigned int order = compound_order(page);
-+	bool nolock = free_flags & SLAB_FREE_NOLOCK;
- 
- 	if (WARN_ON_ONCE(!PageLargeKmalloc(page))) {
- 		dump_page(page, "Not a kmalloc allocation");
-@@ -6724,14 +6770,16 @@ static void free_large_kmalloc(struct page *page, void *object)
- 	if (WARN_ON_ONCE(order == 0))
- 		pr_warn_once("object pointer: 0x%p\n", object);
- 
--	kmemleak_free(object);
-+	if (!nolock)
-+		kmemleak_free(object);
-+
- 	kasan_kfree_large(object);
- 	kmsan_kfree_large(object);
- 
--	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
--			      -(PAGE_SIZE << order));
--	__ClearPageLargeKmalloc(page);
--	free_frozen_pages(page, order);
-+	if (unlikely(nolock && kmemleak_may_need_free(object)))
-+		defer_free_large_kmalloc(object);
-+	else
-+		__free_large_kmalloc_page(page, free_flags);
+-	/*
+-	 * See set_cpus_allowed_force() above for the rcu_head usage.
+-	 */
+-	int size = max_t(int, cpumask_size(), sizeof(struct rcu_head));
+-
+-	return kmalloc_node(size, GFP_KERNEL, node);
++	return kmalloc_node(cpumask_size(), GFP_KERNEL, node);
  }
  
- /*
-@@ -6753,7 +6801,7 @@ void kvfree_rcu_cb(struct rcu_head *head)
- 		if (slab)
- 			slab_free(slab->slab_cache, slab, obj, _RET_IP_);
- 		else
--			free_large_kmalloc(page, obj);
-+			free_large_kmalloc(page, obj, SLAB_FREE_DEFAULT);
- 	}
- }
- 
-@@ -6779,7 +6827,7 @@ void kfree(const void *object)
- 	slab = page_slab(page);
- 	if (!slab) {
- 		/* kmalloc_nolock() doesn't support large kmalloc */
--		free_large_kmalloc(page, (void *)object);
-+		free_large_kmalloc(page, (void *)object, SLAB_FREE_DEFAULT);
- 		return;
- 	}
- 
-@@ -6793,10 +6841,11 @@ EXPORT_SYMBOL(kfree);
-  * but may defer freeing to irq_work() in some cases.
-  *
-  * Intended mainly for objects allocated from kmalloc_nolock(), but can handle
-- * also kmem_cache_alloc() and kmalloc() objects, except large_kmalloc.
-+ * also kmem_cache_alloc() and kmalloc() objects, including large_kmalloc.
-  */
- void kfree_nolock(const void *object)
- {
-+	struct page *page;
- 	struct slab *slab;
- 	struct kmem_cache *s;
- 	void *x = (void *)object;
-@@ -6804,9 +6853,10 @@ void kfree_nolock(const void *object)
- 	if (unlikely(ZERO_OR_NULL_PTR(object)))
- 		return;
- 
--	slab = virt_to_slab(object);
-+	page = virt_to_page(object);
-+	slab = page_slab(page);
- 	if (unlikely(!slab)) {
--		WARN_ONCE(1, "large_kmalloc is not supported by kfree_nolock()");
-+		free_large_kmalloc(page, (void *)object, SLAB_FREE_NOLOCK);
- 		return;
- 	}
- 
-@@ -7167,7 +7217,7 @@ int build_detached_freelist(struct kmem_cache *s, size_t size,
- 	if (!s) {
- 		/* Handle kalloc'ed objects */
- 		if (!slab) {
--			free_large_kmalloc(page, object);
-+			free_large_kmalloc(page, object, SLAB_FREE_DEFAULT);
- 			df->slab = NULL;
- 			return size;
- 		}
+ static inline struct task_struct *get_push_task(struct rq *rq)
 
 -- 
 2.55.0
