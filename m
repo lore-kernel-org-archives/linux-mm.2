@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE3BC5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 08:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B40B8C5AC80
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 878A76B008A; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
+	id 83EEF6B007B; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8027C6B0092; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
+	id 7EFC26B0088; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7181C6B0093; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
+	id 6E0066B008A; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E2506B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:52:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7D1D1A0116
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:52:18 +0000 (UTC)
-X-FDA: 85073856756.25.0BCEB9E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 09740140002
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:52:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTcT8qQ5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D5D56B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:01:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0674A0360
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:01:29 +0000 (UTC)
+X-FDA: 85073879898.17.5232008
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C45F11C0018
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:01:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W4paKvFA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786092737;
+	s=arc-20220608; t=1786093287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5dcfVoJ6AbTamxtwDiIevecxcWgLUpSF8Abt8+46V18=;
-	b=u9xt+JE9TRSlA7dTVnOtUM0u6misMDcKxEe5+9LpItKL4KlBd1oRRDs/GshEnjtl8g+7J2
-	5HJnPrNdUob8EnmX1lljknmBar5W84QK5zdfL7HbrBU3pQl93QYVgo8TuQGXUkJjprQJPW
-	ecu/6C4dPFzAYdzPxK4otc+Hfek1a3k=
+	bh=iG7BQOUNjluMUKJPYfIHD5r/Uah0YPlbWHQVgLWehtU=;
+	b=kv6jKPCfc9fj0jhCCc3BD7PewH/S1SZL/IuLuT2wh89nOsEg/uwxdQE6ALeNOIfQ3ZbkaO
+	uAJjOQLOBa0nhW/Tqs5wMn8PK/ftoUhvzzhg/IBBNyuyOWcHRb22aiWSdCh+5AA4BWol2p
+	cCH77VZcZDPCVPbN+LQ1cXMDCPE4eo0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTcT8qQ5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W4paKvFA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786092737;
-	b=Wgess3MmVluuEq1WP+m60gEWROIyn2rbSAAJEDjkshpnRzHf4N3ZW9dNUDb3qhY3XI0PqW
-	iFkoVeuH0YEVx3L1SAi0hLWQ3bjDRql4mUP3vDxeaIUzAWwM0ttQWWGhyzDIg9mpQvsVZE
-	3py6MSVQ6KyMnUSZv+G/5RUgz+1Yl64=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 344324172D;
-	Fri,  7 Aug 2026 08:52:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD961F00A3A;
-	Fri,  7 Aug 2026 08:52:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786092736;
-	bh=5dcfVoJ6AbTamxtwDiIevecxcWgLUpSF8Abt8+46V18=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nTcT8qQ51DH5ivaM/QlGSUOmHVRTjTlaGZWUFmg7j5tGviiEE7SKdugJMY4FCLM0b
-	 bHPUbO9slRGyttKW5PcGlGFgT+zn1K0M7Mi+BC/LnadNL4IhuOQI1p4oBfeVsEVWd4
-	 MY3wnYZve+r6QEI/Ue6Tb8OgO6pcif8+fTzSPSCAhmWis07T+fW4Tycszd8mhRyGG2
-	 IxDDzD3eCjWy2Nib9EvdAgr5addJt1zZG1gGH+kgPQk1EjtxPmC3LqEC6GPBPqHDfp
-	 XXDgvo+Lzz2SeVs3Cp0wsWiD1QRnE7omcZ46bUsGL/MrxC4b0C1jvz6eX9iWo9HbmS
-	 oULyXfwS+jcrA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
+	t=1786093287;
+	b=BZRmHCm0NfvJqxbGoe0I67eesQ0DoJV0V36BA6CAp/srkaNxp6k1yyszvrnxrcZudor3rh
+	A4eUKBQrg2JsA6dDur+IgL94Jp+d0q8jOr0a2rG46Y8DpXZnIvBWtZUb9t28F+xKWWYKMN
+	cgDweNz+VyyX04J/gvCXHAJJZcZ/sSk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786093285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iG7BQOUNjluMUKJPYfIHD5r/Uah0YPlbWHQVgLWehtU=;
+	b=W4paKvFA++v1+lPM1ytHVfF0PZgUR7OB0TF6XKLapSuMujihGcrfh1cnW4DDbj0JgZF4hM
+	uzcLPRGnqw+YY1zkx6ns8pfJsv7N2hXW4gK6iqyVohSLE+pv95PdLIOdAdnstM5ayQxb/b
+	I+VmA6gxITBSkq9zeH/4MNwnK4FYdSw=
+From: Ridong <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	nh-open-source@amazon.com
-Subject: Re: [PATCH v2] mm/mm_init: fix out-of-range first_deferred_pfn
-Date: Fri,  7 Aug 2026 11:52:02 +0300
-Message-ID: <178609265194.1678924.36219766049856904.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260807031243.87904-1-graf@amazon.com>
-References: <20260807031243.87904-1-graf@amazon.com>
+	Ridong Chen <ridong.chen@linux.dev>,
+	cui.tao@linux.dev,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v2 1/2] memcg: acquire peaks_lock when reading memory.peak
+Date: Fri,  7 Aug 2026 16:59:59 +0800
+Message-Id: <20260807090000.1532495-2-ridong.chen@linux.dev>
+In-Reply-To: <20260807090000.1532495-1-ridong.chen@linux.dev>
+References: <20260807090000.1532495-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 09740140002
-X-Stat-Signature: qeb7n1nh3wtqddfjcw6biix93f5gttus
+X-Rspamd-Queue-Id: C45F11C0018
+X-Stat-Signature: grjypp3ndzxjptjie668uz73d8ok5hqk
 X-Rspam-User: 
-X-HE-Tag: 1786092736-313245
-X-HE-Meta: U2FsdGVkX19Aq2lecQod/pKWHDmx8yFJn7Mg1s97cfcempM7C3UlJooyk45temlWc4OOYGoD4ftP8oNBFRMKsZKIlv9PtUuNBgkt1FuLt6ZyC5rPqSpWkn5JJ+ABUvFroSKpPdH5uf7zyUhbjl+tv/lmM7NzdLTyHc1E+ZOKZFwh7SKsS8a8rQ6pbMN0N2lxpBjGNz2fGmM69R5rDrGpsQUNRT221T1/cbk0uMnzkgCMqrUhlTJkGEzIQKWHnnByF+U2/8KSZDWyhmc3NUADiCe8i4UuPNlj757pIqASWqkGDzSyLEJF0NX0y9EAw3lt8a4hFW3JqZ0oXtrswp3i5wGkBnOTUc83pGUgBMIfWuXVlecKDh8Wg8jpZiw+tqcQFHhLtGg8Hen7jFQcEerLf+heX/MG1/NCGs36wMru57g4FTzMnQ5vVoGcAfNANx5q1qKU4A3MUgkQ1itTbvFtr6PC2SipsXRz8G63uhPtZyBWazo3H6LC7rC6iLZBa7NpFiMHOJfMlklOzqz8vNSZCy7Vd5SjGgWiiLvb7xyufbEabNMsji8Mboph5ULNdkXXsHTncDQa5mgamw3h2scNDGxh245hYsK2ejpiskP5F+Q4qbqo3XrP9CP2HcApXiT+MFGVmYU0QCUD+4Oq9b6xvyISaImR6PKR6QtxRPaPq8pseUePTdFfrkWrMAGAj1C4oarpoXktjwKFa5nj1GJ+0L3nlwdW4YOYZ7Q+90OOrCE7maRWSXjCVIO5mscjaHUDAQhW3gFnfSJHlJp5K2R1nouN0o4f9tZP3MZ3O11S0MiasUWLveQ2L+LldT/WIhg7eVHZ6QfA/qk8KEJ3KvS04TRsauiJmU8L+BsB9PI2zzJ49wAuGsU9d9AdCWwytsI/C+FSTVTDcm0WbuAyr0CGzvT7AL16/4gvn1Qs0o7vhYxzoS01idW2ArBBvz9qVujS+t6h16JKRR8teZqjKGa
- WKixy17E
- f8gc61XwgiED5f30+8nT2dzeo/ocqlrSRo6xJpkPMcxnKBmiIVQi8krm/fCcXl2aTolpqo6EgsAZRtwFiKjfprMLAe+pTYZmkT/7fG7Qp8OawEfqI5qoRF2v3bxjbnzeynyFRwFVefyMs1FPNmzCn/hm4MR89lp8VLiYCNXH/Wqb/vJm5/zYC1ESfs1o0kkI+4lz7OvH7i89SmqPHb1R/QPOUld6f1JYDj23hln0zWYgdxTfJDcjGHrGV2hUI7rhubYWl+NPtZFaYHLOxwlILbzcWigB+9+2RYsHWm6GDQFcinhC7ZjtYczlQPwyvOEirAN21GGGZD+OVyx9bjSl8QbA+eDe6nsY13cik/HyMDVSPuJQ=
+X-HE-Tag: 1786093286-574622
+X-HE-Meta: U2FsdGVkX18WgqriTDnzJDX6bEbdU3ReVIntU35FRw7VLAYFXrGMjHoPtaRdQaugEZbESWtJjuiGYNn2+Z3jiqoz5+NF1cHA4D8asEsCdhxFQmjVNV/QC0VewepzlYhGTMCRqrurItd9E4jd3sffr978uDPuMb+EdmQoULpq42SqftX1GGHnxzkHVOlfeC1fePqSeG2nidboatASC9m8jJmDXi+ZJ4ook7Y6RvxatP0SIfO8fCyC1YCPhfDtiJR34UGUstBxq2LW1vPYhSiOYhphuWIxgM0242g2dKOVb5YRZw9u5gue3HR45109IgZrvr7WkPC2ySffwpFHYtK+PmoNohjc8t5hW2rIiWGd+EMzqznfR7S1eZIdX5zzKbhgRcFf6ZvMO+JlvILO3Qs7orwxd6Rc72ErkI91vHz7iQzJkfv0XLN3NkzpoDBZJplHRLWtFH0i0x1ZQh4YfaPXwxZLnri93SJ9K00eb31yO3pvme07O5po1lHXAXmEANmE6gRhbdbpKuGxxLyhNrfyPUFoQbHyij429AXTwuvrmrBsuypxTPqqX06768UkolvnWkCCJ47Z8VZn/ZramP3d9iUCOuH41/tT5MWY7s6o4ivWRlXjHvOIX9dy4ZNIvXsUuBsfE1RUPqAEtVhp8+CMN514m8UkYxl32D0HntBTgQK51IL09O5uB8I3EWxaVBXQo+JGRqMd28dMVog/r197LgJjVIydtiJ6lXPLX5aVEXSIUw/56YE+BxPTmQQVi4XwLCqaI+MD/DU4S84irI1LnFt9TJcnwBXcloNdNxwHL2B8DKsiGgJAI8A1PX+AOfsqx5wGiWwBBTGD02Ws39NephYS0b1K4Qx6S73rYyg7TRRRzpUZtwr11S+a0Zw+ALRQBdCUTgdzrDeXESrEy8+8ydunhlVD/We77xaQbPSUuvpIGEwXT08neGfag7DIaOH1F+MmfF4/Qb87Ewlwqft
+ tsdq8I3l
+ LrVyy9B0B9NRdCgjxeIxGeMORwrFX+Glxwb4if4IZxS7dRFcBlCQfXE64nzP7+GPdy4u/05wUvWWRgVtFuhCKPdtfjspXcb9oOloehPkgzgbn/nRbp1WWq2CfzC2AvA9SI9rQm8hsUYTgmhlxAMEEcUCihHeiL1sIIe/rGkHdBjITo7SrAMynxVK1eohsADKIioYIRl5bMAOg0sbcPcGlLr2kgE9Ik5seOCTfGmTd9dcZ69itS5xUi4MBVXRiXi5BHz8Y5S6eyN4LqKEEr9FiP6Al83VlvMtR329CZmP+3Ue9WExbUK+VqBlJTAvSkjGt0EsYCQEWumkKB7zerG8N3Jvmgk4VLgAHSZcx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,27 +97,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 07 Aug 2026 03:12:43 +0000, Alexander Graf wrote:
-> With CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled, deferred_grow_zone()
-> undefers struct page ranges early in boot to satisfy an allocation.  With
-> a large CMA reservation in place, the ranges it finds may not add up to
-> the allocation it was asked for, and we end up undeferring all available
-> RAM and still fall short.  That is fine in itself: the function accounts
-> for it and leaves the caller to decide whether it now has enough memory.
-> 
-> [...]
+From: Ridong Chen <chenridong@xiaomi.com>
 
-I reworded the code comment and the changelog even more and
-applied to for-next branch of memblock.git tree, thanks!
+Sashiko reported that a reader can transiently observe a lower peak
+within a race window [1]. peak_show() returns
+max(local_watermark, ofp->value), but peak_write() updates those two
+under peaks_lock while the reader takes no lock. The interleaving is:
 
-[1/1] mm/mm_init: fix out-of-range first_deferred_pfn
-      commit: 97090500d776c3f6d08e857e3a0a7cf092999094
+  writer (reset on fd A)                 reader (fd B)
+  ----------------------                 -------------
+  usage = page_counter_read(pc)
+  WRITE_ONCE(local_watermark, usage)
+  // watermark lowered to usage
+                                         lw  = READ_ONCE(local_watermark)
+                                         // sees the lowered usage
+                                         val = READ_ONCE(ofp->value)
+                                         // B's value not updated yet
+                                         return max(lw, val)
+                                         // both low -> low peak
+  WRITE_ONCE(peer_ctx->value, usage)
+  // B updated, but too late
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-branch: for-next
+Fix it by acquiring peaks_lock when reading the peak, so the reader sees
+a consistent snapshot of local_watermark and the per-fd values. The same
+race applies to memory.swap.peak, which shares peaks_lock and the
+peak_write() path, so take the lock there as well.
 
---
-Sincerely yours,
-Mike.
+[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/memcontrol.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index dd6b1c298345..2da55b778ae3 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4711,8 +4711,13 @@ static int peak_show(struct seq_file *sf, void *v, struct page_counter *pc)
+ static int memory_peak_show(struct seq_file *sf, void *v)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
++	int ret;
+ 
+-	return peak_show(sf, v, &memcg->memory);
++	spin_lock(&memcg->peaks_lock);
++	ret = peak_show(sf, v, &memcg->memory);
++	spin_unlock(&memcg->peaks_lock);
++
++	return ret;
+ }
+ 
+ static int peak_open(struct kernfs_open_file *of)
+@@ -5790,8 +5795,13 @@ static u64 swap_current_read(struct cgroup_subsys_state *css,
+ static int swap_peak_show(struct seq_file *sf, void *v)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
++	int ret;
+ 
+-	return peak_show(sf, v, &memcg->swap);
++	spin_lock(&memcg->peaks_lock);
++	ret = peak_show(sf, v, &memcg->swap);
++	spin_unlock(&memcg->peaks_lock);
++
++	return ret;
+ }
+ 
+ static ssize_t swap_peak_write(struct kernfs_open_file *of, char *buf,
+-- 
+2.34.1
 
 
