@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CACAC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 17:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89267C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 17:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D1E66B007B; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
+	id E71DB6B008C; Fri,  7 Aug 2026 13:28:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7837E6B0088; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
+	id DFB1E6B0092; Fri,  7 Aug 2026 13:28:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 671C56B008C; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
+	id CE9B46B0093; Fri,  7 Aug 2026 13:28:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4735E6B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:21:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 393A912013A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:21:30 +0000 (UTC)
-X-FDA: 85075139940.20.4A3ECCE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 83B4740005
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:21:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIyozzzf;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A128F6B008C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 13:28:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C73B120128
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:28:42 +0000 (UTC)
+X-FDA: 85075158084.06.9C8975C
+Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7B0A220013
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:28:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ughP2etH;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786123720;
+	b=wgk+TBHDoVtz9CEVZQ1SH9zjZiddjYZkecph3JbSzq6UJeSq8QkcuIuZocFX74bVVZLlas
+	hzbrQmiPGK6DcZcDXYABT7f2l0oSIygeyA92EUoqgnOTKkBMa7z7phluKHnAkZEfvAijK8
+	5Rp+A8damWZ34vpk1ihpLUMDkeb8xvc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ughP2etH;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.175 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786123288;
+	s=arc-20220608; t=1786123720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Tr+OngTsfD5qeav2e6UkiPEYssc25+AtnzcNKlmI2I=;
-	b=XVbjVgh9hfMGOGg3+9AyddocYwxDJCbe2XPBVD3vPXNYppALAFlmnGaSplPDPIslVHtlFG
-	I0b0EnpYrWzfBKBA+H5rFGD1VK8wbCIpZGxj41MIGejSePk3dAMVwEHxie9nVTZMlKLm2f
-	DwNXJ3A8kfq6ggHUwWHFMOWmqb+mrwQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786123288;
-	b=sswBUUXdDDjLFyCJWEnkF7v5YN+BoGMJiBhuBO81V+7Rb7lLwuo6NQsJm2pz/HAqqFj174
-	7YbWnhqr32alYYH7tZOhQdxOpjKxcMTaucdeORY/iO08X70XY9oymI7XaYeb0xDHY/vrHP
-	eIZgMwAyQ23nmKKHvZRPD93VTZbb+vc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AIyozzzf;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FF0840050;
-	Fri,  7 Aug 2026 17:21:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EEE1F000E9;
-	Fri,  7 Aug 2026 17:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786123287;
-	bh=8Tr+OngTsfD5qeav2e6UkiPEYssc25+AtnzcNKlmI2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AIyozzzfr+dQp2H8Mss1vFkruLckMYEvnGMbRVHglJzy5VD/RU9ZDhgtqIjlONLSR
-	 UZpH3eqdl620lb0P0EquTotgm3yd+yvX7k4ublIX19kaPHwQgaC4t4yfKovRK+PNv3
-	 8Nh6GKt9OxflFKRAyamwGHe0LPi1/nM19HjjwC8h1i4ZiqPcMV+alLurohiW70h7UE
-	 DfyxjUbc4U+Cvf902vkF7SJEvAwIxpIeAnGIrwdwslKZmet8o+V9eT+vq40W2ncHln
-	 ezysQ7WD0Dk2j/HDgFaqXfxxKfnWygMlNnk5+e7zvJHy23Av4gKrVIKaYHI2/wsycj
-	 bMH9z0ZRBbL7w==
-Date: Fri, 7 Aug 2026 18:21:10 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH] mm: Make VM_FAULT_RESULT_TRACE compatible with sparse
-Message-ID: <anYSxm7GHV-bymDQ@lucifer>
-References: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
+	bh=os/PRrPbacuorvD7qAfSrgmy4CupVw/uh8x9t7DjSaI=;
+	b=5UiPJ96xV2RqQpWRINll1eNmKdL5p8S+hcEM98FGST5WiP+WR16O95G/ER2ZCAppPHwPeb
+	mGfuLg5CwQaR7rwR+dJCqUJOlmaFTxkhspNBiSd22sc3UW7X+ILIMLgo+L7TdeKBHiw6P+
+	QW4jZWaeUUMfg0a7mwpILokvnLiOgqI=
+Date: Fri, 7 Aug 2026 10:28:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786123715;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=os/PRrPbacuorvD7qAfSrgmy4CupVw/uh8x9t7DjSaI=;
+	b=ughP2etH1jfO2YCuUwJ+EDaLB5Zll21Cf4meMuH3AX4mSCqhajNRmbc1Jajyeb/kfQZWiC
+	91mGj+2/jTt0aErwcrvnfYXlbFJC4bC1u/Ka6mNI817P1ddiI/TPHVS5SpH3kdPC6F4niK
+	HCfDMnFO+ZHnCSYAHUgaXuM3nrkw5cQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Audra Mitchell <audra@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>, david@kernel.org, jocolema@redhat.com, 
+	raquini@redhat.com, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix unbounded loop within try_charge_memcg
+Message-ID: <anYUNIKwXnTIx0fl@linux.dev>
+References: <20260806151004.1825320-1-audra@redhat.com>
+ <anWSHc04JJBJ1VbS@tiehlicka>
+ <anX8VgySSw5OR_Sb@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e56c9e2aead04f79192c3110de80d846e41e3791.1786122711.git.bvanassche@acm.org>
-X-Rspamd-Server: rspam07
+In-Reply-To: <anX8VgySSw5OR_Sb@fedora>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7B0A220013
+X-Stat-Signature: 66dyto1epppf1nzi3ijdkindrqt857jh
 X-Rspam-User: 
-X-Stat-Signature: k71jqa3s8x411bbpwx76opohrxz56a3k
-X-Rspamd-Queue-Id: 83B4740005
-X-HE-Tag: 1786123288-252531
-X-HE-Meta: U2FsdGVkX19Go6qIhtw1/Wm0ON/s9Kt5gx2qIV5DSqU378R1Y92Rc7hGyHqDhC8bzP0+aOGuVMHQMtq+f/TAGQ7A4QB55/M56mq1yHlvH20mL9P901WzKmh0E3dzQigkus6swBAZZY/lZOD0v9dSlfT+6fi6/QauQ14LBbLSiGNkho9j7nF3te4UZM+7YsQEO3VPZrk7OQfd6JNIr/3hSH2bliRBLenwljgS2g4DVfTw6w5m77RrvDWR0+M6tT9y8KAUO+RDR3kRVVUOdg3fFeqSP+5mQzvlQkIqFFQMIG8r15+f6jLXEczlC0R6smKxwS0kLWeb+WKy8hLp9v/BZHaRZkh0PMX/CgOe06rHKU0l7nIYReqtyyYwWmyVstl6cPmwStDTAZNQlxpDgl/6kfRGw/Z7kL+8VqyxDGk1ospAsvxdsFVSt10zkLOtI81VZ89A4V0Tu8tvIr2A0crEbfmiCD1u5U26ldbOZw71BbVhl8c7RsfCYgCcTcvqeFlcBUCO5P3EphTaSc1bFoGAMRRkz7MHLDrrXcusU7k/5AT2joogdp3Ts/z+qTArFsUDMTMYGlwmpfzDublwZrDyi/68CTBCCmf6wsjznf5CcPfczzZUe+G9Up798H/kRX+2+n3XWjirM8I+BPfH+dgkruYi8uKHsmnBCXgy+KVVMGxMvByoYykSfJsEQNipdaupkMHxTi9SfShLRwCcsahSuk7DHMwz76Vu/fmiNhSQCwlGrEQY9ca4roTe48dWd2VVppr48keHEv4ap5JNEcRmrRX0HScdbdb2PdEBPjyW3WvNbauUaigyA51Zslydea8Y13LuiVeVtuXb0OrfimuTvyvhSoB0lo6neqY86NVCAK4mr6wiuXEIZRlEUwys2TTZ9O7i8G/ClRgJa+rstGUq5eQygiDA/thxcyR506SGmJFkMwjDhDa4xbR8UcQmCksi5SiqWfLuhvux/PlKEuz
- kC/tnOt8
- TOiilhDuwo15LwcPx+Cq7nbiXoPL8GRdKTyf5fFqvoGzb/IwLwOAHSKom/5dei6Yfk0HjhMqyB6/F46Ma/raLF/Xcu27/zA71RXCY90t+O4zn4H9k3Lj9F2D4pfxgBcKKznD1fkjmM0EKzFy6L6mVk3jubkb/ERABYxtXSspiITbyZOYXskLRIcNjKIYA8Au1n8+ZCNsttCbsd0LJ9iMPQ7k3Q3Y78zpVkBHT+T8RsXRvsb7DcyL1AlXa2CyYrtuyFbiaAP8lIEUJ/C1rauQbOPWbsQMXRVi9A/soGZpKiyZ5hvwty3XjrgDuDSt6j8K/Kyhsm27XkGgrFuduHjFy5l4tIMet4DvuBvkIYR21g81TSvIrvYFSXj3qOKm21cBcS+yTXVNjw079LBf569UGclLUjw==
+X-HE-Tag: 1786123718-940640
+X-HE-Meta: U2FsdGVkX1/P5n8k6ASoDpHPgxoP7i+3kjJsaVVQtwqc5dvzPNF/xg8DOb5w12VrNQbGljvnza6ge+32jAg37ry0PMqnSb2kKiiuDXNxnvjc9yEmriMItzRhYYukxM1HXBkFSNVxSZcqyQ92LdcPxj+e3ib1RSo+3AfjyhjUQR/EKSMK554oNGKMlbPF2Hm/kwtjopqwjCsAzYfmPU4SMH6r2nqvW55D6Bzu/tQvIgwDr4FfTdJcs5IabyswRvYZiubGbXXkAI6pX/qOCN0kntBZiP0eFygNpd862t30zHcHZfbMe051+bP5VX9QIGUaCMFz9IquV+jSgruTggKWx1+d1BYgWi4MbwM008l9h3bR7phBj755Jv0KUNThD4kSavnF97Dg2YjwhzflcRZ3Or5NbybpRf5W053dlpzjoHpSk6Ysj4WkOmicOC4quLQ23FXNiMD34QtEMG0zcfxXSgtgogeufTLH1QVT1c2kcln4/Ixgwv23XLJifIYmjReQ4WpIixIUrLPE5aQTsXdSBL9yAz+2EzTbGMN3+kr1tk1grz+eHA0pT1+dJzW4uR/JEqL5n+bPQa3CSbO9E7XatNlFcIN1AzEBteizq/+O5uO+UHk73T74Ff5wWHAdpRrpDk/Td98yv0aG5o3GFt7DZP/TMeQNDqnjQybjG/SU3nU91yBq5y8tGdd5XsdxW2opIzGWIjZVFxC+r+RBPB8+JppPvAym/8Hd9BgOmMaFAcyFnqilyxjUo/LtRyxFsCVLTYXjsJrfsdYbYrCjA7bs8E5JSkkPXBVgrXOOVwoRCO3BFeU4rapgdB0qsmJYkNZrijN81jJGA9AqV0ml2Xm9tDvxNFT4Zkv8dJ3Td1f2hTIsyTzhCfrVU3RTzgSRIzZ000kb15dJFwLRws3a3L9LHIbQAIqrAS9NcKYQgyKiawkVf2KqU9NMo+jRnpnFNvzAZGjgerkrtzwe8HHzcpS
+ jFRWZ85M
+ Gfk875w7Xeg7mFLsko3GHhOaqzvmcrdXwkZgf6K7cpzwM20+0M3PuLBaIvJP5lRIymNneT7VV2lFEeC5ByyPYlfhIHZj7rLhLyMd4TNmHyya3j7iZzNi2r+7paZ0BLOjCYZrwmzEvS3HlfZqTrCs6VdV/Kfucs0A/vP8o5gNAwzBVek18mQ2IshmjhCpgxrwPLu7mU6o1t5C6h/JRVfScPlpmx/27t04MUzYVgMtBjTamSPwCjfxRF819O484GOc/w7he
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,68 +91,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 10:13:10AM -0700, Bart Van Assche wrote:
-> Fix the following sparse warnings that appear while building f2fs:
->
-> ./include/trace/events/f2fs.h:1469:1: warning: incorrect type in initializer (different base types)
-> ./include/trace/events/f2fs.h:1469:1:    expected unsigned long mask
-> ./include/trace/events/f2fs.h:1469:1:    got restricted vm_fault_t
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Fri, Aug 07, 2026 at 11:40:06AM -0400, Audra Mitchell wrote:
+> On Fri, Aug 07, 2026 at 10:06:53AM +0200, Michal Hocko wrote:
+> > On Thu 06-08-26 11:10:03, Audra Mitchell wrote:
+> > > Originally nr_retries was actually nr_oom_retries and we used it to track (and
+> > > limit) the number of times we entered the mem_cgroup_oom path and then attempted
+> > > a retry. The purpose of nr_retries counter changed with the introduction of
+> > > 9b1306192d33 ("mm: memcontrol: retry reclaim for oom-disabled and __GFP_NOFAIL
+> > > charges") so that the oom-disabled and __GFP_NOFAIL charges would also continue
+> > > to retry within the desired nr_retries threshold. Later d977aa939fca
+> > > ("mm, memcg: unify reclaim retry limits with page allocator") changed the
+> > > nr_retries counter from 5 to 16.
+> > > 
+> > > As the function has evolved we now have multiple paths that have a goto retry
+> > > path and we have lost the original purpose of the nr_retries counter, allowing
+> > > us to take a goto retry path an unbounded number of times.
+> > > 
+> > > Fix the unbounded retries by nesting the code in a loop and decrementing the
+> > > nr_retries counter correctly.
+> > 
+> > Are you trying to fix a theoretical problem spotted by the code review
+> > or is there any actual problem that you are trying to fix?
+> 
+> We have had some customer complaints that performance has slowed to a crawl when
+> the cgroup memory limit has come close to the maximum limit. In those cases, we
+> have noticed that each process is spending a large amount of time in the direct
+> reclaim path acquiring just enough memory for their specific allocation, thus
+> by-passing the oom condition yet degrading the system's overall performance.
+> In the global case, direct reclaim is bounded by DEF_PRIORITY, however, a cgroup
+> will go through the try_charge_memcg path which will call
+> try_to_free_mem_cgroup_pages->do_try_to_free_pages each time it does a retry (16
+> times). If we bound the loop in try_charge_memcg, the worst case is 16*12 passes
+> attempting to reclaim. This patch is meant to address the unbound case, limiting
+> the loops to 16 attempts at following the direct reclaim path. An argument could
+> be made to reduce nr_retries as well, but given that the nr_retries has been set
+> to 16 for sometime, it seemed unlikely such a change would be considered.
+> 
 
-I no longer work at Oracle ;)
+Generally we keep the kernel oom-killer very conservative and let the userspace
+system-oomd react and trigger the kill (unless there is an obvious bug and/or does
+not require to add one more heuristic in the reclaim+oom path).
 
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-
-This seems reasonable to me, AFAICT.
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  include/linux/mm_types.h | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index b18c2b2e7d2c..fcd7d6cfce0f 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1703,20 +1703,20 @@ enum vm_fault_reason {
->  			VM_FAULT_SIGSEGV | VM_FAULT_HWPOISON |	\
->  			VM_FAULT_HWPOISON_LARGE | VM_FAULT_FALLBACK)
->
-> -#define VM_FAULT_RESULT_TRACE \
-> -	{ VM_FAULT_OOM,                 "OOM" },	\
-> -	{ VM_FAULT_SIGBUS,              "SIGBUS" },	\
-> -	{ VM_FAULT_MAJOR,               "MAJOR" },	\
-> -	{ VM_FAULT_HWPOISON,            "HWPOISON" },	\
-> -	{ VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" },	\
-> -	{ VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
-> -	{ VM_FAULT_NOPAGE,              "NOPAGE" },	\
-> -	{ VM_FAULT_LOCKED,              "LOCKED" },	\
-> -	{ VM_FAULT_RETRY,               "RETRY" },	\
-> -	{ VM_FAULT_FALLBACK,            "FALLBACK" },	\
-> -	{ VM_FAULT_DONE_COW,            "DONE_COW" },	\
-> -	{ VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
-> -	{ VM_FAULT_COMPLETED,           "COMPLETED" }
-> +#define VM_FAULT_RESULT_TRACE						\
-> +	{ (__force u32)VM_FAULT_OOM,                 "OOM" },		\
-> +	{ (__force u32)VM_FAULT_SIGBUS,              "SIGBUS" },	\
-> +	{ (__force u32)VM_FAULT_MAJOR,               "MAJOR" },		\
-> +	{ (__force u32)VM_FAULT_HWPOISON,            "HWPOISON" },	\
-> +	{ (__force u32)VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" }, \
-> +	{ (__force u32)VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
-> +	{ (__force u32)VM_FAULT_NOPAGE,              "NOPAGE" },	\
-> +	{ (__force u32)VM_FAULT_LOCKED,              "LOCKED" },	\
-> +	{ (__force u32)VM_FAULT_RETRY,               "RETRY" },		\
-> +	{ (__force u32)VM_FAULT_FALLBACK,            "FALLBACK" },	\
-> +	{ (__force u32)VM_FAULT_DONE_COW,            "DONE_COW" },	\
-> +	{ (__force u32)VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
-> +	{ (__force u32)VM_FAULT_COMPLETED,           "COMPLETED" }
->
->  struct vm_special_mapping {
->  	const char *name;	/* The name, e.g. "[vdso]". */
-
---
-Cheers, Lorenzo
+Anyways was systemd-oomd and psi enabled on the user system?
 
