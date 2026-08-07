@@ -4,87 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FAE4C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 19:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA52C2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 19:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58D136B0088; Fri,  7 Aug 2026 15:10:50 -0400 (EDT)
+	id 45D1E6B008C; Fri,  7 Aug 2026 15:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F386B008A; Fri,  7 Aug 2026 15:10:50 -0400 (EDT)
+	id 3C0AD6B0092; Fri,  7 Aug 2026 15:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 454856B008C; Fri,  7 Aug 2026 15:10:50 -0400 (EDT)
+	id 2AF106B0093; Fri,  7 Aug 2026 15:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 12A246B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:10:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A1171C0202
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:10:48 +0000 (UTC)
-X-FDA: 85075415376.29.653206E
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2C3D62000E
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:10:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lub/0oAM";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 032306B008C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:13:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45BB3A0198
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:13:45 +0000 (UTC)
+X-FDA: 85075422810.03.D62D55C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2D6E440013
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:13:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fKfxsdtF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786129846;
+	s=arc-20220608; t=1786130023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCEptNRU1/sT4EeCLaaq6ras0jXi+prulPBFZsJWzg8=;
-	b=GApb8KR8aa2qIXZ5JoNHyVB/u+2JrB7RAW8JwaNUo20yatHKSXnZz6xOZk/d6rVge+3rRy
-	fDFOa/i4qbgrL0SYHyUajcaE+IKjd6t7mdo6HCKug0rGbfALkU6xvF6DTjVOHABSi+YoLU
-	6djD7KkdDMToSbUFss7DHSaHYdmMD/Q=
+	bh=sJYGVFI+AMYRJ/HMDjzVs+LLOKd26PLu0JdeojtQXvw=;
+	b=Nyi7Zk0Bul3UN0iw0bW020f3JOmptN+auFMrDXSfS/OWsg0s1MPgeisVLswyRDzgBaehFW
+	Vo4EIJeytuCTuyDWKQbuLYbw3AzgwIwLWin8CMDRlt75lLUPw0g/crwGA0SZRu9kPeRqar
+	7/Ylg3kX6HxcW2RFX6IgS/1XTjn7ETc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lub/0oAM";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fKfxsdtF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786129846;
-	b=H0hDI/sO6+RTxvmIyD0rFpM9f7ATk87c4ZZ8WI4769oyjyH4HkpM9pOWKf2Yqw4AKDwfnE
-	JFguOwLOOoSKX4gMLMgCJsp3xZniWTOxFvsQfLFzSReuHYpiUGhZjEBdG4scRaiuhvDe+u
-	wSeDL04O11H/DDVv08QWiGgfYVeSxRM=
-Date: Fri, 7 Aug 2026 12:10:20 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786129844;
+	t=1786130023;
+	b=n7T+/wLhe1uPPQtTZcHLsYCNzK2WSHjSd6CkEQYENaIsyVW4B/a0bBzdeRrGRDAPmroYYg
+	f9szguU9Zd+T6d6rw0kBHFXGJ0aH3w7/P+6D6g0q25oEFQ3EKDHRlm1Vcqst8rufgtYj9x
+	J85TbOsTvJLU3uUbiQqbzrlSYBFW8sY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786130022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PCEptNRU1/sT4EeCLaaq6ras0jXi+prulPBFZsJWzg8=;
-	b=lub/0oAMZ/BfA/OhRan10l0mip92hxY0WzguPVfbO1Cdn7f7keLyKEEB5V1n9D33SLhKlC
-	mdhx3EDFS736L4fM6ijybNLHtLOubSwUc5/1laOYT8p9QX2Bzs7Zr9K3P8PGx3pp3yX4od
-	RvFOscDgbmV+WQ3PgWzqn44CV+KE0Wk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
+	bh=sJYGVFI+AMYRJ/HMDjzVs+LLOKd26PLu0JdeojtQXvw=;
+	b=fKfxsdtFEbmRp6+B6n+UDH/I2PtOdq3/ooBBOxxuukKYo+0AwYNHF9bc64EiqadWwr7Hh8
+	nAFmrAQGoL7ujoeFzSa0gxZWfwdCc09G550VXbybuZc12Aw/aYPs5ho/Tw7HzkkRPhgXhl
+	W0rnR5oVkzOWsOr6BN63MazCueZp/v8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-FONeiBgkO7i1sT07L_P4-Q-1; Fri,
+ 07 Aug 2026 15:13:29 -0400
+X-MC-Unique: FONeiBgkO7i1sT07L_P4-Q-1
+X-Mimecast-MFC-AGG-ID: FONeiBgkO7i1sT07L_P4-Q_1786130007
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2F11E195608E;
+	Fri,  7 Aug 2026 19:13:27 +0000 (UTC)
+Received: from fedora (unknown [10.22.64.85])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58D84422;
+	Fri,  7 Aug 2026 19:13:24 +0000 (UTC)
+Date: Fri, 7 Aug 2026 15:13:22 -0400
+From: Audra Mitchell <audra@redhat.com>
 To: Michal Hocko <mhocko@suse.com>
-Cc: Audra Mitchell <audra@redhat.com>, david@kernel.org, 
-	jocolema@redhat.com, raquini@redhat.com, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+Cc: david@kernel.org, jocolema@redhat.com, raquini@redhat.com,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] Fix unbounded loop within try_charge_memcg
-Message-ID: <anYr6UIi1nevGJkA@linux.dev>
+Message-ID: <anYuUpgvsUGZcGMQ@fedora>
 References: <20260806151004.1825320-1-audra@redhat.com>
  <anWSHc04JJBJ1VbS@tiehlicka>
  <anX8VgySSw5OR_Sb@fedora>
  <anYoLs1B0MwUNR2n@tiehlicka>
 MIME-Version: 1.0
+In-Reply-To: <anYoLs1B0MwUNR2n@tiehlicka>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: jS2_UTqGkh27GdvJXD78aloiyt9zvLk9OKfOOBKnmT0_1786130007
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anYoLs1B0MwUNR2n@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2C3D62000E
-X-Stat-Signature: k9z77ksxp4dgye53r3tc9w4hiyddtsrk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D6E440013
+X-Stat-Signature: 9gnea8aubg5g14b1tmphat7ua3pprgkg
 X-Rspam-User: 
-X-HE-Tag: 1786129846-993691
-X-HE-Meta: U2FsdGVkX18j1ZgBDo0U2c2OQOUygikBkBYaetETpOAwEijY2AeXTgxtrfzCsjOqYf/mtP8NQ/f6tjSc0PKmeC5hIvAsCoOtAWB3cfhB9zxHL/2QjqrHK3QoG6Dhh7DHJ4kHO8BMsfWTBNXbaUHXQgfIg0AO3yEJGL9RBoZL2wf695WoWqBiS5ati9NMYbLrvW4E/duV9lULc3daz25I7OAjM0m7a8tYI7d34qSBxriwY/IWNRQFfHxRCamr9GADxMnHg+Rz8fXoETS7X+eiYBAwJMcuTcOTaRxKTT9KPKaY7Gc1fCsQq2zggM3RGbA6rC1uap7jITndiYcvr60/whnvoPHzY7idfaliq+UhRPcHpvPfQ/1QvZaq8DhPeFgBVxmS9a8mG0xOwu7AUSmuMSPYtQDVH1GCKrG8ea8BxKLPU4H0WiS/90kFwBtyUV9t94v9yaAEyLdjHQtyob6CCkRJG5ZwLkrSJLZwNgyHIsr0B4/uNeLSGH6eNNNFuHY7yI7zOKDy0l8jFJoVYoHrlFoAzPO/B5ayhh3azwsFh1cG44y2dxIm8QGqFWmn1IQbbAc+0IH8mLHx29Nqh3PYgiuz+UADIwS0jzK7nHxXgLsY33a/2CwET6QpB1W2ZTnFEoUyD3zWdJ/ZFGE8+ND330S/o4Qwmy9oeOBVvNv60hX7HKGYRu6M7WqpHCOMzNG/XgYD/f2+k4omre0az07N6tooJy4NHH/qn4zdaNmgp0AyN3xeUl/m/h/BOkfUaKv065n8UqyMQsc7b2j5g8hHqp/hQPN+PXUIkG2q6EqB35mB4iQgdM0WUV8sx/h4R22JB8bOqM0xzeRWB0L0PhGUKqSEc8szShJ3ETTtLYeGRW5EeJxYJa7I5K7zNqwkNHl68KWBM5EOmGN7YmUgriEyIlw/bNmhTZeD9fbrYBRvzZ31uqwlDseXPX9y5+RVGN37biupBx0TgOBRdjDTtOF
- n7Kqk3lO
- wyG2U51i6iCF5tpl2dVJuW3vHcW1XXbt9nncRiUQ0Y2MdAXyJTAzNlw34vsNhyqn99Kuea2w6VTqoy5RkUtHXBWAxf8S7Yl7XmU3i9WfEuDQPk+yyC2513/EyyNb0MKnFmVEtG+Q5xoP+TGhjXsCFRKKaImcPo3RTFaBjmD5YUfHANRlyYECMvW6A7VjDVqaEVRATaoZ7FTmBpYiJQUj8KbA2OGGQ3jSiqACDD0tp/uw1uiqBZkRwjziDICxtMAhJZMoi
+X-HE-Tag: 1786130023-397816
+X-HE-Meta: U2FsdGVkX1/7er4Ooc1xroLlDRkLkaiy7x//HEQ5HeQtHcZuzcbR69s0S7d3bu9wZ+mN9RZRLAYXnTgMWEXMNx6JZIq77I58EsxLTszE/rWJFcps/Wt4SnSZEsQS2A82Win7y/2G57uWtmIlHKeEppWiZwatJvWwfLAxSXfMIUr570Vgq14YgKVdB9k5pELCXvBAoxcAYN7Z1G4PcrcRn3rnxsBDjg884+Hm10L95RtvRh+aHW10eBCdyLJ28x03POkhFPW/AdmSWrX3T8T1GicHoHa6iprXcj7zSoESir60CJyY2XBpkCIzzea33SMdVuJ/TVnL+MWUl/47Ka8DUHbqBGGFwT3AE2wDKY3TFuLLC+OjJt+6oahYlGPVEpW3Ni0dh5g7IlexFBUx5i8n3+48s3MWjCOCkBoL/WwLgMDqolxq+VC9GRJ5UD23GO4XdobsSpAzLuC6pZ5LymJl/BNaYbcyxMedbvEHKOOChYTa2ndYok+j9b/7zAirn4Pvl0YACwREup+Xly/7Zu/wWIJDAoigcpjNg4P3gbYH0XqWMRlk5/fDNajzg0Wq09l7KfGIVW+4X4UCORczjC92qtF96hXdZRUUG9r6IsXhXl/fN2hfxGyY7JCxlsAPu5n69PSvEj+1v+hLQD1fOh5SsdVvlwjdCYWuLioUIaFxoefgp8pbWyCiDV4xdEDBgyK4YQM7doayFc6zERuv8ju623uijGzM4o+us6id6Uq1JcqgirwKrv4Y59fMG9ra/c34wrBstx2As76tYsRIflDrjRmPvAKyblepMWd9QpDLCgSNhXFDArrgeSFA1lqNq3cGO7+h4cXJKXxyCdfF755V0GHK0Yq6m01VjutgwodBYncgsjN5QgG59wzAGdRQJnctuUIdlm23WUORukw4pENoFUxuV0jOemzOjXFL1B0IftyD4+foknmhB6TweB09TzpGC59hVWTjWP1iAgtStQv
+ gZ/JHVar
+ DR93MVD9610ZDjb3FHCsJXLGNCAPNWesKftaGnmKfxCML1z9FeuL5WqtV4MpOeMcJ5KeSsT/hTZi0JZAWZDp/DgT7VCPZsgXO6ExI/trlK+aiN6G3gKBr6aBtuiVTwN5OCow1AtZUcqn0bfX/EA7uF/XzHcjMD7ACJbvrYArj17c3nYMP7Og3oDUubwOZgn98/ybLbMvupNg5QBYjarzDGiNpJUTWAWR3x39SIM6+q4Xpryyi31WFz4eqRmcGSpttAgrn0T3GS2vFsjT0yK5wydBKgzugTq6nxGrR9OMn9CcraTPTf6CjmV1LKHq+hPPJXq2Ufy1rNAYRcB2ip/Os/LijjHbdqFaUz605ix7eCyTAuZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +115,6 @@ On Fri, Aug 07, 2026 at 08:47:10PM +0200, Michal Hocko wrote:
 > On Fri 07-08-26 11:40:06, Audra Mitchell wrote:
 > > On Fri, Aug 07, 2026 at 10:06:53AM +0200, Michal Hocko wrote:
 > > > On Thu 06-08-26 11:10:03, Audra Mitchell wrote:
-> > > > Originally nr_retries was actually nr_oom_retries and we used it to track (and
-> > > > limit) the number of times we entered the mem_cgroup_oom path and then attempted
-> > > > a retry. The purpose of nr_retries counter changed with the introduction of
-> > > > 9b1306192d33 ("mm: memcontrol: retry reclaim for oom-disabled and __GFP_NOFAIL
-> > > > charges") so that the oom-disabled and __GFP_NOFAIL charges would also continue
-> > > > to retry within the desired nr_retries threshold. Later d977aa939fca
-> > > > ("mm, memcg: unify reclaim retry limits with page allocator") changed the
-> > > > nr_retries counter from 5 to 16.
-> > > > 
-> > > > As the function has evolved we now have multiple paths that have a goto retry
-> > > > path and we have lost the original purpose of the nr_retries counter, allowing
-> > > > us to take a goto retry path an unbounded number of times.
-> > > > 
-> > > > Fix the unbounded retries by nesting the code in a loop and decrementing the
-> > > > nr_retries counter correctly.
-> > > 
-> > > Are you trying to fix a theoretical problem spotted by the code review
-> > > or is there any actual problem that you are trying to fix?
-> > 
-> > We have had some customer complaints that performance has slowed to a crawl when
-> > the cgroup memory limit has come close to the maximum limit. In those cases, we
-> > have noticed that each process is spending a large amount of time in the direct
-> > reclaim path acquiring just enough memory for their specific allocation, thus
-> > by-passing the oom condition yet degrading the system's overall performance.
-> 
-> Yes, this is entirely possible scenario.
-> 
-> > In the global case, direct reclaim is bounded by DEF_PRIORITY,
 > 
 > Well, both global and memcg reclaim share the reclaim logic. Both of
 > them try to exercise all reclaim priorities (i.e. check whole eligible
@@ -131,42 +122,37 @@ On Fri, Aug 07, 2026 at 08:47:10PM +0200, Michal Hocko wrote:
 > option left. For the global case should_reclaim_retry is the gate keeper
 > around direct reclaim retries while for the memcg we have more or less
 > fixed number of retries.
-> 
-> > however, a cgroup
-> > will go through the try_charge_memcg path which will call
-> > try_to_free_mem_cgroup_pages->do_try_to_free_pages each time it does a retry (16
-> > times).
-> 
-> > If we bound the loop in try_charge_memcg, the worst case is 16*12 passes
-> > attempting to reclaim. This patch is meant to address the unbound case, limiting
-> > the loops to 16 attempts at following the direct reclaim path. An argument could
-> > be made to reduce nr_retries as well, but given that the nr_retries has been set
-> > to 16 for sometime, it seemed unlikely such a change would be considered.
-> 
-> As Shakeel said in other reply, this is a deliberate implementation
-> decision. The OOM killer is the very last resort and we are giving
-> chance to userspace to handle close to OOM situation much more
-> gracefully and also workload aware. Keep in mind that what might be seen
-> as a slow progress for one workload might be acceptable for others where
-> OOM killer could mean a lot of work being lost.
-> 
+
 > From what you are describing above those users might be hitting reclaim trashing.
 > I.e. last small portion of a reclaimable memory is bounced back and
 > forth for the workload to make tiny but steady forward progress. While
 > OOM killer might help to stop the suffering and restart the workload
 > sooner I would generally recommend revisiting limits set for the
-> particular workload.
-
-+1 to this. Beside memory.pressure, we also have refault and reclaim metrics
-in memory.stat which can further help in debugging if the workload is thrashing
-due to workingset larger than the limits.
-
-> Especially if restarting it might lead to the same
+> particular workload. Especially if restarting it might lead to the same
 > state sooner or later. Watching PSI metric would be a good start to see
 > how the workload behaves wrt memory stalling. User space oom handlers
 > might be a proper measure as well but that will always be safeguard
 > rather than a solution.
-> -- 
-> Michal Hocko
-> SUSE Labs
+
+Both of these recommendations were made to the end customer, with a
+significant emphasis on reviewing the workload and the limits in place.
+
+However, while reviewing the code, I was truly surprised to find retry
+pathways in try_charge_memcg that do not decrement the counter, such as this:
+
+        nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+                                                    gfp_mask, reclaim_options, NULL);
+        psi_memstall_leave(&pflags);
+
+        if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+                goto retry;
+
+If the intent is to have a counter of nr_retries, I am genuinely surprised
+we are comfortable not adhering to said counter. The patch is not meant to
+change any heuristic, but only enforce a counter that is already in place.
+
+I have no real dog in the fight of pushing this change to upstream, so if the
+patch is not desired I will let this lie. Thank you for taking a look and
+the dialouge. Happy Weekend!
+
 
