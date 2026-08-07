@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ABB3C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B2EC2A09B
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652C06B009D; Fri,  7 Aug 2026 10:07:50 -0400 (EDT)
+	id 43A336B007B; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603DA6B00A0; Fri,  7 Aug 2026 10:07:50 -0400 (EDT)
+	id 3EAFE6B0088; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A256B00A1; Fri,  7 Aug 2026 10:07:50 -0400 (EDT)
+	id 327BF6B008A; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 312266B009D
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:07:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C48C1A1D40
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:07:49 +0000 (UTC)
-X-FDA: 85074651858.09.79C121A
+	by kanga.kvack.org (Postfix) with ESMTP id 11A876B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8283BA1CD6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:12:23 +0000 (UTC)
+X-FDA: 85074663366.27.ECDE6CD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2CFE880012
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:07:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmX4tl3M;
+	by imf21.hostedemail.com (Postfix) with ESMTP id D8C111C000C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:12:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovbPN7Me;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786111668;
+	s=arc-20220608; t=1786111941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQqH9N8cRtNFukXaAbTPupUZURdwJwhrhW3sLeMpOdk=;
-	b=XTEb5Y9NtSfSKBk9GQyw8rfE1VqEadKYHuY3q/WsW/h0otP4rs9tm1PyBI+2TNOOPzv5Ua
-	FMRcVtJ4TYQuJfK5oOJOKi0acqH8E4XMDCLvQdfCentWAULunrk277oihi8sfd7S844LEh
-	iyBIWZz4o0/F8TlNvI4rIevEDOMtZYM=
+	bh=6yPFn7yHkyG0BJL3IlHOeyOih//+Qc5xhI7AQ3jvymc=;
+	b=qqjqdqOnMGZeEpKPdxYj/AC+R9N7e9diEOrJ0c0KFAC9Bkx7glXFHaQFORw7w/0anhwU3z
+	EuimAowIFDb66d8boa4kwtgK3v+RHADjWODK0Gg0KC6S3RZSUX5dXb43PMn8trn0ILNj/5
+	3YWrN1Y9N7Qto7zkmBm1SQspGP1LKO0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmX4tl3M;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovbPN7Me;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786111668;
-	b=ulHwMpBQrLzApNIgVhtndvCI8LFpMgzxaGgGuGLtIdXRzugPWbcoik7TS+xoW3ozqvupAJ
-	VY9pomUVdNq+13s8FglDbT/Ppns8eqghX3//7vHHrlYEeOksKLm9wfkfJUEMxISDilZALj
-	44PjMikVp50PlAA8Ci0gQYdQ3M3w5+c=
+	t=1786111941;
+	b=bMA1iA9KGPJDg1dH6jh9FJiL0rCQgoFc3OkZdiuJmkDWUcRrQv1K4VFTDvGXwiVCxVh32W
+	DfVZAuLah7eWSJClY9u/ULgr9feyIho4F9lJiJkmFSHgWsN6PGTOkIT+hlCIY5bqeFb/yc
+	tCfp121STh28nEUcP6hhNnJIZBN868Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69D5342AE0;
-	Fri,  7 Aug 2026 14:07:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E59A1F000E9;
-	Fri,  7 Aug 2026 14:07:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 176AF40A23;
+	Fri,  7 Aug 2026 14:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10B91F000E9;
+	Fri,  7 Aug 2026 14:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786111667;
-	bh=DQqH9N8cRtNFukXaAbTPupUZURdwJwhrhW3sLeMpOdk=;
+	s=k20260515; t=1786111941;
+	bh=6yPFn7yHkyG0BJL3IlHOeyOih//+Qc5xhI7AQ3jvymc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hmX4tl3MKGsF9m/+hq1ZYLMiEusVyRG/sxJXQhGQIfDXHZ3aKnHgAAk5mLU8U4Evk
-	 4B9xWCJIZoEU29h7oq3RtU2ZNw62xPI40xgq4r/sdkOUZqLmf4Emq3cxVuljcHYLEC
-	 O+uE+ZWL1QB2sFDY+uxCd3v9YGArQBP7yKn9cdgLHihtM6SAj/vFscY1XkfiJ/f16P
-	 U8B8w+RTVwp/G3RmKUJeFFcDB+yUlnBtWO4wNTCb/M6IpYZudbsWmq6bDMHUwefc/P
-	 nTxWREoGIlCQ8gFsZ70ACBvApQ5bV7x5+rGCHL1lYtZwb11qwuXipVSWJsVqQ4fFRp
-	 Cr98S2n6yIWUA==
+	b=ovbPN7MeUrWXRmoHVwijxRr5kNkr0jDBpWovDeFk5El/Uq9R/fwk/DuQ24LXjuiMk
+	 ZaYqjGQDz35SWWIuxQ1LBMKsLr0FYsl0/QGUCa4H7S5OKOp6pcJnmOvSbUCtgcjHQz
+	 E+CAXq4rDRN9rVU6YIdnaMB6/qYwOJAarSL4EnSis9d2aUmMzQ9yW9sXu29ntXfJKx
+	 LRUH0rvCQary2ZaNedV7qjHLIXkZEaBAOuaYEt5oVMPLP0HyEo3ZcImALOid5dYDvO
+	 HadyE3D7PedAhgqQDnR1C0IGNNwtLo78gtOO7utY2lJXmttPDM9CPBfA8awGC5rtdY
+	 aZJ9W6Ahs7HNQ==
 From: SJ Park <sj@kernel.org>
 To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] mm/damon: skip deactivated schemes in watermark checks and add fallback sleep
-Date: Fri,  7 Aug 2026 07:07:39 -0700
-Message-ID: <20260807140739.91238-1-sj@kernel.org>
+Subject: Re: [RFC PATCH 0/2] mm/damon: fix nr_snapshots semantics and max_nr_snapshots check coverage
+Date: Fri,  7 Aug 2026 07:12:13 -0700
+Message-ID: <20260807141214.91390-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260807093526.183009-3-aethernet65535@gmail.com>
+In-Reply-To: <20260807093526.183009-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D8C111C000C
+X-Stat-Signature: 4exww5yj5pcfr3qk77of3frbq3qyti5h
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sijcsznrep7s66itb5umzyrw53zezz1h
-X-Rspamd-Queue-Id: 2CFE880012
-X-HE-Tag: 1786111668-552010
-X-HE-Meta: U2FsdGVkX19t0F8NlcANeYwAFJtqYJkhQnvhgG522JzOzYJGFuhAeb1vXuqXT55VBarHeyge5IQGi/S+yzkXH5PDWFRas0BF3wnw1p6D9GZcnmSpUCHNhVjZu+Gbt9CDA8ujaE1ZMY/GRTIHuk/KU+UbRjOdhHwWVvLdtMseWpz83Gi4MIe8unAmYxBRfH+bBnBwMmHRfYdqHvz8lBqcHmDkkyYxPDhmdjL2+fb+uJLcYHJJO50xcG3q9nY2KPa3KfXtRUFW324+riYQDa3ZhXxoXWJbyxU1ZH3+Yl2Jojo6J39ec+5cAAZoKRCvCHVWQRYypzR47OgS3iwpL4GmAp4FJ3ipZp/ldY1fAUGS/KhICDoacA9N2v9tYNmL73UIsPqqUl4pxK4GfQnKrVur8lcM0ZOufVMaFBz0iocwxAbdTb1pU5G/5QGGGpujWviS5ytxb/D48LjrkqDK9IGjEaYlUaf75lQCYkSLq/VkI23SPXvMJNHtOJT4hFKzX50jRUFtA2JGumBFqateB9gdnqWUPS2xQ2ltJuGSXENMK4zdESLXuskOAfq6S2eFgVZQeNwHvV+niU98nu5BBGVUSPKsDD+cJi72O/5ulp8sP5IN8coOSClw9ydgY7T1sfQ/suJvaY2BfYtP2ZUdCzW6wpRETl83pW5XccXKtIbyBArB6VhcfAOCNxGvOx8lIrMRsGjoQPn7Yvuv9dsfUYp0SzV2/xNy7hWG9EQg4U82JarKXeK2jscSdNKKCFqdtcNnRyOB0enYXxvF0h8EoGme/m8UXXLjib+2YIiH3O2ndz3T58Qe3/1HItQtFtJkrAOeEBLNwUzAzyS2sgeRXPok7WY3Ff+VEN7OV5BgQhU+9/BC/06eOvmhgnh7DEVjOky3xw6essQ9JSDyk698EJaLTzKSZM9IdapGDXuJ8cUG9ESKtLo1iP51N/r+Me089lYwiE+371s0o5kMeTod69z
- UWwHlcHm
- Ko6lUk5p0teRdLCIQXZymV+11ziNSkcbEiZD234C7rcbApPBTv1A40CmVcKPOmmTLe5Zzvn/FgU/nFnOj+P0QQw9xkjq0TJu4RwYz1pgdPMStpJmSONLt26q4G5yYNz8yNBIDGpenCY8Zyqrm/SgwPSQGzxywn25EuYjNkBax6znMVzDo5hn1uekGmDd+m8tIix6bYFvVTNs4IRUAeG1pbkmwUP6tq7lVvYS+1Bj7JNNkAfE=
+X-HE-Tag: 1786111941-850462
+X-HE-Meta: U2FsdGVkX1+6OzQQTfJaooTHsPecWEZ9XuuHLtFBI9EaJ64I6nJB3CWChzE5n61//grA7z+9Njt/LbqkXWyYCLT1g6Q+6xbfUCbv985NZpuTR2KQffFsHOiC7iBk85sab9LXSq9/i5iHMkOWna8604NhVq3/GNJhSfsUkAsGFdJ/Grow0DzxzXtk8zIMjq/YSEiR58IdNA1E4pS2SQ+vUdP9aGe7/ryFt+q4Ssfw/80RKm7uSPr7r9zwR10fOm79n8jKNMgwmqMrfqqp9bjqmq+CKjxI6wkkmCw/ZoPXcMYW2F2PxahOKISIfYR85/pORpHchYvBhAUZl2s36yXiHh6VwAXQn853/4gdAWRg1JlGVZu2Io9c3sairc2ppCTgyzJFKSaq9sB0kN10PtCCGkR9fiQ1xXYZ5sPiDkam5BJjT+zcMTcOo+bjtar/T18Cf1Q7a6BicRaURzw8gPbscYcDSMEiFHNg0c3L1yjL9RhXwCmNfnRKJ8s8t4ShUs4fzKMR3s0EhmERpGnBQuxQ+MxQ5ovbKk+5jBVFmLTWBtYwadfg97vsvf/nJrEh+a6xMNgoAdo2eRhEve+eevlUyi/3v47JoSuSWRPeyF1qkZ+OAhv1M3c4dYJuOMGYCQB1bh4I+YZqpclIFIXJKyaGGU3R+w4etAVeo8KedtlarqvswVr2yVTm5DpYsw8EpmekD0B5qsQJId6p6ufGrCO7QVl69zVC9mXHEQ9feSAJUIzQlxNtwsbQyPreuUbGkvrMWZZqn4jBRFSsZhLzAxpL0euabDBagzOo0uXSHIwAiAqLfxKz8hTb+ZbbFQYv26uEVp9HUaw1ltMi5e+xoJApP4LK6SSLehZuQ3jxYGaBUlj+29xTS/4hylWzGQnt5Q55VZchyoUyxunba3dixre9arkOMMxwZPk+m05YeimAPHl6r0B8vOKodBsHfzyqEoeF7MZvhEHjT3gCrTt4IQK
+ wV9AlQlW
+ +emsmH3Zksc9CxrXvNVp46Xmkk24JY4djlteBTUQyf6ECNOGT2X2G0AyQfN9HUW8RPqOH2DmvAVP/fppMA8CeBvmTZUUxRvIrn4NNDp10xKW/7fNZwAna9SfrveVoo8sH7hge3mwSgEsEbiwo+vUOneR+1uAVBzZvhArXIGyCVAJCKBoP5U1jHSpCyrhObvoUoIryipfPWg+ArgoIdHgUmI+awVhQDTi5osebL8enmaNpw0i6uHbOBs4Mc2/0UhQK773dF1pJ6+PX9o4Tg/twyeZE3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,35 +93,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hello Liew,
 
-On Fri,  7 Aug 2026 17:35:26 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Fri,  7 Aug 2026 17:35:24 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> According to DAMOS design documentation, a scheme is deactivated when
-> nr_snapshots reaches max_nr_snapshots. However, the previous
-> kdamond_wait_activation() still checked the schemes which nr_snapshots
-> reached max_nr_snapshots.
+> Both patches address the DAMOS nr_snapshots/max_nr_snapshots
+> deactivation mechanism.
 > 
-> This caused an issue - when all schemes were deactivated due to
-> max_nr_snapshots, but their watermarks were still satisfied,
-> damos_wmark_wait_us() would return 0, causing kdamond_wait_activation()
-> to return 0 (activated). The main loop would then continue without
-> sleeping, leading to unnecessary overhead since all schemes would be
-> skipped in damon_do_apply_schemes().
+> - Patch 1: fixes the nr_snapshots counting semantics.
+> - Patch 2: unifies deactivation checks to prevent busy-loop.
 
-This is an intended implementation.
-
-When all schemes are deactivated by watermarks, DAMON stops monitoring.  It was
-implemented in the way because we didn't want DAMON consumes system resource in
-the case.  But, later it turned out DAMON's resource consumption is really
-negligible.  Rather, it is turned out that it makes DAMON runs with stale
-history when it is activated again.  Particularly, regions have 'age' and their
-start/end addresses that was emerged before the deactivation.  Those are
-meaningless and could even cause wrong DAMOS decisions.
-
-We don't want that anymore.  For a case the user really want DAMON completely
-stops, we introduced 'pause'.  For max_nr_snapshot-based deactivation, we don't
-intend to completely stop DAMON.
-
-Maybe the documentation can be updated to further clarify this.
+Thank you for sharing this patch series.  However, I don't think the patches
+are fixing real problems.  Rather, it seems the poor documentation has confused
+you.  Sorry for writing the documentation in the confusing way.  I commented to
+each patch for details.  If you want, please feel free to send documentation
+update patches.  I will also try to find a time to do that if nobody does.
 
 
 Thanks,
