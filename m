@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EE5CC5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7068CC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 20:21:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F7786B009B; Fri,  7 Aug 2026 16:21:16 -0400 (EDT)
+	id 7FB236B009D; Fri,  7 Aug 2026 16:21:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 031B66B009D; Fri,  7 Aug 2026 16:21:15 -0400 (EDT)
+	id 785506B009E; Fri,  7 Aug 2026 16:21:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3B296B009E; Fri,  7 Aug 2026 16:21:15 -0400 (EDT)
+	id 64D776B009F; Fri,  7 Aug 2026 16:21:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AC6E36B009B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:15 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23168A01A0
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:15 +0000 (UTC)
-X-FDA: 85075592910.03.1DA8C3C
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 55D201A0002
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=o5UmXaK7;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 324AB6B009D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:21:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9DC4FC0192
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:16 +0000 (UTC)
+X-FDA: 85075592952.22.EB61410
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D902A8000C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:21:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FItVHQzv;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786134073;
+	s=arc-20220608; t=1786134074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PmLOPzI7usjs7Qmnspd34ZMOrobza2FnhZDO80Oyo7g=;
-	b=p/3b+Srea88fGozy8TOosz022iP5RN12OZc/7eERKTDLXwd7H1Nm4/YLH313Hbl2n+ZYLP
-	YnupzeMXGsMAnFvlQI4lD59ttmDjOwOvRrXLg1NQYhKkw0aCnG9LCv+5FzbHeAWhgwN471
-	CL0lYh2LOBMwOd7gBOzQZPGV1ztdiZI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=o5UmXaK7;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=qFD6EfRm/L4Zg2p1Y1cVpL/1kzGCx7Oqw9Sl1lvWZlg=;
+	b=xJlwBoiTq4fWExDQXTjeIxuc8PLDanoEI9MXiXDm+5KSeCHDMMU5hR/vqzNwF0bSy42YMf
+	j8Mmh371u/MNigDlNfZWCB3nm/jM3B6Mdvf5q9e4SzV0iCt7X1u5wzv2vPVAqRAmFbRaDS
+	uofiiX5pmIZLl9x6P4MMdUm1EajOi4k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786134073;
-	b=iVr6CtqIYNEfL6/Wc7igtsUKxayBB6lM792pOmaw5T2/uAxbr0PyM0E4Fwp69tggnXmEW8
-	AAdo3iUfI0YoN/gM6BHbw7je1QmiCCUIoMk2WKsy/7qRLNlzl7LUL6CPpuJ0YZzBTvWQ1m
-	tNpLZ9koSWAirTJe9QBN5T+hcD22xvs=
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-455ca262ccbso2163218fac.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:13 -0700 (PDT)
+	t=1786134074;
+	b=pTTg/rShP3RQjvMQthD8lceNWhEek5ChWDD70djx8HrdkTQJ2FvHB5XZlrSgc8YODtatNA
+	2MlxRKAgpwiiPGsOSK5f9zT8V4CWTmf7tYK3DWjQYyH/m66wrY0MIe0BbeeV0VjvvIzU4q
+	LEXEkQbWai79PvppcS9TiqdYrjjJNrw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FItVHQzv;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e9ecb1e13cso3979597a34.3
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 13:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786134072; x=1786738872; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1786134074; x=1786738874; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PmLOPzI7usjs7Qmnspd34ZMOrobza2FnhZDO80Oyo7g=;
-        b=o5UmXaK7qRaIoO49CkdvjdD3/a4B+LTsakcd3OrCXT7AW2hrhsv7gyA9SqRaSOvx9n
-         eWAwSTk95Bq0VwydR8NdGlxRE5i/LfPiIIkoRiz2GhYWiOEXBnXmA+SFq1sX0Pes+w/w
-         s1rxa3ZpQPSmKlKxzkwV/DA7q1yYGdKimr50GvpVKBCxNxkaKVoSvSLu6R9ZTMV0Z5Wy
-         OoF0oGik04UDRKZd6qDpXuYsetg3wNYN+cu9AKajROU2L1iMRLU1dQE3pd5Ltg6Gs+Zt
-         y5k8oHHoJf45ut44e5xHnXhUACSk3hOJd7r3YtPCw5eofuBg27luBlTrvMl2+y/YxSOI
-         XuwQ==
+        bh=qFD6EfRm/L4Zg2p1Y1cVpL/1kzGCx7Oqw9Sl1lvWZlg=;
+        b=FItVHQzvL0f0rh4P17gQxcVQDNzu7P2MEzQ+0PH2WXUwJa8crUVMCU7aD0NivN6520
+         IjV/mqkhHfgzaaIGlRS98IPPJzdB9wvU6nizpLERAw7u26fcQziI7GmE3jGtyUXwa80Q
+         kBdzDm69N952fEWKmlwVbb0LmAXV3/ZzRM8OgK+GHdxwlf6BKJsz1VJ+mq+XeCnWHRTK
+         nAVceiASniKfMGjGgZlSmKA8Ijq8Lgk0fBuyT7HHW5ZnsI6RHTwFZdkVvj6OxbeaFRdr
+         h9vv0lO9BAWUHR0rTFQztZXSQVjMSgBBvioSERyEq9ljA6JNY0iIeMy7rg596NNj0bXd
+         0oQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786134072; x=1786738872;
+        d=1e100.net; s=20251104; t=1786134074; x=1786738874;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PmLOPzI7usjs7Qmnspd34ZMOrobza2FnhZDO80Oyo7g=;
-        b=jNOZZNk3mzYgGAS8umkZI19glylHR2S1zoC5W9V8NsyasEAqo0PWkflsQAsbEGHLn1
-         naxnJG04+//Z7L6pCUGfFXsgRH0LqU6L2seLLHKJUsbMsG8Y3sFWDGGbT/2xaL90hfvD
-         RCS7rRX4y9+NPuM72vef9QCn5Cuby/XRAztKvFFV8jQz2vv64Pb8qLgFu2l/g18WUsd8
-         XAhwmgPdiB4tihaUgLQHAyPXrjfQsk7xeV2uUIx2s+NQpNQAdy2+XxYOXEEiUG0z5vs8
-         B5IVd0Ch1cyR5LxE5yGhUnELog+6x9NQ5wkriEZ7D8nnjHFhr2d1ofPqav8UfyhKGfNa
-         rDuA==
-X-Forwarded-Encrypted: i=1; AHgh+RrXGUtjV3fHuc5z+a5EPhqmG6zoUnLcPRVQBC2070uitxSXeE+yn8n4k2Kf1jyLfo0bV4te+mWlRA==@kvack.org
-X-Gm-Message-State: AOJu0YyuZn6Tp4Aea3Y/Xo4wZ2pSjaH5SZIff+kaeOsRMVLpQmGQYC0A
-	exoEjMbSr1J7uyPtmkGw6tZ+GC8n9HJqjxu4YDBR2WEwfLgdd8yPmT+7
-X-Gm-Gg: AR+sD10+Wa4GK0qq/lcYvtHyUl5njhaA8KKxs+cbBmbPTOQjPCCpC5eIZouPT95F0OU
-	PqRMbc9lnB4+GVOEpbM6x11zTTU13Jd/YZr/BgjQ0/KyMr0sEkQe1Gy8BxPIB+H1Om6Ku9n9ssQ
-	YrqFUM/fWD5QT0c98RE58dnw3NWpVVodA22TTnQsRcJVKsEwxeymu0BQohccf1yn1LX9/kV3oiJ
-	T2X/3Of/Go8L1pUe5ySH9p6KjbMWlviLhDcMrJ9Zy9hQk4MYf44IIZA+p/f/5gQJuqKZyvAHyM7
-	30CmNXq3HIkOvbfBezsCj/8NZ+M6KMVWRWoeCCOBiPitDq2Z3WmQOm5lxGqC9QVeTtTVe6Ns0Ic
-	8tebQ8Z8dwGi/UWQhtr8VlGZ4upL8jdfsQNRSWIvA/qy7Wibh49tw0hPH0KSNUpwzUpn+dI9zNM
-	cKobvmWrVWNWwjN8Q8apRU6Ht0t7MYC28E7znv2oJLnOMoOfQ3MdL+reSHMpV7WnXbv+QUUpZAG
-	vgu+TK/rJUReAayVfE=
-X-Received: by 2002:a05:6871:79a9:b0:455:d6a6:6fdf with SMTP id 586e51a60fabf-4599f0ef42dmr14021135fac.21.1786134072221;
-        Fri, 07 Aug 2026 13:21:12 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:42::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f1e348d0sm2692743fac.16.2026.08.07.13.21.11
+        bh=qFD6EfRm/L4Zg2p1Y1cVpL/1kzGCx7Oqw9Sl1lvWZlg=;
+        b=ETxTuyXSgQAvcg0PeVcrzjMsUAOwOcugI1Z/OydTcF9YKCt4l5EFz5eNMdpT3rU8kX
+         va2WBG2BSeMpJYewD3sJzvB0g12lpFFwR4kCjphVQClFWmruYjD4Dc5AHB7os1feAWTB
+         LJxhJn/uDHJaawdDQt5my8gzgTPJ709DoTED4JFt9UoIR/JvMT+7NtTdUcFOkeP7oKq2
+         Kp3VzwtawYIuwpYTWGkLZmH9dy/7wMvcyhFSCFLvBJfsl4v4kwJ5BpBiETMPCUQlzyPo
+         9aUSV/Nn7wo2pXmuCghctYiIrWFaPHZO5gPZdCOE7AadPyeSCSN1fTF/3j5zKl4BU7o1
+         yeSw==
+X-Forwarded-Encrypted: i=1; AHgh+RppMCicwOuUazTB3WisSHaTDlPY//G1yS0VAGNxQY8ZkkAGGV080C4tlL8dzYbC0Juo31fs6KLt3w==@kvack.org
+X-Gm-Message-State: AOJu0Yxo4ACl5cIULAjv1epNbGMAikrCWcOcxcrtuwIZAUOoF+K1HeT8
+	dF3wQPu8oun0A/l4arHcyCnAQir5OZ8BuCwZK4R02GBgvfk1e6tRHqSf
+X-Gm-Gg: AR+sD10Ycq6ob6KKzm+SnxTTVK8zCtdS5pd61jqkbTJOY/CFlLEuqMZINw3ULskFNeM
+	75eSlciVm39sIuAd9JKPxJwOxzkrfVQ7M2K+1r2A3RMZY/xvMBlbcakjJ/B4RC2gqSoGP83B/6T
+	8EPRqrWiu60V+g5JrHanABcfpCTstHRJUFMNmFzR9EUXeQGGBy6nejnXr12wPgE6p0cokQb+Cxe
+	hPJZzD0RI8jGraSnr0cSVQMRDPm6uBlx19IALxJBA3gb+0sptpBd2GzZWKStV2mZGqbdIswy60Z
+	hR5yLMJfv92QMQ6/QB5t2tq+blvJjQfzMZ9ckVxLchbmad4Kqw6L+l7aSv59UFTFOWwimXZHpgf
+	ejaGQPUVwKMneU2Vbt7xg2tJDnSWEMJbIK2OB0ObkYRa3lMkR99AUqcCmSDk2+deqTb/NJtnbE/
+	7a9jwwZUGyIPtIIEgEfonx6sB4xLE3Ssqnzk+d6jHToW4bi+tNT2QuAO2yQVfjPB3DZGWtvaysm
+	DqKk7q5BG/47J0lCcY=
+X-Received: by 2002:a05:6830:82fb:b0:7dc:c7aa:22bd with SMTP id 46e09a7af769-7f1e5ce763dmr15477492a34.6.1786134073875;
+        Fri, 07 Aug 2026 13:21:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:58::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f35b56391dsm1914394a34.1.2026.08.07.13.21.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 13:21:11 -0700 (PDT)
+        Fri, 07 Aug 2026 13:21:13 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Gregory Price <gourry@gourry.net>
@@ -137,22 +137,22 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH v3 08/14] mm/memcontrol: Make memory.low and memory.min tier-aware
-Date: Fri,  7 Aug 2026 13:20:51 -0700
-Message-ID: <20260807202059.2620949-9-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH v3 09/14] mm/memcontrol: Make memory.high tier-aware
+Date: Fri,  7 Aug 2026 13:20:52 -0700
+Message-ID: <20260807202059.2620949-10-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 References: <20260807202059.2620949-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 55D201A0002
-X-Stat-Signature: kc1nqmiritbesqtjp5aqjgu9tbie9aek
-X-HE-Tag: 1786134073-647938
-X-HE-Meta: U2FsdGVkX1+D/khXmnZdIiEUy0l9InHMKAWmOTgE4VIy8JvYFrvlJKlsdgLAqmOWoC58SbHEBasIMDvRasbdURmS5xrfjWAfyvYhVf9belIrtjnPHHuzkiFbx9f0zpG4L7L7ba8UqOoaflJ9VxczM0ixd8261Et948Cf7qqY/+p3farqT7ikVLGMGqNTZfxng/iCndNZDzFV6K9Ik95Jzx99j2mLblz9yawg0TiP4K34qckDhcRcw1k8eNqlIy+2a3vbIfB6OniueVfEFJ7T4swrCC3pGp9mk8vocS/luey0jLLamYh3L8jem1SxmAMvKsk1uXQD13FnS5fUHb6nRnFA2Zmy1bTy8DKOINSIAr6l0RI7mzx5fDXTItpkpV6z4E390xA8mslMXIITT9wK0AzS57atNRGmAmgiDsE9acveteCNypJwpCfBsibniOqchg2bnyMf9mcgsCZPKtDPieJiYF+LI0+AsaB2CRBOQmF5ByGDNTdLsAg7NEluiLoELHF0b6YxDWld7jycOii2ikeskqfWn/dNK+0548XCudrq1qXvQlw06J5/lHvepXw4PoYuScTr5ycVEZBZnZiXI48u+VZffQpQ1N29K5Oa48YquRMJVM3ULPe8ONM7hENErQ7gZetnzN3ohDkT1UO62Ih5rFVASvFrjU/IUA2fB8/zjrd9rh5lR23Hyb1XE1synrvQsdesSlAZ0Z4WI99MVWFFMFxDyy+mX7IZior33TFzI+dsWPq9dJJl6j0oQaxOgfud750ZQ3tXXA9U3Ve0xZ2Itebhz09L5v/wXc35VrT4cyZmOhue6eDWsrEekcaUJrSVh1kteNIHBDuS5sOkyfuPSV7NxYKldHoWDATYu6ASsXI6ae5rMRKiIFuRzuv7K7sn5uJgtmOoCnruEZAPiy6K44c4/SdG3TbChuagKH7C6XAKTNFVasufVEMMqaI2Cnxv3rKBdHHPQBmodLQ
- GQIkUBUr
- hIXxpXuPv9SI1TwuBwdsqoC7dS7m6+5KN6FM9cWuvBfOlKvTW8Eo87zfHVVSbJN9oNerAUCWPbO4RkbUHpPALYohOtPzMOqs0M7iMfJLRNqC1RgcS2fhKIF1lYptgSytVkTkrQy3p46WhL+PZCi1S8exssVaGRz8mcYWJbxp4LiFmomek6uj8ctHJHZrdw+6Iw92VCiIPQu+nzwlJbi4w2PCypCH07Ew8EURl/WuLGct61dw4cF1rRKcTrd1gVCcCpwZVkcwxP6vWqSmAqzjcJt9h94nploZUTDsVtBMfyGnviI+agtFysxUYeXPyOTvyJ5Uc75JBCjRwrS8hRfy7sDWGv173z7nmNchuUy2rkqitRRz/573Maa9H++eSd7lcpjia04Lnn/X+URATswAtxVfYd97xLbT7qiqkjroxPPGZWbfBHFj2x7oDEi8R3z7doJc1vYDMPXP9/hwaPNxOXGZVMLRPGOBr0FS/Ne7J3bqmntOW5k/JfJ81bQFcTSBlg4q6qsef7f4Qutf6mQncJDAJ59aonCa62iBP
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D902A8000C
+X-Stat-Signature: mapi3uem1mk3g1uumpqo4p3zus65thys
+X-HE-Tag: 1786134074-504116
+X-HE-Meta: U2FsdGVkX19MXMmKOxYAoVmDUV6Aqub2+o2ixJpol0avwTCcT6d4MWYdAqpe6hDBahwekVjaIuTnwoWzNL9gMoAzWPFMS+e7nJMc98u0BijEvQtC8R66QT3GlmW0P2M03hnqxVMVmSIPpBPjsrQUyHWUjmfmok59DCCQd8y0hp+ebrLyPUaJdksKoFjwpA6voJ0QGG0EaERYdP5ToXy4dwH09dq/l399+y3BPiuAnK9kRA0IfABujXvn40RMs45WFVYYGkJmgBQXrn6bGJixn+AHc/2ieqGG2tcNxvTnGV9FNRJpcUL7d3nAyVM8W1qxVf30c/6XYBeKGGMhcuHFEYOS70WnCAK6skp22n/7neZ29wdq/WwJ7VxXJqPkaku9knwqkj0+C4rpqF14uwtWcoph/ge14tv4Bj+zNNiYN/4Tj9BFrhX9JJsmMFSpo0KOJds+m/J71rCFO+q2mqkCARfjBC9wsezuynhiPCNlQTvxQcCaX0eocrOA7n0NYNXtQe6+0IM96NCGD7lNDEbDxEajeL/bBkeggmyU1d85dBzvUNzEihGalc73Vgica9d4Hp8XHKlVTB6ZU97D5dk3755Hpdxsyh+n5Kfh57MZZ7yc8OsuxrQw12yP0x45SGks2GXiMqdVvPfT99UjQBb5XPhYRMdBVMahqPqFFQg9LRzz+PzODfDsuyaDQPvubzCsiFE/lHRT+w9bgI/k23eMcH/txb43Ed2Gup8yY91WgV1t+GTR9mOxRVH7hfnY9ySM0uorWyW2s2V1N9cOWwgkeYNJcbdGhVewMwOcee7NQ2m80adN1JmRJ3xLNLP0+PkVDtDSTT7HNfn9OhRqjS9W9qQf94VPe1+pg8UmU1cdw2BxQYLzJ8EdzCX0f3O0NUTFa+GL8IdocspQUjns3pjLgEzklz2cMeDfAa3Up1zyuyk9pxaDtNXQ7KrX1/4bvlODOvYrWKZ8pV6YFRvDEKH
+ 3NXmvm3k
+ dotgcjl1mhdpHkYa4L17nP4d58hjhk0rPLvGh+Jv81Sdz85xllkb72kg4iTpFtTLlrz1+N9YzWUe+YP4aE28Gr/bATeHpwHMizxkGjQTR9bnOcWYa0zcHXPygbh47blBCOcCdzDDBJHETMMloswsM5QHh/OvbTsXqKg8bw7a4H36rP+9Ap9rNLpax7GSrS6lvM5mieewBtAdGXx/aIb5IGMdf79vQpfbcr72bJMtetEWIbJreysTTfpUed2AEnD4Av20SZCni1Nvm5DEZ5iXu3Ff4834uBNhIXLzk9nskLownmBaLd+Xk0AGE1TX86zBWWxAJ5GTMpAhsraWdHeSQRomeh0XLzAf0+W/yv8V9ECe2qZGDdG5YkN0cshYw2Xibn+AH4ehyenByVSVkGTrnTHCVAWG1BIg3apWhFx5yWj72P89Yn/lGR7OZt3rYiW6Owo9t1L7VmwGF2Av10PfH9NA/fEDBjQBq6uyh9SNIU+qLXiz1eU91Fjhrt2JHjnaHxPg4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,184 +166,158 @@ fair distribution of tiered memory among the workloads, as the only
 enforceable limits have to do with total memory footprint, but not where
 that memory resides.
 
-This makes ensuring a consistent and baseline performance difficult, as
-each workload's performance is heavily impacted by workload-external
-factors such as which other workloads are co-located in the same host,
-and the order at which different workloads are started.
+This makes ensuring consistent baseline performance difficult, as each
+workload's performance is heavily impacted by workload-external factors
+such as which other workloads are co-located in the same host, and the
+order in which the workloads are started.
 
-Extend the existing memory.{low, min} protection to be tier-aware in
-order to enforce proportional best-effort and guaranteed memory
-protection of higher-tier memory.
+Extend the existing memory.high protection to be tier-aware.
+
+Depending on the combination of limit breaches, selectively reclaim on
+tiers: when memory.high is breached, perform reclaim on all tiers.
+When memory.high is safe but individual tier limits are breached,
+perform targeted reclaim on those tiers only.
 
 No-op unless the system has tiered memcg limits enabled.
 
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/memcontrol.h | 25 +++++++++++++++++++++----
- mm/memcontrol.c            | 11 ++++++++++-
- mm/vmscan.c                | 15 +++++++++------
- 3 files changed, 40 insertions(+), 11 deletions(-)
+ mm/memcontrol.c | 66 ++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 55 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index f7a92b66330ec..ceba0fd6de184 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -18,6 +18,7 @@
- #include <linux/page_counter.h>
- #include <linux/vmpressure.h>
- #include <linux/eventfd.h>
-+#include <linux/memory-tiers.h>
- #include <linux/mm.h>
- #include <linux/vmstat.h>
- #include <linux/writeback.h>
-@@ -618,21 +619,37 @@ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- }
- 
- static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, int nid)
- {
- 	if (mem_cgroup_unprotected(target, memcg))
- 		return false;
- 
-+	if (mem_cgroup_tiered_limits()) {
-+		int slot = nid_tier_slot(nid);
-+
-+		if (slot >= 0)
-+			return READ_ONCE(memcg->tier[slot].elow) >=
-+				page_counter_read(&memcg->tier[slot]);
-+	}
-+
- 	return READ_ONCE(memcg->memory.elow) >=
- 		page_counter_read(&memcg->memory);
- }
- 
- static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, int nid)
- {
- 	if (mem_cgroup_unprotected(target, memcg))
- 		return false;
- 
-+	if (mem_cgroup_tiered_limits()) {
-+		int slot = nid_tier_slot(nid);
-+
-+		if (slot >= 0)
-+			return READ_ONCE(memcg->tier[slot].emin) >=
-+				page_counter_read(&memcg->tier[slot]);
-+	}
-+
- 	return READ_ONCE(memcg->memory.emin) >=
- 		page_counter_read(&memcg->memory);
- }
-@@ -1142,13 +1159,13 @@ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 	return true;
- }
- static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, int nid)
- {
- 	return false;
- }
- 
- static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, int nid)
- {
- 	return false;
- }
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index f3714dfd85aa0..025496794cb91 100644
+index 025496794cb91..44ea465b2005d 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -5310,7 +5310,16 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 	if (!root)
- 		root = root_mem_cgroup;
- 
--	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
-+	page_counter_calculate_protection(&root->memory, &memcg->memory,
-+					  recursive_protection);
-+
-+	if (mem_cgroup_tiered_limits()) {
-+		int nr_tier_slots = mt_nr_tier_slots();
-+
-+		for (int slot = 0; slot < nr_tier_slots; slot++)
-+			page_counter_calculate_protection(&root->tier[slot],
-+				&memcg->tier[slot], recursive_protection);
-+	}
+@@ -2387,6 +2387,28 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ 	return 0;
  }
  
- static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ffe7ea3c5aff6..29f3f12042650 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4190,7 +4190,7 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
++static bool memcg_tier_over_limit(struct mem_cgroup *memcg,
++				  unsigned long *overage, int *breached_slot)
++{
++	int nr_tier_slots = mt_nr_tier_slots();
++
++	for (int slot = 0; slot < nr_tier_slots; slot++) {
++		unsigned long usage = page_counter_read(&memcg->tier[slot]);
++		unsigned long limit = READ_ONCE(memcg->tier[slot].high);
++
++		if (usage <= limit)
++			continue;
++
++		if (overage)
++			*overage = usage - limit;
++		if (breached_slot)
++			*breached_slot = slot;
++		return true;
++	}
++
++	return false;
++}
++
+ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+ 				  unsigned int nr_pages,
+ 				  gfp_t gfp_mask)
+@@ -2395,10 +2417,19 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
  
--	if (mem_cgroup_below_min(NULL, memcg))
-+	if (mem_cgroup_below_min(NULL, memcg, lruvec_pgdat(lruvec)->node_id))
- 		return false;
+ 	do {
+ 		unsigned long pflags;
++		const nodemask_t *reclaim_nodes = NULL;
  
- 	if (!lruvec_is_sizable(lruvec, sc))
-@@ -5057,6 +5057,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	bool need_rotate = false, should_age = false;
- 	long nr_batch, nr_to_scan;
- 	int swappiness = get_swappiness(lruvec, sc);
-+	int nid = lruvec_pgdat(lruvec)->node_id;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 		if (page_counter_read(&memcg->memory) <=
+-		    READ_ONCE(memcg->memory.high))
+-			continue;
++		    READ_ONCE(memcg->memory.high)) {
++			int slot;
++
++			if (!mem_cgroup_tiered_limits())
++				continue;
++			if (!memcg_tier_over_limit(memcg, NULL, &slot))
++				continue;
++
++			reclaim_nodes = mt_tier_nodes(slot);
++		}
  
- 	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
-@@ -5064,7 +5065,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 		int delta;
- 		DEFINE_MAX_SEQ(lruvec);
+ 		memcg_memory_event(memcg, MEMCG_HIGH);
  
--		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
-+		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg, nid)) {
- 			need_rotate = true;
- 			break;
- 		}
-@@ -5104,12 +5105,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	unsigned long reclaimed = sc->nr_reclaimed;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	int nid = pgdat->node_id;
+@@ -2406,7 +2437,7 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+ 		nr_reclaimed += try_to_free_mem_cgroup_pages(memcg, nr_pages,
+ 							gfp_mask,
+ 							MEMCG_RECLAIM_MAY_SWAP,
+-							NULL, NULL);
++							NULL, reclaim_nodes);
+ 		psi_memstall_leave(&pflags);
+ 	} while ((memcg = parent_mem_cgroup(memcg)) &&
+ 		 !mem_cgroup_is_root(memcg));
+@@ -2842,23 +2873,25 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	 * reclaim, the cost of mismatch is negligible.
+ 	 */
+ 	do {
+-		bool mem_high, swap_high;
++		bool mem_high, swap_high, tier_high;
  
- 	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
--	if (mem_cgroup_below_min(NULL, memcg))
-+	if (mem_cgroup_below_min(NULL, memcg, nid))
- 		return MEMCG_LRU_YOUNG;
+ 		mem_high = page_counter_read(&memcg->memory) >
+ 			READ_ONCE(memcg->memory.high);
+ 		swap_high = page_counter_read(&memcg->swap) >
+ 			READ_ONCE(memcg->swap.high);
++		tier_high = mem_cgroup_tiered_limits() &&
++			memcg_tier_over_limit(memcg, NULL, NULL);
  
--	if (mem_cgroup_below_low(NULL, memcg)) {
-+	if (mem_cgroup_below_low(NULL, memcg, nid)) {
- 		/* see the comment on MEMCG_NR_GENS */
- 		if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL)
- 			return MEMCG_LRU_TAIL;
-@@ -6168,6 +6170,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 	};
- 	struct mem_cgroup_reclaim_cookie *partial = &reclaim;
- 	struct mem_cgroup *memcg;
-+	int nid = pgdat->node_id;
- 
- 	/*
- 	 * In most cases, direct reclaimers can do partial walks
-@@ -6197,13 +6200,13 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 
- 		mem_cgroup_calculate_protection(target_memcg, memcg);
- 
--		if (mem_cgroup_below_min(target_memcg, memcg)) {
-+		if (mem_cgroup_below_min(target_memcg, memcg, nid)) {
- 			/*
- 			 * Hard protection.
- 			 * If there is no reclaimable memory, OOM.
- 			 */
+ 		/* Don't bother a random interrupted task */
+ 		if (!in_task()) {
+-			if (mem_high) {
++			if (mem_high || tier_high) {
+ 				schedule_work(&memcg->high_work);
+ 				break;
+ 			}
  			continue;
--		} else if (mem_cgroup_below_low(target_memcg, memcg)) {
-+		} else if (mem_cgroup_below_low(target_memcg, memcg, nid)) {
+ 		}
+ 
+-		if (mem_high || swap_high) {
++		if (mem_high || swap_high || tier_high) {
  			/*
- 			 * Soft protection.
- 			 * Respect the protection only as long as
+ 			 * The allocating tasks in this cgroup will need to do
+ 			 * reclaim or be throttled to prevent further growth
+@@ -4967,13 +5000,24 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 
+ 	for (;;) {
+ 		unsigned long nr_pages = page_counter_read(&memcg->memory);
+-		unsigned long reclaimed;
++		unsigned long reclaimed, charge;
++		const nodemask_t *reclaim_nodes = NULL;
+ 
+ 		if (high != READ_ONCE(memcg->memory.high))
+ 			break;
+ 
+-		if (nr_pages <= high)
+-			break;
++		if (nr_pages <= high) {
++			int slot;
++
++			if (!mem_cgroup_tiered_limits())
++				break;
++			if (!memcg_tier_over_limit(memcg, &charge, &slot))
++				break;
++
++			reclaim_nodes = mt_tier_nodes(slot);
++		} else {
++			charge = nr_pages - high;
++		}
+ 
+ 		if (signal_pending(current))
+ 			break;
+@@ -4988,9 +5032,9 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 			continue;
+ 		}
+ 
+-		reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages - high,
++		reclaimed = try_to_free_mem_cgroup_pages(memcg, charge,
+ 					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP,
+-					NULL, NULL);
++					NULL, reclaim_nodes);
+ 
+ 		if (!reclaimed && !nr_retries--)
+ 			break;
 -- 
 2.53.0-Meta
 
