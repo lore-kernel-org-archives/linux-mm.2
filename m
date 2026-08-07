@@ -4,109 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 160B2C5AC67
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 00:56:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0632C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 01:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3C1F6B007B; Thu,  6 Aug 2026 20:56:48 -0400 (EDT)
+	id A97126B008A; Thu,  6 Aug 2026 21:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C5D76B0088; Thu,  6 Aug 2026 20:56:48 -0400 (EDT)
+	id A48016B0092; Thu,  6 Aug 2026 21:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 866B26B008A; Thu,  6 Aug 2026 20:56:48 -0400 (EDT)
+	id 95D596B0093; Thu,  6 Aug 2026 21:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 49F016B007B
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:56:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B798AA02B4
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:56:47 +0000 (UTC)
-X-FDA: 85072658454.15.46710D2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EAD4DC0005
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:56:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Qhn7L6um;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 673C36B008A
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 21:03:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F0AA1C0DAA
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:03:31 +0000 (UTC)
+X-FDA: 85072675422.26.24592F9
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5D0C2140005
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:03:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DK/v3Y56";
+	spf=pass (imf26.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786064205;
+	s=arc-20220608; t=1786064609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cFaQFmQKBg6ASUeFA5iPFkDy6Gqt+BNir+tEhwk+l4k=;
-	b=Z2n2YriENUlO3QNqvedtdN1uDl5Ib3SBSwD30VStwinVIEbkKAkiR9GEl7ut21aOm4NxLP
-	TrcJksntRLEGzTqNLe40IgeOveUs455AwWEXew4K+sdguzGhuAGRk+xFhyTM6hePzGsAIr
-	7VgEUfeV0HVWGJBoNsUHANVwqZHzS/Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=4NPMPfYvs8YO3COzwGcfWMaaWC300S3yD9dfuIoNJs4=;
+	b=sRPWgJ3axK+MikEsXfaIm+DtKAhknDKsgQS/kJRFf1nKU2yLBOK5kix2oW+N2cFZR6o/kS
+	/hroxoM2dBsOtb+M2lc5OMB3wWHMUUfNV4Z2QVZq/mBqM4QDW3LPaYB2tWBNu95upsPUXO
+	bcA9wWALWLgFNXO3hRqUyhiu7fOPlLA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786064205;
-	b=WjmezS/cTov8via9c9+YGdm4/5zWOi7v95egmoY6hkRMoj+btjfMIxb2cRYYPUT9LNd44W
-	XSW8VfwcGMVUiWLzhciL+u8MNoCxfpuhI0XTNmAGvvSs/zM4/vdWDbpFrBV4wRts7U1QKU
-	J086E4imAgmo+yQ5QyJZ2p0KWsN5Q2E=
+	t=1786064609;
+	b=F3gt4pP5aXoXI2fWQyPXTjvFYzhdo7jI418GHk8OyTeaWUwUoJV6V2Ct21b81CAShAQ3uC
+	U+8i63s656kEZP4TodNoa5HNBsIf1MT7OfmW9uheeaS0rZLY1ShJNQ/OXUMGZ7Qj/KYZLt
+	WxqUBC9HsjMDDNRNLfhtSwvca7nImYM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Qhn7L6um;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786064205; x=1817600205;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xaqEawUcKzqcXHKZwNsMONvFjoxesrE/pbHOtm3vIQI=;
-  b=Qhn7L6umkL0AW3/X2pGEecWfXAMOWcDNqLBbXvSiwS12wN+SCpa/oOAM
-   WZjaSFHKPufmopI4md77QM+KZT3JBwD2dk4BCKZO2+aMaE9VCwFpdGsNN
-   7GKdWL/xP90AnKaYdU59Ar/7VzZmkFcBCLkmezVGtPTflFobyHhQi7yzX
-   DO4OqFLsTZXJxKelt5I8hS+Y9ulKtWL+pDrYcCoXB0DhBiW3zAsNeMPY5
-   6hW5NMSIC5/bcybsc3VBp105yn4DuAJTJ8oFcM3ilj4VTpInWhb5VmXzF
-   LvSJSFOu2bWLKVMCul7OrBteACBptOv4llC8LsGJns0KGDJsYuJntwJn0
-   w==;
-X-CSE-ConnectionGUID: BY8fbyPRTm2MdbsLff6Mhg==
-X-CSE-MsgGUID: LnJ13JlXT/qgOcebqNrz4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="104204169"
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="104204169"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 17:56:43 -0700
-X-CSE-ConnectionGUID: 5WDPTH/PQKq7JVutMVnZiQ==
-X-CSE-MsgGUID: GAiCsshUS6uEexCdJ2ouSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="262316399"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.50])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 17:56:41 -0700
-Date: Fri, 7 Aug 2026 03:56:38 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
-	usama.arif@linux.dev, hughd@google.com, ryan.roberts@arm.com,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DK/v3Y56";
+	spf=pass (imf26.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786064606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4NPMPfYvs8YO3COzwGcfWMaaWC300S3yD9dfuIoNJs4=;
+	b=DK/v3Y56xjFrF2K8N+nAgaSF6Xik8ghGF389/1ErJLjR7yxWtsXOwDMdmUoFnpVVF7J2yI
+	HuntldO0cCJJ9DkY+kOrjYj+AJ8k4Gljl28gvoJ/18Vw6jlYIawDeHx3kqyxOLXjs7LJyL
+	wxVaRnlWpAOnlipMDPvrR4M4jFO/Nv8=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: shakeel.butt@linux.dev,
+	roman.gushchin@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-Message-ID: <anUtRinHGQyqtXJo@ashevche-desk.local>
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
- <alHNjbiWFYXSPZtY@casper.infradead.org>
- <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
- <e0421ba6-82a5-4c88-b5db-23231c265142@kernel.org>
- <alTN0i6XgnI_eDoh@ashevche-desk.local>
- <alTbSRXXqNFPl59U@casper.infradead.org>
- <alUM69tP-Zayp1Jk@ashevche-desk.local>
- <bccce409-e105-4a7a-b962-35905dc1ff38@arm.com>
+Subject: [PATCH] MAINTAINERS, mailmap: update email address for JP Kobryn
+Date: Thu,  6 Aug 2026 18:02:26 -0700
+Message-ID: <20260807010226.8995-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bccce409-e105-4a7a-b962-35905dc1ff38@arm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: EAD4DC0005
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5D0C2140005
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 4b8qps66ucxe7yj5w6wsxgh89568rc1i
-X-HE-Tag: 1786064204-841639
-X-HE-Meta: U2FsdGVkX1+/MyxNTsWPup6zx0VFk919S3gANzIaxnHUy6BfvDv3wOJ8RPNbSyTw1bhgN9LjtK1XKv3ZPKo/zcFGfhd2baVoSyaR5c58TivuHjlLzxxuVar+YstwW9RgjzFsFUHqWHe7hRw6+blcpkiwKtMvau8k79Ae+5A6oHpfF0xNfrcKfG16nz+2TR+kzTk42E5FDeq663ay30J2P0ljEO3eP9fvbfYe2ustM8ddVzoeImu9W48L3SpxyeWgHATXkdHE71Hv0fGp15Yjv1qH7FblR7SbzpRYHxd9AbDb/ADpBmMrS9Q7NoYdBWQxrvACF5tJS595/+aqyO/QgJGxtMy19Fv1WoblFr/v2QPIZt/mho0dpnMCCo+xrJuu4LJijgXeOCVYachDZIS+zD7g7VXlVagXl+v6l+RyI8fdKhLCNsmwrLEnJvH4Xyrofoq225eDtM3VouuAComWVKulb/y/UHWSFlahWS9gENShuQUl/GCokXkIWiW2KI8eB9bzq8Ts8lcEA1LMnHV4g69xLmplRmvK+vgoLxPsL3URPyFCNs0+JJuqGysrNR3swboS9EITtmrIUUVn+9PFoP+iSKZDeKprAfPcdYUVuCMrfHTt1lsLlVd5OngO7LUvgK8nDt4llcqseF27iiDNeLPEhl50f8SBTfZjgsLCQxrvczvqO4+X2zLkfMkxc3ovV3pB4PkQNKR4bCTqAjoNeLayrAM4HZCzIyivUiRC/owAeo1hiIUwg9WfcpyeRinzNFolIbCSWOnis7x6EzkolqXezcO5mvW/jRLjd1mlCxo783PgWl5A6bhsaxtXrTmvCokJMX3TVr5Z9cahvKkkFx7XN10HTGoCRYgWeFNF6y2HWwm8eF+Umq8PoHTY2GGzC8C67wXg5fR3mXHT65uUMOOlyLUjbvVRQnrxvhmu+qOSihVkxk6XxVLyh2wPGt2RdSGfstdMCenaEJ1CJJs
- Am8p0CAU
- 3Qv+29+0nYnV7Fy5wP7MUsoPxIW0+Mb52xeAwP88xPCKabs0prebQRqI489TM8ZGKj8+NmwoTKCNFyeCJ9gI+rRaIfy15RYfK6D/jxLUghcFLe8cmq9rh9X1mG78sEnKomzXFkWPhSUn8KSMi2H1ypo1ZGdMh7TXWH0+8HkY0RsCACxElJsYfJz6MlTIxGkroYcEXV5istNU6KXL51oHDftDtT6IhAjgcJTTGcCARZr1P9QWXIsY47rX3rrsHo9qgM4dHPcFYu++N7tuIPd9KGpTwTQ==
+X-Stat-Signature: 6niw65f5qk76woahjydnkgibhiwppboh
+X-HE-Tag: 1786064609-345708
+X-HE-Meta: U2FsdGVkX1/3EYBuvnDfObIO92/3ZnzjtYtoPmiBvJBNZh93fzXZ664rqKDrQF0qwrnkpOzXP607OdxfUwlHgIWsdI207p9cILEOl3LM8t5YsJgozTrHjYNRj4bMud/592q2ZnmczIvlrBpNkW0kn5htDECN1tosd/xVQ16cJIUd78a1rDdkXuErYuB5maYFspw9b5MuqJFrtzQ/bfvEoCDaJHHJxK0D4Z6NPmrMNuXLbVjUS8NIBJ7EJ+1lJwuu/UuIls5Y/Br3WzKH0NRQ5T4AQ7eXi5+T9WSl1A80mwvesgv64io6siDT7VZP7QEAn182GpD5/7nNr0A5U5ev/gvGTlcIbg+rFWcemq8qdxr2F0pVVDUZU4M9oe7qJW25/XjXyIKHFxvoBLRCfESy8aoqNJT0OJ2ySIO+DHzt5MC06pxXSsKII0T8tuLUuT6VHOw44XKi76tqtPiutOR8EC4qIkE79FiX66LQUU0wBc4caaiQb02ENJzDND086+8HNvK91ALunFveE0Bc9uf6V9dhW/1lQr8vYmxjAt5ttCcRiOeauJtnSi7RoAyMxyxesxZR7lh1+PD6PycCd7J1P1+QZ0G+h8mdxFl27BJUPlgHEF0/JepmCFTcipfgWaP1QAjO/FVI2/yR2w+09353t4Cr2PpGD6YdFRziFYiCr7rAhS91kmOgo+YjTeCSJOyXw1aJW9YfJI1zEqyJCBYZpDdnvQpGD1JQV5+zY0uGqCSwOZRkmN9aEq9TxSXsKb3ESPaFinJi3wLXksxpG851QknlQi8NxyuyRLbPHAAmnxKj9T2VBW+EXjmr7k73QbuXNG7N1pZXv8EbJJvquPTmqRlKRmfuwmkR0DW6J61gFMl7EHxMBcoydrXUcYnADiSLZyRPd7hoOC6dwKVqTs6ccst+0Eihf/v2QCqiTCAvnHyE2Tx+L1X8j+GPOygR9+YoUwjsIjAKZY1fBYfGZVS
+ jzd2Vtrn
+ m1lfi46g2n6OBX2MT4iRpbNqxtmhJypZfSgG4p5Ykc3M11r9FT5rY2nhk645kub0ua6EZsfNfcAUNIgfQi9PT0PbC8Hf+CNI5PpjFIEIbLGFbDO11aEjYoDAgU4XikHrDsoXoRUDWlgdj5qCnJJdnmmPRROyr3AkojiI7M9gJvjggL8H58gpRgfmFTwdN/3o1gj1r5KYaacZjKlgME+2Aj/NVB9MSoTKHnImnA1XU2iruAYtO4eZh98c6JBXEJuOhLEEmdcJYC53lspUQS3zL0WLWUH79jP2veoTBc4G1Vu+cNmDhtaFWDWVkW0i8HyWHmZrJQJqAy37CTSjVuEP3Om1y6VJYwRp+TOjMWcLcCcKDoluffVzJP1atNBGaS+hyTU4zt9CkW+79Sl1bKWELsMpdruUUOMpNNWSIxFK5jTKMRevTvR8m6GsYIxZi97HIMiwLMYfUDy1b8Z96tcz20b+3WZYQxQAOPOrANRm11K+cXMebRXggWc+el+qTg6gOWxUrEDOQ7kasWT/UIlQTVpOiDxXwY4Wk9wRO/A4rE2Ezv/vnA188l7fUNrZelldld8iZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,39 +86,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 06:20:39PM +0530, Anshuman Khandual wrote:
-> On 13/07/26 9:36 PM, Andy Shevchenko wrote:
-> > On Mon, Jul 13, 2026 at 01:34:17PM +0100, Matthew Wilcox wrote:
-> >> On Mon, Jul 13, 2026 at 02:36:50PM +0300, Andy Shevchenko wrote:
+Switch to my linux.dev address and add previous one to mailmap.
 
-...
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-> >>> FWIW, we have hex_dump_to_buffer() for that already.
-
-> >> ... which doesn't eliminate the problem of allocating buffers in the
-> >> caller.
-> > 
-> > Right, for this we need to integrate hex_dump_to_buffer() into %ph.
-> 
-> Would not that create more complexity which might not really
-> be required here for simple pgtable entry print solution that
-> would probably have very limited number of callers anyway. Is
-> not that reason - we did not go for the original printk format
-> proposed earlier.
-> 
-> https://lore.kernel.org/all/20260610043545.3725735-1-anshuman.khandual@arm.com/
-> 
-> IMHO this should be left unchanged. Later if there are more
-> users for such prints, those printk formats should again be
-> evaluated.
-
-My comment was only to show the possible option to solve what Matthew pointed
-out without relation to any exact usage. Yes, for this certain change this might
-be an overkill.
-
+diff --git a/.mailmap b/.mailmap
+index 01453c5e1ab4..52cde9c10c28 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -458,6 +458,7 @@ Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com> <jorge.ramirez-ortiz@linaro
+ Josh Poimboeuf <jpoimboe@kernel.org> <jpoimboe@redhat.com>
+ Josh Poimboeuf <jpoimboe@kernel.org> <jpoimboe@us.ibm.com>
+ Jouni Malinen <quic_jouni@quicinc.com> <jouni@codeaurora.org>
++JP Kobryn <jp.kobryn@linux.dev> <inwardvessel@gmail.com>
+ Juha Yrjola <at solidboot.com>
+ Juha Yrjola <juha.yrjola@nokia.com>
+ Juha Yrjola <juha.yrjola@solidboot.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cfee5d47b214..2fd28489c4c0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4973,7 +4973,7 @@ F:	tools/lib/bpf/
+ 
+ BPF [MEMORY MANAGEMENT EXTENSIONS]
+ M:	Roman Gushchin <roman.gushchin@linux.dev>
+-M:	JP Kobryn <inwardvessel@gmail.com>
++M:	JP Kobryn <jp.kobryn@linux.dev>
+ M:	Shakeel Butt <shakeel.butt@linux.dev>
+ L:	bpf@vger.kernel.org
+ L:	linux-mm@kvack.org
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.55.0
 
 
