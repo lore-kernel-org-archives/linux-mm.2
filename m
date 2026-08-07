@@ -4,222 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C36BEC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 16:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A73EC5AC9F
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 16:31:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC4046B008C; Fri,  7 Aug 2026 12:26:58 -0400 (EDT)
+	id 42E216B0092; Fri,  7 Aug 2026 12:31:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E316B0092; Fri,  7 Aug 2026 12:26:58 -0400 (EDT)
+	id 3DEEA6B0093; Fri,  7 Aug 2026 12:31:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C75A6B0093; Fri,  7 Aug 2026 12:26:58 -0400 (EDT)
+	id 2CDFB6B0095; Fri,  7 Aug 2026 12:31:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2546B008C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 12:26:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8929A0453
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:26:57 +0000 (UTC)
-X-FDA: 85075002474.24.72FF5C2
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013050.outbound.protection.outlook.com [52.101.83.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9A35E12000C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:26:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=LbE4HoBx;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=LbE4HoBx;
-	spf=pass (imf29.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.83.50 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786120014;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 04FEC6B0092
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 12:31:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 913251A0488
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:31:50 +0000 (UTC)
+X-FDA: 85075014780.06.7C33B40
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 588B5A0008
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 16:31:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HrXn6Lj5;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786120308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MS1lmnXLC+3vPC4LjFRguif+C4PkJMlmWukiMTyIh2c=;
-	b=YiIV/c9pVlpw+he/B9faLQv3hVTOBtrggA0cSAdXJ/rjthRiC35iqKnFPa7XzXR9jrRsvD
-	pUbAb3yQMf8sw46uOSpf9Q4ELj/VwItcWPS+UoaiOKth2XGjdFIP+UrvXMzFPG8ZJTh4bR
-	ki6Z/TyiYXEdTLG9A6muEiDQx1y/yJw=
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786120014;
-	b=KeE98VrvsLhVKrv/wrYjiRsX8R6PTV7Bx3fCIhVX1l1ZEaNKE8B5B3zzg1mAfy/c+WtJ16
-	V7xd9irw+QvziVdXwwtTloU0CCEEDN0slIteZZKhq8yUh3qhy3/2xlaK0pgVdJg1UoVMXZ
-	ADRbvqCulGwJo/4NoTdwYr9e6YILjIg=
-ARC-Authentication-Results: i=3;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=LbE4HoBx;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=LbE4HoBx;
-	spf=pass (imf29.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.83.50 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=S1XfxwbdoezrGNtcj8UyE3GCZXPXBdAlOWQPBP28V+8tyrszTTGsxfqldiEGqWUtuUE3vGD6hP9N8iWgN/hWSoqJbKvP7dCnk5mClR/jGw+Xd8ULlXemEMgYLQG5a8+SX+zAiRD/IiLlYYyj9WdOPaiYjjvyJLvzn4300I63UoltiCDj8Jg0P5yNqhROTB5cT1IJ66IKetoBSUH9ZlAkDZ0jb1JhqadNZhlcWhQg0uXCf1ZZJUT/3VejedLWxaDFhoB7eXKVxueFE8+BcEVbJjRFeKflCsN6qbZXJGnduh1MfFIEI7/GxeHQ+Rq3Rlf9McLwZh3G/s7I32c5KxrR3g==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MS1lmnXLC+3vPC4LjFRguif+C4PkJMlmWukiMTyIh2c=;
- b=QoPWnMGbeaEPY70JHB5FQkhZMhNEsKVxusaXcu3ZHcrzDdOsIH9+aABL25xarJ2p0BlpVUxRf6Rgne1yLcv5zGx6QYZC0BurUyoI26KRLxEWfz7BT1WkTKdGln9XQj+21bbKcTWU5FdswTkyPLbGGfARa3gbWsvHVimPUlPOEt/SW7LYQCODLdiyL+SIffv0U//X6j+iV2CRM+LdaMa6FV/uONol3kF+A/EQq4DM41RU4LgJE6M4FV88hSW9/TUJWGaUuxL5/L7o/ivebYQhF9bO3h+hR2CNByMmIjCJr6HDtFMzZtLfkA/9O71rEd8cKcmANziXxWRrfApO7Lw8Fw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MS1lmnXLC+3vPC4LjFRguif+C4PkJMlmWukiMTyIh2c=;
- b=LbE4HoBxjfRtlY7c6ZHDXc95qdWRroP7GkPtXzaFqe+eQxYuiOQOAwMBr7zadR4TuTA5v2UTuXmiECUnpZtueKfuejTnnfUkBfLrYjyJgXAvWpK0ohfjKh71EC1IompC0jkrflMssKe0/wRqt9RdzegAqcf5Dc1XBW/fb9/q1tA=
-Received: from AS4P192CA0049.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:658::22)
- by PAXPR08MB7442.eurprd08.prod.outlook.com (2603:10a6:102:2b8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Fri, 7 Aug
- 2026 16:26:44 +0000
-Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:20b:658:cafe::5) by AS4P192CA0049.outlook.office365.com
- (2603:10a6:20b:658::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.23 via Frontend Transport; Fri, 7
- Aug 2026 16:26:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.6
- via Frontend Transport; Fri, 7 Aug 2026 16:26:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FBDF7vggKyg/P39qymfNUnPXNLSQX3uZtATlVOwaLtC8TwntOHJPr284gwOOE6pZfD9pmyFHAa1UmVfQW8bWlKsBhgNU/ouiGX+26VsQpjWXWZ03OJBCOzmApMN/ySTKE8mQDBvgdWMFtoxsru3C01DYlr7vL3iyKVBB5c54bw0QQucf/VJGVkwhwn0z/NmQitzGga1XjI0FH3FYglUvWzdpCvBaLvOiejWwJW7tBPnR8nOSG9qg1A/4DhkmlwKTNOGQjqPvIBUIIUSuFkWtbpulF3P6v2SWp5fzB49KalXQ7i7JhAcvUoHoajLSseZYDQIz+xv6ilzZFCFfYm3ztg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MS1lmnXLC+3vPC4LjFRguif+C4PkJMlmWukiMTyIh2c=;
- b=RvoYgMTkY2CEpoffjFhgvcG6DOqoHwEYbJ3Ie40Y2aRdAowA7ORsQl6ZnFxPWEiRodcf+LQDB5UOCktktQ+uxJAXXkH3XltD1V1wzgI2rtyhQsrVcO8xIqGBAnRZ+pnWcT0zs6U3BkS0mNhhnOV96LiBzjqE7VbRskZWsDvkN+P1KzSRZcbvzKEh42wx0U5sjamKWFkxFTgC6XqVLLTJ//iITABk8mNNNio7hfW87kMwg27jLdrB+/9eJLsIyVTVEgYOvUXJ1zW80G/r81Ak3LDbRkKk/TMVrZf9o1etFK7qrsmJCJNLp2hUG362ZxNhsBXDxRQjMohSfbormJVZnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MS1lmnXLC+3vPC4LjFRguif+C4PkJMlmWukiMTyIh2c=;
- b=LbE4HoBxjfRtlY7c6ZHDXc95qdWRroP7GkPtXzaFqe+eQxYuiOQOAwMBr7zadR4TuTA5v2UTuXmiECUnpZtueKfuejTnnfUkBfLrYjyJgXAvWpK0ohfjKh71EC1IompC0jkrflMssKe0/wRqt9RdzegAqcf5Dc1XBW/fb9/q1tA=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by VI0PR08MB10655.eurprd08.prod.outlook.com (2603:10a6:800:209::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
- 2026 16:26:07 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0292.018; Fri, 7 Aug 2026
- 16:26:07 +0000
-Message-ID: <5c329236-7761-4e42-a549-b822e43b4358@arm.com>
-Date: Fri, 7 Aug 2026 17:26:04 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- David Hildenbrand <david@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH 6/9] mm: convert PTE table entry to pte
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260806083926.1807279-1-usama.anjum@arm.com>
- <20260806083926.1807279-7-usama.anjum@arm.com>
- <fab9fc78-1e1d-4d5b-a9ca-92f3ebd04108-agordeev@linux.ibm.com>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <fab9fc78-1e1d-4d5b-a9ca-92f3ebd04108-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0420.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18b::11) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	bh=dYO5gL84ZfhgoOGOa76MHQFHtbyAJJVUdQQDYUbGmIY=;
+	b=odT+CB7/YwiLjQSBqpgnORXY7boCIruAjm4TF0q4YFCNWl3fkH3jGBfYlqFuAWhexckbB1
+	82fzXDCdrPDrkFMssVF6tBbcLOojVs/4tLK2S+14UCUG/qIXsyMfBTbXPYQgtRyLG4QvdM
+	pco7+pvoZ+O10yo4F95Q57/fR5Lkbjc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786120308;
+	b=4zSd8/Vo14thmxLbm6VjsX49f1Qn9HKxZb01G5jkvoUkZ/N/BdcAFiF2e3B8uNk6r7Dfng
+	cUyEysedjUOHOsHOX/zL0kH/Bl6NswQRyg8qt7fzg/OU4xFSuc/wiZO4pzX50hMAD2rcEV
+	xUKVHrC/bSx520GJxsTTfY5bwh1cw+4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HrXn6Lj5;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-902e4af2d9dso17090886d6.0
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 09:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1786120307; x=1786725107; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dYO5gL84ZfhgoOGOa76MHQFHtbyAJJVUdQQDYUbGmIY=;
+        b=HrXn6Lj5TRProEQ95CUOYkC+5BJjIxMbNO5LMGFr0qACxZvz2PAXvSk4HYmEorsqNb
+         eEYVPRVIJO99t+AtIez9vFrnTUapxw6Dr4BcZM3kzxVlo4dWpHi1q+gqsDtl49xEkkDY
+         d7DQaIAbgtfv+yCJ9A+OUt25Dn27TjqMtTBYLwgOSxDZkdJrx7h/oVU4eI4Jh/ZOq2Qe
+         ZJvLoGlLjhpGqntzYl8U45m2K7rbNKwrRnJ6rEp5hQrhITz6eWfapcUQusCfLIWBPQg/
+         0ik82yk0Kklkf+9DSN0fW+ElSQ6rnM7Q25BXw3GZvPkZ9KTUBVvzUj9UUGXAfBAsUWd4
+         i2JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786120307; x=1786725107;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dYO5gL84ZfhgoOGOa76MHQFHtbyAJJVUdQQDYUbGmIY=;
+        b=erRI9i5ljTC2M5GnfMLVlh9xIYQhbsXe/CaOUJKVGE3aSuKvsuRkjMANknkpSgGsua
+         sucJWAfbVvLnmG+soKiUJFlRGbuwxwtVpXYtesK6qQQ3t9TZ8G564rYzpF6K/2zlAUpG
+         aFRoLyNCdNZNJUpEN19cdA3i/OLSLy4+eylr+33gSAWiJDatVCvvJbMp2hD6xLTtaiST
+         aUDLmh53AGyfWgdUIOCy/bUYavYm+UCYWI++Kk1fQMx5oSSLnF9sstR+UeV9lIoKpzOp
+         ix059JH2Rl5ugwE9OC0rg1MRknHDop5eCenZ0ikpCzbOwtq4cGgKUOQ/s7C1eKZXAIjl
+         2DhQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4IMFLEQn2kEHlgUqxoOHCtkQAQ+rTO8OvxaBo4jmm/oOZSJnJ9u6mbq79gjiJrtxUv2JBMqT9Ag==@kvack.org
+X-Gm-Message-State: AOJu0Yy2q6cgDvrEFUrWg5nZ6UXKe3ckou772qs6muNSOhd4wqMaImge
+	V/zu++NCA6GZ9TL8Ghv52tWKM0gLk2RiU5PwYLxG1jfTXYSSNAy0lItZvNYRPgsu1h0=
+X-Gm-Gg: AR+sD13znNly+ISEvc7DIxNSY2LUae7WvEY8xjYtU0HbHnV0tkCtwuk7qly19erdII9
+	Yger6alUMdB7odG3088EjlayaiG/YULuHJ6MSQXVi55tejLnTKQzVA3wjAew45yHHtMaiepHX/0
+	4OIe4/P1V6LI7Qwu6cezBfwNmyhAf3ECXCEd81x9A3hIK6cz+G29UNzcmiL1w2a6MyVf7uRQBsa
+	xkYyFge+lZ90JLWPYkXnJRuLwXdgc1q51yOHVMQJyk6CzhMoFe4lZVjLzlaI8wEA6Mb5iEq2b/j
+	KAvS2QTwZnlJloS+2aaZCnbiIbsoPvFVHgSc5ay/gXm8r4qDIVj69mjc9FNz0+61uBSq8dwIsNa
+	Ip12fSP8IraMYUlMBWN2A44yL3mAWNJd1lHl64usOLHMHkWJ+sbSS7oDK/YVPBfLXTno2t4jWmR
+	SJzR5cjLaPOiYyuom9jZk5qzYi2lo0DrHzbOCkUZ31FPV/Q9NTmWABi2CfrJA=
+X-Received: by 2002:ad4:5c8f:0:b0:907:6f9c:3b43 with SMTP id 6a1803df08f44-90a34c86e42mr12128346d6.2.1786120307299;
+        Fri, 07 Aug 2026 09:31:47 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908a932ce88sm12048886d6.38.2026.08.07.09.31.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 09:31:46 -0700 (PDT)
+Date: Fri, 7 Aug 2026 12:31:42 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev,
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, riel@surriel.com,
+	gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net,
+	kernel-team@meta.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v3 08/11] mm, swap: only charge physical swap entries
+Message-ID: <anYIboHEUZb4fhHv@cmpxchg.org>
+References: <20260806184254.3790858-1-nphamcs@gmail.com>
+ <20260806184254.3790858-9-nphamcs@gmail.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|VI0PR08MB10655:EE_|AMS0EPF00000199:EE_|PAXPR08MB7442:EE_
-X-MS-Office365-Filtering-Correlation-Id: 18b46daa-e409-4390-8a75-08def4a0abaf
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|18002099003|22082099003|4143699003|11063799006|56012099006|3023799007|10067099003;
-X-Microsoft-Antispam-Message-Info-Original:
- 1mEC+1GW7muqv9YRUa+5/AFrrrerVojSEnd0ecaTJkfa3ovLhwzSUtq/5/iXk3EltNs1VIgCRf8Zh7GTAr6czHLzj1LlHiHnMTDT5Dcb24wAlC09Mw+6D5YHPspvL2sx1EVI20obl2sTrjQoXjDCgA7aBVp0HoJDluRDuV7/B58aAjYrXiLYtdilyVB/c4ILJZct9XSAPErba2JDglH3GKJD4ype/UD4mcHzequXHk1JMOE06O16tguwAUEIG0u+MJ8ggTWNqgYTzNOd6MVIq6sd2hHoWdX2Y2qjuTpQTX+YA2OBeZDzPK349/Ui6sl0RztQtbMC3yY/MuAf8RC0UbnnCeYg8DCCD41dNdhUatK+JRo5T3IK1KmdaqJIqc1SsTX08C88FG2Lg8b1iyt7B2jUsYSIVllojrtRN+9N6ntm73XxGeP7W/EKk2HijMVLt/zJ00cBPF+s6ehrAwUuLcXR3bFWdCxqikr9Hu5qgLqNLiBeQyU9LZ3Rn0uE/AjKJr7KxBolhiCVsfoUtLoROh7bFHlrC6EFaGGtVgi1y6ZHnr30Pd2XXuuZe89Ym83TMhdg1ihZmFB2EXbHj6gKjLziMPVkfqXTj4k6Xt+iMxg68NNxRNU+gVap/tVp0ZnjQsNUaocWwqx1SokpwWWnu8VdsKL2mjWzZqYQVxBsrn0=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(3023799007)(10067099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- dn/YewereVVzC5A5tIWzHJtVSWhBYpgpDSi5ALQzfsiowfVbPFqVXI1S32+w2Gf3hBalkT4ScA+EB4sUwudcOtIJhjhR9aueBLUTgRnHXPmr0dbhEUDZJ+v2rrucvP3u7iERclCslQl2A5NyoZhvKU3h4jrT3J9OorOozCFUP/qcN/HdbFVtvnLxCOyew+JGCZ6WkqiuZJrWgmbPl2r9U72xSp7bx/EmXd8DnNf3SnfIcujY2BMitEtNTLz7u55xSDP2vPsc11Dyxs/oe8ZFQ05c4AHjsCyEnqkcV8VIhBM96NYmH5IBO7uCDB0P5KyPkh6gWTBXXIEFZ97AzZVXsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10655
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS0EPF00000199.eurprd05.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	0a4a3d81-f480-4118-d51a-08def4a09582
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|7416014|82310400026|23010399003|376014|35042699022|1800799024|36860700016|13003099007|10067099003|11063799006|56012099006|4143699003|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	3ee23sDBvCMpGWS4TDHQCLYyUuSwv+AYpmfNHpcECbYwo+er0pcuW0YBJ/JGlzMVJsYwX+sABSXsOIooXGv1Z0M+CPTlgjlg8l/Ty/wmwVr9lgrVojIjexEIkm6+ajX+jCaGQkEO1zUJo0wXkMoWdebOCQaVpddKqpa301BXJrr6TFCTFHFnP4U3N8xqK/Yw3VDWz/HR+Tmja6qer8yUgdSzdJJOcu3WoyKS89aiOVle25K9alBtrNPHYoQoWKJ06NlFBf751x6aeo652mwomwBFkHSiU2zKXMeAFWuaxSYXq1glMto7hAF/gOGGTL2KsodAfMs/ljrXF2CelpRYmy7dwl871eDCtbhP7HZoQm95AyQDVHiuS6igbUrWVHInoFmIcSSYQ/pKGROsSzIS9uHKiT7mjVo4I+Jt8RhdN6Qu7v9+iowjNrvL73d5s7jF/NcJvL+dVY88XcquKU700NMF0mYZsemFR7s3WLsgCe9H7NzHlwj0UTfVbvv+b/p3fSGye2GK0W+Cf5h6XQwGCOInM1gxaeD2SAmf6gEEMx0eI5VC946Ussig+Y5WXGfBzdXeBSVELZFMUB3Mrj0zZ87rzh8sgxNwXrn0iQFJEUDkZkzpkge9bwfairbgtuVQtzayx75zCTl1VV7FA1Sk9FfxIDz8ceClCSD8heLSBoia02CVnceaJ5LQ/HpxSzWGxbG6EIome9u0k4ClWpNNmw==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(7416014)(82310400026)(23010399003)(376014)(35042699022)(1800799024)(36860700016)(13003099007)(10067099003)(11063799006)(56012099006)(4143699003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	d+88svJ5Haq6WSE5QYn4CZJyPMiUwhrt6t1V2RHk3Ee1c9prJyx4tb+QtGTj3UbgmutI/PnhCtEHsr35ZeMYJIjsJ1kttUusNFj9C44KxueqFhTUJy1pVRJjR7gJbqZb0XMMkZZBV8qaszUzoOYuG3Fmn74WxXMTHpIniau7xxMzQqqH+IEnWJ+LM/afEF7mm1UuFtpi61Es1j6qU/6DdzZefnT+s7uMDbLXE75755Yr3IgrwazWn4HlBUcwVZSyzmwFVXX+7IB10zw772A9Uc0UPJ5QKASwy6/zQ3PJ05eo7i0EfLOboN8P005OBeG3KiQdN6k/85+GF3+NgIOzozCldvxfEbHC+2lhiRP1hysiIPiJVK+xNnkfisRuPDTC/zUrbgJfQU3UTvywsjWWCl89sfVDR1zg4iJA8cEZxL45be/o2DGrtvgTNcV8TyCA
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 16:26:44.4840
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18b46daa-e409-4390-8a75-08def4a0abaf
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF00000199.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB7442
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9A35E12000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806184254.3790858-9-nphamcs@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: ay8qxenu4pepu3ax7pycgmanfwxgcq8q
-X-HE-Tag: 1786120013-540264
-X-HE-Meta: U2FsdGVkX19Ih/Te4N2X1w9EyDfwuJksU+H1gVQqXXzBaiB7L0s+ZkePPH52FZh7TFlFZQjjGvpA0AFFI3zxTPhH7s+vE/1zhWpQ6OK18oGKDKMEoyvh5ixxvDKbLvvcWYpdduLrYybGkPoaJ3dnUEHjpjX78p0qMXOYJcINEiheMZo4tC5g6dbLYvWlBI5GvODN2Y4kuxgiRA9v0wnpaLo1QvA1ymwGLCcjm0f4WUUeF71kKGnEIpkh3k6DGqaBV6Zr/i6+mYIF3fFqE1snEjtn0+SrmMT/9+/Mjg+pS2awzsZqfDw3P8z1VwTGanbLxmo/ksYdh5qfJpaa839Uu5vHwA3S0hDFTKkVYZv/6wGtbhTzmyctKf58xgWpCsIPZRt2wC5B6oxIIvxvqfgvfibCGklZeYeTLgr7DKmcx7BbmGHPYmxU60o31aXuN/EsGqJeY50gVCB7SfXfmm2MX6yCh4rWDnQBqt18LnECD1tLhcAsYBArrrp3NLxq0dzdnZawU0p5lBAXioRbsridrfxGMlIA5CGqj84enMjErg0/hM7RqYTHdN1QLijcL/tOb/X9NB4161Uu+2hunGmt3XtjF95cGkmXkng7F7lIEK+OBxghZM56xMTGZtnBmfNu2rTO39xT6sYf0I3XW5NJfyMw8caE/XzMsqIoSEB7PYoU3gflY9dQJ7NKd5vflmanwt/LdmYt8OhUErZ9TtbMA3VJuPWE1mMpQznGlch68812rvziBL4GxfViclSecVvfSutceYhQbmin5IebDMAKbwOvVw/FB4P8Uf5Xj34eb5Aab3OpdB8ZwXtHMgIMhFw6Gp3vNKoWfqYfpigJH9c9EVRC4Xhnr1GDXa55+VMJ7o7oY2O305Xa/Tr115/Dw30UXu5mf8G1er3UT1Y5kKUD6YSGm17B4PFyDjWdKpYUjmRYb1gHVN3RafYhJTtLbpW5zG3ANagbpUFUfTzLh5L
- UEq2YFGO
- Hb73tpROk3QMokGt9gWwT9NJVjwVafe0y/kQu0t890jEEuGS9J9atgvX1oh8JCUEwmmW/fs6KbeD+myxedSehStzroCwSbz67QfiNWwAQ7uxnh066p6IA/X+X1d1epBqXv5Rf0Iy2eDnj8WDzy00PQ8NMayxaJSEAfsFM6fdv1SLc0Yg917PpSYCAfQfuw39wteqz8YHGsolWLGfjFKGWB+dw0jdN6n4WoXGMynxNTs48PE5nAHDhDsBYr6CzD5L2SoNHpvUt6YRJKXEhoT7jfsH6hvHa+5l3++ipEYv5Zo70nilJhTEG1npp5ChT/SLZ+Mr/m4jYasjydZdVzHB+z6CbdJNXw4U+kQbFzfdTzUEuKBp/FccIecPcBtNS6Qe+fCM8bqEhsPfb0+VgIi6JAF54QeBGOD3ko7HdyOJ1w+mjXnCbqbbahaWGsiNydSIdI3kWqpsJm3+3UlteQzYlTaXaWu9pjfZRlDSWMAgpEAoN1C7cf+leS1WSxYehJI0bEXvEXOswdLH7qo1F07qctZS6x2bEc6tsvDAvB9zFBB8v86dM3wz8U0eMIxRg/p1JTGThGGLlUwFWs9x+N/AFqqgjYotB1JneLIBQ0VJkXXHj97qQ1tk21v0FCVV4sCd8eef6
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 588B5A0008
+X-Stat-Signature: a6hzt4w4odj9cn6i9kqw7sn99bo67fj7
+X-HE-Tag: 1786120308-509450
+X-HE-Meta: U2FsdGVkX18Q6onwH1vnAI7YD3f5AGtIfGD7yNrY+mrrptXQjqSs3U524lKaLDpVYU8BfDi6X26ISgxA4Ix7vWM/MFEfPXM44dTwxLtStQm0+rZIK73rCa9/Svtt9842wDdMlK53b0SVIwQA9YEg+wsNI6CCpkZcGyCF9fme50S9sCYx/h1Baggw3RXTa8V+i/eVu+49vxGCkk8izKlKl3Z9/qchH2Z/dwRtL5h6SYs+dNxsByg5hAlyZUkFvvSNdBojGIn8oB2g4llKw1Xx1f1ZMdPJT68KYvICNN6fRYwy1iwjqO6JXMvZu92hKmebpjD3s3nTGT9p0H8bcqtjT6XDdJxYKoxUoDQSqLI5wfN2KeAtyxXqt2D5apTHPX4gVn5fNn6ELrpYMi67UroXPAJnG/VBbQa1XxEpQysDBBbIit1tHECmCXU2N8gEpjVDZsJxuX4CfHvqutj5z+c1bTQqpP8dX6Ah45ppKt/tzxOnsgWeQ5Jfbje4CPG6O9nbGGebzI1lPr53Vk6EiRA04RaDFCz/HRPRxzinVgKWROAUPfKCVOqOlvZ8ngIopMuPbFwtRlR7nH1Vmh5jRmwAiCZDAoPt/KBO2yFvrsMxiJYzSNvpH8yu1l51bR++Lc8T1qLmxblPOYbGulCeE3Pv6vN+n7/n93jSLmEOdxGXZ9cyBW/9sAOH2BjHKjY4Br0hAVqANFDTolHraYedgnV9HOgr8BpyO0jOScM6OFFOrmfy/I2NzS2kjMg10Vd+CfENmKc7wTRTd8Ul+wE6FaujGERIEOk/SjXopbfRX0JPFbRy1SR29Np6A0kVs2gkBmBnE0SEs9ZK2y8WV5mA5lCMeM3sRjwlpY2BUBpguBazuGcOSLgP0PoHObK5Nhn3j1scLOk+ceQZHUvWTBOpIzuvEWHqMaHxNriE7pbKvzLvfDNtIAWzd+xbqNOucRXZ8MwOBqzljArSSLFLPOIoJnl
+ A1ug5A4P
+ oPb8r5GDRBfiyIXgj4oY2sTAKVlMw3zS21gHq6klqdWU78X0zzdLeTptImad+9N6QfI67eNJGZ2/uDpbUExGAQQ0wrLQ5A0HCQYOQd4sChmt2XiNgsPh9q6k7W3ihbxSYEEhYQPjrohhrm86rf8jcDRuHjcBaB0wpM7VPml3MGYL2GHcfILNjPruJSJlNAVECPCnQyTlYmuu/TGVy28Lj7ObIxPSIZmcmFMEiUx8w4An+X7v12dIg0MmJXG0gUFs/WwC4mJVjlQ4YRpU66+hEir/q/XrCQ9F3wDNwwCZ7ujm+PXDHp8UBcAKtkvoObYYVVuJOhr1yia34EgsMYUnHS3EBhTPAFiNm3RtdLuU6EW+xPhAAGVXwB65Jo+hlzn2RT6HqbgbOciLQ/lukR57OvhZ5UpXZl9J+ATR2KL81zETtAlYaHlwOnZueMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -227,72 +129,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/08/2026 7:58 am, Alexander Gordeev wrote:
-> On Thu, Aug 06, 2026 at 09:38:44AM +0100, Muhammad Usama Anjum wrote:
->> The non-MMU stub receives hw_pte_t but returns a logical pte_t
->> value. Convert the stored entry through __pte_from_hw() before
->> returning.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->>  include/linux/hugetlb.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index bc0b9c65aa1d0..9e8b391aa4bc9 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -1283,7 +1283,7 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->>  #ifdef CONFIG_MMU
->>  	return ptep_get(ptep);
->>  #else
->> -	return *ptep;
->> +	return __pte_from_hw(*ptep);
+On Thu, Aug 06, 2026 at 11:42:51AM -0700, Nhat Pham wrote:
+> Charge memcg->swap when a vswap entry acquires physical backing rather
+> than when it is allocated, so memory.swap.current tracks on-disk swap
+> usage. Zswap-backed and zero-filled pages occupy no swap space but were
+> charged as though they did.
 > 
-> But this is a direct dereferencing, which breaks the whole point, isn't it?
-Yes, this is particular line is for non MMU. In this case, CONIFG_ARCH_HAS_HW_PTE
-would never be defined. Hence hw_pte_t is just pte_t and direct dereference is
-allowed. I'd thought a lot about it; is better to leave direct dereference here
-or use some helper. Then used __pte_from_hw() was already being used in generic
-ptep_get().
+> memory.swap.current therefore no longer counts them, and a cgroup whose
+> pages all land in zswap can now reclaim anon memory with memory.swap.max
+> set to 0.
+> 
+> Direct-mapped physical swap charging is unchanged.
+> 
+> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 
-There are only two users of __pte_from_hw() at this time. 
+To head off any uncertainty about this: this is exactly what needs to
+happen in terms of cgroup semantics.
 
-> 
-> What about introducing something like pte_t ptep_get_sw(hw_pte_t *ptep)
-> to be used in exactly situations like this? With that the semantics of
-> hw_pte_t pointers becomes straightforward and closes the still ongoing
-> "storage vs lifetime" discussion:
-> 
-> hw_pte_t*     points to HW-formatted page table entries
-> 
-> ptep_get()    is used to obtain HW-linked/attached entries, and may wire
->               extra code like [1] or [2]
-> 
-> ptep_get_sw() is used to obtain HW-unlinked/unattached entries and in
->               most cases is just a direct dereference
-ptep_get_sw() or ptep_get_deref() is better name here?
+memory.swap.* are about physical swap space. They track, control, and
+enforce fairness for a finite resource that is separate from memory.
 
-I thought __pte_from_hw() is ugly enough that if someone tries to use it
-wrongly, it'll be noticed pretty easily. I'm fine with any other name.
+When a user switches on vswsap and a bunch of empty pages are stored
+inside the zeromap without consuming swapfile space, these counters
+must be 0.
 
-> 
-> The caller should always know whether the entry is attached or not, so
-> confusions like [3] are avoided.
-> 
-> 1. https://lore.kernel.org/linux-mm/20260526-kpkeys-v8-21-eaaacdacc67c@arm.com/
-> 2. https://lore.kernel.org/linux-s390/650903a4-0dd9-4e6b-9d4b-3c32c5657236-agordeev@linux.ibm.com/
-> 3. https://lore.kernel.org/linux-s390/b44e071d-7c9d-4e7e-a84d-4af3499a5a05@arm.com/
-> 
->>  #endif
->>  }
->>  
->> -- 
->> 2.47.3
->>
+When a user switches on vswap to use zswap without a backing file,
+these counters must be 0.
 
--- 
-Thanks,
-Usama
+When a user switches on vswap to use zswap with writeback, only the
+pages that get written to the swapfile must be tracked and controlled
+by these counters.
 
+A few inline comments on the implementation:
+
+> @@ -5701,6 +5702,116 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * __mem_cgroup_record_swap - record memcg for swap without charging
+> + * @folio: folio being added to swap
+> + *
+> + * Pin the memcg private ID ref and record it in the swap cgroup table
+> + * without charging memcg->swap; the charge is deferred to physical-backing
+> + * allocation (vswap).
+> + */
+> +void __mem_cgroup_record_swap(struct folio *folio)
+> +{
+> +	unsigned int nr_pages = folio_nr_pages(folio);
+> +	struct swap_cluster_info *ci;
+> +	struct mem_cgroup *memcg;
+> +	struct obj_cgroup *objcg;
+> +
+> +	if (do_memsw_account())
+> +		return;
+> +
+> +	objcg = folio_objcg(folio);
+> +	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
+> +	if (!objcg)
+> +		return;
+> +
+> +	rcu_read_lock();
+> +	memcg = obj_cgroup_memcg(objcg);
+> +	if (!folio_test_swapcache(folio)) {
+> +		rcu_read_unlock();
+> +		return;
+> +	}
+> +
+> +	memcg = mem_cgroup_private_id_get_online(memcg, nr_pages);
+> +	rcu_read_unlock();
+> +
+> +	ci = swap_cluster_get_and_lock(folio);
+> +	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages,
+> +			  mem_cgroup_private_id(memcg));
+> +	swap_cluster_unlock(ci);
+> +}
+> +
+> +/**
+> + * __mem_cgroup_charge_backing_phys_swap - charge memcg->swap
+> + * @memcg: the mem_cgroup to charge (may be NULL)
+> + * @nr_pages: number of physical swap pages to charge
+> + *
+> + * Charge the swap counter when a vswap entry gains physical backing. The
+> + * private ID ref is already held (pinned by __mem_cgroup_record_swap() at
+> + * vswap allocation), so this only moves the counter.
+> + *
+> + * Return: 0 on success, -ENOMEM on failure.
+> + */
+> +int __mem_cgroup_charge_backing_phys_swap(struct mem_cgroup *memcg,
+> +					  unsigned int nr_pages)
+> +{
+> +	struct page_counter *counter;
+> +
+> +	if (do_memsw_account())
+> +		return 0;
+> +	if (!memcg)
+> +		return 0;
+> +
+> +	if (!mem_cgroup_is_root(memcg) &&
+> +	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
+> +		memcg_memory_event(memcg, MEMCG_SWAP_MAX);
+> +		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+> +		return -ENOMEM;
+> +	}
+> +	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+> +	return 0;
+> +}
+
+These functions are just __mem_cgroup_try_charge_swap() in two acts :-)
+
+Please refactor this properly:
+
+__mem_cgroup_swap_record()
+__mem_cgroup_swap_charge()
+
+> + * __mem_cgroup_uncharge_backing_phys_swap - uncharge memcg->swap counter
+> + * @memcg: the mem_cgroup to uncharge (may be NULL)
+> + * @nr_pages: number of physical swap pages to uncharge
+> + *
+> + * Uncharge the swap counter on physical backing release for a vswap entry.
+> + * The private ID ref is dropped separately via __mem_cgroup_id_put_swap() when
+> + * the vswap entry is freed.
+> + */
+> +void __mem_cgroup_uncharge_backing_phys_swap(struct mem_cgroup *memcg,
+> +					     unsigned int nr_pages)
+
+Same on the uncharge side...
+
+__mem_cgroup_swap_uncharge()
+
+> +{
+> +	if (!memcg)
+> +		return;
+> +
+> +	if (!mem_cgroup_is_root(memcg)) {
+> +		if (do_memsw_account())
+> +			page_counter_uncharge(&memcg->memsw, nr_pages);
+> +		else
+> +			page_counter_uncharge(&memcg->swap, nr_pages);
+> +	}
+> +	mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+> +}
+> +
+> +/**
+> + * __mem_cgroup_id_put_swap - drop memcg private ID ref without uncharging
+> + * @id: cgroup private id
+> + * @nr_pages: number of refs to drop
+> + */
+> +void __mem_cgroup_id_put_swap(unsigned short id, unsigned int nr_pages)
+> +{
+> +	struct mem_cgroup *memcg;
+> +
+> +	rcu_read_lock();
+> +	memcg = mem_cgroup_from_private_id(id);
+> +	if (memcg)
+> +		mem_cgroup_private_id_put(memcg, nr_pages);
+> +	rcu_read_unlock();
+> +}
+
+__mem_cgroup_swap_put()
+
+and then remove __mem_cgroup_uncharge_swap(). Handle this split the
+same way as on the charge path.
+
+> @@ -2116,8 +2117,16 @@ int folio_alloc_swap(struct folio *folio)
+>  			goto again;
+>  	}
+>  
+> -	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+> -	if (unlikely(mem_cgroup_try_charge_swap(folio)))
+> +	/*
+> +	 * A vswap entry has no physical swap yet, so only record the memcg;
+> +	 * folio_realloc_swap() charges once backing is allocated.
+> +	 *
+> +	 * Need to call this even if allocation failed, for MEMCG_SWAP_FAIL.
+> +	 */
+> +	if (folio_test_swapcache(folio) &&
+> +	    is_vswap_entry(folio->swap))
+> +		mem_cgroup_record_swap(folio);
+> +	else if (unlikely(mem_cgroup_try_charge_swap(folio)))
+>  		swap_cache_del_folio(folio);
+
+This becomes:
+
+	if (!vswap && mem_cgroup_swap_try_charge())
+		abort
+	mem_cgroup_swap_record()
+
+> @@ -2614,18 +2685,28 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+>  		/*
+>  		 * Uncharge swap slots by memcg in batches. Consecutive
+>  		 * slots with the same cgroup id are uncharged together.
+> +		 * For vswap, only drop the ID ref - physical swap was
+> +		 * already uncharged in __vswap_release_backing above.
+>  		 */
+>  		id_cur = __swap_cgroup_clear(ci, ci_off, 1);
+>  		if (batch_id != id_cur) {
+> -			if (batch_id)
+> -				mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
+> +			if (batch_id) {
+> +				if (is_vswap)
+> +					mem_cgroup_id_put_swap(batch_id, ci_off - batch_off);
+> +				else
+> +					mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
+> +			}
+
+And this becomes:
+
+	if (!vswap)
+		mem_cgroup_swap_uncharge()
+	mem_cgroup_swap_put()
 
