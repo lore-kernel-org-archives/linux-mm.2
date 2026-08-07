@@ -4,104 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9875C5AC80
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 00:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A9ACC5AC67
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 00:19:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA546B008A; Thu,  6 Aug 2026 20:16:47 -0400 (EDT)
+	id 116CE6B007B; Thu,  6 Aug 2026 20:19:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 975526B0096; Thu,  6 Aug 2026 20:16:47 -0400 (EDT)
+	id 0C6986B0092; Thu,  6 Aug 2026 20:19:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E946B0098; Thu,  6 Aug 2026 20:16:47 -0400 (EDT)
+	id EF7626B0098; Thu,  6 Aug 2026 20:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 559756B008A
-	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:16:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC959A01FB
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:16:46 +0000 (UTC)
-X-FDA: 85072557612.27.E3D313E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D103080008
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:16:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HQaSI/cf";
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786061803;
-	b=EynGoN7QsrgZZfNyoYI1hHmFcmCcHEyxvZNMaTvmAjFbMCcwmO+GOQBQG4IL9edsgPyjfT
-	poYZylngwuZS1N43vy2H43kyOJQLc7dUdPBRh01dRvXhrSMKsmwhFPYRy46MpnwViVAqSU
-	sCxBLvXBw+aPX4ApmME8cDDAYtACVME=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HQaSI/cf";
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8D8C6B007B
+	for <linux-mm@kvack.org>; Thu,  6 Aug 2026 20:19:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07D6EC0215
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:19:13 +0000 (UTC)
+X-FDA: 85072563786.12.3A79BE8
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 45DB8140003
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:19:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XLEQD8Na;
+	spf=pass (imf09.hostedemail.com: domain of 3fSR1agYKCPQoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3fSR1agYKCPQoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786061803;
+	s=arc-20220608; t=1786061951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pkevoz5jx7erzd5Ik87vNymctnq+yckBopcIFpf/dQI=;
-	b=PwZ8rpGjY+G0bW+MO4bJCCbGMWlUSHLul0b513B6XtP9e0hiatuzkQBgAU/fk2nlATaJQ2
-	QM0fy8q6WGiDyHt8xljIjlFa2D1qrqlpZSSLlc+/I74lGmPWp3iW1CCv4BZl+TSCL5L9Ns
-	KNt//DlDvGOCdBVqmE21TP5JNaHkrkc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22A4943CB2
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA90E1F00A3F
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 00:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786061802;
-	bh=pkevoz5jx7erzd5Ik87vNymctnq+yckBopcIFpf/dQI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=HQaSI/cfSX8zzyCVbNNYTrKisR24zrpRcxY7Qj5UVvfySDu5hhTCp2GUsYylPqH5d
-	 sXOZ62DROdUSWBTSJ8lSykX4XgXz9bOgdI07N56UWyAdujOx4db1/xZB0qGelbg/yq
-	 rSuT/SkgsRe1F/Gf/N5nfn5H41Mof39FZJy3RzysEnzdX0qYq4ZUgFG65nWvPVNJEb
-	 /NmI7SQECmXbRd1mPLV6mmz/oUgGHvSZUQkYC2JmAE2SrpBJacx6ktLod5PSOgFoeT
-	 K4nOaJf+di0TqfPzaObXj2zKjgFaSm1UI4zMGbdN0NyH8JOV7BrkdtHBGm58eXn7x5
-	 Gl1bjMhIC9zLw==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1f758014b8so264955766b.3
-        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 17:16:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpBRZptayngA+11ZXxxKNhie9IfMf4EeqaqWHC6qJc4UIP7/4z4lh6uoTIB2Edse1lf55zL9QEjsQ==@kvack.org
-X-Gm-Message-State: AOJu0YyxdqJugeDIf4jTUeEo8tVi/4UOs6YDtIp34tSGFxf7BkUVcrXy
-	aJo64Ey6Cm3Jkn58OwRLWSkRK05Amnic7yak2e8ICvDDRGtUM/AG4b1gVDT168SNH7Gj5C/9NxG
-	8NTTegI4TLoABR1QgfamypXPDSOyZgLk=
-X-Received: by 2002:a17:906:99ca:b0:c16:29eb:e834 with SMTP id
- a640c23a62f3a-c2039cad23amr848650366b.21.1786061801831; Thu, 06 Aug 2026
- 17:16:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com> <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
-In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 6 Aug 2026 17:16:30 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zODy9UCrtJuU5_SuiZDUbg4dUYLhOyOwZtD-U0N0tpCsA@mail.gmail.com>
-X-Gm-Features: AUfX_mx3Xce8tq1HGfkrtfLUcGc5qz1WU-fRmuaPsRk6wi3LUzKvaDu9efg2rJ4
-Message-ID: <CAO9r8zODy9UCrtJuU5_SuiZDUbg4dUYLhOyOwZtD-U0N0tpCsA@mail.gmail.com>
-Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED allocations
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	bh=luhPZAd9yDKFqzqDYzNPoL8PFv2nmAeAhL8OrthRHBw=;
+	b=SgI/6F27vSS+Xc0T2Wjy0AhmewjumCkB0d7+rp/mYsGd9+EXjiAE51DgpTzXy8OhdjyhqC
+	acAJjYrpz+dlsEPPuzuW+/DGU21cn/wXnEnlwB8Wahco0Eao2QplebwoYp41+2G2WKPQwT
+	XxaPKBg+H5pqjZp+Rh27PClxR6atC4Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786061951;
+	b=IIxOIg4ihHZ2u6oQiAsR18bEmBeeeqLGexMt+Qo6auvnacRH3j159hWAwHg+S6t69n2937
+	GaKZugN8W32IIIKbc1mdlVfT7DknbFX3RRxTQxtX9bE1p0pZuIVVGVt4JNLduvrzDMXDvT
+	8F6nFsAaGA+CoWt/mGvZWyz/E7NoMyM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XLEQD8Na;
+	spf=pass (imf09.hostedemail.com: domain of 3fSR1agYKCPQoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3fSR1agYKCPQoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d04908139bso47908235ad.2
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 17:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786061950; x=1786666750; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=luhPZAd9yDKFqzqDYzNPoL8PFv2nmAeAhL8OrthRHBw=;
+        b=XLEQD8NaO7r8mYPW8wjuV4NZvjlx1KI1gH0Fvy/dy8C4K3ZPrvVzEPi3/bvzQmYp6c
+         lwfVDpo5a2EXs/mVjMdGv7R0RvxpIXG+Pzuaai4coQ9rY69hYVd834T9EqMYeiNH6eFS
+         sQDZKKM/dAbJpjiUfHzOW9GkXRPvajQpU4FpX+EmcHFhczrUXeaX1DMMxgbjdIWfCfvq
+         3ypNCqIPDGzfvwhNJSi5erMQC/QVILJ/Cs837CyZR52S9GCGBHoQVUkT5pdcO/ujSSe+
+         XE1qjx36Ah9BmEk5wkkj9cOD8JNwrocG8A/y8f3skUi15cPYC88j6T/Jav6DOWmfhy0j
+         /rRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786061950; x=1786666750;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=luhPZAd9yDKFqzqDYzNPoL8PFv2nmAeAhL8OrthRHBw=;
+        b=HkUEOqaPH/QNpD0gcLrpdcEI8DkKIjMj1DEFZDfE1Hs7ae3Z1Hp2qNhvauGU1FiTiM
+         YMTw+O0JMozwe15XVwTcCU0na4tGiSf7yibyze3fletrbWEmaWPDqWn9Ogim3vO23Wj/
+         6nrFa5dfN7k/z8iAWLUdq+br2jl7EaqcgeR4AHHHCcGij9ooOhyGCF3W8AEFGti3DA6d
+         SiCq1/piQHX5FEA3QX1lNGqvjq6umtiHOEfEZI8UOL991feKlb90ttDkYvPzYfgEG/xU
+         uOLN7CkjoZjuj2uuXZYPQPefJFn4nrVOeScvZRq4UkHj7Wu+M/O/ubBKG3oIT+g+c5Xo
+         li4A==
+X-Forwarded-Encrypted: i=1; AHgh+Rqcfs+uOUFDSf3uPgrNrBAqtRGyyI+rgZHNQTjauoDn4iL6aaH0Z7Pijkxj1OqWafUhVFLohiqBEg==@kvack.org
+X-Gm-Message-State: AOJu0Yz7zM2Z7RlY4NEgD+ZvP+J8pkf8AAk5GtrHpKVVPXwWLMiWt9AS
+	oF32CTscEtHiPJWPNYBEdXxeIc5wp+z/125/c8ai75B4Jl+hmlFM1L4UvXmareNbDR7DhIARK3o
+	gHwzMIQ==
+X-Received: from plblg8.prod.google.com ([2002:a17:902:fb88:b0:2cc:61be:8bbb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f788:b0:2c9:d55d:2d3
+ with SMTP id d9443c01a7336-2d0ca7834d4mr237958385ad.15.1786061949754; Thu, 06
+ Aug 2026 17:19:09 -0700 (PDT)
+Date: Thu, 6 Aug 2026 17:19:08 -0700
+In-Reply-To: <CAO9r8zPk-X5+NmtKm5pvPD=zhrDDAqF_2h-a9-0=5-+CVEnUNw@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
+ <amu5v-e39GKpgFG4@google.com> <DKCQZ9JTKRIO.1K61106YF38GW@linux.dev>
+ <amz0jzVPZo_eBeRV@google.com> <anUgqnHKShicIK7C@google.com> <CAO9r8zPk-X5+NmtKm5pvPD=zhrDDAqF_2h-a9-0=5-+CVEnUNw@mail.gmail.com>
+Message-ID: <anUkfHGqI07cgSHG@google.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
 	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
 	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
-	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	rientjes@google.com, patrick.roy@linux.dev, 
+	Takahiro Itazuri <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
 	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D103080008
-X-Stat-Signature: 4pipo1b3qygouwpbhnxxmjer747bd89t
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 45DB8140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786061803-807912
-X-HE-Meta: U2FsdGVkX1/3hacRatxSL7JuWZ1QCqm+2+spmcsJ+btqre+0np0bQK9nDEXH1OzXgDkLw8Uo9pK4d0AVQ9gcCL9c+fHbCY3Ie4Mt/eYNoQuebYG8zjDYTpi5dHVP/GWWKf++oILHg6xCb2cuxEzMIeIYeU8T3Hg7WFrg48V2VA6f209Vh9uSlkqq75A8UAqgnRjLPoEPlqkcf0nrWmpHgJGoxK0oAzhATZdi62/uUjd3hlAVPy/eQHYubQSDBsi1VOHQG5id9s2LLTIcZdr258vKPpFyCYoWYbDwwD2kqd1EDU7hwDawx3yt4p8c0S9EW9acx+aou6RbIQJzqsHnYyD/RzKm6YuKT6AvrnrjAzY0AOnjXr9kTQCmVgZZcrr0BVTnZNFxrpGgUFhomgKFL0aCjut8V4LV8RpVn0QAnD1mDvviybGm6GMg08s6rlDJ55blb2Vf8T77TFZwjnqPRdntBN6nYYQq4oYlGVJBarj3D7s2sg5YprsRJKDMUc1KLeU2atMVvfyMQCM9kls1ocli+YHIlgkkhaqqzFKV0SqGlVUx5LbBuICvBru82hPLn+FS8b3lkx8lnPdBBACpt2NBes12hUF//O4/vNawRDB2/241Zxng3nxkmzOl577wLgBREGeJHXIqgxsYBrRvIN8JsNPZJdFtArSOc6YlpBPhHUxXQSR3z9z1XppHQsUSkcQcT7ac4OunICLJ+FgK+wNZHO+FyHVWnLHMxl+HKntvX081vltnHUOGGZWtPr++wycNWt5XTdDAgnPNk8/WKNhDVN5KjVuQVgEtjzLY9EVBQPpo4qHoSAsbvou6AL99PLd5LELrH0q9GQQFTdqOuOnQB0s+ch9jCKvh5ptTV2B0AxZCRQ899qNMiKWFzxR5vuFt3MNXY+sXjUMdgWDfMTIz4WLUY4VbuaR9P0sA7za8kmIWI6/ATBZZzSqkJaVQt+qvZ7Lu614BQzX5as9
- +a+DMxDt
- sWLhhSTPjMsLwjLn2+6ZB6NiiwfEYdbpF1NRqVTnNGPgA/Wa5Hx3jJwzUeJf/td7RZDNuQ9PvlxWklbDgylz+B/cfg1jUJqc5nQsLIXsKPgLYrv9YUa2ZPk6h2V3dQhqTnubeZtbkGIrC0ME8Os0hutKxszHmVdYmWXJh9PruEHxLO/JJfL2dy+5PuPbJETGIIpeeYAtrceuKHLMZdX4gHPbk9M+5s3G6XzTjaRq2HSZHYpYTxqbR5FNV1vsaqjKq1jIMusUWqEZw4dD6bSl26kobzsyycf3NPiqr+SZYSqX9t9Sf4SjKOTcJho5BfY9qwKvu2wKPGHcIJ/E=
+X-Stat-Signature: eojzzhmjh3ei9mj93xququ7d4ao7tcnf
+X-HE-Tag: 1786061951-557814
+X-HE-Meta: U2FsdGVkX1/hRMB2uygZOzS9tqzVuJvsJpF+WlN3hh+NTPLFis2DWNa5kDx6UdazK3virViTNJohTfKkKcKneAs+zpkp2wBS2BcjV3jSw196N7jYmIpNU8LRjfXu+G3L0eZfHDujEAqO8dkIY1z1nc/a/4kjCOi9Bh2lZsqfkFqxSTUYl6u9zbXhiVVaHUq/pkcNFwC3bSDxJAGu273MvWDU7EWw41nlZVsHaRthdx1pHa99+4yjOL2/Gc6GrUdFowIVbk9IYKabuvPhNVPzqxQ8L3Yake4cOhSMiXosphNeanROOhdq581HIurburN2b6Lxuutc8+5Q3/B+QyfZcBN5tU8PHmY6IuNWJ2hb6m1I4t7/WZqSVVAJn69SG1Y6qIiStBQoIvBObGAO+bI1xHxTfGgji+IcrCP/7jQwPysku7auAE4pr6Q0a/hML0ggKkO0ZZZq1E/8Kd7npeBU/WRsuUMOVqK7YriKAvkgzJz8OOrAdunXybE/mmMCirf3ZSgbIBMU8DT1At/PVUBxU3JAR7BocpZJHmnsfAP3e0lxB+CcNhy90rVtj0ctd1vykmFr0a2zHQyShugg+dHpDcTADQRiMK3+BPucdBsJSCOF+c2iBUvU8VkkXIrGiVP9R0WVw3oFHnrXEFg6WmOGU7FdqdzdDOkcjJ8i9Ozp2DHiIeL4jqvRBxK+wyUy0Lv6hoYov+V9ZVxss+geqIXrhTce7Mq/IaeQtHbH0r3N/pq9K9a2LKKOc0q9nTEau6XThcKvzgeL/ldhwp5ZRQNGuc8kr/dbkYsIC3jVohTd/VOzilfKOTfRYEVYj9lMLB0gbwvNQ/NSgTvnd7ZKP6hNG+MFO8jaU30ILhAl5UxArdFS062gdaRrfFc1MlK8pxBR13EzBWq7M4jQlQzmYtfdUqGTkY1fTXUM4ofaIRsnqqO158BPkoRsGJfBuWAfY/xSbL4bxBJdjFVUpXjhsda
+ mGdTogAY
+ iMLZX2xAxjqwPau7T3NWyah8nZwcRG8ajwWvRUSJ7eZrBTRYQRjpe/B4LJWTD8Yk/5okU3emGOo/e3CQ9zAAb7fdBE5n5qZbFwQmqWRLXnuk453iBZ1wCxsPmCcBQXDIH3G9Zx+zrs6xCOT8wPLYjEPsuxEuq+3Jp/3JFNqnuk1JQpsX+39csnYJFGQNoPE9+f7wB+ikl3omKWkNIq3ZV/cf5rzrQML6Z6je5n80b42RpBkB3ZFDKqnGFTCDDE8PsVdDsjc66yA/LitM87IYNtTlN0lfghad2BFhGSI2v/ZtBtBZeACsxI7XWhjeSOMhPIsyHeWmpLVAqlYZEnehcuX9ab1ycy9NAFmUUaQJnwmszVZTlqCteJV59O9JxVcv0AWgp4M9Kv+NC+EaT1nzPR62sCktt/ZVfBPrEtEi+y+GsuYlNdZCXF6V8iCkrRIBU/djqgnA4kNOdReznTo1V1WSYp4nOmQHNj2ks6Abs2wK71yQq9r2hlLlkE1wDRxqoKEjRNtS0QZKsBxnUYOaeTLHjcOSS+FVHfCUSwHnT/PHeAuhEgacxxCShukelhQ65nopiz4JJggEiIxXH0NUuX7fmKWuvI8MryG50/EJ9Nm1G+v67uImjiiOCxskcmzwwr6spPrKMM5eBb2lWDYjBHGzLhGGq7uX/1i47
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,34 +124,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 67b01af024e17..c9eb3947ffc79 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -1393,6 +1393,9 @@ static bool suitable_migration_source(struct compact_control *cc,
->         block_ft = get_pageblock_freetype(page);
->         block_mt = free_to_migratetype(block_ft);
->
-> +       if (freetype_unmapped(get_pageblock_freetype(page)))
-> +               return false;
-> +
->         /*
->          * CMA pages can only be taken by ALLOC_CMA requests. For anybody
->          * else, vacating a CMA block consumes free pages the caller
-> @@ -1444,6 +1447,9 @@ static bool suitable_migration_target(struct compact_control *cc,
->                         return false;
->         }
->
-> +       if (freetype_unmapped(get_pageblock_freetype(page)))
-> +               return false;
-> +
+On Thu, Aug 06, 2026, Yosry Ahmed wrote:
+> On Thu, Aug 6, 2026 at 5:02=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > On Fri, Jul 31, 2026, Yosry Ahmed wrote:
+> The mermap provides infrastructure to do this, but I think the assumption=
+ is
+> that mappings are short-lived. Keeping mappings for the lifetime of the V=
+M
+> would probably need more thought. For example, migration is disabled whil=
+e a
+> mapping is active (as mappings are per-CPU), and I was even proposing
+> disabling preemption (lol), so that wouldn't work at all with mappings th=
+at
+> are kept around for that long.  The address space is also currently limit=
+ed
+> to 2M per CPU per process, which should be plenty but could also become a
+> limitation.
 
-Do we also want to add safety checks in the page migration code? IIUC,
-if we miss a check in the compaction code and try to compact an
-unmapped pageblock the kernel will crash with a #PF in supervisor
-mode.
+They don't _need_ to be kept around that long, but I'm skeptical that on-de=
+mand
+mapping will actually work for KVM's use cases.
 
->         if (cc->ignore_block_suitable)
->                 return true;
->
+> >  2. Always access guest memory through userspace mappings, i.e. through=
+ uaccess.
+> >
+> > #2 sounds nice, but the problem is that it effectively requires hand-co=
+ded assembly
+> > sequences for anything more complex than basic load/store operations.  =
+Which isn't
+> > a complete non-starter, but it's a pretty big blocker.  E.g. see the me=
+ss that is
+> > record_steal_time(), and then imagine trying to convert something like
+> > nested_vmx_prepare_msr_bitmap() to use uaccess.
+> >
+> > So, unless someone comes up with a clever idea, KVM will need something=
+ GUP-like.
+> > Strictly speaking, it doesn't necessarily need to be exactly GUP, becau=
+se KVM could
+> > poke into guest_memfd directly; KVM would "just" need to manually track=
+ its own
+> > mappings.
+>=20
+> Ideally we can have shared infrastructure for this (i.e. the mermap).
+>=20
+> > But on x86 at least, that's not really a viable option because it only
+> > works for map-rarely, read/write-many use cases.  For one-off accesses,=
+ creating
+> > and destroying (very) shortlived mappings would be too costly, and so w=
+e'd want
+> > those to go through uaccess.
+>=20
+> Not necessarily (I hope). I think the mermap pre-allocates page tables
+> (or some of them) and defers some TLB flushes, it's aimed at
+> short-lived mappings (e.g. for read() syscalls to map a file page,
+> copy to buffer, then unmap).
+
+I highly recommend testing shadow paging if you have aspirations of replaci=
+ng
+the get_user() in FNAME(walk_addr_generic) with an on-demand mapping.  I wo=
+uld
+be (pleasantly) shocked if dynamic mappings can provide acceptable performa=
+nce.
+
+>=20
+> > At that point, userspace is basically required to
+> > maintain mappings for all host-accessible guest memory, and if there ar=
+e userspace
+> > mappings, then not using GUP doesn't make much sense.
+> >
+> > Note, I called out x86 because x86 has the most extensive emulator and =
+shadow
+> > paging support, which is where the isolated, one-off accesses happen in=
+ spades.
+> > Other architectures might be able to squeak by without userspace mappin=
+gs, at
+> > least for now.
+> >
+> > So, in all likelihood, KVM will want GUP.
+>=20
+> Yeah I am thinking that the check here to disallow GUP completely for
+> unmapped pages is aggressive. Maybe it works for now if KVM does not
+> currently have any use cases for accessing guest_memfd memory. But if it =
+does
+> (or will very soon), we need to think more about it, otherwise
+> AS_NO_DIRECT_MAP is not really usable for guest_memfd. Since you said KVM
+> "will want" GUP, I assume it currently doesn't?
+
+Doesn't what?  Have GUP?  KVM heavily uses GUP, including for guest_memfd t=
+hat
+can be mapped into userspace.
 
