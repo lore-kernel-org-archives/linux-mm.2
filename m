@@ -4,127 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 588C0C5ACD1
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:22:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF063C5ACD1
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 21:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A4866B008A; Fri,  7 Aug 2026 17:22:56 -0400 (EDT)
+	id A26646B00A0; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634B56B008C; Fri,  7 Aug 2026 17:22:56 -0400 (EDT)
+	id 9CFFB6B00A2; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F62A6B0095; Fri,  7 Aug 2026 17:22:56 -0400 (EDT)
+	id 8E5C06B00A4; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22FED6B008A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:22:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3701A1C0097
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:22:54 +0000 (UTC)
-X-FDA: 85075748268.01.E6373C0
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5FA00C0005
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:22:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hjAmc3My;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 718F76B00A0
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 17:38:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EECD51A0190
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:38:08 +0000 (UTC)
+X-FDA: 85075786656.05.5593339
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DD7C840007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:38:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fhtnW4u/";
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786137772;
+	s=arc-20220608; t=1786138687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGhPRnqQkvQ9XTDuFD2lcLHAbRWoNgCOpfXPrXNXFpc=;
-	b=C9545pqjtDYLkwMaOOkQqT8bWKJncP4Cur2FaXIWQRDh8WwTlx/nwQ+5y5Bv2rEgrvG30v
-	dM4efF64AssIk4xopDueBD5ZxN5xwH/z6wvvspjcY5uGnnWKbjlWMB6zxvaVoaqGk1+Svt
-	qHQ5S/htr7fz5bGDcJO2pXkY9vJsq98=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hjAmc3My;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=elZQKeikZzxWpyEMzJPkFz75IkgIrejtRCC8CUUdJfM=;
+	b=J0aMWzWvVzeNbfh1oI+FkYJego7FJYeQsVhTde/WLaQbj+qXOfmJlL7zCTS5CIcs1DnAZS
+	dzkfbuo0ZPl/szvomZdP/NmY3QCTynI+HXn8vmG1vbCfcQmYSx1pLVkpimxFKOjpqJ9mLc
+	WDMVPhcJmmcL01UpEBHIE7Fs+QQ0ZhY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786137772;
-	b=ij8MQbLA7CZ9e/8TP7/ihRub9KX52XYUGg2Sv+BYWBKxy7kV8SlbC6LzJiwLBE14J7j+2x
-	/A4Lr1mM2jQ8oh0oXpDNua9asrugK4FW5JDoaNUUjcsR6oVioeiOdWUjpB06OtDNlvKOLp
-	sEz9s0PfFI0CQi7MAUMrjyhoXhnnOz0=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ce7d2adef4so287735ad.3
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 14:22:52 -0700 (PDT)
+	t=1786138687;
+	b=a+3Ot9QNKA+OOatBBLtXv9tg+0jEZ1Vmi37P86EcZ8d/5H2kf1ItcErFuIX2HTPbh3W9Ju
+	fVnPC3EysQYoc74mIPSF/FEK0s0DUh+QAeAmvLTTAp9fNxuP9ddo8eX4ICW2P+UnxkLTx9
+	0FYpPAz7d/b8qXVYYNLKRX489ZUJrUQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fhtnW4u/";
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D646142A82;
+	Fri,  7 Aug 2026 21:38:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E641F000E9;
+	Fri,  7 Aug 2026 21:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786137771; x=1786742571; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wGhPRnqQkvQ9XTDuFD2lcLHAbRWoNgCOpfXPrXNXFpc=;
-        b=hjAmc3My8zw4QdDQ5oJpvAywcEZEauSHn0KXOL+JfCao/1xYTnP4z929TplFcDff1z
-         N5tzIGnGlhLGKMehk62RkONjeMVPzbepWdFug8Woj8FxxoduLvbZA+IsMY9gUHlouzqN
-         3stXIyhH1m9cEnO1t0fn70YFPoLg1ASZYxZheZoA3qT7i3g4pXozmZZUtif3V5vw+x1o
-         jlf0w/phwaMrxHuTTIurhmcR5SJjFqUqwBy3vJ099E6QGoyvfWZns0Y97nlvtTyM3NzI
-         omqZD/xI/r/tSt2EFRX02VDdz9Tf6peQ9RBmaJOi/WasWdJQX57yN5cywacMsxX8bSAz
-         ATBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786137771; x=1786742571;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wGhPRnqQkvQ9XTDuFD2lcLHAbRWoNgCOpfXPrXNXFpc=;
-        b=poYY5PkVZauU530z1RGYGFy6Xdjcvr0Qhobr/8gcrOP4wmjS3+7y33Xr7ECYJrEKx0
-         9YLYiQwfu/UUrhehIDIcaqcqtBrK0KqNWSqDyMAEX4N0bI/5b2EMvN6McgrA5NJODaWr
-         gNUUX3L1P4xBvaRjWwud++sTB/W9VO3E0NlVN3qnaW0MHaIIyffH54022HBJ8L5H2naC
-         TxCHmaMmhF+4PMr6pE8mFiTsdub4CKnn6SOiLvh/mQkpbTJ3rT7YNO0uqiiVnq7YbJC4
-         pOh92roZQTdrCU3c+TRWNP5C1C501FrX1tN7nGhyDTkkcwWebsSAp766gUUAaJ/rUkH1
-         Di/g==
-X-Forwarded-Encrypted: i=1; AHgh+Rqykx5w1Q8nyHAwpqe1Y1YfITsKxLCIbJBG7RgYHtfdI4rNkRPu3y+Roe0Pulslsqcp9e3Ygexnew==@kvack.org
-X-Gm-Message-State: AOJu0YzAuRXgMx9FqZ5EJn0TkR0QCQzkI6XTDDFcVCDvDZpy2hr6+KJU
-	9bF6IY9HbkD4FPbNquV9XH/1egEnLIz/v4pHJK4pH3fWPRZto/1mhm8W
-X-Gm-Gg: AR+sD13Q0eiRj4+LIplitHJH6+cvDJ5O11yrt7mus4GC6ffpTpZKCbaVeosh+qThc7l
-	DCx24mKKl1BX8UeJW3LUe2OfG07uMAtgDT4WhbeTiReZ3tbZ+eAgCF3jjE774q7zv0XjYqVtw/0
-	Q7pcwck4FstwwVm906mkFrKcRKbqmJ3dy7awnyYCmV62m1KJwxvlj4i6NDmGe3aofzbdzqb46fp
-	Xe8fR9erpb9ynGzFBkCOi6C1tyQLU/UXb0cFTwwC+/lj28OiB3ADv2walMxeRV++h48wHZUR79P
-	BjeVltvNdgU9Yo/T4FXgpI90XRvGfhPSLeQzt5LATk0j7JRqvQh7YQfnODAyvFc42IsQR+ulwrC
-	7i+R49TVLRbyS4N7YWCSV7zFTx7J9y9IE4PwvGz+uYCvKcRAaAQHeVJnSbHAmtJahxJloCR57Ur
-	sfsPYkbJdgvcXNExffxJqk9jkKW2pG9a9QbJR3s0/s1y3+zBgSCf+jVMseEWbCfbpq8qn/FANv5
-	6+OXffHrM416BoA1ACs8XcB
-X-Received: by 2002:a17:902:e5c1:b0:2d0:cc92:f7ae with SMTP id d9443c01a7336-2d294b29499mr79128275ad.3.1786137771208;
-        Fri, 07 Aug 2026 14:22:51 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d14dbeaad6sm13880585ad.51.2026.08.07.14.22.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 14:22:50 -0700 (PDT)
-Date: Sat, 8 Aug 2026 05:22:41 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Shivam Kalra <shivamkalra98@zohomail.in>, 
-	Kairui Song <kasong@tencent.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 0/3] mm: support splitting mappingless swapcache folios
-Message-ID: <anZLkwwxHdhM2M2Q@KASONG-MC4>
-References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
- <590B3189-5B66-4ECB-84CD-7B7EF18C0E54@nvidia.com>
- <anNOroQdjQh7xmU9@KASONG-MC4>
- <DKIRYOJXLIYN.32KI06POZL7SY@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DKIRYOJXLIYN.32KI06POZL7SY@nvidia.com>
+	d=linux-foundation.org; s=korg; t=1786138685;
+	bh=elZQKeikZzxWpyEMzJPkFz75IkgIrejtRCC8CUUdJfM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fhtnW4u/UudPVV1QEdxmYzO3L3c6AyO1BChlBF42VEEm2BX114jT6VD/r/sYmJZWU
+	 Oz2r/nIYV+HHHfV6HEUSTkM2+APMxr11seWvxJo3p+LPiEK1Z1YTE4KEaSWIW4zACG
+	 CnuUaUh97dZrli8bxsybAZslGsEhZh1ws4vVC7Ng=
+Date: Fri, 7 Aug 2026 14:38:04 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hui Su <sh_def@163.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, qiang1.zhang@intel.com,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] kasan: fix cache shrink race with CPU hotplug
+Message-Id: <20260807143804.24cfd5710208d9a421b0e0e1@linux-foundation.org>
+In-Reply-To: <20260807065038.2600949-1-sh_def@163.com>
+References: <20260806121006.1642946-1-sh_def@163.com>
+	<20260806135125.a444f867993cb3cd3122551e@linux-foundation.org>
+	<20260807065038.2600949-1-sh_def@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5FA00C0005
-X-Stat-Signature: ap5jgcykqht5oqcus65us6twqkr8n17b
-X-HE-Tag: 1786137772-679561
-X-HE-Meta: U2FsdGVkX18tsQLetcv9Q3s5vYi+d1GlVS5NBl38pxwrWr8Aq7omkgD+cgp2R/UNJOmytCt7cXJao4tJ3dimI20lxXaA7GVFq8QjuZVeKu9wMZ3e8jqWdiIT/QoSATQK7o3MMmThtpbT8hZ3IH24jJWTejzq9L40oEM0ICz1qGyOWWfnKAUMHKmjb5iJFvSHcvtdcvm2wjHCg9cHboY7mDBirqC6+jzxp9m8BIxEebN6ipty3KZ54QRTeCr4WOuINvMMOTdaFe3EgieODqtkupkhQhcNnLwfrc+nvXjxxDPJ94eOXe97i08TBJ7e36bTy7+uZlgVINBR0MYUisYg0QH5wd7/8dCseO2ywN3SEP055o7yAA7mJZFt7X2qS0Hbi+BEyOTZmvV69pEnhSDnIeQwmi1Fq2Kb94oLe0YPScxqa8LdxKuUzojST3HiURK69gU4LE+733EmZwhn9lUsvH0wLR7Mb/9TZcvkBPYw0YcLOd8c2zk1V4wCBQJ88LNFOKFma1KKHNXU/6BLcLiGS2I4HSjv5nZ9wk6QpisAzBQPPgOx/PnFw2auYj/b44X8va77p6pwQyRQ3SPoSKLsOxT8s2E30QkSlC3j4guK4ZXbZyiOmuB3OhfNBlwWc6Dm4wYjuX3GujBF4ShmSQJLHq6B/ky+3SIa2S38RARBoj8WoWYAJ1crCiNC3/5qBJDmVABLlhdcKwqXeVReOlffmVz2IIh8mCddXJB33YASgaKjRj2N/8A5cAMMcp/asdQCU0E28aOjguMqfs9MCj3JJf3vs553sVDwnrXnarasdVTqC4s9IJUPCkAEALWw/pmXkLg2lh4rSqLBQ+CViiudYEUuaF7vU6NGMz2trSNvP9P47oC28IRItiK738kQmQxpKP2wSMP03z8iKXQ/waHX1w0uFmtirTeqnQFPcqWtZ2+uBw6SfDjDK7aFvSvVFTx+yKfkjK4Kf+q9Bbv+Oqg
- um4wLgV0
- 72a/Jie9i3L+ybufJqjtedG2weAs28f7y8X5uOrtjgb9XL/kZUR7fkZmF2N0QkoyXhWu6Qcfx+M/2ELSCEKca/mgDStna5Tk6PA+jAXzhF3TUtEhlBxehGtGm21JSgm+wu0By6OxA0Gp/tzcu6hO0j7yDFF/dDxYYrKJr2jQi1vw4Z+5V1nPlhzGSHalCzU3jv0gk9thauF/lc6Ca6YClstvKZhjy3QjUqLEGakQNycJTRrBYRq/+OH59gg5AUTaHG1bY6Og/gv8aZ3mw0JGk/bfcHmilWy4BXbI1oIO408bJTDsL5+43s/FOlEDK9vXn5OgpDPJ1c+opL9uDshjtzNFDPNRcoV0ZV9H0XzblsMhLNbqTdf4Fq0fCPFa5jLLG4q/PIED1VwEywWpivHLjc10CAxUtH5l3V9yaQiJQ3VecgbE6jDbXu/APuGY4HQNehvhs/O4foB9aZBAWRtur7O7kDFu7a1tz4Q7xSQZeSYMNSLG2vbuW5cWCMNB9569VH51O
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DD7C840007
+X-Stat-Signature: 1wgit1gj8f7wwk9e5qke4pp5y3ruo7fs
+X-HE-Tag: 1786138686-184601
+X-HE-Meta: U2FsdGVkX1+qDvTkNJJeU0phh3/ECWI/O9mHjL2g4P3t5BTabMbUGR7g6VWHtPH4/ILlAINjgtFS/HmXZrTZ1+zUzwXK1QwmZ1zPvaw3bMA/sy7lzS7V5yh7omTgl17A4YIh4ZnM5URfGeifD5PQZRQS7m4Zr1cvT8rdZ1CIRzqt3LbYAiWJyh0t+BV/7poP6nJOyi0EV3uP7do29vkVEMcm2T1T/HXpFdRmAV5dxoqyWnmu24hj0nlU9GnxzTqXn/GniLbW0BUPSplGYbcfHG1EgiLVoMbYlhAQCRjWAHd4NLFLV3IzzHt63ICMG6Noc8Y6DYAY/NWwBemDqeWY6dFU3i9uEL82m/97jBrhM7qSK+XZLpsJ8qrpMT3v5XHF4QLHF8/KMTAabuqtjF9kGmC0k+KSJmJdJ23oZ5KHbfQ9VgUtQhqq04ldJd07qMvPORy1mcviV2Q1SqbEWVUNd4U1k9twz+ytU28FCN0dx3Md8xWaYgn2fS/bY5SdLvz77Uz4XTRez8VTKFlr1F+uW1GTn/l2SRn5G3eIwGzGGDZZoY722WA7DP7LfZkuDVfh7YlU6XTpbnMnlHkh6wPiVgzOG+x/4PidHGqBAUIVWHLsNfh7m6rTH122uFopTQrA1tUkQznCqJccqbUrE3SlbHLL1nNjZUQn9FPEbDZS0rMqAGodPcqWJ5DY9jIAl7Ds+pQLUNCf1DEqdvKjB43qwFnHckJHuXIBif+nOXdoqAAKWatnA2WqvqQjqVBfnAyd9A1fGsvMcYISJvBIyigXkt+9v73qxZOCeMe/F8EXVJaKVkwN4Kzwskr8g6+D7C4GJ6rZJvszWYlcx9Y2Cbw4MvXU0vTlcaLMPavpuJ0QWsRewMqIDJms9Uro/ft5cwNB/UbZEtRSNxPSBB+Ho8+X3STtvKC0zggd7Iznvt2rnkwiOYbDop7OnqNHXHN/ZQuBGWA3M4pTLLOI8i0L9Um
+ RDN7Sb77
+ 2rva7VNcec5gVX0TcLPgLsorFPiptxJveLJkP7vfVZ5FKYRjai1ZQ8zgOxoOGm3e92Y8mdy3nY8DGMQqhff1LkS4PcP4Am6qQeGKkDO3vJaXqY83q1vpdgFPuZc2b8kWRBqGuCP6c7Hshdl7Ts7c4eqmtEmokauXc7Yns7Jp8i3f50HyMDnKENvu5uATjHE/yFP2dvm+9y/6eJl4EU8XGhFcyG9EbX3dnoKS/Btepw/JgyHA7ih10CuFixzGYcuK5qn9N3Gvqk4oz5HZNlInW6MeWMoE1Zm6rhUFf5p8L9sfp/79+et0mtTTs4E+k1cQcCwA9EHNHcGVYHdhUEw3NVvbQKh9XM6X0rDbE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,56 +93,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 10:18:05AM +0800, Zi Yan wrote:
-> On Wed Aug 5, 2026 at 11:54 AM EDT, Kairui Song wrote:
-> > On Wed, Aug 05, 2026 at 08:03:33AM +0800, Zi Yan wrote:
-> >> On 5 Aug 2026, at 7:18, Shivam Kalra via B4 Relay wrote:
-> >> 
-> >> > Large shmem folios lose their address-space mapping when they are written
-> >> > to swap, but remain valid members of the swap cache. Folios read from swap
-> >> > but not yet associated with an anon_vma can have the same mappingless
-> >> > swapcache state. folio_check_splittable() currently mistakes both cases for
-> >> > truncation and rejects the split with -EBUSY.
-> >> >
-> >> > Implement the longstanding TODO for this state. Allow mappingless
-> >> > swapcache folios to use the existing uniform order-0 swapcache split path,
-> >> > while continuing to reject truly truncated folios and unsupported
-> >> > higher-order or non-uniform swapcache splits.
-> >> 
-> >> Thank you for your patches.
-> >> 
-> >> As Kairui (cc’d) mentioned in [1] (see “A bit more details on this”),
-> >> we might not need to implement this split. I will let Kairui to decide
-> >> how we should deal with this patchset.
-> >> 
-> >> [1] https://lore.kernel.org/all/CAMgjq7CHDG8JhesSPMkn1kzG8jKb0BXO756BvxMQC_MCn2eTyA@mail.gmail.com/
-> >
-> > Thanks for the CC, this is actually not hard to implement as shown by
-> > Shivam, I just found the code more and more hard to follow and fragile
-> > as we add more logic to it. And we don't have to reject higher order
-> > split either which can be seen easily if the code is cleaner.
-> >
-> > Personally I think doing some cleanup first is better, I haven't post any
-> > code as right now there doesn't seem to be much user of this. It will be
-> > needed if more clean THP swapcache begin to show up due to things like
-> > THP readahead for swap, which isn't here yet. I think I can send an RFC
-> > tomorrow just for reference. I'm fine if we prefer to remove that TODO
-> > using this smaller change first :)
+On Fri,  7 Aug 2026 14:50:31 +0800 Hui Su <sh_def@163.com> wrote:
+
+> > Especially when proposing a backport.  At present we've provided our
+> > -stable recipients no reason to accept the patch.
+> > 
+> > Documentation/process/stable-kernel-rules.rst says "it must fix a real
+> > bug that bothers people".
+> > 
 > 
-> Thanks. Can you also help review this patchset? The changes looks good
-> to me but I am not sure if I get all the details about swapcache handling.
+> Yes, I agree. I did not include the real bug dmesg in the original
+> changelog, which made the stable rationale unclear.
 > 
-> -- 
-> Best Regards,
-> Yan, Zi
+> The 9p case above shows that this is a real bug: a userspace-triggered
+> teardown path can leave objects in the 9p fcall cache and report the slab
+> shutdown warning after umount.
 
-Hello,
+OK, thanks.
 
-Thanks for the reminder, I got a bit busy so delayed for a day on that
-RFC.
+> Should I keep Cc: stable in PATCH v2 with this dmesg and
+> userspace-visible effect added to the changelog?
 
-For this series I think it's functionally fine, just the split logic is
-a bit complex to follow and we still have restriction on swap cache
-for order 0 uniform split only. I'll have a closer look later. Also
-let me know how you think about that RFC.
+Yes please!
 
