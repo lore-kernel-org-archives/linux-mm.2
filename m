@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AD07C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 05:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 699EFC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 05:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D748C6B007B; Fri,  7 Aug 2026 01:45:48 -0400 (EDT)
+	id 48B086B007B; Fri,  7 Aug 2026 01:54:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D26926B0088; Fri,  7 Aug 2026 01:45:48 -0400 (EDT)
+	id 439B56B0088; Fri,  7 Aug 2026 01:54:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3B5E6B008A; Fri,  7 Aug 2026 01:45:48 -0400 (EDT)
+	id 30CC86B008A; Fri,  7 Aug 2026 01:54:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0976B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:45:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E24DC01C7
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:45:48 +0000 (UTC)
-X-FDA: 85073386776.01.09CF8AD
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9E114100010
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:45:45 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HuH/OQiU";
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786081546;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F319E6B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 01:54:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59D4F1202D6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:54:54 +0000 (UTC)
+X-FDA: 85073409708.21.265DF72
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6E91B100002
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:54:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lw8LWXWH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786082092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vtSZIt9dlXMvAfyTzKVr5n3mZ8wTK92TvaHA6/Pp7GE=;
-	b=AyclWDApqTwDoU/UROy26lN3UviXkLdmOrU9ftKA0KyYxuCGULHi6o2AjlfHhiqPQLmVqr
-	cST3+FKddzkXTpH8DLNDt4LlWoYohY4UFPV0FMztS7c4UZIaHLVnbEP/exSTNGH4lsC4mq
-	ACumgNBebwH+UmeTXOsGzSoyw44K7bo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786081546;
-	b=dvrcRcP9GrPeIbogl5VqtPtVzD64zPzQG71xG5EXXZHrs9OQdH3Rt1TepiFzVD3ScG+eEA
-	D1SLEj2evhwjk82hE9W+KDzr/stxqB+54WECEESIwItoeuY/1N8E5cuwtyggc21sJluPrM
-	AZh+MgQ0BWL9u/BGAPZQWFUvlSc7SWI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HuH/OQiU";
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <9067a389-2e1b-4352-bb88-7a78a3fe6a19@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786081539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vtSZIt9dlXMvAfyTzKVr5n3mZ8wTK92TvaHA6/Pp7GE=;
-	b=HuH/OQiUliANUoiJzpe5x9lpfc5e4uli8SYz6eIvlroKyZCgQlBTalKdLHwzK38mhxeFNd
-	43r7cBZx1HzLb4ZwfRG8tFeE/NlMtwW8JBWogImG4jkqODtz9mdH4pNcOC+mjbP6/iqLwV
-	hJNEsh4IkUwQWUt/z77xri3pEkgNY4g=
-Date: Fri, 7 Aug 2026 13:45:23 +0800
+	bh=RCZEpJNJfrzJ2+zf5kv74E8kREBs0HYXycpY26gpuJc=;
+	b=B8dBXPfMinJbpNHnDSY6r/92EST13aIo3aYdJD2gItPaKglaxWUr0Axf+4ktqfDx/mXovL
+	tmNuinC9F79DFUwCnUHosMTISOPw7MQjQ2Wc9fr6TQT5emQ4cqb2eh9c3cZ1pc78tvELOX
+	k406+UNIeq1jTYGoX9YPwdzAMAFgCQc=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lw8LWXWH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786082092;
+	b=0pNNOxw9dIDFVyuKy0nQieBkudkej+KbacnwZCFN1SM5D5zHQAXXB3lzqhlAgKN6EjN00O
+	p0Wiyke8tCLF6SVUomskdz0qN9e+TfwAbKKv1RWZCOAnSDu3sIWmPl/vQDaYXth1Jwr4dl
+	eb/QPHZgIhv5F2VV6xRraji1D3YY4BA=
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b0129cf6ffso3384e87.0
+        for <linux-mm@kvack.org>; Thu, 06 Aug 2026 22:54:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786082091; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kV6HdAxz9PSQv8PHxn0F0Ip2shqhUIFA9rslRqsGKb1Ie1TfKfBuRsHc7pwYV2iq01
+         whX4IYwJcHIl0U1AjyuNAHDOlBDg8J4/5n/8AfS5aa9GzkKQD4RFx6oB3KaZKtTKcctQ
+         HOOdDjZxJG9z0a5q9V3pXVx6hSteojse6RHv8UhxCtFOyZbH25prD2hJ/QY7NCxMybci
+         zib2ij3F1L80j2JF76dlVAoNXsmUGgURo1h9Pd/L6zPlnXPKXT2X0rSqvVC+qukVGFuQ
+         sVMVtZeYxJXAXacmFqebCncg3JiejKxJXUS2tFQBZvZXok3eIrNUyjLG1K766XFWQiZS
+         inCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RCZEpJNJfrzJ2+zf5kv74E8kREBs0HYXycpY26gpuJc=;
+        fh=6S8MflWUr5FhPumjSV42MJs5jTd/kJME8pVkA9/WIj8=;
+        b=A8I6zDqNar0PeC99qI6S9MKuMsqaii7JmmGyf0TmS1gHlDt2OaHR2AHNWqzyNcTJKa
+         fkfo0R8zPyd7XODSqs2rP7lFOrKPNMcsH3yvni4SAzyfTCMVOs1oO+xOV+Pp+v8misK9
+         mjpdU2yTy1nk4v9GDGgQ/68f6+3OWXyJpJ7wfQTguZ+KfEihH62zsgFCMznKNdm3A1VP
+         nAJ1LDeH7WHpNBfkfErgf37UNiAAZX2Kzpd6wtrotcZipsi42BkO9lZNUDfLaj90Bn54
+         FAHIgwubj1SxyLfBfvmNfW1HZ4YQa+RSAWYFcmW7tE5RSbH7rg/WeDVjPH/86czmzD5c
+         tTYw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786082091; x=1786686891; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RCZEpJNJfrzJ2+zf5kv74E8kREBs0HYXycpY26gpuJc=;
+        b=Lw8LWXWHJtyE+YoLegLpM47PqMU0l79TWE4fcvG59tQeME77+akVRisZqaOZbsn9cE
+         9etJ9yXI+ofS2qkrwZKvfNOrh7FPN84HabJquy0lFyEDx+DgTyUjdgCcr52KsHGjjz76
+         U9X/ZffoeFgHsHKQ3OXFUT6Az9fUI8uHs9eXau5qBFevmzDlsTPLvfcVwnABj6rtK65g
+         nTI0GHoQC96EsKrJFsDvFknsNMVPm3F46F816jZ/kKovwEjTRX6VGZWMWOAutTtNnD4o
+         teOvqRmFtKpjxGVXipXeRrGVGHPEES1PUoAaibqJo+aXoNbJ+NviIm7CSjn3Lk6DGUFi
+         nIVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786082091; x=1786686891;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RCZEpJNJfrzJ2+zf5kv74E8kREBs0HYXycpY26gpuJc=;
+        b=LahImvGPjQcMtO+OX95KqVZPv9KcqURBstZ4VdIYknLpJfm3yL1ccs4oHfDnNPAgQv
+         1nvocFeWuqRDlAA8/BtzMz4pgSPXS0EajfK2tmOtrTV8FcChNQoSo+JM27GDDcTMjwTH
+         YNEP2Ug9WPieEbUOK4pVQowM4EwApqAhauq7Q1UJxTHDdM0bw8Oqj8NtvhcYNqhLwSzj
+         bNQeYwBbz2+BoBmzb4ZJAO7/Q8ZfP/HE+Ficiq4Jzyip1qZm4OazSq9ZqMkU9xDAPxb6
+         ezBh2lv3n3xDSLXULr2tPZxAaGnv1RFRKlZuWmDFSk+byEY8sX6Y4nCiwazsePHeotfz
+         /8UQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpOSkNA6lO7LLUgq9R5kkb6RKw1Oc25JdoL0ge4tcnSpcnOit5GL42IVD1K2Z1mwFZx2Sx/kky4HQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy+6BFDROqjHMMA/F3tT8d5a6V4ZyKJgz1WrP/C7b+8VcfKcQla
+	ulGSCVRCtNPs3WseiE1CqALWLOyJ8GTowmEirYeZ8yjQ6uGH5vRz+61oTXoB8exqv3mdtcmBQxh
+	x/yYWM5G6t0sih989HKxBI7Lr4wcKTkL8a5rM6L/m
+X-Gm-Gg: AR+sD13QWpuO3bLt3UmnTjuTdA2TLPVS5DukG09PNsPatEFLOB0wYXb1CcLdmpVv3pz
+	cs/o1lSmucF50Cr9POB/M80dwvFVAtBG8y2W1iSrxA/jTbjMP5ljdQPjTAHIyGGTB9pKdmxgMA2
+	9BH6Ql16U1pGDh9GEidTtAt5v9JacnpYvuDmmSq6lM5jUPoP1YU8R4tI/7vi9z/kJfxnC3VMpQs
+	59F+XVkrggLIP575jmzFllVd/2K2PwWeWimI5UprLJAaDdypkVwVwwPdSVoozM3GVVFsO51kwoc
+	fp4sIHwEjNJ/kOi+JR+32wdQX4/0Ku8PhS6mE1x1vl5hGWxiI6jSYyRRa98UsxH5aCUFh2e8HYS
+	YxsxvsaBFTsob5c1TeFzOBP6rt2LPX7gVnQos43DDGyGs
+X-Received: by 2002:a05:6512:10cb:b0:5ae:b1b3:145a with SMTP id
+ 2adb3069b0e04-5b304d41a95mr175952e87.6.1786082090179; Thu, 06 Aug 2026
+ 22:54:50 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] alloc_tag: fix undetected compressed tag overflow when
- profiling is disabled
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Abhishek Bapat <abhishekbapat@google.com>, stable@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260805090633.141001-1-hao.ge@linux.dev>
- <20260805095505.1c2cbc150441cb20a74ba9bb@linux-foundation.org>
- <CAJuCfpG_XX-Hwy=TCrJ+g6yiMxGXLB=LvnPN_WLP3WQktNZMbA@mail.gmail.com>
- <e96d8a13-8f9a-49f4-ae4c-a14c6de5ae66@linux.dev>
- <CAJuCfpFyTaqLnyi11PtAj-ouJiLcfxZoYDRUUKSZbW3RfDFOUw@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpFyTaqLnyi11PtAj-ouJiLcfxZoYDRUUKSZbW3RfDFOUw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9E114100010
-X-Rspamd-Server: rspam10
+References: <20260726072935.3513996-1-souravpanda@google.com>
+ <20260805202444.1573218-1-usama.arif@linux.dev> <2qq6r5zvegrk5bbx7qbkscwqmccda7mxtzuvd3wln24yjm2qhx@663fzadsgmg3>
+ <CANruzcT9PEXYRu1t_ge9ZNE8hLBpt6rWP4CwsBUkoZQTtpPKdA@mail.gmail.com>
+ <007cdb8b-01e3-4d73-9ac9-1a52ab5798dd@linux.dev> <CANruzcR5AZHEg1TdAGG3Qm292vHXMB3BXvssm_rkv+xj+TBnNQ@mail.gmail.com>
+ <2sipzzq7amhd5kn4xbqmtzc25iud2zp76dhpefcujqqpcnpqrt@czyz3dag6hlp>
+In-Reply-To: <2sipzzq7amhd5kn4xbqmtzc25iud2zp76dhpefcujqqpcnpqrt@czyz3dag6hlp>
+From: Sourav Panda <souravpanda@google.com>
+Date: Thu, 6 Aug 2026 22:54:38 -0700
+X-Gm-Features: AUfX_mx6Q2IQlc6_66kba5ZDPisz_RPBOxLYGAKq4hpszthEL_25bvWPU-_ZhlY
+Message-ID: <CANruzcS7U5Brty6GH7W9-cr_vjUys7MFb_hRcQy-LxDCD8Perg@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Usama Arif <usama.arif@linux.dev>, muchun.song@linux.dev, osalvador@suse.de, 
+	akpm@linux-foundation.org, david@kernel.org, surenb@google.com, 
+	fvdl@google.com, gthelen@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6E91B100002
+X-Stat-Signature: bne8nfn9pkn8fph5wtd11cwhgau58zrw
 X-Rspam-User: 
-X-Stat-Signature: njon7oje6z5scyzx1o819cx4qzrwcer5
-X-HE-Tag: 1786081545-77397
-X-HE-Meta: U2FsdGVkX1+GHIsMXU6QRySPOwKPICCxQKnTRPYWjRCRzp+A/W82LRr8KyU/wnhXuxoe7vzr55QpzcTu2m2VQrly1ns6dZM5bRw++C/Lxg8kqVfH9pDjp6jeaZ4PkCr4yB1h6aycmV/iJPxv8Jy8TNzlGH1Eyr3lThpQbkQCItppX/bFbE0Yxj/YjQ3wq8tUpqFec7426jRZi+hZgW2usk73gV1nG601g9tvd4q7qzqeAOmWBnf9uKruEFz2pSGzPno7Hh3Rlb6HuvQyN27NJ1sDklTlVL0DvbhYJx246B0IG8x5GVDdmmN5GPuaBTdwegekJhgVkOvM8LLQDZarK+NgbclijML0ZnhCF6jwrZgCZHWs0iNJiNxYiLm0m3deCMPcssYMe8ACu7cJfUEPzrP1akJrq8CxJxJV1f6B/P4MhXiLN/qpoXZZ6vMt6alHRu5z0JM2jXo0kFR+dQy8xLJFigKXYmapa6v+aIG5rkFf7TuHaH5tnJC2Pl1Se3nIOH1DKGnUnuF/LbChusUd5ff1OyALCxlmd+sVNSYBjubI7U6rNLFutoMvLxcEnbNG9x69Pp2BaLDrhN8VBpX6ljBfNJS9Jlslp8Zhs8pT9+p42EEEBQdPK4/hEWUNS9xJKO6phkuZN9pcBXFYWHzjMUAUXRDgTSFjJunJcCS78AA22xk0UcLR+dXiNFejKZQwnrBeJyKruu9c19B94IICsYQg9yC+H+raoZJViv9eMOtOQ2MXui8V6Eswt5IBSULrqSQTltJnO3d3y4skaOV0BCbSG0j+MI52hM6QwkCY344wHXKiFKdqDyHOfClcBwyxWfzVie3IDMP0diekljKTUlHv+K1EuykNYtlCLChTI1NbYDLqQ2ZUsLjTzTsnt8AXPGHPpEItM7m/rJgCJtnR6x4reCB5/Xll3Kzb9sDbMKhCzxoNdKFhbdJfKhDUXnkfl7Ik28ssztPeyhir+EE
- tc/aqPGe
- 4WO66fcBzfHc5VK6inFvs5Olz6gwO3QyWgZcXSpzjV77Rp7AxFwGVehAwxNtzDP96zAuRawLfx9jJAUVhbtrpzJrQbCKn6wktCmpFGVqF7vq6kxEQGKKpxB86Sndx5o1M3F+kzMCouPajZFlola55iuerXCBB72w2BfeljK1UYD9huN910inVM5Q1rOGOLnnemgf/pttPxr4gwg6uJibeqRofUOSBpjvu0NsO4LeOR4JcELhGYzb1QcISnsTB1PDTD4zb5AZnYLTb+h5Vw6qHd9Yqbkq4YpEnMtUYRKifqlnOHIfFi+7UppF0Jmx1V0emYpB2oXd2bWSGJg54s9/f/wBsKmpg8PLkK7IJeBg8ukFBMqfsyqem6laXQ2b9jABjs9cpHAxPzGhod9QtVdHyS9M7hXcNAp+vXYJ39uIGmIH+DpMhSxHyPqLPYkPjBWMGL5gMZHFhH5CWOK4=
+X-HE-Tag: 1786082092-705475
+X-HE-Meta: U2FsdGVkX18Q3eeo0U12720GBWD65RSydMeQf413MWxbvYlvOtYR9X0pjmo7PD7Ljgy7CYsGVATMUI34uKS9L31qmaTsIvwjaz2f/Kwtol0faLsERXPXVQMivw3vzEVrRc9R7cPpuj8bmXFuCOSGFG+xWmPt4GA7+LRjPBBrgo703M6oR1eMiCOD02JTjHwdacJF7re9cJfVDvjP4wV0wy9hN5S02rcGNbWdgWA4Q5M+NDWO6MXOiD5uv2mypJDIumNlzPbmEztOH+c8VpDHl7mT9ryMKOEDoYG9yJNtu0sehuKBrxzBJBUWMW7b4g0ztbqDB/pMGAzB5qr16vzJohuAptPOJdQ1jhfVfuGkEL9mjkdg6naHdDWNZK72A2XNYgnTmJpNTaRlX8PUKoWAb4Me+3gsuUl7vyPXhyrWpO0JyRHeA3TJ9gcEUXC0BQznyQ8dHSdws0ebb1X9XsK9y66+KvwRm1y/bAWdMFuz9hP4oxEIUWM7tAymBMwaL7H5IxVAcuqNtmxmoY9lEAcxSsUasQXu7EJyWHx2eJjGPrwXwFmBxnCOYJEJGKO3XXJRJFYNnXZsxg/Mef06zUBbKMmlP/YS4/SVG+Kpyp2HEyPOjsMmCqd8BVBSk8ye/qvYUV/AFhaFAus7dm9m2jrdbpZuWaZJWk/w1KBHIp/yvgDFsxxekgu2A8kjdqvGp4D/Xp6sdZdLj+LjR5aZWMX8flKWLdTkSym7BbZ3bdKRPtXPjAWYTrg5NqAaxpbZyqRLJYBx4ZeS5trVq2a8RW3RRN14NFmnhAsPJhfvvjAeQxJSmPzy4HgZMU3N7r5Uq1I4d93qRVsp00ozl2547lpZjf4NILi1Q3V6dM1Y0ASL6wT9CSxkQu9PQ18iHj+CpKjIy4CZbTehxTqFm3dgRWozDjJgEIK9mglQ0ZDLMOAtoC2tnRO1Q+IYRs/4QaKIHOBE5KA5i7Bc9r7sgapp147
+ 2trWNXsE
+ H8iH8vfFD1QLpQQ25wmqsJHB6xOrszJ+I1UZqEAhLlyY/OaXYJiy/yvkaZND+bFMAWkPPPNG+iOAaGfN8r0k9h1AfGwjTW6D0PkWyke4vyLxNE8lkDPoLxySv//be3NmVEArqq0nXfTF7UEgu36JUaMwsaoaOYDAgxKzbJnLyMGmwBsnByidXrGIbdA8VQ7KmDgxlzGstIbjo6RXzoaXbAytEQlqFhMplp6fgHQoVcA8cftZmcjaLLrq0hufbiZ7VUofGOBH1o4oOOT32y9TkFYFZia/S6KsWtxEnudJ9CDjQOCJCq0KZZk43try6czHqS6Y+uF8PuK8DIkdYWE8sTPt6jRT4uREJ/nq92gNzwgBTKwBPAicLlSplSiCXxG9jWVoeVipa1tSQK/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,171 +146,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+On Thu, Aug 6, 2026 at 10:29=E2=80=AFPM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> On Thu, Aug 06, 2026 at 09:11:29PM -0700, Sourav Panda wrote:
+> > On Thu, Aug 6, 2026 at 4:07=E2=80=AFAM Usama Arif <usama.arif@linux.dev=
+> wrote:
+> > >
+> > >
+> > >
+> > > On 06/08/2026 06:33, Sourav Panda wrote:
+> > > > On Wed, Aug 5, 2026 at 7:47=E2=80=AFPM Anshuman Khandual
+> > > > <anshuman.khandual@arm.com> wrote:
+> > > >>
+> > > >> On Wed, Aug 05, 2026 at 01:24:42PM -0700, Usama Arif wrote:
+> > > >>> On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@goog=
+le.com> wrote:
+> > > >>>
+> > > >>>> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask t=
+o
+> > > >>>> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> > > >>>> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propaga=
+tes
+> > > >>>> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> > > >>>> alloc_gigantic_frozen_folio().
+> > > >>>>
+> > > >>>> hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodema=
+sk in
+> > > >>>> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemas=
+k),
+> > > >>>> leading to a null pointer dereference kernel panic.
+> > > >>>>
+> > > >>>> Fix this by checking if nodemask is NULL in
+> > > >>>> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> > > >>>> node_states[N_MEMORY]. This allows hugetlb_cma allocations to fa=
+ll
+> > > >>>> back to any node with memory, keeping behavior consistent with
+> > > >>>> alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
+> > > >>>>
+> > > >>>> >From a userspace perspective, this bug allows an unprivileged u=
+ser to
+> > > >>>> crash the kernel (trigger a panic) by requesting a gigantic huge=
+page
+> > > >>>> allocation with MPOL_PREFERRED_MANY on a system where CMA is onl=
+y
+> > > >>>> configured on a subset of NUMA nodes.
+> > > >>>>
+> > > >>>> This can be reproduced by booting a VM with two NUMA nodes, rest=
+ricting
+> > > >>>> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
+> > > >>>> hugepagesz=3D1G hugepages=3D0), and running a program that alloc=
+ates a
+> > > >>>> 1GB hugepage area without reserving, restricts allocation to Nod=
+e 0
+> > > >>>> using mbind() with MPOL_PREFERRED_MANY, and triggers a page faul=
+t:
+> > > >>>>
+> > > >>>>   void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+> > > >>>>                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+> > > >>>>                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+> > > >>>>   unsigned long nodemask =3D 1; /* Node 0 */
+> > > >>>>   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+> > > >>>>         sizeof(nodemask) * 8, 0);
+> > > >>>>   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> > > >>>>
+> > > >>>> This results in a NULL pointer dereference:
+> > > >>>>
+> > > >>>>   BUG: kernel NULL pointer dereference, address: 000000000000000=
+0
+> > > >>>>   #PF: supervisor read access in kernel mode
+> > > >>>>   #PF: error_code(0x0000) - not-present page
+> > > >>>>   Oops: Oops: 0000 [#1] SMP NOPTI
+> > > >>>>   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+> > > >>>>   Call Trace:
+> > > >>>>    <TASK>
+> > > >>>>    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+> > > >>>>    alloc_surplus_hugetlb_folio+0x6d/0x100
+> > > >>>>    alloc_hugetlb_folio+0x3c5/0x660
+> > > >>>>    hugetlb_no_page+0x3d9/0x650
+> > > >>>>
+> > > >>>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
+hugepages")
+> > > >>>> Cc: stable@vger.kernel.org
+> > > >>>> Signed-off-by: Sourav Panda <souravpanda@google.com>
+> > > >>>> ---
+> > > >>>> Changes in v4:
+> > > >>>> - Reverted the alloc_fresh_hugetlb_folio() cpuset snapshot appro=
+ach from v3.
+> > > >>>>   As Muchun Song pointed out, snapshotting cpuset_current_mems_a=
+llowed does
+> > > >>>>   not prevent false-positive allocation failures without complex=
+ retry loops,
+> > > >>>>   and alloc_contig_frozen_pages() / alloc_buddy_frozen_folio() a=
+lready handle
+> > > >>>>   NULL nodemasks safely internally.
+> > > >>>> - Handled NULL nodemask directly inside hugetlb_cma_alloc_frozen=
+_folio()
+> > > >>>>   by defaulting nodemask to node_states[N_MEMORY] (Option 2), ke=
+eping
+> > > >>>>   HugeTLB allocators clean and consistent.
+> > > >>>> - v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-s=
+ouravpanda@google.com/
+> > > >>>> - v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-=
+souravpanda@google.com/
+> > > >>>> - v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-s=
+ouravpanda@google.com/
+> > > >>>>
+> > > >>>>  mm/hugetlb_cma.c | 5 ++++-
+> > > >>>>  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > >>>>
+> > > >>>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> > > >>>> index 39344d6c78d8..5744de0ceeb7 100644
+> > > >>>> --- a/mm/hugetlb_cma.c
+> > > >>>> +++ b/mm/hugetlb_cma.c
+> > > >>>> @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(=
+int order, gfp_t gfp_mask,
+> > > >>>>     if (!hugetlb_cma_size)
+> > > >>>>             return NULL;
+> > > >>>>
+> > > >>>> -   if (hugetlb_cma[nid])
+> > > >>>> +   if (!nodemask)
+> > > >>>> +           nodemask =3D &node_states[N_MEMORY];
+> > > >>>
+> > > >>> Hi Sourav,
+> > > >>>
+> > > >>> hmm what if cpuset.mems only allows allocation from node 0, and h=
+ugetlb CMA
+> > > >>> is only available on node 1. This will no now allow allocating a =
+gigantic page
+> > > >>> on node 1 when its explicitly not allowed?
+> > > >>
+> > > >> That's fair point but should not the user be also responsible in p=
+rovding a right
+> > > >> nodemask containing CMA memory if it prefers avoiding node_states[=
+N_MEMORY] based
+> > > >> fallback mechanism in kernel ?
+> > > >>
+> > >
+> > > I don't think the task can be made responsible for providing a CMA-aw=
+are fallback mask
+> > > here.  Userspace supplies the MPOL_PREFERRED_MANY preference, but the=
+ kernel itself
+> > > changes the second attempt to a NULL nodemask.  That permits fallback=
+ outside the
+> > > preferred policy nodes; it does not permit fallback outside the task'=
+s hardwall cpuset.
+> > >
+> > > >
+> > > > We have precedence for three options, which makes selecting one dif=
+ficult :)
+> > > >
+> > > > 1) nodemask =3D &cpuset_current_mems_allowed is currently being use=
+d in:
+> > > >        only_alloc_fresh_hugetlb_folio --> alloc_buddy_frozen_folio =
+-->
+> > > > __alloc_frozen_pages_noprof --> prepare_alloc_pages.
+> > >
+> > > Here I think using &cpuset_current_mems_allowed is part of the page a=
+llocator's wider cpuset handling.
+> > >
+> > > > 2) Some places use cookies with cpuset_current_mems_allowed to prev=
+ent
+> > > > torn writes. But this adds complexity.
+> > > >        An example would be dequeue_hugetlb_folio_nodemask()
+> > > > 3) node_states[N_MEMORY] is sprinkled all over the kernel (simplest=
+).
+> > > >
+> > >
+> > > I would prefer option 2.  A NULL mempolicy mask should fall back to
+> > > cpuset_current_mems_allowed, not all N_MEMORY nodes.
+> > >
+> >
+> > Sounds good Usama :)
+> >
+> > I will send a patch that replaces nodemask =3D &node_states[N_MEMORY];
+> > with the below:
+> >
+> > + unsigned int cpuset_mems_cookie;
+> > +
+> > + do {
+> > + cpuset_mems_cookie =3D read_mems_allowed_begin();
+> > + local_node_mask =3D cpuset_current_mems_allowed;
+> > + } while (read_mems_allowed_retry(cpuset_mems_cookie));
+> > +
+> > + nodemask =3D &local_node_mask;
+>
+> Although complexity increases with the above mechanism but probably
+> it might be better in terms of being compliant with task's hardwall
+> cpuset as explained by Usama earlier.
+>
+> >
+> > Will send it out tomorrow! Let me know if anyone has any objections.
+>
+> I would say let's wait for a day or two before sending the respin.
+>
 
+Ack!
 
-On 2026/8/7 09:08, Suren Baghdasaryan wrote:
-> On Thu, Aug 6, 2026 at 1:36 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> Hi Suren
->>
->>
->> On 2026/8/6 01:47, Suren Baghdasaryan wrote:
->>> On Wed, Aug 5, 2026 at 9:55 AM Andrew Morton <akpm@linux-foundation.org> wrote:
->>>>
->>>> On Wed,  5 Aug 2026 17:06:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>>>
->>>>> In reserve_module_tags(), the tag overflow check is gated on
->>>>> mem_alloc_profiling_enabled():
->>>>>
->>>>>       if (mem_alloc_profiling_enabled() && !tags_addressable())
->>>>>
->>>>> If profiling is toggled off at runtime and a module is loaded whose
->>>>> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
->>>>> skipped. vm_module_tags_populate() still maps memory for the tags and
->>>>> the module loads successfully, but the total tag count now exceeds what
->>>>> NR_UNUSED_PAGEFLAG_BITS can address.
->>>>>
->>>>> Once profiling is re-enabled, ref_to_idx() computes each tag's index
->>>>> as its position in the alloc_tag array. update_page_tag_ref() masks
->>>>> it to alloc_tag_ref_mask before storing in page->flags. Indices
->>>>> beyond the mask are truncated and idx_to_ref() resolves them to wrong
->>>>> tags.
->>>>>
->>>>> This silently corrupts /proc/allocinfo: allocated pages get attributed
->>>>> to the wrong call sites, so the statistics it reports are wrong.
->>>>>
->>>>> mem_alloc_profiling_enabled() and mem_profiling_compressed are
->>>>> independent. Once compressed mode is established at boot, it stays
->>>>> active regardless of runtime toggles of mem_profiling.
->>>>>
->>>>> Remove the mem_alloc_profiling_enabled() guard. Also return an error
->>>>> after shutdown_mem_profiling() to skip vm_module_tags_populate(), as
->>>>> the mapped pages would never be reused - shutdown_mem_profiling() sets
->>>>> mem_profiling_support to false, so no future module load enters the
->>>>> codetag path.
->>>>
->>>> Thanks.
->>>>
->>>> AI review points at a cpuple of possible things, one pre-existing:
->>>>           https://sashiko.dev/#/patchset/20260805090633.141001-1-hao.ge@linux.dev
->>>
->>> Yes, pre-existing issue can be handled separately, it's not directly
->>> related to this change.
->>>
->>>>
->>>> "Does this unintentionally result in a denial of service for module
->>>> loading, preventing critical drivers from loading when they otherwise
->>>> could have just disabled profiling and gracefully continued?" sounds
->>>> pretty obscure and I doubt if we care?
->>>
->>> Hmm, I think Hao considered that in his previous version
->>
->> Yes, I did look into this.
->>
->> but now I'm
->>> thinking we might be able to handle this more gracefully and not fail
->>> the module loading. When profiling is disabled
->>> codetag_needs_module_section() returns false here:
->>> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822,
->>> so if we had to disable profiling, we could return NULL instead of
->>> ENOMEM and change the condition here:
->>> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2825
->>> to act as if codetag_needs_module_section() was false from the
->>> beginning. IOW code at
->>> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L2822
->>> becomes:
->>>
->>> if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
->>>       (dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
->>>         arch_mod_section_prepend(mod, i), shdr->sh_addralign)) != NULL) {
->>> ...
->>
->> The primary blocker is __layout_sections.
->>
->> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L1730
->>
->> This is because __layout_sections controls whether we reserve space for
->> the codetag section inside EXECMEM_MODULE_DATA, the same way we handle
->> regular sections.
->>
->> When codetag_needs_module_section() returns true during layout,
->> module_get_offset_and_type() is skipped, so sh_entsize only gets the
->> type bits with offset = 0 - no space is reserved.
->>
->> If we bail out with NULL when compressed tags overflow and add a dest !=
->> NULL check here, we'll end up hitting the later else block.
->>
->> if (codetag_needs_module_section(mod, sname, shdr->sh_size) &&
->>       (dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
->> arch_mod_section_prepend(mod, i), shdr->sh_addralign)) != NULL) {
->>          ......
->> } else {
->>          enum mod_mem_type type = shdr->sh_entsize  >> SH_ENTSIZE_TYPE_SHIFT;
->>          unsigned long offset = shdr->sh_entsize  & SH_ENTSIZE_OFFSET_MASK;
->>          dest = mod->mem[type].base + offset;
->> }
->>
->> That'll cause the following memcpy to clobber the leading data.
-> 
-> Ah, ok, now I remember how the areas are reserved there. Yes, my
-> suggestion would not work.
-> 
->>
->> If we really need to fix this, we can use dest's return value, with a
->> check like:
->> if (codetag_needs_module_section(mod, sname, shdr->sh_size)) {
->>          dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
->>                  arch_mod_section_prepend(mod, i), shdr->sh_addralign);
->>          if ( dest == sentinel_val )
->>                  continue;
-> 
-> You can't simply continue here because during the next iteration
-> codetag_needs_module_section() will return false (since we called
-> shutdown_mem_profiling() and set mem_profiling_support to false) and
-> will take the "else" branch you pointed out earlier, which will
-> clobber the leading data.
-> 
+Thanks Usama and Anshuman :)
 
-Ah, right.
-
->>
->> But that would also mean extra work on our end - for instance, we’d need
->> to stop the per-cpu allocations inside codetag_load_module.
->>
->> https://elixir.bootlin.com/linux/v7.1.5/source/kernel/module/main.c#L3571
->>
->> Could there be a simpler solution for this?
-> 
-> Hmm. What if we return something like -EAGAIN and propagate it up to
-> load_module(). load_module() will check for that error and retry
-> calling layout_and_allocate() but since now
-> mem_profiling_support=false, both layout_sections() and move_module()
-> will work as if profiling is disabled. We need to make sure
-> codetag_module_replaced() and codetag_load_module() do nothing when
-> mem_profiling_support=false but that should be easy. WDYT?
-> 
-
-Good point, I'll look into this approach.
-
-Thanks
-Best Regards
-Hao
-
->>
->> Thanks
->> Best Regards
->>
->> Hao
->>
->>>
->>> I think this would result in a better handling of this situation: if
->>> we can't fit the tags anymore, we issue a warning, disable profiling
->>> but continue loading the module. Hao, WDYT?
->>
->>
->>
->>
->>
->>
+> >
+> > >
+> > > >>>
+> > > >>> Would it not be better to check cpuset as well?
+> > > >>>
+> > > >>> Thanks,
+> > > >>> Usama
+> > > >>>
+> > > >>>> +
+> > > >>>> +   if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+> > > >>>>             page =3D cma_alloc_frozen_compound(hugetlb_cma[nid],=
+ order);
+> > > >>>>
+> > > >>>>     if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> > > >>>> --
+> > > >>>> 2.55.0
+> > > >>>>
+> > >
 
