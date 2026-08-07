@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC4CC5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB9C1C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 739486B0095; Fri,  7 Aug 2026 05:24:45 -0400 (EDT)
+	id 19B3B6B0096; Fri,  7 Aug 2026 05:24:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E9386B0096; Fri,  7 Aug 2026 05:24:45 -0400 (EDT)
+	id 1450A6B0098; Fri,  7 Aug 2026 05:24:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8596B0098; Fri,  7 Aug 2026 05:24:45 -0400 (EDT)
+	id 0346B6B0099; Fri,  7 Aug 2026 05:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DA526B0095
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:24:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC6DE14029B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:24:44 +0000 (UTC)
-X-FDA: 85073938488.29.0C88602
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 128B214000A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:24:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VPfXn6S9;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D82966B0096
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:24:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B8EA16029B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:24:51 +0000 (UTC)
+X-FDA: 85073938782.12.E04277B
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A9D6D180011
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:24:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b7uq61go;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786094683;
+	s=arc-20220608; t=1786094689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aOtbSQ2gdBo/G8CsEYhRHsP8d62EaT8RCw0jB8TkVqA=;
-	b=tP/c5yYsC1gcitDMgsJzeiYrmLfKZ1ZaQzN+CBu9NldrPOy9In85j5YK4wg+FvyTBEyDSC
-	2aq2VX7Q5W0EVHdSQq6nfqj4s9LWjKlPQx4n0aZO0oa6DdQkfe0BYpy7WrznG5gaXwEOWn
-	om4WpBs8bpqr1rhOmf3WwmRe5lZAxSE=
+	bh=ZZ7BfDw8IdELpVl1v0XbwQYrJXlm7dQ+k8WFQ5Z2DJA=;
+	b=RrIpGT34Svu/Max3kjRxEV8FZmQt+UQqm4DpX9BumHbbOZziJiujav/CQLtlzJvNWBEbqb
+	NKWmJ7fDSXI9U5tKyuZJihplkf9uN/XYszZUpBhVgXaZcuEC7TQkoAfvKLBdLHdsGgGIdC
+	CtPKvEj1J/T+kgq/Q8MjRv6//GlmP80=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VPfXn6S9;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b7uq61go;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786094683;
-	b=Jy/Xlf4QXPrmOYreAn7hojKh137WwDPBzxPh5ksSVryf/L92yXHdUVNKIig57tLSdwS4L1
-	aRIePKfSyOO+tcG3aleK1anW9aI2QBHFg9lq+VocElAx/7YKCj4aQptAOApiN44wh7ZcX8
-	Yl1Tb0aaWY7A+4NQcduG5ECpekPuMN4=
+	t=1786094689;
+	b=HSJH2T6HNmayMrdVMBqSoJyd7PgFs+z7ZK3DTzRvqnwlGSCXx8ScLyFelpaSpVzzTFcxGr
+	VQ/hwFIUPOqA2qCpRAcJ4FE8y0Nz3xGP1s+wz1j+cKNm5oDr+kDwR/zt2dpFfsP4AugNiE
+	Ond1W7+HPjsnqjqiq4af4MEfYoQ9Rlw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786094681;
+	t=1786094688;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aOtbSQ2gdBo/G8CsEYhRHsP8d62EaT8RCw0jB8TkVqA=;
-	b=VPfXn6S9MFW3veMYVBqKVrOrEAFQIh8XB7hEn4LTdi3KFoSD5+7t3zfRZyvUAiV9T9pQ3I
-	h09UJJxmZ0HD1QZ48K/YPGHUILe74UmTvMmf/Szr2QnrfC9UvE98zv7SgZefiLH/CuSl9q
-	cdersJZjpD8z/qTx1XmMyGRpjHLxTLE=
+	bh=ZZ7BfDw8IdELpVl1v0XbwQYrJXlm7dQ+k8WFQ5Z2DJA=;
+	b=b7uq61govvjgbteN+q/1DdxO8sprNFEJT0E4eAeGhR+OOh670CTz7PsyLRZexagU4bTa5G
+	V2I5FleF9z1hl4/SoNppDdzAnX1Oh6ePnEyFKHS7if5WgY2pTuFNWsyLCbo8i3N4w3sbJp
+	GJ0hekSSWsETMRCevuZRJS+Z3+WYH8I=
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -71,9 +71,9 @@ Cc: akpm@linux-foundation.org,
 	yuanchu@google.com,
 	weixugc@google.com,
 	Baoquan He <baoquan.he@linux.dev>
-Subject: [PATCH 3/4] mm/mglru: add debugfs knob to control cross-node empty walk skip threshold
-Date: Fri,  7 Aug 2026 17:23:40 +0800
-Message-ID: <20260807092343.4123734-3-baoquan.he@linux.dev>
+Subject: [PATCH 4/4] mm/mglru: invalidate empty-walk skip on page fault and migration
+Date: Fri,  7 Aug 2026 17:23:41 +0800
+Message-ID: <20260807092343.4123734-4-baoquan.he@linux.dev>
 In-Reply-To: <20260807092343.4123734-1-baoquan.he@linux.dev>
 References: <anRqew3VikVzxJJb@MiWiFi-R3L-srv>
  <20260807092343.4123734-1-baoquan.he@linux.dev>
@@ -81,14 +81,14 @@ MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 4o4oxdb3871u5scp34nq84rxka35qjyz
+X-Rspamd-Queue-Id: A9D6D180011
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 128B214000A
-X-Stat-Signature: s3a9zy5pf4ufu6pnhinmuam44bi5r816
-X-HE-Tag: 1786094682-373164
-X-HE-Meta: U2FsdGVkX1+0PVS4iszZ7NecAmqqcoxpBT4o0Kqx7Pym9yV83YOyA+Xww5BlbLL2y9z49AMWCPPbsOARD+s5HZAu88qwCWRC3FVMD9zlIVP6OJ4hn+hHeAPHOi8SdTtF1jUu8m0pmWi3V15/jMClirEkMjBI/a1PA7Xd05EPNZ9JbU3QLQR0U1nqY5Zd3SBPdwT9vHYZ9y3X1hl+l3Dpqi5ipUSVlMw97bKwNU5jz8JiITmYkmOro0rpW3FFVg/SL5V55z1YdGpYBq66U+x3gVmKHxelCklkYkRfK/iIgjtGnNYn8RLVMrrPWVFb7ktCnnfPMRA4YWgTvdZENCQXO6ZwDbksP5lLaILGmn5Mys47rpsHGt7JTUM6ahAm77a+jf5DyFmlZN318B625okv8n2IUCkr0sUBt5jagoxazBe4iVgM5njOR5Q7gDfQtcUEA8hBqAq1TPCNTvNuShkvjM/R5OKCyRGE2SY5duBd0jRvdKzIfXgwX8kO5N/vKiHpFznlA0dZ+p/CQisg/Sq2oVsLGeqwcBWIMT96rcQSTsUdwuZu+WAz/6m2NNtCrx/XrlrhmiUWvCcGbMagoZnnzZF6mPVLPLYwEDtOWE+brP/WVDST7md7DXd3EyaTsIzksUTnHqka7jVUJJaNk9y8fqfNGKgPTNpJISt0wSPZQZiltbqi3Sh0reHMa6ATXBY/7Exm6ZCu/cm02T1aASQapaJvAX3TpJeiohxD4LllHy0mAqRr8enxSXavNC5+YB53lbygT632uGx98W48POuWMwtxtdOoVae6R2ak1zI4X27JeP9zUxFjcoccdxLbB9tFU/EqN0A/BjjLfArW1s5d4sXbqJC27cbPt+aUkrFUwUHFDgPSM9FLlGG2R1AoPKRwFicQkkRwhslDzG6JyO41vFg6hIKmNHioQ5CeRRC1QxIuddk9cyywca0BjKKdjYoT6IRFY4GVlE2MUYBk+Ha
- 04nby4D1
- MLVuQYGkj7jlsCVn27ieC235fwxr+imM6A4kwYwX4M53FqQ+WNkIXZ5W1PSBU/PlaJ7y89gMmMDiU7ielhiANv3pLInCbn/Pw1XQet9rtXVDmkmrNK47gl9uGIOUY3oNHKcJWsKS2X+Fb1FX/t0lCtOF4b1RnID+4DqGYmP/uC53es3VveqjmjHHheeCEu5ZFRK3g4z1nj2JK/S8HoD/2wvhH8W/fAEvy8JRM
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786094689-883382
+X-HE-Meta: U2FsdGVkX1+xYTX7RWp45bxBURwQaNl3BsnN71Ctv8vnp3vldOzg9SFjeYY7ZLY/zcb4F8hrU8bJLT/G3Ru/NlvIfKv/q5YX9Wm9pHTMj/D0n+HEp6YvGVojsRiYk812DHIKX8HAUx4UGCilN13XRof2XyAyghFWJ/pFVXhNV1CtNPRy1upE3Vkp7f+jYCgVh5XgkTCnLTx+LN7ZmvdPUZOwUidILyZKVFc8wrz49zb7KTj425L3I2user8Alz3DijXVjbEfeNsvIJlbmtRJOiwiuvPZ3dF2pu521drHGxmwxxeY62xlYIK38FLpoOwlNbOZT2raO1zgFSl3KN7907l3VCZnkYvMmYGSVyHBhcYNndYQ5EkhkQvtdaelJn6gh6iwkLk3MqXR92Y8iE8b4S3+Isb0PB7/EMZjTqluo2U3GAlPHc7JCOLcJ6D6aQDcI4SurzYnCSzU5Yrha/2g5jFYJVNRf4dZIjmJhw8w4ISxMCgvGedoiGspxtgqlWj33HEVstr0+yg53/nE2gesjuHaGdz409g5BXVlVIYQ3fs7S4KSdVHk0xTeRNhUAArb/mmF6UZZNcbmfGmspo3E1cyufT3KuoKy7pg7apF+q8rp93Cdi43id7LMrKia78aX80zcI9oDHSO7uPKyV0Wx19sFy9VK1GOR/5d1uxAnsmDFkG5y6Vtvs4MhvR6Dqj2kqAo9L1F03HFHdmnuvvhHy6uLZZPdfnzpSIKCBiouVtKkI1C7JYD/Rd3TW4tkNLoDE70WvuGcl0QTkyuML+v7V3PWEEAMY5pTDIHT9oocyru7Z7DvEtIs8TORR3ae0g4PY/hSaz5o41PgDI3FUh6243OGXwoQMmfT7yvIKxM5moWOUeysTH97KKq0cE3qrx4dPTaBcvF+ISRY8l6kJSrzyfXkruDBwmfX3lNmc2kP277rERYuQgYLRHg7ILFN8nnoXDxBAeyrBXFIcTYxwND
+ Drt0CHPn
+ G0l4waWWX9YmdOJXLeJC/6aIhsk59KQ2qqMxsN2vkJYgApBOB6lpWLNDeAhsDpZLmkgRgF3C+zuwt34rmAf0D1o6BbZIGOCB/ggOSyc2CL3UHAWoLrKSPBEJak1jHtm3C+pCR+unqbiGgSCsvsCFGq3HPnTHyZx1G1z+y8JKpzBKtNRUKxruxXYw8wb+UyjURQeFTdXWV/celzAQrg6AYf/4cAGJawsoZKEKq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,107 +96,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert the hardcoded MGLRU_EMPTY_SKIP_GENS from a #define to a
-runtime-tunable variable (mglru_empty_skip_gens, default 4), and
-add a debugfs command to control it:
+empty_map skips an mm on a node for up to K generations after an empty
+walk, leaving a window where pages that appear on that node are not aged
+until the forced rescan. Notify MGLRU when a page of the mm appears:
+set the node's bitmap bit and clear its empty_map bit. Fault and
+migration are both software events, so the invalidation is complete - a
+node marked empty has no pages there, so a page can only appear via a
+fault or a migration.
 
-  echo "skip_empty <N>" > /sys/kernel/debug/lru_gen  (0 = disable, default 4)
-  echo "skip_empty" > /sys/kernel/debug/lru_gen      (show current value)
+- mm/memory.c do_anonymous_page()/finish_fault(): mark the folio's node
+  after the page is allocated (anon and file/COW faults).
+- mm/migrate.c remove_migration_pte(): mark the folio's destination node
+  (also covers NUMA-balancing migration).
 
-Setting N=0 disables the cross-node empty walk suppression entirely,
-allowing easy A/B testing without recompiling the kernel.
-Default 4 matches MAX_NR_GENS so the skip window covers at most
-one full LRU generation slide.
-
-This is intended as a development/tuning aid for RFC. Whether it
-should graduate to a permanent ABI (sysctl) can be decided once
-field data demonstrates the optimization is worth keeping.
+The bitmap bit is mostly redundant with schedule-time marking, but is
+needed when migration targets an idle mm whose bits were already
+cleared by a previous walk.
 
 Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 ---
- mm/vmscan.c | 41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ include/linux/mm_types.h | 18 ++++++++++++++++++
+ mm/memory.c              |  7 +++++++
+ mm/migrate.c             |  3 +++
+ 3 files changed, 28 insertions(+)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index c39b392d7b7e..631bcd89b196 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2709,14 +2709,6 @@ static bool should_clear_pmd_young(void)
- 	return arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_YOUNG);
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 68ec8bb2ab71..89b723483675 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1531,6 +1531,20 @@ static inline void lru_gen_use_mm(struct mm_struct *mm)
+ 	WRITE_ONCE(mm->lru_gen.bitmap, -1);
  }
- 
--/*
-- * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used on all
-- * nodes, so aging on a node where the mm has no memory wastes a full page table
-- * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations after an
-- * empty walk, then force-rescan to close migration/mlock/NUMA-balancing windows.
-- */
--#define MGLRU_EMPTY_SKIP_GENS 4
--
- /******************************************************************************
-  *                          shorthand helpers
-  ******************************************************************************/
-@@ -2927,6 +2919,9 @@ static struct lru_gen_mm_state *get_mm_state(struct lruvec *lruvec)
- 	return &lruvec->mm_state;
- }
- 
-+/* tunable empty-walk skip threshold; defined later, get_next_mm() needs it */
-+static unsigned long mglru_empty_skip_gens;
-+
- static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
- {
- 	int key;
-@@ -2951,7 +2946,7 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
- 		DEFINE_MAX_SEQ(walk->lruvec);
- 		unsigned long empty_seq = READ_ONCE(mm->lru_gen.empty_map_seq);
- 
--		if (max_seq < empty_seq + MGLRU_EMPTY_SKIP_GENS)
-+		if (max_seq < empty_seq + READ_ONCE(mglru_empty_skip_gens))
- 			return NULL;		/* skip: < K gens since empty */
- 
- 		/* K generations passed → force rescan */
-@@ -4273,6 +4268,15 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
- /* to protect the working set of the last N jiffies */
- static unsigned long lru_gen_min_ttl __read_mostly;
  
 +/*
-+ * Cross-node empty-walk skip threshold: skip an mm on node N for up to
-+ * @mglru_empty_skip_gens generations after an empty walk, then force-rescan
-+ * (closes migration/mlock/NUMA-balancing windows). Default 4 matches
-+ * MAX_NR_GENS; 0 disables the suppression. Tunable via:
-+ * echo "skip_empty <N>" > /sys/kernel/debug/lru_gen
++ * A page of this mm appeared on (or was accessed on) node @nid — e.g. a page
++ * fault or a migration. Set that node's bitmap bit so the aging walker walks
++ * the mm, and clear the empty-walk skip so a page that just appeared on a node
++ * previously marked empty is not ignored for up to K generations.
 + */
-+static unsigned long mglru_empty_skip_gens __read_mostly = 4;
++static inline void lru_gen_mm_accessed(struct mm_struct *mm, int nid)
++{
++	unsigned long key = nid % BITS_PER_TYPE(mm->lru_gen.bitmap);
 +
- static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
- {
- 	struct mem_cgroup *memcg;
-@@ -5870,6 +5874,25 @@ static ssize_t lru_gen_seq_write(struct file *file, const char __user *src,
- 		if (!*cur)
- 			continue;
++	set_bit(key, &mm->lru_gen.bitmap);
++	clear_bit(key, &mm->lru_gen.empty_map);
++}
++
+ #else /* !CONFIG_LRU_GEN_WALKS_MMU */
  
-+		/*
-+		 * set/show the empty-walk skip threshold: "skip_empty <N>"
-+		 */
-+		if (!strncmp(cur, "skip_empty", 10)) {
-+			cur += 10;
-+			cur = skip_spaces(cur);
-+			if (*cur) {
-+				unsigned long val;
+ static inline void lru_gen_add_mm(struct mm_struct *mm)
+@@ -1553,6 +1567,10 @@ static inline void lru_gen_use_mm(struct mm_struct *mm)
+ {
+ }
+ 
++static inline void lru_gen_mm_accessed(struct mm_struct *mm, int nid)
++{
++}
 +
-+				if (sscanf(cur, "%lu", &val) == 1)
-+					WRITE_ONCE(mglru_empty_skip_gens, val);
-+			} else {
-+				pr_info("MGLRU empty skip threshold: %lu generations (0=disabled)\n",
-+					READ_ONCE(mglru_empty_skip_gens));
-+			}
-+			err = 0;
-+			continue;
-+		}
+ #endif /* CONFIG_LRU_GEN_WALKS_MMU */
+ 
+ struct vma_iterator {
+diff --git a/mm/memory.c b/mm/memory.c
+index 428eb555ecb7..e3d7c8f7ca7d 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5512,6 +5512,9 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ 		folio_put(folio);
+ 		return handle_userfault(vmf, VM_UFFD_MISSING);
+ 	}
++	/* a new page of this mm lands on this node: invalidate any empty skip */
++	lru_gen_mm_accessed(vma->vm_mm, folio_nid(folio));
 +
- 		n = sscanf(cur, "%c %llu %u %lu %n %4s %n %lu %n", &cmd, &memcg_id, &nid,
- 			   &seq, &end, swap_string, &end, &opt, &end);
- 		if (n < 4 || cur[end]) {
+ 	map_anon_folio_pte_pf(folio, vmf->pte, vma, addr,
+ 			      vmf_orig_pte_uffd_wp(vmf));
+ unlock:
+@@ -5772,6 +5775,10 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 		page = vmf->page;
+ 
+ 	folio = page_folio(page);
++
++	/* mapping a page of this mm on this node: invalidate any empty skip */
++	lru_gen_mm_accessed(vma->vm_mm, folio_nid(folio));
++
+ 	/*
+ 	 * check even for read faults because we might have lost our CoWed
+ 	 * page
+diff --git a/mm/migrate.c b/mm/migrate.c
+index b937cbd76480..2e0674e89ba8 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -354,6 +354,9 @@ static bool remove_migration_pte(struct folio *folio,
+ 	struct rmap_walk_arg *rmap_walk_arg = arg;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
+ 
++	/* the folio ends up on folio_nid(): notify MGLRU for this mm */
++	lru_gen_mm_accessed(vma->vm_mm, folio_nid(folio));
++
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		rmap_t rmap_flags = RMAP_NONE;
+ 		pte_t old_pte;
 -- 
 2.54.0
 
