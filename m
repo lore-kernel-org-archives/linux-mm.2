@@ -4,110 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71264C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:35:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECF3C5AC9F
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA4B6B0088; Fri,  7 Aug 2026 05:35:39 -0400 (EDT)
+	id EA4336B0093; Fri,  7 Aug 2026 05:35:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 357F16B0093; Fri,  7 Aug 2026 05:35:39 -0400 (EDT)
+	id E81256B0095; Fri,  7 Aug 2026 05:35:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29D506B0095; Fri,  7 Aug 2026 05:35:39 -0400 (EDT)
+	id D1BC06B0098; Fri,  7 Aug 2026 05:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 001A46B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:35:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C3571402A4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FDFE6B0093
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:35:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D220DC0342
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:35:40 +0000 (UTC)
+X-FDA: 85073966040.05.EF69D28
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1376640008
 	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:35:38 +0000 (UTC)
-X-FDA: 85073965956.18.1163824
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B774740011
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:35:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dQgXgpQr;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ry6KOkwv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786095336;
+	s=arc-20220608; t=1786095339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ikUEXbCxj3hayBZiXKMC/GcUDL0sztIe9+0w0hR5n7w=;
-	b=2ooOZV1xxXkSaqT3x5UE04ETddmzKemwtsQgNLGdAkeSaO9L0gpYNARaidTjjeCGfXl/In
-	dBpFHf3lPdaPhoS50X9LT7B8b3Q7d/+T5xIKy339Sy+wNSYcSMXfir2qErx7DXyLJa9bmH
-	boGn1cpSEDCl18YojkeJln5pFBeY93M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786095336;
-	b=bfEi3UF/jODm+KTqRb8EHI4OuFJkrsbjnNihCEvhkVKlpCmUxBoBqOemiAz2BQ3mjizJM7
-	TtyVJA/QWBYVlzPAu1RZObrgi8qtGGQZaJDwzA6hYPRk75n/88tlE/ewUZZ0Bfk47TgpGq
-	zLP50ofYlE2P3P12RY/cienuHemXdYc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BoZJUvqOnB9ofJGbnDsG82ZWVAW/7cBOGmRgNjA3QOQ=;
+	b=DbvRkSDEl3ZGStJQu2SF72fuU18Ch4uF/mlwb/cH+zz6xx/WtuxNLgSYHQcaO92/+IiP9g
+	W7iG5ChObCOcg5mWyW1ZhNKU84xoIyVB33FDFDZGj8kg6rzM9zqDu1S9lS1XCA+/yhc0w9
+	3q8w+WYOMfh7O5wuRgOAzQZfO6r0KTI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dQgXgpQr;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38dcbade417so2614340a91.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 02:35:36 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ry6KOkwv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786095339;
+	b=LXT92Pfw56f0v7u3meS0zKNxXDES5d80KWU4GdwuPOf/YLZn6S5Upf0XuBxsys7bOxDXcL
+	Djrjm7bCw/245yorg9fB7o4ZrZlVFoWHoIBW4lL/TOKALRffGKrTbTk/oscKnuh7xpuBkn
+	3IVw7PUtet1k08hwSwWChTTszwVW+l8=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2caf228a910so26263055ad.2
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 02:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786095335; x=1786700135; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ikUEXbCxj3hayBZiXKMC/GcUDL0sztIe9+0w0hR5n7w=;
-        b=dQgXgpQrZkRqGwGlZTviLeK+dECB0EvK+6futXNgI6s5ZS8KjsmaC9eQv6JG3KIbYT
-         6EXvdoGgorWPyINluZiDM926B1YcdwYg5kYZcVCTDt6OFIJR6eYO7lHnjIvan01AgC4v
-         3EOncgQWR97Mp2cE6LXXgjaar37haNQ/m+4If3RfcEvUqNPvD/Jp7aBpbVRJUqqyu1hw
-         eVPHeRtotci1i+lOY7BMf8L7WFT/lR6YZyM+474oPHDTszpVQMxYb5MzjLldpNEN64bc
-         5/Fz2G0WJjRf+5EjG3yzVLE038IXNDXJMqlDy0fDu9QrVtJAhhQ7Hb7U3h2mwSITy3tw
-         NTZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786095335; x=1786700135;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786095338; x=1786700138; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ikUEXbCxj3hayBZiXKMC/GcUDL0sztIe9+0w0hR5n7w=;
-        b=OAPgkqTDBr/+MoXi8u+hP7rR0hBtxsS4cQGlpZjoBdAhkEDBmrZVJLiYGAS6ZoOh/L
-         U6rdHfzcshoSS+doElmuCyptb97FUdrd2X9cGK/SBJxbrfcVNe/Y+XBn5CEt+7oN147P
-         wBAx3PCrBIwwEScn16gY1WQSNxSj5tKKENyNZg+S4PlGyOWyt8+ukCStFy924Zy6J+D4
-         JXn8wpWXlTtokR+NjysoopWwHSZ8sSCRvRadZ8tc0xIEODkdoYfE9/N8nxS2z40OlQju
-         MyoQbmLZSkPCqMo++kLW0PKgXfuIYEaSlhnz6De5iRQL8E7EaeBVpoFEyPjLXd/z+wXM
-         Hlhw==
-X-Forwarded-Encrypted: i=1; AHgh+RqLTR1by/zZ+UNI101bB97oqq4xMUziWv7QW0YMcG136w2U6YVqJvNub6r0C4q5Gs0A833zfvDipQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz3g/a5YOskkDGXPRBpw3rlwKClr72WQOVk7133cO+jBnrhpr2M
-	pSeOysah6Ci2ZbSiusYBbnq26B7rn1HRLytfGEcx2a1OPDkztjuoin2HQl0ACA==
-X-Gm-Gg: AR+sD12t6Lvjm3SK1mWYC5ckSL+9y6d40h94nEJ7OBUtc0u14x8oZWVvY62/bB1qRub
-	yRADxFBWFQl8AHPr85DD2FF4PnaC9J85v1tIpuD3p0FP3a6JSAz3r+uO9cUcp1qO8dKg5vV9Bsl
-	PWxDxILr0lSYzhs2gYnfdE/j3tSkU/Z3oWeyeb6Bouli7Yo3sw7OS+nq7o5yspZSRpqFTbaB3/X
-	nth7y9d7juj40G3davNE2sWHrMgNbAYn7QXM7ogire5lTRUaFkAklfsv2LpXutxqyZTPeG5Yy6c
-	qPJ0R2EMqiob/CgAMjPivFbyHuon/Q8s3D8WTlxCh6g7VPuPT91JwN62nyS3y39CF7jURBn9SrN
-	vefUgb8louWMPkTjJjbkF3AlElnN8sJv/2230VNCY9cUtmJ6W5awKX4CSA+VD5W8g2jOfv+rJrP
-	p7UkUbKpqP+MdKwj56ngaqgmU7tgXKy3MRt2zCUuGxjAlMh+rWnVqMzDFx1wT9Qp0c
-X-Received: by 2002:a17:90b:2590:b0:38f:2168:b9cb with SMTP id 98e67ed59e1d1-3903c572a05mr22075654a91.9.1786095335499;
-        Fri, 07 Aug 2026 02:35:35 -0700 (PDT)
+        bh=BoZJUvqOnB9ofJGbnDsG82ZWVAW/7cBOGmRgNjA3QOQ=;
+        b=ry6KOkwv764qtdXaRZhwe15FWWcY71RXKfGyoId0PhdFOTk6Kdqeay0EmNVlYXiMOx
+         3rqTmDYm4VDSIaI+8QOPziPcNtmK154qNlf6Z1Pj69ifqkRX78YbQf7SVKpjz5+EOf/a
+         arI6pV8cA6WsEUSfO4F9pn7S8B5d3sKesNB3qIri00PbXHHvWfJ6iPIWdfmgvqPZgEBU
+         +sVk0dkdIbZBYNc+gxS1lGBIgWl1w61pI0m4VdvgLMuqcQDFi7x8lSA1tfGCsAj8Gx5R
+         V1HtAYHN7zZTu8zn8Xp52lWKJOJLDJuyaPKHTm3IhdWqpJg7U9Ro7PoPSBX4nXo/QpFZ
+         ztpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786095338; x=1786700138;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BoZJUvqOnB9ofJGbnDsG82ZWVAW/7cBOGmRgNjA3QOQ=;
+        b=ZDHpuGqD4fPMGB/JAonrmd0P6z13PSZn4JCKyi2lMibRHQNVAuzCD54M7Pv70/E0C/
+         Nkhaw68ZTT/p3HOzTu5F5u2kszFcXOwFwAfxpRkyMavT6e/qsv60VgTWHGrarN03EssI
+         oMJkOVsUWjz7pxz/lrR+ZDb/hSWDmEJ8lvVt0cKqCVqJOmWuQYGvySoONW+/TPBbXwjC
+         la7L+rxiSf0Er65zzOiJgC3Ea8La70W97FIY8Fpfww6ZF7/h1yiCHMGbSpwDxtA4aQhr
+         NX2OWqKu3PUTfhTKrsPhX1uwkKWnycJIcnHH5WQXTI0C4HS8a2zYx3lQDoSexLAMfg29
+         JZhQ==
+X-Forwarded-Encrypted: i=1; AHgh+RriIR3IvCNO79eCC9ZalSA0IztHo++7DiQ80BVsdrlobZaVmm4uOaksMvzi8nTdXjdaWH9BKSCJwQ==@kvack.org
+X-Gm-Message-State: AOJu0YwEfWo92fxbergWdkb0wJriRAka5BitM7kQGxTC5QjXQ7fayEn0
+	uD4Lf523u0e5gNWuzAzf6Lle5tB7RMqKiliB89617FcxdgT2WutjCClr
+X-Gm-Gg: AR+sD11Folko0NUROxbX9gH6rdm3Xe2ZdF4CLQHU5V/kslohPtNDMa49bQzFgjt8/PZ
+	OWUfm9npNmrukQBL9HQSqTIH151BgubTwwiz+hnlY6tN1MoyBg9W5SVJgojhMMWtrZz31dsPN2i
+	TnBu41bwlTEujjjVBwCmPE5zGwIPaYUjRVvzHim2ITSuUCzqf8jz1+3ZjPdMftzHgr0L+I2/NcU
+	n3/E6pMNhiuuq8raG9xsQWe3olUXhEd3qUdTFH1ml4W/0M5K/9aZf2erPs1j8Pi40eHlzewxtlO
+	6s6nLDE9PJ9sMIm979JPLC///KbmOZs7UY/93pbXSZHuuMx+vzbbW9DFbCJgi4rrwb8OWSThg1w
+	8TM0UhP4IbXUx1iShNP9jXksSu2l72HICxN4k7hiJyBXI85RYmOG4BroyB0I/LXWlprd+S9ovK7
+	FoRaHVvkLLHHNf1zSUKFraDAuxPfCsQ9kl1l7dv/m/4O4OuspHZQDYOAmRx3MKiYfc
+X-Received: by 2002:a17:90a:da83:b0:38d:e0c4:c955 with SMTP id 98e67ed59e1d1-3903c5d84b2mr21355052a91.15.1786095337751;
+        Fri, 07 Aug 2026 02:35:37 -0700 (PDT)
 Received: from celestia ([2402:1980:935:f4a7:6f5c:e816:9aba:2090])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3926254ee45sm1604269a91.2.2026.08.07.02.35.33
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3926254ee45sm1604269a91.2.2026.08.07.02.35.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 02:35:35 -0700 (PDT)
+        Fri, 07 Aug 2026 02:35:37 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [RFC PATCH 0/2] mm/damon: fix nr_snapshots semantics and max_nr_snapshots check coverage
-Date: Fri,  7 Aug 2026 17:35:24 +0800
-Message-ID: <20260807093526.183009-1-aethernet65535@gmail.com>
+Subject: [PATCH 1/2] mm/damon: fix nr_snapshots counting using tried_applied flag
+Date: Fri,  7 Aug 2026 17:35:25 +0800
+Message-ID: <20260807093526.183009-2-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260807093526.183009-1-aethernet65535@gmail.com>
+References: <20260807093526.183009-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B774740011
 X-Rspam-User: 
-X-Stat-Signature: uxsca1cynpjp4y6ac8mqhognajoso3ks
-X-HE-Tag: 1786095336-85465
-X-HE-Meta: U2FsdGVkX1/pPvhdZUrHKSYHDnIoGZPYFfZeo67lYxCKzsy5XnRgJPpqSQx7Km3cUfGEP5ZqHacny3CE+K4NC/CLWaqSmOWLzRtLyQggCyHRyQWhCGTUoJ6UPNDQS+IZBy6/uxT12ZMVUdlR9YB2aAXxmDyCGKqP9Cq/Ao+XBzJEMNID4oGNNQFA0mNt6ljZbLt0LDzFCznTdrwW0aGzC8wvjLRjoMmxG6f0cKG9hasLYx86p98WOHynG81GTSNYBSkdnMOxbP3h3ZC5Y5DWV6yawhIHSohrIJ3TNPvbseVpLKbM/LEx472ae5SJ1pML0ugXz8lh3Nzb2lu3fI+pyjXWRsYDBwM/9uILEfW0naJ29FEoZApINi65t/WFNiijnwWAXBE7XAEywPeBKSR1KykTEjNPj8ek1i8j49NWkSzqEBuAzDoGlW3sAgFsGkolY0KBG0+Gqznbk3O2muDKks3+MMNMhcuSMbgTvf7mkU7Okcywnm/2v447itw8SBX8D99yKYyeVVhojY0ukhy9UyxYtALK3Bd2iTOrGBy9EtUXAVSpE1tBjPsLMwCQ5E1CjprhZ+pFCBomhauGnyH4ZKPUTEdmRYV6wTQPZFhMwY8WZ3zQJ1w2t1xR2XaHQ9YutUYcf26OaUd1dEU0Zys1mDOkziV89nffo/f3sIgZtQUhRBfkHhU4jaKg/CIW02CcpYXGz3GZT1VEuwOJArt6E8yo3+iJO/chinrFhlhLGbsZJmzHZIy0xqWdXg00GFrZ8epnMXj4dEQSlByPrYjlAGZXNCSzWFyBeDt2GTIdwXXOyQ7xFa9+LPwsB9nx3yl33J4O3ytzXdddR7NbIqefJu7l3tgfMpqR3uuxuHr+JLxIn3K3sxCdX8HJsRqTAg/GTQxQ8QI6IZe+Itbl+WeHr0u4cboYScFo9EG+gn0rvbxBd0jsH4IJxH9cmEK+cjJ8OUOsLMw3JWumIg23kE/
- NRrdrkBo
- t4IruBPHm75hbeRpxeRJEfPjMrRPD2enBW6QJpedV/h7KKdD9bMfT5vZLUqJBrcaIwmUQWVN3Dnj6hRzgOrpMuBU16MYIiUILG2EddHq7yTlFop7tFBG79+YRbS+eMndBsGQt+kKhbZ9ZFstTVPr8om0pV81UBl6obfg6yZ09Ww0LVU6hBIlq1FptMBIMhGBdR+Y4RZUq9y/pjtz4gLVksiwb6YXwl0uEmc6Hlf8La4gIbDdZVhEOTL+2adhJpjsK5e0mCWCtcnRA6jeTAXKrV5BAJzrw6AhTmLBReHMK/7PtwQaoPSIKMBHnSR8WjGzyikNrQH+pSD3QyGttaeWGArQ0pTo7LqbS/Z/56ElBXTZLOBsJaUTMN3oobn3xJ4xmzculbmow+PCACWFcp1H4gOfBouvAaWrI6VHfs2UsHzhb0dJ+BAgDBV6jpMcsQmIyQRypS07ZM6Vxg0b+8HZz9QbUglprGog193SZ
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 8ecgwbdpzactqzi1t8h6w9fqfgyrqj3b
+X-Rspamd-Queue-Id: 1376640008
+X-HE-Tag: 1786095338-776975
+X-HE-Meta: U2FsdGVkX1+6D1HIBWQ5VJ1qocLLO7xcZpOIGnmPmf2IeFsBYsyDbhBI+GFxAJZyBO0xbOvC0/VMSs/qXWWZqcrCIuQpGhe+slUSgQnPCOtgYoCyszPncLfYTuoBpru5zEMZPF0Zcpgu1rVgxpChu8P7tWsVDTWedfxRPgaKnzTTBgOw6Di7MunVUULn7b0rX3K7l4ClJm88meTPFvCT1PjeclHTi+m+VGa+GgGp+s6whYvCEciJ1EhDatjJCjKd5fxPJawRvGs+RnPJL+Ne0UvmmKS7J+UC0w7clTHk/Jv12BnTCMW287FQkcWcaXXmJwX5fM9wylpDFpUcD0kxJ+U4xHJW17B5DySEk4bg3f1xgXYF/7iV58y/rkaA8DaRIBoC0eLK2WO2O8jQyR63UZreF8sth0jqeAPFUTQpNeAoABeClvMcoB1xqXWgohNTjmhgzwNYUaXqnk+Rs1VxrFSYJ42A9Djs9lMd6hYzuX1TZryFf4oY4igde85SwOIhOeCgfpW7goaA1LClIhW1o0MJQxQAR/xhmnqHqG4ux3oUVPsM95gdT7v0XDRraj7if6BovgC6XoniuxWwF0bRpSjuGQmt57BJhVb+tmofujBT3jpVoYelVsz0dAhhGGIZXao27Nv20Obdw6FjK0wO8ep+gPYjoq21traHM5gAH9gTP/EBFHTVodOMW/Va2k4MwJKCSHq662nKKDme0tsGTWbuAIxRW7ySsiMuD3deJKO3vk0YYHMyHHKsE/PxrG25+VCmR1xdTMF8JTQZxjrAvhkVUqerzE4l5uhkiIFVC6ALP6GlV2ko2DZM1nFF6MU/ajOnbS0/MnRS/0CQ7N9DmL3z9r/MT/HK64I/g3bIbQXI4rumlum47PjGhU7mkJAqBZ+xZbVOHOWU/9tyADJmTzXoat/ZLXHkWZnCm3NZ8jVMEsBBPco65SzP1HPAUIm0O4s9O0iWPY45kX4W7jD
+ jODAnpvu
+ 7GUDQmPRfW5l+iMyCNS5aWY1Lq2LWqcyjFRXZK9Up0Y6ZaNxA9VbqvV303spjXGnRUOdunIB/qQK20lbSN9YEZTyKLVdjVSGhEHsXFMp/275u+HBMZb0UxJHaNhlgE7rF2gfDZjtB4JuPkb8eh05CoTR0ZpXh6nEgzldkZS4spoCNPNhezonTRSMzYjKTKVXM2STV95ow99l9nzdjD7i0aBj6MDn4iEcHXU9xD5xoICk9xO/3vkgWihTY20h+gmHK8mPDSHpt6VaAL4xuVM14YKrUuGo3k2qLen3cfkVUPXHuD6yzdFWIxcM9m3MuTNyTrLi6lLAIKl+MsoMW8c/3enyLsDXnn15T1LsM8iVOEASj1+Gn/rZYFW6khJpS7BSQOlplk3Y05MvJSx+baPoB4a8XmNRRyLiMusr9fE/K6kULd7prXEzYdLINbpnqWY1+hlSEoeSFVnoUScbcZydT2N/VLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,24 +118,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Both patches address the DAMOS nr_snapshots/max_nr_snapshots
-deactivation mechanism.
+Currently, nr_snapshots is only incremented when damon_is_last_region()
+returns true. This is semantically incorrect because nr_snapshots should
+count the number of DAMON snapshots (aggregation intervals) where the
+scheme was tried to be applied, as documented in design.rst.
 
-- Patch 1: fixes the nr_snapshots counting semantics.
-- Patch 2: unifies deactivation checks to prevent busy-loop.
+The "tried to be applied" means the scheme passed all guard checks
+including access pattern, quotas, watermarks, and max_nr_snapshots
+filters. The old damon_is_last_region() check does not accurately
+reflect this semantic.
 
-Note: Patch 1 should be applied before Patch 2, as damos_is_deactivated()
-relies on correct nr_snapshots counting.
+To fix this, add a tried_applied flag to 'struct damos' that is set
+whenever a scheme passes all guard checks and is considered for
+application in damon_do_apply_schemes(). Then, increment nr_snapshots
+based on this flag in kdamond_apply_schemes() after the walk completes.
+This ensures nr_snapshots accurately reflects the number of snapshots
+where the scheme was actually tried.
 
-Liew Rui Yan (2):
-  mm/damon: fix nr_snapshots counting using tried_applied flag
-  mm/damon: skip deactivated schemes in watermark checks and add
-    fallback sleep
-
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
  include/linux/damon.h |  2 ++
- mm/damon/core.c       | 42 ++++++++++++++++++++++++++----------------
- 2 files changed, 28 insertions(+), 16 deletions(-)
+ mm/damon/core.c       | 12 ++++--------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 0c8b7ddef9ab..01e899a2150c 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -573,6 +573,8 @@ struct damos {
+ 	unsigned long next_apply_sis;
+ 	/* informs if ongoing DAMOS walk for this scheme is finished */
+ 	bool walk_completed;
++	/* informs if damos is tried applied in this phase */
++	bool tried_applied;
+ 	/*
+ 	 * If the current region in the filtering stage is allowed by core
+ 	 * layer-handled filters.  If true, operations layer allows it, too.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 644daf5a1656..7230483e771f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -398,12 +398,6 @@ static void damon_destroy_region(struct damon_region *r,
+ 	damon_free_region(r);
+ }
+ 
+-static bool damon_is_last_region(struct damon_region *r,
+-		struct damon_target *t)
+-{
+-	return list_is_last(&r->list, &t->regions_list);
+-}
+-
+ /**
+  * damon_probe_hits_wsum() - Returns probe hits weighted sum of a region.
+  * @r:		region to get the weighted sum of.
+@@ -2668,8 +2662,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 		if (damos_valid_target(c, r, s))
+ 			damos_apply_scheme(c, t, r, s);
+ 
+-		if (damon_is_last_region(r, t))
+-			s->stat.nr_snapshots++;
++		s->tried_applied = true;
+ 	}
+ }
+ 
+@@ -3249,6 +3242,9 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 	damon_for_each_scheme(s, c) {
+ 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
++		if (s->tried_applied)
++			s->stat.nr_snapshots++;
++		s->tried_applied = false;
+ 		damos_walk_complete(c, s);
+ 		damos_set_next_apply_sis(s, c);
+ 		s->last_applied = NULL;
 -- 
 2.55.0
 
