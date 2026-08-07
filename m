@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B84DC5AD05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 23:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27F8C5AD05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 23:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 523446B00B9; Fri,  7 Aug 2026 19:26:50 -0400 (EDT)
+	id C16DC6B00A6; Fri,  7 Aug 2026 19:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3266B00BB; Fri,  7 Aug 2026 19:26:50 -0400 (EDT)
+	id BB9A26B00A7; Fri,  7 Aug 2026 19:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5836B00BC; Fri,  7 Aug 2026 19:26:50 -0400 (EDT)
+	id A90746B00A9; Fri,  7 Aug 2026 19:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F367F6B00B9
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:26:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50CC7160203
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:26:49 +0000 (UTC)
-X-FDA: 85076060538.23.A2B7074
+	by kanga.kvack.org (Postfix) with ESMTP id 746A36B00A6
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:59:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DDAD81C07D8
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:59:32 +0000 (UTC)
+X-FDA: 85076142984.30.C6CFED2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6C799A000B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:26:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPCm+Yt4;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A43720007
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:59:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2tMhiFE;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786145207;
-	b=gHgLQUyYGg4da6rbay8Doirj9IQHCONqHDU/g7XyhGU88qhY6d77BHUe2xP8D6Mz+KgRPG
-	JEJuR9MtB6Gi6/GMDNKvrKC4M9YTt1Op8ZhfPWPW7YSbyEuuI8eJZgiTvlidwR06/LzZYz
-	Io3bTx6RAEPSXkXasDFkOYyZaEWmt0s=
+	t=1786147171;
+	b=00++vY+zgC5KAid1cKtpzmddxZpYJSdzYgDG4Zy/UN4Y5lIzjSIO2lgECKE2dLSjaenrFF
+	OnfSyeU9ae45oiimPTx5CY2g4hKiEmi1jN9ShX3XTkiNvDhVPw50OPwpJ9l+RJZb7Kxzbm
+	ePwSwELK7XYsJSHlv4L6u2Oq/ydkLc0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPCm+Yt4;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d2tMhiFE;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786145207;
+	s=arc-20220608; t=1786147171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i4cxxvp0f8cy854qggvftBeZLtacFW5iIDEQ/J+cwkI=;
-	b=Flw8E1nFU2jhJYDEA5nzE2od8lhsb1voZn9TgOXGhunAZQX9cxquJWZhSwAFXr5tAbgWe5
-	9EXE4GOz4nxJmLmemsX9KFNmQxnZXrfVM5xLAYYcctWfLPe8dz2sIE9oakm14wKzz2Pasz
-	TtchLOvKFaCgrPYWkhmhd9QCYloMazE=
+	bh=Ih4/vMKtjC0ICTAP+VeJSUaN55ExTa2E+IFm6J2Z3vE=;
+	b=Gk7GwEUhgIpAvooiVT/rMybwp5kj8tz7TDftVpYkSmup/9O7BPuXNHcM3VjOhrmAb1A3vp
+	44H7utoBduuilkJ3nUqZaJhwahR7z2HDAqNQh0XbOwYjKijnpv80ulFpTqg2Ne0Pz67jW6
+	svH1lMkjwMkz3JGGbXrz6LtW6v4Qn+8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D81644003
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC401F00ADF
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 23:26:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CAF34193B;
+	Fri,  7 Aug 2026 23:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411851F000E9;
+	Fri,  7 Aug 2026 23:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786145206;
-	bh=i4cxxvp0f8cy854qggvftBeZLtacFW5iIDEQ/J+cwkI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hPCm+Yt4Vch5BSbQ0ClvEdx2L8AV+Rh6Da8o+gwueR9dldOfuvXngqs4keglQl8OR
-	 u7RWoO72wuF7YIYPC6ffVgLfc5FDc3BKaPuUv52oQPKS4ZaJVYVfrI5vjN5jSlD6EL
-	 DZi7V34+9toqGMXqvaG7PXsAnRacOOw3ZE9sD0g2n+7qrDQylkaMM3E9ct/OIm50ao
-	 aRyTscTK/89ZPH5ZT63xlalYGAD8aOIYK1zRS42B6hx+XqCMw1cCApzjL8uZ+pVPnk
-	 P22RkGoBQOJaucsY1oXieEexYBjvdngnk0KR5PdlZgBf+5zkKbtPz6MuEyHJNL82v3
-	 9P3Ru7YX73FJw==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e7632b193so5453385a.2
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 16:26:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqOAlZFEapv18g+BYQfxJSOBjqDVhdeUT9zPa9K4Tbuvc4rn2e8s/pLYSC6ywJeks2YTw85v0Kf5Q==@kvack.org
-X-Gm-Message-State: AOJu0YwjcBSGsSdJWidnNyCscA9RInSSRt9NYzgniK/Ozc/XhGluikK9
-	ypWBYJbz4+Cg7cb30effx63lwfefWL7jXquxJaBixbg9xeeYnB9NFRiFngJnuCz5OEGLxzkuDUt
-	Kfg4+fvF9mJ5Ze3ykmMBPNfjDQ+YW5bw=
-X-Received: by 2002:a05:620a:372c:b0:92f:199:b035 with SMTP id
- af79cd13be357-9367973f161mr458105485a.3.1786145205525; Fri, 07 Aug 2026
- 16:26:45 -0700 (PDT)
+	s=k20260515; t=1786147170;
+	bh=Ih4/vMKtjC0ICTAP+VeJSUaN55ExTa2E+IFm6J2Z3vE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=d2tMhiFEt/FNjGa039RVJKAL0/PjD+BSC0G4kW6g0dMN8NqJ7jfnyfC5isGM8s4l7
+	 xujO6aPCAgCH0rbiLlYjAwcpy4nWGgvDdhMMX17I/g1ocItdM4oM/6jSR4Oe2cB0Cv
+	 z+Y8reIcWlZqrYyQq+pyzLthexRqLJvMdjIgCZpA5FTPkhtOqYF9JGy0jCvC/Oy7Ft
+	 KOnppwc0P+vK6Dg95wpLiDrJjpy+z33vgxCSaSOhnJH8cegfhhXl7Tqp9hniysGeVq
+	 x+VlekkFOWW3b8ooa0pKHoGTnyE/7E2maWWeOsrP4LFeQ41VhFgZ+KXKzao9dK1ymB
+	 SjbX6P7Eil6Dw==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 0/2] mm/damon: fix nr_snapshots semantics and max_nr_snapshots check coverage
+Date: Fri,  7 Aug 2026 16:59:25 -0700
+Message-ID: <20260807235925.1146-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260807161900.57054-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com> <20260730122304.2496440-5-xueyuan.chen21@gmail.com>
-In-Reply-To: <20260730122304.2496440-5-xueyuan.chen21@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 8 Aug 2026 07:26:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zAWOQXzGv-4SAmCsWqDtpJNuZ=SMcX2e7Xp0QEU2DFBg@mail.gmail.com>
-X-Gm-Features: AUfX_mwMd3f5s4Yz6hb8nRTt6VgnEA6ch5mYz8OPOzoAMZHEcwXwwG8U9wt5VXs
-Message-ID: <CAGsJ_4zAWOQXzGv-4SAmCsWqDtpJNuZ=SMcX2e7Xp0QEU2DFBg@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 4/4] mm/shmem: split large folios only on -E2BIG
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
-	hannes@cmpxchg.org, youngjun.park@lge.com, baolin.wang@linux.alibaba.com, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6C799A000B
-X-Stat-Signature: 7emhj5h85k3cphgppd9ww5zkuq39epwp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4A43720007
+X-Stat-Signature: rn3a6mi3qidpo7dbh5wq3cwtntsqh8ho
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786145207-614586
-X-HE-Meta: U2FsdGVkX1+cogBvwdDmQMS3dsc1K3Vp1Ce1GsUviD9TL/gpsnvtQ/l8OMv+b4NROXgDQAJFQXCAqkTbTEmB3Ln6T3X8UR/kyn3bnQNH056MGUIIU+Xc2S6Qlk77mlSRJfJ3Z3GPokXP9pR6qWohVY6AlcWlOdO9zohFip5s3Z8jYXgVJs6FJoZnNkplLn6qbrKi5GFgtXDK1bCft6RvQIB/utiCy4WCu7nVsttfxa4aT4d0+EWHqY4rvTNiLqpBm5x8EwdC80PkkRujkXP2VdDo9WyaKSUDqy7A0AvLyOSOz2qAA4zp+AsqyepXsBRHLc/n+27CL7UPmztW/Mv1XpibX7PFkt65VIxB6QcD/j+rzlD3XTCB6y62CkZNQLldjqywTw1Qsn9jq2i7H8v3CETWkOv9vGANncRcFnTlWT744KonRyxexXmF9Bmf89/6PS0MoIYI48Np2T44PtFhgAmUMsOsd1Xmo9s+YeuwFW2u51Uk1J+udEwzpBfiL/4DBqHSRw3g+axT9SxgRlEgA2w7Gj4G+mOpIHH8HnTn0Z/whcE5W94FZfNdDcjuS4M7yhWmEq/J9useBab4N1Kw8tNC7fJr1gyiYhpWI6jWjZZNSMmlV5HP6ip9OXysujYrIGuxwyQ20pl+fXWUMdg1sBoMyS2UKwpOYi4ILVKJ0m69ZQXzLohv8z677iYvISNOEKRfwdHoe7lLr7QwNgbxewYdIONDOP+1PdkF6k0mqe/wrZgl0k5hAhsA32lxe2nS+IgQzuORHcVi0LCkSw/IMs2DcdnXx/fgvy/plEIPq6211yGeC/G4BFtjqPJwcZDjqG0VKhgsZQRWyewh2tp4PUuTfxoidI9LXFucRUBZ4uoPyFhvnMhPUPsmdTn7FDgRE0MdIHzVJLLV6hh0TCUZR8aITzgcJ5RM+bh7lWPQF7r/fFBwe5pF2lsCoUZF13q7cj/6SLbrnXNIrOxhqSR
- k0jprGaU
- b+8n61tddNLTnl4tpB70ZNfP/t2oTAYw2RyxYwFeYwBBp62MQHSHD0LdJGlGy5Xy3c5GsLgWztt99x6kaKz6/G9JJAYk1q03LCPdZMTOze0gZYMT/GG25P+khjkjAV4SD6rx2sshUnWlM8Y1Ko/EXfSzf4Z8zV/OG+vD0kZjMaZjslCrzVse9VQLJ5JhbBIBaCZOmX1d6PlYveYROykMXMMNMX2DJGt5Lqa1Mxh5Gi1fYaFmRwDGjqu+1AGajCKMV5Nlr44pZfeoF9/zVaMeCfgu8krQxdQXYR1QjkdTl7VIwl+fmkrJdt4hK2Bygg5MO7RewDtrJ6vipYz0f30RYxa3c+MnfmQ+zk483UGYLnm5iM+NIlSz8qJQCpSKrpuOJ5BTtBnRXkpGvRQQwNCB2ppYvQlkrpmxegYCqGxxy4XhtWAhaqcFXH40pxQ==
+X-HE-Tag: 1786147171-92744
+X-HE-Meta: U2FsdGVkX1+inuoR9mdAgMBCa69n6lZqN9u50eIgS2Bl2ILViKR6qa3Bzwt9/Vz3w6dQku8Ea1+a2/snk+nX+dt1BYDHUiyUf2aw6Of33doPobIpa1z1hq/Qdb0+EH7NCFuEgGHYCVAOya/3eT63F/JgtPcqY6QvD6Y/xKOjizzUAYz18S6cjGx3e5csd96NUe0VpdOelo5gTjch5/3EWIIx+CCcMVaw92/78yVgw0iRZnVwVyXVnkhZamgxFgkeRnX0YzYdTTXWdfIXvQR4LG46xhaD/Db8H8Nmucqh9J9RW2bX2/YU3Y4QuL7AvRrXxEwgICQalN3Eur/bi0QHK45606oUugy3smgtMAZy96lGf3kWW5hIe9NTlYsgZYAwwK6gZiG3DfhqfGFyhQpao3W4oWbl+m21sgeYVVS4llpWFCR31Chb6GvifL99uqUXBbspEKnfc0JCoAJRAbXginOtIyvkSjenbQmqI8fRxZpD/aORlf0aSg6UZRS7tAowEYg/HiT8AOzoy/F9ZOWrEnoK18x6dXuOJhZJGlDhNPryI7BN8vm7rqmijeDWRWMgQXd028068XxkKkkoVIQI5z7YqMYNHmgVtQkbS4tAN/Z6OpVx5hdXgSL0nE3kBkzI9jX9BqDaVpKHqcf5rfQliXOP1lbY6MVjcYCmtxlRCXkZ7Ao4Akgn0H74qojGX4lVS+f+RTt2HKCFG6FtWYov46lcH7mhWwJ1m4hlKzFz9Pwo6VdUFfKxhS8TKvyZ2TTi4qehNlcWJVDug+EEHyFYcxDgxOOb9uWgqjGrTmO59JDYvvz81ZB7iief10bI+nzTO/3EPE5NfNJGlh2mCsqNMJ/y68CiDisvOHV8k0oKHJq5AUHKbSAiOBiLFUtx0XWf+C80z+Qq9c7Wt9fr/qOkUJrdxzqzfEK67ryDeToZdGosYgqa5Hith1eh6USzOp+pB+OjOKObLMh51tnsMYz
+ f80uR82W
+ 3LlJTQs12SbwcsSddotaT1T4StwXO0ksc9M/Ow2n8IxNKS68acwm/zeTkTcU010Lozf0ZVO3A8D2Lr0zyF+i6/0I93nNPNP/S+/YCKtdOqxmD3iz3GtL6n2mIOLzPDYAD2xe79RyytMIdpOLEmW9VxwVax289A4yIYn9U867mI/+g9oftYySJw0C4wVlqmETYmNmYYGGBFvAHk/lcSNg6G3U8ue3INjRoyPrGOySN735DV9vU4O8McbxN5EOG1PjHZEoMImuwZBGGRpM0xrR4yPO4VhEWIDdLd3xvwzaiwNYaAOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,23 +91,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 8:24=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
-com> wrote:
->
-> shmem_writeout() currently splits a large folio on every
-> folio_alloc_swap() failure. With the refined return-value contract, only
-> -E2BIG indicates that splitting might allow smaller folios to be swapped
-> out.
->
-> Enter the split fallback only for -E2BIG. For -ENOSPC and -ENOMEM,
-> redirty and reactivate the folio as before.
->
-> Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
+On Sat,  8 Aug 2026 00:19:00 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-LGTM,
+> Hi SJ,
+> 
+> On Fri,  7 Aug 2026 07:12:13 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > Thank you for sharing this patch series.  However, I don't think the patches
+> > are fixing real problems.  Rather, it seems the poor documentation has confused
+> > you.  Sorry for writing the documentation in the confusing way.  I commented to
+> > each patch for details.  If you want, please feel free to send documentation
+> > update patches.  I will also try to find a time to do that if nobody does.
+> 
+> I will update those documentations! Thank you again for your detailed
+> explanations.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Thank you, looking forward to it!
+
+
+Thanks,
+SJ
 
