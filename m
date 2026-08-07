@@ -4,141 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45CE6C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 08:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07353C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 08:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34F1F6B0098; Fri,  7 Aug 2026 04:00:49 -0400 (EDT)
+	id EC0AF6B007B; Fri,  7 Aug 2026 04:37:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9056B0099; Fri,  7 Aug 2026 04:00:49 -0400 (EDT)
+	id E71C86B0088; Fri,  7 Aug 2026 04:37:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C85D6B009B; Fri,  7 Aug 2026 04:00:49 -0400 (EDT)
+	id D60F06B008A; Fri,  7 Aug 2026 04:37:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1E096B0098
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:00:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F6B71A039B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:00:48 +0000 (UTC)
-X-FDA: 85073726976.15.DA1A249
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A74E740008
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:00:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGxkSB7b;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786089646;
-	b=7MMbnDuQepdG35GLID/GvtlOdqhqxTlbYbvLPwSlY6pgaYo5PYWlRnpjMbyR7RgAIGmGOO
-	N/9jKrJZb4bBYIMXInWK0XmyLV4saRaAAzEmVYi1xk8D+AlVCgANoz1DYEEN5tHVFdJlyu
-	cjk89TKy2XbtDc9HY9vc6k+ZMmjMplE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGxkSB7b;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A42836B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 04:37:41 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8ABE51C089D
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:29:29 +0000 (UTC)
+X-FDA: 85073799258.03.40C8C82
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B7C252000B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 08:29:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aXiQ39mz;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786089646;
+	s=arc-20220608; t=1786091367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pp9Tsv29Kywtrh5hEdWeyb7iqMYUwLZdWf1jVABveyU=;
-	b=JHzle4ULF+J/FLvSL3HGBwSA9P9S4IhWahDWGDAvWdhfeSAFr1NVoFw+TVfmgOWQttGWIW
-	D3Yt35hDC/Wqjypbw29W3Ekm261J5H7ylieD+zSDmXBURLr9seQDk7azyVMrCI6SayyLAh
-	qkWaMxSdVP+ZnHL/C6BZsaG5JYpZ/TI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B54C60DB8;
-	Fri,  7 Aug 2026 08:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2156E1F000E9;
-	Fri,  7 Aug 2026 08:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786089645;
-	bh=pp9Tsv29Kywtrh5hEdWeyb7iqMYUwLZdWf1jVABveyU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BGxkSB7b0W3zfv5VH4I31EyJ3FHofLv5b2Ii6whX6K8yx6nU+vTpbHMSbnSq2nEye
-	 4TnU+twVU3U6n3IfnPx9Ab3xkkwZezuXsjCdIffZ4CtwasQ2F3NVGCdb/ttKomy8QQ
-	 uzaJoKSeIbmQAGtvUVmBGTnFwdEcZZ3w60MacBkZeIL45YZ3K29eCOcvH5oqYQxY/3
-	 ElseNhCP0U6R9XXGKLfb53IUM4M0nc0d1cRf9h0mpW9NN0RGJ0yXibvK4+zYnJi5QZ
-	 gCFrh35hpBwccq/EuTS0xf5/2a1khEFIvpBggIEtfv5G9covxlrryF1Nxlljewyilx
-	 FeCDqXkL4zhog==
-Message-ID: <ee7f1dc8-c37f-4ed9-9ef7-71a65aae96a8@kernel.org>
-Date: Fri, 7 Aug 2026 10:00:36 +0200
+	bh=jSdehXnGw+ibRHaOVjI8Ioi7JL8VFOTG325yque/uGM=;
+	b=hIeb23KywFNsTe+suEN6SyLaN7Cs3mPGIZ+0OOMvlXyHIfC6pCcwpBDXX3eJSrdErVmzDs
+	aLghpgGuVbVfYVu3GV/ZaOPDmJAGVS902JJNdI0eN1wtqNVIIybjJQ4/KUDBOPgQHgTv1O
+	p0fw+jG4CbPI3hQZSTEXysMAd6Z/wmI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786091367;
+	b=iO5S6LfAB6VnzQNX/SKfW6yROaPJFJuckB17D0BSPrxidcHm7tjuaedGxALGffr9tJ0Hse
+	9MWfAxptrH+gJVzWMQqi1JhFIk+VGc0Wn1xlkmDXtWBztDFvpk1xx2G/dIYisljgZlIgWi
+	+cKnBv0fI5WxHQGGols9KSfqiU8Dc5E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aXiQ39mz;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3811f512167so3748334a91.3
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 01:29:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786091366; x=1786696166; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jSdehXnGw+ibRHaOVjI8Ioi7JL8VFOTG325yque/uGM=;
+        b=aXiQ39mzfinRpjNlxPYfAekCVO5zVnuqCFGSu5ejvP+sKQePky6x+AwS1t3x4VA2dA
+         SG7D4opNobuYzio/s7+j+Wv3JiewKN62y3CXGXE2eMWpIE602f40/WmjPiEgVjkKKUX8
+         IczQFiRcs219S7iqANMqzEpGSysj8N4/mMseIjBxBIqvmmZoEapDHTj4j+AiHXEddRZA
+         kH1BzTILC6T7cAlJEvvBUvr6syZRe80lJ7r9hbgC8MqK3ZAgG+61GqzlrTXInmsjcwm2
+         F6krGT5zttB1vGV1nJ62ekruQxbE0x73H/edgd2Si9cptKVfG0QFC4kx+CSNuLfaew+j
+         QGsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786091366; x=1786696166;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jSdehXnGw+ibRHaOVjI8Ioi7JL8VFOTG325yque/uGM=;
+        b=Bp7rU35Yv+qLbLE5KNJUy/JcK2lzB+x5ZB+jW/Dh+dW8EW+HdDy6vmQ98xhQgx7oJr
+         m7wLpxs10yf3qU5Bec4wg9luAUzgMVZaSnfj70UdB/ke6rkGh9edOYzPHip2ZgkJKXcp
+         /ntB87EmyrPO/cTjDi0yvevfNzJhdIul6Ok0MDFiy4ulkGHt+kXH+zfPTHWa1pnfIxUG
+         XZDo499XA16XgdAwjztCuP9fgqjmzVad7+Pt+i7XinWLOxNW9/m4iWmt1cw9BYe74epB
+         vle6e63qk1NLU/8KKoz6H8jrTFI8W4/kuioXDqMiCYLVn4JqU4WkRVulX9RzKINcA5bm
+         Sx5w==
+X-Forwarded-Encrypted: i=1; AHgh+RpM9PaYqJUJLc02msJkF20atWrIcOMBz7OcnV03IWUQKWrplPpcJFSRAuXD1Yk6QWUSYUpWAChQXg==@kvack.org
+X-Gm-Message-State: AOJu0YxqOUXknK+gtlBUwp/hQWwDhxjhun4vjYl2IthYobn19FFBblix
+	9p9oQQZUS9uewJGs/iy2F4oiO4kPsRHDcslK9b+O2qAA7Tpf5kz3C5ua
+X-Gm-Gg: AR+sD12hnXpvoJNu+d8uSnLo75/nbfOs4bDDBsXWf/cgwiYljUSHNUsHZrIZmBtGZII
+	4Hoarqsada+gPRCBwJYACWAthEP1xm/IzVjgCBb5LXE+idXxiS7PCDMJJHU52HoJ7r55pygxNF4
+	5QV5Fg6ecOCGRvgabIZhmK/QjTC8OULzQDzKD05MisUQ1Brfv2EzmOxGhwTYtipY2yMWPPxY4En
+	gTK5EZUX/wc7JPYsaYIa1bzVuf6XELhgj159nl6mTzROED9s1GdRs9ebPaAFswvtFvQthk0IsS7
+	FUdgIQpuszCg1YrnxzmwlH8Jta2EhbQk3QHxCTnEboZn089StOl2HpQAkPqxRDdI/tLfW0gODK1
+	9W6tr2d1E44WfStWHkiYKf4CyHn+yNqQgrD7n7WWDHgJJHC/boaTK9N2ceWNqrXFdV0ZTyyQZTJ
+	NMKl+dI5sdUr9218mfip+UHjHFsCBE3zc84l3J2DJS01RiOFEWgnlcdjT5eZ6md3k5oeYUPu+ZS
+	17dVcuW1z0qP4bZLlDmJRReZ1iMc6hn6Q==
+X-Received: by 2002:a17:90b:41:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-3903c5bd850mr22010506a91.14.1786091366383;
+        Fri, 07 Aug 2026 01:29:26 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925ff23539sm1569505a91.11.2026.08.07.01.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 01:29:25 -0700 (PDT)
+Date: Fri, 7 Aug 2026 16:29:17 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
+	baohua@kernel.org, hannes@cmpxchg.org, youngjun.park@lge.com, 
+	baolin.wang@linux.alibaba.com, hughd@google.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com
+Subject: Re: [RFC PATCH v5 2/4] mm: distinguish large folio swap allocation
+ failures
+Message-ID: <anWAZ3T6Sz8bsKSo@KASONG-MC4>
+References: <20260730122304.2496440-1-xueyuan.chen21@gmail.com>
+ <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fork: reset pointer tag of vmapped thread stack before
- vfree
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: sparkhuang <huangshaobo3@xiaomi.com>, akpm@linux-foundation.org,
- bsegall@google.com, dietmar.eggemann@arm.com, juri.lelli@redhat.com,
- kees@kernel.org, kprateek.nayak@amd.com, liam@infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, mgorman@suse.de,
- mhocko@suse.com, mingo@redhat.com, peterz@infradead.org,
- rostedt@goodmis.org, rppt@kernel.org, ryabinin.a.a@gmail.com,
- stable@vger.kernel.org, surenb@google.com, vbabka@kernel.org,
- vincent.guittot@linaro.org, vschneid@redhat.com
-References: <anSVlVpUXrA8ra_z@lucifer>
- <20260807065351.93659-1-huangshaobo3@xiaomi.com> <anWPTt4DE-Q8PKry@lucifer>
- <15a1b3e5-825b-4ffc-9349-de771cbde7fa@kernel.org> <anWQIwKDHj-8SXO0@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <anWQIwKDHj-8SXO0@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A74E740008
-X-Stat-Signature: bqjjbt6jfzh1y5mbnfdzz6ari8gdd9oz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730122304.2496440-3-xueyuan.chen21@gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B7C252000B
+X-Stat-Signature: 55m7fuiy1ydb49ekj6rtxb7e8b84tkig
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786089646-250288
-X-HE-Meta: U2FsdGVkX18QeOV0vmbE1imf0UjMSXiGx9la+8578KDU4EDxolkMEoI5JrD3KGPllbQoDmgyDaSHObqvFNRXDFYaH63sNHUgaaCRhLj3vJLhLyuuqQ/c54pF84JtCEaMzRBm/eG8XOfu/7FcmOd5Znj7bO42KjMlbFvKIFjWIy9VHMaxbwyatwnqLKUHuzgCrVyuE2Jcgg+SryaS/RO5MmEC8NfiSrnEwQMSpQm1UFy3WSJ0uz6kjGomDH5k9Vmkvi3DIuDznaO2rjztK6AtqNf4ogRl+Xs4w52rLf8GjzVhsU3IiBEFrH1q5t2WwPVf8qWmi+GjyUmV6tc4b0pvQfLiFP1sVXHrAvC+qWh1PEZevuOqLC3rFPmDdCx1uh6Y6VZe2+NUBT4AUfLeSv05LmIlmn4lRAVKMUPq8Xv8jBtMJApkolqWREQ3xGIXgijCuVraG2ZOYI12w4dhaENp+dUvskjCzFNMZB8mb+9/6lPa0uSclIvje8X4HUpB/glBbGtSf0TDY1TTlGxstpCYMgHtRMELXlFfVDe2KjpIixgiZj+3waguY18AihCD+aQo992K/DIw6SL8s7xcgSG2UD/NE7HB6TzWuFVhpFuZwazE2W8XWJbtgth90dUI9tzvld8snvkqqx8vEpjE0LrX8oWyHO53/dmLXgcFmniKCBuLGZJ5/wj74Jtz9x/5twd9bKPS6TB2WjiGY38BAjImQNDnHntadek60fXzBPvMEm5ehI6OD9jl4DGp9YQPTXlWdI2vK/u+1bZqGqD/YduVxfT0SnI9ehcS1QdWa8vAJcBJ+kx+xMoPorhfNBGUlWI8pGYSCLXewt2UVEN4JKOnrHrOTNiUV8/baRmS0vWfdWAiASrmsWDqYZlYppIbRRve+Axz+PxKk6r/W519jzOeDYqkbewYxitW2qHRnZWu5KARUTXXzZB5AAKxJoZKQ2niEWpHmmdMuOoqgIaCxU0
- 2mz57O9A
- hZsrcYL6B8qcJjZ2qOVgjWyq7k2sapKV/PKwJ/zkfBw1LD0O+aQsrlceMwikXJPDfcQZ8w//fZFOPrS4I6JaLo73n6B1a5ZqEP0orT9RMtdHsI7j+bX25/8gqYMsIpZauJs5I3DonHNF1f0vF3Ut64sfhcdT5ZTkPQVElRonpsmTrXufFr0FT3u/TDmRBtubz3wkJgRrjTaAwgG4NCE6AM/8uhokU2MLfiZY1zj4MCx4ly+IfdJB+kaz7jM1C/bk6EAGeNz+9ZWcc2H19QZliPkci2UBgtQ9WupSnMR++E771NmrAJcsPd3LNTnU2sPohgiAvokBGe8kBdYk=
+X-HE-Tag: 1786091367-354512
+X-HE-Meta: U2FsdGVkX18hk7UEOA4vW/DsJ/Br6/tl8r7XBWnZm0ZMkUB6GVU63CM1PMjnRsX56G+rZgRrHPtafCUnZ2Q3omxQ0mC1wWk9oKHQz/adnrq2l7QmY67zWyzbvlCe4KlQTmHLGXMwfoKB5VZT0cwRxUB/F77glyWzEkDdiYsgYPLJhf2+9PseABabJtJdOLNn2IMvM9UfkXwsUFoWKBtBekl76niX45+E6HWjZ2T9knKMNtCeSjew9Xf6b3iOJDQBn2R9BCP79Z/0WC7/3+8b9ddNaQYJndi+w/ZAUi7WRMD7dJFFsRVhBs7JftOz5j44w7mqsB+2QmMVF+ovHvcVobCLeYNUrVzjm23xSeWs4F0IFhMhKrX6NPYy3tKvEs0HMsgv7Bvrnh2W+unsuv03UrMl2gZceMhhA901sT6LomYvEPvxeN7ScBLUNyNzSGtkf49lY/wYI/X6BDhdIZSS6RyhN45CNfcT8TgjGHEK6HDtr92qbkKWHXt8CBcAiaPG0j77SSUzZ4yzKG30aGVSJYkt/RawstCldmEz/CJMllB8rVTS3W+5HfOXvkhrb0IGqBJHFQbay/sG08f2d/yeF6AP7fOA1BqL2eU+uJeLwiDZ5E96Yy88PZawrSQtQB1cyb4HXF0IhYqG/AwgK7AHUG3HJRtOB8EoUPMQtjvilXvJT9Q6Na8FDUFqt3jqnORWy9LU8uhUBogfjsoKPP4VHSurmva6pPG9OqbvGOTkHwwFgiCtbBx/9EQXMpmRHfymmdTjfOfiTyMKqY6T/Fy+GYRF0p7xHyvBnYHgIV76R6dQ8xQl71VTxscdl0stsakfzWEvMXIsFj9zPel91J3auRWMfgjls46S8K9i5znX+WSgjtmXiXDBxUsuvE4qV7FNg46G/SNLhNRPmBfoKUtpV0GYNtF2KxeYTLPJQiHytn3x5T0jDrea70VjJnnpgrJHomWo4uIcQQkmaCvaTMk
+ WNJ9lAKg
+ QoPb+EcdpuhJcSZehLhNwDw2O7CohYmLzPpVVC3QZWIsT/RCh2tEso3mriDVYjSuw96fVn1Z1UkcrrS4ll71ItlfMb0yZsatIc6IZn+kzW+HrvO8Gcl0UNlcglvhpowZnh3VgWPjlQvv6Fum2Jlcj3VmHq4QIjBs6jNvMs9dt1YEW9n6gSafQ1t1u8hkw15GyKDL+xcM4EgN0kjGIAeDNp30rYPDLxZRhWpKxy2G0e5/nDVIj2Wj+yqrs+XmVUmQXb69wbciNvcWGz6KhSY4VLcviVKGSIo1OkQgAHgZADMxNrk1UFUAjVoXbTdC13U9YWGGYZkrqPYeXEZfEmBn7gq6hQdEccPQTnxqsMA1j0Hu+E6dqHepIgwQVoV0t5QX+oeyh1RtoozW0SEC3MhbgW9dp9U68xK2sJ2bJ3J9XD5qhE5SHRbPL+KkREbRiqMXuJNIptf6EajoSg5bWaX1YBvswWn6JbLctNGlhDnzr0BpsPf4RD2iaG3OPsqBP5nJAEsr4o3+9skxITH1pi4IEiMBSYjPGeZE0+3dmzYT5soX3rm4oZZ+e58N0vmrm5bt9qhM6v3k7QFOFzbdo3mKVxI0E0SewncTOZUtFlD0Xyd4DWSCBlpWny3hBLC9zlulXOrQ73rC+kSSXt7lCa/Jz92lKbhelJ2He9oymhZ9k0g1e0dNsRfxQYcICo7MF5PZecekMihYUqdrTTePEVT/MvoLucZMkEUhVoMG4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +128,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/7/26 09:58, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Aug 07, 2026 at 09:57:30AM +0200, David Hildenbrand (Arm) wrote:
->> On 8/7/26 09:56, Lorenzo Stoakes (ARM) wrote:
->>> I'm sorry that whole reply is more AI slop and I'm not reading it.
->>>
->>> I have zero interest in chatting to an LLM via a middle man.
->>
->> I think we should start charging a workslop fee of, say 100$ per patch? :)
+On Thu, Jul 30, 2026 at 08:23:02PM +0800, Xueyuan Chen wrote:
+> folio_alloc_swap() reports most allocation failures with a generic
+> negative error code. Reclaim cannot tell whether splitting a large folio
+> could make progress or whether there is no backing space at all.
 > 
-> I don't get out of bed for less than $1,000 ;)
+> Keep the global free swap count and the remaining hierarchical memcg swap
+> margin as separate inputs. The memcg charge path reports only its own
+> margin; folio_alloc_swap() combines the two layers when classifying an
+> allocation failure.
+> 
+> Return -E2BIG for large folios when a smaller allocation might still fit,
+> -ENOSPC when no global swap space is available, and -ENOMEM when the
+> failure is not helped by splitting.
+> 
+> For early large-folio rejections, check global and memcg swap availability
+> instead of returning -E2BIG unconditionally. On a memcg charge failure,
+> swap slot allocation has already succeeded, so use the remaining memcg
+> margin to decide whether a smaller charge might fit.
+> 
+> This only refines folio_alloc_swap() return codes. The reclaim callers are
+> updated separately.
+> 
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Suggested-by: Youngjun Park <youngjun.park@lge.com>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> ---
+>  include/linux/swap.h | 16 ++++++++++++----
+>  mm/memcontrol.c      | 32 +++++++++++++++++++++++++++++++-
+>  mm/swapfile.c        | 32 ++++++++++++++++++++++++--------
+>  3 files changed, 67 insertions(+), 13 deletions(-)
+> 
 
-Oh, sloppers are everywhere, we're going to be rich! :)
+Hello Xueyuan,
 
--- 
-Cheers,
+Thanks for the patch!
 
-David
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 0544b2ec4c56..7d12058174ae 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -509,12 +509,13 @@ static inline void folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+>  #endif
+>  
+>  #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
+> -int __mem_cgroup_try_charge_swap(struct folio *folio);
+> -static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+> +int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin);
+> +static inline int mem_cgroup_try_charge_swap(struct folio *folio,
+> +					     long *swap_margin)
+
+Am I the only one that feel this returning argument is a bit ugly? See below..
+
+> +/**
+> + * mem_cgroup_get_folio_swap_margin - get a folio's memcg swap margin
+> + * @folio: folio whose memcg margin is queried
+> + *
+> + * Return: Remaining chargeable pages in the folio's memcg hierarchy.
+> + */
+> +long mem_cgroup_get_folio_swap_margin(struct folio *folio)
+> +{
+> +	long swap_margin = PAGE_COUNTER_MAX;
+> +	struct mem_cgroup *memcg;
+> +	struct obj_cgroup *objcg;
+> +
+> +	if (mem_cgroup_disabled() || do_memsw_account())
+> +		return swap_margin;
+> +
+> +	objcg = folio_objcg(folio);
+> +	if (!objcg)
+> +		return swap_margin;
+> +
+> +	rcu_read_lock();
+> +	memcg = obj_cgroup_memcg(objcg);
+> +	swap_margin = page_counter_margin(&memcg->swap);
+> +	rcu_read_unlock();
+> +
+> +	return swap_margin;
+> +}
+> +
+
+Will is be good if we just always check the margin use this helper
+on alloc failure? Alloc failure should be a rather cold path I think?
+
+>  bool mem_cgroup_swap_full(struct folio *folio)
+>  {
+>  	struct mem_cgroup *memcg;
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 70b90fa9c2a0..ae62c9f9c0f2 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1735,23 +1735,28 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+>   * swap cache.
+>   *
+>   * Context: Caller needs to hold the folio lock.
+> - * Return: Whether the folio was added to the swap cache.
+> + * Return: %0 on success, %-E2BIG if splitting the folio might allow swapout,
+> + * %-ENOSPC if no global swap space is available, or %-ENOMEM if splitting
+> + * would not help.
+>   */
+>  int folio_alloc_swap(struct folio *folio)
+>  {
+>  	unsigned int order = folio_order(folio);
+>  	unsigned int size = 1 << order;
+> +	long swap_margin = PAGE_COUNTER_MAX;
+>  
+>  	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+>  	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
+>  
+>  	if (order) {
+>  		/*
+> -		 * Reject large allocation when THP_SWAP is disabled,
+> -		 * the caller should split the folio and try again.
+> +		 * Reject large allocation when THP_SWAP is disabled. Check below
+> +		 * whether splitting and retrying can make progress.
+>  		 */
+> -		if (!IS_ENABLED(CONFIG_THP_SWAP))
+> -			return -EAGAIN;
+> +		if (!IS_ENABLED(CONFIG_THP_SWAP)) {
+> +			swap_margin = mem_cgroup_get_folio_swap_margin(folio);
+> +			goto failed;
+> +		}
+>  
+>  		/*
+>  		 * Allocation size should never exceed cluster size
+> @@ -1759,7 +1764,8 @@ int folio_alloc_swap(struct folio *folio)
+>  		 */
+>  		if (size > SWAPFILE_CLUSTER) {
+>  			VM_WARN_ON_ONCE(1);
+> -			return -EINVAL;
+> +			swap_margin = mem_cgroup_get_folio_swap_margin(folio);
+> +			goto failed;
+>  		}
+>  	}
+>  
+> @@ -1775,13 +1781,23 @@ int folio_alloc_swap(struct folio *folio)
+>  	}
+>  
+>  	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+> -	if (unlikely(mem_cgroup_try_charge_swap(folio)))
+> +	if (unlikely(mem_cgroup_try_charge_swap(folio, &swap_margin))) {
+>  		swap_cache_del_folio(folio);
+> +		return order && swap_margin > 0 ? -E2BIG : -ENOMEM;
+> +	}
+>  
+>  	if (unlikely(!folio_test_swapcache(folio)))
+> -		return -ENOMEM;
+> +		goto failed;
+>  
+>  	return 0;
+> +
+> +failed:
+> +	if (get_nr_swap_pages() <= 0)
+> +		return -ENOSPC;
+> +	if (swap_margin <= 0)
+> +		return -ENOMEM;
+> +
+> +	return order ? -E2BIG : -ENOMEM;
+>  }
+
+How do you think if we apply this on top of this? (Not tested)
+Should be no behavior change but outside the existing races, the margin
+read moves from charge time to failure classification time, a small
+TOCTOU, which the original also has but in a different way.
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 7d6216c8b830..dcf01d4c5e1b 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -490,13 +490,12 @@ static inline void folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+ #endif
+ 
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
+-int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin);
+-static inline int mem_cgroup_try_charge_swap(struct folio *folio,
+-					     long *swap_margin)
++int __mem_cgroup_try_charge_swap(struct folio *folio);
++static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+ {
+ 	if (mem_cgroup_disabled())
+ 		return 0;
+-	return __mem_cgroup_try_charge_swap(folio, swap_margin);
++	return __mem_cgroup_try_charge_swap(folio);
+ }
+ 
+ extern void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages);
+@@ -511,8 +510,7 @@ long mem_cgroup_get_folio_swap_margin(struct folio *folio);
+ extern long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg);
+ extern bool mem_cgroup_swap_full(struct folio *folio);
+ #else
+-static inline int mem_cgroup_try_charge_swap(struct folio *folio,
+-					     long *swap_margin)
++static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+ {
+ 	return 0;
+ }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index b4c65ccf3538..d89054dd96a8 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5650,13 +5650,12 @@ int __init mem_cgroup_init(void)
+ /**
+  * __mem_cgroup_try_charge_swap - try charging swap space for a folio
+  * @folio: folio being added to swap
+- * @swap_margin: remaining memcg swap margin if allocation or charge fails
+  *
+  * Try to charge @folio's memcg for the swap space at folio->swap.
+  *
+  * Returns 0 on success, -ENOMEM on failure.
+  */
+-int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin)
++int __mem_cgroup_try_charge_swap(struct folio *folio)
+ {
+ 	unsigned int nr_pages = folio_nr_pages(folio);
+ 	struct swap_cluster_info *ci;
+@@ -5675,7 +5674,6 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin)
+ 	rcu_read_lock();
+ 	memcg = obj_cgroup_memcg(objcg);
+ 	if (!folio_test_swapcache(folio)) {
+-		*swap_margin = page_counter_margin(&memcg->swap);
+ 		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+ 		rcu_read_unlock();
+ 		return 0;
+@@ -5689,7 +5687,6 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, long *swap_margin)
+ 	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
+ 		memcg_memory_event(memcg, MEMCG_SWAP_MAX);
+ 		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+-		*swap_margin = page_counter_margin(counter);
+ 		mem_cgroup_private_id_put(memcg, nr_pages);
+ 		return -ENOMEM;
+ 	}
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 5d8d04576c13..09760985b911 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1756,7 +1756,6 @@ int folio_alloc_swap(struct folio *folio)
+ {
+ 	unsigned int order = folio_order(folio);
+ 	unsigned int size = 1 << order;
+-	long swap_margin = PAGE_COUNTER_MAX;
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
+@@ -1766,10 +1765,8 @@ int folio_alloc_swap(struct folio *folio)
+ 		 * Reject large allocation when THP_SWAP is disabled. Check below
+ 		 * whether splitting and retrying can make progress.
+ 		 */
+-		if (!IS_ENABLED(CONFIG_THP_SWAP)) {
+-			swap_margin = mem_cgroup_get_folio_swap_margin(folio);
++		if (!IS_ENABLED(CONFIG_THP_SWAP))
+ 			goto failed;
+-		}
+ 
+ 		/*
+ 		 * Allocation size should never exceed cluster size
+@@ -1777,7 +1774,6 @@ int folio_alloc_swap(struct folio *folio)
+ 		 */
+ 		if (size > SWAPFILE_CLUSTER) {
+ 			VM_WARN_ON_ONCE(1);
+-			swap_margin = mem_cgroup_get_folio_swap_margin(folio);
+ 			goto failed;
+ 		}
+ 	}
+@@ -1794,10 +1790,8 @@ int folio_alloc_swap(struct folio *folio)
+ 	}
+ 
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+-	if (unlikely(mem_cgroup_try_charge_swap(folio, &swap_margin))) {
++	if (unlikely(mem_cgroup_try_charge_swap(folio)))
+ 		swap_cache_del_folio(folio);
+-		return order && swap_margin > 0 ? -E2BIG : -ENOMEM;
+-	}
+ 
+ 	if (unlikely(!folio_test_swapcache(folio)))
+ 		goto failed;
+@@ -1807,7 +1801,7 @@ int folio_alloc_swap(struct folio *folio)
+ failed:
+ 	if (get_nr_swap_pages() <= 0)
+ 		return -ENOSPC;
+-	if (swap_margin <= 0)
++	if (mem_cgroup_get_folio_swap_margin(folio) <= 0)
+ 		return -ENOMEM;
+ 
+ 	return order ? -E2BIG : -ENOMEM;
+
 
