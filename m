@@ -4,85 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE390C5AC7C
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 06:54:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E671C5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 06:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD0786B0093; Fri,  7 Aug 2026 02:54:03 -0400 (EDT)
+	id 7D0D96B007B; Fri,  7 Aug 2026 02:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA7E66B0095; Fri,  7 Aug 2026 02:54:03 -0400 (EDT)
+	id 763406B008A; Fri,  7 Aug 2026 02:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBD836B0096; Fri,  7 Aug 2026 02:54:03 -0400 (EDT)
+	id 5FBE86B0096; Fri,  7 Aug 2026 02:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 924A76B0093
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:54:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF6EAA02E2
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:54:02 +0000 (UTC)
-X-FDA: 85073558724.16.E40A0EE
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E5C0A4000B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:53:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of huangshaobo3@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=huangshaobo3@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 313E76B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 02:59:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD457160328
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:59:03 +0000 (UTC)
+X-FDA: 85073571366.14.605C641
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 59C1B120004
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 06:59:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=b6abVgzg;
+	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786085941;
+	b=iaeifcaO6XULpZyTJLBWXTSBADDrpKd0JN9QfpG9hR3Oi9WfyZRjIbRHLvzanKV+GWYHdZ
+	90Q2HPJOsFDZftXnPxey9aCA52pRk3cXGJBgBKvy5PsiITkh4114G4YCoWEKz2tr4I51pg
+	FlSAT9bKVMDExIhe6HU9I6s4nVk3bGA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=b6abVgzg;
+	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786085641;
+	s=arc-20220608; t=1786085941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y+SijTlHd5AhxqNKcUNtNYXXpBBE/xXrgQw+KpdNqIQ=;
-	b=JUxkeyrqbXgpNlKCeYmq8c2u9JI9DbP+zpbzENQalVP0hXhM/k1dWikjSlLRkrlVSbLbH0
-	GzqfDDSsJAZ950N12RHpmQqjq/Hus+ZcxcJx69JbeMrttkg2kZ8n9FSMagbHqjQ8i6m7Vz
-	fb4JN2HEsgVOtoEa0WUnkaCJdjsYOZY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of huangshaobo3@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=huangshaobo3@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786085641;
-	b=dJs6BedOuvyZgly9JvHr2MUqQUpLywazd8IRgNgO+IyL0RU34CMb3qy9F2fHSYmgi1xQAL
-	JeoQea7tyFs5Gi6h5mmRVc4VjsrX4Cp7YhujhgIwqJ6H6LioKQOH3y681yZyjUhjNhFFvr
-	C+0K4+jra7QVxgKmkHljzv9nXKWpen0=
-X-CSE-ConnectionGUID: /3w6XIUhRMmC8WuO2Pwtcw==
-X-CSE-MsgGUID: ggvO1g2JSU2ZEXXUbZBaXw==
-X-IronPort-AV: E=Sophos;i="6.25,210,1779120000"; 
-   d="scan'208";a="184867146"
-From: sparkhuang <huangshaobo3@xiaomi.com>
-To: <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>,
-	<dietmar.eggemann@arm.com>, <huangshaobo3@xiaomi.com>,
-	<juri.lelli@redhat.com>, <kees@kernel.org>, <kprateek.nayak@amd.com>,
-	<liam@infradead.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<mgorman@suse.de>, <mhocko@suse.com>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <rostedt@goodmis.org>, <rppt@kernel.org>,
-	<ryabinin.a.a@gmail.com>, <stable@vger.kernel.org>, <surenb@google.com>,
-	<vbabka@kernel.org>, <vincent.guittot@linaro.org>, <vschneid@redhat.com>
-Subject: Re: [PATCH] fork: reset pointer tag of vmapped thread stack before vfree
-Date: Fri, 7 Aug 2026 14:53:51 +0800
-Message-ID: <20260807065351.93659-1-huangshaobo3@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <anSVlVpUXrA8ra_z@lucifer>
-References: <anSVlVpUXrA8ra_z@lucifer>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ra4H8CAbtiN9wPr1aKFBAag6HNf0qBuveAYY5O5upyA=;
+	b=4YbME0Q4lvultG1KtSvOtxdSgnI/OKKSjVbYQd5N4iF+E1/UI+ehp4FcNjwZJCnTh1NZtl
+	+DU730BL3o95MrF22J0J7aY6rv3KK5vh70kI5f0WT77DjPyqBGec/uAv74y321cIuAhe71
+	Py7Q3jiWXAr3bX0AZrGVGucnTXRgxEw=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770Huoo016275;
+	Fri, 7 Aug 2026 06:58:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Ra4H8CAbtiN9wPr1aKFBAag6HNf0qB
+	uveAYY5O5upyA=; b=b6abVgzghGiyJP2Wlz0QxQ4Xlm4EEGD9Kpi/bbrlqUSFBE
+	peaClBZE7a6uUDxpMzlqxLdBYmzJ2Zv0Gov1Z/ABs95zQALrNBxETA0/pEucil/j
+	W+YyJwlwpe3OK1MAOCII7fcp3YeD9G589urjh/7H6praJpDu3PDyifCYlbxg55Wq
+	kegIhHrXFaKgEStmSWQn7LYsur2nUZn/xPNaUh2EUQxX/E75LETTqXwjtCkcIvTM
+	6z2V+hipWhFW5E/1SdFcNJm3hHGg12nD12POK8woGUy/Cd3cVuoSGV0jyJiT1nQe
+	XgoPgNhStcc1pjBG2Dfbs0hQJW5cw8oy/wETB5bQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy00am7a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 06:58:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6776uLDe003221;
+	Fri, 7 Aug 2026 06:58:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qxspg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 06:58:31 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6776wSir33882500
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 06:58:29 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D3B0620040;
+	Fri,  7 Aug 2026 06:58:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4351E20043;
+	Fri,  7 Aug 2026 06:58:26 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.55.180])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  7 Aug 2026 06:58:26 +0000 (GMT)
+Date: Fri, 7 Aug 2026 08:58:24 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH 6/9] mm: convert PTE table entry to pte
+Message-ID: <fab9fc78-1e1d-4d5b-a9ca-92f3ebd04108-agordeev@linux.ibm.com>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-7-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-Originating-IP: [10.237.8.163]
-X-ClientProxiedBy: BJ-MBX03.mioffice.cn (10.237.8.123) To BJ-MBX01.mioffice.cn
- (10.237.8.121)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806083926.1807279-7-usama.anjum@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA0OSBTYWx0ZWRfX3Npn1dSDlp+R
+ fqhR9MpXZOAAKnyVJ8e3VxdJ3uPpsfM7vsZzpddpvCei+hGCUgHlBFVERXxX+W23gcpS04A1TAu
+ ZsTRXf6ZMD17BVZmsTCM0lUCa3PumjU=
+X-Authority-Analysis: v=2.4 cv=VPTtWdPX c=1 sm=1 tr=0 ts=6a758218 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=7CQSdrXTAAAA:8 a=VnNF1IyMAAAA:8 a=MkxDnzPc83ckttyupOUA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-ORIG-GUID: 9g22-5Yiq-VIyR9utDe_g8M8U8wsuEOd
+X-Proofpoint-GUID: 9g22-5Yiq-VIyR9utDe_g8M8U8wsuEOd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA0OSBTYWx0ZWRfX4qeGdjjX3Iob
+ oR2d/W90tNYt47jYoawp2wnB7y1FcZkNxxg7/PT57hDZR5feFluugIlRZ22mBQ/td/U5spNK5Sw
+ r8fBBZDJMOMHDyBDHn28hS5vFD1IBzJcw9uh6xxZ9XoecZCsQnhJUSSf9noMzRB2RMvDZxhPIkf
+ XMKQ1X4w4JsUHL/vsYXt9nxlaz1I/q7ljQgCtXwMvAVt1kijbs35mMQ7c76oGi39I1XSIpxXjmb
+ kIMcLde1EyTpmQmaPbN+E3LbUk4M/lkkgjjjvsZIBgTXWy3e0GMD7NaUrStoYwo4ESb8Z4Wsdqh
+ +581CUAUBwBVUa2TokmdsZzGbrL67tdrfft71SfQsy0ZlWFNR+iL1PR2Oez6zshpb+e7rynA9dG
+ f8FbSxO38FmGhTq0nvrdQcjHK2fKXR2vKx64CE0UHGLhgbh7cUWWpBSkiNUoiKjHZV0BphvCO4H
+ jlupay2/A2mIbK8uZUQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070049
+X-Rspamd-Queue-Id: 59C1B120004
+X-Stat-Signature: yiwozfpg6akpn86xmz1uifmdwpf7xg68
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E5C0A4000B
-X-Stat-Signature: 67zzxqr4tboaaqzbi3bxcrxnu9mux5bs
-X-HE-Tag: 1786085639-452522
-X-HE-Meta: U2FsdGVkX1/FvULVW8dAvo3nvHtlKGZ3UtQkbdPZoc6E4t4QOTQPYEyVfd7dQN/Rcr4nJtCA11cLUGI1gDtwGEyBMoqY7+FiT7hSMZnRq3OyNMZQnjcIXIBeAqYl0bZZKRwpHwjVO1Cx/5RjYfHtNJ5Js5tQ50h5R8IASD0eq+/k0/E+9NM3enBlnLkqsVKQOgawkeJPztUZEfgc+RhmCQN4zlqcVEMGm/JjBcvYsWVbn5vAK2fVrFzY2r0YP1gQjpyaBT/U2Mr6THDbjWEZ/fZWKjiw+qzhXEo4sVFAJdso5b/YNc8+tITkS5HXDlT38Hq/HUEuLpfHp+hYSenNHzvHWvGDya8bRIEbaHpjTAA29fHftJfqIWPdgNc2OT/h7W88okg7R7w2twRq1U0Fc3b2niYVBtkGPumH3AnTdGTiaYtnzWmmb0Nl2Aiuef6Xug03zKJXfZSRYX3oDzYr/pVsqYTPE2F7jJivE0nN1cszwAxVC1TAr8zNK4g6cqpUPGur5mvh3nWbuLFUs61P1XmCTVE7qvbMID6LJ2ifUfpGN4xIawXkxNqasR0EpGCraLTTp4hmIMymm1wtxycQ39h778LIs/jmqBMa7jZZOV8ZZGgyMl2ZShJYVpCKIhKq0RvAVSidnCH8oAIKeGEfpcf/0LXmwb+35glVb1i7dGC8OeVTbbFNenLfT04orH7aax9O/lGxfoIbmMTupY/gD/QOAtsK0DviGP31jJrpyjn+8hOmbw3Z4Frt0QCMRXM59UR8XtN+xSxkQ04GugRYV1tcUBv+vAQwgXf3LjhOmyidMNnjGUBZdpphGNlg0gAMiMWo0yNEleuKbRdU/GZ1+t9QtBRpRKzVKpN07YSQlVaJTlAOzg0dVS+NZIm/Ras/uGofjKB2fHnx3hSnNLjs0UYT76F/H0/bXx5s/fXb/nCCmFqsLPMblzxkAdlN8kHBuFgBb6laIfrCtZRX3oS
- irFEgMLq
- NcV7DT0TqJNjQkJPnmXj0LiAFvGDwX/nuNzcyaeLAzQPleMv5tD84xtzgVQAbX5ucPXnOeOZgY3WY+t38J3K+mmHxXaPk/adxnr2DXhYjr+aumJ6OVWWviJuU3IRKWmuskuplCe9kZ0G9lzFIvHQkfY5tLhmE6WzkKU8Yo90qBRRCwhVxT7tg9pmFNg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1786085941-229523
+X-HE-Meta: U2FsdGVkX190NrOEu1NPKUMevfOPxXqAPREo4njNyK5xn1llOUAW6jPXZGEA+ZEPk0+jp1cYsO1a2ftx6CARd410wWiUJnzBFCUP0ZesLDolL7F/eClpre80O5FFx2cCvUJLW2sakIqHg1OZSD4MJNyIEmjmOlDmezBL624V6G0S+Fus2kNUh9tzkDVskhhx/U6Dh8vTN4DoE7HRVMzeBSb2PVoFs690L9E5zzFUcQmsXepAIUHi+pt3rvTsVyomqWGzCeLXTF51egyniqUTWT8CXTA66zTz4W3nJl+jTd6BB/Lo0gO4CCrPwiG6pxAlYde5veO+NiZIn2SdHEqbYhEUSg6tViUfCW/7VKKzlPngtbS8jNe0gWSVpJoehtfGzPVeQL+jHvUxigmrFeaaUWR6dl2hIkAOg4HMNSp1wHU+kdzf/3z2AV5gBxsUsiH4tnMfcnWrrSFiuNsW76njwVSY2WOu3bsHFozfQlSGnx+FLHFlFsu2ZIgIeaNLLbMdjV2tA9xJ9HY9mjDKQXUyG6ImSHDf+DDGM+wLJ//Dmb80f4T48ZagVuUFGGfbFuhIBH4Pb1lfyeUqtfxrR83O/a5N6M/WyfKNEpemtaEtxr68toIuU6Obre8dyhLb2d7ALdsqc7XjBXfpjXNdBcUsxc88UtSMcCLiOU0TJKhijvDERManSvWoBfxYKjF6g9rFxlexoVZDhI5bJ+mmHO+NmP7PA5Vja8CkZ9BgX5PZZNSaBVN0bC4oLpGN5MecXmcv+hkYTafbsNTdwv0+aTsOK3Vp7wQHjto8wVOyykZVban/bKAfU9ldaXwx/CP2/ltJpCzGoFb8SO1pRGkDZa58zLDw7xNQmZqYTk9N+2rD+DBUL8WnFquD8NhY7aKjIDf72ojtiMwuOpC2Vg2uOkA/9oJP8WsxfgOqNOdb6qZpzsl2Q5cnrnOPk4VI95Og8uZ2iqjkMmZFQgZEGBcmYPO
+ SKmoZsqw
+ awtuIRTbaXTh5GLEmXnl7uTeaoFyTOQg6c+l10CpxP1nNCqwwu+5+OTVRTqNbeUX++bdl7r8ucgqfixhPFDf6PxgSsWer6DTRCMNWIV/R5P/XD9Z++hWnClalg6h/fiIG6o1xr9i08BcVx5ehxcl3DtZIbRFI9yodnLtLuHy7qX9Vevguk5ekmQpPtqhnfIyQ5vUUa6BAhm4oyo5d24ieC1mMjMMPCS+/onaXfH8fNOkeUWy9zGlxPdXYNo9W+LgFN07pXQmD5IupVRvb3JnfdhCeDHq9YiR6ubv2WqlTkqOmClQyorrX4uVNOd7eQHK21BqQ8jkN/xsVcUgxX84kk7jf/U4xtTXVMDQDSz618Oq/PEUMvb6F1M+eYxEYkDx2oqvsZ/+i0AJUAcJLODKqLGv0zniR8zvGvQDLcVbNPHqaIRO7AUj6hsG3kDBVHChVmfivs9qJSZHhPzA+0Wxw4+tetARIAkJ9tnMc3Tt0Q/feeZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,60 +184,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,=0D
-=0D
-Thanks for the review. You're right on the process points =E2=80=94 I'll fo=
-ld=0D
-those into a v2 (real name, Assisted-by: tag, drop Cc: stable, trim the=0D
-comment, correct the Fixes: target). I won't re-spin it just yet though,=0D
-for the reason below.=0D
-=0D
-I want to be upfront about where the analysis actually stands, because=0D
-I'd rather not push a fix whose rationale I can't fully back up.=0D
-=0D
-The one-line change itself is sound and follows existing precedent:=0D
-c08e6a1206e6 already resets tsk->stack to 0xFF, and 528a4ab45300 does=0D
-the same in scs_free(). A 0xFF-tagged pointer bypasses the KASAN tag=0D
-check, so vfree_atomic()'s llist_add write to the freed region stops=0D
-faulting regardless of what the memory tag currently holds. That makes=0D
-the reported false positive go away =E2=80=94 that part I'm confident in.=0D
-=0D
-What I have *not* nailed down is why "memory tag: [ff]" shows up in the=0D
-report in the first place. On the 6.18 android-common tree:=0D
-=0D
-  - At allocation __kasan_unpoison_vmalloc() tags vm_area->addr with a=0D
-    random tag (0xc2 here) and sets the backing memory tag to the same=0D
-    0xc2, so they match at that point =E2=80=94 the report is not from the=
-=0D
-    alloc path.=0D
-  - c08e6a1206e6 resets tsk->stack to 0xFF (SP can't be tagged); its=0D
-    commit message explicitly notes the stack *memory* still gets tagged.=0D
-  - The only caller of kasan_unpoison_task_stack() =E2=80=94 which would wr=
-ite a=0D
-    0xFF tag into the backing memory =E2=80=94 is the idle-task path in=0D
-    kernel/cpu.c. It is not called for normal task stacks, so my earlier=0D
-    commit-message attribution to that function was wrong.=0D
-  - page_kasan_tag_reset() only touches page->flags metadata, not the=0D
-    physical memory tag, so that's not the source either.=0D
-=0D
-So what flips the memory tag from 0xc2 to 0xFF between allocation and=0D
-the RCU callback remains an open question. My suspicion is the async=0D
-vfree_atomic / delayed_vfree + page-reuse interplay during the reboot=0D
-SIGTERM storm (the trace also shows page flags kasantag=3D0x55, a third=0D
-value inconsistent with both), but I haven't proven a specific path.=0D
-=0D
-Accordingly I don't have a deterministic reproducer. The report is=0D
-reproducible only in the sense that it shows up during reboot with heavy=0D
-thread churn; I haven't been able to trigger it on demand.=0D
-=0D
-Given that, I'd like to hold v2 until the 0xFF source is understood=0D
-rather than ship a commit message that hand-waves the root cause. If you=0D
-or the KASAN folks have a view on whether the reset_tag fix is acceptable=0D
-as a "stops the false positive, mirrors existing precedent" change=0D
-without a fully root-caused explanation =E2=80=94 versus waiting =E2=80=94 =
-I'd=0D
-appreciate the steer.=0D
-=0D
-Best,=0D
-Shaobo=
+On Thu, Aug 06, 2026 at 09:38:44AM +0100, Muhammad Usama Anjum wrote:
+> The non-MMU stub receives hw_pte_t but returns a logical pte_t
+> value. Convert the stored entry through __pte_from_hw() before
+> returning.
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+>  include/linux/hugetlb.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index bc0b9c65aa1d0..9e8b391aa4bc9 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1283,7 +1283,7 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>  #ifdef CONFIG_MMU
+>  	return ptep_get(ptep);
+>  #else
+> -	return *ptep;
+> +	return __pte_from_hw(*ptep);
+
+But this is a direct dereferencing, which breaks the whole point, isn't it?
+
+What about introducing something like pte_t ptep_get_sw(hw_pte_t *ptep)
+to be used in exactly situations like this? With that the semantics of
+hw_pte_t pointers becomes straightforward and closes the still ongoing
+"storage vs lifetime" discussion:
+
+hw_pte_t*     points to HW-formatted page table entries
+
+ptep_get()    is used to obtain HW-linked/attached entries, and may wire
+              extra code like [1] or [2]
+
+ptep_get_sw() is used to obtain HW-unlinked/unattached entries and in
+              most cases is just a direct dereference
+
+The caller should always know whether the entry is attached or not, so
+confusions like [3] are avoided.
+
+1. https://lore.kernel.org/linux-mm/20260526-kpkeys-v8-21-eaaacdacc67c@arm.com/
+2. https://lore.kernel.org/linux-s390/650903a4-0dd9-4e6b-9d4b-3c32c5657236-agordeev@linux.ibm.com/
+3. https://lore.kernel.org/linux-s390/b44e071d-7c9d-4e7e-a84d-4af3499a5a05@arm.com/
+
+>  #endif
+>  }
+>  
+> -- 
+> 2.47.3
+> 
 
