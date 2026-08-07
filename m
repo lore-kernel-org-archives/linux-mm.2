@@ -4,114 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D88C5AC80
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6BDC5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:45:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E56456B0095; Fri,  7 Aug 2026 05:35:43 -0400 (EDT)
+	id 653966B007B; Fri,  7 Aug 2026 05:45:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2D966B0098; Fri,  7 Aug 2026 05:35:43 -0400 (EDT)
+	id 5DEAF6B0088; Fri,  7 Aug 2026 05:45:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1D466B009D; Fri,  7 Aug 2026 05:35:43 -0400 (EDT)
+	id 4A8F36B008A; Fri,  7 Aug 2026 05:45:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0DF26B0095
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:35:43 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 042F6160258
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:35:42 +0000 (UTC)
-X-FDA: 85073966166.22.A1305FA
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3C0C6C0007
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:35:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R2Km9XkQ;
-	spf=pass (imf22.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E0A26B007B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:45:20 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01DA21202E7
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:45:18 +0000 (UTC)
+X-FDA: 85073990358.24.65089DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6B319120004
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:45:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXvKR5d1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786095341;
+	s=arc-20220608; t=1786095917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wpE9LlR4n7E+nsWeZA4Ufk20Oj2MKir8BCmBsXj1cZ0=;
-	b=hoD69HWZIj6XNs6/RKrn/C9xCUIUUHMmQTYd/VcQtRLt5WkkXMMupHm7+itT6nWYf7OANs
-	XVvkjnjAPxkXT/BuSxPaagGXsuuYzQUl0wX1OZHUuxjysdbi84b2u3B9qq8MsxQxnRWVwr
-	kWdcZDDYuawQMPHAxIVYJnQQz88CjiI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786095341;
-	b=UxH/XlQDdhR+BAJNl737Ou/jpeJ4SQQmcxIJVgDFetS62kB26FPxfnUnMILHeg+w6v8mO0
-	Haa19weArY09FdCCe1TIpf8y/beiUGPm0qlUcZek8hTxg78g6D2TG4NRGbGB+fWIpj5+KJ
-	bY/IPXadNMp1bsnrPm7tYhpTiRmFTzE=
+	bh=8RITH1nY/nc7IpashnTGE42JIybUfWu56Yp7J/1Iy1s=;
+	b=8fK06sgkol4S7cghuBAQ4dnlwUG1XnHKa5CFdBe0YGUpuhPB7TbOrZBYAMIoUVra63j80y
+	NU0z5anUedXlWr4TB+87cSPBmseE6zdZHmeUjttTQMithIvqQ7xhSxvOxKlZktNojDaAdM
+	y4pb0oBCBGhiSlXkqXdf7eEOrwf3hw0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R2Km9XkQ;
-	spf=pass (imf22.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so2151976a91.1
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 02:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786095340; x=1786700140; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wpE9LlR4n7E+nsWeZA4Ufk20Oj2MKir8BCmBsXj1cZ0=;
-        b=R2Km9XkQtcj90qGksN3vD5znPRb+6U8lUqHMYZSfwGB6aCgmCRdRJ2WxHOZiH6VrZA
-         yH2+aLueOf4pw/30qUhZCqBhF62KH2cmdNwDOgHkcmMnk3gxVkpyRTdkkrEX3Noq+dyj
-         FmI94QFfBTeMIsw7yB5QChs5PowJ5skX1lB+gVSebKTct3FBocrmMSisp6Ug2SVAUCCI
-         VlbV54YvdWs6qhCRP+HCKVSWNXicjpbHrsGh8wlQHpRbwvQI4HjMwLOFfIY2hpolo08Z
-         kMZjqxeIgPQVZ4uA7HrfCtDH2BNV5XyWK7voDG+2Nku/Cp8qRlH20NP5GUS5DWth2jcn
-         nd4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786095340; x=1786700140;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wpE9LlR4n7E+nsWeZA4Ufk20Oj2MKir8BCmBsXj1cZ0=;
-        b=WYY9WENm0wWTWlRQYegux3tpmq91z4ome891y+O3OoqrtFuHE3jIY7JQhR9LO+6SQE
-         j/3ePcvz0i9PstsOiFV9HswHKbsg37+SZ/Ez9YIoSF9eFe4kk+IrjP7AZXQwR5Blrn0i
-         Ghi9XY20GQ1D3m257k/xL2wBhK/uAcsHdZFP21AToNotF7v5nIFk4JWERK4lFKsgZiVy
-         l0Dd/z+vmoupIBEWDTXjFtpCzJ+NA9fwfLE/TzXRhnWVOE4qCweHhdPm+TxAAoiJAroK
-         4mTGqadv1lifBHag/zALuc80L0vCb+KJXdBMhfw7UwwT4h37I2lVoqNGzYRiWwMZ8IvE
-         1y9w==
-X-Forwarded-Encrypted: i=1; AHgh+RqMG5cRdXkIclWzYfK7AGbsU49yTvWa3A8PoOugxJ3Ker1iRnVl/S5DgWJwObtFDEu1tsq4zhH6bQ==@kvack.org
-X-Gm-Message-State: AOJu0YzL75vUxaCTK98hbIzgjETTsBFFrkhLSkRgwBkCNBBio1Jpn7Bv
-	HoJKVP1ZpbXNTpTf6HNrDHGUYUY+wi5xJOJPcN1mPaAVXgkuQT+enb9c
-X-Gm-Gg: AR+sD12QP3jHAG41KrvC0csKYm1jgCd8tTTHPdmQ8Yd+J35fM3j3TAR0Kjq/0k+FE6W
-	iQWFjmQaV1qGL37o+kKgHe9efeGiwLdF4M2WPrF8Wm1NuwC9Rg6B4+NIwYy8mrvShLifg8UKDYT
-	1dYzRhlXWO6KscEtKZnMOA/agb/Wm6fYknds9l2J73wB2NvXUUprEJMYLQYOmyPlkVDfWsPKuHY
-	Ec5XGZTS0MbJV0HYUxgofY4cnMx4FK7XeB2v2M0UMYjUcSvTkXIvbVBt8yxNvwHgmYK5hODMQd5
-	8bd08eSepZrlFrj5xdJOFEtwBJxSqS71XBohWURiVrJlPp7tPHRxEMYgTuC9n3XFTS8IlOxYCUp
-	+WIiQ7eomC4ezp9zedO5jSACm5lyPS3VdEjyTJGipz1L8he7rwxutdAU9YFEb7CCIkZnHLI5dLV
-	Ly5qW5HzijXS0i6dBo0na56tkXBnreS8qetIC7x5gAYbBzVTwS2fUrcAAH4IFbvicDBaaVintgF
-	H4=
-X-Received: by 2002:a17:90b:4c50:b0:381:5a08:6291 with SMTP id 98e67ed59e1d1-3909d917dddmr6862093a91.20.1786095340044;
-        Fri, 07 Aug 2026 02:35:40 -0700 (PDT)
-Received: from celestia ([2402:1980:935:f4a7:6f5c:e816:9aba:2090])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3926254ee45sm1604269a91.2.2026.08.07.02.35.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 02:35:39 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH 2/2] mm/damon: skip deactivated schemes in watermark checks and add fallback sleep
-Date: Fri,  7 Aug 2026 17:35:26 +0800
-Message-ID: <20260807093526.183009-3-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807093526.183009-1-aethernet65535@gmail.com>
-References: <20260807093526.183009-1-aethernet65535@gmail.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXvKR5d1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786095917;
+	b=soS/KdsnKTquXD2qHb8YUmNNKx/Q0WBQGn8MCmLDw1dDvabKeg1DLGxmrmNaPNjQ0eJ97p
+	GOSPFk9JypE69x4xgzX97lzhBMQ74n1Yl9H5qIR+CaDPTeXILyT5NXqrzYyCQ3c6s2ub/D
+	KxRH5IInKOeWVCIA2i0WZh8KhyJGBrg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0029F60A86;
+	Fri,  7 Aug 2026 09:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2587C1F000E9;
+	Fri,  7 Aug 2026 09:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786095916;
+	bh=8RITH1nY/nc7IpashnTGE42JIybUfWu56Yp7J/1Iy1s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AXvKR5d1cvazAa1A7Tp2AB8n4pvOKTw1DOiMTlxAaG/iaDtDswU6PzN9E+FWAysut
+	 Zsm67YoEsT0T/xZa0MWj65QHE0Ouu5B7yre8tAiq8JpIfao9gBbVI56sm2qRMvQxN6
+	 JIR2tCLK+ReIS801452Z4AUsyHbodq/+ynt6FwG5OaXdiFAFNpVlkWo/ee8Z5tCOaz
+	 zmKVbdAwvkGvrxx5vkQz0i/HUHkr5iuMQ6IPzXFee7MhpivAGH5BJ4KCaFHPMla1ky
+	 Ugr+H8D/yPMdstmEu9ylv5Wcbww4NK9f0l2ucqXhgyg5Lat+g9Mgq8vWCCuZEUOSAG
+	 Lp8OUpkuhRK7g==
+Date: Fri, 7 Aug 2026 11:45:11 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Jianlin Shi <shijianlin11@foxmail.com>, linux-mm@kvack.org, vbabka@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] mm/page_alloc: only update lowmem_reserve_ratio on
+ sysctl write
+Message-ID: <pig4crs5bj5aiswzaozygjek6tj7csyhvjb6k6rb4cbro6efnf@3j7xsrrbmi7k>
+References: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
+ <tencent_A860C873956A52E26AD8D309A308A241BA08@qq.com>
+ <anSRGASe5FIrqwlg@cmpxchg.org>
+ <20260806142002.ac4a349730f3ce15154a71a5@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3C0C6C0007
-X-Stat-Signature: crsj6z4y94cgezrk9ywajyu8hyitqpyw
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vr7ccx6vaowjbc2m"
+Content-Disposition: inline
+In-Reply-To: <20260806142002.ac4a349730f3ce15154a71a5@linux-foundation.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6B319120004
+X-Stat-Signature: 9ezbqwj6ccx4yraccpshqm9m6r4hzkfg
 X-Rspam-User: 
-X-HE-Tag: 1786095341-101090
-X-HE-Meta: U2FsdGVkX1+Xo1w+Cg10SY/7AkHw/8s+y7GuAMFBa2UWNFlIkDTj5ubiOYJd8qBcfuCN3+fgtssk8beP73eY9ffHpbrpwaK+a6JdLgXMzRwoY++6K/gl4XnH5sJFaJpyOiMjvB+vFAVD+A8ZGCOeU3LzWslo30vubmJL8muDKo0m6ApjS87IKUPjz+9MUoCPvhemqJzKgXHwfZIDHXjmjjzn5qQcfnlR6hTTWzDfHYN22mLBdEnXIc2+ZzVr+I1/ew8ql2pjIYTgslCivyQQtrYCGciAATDiAWDpHoEA4WBhlnFFknxejEkn6PJQlWTJbce9qGAr22rx/EdJUrtcXzShu3i9TAlvaLPJhNxEGS8xZrOKlfT+4eK2jX7oJftp7fzAZ0ID69d/xCwbhYHu4dfslD5C2WveJSdXA4rXG2VRu9bduZmNaczA/S+KXR/68P4FKJ2WIjRpowq2eKPBESgHNHR52M3bmeOS4vlMDdbkQsDPYj0w1SM++vwAJ2K/wt4pW3LPJZgx40oX+UGtKcNNpQBvPx206o5gTpLiIaGOK/IBHHCkWuUjrzfhzW0QICLUenQI++KG1VR/1Pcu6ooWlOORS+pYpJS/YJzL4okCyXZIchdLHWo/abWSKf7881MBl80anFy07jTKOX8Rjqj+pdFkNozjTCXHUFK3UFfxED2WmoPTM1ytxlUrmhCpkpQQ2wB5u6EQtsdf8wBvmFQGdlO3I7V+Qm3PoaGDvV5drDjsypGbv1E6zB7QKUJv6+JO0ue4fo8n+0F30AqvFHn+FuzSMOV8c4WmKTk/zDJHtLWbaOue1xfBBkqb5oGCcrFjLzu7kiQN25oJ07xz77QobI2Kr0rQgEihmh2zCliIUT/EeQ7rIB7L2+kILHNx36issxyAOZR/LtzDcVvWfyni81Lp1fyo+0qFnKxqyvyLCdj17L30qUQkqFm2knlqXaCRvv6/8KyTOTbxjEm
- uwPJ/mAY
- Fc4tdJi1vVnxRvNBOpcx59k9rNbhc3Z1+wUzD1mgof7Zwy/pL92BeQ98PkXra2oNsj/RjOd4+uhKW+gxEY28Aqjwgty5Vv6sc2Lm1MPa0a/BBKXtb0e+HtWUwZkDTHIrn8/LeCE4BJzjKcYHATHZMwR5ezQ4NLpCYmXGfIzoZrJUfaMQbzzflQt91Px1uMBlzVD8ni+Ttk1oBOuResGW+IcH8sGwi3dCUrFkCV4UR40kTqPbyxvaAXoe3t+UX5l0ifaIx/253Zkd2He3WqIIHRY2J/Zz1S9B/VTUlN707VkVnNDEaZVgsuCfKNdjJDRT2GxpAjvDOZwbeKfFzSl92Lim6oh2DO9CAHlVv/58Mx0nN7xwbgorGTu8ff77Dz/gkWNIH1eJ0JQCXgGsHDRxsw+by7ALjTMJ3BQjM
+X-HE-Tag: 1786095917-315090
+X-HE-Meta: U2FsdGVkX18Yq+IDDz3rsPCtyjQM6y7v5ha0WfRPc5GPwx+X2LTgdMkYSkQnKUSJDquwIyygxPPRnlzV16nPjF+Sz11DP6OaLsfowQZLHJj3IIN7/2omY+0BPZlronF/ruKUYwdVN9w/j50NpwAtEhXjyL8PkM1pPGyaviZTrhUpk6UUzrxd1ZBnNGwzif4aKjkE1Z4f1kxMoPa9SzYrV8madnXqLGkFCAf27fIFjNPLMqDUgoKpsys79fFfWF7mCeWcrVMFGo6DDwNvaXqB/NCtJxGGpc+4nKR2nIkYCDKO4genrVTPBpYvZuBgRNwbYbgfRPZReXgJkgh7fdIKMWUJxNEwOZFU72OoFIG9zXruE3hWrWtY6AgeWYCTA/e2ifyklJdsu3XdMUfg7Xp/asRYc1Vj0SNZ6d6dLFtcHvLOTmqsm73Exsqaz593d/eafHe9+Py2F0BJ7TzMHCLkIpKrKeeNfIAbqd18gwUh/+EMLwD/B+cttqE3E9Rjrxvto4oWeR1lwI92dN0+9SDBxoEb+fdPwCo9xI9gcLMAAFUT+7eV2FHAIumOoHt/7tFlRS4qiV3dxR2r4ZhOoWJRYLcINIUu3YC+4w9q8NnTRAq36bUDqfw0gpmoDG9KI72KyFh19Px+YVonox0sliKtrC7a/78W4UxuGraHamNZ06/6peD+5jPfIQeeYHcdFrf1EwrNJ0fwBmT2SoHKcc46cmKdakNZyoDqD/k1UgJtA80J5ljeCj2MVBlBMVPHngLiZbGHI6QdDoyIFV5z3k7vgVwEQEWas89WKdPpW/GcnBbIpHQ8jWI17YHcx5I1h1quaJg1Q/lUrGMTVpNoRfI2HqC6hmqbMxlmRMoLIqozF4zAnSFs/UqjjX/Cr5UDL7FeeKL2GhxXDXcLd7oNFoyYkRh/zewyRZ+cWVNkflz3+/NenAcxJSw6sUxeu9jUEQ1ASZQ44bj5Ig6JspWQW4X
+ u2X+DCP9
+ KZOxYj6rOh731EMc/YteoAZeVKlQO8o45J71bU6j6iPSHw0f0G0R3RCre5JluumQTFs6/K///gy6mcllbb/xelOVh/uU12zimlYpUlL8Gu5g9fopMMZILS76YBVUklhdl2ERDHEdrf5A5QAa9ZffrW9CWXrPU9RaEBQeRJ7mH6wD5yxXhjpvqawnwnsrJJmtw8/gpkpi4AY+yInf+T+dBgYZAtsacxkHFuwn06DCSWV/mZfTmCp37TQt+oEMn0IY7BzEJP4z4Zj88hpxBcPAno/t2sViyPg1iAhokJiS6YlU/N1qNa2NMDk7kYSrisL2snwhvCYxUZR4fX8EZ77J7vodWonsXWZ+pHpFfAw96W0DA2cYHPXZlaP4orZVJ5qN0baD+xzfXNIo0jt79VA3sgYCRIMESRlHQV0/RFTzYwCwZ14byl5pIvqF3/7j60iMujg/a3cfHxao2IL2p/om+lRWneCSjMXXDdMKL6vAK6/8bEvifCy0B+cOOcv1HWjdtfplQ30JmNt0wlw8q+SLVTFhLThw1kdte5FvF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,111 +97,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-According to DAMOS design documentation, a scheme is deactivated when
-nr_snapshots reaches max_nr_snapshots. However, the previous
-kdamond_wait_activation() still checked the schemes which nr_snapshots
-reached max_nr_snapshots.
 
-This caused an issue - when all schemes were deactivated due to
-max_nr_snapshots, but their watermarks were still satisfied,
-damos_wmark_wait_us() would return 0, causing kdamond_wait_activation()
-to return 0 (activated). The main loop would then continue without
-sleeping, leading to unnecessary overhead since all schemes would be
-skipped in damon_do_apply_schemes().
+--vr7ccx6vaowjbc2m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To fix this:
-- Add a damos_is_deactivated() helper that checks both wmarks.activated
-  and max_nr_snapshots conditions.
-- Replace the wmarks.activated-only checks with damos_is_deactivated()
-  in both damon_do_apply_schemes() and kdamond_apply_schemes().
-- In kdamond_wait_activation(), skip deactivated schemes when calculating
-  the minimum wait time.
-- When no active schemes remain, sleep for sample_interval as a fallback
-  (consistent with pause behavior) instead of returning 0.
+On Thu, Aug 06, 2026 at 02:20:02PM -0700, Andrew Morton wrote:
+> On Thu, 6 Aug 2026 09:50:16 -0400 Johannes Weiner <hannes@cmpxchg.org> wr=
+ote:
+>=20
+> > > -	proc_dointvec_minmax(table, write, buffer, length, ppos);
+> > > +	if (!write)
+> > > +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+> > > =20
+> > > -	for (i =3D 0; i < MAX_NR_ZONES; i++) {
+> > > -		if (sysctl_lowmem_reserve_ratio[i] < 1)
+> > > -			sysctl_lowmem_reserve_ratio[i] =3D 0;
+> > > -	}
+> >=20
+> > This could use a comment. How about:
+> >=20
+> > 	/*
+> > 	 * proc_dointvec_max() works incrementally. Use a buffer
+> > 	 * and only set the values if all of them parse cleanly.
+> > 	 */
+> >=20
+>=20
+> I added a fixlet:
+>=20
+> --- a/mm/page_alloc.c~mm-page_alloc-only-update-lowmem_reserve_ratio-on-s=
+ysctl-write-fix
+> +++ a/mm/page_alloc.c
+> @@ -6932,6 +6932,10 @@ static int lowmem_reserve_ratio_sysctl_h
+>  	if (!write)
+>  		return proc_dointvec_minmax(table, write, buffer, length, ppos);
+> =20
+> +	/*
+> +	 * proc_dointvec_max() works incrementally. Use a buffer and only set
+> +	 * the values if all of them parse cleanly.
+> +	 */
+>  	memcpy(ratio, sysctl_lowmem_reserve_ratio, sizeof(ratio));
+>  	tmp.data =3D ratio;
+> =20
+> _
+>=20
+> Sashiko got all upset about concurrency issues:
+>=20
+> 	https://sashiko.dev/#/patchset/tencent_A860C873956A52E26AD8D309A308A241B=
+A08@qq.com
+>=20
+> But I think I'm hearing from Joel is that the longer-term plan is to fix
+> all this up within proc_dointvec_minmax()?
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
- mm/damon/core.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+Indeed. From this I have two todos:
+1. Address the partial write for sysctl vectors
+2  Address the Potential concurrency issue
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 7230483e771f..57d1a21a8a0a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2633,6 +2633,17 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 	damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
- }
- 
-+static bool damos_is_deactivated(struct damos *s)
-+{
-+	if (!s->wmarks.activated)
-+		return true;
-+	if (s->max_nr_snapshots &&
-+			s->max_nr_snapshots <= s->stat.nr_snapshots)
-+		return true;
-+
-+	return false;
-+}
-+
- static void damon_do_apply_schemes(struct damon_ctx *c,
- 				   struct damon_target *t,
- 				   struct damon_region *r)
-@@ -2645,7 +2656,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
- 			continue;
- 
--		if (!s->wmarks.activated)
-+		if (damos_is_deactivated(s))
- 			continue;
- 
- 		/* Check the quota */
-@@ -2655,10 +2666,6 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
- 			continue;
- 
--		if (s->max_nr_snapshots &&
--				s->max_nr_snapshots <= s->stat.nr_snapshots)
--			continue;
--
- 		if (damos_valid_target(c, r, s))
- 			damos_apply_scheme(c, t, r, s);
- 
-@@ -3220,7 +3227,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
- 			continue;
- 
--		if (!s->wmarks.activated)
-+		if (damos_is_deactivated(s))
- 			continue;
- 
- 		has_schemes_to_apply = true;
-@@ -3704,16 +3711,23 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
- 
- 	while (!kdamond_need_stop(ctx)) {
- 		damon_for_each_scheme(s, ctx) {
-+			if (s->max_nr_snapshots &&
-+				s->max_nr_snapshots <= s->stat.nr_snapshots)
-+				continue;
-+
- 			wait_time = damos_wmark_wait_us(s);
- 			if (!init_wait_time || wait_time < min_wait_time) {
- 				init_wait_time = true;
- 				min_wait_time = wait_time;
- 			}
- 		}
--		if (!min_wait_time)
-+		if (!min_wait_time && init_wait_time)
- 			return 0;
- 
--		kdamond_usleep(min_wait_time);
-+		if (min_wait_time)
-+			kdamond_usleep(min_wait_time);
-+		else
-+			kdamond_usleep(ctx->attrs.sample_interval);
- 
- 		kdamond_call(ctx, false);
- 		if (ctx->maybe_corrupted)
--- 
-2.55.0
+Best
 
+Joel
+
+--vr7ccx6vaowjbc2m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmp1qSYACgkQupfNUreW
+QU/w/QwAkiskagS/4KNgmgXF/zdpFykp2NN4IXFG70MphKCbGV7I/HkczzUmX/y+
+36lvFv4Py+aQmwoZJtvxvaKUqyHNfSaIIU6e3RuxLQlNdHaoX02D8hKpwwFhuvBS
+Rz/BxW67l8YoxhFJbe4hDSz4Ty8ef1ezx2zE4QtDqvK1B7LDsc/8fbFWx+9sc9O5
+fbxIYoQCIJrLWXrJYdSkIGVI4XmnMCe/wCxoeJAqqck0w7YiaETWa4dwXQ5EzfMO
+Xkp3AZo6+uhV65n7uxWRVsPEQSzClA+EGSkun2lRqbvMQWxYY42YXciSU0+Fh69W
+Mix+/t45RAlEBFcyo56qjJeK36DiGbt2to+UAotU8YXmDflXgQ+67oOW1zOUECMw
+Ms+O7yoTERzAG6CjAQPjH49POTz9SG8GgDl6Da1kGfdvoNAoC4Hg+7bFsrwqU6Ve
+oQSl73hRS4Sv00FIqz5z5iOTkArBHo8LDHewSsUEp0+LvIG7R9jWk3SiQvtxJCls
+2tkB68+w
+=WvIP
+-----END PGP SIGNATURE-----
+
+--vr7ccx6vaowjbc2m--
 
