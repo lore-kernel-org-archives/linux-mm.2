@@ -4,128 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52DC7C2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 19:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62927C5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 19:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C52A6B0088; Fri,  7 Aug 2026 15:26:27 -0400 (EDT)
+	id 737BE6B008C; Fri,  7 Aug 2026 15:27:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4763B6B008C; Fri,  7 Aug 2026 15:26:27 -0400 (EDT)
+	id 6EA076B0092; Fri,  7 Aug 2026 15:27:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38D466B0092; Fri,  7 Aug 2026 15:26:27 -0400 (EDT)
+	id 5D9196B0093; Fri,  7 Aug 2026 15:27:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECE0A6B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:26:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73CDCA1298
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:26:26 +0000 (UTC)
-X-FDA: 85075454772.03.2EB587F
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 837CB2000B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:26:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=Wc8fl+2z;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.173 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 31AC96B008C
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 15:27:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB00D1401AA
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:27:20 +0000 (UTC)
+X-FDA: 85075457040.20.3B4F480
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 87908100014
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 19:27:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=VIx7pPXe;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786130784;
+	s=arc-20220608; t=1786130838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BnBfFyLoEx/PS4yB8HejgcyF2TyrFNRyKWrp3MGGWwU=;
-	b=MzprOgp46W13psS1w1S8Uikg9YEwaFJiXSYNJar1srDM3TpDqfKXEfFZWf54RvPWbh5xGI
-	YfsjeiJb4LAuK+RXmICbJ97MmchwhRxGZWXiQZRnl1PADHUrLV7mRaT2pQpLKR8ZZH99Ta
-	aRpdD+tTLWqmV7MDBYmfQMvdgj/x2EU=
+	bh=Y+D6EJxpOusMJIngkH9gqN2jeKN0j1wGUyv/qwF+lbU=;
+	b=PquMLaYgr2Epbn/w+boAHZD8rz1dOEt90JcVpY6s4YQPmdP/XCHK0G6aTFKI/pZ2n8QzAk
+	dO4zO40SvvJSuXnP54s8IrJdxZsnFnsHIjj2a0Slehs4JaFiOeQ73FBZ6MCmWfUjf1nC3D
+	5SeY9FAA2UHSjrmS3Gu7XpFwmBF8qvw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786130784;
-	b=hAMAFl46cW/topmmA5FRpYORfiaoRKf5Q0Q1KCZlFW+bGe11UbLy4bg75MePzpAbVctOMk
-	UkMmbjQhJ1dAP/QVusGBPImlkko482StwlBC/fTbjvAo40v0HFKaI59V7DN4/CEpd0Fn63
-	DPmsHb1WiKTl6+L+NTZW3IBgqDlKtMk=
+	t=1786130838;
+	b=QSJT4hp/qbsp4hsXiOfmQGW54+n1SoXruczt2gf2zYDkRqQtNTuf+pJz4G0rrObq6rI3jN
+	tzaH4dL7yLM2EnEgbhlICY+mGJo+w5beiQCRFOufc2kOBQWF8KPGNy32saLrHLhHXLLMYE
+	tFxBPvu3Rw3WKwQ2ZxZApHcJ3gcjVOA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=Wc8fl+2z;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.173 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c149c5722so19859071cf.0
-        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 12:26:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786130783; x=1786735583; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BnBfFyLoEx/PS4yB8HejgcyF2TyrFNRyKWrp3MGGWwU=;
-        b=Wc8fl+2z+hL+sxci/el9K8ZI+jVeCCXqzDBuxFcIY5baeFoOsXM4xg+CYnusPU7ihB
-         rOt71aXmtrXuDpe7v8KGGoH+51U62f0Kgp28ZcUjRjx+SCMtJ0Mh5rxcE0tTyks8WtzG
-         mDFRFDJly70l+kZ/77QU5YIJQDGFifbymB8ENAJ7udh7Y+jYIimp6nFzWyedt5O+KHfB
-         CPQ8W+TesJCWKGJbAq6ByZ90kvfhTjXySTaNaPYkZZE5QfFL+/G2dADQFMIo5AZ5GWmv
-         5cHXdSIDV+8yE7xxT/juFdtpbBuT3nnjA4IGUaeKP2xph+sSyDtRDQUayiKaMZByrxXu
-         VgOA==
+	imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=VIx7pPXe;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677JMpwC1808077
+	for <linux-mm@kvack.org>; Fri, 7 Aug 2026 15:27:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=Y+D6
+	EJxpOusMJIngkH9gqN2jeKN0j1wGUyv/qwF+lbU=; b=VIx7pPXeJAufDHCL9g7e
+	rhYgt2rXZlkq0bpH8mqE/EG/H7Ii4ML1gqLC2GNsKmfs8xD4wQXwIVWf/GQRKRDv
+	zAJHtydPZ02MtzsWe1vlMSe/ov7GCq6GlGmh1A2K7Oo2CgDqgj/cUCgYPWJeYKW/
+	vAc3Qqzbf4sYN1vVZZuZnAPhjv8Y5acgYUDRvlYkz0BZwDZf17vTOLO7G61wDYB8
+	YyKlYatP311FWSzQUhBm9TGIs828Iy+89IOQaKxuPALUPtSsWUPSZPJU9rnlFmk8
+	KjcnMvLuqXFVdWrrxmJFF/mTLgqlHUi/9Q2Lc3Knys4khnKzdNxvl6986l4JLkSu
+	Ig==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fwh9223t6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 07 Aug 2026 15:27:16 -0400 (EDT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51bec738909so37907431cf.1
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 12:27:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786130783; x=1786735583;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BnBfFyLoEx/PS4yB8HejgcyF2TyrFNRyKWrp3MGGWwU=;
-        b=DU/ATXKmPfJjrlQJOd573k5pGHfvis9sTVVHN2EX5BPFGcdBDi747counaf3LLz6Vg
-         9hFqnht3i/Xi40glj6Rn4sd+c2Z6B+HhXvk9ggrCKw3QXX9H5NcnAV8h8WCffy3PQ1Rj
-         x7M+B9s+poRJSfTjZ08zSPkSlMPjCUHWbF2J7DqBM7DwoN+mPE9uSjkvN+HlkAcTrKjr
-         V0NNReNx+6Xq/vK6FvPFdpDUb0wU/tZF90JdikZiXX/tL8m+R1By+xnWosIC5oe3NC8c
-         9H5do9lBy9qPsX5Fl/ocG3GNIgl+xV5yblkwvynOz1bXnz6K1/dChpPaFURYgHc4oHiD
-         xl/Q==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/qyxdrQ+3tD1UupuqNKOTSk87myWqgoleb79vxnHtIb5CaipUS3DVR185VtxgWExefI+zE5ScYA==@kvack.org
-X-Gm-Message-State: AOJu0YxZAt5AqfOTfVH506IYfBAQB/9t2HksUggKEkZw8Kzej7Oveny9
-	qLAV2v+O7rsiqOWsayHHkeiBHqWpPxN+z8vF11hab6G7vKLoZqY99E1uNufuEwhnGKQ=
-X-Gm-Gg: AR+sD13qog00YTQJzgJYAAhEXs/d4pqZEizpIEekfjwq41kVgu64ripXNzADuoJllaI
-	07e5pPukuqjwM9BkzGOdg29ffdR4yOGk4JVT/1xg7K4Pb7x4V42cmzzz1+uD8KwLvmtimTJf4YW
-	Y1oX4ryapqm/Cw1d6/3VSIz+UrfHJyK8rmiju+YQqN/uEhZgpDoQDMf4HcFKz2ypFBHMBHyzzAH
-	O253u9JZ6uKhxD1FzLgTcyBLM5MQWbHXZNXY77omlG4KGxLBGkgJAsr4j2t/uwuJ8ba40OklVFx
-	1OpGBTLu/OhObspLEEbPTe9naNfEGGDtZJlbgPEB9qaHD+URo7T0b9ilnC4CsK4Zyeyr/QU0DBm
-	7Yoydq8Bz36i9Yff9F+TiORoMKJTOwwx99rvthwh1Rho8KSjKV4e2uwyE+MRYwcl379VpyxKqu0
-	WVBLxRJlEDjT2X1CMRG9VAf87V5/9cGDEAU36AGw==
-X-Received: by 2002:a05:622a:1246:b0:50f:c403:7ffb with SMTP id d75a77b69052e-52d237a7734mr13432901cf.18.1786130783658;
-        Fri, 07 Aug 2026 12:26:23 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d163d9107sm18654961cf.13.2026.08.07.12.26.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 12:26:23 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wsQD0-00000001DxM-1yq9;
-	Fri, 07 Aug 2026 16:26:22 -0300
-Date: Fri, 7 Aug 2026 16:26:22 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	syzbot <syzbot+78a7af91b68fc6394771@syzkaller.appspotmail.com>,
-	akpm@linux-foundation.org, jannh@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] WARNING in mas_nomem
-Message-ID: <20260807192622.GK200537@ziepe.ca>
-References: <6a6c4f18.b1a781d0.210f9.001f.GAE@google.com>
- <6yf7k4fmg4tkbmli6t4qzrk2eiyuuynoc2oimbgaebught2yh5@dspb7xile3kj>
- <cad222c7-0ca2-47ba-a21d-1522384713c8@kernel.org>
- <20260805004619.GA28508@ziepe.ca>
- <5cf3542f-fca7-44d0-8a17-8aa316b1fb12@kernel.org>
- <hg73nwj6fdkqect6xzf34i7e4ki5izjyzb3lz6ery62sq3566k@i7tsboqhsdxd>
- <20260806154845.GF28508@ziepe.ca>
- <ulmrkvrqbxqvri33y2olv6x2xjahb3yuee5vcgaojlxhl75gxs@ihjkaias5kml>
- <pipldkadm5oy4olwticdjqfjz4ccn7jfqo3tdle4n2b4jtfmiq@5ckyybqnyk4m>
+        d=1e100.net; s=20251104; t=1786130835; x=1786735635;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y+D6EJxpOusMJIngkH9gqN2jeKN0j1wGUyv/qwF+lbU=;
+        b=mHYz7OIasQ8LJkZCTRIbE1Z0ePQIUhqIJ3bhiRroJq0UNHzVqPMaQGZ/HLBlLbSyVT
+         TJ/97X4j7muXHbooutCtntampT4sw4MuL+eNg6NJzwfIeP+ea61g4xeSG9oYHvUdT6h9
+         kwYJ2m3nuXiLLrqQDUajFn8MNNiyKUhCuRWGdFYlQw92QNuIexBUHuGQ4ywqqhAioxx8
+         jcIa0YC11+vOSg5zH06EDun6sKTjwFAgufnFfzu3duy1mBv3GXPm8sAs9yC2WJgImrdN
+         sNjOdQ1pe3d1rtxQfm9kF2a+HnIcv1BDFPQDtS9THgcZeoD9Eug/lKwQcbQ0DtPXYDkx
+         wVYg==
+X-Forwarded-Encrypted: i=1; AHgh+RoFcvJl946HFjf3zPtZbrEiNRo0OsbzdLasAUPs7c3KbR0hz957qO0hg8AWHCoDmQxdToiYl30Xfg==@kvack.org
+X-Gm-Message-State: AOJu0Yz/SCiXM51ZxwD30qMKkkQu4EkHioBOokxrKv/PGrCMUyLGm4Er
+	a+8V/fuQDaMs5PmZA56EkbFdISS57o0Xe4b5vpRH4nNHD9/pJGKi0ORDn/kR8XByBTJaF+2gtgZ
+	8nS2s0x0w5zdLRNUwhBcSwbanLW/flt/GVRChIiyXMmR1Ond3
+X-Gm-Gg: AR+sD11gbVuxli5DbZNJd6EBA4JQjJKXwJyjXhu2TMcQWDay3GCKhxzaUldCLwpzV4n
+	d6fsQ29xEMx+VcTM80JyjJexv+poVwrcY3dFH+PG67TNKilIOpP1kuS8N8gUiLc0bMnA6ymqgg6
+	gNBzu93GJ6OJ34QnN6q14ACnLH70gdhGr+88TbhUPB/8GCcHN+dzbzKgALxcFL/oS2erAJwTJFo
+	EAJxs03UnesNA4hLVfFsExgFYQcCx8JBkmOSiESDunqfIpd8R7unqHiynppmvkpuqbWWEpfFpkb
+	vdXBY9nMrBd3wNF7Rl/nivpwX9LTzEafs6W4DjUyEbU1JdspT9CZLrK+/ZVK9lY0YrlPdDib5Mf
+	vIMBM/M6pprNdPj/KbgY8ChCh8e8zcb/Bl4yp+VzACNZrUnPufG/j7eaBjO/X19si
+X-Received: by 2002:a05:622a:14e:b0:51b:fde4:cd4f with SMTP id d75a77b69052e-52ce6183c7emr264779571cf.30.1786130835396;
+        Fri, 07 Aug 2026 12:27:15 -0700 (PDT)
+X-Received: by 2002:a05:622a:14e:b0:51b:fde4:cd4f with SMTP id d75a77b69052e-52ce6183c7emr264778931cf.30.1786130834911;
+        Fri, 07 Aug 2026 12:27:14 -0700 (PDT)
+Received: from ?IPV6:2a00:a040:199:782e:ad40:551f:594a:fcd1? ([2a00:a040:199:782e:ad40:551f:594a:fcd1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002145a2bsm8291357f8f.4.2026.08.07.12.27.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Aug 2026 12:27:14 -0700 (PDT)
+Message-ID: <1b688500-230a-4733-99da-bdd8adc9f67b@columbia.edu>
+Date: Fri, 7 Aug 2026 22:27:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pipldkadm5oy4olwticdjqfjz4ccn7jfqo3tdle4n2b4jtfmiq@5ckyybqnyk4m>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 837CB2000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] mm: remove PageReclaim
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+        Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Christoph Hellwig <hch@lst.de>, Johannes Weiner <hannes@cmpxchg.org>,
+        Yosry Ahmed <yosry@kernel.org>,
+        Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
+ <20260806-b4-page_io-folios-v1-2-0899bac3b826@columbia.edu>
+ <anYocInoXy7KRcZ8@casper.infradead.org>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <anYocInoXy7KRcZ8@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: -dfeNfekrzvnVGGr7yB1_i4rFN7YQoB1
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDE1MSBTYWx0ZWRfXwgpHo9OE1XHI
+ RCB3u/b6WfhcdtjxhDc83tWGO0MotCn/eYdDID7iGfKjlKmuppp8Pc3es0XDf8SrinciKgJcceo
+ 6bCO3OMkFQ7ronYlZlt4YE6tJRhennhIIqgxOiNWphp5STOj6VPg
+X-Authority-Analysis: v=2.4 cv=I7FVgtgg c=1 sm=1 tr=0 ts=6a763194 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22 a=JfrnYn6hAAAA:8
+ a=peVdY9tWmQCycwUogXEA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: -dfeNfekrzvnVGGr7yB1_i4rFN7YQoB1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDE1MSBTYWx0ZWRfXyMGbeYA+jSMh
+ X0YMv319HCKjC1PwzPruwbEsJniwHWnPglWdEIVSCo4gRc4TaLQ2H6D5zlOpPklpBRL2pf4viEi
+ e7ihWLgPKOReHiYInEBlyJZl0T7z2QvjEpJLuxkCiDNK6HuGLOr/0B9xl6DRngQzjAR+OXbINyr
+ H+TqzTzIEwFLZA/t5vCX5gWRz57d6XjQrAbVzxDvOBGDiquUpVCicoz+Za+G9UcU7n1kvnfElCG
+ qFtvrS1mvDdOSLFEyF8gCTwWQ21HIYx7Z9KQzJc0aC8EnXImbepvk0DJJTwGM4cXu3Qw97Hprbr
+ sF34NN46eW8ZKV/KVFWReXPmks6F+d6BEIqwwG6BBro1oS2T80sCZwsGFhTM64j5LgW7x3l6Ycz
+ gvey8aFMFVzOdrQW7TQWSV4fI53u0vOcuk4KloE/4aVgCDfrIOHUfw3BinMJSTNf7LZ7JbJrveg
+ Bsh+CdBFWvDZ0EuAgNQ==
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11868
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=10 impostorscore=10
+ bulkscore=10 priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070151
+X-Rspamd-Queue-Id: 87908100014
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: r8abf6cobuaj8ws6xfryciwpo8ofyb3b
-X-HE-Tag: 1786130784-335844
-X-HE-Meta: U2FsdGVkX18vns3S3T+QpXDJKfBuaZro4aRyi8QWiHfuB29PMDDYd+krMwYUMJ9itwdGyOOtrlBSjA9AHQKpQ0kfNGx1N6NGcP3GxNHBjnzoDtmdaeOLAgJcWb00nH7oxoW02hv+eQmdYpDgx7ZEeAsIOiNnojNQcamFzj35sGYG1Razs8hCisQvqVXgDkKSwTZ7P9buE5qqfwjc2MFZaIna/TuPDXF3eRtOtleOin0CE1XWn88PcTqSlQO/TqgBB96yGFoAbq/rdifWYCZMA54kxyNse/Zj3enQPlG8DVBunMfAZRh6LsOu7ryeBiC1BTY0qy41E33OFxqMkilB3TkdyXHpvrk4KVWmAAtJtLe6USiVMUUA+2xjnbXA62v76r65PkhKONkPBmEz0de+YogBPNK04fFkRZJ1GaC/W2ZmgOb5PfZtyT+Nj9HX2eijoUElBTSGNaj8Mnq9UZJ2HlRTpKgAkTAQJWDXikb5yf+zBTY6zOhyCyfRJP1HpsbTWJn5UXMYjb5+s6wLbHEdkOiZST+sFzWjBnVeNarao8ySbTmdeq6WumX87cLaHaApctU7yV/DpyOIQEfAOD0umACUlpNyQHzeh3l8eIKvPaExBWsTvlTJFG3JQDDUSXmtF8+lYZnB3P3wV6qHEEZ9/liSrVC0dpBvDB5jIhncjwCTQHvelQszhW/FhWgc6TM8yHJU3SIB/ODDVGO/JdF1zOCLYLk7XZwa4FNjmcJa1zQYJ0iAQpeI/NvBCfgKv13bZ7QnZXm6kAcWkwRAfs+KeqeRUxLEgOOFD8A0CP2Hw098u0SrlzU376nWfPE4zwTbLoGQscdwabrs3SzM190ex+qciPpSrzNi97mAQW+PavlUwhuQt9KPeZ9IJhgPIXk6gytVuiIoaJQhrcjZ6Ecn+wh2QCIQbWRbycOullaMqm0F/oFlfw+AqqLXhcu2yKc5+ORiYf3MoVmeGSdK9Qs
- ZS5KLeOY
- asJ0F7S1fG9HKG+nz3aBl1R7TCKsWbgfwf8aowvrzPAUz/6oNUe9wvplAofAgBB43urRLcQpFlqdLQW7QKZmAoBaIJQY4J8MyB4dH90LVm0kd/VyuN1R6IRgURlGDF/0cTbcgv+w1S52JxMaeTsShKAFtd1SqKLhyqdKQlzpYhCvhiUvgs+YWuJ7BhMiIzpXPZPG53pmzGHH55pBgXWpnHCl2PAHolQcuVFguiGHHMpEgRuF871gUfvdReuyogUVuMTlvzZCFD2RmzEj1kSxwc2JgBgg0Kg1OdWcv4j0ljNM5YUGO2xoJy3vOtr1QPdrV2kiPkFnwDoi5GEmzVtdHgGnpyZtRA0qIvYh9lFDeL/XkEp9hplL6dNoGi4RaK7I4zs9ltCfCV2LG3yocdKB5KvBLEgRxFQeE38sgMSs6rRioi3X0LLlSxkrEozo/Tt8JSccMeGJ3apWlNcCh86griXSG1mez6G8HQo+zxuAHZAN+gDBPOrpssQ3wZyCDFWtheSBO
+X-Stat-Signature: itfrf7m5hhotxcwuihpmd46wsixckexe
+X-HE-Tag: 1786130837-330516
+X-HE-Meta: U2FsdGVkX1/zRgk4hlAKMSuLF18ipPALCKQtmWcI4flhTJ1lkBi2IxSDYx507l+ISZcI/K7uMKQ8WGJQHeW1qXWd/3kYD1ntqIOVESGMSXPc52R5vxIQv7j8fCTkqTffzqhsigEsmLdfutiKzhnD6Wpl+Fa72jO3Y1iXFe6rXKednmDTVcF+ramxtTxGyL5wmx8ATiRf+L1y/1Ge8dfC3DbLVu9/OVOTEUltkspVcctdpXEMoy6BJ7ZNOy/PcJGE/ZyZlJVcCnJa84Zr2CVIzVXJUdpAZKDxc9dDU1Mg5C6VsllBhh4OVc/z+z1RfhKP3ra4zFwicwXn0Z2MUeiumtorE4bMJcfQk1uaIeNxHmlPq0bO4yS+w+yd6/Fya2aWhkrDb1hFVYNaOUmZZGJPbnyniiHtcJzNJAVqAuuwxpSiZaLTKDn5ZxeF0EP238gcB0xQk9as+dxouMA7othqvUqz5JqKTszpQi9KoRmOXFkIN9gzfm6owd8eQSDBErYEk7U93HdClTPPNcS/+6rLKgVPlLUlGi9kA3+IBQt1SK8mBKKJTQyvYuRyfFC8z2NaIjf8frnalJyoyX0CP41u+tXygOGQRgfOBdbJM/JD6laQo8sD0OPlfCeHs+efFfe6w0pzf6JUCc5k16YGlP0wJT9i4vbu4L+rESazaXSq7Ga2pN7CfTermofLQlg5CdYUB0nnOccZJ01iD2HQ05TinK4dIp7jwhuu0Nb0VpwPWsglJkYyHYAi3L+BtDr+uIrSnfI088DAWV39RQP0DHMRi4k+DNYmtCtrB9TpDxfnETMgL8Ko5Qe8JOyg3QEOPExKi3oBr7Plh+XGs2elPAm7MtinB36xzflctlrEhwb4QwbYtE6uQ+fcKUpTblBTbJDGOqZpTnTO4d/Vg62KhxjmAqRJY6YAfaaNVH0V3/bx+0iaeqh8NZEQq5BI65WkJ1mH7wpmRqU7V3xk/FtoW9c
+ FaOos9LG
+ 60SkuVu1QR/7z6VNbzttpuJZKQzwwpzOhljeUExw557b3RGV7I265oWeI3K9L0VlFEfzj71pFdOHlosoJAnwAdXxefr6zViX3oUWx355+581jRwRakra8pAoUItOmoWotQljHZM+7ZFl410ppF9UJc4zm30JBtqOl2dlYH5jpxi/w5h+TFDNBOGiP4xvOvBz56GIwWiwA7vLxxm9Fss1ThmGfbVETM53+IrlT3MQ8TZRd6ByJ7q74/gXNjqKT7DvTLBF5shfZAf8AA/PGDVtbehqfZYdcvRW2CrCh3YrA96CBozgn30Ed3jniu4euxCxg75zC6oMQNh84Mja1GmTF8U5Kykwx7GXKRRBa2R+9+OGC/hA2quOdGWZqgbeWRhc4NttuhDrNjmDWNVvyV3UTCZF+XJcVh+JuAFxDzcq4kWPqhudtxOIMPLN5nI9wXCwCsV7hN3z/s/Oc8xnDi2fe+/gu4JWOvXtqsw3OduNxvalNpju7l1bb99gA84PxmkCWKwdH4rEwz7Zyf4gOew/XszCvBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,43 +167,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 03:24:24PM -0400, Liam R. Howlett wrote:
-> On 26/08/07 09:19AM, Liam R. Howlett wrote:
-> > On 26/08/06 12:48PM, Jason Gunthorpe wrote:
-> > > On Thu, Aug 06, 2026 at 10:29:27AM -0400, Liam R. Howlett wrote:
-> > > 
-> > > > @@ -5609,8 +5612,7 @@ void *mas_store(struct ma_state *mas, void *entry)
-> > > >  		goto store;
-> > > >  
-> > > >  	mas_alloc_nodes(mas, GFP_NOWAIT);
-> > > > -	if (mas_is_err(mas))
-> > > > -		return NULL;
-> > > > +	mas_nomem(mas, GFP_KERNEL | __GFP_NOFAIL);
-> > > 
-> > > It still feels really weird to ignore the return code from mas_nomem..
-> > > 
-> > >  void mas_nomem_nofail() 
-> > 
-> > Sure, that's fair.
-> > 
-> > > 
-> > > ? and maybe it can have a WARN_ON
-> > 
-> > 
-> > The warning would never trigger.  If the allocation fails with nofail,
-> > then you'd never reach the warning.
+On 8/7/26 2:48 PM, Matthew Wilcox wrote:
+> On Thu, Aug 06, 2026 at 06:55:34PM -0400, Tal Zussman wrote:
+>> This flag is now only used on folios, so we can remove all the page
+>> accessors.
 > 
-> Upon rereading my reply, I don't think it was clear what's going to
-> happen here.
+> And we don't use folio_test_clear_reclaim() at all (it's mentioned in
+> a comment, but that's it), so we can drop that line entirely.
 > 
-> If there's really no memory and no reserves, then we're going to panic
-> on trying to allocate.  So, even if I rewrite this to have a void
-> function to print a warning, it will never trigger, at that point why
-> have another function?  Are you looking to document what's happening in
-> the code with this?  If so, maybe a comment would be better.
 
-Yeah, it is clearer to document it with a function that can't be
-called wrong, IMHO
+Aha, I missed that - even better.
 
-Jason
+>> -PAGEFLAG(Reclaim, reclaim, PF_NO_TAIL)
+>> -	TESTCLEARFLAG(Reclaim, reclaim, PF_NO_TAIL)
+>> +FOLIO_FLAG(reclaim, FOLIO_HEAD_PAGE)
+>> +	FOLIO_TEST_CLEAR_FLAG(reclaim, FOLIO_HEAD_PAGE)
+> 
+> With that last line removed,
+> 
+> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> 
+
+Thanks!
 
