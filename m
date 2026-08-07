@@ -4,86 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B2EC2A09B
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:12:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D0CAC5AC7A
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 14:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43A336B007B; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
+	id 3A2046B0092; Fri,  7 Aug 2026 10:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EAFE6B0088; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
+	id 352466B0093; Fri,  7 Aug 2026 10:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 327BF6B008A; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
+	id 241356B0095; Fri,  7 Aug 2026 10:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11A876B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:12:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8283BA1CD6
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:12:23 +0000 (UTC)
-X-FDA: 85074663366.27.ECDE6CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D8C111C000C
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:12:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovbPN7Me;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EBA846B0092
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 10:14:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8CCBAA029B
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:14:15 +0000 (UTC)
+X-FDA: 85074668070.02.F0B5377
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6C087A0006
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 14:14:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vfmwRR7n;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gav6SKQL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CEMeKmT0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="L37yUwa/";
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786111941;
+	s=arc-20220608; t=1786112053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6yPFn7yHkyG0BJL3IlHOeyOih//+Qc5xhI7AQ3jvymc=;
-	b=qqjqdqOnMGZeEpKPdxYj/AC+R9N7e9diEOrJ0c0KFAC9Bkx7glXFHaQFORw7w/0anhwU3z
-	EuimAowIFDb66d8boa4kwtgK3v+RHADjWODK0Gg0KC6S3RZSUX5dXb43PMn8trn0ILNj/5
-	3YWrN1Y9N7Qto7zkmBm1SQspGP1LKO0=
+	bh=U4ofNE+31BIGjcilMtxKciEXvVlxg/SgK86+li9Dk3w=;
+	b=Ut9xYkr8eFUJXvYuwRLMzN63rStT9Bc7YhrTrb7aShwSJLasJP63PdvMijrABMOJ4XC0FY
+	rrQahQemf/mPTV9KDqn/OdEFZ5imVgHRZJbNb9h/4wF4ov7v+YdQZGjeus/1WC1nUWMvHx
+	VDxSd0/DCYo3dcl6XfPXoTE7WauRLKw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ovbPN7Me;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vfmwRR7n;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gav6SKQL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CEMeKmT0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="L37yUwa/";
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786111941;
-	b=bMA1iA9KGPJDg1dH6jh9FJiL0rCQgoFc3OkZdiuJmkDWUcRrQv1K4VFTDvGXwiVCxVh32W
-	DfVZAuLah7eWSJClY9u/ULgr9feyIho4F9lJiJkmFSHgWsN6PGTOkIT+hlCIY5bqeFb/yc
-	tCfp121STh28nEUcP6hhNnJIZBN868Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 176AF40A23;
-	Fri,  7 Aug 2026 14:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10B91F000E9;
-	Fri,  7 Aug 2026 14:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786111941;
-	bh=6yPFn7yHkyG0BJL3IlHOeyOih//+Qc5xhI7AQ3jvymc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ovbPN7MeUrWXRmoHVwijxRr5kNkr0jDBpWovDeFk5El/Uq9R/fwk/DuQ24LXjuiMk
-	 ZaYqjGQDz35SWWIuxQ1LBMKsLr0FYsl0/QGUCa4H7S5OKOp6pcJnmOvSbUCtgcjHQz
-	 E+CAXq4rDRN9rVU6YIdnaMB6/qYwOJAarSL4EnSis9d2aUmMzQ9yW9sXu29ntXfJKx
-	 LRUH0rvCQary2ZaNedV7qjHLIXkZEaBAOuaYEt5oVMPLP0HyEo3ZcImALOid5dYDvO
-	 HadyE3D7PedAhgqQDnR1C0IGNNwtLo78gtOO7utY2lJXmttPDM9CPBfA8awGC5rtdY
-	 aZJ9W6Ahs7HNQ==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 0/2] mm/damon: fix nr_snapshots semantics and max_nr_snapshots check coverage
-Date: Fri,  7 Aug 2026 07:12:13 -0700
-Message-ID: <20260807141214.91390-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260807093526.183009-1-aethernet65535@gmail.com>
-References: 
+	t=1786112053;
+	b=FOATqwzC44s1KXqIbFrZa0TE02SdB7lyBXg3avuT4GiZYsa1MkWFPQHJtkgaJSm1ZsID3D
+	WEAXR3RDoNhSvklDPukwacsDHx/czY1nQidxDcx+ykJum3CuYQacMGnYAvU79I/6Jmdqxw
+	QEISo/Axz6jlGIFjivI0jaDO/r7VDE8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CCED23E16;
+	Fri,  7 Aug 2026 14:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786112048; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U4ofNE+31BIGjcilMtxKciEXvVlxg/SgK86+li9Dk3w=;
+	b=vfmwRR7nzGkRyQDwvo9vi17BiUPwAuX3WykJPpJj25QHlkjai7uP2PdHe12LwjaEdSJ1/7
+	oqPIlJep2kwyMzPCVWvVUk0bn/3jzflNrp7p5mwYdz6TauTt2kxQW4U9kY55hug/M5Kg/Y
+	5YNBE+Gg42nt1TqyUTxLr+2x3KNrh88=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786112048;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U4ofNE+31BIGjcilMtxKciEXvVlxg/SgK86+li9Dk3w=;
+	b=Gav6SKQLcQYWlXGfpToP92xM8rn0anThhC9LWprNkSy+wmNIaAsan0OnOknjELeTT7Phvz
+	EGbRyehiwTllHgBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786112043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U4ofNE+31BIGjcilMtxKciEXvVlxg/SgK86+li9Dk3w=;
+	b=CEMeKmT0kSfNgUVWzZRJlK2KYPWxf1nw+casqU4S1R47FxpGgi52XimlTu45Xqzd5I1DD9
+	9Kz+WhP4eKbaviDHiMrzPrxXPtIvQa5CT84VOWTUNpFbU8QfkAReLGlhdxnyQwrjErvgeu
+	86RqSAohQ1TMStGdyPjNi8qYR1xvExA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786112043;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U4ofNE+31BIGjcilMtxKciEXvVlxg/SgK86+li9Dk3w=;
+	b=L37yUwa/8Ad4L2bmKW5TdKHJ5CbKZtDv3dxkzhUAMy9KVIpCqcdj3lUxEnJIY0AljMPk3X
+	bds7PewKuAjEg1BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75729779B6;
+	Fri,  7 Aug 2026 14:14:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Xc5qGSvodWrrIQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 07 Aug 2026 14:14:03 +0000
+Date: Fri, 7 Aug 2026 15:14:01 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: vova tokarev <vladimirelitokarev@gmail.com>
+Cc: akpm@linux-foundation.org, security@kernel.org, linux-mm@kvack.org
+Subject: Re: Fwd: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to
+ local privilege escalation
+Message-ID: <anXnHMInq_JLYbWc@pedro-suse.lan>
+References: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
+ <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D8C111C000C
-X-Stat-Signature: 4exww5yj5pcfr3qk77of3frbq3qyti5h
+In-Reply-To: <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1786111941-850462
-X-HE-Meta: U2FsdGVkX1+6OzQQTfJaooTHsPecWEZ9XuuHLtFBI9EaJ64I6nJB3CWChzE5n61//grA7z+9Njt/LbqkXWyYCLT1g6Q+6xbfUCbv985NZpuTR2KQffFsHOiC7iBk85sab9LXSq9/i5iHMkOWna8604NhVq3/GNJhSfsUkAsGFdJ/Grow0DzxzXtk8zIMjq/YSEiR58IdNA1E4pS2SQ+vUdP9aGe7/ryFt+q4Ssfw/80RKm7uSPr7r9zwR10fOm79n8jKNMgwmqMrfqqp9bjqmq+CKjxI6wkkmCw/ZoPXcMYW2F2PxahOKISIfYR85/pORpHchYvBhAUZl2s36yXiHh6VwAXQn853/4gdAWRg1JlGVZu2Io9c3sairc2ppCTgyzJFKSaq9sB0kN10PtCCGkR9fiQ1xXYZ5sPiDkam5BJjT+zcMTcOo+bjtar/T18Cf1Q7a6BicRaURzw8gPbscYcDSMEiFHNg0c3L1yjL9RhXwCmNfnRKJ8s8t4ShUs4fzKMR3s0EhmERpGnBQuxQ+MxQ5ovbKk+5jBVFmLTWBtYwadfg97vsvf/nJrEh+a6xMNgoAdo2eRhEve+eevlUyi/3v47JoSuSWRPeyF1qkZ+OAhv1M3c4dYJuOMGYCQB1bh4I+YZqpclIFIXJKyaGGU3R+w4etAVeo8KedtlarqvswVr2yVTm5DpYsw8EpmekD0B5qsQJId6p6ufGrCO7QVl69zVC9mXHEQ9feSAJUIzQlxNtwsbQyPreuUbGkvrMWZZqn4jBRFSsZhLzAxpL0euabDBagzOo0uXSHIwAiAqLfxKz8hTb+ZbbFQYv26uEVp9HUaw1ltMi5e+xoJApP4LK6SSLehZuQ3jxYGaBUlj+29xTS/4hylWzGQnt5Q55VZchyoUyxunba3dixre9arkOMMxwZPk+m05YeimAPHl6r0B8vOKodBsHfzyqEoeF7MZvhEHjT3gCrTt4IQK
- wV9AlQlW
- +emsmH3Zksc9CxrXvNVp46Xmkk24JY4djlteBTUQyf6ECNOGT2X2G0AyQfN9HUW8RPqOH2DmvAVP/fppMA8CeBvmTZUUxRvIrn4NNDp10xKW/7fNZwAna9SfrveVoo8sH7hge3mwSgEsEbiwo+vUOneR+1uAVBzZvhArXIGyCVAJCKBoP5U1jHSpCyrhObvoUoIryipfPWg+ArgoIdHgUmI+awVhQDTi5osebL8enmaNpw0i6uHbOBs4Mc2/0UhQK773dF1pJ6+PX9o4Tg/twyeZE3A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6C087A0006
+X-Stat-Signature: 88qcwarw7sphzqozjgagmdzdfpcu7bsr
+X-HE-Tag: 1786112053-860010
+X-HE-Meta: U2FsdGVkX18+cUBuTUoXb/tpsuSqEPqlgm43p/WgIoaLI++dWttqRFHx4Mfauv8qPij8nn2h6fZ5ZN3eoOlno8yCiBCNnsFVoE5hvqBqQhsBejvfuuEZe/9AURyAB+z7Exa/G0x1ghwjsGQ7Uy/9feWq6yLzFhip78yBWom7Fz1TvaHCTOhArAqozvtBtKz+VnuNSNSX7mlFfT2PfiMnSzpELukdWocBzeebL5REniJoEnZzDsRUi5lKib7naExfS6S2fFrZGL3UTgkJkGBYqmQQD1JWoh80GncuAl597obIHd3JB/6GkUWRHwdwXOCoHnis6L1QAbFZ+bUThcf4gO2g68ld6LsR8kDX+koz2ixGvCq5nw+GBMJh4uSViwWUp/zgnFCccaX0emHv84yoW5rdF7ky5or+e17F/3ToiBCFyrcgFIRBNY79YEuw2PjzLSQ56LyYO1MRTAlwZO1TEV56DeMY9QbF62bDuDyOHMdsnd2tfebUsROIbkZ0Xet4rJOu910O4gRPyzY2lgxR6I7Vv2lhM5GqqzRHo3q6SZgJXKOylp3lsDEh4eQ7wsXu+aIjIycrIO2y3qYYkVmLMVm/bSPjCC22Fa7zkZoFghFc49MxS4pE/XFi8H0h2bt2nC2ifgngDaCuhQXKgcFQFCC2GhPu6ZLDeTMUnqmBnmCELXUcESp+y3QYBCGoKQarLcQteYIiaeBO/ErAhxc0UYTzOVPkhVfMcWdrNnU1IVAELxbge4a/0jkvnE+wMWPh/Nzm40BjyZBQp4Rbg+TjJ3MVPN2/7azBN4O2WJB5j6dgJs6xqoEmFIY4Ueom064CzabvhRgrgdAImHI15vc/+QFDQqThFK7bypKlbfIFaNDW+IbAHikm42hYKJ7T7gwUHvcAS6Dobmfr+PoKzxNRsJjzrI9hi9/Pkst551sspyKRn0Ob9DP1sf8SCHllZ8r9c2nTrEVl+rO6ZvUhfFg
+ Ft7xVNS1
+ kn2+IF1Fuo7YZeh9s9sw3qPeEIBkNYdMHyshTs3X1ekGg3YzsluvYrZu5Q5V+3Xxs6egvDs65KECiqam9Ar3oVHh6khf3Vt8dGabfOmnTcoDTU8Cm+dCOev1dkPgyx1ZDCy++JtrnxI684/zvtwfOi18uDxmoM5LQSC38JMIlFg+Q6bJiFUbmvj6OCOKxJR7N4DB6xUoXMMWApVbMkOnbLtVBeZQm2329SAQ0NNYgDJVymWZ8sLets4G34CFq3VF75dsT/lzXe28jxo9oY8uobP/CwhaqoPtxCaxdp+BGedqJDVt7mEooomRU1b0zQRBnEdDTLcQyswpe3DLLdZ66Y4vjQ2P8oDka7IeOnHeki3V2YDG1zzPaU+QBxsd9GkTwUAUG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,25 +136,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Liew,
-
-On Fri,  7 Aug 2026 17:35:24 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> Both patches address the DAMOS nr_snapshots/max_nr_snapshots
-> deactivation mechanism.
+On Fri, Aug 07, 2026 at 01:40:41PM +0300, vova tokarev wrote:
+> Hi,
 > 
-> - Patch 1: fixes the nr_snapshots counting semantics.
-> - Patch 2: unifies deactivation checks to prevent busy-loop.
+> It's been almost two months since I sent this report, and I haven't
+> heard back. I'd really appreciate any feedback when you get a chance.
+> 
+> I've rechecked both mainline master and stable 6.12.95 -- the
+> vulnerability remains unfixed in both trees:
+> 
+> 1. mm/shmem.c: shmem_mfill_atomic_pte() (6.12) / shmem_mfill_filemap_add()
+>    (7.x) still adds pages to the page cache without calling file_modified()
+>    or __remove_privs(). Writing to a SUID binary on tmpfs via UFFDIO_COPY
+>    preserves the setuid bit.
+> 
+> 2. mm/userfaultfd.c: I noticed commit 85668fda932a added retry state
+>    tracking on master, but MFILL_RETRY_STATE_VMA_FLAGS still does not
+>    include VMA_WRITE_BIT -- the mprotect TOCTOU remains exploitable.
+> 
+> This is a deterministic local privilege escalation (no race timing
+> needed for the killpriv bypass), affects every kernel since 4.11
+> (8+ years), and works on any system with userfaultfd + tmpfs (the
+> default on virtually all distributions).
+> 
+> I have a full working PoC that gets uid=0 from uid=1000 reliably.
+> Happy to provide any additional information if needed.
+> 
+> Thanks,
+> Vladimir
+> 
+> 
+> ---------- Forwarded message ---------
+> From: vova tokarev <vladimirelitokarev@gmail.com>
+> Date: Tue, Jun 16, 2026 at 12:37 PM
+> Subject: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to local
+> privilege escalation
+> To: <security@kernel.org>
+> 
+> 
+> Hi,
+> 
+> I found a local privilege escalation (BadBunny) in the userfaultfd +
+> shmem subsystems that affects all Linux kernels from 4.11 to 7.1
+> (every major distribution: Ubuntu, Debian, Fedora, RHEL, SUSE, Arch,
+> Android, ChromeOS, and any system with CONFIG_USERFAULTFD=y and a
+> tmpfs/shmem mount).
+> 
+> Two bugs are chained:
+> 
+> 1. TOCTOU in UFFDIO_COPY retry path (mm/userfaultfd.c):
+>    mfill_retry_state_changed() does not re-validate VM_WRITE after
+>    dropping and re-acquiring the mmap lock in mfill_copy_folio_retry().
+>    A concurrent mprotect(PROT_READ) installs a writable PTE into a
+>    now-read-only VMA.
 
-Thank you for sharing this patch series.  However, I don't think the patches
-are fixing real problems.  Rather, it seems the poor documentation has confused
-you.  Sorry for writing the documentation in the confusing way.  I commented to
-each patch for details.  If you want, please feel free to send documentation
-update patches.  I will also try to find a time to do that if nobody does.
+This sounds like a bug, but not really exploitable.
+
+> 
+> 2. Missing killpriv in shmem UFFDIO_COPY (mm/shmem.c):
+>    shmem_mfill_filemap_add() adds pages to the shmem page cache
+>    without calling file_modified()/killpriv. This preserves SUID/SGID
+>    bits when file content is replaced via UFFDIO_COPY, unlike normal
+>    write() which strips them.
+> 
+> NOTE: The killpriv bypass (Bug 2) does not require
+> unprivileged userfaultfd and works even with vm.unprivileged_userfaultfd=0,
+> since UFFDIO_COPY on shmem is available to any process that can open
+> a tmpfs file O_RDWR and call userfaultfd with UFFD_USER_MODE_ONLY.
+
+Who made the suid file world-writable? Note that this is not a bug, page
+fault paths don't clear the suid bit either.
+
+> 
+> An unprivileged user can replace the content of a SUID-root binary on
+> tmpfs via UFFDIO_COPY while preserving its setuid permission, then
+> execute it to obtain root.
+> 
+> The attack is deterministic (no timing dependency for the killpriv
+> bypass), requires no heap spraying, and bypasses all modern kernel
+> mitigations (KASLR, SMEP, SMAP, CFI, PAC, heap hardening).
+> 
+> Affected versions: Linux 4.11+ (since shmem UFFDIO_COPY support,
+>     commit 4c27fe4c4c84 "userfaultfd: shmem: add shmem_mcopy_atomic_pte")
+
+This sounds like a bug, but not really exploitable.
+> Confirmed on: 7.1.0 (aarch64)
+> Affected distros: All major distributions (Ubuntu, Debian, Fedora,
+>     RHEL, SUSE, Arch, Android, ChromeOS) that have CONFIG_USERFAULTFD=y
+>     and tmpfs mounted (virtually all Linux systems)
+> 
+> Attached files:
+>   - bad_bunny.c                           Full LPE exploit (uid=1000 to
+> uid=0) Build: gcc -static -O2 -pthread
+>   - suidhelper.c                            Standalone SUID payload binary
+> Build: gcc -static -O2
+>   - uffdio_copy_lpe_report.md     Detailed writeup with root cause,
+> reproduction steps, and suggested fix
+>   - badbunny_demo.mp4             PoC demo clip
+> 
+> The PoC (bad_bunny.c) sets up a SUID target on tmpfs, drops to
+
+Since the exploit isn't public, I assume you set up the tmpfs file as root
+and world writable. This is not an LPE.
 
 
-Thanks,
-SJ
-
-[...]
+-- 
+Pedro
 
