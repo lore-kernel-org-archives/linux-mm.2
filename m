@@ -4,88 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B469C5AC7A
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E0BC5AC7C
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Aug 2026 09:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CA766B007B; Fri,  7 Aug 2026 05:11:18 -0400 (EDT)
+	id 15E4F6B008A; Fri,  7 Aug 2026 05:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A12D6B0088; Fri,  7 Aug 2026 05:11:18 -0400 (EDT)
+	id 10F086B0092; Fri,  7 Aug 2026 05:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DEE46B0092; Fri,  7 Aug 2026 05:11:18 -0400 (EDT)
+	id F41166B0093; Fri,  7 Aug 2026 05:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 54C4F6B007B
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:11:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA09C1C0C70
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:11:17 +0000 (UTC)
-X-FDA: 85073904594.07.9E1FDE5
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E60C18000A
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:11:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iXtfxaG2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C75716B008A
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 05:18:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EAAEA1CA1
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:18:00 +0000 (UTC)
+X-FDA: 85073921520.16.6C0A81C
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 68F54180008
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 09:17:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="fn7o/Br1";
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786093876;
+	s=arc-20220608; t=1786094278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RLWWlERU4EyhgRGntEHaWI0+q0HSVagA2adXFhHKiXA=;
-	b=UJDHv9SXF2NiVEX/Tq1vtzlfnJXCQsXt1B0W2QXRIFVZqwJWrHqVUsE2oC5b6bElOTZ35V
-	QGokyeeG+SVct3N96Yexp5qqi1TEGphplcUpJSzgzDUkISqqcadSyE2QNW3EnESm0xeipp
-	lzMY6DQu1eyhc/If31kusyHN3e7HQhc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iXtfxaG2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=nE9EpAT+paxZNLOvuqRoG+/4E3IKgvzJcMoz26cdk1M=;
+	b=lfvOcw7kvlb4KmTK20Vly8JPJJjUEymnoW2hQW1bWN2WccZIXRV6xv0FRBJ/lV70NkePlV
+	OjD8Yuz20DF7yNt7+qEXsp2n4sWOSI100UmH0UPveanVr9pXTS5Ff98zOrsIE/vPdOUIyb
+	4QxyIsOE+MD5v5EwMpqF+v5QmKp/7RI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786093876;
-	b=BBDvhkLkmPLr8QJGtpIvXDb6xYXobA5uA9BDHC8JUMdDvhjyx+mNKTfdtAsOLx9GzOluBL
-	GwhwyUy5R+XIaY812ZB+hcpZKc7XjkGriUplBAFoHbq3NjtdpJwN7B7d9d0Z/eQkv6lLvF
-	y6quwqJpOC0CScCCzCvlxEq5hNevkfA=
-Date: Fri, 7 Aug 2026 17:11:05 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786093872;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLWWlERU4EyhgRGntEHaWI0+q0HSVagA2adXFhHKiXA=;
-	b=iXtfxaG2SPCY6xrbj8qSCqXXqFUt3cvmtGL/Bht220P5ajk0P8xgKUsW/IV/8e5bBIBqER
-	moIJBWeaX5vXBNUzQS+oIKCqVcEnDBOGy3UgOmUxMpz6Mbhx/agnSFKB0IQVGWib+jzRja
-	2D1WAGOBfr7kifZa7cJ4Er5I1Hh79BQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-mm@kvack.org, chrisl@kernel.org, nphamcs@gmail.com,
-	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com,
-	yosry@kernel.org, david@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 01/10] mm: xswap support for zswap
-Message-ID: <anWhKU8NPzosQR8d@MiWiFi-R3L-srv>
-References: <20260805075336.3579395-1-baoquan.he@linux.dev>
- <20260805075336.3579395-2-baoquan.he@linux.dev>
- <anNGE_FOoupPtOhj@cmpxchg.org>
+	t=1786094278;
+	b=Mxs22nx8Nvo4lKS9T+tQ+tbLEulHDCBEDt9ggITULxFOERr704GquS+Q5hmd9x0U05NrW1
+	WUbpNPYCu5tM7rRvH664bHS5Qjolyna03xNEExVE3KnqT/etuot4zE0Ct0lirW0U4pjLX0
+	fL8j+ObHTSKJQ7Yfl6UY4lvLqr51cCI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="fn7o/Br1";
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-496b7622a83so26355115e9.2
+        for <linux-mm@kvack.org>; Fri, 07 Aug 2026 02:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1786094277; x=1786699077; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nE9EpAT+paxZNLOvuqRoG+/4E3IKgvzJcMoz26cdk1M=;
+        b=fn7o/Br1Ca6gWaR6zFeDeCs/RfNj/r6kH97x7ZmBM/azqXf5IUgJOdmIKnJOL2LYbY
+         nFC8FMMrkmsyLQMXwGXFTvqIW1euQuGB2LljOY57fCXCavEX9+is7LhVN8jFhphNAeGw
+         wLktlZRLzHHyINN7CkRm74yqLW8aooK1Ierlobeej65zqBfqabAtFwhyN6s7EFc4mU5F
+         CkaG1l18O1xkYNGi+jpPvSfUARcGT2P01RNE1C/ca46YXLpA3C1nBkM4mFLuxy/JRb6n
+         zVymBXB/3hfA7ujFmPW35RUYb4efw+MrwSrOQjf2gdEXbufuNDIH3q8HidQDeD7M3D5A
+         4tzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786094277; x=1786699077;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nE9EpAT+paxZNLOvuqRoG+/4E3IKgvzJcMoz26cdk1M=;
+        b=sR1QJvd8wpaNDj6TsuxLBZv+W5m+jFTdq/tHwip41kTfrlpfge4ml/EUjyhmnMkX0n
+         PMz1vqvoCdQYYQ4h4zsN9y1MGu2fC5uwETrjNSzwBLOj0ooEvJeqyNwEpWxVw+D5V0Vc
+         UCgp2EuqM8+B4TuDBTCj191zueR3TIJX/LN06/zXLMnzStvcl50gIjxJlSw1jqFCk+P6
+         mQymaNFwm2qM9FespxllBR/e3l5ZcuDPVbIFVjetyudcAdCIEIU3sFfox6idmS0j9zLH
+         OcLYerN+8eBE7r42tZikboapaGtZa4hjCmNlnjnEIHegnFi1v4x+xMY6QlMljrXJAo9w
+         67xQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7cNgbS28tooHkFmIImp3lqtFzTdBySiCbb4wUuYfRbEbWL1eHLxI7j/WZ9EYrCCt8niqX/1p92A==@kvack.org
+X-Gm-Message-State: AOJu0YwNDTtSTFOxRHdFOeSWnxw3tLJfjAQrKpH6AdNAgWEcMXweYg4h
+	VZKqT0ByZp5OWizA6JIerTbsh60/BNHa525h4E9Sk3pvt/pfHHEJ+Y8c9Ccx5lVCbVg=
+X-Gm-Gg: AR+sD10HhCHYJIVsQe73Y4X0ITJSBv1BdXrPzHA/RTi1VQPNZpHEb3l8LzqbflCcBws
+	vVbbRFVFSkk3F8xctqHxFu5ilrFYNOc38XHYnT0CW6USR0z2S8Qrp8hATsdATrcjk07RDsvk3jw
+	C6+vgtdnE315haMJQI2Z5VKqDpGK5r5Spn8KVvELeMe/7Tw+bDqcWcPWl6Z2o5KsllXPzp0C1vU
+	Usox8VAgErRexPks3LgfQwL6Bmm3RXNDbekHSfqMzvr/beUTRn7Ff4Laq8pTBLcwAZXSWFqvRhx
+	LfmUptrTz+SBzkOAtzBLy51VUSjXH5jfzflO8b2G6D5uPOqjeVRzCUDulKSL8EstgZXrrENYCRV
+	WkLth6iOMHs8vMgwk+Kin7Ql349f2XneKPpG880YNBPm8aE+wz+E0NZbz6jMKWdIU6aeS6CxO0I
+	ltRQ2xTwuvpSRUrFvaswK1Zgwa+rgTzfkvgksHJhWeK53F1syZGGTKIDHbhgIEIUMnNF2YZqY1X
+	cc=
+X-Received: by 2002:a05:600c:3586:b0:499:49f3:77b1 with SMTP id 5b1f17b1804b1-4994e728283mr284725245e9.3.1786094276825;
+        Fri, 07 Aug 2026 02:17:56 -0700 (PDT)
+Received: from localhost (109-81-83-166.rct.o2.cz. [109.81.83.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4800215078asm3937193f8f.12.2026.08.07.02.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 02:17:56 -0700 (PDT)
+Date: Fri, 7 Aug 2026 11:17:55 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Audra Mitchell <audra@redhat.com>
+Cc: david@kernel.org, jocolema@redhat.com, raquini@redhat.com,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix unbounded loop within try_charge_memcg
+Message-ID: <anWiw0Zb66jyhzBU@tiehlicka>
+References: <20260806182429.1841095-1-audra@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <anNGE_FOoupPtOhj@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E60C18000A
-X-Stat-Signature: fjcpcebniws1kp5hmtt1juktyqnig6dw
+In-Reply-To: <20260806182429.1841095-1-audra@redhat.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 68F54180008
+X-Stat-Signature: goijmat6yru96osgqmjotzigix4sjutj
 X-Rspam-User: 
-X-HE-Tag: 1786093875-778259
-X-HE-Meta: U2FsdGVkX1/DnPElFv0k/TjnfALLkScVqkG1OoGvXcWA3QDbscecYALCf+ZaRdXZPSmNeQnY8CcbYn1OlWeZwbbHpw6cr2Q6GMEPSWkEe3LMGvSXH8C1Zig3RkW1VbNOI3IuOlPlfsKZ0BJDpcjC2ymP8Tya9gIIw1IL0Fqhfgnv6pdIxahlP8gr5jzfKdi5rBryebFr+uY0JMUjGkAuj/JedcuksHJaOyUdb2zs4Dfa06ajvO6ZCoXHZt0ckr1mq3g1BriVbr8Qrlln4WRwbGWseH0kBfFhw85euKrELakdoBYSkeXNK23scObkdn5uNCTcP9w6/b2LsCzAOiLosxvMBm1WBKblYqBcoD4oHv1JnLOxlrSiN1NiIBa55t1RuVzNhh1B3WUN4lKk5SIBe31nYugN1Evpp9xKprDqrxouslmrUH1jjzynz4Rlo8EzqJJsS0U/jp/rAl2x2NlrWHMF6DKrUHQ6AEFiuqxW34IIz3EsPUZcF5YO3NGFv2lSlZg4ekZUstEwYDPuj9ruqJuUOuNZRcDYi7S86hl/zDtse0HvHhPkfCKn1qxTpKjgB/hlibV40umjiLaO4lzIm1NQgsIGABtNypJ6GNgv3oXDVlxG8YJdH68LZ+J1OBkUoXetFJqt1JOgnAkulO4R14MuxZi+RPRw42NBLC0nmI4fowX2KFFqkPL1x3VyFoa/CKqNBK5IOpYjz5DsbqPGyJ59ER4NPgQmPt83LNmN6UJToyThE+TQwF3eyeB16tEK+W8QJoR8P8qXIbq1d9tLaz5jfunWtI2WrT+27btmMeDDIOPkyl2Rqv9zKgJFv6fgM2LrK7EdFGTjLNKg/1GfreP4yl7kbmJAS1/k0LRgMh3+u7cUqHGWI/5Pfp6NNGDRtMlVPB9hbBQ5ALp3r8jYMxAslfgHPtYdhvdahMNE0o5bbYi2nIH5V3WLfdrwTSgd8qv+qbz4NuCGfOOUl+l
- pADJCOHr
- UPEsxT/S+fRsKYwxcijlj5tjaxUoBccDckoPWujyfi7iQ0E3URJ2FY/SxaQyUBM5gdBluQeg45hEEhvVtnoF9kkDCy+j2pFQ/uOmjUkHJ8MYEQ/NeuImqzaXhT7hn8Dd9TRVfJFuZug8mV4e8qleEB+5ehKoo8QCHxI9J6bKudXmiPo3dKiIUzc2B4TrS+sqWSH+yWHtLl9RdhZ+qPlX9yDlRS9CNzAVYYIwU8OoOY+yUaJMVzYTOhvLaHri7u0WnLVc5WsSyW6N0vJvUA2pBD83yOyq5gKXrR02BIeNYDqfSVL4=
+X-HE-Tag: 1786094278-819224
+X-HE-Meta: U2FsdGVkX1+KmcZ2iIjAQubUkAjhN1tELWhzFpsGxwb+xEvmP8FVLsXz+a5xSSnYIwL8sxpjfCr1gmVz5tzb7G/NTV05PVXqlxQjo1mg22/mBYncdO7jCxPfLR5Ltpeo5kaZ69FBEcII7QJFTw03if27TcTXMqWJ4yua4fr4/+vNQAgrThasfUZFQtnmQWgj1bq0rE7HQchamcnHVCJ4b4sAE69mQItAhYqyeRL9baK0o4Pzbnb5lZ/aThFO/QY1Un8uua4pav6D349o2q51kGYhm14lIpARwDHKx0CMU+R/1yUJwS/bOlwwYJxLStP/SbAmzpife5T8M6p1EfcSxs7DgF+fy6w1PdGZkqjfekSZbGmDiuHXlk7wNMioQ8KbImor3rN1qZp37QKlxUS29CRfQV2UaG4B+Ai9UorrupEdG1bhqzQP70QXZwtpo7KNlMeLIsUXToo2Y2nRRIGVS8ZpxEu0unHx2/Xg4SEAZOhTuxTG/rwU3C1mM7UCSE1PDQ/+2kvNRscR0b/aTmKi+2ZoT55FBS/QQg/lyOtVxGqsTdfYf4c8iwlrTPiiZAYhZMGLb54AvlpHYjqYCzUnLyWGZmr0IVcz+sZjUUj94zQ7euSYdZHZwpT5FnMQzSBTyFod3QqQzk8tR3CFb8ZlRoydFw4XdwjL0y5e9cPfzi1gHY7AMYSvEEsHiXyO8Fp4Hy+7x6Rz3M74PaWBOttvcXg4MWAitJYqa1JfyUOAxPUKZbKB4STLsQeFreGfWPgmyCADZwtx58aLvO14vJmyaNkWVXRa8rH7AvN9kJEDSwOU/A7LdHANpw0PTMWVDJME5T0uAvOg+Ekk8cHJVCn+MT05NvpJRsPq9w2llrlz1J+pUS/a5fRkp7lOVhnUYnGLCsJohljQb8SM8haR1LSpqMUHsDBYGJthdGhXOSSSv+nKmZCuJ/jXr+dFklTPngu83qf++4i9naIANGO6/RR
+ smEEZYFY
+ 8c+f7rutEpAUaLL/1NOkzKzF2aF5UR7JuAIG2UhUZCjNR6EF+rODOkYTsULsuguvGNBqKKp2sbYGs6d8nyVw4fPyZIWM9Q/SqsQlRgGd01gdAa0WaUrHRsNK8Th9BKSViX3x3lxAcKFAe7TOJFZm1K+Kb9t/x6186ueEP632MFpVoDu+nhjUV//BUDkPHaHoOSSHilTcknMoa7EutagTwvJ3M02uEvkfjfCxMnw65SYcznaDKewQer297pjlT/RiGJuuM1nUpeQzTTbyROMSdrO4Mbwh1WmjLgtucwED7dIWolkoWSGic27m6u+t4hpqe5okqzli0+hDcJQX8kU7g5EjAgPFo1kSPribvLR17A8ZDXW3gLgh1euqGwAwsEYRZmuO2SkkqCpLxSXVeLUGedzZP5UraL+FWyDu5P3qAOpDitRc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,125 +124,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Johannes,
-
-On 08/05/26 at 10:17am, Johannes Weiner wrote:
-> On Wed, Aug 05, 2026 at 03:53:24PM +0800, Baoquan He wrote:
-> > From: Chris Li <chrisl@kernel.org>
-> > 
-> > Introduce extendable (virtual) swap device support ??? xswap.
-> > 
-> > The current zswap requires a backing swapfile. The swap slot used
-> > by zswap is not able to be used by the swapfile, wasting swapfile
-> > space.
-> > 
-> > An xswap device is a swapfile that only contains the swap header,
-> > with the header indicating the size of the virtual swap space. There
-> > is no swap data section, therefore no waste of swapfile space. Any
-> > write to an xswap device will fail. To prevent accidental read or
-> > write, bdev of swap_info_struct is set to NULL. Xswap devices set
-> > the SSD flag because there is no rotational disk access when using
-> > zswap.
-> > 
-> > Zswap writeback is disabled if all swapfiles in the system are
-> > xswap devices (tracked via nr_real_swapfiles).
-> > 
-> > How to create an xswap device:
-> >   touch swap.1G
-> >   truncate -s 1G swap.1G
-> >   mkswap swap.1G
-> >   dd if=swap.1G of=xswap.1G bs=4096 count=1
-> >   # xswap.1G is 4K on disk but reports 1G capacity
-> >   swapon xswap.1G
+On Thu 06-08-26 14:24:28, Audra Mitchell wrote:
+> Originally nr_retries was actually nr_oom_retries and we used it to track (and
+> limit) the number of times we entered the mem_cgroup_oom path and then attempted
+> a retry. The purpose of nr_retries counter changed with the introduction of
+> 9b1306192d33 ("mm: memcontrol: retry reclaim for oom-disabled and __GFP_NOFAIL
+> charges") so that the oom-disabled and __GFP_NOFAIL charges would also continue
+> to retry within the desired nr_retries threshold. Later d977aa939fca
+> ("mm, memcg: unify reclaim retry limits with page allocator") changed the
+> nr_retries counter from 5 to 16.
 > 
-> Sigh.
+> As the function has evolved we now have multiple paths that have a goto retry
+> path and we have lost the original purpose of the nr_retries counter, allowing
+> us to take a goto retry path an unbounded number of times.
 > 
-> Why does the user have to go through this dance?
-> 
-> Why does the user have to decide in advance what size the space needs
-> to be?
-> 
-> You point out no inherent limit to how much can be compressed, so
-> there is no reason to make userspace decide on an arbitrary one.
-> 
-> There is no reason to tie an address space that can be managed
-> transparently inside the kernel to TWO named files on disk.
+> Fix the unbounded retries by nesting the code in a loop and decrementing the
+> nr_retries counter correctly.
 
-Thanks for looking into this.
-
-The file-based creation dance is there only because this is RFC —
-I wanted to reuse the existing swapon path so the core grow/shrink
-machinery could be measured and tested without also designing a new
-userspace interface. I agree it's not the right final interface.
-
-The direction I'm thinking for the next revision:
-
-- Drop the file requirement entirely.  An xswap device has no backing
-  store, so there is no reason it needs a file.
-
-- Use totalram_pages as the initial per-device size.  Chris suggested
-  this, and it's a natural bound: if all anonymous memory is swapped
-  out, that is the maximum number of swap entries zswap will ever need,
-  assuming a reasonable compression ratio. The hard upper limit could
-  be 2 times of system RAM, or the max system RAM memory hotplug can
-  add to.
-
-  Doing this because we need consider swap.tier support. A single global
-  xswap device in swap.tier would mean all memcgs compress into the
-  same device — there is only one swap entry namespace. With per-device
-  xswap instances, swap.tier can bind different memcgs to different xswap
-  devices, giving each its own swap slot namespace. Total isolation on slot
-  usage, no cross-memcg interference.
-
-   -----
-   Hi Chris, Joungjun,
-   Please correct me if I misunderstood the swap.tier concept and xswap
-   use case in there.)
-   -----
-
-For creation, something like:
-
-1. 
-  echo $((4 * 1024 * 1024 * 1024)) > /sys/kernel/mm/xswap/create
-
-or
-2.
-  even simpler, with automatic sizing:
-
-  echo 1 > /sys/kernel/mm/xswap/enable
-
-  (use totalram_pages as the default size.)
-
-3. 
-swapon -t xswap xswap0
-
-(use totalram_pages as the default size.)
-
-I'm open to other ideas.  If anyone have a preference for the interface,
-I'd like to hear it.
+Are you trying to fix a theoretical problem spotted by the code review
+or is there any actual problem that you are trying to fix?
 
 > 
-> There are plenty of past discussions on this very topic. I don't see
-> the point in resubmitting the same thing under different names,
-> without even a reference to previous discussions.
+> Signed-off-by: Audra Mitchell <audra@redhat.com>
+> ---
+>  mm/memcontrol.c | 153 ++++++++++++++++++++++++------------------------
+>  1 file changed, 76 insertions(+), 77 deletions(-)
 > 
-> As a side note: if you have to add "(virtual)" after every instance of
-> "extendable", then maybe "extendable" is a terrible name and you
-> should just call it "virtual".
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..781bcced5848 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2607,98 +2607,97 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	unsigned long pflags;
+>  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+>  
+> -retry:
+> -	if (consume_stock(memcg, nr_pages))
+> -		return 0;
+> +	for (; nr_retries >= 0; nr_retries--) {
+>  
+> -	if (!allow_spinning)
+> -		/* Avoid the refill and flush of the older stock */
+> -		batch = nr_pages;
+> +		if (consume_stock(memcg, nr_pages))
+> +			return 0;
+>  
+> -	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+> -	if (!do_memsw_account() ||
+> -	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+> -		if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> -			goto done_restock;
+> -		if (do_memsw_account())
+> -			page_counter_uncharge(&memcg->memsw, batch);
+> -		mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> -	} else {
+> -		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+> -		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+> -	}
+> +		if (!allow_spinning)
+> +			/* Avoid the refill and flush of the older stock */
+> +			batch = nr_pages;
+>  
+> -	if (batch > nr_pages) {
+> -		batch = nr_pages;
+> -		goto retry;
+> -	}
+> +		reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+> +		if (!do_memsw_account() ||
+> +		    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+> +			if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> +				goto done_restock;
+> +			if (do_memsw_account())
+> +				page_counter_uncharge(&memcg->memsw, batch);
+> +			mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> +		} else {
+> +			mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+> +			reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+> +		}
+>  
+> -	/*
+> -	 * Prevent unbounded recursion when reclaim operations need to
+> -	 * allocate memory. This might exceed the limits temporarily,
+> -	 * but we prefer facilitating memory reclaim and getting back
+> -	 * under the limit over triggering OOM kills in these cases.
+> -	 */
+> -	if (unlikely(current->flags & PF_MEMALLOC))
+> -		goto force;
+> +		if (batch > nr_pages) {
+> +			batch = nr_pages;
+> +			continue;
+> +		}
+>  
+> -	if (unlikely(task_in_memcg_oom(current)))
+> -		goto nomem;
+> +		/*
+> +		 * Prevent unbounded recursion when reclaim operations need to
+> +		 * allocate memory. This might exceed the limits temporarily,
+> +		 * but we prefer facilitating memory reclaim and getting back
+> +		 * under the limit over triggering OOM kills in these cases.
+> +		 */
+> +		if (unlikely(current->flags & PF_MEMALLOC))
+> +			goto force;
+>  
+> -	if (!gfpflags_allow_blocking(gfp_mask))
+> -		goto nomem;
+> +		if (unlikely(task_in_memcg_oom(current)))
+> +			goto nomem;
+>  
+> -	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> -	raised_max_event = true;
+> +		if (!gfpflags_allow_blocking(gfp_mask))
+> +			goto nomem;
+>  
+> -	psi_memstall_enter(&pflags);
+> -	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+> -						    gfp_mask, reclaim_options, NULL);
+> -	psi_memstall_leave(&pflags);
+> +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> +		raised_max_event = true;
+>  
+> -	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+> -		goto retry;
+> +		psi_memstall_enter(&pflags);
+> +		nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+> +						    gfp_mask, reclaim_options, NULL);
+> +		psi_memstall_leave(&pflags);
+>  
+> -	if (!drained) {
+> -		drain_all_stock(mem_over_limit);
+> -		drained = true;
+> -		goto retry;
+> -	}
+> +		if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+> +			continue;
+>  
+> -	if (gfp_mask & __GFP_NORETRY)
+> -		goto nomem;
+> -	/*
+> -	 * Even though the limit is exceeded at this point, reclaim
+> -	 * may have been able to free some pages.  Retry the charge
+> -	 * before killing the task.
+> -	 *
+> -	 * Only for regular pages, though: huge pages are rather
+> -	 * unlikely to succeed so close to the limit, and we fall back
+> -	 * to regular pages anyway in case of failure.
+> -	 */
+> -	if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
+> -		goto retry;
+> +		if (!drained) {
+> +			drain_all_stock(mem_over_limit);
+> +			drained = true;
+> +			continue;
+> +		}
+>  
+> -	if (nr_retries--)
+> -		goto retry;
+> +		if (gfp_mask & __GFP_NORETRY)
+> +			goto nomem;
+> +		/*
+> +		 * Even though the limit is exceeded at this point, reclaim
+> +		 * may have been able to free some pages.  Retry the charge
+> +		 * before killing the task.
+> +		 *
+> +		 * Only for regular pages, though: huge pages are rather
+> +		 * unlikely to succeed so close to the limit, and we fall back
+> +		 * to regular pages anyway in case of failure.
+> +		 */
+> +		if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
+> +			continue;
+>  
+> -	if (gfp_mask & __GFP_RETRY_MAYFAIL)
+> -		goto nomem;
+> +		if (gfp_mask & __GFP_RETRY_MAYFAIL)
+> +			goto nomem;
+>  
+> -	/* Avoid endless loop for tasks bypassed by the oom killer */
+> -	if (passed_oom && task_is_dying())
+> -		goto nomem;
+> +		/* Avoid endless loop for tasks bypassed by the oom killer */
+> +		if (passed_oom && task_is_dying())
+> +			goto nomem;
+>  
+> -	/*
+> -	 * keep retrying as long as the memcg oom killer is able to make
+> -	 * a forward progress or bypass the charge if the oom killer
+> -	 * couldn't make any progress.
+> -	 */
+> -	if (mem_cgroup_oom(mem_over_limit, gfp_mask,
+> -			   get_order(nr_pages * PAGE_SIZE))) {
+> -		passed_oom = true;
+> -		nr_retries = MAX_RECLAIM_RETRIES;
+> -		goto retry;
+> +		/*
+> +		 * keep retrying as long as the memcg oom killer is able to make
+> +		 * a forward progress or bypass the charge if the oom killer
+> +		 * couldn't make any progress.
+> +		 */
+> +		if (mem_cgroup_oom(mem_over_limit, gfp_mask,
+> +				   get_order(nr_pages * PAGE_SIZE))) {
+> +			passed_oom = true;
+> +			nr_retries = MAX_RECLAIM_RETRIES;
+> +			continue;
+> +		}
+>  	}
+>  nomem:
+>  	/*
+> -- 
+> 2.52.0
+> 
 
-"extendable (virtual)" wasn't meant to explain one with the other.
-Chris prefers "extendable", you prefer "virtual" — I put both in the
-cover letter so the community could weigh in. I don't have a strong
-preference to either. 
-
-I'll address all of this in RFC v3 — drop the file requirement,
-auto-size to totalram_pages (with grow/shrink for dynamic adjustment
-on top), and settle the name. The goal of RFC v2 was to get the
-core mechanics reviewed; I think that part is in reasonable shape,
-and the interface is exactly the kind of thing I was hoping to get
-feedback on.  Thanks for providing it.
-
-Thanks
-Baoquan
-
+-- 
+Michal Hocko
+SUSE Labs
 
