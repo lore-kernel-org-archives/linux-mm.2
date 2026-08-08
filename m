@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5555BC5AD2B
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 01:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94D15C5AD05
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 01:36:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724796B0088; Fri,  7 Aug 2026 21:19:24 -0400 (EDT)
+	id A9D2C6B0088; Fri,  7 Aug 2026 21:36:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CDFD6B0092; Fri,  7 Aug 2026 21:19:24 -0400 (EDT)
+	id A26606B008A; Fri,  7 Aug 2026 21:36:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BD536B0093; Fri,  7 Aug 2026 21:19:24 -0400 (EDT)
+	id 93CEE6B008C; Fri,  7 Aug 2026 21:36:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 195E16B0088
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:19:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5129F1402A4
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 01:19:09 +0000 (UTC)
-X-FDA: 85076343618.25.EF69B05
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B2E1A1A0006
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 01:19:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l3LIcieJ;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 062466B0088
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 21:36:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 399D7120288
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 01:36:16 +0000 (UTC)
+X-FDA: 85076386752.01.19B7C01
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4F22840004
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 01:36:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LI/AXB+s";
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786152974;
+	b=nWdWWYgRcE9e4aiCY0xVZMsW4tK3EQojv/nDpOPt0yNN6Kvvsm0LD5SyTJuSLBKYJ/twpj
+	KFPZ77F1XRaYO6brbMK2RM2xSD2mjnFNITBSdJ2QWp2FYVYVRdAuWhNAZR9529Xv0AMH4p
+	lEiwTQu2djxhMrclpMUFwFtYqA6+YHA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LI/AXB+s";
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786151947;
+	s=arc-20220608; t=1786152974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rMyxG+nPHVxHJ1KM+yO+RxpMBhOYpRjh117VjJdqmNU=;
-	b=RoLVaHpYazHMHaeynw770tBXFQuV500WGk4ImWsdgBjzemfIQZtY3UQR+uz8RvIy0IlZq3
-	0f/Z1fKGwG1NOFMAeav6bpeKtL53z8nED0Jjl0HAzWBIIv1VA/JgwUU2NPQPDvUyXTCbge
-	WOWdL42z14pX/Swv7yh1m3+TAexBTBI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786151947;
-	b=cD4L6gSls7Y9w7ZZMXy7ilfTEco0RGGGeMAiHjKbKGijXLFDPKJdu4qX0txagGftoLVR1n
-	4LsnMbSI0b7d295uJtdr7hpZa+tQdoIEkdvMT41x9v694K3tcLGXaRedzMArysSmOW8+dp
-	O1V0lrRE6asAPf4uMCJXCSt5c6v3Qww=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l3LIcieJ;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rMyxG+nPHVxHJ1KM+yO+RxpMBhOYpRjh117VjJdqmNU=; b=l3LIcieJ6AXIOCMvvamI+rcA+a
-	XujTAm6DKG3jXmHB+i3ylb9K6h+eYDeuyBYQ8pdC9TyfSKe3/rQXPgufJoCS0XWnne2iyslYPuZWn
-	8TwuuMIaHNN+Osyife+4g8Oxsg8MUYkhViFfmcKps9AQ6CAMEJFJpI8p6D8FXRlNQ02O9FcDUSqoc
-	0i6zF64R3JZ/iLxFdjb5laolsf3/ZxcYu2+TJ1MokpuXDnzlQStpTNwiBo2mZy6KGcChSvgmBx78O
-	1dZLZVllADx/9PPwhvG4yYS0ADp6KtOncFpy8OvY8bEsf8AhBDtrJXDDGUgvsgG11oDXVLKqzanCk
-	208+cZOw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wsPsK-0000000Dbim-3pzX;
-	Fri, 07 Aug 2026 19:05:00 +0000
-Date: Fri, 7 Aug 2026 20:05:00 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Tal Zussman <tz2294@columbia.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Christoph Hellwig <hch@lst.de>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] mm/swap: rename __swap_writepage() to
- __swap_writeout()
-Message-ID: <anYsXImJ86OY-IZI@casper.infradead.org>
-References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
- <20260806-b4-page_io-folios-v1-6-0899bac3b826@columbia.edu>
- <anYPVB3dwJCVoXVv@cmpxchg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anYPVB3dwJCVoXVv@cmpxchg.org>
+	bh=mBze6R+Yde21iZRthxsluHvPvQaZpfZt7IhiN6kDbGs=;
+	b=KdOsZMu9O/w6QE+DaygY+8SlGoTH7kxcFuonoO59sRDg+YkXDwPaigev/l5R1Vq1vZ/Osj
+	n0/soZQQaKw1pvXQg9vl6Gei2tVzw0suxALoZ/fjYiUNkYrwqCwti/NaZjtNzooZ6LzWCi
+	chCFhgfV2D1qHgsaioq9mHsqMd7TMfA=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786152971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mBze6R+Yde21iZRthxsluHvPvQaZpfZt7IhiN6kDbGs=;
+	b=LI/AXB+sl/lAsfXlZgmEG1cRftwk6gDS1C1hOcW1gnixTb7sKudbdP/f+F4XA2F7tLCXnF
+	e6sGu5pPc2E6cB4241E+FS8cHpWkWeVlOdYK7nVO+Y0KFRjnp2wcHfJhfjzfj4EZURu/jw
+	/XzeJHn5jY4kzwNsJMVweKHyhZ5XDBA=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3] memcg: keep folio's objcg same as its node
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260807142406.443516-1-shakeel.butt@linux.dev>
+Date: Sat, 8 Aug 2026 09:35:36 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org,
+ cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Karl Erik Hofseth <karl.e.hofseth@opoint.com>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9B30927B-4154-4FA4-B62E-425F6EC4FA89@linux.dev>
+References: <20260807142406.443516-1-shakeel.butt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4F22840004
+X-Stat-Signature: wuz1ddehsoowm6og11wqe19mm7x8idfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B2E1A1A0006
-X-Stat-Signature: b84iht8o9sthqy9oqhou9y83n8ftn4z3
-X-HE-Tag: 1786151947-174552
-X-HE-Meta: U2FsdGVkX1+kq7CQq5vYvZwSyHHRlAsZMzWsH0z9CJ1Lpe4v1kMh238NU4K3WVZpTrQNDCX8EWDWTOr/3M6XCA/1sHkSJlXtEdKD7dggVhZ4CP8OtEReQLRPQ10sRQ5dKe7h3++WT3iEKaB1Csx4cv8x2d5P9kA47e7BWwZZYmndESWYJ5ua3UIE0XqWRmZCaBnWOwqjT0Xy3hPVYy1AzTjLN0nhhq9RDMh0oTIt/5pZdWbZbQZA+osPLxgGTeZwfbvYIt8aCc3xojWz0tp4zyEJWrVPIm+yK5l3J21oi1t6iWnXH+vk1i/3B1I7iV0mPeQgYGSXu/ZMTSf5Z3Qpx9CiAx+yku+lk53/WKvyNXPBsg3q4aqBN1R8TeJ9rWX0B7ll0BXgBSl+i6YEvHcO4D3Uc3zHO1trb9OsE3bl4qpHSd+oHlUSlNq462HY0X0g7cuZUe3KtB/ay2SZD400T6kMPTnn35IJhFV6+o8V54vwykpeVqQoquOk7sgB+kwtZYxBMmXhrj4sO6BTPUY+kESB+e/8ejkAl8Ic8B61vSbHJezDbslxRM+MrrqRu75RSZsj7T/h3aEpA7uFccWTdVTHJ5XsYFjJ6q9EIBBMPxjexH9W5EPSZ0bbu+BJGwlHmqnHGZ87NDPwMzVyKmO2lVoGieBDqOq6/6BXNyvV8h05mRfgcQizHtDV85DXy0vydewwVPEMzRtsGWJNC+uxBSy0kS0pJ1seMoaUbyokvIIW3IiPxnUfFxRRc1k4DvGKouWNYAMEerldacT18y3RetbSOSnE7koqMgw0BLKnPIXv22M28x4TZfkBhxEdKiPuVxCEqzB7L7eun29/lHaylLseclbCuG/NxWXiGw+xwpJQAT4NdpumXRtsPqHoxNziZ9fN9D/8rXS5cq3CIE5isF7XeY/a/gOeeZPV48fKEzKS4R4iWDWNye+TXDN2/EQwGYHx8iyG5BsxG3nBdxQ
- bG40SVix
- RABoT91MSrHgdhB/il7c5XZNH8s0cOskZGkJ/Wby4zs4ktAk9+v2HOFkyILbLSuEFZ7eFpSK5dNVbU9trz52ReyNi25/uQSqcTFPMkqc8IAtH1R4fGXYclvdfj+AfhMMUihkvz4VoKEEpzcF31+iz3yt3YQCJn0Aw0TKeOAszloT6OYqjAzsfqenEpfle7v5lRu75HptC3mi3Bk4mf92qvN59MR4im1ZXw2TSxD72LFVfImqg3qXqReVsOt6nDueDHUC1iy0ZMzNdxF1OPtTSgL6BR104wkiwwUI4
+X-HE-Tag: 1786152974-20330
+X-HE-Meta: U2FsdGVkX1/hyAyR45jMcrerp6Q7JFUHH6oOSZ/9uRcZjCUQ/bl2yKtCiMMhAoT3xANLRr15NUC7U3JNWtwprKTOY3L4sN15DHKv315JHhiawr75GYD07vtkUq9Ucnot4W2nWEkEARuoTaw4TWHnP7/fgRofMwaKdhjBIjRLPqdVDIedbDBnNnoFQYbJvLovzbZxatzHEXKqtVoTF/twGTGrVBZQKwhmA9osPq6pOMofbuWxArVvoFoOrh9fHPD7ihv/xzAeEQ4ryu0Wc85nnKdXDIvuhItmp08IGboRXrbw6jnSg3U5Y3zyssnTSeQPj7b7i4+HM+p7RJc7MtrrYr4omzgM2bjCp+skE0H6KcLp5sTc4t/o7W8q3Yi2BAJZZUBNrLuYznNoAg+PC2i6EWBexeBrEPml3XJGDJSQ2zCmig5h/BM97y34M5+hTvtqhgE+q9iinU3c+RqIyXzhuCrp64dXVo2m8I5X7/dV2LIXR2MAXqNmHWdnUY1vHUzOvTzZC20ZrM+tgVZjaaDA/JbOtbxMACZvt/Y7mhEEoitUAyqPSGMOjciOl5O0ITi0TjNFb3URtxBCRcN7oosoqKMsnQmGrzODyDhDxow47TdCHe2oOinYBbup6CGeJrSBM7ne+m6cQvfgQhbIqME+mxkzTYmOiDmppWkgBN5b0Y0zJB8Z8HctFftUMDYzE8XHW/vYs/5JB6UJCouLs5KpsnwfIUT639kHJNrpDG0/lZL3cuj3y7baoVlyZBsiCOIYFdGRiApzbTtGaQjYQuChgwZGriSmM3uO1BRYqKzzMy1vBy9nsRn4krTZNGsLIl19hUHAcYMHSYGMO1DJIpGpuk+A8IzzeD0Nnp+SWlj8adk6mgNYNRzXBXmaK1wwLZm5RUD6ADjG/8SPGYxHoYhU9jyffkQS38retJwOAWgQvULn+ZRkgeaEFLYuULIVSmHFADF2tEZhI1aoyESVrD5
+ dvr1bspV
+ M8Q01XqqzOZA98d23ScsuM6nJXLjU2VAT5us5SXZL8D+kk6TiojmQx3Zgx3GjFCcmmntMiDRXTsHnssIg2V+rRx4Ez0Ypk827KHxEAeWgxK79+TGfd73/XXILwduwEZk4XxaNZ8Cj1aKtxbL3ZUsE9OkBZHBA2lJ/WGHqszSrHpPCY7QDOsE394l31Ppiqe+lTGymrg0WXS4LnYRnHQYjt/EH/6VOBTmLlbMHdO8JIyByggPSqnIKCt8JNyMBQrRZPwB+qg8nPMzEUhcvGOpBEyCSVcUtDejPlpR0HzFD+WJ8vQuHbmOJvS5LWe7iwlE49TBdcPNtRtj3f0ANt2tdmo6Bud7IJfSEqnD1yx1fS682XdAdQWdokJT40BjdQmZsgNVJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,32 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 01:01:08PM -0400, Johannes Weiner wrote:
-> On Thu, Aug 06, 2026 at 06:55:38PM -0400, Tal Zussman wrote:
-> > Commit 84798514db50 ("mm: Remove swap_writepage() and
-> > shmem_writepage()") renamed swap_writepage() to swap_writeout().  Rename
-> > __swap_writepage(), which operates on a folio, to match its caller.
-> > Update a stale reference to swap_writepage() in swapfile.c as well.
-> > 
-> > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> 
-> Looking at that commit, I can only guess that pageout() had an
-> influence on the swap_writeout() name.
-> 
-> However, on the read side of the page_io.c API, we're following
-> swap_read_folio* consistently.
-> 
-> [__]swap_write_folio* would seem more symmetrical?
 
-I wanted to be sure that filesystem authors see this as something unusual
-rather than something they should implement as a counterpart to their
-read_folio operation.  So it was intentionally asymmetric.  I'm open
-to discussion of better names, but my hope is that we get closer to the
-'do direct IO' model and shmem doesn't need to swizzle its folios into
-the swapcache to get them into the swap system.
 
-> [ At the risk of starting something, should the file itself be
->   renamed? swap_rw.c or swap_io.c or something. ]
+> On Aug 7, 2026, at 22:24, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>=20
+> memcg_reparent_objcgs() has an inherent assumption that a folio's =
+objcg
+> is the objcg of the folio's node.  Folio migration across nodes breaks
+> that assumption: the new folio simply inherits the old folio's objcg
+> while living on a different node.
+>=20
+> Once the assumption is broken, the reparenting of the folio's objcg =
+and
+> the reparenting of the folio's LRU list are no longer atomic.
+> memcg_reparent_objcgs() handles one node per iteration and drops all =
+the
+> locks in between, so the objcg gets reparented in the iteration for =
+the
+> objcg's node while the LRU list gets spliced in the iteration for the
+> folio's node.  Any LRU operation on that folio in between resolves its
+> lruvec through the objcg, and thus takes the lru_lock of the wrong
+> memcg, not the lru_lock of the list the folio is actually on.
+>=20
+> Fix this by selecting the objcg by folio_nid() at charge time, and by
+> re-deriving it for the destination node in mem_cgroup_migrate() and
+> mem_cgroup_replace_folio().
+>=20
+> Reported-by: Karl Erik Hofseth <karl.e.hofseth@opoint.com>
+> Closes: https://lore.kernel.org/all/anMmd1ADrDVwMO6v@work/
+> Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying =
+memory cgroup for LRU folios")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-I'm not opposed to that either!
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
 
