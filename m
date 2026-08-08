@@ -4,121 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D0AC5AC67
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 10:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98FFC5AC67
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 10:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140B86B00B0; Sat,  8 Aug 2026 06:57:49 -0400 (EDT)
+	id A6A306B00B2; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 119296B00B1; Sat,  8 Aug 2026 06:57:49 -0400 (EDT)
+	id A1ADF6B00B3; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02E666B00B2; Sat,  8 Aug 2026 06:57:48 -0400 (EDT)
+	id 90ADD6B00B4; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE0D6B00B0
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 06:57:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3FC78A02F9
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:57:48 +0000 (UTC)
-X-FDA: 85077801816.01.CA33AF5
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8BBAC40005
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:57:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=opQUVLe6;
-	spf=pass (imf04.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 664C56B00B2
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1794160365
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:58:40 +0000 (UTC)
+X-FDA: 85077804000.16.78210B6
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E013BA0003
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:58:38 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DGgdRj2F;
+	spf=pass (imf15.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786186666;
-	b=hcladIfYxxCmsV8uji1o51/ivGpK3rybfnrOZ3KlEpKoeKC8w9f2syPHy6l3g5V51Fq24n
-	xZhR79/RswDYX6H/3PRkpS3KvnLUiUf/E8m9bp1JOgvVHrIaLasmGXxTKEkq/gi9VUTI3U
-	fCnPCsaXjSUpyU3NtcYBcePuutpyPpE=
+	t=1786186718;
+	b=aSh80NOB84umjpay4gT6WXMYPS7k1VIV5SyyFBiF5zMZd/lHSfH/cRodmNkkXMEWPvldb0
+	pWZCkoU/bXQI7pDcvYnHHX6XrVX7wfqWzo1goQCa+poj9KC/KXjvDrlm8CuLxebLz/TM72
+	SDjq+AgGoVL54IH/PUbjxjC/pOMk0yA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=opQUVLe6;
-	spf=pass (imf04.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DGgdRj2F;
+	spf=pass (imf15.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786186666;
+	s=arc-20220608; t=1786186718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4uScLI4cpsUUGrfGmDNzyeUDMx7+1ql508c4euP1/Hk=;
-	b=QOGqD9VmiKuEO2yCKfzOgV4BdnRUBUQz/g+31/qUUBrBedWr0hinZ+75kBS9wwyNd/qVv7
-	2gD0jv+aCiLUlbkFCsQk1YmaNK9LnHAhLrg7xdA8XjWVCIrdmOmRwUUi2p+5GngnxmWNlZ
-	PA0lh8MK8U4Uhz5qDDpJujCs002BZJU=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47fe2d179e2so164182f8f.1
-        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 03:57:46 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
+	b=8dOd8Z3MBZByeN5TokODJEIbko0plL4JRp++b7KiZrSDwSTY6OD750baU1G0fOq5z4KzcP
+	HxDc96bOMQmGckyA2YknzXny7U+fexGDJRl2bdgZjjw+Z7a/VK31LMbMwXFsXZ7a+pj9Tl
+	/+kPS3qqohIlK28WrCiJpl8otnmu3l0=
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-38dbe53179bso158397a91.0
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 03:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786186665; x=1786791465; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4uScLI4cpsUUGrfGmDNzyeUDMx7+1ql508c4euP1/Hk=;
-        b=opQUVLe601Zn70e9fThAIAmEy5DMbfrSpYrC+Q7AWknEpWnoxcnxBOaN5pY+Z8/G4O
-         QvEjhr7ZRLrXC3/KY5HwLSO0OMaoQhNmKtGB1svHeECZa3YfvGdW0Wulkn2MSIa2gi1G
-         AuF3MMH9ctVMQqhkldlyaBa6n2UuQ4ubdAXV/eQc86LMW14xVRDkoDAd7/4qLrlmH13S
-         C2h3PZ3m+ohHrLQU0lzN04uhcYYWuxLua6E2cvvbQwA2JgClD/MAU/wQsg9WmOwzRHB7
-         gfaOLCO+wTztTFpunaH2xB0Z73RNfgBNFvv7mBuoxA+8YMUqZiDrcvLC7KMxG1bspQx2
-         n8FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786186665; x=1786791465;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786186718; x=1786791518; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4uScLI4cpsUUGrfGmDNzyeUDMx7+1ql508c4euP1/Hk=;
-        b=JfVj5iHp3udo4UTOi4tMfOpj+i9XIlCRcW0/h6RpztF51b0MGrkvHitMq1Ji+VTs1k
-         CN5md1Gbvz0bS3CxWDUKclYH4CqIqCQaQNsE+QlAHYddIlx2ig+tx4mAGbnahzHRpCT4
-         OwD5FeGM3+kyqQl+mWpeJ4VyMUDz0DJdMjXslrInEK7LCrLiLBAWTi2b6YxKO3CdQENy
-         n8Zbtdw2XMM81oBlYH9AY3me/OzZRlpmKEBglQb1duFj57agbMXGaG3zPuFXcn9cKtRj
-         QG+ihzZDBnZSextXJLLW5C92beMIvh+bzqbPNYfvKmJpgpJOJvoJ46BfURGbNmbcnOoP
-         4iwA==
-X-Forwarded-Encrypted: i=1; AHgh+RrFvrAaTAMekeY09ZERN8OG8TfXzRkxyljUvZeiLFlqDzEtoRUW+zHDdyTsjbj5WdkKLG8eNAKizA==@kvack.org
-X-Gm-Message-State: AOJu0YyBFZucDJTHQ4YSVtjWMM8JgF9Py8jNUPRqXuSf55IvSJM2T6mv
-	EH/D5EIDEJ7lqfUOiNNczc7BGBB3g76O+fysXzBSojUAVdN05lA+u8+u
-X-Gm-Gg: AR+sD10erf/zYNJO/bI+NADGF6C3gBUstI1NJ1JY83A9nIIQgGQUmuwA4tRkEYzZDUJ
-	C9IBLn1nHKRzkGnKcfv1H2S3qYktefYG2AtHKXguznWNVePc8zmQ5e9YRUbcJuGinonHaANb/Gh
-	j02xl1Pleje3oe0CK+sb8CcUWv2gdl+kZGy2/LgM+NwIIdYfOkZ8CXUfnnScmGdBRU3vpUfB8zS
-	ZuOVeHTVJWdhAPnPA3vYv5G3Mjn8HswopSDp7M6Y8klWwuovpXQNF5UMrrBu70fWAhFZSbUnAEs
-	IJEMmxl472aBX5J83gIirsUJLr0RTp7bknkVjtwxULjRzTiLX3217ID9X0VhwXW7FP+vG3jn9xY
-	ACrGLvD4Xn4ynrc9IVWi+i4SNPkSfVm+r+2EYveX2zGqlyzQAobrYLH+5uOHP9W2P8QityA4xkp
-	pEpQv2e3lSko6vq5QPazPn7Gy7eA9QmGKVbEyDxvPR0sT2z473krSsuby5Z3q7lTJibYrWKKKIq
-	mBRZY5YjK3dFwhVo3H6os1s1V+ixrylGJPHIeHswvtA+EBlJjUXw62DOJYkgNMDGvTvRlY3Oc6b
-	bRxdJ493zrJTlO9gOcjwOGB48Ty16hE=
-X-Received: by 2002:a05:6000:2006:b0:480:c5:d635 with SMTP id ffacd0b85a97d-48000c5d6d9mr18245404f8f.0.1786186664921;
-        Sat, 08 Aug 2026 03:57:44 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-077-007-004-134.77.7.pool.telefonica.de. [77.7.4.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021506desm13940854f8f.10.2026.08.08.03.57.43
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 08 Aug 2026 03:57:44 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-mm@kvack.org,
+        bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
+        b=DGgdRj2Fmyqrb+sc6qCvmdT+ayQqf2z6A/RGYhQt48IWv5PsqzdKptzOclPvPKJ3Ww
+         T18V5PWKdH8+czyyju/tBZax+PA/Z1HF4gn4ivjCR3JVIfLQ3bgVyscThuwNR6LdEht7
+         rbp8/s/dZHuq262QAdNoy0g2tSm7C7H4T8HeiirydrPiebtwvUhYZmawaQCKprhxw0MP
+         USx/JhBtQaadDo4zSgaZzxnQupQOdfS6uxa9i/xxRn3FwY0TwTchVGeSOcUm9ber2f9O
+         sjdb9xMJ+tu0Yim5HQKGxmmJsh7ktnSjf3S0/bipoZ9Q29qNqvS+AdO0JA9/OL6MrJeJ
+         VqOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786186718; x=1786791518;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
+        b=aLrLDWjPMMlJk8fsyrkJkvBuhYIe59WUtDcb77kYJGglI0mB780X3+IA7lLZV6jtp7
+         W93IPJm2OBIapjULxMTvzAqGOwf3VT3knKdLRl6g148Yo/RH2NqsXiMkS8MWoWZekBq0
+         WVq/S2ixHJNDmQ54y6V4b0bzbe6/0hwz5uaRERsxnlLzMkDSMxE6s4k3e5rJ6uUSmvH6
+         aBRDPa3To8KCTJc5i1NRNNVwB39sBsphEYwXlx3yKIryYgDQzI++zY8J8YqrKhWe1kaV
+         G0ytDD8g9jbTO2aQxNgbpBqwesmuw6Lv+5J8tpHStERdK9lzMmmQ2e0lOQY0AiGQgaO1
+         5hGA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7zslAh8AmrOvfsVLQMHMh6TzHz6mWn11Dr4+aQvN184Yhnzp2oAIpYWdbnj96ACxGpWUGntciOA==@kvack.org
+X-Gm-Message-State: AOJu0YwrNOa+xEWpjZt/hH32cnlOOQrUWy5RqhhqvYGQZJu89SY9luQS
+	xxw9hlv+iWg4bNshToo5I5u7IA6r6O3Na9Hk4D8O4QKQqWgStd0zqjbI
+X-Gm-Gg: AR+sD117fF9euCxhb7UBrpYJ1htxvqZF0fCRqKwQ9+77Y/NmquNcLx2Ji/bKe9vsMaZ
+	WEMNImNO5yycXmHCdYd5/FlYmF1+Cr6j2GZaV8o+u3KuqLzwSbZun15NWqdpbDKEkwzurLEmXx7
+	XBvULA7ThjGD9rNAg3eOxAS7mgvq+5dbqOlUHgYG97wo+q8t9+ZLhETRazTt2ylHziCEzn+D1TS
+	Z1Q7G8vp7R+f6mCFzi8OvjKXW9YzuvwNZ/nZBSREWK58TPZwzo32pstArDjkolLT6wHL35JUfNH
+	yIM7hxcDO5kK0Br0BvetCRAcfKlxf7+hACvRwrjijZjivkpBxuU8twXb1zrX+Fzaq6bGiFm6Pco
+	v6erxE0XSu1kVdIW1QGkn4LHXIC3Mng4RuSKLCWt4x4UNYY6GGf/XDubeys2ndiihJUn29iwvvs
+	nnUUwcOC0pJBhyrOeNXMQPE6xSW7s1cXT2gm4lHxck0zX0zH7HjCI4qjUSCWzYF22UwrXTzTgJV
+	tQk7k5NmkotYKar
+X-Received: by 2002:a17:90b:1a92:b0:392:6638:2e6a with SMTP id 98e67ed59e1d1-392823bfc0emr5468220a91.13.1786186717681;
+        Sat, 08 Aug 2026 03:58:37 -0700 (PDT)
+Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:4438:bc18:5a8c:feec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3908616d21esm8552074a91.17.2026.08.08.03.58.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 03:58:37 -0700 (PDT)
+From: Hongru Zhang <zhanghongru06@gmail.com>
+X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
+To: zhanghongru06@gmail.com,
+	baohua@kernel.org,
+	ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
 	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH] slab: align ZERO_SIZE_PTR to ARCH_KMALLOC_MINALIGN
-Date: Sat,  8 Aug 2026 12:56:22 +0200
-Message-Id: <20260808105622.62026-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	vbabka@kernel.org,
+	willy@infradead.org,
+	zhanghongru@xiaomi.com
+Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
+Date: Sat,  8 Aug 2026 18:58:20 +0800
+Message-ID: <20260808105820.23608-1-zhanghongru@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260807074948.28953-1-zhanghongru@xiaomi.com>
+References: <20260807074948.28953-1-zhanghongru@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8BBAC40005
-X-Stat-Signature: 7oehh3eecsyuku694r7d3bbfwyeapyd3
+X-Rspamd-Queue-Id: E013BA0003
+X-Stat-Signature: ou8sudu1btpsd31nokqj41f9hmh4mpfq
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1786186666-115811
-X-HE-Meta: U2FsdGVkX18Yi8uhQP3WxIgK4Owaq2AzgiY8Y9u1Z2t35uYOis0gkKPr9s6Uj+U3rjV4ned3Q4nUqA2up6A1J2eBo5BOeWf9pg5MCIiqyozgzqutfS5yUSjIwujFJvawmGx92XirYWu6Lv+7RhW1o1+WI+Arkz7PnDrOzZnUdPjFm3/j96RPbpSPvB9+hv/U2eDoXzHoZ3d7qtoMQ2WGaJfWfY8oNRWPfdnk4wySx1D0prc9P9WSq5AXhqh9+IHGjcEI5/WG1XGbKheZZEqZ/De/Z36JoaHW+anhP4te335T1aFSS33eCCZyrbGFX0yL2Sq/aI7KnBEd1fEvEwatLk6PE27oWhNioURtl93ahFwXurCwPYEdyrBvEXa3+Gu34CI46JcIM7xwA3Qr5Ks8DZNzD/lnYh2sFPtFHbx1C8Fk9cScdTsCtLW5z9tMlwmjGYu6/qiG132ucBDwnT6WTT2ECVCKmYk/rb9i6A9HKhynOl+Zh8umV9jHIpr+4GtP8o4Y0aIPmabyu+GxSPLsdR2iYPh9wdhUGZTcq8dVdRiJecLHpyNMHwvHJDO9gBUnxY9xf5BbKvsIF5vlt65F9qDqZMih9Fh02Or3SC13L3zLLPWAqTwd0JFNPfGg5fYyz05BvfEJVJ+Fl/5jAGxuinDYyAj2U11V9Mgdd9LgLJv3Kk8e7mfspovyfKWQC+wzuSJsFm6520PylT37fXyq57ttkw4/BEJJIEsuE8AMsdyQazNvkG3Aj19gnlBnfs4kfr0xNAYF4XytN4Y/JbREpqf9UeIJ0e5V2UNmA5xOmsuS9Ixpo1CO9wLrUsbbBA41hRsMHA4Y2snaS8xeMMLZQCD1OCajQlES167gSf/1WIVEjIz33e0Ej5gAPh2Rf2HJuM11E9tL6WGx0G8s2R9XJCU/1/YMtZiHL5GUeIF5EyIqBkHI0tIsgI50/T24xTXDo7edg7mtlJNrEvrckzR
- OKbomBFF
- nIcDP/Hf6iGk/SYl34HVhtc6h95xlUkQrPZhczTRNL24HNfW4bKXxFqlfjH7pIxYssntO/DrB82tyxV2JqL4Q612BiXcvIQdsBQyghx0s984sCZAlrdAeFrrjClD0d9naF5fFmeivsHrVp5KhwLSZTmjQMwz3beMXDNArL+ty8cuKJlrGVmC4jXTJkR4K/cc3eK6ePyNimoDruzIsViNyQfwcooj8w37GJp76z9rf79MqKK56Qnd2i0V4rLBOK7CuuO0MVuRIiPEiBUf9CBmRrFHjBcBGulP/E6KkVEvDgGAoRs2dz7WJqBJeQBbysYV+2MTz0DjXB3S69wnkOAWJsaxYodG/5Bzp3b9Zyhi3zOPNTKSNObmTwXJwXDWfvIIRP67metKJyXs7hg4yfpEGykLE/4wx1iUgregNAahRp8ckVsPriAlZEvIH2Sx1IEFVfHYfZ5Zl67qUxyoDot1km6j16JMqWABWJ17RIqM7o++fKDY=
+X-HE-Tag: 1786186718-761213
+X-HE-Meta: U2FsdGVkX19nXxnwKYEMtwQN+KIWGB+cdCVH1Qg/bExsrvK0Yx4tHJOXvS1mNkrBK1l73ak17DVLXSvvXsOff2rCXZBbKnETytfqxNgxtPI47TpZcHHCQ18QE0QX3nyKeM8OYY0h1RFqqbSyPRMSpFk3ghUA46NBnCJxSKvSomC7Kg0g+A+RRxxi+8dclHu0VgAp3n+uk8d5yUNbES8stxYlIynIurAZMHO2M+FnSCcWpVeyiaOb6Yt2DAuufiU2yCf6by5ifZq0OOQ3r0g8NJgXnK18fxhoGHzp6KRDyNB6HV3lTxoBdpkp8jfBaKSi9FdvqVQyl6uhd896idRAASs6+khOm0ReeKM4MXqn8ET6CUpAE7jpO7x9GdGxExdaPOUhJRLvTI4TNLJldqda9ICG5ayruOaqpdUhw/fvLsO9E/FnIg4xIFQ57a7qYLeSUhQwhqSjK7Rla8TkwcKgqicYWM9eMG0HOZPgJNtFOVPpWG3ZiCtv7U0z4ZfRO+Q6qi0fOmZbJF/x0RGqosDUqA9sih5xSUeJSVUYWbuKJHhaK71utcVFRW7o+9EFeE6I8g33ELV70MO6UPHlb0Iowdu5fj3KNzD4RKvwjICgJMVznlKv87jrxTomDxhbBCEV6vk0TjkBX5CBgTqCvNVLxkCkQPaYKRbrF4ODcYbDujyaKh3YO38hjo6/q3arDCM+7e8v84i4sv2X863zV+7EDKm56Gk3vI4ysGj0QUd4Qh7FuIB9yajFziRoS+t9tmoD4t6xMSk63pTd1RFMGwYZ8D//fxzwpeeSke4MAlUoFcLzIbrgSdKyud8iMSZXJUBV4sMSQJny37aCmmfrKlHqHyWmor5bLf33Hz8M+tfcKJFof9jMpJPGIbWJvDZAyuCUyomL8JXU2EjwYxhIKLD+pFG4O28Ns3C7Vcc1AWMaHQSYycJMD0sduqo/nm7KD/2os+tbH7iBB/DnSjrLX9q
+ /scDgkBg
+ dtMRUCl0Nb19J+LDCqtJphXrWD0ODNnegyQg1SxnWJqzI97QhowVM0G+cG8K8ta62lY/+R+Fb7Q7y00K50V2IzgEH9nMJfi23n7zLdUGYGbs/OGpyMCW+FhhJqjnnWGrG2z6aCsWDZd+XuN6TMl0Aa9JVgDaXcuhH4cW8NZMc3GVlx0A1382sd/TGUAnCcIDbhvjs62ltvSixoXiDSpjOKcpQZMH7rV6u/VnofTQGlVXmoGgCs5vRWKWahEXFFzq0Z+susQRhAjoYphFbF2ZeeOn91Xao38TczsOF/Li2qzJR8tmDnVNYpzvY1UE5+aZ6uF9NdfPrZihPHgoROz5FlWkkGQ7MQR9kUtv5YDDKRSnhifh00LowM2W4SDSctQddEJg2kHenvux+kXH7qQr+PqNtkd4Pxk2qgDzfF5qFU5Wiw8DHvf4mhRwWR5k7NnqHs9UEoxTs67lcezM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,92 +131,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kmalloc entry points are annotated with __assume_kmalloc_alignment
-but return ZERO_SIZE_PTR, currently (void *)16, for zero-size requests.
-This violates the annotation when ARCH_KMALLOC_MINALIGN exceeds 16.
+> Swap Throughput (higher is better):
+> +--------------+-------------+----------------------+----------------------+
+> | mmap writers |   Vanilla   |          P1          |          P3          |
+> +--------------+-------------+----------------------+----------------------+
+> |      0       | 17303.09 /s | 17899.48 /s  (+3.4%) | 18190.62 /s  (+5.1%) |
+> +--------------+-------------+----------------------+----------------------+
+> |      2       | 16728.04 /s | 18346.72 /s  (+9.7%) | 18162.03 /s  (+8.6%) |
+> +--------------+-------------+----------------------+----------------------+
+> |      4       | 12596.23 /s | 16095.20 /s (+27.8%) | 17991.45 /s (+42.8%) |
+> +--------------+-------------+----------------------+----------------------+
+>
+> P3:
+>
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index 45b99c3b1442..c3ab30d32a15 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> 	struct mm_struct *mm;
+> 	vm_fault_t fault;
+> 	unsigned int flags = FAULT_FLAG_DEFAULT;
+> +	bool vma_lock_retried = false;
+>
+> 	tsk = current;
+> 	mm = tsk->mm;
+> @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> 	if (!(flags & FAULT_FLAG_USER))
+> 		goto lock_mmap;
+>
+> +lock_vma:
+> 	vma = lock_vma_under_rcu(mm, address);
+> 	if (!vma)
+> 		goto lock_mmap;
+> @@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+> 						 ARCH_DEFAULT_PKEY);
+> 		return;
+> 	}
+> +
+> +	if (!vma_lock_retried) {
+> +		vma_lock_retried = true;
+> +		goto lock_vma;
+> +	}
+> +
+>  lock_mmap:
+>
+>  retry:
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 428eb555ecb7..8c34a857548b 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4987,6 +4987,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> 	}
+>
+> 	swapcache = folio;
+> +	/*
+> +	 * If the folio is uptodate, we are likely only waiting for
+> +	 * another concurrent PTE mapping to complete, which should
+> +	 * be brief. No need to drop the lock and retry the fault.
+> +	 */
+> +	if (folio_test_uptodate(folio))
+> +		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
+> 	ret |= folio_lock_or_retry(folio, vmf);
+> 	if (ret & VM_FAULT_RETRY)
+> 		goto out_release;
+>
+> Thanks,
+> Hongru
 
-This can mislead compiler optimizations. Current compilers retain the
-ZERO_OR_NULL_PTR() range check, but GCC and Clang eliminate an exact
-ZERO_SIZE_PTR comparison after an annotated allocation. Clang's UBSAN
-also reports the failed alignment assumption on armv5.
+The two-writer results varied too much to show a clear difference, so I
+increased the number of writers to eight.
 
-Set ZERO_SIZE_PTR to ARCH_KMALLOC_MINALIGN when it exceeds 16 and keep
-the existing value otherwise. Assert that the alignment does not exceed
-128, which keeps the sentinel below PAGE_SIZE and the low pointer
-poison values. Deriving the value from the architecture also avoids
-changing architectures such as s390, where low absolute addresses are
-valid.
+Using a dedicated benchmark [1], we tested this on a 20-core Intel
+i7-12700 desktop with a 2GB swapfile. The benchmark uses one pressure
+thread under memcg limits to keep a 128MB non-zero anonymous mapping
+under swap pressure, 12 reader threads to fault it back in, and optional
+mmap writer threads to amplify mmap_lock read-write contention. Each
+test ran for 60 seconds and reports completed reader rounds per second
+under swap pressure.
 
-Fixes: 94a58c360a45 ("slab.h: sprinkle __assume_aligned attributes")
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
+Swap Throughput (higher is better):
++--------------+-------------+---------------------------+---------------------------+
+| mmap writers |   Vanilla   |             P1            |             P3            |
++--------------+-------------+---------------------------+---------------------------+
+|      0       | 17303.09 /s | 17899.48 /s       (+3.4%) | 18190.62 /s       (+5.1%) |
++--------------+-------------+---------------------------+---------------------------+
+|      4       | 12596.23 /s | 16095.20 /s      (+27.8%) | 17991.45 /s      (+42.8%) |
++--------------+-------------+---------------------------+---------------------------+
+|      8       |     0.58 /s | 15420.57 /s (+2658619.0%) | 17328.80 /s (+2987624.1%) |
++--------------+-------------+---------------------------+---------------------------+
 
-Notes:
-    This version is based on the RFC discussion [1].
-    
-    [1] https://lore.kernel.org/r/20260712120728.96628-1-kmehltretter@gmail.com
-    
-    A tree-wide audit found no users depending on the numeric value of
-    ZERO_SIZE_PTR.
-    
-    The static assertion follows the ARCH_KMALLOC_MINALIGN fallback, the
-    first point where the macro is guaranteed to be defined.
-    
-    Tested on bcc44b6785f21:
-    
-      - armv5, armv7, mips64, ppc44x and sh4 with minimum alignments from
-        32 to 128
-      - x86_64, arm64, riscv64, s390x and m68k as unchanged controls
-      - Clang 21 with CONFIG_UBSAN_ALIGNMENT on armv5 no longer shows the
-        alignment assumption report
-      - no text, data or bss size change on armv5 or arm64
-      - the exact ZERO_SIZE_PTR comparison remains in armv5 code
-        generation
-    
-    The sh4 test needed two unrelated workarounds, both reproduced on the
-    unpatched tree: compiling tcp_output.c at -O1 because of a GCC 15.2
-    hang, and disabling USB_OHCI_HCD because of an sm501-usb boot failure.
+With increasing mmap_lock write pressure, Vanilla degrades sharply and
+drops to near zero at eight writers. P1 and P3 hold up much better, with
+P3 consistently outperforming P1.
 
- include/linux/slab.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+P1 retries once under the VMA lock before falling back to mmap_lock. P3
+additionally skips the retry in do_swap_page() when the folio is already
+uptodate.
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 32c9f8ed7ae20..0798a714da87f 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -259,13 +259,16 @@ enum _slab_flag_bits {
+If there are no objections, I plan to respin with P1. The do_swap_page()
+change will be sent as a separate patch.
+
+P1:
+
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..c3ab30d32a15 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	struct mm_struct *mm;
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
++	bool vma_lock_retried = false;
  
- /*
-  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
-+ * It satisfies the alignment promised by __assume_kmalloc_alignment
-+ * and keeps the historic value 16 where that is already aligned.
-  *
-  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
-  *
-  * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
-  * Both make kfree a no-op.
-  */
--#define ZERO_SIZE_PTR ((void *)16)
-+#define ZERO_SIZE_PTR ((void *)(ARCH_KMALLOC_MINALIGN > 16 ? \
-+				ARCH_KMALLOC_MINALIGN : 16))
+ 	tsk = current;
+ 	mm = tsk->mm;
+@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
  
- #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
- 				(unsigned long)ZERO_SIZE_PTR)
-@@ -622,6 +625,12 @@ static inline bool kmem_dump_obj(void *object) { return false; }
- #define KMALLOC_SHIFT_LOW ilog2(KMALLOC_MIN_SIZE)
- #endif
- 
-+/*
-+ * Keep ZERO_SIZE_PTR below PAGE_SIZE and the low pointer poison values.
-+ * 128 is the largest in-tree ARCH_KMALLOC_MINALIGN.
-+ */
-+static_assert(ARCH_KMALLOC_MINALIGN <= 128);
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 						 ARCH_DEFAULT_PKEY);
+ 		return;
+ 	}
 +
- /*
-  * Setting ARCH_SLAB_MINALIGN in arch headers allows a different alignment.
-  * Intended for arches that get misalignment faults even for 64 bit integer
--- 
-2.53.0
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
 
+
+P3:
+
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..c3ab30d32a15 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	struct mm_struct *mm;
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
++	bool vma_lock_retried = false;
+ 
+ 	tsk = current;
+ 	mm = tsk->mm;
+@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++lock_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 						 ARCH_DEFAULT_PKEY);
+ 		return;
+ 	}
++
++	if (!vma_lock_retried) {
++		vma_lock_retried = true;
++		goto lock_vma;
++	}
++
+ lock_mmap:
+ 
+ retry:
+diff --git a/mm/memory.c b/mm/memory.c
+index 428eb555ecb7..8c34a857548b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4987,6 +4987,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	}
+ 
+ 	swapcache = folio;
++	/*
++	 * If the folio is uptodate, we are likely only waiting for
++	 * another concurrent PTE mapping to complete, which should
++	 * be brief. No need to drop the lock and retry the fault.
++	 */
++	if (folio_test_uptodate(folio))
++		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
+ 	ret |= folio_lock_or_retry(folio, vmf);
+ 	if (ret & VM_FAULT_RETRY)
+ 		goto out_release;
+
+
+[1] https://gist.github.com/zhr250/218ffe693f842346b56434483127422c
+
+Thanks,
+Hongru
 
