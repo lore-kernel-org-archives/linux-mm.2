@@ -4,122 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2F6C5AD44
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 20:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB17C5AD44
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 20:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 440CE6B00D7; Sat,  8 Aug 2026 16:04:39 -0400 (EDT)
+	id 642186B00D9; Sat,  8 Aug 2026 16:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F0DC6B00D9; Sat,  8 Aug 2026 16:04:39 -0400 (EDT)
+	id 61B116B00DB; Sat,  8 Aug 2026 16:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B8FC6B00DA; Sat,  8 Aug 2026 16:04:39 -0400 (EDT)
+	id 5303D6B00DC; Sat,  8 Aug 2026 16:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6E546B00D7
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 16:04:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B26314041D
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 20:04:38 +0000 (UTC)
-X-FDA: 85079179836.18.37BF4FD
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8221C18000D
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 20:04:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WN5qD+py;
-	spf=pass (imf24.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BC736B00D9
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 16:10:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6201403E4
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 20:10:33 +0000 (UTC)
+X-FDA: 85079194746.13.0795A26
+Received: from mail-oa1-f77.google.com (mail-oa1-f77.google.com [209.85.160.77])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 34CBCA0003
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 20:10:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3N413agkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.77 as permitted sender) smtp.mailfrom=3N413agkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786219476;
+	s=arc-20220608; t=1786219832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FTWOCf3x+WMKSnT7DYKaYqLrpreFxQU4MBSEOLxHycI=;
-	b=gXjS/dIMEh+0o3wAnM9/w1dq3uFXlkOLXgzAHLX0lkvZfmKh/N1Ihw0ihMvCjfz/QcaE1o
-	32eboQ6I54dIw/QuebEkLmhapFhRJcr7PzEMz9UgxbouaBg2CtoV82fx94CO3c4gbZtZaN
-	CbwA0y0e39bm1VZtxFTESncB3+kXeb0=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=CzClKpT45UdPzKPYBztnn32Cksr2GcbB4kXjyAm2OcA=;
+	b=8GydFm/DE4UrRmBQZp8z4LSyYaaO74P1JniBDXZF9xog7fK/fTC9j7L6HxVcU/pZadz8bO
+	urFipZQVDgf5et4zZGuyQoDihx+EauYcep2dzpDOLzn5LCxxUjdC77woxz04ysqgL7UvSX
+	W7oqhJIS2mQjHEuykOA3zNLJefgVANQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786219476;
-	b=o7MlyASeVbyU62YEnYUMvY1gSmfqJsECfgcjn5DD6QlcY69dW8giNlVnTjRvwzrJlMgGZL
-	nILhoPQI2fKe8/SIEm8ljccQ3y3vQFm8w4GDPk6d8znNzwVuFJ6vy+Ph0d3s7D7FnjPYco
-	A/YgdQAaPaIsaLgaQI/Cs76w2/PgPjE=
+	t=1786219832;
+	b=EqzPxbdGrjJMGaP2HgJk/JCmxQbKCiX68ZpegbUqI+SAR8OMBLIgsZKq1AbKpAvD2IXkhH
+	UThTAI+KW7mPQPIFiPsJ6Cfij9BTZ8J15JDH6vG4jfW4ouN/uz5lGhIwoQM3kiiaVbLM14
+	bszLBHTAAfFU5ooSDBOBgCQ/pJqAwFk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WN5qD+py;
-	spf=pass (imf24.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4957eefd361so3994605e9.1
-        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 13:04:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786219475; x=1786824275; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FTWOCf3x+WMKSnT7DYKaYqLrpreFxQU4MBSEOLxHycI=;
-        b=WN5qD+pyvxgXeelQK0l6dS+8ypXvuWhg5odsW1vKGrbbdXA+abR1M35Mn5tow3atCR
-         9f65/t+DrcIFWrnyoMOWco4BqbXnbvCTE4v/EY34HzG/4jUHB4FWBeZ3qiod95ZPbf1E
-         /5L47Pig1Bn3Wj96OGed6dxOsIbil1lH8nnmdupqU2hJULX2BhscjjJOGtYJKYjGt5IF
-         m3LmA6gp/nOZ6HzG2+ahh5ag7cLgBFXozvM+eDcnyzw74KMAkR7wAwTZNCB9NOWy7MsU
-         FSgABEwRAKgLZB1fnP4xuBv56XCV+EBSSe1hLh4BQ6Il9GhsDW9IWLn3yDj0O4JEatNu
-         3apg==
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3N413agkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.77 as permitted sender) smtp.mailfrom=3N413agkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oa1-f77.google.com with SMTP id 586e51a60fabf-456b5122c7cso3872852fac.1
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 13:10:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786219475; x=1786824275;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FTWOCf3x+WMKSnT7DYKaYqLrpreFxQU4MBSEOLxHycI=;
-        b=E5fjVuYsA5mNAmH5WCfxAeYipejmYQlqlHFTI/S7ClmAqhGlzmM6Mkl/pOrYrh9slc
-         +4pMxXDrCGf8k8FxAxBVWivbTXIRCGo7EJvMO0cXAYfBSdogdn+tY3t0kwJUnoLZQSn9
-         IziGHtMf08Zbv+XNnWzps5gCuiGYiv81S7JkXwdgo14xExWPb67N4mbstggkjEmkXqKt
-         NZb21xY0BXs+RaWrwUed+Al0Pc31Rf/+BUI8mXF046erlNWushnErbX27VuZ8m7E5EA7
-         5ZoE34CdYag4gzrv72H46zQy18L9iXk6P066RRIyfGmopuuyQ9SGHmr6F/483l5vdFzj
-         +S+w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr82ltFgm616IYIiRA5Mc0q+B8IyezSvy9QAycxw8S0yE189BtwHQFpZaiXS7HoZH677ImgRJfy0w==@kvack.org
-X-Gm-Message-State: AOJu0YzFrIr/WeuSfn7qix82DFH6XC56dIpO6xNo+lho/wTcXTExBggO
-	c39IREodUl88eas3kdi8PZLtZ94S52FYCh1yiMA05+GFIasLVHrjwX7l
-X-Gm-Gg: AR+sD102A4rwubZVNBkHvkbM6eUxqkdipAHQDvt0RR4pT7+QQvVB1YPh2CfqzAb3TAC
-	cTvg5I6mT0wLXdpO6DeEnoNrD6SNm8vmCS5GUZkSzLBvcwkZhEDvmah+aID/sNeClD47JHQ4ddi
-	xOKBSmLjbWGPllJnnBkOcCb849tYIKQ+w3vGAGmNiynTwXrbqx4jwfu0rFnS/M5QgvEalILPb70
-	iJlnpCUioiIm73JoPjDfgIugkL8yJ2qwrczi9lpA5tdfJYnmCZz9LfVqQizK/UTGiZcLLoUZl1N
-	bajHn9NFdoZCJwWi8b6FpMtXTge1znkk5xEk3O5xPCcNKaQ2I0ZwD6P/CQj9Q+Cs6OjKM4eXUO/
-	jnRgxQg7cxNtZLuKMpK8V0Q7lzT/gEThmXPqvRBoe0GxQwow7YH8xtPT66ruShQj80P5RTr0fuq
-	bDEwgr5m4joknekSJktPDF7/Kivyc1xsAa21OfXUtakm/GR19l6Gbum0zxFWUr/9zXP2sEppEbC
-	mRo25iBDUX5bgcHD0IQQPO0n+RyOID3J8g/1s/vemMIf5jolNrGnyLLr/RDxik5vfOf5x/BuZlX
-	m+PF89WbIllESi8kEBaC
-X-Received: by 2002:a05:600c:6612:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-4995e0ebf84mr186829685e9.17.1786219474873;
-        Sat, 08 Aug 2026 13:04:34 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-077-007-004-134.77.7.pool.telefonica.de. [77.7.4.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995919df87sm196278975e9.6.2026.08.08.13.04.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 08 Aug 2026 13:04:34 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC
-Date: Sat,  8 Aug 2026 22:03:12 +0200
-Message-Id: <20260808200312.6326-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20251104; t=1786219831; x=1786824631;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CzClKpT45UdPzKPYBztnn32Cksr2GcbB4kXjyAm2OcA=;
+        b=ZyZGObanGoNidzyHjo1bDiiGOgJ4KhfvxBN12tKIHF278QHm/BMLjXUole/DOVEFnN
+         RjzTRsiG3cOnF/CNV5SR062TfV5CmhHUY0Wjm2Rm0dhJAAJYQhK2udTmIoreVihawfWR
+         9euorckNSOP05eceM6yqunQ5I/xg0DgrN7edBn1i33+RAv29DQ/+2qyrVqPoFAZe3TMJ
+         LfeNs0uPAgvT2vBT7t+rzN80P20Ul5qoTNYKKHUGqYHl6+TQh0xF+G6MghdcogT4bFEc
+         b4/8ewjltcrhS5ndAL/myzddluwQnECwjGPzqlajIgnFxbNctuUb9FUBF7QOq8NG1zOr
+         vJtQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoGRitiH6Sv/iVRsTjBPUroHAtumRuXi5Lhbfm1DPAHTlZSwOzh6rub+cknksPpj891RxwtgWHy3Q==@kvack.org
+X-Gm-Message-State: AOJu0YzC8Hiyt9aE3NdltpahBjUxyepwx8UMNQA6Nt31SK+bHM59iqf3
+	qY4eezorn7l8nE3L0QNuvEdnahaUPKcA9yhw16+u1e4k4ELedRK+Ddb6dd0zax3gGqFH652FT6T
+	bt8J+vNJExQgO3IRrYwG+rvRJnE6dfyRxTsTKIf8DFLiqWXKUbfmTFj7SgRw=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:13d4:b0:496:9ee:e538 with SMTP id
+ 5614622812f47-4b1af69a123mr4067786b6e.5.1786219831127; Sat, 08 Aug 2026
+ 13:10:31 -0700 (PDT)
+Date: Sat, 08 Aug 2026 13:10:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a778d37.01d0871a.3a0d52.0070.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in mmap_region
+From: syzbot <syzbot+d3c6764857d7cac5048a@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 34CBCA0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8221C18000D
-X-Stat-Signature: 1aygnwzxwjphoyj96spuhw9msasnuq5k
-X-HE-Tag: 1786219476-99639
-X-HE-Meta: U2FsdGVkX1/fTgRD9o9kjZclg+ynXHGmn/FgCX+7VuN9ESxg9AXE7MAhw00U+Z1C8vtgu4zS4L9mDrSqJk10N3DYvma7RNwyX6dMIFU8Oo9IdX3B8Rzj3brFGvDIAEn4MdMocA0R5AXEkyNGPEKSg6Mcs6zcFdBENzWhNeXENL5Qeu+a7nvfJhxNx36vLJ+xFEcSdyxhQP7pXmsdgKP4/uTkBHuZqU/4Z8y2+HI/rSq1B8L+/7D/yWJp8t8SRkKL3EcHMm3PJETO5NWA2l7CFw1u5EJADDnHDvDFKrebNujNTrlahH0FjypX8jgt6hcX63WVVybU7qZwrMJuFA7dLKb6g1GCi724nOKtHI6+0mPLUYvy4cy79zaK/1AIgURHOcCMWD/y74JdsAk24t5hd5MM0CQL9dH9tn19sAOyM6XXiFz1aJhfkP26Tw+zdOq8Cc154+szlBUIzkuN7ABtcL2E8o5HJlIEJboj1sxLmURyTEXPDxvRbJR3Adh1qb0tw8jy7urCqZZh396B2xo7CvEytYjoCFpov188PBfSPxL9z3P/meXbQ4IP9aDyAitFYtd+Z0fzg7YqHj9uQhMlHwqJ2lP8K8KO3GH0dKnX7YUIg2C+wJAWpTMtfTeH8juRZCMo3P0plXaco4RkjiZ1F298ezzDatZkxF52PzgyNm7VyI0vWsY9xSGA20ToDjeWgdYsXzykLgjEQjHgGalab9axoOFQZMTr6oC3a3PohExb8VG2+weLj0Q2+K9kGGUkf6rZ9+UUJt8nez8bWTVSD+pb+Hg9n5fQoD9JSjOPfpq7IBoydmKGXcpMXoHiD6ung9O03QrBT/kc2eev8Fk5HkzCsGQ/6lvok6I+Vd0zaAC2w6dgU2r3g50LufaT2f5bR3PUxAIo5VC56SiDJSW5uhmbDsxJ9iTrnbCZ61Xp00fqwl5aihmzggo2qi1CHrj2jo/WR0HBxkxqbdVQrRF
- PUZ+g1SS
- KzzuziaFlntoHdnUGs8KB+SDKxjHz9+ZHDMT/94jAwfPlqZdanmHztJtKGje/dSJgD43C82V9JH2H8qPGymxyfZiLISw4Y4Pdv20Q/WQ3B6/ZdP4Zv9pol1TT4YyjVpxI8+vsiWtCENJ9u88CMyN34ZZMBtQ8meVKSCJEe0+0zlbK76K/JZy0hAHPWATcAyQ/aIXwQCijajiY2uc+4fRXHCLLVBJhCVJTRBQVyLxgj6H6g14Kp4o5vfmLCSLVNf0d232814HPocf7AdKQWDoRGKyBlKRvCT0FofEfY55f+a5dcLaBuuv8s3kq9w+UGms2hlQ4uUyP5lki/dUC1BLaLCmyiWkbRlgOqdtkkAG+4JTm/bSjhjIbISx3EQe7UQoaViBUpXBzTR0SHAaWPsNzqxPnjb1Kc9q/KAl2PU13hb7KjxGapJ8ekdABPHW2SD+oL3bEjueQ9VOCb0y53UzTx2XcigjWXJCushtHj997AeuaM0s=
+X-Stat-Signature: i3qssaskk74bbe8iiyehqpb5gzbgtit8
+X-HE-Tag: 1786219832-880037
+X-HE-Meta: U2FsdGVkX19D7ihu72tDTsZqP6QTrQ0Y3FHpHPCnhqRT10wPArQALGBEN0GcFNjkVXPbWdHwFp+DrGs8jiFf0l/9QhNipYnEWzhzq/oXO1bFf6sSD+0LQCuT4CD++cmP4jUenSPFqD64UaT8p4iO4owQx7s3Yp04Gae4iwHTj3DhSnFn1wK4D4bL/CtsJmOwRL/GcgK1LR5qI/rdu84DXA6VxvTucjMVQ6a0LjjWDLZRXlvhK3ttf0wx0fpCNkAoD5lMHvWwjQlMlqInUh3x10TTtfeHf5TxOPvjkBBcaupu8U5zyQZr34B0BnYMzL8cdQENuoZoyGFzdxU/ml8tgNa7jdKYG9BJ2ccE6afUFXDQg5gaJoVcxz7IB8C+c+cnXMhoDeHBXuODjrTN945Es5fuBEgQNKxqN9A9WEJPqvdEHYmF1ADLaJpBX/gB7TlSXm8QCdSc6N4J9lkIeyChn0RwE+SOC7kxLvIdpygmF1YSV1h1WdSYvBkGqwV6cYd3AM3ZJsa+b1aakUlNV3foqwdqqO649S04hjf4NAVPwKSiGYIP0zxBQzZ6vebgvfmlYknJZBkBlzsBflRce8mgQ82fBIqh9x4GoFzMIdhZm51fbYuz2nl0xoMFXTjzgL4Akt8nCYRRqvuBwVljNU7g8T1VWYLk1GzKU5Fyfi4h2NAFrPD8iCz/VnQgrNVGVcXH7RcG0dcq9vi7pLf5M6Py+7n8xy0F75fi61NdMiLJx8i5n4OcxqbN19CdmGU7LC+c7TpnVID6a0cZjZjdQuq5fdya4NE1eVhBszHO/8JCs6/lVZdvFB4jw6NCmmuvF5R9fz20Mzlu4yD4S9nmW4IeyxijAlnGotv7xEZeJoxyCI1oBv9hcc5iC3NbS9O17h4PWgFYYp2qyF97B8tNWq6eNrLPL/hYPqoTUqT2UbXpHdaw4Nz9JOJOjCUfGyztmn7Icr2lRyvuQN0boSLPIe6
+ GEB5NNx7
+ 5f4BwxP4PYjUYF1L6B11CxSMrCQA75HMXw7rSPtoFnkJ9cAmHl8n4gF5z1kvoDpFxVuRa2ILJ9nOauisLPinGwe5kPgTT+vaaZCMZ023XTLqUzRpseiM4hPHPdq2zO9tNbh3h5Lu2Ju3rIBKHbCoHWaj2fyTkBUWNMxI+we71ycYMVPKRxdR/hd+8Wm3FltgBES69WWgfru+y3N1SgKxmDDl8a+nmRhZdjp01i/XAF+2ZY2w3joIunIzEI4PI4zVk3+Dt2nr1r6/cgli6wtkU4hlulWZO7uzj5TUWkJLTYV5706hrYK+1mVB4l1Drp2Lv4WkO+3V21Ly832/Qujh/NEiJl+nPcTREbsvMhcUcFhfsehQHymfeMln4EwuxJdVoJXA7HWN88sIXBbhPS1JWdSKTbprfTzEKsmAcTF9IuGrFKSyR7wn9otGhUq690/qpYXvkX8C8zvcP46TrxvjDHA/lq86rIMuPpVjrVNPHTMbaathbVIQJtoTOcfxIrLbX2qTLtCoEUMPJZdsI1kW7J0yIFv2KrtVpg7vPp9kpgnn8/Jna2U0qxnUI6n+iscfyJBE1VYFK1yZ4s4GYJyL2oxIUOKu3KKjbANiH6NWCWdAeYuNC5F7Tn3lpjrMqdcIHzN0Bh7SQfByHIUm41R2XUSy2qb3HukrXcqkPbS9Wx4TgSjaWQ0nsf49K9IIUZLmaqXZ5bcbEEppMBD41W9B58VizgMhB6uZlR7mZpi2sWCOus/aj/2HchHlh6XeYY9SxWoNgl8pzisVJujeKA/HNkK9J587LfGFT0ngntU4D76C6jHJNqsv9H+oiqYwL81qnYxTTXPflbxAJ4ITTOVWaDFOlfQec2ouEvfFbpyS0X84iQEDXRXYti3SZ153rd3ct74iXEbfOO4deE6xh1AOuvLe9cs+sHJ+uIRkbs1xSH3EkIOe71gKQ+lmc/v1JBWMBh1wmDSVX5/pOpBgqCe8OAOoWSnh2
+ SvHxJGk/
+ qij3Uz4rBeBOSTgPMUxpinw7KbmAPM84DeQthNWUfsA2wg275v6/4ElCZMME099/91MyYK7f27s60TA1znB6zZEDAK0WHfbwHc4cMsgwJ2bPaQc74A+oBzfsaAdhaRGZka7MYqPyaXfKLfeO+xUolkcJ/Kc/y0tKsu1dSUTR8CdpHF2fMhGKQgGtkl29cVjtzjITI9F+IqpWMqlwYhHQMlr68QN0fnlKwUeH5Uml3FEtftBU3jbrZGr6/K/3gask/xZKti+8jtXoWdt7kJi0QaWjc6tihJxH8p5+LgOn+GUos7ViYfWBeBVrpH20u2HaUHz37wHeo5TNP6EB6DCuEsdJfv1cJqilR0KKi40ykkl74SEA6ZO4PhYAzuZD3hlRJ/HXY4oQCYxkclccbQPeZppQsg+UakvtSwcqhKrsUviA/BOA3gjnr/VTWADWI4oK8ZLM9YE34Og=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,48 +96,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_maps_tearing_from_split times out when READ_IMPLIES_EXEC is set.
-This happens by default on pre-ARMv6 CPUs, which lack no-execute support.
+Hello,
 
-split_vma() re-maps the first page with mod_info->prot | PROT_EXEC to
-make it differ from its neighbours.  With READ_IMPLIES_EXEC the original
-mapping is already executable, so no split occurs and the test hangs
-waiting for the modifier child.
+syzbot found the following issue on:
 
-Use PROT_NONE for the split mapping, which always differs from its
-readable neighbours.
+HEAD commit:    1701fda2f58e Add linux-next specific files for 20260805
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=120a0fb9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1abaff330e312dba
+dashboard link: https://syzkaller.appspot.com/bug?extid=d3c6764857d7cac5048a
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1255d7b9580000
 
-Fixes: beb69e817246 ("selftests/proc: add /proc/pid/maps tearing from vma split test")
-Assisted-by: Codex:gpt-5.6-terra
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/260da702bc71/disk-1701fda2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/006e50e3e545/vmlinux-1701fda2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/232c4643654a/bzImage-1701fda2.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d3c6764857d7cac5048a@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+vma_is_anonymous(vma)
+WARNING: mm/internal.h:241 at mmap_file mm/internal.h:241 [inline], CPU#0: syz.0.17/5892
+WARNING: mm/internal.h:241 at __mmap_new_file_vma mm/vma.c:2586 [inline], CPU#0: syz.0.17/5892
+WARNING: mm/internal.h:241 at __mmap_new_vma mm/vma.c:2685 [inline], CPU#0: syz.0.17/5892
+WARNING: mm/internal.h:241 at __mmap_region mm/vma.c:2905 [inline], CPU#0: syz.0.17/5892
+WARNING: mm/internal.h:241 at mmap_region+0x1f8d/0x2460 mm/vma.c:2990, CPU#0: syz.0.17/5892
+Modules linked in:
+CPU: 0 UID: 0 PID: 5892 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:mmap_file mm/internal.h:241 [inline]
+RIP: 0010:__mmap_new_file_vma mm/vma.c:2586 [inline]
+RIP: 0010:__mmap_new_vma mm/vma.c:2685 [inline]
+RIP: 0010:__mmap_region mm/vma.c:2905 [inline]
+RIP: 0010:mmap_region+0x1f8d/0x2460 mm/vma.c:2990
+Code: d6 a0 ff e9 69 f1 ff ff e8 10 d6 a0 ff 90 0f 0b 90 e9 5f e2 ff ff e8 02 d6 a0 ff 90 0f 0b 90 e9 02 fe ff ff e8 f4 d5 a0 ff 90 <0f> 0b 90 c7 44 24 08 ea ff ff ff 48 b8 00 00 00 00 00 fc ff df 41
+RSP: 0018:ffffc900037bf560 EFLAGS: 00010293
+RAX: ffffffff8226adfc RBX: fffff520006f7ec0 RCX: ffff88801d711f40
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000001
+RBP: ffffc900037bfb70 R08: ffff8880122eb803 R09: 1ffff1100245d700
+R10: dffffc0000000000 R11: ffffed100245d701 R12: dffffc0000000000
+R13: 1ffff920006f7efd R14: 1ffff11006c41e09 R15: ffff88803620f048
+FS:  0000555564503500(0000) GS:ffff888124f18000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa7f9a70000 CR3: 0000000071f6c000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ do_mmap+0xe0a/0x1300 mm/mmap.c:573
+ vm_mmap_pgoff+0x272/0x4e0 mm/util.c:581
+ ksys_mmap_pgoff+0x4dc/0x760 mm/mmap.c:619
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x510 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa7f9b9e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fffcfdacab8 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+RAX: ffffffffffffffda RBX: 00007fa7f9e25fa0 RCX: 00007fa7f9b9e0d9
+RDX: 0000000002000000 RSI: 0000000000003000 RDI: 0000200000ffa000
+RBP: 00007fa7f9c35024 R08: 0000000000000003 R09: 0000000100000000
+R10: 0000000000000013 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa7f9e25fac R14: 00007fa7f9e25fa0 R15: 00007fa7f9e25fa0
+ </TASK>
+
+
 ---
-Tested on:
-- QEMU versatilepb/ARM926EJ-S: maps and smaps fail before, pass after
-- QEMU realview-eb-mpcore/ARM11MPCore: maps and smaps pass before and after
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Changes since v1:
-- v1 went out without any recipients in To: and received no reply in 19 days.
-- No functional change. reworked the commit message.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-v1: https://lore.kernel.org/all/20260720061835.6290-1-kmehltretter@gmail.com/
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
- tools/testing/selftests/proc/proc-maps-race.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/testing/selftests/proc/proc-maps-race.c
-index 1026d8c400e1..415eccb70468 100644
---- a/tools/testing/selftests/proc/proc-maps-race.c
-+++ b/tools/testing/selftests/proc/proc-maps-race.c
-@@ -490,7 +490,8 @@ static bool query_addr_at(int maps_fd, void *addr,
- 
- static inline bool split_vma(FIXTURE_DATA(proc_maps_race) *self)
- {
--	return mmap(self->mod_info->addr, self->page_size, self->mod_info->prot | PROT_EXEC,
-+	/* PROT_NONE differs from both readable neighbors. */
-+	return mmap(self->mod_info->addr, self->page_size, PROT_NONE,
- 		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0) != MAP_FAILED;
- }
- 
--- 
-2.53.0
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
