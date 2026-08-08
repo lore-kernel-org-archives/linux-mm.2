@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA0AC5AC67
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 15:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22702C5AC67
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 16:27:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A152A6B00C2; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
+	id A0DD96B00C4; Sat,  8 Aug 2026 12:27:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CD8C6B00C3; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
+	id 9BED16B00C5; Sat,  8 Aug 2026 12:27:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B5176B00C4; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
+	id 8D67D6B00C6; Sat,  8 Aug 2026 12:27:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 683826B00C2
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5AF4140398
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:53:30 +0000 (UTC)
-X-FDA: 85078546980.11.89D9666
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9280240007
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:53:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786204409;
-	b=0fdyAfB+mTHVm+L5tdSiyXxLbwEJQBqkSh4CH4ns4Gu8jqh+3u/TR7HGD4cqns1ylHj361
-	cxc9k+4EqxnGIy5FsO9rsdaKF7xJ7xIdPGPYjGopWzmxKvhtvWvYgS9WU5iUqcE+uhP77c
-	5hYx5BEOJRsUwJQO/un0rok2WWJrJM0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6995E6B00C4
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 12:27:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC544403FC
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 16:27:35 +0000 (UTC)
+X-FDA: 85078632870.23.CA02392
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 542C240009
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 16:27:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oB2Y8P6i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786204409;
+	s=arc-20220608; t=1786206454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nltNiX6rU18IHooivbDgvc+FtyhiQr4rTMa/+aorgts=;
-	b=u0JxEKdDKx2BMMvK6jSG72iK6eq2LgIGRQgeAHPfzrPcefN2J8Y8SbAer1Ym+7HMxHkj/r
-	MttjLNIHBScDA8xX5GV1hLGgxSTb1EphofwVDOGQ8Vg3YRfIm7T2Y5RB4lMZNo6ZM9cyqH
-	ETqH2ywHzspKajIZQBAVvTR14kUdvRs=
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.53 with ESMTP; 9 Aug 2026 00:53:23 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.126 with ESMTP; 9 Aug 2026 00:53:23 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sun, 9 Aug 2026 00:53:23 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <baoquan.he@linux.dev>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Mknf88l59jYGHy564b6wquM7BKXv1lWu2LkHGwW/3nI=;
+	b=qfPr/efTTlcXWUWV0pRgl+48MQmmuz7rWl9x5rkapgc+bwN5etYe4jyPEXuvc4aYRqbheh
+	M8eRHzC8hYooscir1sf619tRCGDTZzJw00w/60k1d1VQpk4ghICVh7JWuymo0nFKRIRj29
+	ouDN0SwTAvBaw0k7amgmZZtxVfdprAw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oB2Y8P6i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786206454;
+	b=E/P/E055jkueA50GY5dBql1PoaIx8ZYTq1J/61eSXTARdrBtg+DWRTILKD83RwOF2PReWp
+	FVuadHPqzJEv1MHXrhZs4cN2KyI+BAEimDk8jophFWzWKUcDiRGbn5xNRfISxdpRZbFCc5
+	egc/vDOkO+YwFbxQR0DN7fI3mRENC/Y=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9682E6001A
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 16:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3165A1F000E9;
+	Sat,  8 Aug 2026 16:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786206453;
+	bh=Mknf88l59jYGHy564b6wquM7BKXv1lWu2LkHGwW/3nI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oB2Y8P6i7M3KVb+6+Z/Z5LZP2H7EBd8xQolKqmDNfimo30AInQxzeSCHrVV6fZBwo
+	 IYMeuwH9IrBM6jkBf5md5U2jScC8m2wMFnoXrZu4RtqXGhllFckDLG52VlutPStfJZ
+	 U/ozrlktpwsAB4SHVxrU7AF79bqNUSwxvw/Lnf/67kHCYre1OkqCsW3tuvJrQoruQ6
+	 yD0oj/l4tycXWRpos5wcFrVB8EIKfsDFoa0fJnYgmrQ1FiE5XHkuJct9wbgFq3V1IX
+	 5y29rviBQ2m6OwmNW6/IU1RvMsJIkLIs0qgBpXWwYr5zijg/JId9jWiUJr7iz4CSlg
+	 OH+jlUY5NxdVQ==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
-Message-ID: <andQ8w/B5DCSzKKD@yjaykim-PowerEdge-T330>
-References: <20260806193228.458685-1-youngjun.park@lge.com>
- <20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
- <anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
- <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
- <20260807144256.6fbdfd15f7ed4f518af7929f@linux-foundation.org>
+Subject: Re: [CFP] DAMON Nanoconference (aka BoF) at LPC'26
+Date: Sat,  8 Aug 2026 09:27:24 -0700
+Message-ID: <20260808162724.92408-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260806003357.92659-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807144256.6fbdfd15f7ed4f518af7929f@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9280240007
-X-Stat-Signature: 9p7uhjp1esa8ot5occa5n3ksg6qz9cbp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 542C240009
+X-Stat-Signature: i31x8swzcgfijn45osmu7dpjhcpqtnys
 X-Rspam-User: 
-X-HE-Tag: 1786204407-596469
-X-HE-Meta: U2FsdGVkX1/5EWN159Q2hPF/VmJoT11Eysy0y/97ImLXyZcgpLten9Q5q5KEG2pHwGM5sVvdCY4hutuhL9YVGAOfC1PEHmBEhesA3C7T8iRoaKTmyyjNCgEZeHveRC1OaAOY0zUXprX/arBR7Dn6YNY/XCZdnnF/CPE6t5CNJECIpjXLGEWQo6rIaO2jSCiSGgjACsVoyXMsc1XAqmdtJNGCEiMHyGDEf+Nu3QSesq+I4giwni8XyTf1EIV3OOz9h1RgUT9aWtCqQpNQ2SwvLPTmecNbrQelRxPgYmLYXJd2GvsZRMEwgsV7u4HoFb0XTEgoNbcvrEFep5lSVwXFFz8MblXhsBMNwYrVqn1dKONjduXJSGpqgX4Me6A9M9k0PRmypV7TMPsYC6ZyrirMbKcfaVq1fU74RwwsWbHQgJgiCnmb1CXgzh/B6LkuH87DOOkbAchJAZfULlWxvfbs5EVnlC177/LPWGFOr2sRVEShaZbnIUTHA8cN9An1gWzEQbSLL9FlXrApFQuI068zQWmrL87Eu2DgtPSdBBc00yxB0RF58JXulTZcW8hX8+EJwiuhbUsy5m8clm2OEGkYJ85mPdwrQEtsKXE0khPLfLcPev5Pii4aqtNOXVV3grXqA8icjelXRNNCqvOr95es3jjQwqezpB+v3jiKaoD8ZYr0mtFJGgNvUFSznEPXXLNDvCF2I2npslOzpn5cTirn4zynYGMmIgNLg5xI4j8NJD2FRJ/AUWbbrG6W1Vgt4/PKOwiJoUgnxUmcskRjWoO1sPihGseoFhAD6dGPTf+hKs9P3UWWK5HsUbsgiMMdr7xCitNtY5zOZ+abkYyuBVko+hltj0/DM8rWD9MzD4+nmh5uP0JdfJo8bL2mAa9RtiBrzl1CkBVp6mYwfJMNUxr9AXH5x/wm60pixhNbneb84o6E2Mfazm7nraCoMGBzEQO2bPCdmaciYyv6t77w+Uf
- 37xAhSyK
- i2+NzooU9uz09bZ3C8U9AzyUL+lfvzbIVsBc9+vI3Up9YxsU9JNwbgc/t3dmhTUX8ADlJK6UQoAbq7a49kfSqFeBo9rVCEj5H/x6Fne+FpDMKUHduTwGlESkcC7rYMEOdEyWXiW/LEPKIeN6FGpDt+zCWU1OFU2fkEPF+b7Z450Q0epBuORcx6FM5hQ==
+X-HE-Tag: 1786206454-923393
+X-HE-Meta: U2FsdGVkX1+O360PnkAleXyVpbveWvgDvgvk8TgNRyF/k4GL1ali4Qzu0ASqvjy7rowXsTrokog0BTg+bvB4TxF02RmjwJkzUr8j7sCbcoqiiG4Hfpy0NDyYG3zrU/5B4IwN/BdQfuiprth+Zl0MLt5ZuTe/xvSnXtBRTJu3J891ToZ17d2+Q/ipYdGfyOovnaR7xdcl0F7zb3iNQwOXI16gvWlijAbndq096jJikTBGMrpNIVHllE1k7Hub2L+bHYWRQu8nzdEbmcP390JnUvPUxp/fc5FNuYqI982Jpqsk6zB3hL59DwVQ7oIxWfzFA5+HHRwd80JItSj8sV8QWpr99cRenOuiujqy4Kjmg3umgMGIlk/Blv9ZoviNZL9rmhHgeWBDlZFxc4Mz//mwfnhht2Kbbd8ogPTcTVpI5OP5FR7SJyViT96Tlt5/6KLqhRK2hd92i2XiTdLWPDbNZtIq3NQs7YJVg2864lSLtbjVL2ignrAjL9j9021g+Q0jl/LWJYmh3jz/u5zP13hwzBST1qe2zv+eKJEv+cnHzZ9sqRZOjakdwVOm9sBFzcLul7Zzm68pJZivV3t4/ARZdVSfBMapi263FH2qANj8JGhI+KRkDLEpJ5ApNh7AuEx6JOMdC6BvwDbOxbpFRUMkEltsbQDoxBc4L6ihOiZB6EpPEmG7kzRM6tEGRvTP8eKf9fLIOyKqV0iMm4KBwFTqGM6V0z/ITQyDFqd2HJhz4XmRG4GYBqCfRdWRn+60OICXoisnjK7UhIOjX9STQgTkZzg0gs2zuIkOAoEL+ZOx53N8JXWWklhagGc3ERJzeyb+mCGP6Qx/T2sTTBDpCplEJL1MEbvU3SeR3fWdzmsWd1WTMwe03K1J/12IaDdcenoHR2EzsaToFLwDF4MdhB9knmTGZo/5q1uEKvoEmp8aCLUc5Yqm8ePkRzKbB69v3mZeZUYnjXXYDNctIEk3/Sm
+ hG2yLJ1u
+ /JlDFbAJY0YrQKvYlsa4uA8PaOypm68j+VTy1k71TFIrV2n9vC1pUnvyWGgLzgoimDZBj98FWXbEV+8HgLzSrQCaiRVWo95HFLb4HKVYEufPmv45QOm5r58uFtSqVIXTn16Br7np5ZqeDXoHJ61fXj5lQYpUl+eXPN6jljhby7o0GoMjB0CrPvqo/O2s0rHabsQ7GhMODzKO2KcYnELyMXUkbGSSvAbtvrf65m/zZPj8zrt9Ny6xfD1Je5aphXGm5cO/kIMcmt84E2MtGkAxjrAuC1BN9JaHw5dvxRhqgA3rG+2kUZNl4Krj96Lxfvxm+BNNVOFdqavA0luKZ1qdpBPxuiVGcBHjg1a+Ue0F6LVEZ7w1dMjlqDxYREtLJ981+DgWVrJxWzJhWwhpIWwYUjCmEcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,68 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 02:42:56PM -0700, Andrew Morton wrote:
-> On Fri, 7 Aug 2026 16:42:22 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
+On Wed,  5 Aug 2026 17:33:57 -0700 SJ Park <sj@kernel.org> wrote:
+
+> Hello community,
 > 
-> > > I have no measured times yet, since that case has to be set up on purpose.
-> > > What I did is the arithmetic for the case that skips best,
-> > > For example 1T of swap with 256M slots with SWAPFILE_CLUSTER = 512
-> > > and everything free but the far end:
-> > > 
-> > >   - today:          256M table reads
-> > >   - with the skip:  512K counter reads
-> > 
-> > 
-> > Maybe just use time to measure swapoff time consuming, just like below
-> > as I did on a kvm guest, I guess a bare metal machine with larger system
-> > ram could be more obvious?
-> > 
-> > root@fedora:~# free -h
-> >                total        used        free      shared  buff/cache   available
-> > Mem:           3.8Gi       181Mi       3.6Gi       924Ki        72Mi       3.7Gi
-> > Swap:          2.0Gi        18Mi       2.0Gi
-> > root@fedora:~# time swapoff /dev/vdb
-> > 
-> > real	0m0.101s
-> > user	0m0.001s
-> > sys	0m0.017s
-> > root@fedora:~# swapon /dev/vdb
-> > root@fedora:~# time swapoff /dev/vdb
-> > 
-> > real	0m0.014s
-> > user	0m0.003s
-> > sys	0m0.001s
-> > 
-> > Not sure if Andrew is asking for this.
 > 
-> I think it's helpful to include such info.  The audience for changelogs
-> is more than swap developers!  It's also an MM maintainer and -stable
-> maintainers and other people who are all wondering "should I backport
-> this for my users".  Let's give them the means to determine that.
+> We will have a DAMON BoF session [1] at LPC'26.  Because it is a BoF, I want to
+> make it as casual as possible with many voices.  Hence inviting you.  You could
+> think this as yet another version of our bi-weekly Beer/Coffee/Tea chat meeting
+> series [2], or the first Nano-sized DAMON conference.
+> 
+> If you have any topics about DAMON that you want to present and discuss in the
+> session, please send an email to me.
+> 
+> Example of topics include but not limited to:
+> 
+> - Your DAMON work that is recently landed, in progress/plan
+> - Your DAMON usage and success/failure stories
+> 
+> Depending on the topic and number of proposals, I will try to give each topic
+> 5-15 minutes.
 
-Hello Andrew Here is the experiment.
+We already got plenty number of proposals.  I'm closing the CFP.  Sorry for not
+announcing an official proposal deadline in advance.  Please feel free to send
+any DAMON topic, though.  We could extend the session to hallway track, evening
+event or a later DAMON Beer/Coffee/Tea chat.  Also that will be helpful for
+planning the next DAMON Conference.
 
-7.2-rc5, fill a 1 TiB swap up to some amount, then swapoff.  
+> 
+> 
+> [1] https://lpc.events/event/20/contributions/2453/
+> [2] https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
 
-What is left sits at the top of what was filled, so every slot below it is free.  
-Those entries are in the swap cache and cheap to free, so the search is most of the time.  
-In short, best scenario my patch shows improvement.
 
-Medians over 11 pairs at 32 and 128 GiB, 3 pairs at 256 and 512.
-
-      filled          swapoff 
-                      old        new     
-       32 GiB          92.4ms    66.3ms
-      128 GiB         157.6ms    94.4ms
-      256 GiB         209.7ms    63.8ms  
-      512 GiB         391.8ms    73.4ms   
-
-old grows with how much was filled, new does not.  
-
-In the ordinary case swap still holds real data and swapoff spends its time
-reading it back.  I tested 4 GiB on an 8 GiB device, where the scan is 1.4%
-of try_to_unuse(), and there is no difference either way. meaning no regression
-
-Thanks!
-Youngjun
+Thanks,
+SJ
 
