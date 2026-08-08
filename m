@@ -4,136 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55492C55174
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 12:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C500EC55174
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 13:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 459756B00B7; Sat,  8 Aug 2026 08:17:27 -0400 (EDT)
+	id 581906B00BA; Sat,  8 Aug 2026 09:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A5B6B00B9; Sat,  8 Aug 2026 08:17:27 -0400 (EDT)
+	id 532C66B00BB; Sat,  8 Aug 2026 09:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8F66B00BA; Sat,  8 Aug 2026 08:17:27 -0400 (EDT)
+	id 421806B00BC; Sat,  8 Aug 2026 09:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EB12F6B00B7
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 08:17:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8109C0371
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 12:17:24 +0000 (UTC)
-X-FDA: 85078002408.16.DF0E541
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5206420003
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 12:17:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=njcPzkbS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fLyELjvD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=szDHY6tG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2pLjEvFU;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5C96B00BA
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 09:25:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F3A7F1C0EE7
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 13:25:55 +0000 (UTC)
+X-FDA: 85078175070.03.C856FA4
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 33992100002
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 13:25:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fm373Vd3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786191442;
+	s=arc-20220608; t=1786195554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qehbiy1CA3dVi+qrouYSN8RlLNI21IoWPgUv6jKFe1I=;
-	b=amIFd1mDlrvYx0zml+W87WDp3kQHajt9SYttEgk4ZJD9ifAsSL+5c+yVpX1Z6waoUHlFlA
-	Rxm34NDw81a/+0Jimz3OvMoLfZqN9fQUAgEb6tn7hnKT53DWJxgnsXvFhzYFjce+npNuQt
-	TZgpH7yhiobZIQgjwMpcr5bdvC4eBcU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786191442;
-	b=rs2fuQiM3Vvdnzui13hm/9+ol7/ekVW0fLxjgfpG6+v4UexdvUa0NfpAd1SukyHykj71PI
-	93em8KuyJA2yGpsnZFTYs30iLcma4emZ82NWKvOi6XVnDu+/tStn4FYsr+peAYZ6ZNwLmg
-	7eXiYdiK8KspBKyvlHMiluh8NX4SKdc=
+	bh=aEPuJi9dOtjcd1sSrhmRN/FNlJj3jv4zUiWWrq20D8g=;
+	b=vemzjGzyG/wv13I8lvztYvc3TF0YcVvlnWVTgVFbvFA9+9K+tK9PCQ95NX68fbrvpMVTxM
+	qLxY9XyV6ItCrynOSrWyp/f9IrlfXF8mgBHxtf+uuMWk4s4KRdWBRyzW8mSUyN2ohtpKpu
+	5/aHXlS50tkC4gccb78QU95pR24IIC8=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=njcPzkbS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fLyELjvD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=szDHY6tG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2pLjEvFU;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3D21780C9F;
-	Sat,  8 Aug 2026 12:17:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786191436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qehbiy1CA3dVi+qrouYSN8RlLNI21IoWPgUv6jKFe1I=;
-	b=njcPzkbS0nKgRDOBCsdQIenwyxVtbRlSK9B5DVZYgJWkzImM7S1LllkbDYM6gbbcKIdqgL
-	Ehs3mfw+EOFTMqatGyTwpQqOrk+7qq5rRoIoFZ5AvjR/cYru0qaJ8NXCR4Fq1nmJJoqcqv
-	4DNtOEOuNYfJn1muVxdYiktHr4jJRkQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786191436;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qehbiy1CA3dVi+qrouYSN8RlLNI21IoWPgUv6jKFe1I=;
-	b=fLyELjvD93ELzIVUiQ8WkqFGzUn+2y/TzzCYR1Bzr21ktKzXAnWJo05gyh/94PHWOegqyl
-	gI1U5S8u+LffBMDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786191432; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qehbiy1CA3dVi+qrouYSN8RlLNI21IoWPgUv6jKFe1I=;
-	b=szDHY6tGcKNdlx+XCa3JpjfYzpM8qXs5G3UIEjU1r3D5XDWDftLOO10ZPw5aJ44Mbzpctu
-	Gv6AXnvX8HLukjxneIRmwxAAs2R3rATCO2JFM7P52cuGwLoaHJaknh7OAOoizveW0IjMak
-	XyzncoIYxVq9hdyJdiq0slSWfQizBY0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786191432;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qehbiy1CA3dVi+qrouYSN8RlLNI21IoWPgUv6jKFe1I=;
-	b=2pLjEvFUvZWrNHgNf0whLMKpoP5aV2f5ClQ/BhXmRfnniLBG/nWHVH+CJswb1J1/I1hgex
-	eek3pPHSvuGrxvDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82BE7779B2;
-	Sat,  8 Aug 2026 12:17:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id k29KHEced2rBTAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Sat, 08 Aug 2026 12:17:11 +0000
-Date: Sat, 8 Aug 2026 13:17:09 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: vova tokarev <vladimirelitokarev@gmail.com>
-Cc: akpm@linux-foundation.org, security@kernel.org, linux-mm@kvack.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: Fwd: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to
- local privilege escalation
-Message-ID: <ancYCBUT8aB0qHwz@pedro-suse.lan>
-References: <CAGBKPgOm8q-8_rwyRPEmSj8JXdh_GaK1Q8vpJ=j-+yA0SgcNQw@mail.gmail.com>
- <CAGBKPgPPALX_5CQJAKUNjwi2fD28pBeS5pRuwQgePU93pOy8EA@mail.gmail.com>
- <anXnHMInq_JLYbWc@pedro-suse.lan>
- <CAGBKPgOfbMJruqcegJca6BBpEtpd91s5ASF_VU+gucWsjwp8WA@mail.gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fm373Vd3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786195554;
+	b=xEreKCKklbJ338bq5A08K6+2XLYScjtYcjG7iCOhvTRRdYCjuFcaBLYpiFi9u9AKZNKjcW
+	qD6VvhMJTHaxV0Nle5/9TBHan2wpLMg/FaaE88Hlyg7qZ00BvzV8vROreHgNQYzScJxYvV
+	iVeVg9cMBAmmoyLqDKeEU9Daf1ZOivQ=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso495750a91.2
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 06:25:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786195553; x=1786800353; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aEPuJi9dOtjcd1sSrhmRN/FNlJj3jv4zUiWWrq20D8g=;
+        b=fm373Vd3z1EtlL6+KgeonVbwaAjbskuHw0sMfSstK+YtASm7Bo7CjrblIMnyyPmTGH
+         bS9Kry9x6uvGEwXzX+x5yoGUSlx7JHbVLK2500fRq6ytj2JIyNzUUUZfRvLKMsNL4RGe
+         tACwN394XG0JShAcRxYhdDqUFKPaW2PlkPMiTZNzZAqiwYQlhYvqUt365OqsprlOUNv7
+         lXieMUlUNZFGcj92bnQ6738Ez4PHi2FyxGfK36UYnf+1DRVXfhm3yTf59xCpC9BglaNO
+         872piBfqP9WlOgD4nVgIPMRcawchcc3g2Xn4alv6BYIUs/QhK/yP9BnplR2HuLVpLPtt
+         jB6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786195553; x=1786800353;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aEPuJi9dOtjcd1sSrhmRN/FNlJj3jv4zUiWWrq20D8g=;
+        b=o7Mr2gSFgkHXwftRBz4LLa5YSviHeC1rFDQQ1eWKhsSUCypnNAP4HB2XMDTkvqQa+d
+         0n39ANJoixF1WsWdu2ccdQ5ZB/+gNXiXJTlfXcnlroum2mMbBtVaVRC/LNcfqSs4R15W
+         aG9Bw056jfF7yaAfIk98ExvLi5Q0njDLWL5U47Y7CfOY1gQ6nRYL+5l5TNXSdNtsPWZR
+         1CA/cbZHlJqBsHFRQBes92K7U4VHhDnWRwb4lsfKCoZleUxet6bei7g00CQ/rrXlsXtB
+         lTmS8PSiUNBYlXTr+QyiwV1J7woxra683ztGe6bLtSnxnorGY6pNEHUjYB+CHBaZ7DK9
+         S/HQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpK8M+ERMNigmNb27ZcyOIwHxXNSeynp8zYfO4IWke+1ZTvo5hyLsMKAUOw2PPlg+9yfVYTAP/F2Q==@kvack.org
+X-Gm-Message-State: AOJu0YyL4BXaQMMy6daRwPjW9N1FGLyAGATTb44p1XUT0ADKsg3r62G3
+	vrA65p1+7a9ZUkERXdc4+yHnQoaG4T4fMnEhr6coeI9wrmoNuRDswFGq
+X-Gm-Gg: AR+sD12LliGurhTz9SUMgyHbvVM//I03BIcRErKSKxk+AQLWw2KoHuN72eg+GWKiZpA
+	O512rMahAbVjLHxgDUaRkQbPn9FERRhrTl2GGUeR3Z01ce4PiB/6XMBa5+8jVqNGZ1tGCBX7t27
+	YEPmIp4+fgEkTz1neu0F9F3q7l966AEnJyZR/Aoa336AFvwgBP9p4NEtuXfHsfk01EApZHpDo8r
+	JGGRbpXjM9Ml0EVWJLPkqFwSw1XkSwxRpJdPvRTz5Ysb8PHvrmABksuDXf2H1pSHomVr0W7NQdp
+	LXk9hHyJiWznFC94LiSzMdJZBAV+zWZJWiw+RRdH/CkcmRTTnsrhQWPojnF52WRm6vQ3htaHnB9
+	QURROypjl1VCULSTU1oxytKvXPk5vPeE16hZ8P94+se0HFxWrobL7D0ViOSNjKM9XQVEDoTErSo
+	YVQsXNNIkNs/PSUqfTUsFmdFPkMx9rkumab3zjLCaQfYj076zXfVM5nL0SClezC8/m2w5Qgkxpr
+	gmTtxRlSYvbNR29/uPHcqS8fco16k4BlSg=
+X-Received: by 2002:a17:90b:2748:b0:380:7688:fbe9 with SMTP id 98e67ed59e1d1-392823a4a2bmr7598863a91.8.1786195552899;
+        Sat, 08 Aug 2026 06:25:52 -0700 (PDT)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085f5c9a5sm8330201a91.15.2026.08.08.06.25.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 06:25:52 -0700 (PDT)
+Date: Sat, 8 Aug 2026 21:25:47 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Jianyue Wu <wujianyue000@gmail.com>, her0gyugyu@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm, swap: give hibernation swap slots their own swap
+ table entry type
+Message-ID: <ancjiz6-qyC0ki4O@KASONG-MC4>
+References: <20260806190636.446205-1-youngjun.park@lge.com>
+ <20260806190636.446205-3-youngjun.park@lge.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGBKPgOfbMJruqcegJca6BBpEtpd91s5ASF_VU+gucWsjwp8WA@mail.gmail.com>
+In-Reply-To: <20260806190636.446205-3-youngjun.park@lge.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5206420003
-X-Stat-Signature: 6gft5sm94rb1hw3aza3c3uesgd6rdhnk
-X-HE-Tag: 1786191442-174573
-X-HE-Meta: U2FsdGVkX1+kD4FKnj5zLm7lmmYiJK2bNWB8BHbWOUZH0OeZXrGBOquKDYjCYxQZ5RE/dP5fDbYanlvWbWEqCpZ9DZwM3e9tcw586PN60kSRja5aC/NE8vqMp9IrOPOpDcPL6/QtlPmBxds7RBTz1yAkoKBSkq01Uu5O2vUgHQrKWNUkI7NIHNJzQedaQPdIDSHams9zRRqaGJT0ERnH+k3DJwjrc2b/hshkdQxM37Nuzja8u8cgOdGIZAlgd1qP7SxnYvgANu1rNm/htaNDYdADeaD8w5vfqSQtqcaUqia+9v7jB3EOEEEwS7PzEvKK34RtePZ0zVKUEL8Ky1O61AGjyeQ3W1BSwKWlg9kbjwewI3X4h1OoE7bXKb/caftju2JY7bun2LRoejV2x2t/VBcWLdwvYLmbRtUKw4YkSA5dgablWKexmLcG1aEg1Y6bFfoqc0oJcsSVFkA9vUcJtMI6LISqcdeh7SttzMKm1kskXup9fODLIqqs+48UtUd/H10nl/CJE0bgantrWUMVt7WeQuFjfiLqcrmTkzPfNR/sBhEcY1MIu8PTmbqyTwlZfRl5sy2Lx3VerX/xSgEwTEANicDsFMPN+7IRyHIbyUG3nIkuQDVoEVVNvHTOinaePXlovYVrIevCFcx054OubVhONJYpp6L3VxoNAJJLDBeAirKcGioBoqQrxZt1K+QhlZqjpHsTD4cZe1270xpwi8HW1efN3L2jEG1H6LK/7NMd6QldUHnN6eobTMoeXXnAuTViEGhGTxGtPCsxTJ09MdsvdxXbYg43jPGzQx3dpNJqP+1woe+i+Fqz6sQcrXs6Ld7otkccaWyQeUlm01IsEQ04XIyEZfMfBCZrPIHqCnjqgWjGgXE99hQcGvfr6YHb0e9/DpsnwDao1dq3B0FJhUnQUOpJ/zMqhGWZtWdH4L1BFIV/ceQhHD3m5fhZCE77+wNgLzZlUoi1Sl4u0fK
- pr6qY4hB
- dg+8Fk5ewFOUSvxqzG6xrJNnfoZhmnx3GsXTJk8yYdCOfsblU698V5aKQzd1X7y5WPke0eErC3ZcDiXxQnOvWeqpixwkZHqkmbzHeCumFGj7IU5dmJoPOXhT24LEyCQUbnLz4jSydnyZbnmGBP21ItdmckO83fv7zwj1BrNDH5Nb4NzkroEIboBbDyJZvLBzRUtOb/XrnbzVbH6qYBGMCH3ewBo+DTNQjgJSDK04iDEYw8MgjfiK1qHlSGgJyEfXlcLgLQrMWNFC995NGzvlgXmZxXVBh9OLqY68hHqski3feZ+uSFGjN4EoFSq3jxdaOqcBLusWeHDsrhM60ztwE6YSvwPypCd9gzfs5Eg65o3vVVX+dDPIydDmLeGOOBECt7+Aj
+X-Rspamd-Server: rspam03
+X-Stat-Signature: qzcxa7wfqnf86yzt771xk9gf6zy5ooem
+X-Rspamd-Queue-Id: 33992100002
+X-HE-Tag: 1786195554-47216
+X-HE-Meta: U2FsdGVkX1/VoJzq9Dz7yENRmoEcDOJocN6fYNxbisZ/o+DupytadthSpzHp2I3gZ4gBzvl3QGCIm4lLP+7AkMirCcTlu2xmWSi+md9eRcgHT7yVVpEc5shQyoUaDhnlBOEjIUwcKccGBR3nN6CLLNdIGHM+Xy2LGt8nnRqhPmKoYeD7NekTH9uaWnNHem75z42EDrw40CRy57krz/tqnrkb0v3DIZ95WbjblrLDZLQ3q6VGPO4ZQFe9qiXYsY9UKNzNjIY5IoIP24W0rM4RkMy27gTaZbRMVX/giV34axFX75OlPMa19xZc23QzBIiKJ9DeVp2cewz/cP3DgKSqV/tDroU6GRayl28MBj1fCp+SpqHM7PF+7tLVuOisjxDNVAdvouSrmjDNRsgn960tv9jBEcNZix253QRVNkcA2kF1URvY9o3SZI6sWI0mJ9kpOS56Q6TvPER4dLvTKnZ7G04EJ2BPAndKb2wVlHKfMjDJu+/y1UijlFRw/NW/vHK+5rOo+zZ3snM+OXnYm9XPQRD5rjAWJie5I633GyjpZLNJG3IQ1OZhtp8VcNzBiedMUgrsTx2V3mwLr+rYxY9EjrKg+PuYNqOpaIAkJUF10fMAucpjNxnQeOC3vdwE/YgwEck5b7wpAUBQgjbeNPW5HW0Xgmv55Krz+Mb4WAc699vYMRnbwCRN1Jm6X1/Ov/wc0d2J5DCHbXNVXHv1Ph1MFKGZ8awVBSuAzy0GTT4CcJNzKPKk8AZ1oKERODmeZYg+E3V4oqKd8a46ZE7/a1Ss5N3opXR8WP9zVnvuO2Y3wPFzCisT9KAMuqCsYYCwT81txGGyc4wp80uW4ltjx5o84wtZ/YHjFEd0ry0fR28HAEt3do4Sqn4Sfle6/8p3CgzfQpqWg+kyGK1AE8rtmQeHbKbbXeq6bZlyISqdq7P1ArL4sR6hHP370NKXfLcxpWZ9qtZUsrjCkC5Fx/B4VwN
+ djI0Oi/f
+ xPc+F2Agx8gGU+jCwn2Y7hoY8mTkTRDbtM9Ac/Exq1m946g2wS0ig9DE5tQwAriKy0Qe54S6GcSzzCFi8DO0DMcXbU1Oiov8DmU1rREKE34w0FPKTHEJgt3zDPHCUeGZ0waZcUMeVDSXrNtpRmETdohW2NbOyB13jUDZMZc58d0oUUPdB8IeYf4o4fjN9oIML0q+tZO9r6r3tB9OEGtOXFePha87+NbSnDkSWkx9es5ghwmFqD8xhtFVfUlJnLkUE0LDWdX/niZ/HX+4xMqqZTuAegylwfbCepJ9J0mSpdA4f7G2xz6tjOZsvcQP1uwme66ZmJOMbX+sHCTxXilL46mQ1ZwH4pSuNJ2027mkl/uUgqaqcC7wrK4H4mSGcnTMXAa4QDSYszm8G/z7R8HGHhuiBgX/yp/+IwLjwbRxoCYlsid6XueA7Hn34Lx5SvB4paP9yKZ6pzfLtwJadnYPIyn8O3wPYP7UUzUSv1nCMzrQkGwzxnDgODAx8kTh0ApGtwAWv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,231 +124,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I'm adding a bunch of fs people that might have opinions about this. Please
-see the rest of the thread below.
+On Fri, Aug 07, 2026 at 04:06:34AM +0800, Youngjun Park wrote:
+> swap_alloc_hibernation_slot() stores a fake shadow in the slot it hands
+> out.  An anon slot swapped out with no workingset shadow looks exactly the
+> same, so nothing in mm can tell the two apart.
+> 
+> Give hibernation slots their own type.  Bit 4 and every bit above it are
+> set, the same shape as SWP_TB_BAD.  Bits 0 to 3 are taken by the shadow,
+> PFN, pointer and bad marks, so bit 4 is the first free one.  Neither type
+> holds data, so the value alone says what it is.
+> 
+> The entry has no swap count.  Hibernation only allocates and frees a slot,
+> so a count would never change.  swap_free_hibernation_slot() frees the slot
+> directly, there is no count to put first.
+> 
+> The next patch needs these slots to stop looking like shadows.
+> 
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Link: https://lore.kernel.org/linux-mm/abp7aDgYLrxF3Me8@KASONG-MC4/
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> ---
+>  mm/swap_table.h | 12 ++++++++++++
+>  mm/swapfile.c   | 13 +++++++------
+>  2 files changed, 19 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/swap_table.h b/mm/swap_table.h
+> index e6613e62f8d0..c1c516bcc17e 100644
+> --- a/mm/swap_table.h
+> +++ b/mm/swap_table.h
+> @@ -30,6 +30,7 @@ struct swap_memcg_table {
+>   * PFN:      |SWAP_COUNT|Z|------ PFN -------|10| - Cached slot
+>   * Pointer:  |----------- Pointer ----------|100| - (Unused)
+>   * Bad:      |------------- 1 -------------|1000| - Bad slot
+> + * Hibern:   |------------ 1 -------------|10000| - Hibernation slot
 
-On Sat, Aug 08, 2026 at 12:13:06PM +0300, vova tokarev wrote:
-> Pedro,
-> 
-> Thanks for the review. Let me address both points.
-> 
-> On the page fault comparison:
-> 
-> UFFDIO_COPY is not comparable to a page fault. Page faults serve
-> existing page cache content (read-like). UFFDIO_COPY adds new,
+Nice!
 
-A page fault can also write to the page cache. On MAP_SHARED mappings.
+Just one idea, would it be nicer if we have:
+* Hibern:   |   0   |------- 1 -------------|10000| - Hibernation slot
 
-> 
-> user-controlled content to the shmem page cache (write-like).
-> 
-> The correct comparison is to write(), which calls file_modified()
-> 
-> -> __remove_privs() to strip SUID/SGID.
-> 
-> 
-> This is exactly the reasoning used when fallocate() was fixed
-> 
-> across XFS (commit fbe7e5200365), ext4, and f2fs to call
-> 
-> file_modified(). The XFS commit message says:
-> 
-> "as various fallocate modes can change the file contents [...]
-> 
-> we should drop file privileges like suid just like we do for a
-> 
-> regular write()"
+Or:
+* Hibern:   |0..001|------- 1 -------------|10000| - Hibernation slot
 
-I can't speak for fallocate, or other system calls. As far as I'm aware,
-this is a best-effort kind of thing. As I said, writing to a MAP_SHARED
-mapping does not clear the setuid bit. It's a super trivial thing to do,
-too. But it's not a problem because setuid executables are not world-writable.
+That way if we accidentally used __swp_tb_get_count, it return a actual
+meaningful value instead of MAX. Either 0 - the slot is not used as
+a countable ordinary slot, or 1 - the slot has one user: hibernation.
 
-I simply don't think this can feasibly be a security boundary, considering
-how much it has been historically screwed up, and how the second-most basic
-way to write to a file Just Bypasses It. I also don't know a single setuid
-program that's packaged as 04777. Do you?
+Maybe 0 is better at least for the intermediate commit, see below.
 
-> 
-> UFFDIO_COPY on shmem changes file contents.
-> 
-> It should drop file privileges like suid, just like write().
-> 
-> 
-> On the PoC setup and exploitability:
-> 
-> The PoC uses mode 04777 for simplicity of demonstration,
-> 
-> but the underlying bug is a killpriv invariant violation:
-> 
-> every VFS write path calls file_modified() to strip SUID on
-> 
-> content modification, but shmem_mfill_filemap_add() does not.
-> 
-> The killpriv mechanism is defense-in-depth - if file permissions
-> 
-> alone were sufficient to protect SUID, the kernel wouldn't bother
-> 
-> stripping SUID on write(). But it does, because writable SUID files
-> 
->  do occur in practice (group-writable SUID binaries, POSIX ACLs,
-> 
->  container shared mounts, chained with a separate write-access bug).
-> 
-> 
-> For precedent: CVE-2023-0386 (overlayfs copy-up preserving SUID
-> 
->  across namespaces) is the same class of bug - a kernel code path
-> 
->  that modifies or copies file content without stripping SUID -
-> 
-> and was scored CVSS 7.8 and added to CISA's KEV catalog.
-> 
-> The fallocate killpriv fixes were backported to all stable trees.
-> 
-> 
-> Additionally, this path is available even with
-> 
-> vm.unprivileged_userfaultfd=0, since UFFD_USER_MODE_ONLY
-> 
-> bypasses the privilege check (userfaultfd_syscall_allowed()
-> 
-> returns true unconditionally for USER_MODE_ONLY).
-> 
-> The kernel considers this path safe for unprivileged use,
-> 
-> yet it skips killpriv.
-> 
-> 
-> *On the fix:*
-> 
-> Regardless of how we classify severity, the fix is trivial and makes
-> 
-> UFFDIO_COPY consistent with every other write path -
-> 
-> add file_modified() to shmem_mfill_filemap_add().
-> 
-> I'm happy to submit a patch if you'd like.
-> 
-> 
-> Best regards,
-> 
-> Vladimir
-> 
-> On Fri, Aug 7, 2026 at 5:14 PM Pedro Falcato <pfalcato@suse.de> wrote:
-> 
-> > On Fri, Aug 07, 2026 at 01:40:41PM +0300, vova tokarev wrote:
-> > > Hi,
-> > >
-> > > It's been almost two months since I sent this report, and I haven't
-> > > heard back. I'd really appreciate any feedback when you get a chance.
-> > >
-> > > I've rechecked both mainline master and stable 6.12.95 -- the
-> > > vulnerability remains unfixed in both trees:
-> > >
-> > > 1. mm/shmem.c: shmem_mfill_atomic_pte() (6.12) /
-> > shmem_mfill_filemap_add()
-> > >    (7.x) still adds pages to the page cache without calling
-> > file_modified()
-> > >    or __remove_privs(). Writing to a SUID binary on tmpfs via UFFDIO_COPY
-> > >    preserves the setuid bit.
-> > >
-> > > 2. mm/userfaultfd.c: I noticed commit 85668fda932a added retry state
-> > >    tracking on master, but MFILL_RETRY_STATE_VMA_FLAGS still does not
-> > >    include VMA_WRITE_BIT -- the mprotect TOCTOU remains exploitable.
-> > >
-> > > This is a deterministic local privilege escalation (no race timing
-> > > needed for the killpriv bypass), affects every kernel since 4.11
-> > > (8+ years), and works on any system with userfaultfd + tmpfs (the
-> > > default on virtually all distributions).
-> > >
-> > > I have a full working PoC that gets uid=0 from uid=1000 reliably.
-> > > Happy to provide any additional information if needed.
-> > >
-> > > Thanks,
-> > > Vladimir
-> > >
-> > >
-> > > ---------- Forwarded message ---------
-> > > From: vova tokarev <vladimirelitokarev@gmail.com>
-> > > Date: Tue, Jun 16, 2026 at 12:37 PM
-> > > Subject: BadBunny: UFFDIO_COPY shmem killpriv bypass leading to local
-> > > privilege escalation
-> > > To: <security@kernel.org>
-> > >
-> > >
-> > > Hi,
-> > >
-> > > I found a local privilege escalation (BadBunny) in the userfaultfd +
-> > > shmem subsystems that affects all Linux kernels from 4.11 to 7.1
-> > > (every major distribution: Ubuntu, Debian, Fedora, RHEL, SUSE, Arch,
-> > > Android, ChromeOS, and any system with CONFIG_USERFAULTFD=y and a
-> > > tmpfs/shmem mount).
-> > >
-> > > Two bugs are chained:
-> > >
-> > > 1. TOCTOU in UFFDIO_COPY retry path (mm/userfaultfd.c):
-> > >    mfill_retry_state_changed() does not re-validate VM_WRITE after
-> > >    dropping and re-acquiring the mmap lock in mfill_copy_folio_retry().
-> > >    A concurrent mprotect(PROT_READ) installs a writable PTE into a
-> > >    now-read-only VMA.
-> >
-> > This sounds like a bug, but not really exploitable.
-> >
-> > >
-> > > 2. Missing killpriv in shmem UFFDIO_COPY (mm/shmem.c):
-> > >    shmem_mfill_filemap_add() adds pages to the shmem page cache
-> > >    without calling file_modified()/killpriv. This preserves SUID/SGID
-> > >    bits when file content is replaced via UFFDIO_COPY, unlike normal
-> > >    write() which strips them.
-> > >
-> > > NOTE: The killpriv bypass (Bug 2) does not require
-> > > unprivileged userfaultfd and works even with
-> > vm.unprivileged_userfaultfd=0,
-> > > since UFFDIO_COPY on shmem is available to any process that can open
-> > > a tmpfs file O_RDWR and call userfaultfd with UFFD_USER_MODE_ONLY.
-> >
-> > Who made the suid file world-writable? Note that this is not a bug, page
-> > fault paths don't clear the suid bit either.
-> >
-> > >
-> > > An unprivileged user can replace the content of a SUID-root binary on
-> > > tmpfs via UFFDIO_COPY while preserving its setuid permission, then
-> > > execute it to obtain root.
-> > >
-> > > The attack is deterministic (no timing dependency for the killpriv
-> > > bypass), requires no heap spraying, and bypasses all modern kernel
-> > > mitigations (KASLR, SMEP, SMAP, CFI, PAC, heap hardening).
-> > >
-> > > Affected versions: Linux 4.11+ (since shmem UFFDIO_COPY support,
-> > >     commit 4c27fe4c4c84 "userfaultfd: shmem: add shmem_mcopy_atomic_pte")
-> >
-> > This sounds like a bug, but not really exploitable.
-> > > Confirmed on: 7.1.0 (aarch64)
-> > > Affected distros: All major distributions (Ubuntu, Debian, Fedora,
-> > >     RHEL, SUSE, Arch, Android, ChromeOS) that have CONFIG_USERFAULTFD=y
-> > >     and tmpfs mounted (virtually all Linux systems)
-> > >
-> > > Attached files:
-> > >   - bad_bunny.c                           Full LPE exploit (uid=1000 to
-> > > uid=0) Build: gcc -static -O2 -pthread
-> > >   - suidhelper.c                            Standalone SUID payload
-> > binary
-> > > Build: gcc -static -O2
-> > >   - uffdio_copy_lpe_report.md     Detailed writeup with root cause,
-> > > reproduction steps, and suggested fix
-> > >   - badbunny_demo.mp4             PoC demo clip
-> > >
-> > > The PoC (bad_bunny.c) sets up a SUID target on tmpfs, drops to
-> >
-> > Since the exploit isn't public, I assume you set up the tmpfs file as root
-> > and world writable. This is not an LPE.
-> >
-> >
-> > --
-> > Pedro
-> >
+>  
+> +static inline bool swp_tb_is_hibernation(unsigned long swp_tb)
+> +{
+> +	return swp_tb == SWP_TB_HIB;
+> +}
+> +
+>  static inline bool swp_tb_is_countable(unsigned long swp_tb)
+>  {
+>  	return (swp_tb_is_shadow(swp_tb) || swp_tb_is_folio(swp_tb) ||
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index f5dfc7e59191..a337387f7431 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -928,7 +928,7 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+>  	 * upon folio unmap.
+>  	 *
+>  	 * Else, it's a exclusive order 0 allocation for hibernation.
+> -	 * The slot starts with count == 1 and never increases.
+> +	 * The slot carries no swap count and is freed by offset.
+>  	 */
+>  	if (likely(folio)) {
+>  		order = folio_order(folio);
+> @@ -940,8 +940,8 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+>  		order = 0;
+>  		nr_pages = 1;
+>  		swap_cluster_assert_empty(ci, ci_off, 1, false);
+> -		/* Fake shadow placeholder with no flag, hibernation does not use the zeromap */
+> -		__swap_table_set(ci, ci_off, __swp_tb_mk_count(shadow_to_swp_tb(NULL, 0), 1));
+> +		/* Exclusively owned by hibernation, must never enter the swap cache */
+> +		__swap_table_set(ci, ci_off, SWP_TB_HIB);
+>  	} else {
+>  		/* Allocation without folio is only possible with hibernation */
+>  		WARN_ON_ONCE(1);
+> @@ -1929,9 +1929,11 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+>  		old_tb = __swap_table_get(ci, ci_off);
+>  		/*
+>  		 * Freeing is done after release of the last swap count
+> -		 * ref, or after swap cache is dropped
+> +		 * ref, or after swap cache is dropped. A hibernation slot
+> +		 * has no count and is freed directly by its owner.
+>  		 */
+> -		VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1);
+> +		VM_WARN_ON(!swp_tb_is_hibernation(old_tb) &&
+> +			   (!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1));
+>  
+>  		/* Resetting the slot to NULL also clears the inline flags. */
+>  		__swap_table_set(ci, ci_off, null_to_swp_tb());
+> @@ -2201,7 +2203,6 @@ void swap_free_hibernation_slot(swp_entry_t entry)
+>  	pgoff_t offset = swp_offset(entry);
+>  
+>  	ci = swap_cluster_lock(si, offset);
+> -	__swap_cluster_put_entry(ci, offset % SWAPFILE_CLUSTER);
+>  	/*
+>  	 * A slot with a folio in the swap cache is freed when the folio
+>  	 * leaves the cache, the same rule swap_put_entries_cluster() follows.
 
--- 
-Pedro
+This idea is right, but is the patch in the right order? If readahead
+tried to add a folio to a hibernate slot by accident, seems nothing
+blocks that in the current patch, and that PFN slot will have a (MAX)
+count value, and considered countable? If the that folio is somehow
+reclaimed, we got a corrupted shadow (hib type is gone)?
+
+If we have the count part of a hibernation slot be 0,
+__swap_cache_add_check will fail natively, seems there will be no
+such risk. A few existing helpers can also help catch potential
+wrong freeing of hibernation slot. (underflow check).
+
+The layout can be changed again afterwards.
+
+How do you think?
 
