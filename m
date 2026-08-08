@@ -4,126 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98FFC5AC67
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 10:58:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39570C5AD2B
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 11:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6A306B00B2; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
+	id EF20E6B00B4; Sat,  8 Aug 2026 07:11:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1ADF6B00B3; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
+	id EA3926B00B5; Sat,  8 Aug 2026 07:11:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90ADD6B00B4; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
+	id D90FE6B00B6; Sat,  8 Aug 2026 07:11:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 664C56B00B2
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 06:58:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1794160365
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:58:40 +0000 (UTC)
-X-FDA: 85077804000.16.78210B6
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E013BA0003
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 10:58:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DGgdRj2F;
-	spf=pass (imf15.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786186718;
-	b=aSh80NOB84umjpay4gT6WXMYPS7k1VIV5SyyFBiF5zMZd/lHSfH/cRodmNkkXMEWPvldb0
-	pWZCkoU/bXQI7pDcvYnHHX6XrVX7wfqWzo1goQCa+poj9KC/KXjvDrlm8CuLxebLz/TM72
-	SDjq+AgGoVL54IH/PUbjxjC/pOMk0yA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DGgdRj2F;
-	spf=pass (imf15.hostedemail.com: domain of zhanghongru06@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786186718;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF1726B00B4
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 07:11:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19C6440329
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 11:11:11 +0000 (UTC)
+X-FDA: 85077835542.08.CB5B084
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2E30F20006
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 11:11:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QuRt5K12;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786187469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
-	b=8dOd8Z3MBZByeN5TokODJEIbko0plL4JRp++b7KiZrSDwSTY6OD750baU1G0fOq5z4KzcP
-	HxDc96bOMQmGckyA2YknzXny7U+fexGDJRl2bdgZjjw+Z7a/VK31LMbMwXFsXZ7a+pj9Tl
-	/+kPS3qqohIlK28WrCiJpl8otnmu3l0=
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-38dbe53179bso158397a91.0
-        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 03:58:38 -0700 (PDT)
+	bh=9NmdFAeTsQg4CtPClUPsiHvGEtBOt9fIz2/ykVtgMMg=;
+	b=PJDiYgKejLSccWYq+sNqsB81lVBpizZYf2kvsoXfF26ugV1WSfvGz5+0PKLODqt9FVDNLI
+	pU4Kl0PAMI+9pBQbTtNwTP6JikthUy6r4lsvrsyrnsPZS4ivOARFm17Kgiai8ieerTde2p
+	b3F1Hkspk06xGqTyCIleKmJ0ZuUbXkQ=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QuRt5K12;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786187469;
+	b=6ODn5GziOnik3Cdh/Upu3ANfSPtBDZbJQy9E3IKxVZs65WKLWe8TdRnprqZ3adkKI3cKbZ
+	DwCACHwS98UphwA1HvUdYtyTZuacJMmzE6CsQRA601eN72R7TBiH/tRB/ZvjE3IwSfgM90
+	28LHPLlDffv83qauFX8QGd4kEJJ8Q5s=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c2055573c8cso37433366b.3
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 04:11:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786187468; cv=none;
+        d=google.com; s=arc-20260327;
+        b=S7PgdK9nvEkXsQzJZ45vNP+Yik229zajx4Yn2O2LIWyNnBvz60gIeT2zoo4BviFhua
+         qqI44PHAEJUb8d1dMVjqvSL0YtfKCnVKoDd1RSc6zTf9F+iNV1JREVk4QsFGZcj414sz
+         LvAIut500YltcRO28VOADNYSU3PUQFryh5lOPTDuu7/7kDR6M8ZqipVC0sI+XDAkuXFh
+         xoO96A/zyQPoxR/JmuDUecCJlDsikdhJGzOSs2g+/YwAUWp+V/e3FyDIuStImbrudNxg
+         4/TJbeA920Bwy+t151qYc+RNNXBnfiI//S3J0JITB3XquG5+FWP2nCruXGoCXvP5BFrF
+         mgnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9NmdFAeTsQg4CtPClUPsiHvGEtBOt9fIz2/ykVtgMMg=;
+        fh=KPvv4AXUX+yulIU1HuYn+THvAw1KrUVPZrTw5MLE+C8=;
+        b=GZM3nkSbAEuC2G1+tMK/u5MQ2TnQCdd+o8wF6rGNKusBGN6Q8NaV7iZK+DuUuqFTnH
+         3hVN3zpvnmLibebjd2hjUGiAnyVLoj9MYCsOkPS3XDjggg3Ddifm/eRhrLCeUOouEA37
+         tC2BwJDe3GBQbyimL+H4nkwgYOvNUC1J2DWTJLEjKQWhotf83M67Imn+4/nkzSKd0LTA
+         zzCuMBDd/sNj58G+vfKM4BM2Pr0VzKgx1zeSybjdj6PKMbt5fJhYNKyHZvx9D0LNmhdP
+         Af+mO11FhXXEDmEW/RVfaNJVRRZEOmCSpeAsad7WybN51cWWhNLWcWBXxfPStfrSxo2+
+         csJw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786186718; x=1786791518; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
-        b=DGgdRj2Fmyqrb+sc6qCvmdT+ayQqf2z6A/RGYhQt48IWv5PsqzdKptzOclPvPKJ3Ww
-         T18V5PWKdH8+czyyju/tBZax+PA/Z1HF4gn4ivjCR3JVIfLQ3bgVyscThuwNR6LdEht7
-         rbp8/s/dZHuq262QAdNoy0g2tSm7C7H4T8HeiirydrPiebtwvUhYZmawaQCKprhxw0MP
-         USx/JhBtQaadDo4zSgaZzxnQupQOdfS6uxa9i/xxRn3FwY0TwTchVGeSOcUm9ber2f9O
-         sjdb9xMJ+tu0Yim5HQKGxmmJsh7ktnSjf3S0/bipoZ9Q29qNqvS+AdO0JA9/OL6MrJeJ
-         VqOQ==
+        d=gmail.com; s=20251104; t=1786187468; x=1786792268; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9NmdFAeTsQg4CtPClUPsiHvGEtBOt9fIz2/ykVtgMMg=;
+        b=QuRt5K12erIyBFI9s5NOSne2WMCAUURv7hgk016/i7xY0C04r/I7QCtili1y5nS8bp
+         mw+naLg7ItndPz2xb++yEDVSWRmwr8swiEwxuiF+98m7XCFs82c2+whUHZ6pkZ2GzrIa
+         AbWJMJ8LcxMMSlps18LDVW0o16Rn13gGHt9BppvBXuatXC5rXleCG1l1UopfjfSYTOSj
+         7/6VQnVl9r0KiKSaA7igsAdR+dDwOtoX/P9xulaOgILjL1Gc57r8FUnY0eGYoOFRfSsG
+         IamwgEETFvuIBpLuvs7geejnWqOrtafvxeylUcI8s0o93lHv+ABKYnNX8k7dhO9PU9M4
+         pk6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786186718; x=1786791518;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9gFo3pDq4eQYRdy3D1/uGQvkKMwUkSIKPZQA1ehAXiU=;
-        b=aLrLDWjPMMlJk8fsyrkJkvBuhYIe59WUtDcb77kYJGglI0mB780X3+IA7lLZV6jtp7
-         W93IPJm2OBIapjULxMTvzAqGOwf3VT3knKdLRl6g148Yo/RH2NqsXiMkS8MWoWZekBq0
-         WVq/S2ixHJNDmQ54y6V4b0bzbe6/0hwz5uaRERsxnlLzMkDSMxE6s4k3e5rJ6uUSmvH6
-         aBRDPa3To8KCTJc5i1NRNNVwB39sBsphEYwXlx3yKIryYgDQzI++zY8J8YqrKhWe1kaV
-         G0ytDD8g9jbTO2aQxNgbpBqwesmuw6Lv+5J8tpHStERdK9lzMmmQ2e0lOQY0AiGQgaO1
-         5hGA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7zslAh8AmrOvfsVLQMHMh6TzHz6mWn11Dr4+aQvN184Yhnzp2oAIpYWdbnj96ACxGpWUGntciOA==@kvack.org
-X-Gm-Message-State: AOJu0YwrNOa+xEWpjZt/hH32cnlOOQrUWy5RqhhqvYGQZJu89SY9luQS
-	xxw9hlv+iWg4bNshToo5I5u7IA6r6O3Na9Hk4D8O4QKQqWgStd0zqjbI
-X-Gm-Gg: AR+sD117fF9euCxhb7UBrpYJ1htxvqZF0fCRqKwQ9+77Y/NmquNcLx2Ji/bKe9vsMaZ
-	WEMNImNO5yycXmHCdYd5/FlYmF1+Cr6j2GZaV8o+u3KuqLzwSbZun15NWqdpbDKEkwzurLEmXx7
-	XBvULA7ThjGD9rNAg3eOxAS7mgvq+5dbqOlUHgYG97wo+q8t9+ZLhETRazTt2ylHziCEzn+D1TS
-	Z1Q7G8vp7R+f6mCFzi8OvjKXW9YzuvwNZ/nZBSREWK58TPZwzo32pstArDjkolLT6wHL35JUfNH
-	yIM7hxcDO5kK0Br0BvetCRAcfKlxf7+hACvRwrjijZjivkpBxuU8twXb1zrX+Fzaq6bGiFm6Pco
-	v6erxE0XSu1kVdIW1QGkn4LHXIC3Mng4RuSKLCWt4x4UNYY6GGf/XDubeys2ndiihJUn29iwvvs
-	nnUUwcOC0pJBhyrOeNXMQPE6xSW7s1cXT2gm4lHxck0zX0zH7HjCI4qjUSCWzYF22UwrXTzTgJV
-	tQk7k5NmkotYKar
-X-Received: by 2002:a17:90b:1a92:b0:392:6638:2e6a with SMTP id 98e67ed59e1d1-392823bfc0emr5468220a91.13.1786186717681;
-        Sat, 08 Aug 2026 03:58:37 -0700 (PDT)
-Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:4438:bc18:5a8c:feec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3908616d21esm8552074a91.17.2026.08.08.03.58.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 03:58:37 -0700 (PDT)
-From: Hongru Zhang <zhanghongru06@gmail.com>
-X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
-To: zhanghongru06@gmail.com,
-	baohua@kernel.org,
-	ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	vbabka@kernel.org,
-	willy@infradead.org,
-	zhanghongru@xiaomi.com
-Subject: Re: [RFC PATCH v4 1/3] mm: allow page faults to request VMA-lock retry
-Date: Sat,  8 Aug 2026 18:58:20 +0800
-Message-ID: <20260808105820.23608-1-zhanghongru@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260807074948.28953-1-zhanghongru@xiaomi.com>
-References: <20260807074948.28953-1-zhanghongru@xiaomi.com>
+        d=1e100.net; s=20251104; t=1786187468; x=1786792268;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9NmdFAeTsQg4CtPClUPsiHvGEtBOt9fIz2/ykVtgMMg=;
+        b=f3jjAXeugWAQ73bv4jlEdSEDu3YrJIuoMB0eyy1i/ACu2NTuu8NIgSfgpnJkFDWUVA
+         c7ZtMA3zofFf8Hdtcf59Wpzw5iX4A6QNL9yd/ezTO5iGiIXexYv4WG2Aq9VYmIu2WeLp
+         Syk3ce0z7SpbQ3wbeqhGSYSKXnPa3R841gXuqsEa7EYLTwIVMUECnb52uj3bZSV70RiC
+         0AlZv7+5N4MUpYdxnWnHtobHkNQaHj+A2TdkWM0mVQRpbyKH3EldCs79XSyz5cpD4R+f
+         maKNftLUQB3y1tCvsoERsZK7jY4n0/QpIbwahKZxqFf/4bRkTSUtWunLXMQPSJwLyfha
+         LqcA==
+X-Forwarded-Encrypted: i=1; AHgh+RqxdzEiTVVla7bxDcaxGP0wf6fylDiHlVAFvSZKwCwyfD+NHj9NlcRUKvnIdvBEEpeLqopa7TZTvg==@kvack.org
+X-Gm-Message-State: AOJu0YzLClOhJrQUZ+iuOByTXWD+XMCSG7JzTpD73npw+bQ9d8QJ9QV7
+	d426M4c4IE1qZM/8rD6HOlQaLbLisSIC/GyAC4//ip20qqBRMCc7oPSyyTaMBX/RozLpJsZ6AiT
+	Nf9L98gdrZLmYZayBaoFXfUkNsT0w018=
+X-Gm-Gg: AR+sD11sHCVCP3H7fjJ4b1DFcZ8ffzotGd3XiDv6yGXLvJ5KTpMbGhcU5/+vOAbA9Y9
+	kEDKMxMJ1yUPc58VH9ciV4Mo33ob1EwS/2J+06NlTb8mn54lBVOV4Y9Kt9zFPzttayoJlhZQY5J
+	o3i0PAaYapO/kfHaIXG33y7RxigsFaY1kM3CCG9/SVbIWmO0sYR3rVbaq+7j/U9CqxzH7nWcJG4
+	XbdZwocPT4CX0AiS6LPmfaEaGlGDCzpUjVWXAnCdclPZHtsS3AlAOP+b778kyzE0IDl647jOCYK
+	FeJfqhxSpzM13FhIyhIae2ZDt/oY4bwHfw8uP2qZoy5dWOGjx8QJQujn1KtaM451mWeoArrWUFl
+	o3Q==
+X-Received: by 2002:a17:907:6b07:b0:c1c:5aa1:de57 with SMTP id
+ a640c23a62f3a-c2039b7e997mr1550154966b.13.1786187467198; Sat, 08 Aug 2026
+ 04:11:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E013BA0003
-X-Stat-Signature: ou8sudu1btpsd31nokqj41f9hmh4mpfq
+References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in> <20260805-b4-mappingless-swapcache-v1-2-b1d78ba257ca@zohomail.in>
+In-Reply-To: <20260805-b4-mappingless-swapcache-v1-2-b1d78ba257ca@zohomail.in>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 8 Aug 2026 19:10:30 +0800
+X-Gm-Features: AUfX_myclkXQm0J9pgU-SRUEwwOPsam-5qTNU3TDb54eeVu4YhzblVp-LJ_uYWA
+Message-ID: <CAMgjq7BW_n3HpM=mCGn=q90=4+oXcBLWwZewxvEcwqfzjuewOw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mm: add KUnit coverage for mappingless swapcache folios
+To: shivamkalra98@zohomail.in
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2E30F20006
+X-Stat-Signature: detqrepptidu3kyw8ka11zbcmgwycuq8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786186718-761213
-X-HE-Meta: U2FsdGVkX19nXxnwKYEMtwQN+KIWGB+cdCVH1Qg/bExsrvK0Yx4tHJOXvS1mNkrBK1l73ak17DVLXSvvXsOff2rCXZBbKnETytfqxNgxtPI47TpZcHHCQ18QE0QX3nyKeM8OYY0h1RFqqbSyPRMSpFk3ghUA46NBnCJxSKvSomC7Kg0g+A+RRxxi+8dclHu0VgAp3n+uk8d5yUNbES8stxYlIynIurAZMHO2M+FnSCcWpVeyiaOb6Yt2DAuufiU2yCf6by5ifZq0OOQ3r0g8NJgXnK18fxhoGHzp6KRDyNB6HV3lTxoBdpkp8jfBaKSi9FdvqVQyl6uhd896idRAASs6+khOm0ReeKM4MXqn8ET6CUpAE7jpO7x9GdGxExdaPOUhJRLvTI4TNLJldqda9ICG5ayruOaqpdUhw/fvLsO9E/FnIg4xIFQ57a7qYLeSUhQwhqSjK7Rla8TkwcKgqicYWM9eMG0HOZPgJNtFOVPpWG3ZiCtv7U0z4ZfRO+Q6qi0fOmZbJF/x0RGqosDUqA9sih5xSUeJSVUYWbuKJHhaK71utcVFRW7o+9EFeE6I8g33ELV70MO6UPHlb0Iowdu5fj3KNzD4RKvwjICgJMVznlKv87jrxTomDxhbBCEV6vk0TjkBX5CBgTqCvNVLxkCkQPaYKRbrF4ODcYbDujyaKh3YO38hjo6/q3arDCM+7e8v84i4sv2X863zV+7EDKm56Gk3vI4ysGj0QUd4Qh7FuIB9yajFziRoS+t9tmoD4t6xMSk63pTd1RFMGwYZ8D//fxzwpeeSke4MAlUoFcLzIbrgSdKyud8iMSZXJUBV4sMSQJny37aCmmfrKlHqHyWmor5bLf33Hz8M+tfcKJFof9jMpJPGIbWJvDZAyuCUyomL8JXU2EjwYxhIKLD+pFG4O28Ns3C7Vcc1AWMaHQSYycJMD0sduqo/nm7KD/2os+tbH7iBB/DnSjrLX9q
- /scDgkBg
- dtMRUCl0Nb19J+LDCqtJphXrWD0ODNnegyQg1SxnWJqzI97QhowVM0G+cG8K8ta62lY/+R+Fb7Q7y00K50V2IzgEH9nMJfi23n7zLdUGYGbs/OGpyMCW+FhhJqjnnWGrG2z6aCsWDZd+XuN6TMl0Aa9JVgDaXcuhH4cW8NZMc3GVlx0A1382sd/TGUAnCcIDbhvjs62ltvSixoXiDSpjOKcpQZMH7rV6u/VnofTQGlVXmoGgCs5vRWKWahEXFFzq0Z+susQRhAjoYphFbF2ZeeOn91Xao38TczsOF/Li2qzJR8tmDnVNYpzvY1UE5+aZ6uF9NdfPrZihPHgoROz5FlWkkGQ7MQR9kUtv5YDDKRSnhifh00LowM2W4SDSctQddEJg2kHenvux+kXH7qQr+PqNtkd4Pxk2qgDzfF5qFU5Wiw8DHvf4mhRwWR5k7NnqHs9UEoxTs67lcezM=
+X-HE-Tag: 1786187469-339216
+X-HE-Meta: U2FsdGVkX193sEpUflLUPMBNHpvZImd2V+LvH3lSWr7y4RRFNwOekztmQLr8K/egVGrARkCyA+Rqe/oyThl0oVvSDOWpm8T/fbAD10DB+1sVL0Qs4e9RtmClwyZ3PtPrOv/tFCmU54cpsbcfDxEfLIuqXFlgispAglpPfoooETx2fL+lmdb8S1D3bax0vHHAoFNzqyGorh055ulWuk/9LtiRmyPS/2y8jVOHfsBhUvzkWdWk/0T8AzPZfQUwo7Ej1A1jTnGmRRR+48Tu1KQd+v1MImUY+4XsKL1IOAQaAKZKfFOrSk6u20Jy4NJ23jKkozWAqatB3VF+F/DPCAfFkDLrzRMIdQEEpMKF8f97iCFgK26WrTq9MKjPdF0o/ZGelrhFEpN7Pod3+V9ObXjyW5nrTcAjjik6MRrGxo8m5xturAJhkUcaZmW3wF4Iw5iyrLDmAfK238SruG+/FlZ3R8p+W5Jmjo7OLuWz/QW4OiNJQsdKA4TA6j4k9A5SrDCXGFdkHBFcyuHJRdGzri5q6Dl77O5ScsdZ+e4Ew9PTL/wJvlQU1paSTsT68KVbGG3KLPOT8qUrdB8rF1ioDmCR+2vfOnzdL5F4rSEax3iEHd43O2GYHRcDT2k035G/ddYLw0wtJJKmatgciqiL8Sd7LyIKzMVC7aVqNbFjWI58qJy1Q1anbi3Gwj2Lfa1pJsDLFt7+B7PegCkGG+1ugVZsgpG0ZER3KmQcBQovcbneP52XcUYLHifCqn6PCtoBZKhmU0sdjTA7HKmpYZIZqoAEKUwOXK+8Gm5z6vr2QhsyxjYFEWdvwxZmDg9qXB2gqFMseKAhiujYQ6uZA9GwU+H3/BYH1bxIjC0nwbsffOiWKO3zVtbLQmwksDO//aNysYfaxQ/U0D6r2XAfDljzy4kjBFrSRM0tOoD2IbQXvnrjK3/bGjGitFWWL+KcB5wqH+WdWARV17KsBH2iuTQGrEq
+ d2ZZrHTS
+ fW3yEjRASKCt6ItRItgoVg09WpjXLplkO+Pt7l4FXfkyEIqTKCp8f948PYrahFA7Q1ejN7WEohePTNNKyEoQxiCr6pcXGK85qBEnpC8oPr1oRKp9Awz408jtklpCia7b1feq2LrRZ5j4jjyWN/w8pA7FHxDrBjBv3RMmqIpY8Kzj7Ara+NNvcVDn+OG50bNVpOjg3O4TVqBbc26cgj3ZALJYeN/G+4Nksoqm+4KVX+UNhj8+UnWICFi+oZlcpKCA5HdOOLpxvOAASrqgbc7n7Geb43oaciRtsmsQpfNZcXAztLo9q3yGqyOmbzF0F1syUGlZ7akJYGhy8voP0bm7urT1YqX7/nJa4XvaHicH9jsckvX93i5RFqZ8Te07khx7jz22j0fHyAeZK7nGYDdPpXj9p38Ylet5vu6TxB5cBDKVwO86RGefplTrMSkoAo4Sbg6W4Xb43aS8lo27QuBaMOfhmcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,199 +147,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Swap Throughput (higher is better):
-> +--------------+-------------+----------------------+----------------------+
-> | mmap writers |   Vanilla   |          P1          |          P3          |
-> +--------------+-------------+----------------------+----------------------+
-> |      0       | 17303.09 /s | 17899.48 /s  (+3.4%) | 18190.62 /s  (+5.1%) |
-> +--------------+-------------+----------------------+----------------------+
-> |      2       | 16728.04 /s | 18346.72 /s  (+9.7%) | 18162.03 /s  (+8.6%) |
-> +--------------+-------------+----------------------+----------------------+
-> |      4       | 12596.23 /s | 16095.20 /s (+27.8%) | 17991.45 /s (+42.8%) |
-> +--------------+-------------+----------------------+----------------------+
+On Wed, Aug 5, 2026 at 7:24=E2=80=AFPM Shivam Kalra via B4 Relay
+<devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
 >
-> P3:
+> From: Shivam Kalra <shivamkalra98@zohomail.in>
 >
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 45b99c3b1442..c3ab30d32a15 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-> 	struct mm_struct *mm;
-> 	vm_fault_t fault;
-> 	unsigned int flags = FAULT_FLAG_DEFAULT;
-> +	bool vma_lock_retried = false;
+> Add focused coverage for the folio_check_splittable() eligibility checks.
+> Verify that an ordinary mappingless folio is rejected, a mappingless
+> swapcache folio is accepted, and unsupported target orders and split type=
+s
+> remain rejected.
 >
-> 	tsk = current;
-> 	mm = tsk->mm;
-> @@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-> 	if (!(flags & FAULT_FLAG_USER))
-> 		goto lock_mmap;
+> Build the test only when KUnit is built in because
+> folio_check_splittable() is intentionally not exported.
 >
-> +lock_vma:
-> 	vma = lock_vma_under_rcu(mm, address);
-> 	if (!vma)
-> 		goto lock_mmap;
-> @@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
-> 						 ARCH_DEFAULT_PKEY);
-> 		return;
-> 	}
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+
+Hello, thanks for the patch. A few concerns on this...
+
+> ---
+>  mm/Kconfig                   | 14 ++++++++++++
+>  mm/Makefile                  |  1 +
+>  mm/tests/folio_split_kunit.c | 52 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 67 insertions(+)
+>
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 331daf7fcfab..164dc1438900 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1503,6 +1503,20 @@ config LAZY_MMU_MODE_KUNIT_TEST
+>
+>           If unsure, say N.
+>
+> +config FOLIO_SPLIT_KUNIT_TEST
+> +       bool "KUnit tests for folio splitting" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT=3Dy
+> +       depends on TRANSPARENT_HUGEPAGE
+> +       depends on SWAP
+
+Just BTW, we already have a tools/testing/selftests/mm/split_huge_page_test=
+.c.
+
+> +       help
+> +         Enable this option to test folio split eligibility checks. The =
+tests
+> +         verify support for mappingless folios in the swap cache and ens=
+ure
+
+FOLIO_SPLIT_KUNIT_TEST seems a generic test and not limited to SWAP,
+but it relys on SWAP, looks a bit strange to me.
+
+...
+
+> +static void folio_check_splittable_mappingless_swapcache(struct kunit *t=
+est)
+> +{
+> +       struct folio *folio;
+> +       int ret;
 > +
-> +	if (!vma_lock_retried) {
-> +		vma_lock_retried = true;
-> +		goto lock_vma;
-> +	}
+> +       folio =3D folio_alloc(GFP_KERNEL, 2);
+> +       KUNIT_ASSERT_NOT_NULL(test, folio);
+> +       folio_lock(folio);
 > +
->  lock_mmap:
->
->  retry:
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 428eb555ecb7..8c34a857548b 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4987,6 +4987,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> 	}
->
-> 	swapcache = folio;
-> +	/*
-> +	 * If the folio is uptodate, we are likely only waiting for
-> +	 * another concurrent PTE mapping to complete, which should
-> +	 * be brief. No need to drop the lock and retry the fault.
-> +	 */
-> +	if (folio_test_uptodate(folio))
-> +		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
-> 	ret |= folio_lock_or_retry(folio, vmf);
-> 	if (ret & VM_FAULT_RETRY)
-> 		goto out_release;
->
-> Thanks,
-> Hongru
+> +       KUNIT_EXPECT_PTR_EQ(test, folio->mapping, NULL);
+> +       ret =3D folio_check_splittable(folio, 0, SPLIT_TYPE_UNIFORM);
+> +       KUNIT_EXPECT_EQ(test, ret, -EBUSY);
+> +
+> +       /* Only the eligibility check is exercised here. */
+> +       folio_set_swapbacked(folio);
+> +       folio_set_swapcache(folio);
 
-The two-writer results varied too much to show a clear difference, so I
-increased the number of writers to eight.
+Faking a swapcache with folio->swap =3D=3D 0 looks hacky, could go very
+wrong if you do any actual work on it.
 
-Using a dedicated benchmark [1], we tested this on a 20-core Intel
-i7-12700 desktop with a 2GB swapfile. The benchmark uses one pressure
-thread under memcg limits to keep a 128MB non-zero anonymous mapping
-under swap pressure, 12 reader threads to fault it back in, and optional
-mmap writer threads to amplify mmap_lock read-write contention. Each
-test ran for 60 seconds and reports completed reader rounds per second
-under swap pressure.
+> +
+> +       ret =3D folio_check_splittable(folio, 0, SPLIT_TYPE_UNIFORM);
+> +       KUNIT_EXPECT_EQ(test, ret, 0);
+> +       ret =3D folio_check_splittable(folio, 1, SPLIT_TYPE_UNIFORM);
+> +       KUNIT_EXPECT_EQ(test, ret, -EINVAL);
+> +       ret =3D folio_check_splittable(folio, 0, SPLIT_TYPE_NON_UNIFORM);
+> +       KUNIT_EXPECT_EQ(test, ret, -EINVAL);
 
-Swap Throughput (higher is better):
-+--------------+-------------+---------------------------+---------------------------+
-| mmap writers |   Vanilla   |             P1            |             P3            |
-+--------------+-------------+---------------------------+---------------------------+
-|      0       | 17303.09 /s | 17899.48 /s       (+3.4%) | 18190.62 /s       (+5.1%) |
-+--------------+-------------+---------------------------+---------------------------+
-|      4       | 12596.23 /s | 16095.20 /s      (+27.8%) | 17991.45 /s      (+42.8%) |
-+--------------+-------------+---------------------------+---------------------------+
-|      8       |     0.58 /s | 15420.57 /s (+2658619.0%) | 17328.80 /s (+2987624.1%) |
-+--------------+-------------+---------------------------+---------------------------+
-
-With increasing mmap_lock write pressure, Vanilla degrades sharply and
-drops to near zero at eight writers. P1 and P3 hold up much better, with
-P3 consistently outperforming P1.
-
-P1 retries once under the VMA lock before falling back to mmap_lock. P3
-additionally skips the retry in do_swap_page() when the folio is already
-uptodate.
-
-If there are no objections, I plan to respin with P1. The do_swap_page()
-change will be sent as a separate patch.
-
-P1:
-
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 45b99c3b1442..c3ab30d32a15 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	struct mm_struct *mm;
- 	vm_fault_t fault;
- 	unsigned int flags = FAULT_FLAG_DEFAULT;
-+	bool vma_lock_retried = false;
- 
- 	tsk = current;
- 	mm = tsk->mm;
-@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	if (!(flags & FAULT_FLAG_USER))
- 		goto lock_mmap;
- 
-+lock_vma:
- 	vma = lock_vma_under_rcu(mm, address);
- 	if (!vma)
- 		goto lock_mmap;
-@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
- 						 ARCH_DEFAULT_PKEY);
- 		return;
- 	}
-+
-+	if (!vma_lock_retried) {
-+		vma_lock_retried = true;
-+		goto lock_vma;
-+	}
-+
- lock_mmap:
-
-
-P3:
-
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 45b99c3b1442..c3ab30d32a15 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1222,6 +1222,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	struct mm_struct *mm;
- 	vm_fault_t fault;
- 	unsigned int flags = FAULT_FLAG_DEFAULT;
-+	bool vma_lock_retried = false;
- 
- 	tsk = current;
- 	mm = tsk->mm;
-@@ -1331,6 +1332,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	if (!(flags & FAULT_FLAG_USER))
- 		goto lock_mmap;
- 
-+lock_vma:
- 	vma = lock_vma_under_rcu(mm, address);
- 	if (!vma)
- 		goto lock_mmap;
-@@ -1360,6 +1362,12 @@ void do_user_addr_fault(struct pt_regs *regs,
- 						 ARCH_DEFAULT_PKEY);
- 		return;
- 	}
-+
-+	if (!vma_lock_retried) {
-+		vma_lock_retried = true;
-+		goto lock_vma;
-+	}
-+
- lock_mmap:
- 
- retry:
-diff --git a/mm/memory.c b/mm/memory.c
-index 428eb555ecb7..8c34a857548b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4987,6 +4987,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	}
- 
- 	swapcache = folio;
-+	/*
-+	 * If the folio is uptodate, we are likely only waiting for
-+	 * another concurrent PTE mapping to complete, which should
-+	 * be brief. No need to drop the lock and retry the fault.
-+	 */
-+	if (folio_test_uptodate(folio))
-+		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
- 	ret |= folio_lock_or_retry(folio, vmf);
- 	if (ret & VM_FAULT_RETRY)
- 		goto out_release;
-
-
-[1] https://gist.github.com/zhr250/218ffe693f842346b56434483127422c
-
-Thanks,
-Hongru
+Hmm... you are just testing the gating, not the actual split, that
+makes the test not very meaningful I think. And we should not block
+non-uniform or high order split for swap cache after sorting things
+out, then this test will be doing nothing :)
 
