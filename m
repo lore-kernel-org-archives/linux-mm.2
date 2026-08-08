@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1B9FC5AD05
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 00:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0FC7C5AC82
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 00:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7311F6B00A4; Fri,  7 Aug 2026 20:15:29 -0400 (EDT)
+	id 787BB6B00A3; Fri,  7 Aug 2026 20:19:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C1E36B00A7; Fri,  7 Aug 2026 20:15:29 -0400 (EDT)
+	id 737A46B00AB; Fri,  7 Aug 2026 20:19:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0FF6B00A9; Fri,  7 Aug 2026 20:15:29 -0400 (EDT)
+	id 64E1D6B00AC; Fri,  7 Aug 2026 20:19:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DFE6B00A4
-	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:15:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B4091201FB
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 00:15:28 +0000 (UTC)
-X-FDA: 85076183136.18.2D0E02A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 32A5F6B00A3
+	for <linux-mm@kvack.org>; Fri,  7 Aug 2026 20:19:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CBF2A0BF1
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 00:19:21 +0000 (UTC)
+X-FDA: 85076192922.22.208C26D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D490E40008
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 00:15:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dOoFAEzh;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id D69C2C0002
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 00:19:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AEcamcDg;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786148126;
+	s=arc-20220608; t=1786148360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HYOtN5es1U3sL5PR1h8VK1Qw6VZNk1IXyhW2dQx1Zs8=;
-	b=JrrUBkhB5F921NM7gM7wnMgzF5MBpnc/bnVsr2jdlrWmDvksC+phCHrqn/3nXsqFuOfGZU
-	21odDi3qi92b4isQ3Lt8s0UUVWQEYqb5jM7zhnA2rhSk7kOYGfUQ2oO0cSAQPoAEbHyF6y
-	OwVcmQzCjPGzo3dY83L6J+sA5D5yAik=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786148126;
-	b=Po/ZqGRrxfzfwSc+wHzsnzAMDQHHl+oHWkXiDNhd8oxT7UorwtICS9w8y/+mFcjxICKH3V
-	3j7lSQ0Gc2RhQyYfsctMkmeXzcKF2jTXUFVgwKYe21YxXEUYbP0BCG2FwAAlgT5bA88buH
-	rUpUhAnP3MfgovlTzTuvW1HJH2YPsDk=
+	bh=fTh+tlr+MLwVhLjQqoQiJDfHy6vLLNfFF0nfrsGeNks=;
+	b=2nUCUA8o8x7PLkksOmTye99tAF868PKNYhxIVD53rc5EAjITzOGkYleFABZzqKPTueofRB
+	rFK7oWFw/PWvmPjjVi+xQF9god9lLZWS+p2D1Tj1L8Gf5VPtI0iBL8mDkhbHwdnChi3h6T
+	AlKw3DibcFW58VEMnI0+98lgNIq9PQA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dOoFAEzh;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AEcamcDg;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786148360;
+	b=NDQkFLPBcJTbwdzRHB+wH0K5jjyKQc7LxWRZDtrIW1bAM9jxBvogSeZmPOnwPL2DKdmdLh
+	YaWzqI4xniC/HIY/40q9hSAxxsgATLCTT5id33GLojBu/NPEL+WBOli0G3PcIV7Jn8pH9T
+	DKsWaiePtbgoq50Du7tA60TZncHmNT8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D5340408D7;
-	Sat,  8 Aug 2026 00:15:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C7A1F000E9;
-	Sat,  8 Aug 2026 00:15:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 121EC43B53;
+	Sat,  8 Aug 2026 00:19:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DA11F000E9;
+	Sat,  8 Aug 2026 00:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786148125;
-	bh=HYOtN5es1U3sL5PR1h8VK1Qw6VZNk1IXyhW2dQx1Zs8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dOoFAEzh8QmWlhl/Qey0OxS02wr9iK4w12SUs9xV+kECYHt0HTDukkQBZTGp81fMK
-	 aeOyjdWhiUx5K6GDLRAc/cB+qpwOny3BP21x+MbrKMCV+ZwpOxn31KQE68S0+D9Qk8
-	 vTJ0ADvU1qkuuuyQSJXOYovSYfUBNX59EEeBqlKdqC8s+zSC2omC63cyGydoeIFwRQ
-	 doN/uqitbni8Bc02I/L3L4cxwM3RBjWjj2VLUFD/zmgip+A4s56BjTQzaIfYJB/7qu
-	 VytlEzgmjSEofYTW+NgJVSqqPJ+wCIkhIgAF3gzw61zlwWEPjK62Ai9wAAu8zNP/ry
-	 osOEKEqqV/M2w==
-From: SJ Park <sj@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v2] selftests/mm: Drop duplicate test_seal_mprotect_two_vma_with_gap() call
-Date: Fri,  7 Aug 2026 17:15:20 -0700
-Message-ID: <20260808001521.1467-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260807071533.48130-1-hongfu.li@linux.dev>
-References: 
+	s=k20260515; t=1786148358;
+	bh=fTh+tlr+MLwVhLjQqoQiJDfHy6vLLNfFF0nfrsGeNks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AEcamcDgQI/AsYPr1XCKo5dgYxuYDyLUh8ZtZaIZ3eW9VTnIuvHyym6sFow+V+EmJ
+	 BF/EC2CPLtBSLgmPX6/6yjyEdHeoRDl/w577EI29kncY8HueOnXAfUDmLNu1ATrBK0
+	 9ZHnpUTzm6ZDI+IUC2S3qusrId8dd939bIuBbpV6wqmH5toMuH+v5IRoDmAAIC8NJa
+	 ZnCIe/9qy7oR0D+Vma5F7lQV9JJQ/WHEISQwrjawugi+3KAdfa5HZJkwWNdtB4zmLK
+	 6Oj6DMWXxTgkA/N+f109WJn8XhQmPW/lxnxAfz2oaKrLa+dwH1XPSgkyKAkdJZ4FlO
+	 V0E1EDno6R1YQ==
+Date: Sat, 8 Aug 2026 00:19:15 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
+	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <anZ0vPCi-yq_n4IA@google.com>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+ <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D490E40008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
 X-Rspam-User: 
-X-Stat-Signature: p17tpba7667wqi7xqt7qfj7gzhhp3e41
-X-HE-Tag: 1786148126-673515
-X-HE-Meta: U2FsdGVkX19UeyQhExRUglS518EYW6SB75TYU60YBh00wiJhZqOjTTjG/cAKLjov7e0ZSRMRcj7re2nGMD7J0P/t7PrTHy6TODqONCKGaSH//qENqd2CZw4z8TlU46bkk+GopQSrxLcXEYF3AH3ioCZFfG6swxoDyha10314RV18e9HdJRFPCfYmvDsE4ItSBf3OaVv0HAUSTXFdspRsWxwDikyK2zE92gb2nnBWaJCI/ZkI6LjS55H3V8+a2EunlAW4iDBwrna/E4EEHPndZInCFY2AZEdYfTnCDLhcUC1H1uel/P3XJAWqIh7ErkE7oqJnC3LRUYk2OjT1I4mxKdlJf68yfufDsr60cIjk5nXg0Yiy0nYSlv7qykxJ0Bk1IImSwVR3h6Dz0N2ICf5Af2yfs/TleywgP+5Y8MPqdSeZ5qtaXsKySGsjRfizB1Ew9xr4RQPWtOKPw9A8+Co506EeOIxf5ShbsZr8jT6HHnF6C4FENjJOLpgnq1ZFn8RhOZxV9J86dfyMiUcQtg7lNkCG4iFKYISYtN6IxXcuryyC0lqpu4AicQn1NKzQtD7PSQokEyp04sjtjO+InJGOr9yXJRtm5Ie5B81LLqREAEteikd4VRTYoeTsZDcG1gmnD7tkbWWz4MBgmrL+rJvquZCQgOR+/F5v09YaAzjFPTZPgGdoRmCk2aa6xD1IEIrbSZtx6JstpREaA6ML7xuDhnymsovm7eOQ5v/BmJ4lDje/+58lILdkuNbzH8vEdCX41V6E3AGxH1UQC5u5XkvLqHWL+m5067PVLizItGVPQenXxWJlGeOh1aI81dae782PV1MYnx7tPsnfUwOtuphcl4rUTBBwLXGUeBc0AtRJA/AiztmbY6HvLR11DIjKAFVJA7ZsiZsXmL5ENCftXSddqdS8TTNuc2bwDvnE8csPJfAFU9nAknQVDbxWdNNhooaU2mJ0mCMWNcDuNcw6QWW
- nlEv2GOP
- heADlC90ij9aAsecSLRvLAebEIemKWFQXhaO5ZdcYyWip+UxMpjQkSTZjiLXL2MBes90s85vhHVNPqARuKPoB9YdUtrj/B+OkkJl9lJiNyHXAQUlyyxb2S/KaMBjqbtTN0FRU6+BuYGKbDUXz3C0p/ApRXa8Zsc6gTIbjLdsZ1ybG9sF+qGppeERf/j4UXdLF2FoU2IwttAVdWppwwlcCQlfNr7DPSSM26bJ9wvGXvq8aPcZHstNHdnsulDbupJvr9cTn
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D69C2C0002
+X-Stat-Signature: 3ej59ptchz15mspp9dor8mpjjrw9hs8a
+X-HE-Tag: 1786148359-234840
+X-HE-Meta: U2FsdGVkX188G4LSZ8xK7isDh8vO8CPcrbq3DFVPG2Vx7ehkDktp/DFkkdXaQwVlysG0SAxyVdZIpwFxX8sE00qPGgOvedxgfZ5QjpTghsQTeBh0hddbFCrFDDsm8Hb/yY9VhwvHR8YWasCGXe+Z+3Ns8zbVzY0QSBq2zjkVCRTtDKX7b+3eKwi6Wd3LTXGiZGNQOFRW2Kar4bEpoq8WXc+/kBOjcVx8Q3ozA5Kavndia+whv8R5K6WzqyF3QMCgzS5ThsasVyvd1oHm/o3qUUc1RCR0s+np7IYGGfZiuJoTHAmS2LOlnLExG848dpjnlpP21h2JjKjtZFktvHWP4FR/d1Q/p5ubwVNg9ReFrBFr5aaQ9iCkvaAqZrScsgs5HrpStppp0dKpI8xCDumSobpQbXiMVFC6Ze9bM28s1OQPByZkkqQHfynrygsjTeSJ6Lhubt6UaWspil+vsTyJWy/YrRFEpTu0KTpl+tcCuJ5DVp9p2Qsp4bTeeUPEGK4cP30cKrmmZbzsyd2hlhOB5t2MEYg5Eg4RgV1kl0f0gDFOT/WN1+BnoiD3CHR+P+GlfmYOWo12HArCh+ZUfX/lV/yvXkf0JLE+3Eu1Lh4lLyptQrMavrJr/c9S7dBC/e5JsALaLScH3rbhauH+78/icAbjwmsVAZD2pR10wnzCxIUP1YDv3c53U9kaSZrxoSDXygNVDAzB5c2CTKFSsmQI7HD+OATdFHoY3+9MMzdM4/CgCBco27wYOeehSjod6ObPvaJ97/d1k69ZBLrUpNaI7TAs21QJ2Q9UZMqtO/6wLAUdX/AHL5A/Gd/W1SUhX712gpGEmm0RF7XJsJgfZVR98//GD+2A9VgMFFjb4fdrC8lUggqd3UTVCfYyFeWb1mRMh7l41KQt7rpl1KBbQfbC4WU3/BYq6qW+jX3VIIXLff7mTjoYJ/dkz4e5U0hUpq6V6Q9UWdUQN/u7S1537+W
+ hyl+yn93
+ GOp7nPJzGdeDBx58cGipdvaZxjh1ZgbW4+pSW7ko1lwyW0CyjWekqdU/FSVWmCY7xEaC6CjOXLxSpqtr7c3XBK5N2YV+oaJONLoCtvtRVrP7bp8h+av38EEAI8xIO2hx89f2M23pE3Q9hyNpuENLC9QHALbC8nGwcV8pq6M7208JAsfUUtRCJj1PTfkbTylRQTnK3SX9xqY+dmfztcp7IDyT0z++LLDc+Q1lAsQrjGX5X8bv06/K2q9dAHwg1r/SXynGI7R8rRvprt/+obPaTh3w8lrYfMAxZ8UVIf/OvgRFyUj3fAaZL57/uB9Q3pmIbbIDAUI23MFIXwXYaoIgHNIOuaTLM2+oF3syxPD8nbikKY4iXuyIOFSGBhwmneIkpAxSbmm7fSsyws4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,60 +102,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  7 Aug 2026 15:15:33 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
-
-> > > ---
-> > > v2:
-> > > - update ksft_set_plan(88) to 87 to match the actual number of tests
-> > >   after removing the duplicate call.
-> > 
-> > I wonder if there could be an automated way for this.  Obviously not a question
-> > to the author but just my loud thought.
+On Sun, Jul 26, 2026 at 10:22:36PM +0000, Brendan Jackman wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
 > 
-> Glad you brought this up, I totally agree with your thought.
+> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
+> set to not present. Currently, mappings that match this description are
+> secretmem mappings (memfd_secret()). Later, some guest_memfd
+> configurations will also fall into this category.
 > 
-> Something like the below refactor could achieve that automation:
+> Reject this new type of mappings in all locations that currently reject
+> secretmem mappings, on the assumption that if secretmem mappings are
+> rejected somewhere, it is precisely because of an inability to deal with
+> folios without direct map entries, and then make memfd_secret() use
+> AS_NO_DIRECT_MAP on its address_space to drop its special
+> vma_is_secretmem()/secretmem_mapping() checks.
 > 
-> +typedef void (*test_fn)(void);
-> +typedef void (*test_fn_seal)(bool seal);
-> +
-> +static const struct {
-> +    test_fn_seal fn;
-> +    bool seal;
-> +} tests_seal[] = {
-> +    { test_seal_mprotect, false },
-> +    { test_seal_mprotect, true },
-> ...
-> +};
-> +
-> +static const test_fn tests[] = {
-> +    test_seal_addseal,
-> +    test_seal_unmapped_start,
-> ...
-> +};
-> +
-> +
->  int main(void)
->  {
-> ...
-> -       ksft_set_plan(87);
-> +       ksft_set_plan(ARRAY_SIZE(tests) + ARRAY_SIZE(tests_seal));
-> +       for (size_t i = 0; i < ARRAY_SIZE(tests); i++)
-> +               tests[i]();
-> +       for (size_t i = 0; i < ARRAY_SIZE(tests_seal); i++)
-> +        tests_seal[i].fn(tests_seal[i].seal);
-
-Thank you for sharing your great idea.
-
+> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
+> set by guest_memfd) because not all guest_memfd mappings will end up
+> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
+> can be mapped to userspace should also be GUP-able, and generally not
+> have restrictions on who can access it).
 > 
-> Though I'm still unsure whether this extra complexity is really worthwhile.
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+> [Moved zapping to page cache; removed review tags]
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+[..]
+>  /**
+>   * filemap_remove_folio - Remove folio from page cache.
+>   * @folio: The folio.
+> @@ -260,6 +309,8 @@ void filemap_remove_folio(struct folio *folio)
+>  		inode_lru_list_add(mapping->host);
+>  	spin_unlock(&mapping->host->i_lock);
+>  
+> +	prep_remove_unmapped_folio(mapping, folio);
 
-Agreed.  I believe it is good to have this as is for now.
+Does this miss callers that call __filemap_remove_folio() directly?
 
-If we have to add such automation, I think kselftest framework is a better
-place to change, than each test.
+We can't just move the call into __filemap_remove_folio() as it will
+later include a TLB shootdown and (at least) some of the callers have
+IRQs disabled.
 
-
-Thanks,
-SJ
+> +
+>  	filemap_free_folio(mapping, folio);
+>  }
 
