@@ -4,108 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF462C5AC67
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 15:33:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA0AC5AC67
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Aug 2026 15:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6415E6B00C0; Sat,  8 Aug 2026 11:33:28 -0400 (EDT)
+	id A152A6B00C2; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F4256B00C1; Sat,  8 Aug 2026 11:33:28 -0400 (EDT)
+	id 9CD8C6B00C3; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5090C6B00C2; Sat,  8 Aug 2026 11:33:28 -0400 (EDT)
+	id 8B5176B00C4; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F3046B00C0
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 11:33:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B1B1A2376
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:33:27 +0000 (UTC)
-X-FDA: 85078496454.17.8EE0394
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B460840004
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:33:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b="M10L/EjE";
-	spf=pass (imf01.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786203205;
+	by kanga.kvack.org (Postfix) with ESMTP id 683826B00C2
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 11:53:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5AF4140398
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:53:30 +0000 (UTC)
+X-FDA: 85078546980.11.89D9666
+Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9280240007
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 15:53:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786204409;
+	b=0fdyAfB+mTHVm+L5tdSiyXxLbwEJQBqkSh4CH4ns4Gu8jqh+3u/TR7HGD4cqns1ylHj361
+	cxc9k+4EqxnGIy5FsO9rsdaKF7xJ7xIdPGPYjGopWzmxKvhtvWvYgS9WU5iUqcE+uhP77c
+	5hYx5BEOJRsUwJQO/un0rok2WWJrJM0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786204409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vBE9QDMYlEy4hGZLT0RwN5rvyo0b7qG9j+dcATuXzuU=;
-	b=Zp4jaI/2h8UsMMM7M61t58NAKt6ut1e57FJK6xQ/msB2zit6oygoRCOPuBYtfcjhEdKnrT
-	V1jywPRS1QvwtH6i0NuJD67EQFwUV6EctoBh6TGECpEx+qjUewXqJFwY2kKFYfA457dnrw
-	F8S7KSPchMB4eJT3VFhG6bbujDerbFE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786203205;
-	b=DzJ36is61BPA7qVGZoLxLzSLuFapfNJ/72UKCCG17vOHU5NPe63nfvF8lPD1GUE6IBv5if
-	mRkY0I1/vA7Y91UHrzPNpz8QYyUXGNnHwZhhDzhhLapVBRj0C42z4Ivh/ZOHib/ZPC2IEl
-	Zyg1rqpiF38EpBh1jtn0X8yTSMGs7wA=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b="M10L/EjE";
-	spf=pass (imf01.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1786203153; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=IUWinNYQ6tmUb0p1UpWmaAFZzUrwKtg5Paz9gimUkDNtIdCGYYB3ljb/s/s/BHjWET3XfbyBtI8fIZMsyN+JBtmom/gyC3ShZOv1o9+1arSyG1rPAEhDzgslrGhlC5N8s6OgXz7aHVHkokxg247jC1NeXVlNHXrinAjPj7AaRJI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1786203153; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vBE9QDMYlEy4hGZLT0RwN5rvyo0b7qG9j+dcATuXzuU=; 
-	b=JtPYisYciEJVTSUHml4xoXxaVZAOO99Oa9aUkmRSsC0mMLhl8DiWzFTg6XCVEk0KAuL3rUUHaG5R3kkurVtQ03w0MeHmruceOeGkwdLahOJESfXUqu/nDrppvfavbwJ+z8jiFy1NVitxrAnjXyyg25/4Qfzkq9Mc65PNKZcrINE=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786203153;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=vBE9QDMYlEy4hGZLT0RwN5rvyo0b7qG9j+dcATuXzuU=;
-	b=M10L/EjE3vD42kohUexzJciqpDldPZ0wYTcnLuGjAqfUMacqQRy6kl+ZHVrlWoqB
-	WQdC4mwj+1tYvzXg5jpOAGxNm/gslePvE03GzcGKa3C7I0Y/s1osD09uofWJl78lsiU
-	H+2qS/THkvJWkrDWypR1EV/ssT4UaXc4tYKdyBuw=
-Received: by mx.zoho.in with SMTPS id 178620315259581.6263347714123;
-	Sat, 8 Aug 2026 21:02:32 +0530 (IST)
-Message-ID: <c0c5f2c0-fd90-4ed8-9c49-7499dc56fcfc@zohomail.in>
-Date: Sat, 8 Aug 2026 21:02:31 +0530
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nltNiX6rU18IHooivbDgvc+FtyhiQr4rTMa/+aorgts=;
+	b=u0JxEKdDKx2BMMvK6jSG72iK6eq2LgIGRQgeAHPfzrPcefN2J8Y8SbAer1Ym+7HMxHkj/r
+	MttjLNIHBScDA8xX5GV1hLGgxSTb1EphofwVDOGQ8Vg3YRfIm7T2Y5RB4lMZNo6ZM9cyqH
+	ETqH2ywHzspKajIZQBAVvTR14kUdvRs=
+Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
+	by 156.147.23.53 with ESMTP; 9 Aug 2026 00:53:23 +0900
+X-Original-SENDERIP: 156.147.1.126
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.126 with ESMTP; 9 Aug 2026 00:53:23 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sun, 9 Aug 2026 00:53:23 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <baoquan.he@linux.dev>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+	her0gyugyu@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] mm/swap: skip empty clusters in the swapoff scan
+Message-ID: <andQ8w/B5DCSzKKD@yjaykim-PowerEdge-T330>
+References: <20260806193228.458685-1-youngjun.park@lge.com>
+ <20260806130655.420e16bf621b580cc5f08040@linux-foundation.org>
+ <anV+EoxWGKdU9da0@yjaykim-PowerEdge-T330>
+ <anWabobwPyAXvRe5@MiWiFi-R3L-srv>
+ <20260807144256.6fbdfd15f7ed4f518af7929f@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm: add KUnit coverage for mappingless swapcache
- folios
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Nico Pache <nico.pache@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
- <20260805-b4-mappingless-swapcache-v1-2-b1d78ba257ca@zohomail.in>
- <CAMgjq7BW_n3HpM=mCGn=q90=4+oXcBLWwZewxvEcwqfzjuewOw@mail.gmail.com>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <CAMgjq7BW_n3HpM=mCGn=q90=4+oXcBLWwZewxvEcwqfzjuewOw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B460840004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807144256.6fbdfd15f7ed4f518af7929f@linux-foundation.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9280240007
+X-Stat-Signature: 9p7uhjp1esa8ot5occa5n3ksg6qz9cbp
 X-Rspam-User: 
-X-Stat-Signature: 8y5mnhy79q9yxq9i8qa1qdq1owh7ztb1
-X-HE-Tag: 1786203204-561770
-X-HE-Meta: U2FsdGVkX1+J6+DJ8YSKP9TCPxqBDhLASDygd1u5qy7wlsY7+bMCzJDFYis4i7xom5hlHUKt29Hc6Fal5cJoKsG4qejQcd/lC698iRhenTcvzUCMTB1okFlc/2dat5/8UsRrouJqQ50dAfJlsUFZD0Wdg7sFlGYKQ7W7KkSt7lnDGsaZ5+57T8DQXkJ1yW6fSkYAJ5jR0PfGA422omcs0SciYWBQwNLWRGSgaqz88gPqPILsCoxTQbBT6xQ0DxIk3adqm0IpeEzd3HEN6ZEE+R+Z6ksO+qpu6rKWEoKpmqK9iOOtZcaEcmljAMJsyXdfEnpMQ3udZ3BtABcD/WFh6l98BwKx2RefAjXjhHNNH2eq8ZZu4EPFqz+MuCu+M3kbMc1zH7W3I5HQADoKQdpQn2kw4h0fPHzHVxebDLRivcj8Ge7l4Rwv1iKVH6zgtsDI8HGKOT3aOD4P9Uw4c/dVLVNecbloKoDdZ7bnGQtRb6rZ3vJN05mv3T8jT9WHdV6bVuaZqyUWrvP6OhGFSdi2VFQW6LS1wYJlUbbQRCm7nNhz9D1wt6UFuunvzU1BLbr82bkE99g3Jkgczc+U/vuWT8qJpIvCbajclc08cgrULuMVxeh7EoVPf9fv5Qq/WA6AltWLyI3YRcWB2d0vimG3Ske4OhisNn71vuCABTxmOJfkYuGOZJt8S4olrRwe1mlGZrehxgvzPvn8ZDZGBfNekmsndD/R/ojQzT/f4XaaKyirHgMrGNRrBObro4T7TeHYbr1KAYv/GBoAyVxH9izEylasDMEak2UdAA4nBK0XwelZSqWo8TjjllkWqdO48Jg7p3wSYXu/TnECGsu1tHpqkog/s6nFhYtChon85AhjtdVjby6W1eNuSpmnN/kZQ0zlRoIL7AgIhQo+Ju8bClF2w2zn8WHUO3pJ93+tAqrztUS19YK0N+Npu3UVUPHx24AasucWYiKmXyBv/Xf2moK
- 6iDf3RJ/
- VtlRptnvZHez2AvQt/2SozDdowUGEXw8rvcVsLIsnmrMKx3bh5xaczije+PWz7EHmd1FPCQ4e9iaQu0PWUJkZufU7JXk8bAzlkyFyCJyPIs68L7hJRH0xfmLEMwyfu2rCaEtOp30AjlR4+jJdO5aZp0L9OJCivKhbff5mYdBeqDqm/Bfx0sj8mR14SzqDkQjLX1u0duNKuiLf6fMk2UBx6/pWC7k09hMt5DZPFfcsoE09WFIR9NS72P6rWAWEN9dtGjLVlNn5+NfUrQF6SlYVg2W1hMH1zgH7IbeypMJqCqYEzxgbGZqYnDCPmKoTxe9j01olchRXkWcr++zmRtPbPKTempvhSQK5tYwnajCgmBQLq7I=
+X-HE-Tag: 1786204407-596469
+X-HE-Meta: U2FsdGVkX1/5EWN159Q2hPF/VmJoT11Eysy0y/97ImLXyZcgpLten9Q5q5KEG2pHwGM5sVvdCY4hutuhL9YVGAOfC1PEHmBEhesA3C7T8iRoaKTmyyjNCgEZeHveRC1OaAOY0zUXprX/arBR7Dn6YNY/XCZdnnF/CPE6t5CNJECIpjXLGEWQo6rIaO2jSCiSGgjACsVoyXMsc1XAqmdtJNGCEiMHyGDEf+Nu3QSesq+I4giwni8XyTf1EIV3OOz9h1RgUT9aWtCqQpNQ2SwvLPTmecNbrQelRxPgYmLYXJd2GvsZRMEwgsV7u4HoFb0XTEgoNbcvrEFep5lSVwXFFz8MblXhsBMNwYrVqn1dKONjduXJSGpqgX4Me6A9M9k0PRmypV7TMPsYC6ZyrirMbKcfaVq1fU74RwwsWbHQgJgiCnmb1CXgzh/B6LkuH87DOOkbAchJAZfULlWxvfbs5EVnlC177/LPWGFOr2sRVEShaZbnIUTHA8cN9An1gWzEQbSLL9FlXrApFQuI068zQWmrL87Eu2DgtPSdBBc00yxB0RF58JXulTZcW8hX8+EJwiuhbUsy5m8clm2OEGkYJ85mPdwrQEtsKXE0khPLfLcPev5Pii4aqtNOXVV3grXqA8icjelXRNNCqvOr95es3jjQwqezpB+v3jiKaoD8ZYr0mtFJGgNvUFSznEPXXLNDvCF2I2npslOzpn5cTirn4zynYGMmIgNLg5xI4j8NJD2FRJ/AUWbbrG6W1Vgt4/PKOwiJoUgnxUmcskRjWoO1sPihGseoFhAD6dGPTf+hKs9P3UWWK5HsUbsgiMMdr7xCitNtY5zOZ+abkYyuBVko+hltj0/DM8rWD9MzD4+nmh5uP0JdfJo8bL2mAa9RtiBrzl1CkBVp6mYwfJMNUxr9AXH5x/wm60pixhNbneb84o6E2Mfazm7nraCoMGBzEQO2bPCdmaciYyv6t77w+Uf
+ 37xAhSyK
+ i2+NzooU9uz09bZ3C8U9AzyUL+lfvzbIVsBc9+vI3Up9YxsU9JNwbgc/t3dmhTUX8ADlJK6UQoAbq7a49kfSqFeBo9rVCEj5H/x6Fne+FpDMKUHduTwGlESkcC7rYMEOdEyWXiW/LEPKIeN6FGpDt+zCWU1OFU2fkEPF+b7Z450Q0epBuORcx6FM5hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,42 +91,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/08/26 16:40, Kairui Song wrote:
-> FOLIO_SPLIT_KUNIT_TEST seems a generic test and not limited to SWAP,
-> but it relys on SWAP, looks a bit strange to me.
+On Fri, Aug 07, 2026 at 02:42:56PM -0700, Andrew Morton wrote:
+> On Fri, 7 Aug 2026 16:42:22 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
+> 
+> > > I have no measured times yet, since that case has to be set up on purpose.
+> > > What I did is the arithmetic for the case that skips best,
+> > > For example 1T of swap with 256M slots with SWAPFILE_CLUSTER = 512
+> > > and everything free but the far end:
+> > > 
+> > >   - today:          256M table reads
+> > >   - with the skip:  512K counter reads
+> > 
+> > 
+> > Maybe just use time to measure swapoff time consuming, just like below
+> > as I did on a kvm guest, I guess a bare metal machine with larger system
+> > ram could be more obvious?
+> > 
+> > root@fedora:~# free -h
+> >                total        used        free      shared  buff/cache   available
+> > Mem:           3.8Gi       181Mi       3.6Gi       924Ki        72Mi       3.7Gi
+> > Swap:          2.0Gi        18Mi       2.0Gi
+> > root@fedora:~# time swapoff /dev/vdb
+> > 
+> > real	0m0.101s
+> > user	0m0.001s
+> > sys	0m0.017s
+> > root@fedora:~# swapon /dev/vdb
+> > root@fedora:~# time swapoff /dev/vdb
+> > 
+> > real	0m0.014s
+> > user	0m0.003s
+> > sys	0m0.001s
+> > 
+> > Not sure if Andrew is asking for this.
+> 
+> I think it's helpful to include such info.  The audience for changelogs
+> is more than swap developers!  It's also an MM maintainer and -stable
+> maintainers and other people who are all wondering "should I backport
+> this for my users".  Let's give them the means to determine that.
 
-Fair point, the naming is misleading. FOLIO_SPLIT_SWAPCACHE_KUNIT_TEST
-would have been a more honest name given the scope. I'll fix this if
-the KUnit patch is kept.
+Hello Andrew Here is the experiment.
 
-> Faking a swapcache with folio->swap == 0 looks hacky, could go very
-> wrong if you do any actual work on it.
+7.2-rc5, fill a 1 TiB swap up to some amount, then swapoff.  
 
-Agreed it is fragile. The reason I went with this approach is that
-setting up a real swapcache folio in KUnit is quite difficult.
+What is left sits at the top of what was filled, so every slot below it is free.  
+Those entries are in the swap cache and cheap to free, so the search is most of the time.  
+In short, best scenario my patch shows improvement.
 
-> Hmm... you are just testing the gating, not the actual split, that
-> makes the test not very meaningful I think. And we should not block
-> non-uniform or high order split for swap cache after sorting things
-> out, then this test will be doing nothing :)
-Same reason, testing an actual split in KUnit would require the
-full swapcache infrastructure that is hard to mock up. The gating
-check is what this patch actually changes, so it felt like the right
-thing to cover in a unit test. The real end-to-end split coverage is
-in patch 3/3 (split_hwpoison_swapcache selftest), which goes through
-the full memory_failure() -> split -> swapin path with a real swap
-device.
-That said, I take your point that once higher-order and non-uniform
-splits are unblocked for swapcache, these gating assertions would
-become stale. I'm happy to drop this KUnit patch for v2 and send
-just patches 1 and 3 if you think the selftest provides sufficient
-coverage on its own.
-On the broader question, I'd be interested to see your RFC for the
-swapcache split cleanup. Would you prefer that I wait for it before
-sending a v2, or would you be fine with the smaller two-patch series
-(core fix + selftest) going in first to resolve the TODO?
+Medians over 11 pairs at 32 and 128 GiB, 3 pairs at 256 and 512.
 
-Thanks,
-Shivam
+      filled          swapoff 
+                      old        new     
+       32 GiB          92.4ms    66.3ms
+      128 GiB         157.6ms    94.4ms
+      256 GiB         209.7ms    63.8ms  
+      512 GiB         391.8ms    73.4ms   
 
+old grows with how much was filled, new does not.  
+
+In the ordinary case swap still holds real data and swapoff spends its time
+reading it back.  I tested 4 GiB on an 8 GiB device, where the scan is 1.4%
+of try_to_unuse(), and there is no difference either way. meaning no regression
+
+Thanks!
+Youngjun
 
