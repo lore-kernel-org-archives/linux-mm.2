@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D538FC5AC80
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 06:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57DF1C5AC80
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 08:09:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AB0E6B0110; Sun,  9 Aug 2026 02:58:36 -0400 (EDT)
+	id DF8146B0112; Sun,  9 Aug 2026 04:09:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55BA16B0111; Sun,  9 Aug 2026 02:58:36 -0400 (EDT)
+	id DA9E46B0113; Sun,  9 Aug 2026 04:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44AA06B0112; Sun,  9 Aug 2026 02:58:36 -0400 (EDT)
+	id CBFAC6B0114; Sun,  9 Aug 2026 04:09:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18D266B0110
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 02:58:36 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A625804E4
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 06:58:35 +0000 (UTC)
-X-FDA: 85080827790.13.714253B
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 267EEC0007
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 06:58:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hDVT6Afz;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A91A26B0112
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:09:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35DB8A2675
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 08:03:48 +0000 (UTC)
+X-FDA: 85080992136.18.99E32DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 998C21C000A
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 08:03:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eN4rk+K1;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786258713;
+	s=arc-20220608; t=1786262626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0j/swSolXVaTQw8w321V40RuywVBDgJIsmDnGmUow5k=;
-	b=eMXD548WQ/cn0r5IDmb7M2QzYGof+6aW8Cv72pXTqX/UMxwUL0s8JGgj4UZGdlfGimSriE
-	yyIoUj7voABR9SQQsXVk+zOKUw5Ao80AZ52dvtkTlRL1YWh+jkOrMaHg5kGLJ01njOhYlf
-	gFvavRvW2WbbEdC7NUt4LFfVsaIJGrI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UUnD4YT4HuSOBagwB//yv3X0Nx1d1hKHYt4Fov9+dc8=;
+	b=8VlTiLnvarZCMikotYIabj5f+dOZZbHNd9lzUz3VqNJFnCFIsiBjVib82t7GlFKrihwqv6
+	ZdO2XLN06sYwUSaTu7ziwp/k0SN8CTcxnknWi5u3RR25U43sEIhozvJddZKf6Lx6CjnHbq
+	r0C36yxzDbMWHwkooOW9Awqw1gQD2ao=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786258713;
-	b=3YKYBNUPJjaReC1Sh3wsaFjXJyMNsZEhJRykAHK4WTWGkS5PCeZENjzYdmPEkATuKZPnp5
-	pr8KfUNFCdJ/iZLjBai5Gu5VN3stfU5PhPXVSySBDcOO6qdwE0oN94smi0a3zp0wBro/Qv
-	V7jfWML8AnMibkaT1eRqedcoiqCn9fk=
+	t=1786262626;
+	b=bXPFYCa6JnIkiFQdNQd5idZasDKI1lI429uBcTOhTs2REzNCx9nOwc8Y/h1U0rcd5sXi3b
+	PVzBlyVZ6fxHN/xRw/xnV1yuKXVyQ8YZ9oti5SevT1tPr/WUYXmWNe5KtykqbfE+0lJJer
+	KMstRLQE59SWlyv+sYhwa6ux6cZyLA8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hDVT6Afz;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786258710;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0j/swSolXVaTQw8w321V40RuywVBDgJIsmDnGmUow5k=;
-	b=hDVT6AfzzkGKoH9FrofNnkex2iCiT023RMAmLMoZnZgLcyo1A2VqyOySD1Uf/S+DgTF1xu
-	WZ9BaNOYi6/JR3Jcxoe9xKmzowyy+uBci2BxOh7HJ0gGU4JQlhI7pkUs048Y5ueyxTKSO6
-	oyU1c59wl/GWuPDFFtXet4cGDQGmYw0=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v5] mm/hugetlb_cma: Fix null nodemask dereference in
- hugetlb_cma_alloc_frozen_folio
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260809043250.2917406-1-souravpanda@google.com>
-Date: Sun, 9 Aug 2026 14:58:12 +0800
-Cc: osalvador@suse.de,
- akpm@linux-foundation.org,
- usama.arif@linux.dev,
- shakeel.butt@linux.dev,
- wangkefeng.wang@huawei.com,
- anshuman.khandual@arm.com,
- david@kernel.org,
- surenb@google.com,
- fvdl@google.com,
- gthelen@google.com,
- hannes@cmpxchg.org,
- riel@surriel.com,
- sj@kernel.org,
- vbabka@suse.cz,
- mhocko@suse.com,
- bjackman@google.com,
- zi.yan@sent.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E2FFA328-21B3-4E3D-8CB9-5638B4CB545B@linux.dev>
-References: <20260809043250.2917406-1-souravpanda@google.com>
-To: Sourav Panda <souravpanda@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 267EEC0007
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eN4rk+K1;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9974D60008;
+	Sun,  9 Aug 2026 08:03:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832F91F000E9;
+	Sun,  9 Aug 2026 08:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786262625;
+	bh=UUnD4YT4HuSOBagwB//yv3X0Nx1d1hKHYt4Fov9+dc8=;
+	h=From:Date:Subject:To:Cc;
+	b=eN4rk+K1PFz/8b8/Qu0TTafuUNHxYuoiiH5kdUll/FLdwZtnj3kIbKRy4GfaohDFT
+	 XhNKai0vQ/+l02TMioR+oB56F1d+WFZZe4yBhasn1z7GoHNc2q9egVNMDjz2P5Ghgy
+	 V2VeBdI+o57IwyRmBXxx1n6hjKyk4SgD911/SoJq5rFpSPZIfjCA7R3ymZK9bXksC+
+	 4iq9M/NMZFv0DcR/7x5njYxH6geX7j/gtmRP8DNzejUN3qhNRNB83PILJ3Xwprk8px
+	 Ppqld6zT+v9L+nNV3i7AHhmcCnvbyHFnBqC5z9rEDB8Th/WdzClA5l1SQVE4XvVAv8
+	 PXYm0tpZfc68Q==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sun, 09 Aug 2026 11:03:35 +0300
+Subject: [PATCH] selftests/mm: thuge-gen: fix test_shmget() for PAGE_SIZE
+ check
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260809-selftests-thuge-gen-fix-v1-1-1919f4b3d12f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFY0eGoC/yWMyw7CIBBFf6WZtROxhvr4FeMCcGgxhRpmMCZN/
+ 13Q5Tn3sQJTDsRw7VbI9A4cllThsOvATSaNhOFRGXrVD+qsLsg0eyEWRplKjUdK6MMHtXFKez0
+ c1clBXb8yVf17vt3/zMU+yUm7aw1rmNBmk9zUVIyLxH2MWBKLsTPBtn0B2IuDMZ8AAAA=
+X-Change-ID: 20260809-selftests-thuge-gen-fix-5ac05f56307c
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Mike Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-mm@kvack.org
+X-Mailer: b4 0.16-dev
+X-Rspamd-Queue-Id: 998C21C000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: o3ie7md6htagteuz41wpguqexx4ytdns
-X-HE-Tag: 1786258713-486449
-X-HE-Meta: U2FsdGVkX19H5bG3RfHmDepryoTXZ4Uww8Zd5FHpOfzU9idQdPOVOk/raOWNLD7/5mmG8qnxGyv8Ja8sgW4tJjvZbnHEC0t4muwNKtc8Dsi+OVXmKqFGh9xWbAXXKxwsZM8g1+VpPKeXZjVAPAlv40DkwJCbh+emZLn5KcQAdqbSbIfQ5rSsFVFwWmsUDwFeRzcTuCH4ZXoUojc423ViWENHvTDLLNzMLgL6vTtKaJdcgDXl5ZqfZqyJllCYfmB++jl17/Th5gEj39Ja0z70FL6OgE9ESUZSc97Pi9qbGHpHtGhubXhzPpMm/NhSwsaIVWS94BWp5hlv6ollaKghHxQbyMU5rF5iP5lC6shviFwAXYb3Hw/OXPkoqT4N2LMClagDnyqzLK+wy0DzVdGeWWbuPDe1ejC7df6c0llx++nOuLDCX9aN7q0CG89I71pJP1BnTSWWUiPPzeqdqE4qPHGVaQeUljMqrP+caLIvERu09mYevXKL5QK6GKZQn79whhcK4xCoYdrMmhZiq8/O0nwpCsC4AGIb3qHuGrVp7HM1uSC7/t0EeVuOQTq+OpFvhU1BxuyMc4Jpyitzx2XUrbnQ4zgwX8+u8jJl+XENIUkl5uCrNYQtiA/ePo7BT2sHwGEt2M9PDOqff5k5LlsE4uCfAIks5Q9jTDjsHuSMX7zqBHQ6kRD0RumW4ef1a84KmvAxZrGu2qY4MHiMMszi60cQW95YF3ZyNXjMU+CMY4lDyhiZ3UVYWdQpi1yQnZMDDOdtQp1xNMajeZCSQpqt4nj0KtNZzEhqY0Si0euH8TdTaE0dLv9i8kfPu4YVC+EV9WSp4JstkvIgn9emJb6d9LEXnxJJXvKuWmk/zW3bqPSV+Lpt4UXaBa5m7lCP41hCPjCEAqJG2PEaLVugpMn3YX2NNEduBcgz9WZMfTvzsCwWcYbtlLp9l07n7bfSu6JZPtsSEP0J6DkopYl9A+2
- TlfeJ5MH
- /Prgc5exemV9OOder4QTNrwdosbqPV8Imikhz34zBMUK9OlVCIx9hmF2cU85B3MiVbn646QMmZbFGKbJX2fFMVzfv/lsLFTTo9AhO8cL1/I7+YNY8T1Xm0XsokdZnvrWrEsmtpm52soRi3gA0OZ4v3vm3BWKbDwSX+dA33HhNRJhIFLkCRKHNYLfWw98JNLBdy6C+gUB5FPQJAOOBR4mDTOkG3VBlvNla9EWVUolrrd1QhceWtZMcBqKPEONXOmKveWTGwgaMWVaEM5CoQvd3f5JIkXGyNLsebaby2BYf2uXJ/tLM8rxJ/vXlh8H1sv94URBNzGdVkSH8y3Q=
+X-Stat-Signature: abbjpbpwugf85f3bgwhpfc8es4nt8etn
+X-HE-Tag: 1786262626-684211
+X-HE-Meta: U2FsdGVkX19gGClrCkFWbbtDlm0bzV0IGIuzGt9SREI4zd0UkAaSnGzdL9JjhCN4LP+EetiQkdpuLDlaExN9WVLDb+0zXBfiAuOtx+Op+jTiHAHBYmS+CHYvIn4+otvdPbivts8/th6HFAsVdag0xH/iU19Q2NzXJ8tLBt0SSC8t5eid9pPh5hi9/7qxviLHbe3sFrYvxgR32280zPv9CvZSkekhoYV51L1xrbh2ehxvexGxHbfLETIOYrpWLHnz0WADJuHSd4ZdEGh78XunSLv0U8cy3t1W5xQFLuuggvGzVGUWJEDuk7TProW+2+fAHj+qt0+BvtJi89K5EPTZrPTIeJX/8Hh6OqaoaKI7nl8XpptQwn3jlECihHwxaXbXcW0jEjxyRXIgVGxBqfvIvVnVlXiBVYsuO7R8WHXQRxmcx4G2/IbH2f0YjRyb7D9vQn6P33DE30QeVx2oCZvmGeiVvSU9n5m71onQiwCsxK9KOHMMZuPCb+d0m3qegfXBg65rBdag4ZQAWb4LmehHiKXLh3iziW1+iPwF4QuKYf39ZCIkREGjXmO4tT3+8x6KVPJefdZISCKZkL+7nDBzZizY2TQKhsB55uWU701uJdSHcBdj991ZCh26RMoOMV7NOpwNB+4xlSMdmg2IIb3TLfiwejzNmRcFulSTQcnYmEqo2N7mo+ol0HnA1GOK6a4dCnMy1vcJnm1L/htPENidGZ7QykxZFS2yjPXAF67dy+aDmpmVtNDVaBh8oDpuu+ijHe8Nr172kyNoxb2WGsBzCrvjhcJw2fjzeXWlVfJm+Xbt+ijzjamw8g87ux/14041NNkgO9ZgWiJ+2vteEwWe6n3+qE4tfRdVqwPW2FRSoPTqxHXUdNvNxZOUYvmfyreWmu6ZmJlSsG2NHBazrewFx0uNJtJ3yIsEZMzdF96cGUHHwO3kdBzP3/9WgkWEUjcw4UK286iSveBncV488L3
+ HRijwVCg
+ FL7uqEYjuaKgTQjRBfYibvoBcDFYM/D7eTOQIZhzJOX6ryuTryB5NGrVvRUKGeypW/qquvtokHdKSvC8sQaQMsHeVCtW7fQ7/8frre8NOGZz4ZgIxZC+5Rnmhe7Q4OqAnfz10hpcFpY6bAr22CrAp1aKkYg+hUe6VmdNHrtvljShjCibyymYXxtieF9/nJw4UE4SzFBj/IGzC23vPmyy7aFW82TESi9gvPdzm2qZLRV1BRTt6/k6jHxXk0JO/FF1s1MnKTjx3cdjBAd0AZ09u6b5aSndMjslHxxpg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,150 +99,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
+changed thuge-gen test to use common functions for reading hugetlb
+attributes from sysfs, but it missed that the original read_free() function
+special cased PAGE_SIZE tests.
 
+For PAGE_SIZE tests, failure to read sysfs was ignored and read_free()
+returned 0.
 
-> On Aug 9, 2026, at 12:32, Sourav Panda <souravpanda@google.com> wrote:
->=20
-> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
-> alloc_gigantic_frozen_folio().
->=20
-> Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
-> allocation on hugetlb_cma[nid] without verifying if nid is included in
-> the caller's nodemask. Adding a node_isset(nid, *nodemask) check =
-ensures
-> the initial preferred node allocation honors the memory policy / =
-nodemask.
->=20
-> However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask in
-> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
-> leading to a null pointer dereference kernel panic when nodemask is =
-NULL.
->=20
-> Fix this by checking if nodemask is NULL in
-> hugetlb_cma_alloc_frozen_folio() and defaulting it to
-> cpuset_current_mems_allowed (safely read using a seqcount retry loop).
-> This ensures that the initial node check and fallback loop safely =
-honor
-> the task's cpuset without violating cpuset constraints or causing NULL
-> pointer dereferences.
->=20
-> =46rom a userspace perspective, this bug allows an unprivileged user =
-to
-> crash the kernel (trigger a panic) by requesting a gigantic hugepage
-> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
-> configured on a subset of NUMA nodes.
->=20
-> This can be reproduced by booting a VM with two NUMA nodes, =
-restricting
-> CMA to Node 1 (e.g., hugetlb_cma=3D1:1G default_hugepagesz=3D1G
-> hugepagesz=3D1G hugepages=3D0), and running a program that allocates a
-> 1GB hugepage area without reserving, restricts allocation to Node 0
-> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
->=20
->  void *ptr =3D mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
->                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
->                   MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
->  unsigned long nodemask =3D 1; /* Node 0 */
->  mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
->        sizeof(nodemask) * 8, 0);
->  memset(ptr, 0, 1UL << 30); /* Trigger fault */
->=20
-> This results in a NULL pointer dereference:
->=20
->  BUG: kernel NULL pointer dereference, address: 0000000000000000
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  Oops: Oops: 0000 [#1] SMP NOPTI
->  RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
->  Call Trace:
->   <TASK>
->   only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
->   alloc_surplus_hugetlb_folio+0x6d/0x100
->   alloc_hugetlb_folio+0x3c5/0x660
->   hugetlb_no_page+0x3d9/0x650
->=20
-> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
-hugepages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sourav Panda <souravpanda@google.com>
-> ---
-> Changes in v5:
-> - Replaced defaulting nodemask to &node_states[N_MEMORY] with safely =
-reading
->  cpuset_current_mems_allowed using a seqcount retry loop, ensuring =
-fallback
->  allocations comply with task hardwall cpusets as suggested by Usama =
-Arif.
-> - v4: =
-https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@goog=
-le.com/
-> - v3: =
-https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@googl=
-e.com/
-> - v2: =
-https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@goog=
-le.com/
-> - v1: =
-https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@googl=
-e.com/
->=20
-> mm/hugetlb_cma.c | 15 ++++++++++++++-
-> 1 file changed, 14 insertions(+), 1 deletion(-)
->=20
-> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> index 39344d6c78d8..3ae9347078e9 100644
-> --- a/mm/hugetlb_cma.c
-> +++ b/mm/hugetlb_cma.c
-> @@ -3,6 +3,7 @@
-> #include <linux/mm.h>
-> #include <linux/cma.h>
-> #include <linux/compiler.h>
-> +#include <linux/cpuset.h>
-> #include <linux/mm_inline.h>
->=20
-> #include <asm/page.h>
-> @@ -30,11 +31,23 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
-> 	int node;
-> 	struct folio *folio;
-> 	struct page *page =3D NULL;
-> + 	nodemask_t local_node_mask;
->=20
-> 	if (!hugetlb_cma_size)
-> 		return NULL;
->=20
-> - 	if (hugetlb_cma[nid])
-> + 	if (!nodemask) {
-> + 		unsigned int cpuset_mems_cookie;
-> +
-> + 		do {
-> + 			cpuset_mems_cookie =3D =
-read_mems_allowed_begin();
-> + 			local_node_mask =3D cpuset_current_mems_allowed;
+This allowed test_shmget() to essentially skip the check of how many huge
+pages was consumed when it ran with PAGE_SIZE.
 
-I think it only makes sense to move cma_alloc_frozen_compound() inside =
-the
-loop. Otherwise, during subsequent memory allocations, we could still =
-face
-unexpected allocation failures.
+Commit 3199b0c09efa ("selftests/mm: fix read_file() return value check")
+fixed the common read_file() to actually return error on failure and this
+exposed the issue in test_shmget() that checks the number of free hugetlb
+pages even for PAGE_SIZE test, tries to access
 
-Muchun,
-Thanks.
+/sys/kernel/mm/hugepages/hugepages-<PAGE_SIZE>/free_hugepages
 
-> + 		} while (read_mems_allowed_retry(cpuset_mems_cookie));
-> +
-> + 		nodemask =3D &local_node_mask;
-> + 	}
-> +
-> + 	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
-> 		page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], =
-order);
->=20
-> 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> --=20
-> 2.55.0
+and obviously fails there.
+
+Gate the checks for free huge pages on size != getpagesize() and initialize
+before and after variables to values matching PAGE_SIZE test.
+
+Fixes: 49a4e7186b08 ("selftests/mm: thuge-gen: add setup of HugeTLB pages")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+selftests/mm: thuge-gen: fix test_shmget() for PAGE_SIZE check
+---
+ tools/testing/selftests/mm/thuge-gen.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/thuge-gen.c b/tools/testing/selftests/mm/thuge-gen.c
+index 22b9c2f1c35d..50d0805b65db 100644
+--- a/tools/testing/selftests/mm/thuge-gen.c
++++ b/tools/testing/selftests/mm/thuge-gen.c
+@@ -71,12 +71,16 @@ void test_mmap(unsigned long size, unsigned flags)
+ 
+ void test_shmget(unsigned long size, unsigned flags)
+ {
+-	int id;
+-	unsigned long before, after;
++	/* values for PAGE_SIZE test */
++	unsigned long before = NUM_PAGES;
++	unsigned long after = 0;
+ 	struct shm_info i;
+ 	char *map;
++	int id;
++
++	if (size != getpagesize())
++		before = hugetlb_free_pages(size);
+ 
+-	before = hugetlb_free_pages(size);
+ 	id = shmget(IPC_PRIVATE, size * NUM_PAGES, IPC_CREAT|0600|flags);
+ 	if (id < 0) {
+ 		if (errno == EPERM) {
+@@ -97,10 +101,11 @@ void test_shmget(unsigned long size, unsigned flags)
+ 	shmctl(id, IPC_RMID, NULL);
+ 
+ 	memset(map, 0xff, size*NUM_PAGES);
+-	after = hugetlb_free_pages(size);
++	if (size != getpagesize())
++		after = hugetlb_free_pages(size);
+ 
+ 	show(size);
+-	ksft_test_result(size == getpagesize() || (before - after) == NUM_PAGES,
++	ksft_test_result((before - after) == NUM_PAGES,
+ 			 "%s: mmap %lu %x\n", __func__, size, flags);
+ 	if (shmdt(map))
+ 		ksft_exit_fail_msg("%s: shmdt: %s\n", __func__, strerror(errno));
+
+---
+base-commit: 17e5919bdca144d4e67337f53bf57d7811f62192
+change-id: 20260809-selftests-thuge-gen-fix-5ac05f56307c
+
+--
+Sincerely yours,
+Mike.
 
 
