@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0B98C5AC80
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 11:55:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33297C5AC80
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 12:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71E876B0114; Sun,  9 Aug 2026 07:55:46 -0400 (EDT)
+	id D781F6B0116; Sun,  9 Aug 2026 08:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5F76B0115; Sun,  9 Aug 2026 07:55:46 -0400 (EDT)
+	id D296A6B0117; Sun,  9 Aug 2026 08:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60BA56B0116; Sun,  9 Aug 2026 07:55:46 -0400 (EDT)
+	id C3F476B0118; Sun,  9 Aug 2026 08:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32B746B0114
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 07:55:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9852A26ED
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 11:55:45 +0000 (UTC)
-X-FDA: 85081576650.11.8A38343
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8A83920002
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 11:55:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XA02xsgb;
-	spf=pass (imf03.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E6BF6B0116
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 08:32:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98B784055C
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 12:32:13 +0000 (UTC)
+X-FDA: 85081668546.22.ACA23DE
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B36104000A
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 12:32:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=mWR+CKra;
+	spf=pass (imf07.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786276544;
+	s=arc-20220608; t=1786278732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=7JzxgtsTDUoR0wIQZpzPj4WqrX4aVTLG8zDY2f63lEw=;
-	b=U890vH+8D1tbyDTwmcUADlPZ2Ppm3Tar+SUl45r3zVpY3ajOhvrMp62lz09PqgZ7oCet2E
-	Zzn4nWqqhdDwXkNf2Hs8ZUUgTE2pfr3pwKnR2TWtzZCSH6SFPSQnC/J+FuT/+uUVp6Fuv9
-	uckgy/Cl4sRHZIv2DzmUYMIO2LaCvWY=
+	bh=efYPvCjUsEUH5QronJogwjmNGwQFrMfQwWcLj7jrAeU=;
+	b=4tkD09OnmL3J8TnDuYrCYnRADp7E9+m4wwnerXTJFWD8/ODdPB9w4m26eccZ1elcciNvqS
+	xJqqIM2NEtanZ3wZLaPWP2LlItijSMZhj5qByXwD1Rz3bz+Qy7umnlQ7xp40sqzlIfz4yj
+	7Xt68TP9wzMNKs665Wvq2Vg3zGGrkqE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786276544;
-	b=Ylxu+hcl2LnvSUW89JEcfQCAXLP3YSa3B0oBimDcIIrSWp1WIvs+8a534BlnCkXmtax26w
-	3VSbbh0aW3+RhMjqsmId2p1Bj2RSiLfXt6MtqEc9NEWLiYLHQUjIKv3f3gz6WseoTFWOp5
-	VrHBHilqhZNgxVcZA8r3/S02hbRbvvQ=
+	t=1786278732;
+	b=xHkcGRKOQesBbbhrljPe9iY96/XHfVu1J08NTDfI5zWzbyVO/56IdKEL+RqrQMEWa9gOdF
+	9YlTNxT3o2MC8XUbW/U52jfNtcGZai8BS2PiM3RqS32bbjetudpA5BIdCK8PHnFvq6Vzn/
+	Na0A8LsyAVwkt3Fxeph8i+W4eiG+qjE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XA02xsgb;
-	spf=pass (imf03.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=mWR+CKra;
+	spf=pass (imf07.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7J
-	zxgtsTDUoR0wIQZpzPj4WqrX4aVTLG8zDY2f63lEw=; b=XA02xsgbMqUxmSXwx/
-	7DpIUMxNgzPQJVnA2iAcq/2pbWte18lwpEAQMFnWyaHiurbPUNGrqQyC6HQqZDYl
-	lsWZvmyjthlz1HMWHeRRINrmP327Sfdlu4C2eN/CR10LurDH0GVYz3Dr+RMjqAmS
-	SGV0ohOHAtgjYZYQZMnx7yMsA=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ef
+	YPvCjUsEUH5QronJogwjmNGwQFrMfQwWcLj7jrAeU=; b=mWR+CKrawasrGW0M4h
+	8krXlTsvm0o6MiWm4Xffp2aqsNWBWR3hymZsG9/2R+vk3RBnqPx7i+YgiQUPz2cg
+	O0Cw96QUv2NvHOxsrCI72AlVNqEa37Ohy8rdk+Fj/WaAEWygybi7HJw3yd4RTcqe
+	9NXFu3REv/LcPEZATpKqidFZ4=
 Received: from XLL-9950X.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCnD5ShanhqmevnOg--.50263S2;
-	Sun, 09 Aug 2026 19:55:14 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wB3rvo7c3hqZ8YMMw--.2688S2;
+	Sun, 09 Aug 2026 20:31:56 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
-To: minchan@kernel.org,
-	senozhatsky@chromium.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
+To: rppt@kernel.org
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Longlong Xia <xialonglong@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] zsmalloc: account for handle size in class lookup
-Date: Sun,  9 Aug 2026 19:55:18 +0800
-Message-ID: <20260809115518.3791787-1-xialonglong2025@163.com>
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH 1/1] mm/mm_init: compute hash mask with unsigned arithmetic
+Date: Sun,  9 Aug 2026 20:31:19 +0800
+Message-ID: <20260809123119.3811851-1-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnD5ShanhqmevnOg--.50263S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AFyxKFykKFyUKw43Ar1UZFb_yoW5JFW5pF
-	47Ga48KrW5XF409ws7Gw4qkayfCw1xGF47JrW7tw1S9ryrXr1xtry2gr9093yUCr4DJa45
-	WFZFyw15Aw4DCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrL05UUUUU=
+X-CM-TRANSID:_____wB3rvo7c3hqZ8YMMw--.2688S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF1UZr1rKrW3JFWrtFyDtrb_yoWDJwb_uF
+	4Dtr4vgr43C3ZxKw17WFy5t34jga9rCa4jkFnrCr13J347A345Cw4kGr4avw1DGr4Ykryf
+	Aan0vw1Ykryv9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8SksDUUUUU==
 X-Originating-IP: [240e:46c:1000:421:146d:94c1:77b6:b055]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2wJ7dGp4aqKvPAAA3f
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2xyknWp4czxD6wAA3L
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8A83920002
-X-Stat-Signature: yuiuywqwpm4xgfyjme1k51nao86dcy4w
-X-HE-Tag: 1786276542-558599
-X-HE-Meta: U2FsdGVkX1/NhJIIIyvp5GCcjOuKrrFSRYvTY9dGuhVmzKhBrlAfbIsh0+qSMTcK7nbkRoObFgtG83RdBOuv28TXfUaL4PxSNeYn+lV7xZbiPegfeFV7w8KAqwFN5sHGb288D5kjGtf+Hz2KdqqmG/Ng3ga9Nf8V1/2iKgB0Ej0njwRO+2zmgPKqegXWlRJN/XLWV0y17ywssf/QGthg/TdVPpi+p9ZUCRuVaPy8Y816vvO3iY986Sj4aCbU/pV5QOGlVDdlJ/JHgMXNzZDE1ej9Gb49vltJIhz51TpjgYiMY3AfUm6+aFlpQV7Xjo5LrZ07f18t9++YgQO0Wsu2WJqTtlPp2Ef3eXSUAeXfhOBOwmYy3KQFunGah/WTflK95DwMp6VAsH+PwS3KO6ODCoyWFOT6W4Jgez9FVVIvjVFSdYTk2hbTpSbeYeciHJm+uUjMAupJBw1p6oXCSLED7fJWTXpoNLyJ2PgfTGzn0sb0d4S8wa1G8MFqEOpTMQwOhcdTY7iYiTIdBTRVi+cLhi2QacO1XO1j2o3Q7QHZ6pSfjSb3XWkHRzGWYmsKRYM/7gMc9pIcHFc3p+aExD26Cd0M/QPp9ZuaPlazmGZW/WrkW+GDVW8lXfp7HJHWN/q/Ey4HOqHNaT8wfOcYbKYcTsiPALb5h0aTzh+g096Goq6aVgLslZKxZR4rMbeS5mN0RFFv1YkmE6Eka/L/HZAVo8MexHh++94eZy0yIuY4iA75ySGv/Qqi3BEUD7pCz2HgpC3mgb9bmiF0vWwDpvveSmPkxuqX6BH25UB/Tzolu9NtAyAFaphjlzNvD6WKTVyJXikjnaPZIw/VF5UrLUTXomXT+HbaUzri6NAH3nRlGPHo5kgiLjVzCled6qfJifC7jfyufIdOFCxHg75XGglVdlxwHRqEy7gV4UC4E4jpd4thcG7nxRgqaR4DtHnuqvDNXB5ZU4S2i7+SFKVAOK3
- /6PzmdY9
- kIjNmB/19tLrmINeqBYmHbqCuSEIU9ExJR+7Rdo89NLbaRMOqmrkiPvqxhV2S2mbLt5zf42URX19ae+2aiqWJNoYe1qaSWlfdN0PWge+eJXf1knS47LBj9nyIw0qanrGH0yMhXjRt7wJwN/ifBFhJMuRVWFUJj07wHdQs/KX1tWcivEKRQNV4VejALEFtJwHfvTdvart5twQiVPRvpAw+TBxZ48dKsyzo8aXR6X4EcrBgo8wqbqMaXMF2umuvtjwp8BZrRMCFMq5oejMyy6nCrDubbxroyLbvWrxtSemRQ/CAfKLQL8F3zn7uqtqKpEvPswHkbzH3ZvSmJIr5K8dXRGJrhQ==
+X-Stat-Signature: coeh3ccqnf96czskawpqninh3j4918bw
+X-Rspamd-Queue-Id: B36104000A
+X-HE-Tag: 1786278730-538508
+X-HE-Meta: U2FsdGVkX19izyH0zSSqiuuMyOnX9gisMMuEWDgMKsqRYyT4UFVQxIMhQFIhUtmy6Fwuj3w6iPT4k7/oTpK11nq9rsYGHTPJ6VMiUNTrC3vSp2U6l6rWsTp7vHdO46uSjy3SwOREpO9OPXjmIayRtQsz6B39cQ5IT1buF9KSzeAn/8/6Frh0a5tfzvL+dEzAzIhjyJvLA0lnP1fB3NZzQwpRW9DxmiGDCL5htTqwJo57de1Tt4YSn4UeUqgaIzFTNIyApzo2oqBktYExbNN1Q5uKDw4zC766dbFVbhFMVTYmfSGdl++NuEalK1uvfi6VPLTmEAvb+sojDYuTu1JjJfR39ICUWoZLsD5YjpoxKinIQpQ5p0i/JG6Twngkccp3DgLOF6tmpCaxVE8vjfdvTegRqmXgGkkpp8OlGOHPGFAJGAtQdXu9cbZETrSZYc7+Y1SOuH4AUC9tJv4uG8K5l5Dl+lVXnx2bz4ahhWmv25Tm9DAniSf7pyho5TJVexZd75mivWmeDfIbmeU+XND8oqK1O0IwWyRKTPgVSIAFqbR4oSxyRV+7VEtOSALppnaLV3k6RpsWHha1iqaYkOYFqlF5D/9FI/7DC5S0dyP88A/lAeGrlKf0o8D+BnKFXnLXjgbLySUm2DFaFsdvddK0eHkRI05n7/VBshOtu3dBfM7dTsbPnYNSE8pCBXbb2uzt4HnqeQB6zRuf8cIM1pq5uI65k21oyJOd+zCRDD3wb1IQguLOqnXVNich7AJYnzIRhq4etnJvQv/5pbFyw0sfekm4xR0ZqsyUbYR4lEnd0oP29tYYS/btvmB5E4iF6r8SzbQlxC5UR4XjihuMaZ8AbPrIAzxsnngrA6zUtD1ZFDW/lMTdsM7mM76YAuUIiGqsBaYMNri9opYCmcUGgHWpNSHSvnZNYeO7YoOf1ZkvZNYx+tpuy9jedK2v7ffgIB7BQl06i+H8x6axvI+XeSI
+ zJud1mUq
+ u/y8FpjEz0Y2HBMolVjcIteLeGxHWXUGYG5VcSVYdpVq0ebaz16NpqG8AH8DVoD6t+AlAdzVcfmOpqS5X0Tl5dPtARJID6bY1/tmXLW5viQe7MqMDgUQINt+B2cXr1hv1ST4+5Jo6KblIhocPJGXvbvy95lPB7enBynvV7TPeE5ufdCd3CpAakV4UFd/073Ys6wHBoFyP5fmnyBojXJq1OEVbfC7N9XivmWT3ZPuOFWTy5iQLNziYHJUvttCs91zeAy8aAqgr+FaUZ9uSH2KgDk5nyQpTR1wtiFGoEx1xR69H2lQa3zg2bcX904cmEOBdOs5CeqXGYMsqvCRrSdR3+uJCY4Iy4xRea61KybbH93QO2iA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,69 +93,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-zs_lookup_class_index() lets zram recompression decide whether a newly
-compressed object would use a smaller size class. It currently classifies
-the payload size directly, while zs_malloc() adds ZS_HANDLE_SIZE before
-selecting the class.
+alloc_large_system_hash() allows up to 2^31 buckets, so log2qty can
+reach 31. At that limit, the current expression relies on signed
+integer wrapping to produce the unsigned hash mask.
 
-This makes lookup disagree with allocation near size-class boundaries.
-With 4 KiB pages, CONFIG_ZSMALLOC_CHAIN_SIZE=8, and 64-bit handles, a
-1025-to-1024-byte recompression appears to move from class 64 to class 62
-although both allocations use class 64. Conversely, a 1049-to-1025-byte
-recompression appears to stay in class 64 although the allocations move
-from class 65 to class 64.
+Use an unsigned literal so the mask is computed with unsigned
+arithmetic. Supported compiler settings already produce the same
+result, so this is a source-level cleanup with no functional change.
 
-As a result, zram can accept replacements with no allocation benefit or
-reject ones that would save memory, potentially marking the object
-incompressible.
-
-Factor size-class selection into lookup_size_class(), account for the
-handle there, and use the helper for both lookup and allocation.
-
-Fixes: 7c2af309abd2 ("zram: add size class equals check into recompression")
 Assisted-by: Codex:gpt-5.6-sol
-Cc: stable@vger.kernel.org
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 ---
- mm/zsmalloc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/mm_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 83f5820c45f9..41b03a9ecec2 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -478,6 +478,11 @@ static int get_size_class_index(int size)
- 	return min_t(int, ZS_SIZE_CLASSES - 1, idx);
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 498d62c4ece3..1883fe923ffb 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 	if (_hash_shift)
+ 		*_hash_shift = log2qty;
+ 	if (_hash_mask)
+-		*_hash_mask = (1 << log2qty) - 1;
++		*_hash_mask = (1U << log2qty) - 1;
+ 
+ 	return table;
  }
- 
-+static struct size_class *lookup_size_class(struct zs_pool *pool, size_t size)
-+{
-+	return pool->size_class[get_size_class_index(size + ZS_HANDLE_SIZE)];
-+}
-+
- static inline void class_stat_add(struct size_class *class, int type,
- 				  unsigned long cnt)
- {
-@@ -1021,7 +1026,7 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size)
- {
- 	struct size_class *class;
- 
--	class = pool->size_class[get_size_class_index(size)];
-+	class = lookup_size_class(pool, size);
- 
- 	return class->index;
- }
-@@ -1311,9 +1316,7 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
- 	if (!handle)
- 		return (unsigned long)ERR_PTR(-ENOMEM);
- 
--	/* extra space in chunk to keep the handle */
--	size += ZS_HANDLE_SIZE;
--	class = pool->size_class[get_size_class_index(size)];
-+	class = lookup_size_class(pool, size);
- 
- 	/* class->lock effectively protects the zpage migration */
- 	spin_lock(&class->lock);
 -- 
 2.43.0
 
