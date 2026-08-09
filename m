@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE97C5AD2C
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 04:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1693DC5AD2C
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 04:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 151BB6B0107; Sun,  9 Aug 2026 00:18:20 -0400 (EDT)
+	id 5FED66B010A; Sun,  9 Aug 2026 00:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 129E76B0109; Sun,  9 Aug 2026 00:18:20 -0400 (EDT)
+	id 5B0146B010B; Sun,  9 Aug 2026 00:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03EA96B010A; Sun,  9 Aug 2026 00:18:19 -0400 (EDT)
+	id 4775C6B010C; Sun,  9 Aug 2026 00:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B07996B0107
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 00:18:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0955D40351
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:18:19 +0000 (UTC)
-X-FDA: 85080423918.21.33C4F56
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2D0DA40003
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:18:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWqR2OoK;
-	spf=pass (imf01.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E9F626B010A
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 00:32:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EF0D1C100F
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:32:55 +0000 (UTC)
+X-FDA: 85080460710.09.664EE83
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 786FB140011
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:32:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M8QHrCsa;
+	spf=pass (imf23.hostedemail.com: domain of 39AJ4agsKCDUjfliRmgReURXffXcV.TfdcZelo-ddbmRTb.fiX@flex--souravpanda.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=39AJ4agsKCDUjfliRmgReURXffXcV.TfdcZelo-ddbmRTb.fiX@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786249097;
-	b=cAmTiWbR43H0cLIJzzRLss/Idykf3bIxhthA0Nbnq95Q6lVuzOTH/JTyDA3DEso4gO88ON
-	p/HOOTjPyOcUKYYB2vT/Uinbgz3E2sYSL1jiwBWgqIZG+xSc/JX/ncmTpwJOAFF5OnKAUd
-	hbCATeXRJ/DEc7fxH5rdy+bFZj6EWKI=
+	t=1786249973;
+	b=tXSzkfGjuKUN5U7+Fd3ksS4eo9T9CbrtbJAUN3lpeongRsNojjkgESPON/gn7fXl6eokCC
+	p1XamzU1QpAJEM6gEPdarOz2M221naTka6BGLI9Igncg0U0kQbtahoNQ++U07r6Y5CJ9zl
+	9Ndknq49mjtmukxKvoGL03jkN07IiH0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWqR2OoK;
-	spf=pass (imf01.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M8QHrCsa;
+	spf=pass (imf23.hostedemail.com: domain of 39AJ4agsKCDUjfliRmgReURXffXcV.TfdcZelo-ddbmRTb.fiX@flex--souravpanda.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=39AJ4agsKCDUjfliRmgReURXffXcV.TfdcZelo-ddbmRTb.fiX@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786249097;
+	s=arc-20220608; t=1786249973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3nl1oGlrcfuCJuGBdIMdIDErS4NCVUDQGrDn8WbrKY=;
-	b=qJyOaf41PYdpVbLLvfVKdxWtaWrJTLILRcJaE7T+xHDoBafjXF2cZrBjE2nNSmDCHM7ilB
-	GNfr6pDlg+oNhBJkgNHMExpRh/e8EcgGErBsCAIU5jYZuGu/OydOwfB8xjg9sLB1iEPjQD
-	qTOrzMTwQoAoXIZmB4IFcjRnTKZ5D7U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 583A4600DA
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A6A1F01558
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786249096;
-	bh=j3nl1oGlrcfuCJuGBdIMdIDErS4NCVUDQGrDn8WbrKY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BWqR2OoKgA28BeVh3Tm2EUcOjEZnC39w2oYDR+RumJ0+Zfy9UrFNzlUMMWe6DTogV
-	 Wf+sIzEfuyhbUINfv+0VurPDdJG51M2uZWhkBBvaqJ8kwgtV1U7fjfd5HytQtxk++J
-	 gBB0qGmAr3XMfYyfSES3OSr3PgNSmBkhzFArQlrCuaLeKQrjm8/7N6n6/dywaNFU8m
-	 OFgCa6oc6mUFIs4oRxh/1pEyFqxwCZk10TWBqIurV8I0ZHQb1XBwxoYXgQ+skJjr+G
-	 EVcz/4EdA5ZZ0Qwqiw49wfVW+xBjgZuUyjgTeaIUnvn5XGib+ONyHzpMT7C6m7LY1j
-	 cftS7HORAGe4A==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a1b51723a9so1237165a12.1
-        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 21:18:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpv4l1M6linxhNuN7jDGuRWwFTMMS81FBlDaxcKs1tmvN4Dydl4nZM7cHVg21qqeijs7gfyOhD2Xg==@kvack.org
-X-Gm-Message-State: AOJu0YxJKwW7ZF5pi3zEA5Ti03ZJxEYjuFQcR6JNV9tYKdTOdkamZoSQ
-	2Vhh83VAoukNtnNpiOOtFIvorjMphSJAMiyDh6GPphGQBNzwhDOE44xgBhV0P9dIEgRneVV0z+5
-	Rsg9/ccpreMXZw7WsNLnjeuUj2kUKZAU=
-X-Received: by 2002:a05:6402:5d0:b0:6a1:245e:525a with SMTP id
- 4fb4d7f45d1cf-6a14f26eb8emr17244030a12.19.1786249094682; Sat, 08 Aug 2026
- 21:18:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260807103714.33074-1-dongtai.guo@linux.dev> <20260807103714.33074-2-dongtai.guo@linux.dev>
-In-Reply-To: <20260807103714.33074-2-dongtai.guo@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 9 Aug 2026 12:18:04 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4xxPXVRNXP42CBtMdVXbBZ4E6A997jZmw7HpEUSFAj9g@mail.gmail.com>
-X-Gm-Features: AUfX_mzdXzAu0LbrcSZLHxk0mDTfusrkGeDoTo4UC_Q7T6b0NAW8AH8IYMcYy6c
-Message-ID: <CAAhV-H4xxPXVRNXP42CBtMdVXbBZ4E6A997jZmw7HpEUSFAj9g@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] efi: add a KHO configuration table GUID
-To: George Guo <dongtai.guo@linux.dev>
-Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	shuah@kernel.org, ardb@kernel.org, guodongtai@kylinos.cn, kernel@xen0n.name, 
-	graf@amazon.com, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SFcfVMlaONyojBIsJ/DA4x9Y5kX85WT5BYOtPk8UXQs=;
+	b=AQLBJFqK6cDo7QGy7PoJ6KeKN/kTWXjZkHRm4hIud2SmYUAshj5rA0dTZG5B9kubN9f6V2
+	oMMYG54Kv07Kvbm84GLdL1zyeFAS10kytJOs1y1h9ol5L0rzN5EUxj9vVvjbZP/FKUqDPP
+	276Y+8E7pckC5vzC6eh+CW47yXby1mk=
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38ecc48b3c2so1495455a91.1
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 21:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786249972; x=1786854772; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SFcfVMlaONyojBIsJ/DA4x9Y5kX85WT5BYOtPk8UXQs=;
+        b=M8QHrCsaBb/2Z+U+D1V0uEo+NVxsUVNpuy79VcynEO/siI3vcCD3ptrF3XsZ6plDpv
+         QdGUIQhf9WtDIz3quithyJ3COW4IlntIqniIolkneL+RovJxeq258NwHKjyY9+sm3ODO
+         gyIChGSdxiNRISPUZ11Pli+A/5IxiRqWscIDaSeErS08JD36vKtf2HntPcY7KYXxxJAj
+         zHjLpLwFWXj/aC5wAUV8d6ywsqa86LEfAQFw+llxF3MobZnK5K3tRJD/JvmZ3z/5+rcK
+         /z4Q28VxypyMR5B0m0YV4YeojpgF1NgnkWls/7WpHOf9I7YF8aak/TR5Th4TlJnc7YhX
+         L7SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786249972; x=1786854772;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SFcfVMlaONyojBIsJ/DA4x9Y5kX85WT5BYOtPk8UXQs=;
+        b=ONB8uhawx7Hw3XRdrLoDerjCCvmuaQ6Y0Ag2dHVUtc9Wu+qR28M+HeFxbYQL2+88Hh
+         v39LktW4Q+PdYhuvbPtLbQXI5e4l+vA8YJ9lgTMUlPBYWfRuFTKeWNW5LzLTJWo8idnM
+         qeHHOgeVKk60uV1fUoJKNIUJsVCZFsDbSHbTAmz62IlpXVyuFjUb6YNnsHKduDK3NQAa
+         kQ45ydFez/qoDObtKxut/KVa+Ud6AlbrkHc6i41HWezhGOvM+deMUc1B4WLpy8cXROud
+         f2L8ugxNPRV+e4NpYjCmfaYHihp9yQRc/ROhYJM5avtrUzY3VkcTa6om/rRiwMw4Ms4g
+         9h8g==
+X-Forwarded-Encrypted: i=1; AHgh+RqbLyoY5FYKL6vtFq4RQJj6HnMz/frs/xgJAo2xNTcOjfICCl2ZzqGBQfTlrmvVdWehZMd8tE8SXA==@kvack.org
+X-Gm-Message-State: AOJu0YzfvnfWGDScerqvDHD+gGreoPBz+pteD39z/oCNi0ojcC2q3mVf
+	Zfj7yOvpjkvjxGPcU/h6XevK8+/Eu4/bMG+HAmh0Q79gkdqbjHXDM8Prj6z53I0DZ4FaCqeFTCL
+	KL1uEZ0xpoCXl8dstsU6sb79vHw==
+X-Received: from pjwo24.prod.google.com ([2002:a17:90a:d258:b0:384:f6e1:ff87])
+ (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2249:b0:36b:bec8:94c5 with SMTP id 98e67ed59e1d1-3928242ffc4mr9674877a91.10.1786249972002;
+ Sat, 08 Aug 2026 21:32:52 -0700 (PDT)
+Date: Sun,  9 Aug 2026 04:32:50 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260809043250.2917406-1-souravpanda@google.com>
+Subject: [PATCH v5] mm/hugetlb_cma: Fix null nodemask dereference in hugetlb_cma_alloc_frozen_folio
+From: Sourav Panda <souravpanda@google.com>
+To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
+Cc: usama.arif@linux.dev, shakeel.butt@linux.dev, wangkefeng.wang@huawei.com, 
+	anshuman.khandual@arm.com, david@kernel.org, surenb@google.com, 
+	fvdl@google.com, gthelen@google.com, hannes@cmpxchg.org, riel@surriel.com, 
+	sj@kernel.org, vbabka@suse.cz, mhocko@suse.com, bjackman@google.com, 
+	zi.yan@sent.com, souravpanda@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2D0DA40003
-X-Stat-Signature: 1yejyn4ck7sk6twdq9bx89s6u86ffaso
+X-Rspamd-Queue-Id: 786FB140011
+X-Stat-Signature: rg3j6u717j6g9afjx7rqc3wsweirpjif
 X-Rspam-User: 
-X-HE-Tag: 1786249097-683819
-X-HE-Meta: U2FsdGVkX19/5Ya045nrDdVwqSgSvNIBuav0zZCaEN1rRzb2gDKCU0PJpC8INpaQBQdy2YliTzm6rchMC9a40D9RSSE898h1lEaGQiGgI6KlJT61nBJUVFZU+w7/6cOtF7Tb7SWzg+oudzyLaCvqOPgIwKHEAMvq7cogDl5laGDKFoID4l8kmuJbcMs78P+JSZ69A1UAXT4C4xgwrlBtgj0OkbkbGmJ7dE4v6x9QV8gIXDzHu8Qb6DKKY8Z5bAtoSgxXTkgeXXvkRrDBuqLfj7EcQ+Q1IQ9u8vxVPeQuqhYIByy1ULRXSS3O7dfs/5WV3mkHgJxkclJaSaT/YIFn3f3uJufeUvqU9Df/g5Tgv3E5X3qMk2ygjceB/Zs2eJ2deazO5tOOQ0WJEk3PQbL3N5LayNiyJMf6km+50wJuGqT7QgFsYFRdhN/9TjlEmSB+ja1Q1fEUMIokMB6cZXToHj4Y8/ipR7XI22lEWklQpP9wmrorJoKeQL5OgPw+2xCSKhbM0Q4r5zXulH72bjFwGt4CCxqpsacDe1Kyf/8JruxSm8vMqt8meUMlpNqe8gUgweagCUMjtdhFRBTBGmA9ikN+GGQC3NMT+VdG0BSJo80VipGzlgBF7qZExm82hLQwGcT9f+OZTidGjT+dAIF8XVMTRviZVcyh4UvPOxWj7O4Yn7ajye0tTAl9CTceIWB2wP59V/hl3a/LCfY9GrOUbMpz49F8I1cSeW0sT4gA+NFrkOCmcCdlF7ZwdZC5T/zHwjY9gu8S4FVW6mxPpzzceO16huBlX5OC/0cY0e5QpS8h9pA/RakCHljqaYM+o6R9Y2rWoFNZgMccHcYbxfKLV8LzZJMt/Miq2gdYME2mWdQfLR8FdlnQy8eSm5fEdXxJ79txF+HZv7OsCbUYFllP4ySVDmTEEVY6PZKe2NYxO1vEpVR0JkyNpwkjlVyunLKueAoiVcdM6akAkOJKaM1
- F7mgxjl0
- yveR9jnVcjr/iLh5AVeejiGw/mFy3+m2CGPyuVPZ6k+ngGTNHfUfyKGba/JzsKO/qPJfzB3xdmyvV2WCEeprWGMlsTjCLAmM4NMDNQC9Mgi+7NWOStPFjiSV8dJoFHmMa1Slv/LoDmh41LuqtyJuESDlp7z9q/FRUy8CpVm0Md1/8Uvk+Ew8CX6CyzxMphE9C6a7wLVp+e9ufkRVonZmHGxdu2HUsqC6aiIUf8qVs3WhcF2kklL7vjPm+Ei9O3RTZo+hY1lqiugxkZG/QdAjhwH13FMADValQhJwG
+X-HE-Tag: 1786249973-981728
+X-HE-Meta: U2FsdGVkX1/wNtnmCmB3bvUTdvBWB3o1DRccqgWL590glzgy2VTFDNS7OKnWYklkM3Vd7OC3waP0yz8TWc53eXUet8qCY+ihex1qjfQOf5Q+IZtVuyz0/GmiuEJbK1uYznyv6QtnDki3s4xqxNgrTp7BvFErcJcPrVXgiFjSG0Eep92fY2vA0qnIr9NvLyO1+PD4G9sL1+S8vXk2MHgOHcMAeozZWnT0nXEDa1izbvzAzAxs7NQxoUchQsnPBUupPc3s1GdaTB6jGSU28RTK6PjNf9SBboO+q5x5biSuMAdoqbg/5FCv3CfyvYhhzrfU+sALBCTPpDYokbwyddMdLm2ADG422Sno69c8NILb55mUvnJ9lFyBePwzaU4gPlA9Gtc+MWpGQbTaLiJHoYL6iI/lfud4uVMrWaSyZ/204eFtF2BxQBAM+UweKBajEghJyHs9npV9/4qkme6Vt+x9ycMrUPznsIo6i/hvGqlzrHwCkDK8N1CSPYoXK3s9soTRdw6xboa7hMfMeLz1pLoME/OrBa+8tnmpRoAz8tx/+wqUvHvNBVcUe63w7FFLDZ2TvHBU91a2QTh7j4fgY/dduAfsaglY84zowuND92YXuOdQujuf0RuIJt2nCBddzZ7oGke69aAYswnkfcQ689PV+LK+Uz1k81hK8hENjrbpXL6O0U3MKGwBK/91roDYA+kmNHpaE4IJ6IQejAFI/JPCOCOouqhwjwRgFuKYehj3m7M06UwCwpsBnxndvRdUQ79KC0xOiXaxSasganoY8Jm9LgVshL7E9skh+c/njzkQNrPii6NjQZLY6x3rDD0d9uu6clpkKs1jeut5/B1Bk08EM+gdOt+/zgt0h1+hDXbniL+VUo81Pt2KRMYV2WidrJTuaDPm27bonutltufj/yELCkFYe13x77+Eo25KMqQh+cTLc0nvVS3R0FjJN2Ax9LlBcBwL8tM8mWPpD22jUJc
+ 5C0ADn2k
+ kGzGM7ctdQEPI8A2sYekk8PhfBbN6B6wzqBf/0jSxKpLrNCqSe3mrBrMFE7BIkZuymSLdG3AGdVEA4T54bnBQ4fIrEYI/Uak6LvTPMIVVtXletbBRMqaeiipEtLYkhHrjVxphpCw53UOkK1ZGkgEV+GX8FoPfJGBlOOhaywi17cXAFN1vaZat0+raf6ursZpPsjdNOaPdYu6Rq4vSg9EBizMG1r5r5iD2QAQZgrgIAVdCT/91509LoJTLDXJ0PzmAHi43P3mHq/m/Os4HFZYO0YqYnbg3bdnA8JY1EXrPELfNtMkQjOLkqvfv+520a3uQj9fKdhtj7/1+w+PRzw8PauW2HMY5BunikyFpfAjB28ob0FuKUWMRnqt9naXVMoe3nmucdJ2RXV10oMmv5yHzrG9CSEMwEE/WS2ut4/QpMAvngE5u51HgC7Bm17KGt2+2Yb4leoiAPr5fy9zh1oMr48RXwdm7XML5bb5pa8pRlX/uKQC9IS2uJht6OFuz5P1Mz86S/qwGUp/uomCX04Cmrl+5pm/kL326YfDONIeAO9K0VDy1A/649eYYn2AApKIDcswMHnddW3KptQBormboVQFobBQXWyx0kIpWWU9kXBsUpmVKoFLcstpQgdTe4ZPpV1gJlGxBUFYq2c+xv8diB9h7DdS8Ibu12Kq6dl2fBJAAIEE1H4GgsYijtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,108 +109,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, George,
+alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+alloc_gigantic_frozen_folio().
 
-On Fri, Aug 7, 2026 at 6:38=E2=80=AFPM George Guo <dongtai.guo@linux.dev> w=
-rote:
->
-> From: George Guo <guodongtai@kylinos.cn>
->
-> Kexec Handover (KHO) passes the address of its state FDT and of its
-> scratch area from the current kernel to the next one.  On architectures
-> that boot with a device tree, the current kernel writes the
-> linux,kho-fdt and linux,kho-scratch properties into /chosen, and the next
-> kernel reads them back in early_init_dt_check_kho().
->
-> Architectures that boot through EFI without a device tree have no such
-> channel.  LoongArch is one of them: its efistub passes the EFI system
-> table and the command line to the core kernel directly and never creates
-> an FDT.  x86 has the same problem and carries the state out of band
-> instead, in a struct kho_data in the setup_data chain of its boot
-> protocol.
->
-> Add an out-of-band channel for EFI: a LINUX_EFI_KHO_TABLE_GUID
-> configuration table entry, under a randomly generated GUID, pointing at a
-> struct linux_efi_kho_data.  The
-> current kernel loads the structure and an extended configuration table as
-> kexec segments, then switches the EFI system table to the new table
-> before jumping.  The next kernel finds the entry by GUID and calls
-> kho_populate().
->
-> The structure carries no version field.  An incompatible change to the
-> layout must use a new GUID, which is the usual rule for EFI configuration
-> tables.  The handover payload itself is versioned separately, by the
-> compatible string of the KHO state FDT that kho_populate() checks.
->
-> This patch adds the definitions only.  LoongArch is the first user; any
-> other EFI architecture without a boot FDT can use the same channel.
->
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  include/linux/efi.h | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index ccbc35479684..789ab9e4312a 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -422,6 +422,7 @@ void efi_native_runtime_setup(void);
->  #define LINUX_EFI_COCO_SECRET_AREA_GUID                EFI_GUID(0xadf956=
-ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
->  #define LINUX_EFI_BOOT_MEMMAP_GUID             EFI_GUID(0x800f683f, 0xd0=
-8b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
->  #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID    EFI_GUID(0xd5d1de3c, 0x10=
-5c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
-> +#define LINUX_EFI_KHO_TABLE_GUID               EFI_GUID(0xc941b6c7, 0x7b=
-3f, 0x4af6,  0x9e, 0x50, 0xfc, 0xb3, 0xa8, 0x86, 0x8a, 0x17)
-I don't know whether it is allowed to define a new TABLE ID while
-doesn't touch the UEFI SPEC.
+Additionally, hugetlb_cma_alloc_frozen_folio() previously attempted
+allocation on hugetlb_cma[nid] without verifying if nid is included in
+the caller's nodemask. Adding a node_isset(nid, *nodemask) check ensures
+the initial preferred node allocation honors the memory policy / nodemask.
 
-Huacai
+However, hugetlb_cma_alloc_frozen_folio() dereferences the nodemask in
+node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+leading to a null pointer dereference kernel panic when nodemask is NULL.
 
->
->  #define RISCV_EFI_BOOT_PROTOCOL_GUID           EFI_GUID(0xccd15fec, 0x6f=
-73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
->
-> @@ -1271,6 +1272,29 @@ struct linux_efi_memreserve {
->
->  void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
->
-> +/*
-> + * The LINUX_EFI_KHO_TABLE_GUID config table points to this structure.  =
-It
-> + * carries the kexec handover (KHO) state from the current kernel to the=
- next
-> + * one: the addresses of the KHO state FDT and of the scratch area.
-> + *
-> + * This is the handover channel for architectures that boot through EFI =
-without
-> + * a device tree, where the /chosen linux,kho-fdt and linux,kho-scratch
-> + * properties read by early_init_dt_check_kho() are not available.  The =
-current
-> + * kernel loads the structure and an extended configuration table as kex=
-ec
-> + * segments; the next kernel finds it by GUID and calls kho_populate().
-> + *
-> + * The layout is an ABI between the two kernels and is fixed.  It carrie=
-s no
-> + * version field: an incompatible change must use a new GUID, and the ha=
-ndover
-> + * payload itself is versioned separately by the compatible string of th=
-e KHO
-> + * state FDT, which kho_populate() checks.
-> + */
-> +struct linux_efi_kho_data {
-> +       u64 fdt_addr;
-> +       u64 fdt_size;
-> +       u64 scratch_addr;
-> +       u64 scratch_size;
-> +} __packed;
-> +
->  /*
->   * The LINUX_EFI_MOK_VARIABLE_TABLE_GUID config table can be provided
->   * to the kernel by an EFI boot loader. The table contains a packed
-> --
-> 2.53.0
->
+Fix this by checking if nodemask is NULL in
+hugetlb_cma_alloc_frozen_folio() and defaulting it to
+cpuset_current_mems_allowed (safely read using a seqcount retry loop).
+This ensures that the initial node check and fallback loop safely honor
+the task's cpuset without violating cpuset constraints or causing NULL
+pointer dereferences.
+
+From a userspace perspective, this bug allows an unprivileged user to
+crash the kernel (trigger a panic) by requesting a gigantic hugepage
+allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+configured on a subset of NUMA nodes.
+
+This can be reproduced by booting a VM with two NUMA nodes, restricting
+CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
+hugepagesz=1G hugepages=0), and running a program that allocates a
+1GB hugepage area without reserving, restricts allocation to Node 0
+using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+
+  void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+                   MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+  unsigned long nodemask = 1; /* Node 0 */
+  mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+        sizeof(nodemask) * 8, 0);
+  memset(ptr, 0, 1UL << 30); /* Trigger fault */
+
+This results in a NULL pointer dereference:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+  Call Trace:
+   <TASK>
+   only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+   alloc_surplus_hugetlb_folio+0x6d/0x100
+   alloc_hugetlb_folio+0x3c5/0x660
+   hugetlb_no_page+0x3d9/0x650
+
+Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sourav Panda <souravpanda@google.com>
+---
+Changes in v5:
+- Replaced defaulting nodemask to &node_states[N_MEMORY] with safely reading
+  cpuset_current_mems_allowed using a seqcount retry loop, ensuring fallback
+  allocations comply with task hardwall cpusets as suggested by Usama Arif.
+- v4: https://lore.kernel.org/linux-mm/20260726072935.3513996-1-souravpanda@google.com/
+- v3: https://lore.kernel.org/linux-mm/20260705175119.440599-1-souravpanda@google.com/
+- v2: https://lore.kernel.org/linux-mm/20260704174930.2885785-1-souravpanda@google.com/
+- v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
+
+ mm/hugetlb_cma.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 39344d6c78d8..3ae9347078e9 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -3,6 +3,7 @@
+ #include <linux/mm.h>
+ #include <linux/cma.h>
+ #include <linux/compiler.h>
++#include <linux/cpuset.h>
+ #include <linux/mm_inline.h>
+ 
+ #include <asm/page.h>
+@@ -30,11 +31,23 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 	int node;
+ 	struct folio *folio;
+ 	struct page *page = NULL;
++	nodemask_t local_node_mask;
+ 
+ 	if (!hugetlb_cma_size)
+ 		return NULL;
+ 
+-	if (hugetlb_cma[nid])
++	if (!nodemask) {
++		unsigned int cpuset_mems_cookie;
++
++		do {
++			cpuset_mems_cookie = read_mems_allowed_begin();
++			local_node_mask = cpuset_current_mems_allowed;
++		} while (read_mems_allowed_retry(cpuset_mems_cookie));
++
++		nodemask = &local_node_mask;
++	}
++
++	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+ 		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+ 
+ 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+-- 
+2.55.0
 
