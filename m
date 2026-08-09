@@ -4,86 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A6A0C5AC80
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 04:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74ED0C5AD2C
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 04:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B92096B0103; Sun,  9 Aug 2026 00:02:41 -0400 (EDT)
+	id 260EF6B0106; Sun,  9 Aug 2026 00:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43056B0105; Sun,  9 Aug 2026 00:02:41 -0400 (EDT)
+	id 236D16B0107; Sun,  9 Aug 2026 00:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A58FD6B0106; Sun,  9 Aug 2026 00:02:41 -0400 (EDT)
+	id 125C96B0108; Sun,  9 Aug 2026 00:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 553516B0103
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 00:02:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 003971404AE
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:02:38 +0000 (UTC)
-X-FDA: 85080384438.06.B4AF1F9
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BBF622000F
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:02:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf13.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id C2BB26B0106
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 00:16:42 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 224BD1404A5
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:16:42 +0000 (UTC)
+X-FDA: 85080419844.24.0049636
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 297A080011
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:16:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xsif203G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786248157;
+	s=arc-20220608; t=1786249000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QhcNA1MMOHR95k6P3pb19IpAD2Ulk/ogPeYzic9O9Mc=;
-	b=0GfveARKB/wKdUjcCH/8Sj25fvhS05Zshhx/wEI9cHLVudnLi+ltsQsRuaVVHZJ+xEisPj
-	8FaZpRjlzdtu+KTVZ/XHKLWj59F0MjtI3tUfZWBkH9gjGBxMcpkkVsIS0SLTP2LNF61uD/
-	9vF+jwmk9Qj0lcV/nRzrz5PZP+DdDBA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WEJfTEDHJt9NLvc9wWmqXGDB9HdtwB+EfSEcVZv5fUE=;
+	b=uelY53yFNGCrKqTSTF5BmOBu8VlEwUz1t89wEtShWeCudGh/oYz07/zBXwE+Z+BNhKnQM+
+	cBjiwnEIlrWGvV+SQq5Tf2ujAaiagea9ksXrebQ6vlLHZZnsAcjvKSOMXhwnUeW1WgJEJH
+	vthkFINi1UC35faI8Rmxuf0m8SGb+mA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf13.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.53 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xsif203G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786248157;
-	b=EksWHFrAAv70TUMbPpWklVnCrEzHcpCFbD/pWaRZVcmWFZEkOcxHqf+7ET9q/BUlv3jPxb
-	RW117yywdbOpdoOA1RXqv2sTehj2DWYstHPgtRom02o+hixMA5X0OscnQCcIk7Y29AoAJz
-	z2xqBWAnXlzxEK0verwyPZNgc6vfrE8=
-Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
-	by 156.147.23.53 with ESMTP; 9 Aug 2026 13:02:33 +0900
-X-Original-SENDERIP: 156.147.1.125
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.125 with ESMTP; 9 Aug 2026 13:02:33 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sun, 9 Aug 2026 13:02:33 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>, Jianyue Wu <wujianyue000@gmail.com>,
-	her0gyugyu@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm, swap: give hibernation swap slots their own swap
- table entry type
-Message-ID: <anf72SvjPu0yt5wT@yjaykim-PowerEdge-T330>
-References: <20260806190636.446205-1-youngjun.park@lge.com>
- <20260806190636.446205-3-youngjun.park@lge.com>
- <ancjiz6-qyC0ki4O@KASONG-MC4>
+	t=1786249000;
+	b=Uo8WUXWbcFF1O9VXw6pJ2T5b1nWsEqWyY3/GRH1UqxSBWtFtutxGepk5705oBap0/bGx0m
+	j+NTDOFGX31+Epg0AVfM13s51Z77vOlq8G86X3mpV2lvFuIT3IF4jtiYhmkZgcgWfqyEjh
+	dajq4aVLr6Ohl11cADHBrS5J7Jo7MUI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24E7C43E83
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:16:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24921F00ADE
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 04:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786248998;
+	bh=WEJfTEDHJt9NLvc9wWmqXGDB9HdtwB+EfSEcVZv5fUE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Xsif203G7VaCiG1PzPp0/RgnSSQfomKj7Kse/6bOn1VHXaop30K6haKnOAjMUY3Tj
+	 paKF5D+xUzXjmf4x3xQCk2eiN+n8no5VvwZxhYg1idvcIPFqEa3Sp1DYIRembuocMu
+	 Hzx2RTRxB6BSKfKu8NtMZNeYERcEvHQCIWwkohbYj0Kg8DKKOoyLZC/R4NtbBocuPV
+	 hW54pk8rqAxUdxqHZKKUXbcI2TugBAqQx6/BaaJRNiEMAr1geSKFblNn7FGMZEldhB
+	 xa3WceM6CrRQbJXL4yXsl138USOVgPxo5mlV6nmzlQ5HCCiyP84SMXA+iFGynQW7ms
+	 1tROfhJPh9sYA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-698ae09e356so861742a12.2
+        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 21:16:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq85LuXKOgqI+6tvpkZ/T7Vxzv3ItfsfZoIycBMumFH9v4JezQNtt7cxjMYvpX6iy7AS8dM2VBHeg==@kvack.org
+X-Gm-Message-State: AOJu0Yz+zT2PbNrJRiSUzfbcrt+/4y44psvqbhmBC3117pr/0QBM2OcG
+	TVMdzJlK1UxWplAltnY0HrQsb1wP/Ff+aTtO6Ub/IwS8UlhQ4NauWfLZl2oOu6mRZLZoTxKKRh7
+	B/Fw0KZYV420dzaC89b37qamBSU11ogE=
+X-Received: by 2002:a05:6402:916:b0:6a1:2efd:8687 with SMTP id
+ 4fb4d7f45d1cf-6a14f132690mr17469409a12.14.1786248997461; Sat, 08 Aug 2026
+ 21:16:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ancjiz6-qyC0ki4O@KASONG-MC4>
+References: <20260807103714.33074-1-dongtai.guo@linux.dev> <20260807103714.33074-5-dongtai.guo@linux.dev>
+In-Reply-To: <20260807103714.33074-5-dongtai.guo@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 9 Aug 2026 12:16:25 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
+X-Gm-Features: AUfX_mznkXpFMDYsM8EQmNDhdR03Th0a7eD16k8LboAyBQB4rd5wtvUyIPPIU6w
+Message-ID: <CAAhV-H7+1bv6ULPO1+SZ5R=XFxNTh+54rqnYQUAW26kF83kiMg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] selftests/kho: add LoongArch vmtest support
+To: George Guo <dongtai.guo@linux.dev>
+Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	shuah@kernel.org, ardb@kernel.org, guodongtai@kylinos.cn, kernel@xen0n.name, 
+	graf@amazon.com, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Kexin Liu <liukexin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Stat-Signature: 61gxc1rn4maktuzxwzq3a7u694453utt
-X-Rspamd-Queue-Id: BBF622000F
-X-HE-Tag: 1786248155-365005
-X-HE-Meta: U2FsdGVkX197XSTQE5fp9sjOBYZlG7ydwTDY0w9NC1XIwwOBgaPg594hVyQrsRNCrq/Zp34kL/haZQFBIcWO5FPbi8VRZDQ3Gkqby0BjpSBFYolPjugKXnf4QN1fdVXAchL+OQP5cjrJh1U73+foFfwVLfjozOtEfJBaGVCK0ZDvYVEStKo/KnrvJmoBfNjFIOO0RtTHb+douQCTiMG0tWr3ViUxFY04BBIO979/uYBPKAhcZSg4w+8jaU7CtvimVtjVTzWKowLJ6s68U21o/DjGnnKy99OE0P+IE4xV5E5i7VQl3T/Rrm220ljOqlDGfxlVtDppoEkLzFFxHp3SOvR5ffRUjKaaVJayFkMDr9oDkZ2b1J1Xq8iEOvhA92EqY5a9QGyAPbY71FS73CTDd7ai/vKJti0TrAXnEQVpKuZOj/GhIE121kQ1PhsgULG0lzQXhrgVE6MnocWN1eKo4i6A89KCjpdGD6QmSe1Bucao5DPgeCkOIv2WjU9bPvJBL2IEHpZ21twFpiilayGMqzVmyKSBKcvdgmId7BqsDQWZPQpqPoycFbmq4Ukm0hD2dKR/KPojtufPa+cGuuYriMlYTXNeYsT3RoOXWTG74rg5+c17mQROaSAdfM90fkr30crEyTof6A+tWLEtvG+tH8p/8BQ3/rIFxWRY8qFVy515H82KbspFYqYpPpDU4lqs2dXAwCk09r2H5DiV4KNbwW55a0dvidulS31IssmhreUXbB6ULR0yw1DTruN6plQ+YMwPsfS4CEwxS2wYK9BAZGm+KawzHZk22+I6McSw9lI3BQZ/PVfLp+m8mWWAO21DXb5r6g2TDrYm34Luf9bnbJkFUIedF4K0gEw8MjyJi64s02CGkwFsf5URxP7mu0YO0oHf/d991K733r5890Pcdp7wT5+zdqOUKSAsddKkdlp7Pc1vjMERbctoeX4WQNlobkTP4VzoZKY/I4BuM0M
- lx05Q0YE
- SlpVBm7vp+MSrUaAiNr1e2dixLK3WailEfMH16hiw2KKeWdxn6/QTaEG3viidF6TpPCChnlguMd86Sl+etLTZoPANkBk+TfuEHEGK7KU+ZsZ2FzHvA0sKpSJa6jg7g0qEBQk7cJF/+sf9bELirfhaH8CI+u+l+nC4IxBBISSGsGMELBiZYW03e8SDJzz6BccpScKUAi3KZuZWhDmf7umvBhX+ycHnVhy/2irpUeGrsed7tltSBeD4qgoZwoOxZskaY7Pp
+X-Stat-Signature: wr1r7nieee8ujdb5x57cx35zmpgp1od5
+X-Rspamd-Queue-Id: 297A080011
+X-HE-Tag: 1786249000-795897
+X-HE-Meta: U2FsdGVkX18dPkLB6BIhW060iN6uAEmpncYXrok1TVLhmHajUdBdr35thvap2RhvtSU21E+2sHk623ryfY0lab2f8/BD5REWEuLiZJhXK9t3cxeJHAYKXaCq9EjTWZJsLiVp98lpeLvQwV4aZh8P/Ni+PSVnejpkXXJJw0Sbc5bbmLOK2ZEwKST6Rgo4pGUm8iZ3pWEGZso5GuXO/Io2zbJTGBUVYWtv8OwgLcuetFmdHbpiSvkeJNh9Zu33CL2EradeIBfS7040S3riFYuEHctJohHgvrqK8B4viKYu7KShQDV1r7ma3jXB+nr2dWDVaEm+NfIV97JdqxNa92dJxX76v38z8LMwV+iLIZb3hgtF60QLZsydJK/vNuBs6BSEQ5HJE4PezKEnrgtOHt3XRGLNWAUzLyQO3znxkZjedg6ZBkCJEwyEoLSeLxwx64nmGx0PwlJLXPnJqr5+KxMp5a95H6t0+dG40Ix6oO4isAphZdJ51tu8oY1BPI8fnmtZAzuZXMdUWIshG1OQUoNPzzKL30/ClUkXxRVo3qfn+6e82jZ0s9Y19/F8obqkJZoxCmoBHCwWpJUsB0qKvOtTI6TmCtTyvNmKfNP2Hh50X6hOOsrS6Wlur+5My5jzVPUOunPgtsBK71GPZTfxQc5cHFw2audsa4B4w2NDZ3s12fSdTh3bjOiLv5rkRpYosPHr0pNzi3Uv3E8BBAsdgWod7QfuX31x0hd4J3/kplbEiZHHq2Nq6jjrveTIO5BzZ+Rn5fIstfBQAf764cyXhIIaozMNVyZjueZ52trXfBvNlWHJqYuLHXRqRTCjplsfvr5Xmb/PKCgkAjFcPPeThLlYUtSta/y2wWBMr+ONElS72lfdEOeFWnFVWUYklkdvFVzb75RXS5EZNVuJJ09C36qLKVMW24J9kwzqb2yW2a2YB4C2cOdJswZ8bSCUU1AAFBpwWg1mhfU9NL5hlpKYTXu
+ CKxiH1+V
+ jOpCokuR589kiyt+SXyBG4o8YxYLZSnwjcrd7xEiXlVKjI5yOOKHeB7/fb/e07YQYxiDxiGGfVqAL6kHiita3x2J9uiuD3XU2dPvro6Cc+JjcwlTMzilFkusKUYL0fq9rodX+zZ9kU5GoSL8NIkVY4tzlOOzujLzoSFUb3oFIgcNLFf94ZM4YSg1gpE/4hg5QTeg6FBxu22k/9fQjX03FQT6KYLsi5DtOyr/fbzhXJr+ExrA/j+Poc282cgCwGqxb0bECNrKRHx618bEkE23i0gSIAMN3Cj6DCquT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,128 +106,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 08, 2026 at 09:25:47PM +0800, Kairui Song wrote:
-> On Fri, Aug 07, 2026 at 04:06:34AM +0800, Youngjun Park wrote:
-> > swap_alloc_hibernation_slot() stores a fake shadow in the slot it hands
-> > out.  An anon slot swapped out with no workingset shadow looks exactly the
-> > same, so nothing in mm can tell the two apart.
-> > 
-> > Give hibernation slots their own type.  Bit 4 and every bit above it are
-> > set, the same shape as SWP_TB_BAD.  Bits 0 to 3 are taken by the shadow,
-> > PFN, pointer and bad marks, so bit 4 is the first free one.  Neither type
-> > holds data, so the value alone says what it is.
-> > 
-> > The entry has no swap count.  Hibernation only allocates and frees a slot,
-> > so a count would never change.  swap_free_hibernation_slot() frees the slot
-> > directly, there is no count to put first.
-> > 
-> > The next patch needs these slots to stop looking like shadows.
-> > 
-> > Suggested-by: Kairui Song <kasong@tencent.com>
-> > Link: https://lore.kernel.org/linux-mm/abp7aDgYLrxF3Me8@KASONG-MC4/
-> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > ---
-> >  mm/swap_table.h | 12 ++++++++++++
-> >  mm/swapfile.c   | 13 +++++++------
-> >  2 files changed, 19 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/mm/swap_table.h b/mm/swap_table.h
-> > index e6613e62f8d0..c1c516bcc17e 100644
-> > --- a/mm/swap_table.h
-> > +++ b/mm/swap_table.h
-> > @@ -30,6 +30,7 @@ struct swap_memcg_table {
-> >   * PFN:      |SWAP_COUNT|Z|------ PFN -------|10| - Cached slot
-> >   * Pointer:  |----------- Pointer ----------|100| - (Unused)
-> >   * Bad:      |------------- 1 -------------|1000| - Bad slot
-> > + * Hibern:   |------------ 1 -------------|10000| - Hibernation slot
-> 
-> Nice!
-> 
-> Just one idea, would it be nicer if we have:
-> * Hibern:   |   0   |------- 1 -------------|10000| - Hibernation slot
-> 
-> Or:
-> * Hibern:   |0..001|------- 1 -------------|10000| - Hibernation slot
-> 
-> That way if we accidentally used __swp_tb_get_count, it return a actual
-> meaningful value instead of MAX. Either 0 - the slot is not used as
-> a countable ordinary slot, or 1 - the slot has one user: hibernation.
-> 
-> Maybe 0 is better at least for the intermediate commit, see below.
-> 
-> >  
-> > +static inline bool swp_tb_is_hibernation(unsigned long swp_tb)
-> > +{
-> > +	return swp_tb == SWP_TB_HIB;
-> > +}
-> > +
-> >  static inline bool swp_tb_is_countable(unsigned long swp_tb)
-> >  {
-> >  	return (swp_tb_is_shadow(swp_tb) || swp_tb_is_folio(swp_tb) ||
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index f5dfc7e59191..a337387f7431 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -928,7 +928,7 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
-> >  	 * upon folio unmap.
-> >  	 *
-> >  	 * Else, it's a exclusive order 0 allocation for hibernation.
-> > -	 * The slot starts with count == 1 and never increases.
-> > +	 * The slot carries no swap count and is freed by offset.
-> >  	 */
-> >  	if (likely(folio)) {
-> >  		order = folio_order(folio);
-> > @@ -940,8 +940,8 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
-> >  		order = 0;
-> >  		nr_pages = 1;
-> >  		swap_cluster_assert_empty(ci, ci_off, 1, false);
-> > -		/* Fake shadow placeholder with no flag, hibernation does not use the zeromap */
-> > -		__swap_table_set(ci, ci_off, __swp_tb_mk_count(shadow_to_swp_tb(NULL, 0), 1));
-> > +		/* Exclusively owned by hibernation, must never enter the swap cache */
-> > +		__swap_table_set(ci, ci_off, SWP_TB_HIB);
-> >  	} else {
-> >  		/* Allocation without folio is only possible with hibernation */
-> >  		WARN_ON_ONCE(1);
-> > @@ -1929,9 +1929,11 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
-> >  		old_tb = __swap_table_get(ci, ci_off);
-> >  		/*
-> >  		 * Freeing is done after release of the last swap count
-> > -		 * ref, or after swap cache is dropped
-> > +		 * ref, or after swap cache is dropped. A hibernation slot
-> > +		 * has no count and is freed directly by its owner.
-> >  		 */
-> > -		VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1);
-> > +		VM_WARN_ON(!swp_tb_is_hibernation(old_tb) &&
-> > +			   (!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1));
-> >  
-> >  		/* Resetting the slot to NULL also clears the inline flags. */
-> >  		__swap_table_set(ci, ci_off, null_to_swp_tb());
-> > @@ -2201,7 +2203,6 @@ void swap_free_hibernation_slot(swp_entry_t entry)
-> >  	pgoff_t offset = swp_offset(entry);
-> >  
-> >  	ci = swap_cluster_lock(si, offset);
-> > -	__swap_cluster_put_entry(ci, offset % SWAPFILE_CLUSTER);
-> >  	/*
-> >  	 * A slot with a folio in the swap cache is freed when the folio
-> >  	 * leaves the cache, the same rule swap_put_entries_cluster() follows.
-> 
-> This idea is right, but is the patch in the right order? If readahead
-> tried to add a folio to a hibernate slot by accident, seems nothing
-> blocks that in the current patch, and that PFN slot will have a (MAX)
-> count value, and considered countable? If the that folio is somehow
-> reclaimed, we got a corrupted shadow (hib type is gone)?
-> 
-> If we have the count part of a hibernation slot be 0,
-> __swap_cache_add_check will fail natively, seems there will be no
-> such risk. A few existing helpers can also help catch potential
-> wrong freeing of hibernation slot. (underflow check).
-> 
-> The layout can be changed again afterwards.
-> 
-> How do you think?
+Hi, George,
 
-Yeah whole thing you addressed make sense.
-I will follow your guide & review and send the patch soon :)
+On Fri, Aug 7, 2026 at 6:39=E2=80=AFPM George Guo <dongtai.guo@linux.dev> w=
+rote:
+>
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> Add loongarch.conf to configure QEMU's LoongArch virtual machine (VM)
+> with a la464 CPU, enable the 8250 serial console, and set the kernel
+> image to vmlinux.efi.  Extend vmtest.sh to recognise loongarch64 as a
+> supported target and map it to the 'loongarch' kernel arch name.
+>
+> QEMU's LoongArch VM provides no ACPI tables and relies on FDT to
+> describe hardware.  Without 'earlycon' on the kernel command line, the
+> FDT is not scanned for a console UART, no output reaches the console,
+> and vmtest.sh's console log stays empty causing the test to always
+> fail.  Add 'earlycon' to KERNEL_CMDLINE in loongarch.conf.
+>
+> QEMU's LoongArch VM has no i8042 PS/2 controller.  When PNP detection
+> finds nothing, i8042_init() falls back to probing the ports directly.
+> On LoongArch the I/O ports are memory-mapped, and the i8042 port
+> addresses are not backed by any device on the VM, so i8042_flush() takes
+> a page fault and the kernel panics:
+>
+>   i8042: PNP: No PS/2 controller found.
+>   i8042: Probing ports directly.
+>   CPU 0 Unable to handle kernel paging request at virtual address ffff800=
+000008064
+>   ERA: i8042_flush+0x50/0x198
+>    RA: i8042_init+0x2a8/0x35c
+>   Kernel panic - not syncing: Attempted to kill init!
+You never answer me why in your test you should disable i8042 from V1
+until V4. In normal use we use a single kernel for both host and
+guest.
 
-Youngjun
+Huacai
+
+>
+> Disable SERIO_I8042 and its dependents (KEYBOARD_ATKBD, MOUSE_PS2) in
+> the QEMU_KCONFIG fragment to prevent the driver from being built.
+> All three options are scoped to loongarch.conf; no other architecture
+> is affected.
+>
+> Wrap the QEMU invocation in run_qemu() with timeout(1) using a local
+> time limit so the test always terminates, even when QEMU does not exit
+> on its own.  This is useful for every architecture; on LoongArch, for
+> example, QEMU provides no EFI runtime services and machine_restart()
+> falls through to an idle loop after kexec, so QEMU would never exit
+> otherwise.
+>
+> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+>  tools/testing/selftests/kho/loongarch.conf | 11 +++++++++++
+>  tools/testing/selftests/kho/vmtest.sh      | 22 +++++++++++++++-------
+>  2 files changed, 26 insertions(+), 7 deletions(-)
+>  create mode 100644 tools/testing/selftests/kho/loongarch.conf
+>
+> diff --git a/tools/testing/selftests/kho/loongarch.conf b/tools/testing/s=
+elftests/kho/loongarch.conf
+> new file mode 100644
+> index 000000000000..e45fe1014cf3
+> --- /dev/null
+> +++ b/tools/testing/selftests/kho/loongarch.conf
+> @@ -0,0 +1,11 @@
+> +QEMU_CMD=3D"qemu-system-loongarch64 -M virt -cpu la464"
+> +QEMU_KCONFIG=3D"
+> +CONFIG_SERIAL_8250=3Dy
+> +CONFIG_SERIAL_8250_CONSOLE=3Dy
+> +CONFIG_SPARSEMEM_MANUAL=3Dy
+> +# CONFIG_KEYBOARD_ATKBD is not set
+> +# CONFIG_MOUSE_PS2 is not set
+> +# CONFIG_SERIO_I8042 is not set
+> +"
+> +KERNEL_IMAGE=3D"vmlinux.efi"
+> +KERNEL_CMDLINE=3D"console=3DttyS0 earlycon kho_scratch=3D16M,16M,16M"
+> diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selfte=
+sts/kho/vmtest.sh
+> index 0014bd76e88d..de6aa59cf5a0 100755
+> --- a/tools/testing/selftests/kho/vmtest.sh
+> +++ b/tools/testing/selftests/kho/vmtest.sh
+> @@ -21,7 +21,7 @@ Options:
+>         -d)     path to the kernel build directory
+>         -j)     number of jobs for compilation, similar to -j in make
+>         -t)     run test for target_arch, requires CROSS_COMPILE set
+> -               supported targets: aarch64, x86_64
+> +               supported targets: aarch64, x86_64, loongarch64
+>         -h)     display this help
+>  EOF
+>  }
+> @@ -111,12 +111,19 @@ function run_qemu() {
+>
+>         cmdline=3D"$cmdline kho=3Don panic=3D-1"
+>
+> -       $qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults \
+> -                 -accel kvm -accel hvf -accel tcg  \
+> -                 -serial file:"$serial" \
+> -                 -append "$cmdline" \
+> -                 -kernel "$kernel" \
+> -                 -initrd "$initrd"
+> +       local qemu_args=3D(
+> +               -m 1G -smp 2 -no-reboot -nographic -nodefaults
+> +               -accel kvm -accel hvf -accel tcg
+> +               -serial file:"$serial"
+> +               -append "$cmdline"
+> +               -kernel "$kernel"
+> +               -initrd "$initrd"
+> +       )
+> +
+> +       # Bound the QEMU run so the test always terminates, even when QEM=
+U
+> +       # does not exit on its own (e.g. no EFI runtime services after ke=
+xec).
+> +       local qemu_timeout=3D60
+> +       timeout "$qemu_timeout" $qemu_cmd "${qemu_args[@]}" || true
+>
+>         grep "KHO restore succeeded" "$serial" &> /dev/null || fail "KHO =
+failed"
+>  }
+> @@ -127,6 +134,7 @@ function target_to_arch() {
+>         case $target in
+>              aarch64) echo "arm64" ;;
+>              x86_64) echo "x86" ;;
+> +            loongarch64) echo "loongarch" ;;
+>              *) skip "architecture $target is not supported"
+>         esac
+>  }
+> --
+> 2.53.0
+>
 
