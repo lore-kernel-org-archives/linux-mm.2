@@ -4,140 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3CF2C5AC67
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 01:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45203C5AC67
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 01:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DA6F6B00E9; Sat,  8 Aug 2026 21:07:57 -0400 (EDT)
+	id B95336B00EC; Sat,  8 Aug 2026 21:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B2426B00EB; Sat,  8 Aug 2026 21:07:57 -0400 (EDT)
+	id B46426B00ED; Sat,  8 Aug 2026 21:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A1376B00EC; Sat,  8 Aug 2026 21:07:57 -0400 (EDT)
+	id 9E6EA6B00EE; Sat,  8 Aug 2026 21:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E472F6B00E9
-	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 21:07:56 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B76A1C1099
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 01:07:56 +0000 (UTC)
-X-FDA: 85079944152.11.5B4DF02
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 46FCBA0008
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 01:07:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qYOylP0P;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 50C8B6B00EC
+	for <linux-mm@kvack.org>; Sat,  8 Aug 2026 21:54:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67E2F140496
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 01:54:25 +0000 (UTC)
+X-FDA: 85080061290.25.0F3E2E0
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011057.outbound.protection.outlook.com [40.93.194.57])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8B69F100007
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 01:54:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KL0mW8sN;
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786237674;
+	s=arc-20220608; t=1786240462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1RIcoRAbFf3341jf2ecw8S5B64UJUijX3gld+wbMh7E=;
-	b=ycnzxLSKrxdJhGhgS31TduAoD9WAEHqpuqIwwG3OUApRjhc7A1ysxyiWcrIcfuf3jhCj8E
-	ZMrLfBXrUbCF82bA/MC1fQm/CsOsAMCjojswq/16CzCoaM9J7nb2wtj+84PF4ex/7yag4c
-	0gINYSyjcCAq8SCWSrucbIjGtghEU/k=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qYOylP0P;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+	bh=/YhXyBqDxDWrvB310ht7S0OViRq/08T8CCwqs6b+pUU=;
+	b=JdXfTwttxkRRyb8gCzUQLORKRP0m0fmRQCKxn7Kb5wBcDz4XfnG1xUfbmomwnw/rlMvgUp
+	q4QnoSUCLsPGo79XUljRHcb+FQcQQwKjqEAafdhzwREaWE5Pbm2pNbOA4um1oE33CAnNUx
+	9SbUH5H5LmT+wX0uqoiAauiM2MPnFa8=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786237674;
-	b=Wsc+Td8GZVO1T+w2fi3j7R3DwWSFyPyiyLd6YJ+GiwtFPb1O9iDHGRaQDgY/hPyV6rkSl4
-	lOPPwRXPBFA4a7DaVwUhCYBVG/KO4gAxChEfmNE/pRIQjY0UuE8oeN2tgbx4/rKfAs61xx
-	lViRoxpDRIHcMKQ9pFzY3pVk6o0hUho=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c01c79467so136591cf.0
-        for <linux-mm@kvack.org>; Sat, 08 Aug 2026 18:07:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786237673; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RGkQcv1vA3DOpPewumpauPM25eveR1xgJHmZofkW638N5h5ni842J1zzWzr614wC3U
-         Oc89QWmY6lK6WKQW/E42Fd0189U+Hfc6RUo7fdekmWgmzhj3s6XqxXvUNuRSMHsn7nhG
-         GcRWSpw07qa8g+xB+BmoWjRuCMB+V+JiPQbGS5Q5c/Sdy5wELGdw0OaROwytVKOXZKf4
-         hRUhj1MrJsbuQjd1YWs2VgZeagHrniZ3/02KaTk0k7cFyrkP55cO8lmy7vw0Oxcr0d6z
-         YNZM6OwzZH5MIKqtlIuUM23ioWEZoVZKgazeu0igpfWKriTrPtqJiRvL86xWGHQj9A3h
-         wJiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1RIcoRAbFf3341jf2ecw8S5B64UJUijX3gld+wbMh7E=;
-        fh=qh87vtTrbzctmRdzNqYlY87CyW0WAjnmihR38weIjls=;
-        b=EjqJMGnm+MNZqP0UZ+jPzr/R0RTfbc5LxkzWtJ8gpo2klhndWCRLSmjr5sERe/SoZx
-         8BJ63rXcoZoAgXWulhLJdrJSbHrs7NEEeNi0ivCSBp1+a+uH/wQi9rzQVRRFawTvCAoE
-         wrR/FWBU+4tNJBGIzwxgcP04fWnTbpXXo6m+xIyNDmUlVWAhmx0Ir6uHvQRdY5isWD0F
-         0c3+hT8psmRSChLdQ7Uv8zZioi/akYwfgBUpoMnobly/oK7l7K1mW7jLCNBGmdD9W+q7
-         127w1SSlt4y9TWW63tGbOosPzD8Rqt2+CN7rsdUaAil5qQTUhBCBLio7j8Xihu+wOSqE
-         I+qQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786237673; x=1786842473; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1RIcoRAbFf3341jf2ecw8S5B64UJUijX3gld+wbMh7E=;
-        b=qYOylP0PbBTqZTHJnlH1eCqinf6rJREhEXHacRP+54mK8r6fiqyKOPWe4OPE5i3Ts6
-         719GgLMxovWb8tx2OYYp+KeR1i9oRhONPNFq5U6aep0URMh9tjm5y/shxpXCL4AT5Wcj
-         fDaF3hEK3Cjz8//9Hg7juZsZv+mC0g/kKEIjRvSFSLSL5aWP39ln3qMjtrs5fyPkw1U8
-         T3QdZS01BhwUHfaC0pZL0EH27fHDaPZkm/k0/uH6Ze4CqkalG8NtGP5eLkjZ/1smZG4K
-         k+EmUex8EGWwUZVcCZCUf1RrmSFuQaBT5rX/9TrG3bfQ99vhOjVepUk0d2q+kjmSbNVy
-         5jjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786237673; x=1786842473;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1RIcoRAbFf3341jf2ecw8S5B64UJUijX3gld+wbMh7E=;
-        b=VaWQKa13PyQ8O7YqX40BOetRJ3re8bx1L8U5HqGrSk+WNFlSSAK+QfUMeyeP3p6RNn
-         Cm8T6HpRmVvLi33LKzBwhlTUdyC/Q2JEC9XVZx0qHs7ZLudf/tLfWrFU5D2ePaQ5WATK
-         7xAGtfCTMNU2h9WVEgoB9wS8kO9o7gD6TtI1Hs3usQLhgp3vVK9/qoENdERV04PJB25q
-         oKZPoHDTN1RU0CvGfEF7NzOJ4BLg+6OTGJKt9HbsoH3iEUd3BvfpTJuDD2TzKY+Q9I2t
-         1uLF2GNC4AyeGuSBCqm6LZ7FSS5dQqrE82LqqRy4x/V6rYwrmqSFgrsVwoTyU4eo9WRc
-         YGTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpDyfRRRO92GPdTp7MKkooJ1OOyMzxCL27Cz+5CqpDiD5A2rv1D0B0Z4izwayLRWby7ngsQut6+eA==@kvack.org
-X-Gm-Message-State: AOJu0Ywfkju8oz34miVAJIF1oqvuJ9Rqsvg6nn/agp4wxM2oz8KHJE/r
-	v1pmJMR8I4jgWZro2g8Blu/9EgJMEOpX+jlQTXbIFqIae2kktNe5v5MR7fkCHtDa1VZqnJ66E26
-	NOlu8b9kwhLaOKhPD/l5bzu4vqkXCFgj9+BbfxATw
-X-Gm-Gg: AR+sD113EHkcRjUZWS55HMSXkDFlzEJYK9vTIbfznYh434YI5rMHERm9rBu5608lc2x
-	unN1Mj8w7BE1IAXo1vChPFEMXO9QbKLGlHvnI+CedvBlRSMnfZK8BWkp81QEYo0x5TT1B0SBFvg
-	6EF6iVd7zL7oWMGPiW3tDw1z/nCH1lwphZN44xMseWZeLoMr1yYGZGeDHd135ZSukkj4uBPinpE
-	BPNfMeCACZJNWiP3tWkOlNm6ePdUp7Zd0sdD0EY8qFhcBIGBemmdKlRusyKP5GyKFjZt1QUrUe0
-	ZvPPRF33pg10W7F/CuXwS4eR6BZLbpze+Jn9YuGrEeLv1o/hb91MDw==
-X-Received: by 2002:a05:622a:1e14:b0:51c:ad5:93be with SMTP id
- d75a77b69052e-52d23c4d2c0mr17327631cf.8.1786237672838; Sat, 08 Aug 2026
- 18:07:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-4-surenb@google.com>
- <anbZpzFbtYG7Ngit@casper.infradead.org>
-In-Reply-To: <anbZpzFbtYG7Ngit@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 8 Aug 2026 18:07:41 -0700
-X-Gm-Features: AUfX_myNmlcEkQAwXDWubrX1D1lLUTl8aLYHaNOUsK1z6JmJL0Nh17XQsBbFeis
-Message-ID: <CAJuCfpGdyNq10F15G9Z=TrkcGL8my5RB1w+nZMKOTaH1o9mrGA@mail.gmail.com>
-Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	t=1786240462;
+	b=RO2pki67q25EjjBPp8TtaG3via1ajZmeY39RoLprjTpJeZvo19PNVSpVNkTYY4CM8ZrOPa
+	EUxCa0d5u5ZyYad+f0QHDkt6Kh7kRjEVqXDBc77fy7eFn2iJe3WouarTkXvS/JbrSvjHsu
+	TeywkJgzKEHvMXZaYOcr5YZN8tlOpR4=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KL0mW8sN;
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pPaSmdsrFRGeOgVh1vll9tVmsVLUGsmbZuDhxM+d34xf9dWgLe+XJmVZp6I57r9ylSVOoFW8elJItLXGnkvgBoSdJ1sCo0t9tDt+/xK+TIDkz4J+q7TsMAPE6Q/Ank3Gu1BsYDKaQwdt3oq3uIvSdajBd7xfjbXBKR0Vun8L0kN7HeXPwPrJJ+xopCvNXeHcOu31+W53Mmv0EFn/3e+WTS81gb2MDBhKeUmSaPz0QcSjSrxuve43wEZbAoXoHtzwg9GRmIfdIj054knJ8IoDhboFUTZZsprRQQ7E67aF59CPY4QROtoQz5PTjkzwHEe5RmHh3Or/m4rytoX0O8rQAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/YhXyBqDxDWrvB310ht7S0OViRq/08T8CCwqs6b+pUU=;
+ b=alvDVesjzXsfW6H26ePAVBshk6VKI6KJKnzdSxp0Bf4TRb74rqv5GrjeFAoAayKSK+ek+GG/APZpAOMiThQV+FAOg6PCWz1tyxcJFcMPY0Eg2FeuIeA5wtgSvBlAu/4txQO1mk5c04cyOQWwf9HEwAkXPcGyOjLz+GnG3yMyt7p5TqnGtpHy//ZBMIdZMpx8KQfuBajo0Iiis7rROASONjUHuIcvNovnF12HRMJYp4HAR2zruV4tieB5PGMgvAPrHvIBg4KV9WjVFnaOsNvs+8iYzQSKYjstLkbiT7fEHx64yah9QmB7yHv7KuVioEQYQU+3HVZWQ2PLpPX8S9SddA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/YhXyBqDxDWrvB310ht7S0OViRq/08T8CCwqs6b+pUU=;
+ b=KL0mW8sNS5HHvAK87f2QictU9iSxmPtc4k2DNJu+sJMSSWcUFvx+p78XRQyphHbcKvErQhwv+4pM8Vx3Oycfa5BaVxfJ67AQvRT2ljNz/g4ovHJ3FkXOq8Zq6w6CSEqvEMyfFkRzvKYqUDNgV99LmrsX674/arlRg85INXV6iltSO2UrfOcDwH4M4JSfbqHSg+fFyJ23hJdc5BexHiKgKjuK6HU/f53SsLTfEsjydPrKn5CDv3Ck7Mew2kgWNfzxW8jYKX1s248N2qVZiikhZXUhuqm+ycOBy/Gbht8aQ1ENpgB4ZJn+9b3yoBZ5je1y7OgraJYn/UKEkJZWeZ4diw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY8PR12MB8315.namprd12.prod.outlook.com (2603:10b6:930:7e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Sun, 9 Aug
+ 2026 01:54:16 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0292.024; Sun, 9 Aug 2026
+ 01:54:16 +0000
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 46FCBA0008
-X-Stat-Signature: 3nbaxtgntt9eqa1p9prciiuu4gen65po
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 08 Aug 2026 21:54:14 -0400
+Message-Id: <DKK1E8OEGPDZ.3NO34RHQEGIRJ@nvidia.com>
+Subject: Re: [PATCH RFC 05/13] mm/huge_memory: consolidate irq and locking
+ for folio split
+Cc: <linux-kernel@vger.kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Dev Jain" <dev.jain@arm.com>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Chris Li" <chrisl@kernel.org>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Barry Song" <baohua@kernel.org>, "Youngjun
+ Park" <youngjun.park@lge.com>
+To: <kasong@tencent.com>, <linux-mm@kvack.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260808-swap-thp-cleanup-v1-0-689939a7ccc3@tencent.com>
+ <20260808-swap-thp-cleanup-v1-5-689939a7ccc3@tencent.com>
+In-Reply-To: <20260808-swap-thp-cleanup-v1-5-689939a7ccc3@tencent.com>
+X-ClientProxiedBy: BL1P222CA0016.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c7::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB8315:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45c580d1-c24c-4105-8970-08def5b91e63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|4143699003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	8s+CmetS1ghj8/O/2ztvUQU5ARFz1HfvjXcZ5Or8zUHR0rSwl+xAjLOQg9+ZWJUO/IvBmbbCeOsdBmHLbMk1Cs551aPVAqoYLdQg1Da1od2XAS+O/BIbaXm74bmbVyG0VzRmkDKQEYL/1RwW9szrHoyU71b6jVuX4Jo/tJrWVZSWqAqeSK8wq5Sgz6FtXu+mMTmdIZ95UVtKZS61OFXx7bGrpiBCMqWY76lEbGr17XTzPZOnAf679etKnZpSGrpJoWNQUGHMF6Z90jWGUoM0/rE5jip+lRLcy48hdGglcUwryjZatRezXVuLbhTwB91K+jOAT3dgeqOsxX5zrFy/BdbpKWTTAN5uLhMTSta2VEUQ4a/CWGkXYx1JyVexocubByUyZz33jeSEHOLaQIFT2Wpj3aTvDv9zsJgJaipbO/vK7a4tevk4s6VoiQRIQ736Wlm1YLhvM0VHLQ7OwrWFEQ58Q+2nuqDv5XVWgCeYM8A8LnNS4hAShUYDpdxQEs612gctSlz9+t52iWD5fNK+SMYQfaUDYzLxSDCW97FCa0jnKcxKAvu704FSAajCeSA8EQyWhhf4M+smM36fqOrIWSM9CO0Ar33OdQtuwKJM9bO6kRnO77hGXvg9jK8DtQEO5BWucFmWZho8taB3/NQKHABy6mS0uzHs27jx0rfDu30=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MHpwMUxoUGRmU2dPdHovRjJVRGwxdmRaMnlEWlRpQ1FYTE51eThGV0xDTkdI?=
+ =?utf-8?B?WktuRXA2bE5JWk5KRzI5VVNCK01OaUlTb2FrdVlBT3BCS1ZHUUs3dlA4OTZt?=
+ =?utf-8?B?cFRWcHcyb1hZQi9rSW15UEpJMStHaGI3V2Z4cnRRcFEwTVd6YytyOXg2SnF0?=
+ =?utf-8?B?a2tUZ1M5SWdibFRjRGNzOG9ORnMydmpFZzh2TFl2MUdDNXhKaFluN3ZBcHJz?=
+ =?utf-8?B?TmZlb01MQ3BJbXVTV25CdCtKd2c1dnRFSjZ5MU1CdEg1cFpzRlA3cjV5cy9u?=
+ =?utf-8?B?VG5jMzdBbEpSU3JmRVpHUVdjanlwbnFBZmNEWkIvdjBlNVE4eEczbm5INmxm?=
+ =?utf-8?B?WlhlbkNKUFlNMFhzejJONWYxVkpYeFRQZ1hSVDM1amxqRkZ6Zmg3R3JNaDdR?=
+ =?utf-8?B?TEVPUUxidC9DOTEvc29NQ2NrTFpicGtXblFCWlQ0Z0h5RWEzTXZsNWlubGZZ?=
+ =?utf-8?B?ZGhnb1pabW9yU21COVJvSGc4bmVnaldmci91Y0VyQnpBdmN4MjNRZ1FEWnUx?=
+ =?utf-8?B?RzFBekt1eXhrb3dIdjFFb0I0aUtjOGJlekRDWDN3S2NDZzBhS2JyTUxTTzEr?=
+ =?utf-8?B?M3pTZUNuK1c1RUtzM2hsOEJpS0RLb3I5Vk9OSHc2ZUloTE1pTU9XMDRtTE1L?=
+ =?utf-8?B?dFNXOGxnNUNXQ1BUNmswS0htT1IxYi9seHVFdUlVZVhEczB1cllQWjJoZ3dM?=
+ =?utf-8?B?eDZJTllOS3Zua21HLy8yZnpBbnpobUhCVmFOeVFQYzU1WFo2NjV6NURiYkxO?=
+ =?utf-8?B?b054SmJENFN4TDYwc1JkMm4wbTF5dncrc3ZuK2JqYUpERkkwVVVMazFjRkM0?=
+ =?utf-8?B?VGxYOWM3c1EwSEJoTTltbnVSdmVFTkNnT1pBOUdQNnVZZkg1RDVhbG94b0dm?=
+ =?utf-8?B?NVNtc203bjlvblVNT256SzhJTXNWaVU4MU9WUDJXUjVlcThIUENLQlFEZCtG?=
+ =?utf-8?B?NWdHVS9sTTVtbkFPYUxTTC9pM2J1QzlCL1AyV1hVZUNIQWV5bXh2NzZaNVll?=
+ =?utf-8?B?R0tkYysrL2hNYWRYaUZjcUdOTWcxc0NKT3B5eHprQ2Jta1VJWlg3MEpUYnJM?=
+ =?utf-8?B?UVN2am9BaUo1Y1FvaDZ0eG1FaUNtbzZzZy9EcGNBYzFROVJhUVJDUXpjWUp2?=
+ =?utf-8?B?bDd0cVIzTGNGVVdtSHhDMlFkSEZVUkRrMzl5anpWZHdNV01VY1ZwWWhTY2xB?=
+ =?utf-8?B?SHpQRnVicnh2Ymh6VTdPK0dYLzcybjU1NGlyZE1xMFNic01VRUF0SHQ4MmpY?=
+ =?utf-8?B?TmZVb3pzRWdYeDBIRHM5Q3NTbU5JZHB1aWxuS3dQdmpGNW1xd2hRUGgxdkhu?=
+ =?utf-8?B?RDVMY3drcmt0YmcvTFVYRjBxUEZDcDg4cjJGZVdKbmNSNkNna3BQa3ArYW5Y?=
+ =?utf-8?B?dkxCYzdDbHFyb000OGxrdVpoZFN4NmloWG8rNGpDSG5hYUtKTFZLZWNGTVdS?=
+ =?utf-8?B?KzBWS2o0QUdXN3I0a2E3RXNsa1hYUWlUUU1DaVM0b3hYWmFUUVVaSW9aVFZ3?=
+ =?utf-8?B?VGlMN1dTZ0Z1YUNlWms3aFRJOUZZVEF5Y0IyMFpGbHpoWXRpN0xZUERCaW4z?=
+ =?utf-8?B?ODNXTjZ4Z2dSVEVyUGFNU2RwaElXUGgyVGlCMzBpNWVwbWphRGdLQmt3VGZU?=
+ =?utf-8?B?UjJqRWRGWHVZSlNqeGZRL2RQREpFeTBPNzgvNnJ2WXB0QXZ0SGFsdXVIM1lV?=
+ =?utf-8?B?Q3ljdnRPcFJ0cFBiL1c4NzI2dW1LU1dKdGhtckdESFdBSytvRmt6MUlzL0lY?=
+ =?utf-8?B?MVBsekdzcTZVbTEyZnllaWhWcEk3eCs2cHBueXpvNm4xMjhBUUJBeFNiWGtt?=
+ =?utf-8?B?MzlUajU4M1NJZVhod2hMdGNQNjgwVTc4Szh0VWwzS28xdm5EMC9nZllFcTBN?=
+ =?utf-8?B?Y3BJd0J0L0dCN1p5ODJXVnVseGRUblA0b1BvU3NxbVpnQjBDdWp6T2tTU1ZO?=
+ =?utf-8?B?MnlBOFNzM0J0Rld5ak0wMXl3U2xCMjFSS3FFL0lSSVNqRkpxdjlzMnRTV2pX?=
+ =?utf-8?B?VHdlekRWcnBIdVdNNmU3TnRGRktIcEhieDViOWc0bllVOG13MWlub2NkRFNy?=
+ =?utf-8?B?WGJhSWNkclVHUjdGNlZkNWJObTlQQU5FY0NjcUUxRTM4ZG5KS29XNUNuRUU3?=
+ =?utf-8?B?YXRhUEt2Q1hMdmFLelJPU2dKMm5hTW5TUVlObjEwb0QyVkVEVWxjVGx3OVpa?=
+ =?utf-8?B?TXhsYVlKSU1PSk1VWFcvWURrOTR3KzJIT1l6K1ZicmtLT3RqS1R0YnZqQS93?=
+ =?utf-8?B?Qm9LYmFIMUpYQi92SHdidkxoUjNnQUFtR2NMZi9tTXdRdkdsc0tMcTZNZXVO?=
+ =?utf-8?Q?BUTpTNZ3MMv+EEGu7d?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45c580d1-c24c-4105-8970-08def5b91e63
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2026 01:54:16.1851
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2bpdtl1t+bctgJLkUBPgW1MaguxIusQQHo0pMjQJryNEQ7MhPh/AITyHw9NWusEj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8315
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8B69F100007
 X-Rspam-User: 
-X-HE-Tag: 1786237674-504799
-X-HE-Meta: U2FsdGVkX1+ZdTWXPpQvTGoDYZbNKiRoiT1lggtVlIsOIg5WmP0syPuv0TeIiRXyGqJDG7/BX4QFk5wt4k6qvJ5Xgk2l8u4seuHt62LDbxBfixnswnz8zhBOYjD4DfqDiCzsjkeWsjXUruvng0tvfGU5j48Zcm69PR766g8gYns7hZAItu+DSOcb2sgpKdjAnDEyaNVOAiHQAzhGJhrecJkK9ykrq1DUw8OPzB8id87MZEahHfKCd6MG5OQLybM8glQ5mzaXMLRz8/2xABiFo99cmYiCIOD7xMgxrSwJeRnwLOknlAYS1gDlRvgLHxS8mMeCJce8mWkpeDvWkx717csyu+V6ctxIioZvt4d8sokwizCGwDG0+uz3m+bLhcbmxGGXxk3gYFIVBMtwTQvLrp9oAi/vCFetGUJ5dJp21woaxBPJOo4dhJbuck6aWFYv2djBeyIk3ZT5qLJREYBR+G/vGL7808I2OKt1yJeZKFXJGAO6iW+DTt4lHYekm+K8ASzlHptYBE16AnQSPJOIF8Rf1fynPoMAwb8BEHGAyv+VRSI4nqlujH0gxVQFFIyun6oE2ujpPFldY64O6LZpLEGIJr98elrVrxu0ceKbT8FZ3lSNRwa0mU1R21oBpQGzuqKTTZ3s28WX+fsQSpNE0wjMXgfGVjRTG+EjGpR9FOZdpUl4LM7lddwpPLOcfRwYtCKLzhkUxb3sCA6HEc9o2buM3/ywsAkAPemVdl1rRHsn+C9BTne3DPO5WLQmhY7LGL1t6/+bV8wDofaJv7hYCQzcIqkKiSmIrjSxhb+pwvK1ZfQdira2t8mdmmPNQxyegMdmka7lhGsMu3/Inmit0QbNb0p/xBmjSve4p8Ak5sap/VrW7lVZoGks14osV9qEPC1VRe0slVHBn/TgpHJP93A/dnKl+tc5DB5icGdrmrjAU0hvViE0HpY1EJESzIEI+0LLjrkt5YE4ErAwHfb
- Qc3yrLVH
- uPD3U4hbF2XrzimQxz1tP9YP+0hpr9jHpFtlJZeI0vWlswderF1KnrqQRJQOo4YAKldR6eSS1LQM4LEGqsS1Vg7NxrCUQrG22KCYcqe0Coomcl373u+EAka/gdRUXlFONZapghYlXnGBeAE2Z2r+QmQc8hv8VseKncaVgk3QqLQFZhip18JsJCRea84XhNOtY4DJrb5h3QAYkWpxo7TT9n6M70ArTPSQY9aIARwZrDYmD+IKrtEcaJNKoHyeoNbK5wQ8VwZeQciRjmh5zRkapTfAFb1rxR1RF6unKn4bwITykokuohLwKD4Em38LTmbHemdkIOyvKnml4X3sHQOISyxFijgW3B/ZyRz7SP8tLv9N96emkN71Gcf6Rvj5Ont0P9FFlGe3ocEw58gZZwiGdGP0QWhD6hm4bGUsuvvGIe8IND1zSSs71cwUCWQukw6CxDQf0
+X-Stat-Signature: jzc78msedtb69mgoe5qshcn9tessm3jp
+X-HE-Tag: 1786240462-974936
+X-HE-Meta: U2FsdGVkX1+MFMPP6ftnnYeY6iPoMQAoRrfaKSRnx84O58EuWolO9HLoqaAS3hK7qSBXC8jcZHNZxY1HzgRn9hHzUfm84xcPf36NQQWzxpk8WYXJ4KQHswHUPh1vslv2k5YRNzR1vRdnZycjXlbjdANd3k5t6lApMcEe2Mw5lxoIWcmI2BXmvqbNx7YgI7cSOZoC919of5p3dkCK1rU6UcFwk6JX3rxOr6b27On6RGl81L6oCAa9nqfqONiRUwkauv4yu1JH+qFWipBk8Y7kK7nRlE9cF7YbVQmREpAuX9KOtLn7n9C6xNS7wBeDc/MieNNkdiW1YVMYkMpEcIylVnjZV4NDe0genwU73LJKiZQmXH+EE8SFOwAHfASlMpm3oYqpEs1rlsCcd08lVuw8W0tEZtL4LM6sir7hI1V0ZMZTeU5IE0fkg8t4sEaZ7uP3bLzrdSDEBcYINfX0lkW42cbnMH6jDC5FqNlx8IyXWwicQG+CIpdYtdSl2D+W8xtzpGw1f4nMV4dFXnPFkLL377HNpHf7xucvSXKyJjp3OdUEsrcrq1ElXLf2XVDRCVvVM/oTYTWz4nPeNtHRyv6tM4KAMU+w8Dkl5cXSpuU/6/dZvVCInmtAXtDxsp9MjsJhEvfanH25DcQ3dBhj5SAPZ0swU6Sm6Kkig7xbFfkXvGw5Vw6PMAmF/5zOVURZUrX5UjWtdeNXDcIzlSJC9qsP32907dmdWRrlLDfcJRivNIDrRk/MfKISBYD4pM2TqgeS0fvjwxMD6rX+9W14pvISUvsKgI4BO/mhAnNGHPDfShN5xaCK5WFJ+Ot7s466sP6cDoJFVaT8zSWYFs3egBUVzx21y14uNRkiSvGNKKYmeGx7FxhsLGz+HSj98soYQbPj+C3PdPad3DeOn/M0CLyhuhiGOfwRY2SzsPMo2tGuu9AUacQNpAgpVIgegZ4FLOlQINh779oD4Eox0eUgs4n
+ HuUvMqsm
+ kEtA9iPvG3AXfId4du73DKtIyh4NkPDFtDtyXtTRWWG6GQMsY3jImRX8UmoWqf2OcOWSqAcgG/9hIY9yfqy9pzwCrHGRf+u9PrrCZCjIQuM6PeNXWs4AtlxjsgqhjD0pbieabViBxdiaaiDbFumGn9p8yQ0nw/X5k2+43omfgkzy+C3fbrJi3qfy6gT3ASQddAmN6YM++PppFrB3QeSrnkrnShfd45UxNeLOWa3pwbd6IuAp5oaHvvqtHDxvJ5Aocn6eBTiGYc6kdp6JqlFNmzalYgiJd1hzrz1UDrKWBAqaS1wB8HWntr/E/lOmDHNdy5ZqP87Ef/DeOrS6XB3yYxZDaxKDHvu/klGs8faMxcpTtspWSsmupzw8YypbH4seR2bjXgjZ40hbYxAJWj5Xg0PRTtWmF4mJYKnGDzkvNRLCQn8/mIF7ZtUJvhGVC8cN5iofp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,112 +181,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 8, 2026 at 12:24=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
+On Fri Aug 7, 2026 at 5:17 PM EDT, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 >
-> On Thu, Aug 06, 2026 at 01:05:46PM -0700, Suren Baghdasaryan wrote:
-> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> >
-> > =3D=3D Background =3D=3D
+> Let each split helper handle its own locking instead of relying on
+> the caller, so both paths follow the same convention and __folio_split()
+> can drop its local irq handling and fail label, preparing for further
+> cleanup.
 >
-> I think we can do without the headings?
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/huge_memory.c | 52 ++++++++++++++++++++++++--------------------------=
+--
+>  1 file changed, 24 insertions(+), 28 deletions(-)
 >
-> > There are basically two parallel ways to look up a VMA: the
-> > traditional way, which is protected by mmap_read_lock, and the RCU-base=
-d
-> > per-VMA lock way which is based on RCU and refcounts.
-> >
-> > =3D=3D Problem =3D=3D
-> >
-> > The mmap_lock one is more straightforward to use but it has a big
-> > disadvantage in that it can not be mixed with page faults since those
-> > can take mmap_lock for read, which can deadlock when mixed with nested
-> > page faults and parallel writers.
-> > For example:
-> >
-> >       mmap_read_lock(mm);
-> >       // Another thread does mmap_write_lock().
-> >       // New mmap_lock readers are blocked.
-> >       vma =3D vma_lookup(mm, address);
-> >       // This deadlocks on mmap_read_lock() if it faults:
-> >       copy_from_user(address);
-> >       mmap_read_unlock(mm);
-> >
-> > The per-VMA lock can be mixed with faults, but they can fail and need t=
-o
-> > be able to fall back to the traditional way.
->
-> Umm.  I don't see how this avoids deadlock.  Assuming the next patch
-> converts copy_from_user() to use the VMA lock, surely the following
-> situation would obtain:
->
-> A takes mmap_read_lock
-> B tries to take mmap_write_lock, blocks
-> A calls copy_from_user()
-> A calls vma_start_read_unlocked() (because it doesn't know A actually
-> holds the mmap_read_lock() already)
-> A does a lookup under RCU, but gets NULL back (maybe it's calling
-> c_f_u() with an invalid address?)
-> A tries to take the mmap_read_lock again to make sure.  Deadlock
-> because B is waiting for A to release the mmap_read_lock.
->
-> Am I missing something?
 
-I think Dave's idea was that A would take a VMA lock (which might
-require taking mmap read lock temporarily) and then call
-copy_from_user() with VMA lock only, which allows copy_from_user() to
-take the mmap lock. This was used in the last patch [1] of the
-original RFC. That patch is dropped from the series because this
-approach has a conceptual lock ordering problem - it takes VMA lock
-and then mmap_lock (see explanation at [2]).
+<snip>
 
-[1] https://lore.kernel.org/all/20260429182005.00BF70D8@davehans-spike.ostc=
-.intel.com/
-[2] https://lore.kernel.org/all/CAJuCfpHBzYUNEe_LBpeERf68_fso=3DHy+UZWtqejT=
-Ukm1O4NLfA@mail.gmail.com/
+anon part is not changed.
 
-So, yeah. I need to rewrite this commit message.
+> @@ -4035,8 +4039,21 @@ static int __folio_freeze_split_unmapped_file(stru=
+ct folio *folio, unsigned int
+>  	struct lruvec *lruvec;
+>  	int ret;
+> =20
+> -	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
+> -		return -EAGAIN;
+> +	xas_lock_irq(xas);
 
->
-> > +/**
-> > + * vma_start_read_unlocked() - Find the VMA covering 'address' and rea=
-d-lock it.
-> > + * @mm: the mm_struct of the address space to search
-> > + * @address: address that the vma should contain
-> > + *
-> > + * The fast path does not take mmap_lock. Waits for writers to finish =
-if the
-> > + * VMA is being modified by taking mmap_lock.
-> > + * Use when mmap_lock is not held, otherwise use vma_start_read_locked=
-().
-> > + * Nothing prevents VMAs being unmapped/mapped before or after the VMA=
- is
-> > + * looked up, if a stronger guarantee is required, take an mmap_lock.
-> > + *
-> > + * Return: If a VMA exists which spans @address, return that VMA, read=
--locked.
-> > + * If no VMA is mapped there or, very unlikely, a reference count over=
-flow
-> > + * occurred, return NULL.
-> > + */
-> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> > +                                            unsigned long address)
-> > +{
-> > +     struct vm_area_struct *vma;
-> > +
-> > +     /* Fast path: return stable VMA covering 'address': */
-> > +     vma =3D lock_vma_under_rcu(mm, address);
-> > +     if (vma)
-> > +             return vma;
-> > +
-> > +     /* Slow path: preclude VMA writers by temporarily getting mmap re=
-ad lock. */
-> > +     mmap_read_lock(mm);
-> > +     vma =3D vma_lookup(mm, address);
-> > +     if (vma && !vma_start_read_locked(vma))
-> > +             vma =3D NULL;
-> > +     mmap_read_unlock(mm);
-> > +
-> > +     return vma;
-> > +}
+local_irq_disable() + xas_lock() is replaced by xas_lock_irq(). Are they
+equivalent? Codex told me that the latter no longer prevents preemption
+on RT kernel and can lengthen folio split process if it is preempted. It
+is worth spell out in the commit message after you verify it.
+
+> +
+> +	/*
+> +	 * Check if the folio is present in page cache.
+> +	 * We assume all tail are present too, if folio is there.
+> +	 */
+
+xas_reset() is gone here. It seems to be a no-op, since xas is not
+walked yet. But it is better to mention it in the commit message.
+
+> +	if (xas_load(xas) !=3D folio) {
+> +		ret =3D -EAGAIN;
+> +		goto fail;
+> +	}
+> +
+> +	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
+> +		ret =3D -EAGAIN;
+> +		goto fail;
+> +	}
+> =20
+>  	if (folio_test_pmd_mappable(folio) &&
+>  	    new_order < HPAGE_PMD_ORDER) {
+> @@ -4107,6 +4124,8 @@ static int __folio_freeze_split_unmapped_file(struc=
+t folio *folio, unsigned int
+>  	if (do_lru)
+>  		lruvec_unlock(lruvec);
+> =20
+> +fail:
+> +	xas_unlock_irq(xas);
+>  	return ret;
+>  }
+> =20
+> @@ -4246,19 +4265,7 @@ static int __folio_split(struct folio *folio, unsi=
+gned int new_order,
+> =20
+>  	unmap_folio(folio);
+> =20
+> -	/* block interrupt reentry in xa_lock and spinlock */
+> -	local_irq_disable();
+> -	if (mapping) {
+> -		/*
+> -		 * Check if the folio is present in page cache.
+> -		 * We assume all tail are present too, if folio is there.
+> -		 */
+> -		xas_lock(&xas);
+> -		xas_reset(&xas);
+> -		if (xas_load(&xas) !=3D folio) {
+> -			ret =3D -EAGAIN;
+> -			goto fail;
+> -		}
+> +	if (!is_anon) {
+>  		ret =3D __folio_freeze_split_unmapped_file(folio, new_order, split_at,=
+ &xas, mapping,
+>  							 true, list, split_type, end,
+>  							 &nr_shmem_dropped);
+> @@ -4267,12 +4274,6 @@ static int __folio_split(struct folio *folio, unsi=
+gned int new_order,
+>  							 list, split_type);
+>  	}
+> =20
+> -fail:
+> -	if (mapping)
+> -		xas_unlock(&xas);
+> -
+> -	local_irq_enable();
+> -
+>  	if (nr_shmem_dropped)
+>  		shmem_uncharge(mapping->host, nr_shmem_dropped);
+> =20
+> @@ -4355,8 +4356,6 @@ static int __folio_split(struct folio *folio, unsig=
+ned int new_order,
+>   */
+>  int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+>  {
+> -	int ret =3D 0;
+> -
+>  	VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+>  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+> @@ -4365,11 +4364,8 @@ int folio_split_unmapped(struct folio *folio, unsi=
+gned int new_order)
+>  	if (folio_expected_ref_count(folio) !=3D folio_ref_count(folio) - 1)
+>  		return -EAGAIN;
+> =20
+> -	local_irq_disable();
+> -	ret =3D __folio_freeze_split_unmapped_anon(folio, new_order, &folio->pa=
+ge,
+> -						 false, NULL, SPLIT_TYPE_UNIFORM);
+> -	local_irq_enable();
+> -	return ret;
+> +	return __folio_freeze_split_unmapped_anon(folio, new_order, &folio->pag=
+e,
+> +						  false, NULL, SPLIT_TYPE_UNIFORM);
+>  }
+> =20
+>  /*
+
+It is nice to see caller no longer needs to care about
+local_irq_disable/enable().
+
+
+
+--=20
+Best Regards,
+Yan, Zi
+
 
