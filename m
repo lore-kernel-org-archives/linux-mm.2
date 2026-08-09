@@ -4,145 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E300CC5AD4E
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 16:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E05C5AD7B
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 17:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B58B6B007B; Sun,  9 Aug 2026 12:21:51 -0400 (EDT)
+	id EE1836B007B; Sun,  9 Aug 2026 13:46:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98D7D6B0088; Sun,  9 Aug 2026 12:21:51 -0400 (EDT)
+	id EB9786B0088; Sun,  9 Aug 2026 13:46:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87D056B008A; Sun,  9 Aug 2026 12:21:51 -0400 (EDT)
+	id D81426B008A; Sun,  9 Aug 2026 13:46:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 509776B007B
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 12:21:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B48C7140596
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 16:21:50 +0000 (UTC)
-X-FDA: 85082247180.17.C2A91EA
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AA8611C000C
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 16:21:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MV0RSpIk;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786292508;
-	b=YU3vlzvVf4PzzjpnRSYMGyw7vugz14OwMN8UoNC7fgfFrL+6OL2jhKNvVp+Fq2YvlLaL7o
-	K/jAJ+hffy8dVbEgQYzQIyUaesEU7ZOjZgXqKDySQtK/gkog57QFHsQTdUq1Y7y8KV4qtk
-	9oPMKflZ8NnF38iZ/4DGsWe6ZF/+cGY=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MV0RSpIk;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786292508;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A4416B007B
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 13:46:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10F25C0593
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 17:46:22 +0000 (UTC)
+X-FDA: 85082460204.13.D108689
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A48E718000C
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 17:46:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UabY2i2O;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786297579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4g+uNVEIUaafW1jVJCwJcqut7w+vaPKEHq4aK6RYbgA=;
-	b=gFW3DxWOYr1W1uE1R61fgUPMgKTcjvXbhCht4++yKtKDG8F5vvh5RKMYdhosU+mzXUE94S
-	iivnzQlEFgqBls1QX7TlqNjpeg6lgQhHTdVldIfn6XB805gFJhCpt9hU7JZm7933TeJ1OI
-	ZPPuN5ZB1/Wz81yCWXAlwRb09Z671Js=
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e9ecd7216cso599333a34.3
-        for <linux-mm@kvack.org>; Sun, 09 Aug 2026 09:21:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786292507; cv=none;
-        d=google.com; s=arc-20260327;
-        b=srporklfinJsH8zIpbuRWr0lXohxVoyCb9L90W+pW03HsJAmKd2fIRxDhxuKdrrY6W
-         N602wjELPcQoT22oO8ZuYG4krLPyZmlR8kn1aIqZLMI/pgGHm5pE3RNRZPwFDdkqaQtc
-         UAK+nX01nRZsmYmrcOUWrJtkkfdnQDzRbCxsfgerpXPwnxOKX5ibWG2x63mXhfLmT+Tj
-         DMgjtk6RB4Ys9r1xZ8sR/NtMa26apqmi1/Sj9XtqDyHV2yGZDjrfWhQHDcka1sRNNDW8
-         N5V4Rdgq3n2pSv9G/huDvquLERx+H5w0gO3TssDvq9opTV5ADEQPsiftCGohANpQDIkP
-         JOYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4g+uNVEIUaafW1jVJCwJcqut7w+vaPKEHq4aK6RYbgA=;
-        fh=4g8s1MxfM9+y2L6ucnblxVYbkd0QS6Y/miwVvH28MQ0=;
-        b=JUfXcVpGHboWB9rebiKgOTwFJ5agnmXsS1+BmiZ1zoR0QjVMMaZ058aKwKa49B1Mey
-         k3L43LhbSDaDen+46YiScQhirXZ4SCpK3S61o/mKj4qbH3NcLkW2eX94/g2m+VASYZTM
-         hbF4109T7CBfVnd8u4CH8GfZV32srGyF70qpK3wDfDMpP9mO6oOrczkcovLoguDVx8TF
-         l1fHyKlfk1m9A5qEmb5kRFfHO6+BhQOUtqwKBaWOsWzDo/35pYhE4ZjSDF8rfs6Cr+n8
-         OMxvvtBAENpNi+C6+dZwieBYtzgQhYsR5txSpTGrMvpjGX9K3H2MDyUvS9z+hABzTXxb
-         zwWQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786292507; x=1786897307; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4g+uNVEIUaafW1jVJCwJcqut7w+vaPKEHq4aK6RYbgA=;
-        b=MV0RSpIkmrygUMxSLD9Ccf3jMvxqovLsuBliLcdGXztbdP5cEEJM2WilrDN8nG7pta
-         3hT4QotbZA9qqoslccMZ4TJrd8g82Vo1eMShe24r0ZwDSlzvOSEw/7XibZpSzHS8JsBt
-         wylfQq6Bd4iuXYRZthOEv2QLQ20GJLFZYfC9OikqYhA/RZh8p8hBZde+dxvn7mIUHReg
-         rezfZyvcHrsZjIttlAEnaLo37+uTCZQqR5of2K/wNGRjDLTlKjsanISZlIJPRvSJFDUf
-         hRBNK+YoRj1Nnm+eiHfHqhzEZpE+9OCItvYv8xiyjgvInBD6ULKpt22tR4mMXrfDti/+
-         mWzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786292507; x=1786897307;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4g+uNVEIUaafW1jVJCwJcqut7w+vaPKEHq4aK6RYbgA=;
-        b=gvzThUPj/DpmAehgDNlOmSTsAcnYqhJxBCCIJmagVPZCI7fEEpjF6zRDaQ7jccMVPz
-         uApoTsAp7QrwtSGzNguJhnNpYkgzj9ZR0Pzdhw3foYyTHQtcZLw4puyi0ntRTHxNwvrw
-         MK9lv9a7eFcMLRKTWzsHp7o/AVDiLVyanZAMwmQ0IwZvxwnazyowZ1Wy2y5TMW8VbDaH
-         Mnx+XK26/32Pco08I+3OJBiWyTlPYQpfAtxnertyplDvAzqE0eE6nxQhhCrGz3zOl3Uu
-         73cep+Z2csLGLoDX1KwMwoYW/EZ177c9S+rVa3OPukyGlb7zX4Z7kqISrjR/nzHYMjUs
-         Twtg==
-X-Forwarded-Encrypted: i=1; AHgh+RqoUGLcBuCYLy9ZCyfJd7iSTg0w3BwHBUY0bPgwi+u0VRhTcSFu+ph8LBQCJ1Yy2vethzA7eNBGLQ==@kvack.org
-X-Gm-Message-State: AOJu0YyKbyNv4lPAsbxYCBtVVuyqDY3gEKD0CmEBSxrFa58qFOi+BgNs
-	jF8Hwad1gA0iy4j7ZgQ+Jh/vPMeIPnbbpbvpPSK2kdN/3ZQCIVAyrCvpHnABgpiQlPDklF1rFFV
-	8GGVpA1jJeU7A1mfLgek/81FTGnmhykA=
-X-Gm-Gg: AR+sD10IvKDGu9IH5wySuR0KJlZvZySISxHNiPIwrNM1uTkHKeMkQeaQto8zYNH+RvB
-	2kpH0iSpeb+rE4QVxk9KBPGdXksVL6kJDcyY0is+KeIeQY0bORCkRBvGBSDNA7YlL+Jfbftse4k
-	172cPywSoPjFhQraCKoQ5HFWDNlIJsYPqjUyMoSe7Ynwyfhfw5vVTd/SIx7JWf5ABJPyDyk5nyj
-	aJTfIVtSs7d31HxsnQOC2FrHW7N34KFXu/+laOUB1B9DcV/nIyUnaPDhG5vVdKFc/LGN/oBZA5n
-	//djSpGW0iz4flLdZtRXHGm1cBH8jQQn2AYvz6pwPyb0
-X-Received: by 2002:a05:6830:2b14:b0:7ee:19dc:b00 with SMTP id
- 46e09a7af769-7f3690ab85bmr9122552a34.3.1786292506403; Sun, 09 Aug 2026
- 09:21:46 -0700 (PDT)
+	bh=1V46XsJ2ASYOMqPQa9NRG149ty7O7KB1wPG7dfwq0b8=;
+	b=OvXT8TgB2yIno3bPdao5mAWjkGW9O559/QvV8aemmIWZotqA75vO6I4+6/RVn/pdAzttHR
+	1pd/rCtoAdzxmvjmy9W600spu1MQQD9LCB3U8oA+iRuKJi3dhHl0uyRV94ZadlM+lwp4PA
+	JrLuNoJrjQoGEofp0C00lg6Me+iBC8A=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UabY2i2O;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786297579;
+	b=jqjv/V4Zuk5c3fvLBD4G3b5aL02xsy7dRZA7bgZEOr/KfL+YrOgcOYlRuOm8VyEA69uQzZ
+	nNsZNJ4kB4Zy0OQzxYTkNvMRVVMfvAIeF0hfaOm9hj21c8MXQrf96RVWgd21jzNSGLeeLD
+	90JH+XT1A+4rQ7QOCCx7UvtikFxHWVA=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 679FW1sE3277678;
+	Sun, 9 Aug 2026 17:45:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=1V46XsJ2ASYOMqPQa9NRG149ty7O7K
+	B1wPG7dfwq0b8=; b=UabY2i2O0DFebgnB5Itk1pRi3/Htbxgsnj9zfMhYyXAq+k
+	yF4QkmQIRPAjVGN5n1TRYRA93L73U7SajNdDfI3dDHHhuVPIhOocLrBCQRPGo6fO
+	zRUesLej41tQv0v/OKC288JhXJxpOKbIav1Tz2cpvXyghY1uWfY3xJlpLdnQWSkO
+	g9By3jcVfZdNthUqy8R7s35WFAUQpmZ+ICuM5XKofi9TBR9lWHWDncMDr7e2p4Pd
+	ahAwkkpqBsFsqnU9UxNpc/YeN9/xorzOtztL+lqAorMkbJvqxaDn+ti/Ykb1NS4P
+	GkIfLBl2FlcgU/0FYB7OxhPqwp9WpNOjoazF1Vnw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq94twx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Aug 2026 17:45:48 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 679HfJG7012053;
+	Sun, 9 Aug 2026 17:45:47 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5vt2bb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Aug 2026 17:45:47 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 679HjjQR34275656
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 9 Aug 2026 17:45:45 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0842520040;
+	Sun,  9 Aug 2026 17:45:45 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C40720043;
+	Sun,  9 Aug 2026 17:45:42 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.135.220])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Sun,  9 Aug 2026 17:45:42 +0000 (GMT)
+Date: Sun, 9 Aug 2026 19:45:41 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH 1/9] mm: introduce hw_pte_t for PTE table storage
+Message-ID: <4a42c498-58ca-46f4-819f-da14cfba154f-agordeev@linux.ibm.com>
+References: <20260806083926.1807279-1-usama.anjum@arm.com>
+ <20260806083926.1807279-2-usama.anjum@arm.com>
+ <3db8233c-3785-444e-b2eb-3e5fc5cb2f17-agordeev@linux.ibm.com>
+ <eef14e97-20cd-4b08-ae22-7636af049b09@arm.com>
 MIME-Version: 1.0
-References: <20260726212812.89266-1-shijujose2008@gmail.com> <20260807055952.GIanV0WDlB9-eP9VdV@fat_crate.local>
-In-Reply-To: <20260807055952.GIanV0WDlB9-eP9VdV@fat_crate.local>
-From: Shiju Jose <shijujose2008@gmail.com>
-Date: Sun, 9 Aug 2026 17:21:35 +0100
-X-Gm-Features: AUfX_mwLW-hapdu2hs4DMFMxwFy8InInYkZZJQTUfB_9HQ0CIhdHPAN3xmR9s3U
-Message-ID: <CAG4KcRJcpLREkbmOEEw7nGD+_PNOd+fWHkODqfWo1M8hmxA_Bg@mail.gmail.com>
-Subject: Re: [PATCH v23 0/2] ACPI: Add support for ACPI RAS2 feature table
-To: Borislav Petkov <bp@alien8.de>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	tony.luck@intel.com, lenb@kernel.org, Yazen.Ghannam@amd.com, 
-	mchehab@kernel.org, ashok.raj@oss.qualcomm.com, jic23@kernel.org, 
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
-	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
-	wanghuiqiang@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AA8611C000C
-X-Stat-Signature: 6qkqntwyiogp31cgm9zi37gpcquxn4k8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eef14e97-20cd-4b08-ae22-7636af049b09@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ehRYw8QMBCJQ6XIfQUmc1xOZ8VBocr8y
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a78bccc cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=7CQSdrXTAAAA:8
+ a=7ZejAh3qsUrew3BXsuMA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA5MDE1OCBTYWx0ZWRfX8PAJydAF9Sdz
+ 7Q3LQNawdCCW5p3S9Cbrhno/+8i0akWT9oxXen6S0nUhBQsH880/7RsGl95VX21rT54x9YhFqi1
+ 20KERD3HCbwvoqxx4T70j96cVKwA2YxlZ6l2xOFcmMWRehBEI40oNe5oKbokVHGzUV8t5ZkpMSK
+ ns0C/90GTY6G7Afmg3i4iWKGKI/x2MSzhpkhUmia4LUS0tqD/uSG8uJudCOs75ncoAMtIyBtPts
+ SBc2vAEfXkhI2UuaiCwcdAwFVnvK8EgubcrGc/SgeNggiVPjDgs5qWQ8+vOIPtcC9cEpr02poOB
+ Lg7APmO3Rx8vA6tguusRIZ4Fs8vWJdm8vnK+m2H0UOB6WahoA26KXbJqrB0927hzkoKT62s0AOf
+ RGde2c8tcj7xMXKNQULCZu1ZlHt1NIVwRcJ45XzbncbVNxXZWhcoK8gsn97hT6hSSx+Fo3N5VVF
+ ELeKceQfHYIaUoeswKw==
+X-Proofpoint-ORIG-GUID: ehRYw8QMBCJQ6XIfQUmc1xOZ8VBocr8y
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA5MDE1OCBTYWx0ZWRfX40Jd01nPAYq/
+ 0UVJDKsUAxNz/IYIJFjnAhSgQRETCQqeUcuCeVy3WJaqKm5o/wyOjpQIKh0TKZ3HawAxontKM5X
+ Anm2JSFRi6CK3bLpHrJPHohn6MgFj5w=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-09_05,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608090158
 X-Rspam-User: 
-X-HE-Tag: 1786292508-165257
-X-HE-Meta: U2FsdGVkX19GFSe0gNZxVPn3FQsrEkyoyYqImxe0JKOOUgpShlpXQhCG6Jy9IL0i3cO5gtLt8m3lnYo5AjyCgttKCpYMycoLPQUIGfzLPqTu1c6nVitalQqD5f+kzjxKO0HMYFdXXkcasPfFUcmU2ybYgO2ZiY5AoUuh2haKvpzghaaBKKyl9ihc4ygRqNmSNiZwTtcw5n8iJSB5e7CBpuwjAIdO4QPxS1ZurV5yLUDvDj0y1UhuaHfhT5oVI3ojGfobe4RiqWhd9/jY90n7Lan8kjs9YRBH30z1TxD15z4B/QM3PgMfV7gBWZkiuPS+A9RQYLM/J6UsYF3cQxLQRBKEeN8MZnKShSQOj4c8YDDUh9CfM/VfU2lZh+jBxGkIzt3rv3/5T4L8W3yNn1e3gzMXJsAFSEU5ze/3CfDP//xMFViVYfuzB3V/mqeZfS3PLoz4brPBK9PacjegwY6RqZKZMgxGpoRuiAV92lCrCUa8IaiLMZ/E/ai9ehivWJMFPApMDynvAIGaZN0Wk07rVBHI9/AmYPbkQnz9iFAbX19BDguCmv+aLTaEHtuJbihhDCPTJZUO6U229kLkn2A/uYg4gjV5Q7gkNqIynLlVgJPxGLMx+Im1UtYd8namZdfc/O2bLiSt1/+WWxcbZ3073nqF9r5YF8AT3lVPSg/0CG0PU/WW6hHvMcnArCT1Vv4rY8NI6y++l6NZvDTaEFaYqGpQae5xlaWJcMsjlnsvNPuANa0LbRBJiTTu3kp1SsPVBmw1LHztLLwfi/0ODBcbv0dvXwVM46OB1dXiaqqlN8WghCv9mj1Lw11IbY44+iZVqus+caHHAwzmrwVX6kmL8LAF8X58H5aSELSgN4HN6GucOrSLCv6mQ39FJ3neyUIJ1wyOKU6AxFhQCxh19w+1rEqsucGKbrvyBHmaQdU5lvRMrM66ZG7DzbQbBKOPD5tVg5CKAlBX/SzkEqqfh8o
- yfW55i4F
- v9u8phlmnX+ndDS4DIqZf3pSFS5XAp7pKhRIOljqdTigrqWM9Z4+XmBt3upmnbpA0i2tprN6Uzt+KeBVGvgIRfTp+U/LH10+cXSaBOGgbanwdrSYaXmPjPCOEyxGFCsldLiFHnFPJFjHW17xAK9W71CKD0fXmwfKxf5zvYwUNFU9RtGXEMAZy4C8o7cgiIcEC/3KAkKMvtwWGtpr0W3KFs4pOeBcIDOKIxg4QwV/05yWXmbs/fm8WYFC6h7BnVlaQk4Y2KMsKO5sXHuejuSfTZk5VM01FmlZgty4TNgKkP8d5nUZfz0AU//pfrK8oV4rOeJfmRQ/irBLu7qOsVl6fSXM3nWqnr9RbyYtHiizEBimxCUsKJwTrdfwjd9tcKBM0Ml4Lvzgag8Qyu+RK13XXZy6yCgdyfkvm++6q5sPdALmCYXaT2+HDCB4gYL7UZf/e1st0t2Uiv5IRxpCWgXW2PVUnBjYOd41A8U6vHuhiYfiNoMLKnGqMN2azIMkfIxSDymMMDkZrjpGCiansvtPtUg5cwV/px8nyIt+ud6k75Amg35s=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: o4h8rsmmr9fqbupei49d9zuw61b9i7cn
+X-Rspamd-Queue-Id: A48E718000C
+X-HE-Tag: 1786297579-309627
+X-HE-Meta: U2FsdGVkX1+617yp8FDstE7z6iQqvUavjCs5gsxIF7YvrmfFRziUtLpa+7sg8/KU/X48mwWdN/wNTbLfVVlJKjW/7ToACgT13beNvMhgzn+dA2Txg1dnGW4dmu9ryIGzengcSzf0JEUUreT6ZlohsXValIajf1j/7t8oJyrZBfH5f3nkBSp4Fjx0uhuaSmhAY49qfQCKPqkbJA+V6GOrzCLs6lZkJ6wmu1Zb7Pv28dK7LWIPNKNo3oufGMSQo7NHTXZYidwh5XU/VJDKrI0+HeAg9TpezX7/1tudqZPZxTaqxPgbfivu1Xwv3ERXtuuGMAhPdWEyPR2ZdlH7+vNeATNlwDf45SNjEx8NVbVtI0tZRKMCJQARO4DkCL+oW2FU68l8TDddkeO1dxAXYqSYInPY+m8W6d8HnH7VnafDq8FzyijIJuwfdUPA5BKftXZ36nBGlH1ooCxDbYuL2wG4hYDs0M78fzzc7AWoKi837SvKI/Ly+EzpXkCE09cj5s7gZIRTPryJvjX0wV25O5Lvh60sl//qDIYuVMLcAyt578Hoxd+JniCdT4qkisbfGv5Me0v0cCO/tL3OSY6adqTif2302QV2MAbueoE4jcNjwYMpRMv/HxeXB5aYTJRXwvRbFf2CoDScGXaAbfj3C7wjT4e420SpSJxWR8CQUAdhoQ6z6jFXNt3M6NrAHMXM/0dJuW+0Z+RVvlZtI6ueJNsWrJwRifCYtIhwNJYG8jrzToRX0E6fh7adkeTPuIac46SNtzYZAG0onAkmeKIconGR/Gs5qbNYbxWmSJxkgN8ewHif9SReyMWYuGJ+o78pQhNa18BBWhHVntIHwkDOuTuPGiCViUq1kQqLu2PdTn47DogmqfCqHsbI4t2W0mc2ouwpJrY96o+5bOnwPNaW/Ql7dRv9/NcRuStZO3cUde+5D0/Zy1n+z3E36+HC554G81Be3rA1e5wqwUDdZZjHYXz
+ kDxcNPBY
+ RbrQbG9S1c9SDlBTUulXDJptsAaCTnaLZCZoV/cuB97xc9nn4agMMv+i+pzOSoc9FIWkHtgeOZKTZvKEIDtlZHO5rekMxk74qaKs/784/k+HHvZr38D4QvIRnqRhxPVyT/0jjhyVTNzIqiaSErtmM3OG3nLkxb7AsD/mW+sMym6q+y8cEMr1fNmf9xLqJ04l8KfmySbcfNHMAd85Ayo9/3RQWNZKFhf4VKQ8DcsqrYN4A0IeqcW+UIJi639pxE4nWPjYElZXyoEEXh28uH1VrneddiBX/HDhvJYrq3BRNcsA150VVHA2IajIfU1dYq0POqdvLWg9MCuRVAsT/xJ22brzugV0PHOiRNLSLQ7DXEzD296T0UP9BmzG2rR48kbPBCh2kti2hRnQVld4/OZEZOZYAjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,255 +186,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Borislav,
+On Fri, Aug 07, 2026 at 04:24:00PM +0100, Muhammad Usama Anjum wrote:
+> On 07/08/2026 8:09 am, Alexander Gordeev wrote:
+> > On Thu, Aug 06, 2026 at 09:38:39AM +0100, Muhammad Usama Anjum wrote:
+> >> pte_t is used both for logical PTE values and for entries stored in a PTE
+> >> table, so pte_t * does not distinguish a pointer to a copied value from a
+> >> pointer to table storage.
+> >>
+> >> Introduce hw_pte_t as the generic name for a PTE table element. Define it
+> >> as a macro alias of pte_t by default. When an architecture selects
+> >> ARCH_HAS_HW_PTE_T, define it as a structure containing a pte_t instead.
+> >> This preserves the representation while allowing converted architectures
+> >> to enforce the distinction at compile time.
+> >>
+> >> Keep the C type definitions behind an __ASSEMBLY__ check because
+> >> architecture assembly sources can include this header indirectly. Include
+> >> asm/page.h so consumers such as linux/vmalloc.h retain the page definitions
+> >> they previously obtained from that header.
+> >>
+> >> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> >> ---
+> >> Changes since RFC v1:
+> >> - Add the ARCH_HAS_HW_PTE_T opt-in and generic wrapper definition.
+> >> - Exclude the C type definitions from assembly sources.
+> >> - Update the description for the new opt-in model.
+> >> ---
+> >>  MAINTAINERS                   |  1 +
+> >>  include/linux/pgtable_types.h | 17 +++++++++++++++++
+> >>  mm/Kconfig                    |  3 +++
+> >>  3 files changed, 21 insertions(+)
+> >>  create mode 100644 include/linux/pgtable_types.h
+> >>
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index e9c8567308a75..7169bea968cf5 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -16982,6 +16982,7 @@ F:	include/linux/mmu_notifier.h
+> >>  F:	include/linux/pagewalk.h
+> >>  F:	include/linux/pgalloc.h
+> >>  F:	include/linux/pgtable.h
+> >> +F:	include/linux/pgtable_types.h
+> >>  F:	include/linux/ptdump.h
+> >>  F:	include/linux/vmpressure.h
+> >>  F:	include/linux/vmstat.h
+> >> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+> >> new file mode 100644
+> >> index 0000000000000..70c3edd00a01b
+> >> --- /dev/null
+> >> +++ b/include/linux/pgtable_types.h
+> >> @@ -0,0 +1,17 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +#ifndef _LINUX_PGTABLE_TYPES_H
+> >> +#define _LINUX_PGTABLE_TYPES_H
+> >> +
+> >> +#include <asm/page.h>
+> >> +
+> >> +#ifndef __ASSEMBLY__
+> >> +
+> >> +#ifdef CONFIG_ARCH_HAS_HW_PTE_T
+> >> +typedef struct { pte_t __pte; } hw_pte_t;
+> > 
+> > On s390 it fails to compile once we do typedef hw_pte_t *pgtable_t
+> > in asm/page.h. m68k, powerpc and sparc may also have such problem.
+> > 
+> > The below declaration helps to resolve it using forward declaration
+> > and without meddling with headers, though I do not like it much:
+> > 
+> > typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
+> Thank you for testing it out on s390.
+> 
+> As __hw_pte_t isn't being used yet in this series, would s390 enablement
+> patches add __hw_pte_t to this definition?
 
-Sorry for the late reply.
-Please find my reply to Sashiko reported issues and
-apologise that the replay is not in a patch friendly format.
+I hope there is a better solution. As I noted m68k, powerpc and sparc
+may also be affected, so I would suggest to look into those as well.
+I would prefer s390 to use the generic one rather than circumvent a
+compile error in a custom way.
 
-1)
-> diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-> new file mode 100644
-> index 0000000000000..51adfcddfa99a
-> --- /dev/null
-> +++ b/drivers/ras/acpi_ras2.c
-[ ... ]
-> +static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx *ra=
-s2_ctx)
-> +{
-[ ... ]
-> + if  (ioread32(&ps_sm->params.flags) & RAS2_PS_FLAG_SCRUB_RUNNING) {
-> + ras2_ctx->od_scrub =3D true;
-> + ras2_ctx->base =3D ioread64(&ps_sm->params.actl_addr_range[0]);
-> + ras2_ctx->size =3D ioread64(&ps_sm->params.actl_addr_range[1]);
-> + } else {
-> + ras2_ctx->od_scrub =3D false;
-> + }
-> +
-> + return 0;
-> +}
-Does this logic misidentify a pre-existing background scrub as a demand
-scrub?
-If the platform firmware has background scrubbing enabled prior to driver
-initialization, ioread32() will read RAS2_PS_FLAG_SCRUB_RUNNING. Because
-the driver's internal bg_scrub state is initialized to false, this assumes
-the active scrub is a demand scrub and sets od_scrub =3D true.
-Would this prevent the user from controlling hardware memory scrubbing via
-sysfs, since writing to enable_background might return -EBUSY and
-writing to enable_demand might return -EOPNOTSUPP?
-
-Shiju:  This is not a valid comment.
-Please find a description from the spec.ACPI spec 6.5 RAS2
-Table 5.87: Parameter Block Structure for PATROL_SCRUB:
-Flags (OUTPUT) : The platform returns this value in response to
-GET_PATROL_PARAMETERS:
-Bit [0]: Will be set if memory scrubber is already running for address
-range specified in =E2=80=9CActual Address
-Range=E2=80=9D.Bits [31:1]: Reserved, must be zero.
-
- ioread32(&ps_sm->params.flags) & RAS2_PS_FLAG_SCRUB_RUNNING
- ACPI spec 6.5 RAS2 Table 5.87: Parameter Block Structure for PATROL_SCRUB
-  Field: Flags (OUTPUT): bit[0] - returns status for demand scrub only,
-  and thus this condition still be false for the demand scrub as well
-even background
-  scrub is enabled prior to driver initialization.
-
-2)
-> +static int ras2_hw_scrub_set_enabled_od(struct device *dev, void *drv_da=
-ta, bool enable)
-> +{
-[ ... ]
-> + /*
-> + * The validity checks for the address range to scrub need to be updated
-> + * with (base + size) > (mem_base + mem_size) check in the future once a
-> + * proper method for determining the NUMA node memory range is available=
-.
-> + */
-> + if (!ras2_ctx->size || ras2_ctx->base < ras2_ctx->mem_base) {
-> + dev_err(dev, "%s: Invalid address range, base=3D0x%llx size=3D0x%llx\n"=
-,
-> + __func__, ras2_ctx->base, ras2_ctx->size);
-> + ret =3D -ERANGE;
-> + goto enable_bg_scrub;
-> + }
-Could this permit passing oversized physical memory requests to the ACPI
-firmware?
-The driver checks if the size is zero and if base < mem_base, but explicitl=
-y
-skips checking if the requested memory range exceeds the NUMA node
-boundaries (base + size > mem_base + mem_size).
-Since mem_base and mem_size are initialized in ras2_mem_drv_probe(), would
-it be possible to add the boundary check here to prevent out-of-bounds
-physical memory accesses?
-
-Shiju: The suggested check for NUMA node upper boundaries is unable to be a=
-dded
-          at present because of the reason given in the comment added
-         (proper method for determining the NUMA node memory range is
-not available now).
-
-3)
-> + goto enable_bg_scrub;
-> + }
-> +
-> + ras2_ctx->od_scrub =3D enable;
-> +
-> + /*
-> + * May need to return the error code from below function call to the use=
-r
-> + * if the below function fail to update current scrub parameters even th=
-e
-> + * demand scrubbing has started successfully.
-> + */
-> + ras2_update_patrol_scrub_params_cache(ras2_ctx);
-> +
-> + if (ras2_ctx->reenable_bg_scrub && ras2_ctx->driver_active && !ras2_ctx=
-->thread) {
-Can this allow hardware state modification during driver teardown?
-Sysfs attributes are unregistered during the devres phase, which executes
-after the auxiliary driver's remove() callback completes. If a sysfs write
-to enable_demand hits this path during teardown, the command is sent to the
-firmware before checking driver_active.
-If driver_active is false, it skips creating the monitor thread, leaving th=
-e
-hardware stranded in demand scrub mode.
-
-Shiju: This is not true. Scrub sysfs attributes are attached with the
-edac device and
-          are added when the edac device is registered for acpi ras2
-in edac_dev_register(),
-          where the edac device is the child of this auxdev->dev. Thus
-auxiliary driver's
-          remove() callback would be called only after the
-edac_dev_release(), and
-           edac_dev_unreg() are called, where scrub sysfs attributes
-are unregistered.
-         Also both ras2_mem_drv_remove() and ras2_hw_scrub_set_enabled_od()
-         are protected against race condition using pcc_lock.
-
-4)
-> + /*
-> + * If kthread_run() is called before sending the command for demand scru=
-bbing,
-> + * the thread may determine that demand scrubbing is not running, attemp=
-t to
-> + * restart background scrubbing, and then exit. This can occur because t=
-he
-> + * thread function may start running before demand scrubbing starts.
-> + */
-> + ras2_ctx->thread =3D kthread_run(ras2_scrub_monitor_thread, ras2_ctx,
-> + "ras2_scrub_nid%d", ras2_ctx->sys_comp_nid);
-> + if (IS_ERR(ras2_ctx->thread)) {
-> + ret =3D PTR_ERR(ras2_ctx->thread);
-> + ras2_ctx->thread =3D NULL;
-> + /*
-> + * If kthread_run() fails and the demand scrubbing has started running,
-> + * re-enabling background scrub will fail. Thus admin/firmware may need
-> + * to re-enable background scrub after demand scrubbing has finished.
-> + */
-> + goto enable_bg_scrub;
-> + }
-Does this return an error to userspace despite a successful hardware state
-change?
-If kthread_run() fails due to memory pressure, the driver returns the
-resulting PTR_ERR to userspace. However, the driver has already successfull=
-y
-sent the RAS2_START_PATROL_SCRUBBER command to the ACPI firmware.
-The rollback attempt to re-enable background scrub via
-__ras2_hw_scrub_set_enabled_bg() might silently fail with -EBUSY because th=
-e
-demand scrub is already running.
-
-Shiju: In my opinion it is correct to return the error to the
-user/admin instead of silent error,
-          to indicate that the background scrub will not be enabled
-automatically by the driver.
-         This enables user/admin can check the status of the demand
-scrub by reading
-         the sysfs attribute 'enable_demand' periodically and
-re-enable the background scrub
-         when the demand scrub is finished.
-
-5)
-> +static void ras2_mem_drv_remove(struct auxiliary_device *auxdev)
-> +{
-> + struct ras2_mem_ctx *ras2_ctx =3D container_of(auxdev, struct ras2_mem_=
-ctx, adev);
-> +
-> + if (!ras2_ctx)
-> + return;
-> +
-> + mutex_lock(ras2_ctx->pcc_lock);
-> + ras2_ctx->driver_active =3D false;
-> + if (ras2_ctx->thread) {
-> + /*
-> + * Prevent the thread's `task_struct` from being freed if the
-> + * thread function exits.
-> + */
-> + get_task_struct(ras2_ctx->thread);
-> + mutex_unlock(ras2_ctx->pcc_lock);
-> + kthread_stop_put(ras2_ctx->thread);
-> + ras2_ctx->thread =3D NULL;
-> + return;
-> + }
-> + mutex_unlock(ras2_ctx->pcc_lock);
-> +}
-Can this cause a use-after-free or Oops during driver removal?
-In ras2_scrub_monitor_thread(), when the thread finishes, it sets
-ras2_ctx->thread =3D NULL, unlocks pcc_lock, and gracefully exits:
-ras2_scrub_monitor_thread()
-...
-if (ras2_ctx->driver_active)
-ras2_ctx->thread =3D NULL;
-mutex_unlock(ras2_ctx->pcc_lock);
-return 0;
-If ras2_mem_drv_remove() runs concurrently, it takes pcc_lock, sees
-ras2_ctx->thread is NULL, and returns without calling kthread_stop() to wai=
-t
-for the thread to fully exit.
-This would allow the module memory to be freed while the kthread is still
-executing its epilogue, which could result in a page fault.
-
-Shiju : Sashiko specified that the thread function gracefully exits.
-Thus calling kthread_stop(), as it suggested, in a kernel thread that
-has already
-fully exited on its own, risks a use-after-free or invalid pointer
-dereference, which
-Sashiko likely to complain next.
-
-Thanks,
-Shiju
-
-On Fri, Aug 7, 2026 at 7:00=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrote=
-:
->
-> On Sun, Jul 26, 2026 at 10:28:10PM +0100, shijujose2008@gmail.com wrote:
-> > From: Shiju Jose <shijujose2008@gmail.com>
-> >
-> > Add support for ACPI RAS2 feature table (RAS2) defined in the
-> > ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-> > scrubbing feature.
-> >
-> > ACPI RAS2 patches were part of the EDAC series [1].
-> >
-> > The code is based on linux.git v7.2-rc2 [2].
->
-> You're probably going to hate Sashiko by now but there's more issues agai=
-nst
-> patch 2:
->
-> https://sashiko.dev/#/patchset/20260726212812.89266-1-shijujose2008%40gma=
-il.com
->
-> Please sanity-check them if they even make sense. If they don't, you can =
-say
-> why and we can ignore.
->
-> Thx.
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+> This could have been avoided if each architecture defined its own hw_pte_t.
+> But for now we are keeping the generic definition of hw_pte_t.
+> 
+> > 
+> >> +#else
+> >> +#define hw_pte_t pte_t
+> >> +#endif
+> >> +
+> >> +#endif /* !__ASSEMBLY__ */
+> >> +
+> >> +#endif /* _LINUX_PGTABLE_TYPES_H */
+> >> diff --git a/mm/Kconfig b/mm/Kconfig
+> >> index 331daf7fcfab5..31ba9ebf4aafd 100644
+> >> --- a/mm/Kconfig
+> >> +++ b/mm/Kconfig
+> >> @@ -1316,6 +1316,9 @@ comment "GUP_TEST needs to have DEBUG_FS enabled"
+> >>  config GUP_GET_PXX_LOW_HIGH
+> >>  	bool
+> >>  
+> >> +config ARCH_HAS_HW_PTE_T
+> >> +	bool
+> >> +
+> >>  config DMAPOOL_TEST
+> >>  	tristate "Enable a module to run time tests on dma_pool"
+> >>  	depends on HAS_DMA
+> >> -- 
+> >> 2.47.3
+> >>
+> 
+> -- 
+> Thanks,
+> Usama
+> 
 
