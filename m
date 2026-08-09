@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B2EC5AC80
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 14:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70A02C5AD4E
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Aug 2026 14:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280736B007B; Sun,  9 Aug 2026 10:03:47 -0400 (EDT)
+	id 0D1FE6B007B; Sun,  9 Aug 2026 10:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 230D96B0088; Sun,  9 Aug 2026 10:03:47 -0400 (EDT)
+	id 083226B0088; Sun,  9 Aug 2026 10:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147946B008A; Sun,  9 Aug 2026 10:03:47 -0400 (EDT)
+	id EDB346B008A; Sun,  9 Aug 2026 10:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4FB96B007B
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 10:03:46 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6188614057C
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 14:03:46 +0000 (UTC)
-X-FDA: 85081899252.10.470B5C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B3AB0C0010
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 14:03:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eem74xGm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C8DF36B007B
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 10:25:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BD50A03F9
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 14:25:44 +0000 (UTC)
+X-FDA: 85081954608.13.6401706
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AC8F840007
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 14:25:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMy+Lg+b;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786284224;
+	s=arc-20220608; t=1786285542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8R5Hp4lAYk21jzt2d53dHdom5AbkPCz9hSGN4NvOnCk=;
-	b=ZdtHbB5Isbhz5mpIwDf80KciCIj8mEOaxjD8/fM9qhDQz01tbQC9SZlmaV+Sl9YrxHfXFy
-	3Dhqw3hjYhr/c/Ev9oJ+UPj8Dns6qTDeVf0Y3P2dIzPqOSDaihMZAVbch4KhgSenaYLoFO
-	hCCf3YRFwSvnaMNOyzt8ikrylmVWf4I=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eem74xGm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=+mUtOVgyzqDU/k3Pbcj2HKLEv+mxt8OFSMeHs/bRNlQ=;
+	b=6PVL+4xxkmIlpL4Rq14yWGEZ2/Ghb0D9GrS/b7xnu+TgNRxmlH0HwsGNn4vjJ6iqozOEbT
+	Gi4wAyubwP2fCTqCN+qSwN4WNtntkBEHi6gjsXnqjhV/HMRwffkU37VlINCLKSnnBSVOr1
+	MUaB/Vp1Ej2YHaCkGyEYtsnb3bmalM4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786284224;
-	b=A8UORoohv8KGjNl2ts0q/kClED9VeBPt+LoaM/c99EmJ8jtr9bc1l6SZxeEOgNdxatCZzq
-	BWtDxKAM514EoOuP9I7kbRUn0ezHnVejqBijFVRsleoCG4KAiUEiQwnkbmDibMfoogrJTi
-	ZHYrmRuLnFIJ+KN/sBoN8XGJgn2qgKg=
+	t=1786285542;
+	b=Txnary9eawn0fysCDG0g80rxfBLwh2Jl/0TGUWm0cCoA67fCXhbX05iE1dcteNMiw7kNFS
+	BaCN/t1xSwrqxnzdiPsqku3guJwLAdDU7Q8RfLvicjtkru/RQVGYVki5yqZ5MYsuS9FqdY
+	jm7ct9C2ukKCm/L4P4ZvTfyrhcbhaRE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMy+Lg+b;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15E9960008;
-	Sun,  9 Aug 2026 14:03:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DEE1F000E9;
-	Sun,  9 Aug 2026 14:03:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F0A643D25;
+	Sun,  9 Aug 2026 14:25:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AEA1F000E9;
+	Sun,  9 Aug 2026 14:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786284223;
-	bh=8R5Hp4lAYk21jzt2d53dHdom5AbkPCz9hSGN4NvOnCk=;
+	s=k20260515; t=1786285541;
+	bh=+mUtOVgyzqDU/k3Pbcj2HKLEv+mxt8OFSMeHs/bRNlQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eem74xGmmfxX4i5JGj5geIWcHbuRewGhh7jtDenQX1rUPWDua13ZDJoWcbiBDD6xv
-	 RqDLgzNIa3BbyJlCevTg8MNcziZWAbPAG7qqrRUvwgaXnhXrFcn+AzZxoq6a92f/5g
-	 uu0HuXuNHMYFgYdinigoKyGTDpiIZd7gCDmOr330AFuevEFo84RBz6zmUtC6J4UzZj
-	 2dgDt0mxAPahvRLYoJwwmFtFHQLbemX2BLnJEZcKRx5k049uI1QCAPV0r48fFZbzMq
-	 RRcM/Pwx41eRaDNfkvMjOm7ky+QtZng3gVmecZLGxWtgSQs3u1PFrgpBWbL5dW1cHL
-	 Qfo3l3WHevXLQ==
-Date: Sun, 9 Aug 2026 17:03:37 +0300
+	b=VMy+Lg+bZfaZP8oorEjOei5gN0ErIP9YRQxC8p71GVD4YUPW8rQ8czAeQETBAcUee
+	 sBxZHH+PJh63GSlYQmHUww4cNgRqCvX3soypbcIzYZ54s/nef2TZmvR6638Vvl3Kpj
+	 liY8bwwM8rSQ97DWoGRwzL9CN3YeVH2y2+ddaXVPxTJsZpXb2uy3mhC/bq8d8q/IgK
+	 p3ceXktYG5V7bRYWW1JuHaC6HFUkOUXeb4FrCGQmAapAJawX7J7grmiXPPHamPZUyI
+	 PW0BFkZGq470qpfMYuiFI78hJAMlXLXV9qsU/VVoepqaolqLWZnX/C2lEPFZPYoXDs
+	 WuuXAVtB0P7pQ==
+Date: Sun, 9 Aug 2026 17:25:34 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Longlong Xia <xialonglong2025@163.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-Subject: Re: [PATCH 1/1] mm/mm_init: compute hash mask with unsigned
- arithmetic
-Message-ID: <aniIuZa53OBqCMbB@kernel.org>
-References: <20260809123119.3811851-1-xialonglong2025@163.com>
+To: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, peterx@redhat.com,
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+	syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/userfaultfd: clear uffd-wp PTE state when
+ re-registering without WP
+Message-ID: <aniN3qiwJkUOkmaD@kernel.org>
+References: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260809123119.3811851-1-xialonglong2025@163.com>
+In-Reply-To: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
+X-Rspamd-Queue-Id: AC8F840007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: d9t7zmkj8qgnutighxrug71c5orkmhh3
-X-Rspamd-Queue-Id: B3AB0C0010
-X-HE-Tag: 1786284224-571542
-X-HE-Meta: U2FsdGVkX181Udv29W8opnG9cw3zbArE+raX1dWIdRyqv3jh+XEPsBRM0KQUbxv+ut/T2GVuKJn2S0FIgWf1jXSs0APAxwwJWEEYYDg9A+QrVX+p9YUl9BF6CvEGqQoz8Ha7ar8q51yW0bzN/9363odBo2WL9zzFX/sEvKob9kX3Z/g8+91eCqbHV+pdTXrOnr3SPeySfsvzIPSl/he4wc0RAItnYDlA/t7hQFPdrcSpPjLGSiqSlafpO7mcYhZjhlsGNESMTamFHkQY/mw6/3JOBsBJWP6B6KkvipqNkjMQ1LITJgzmrdZXP8pdfX8j+G/qDJw91odoqlkKhARfpjkwWDaZHK3ZE8Zwz7AVITcLLSNDh2Vy/ySqs92T2NSf3ST4mGoZp5fcMmVqvNg7a+4wUMDRw/ATWt0XhgKnva0CGSkyTd/K3QJpvBYN8SiN2yVSv7r3tJKeT5XwTvPDf6nra2Av6+Vx31/YjwXORTi4F9/CSmyJTvbhLBebtmXgxC7gbCkx/9UDjDDo/ak1JTXfKvktzmR1KNWMMmRGvW5oqKP9DT+XnNGmwSHrxKEgM3TJIqTRX99x3IGF9icuoJiFtlFX/MNvWU/MroWv1gqJR/8+UcyUnD/rAQ+CFWqo8v0qx0H6Ma+R1tpvJKiZxs/qcXrz3VSsSatReQMrYtC3+g/vZPSa3MqnuamiNl+aklb+yY9HPnvpY5iEkxZUVfkxngKpiLqx7yJxG/+xgZn7WlQovbW88sSFHz/JKovOz34EHvmr47RNs+nVG0Sqju9axX3A5/wCRlmN6NvEO91DUvSABNGVQsfBYDL1ryzbhEuM7vC9fFU++gL6e9pPPRl64k/o840hYtUr5bcyzgklYvZMqgF+2E4aFyNOuT67tfCLMPMU09eOVr+TWE8Z/ZFZX0b3992xjceKZ8YR3bMSA7EIzcQWgqF3IGTHTbskLFyTnrY9M4YUtJGg06P
- ZWLyyiCt
- m1ZwdIqBY0EiDiHbFZdTgD4HPE7hwAgoOeJ7Dy87gkeSp12+5uzfIiRDP7iAkSUIxuder6pijeFVFSgg232sOmByMYyhHFjBW2QJ2KaVC64JidPF9P54SCXPJENnb1fN/6H/OeZCWz+u5gRtMZWhaIHZVHomp5iHRqRYMuT9bZcUbt2saliRLT0ekqS2ogpGyYGHuZMfmF2eDZO1VLde6XDOaa8/ax5I1rOI0P+H/Z/Ci4VR/PHcu+Sn8oetjmzY5HjcHC6Yc1XDJnriUa4vyCw4mZ4vUfW9R3bNdVxrESZoYKtA=
+X-Stat-Signature: tqcq833gfb8xu4qg8pkw3adus3hzuqh9
+X-HE-Tag: 1786285542-101094
+X-HE-Meta: U2FsdGVkX1816LH/LGEAEce+gs/69bQ/2RrKP0ns/yHe5+F8/Ecqk7K3mnvWlMIO1o/DUaqaApN05ZlcXPwSq+ixtN0p0h7T5/A48O2faHmBxmnZmSi5Ecq2RDg4pMqlqNg27P+2rP2QHLMU9n469Cadv7PO0cfEAidzGCR7zmIpogOqUoxAeNTr3lRxHQoFOFZ0Wy8LjKDpYeURxleeNqWfFHyiILtW++OGgFa0NdYn2ZhFUoZd9bhp9vxAuEVERMO5nqRb3hLtlcJSHxe/FvTXMOzn48eA570x3/PHEAD928b9ATNfeF85prRf9KKt3nSo1yr8pgHtMtXbVzV9OJ0UxGio48MU69ApKyvt6XTqkHKkePd+G86bEvAYdI3nlYggnWhDtBW++JWYO1M+3haf54R8emmnneil0ugD5B9rCPB+FFfJysYhXdxoUvQtSpF3t2V126v0EF1VAI0jYP1BhtVfHDJ7LIeMB1krrrwXNkf5QXUiuDdOuY4x2enPpWBUIdCLDyX9YPKuh80TIdImiJwuLabNlYImEwzLVela+Ohi5oYh6Su8OPVARzEuzRaU177bhygosCGE+PuDyFTUslbEwdEgWWJ1gX0rp7rwNa4Ce4bUxcyeCrtQU6Z2XXH/VYR4SW2Q6xPjE/Qmuni193AvGzSFBqvf5cwrPBxYwr8xm4jn7cfAi+WB9oWPA8sZa5c65JO3ki8B7rSzHg1k67d6BK1SD9PBYuRppg5Zgcy8MtMyye535kEfH+W1lwrebEvWqmC95snNwkNef4uzCxpy/Wt26xY4ZrI6rAnt6KkIOPrKvcY371R/R6t1tj3fk6NjqatIj7UO+OWPqFHhWD1KD0pldsIegKokOgDK7aOetscqVBz2tbl9o4mVbSmCw6zmwoM9ZAgazGjaE3wGjW8rlti02jMc5K8PAvmy3Op//Tn6o0NFW/fbe0lasjHYc6EaF3EZ/QHq0QZ
+ DfEKQ2S6
+ 194mcsETvU7gSzHXUtnW0AbzXh4EqlaIr6KG1JkWJL2F/pNhhBcspqBagjbazSIFiOmq1fe+i27+quMd3nUoWKt/iMV4nDWFDzT97zEB/CPt7Frsg/YFBO513sGCcwJ8tkeKmxRh1JbdwOdmhymZuw5mu7MURybf58zNZwABezqm0pNOA3mu2BYu+XWBIusr7TzGRSBaSruRtdgHnfG4XkbKMET9jmZJRUjwiu2k81Tm+sMCsHWD6xOoFXL1ygVCBUVRgtOd4m5QEErV04JMEDGgagw3LFG2/4ugKoArzu3dfaE9Xx8Wktl2g+jl/xFi/W6Od7BTqozeLT64o8z1MEr8SwUpMr6Du2WIyFNsf5fRcRFekNWWvvy4Dvp4x9QNxZC4sGwnd+fcXYu8z3uQh9YGcmAdkItynFofaIzr5DnWt/NtDHkvJVcQf49o07xhbZ1jRucbC0wt8Cx2IhLSIzNUC7OmP+hyzdGI+PEga9+KTNoggBHJ4L5MxJyicgrXRi8K/YbCA4TNsLqI//IXBTgpKtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,43 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Sun, Aug 09, 2026 at 08:31:19PM +0800, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
+On Mon, Jun 01, 2026 at 04:26:09PM +0800, Jianhui Zhou wrote:
+> UFFDIO_REGISTER can be issued on a range that is already registered in
+> the same userfaultfd context, replacing the VMA's userfaultfd tracking
+> mode.  For example, a range can be registered with
+> UFFDIO_REGISTER_MODE_WP and later re-registered with
+> UFFDIO_REGISTER_MODE_MISSING.
 > 
-> alloc_large_system_hash() allows up to 2^31 buckets, so log2qty can
-> reach 31. At that limit, the current expression relies on signed
-> integer wrapping to produce the unsigned hash mask.
+> When the second registration removes VM_UFFD_WP, the VMA flags are
+> updated but existing uffd-wp state in page-table entries is left behind.
+> That stale state can survive in swap PTEs.  On swapin, do_swap_page()
+> restores _PAGE_UFFD_WP from the swap PTE and can then install a writable
+> PTE, triggering page_table_check:
 > 
-> Use an unsigned literal so the mask is computed with unsigned
-> arithmetic. Supported compiler settings already produce the same
-> result, so this is a source-level cleanup with no functional change.
+>   pte_uffd_wp(pte) && pte_write(pte)
+> 
+> Handle removal of WP mode through UFFDIO_REGISTER the same way as
+> UFFDIO_UNREGISTER: resolve the per-PTE uffd-wp state before dropping
+> VM_UFFD_WP from the VMA.
+> 
+> Also make the same-context fast path require an exact UFFD mode match.
+> The old subset check treats MISSING|WP -> MISSING as a no-op, even though
+> WP mode is being removed.
 
-If complier already takes care of this then why do we want this patch?
+The recent RWP changes prevent re-registering to the same uffd with a mode
+that clears VM_UFFD_WP or VM_UFFD_RWP. See commit 6eab8f2cc646
+("userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing")
+in the mm tree.
+
+Andrew, can you please drop this patch from mm-unstable?
  
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> Fixes: f45ec5ff16a7 ("userfaultfd: wp: support swap and page migration")
+> Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
+> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
 > ---
->  mm/mm_init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 498d62c4ece3..1883fe923ffb 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  	if (_hash_shift)
->  		*_hash_shift = log2qty;
->  	if (_hash_mask)
-> -		*_hash_mask = (1 << log2qty) - 1;
-> +		*_hash_mask = (1U << log2qty) - 1;
->  
->  	return table;
->  }
-> -- 
-> 2.43.0
-> 
+>  mm/userfaultfd.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 
 -- 
 Sincerely yours,
