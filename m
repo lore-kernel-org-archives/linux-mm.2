@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C5A4C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 08:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E044CC5AD4E
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 08:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 352986B008C; Mon, 10 Aug 2026 04:08:03 -0400 (EDT)
+	id C07FA6B0093; Mon, 10 Aug 2026 04:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329486B0092; Mon, 10 Aug 2026 04:08:03 -0400 (EDT)
+	id BB96E6B0095; Mon, 10 Aug 2026 04:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2183F6B0093; Mon, 10 Aug 2026 04:08:03 -0400 (EDT)
+	id AA7E16B0096; Mon, 10 Aug 2026 04:10:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE9956B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:08:02 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96172A04D8
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:08:02 +0000 (UTC)
-X-FDA: 85084631604.17.7401449
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 817E86B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 04:10:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B03FA2644
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:10:04 +0000 (UTC)
+X-FDA: 85084636728.15.AC1E2EB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D49F1A0006
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:08:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jtk/UaeU";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786349280;
-	b=OSjigwBVL/jQ7i5m6lmVecBWqFmWU/cP/VWSfgLqkN2yk1NuLPiuy1+8JDD6dKdWrasloD
-	x0JcYhEaLBb4r5QFekvBzVvZ8g4ZDJfe8EepoKaV+MOQ6NUAXL9ua8iJZ67tApHNGPmwL8
-	dFxGfVXRSqAy0KNZDevtqXwiVHK9eX4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jtk/UaeU";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5DF0D20005
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:10:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfTBdkoY;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786349280;
+	s=arc-20220608; t=1786349402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFhGsVAUsNp9P12Sw9NmmlITztpvk1ZNsJoMsuJuh6s=;
-	b=Yzp9eSUZMk2Wj/TaI4FCCcZasTY4OdVjxCUrIOvOWMlJpCe4oeSDQK1A0HI9QNV+j3Rehr
-	QJVIcAld0/selSWEG/+6Bui+MfK2OFmcjBOABj0T9TwEPqxtX5Ql4MSdUxcKJRvzWk+zbL
-	DIiLYwoLNwZU+6JhYzMTcBalEsIwWsc=
+	bh=OLW453wfp7TG7edKDi4mkJgnCHT8TeVF/tH4dA3Vb3U=;
+	b=4ylIv61xYhyxKz8O/1XqMvyiElzNY9a3vk2CUEB2quIaKt76bY02r/j/8K5M76rt2IUCBG
+	H2y0EwwoFTKtod9uRI+VzOUgkw8blMQtMt7nE4BL+d94R0tWDI+HEZWjjgFmbDrkDD7Rsz
+	k/rV9UjJB3xXSBLOnusVptKNM0PMcMs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786349402;
+	b=Ou0p+hRpZmKfT4fXRo0FU+pfafk7cYqlVFSvCPEmzFdmZtLL8BVrGrZIuMxiJ2TdNKb+f1
+	p7DLop0Xf6bVP3TjnNeDCcp1W5K6ib3lDugMVIWFent31xN3teTn8Dq+wqREjtWazNOtD8
+	C4O96HBiKw8sfQIq/rzbJhst4TVjXEI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfTBdkoY;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63AC060052;
-	Mon, 10 Aug 2026 08:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7921F000E9;
-	Mon, 10 Aug 2026 08:07:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E6CC560052;
+	Mon, 10 Aug 2026 08:10:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E16A1F000E9;
+	Mon, 10 Aug 2026 08:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786349280;
-	bh=nFhGsVAUsNp9P12Sw9NmmlITztpvk1ZNsJoMsuJuh6s=;
+	s=k20260515; t=1786349401;
+	bh=OLW453wfp7TG7edKDi4mkJgnCHT8TeVF/tH4dA3Vb3U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jtk/UaeUSktXAID9PZ7kQSq4FoJyluNekVHL7zUaCAnej7UqdoKGd0qRbOxQuOdMU
-	 LDHZvvb5IQ6CeMkrAIDqo1E61MPAveZYT/E0T11m0988lbcpWc9jl2BoR3pEZr3OfW
-	 VvMvqEnxYDu7bqN4Mk4zjSsf2ftH2tt0yv9Ws15YLnduraT9Ps2hNHmJaaYZp2SlqS
-	 QJP7GD9fj9RLV3FE0GdyQNpiIw2Llr9Ci0rAEa072aIwfmw02174dpDDOsJlqHofua
-	 eBP3Ao+EJ4mdNPCgHNNJjsB/YaDtaxKTXSTQR6OYmmqm0hDlKBI35/O3bgC5vzYkFz
-	 +G0MwMj4735pw==
-Message-ID: <7be3503a-2ed7-40ea-9ba3-68a4f2f3b348@kernel.org>
-Date: Mon, 10 Aug 2026 10:07:38 +0200
+	b=lfTBdkoYldI3SLP2xsB2q3Mtq7LW0RZ9E8cbtg4dD5/f47DT2+XG0pANB1kWTDl7L
+	 lylQlATU6oRkA6IvP6oFcUo1Z+VIpwrk4FHiox9+6y9w1x7BTWrtbTPeenDTdM7gYN
+	 8S7QeZ+oz3zZC1rmM7Mw71FvlX34ZNeD2vQEM4/jcsIVGMDblEeWHkzVW55R0VQMUj
+	 /RKt5fT4EEWLk1ZJSyWWXESIAAqAGqUrpLCRQ3OhzZgiqUU1KqHGsTe5VCucrR+5/8
+	 HptV4VKmMW29q25w0iU06i2gw36L1jh9KhfDxnf2f4CztcxetMZtneIhnW+XFV/9fF
+	 iQuDmu8sJvEMw==
+Message-ID: <2f72a8a3-f158-441b-82fe-25bdb98ea982@kernel.org>
+Date: Mon, 10 Aug 2026 10:09:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
+Subject: Re: [PATCH v9 04/41] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -101,7 +101,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -148,17 +148,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D49F1A0006
-X-Stat-Signature: xeyes7id3axg3bkgqmhoagxpgxatzgsy
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786349280-169703
-X-HE-Meta: U2FsdGVkX18TXRP2FYB9pWT5biOZ1OavOE5cJtOdFDKQ/+hDP5WMeTNXuuPHGhscH553Eg8UBdlj/s/X9XfOj28It7cm14pPE0VMsvs6Bj7rKB8x50qUKQmSNC/qOvHUS1z83piTmNYvtwLjbsldbi3GSKGdILwRFJqx9QI/X51QFKV4XE+Mbh76hgXnr50vs3r7ZErwbu+K9wcjaWshgziQ5aIoJzOovPKTutzCupoxAMN0lZ/k6BEqkb4ChtkCf33c4xMxw+QCj3Z6wq1FuJ6dLF0bLRIkgcHBABIw1XgXCXprrf4MmpNyVLFzcwzBx0Doiy87OZnsmac7/WvFzzLD0SgPNlgpE/K7Vcufy1Yq84UTyZnW1JZuvuTEWiioChErujXlWxMldG2GkFqf1DC3YtRH4Ax2pqd4cWsbIkFSDjBUHXdRbc9e8mGvOW4jPELqoSGJFhrwLfaAmEwI+HdSf+wjLv+GvYDnHb1X/dL2tigX80vyXQNGUVMPtKfWRcKKpHn9mPF5qcrOaZvwASc4H8jgRVv7wLu2mLoWcKIsNqZkv4TaHIJpAbh4VOGM6sxuqEu8gGgG/4FY+c2TBVPy95/76ShpySDR2SucTiBQ4PS5ZIkvYIViXUBycELcq60fJx758HmHl+N1diiZ7w2EQJacA0B9alutNo7tzTzPGieFBRF5LnW3816m9vDCIVwi53sR641vzXIqptgPAvQavFNBmg7YZJijGyWU71mpHKJ7xqeuNaTtSHR0H2Qk52jQ1weQKZ3SAEUkaGo7TNa8A5yDaoME2K5aUhdvZPnZ+A0S6J+C+9IO2qhY92NE/DRRI1mXm7a01CnBtl/Tp0+3BkqtZXwXJH0RustMYJBdoAgiEgDE15KQ2P64mcE9NIGDi1XZrKHL/MThUidzI7eyrDwQpOLVP+XR0O0cAYMw4MNQP0quy8HsPSSRhASpHfujhAWrO9S1a1G/oHZ
- y9ligMyS
- MZ6xo/F7egZN05k8GIUzC2AKM4VPnomKYSsqLxU2i33k7ReXh0amqktFbnFAmoXNVNYrhAHqxCqJ2BOEA2LO+eyPA0ABGEVvkYXoduj+hbXRHGZYabClmPSVnBbLmqha/GXHs9mUr2CLGgaGD6cc6q0IokGmKz8M+MGudvESzuNU/5UGdZoJ3lVGpAAlStv3zOxR5voe5epB+eX9hSkfbr8CfU0tFT1f3K91n43y0dxByZyQXrgrPBU2qA7VBwksQC6s72uKrinH3oCQOCrRAxJ4r1xWOOZS/XgP4VOtz86ff31vvr1XW9X+WY6F45378kp4OguBf/1ftQGbz5mm7v5jSfUfG34zFSFdCxDdqBfjJFDYfsrO5MKjXEOItRsjjczqERcqcnIyZUbMRSBmS9mCWNA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5DF0D20005
+X-Stat-Signature: 358omopsbj8ri5p36xkgncajdzjptcyh
+X-HE-Tag: 1786349402-621872
+X-HE-Meta: U2FsdGVkX1/faFprY9Cc1dXo0VsdbM0jXxtLeRWwqi6tdemoR1pNWJY+MCWEkjkoC3HnmIiPmuOm4aKJJLe17O4dLxnxJUJ8hCoAe4WxoUuy9bNfzeIdyrgVsXy3JOB3agIKqphy3e8nHrjtPTw/M4MTeJMqZShY8ah/bERXMim/cAn9XvOQh2J9ixGXpq+WZt1c1MRunH44lzs5o+s0ZRvuYpIotJhqbhIvkBzs9P44cRBmskAO0IBnE0MeBYCBhnf7po84Qge33jenO6GYFmtYF+kwf0iY45olvcprsmK0WXArmyoDKJ7xnchWfEIcjdEhIXxhLkbEFvnFSewfqOXmmAjfUJPolWrzCaff28T/Dqkox9rSg2MX+4ZjwTts2VASi7EH0OoJP976ibiSQZnYGOrgywTbXxnxTGp+xXonDbHoT3ES05d+x3BsLqv+ZnjOxUUUf/GTF9jHes6UCMkua7gqIDpCfabI0uh8wimxwqJri1p4SfrysfWCryW2cHsXEaqof4P6hiPjQHighHp5RNqIcNFfw802B5CP+FB2Mxb7zWM02Sj0dUU/6j525pIpAzQrMnC7wH3vU4pqsW3bvbWLFBQSs1j4q+RAG3leb9j0NMY/cdUqwx8/uafU5/gmh6OArUYlIkMlyUxEWyTmyB2bCuQvzlItwmQC7aEXLiUiKOSChOjJFVVmrn8h2+MMuMbdkmURmFzk3x8uIV/k+DDymUh1AOoiYT0yuVzuZHISASfswRUaf7AOOdj6iF2HNlsN/mX25yCcQyoHpz3R2Qp+7Sty1UAHCKiSz2qoi9FJhsF3NkAv++yotMZNFI7wuOX1LU9gHEVgfCUs9Mwh1NlIgHFDQ/XImCLikz6OOz28qTUBTD9RWt3J/cU+RGUj6uD8s/L4K5qG2USQedxpo+hi8m3wv/vDzuNoLtFLln58un0/j+QX/eobHsSBQ+0IRYV7Lwxo0C2zh4N
+ BCJ8/kgw
+ jCROequ8hnL0seSEwPrm5WRoa9vOaRbXZHrN3/dpW8NUWO6TV0s3DiW2zUdtpX1tKIEVmsfy9jELAPcFksZVnjVsgym5btHKJhEPzv/XMxKETAOhB33OSiXE/UFgbIcbxnAbHzGBXbelu93XO0oJPmnbbgA9swe6bTscaa3cmWOnL9ABihrjOC170ZolXzaQ5DYbXCddOYp735EOZlwRB3psTfsXIN0383OewyUluuJAsKYcd5CiQ4ltgcNAB11GKXNtPqdjnDTCsMvA5IQVgdWSaDXg3gkpx+82ee0qAa/pcFyc4PTVVslUy6wzQsmrAkd1HOnejYGK5Klw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,18 +169,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> on kvm_arch_has_private_mem being #defined in anticipation of decoupling
-> kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> guest_memfd support for memory attributes will be unconditional to avoid
-> yet more macros (all architectures that support guest_memfd are expected to
-> use per-gmem attributes at some point), at which point enumerating support
-> KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
-> supported _somewhere_ would result in KVM over-reporting support on arm64.
+> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
+> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
+> between SHARED and PRIVATE.  At that point, there will effectively be two
+> (potential) sources of memory attributes: the VM and guest_memfd.
+> 
+> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
+> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
+> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
+> is a helper local to the file.) Update the accompanying trace function to
+> match.
+> 
+> No functional change intended.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Tested-by: Shivank Garg <shivankg@amd.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
