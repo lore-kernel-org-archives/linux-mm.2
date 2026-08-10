@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC2AC5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 02:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2ECC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58D0E6B007B; Sun,  9 Aug 2026 22:58:46 -0400 (EDT)
+	id 3ADE96B007B; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53DC16B008A; Sun,  9 Aug 2026 22:58:46 -0400 (EDT)
+	id 35DD36B008A; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452F76B008C; Sun,  9 Aug 2026 22:58:46 -0400 (EDT)
+	id 2761F6B008C; Sun,  9 Aug 2026 23:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 167766B007B
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 22:58:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B2CF16062C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:58:45 +0000 (UTC)
-X-FDA: 85083852210.13.5B46803
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1F0B9120002
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 02:58:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B9mm7QNK;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F265A6B007B
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:13:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44D8A140663
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:13:18 +0000 (UTC)
+X-FDA: 85083888876.25.B14C942
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BF22A40005
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:13:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skIQAoNe;
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786330723;
+	s=arc-20220608; t=1786331596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXCqoFJf3vzt1oImCMxR6zmmit+AxyUiAUJr9XJhOUs=;
-	b=Nw+Zg1kMzBY+bLO24DGG42i7OiFO03jk1Q14h5vwS/H4anOFA2redgzsRFb/CAJ6Mkz9cA
-	HZOpQfen741I7ybMtwQUx6oEK2fI0u8lzxqPHkkzs9LLRBcYThD1P6v8PTEuTcEVCt5UWh
-	42do2LJaPKHTe2N2bXYLtnnuceVSdSs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786330723;
-	b=JYbtzGNtkHeuf/npSaK1pZ2CrLSqtp/ZAVNat0bA+jV13uywDXdTlHt6lMi8W4lQNhZ6Yi
-	3MknXqVeOEPPJeSp1jRpaF3dhqyIjkGJkMT2yFisNpUvA6ll+8QrpEBM4RjfIPP2zbvzvl
-	luxp7GWobFHgA/BveerU07siGx6C++g=
+	bh=2a1dvpSkcRACkkHB2Cu1hgAbZL4dDEVOnuwm526Fne0=;
+	b=PBW+ramOhTTgnPn7M7K+fdg5fYa4l+pKg3qSoRadiGaA3NiTOrKaig6rH/n5FJ6FmpEqw6
+	i0bPiOBhFZY35Ha1qikfZzOCuBBB+fs5y2uvU3HvQ4Reec54QPJ8yI1oEUkJNV19VPYBxK
+	P0taGpW24gidlZRn8z4Azv9HxjSBxcM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B9mm7QNK;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <a318c942-0776-4678-a9cd-504e713d25f5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786330720;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uXCqoFJf3vzt1oImCMxR6zmmit+AxyUiAUJr9XJhOUs=;
-	b=B9mm7QNK+NF8m3aikMjvabUf1QLFVjL+JiUZe7E5cZsfAzNPm2RoIgKOzfwhVFGJrK951b
-	DF7hseUMQVA+MQEfEepP/3pN9a5HrdRkoJ74CxmW/dqGcL+HN0TzhmAzHb3YgIPtnjZGNq
-	MCVx4jiKDFGhtbmUZkeYcEVVDYEM/8k=
-Date: Mon, 10 Aug 2026 10:58:31 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skIQAoNe;
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786331596;
+	b=h34e0gLrR/QAH2gaVK14HONjUrdcvFttnox8suS/Ded6QsiFoQCmt+Q2ywHpdgqss2DJH4
+	7ZNeZhxBNAf/sEXlSlcIttLZvWmkJDavQm5K6U+Hr5drjiH7sWHiWf7cvpJn0UciEjqE+r
+	3iCN8hpn7N2H9zI2XXzhirFQzpKuue8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2a1dvpSkcRACkkHB2Cu1hgAbZL4dDEVOnuwm526Fne0=; b=skIQAoNe8lRYuzKoEm3eay3Z5V
+	iSpC+Oa23X2H4Y8f7fhcOC61bk/biFrMd6Mn3SRkgekSN6U4puQUF8b+5HouSwG09LE+QbF/fKwAe
+	Glm+zSCGreKBsYnoKoRK0yCc7kAtcjG+xQViZCFZDjQDLBtYf39YyPPEUXiLXwrwoVsLnm1AMZwv/
+	prOHAaHMNswVsmgD7iaWZBlsHXt93DZ1Vtx6as78ol9Cblkn/P4+EclqWQrczH0H0hcRg003dmYWM
+	BlLVaaHKn/drAuWYFvdvi++jgZXLmWeeKUtBBQ0fXuykt8+je4+i6IlC4Ie7zXVcZqQmjcCkf3tUj
+	dDyznD5w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wtGRs-0000000ABKb-1O40;
+	Mon, 10 Aug 2026 03:13:12 +0000
+Date: Mon, 10 Aug 2026 04:13:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Ayhan Aydin <nsd.project.dev@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache
+ prefetcher
+Message-ID: <anlByPDZmvEhWeXI@casper.infradead.org>
+References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
+ <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 0/2] mm, memcg: fix memory.peak reset clobbering other
- fds' watermark
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cui.tao@linux.dev,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260807090000.1532495-1-ridong.chen@linux.dev>
- <20260807132241.147c758d2904e00daf28ba4e@linux-foundation.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260807132241.147c758d2904e00daf28ba4e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1F0B9120002
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
+X-Stat-Signature: 744k9jjddqt87dx1da6xmka1w67yby63
+X-Rspamd-Queue-Id: BF22A40005
 X-Rspam-User: 
-X-Stat-Signature: hk5qtx767qafxiigf1tnjfpu8zehsh6h
-X-HE-Tag: 1786330721-430987
-X-HE-Meta: U2FsdGVkX19nD60160ASyudNCHYCHnEkTUfMUF0y2SQtALVrnO+p25+y7DdPJ8i6NLKOf6Zrm+ZCSYuXYkMFTz45vpZ9zxvcILig60Xta5rpT/0Q9rrK2JEwa9ZG6BuAQLnRzwycC9qwjxcgUCXTb3mwO+4Dy5UcPyGc9XoVxPtqB2R78g/WpwYt0lNP3iYjFVOsO42ACX25qmRaUaF26UJffspShn1IM6mjR1dl1/pqkUNN9OmyYmuVBeQVuw/hRTQZktBDe6AC6zOIaUdfwfFOZTbkEYSQOc5rbswjGAt51X7+0CGbjK4zSyzG99RsFnguyYNS7bkvoSUb8VVEqH0rq9haOBG1jpDlQO7duwyFaToTJlf6JE/MOZxFrkE3nwQXSeDfU/6TpwC6sZETIkqCug8l28g/VtBA5NynvAW4O6sQNUHCh1NXXEzGzC/CEmEFJe16ooBHcrpO/T2eELw6nSmZ0/WeHxPT0Cw8KN9gyoT9i6/g4SDJQqUsAeB7M8XjrPJlqWsAD3MscOQpFcvAdklKQbsjKSAig+haHFmKSxpUH+2aFxB9Oy+nUyGGVM9nOUVuUbJrWCFFeRVT0VLVS9QIjgDxiVz+5qhzvbKbriOEx7V0140AnpJGcyi4/6mPnCFB7zrr4CndJHA0lfQqm2biHHRK8UWKW/8ZnPoCs5B30pWBtI2uJijjZAtNo47S/xYs0oYThNqDJCQkEMUYliuAh6Ec/W98PzhNJpyfdej7e/Nfnd7mFI7V4+iur1Qn4wCS00/iECSIZRwdhfSqz4P2gxA+5YJ1x4wHsaOY72gmvnF+xPpZi4dAGAyyTlNJFOe9KY+YdLbLbGvK5tY354ES85tU3rJdJUlq++0mTVexiO7R2htBJdHMHGdoqFlRQVC4CCDK4FBjrvtL/hCJKuA3LkIdQYvSt5Mzb3Y8x//SrgNM6C2vvjfufn+3DaImmVpy/h70V+cV9g5
- /llJQlb9
- OAte4tvBzDCy58o/OgHK9+QnbXL6g8LFNrm6/kdFA88RXKavE93qwK6LuoJ7YY8l9aeXkCEiTtP/acsHojVWOtJ/Tapsdyx+cl92H6+4AVpE+txxozQPqMCGAqa0a058YixFZoa53km8Bd5rMGUzhy2owRVkQgv0FV6vQWEadEIrgPR9vLwwN1FutYVn+mPJTbr/QOxfPdjfK/tl3qyR/L5u8KGep8eRR/lrL20ynoR2TiyPt+p0DXmNo37ki0ta5BI3sj6mCL1odhERdqxr5LBPlkA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1786331594-444978
+X-HE-Meta: U2FsdGVkX1/KyJnatLkVVQoFHKXYjb/vZV2s681lyv6CgXon1MXnPvSDBXzYILpXo9RgURpuZnXWzxmuZr4IyEVDGnKeZlmP4NUN8pNaGsLaaaQVr0kRbj17VSHEm8cNg8NpO7wIGgyRSlDlzSxj8q3bdO0aO73LLWHlsYw8Ha6Ea83s1m7iIttQG7yId7tAakHu2OkmSVBWH5Gi2xpKnH3wFvJPzWvVrauLl5brl6UVCTWUsP/fRLhYpS8qKWTmLlZ8EYVREGt/Mnf547CHdOvfFlYK0REJKEu+XEGuQpbVhOQYWJObSKy7N3YMt36feu028cSTaoXvzZwVvf/zTwIzyiF3vCaskgE0hYfbHONmnnzSezQyh5CXuch0xZVB3XCbFDhICISEy2VRceeRFyTEkw0C8VZyIg57kJclh9tIZMaojxc3xAt1bznxixAHh2ku1S1vpENy1pLk9IYBa+wGcOkFvjh0+0HlRx0I2IXI8/5lX5U9V7I4lYasr2+mhR6FntaMfyeT3X0WXgN/RYM6TzGHp1auK5uEJAn7UCvxTg5EavRvNf8KVtACNq04tWvdG8NRZa++5XkxaJPKSlwV4sLvefBOqQqd4KzaLmzbU5JeLgpBdU+VCW9/ls2wT5pOmcfZhPzjlgxjsxvPKEYY4JD0a0zv43o4U+6GlLH+nPOY1jo7rqx1jLQbjmmqhmFDeAMRKblcAteDKTfcG4BCNl38LzPK8XI6ujP4LMet2WcZvwJyv59ae8cbuU/EJDzk264gJdD3FiPHqw5n0LAonOBcwPx0qpSBEXDP337wbs8SFzXeh+0RbrIc8XyQe4mLDZMD1sOvRKdvu1fknYieUU9J7HGiSugMRaT7F2SygfmNdoEm/Y9dbDqR2Qfi78YlD9rjONKS4hIA56IgDpfV/XQlh65t6qYSxm6jrSRyvFu6/f7r1zR64YuZP9JMfciqJ01eqmbZogTw2px
+ 2dSZiCcM
+ y1udx3LL0EVCDbz/pIj90p9mC+QgyokaKi1w/8yyTddsFV+/JdQUka74AjXIkQ/VdeqwksPm1Vn5cEsYNqzsLrvhBnkJz6d0g84f1ERB2Unrb42hADiU0Q9gTGLAXrDyvAJwmH4hG+Ts22aOXXEbMJBsNa35vk3sLpebvbf2AHnQTbsMQcHdgxh1v93eleT4K+1uS+C6Glps1+viqJ+AyLNiYryg+qYzbSC78MwIh507kSZSkXAuajin0+3Rt0zVRhimO9s5ylqGbSKWapfGNeSm8o4aAMOJ2eeJrezOxJ8yOKTQnLVQLDDXiPoEsJHEMq6uw848i26zDG5MfkotDcI3kxotJrsBAAjo4IpzYJRllOBPK3PH+Vy4iWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,44 +90,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Aug 08, 2026 at 05:10:42PM -0400, Ayhan Aydin wrote:
+> Following up on this RFC submitted on 20260725. I understand
+> maintainer bandwidth is limited, so no urgency implied - just
+> making sure this didn't fall through the cracks.
 
+It absolutely did.  It would probably help to cc the page cache
+maintainers (Jan added) and the fsdevel people.  You can find
+this information in the MAINTAINERS file.
 
-On 8/8/2026 4:22 AM, Andrew Morton wrote:
-> On Fri,  7 Aug 2026 16:59:58 +0800 Ridong <ridong.chen@linux.dev> wrote:
+> For reference, the series adds an optional observation hook
+> (CONFIG_NSD, default off, see PATCH 1/3) that does not bypass
+> the existing ra_state / file_ra_struct machinery. All actual
+> page insertion is still delegated to page_cache_sync_readahead().
+> Benchmarks (interleaved ON/OFF methodology, i.e. same-machine A/B
+> with repeated runs, SQLite full-table scans and buffered
+> sequential I/O) showed an 18-19% wall-time reduction and
+> +22.6% throughput improvement respectively.
 > 
->> Two fixes for the per-fd memory.peak / memory.swap.peak handlers added in
->> c6f53ed8f213. Each open fd reads back max(its own value, the shared
->> local_watermark), and both bugs live in that scheme.
+> Happy to rework the approach, shrink the footprint, or
+> re-parameterize the predictor if that would make review easier -
+> just let me know what would help.
 > 
-> Thanks.
-> 
-> We're missing the preferred description of the worst-case
-> userspace-visible effects of the bug.  It appears they're quite minor
-> so I'll assume this series is a post-7.2 thing.
-> 
+> Full series and docs:
+> https://github.com/nsdprojectdev/NSD/tree/upstream-prep-v1
 
-Agreed, post-7.2 is fine and neither is stable material.
+Let's call this a good proof of concept rather than a merge request ;-)
 
-Worst case for both: a reader of memory.peak (or memory.swap.peak)
-gets a value lower than the true peak, so a tool that sizes or bills a
-cgroup by peak usage under-reports it.
+Architecturally, we're only hooking into the read path and ignoring the
+page fault path.  Was that a deliberate choice?
 
-- Patch 1 (reader side, take peaks_lock in peak_show): a reader that
-   races an unrelated reset briefly gets the low value. Transient.
+I haven't spent the time to do any detailed analysis of your code,
+but it feels to me like we should be doing something more invasive
+and integrated.  It would be nice to replace the existing mechanism of
+marking folios with PG_readahead, if that's possible.  It'd be nice to be
+able to detect backward access patterns as well as forward access patterns.
 
-- Patch 2 (writer side, peak_write reset): a reset on one fd stores
-   the current usage into the other watchers instead of the old
-   watermark, dragging every other fd's peak down.
-
-I'll spell this out in both changelogs in v2.
-
-> Sashiko might have found a similar race on the writer side:
-> 	https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
-
-Yes, that's the writer side that patch 2 fixes;
-
--- 
-Best regards
-Ridong
-
+Let's have a conversation about what you're trying to do, and see where
+we go next.
 
