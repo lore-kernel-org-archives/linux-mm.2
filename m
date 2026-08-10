@@ -4,120 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A9EFC5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C8C8C5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 09:57:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25A876B008A; Mon, 10 Aug 2026 05:50:08 -0400 (EDT)
+	id 43E716B007B; Mon, 10 Aug 2026 05:57:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231C66B0092; Mon, 10 Aug 2026 05:50:08 -0400 (EDT)
+	id 3EF906B008A; Mon, 10 Aug 2026 05:57:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1213E6B0095; Mon, 10 Aug 2026 05:50:08 -0400 (EDT)
+	id 3051C6B008C; Mon, 10 Aug 2026 05:57:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D997D6B008A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:50:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E953140728
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:49:27 +0000 (UTC)
-X-FDA: 85084887174.14.2C57A1E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7E62640005
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:49:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wv/1X9ER";
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5D66B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:57:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99BF41C104A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:57:52 +0000 (UTC)
+X-FDA: 85084908384.13.FE22732
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CC72C140002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:57:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KUfI1DZj;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786355365;
+	s=arc-20220608; t=1786355870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+SkRVVFBnEWD5Uv1sCu0rIS7Pvrxt+IlmbSlVY+WN7Y=;
-	b=ktKt2RpAQmUeo4c4DIidM6uDORODttkc10IoP+wdY2+eWr/FtVemTBOg6HXMkCPZAS818a
-	zWMeiv44LHiF0oBsJdGBN7KnSSJq+DefBDDiwepNvhqSYnHaAfkR0yKmu9WVwfHG8EKZkh
-	JdAxw8Yc4ePuLx0W0m8fVUINMWTGNMU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=aL4Y3k21PGVS3UmK0vSrCZe8gNNQ0oA2E/XU6jNiXg0=;
+	b=iisefXKqO+JeY93AgOahlUr8M0kUlc1BeAoj5/ODL6O/zIVNG5VIn4Ya5rknIva6MuN9ct
+	NHuhodv07CLlnu3HwHW5dLeFhCL7FxQJ2TpOIJE548OMUSkfbrbLrQyTc34RrMRLjJxaWB
+	p7xatkDHvfEZqgSsl4PWmLjFPNmBS6M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786355365;
-	b=M3djx0SUVBd6QzldfyURZRVvtKgRQ36y+jxVT9fHnwqCUt+1W1RS0VmIWGS454HQozprDW
-	pFW+Qq3T7o2tBBXJ2sAr1+l4J3gg5jd5Esp3hVRqo3JLxhiLMjE1Yk6d2Vb0TsquEcws7k
-	Rv1m6rOAVkO0gezAaeqpeofThyNnJj0=
+	t=1786355870;
+	b=y+H8iBndQq7eS+sN2DIZNdbbRIzAhkfpgdeke90g4onRY+GIl0zrYFKtsbdf1IfMoqGLiX
+	wC3NIoRFqLSveNOkvLDeASCyzI1Nc6momw36Bvv5wr3nPU3ozoIThqb1R3nlTCtJvld0lt
+	iOO6Hk4EoQindeuSTpy8Vu0U9UPaDio=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wv/1X9ER";
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A342843786;
-	Mon, 10 Aug 2026 09:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4171F00A3D;
-	Mon, 10 Aug 2026 09:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786355364;
-	bh=+SkRVVFBnEWD5Uv1sCu0rIS7Pvrxt+IlmbSlVY+WN7Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wv/1X9ERDgtWjYDxjzZQQsH8DYErF0xSN/m1nsTerJ1Er+kroo9T/21BDk/j7AewG
-	 mb2IJDCbaMfAABiZxqGXtWe5JStNGY6g0/WzmFXrx554ub8uhd/ljk/R+OWXnj3cp/
-	 0tygfj2/ykqQIc+PBCczkCegW+aR7tcmzWLCT1SxdlBpBCcab2B4uHgg/Wvm3+ujcx
-	 y6Xghqh0QnekpoJg3KSLMBFUs8G2mZiWSS4VeVJvhj/hxr72sfn6l/Iyuz8A2Oi/XI
-	 X36EjV8hcVDySuD886VIh8l+yt1mrmxrYolrGduttG11EGbUV8UCoJuayodjM0Kfxw
-	 d1BGVKDTr82WQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 295951980070;
-	Mon, 10 Aug 2026 05:49:19 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 10 Aug 2026 05:49:22 -0400
-X-ME-Sender: <xms:np55ar1l-aHPos9U5GDLl5hYwTm7qdWJFyo8XYSTPt1sqS8vYicOIQ>
-    <xme:np55an8lqTEzAiU6nGPZIiQtccrVTyYORD2hTZd8Trlknuos4yvZPJXQ4kHJ1-Y1G
-    W8RVByBchNeBv2s-z-P0SlD89V9d5QwxfUIljZ70ntXeayeMbMLhheD>
-X-ME-Received: <xmr:np55ak-Fnnvnnq6tfDHIhNzNeOl1ddR5u81vHIXw3U6DwCZAMFJjRd1KRBc>
-X-ME-Proxy-Cause: dmFkZTFtndxpDvAd2Xc8GhLUujyEL1KRBU/KLtnlxPJZ7PwJKuizNvh0Z5nvw5UODqwllm
-    V4MP/pzGB/+3yE3nyd/lTZP/DgxMaCzSp9LGMHqIIu5mW0q53R2kwdRWr/xnKVxR15lPSC
-    6b/OyYNV6nBONIIr/iqg5mahro16YCqwYKiUDNTuj1ocDqtFiwahujtpDXS8/QEl3XAZQC
-    56SNpjPa2MPTK7IwzS1MW+R5q4t+LW63JuusoKHkwFCrP7blr7f0yikhAdellsewTJzzVc
-    AtFf/73lGdkx0+oyvTFwmDb2fmam7twddPl8c1I0F76DieNBdRAaxIqGNcDWsWNFhVYmk6
-    tFPJssgPaanMKR0g5JNUTeSZpap8AVWgDRH6m9ouaqcRUvZ5DAc4z6uBq3qwaFGaFy+j8b
-    rDWdAj4xmKJHMDe2hc6z4PPA6xyZA9BM50A67IBlmXVlMYlZnc8T1W75xqs7t0zVhPqEmz
-    NevDSjJ2NtfeSGWwVymgzkAj0Zq3aPHtl+TAmYFHPzP9z+lLetaHhmaC7OYQlMQL9NXzo6
-    5OlgE1tfBVtJmrb//XHvAY24EfEV1wlL1MrwWR4oI+8Be9WUdtOAwLoQx4SAIfo9cpncKU
-    8/SMJs8PW0OzgA8cvO95mlFUTED6FWBB2SZeRXr7kiWpyFH6xcJmYOp+QxEg
-X-ME-Proxy: <xmx:np55aiEaKhAztSCSslrJnrDpDkGNFELCNJiFtupfeFPwAXCfDnKiJQ>
-    <xmx:np55amfI9jzmuhXm0uHv1ppTLwS84wPJz6Jrv5_NUHJh4xZOuwiJdA>
-    <xmx:np55aplvVOISzBVBrLEav2PVtLLzRqJ7Ehrh0FFrhfG610vYrZ2RWg>
-    <xmx:np55agp5ZdijI1sH-Z4Lobz29FtuW7Sv1UfOAAPOG_3pXSGotQMsfQ>
-    <xmx:np55am-zCMrydn-RbeG9t0dC_-Aayrld788RTw4bVIaL26sWnyuJnp91>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 05:49:17 -0400 (EDT)
-Date: Mon, 10 Aug 2026 10:49:16 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4] kexec: keep the next kernel off hardware-poisoned
- pages
-Message-ID: <anmb9FHMEMygENiO@thinkstation>
-References: <20260807-kexec_posioned-v4-1-70d57f14625d@debian.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KUfI1DZj;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=aL4Y3k21PGVS3UmK0vSrCZe8gNNQ0oA2E/XU6jNiXg0=; b=KUfI1DZjXqL/Vruue4o5aBZ2p3
+	OoixOh3ygSwcf0yEhumKG5uDDA11d84lWixiNYDVdNpqnMtMmA/9qSu/H7JTMIvA6ozviX92N8qU4
+	HoHiHB3qxa7Gp3nwRXUJB6/gn3w208eQA0PYeaWo7rqZcEftdPkRsMRjvqRp8eaowh7qFEvNLrgY2
+	Rd6UJClXQsR3owlDWTF7Y385ZrQtc/nz2mkWLuOygLA+5nHt8C6KRz+Twaiq/Zv8PtgClqTJ5+gbl
+	zGyA4UbMItmYiObBMQKKIP4Mzq2qUSU+2xK68Fi2D6dV4aNds31V7wmI0lAl6gne0niurOL3Uq5K1
+	Tt1RHXlA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtMlL-002fPE-2v;
+	Mon, 10 Aug 2026 09:57:44 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 10 Aug 2026 02:57:36 -0700
+Subject: [PATCH] mm/vmscan: report RCU-tasks quiescent states in
+ shrink_lruvec()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807-kexec_posioned-v4-1-70d57f14625d@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260810-rcu_task_shrink_lruvec-v1-1-4d9f7d5251cb@debian.org>
+X-B4-Tracking: v=1; b=H4sIAJCgeWoC/x3MUQqDMAwG4KuE/9lC04cpvYqMIjWbQelGMmUg3
+ n2w7wDfCRdTcWQ6YXKo66shE3eEukztKUFnZEKK6RYHjsHqXj6Tr8UX07aWzfZDauiZmZMM/Sw
+ RHeFt8tDvPx7v1/UDSyqAyGgAAAA=
+X-Change-ID: 20260810-rcu_task_shrink_lruvec-711112e87de0
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, paulmck@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1691; i=leitao@debian.org;
+ h=from:subject:message-id; bh=fmI8xADi6KWlR3J6/Hbvd2ecHxpAV7Iqo9WVc8nZUVM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqeaCToqI2nT8QJTT84s4jrQ7GMvHwM36xgVmyh
+ 5GeZm4IMW2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCanmgkwAKCRA1o5Of/Hh3
+ bXz0D/9wIlKhOvTMTno87Pfk5Lc4xEpnhJ5xET8HtTcF1K3Ho1A0Hx/Id26g9EBF112EyxBkIiF
+ 5+DLmbUKFj3geNY6shSQZUgyH/jIe7AYj/Dfnmj0gGgno6sQ2TxGOadkpv2gZRTcWJKFwM15moG
+ ySksHCa2U6y7rHfkn1QPGr9hXM9dz8KI55VUbTa8h4ZT2+V2ajxqMUckYlistFjA43J6eFa+bh7
+ ncsWzyxcQzp+kDiEkeVYIVTrBuP6rzgqcBK898ZoSqsqMQ6WQ8fTI0OdRAovmiK82rwbvSJPgX1
+ BXkFAffch4gPDytj/K4pMbZrHCTp/mfVCcpaX7v4EG2ISzN2El8BpRSFISafFXmTKtCKqH8QVdC
+ DIFZhMk8Zrkaa7H6o7DZIwcPnbAJDxzuLdzRrCSTJC2obsn/TNtVmymRdUnZHXYgkgRjk/7HctI
+ L22Z9mrWFukw1n5gYajo1z6oBYBLohHhNIyEFr3ncHO06B2otAGW+J/KbKFtwHF1cYdgZQeZFCD
+ bTTjjNmpwMIVIltTt9PLrvomJaHLfMin5R6R96nIOnALSun7XAqR/A8VBCauE/8+Rg052j/Xu6k
+ rxsqqPlNIw6TTdgXP3BbKZvR/m3gtmgoCOcg2CfsyOsM5Y34AI3jjYhPzPd9eazsWDuFiXeOMHx
+ hilvBDWbfGwTYtw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CC72C140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7E62640005
-X-Stat-Signature: itedii717asdzqor1xxoiaw5p6y5jtg3
-X-HE-Tag: 1786355365-727690
-X-HE-Meta: U2FsdGVkX1/WARwJ1aP3G0nSBOo6Avh/lIWtZ63CBnhg53j1VZMrCFWgCCQV7PHvrQT15J1jlg1YnRuN6cSLRaD4qgEilPT5PPGvMHQWbyyjOzEqO+A4Q8goksJ0NTPoBel9Kuyc0lyfMTfBPrvbxj651Pkyq0WmgZme8Nl6JrKIRc6FmoR3ztmQvmwztsH1fqbHNbKoCeDCPtGgrr9MylO4p8cfz73m9PDPLALA3Uh1SsUucLA8RWvN2dc+p92d8KeYEcvEcrSEP0keGqGLa5pKPteR6nNPL8yBVhaE2nAIFcZ81lDHqJI2oPItj+918JmHnKURlmV+vSOc4/HVjUbu5JsQzm1ck1+hpoiUqsR388wy6ZoQFda4kI1ugbtIdzLTrENfl05GrSVH2HNs0RHRTdO+QiqRRFLOruJcllES72jnbRczDY54ueo4PAxHbvz4J049zPy/0Ela2mXQsVoMZMPD68MmFhnAuzLRiorPUJ4A/dmn5Sz1cduCJtUJN7PDz7lQve8rIq6zF6d/eUexhm9U5s/qWQh9BdBPZLn6ZpISKuf8taS3q6oQ1KqvszohF9W2syvzoD0Kc0p495rJLKYS37ChidrUmjF8JY6u/2QtlMJiV6uClcUytjsL8xrCOeQAq1c1Jii9NlDs4hI+ezJ1lqKiMGsIa3+Sw8nnYwuMA5/EHv3t+FgD/yVixJpvaET+jCiFp1J6DP1IELVZlad6F9GY1mySM5iRJLikmNTvs+RzYhOgpmKuZJTrgFpWFI62rZIgJ9DwI2HHsHd/+TujEyh7TuvOsyd9v+NeouWQ9PxdB9bxdE3sCLwzN2ImvvmjiTLceUc873fG3y4YpEe+Zt+gzLZRjeWfoOGjQVNhWrFHlHnLzfQsIz6CRzRZ5rF3dyUACzRP4EFkbm09VZC/vRtweLgwqVngYKnm59YmJgdWJvoAtGBjMV1BD6Qro0Kt3gRjTwQsNEj
- GJ8hl9S2
- Pnd99zGPKl/NgF3fa2SgPVT1AVK/DYGYc2Q0O6U3TZTzxDCIioKQHIIVCefpCVPPpRf/iuz1A5S9/YYeZ3OtucRAyZM8Q9kGAXNejvOfb7XrzmTronSQmNCI1pBlZ7sE6M1vvWARR1pUm/8hwTcPZYMLaJRFCGKF3pd/sQ0faLWC6M1JOs061fx8TVJqlUcRxUuASYZwAmBe7QQcT1BIcscv6eyqN7NOFPgJI+KtCt3gcVfWEoCSnvtezRzkpRn28AsoKvDnWIhYuviphh8KS5u/51dJ3Vr74ioo4B8bIE9s5qP6AzyatLiDMcZ96r/Oi2wanZU73Pz3lTGzsrUWkbMHRc9CelvdBKoh1
+X-Stat-Signature: 6j7qhc1xd6j513iqifg7krpoym8wfirj
+X-HE-Tag: 1786355870-966255
+X-HE-Meta: U2FsdGVkX18Z02ztuQjdeAgwjyS0PPlh4f4QA+XuGzt/4R9ADPJfihuyirQU/wX9UaK3pv4+5GkBRLnckvychoyOD4xQdJyIXi9VDLbg2WXT1+HFr2zVvSa+j/AWvnnEA7bqARqYuPMBlyiq8XpggJYbpBgQqD9WMzwC7GjzwDby8sMbVuPszkPfNbrHwXJoWUDDeDLc+HGnTnVKTu8R7C+v6cIFwJUocYiQn8ww2AjkT0caTfanNCnGVKWajf79Sn+a0LBCYBSU7FbBldhNFuNfjPw7GEpmJL/TteF/B9ho2IDQo+P+y/Q6YCTur0KmnYhkwf+XqOikPL0FuH8jMs/Z8Z0La1S6DzaIUF9TdbZ/H43JgTa+Te79LvwQfgnhWSHh1eEdVR5FYDO6CiYXmiS6F8HryImVRMJ47/OwRbOCysJzvuA7OWncjAojP2p+tg83Y7s0ruwvs1r9a4LtwRsnReIX48OEMHrTyxKfcn1SAGdo22T3nkNYUBPc6zBKbnfAiSWmUZfepZjJlNnT/VG0oQ7daT2pn3Cy0sq3qe1hI/oTsZqejG+XOJynEnV7texdweksyggWrTiH1A6RJITfZV5vZyNiKHtmP2Kt76u3NbQbELEYL1R4TdDa8nOqAiefOr6M2vyCPNF8SaX+mccgH96e8nbu+yMr35AY2MOO7dkblxBY9M6lmxfrc6VN93Jc5fkIN+bjAuuZD1m6sEy/cFTtKxyxKhWqIdPqK5eevNkn4DQPuFqlJQSfFdgQ8hR+op1fwOPQ9ps2+9g5aOPbIXxX7LKkFwvlSXd4EoxuYt77WSWKU3tym36VMZcJO8+cOzKcdFMhGA8Sx+Q6nFNaG4iiV5j0HjAS000/XAylItLmvP1/0yh9x+Gn0XJF9mek3tQEk5hvNht4YTC2QgnEhwPvH0Ojl8oc8suzcgcAwoqhsCl3RG9YXMGI+8VSL+ESdHsJsbvegodExdX
+ pyaRk9Jn
+ igAYs0PoWNL8bltD2sBrI52ProryyeC7K89zmJQpvN2wK6qhmPWDQ8zrkoDyeXqbRrSTqoAwNbBwzqAGelOOT29sar1AvYn9N1ImCS1msoVnjB4Sq7C8SmlQZY3oSuO1kZ/9Lw7zzqAJSv6fjq7V1aKHVfq2s+fFVJpZMPiDLkJ/evxM3ex5rrAANs7gUL+FGUgTV87LZb8Q96lwcx8YnDQBqsKXGQ2kUBYW+/PWsjzoGTMqdUKmm1yAOqOlqoyDhhLXYcWH9kiM6CHdBKF7rEQHTw2F57uFS7Mmzhqsb5mh29edTH+WWFRRJ1HoJf+x+m1AXYYfwXWHiKEn8HnxihaSqUaSxp8hJUW7xDWeAwl8hZOyicwYAJT6HLzDETNVNTGw9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,115 +118,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 07:05:09AM -0700, Breno Leitao wrote:
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index dc770b9a6d053..e097e980b1439 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
->  	}
->  #endif
->  
-> +	/*
-> +	 * Reject destinations that land on hardware-poisoned memory: the
-> +	 * relocation copy would machine-check on the bad frame.
-> +	 */
-> +	for (i = 0; i < nr_segments; i++) {
-> +		if (range_first_hwpoison(image->segment[i].mem,
-> +					 image->segment[i].memsz) != PHYS_ADDR_MAX)
-> +			return -EADDRNOTAVAIL;
+I am seeing some rcu_tasks stalls in the Meta fleet during reclaim.
 
-Other -EADDRNOTAVAIL usage indicate error on user side. But this is not
-a user fault. Maybe -EHWPOISON instead.
+  INFO: rcu_tasks detected stalls on tasks:
+	0000000088620d09: .. nvcsw: 6735/6735 holdout: 1 idle_cpu: -1/8
+	task:GlobalCPUThread state:R  running task  pid:2552016 tgid:2524552
+  Call Trace:
+   shrink_lruvec
+   mem_cgroup_iter
+   shrink_node
+   do_try_to_free_pages
+   try_to_free_pages
+   __alloc_frozen_pages_noprof
+   alloc_pages_noprof
+   pte_alloc_one
+   __pte_alloc
+   handle_mm_fault
 
-> +	}
-> +
->  	/*
->  	 * The destination addresses are searched from system RAM rather than
->  	 * being allocated from the buddy allocator, so they are not guaranteed
+Nothing promises direct reclaim returns in bounded time, and the scan
+loop in shrink_lruvec() only calls cond_resched(), which is a no-op on
+PREEMPTION kernels.  Involuntary preemption is not a Tasks-RCU
+quiescent state, so the reclaiming task never reports one and becomes a
+holdout.
 
-...
+Upgrade it to cond_resched_tasks_rcu_qs(), which reports a quiescent
+state even when cond_resched() does nothing.
 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index a8b03e2920ba8..c485e205fb633 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -96,6 +96,78 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
->  		memblk_nr_poison_sub(pfn, i);
->  }
->  
-> +/*
-> + * Return the first or the last hardware-poisoned online page in [start,
-> + * start + size), or PHYS_ADDR_MAX if the range is clean.
-> + */
-> +static phys_addr_t range_hwpoison(phys_addr_t start, unsigned long size,
-> +				  bool first)
-> +{
-> +	phys_addr_t poison = PHYS_ADDR_MAX;
-> +	unsigned long pfn, end_pfn;
-> +
-> +	if (!size || !atomic_long_read(&num_poisoned_pages))
-> +		return poison;
-> +
-> +	end_pfn = PHYS_PFN(start + size - 1);
-> +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-> +		struct page *page = pfn_to_online_page(pfn);
-> +		struct folio *folio;
-> +
-> +		cond_resched();
-> +
-> +		if (!page)
-> +			continue;
-> +
-> +		folio = page_folio(page);
-> +		if (folio_test_hugetlb(folio)) {
-> +			/*
-> +			 * hugetlbfs is a bit special, given the poison
-> +			 * information is at the folio, not at the page
-> +			 */
-> +			unsigned long folio_end;
-> +
-> +			/*
-> +			 * No hugetlb_lock: the scan is racy either way, a frame
-> +			 * can be poisoned right after it. Just don't let a folio
-> +			 * dissolved under us walk the scan backwards.
-> +			 */
-> +			folio_end = folio_pfn(folio) + folio_nr_pages(folio) - 1;
-> +			folio_end = max(folio_end, pfn);
-> +
-> +			if (folio_test_hwpoison(folio)) {
-> +				if (first)
-> +					return PFN_PHYS(pfn);
-> +				poison = PFN_PHYS(min(folio_end, end_pfn));
-> +			}
-> +			/* skip all the pfns that belong to hugetlb */
-> +			pfn = folio_end;
-> +			continue;
-> +		}
-> +
-> +		if (!PageHWPoison(page))
-> +			/* page is good, let's go to the next one */
-> +			continue;
+PS: This has been discussed in [1]
 
-If you don't care about re-using clean part of poisoned hugetlb folio,
-use is_page_hwpoison(page).
+Link: https://lore.kernel.org/all/amdWVTs0WKOxguxP@gmail.com/ [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This would do:
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 26436059ea394..6ac2fde137b89 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6023,7 +6023,7 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 			}
+ 		}
+ 
+-		cond_resched();
++		cond_resched_tasks_rcu_qs();
+ 
+ 		if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
+ 			continue;
 
-		if (!page || !is_page_hwpoison(page))
-			continue;
+---
+base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
+change-id: 20260810-rcu_task_shrink_lruvec-711112e87de0
 
-You would spin a bit on the same folio, but shouldn't be a big deal.
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
-> +
-> +		if (first)
-> +			return PFN_PHYS(pfn);
-> +
-> +		poison = PFN_PHYS(pfn);
-> +	}
-> +
-> +	return poison;
-> +}
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
