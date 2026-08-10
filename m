@@ -4,137 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D627FC5B567
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 20:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78854C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 20:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 973756B007B; Mon, 10 Aug 2026 16:20:01 -0400 (EDT)
+	id 66BC46B008A; Mon, 10 Aug 2026 16:23:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94ABD6B008A; Mon, 10 Aug 2026 16:20:01 -0400 (EDT)
+	id 61D106B008C; Mon, 10 Aug 2026 16:23:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83DAB6B008C; Mon, 10 Aug 2026 16:20:01 -0400 (EDT)
+	id 533176B0092; Mon, 10 Aug 2026 16:23:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55A476B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:20:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E82011A027A
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:20:00 +0000 (UTC)
-X-FDA: 85086476160.18.BF85BEB
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E5BB640008
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:19:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jidhl0aj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786393198;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1A66B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:23:40 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC6001601F2
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:23:39 +0000 (UTC)
+X-FDA: 85086485358.01.653EF97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6653580002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 20:23:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QPO+gtNs;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786393418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UgIF1kuc19iuRlP9zEQcOp7zPTO65a3duLKsT6ITH1s=;
-	b=QjGq67z1oj0rEkArqUY9NQo2f60QTDPWwT1bXtaLiX3Dd+4wdZW2rMwq8cYYHotjqUKsQQ
-	LJYjygIXSN/uD4KnfY2eHDSmidAZQHoynOLEcAUXNYmlnfZqFgUbIChhryz1Y4j1Brent6
-	iSope57mXC0X6RiP1/ug3ROFE+CULjo=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jidhl0aj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786393198;
-	b=Hp28s/i07YTQ+alD/nLamyRdFEKzOiNSxR873JZtiW7YTQwRRLSUUFESSMcLXxZt5kOd3Z
-	xRNjQhEIkLXTrOYhnYY43C5jVUZbEsUmE55YvafoZc6Ghr222ToEQ2xFMHGNWg2i/63X6b
-	6PoaKxZy90qwGzpTjVO1x9WvaAGcmPk=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-698ae09e356so2942525a12.2
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:19:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786393197; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Vo8dEAICRqhNkCCx669Xx3xLy3wCaHAXYvnQBVCgHBpD9U0N4oteiSoYuFzbDg7uak
-         89AygT91RznTYr6r3EltjciOwA7Lw+9j/2QilK9MoXRCHuuGyd+UOZ5/yyOAU4wj8wQ8
-         D078/JUvN2Mq191/tFPpnk0PnKAChYMCUIYN8+2epwNaqQ07fiXLvQDrJVJYOVzJKPPc
-         gxiqsOz9MWtyWbonlJChLgKTDW//gCC8fXhQjWMmri3zEIcllpgi9hs4u1A1SusnzQyz
-         Q1qaTJUrrdI9CrWMr35upqenGGZxPT1fle917CyAxOh7y67MOuX4N1ymW17rMS1a8Xil
-         nSpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=UgIF1kuc19iuRlP9zEQcOp7zPTO65a3duLKsT6ITH1s=;
-        fh=vbKm88QzV2GguLahTuCRXjvXvg0bhK4EhBMMe+mzh/E=;
-        b=JumR5m4ck0OFkXkbKdUC2IC0x27STtIH+ZXYJ9lkNIKTy/l9OwbYMmEa2NCr8sp0UF
-         7+XPM6ZrtCQzVISZdS7RwJRInUbdpZ54XGSZdCr7WYHRS5GhXwMsgK0SmrsdQdyyUKkf
-         ITr2WwsLI760rB2Ji28iB1s2qGJd+JJW/ukw0DSu2fCV4NoDUZub9XfoKABJjpSJmL80
-         zxhFFLP4MKJiHGA3aFK0mr0D+HQorBG/mD3SLvDyLS+DSTHCGNwlXbObayNBpKO56+8N
-         y/BfXk7zlrYOViSKwUHfYNQqDTf26pPgsf0yrC9cLGMRMztfI+yeSWtqQW0LKJ7TIGEm
-         wcig==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=nqOA+3smWlYmWZnKA+ZlQGSHPttzuKCyY9xCjtxixKo=;
+	b=UsDa4JQ+f079iWTzNqwX4URM+L/1PLPCyfBkHRe2Y2ohtZXNGNv87Hdce3sbVIF2CcxcSd
+	72zWq7PqMlFaeqboUnwuHNtTOFtozEbXT0i1TDhBJWWSc6F/tQYBgxuXAnGnNTaXE0Qnib
+	E/rjKv9X6EHbdHy6HVOqwO6h/wI/tRQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786393418;
+	b=8PMmN/yZfdCeZeMiTJk1AYMtTuPnw5IxkR0vpNKPQj1Yhch6fT/aghUkfFTI1zzV1uiyeI
+	rDxbzDWRJ6SQA6MuzkbfDvJS33QgrusfJ8Uae0JCLJ1RGPgT1OlIaIT89wMPBSI4QJ3g2g
+	HL0x01n4CPmOpuq8IKwiJ57qpi2UCgc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QPO+gtNs;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AACB741FDF;
+	Mon, 10 Aug 2026 20:23:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9231F000E9;
+	Mon, 10 Aug 2026 20:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786393197; x=1786997997; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UgIF1kuc19iuRlP9zEQcOp7zPTO65a3duLKsT6ITH1s=;
-        b=jidhl0aj2bmzYlccu5i+jVeqhWmmeu/hvaRNjS6q09lgxQsujmAwA1zR9r2JWbEIBv
-         v0iupiE88AEjIBKnnVck5zlRjx2gbyCzTrphVfAtYgME6eUqUTlKgxqr3wEzn3mrLDuZ
-         wg7/p2w9+vIEdy+PR6fDaVzjv4Mlco/LDNapCiaUYpn7Cc6UwhFl9wJpByVRdK0vaR7A
-         Ew5X/rLZJwz3e++TjxVJpjEizUKOoxpQB+8qP72aMZ+oF65lR2wP9hs8zUgF2SWF/iR+
-         sGxalvNAoUoAnRWwMCnSoYnAeiwc2fcwuh3ibFsJF1H4apRKVefpkmFjTQ4wnPz5LZvN
-         XY3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786393197; x=1786997997;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UgIF1kuc19iuRlP9zEQcOp7zPTO65a3duLKsT6ITH1s=;
-        b=UoED8d7WCm4Y0SjEtFe759TerJKchgoe7y2WtwIZNWgM/FOXZwZX9wxSZ5PGd0migQ
-         ncOU5I3iIvCznn0C0FiF9Jz2VtgyOaarzLYCDeRKb+zunq9eH0NUTDP60/LZfBPnax4x
-         KYQOYuD8vVHdOqI5KSWF6y/zL4VqZwsiyePCjweK5Iqvx2Fsf/vgB/xqiV2ORcEz6tj8
-         x2Am8jGYuFrUs83XvQBs0LQTx/dWdZ9KVKNq9cZMg1JV6ldcHSeAH1cdJqOsDqBQwSHD
-         03addDZts/QaPRWF2zNewen9WBhj3LiWeUdgNF/hEKkkB41CXqWOwzukh+JTHYEULIlL
-         p2gQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqGmEqhuEsm66ReOvcedyQDRfG4hjk/o1Bu1R2HIH+vJIEACK9Bkymr0+niJ7K5uC6/Vvmb5bF9OA==@kvack.org
-X-Gm-Message-State: AOJu0Yx7qEXfVbQJMf3AEPAt52AfPZ9RYBeJAa1ROu/YUsporGvDgwGK
-	GWoIc95V7PYgfImgsItsMVXwpwXMHRkQP+dHEcWUhHGqX7yNjFJGg88xsP/FK/p8CVL2JguoQV/
-	1B+4s3/sJKF42U1Goei6q6C3dPrJ8IMY=
-X-Gm-Gg: AR+sD10S/0zp2ec/pRM9TazV3sYjYFzGyOh9Frsz0QOO01XU9uHMJQTGs58tesrIoS8
-	Z2Y7F/xeSKGFlNMbdYV9vb8OWrAcunuej4nh+41Hgg6Iqhcr22qUhSY5E5hfVkLTiNz1Lh2V2+X
-	JlvgKyTu4WH2eYI6Md9H6tYH4ta/XeVy0PAWGR9OqvrCzC204WbqBAickXVfC+t2Eqhkc1ziAwX
-	LvkYFMAoJSuCKbwHkVUC9ebWaAru/V9fzNoxrT/yV6peOpX7FSQk/ZIE4dmHSMdultOaY7wAstm
-	Ee33w8Q+ztdMOdHdJE6xtabT4XyjuhChNaf4xqKBv5I+bA==
-X-Received: by 2002:a05:6402:51d1:b0:6a0:d40e:9c0b with SMTP id
- 4fb4d7f45d1cf-6a14f1448femr21365486a12.16.1786393197284; Mon, 10 Aug 2026
- 13:19:57 -0700 (PDT)
-Received: from 292895732794 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Aug 2026 20:19:56 +0000
-Received: from 292895732794 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Aug 2026 20:19:56 +0000
-From: Ayhan Aydin <nsd.project.dev@gmail.com>
-In-Reply-To: <anlByPDZmvEhWeXI@casper.infradead.org>
-References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
- <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com> <anlByPDZmvEhWeXI@casper.infradead.org>
-MIME-Version: 1.0
-Date: Mon, 10 Aug 2026 20:19:56 +0000
-X-Gm-Features: AUfX_mwYOvXHj1CH5NXEpaVzNk72oIsQRcr9M8up0rWun7RadURAT4-q_8yOC5Y
-Message-ID: <CAFLp9PEHKcdAgt3LX1m_0+H=foY+Va8gtSv6r7Gp1RVcKZ7YiA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache prefetcher
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	d=linux-foundation.org; s=korg; t=1786393415;
+	bh=nqOA+3smWlYmWZnKA+ZlQGSHPttzuKCyY9xCjtxixKo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QPO+gtNsFr3mhwBGxeMw2VpABTVOyrysbpkvdqWcmpGnvPQyOOkxUkdYvxiR2i+Gx
+	 S7I2fmr9RncPOQU8Q5pnKg2U5eKlbWiIACs8PCewD65+Z1h43EgCVu5Ya2BitLmULj
+	 am4pe5Mf3aHDbEKo6bn4kNMCeYCzRhjiEiZ5BUpM=
+Date: Mon, 10 Aug 2026 13:23:34 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: David Hildenbrand <david@kernel.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, mm-commits@vger.kernel.org, Stanislav Kinsburskii
+ <skinsburskii@gmail.com>
+Subject: Re: [akpm-mm:mm-new] BUILD SUCCESS WITH UNVERIFIED WARNING
+ e0ffd277b09a7c9f1a436e5f75be37ac490bc59f
+Message-Id: <20260810132334.3cf85dc3e9061bc7072759f8@linux-foundation.org>
+In-Reply-To: <202608101053.PhnVUM4u-lkp@intel.com>
+References: <202608101053.PhnVUM4u-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6653580002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: nyxn5mabedwjsm6xjb14r38ez8gw8d9b
-X-Rspamd-Queue-Id: E5BB640008
-X-HE-Tag: 1786393198-906437
-X-HE-Meta: U2FsdGVkX1/YZlz2DBVAmW3TJKj+34Ye9Qr5pJbZAPFTpfB3V4l90EtwU/D84K56GEe/EuuHKbi/GHj17hRGT2x2tRGNIxVlVLYyTlWP2XVjdJ/srxYlwm0jvh6649/WRU2OoqtUxuPTc5BkFw01YJDLeT4eJ/1oiL7UDJZAsFTHEXpzGJUX0qKc+4oCCp9iUAi43+ushnLD/b7U3q/RsHWkualKCmE/s1Ln2/VMlhhRKDTrrfPByET6yVMXblbRmxtK6RGatPXW5/kL0gZ4D1qdfrTB6KV4rtGo0OcLPTkdyhix0eRMZ/nyNDhxmbeS8xOSJLnt7m3h7NFjzNGqvG1mLMQ75/Pb43IGYPTXN+0c5OImmwyEFf8E8L7F2izoGAIOeYkta2iCA+nOxWbekSRE9I1G81+tm1qNz+pX6jIzwkNKkGxKXSER+PRmcf04uu/528tiYSN4FzqEyp9hsq0txxRICcgd7LKL3nwVjlVtB+/1zYjyBD2E3xh9Npxj8+91L5HAM6rEBX3bSrDWgAXhS9hCgQzdHPZOFkjAnMIofa4t2SFamu15PWJCmsvRCs0IwAzbeVHRt/liHMwDlZ1HU+xzxpFLbJCbl+4sVIiiay2er1SxkF09oi8wqv3tqB1M4JCKUIjE9/3arf16CY+flQ6ecM0ZU0QBNc4u3+QO2TZunJLkF1avGMK1tTsJckdgsozv9heQos1LV+3dLdOXtYI4zwfaUcMA1PT6mb5o0i2NsrZYRDWULg0YsVwgMNtS6f2pKAJRqxyWzctG4WN737itLMi+qLrf7SUpDUUZSM7aZf3AVLY+n1YTUceqJTea3G+J30X8jqlYE5WApicI9V/Law6r9isjcw7I+hRAfMr7VSLYDRhXjF+MJUsZdH7LC1KTX42lh2JXlNo45ffe8A0tK0I5EPMPIdP1DKswqFTPGVeMp7YruZvlejyPza0kIZCG0yF8RdboSNc
- +VmGPlZ1
- XuAvQ4mURYk1rKbOh4idpkPf8XIvFA1YU6JnoqCDjRZ6FROX7V4cIHymvH1WM7cGpiNWChn4WqY3CSJ+rjRSSOBYFpzdR7tBNBTvOIo12WBj51nCf/tDIUA9wYi8lALnHnhGT09VwfvMXGZYX0n2wRpCipSypo3ZXjQpNycyzlyTozsMbiTlOXml5xs28c6kSzhOL95TBG33mgaJNs6tpV1Ml/XKqwfc5dCsGus6mZ0xzDvp98/y9J11FCLVjEkM1mN81UOtvpPTbNRsDsOfeMNolERALi24ux5x/73pTuM+Z5JF4kEl82Ttzn3len+gZHdlqOvAZPP75g9NGjhAydfvNErBYJalEcMfoFDlU6rqCazdMhP6b+PPifjvV9fCNFJ3mmAJhRnmKy7ViMIjtRR0ta7mvdj1NvCRQ4aXKF2F8yaK8G8Fu9j2T34GzxCwjaKvk4YGMyDK3/VCjGQ8T3BaElxnYA6xSFqCwrmhvPIvLtjeboRYE0Jl/wg==
+X-Stat-Signature: 8u3yepkrghuifg9wguo63ax1okyypr6o
+X-HE-Tag: 1786393417-991149
+X-HE-Meta: U2FsdGVkX1+2IsXMPB8SPVkegIbwybqnxQ7EqHcOyGwbJ3ljcy5Yg7qTtJergj9CDG73fsmisbmTW0RHnLCNoQIA6wvFPqrAQt9Aa6xYG5z0VyTqGvQg0xcmevtB63p2jGPmlNvm4RvShu9ajK5nCKpaQZyp0PJneU0PKwoO8i/njBFzkrPjwM8MFWqFGhUWCQHd31rfExsYEoDNAeqKXyRvQcyKbKLoUsuiU1rDY0tbZzyoO5xRxqaH/j4K2F+F97WHNv6Xja7RkdzKqyTKpP7LiGhwhTZrsYxhCg1MbdJrF/33W04Bb2SOsTeEHqy3/8aGP18qQJMsXOjN4p6+c246Goq10apgXhzr9M9Te/FsXuW2D7SI8XmCCoitxy6YyFGEzNuXTDhxOPzulNy7KoW9JhyMvECJq6XNZAc8KZH5ysOU76cH3FOo4tKFfv0NqkYEyo2nz+6J9ngMELt4ZYtIkEIjFRblC5w+j0N7NmbYZ3GUM9EohxijrzOPKHcv1XmGn6qbR4kVTm781FZs/wdG9vOibfTdJeW+aN4XA9ijsVC6rE11TP3FqQhh6h3QKo3DMjnfTgOFfDbRhDGbtS78UkeWzc074u63gpGYkXMSzncZ5qGOhQYcRkD5CY560RFeBnyWKENd5PuYEzwzmWegajqcMYIbfJVkbQWQS5bDzNBlSToLmNYwTob1mblFVEFrpLYf+8QO1KL7T6B98v9vGTpgotBQw3bvE7VF7dVWc3eYnf8wmAV6FyytX/WYspXReD3T5ChVQYVHB561NCRUlV/Mqkt+ehrtHpP/yiqm5gGF3VJsyj+xAH3pZ1wjT+69YnUERoFyCl40uU/Nbef3W+TBc4wvnXLIa9VswQdu8K/HcI+XfC/t8AAitoEKYgekV6ZbtIdHy7zfwG3B5LMY4uorOyyE8cNkgwXRycSURwQo31hzhO7sdPopHA2XU6MnW7w3Qyexx0BmRFm
+ QMbPNwym
+ 7sqrZgIb53OvkiTSbIuBaqCVYLciGP1/OZar0OxQ7mq+g4YCB9dQ74UBeRN7mS8rZseAMlPxNQYBkvroTNmCK6d0dvoHjJiBrAboZOiSEwiF5Dx9AMydmNGj8aotQuLlXXF6eFOhqwxDQIi4h2pT3iS510D6CY57lO7t8i/Cd8sIPkqK9AyHr4p8QTcEsUq/QtzRXLkfqCpBDPCJWTYHrfa7Y9bgtS0UqhY4vqUx2HTa/Vwx4Uue47CA9rdQNDcFMUfKBhcXWC922evv2Yl/waKkQ/MdygnJ+WJNFXNAS/Ze5CyTFNVSHtBnS2iC9dsCgqr2qMdto2WkJeT1BMnFNERl646c2Z5Q2lik+djoWL1mjIC5la2CkA9qyzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,65 +91,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+On Mon, 10 Aug 2026 10:44:13 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Thanks for taking the time to look at this. Really appreciate the
-detailed feedback. Adding Jan and linux-fsdevel to this reply per your
-suggestion rather than waiting for the next round.
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> branch HEAD: e0ffd277b09a7c9f1a436e5f75be37ac490bc59f  mm/swap, PM: hibernate: atomically replace hibernation pin
+> 
+> Unverified Warning (likely false positive, kindly check if interested):
+> 
+>     https://lore.kernel.org/oe-kbuild/202607120402.clBrrZQA-lkp@intel.com
+> 
+>     mm/hmm.c:673 hmm_do_fault() error: we previously assumed 'hmm_vma_walk->locked' could be null (see line 654)
+> 
+> Warning ids grouped by kconfigs:
 
-> Architecturally, we're only hooking into the read path and ignoring
-> the page fault path. Was that a deliberate choice?
+Thanks.  I assume this warning was produced by sparse?  The report
+doesn't tell us this, and I suggest that it do so.
 
-Yes, deliberate, though I'd frame it as a starting point rather than a
-final position. The read path was attractive because hooking there let
-NSD observe and build its access-pattern model without adding latency
-to the caller's path. The benchmarks I mentioned (18-19% wall-time
-reduction, +22.6% throughput) are from that observer-only design. The
-page fault path is synchronous and latency-sensitive by nature, so I
-was cautious about touching it before the read-path approach had
-proven itself.
+> recent_errors
+> `-- s390-randconfig-r071-20260809
+>     `-- mm-hmm.c-hmm_do_fault()-error:we-previously-assumed-hmm_vma_walk-locked-could-be-null-(see-line-)
 
-I don't think it needs to stay excluded, though. A lightweight, sampled
-hook (rather than firing on every fault) could let NSD extend its model
-to fault-driven access without sitting directly in the fault-critical
-path. Happy to prototype that and bring overhead numbers before
-proposing it as part of the series.
+Caused by
 
-> It would be nice to replace the existing mechanism of marking folios
-> with PG_readahead, if that's possible.
+	121170831228 ("mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support")
 
-This is the part I want to be most careful about, and I'd like your
-read on it. Right now NSD is purely an observer. It never touches
-ra_state/file_ra_struct or the PG_readahead flag itself; all actual
-page insertion is still delegated to the existing mechanism. That was
-a deliberate safety choice: with CONFIG_NSD off, or even with the
-module unloaded at runtime, the kernel's readahead behavior is
-completely unaffected. There's no state that depends on NSD having
-been loaded.
 
-Moving to something that actually drives PG_readahead / the readahead
-window would make NSD a lot more useful, but I want to preserve that
-same guarantee: the kernel must always be able to fall back to its
-native behavior instantly and safely if NSD is removed, even
-mid-operation. Before I go down that path I'd like to talk through
-where the safest integration point is, whether that's advising the
-existing ondemand_readahead() logic rather than replacing it, or
-something else you'd suggest.
+Stanislaw, you've previously said that this is a can't-happen, but boy
+I'm getting tired of seeing this warning report.  Would the below change
+hurt anything?  I can't immediately think of a cost-free way of doing
+this.
 
-> It'd be nice to be able to detect backward access patterns as well
-> as forward access patterns.
 
-Right now the predictor (Markov chain / frequency-recency based) is
-forward-only. It assumes roughly monotonic access. Backward detection
-is something I hadn't prioritized yet but agree it's a real gap. Happy
-to look at extending the per-inode context tracking to catch reverse
-sequential access as a next step.
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm/hmm.c:hmm_do_fault(): suppress sparse warning
+Date: Mon Aug 10 01:16:37 PM PDT 2026
 
-Let me know which of these you'd want to see first. I could start
-with a writeup of the sampled fault-path hook, or with a proposal for
-how NSD could advise readahead decisions without owning the state.
-Whichever is more useful for moving this forward.
+mm/hmm.c:673 hmm_do_fault() error: we previously assumed 'hmm_vma_walk->locked' could be null (see line 654)
 
-Thanks again,
-Ayhan
+Stanislav says this can't happen.  Waste a few cycles to make the warning
+go away.
+
+Fixes: 121170831228 ("mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/202608101053.PhnVUM4u-lkp@intel.com
+Cc: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hmm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/hmm.c~mm-hmmc-hmm_do_fault-suppress-sparse-warning
++++ a/mm/hmm.c
+@@ -670,7 +670,8 @@ static int hmm_do_fault(struct mm_struct
+ 		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
+ 
+ 		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
+-			*hmm_vma_walk->locked = false;
++			if (hmm_vma_walk->locked)	/* needed by sparse */
++				*hmm_vma_walk->locked = false;
+ 			return HMM_FAULT_UNLOCKED;
+ 		}
+ 
+_
+
 
