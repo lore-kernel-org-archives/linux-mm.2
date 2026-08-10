@@ -4,82 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 753C6C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 10:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AFDC5AE5D
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 11:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2CC56B008C; Mon, 10 Aug 2026 06:52:48 -0400 (EDT)
+	id 130706B007B; Mon, 10 Aug 2026 07:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD726B0092; Mon, 10 Aug 2026 06:52:48 -0400 (EDT)
+	id 0E0C26B008A; Mon, 10 Aug 2026 07:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCBF56B0093; Mon, 10 Aug 2026 06:52:48 -0400 (EDT)
+	id F11996B008C; Mon, 10 Aug 2026 07:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AF786B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:52:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1F330A0050
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:52:48 +0000 (UTC)
-X-FDA: 85085046816.18.2AA39A6
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C9D806B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:02:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 495A7A011B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:02:22 +0000 (UTC)
+X-FDA: 85085070924.19.5F98FBA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6060840008
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 10:52:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XFB1dv/E";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9335520007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 11:02:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hDkgUDMY;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786359166;
+	s=arc-20220608; t=1786359740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xd7uYlI3wnjsUpJNqV8hMKDPnzd4/RrOMCkHIu6ecco=;
-	b=uCXXgIc9d1XEk2cB46NR9Aa/Wr8uVpFXxuslggvoALMU6VCKSQRj6nYA1ZkzFXTYqa3tGf
-	TVakZsrxmpmghdAItsBAaz7B79Xr4bXdPUOINtbWcz5P0CaSjjPayYwDAMZ3Er4V6T2wYN
-	tEfVVoshNpaqI+7bFhgmxv0hsYsVD/I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786359166;
-	b=DPXxCVgBTO0XH2vEtdPdVKR1itnTMBBqUzVRMesGLsh7qpB+dzXnbMIELzHSkGBgbklP75
-	bTSoEbv69wPdLi8k6E0CRz7i2V2UdIBMj9xIrxUHROYhT+yTkeuBn8LKaHVu/hDv51Aup0
-	StzhW+A3kY2GRt5iik6cpKNkLQyTWok=
+	bh=PerAcd8Ftc1dQcAuCFDMRae4j4jHB+ZR5/FdRu7pFvI=;
+	b=bKUHZqxxLbIIzF+JC+AASIlGu4zA39KbvCucL8C8SL6ynCAbb39sfsmYXc0epEahW4Q6Jh
+	iEPbGqdlymcHM/YT0LqNUwqMVKNC+ZJrTieuLTwnZmPulU9pHha5Hx2B/ipJOK2D4AZcMt
+	PSyvrCGEXpppDvQk9cZfOMR7K1z965M=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XFB1dv/E";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hDkgUDMY;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786359740;
+	b=aYfyO/dxo3J1GtYnZ8S7F0Aj7szDKV55cRhwvYxpJlRjaQHwzECXLaCALVZZPuIDtRyMrn
+	98z42WijlgH/gt6q83uSS31C5y3NiZQUTWdDdn4RkeO9XIxkVlmIr/TIC7UJJ7/QEOQktE
+	uwM8knXdb/OlpLx1SXyQv+J/wIdfnmA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E1C44600AB;
-	Mon, 10 Aug 2026 10:52:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1DB1F000E9;
-	Mon, 10 Aug 2026 10:52:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B692600B1;
+	Mon, 10 Aug 2026 11:02:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EF1F000E9;
+	Mon, 10 Aug 2026 11:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786359165;
-	bh=xd7uYlI3wnjsUpJNqV8hMKDPnzd4/RrOMCkHIu6ecco=;
+	s=k20260515; t=1786359739;
+	bh=PerAcd8Ftc1dQcAuCFDMRae4j4jHB+ZR5/FdRu7pFvI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XFB1dv/E1xORbGmgRjDNX1HyLkdZhUvti4vokmTBUS5WWoC/8aCtfNGix+ti0ljCQ
-	 tRmjUfaRtN+omFlttkw8IpYh28r9q3lmEmeUXzmOUuLu2Eyvdx+zy/B4ydniOmloSK
-	 oYSlKhZ15KK1hFX8mnzA9zDKeK9t5zGWfn6+tIf5q1uv7AxB96UEMB5P3KDWN3vrsC
-	 7tppJGXbcW97ZkA58zyFlln2hVOEFJITZHnJwP1zVCQIIXI6YvKwazQrrTXSSvS3UT
-	 hw0E2yTZyuey76B98vwPO3doBlVa6TVfPwv/0+Mh+oMBM+E2JIxiLBNeVcb2sImMnv
-	 sg+CtjYVoEycQ==
-Message-ID: <69df3080-a719-4131-a247-62bf47bda8a6@kernel.org>
-Date: Mon, 10 Aug 2026 12:52:38 +0200
+	b=hDkgUDMYoE3DxcdkflC+LZwzV4mkd4MXLS5Hco5MJNvkwjOZ6I71k9L8kMlhWZJ7C
+	 GSd6rBexBjv3p5tQ0Fi3BLboP9r3pW9iS9rq/zwrh5tJ2CzQJaRXtbmaM3rPz7rb+T
+	 1y/5xYC/FH1el2yeFmIMkLSx0MNZfQ2CNwEqs4YdgXVHCFKXub8vnRn4Y28S0lGTok
+	 gsVmqpOsk2bAaUKdM/ZMwxJLkV1+4avy6qBdWN+OWzlgU2EaX6floux7kspA7xGpXo
+	 jzGMvauPjqjX9At99tX+Z7fmRnV1G1iEY7s0tef7CIRiy1VCx5zG+q7qhRSjXRvCRD
+	 gDNJ94SkyuFow==
+Message-ID: <4d09f658-cd0f-4817-b970-5cbb77dc2655@kernel.org>
+Date: Mon, 10 Aug 2026 13:02:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tracing: report buffer memory in /proc/meminfo
-To: Xiang Gao <gxxa03070307@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiang Gao <gaoxiang17@xiaomi.com>
-References: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
+Subject: Re: [External] Re: [PATCH] mm/gup_test: fix race with
+ PIN_LONGTERM_TEST ioctls
+To: yunhui cui <cuiyunhui@bytedance.com>
+Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com,
+ peterx@redhat.com, yang.lee@linux.alibaba.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260608025043.88087-1-cuiyunhui@bytedance.com>
+ <09ee2ea0-c93f-406c-b5af-1fe3a50c8989@kernel.org>
+ <CAEEQ3wm8kyDSScYsAMTf6jdEqnQzQSi1xykqH2Z7vvJzQNc8Jg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260810094025.136705-1-gaoxiang17@xiaomi.com>
+In-Reply-To: <CAEEQ3wm8kyDSScYsAMTf6jdEqnQzQSi1xykqH2Z7vvJzQNc8Jg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6060840008
 X-Rspam-User: 
-X-Stat-Signature: xydxgf8dmj1csqszypts3zacocmpgexu
-X-HE-Tag: 1786359166-326863
-X-HE-Meta: U2FsdGVkX1/7cWxqdpfdPdxF9KKsvpoPgG2xMXOpskJqLKmf8ONO795ZZhbtxB8RnFOC5Aq6xLAlBH3JmqBMXaBo3VYRVujEQLPHipIHwlKS2mSs8vyEVBXf5xwgXyaxWUfy0blARZIHHek2bbjFRvewqTgkCLDdohLMTNs+lxTJxjslaWbIR3n+FoJdrPjKaAKqWObfTwh7SxXro8GSECJucmr9nVtdJKV4YcgULALVz02LLTrFoUKeUC3NjGLO+5xgRLu8DV4BTxmoA96pQrpbVwatmcblTDFQCowvCv8co98nhoYciUyB/rhNVzFw99/n71/4Dxd8ZKbWaFvPcuKAYlmhZrH28074e37zg45tJ1pe8IFh7+qyQc+IgdpIXHEuFeMz4URL9fItfTuWNW+gx4NTsrHC6iivhDQfv1kEe4x1ulIBntz8CCtf41+8bT7mpDTzGtX3YrmganQEvOAcVofEMwvYunixXetjjVZgJZx7dBZtsRuoPhU3IwqtK0I2sNKKvU+npoqdyKl95jgET6RpUoVAXyGxRjCJBd4aoAxNb1nkV3/+b6fu+2qG6VhU/EZcjvSFpBSoKila++6gy/W1PDogwqnW+Ih0jUerh/fwhuRhR8OLV2AOR6w1x90+oSMdRtP1cURFcEDvcwBq5Hj0Vf0chNt9zHcDHg8OSqTuBQSUycayzqFgVgFYL0EKdEv1swpHU3xQz4RQy+AeEYD0vkEBf5gy/C6BR6eCF8p5ljEWxCv+yLNrt+nO3x0nVOfc6s8UcdyShApzQJMM1YhGzBQY0/rA/aIfyUk0Tr095273ID0u1ZGmy4iEty3Aw3MQ2mACYBu4wzpWJIp3PQvzgcCj6NYt3V6kMmHATNHVYSUSlWxjo/Dczi8ZmvW5DfksxNUPPH4u3PnixdOtx7Hi+oJViwAveWMsJp6VgIksb6IyuemO2ss5n6ziSitzgIPa1RWfpw3Wsvp
- ecCkU95p
- z9Jy4tsIWUnUk9MubiXOKogW59iHXbj+yUvObujtXuRtK+CjRJmC02jzP4EBtvl90GrnIJW8KjlnWMSoVaXsZldDIMJUsH6TBZFJNNtgG97xUU36p+UcV4ggGFWy254HpfVsjFRu87VlZr6CBMVKJbHyeQjcaU7FmYCUtG0D5ZXU3oms0Odelo4wak1V9BM4LT2zwWc4m/GHRPhtpejdtEA41b4bfwAWAXdbAAruW6L1FU29s8Nxw42OJ8zQBdrIHquHN
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9335520007
+X-Stat-Signature: bs5fin5d3ioohh98fm33m8uqyhbn4ww6
+X-HE-Tag: 1786359740-845518
+X-HE-Meta: U2FsdGVkX1+nKFh3Xt2QVJWfz42JbJWI3dfoUc7gQdXrBZeQTqsGA5u2h0RVjW7sBKvE/S8MIjTZ4ztnAfZIahagvRc4UHzW+OUdY03Hxtvlw0dPSGmKqltN6i5aTTdx3UQD4YbOQBz3zE4MK0Dt9im56DCqicG+Bw0cNDjr3v0SqO3nMyIndvtljyZbVQrJSis6As559ooHMk4L3LZQ3tbaJk5BDQxhJAR2dySpiFmOM6z/gNo5Dn1CcTffnEs2QwHWKasADeZqO8JGyYpbnAoJAlr6W2gNfziDwHNeeJKDN1lkuzDoPEJGcmUiGRLzlmPALbvhy4cYzc8Ei0s7+aMEfpVxcv/5EHrWuhQKlyiUJy5KedB49p1vhkMq44tmpJqIugD2/wJuZqUvKcy7xP5T3T1dyxpy2/ltbLfJryADiCgfyLkKR5nxzM6UFKwTIt/h6m4RQrIs8M5bADEvUPy1muzvnUC/FiGwkPF3gLyXSsY/qL0/H3UclVrPyeqCQWHxErtZrXvyaanmK/VBFBvfp9a/CeXt588iC6gxmx6tq41JaPqzBY2EbHaIh/U0QufHYKHVk0UsyBC5bOgTPZ7KJsuC/GC7cls4seGBwwndEbU7c4k3/ZtV7Z2Tt4CTu+vhm2mm5/dZ8cfwZUkw7Nj03YVWDTwVvIYw2T0GZfQu6i0brBTIztyTl+sdQHP0LRUWA2DmpIoOvk10zEYIpnwyDKEfo9UitLRjuyoa/4T66iqKBwuCaXE5e/e/GLeQgapGbv8CM/jJ6ZhKGLFIsUBlxcmaUOprC0lTryqRT1FY/oAU85KkB13B89nfOvRXsgIuYowEljKOfr4w6df07eVXtcc1V/8sxHCosyE5yzU62OYivL3yiXe6n3mXyO2SX0CRrVjA0PLcuDstGX6Vz/W45ChBydGwDXnLYe8NsJltnT5KpSTOQY4BDjWzpSE332L4/1Y3jz2CnWuMOS0
+ elDa4YCa
+ iIsd0ICgnAJNS/6MCO2UMENo8O5dPbIIw4Ag5vdw7dv9K4dznZi4Gp4wOh19u5NQycJX/pIHuVitY/hQDhhp/Nad6zfkzMa0buDvsdPofl0XEXl4yJ3SFUS6GTsSf0cv5norG5G+6dwpzxbWKpEbshQnr64vftsXnT5uV4AKWR0iYRLGLTKlZKJse2lbxLbra09xYo0XRW/LdIap6S4JS0YPJHKqubvjtef2t7Jc1ilE2qW1rU/uRH7lSzjX5xyV7Fyaio3APCsJgznyczog/MKjV+jbuD9vZ/E+6Ji+hRV8h7a7G4uww1IElSZdXv81XBGOEGc9dsiz0zvejE2qoEtIoE/HyFY+rvXCIeRw8CpDuxSWiGYVck0FWsUHdSYUxTmfg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,16 +141,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/10/26 11:40, Xiang Gao wrote:
-> Report the data capacity of all ftrace ring buffers through a new Ftrace
-> field in /proc/meminfo. Include the main and snapshot buffers of the
-> global trace array and all tracing instances, while leaving ring-buffer
-> metadata accounted for by Slab.
 
-why? :)
+>>
+>> Can you review+test that change? Thanks!
+> 
+> Sorry for the late reply.
+> I tested your patch and it works fine for me.
+> Tested-by: Yunhui Cui <cuiyunhui@bytedance.com>
 
-To report a handful of KiB as in your example below? Doesn't sound super helpful
-TBH.
+Thanks, let me send it out as a proper patch.
 
 -- 
 Cheers,
