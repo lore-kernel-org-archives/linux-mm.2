@@ -4,176 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A274C5B572
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 263DDC5B56D
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:27:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1DA06B008C; Mon, 10 Aug 2026 12:25:31 -0400 (EDT)
+	id D21C56B0096; Mon, 10 Aug 2026 12:27:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCF036B0092; Mon, 10 Aug 2026 12:25:31 -0400 (EDT)
+	id CD2C56B0098; Mon, 10 Aug 2026 12:27:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBDD46B0095; Mon, 10 Aug 2026 12:25:31 -0400 (EDT)
+	id BE89D6B0099; Mon, 10 Aug 2026 12:27:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 979D96B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:25:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E95380180
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:25:31 +0000 (UTC)
-X-FDA: 85085885262.29.E8F5B5D
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 26A5E180013
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:25:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=p6Lcubla;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786379129;
+	by kanga.kvack.org (Postfix) with ESMTP id 964716B0096
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:27:46 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DCA0A1BFF
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:27:46 +0000 (UTC)
+X-FDA: 85085890932.05.B33F785
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 65C5440007
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:27:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZXmcShJA;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786379264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQBA7RZMWG8pbHKGdFOSfTUai8Qp0mhMLH3fVjxyT/A=;
-	b=xp6aX+eRKnC9qnsWISGDMhKze34O0jhWndn1obwnPMShNUVtzi6I9sJKkih7eTZYBEGOuy
-	iz4XNCkjCRBzQKTlqNKlI99Pfl3W3s/XImHV0pCASyvdNjnemo6S882PmwfYfGZeoNseuS
-	4fNnsu69JucDEe1N3kI70QoBxSDupeA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786379129;
-	b=jnMz9ZUsyOgkgIswjoVwEAgoIVNk0Dm5RrcteDtc/BR14HctQULEdIH70JJcT945BrmeCg
-	Qg73t7Rizp7bxQQpx/NNosDGQYFcZ4fT5rBVQcm5b8uASgX7X/FR1wWhU1jsi1WTIkw8/6
-	Anc3X3t/WvJK2DXo6N3ZdbDszpq6rhI=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=p6Lcubla;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c10e86e52so429201cf.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:25:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786379128; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pPJ6G67IeIlX4vm2+YXGheh0hyej5HomBQxv2wEYvZd2E1iZ+FD1bpQohYiPuFgE0z
-         PfmfDLuBADs7oxH8zoB9VTl+Ke3WbsGUBX5twHkesuj65dPZ0GTXh0lDV3cmaEzMAxke
-         9GfiDJE5Q049tQeCq7CgVehkDTkWwXqgujM4D+TWa9mu3OrkykAFjdXsLUfg5ycuxP8R
-         yFqyvZHmMkRQiL0YiEtAYBEzgG0wh9Na1bMr0ulZyIdgF1+seBxt1j0wC0Hy4fU6X1G+
-         3ntpJMwKmIqHS/Me19EsSXUQbTj77CGPNAQpg5rZ6hwh2Sxxz2awRDuIlM8Wld4lS0tn
-         ZWlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oQBA7RZMWG8pbHKGdFOSfTUai8Qp0mhMLH3fVjxyT/A=;
-        fh=RlqCpUC4GyvQ4Lt9dAtliw0qu+No4U2pE/tHqFGeLzo=;
-        b=XrPzrA0l4CNHotDmA51MXBNENd57Puldj3qiBohqqJEbT1fT4qW5RLuwUS1YMEofUV
-         LPFdREx9vOsCcKCbZlyZ9jaKAxNEdasiBVHH0El+B4pAAgzPyqGKLdoD+uAYaIFux+rd
-         xflJG29fVaNz2K87S0UNrge2SDtZkvH3JAhlguci38ckoNWyn1cOGIr5yx6xdkX3DfHI
-         B/PsU5dXWJ9xaVa3XcrXCZM/TrxvyfAO4z2IqOsnHoA3qlComhOx54rxwoMJTTC//X0j
-         J97fS9w0LwCB7+QJ0euSEAtl6WJFyxsR1OZTF0V5KwmZyuCo8k27UO3zE+yqBZtN1Jr4
-         F7OQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786379128; x=1786983928; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oQBA7RZMWG8pbHKGdFOSfTUai8Qp0mhMLH3fVjxyT/A=;
-        b=p6LcublahOXCZEpQYYb0Yt1r9s1Q5CMtEEO73wHP/z1ndsKERuHe7+Mb25uSalO2U2
-         ovYc/CdAMcscXFvggiPj9Ztnij08J6TsmUwMO9W0pA+71aYsMaS2N37zSvl6upERPMV7
-         riOsHs+NyeU03UtTrTwuZBD8ed7iJ3AqiWT3lZop5/dsH7RaUgiyFv1KtnMR+H43RCp5
-         fMBlm2o0iIYzDq5EJK0xlD6jUGzRo8UoA3HahRL0V9LJIcLI5IF8yjVwUvgp1igxB5Tw
-         0y4pAdqD92OdLwa+JuIRgkYu7FO/bmU/TDilnTNH61Fsm+0qJMDyf4PhDS9K5nd2EZld
-         KD3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786379128; x=1786983928;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oQBA7RZMWG8pbHKGdFOSfTUai8Qp0mhMLH3fVjxyT/A=;
-        b=nouYFnaAIzIfK/daLGsd06Z/XPsLS//s6HXEimMslNhadaZ7huOvbOgc1tjprATpHP
-         kTTj8ogM3BJ4w7YwY+Be7CUoWQGjNUnRuFGeHEszXXsd3oO7tqbxFMW+XbcrouktzkV/
-         4g9S6jqbLMAPxTEWWH43KwJTPJOpgtCOB7orW9GMH14cOcktzCm4suoALTnzDecZKv29
-         sJpjl+Jq8uIHFabATqasiwVRA86iHG4ReQF8/MPXQJxwh3fdksHUFefUUP71STgP7xGB
-         VG969X4CCw1jBL9Kr02abr47AnlQVdTCcfeDjBGB2e7nR2RQjcJ/drD6m71NyoCiIKMu
-         CqpA==
-X-Forwarded-Encrypted: i=1; AHgh+RrQsF4u0fcLqqYfbaRtZkilCOhUiYDuL4pituPNr7RvQC7DeQ62lG2bjTmphqBxmNfTlL1ftkkQJQ==@kvack.org
-X-Gm-Message-State: AOJu0YzBtsdEIc/eC5mUjUnNTKGjHXOxSJI4A8M03W5CeQ/G8QVfH5KN
-	xtkg3fh998nJ/ihvrNl308MGiT7Q7bTrrnLRgCj69Cdzx7cPxxHGnqzCUJ1TJqNGfXGVzvvCCxi
-	AEh5K0MMIKyaNi2OS9tp19eNfiPtsOU3kVNariyqe
-X-Gm-Gg: AR+sD11AdS5ESyjtmBuC2Lx8r3vjoNSzwZZMBUUx3v2V6tBlNh+lR7QvfUUANs3kEE1
-	DfwoGDsigFlPtjy7FoJBerjlkMF5fNrh+8iSf7mVlLAaLaziuUXokDcjw+2ZNhBsOrhRmbKHQDi
-	2UMVgkq1D2FAkbb/EHg3S3bWqmlZhfdwvkwmqgtNtiJi0Ce0gukC1vE7S2gSPycpEObmW73Gt9k
-	ORytE5oA0erldvAcj5tE+zB8urrfls3QiRdnNHIIMg3wUefq7ei/DgXwHISXWsFRsaCurCfcDXp
-	/qtoil5YH6oiJ8PQDO81s0aK8xHOetU5x6mL8Lf04UU=
-X-Received: by 2002:a05:622a:1b06:b0:516:3f51:81cb with SMTP id
- d75a77b69052e-52d2817b938mr34999921cf.13.1786379127554; Mon, 10 Aug 2026
- 09:25:27 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BMpEuC5EAExmI+0zM2GMm8umjal5Myhru9XEpHEvqBI=;
+	b=XfGFWB1ONUK2XLzZgKqa89h7lFjfMR2sDjbAWNN/tk/nUh7t8ujvMpE2L6/Xim/GXAYp/z
+	OBvukqqlyDw9VHGK3AI/O7X7eXyV6vKX0VpvTuIi5Q5I5vgzCZVqqvQ/bdamoDeGMdN4Wo
+	XPIcPW8+pqGWGyh3To1Xv/ouKw9QJjU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZXmcShJA;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786379264;
+	b=W93v1oGKbQrPIel7/XPdoOIyksA4Uaw9wGRcI+Ep2xuyHFhrihszu8SOiT/brwVOhdZxzI
+	AczkV1I03Ip0bargUMIfSmtiifmUJvxWo10EJ6Cd/1bJG2Gg+dN0Yx8fxeBVIYyXvldh+s
+	qztnmP99gTCNb6kXgFnOtaklFCPlL9o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=BMpEuC5EAExmI+0zM2GMm8umjal5Myhru9XEpHEvqBI=; b=ZXmcShJA5w7Why17l1Povmx9ad
+	+O2K/3jFo56MiK6xwlOK8pxh3Kq19+CWYvpNJ0n9TfvDCBmd+SnQ/ShbrFpeDfubJJl65NP/7YZnA
+	XZuL26aJSPgcOrn+YQ1aJm1LLZY67GU78hd1Xz625C2j+rKKltrZLj7ADfudJnbBk+nT4RKBKpi23
+	xjRqfzfNAAc/zEwIggeCKbbhVPUIYN+NlHMJXBNSGuzr2zFr3of+piou/LvwSW5gP899EaggmJl3U
+	c2ciZpfIdXI6exsqXvDacaE6WMfht4SiEkTIEp1Ro/iH96X1d0kISD6dL6E13pmgJ1TsLUat8oS//
+	X7KJIg9A==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtSqX-002uf4-0M;
+	Mon, 10 Aug 2026 16:27:29 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH 0/3] mm, swap: don't spin or flood the console on a bad
+ swap entry
+Date: Mon, 10 Aug 2026 09:26:48 -0700
+Message-Id: <20260810-swap-v1-0-375ef0767206@debian.org>
 MIME-Version: 1.0
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
- <20260806-b4-scalable-cow-virt-pgoff-v4-3-ab318a350404@kernel.org>
- <CAJuCfpGjE66Duhw0r8H0GKBFDExjroRar6n5MgVOOQjz4ZfTuA@mail.gmail.com> <anmNojqwGzdiLkIm@lucifer>
-In-Reply-To: <anmNojqwGzdiLkIm@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 10 Aug 2026 09:25:16 -0700
-X-Gm-Features: AUfX_mz9WU1SPgoH6YTV3DTKwNKGMKFcURK6j4M8chTMyTH0jJu5GwZ0wv2wrtI
-Message-ID: <CAJuCfpHtaeeqn9UbnG1U0iA8uhrcQpEG8g8+G_RybVbwoOE0sA@mail.gmail.com>
-Subject: Re: [PATCH v4 03/20] mm: introduce linear_anon_page_index()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 26A5E180013
-X-Stat-Signature: 163na6r563p5eoxjffugn3n6y78oj4kh
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMj7eWoC/x3MQQqAIBAF0KsMf62gUlFeJVqYjTWbEoUKorsHv
+ QO8B5WLcIWnB4VPqXLs8GQVIW5hX1nLAk9wxnWmt0bXK2Tt2saZNMR+DgMUIRdOcv/NOL3vB2f
+ FkTNWAAAA
+X-Change-ID: 20260810-swap-25420f9c8ba9
+To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Xu <peterx@redhat.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+ Chengming Zhou <chengming.zhou@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2260; i=leitao@debian.org;
+ h=from:subject:message-id; bh=nJ7VojU8wrPan7dxRkHAqS4AsX34ilWSfKk8gX6s3Bk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqefvoTekUQgxrCabVi0QHxa+ov4eLbm0XOLZss
+ 6XBTookhl2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCann76AAKCRA1o5Of/Hh3
+ bVifD/4hAHv2SkQh53sJb6QbDtBvjjR258t7kyn8wmRhzJ+uyxNjJbwtIhpL0ddaR6e8I0M0puZ
+ iw0lnClIpMRAdDNvl2Tp/W32w7X3f/VI+/lQ5ai4vXxkwo+KQUU4FBBPLOFn4W/Hw0b++C0TNjg
+ bG6oM2BWf5njyPFl9sSkjhql1feKm3b5MXMm33ICghPBrMxeaEqzjuNM+xOUqAZYfB5hSLY94HP
+ 17EeDYnGJZiDP9OESzgJutVkTx1zldgibbBihubpWIUOZuaq5rSel9N5Txb9rR7tyN350GHi+Gk
+ Hbv/4x6MEqt96EHplRvYwb/0vg7z0gqsANvDEL3MrQwxfn/kaSJNvgwxcL1Dru1I8vrY1QLHHig
+ JmuvWo7/ls/MfCQJtObopFuCkfZ+GggEYv3cXbxQ3rbcZjuRl4OMtqwjuyNRo8y95Qq122KnOz/
+ oGr+jsNMv0CHkiljo/7wJuBw6zLxNDKQKyv8t0w0A1mG1jYLKAuqhwwE0DkJJTSbNIm+Oda/yK9
+ 4CgBkrcFqKT6BMc+0g2BVf2fLaz83Im08B3Lw6qiqKKAKpHR3Ud3rtM+S9hn0HjasU/6P3Rp08l
+ EzB9CDLHFBwGDhlaXkDfU5LJxmOmUWuwT+l5LZyvlJMxBROGmI1UUYAE0kwrfcnf1kKjpn3f/dz
+ CicmIiewm1AI66A==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 65C5440007
+X-Stat-Signature: q8basf1dcrxrkapwe1dqio6az51zwqwb
 X-Rspam-User: 
-X-HE-Tag: 1786379128-595045
-X-HE-Meta: U2FsdGVkX1+aUJAUJH6DV2LH4tJ/cgSU2UNsERwM2bWE94X4CeH7iDEE/t3PUivoY5yB0q7R/DJpuR58Vy6sdPrc5xERHRfUNC9Hhod+219X6CjiQOrre8qGFEMb90sVy/f0g/ujyrusVtc1G0OfMBd5F1fsfa3ZzsiMIS4CtQWZZECDcRKOFOK/T9uwfC+6N89Lky/UZrgdVyvZSHJqn7v8MflED0HCBcPJZP166rC9+6ovxNNdX3+Qy2nmOK3QO9aqMy6Erb8PgjqiciNlshqUyIxpC7zQ0MgDR5rXsWtn/+SrGsOckp8XVBxVJkYqQ9CKzkGGEuVLzWe8TMuQYL3m+hM9HnWLSqSb6eHXVoRBmInjxu8bOFynYGoTiZdTmmjUDqDHLedZEnVRFu405EiwAeGYlqhwIOWzVfCDl26neZL7/9TQAmUGV/wCh82yl2wXjF4hibuIlEcItV8NG/WH1rRB6k4upl7ekGvpHELISuDLUg9/KxbeAct9KRhIzMmHUCAFeCjvPXjhBxAKDUoq/9hHhkSSHjFfdUW07D8ca1iVfQwlD03+wN/Yt+GQkKRXJ9HpsyY1Rby4/X3ZQABmM5BeKT1hgxdU+w4sUMq/8oqfKhRF2Ji8DWbyXYfGLAEDZLmh+CL2OQ3ZMqIAqkfNJNe9o/HndRG22ks6iZof6qqQR/DJlSce5BOn1fcrWn10n6jIMQyHPsrQu1/dk3inbzXDGWQCenu/4OUH+8W6gU1YsUyzkeXkob3GtzxN9m4vMiA40gCCR6NRNKOH55R7f/6f1avkZJ1E46YA90AwxXt9bnKd6ypweY1Wo6IQVPFo9PVXqMAdvVzP8zWO0LNuCczm6LAa8Cf+OsTc8vpzm3MVRfcEw6tw/lT373SFW9zFcqEfULBUyq3+u8/vE0XrFH2+3gNG+gFkFP1oP/cbXgqq5oHmbT6mh7LVWugtmCKx/Bm7aRB73PEVScY
- vnW3HKSD
- xB1JzNJjgtIzW+yYwRAmDbwETbQ/RnKSrgdTuGPYuhiHwcl6s8Ip0Ql92y8tcN5qgFTMjRLnVgigPLGnpcuUpNu+szIhOT3KNDB8nKuP4e4fsDI+beMGsTkuTl/bpXPbafwT71PufeDVtQqAc/N8dOiCeVLJisXe2AcqxHbhfJRAntNFjMKX9fftTWRCwFH3Y3YvpyEJ/987089f3glThBHTDemAFG7wewMXmsTdgADzmWv9l4OItjJNshCxl0C/c+t+/h1xZvXVSxEUuUfYpCzjpu2kJumC6LVgnM2NXZRPFuqGZi4KeZp+ePDzohyxxRLKDioRafU8lJ8VoBb060jtu8bBu7f6078M2iEyIBaZBAofHidPvzI3YqsqsPG9GYSSL
+X-HE-Tag: 1786379264-554627
+X-HE-Meta: U2FsdGVkX1/9covnE5WiUlBCc9zaevRGVQI8vkG/5HM83VQu1g4yTMSG3wceBrc2kXLSaZPusQ8iYeEI2aMTzDFWz0RG5Vzven04PJHBZR6fRCi6tV2JCx4mt7BeCYzbiS7DZ6ODyNbPkGP7QHq1no2HAjzuE3fJ4JeCg+r++VuEVjqGPyHBBRRv3tj8Cn3nA+JqT5vYiexGAphJ6RttJwYkyWwyHfZ2d2K1kxzb0N/dz9DmU5KVs/YAf/RkAri9IcZEXFf+Q6eze/XaNpckuOoo3g4CJROSzgbgRfPg1VU7XmQ+Fki6L8k9wTuG8RfQ0ORjYRs/bgMtIhoUQiZD4mri7LORxzEblMOlbCI8DXu4HC0xsFHjbr6n0NH0eW2ytUxZ00KzkS2WKOSrD8BId04bXfV8eChADzurIQmJqK9pw25Bx0XcSFApir4/pqc/D5sWpJje0FccLUOdLhlZ61w6R1S63W8y8uf+f/txiWrM22rfjVdrbJgxTtx6oEmISLgrCTlyKz+cVtDT3R6Gxc+Ygvpu/Lwz2wc5YHUA+VrGA+kjp66EqQq1+zHkQsMxuARrIizeKjLsN+l9reDLlr1nyS4QLFyFPekETrT3tQdAnmYkg46TfTXfRh8PsSSfK3Wn7Ot3Y/mhwWUdAIe+Gt+RkDStkJfeKoov+dc2WbLci5GIJXIU8MfGSBY6tt/PsK1UVZsot7Croo6ZpD4DysB0Vq5ylinF1wdeWqOq1lPBXmbT2rV1+8EjUsMnQn7I1qtDH1dvEvmU1MHeKKtB8fTzxZUAOeYcna4Q1A4Rlh46pRknoBLREsUfsHo6Q7OPpEoyhjBuHP2uWuFbbM2hjNQu8aOGdp43IoH0XfW1gHLk36ltMKgmliq55mqpC//yDVVNCYXZee/FHVZqmqQxtrTS79K264Nwlu6ax5soBW+JYr1pW0ODu4kJrLDjnWRG0Oh1ZexlcmfegxbjBke
+ cfuwgd6Z
+ tyuwRHSV7YJHSKAzxe/dvI98oHUngOwzatSAFRA9WHvwKL4fmTyG9E5ArQB09CYHGdBsD5u3iUlwBh5G8jxyfaOFGf708oWaCp1hSZpzpokMWXKGP0dtniHH+3qN04iqDWwqliKmdpGWER7jLkhqyjnq8XG/Hy4czOQYNYDWWfWLo1QvyC5P5SL9SA0eV5kCYBqu+5jUbBp3NB3if5RK8dbsMLK/ksa4wej+kVNyVWxXKlRpZj5+n+Cedm0eiRUq2+Z5eBh+m8N+uXXRuwbo758bh6VCG3tBjQzwD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,117 +123,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 1:40=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> On Sat, Aug 08, 2026 at 05:49:48PM -0700, Suren Baghdasaryan wrote:
-> > On Thu, Aug 6, 2026 at 1:23=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kerne=
-l.org> wrote:
-> > >
-> > > This function provides the anonymous equivalent of linear_page_index(=
-),
-> > > instead offsetting based on the anonymous page offset of the VMA.
-> > >
-> > > It is valid only for anonymous or MAP_PRIVATE file-backed mappings, i=
-n
-> > > other words CoW mappings.
-> > >
-> > > For pure anon VMAs, this will be equal to linear_page_index().
-> > >
-> > > Assert that both of these invariants are true In linear_anon_page_ind=
-ex()
-> >
-> > s/In/in
->
-> Ack. I ran these patches through claude several times and it didn't get t=
-his ;)
-> the machines are not taking over just yet...
->
-> Andrew - could you change this in-place? Thanks!
->
-> > > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> > > index c6fc783aaee5..0adfa6605653 100644
-> > > --- a/include/linux/pagemap.h
-> > > +++ b/include/linux/pagemap.h
-> > > @@ -1094,10 +1094,44 @@ static inline pgoff_t linear_page_delta(const=
- struct vm_area_struct *vma,
-> > >  static inline pgoff_t linear_page_index(const struct vm_area_struct =
-*vma,
-> > >                                         const unsigned long address)
-> > >  {
-> > > -       pgoff_t pgoff;
-> > > +       return linear_page_delta(vma, address) + vma_start_pgoff(vma)=
-;
-> > > +}
-> > > +
-> > > +static inline pgoff_t __linear_anon_page_index(const struct vm_area_=
-struct *vma,
-> > > +               const unsigned long address)
-> > > +{
-> > > +       return linear_page_delta(vma, address) + vma_start_anon_pgoff=
-(vma);
-> > > +}
-> > > +
-> > > +/**
-> > > + * linear_anon_page_index() - Determine the absolute anonymous page =
-offset of
-> > > + * @address within @vma.
-> > > + * @vma: An anonymous or MAP_PRIVATE file-backed VMA in which @addre=
-ss resides.
-> > > + * @address: The address whose absolute page offset is required.
-> > > + *
-> > > + * This returns the anonymous page offset of @address, which is the =
-page offset
-> > > + * the address possessed at the time the VMA was first faulted.
-> > > + *
-> > > + * For anonymous mappings, this returns the same value as linear_pag=
-e_index().
-> > > + *
-> > > + * For MAP_PRIVATE file-backed mappings, this returns the anonymous =
-page offset
-> > > + * of @address, which is the page offset the address possessed at th=
-e time the
-> > > + * VMA was first faulted.
-> > > + *
-> > > + * It is not valid to call this function for shared file-backed mapp=
-ings.
-> > > + *
-> > > + * Returns: The absolute anonymous page offset of @address within @v=
-ma.
-> > > + */
-> > > +static inline pgoff_t linear_anon_page_index(const struct vm_area_st=
-ruct *vma,
-> > > +               const unsigned long address)
-> > > +{
-> > > +       const pgoff_t pgoff =3D __linear_anon_page_index(vma, address=
-);
-> > > +
-> > > +       VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma));
-> >
-> > As discussed off the list, this assertion works even for read-only
-> > anon mappings because, as you said, "there's no such thing as a pure
-> > anon mapping that is !VMA_MAYWRITE_BIT, there is no way to achieve
-> > that."
-> > It took me some time to see that after reading your discussion with
-> > David at [1] and [2], and I don't think it's very intuitive. Could you
-> > please add a comment explaining that? Maybe add a comment at
-> > vma_is_cow_mapping() definition since you are using the same assertion
-> > in another patch of this series?
->
-> Sure will do! It is very confusing stuff (and I was duly confused also at
-> first).
->
-> To save a respin (unless there's more stuff I need to address) I will pro=
-bably
-> reply to the relevant patch with a proposed new comment.
+I've seen some machines at Meta flete that show the following type of
+problem:
 
-Sounds good!
+1) It gets some weird warning:
 
->
-> >
-> > [1] https://lore.kernel.org/linux-mm/anBjpdMicqaGADr-@lucifer/
-> > [2] https://lore.kernel.org/linux-mm/anLyhaI6kW-EWk13@lucifer/
->
-> --
-> Cheers, Lorenzo
+  BUG: Bad page map in process khugepaged  pte:f000eef300000017 pmd:00000067
+  addr:00007f57c0a01000 vm_flags:20200073 anon_vma:ffff88829af7c340 mapping:0000000000000000 index:7f57c0a01
+
+The corruption is most likely the collapse/PT_RECLAIM race fixed by
+commit 366a4532d96f ("mm: fix the race between collapse and PT_RECLAIM
+under per-vma lock"). But this series is not about tha.
+
+2) Then it floods all the monitoring of the fleet, sending the same
+   message in the loop, crashing the our fleet kernel monitoring
+   subsystem (which is the part that I am interested in protecting)
+
+  get_swap_device: Bad swap offset entry 3ffffffc043c5
+
+For instance, in a host today it logged 6M in a few hours, and it is still
+going forever. Two things go wrong.
+
+1) get_swap_device() prints unconditionally, unlike print_bad_pte() next
+   door which suppresses itself with is_bad_page_map_ratelimited().
+
+1) do_swap_page() returns 0 when get_swap_device() fails, so the
+   fault is retried, reads the same entry and faults again.
+   Nothing in the round trip changes the PTE.
+
+Trying to fix it in a naive way:
+
+Patch 1 is super simple, and rate limits the two prints.
+
+Patch 2 makes get_swap_device() return ERR_PTR(-EINVAL) for an entry
+that can never name a slot on any device, keeping NULL for a device
+swapoff is taking away, and converts the callers. No functional change
+expected.
+
+Patch 3 uses that to return VM_FAULT_SIGBUS instead of retrying.
+
+---
+Breno Leitao (3):
+      mm, swap: ratelimit bad swap entry reports in get_swap_device()
+      mm, swap: distinguish a malformed swap entry from a dying device
+      mm: fail the fault on a malformed swap entry instead of retrying it
+
+ mm/memory.c      |  7 ++++++-
+ mm/mincore.c     |  2 +-
+ mm/shmem.c       |  2 +-
+ mm/swap_state.c  |  4 ++--
+ mm/swapfile.c    | 17 ++++++++++-------
+ mm/userfaultfd.c |  3 ++-
+ mm/zswap.c       |  2 +-
+ 7 files changed, 23 insertions(+), 14 deletions(-)
+---
+base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
+change-id: 20260810-swap-25420f9c8ba9
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
