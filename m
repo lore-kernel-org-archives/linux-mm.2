@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85541C5AD4E
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 05:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB20C5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 05:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CEBB6B008C; Mon, 10 Aug 2026 01:41:34 -0400 (EDT)
+	id 707916B0093; Mon, 10 Aug 2026 01:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 358EA6B0092; Mon, 10 Aug 2026 01:41:34 -0400 (EDT)
+	id 6B8C36B0095; Mon, 10 Aug 2026 01:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21FEC6B0093; Mon, 10 Aug 2026 01:41:34 -0400 (EDT)
+	id 5A7166B0096; Mon, 10 Aug 2026 01:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E76F56B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 01:41:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 557AF1206B6
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:41:33 +0000 (UTC)
-X-FDA: 85084262466.02.C4D0C87
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 119AC80010
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:41:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of dzm91@hust.edu.cn designates 207.46.229.174 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 34E586B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 01:44:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B486F12068D
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:44:02 +0000 (UTC)
+X-FDA: 85084268724.08.65C5891
+Received: from out-189.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B32B240002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 05:44:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GWzAyzsx;
+	spf=pass (imf12.hostedemail.com: domain of hongfu.li@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786340491;
+	s=arc-20220608; t=1786340641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SO9O2x/1heZGfWI79kiI1MjVfL/S/CCSC4z28A4xhNE=;
+	b=X47q0zAEMi/fXhjPKkcQzjRjL9JMiKBLSX/q3960xgLCXvBEvH9aKzPKCg+seAMFHNTWAB
+	/O/xj74GEZ67dYtV8oRrKJY2DWAPxFHNhoOLnGNbsxqqEyUN+u+lgjlTuUQ/ngBZ8qcSpu
+	w6pEAGS262xufQGBk3XN9AK6tFqeFqE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GWzAyzsx;
+	spf=pass (imf12.hostedemail.com: domain of hongfu.li@linux.dev designates 37.59.57.117 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786340641;
+	b=H+L1q2/V7k5TKHGARmGX68NCqLU+Zr0yoectgbSVFRa3s+7zeoJrYMOOc9A93muN4jDk1q
+	jsBqy+oo83aVLpD5YY8k/tp7gXSf4q4Ip6DaovPQBbXndweKWpbHz0NqtNiucQ9tDlTbgW
+	ZA06CiWYRZ/zRkMSE/FoFEv6iZO5+Q0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786340638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=f9ncFPoyeU+CoX9FPDpTDGQ1eDb+6ZmoOTfj/HqqNAA=;
-	b=hh0BdVdHHhB/FEUcYa4eFQ8mgHP+Rmr4fPBYDdVNeQ2UPCQQkvxlqggp6OkKlWmixXWCOg
-	KfUQkmT3ovB9H6sWsqBe0rHG5McKv+vO+v1SUnz1QQ9ED9casV8Ztt67N2VPY776RthWOz
-	cqltZurUzzIZKd+SvSyJNzM/rBh50hQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of dzm91@hust.edu.cn designates 207.46.229.174 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786340491;
-	b=GwWX98Rfpoaed7A5CRIxJl5RtlQCoFi5BVrPu22jheUMOWQmm4aw9trVXX6nssaYj34dha
-	fgawLTINjtFijT1SavkUYJK+XW1L+RyCYCs8cfSVTQvJMJj2MP1iuN2kHElhpcR/6RPe25
-	KFMWOoO4s3k+YOrB3gEyUdzjKkQ8Gvk=
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrAD3zTRZZHlqh0+kAA--.61798S2;
-	Mon, 10 Aug 2026 13:40:41 +0800 (CST)
-Received: from [100.81.40.43] (unknown [10.12.191.55])
-	by gateway (Coremail) with SMTP id _____wB3QlZYZHlqpkA1AA--.42332S2;
-	Mon, 10 Aug 2026 13:40:41 +0800 (CST)
-Message-ID: <f14f7349-a827-4bc9-904c-13fe5c6e6412@hust.edu.cn>
-Date: Mon, 10 Aug 2026 13:40:40 +0800
+	bh=SO9O2x/1heZGfWI79kiI1MjVfL/S/CCSC4z28A4xhNE=;
+	b=GWzAyzsxnA9O25inhOpor2MP5uPSYRS5xoFbf5Pgh/SBVcrR+On+egCA10gZzUj06LvIpq
+	lNsWL8qGLK0RBRJCGBq0vMLTJKBviMQ+3NDBSk+XHzjkK7DAyC907W1eT6QgfJ/DBZ4qL3
+	uSWhFGPuS/W9cufF3rm8Pv0MfPEIpLU=
+From: Hongfu Li <hongfu.li@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	dev.jain@arm.com,
+	hongfu.li@linux.dev,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	nico.pache@linux.dev,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com
+Subject: Re: [PATCH] selftests/mm: fix read_file() return value check
+Date: Mon, 10 Aug 2026 13:43:00 +0800
+Message-ID: <20260810054300.82437-1-hongfu.li@linux.dev>
+In-Reply-To: <43b5db93-1c1b-436e-a8fa-d89582e31894@kernel.org>
+References: <43b5db93-1c1b-436e-a8fa-d89582e31894@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/7] docs/zh_CN: update DAMON translations
-To: Doehyun Baek <doehyunbaek@gmail.com>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>
-Cc: SJ Park <sj@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260708073246.1652828-1-doehyunbaek@gmail.com>
- <CAN-j9UpTxLzvu7EruQW+kvvxivrtOaS3FBW_8dLc9TWuvLO7nA@mail.gmail.com>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <CAN-j9UpTxLzvu7EruQW+kvvxivrtOaS3FBW_8dLc9TWuvLO7nA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:HwEQrAD3zTRZZHlqh0+kAA--.61798S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYG7k0a2IF6F4UM7kC6x804xWl1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2
-	x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWx
-	JVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
-	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcV
-	Cjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0yrW7UUUUU=
-	=
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 119AC80010
-X-Stat-Signature: 8o7yrki58b5pqtki1wbprqiikzk7urbu
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1786340488-220186
-X-HE-Meta: U2FsdGVkX1+A6ZO10SoQ1q24aCQk6NOMvoUUQn0o7Zh9Q8YPqSRNhwxI9OIhNEFLVlMdXZ2mAMYsiC5SKk1s+tw9938MI+KUUU1Qf+/VsGnFmFCfUufAoLxe7lgLYoWAizx8msnqGC36/U4u6giVSUCZGh//q5TSY8iAaYfE99wqGequVr63qeKnVpBMoXC9M0wbFtekO61sY51AUbutuwu7IpL623fg797D6x0FPucJ61O9XXJS+SRAfFfmIm+YYx+PpbQMr86eIee39pyNTib/luma195EGlTs9V8E1HlIqKTIwQL8ZeqY9QPBKmhNQ3ucMxBYfCnMveEjJrnwE34lwkCUzYVdxe3S3kbS+F30+W5a+CUohGcJexSjsdJZBzsgBEonIb1opFgBxS0QZUhn+BIYx3w2h7OLKHXbsZB4Us0OFKTbqwbVM+uHOXYntvXcgFPEZoX8XMZTwcjiSzLR1GhVbCY5f9KtZRuia6JAsVO1e4UkOK1IJyB9Izuv0OrG9BwzjG4ACCgQvED3XEEaRKHfGn0T3KqqSCJ2vwJlIuzPNRQr0wSVmwvzLy5FZPazPuMwhxrhN6NIdIIc5ta314faDWSgITl/FIvxAkR4nFcEj5LtEki7D+Rk4aEdrB4/yWkmUnswD230VMWiP62m+G6YkpL0UjOalJNInSsR3P91iQKyBfMlSzfW4/4RWfO71HeYe8ezSoQxagL0vPj6wDaRNGpA7TDioPr/BbRAQ8M3LptcSHhSCT2xC0t18pGErjhVXxUEIvkU1vK1TdGP4f2/akTSIcTdsyQw6Fn6p8aZXohfOch38h5AmMOugstwA9pibQKuXpmkxp28nKNalGTuoFUtyDFjpCnX8UJdLtH2dLn+1BayynmkvxBzbFlpuRHkeHqU/Umh5VU59jaK9fmc4z6+zf+ngI4x96wFgPCXIwJexDGIOyT5E+N70oLYCs+UaqJii9ZL1pD
- VyQ02TEa
- vhS7wQGcY+1g2z8yIQHRmxRyIs7qMV2xhF8408MGWeNle/oSHkuCEHVmmgWhMXlwWDy1LiVEduN7K+Ei26eohdapKj9XSjH+ReiXp
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B32B240002
+X-Stat-Signature: 3sm7tfky6wwp4mxgc3dqi7yajcw9qnai
+X-HE-Tag: 1786340640-626545
+X-HE-Meta: U2FsdGVkX19PEWZCwyUIO9JU8N2dQ15tx89u4F1/2p4WdVVMxw/IZsKQbV3ft0Ytw0s5zugv0D97JaX/X9pJBOZW33eejA0YNNwZSpAMx3VRjw4BIcJGSoaW3tnQB64KqVdGEn1Y0obi79ruLWlO6rPS8HQy6xX4nyO1LHLqhPsFh3y9VLdIJZwn70sCd2qqYUcEbeZqnm48SnxxW76yRfPp58fxWnpR+XNCBK/ayyKE6gqEnLfpAsB2yFxu7PVkRSmpvuVEMu1mBSq2yqV5CjX8qYyP7ngHrZUB3gYD/F3Ubv0S/bRW6offpE5SKPUfqBjDJFADb8D56VhKhUS0j9HoTE0I1AjDsRsbgbxJufOQv8AoB/nlU31xkGbsn1+JmZkjoLprEXbvPH9iBgJ9HanfKcvAB0B0wpCw52PuVh0rq80Suxxe6f+rmi7TNQUb6Uq2Fx0czFFFUojo0/igko4KrR2/ADeUf7YvYUoZeJ0r4xvG4nFGZG1iB+40nqbpKS83kixcUbIJx8pXVn8mbjpgUyRNTID9KdW/dBBcTnd5pg8MPZVfkTmH7QkZ6rl9tM5KflyIk+f+mpBR+tvfdODLPtlUiFOHeNgbWD9JCb+Epy1SkSsbzK0IDgLgjbcu6+b5Mutf4bItY+XkspOkDJROqWjxl6kVRVIn6tqRfx5gvAcWoUBgMOyHmjK+bz4sIW5LU1+dxgiLJOTi6Whxq7mu6NQ6WGjkZw6SBsDPJ4FYTHlA39cuOGZp3DwFvcVtRRTqjW4T1rck0Rc8YQefNNtzP25oYHIZm40kkfB5Sd9GHCP72ZFB+fHttvDd1utX/0WxKigkF9Pf8DteTuH4n2WUfM9R4WLJb+pyE7RhLJN0g1B6M4ZCq+3/BJ5k5xZsumY+z2XGt0Y0Lnp9XnM9LGtyOFQwGL+W1aQAxYFwi7zIyE7wi14JXxMQz5vdbAkvoTtZOmmL8H8TjlQlkds
+ r/GymkaH
+ z37SKAKC0Cd1IA+dTFn7D0FNZOFY4HCw8rXz9mZZ7jUMK6lfA7Zm3f1FixptKBPigbLyp5JayRdg0C7UD1BajP6pJqQwH6Exqb4PeAoaUfgMWoqEt5rByUUkoFvqZrd9fpbeDiKtws9e3HGRM0Pbj370nax4RA44ThKsAh4abHdc/93ci6ZljJjavbz9Uz7m/JiBxY2pE5A70jZWoY+McRjwD1kk1UndCEGQl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,30 +105,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> > index ef1ea11981a7..2697d50d07f4 100644
+> > --- a/tools/testing/selftests/mm/vm_util.c
+> > +++ b/tools/testing/selftests/mm/vm_util.c
+> > @@ -755,7 +755,7 @@ unsigned long read_num(const char *path)
+> >  {
+> >  	char buf[21];
+> >  
+> > -	if (read_file(path, buf, sizeof(buf)) < 0)
+> > +	if (!read_file(path, buf, sizeof(buf)))
+> >  		ksft_exit_fail_perror("read_file()");
+> >  
+> >  	return strtoul(buf, NULL, 10);
+> 
+> 
+> Yeah, that looks correct. Do we have Fixes: tags?
+> 
+> I think it was already wrong in read_num() in
+> 
+> 
+> commit e0c13f9761df8f97cf5e81495d12ecbc4075684a
+> Author: Kiryl Shutsemau <kas@kernel.org>
+> Date:   Wed Jun 3 16:00:06 2020 -0700
+> 
+>     khugepaged: add self test
+> 
+> 
+> where we had
+> 
+> +       ret = read_file(path, buf, sizeof(buf));
+> +       if (ret < 0) {
+> +               perror("read_file(read_num)");
+> +               exit(EXIT_FAILURE);
+> +       }
+> 
+> 
+> So likely
+> 
+> Fixes: e0c13f9761df ("khugepaged: add self test")
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-On 8/10/26 1:14 PM, Doehyun Baek wrote:
-> Hi all,
->
-> A gentle ping on this series. It is still awaiting review.
->
-> If the current scope is too broad, I can split the series or reduce 
-> its scope.
-> Conversely, I can expand it to cover additional DAMON documentation if 
-> that would be preferable.
+Thank you for the review and tracking down the original commit.
+I will include the Fixes tag you mentioned in the next patch revision.
 
-
-This scope is actually a little broad, but still fine. The real problem 
-is, this patch series is not in my todo list.
-
-Now it is, and I will post my review quickly.
-
-Dongliang Mu
-
-
->
-> Please let me know how you would like me to proceed.
->
-> Thanks,
-> Doehyun
-
+Best regards,
+Hongfu
 
