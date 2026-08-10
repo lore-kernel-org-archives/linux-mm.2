@@ -4,145 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C5C9C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12C4FC5AC82
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 03:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B5946B007B; Sun,  9 Aug 2026 23:36:26 -0400 (EDT)
+	id 0346F6B008A; Sun,  9 Aug 2026 23:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1667F6B008A; Sun,  9 Aug 2026 23:36:26 -0400 (EDT)
+	id F000A6B008C; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055966B008C; Sun,  9 Aug 2026 23:36:26 -0400 (EDT)
+	id DEF026B0092; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5E466B007B
-	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:36:25 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9D27A2893
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:36:23 +0000 (UTC)
-X-FDA: 85083947046.01.E87BF17
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 012B7100005
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:36:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EYDavEcJ;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786332982;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B2A686B008A
+	for <linux-mm@kvack.org>; Sun,  9 Aug 2026 23:38:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45C5B16065E
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:38:58 +0000 (UTC)
+X-FDA: 85083953556.26.A54B9B9
+Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 101181A0002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:38:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=f+qCUT7F;
+	spf=pass (imf19.hostedemail.com: domain of linyongting@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786333136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yLQJq5G+7lEO8q36b2mv1yMCYoZ1x/NgyUsbF06t2iY=;
-	b=2Ng8MUFIhnS72WaaoWxAhQ0lcWmwkcbwe4imK1FuIxdsG6+ZLkE73gI0AJ0uUHeXNITnDo
-	zU8FPDtnZxjlissBWi5bYpcz3jRHlvnplM2ivXmi+8RRfwJyPzMw5L4EtnEJ4dpP7EMNE+
-	au579vCbFP1ZHFiG3RJHjGLV3WY2SLk=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1786332982;
-	b=3NlQBuEyQgR3tIospb3Vp9BxJS9N3dDVtwLMtQEnkR/KfDWTSrupkqzz2r7ghvXodqQbJl
-	sbfY8+UQaQA80YtCGvH9D8OYkY3LjKWXOg+88d/n62Ubj5tkFj1s6cqC52clvPS21g9GGF
-	L9BoheEpgXmivCAgnmxlQr47gq4QM94=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EYDavEcJ;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c15e2dab83eso199503166b.1
-        for <linux-mm@kvack.org>; Sun, 09 Aug 2026 20:36:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786332980; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZOIG720A7xhhs2iHB+ZhuNpG9L0yS3nOZgiXS/xEFHkiyjScyB+6KREbXLKp7dQJfA
-         9+epQMAfMEVs9ulQNJFYpLEWB7zixjFcXFr/ft41Yf6B7/qDEH/p4cNg876Tvj4cXidU
-         Lwfputdf1RPCgHOaAEy9KhWXBde77wE5/kE6kty+i6FSl5YRGGvWw/7QIq59pWwHtVq0
-         o/FbyGvK86Edjgd4qgIDsoiOHZp9B90sMIC0iio1d16naD7AXB1epxNTeOTNPAhcVodz
-         snK2drNrGhCiaSuIqvQkO9e7Fjg7YXQjrJsGWXMjzeCDzStlv00E7dtYJ2+pR/HFBxnJ
-         XycA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yLQJq5G+7lEO8q36b2mv1yMCYoZ1x/NgyUsbF06t2iY=;
-        fh=3eK/jkbZOoHc15VoUJwOGUryFf50diLm6hH5FkYkqeM=;
-        b=e4DAaDL/PHp7T96q4LCg1i1F0RrKeOZLq//gU5Zi92M/BFxLIcjAzX/hsN/ejzP+Su
-         y8OD0aZ3R4SpQQCBvVIfY6K2l9Va8Ua2HChP5hf6mx40PPVcpT8R0uFTZEKrU8esHwXD
-         RMWhBBaIpInfbH0FhVRHFWr9nw4BDfGDQG6j5IPzcvaVrnsKXR7o1MG4g4VisBMCIDV1
-         C9p5D+Vw0ewvFGpRzvWXq8vG5iiqFOGiRfUb/JZ+HBXTwvNb+FwN3sS2ru4uLypUlEjm
-         +2Tfm3AWml7QaNbSQ3zzBZLVOOiH3gtUJVFejZzQDQoamunAXGHrcMDsHgVE053YH2oA
-         IVYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786332980; x=1786937780; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yLQJq5G+7lEO8q36b2mv1yMCYoZ1x/NgyUsbF06t2iY=;
-        b=EYDavEcJD23OKFztTLFD3gXM1n0QUSNmcl2YauMczi2H27qB6EcyCAHhzLTcSNde7i
-         Xo4Y0DRZpvKQFhXCpZCGPt9K7Z928UXvOmbXYUm0FKQpSQhTAjP2SmHkjsHWrdvfIcu0
-         B1hXPJGi0OSi5qKyVPZc/UdOETwY+WPfELRMT5PMLW6dcoGoEzOGcGgK9wMkCaiEmE8B
-         IPoW77OgetWZSPAO5PuEISimafq0VI2lzIvQbYIDTKLv8ql2u6qydkiXtkLE5bBXCEaY
-         UAk1GIDRYk41hL5316Gd1cmePZ2djYUohAjGXEQefnJ5zLOlSsoLxYmavgV7HLAP07kZ
-         1TcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786332980; x=1786937780;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yLQJq5G+7lEO8q36b2mv1yMCYoZ1x/NgyUsbF06t2iY=;
-        b=amFdhRThEhsCj9EWtRl1I9lXnZ+JIol2ex7xKYM45oCHM0TTYIP7dA+J6jEu/ggUeb
-         qVYJM3GNb0Q+83IpxEAe/TrDatVwLMgzH92PllmMzR0UgVI7/EZG6hXSYVqgu1TGGCgk
-         DSpXvBje0gvkX1LevQJXB2Ns8HmMwRBm8+s0aO3Ld5q2Qo3erpOfYCBjanDw0H1+4Kr7
-         jMJiElY/h/Vs/KHImSfM4gBaXfzV7T8zh/EDYvwC++iEgQMTsOiq+c8YA2FaiGvu90My
-         4+fLKJLk3ZUPJQZ3cwbGEM0jsvgBydHPrS83JvNkvPRHKMm58joGM9T8PwYE2JLMfuy2
-         TSbQ==
-X-Gm-Message-State: AOJu0YwnDY3zRar69qPDeikKKkLN5iNdsLBDljxZSJnXaHDNN4Y9FnyC
-	gIkiP2pTS3eVbaf3iZsS4zzPzdg1x8sXCEEtp+7R0IWNJuZxKKyNw8Bbxs5xrRv9fHQD8vsnYVX
-	ymbiov8pof8YTYGZFM5NEaGMRi6Pxm1o=
-X-Gm-Gg: AR+sD11oZUBS1vxHpUVZv5VQvvOsErzScsED90oJVvYVW35ikxFQOUtrRQ9B9Wl9A/s
-	W1hhg93irczFRtQJCVY+s3vieH3WvgVBaKUJJ/0j8ZWEpElllDALoh3MyYWpf12nXieFWG33vOn
-	K98DReWw8dDea2F4jF/wX2NQ/vHWgBeXtm2dBee3yBmcCFHxxCfE9ouP7BXmaBXu1cwOFD9juXP
-	Xx1/h0DF03O7f+Y6/brfDS0MSAac6I3JZjI4XOwyLrCRfT1W/RcxZAmZI50zmMiKxm1MMpNVEic
-	8/756SMu7mWnEDSMoUlmyMJnvHlcloj6RmA6/ephv/2nfK+EzGx5U/zhqTzXwz2k1J0/2y1Vv2z
-	6Cg==
-X-Received: by 2002:a17:907:d409:b0:c16:2139:dae4 with SMTP id
- a640c23a62f3a-c207eb4f778mr1046123466b.6.1786332980141; Sun, 09 Aug 2026
- 20:36:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260808-swap-thp-cleanup-v1-0-689939a7ccc3@tencent.com>
- <20260808-swap-thp-cleanup-v1-5-689939a7ccc3@tencent.com> <DKK1E8OEGPDZ.3NO34RHQEGIRJ@nvidia.com>
-In-Reply-To: <DKK1E8OEGPDZ.3NO34RHQEGIRJ@nvidia.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 10 Aug 2026 11:35:43 +0800
-X-Gm-Features: AUfX_mzTrzJ0lwFbbSxNsYhM_xsUsWMc2wdF_J8gimKxTXTperVV-iRWiRP6JBM
-Message-ID: <CAMgjq7D=o3MMEroOU-RxsQrjX2DzJhDdi0YcK=wEz9c8yE=wrQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 05/13] mm/huge_memory: consolidate irq and locking for
- folio split
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 012B7100005
-X-Stat-Signature: r6p1wnr5pccrrsmue1yrrad5etdhgckc
+	bh=korNoNZfAXzZjyOdMvauYaWtvPC4odCOcA6M74LpPBw=;
+	b=Fu1oTUkqUEQhP7Zw4InkHsV9FGuA8sEoqksp1AMafgqMMFquBMfTgWRnJ8UlEVZUVesZkT
+	7Yfp2VEyZElFGmhDMkVmi0u8zqKAFQ1GnTip4d73RzmuJ5rQWA4pdAkcabeYLIt03iFknU
+	o3UhtYb4M0Mc3bi0273QwLPxWTk7qjA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=f+qCUT7F;
+	spf=pass (imf19.hostedemail.com: domain of linyongting@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786333136;
+	b=WK6/utnOEPwSgvjB/F5aWjy/Cp1VPknNebsj+iYJ03VWePlNsHqeq84m0lxw9aXCbK1GAH
+	UhEpy4otnXJkVnRGUZf4XQtkVkY7DHXATTvpRG91gSsRBq52GBacAlZIcyz9++Lr2JOyAn
+	auRPv05gXQCIPZ8kFY1Q5yAv1+o2LMs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1786333130; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=korNoNZfAXzZjyOdMvauYaWtvPC4odCOcA6M74LpPBw=;
+ b=f+qCUT7FHFxHtG8joA+8HtCL3q+o2LmvekGvQd6dtZTHm9XV5UMSCLjQDnRQ00FiedN8dw
+ g2l3dxgudkZFwfqVMH8Z70eLd4GK/BTA3zYnWT8z0LhdZdaCx+PTxIb0ha52r5+mlIEZbN
+ oiokQNv88Lla2jc+f6Tu9GVEj4ihKefJkoB7NRtPf/ot8Dmi4jetKVpZI/rCFOno4KTk7d
+ 01FfhSfyFN6pO5w2/56c1Ge0945XlXUOERtje0YgLb+4wTEA2Qeb/gKzQgA0vVZgE/hhtq
+ n1d38a7Q9CT8wukSz0uN5FgH0MYoBWocb/sW+3fTLgeBGx9UUMP5YvXmG81BBg==
+Cc: <Jonathan.Cameron@huawei.com>, <akpm@linux-foundation.org>, 
+	<alok.rathore@samsung.com>, <balbirs@nvidia.com>, <bharata@amd.com>, 
+	<byungchul@sk.com>, <dave.hansen@intel.com>, <dave@stgolabs.net>, 
+	<david@kernel.org>, <donettom@linux.ibm.com>, <gourry@gourry.net>, 
+	<joshua.hahnjy@gmail.com>, <kinseyho@google.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <nifan.cxl@gmail.com>, 
+	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>, 
+	<rientjes@google.com>, <shivankg@amd.com>, <sj@kernel.org>, 
+	<weixugc@google.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, 
+	<ying.huang@linux.alibaba.com>, <yuanchu@google.com>, <ziy@nvidia.com>
+From: "Yongting Lin" <linyongting@bytedance.com>
+Date: Mon, 10 Aug 2026 11:38:14 +0800
+X-Lms-Return-Path: <lba+26a7947c8+8188ca+kvack.org+linyongting@bytedance.com>
+In-Reply-To: <amjz7kIDuZH6gBx9@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Message-Id: <20260810033814.83951-1-linyongting@bytedance.com>
+Mime-Version: 1.0
+X-Original-From: Yongting Lin <linyongting@bytedance.com>
+X-Mailer: git-send-email 2.50.1
+References: <amjz7kIDuZH6gBx9@casper.infradead.org>
+To: <willy@infradead.org>
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1786332981-780415
-X-HE-Meta: U2FsdGVkX1+Kt3fPYabYDoUiDHjV6r8UXE3TkATaw7H1243hEoXwDDT6nG/qS8LrSjDyzlerlQ+D72R9/myDRjGbnj8F4IxWoOKkwwYII+dk8nq0KI1I/U/v6uTXCaOVlgwe/g80ncBAylh3Ab1zEBvzFC54b14cQZJmeqW1NCS9WosQqK2Am3dJlsAOpe5gMyg8DGgpBlqrqy81whpt5MI6f4guLVSvccK/VVX8q0nY0+ofm9g4eXy03XdQQZ/gEXnujJkq1sT2IvMId8PyegcJ9YOkEOnZfmQNbBnWLHjoV3Ii1dwhWWVGQKSy4hGshKdQQVihimuVpJGm8CChF/Xt9fLPZsltIAQno6+djYgmVs89Kfwzchsc2aRKXxZT8khs6VUOg3rbhMu7eNrpLmqkXzGwH+VPDonjbQRCsgYPA8DQCqU0hsBithAs3owZeU+MW46pQxXMcTECh7uzuxMEHjc9E9kcS8HmTl6Y+1TSFWbgIzRwzotjORN7UKwTetNAh5OHGPTQbrxijrE33KeQcxwUvNl119uuoF+lS52Xw4wF5LkOxam9B1tFMC5DpDP4vq+kHMaHFy9/DiGm4zuxUohAH45gWXN1oBRVknsZOgMuBkparC1xObKlzwgngH2OfNytyqcdanSqHypPaEvm4OU34D68XOJlTu+3u8eA+KZAQWNxbSghaZesyo+2fCKVjdUJ0IHzRHPqd/r/DZHt1yOdKT8Qx9PpCSOwuc1gDdcDBvyHv9Hsqinf/pnY2Xwld7AYDp2TSl+Ot8/ni+AbydKrCas3DCDAkNB4OvqicF3fuxR8Oh5P+/h4QVUX6DZ+foiCKZaDBgA2IAPEtg1tcScV1h21GlPmhyVhOWzZg7ItyWQu8NY5Cj0c+ryaDjX1mTBHZ/HaLqhtHB8nOPivpvA01hCV9uuvOmB47+S/rokmQIJAeV5pLZIzhaXFF0rO2/41zVr2wQHLN5j
- /3Qhbp+v
- vOEH0lxxqxRECZqpiL6And8JFVyPIkNok8XEAc+G9+mLVexLZF/a+Qrs5NmGilWnbBReZIh46zUiJh7A/sl/oPqCvyLiGM5Uzn9v94CjFVPM8l9SemU/8ZJz4t8ecoJI1kTYcSRsf2a9Dz5V9kxPa8ELdWOwZVYkE9ouDQ0V0qPJp/puPb+euytKJalWUTbe9dM5QdU7UtCi3dOMVBE8n1CmeLyQETmrvijzLK933bgYrIFWqd/sU/SgeHC2VQ+XwGM5MptQEyNx3nWHzMU8Kq2DWBTdu78I/Hv3Vwh26vr6On8Gh17jpkfPkrqkaQNdAaVThizQlaG6mnb4vO+rhXHaO0uk9YNKE9bhA8kBsXPntC59TXNfY6ZShCTK7WqrbNT07wYygyZAEaNAFA4YWaFGwoPQkX9bpmipz9DZxpLy4Vkr5d9WjinjfPzJ0T0SfDj+z73YgQrmGOpaltgvcWgbC+CnNgPo0bHIADiiUbCHM9CAz5m+scOWE7A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 101181A0002
+X-Stat-Signature: ienn5et58qdjxauakimksiw94qzi9kkf
+X-HE-Tag: 1786333135-337443
+X-HE-Meta: U2FsdGVkX1/TDLlME5Sax2sTz6AdZF5kmlW8EiPlbUONF0dTGdAvQ7QRo3UIhPewFMs6xEpKCegqkq0hc2olR6TXDbiInMq00u2c+HVW5uuP9ShROw7qJJzGADuvaNGXXTaaXNIYHIIYb7L68B2NxTXjoTND1dkHO+5eeVyBvkngpqR/oW67kMN+Jwv4h6myzxAtCnlBVG85gu7PpzflzZkGZvR2rehfwq/oN4NjVugoOxsZHvxqhuH1bKLA7/3w38SPF7RULSZU+d1aD8VyVQ8C9ZGRm5PRcwppyDBwQbsWrS81bQB98ZNy2qmWS941xxrr5EKYdeGyOj8fPTteq/ZxWZZ3eGLYHuDVGrqOMiABiJ5OYTxaQEPxUMVVoWB/aXmS+1fiU0NGylHvsijlaSInNsHv4toGge+u7QNI0g8X6e8x/hMJCGzZkhgL4hLYk/jDFLReIwI58MGB84GaMs7/3aPYB+cn/8bxq5KZAs9hxMY06xoxKzb1KpYUcbuXCI/z/PV8pvwBXEykPNdlxWPtixwzOj6BUs0QfxDv2yIK50wRzG1wffyx6Xyi9yzJXer/dG0MkD83JG5X0/JaAnbydgr4FAlnCu2W91DRJG1v6dTwVGBn7zVy6LOXHsP9MNou6AcUFQYeJZgjZlXj/R3RLzsoVSnzN9yabwGHGKxVXD+wdKvhHGODF8VWwxw7usjLx/M+PwaLLJfg1FopwuTX5lQK/zLoftJVzFMm81md7Gsw4tHrfQoCeoQBpX5s//ulgyFH5rMnDmvbtb55qQtadNFbKxZ9KLx2m5mQZ5DslOmSliMMkNAkeQyW5iY52z2uZ3DXjyPEva7eEXnMVvcKs6DHVJnb9xqvv12+9UF397mUIXJ5I6w/QtsgMdrSHwgSaiTyQQqCwvAQQGMvhEJKARw6mTpzKRpgZ06Q0YgWsOXThdBhQlmnt6QPLIrmlpCC++1h+YCnh+3nww7
+ /1HdhHjQ
+ dEdx5Ab28rXQUFiYDXFJlB+gBhRD0M6oYdxdXTSeDYEalkQYGLAihnV20C2a5mJV+uibkG/GXU2VbSLK9yPCtbNQ+Ne0+SHGy1t35b9YsXysauN8wO2DeN9tF20f9MLMjtGVybJJowm8+fDOwB6PUhBv5m65fTScDnK35NppBK1Nl4ZxRl46wgn93kK+y+YbpDJWjX+TpwnYByRiBBCLr8LVlO2N77OtIjbIXBAZ1TARRKNGk5CeyF0ceLo/kWLAfyCPD1zpwyAVwL4wtiyrKbosFXbLUP+7nSvwgathMOAJjdKMN8HjqTBr3/Pv8QQCJLoC/5m0iobRzooTPVUfpBxxQ6yozn7MQBs1sO3RqzGsdh5hlUUeXUBG3hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,61 +98,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 9, 2026 at 9:54=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+On Tue, Jul 28, 2026 at 07:24:46PM +0100, Matthew Wilcox wrote:
+> On Tue, Jul 28, 2026 at 11:14:01AM -0700, Andrew Morton wrote:
+> > On Tue, 28 Jul 2026 11:13:48 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> > 
+> > > This patchset introduces pghot, a subsystem for hot page tracking and
+> > > promotion.
+> > 
+> > Can DAMON be used to do this sort of thing adequately?
+> > 
+> > Thanks, I'll await review input on this.
+> 
+> I don't think we should do this.  I don't think it's a use-case that
+> customers actually want; I think it's something CPU vendors think their
+> customers want.  I've said this repeatedly over the months this patchset
+> has been in development.  I say no.
 >
-> On Fri Aug 7, 2026 at 5:17 PM EDT, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Let each split helper handle its own locking instead of relying on
-> > the caller, so both paths follow the same convention and __folio_split(=
-)
-> > can drop its local irq handling and fail label, preparing for further
-> > cleanup.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  mm/huge_memory.c | 52 ++++++++++++++++++++++++------------------------=
-----
-> >  1 file changed, 24 insertions(+), 28 deletions(-)
-> >
->
-> <snip>
->
-> anon part is not changed.
 
-Right, I can mention this in commit message.
+From our perspective, this is not merely a hypothetical use case. We
+are actively developing and evaluating CXL tiered-memory systems, and
+expect promoting CXL-resident pages that become hot back to DRAM to be
+a practical requirement.
 
->
-> > @@ -4035,8 +4039,21 @@ static int __folio_freeze_split_unmapped_file(st=
-ruct folio *folio, unsigned int
-> >       struct lruvec *lruvec;
-> >       int ret;
-> >
-> > -     if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
-> > -             return -EAGAIN;
-> > +     xas_lock_irq(xas);
->
-> local_irq_disable() + xas_lock() is replaced by xas_lock_irq(). Are they
-> equivalent? Codex told me that the latter no longer prevents preemption
-> on RT kernel and can lengthen folio split process if it is preempted. It
-> is worth spell out in the commit message after you verify it.
+NUMA balancing mode 2 already provides such a promotion path. What we
+are looking for is a better hot-page detection mechanism than NUMA hint
+faults. AMD IBS is an interesting option, but the v8 results do not yet
+show a clear performance advantage over hint faults.
 
-It's a typical RT tradeoff, but I think it's actually an improvement?
-The old behavior was an actual RT anti-pattern, RT cares more about
-latency. I also traced other freeze & filemap update user, most are
-using xas_lock_irq, and that seems better. I'll mention this in commit
-message.
+IBS is not the only possible hardware source. CXL 3.2 defines CHMU for
+device-side hotness monitoring, and CHMU has also been discussed in the
+DAMON and CXL hotness-monitoring discussions.
 
-> > +
-> > +     /*
-> > +      * Check if the folio is present in page cache.
-> > +      * We assume all tail are present too, if folio is there.
-> > +      */
->
-> xas_reset() is gone here. It seems to be a no-op, since xas is not
-> walked yet. But it is better to mention it in the commit message.
+CHMU does not normally provide the CPU NUMA node that generated an
+access, which complicates target-node selection on multi-socket systems.
+However, single-socket systems are also common across data-center CPU
+generations. On such systems, the missing requester NUMA node is much
+less of a limitation.
 
-Will do.
+This suggests that a configurable framework capable of consuming
+different hotness sources, depending on the platform topology and
+available hardware, would be useful.
 
-Thanks for the review!
+We would also be interested in helping test and compare the different
+approaches as implementations become available.
+
+Thanks,
+Yongting Lin
 
