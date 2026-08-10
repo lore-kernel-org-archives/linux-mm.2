@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0571FC5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 22:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33E3EC5B569
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 23:05:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46C056B007B; Mon, 10 Aug 2026 18:58:26 -0400 (EDT)
+	id AB9016B007B; Mon, 10 Aug 2026 19:05:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C8A6B008A; Mon, 10 Aug 2026 18:58:26 -0400 (EDT)
+	id A6F4B6B008A; Mon, 10 Aug 2026 19:05:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B8E6B008C; Mon, 10 Aug 2026 18:58:26 -0400 (EDT)
+	id 980906B008C; Mon, 10 Aug 2026 19:05:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BF246B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:58:26 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08D53A02BF
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:58:24 +0000 (UTC)
-X-FDA: 85086875328.26.FD1F017
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 51297C0003
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:58:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LMIreBZw;
-	spf=pass (imf10.hostedemail.com: domain of 3jFd6agYKCH8vhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3jFd6agYKCH8vhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786402702;
-	b=m8fVfh4BNI2qSxJz4oSXyZtSwozCVJUSP3rdkUPNij7VV0cYLXn0SVw9Insog7GWlHEFOq
-	V/ocCp7KR14q4GBB7tJ6e52TAg18NnIV9VyoMc8IACE4SnEayJcDyRyf4U3+HUCXajBHAG
-	9JlqOBCoqmnp2fLv9u9Fuh6e0xQjZPw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LMIreBZw;
-	spf=pass (imf10.hostedemail.com: domain of 3jFd6agYKCH8vhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3jFd6agYKCH8vhdqmfjrrjoh.frpolqx0-ppnydfn.ruj@flex--seanjc.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 713766B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 19:05:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E60C21A02E5
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:05:24 +0000 (UTC)
+X-FDA: 85086892968.04.9F61A8C
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3611C2000D
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 23:05:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Uv1VC2HL;
+	spf=pass (imf03.hostedemail.com: domain of 3MVl6agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3MVl6agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786402702;
+	s=arc-20220608; t=1786403123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Mn9WKaRVsVTpGaOSKTBrlWB9M3O9fuL04U/nAsMmiI=;
-	b=4XlpjNrGTpivP6/ss8orZCz2waYooP/LrPFyogGgT8bbrYv/5/sqcW9TsGlRlXsKZ8TEmV
-	zakGpdgUeFPUIumXliLJm64Nxc4VUEN653SgznIVEjg7hTr5OXy7ki0b5tFtbx7ucJlqYp
-	T7IYfjrpOGBA6TiNavCJSIQWprAyBGM=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f283baf1fso2439096a91.3
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 15:58:22 -0700 (PDT)
+	bh=/9OrpqxZWhRM/HFUiR8JGN523y//wB+NGc5onZ0jOJQ=;
+	b=Mk8PQw2mRbJWDTJJ7NLiUtwFBvSUO9D8vizTqYQzQzJ6esxPonqcFfTvnQdE1p9GfMoc6y
+	lGaHm2MxcbN+9cGXONVr11NG7tu1OCxfbsS8TEpy5584qucdJYzK3603cRXqbilCNl49ZK
+	WfBoGAa8iqcc10kgt4ltU6Ee5QYn13Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786403123;
+	b=hVGDdcqksFiUh7LFhAaLGrp7QhnAuCn01JkATstiJ4QAlrjXDFPah3qBjd6iTQX8SHS+xk
+	MWDJeMBQhpicZGKC183G6ylfLjp7ySpBZPW+u4P4EiyU8WHPTpIfpGBS1DDGckB22nhDXI
+	Hr1Jfs0XbAw3Rw85UWYoY7+CXefi+7M=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Uv1VC2HL;
+	spf=pass (imf03.hostedemail.com: domain of 3MVl6agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3MVl6agYKCCgWIERNGKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84857446424so4157837b3a.1
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:05:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786402701; x=1787007501; darn=kvack.org;
+        d=google.com; s=20251104; t=1786403122; x=1787007922; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2Mn9WKaRVsVTpGaOSKTBrlWB9M3O9fuL04U/nAsMmiI=;
-        b=LMIreBZwOWB6/JVUpK4FsCWeyXSYcWbYptN8M6+zb/9tlraHFLugmysUnlRWix59bw
-         DhsOmL+XJiGeR/qEZaMNOn+OaiwllPD0izlIvwURka5H1Nl4JVdO1xyfXsHINLW6a9PC
-         ko/mYPI1+eA3mfIdIT6i5bwwYH1oRtQbGuzB6ttMRymupyQVR1x3ZcRy2VNDfeE/g2Kk
-         bHsI2fe4wBRKCwUFErhT2ULFS6owK8xsKXtOFyRBDY8RXuugXFS7speWozV1Q53gB1vV
-         stBbFlTK9xbkVFFulrw+3PbHO0KG0CbyLFWzMCMQzrELWVdtJzzHTob96q5Wd1m2huxc
-         V+yA==
+        bh=/9OrpqxZWhRM/HFUiR8JGN523y//wB+NGc5onZ0jOJQ=;
+        b=Uv1VC2HLVLpU/hX6MUfwFTDjzQVVpI5rjweSKy0I6RKJQEdJG/hK8CCvl984Ndj6rj
+         kUbQ7mW0Tr4ZDKO3s9x5l50jaya5BcoJ34MNk/d0Mw95HVK7MQEJCo4tmBJZoHCEJQIN
+         FqCnlonCqfgQskHieS6jNIrf0hrf09WAv6vmwtNLV4NkKobjQRL8Gg4pMRSyRFgbGhXU
+         3gN5XOKAOP3YVVR3nPlm+qlBPHz/gvg6L2YAtdFoyts37K4a35nh8rPIS0NmFna1pSS1
+         E2TvsgVEXOObyp0azZr2tBg3DJOiJQlqWJXuxssEMTZQylpa/bxXqz1s/vzrwSlx7JPt
+         ryvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786402701; x=1787007501;
+        d=1e100.net; s=20251104; t=1786403122; x=1787007922;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2Mn9WKaRVsVTpGaOSKTBrlWB9M3O9fuL04U/nAsMmiI=;
-        b=WbhfHb3xZ7+UcQYqwQtX3vWtPh8Vs0F4fxN5MhE5MXkB2i0RF6JuqVW4aE6QNu/6mB
-         YcxS5mGbDz1y0LVMLGxb+L2ptqEft7gDwu67rEcoOXylgsHhiuJLXTBH/juHhcWAfw5Z
-         J6IpHXcP8EoqLG9M4P1An1RpyCMjtAKVpUBAb6EIQxQ+TbvXVkr0j1639ML49si7MtUx
-         OCVL0zo3KwVO8KizP7FMIgdmnSBOmpBNW8uCThNYUphQ6FMUz9n7MefQM4QdDm4E482G
-         W4u701nTrocr7KIS1dMHjfaBHLddx2rapQfmUyY5CjHFqDwybQTw+Gfez4xumm974Ok2
-         iq2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqUs/EmPI0iNe9tXcMpflo7P1ia6R64qezuJ8gphlAbf7FmWoXaUJjIlg70k1iDZ6/0nT0mLcJ7hA==@kvack.org
-X-Gm-Message-State: AOJu0YyFUBl9rPqIMq8ZMTTvuPQ95wdMWwQn5Tt8CvUi6ILu5Y65USrK
-	o0yKdevcLlzgnbr3l5JydHnF3ekHbhNNLNjBKLnYLrqM/+0vHuqDJol5Ksbifl9kZY8+V3ECZGm
-	WqzGJpQ==
-X-Received: from pjse9.prod.google.com ([2002:a17:90a:77c9:b0:384:934b:9128])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:590e:b0:38e:6a44:671b
- with SMTP id 98e67ed59e1d1-3909d301d9cmr33802476a91.0.1786402700758; Mon, 10
- Aug 2026 15:58:20 -0700 (PDT)
-Date: Mon, 10 Aug 2026 15:58:20 -0700
-In-Reply-To: <20260728121138.1103610-2-tarunsahu@google.com>
+        bh=/9OrpqxZWhRM/HFUiR8JGN523y//wB+NGc5onZ0jOJQ=;
+        b=rcJv7kn8xO0HpRBd2rZG9BgrScqo40TyAap8EX/CNu8oPBehOEe4q2B/hgfPGMXR7x
+         DS811MoJwN1xe4g5UHZlelOPdsw0qBff87GRA3fY34dQbXkyxD2xAphORzqd7etWuReP
+         HalB2grDduN2suQBUNwQb532ki6oPscgZT01JaRMY5YFgOpw9XweSD81RNRh0Bb3C75C
+         s2PxtRvkGj0r2ejHl3bdf01EnPoVlVowMq4WKku9ALlYr+x3rt/qaLN9yysySN9qIwdW
+         n6k+uTdeU/YDxmTxJB0QFvIeQZnW9DUjVISbGAeTLAFexU2ucrcUH5c9XhotPZ9Z2v46
+         i+bw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrl5OEYCdRmwW4y+9xfe4fLrGyWf6oT6XprbO+JSix1P1DDxCxFmPUmZpXffYT2Erih7uEYlN4QYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwmNj5KDVgDjhDuVSv99Z39XTVgsgrkZdHf63pETHmWwwl2Oh1P
+	gwm9H4Gm3WulB/BT2Tclo5pNG85MmzG73ooD1opPqMaZisofoEykoFI9kUAlga9aRAL69NdtZ41
+	sKFWg/A==
+X-Received: from pfnv2.prod.google.com ([2002:aa7:8502:0:b0:847:7765:a4c3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:420c:b0:848:2f2c:b2c8
+ with SMTP id d2e1a72fcca58-84f9c95f809mr5850968b3a.24.1786403121703; Mon, 10
+ Aug 2026 16:05:21 -0700 (PDT)
+Date: Mon, 10 Aug 2026 16:05:21 -0700
+In-Reply-To: <20260728121138.1103610-3-tarunsahu@google.com>
 Mime-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-2-tarunsahu@google.com>
-Message-ID: <anpXjM_lg_UTpl0q@google.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-3-tarunsahu@google.com>
+Message-ID: <anpZMemVz5yC_WLo@google.com>
+Subject: Re: [PATCH v4 02/11] KVM: Introduce kvm_create_vm_file() helper
 From: Sean Christopherson <seanjc@google.com>
 To: Tarun Sahu <tarunsahu@google.com>
 Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
@@ -103,14 +103,14 @@ Cc: ackerleytng@google.com, fuad.tabba@linux.dev,
 	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
 	suzuki.poulose@arm.com
 Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 51297C0003
-X-Stat-Signature: 7ttm43ppmcufdofdgpq879gd4mamces7
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3611C2000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1786402702-174676
-X-HE-Meta: U2FsdGVkX19GOzq0oUR7/mwcENDw7QqdilMcAjIqG9xg2WsGvGgqxuQ+RVFu45vQX1+rUcXj5wjpIGR4aKqa1z1a5f+vPAIprXduVbB/XEf7BOlFPyx/PYVBvAacLHoDuxFB8wfOcWnPMBNUq79RVj7y2vTB4BvWFkBcmSsg173oQAQcog0UqA3/5vBv3gzTgo49dqdyEsGlYKrInH/H6EShfGGRJe9IE7R66ztfKXbKAWVffaErtLRFydD+lJValR26eJhBVVrrI2JB5uAV4vyHkRHeCGf1UR+2ai8oQSWfRNnYXb/r/EQM5pSiyu+6u4Cl2NTJ7IHl1bRh/7to/3w9jewbCv/5Qb8Az0GUZFZUL4T2XVrDMvRxCsLirVlVLOjhquXfuUNwcjrkMGIQBFkAjdrYJI+8lQy97PqMQCcnz13EZLmWKgl4O4HwEChyJIWxntNWAaTzNVWtQ6zaJV1+rN0dbBEV8fmYFwzY19qHkY2YEt8UFYnCqmELhGeNl2oT0lH8hmfHfKbxN6PNoXVa/xYRDSnHfLYwpdqCXNmaTBLpPHpz37HMCzoxj9LTNHoVbYacwqsbZPUoWIVNAczlT3ISyLieDBi969mdeTyR/SkYeSYlZgbfT1Z9vL1vtDiDj+d0x9ooHPUj9KLgHVoFW81PXRakbuPbKPd5URxVYxZX41FiGnYn03uflAfFD6ZLZPZp7NgGF7lMUo8x6Cd0jfiUJ940+ufQ0YnIfOVy32WuWJcLZe7gI/Ef8ou8RdSl/gYIGfRpo/K6aVivpfQgvEmazrVMYrGIn3MNJ0o88W3AsgFEMUC1BJxDPhRLjsU0kl2YEh0XXb/bZLh1RhTljAkbgxljcPf6ekvYMot7BCZ4eTGv6h3olSkgg/PvGJP44e149rJ2/OGMTsl4nNr/yrjs6XF+4yPFsxgUDjPyFRlzY7gDBD/DJ4L6EQbRjB0mt/j8jANH+LsKK2l
- +kA0RLZQ
- USlK9GBF9mtOPccb/t2cgMd3gHSMeKVfAoGHQr5dtBVpVMz/oxJMKMRKqX57di/7zzZUbMqEcoM3pwQYfOlr0cg3naj1Ss0NzsZuXvly2aucRAFXTviNE2AxXNVxuYJfaNHgKbSIllfxRUDijHdC/S6OFDIq/7ZSJaUuu9mFOVm7go0aHK35yW/91ZsoBRUkf5s5zBvBZ5wBwPcTC6s+Mw7/Sn4Le8JF2ZezoxDhUm0ypyxUvINKaVQNw14rGF42mp1O17NGmaz66/dlSFtNk4/PFhoiNIu/1WjDuJclhZdlFv8h71UvUAzl3gIxqnh4/dfcEBmKPWLO6IZpNBwiNWfbox4ltFQPDDYGxswh/enDQTRh2/V5tAscR61Jq1WQUQFziTJy0x2okNykwQK6L0oVTCuWUZ9MVS9P+J3gea7f58ir6y4D2uB78PaxDSAwHZr2bJ5HBcnPoa1UwBJzqBBOXNBqqBlvQXLsngbn0Iqo7V12yE9n1eA0XmtElLKnCncmq/XMDr1F0fyUdxf+0DdsAlJm9e5alg/6BWp3u4GZBNJ6ofOzhAOg7Qn+4obRpY8cpSHw6O0/RLe6V8FreC3iFABWo/iZhvIOZvnsxTr7LgHUk021z4QCwGNNplL7JkoH83RLS/7R4nP11n9MC8Q2xbBaO1kfiOUPvjulG0q/hFWc=
+X-Stat-Signature: dk7z1cfjwmy91pwd6ugjyx87u3baiabp
+X-HE-Tag: 1786403123-935015
+X-HE-Meta: U2FsdGVkX1/TyvmnFMRlZWkuowblfxXI/TRANgnahOpxgborzqv65UG6eKJEVKYuetEV+vHRU4t4q99lCoJfepvdE+8vkXCMg0hZcPVowk+cpohEWyQx2yBIN43qHr7xPlyx+7ZND3OX7Apuohr8ZBQAaN0xi1ZsHJUu1hSp5irfSHhZI7tCTHHnCBc45bclDDVtglF9fYXwGwURhB+5PIIoK1y81IxmKCyZQM8tDEBES0JLobq94NlGDQXBk0MYtUQJ4438EEd9sXb21noDpfPnjsZQfFkuck/mp6cEA+ZeNaIOT0RffwgVAMWmwMmP3nVAiYW213cq0XlDET2OWLK+w7ow5bN+WkLyQTXkGBGR+vOfAROt9X4VWvpD4aXIS4VPwZSjenyFqfrGWzc+kHSzw4cr92ZDaS4er38URKwT1cFMp5TwWz7ZT+vvCtbBKSLiwD3tVwpZpYeMAihxJaqZVERfFdDwviPSqEo02Xs0eIqfNtm35vYvtTMshUQEXKp/S6ZgxEFpOKax4iDWioOMgzcs5szuJ9JfSBTC3Nhnjuozksj+Z6jC1Bva1QHbkteRVMOmR5deicnkxWRNzYX4FgIqUDo6DrjnnfTQNnnA2X+F3iSSIGdejtSmiDkauqzBMd1IZwPFdGnLTldkzywR7WIoKcvlgjzhLQJyeWg8UttxETAaZ8SWK0qCifb7UkZ5PtAOmPPKlHYE6BJ+qXu7v4d4neocQr6GAkkyS1jBTHENvhtCNbnx6CcK2UoZtBqp//QURzfArYjvWcEMSTxrCjXmglzLYYz78rbX3e2Pz7bijDSQl/elm44pSkiNGYP84PNm4PVNnZAMOX2SkzdTzmir0x03T4mU5duP5HUQ0dV5epZQQoawLC/MidZ2ftglYg4+1kEnEBoHqWsuG3a+FfzOt1O+E6KOjCPEDTzEAHgN48OzzP+Is4bqghtR6hnDr5bx5lDPB415YjI
+ 7dWVEAG4
+ eF7uAinbNCespxKelBsHyTBE3CsHtu+k0FoXg03ySzy8ZLyHSKTbhV480YBGmgKzzOJL2TJdibe0cZ6bKMBf3yAdY1GTN2b0o8H7H246iJch4n3Li1DJZpMLGoIV6eTAlcl4ivKWXUm1ppb+GCesZaDzVGIK7By/S1L3arx28S0BqgOoI/uY2baXW2ASQH+QoRKBLNnJgOzk0a50XEOxd+z6EvfjbI8AMaTerb5ixJzmpaSUVyyUlACAq1yP2hekgUzX3+4W89id7CGQ9dHS3/Pdf2GmkPqzqelj/8EVMhanppYPqjjEu+muXDJKIxTPuBXfZTJf6ZrEW1TXauk5mf0M5XGGz+I6lfEFjIVdf5Zs7eKUQVCZD7CFEVpLJC5+JU9ZkgOejXvo6mmJc5sUFOA7+3ZEAgpiUoX3OsxaSWA3z4GTvuFQ4XZIkdO6yLRDG9Kl+0RHkJzE2k+vY8NBmFiHnDlnc5lBAsJJ+dejrQPXhB0bmPnYTXUslKf5ECtuhTEXBDoVxzs9YzBlIvmkOp9t8sNKR7C5uZCtDYXet8Fq7oW3WaqH0fapVMfpvM2j41l9PVGOJLumAa2dkh5N+GmhX9x3nWLG7AozNxm0wsQKi7Fpge1D3d1PS4C+0j+tlP8l4rU2j1VCQbuniz1p4hzMxEHE/bagbumbtM+KSmNts2Qc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,15 +119,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Tue, Jul 28, 2026, Tarun Sahu wrote:
-> Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
-> enables live update support for KVM guest_memfd files, enabling
-> guest_memfd-backed memory preservation across kernel upgrades.
-> 
-> Currently this support only guest_memfd files that are full-shared
-> (INIT_SHARED and no support for private_mem).
+> - Move ITOA_MAX_LEN to kvm_mm.h for reuse by upcoming kvm_luo code.
+> - Introduce kvm_create_vm_file() to wrap kvm_create_vm() and
+>   anon_inode_getfile(), providing a unified VM file creation API.
 
-Why?  Specifically, why do we need/want a separate Kconfig for guest_memfd
-liveupdate versus KVM liveupdate?  I can _maybe_ see a KVM-wide Kconfig, but
-even that seems like a stretch given that (AFAIK) hypervisors are the one and
-only use-case for liveupdate.
+As Ackerley pointed out, changelogs that are literally a list pretty much always
+needs to be split.
+
+These also need to explain *why*.  "providing a unified VM file creation API"
+isn't sufficient justification.  In general, all of these changelogs need to
+provide more of the "why"; I can figure out what the patches are doing easily
+enough, but in my speed read of the series, it's hard to figure out the "why".
 
