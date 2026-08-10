@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514C9C5AD7B
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67259C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 12:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 498046B0093; Mon, 10 Aug 2026 08:56:13 -0400 (EDT)
+	id 44C236B008C; Mon, 10 Aug 2026 08:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46F116B0095; Mon, 10 Aug 2026 08:56:13 -0400 (EDT)
+	id 424B26B0096; Mon, 10 Aug 2026 08:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35EA26B0096; Mon, 10 Aug 2026 08:56:13 -0400 (EDT)
+	id 360C06B0098; Mon, 10 Aug 2026 08:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 163336B0093
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:56:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 252911A015B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:56:12 +0000 (UTC)
-X-FDA: 85085357784.21.C4B0344
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 80D9F40005
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:56:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7vr1lga;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 135216B008C
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 08:57:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0AD2160143
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:57:40 +0000 (UTC)
+X-FDA: 85085361480.22.3C4459B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 036BE40009
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:57:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ig+b+sZN;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786366570;
-	b=LExhW2qtn+ggK8gAsfR0dkIi1diXkv0V7smFS3ITKu3TjP51Pp4DL5a40Jl4+ot0MwE1I3
-	4FnIxm/Gv+oe4puVtSg237wRePmMYeANm7Q+OGWzp54Yz7zHyFejFeHK+i8ZxSCSFi2eif
-	kC3+gcY7tx0/bIRUF8ffExQccKO8Mls=
+	t=1786366659;
+	b=rejfmRBnzu4OOJM0rbid04iNkF+Yn3a3ho834DOfkR8PCoRBgsvoIJumGwgHndAAoixuBs
+	RPhkd99XuTO9Zpod39MzPz2D/VmCeikLDPoTFhQ2E8JRxKFHqosgN7I3og1lJ4SafHhkMr
+	QAgWPUCdlU8TcTR8lHwg6egoOZkC638=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7vr1lga;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ig+b+sZN;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786366570;
+	s=arc-20220608; t=1786366659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MPKIlGpvmXcWQjI00VD8/5BTruLNkTRTyS1KnizrheY=;
-	b=74bjLXOkz/C7wBqPc2mJKjVjLBm0IgtR+ztOUwq07JI0IO1xEOZ3CGo8eylxBV5tR3EDbm
-	s0vAqNMMXEcVKrUDC5slgZMnHdOG7jm8ziwn2vdXiRCh2Ub6kyHt8jQrRLOrvpEMo2rq2V
-	FajVMMtoUKXV5ylXKDZlCntU5DHC2K0=
+	bh=7nEsiIljsOnwiqNJPeR59SBXjP5U5Vnellr86acHMk4=;
+	b=h9NLKvjKVUBtEjuraeyVeUrgsQiZfNlosVujT2/pKeMU+C5pXaMaV1v71dcRddwDBaGDup
+	gv5si06hyzE1gdKOaaYyUNenqN+srcmjEX1qoMjbPrg1ZZ/5xj88sOXWSonIrBsTWbwI8Z
+	5avZzZpQqHGlk4KkwuWA/VT2Z5yN/2c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C661340659;
-	Mon, 10 Aug 2026 12:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6591F000E9;
-	Mon, 10 Aug 2026 12:56:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D7FD601E0;
+	Mon, 10 Aug 2026 12:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DA81F000E9;
+	Mon, 10 Aug 2026 12:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786366569;
-	bh=MPKIlGpvmXcWQjI00VD8/5BTruLNkTRTyS1KnizrheY=;
+	s=k20260515; t=1786366658;
+	bh=7nEsiIljsOnwiqNJPeR59SBXjP5U5Vnellr86acHMk4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e7vr1lgaqF30+6dpc+JhFfhBT3urAGCW5BunGeskC4pRhKJPj9hzGXL7RlFivof/I
-	 Wsiwf9KmF2ZckCXD1Ep4XDYUDcJNFJxZULN7auMqvBIQnbr7DxR+VlTg24T3QEUlYZ
-	 zQ8Y3U/UZjLLhWoltw+0SSfEblcbKHmq+Im2q7nc7I90c47Q76O5Y2o7B3bYv8wlXj
-	 3hqParA/XlZ2NMOex/vSfx4Oke9Zhs+F9WuEdlf7+zP5SNtLkR3PyyLsAkGyhJYUw0
-	 /3+Q6MXXNyu4orfM9yXs42KeDVJbgyCujPhy0kpfYYfpaSF6HAmrdaaeeRuXozOuYs
-	 YghievTvXw3tA==
-Date: Mon, 10 Aug 2026 13:55:49 +0100
+	b=Ig+b+sZNILkr56gDnGvd+gfzEq6oaBqW/nqeXP0rI+XM2u9rVQo7Re2/XnKIG1RRt
+	 bpNfKRUeKJVMbZI2LafUyPKGKcdKLr6fHh9Bz/lQ7RAWGA844b3W/Mph4YPul+X4Nv
+	 a8lah/j8namaCU9T1N9E603HnIV8JRv9+IQDtlPIB432whEGIUNTctnq+jnWra9A3M
+	 51RjdDJHBlw0Iml5CWCfa6zKHX+8jtQAXZbQK2l2u+4OC1vMVWC7h4pYXEKUf+p3Vz
+	 mCCWBu4H+k3PFJhOetXyZ/ffuB+jBMyiDmFyJkXsoHB8XDIH+o9SA3uzcX4HCXbtmW
+	 qEHMuD04vZ9ww==
+Date: Mon, 10 Aug 2026 13:57:18 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
 	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
 	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Christoph Hellwig <hch@lst.de>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 4/6] mm/page_io: rename bio_associate_blkg_from_page()
-Message-ID: <annKQgxGQvQe04iO@lucifer>
+Message-ID: <annKe7qXw_A-BbHl@lucifer>
 References: <20260806-b4-page_io-folios-v1-0-0899bac3b826@columbia.edu>
  <20260806-b4-page_io-folios-v1-4-0899bac3b826@columbia.edu>
- <anYqSDnC2BbJXv1h@casper.infradead.org>
- <612ed1ce-e7a7-410e-9ad7-256e77bc867c@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <612ed1ce-e7a7-410e-9ad7-256e77bc867c@columbia.edu>
+In-Reply-To: <20260806-b4-page_io-folios-v1-4-0899bac3b826@columbia.edu>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 80D9F40005
-X-Stat-Signature: arni5hw77rigt6p8hx8jtgpgaiefqw46
+X-Rspamd-Queue-Id: 036BE40009
+X-Stat-Signature: xhed6qe887hyzx91ixf7x7fjoj6epx8z
 X-Rspam-User: 
-X-HE-Tag: 1786366570-426559
-X-HE-Meta: U2FsdGVkX1/JNmT5TXoBX+2qt4NjLjFKBbyqYvhsq3rlVUzBGn3+Eif2dlGXcbjKpvE20lJwP05/bWptbHcufRciVkFcECuH76RKVUj2+sLyidRxmU+wnqhjcH5CYDXJW4RrRQDtqaKcVTduuNIqpR+o8oVZoFt2GV4wmFDTqy5xQZRag5BCxIiPJKtN7MsOnDbIIQZ7TNDfE6Jd0SlA+lhJMA4qUj6yV7NrKT8r0bwyZG8qDu11yET9Dpsuvv1YplNDejzoi6pDmXAidvfBrEg01qDJI2v4AVKaP02xZRb3TLsvnmZen7HgZanAnsiy/IFRJiBnYByZocYhUMDdFqPwr6tobf7ptGYijKJp+z18VyCLM0Rys63m/Jxo3MDkDrtNuJ84N24AkwOrcuZqXUQq1FcQeHNjZj1njlWVqMFsP8dCaISJjzIIRFS3WaB5lljf8xBMv8qieRq8POQ/Br7HwdUKNCUsO/KQRGDiLnOtuRq6dtsc7zmmsrPnrIQO4Y47V4+tiwPQs/B0f5/IPQODFf8kkpOg56G8UOZBGy4SyWfGX7w2Tp9LZSO6UExDQC+RHgnsqTdpnpAUBnrH4Y25lAA8rOyuEAYLUCfHcuh7ziqNPsY4bjpZpNwd41eU2lzrTwtpjYmM2DA7kihZYDu/lk1w11Y5h9bfXp86FZlwLVpPceqxVvZSlg2MjKuO0l8HiOwPm9DzJBzQsZFgCdCFPQqGa0bT4UrEs704CRltgCmF+8N8DpT2oXn3aRvcy+HHaTohCwuOW0TwsPptWfotK3NXP8v8fRyV5fWvdFWVJRDETImXAVdbux4rOoJV2NWkCC4nWQOAOML6AkZJt6JrKxS6DxBGAxVdnSFq0v6yXb/5zaLAbPr93gq1r1m3ALGzxzt7pzvmFGbz+OyEYn/OKAdku0/OTSpCe9xaIQCIVTbF+LaA5UK/8hyaHVI6ppruAnMfi96XcD36LW3
- dT3BK/8z
- MSa1WRHD4XyAprEqZjbo8Kk/GHnDM2IAGjGnDNpgtpAqmHt9Eq8E961cQAgVBt8Kw0yQ/73FjiRyNVYGziKmldgC6Qduhz81qDo0ww7G4VC1QdoQNi38DbBMrhBlIEFNf+7cZhpzWJ2P/b9htSHCdd5E+g7qU3btgngdH5TmzSyliDNLelUEwaq67dbNiwqheKSbXdjC86/XFsarECD5AB3m0Y2v/oAirV78W5nnzor4z6vL/uF/maoIXHFMdi/jNDGkmWojLf93kffMdal3mr/IcktceRLliWUBv9mp4uHJFRPpcC+ucBbx8xL23gji2Ss9VlcjfW+s3b5HSp38YgAb5L5Hk3Pg3T5B1X2osoUqXu6E=
+X-HE-Tag: 1786366658-881800
+X-HE-Meta: U2FsdGVkX1926BUk8K/tJCXLB0g5gLGDVgKvWHm+YM9xpNlStt/BWWMdqcrbbu5FRIyrOJY6DtnQams7KjpcssePgMQGvFWtf03pm57VdnEmEKcKcjVOU02ijXIJivG6aozAPvGBPx5LDnmTVefI2jKhLE4ayAdbh+ID5ql14xIvFgYoCMrQbSSoreEzVMYbMOaBto5ndu9b3dIJSQhN9tJnEb/E5M/byVtHCt5aOabaYHp+LYCgxxACPormvFu4JKSzZ5RxIvwJ/Q2Tu7DWfvLsOwlrkCceFjFzWlBeKAuqZwfY1eB+mDbT0+A6BIkmRh1JI64pBvkD5Tspr8fIzcuFnZSqF0hqUiNok0Ma3Pc8GeCWDasQneo01AFBa18r/uNzj7bp4/sH7VIlLWxaoaLOmAti1L4vJNrB1vw5va/ny+ScMr3otQtgxZA+vPY9cVUr/2rWzwsCw1x/nCcOhivUZ9+7RAyTa2iW4RG8zZXfnra1E4M86bGzGkvfFfTvCpv7OLaeGAr2lVp8pOoPgv7/uCxCJWbk8n3aLZQ5dq7tR7KuEu1Mg7IcoCYU8kBecinmEmjxhZIYvXOzmmFjjWvvt3OgfQ32I1Incx8HSflCHX0ZccUpFnt0SrBDuipOk8q7wEYi2TZJ9w5fX4YhcsMxd8PGY5f5M/vNhIadpKA6U6zdB9Zqeous2pO4TT4SaSRbqv/QZzf505sl3h0nsw6Io+8DFOtcKBQnzeB9BXYy/AfgIwKIANnJY2whrdLwOLB84UnADcUr00brDzP4DRmg8RsJ2YOa4pMhn2UJrIU7lGw8GFIsuPC5ODlVWpRzAFGpsZ4Au9b1Oouko2K9+LS5SS8NRxKhjXM/jj2cUHVkWGyDgcoD2pXBcoa2d4ysMk6j83gfvBX7NaFpQO6l+5QGPob9lGxBTl9RFiIjp5WewzwUC2NPwkjfDkfNQ+C+s0cSiUjVT3wRPYhR8/q
+ dd02IBi7
+ /5wVtgA5hIo4NAm/0PzsIx4/ofHMfIVN9Yuw6223KQx0PLEh9bQkGcKq5xT3gG1ONeK0L23nkk1uq53KXAfOaNX3jU70e9UkVfe4O+F7Vud29dIl+MvbafQmpsG0WCICdIIHdUn6EngFkmQz9AGZKxqRy43bgWftisAT9oK/B9nV94HkR1eSkbEQaAatzDxZ5Yv0GebcczR0vRMdbibFL0MQNdSsOk92pXRy6BjzPgCNXgHcM6h6s4xdv05mC+zHZvV65aLugFo1X2W3kZM87i7ph0+S9M20d+MZ+mlGtyIdKk8VOFBYz99J3GgZYvuoF2Viy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,33 +99,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 07, 2026 at 10:30:22PM +0300, Tal Zussman wrote:
-> On 8/7/26 2:56 PM, Matthew Wilcox wrote:
-> > On Thu, Aug 06, 2026 at 06:55:36PM -0400, Tal Zussman wrote:
-> >> This function takes a folio. Rename it to
-> >> bio_associate_blkg_from_folio() accordingly. While at it, convert the
-> >> macro in the !CONFIG_MEMCG || !CONFIG_BLK_CGROUP case to a function.
-> >>
-> >> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> >
-> > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> >
-> >> -static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
-> >> +static void bio_associate_blkg_from_folio(struct bio *bio, struct folio *folio)
-> >
-> > It's s shame this isn't const-qualified (after all, we don't modify the folio).
-> > That needs folio_memcg_charged() to take a const folio pointer, which it
-> > could.  And folio_memcg_blkg_css() and folio_memcg().  That's a followup
-> > patch though.
-> >
+On Thu, Aug 06, 2026 at 06:55:36PM -0400, Tal Zussman wrote:
+> This function takes a folio. Rename it to
+> bio_associate_blkg_from_folio() accordingly. While at it, convert the
+> macro in the !CONFIG_MEMCG || !CONFIG_BLK_CGROUP case to a function.
 >
-> I had the same thought when looking at this and went all the way down the
-> callchain to dump_page(). I didn't want to flood the list with patches, but
-> happy to send a couple follow-up patches once this is in mm-new.
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Churn that achieves good things is OK :) (but of course, I would say that
-;)
+Nice in general, thanks!
 
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/page_io.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index c6d0949b3f1e..8573f7b8967a 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -276,7 +276,7 @@ static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
+>  	return can_merge;
+>  }
+>
+> -static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+> +static void bio_associate_blkg_from_folio(struct bio *bio, struct folio *folio)
+>  {
+>  	struct cgroup_subsys_state *css;
+>
+> @@ -297,7 +297,9 @@ static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
+>  {
+>  	return true;
+>  }
+> -#define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
+> +static void bio_associate_blkg_from_folio(struct bio *bio, struct folio *folio)
+> +{
+> +}
+>  #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
+>
+>  struct swap_iocb {
+> @@ -595,7 +597,7 @@ static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
+>  			REQ_OP_WRITE | REQ_SWAP);
+>  	bio->bi_iter.bi_size = sio->len;
+>  	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
+> -	bio_associate_blkg_from_page(bio, bio_first_folio_all(bio));
+> +	bio_associate_blkg_from_folio(bio, bio_first_folio_all(bio));
+>
+>  	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
+>  		submit_bio_wait(bio);
+>
+> --
+> 2.39.5
+>
 
 --
 Cheers, Lorenzo
