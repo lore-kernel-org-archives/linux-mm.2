@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C3FC5AD55
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 13:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAE0C5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 13:22:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33E126B007B; Mon, 10 Aug 2026 09:20:40 -0400 (EDT)
+	id 9F94D6B008A; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF586B008A; Mon, 10 Aug 2026 09:20:40 -0400 (EDT)
+	id 9A9C66B008C; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DDD86B008C; Mon, 10 Aug 2026 09:20:40 -0400 (EDT)
+	id 898066B0092; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6E586B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:20:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71B238015E
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:20:39 +0000 (UTC)
-X-FDA: 85085419398.09.F165533
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C595680002
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:20:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZLLShh93;
-	spf=pass (imf02.hostedemail.com: domain of 3I9B5agkKCAYzgx0tygn0muumrk.iusrot03-ssq1giq.uxm@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3I9B5agkKCAYzgx0tygn0muumrk.iusrot03-ssq1giq.uxm@flex--tarunsahu.bounces.google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 658C76B008A
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:22:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB27F80180
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:22:48 +0000 (UTC)
+X-FDA: 85085424816.25.7DD897C
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 78F41160010
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 13:22:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tItyoQ9s;
+	spf=pass (imf08.hostedemail.com: domain of 3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786368037;
+	s=arc-20220608; t=1786368166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aoXL2lcVuXDTzwRL1s4LiTCXpMnjYT/r+wP/urETSuU=;
-	b=ab0m7RDybUCeNiUrzXK4hf/EPbs7QOCM2kt/5NkZzPW/DMkeb2vyJ/LN3dt3UD/KjD8piK
-	EYJWRDbGrF0vOQR94YwQMrVGfDwy7iGFXER1YXd6UA2mwPrKRUsM+PD3u4YR5rsb5Kbng2
-	BzWW6gZ+q/4tHW8Fe6vdMjbBKfbwKIA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZLLShh93;
-	spf=pass (imf02.hostedemail.com: domain of 3I9B5agkKCAYzgx0tygn0muumrk.iusrot03-ssq1giq.uxm@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3I9B5agkKCAYzgx0tygn0muumrk.iusrot03-ssq1giq.uxm@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
+	b=0tS1R7I250yyfHFcOpe6YcOQHshe897nIG19gmTGLZPmgKEm+iQWEA5xXOU86sxS41Z3kX
+	nM+ONTj+GIANxUaYs7TPcY3NqGAnR855N8PHWX1OUY3iW1eMpFLNXzB+rFuSyGeYYhb7qs
+	bdjis4CmCnqZiOnDNuADQs2gc4I+J0g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786368037;
-	b=D6v2WKoqSSFbuLaE4sSVDK9iVuG2dh7CC2GeaGd5JXTgk60VdXD0FN3uO9guwvSQvUmouU
-	jgb5c+y49daQK62AOWEYOYeO/GgC8YUILewIlAkwm1faUsFSIAoOASw4qM3fEki24dkABw
-	oi7ojJebRdRVRkPpyS445Jvowgx4N8Q=
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c20262b5e10so210660066b.1
-        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:20:37 -0700 (PDT)
+	t=1786368166;
+	b=hUe6M1IPFCwWneU7l7DfqMxPJI12i62zejUxzDUyUWJueFVhlBZbzxmoduSPRaO8Dp9vSY
+	mdxBpxWXGw8vQfs8Eg1IKayPhE/XyH71iye916SDOJ17gWBimnqebhAaqnBjKuFfG/vgmf
+	vwLaUXoVeLDLHYYGF3R1zIUGY7xVokc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tItyoQ9s;
+	spf=pass (imf08.hostedemail.com: domain of 3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3pNB5agkKCIc4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c158e733fd6so159959366b.2
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 06:22:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786368036; x=1786972836; darn=kvack.org;
+        d=google.com; s=20251104; t=1786368165; x=1786972965; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aoXL2lcVuXDTzwRL1s4LiTCXpMnjYT/r+wP/urETSuU=;
-        b=ZLLShh93VJ5FIR9W0kF/czHDLGbv75WyQDKhbFEgmBcZYJGlRb8DSOJys7yW4lv5bw
-         CaGyvyJkb/39fnjcpxld2cneS8gThUfopgs+dJC8k+4AUUGIBA1F7JisVcRWaJLtZe48
-         J2oTyLdRIKXWNeNN2JFVvYK2V0ohJv36KFsgKm+fTFkfso7o86f9C8Hnjj1TVRycwJj2
-         HFtiocSFnIFBeUalUUZhs6Ib+TKUFlQYx/EkccT8n86H2WvYFpvlRRX89/0CPmfwX8b1
-         lR0/B4KTk48AtKV01HCC+1jhPymC2b5OOIm5lACOpQI6jkhFS/Pohiau9N0PlB6Mw8un
-         rUeg==
+        bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
+        b=tItyoQ9s7xuDWfEcGxrIbjlJwsE7ZCDdSB3WcWJM5lnjMq2YsC0CE5Q9ZtcCpv8vix
+         1EzAVZdXtFHqIn43tfQ06nd3am3d/sI9xwEFK7qHQZvh483xwSOmoxMnkPt5+Qyxy74r
+         vRwmQtds1qPKGRfb4g49ZwnT/G/UPfIXbpe0X72vVFaNVnMdUETZrXWfz+EgEHuSnlOL
+         WoiWVo5ERcb3KFD+3VTwUptscSU7dqHBi1Uj7hhwo3jEgrIvqxusg8ItdJ3k1SMVMlZV
+         8Z83RROy9jzMbPL1KSdSeXdLgXX7knB1dbC5rVeOghouZ+vJ0kFEK9yiXYYILSs4Ckt/
+         EUrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786368036; x=1786972836;
+        d=1e100.net; s=20251104; t=1786368165; x=1786972965;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aoXL2lcVuXDTzwRL1s4LiTCXpMnjYT/r+wP/urETSuU=;
-        b=Z07uEx+TEe5BYvgfnmefYG9X8fdX9OsVEFxgpqXWvoXArtg4Dh+ElN965bu6aVFjwi
-         PbkIhLzizPqfRTyyBP7i5R852rql/z+sjiFLduFNyumeEgVJxL+Qj46RDh0y/btP05dQ
-         UFTi8zfRxWR8mOnekoLl0n2OJ9bGGP+5xC9uWlWkB2z2UIOq1a2P5mX+1kYXQUhUE8G/
-         K/8twwvK35ifcA+lZB0DzZDFth753eeV/Lh9A2ugpFnCoHofOjvukF8FOb/liB9Ta4NQ
-         HyJwoTUFS0jBcuEOqjqSroK1yD2QtoZFjbYRWL6t95/ZHX7/CsfKWpOWZ/7hsg0jBg0T
-         os5w==
-X-Forwarded-Encrypted: i=1; AHgh+Rpmj3pUusRgrPmpPavM0LTFRp5v3gjGHsN366Bj/+VrkNvR6ub8DdOF2z4xXN8IGNqQKQdLAcBzDw==@kvack.org
-X-Gm-Message-State: AOJu0Yz45f0QkqJAmKcV/RHHJUNaGgHR+5lNpm/sa5+NgOPv9JYkzMJj
-	fcp83pmrFku+BIbCf0FaKLo73OitIgHDbw7bFqWC2T3Sor9n/Gymf96N+C6mI8YgfxuBjnfCVeL
-	Pg65AqOse1kS2ORLdyw==
-X-Received: from ejczw12-n2.prod.google.com ([2002:a17:907:e00c:20b0:c19:71f5:ee20])
+        bh=iM/Qa4ThtXGVoAOuESD7ZLMy4Hwa1Cb/UO9QtFpTQ7s=;
+        b=Fgxzio3luwFRjB+UbnHc39HM5CcTX0B8nPs1EcW/R8+EFzvCxuS8zobulMKHv9TZoX
+         biuAsAJSN76RB2zwhz3gX21EhB5W9k0+FqEPd/tg55UFFCEF9UsRPkGJQHxkq6zElGTW
+         U79P/5Ba0saAEqM2dAByO0XLmuJL29Gsv28qMYodrIp3nVQ4IQht0tOPNRuHPVeckPTl
+         zkfQaUpyhB7q3eHdwgAee5w+WQDfrttU+RCZgUUfzAQzChz11Ibx6JIG6OB8rjn55d/H
+         evbKGUbNcLvt5W31ybk2457+grWuTt0FeUIyrXZ1ys2KX/Yl5smKJJPh8S2fxarZsiNF
+         2rkg==
+X-Forwarded-Encrypted: i=1; AHgh+Rraxzb6YhPgWPvKBUZ5xpqpjfw7/n59MrP0ZkNsvEdLRh195t3C0FNOv4Q/ZS9DmexWlr6NWUPbvg==@kvack.org
+X-Gm-Message-State: AOJu0Ywk9fkamjRsSgax/R7vZjKBT4xSKAlH3v3DSwA0T5AdBjET8XR9
+	XyuAsYUngfOB3rdbew5aS7nQa6J2DL19+Fx/D7zM7puGKZ196G+7XrwFVfydPhEQ8yRx6HUi6Z9
+	L1wkRWbjU+/uzT3F5rQ==
+X-Received: from edap32.prod.google.com ([2002:a05:6402:5020:b0:6a0:ddb8:db7f])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:ea8b:b0:c16:126b:98b4 with SMTP id a640c23a62f3a-c2039c03283mr2125010166b.3.1786368035983;
- Mon, 10 Aug 2026 06:20:35 -0700 (PDT)
-Date: Mon, 10 Aug 2026 13:20:34 +0000
-In-Reply-To: <CAEvNRgGJ0s5Vu8xRvfPmA39p2Bmkr-U7JFFkshM9Dyk9j+t-YA@mail.gmail.com>
+ 2002:a05:6402:a5c1:20b0:6a1:f7f4:200b with SMTP id 4fb4d7f45d1cf-6a1f7f4278bmr5285938a12.12.1786368164940;
+ Mon, 10 Aug 2026 06:22:44 -0700 (PDT)
+Date: Mon, 10 Aug 2026 13:22:44 +0000
+In-Reply-To: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-9-tarunsahu@google.com> <CAEvNRgGJ0s5Vu8xRvfPmA39p2Bmkr-U7JFFkshM9Dyk9j+t-YA@mail.gmail.com>
-Message-ID: <9huz1pc6863h.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 08/11] KVM: guest_memfd: Add support for preservation
- via LUO
+ <20260728121138.1103610-12-tarunsahu@google.com> <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
+Message-ID: <9huzv79i6rff.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
 From: tarunsahu@google.com
 To: Ackerley Tng <ackerleytng@google.com>, fuad.tabba@linux.dev, 
 	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
@@ -104,14 +103,14 @@ Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
 	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
 	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 78F41160010
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C595680002
-X-Stat-Signature: uwgjz8gc8ub8nfen6mt8xmk3bs3gt9hs
-X-HE-Tag: 1786368037-688298
-X-HE-Meta: U2FsdGVkX19wt69jZDGBSzoachaFx9JKaBLH5rN6ndfPF6U8ZDhPxdM4kz/aX90a8FBtwg6QGnmIu0PPCXAnyBH8oomJ6vyQcBzCvGyYDairkQuq/gx50/oj5ZPUQSUYKj8RgUeyrjtrAK6ztdOZEB8OZJ8qHHEtPv8GtzOcnljf3gOAH9Skyaz3rKbziAQLp52mIgWdTFnsHt3BYlN1rEz2jluDZcyMqCEspWkFJEfpNazYdS3kcmCJuY7PpI/x9S6qEmeNNaWMB0W0MGuwMx695xRRQITLX1xZBDsn4zX5DUuda/TknyJg2Djsa59pgzsKNxFZ5CBT7R1NG1l7Ua97wpTl6HVKJJ4MnrK07wcRQrSf31NECPMkFm+78Yf48Vxe8e6n2p+dqJUnSv1bXLjLhgJb6+hftRsWBY8PKhRFXqjR6g7ya6Rlj94OeedkoISzn1SMlRS3vkFCVA91vCSS4fhnQn2ITycfFl6zZ7R5GzdqaHU8L4rILR3enYUCZl6aMnpAdbT78IEadzVzsKKsR9uHtIE29k0WoEmDTpVswpXKOGglbgYmTiZH3DP8bUeHp0C1rUpanXpHZO05/9rwuzHjQzfT+nfWs+9vRkKjyOJx3k8tlR2/IDuNjRul6t0v6aH3M2J7nDUH60/TaYciD1olgxc5GjrE71xdhB+B6JxnSUnLWXiwO6KF6tLtsnbuGv/ZTttHG2hrwoE5aRrFf52HkfhqGoVRo92W+G4yIaiUJIQLXD9wM1g+0HT741pRZp5rDsQ1u8qnWfd8dFOH1OX//QVdbliyKcZQT2Cw5cqSjinD5mBQM8ZtJG2RUy8KDifM8zNdJx4X+Tkwp1wfnC80Kqq3jiz0pbJv9n4EisoFRZv06jFgkew//S5iXHzOfUubV9+BFKzlmFpuPx1UGVelVCnRNQUzjDFuJ+u9G92x6BYBOBjfZre7bqH5XpAj8wl43cH4w+i30qz
- p0stsm7y
- iYmnsFyO7iDJxRL3RDsgV+hLBtK3Df2tP7gWhAF7ivOli9oRhTdo+pD49ur8tUpToytqKVrrLNHra9jIGT1UNxVie+ix4fvOxYkAPhWQ+yEpLPxWv8tows8zEtPefoTIht9y4+z0+55MUDGGeSGdyLmRhuUP7jrxRxqUiKa31A++yNBZzUv7ZgkLyL/JlhXcaNIHfmOxc7/NVfPktH5Fl1kSnjOZzH4ATZGanRKwL1+mrXA9CqCptjr6mVenN768azv2Dp7OJaDSP328X4rmKv/MJjczUN7/F0I8nZlyy1hrGr3JEjZqz9qCOlT+7yHC7n2fSpcUVhGpUlTtXUKsfsbCaMgFtKoF3juSpNnZ6RdYoMMysLBeeB5yrqqyoWQtlZl/dSaQfv0mNEx9s9jCjIzcgL5/9XdgaXuAT6M0UrlJzUZ4nWa1ttp8vdLlzrcYJGkjFihgRmIbwjAG+EZHly885IY5jJMcjNPK5SHYl5ibfPra9A/vMuvS+yvG9ARxHzgAsayZtjH9G5GIymFETL3HX7I9+U3yv6VKEnkXZUowSCtt5JS8ZKKwuc98OiSzFBjmx6eere3gZJrEqYb4KlzpLSSOKovtrNgAGrjB/oT9S+NhJfIxD5Q+/5p9PYXDBXOwo
+X-Stat-Signature: tks83e4fbz5xsnrigeju11443i9mq9mh
+X-HE-Tag: 1786368166-737713
+X-HE-Meta: U2FsdGVkX18MSKy0zzyze0IpT1oZ+5u2zwo0zMtU998hcItqlR8yMAtH2sIJyfy1R1D8uzmJflS20wiR3xFKhn2NZQgSCycih+BOAyfQMuYARUKhvdrCmNuymScR47bl1E29/cRORgFZ9JQNEpZbAHM1dUYKKB/I+3jPkOYi1fsuLgJHSISjNRE9V71kHL8mT1hVSz5Lwsy5afQVL2Wy3R4IO3xlNzb2oLUhg86KyfdaB16scHimFCs9wylct7MxqZBWUEf1RAyWI+mBPiEFZaaYkOB60/yqAfLSSer8R7c4oXK0m0v+WfOJMjg/L8kDNER2T0OQA5efhhPPEgnd27/iL9c2EEFxMkGWnXQSUtLOhxiaFottjGENJjrzLsKiEAAsT/IE3JWZuwdGF5mRvIfD9WiSiQ1/JFrcrL5y6E5aC5t/QX9y9/Xcxf+tRg8JHJdIUubRjq+1H0eNT5qfVCFgdjMYpHhyQHuOBafQDdXDSVPg886hPFdGR9qhjxoXlzNcwKMqL7uoFX+MH6b0LZAlGdoNLuoAoi2/8+UozLyg7CYbagdunTdZ2ql09vAUpkZ0wX8GJKsVzdpf1/otQIgJn5ZaFNtP2pbSkD4ULjXK0ui2J1cfbRaCFSdOuKk2mNzHC5XFBdPnppKldHA2KRYNEtN16wnX4dL5AgKPv8XsIfrCiTOXzTuatQ4JflTLsfwZ+S93M32hYk0wSMQMo7insCstStofTAVlRZnkC5kct1V1RtMPfOIPW4gARXgbVreItp4B5BFZLqKrwdcdhkuVKXLN8Lh1jx4K56WkgGXNnzR2Qo7vmWA8lsHWbvXQKbSizElP8iZ39X9ohbNP0H5ZJi6NwVfbeSWc8pYXYPJ8oCB88aWmAqL41l4NnJjs4g2bn/zg+gnB5/Xjrh1rAjmwtJ9Pm3of+w5/SAOKIvJKDrJmqCzfPLlIkUWOXO/4NlH9KF9bb9KhPp1Aewc
+ S8MYT1gX
+ c3X49mHncq6N4TZT3oGgf+i/IER5miVcvhZnQYqVsHEXnNo2Kxn+WqIkmfuIPIWTRbkKUBnS9kJ0m9QayrHc5rdrFBrybkHXyJkxfZPCrZMy/EHkAVR4JB0GxBNTQqQ9ElzKg9ovrj+K6JRoDo2z66WJ+4dhSaAbPlv+8/geYNygxK32VkSKdC6HdzqWzeCf+xPXpyyEurtmWxmy/0piUkXsO2nLG9NLgutGr+61a8dVSa17baXvkhMTXsBcPlPB3/TvLDTSO/vgpTehNxDgO4tkJ2vtrpY3g8SoF1rMSvXg/k4n8wEPiXZqWdfphZ4xoDrrkfa3DiZuMJa7xQYRjitfSq8dLrd30Iqgo8b3LXHjrAIHLjwFt9sS06A3MSl3z4JIq3hoEB2sR32drngX7ZGJNT9g/V3lP8ogLUB8nNxxoNbVOzqsDc/+c7Xr8NppdFIA/u7yVY0wpCVJTBlENUFiLGCy3FnaQHiiL6fFFxALDz2lciK8wUUDNgA+xW/eGcL94uRnopyXNNmTsKDBJ6SjQUcQGHiyNh9sMm4C0KnHcPiq3J508eK9rRHk08e9q+S6KuZIlJ1KbFoaYcvIJOfJTMOJKY1sKrOqvFQGtr7vKvRbRNshYEELAeJy4ThuaTa75szTUa+5LqGTr3Z7+lV+OUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,68 +122,51 @@ Ackerley Tng <ackerleytng@google.com> writes:
 
 > Tarun Sahu <tarunsahu@google.com> writes:
 >
+>> Add guest_memfd_preservation_test to verify that KVM VM state and guest
+>> memory backed by guest_memfd are preserved across a kexec reboot via Live
+>> Update Orchestrator (LUO).
+>>
+>> This test includes multiple tests
+>> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
+>> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
+>> - (C) Test to allocate the guest_memfd memory after preservation because
+>>   preservation makes the guest_memfd frozen. Which must fail as well.
+>> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
+>>   kexec: Below is the details of stages in this test.
+>>
+>
+> I think we should split this into multiple patches, where each patch
+> introduces 1 test.
+
+Got it. I will split them. I thought that this test already spawn a VM
+and other test can just reuse the same VM.
+
+>
 >>
 >> [...snip...]
 >>
->> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
->> +{
->> +	struct inode *inode = file_inode(file);
->> +	struct gmem_file *gmem_file;
->> +	struct kvm *kvm;
->> +
->> +	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
->> +		return false;
->> +
->> +	gmem_file = file->private_data;
->> +	if (!gmem_file)
->> +		return false;
->> +
->> +	/*
->> +	 * Only Fully-shared guest_memfd preservation is supported
->> +	 */
->> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
->> +		return false;
->> +
+>> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+>> @@ -0,0 +1,357 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2026, Google LLC.
+>> + *
+>> + * Author: Tarun Sahu <tarunsahu@google.com>
+>> + *
+>> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
+>> + *
+>> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
+>> + * frameworks because Stage 1 daemonizes into the background to pin resources
+>> + * and requires a human operator to manually trigger kexec before Stage 2
+>> + * is executed. Running Stage 1 automatically would leak the background daemon
+>> + * and cause CI runners to falsely interpret it as a passed test.
+>> + *
 >
-> The above check can probably be removed. I think the core thing about
-> this series is "we can preserve any memory that doesn't have any
-> encryption state that goes along with it", and so the check for
-> kvm_arch_has_private_mem() below would be sufficient to gate that.
-
-
-Sounds Good. Will remove it in next version. I will rephrase the
-Line: "Support only fully shared guest_memfd" => "Support only
-guest_memfd that does not support private pages and also can not be
-converted to private"
-
+> Usually there aren't many printfs in tests, but since this is a MANUAL
+> test, maybe that's ok?
 >
->> +	/*
->> +	 * It makes sure that no memory can be converted to private
->> +	 * even if it was initially fully shared (in-place conversions are
->> +	 * prevented).
->> +	 */
->> +	kvm = gmem_file->kvm;
->> +	if (kvm_arch_has_private_mem(kvm))
->> +		return false;
->> +
+> Would like to know what Sean thinks of this, and printfs in general.
 >
-> For now, has_private_mem == has some encryption state that we can't
-> preserve yet.
->
-> This also gates off KVM_X86_SW_PROTECTED_VM, but I guess that is
-> intended, since when work is done for preserving encryption state, we
-> can then test using KVM_X86_SW_PROTECTED_VM, and only then, remove this
-> check?
-
-Yes, It will be enabled when private memory preservation will be supported.
-
->
->> +	if (mapping_large_folio_support(inode->i_mapping))
->> +		return false;
->> +
->> +	return true;
->> +}
->> +
 >>
 >> [...snip...]
 >>
