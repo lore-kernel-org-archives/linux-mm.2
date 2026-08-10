@@ -4,134 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF89C5B569
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 22:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E7BC5AD55
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 22:16:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EC046B007B; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
+	id 338216B007B; Mon, 10 Aug 2026 18:16:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59C866B008A; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
+	id 2E8B36B008A; Mon, 10 Aug 2026 18:16:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B24C6B008C; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
+	id 1D7E56B008C; Mon, 10 Aug 2026 18:16:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D916B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:10:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9240614024F
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:10:14 +0000 (UTC)
-X-FDA: 85086753948.18.5269206
+	by kanga.kvack.org (Postfix) with ESMTP id F29486B007B
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 18:16:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 575AB802B0
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:16:46 +0000 (UTC)
+X-FDA: 85086770412.28.19AC85C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1D3D71C0003
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:10:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UwX/Ilov";
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 381BF140015
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 22:16:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i1O0I4Om;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786399812;
+	s=arc-20220608; t=1786400204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/hUK9nmdYQUfhG6ut1/QpR/T7D3LLI4jSc7+bBZ5Ofc=;
-	b=IiJnIbj5uHsHpNGqSB1LXgR6q8pU9lyqyjEz3F8X5RAOEW6rzu4e7ScUhvs/agi7VwTvl6
-	wewjKoRksUDArD6w4iIRzAVVBWMBkLVda468zLtLczOnHN6GkOLJGVGQBy0kC7SZlZMBK9
-	TiztFdkV7xcb/DIBidLxwjnM4iDuz38=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UwX/Ilov";
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=mfPD0y6Vyt+IkmC/2uT8T0rxNYXqQ/3bdmJoo9LdWMc=;
+	b=FtxLx8qjf30qz9LEHlq1cm0hY0mBrgT5qE8befHARg6pxhitGEaObdWxTJQWFffsN+6U1o
+	/3EDcrL0EVvcFPT6HAii2PAAS5snWnfnzoGvfSBc6wtm1eiXru7uNZ+QOqqLAZCSXIMREg
+	lwtOAneFmZFPAfORlyIvvhe85e9Hhhc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786399812;
-	b=X6mpCEx1fGPEOJNwc5J+pbDceL6dMhjXzCGUN/+HCE6oz6yfkSUI8U1ikW90HOgU7WcUX+
-	N/Lm1tVETRM+ywIN6PbZAx3oMsBjsD0764Spgqt7i4lEPa4v9R98WQ/J5kfs9SFlsm/igz
-	F3kA44T6coHuydM0o7D9tZ8plMXffU4=
+	t=1786400204;
+	b=ZWrB86zxO/YiOiCa+2E65LlrTh6dSqWkvgDBPRRarIZ5HzVcplxeiygIImkr1d3Pl/qr44
+	CDEwZQ7tfhRbq4H5kZ5Htj3yMBbqloTKEAhQtnlDviHSfvt6EDPV79C7XIcRx8j42cqzCP
+	toMRyFjc21VRrAIEac6v63B9lpiXgNE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i1O0I4Om;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9648A6001D;
-	Mon, 10 Aug 2026 22:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB66F1F000E9;
-	Mon, 10 Aug 2026 22:10:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6C986001D;
+	Mon, 10 Aug 2026 22:16:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4851F000E9;
+	Mon, 10 Aug 2026 22:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786399810;
-	bh=/hUK9nmdYQUfhG6ut1/QpR/T7D3LLI4jSc7+bBZ5Ofc=;
+	d=linux-foundation.org; s=korg; t=1786400203;
+	bh=mfPD0y6Vyt+IkmC/2uT8T0rxNYXqQ/3bdmJoo9LdWMc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UwX/Ilov0bIFii9m3iwtL8q7dWNlzT+Wx3UroPo9PylX7if0NcfH9JAavRDAn86dw
-	 JNwDAbfcVY3VRo/UBsUbAdQe6WqOiVdxquE1mb7LVSCrY0NRcx31i22SVoR5H3wZ9K
-	 Nroa/JyRqqFqLrw3hFrR5C55A7jEiwD4QPiMGP18=
-Date: Mon, 10 Aug 2026 15:10:07 -0700
+	b=i1O0I4OmaU6cNpeU3DYLQ1h0VJZsd7MRb+DfGkbegHB220v8Lf83Rx2Odj8Kz/J/G
+	 y3RoP/IvsG1dEIEpQru62AeaFtI13q/CB6CNf4P7hwrpSeKGeaiVvwObhy9qclXnbx
+	 NgIqV1bWxe15b6VY03TjWnKyH5ohHl3P0sGHV2Mg=
+Date: Mon, 10 Aug 2026 15:16:42 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
- Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
- <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
- Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Alex
- Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
- <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de
- Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
- Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, Oscar
- Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park
- <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/20] mm: provide vma_[flags_]is_cow_mapping() and
- remove is_cow_mapping()
-Message-Id: <20260810151007.c1cfbcf46d498d2f8ce566f9@linux-foundation.org>
-In-Reply-To: <ann-vS6MYT9kuXqu@lucifer>
-References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
-	<20260806-b4-scalable-cow-virt-pgoff-v4-2-ab318a350404@kernel.org>
-	<ann-vS6MYT9kuXqu@lucifer>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
+ Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Jianyue Wu
+ <wujianyue000@gmail.com>, her0gyugyu@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] mm, swap: keep hibernation swap slots out of the
+ swap cache
+Message-Id: <20260810151642.871c9b5d9cd56f6efd45ff90@linux-foundation.org>
+In-Reply-To: <20260809144559.2104856-1-youngjun.park@lge.com>
+References: <20260809144559.2104856-1-youngjun.park@lge.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1D3D71C0003
-X-Stat-Signature: 6wapmibastqtqeegnbh1jh1pitdp75we
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 381BF140015
 X-Rspam-User: 
-X-HE-Tag: 1786399811-822051
-X-HE-Meta: U2FsdGVkX18yB2wDyq1rW8XJRsCYgCac1N4GtfnO0r2fFCQ/BgnAEWDjvBfWr3H0VIow6zBlYSwx4GBOcjk8F7BPQ5jKksHHqxwOKrdwXI6ANaqfu7Z++LcVYLL3gxFGIral+7ggEoFlKdm9v9Uhmy29gEAAqdShkLuFf9EG4zWZogrVrb7sY8ERwKlSh1V2wd1x4yyBIvIZs2Ro/qwFgukYmZmiuCaFGQdkvfXa3l5DfC+jD1/9zt815/XgjuyZ+3+4b7TIaCL7wxp6nLs56m5CVipfhHVe3D4n9vK2RSQwuvfho5Qv71LZNS2/S4vKOya2/piucU+l6FWBfz9MHw+XmW0WXhdImfJkgYIfnzM6WI5xDmCDPthngdKlPbNFQ1QUN4w95imcuzvho3BV6NFRl5/D6fgH/2i8FYCUbCtKafrO1G48DeaKL/NzsheJIuYYsTrTGPcwbMx7Sxc4F3E3h1MRBJ0g0kKnaj+6W0tPYP7o7Dp0tfEaki/b5NkEHfY61hZROKCCivc99fO8vsQUsCPwoYWUap5N5yXoUgMTTzOJCFJbkHLlkDDD6L4hDlNu5GWGBhNsoxAJrNolO0w6mwavq2Cxu7oV6K4Shnd66sh1XsTOLYySlkugZWIEPjejZ5kXJWut/NKlYqz4NPQ7lWfG02FY9LuZShMlgCglZZIVmJ+T16mmk4GQ21qBVnC2AgV2KoPLuUQO8aKeHbkJrPopR6FtXg1b7HZ7VU+ZRjyXvz0CFPMXv0E7NqvHWm1nYgQMocnXXx3N3wB0uDPTXFvX9tvVxuwuqplLZSveSwrBbT1BJxAoH11uPd/LrWVR3CBbxqCQ3Dxcr3Tnzf9WKsKkx8YuebY3qDgTzODDe3e4StvQcI3Ebjh33zU16SelRufGDP0u+3Kr7xKcS4UmGZf3p4KqKtw9xB7CaeguXecn8pHw7YFVO2JeHK/N2WK/3eabSvja0VMa+In
- FAJZbP78
- 67Ca4LOkmym32BDWq7nXHG0/Qc2kXB4Rmu2OWqBwKvBvvKNVi9/0u2We12kgR6ME9lPZ5IWnZmcVzlRDG5JubSUwF4RAPjhqDfc2GMl5IDtIinUvFh0nH3k82MKDL/DXozX8OEBbRA/4smxAor3OUqADOh9ylaBr/gIBrilXXiigotaceStLkMzyfLw8imAg5IBibwWH44K4zU4CpVvgKkRScwLEAkHJa0RMHvxyGgzwxHbrFaQuoClCSXnb0wbk/OjrHQQXqP00m6YZYGx/QdCQV2gyMG6cdzavXnfREzyCXzDVT0l1bkua14O0cBwiqKdHmcM0ZO2rlxA0RqyVI93wh0UILgV77oG9WzEd75YMdMFqX3JOW9wJkmY+TCJsmZIgvBTaDAf1vXbfY7unrBiRU+akxbzqMtdzYoi+IAy+zPepxkXSIc4Z4RGqtZvZ2pKv6LPTXOGy/oBg=
+X-Stat-Signature: ymf1tzd99fkpkw3i4otdrox7pkbtui5h
+X-HE-Tag: 1786400204-334488
+X-HE-Meta: U2FsdGVkX19LV4Xkj9ijY44xKT7OUErry/59mMpeb19QT9s+MCUwAzaLZBsnFu4Yv26JAaQjXCJLfDe4ItCIVBLg0uiVhveqADgQmyjZdnv41iT5aiwQD+bILmAwbsq70itOOHAri5/e5oAz7dEcJaM7pmkx28+IU/DTwu3AjqKW+yCxtMcKLZ6I8Uwrj320HzSlLW3ruOBqMJCpYyMnV6LwQ7UVFEcmcOnSh17JNpD2X5N6pY//5ON4vZYqt6tTCZLV7MouhZTsMLOkX9msjsxCTjP+3FsMUWyFEiWD8Gt0mScfKrf7TaH3eCByhfY4fkNF31n/XQTtrhr9i8HzRHYkL7kayCuecf/32R4cXcOe40KFtWiUxQPIQz14i81bs4tMIGnNblybo4KENuJhWE6khTiNNf0fXCzUiAjaTwBOpBvl3EaA0cWu2eej/uFr02b8TRvmjG+mqDZOda4BHRtRA0CLmoSnXoPZ4rfpIPZiqUfHsEwdknFeTsMzi8LaFvw1XsotDDgigLGpMlE4de7aEVvSJXMEXwJu1SXeZnq+oOJlyjPK/ulRWrWdh0bu4v/uE1dJADF63feUgqwl7bXkWTLFwRiutB3cVFwwvO35EjYsN/FAjJzyh9ThW+FvUpPGo0DRPv7m/A1D7ebU3F+JNGMVDQKDziNIKICXUaEsBrbbqkZpPW5BkU026l0ClKnP0h9kPJTLiBmoMiUx5wnvooW3SUpyicsz0Rwi5A5XDQ/moZRHmFC5IlkCFiFaf6N2TrfSPGyoqyoYnkJ4sBhMtTs1jtWnDVTUD+ZpFQTaz2Fw8i9N3nBtMkCHaNqS2SNYPwzqFeLQhaTB03qQZnBqeUX5kqk7LEYU0+A/pFW1WEOhNzQpGkIIt3AcD8tlhQOMHcjj2q8J3W58OC6CMQ6VQllluu2+LZbe4nerVB01UOjhmSX0nxYBKxsrpQhaTBXAO2fDRsVoj0omeZi
+ OVpn0A7y
+ 0VwGJoBcib+XuVetdztrlkdsnvao6xgrz5kzKhO2ilX69tW9WGJT+jE9HfpxcxxELEWfWQ6XPrtj41D97TmqZEzEUnbz4DT00HcBl9XAhBEAuCTbACudzJA7t9giDA3lwAqJukOjF+pNDzxLjTijlqmcQ7o70+g1Hha3KKVhCoZEi99Cytrju3HW7pYC4e/c4Izxjn5oradd6qKo3FznllgrNz1TWdBciHLzBq3QQOySM8cE3EagcJRH15ALxoXWcECZ52gfbp6gQ7wco/48Xfw+QTeBUW8MdNiNb1sQBWknkmgOUE0yhPPnwjUwPF6yx/AHZMJc3zASSuRU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,104 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 18:59:34 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Sun,  9 Aug 2026 23:45:55 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
 
-> Hi Andrew - would it be possible to insert the comments added below? Trying
-> to avoid a respin if possible :)
+> Cluster readahead walks a raw page_cluster sized window of offsets around
+> the faulting entry.  A hibernation slot looks like an ordinary swapped out
+> slot, so __swap_cache_add_check() lets it in.  Readahead reads the offset
+> off the device into a folio and puts that folio in the swap table where the
+> hibernation entry was.  This has been possible for a long time.  It only
+> wasted a folio and a read.
+> 
+> That changed with commit 0d6af9bcf383 ("mm, swap: use the swap table to
+> track the swap count").  A slot with a folio in the swap cache should only
+> be freed when the folio leaves the cache.  swap_put_entries_cluster() still
+> does that, but the conversion left swap_free_hibernation_slot() freeing the
+> slot either way.  Nothing points at the folio after that, and when reclaim
+> drops it later, it writes to the table entry at the old offset, which
+> someone else may own by then.
+> 
+> Patch 1 is the fix and the only patch for stable.  It puts the missing
+> check back, so both free paths behave the same again.
+> 
+> The rest removes the cause.  Readahead should not touch these slots at all,
+> so patch 2 lets only swapped out slots into the swap cache, which also puts
+> back a bad slot check the swap cache rework dropped, patch 3 gives
+> hibernation slots their own swap table entry type so that check covers them
+> too, and patch 4 drops the guard and the reclaim, since no such folio can
+> exist any more.
 
-np, like this?
+Thanks.  It's late and review is only partial.  I'd prefer to wait
+until after 7.3-rc1 to process this series.
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
-Date: Mon Aug 10 03:07:02 PM PDT 2026
-
-add comments, per Lorenzo
-
-Link: https://lore.kernel.org/ann-vS6MYT9kuXqu@lucifer
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/mm.h |   57 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
-
---- a/include/linux/mm.h~mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix
-+++ a/include/linux/mm.h
-@@ -2271,17 +2271,74 @@ void unpin_user_pages(struct page **page
- void unpin_user_folio(struct folio *folio, unsigned long npages);
- void unpin_folios(struct folio **folios, unsigned long nfolios);
- 
-+/**
-+ * vma_flags_is_cow_mapping() - Do these VMA flags imply a CoW mapping?
-+ * @flags: The VMA flags to check.
-+ *
-+ * Mappings which could be CoW'd (subject to Copy-On-Write faults) are
-+ * described as CoW mappings.
-+ *
-+ * All mappings backed by anonymous folios (all anonymous mappings and most
-+ * MAP_PRIVATE-file backed ranges) are CoW mappings.
-+ *
-+ * All other mappings (including all writable MAP_SHARED mappings) are
-+ * non-CoW.
-+ *
-+ * The criteria are !VMA_SHARED_BIT, VMA_MAYWRITE_BIT.
-+ *
-+ * VMA_MAYWRITE_BIT is checked instead of VMA_WRITE_BIT to account for both
-+ * future mprotect() calls which can render a read-only mapping writable, and
-+ * GUP with FOLL_FORCE (e.g. ptrace) which can CoW a read-only mapping.
-+ *
-+ * - No anonymous mapping can ever clear VMA_MAYWRITE_BIT.
-+ *
-+ * - Writes to anonymous mappings do not immediately result in CoW faults but
-+ *   may do so after the process is forked or if a read is followed by a
-+ *   write.
-+ *
-+ * - Writes to MAP_PRIVATE file-backed mappings result in CoW faults and may
-+ *   do so again after fork.
-+ *
-+ * - MAP_SHARED mappings of a file opened read-only are transformed into
-+ *   VMA_MAYSHARE_BIT, !VMA_SHARED_BIT, !VMA_MAYWRITE_BIT mappings, so remain
-+ *   non-CoW.
-+ *
-+ * - Drivers may clear VMA_MAYWRITE_BIT but do so at mmap() time and cannot
-+ *   mark themselves anonymous. Having cleared this flag it is not valid for
-+ *   them to leave the VMA_WRITE_BIT flag set.
-+ *
-+ * As a consequence, the anonymous reverse mapping only tracks CoW mappings.
-+ *
-+ * Returns: true if the flags indicate a CoW mapping, otherwise false.
-+ */
- static inline bool vma_flags_is_cow_mapping(const vma_flags_t *flags)
- {
- 	return vma_flags_test(flags, VMA_MAYWRITE_BIT) &&
- 		!vma_flags_test(flags, VMA_SHARED_BIT);
- }
- 
-+/**
-+ * vma_is_cow_mapping() - Is this VMA a CoW mapping?
-+ * @desc: The VMA to check.
-+ *
-+ * See vma_flags_is_cow_mapping() for details.
-+ *
-+ * Returns: true if the VMA is a CoW mapping, otherwise false.
-+ */
- static inline bool vma_is_cow_mapping(const struct vm_area_struct *vma)
- {
- 	return vma_flags_is_cow_mapping(&vma->flags);
- }
- 
-+/**
-+ * vma_desc_is_cow_mapping() - Is this VMA descriptor a CoW mapping?
-+ * @desc: The VMA descriptor to check.
-+ *
-+ * See vma_flags_is_cow_mapping() for details.
-+ *
-+ * Returns: true if the VMA descriptor describes a CoW mapping, otherwise
-+ * false.
-+ */
- static inline bool vma_desc_is_cow_mapping(struct vm_area_desc *desc)
- {
- 	return vma_flags_is_cow_mapping(&desc->vma_flags);
-_
-
+AI review suggests that more such fixing is needed in
+__swap_cache_add_check():
+	https://sashiko.dev/#/patchset/20260809144559.2104856-1-youngjun.park@lge.com
 
