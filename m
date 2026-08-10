@@ -4,97 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9393C5B56A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7C3BC5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 16:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91D076B007B; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
+	id 8FD596B0093; Mon, 10 Aug 2026 12:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE0A6B008A; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
+	id 8AE806B0095; Mon, 10 Aug 2026 12:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E3726B0093; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
+	id 74EC96B0096; Mon, 10 Aug 2026 12:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 523486B007B
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:19:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9EA3A0208
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:19:51 +0000 (UTC)
-X-FDA: 85085870982.19.4E4FF90
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0A6C920009
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:19:49 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP3fMCtV;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786378790;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 48EF26B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 12:24:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5DF61601ED
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:24:38 +0000 (UTC)
+X-FDA: 85085883036.29.31B4621
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E2DA4180011
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 16:24:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ey5qJBQt;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1786379076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vWFF5rbpHjkJVsF6rYCEgkXwe2H85cOSrnKD6SoYu/s=;
-	b=JDSD4hq0pZghv3Zp0idKSOOdrh7ulK4j8LaAhCTmmX9TBnad/gsKpHUoMdayEjosxIXatN
-	yZWvgt9FjoCyluIo5W0d9fWPdz/fe4p72lT/mE8D3SYLkutbMiS19MzBlHyHmm5jF0fOZ7
-	HUB5hrwStZpXE1qkNXEsHqrfjEg3Zjs=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP3fMCtV;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786378790;
-	b=UqTRqWjDcyBVdZJgKbT75iS70XJiOxpCu/kS6CPqrVpWhm8IUotyjm8+EJSeXQdA+7BoC7
-	1nk+tIlodorc+f1GF+0DQPYVI+Unhsh983R4Sk2fD5ESS/T+lUkHUt+JApkKEhZB9mSQw2
-	yTuo94zAYWC9Bd1WkNBUrC+kodIUahQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 001C143B42;
-	Mon, 10 Aug 2026 16:19:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4751F000E9;
-	Mon, 10 Aug 2026 16:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786378788;
-	bh=vWFF5rbpHjkJVsF6rYCEgkXwe2H85cOSrnKD6SoYu/s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=KP3fMCtVOHkjkiegq2GgwH9YPInvhvDmEUuuGn4JZMsYwY2MwFps4JRByvplPOHCP
-	 9RhXPvwpDboJLnctJuK21ybEl6SfcdfKJ0psbl62EImczU78jwlrH77d4FgHroailz
-	 ICKmE6pAea+OP/q4KpsnmC5lP7KJhbY2/SrgOXM9wy5IVDrPQXf8SQ9l08PMgohBzu
-	 35QXMP6ecEqvEcDHjr+Lc4GnKYNKCAIsGVCeKjCmjCzGDs8P01voF22M8uTk+uReLZ
-	 4oAGMFyzVA+aGyjOmmBJ5NEa6/pPg5xL41w1l7UJ4zF4Tx39PZ0uvl1yWJr4dfs8/m
-	 0cHEVsNm/N0gg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,  George Guo <dongtai.guo@linux.dev>,
-  Mike Rapoport <rppt@kernel.org>,  pasha.tatashin@soleen.com,
-  pratyush@kernel.org,  shuah@kernel.org,  guodongtai@kylinos.cn,  WANG
- Xuerui <kernel@xen0n.name>,  graf@amazon.com,  loongarch@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
-  linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] efi: add a KHO configuration table GUID
-In-Reply-To: <CAAhV-H6UufWevaCds851xSxEMLeLcq+8wpoWq8OyeXib25GEUQ@mail.gmail.com>
-	(Huacai Chen's message of "Mon, 10 Aug 2026 22:35:37 +0800")
-References: <20260807103714.33074-1-dongtai.guo@linux.dev>
-	<20260807103714.33074-2-dongtai.guo@linux.dev>
-	<CAAhV-H4xxPXVRNXP42CBtMdVXbBZ4E6A997jZmw7HpEUSFAj9g@mail.gmail.com>
-	<96bd0e57-b517-4008-905f-9860661afaf2@app.fastmail.com>
-	<CAAhV-H6UufWevaCds851xSxEMLeLcq+8wpoWq8OyeXib25GEUQ@mail.gmail.com>
-Date: Mon, 10 Aug 2026 18:19:44 +0200
-Message-ID: <2vxzse4m54nz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+	b=nGfBUL53+GPpDJmCT4Ykud7a1wll4MIPksMZOXOvTRJwQAVUP9ZzEkKzQT8U+11x/YQhEi
+	xBVN8qfKwPpE+oBpl2ufIFlhf2ads/0yDVzlE1ws7ehQTmmaq+lAjj7NGCHBMHW/67md1T
+	lBYBzMAmo7aA7P3hpy72/v0EUGwcXno=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1786379076;
+	b=ED74L59S3K1G8fHMEKasSroSUjaxES93kUeHJzue30muYkhatuogT7oSTbYnXBR0uxjPUv
+	wJetARR6C6NpWMtlWpDwL9wx3T8Lb3ayNahY/ESibSKUtBNgCHpZwoXe53zODehKy9u/lD
+	DVQnc3LmfyCzL+R/ECAViNXzGnYl+i8=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ey5qJBQt;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c10e86e52so428791cf.1
+        for <linux-mm@kvack.org>; Mon, 10 Aug 2026 09:24:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786379076; cv=none;
+        d=google.com; s=arc-20260327;
+        b=T72UqMhJiDyQjrOYvZR/x1W60UBeHpvmz3tXTS00WsL31oPU/Gw2N95PvOYJ+XVeCs
+         Tlwcz8AolaoQTkB0Ggbg8wkyeQo69HIBTW0Pd0etwuxl6VTOnBajjETzuu8+ddPXW8XW
+         Yxba6nAiJjc0QMh9Ug91lGUeWTzA29NR/XVpwQoltqtsLqqvszL22OxPJJf9IpLinQNu
+         I8zHz8TBeL+WAfUsdiNvZ68kCGtwEi9yID+YtCWwYTgUia4XfvroPY3lkKnuNoJF1dCY
+         ifI/iGfT+37bzMwBd+KAVdetqYHso6CSdNuFTRtk38c9BsgzIne3Pus8f3ElIa2eKcUg
+         nKJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        fh=TortwQSZfeAgskKqGUMMC6Agr4JSZbgndP4WFPy4zkA=;
+        b=cWOWpQQg0rtnpi2t2AeWG+NQYKImojxpbMdH2SRKsjTR0QN/XfhJEH2kkMssFBtLmS
+         S/KuBKl1AEcNXnFU/W9GZWAD0SX8L3rvW/vGhX/88HlEfzWGPARIJIx9dUq3U4xPJduQ
+         u3/yB1DQ3GNAWHZcVOVF4FFCIEeYKIQ9to/CYkITmWxRK43a9MWKYAqGiM7hcpc++1H1
+         s/WVzSHGn4+0cy6YGGF3oQe6T26k/aB7R+/xRHk8Y5p93A8T3ZDpbQLTtS0FPopmAMyd
+         YPwcK2pegqsJdXwXOrftZICy+CJI5KAXmV9uCdmsZSzpBTdNmL10TRE1ejLGIqqznOUy
+         1Xzg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786379076; x=1786983876; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        b=Ey5qJBQtd/tpTkneD9jCmMxE/ubcwbKzRBpJiwgz3t4lF941ZEgqGFjPr6Z6I2YTyg
+         4SISAS5E6nCy2Wnab4tAfru/TuHXEGm+To+fAgvfddKu4Vo90StyaTpbY/KKUY1Y84F0
+         YyRWhXWEAnpcVgoBYV5RH0NprMsjBC74tJmVwIVI6Tmw7KZRKLbGKRBMZmR45WFHxpnl
+         oTTm9sSMKcBI7aLDLsV2vwuCYy05QiQIkpTTnxvTrVymX3srw7I+Li18wSuvTqQUz/xf
+         D/71Zuj4OoPFuj8cxCF+dyEHCXYm11IUkN0gVNETJIjmCyVwkiP+LyIUuoW4XuwEXuye
+         7bqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786379076; x=1786983876;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JnpU+yjthofc0zpgkM1QSjOc8GqltDckB0JeUB3rUkg=;
+        b=krO9KcjrohPJeUSZOV9fkRMjkyaVTogyAF+GdY4bDHiuTN/SEmrjykrpebs0zh/0Is
+         AWECXnzOI/ye+LHabCcuRPKjSKKajfoAqqVBy+uOwGtTBAV9Q3RaXTFDqDDIsQ4RC1EL
+         VvLI9C/I29f0UTd1uNcyci1+PMVPiUB6VQng5+xqZ0+NlyQF7y8VONluLYz0W5MTIrHZ
+         1dRg5FnlV9QSzhiQBBjJXT6qSHFSyzj4g/jim6mxpePfSY8ZmcUt9RRkHC7Wvhuao6Q2
+         o/Cbmqm3rrP/PqVMu9wWJBhN2m9KsdK1VIqhnLmrbaXPFcohtso0TX+81wGygUYwS0ET
+         Q1uw==
+X-Forwarded-Encrypted: i=1; AHgh+RpkT1v4pe4sHiPFSXKf99lILSJ35JlII6tdiwi6LU51avbdYNhrPpEW+Lnk1prjsfS4Tt6Ak0kKRg==@kvack.org
+X-Gm-Message-State: AOJu0Yy5RMQ1+isVxNMA6+CFinPEnwnDMHctW+KwWCiecUpYxEVEMHXV
+	J6SHEoEXFFSUWyYL9YXvpdROHeSjeRCXRkXCUxoAmxQxoAsLmGBWy4W5sgS1hCkZv+gIQf7WDqd
+	oax88HjoXz8ZVRkaFOGo5eEkFgvgWhSztGqOn3i7y
+X-Gm-Gg: AR+sD12z0RUKXHVCIMSmEhSTdVWH8YguXW4g7xuP7ttZZAYt24PbkrAqaBMZB9hAhj/
+	abiBfnEuhriU0c0mLprK+XyIG1YPKkmbqrCnBOfK2v9auwtZU064ui1SxTI4G305K/97uYEMvS1
+	NMBmukhgPguM4dUEFXLw0LSU+wUYzVj70S3GXodC2Fu2EyTDSHOBhUSI9vvyDxZhNDazoEW23r9
+	CeGoJy02rkJheKrsCFu6x16rhiwc4v8i4ggj4H/8JZriDe98bVWaGYr6gqJJy1M+oJgqbaFgpOw
+	UvmKZsundX5L4BnZsCX76hQvZXrWmWGGnTJ4HSz1lDkS55CS/vyG+A==
+X-Received: by 2002:a05:622a:2b0a:b0:519:b655:235 with SMTP id
+ d75a77b69052e-52d2810222bmr38915311cf.3.1786379075203; Mon, 10 Aug 2026
+ 09:24:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260806-b4-scalable-cow-virt-pgoff-v4-0-ab318a350404@kernel.org>
+ <20260806-b4-scalable-cow-virt-pgoff-v4-1-ab318a350404@kernel.org>
+ <CAJuCfpFAA1H2pOi6EOarNtrdzLQDJyhm6QOGsfZ4SFTuM5eiLQ@mail.gmail.com> <anmLnvWAyIJwjsXj@lucifer>
+In-Reply-To: <anmLnvWAyIJwjsXj@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 10 Aug 2026 09:24:23 -0700
+X-Gm-Features: AUfX_mykce6fbL166nHsURFiLv_kMzKY9gOukzdEiVHYnjVKW8Vop-MtXqL00bE
+Message-ID: <CAJuCfpGJuf3NOuPg4+7TaWhNOv5sN7WEY2awZOpDv1VV13J-DQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/20] mm/vma: introduce VMA anon page offset field and
+ add helpers
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mm7a65ty34nmwwisq4c1dia6qj1s1qag
-X-Rspamd-Queue-Id: 0A6C920009
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1786378789-773335
-X-HE-Meta: U2FsdGVkX1/rghd/TW88VPB2tZHM9BWdGTu8OrD7HkgCJBtMtP4pflYDqPwqfSOj4GlPwzVNlz5I4Kx3iLw6nByMwOykrB2EVslNs+NX99VAOoO7fkvtVOaqbSFzeyGMSaAZa94DLLgE5C+PAmV7LvFCYnLlDdlJ5d4tHKS0X3O3YebzfWpiGuHLeV2ypLjZcz3IMyJxai7fYotZq6rICyje7BdUQF52+RUqVAoKnBVRFrUFTyA4ptZbPWuXOP0x8GnDrwBGePDka6kRaVuDx2Pjs/hiUIB6/JjYJZwIfWoMyvoDN3uS5rPt8mlz0uwFqT3ApiSccg1ZDKugJ+tqhrxqSD/egr4W8wo800mbgeOqPem2Ta1i/oHjfUnZVYtRDuuBLg3SHR1tZNw6tJ8yplCTsr98lesWtJLOHSDk0dUWvm++UTk8vQArxFDpUqjDrVc5B6a0l+mzhR6GWVnE9PmMc02OiwrR9whxrCFa/k5kdfseExgGK49/CPmPXF105aezzqeD7ijhpqnV9vHockqmynSMNQ9gnokmeILg0NdfaVOaW2uCZIWY4/LYnT1PwrOcyLNFf9Z6UXieBvz+o7fPjzH/mX6nhml344BhotBC5hsjbiiVo/mWDXE7HADjSkn1lG6agCxEU3rvz83SwAt7n8jjvIXEAMC09EtftCiS97Uh7HSh3s2BwzaT+6oVRxDUJpogsAsK5QOXiIPmv5bUW5IjV+iHaHlCaYcVqmIKKViIblC2ixRYphWz1m9hgbJ9mMrMreyEzuIXBpw5RC52Q4yyvmHYNh7ranEY4gwcQHAC0tZXeAD3RJlLVPD6cSuZgC2zlWC2hwIw1jpgo7iKld1tyDmL+VT4Z4bwRZnSVBHBoJg9FLUpq4Gxv3nlUg8gR3kqGYxuQVU2RR+GBQqwGPUGiX0aaoOoxgwuchBEHBrIksGUtgJ1YP9nFfKWk6GFcQDkGOsE/jSQNsT
- KI8D7cJH
- tjeVtnbv531xfAmfbgUI4gvgKJH4Bf9Tp1AfXzGQF9uNjiuPY8TFblttD+VDHUwC0ZsbMStTQceE6ahdJUMZAsbrxvDSgk6aPJh+58Tg1y0vtwqR1B/6wByx3GGJt882tuDnE8i4b7TT+aGMS5gtU/WsLMQHMPJHQIImubl7uwtdZ5crmEppJQwBLjz+lQg7AGMn5FcAIMXgH3dwL28xZfUUZT5gy8cR2eMoDCl5pz1wQQOotKPJuOenrV5K6zMmCv4UUrB/fo+9s2wE5Ukjtiw4XEA==
+X-Stat-Signature: i3njonoatzbcoz7oexy1qpimmxhpm1hh
+X-Rspamd-Queue-Id: E2DA4180011
+X-HE-Tag: 1786379076-404399
+X-HE-Meta: U2FsdGVkX1+nFJPBRHgn+lCNSitzPUURj/7y3n3Bt7SGQzZ+w1MpVLi983zrdYjDSu4/YUuKCqJzSEm3wZWHtatKwbqUvOCBoMGgule5NKJkQPqUWEPTHB4TAHFRee9HTdNtP1rwmdHX+siwSJm5kaTgEQ+NDwwy1QgqXotfeaWopec8XjKmFFWo+2T2Fzz0+6ktW86BnEdM8gE4BVA6tY5itlLK3u9z0Zwsg1cJl5k/lG6CQ1W7JMH4I+CgkMypUMdKhKx7UETFoKu/56eElqErmRJ66YXXRKDmvRYNLsqNvUty8xqbKkLNvIdjS/EQ34h1iKbSYVZ/9JnrB+5qShXAY3FRe8nY6hRWAbBu02+0h0+CGHXqUcxF6QYu3xr+Q5RV70rsvHIWkhwiO8yRz128T7XvT0SyEgWC1HwBa2mQQjPQme3ONo+QpbTnlfGcdTlCQVOLjKGU5qwli/a1DOFuy4TF2TMwC1ZJGoEQTcCRtF9UOQ6p9VAdlAssmgmC+8EWumlHsI38r3Inq+y25WQwJ9E9LpoNZ9P7h66IGx4eU9KzQUkOCibJEeNjrPuk5rJrFHGSm2IVaqECPLlhyqhtovmuFAkEkfdYLxsayzMckOIdfGlPOVTp7ZwWueCgACG9mUASYRwNX3pLgKjwjF7O6m4K9EuTJJ1yJRCeML3q479f909l2+5cI+vbzYaPQmVYLwhU6P2lzlpwha0bA0LDQ/mTGiW/RrLXD+C0ME8cFSnMIzAS85Aeqj7yNqBwFNyQ0aezY14LMQf/59obZAaEzk3bSoemjobq4S2+pHvBnc2rO4tac1GjYh20N4bCFqv38OQWdifsUXyECRRUEB1w0WWuJjSuNtqj9WJCGbgwpUXgQHxQswV4WWTos021lWwFNzjCcmsgnPApicTLezGv1l8rddfQvdB9kj0KEVk2nTpvLJg/78vwlpZkGCBfkQuAgcEkEXzM6JETMNJ
+ Ue6w/Tzp
+ XS/3lSPhBK+wnIEkulQl3lgpGtici3YM6WSa3QNLQ916uffFnyPfZMfEzJl4gn6JNhuzPyGxWP0X3d2ukku5LJACYS8UREow/FWkeqW9p3KJhQtUwZ0Gx5XUNaAU2Pu5g3OEMpuluLOBWA6ma+Z0vgTZmCLc+HfWZnpXH77VUamjUKcYOAdRSZZNjxjwkDeYXm1upBfs3mPI6MpTcrpMJW6hJUnRkwmxy+q/0PWH/H14+QHScMYRduXsOnFcMETu6Hiprpy6r8DlR4R9PfojKLGOuNq1ghi+BmBGIM1g5EH9xWiekGXVsg7xUrSS8uvQlTJRSBH53izC1Iw01bPY/bL+wxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,104 +182,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10 2026, Huacai Chen wrote:
+On Mon, Aug 10, 2026 at 1:36=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> On Sat, Aug 08, 2026 at 05:51:10PM -0700, Suren Baghdasaryan wrote:
+> > On Thu, Aug 6, 2026 at 1:22=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kerne=
+l.org> wrote:
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index 87feaa5a2b78..df78847f5f07 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -4393,6 +4393,65 @@ static inline pgoff_t vma_last_pgoff(const str=
+uct vm_area_struct *vma)
+> > >         return vma_end_pgoff(vma) - 1;
+> > >  }
+> > >
+> > > +/**
+> > > + * vma_start_anon_pgoff() - Get the anonymous page offset of the sta=
+rt of @vma
+> > > + * @vma: The VMA whose anonymous page offset is required.
+> > > + *
+> > > + * If unfaulted, then this is vma->vm_start >> PAGE_SHIFT, if faulte=
+d then the
+> > > + * anonymous page offset at the time of first fault.
+> > > + *
+> > > + * If the VMA is anonymous, this returns the same value as vma_start=
+_pgoff().
+> > > + *
+> > > + * This value is used for tracking MAP_PRIVATE file-backed mappings =
+by their
+> > > + * anonymous page offset.
+> >
+> > I assume this function should not be used with shared file-backed
+> > mappings, right? If so, maybe add a comment like the one you have for
+> > linear_anon_page_index(): "It is not valid to call this function for
+> > shared file-backed mappings."?
+>
+> No that's not the case, it is valid to access this for any VMA though it'=
+s only
+> meaningful for MAP_PRIVATE and anonymous VMAs (though in the latter case =
+pgoff
+> =3D=3D anon pgoff).
+>
+> The code keeps the anon pgoff values consistent even for shared mappings =
+because
+> - hey - we have the field anyway and it's easiest and safest to just keep=
+ it the
+> same.
+>
+> One alternative would be to have code that checks the flags and zeroes th=
+e field
+> otherwise , but then you have problems like - early on initialisation now
+> there's an ordering requirement which can easily go wrong.
+>
+> Another alternative is to just leave it stale, but then that seems object=
+ively
+> worse and again requires branching code on update and set.
+>
+> All-in-all it's easier to keep this working the same for any type of mapp=
+ing,
+> it's just useless to do anything with the anon pgoff for a shared mapping=
+ :)
 
-> On Mon, Aug 10, 2026 at 9:14=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
->>
->>
->>
->> On Sun, 9 Aug 2026, at 06:18, Huacai Chen wrote:
->> > Hi, George,
->> >
->> > On Fri, Aug 7, 2026 at 6:38=E2=80=AFPM George Guo <dongtai.guo@linux.d=
-ev> wrote:
->> >>
->> >> From: George Guo <guodongtai@kylinos.cn>
->> >>
->> >> Kexec Handover (KHO) passes the address of its state FDT and of its
->> >> scratch area from the current kernel to the next one.  On architectur=
-es
->> >> that boot with a device tree, the current kernel writes the
->> >> linux,kho-fdt and linux,kho-scratch properties into /chosen, and the =
-next
->> >> kernel reads them back in early_init_dt_check_kho().
->> >>
->> >> Architectures that boot through EFI without a device tree have no such
->> >> channel.  LoongArch is one of them: its efistub passes the EFI system
->> >> table and the command line to the core kernel directly and never crea=
-tes
->> >> an FDT.  x86 has the same problem and carries the state out of band
->> >> instead, in a struct kho_data in the setup_data chain of its boot
->> >> protocol.
->> >>
->> >> Add an out-of-band channel for EFI: a LINUX_EFI_KHO_TABLE_GUID
->> >> configuration table entry, under a randomly generated GUID, pointing =
-at a
->> >> struct linux_efi_kho_data.  The
->> >> current kernel loads the structure and an extended configuration tabl=
-e as
->> >> kexec segments, then switches the EFI system table to the new table
->> >> before jumping.  The next kernel finds the entry by GUID and calls
->> >> kho_populate().
->> >>
->> >> The structure carries no version field.  An incompatible change to the
->> >> layout must use a new GUID, which is the usual rule for EFI configura=
-tion
->> >> tables.  The handover payload itself is versioned separately, by the
->> >> compatible string of the KHO state FDT that kho_populate() checks.
->> >>
->> >> This patch adds the definitions only.  LoongArch is the first user; a=
-ny
->> >> other EFI architecture without a boot FDT can use the same channel.
->> >>
->> >> Signed-off-by: George Guo <guodongtai@kylinos.cn>
->> >> ---
->> >>  include/linux/efi.h | 24 ++++++++++++++++++++++++
->> >>  1 file changed, 24 insertions(+)
->> >>
->> >> diff --git a/include/linux/efi.h b/include/linux/efi.h
->> >> index ccbc35479684..789ab9e4312a 100644
->> >> --- a/include/linux/efi.h
->> >> +++ b/include/linux/efi.h
->> >> @@ -422,6 +422,7 @@ void efi_native_runtime_setup(void);
->> >>  #define LINUX_EFI_COCO_SECRET_AREA_GUID                EFI_GUID(0xad=
-f956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
->> >>  #define LINUX_EFI_BOOT_MEMMAP_GUID             EFI_GUID(0x800f683f, =
-0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
->> >>  #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID    EFI_GUID(0xd5d1de3c, =
-0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
->> >> +#define LINUX_EFI_KHO_TABLE_GUID               EFI_GUID(0xc941b6c7, =
-0x7b3f, 0x4af6,  0x9e, 0x50, 0xfc, 0xb3, 0xa8, 0x86, 0x8a, 0x17)
->> > I don't know whether it is allowed to define a new TABLE ID while
->> > doesn't touch the UEFI SPEC.
->> >
->>
->> That is fine in principle: the whole reason for using GUIDs as identifie=
-rs
->> in UEFI is that everyone can invent their own, and the risk of conflicts=
- is
->> negligible.
->>
->> All LINUX_EFI_* GUIDs are Linux inventions, and are not mentioned in the
->> UEFI spec at all.
-> OK, then I think the direction of this series is correct now, and I
-> hope there will be more archs share this GUID.
-
-Agreed.
-
-Perhaps we can move x86 over to use this as well? If I understand
-correctly, pretty much all modern x86 systems have UEFI, so it would
-make sense for KHO to directly use the generic UEFI bits for x86 as well
-instead of having it via setup data.
+Makes sense. Thanks for the explanation!
 
 >
-> BTW, I think LINUX_EFI_KEXEC_HANDOVER_GUID may be a little better than
-> LINUX_EFI_KHO_TABLE_GUID.
-
-+1, that sounds better.
-
---=20
-Regards,
-Pratyush Yadav
+> --
+> Cheers, Lorenzo
 
