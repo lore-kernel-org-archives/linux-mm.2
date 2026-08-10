@@ -4,161 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B08C5AC82
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 07:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB37C5AD7B
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Aug 2026 07:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADAFA6B008C; Mon, 10 Aug 2026 03:53:53 -0400 (EDT)
+	id 4EEFB6B0093; Mon, 10 Aug 2026 03:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2066B0092; Mon, 10 Aug 2026 03:53:53 -0400 (EDT)
+	id 4C6F16B0095; Mon, 10 Aug 2026 03:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8906B0093; Mon, 10 Aug 2026 03:53:53 -0400 (EDT)
+	id 3DCCF6B0096; Mon, 10 Aug 2026 03:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 70FDC6B008C
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:53:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0848E1C1604
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:53:53 +0000 (UTC)
-X-FDA: 85084595946.03.5176D16
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2F24C40003
-	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:53:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DW4z82QM;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1CD9C6B0093
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 03:58:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 103301C1588
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:58:32 +0000 (UTC)
+X-FDA: 85084607664.10.4909F10
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E6F64C0002
+	for <linux-mm@kvack.org>; Mon, 10 Aug 2026 07:58:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c4t+qkeF;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1786348431;
+	s=arc-20220608; t=1786348710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RsQ1603LS78fzd75k/x6TR3rmaLDzL0DbDH4cQP+xIY=;
-	b=yJSUhhDdGB+GPggdB5m7tfESDffcRGqGuOM9G89JvISzU5nRuSvg+HaNK0ltCmJfpfhroV
-	uJGLz4ke+5IDuu4J2HWtY8aUAPk0WJJ8Ma95WEJyx/j8KBgOWqR3eLIjVekHBrIVUy9kNC
-	/L2rr3MaLrg92TCTKywTvq4PsDBVRdI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1786348431;
-	b=WFnjjZopG3L9nYTsTRRIV1rCzLtCivYSSW2suQkfQtmCXvhC1PnFDqtgrooTyD5EJ9Z4gH
-	4ugslGOc663Es8oZebWxANrArLEpm0wa16ZZy/tVmZQq8rllFFsTT9y58+vmd4u3GsaTqe
-	XMroKQRLNVBoGj17UeglhyeHitFp6js=
+	bh=eXqpPmFg3NAwqefW6Q/q19TF5DPxz3Lme5BVQFRJrFQ=;
+	b=vYII9tbjadovFcwy8QhydtKt/49QkeDZsCL0GW846mdRttFvCXEE4EVsMDkMWHTO5ac9JV
+	7xmf2SI0zqgaPeYlY0p5eEW1rEI3uDIX1MfHyecHnIE8v5J9P4xEuzTEKXigIJNkFjbhVX
+	UXIrrm9surPtMXtYMh7PNwUX2mLr6w4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DW4z82QM;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F090440C06;
-	Mon, 10 Aug 2026 07:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D63B1F000E9;
-	Mon, 10 Aug 2026 07:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786348429;
-	bh=RsQ1603LS78fzd75k/x6TR3rmaLDzL0DbDH4cQP+xIY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DW4z82QMtva6XBNmUaUzZLe0byysfZf29zr2G0Oagu6iwv3gzJhRTdY+73TWV76VC
-	 3GiIznMMAdA1VjRdjRC+6TzB1p0b8gcI4x/hHUrwU5ayS9XABnhXcKXqNKhOM2B/x8
-	 23mdTZtUDc/42rg8xEidBlpG6SpASoWPIpKJhSB6fVLXlTnAScj4SlUiUaCGyx6kra
-	 OfgYRsVfVvLKmLQc3RjVdcmA3OFw27AGfkw2aL57TxhkVId3It4gJNivfkVxcrhlhi
-	 QhiUKSDg1PRV4kC6A3y7MWEY1KBv6YQ+C0TOtDTGLk3Wm8OWbCjyIjIdzn41kjR3gU
-	 qujSBCM1IL+mw==
-Message-ID: <fa1ee6d5-9a89-49af-ba50-1beb3b417c6a@kernel.org>
-Date: Mon, 10 Aug 2026 09:53:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/41] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
- KVM_VM_MEMORY_ATTRIBUTES
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-2-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c4t+qkeF;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1786348710;
+	b=KKynTAk/9H1mF+dUvS2Cizvn6v657I+iYf4nqKvFjHZTHLQKyvIOjaWkk7Vl0IFcN5SyBb
+	KiHwHKxlKoWbMgKvLw868mR46huHvlxRKj7R1XtpH5mxaCKrn8YSQAECBxDUrks+Do6MzW
+	q/ZffuHdlo1MFBm6DK4wydaCX2PiUmQ=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786348707;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eXqpPmFg3NAwqefW6Q/q19TF5DPxz3Lme5BVQFRJrFQ=;
+	b=c4t+qkeFJKO/1yXLiMbdEWCssRIOIcrOPElW099+wv7sX6aO4srSJ3FbT9mjc+joDKS+Ab
+	G49Gpx2XnYxtUrTjqEQEZG82xw5N2mjeA25QjGxPiYdgD7HBJnSKEpmlWfVkkjyGvg8KBM
+	5mvMDdShimSb30wXJ2s2BWtHv6dicYg=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined
+ nodes
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com>
+Date: Mon, 10 Aug 2026 15:58:09 +0800
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-arm-msm@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5059A780-9C10-4171-A254-38944464F1AC@linux.dev>
+References: <20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com>
+To: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F24C40003
-X-Stat-Signature: 5xjbuz5dn44mg5e8hdtfchbxtk7grgrc
-X-HE-Tag: 1786348431-395597
-X-HE-Meta: U2FsdGVkX19/Dv47Xh8lWkoBwfFVeNOpIbZJxAmN2xtZlgeP44AxDy1APIDKus5W87c5k+rfUs3N3GmmMJitHUz8em71R6gWw/cnzjsPtWv9jHbFVEcydgsnyxAqxS24byIEAZT+F80N9cdlQgoaJ1uy2IYwOJXwAJ8/ZkrbNuA8YIIlIRHkwG0X7wdB3k0LByuBmtK9K99x8v/X9TP7/FOOw4iQki7VmpwHeJDX432SjNxKGygle2ct62si73U2VC2CG80eCAgoc1ZKldZH6RyzDme4oQ0Ite4T/rK0aPoZpQHVdadeZ6NXp7UFdVBSbdek8SvygTrKO6PfX622q/hNuOVO/gacJTHIvQrRRVmkwiqG8Cv5my76JdirohiACOwBsJ0sXXa0muoWGhBhAL4ifUHMUHPFGuV2kinifn/KogDB8UQslGcNGiKp4yJ3IUPmlUCWYeEBIjqp3+PN/hUQJhcGLVHtA2zr5b1fi6O0N6j06/wdd7btaBiLLkgDRuaipN3dAPCskYbZfNcRRpBJWOu2iNZJ72Noe702mcgzlRLW8hCaPNVT7XAbIusuEbOCZSdnPRr1BcFDMeDCC6D8Nad/gxXNPh9hlMd18NUHwIPc7QDR8Mi8TroKO2nJQair0wHDijrPls8iKB21SoEr/f89etn/dxMepE4bTTLpC4+om3Jp9lXn8aLj5TdsLw/KiVgS/RsdmC9D/IDuMZ/I6KB6f+lXn/J6MisOqSggKJoFiWNDgg48srQ0D2C0+J8bo5xDLsD5E/hOoLs5rciTYXnBEAQRG5TAopmUv9ZmWk71kvtKjvWq/TfA3XSjUZDUVcJJbTvqE+MMb+ouK3vz3h6KoecaimSLFbZXyLL3qjDojUnf7EnaohPJBgECshOXnjn7XeX+ooqJO2vpNTBqKPnxqH8cEIN7EEuExuSFip5bS2jgdW/GBujstr2rjZDsgqbOWCJA72YQnrq
- 7Gf4fdtk
- Bhoe1ENv0Ev5FkNaTI/NzXtw0piXPmPAKmjoOiRf8lZ4lghauxGsT9BjLVyp7U2hC2lkorIXYkg9vcDqkzQSta8mND0Tp/VIkOPIzzC8Vvp8KbIGYKt24gmcAzQVGSF/HcoOVB0ufuMjVKwrq5ta2mAoNg5Uyv/4eJWJ5d7v5V6XJtdtFf2/u276Kmwd6LtmRFZp+ZasfwWBC9KH//SOX8ZlF3F2CfNjqb8ya86Yev9F6SBMqLCENYwVLNDVj9Y5TyhBbTzNqrM5MDVKiwMp2NHD3TrYxf/5rsnvYrQzA8rf3JWPOfTBm1jw/7aiFIgyQ5plm51wGnx1w0kpHhe+Td5Eof0ACqJb76RR+mhUS/o5jUma83LUBAsChd4sAQWJsu6GeXLxAKmgQZfjRxsRSXjo3jw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E6F64C0002
+X-Stat-Signature: usb9tnqt7f6yapd945wu3qo9xxxu4ord
+X-HE-Tag: 1786348709-513762
+X-HE-Meta: U2FsdGVkX1/EpHkAK0mzEMeC5GrtIg8STcP+EuOnrciTTye13WlKx6C5qyfDqzCTu6QH+hYP67JkYDrs4d62FsB/HlRAKYTkDGBNMuewfpFKU03RTRFLkYp/C9i1cxAva7gtZWm7NJ+UyoHz7Sgb1/aGFxrlMaUnNlQiAhiyK3JpRiD3btwPjlMfxOABt+lU33Uu176AtT3OcPAbye3nv2eAeZCMk+Yyy/Dn53pE+NwQwuHAN81rwnWGcRA+CKSFwCsF+HaxIxvE5R1bWZKZryyj2Ch5tHiMMiyEniTOyTekoTN+T+XrU0L8I2JQ/Mk86SfPnoYL0q9k14lryr/T71hdImnAkhu+yA0BhnkJ80WUp0KcNYrank1KX+3MBP15lT3twzNC1v2nF8SesL7FvcBvqaWAB3mH9DwbWVGenBkU5iAecLPQvjxO7dQf1ENnAmde3TVmDooJsQ+8PguJElhazEoc2U+1RKwtH6Hb3pHmg7ak9ivvANV0NLO2jutQWbQ+XOceIfnKKOXG2Rfy8pPA3mrcqIZwimYWw2lwR8r8dVYKtd1f3jVyVQ+JE09+mrwMHM6t6+Nhbd0tDDKYNMpGT79i5A9oxoPWccNJYJi44/pD08RsBFd1nXkVj+52wc24+el7JP8sVRca+Z7/W/1fcHRk8CaIM9PsA+A9ytGcFEnMBvgsvTDj/HoXd66ccNH4DkVEBNbw7NVWFn2CJGmzfLySQFa0CIoG6mO6CFlF128BJ012bQJO43kTCPXUjkQYehP17WZ/lWz/6CoO6JWDysSrekhhYde6tOkx6CAaIC+n1W2aAMXYMe5WX8KY7aOEeWYFKmmhJPkyNW5MmKUxvaR083k5uTyuvv5Aamadjkn77B3aVcc3FMJpPVP90cyLf6b1MHQvhEfY72HrNYF++dl/Ov86spKJiE/Gh4czhJ6u1dd7h4kd7Mc9aflk+MBicH2dHMjJEE7/mPm
+ WrM5rOxF
+ BwSXLLqxQQgMRlPXXvAf6Ow6QbKt74bfNsCHmYQwpP+Dwl1fRaaLa7KcX84vrbVhn2gi/B6gl/qvSinQugaEgH3rtzU2J/y3sBwoTl2rcfIUfBzruAEfifJVfNEycA0ABVqOq5UDH7f/+e+/o4mqpSjUxaau4WDEcKAWT1cA+NgwpscnkOmuU866VMwImF0z+0zC52ZtCn1R46eUCIct2j2/NvF3pb8gL4kD5fQxbHOCuHSm6RU7gCP0II8AyXRlYd5z514uFjQoJK2BdNyxTAF6MhBDkQGXN0cHx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,28 +100,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 02:35, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Rename the per-VM memory attributes Kconfig to make it explicitly about
-> per-VM attributes in anticipation of adding memory attributes support to
-> guest_memfd, at which point it will be possible (and desirable) to have
-> memory attributes without the per-VM support, even in x86.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
--- 
-Cheers,
+> On Aug 10, 2026, at 13:46, Prakash Gupta =
+<prakash.gupta@oss.qualcomm.com> wrote:
+>=20
+> memcg->nodeinfo[] entries are allocated only for nodes present at
+> css_alloc time. When a node is onlined after a memcg is created its
+> nodeinfo[] slot remains NULL. Two call sites dereference these slots
+> unconditionally:
 
-David
+I don't think the premise of this patch is correct.
+
+memcg->nodeinfo[] is not allocated only for nodes that are present or
+online at css_alloc time. mem_cgroup_alloc() allocates per-node info =
+with
+for_each_node(), and for_each_node() iterates N_POSSIBLE nodes:
+
+        for_each_node(node)
+                alloc_mem_cgroup_per_node_info(memcg, node);
+
+Memory hotplug also rejects memory being added to a node that is not in
+node_possible_map. So a node that can be onlined later should already
+have a nodeinfo[] entry for all existing memcgs.
+
+If memcg->nodeinfo[nid] is NULL on your system, that looks like a
+violation of this invariant, or possibly a downstream-specific change,
+bad nid, allocation/lifetime issue, or memory corruption. I don't think
+the generic explanation that "the node was onlined after the memcg was
+created" is sufficient.
+
+>=20
+> lruvec_stat_mod_folio() calls mem_cgroup_lruvec() which reads
+> memcg->nodeinfo[pgdat->node_id] without a NULL check. On a system
+> where a node is onlined after the memcg is created, any folio stat
+> update for that node crashes with a NULL pointer dereference:
+>=20
+>  Unable to handle kernel paging request at virtual address =
+ffffffbebf7e1908
+>  pc : lruvec_stat_mod_folio+0xf0/0x444   [6.18.21-android17-5]
+>  lr : lruvec_stat_mod_folio+0x88/0x444
+>  Call trace:
+>   lruvec_stat_mod_folio+0xf0/0x444
+>   folio_add_new_anon_rmap+0xac/0x2b8
+>   do_wp_page+0x768/0xc80
+>   handle_mm_fault+0x37c/0x8c4
+>   do_page_fault+0x140/0xa1c
+>   do_mem_abort+0x54/0x74
+>   el0_da+0x48/0x8c
+>   el0t_64_sync_handler+0x20/0x130
+>   el0t_64_sync+0x1c4/0x1c8
+>=20
+> __invalidate_reclaim_iterators() iterates for_each_node() and reads
+> from->nodeinfo[nid]->iter without checking for NULL. for_each_node()
+> visits all possible nodes, so this is reachable whenever a node is
+> onlined after the memcg was created.
+>=20
+> Fix lruvec_stat_mod_folio() by checking nodeinfo[pgdat->node_id]
+> directly and falling back to mod_node_page_state() when NULL, =
+mirroring
+> the existing !memcg early-return path. The fallback must not go =
+through
+> mod_lruvec_state() since that calls mod_memcg_lruvec_state() which =
+uses
+> container_of() to recover the mem_cgroup_per_node from the lruvec
+> pointer; passing &pgdat->__lruvec there produces a garbage pointer.
+> When nodeinfo[nid] is NULL the memcg has no per-node accounting
+> structure for that node, so node-level accounting is correct.
+>=20
+> Fix __invalidate_reclaim_iterators() by skipping NULL nodeinfo[] =
+slots.
+>=20
+> Also switch lruvec_stat_mod_folio() to folio_memcg_check() which uses
+> READ_ONCE() to safely read folio->memcg_data in an unlocked context.
+>=20
+> Fixes: 6c77b607ee26 ("mm: kill lock|unlock_page_memcg()")
+
+The Fixes tag also seems odd. 6c77b607ee26 ("mm: kill
+lock|unlock_page_memcg()") only removed/renamed the lock_page_memcg()
+wrappers and does not appear to change nodeinfo[] allocation or memory
+hotplug handling. Could you explain how that commit introduced the NULL
+nodeinfo condition?
+
+> Cc: stable@vger.kernel.org
+> Assisted-by: pi:claude-sonnet-4-5
+
+Given the Assisted-by tag, I assume some of the analysis may have been
+tool-assisted. That's fine, but the author still needs to validate the
+reasoning against the actual code before submission.
+
+Did you confirm that the relevant allocation and hotplug paths were
+manually checked against the affected tree? In particular, I wonder
+whether this behavior depends on downstream changes around
+mem_cgroup_alloc(), for_each_node(), node_possible_map setup, or memory
+hotplug nid validation.
+
+Muchun,
+Thanks.=
 
